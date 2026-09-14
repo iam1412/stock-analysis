@@ -10,6 +10,20 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 208,
+  "values": {
+    "px": 241.87,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 199,
+    "fvHigh": 223,
+    "eps": 6.62,
+    "shares": 233000000,
+    "dps": 1.36,
+    "bvps": 51.6
+  },
   "theme": {
     "accent": "#2E7D32",
     "accentDark": "#1B5E20",
@@ -41,18 +55,14 @@
     "min": 180,
     "max": 260,
     "grid": [200, 220, 240],
-    "fairLine": 208,
     "currency": "$",
     "highlight": [1, 8]
   },
   "gauge": {
     "min": 170,
     "max": 267,
-    "cur": 241.87,
-    "fair": 208,
     "fairLabelTop": false
-  },
-  "fv": 208
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +82,11 @@
     <div class="sub">เครื่องมือวัด/วิเคราะห์อิเล็กทรอนิกส์ (EIG) • อุปกรณ์ไฟฟ้ากล/ความแม่นยำ (EMG) • serial acquirer นิช industrial • ตลาดเฉพาะทาง aerospace/medical/process</div>
     <div class="price-row">
       <div>
-        <div class="px">$241.87<small>(AME)</small></div>
+        <div class="px">{{rd:px}}<small>(AME)</small></div>
       </div>
-      <div class="chg">▲ +19.7% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $174.43 / $244.71<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / AMETEK Investor Relations (FY25 Annual Report) / Macrotrends
       </div>
@@ -87,8 +97,8 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$56.4B</div><div class="d">233M shares outstanding</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~36.5x</div><div class="d">EPS TTM $6.62 — valuation ตึง</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">233M shares outstanding</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM $6.62 — valuation ตึง</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~28–32x</div><div class="d">ปัจจุบันสูงกว่าค่าเฉลี่ย</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~4.7x</div><div class="d">BVPS ~$51.6 — premium ธุรกิจคุณภาพ</div></div>
 
@@ -113,7 +123,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#2E7D32"></i>ราคา AME</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $208</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -142,8 +152,8 @@
         <div class="mval">$202.44</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $199 – $223</span></div>
-        <div class="r">$208</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธีที่ 1 P/E TTM ให้ค่าต่ำสุด $198.60 เพราะ EPS TTM ยังสะท้อนผล amortization สูง ส่วนวิธีที่ 2 Forward P/E ให้ค่าสูงสุด $222.60 สะท้อน guidance เติบโต FY26
@@ -160,14 +170,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $241.87</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $208</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$145.60<br><small>MOS 30%</small></span>
-          <span>$166.40<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$208<br><small>Fair Value</small></span>
-          <span style="text-align:right">$223<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$259<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -184,19 +194,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−16%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาแพงกว่า Fair Value — ไม่มี Margin of Safety · ควรรอย่อ</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$166.40</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$145.60</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $208</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="241.87" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -290,8 +300,8 @@
       <h2>ธุรกิจดีเยี่ยม แต่ราคาแพงไป — รอโอกาสย่อ</h2>
       <p>AMETEK เป็น serial acquirer industrial คุณภาพสูง พิสูจน์ด้วย AMETEK Growth Model กว่า 20 ปี: operating margin 26%, FCF แข็งแกร่ง, M&A มีวินัยในนิชตลาดเฉพาะทาง aerospace/medical/process ที่คู่แข่งเข้ายากช่วยสร้าง aftermarket recurring revenue สม่ำเสมอ อย่างไรก็ตาม ราคาวิ่ง +28.5% ในรอบปี ทำให้ valuation ตึงที่ P/E 36x สำหรับ growth rate เพียง ~8%/ปี Fair Value $208 (MOS −14.2%) บอกว่าราคาปัจจุบัน $237.52 แพงเกินไป Base case ให้ผลตอบแทนเพียง +5% ใน 3 ปี — ไม่คุ้มความเสี่ยง กลยุทธ์ที่ดีคือรอย่อลงใกล้ $166–$208</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$208 <span style="font-size:12px;color:#cab9a8">($199–$223)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −16%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$259 (Buy)</div></div>
       </div>
       <div class="zone">

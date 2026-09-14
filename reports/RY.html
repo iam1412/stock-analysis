@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 155.8,
+  "values": {
+    "px": 205.9,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 127.5,
+    "fvHigh": 184.1,
+    "shares": 1403000000,
+    "dps": 4.74,
+    "bvps": 68.53,
+    "baseEps": 10.93,
+    "scenarios": [
+      {
+        "tgt": 106.37,
+        "div": 14.5
+      },
+      {
+        "tgt": 182.28,
+        "div": 16.3
+      },
+      {
+        "tgt": 261.9,
+        "div": 16.6
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#2882e1",
     "accentDark": "#175faa",
@@ -40,17 +73,13 @@
     "min": 140,
     "max": 220,
     "grid": [160, 180, 200],
-    "fairLine": 155.8,
     "currency": "$",
     "highlight": [0, 9]
   },
   "gauge": {
     "min": 100,
-    "max": 250,
-    "cur": 205.9,
-    "fair": 155.8
-  },
-  "fv": 155.8
+    "max": 250
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -70,11 +99,11 @@
     <div class="sub">ธนาคารพาณิชย์ใหญ่ที่สุดของแคนาดา • Personal &amp; Commercial Banking • Wealth Management • Capital Markets • Insurance</div>
     <div class="price-row">
       <div>
-        <div class="px">$205.90<small>(RY)</small></div>
+        <div class="px">{{rd:px}}<small>(RY)</small></div>
       </div>
-      <div class="chg">▲ +40.5% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569 (Yahoo Finance ตรงกับ StockAnalysis.com พอดี 0.00%)<br>
+        ราคา ณ {{rd:priceDate}} (Yahoo Finance ตรงกับ StockAnalysis.com พอดี 0.00%)<br>
         กรอบ 52 สัปดาห์ $132.27 – $218.57<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, งบการเงินประจำปี RBC (FY2021–FY2025)
       </div>
@@ -88,7 +117,7 @@
       <div class="metric"><div class="k">Market Cap</div><div class="v">~$289 พันล้าน</div><div class="d">≈ C$411 พันล้าน • 1,403 ล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~18.8x</div><div class="d">ราคา USD $211.08 ÷ EPS USD $10.93 — ห้ามหารด้วย EPS สกุล CAD</div></div>
       <div class="metric"><div class="k">P/E ล่วงหน้า (Forward)</div><div class="v neu">~16.4x</div><div class="d">EPS ล่วงหน้า $12.58 (Yahoo) • SA 17.75x</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">~3.00x</div><div class="d">$211.08 ÷ BVPS $68.53 — สูงกว่าจุดสูงสุดของตัวเองในรอบ 5 ปีที่ 2.07x</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~{{rd:pbv}}x</div><div class="d">$211.08 ÷ BVPS $68.53 — สูงกว่าจุดสูงสุดของตัวเองในรอบ 5 ปีที่ 2.07x</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">C$20,362 ล้าน</div><div class="d">+25.5% YoY (ปีบัญชีสิ้นสุด 31 ต.ค. 2568)</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$10.93</div><div class="d">GAAP diluted ≈ C$15.39 • adjusted EPS สูงกว่า ~3% ($11.30)</div></div>
@@ -111,7 +140,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#2882e1"></i>ราคา RY</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $155.80</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -137,8 +166,8 @@
         <div class="mval">$127.50</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $127.50 – $184.10</span></div>
-        <div class="r">$155.80</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>เรื่องสกุลเงิน — จุดที่พลาดกันบ่อยที่สุดกับหุ้นตัวนี้:</b> RY จดทะเบียนที่ NYSE โดยตรง (ไม่ใช่ ADR ไม่มีกับดัก ratio) ราคาซื้อขายเป็น <b>USD</b>
@@ -169,14 +198,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $205.90</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $155.80</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$109.06<br><small>MOS 30%</small></span>
-          <span>$124.64<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$155.80<br><small>Fair Value</small></span>
-          <span style="text-align:right">$184.10<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$195.05<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -192,22 +221,22 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−32%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>ไม่มี Margin of Safety — แพงเมื่อเทียบกับประวัติของตัวเอง ไม่เหลือส่วนเผื่อความปลอดภัยที่ราคาปัจจุบัน</b><br>
         ราคา $211.08 สูงกว่า FV $155.80 อยู่ 35.5% ของฐาน FV — หลังหุ้นวิ่ง +43.3% ในรอบปีจน P/E แตะ 19.3x และ P/B ปัจจุบัน 3.08x (ราคา $211.08 ÷ BVPS $68.53) สูงกว่าจุดสูงสุดของตัวเองในรอบ 5 ปีที่ 2.07x
         แม้เลือกใช้ขา justified P/B อย่างเดียวซึ่งให้ค่าสูงกว่า (FV $184.10) ส่วนต่างก็ยังเป็น −14.7% — ไม่มีทางเลือกเชิงวิธีใดที่ทำให้ราคานี้มีส่วนเผื่อความปลอดภัย
         สำหรับนักลงทุนสาย value จึงเป็นช่วง "ถือรอ" ไม่ใช่ "ไล่ซื้อ" — ธุรกิจแข็งแรงจริง แต่ราคาสะท้อนความแข็งแรงนั้นไปเกินแล้ว</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$124.64</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$109.06</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $155.80</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="205.9" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -216,17 +245,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $205.90 • EPS ฐาน ~$10.93 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −4%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$106.37</div>
-          <div class="ret neg">−41.3% (≈ −16.3%/ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$9.67</span></li>
             <li><span>P/E ออก</span><span>11x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$14.50</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>เศรษฐกิจแคนาดาถดถอย PCL พุ่ง + multiple ยุบกลับสู่กรอบล่างประวัติศาสตร์</span></li>
           </ul>
         </div>
@@ -234,12 +263,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +6%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$182.28</div>
-          <div class="ret neg">−3.6% (≈ −1.2%/ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$13.02</span></li>
             <li><span>P/E ออก</span><span>14x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$16.30</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>กำไรโตตามปกติ แต่ multiple คลายจาก 19.3x กลับสู่ระดับที่สมเหตุสมผล กำไรที่โตถูกกลืนด้วย de-rating</span></li>
           </ul>
         </div>
@@ -247,12 +276,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +10%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$261.90</div>
-          <div class="ret pos">+35.3% (≈ +10.6%/ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$14.55</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$16.60</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>ตลาดยอมรับว่า multiple ใหม่คือ "ของจริง" จากส่วนผสม Wealth/Capital Markets + CAD แข็งค่าหนุนผลตอบแทนสกุล USD</span></li>
           </ul>
         </div>
@@ -310,8 +339,8 @@
       และที่ควรสะดุดใจที่สุดคือ ราคาปัจจุบันยัง<b>สูงกว่าเป้า 12 เดือนของนักวิเคราะห์ทั้งสองแหล่ง</b> ซึ่งเป็นภาวะที่หายากสำหรับธนาคารขนาดใหญ่
       หมายเหตุสำคัญ: งบการเงินทั้งหมดของ RBC เป็นสกุล CAD ขณะที่ราคาซื้อขายเป็น USD — ตัวเลขมูลค่าทุกตัวในรายงานนี้แปลงเป็น USD แล้วที่อัตราสปอต ~0.72 USD/CAD</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$155.80 <span style="font-size:12px;color:#cab9a8">($127.50–$184.10)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −32%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$195.05 (Buy — ต่ำกว่าราคาปัจจุบัน)</div></div>
       </div>
       <div class="zone">
@@ -326,7 +355,7 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ 11 ก.ย. 2569 ($211.08) จาก Yahoo Finance ตรงกับ StockAnalysis.com พอดี (ต่าง 0.00%)
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ {{rd:priceDate}} ($211.08) จาก Yahoo Finance ตรงกับ StockAnalysis.com พอดี (ต่าง 0.00%)
     • งบการเงิน FY2021–FY2025 + TTM (สกุล CAD, ปีบัญชีสิ้นสุด 31 ต.ค.) จาก StockAnalysis.com • EPS(TTM) GAAP diluted $10.93 จาก Yahoo Finance (StockAnalysis รายงาน adjusted EPS $11.30 ต่างกัน 3.3% ตามนิยาม)
     • อัตราแลกเปลี่ยนที่ใช้แปลง CAD→USD ≈ 0.72 USD/CAD (สปอต) — มูลค่าเหมาะสมจะเลื่อนตามค่าเงินได้
   </div>

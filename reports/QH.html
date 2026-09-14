@@ -10,6 +10,19 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 1.57,
+  "values": {
+    "px": 1.4,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 1.32,
+    "fvHigh": 1.72,
+    "shares": 10667000000,
+    "dps": 0.1,
+    "bvps": 2.82
+  },
   "theme": {
     "accent": "#c0533a",
     "accentDark": "#8b3520",
@@ -41,18 +54,14 @@
     "min": 1.2,
     "max": 1.6,
     "grid": [1.3, 1.4, 1.5],
-    "fairLine": 1.57,
     "currency": "฿",
     "highlight": [1, 4]
   },
   "gauge": {
     "min": 1,
     "max": 2,
-    "cur": 1.4,
-    "fair": 1.57,
     "fairLabelTop": true
-  },
-  "fv": 1.57
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +81,11 @@
     <div class="sub">บ้านเดี่ยว PRUKPIROM &amp; LADDAROM · ทาวน์เฮาส์ THE TRUST &amp; GUSTO · คอนโด Q CONDO &amp; CASA CONDO · ถือหุ้น HMPRO ~20%</div>
     <div class="price-row">
       <div>
-        <div class="px">฿1.40<small>(QH)</small></div>
+        <div class="px">{{rd:px}}<small>(QH)</small></div>
       </div>
-      <div class="chg">▲ +6.1% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿1.21 – ฿1.53<br>
         ที่มา: Investing.com, SET, QH Investor Relations
       </div>
@@ -90,7 +99,7 @@
       <div class="metric"><div class="k">Market Cap</div><div class="v">~฿14,934 ล้าน</div><div class="d">~10,667 ล้านหุ้น (SET)</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~8.26x</div><div class="d">ต่ำกว่าค่าเฉลี่ยกลุ่ม ~10x</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~10x</div><div class="d">ช่วงประวัติ 8–14x</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.50x</div><div class="d">ต่ำกว่า Book มาก (BVPS ฿2.82)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">ต่ำกว่า Book มาก (BVPS ฿2.82)</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">~฿1,728 ล้าน</div><div class="d">−19.6% YoY (FY24: ฿2,150ล.)</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.167</div><div class="d">FY25: ฿0.16 | FY24: ฿0.20</div></div>
@@ -113,7 +122,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#c0533a"></i>ราคา QH</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿1.57</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -139,8 +148,8 @@
         <div class="mval">฿1.32</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿1.32 – ฿1.72</span></div>
-        <div class="r">฿1.57</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี DDM ให้ค่าสูงสุด (฿1.72) เพราะ QH จ่ายปันผล yield สูงกว่า 7% สม่ำเสมอ วิธี Justified P/BV ให้ค่าต่ำสุด (฿1.32) สะท้อน ROE ที่ลดลงใกล้ cost of equity วิธี P/E ที่ 10x กลางๆ (฿1.67) สมเหตุสมผลหาก EPS ฟื้นตัว มูลค่าเฉลี่ย <b>฿1.57</b> สะท้อนราคาที่ควรซื้อขายหากตลาดให้ Valuation ปกติ
@@ -154,15 +163,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿1.40</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿1.57</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿1.10<br><small>MOS 30%</small></span>
-          <span>฿1.26<br><small>MOS 20%</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">฿1.40<br><small>เป้า Analyst</small></span>
-          <span style="text-align:right">฿1.57<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿1.72<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -175,19 +184,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+11%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาพอใช้ — ทยอยสะสมได้ในโซนนี้ หากเชื่อว่า EPS จะฟื้นตัวและ P/E จะ re-rate กลับ</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿1.26</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿1.10</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿1.57</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="1.4" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -279,8 +288,8 @@
       <h2>หุ้นปันผล Value Play ที่รอการฟื้นตัว — ซื้อขายต่ำกว่า Fair Value ~12%</h2>
       <p>QH เป็นหนึ่งในผู้พัฒนาอสังหาริมทรัพย์ที่มีประวัติยาวนานและ Portfolio ครบวงจรของไทย ปัจจุบันซื้อขายที่ P/E 8.26x และ P/BV 0.48x ต่ำกว่าค่าเฉลี่ยอุตสาหกรรมอย่างมีนัยสำคัญ ด้วย dividend yield ~7.1% หุ้นนี้น่าสนใจสำหรับนักลงทุนที่ต้องการกระแสเงินสดสม่ำเสมอ แม้กำไรสุทธิจะลดลงต่อเนื่อง 3 ปี ปัจจัยที่จะ re-rate ราคาคือ การฟื้นตัวของยอดขายอสังหาฯ การลดดอกเบี้ย และการ re-rate P/E กลับสู่ค่าปกติ 10x มูลค่าเหมาะสมเฉลี่ย 3 วิธีอยู่ที่ ฿1.57 ให้ upside ~13.8% จากราคาปัจจุบัน</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿1.57 <span style="font-size:12px;color:#cab9a8">(฿1.32–฿1.72)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +11%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿1.40 (Neutral)</div></div>
       </div>
       <div class="zone">

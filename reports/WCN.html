@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 150.7,
+  "values": {
+    "px": 159.74,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 143.5,
+    "fvHigh": 156.6,
+    "shares": 254100000,
+    "dps": 1.4,
+    "bvps": 31.7,
+    "baseEps": 4.1,
+    "scenarios": [
+      {
+        "tgt": 143.36,
+        "div": 4.2
+      },
+      {
+        "tgt": 180.77,
+        "div": 4.91
+      },
+      {
+        "tgt": 236.64,
+        "div": 5.39
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#6b8e3a",
     "accentDark": "#4a6428",
@@ -41,18 +74,14 @@
     "min": 140,
     "max": 180,
     "grid": [150, 160, 170],
-    "fairLine": 150.7,
     "currency": "$",
     "highlight": [1, 7]
   },
   "gauge": {
     "min": 90,
     "max": 320,
-    "cur": 159.74,
-    "fair": 150.7,
     "fairLabelTop": "-58px"
-  },
-  "fv": 150.7
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +101,11 @@
     <div class="sub">เก็บขน-กำจัด-รีไซเคิลของเสียในตลาดรอง/ชนบทสหรัฐฯ-แคนาดา • ฝังกลบ (Landfill) • ก๊าซชีวภาพ Renewable Natural Gas (RNG) • ของเสียจากกลุ่มพลังงาน (E&amp;P waste)</div>
     <div class="price-row">
       <div>
-        <div class="px">$159.74<small>(WCN)</small></div>
+        <div class="px">{{rd:px}}<small>(WCN)</small></div>
       </div>
-      <div class="chg">▼ −4.7% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $146.89 – $191.91<br>
         ที่มา: StockAnalysis.com, Finviz.com, Yahoo Finance
       </div>
@@ -90,7 +119,7 @@
       <div class="metric"><div class="k">Market Cap</div><div class="v">$40.59B</div><div class="d">254.1M หุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~42.2x</div><div class="d">Forward P/E ~29–31x</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~33x</div><div class="d">ช่วง ~28x–42x (พรีเมียมตลาดรอง/M&amp;A)</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">5.04x</div><div class="d">BVPS $31.70</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS $31.70</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">~$1.06B</div><div class="d">เติบโตต่อเนื่องจาก M&amp;A + ปรับราคาสัญญา</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$4.10</div><div class="d">Q1/69 EPS $0.86 · Consensus FY2569 ~$5.50 (adj.)</div></div>
@@ -113,7 +142,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#6b8e3a"></i>ราคา WCN</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $150.70</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -139,8 +168,8 @@
         <div class="mval">$156.60</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $143.50 – $156.60</span></div>
-        <div class="r">$150.70</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/E ให้ค่าต่ำสุดเพราะอิง GAAP EPS ที่ถูกกดจากค่าตัดจำหน่ายสินทรัพย์ไม่มีตัวตนจาก M&amp;A ต่อเนื่อง, DCF สะท้อน FCF ปัจจุบันที่ถูกกดจากช่วง CapEx สูงของโครงการ RNG, ส่วน EV/EBITDA ให้ค่าสูงสุดเพราะ EBITDA ไม่ถูกกระทบจาก D&amp;A ระยะสั้น ค่าเฉลี่ย $150.70 สะท้อนคุณภาพธุรกิจแต่ยังต่ำกว่าราคาตลาดปัจจุบันที่ตึงตัว
@@ -154,13 +183,13 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $159.74</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $150.70</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$105.49<br><small>MOS 30%</small></span>
-          <span>$120.56<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$150.70<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$202.73<br><small>เป้าเฉลี่ย Analyst</small></span>
           <span style="text-align:right">$305<br><small>เป้าสูงสุด Analyst</small></span>
         </div>
@@ -175,19 +204,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−6%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>ไม่มี Margin of Safety</b><br>ราคาปัจจุบัน $172.93 สูงกว่ามูลค่าเหมาะสม $150.70 ราว 14.8% → ตามเกณฑ์ value investor ถือว่า <b>แพงกว่าพื้นฐาน</b> ยังไม่ใช่จุดซื้อที่ปลอดภัย</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$120.56</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$105.49</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $150.70</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="159.74" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -196,17 +225,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $159.74 • EPS ฐาน ~$4.10 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS 3%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$143.36</div>
-          <div class="ret neg">−7.6%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$4.48</span></li>
             <li><span>P/E ออก</span><span>32x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$4.20</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>Multiple หดสู่ระดับคู่แข่ง WM/RSG (~30x) จากดอกเบี้ยสูง/CapEx ไม่เกิดผลตามคาด เติบโตชะลอเหลือ ~3%/ปี</span></li>
           </ul>
         </div>
@@ -214,12 +243,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$180.77</div>
-          <div class="ret pos">+16.2%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$5.16</span></li>
             <li><span>P/E ออก</span><span>35x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$4.91</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>เติบโตตามแนวโน้มระยะยาวของบริษัท (~8%/ปี) M&amp;A ต่อเนื่อง มัลติเพิลทรงตัวใกล้ระดับกลางวัฏจักร</span></li>
           </ul>
         </div>
@@ -227,12 +256,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +13%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$236.64</div>
-          <div class="ret pos">+51.5%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$5.92</span></li>
             <li><span>P/E ออก</span><span>40x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$5.39</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>RNG facility ทยอยแล้วเสร็จหนุนมาร์จิ้น + M&amp;A เร่งตัว นักลงทุนให้พรีเมียมมัลติเพิลกลับสู่ระดับ re-rate (~40x)</span></li>
           </ul>
         </div>
@@ -278,8 +307,8 @@
       <h2>ธุรกิจคุณภาพสูง แต่ราคาตึงตัว — รอจังหวะสะสม</h2>
       <p>Waste Connections เป็นผู้นำเก็บขน-กำจัดขยะในตลาดรอง/ชนบทสหรัฐฯ-แคนาดาที่มีการแข่งขันต่ำ ทำให้มี pricing power และมาร์จิ้นสูงกว่าคู่แข่งอย่าง WM/RSG ต่อเนื่องหลายปี ธุรกิจ RNG (ก๊าซชีวภาพจากหลุมฝังกลบ) อยู่ในช่วงลงทุนหนักที่กดกระแสเงินสดอิสระระยะสั้น แต่คาดหนุนมาร์จิ้นเมื่อ CapEx ทยอยลดลง อย่างไรก็ตาม ที่ราคาปัจจุบัน Trailing P/E ~42x ตึงตัวกว่าค่าเฉลี่ยและมูลค่าที่ประเมินได้ (~$150.70) ทำให้ยังไม่มี margin of safety สำหรับผู้ลงทุนใหม่</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$150.70 <span style="font-size:12px;color:#cab9a8">($143.50–$156.60)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −6%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$202.73 (Buy, 28 ราย)</div></div>
       </div>
       <div class="zone">

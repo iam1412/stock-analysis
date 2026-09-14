@@ -10,6 +10,38 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 144.64,
+  "values": {
+    "px": 199.28,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 136.8,
+    "fvHigh": 155,
+    "shares": 196230000,
+    "dps": 2.08,
+    "baseEps": 6.35,
+    "scenarios": [
+      {
+        "tgt": 91.56,
+        "div": 6.24
+      },
+      {
+        "tgt": 136.08,
+        "div": 6.75
+      },
+      {
+        "tgt": 202.8,
+        "div": 7.02
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#0a4d68",
     "accentDark": "#062f40",
@@ -41,18 +73,14 @@
     "min": 50,
     "max": 250,
     "grid": [100, 150, 200],
-    "fairLine": 144.64,
     "currency": "$",
     "highlight": [3, 11]
   },
   "gauge": {
     "min": 90,
     "max": 212,
-    "cur": 199.28,
-    "fair": 144.64,
     "fairLabelTop": true
-  },
-  "fv": 144.64
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +100,11 @@
     <div class="sub">Hybrid Cloud Storage • ONTAP • StorageGRID • AI Data Infrastructure</div>
     <div class="price-row">
       <div>
-        <div class="px">$199.28<small>(NTAP)</small></div>
+        <div class="px">{{rd:px}}<small>(NTAP)</small></div>
       </div>
-      <div class="chg">▲ +69.2% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569 16:00 ET (ตลาดปิด)<br>
+        ราคา ณ {{rd:priceDate}} 16:00 ET (ตลาดปิด)<br>
         กรอบ 52 สัปดาห์ $93.69 – $209.06<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, Google Finance
       </div>
@@ -113,7 +141,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#0a4d68"></i>ราคา NTAP</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $144.64</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -139,8 +167,8 @@
         <div class="mval">$142.11</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $136.80 – $155.00</span></div>
-        <div class="r">$144.64</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         FCF Yield ให้ค่าสูงสุด ($155.00) เพราะ NTAP เป็นธุรกิจ asset-light กระแสเงินสดสม่ำเสมอสูงกว่ากำไรทางบัญชี ส่วน P/E Valuation ให้ค่าต่ำสุด ($136.80) เพราะใช้ EPS แบบระมัดระวังไม่เต็ม forward EPS $8.90 ที่นักวิเคราะห์คาด FV เฉลี่ย $144.64 จึงอยู่กึ่งกลางและต่ำกว่าราคาตลาดปัจจุบันที่วิ่งนำหน้าไปแล้วจากกระแส AI data infrastructure
@@ -154,14 +182,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $199.28</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $144.64</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$101.25<br><small>MOS 30%</small></span>
-          <span>$115.71<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$144.64<br><small>Fair Value</small></span>
-          <span style="text-align:right">$155.00<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$179.82<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -175,19 +203,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−38%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>ไม่มี Margin of Safety — ราคาแพงกว่ามูลค่าเหมาะสม</b><br>ราคาปัจจุบัน $207.08 สูงกว่ามูลค่าเหมาะสม $144.64 ราว 43% แม้พื้นฐานกำไรเร่งตัวจริง แต่ราคาวิ่งนำหน้าไปแล้วมาก ยังไม่ใช่จุดซื้อที่ปลอดภัยตามเกณฑ์ value investor</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$115.71</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$101.25</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $144.64</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="199.28" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -196,17 +224,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $199.28 • EPS ฐาน ~$6.35 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +1%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$91.56</div>
-          <div class="ret neg">−50.9% (3 ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$6.54</span></li>
             <li><span>P/E ออก</span><span>14x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$6.24</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>เศรษฐกิจชะลอ งบ IT enterprise หด multiple หดกลับสู่ระดับก่อน AI narrative</span></li>
           </ul>
         </div>
@@ -214,12 +242,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +6%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$136.08</div>
-          <div class="ret neg">−28.3% (3 ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$7.56</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$6.75</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>กำไรโตต่อเนื่องปานกลางตาม hybrid cloud/AI data demand multiple ปรับกลับสู่ระดับปกติ</span></li>
           </ul>
         </div>
@@ -227,12 +255,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +10%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$202.80</div>
-          <div class="ret pos">+5.3% (3 ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$8.45</span></li>
             <li><span>P/E ออก</span><span>24x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$7.02</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>AI data infrastructure demand เร่งตัวแรง ONTAP/StorageGRID ชนะส่วนแบ่งตลาดเพิ่ม multiple ขยายต่อ</span></li>
           </ul>
         </div>
@@ -277,8 +305,8 @@
       <h2>ธุรกิจแข็งแรง กำไรเร่งตัวจริง แต่ราคาวิ่งนำหน้ามูลค่าเหมาะสมไปแล้ว</h2>
       <p>NetApp กำลังอยู่ในช่วงกำไรเร่งตัวจริง (EPS รายไตรมาสจาก $1.15 เป็น $2.03 ภายในปีเดียว) หนุนจากดีมานด์ hybrid cloud storage และกระแส AI data infrastructure ที่ทำให้ ONTAP/StorageGRID เป็นชั้นข้อมูลสำคัญของ enterprise AI workload อย่างไรก็ตาม การวิ่งขึ้น +74.8% ในรอบปีที่ผ่านมาทำให้ราคาสูงกว่ามูลค่าเหมาะสมที่ประเมินแบบระมัดระวัง ($144.64) ไปแล้วราว 43% และสูงกว่าเป้าเฉลี่ยนักวิเคราะห์ $179.82 ไปแล้วด้วย สะท้อนว่าตลาดวิ่งนำหน้าไปมากกว่าที่นักวิเคราะห์และโมเดล valuation แบบระมัดระวังมองไว้ นักลงทุนแนว value ควรรอจังหวะพักฐาน ส่วนผู้ถือหุ้นเดิมยังไปต่อได้ตามโมเมนตัมพื้นฐาน แต่ไม่ควรไล่ราคาเพิ่มที่ระดับปัจจุบัน</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$144.64 <span style="font-size:12px;color:#cab9a8">($136.80–$155.00)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −38%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$179.82 (Buy)</div></div>
       </div>
       <div class="zone">

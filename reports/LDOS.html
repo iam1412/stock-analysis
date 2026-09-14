@@ -10,6 +10,40 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 168,
+  "values": {
+    "px": 128.86,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 131,
+    "fvHigh": 197,
+    "eps": 10.93,
+    "shares": 125800000,
+    "dps": 1.72,
+    "bvps": 38.79,
+    "baseEps": 11.99,
+    "scenarios": [
+      {
+        "tgt": 136.48,
+        "div": 5.16
+      },
+      {
+        "tgt": 213.36,
+        "div": 5.16
+      },
+      {
+        "tgt": 284.65,
+        "div": 5.16
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#CC2529",
     "accentDark": "#8B0000",
@@ -41,18 +75,14 @@
     "min": 75,
     "max": 200,
     "grid": [100, 125, 150, 175],
-    "fairLine": 168,
     "currency": "$",
     "highlight": [1, 8]
   },
   "gauge": {
     "min": 80,
     "max": 220,
-    "cur": 128.86,
-    "fair": 168,
     "fairLabelTop": true
-  },
-  "fv": 168
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +102,11 @@
     <div class="sub">Defense, intelligence &amp; health technology • DoD, intelligence community, VA, FAA • F-35 sustainment, air traffic management, VA EHR • ~$16.7B revenue, strong backlog</div>
     <div class="price-row">
       <div>
-        <div class="px">$128.86<small>(LDOS)</small></div>
+        <div class="px">{{rd:px}}<small>(LDOS)</small></div>
       </div>
-      <div class="chg">▼ −32.3% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $98.86 – $205.77<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, Macrotrends
       </div>
@@ -90,7 +120,7 @@
       <div class="metric"><div class="k">Market Cap</div><div class="v">$16.21B</div><div class="d">~125.8M หุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~11.79x</div><div class="d">EPS TTM $10.93 GAAP</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~18x</div><div class="d">ช่วง 13–25x ในอดีต</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">3.32x</div><div class="d">BVPS ~$38.79 (บวก)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ~$38.79 (บวก)</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2024</div><div class="v">$1,251M</div><div class="d">+501% YoY (จาก $208M)</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$10.93</div><div class="d">Forward FY25: ~$11.99</div></div>
@@ -113,7 +143,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#CC2529"></i>ราคา LDOS</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $168</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -139,8 +169,8 @@
         <div class="mval">$197.05</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $131 – $197</span></div>
-        <div class="r">$168.00</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/E และ FCF Yield ให้มูลค่า ~$192–197 สะท้อนพื้นฐานรายได้และกระแสเงินสดที่แข็งแกร่ง ส่วน EV/EBITDA ($131) อนุรักษ์นิยมกว่าเพราะหักหนี้สุทธิ ~$6.8B ออกจาก Enterprise Value มูลค่าเฉลี่ย (น้ำหนัก 40/40/20) คือ ~$168 ซึ่งตรงกับเป้า consensus นักวิเคราะห์ $168.27 จาก 17 คน — ยืนยันความสมเหตุสมผลของการประเมิน
@@ -154,15 +184,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $128.86</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $168</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$117.60<br><small>MOS 30%</small></span>
-          <span>$134.40<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$168.00<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$168.27<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$197.05<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -175,19 +205,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict good">
-        <div class="big">+23%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ส่วนต่างความปลอดภัยสูง — ราคาต่ำกว่า Fair Value $168 มากกว่า 1 ใน 3</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$134.40</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$117.60</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $168</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>&#129522; ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="128.86" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -196,17 +226,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $128.86 • EPS ฐาน ~$11.99 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>&#128059; Bear</span><span>EPS &#8722;3%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$136.48</div>
-          <div class="ret pos">+5.9%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$10.94</span></li>
             <li><span>P/E ออก</span><span>12x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$5.16</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>DOGE ตัดสัญญาหนัก</span></li>
           </ul>
         </div>
@@ -214,12 +244,12 @@
       <div class="col base">
         <div class="top"><span>&#9878;&#65039; Base</span><span>EPS +5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$213.36</div>
-          <div class="ret pos">+65.6%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$13.88</span></li>
             <li><span>P/E ออก</span><span>15x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$5.16</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>Defense/IT เติบโตต่อ</span></li>
           </ul>
         </div>
@@ -227,12 +257,12 @@
       <div class="col bull">
         <div class="top"><span>&#128640; Bull</span><span>EPS +9%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$284.65</div>
-          <div class="ret pos">+120.9%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$15.53</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$5.16</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>AI/defense rerating</span></li>
           </ul>
         </div>
@@ -281,8 +311,8 @@
         Leidos เป็นบริษัท defense, intelligence &amp; health technology ใน FORTUNE 500 มีพื้นฐานแข็งแกร่ง: รายได้ $16.7B, FCF $1.86B/ปี, backlog ผูกมัดรายได้ไว้หลายปี และเป็นผู้รับเหมาหลักของ Intelligence Community (IC) ซึ่งงบมีความมั่นคงสูงกว่าฝั่งพลเรือน ราคาหุ้นร่วงแรง −32% รอบปี จากความกังวล DOGE ตัดงบและแรงกดดันต่อสัญญา VA EHR ทำให้ P/E เหลือเพียง ~9.8x — ต่ำกว่าค่าเฉลี่ย 5 ปี ~18x อย่างมาก หาก LDOS รักษา EPS ได้ใกล้ consensus $12/หุ้น และ P/E ค่อยๆ rerating กลับ 14–15x ใน 2–3 ปี ผลตอบแทนจะสูงมาก — แต่ต้องยอมรับความไม่แน่นอนจากนโยบายงบประมาณระยะสั้น
       </p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$168.00 <span style="font-size:12px;color:#cab9a8">($131–$197)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +23%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$168.27 (Buy · 17 คน)</div></div>
       </div>
       <div class="zone">

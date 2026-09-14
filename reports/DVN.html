@@ -10,6 +10,19 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 44,
+  "values": {
+    "px": 50.23,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 37,
+    "fvHigh": 49.71,
+    "shares": 1150000000,
+    "dps": 1.28,
+    "bvps": 24.97
+  },
   "theme": {
     "accent": "#1A7A40",
     "accentDark": "#0F5C2E",
@@ -41,18 +54,14 @@
     "min": 30,
     "max": 55,
     "grid": [35, 40, 45, 50],
-    "fairLine": 44,
     "currency": "$",
     "highlight": [0, 6]
   },
   "gauge": {
     "min": 20,
     "max": 70,
-    "cur": 50.23,
-    "fair": 44,
     "fairLabelTop": false
-  },
-  "fv": 44
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +81,11 @@
     <div class="sub">Multi-basin E&amp;P: Delaware Basin/Permian ~55% + Anadarko Oklahoma + Eagle Ford Texas + Powder River Wyoming + Williston/Grayson Mill $5B (2024) • ผู้บุกเบิก Fixed+Variable Dividend Model • ควบรวม Coterra Energy เสร็จ พ.ค. 2569 สร้าง mega-E&amp;P 1.38M BOE/day • FCF return target 70% คืนผู้ถือหุ้น • Cyclical FCF ผันผวนตามราคาน้ำมัน</div>
     <div class="price-row">
       <div>
-        <div class="px">$50.23<small>(DVN)</small></div>
+        <div class="px">{{rd:px}}<small>(DVN)</small></div>
       </div>
-      <div class="chg">▲ +54.6% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $31.45 – $52.71<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, Devon Energy IR
       </div>
@@ -87,7 +96,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569 — หลังควบรวม Coterra Energy (พ.ค. 2569)</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$57.8B</div><div class="d">~1.15B shares (post-Coterra merger พ.ค. 2569)</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~1.15B shares (post-Coterra merger พ.ค. 2569)</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~14.0x</div><div class="d">EPS TTM $3.59 (reported); adj. core Q1-2026 $1.04/qtr</div></div>
       <div class="metric"><div class="k">Forward P/E</div><div class="v">~9.5x</div><div class="d">EPS 2026F ~$5.30 post-merger synergies (analyst est.)</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~2.0x</div><div class="d">BVPS ~$24.97 (post-merger dilution จาก 1.15B shares)</div></div>
@@ -113,7 +122,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1A7A40"></i>ราคา DVN</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $44.00</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ (Coterra merger)</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -142,8 +151,8 @@
         <div class="mval">$49.71</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $37.00 – $49.71</span></div>
-        <div class="r">$44.00</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี EV/EBITDAX ให้ค่าต่ำสุด ($37.00) สะท้อน leverage สูงและ depletion ที่ต้องจ่ายต่อเนื่อง
@@ -163,14 +172,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $50.23</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $44.00</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$30.80<br><small>MOS 30%</small></span>
-          <span>$35.20<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$44.00<br><small>Fair Value</small></span>
-          <span style="text-align:right">$49.71<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$60.88<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -187,19 +196,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−14%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาสูงกว่ากรอบตัวคูณตลาด mid-cycle ~8.1% (MOS ติดลบ) — ยังไม่มี margin of safety ภายใต้กรอบ 0.4c; รอย่อสู่โซน MOS 20-30% ($30.80-$35.20) ก่อนเริ่มสะสม เว้นแต่เชื่อมั่นว่า Coterra synergies + oil ฟื้น $65-70 จะยกระดับ FV ในอนาคต</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$35.20</div><div class="d">โซนน่าสนใจสำหรับ value — ต่ำกว่าราคาปัจจุบันพอสมควร</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$30.80</div><div class="d">โซนถูกมาก (deep value) — เข้าได้ดีหาก oil ปรับลง</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $44.00</div><div class="d">ต่ำกว่ามูลค่าเหมาะสม mid-cycle</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value — ต่ำกว่าราคาปัจจุบันพอสมควร</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value) — เข้าได้ดีหาก oil ปรับลง</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ต่ำกว่ามูลค่าเหมาะสม mid-cycle</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="50.23" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -295,8 +304,8 @@
       <h2>DVN: Mega-E&amp;P Cyclical — ราคาตึงกว่ากรอบตัวคูณตลาด รอย่อสู่ $30.80-35.20</h2>
       <p>Devon Energy กลายเป็น E&amp;P ขนาด mega (1.38M BOE/day) หลังควบรวม Coterra Energy เสร็จ พ.ค. 2569 สร้าง Delaware Basin powerhouse ที่ใหญ่ที่สุดในอุตสาหกรรม แต่ตลาดยังกังวลเรื่อง share dilution (1.15B shares), leverage สูง ($9.8B net debt), และ WTI อ่อนตัว ราคา DVN เคยปรับลงมา $41-44 หลังดีลปิดก่อนฟื้นตัวขึ้นมาที่ $47.57 ปัจจุบัน ซึ่งตึงกว่ากรอบ Fair Value $44.00 ที่อิงตัวคูณตลาด mid-cycle (P/E · EV/EBITDAX · FCF yield) ราว 8% — P/E forward เพียง 7.9x และ dividend yield 3% ที่ fixed+variable model ยังให้ผลตอบแทนดีแม้ oil ปานกลาง แต่กรอบตัวคูณ mid-cycle ยังไม่สนับสนุนราคาปัจจุบัน หากนักลงทุนเชื่อว่า WTI จะอยู่ที่ $65-75 ในระยะกลาง Coterra synergies $1B/ปีจะ kick in ปี 2570 ทำให้ EPS และ FCF/share ฟื้นตัวได้แม้ shares เพิ่ม จุดเข้าสะสม $30.80-35.20 (MOS 20-30%) สมเหตุสมผลสำหรับนักลงทุนที่รับ cyclicality ของ E&amp;P ได้และมองระยะ 2-3 ปี</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$44.00 <span style="font-size:12px;color:#cab9a8">($37.00–$49.71)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −14%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$60.88 (Strong Buy)</div></div>
       </div>
       <div class="zone">

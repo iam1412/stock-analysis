@@ -772,15 +772,23 @@ function mirrorStockMetaV2(html) { return RV.mirrorStockMeta(html); }
 // ★ lazy require: test/check-reports.js require ไฟล์นี้ตอนโหลด (mosBand) — require กลับที่หัวไฟล์จะเป็น cycle
 //   ที่ module.exports ของเรายังว่าง ⇒ mosBand undefined ใน gate
 function gateAfterPatch(html, name) {
+  const g = gateCheck(html, name);
+  return { ok: g.ok, codes: g.codes, detail: g.detail };
+}
+// ตัวตรวจ gate ต่อไฟล์ตัวเดียวที่ทั้ง cron (gateAfterPatch) และ migrator (`migrate-v2.js --cron-diff` · ระยะ 2 ส่วน E Task 14a)
+//   เรียกร่วมกัน — เดิม migrator มีสำเนาของตัวนี้ (expand + checkHtml) เพื่อ expand ครั้งเดียว ⇒ drift ได้ถ้าแก้ฝั่งเดียว
+//   คืนผลของ gateAfterPatch ทุกช่องเดิม (ok/codes/detail — ลำดับ code ตามที่ error โผล่) + ของที่ migrator ใช้เพิ่ม
+//   (expanded = หน้าที่ expand แล้วให้ใช้ต่อโดยไม่ expand ซ้ำ · warnings) — gateAfterPatch ตัดเหลือ 3 ช่องเดิม (พฤติกรรมเดิมเป๊ะ)
+function gateCheck(html, name) {
   const { checkHtml } = require('../test/check-reports.js');
   const { expandReport } = require('../build.js');
   let expanded;
   try { expanded = expandReport(html); }
-  catch (e) { return { ok: false, codes: ['EXPAND'], detail: `EXPAND expandReport: ${e.message}`.slice(0, 400) }; }
+  catch (e) { return { ok: false, codes: ['EXPAND'], detail: `EXPAND expandReport: ${e.message}`.slice(0, 400), expanded: null, warnings: [] }; }
   const r = checkHtml(expanded, name);
-  if (!r.errors.length) return { ok: true, codes: [], detail: '' };
+  if (!r.errors.length) return { ok: true, codes: [], detail: '', expanded, warnings: r.warnings };
   const codes = [...new Set(r.errors.map((e) => e.id))];
-  return { ok: false, codes, detail: r.errors.map((e) => `${e.id} ${e.msg}`).join(' ; ').slice(0, 400) };
+  return { ok: false, codes, detail: r.errors.map((e) => `${e.id} ${e.msg}`).join(' ; ').slice(0, 400), expanded, warnings: r.warnings };
 }
 
 // ---------- flags ----------
@@ -1160,6 +1168,6 @@ function pxOf(html, sm) {
   return r && RV.isV2(r.data) && r.data.values && Number.isFinite(r.data.values.px) ? r.data.values.px : sm.price;
 }
 
-module.exports = { derivedPassV2, mirrorStockMetaV2, healDerived, fvOf, pxOf, mosBand, fmtPrice, fmtLike, toYahooSymbol, fetchChart, buildChartData, niceBounds, annualChg, decide, currencyMatches, isIntradayQuote, detectMixedBasis, detectStaleQuotes, missedSessions, probeCap, capByCohort, controlTickers, unverifiedCohorts, classifyStale, patchReport, gateAfterPatch, mergeFlags, commitFlags, styledRD, commitBody, THAI_MONTHS, MOS_FLIP_DEADBAND_PP };
+module.exports = { derivedPassV2, mirrorStockMetaV2, healDerived, fvOf, pxOf, mosBand, fmtPrice, fmtLike, toYahooSymbol, fetchChart, buildChartData, niceBounds, annualChg, decide, currencyMatches, isIntradayQuote, detectMixedBasis, detectStaleQuotes, missedSessions, probeCap, capByCohort, controlTickers, unverifiedCohorts, classifyStale, patchReport, gateAfterPatch, gateCheck, mergeFlags, commitFlags, styledRD, commitBody, THAI_MONTHS, MOS_FLIP_DEADBAND_PP };
 
 if (require.main === module) main().catch((e) => { console.error(e); process.exit(1); });

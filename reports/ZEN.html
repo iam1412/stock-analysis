@@ -12,6 +12,40 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 4.6,
+  "values": {
+    "px": 5.6,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 2.9,
+    "fvHigh": 5.6,
+    "analystTgt": 5.8,
+    "shares": 298180000,
+    "dps": 0.1,
+    "bvps": 4.57,
+    "baseEps": 0.28,
+    "scenarios": [
+      {
+        "tgt": 3.6,
+        "div": 0.3
+      },
+      {
+        "tgt": 7.02,
+        "div": 0.45
+      },
+      {
+        "tgt": 10.12,
+        "div": 0.6
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#c62828",
     "accentDark": "#b71c1c",
@@ -43,7 +77,6 @@
     "min": 4.5,
     "max": 6.5,
     "grid": [5, 5.5, 6],
-    "fairLine": 4.6,
     "currency": "฿",
     "highlight": [2, 8],
     "gridFmt": "v.toFixed(2)",
@@ -52,11 +85,8 @@
   "gauge": {
     "min": 3,
     "max": 7,
-    "cur": 5.6,
-    "fair": 4.6,
     "fairLabelTop": false
-  },
-  "fv": 4.6
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -76,11 +106,11 @@
     <div class="sub">เครือร้านอาหาร ZEN • Shabushi, AKA, On the Table, TETSU • Japanese &amp; Thai Cuisine • Mall-based • 300+ สาขา ทั่วประเทศ</div>
     <div class="price-row">
       <div>
-        <div class="px">฿5.60<small>(ZEN)</small></div>
+        <div class="px">{{rd:px}}<small>(ZEN)</small></div>
       </div>
-      <div class="chg">▼ −5.9% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿5.00 – ฿8.20<br>
         ที่มา: Yahoo Finance · StockAnalysis · Investing.com
       </div>
@@ -91,10 +121,10 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 · ที่มา StockAnalysis + Investing.com</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">฿1.67 พันล้าน</div><div class="d">298.18 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">298.18 ล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~32x</div><div class="d">EPS ต่ำชั่วคราว FY2025</div></div>
       <div class="metric"><div class="k">P/E Forward</div><div class="v">~22.8x</div><div class="d">EPS ฟื้นตัว ปี 2569E</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.23x</div><div class="d">BVPS ฿4.57 · ซื้อขายเหนือมูลบัญชี</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ฿4.57 · ซื้อขายเหนือมูลบัญชี</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">฿45.84 ล้าน</div><div class="d">−19.4% YoY · margin 1.15%</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.16</div><div class="d">FY25: ฿0.15 · FY24: ฿0.19 · FY23: ฿0.53</div></div>
@@ -117,7 +147,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#c62828"></i>ราคา ZEN</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿4.60</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -146,8 +176,8 @@
         <div class="mval">฿2.92</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿2.90 – ฿5.60</span></div>
-        <div class="r">฿4.60</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/E (Forward) และ EV/EBITDA ให้ค่าใกล้เคียงกันที่ ฿5.57–5.60 อิงการฟื้นตัวของกำไร
@@ -165,15 +195,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿5.60</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿4.60</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿3.22<br><small>MOS 30%</small></span>
-          <span>฿3.68<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿4.60<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿5.60<br><small>กรอบบน FV</small></span>
-          <span style="text-align:right">฿5.80<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:analystTgt}}<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -189,19 +219,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−22%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาเหนือมูลค่าเหมาะสม — รวม upside ฟื้นตัวไว้ในราคาแล้ว</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿3.68</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿3.22</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
         <div class="metric"><div class="k">โซนเริ่มพิจารณาสะสม</div><div class="v neu">&lt; ฿4.60</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="5.6" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -210,17 +240,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿5.60 • EPS ฐาน ~฿0.28 (FY2026E) • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} (FY2026E){{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿3.60</div>
-          <div class="ret neg">−30.4% (−11.4%/ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.24</span></li>
             <li><span>P/E ออก</span><span>15x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.30</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>รายได้หด กำไรหด</span></li>
           </ul>
         </div>
@@ -228,12 +258,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +12%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿7.02</div>
-          <div class="ret pos">+33.4% (+10.1%/ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.39</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.45</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>กำไรฟื้น สาขาใหม่หนุน</span></li>
           </ul>
         </div>
@@ -241,12 +271,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +18%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿10.12</div>
-          <div class="ret pos">+91.4% (+24.2%/ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.46</span></li>
             <li><span>P/E ออก</span><span>22x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.60</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>ขยาย ASEAN + SSSG ฟื้น</span></li>
           </ul>
         </div>
@@ -302,9 +332,9 @@
         ราคาปัจจุบันได้รวมความคาดหวังการฟื้นตัวกำไรไว้แล้ว ผู้ลงทุนควรรอยืนยันว่า
         EPS จะฟื้นตัวสู่ระดับ ฿0.28–0.39 ตามที่คาด ก่อนพิจารณาเข้าซื้อ</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿4.60 <span style="font-size:12px;color:#cab9a8">(฿2.90–฿5.60)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −22%</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿5.80 (+3.6% upside)</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~{{rd:analystTgt}} (+3.6% upside)</div></div>
       </div>
       <div class="zone">
         💡 <b>กลยุทธ์:</b> รอซื้อที่ ฿4.60 หรือต่ำกว่า (= Fair Value) สำหรับ Value Investor

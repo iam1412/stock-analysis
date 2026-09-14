@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 87,
+  "values": {
+    "px": 89.25,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 84,
+    "fvHigh": 91,
+    "shares": 115910000,
+    "dps": 1.28,
+    "bvps": 14.37,
+    "baseEps": 3.72,
+    "scenarios": [
+      {
+        "tgt": 77.29,
+        "div": 4.03
+      },
+      {
+        "tgt": 102.81,
+        "div": 4.32
+      },
+      {
+        "tgt": 130.32,
+        "div": 4.8
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#CC3300",
     "accentDark": "#991f00",
@@ -41,18 +74,14 @@
     "min": 80,
     "max": 110,
     "grid": [90, 100],
-    "fairLine": 87,
     "currency": "$",
     "highlight": [3, 7]
   },
   "gauge": {
     "min": 55,
     "max": 125,
-    "cur": 89.25,
-    "fair": 87,
     "fairLabelTop": true
-  },
-  "fv": 87
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +101,11 @@
     <div class="sub">Industrial filtration • Mobile &amp; Industrial Solutions • Aftermarket recurring revenue • Dividend Aristocrat 29+ yrs • Data center &amp; Life Sciences filtration</div>
     <div class="price-row">
       <div>
-        <div class="px">$89.25<small>(DCI)</small></div>
+        <div class="px">{{rd:px}}<small>(DCI)</small></div>
       </div>
-      <div class="chg">▲ +5.9% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $69.03 – $112.84<br>
         ที่มา: Yahoo Finance, StockAnalysis, Finviz
       </div>
@@ -90,7 +119,7 @@
       <div class="metric"><div class="k">Market Cap</div><div class="v">$10.34B</div><div class="d">115.91M หุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~23.95x</div><div class="d">Forward P/E ~20.37x</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~21–24x</div><div class="d">Industrial quality compounder</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">6.21x</div><div class="d">BVPS ~$14.37</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ~$14.37</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">$438.8M</div><div class="d">เพิ่ม +21.1% YoY</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$3.72</div><div class="d">FY2026E ~$3.95, FY2027E ~$4.39</div></div>
@@ -113,7 +142,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#CC3300"></i>ราคา DCI</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $87</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -139,8 +168,8 @@
         <div class="mval">$91.33</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $84 – $91</span></div>
-        <div class="r">$87</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         P/E (22x forward EPS $3.95) ให้ค่า ~$87 สอดคล้องกับ Dividend Yield Target (~$91) ขณะที่ EV/EBITDA ที่ $84 เป็นกรณีอนุรักษ์นิยมมากกว่า DCI ควรได้ premium เหนือ pure-play industrial เพราะ aftermarket recurring revenue (~55% ของรายได้) สถานะ Dividend Aristocrat และ data center filtration ที่เติบโตเร็ว ราคาปัจจุบัน $89.09 อยู่เล็กน้อยเหนือ FV เฉลี่ย บ่งชี้ว่าหุ้น fairly valued ถึง slightly overvalued ณ ปัจจุบัน
@@ -154,14 +183,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $89.25</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $87</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$60.90<br><small>MOS 30%</small></span>
-          <span>$69.60<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$87<br><small>Fair Value</small></span>
-          <span style="text-align:right">$91<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$96.80<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -175,19 +204,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−3%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาเหนือ Fair Value เล็กน้อย — ยังไม่มี MOS / Fairly Valued</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$69.60</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$60.90</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $87</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="89.25" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -196,17 +225,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $89.25 • EPS ฐาน ~$3.72 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +3%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$77.29</div>
-          <div class="ret neg">−13.4%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$4.07</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$4.03</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>ภาษีนำเข้าบีบ margin / truck demand ซบเซา</span></li>
           </ul>
         </div>
@@ -214,12 +243,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$102.81</div>
-          <div class="ret pos">+15.2%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$4.69</span></li>
             <li><span>P/E ออก</span><span>21x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$4.32</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>ฟื้นตัวอุตสาหกรรม + data center filtration</span></li>
           </ul>
         </div>
@@ -227,12 +256,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$130.32</div>
-          <div class="ret pos">+46.0%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$5.23</span></li>
             <li><span>P/E ออก</span><span>24x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$4.80</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Life Sciences + AI data center กระโดดเร็วกว่าคาด</span></li>
           </ul>
         </div>
@@ -278,8 +307,8 @@
       <h2>Fairly Valued — รอจังหวะดีกว่า หรือเริ่มสะสมในโซน $80–$87</h2>
       <p>Donaldson Company (DCI) คือหนึ่งใน industrial compounder คุณภาพสูงในตลาดสหรัฐฯ ธุรกิจกรองอากาศ น้ำ และก๊าซให้กับ truck, off-road equipment, โรงงาน, data center และ biopharmaceutical มีรูปแบบ recurring revenue จากการเปลี่ยนฟิลเตอร์สม่ำเสมอ ทำให้ cash flow มั่นคง รองรับการจ่ายปันผลเติบโตต่อเนื่อง 29+ ปี (Dividend Aristocrat) ROE 27.78% และ FCF $390M TTM สะท้อนความแข็งแกร่งของธุรกิจ อย่างไรก็ตาม ณ ราคา $89.09 หุ้นซื้อขายเหนือ Fair Value $87 ประมาณ 2.4% ยังไม่มี Margin of Safety สำหรับ value investor โซนเข้าซื้อที่ดีกว่าคือ $80–$87 (near Fair Value) หรือ $70 (MOS 20%) ซึ่งอาจเห็นได้ในช่วง market pullback</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$87 <span style="font-size:12px;color:#cab9a8">($84–$91)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −3%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$96.80 (Hold/Moderate Buy)</div></div>
       </div>
       <div class="zone">

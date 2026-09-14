@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 80,
+  "values": {
+    "px": 46.95,
+    "priceDate": "2026-09-11",
+    "dateEra": "CE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 76,
+    "fvHigh": 84,
+    "analystTgt": 78,
+    "eps": 1.39,
+    "shares": 548000000,
+    "baseEps": 1.7,
+    "scenarios": [
+      {
+        "tgt": 60,
+        "div": null
+      },
+      {
+        "tgt": 89,
+        "div": null
+      },
+      {
+        "tgt": 135,
+        "div": null
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#d24637",
     "accentDark": "#9e2f23",
@@ -41,18 +74,14 @@
     "min": 20,
     "max": 100,
     "grid": [40, 60, 80],
-    "fairLine": 80,
     "currency": "$",
     "highlight": [2, 8]
   },
   "gauge": {
     "min": 40,
     "max": 135,
-    "cur": 46.95,
-    "fair": 80,
     "fairLabelTop": "-58px"
-  },
-  "fv": 80
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +101,11 @@
     <div class="sub">โรงงานรับจ้างผลิตชิป (specialty foundry) ที่ไม่ใช่เทคโนโลยีล้ำสุด • แพลตฟอร์ม <b>GF Fotonix / silicon photonics</b> ผลิต photonic IC สำหรับ transceiver และ co-packaged optics (CPO) ในดาต้าเซ็นเตอร์ AI</div>
     <div class="price-row">
       <div>
-        <div class="px">$46.95<small>(GFS)</small></div>
+        <div class="px">{{rd:px}}<small>(GFS)</small></div>
       </div>
-      <div class="chg">▲ +31.9% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2026 (ราคาปิด)<br>
+        ราคา ณ {{rd:priceDate}} (ราคาปิด)<br>
         ห่างจากจุดสูงสุด 52 สัปดาห์ $92.55 ราว -46% • ปรับฐานแรงจาก $88 (22 มิ.ย.) ลงมาที่ $49.70 (30 ก.ค.)<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / MarketBeat
       </div>
@@ -88,7 +117,7 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ FY2025 (Form 20-F) + Q1 2026 (6-K)</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~$26B</div><div class="d">~548 ล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~33.8x</div><div class="d">EPS TTM $1.39 <span class="pill r">ยังสูง vs กำไร</span></div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM $1.39 <span class="pill r">ยังสูง vs กำไร</span></div></div>
       <div class="metric"><div class="k">Forward P/E</div><div class="v">~23.5x</div><div class="d">EPS เดินหน้า ~$2.0 (กำไรฟื้น)</div></div>
       <div class="metric"><div class="k">EPS (TTM, IFRS)</div><div class="v">$1.39</div><div class="d">non-IFRS สูงกว่าเล็กน้อย</div></div>
 
@@ -113,7 +142,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1a73e8"></i>ราคา GFS</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $80</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -141,8 +170,8 @@
         <div class="mval">$80</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $76 – $84</span></div>
-        <div class="r">$80</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>หมายเหตุ:</b> ข้าม DDM/P/BV — เพิ่งเริ่มจ่ายปันผลก้อนเล็ก (~0.70%) จึงยังไม่เหมาะกับ DDM • GFS เป็น foundry วัฏจักรสูง กำไรเพิ่งฟื้นจากก้นวงจร
@@ -157,14 +186,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $46.95</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $80</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$56<br><small>MOS 30%</small></span>
-          <span>$64<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$78<br><small>เป้า Analyst</small></span>
-          <span style="text-align:center">$80<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:analystTgt}}<br><small>เป้า Analyst</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$125<br><small>เป้าสูงสุด</small></span>
         </div>
       </div>
@@ -179,19 +208,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict good">
-        <div class="big">+41%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>มี Margin of Safety แล้ว</b><br>ราคาปัจจุบัน $49.70 ต่ำกว่ามูลค่าเหมาะสม $80 ราว 37.9% → ตามเกณฑ์ value investor เข้าเกณฑ์น่าสนใจมาก (เข้าใกล้โซน MOS 30-40% ที่ถือว่าดีมาก)</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$64</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$56</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
         <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v pos">&lt; $76</div><div class="d">ราคาปัจจุบัน $49.70 อยู่ในโซนนี้แล้ว (ต่ำกว่าจุดซื้อ MOS 30% ด้วย)</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="46.95" step="1">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -200,13 +229,13 @@
 
   <!-- ===== RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $46.95 • EPS ฐาน ~$1.7</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$60</div>
-          <div class="ret neg">รวม ~ +28% (≈ +8.6%/ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$2.14</span></li>
             <li><span>P/E ออก</span><span>28x</span></li>
@@ -217,8 +246,8 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +18%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$89</div>
-          <div class="ret pos">รวม ~ +90% (≈ +23.9%/ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$2.79</span></li>
             <li><span>P/E ออก</span><span>32x</span></li>
@@ -229,8 +258,8 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +28%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$135</div>
-          <div class="ret pos">รวม ~ +188% (≈ +42%/ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$3.57</span></li>
             <li><span>P/E ออก</span><span>38x</span></li>
@@ -282,9 +311,9 @@
       <h2>เดิมพันคุณภาพบนคลื่น AI-optics — หลังปรับฐานแรง ราคาต่ำกว่ามูลค่าเหมาะสมแล้ว</h2>
       <p>GlobalFoundries เป็น specialty foundry (ไม่ใช่เทคโนโลยีล้ำสุด) ที่มีจุดเด่นชัดเจนคือแพลตฟอร์ม silicon photonics / GF Fotonix ผลิต photonic IC และ optical engine สำหรับ transceiver และ CPO ในดาต้าเซ็นเตอร์ AI พร้อมกระจายปลายทางสู่ยานยนต์/defense/onshoring สหรัฐ — หลังราคาปรับฐานแรงต่อเนื่องจาก $88 มาที่ $49.70 (ราว -43%) P/E ลดลงเหลือ ~35.7x จาก ~49.6x ราคาปัจจุบันต่ำกว่า fair value $80 ชัดเจนและต่ำกว่าเป้า analyst เฉลี่ย $78 ทำให้มี margin of safety ~37.9% ขณะที่กำไรเพิ่งฟื้นจากก้นวัฏจักรและ photonics ยังเป็นรายได้ส่วนน้อยจนถึง ~ปี 2028</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$80 <span style="font-size:12px;color:#a8b6cc">($76–$84)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +41%</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">$78 (+66%)</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#a8b6cc">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">{{rd:analystTgt}} (+66%)</div></div>
       </div>
       <div class="zone">
         💡 <b>กลยุทธ์:</b> สาย value — ราคาปัจจุบัน ($49.70) <b>ต่ำกว่าจุดซื้อ MOS 30% ($56) แล้ว</b> เข้าโซน deep value • สาย growth/ธีม — เข้าได้แบบ DCA และยอมรับความผันผวนวัฏจักร โดยติดตาม <b>รายได้ silicon photonics/CPO (เป้า $1B ปี 2028)</b>, <b>เส้นทางกำไรขั้นต้น 30%→40%</b> และ <b>วัฏจักรดีมานด์ชิป (auto/mobile)</b> เป็นตัวชี้วัดหลัก

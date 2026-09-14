@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 68.37,
+  "values": {
+    "px": 57.39,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 66.68,
+    "fvHigh": 71.25,
+    "shares": 137800000,
+    "dps": 1.44,
+    "bvps": 13.62,
+    "baseEps": 3.75,
+    "scenarios": [
+      {
+        "tgt": 52.94,
+        "div": 4.23
+      },
+      {
+        "tgt": 80.39,
+        "div": 4.67
+      },
+      {
+        "tgt": 107.7,
+        "div": 4.97
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#0072CE",
     "accentDark": "#00509E",
@@ -41,18 +74,14 @@
     "min": 50,
     "max": 80,
     "grid": [60, 70],
-    "fairLine": 68.37,
     "currency": "$",
     "highlight": [4, 7]
   },
   "gauge": {
     "min": 50,
     "max": 85,
-    "cur": 57.39,
-    "fair": 68.37,
     "fairLabelTop": false
-  },
-  "fv": 68.37
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +101,11 @@
     <div class="sub">เครื่องทำน้ำอุ่น/น้ำร้อนที่พักอาศัยและเชิงพาณิชย์ • ระบบกรองและบำบัดน้ำ (water treatment/filtration) • Boiler เชิงพาณิชย์ • ผู้นำตลาดอเมริกาเหนือ • ขยายธุรกิจในจีนผ่านแบรนด์ A.O. Smith China</div>
     <div class="price-row">
       <div>
-        <div class="px">$57.39<small>(AOS)</small></div>
+        <div class="px">{{rd:px}}<small>(AOS)</small></div>
       </div>
-      <div class="chg">▼ −13.0% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $54.16 – $81.87<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, MarketBeat
       </div>
@@ -87,7 +116,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM ณ ไตรมาส 1/2569</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">$7.91B</div><div class="d">~137.8M หุ้น</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">~137.8M หุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~16.7x</div><div class="d">ต่ำกว่าค่าเฉลี่ยย้อนหลังจาก China headwind</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~23x</div><div class="d">กรอบ 18x–28x ในรอบ cycle</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">4.2x</div><div class="d">BVPS $13.62 — ROE สูงหนุน premium</div></div>
@@ -99,7 +128,7 @@
 
       <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$3.81B</div><div class="d">ทรงตัว/ลดเล็กน้อยจากจีนอ่อนแอ</div></div>
       <div class="metric"><div class="k">อัตรากำไรสุทธิ</div><div class="v">~13.8%</div><div class="d">North America แข็งแกร่ง ชดเชยจีน</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.5%</div><div class="d">$1.44/ปี • payout ~33% • เพิ่มต่อเนื่อง 30+ ปี</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">$1.44/ปี • payout ~33% • เพิ่มต่อเนื่อง 30+ ปี</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">1.17</div><div class="d">ผันผวนใกล้เคียงตลาด</div></div>
     </div>
   </section>
@@ -113,7 +142,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#0072CE"></i>ราคา AOS</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $68.37</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -141,8 +170,8 @@
         <div class="mval">$67.19</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $66.68 – $71.25</span></div>
-        <div class="r">$68.37</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         ทั้ง 3 วิธีให้ผลใกล้เคียงกัน (กรอบ $66.68–$71.25) เพราะ AOS เป็นหุ้นคุณภาพสูง ROE สม่ำเสมอ ปันผลโตต่อเนื่อง และ P/E ปัจจุบันต่ำกว่าค่าเฉลี่ยย้อนหลังพอสมควร
@@ -158,15 +187,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $57.39</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $68.37</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$47.86<br><small>MOS 30%</small></span>
-          <span>$54.70<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$68.37<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$70.45<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$71.25<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -180,19 +209,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+16%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS อยู่ในระดับต่ำ-ปานกลาง — ราคาเข้าใกล้มูลค่าเหมาะสมแล้ว ยังไม่ใช่จุดเข้าที่มี margin of safety สูง</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$54.70</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$47.86</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $68.37</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="57.39" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -201,17 +230,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $57.39 • EPS ฐาน ~$3.75 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −2%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$52.94</div>
-          <div class="ret neg">−0.4%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$3.53</span></li>
             <li><span>P/E ออก</span><span>15x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$4.23</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>จีนทรุดต่อเนื่อง สหรัฐฯ ชะลอ EPS หดตัว</span></li>
           </ul>
         </div>
@@ -219,12 +248,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +6%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$80.39</div>
-          <div class="ret pos">+48.2%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$4.47</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$4.67</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>จีนทรงตัว/ฟื้นช้า ๆ สหรัฐฯ ทดแทน+ใหม่เติบโตปกติ</span></li>
           </ul>
         </div>
@@ -232,12 +261,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +11%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$107.70</div>
-          <div class="ret pos">+96.3%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$5.13</span></li>
             <li><span>P/E ออก</span><span>21x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$4.97</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>จีนฟื้นตัวชัดเจน + buyback หนุน EPS + margin ขยาย</span></li>
           </ul>
         </div>
@@ -290,8 +319,8 @@
         FV เฉลี่ย 3 วิธี $68.37 ให้ MOS เพียง ~8.3% ซึ่งไม่ใช่ส่วนเผื่อความปลอดภัยสูง สะท้อนว่าตลาดได้ปรับราคาสะท้อนความเสี่ยงจีนไปบางส่วนแล้ว แต่ยังไม่ถึงระดับ deep value
       </p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$68.37 <span style="font-size:12px;color:#cab9a8">($66.68–$71.25)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +16%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$70.45 (Hold)</div></div>
       </div>
       <div class="zone">

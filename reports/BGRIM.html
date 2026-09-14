@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 14.59,
+  "values": {
+    "px": 18.6,
+    "priceDate": "2026-09-14",
+    "dateEra": "CE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 13.32,
+    "fvHigh": 16.12,
+    "shares": 2607000000,
+    "dps": 0.41,
+    "bvps": 13.32,
+    "baseEps": 0.62,
+    "scenarios": [
+      {
+        "tgt": 10.4,
+        "div": 1.2
+      },
+      {
+        "tgt": 18.7,
+        "div": 1.2
+      },
+      {
+        "tgt": 27.2,
+        "div": 1.2
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#c68317",
     "accentDark": "#8e5f10",
@@ -41,7 +74,6 @@
     "min": 10,
     "max": 22.5,
     "grid": [12.5, 15, 17.5, 20],
-    "fairLine": 14.59,
     "currency": "฿",
     "highlight": [5, 10],
     "gridFmt": "v.toFixed(0)",
@@ -50,11 +82,8 @@
   "gauge": {
     "min": 9,
     "max": 22,
-    "cur": 18.6,
-    "fair": 14.59,
     "fairLabelTop": true
-  },
-  "fv": 14.59
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +103,11 @@
     <div class="sub">โรงไฟฟ้า SPP ก๊าซโคเจนป้อนนิคมอุตสาหกรรม (ไฟฟ้า+ไอน้ำให้โรงงาน) • พลังงานแสงอาทิตย์ ลม น้ำ • โครงการในเวียดนาม เกาหลี กัมพูชา ลาว • ผู้จ่ายปันผลยาวนาน</div>
     <div class="price-row">
       <div>
-        <div class="px">฿18.60<small>(BGRIM)</small></div>
+        <div class="px">{{rd:px}}<small>(BGRIM)</small></div>
       </div>
-      <div class="chg">▲ +14.8% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2026<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿10.30 – ฿19.80<br>
         ที่มา: StockAnalysis.com • SET (set.or.th) • Investing.com
       </div>
@@ -92,7 +121,7 @@
       <div class="metric"><div class="k">Market Cap</div><div class="v">฿48.5 พันล้าน</div><div class="d">2,607 ล้านหุ้น • พาร์ ฿2.00</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~61.3x</div><div class="d">สูงผิดปกติ — กำไรกดต่ำชั่วคราว</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~25–35x</div><div class="d">โรงไฟฟ้าทุนหนัก ท่อโตสูง</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">~1.40x</div><div class="d">ส่วนผู้ถือหุ้นใหญ่ ฿13.32/หุ้น</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~{{rd:pbv}}x</div><div class="d">ส่วนผู้ถือหุ้นใหญ่ ฿13.32/หุ้น</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">฿823 ล้าน</div><div class="d">โต y/y แต่หนุนด้วยกำไร FX ที่ยังไม่รับรู้</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.32</div><div class="d">EPS normalized ต่ำกว่ามาก (ดูหมายเหตุ)</div></div>
@@ -101,7 +130,7 @@
 
       <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿54.4 พันล้าน</div><div class="d">Q1/26 −7.1% y/y (ค่าไฟ EGAT/ไอน้ำลด)</div></div>
       <div class="metric"><div class="k">EV/EBITDA</div><div class="v">~12.0x</div><div class="d">EBITDA Q1/26 +1.9% y/y ฿3.8 พันล้าน</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.2%</div><div class="d">DPS ~฿0.41 • นโยบาย ≥50% normalized</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">DPS ~฿0.41 • นโยบาย ≥50% normalized</div></div>
       <div class="metric"><div class="k">Beta (5Y)</div><div class="v">~1.0</div><div class="d">หนี้โครงการสูง — ไวต่อดอกเบี้ย/FX</div></div>
     </div>
   </section>
@@ -115,7 +144,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#e69c24"></i>ราคา BGRIM</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿14.59</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -141,8 +170,8 @@
         <div class="mval">฿13.32</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿13.32 – ฿16.12</span></div>
-        <div class="r">฿14.59</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/E ให้ค่าสูงสุดเพราะตั้งบน EPS normalized ที่สมมติว่ากำไรฟื้นจากกับดัก FX/ดอกเบี้ย ขณะ Justified P/BV ให้ค่าต่ำสุดเพราะ ROE ปัจจุบันเพียง ~6% ยังไม่ชนะต้นทุนเงินทุนชัดเจน — FV กลาง ฿14.59 จึงสะท้อนหุ้น "ฟื้นตัวแต่ราคาวิ่งนำพื้นฐาน" ค่านี้สอดคล้องในเชิงทิศทางกับเป้าเฉลี่ยนักวิเคราะห์ (~฿16.68) ว่าราคาปัจจุบันตึง
@@ -156,14 +185,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿18.60</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿14.59</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿10.21<br><small>MOS 30%</small></span>
-          <span>฿11.67<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿14.59<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿16.12<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">฿19.80<br><small>สูงสุด 52 สัปดาห์</small></span>
         </div>
       </div>
@@ -177,19 +206,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−27%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาปัจจุบัน <b>สูงกว่า</b> มูลค่าเหมาะสม — ไม่มีส่วนเผื่อความปลอดภัย (ซื้อตอนนี้คือจ่ายแพงกว่ามูลค่า)</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿11.67</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿10.21</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿14.59</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="18.6" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -198,17 +227,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿18.60 • EPS ฐาน ~฿0.62 (normalized) • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} (normalized){{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS -2%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿10.4</div>
-          <div class="ret neg">−38%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.58</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.20</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>ก๊าซ/ดอกเบี้ยสูงต่อ, FX ผันผวน</span></li>
           </ul>
         </div>
@@ -216,12 +245,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿18.7</div>
-          <div class="ret pos">+7%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.78</span></li>
             <li><span>P/E ออก</span><span>24x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.20</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>กำไรฟื้นตามต้นทุนก๊าซลด, โครงการใหม่ทยอย COD</span></li>
           </ul>
         </div>
@@ -229,12 +258,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +16%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿27.2</div>
-          <div class="ret pos">+53%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.97</span></li>
             <li><span>P/E ออก</span><span>28x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.20</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>demand ดาต้าเซ็นเตอร์พุ่ง, ดอกเบี้ยลง, รีไฟแนนซ์หนี้</span></li>
           </ul>
         </div>
@@ -279,8 +308,8 @@
       <h2>ธุรกิจดี กำไรกำลังฟื้น — แต่ราคาวิ่งนำไปไกล ยังไม่มี Margin of Safety</h2>
       <p>BGRIM เป็นผู้ผลิตไฟฟ้า SPP ก๊าซโคเจนชั้นนำที่ป้อนไฟ+ไอน้ำให้นิคมอุตสาหกรรม มีกระแสเงินสดสม่ำเสมอและจ่ายปันผลต่อเนื่อง กำไรกำลังฟื้นจากต้นทุนก๊าซที่ลดและวัฏจักรดอกเบี้ยขาลง แต่ราคาหุ้นรีบาวด์แรงกว่า +90% จากจุดต่ำสุดในรอบปีจนอยู่ <b>เหนือ</b> มูลค่าเหมาะสม ฿14.59 และเหนือเป้าเฉลี่ยนักวิเคราะห์มากขึ้น ขณะ P/E (TTM) ~61x ดูแพงเพราะกำไรฐานยังถูกกดด้วยรายการ FX/ดอกเบี้ย — ภาพคือ "หุ้นพื้นฐานฟื้น แต่ราคาวิ่งนำไปไกลกว่าเดิม"</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿14.59 <span style="font-size:12px;color:#cab9a8">(฿13.32–฿16.12)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −27%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿16.68 (Buy ส่วนใหญ่)</div></div>
       </div>
       <div class="zone">

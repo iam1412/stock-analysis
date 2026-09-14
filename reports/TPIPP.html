@@ -10,6 +10,40 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 2.1,
+  "values": {
+    "px": 1.76,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 1.75,
+    "fvHigh": 2.45,
+    "eps": 0.18,
+    "shares": 8400000000,
+    "dps": 0.1,
+    "bvps": 4.33,
+    "baseEps": 0.22,
+    "scenarios": [
+      {
+        "tgt": 1.7,
+        "div": 0.25
+      },
+      {
+        "tgt": 2.8,
+        "div": 0.3
+      },
+      {
+        "tgt": 4.02,
+        "div": 0.35
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#2d9e6b",
     "accentDark": "#1a6b47",
@@ -41,7 +75,6 @@
     "min": 1.7,
     "max": 2.2,
     "grid": [1.8, 1.9, 2, 2.1],
-    "fairLine": 2.1,
     "currency": "฿",
     "highlight": [0, 1],
     "gridFmt": "v.toFixed(2)",
@@ -50,11 +83,8 @@
   "gauge": {
     "min": 1.2,
     "max": 3,
-    "cur": 1.76,
-    "fair": 2.1,
     "fairLabelTop": true
-  },
-  "fv": 2.1
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +104,11 @@
     <div class="sub">ผลิตไฟฟ้าจากเชื้อเพลิงขยะอุตสาหกรรม • พลังงานทดแทน 507.2 MW • กู้คืนความร้อนเสีย • โซลาร์เซลล์ • สถานีเชื้อเพลิง</div>
     <div class="price-row">
       <div>
-        <div class="px">฿1.76<small>(TPIPP)</small></div>
+        <div class="px">{{rd:px}}<small>(TPIPP)</small></div>
       </div>
-      <div class="chg">▼ −14.6% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿1.66 – ฿2.44<br>
         ที่มา: SET (factsheet), Finnomena, Yahoo Finance
       </div>
@@ -89,10 +119,10 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 / งบ FY2567 (2024)</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿1.48 หมื่นล้าน</div><div class="d">8,400 ล้านหุ้น • par ฿1.00</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">8,400 ล้านหุ้น • par ฿1.00</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~9.78x</div><div class="d">EPS TTM ~฿0.18 (SET factsheet)</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย เซกเตอร์</div><div class="v">~12–15x</div><div class="d">พลังงานทดแทน SET</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.41x</div><div class="d">BVPS ~฿4.33 (ต่ำกว่าบุ๊คมาก)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ~฿4.33 (ต่ำกว่าบุ๊คมาก)</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2567</div><div class="v">~฿2,266 ล้าน</div><div class="d">ลดลงจาก ฿3,302 ล้าน FY2566 (−31%)</div></div>
       <div class="metric"><div class="k">EPS (FY2567)</div><div class="v">~฿0.27</div><div class="d">EPS TTM ~฿0.18 (กำไรอ่อนตัว)</div></div>
@@ -115,7 +145,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#2d9e6b"></i>ราคา TPIPP</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿2.10</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -144,8 +174,8 @@
         <div class="mval">฿2.32</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿1.75 – ฿2.45</span></div>
-        <div class="r">฿2.10</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/E (฿2.42) ให้ค่าสูงสุดเพราะสะท้อน earning power ระยะยาวหากกำไรฟื้นตัว
@@ -162,15 +192,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿1.76</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿2.10</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿1.47<br><small>MOS 30%</small></span>
-          <span>฿1.68<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿2.10<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">฿2.30<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">฿2.45<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -186,19 +216,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+16%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS ปานกลาง — ราคาต่ำกว่า FV พอสมควร แต่ยังไม่ถึงโซน "deep value"</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿1.68</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿1.47</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿2.10</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="1.76" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -207,17 +237,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿1.76 • EPS ฐาน ~฿0.22 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿1.70</div>
-          <div class="ret neg">+11% (3 ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.189</span></li>
             <li><span>P/E ออก</span><span>9x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.25</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>กำไรหดต่อ ต้นทุนสูง PPA ต่ออายุยาก</span></li>
           </ul>
         </div>
@@ -225,12 +255,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿2.80</div>
-          <div class="ret pos">+76% (3 ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.255</span></li>
             <li><span>P/E ออก</span><span>11x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.30</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>กำไรฟื้น ต้นทุนลด coal-free</span></li>
           </ul>
         </div>
@@ -238,12 +268,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿4.02</div>
-          <div class="ret pos">+148% (3 ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.309</span></li>
             <li><span>P/E ออก</span><span>13x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.35</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>ขยายกำลังผลิต ESG premium ดึงทุน</span></li>
           </ul>
         </div>
@@ -298,8 +328,8 @@
         อย่างไรก็ตาม แผน Coal-Free ปลายปี 2569–2570 และ feedstock ที่มั่นคงจากกลุ่ม TPI เป็น tailwind สำคัญระยะกลาง
         เหมาะสำหรับนักลงทุนที่รับ leverage สูงและรอการฟื้นตัวของกำไรได้ในระยะ 2–3 ปี</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿2.10 <span style="font-size:12px;color:#cab9a8">(฿1.75–฿2.45)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +16%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿2.30 (ประมาณการ)</div></div>
       </div>
       <div class="zone">

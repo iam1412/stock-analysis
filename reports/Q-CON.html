@@ -21,6 +21,38 @@
 -->
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 5.7,
+  "values": {
+    "px": 6,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 5.44,
+    "fvHigh": 6.2,
+    "shares": 400000000,
+    "dps": 0.4,
+    "baseEps": 0.53,
+    "scenarios": [
+      {
+        "tgt": 3.07,
+        "div": 0.55
+      },
+      {
+        "tgt": 6.37,
+        "div": 0.95
+      },
+      {
+        "tgt": 9.31,
+        "div": 1.2
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#c87941",
     "accentDark": "#96582c",
@@ -52,18 +84,14 @@
     "min": 5.5,
     "max": 7.5,
     "grid": [6, 6.5, 7],
-    "fairLine": 5.7,
     "currency": "฿",
     "highlight": [4, 11]
   },
   "gauge": {
     "min": 3.9,
     "max": 6.7,
-    "cur": 6,
-    "fair": 5.7,
     "fairLabelTop": true
-  },
-  "fv": 5.7
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -84,14 +112,14 @@
     <div class="sub">ผลิต-จำหน่ายอิฐมวลเบาออโตเคลฟ (AAC) แบรนด์ Q-CON • ผนังสำเร็จรูป-แผ่นพื้น-คานทับหลัง • ฐานลูกค้าโครงการที่อยู่อาศัย-อาคารพาณิชย์ในเครือข่าย SCG</div>
     <div class="price-row">
       <div>
-        <div class="px">฿6.00<small>(Q-CON)</small></div>
+        <div class="px">{{rd:px}}<small>(Q-CON)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
            รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
-      <div class="chg">▼ −9.1% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿5.65 – ฿7.40<br>
         ที่มา: SET (set.or.th) / stockanalysis.com / Investing.com
       </div>
@@ -118,7 +146,7 @@
 
       <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿1,877 ล้าน</div><div class="d">▼ −22% YoY จากตลาดก่อสร้างซบเซา</div></div>
       <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~25.1%</div><div class="d">ทรงตัวจากปีก่อน</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~6.7%</div><div class="d">฿0.40/หุ้น (FY2568) ปีก่อน ฿0.65</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">฿0.40/หุ้น (FY2568) ปีก่อน ฿0.65</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">~0.6–0.7</div><div class="d">ผันผวนต่ำกว่าตลาด แต่สภาพคล่องน้อย</div></div>
     </div>
   </section>
@@ -134,7 +162,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#c87941"></i>ราคา Q-CON</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿5.70</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -165,8 +193,8 @@
         <div class="mval">฿5.45</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿5.44 – ฿6.20</span></div>
-        <div class="r">฿5.70</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <!-- ✏️ หมายเหตุ: วิธีไหนให้ค่าสูง/ต่ำเพราะอะไร, ทำไม FV กลางจึงสมเหตุสมผล -->
@@ -183,15 +211,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿6.00</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿5.70</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿3.99<br><small>MOS 30%</small></span>
-          <span>฿4.56<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿5.70<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">฿6.20<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">฿6.20<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -207,19 +235,19 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
-      <div class="mos-verdict bad">
-        <div class="big">−5%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>ไม่มี Margin of Safety</b> — ราคาปัจจุบัน ฿6.25 อยู่ <b>สูงกว่า</b> Fair Value ฿5.70 ประมาณ 9.6% ยังไม่ใช่จุดเข้าซื้อที่ปลอดภัยตามหลัก Value Investing</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿4.56</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿3.99</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿5.70</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="6" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -228,17 +256,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿6.00 • EPS ฐาน ~฿0.53 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −12%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿3.07</div>
-          <div class="ret neg">−39.7%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.36</span></li>
             <li><span>P/E ออก</span><span>8.5x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.55</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>ก่อสร้างซบเซาต่อเนื่อง กำไรหดตัวต่อ</span></li>
           </ul>
         </div>
@@ -246,12 +274,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +3%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿6.37</div>
-          <div class="ret pos">+22.0%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.58</span></li>
             <li><span>P/E ออก</span><span>11x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.95</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>ทรงตัว ฟื้นตัวช้าๆ ตามภาคก่อสร้าง</span></li>
           </ul>
         </div>
@@ -259,12 +287,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿9.31</div>
-          <div class="ret pos">+75.2%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.74</span></li>
             <li><span>P/E ออก</span><span>12.5x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.20</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>วัฏจักรก่อสร้าง-อสังหาฯ ฟื้นตัวชัดเจน + งานโครงสร้างพื้นฐานภาครัฐหนุน</span></li>
           </ul>
         </div>
@@ -314,8 +342,8 @@
       (รายได้ -22%, กำไรสุทธิ -51% ในปี 2568) ราคาปัจจุบัน ฿6.25 ยังสูงกว่ามูลค่าเหมาะสมที่ประเมินได้ (฿5.70) ทำให้ยังไม่ใช่จังหวะเข้าซื้อตามหลัก Value Investing
       แม้ dividend yield ~6.4% จะช่วยพยุงผลตอบแทนรวมได้ในระยะยาว</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿5.70 <span style="font-size:12px;color:#cab9a8">(฿5.44–฿6.20)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −5%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿6.20 (ไม่มี consensus เป็นทางการ)</div></div>
       </div>
       <div class="zone">

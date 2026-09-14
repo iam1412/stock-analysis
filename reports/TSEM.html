@@ -10,6 +10,38 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 213,
+  "values": {
+    "px": 211.52,
+    "priceDate": "2026-09-11",
+    "dateEra": "CE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 97,
+    "fvHigh": 213,
+    "analystTgt": 315,
+    "eps": 2.53,
+    "shares": 113000000,
+    "scenarios": [
+      {
+        "tgt": 94,
+        "div": null
+      },
+      {
+        "tgt": 222,
+        "div": null
+      },
+      {
+        "tgt": 382,
+        "div": null
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#159f9f",
     "accentDark": "#0f7575",
@@ -41,18 +73,14 @@
     "min": 50,
     "max": 300,
     "grid": [100, 150, 200, 250],
-    "fairLine": 213,
     "currency": "$",
     "highlight": [0, 8]
   },
   "gauge": {
     "min": 100,
     "max": 340,
-    "cur": 211.52,
-    "fair": 213,
     "fairLabelTop": "-58px"
-  },
-  "fv": 213
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +100,11 @@
     <div class="sub">โรงงานหล่อชิปเฉพาะทาง (specialty foundry) • ผู้นำแพลตฟอร์ม Silicon Photonics (PH18) สำหรับ optical engine / CPO ของดาต้าเซ็นเตอร์ AI • RF-SOI และ analog</div>
     <div class="price-row">
       <div>
-        <div class="px">$211.52<small>(TSEM)</small></div>
+        <div class="px">{{rd:px}}<small>(TSEM)</small></div>
       </div>
-      <div class="chg">▲ +148.4% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2026 (ปิดตลาด)<br>
+        ราคา ณ {{rd:priceDate}} (ปิดตลาด)<br>
         ย่อแรงจากจุดสูงสุดตลอดกาล $319.94 (52 สัปดาห์)<br>
         ที่มา: StockAnalysis.com / MarketBeat / Yahoo Finance
       </div>
@@ -88,7 +116,7 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ TTM/FY2025 (ประกาศ 4 ส.ค. 2569) + Q1 2026</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~$23.90B</div><div class="d">~113 ล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~83.6x</div><div class="d">EPS TTM $2.53 <span class="pill r">พรีเมียมสูงมาก</span></div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM $2.53 <span class="pill r">พรีเมียมสูงมาก</span></div></div>
       <div class="metric"><div class="k">Forward P/E</div><div class="v">~41x</div><div class="d">EPS เดินหน้า $5.10 (SA) – $6.53 (Yahoo)</div></div>
       <div class="metric"><div class="k">EPS (TTM, diluted)</div><div class="v">$2.53</div><div class="d pos">▲ +30% จาก FY2025 $1.94</div></div>
 
@@ -113,7 +141,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1a73e8"></i>ราคา TSEM</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $213</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -138,7 +166,7 @@
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสม (ยึดขา P/E ที่ตลาดเทรดจริง — กฎ 0.4c)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $97 (DCF) – $213 (P/E) · ห่างกัน 2.2 เท่า ไม่เฉลี่ย</span></div>
-        <div class="r">$213</div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>หมายเหตุ:</b> ข้าม DDM/Justified P/BV เพราะ <b>ไม่จ่ายปันผล</b> (0%) และเป็นธุรกิจ foundry asset-heavy ที่ BVPS ไม่ขยับตามมูลค่าเทคโนโลยี SiPho (กฎ 0.4b) • ขา P/E และ DCF ห่างกัน 2.2 เท่า (>2.0) จึง <b>ไม่เฉลี่ยตรง</b> ตามกฎ 0.4c — ใช้ขา P/E ที่ยึดตัวคูณตลาดปัจจุบันเป็น headline ส่วนขา DCF แสดงเป็นบริบทว่ากระแสเงินสดจริงยังตามราคาตลาดไม่ทัน • ที่ระดับราคาปัจจุบัน valuation ยังตึงมาก (P/E TTM ~86.9x) แม้ EPS TTM จะโตขึ้นจากงบ 4 ส.ค. 2569
@@ -152,13 +180,13 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $212</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $213</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$149<br><small>MOS 30%</small></span>
-          <span>$170<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$213<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$315<br><small>เป้า Yahoo (n=8)</small></span>
           <span style="text-align:right">$315<br><small>เป้า SA (Strong Buy)</small></span>
         </div>
@@ -174,19 +202,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+0.7%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>MOS ต่ำกว่าเกณฑ์ — ยังไม่ใช่จุดเข้า</b><br>ราคาปัจจุบัน $219.82 สูงกว่ามูลค่าเหมาะสม $213 (ขา P/E ที่ยึดตลาด) เพียงเล็กน้อย → ยังไม่มี margin of safety (ต้องการ MOS ≥10-20%) <b>ยังไม่ใช่จุดสะสมที่มี margin of safety เพียงพอ</b> ควรรอย่อลงมาที่โซน $149–170 ก่อนพิจารณาสะสมจริงจัง</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$170</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$149</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $213</div><div class="d">ต่ำกว่ามูลค่าเหมาะสม (ขา P/E)</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ต่ำกว่ามูลค่าเหมาะสม (ขา P/E)</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="211.52" step="1">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -195,13 +223,13 @@
 
   <!-- ===== RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $211.52 • EPS ฐาน TTM $2.53</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน TTM $2.53</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +10%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$94</div>
-          <div class="ret neg">รวม ~ −55.6% (≈ −24%/ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$3.37</span></li>
             <li><span>P/E ออก</span><span>28x</span></li>
@@ -212,8 +240,8 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +25%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$222</div>
-          <div class="ret neg">รวม ~ +5.0% (≈ +2%/ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$4.94</span></li>
             <li><span>P/E ออก</span><span>45x</span></li>
@@ -224,8 +252,8 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +40%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$382</div>
-          <div class="ret pos">รวม ~ +80.6% (≈ +21.8%/ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$6.94</span></li>
             <li><span>P/E ออก</span><span>55x</span></li>
@@ -275,9 +303,9 @@
       <h2>foundry ซิลิคอนโฟโทนิกส์ตัวจริง — แต่ราคา "วิ่งนำพื้นฐานไปไกล"</h2>
       <p>Tower เป็นหนึ่งใน specialty foundry ที่ได้เปรียบในคลื่น AI optics ผ่านแพลตฟอร์ม Silicon Photonics (PH18) และ CPO ที่ป้อนชิปออปติกให้ดาต้าเซ็นเตอร์ AI พร้อม RF-SOI/analog และงบดุลแกร่ง (net cash ~$1.34B) — ที่ระดับราคาปัจจุบัน (ย่อลงมาจากจุดสูงสุดตลอดกาล $319.94 พอสมควร) P/E TTM ยังสูงราว 86.9x (forward เฉลี่ยราว 38x) ขา P/E ที่ยึดตัวคูณตลาดปัจจุบันให้มูลค่าเหมาะสม $213 — <b>MOS พลิกกลับมาเป็นลบเล็กน้อย ยังไม่มี safety margin</b> — ขณะที่ขา DCF บนกระแสเงินสดจริงให้เพียง $97 ห่างกันเกิน 2 เท่าเพราะตลาดให้พรีเมียมกับ narrative SiPho/CPO สูงกว่าที่กระแสเงินสดปัจจุบันสนับสนุน สาย value ยังไม่ควรเข้าที่ราคานี้ สาย growth ที่เชื่อ ramp ต้องยอมรับความผันผวนสูงและความเสี่ยง de-rating</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$213 <span style="font-size:12px;color:#a8b6cc">($97–$213)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ff8a80">MOS ~ +0.7%</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$315 (+49%)</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#a8b6cc">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ff8a80">MOS ~ {{rd:mos}}</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~{{rd:analystTgt}} (+49%)</div></div>
       </div>
       <div class="zone">
         💡 <b>กลยุทธ์:</b> สาย value — รอย่อลงมาใกล้โซน <b>$149–213</b> ก่อนพิจารณา (น่าสนใจจริงจังที่ &lt;$170) • สาย growth — เข้าได้แบบ DCA และยอมรับความผันผวนสูง โดยติดตาม <b>การ ramp ของ SiPho/CPO เข้าสู่ volume</b>, <b>กำลังการผลิต fab ใหม่/300mm</b> และ <b>การขยาย gross margin</b> เป็นตัวชี้วัดหลัก

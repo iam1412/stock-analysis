@@ -10,6 +10,41 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 114,
+  "values": {
+    "px": 96.68,
+    "priceDate": "2026-09-11",
+    "dateEra": "CE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 99,
+    "fvHigh": 125,
+    "analystTgt": 132,
+    "eps": 1.07,
+    "shares": 435500000,
+    "dps": 0.17,
+    "bvps": 11.62,
+    "baseEps": 2,
+    "scenarios": [
+      {
+        "tgt": 71,
+        "div": null
+      },
+      {
+        "tgt": 131,
+        "div": null
+      },
+      {
+        "tgt": 198,
+        "div": null
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#1a73e8",
     "accentDark": "#1557b0",
@@ -41,18 +76,14 @@
     "min": 80,
     "max": 130,
     "grid": [90, 100, 110, 120],
-    "fairLine": 114,
     "currency": "$",
     "highlight": [3, 9]
   },
   "gauge": {
     "min": 70,
     "max": 185,
-    "cur": 96.68,
-    "fair": 114,
     "fairLabelTop": "-58px"
-  },
-  "fv": 114
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +103,11 @@
     <div class="sub">หนึ่งในผู้ผลิตยูเรเนียมรายใหญ่สุดของโลก • ถือหุ้น 49% ใน Westinghouse • เชื้อเพลิงนิวเคลียร์ป้อนไฟฟ้ายุค AI</div>
     <div class="price-row">
       <div>
-        <div class="px">$96.68<small>(CCJ)</small></div>
+        <div class="px">{{rd:px}}<small>(CCJ)</small></div>
       </div>
-      <div class="chg">▼ −5.4% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ≈ 11 ก.ย. 2026 (USD, NYSE)<br>
+        ราคา ≈ {{rd:priceDate}} (USD, NYSE)<br>
         ช่วงซื้อขาย ~$107–109 ระหว่างวัน<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / CNBC
       </div>
@@ -113,7 +144,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1a73e8"></i>ราคา CCJ</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $114</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -141,8 +172,8 @@
         <div class="mval">$125</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $99 – $125</span></div>
-        <div class="r">$114</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>หมายเหตุ:</b> ข้าม DDM เพราะปันผลน้อยมาก (0.16%) ไม่มีนัยสำคัญ • CCJ เป็นหุ้น <b>วัฏจักร (cyclical)</b> ที่ตลาดให้ multiple สูงเพราะคาดกำไรเร่งตัวจาก
@@ -157,14 +188,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $97</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $114</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$80<br><small>MOS 30%</small></span>
-          <span>$91<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$114<br><small>Fair Value</small></span>
-          <span style="text-align:right">$132<br><small>เป้า Analyst</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:analystTgt}}<br><small>เป้า Analyst</small></span>
           <span style="text-align:right">$168<br><small>เป้าสูงสุด</small></span>
         </div>
       </div>
@@ -179,19 +210,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+15%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>Margin of Safety บางมาก</b><br>ราคาปัจจุบัน $108 ต่ำกว่ามูลค่าเหมาะสม $114 เพียง ~5% → ตามเกณฑ์ value investor ถือว่า <b>ราคายุติธรรม (fair) ไม่ใช่ถูก</b> ส่วนเผื่อยังไม่หนาพอสำหรับหุ้นวัฏจักรผันผวนสูง</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$91</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$80</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
         <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $100</div><div class="d">ต่ำกว่ามูลค่าเหมาะสมพอควร</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="96.68" step="1">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -200,13 +231,13 @@
 
   <!-- ===== RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $97 • EPS ฐาน ~$2.0</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$71</div>
-          <div class="ret neg">รวม ~ −27% (≈ −10%/ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$2.5</span></li>
             <li><span>P/E ออก</span><span>28x</span></li>
@@ -217,8 +248,8 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +20%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$131</div>
-          <div class="ret pos">รวม ~ +35% (≈ +10.5%/ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$3.5</span></li>
             <li><span>P/E ออก</span><span>38x</span></li>
@@ -229,8 +260,8 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +30%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$198</div>
-          <div class="ret pos">รวม ~ +105% (≈ +27%/ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$4.4</span></li>
             <li><span>P/E ออก</span><span>45x</span></li>
@@ -281,9 +312,9 @@
       <h2>ผู้นำยูเรเนียมยุคนิวเคลียร์ฟื้น — ราคา "ยุติธรรม" แต่ผันผวนสูง</h2>
       <p>Cameco เป็นเดิมพันคุณภาพสูงต่อ "ดีมานด์ไฟฟ้าจาก AI + nuclear renaissance" ด้วยฐานยูเรเนียมครบวงจรและหุ้น Westinghouse 49% — แต่ที่ราคา ~$108 multiple สูงมาก (P/E TTM ~101x) สะท้อนความคาดหวังกำไรเร่งตัวไปมากแล้ว ส่วนเผื่อความปลอดภัยจึงบาง (~5%) และเป็นหุ้นวัฏจักรที่ downside ลึกหากวงจรพลิก</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$114 <span style="font-size:12px;color:#a6c4b5">($99–$125)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">MOS ~ +15%</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">$132 (+37%)</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#a6c4b5">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">MOS ~ {{rd:mos}}</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">{{rd:analystTgt}} (+37%)</div></div>
       </div>
       <div class="zone">
         💡 <b>กลยุทธ์:</b> สาย value — รอย่อ/ทยอยสะสมเมื่อราคา <b>ต่ำกว่า ~$100</b> (น่าสนใจมากที่ &lt;$91) เพื่อกันความผันผวนวัฏจักร • สาย thematic/growth — เข้าได้แบบ DCA และยอมรับความเสี่ยงราคายูเรเนียม โดยติดตาม <b>ราคายูเรเนียมระยะยาว, อัตรา contracting และกำไร Westinghouse</b> เป็นตัวชี้วัดหลัก

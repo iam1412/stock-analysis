@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 246,
+  "values": {
+    "px": 212.4,
+    "priceDate": "2026-09-11",
+    "dateEra": "CE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 238,
+    "fvHigh": 255,
+    "analystTgt": 318.53,
+    "eps": 6.85,
+    "shares": 211000000,
+    "baseEps": 12.5,
+    "scenarios": [
+      {
+        "tgt": 159,
+        "div": null
+      },
+      {
+        "tgt": 264,
+        "div": null
+      },
+      {
+        "tgt": 390,
+        "div": null
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#1198d5",
     "accentDark": "#0d6f9b",
@@ -41,18 +74,14 @@
     "min": 150,
     "max": 350,
     "grid": [200, 250, 300],
-    "fairLine": 246,
     "currency": "$",
     "highlight": [1, 8]
   },
   "gauge": {
     "min": 150,
     "max": 470,
-    "cur": 212.4,
-    "fair": 246,
     "fairLabelTop": "-58px"
-  },
-  "fv": 246
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +101,11 @@
     <div class="sub">ซอฟต์แวร์ออกแบบ & ผลิต • AutoCAD, Revit, Fusion, Construction Cloud + Autodesk AI (generative design)</div>
     <div class="price-row">
       <div>
-        <div class="px">$212.40<small>(ADSK)</small></div>
+        <div class="px">{{rd:px}}<small>(ADSK)</small></div>
       </div>
-      <div class="chg">▼ −29.5% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2026 (14:55 ET)<br>
+        ราคา ณ {{rd:priceDate}} (14:55 ET)<br>
         ปิดก่อนหน้า $187.72 • ช่วง 52 สัปดาห์ $185.50–$329.09<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / MarketBeat
       </div>
@@ -87,7 +116,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ FY2026 (สิ้นสุด 31 ม.ค. 2026) + Q1 FY2027</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$44.8B</div><div class="d">~211 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~211 ล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM, GAAP)</div><div class="v">~31x</div><div class="d">EPS TTM (GAAP) $6.85</div></div>
       <div class="metric"><div class="k">P/E (Non-GAAP, fwd)</div><div class="v neu">~17x</div><div class="d">EPS non-GAAP FY27 ~$12.5 <span class="pill g">ถูกกว่าค่าเฉลี่ย</span></div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย 5 ปี</div><div class="v">~30x</div><div class="d">non-GAAP fwd ในอดีต 28–35x</div></div>
@@ -113,7 +142,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1a73e8"></i>ราคา ADSK</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $246</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -141,8 +170,8 @@
         <div class="mval">$255</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $238 – $255</span></div>
-        <div class="r">$246</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>หมายเหตุ:</b> ข้าม DDM เพราะ <b>ไม่จ่ายปันผล</b> (ใช้ซื้อหุ้นคืนแทน) • ใช้ EPS <b>non-GAAP</b> เป็นฐานเพราะ GAAP ถูกกดจาก stock-based comp มาก
@@ -157,14 +186,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $212</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $246</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$172<br><small>MOS 30%</small></span>
-          <span>$197<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$246<br><small>Fair Value</small></span>
-          <span style="text-align:right">$319<br><small>เป้า Analyst</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:analystTgt}}<br><small>เป้า Analyst</small></span>
           <span style="text-align:right">$456<br><small>เป้าสูงสุด</small></span>
         </div>
       </div>
@@ -179,19 +208,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+14%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>มี Margin of Safety พอสมควร</b><br>ราคาปัจจุบัน $187.62 ต่ำกว่ามูลค่าเหมาะสม $246 ราว 24% → ตามเกณฑ์ value investor ถือว่า <b>อยู่ในโซนน่าสนใจ</b> สำหรับทยอยสะสม (ยังไม่ถึง deep value)</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$197</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$172</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
         <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $200</div><div class="d">ราคาปัจจุบันอยู่ในโซนนี้แล้ว</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="212.4" step="1">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -200,13 +229,13 @@
 
   <!-- ===== RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $212.40 • EPS ฐาน ~$12.5 (non-GAAP)</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} (non-GAAP)</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$159</div>
-          <div class="ret neg">รวม ~ −25% (≈ −9%/ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$14.5</span></li>
             <li><span>P/E ออก</span><span>11x</span></li>
@@ -217,8 +246,8 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +12%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$264</div>
-          <div class="ret pos">รวม ~ +24% (≈ +7%/ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$17.6</span></li>
             <li><span>P/E ออก</span><span>15x</span></li>
@@ -229,8 +258,8 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +16%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$390</div>
-          <div class="ret pos">รวม ~ +84% (≈ +23%/ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$19.5</span></li>
             <li><span>P/E ออก</span><span>20x</span></li>
@@ -281,9 +310,9 @@
       <h2>ธุรกิจคุณภาพสูง ที่ราคาถูกลงจน "เริ่มมีส่วนเผื่อ"</h2>
       <p>Autodesk เป็นเจ้าของซอฟต์แวร์มาตรฐานอุตสาหกรรมที่มี recurring revenue เกือบทั้งหมด, margin สูง, FCF แข็ง และ ROE ~50% — แต่หุ้นถูกเทขายลงมา ~43% จากความกลัวเรื่อง AI และการ de-rate กลุ่ม SaaS ที่ราคา ~$188 ตลาดมองแง่ร้ายไปมาก ทำให้เริ่มมี margin of safety ราว 24% เทียบมูลค่าพื้นฐาน</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$246 <span style="font-size:12px;color:#a8b6cc">($238–$255)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">MOS ~ +14%</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">$318.53 (+50%)</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#a8b6cc">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">MOS ~ {{rd:mos}}</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">{{rd:analystTgt}} (+50%)</div></div>
       </div>
       <div class="zone">
         💡 <b>กลยุทธ์:</b> สาย value — ราคาปัจจุบัน <b>&lt; $200</b> อยู่ในโซนทยอยสะสมแล้ว (น่าสนใจมากที่ &lt;$197, deep value ที่ &lt;$172) • ติดตาม <b>ผลกระทบ AI ต่อความต้องการ</b>, การรักษา margin ~39% และ FCF เป็นตัวชี้วัดหลักว่าธีสิสยังอยู่

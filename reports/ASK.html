@@ -10,6 +10,19 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 9.4,
+  "values": {
+    "px": 10,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 6.35,
+    "fvHigh": 12.04,
+    "shares": 703790000,
+    "dps": 0.4,
+    "bvps": 17.15
+  },
   "theme": {
     "accent": "#00695c",
     "accentDark": "#004d40",
@@ -41,7 +54,6 @@
     "min": 6,
     "max": 14,
     "grid": [8, 10, 12],
-    "fairLine": 9.4,
     "currency": "฿",
     "highlight": [1, 9],
     "gridFmt": "v.toFixed(2)"
@@ -49,11 +61,8 @@
   "gauge": {
     "min": 6.5,
     "max": 13,
-    "cur": 10,
-    "fair": 9.4,
     "fairLabelTop": true
-  },
-  "fv": 9.4
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -73,11 +82,11 @@
     <div class="sub">เช่าซื้อรถยนต์ทุกประเภท (รถบรรทุก/รถพาณิชย์/รถยนต์) • สินเชื่อส่วนบุคคล • Floor Plan • BGPL (เช่าซื้อเครื่องจักร) • SKIB (นายหน้าประกัน)</div>
     <div class="price-row">
       <div>
-        <div class="px">฿10.00<small>(ASK)</small></div>
+        <div class="px">{{rd:px}}<small>(ASK)</small></div>
       </div>
-      <div class="chg">▲ +29.0% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿6.80 – ฿10.70<br>
         ที่มา: Yahoo Finance API, StockAnalysis.com, Investing.com
       </div>
@@ -91,7 +100,7 @@
       <div class="metric"><div class="k">Market Cap</div><div class="v">฿7,038 ล้าน</div><div class="d">703.79 ล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~12.3x</div><div class="d">เทียบเกณฑ์เช่าซื้อ 10–14x</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~8–13x</div><div class="d">ช่วงวัฏจักร (ขาดทุนสินเชื่อ)</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.58x</div><div class="d">BVPS ~฿17.15</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ~฿17.15</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿531.6 ล้าน</div><div class="d">+60.2% จาก FY2567 (฿331.8 ล้าน)</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.86</div><div class="d">FY2568: ฿0.83 / FY2567: ฿0.63</div></div>
@@ -114,7 +123,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#00695c"></i>ราคา ASK</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿9.40</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -140,8 +149,8 @@
         <div class="mval">฿6.35</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿6.35 – ฿12.04</span></div>
-        <div class="r">฿9.40</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/E ให้ค่าสูงสุด (฿12.04) สะท้อนมุมมองว่ากำไรกำลังฟื้นตัวและตลาดให้ P/E ที่สมเหตุสมผล วิธี DDM ให้ค่ากลาง (฿8.32) เนื่องจากอัตราปันผลยังต่ำในช่วงฟื้นตัว วิธี Justified P/BV ให้ค่าต่ำสุด (฿6.35) เพราะ ROE 5.22% ยังต่ำกว่า cost of equity สมมุติที่ 9% ซึ่งหมายความว่าบริษัทยังสร้างมูลค่าได้ไม่เต็มที่ มูลค่ากลางเฉลี่ย ฿9.40 เป็นจุดอ้างอิง ณ ระดับกำไรและ ROE ปัจจุบัน หาก ROE ปรับตัวขึ้นสู่ 8–10% ในอนาคต FV ที่แท้จริงจะสูงกว่านี้อย่างมีนัย
@@ -155,15 +164,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿10.00</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿9.40</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿6.58<br><small>MOS 30%</small></span>
-          <span>฿7.52<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿9.40<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">฿11.50<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">฿12.04<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -176,19 +185,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−6%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสม — ไม่มี Margin of Safety ณ ระดับนี้</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿7.52</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿6.58</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿9.40</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="10" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -279,8 +288,8 @@
       <h2>กำไรฟื้น แต่ราคาวิ่งนำไปแล้ว — รอจังหวะย่อ</h2>
       <p>ASK เป็นหนึ่งในผู้นำสินเชื่อเช่าซื้อรถพาณิชย์ของไทย มีฐานลูกค้าแข็งแกร่งจากกลุ่มรถบรรทุก/รถไถ/เครื่องจักรกล ภายใต้ร่มของกลุ่มกรุงเทพประกันภัย-BBL กำไร FY2568 ฟื้นตัวชัดเจน +60% และ Q1/2569 ต่อเนื่องอีก +39% YoY อย่างไรก็ตาม ราคาหุ้นขึ้นมา 52% ใน 1 ปีแล้ว และปัจจุบัน trade เกินกว่า conservative Fair Value ฿9.40 ประมาณ 13% ROE ยังต่ำ (5.2%) สะท้อนว่าธุรกิจยังไม่ได้สร้างมูลค่าเต็มศักยภาพ — upside ระยะสั้นจำกัด แต่ถ้า ROE ฟื้นสู่ 8–10% FV จะปรับสูงกว่านี้มาก</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿9.40 <span style="font-size:12px;color:#cab9a8">(฿6.35–฿12.04)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ef9a9a">MOS ~ −6%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ef9a9a">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿11.50 (Hold)</div></div>
       </div>
       <div class="zone">

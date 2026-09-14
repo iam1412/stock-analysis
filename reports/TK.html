@@ -10,6 +10,20 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 4.97,
+  "values": {
+    "px": 4.48,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 3.5,
+    "fvHigh": 7,
+    "eps": 0.18,
+    "shares": 500000000,
+    "dps": 0.2,
+    "bvps": 10.67
+  },
   "theme": {
     "accent": "#1565c0",
     "accentDark": "#0d47a1",
@@ -41,7 +55,6 @@
     "min": 4,
     "max": 5.25,
     "grid": [4.25, 4.5, 4.75, 5],
-    "fairLine": 4.97,
     "currency": "฿",
     "highlight": [5, 9],
     "gridFmt": "v.toFixed(2)",
@@ -50,11 +63,8 @@
   "gauge": {
     "min": 3,
     "max": 7.5,
-    "cur": 4.48,
-    "fair": 4.97,
     "fairLabelTop": false
-  },
-  "fv": 4.97
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +84,11 @@
     <div class="sub">สินเชื่อจักรยานยนต์ & รถยนต์มือสอง (hire purchase) • นาโนไฟแนนซ์ • สินเชื่อส่วนบุคคล • นายหน้าประกันภัย • กัมพูชา & ลาว</div>
     <div class="price-row">
       <div>
-        <div class="px">฿4.48<small>(TK)</small></div>
+        <div class="px">{{rd:px}}<small>(TK)</small></div>
       </div>
-      <div class="chg">▲ +1.4% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569 · งบ FY2024/FY2025<br>
+        ราคา ณ {{rd:priceDate}} · งบ FY2024/FY2025<br>
         กรอบ 52 สัปดาห์ ฿3.64 – ฿4.90<br>
         ที่มา: Google Finance / Investing.com / StockAnalysis.com / Alpha Spread
       </div>
@@ -90,9 +100,9 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 · FY2568 = ปีสิ้นสุด ธ.ค. 2568</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~฿2.24B</div><div class="d">500M หุ้น × ฿4.16</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~24.9x</div><div class="d">EPS TTM ฿0.18 (กำไรฟื้นตัวจาก FY67 ขาดทุน)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM ฿0.18 (กำไรฟื้นตัวจาก FY67 ขาดทุน)</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~8–12x</div><div class="d">ช่วงปกติ (ก่อน FY67 ขาดทุน)</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.42x</div><div class="d">BVPS ฿10.67 · ต่ำกว่ามูลค่าทางบัญชีมาก</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ฿10.67 · ต่ำกว่ามูลค่าทางบัญชีมาก</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">~฿90.4M</div><div class="d">ฟื้นตัวจาก FY67 ขาดทุน −฿15.9M</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.18</div><div class="d">FY2568: กำไร 90.4M / 500M หุ้น</div></div>
@@ -115,7 +125,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1565c0"></i>ราคา TK</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿4.97</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -137,8 +147,8 @@
         <div class="mval">฿5.34</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿3.50 – ฿7.00</span></div>
-        <div class="r">฿4.97</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         ตัด DDM ออกเนื่องจากปันผล ฿0.20/หุ้นปี FY67 จ่ายจากกันสำรอง ไม่ใช่กำไรจริง การใช้ DDM จะให้ค่าต่ำเกินจริง วิธี Justified P/BV (฿4.59) อิงสมมติฐาน ROE ฟื้น 5% ระยะกลาง วิธี P/BV Peer (฿5.34) สะท้อนมุมมองตลาด Fair Value ฿4.97 (เฉลี่ย 2 วิธี) — หากบริษัทฟื้น ROE ได้ถึง 8–10% กรอบบน ฿7.00 เป็นไปได้
@@ -152,15 +162,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿4.48</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿4.97</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿3.48<br><small>MOS 30%</small></span>
-          <span>฿3.98<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿4.97<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">฿4.97<br><small>เป้าเฉลี่ย</small></span>
-          <span style="text-align:right">฿7.00<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -173,19 +183,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+10%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาพอใช้ — ต่ำกว่า Fair Value ~฿0.81 · ทยอยสะสมได้ในระดับนี้</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿3.98</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿3.48</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿4.97</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="4.48" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -277,8 +287,8 @@
       <h2>Deep Value ที่รอการพิสูจน์ — P/BV 0.39× บนงบดุลแข็งแกร่ง แต่ ROE ยังต้องพิสูจน์</h2>
       <p>Thitikorn PCL (TK) เป็นบริษัทสินเชื่อ Hire Purchase จักรยานยนต์ที่ก่อตั้งมา 52 ปี มีงบดุลแข็งแกร่งมาก (D/E 0.06×) แต่เผชิญช่วงเปลี่ยนผ่านยาก พอร์ตสินเชื่อหดตัวต่อเนื่อง 5 ปี และ FY2567 บันทึกขาดทุนเป็นครั้งแรก แม้ FY2568 กลับมากำไร 90M บาท แต่ ROE ยังต่ำมาก (~1.7%) ราคา ฿4.16 ที่ P/BV 0.39× เป็น Downside Protection ที่แข็งแกร่ง แต่ Upside ต้องรอ Catalyst ที่ชัดเจนกว่า เช่น พอร์ตสินเชื่อขยายตัว YoY ได้จริง หรือ ROE ฟื้นเกิน 5%</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿4.97 <span style="font-size:12px;color:#cab9a8">(฿3.50–฿7.00)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +10%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿4.97 (ไม่มีข้อมูล Broker)</div></div>
       </div>
       <div class="zone">

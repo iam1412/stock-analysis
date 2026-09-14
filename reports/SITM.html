@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 692,
+  "values": {
+    "px": 635.66,
+    "priceDate": "2026-09-11",
+    "dateEra": "CE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 644,
+    "fvHigh": 740,
+    "analystTgt": 864.38,
+    "eps": 0.52,
+    "shares": 30070000,
+    "baseEps": 11.7,
+    "scenarios": [
+      {
+        "tgt": 388,
+        "div": null
+      },
+      {
+        "tgt": 911,
+        "div": null
+      },
+      {
+        "tgt": 1532,
+        "div": null
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#b38713",
     "accentDark": "#81610e",
@@ -41,18 +74,14 @@
     "min": 200,
     "max": 800,
     "grid": [400, 600],
-    "fairLine": 692,
     "currency": "$",
     "highlight": [0, 8]
   },
   "gauge": {
     "min": 420,
     "max": 940,
-    "cur": 635.66,
-    "fair": 692,
     "fairLabelTop": "-58px"
-  },
-  "fv": 692
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +101,11 @@
     <div class="sub">ผู้นำชิป MEMS oscillator / clock — ให้สัญญาณนาฬิกาแม่ความเสถียรสูง (low-jitter) แก่ SerDes ความเร็วสูง, ลิงก์ออปติก 800G/1.6T และโมดูล co-packaged optics (CPO) ใน data center AI</div>
     <div class="price-row">
       <div>
-        <div class="px">$635.66<small>(SITM)</small></div>
+        <div class="px">{{rd:px}}<small>(SITM)</small></div>
       </div>
-      <div class="chg">▲ +119.5% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2026 (ปิดตลาด)<br>
+        ราคา ณ {{rd:priceDate}} (ปิดตลาด)<br>
         52 สัปดาห์ $204.60 – $901.81 • ผันผวนสูง<br>
         ที่มา: SEC EDGAR (8-K 5 ส.ค. 2026, 10-Q Q2 2026, 8-K 1 ก.ค. 2026) • StockAnalysis.com • Yahoo Finance • SiTime IR
       </div>
@@ -113,7 +142,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1a73e8"></i>ราคา SITM</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $692</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -141,8 +170,8 @@
         <div class="mval">$740</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสม (ถ่วงตามตระกูล)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $644 – $740 • DCF (บริบท) $240–310</span></div>
-        <div class="r">$692</div>
+        <div class="l">มูลค่าเหมาะสม (ถ่วงตามตระกูล)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}} • DCF (บริบท) $240–310</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>หมายเหตุ (full disclosure):</b> ข้าม <b>DDM/P/BV</b> เพราะ <b>ไม่จ่ายปันผล</b> (0%) และมูลค่าทางบัญชีไม่สะท้อนธุรกิจ IP/ชิป •
@@ -160,14 +189,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $636</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $692</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$484<br><small>MOS 30%</small></span>
-          <span>$554<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$692<br><small>Fair Value</small></span>
-          <span style="text-align:right">$864<br><small>เป้า Analyst</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:analystTgt}}<br><small>เป้า Analyst</small></span>
           <span style="text-align:right">$902<br><small>สูงสุด 52 สัปดาห์</small></span>
         </div>
       </div>
@@ -182,19 +211,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+8%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>แทบไม่มี Margin of Safety</b><br>หลังแรงขายทั้งกลุ่มชิป/ฮาร์ดแวร์ AI (18 ส.ค. 2026) ราคา $680.06 <b>ต่ำกว่า</b>มูลค่าเหมาะสม $692 เพียงราว 1.7% — เป็นแค่ noise ระดับตลาด ไม่ใช่การ re-rating ของธุรกิจ และยังต่ำกว่าโซนน่าสนใจ 20% (&lt;$554) มาก — ขา DCF ยังชี้ต่ำกว่านี้มาก ($240–310) และฐาน GAAP เพิ่งพลิกบวกด้วย EPS TTM $0.52 ที่ยังเล็กมาก จึงยังไม่ใช่จุดซื้อสำหรับสาย value</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$554</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$484</div><div class="d">โซนถูก (เผื่อความเสี่ยงสูง)</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูก (เผื่อความเสี่ยงสูง)</div></div>
         <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $644</div><div class="d">ใกล้ขอบล่างของ fair value</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="635.66" step="1">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -203,13 +232,13 @@
 
   <!-- ===== RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $635.66 • EPS ฐาน $11.7 (FY2026E non-GAAP, ตรงงวด)</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} (FY2026E non-GAAP, ตรงงวด)</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +10%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$388</div>
-          <div class="ret neg">รวม ~ −39.0% (≈ −15.2%/ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$15.5</span></li>
             <li><span>P/E ออก</span><span>25x</span></li>
@@ -220,8 +249,8 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +25%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$911</div>
-          <div class="ret pos">รวม ~ +43.3% (≈ +12.7%/ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$22.8</span></li>
             <li><span>P/E ออก</span><span>40x</span></li>
@@ -232,8 +261,8 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +38%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$1532</div>
-          <div class="ret pos">รวม ~ +141.0% (≈ +34.1%/ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$30.6</span></li>
             <li><span>P/E ออก</span><span>50x</span></li>
@@ -288,9 +317,9 @@
       <h2>เจ้าของ "ชั้นเวลา" ของเครือข่าย AI — คุณภาพสูง แต่ราคา "แพงสุดขั้ว"</h2>
       <p>SiTime เป็นผู้นำชิป MEMS timing ที่ขายสัญญาณนาฬิกา low-jitter ให้ SerDes, ออปติก 800G/1.6T และ CPO ในเครือข่าย AI — Q2 2026 รายได้ <b>$157.4M (+127% YoY)</b> พร้อม non-GAAP EPS $2.34 และไกด์ Q3 กระโดดเป็น <b>$285–295M</b> หลังปิดดีลซื้อธุรกิจ timing ของ <b>Renesas (TPD) เมื่อ 1 ก.ค. 2026</b> ($1,500M เงินสด + หุ้นใหม่ 3.56M หุ้น) ซึ่งขยายพอร์ต clock 10 เท่าและดันมาร์จินขึ้น — แต่ก็ทำให้งบดุล <b>พลิกจาก net cash เป็น net debt ~$929M</b> งบ Q2 (5 ส.ค. 2026) ยังยืนยัน EPS TTM GAAP พลิกบวกเป็น <b>$0.52</b> (dil., จาก $0.49 เดิม — StockAnalysis + ตาราง [3] ตรงกัน 0.4%; Yahoo แสดง $0.60 คนละฐาน ไม่ใช้) ฐาน forward ยังคงอิง <b>FY2026E $11.7</b> (Q1–Q2 จริง + ไกด์ Q3) ที่ผ่านการตรวจงวดแล้วเหมือนเดิม เพราะยังไม่มีตัวคูณตลาดใหม่ที่วัดได้จริงมาแทนที่ ⇒ fair value คงที่ <b>$692</b> — วันที่ 18 ส.ค. 2026 กลุ่มชิป/ฮาร์ดแวร์ AI ทั้งเซกเตอร์โดนเทขายพร้อมกัน (de-rating ทั้งกลุ่ม ไม่ใช่ข่าวเฉพาะตัว) ทำให้ราคา SITM ร่วงมาที่ <b>$680.06</b> ซึ่ง <b>ต่ำกว่ามูลค่าเหมาะสมเพียงราว 1.7%</b> — แคบเกินจะถือว่าเป็น margin of safety จริง โดยเฉพาะเมื่อขา DCF ชี้เพียง $240–310 ส่วนสาย growth ยังเห็น upside ตามเป้านักวิเคราะห์เฉลี่ย $864.38 แต่ต้องยอมรับความผันผวนสูงมาก ความเสี่ยงรวมกิจการ และ multiple compression</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$692 <span style="font-size:12px;color:#a8b6cc">($644–$740)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">MOS ~ +8%</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">$864.38 (+36.0%)</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#a8b6cc">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">MOS ~ {{rd:mos}}</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">{{rd:analystTgt}} (+36.0%)</div></div>
       </div>
       <div class="zone">
         💡 <b>กลยุทธ์:</b> สาย value — แม้ราคาจะย่อลงมาใกล้มูลค่าเหมาะสมแล้วจาก de-rating ทั้งกลุ่ม 18 ส.ค. แต่ยังไม่ถึงโซนน่าสนใจ รอย่อลึกกว่านี้มาที่ <b>ต่ำกว่า ~$644</b> (น่าสนใจที่ &lt;$554) และจำกัดขนาดสถานะ • สาย growth — เข้าได้แบบ DCA และยอมรับความผันผวนสูงมาก โดยติดตาม <b>ยอดขาย CED / timing content ใน AI</b>, <b>งบ Q3 2026 ว่าทำได้ตามไกด์ $285–295M หรือไม่</b>, <b>รายได้จริงของ TPD เทียบเป้า $300M/ปี</b> และ <b>ความเร็ว multiple compression</b> เป็นตัวชี้วัดหลัก

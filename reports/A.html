@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 129,
+  "values": {
+    "px": 146.93,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 121.2,
+    "fvHigh": 136.39,
+    "shares": 304000000,
+    "dps": 1.02,
+    "bvps": 29,
+    "baseEps": 5.59,
+    "scenarios": [
+      {
+        "tgt": 135.87,
+        "div": 3.06
+      },
+      {
+        "tgt": 161.92,
+        "div": 3.06
+      },
+      {
+        "tgt": 183.36,
+        "div": 3.06
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#0E83AE",
     "accentDark": "#0A5E7E",
@@ -41,18 +74,14 @@
     "min": 110,
     "max": 160,
     "grid": [120, 130, 140, 150],
-    "fairLine": 129,
     "currency": "$",
     "highlight": [5, 10]
   },
   "gauge": {
     "min": 108,
     "max": 160,
-    "cur": 146.93,
-    "fair": 129,
     "fairLabelTop": false
-  },
-  "fv": 129
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +101,11 @@
     <div class="sub">เครื่องมือวิเคราะห์/วัดทางวิทยาศาสตร์ • Life Sciences &amp; Diagnostics (chromatography/mass spec/genomics) • Agilent CrossLab (บริการ/consumables recurring ~42%) • Applied Markets (chemical/food/energy)</div>
     <div class="price-row">
       <div>
-        <div class="px">$146.93<small>(A)</small></div>
+        <div class="px">{{rd:px}}<small>(A)</small></div>
       </div>
-      <div class="chg">≈ ทรงตัว (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $108.35 / $160.27<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / Agilent Investor Relations / Macrotrends
       </div>
@@ -87,7 +116,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">FY ต.ค. 2568 · adj EPS $5.59 · ราคา $135.07</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$44.7B</div><div class="d">~304M shares outstanding</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~304M shares outstanding</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~26.3x</div><div class="d">adj EPS $5.59 · GAAP EPS $4.98</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~25x</div><div class="d">ช่วง 18–35x (FY21–25)</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~5.1x</div><div class="d">BVPS ~$29.0 · ROE 19.3%</div></div>
@@ -113,7 +142,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#0E83AE"></i>ราคา A</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $129</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -139,8 +168,8 @@
         <div class="mval">$121.20</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $121.20 – $136.39</span></div>
-        <div class="r">$129</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี Forward P/E ให้ค่าสูงสุด ($136.39) สะท้อน optimism เรื่องฟื้น demand FY26 · วิธี P/FCF ให้ค่าต่ำสุด ($121.20) อนุรักษ์นิยมกว่า · วิธี P/E (adj TTM) อยู่กลาง ($128.57) · เฉลี่ยสามวิธีที่ <b>$128.72 ≈ $129</b> สะท้อนบริษัทที่ฟื้นตัว recurring-heavy แต่ valuation ปัจจุบันตึงเล็กน้อย · แหล่งอ้างอิง: StockAnalysis.com · Yahoo Finance · Agilent IR · Macrotrends
@@ -154,14 +183,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $146.93</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $129</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$90.30<br><small>MOS 30%</small></span>
-          <span>$103.20<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$129<br><small>Fair Value</small></span>
-          <span style="text-align:right">$136.39<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$160<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -175,19 +204,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−14%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาเหมาะสม–ตึงเล็กน้อย (ราคาเหนือ FV ~5%) · ยังไม่มี MOS · รอย่อสู่ใกล้ $103–$115 ก่อนเริ่มสะสม</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$103.20</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$90.30</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $129</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="146.93" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -196,17 +225,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $146.93 • EPS ฐาน ~$5.59 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$135.87</div>
-          <div class="ret neg">-7.5%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$6.47</span></li>
             <li><span>P/E ออก</span><span>21x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$3.06</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>China tariff กดรายได้, demand ซบเซา</span></li>
           </ul>
         </div>
@@ -214,12 +243,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$161.92</div>
-          <div class="ret pos">+10%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$7.04</span></li>
             <li><span>P/E ออก</span><span>23x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$3.06</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>CrossLab ฟื้น, pharma capex กลับ</span></li>
           </ul>
         </div>
@@ -227,12 +256,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +11%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$183.36</div>
-          <div class="ret pos">+25%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$7.64</span></li>
             <li><span>P/E ออก</span><span>24x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$3.06</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>biopharma boom, China stabilize, CrossLab expand</span></li>
           </ul>
         </div>
@@ -279,8 +308,8 @@
       <h2>Compounder คุณภาพ ราคาเหมาะสม-ตึงเล็กน้อย · รอย่อใกล้ $103</h2>
       <p>Agilent Technologies เป็นบริษัทเครื่องมือวิทยาศาสตร์คุณภาพสูง มีฐาน recurring revenue CrossLab ~42% ที่มั่นคง พึ่งฟื้นจาก instrument demand trough FY24 สู่ +6.7% ใน FY25 adj EPS $5.59 · P/E 24.2x ณ $135.07 ≈ มูลค่าเหมาะสม (FV $129) — MOS เป็นลบ −4.7% หมายความว่าราคาตลาดตึงกว่า fair value เล็กน้อย ยังไม่ถึงโซนน่าซื้อ · จุดเข้าซื้อ value คือ ใกล้ $103.20 (MOS 20%) ที่เคยเกิดขึ้นเมื่อ มี.ค. 69 · นักวิเคราะห์ 20 ราย มองเป้า $160 (+8%) สะท้อน upside จากการฟื้น pharma capex และขยาย CrossLab</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$129 <span style="font-size:12px;color:#cab9a8">($121.20–$136.39)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −14%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$160 (Moderate Buy)</div></div>
       </div>
       <div class="zone">
@@ -293,7 +322,7 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลอ้างอิง: StockAnalysis.com · Yahoo Finance · Agilent Investor Relations · Macrotrends · ตัวเลขงบการเงินอิง FY25 (Q4 FY2025 สิ้นสุด ต.ค. 2568) · adj EPS $5.59 · ราคา ณ 11 ก.ย. 2569
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลอ้างอิง: StockAnalysis.com · Yahoo Finance · Agilent Investor Relations · Macrotrends · ตัวเลขงบการเงินอิง FY25 (Q4 FY2025 สิ้นสุด ต.ค. 2568) · adj EPS $5.59 · ราคา ณ {{rd:priceDate}}
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 26 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

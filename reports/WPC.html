@@ -10,6 +10,37 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 73,
+  "values": {
+    "px": 69.12,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 64.23,
+    "fvHigh": 78.67,
+    "shares": 222800000,
+    "dps": 3.76,
+    "scenarios": [
+      {
+        "tgt": 63,
+        "div": 11.34
+      },
+      {
+        "tgt": 86.1,
+        "div": 11.73
+      },
+      {
+        "tgt": 106.25,
+        "div": 12.07
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#4155c8",
     "accentDark": "#2c3b96",
@@ -41,18 +72,14 @@
     "min": 60,
     "max": 80,
     "grid": [65, 70, 75],
-    "fairLine": 73,
     "currency": "$",
     "highlight": [2, 4]
   },
   "gauge": {
     "min": 50,
     "max": 80,
-    "cur": 69.12,
-    "fair": 73,
     "fairLabelTop": false
-  },
-  "fv": 73
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +99,11 @@
     <div class="sub">REIT เช่าสุทธิ (net-lease) แบบกระจายประเภททรัพย์สิน • อาคารอุตสาหกรรม/โรงงาน 38% • คลังสินค้า (warehouse) 25% • ค้าปลีก/โชว์รูมรถ 23% • self-storage ส่วนน้อย • สัญญาเช่าระยะยาวเฉลี่ย 12.1 ปี ผู้เช่าเดียวต่ออาคาร (single-tenant triple-net) • 1,703 อาคาร 374 ผู้เช่า ทั่วสหรัฐฯ และยุโรป</div>
     <div class="price-row">
       <div>
-        <div class="px">$69.12<small>(WPC)</small></div>
+        <div class="px">{{rd:px}}<small>(WPC)</small></div>
       </div>
-      <div class="chg">▲ +4.7% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $61.09 – $76.97<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, SEC 8-K Q1 2026, digrin.com
       </div>
@@ -113,7 +140,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#4155c8"></i>ราคา WPC</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $73</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -139,8 +166,8 @@
         <div class="mval">$64.23</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $64.23 – $78.67</span></div>
-        <div class="r">$73.00</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/AFFO (ทั้ง TTM และ forward) ให้มูลค่าสูงกว่าราคาปัจจุบันเล็กน้อย สะท้อนว่าตลาดยังให้มัลติเพิลต่ำกว่าค่าเฉลี่ยกลุ่มเล็กน้อยจาก leverage ที่สูงกว่าคู่แข่งบางราย (Net Debt/EBITDA 5.7x) ส่วน DDM ให้ค่าต่ำสุดเพราะ yield ปัจจุบัน (~4.95%) ต่ำกว่าช่วงก่อนตัดปันผล ทำให้ implied cost of equity สูง Fair Value เฉลี่ย $73 ใกล้เคียงราคาตลาด สะท้อนว่าหุ้นเทรดใกล้มูลค่าเหมาะสมเล็กน้อยสูงกว่า ไม่ถูกไม่แพงมาก
@@ -154,15 +181,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $69.12</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $73</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$51.10<br><small>MOS 30%</small></span>
-          <span>$58.40<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$73.00<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$78.50<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$78.67<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -175,19 +202,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+5%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS ต่ำมาก — ราคาเทรดใกล้เคียง Fair Value แทบไม่มีส่วนเผื่อความปลอดภัย เหมาะกับนักลงทุนสาย dividend income มากกว่าสาย value/MOS สูง</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$58.40</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$51.10</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $73.00</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="69.12" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -196,17 +223,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $69.12 • AFFO ฐาน ~$5.10 • รวมปันผล (ใช้ AFFO/หุ้นแทน EPS เพราะเป็น REIT)</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • AFFO ฐาน ~$5.10{{rd:scnNote}} (ใช้ AFFO/หุ้นแทน EPS เพราะเป็น REIT)</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>AFFO +1%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$63.00</div>
-          <div class="ret neg">+7.6%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$5.25</span></li>
             <li><span>P/E ออก</span><span>12x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$11.34</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>ดอกเบี้ยสูงต่อเนื่อง, ผู้เช่าล้มละลายเพิ่ม, การลงทุนใหม่ชะลอ, มัลติเพิลหดตัว</span></li>
           </ul>
         </div>
@@ -214,12 +241,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>AFFO +4%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$86.10</div>
-          <div class="ret pos">+41.5%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$5.74</span></li>
             <li><span>P/E ออก</span><span>15x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$11.73</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>ลงทุนใหม่ตามแผน $1.5–2B/ปี, occupancy ทรงตัว ~98%, ปันผลโตตามแนวโน้มปัจจุบัน</span></li>
           </ul>
         </div>
@@ -227,12 +254,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>AFFO +7%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$106.25</div>
-          <div class="ret pos">+71.2%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$6.25</span></li>
             <li><span>P/E ออก</span><span>17x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$12.07</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>ดอกเบี้ยลดลง, cap rate หดตัว, เร่งลงทุนยุโรป/อุตสาหกรรม, มัลติเพิลขยายกลับสู่ระดับก่อนตัดปันผล</span></li>
           </ul>
         </div>
@@ -277,8 +304,8 @@
       <h2>WPC: REIT เช่าสุทธิคุณภาพดี ฟื้นตัวต่อเนื่อง แต่ราคาเทรดใกล้มูลค่าเหมาะสมแล้ว</h2>
       <p>W. P. Carey เป็นหนึ่งใน net-lease REIT ที่กระจายความเสี่ยงดีที่สุดในกลุ่ม ทั้งประเภททรัพย์สิน (อุตสาหกรรม/คลังสินค้า/ค้าปลีก) และภูมิศาสตร์ (สหรัฐฯ + ยุโรป) หลังผ่านจุดต่ำสุดจากการตัดปันผลปี 2566 บริษัทกลับมาโต AFFO ต่อเนื่องสองหลักและปรับขึ้นปันผลทุกไตรมาส อย่างไรก็ตาม ราคาหุ้นที่ปรับขึ้นมาแล้วในรอบ 12 เดือน (+12.1%) ทำให้ valuation ปัจจุบันสูงกว่า Fair Value เล็กน้อย MOS ติดลบราว −3% จึงเหมาะกับนักลงทุนที่มองหากระแสเงินปันผลสม่ำเสมอ (yield ~4.95%) มากกว่าผู้ที่หา capital gain จาก undervaluation</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$73.00 <span style="font-size:12px;color:#cab9a8">($64.23–$78.67)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +5%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$78.50 (Buy/Hold ผสม)</div></div>
       </div>
       <div class="zone">

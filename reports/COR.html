@@ -12,6 +12,20 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 310,
+  "values": {
+    "px": 321.57,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 263,
+    "fvHigh": 348,
+    "eps": 16.67,
+    "shares": 194600000,
+    "dps": 2.4,
+    "bvps": 17.46
+  },
   "theme": {
     "accent": "#461E96",
     "accentDark": "#2E1066",
@@ -43,18 +57,14 @@
     "min": 250,
     "max": 400,
     "grid": [300, 350],
-    "fairLine": 310,
     "currency": "$",
     "highlight": [4, 7]
   },
   "gauge": {
     "min": 180,
     "max": 420,
-    "cur": 321.57,
-    "fair": 310,
     "fairLabelTop": true
-  },
-  "fv": 310
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +84,11 @@
     <div class="sub">US pharmaceutical distribution (#2 by revenue, formerly AmerisourceBergen) • US Healthcare Solutions • International Healthcare Solutions (Alliance Healthcare EU) • ION Solutions oncology • GLP-1 distributor • Walgreens partner</div>
     <div class="price-row">
       <div>
-        <div class="px">$321.57<small>(COR)</small></div>
+        <div class="px">{{rd:px}}<small>(COR)</small></div>
       </div>
-      <div class="chg">▼ −4.8% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $244.82 – $377.54<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, Google Finance
       </div>
@@ -89,8 +99,8 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569 | FY สิ้นสุด ก.ย.</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">$62.6B</div><div class="d">194.6M shares</div></div>
-      <div class="metric"><div class="k">P/E (adj TTM)</div><div class="v neu">~19.3x</div><div class="d">adj EPS TTM $16.67; GAAP P/E 24.0x</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">194.6M shares</div></div>
+      <div class="metric"><div class="k">P/E (adj TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">adj EPS TTM $16.67; GAAP P/E 24.0x</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~17–20x</div><div class="d">adj P/E เป้าหมายเซกเตอร์ 16–20x</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">18.4x</div><div class="d">BVPS $17.46 (leverage-amplified)</div></div>
 
@@ -115,7 +125,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#461E96"></i>ราคา COR</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $310</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -141,8 +151,8 @@
         <div class="mval">$348</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $263 – $348</span></div>
-        <div class="r">$310</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/E (18x) ให้ $320 สอดคล้องกับ premium ที่นักวิเคราะห์ให้กับ specialty distribution mix ของ Cencora (ION Solutions oncology + Alliance Healthcare EU) วิธี EV/EBITDA ให้ค่าต่ำสุด $263 เพราะ net debt $8.2B กดมูลค่าหุ้นส่วนแบ่ง วิธี forward growth ให้ $348 (อิง EPS growth 11%/ปี และ buyback) ค่าเฉลี่ยถ่วงน้ำหนัก 50/20/30 = ~$310 — ค่อนข้าง conservative ใกล้เคียงกับระดับ "fairly valued" ที่ราคาปัจจุบัน ขณะที่ analyst consensus อยู่ที่ $351–$368 (bullish กว่า)
@@ -156,14 +166,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $321.57</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $310</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$217<br><small>MOS 30%</small></span>
-          <span>$248<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$310<br><small>Fair Value</small></span>
-          <span style="text-align:right">$348<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$368<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -177,19 +187,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−4%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS เล็กน้อย — ราคาใกล้ Fair Value; รอโซน $248–$265 เพื่อ MOS ที่ดีขึ้น</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$248</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$217</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $310</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="321.57" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -281,8 +291,8 @@
       <h2>Fairly Valued — รอโซน $248–$265 เพื่อ MOS ที่ดีกว่า</h2>
       <p>Cencora เป็น #2 pharma distributor ของสหรัฐ (รายได้ $321B FY2025) ด้วยความได้เปรียบจาก specialty oncology (ION Solutions), GLP-1 tailwind, และ Alliance Healthcare EU ทำให้ EPS adj. โตต่อเนื่อง 14–16%/ปีใน FY2023–2025 OneOncology acquisition (Feb 2026) เสริมฐาน oncology ให้แข็งแกร่งยิ่งขึ้น ณ ราคา $312.90 ซื้อขายที่ adj P/E ~18.8x (fwd 16.7x) ใกล้เคียง 5-yr avg และยังต่ำกว่า McKesson (~18–20x) — สะท้อน discount จาก Walgreens risk + drug pricing uncertainty นักวิเคราะห์ 14 คน consensus "Buy" ราคาเป้า $351–$368 (+12–18% upside) แต่ประมาณการ conservative ของเราอยู่ที่ $310 (MOS ติดลบเล็กน้อย ~1%) จึงแนะนำรอสะสมในโซนที่ดีกว่า</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$310 <span style="font-size:12px;color:#cab9a8">($263–$348)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −4%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$368 (Moderate Buy)</div></div>
       </div>
       <div class="zone">

@@ -12,6 +12,38 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 1395,
+  "values": {
+    "px": 1140.32,
+    "priceDate": "2026-09-11",
+    "dateEra": "CE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 1120,
+    "fvHigh": 1605,
+    "eps": 32.03,
+    "shares": 55900000,
+    "baseEps": 32.03,
+    "scenarios": [
+      {
+        "tgt": 1412,
+        "div": null
+      },
+      {
+        "tgt": 1851,
+        "div": null
+      },
+      {
+        "tgt": 2559,
+        "div": null
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#4a6b8a",
     "accentDark": "#2d4a63",
@@ -43,18 +75,14 @@
     "min": 1100,
     "max": 1500,
     "grid": [1200, 1300, 1400],
-    "fairLine": 1395,
     "currency": "$",
     "highlight": [3, 11]
   },
   "gauge": {
     "min": 976,
     "max": 1650,
-    "cur": 1140.32,
-    "fair": 1395,
     "fairLabelTop": true
-  },
-  "fv": 1395
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +102,11 @@
     <div class="sub">ชิ้นส่วนอากาศยานเฉพาะทาง (proprietary, >75% ผูกขาดซัพพลาย) • อะไหล่ตลาดทดแทน (aftermarket) มาร์จิ้นสูง • การบินพาณิชย์ + ป้องกันประเทศ • กลยุทธ์ซื้อกิจการ + ขึ้นราคา</div>
     <div class="price-row">
       <div>
-        <div class="px">$1,140.32<small>(TDG)</small></div>
+        <div class="px">{{rd:px}}<small>(TDG)</small></div>
       </div>
-      <div class="chg">▼ −12.9% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2026<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $1,123.61 – $1,623.83<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, TransDigm IR FY2025, digrin.com
       </div>
@@ -89,7 +117,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2026 | ที่มา: StockAnalysis.com, Yahoo Finance, TransDigm IR/10-K</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$63.7B</div><div class="d">55.9 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">55.9 ล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~35.60x</div><div class="d">EPS TTM $32.03</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~51x</div><div class="d">ปัจจุบันต่ำกว่าเฉลี่ย (discount)</div></div>
       <div class="metric"><div class="k">ROIC</div><div class="v pos">~16.74%</div><div class="d">ผลตอบแทนจากทุนที่ลงทุน (equity ติดลบ — ROE/P/BV ไม่มีความหมาย)</div></div>
@@ -115,7 +143,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#4a6b8a"></i>ราคา TDG</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $1,395</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -141,8 +169,8 @@
         <div class="mval">$1,458</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $1,120 – $1,605</span></div>
-        <div class="r">$1,395</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         P/E (Fwd) ให้ค่าสูงสุด $1,603 สะท้อน earnings power ที่แข็งแกร่งหาก P/E re-rate กลับ; DCF ให้ค่าต่ำสุด $1,122 เพราะ TDG มี Net Debt สูงมาก (~$23B) ทำให้ equity FCF yield กดลง; EV/EBITDA ที่ $1,458 เป็นค่ากลาง — สะท้อน enterprise value ที่เหมาะสมกับ margin profile ระดับ top-tier ของอุตสาหกรรม FV เฉลี่ย $1,395 ชี้ว่าราคาปัจจุบัน $1,324.56 ค่อนข้างสมเหตุสมผล (MOS ~5%) ไม่ได้ถูกมาก แต่ผลตอบแทนระยะยาวน่าสนใจหาก EPS growth ยังคงเดิน หมายเหตุ: ไม่ใช้ DDM (ปันผลไม่สม่ำเสมอ — กู้มาจ่าย special เป็นครั้งคราว) และไม่ใช้ P/BV (equity ติดลบ)
@@ -156,15 +184,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $1,140.32</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $1,395</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$976<br><small>MOS 30%</small></span>
-          <span>$1,116<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$1,395<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$1,524<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$1,605<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -177,19 +205,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+18%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS น้อย — ราคาใกล้มูลค่าเหมาะสม ไม่มีส่วนเผื่อมากนัก เหมาะสะสมทีละน้อยหรือรอโซน MOS 20%+</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$1,116</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$976</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $1,395</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="1140.32" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -198,13 +226,13 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $1,140.32 • EPS ฐาน ~$32.03 • หมายเหตุ: ไม่มีปันผลประจำ (special เป็นครั้งคราว)</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} • หมายเหตุ: ไม่มีปันผลประจำ (special เป็นครั้งคราว)</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$1,412</div>
-          <div class="ret neg">+23.8% (3ปี รวม)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$40.35</span></li>
             <li><span>P/E ออก</span><span>35x</span></li>
@@ -216,8 +244,8 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +15%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$1,851</div>
-          <div class="ret pos">+62.3% (3ปี รวม)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$48.71</span></li>
             <li><span>P/E ออก</span><span>38x</span></li>
@@ -229,8 +257,8 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +22%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$2,559</div>
-          <div class="ret pos">+124.4% (3ปี รวม)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$58.16</span></li>
             <li><span>P/E ออก</span><span>44x</span></li>
@@ -281,8 +309,8 @@
       <h2>TDG — Compounding Moat ราคาสมเหตุสมผล · รอโซน MOS ดีกว่า</h2>
       <p>TransDigm เป็นหนึ่งใน compounder ที่ดีที่สุดในอุตสาหกรรม Aerospace — aftermarket razor-blade moat ทำให้ pricing power สูงผิดปกติ (operating margin ~46.5%) และ EPS growth ยั่งยืนราว 20–25%/ปีในระยะยาว อย่างไรก็ตาม ราคาปัจจุบัน $1,324.56 มี MOS เพียง ~5% เมื่อเทียบกับ FV $1,395 — ไม่ถูกพอที่จะ aggressive เข้า นักวิเคราะห์ Buy ด้วยเป้า $1,524 (+24%) ถือเป็นดีที่สุดในกลุ่ม แต่ Debt สูง + ไม่มีปันผลประจำทำให้เหมาะนักลงทุนที่รับความเสี่ยงได้สูง</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$1,395 <span style="font-size:12px;color:#cab9a8">($1,120–$1,605)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +18%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$1,524 (Buy, 22 analysts)</div></div>
       </div>
       <div class="zone">

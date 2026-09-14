@@ -10,6 +10,40 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 134,
+  "values": {
+    "px": 130.99,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 130,
+    "fvHigh": 139,
+    "eps": 5.7,
+    "shares": 44300000,
+    "dps": 1.36,
+    "bvps": 69.87,
+    "baseEps": 6.4,
+    "scenarios": [
+      {
+        "tgt": 122.9,
+        "div": 4.08
+      },
+      {
+        "tgt": 165.5,
+        "div": 4.08
+      },
+      {
+        "tgt": 215.9,
+        "div": 4.08
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#B31B2A",
     "accentDark": "#7A1018",
@@ -41,7 +75,6 @@
     "min": 100,
     "max": 150,
     "grid": [110, 120, 130, 140],
-    "fairLine": 134,
     "currency": "$",
     "highlight": [3, 10],
     "gridFmt": "v.toFixed(0)",
@@ -49,11 +82,8 @@
   },
   "gauge": {
     "min": 85,
-    "max": 170,
-    "cur": 130.99,
-    "fair": 134
-  },
-  "fv": 134
+    "max": 170
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -73,11 +103,11 @@
     <div class="sub">Specialty medtech · Vascular access (ARROW catheters, #1) · Anesthesia (LMA airways, #1) · Interventional urology (UroLift BPH) · Surgical/cardiac · High-barrier niches · Adj margin ~26% · Wayne PA</div>
     <div class="price-row">
       <div>
-        <div class="px">$130.99<small>(TFX)</small></div>
+        <div class="px">{{rd:px}}<small>(TFX)</small></div>
       </div>
-      <div class="chg">▲ +5.2% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $100.18 – $139.67<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, Teleflex IR (Q1 2569 Earnings Release)
       </div>
@@ -89,9 +119,9 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ กลางปี 2569 · อิงตัวเลขจากการดำเนินงานต่อเนื่อง (Continuing Ops)</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~$5.8B</div><div class="d">~44.3M shares diluted</div></div>
-      <div class="metric"><div class="k">P/E adj (TTM)</div><div class="v neu">~23.0x</div><div class="d">Adj EPS TTM ~$5.70 · GAAP บิดเบือนจาก divestiture</div></div>
+      <div class="metric"><div class="k">P/E adj (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">Adj EPS TTM ~$5.70 · GAAP บิดเบือนจาก divestiture</div></div>
       <div class="metric"><div class="k">Forward P/E (FY2026E)</div><div class="v">~21x</div><div class="d">Adj EPS guide $6.25–6.55 · คาดกลาง $6.40</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">~1.87x</div><div class="d">BVPS $69.87 · Goodwill+Intang. ~$3.8B สูง</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~{{rd:pbv}}x</div><div class="d">BVPS $69.87 · Goodwill+Intang. ~$3.8B สูง</div></div>
 
       <div class="metric"><div class="k">รายได้ FY2025</div><div class="v">$1.99B</div><div class="d">Continuing ops · FY2026E ~$2.29B (+15%)</div></div>
       <div class="metric"><div class="k">Adj EPS FY2026 (guidance)</div><div class="v pos">$6.25–6.55</div><div class="d">Q1 2569 actual $1.39 (beat est. $1.22)</div></div>
@@ -114,7 +144,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#B31B2A"></i>ราคา TFX</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $134</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -144,8 +174,8 @@
         <div class="mval">$130</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $130 – $139</span></div>
-        <div class="r">$134</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         ทั้ง 3 วิธีให้ค่า FV ใกล้เคียงกันในช่วง $130–$135 สะท้อนว่า TFX ซื้อขายใกล้มูลค่าพื้นฐาน
@@ -162,13 +192,13 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $130.99</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $134</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$93.80<br><small>MOS 30%</small></span>
-          <span>$107.20<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$134<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$146<br><small>เป้าเฉลี่ย Analyst</small></span>
           <span style="text-align:right">$160<br><small>กรอบบน FV</small></span>
         </div>
@@ -186,19 +216,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+2%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาใกล้เคียงมูลค่าเหมาะสม (ต่ำกว่าเล็กน้อย) — MOS บวกเล็กน้อย ยังไม่มี margin of safety ที่หนาพอ รอจังหวะ dip ก่อนเข้า</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$107.20</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$93.80</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $134</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="130.99" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -207,17 +237,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $130.99 • EPS ฐาน ~$6.40 (FY2026E adj) • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} (FY2026E adj){{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +3%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$122.9</div>
-          <div class="ret neg">−3.1%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$6.99</span></li>
             <li><span>P/E ออก</span><span>17x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$4.08</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>UroLift ฟื้นช้า leverage กดกำไร</span></li>
           </ul>
         </div>
@@ -225,12 +255,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$165.5</div>
-          <div class="ret pos">+29.5%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$8.07</span></li>
             <li><span>P/E ออก</span><span>20x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$4.08</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>Vascular+Anesthesia โต deleveraging เร็ว</span></li>
           </ul>
         </div>
@@ -238,12 +268,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +13%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$215.9</div>
-          <div class="ret pos">+67.9%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$9.21</span></li>
             <li><span>P/E ออก</span><span>23x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$4.08</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>UroLift ฟื้น margin expansion M&amp;A value</span></li>
           </ul>
         </div>
@@ -293,8 +323,8 @@
       <h2>Medtech นิชที่มีกำแพงสูง — ใกล้มูลค่าเหมาะสม รอ dip หรือสัญญาณฟื้นตัวชัดก่อน</h2>
       <p>Teleflex เป็นบริษัท specialty medical devices ที่มีตำแหน่งผู้นำตลาดในสองกลุ่มหลัก: ARROW vascular access catheters (global #1) และ LMA anesthesia airways (global #1) ซึ่งมีกำแพงการเปลี่ยนแบรนด์สูงจาก clinical training และ hospital protocol ที่ฝังอยู่ลึก หลังการ divest ธุรกิจ Surgical ออกไปในปี 2568 TFX กลายเป็น leaner, higher-margin business ที่ focused มากขึ้น โดย adj operating margin อยู่ที่ ~26% adj EPS FY2026 guidance $6.25–6.55 สะท้อนการฟื้นตัวหลัง transition ความท้าทายหลักคือ UroLift ที่ยังฟื้นตัวช้า leverage สูง ($2.16B net debt) และ GAAP EPS ที่บิดเบือนจาก amortization ราคา $132.26 ใกล้เคียง Fair Value $134 (ต่ำกว่าเล็กน้อย) ทำให้ MOS เป็นบวกเล็กน้อย ~+1.4% ยังไม่มี margin of safety ที่หนาพอสำหรับการลงทุนแบบ value; นักลงทุนที่รอ dip ควรมองหาจุดเข้า $107–115 (MOS 15–20%) เพื่อ margin of safety ที่เหมาะสม</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$134 <span style="font-size:12px;color:#cab9a8">($130–$139)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +2%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$147 (Hold)</div></div>
       </div>
       <div class="zone">

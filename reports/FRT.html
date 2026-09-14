@@ -10,6 +10,18 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 129,
+  "values": {
+    "px": 114.36,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 124,
+    "fvHigh": 134,
+    "shares": 86920000,
+    "dps": 4.52
+  },
   "theme": {
     "accent": "#8B2635",
     "accentDark": "#6B1A27",
@@ -41,7 +53,6 @@
     "min": 90,
     "max": 140,
     "grid": [100, 110, 120, 130],
-    "fairLine": 129,
     "currency": "$",
     "highlight": [0, 9],
     "gridFmt": "v.toFixed(0)",
@@ -50,11 +61,8 @@
   "gauge": {
     "min": 88,
     "max": 145,
-    "cur": 114.36,
-    "fair": 129,
     "fairLabelTop": true
-  },
-  "fv": 129
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +82,11 @@
     <div class="sub">Premier retail/mixed-use REIT · 56+ ปี Dividend King (สถิติยาวนานที่สุดในกลุ่ม REIT) · ทำเลชายฝั่งที่มีรายได้สูง (DC/Boston/SF/LA) · Grocery-anchored &amp; Lifestyle centers · Occupancy 94%+ · Rockville MD</div>
     <div class="price-row">
       <div>
-        <div class="px">$114.36<small>(FRT)</small></div>
+        <div class="px">{{rd:px}}<small>(FRT)</small></div>
       </div>
-      <div class="chg">▲ +18.9% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $89.99 – $126.41<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, Federal Realty IR
       </div>
@@ -89,7 +97,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">REIT metrics: FFO/share แทน EPS · P/FFO แทน P/E · Dividend Yield ที่เติบโตต่อเนื่อง</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">$9.94B</div><div class="d">~86.92 ล้านหุ้น (NYSE: FRT)</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">~86.92 ล้านหุ้น (NYSE: FRT)</div></div>
       <div class="metric"><div class="k">P/FFO (TTM)</div><div class="v neu">~16.8x</div><div class="d">FFO/share $7.22 · เทียบค่าเฉลี่ย REIT ~17-20x</div></div>
       <div class="metric"><div class="k">P/FFO Forward 2026E</div><div class="v">~16.2x</div><div class="d">FFO 2026E $7.52/share · ต่ำกว่าค่าเฉลี่ยประวัติ</div></div>
       <div class="metric"><div class="k">FFO/share TTM (2025)</div><div class="v pos">$7.22</div><div class="d">เติบโต $6.32→$7.22 ใน 3 ปี (+14.2%)</div></div>
@@ -115,7 +123,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#8B2635"></i>ราคา FRT</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $129</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -141,8 +149,8 @@
         <div class="mval">$124</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $124 – $134</span></div>
-        <div class="r">$129</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี DDM ให้ค่าสูงสุด ($134) สะท้อน Dividend King streak 56+ ปีและการเติบโตปันผลที่สม่ำเสมอ วิธี NAV Cap Rate ให้ค่าต่ำสุด ($124) เนื่องจาก REIT ชายฝั่งพรีเมียมมักซื้อขายเหนือ NAV เล็กน้อย วิธี P/FFO ($130) เป็นกลาง มูลค่าเหมาะสมเฉลี่ย $129 สะท้อนคุณภาพพอร์ตโฟลิโอและ Dividend King status ของ FRT
@@ -156,15 +164,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $114.36</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $129</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$90.30<br><small>MOS 30%</small></span>
-          <span>$103.20<br><small>MOS 20%</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">$125.93<br><small>เป้า Analyst</small></span>
-          <span style="text-align:right">$129<br><small>Fair Value</small></span>
-          <span style="text-align:right">$134<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -177,19 +185,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+11%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS พอประมาณ — ต่ำกว่า Fair Value เล็กน้อย เหมาะกับนักลงทุนที่เน้น Dividend King คุณภาพ โซน Deep Value อยู่ที่ราคาต่ำกว่า $103</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$103.20</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$90.30</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $129</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="114.36" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -281,8 +289,8 @@
       <h2>FRT — Dividend King REIT คุณภาพสูง ราคาสมเหตุสมผล ยังต่ำกว่า Fair Value ~6%</h2>
       <p>Federal Realty Investment Trust เป็น REIT ระดับ premier ที่โดดเด่น 3 ด้าน: (1) Dividend King 56+ ปีต่อเนื่อง — สถิติยาวนานที่สุดในกลุ่ม REIT ทั้งโลก สะท้อนความแข็งแกร่งของโมเดลธุรกิจที่ผ่านหลายวิกฤต (2) ทำเลชายฝั่งพรีเมียมที่มีกำลังซื้อสูงและ barrier to entry สูงมาก ไม่สามารถ replicate ได้ (3) กลยุทธ์ mixed-use development สร้าง value ระยะยาวที่ Santana Row และ Pike &amp; Rose ราคาปัจจุบัน $121.47 ยังต่ำกว่า Fair Value $129 (~5.8%) และต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ 19 ราย ที่ $125.93 (Consensus: Buy) อัตราปันผล ~3.73% พร้อม track record 56+ ปี ทำให้ FRT เป็นตัวเลือกชั้นเยี่ยมสำหรับนักลงทุนระยะยาวที่เน้น "Quality Dividend Growth + Capital Appreciation"</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$129 <span style="font-size:12px;color:#cab9a8">($124–$134)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +11%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$125.93 (Buy · 19 ราย)</div></div>
       </div>
       <div class="zone">

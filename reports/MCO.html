@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 551,
+  "values": {
+    "px": 474.95,
+    "priceDate": "2026-09-11",
+    "dateEra": "CE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 530,
+    "fvHigh": 575,
+    "eps": 15.74,
+    "shares": 174700000,
+    "dps": 4.12,
+    "baseEps": 16.75,
+    "scenarios": [
+      {
+        "tgt": 471,
+        "div": 13.5
+      },
+      {
+        "tgt": 711,
+        "div": 14
+      },
+      {
+        "tgt": 866,
+        "div": 15
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#1c5fbf",
     "accentDark": "#10357a",
@@ -41,18 +74,14 @@
     "min": 400,
     "max": 600,
     "grid": [450, 500, 550],
-    "fairLine": 551,
     "currency": "$",
     "highlight": [3, 5]
   },
   "gauge": {
     "min": 350,
     "max": 590,
-    "cur": 474.95,
-    "fair": 551,
     "fairLabelTop": "-58px"
-  },
-  "fv": 551
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +101,11 @@
     <div class="sub">Moody's Ratings (จัดอันดับเครดิตตราสารหนี้/องค์กรทั่วโลก) • Moody's Analytics (ข้อมูล/ซอฟต์แวร์ความเสี่ยงทางการเงิน)</div>
     <div class="price-row">
       <div>
-        <div class="px">$474.95<small>(MCO)</small></div>
+        <div class="px">{{rd:px}}<small>(MCO)</small></div>
       </div>
-      <div class="chg">▼ −1.1% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2026<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $402.28 – $546.88<br>
         ที่มา: StockAnalysis.com, Google Finance, Moody's IR, digrin.com
       </div>
@@ -87,7 +116,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ราคา ณ 24 ก.ค. 2026</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">$83.0B</div><div class="d">หุ้น 174.7M · Beta 1.34</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">หุ้น 174.7M · Beta 1.34</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~30.17x</div><div class="d">EPS TTM $15.74</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~31x</div><div class="d">กรอบ ~25–40x (premium duopoly)</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~22.7x</div><div class="d">BVPS ต่ำจาก buyback ต่อเนื่อง</div></div>
@@ -113,7 +142,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1c5fbf"></i>ราคา MCO</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $551</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -139,8 +168,8 @@
         <div class="mval">$535</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $530 – $575</span></div>
-        <div class="r">$551</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         ไม่ใช้วิธี Justified P/BV เพราะ buyback ต่อเนื่องกัดทุนจนส่วนผู้ถือหุ้น/ROE บิดเบือน (ROE 76% TTM, P/BV ~23x) ทำให้สูตรไม่มีนัย จึงเน้น P/E + DCF (ตามกระแสเงินสดจริง) และ EV/EBITDA แทน ค่ากลาง $551 เป็นค่าเฉลี่ยทั้งสามวิธี — ปรับขึ้นจากรอบก่อน ($510) ตามไกด์ไลน์ FY2026 EPS ที่บริษัทยกระดับเป็น $16.50–17.00 (จากประเมินเดิม $15.0–15.6) สอดคล้องกับเป้านักวิเคราะห์เฉลี่ย ~$556.19 (Buy) ที่ StockAnalysis.com
@@ -154,15 +183,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $474.95</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $551</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$386<br><small>MOS 30%</small></span>
-          <span>$441<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$551<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$556.19<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$575<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -175,19 +204,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+14%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS ขยับขึ้นเป็นโซนกลาง หลัง EPS/guidance FY2026 แข็งแกร่งกว่าประเมินเดิม สวนทางราคาที่ย่อลงหลังงบ Q2'26 — เริ่มน่าสนใจสะสม รอจังหวะย่อเข้าใกล้โซน MOS 20% ($441) จะยิ่งปลอดภัยขึ้น</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$441</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$386</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $551</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="474.95" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -196,17 +225,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $474.95 • EPS ฐาน ~$16.75 (guidance FY26) • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} (guidance FY26){{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +4%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$471</div>
-          <div class="ret pos">+2.0% รวม (3 ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$18.84</span></li>
             <li><span>P/E ออก</span><span>25x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$13.5</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>ออกตราสารหนี้ซบ + de-rating</span></li>
           </ul>
         </div>
@@ -214,12 +243,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +11%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$711</div>
-          <div class="ret pos">+53% รวม (3 ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$22.92</span></li>
             <li><span>P/E ออก</span><span>31x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$14</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>วงจรออกหนี้ฟื้น + MA โต</span></li>
           </ul>
         </div>
@@ -227,12 +256,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$866</div>
-          <div class="ret pos">+85% รวม (3 ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$25.47</span></li>
             <li><span>P/E ออก</span><span>34x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$15</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>ออกหนี้บูม + AI หนุน Analytics</span></li>
           </ul>
         </div>
@@ -277,8 +306,8 @@
       <h2>หุ้น moat กว้างคุณภาพสูง ราคาย่อรับข่าวไกด์ไลน์เล็กน้อย ทั้งที่งบจริงแข็งแกร่ง — MOS ขยับขึ้นน่าสะสม</h2>
       <p>Moody's เป็นธุรกิจ "ดูโอโพลี" จัดอันดับเครดิตระดับโลกที่มี moat กว้าง มาร์จิ้นสูง และรายได้ recurring จากฝั่ง Analytics เพิ่มขึ้นเรื่อย ๆ งบ Q2'26 (22 ก.ค. 69) ออกมาดีเกินคาด EPS $4.68 (คาด $4.28) EPS TTM ขยับขึ้นเป็น $15.74 (+12.8%) และบริษัทยกไกด์ไลน์ FY2026 EPS เป็น $16.50–17.00 (จากประเมินเดิม $15.0–15.6) แต่ตัวเลขนี้ต่ำกว่า consensus ~$16.78 เพียงเล็กน้อย บวกแรงขายทำกำไรก่อนงบ+ตลาดกว้างระมัดระวัง ทำให้ราคากลับร่วง −7.7% ในรอบสัปดาห์มาอยู่ที่ $471.50 ผลคือ MOS เทียบมูลค่าเหมาะสมใหม่ $551 ขยับขึ้นมาที่ ~14.4% (จากแทบไม่มีส่วนเผื่อ) พร้อม upside ~+17.96% จากเป้านักวิเคราะห์เฉลี่ย $556.19 (Buy) เหมาะกับนักลงทุนระยะยาวที่มองข้ามความผันผวนช่วงสั้นจากปฏิกิริยาต่อ guidance</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$551 <span style="font-size:12px;color:#cab9a8">($530–$575)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">MOS ~ +14%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$556.19 (Buy)</div></div>
       </div>
       <div class="zone">

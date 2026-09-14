@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 602,
+  "values": {
+    "px": 504.7,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 544,
+    "fvHigh": 640,
+    "eps": 13.59,
+    "shares": 82500000,
+    "bvps": 22.8,
+    "baseEps": 13.59,
+    "scenarios": [
+      {
+        "tgt": 547.84,
+        "div": 0
+      },
+      {
+        "tgt": 725.42,
+        "div": 0
+      },
+      {
+        "tgt": 868.14,
+        "div": 0
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#0082C8",
     "accentDark": "#005A8C",
@@ -41,18 +74,14 @@
     "min": 400,
     "max": 800,
     "grid": [500, 600, 700],
-    "fairLine": 602,
     "currency": "$",
     "highlight": [1, 11]
   },
   "gauge": {
     "min": 480,
     "max": 720,
-    "cur": 504.7,
-    "fair": 602,
     "fairLabelTop": false
-  },
-  "fv": 602
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +101,11 @@
     <div class="sub">ผู้นำการวินิจฉัยสัตว์เลี้ยง (vet diagnostics) • เครื่องตรวจ/น้ำยา in-clinic (CAG ~92%) • Reference labs • ซอฟต์แวร์จัดการคลินิก • Water/Livestock testing</div>
     <div class="price-row">
       <div>
-        <div class="px">$504.70<small>(IDXX)</small></div>
+        <div class="px">{{rd:px}}<small>(IDXX)</small></div>
       </div>
-      <div class="chg">▼ −19.8% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $506.91 / $769.98<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / IDEXX Investor Relations / Macrotrends
       </div>
@@ -87,8 +116,8 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM / FY2025 (ปีงบประมาณ)</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$41.6B</div><div class="d">หุ้นในตลาด ~82.5M หุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~37.1x</div><div class="d">EPS TTM $13.59</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">หุ้นในตลาด ~82.5M หุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM $13.59</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~50x</div><div class="d">ช่วง 35–75x (ปกติ premium สูง)</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~22x</div><div class="d">BVPS ~$22.8 (D/E 0.59)</div></div>
 
@@ -113,7 +142,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#0082C8"></i>ราคา IDXX</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $602</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -141,8 +170,8 @@
         <div class="mval">$640.00</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $544 – $640</span></div>
-        <div class="r">$602</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         P/E TTM ให้ค่าต่ำสุด $543 เพราะใช้ P/E conservative ที่ 40x (ต่ำกว่าค่าเฉลี่ยประวัติศาสตร์) · Forward P/E FY26E ให้ $622 สะท้อนการเติบโต EPS ที่คาด · DCF ให้ค่าสูงสุด $640 จาก FCF conversion ที่แข็งแกร่งของโมเดล razor-blade · เฉลี่ย $601.73 ≈ <b>$602</b> เป็น FV กลางที่สมดุล
@@ -156,14 +185,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $504.70</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $602</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$421.40<br><small>MOS 30%</small></span>
-          <span>$481.60<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$602<br><small>Fair Value</small></span>
-          <span style="text-align:right">$640<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$709<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -178,19 +207,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+16%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS ต่ำ — ราคาต่ำกว่า Fair Value แต่ยังไม่ถึง MOS 20% · เหมาะทยอยสะสมสำหรับนักลงทุนระยะยาวที่เชื่อใน moat</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$481.60</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$421.40</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $602</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="504.7" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -199,17 +228,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $504.70 • EPS ฐาน ~$13.59 • ไม่รวมปันผล (ไม่จ่าย)</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} • ไม่รวมปันผล (ไม่จ่าย)</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$547.84</div>
-          <div class="ret neg">+8.5%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$17.12</span></li>
             <li><span>P/E ออก</span><span>32x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>vet visit ชะลอ + การแข่งขันสูง</span></li>
           </ul>
         </div>
@@ -217,12 +246,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +12%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$725.42</div>
-          <div class="ret pos">+43.7%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$19.09</span></li>
             <li><span>P/E ออก</span><span>38x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>CAG organic growth ~10% · recurring เพิ่ม</span></li>
           </ul>
         </div>
@@ -230,12 +259,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$868.14</div>
-          <div class="ret pos">+72.0%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$20.67</span></li>
             <li><span>P/E ออก</span><span>42x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>vet visit ฟื้น + software เติบโต + Water/Livestock</span></li>
           </ul>
         </div>
@@ -282,8 +311,8 @@
       <h2>IDEXX — Compounder คุณภาพสูง ราคาน่าสะสมมากขึ้นหลังย่อจาก all-time high</h2>
       <p>IDEXX Laboratories เป็นผู้นำตลาด vet diagnostics ระดับโลกด้วยโมเดล razor-blade (เครื่อง+น้ำยา recurring) ที่สร้าง moat ทนทานมาก ROIC 46% และ ROE 72.9% บ่งชี้คุณภาพธุรกิจชั้นยอด ราคาย่อจาก $770 เหลือ $551 ทำให้ valuation น่าสนใจขึ้นอย่างมาก — FV $602 ให้ MOS +8.4% และ upside +9.2% จากราคาปัจจุบัน นักวิเคราะห์ 15 รายตั้งเป้าเฉลี่ย $709 (+28%) สะท้อน potential upside สูงถ้า vet volume ฟื้น ความเสี่ยงหลักคือ premium valuation และ vet visit softness ระยะสั้น</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$602 <span style="font-size:12px;color:#cab9a8">($544–$640)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +16%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$709 (Buy)</div></div>
       </div>
       <div class="zone">
@@ -296,7 +325,7 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มาข้อมูล: StockAnalysis.com · Yahoo Finance · IDEXX Investor Relations · Macrotrends (ราคา ณ 11 ก.ย. 2569 ยืนยัน ≥2 แหล่ง)
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มาข้อมูล: StockAnalysis.com · Yahoo Finance · IDEXX Investor Relations · Macrotrends (ราคา ณ {{rd:priceDate}} ยืนยัน ≥2 แหล่ง)
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 26 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

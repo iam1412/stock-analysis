@@ -12,6 +12,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 195,
+  "values": {
+    "px": 176.91,
+    "priceDate": "2026-09-11",
+    "dateEra": "CE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 185,
+    "fvHigh": 210,
+    "shares": 483000000,
+    "dps": 3.6,
+    "bvps": 30.57,
+    "baseEps": 8.5,
+    "scenarios": [
+      {
+        "tgt": 178,
+        "div": 10.8
+      },
+      {
+        "tgt": 240,
+        "div": 11.45
+      },
+      {
+        "tgt": 314,
+        "div": 11.76
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#1d4f91",
     "accentDark": "#0a2d5e",
@@ -43,18 +76,14 @@
     "min": 150,
     "max": 200,
     "grid": [160, 170, 180, 190],
-    "fairLine": 195,
     "currency": "$",
     "highlight": [7, 10]
   },
   "gauge": {
     "min": 136.5,
     "max": 220,
-    "cur": 176.91,
-    "fair": 195,
     "fairLabelTop": true
-  },
-  "fv": 195
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +103,11 @@
     <div class="sub">นายหน้าประกันภัย/บริหารความเสี่ยง (Marsh) • รับประกันภัยต่อ (Guy Carpenter) • ที่ปรึกษา HR/บำนาญ/สุขภาพ (Mercer) • ที่ปรึกษากลยุทธ์ (Oliver Wyman)</div>
     <div class="price-row">
       <div>
-        <div class="px">$176.91<small>(MRSH)</small></div>
+        <div class="px">{{rd:px}}<small>(MRSH)</small></div>
       </div>
-      <div class="chg">≈ ทรงตัว (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2026<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $156.60–$219.71<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, Marsh McLennan IR
       </div>
@@ -89,10 +118,10 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">เดิมใช้ชื่อย่อ MMC — เปลี่ยนเป็น MRSH ม.ค. 2026 (rebranding NYSE ticker ม.ค. 14, 2026)</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">$85.4B</div><div class="d">483 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">483 ล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~23.7x</div><div class="d">ต่ำกว่าค่าเฉลี่ยย้อนหลัง ~25–27x</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~25–27x</div><div class="d">ปัจจุบัน de-rated ~15% จากจุดสูง</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">5.79x</div><div class="d">BVPS $30.57 — สูงเพราะ goodwill/M&amp;A</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS $30.57 — สูงเพราะ goodwill/M&amp;A</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$3.93B</div><div class="d">รายได้ $26.98B (+10.3% YoY)</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$8.00</div><div class="d">FY2025: $8.43 · CAGR ~12% (5 ปี)</div></div>
@@ -115,7 +144,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1d4f91"></i>ราคา MRSH</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $195</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -144,8 +173,8 @@
         <div class="mval">$201.20</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $185 – $210</span></div>
-        <div class="r">$195</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         ทั้ง 3 วิธีให้ค่าใกล้เคียงกัน $192–$201 สะท้อนว่า MRSH ซื้อขายที่ส่วนลดจาก fair value ~13%
@@ -162,15 +191,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $176.91</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $195</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$136.50<br><small>MOS 30%</small></span>
-          <span>$156.00<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$195<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$199.57<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$210<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -185,19 +214,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+9%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ส่วนต่างความปลอดภัยพอประมาณ — หุ้นคุณภาพสูงที่ de-rated จากจุดสูง</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$156.00</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$136.50</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $195</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="176.91" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -206,17 +235,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $176.91 • EPS ฐาน ~$8.50 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +3%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$178</div>
-          <div class="ret neg">+1%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$9.29</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$10.80</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>เศรษฐกิจชะลอ ลูกค้าลดค่าใช้จ่าย</span></li>
           </ul>
         </div>
@@ -224,12 +253,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +7%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$240</div>
-          <div class="ret pos">+36%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$10.41</span></li>
             <li><span>P/E ออก</span><span>22x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$11.45</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>เติบโตปกติ McGriff synergy เต็มรูป</span></li>
           </ul>
         </div>
@@ -237,12 +266,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +11%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$314</div>
-          <div class="ret pos">+77%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$11.62</span></li>
             <li><span>P/E ออก</span><span>26x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$11.76</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Pricing Power สูง + re-rating กลับค่าเฉลี่ย</span></li>
           </ul>
         </div>
@@ -295,8 +324,8 @@
       มากกว่าปัญหาพื้นฐานของบริษัท — ทำให้ P/E 21x ต่ำกว่าค่าเฉลี่ย ~25x อย่างมีนัยสำคัญ
       Fair Value ประเมิน ~$195 (เฉลี่ย 3 วิธี: P/E $192 · DDM $193 · DCF $201) → MOS ~13% ที่ราคาปัจจุบัน</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$195 <span style="font-size:12px;color:#cab9a8">($185–$210)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +9%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$199.57 (Buy)</div></div>
       </div>
       <div class="zone">

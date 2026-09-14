@@ -10,6 +10,40 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 79,
+  "values": {
+    "px": 69.9,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 75,
+    "fvHigh": 84,
+    "eps": 4.72,
+    "shares": 395000000,
+    "dps": 0.4,
+    "bvps": 26.13,
+    "baseEps": 4.72,
+    "scenarios": [
+      {
+        "tgt": 61.92,
+        "div": 1.2
+      },
+      {
+        "tgt": 89.25,
+        "div": 1.5
+      },
+      {
+        "tgt": 112.71,
+        "div": 2
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#1B3A6B",
     "accentDark": "#0F2447",
@@ -41,17 +75,13 @@
     "min": 60,
     "max": 80,
     "grid": [65, 70, 75],
-    "fairLine": 79,
     "currency": "$",
     "highlight": [1, 7]
   },
   "gauge": {
     "min": 50,
-    "max": 92,
-    "cur": 69.9,
-    "fair": 79
-  },
-  "fv": 79
+    "max": 92
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -71,11 +101,11 @@
     <div class="sub">Specialty/niche P&amp;C insurer · Prof liability/tech E&amp;O/marine/aviation/construction · ~60 global operating units · Founder-led (W. Berkley) · Combined ratio 91-93% · Premium growth + investment returns · Greenwich CT</div>
     <div class="price-row">
       <div>
-        <div class="px">$69.90<small>(WRB)</small></div>
+        <div class="px">{{rd:px}}<small>(WRB)</small></div>
       </div>
-      <div class="chg">▼ −2.0% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $62.87 – $78.96<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, W.R. Berkley IR (SEC 8-K)
       </div>
@@ -86,8 +116,8 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">Q1 2569 / TTM</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$27.6B</div><div class="d">~395M shares outstanding</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~14.8x</div><div class="d">EPS TTM $4.72 GAAP diluted</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~395M shares outstanding</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM $4.72 GAAP diluted</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~15–17x</div><div class="d">Historical range 12–20x</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~2.7x</div><div class="d">BVPS $26.13 (มี.ค. 2569)</div></div>
 
@@ -112,7 +142,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1B3A6B"></i>ราคา WRB</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $79</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -138,8 +168,8 @@
         <div class="mval">$83.62</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $75 – $84</span></div>
-        <div class="r">$79</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/E ให้ค่าต่ำสุด ($75.52) เพราะอิงกำไรปัจจุบันล้วน ๆ · Justified P/BV ($78.39) สะท้อน ROE 20%+ ที่คงเส้นคงวา ซึ่งสูงกว่า cost of equity อย่างชัดเจน · Historical P/BV ($83.62) ให้ค่าสูงสุดเพราะตลาดให้ premium กับ underwriting excellence ระยะยาว · FV เฉลี่ย ~$79 เป็นค่ากลางที่สมเหตุสมผล ราคาปัจจุบัน $70.95 ยังต่ำกว่า FV ~10%
@@ -153,15 +183,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $69.90</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $79</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$55.30<br><small>MOS 30%</small></span>
-          <span>$63.20<br><small>MOS 20%</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">$67<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$79<br><small>Fair Value</small></span>
-          <span style="text-align:right">$84<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -174,19 +204,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+12%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS พอใช้ — ราคาต่ำกว่า Fair Value ~10% · โซนสะสมได้หาก fundamental ยังแข็งแกร่ง</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$63.20</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$55.30</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $79</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="69.9" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -195,17 +225,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $69.90 • EPS ฐาน ~$4.72 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +3%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$61.92</div>
-          <div class="ret neg">−9.7%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$5.16</span></li>
             <li><span>P/E ออก</span><span>12x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$1.20</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>Soft market กดดัน premium rate · catastrophe loss สูง</span></li>
           </ul>
         </div>
@@ -213,12 +243,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$89.25</div>
-          <div class="ret pos">+29.8%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$5.95</span></li>
             <li><span>P/E ออก</span><span>15x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$1.50</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>Hard market ต่อเนื่อง · premium growth + investment income record</span></li>
           </ul>
         </div>
@@ -226,12 +256,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$112.71</div>
-          <div class="ret pos">+64.1%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$6.63</span></li>
             <li><span>P/E ออก</span><span>17x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$2.00</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Specialty expansion · investment yield สูงต่อ · M&amp;A เสริมขนาด</span></li>
           </ul>
         </div>
@@ -277,8 +307,8 @@
       <h2>Specialty Insurer ชั้นนำ — ราคายังต่ำกว่า Fair Value เล็กน้อย น่าสะสมระยะยาว</h2>
       <p>W.R. Berkley Corporation เป็นหนึ่งใน specialty P&amp;C insurers ที่มีประสิทธิภาพสูงที่สุดในอเมริกาเหนือ ด้วย combined ratio เฉลี่ย 89.9% ใน 5 ปีที่ผ่านมา และ ROE ระดับ 20%+ ที่คงเส้นคงวา สะท้อน underwriting discipline และ investment acumen ที่หาได้ยากในธุรกิจนี้ ราคาปัจจุบัน $70.95 ยังต่ำกว่า Fair Value ~$79 ประมาณ 10% มี MOS พอประมาณ เหมาะสำหรับนักลงทุนระยะกลาง-ยาวที่ต้องการ exposure กับ hard insurance market และ investment income ที่ยังได้ประโยชน์จาก higher-for-longer rate environment</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$79 <span style="font-size:12px;color:#cab9a8">($75–$84)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +12%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$67 (Hold · 18 นักวิเคราะห์)</div></div>
       </div>
       <div class="zone">

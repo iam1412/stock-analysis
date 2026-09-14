@@ -12,6 +12,37 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 0.69,
+  "values": {
+    "px": 1.19,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 0.65,
+    "fvHigh": 0.72,
+    "shares": 670000000,
+    "bvps": 1.73,
+    "scenarios": [
+      {
+        "tgt": 0.51,
+        "div": 0
+      },
+      {
+        "tgt": 0.91,
+        "div": 0.02
+      },
+      {
+        "tgt": 1.64,
+        "div": 0.08
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#0d9488",
     "accentDark": "#0f766e",
@@ -43,7 +74,6 @@
     "min": 0.5,
     "max": 2.5,
     "grid": [1, 1.5, 2],
-    "fairLine": 0.69,
     "currency": "฿",
     "highlight": [0, 2],
     "gridFmt": "v.toFixed(2)",
@@ -52,11 +82,8 @@
   "gauge": {
     "min": 0.4,
     "max": 3.3,
-    "cur": 1.19,
-    "fair": 0.69,
     "fairLabelTop": true
-  },
-  "fv": 0.69
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -77,14 +104,14 @@
     <div class="sub">ผลิต-จำหน่ายน้ำมะพร้าว นมจากพืช น้ำผลไม้ และเครื่องดื่มชา ภายใต้แบรนด์ COCO ROYAL, Nita, MABU • ส่งออกกว่า 111 ประเทศทั่วโลก • OEM ให้แบรนด์ต่างประเทศ</div>
     <div class="price-row">
       <div>
-        <div class="px">฿1.19<small>(PLUS)</small></div>
+        <div class="px">{{rd:px}}<small>(PLUS)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
            รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
-      <div class="chg">▼ −40.5% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿0.97 – ฿3.24<br>
         ที่มา: StockAnalysis.com, SET Factsheet, Yahoo Finance, Royal Plus IR
       </div>
@@ -96,10 +123,10 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">บริษัทขาดทุนสุทธิ FY2568 — เน้น metric เชิงงบดุล/กระแสเงินสด</div></div>
     <!-- ✏️ ปรับชุด metric ให้เหมาะกับหุ้นขาดทุน — ตัด P/E ออก (EPS ติดลบ) เน้น P/BV, Revenue growth, Gross margin, ROE -->
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">฿797 ล้าน</div><div class="d">670 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">670 ล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">N/A</div><div class="d">ขาดทุนสุทธิ — คำนวณ P/E ไม่ได้</div></div>
       <div class="metric"><div class="k">รายได้เติบโต YoY</div><div class="v neg">−7.7%</div><div class="d">FY2568 vs FY2567</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.69x</div><div class="d">ราคา ฿1.32 ÷ BVPS ฿1.73</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">ราคา ฿1.32 ÷ BVPS ฿1.73</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v neg">−฿78.3 ล้าน</div><div class="d">พลิกขาดทุนจากกำไร ฿43 ล้าน (FY2567)</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v neg">~฿−0.10</div><div class="d">Q1/2569 ขาดทุนต่อเนื่อง ฿−0.05</div></div>
@@ -124,7 +151,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#0d9488"></i>ราคา PLUS</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿0.69</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -149,8 +176,8 @@
         <div class="mval">฿0.72</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿0.65 – ฿0.72</span></div>
-        <div class="r">฿0.69</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         ทั้งสองวิธีสะท้อนสถานะ "หุ้นขาดทุน" ของ PLUS ไม่ใช้ P/E (EPS ติดลบ) หรือ DDM (ปันผลไม่แน่นอน) —
@@ -167,14 +194,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿1.19</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿0.69</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿0.48<br><small>MOS 30%</small></span>
-          <span>฿0.55<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿0.69<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿0.72<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">฿1.32<br><small>ราคาตลาดปัจจุบัน</small></span>
         </div>
       </div>
@@ -190,19 +217,19 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
-      <div class="mos-verdict bad">
-        <div class="big">−72%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาปัจจุบัน (฿1.32) สูงกว่ามูลค่าเหมาะสม (฿0.69) มาก — ไม่มี Margin of Safety เลย ถือว่า "แพงกว่าพื้นฐาน" อย่างมีนัยสำคัญ</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿0.55</div><div class="d">โซนน่าสนใจสำหรับ value (ต่ำกว่าราคาปัจจุบันมาก)</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿0.48</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿0.69</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม — ราคาปัจจุบันยังสูงกว่าเกือบเท่าตัว</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value (ต่ำกว่าราคาปัจจุบันมาก)</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม — ราคาปัจจุบันยังสูงกว่าเกือบเท่าตัว</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="1.19" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -211,17 +238,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿1.19 • BVPS ฐาน ~฿1.73 • อิง P/BV re-rate (EPS ติดลบ ใช้ book value เป็นหลัก)</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • BVPS ฐาน ~฿1.73 • อิง P/BV re-rate (EPS ติดลบ ใช้ book value เป็นหลัก)</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>BVPS −8.7%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿0.51</div>
-          <div class="ret neg">−57.1%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>BVPS ปี 3</span><span>~฿1.28</span></li>
             <li><span>P/BV ออก</span><span>0.40x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.00</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>ขาดทุนต่อเนื่อง กัดกินทุน ต้นทุนวัตถุดิบสูง แข่งขันรุนแรง ไม่มีปันผล</span></li>
           </ul>
         </div>
@@ -229,12 +256,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>BVPS ~ทรงตัว</span></div>
         <div class="body">
-          <div class="tgt">฿0.91</div>
-          <div class="ret neg">−23.5%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>BVPS ปี 3</span><span>~฿1.66</span></li>
             <li><span>P/BV ออก</span><span>0.55x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.02</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>ผลประกอบการใกล้จุดคุ้มทุน ปรับพอร์ตสินค้า/ลดต้นทุน ทุนเริ่มทรงตัว</span></li>
           </ul>
         </div>
@@ -242,12 +269,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>BVPS +5.8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿1.64</div>
-          <div class="ret pos">+37.8%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>BVPS ปี 3</span><span>~฿1.93</span></li>
             <li><span>P/BV ออก</span><span>0.85x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.08</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>พลิกกลับมากำไร ส่งออกฟื้น มาร์จิ้นดีขึ้น กลับมาจ่ายปันผลได้</span></li>
           </ul>
         </div>
@@ -299,8 +326,8 @@
         เหมาะสำหรับนักลงทุนที่รับความเสี่ยงสูงและติดตามงบการเงินใกล้ชิดเท่านั้น ไม่เหมาะกับนักลงทุนที่เน้นเสถียรภาพ/ปันผลสม่ำเสมอ
       </p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿0.69 <span style="font-size:12px;color:#cab9a8">(฿0.65–฿0.72)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −72%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">ไม่มีนักวิเคราะห์ติดตาม (N/A)</div></div>
       </div>
       <div class="zone">

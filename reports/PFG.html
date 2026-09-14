@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 102,
+  "values": {
+    "px": 116.17,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 87,
+    "fvHigh": 121,
+    "eps": 6.97,
+    "shares": 216000000,
+    "dps": 3.28,
+    "baseEps": 6.97,
+    "scenarios": [
+      {
+        "tgt": 72,
+        "div": 9.84
+      },
+      {
+        "tgt": 105,
+        "div": 9.84
+      },
+      {
+        "tgt": 130,
+        "div": 9.84
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#1B6BB5",
     "accentDark": "#124D87",
@@ -41,18 +74,14 @@
     "min": 80,
     "max": 120,
     "grid": [90, 100, 110],
-    "fairLine": 102,
     "currency": "$",
     "highlight": [0, 11]
   },
   "gauge": {
     "min": 60,
     "max": 135,
-    "cur": 116.17,
-    "fair": 102,
     "fairLabelTop": true
-  },
-  "fv": 102
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +101,11 @@
     <div class="sub">แผนเกษียณอายุองค์กร (401k/DB) • ประกันสุขภาพ-ชีวิตกลุ่ม • จัดการสินทรัพย์ AUM $781B • ตลาดเกิดใหม่ (ละตินอเมริกา, เอเชีย)</div>
     <div class="price-row">
       <div>
-        <div class="px">$116.17<small>(PFG)</small></div>
+        <div class="px">{{rd:px}}<small>(PFG)</small></div>
       </div>
-      <div class="chg">▲ +38.2% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $75.00 – $112.45<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, digrin.com
       </div>
@@ -87,7 +116,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM / FY2024 · ที่มา: Yahoo Finance, StockAnalysis.com</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$25.1B</div><div class="d">216M หุ้น (diluted ~224M)</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">216M หุ้น (diluted ~224M)</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~16.67x</div><div class="d">EPS (TTM) $6.97 · Forward P/E ~11–13x</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~12–14x</div><div class="d">ช่วง 11.59x–16.80x (FY24–FY25)</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">2.04x</div><div class="d">BVPS (TTM) $52.84 · Justified P/BV 2.29x</div></div>
@@ -113,7 +142,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1B6BB5"></i>ราคา PFG</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $102</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสูงสุด 52 สัปดาห์</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -139,8 +168,8 @@
         <div class="mval">$121</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $87 – $121</span></div>
-        <div class="r">$102</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         ความแตกต่างระหว่างวิธีสะท้อนธรรมชาติของบริษัท: P/E ให้ค่าต่ำสุดเพราะ GAAP EPS ถูกกดด้วยตัวแปรทางบัญชี (fair-value gains/losses) · DDM เหมาะกับ PFG ที่จ่ายปันผลสม่ำเสมอ 25 ปี · Justified P/BV ให้ค่าสูงสุดเพราะ ROE 13.5% ดีกว่า cost of equity 9% ชัดเจน · FV กลาง $102 เป็นค่าอนุรักษ์นิยมที่สมเหตุสมผลสำหรับนักลงทุนระยะยาว
@@ -154,15 +183,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $116.17</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $102</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$71<br><small>MOS 30%</small></span>
-          <span>$82<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$102<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$102<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$121<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -175,19 +204,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−14%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาสูงกว่า Fair Value · ยังไม่มี MOS · รอโอกาสเข้า</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$82</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$71</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $102</div><div class="d">ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="116.17" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -196,17 +225,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $116.17 • EPS ฐาน ~$6.97 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −2%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$72</div>
-          <div class="ret neg">−29.5%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$6.56</span></li>
             <li><span>P/E ออก</span><span>11x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$9.84</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>เศรษฐกิจถดถอย AUM หด ดอกเบี้ยกดรายได้</span></li>
           </ul>
         </div>
@@ -214,12 +243,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$105</div>
-          <div class="ret pos">−1.1%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$8.07</span></li>
             <li><span>P/E ออก</span><span>13x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$9.84</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>เศรษฐกิจปกติ AUM ขยาย Fed ลดดอกเบี้ยค่อยๆ</span></li>
           </ul>
         </div>
@@ -227,12 +256,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +10%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$130</div>
-          <div class="ret pos">+20.4%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$9.28</span></li>
             <li><span>P/E ออก</span><span>14x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$9.84</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>AUM โตแรง ตลาดเกิดใหม่ขยาย Fed ลดดอกเบี้ยเร็ว</span></li>
           </ul>
         </div>
@@ -279,8 +308,8 @@
       <h2>PFG — ธุรกิจดี แต่ราคาแพงเกิน Fair Value แนะรอจังหวะ</h2>
       <p>Principal Financial Group เป็นผู้นำในธุรกิจแผนเกษียณอายุ (401k) สำหรับ SME และ mid-market ในสหรัฐ ประกันกลุ่มสุขภาพ-ชีวิต และการจัดการสินทรัพย์ AUM $781B มีโมเดลธุรกิจที่ recurring revenue สูง กำไรขยายต่อเนื่อง และจ่ายปันผลมา 25 ปี อย่างไรก็ตามราคาปัจจุบัน $107.78 สูงกว่า Fair Value ที่คำนวณได้ $102 ประมาณ 5.7% และ consensus ของนักวิเคราะห์ 12 คนให้ Hold ที่ target เฉลี่ย $102.25 นักลงทุนระยะยาวอาจรอ pullback ลงใกล้ $90–102 เพื่อมี Margin of Safety ที่ดีกว่า</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$102 <span style="font-size:12px;color:#cab9a8">($87–$121)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −14%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$102 (Hold · 12 คน)</div></div>
       </div>
       <div class="zone">

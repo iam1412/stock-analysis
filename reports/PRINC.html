@@ -10,6 +10,18 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 2.05,
+  "values": {
+    "px": 1.7,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 1.92,
+    "fvHigh": 2.26,
+    "shares": 3808000000,
+    "bvps": 2.26
+  },
   "theme": {
     "accent": "#e4700a",
     "accentDark": "#b84100",
@@ -41,7 +53,6 @@
     "min": 1.6,
     "max": 2.1,
     "grid": [1.7, 1.8, 1.9, 2],
-    "fairLine": 2.05,
     "currency": "฿",
     "highlight": [0, 2],
     "gridFmt": "v.toFixed(2)",
@@ -50,11 +61,8 @@
   "gauge": {
     "min": 1.2,
     "max": 2.6,
-    "cur": 1.7,
-    "fair": 2.05,
     "fairLabelTop": true
-  },
-  "fv": 2.05
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +82,11 @@
     <div class="sub">เครือรพ.พรินซิเพิล เฮลท์แคร์ • ขยายต่างจังหวัดรวดเร็ว 15 รพ. 12 จังหวัด • Mid-tier Regional • EBITDA ปรับตัวดีขึ้นต่อเนื่อง</div>
     <div class="price-row">
       <div>
-        <div class="px">฿1.70<small>(PRINC)</small></div>
+        <div class="px">{{rd:px}}<small>(PRINC)</small></div>
       </div>
-      <div class="chg">▼ −14.1% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿1.66 – ฿2.50<br>
         ที่มา: Yahoo Finance, Google Finance, Investing.com
       </div>
@@ -90,7 +98,7 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 — PRINC อยู่ช่วง ramp-up ขยายสาขา</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">฿6.47B</div><div class="d">3,808 ล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.75x</div><div class="d">BVPS ฿2.26 — ต่ำกว่า book</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ฿2.26 — ต่ำกว่า book</div></div>
       <div class="metric"><div class="k">EV/EBITDA (TTM)</div><div class="v neu">~45x</div><div class="d">EBITDA TTM ฿253M (ยัง ramp-up)</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neg">ขาดทุน</div><div class="d">EPS TTM −฿0.11 (net loss)</div></div>
 
@@ -115,7 +123,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#f57f17"></i>ราคา PRINC</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿2.05</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -144,8 +152,8 @@
         <div class="mval">฿2.26</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿1.92 – ฿2.26</span></div>
-        <div class="r">฿2.05</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         PRINC อยู่ช่วง ramp-up ขยายเครือข่าย 15 โรงพยาบาล — P/E แบบ TTM ใช้ไม่ได้ (EPS ติดลบ) จึงใช้ P/BV และ EV/Revenue แทน
@@ -161,15 +169,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿1.70</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿2.05</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
           <span>฿1.44<br><small>MOS 30%</small></span>
-          <span>฿1.64<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿2.05<br><small>Fair Value</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">฿2.05<br><small>FV กลาง</small></span>
-          <span style="text-align:right">฿2.26<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -184,19 +192,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+17%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาพอใช้ — MOS อยู่ในช่วง 10–20% เหมาะสำหรับทยอยสะสม ยังไม่ถึงโซน deep value</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿1.64</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿1.44</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿2.05</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="1.7" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -290,8 +298,8 @@
       <h2>เก็งกำไร Recovery — รอสัญญาณ EBITDA Breakeven ก่อน All-in</h2>
       <p>PRINC เป็นเครือโรงพยาบาล regional mid-tier ที่ขยายเครือข่ายต่างจังหวัดรวดเร็วที่สุดรายหนึ่งใน SET — ปัจจุบันอยู่ช่วง ramp-up สาขาใหม่หลายแห่งพร้อมกัน ทำให้ยังขาดทุนระดับ net income แต่ EBITDA ปรับดีขึ้นต่อเนื่อง ราคาซื้อขายที่ P/BV 0.76x (ต่ำกว่า book) สะท้อน risk premium ที่สูง แต่ก็ให้ downside protection ระดับหนึ่ง Fair Value ฿2.05 ให้ MOS ~17% จากราคา ฿1.71 — อยู่ในโซนทยอยสะสม ผู้ลงทุนที่เชื่อมั่นใน healthcare demand ต่างจังหวัดและ patience รอ 2–3 ปีอาจพิจารณาสะสมได้ แต่ต้องยอมรับความเสี่ยง leverage และการขาดทุนระยะสั้น</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿2.05 <span style="font-size:12px;color:#cab9a8">(฿1.92–฿2.26)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +17%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">Consensus / Book</div><div class="v" style="color:#a5d6a7">P/BV 0.76x (ต่ำกว่า book 24%)</div></div>
       </div>
       <div class="zone">

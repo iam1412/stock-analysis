@@ -10,6 +10,40 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 26,
+  "values": {
+    "px": 18.8,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 17.13,
+    "fvHigh": 34.75,
+    "eps": 1.7,
+    "shares": 200000000,
+    "dps": 0.48,
+    "bvps": 10.66,
+    "baseEps": 1.7,
+    "scenarios": [
+      {
+        "tgt": 17,
+        "div": 1.44
+      },
+      {
+        "tgt": 31,
+        "div": 1.53
+      },
+      {
+        "tgt": 53,
+        "div": 1.58
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#1a237e",
     "accentDark": "#0d1257",
@@ -41,7 +75,6 @@
     "min": 10,
     "max": 30,
     "grid": [15, 20, 25],
-    "fairLine": 26,
     "currency": "฿",
     "highlight": [3, 9],
     "gridFmt": "v.toFixed(0)",
@@ -50,11 +83,8 @@
   "gauge": {
     "min": 10,
     "max": 40,
-    "cur": 18.8,
-    "fair": 26,
     "fairLabelTop": true
-  },
-  "fv": 26
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +104,11 @@
     <div class="sub">Digital Transformation Consulting • Strategy &amp; IT Consulting • SAP Implementation • Data &amp; AI Analytics • Blue Ocean Innovation Lab • โตแรง 20%+ YoY</div>
     <div class="price-row">
       <div>
-        <div class="px">฿18.80<small>(BBIK)</small></div>
+        <div class="px">{{rd:px}}<small>(BBIK)</small></div>
       </div>
-      <div class="chg">≈ ทรงตัว (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿12.80 – ฿23.80<br>
         ที่มา: SET.OR.TH, Investing.com, StockAnalysis.com
       </div>
@@ -90,9 +120,9 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล FY2025 · ณ 3 ก.ค. 2569</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~฿3,760 ล้าน</div><div class="d">200 ล้านหุ้น · SET mid-cap</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~11.1x</div><div class="d">ราคา ÷ EPS ฿1.70 (FY2025)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">ราคา ÷ EPS ฿1.70 (FY2025)</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~3 ปี</div><div class="v">~24x</div><div class="d">FY23: 37x · FY24: 26x · FY25: 9x</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">~1.76x</div><div class="d">BVPS ฿10.66 (FY2025)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~{{rd:pbv}}x</div><div class="d">BVPS ฿10.66 (FY2025)</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v pos">฿347 ล้าน</div><div class="d">+13% YoY · New record</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿1.70</div><div class="d">FY2025 · 200M shares</div></div>
@@ -115,7 +145,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1a237e"></i>ราคา BBIK</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿26.00</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -144,8 +174,8 @@
         <div class="mval">฿34.75</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿17.13 – ฿34.75</span></div>
-        <div class="r">฿26.00</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี DDM ให้ค่าต่ำสุดเพราะสมมติ payout ratio คงที่และ g ต่ำ — ไม่สะท้อนศักยภาพ reinvestment สูงของบริษัท growth consulting
@@ -162,15 +192,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿18.80</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿26.00</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿18.20<br><small>MOS 30%</small></span>
-          <span>฿20.80<br><small>MOS 20%</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">฿24.66<br><small>เป้า Analyst</small></span>
-          <span style="text-align:right">฿26.00<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿34.75<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -186,19 +216,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict good">
-        <div class="big">+28%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">โซนน่าสนใจ — ราคาต่ำกว่ามูลค่าเหมาะสม 26.5% · เข้าใกล้โซน Deep Value</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿20.80</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿18.20</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿26.00</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="18.8" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -207,17 +237,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿18.80 • EPS ฐาน ~฿1.70 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿17.00</div>
-          <div class="ret neg">−1.9% รวม / −0.6%/ปี</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿1.70</span></li>
             <li><span>P/E ออก</span><span>10x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.44</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>เศรษฐกิจชะลอ DX budget ลด</span></li>
           </ul>
         </div>
@@ -225,12 +255,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +12%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿31.00</div>
-          <div class="ret pos">+73.0% รวม / +20.0%/ปี</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿2.39</span></li>
             <li><span>P/E ออก</span><span>13x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.53</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>โต 12% ตาม DX trend · P/E re-rate สู่ sector avg</span></li>
           </ul>
         </div>
@@ -238,12 +268,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +20%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿53.00</div>
-          <div class="ret pos">+190.3% รวม / +42.7%/ปี</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿2.94</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.58</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>โต 20% ตามเป้าบริษัท · virtual bank + gov หนุน P/E สูง</span></li>
           </ul>
         </div>
@@ -293,8 +323,8 @@
       <h2>น่าสนใจ — ราคาถูกกว่า Fair Value ~26% ในหุ้น DX Consulting ชั้นนำของไทย</h2>
       <p>Bluebik Group เป็น pure-play Digital Transformation Consulting ที่โดดเด่นที่สุดใน SET — สร้างกำไรสุทธิสถิติใหม่ ฿347M ในปี 68 พร้อม gross margin 50%+ บ่งชี้ pricing power และ talent leverage ที่ดีเยี่ยม บริษัทกำลัง transition สู่ phase ใหม่ผ่าน Bluebik Digital (enterprise scale) และ virtual banking ecosystem ที่คาดเปิดตัว mid-69 ซึ่งเป็น catalyst ที่ตลาดยังไม่ได้ price in เต็มที่ ที่ P/E ~11x ต่ำกว่าประวัติศาสตร์และ sector avg อย่างมีนัย โดยมี backlog ฿777M รองรับ revenue ปีนี้แล้ว เหมาะสำหรับนักลงทุนที่เชื่อใน DX megatrend และรับ volatility ระยะสั้นได้</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿26.00 <span style="font-size:12px;color:#cab9a8">(฿17.13–฿34.75)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +28%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿24.66 (Strong Buy 5/5)</div></div>
       </div>
       <div class="zone">
@@ -308,7 +338,7 @@
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
-    แหล่งข้อมูล: SET.OR.TH (ราคา 14 ก.ย. 2569), Investing.com (metrics cross-verify), Bluebik IR (financials), StockAnalysis.com (ratios/balance sheet), Finansia Syrus Securities (analyst target)
+    แหล่งข้อมูล: SET.OR.TH (ราคา {{rd:priceDate}}), Investing.com (metrics cross-verify), Bluebik IR (financials), StockAnalysis.com (ratios/balance sheet), Finansia Syrus Securities (analyst target)
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

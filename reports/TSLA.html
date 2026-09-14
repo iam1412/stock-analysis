@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 280,
+  "values": {
+    "px": 365.44,
+    "priceDate": "2026-09-11",
+    "dateEra": "CE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 258,
+    "fvHigh": 300,
+    "analystTgt": 420.55,
+    "eps": 1.09,
+    "shares": 3760000000,
+    "baseEps": 2,
+    "scenarios": [
+      {
+        "tgt": 150,
+        "div": null
+      },
+      {
+        "tgt": 396,
+        "div": null
+      },
+      {
+        "tgt": 793,
+        "div": null
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#ed1d1d",
     "accentDark": "#b30f0f",
@@ -41,18 +74,14 @@
     "min": 250,
     "max": 500,
     "grid": [300, 350, 400, 450],
-    "fairLine": 280,
     "currency": "$",
     "highlight": [0, 9]
   },
   "gauge": {
     "min": 180,
     "max": 640,
-    "cur": 365.44,
-    "fair": 280,
     "fairLabelTop": "-58px"
-  },
-  "fv": 280
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +101,11 @@
     <div class="sub">รถ EV • พลังงาน/Megapack • FSD • Robotaxi • Optimus • Dojo/AI5 compute</div>
     <div class="price-row">
       <div>
-        <div class="px">$365.44<small>(TSLA)</small></div>
+        <div class="px">{{rd:px}}<small>(TSLA)</small></div>
       </div>
-      <div class="chg">▼ −20.0% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2026 (ปิดตลาด $405.05)<br>
+        ราคา ณ {{rd:priceDate}} (ปิดตลาด $405.05)<br>
         ช่วงวัน $392.50 – $414.75 • ผันผวนสูง<br>
         ที่มา: StockAnalysis / Yahoo Finance / TradingEconomics / GuruFocus
       </div>
@@ -113,7 +142,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1a73e8"></i>ราคา TSLA</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $280</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -141,8 +170,8 @@
         <div class="mval">$282</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $258 – $300</span></div>
-        <div class="r">$280</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>หมายเหตุ:</b> ข้าม DDM เพราะ <b>ไม่จ่ายปันผล</b> • ใช้กรอบ <b>Value Investor / Margin of Safety</b> ที่อนุรักษ์นิยม
@@ -158,14 +187,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $365</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $280</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$196<br><small>MOS 30%</small></span>
-          <span>$224<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$280<br><small>Fair Value</small></span>
-          <span style="text-align:right">$421<br><small>เป้า Analyst</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:analystTgt}}<br><small>เป้า Analyst</small></span>
           <span style="text-align:right">$600<br><small>เป้าสูงสุด</small></span>
         </div>
       </div>
@@ -181,19 +210,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−31%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>ไม่มี Margin of Safety</b><br>ราคาปัจจุบัน $405 สูงกว่ามูลค่าเหมาะสม $280 ราว 45% → ตามเกณฑ์ value investor ถือว่า <b>แพงมาก (overvalued)</b> เป็นการซื้อ "เรื่องเล่าอนาคต" ล้วน ไม่ใช่จุดซื้อที่ปลอดภัย</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$224</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$196</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
         <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $250</div><div class="d">ใกล้ขอบล่างของ fair value</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="365.44" step="1">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -202,13 +231,13 @@
 
   <!-- ===== RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $365 • EPS ฐาน ~$2.0 (กำลังกำไรปกติ)</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} (กำลังกำไรปกติ)</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +15%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$150</div>
-          <div class="ret neg">รวม ~ −59% (≈ −26%/ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$3.0</span></li>
             <li><span>P/E ออก</span><span>50x</span></li>
@@ -219,8 +248,8 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +30%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$396</div>
-          <div class="ret neg">รวม ~ +8% (≈ +2.6%/ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$4.4</span></li>
             <li><span>P/E ออก</span><span>90x</span></li>
@@ -231,8 +260,8 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +45%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$793</div>
-          <div class="ret pos">รวม ~ +117% (≈ +29%/ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$6.1</span></li>
             <li><span>P/E ออก</span><span>130x</span></li>
@@ -284,9 +313,9 @@
       <h2>หุ้น "เรื่องเล่า AI" ที่ราคาแพงเกินพื้นฐานมาก</h2>
       <p>Tesla เป็นผู้นำ EV + เดิมพันใหญ่ใน Robotaxi, FSD และ Optimus ที่อาจพลิกโฉมอุตสาหกรรม — แต่ที่ราคา ~$405 ตลาดได้ตีมูลค่าความสำเร็จในอนาคตไปแล้วเกือบเต็ม ขณะที่กำไรปัจจุบันบางมาก (P/E ~372x, ROE ~4.9%) สำหรับสาย value จึงไม่มีส่วนเผื่อความปลอดภัยเลย ส่วนสาย growth ต้องเชื่อ 100% ว่า AI/หุ่นยนต์จะทำเงินจริงตามคาด</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$280 <span style="font-size:12px;color:#a8b6cc">($258–$300)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ff8a80">MOS ~ −31%</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">$420.55 (+15.1%)</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#a8b6cc">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ff8a80">MOS ~ {{rd:mos}}</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">{{rd:analystTgt}} (+15.1%)</div></div>
       </div>
       <div class="zone">
         💡 <b>กลยุทธ์:</b> สาย value — รอย่อแรง/ทยอยสะสมเมื่อราคา <b>ต่ำกว่า ~$250</b> (น่าสนใจที่ &lt;$224) • สาย growth — เข้าได้แบบ DCA เฉพาะส่วนที่รับความผันผวนสูงไหว และยอมรับว่าเป็น <b>เดิมพันบน Robotaxi/Optimus</b> ติดตาม <b>กำไรจริงจาก FSD/Robotaxi</b> และ <b>ออโต้มาร์จิ้น</b> เป็นตัวชี้วัดหลัก

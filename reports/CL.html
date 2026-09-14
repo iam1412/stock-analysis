@@ -12,6 +12,38 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 80.5,
+  "values": {
+    "px": 86.8,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 71,
+    "fvHigh": 97,
+    "shares": 800200000,
+    "dps": 2.12,
+    "baseEps": 3.88,
+    "scenarios": [
+      {
+        "tgt": 86,
+        "div": 6.5
+      },
+      {
+        "tgt": 111,
+        "div": 6.6
+      },
+      {
+        "tgt": 135,
+        "div": 6.7
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#E31837",
     "accentDark": "#B0102A",
@@ -43,17 +75,13 @@
     "min": 70,
     "max": 110,
     "grid": [80, 90, 100],
-    "fairLine": 80.5,
     "currency": "$",
     "highlight": [0, 4]
   },
   "gauge": {
     "min": 55,
-    "max": 115,
-    "cur": 86.8,
-    "fair": 80.5
-  },
-  "fv": 80.5
+    "max": 115
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -73,11 +101,11 @@
     <div class="sub">Colgate toothpaste &amp; oral care • Palmolive dish soap &amp; home care • Hill's Pet Nutrition • ~200 ประเทศ • Dividend King 63 ปีติดต่อกัน</div>
     <div class="price-row">
       <div>
-        <div class="px">$86.80<small>(CL)</small></div>
+        <div class="px">{{rd:px}}<small>(CL)</small></div>
       </div>
-      <div class="chg">▲ +12.7% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $74.55 – $99.33<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, MarketBeat
       </div>
@@ -88,7 +116,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM / FY2025 (สิ้นสุด ธ.ค. 2568)</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">$69.5B</div><div class="d">800.2M หุ้น</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">800.2M หุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM adj.)</div><div class="v neu">~24.6x</div><div class="d">GAAP P/E = 35.8x (non-cash impairment FY2025)</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">24–28x</div><div class="d">premium สมเหตุผลสำหรับ Dividend King</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~152x</div><div class="d">ทุนสุทธิต่ำมาก (buyback เชิงรุก + leverage สูง)</div></div>
@@ -114,7 +142,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#E31837"></i>ราคา CL</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $80.50</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -143,8 +171,8 @@
         <div class="mval">$83</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสม (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $71 – $97</span></div>
-        <div class="r">$80.50</div>
+        <div class="l">มูลค่าเหมาะสม (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         P/E Valuation ($97) และ EV/EBITDA ($83) เป็นขายึดตลาดทั้งคู่ ห่างกัน 1.17× (≤2.0×) จึงเฉลี่ยกันเป็นสมอ = $90
@@ -161,15 +189,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $86.80</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $80.50</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$56.35<br><small>MOS 30%</small></span>
-          <span>$64.40<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$80.50<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$95.88<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$97<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -184,19 +212,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−8%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาสูงกว่าพื้นฐาน — CL ซื้อขายเหนือ Fair Value ใหม่ ~12% ยังไม่มี MOS รอย่อก่อนเริ่มสะสม</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$64.40</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$56.35</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $80.50</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="86.8" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -205,17 +233,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $86.80 • EPS ฐาน ~$3.88 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +1%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$86</div>
-          <div class="ret neg">−0.9%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$4.00</span></li>
             <li><span>P/E ออก</span><span>20x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$6.50</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>EM FX crisis + cost surge กด margin</span></li>
           </ul>
         </div>
@@ -223,12 +251,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +4%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$111</div>
-          <div class="ret pos">+27.9%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$4.36</span></li>
             <li><span>P/E ออก</span><span>24x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$6.60</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>Organic growth 3–4% + Hill's รักษา momentum</span></li>
           </ul>
         </div>
@@ -236,12 +264,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +7%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$135</div>
-          <div class="ret pos">+55.5%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$4.75</span></li>
             <li><span>P/E ออก</span><span>27x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$6.70</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Hill's โตแรง + productivity savings $300M ขยาย margin</span></li>
           </ul>
         </div>
@@ -291,8 +319,8 @@
       <h2>คุณภาพระดับโลก แต่ราคาตึงกว่าพื้นฐาน — ถือยาวได้ รอย่อก่อนเพิ่มสัดส่วน</h2>
       <p>Colgate-Palmolive เป็นหนึ่งในบริษัทคุณภาพสูงสุดในโลก: กระจายใน 200 ประเทศ, oral care market share #1 globally, Hill's Pet เป็น premium high-margin segment, และ Dividend King 63 ปีติดต่อกันคือสัญญาณของ durability พิเศษ ROIC 43.5% สะท้อน capital allocation ยอดเยี่ยม อย่างไรก็ตาม ณ ราคา $90.21 CL ซื้อขายที่ P/E adj. 24.6x ซึ่งเป็น premium ที่เหมาะสมแต่ไม่ถูก และภายใต้กรอบ dispersion gate 0.4c ราคาสูงกว่า Fair Value ใหม่ ($80.50) ~12% บ่งชี้ว่ายังไม่ใช่โอกาสเข้าซื้อ ความเสี่ยงหลักคือ EM FX และต้นทุน raw material ที่กดดันระยะสั้น</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$80.50 <span style="font-size:12px;color:#cab9a8">($71–$97)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −8%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$95.88 (Moderate Buy)</div></div>
       </div>
       <div class="zone">

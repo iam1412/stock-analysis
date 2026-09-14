@@ -10,6 +10,38 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 184,
+  "values": {
+    "px": 230.74,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 172,
+    "fvHigh": 195,
+    "shares": 344000000,
+    "dps": 1.78,
+    "baseEps": 7.16,
+    "scenarios": [
+      {
+        "tgt": 179.13,
+        "div": 5.55
+      },
+      {
+        "tgt": 222.48,
+        "div": 5.55
+      },
+      {
+        "tgt": 261.56,
+        "div": 5.55
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#6B3FA0",
     "accentDark": "#492A6E",
@@ -41,18 +73,14 @@
     "min": 150,
     "max": 275,
     "grid": [175, 200, 225, 250],
-    "fairLine": 184,
     "currency": "$",
     "highlight": [0, 9]
   },
   "gauge": {
     "min": 125,
     "max": 260,
-    "cur": 230.74,
-    "fair": 184,
     "fairLabelTop": false
-  },
-  "fv": 184
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +100,11 @@
     <div class="sub">ค้าปลีก off-price • Ross Dress for Less • dd's DISCOUNTS • treasure-hunt model • เสื้อผ้า/ของแต่งบ้านราคาประหยัด • ขยายสาขาตะวันออก</div>
     <div class="price-row">
       <div>
-        <div class="px">$230.74<small>(ROST)</small></div>
+        <div class="px">{{rd:px}}<small>(ROST)</small></div>
       </div>
-      <div class="chg">▲ +45.2% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $134.37 / $255.30<br>
         งบ Q1 FY2026 (งวดสิ้นสุด พ.ค. 2569)<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / Ross Stores Investor Relations / Macrotrends
@@ -88,7 +116,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$79.4B</div><div class="d">344M shares outstanding</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">344M shares outstanding</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~34.8x</div><div class="d">premium vs. ค่าเฉลี่ยประวัติ</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~24x</div><div class="d">ช่วง 18x – 30x</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~12.8x</div><div class="d">ROE สูง → P/BV สูงตาม</div></div>
@@ -114,7 +142,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#6B3FA0"></i>ราคา ROST</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $184</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -142,8 +170,8 @@
         <div class="mval">$185.00</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $172 – $195</span></div>
-        <div class="r">$184</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/E (TTM) ให้ค่าต่ำสุด $171.84 เพราะอิง P/E เฉลี่ย 24x ซึ่งอนุรักษ์นิยม · Forward P/E ให้ $195 สูงกว่าเพราะ EPS FY26E โตต่อ ·
@@ -159,14 +187,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $230.74</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $184</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$128.80<br><small>MOS 30%</small></span>
-          <span>$147.20<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$184<br><small>Fair Value</small></span>
-          <span style="text-align:right">$195<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$256<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -182,19 +210,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−25%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาแพงกว่า Fair Value — ยังไม่มี Margin of Safety · รอย่อก่อนสะสม</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$147.20</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$128.80</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $184</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="230.74" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -203,17 +231,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $230.74 • EPS ฐาน ~$7.16 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +6%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$179.13</div>
-          <div class="ret neg">−20%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$8.53</span></li>
             <li><span>P/E ออก</span><span>21x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$5.55</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>ค่าจ้าง/ต้นทุนพุ่ง, macro อ่อน</span></li>
           </ul>
         </div>
@@ -221,12 +249,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +9%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$222.48</div>
-          <div class="ret neg">−1%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$9.27</span></li>
             <li><span>P/E ออก</span><span>24x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$5.55</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>comp sales บวก, ขยายสาขาปกติ</span></li>
           </ul>
         </div>
@@ -234,12 +262,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$261.56</div>
-          <div class="ret pos">+16%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$10.06</span></li>
             <li><span>P/E ออก</span><span>26x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$5.55</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>ขยายตะวันออก เร็ว, value-shopping붐</span></li>
           </ul>
         </div>
@@ -291,8 +319,8 @@
         P/E ~35x เทียบ Fair Value $184 (MOS −35.3%) นักวิเคราะห์ 19 ราย มีเป้าเฉลี่ย $256 (+8.3%)
         แต่สำหรับ value investor ควรรอราคาย่อลงใกล้ $147–$184 จึงจะมี MOS ที่สมเหตุสมผล</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$184 <span style="font-size:12px;color:#cab9a8">($172–$195)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −25%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$256 (Buy/Outperform)</div></div>
       </div>
       <div class="zone">

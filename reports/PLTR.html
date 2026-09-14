@@ -10,6 +10,19 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 69,
+  "values": {
+    "px": 167.23,
+    "priceDate": "2026-09-11",
+    "dateEra": "CE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 53,
+    "fvHigh": 79,
+    "analystTgt": 189.9,
+    "eps": 1.17,
+    "shares": 2570000000
+  },
   "theme": {
     "accent": "#1a73e8",
     "accentDark": "#1557b0",
@@ -41,18 +54,14 @@
     "min": 50,
     "max": 250,
     "grid": [100, 150, 200],
-    "fairLine": 69,
     "currency": "$",
     "highlight": [0, 8]
   },
   "gauge": {
     "min": 35,
     "max": 200,
-    "cur": 167.23,
-    "fair": 69,
     "fairLabelTop": "-58px"
-  },
-  "fv": 69
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +81,11 @@
     <div class="sub">แพลตฟอร์ม AIP (Artificial Intelligence Platform) • Foundry / Gotham / Apollo — ลูกค้ารัฐบาล & เอกชน</div>
     <div class="price-row">
       <div>
-        <div class="px">$167.23<small>(PLTR)</small></div>
+        <div class="px">{{rd:px}}<small>(PLTR)</small></div>
       </div>
-      <div class="chg">▼ −16.6% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2026 (ปิดตลาด 16:00 EDT)<br>
+        ราคา ณ {{rd:priceDate}} (ปิดตลาด 16:00 EDT)<br>
         พุ่ง +36.9% จาก ~$125.65 (ต้นเดือน) หลังงบ Q2 2026 (ประกาศ 3 ส.ค. 2026) โตแรงกว่าคาด — โมเมนตัมยังไม่มีสัญญาณชะลอ<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, งบบริษัท (SEC)
       </div>
@@ -87,7 +96,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ FY2025 (10-K) + Q2 2026 (8-K, 3 ส.ค. 2026)</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$430B</div><div class="d">~2.57 พันล้านหุ้น</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~2.57 พันล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM, GAAP)</div><div class="v neg">~143x</div><div class="d">EPS TTM $1.17 <span class="pill r">แพงสุดขั้ว</span></div></div>
       <div class="metric"><div class="k">Forward P/E</div><div class="v neu">~75–90x</div><div class="d">คอนเซนซัส Yahoo/StockAnalysis ต่างกัน</div></div>
       <div class="metric"><div class="k">P/S (TTM)</div><div class="v neg">~72x</div><div class="d">ซอฟต์แวร์ทั่วไป 10–15x</div></div>
@@ -113,7 +122,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1a73e8"></i>ราคา PLTR</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $69</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -141,8 +150,8 @@
         <div class="mval">$53</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $53 – $79</span></div>
-        <div class="r">$69</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>หมายเหตุ:</b> ข้าม DDM เพราะ <b>ไม่มีปันผล</b> • ทั้ง 3 วิธีให้พรีเมียมสูงอยู่แล้ว (P/E 40x, P/S 22x สูงกว่าค่าเฉลี่ยซอฟต์แวร์ 2–3 เท่า) แต่ราคาตลาด
@@ -157,15 +166,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $167.23</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $69</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
           <span>$48<br><small>MOS 30%</small></span>
-          <span>$55<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$69<br><small>Fair Value</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$172.01<br><small>ราคาตลาด</small></span>
-          <span style="text-align:right">$189.9<br><small>เป้า Analyst</small></span>
+          <span style="text-align:right">{{rd:analystTgt}}<br><small>เป้า Analyst</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -179,19 +188,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−142%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>ไม่มี Margin of Safety (ติดลบหนัก)</b><br>ราคาปัจจุบัน $172.01 สูงกว่ามูลค่าเหมาะสม $69 ราว 149% → ตามเกณฑ์ value investor ถือว่า <b>แพงสุดขั้ว</b> ไม่มีส่วนเผื่อความปลอดภัยเลย เป็นการซื้อ "ความคาดหวัง" ล้วน</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$55</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$48</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $69</div><div class="d">ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="167.23" step="1">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -281,9 +290,9 @@
       <h2>ธุรกิจโตเร็วระดับโลก แต่ราคา "แพงสุดขั้ว" — เดิมพัน growth ล้วน</h2>
       <p>Palantir เป็นหนึ่งในบริษัทซอฟต์แวร์ AI ที่เติบโตเร็วและมีคุณภาพสูงที่สุด (โต 78.9% TTM, Rule of 40 ~122%, กำไร+FCF เป็นบวกจริง) — แต่ที่ราคา ~$172.01 หลังพุ่ง +36.9% จากงบ Q2 2026 ตลาดได้สะท้อนความคาดหวังเชิงบวกแบบสุดขีดยิ่งกว่าเดิม (P/E ~147x, P/S ~72x) สำหรับสาย value <b>ไม่มี margin of safety เลย</b> (ติดลบ ~149%) การถือที่ราคานี้คือการเดิมพันว่าการเติบโตระดับสูงสุดจะต่อเนื่องไปอีกหลายปีโดยไม่สะดุด — ความเสี่ยง de-rating สูงขึ้นตามราคาที่วิ่งนำหน้าพื้นฐาน</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$69 <span style="font-size:12px;color:#a8b6cc">($53–$79)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ff8a80">MOS ~ −142%</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">$189.9 (+13.6%)</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#a8b6cc">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ff8a80">MOS ~ {{rd:mos}}</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">{{rd:analystTgt}} (+13.6%)</div></div>
       </div>
       <div class="zone">
         💡 <b>กลยุทธ์:</b> สาย value — หลีกเลี่ยงที่ราคานี้, รอย่อแรงสู่ <b>ต่ำกว่า ~$69</b> (น่าสนใจที่ &lt;$55) • สาย growth/momentum — เข้าได้เฉพาะคนยอมรับความผันผวนสูงและ valuation risk โดยติดตาม <b>อัตรากำไร (Op margin)</b> และ <b>การคง Rule of 40</b> เป็นตัวชี้วัดหลัก; ระวัง de-rating รุนแรงหลังราคาวิ่งแรง

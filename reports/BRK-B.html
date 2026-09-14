@@ -10,6 +10,36 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 512.12,
+  "values": {
+    "px": 510.37,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 466.3,
+    "fvHigh": 562.75,
+    "baseEps": 21.39,
+    "scenarios": [
+      {
+        "tgt": 467.4,
+        "div": 0
+      },
+      {
+        "tgt": 602.6,
+        "div": 0
+      },
+      {
+        "tgt": 760.5,
+        "div": 0
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#8b1a1a",
     "accentDark": "#5c0e0e",
@@ -41,18 +71,14 @@
     "min": 460,
     "max": 520,
     "grid": [480, 500],
-    "fairLine": 512.12,
     "currency": "$",
     "highlight": [1, 6]
   },
   "gauge": {
     "min": 340,
     "max": 570,
-    "cur": 510.37,
-    "fair": 512.12,
     "fairLabelTop": true
-  },
-  "fv": 512.12
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +98,11 @@
     <div class="sub">บริษัทโฮลดิ้งของ Warren Buffett/Greg Abel • ประกันภัย (GEICO, Berkshire Hathaway Reinsurance, General Re) • BNSF Railway • Berkshire Hathaway Energy • ธุรกิจผลิต/บริการ/ค้าปลีก (Precision Castparts, Duracell, See's Candies ฯลฯ) • พอร์ตหุ้นสาธารณะ (Apple, American Express, Coca-Cola, Bank of America, Chevron) • เงินสด+พันธบัตรระยะสั้นกว่า $397B</div>
     <div class="price-row">
       <div>
-        <div class="px">$510.37<small>(BRK-B)</small></div>
+        <div class="px">{{rd:px}}<small>(BRK-B)</small></div>
       </div>
-      <div class="chg">▲ +6.9% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $455.19 / $516.85<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / SEC EDGAR 10-Q (Q1 FY2026) / StockTitan
       </div>
@@ -113,7 +139,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#8b1a1a"></i>ราคา BRK-B</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $512.12</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -139,8 +165,8 @@
         <div class="mval">$466.30</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $466.30 – $562.75 · ถ่วงน้ำหนักเท่ากัน 3 ขา (คนละตระกูล: book · sum-of-parts · earnings จึงนับเป็น 3 เสียง)</span></div>
-        <div class="r">$512.12</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}} · ถ่วงน้ำหนักเท่ากัน 3 ขา (คนละตระกูล: book · sum-of-parts · earnings จึงนับเป็น 3 เสียง)</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         Berkshire เป็น holding company ที่ Buffett ระบุชัดเจนว่าไม่ควรประเมินด้วย GAAP P/E มาตรฐาน (เพราะรวมกำไร/ขาดทุนพอร์ตหุ้นที่ยังไม่ realize ทำให้ EPS ผันผวนมาก) จึงเน้น P/Book ($507.30 — ใกล้เคียงราคาตลาดปัจจุบันมาก บ่งชี้ว่าตลาดให้ premium ใกล้เคียงค่าเฉลี่ยประวัติศาสตร์พอดี) และ SOTP ($562.75 — สูงกว่า เพราะให้มูลค่าธุรกิจดำเนินงาน+float สูงกว่าที่สะท้อนใน book value บัญชี) ส่วน Operating P/E ให้ $466.30 ซึ่งต่ำกว่าราคาตลาด เพราะยึดมัธยฐานตัวคูณย้อนหลังของ Berkshire เอง (21.8x) ขณะที่ตลาดวันนี้ให้ 23.7x — ทั้งสามขาอยู่คนละตระกูล (มูลค่าทางบัญชี · มูลค่าสินทรัพย์รายชิ้น · กำไรดำเนินงาน) จึงนับเป็น 3 เสียงและถ่วงน้ำหนักเท่ากัน = ($507.30+$562.75+$466.30)/3 = <b>$512.12</b> ใกล้เคียงราคาตลาด สะท้อนว่า BRK-B ซื้อขายใกล้มูลค่าที่เหมาะสมในปัจจุบัน ไม่ถูกไม่แพงจนเกินไป
@@ -154,15 +180,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $510.37</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $512.12</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$358.48<br><small>MOS 30%</small></span>
-          <span>$409.70<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$512.12<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$535.00<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$562.75<br><small>กรอบบน FV (SOTP)</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV (SOTP)</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -175,19 +201,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+0.3%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาปัจจุบันต่ำกว่า Fair Value เพียงเล็กน้อย — ขา P/Book และ SOTP ให้มูลค่าสูงกว่าราคา ขณะที่ขา Operating P/E ที่ยึดมัธยฐานย้อนหลัง 21.8x ให้ต่ำกว่าราคา ⇒ Margin of Safety แทบไม่เหลือ แต่ Berkshire มี downside risk ต่ำกว่าหุ้นทั่วไปจาก diversification สูง + เงินสดกองใหญ่ที่รองรับความผันผวน</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$409.70</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$358.48</div><div class="d">โซนถูกมาก (deep value) — เกิดเฉพาะช่วงวิกฤต</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $512.12</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value) — เกิดเฉพาะช่วงวิกฤต</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="510.37" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -196,17 +222,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $510.37 • Operating EPS ฐาน ~$21.39 • ไม่มีปันผล — ผลตอบแทนทั้งหมดมาจาก book value growth + re-rating P/B</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • Operating EPS ฐาน ~{{rd:baseEps}} • ไม่มีปันผล — ผลตอบแทนทั้งหมดมาจาก book value growth + re-rating P/B</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +3%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$467.40</div>
-          <div class="ret neg">−8.4%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$23.37</span></li>
             <li><span>P/E ออก</span><span>20x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>Insurance underwriting อ่อนแอ + ตลาดหุ้นซบเซากดพอร์ต + ดอกเบี้ยลดกดผลตอบแทนเงินสด</span></li>
           </ul>
         </div>
@@ -214,12 +240,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +7%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$602.60</div>
-          <div class="ret pos">+18.1%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$26.20</span></li>
             <li><span>P/E ออก</span><span>23x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>Operating earnings เติบโตสอดคล้อง trend ปกติ + เงินสดค่อยๆ ถูกนำไปลงทุน/ซื้อหุ้นคืน</span></li>
           </ul>
         </div>
@@ -227,12 +253,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +11%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$760.50</div>
-          <div class="ret pos">+49.0%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$29.25</span></li>
             <li><span>P/E ออก</span><span>26x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Greg Abel deploy เงินสด $397B สำเร็จในดีล/acquisition ขนาดใหญ่ + insurance float ขยายตัวต่อเนื่อง</span></li>
           </ul>
         </div>
@@ -279,8 +305,8 @@
       <h2>Holding company คุณภาพสูง ราคาใกล้มูลค่าเหมาะสม — เหมาะสะสมระยะยาวมากกว่าเก็งกำไร</h2>
       <p>Berkshire Hathaway เป็นบริษัทโฮลดิ้งที่มีความหลากหลายทางธุรกิจสูงที่สุดแห่งหนึ่งในตลาด ผสมผสานธุรกิจประกันภัย (GEICO, Gen Re) ที่สร้าง float ต้นทุนต่ำ, ธุรกิจโครงสร้างพื้นฐาน (BNSF Railway, Berkshire Hathaway Energy) ที่กระแสเงินสดสม่ำเสมอ, ธุรกิจผลิต/บริการ/ค้าปลีกหลากหลาย และพอร์ตหุ้นสาธารณะคุณภาพสูงมูลค่า $263.1B ภายใต้การนำของ Greg Abel ที่เข้ารับตำแหน่ง CEO ต่อจาก Warren Buffett ในปี 2569 อย่างราบรื่น จุดเด่นสำคัญคือเงินสด+พันธบัตรระยะสั้น $397B ที่รอโอกาสลงทุนขนาดใหญ่ ซึ่งเป็นทั้งจุดแข็ง (ความยืดหยุ่น, เกราะป้องกันความเสี่ยง) และจุดอ่อน (cash drag) ในเวลาเดียวกัน จากการประเมินมูลค่าด้วย P/Book (1.5x เท่าค่าเฉลี่ยประวัติศาสตร์), Sum-of-Parts และ Operating P/E ที่ยึดมัธยฐานย้อนหลัง 5 ปีของ Berkshire เอง (21.8x) ราคาปัจจุบัน $505.83 ต่ำกว่า Fair Value เฉลี่ย $512.12 เพียงเล็กน้อย (MOS +1.2%) สะท้อนว่าหุ้นซื้อขายใกล้มูลค่าที่เหมาะสม ไม่ใช่ทั้งดีลราคาถูกหรือแพงเกินตัว เหมาะสำหรับนักลงทุนที่มองหาความมั่นคง+การกระจายความเสี่ยงมากกว่าการเติบโตแบบก้าวกระโดด</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$512.12 <span style="font-size:12px;color:#cab9a8">($466.30–$562.75)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +0.3%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$535.00 (Buy)</div></div>
       </div>
       <div class="zone">
@@ -293,7 +319,7 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลอ้างอิง: StockAnalysis.com · Yahoo Finance · SEC EDGAR 10-Q (Q1 FY2026, 31 มี.ค. 2569) · StockTitan (13F Q1 FY2026) · ราคา ณ 11 ก.ย. 2569
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลอ้างอิง: StockAnalysis.com · Yahoo Finance · SEC EDGAR 10-Q (Q1 FY2026, 31 มี.ค. 2569) · StockTitan (13F Q1 FY2026) · ราคา ณ {{rd:priceDate}}
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 10 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

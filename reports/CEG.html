@@ -10,6 +10,40 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 282,
+  "values": {
+    "px": 284.75,
+    "priceDate": "2026-09-11",
+    "dateEra": "CE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 242,
+    "fvHigh": 320,
+    "analystTgt": 360,
+    "eps": 11.6,
+    "shares": 313000000,
+    "dps": 1.71,
+    "baseEps": 11,
+    "scenarios": [
+      {
+        "tgt": 204,
+        "div": null
+      },
+      {
+        "tgt": 293,
+        "div": null
+      },
+      {
+        "tgt": 391,
+        "div": null
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#1a73e8",
     "accentDark": "#1557b0",
@@ -41,18 +75,14 @@
     "min": 200,
     "max": 400,
     "grid": [250, 300, 350],
-    "fairLine": 282,
     "currency": "$",
     "highlight": [0, 8]
   },
   "gauge": {
     "min": 180,
     "max": 470,
-    "cur": 284.75,
-    "fair": 282,
     "fairLabelTop": "-58px"
-  },
-  "fv": 282
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +102,11 @@
     <div class="sub">ผู้ผลิตไฟฟ้านิวเคลียร์/พลังงานสะอาดรายใหญ่สุดของสหรัฐฯ • หุ้นเด่นธีม "AI Power" ป้อนไฟ datacenter</div>
     <div class="price-row">
       <div>
-        <div class="px">$284.75<small>(CEG)</small></div>
+        <div class="px">{{rd:px}}<small>(CEG)</small></div>
       </div>
-      <div class="chg">▼ −24.5% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ≈ 11 ก.ย. 2026 (ปิดตลาด)<br>
+        ราคา ≈ {{rd:priceDate}} (ปิดตลาด)<br>
         StockAnalysis $275.53 · Yahoo/Investing $276.60<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / Investing.com
       </div>
@@ -88,7 +118,7 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ FY2025 + TTM ถึง Q1/2026</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~$89B</div><div class="d">~313 ล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM, GAAP)</div><div class="v">~24.5x</div><div class="d">EPS TTM ~$11.6 <span class="pill a">มีกำไรพิเศษปน</span></div></div>
+      <div class="metric"><div class="k">P/E (TTM, GAAP)</div><div class="v">~{{rd:pe}}x</div><div class="d">EPS TTM ~$11.6 <span class="pill a">มีกำไรพิเศษปน</span></div></div>
       <div class="metric"><div class="k">P/E (Adjusted)</div><div class="v neu">~26x</div><div class="d">Adj. EPS 2026e ~$11.0</div></div>
       <div class="metric"><div class="k">เงินปันผล</div><div class="v">0.60%</div><div class="d">$1.71/ปี • โต ~10%/ปี</div></div>
 
@@ -113,7 +143,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1a73e8"></i>ราคา CEG</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $282</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -141,8 +171,8 @@
         <div class="mval">$320</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $242 – $320</span></div>
-        <div class="r">$282</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>หมายเหตุ:</b> ข้าม DDM เพราะปันผลน้อยมาก (0.62%) ไม่มีนัยสำคัญ • วิธี P/E ให้ค่าต่ำสุดเพราะมองอนุรักษ์นิยม (multiple แบบ utility)
@@ -157,14 +187,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $285</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $282</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$197<br><small>MOS 30%</small></span>
-          <span>$226<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$282<br><small>Fair Value</small></span>
-          <span style="text-align:right">$360<br><small>เป้า Analyst</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:analystTgt}}<br><small>เป้า Analyst</small></span>
           <span style="text-align:right">$441<br><small>เป้าสูงสุด</small></span>
         </div>
       </div>
@@ -179,19 +209,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−1.0%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>Margin of Safety บางมาก</b><br>ราคาปัจจุบัน $276 ต่ำกว่ามูลค่าเหมาะสม $282 เพียง ~2% → ตามเกณฑ์ value investor ถือว่า <b>ราคาสมเหตุสมผล (fair)</b> แต่ยังไม่มีส่วนเผื่อความปลอดภัยที่หนาพอ</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$226</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$197</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
         <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $260</div><div class="d">ใต้ขอบล่างของ fair value</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="284.75" step="1">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -200,13 +230,13 @@
 
   <!-- ===== RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $285 • EPS ฐาน ~$11.0 (adjusted)</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} (adjusted)</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$204</div>
-          <div class="ret neg">รวม ~ −28% (≈ −10.4%/ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$12.7</span></li>
             <li><span>P/E ออก</span><span>16x</span></li>
@@ -217,8 +247,8 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +10%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$293</div>
-          <div class="ret pos">รวม ~ +3% (≈ +1.0%/ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$14.6</span></li>
             <li><span>P/E ออก</span><span>20x</span></li>
@@ -229,8 +259,8 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +14%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$391</div>
-          <div class="ret pos">รวม ~ +37% (≈ +11.1%/ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$16.3</span></li>
             <li><span>P/E ออก</span><span>24x</span></li>
@@ -281,9 +311,9 @@
       <h2>สินทรัพย์หายากของยุค AI แต่ราคาตอนนี้ "สมเหตุสมผล ไม่ถูก"</h2>
       <p>Constellation เป็นเจ้าของฟลีตนิวเคลียร์ใหญ่สุดของสหรัฐฯ — ไฟฐานปลอดคาร์บอน 24/7 ที่ AI/datacenter ต้องการอย่างยิ่ง ทำให้มีอำนาจต่อรองราคาและดีล PPA ระยะยาวที่มั่นคง แต่ที่ราคา ~$276 ตลาดได้สะท้อนพรีเมียม "AI power" ไปมากแล้ว fair value ($282) จึงเกือบเท่าราคา — ส่วนเผื่อความปลอดภัยบางมาก</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$282 <span style="font-size:12px;color:#a6c6b9">($242–$320)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">MOS ~ −1.0%</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">$360 (+26%)</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#a6c6b9">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">MOS ~ {{rd:mos}}</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">{{rd:analystTgt}} (+26%)</div></div>
       </div>
       <div class="zone">
         💡 <b>กลยุทธ์:</b> สาย value — รอย่อ/ทยอยสะสมเมื่อราคา <b>ต่ำกว่า ~$260</b> (น่าสนใจมากที่ &lt;$226) • สาย growth — เข้าได้แบบ DCA ยอมรับความผันผวน โดยติดตาม <b>ความคืบหน้าดีล PPA datacenter</b>, <b>การกลืน Calpine</b> และ <b>ราคาขายไฟ</b> เป็นตัวชี้วัดหลัก

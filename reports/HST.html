@@ -10,6 +10,37 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 23.88,
+  "values": {
+    "px": 22.24,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 21.91,
+    "fvHigh": 25.56,
+    "shares": 693000000,
+    "dps": 0.95,
+    "scenarios": [
+      {
+        "tgt": 17.5,
+        "div": 2.4
+      },
+      {
+        "tgt": 28.75,
+        "div": 2.4
+      },
+      {
+        "tgt": 36.22,
+        "div": 2.4
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#b45309",
     "accentDark": "#78350f",
@@ -41,18 +72,14 @@
     "min": 15,
     "max": 27.5,
     "grid": [17.5, 20, 22.5, 25],
-    "fairLine": 23.88,
     "currency": "$",
     "highlight": [0, 9]
   },
   "gauge": {
     "min": 15,
     "max": 27,
-    "cur": 22.24,
-    "fair": 23.88,
     "fairLabelTop": true
-  },
-  "fv": 23.88
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +99,11 @@
     <div class="sub">Luxury Hotel REIT • 76 Properties • Marriott/Hilton/Hyatt Brands • RevPAR Recovery</div>
     <div class="price-row">
       <div>
-        <div class="px">$22.24<small>(HST)</small></div>
+        <div class="px">{{rd:px}}<small>(HST)</small></div>
       </div>
-      <div class="chg">▲ +38.8% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $15.20 – $25.71<br>
         ที่มา: StockAnalysis.com, MarketBeat.com, Host Hotels Q1 2026 Earnings Release, Yahoo Finance
       </div>
@@ -113,7 +140,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#b45309"></i>ราคา HST</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $23.88</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -139,8 +166,8 @@
         <div class="mval">$24.18</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $21.91 – $25.56</span></div>
-        <div class="r">$23.88</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>หมายเหตุ:</b> HST เป็น REIT จึงไม่ใช้ P/E เป็นตัวชี้วัดหลัก (GAAP EPS ~$1.12 บิดเบือนจากค่าเสื่อมโรงแรมขนาดใหญ่) ตัวชี้วัดหลักคือ <b>Adjusted FFO/AFFO</b> ปัจจุบันเทรดที่ P/AFFO ~11.2x (FY2025 จริง) ต่ำกว่าค่าเฉลี่ยกลุ่ม luxury hotel REIT (12-13x) เล็กน้อย สะท้อนว่าตลาดยังให้น้ำหนักความเสี่ยง cyclical มากกว่าจะให้ premium เต็มที่จากงบดุลที่แข็งแกร่งที่สุดในกลุ่ม (Net Debt/EBITDAre ~1.9x) วิธี EV/EBITDA ให้ค่าต่ำสุดเพราะใช้ multiple ระมัดระวังกว่าตามความผันผวนของวัฏจักรท่องเที่ยว ส่วนเป้าเฉลี่ย Analyst ใกล้เคียงราคาปัจจุบันมาก FV เฉลี่ย $23.88 ใกล้เคียงราคาปัจจุบันมาก หลังราคารีบาวด์แรงในรอบปีที่ผ่านมา (+39.1%)
@@ -154,15 +181,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $22.24</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $23.88</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$16.72<br><small>MOS 30%</small></span>
-          <span>$19.10<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$23.88<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$24.18<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$25.56<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -175,19 +202,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+7%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ส่วนเผื่อแทบไม่มี — ราคาใกล้เคียง Fair Value และใกล้ 52wk high มาก เหมาะกับการรอจังหวะย่อมากกว่าเข้าซื้อตอนนี้</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$19.10</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$16.72</div><div class="d">โซนถูกมาก (deep value, ใกล้ 52wk low)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $23.88</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value, ใกล้ 52wk low)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="22.24" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -196,17 +223,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $22.24 • AFFO ฐาน ~$2.13/หุ้น • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • AFFO ฐาน ~$2.13/หุ้น{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>AFFO −3%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$17.50</div>
-          <div class="ret neg">−11%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>AFFO ปี 3</span><span>~$1.94/sh</span></li>
             <li><span>Exit P/AFFO</span><span>9x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$2.40</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>เศรษฐกิจถดถอย ธุรกิจ/นักท่องเที่ยวลดการเดินทาง RevPAR หดตัวต่อเนื่อง P/AFFO compress ตาม sentiment กลุ่ม cyclical REIT</span></li>
           </ul>
         </div>
@@ -214,12 +241,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>AFFO +4%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$28.75</div>
-          <div class="ret pos">+40%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>AFFO ปี 3</span><span>~$2.40/sh</span></li>
             <li><span>Exit P/AFFO</span><span>12x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$2.40</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>RevPAR โตต่อเนื่องตามไกด์แดนซ์ 3.0-4.5% งบดุลแข็งแกร่งหนุน buyback ต่อเนื่อง ตลาดให้ premium multiple มากขึ้นเล็กน้อย</span></li>
           </ul>
         </div>
@@ -227,12 +254,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>AFFO +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$36.22</div>
-          <div class="ret pos">+74%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>AFFO ปี 3</span><span>~$2.68/sh</span></li>
             <li><span>Exit P/AFFO</span><span>13.5x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$2.40</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>ท่องเที่ยว luxury/group business travel เร่งตัวแรง RevPAR โตเกินคาด M&A/portfolio upgrade เพิ่มมูลค่าสินทรัพย์ ตลาดรีเรทให้ multiple สูงขึ้นมาก</span></li>
           </ul>
         </div>
@@ -279,8 +306,8 @@
       <h2>Fairly Valued — Hotel REIT งบดุลแข็งแกร่งที่สุดในกลุ่ม ราคาใกล้ Fair Value รอจังหวะย่อ</h2>
       <p>Host Hotels & Resorts (HST) คือ hotel REIT รายใหญ่ที่สุดในสหรัฐฯ ถือครองโรงแรม luxury/upper-upscale 76 แห่ง ~41,700 ห้อง ภายใต้แบรนด์ชั้นนำ Marriott, Hilton, Hyatt โดยไม่ได้บริหารโรงแรมเอง (asset-owner model จ้าง operator บริหาร) จุดเด่นคืองบดุลแข็งแกร่งที่สุดในกลุ่ม hotel REIT (Net Debt/EBITDAre เพียง ~1.9x ต่ำกว่าค่ามัธยฐาน 10 ปีที่ 2.69x) หลังขายรีสอร์ทมูลค่า $1.1B ในไตรมาส 1/2569 ผลักดัน RevPAR เติบโตต่อเนื่อง (+4.4% YoY) จนบริษัทปรับไกด์แดนซ์ทั้งปีขึ้นเป็น 3.0%-4.5% ราคาหุ้นปรับตัวขึ้นแรง +36.8% ในรอบปีที่ผ่านมาจนพุ่งแตะ $25.13 ปลาย ก.ค. 2569 ก่อนย่อตัวลงมาที่ $23.29 ต่ำกว่า Fair Value เฉลี่ย 3 วิธี (P/AFFO + EV/EBITDA + เป้า Analyst) ที่ $23.88 เล็กน้อย MOS ปัจจุบัน ~+2.5% นักลงทุนควรระวังความผันผวนสูงของกลุ่ม hotel REIT ที่อ่อนไหวต่อวัฏจักรเศรษฐกิจมากกว่า REIT ประเภทอื่น และปันผลที่มีองค์ประกอบ special dividend แฝงอยู่มาก ทำให้ yield "แท้จริง" ต่ำกว่าตัวเลขที่แสดง</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$23.88 <span style="font-size:12px;color:#cab9a8">($21.91–$25.56)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +7%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$24.18 (Hold/Moderate Buy ผสม)</div></div>
       </div>
       <div class="zone">
@@ -293,7 +320,7 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/AFFO และ EV/EBITDA เป้าหมาย, AFFO/share (อิงไกด์แดนซ์บริษัท), อัตราเติบโต RevPAR และผลตอบแทนที่ต้องการ
-    ราคาหุ้นมีความผันผวนสูง โดยเฉพาะกลุ่ม hotel REIT ที่อ่อนไหวต่อวัฏจักรเศรษฐกิจ ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • แหล่งข้อมูล: StockAnalysis.com (ราคา/เป้า analyst/งบดุล), MarketBeat.com (ราคา/ปันผล), Host Hotels & Resorts Q1 2026 Earnings Release + Q4 2025 Earnings Call (AFFO/RevPAR/guidance/leverage), Yahoo Finance (ราคารายเดือน), วันที่ข้อมูล: 11 ก.ย. 2569
+    ราคาหุ้นมีความผันผวนสูง โดยเฉพาะกลุ่ม hotel REIT ที่อ่อนไหวต่อวัฏจักรเศรษฐกิจ ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • แหล่งข้อมูล: StockAnalysis.com (ราคา/เป้า analyst/งบดุล), MarketBeat.com (ราคา/ปันผล), Host Hotels & Resorts Q1 2026 Earnings Release + Q4 2025 Earnings Call (AFFO/RevPAR/guidance/leverage), Yahoo Finance (ราคารายเดือน), วันที่ข้อมูล: {{rd:priceDate}}
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 9 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

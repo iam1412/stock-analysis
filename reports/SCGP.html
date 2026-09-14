@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 21,
+  "values": {
+    "px": 30.25,
+    "priceDate": "2026-09-14",
+    "dateEra": "CE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 16.3,
+    "fvHigh": 25.55,
+    "shares": 4293000000,
+    "dps": 0.6,
+    "bvps": 17.95,
+    "baseEps": 1.1,
+    "scenarios": [
+      {
+        "tgt": 14.5,
+        "div": 1.5
+      },
+      {
+        "tgt": 25,
+        "div": 2
+      },
+      {
+        "tgt": 33.5,
+        "div": 2.4
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#2fa25f",
     "accentDark": "#237645",
@@ -41,7 +74,6 @@
     "min": 10,
     "max": 35,
     "grid": [15, 20, 25, 30],
-    "fairLine": 21,
     "currency": "฿",
     "highlight": [1, 9],
     "gridFmt": "v.toFixed(0)",
@@ -50,11 +82,8 @@
   "gauge": {
     "min": 12,
     "max": 33,
-    "cur": 30.25,
-    "fair": 21,
     "fairLabelTop": true
-  },
-  "fv": 21
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +103,11 @@
     <div class="sub">บรรจุภัณฑ์กระดาษ (containerboard • กล่องลูกฟูก) • บรรจุภัณฑ์โพลิเมอร์/ฟิล์มอ่อน • บรรจุภัณฑ์อาหาร • เยื่อ-กระดาษ • ฐานการผลิตอาเซียน (ไทย • เวียดนาม • อินโดนีเซีย • ฟิลิปปินส์) ขยายผ่าน M&A</div>
     <div class="price-row">
       <div>
-        <div class="px">฿30.25<small>(SCGP)</small></div>
+        <div class="px">{{rd:px}}<small>(SCGP)</small></div>
       </div>
-      <div class="chg">▲ +66.2% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2026 (ปิดตลาด)<br>
+        ราคา ณ {{rd:priceDate}} (ปิดตลาด)<br>
         กรอบ 52 สัปดาห์ ฿14.90 – ฿28.50<br>
         ที่มา: StockAnalysis.com • Investing.com • SET (set.or.th)
       </div>
@@ -92,7 +121,7 @@
       <div class="metric"><div class="k">Market Cap</div><div class="v">~฿129.9 พันล้าน</div><div class="d">~4,293 ล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~25.2x</div><div class="d">สูงกว่าค่าเฉลี่ยกลุ่ม (กำไรช่วงฟื้นตัว)</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~18–20x</div><div class="d">กรอบกว้างตามวัฏจักรราคากระดาษ</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.69x</div><div class="d">เทียบ BVPS ~฿17.95</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">เทียบ BVPS ~฿17.95</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">~฿4,069 ล้าน</div><div class="d">+10% YoY</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿1.10</div><div class="d">EPS FY2025 ~฿0.95 • ฟื้นจาก Q1/2026</div></div>
@@ -101,7 +130,7 @@
 
       <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿121.5 พันล้าน</div><div class="d">FY2025 ฿124.4 พันล้าน (−6% YoY)</div></div>
       <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~18.6%</div><div class="d">ดีขึ้นจากต้นทุนเศษกระดาษ/พลังงานลด</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.0%</div><div class="d">FY2025 ฿0.60/หุ้น (จ่ายงวดสุดท้าย เม.ย. 2026)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">FY2025 ฿0.60/หุ้น (จ่ายงวดสุดท้าย เม.ย. 2026)</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">~1.0</div><div class="d">อิงวัฏจักรเศรษฐกิจ/ราคากระดาษ</div></div>
     </div>
   </section>
@@ -115,7 +144,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#41c879"></i>ราคา SCGP</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿21</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -141,8 +170,8 @@
         <div class="mval">฿25.55</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿16.30 – ฿25.55</span></div>
-        <div class="r">฿21.00</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี Justified P/BV ให้ค่าต่ำสุด (฿16.3) เพราะ ROE (~6–8%) ยังต่ำใกล้/ต่ำกว่าต้นทุนทุน — บริษัทยัง "ไม่สร้างมูลค่าส่วนเกิน" จากทุนมากนัก ส่วน EV/EBITDA ให้ค่าสูงสุด (฿25.6) เพราะอิง EBITDA เป้าหมายปี 2026 ที่ฝ่ายบริหารตั้งไว้ ค่ากลาง ฿21 สะท้อนหุ้นวัฏจักรที่กำไรกำลังฟื้นแต่ยังไม่เต็มศักยภาพ — และต่ำกว่าราคาตลาด ฿28 อย่างมีนัย
@@ -156,15 +185,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿30.25</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿21.00</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿14.70<br><small>MOS 30%</small></span>
-          <span>฿16.80<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿21.00<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">฿25.26<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">฿25.55<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -177,19 +206,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−44%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาปัจจุบัน <b>สูงกว่า</b> มูลค่าเหมาะสม — ไม่มีส่วนเผื่อความปลอดภัย (MOS ติดลบ) ควรรอย่อหรือหลีกเลี่ยงไล่ราคาที่จุดสูงสุด 52 สัปดาห์</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿16.80</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿14.70</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿21.00</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="30.25" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -198,17 +227,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿30.25 • EPS ฐาน ~฿1.10 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −2%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿14.50</div>
-          <div class="ret neg">−47%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿1.04</span></li>
             <li><span>P/E ออก</span><span>14x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.50</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>ราคากระดาษอ่อน • อุปสงค์ซบ</span></li>
           </ul>
         </div>
@@ -216,12 +245,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿25.00</div>
-          <div class="ret neg">−11%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿1.39</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿2.00</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>ฟื้นตัวต่อเนื่อง • EBITDA โตตามเป้า</span></li>
           </ul>
         </div>
@@ -229,12 +258,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿33.50</div>
-          <div class="ret pos">+19%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿1.67</span></li>
             <li><span>P/E ออก</span><span>20x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿2.40</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>M&amp;A หนุน • วัฏจักรกระดาษขาขึ้น</span></li>
           </ul>
         </div>
@@ -280,8 +309,8 @@
       <h2>กำไรฟื้นจริง แต่ราคาวิ่งนำไปไกล — รอย่อ</h2>
       <p>SCGP กำลังอยู่ในช่วงฟื้นตัวของกำไร (Q1/2026 +74% YoY) จากต้นทุนที่ลดลงและการฟื้นของอินโดนีเซีย เป็นเรื่องราวเชิงคุณภาพที่ดี แต่ราคาหุ้นที่พุ่งจาก ~฿13 มาแตะ ~฿28 (จุดสูง 52 สัปดาห์) ได้สะท้อน "การฟื้นตัวเต็มที่" ไปล่วงหน้าแล้ว — ซื้อขายที่ P/E ~25x เหนือมูลค่าเหมาะสม ฿21 และเป้านักวิเคราะห์เฉลี่ย ~฿25.3 จึงไม่มี Margin of Safety (ติดลบ ~33%) แม้กรณีฐานผลตอบแทน 3 ปียังติดลบเล็กน้อย เหมาะ "เฝ้ารอจุดเข้า" มากกว่าไล่ราคา</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿21.00 <span style="font-size:12px;color:#cab9a8">(฿16.30–฿25.55)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −44%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿25.26 (Buy เฉลี่ย 17 ราย)</div></div>
       </div>
       <div class="zone">

@@ -10,6 +10,18 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 148.25,
+  "values": {
+    "px": 128.98,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 136,
+    "fvHigh": 164.61,
+    "shares": 576000000,
+    "dps": 2.25
+  },
   "theme": {
     "accent": "#aa8a33",
     "accentDark": "#7e6526",
@@ -41,18 +53,14 @@
     "min": 100,
     "max": 160,
     "grid": [120, 140],
-    "fairLine": 148.25,
     "currency": "$",
     "highlight": [2, 4]
   },
   "gauge": {
     "min": 95,
     "max": 160,
-    "cur": 128.98,
-    "fair": 148.25,
     "fairLabelTop": false
-  },
-  "fv": 148.25
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +80,11 @@
     <div class="sub">Alternative asset manager — Credit (corporate direct lending, ABS, structured) $450B+ • Private Equity • Real Assets (infra/real estate) • Retirement Services ผ่าน Athene (ขายประกัน annuity แล้วนำ premium มาลงทุนใน Apollo credit) • AUM รวม $1.03 ล้านล้าน</div>
     <div class="price-row">
       <div>
-        <div class="px">$128.98<small>(APO)</small></div>
+        <div class="px">{{rd:px}}<small>(APO)</small></div>
       </div>
-      <div class="chg">▲ +3.8% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $99.56 / $157.28<br>
         ที่มา: StockAnalysis.com / StockTitan / SEC EDGAR 8-K / Apollo IR
       </div>
@@ -87,7 +95,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">Alt Asset Manager — ดู FRE/SRE/DE ต่อหุ้น แทน GAAP EPS</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$74.3B</div><div class="d">~576M shares approx.</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~576M shares approx.</div></div>
       <div class="metric"><div class="k">Price / DE (TTM)</div><div class="v neu">~12.3x</div><div class="d">DE/Share $9.61 (FRE+SRE, LTM) — ตัววัดหลัก ไม่ใช่ GAAP P/E</div></div>
       <div class="metric"><div class="k">AUM รวม</div><div class="v pos">$1.03T</div><div class="d">ครบ $1 ล้านล้านครั้งแรก Q1 2569 · +$300B LTM inflows</div></div>
       <div class="metric"><div class="k">GAAP P/E (TTM)</div><div class="v">~75x</div><div class="d">บิดเบือนจาก mark-to-market + one-time items — ไม่ใช้ตัดสิน valuation</div></div>
@@ -99,7 +107,7 @@
 
       <div class="metric"><div class="k">FRE Q1 2569</div><div class="v pos">$728M</div><div class="d">+30% YoY · margin ขยายจาก fee-paying AUM โต</div></div>
       <div class="metric"><div class="k">SRE Q1 2569</div><div class="v">$719M</div><div class="d">Organic growth ของ Athene ยังแข็งแรง แม้ spread บีบ</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.7%</div><div class="d">$2.25/ปี ($0.5625/ไตรมาส) · payout ต่ำ เน้น reinvest</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">$2.25/ปี ($0.5625/ไตรมาส) · payout ต่ำ เน้น reinvest</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">~1.6</div><div class="d">ผันผวนสูงกว่าตลาด (leveraged to credit cycle + rates)</div></div>
     </div>
   </section>
@@ -113,7 +121,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#C9A84C"></i>ราคา APO</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $148.25</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -139,8 +147,8 @@
         <div class="mval">$136.00</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $136.00 – $164.61</span></div>
-        <div class="r">$148.25</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี Price/ANI ($136.00) ให้ค่าต่ำสุดเพราะ ANI รวม principal investment income ที่ผันผวน ส่วน SOTP แยก FRE/SRE ($164.61) ให้ค่าสูงสุดเพราะให้เครดิต FRE เต็มที่ในฐานะ recurring fee income คุณภาพสูงแบบเดียวกับ BX/KKR ค่าเฉลี่ย $148.25 ใกล้เคียงเป้าหมายนักวิเคราะห์ (consensus ~$150-160) และอนุรักษ์นิยมกว่าเป้าสูงสุดบางสำนัก ($169+) — สะท้อนความเสี่ยง Athene spread compression ที่ยังไม่คลี่คลาย
@@ -154,15 +162,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $128.98</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $148.25</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$103.78<br><small>MOS 30%</small></span>
-          <span>$118.60<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$148.25<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$155.00<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$164.61<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -175,19 +183,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+13%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS อยู่ในโซน "น่าซื้อ" (Value Investor Zone) — ราคาต่ำกว่ามูลค่าเหมาะสมพอสมควร แต่ยังมีความเสี่ยง Athene spread ที่ต้องติดตาม</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$118.60</div><div class="d">โซนน่าสนใจสำหรับ value — ราคาปัจจุบันใกล้เคียงมาก</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$103.78</div><div class="d">โซนถูกมาก (deep value) — ใกล้เคียง 52wk low $99.56</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $148.25</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value — ราคาปัจจุบันใกล้เคียงมาก</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value) — ใกล้เคียง 52wk low $99.56</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="128.98" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -277,8 +285,8 @@
       <h2>APO — ถูกลงจากจุดสูงเกือบ 17% ใน 1 ปี ขณะที่ AUM ทะลุ $1 ล้านล้านครั้งแรก</h2>
       <p>Apollo เป็นหนึ่งในผู้นำ alternative asset management ที่มีโมเดลธุรกิจแตกต่างจาก peer อย่าง BX/KKR ตรงที่มี Athene (retirement services) เป็นแกนสำคัญ ให้ permanent capital ที่มั่นคงกว่าเงินทุนจาก LP ทั่วไป แต่ก็แบกความเสี่ยง insurance liability ไปด้วย ราคาปัจจุบัน $118.61 ต่ำกว่า Fair Value ~20% สะท้อนความกังวลเรื่อง Athene net investment spread ที่บีบแคบลง (0.97% Q1 2569) มากกว่าพื้นฐานธุรกิจหลักที่ยังแข็งแรง (FRE +30% YoY, AUM $1.03T) เทียบกับ ARES ที่เน้น credit ล้วนไม่มี insurance mix, APO ให้ yield จาก permanent capital สูงกว่าแต่ก็ผันผวนตาม spread มากกว่า เหมาะกับนักลงทุนที่รับความเสี่ยง insurance-linked earnings ได้และมองระยะยาว 3 ปีขึ้นไป</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$148.25 <span style="font-size:12px;color:#cab9a8">($136.00–$164.61)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +13%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$155 (Buy)</div></div>
       </div>
       <div class="zone">

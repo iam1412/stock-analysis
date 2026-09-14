@@ -10,6 +10,38 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 52.5,
+  "values": {
+    "px": 68.83,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 46.56,
+    "fvHigh": 58.5,
+    "shares": 1195000000,
+    "dps": 1.71,
+    "baseEps": 5.38,
+    "scenarios": [
+      {
+        "tgt": 31.2,
+        "div": 4.9
+      },
+      {
+        "tgt": 60.4,
+        "div": 5.4
+      },
+      {
+        "tgt": 83.6,
+        "div": 5.7
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#ed1d4e",
     "accentDark": "#b30f35",
@@ -40,17 +72,13 @@
     "min": 30,
     "max": 80,
     "grid": [40, 50, 60, 70],
-    "fairLine": 52.5,
     "currency": "$",
     "highlight": [0, 11]
   },
   "gauge": {
     "min": 30,
-    "max": 75,
-    "cur": 68.83,
-    "fair": 52.5
-  },
-  "fv": 52.5
+    "max": 75
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -70,11 +98,11 @@
     <div class="sub">ทรายน้ำมันแคนาดา • โรงกลั่น 4 แห่ง • ปั๊ม Petro-Canada • งบการเงินสกุล CAD ราคาซื้อขาย USD</div>
     <div class="price-row">
       <div>
-        <div class="px">$68.83<small>(SU)</small></div>
+        <div class="px">{{rd:px}}<small>(SU)</small></div>
       </div>
-      <div class="chg">▲ +72.9% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569 (StockAnalysis.com ตรงกับ Yahoo Finance 0.00%)<br>
+        ราคา ณ {{rd:priceDate}} (StockAnalysis.com ตรงกับ Yahoo Finance 0.00%)<br>
         กรอบ 52 สัปดาห์ $37.77 – $70.29<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, TMX/TSX (SU.TO), CME (WTI)
       </div>
@@ -85,7 +113,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบสกุล CAD · ราคา/FV สกุล USD</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$82.3B</div><div class="d">1,195 ล้านหุ้น (TTM)</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">1,195 ล้านหุ้น (TTM)</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~12.8x</div><div class="d">$60.10 ÷ EPS $5.38 (USD ทั้งคู่)</div></div>
       <div class="metric"><div class="k">P/E มัธยฐาน 5 ปี</div><div class="v">10.9x</div><div class="d">กรอบ 6.6x – 12.6x (FY2564–68)</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~2.1x</div><div class="d">ประมาณจาก EPS ÷ ROE</div></div>
@@ -125,7 +153,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#ed1d4e"></i>ราคา SU</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $52.50</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -150,8 +178,8 @@
         <div class="mval">$46.56</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $46.56 – $58.50</span></div>
-        <div class="r">$52.50</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.75">
         <b>ทำไมไม่ใช้ CAPM/DCF:</b> β ของ SU ที่วัดจริงจากผลตอบแทนรายเดือน 60 เดือนเทียบ S&amp;P 500 ได้เพียง <b>0.34</b> ซึ่งจะให้ต้นทุนส่วนทุนราว 5.3%
@@ -198,14 +226,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $68.83</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $52.50</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$36.75<br><small>MOS 30%</small></span>
-          <span>$42.00<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$52.50<br><small>Fair Value</small></span>
-          <span style="text-align:right">$58.50<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$70.72<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -224,21 +252,21 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−31%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>ไม่มี Margin of Safety — ราคาสูงกว่ามูลค่าที่ประเมินได้</b><br>
         ราคา $60.10 เทียบมูลค่าเหมาะสม $52.50 แปลว่าซื้อวันนี้คือการจ่ายล่วงหน้าให้กับราคาน้ำมันราว $84/บาร์เรล และการที่ตัวคูณจะยืนที่ปลายบนของกรอบตัวเองต่อไป
         ผู้ที่สนใจธุรกิจนี้ควรรอโซนต่ำกว่า $52.50 หรือรอให้กำไรวิ่งขึ้นมารับราคา แทนที่จะไล่ราคาที่ระดับนี้</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$42.00</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$36.75</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $52.50</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="68.83" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -247,17 +275,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $68.83 • EPS ฐาน ~$5.38 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −12%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$31.20</div>
-          <div class="ret neg">−47.6%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$3.67</span></li>
             <li><span>P/E ออก</span><span>8.5x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$4.90</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>WTI หลุด $60 · ส่วนต่าง WCS ถ่างจากข้อจำกัดท่อส่ง · ต้นทุนคาร์บอนเพิ่ม · ตัวคูณกลับไปที่ระดับ 2565–66</span></li>
           </ul>
         </div>
@@ -265,12 +293,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +1%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$60.40</div>
-          <div class="ret pos">−4.4%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$5.54</span></li>
             <li><span>P/E ออก</span><span>10.9x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$5.40</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>WTI แกว่งรอบ mid-cycle $75–80 · กำไรทรงตัว · EPS โตได้จากซื้อหุ้นคืนอย่างเดียว ⇒ 3 ปีได้แค่ปันผลกับดอกเบี้ยเล็กน้อย</span></li>
           </ul>
         </div>
@@ -278,12 +306,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +9%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$83.60</div>
-          <div class="ret pos">+29.7%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$6.97</span></li>
             <li><span>P/E ออก</span><span>12.0x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$5.70</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>WTI ยืนเหนือ $90 · การ re-rate ของเซกเตอร์พลังงานเป็นเรื่องถาวร · ซื้อหุ้นคืนต่อเนื่องอีก 5–6%/ปี</span></li>
           </ul>
         </div>
@@ -337,8 +365,8 @@
       ได้มูลค่าเหมาะสม $52.50 ต่ำกว่าราคาตลาด 14.5% · การ back-solve บอกว่าราคาวันนี้ฝังสมมติฐาน WTI ราว $84 (กรอบ $78–84) อย่างยั่งยืน
       สูงกว่ามัธยฐาน 5 ปี $76.99 · แม้จะคำนวณที่ระดับ mid-cycle $77 เต็ม ๆ FV ก็ยังได้เพียง ~$56.0 ซึ่งต่ำกว่าราคาปัจจุบัน</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$52.50 <span style="font-size:12px;color:#cab9a8">($46.56–$58.50)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −31%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$70.72 (Buy)</div></div>
       </div>
       <div class="zone">
@@ -355,7 +383,7 @@
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะตัวคูณเป้าหมาย (P/E และ EV/EBITDA มัธยฐานย้อนหลัง), ระดับราคาน้ำมันระยะยาว,
     ความชันของกำไรต่อราคาน้ำมันซึ่งวัดได้ด้วย R² เพียง 0.35–0.48 และอัตราแลกเปลี่ยน CADUSD
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
-    ราคา ณ 11 ก.ย. 2569 จาก StockAnalysis.com (cross-check กับ Yahoo Finance ต่างกัน 0.00%) • EPS (TTM) ยืนยัน 2 แหล่งต่างกัน 0.8% •
+    ราคา ณ {{rd:priceDate}} จาก StockAnalysis.com (cross-check กับ Yahoo Finance ต่างกัน 0.00%) • EPS (TTM) ยืนยัน 2 แหล่งต่างกัน 0.8% •
     งบการเงินย้อนหลัง 5 ปี (สกุล CAD) จาก StockAnalysis.com • ราคาย้อนหลัง TSX (SU.TO) และราคาน้ำมัน WTI จาก CME/Yahoo Finance •
     อัตราแลกเปลี่ยน CADUSD 0.717 ณ 8 ส.ค. 2569
   </div>

@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 190,
+  "values": {
+    "px": 130.78,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 130,
+    "fvHigh": 233,
+    "eps": 10.48,
+    "shares": 120000000,
+    "bvps": 33.42,
+    "baseEps": 7.78,
+    "scenarios": [
+      {
+        "tgt": 170,
+        "div": 0
+      },
+      {
+        "tgt": 255,
+        "div": 0
+      },
+      {
+        "tgt": 359,
+        "div": 0
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#0066CC",
     "accentDark": "#004A99",
@@ -41,7 +74,6 @@
     "min": 100,
     "max": 225,
     "grid": [125, 150, 175, 200],
-    "fairLine": 190,
     "currency": "$",
     "highlight": [0, 8],
     "gridFmt": "v.toFixed(0)",
@@ -50,11 +82,8 @@
   "gauge": {
     "min": 80,
     "max": 260,
-    "cur": 130.78,
-    "fair": 190,
     "fairLabelTop": true
-  },
-  "fv": 190
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +103,11 @@
     <div class="sub">Industrial software • PLM (Windchill, Creo CAD) • IoT (ThingWorx) • AR (Vuforia) • ~90% recurring revenue • ARR $2.36B</div>
     <div class="price-row">
       <div>
-        <div class="px">$130.78<small>(PTC)</small></div>
+        <div class="px">{{rd:px}}<small>(PTC)</small></div>
       </div>
-      <div class="chg">▼ −34.1% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $108.50 – $219.69<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, PTC Investor Relations
       </div>
@@ -89,10 +118,10 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 · TTM = ย้อนหลัง 12 เดือน</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">$15.7B</div><div class="d">~120M shares</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">~120M shares</div></div>
       <div class="metric"><div class="k">Non-GAAP P/E (FY26)</div><div class="v neu">~16.8x</div><div class="d">ราคา / adj. EPS $7.78</div></div>
-      <div class="metric"><div class="k">GAAP P/E (TTM)</div><div class="v">~12.5x</div><div class="d">GAAP EPS $10.48 (มีกำไรพิเศษ Kepware)</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">3.91x</div><div class="d">BVPS $33.42</div></div>
+      <div class="metric"><div class="k">GAAP P/E (TTM)</div><div class="v">~{{rd:pe}}x</div><div class="d">GAAP EPS $10.48 (มีกำไรพิเศษ Kepware)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS $33.42</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ TTM (GAAP)</div><div class="v">$1,246M</div><div class="d">มีกำไรขาย Kepware หนุน</div></div>
       <div class="metric"><div class="k">EPS Non-GAAP FY26e</div><div class="v">~$7.78</div><div class="d">Guidance midpoint $6.65–$8.90</div></div>
@@ -115,7 +144,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#0066CC"></i>ราคา PTC</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $190</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -143,8 +172,8 @@
         <div class="mval">$130</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $130 – $233</span></div>
-        <div class="r">$190</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี Non-GAAP P/E ให้ค่าสูงสุด $233 สะท้อน premium ของ industrial SaaS ที่มีคูเมืองจาก switching costs สูง
@@ -162,15 +191,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $130.78</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $190</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$133.00<br><small>MOS 30%</small></span>
-          <span>$152.00<br><small>MOS 20%</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">$180.10<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$190<br><small>Fair Value</small></span>
-          <span style="text-align:right">$233<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -185,19 +214,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict good">
-        <div class="big">+31%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS สูง — โซน Deep Value สำหรับ Industrial SaaS</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$152.00</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$133.00</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $190</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="130.78" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -206,17 +235,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $130.78 • EPS ฐาน ~$7.78 (non-GAAP adj.) • ไม่มีปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} (non-GAAP adj.) • ไม่มีปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +3%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$170</div>
-          <div class="ret pos">+30%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$8.50</span></li>
             <li><span>P/E ออก</span><span>20x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>ARR growth ชะลอ &lt;5%; P/E หด</span></li>
           </ul>
         </div>
@@ -224,12 +253,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$255</div>
-          <div class="ret pos">+95%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$9.80</span></li>
             <li><span>P/E ออก</span><span>26x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>ARR growth 8–9%; SaaS re-rating</span></li>
           </ul>
         </div>
@@ -237,12 +266,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +13%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$359</div>
-          <div class="ret pos">+175%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$11.23</span></li>
             <li><span>P/E ออก</span><span>32x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>AI-PLM acceleration; Rockwell synergy</span></li>
           </ul>
         </div>
@@ -295,8 +324,8 @@
       อย่างไรก็ตาม ที่ราคา $124.55 หุ้น trade เพียง 16x non-GAAP P/E เทียบ peers 28–38x — discount ที่ไม่สมเหตุสมผลสำหรับบริษัทที่มีคูเมืองจาก switching costs สูง, base ARR growth ยังดี 8.5%, และ FCF/share $7.74
       นักวิเคราะห์ 20 คน consensus Buy ราคาเป้า $180.10 ยืนยันว่าตลาดมองว่า undervalued อย่างมีนัย MOS ~34.4% จาก FV $190 ให้ cushion ที่ดีสำหรับนักลงทุนระยะยาว</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$190 <span style="font-size:12px;color:#cab9a8">($130–$233)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +31%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$180.10 (Buy)</div></div>
       </div>
       <div class="zone">

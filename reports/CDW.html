@@ -10,6 +10,38 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 143,
+  "values": {
+    "px": 142.6,
+    "priceDate": "2026-09-10",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 132,
+    "fvHigh": 152,
+    "shares": 125020000,
+    "dps": 2.52,
+    "baseEps": 8.22,
+    "scenarios": [
+      {
+        "tgt": 89.88,
+        "div": 7.9
+      },
+      {
+        "tgt": 165.6,
+        "div": 7.9
+      },
+      {
+        "tgt": 230.66,
+        "div": 7.9
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#00838f",
     "accentDark": "#005662",
@@ -41,18 +73,14 @@
     "min": 110,
     "max": 170,
     "grid": [120, 130, 140, 150, 160],
-    "fairLine": 143,
     "currency": "$",
     "highlight": [0, 5]
   },
   "gauge": {
     "min": 85,
     "max": 165,
-    "cur": 142.6,
-    "fair": 143,
     "fairLabelTop": false
-  },
-  "fv": 143
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +100,11 @@
     <div class="sub">IT Value-Added Reseller ใหญ่สุดสหรัฐ • Hardware/Software/Services • Corporate/Gov/Healthcare/Education</div>
     <div class="price-row">
       <div>
-        <div class="px">$142.60<small>(CDW)</small></div>
+        <div class="px">{{rd:px}}<small>(CDW)</small></div>
       </div>
-      <div class="chg">▼ −10.5% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 10 ก.ย. 2569 16:00 ET (ตลาดปิด)<br>
+        ราคา ณ {{rd:priceDate}} 16:00 ET (ตลาดปิด)<br>
         กรอบ 52 สัปดาห์ $97.12 – $171.55<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, Macrotrends
       </div>
@@ -113,7 +141,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#00838f"></i>ราคา CDW</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $143</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -142,8 +170,8 @@
         <div class="mval">$141.54</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $132 – $152</span></div>
-        <div class="r">$143</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         ทั้ง 3 วิธีให้ค่าใกล้เคียงกันบ่งชี้ว่าราคาปัจจุบันขยับขึ้นมาสูงกว่า Fair Value เล็กน้อยแล้ว ไม่มี Margin of Safety ณ ระดับนี้
@@ -159,14 +187,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $142.60</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $143</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$100.10<br><small>MOS 30%</small></span>
-          <span>$114.40<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$143<br><small>Fair Value</small></span>
-          <span style="text-align:right">$152<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$155.89<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -182,19 +210,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+0.3%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาสูงกว่า Fair Value เล็กน้อย — ไม่มี MOS ณ ราคานี้ รอโซน $114 (MOS 20%) จะมี cushion ที่ดีกว่า</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$114.40</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$100.10</div><div class="d">โซนถูกมาก (ใกล้ 52wk low)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $143</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (ใกล้ 52wk low)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="142.6" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -203,17 +231,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $142.60 • EPS ฐาน ~$8.22 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −3%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$89.88</div>
-          <div class="ret neg">−31.4% (3 ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$7.49</span></li>
             <li><span>P/E ออก</span><span>12x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$7.90</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>AI disrupt demand, P/E de-rate</span></li>
           </ul>
         </div>
@@ -221,12 +249,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$165.60</div>
-          <div class="ret pos">+21.7% (3 ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$10.35</span></li>
             <li><span>P/E ออก</span><span>16x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$7.90</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>IT spending ฟื้น, AI upgrade cycle</span></li>
           </ul>
         </div>
@@ -234,12 +262,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +14%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$230.66</div>
-          <div class="ret pos">+67.3% (3 ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$12.14</span></li>
             <li><span>P/E ออก</span><span>19x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$7.90</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>AI infra ดัน hardware/services demand ใหม่</span></li>
           </ul>
         </div>
@@ -288,8 +316,8 @@
       <h2>IT VAR คุณภาพดี — ราคาขยับขึ้นมาเหนือ Fair Value เล็กน้อย รอย่อกลับก่อนเพิ่มน้ำหนัก</h2>
       <p>CDW เป็น IT Value-Added Reseller ใหญ่สุดในสหรัฐ รายได้ $22.9B ครอบคลุมทุกเซกเตอร์ ธุรกิจ asset-light สร้าง FCF แข็งแกร่ง ราคาเคยถูกกดจากจุดสูงเพราะกังวล AI จะ disrupt VAR แต่ consensus เริ่มเห็นว่า AI เป็น driver ของ hardware demand ใหม่แทน ราคาล่าสุดขยับขึ้นมาสูงกว่า Fair Value ($143) เล็กน้อย ไม่มี Margin of Safety ณ ระดับนี้ forward P/E ที่ต่ำกว่า P/E ปัจจุบันยังพอรับได้ถ้า EPS ฟื้นตามคาด แนะนำ Hold ที่ถืออยู่ รอ pullback สู่โซน $114 (MOS 20%) ก่อนเพิ่มน้ำหนักหนักขึ้น</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$143 <span style="font-size:12px;color:#cab9a8">($132–$152)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +0.3%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$155.89 (Buy)</div></div>
       </div>
       <div class="zone">
@@ -303,7 +331,7 @@
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต EPS และ FCF yield ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
-    ราคา ณ 10 ก.ย. 2569 · แหล่ง: StockAnalysis.com (FY2025/TTM) · Yahoo Finance (Jul 2026 · ราคา/กราฟ) · Macrotrends (ประวัติงบการเงิน)
+    ราคา ณ {{rd:priceDate}} · แหล่ง: StockAnalysis.com (FY2025/TTM) · Yahoo Finance (Jul 2026 · ราคา/กราฟ) · Macrotrends (ประวัติงบการเงิน)
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 29 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

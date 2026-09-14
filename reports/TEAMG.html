@@ -10,6 +10,18 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 3.2,
+  "values": {
+    "px": 2.9,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 2.7,
+    "fvHigh": 3.73,
+    "shares": 817900000,
+    "dps": 0.16
+  },
   "theme": {
     "accent": "#059669",
     "accentDark": "#047857",
@@ -41,7 +53,6 @@
     "min": 2.8,
     "max": 3.6,
     "grid": [3, 3.2, 3.4],
-    "fairLine": 3.2,
     "currency": "฿",
     "highlight": [4, 5],
     "gridFmt": "v.toFixed(2)",
@@ -50,11 +61,8 @@
   "gauge": {
     "min": 2,
     "max": 4,
-    "cur": 2.9,
-    "fair": 3.2,
     "fairLabelTop": true
-  },
-  "fv": 3.2
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +82,11 @@
     <div class="sub">ที่ปรึกษาวิศวกรรมและบริหารโครงการรายใหญ่ของไทย • ถนน สะพาน ทางด่วน รถไฟฟ้า รถไฟทางคู่ รถไฟความเร็วสูง สนามบิน ท่าเรือ • บริหารจัดการน้ำและสิ่งแวดล้อม • รับงาน EPC โครงสร้างพื้นฐานภาครัฐ</div>
     <div class="price-row">
       <div>
-        <div class="px">฿2.90<small>(TEAMG)</small></div>
+        <div class="px">{{rd:px}}<small>(TEAMG)</small></div>
       </div>
-      <div class="chg">▼ −6.5% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿2.66 – ฿3.80<br>
         ที่มา: StockAnalysis.com, SET.or.th, Yahoo Finance
       </div>
@@ -115,7 +123,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#059669"></i>ราคา TEAMG</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿3.20</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -141,8 +149,8 @@
         <div class="mval">฿2.70</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿2.70 – ฿3.73</span></div>
-        <div class="r">฿3.20</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี DDM ให้ค่าสูงสุดเพราะปันผลเพิ่งโต +14% ในปีล่าสุดและมี payout สูง ~57% ขณะที่ Justified P/BV ให้ค่าต่ำสุดเพราะ ROE ~14% ยังไม่สูงมากเทียบ r ที่ตั้งไว้ 11% — FV เฉลี่ย ฿3.20 จึงอยู่กึ่งกลางที่สมเหตุสมผล ใกล้เคียงราคาตลาดปัจจุบัน สะท้อนว่าหุ้นซื้อขายใกล้มูลค่าที่เหมาะสมแล้ว ไม่ถูกมากแต่ก็ไม่แพง
@@ -156,15 +164,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿2.90</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿3.20</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿2.24<br><small>MOS 30%</small></span>
-          <span>฿2.56<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿3.20<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">฿3.20<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">฿3.73<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -177,19 +185,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+9%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS บางมาก — ราคาซื้อขายใกล้เคียงมูลค่าเหมาะสม ไม่มีส่วนเผื่อความปลอดภัยที่มีนัยสำคัญ</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿2.56</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿2.24</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿3.20</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="2.9" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -280,8 +288,8 @@
       <h2>TEAMG — ธุรกิจที่ปรึกษาวิศวกรรมคุณภาพดี แต่ราคาเริ่มสะท้อนมูลค่าไปมากแล้ว</h2>
       <p>TEAMG เป็นผู้นำที่ปรึกษาวิศวกรรมโครงสร้างพื้นฐานของไทยที่มี <b>backlog นิวไฮต่อเนื่อง 6,057 ล้านบาท (72% จากภาครัฐ) กำไรโต +28% ในปี 2568 และปันผล yield ~5.3%</b> — จุดแข็งคือทัศนวิสัยรายได้ล่วงหน้าจากงานในมือจำนวนมากและฐานะการเงินแข็งแรง (D/E เพียง 0.31x) แต่ <b>gross margin หดตัวต่อเนื่อง 3 ปี</b> จากสัดส่วนงาน EPC ที่เพิ่มขึ้น เป็นความเสี่ยงที่ต้องติดตาม ที่ราคา ฿3.12 มูลค่าเหมาะสมเฉลี่ย ฿3.20 ให้ margin of safety ที่บางมาก (~2.5%) สะท้อนว่าราคาซื้อขายใกล้เคียงมูลค่าพื้นฐานแล้ว ไม่ใช่จังหวะที่ถูกมากสำหรับการเข้าซื้อเชิง value แต่ยังเหมาะกับนักลงทุนที่มองหาหุ้นปันผลสม่ำเสมอพร้อม backlog หนุนการเติบโตต่อเนื่อง</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿3.20 <span style="font-size:12px;color:#cab9a8">(฿2.70–฿3.73)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +9%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿3.20 (ไม่มี Coverage)</div></div>
       </div>
       <div class="zone">

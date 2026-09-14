@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 137,
+  "values": {
+    "px": 115.61,
+    "priceDate": "2026-09-11",
+    "dateEra": "CE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 131,
+    "fvHigh": 148,
+    "analystTgt": 160,
+    "eps": 7.7,
+    "dps": 3.01,
+    "baseEps": 7.7,
+    "scenarios": [
+      {
+        "tgt": 107,
+        "div": null
+      },
+      {
+        "tgt": 155,
+        "div": null
+      },
+      {
+        "tgt": 200,
+        "div": null
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#1a73e8",
     "accentDark": "#1557b0",
@@ -41,18 +74,14 @@
     "min": 110,
     "max": 150,
     "grid": [120, 130, 140],
-    "fairLine": 137,
     "currency": "$",
     "highlight": [0, 5]
   },
   "gauge": {
     "min": 90,
     "max": 200,
-    "cur": 115.61,
-    "fair": 137,
     "fairLabelTop": "-58px"
-  },
-  "fv": 137
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +101,11 @@
     <div class="sub">ผู้พัฒนาเกมรายใหญ่อันดับ 2 ของจีน • Games, Youdao (การศึกษา AI), NetEase Cloud Music • ADR (1 ADR = 5 หุ้นสามัญ)</div>
     <div class="price-row">
       <div>
-        <div class="px">$115.61<small>(NTES)</small></div>
+        <div class="px">{{rd:px}}<small>(NTES)</small></div>
       </div>
-      <div class="chg">▼ −17.5% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2026 (14:59 EDT)<br>
+        ราคา ณ {{rd:priceDate}} (14:59 EDT)<br>
         ปิดก่อนหน้า $121.57<br>
         ที่มา: StockAnalysis.com / Finviz / Yahoo Finance
       </div>
@@ -88,7 +117,7 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ FY2025 + Q1 2026 (USD ต่อ ADR)</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~$76 พันล้าน</div><div class="d">ADR ~638 ล้านหน่วย</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v">~15.0x</div><div class="d">EPS TTM ~$7.70/ADR</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v">~{{rd:pe}}x</div><div class="d">EPS TTM ~$7.70/ADR</div></div>
       <div class="metric"><div class="k">P/E ล่วงหน้า (Fwd)</div><div class="v neu">~13x</div><div class="d">EPS โต ~8% ต่อปี</div></div>
       <div class="metric"><div class="k">ROE</div><div class="v">~22%</div><div class="d pos">ทำกำไรสูง สม่ำเสมอ</div></div>
 
@@ -113,7 +142,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1a73e8"></i>ราคา NTES</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $137</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -141,8 +170,8 @@
         <div class="mval">$148</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $131 – $148</span></div>
-        <div class="r">$137</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>หมายเหตุ:</b> ปันผล ~2.5% มีนัยพอควรแต่ payout สูง (เพราะ EPS GAAP ต่ำกว่า non-GAAP จากรายการครั้งเดียว) จึงเน้น P/E + DCF เป็นหลัก
@@ -157,14 +186,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $116</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $137</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$96<br><small>MOS 30%</small></span>
-          <span>$110<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$137<br><small>Fair Value</small></span>
-          <span style="text-align:right">$160<br><small>เป้า Analyst</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:analystTgt}}<br><small>เป้า Analyst</small></span>
           <span style="text-align:right">$190<br><small>เป้าสูงสุด</small></span>
         </div>
       </div>
@@ -179,19 +208,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+16%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>มี Margin of Safety พอประมาณ</b><br>ราคาปัจจุบัน $118.98 ต่ำกว่ามูลค่าเหมาะสม $137 ราว 13% → ตามเกณฑ์ value investor ถือว่า <b>เริ่มน่าสนใจ</b> สำหรับทยอยสะสม แต่ยังไม่ถึงโซน deep value</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$110</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$96</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
         <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $120</div><div class="d">ใกล้ราคาปัจจุบัน</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="115.61" step="1">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -200,13 +229,13 @@
 
   <!-- ===== RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $115.61 • EPS ฐาน ~$7.70</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +2%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$107</div>
-          <div class="ret neg">รวม ~ −7% (≈ −2.4%/ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$8.2</span></li>
             <li><span>P/E ออก</span><span>13x</span></li>
@@ -217,8 +246,8 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$155</div>
-          <div class="ret pos">รวม ~ +34% (≈ +10.2%/ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$9.7</span></li>
             <li><span>P/E ออก</span><span>16x</span></li>
@@ -229,8 +258,8 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +13%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$200</div>
-          <div class="ret pos">รวม ~ +73% (≈ +20%/ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$11.1</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
@@ -281,9 +310,9 @@
       <h2>กิจการเกมคุณภาพ ราคา "สมเหตุสมผลถึงน่าสะสม" บนความเสี่ยงเชิงจีน</h2>
       <p>NetEase เป็นผู้นำเกมอันดับ 2 ของจีน ที่ทำกำไรสูง (ROE ~22%, gross margin ~69%) และมีเงินสดสุทธิมหาศาล ที่ราคา ~$119 หุ้นเทรดที่ P/E ~15x ซึ่งต่ำกว่ามูลค่าพื้นฐานและเป้านักวิเคราะห์ จึงเริ่มมีส่วนเผื่อความปลอดภัย — แต่ผู้ลงทุนต้องยอมรับ discount เชิงโครงสร้างของหุ้นจีน/ADR (กฎระเบียบ + ความเสี่ยง delisting)</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$137 <span style="font-size:12px;color:#a8b6cc">($131–$148)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">MOS ~ +16%</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">$160 (+38%)</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#a8b6cc">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">MOS ~ {{rd:mos}}</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">{{rd:analystTgt}} (+38%)</div></div>
       </div>
       <div class="zone">
         💡 <b>กลยุทธ์:</b> สาย value — ทยอยสะสมได้ที่ระดับปัจจุบัน (น่าสนใจยิ่งขึ้นเมื่อ &lt; $110, ถูกมากที่ &lt; $96) • สาย growth — เข้าได้แบบ DCA โดยติดตาม <b>ยอดเกมใหม่/ใบอนุญาต</b> และ <b>ทิศทางความเสี่ยง ADR จีน</b> เป็นตัวชี้วัดหลัก

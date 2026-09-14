@@ -10,6 +10,37 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 30.65,
+  "values": {
+    "px": 27.54,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 30.34,
+    "fvHigh": 31.04,
+    "shares": 596200000,
+    "dps": 1.2,
+    "scenarios": [
+      {
+        "tgt": 23.85,
+        "div": 3.6
+      },
+      {
+        "tgt": 34.05,
+        "div": 3.82
+      },
+      {
+        "tgt": 42.21,
+        "div": 3.97
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#059669",
     "accentDark": "#065f46",
@@ -41,18 +72,14 @@
     "min": 24,
     "max": 32,
     "grid": [26, 28, 30],
-    "fairLine": 30.65,
     "currency": "$",
     "highlight": [5, 8]
   },
   "gauge": {
     "min": 20,
     "max": 34,
-    "cur": 27.54,
-    "fair": 30.65,
     "fairLabelTop": false
-  },
-  "fv": 30.65
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +99,11 @@
     <div class="sub">Single-Family Rental REIT ที่ใหญ่ที่สุดในสหรัฐฯ • 80,000+ บ้านเช่า • เน้น Sun Belt (Phoenix, Atlanta, Dallas, Tampa, Las Vegas, Denver) • Resident Tech Platform</div>
     <div class="price-row">
       <div>
-        <div class="px">$27.54<small>(INVH)</small></div>
+        <div class="px">{{rd:px}}<small>(INVH)</small></div>
       </div>
-      <div class="chg">▼ −2.2% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $24.25 – $32.67<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, StockTitan (SEC 8-K), SEC EDGAR
       </div>
@@ -113,7 +140,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#059669"></i>ราคา INVH</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $30.65</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -139,8 +166,8 @@
         <div class="mval">$30.59</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $30.34 – $31.04</span></div>
-        <div class="r">$30.65</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>หมายเหตุ:</b> INVH เป็น SFR REIT จึงไม่ใช้ P/E เป็นตัวชี้วัดหลัก (GAAP EPS $0.95 ต่ำกว่าความสามารถทำกำไรจริงมาก เพราะค่าเสื่อมบ้านเดี่ยวจำนวนมาก) ตัวชี้วัดหลักคือ <b>AFFO/Core FFO</b> ซึ่งสะท้อนกระแสเงินสดจากการดำเนินงานที่แท้จริง ปัจจุบันเทรดที่ P/AFFO ~18.0x ใกล้เคียงเป้าหมาย 18.5x มาก ทั้ง 3 วิธีให้ค่าใกล้เคียงกัน ($30.34–$31.04) สะท้อนว่าตลาดตีราคาเกือบเต็มมูลค่าแล้ว FV เฉลี่ย $30.65 ให้ upside เพียง ~4.4% จากราคาปัจจุบัน — MOS จำกัด เหมาะกับการรอจังหวะย่อตัวมากกว่าซื้อไล่ราคา
@@ -154,14 +181,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $27.54</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $30.65</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$21.46<br><small>MOS 30%</small></span>
-          <span>$24.52<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$30.65<br><small>Fair Value</small></span>
-          <span style="text-align:right">$31.04<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$32.22<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -175,19 +202,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+10%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ส่วนเผื่อจำกัดมาก — ราคาใกล้เคียงมูลค่าเหมาะสม เหมาะกับการรอจังหวะย่อตัวลงมาใกล้ 52-week low มากกว่าซื้อไล่ราคาปัจจุบัน</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$24.52</div><div class="d">ใกล้เคียง 52wk low $24.25</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$21.46</div><div class="d">โซนถูกมาก (deep value, ต่ำกว่า 52wk low)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $30.65</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">ใกล้เคียง 52wk low $24.25</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value, ต่ำกว่า 52wk low)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="27.54" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -196,17 +223,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $27.54 • AFFO ฐาน FY26F ~$1.64/หุ้น • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • AFFO ฐาน FY26F ~$1.64/หุ้น{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>AFFO −1%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$23.85</div>
-          <div class="ret neg">−0.3%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>AFFO ปี 3</span><span>~$1.59/sh</span></li>
             <li><span>Exit P/AFFO</span><span>15x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$3.60</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>BTR supply ล้นตลาด Sun Belt ต่อเนื่อง ดอกเบี้ยค้างสูงกดดัน same-store NOI ติดลบ</span></li>
           </ul>
         </div>
@@ -214,12 +241,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>AFFO +4%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$34.05</div>
-          <div class="ret pos">+37.5%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>AFFO ปี 3</span><span>~$1.84/sh</span></li>
             <li><span>Exit P/AFFO</span><span>18.5x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$3.82</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>same-store NOI growth กลับสู่ค่าเฉลี่ยระยะยาว ~4% ดีมานด์เช่าจาก first-time buyer ยังแข็งแกร่ง</span></li>
           </ul>
         </div>
@@ -227,12 +254,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>AFFO +7%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$42.21</div>
-          <div class="ret pos">+67.7%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>AFFO ปี 3</span><span>~$2.01/sh</span></li>
             <li><span>Exit P/AFFO</span><span>21x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$3.97</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>ขาดแคลนที่อยู่อาศัย Sun Belt รุนแรงขึ้น ดอกเบี้ยลดช้ากว่าคาด rent growth เร่งตัว multiple re-rate</span></li>
           </ul>
         </div>
@@ -279,8 +306,8 @@
       <h2>Fairly Valued — ผู้นำ SFR REIT คุณภาพสูง MOS จำกัด รอจังหวะย่อตัว</h2>
       <p>Invitation Homes (INVH) คือ single-family rental REIT ที่ใหญ่ที่สุดในสหรัฐฯ ด้วยพอร์ต 80,000+ บ้านเช่า เน้นตลาด Sun Belt ที่มีประชากรไหลเข้าต่อเนื่อง ได้ประโยชน์จากวิกฤตความสามารถซื้อบ้านที่ผลักดันดีมานด์เช่าบ้านเดี่ยว occupancy ยังสูง 96.8% แม้เผชิญแรงกดดันจากอุปทาน build-to-rent ที่เพิ่มขึ้น ทำให้ same-store NOI growth ชะลอตัวลงในไกด์แดนซ์ FY2569 ราคาหุ้นฟื้นตัวจากจุดต่ำสุด $24.60 (มี.ค. 2569) กลับมาที่ $29.37 ใกล้เคียง Fair Value เฉลี่ย 3 วิธีที่ $30.65 (P/AFFO + P/FFO + DDM) ให้ MOS เพียง ~4.2% — ไม่ใช่จุดเข้าที่มีส่วนเผื่อความปลอดภัยสูง แต่ยังมี upside เหลือถึงเป้าเฉลี่ยนักวิเคราะห์ ($32.22, Buy consensus) เหมาะสำหรับนักลงทุนระยะยาวที่ต้องการถือ REIT ผู้นำตลาดพร้อมปันผล yield ~4.1% ระหว่างรอ same-store NOI growth ฟื้นตัวและอุปทาน BTR คลี่คลาย</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$30.65 <span style="font-size:12px;color:#cab9a8">($30.34–$31.04)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +10%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$32.22 (Buy · 25 คน)</div></div>
       </div>
       <div class="zone">

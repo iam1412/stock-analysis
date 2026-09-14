@@ -12,6 +12,40 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 278.07,
+  "values": {
+    "px": 259.71,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 278.07,
+    "fvHigh": 288.61,
+    "eps": 15.19,
+    "shares": 35570000,
+    "dps": 4.64,
+    "bvps": 56.8,
+    "baseEps": 15.19,
+    "scenarios": [
+      {
+        "tgt": 185.86,
+        "div": 13.22
+      },
+      {
+        "tgt": 344.43,
+        "div": 15.03
+      },
+      {
+        "tgt": 540.11,
+        "div": 16.01
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#1A5294",
     "accentDark": "#0d2f5c",
@@ -43,18 +77,14 @@
     "min": 200,
     "max": 325,
     "grid": [225, 250, 275, 300],
-    "fairLine": 278.07,
     "currency": "$",
     "highlight": [4, 10]
   },
   "gauge": {
     "min": 180,
     "max": 316,
-    "cur": 259.71,
-    "fair": 278.07,
     "fairLabelTop": true
-  },
-  "fv": 278.07
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -75,14 +105,14 @@
     <div class="sub">FactSet Workstation — ข้อมูลการเงิน/วิเคราะห์/วิจัยสำหรับนักลงทุนสถาบัน • Portfolio Analytics & Risk • Wealth & Asset Management solutions • Content & data feeds (API/CTS) • เพิ่งประกาศพันธมิตร Google Cloud/Gemini (มิ.ย. 2569)</div>
     <div class="price-row">
       <div>
-        <div class="px">$259.71<small>(FDS)</small></div>
+        <div class="px">{{rd:px}}<small>(FDS)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
            รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
-      <div class="chg">▼ −2.7% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $185.00 – $370.98<br>
         ที่มา: Yahoo Finance, StockAnalysis.com (10 ก.ย. 2569), MarketBeat/WallStreetZen (7 ส.ค. 2569)
       </div>
@@ -97,10 +127,10 @@
          • ธนาคาร → NIM / NPL / CASA / Loan growth / Cost-to-income   • REIT/กองอสังหา → Occupancy / DPU / NAV / Gearing   • ประกัน → Combined ratio / EV
          • หุ้นเติบโต-ขาดทุน → Revenue growth / Gross margin / FCF / Cash runway (ตัด P/E ออก) -->
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">$9.24B</div><div class="d">35.57M หุ้น</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">35.57M หุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~17.10x</div><div class="d">EPS TTM $15.19 • ต่ำกว่าเฉลี่ย 5 ปีมาก</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~30–34x</div><div class="d">de-rate จาก AI-fear</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">4.57x</div><div class="d">BVPS ~$56.80</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ~$56.80</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">~$566M</div><div class="d">margin สุทธิ ~23%</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$15.19</div><div class="d">FY26E guide $17.25–17.75</div></div>
@@ -125,7 +155,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1A5294"></i>ราคา FDS</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $278.07</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -156,8 +186,8 @@
         <div class="mval">$278.07</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสม (Conservative Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $278.07 – $288.61</span></div>
-        <div class="r">$278.07</div>
+        <div class="l">มูลค่าเหมาะสม (Conservative Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <!-- ✏️ หมายเหตุ: วิธีไหนให้ค่าสูง/ต่ำเพราะอะไร, ทำไม FV กลางจึงสมเหตุสมผล -->
@@ -173,15 +203,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $259.71</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $278.07</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$194.65<br><small>MOS 30%</small></span>
-          <span>$222.45<br><small>MOS 20%</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">$261.19<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$278.07<br><small>Fair Value</small></span>
-          <span style="text-align:right">$288.61<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -196,19 +226,19 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
-      <div class="mos-verdict bad">
-        <div class="big">+7%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS ต่ำ — ราคาต่ำกว่ามูลค่าเหมาะสมเพียงเล็กน้อย ส่วนเผื่อความปลอดภัยยังไม่พอ รอจุดซื้อ MOS 20% ก่อนทยอยสะสม</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$222.45</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$194.65</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $278.07</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="259.71" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -217,17 +247,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $259.71 • EPS ฐาน ~$15.19 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS -2%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$185.86</div>
-          <div class="ret neg">-28.4%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$14.30</span></li>
             <li><span>P/E ออก</span><span>13x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$13.22</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>AI แทนที่ terminal จริง ลูกค้าลดสมัครสมาชิก margin กดดัน</span></li>
           </ul>
         </div>
@@ -235,12 +265,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$344.43</div>
-          <div class="ret pos">+32.6%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$19.14</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$15.03</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>เติบโตตามแนวทาง guide FY26 + AI เสริม (ไม่ทำลาย) ธุรกิจหลัก</span></li>
           </ul>
         </div>
@@ -248,12 +278,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +14%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$540.11</div>
-          <div class="ret pos">+108.0%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$22.50</span></li>
             <li><span>P/E ออก</span><span>24x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$16.01</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Gemini/Google Cloud partnership ปลดล็อกรายได้ใหม่ ตลาดคลาย AI-fear เต็มที่ กลับสู่ P/E เดิม</span></li>
           </ul>
         </div>
@@ -308,8 +338,8 @@
       "ผนวก AI เข้าเป็นส่วนหนึ่งของ Workstation" ผ่านพันธมิตร Google Cloud/Gemini แทนที่จะถูก AI แทนที่ — MOS ยังต่ำกว่าเกณฑ์น่าสะสม แต่ valuation
       ที่ต่ำกว่าเฉลี่ย 5 ปีและต่ำกว่า peers มากเมื่อเทียบ ROE ที่ยังสูง ทำให้เป็นหุ้นที่ควรติดตามใกล้ชิด รอราคาลงมาสู่โซน MOS 20% ก่อนเพิ่มน้ำหนักลงทุน</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$278.07 <span style="font-size:12px;color:#cab9a8">($278.07–$288.61)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +7%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#ffd180">~$261.19 (Hold · 18 สำนัก)</div></div>
       </div>
       <div class="zone">

@@ -12,6 +12,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 96,
+  "values": {
+    "px": 126.81,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 91,
+    "fvHigh": 100,
+    "eps": 7.9,
+    "shares": 1050000000,
+    "dps": 1.04,
+    "bvps": 33.3,
+    "scenarios": [
+      {
+        "tgt": 68.4,
+        "div": 2.04
+      },
+      {
+        "tgt": 108,
+        "div": 3.12
+      },
+      {
+        "tgt": 165.2,
+        "div": 3.6
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#ae8d0b",
     "accentDark": "#7d6608",
@@ -43,17 +76,13 @@
     "min": 60,
     "max": 140,
     "grid": [80, 100, 120],
-    "fairLine": 96,
     "currency": "$",
     "highlight": [0, 4]
   },
   "gauge": {
     "min": 60,
-    "max": 140,
-    "cur": 126.81,
-    "fair": 96
-  },
-  "fv": 96
+    "max": 140
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,12 +103,12 @@
     <div class="sub">World's largest gold miner (~6M oz gold-equiv/yr) • Newcrest acquisition 2023 ($19.2B) • Boddington, Lihir, Tanami, Penasquito, Ahafo • AISC leverage to gold price • Divestiture program $6B+ post-merger</div>
     <div class="price-row">
       <div>
-        <div class="px">$126.81<small>(NEM)</small></div>
+        <div class="px">{{rd:px}}<small>(NEM)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี: ก.ย. 2568 $84.31 → ส.ค. 2569 $117.76 = +39.7% (E35/E36) -->
-      <div class="chg">▲ +56.6% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $67.20 – $134.88<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, Google Finance
       </div>
@@ -93,7 +122,7 @@
       <div class="metric"><div class="k">Market Cap</div><div class="v">$133.15B</div><div class="d">1.05B หุ้นคงเหลือ · NYSE:NEM</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">16.05x</div><div class="d">EPS GAAP ปรับลด TTM $7.90</div></div>
       <div class="metric"><div class="k">P/E มัธยฐาน 5 ปีงบ</div><div class="v">15.35x</div><div class="d">anchor หน้าต่าง TTM ~12.7x (ราคาเฉลี่ย ~$100)</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">3.81x</div><div class="d">BVPS ~$33.3 · มัธยฐาน 5 ปี 1.92x</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ~$33.3 · มัธยฐาน 5 ปี 1.92x</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">$7.09B</div><div class="d">EPS ปรับลด $6.39 · +112% YoY</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">$7.90</div><div class="d">GAAP ปรับลด · เกิดที่ทองเฉลี่ย ~$4,200/oz</div></div>
@@ -121,7 +150,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#D4AC0D"></i>ราคา NEM</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $96</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -154,8 +183,8 @@
         <div class="mval">$91</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $91 – $100</span></div>
-        <div class="r">$96</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>ทำไมวิธีเปลี่ยนจากรอบก่อน (หุ้นวัฏจักร/โภคภัณฑ์):</b> ราคาทอง ณ 17 ส.ค. 2569 อยู่ที่ <b>$4,447/oz</b> ใกล้จุดสูงสุดเป็นประวัติการณ์
@@ -181,13 +210,13 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $126.81</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $96</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$67.2<br><small>MOS 30%</small></span>
-          <span>$76.8<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$96<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$117.76<br><small>ราคาปัจจุบัน</small></span>
           <span style="text-align:right">$131.4<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
@@ -207,19 +236,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−32%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ไม่มี Margin of Safety — ราคาสูงกว่ามูลค่าเหมาะสม | ราคาปัจจุบัน $117.76 vs FV $96 (คิดบนทองปกติ $3,800/oz)</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v neu">$76.8</div><div class="d">ต่ำกว่าราคาปัจจุบัน 34.8%</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v neu">$67.2</div><div class="d">ตรงกับจุดต่ำสุด 52 สัปดาห์พอดี</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $96</div><div class="d">ต่ำกว่ามูลค่าเหมาะสม (ฉากทองปกติ)</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v neu">{{rd:mos20}}</div><div class="d">ต่ำกว่าราคาปัจจุบัน 34.8%</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v neu">{{rd:mos30}}</div><div class="d">ตรงกับจุดต่ำสุด 52 สัปดาห์พอดี</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ต่ำกว่ามูลค่าเหมาะสม (ฉากทองปกติ)</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="126.81" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -228,17 +257,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $126.81 • EPS ฐาน TTM $7.90 • ตัวแปรฉาก = ราคาทอง • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน TTM $7.90 • ตัวแปรฉาก = ราคาทอง{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −22%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$68.4</div>
-          <div class="ret neg">−44.5%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$3.80</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$2.04</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>ทองถอยสู่ $3,000/oz + ต้นทุนไม่ลดตาม</span></li>
           </ul>
         </div>
@@ -246,12 +275,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS −3%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$108.0</div>
-          <div class="ret neg">−12.4%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$7.20</span></li>
             <li><span>P/E ออก</span><span>15x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$3.12</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>ทองกลับสู่ปกติ $3,800/oz · buyback ชดเชยบางส่วน</span></li>
           </ul>
         </div>
@@ -259,12 +288,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +14%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$165.2</div>
-          <div class="ret pos">+33.1%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$11.80</span></li>
             <li><span>P/E ออก</span><span>14x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$3.60</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>ทอง $5,000/oz ยั่งยืน + Red Chris/Ahafo North + buyback เต็มสูบ</span></li>
           </ul>
         </div>
@@ -325,8 +354,8 @@
         แปลว่าราคาวันนี้คือ<b>การเดิมพันว่าทองจะยืน $4,400+/oz ต่อไป</b> ไม่ใช่ส่วนลดจากมูลค่ากิจการ
       </p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$96 <span style="font-size:12px;color:#cab9a8">($91–$100)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffab91">MOS ~ −32%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffab91">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">$131.39 (21 สำนัก, Buy)</div></div>
       </div>
       <div class="zone">
@@ -344,7 +373,7 @@
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะราคาทองโลก, AISC, อัตราการผลิต และตัวคูณเป้าหมาย
     <b>Fair Value ในรายงานนี้คิดบนสมมติฐานราคาทองปกติ $3,800/oz ซึ่งต่ำกว่าราคาตลาดปัจจุบัน ($4,447/oz)</b> — ถ้าทองยืนสูงกว่านี้ได้ยาว มูลค่าเหมาะสมจะสูงขึ้นตาม และข้อสรุปเรื่องความแพงจะเปลี่ยนไป
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
-    ที่มาข้อมูล: Yahoo Finance (ราคา/EPS TTM/เป้านักวิเคราะห์), StockAnalysis.com (งบย้อนหลัง 5 ปี/อัตราส่วนมัธยฐาน/หุ้นคงเหลือ), Google Finance (ยืนยันราคาแหล่งที่ 3 + ราคาทอง COMEX), Newmont Investor Relations (AISC/ปริมาณการผลิต/guidance) • ราคา ณ 11 ก.ย. 2569 · ราคาทอง ณ 11 ก.ย. 2569
+    ที่มาข้อมูล: Yahoo Finance (ราคา/EPS TTM/เป้านักวิเคราะห์), StockAnalysis.com (งบย้อนหลัง 5 ปี/อัตราส่วนมัธยฐาน/หุ้นคงเหลือ), Google Finance (ยืนยันราคาแหล่งที่ 3 + ราคาทอง COMEX), Newmont Investor Relations (AISC/ปริมาณการผลิต/guidance) • ราคา ณ {{rd:priceDate}} · ราคาทอง ณ {{rd:priceDate}}
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 17 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

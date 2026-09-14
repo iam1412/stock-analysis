@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 89,
+  "values": {
+    "px": 94.69,
+    "priceDate": "2026-09-11",
+    "dateEra": "CE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 76,
+    "fvHigh": 130,
+    "analystTgt": 130,
+    "shares": 32600000,
+    "revenue": 50000000,
+    "baseEps": 1.63,
+    "scenarios": [
+      {
+        "tgt": 26,
+        "div": null
+      },
+      {
+        "tgt": 80,
+        "div": null
+      },
+      {
+        "tgt": 150,
+        "div": null
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#e46f17",
     "accentDark": "#a75111",
@@ -41,18 +74,14 @@
     "min": 0,
     "max": 120,
     "grid": [20, 40, 60, 80, 100],
-    "fairLine": 89,
     "currency": "$",
     "highlight": [2, 8]
   },
   "gauge": {
     "min": 50,
     "max": 150,
-    "cur": 94.69,
-    "fair": 89,
     "fairLabelTop": "-58px"
-  },
-  "fv": 89
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +101,11 @@
     <div class="sub">ผู้นำ <b>wafer-level test &amp; burn-in</b> (ระบบ FOX/Sonoma) สำหรับคัดกรอง/เบิร์นอินชิป — silicon photonics &amp; optical engine ของ co-packaged optics (CPO), AI processor, SiC/GaN</div>
     <div class="price-row">
       <div>
-        <div class="px">$94.69<small>(AEHR)</small></div>
+        <div class="px">{{rd:px}}<small>(AEHR)</small></div>
       </div>
-      <div class="chg">▲ +264.3% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2026 (ปิด)<br>
+        ราคา ณ {{rd:priceDate}} (ปิด)<br>
         52 สัปดาห์ $14.01 – $126.62 • ผันผวนสูงมาก (หลังงบ Q4/FY2026 ทะลุคาด 14 ก.ค. 2026 พุ่ง +21.9% เป็น $87.79 (15 ก.ค.) ย่อลงมาที่ $81.05 (17 ก.ค.) แล้ววิ่งต่อเนื่องอีก +27.2% แตะ $103.07 (7 ส.ค. 2026) ก่อนวิ่งต่อเนื่องอีก +19.6% แตะ $123.25 (18 ส.ค. 2026) โดยไม่มีข่าวธุรกิจใหม่ระหว่างทาง แล้วย่อกลับลงมาที่ $80.81 (28 ส.ค. 2026) ก่อนดีดกลับขึ้นมาอีก +12.3% แตะ $90.79 (8 ก.ย. 2026) โดยไม่มีข่าวธุรกิจใหม่ระหว่างทางเช่นกัน)<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / MarketBeat / SEC 8-K
       </div>
@@ -87,7 +116,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ FY2026 เต็มปี (ปีงบจบ 29 พ.ค. 2026) + ไกด์ FY2027</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$3.09B</div><div class="d">~32.6 ล้านหุ้น (คงเหลือ)</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~32.6 ล้านหุ้น (คงเหลือ)</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neg">N/A</div><div class="d">ขาดทุน GAAP (TTM) — ไม่มี P/E <span class="pill r">loss-making</span></div></div>
       <div class="metric"><div class="k">P/S (TTM)</div><div class="v neu">~62x</div><div class="d">รายได้ TTM ~$50.0M • ตัวคูณยังตึงแม้ราคาย่อลงมา</div></div>
       <div class="metric"><div class="k">EPS (TTM, GAAP)</div><div class="v neg">−$0.23</div><div class="d">ขาดทุนสุทธิ ~$7.1M (TTM) • ดีขึ้นจาก −$0.38</div></div>
@@ -113,7 +142,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1a73e8"></i>ราคา AEHR</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $89</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -143,8 +172,8 @@
         <div class="mval">$130</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">ถ่วงน้ำหนัก P/S 40% + EV/Sales 40% + Analyst (n=4) 20% • กรอบ $76 – $130</span></div>
-        <div class="r">$89</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">ถ่วงน้ำหนัก P/S 40% + EV/Sales 40% + Analyst (n=4) 20% • กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>หมายเหตุ:</b> ข้าม <b>DDM/P/BV</b> และ <b>P/E</b> เพราะ <b>ไม่จ่ายปันผล</b> และ <b>ยังขาดทุน GAAP TTM (EPS −$0.23)</b> แม้ Q4 GAAP พลิกกำไร +$0.04 — ประเมินด้วย <b>ยอดขาย</b> เป็นหลัก
@@ -160,14 +189,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $94.69</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $89</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$62.30<br><small>MOS 30%</small></span>
-          <span>$71.20<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$89<br><small>Fair Value</small></span>
-          <span style="text-align:right">$130<br><small>เป้า Analyst (avg, n=4)</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:analystTgt}}<br><small>เป้า Analyst (avg, n=4)</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -181,19 +210,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−6%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>Margin of Safety ต่ำ — ราคาแพงกว่ามูลค่าเหมาะสม</b><br>ราคาปัจจุบัน $90.79 อยู่สูงกว่ามูลค่าเหมาะสม $89 เล็กน้อย (แพงกว่า ~2.0%) หลังดีดกลับขึ้นจาก $80.81 (28 ส.ค.) — ยังไม่มี margin of safety รอราคาย่อกลับสู่โซน MOS 20–30% ก่อนพิจารณาเข้าซื้อ</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$71.20</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$62.30</div><div class="d">โซนถูก (เผื่อความเสี่ยงสูง)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $89</div><div class="d">ที่ fair value หรือต่ำกว่า</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูก (เผื่อความเสี่ยงสูง)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ที่ fair value หรือต่ำกว่า</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="94.69" step="1">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -202,13 +231,13 @@
 
   <!-- ===== RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $94.69 • EPS ฐาน ~$1.63 (พร็อกซีรายได้/หุ้น FY2026)</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} (พร็อกซีรายได้/หุ้น FY2026)</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>รายได้ CAGR ~+35%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$26</div>
-          <div class="ret neg">รวม ~ −72.5% (≈ −35.0%/ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>รายได้/หุ้น ปี 3</span><span>$4.26</span></li>
             <li><span>P/S ออก</span><span>6x</span></li>
@@ -219,8 +248,8 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>รายได้ CAGR ~+62%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$80</div>
-          <div class="ret neg">รวม ~ −15.5% (≈ −5.5%/ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>รายได้/หุ้น ปี 3</span><span>$6.71</span></li>
             <li><span>P/S ออก</span><span>12x</span></li>
@@ -231,8 +260,8 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>รายได้ CAGR ~+83%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$150</div>
-          <div class="ret pos">รวม ~ +58.4% (≈ +16.6%/ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>รายได้/หุ้น ปี 3</span><span>$9.39</span></li>
             <li><span>P/S ออก</span><span>16x</span></li>
@@ -286,9 +315,9 @@
       <h2>ราคาดีดกลับขึ้นมาที่ $90.79 สูงกว่ามูลค่าเหมาะสม $89 เล็กน้อย โดยไม่มีข่าวธุรกิจใหม่ — ยังต้อง execute ไกด์ที่สูงมาก</h2>
       <p>Aehr Test Systems เป็น small-cap ที่เป็น <b>ผู้นำ wafer-level burn-in สำหรับ silicon photonics</b> และกำลังจับคลื่น CPO/optical I/O และ AI processor ใน data center — Q4 FY2026 (ประกาศ 14 ก.ค. 2026) รายได้ <b>$18.8M (+34% YoY)</b>, non-GAAP EPS <b>+$0.11</b> (ชนะคาด −$0.01), bookings สถิติใหม่ <b>$60.7M</b> และ effective backlog <b>$100.6M</b> — บริษัทไกด์รายได้ FY2027 โต <b>160–200%</b> พร้อม pretax margin non-GAAP 18–22% ยังคง <b>ขาดทุน GAAP เต็มปี</b> (EPS TTM −$0.23) แต่ดีขึ้นชัดเจนจาก −$0.38 หลังราคาพุ่งจาก $72.01 (10 ก.ค. 2026) ขึ้นมา <b>$87.79 (15 ก.ค. 2026)</b> แล้วย่อลงมาที่ <b>$81.05 (17 ก.ค. 2026)</b> ก่อนวิ่งต่อเนื่องอีก <b>+27.2%</b> แตะ <b>$103.07 (7 ส.ค. 2026)</b> แล้ววิ่งต่อเนื่องอีก <b>+19.6%</b> แตะ <b>$123.25 (18 ส.ค. 2026)</b> โดยไม่มีข่าวธุรกิจใหม่ระหว่างทาง ก่อนย่อกลับลงมาที่ <b>$80.81 (28 ส.ค. 2026)</b> แล้วดีดกลับขึ้นอีก <b>+12.3%</b> แตะ <b>$90.79 (8 ก.ย. 2026)</b> — ราคาตอนนี้ <b>สูงกว่า fair value $89 เล็กน้อย</b> (แพงกว่า ~2.0%, ไม่มี margin of safety) และยังต่ำกว่าเป้านักวิเคราะห์เฉลี่ย $130 พอสมควร เหมาะกับสายรับความเสี่ยงสูงที่เชื่อธีม AI/CPO ต่อเนื่องเท่านั้น และต้องระวังความผันผวนที่วิ่งเร็วกว่าปัจจัยพื้นฐาน</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$89 <span style="font-size:12px;color:#a8b6cc">($76–$130)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ff8a80">MOS ~ −6%</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#ff8a80">$130 (+37.3%)</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#a8b6cc">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ff8a80">MOS ~ {{rd:mos}}</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#ff8a80">{{rd:analystTgt}} (+37.3%)</div></div>
       </div>
       <div class="zone">
         💡 <b>กลยุทธ์:</b> สาย value — ราคาปัจจุบัน<b>สูงกว่ามูลค่าเหมาะสมเล็กน้อย (แพงกว่า ~2.0%) ยังไม่มี margin of safety</b> รอย่อเพิ่มสู่โซนน่าสนใจ <b>&lt; $71.20</b> (โซนถูกที่ &lt;$62.30) และจำกัดขนาดสถานะ • สาย growth — ราคายังต่ำกว่าเป้านักวิเคราะห์เฉลี่ย $130 พอสมควร ต้องเชื่อว่าบริษัท execute ตามไกด์ FY2027 ได้จริงเพื่อไปถึงระดับราคานั้น ให้ติดตาม <b>ผลประกอบการ Q1 FY2027</b>, <b>การส่งมอบ backlog $100.6M</b>, <b>margin non-GAAP ที่ไกด์ 18-22%</b> และ <b>ออเดอร์ hyperscaler/silicon photonics ใหม่</b> เป็นตัวชี้วัดหลัก

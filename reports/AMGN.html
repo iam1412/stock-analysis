@@ -12,6 +12,40 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 360,
+  "values": {
+    "px": 377.35,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 346,
+    "fvHigh": 378,
+    "eps": 20.98,
+    "shares": 540000000,
+    "dps": 10.08,
+    "bvps": 17.03,
+    "baseEps": 20.98,
+    "scenarios": [
+      {
+        "tgt": 315,
+        "div": 31
+      },
+      {
+        "tgt": 496,
+        "div": 33
+      },
+      {
+        "tgt": 736,
+        "div": 34
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#0066CC",
     "accentDark": "#003d80",
@@ -43,18 +77,14 @@
     "min": 250,
     "max": 450,
     "grid": [300, 350, 400],
-    "fairLine": 360,
     "currency": "$",
     "highlight": [0, 10]
   },
   "gauge": {
     "min": 240,
     "max": 465,
-    "cur": 377.35,
-    "fair": 360,
     "fairLabelTop": true
-  },
-  "fv": 360
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +104,11 @@
     <div class="sub">Biopharmaceuticals (Repatha · Prolia · Otezla) • Horizon (Tepezza · Krystexxa) • Cardiovascular · Inflammation · Oncology • MariTide (obesity pipeline)</div>
     <div class="price-row">
       <div>
-        <div class="px">$377.35<small>(AMGN)</small></div>
+        <div class="px">{{rd:px}}<small>(AMGN)</small></div>
       </div>
-      <div class="chg">▲ +26.4% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $269.77 – $398.00<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, Amgen Investor Relations
       </div>
@@ -90,7 +120,7 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569 · EPS = Non-GAAP (Adjusted)</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">$203.8B</div><div class="d">~540 ล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM, adj)</div><div class="v neu">~18.0x</div><div class="d">Non-GAAP adj EPS $20.98 · GAAP P/E ~25x</div></div>
+      <div class="metric"><div class="k">P/E (TTM, adj)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">Non-GAAP adj EPS $20.98 · GAAP P/E ~25x</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">15–22x</div><div class="d">ช่วงปกติสำหรับ large-cap pharma</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">22.2x</div><div class="d">BVPS $17.03 · สูงเพราะ buyback + Horizon goodwill</div></div>
 
@@ -115,7 +145,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#0066CC"></i>ราคา AMGN</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $360</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -144,8 +174,8 @@
         <div class="mval">$346.00</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $346 – $378</span></div>
-        <div class="r">$360</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/E ให้ค่าสูงสุด ($377.64) เพราะ adj EPS แข็งแกร่ง · DDM ให้ค่ากลาง ($356.16) เหมาะสมเพราะ Amgen เพิ่มปันผลต่อเนื่อง · EV/EBITDA ให้ค่าต่ำสุด ($346.00) เนื่องจากหักหนี้สุทธิ $45.3B จาก Horizon acquisition
@@ -161,15 +191,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $377.35</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $360</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$252<br><small>MOS 30%</small></span>
-          <span>$288<br><small>MOS 20%</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">$353<br><small>เป้า Analyst</small></span>
-          <span style="text-align:right">$360<br><small>Fair Value</small></span>
-          <span style="text-align:right">$378<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -184,19 +214,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−5%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาใกล้มูลค่าเหมาะสม (At Fair Value) — ไม่มี MOS ณ ราคาปัจจุบัน · รอโอกาสดีกว่าในโซน &lt;$290</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$288</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$252</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $360</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="377.35" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -205,17 +235,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $377.35 • EPS ฐาน ~$20.98 (adj TTM) • รวมปันผล ~$10.08/ปี</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} (adj TTM){{rd:scnNote}} ~$10.08/ปี</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$315</div>
-          <div class="ret neg">−8.3% (3 ปี รวมปันผล)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$20.98</span></li>
             <li><span>P/E ออก</span><span>15x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$31</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>MariTide ล้มเหลว + LOE เร่ง</span></li>
           </ul>
         </div>
@@ -223,12 +253,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +7%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$496</div>
-          <div class="ret pos">+40.2% (3 ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$25.70</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$33</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>MariTide Phase 3 คืบหน้า + growth drivers +24% YoY</span></li>
           </ul>
         </div>
@@ -236,12 +266,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$736</div>
-          <div class="ret pos">+104.1% (3 ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$31.91</span></li>
             <li><span>P/E ออก</span><span>22x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$34</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>MariTide อนุมัติ FDA + obesity market re-rating</span></li>
           </ul>
         </div>
@@ -292,8 +322,8 @@
       ราคาปัจจุบัน $382.24 สูงกว่ามูลค่าเหมาะสม $360 (เฉลี่ย 3 วิธี: P/E $377.64 + DDM $356.16 + EV/EBITDA $346.00) แสดงว่าตลาดให้ราคาเต็มมูลค่าค่อนไปทางแพง MOS ติดลบ ~−6.2%
       ปัจจัยที่น่าติดตามมากที่สุดคือ MariTide Phase 3 MARITIME — หากประสบความสำเร็จในการแข่งขันกับ Ozempic/Wegovy (ข้อได้เปรียบ: ฉีดรายเดือน vs รายสัปดาห์) จะ re-rate หุ้นอย่างมีนัยสำคัญ</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$360 <span style="font-size:12px;color:#cab9a8">($346–$378)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −5%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$353 (Buy — 35 คน)</div></div>
       </div>
       <div class="zone">
@@ -308,7 +338,7 @@
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ EPS ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ
     • ที่มา: StockAnalysis.com (stockanalysis.com/stocks/amgn/), Yahoo Finance (finance.yahoo.com/quote/AMGN), Amgen Investor Relations Q4 2025 + Q1 2026 earnings (prnewswire.com), Amgen Newsroom (amgen.com/newsroom), StockAnalysis Forecast (stockanalysis.com/stocks/amgn/forecast/)
-    • ราคา ณ 11 ก.ย. 2569 · ยืนยัน 2 แหล่ง: $382.45 (Yahoo) ≈ $383.00 (StockAnalysis) diff 0.14% ✓ · GAAP EPS TTM $14.38 (Yahoo) ≈ $14.37 (StockAnalysis) diff 0.1% ✓ / adj EPS TTM $20.98 จากรายงาน Q1 2569 (Amgen IR) + Seeking Alpha
+    • ราคา ณ {{rd:priceDate}} · ยืนยัน 2 แหล่ง: $382.45 (Yahoo) ≈ $383.00 (StockAnalysis) diff 0.14% ✓ · GAAP EPS TTM $14.38 (Yahoo) ≈ $14.37 (StockAnalysis) diff 0.1% ✓ / adj EPS TTM $20.98 จากรายงาน Q1 2569 (Amgen IR) + Seeking Alpha
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 31 กรกฎาคม 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

@@ -12,6 +12,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 328,
+  "values": {
+    "px": 315.61,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 313,
+    "fvHigh": 336,
+    "shares": 94200000,
+    "dps": 3.84,
+    "bvps": 84.6,
+    "baseEps": 17.67,
+    "scenarios": [
+      {
+        "tgt": 225.78,
+        "div": 10.4
+      },
+      {
+        "tgt": 367.99,
+        "div": 12.2
+      },
+      {
+        "tgt": 496.5,
+        "div": 12.9
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#0098d1",
     "accentDark": "#006f9b",
@@ -43,18 +76,14 @@
     "min": 225,
     "max": 350,
     "grid": [250, 275, 300, 325],
-    "fairLine": 328,
     "currency": "$",
     "highlight": [7, 10]
   },
   "gauge": {
     "min": 220,
     "max": 400,
-    "cur": 315.61,
-    "fair": 328,
     "fairLabelTop": false
-  },
-  "fv": 328
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -75,14 +104,14 @@
     <div class="sub">นายหน้าประกันภัย/ประกันต่อ Top-3 โลก • Risk &amp; Broking (นายหน้าประกัน/reinsurance) • Health, Wealth &amp; Career (สวัสดิการพนักงาน/บำนาญ/HR consulting) • แผน "Grow, Simplify, Transform"</div>
     <div class="price-row">
       <div>
-        <div class="px">$315.61<small>(WTW)</small></div>
+        <div class="px">{{rd:px}}<small>(WTW)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
            รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
-      <div class="chg">▲ +0.8% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569 (31 Jul 2026)<br>
+        ราคา ณ {{rd:priceDate}} (31 Jul 2026)<br>
         กรอบ 52 สัปดาห์ $240.62 – $352.79<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, WTW Investor Relations (Q4/FY2025 &amp; Q1 2026 earnings release)
       </div>
@@ -97,10 +126,10 @@
          • ธนาคาร → NIM / NPL / CASA / Loan growth / Cost-to-income   • REIT/กองอสังหา → Occupancy / DPU / NAV / Gearing   • ประกัน → Combined ratio / EV
          • หุ้นเติบโต-ขาดทุน → Revenue growth / Gross margin / FCF / Cash runway (ตัด P/E ออก) -->
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">$29.7B</div><div class="d">~94.2M หุ้น</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">~94.2M หุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~16.2x</div><div class="d">อิง adjusted diluted EPS TTM ส่วนลดเทียบ AON (~18x) และ MMC (~21x)</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~21x</div><div class="d">กรอบ 17x–25x (บิดเบือนช่วง Aon-merger 2020-21)</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">3.73x</div><div class="d">BVPS ~$84.6</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ~$84.6</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$1.61B</div><div class="d">Adj. diluted EPS $17.08 (+5% YoY)</div></div>
       <div class="metric"><div class="k">EPS adj. (TTM)</div><div class="v">~$17.67</div><div class="d">Q1'26 adj. EPS $3.72 (+19% YoY)</div></div>
@@ -125,7 +154,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#00a3e0"></i>ราคา WTW</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $328</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -153,8 +182,8 @@
         <div class="mval">$312.55</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $313 – $336</span></div>
-        <div class="r">$328</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <!-- ✏️ หมายเหตุ: วิธีไหนให้ค่าสูง/ต่ำเพราะอะไร, ทำไม FV กลางจึงสมเหตุสมผล -->
@@ -169,15 +198,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $315.61</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $328</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$229.6<br><small>MOS 30%</small></span>
-          <span>$262.4<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$328<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$333<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$336<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -191,19 +220,19 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
-      <div class="mos-verdict bad">
-        <div class="big">+4%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">Margin of Safety ระดับปานกลาง — ราคาปัจจุบันต่ำกว่ามูลค่าเหมาะสมพอสมควร แต่ยังไม่ถึงโซน deep value</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$262.4</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$229.6</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $328</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="315.61" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -212,17 +241,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $315.61 • EPS ฐาน ~$17.67 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −3%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$225.78</div>
-          <div class="ret neg">−25.2%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$16.13</span></li>
             <li><span>P/E ออก</span><span>14x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$10.4</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>Organic growth ชะลอ/ติดลบ, integration Newfront สะดุด, multiple compress</span></li>
           </ul>
         </div>
@@ -230,12 +259,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +7%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$367.99</div>
-          <div class="ret pos">+20.5%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$21.65</span></li>
             <li><span>P/E ออก</span><span>17x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$12.2</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>Organic growth mid-single digit ต่อเนื่อง, margin ขยายตามแผน, buyback หนุน EPS</span></li>
           </ul>
         </div>
@@ -243,12 +272,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$496.50</div>
-          <div class="ret pos">+61.4%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$24.83</span></li>
             <li><span>P/E ออก</span><span>20x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$12.9</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>R&amp;B เร่งตัว, Newfront/Willis Re สร้างมูลค่าเกินคาด, ช่องว่าง P/E เทียบ AON/MMC ปิดลง</span></li>
           </ul>
         </div>
@@ -295,8 +324,8 @@
       <h2>นายหน้าประกัน Top-3 โลก — ส่วนลดจากคู่แข่ง + EPS Momentum ฟื้น</h2>
       <p>WTW ซื้อขายที่ P/E 16.2x ยังคงมีส่วนลดเทียบ AON (~18x) และ MMC (~21x) ขณะที่ EPS โต +19% YoY ใน Q1 2569 และ margin ขยายตัวต่อเนื่อง +130 bps/ปี แต่หลังราคาฟื้นตัวแรงขึ้นมาที่ $335.30 ทำให้ MOS ติดลบเล็กน้อย ~-2.2% เทียบมูลค่าเหมาะสม $328 — valuation ตึงขึ้นจนเกือบเต็มมูลค่าแล้ว เหมาะสำหรับการถือต่อมากกว่าเข้าใหม่ รอจังหวะย่อเข้าโซน MOS 10-20% ($262-295) จะให้ upside ที่คุ้มค่าความเสี่ยงมากกว่า</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$328 <span style="font-size:12px;color:#cab9a8">($313–$336)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +4%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$333 (Buy majority)</div></div>
       </div>
       <div class="zone">

@@ -10,6 +10,19 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 8.5,
+  "values": {
+    "px": 8.7,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 7.9,
+    "fvHigh": 9.3,
+    "eps": 0.44,
+    "shares": 400000000,
+    "dps": 0.2
+  },
   "theme": {
     "accent": "#5c6bc0",
     "accentDark": "#283593",
@@ -41,18 +54,14 @@
     "min": 7,
     "max": 10,
     "grid": [8, 9],
-    "fairLine": 8.5,
     "currency": "฿",
     "highlight": [5, 7]
   },
   "gauge": {
     "min": 5,
     "max": 13,
-    "cur": 8.7,
-    "fair": 8.5,
     "fairLabelTop": true
-  },
-  "fv": 8.5
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +81,11 @@
     <div class="sub">ระบบบูรณาการโทรคมนาคม • Cloud &amp; Data Center • Cyber Security • Smart Solutions &amp; AI • Digital Platform • สาธารณะปลอดภัย (Public Safety)</div>
     <div class="price-row">
       <div>
-        <div class="px">฿8.70<small>(TKC)</small></div>
+        <div class="px">{{rd:px}}<small>(TKC)</small></div>
       </div>
-      <div class="chg">▼ −9.8% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿7.20 – ฿11.40<br>
         ที่มา: SET / Investing.com / Yahoo Finance TKC.BK
       </div>
@@ -88,7 +97,7 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">฿3,480 ล้าน</div><div class="d">400 ล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~19.8x</div><div class="d">EPS TTM ฿0.44</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM ฿0.44</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~18–22x</div><div class="d">ช่วง low 10x / high 30x+</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">0.80x</div><div class="d">ต่ำกว่า book value</div></div>
 
@@ -99,7 +108,7 @@
 
       <div class="metric"><div class="k">รายได้ FY2568</div><div class="v neu">฿2,338 ล้าน</div><div class="d">−4.5% YoY (FY2567 ฿2,449 ล.)</div></div>
       <div class="metric"><div class="k">อัตรากำไรสุทธิ</div><div class="v">~7.3%</div><div class="d">Q1/2569 margin ดีขึ้น 10.6%</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.3%</div><div class="d">฿0.20/หุ้น (Ex-date พ.ค. 69)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">฿0.20/หุ้น (Ex-date พ.ค. 69)</div></div>
       <div class="metric"><div class="k">Backlog</div><div class="v pos">฿3,300 ล้าน</div><div class="d">Pipeline เพิ่ม ฿6,300 ล.</div></div>
     </div>
   </section>
@@ -113,7 +122,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#5c6bc0"></i>ราคา TKC</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿8.50</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -139,8 +148,8 @@
         <div class="mval">฿8.75</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿7.90 – ฿9.30</span></div>
-        <div class="r">฿8.50</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/E ให้มูลค่าต่ำสุด (฿7.92) สะท้อน EPS ที่ยังอยู่ระดับต่ำในช่วงผ่านการปรับโครงสร้าง วิธี DCF (฿8.14) ให้น้ำหนักการเติบโตของกำไร 10%/ปีตามเป้าหมายบริษัท ส่วนวิธี EV/Revenue (฿8.75) สูงกว่าเล็กน้อยเพราะรวม premium จาก Backlog ฿3,300M และเป้ารายได้โต 20% ปี 2569 มูลค่ากลาง ฿8.50 สะท้อนภาพ "ราคาเหมาะสม" ณ ปัจจุบัน ยังไม่มี upside มากหากไม่มีการฟื้นตัวของกำไรจริง
@@ -154,15 +163,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿8.70</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿8.50</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿5.95<br><small>MOS 30%</small></span>
-          <span>฿6.80<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿8.50<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">฿9.00<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">฿9.30<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -175,19 +184,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−2%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS ต่ำมาก — ราคาปัจจุบันใกล้เคียง Fair Value เกือบเต็ม ยังไม่มีส่วนเผื่อความปลอดภัยเพียงพอ</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿6.80</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿5.95</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿8.50</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="8.7" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -279,8 +288,8 @@
       <h2>TKC — ราคาใกล้ Fair Value, รอสัญญาณการฟื้นตัวของกำไร</h2>
       <p>TKC (Turnkey Communication Services) เป็นผู้นำด้าน System Integration โทรคมนาคมและ IT ของไทย มีฐานลูกค้าภาครัฐแข็งแกร่งและ Backlog ฿3,300M รองรับรายได้ระยะกลาง บริษัทอยู่ในช่วงเปลี่ยน S-Curve สู่ธุรกิจ AI/Cloud มาร์จิ้นสูง อย่างไรก็ตามราคาปัจจุบัน ฿8.40 ใกล้เคียง Fair Value ฿8.50 (MOS เพียง 1.2%) ยังขาด margin of safety ที่ชัดเจน ROE ที่ลดลงมาอยู่ที่ 4.2% เป็นสัญญาณเตือนว่าการฟื้นตัวยังไม่ชัด นักลงทุนแบบ value ควรรอราคาที่ ฿7.50 หรือต่ำกว่า (MOS ~12%) ก่อนสะสม หรือรอดูผลงาน FY2569 H1 ยืนยันว่ากำไรฟื้นจริงตามเป้าโต 20%</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿8.50 <span style="font-size:12px;color:#9fa8da">(฿7.90–฿9.30)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −2%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#9fa8da">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿9.00–10.00 (ทยอยสะสม)</div></div>
       </div>
       <div class="zone">

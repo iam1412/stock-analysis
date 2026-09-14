@@ -10,6 +10,38 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 30.6,
+  "values": {
+    "px": 27.41,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 26,
+    "fvHigh": 35.2,
+    "eps": 0.93,
+    "shares": 301000000,
+    "baseEps": 0.93,
+    "scenarios": [
+      {
+        "tgt": 16.2,
+        "div": 0
+      },
+      {
+        "tgt": 37.25,
+        "div": 0
+      },
+      {
+        "tgt": 54.6,
+        "div": 0
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#00a838",
     "accentDark": "#007a29",
@@ -41,18 +73,14 @@
     "min": 25,
     "max": 50,
     "grid": [30, 35, 40, 45],
-    "fairLine": 30.6,
     "currency": "$",
     "highlight": [2, 11]
   },
   "gauge": {
     "min": 18,
     "max": 55,
-    "cur": 27.41,
-    "fair": 30.6,
     "fairLabelTop": true
-  },
-  "fv": 30.6
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +100,11 @@
     <div class="sub">Premium running &amp; athletic brand • CloudTec technology • Switzerland • DTC growth • Roger Federer • Running / Trail / Tennis</div>
     <div class="price-row">
       <div>
-        <div class="px">$27.41<small>(ONON)</small></div>
+        <div class="px">{{rd:px}}<small>(ONON)</small></div>
       </div>
-      <div class="chg">▼ −26.2% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $30.11 – $52.20<br>
         ที่มา: StockAnalysis.com, Finviz.com, Yahoo Finance, Google Finance
       </div>
@@ -87,8 +115,8 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ 12 ส.ค. 2569 • สกุล USD</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$8.25B</div><div class="d">~301M หุ้น (diluted TTM)</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~29.5x</div><div class="d">EPS TTM ~$0.93 (Yahoo, GAAP diluted)</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~301M หุ้น (diluted TTM)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM ~$0.93 (Yahoo, GAAP diluted)</div></div>
       <div class="metric"><div class="k">Forward P/E (NTM)</div><div class="v">~13x</div><div class="d">EPS consensus (NTM) ~$2.07</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~4.7x (ประมาณ)</div><div class="d">อิง BVPS รอบก่อน • D/E สุทธิเป็น net cash (TTM)</div></div>
 
@@ -113,7 +141,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#00CC44"></i>ราคา ONON</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $30.60</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -138,8 +166,8 @@
         <div class="mval">$35.19</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $26.00 – $35.20</span></div>
-        <div class="r">$30.60</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         ⚠ EPS(TTM) ระดับ quote ขัดกันระหว่างผู้ให้ข้อมูล: Yahoo แสดง $0.93 (คูณกลับตรงกับ P/E ของตัวเอง 33.2x พอดี) ส่วน StockAnalysis แสดง P/E 20.87x โดยไม่เปิดเผย EPS TTM ตรง ๆ (น่าจะใช้เกณฑ์ EPS ปรับปรุงต่างกัน) — ใช้เลข Yahoo ที่ตรวจคูณกลับได้เองเป็นหลัก ส่วนตารางงบ 5 ปีของ StockAnalysis รายงานเป็น CHF (สกุลบัญชีของบริษัท) จึงใช้เฉพาะเป็นบริบทอัตรา % (การเติบโต/margin/ROE) ไม่ผสมกับราคา USD โดยตรง
@@ -154,14 +182,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $27.41</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $30.60</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$21.42<br><small>MOS 30%</small></span>
-          <span>$24.48<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$30.60<br><small>Fair Value</small></span>
-          <span style="text-align:right">$35.20<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$51.30<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -177,19 +205,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+10%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS พอประมาณ — ราคาต่ำกว่า Fair Value อยู่บ้าง แต่ยังไม่ถูกมาก</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$24.48</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$21.42</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $30.60</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสมใหม่</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสมใหม่</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="27.41" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -198,17 +226,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $27.41 • EPS ฐาน ~$0.93 • ไม่มีปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} • ไม่มีปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$16.20</div>
-          <div class="ret neg">−41%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$1.08</span></li>
             <li><span>P/E ออก</span><span>15x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>Wholesale อ่อนแอต่อเนื่อง · ภาษีนำเข้ากดดัน Gross Margin · Nike/HOKA แย่งส่วนแบ่งตลาด</span></li>
           </ul>
         </div>
@@ -216,12 +244,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +17%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$37.25</div>
-          <div class="ret pos">+36%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$1.49</span></li>
             <li><span>P/E ออก</span><span>25x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>การชะลอตัวคลี่คลายบางส่วน · Gross Margin ทรงตัว 64%+ · DTC ยังขยายส่วนแบ่ง</span></li>
           </ul>
         </div>
@@ -229,12 +257,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +25%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$54.60</div>
-          <div class="ret pos">+99%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$1.82</span></li>
             <li><span>P/E ออก</span><span>30x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>ปัญหา wholesale/tariff คลี่คลายเร็ว · ขยายตลาดเอเชียสำเร็จ · re-rating กลับสู่พรีเมียม growth brand</span></li>
           </ul>
         </div>
@@ -286,8 +314,8 @@
       ผลกำไร TTM เองยังไม่พังทลาย (Net Margin ขยายเป็น 12.3% จาก 6.8% ใน FY2025) — สิ่งที่ตลาดกำลัง de-rate คือ P/E ไม่ใช่กำไรที่หายไป
       หลังประเมิน Fair Value ใหม่จากงบล่าสุด เราปรับ FV ลงจาก $43.00 เป็น $30.60 (−28.8%) ซึ่งใกล้เคียงกับราคาตลาดปัจจุบันมาก — สะท้อนว่าราคาที่ร่วงมาแล้วสมเหตุสมผลในระดับหนึ่ง ไม่ใช่ส่วนลดพิเศษที่ควรรีบเข้าซื้อ นักลงทุนที่สนใจ ONON ควรรอสัญญาณที่ชัดเจนกว่านี้ว่าการชะลอตัวเป็นเรื่องระยะสั้น ไม่ใช่การเสียส่วนแบ่งตลาดถาวรให้ Nike/HOKA</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$30.60 <span style="font-size:12px;color:#cab9a8">($26.00–$35.20)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +10%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$51.30 (Buy, อาจยังไม่สะท้อนงบ Q2)</div></div>
       </div>
       <div class="zone">

@@ -10,6 +10,40 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 216,
+  "values": {
+    "px": 243.29,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 198,
+    "fvHigh": 235,
+    "analystTgt": 293.46,
+    "eps": 11.31,
+    "shares": 950000000,
+    "dps": 6.76,
+    "baseEps": 11.3,
+    "scenarios": [
+      {
+        "tgt": 163,
+        "div": null
+      },
+      {
+        "tgt": 236,
+        "div": null
+      },
+      {
+        "tgt": 308,
+        "div": null
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#1a73e8",
     "accentDark": "#1557b0",
@@ -41,18 +75,14 @@
     "min": 200,
     "max": 325,
     "grid": [225, 250, 275, 300],
-    "fairLine": 216,
     "currency": "$",
     "highlight": [1, 9]
   },
   "gauge": {
     "min": 130,
     "max": 350,
-    "cur": 243.29,
-    "fair": 216,
     "fairLabelTop": "-58px"
-  },
-  "fv": 216
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +102,11 @@
     <div class="sub">Enterprise AI (watsonx) • Hybrid Cloud (Red Hat) • Consulting • Mainframe (Z) • Quantum</div>
     <div class="price-row">
       <div>
-        <div class="px">$243.29<small>(IBM)</small></div>
+        <div class="px">{{rd:px}}<small>(IBM)</small></div>
       </div>
-      <div class="chg">▼ −20.9% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ≈ 11 ก.ย. 2569 $221.97 ดีดขึ้นจากจุดต่ำสุด $211.20 หลังงบ Q2/2026 จริง (ประกาศ 22 ก.ค.) ออกมาใกล้เคียงคำเตือนล่วงหน้า (14 ก.ค.) ไม่มีเซอร์ไพรส์เพิ่ม<br>
+        ราคา ≈ {{rd:priceDate}} $221.97 ดีดขึ้นจากจุดต่ำสุด $211.20 หลังงบ Q2/2026 จริง (ประกาศ 22 ก.ค.) ออกมาใกล้เคียงคำเตือนล่วงหน้า (14 ก.ค.) ไม่มีเซอร์ไพรส์เพิ่ม<br>
         จากจุดสูง $308.58 (พ.ย.25) ร่วงแรงสุดในประวัติศาสตร์บริษัท −25.2% วันเดียว (14 ก.ค.) แตะต่ำสุด $211.20 ก่อนฟื้นตัวบางส่วนหลังงบ Q2 ยืนยันตัวเลข<br>
         ที่มา: StockAnalysis / Yahoo Finance / CNBC / Bloomberg (งบ Q2/2026 ประกาศ 22 ก.ค. 2569)
       </div>
@@ -88,9 +118,9 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">TTM ถึง Q2/2026 (preliminary, เตือนผลประกอบการ 14 ก.ค. 2569) + FY2025</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~$231.1B</div><div class="d">~950 ล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v">~21.5x</div><div class="d">EPS TTM $11.31 <span class="pill a">รีเรตลงจาก ~25x</span></div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v">~{{rd:pe}}x</div><div class="d">EPS TTM $11.31 <span class="pill a">รีเรตลงจาก ~25x</span></div></div>
       <div class="metric"><div class="k">Forward P/E</div><div class="v neu">~19.8x</div><div class="d">EPS คาด FY2026 ~$12.3</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">2.8%</div><div class="d">$6.76/ปี • ขึ้นปันผลต่อเนื่อง 30+ ปี</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">{{rd:yield}}</div><div class="d">$6.76/ปี • ขึ้นปันผลต่อเนื่อง 30+ ปี</div></div>
 
       <div class="metric"><div class="k">รายได้ TTM</div><div class="v">$68.9B</div><div class="d pos">▲ +9.7% YoY</div></div>
       <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">$10.75B</div><div class="d pos">Net margin 15.6%</div></div>
@@ -113,7 +143,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1a73e8"></i>ราคา IBM</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $216</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -141,8 +171,8 @@
         <div class="mval">$235</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $198 – $235</span></div>
-        <div class="r">$216</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>หมายเหตุ:</b> ปรับ P/E เป้าหมายลงจาก ~21x เหลือ ~19x และเพิ่ม WACC ใน DCF เป็น 9% สะท้อนความเสี่ยงจากการเติบโตชะลอ + ความน่าเชื่อถือของ guidance ที่เสียหายหลังปรับลดคาดการณ์ Q2/2026 กะทันหัน
@@ -158,14 +188,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $243</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $216</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$151<br><small>MOS 30%</small></span>
-          <span>$173<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$216<br><small>Fair Value</small></span>
-          <span style="text-align:right">$293<br><small>เป้า Analyst</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:analystTgt}}<br><small>เป้า Analyst</small></span>
           <span style="text-align:right">$332<br><small>52wk high</small></span>
         </div>
       </div>
@@ -180,19 +210,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−13%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>ไม่มีส่วนเผื่อความปลอดภัย (ราคาสูงกว่ามูลค่าเหมาะสมเล็กน้อย)</b><br>ราคาปัจจุบัน <b>สูงกว่า</b>มูลค่าเหมาะสม $216 → หลังฟื้นตัวจากจุดต่ำสุด $211.20 เมื่องบ Q2/2026 จริง (22 ก.ค.) ออกมาใกล้เคียงคำเตือนล่วงหน้า ไม่มีเซอร์ไพรส์เพิ่ม แนะนำรอย่อกลับเข้าโซน MOS ก่อนเพิ่มสถานะ</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$173</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$151</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
         <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $205</div><div class="d">ต่ำกว่าขอบล่างของ fair value</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="243.29" step="1">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -201,13 +231,13 @@
 
   <!-- ===== RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $243.29 • EPS ฐาน ~$11.3</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +1%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$163</div>
-          <div class="ret neg">รวม ~ −33.0% (≈ −12.5%/ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$11.65</span></li>
             <li><span>P/E ออก</span><span>14x</span></li>
@@ -218,8 +248,8 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$236</div>
-          <div class="ret pos">รวม ~ −3.0% (≈ −1.0%/ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$13.09</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
@@ -230,8 +260,8 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +9%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$308</div>
-          <div class="ret pos">รวม ~ +26.6% (≈ +8.2%/ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$14.65</span></li>
             <li><span>P/E ออก</span><span>21x</span></li>
@@ -282,9 +312,9 @@
       <h2>หุ้น income ที่เพิ่งเจอ guidance shock ครั้งใหญ่ที่สุดในประวัติศาสตร์ — ราคาร่วงมาใกล้เคียง Fair Value แล้ว แต่ยังไม่มีส่วนเผื่อความปลอดภัยจริงจัง</h2>
       <p>IBM ร่วงแรงสุดในประวัติศาสตร์บริษัท (−25.2% วันเดียว, 14 ก.ค. 2569) หลังเตือนผลประกอบการ Q2/2026 ว่า Software โตช้ากว่าคาดมาก + Infrastructure หดตัว เพราะลูกค้าเทงบไปซื้อ hardware แทน บวกกระแสกังวล AI disruption ต่องาน Consulting — งบ Q2 จริง (22 ก.ค. 2569) ออกมาใกล้เคียงคำเตือนล่วงหน้า ราคาฟื้นตัวจากจุดต่ำสุด $211.20 ขึ้นมาที่ $221.97 ซึ่ง<b>สูงกว่า Fair Value $216 เล็กน้อย (ต่างกัน ~2.8%)</b> — MOS หายไปแล้ว ยังเป็นหุ้น income ที่ FCF และปันผลยังแข็งแรง แต่ไม่เหลือส่วนเผื่อความปลอดภัยจริงจัง</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$216 <span style="font-size:12px;color:#a8b6cc">($198–$235)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ef9a9a">MOS ~ −13%</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">$293.46 (+20.6%, ก่อนข่าว 14 ก.ค. ยังไม่ปรับ)</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#a8b6cc">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ef9a9a">MOS ~ {{rd:mos}}</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">{{rd:analystTgt}} (+20.6%, ก่อนข่าว 14 ก.ค. ยังไม่ปรับ)</div></div>
       </div>
       <div class="zone">
         💡 <b>กลยุทธ์:</b> สาย income — ปันผล ~3.0% ยังมั่นคง ถือของเดิมได้ แต่ระวังความผันผวนต่อ • สาย value — งบ Q2 ยืนยันแล้วไม่มีเซอร์ไพรส์เพิ่ม แต่ราคาสูงกว่า FV แล้ว รอย่อกลับต่ำกว่า MOS20 ~$173 ค่อยเพิ่มสถานะ • ติดตาม <b>Software growth ฟื้นตัว</b> และผลกระทบ AI ต่อ Consulting เป็นตัวชี้วัดหลัก

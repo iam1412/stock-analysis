@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 128,
+  "values": {
+    "px": 132.53,
+    "priceDate": "2026-09-11",
+    "dateEra": "CE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 118,
+    "fvHigh": 135,
+    "analystTgt": 142,
+    "eps": 1.6,
+    "shares": 1030000000,
+    "baseEps": 5.01,
+    "scenarios": [
+      {
+        "tgt": 114,
+        "div": null
+      },
+      {
+        "tgt": 198,
+        "div": null
+      },
+      {
+        "tgt": 306,
+        "div": null
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#1a73e8",
     "accentDark": "#1557b0",
@@ -41,18 +74,14 @@
     "min": 75,
     "max": 200,
     "grid": [100, 125, 150, 175],
-    "fairLine": 128,
     "currency": "$",
     "highlight": [0, 6]
   },
   "gauge": {
     "min": 75,
     "max": 245,
-    "cur": 132.53,
-    "fair": 128,
     "fairLabelTop": "-58px"
-  },
-  "fv": 128
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +101,11 @@
     <div class="sub">แพลตฟอร์มอัตโนมัติ Workflow ระดับองค์กร • Now Assist, Agentic AI, IT/HR/Customer Service</div>
     <div class="price-row">
       <div>
-        <div class="px">$132.53<small>(NOW)</small></div>
+        <div class="px">{{rd:px}}<small>(NOW)</small></div>
       </div>
-      <div class="chg">▼ −27.9% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา $107.71 ณ ปิด 11 ก.ย. 2026<br>
+        ราคา $107.71 ณ ปิด {{rd:priceDate}}<br>
         ราคา split-adjusted (แตกพาร์ 5:1 เมื่อปลายปีก่อน)<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / CNBC
       </div>
@@ -113,7 +142,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1a73e8"></i>ราคา NOW</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $128</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -141,8 +170,8 @@
         <div class="mval">$130</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $118 – $135</span></div>
-        <div class="r">$128</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>หมายเหตุ:</b> ข้าม DDM เพราะ <b>ไม่จ่ายปันผล</b> • ใช้ EPS <b>forward consensus</b> เพราะ GAAP ถูก stock-based compensation กดให้ต่ำผิดปกติ (P/E GAAP ~78x ดูแพงเกินจริง) • DCF และ Analyst Intrinsic คงสมมติฐานเดิม รอ full financials 5 ปียืนยันรอบถัดไป
@@ -157,14 +186,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $133</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $128</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$90<br><small>MOS 30%</small></span>
-          <span>$102<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$128<br><small>Fair Value</small></span>
-          <span style="text-align:right">$142<br><small>เป้า Analyst</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:analystTgt}}<br><small>เป้า Analyst</small></span>
           <span style="text-align:right">$236<br><small>เป้าสูงสุด</small></span>
         </div>
       </div>
@@ -179,19 +208,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−4%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>แทบไม่มี Margin of Safety</b><br>ราคาปัจจุบัน $145 สูงกว่ามูลค่าเหมาะสม $128 (แพงกว่าราว 13%) → ตามเกณฑ์ value investor ถือว่า <b>ยังไม่ใช่โซนน่าสนใจนัก</b> ควรรอราคาย่อลงมาใกล้จุดซื้อ MOS20/30 ก่อนทยอยสะสมเพิ่ม</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$102</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$90</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
         <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $110</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="132.53" step="1">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -200,13 +229,13 @@
 
   <!-- ===== RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $133 • EPS ฐาน ~$5.01 (forward consensus)</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} (forward consensus)</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$114</div>
-          <div class="ret neg">รวม ~ -14% (≈ -4.9%/ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$6.3</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
@@ -217,8 +246,8 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +18%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$198</div>
-          <div class="ret pos">รวม ~ +49% (≈ +14.2%/ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$8.2</span></li>
             <li><span>P/E ออก</span><span>24x</span></li>
@@ -229,8 +258,8 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +24%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$306</div>
-          <div class="ret pos">รวม ~ +131% (≈ +32.2%/ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$9.6</span></li>
             <li><span>P/E ออก</span><span>32x</span></li>
@@ -281,9 +310,9 @@
       <h2>ราคาฟื้นตัวใกล้มูลค่าเหมาะสม — Margin of Safety บางลงมาก</h2>
       <p>ServiceNow เป็นผู้นำ workflow/agentic AI ระดับองค์กรที่ยังเติบโต 20%+ และทำเงินสดมหาศาล (FCF margin 35%) ราคาเคยร่วง ~36% จากจุดสูงสุด 52 สัปดาห์จากความกลัวว่า AI จะกัดกร่อนโมเดล seat-based แต่ได้ฟื้นตัวกลับมาที่ ~$125 ใกล้เคียง multiple เฉลี่ยแล้ว — margin of safety ที่เคยเปิดกว้างบางลงมากในรอบนี้</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$128 <span style="font-size:12px;color:#a8ccbb">($118–$135)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ef9a9a">MOS ~ −4%</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">$142 (+7%)</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#a8ccbb">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ef9a9a">MOS ~ {{rd:mos}}</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">{{rd:analystTgt}} (+7%)</div></div>
       </div>
       <div class="zone">
         💡 <b>กลยุทธ์:</b> สาย value — รอย่อเข้าสะสมในโซน <b>&lt; $110</b> (น่าสนใจมากที่ &lt;$102, ถูกมากที่ &lt;$90) • สาย growth — DCA ได้ โดยติดตามตัวชี้วัดสำคัญคือ <b>การเติบโต cRPO/subscription</b> และ <b>การ monetize Now Assist/Agentic AI</b> ว่าจะมาชดเชยความเสี่ยง seat-based ได้จริงหรือไม่

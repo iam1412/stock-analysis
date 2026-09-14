@@ -10,6 +10,38 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 83.81,
+  "values": {
+    "px": 76.7,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 82.62,
+    "fvHigh": 95,
+    "shares": 166000000,
+    "bvps": 16.52,
+    "baseEps": 3.06,
+    "scenarios": [
+      {
+        "tgt": 61,
+        "div": 3.68
+      },
+      {
+        "tgt": 87,
+        "div": 3.98
+      },
+      {
+        "tgt": 110,
+        "div": 4.14
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#ea1f41",
     "accentDark": "#b1102b",
@@ -41,18 +73,14 @@
     "min": 70,
     "max": 100,
     "grid": [75, 80, 85, 90, 95],
-    "fairLine": 83.81,
     "currency": "$",
     "highlight": [4, 7]
   },
   "gauge": {
     "min": 45,
     "max": 110,
-    "cur": 76.7,
-    "fair": 83.81,
     "fairLabelTop": false
-  },
-  "fv": 83.81
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +100,11 @@
     <div class="sub">อุปกรณ์พ่นสี ระบบจ่าย/ควบคุมของเหลวและสารเคลือบ ปั๊ม มิเตอร์ วาล์ว สำหรับยานยนต์ ก่อสร้าง โรงงานผลิต และพลังงาน • ผู้นำ niche fluid-handling equipment ระดับโลก 3 กลุ่มธุรกิจ Contractor / Industrial / Expansion Markets • เพิ่มเงินปันผลต่อเนื่อง 28 ปี</div>
     <div class="price-row">
       <div>
-        <div class="px">$76.70<small>(GGG)</small></div>
+        <div class="px">{{rd:px}}<small>(GGG)</small></div>
       </div>
-      <div class="chg">▼ −6.2% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569 (7 Jul 2026, ตลาดสหรัฐฯ)<br>
+        ราคา ณ {{rd:priceDate}} (7 Jul 2026, ตลาดสหรัฐฯ)<br>
         กรอบ 52 สัปดาห์ $73.15 – $95.69<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, Graco Q1 2026 Earnings Release (SEC EDGAR)
       </div>
@@ -90,7 +118,7 @@
       <div class="metric"><div class="k">Market Cap</div><div class="v">$12.73B</div><div class="d">~166.0M หุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~24.6x</div><div class="d">TTM ผ่าน Q1/2569; ต่ำกว่าค่าเฉลี่ย 5 ปี</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~27x</div><div class="d">ช่วง 21.8x–35.2x (รายไตรมาส TTM ย้อนหลัง 5 ปี)</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">4.64x</div><div class="d">BVPS $16.52 (ณ 27 มี.ค. 2569)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS $16.52 (ณ 27 มี.ค. 2569)</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$522M</div><div class="d">+7.4% YoY (จาก $486M ปี 2567)</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$3.06</div><div class="d">GAAP diluted ผ่าน Q1/2569; FY2025 $3.08 (+9.2% YoY)</div></div>
@@ -113,7 +141,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#ea1f41"></i>ราคา GGG</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $83.81</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -139,8 +167,8 @@
         <div class="mval">$83.78</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $82.62 – $95</span></div>
-        <div class="r">$83.81</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         ทั้ง 3 วิธีให้ผลใกล้เคียงกันมาก ($82.62–$85.04) สะท้อนความมั่นคงของธุรกิจ — DCF (บน FCF conversion สูงเกือบเต็มกำไรสุทธิ) ให้ค่าสูงสุด $85.04 วิธี Justified P/BV บน ROE ~20% ให้ $83.78 ใกล้เคียงกัน ส่วนวิธี P/E บนมัลติเพิลเฉลี่ย 5 ปีให้ค่าต่ำสุด $82.62 เพราะยังสะท้อนความระมัดระวังต่อ organic growth ที่ชะลอตัว เฉลี่ย 3 วิธีได้ Fair Value ~$83.81 ใกล้ราคาตลาดปัจจุบันมาก ($75.20) — กรอบบน $95 ของช่วง Fair Value สะท้อนมุมมองนักวิเคราะห์ที่ยังมองเห็น upside มากกว่า (เป้าเฉลี่ย ~$93) หากมัลติเพิลฟื้นตัวกลับสู่ระดับพีคและ organic growth เร่งตัวตาม backlog ที่เพิ่มขึ้น
@@ -154,15 +182,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $76.70</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $83.81</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$58.67<br><small>MOS 30%</small></span>
-          <span>$67.05<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$83.81<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$93<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$95<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -175,19 +203,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+8%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาปัจจุบัน ($75.20) ต่ำกว่ามูลค่าเหมาะสม ($83.81) ~10.3% ถือว่ามี margin of safety ระดับปานกลาง — หุ้นคุณภาพสูงที่แทบไม่มีหนี้ ROE ~20% กำลังเทรดใกล้จุดสมดุลมากกว่าจุดเข้าถูกจริง ๆ เหมาะกับการทยอยสะสมมากกว่าไล่ซื้อทีเดียว</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$67.05</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$58.67</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $83.81</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="76.7" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -196,17 +224,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $76.70 • EPS ฐาน ~$3.06 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$61</div>
-          <div class="ret neg">−15.7%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$3.06</span></li>
             <li><span>P/E ออก</span><span>20x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$3.68</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>organic sales ติดลบต่อเนื่อง housing/construction อ่อนแอยืดเยื้อ tariff กัดกร่อนมาร์จิ้นมากกว่า price realization จะตามทัน multiple ถูกกดจากความกังวลการเติบโต</span></li>
           </ul>
         </div>
@@ -214,12 +242,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +6%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$87</div>
-          <div class="ret pos">+18.6%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$3.64</span></li>
             <li><span>P/E ออก</span><span>24x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$3.98</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>organic growth ฟื้นตัวตาม guidance mid-single-digit backlog ที่เพิ่มขึ้น 13% เริ่มแปลงเป็นยอดขาย price realization ชดเชย tariff ได้ต่อเนื่อง</span></li>
           </ul>
         </div>
@@ -227,12 +255,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +10%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$110</div>
-          <div class="ret pos">+48.8%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$4.07</span></li>
             <li><span>P/E ออก</span><span>27x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$4.14</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>housing/construction ฟื้นตัวชัดเจน tariff คลี่คลาย M&amp;A ใน Expansion Markets เร่งการเติบโต multiple ฟื้นกลับสู่ระดับพีคจากคุณภาพงบดุลและ ROE ที่โดดเด่น</span></li>
           </ul>
         </div>
@@ -279,8 +307,8 @@
       <h2>ธุรกิจคุณภาพสูงหนี้แทบเป็นศูนย์ ROE ~20% แต่ organic growth ชะลอตัว ราคาใกล้จุดสมดุลมากกว่าจุดเข้าราคาถูกจริง</h2>
       <p>Graco เป็นผู้นำตลาด niche fluid-handling equipment (อุปกรณ์พ่นสี ปั๊ม ระบบจ่ายของเหลว) ที่มีโครงสร้างธุรกิจคุณภาพสูงต่อเนื่องมาหลายทศวรรษ — operating margin ~27–28%, ROE ~20%, งบดุลแทบไร้หนี้ระยะยาว (net cash) และเพิ่มเงินปันผลติดต่อกัน 28 ปี อย่างไรก็ตาม ราคาหุ้นปรับตัวลง ~10.5% ในรอบ 1 ปี และใกล้ 52 สัปดาห์ต่ำสุด หลังผลประกอบการ Q1/2569 แสดง organic sales ติดลบ 6% (ถูกชดเชยด้วยการซื้อกิจการและอัตราแลกเปลี่ยนเท่านั้น) พร้อมมาร์จิ้นที่ถูกกดดันจากต้นทุน tariff เมื่อประเมินด้วย 3 วิธี (P/E, DCF, Justified P/BV) ที่ให้ผลใกล้เคียงกันมาก Fair Value เฉลี่ยอยู่ที่ $83.81 สูงกว่าราคาตลาดปัจจุบัน $75.20 อยู่ราว 10% — มี margin of safety ระดับปานกลาง ไม่ใช่ deep value แต่ก็ไม่ถึงกับแพงเกินไป ต่างจากราคาเป้าเฉลี่ยนักวิเคราะห์ที่ยังมองบวกกว่ามากที่ ~$93 (upside ~24%) ซึ่งสะท้อนมุมมองที่เชื่อว่า organic growth และมัลติเพิลจะฟื้นตัวเร็วกว่าที่ประมาณการอนุรักษ์นิยมนี้คาดไว้</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$83.81 <span style="font-size:12px;color:#cab9a8">($82.62–$95)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +8%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$93 (Buy)</div></div>
       </div>
       <div class="zone">

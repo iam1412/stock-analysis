@@ -10,6 +10,37 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 466.2,
+  "values": {
+    "px": 494.83,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 455.4,
+    "fvHigh": 476.99,
+    "shares": 31700000,
+    "baseEps": 10.12,
+    "scenarios": [
+      {
+        "tgt": 331.8,
+        "div": 0
+      },
+      {
+        "tgt": 568.8,
+        "div": 0
+      },
+      {
+        "tgt": 874.5,
+        "div": 0
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#9d9129",
     "accentDark": "#71691e",
@@ -40,17 +71,13 @@
     "min": 400,
     "max": 700,
     "grid": [500, 600],
-    "fairLine": 466.2,
     "currency": "$",
     "highlight": [0, 8]
   },
   "gauge": {
     "min": 300,
-    "max": 650,
-    "cur": 494.83,
-    "fair": 466.2
-  },
-  "fv": 466.2
+    "max": 650
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -70,11 +97,11 @@
     <div class="sub">ตลับลูกปืนแม่นยำสูงสำหรับอากาศยาน • ชิ้นส่วนอุตสาหกรรม/พลังงานความแม่นยำสูง • Power Transmission (Dodge)</div>
     <div class="price-row">
       <div>
-        <div class="px">$494.83<small>(RBC)</small></div>
+        <div class="px">{{rd:px}}<small>(RBC)</small></div>
       </div>
-      <div class="chg">▲ +15.5% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569 (StockAnalysis.com, ตรงกับ Yahoo Finance)<br>
+        ราคา ณ {{rd:priceDate}} (StockAnalysis.com, ตรงกับ Yahoo Finance)<br>
         กรอบ 52 สัปดาห์ $364.50 – $667.69<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, งบการเงินบริษัท (SEC 10-K/10-Q)
       </div>
@@ -111,7 +138,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#9d9129"></i>ราคา RBC</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $466.20</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -133,8 +160,8 @@
         <div class="mval">$476.99</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $455.40 – $476.99</span></div>
-        <div class="r">$466.20</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/E ให้มูลค่าต่ำกว่า EV/EBITDA เล็กน้อยเพราะ P/E ตลาดปัจจุบัน (~56x) รวมพรีเมียมการเติบโตในอนาคตที่ยังไม่เกิดขึ้นจริงในงบ TTM ขณะที่ EV/EBITDA สะท้อนกระแสเงินสดดำเนินงานที่นิ่งกว่า ทั้งสองวิธีเกาะกลุ่มกันในช่วง $455–$477 ต่ำกว่าราคาตลาดปัจจุบันราว 18–20% บ่งชี้ว่าตลาดให้พรีเมียมสูงกว่าที่ปัจจัยพื้นฐาน TTM รองรับ ส่วนหนึ่งเพราะราคาปรับขึ้นล่วงหน้ารับการเติบโตของ EPS ปีบัญชี FY2027 ที่ตลาดคาดหวังสูง (consensus forward EPS ~$16.87 ต่างจาก EPS TTM ที่ cross-verify แล้วพอสมควร จึงไม่ใช้เป็นขาหลักของ FV)
@@ -148,14 +175,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $494.83</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $466.20</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$326.34<br><small>MOS 30%</small></span>
-          <span>$372.96<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$466.20<br><small>Fair Value</small></span>
-          <span style="text-align:right">$476.99<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$633.25<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -169,19 +196,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−6%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>ไม่มี Margin of Safety (ราคาแพงกว่ามูลค่าเหมาะสมที่ประเมินได้)</b><br>ราคาปัจจุบันแพงกว่า Fair Value ~21.7% สะท้อนพรีเมียมคุณภาพจากธุรกิจ moat สูง แต่ valuation ปัจจุบัน (P/E TTM ~56x) แพงกว่าที่โมเดลนี้ประเมินสมเหตุผล ผู้ลงทุนควรรอจังหวะ pull-back หรือทยอยสะสมเมื่อราคาต่ำกว่า Fair Value เพื่อเพิ่ม margin of safety แทนการไล่ซื้อที่ราคาปัจจุบัน</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$372.96</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$326.34</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $466.20</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="494.83" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -190,17 +217,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $494.83 • EPS ฐาน ~$10.12 • ไม่จ่ายปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} • ไม่จ่ายปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +3%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$331.80</div>
-          <div class="ret neg">−32.9% (3 ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$11.06</span></li>
             <li><span>P/E ออก</span><span>30x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>$0 (ไม่จ่ายปันผล)</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}} (ไม่จ่ายปันผล)</span></li>
             <li><span>สถานการณ์</span><span>วัฏจักรการผลิตเครื่องบินชะลอตัว งบกลาโหมถูกกดดัน ต้นทุนแรงงาน/วัตถุดิบกดมาร์จิ้น P/E ปรับตัวลงแรง</span></li>
           </ul>
         </div>
@@ -208,12 +235,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +12%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$568.80</div>
-          <div class="ret pos">+14.9% (3 ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$14.22</span></li>
             <li><span>P/E ออก</span><span>40x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>$0 (ไม่จ่ายปันผล)</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}} (ไม่จ่ายปันผล)</span></li>
             <li><span>สถานการณ์</span><span>เติบโตต่อเนื่องตามแบ็คล็อกอากาศยาน/อุตสาหกรรม แต่ตลาดปรับ P/E ลงจากระดับพรีเมียมปัจจุบันสู่ระดับปกติของกลุ่มมากขึ้น</span></li>
           </ul>
         </div>
@@ -221,12 +248,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +20%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$874.50</div>
-          <div class="ret pos">+76.7% (3 ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$17.49</span></li>
             <li><span>P/E ออก</span><span>50x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>$0 (ไม่จ่ายปันผล)</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}} (ไม่จ่ายปันผล)</span></li>
             <li><span>สถานการณ์</span><span>อัตราการผลิตเครื่องบินพาณิชย์เร่งตัว งบกลาโหมขยาย Dodge synergy เกินคาด ตลาดให้พรีเมียมต่อเนื่อง</span></li>
           </ul>
         </div>
@@ -272,8 +299,8 @@
       <h2>RBC Bearings: ธุรกิจคุณภาพสูง แต่ราคาปัจจุบันแพงกว่ามูลค่าเหมาะสม</h2>
       <p>RBC Bearings เป็นผู้ผลิตตลับลูกปืนและชิ้นส่วนแม่นยำสูงที่มี moat จากการรับรองในโครงการอากาศยาน ทำให้มี pricing power และมาร์จิ้นสูงกว่าอุตสาหกรรมทั่วไป การควบรวม Dodge ปี 2564 ช่วยขยายฐานธุรกิจ Power Transmission และมาร์จิ้นโดยรวมต่อเนื่อง อย่างไรก็ตาม ราคาหุ้นปัจจุบันที่ $567.25 (P/E TTM ~56x) แพงกว่ามูลค่าเหมาะสมที่โมเดลนี้ประเมินได้ ($466.20) ราว 21.7% สะท้อนว่าตลาดได้ปรับราคารับการเติบโตในอนาคตไปมากพอสมควรแล้ว เหมาะสำหรับผู้ลงทุนที่เชื่อมั่นในโมเมนตัมระยะยาวเท่านั้น ไม่เหมาะกับผู้ที่เน้น margin of safety สูง ณ ราคาปัจจุบัน</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$466.20 <span style="font-size:12px;color:#cab9a8">($455.40–$476.99)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −6%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$633.25 (Buy)</div></div>
       </div>
       <div class="zone">
@@ -286,7 +313,7 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ 11 ก.ย. 2569 จาก Yahoo Finance และ StockAnalysis.com (cross-check ตรงกัน, Δ 0%) • ข้อมูลงบการเงิน 5 ปีย้อนหลังจาก StockAnalysis.com • เป้าเฉลี่ยนักวิเคราะห์ 12 เดือนจาก Yahoo Finance (n=8, Buy)
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ {{rd:priceDate}} จาก Yahoo Finance และ StockAnalysis.com (cross-check ตรงกัน, Δ 0%) • ข้อมูลงบการเงิน 5 ปีย้อนหลังจาก StockAnalysis.com • เป้าเฉลี่ยนักวิเคราะห์ 12 เดือนจาก Yahoo Finance (n=8, Buy)
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 8 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

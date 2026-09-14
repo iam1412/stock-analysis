@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 4.2,
+  "values": {
+    "px": 3.56,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 3.9,
+    "fvHigh": 4.8,
+    "shares": 400000000,
+    "dps": 0.15,
+    "bvps": 1.73,
+    "baseEps": 0.34,
+    "scenarios": [
+      {
+        "tgt": 2.61,
+        "div": 0.38
+      },
+      {
+        "tgt": 5.76,
+        "div": 0.5
+      },
+      {
+        "tgt": 8.26,
+        "div": 0.55
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#0797d8",
     "accentDark": "#0064d1",
@@ -41,7 +74,6 @@
     "min": 2,
     "max": 5,
     "grid": [3, 4],
-    "fairLine": 4.2,
     "currency": "฿",
     "highlight": [2, 10],
     "gridFmt": "v.toFixed(2)",
@@ -50,11 +82,8 @@
   "gauge": {
     "min": 2,
     "max": 5,
-    "cur": 3.56,
-    "fair": 4.2,
     "fairLabelTop": true
-  },
-  "fv": 4.2
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +103,11 @@
     <div class="sub">iStudio by SPVi — Apple Premium Reseller (APR) • iBeat by SPVi • U•Store by SPVi (Campus Store) • iCenter — Authorized Apple Service Provider • SP Service &amp; Repair</div>
     <div class="price-row">
       <div>
-        <div class="px">฿3.56<small>(SPVI)</small></div>
+        <div class="px">{{rd:px}}<small>(SPVI)</small></div>
       </div>
-      <div class="chg">▲ +56.1% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿1.86 – ฿3.76<br>
         ที่มา: SET, Investing.com, StockAnalysis.com
       </div>
@@ -92,7 +121,7 @@
       <div class="metric"><div class="k">Market Cap</div><div class="v">฿1,424 ล้าน</div><div class="d">400 ล้านหุ้น · par ฿0.50</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~9.25x</div><div class="d">ต่ำกว่าค่าเฉลี่ยเซกเตอร์ค้าปลีกเทค</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~11–14x</div><div class="d">ช่วง P/E ย้อนหลัง 5 ปี</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">2.06x</div><div class="d">BVPS ฿1.73 / ส่วนทุน ฿692.9 ล้าน</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ฿1.73 / ส่วนทุน ฿692.9 ล้าน</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">฿136.6 ล้าน</div><div class="d">+146.2% จาก FY2567 (฿48.4 ล้าน)</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.34</div><div class="d">FY2568 ฿0.25 · FY2567 ฿0.12</div></div>
@@ -115,7 +144,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#5AC8FA"></i>ราคา SPVI</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿4.20</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -144,8 +173,8 @@
         <div class="mval">฿4.48</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿3.90 – ฿4.80</span></div>
-        <div class="r">฿4.20</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         P/E (฿4.08) และ P/S (฿4.04) ให้ค่าใกล้เคียงกัน สะท้อนธุรกิจค้าปลีกที่มาร์จิ้นต่ำแต่มีรายได้บริการเติบโต
@@ -162,15 +191,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿3.56</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿4.20</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿2.94<br><small>MOS 30%</small></span>
-          <span>฿3.36<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿4.20<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">฿4.50<br><small>เป้าเฉลี่ย</small></span>
-          <span style="text-align:right">฿4.80<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -185,19 +214,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+15%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS ดีระดับน่าสนใจ — ราคาต่ำกว่ามูลค่าเหมาะสมชัดเจน เหมาะสำหรับนักลงทุนเน้นคุณค่า</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿3.36</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿2.94</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿4.20</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="3.56" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -206,17 +235,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿3.56 • EPS ฐาน ~฿0.34 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿2.61</div>
-          <div class="ret neg">−16.0%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.29</span></li>
             <li><span>P/E ออก</span><span>9x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.38</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>Apple ลดโควต้า APR / แข่งขันออนไลน์รุนแรง</span></li>
           </ul>
         </div>
@@ -224,12 +253,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +12%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿5.76</div>
-          <div class="ret pos">+75.8%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.48</span></li>
             <li><span>P/E ออก</span><span>12x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.50</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>iPhone supercycle + ขยายสาขา + บริการเติบโต</span></li>
           </ul>
         </div>
@@ -237,12 +266,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +20%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿8.26</div>
-          <div class="ret pos">+147.5%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.59</span></li>
             <li><span>P/E ออก</span><span>14x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.55</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Apple Intelligence ดัน upgrade cycle + Vision Pro + ขยาย corporate</span></li>
           </ul>
         </div>
@@ -298,8 +327,8 @@
       ความเสี่ยงหลัก: มาร์จิ้นบางและพึ่งพา Apple เกือบ 100% ไม่เหมาะสำหรับผู้ต้องการ moat ชัดเจน
       </p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿4.20 <span style="font-size:12px;color:#cab9a8">(฿3.90–฿4.80)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +15%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้าตลาด (ประมาณ)</div><div class="v" style="color:#a5d6a7">~฿4.50 (Speculative Buy)</div></div>
       </div>
       <div class="zone">

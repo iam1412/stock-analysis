@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 138,
+  "values": {
+    "px": 126.02,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 128.5,
+    "fvHigh": 144.3,
+    "shares": 1130000000,
+    "dps": 1.92,
+    "bvps": 6.75,
+    "baseEps": 5.14,
+    "scenarios": [
+      {
+        "tgt": 134.64,
+        "div": 5.76
+      },
+      {
+        "tgt": 166.5,
+        "div": 6.12
+      },
+      {
+        "tgt": 194.94,
+        "div": 6.48
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#C8102E",
     "accentDark": "#920B21",
@@ -41,18 +74,14 @@
     "min": 120,
     "max": 170,
     "grid": [130, 140, 150, 160],
-    "fairLine": 138,
     "currency": "$",
     "highlight": [4, 11]
   },
   "gauge": {
     "min": 115,
     "max": 170,
-    "cur": 126.02,
-    "fair": 138,
     "fairLabelTop": false
-  },
-  "fv": 138
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +101,11 @@
     <div class="sub">ค้าปลีก off-price (แบรนด์ลดราคา) • T.J. Maxx / Marshalls / HomeGoods (สหรัฐ) • TK Maxx (ยุโรป) • Winners (แคนาดา) • treasure-hunt model</div>
     <div class="price-row">
       <div>
-        <div class="px">$126.02<small>(TJX)</small></div>
+        <div class="px">{{rd:px}}<small>(TJX)</small></div>
       </div>
-      <div class="chg">▼ −10.1% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $119.84 / $170.00<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / Macrotrends
       </div>
@@ -87,7 +116,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM / FY2025 (ม.ค. 2025)</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$142B</div><div class="d">หุ้นหมุนเวียน ~1.13B หุ้น</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">หุ้นหมุนเวียน ~1.13B หุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~24.5x</div><div class="d">EPS TTM $5.14 / ราคา $155.43</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~26x</div><div class="d">กรอบ 22–34x ตามช่วงตลาด</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~19x</div><div class="d">BVPS ~$6.75 (ROE สูงมาก)</div></div>
@@ -113,7 +142,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#C8102E"></i>ราคา TJX</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $138</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -142,8 +171,8 @@
         <div class="mval">$141.00</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $128.50 – $144.30</span></div>
-        <div class="r">$138</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         P/E TTM ให้ค่าต่ำสุด $128.50 เพราะ EPS TTM $5.14 × 25x (ปรับอนุรักษนิยม ค่าเฉลี่ย 5 ปี ~26x)
@@ -161,14 +190,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $126.02</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $138</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$96.60<br><small>MOS 30%</small></span>
-          <span>$110.40<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$138<br><small>Fair Value</small></span>
-          <span style="text-align:right">$144.30<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$178<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -185,19 +214,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+9%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาปัจจุบันสูงกว่า Fair Value — ไม่มี Margin of Safety · รอย่อก่อนเข้า</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$110.40</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$96.60</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $138</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="126.02" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -206,17 +235,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $126.02 • EPS ฐาน ~$5.14 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +6%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$134.64</div>
-          <div class="ret neg">+7%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$6.12</span></li>
             <li><span>P/E ออก</span><span>22x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$5.76</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>เศรษฐกิจซบ การบริโภคลด comp sales อ่อน</span></li>
           </ul>
         </div>
@@ -224,12 +253,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +9%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$166.50</div>
-          <div class="ret pos">+32%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$6.66</span></li>
             <li><span>P/E ออก</span><span>25x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$6.12</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>comp sales +4–5% ต่อปี ขยายสาขาสม่ำเสมอ</span></li>
           </ul>
         </div>
@@ -237,12 +266,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$194.94</div>
-          <div class="ret pos">+55%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$7.22</span></li>
             <li><span>P/E ออก</span><span>27x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$6.48</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>expansion ยุโรป/แคนาดา เต็มสูบ + gross margin ขยาย</span></li>
           </ul>
         </div>
@@ -292,8 +321,8 @@
       <h2>TJX — ผู้นำ Off-Price Retail คุณภาพสูง แต่ราคาพรีเมียม</h2>
       <p>TJX Companies คือผู้นำ off-price retail ระดับโลกที่มี moat แข็งแกร่ง (treasure-hunt model, 21,000+ vendors, 4,000+ สาขา) และผลงานที่ยอดเยี่ยม (ROIC 31%, ROE 61%, comp sales +5%, ปันผล 46 ปีติด) ธุรกิจ recession-resilient ทำให้เติบโตสม่ำเสมอแม้ในภาวะเศรษฐกิจไม่แน่นอน อย่างไรก็ตาม ราคาหุ้นพุ่ง +24.8% ในรอบ 1 ปีที่ผ่านมา ทำให้ P/E ขึ้นมา 30x และซื้อขายแพงกว่า Fair Value $138 อยู่ 12.6% นักวิเคราะห์ยังเชื่อมั่น (เป้า $178) แต่ value investor ควรรอย่อ หรือทยอยเข้าใกล้ $110–$138</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$138 <span style="font-size:12px;color:#cab9a8">($128.50–$144.30)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +9%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$178 (Strong Buy)</div></div>
       </div>
       <div class="zone">

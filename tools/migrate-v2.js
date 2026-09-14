@@ -10,11 +10,14 @@
  *                             ★ mask ทุกหลัก ⇒ แยกรูปกับค่าไม่ได้ด้วยตัวเอง (ไม่ใช่ "ต่างได้เฉพาะรูปตัวเลข" อย่างที่เคยเขียน) —
  *                             ค่าเป็นหน้าที่ของชั้น 1 ข้างบน (TOLERANCE ต่อ COPY_FIELDS) + สำมะโน (--census) ที่เปิดเผยผลต่างเล็กน้อย
  *                             ที่ยอมรับแล้วแต่ชั้น 1/2 มองไม่เห็น เช่น %/ปี ของหมวด 6 (ดู maskText/stripVolatile/scnPyDiffs ด้านล่าง)
- *   → gate บน expand(v2) error 0 → footer/stock-meta ไม่เปลี่ยน → จึงเขียน
+ *   → gate บน expand(v2) error 0 → footer/stock-meta ไม่เปลี่ยน
+ *   → (`--cron-diff` · ระยะ 2 ส่วน E Task 14a) patch v1 กับ v2 ด้วย cron ตัวจริงบน grid ราคา 61 จุดในหน่วยความจำ แล้วผลต้องเท่ากัน
+ *     ภายใต้ "รูป" (stock-meta · ตัวเลขที่มองเห็น · error/warning ของ gate) — ต่าง = residue `cron-diff <ชนิด>` → จึงเขียน
  * ตัดสินไม่ได้ (ฐานการ์ดหลายตัว/หมวด 6 อ่านไม่ชัด) = การ์ดนั้นคง literal (สถานะเดิม) · ช่องบังคับหาย/ไม่ตรง = ไม่ย้ายทั้งใบ (residue)
  *
  *   node tools/migrate-v2.js AAPL BBL            # dry-run รายตัว
- *   node tools/migrate-v2.js --batch 0 --size 100 --write --census docs/superpowers/audit/2026-09-11-stock-analyzer/
+ *   node tools/migrate-v2.js --batch 0 --size 100 --write --cron-diff --census docs/superpowers/audit/2026-09-11-stock-analyzer/
+ *   ★ exit 0 แม้มี residue (1 = ข้อผิดพลาดไม่คาดคิดเท่านั้น · `--strict` = residue ⇒ 1 แบบเดิม)
  * ★ หลัง --write: npm run build → node tools/preserve-dates.js → npm run build → npm run verify → commit (1 commit = 1 แบตช์)
  *
  * ★ ทุก regex ใหม่ของงานนี้อยู่ในไฟล์นี้ไฟล์เดียว (test/parser-lint.js) — ของที่มีเจ้าของแล้ว
@@ -166,7 +169,74 @@ const RESTATE_PRE_RE = /^(?:\s|<[^>]*>)*\(\s*/;                     // วงเ
 const HINT_PX_RE = new RegExp(`(จากจุดเข้า\\s*)${CUR}?\\s*[\\d.,]+`);
 const HINT_EPS_RE = new RegExp(`(EPS ฐาน\\s*)~?\\s*${CUR}?\\s*([\\d.,]+)`);
 const HINT_NOTE_RE = / • รวมปันผล/;
+// ★ I1 (fix wave Task 14): `{{rd:scnNote}}` render ว่างเมื่อ `scnBasis.divIncluded === false` ⇒ ถ้าแทนแค่ป้าย
+//   " • รวมปันผล" ข้อความที่ผู้เขียนต่อท้ายใน clause เดียวกัน ("$2.88/ปี" · "ปกติ" · "(ประมาณ)") จะค้างอยู่โดยไม่มี
+//   ที่อ้างอิง — คนอ่านเห็นเลขลอย/คำติดกัน (วัดจริง 7 ใบ: ARE BMY CF CME JBHT KIM NTV)
+//   ⇒ กิน clause ทั้งก้อนจนถึงขอบแท็ก `<` หรือ " • " ของ clause ถัดไป (อันไหนมาก่อน) ให้ token เดียวคุมทั้ง clause
+//   ★ ใช้ **เฉพาะ divIncluded=false** — ใบที่ divIncluded=true token render ป้ายกลับมาเป๊ะ แต่ข้อความต่อท้ายจะหาย
+//     ถ้ากินเข้าไปด้วย (13 ใบมีข้อความต่อท้ายจริง เช่น AMGN " ~$10.08/ปี" · SPI " • กรอบอ้างอิง…") ⇒ ต้องไม่กิน
+// ★★ round 2 (review I3): รอบแรกกินแบบ "อะไรก็ได้จนถึง `<` หรือ ` • `" ⇒ **ไม่มีเพดาน** — reviewer พิสูจน์ว่า
+//    ประโยคทั้งประโยค (ADV-4) · ข้อความอ้างฐานบัญชี (ADV-7) · หรือแม้แต่ค่าที่ token ของ site อื่นพิมพ์ไว้ (ADV-6)
+//    ถูกลบเงียบ ๆ ได้ทั้งหมด โดย checkStripped (นับ "ป้าย" ไม่ได้ดูสิ่งที่ติดมากับป้าย) · ชั้น 2 และ cron differential
+//    (ซึ่งตัด clause ทิ้งทั้งคู่) มองไม่เห็นเลย ⇒ เปลี่ยนเป็น **whitelist ของรูปที่พบจริงในคลัง** เท่านั้น
+//    รูปอื่น = ไม่กิน → คง site `scnNote` เป็น literal (สถานะเดิม) ตามทางถอยที่ไฟล์นี้ใช้กับ site ไม่บังคับทุกตัว
+const NOTE_LABEL = ' • รวมปันผล';
+//   (1) เลขเงินท้าย clause (+ suffix /ปี · /yr ได้) — ARE $2.88/ปี · BMY $2.52/yr · CF ~$6 · JBHT $5.40 · KIM ~$1.04/ปี
+const NOTE_TAIL_MONEY = ` ?[~≈]?\\s?${CUR}\\s?[\\d][\\d.,]{0,12}(?:\\s?\\/\\s?(?:ปี|yr))?`;
+//   (2) คำเดียวติดกันไม่เว้นวรรค (ไม่มีช่องว่างนำหน้าเลย) — CME "ปกติ"
+const NOTE_TAIL_GLUED = '[^\\s<(]{1,16}';
+//   (3) วงเล็บสั้น — NTV "(ประมาณ)"
+const NOTE_TAIL_PAREN = ' ?\\([^()<]{1,30}\\)';
+// ★ เพดานความยาวอยู่ในตัว quantifier ทุกรูป (≤ ~20 ตัวอักษรของเนื้อหา) — สั้นกว่าประโยคมาก ตามกติกา round 2
+const NOTE_TAIL_SRC = `(?:${NOTE_TAIL_MONEY}|${NOTE_TAIL_GLUED}|${NOTE_TAIL_PAREN})?`;
+// clause = ป้าย + ท้ายที่อยู่ใน whitelist (หรือว่าง) แล้วต้องจบพอดีที่ขอบแท็ก `<` / clause ถัดไป " • " / ท้ายสตริง
+//   ⇒ ท้ายที่ไม่อยู่ใน whitelist ทำให้ regex นี้ **ไม่ match เลย** (ไม่ใช่ match แบบสั้นลง) — ตั้งใจ: ตัวเทียบจะได้
+//     ไม่ตัดอะไรทิ้งแทนที่จะตัดครึ่ง ๆ กลาง ๆ · ฝั่ง v1/v2 เหมือนกันอยู่แล้วเมื่อไม่กิน จึงยังเทียบผ่าน
+const HINT_NOTE_TAIL_RE = new RegExp(NOTE_LABEL + NOTE_TAIL_SRC + '(?=<| • |$)');
+// รูป global ของ clause เดียวกัน — ใช้ทั้งชั้น 2 (stripVolatile) และมุมมองของ cron differential (cronView)
+// ★ ต้องเป็น clause เต็ม ไม่ใช่แค่ป้าย: ใบ divIncluded=false ตัดทั้ง clause จริง ⇒ ตัวเทียบที่ตัดแค่ป้ายจะเห็น
+//   ข้อความ/ตัวเลขท้าย clause ของ v1 เหลือค้างฝั่งเดียวแล้วฟ้อง "visible" ทั้งที่เป็นผลของการแก้บั๊กนี้เอง
+const HINT_NOTE_TAIL_G = glob(HINT_NOTE_TAIL_RE);
+/** ข้อความท้าย clause ที่ (จะ) ถูกกิน — '' = ไม่มี · null = รูปไม่อยู่ใน whitelist (ห้ามกิน) */
+function noteTailOf(html) {
+  const m = HINT_NOTE_TAIL_RE.exec(String(html));
+  return m ? m[0].slice(NOTE_LABEL.length) : null;
+}
+/**
+ * ยามชั้นสอง (round 2 · review I3 "defense in depth") — ช่วงที่จะถูกกินต้องไม่กลืน "ของ site อื่น" ไปด้วย
+ *   (ก) **token ของ site อื่นอยู่ในช่วง** — เคส ADV-6 ตัวจริง: hint ที่เขียน `EPS ฐาน ~$19.16` ไว้ **หลัง** ป้าย
+ *       ⇒ `{{rd:baseEps}}` ถูกลบทั้ง token ค่าที่คนเห็นหายทั้งจุด (ยามนี้แม่นเพราะดู "ตำแหน่ง" ไม่ใช่เดาจากตัวเลข)
+ *   (ข) **ตัวเลขในช่วงตรงกับค่าที่ token ของ site อื่น render** — กันกรณีที่ whitelist ดันเข้ารูปเงินพอดี
+ *       ★ ชุดที่เทียบ = ค่าที่ token **พิมพ์ออกมาจริง** เท่านั้น · ไม่ใช่ตัวหารของการ์ด (eps/dps/bvps/shares/revenue —
+ *         token render เป็น P/E · ปันผล% · P/BV · Market Cap ไม่ใช่ตัวเลขพวกนั้น) ไม่งั้นจะฟ้องปลอมทันที เพราะ
+ *         `values.dps` **คือ** เลขปันผลตัวเดียวกับที่ hint เขียน (ARE 2.88 · BMY 2.52 · JBHT 5.40 · KIM 1.04)
+ *       ★ ไม่รวม `sc{k}div` ด้วยเหตุผลเดียวกัน: ปันผลของฉากกับปันผลใน hint เป็น **ปริมาณเดียวกันโดยการสร้าง**
+ *         (CF: hint "~$6" = ปันผลรวม 3 ปี = `scenarios[k].div` 6) ⇒ เท่ากันคือเรื่องปกติ ไม่ใช่การชน
+ * @returns {string|null} เหตุผลที่ต้องปฏิเสธ หรือ null = ผ่าน
+ */
+function tailHitsOtherSite(tail, values) {
+  const t = String(tail);
+  if (/\{\{rd:/.test(t)) return `token ของ site อื่นอยู่ในช่วงที่จะกิน (${(t.match(/\{\{rd:[a-zA-Z0-9]+\}\}/) || [''])[0]})`;
+  const nums = (t.match(/[\d][\d.,]*/g) || [])
+    .map((n) => parseFloat(n.replace(/,/g, '').replace(/\.$/, ''))).filter((n) => Number.isFinite(n));
+  if (!nums.length) return null;
+  const fv = values._fv != null ? values._fv : values.fv;
+  const others = [values.px, fv, values.fvLow, values.fvHigh, values.analystTgt, values.baseEps];
+  for (const s of values.scenarios || []) others.push(s.tgt);
+  if (fv > 0) { others.push(Math.round(fv * 0.8 * 100) / 100); others.push(Math.round(fv * 0.7 * 100) / 100); }
+  for (const n of nums) for (const o of others) if (o != null && Math.abs(n - o) < 1e-9) return `ตัวเลข ${n} ตรงกับค่าที่ token ของ site อื่น render`;
+  return null;
+}
+// ── R2 (review I2): สำมะโนต้องบอกว่า "อะไรหายไปจากหน้าจริง" ไม่ใช่แค่ว่าป้ายหาย ────────────────
+const CLAUSE_NOTE = 'ตัด clause ';
+const clauseNote = (clause) => `${CLAUSE_NOTE}"${clause}" 1 จุด — ตัวเลขฉากของใบนี้ไม่ได้รวมปันผล (scenarioPlan conv=plain)`;
+const CLAUSE_NOTE_RE = /^ตัด clause "([\s\S]*)" (\d+) จุด/;
 const HINT_DIV_RE = /<div class="hint">[\s\S]*?<\/div>/;
+// ── M2 (Part D · fix wave Task 14): token เงิน 2 จุดเขียน "~" นำหน้าเสมอ (hintEps · scn{k}div) ทั้งที่ต้นฉบับ
+//   บางใบไม่มี "~" ตรงตำแหน่งนั้น ⇒ ข้อความที่คนเห็น "งอก" เครื่องหมายประมาณค่า · ชั้น 2 มองไม่เห็นเพราะ
+//   maskText ตัด [~≈] ทิ้งทั้งสองฝั่ง ⇒ ต้อง **เปิดเผยในสำมะโน** (ไม่เปลี่ยนพฤติกรรม — รูปของ skeleton v2 เป็นแบบนี้)
+const TILDE_RE = /[~≈]/;
+const TILDE_NOTE = 'เติม ~ หน้า token: ';
 const SCN_TGT_RE = new RegExp(`(<div class="tgt">\\s*)${CUR}?\\s*[\\d.,]+`);
 const SCN_RET_RE = /<div class="ret[^"]*">[\s\S]*?<\/div>/;
 const SCN_DPS_RE = new RegExp(`(ปันผล[^<]*<\\/span>\\s*<span>\\s*)[~≈]?\\s*${CUR}?\\s*[\\d.,]+`);
@@ -177,7 +247,27 @@ const FOOTER_RE = /<footer[\s\S]*<\/footer>/;
 // ── การเปิดเผย %/ปี ของหมวด 6 (review รอบ final F2) — ตัวหาข้อความ "%/ปี" ในช่อง .ret เพื่อสำมะโนเท่านั้น
 //   ไม่ใช่ตัวตัดสินย้าย/ไม่ย้าย (นั้นเป็นหน้าที่ TOLERANCE.f34/f35 อยู่แล้ว) — แค่ให้คนอ่านเห็นว่าใบไหนตัวเลขที่คนเห็นขยับ
 const SCN_RET_TEXT_RE = /<div class="ret[^"]*">([\s\S]*?)<\/div>/g;
-const PY_CELL_RE = /([+\-−]\s*[\d][\d.,]*%\/ปี)/;
+// ★ fix wave Task 14 (Part A) — ตัวเดิมพลาด 2 ทาง:
+//   (1) บังคับต้องมีเครื่องหมายนำหน้า `[+\-−]` ⇒ ช่องที่เขียน "~11.0%/ปี" / "≈ 4%/ปี" (ไม่มีเครื่องหมาย) อ่านไม่ออกเลย
+//       → census พิมพ์ before = null 44 คอลัมน์ 18 ใบ แล้วตกเป็น "value" โดยไม่เคยเทียบอะไรจริง
+//   (2) นับทศนิยมจาก **ตัวเลขที่ parse แล้ว** (`decOf(numOf(a))`) ไม่ใช่รูปที่โชว์ — "+2.0" → 2 → 0 ตำแหน่ง
+//       ⇒ 1.9 → 2.0 ถูกตัดสินว่า "form" ทั้งที่ตัวเลขที่คนเห็นขยับจริง (FER FICO OR PNW PR9)
+//   ⇒ เครื่องหมายเป็นทางเลือก · `~`/`≈` อยู่นอกกลุ่มตัวเลข (ไม่ให้ parse พัง) · ยอมช่องว่างรอบ "/" เหมือน PY_UNIT_RE
+//   ★ `~`/`≈` ถูก **ตัดทิ้งก่อน parse** (ไม่อยู่ในรูปที่ match เลย) — ไม่งั้น "≈ +8.9%/ปี" กับ "+8.9%/ปี" จะนับเป็น
+//     "ข้อความเปลี่ยน" ทั้งที่ตัวเลขเท่าเดิม (การหาย/งอกของ ~ เป็นคนละเรื่อง — อยู่ใน maskText/หัวข้อ "~" ของสำมะโน)
+const PY_CELL_RE = /([+\-−]?\s*\d[\d.,]*)\s*%\s*\/\s*ปี/;
+/**
+ * อ่านตัวเลข "%/ปี" ตัวแรกของข้อความช่อง .ret — คืนทั้ง **รูปที่โชว์** (dec) และค่าที่ parse ได้
+ * @returns {{text:string, num:number, dec:number}|null} null = ไม่มี %/ปี ในช่องนั้นจริง ๆ (ไม่ใช่ "อ่านไม่ออก")
+ */
+function pyCell(text) {
+  const m = PY_CELL_RE.exec(String(text == null ? '' : text));
+  if (!m) return null;
+  const shown = m[1].replace(/\s+/g, '').replace(/−/g, '-').replace(/,/g, '');   // "+0.8" · "-2.2" · "11.0"
+  const num = parseFloat(shown);
+  if (!Number.isFinite(num)) return null;
+  return { text: m[0].trim(), num, dec: (shown.split('.')[1] || '').length };
+}
 /**
  * เทียบข้อความ "%/ปี" ต่อคอลัมน์ (bear/base/bull) ระหว่างหน้า expand v1 (exp0) กับ v2 (exp1)
  * @returns {{col:string, before:string, after:string, kind:'form'|'value'}[]} เฉพาะคอลัมน์ที่ข้อความเปลี่ยนจริง
@@ -191,14 +281,11 @@ function scnPyDiffs(exp0, exp1) {
   const labels = ['bear', 'base', 'bull'];
   const out = [];
   for (let i = 0; i < 3; i++) {
-    const b = (before[i].match(PY_CELL_RE) || [])[0] || null;
-    const a = (after[i].match(PY_CELL_RE) || [])[0] || null;
+    const B = pyCell(before[i]), A = pyCell(after[i]);
+    const b = B ? B.text : null, a = A ? A.text : null;
     if (b === a) continue;                                       // ทั้งคู่ null (ไม่มี %/ปี) หรือข้อความเท่ากันเป๊ะ = ไม่เปลี่ยน
-    let kind = 'value';
-    if (b != null && a != null) {
-      const bn = numOf(b), an = numOf(a), dec = decOf(an);
-      if (bn != null && an != null && parseFloat(bn.toFixed(dec)) === an) kind = 'form';
-    }
+    // ★ ปัดค่าเดิมตาม **ทศนิยมที่ฝั่งใหม่โชว์จริง** (A.dec) — เท่ากัน = ต่างแค่รูป · ไม่เท่า = ค่าที่คนเห็นขยับ
+    const kind = B && A && parseFloat(B.num.toFixed(A.dec)) === A.num ? 'form' : 'value';
     out.push({ col: labels[i], before: b, after: a, kind });
   }
   return out;
@@ -485,10 +572,25 @@ function tokeniseScn(sec, values, info, sites, notes) {
     const em = HINT_EPS_RE.exec(hm[0]);
     const shown = em ? (em[0].match(new RegExp(`${CUR}\\s*[\\d.,]+$`)) || [''])[0] : '';
     const want = info.cur + RV.fmtPrice(values.baseEps);
-    if (em && sameMoney(shown, want)) ht.sub('hintEps', HINT_EPS_RE, (m) => m[1] + '~{{rd:baseEps}}');
-    else { ht.literal('hintEps', em ? `รูปเงินต่าง ("${shown}" ≠ "${want}")` : 'ไม่พบ'); delete values.baseEps; }
+    if (em && sameMoney(shown, want)) {
+      if (!TILDE_RE.test(em[0].slice(em[1].length))) notes.push(TILDE_NOTE + 'hintEps');   // M2 (Part D) — ดู TILDE_NOTE
+      ht.sub('hintEps', HINT_EPS_RE, (m) => m[1] + '~{{rd:baseEps}}');
+    } else { ht.literal('hintEps', em ? `รูปเงินต่าง ("${shown}" ≠ "${want}")` : 'ไม่พบ'); delete values.baseEps; }
   }
-  ht.sub('scnNote', HINT_NOTE_RE, () => '{{rd:scnNote}}');
+  // I1: divIncluded=false ⇒ token render ว่าง ต้องกิน clause ทั้งก้อน · true ⇒ token render ป้ายเดิมเป๊ะ กินแค่ป้าย
+  // ★ round 2 (I3): กินได้เฉพาะท้าย clause ที่อยู่ใน whitelist (NOTE_TAIL_*) และไม่ชนค่าของ site อื่น
+  //   รูปอื่น/ชนค่า = ไม่กินเลย → คง literal (สถานะเดิมของใบนั้น) ไม่ใช่เดาขอบเขตแล้วลบข้อความของผู้เขียนทิ้ง
+  const divOut = !!(values.scnBasis && values.scnBasis.divIncluded === false);
+  if (!divOut || !HINT_NOTE_RE.test(ht.html)) {
+    ht.sub('scnNote', HINT_NOTE_RE, () => '{{rd:scnNote}}');       // ไม่มีป้าย = literal "ไม่พบ" ตามเดิม
+  } else {
+    // ★ ดูบน `ht.html` (หลังแทน hint/hintEps แล้ว) ไม่ใช่ต้นฉบับ — token ของ site อื่นจึงมองเห็นได้ในช่วงที่จะกิน
+    const tail = noteTailOf(ht.html);
+    const hit = tail == null ? null : tailHitsOtherSite(tail, values);
+    if (tail == null) ht.literal('scnNote', 'ท้าย clause ไม่อยู่ในรูปที่รู้จัก — ไม่กิน');
+    else if (hit) ht.literal('scnNote', `${hit} — ไม่กิน`);
+    else ht.sub('scnNote', HINT_NOTE_TAIL_RE, () => '{{rd:scnNote}}');
+  }
   if (ht.err) return { reason: 'หมวด 6: ' + ht.err };
   const t = new Tok(sec.slice(0, hm.index) + ht.html + sec.slice(hm.index + hm[0].length), sites, notes);
   // คอลัมน์: หาแท็กเปิดด้วย regex เจ้าของเดิม แล้วตัดช่วง [เปิดตัวนี้, เปิดตัวถัดไป)
@@ -517,7 +619,10 @@ function tokeniseScn(sec, values, info, sites, notes) {
         // ★ F3: ปันผลฉากเป็นตัวเลขที่คนเห็น และไม่มีช่องไหนในชั้น 1 ตรวจ (f39 ไม่อยู่ใน COPY_FIELDS)
         const shown = (hits[0][0].match(new RegExp(`${CUR}\\s*[\\d.,]+$`)) || [''])[0];
         const want = info.cur + RV.fmtPrice(values.scenarios[i].div);
-        if (sameMoney(shown, want)) edits.push({ what: `scn${k}div`, start: a + hits[0].index, end: a + hits[0].index + hits[0][0].length, text: hits[0][1] + `~{{rd:sc${k}div}}` });
+        if (sameMoney(shown, want)) {
+          if (!TILDE_RE.test(hits[0][0].slice(hits[0][1].length))) notes.push(TILDE_NOTE + `scn${k}div`);   // M2 (Part D)
+          edits.push({ what: `scn${k}div`, start: a + hits[0].index, end: a + hits[0].index + hits[0][0].length, text: hits[0][1] + `~{{rd:sc${k}div}}` });
+        }
         else { sites.literal.push(`scn${k}div`); notes.push(`literal scn${k}div: รูปเงินต่าง ("${shown}" ≠ "${want}")`); }
       }
     }
@@ -647,7 +752,12 @@ const stripVolatile = (h) => h.replace(/<div class="ret[^"]*">[\s\S]*?<\/div>/g,
   .replace(/<div class="chg"[^>]*>[\s\S]*?<\/div>/i, '<div class="chg"></div>')
   // ช่องสรุป "ส่วนต่างจากราคา" = คลังคำคงที่ของ cron (เหมือน .chg/.ret) — ชั้น 1 ตรวจแทนว่าตรงกับ .big ของ v2
   .replace(glob(DV.SUMMARY_RE), (m, a, body, z) => a + z)
-  .replace(/ราคา ณ[^<]*/g, 'ราคา ณ').replace(/ • รวมปันผล/g, '');
+  // ★ I1: ตัด clause "รวมปันผล" **ทั้งก้อน** (ไม่ใช่แค่ป้าย) — ใบ divIncluded=false ตัดทั้ง clause จริงตาม HINT_NOTE_TAIL_RE
+  //   ส่วนใบ divIncluded=true ทั้งสองฝั่งมีข้อความเดียวกัน ⇒ ตัดเท่ากันทั้งคู่ = no-op ต่อการเทียบ
+  //   ★ round 2 (I3): regex นี้ match **เฉพาะ clause ที่ท้ายอยู่ใน whitelist** ⇒ ใบที่ท้ายเป็นรูปอื่น (ประโยค/ข้อความ
+  //     อ้างฐานบัญชี) จะไม่ถูกตัดจากฝั่งไหนเลย ⇒ ถ้ามีทางไหนลบมันทิ้งจริง ชั้น 2 **จะเห็น** (เดิมตาบอดทั้งช่วง)
+  //   ยามว่า "หายได้เมื่อไร/หายอะไรไป" อยู่ที่ checkStripped (นับป้าย + ต้อง divIncluded=false + รูปต้องอยู่ใน whitelist)
+  .replace(/ราคา ณ[^<]*/g, 'ราคา ณ').replace(HINT_NOTE_TAIL_G, '');
 
 /** สิ่งที่ `stripVolatile` blank ทิ้งในชั้น 2 แต่ไม่มีช่องไหนในชั้น 1 ครอบคลุม — ยืนยันตรงนี้แทน (review รอบ 1 F4/F5) */
 function checkStripped(exp0, exp1, values, notes) {
@@ -658,7 +768,12 @@ function checkStripped(exp0, exp1, values, notes) {
   if (c1 < c0) {
     const b = values.scnBasis;
     if (!b || b.divIncluded) return 'ข้อความ " • รวมปันผล" หายไปทั้งที่ผลตอบแทนยังรวมปันผล';
-    notes.push(`ตัด " • รวมปันผล" ${c0 - c1} จุด — ตัวเลขฉากของใบนี้ไม่ได้รวมปันผล (scenarioPlan conv=plain)`);
+    // ★ round 2 (review I3): ยามเดิมนับได้แค่ "ป้ายหายกี่จุด" ไม่เคยดูว่า **อะไร** หายไปกับมัน ⇒ ประโยคทั้งประโยค
+    //   หายได้โดยทุกชั้นเขียว · ตอนนี้บังคับว่า clause ที่หายต้องอยู่ในรูป whitelist (HINT_NOTE_TAIL_RE) ทุกจุด
+    //   และ **บันทึกข้อความที่หายจริงลง note** เพื่อให้สำมะโนเปิดเผยได้ (R2) — ไม่ใช่บอกแค่ว่าป้ายหาย
+    const gone = exp0.match(HINT_NOTE_TAIL_G) || [];
+    if (gone.length !== c0) return `clause "รวมปันผล" ที่หายไปไม่อยู่ในรูปที่อนุญาต (${gone.length}/${c0} จุดเข้ารูป) — ห้ามตัดข้อความที่เดาขอบเขตไม่ได้`;
+    for (const g of gone) notes.push(clauseNote(g));
   }
   // (ข) คลาสของช่อง ret (f38 นับจำนวนให้แล้ว) — การ "สลับ" pos↔neg ไม่เปลี่ยนจำนวน จึงเปิดเผยเป็น note
   const cls = (h) => (h.match(/class="ret (?:pos|neg)"/g) || []).join(',');
@@ -784,13 +899,14 @@ function migrateOne(src, name, opts) {
   }
 }
 
+const ALREADY_V2 = 'เป็น v2 แล้ว — ข้าม';
 function runOnce(src, name, noScn, st) {
   const notes = [];
   const sites = { tokenised: [], literal: [] };
   const fail = (reason) => ({ ok: false, reason, sites, compare: [], notes, masked: false, maskedDiff: '', pyChanges: [], pyCountRefused: false });
   try {
     const rdS = RM.readReportData(src);
-    if (rdS.ok && RV.isV2(rdS.data)) return fail('เป็น v2 แล้ว — ข้าม');
+    if (rdS.ok && RV.isV2(rdS.data)) return fail(ALREADY_V2);
     let exp0;
     try { exp0 = expandReport(src); } catch (e) { return fail('expand v1 ไม่ได้: ' + e.message); }
     const gate0 = checkHtml(exp0, name);
@@ -815,6 +931,506 @@ function runOnce(src, name, noScn, st) {
   } catch (e) {
     return fail('migrator ระเบิด: ' + e.message);
   }
+}
+
+// ── cron differential v1 ↔ v2 (ระยะ 2 ส่วน E · Task 14a — ruling final review ส่วน D) ──────────────
+// ★ ทำไมต้องมี: gate อย่างเดียวไม่พอ — final review ส่วน D เจอ 37 ใบที่ stock-meta.pe กระโดดเงียบ ๆ (gate ผ่านหมด) +
+//   12 ใบ W17 ที่พลิกเฉพาะบางราคา (7 ใบรอดชุดจำลอง 4 ตัวคูณ) + วันที่ literal ค้าง — ทุกตัวเห็นได้ก็ต่อเมื่อเอา
+//   ผล cron ของ v1 กับ v2 "วางเทียบกัน" ที่ราคาเดียวกัน บน grid ละเอียด ⇒ ใบที่ v2 ให้ผลต่างจาก v1 นอกเหนือ "รูป" = ห้ามเขียน
+// ★ ทุกอย่างในหน่วยความจำ — ไม่เขียนไฟล์ ไม่อ่าน price-flags · ต้นแบบ scratchpad/fixD/sim1–sim7
+// grid ×0.85 → ×1.15 ทีละ 0.005 (61 จุด) — ปัดตัวคูณเป็น 3 ตำแหน่งก่อน (0.85+i×0.005 สะสม error ทศนิยมลอยตัว)
+const CRON_GRID = Array.from({ length: 61 }, (_, i) => Math.round((0.85 + i * 0.005) * 1000) / 1000);
+const CRON_META_KEYS = ['price', 'mos', 'upside', 'fairValue', 'pe', 'dividendYield'];
+// ปัดแบบสมมาตรรอบศูนย์ + epsilon (3.45 เก็บเป็น 3.4499… ในเลขฐานสอง — ไม่ใส่ epsilon จะปัดลงแบบสุ่มตามค่า)
+const roundDec = (x, dec) => { const p = Math.pow(10, dec); return Math.sign(x) * Math.round(Math.abs(x) * p + 1e-7) / p; };
+/** ค่า stock-meta เท่ากันภายใต้ "รูป" = ปัดทั้งคู่ตามทศนิยมของตัวที่หยาบกว่าแล้วเท่ากัน หรือห่างไม่เกินครึ่งหน่วยของทศนิยมนั้น
+ *  (ขอบครึ่งหน่วยพอดี 3.5 ~ 3 — กติกาเดียวกับตัวเลขที่มองเห็น withinForm) · 75.4 ~ 75 · 1.4 ≠ 1.2 */
+function sameMetaForm(a, b) {
+  if (a == null || b == null) return a == null && b == null;
+  if (typeof a !== 'number' || typeof b !== 'number') return JSON.stringify(a) === JSON.stringify(b);
+  const dec = Math.min(decOf(a), decOf(b));
+  return a === b || roundDec(a, dec) === roundDec(b, dec) || Math.abs(a - b) <= 0.5 * Math.pow(10, -dec) + 1e-9;
+}
+/** วันที่ patch ตายตัว = วันที่ 2 ของ "เดือนถัดจาก values.priceDate" — บังคับให้ทุกใบข้ามเดือน (ตัวเขียนวันที่/ป้ายเดือนกราฟ) */
+function cronDateParts(priceDateIso) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(priceDateIso || ''));
+  if (!m) return null;
+  const y = parseInt(m[1], 10), mon = parseInt(m[2], 10);          // mon 1-based ⇒ monIdx ของเดือนถัดไป (0-based) = mon % 12
+  return { day: 2, monIdx: mon % 12, yearCE: mon === 12 ? y + 1 : y };
+}
+const NUM_RUN_RE = /[0-9][0-9.,]*/g;                                  // หน่วยเดียวกับที่ maskText แทนด้วย '#'
+const numText = (h) => visible(h).replace(/[−–]/g, '-');             // ลำดับเดียวกับ maskText (ก่อนตัด ~≈) ⇒ เลขเรียงตรงกับ '#'
+const cleanNum = (t) => t.replace(/[.,]+$/, '');                      // "5." ท้ายประโยค / "1,234," ในรายการ ≠ ทศนิยม
+// หน่วยใหญ่ของเงินที่ตามหลังตัวเลข — คำศัพท์เดียวกับ RV.BIG_UNITS (fmtBig ของ v2) · ยาวก่อนสั้น ("ล้านล้าน" ก่อน "ล้าน")
+const SCALE_UNITS = [['ล้านล้าน', 1e12], ['แสนล้าน', 1e11], ['หมื่นล้าน', 1e10], ['พันล้าน', 1e9], ['ล้าน', 1e6], ['T', 1e12], ['B', 1e9], ['M', 1e6]];
+const SCALE_AFTER_NUM_RE = /(\d\s*)(?:ล้านล้าน|แสนล้าน|หมื่นล้าน|พันล้าน|ล้าน|[TBM](?![A-Za-z]))/g;
+const SCALE_AT = SCALE_UNITS.map(([w, mult]) => ({ w, mult, re: new RegExp('^\\s*' + w + (w.length === 1 ? '(?![A-Za-z])' : '')) }));
+const scaleAt = (t, i) => {
+  const rest = t.slice(i, i + 16);
+  for (const u of SCALE_AT) if (u.re.test(rest)) return { word: u.w, mult: u.mult };
+  return { word: '', mult: 0 };
+};
+// "ต่างแค่รูป" = ค่าเท่ากันเป๊ะ (ศูนย์ท้าย/คอมมา) หรือห่างไม่เกินครึ่งหน่วยของทศนิยมที่หยาบกว่า (กติกาเดียวกับ roundsTo)
+//   ⇒ 3.5 ~ 3 · 69.5 ~ 69 · 283.52 ~ 284 (v2 ปัดจากค่าดิบตัวเดียวกับที่ v1 พิมพ์ 1 ตำแหน่ง) · 1.4 ≠ 1.2
+//   ★ ทศนิยมนับจาก "ข้อความ" ไม่ใช่จากตัวเลข (parseFloat("262.00") = 262 จะนับได้ 0 ตำแหน่ง)
+const withinForm = (xt, yt, x, y) => { const dec = Math.min(decOf(xt), decOf(yt)); return Math.abs(x - y) <= 0.5 * Math.pow(10, -dec) + 1e-9; };
+// ช่อง .ret ของหมวด 6: v2 render รูปคงที่ "±X% (±Y%/ปี)" ส่วน v1 มีคำประกอบของผู้เขียน ("รวม ~ … (≈ …)" · "(3 ปี รวมปันผล)")
+//   ชั้น 2 ของ migrator จึง blank ช่องนี้ทิ้ง (stripVolatile) แล้วคุมค่าด้วย f34/f35 + จำนวนหน่วย %/ปี (scnPyCountGuard)
+//   ⇒ ที่นี่ก็เทียบ "ตัวเลขที่มีหน่วย %" ในช่อง (ลำดับ + เครื่องหมาย + ค่าภายใต้รูป) แทนถ้อยคำ · คลาส pos/neg ต้องเท่ากัน
+const RET_CELL_RE = /<div class="(ret[^"]*)">([\s\S]*?)<\/div>/g;
+const RET_PCT_RE = /([+\-−]?)\s*(\d[\d.,]*)\s*%(\s*(?:\/\s*ปี|ต่อปี))?/g;
+// ★ เรียงตาม "บทบาท" ไม่ใช่ลำดับในช่อง: v1 บางใบเขียน "−5.1%/ปี (3 ปี รวม −14.6%)" (ต่อปีขึ้นก่อน — PYPL) ส่วน v2 เป็น
+//   "−15% (−5%/ปี)" เสมอ ⇒ รวม = ตัวที่ไม่มีหน่วย /ปี · ต่อปี = ตัวที่มี "/ปี"/"ต่อปี" ตามหลัง (คำศัพท์เดียวกับ SCN_PERYEAR_AFTER)
+//   บทบาทละไม่เกิน 1 ตัว ⇒ จัดเป็น [รวม, ต่อปี] · มากกว่านั้น (อ่านบทบาทไม่ได้) = คงลำดับเดิม (เทียบเข้มตามตำแหน่ง)
+function retCells(h) {
+  return [...h.matchAll(RET_CELL_RE)].map((m) => {
+    const all = [...m[2].replace(/<[^>]*>/g, ' ').matchAll(RET_PCT_RE)].map((p) => ({
+      t: (p[1] === '−' ? '-' : p[1]) + p[2], v: (p[1] === '-' || p[1] === '−' ? -1 : 1) * parseFloat(cleanNum(p[2]).replace(/,/g, '')), py: !!p[3] }));
+    const tot = all.filter((x) => !x.py), py = all.filter((x) => x.py);
+    return { cls: m[1], pcts: tot.length <= 1 && py.length <= 1 && tot.length === 1 ? tot.concat(py) : all };
+  });
+}
+/** แยกหน้า expand เป็น [ก่อนหมวด 6, หมวด 6, หลังหมวด 6] ด้วยตัวหาบล็อกเจ้าของเดิม (DV.scenarioBlock) — ไม่มีหมวด 6 = ทั้งหน้าก้อนเดียว */
+function cronParts(exp) {
+  const b = DV.scenarioBlock(exp);
+  const i = b ? exp.indexOf(b.sec) : -1;
+  if (i < 0) return [{ part: 'page', html: exp }];
+  return [{ part: 'page', html: exp.slice(0, i) }, { part: 'sec6', html: b.sec }, { part: 'page', html: exp.slice(i + b.sec.length) }];
+}
+// %/ปี ของ .ret = ฟังก์ชันของ "ผลตอบแทนรวมที่โชว์" (RV.derive/scenarioPlan คิดจากค่าที่ปัดแล้ว ไม่ใช่ค่าดิบ)
+//   ⇒ รวม −25.6% (v1 คงรูป 1 ตำแหน่งของผู้เขียน) → −9.4%/ปี · รวม −26% (v2 fmtMos) → −10%/ปี — ต่างกัน 0.6 จุดทั้งที่
+//   ค่าดิบตัวเดียวกัน · ตัดสินว่า "รูป" ได้ก็ต่อเมื่อ **ทั้งสองฝั่ง** %/ปี = f(รวมที่ตัวเองโชว์) ภายใต้ครึ่งหน่วยของ %/ปี
+//   + ช่วงที่ f กวาดได้ภายในครึ่งหน่วยของ "รวม" (ครอบกรณีคิดจากค่าดิบ) · สูตร = scnBasis.perYear (null = ยอม cagr หรือ linear)
+const PY_FNS = { cagr: (t, n) => (Math.pow(1 + t / 100, 1 / n) - 1) * 100, linear: (t, n) => t / n };
+const halfUnit = (t) => 0.5 * Math.pow(10, -decOf(t));
+function pyExplained(T1, P1, T2, P2, basis) {
+  if (!basis || !Number.isInteger(basis.years)) return false;
+  const fns = basis.perYear ? [PY_FNS[basis.perYear]].filter(Boolean) : [PY_FNS.cagr, PY_FNS.linear];
+  const self = (f, T, P) => { const hT = halfUnit(T.t), n = basis.years;
+    if (1 + (T.v - hT) / 100 <= 0) return false;
+    return Math.abs(P.v - f(T.v, n)) <= halfUnit(P.t) + Math.abs(f(T.v + hT, n) - f(T.v - hT, n)) / 2 + 1e-9; };
+  return fns.some((f) => self(f, T1, P1) && self(f, T2, P2));
+}
+
+/** วงเล็บทวนวันที่ล้วนที่ติดท้ายวันที่ราคาในหัวรายงาน → { drop() } คืน html ที่ตัดวงเล็บนั้นออก · ไม่มี/ไม่ล้วน/คนละวัน = null */
+function pureRestate(exp) {
+  const hm = HEADER_RE.exec(exp);
+  if (!hm) return null;
+  const hit = PD.findPriceDate(hm[0]);
+  const r = hit && PD.findRestatedDate(hm[0], hit);
+  if (!r) return null;
+  const from = hit.index + hit.length, afterDate = r.index + r.text.length;
+  const close = /^\s*\)/.exec(hm[0].slice(afterDate));
+  if (!close || !RESTATE_PRE_RE.test(hm[0].slice(from, r.index))) return null;
+  const at = hm.index;
+  return { drop: () => exp.slice(0, at + from) + exp.slice(at + afterDate + close[0].length) };
+}
+
+// กฎศักราช (fix1 R3): ยอม 2569 ↔ 2026 เฉพาะใน "บริบทวันที่" = ชื่อเดือนไทยเต็ม/ย่อ (คำศัพท์เดียวกับ PD.MONTH_ALT) ติดหน้าเลขปี
+//   ("2 ต.ค. 2569" · "ต.ค. 2569") ทั้งสองฝั่ง — "กำไร 2569 ล้าน" vs "2026 ล้าน" = ค่าต่าง ไม่ใช่ศักราช
+const ERA_CTX_RE = new RegExp('(?:' + PD.MONTH_ALT + ')\\s*$');
+const eraCtx = (t, idx) => ERA_CTX_RE.test(t.slice(Math.max(0, idx - 20), idx));
+const DIV_TEXT_RE = HINT_NOTE_TAIL_G;    // clause เต็ม (ไม่ใช่แค่ป้าย) — ดูหมายเหตุที่ HINT_NOTE_TAIL_G
+/** มุมมองที่ใช้เทียบของหน้า expand หนึ่งฝั่ง: ตัดวงเล็บทวน (ถ้าตัดสินให้ตัด) → (collect: stripVolatile) → ตัด clause "รวมปันผล" → แยกส่วน */
+function cronView(exp, drop, collect) {
+  let h = exp;
+  if (drop) { const q = pureRestate(h); if (q) h = q.drop(); }
+  if (collect) h = stripVolatile(h);
+  return cronParts(h.replace(DIV_TEXT_RE, ''));
+}
+/** ส่วนเดียวของมุมมอง → ข้อความตัวเลข/มาสก์ (ช่อง .ret blank แล้ว · หน่วยใหญ่ของเงินแทนด้วย § ในมาสก์) */
+function partText(html) {
+  const h = html.replace(RET_CELL_RE, '<div class="ret"></div>');
+  const t = numText(h);
+  return { t, masked: maskText(h.replace(SCALE_AFTER_NUM_RE, '$1§')), nums: [...t.matchAll(NUM_RUN_RE)] };
+}
+/**
+ * หน่วยใหญ่ของเงินต่างกันสองฝั่ง = "รูป" หรือไม่ — กติกาเลขนัยสำคัญ (Task 14a fix round 2 · แทน "ครึ่งหน่วยฝั่งละเอียด" ของ fix1 R4)
+ *   ฝั่งหยาบ C = ฝั่งที่ตำแหน่งหลักสุดท้ายที่พิมพ์ p (ทศนิยม × หน่วย) ใหญ่กว่า · ปัดค่าฝั่งละเอียด F ไปที่ตำแหน่ง p แล้วต้อง **เท่ากับ C**
+ *   ★ F ต้องเหลือเลขนัยสำคัญ ≥ 1 หลักที่ตำแหน่ง p — "฿1 ล้านล้าน" vs "฿5.1 แสนล้าน": หลัก 1e12 ใหญ่กว่าหลักนำของ 5.1e11
+ *     (เหลือ 0 หลัก) ⇒ ต่างจริง ไม่ใช่ "0.51 ปัดเป็น 1"
+ *   ★ F ที่เห็นถูกปัดมาแล้วที่ตำแหน่งของมันเอง pF ⇒ "ปัด F" = ปัดค่าจริงช่วง [F−pF/2, F+pF/2] — มีค่าในช่วงนั้นที่ปัดได้ C ก็เท่ากัน
+ *     (ADVANC ×0.87: v1 "0.91 ล้านล้าน" · v2 "9.15 แสนล้าน" จากค่าจริง 9.148 → ปัดข้อความ 9.15 ซ้ำได้ 9.2 แต่ค่าจริงปัดได้ 9.1)
+ *   ตัวอย่าง: "฿0.89 ล้านล้าน" vs "฿8.94 แสนล้าน" → 8.9e11 รูป · "$0.99 B" vs "$986 M" → 9.9e8 รูป · "$1.00 B" vs "$998 M" → ปัดข้ามหลัก
+ *     1.00e9 รูป (PRCT ×0.86 — ถ้านับเลขนัยสำคัญในหลักของ F เองจะได้ 998 ≠ 1000 ทั้งที่ v1 พิมพ์ 0.998 ด้วยทศนิยม 2 ตำแหน่ง) ·
+ *     "$2 B" vs "$1,450 M" → 1e9 ≠ 2e9 ต่างจริง · "฿0.89 ล้านล้าน" vs "฿8.84 แสนล้าน" → 8.8e11 ≠ 8.9e11 ต่างจริง
+ */
+function unitForm(X, Y) {
+  if (!X.u.mult || !Y.u.mult || !(X.V > 0) || !(Y.V > 0)) return false;
+  const pX = Math.pow(10, -decOf(X.x)) * X.u.mult, pY = Math.pow(10, -decOf(Y.x)) * Y.u.mult;
+  const [C, F, p, pF] = pX >= pY ? [X, Y, pX, pY] : [Y, X, pY, pX];
+  const keep = Math.floor(Math.log10(F.V) + 1e-9) - Math.round(Math.log10(p)) + 1;     // เลขนัยสำคัญของ F ที่ตำแหน่ง p
+  if (keep < 1) return false;
+  // ช่วงค่าจริงของ F ตัดกับช่วงที่ปัดที่ตำแหน่ง p แล้วได้ C  ⇔  |F − C| ≤ (p + pF) / 2
+  return Math.abs(F.V - C.V) <= (p + pF) / 2 + p * 1e-6;
+}
+/** ตัวเลขลำดับ i ของส่วน (คูณหน่วยใหญ่แล้ว) — ใช้ทั้งตัวเทียบและตัวตัดสินฝั่ง */
+function numAt(pt, i) {
+  const m = pt.nums[i];
+  if (!m) return null;
+  const u = scaleAt(pt.t, m.index + m[0].length), x = cleanNum(m[0]);
+  const v = parseFloat(x.replace(/,/g, ''));
+  return { s: m[0], x, u, v, V: v * (u.mult || 1), H: halfUnit(x) * (u.mult || 1), index: m.index };
+}
+
+/**
+ * ตัวเลขที่มองเห็นของผล cron สองฝั่ง — **ชั้น 2 ของ migrator ตัวเดิม** (maskText + ข้อยกเว้น " • รวมปันผล" ของ checkStripped)
+ * แล้วเทียบเลขทีละตัวตามลำดับ: ข้อความเท่ากัน = ผ่าน · ค่าเท่ากันเป๊ะ (ศูนย์ท้าย/คอมมา — sameMoney) = ผ่านเงียบ ·
+ * ห่างไม่เกินครึ่งหน่วยของทศนิยมที่หยาบกว่า (roundsTo/scnPyDiffs 'form') = "รูป" (บันทึก ไม่ตก) · นอกนั้น = ค่าที่คนเห็นต่างจริง
+ * ★ หน่วยใหญ่ของเงินต่างกัน = รูปตามกติกาเลขนัยสำคัญ (unitForm · fix round 2): ปัดฝั่งละเอียดไปที่หลักสุดท้ายของฝั่งหยาบแล้วต้องเท่ากัน
+ *   (฿0.89 ล้านล้าน ~ ฿8.94 แสนล้าน · ฿1 ล้านล้าน ≠ ฿5.1 แสนล้าน)
+ * ★ statics = คู่ข้อความตัวเลข (part|v1|v2) ที่ต่างกันอยู่แล้ว **ก่อน** patch (ผลต่างที่ migrator ชั้น 1 ยอมรับไว้
+ *   เช่น MOS30 ฿1.99→฿2.00 ใต้ GAP_REL) — cron ไม่แตะสองฝั่งของคู่นั้น ⇒ ไม่ใช่ "พฤติกรรม cron" ข้ามได้ไม่เกินจำนวนที่มีก่อน patch
+ *   ★ ไม่ผูกลำดับ (index) — ราคาข้ามหลัก/gauge ขยายขอบทำให้ลำดับเลื่อนได้ · ถ้า cron ขยับฝั่งใดฝั่งหนึ่ง ข้อความคู่จะไม่ตรง = ตรวจตามปกติ
+ *   ★ คู่ที่ "ค่าต่าง" (ไม่ใช่รูป) ที่ถูกข้ามจริงคืนใน valueUsed — census ต้องเปิดเผยรายใบ (fix1 R1)
+ * @param {{statics?:Map<string,object>, collect?:boolean}} [opt]  collect = โหมดเก็บ statics (ไม่หยุดที่ตัวแรก)
+ * @returns {{bad:string|null, at:object|null, forms:{part:'ret'|'sec6'|'page'|'era',before:string,after:string}[], retClass:number,
+ *            statics:Map<string,{n:number,form:boolean,part:string,label:string,v1:string,v2:string,relPct:number|null}>, relax:object, valueUsed:object[]}}
+ *   at = ตำแหน่งที่ตก (type text|count|num|ret-count|ret-pcts|ret-class|ret-val|stripped + j/i/c/q · drop1/drop2) ให้ตัวตัดสินฝั่ง
+ *   part: ret = % ในช่อง .ret · sec6 = ตัวเลขอื่นในหมวด 6 (เช่น "จากจุดเข้า") · page = นอกหมวด 6 · era = ปีคนละศักราช
+ */
+function visibleCronDiff(e1, e2, values, opt) {
+  const o = opt || {};
+  const statics = o.statics || new Map(), found = new Map(), used = new Map(), valueUsed = [];
+  const forms = [];
+  let retClass = 0, drop1 = false, drop2 = false, whole = false;
+  // ข้อยกเว้นที่ถูกใช้จริงในการเทียบครั้งนี้ (นับครั้ง) — ไม่เปลี่ยนผลตัดสิน แค่ให้ census/รายงานเห็นว่า "ผ่าน" เพราะกติกาไหน
+  const relax = { static: 0, pyForm: 0, restate: 0, scale: 0, era: 0 };
+  const out = (bad, at) => ({ bad, at: at ? Object.assign({ drop1, drop2, whole }, at) : null, forms, retClass, statics: found, relax, valueUsed });
+  const stripBad = checkStripped(e1, e2, values, []);
+  if (stripBad && !o.collect) return out(stripBad, { type: 'stripped' });
+  // วงเล็บทวนวันที่ "ล้วน" ในหัวรายงาน — migrator ลบได้ (TOLERANCE.f11 · site restate) ⇒ ฝั่งที่ยังมีอยู่ฝั่งเดียวให้ตัดออกก่อนเทียบ
+  //   ★ ตัดเฉพาะวงเล็บที่ **วันเดียวกับวันที่ราคา** (PD.findRestatedDate) และข้างในมีแต่วันที่ — วงเล็บค้างวันเก่า/มีคำขยาย = ไม่แตะ (ตรวจตามปกติ)
+  const q1 = pureRestate(e1), q2 = pureRestate(e2);
+  drop1 = !!(q1 && !q2); drop2 = !!(q2 && !q1);
+  if (drop1 || drop2) relax.restate++;
+  // โหมดเก็บ statics (ก่อน patch): ใช้ stripVolatile ตัวเดียวกับชั้น 2 ตอนย้าย — ตัวที่ทำให้มาสก์เท่ากันจนย้ายผ่านได้
+  //   (ช่องสรุป/.chg ของ v1 ก่อน patch อาจค้างคนละถ้อยคำ ⇒ ไม่ strip = จัดเรียงเลขไม่ได้ทั้งส่วน)
+  const p1 = cronView(e1, drop1, o.collect), p2 = cronView(e2, drop2, o.collect);
+  // หมวด 6 หาเจอฝั่งเดียว = โครงหน้าต่างกันแล้ว — เทียบทั้งหน้าก้อนเดียว (มาสก์จะชี้จุดต่างให้เอง)
+  whole = p1.length !== p2.length;
+  const joinAll = (p) => [{ part: 'page', html: p.map((x) => x.html).join('') }];
+  const [a, b] = whole ? [joinAll(p1), joinAll(p2)] : [p1, p2];
+  const basis = values && values.scnBasis;
+  for (let j = 0; j < a.length; j++) {
+    const r1 = retCells(a[j].html), r2 = retCells(b[j].html);
+    let retBad = r1.length !== r2.length ? [`จำนวนช่อง .ret (${a[j].part}) ${r1.length} ≠ ${r2.length}`, { type: 'ret-count', j }] : null;
+    for (let c = 0; !retBad && c < r1.length; c++) {
+      const x = r1[c], y = r2[c];
+      if (x.pcts.length !== y.pcts.length) { retBad = [`ช่อง .ret คอลัมน์ ${c + 1} จำนวนตัวเลข % v1 [${x.pcts.map((p) => p.t)}] ≠ v2 [${y.pcts.map((p) => p.t)}]`, { type: 'ret-pcts', j, c }]; break; }
+      // สีช่อง: cron v1 **ไม่แตะ** คลาส pos/neg (ตั้งใจ — memory price-derived-staleness) ⇒ ราคาวิ่งจนผลตอบแทนเปลี่ยนเครื่องหมาย
+      //   v1 ค้างสีเดิม ส่วน v2 คิดสีจากตัวเลขเดียวกับที่พิมพ์ (RV.derive cls) — ต่างกันได้ **เฉพาะ** เมื่อ v2 สอดคล้องกับเครื่องหมาย
+      //   ของตัวเลขรวมที่ตัวเองโชว์ (= v2 แก้สีค้างของ v1 · เปิดเผยเป็น retClass) · v2 สีขัดตัวเลขตัวเอง = ต่างจริง
+      if (x.cls !== y.cls) {
+        const tot = y.pcts[0];
+        const want = tot ? (/^-/.test(tot.t) ? 'neg' : 'pos') : null;
+        if (!want || !new RegExp('\\b' + want + '\\b').test(y.cls)) { retBad = [`คลาสช่อง .ret คอลัมน์ ${c + 1}: v1 ${x.cls} ≠ v2 ${y.cls} (v2 ขัดเครื่องหมาย ${tot ? tot.t : '-'}%)`, { type: 'ret-class', j, c }]; break; }
+        retClass++;
+      }
+      for (let q = 0; q < x.pcts.length; q++) {
+        const P = x.pcts[q], Q = y.pcts[q];
+        if (P.v === Q.v) continue;
+        // ตัวแรก = รวม (ต้องอยู่ในรูป) · ตัวที่สอง = %/ปี (อยู่ในรูป หรืออธิบายได้ด้วยรูปของ "รวม" ทั้งสองฝั่ง — pyExplained)
+        const plain = withinForm(P.t, Q.t, P.v, Q.v);
+        const ok = plain || (q === 1 && withinForm(x.pcts[0].t, y.pcts[0].t, x.pcts[0].v, y.pcts[0].v) && pyExplained(x.pcts[0], P, y.pcts[0], Q, basis));
+        if (!ok) { retBad = [`ช่อง .ret คอลัมน์ ${c + 1}: v1 ${P.t}% ≠ v2 ${Q.t}%`, { type: 'ret-val', j, c, q }]; break; }
+        if (!plain) relax.pyForm++;
+        forms.push({ part: 'ret', before: P.t + '%', after: Q.t + '%' });      // ช่อง .ret (หมวด 6) — แถว "รูปทศนิยมหมวด 6" ของ census
+      }
+    }
+    if (retBad && !o.collect) return out(retBad[0], retBad[1]);
+    const A = partText(a[j].html), B = partText(b[j].html);
+    if (A.masked !== B.masked) {
+      if (o.collect) continue;                              // โครงคำต่างตั้งแต่ก่อน patch — ส่วนนี้ไม่มี statics (เทียบเข้มตามปกติ)
+      const m1 = A.masked, m2 = B.masked;
+      let i = 0;
+      while (i < m1.length && i < m2.length && m1[i] === m2[i]) i++;
+      return out(`ข้อความ (${a[j].part}) ต่างที่ตัวอักษร ${i}: v1 «${m1.slice(Math.max(0, i - 30), i + 30)}» ≠ v2 «${m2.slice(Math.max(0, i - 30), i + 30)}»`, { type: 'text', j });
+    }
+    // ★ มาสก์เท่ากัน ⇒ จำนวนตัวเลขเท่ากันโดยโครงสร้าง (แต่ละก้อนเลขกลายเป็น '#' หนึ่งตัว) — คงไว้เป็นยามกันโค้ดมาสก์เปลี่ยนในอนาคต
+    if (A.nums.length !== B.nums.length) { if (o.collect) continue; return out(`จำนวนตัวเลข (${a[j].part}) ${A.nums.length} ≠ ${B.nums.length}`, { type: 'count', j }); }
+    for (let i = 0; i < A.nums.length; i++) {
+      const X = numAt(A, i), Y = numAt(B, i);
+      if (X.s === Y.s && X.u.word === Y.u.word) continue;
+      const fin = Number.isFinite(X.v) && Number.isFinite(Y.v);
+      const bf = X.s + (X.u.word ? ' ' + X.u.word : ''), af = Y.s + (Y.u.word ? ' ' + Y.u.word : '');
+      let exact = false, form = false, part = a[j].part;
+      if (X.u.word !== Y.u.word) {
+        // หน่วยใหญ่ต่างกัน (v1 คงหน่วยของผู้เขียน "฿0.89 ล้านล้าน" · v2 fmtBig เลือกหน่วยใหม่ "฿8.94 แสนล้าน")
+        //   ★ fix2: กติกาเลขนัยสำคัญ (unitForm) — หน่วยหายฝั่งเดียว = ต่างจริง
+        form = fin && unitForm(X, Y);
+        if (form && !o.collect) relax.scale++;
+      } else {
+        exact = fin && X.v === Y.v && sameMoney(X.x, Y.x);                                // ศูนย์ท้าย/คอมมา — ค่าเท่ากันเป๊ะ
+        form = fin && withinForm(X.x, Y.x, X.v, Y.v);
+        // ปีคนละศักราช (2569 ↔ 2026) = วันเดียวกัน — migrator ทำให้ .disc ตามศักราชของหัวรายงาน (note `dateEra normalize`)
+        //   ★ fix1 R3: เฉพาะบริบทวันที่ทั้งสองฝั่ง (ชื่อเดือนไทยติดหน้า)
+        if (!form && fin && /^\d{4}$/.test(X.x) && /^\d{4}$/.test(Y.x) && Math.abs(X.v - Y.v) === 543 && eraCtx(A.t, X.index) && eraCtx(B.t, Y.index)) {
+          form = true; part = 'era'; if (!o.collect) relax.era++;
+        }
+      }
+      const key = `${a[j].part}|${bf}|${af}`;
+      const st = statics.get(key);
+      const isStatic = !o.collect && !!st && st.n > (used.get(key) || 0);
+      if (isStatic) { used.set(key, (used.get(key) || 0) + 1); relax.static++; if (!st.form) valueUsed.push(st); }
+      if (!exact && !form) {
+        if (!o.collect && !isStatic) {
+          const ctx = A.t.slice(Math.max(0, X.index - 40), X.index).replace(/\s+/g, ' ').trim();
+          return out(`ตัวเลข (${a[j].part}) «…${ctx.slice(-30)} ${bf}» v1 ${bf} ≠ v2 ${af}`, { type: 'num', j, i });
+        }
+      } else if (!exact && !o.collect && !isStatic) forms.push({ part, before: bf, after: af });
+      // รวมผลต่างรูปที่มีก่อน patch ด้วย (ไม่ใช่ของ cron ไม่นับ formOnly) · ★ เพดาน = GAP_REL (ช่องเงินที่ชั้น 1 ยอมกว้างสุด — arrNearGap)
+      //   ผลต่างที่ใหญ่กว่านั้นไม่ใช่สิ่งที่ migrator "ยอมรับไว้" ⇒ ไม่ให้เป็น static (ตรวจทุกจุด grid ตามปกติ)
+      if (o.collect && !exact && (form || (X.u.word === Y.u.word && fin && Math.abs(X.v - Y.v) <= Math.max(GAP_REL * Math.abs(Y.v), 0.01) + 1e-9))) {
+        // ป้ายของไซต์ = ข้อความรอบตัวเลข (ก่อน ▯ หลัง) — การ์ด/สเกลบางแบบวางชื่อไว้ **หลัง** ตัวเลข (<span>$X<br><small>ชื่อ</small>)
+        const around = (from, to) => A.t.slice(from, to).replace(/\s+/g, ' ').trim();
+        const label = `${around(Math.max(0, X.index - 60), X.index).slice(-24)} ▯ ${around(X.index + X.s.length, X.index + X.s.length + 60).slice(0, 24)}`;
+        const e = found.get(key) || { n: 0, form, part: a[j].part, label,
+          v1: bf, v2: af, relPct: Y.V ? Math.round(Math.abs(X.V - Y.V) / Math.abs(Y.V) * 10000) / 100 : null };
+        e.n++;
+        found.set(key, e);
+      }
+    }
+  }
+  return out(null);
+}
+
+/** gate ของผล cron หนึ่งฝั่ง — ★ fix1 R7: เรียก UP.gateCheck ตัวเดียวกับ gateAfterPatch (ไม่มีสำเนา) แล้วจัดรูปให้การเทียบ
+ *  codes = ชุด error id เรียงแล้ว · warns = multiset warning id เรียงแล้ว · warnMsg = ข้อความ warning ต่อ id · exp = หน้า expand (ใช้ต่อ) */
+function cronGate(html, name) {
+  const UP = require('./update-prices.js');     // lazy: update-prices → check-reports → update-prices (cycle ตอนโหลด)
+  const g = UP.gateCheck(html, name);
+  return { exp: g.expanded, codes: g.codes.slice().sort(), warns: g.warnings.map((w) => w.id).sort(), detail: g.detail,
+    warnMsg: Object.fromEntries(g.warnings.map((w) => [w.id, w.msg])) };
+}
+
+// ── ตัดสินฝั่งของความล้มเหลว (fix1 R6) ────────────────────────────────────────────
+// กติกา (ง่ายและตรวจซ้ำได้): เทียบ "จุด grid ที่ตก" กับ "จุดที่เทียบผ่านล่าสุดก่อนหน้า" (ข้างเคียง — สองฝั่งยังเท่ากันที่จุดนั้น)
+//   ต่อชนิด: ฝั่งไหน "เปลี่ยนชั้น/ฐาน" ระหว่างสองจุดขณะอีกฝั่งไม่เปลี่ยน = ฝั่งนั้นไม่นิ่ง
+//   · throw → ฝั่งที่ throw · gate-error/gate-warn:<id> → ฝั่งที่ชุด error / จำนวน warning id นั้นเปลี่ยน
+//   · meta:<key> / ตัวเลข (visible num/ret-val) → ฝั่งที่ค่าขยับมากกว่าอีกฝั่งเกินครึ่งหน่วยของทศนิยมที่หยาบที่สุดในสี่ค่า
+//     (ราคาขยับทีละ 0.5% ทำให้สองฝั่งขยับพอ ๆ กัน · การพลิกฐานทำให้ฝั่งเดียวกระโดด — BNY 1.2→1.4 ขณะ v2 1.2→1.2)
+//   · visible text/count/ret-count/ret-pcts/ret-class/stripped → ฝั่งที่มาสก์/จำนวน/คลาสเปลี่ยน
+//   ทุกชนิดต้องได้ฝั่งเดียวกัน ไม่งั้น unknown · ตกที่จุดแรกของ grid (ไม่มีจุดข้างเคียง) = unknown
+//   v1 → reason `cron-diff v1-unstable <kinds>` · v2 → `cron-diff v2-diff <kinds>` · unknown → `cron-diff <kinds>` + side:'unknown'
+function jumpSide(p1, c1, p2, c2, tol) {
+  if (![p1, c1, p2, c2].every(Number.isFinite)) return 'unknown';
+  const d1 = Math.abs(c1 - p1), d2 = Math.abs(c2 - p2);
+  return d1 > d2 + tol ? 'v1' : d2 > d1 + tol ? 'v2' : 'unknown';
+}
+const changedSide = (ch1, ch2) => (ch1 && !ch2 ? 'v1' : ch2 && !ch1 ? 'v2' : 'unknown');
+/** ค่าเดียว (ตามตำแหน่ง at) ของหน้า expand ฝั่งหนึ่ง — คืน null เมื่อโครงไม่ตรงกับตอนตก (ตัดสินไม่ได้) */
+function slotOf(exp, at, side) {
+  if (!exp) return null;
+  let parts = cronView(exp, side === 1 ? at.drop1 : at.drop2, false);
+  if (at.whole) parts = [{ part: 'page', html: parts.map((x) => x.html).join('') }];
+  const p = parts[at.j];
+  if (at.type === 'stripped') return { sig: (exp.match(DIV_TEXT_RE) || []).length };
+  if (!p) return null;
+  if (at.type.startsWith('ret-')) {
+    const rc = retCells(p.html);
+    if (at.type === 'ret-count') return { sig: rc.length };
+    const col = rc[at.c];
+    if (!col) return null;
+    if (at.type === 'ret-pcts') return { sig: col.pcts.length };
+    if (at.type === 'ret-class') return { sig: col.cls };
+    const P = col.pcts[at.q];
+    return P ? { v: P.v, h: halfUnit(P.t) } : null;
+  }
+  const pt = partText(p.html);
+  if (at.type === 'text') return { sig: pt.masked };
+  if (at.type === 'count') return { sig: pt.nums.length };
+  const n = numAt(pt, at.i);
+  return n ? { v: n.V, h: n.H } : null;
+}
+function failSide(prev, cur, kinds, at) {
+  if (!prev) return { side: 'unknown', why: 'ตกที่จุดแรกของ grid — ไม่มีจุดข้างเคียงให้เทียบ' };
+  const per = kinds.map((kind) => {
+    if (kind === 'throw') return changedSide(!!cur.t1, !!cur.t2);
+    if (kind === 'gate-error') return changedSide(prev.g1.codes.join() !== cur.g1.codes.join(), prev.g2.codes.join() !== cur.g2.codes.join());
+    if (kind.startsWith('gate-warn:')) {
+      const id = kind.slice(10), n = (g) => g.warns.filter((w) => w === id).length;
+      return changedSide(n(prev.g1) !== n(cur.g1), n(prev.g2) !== n(cur.g2));
+    }
+    if (kind.startsWith('meta:')) {
+      const key = kind.slice(5), vs = [prev.s1[key], cur.s1[key], prev.s2[key], cur.s2[key]];
+      if (!vs.every((v) => typeof v === 'number')) return 'unknown';
+      return jumpSide(vs[0], vs[1], vs[2], vs[3], 0.5 * Math.pow(10, -Math.min(...vs.map(decOf))));
+    }
+    if (kind === 'visible' && at) {
+      const P1 = slotOf(prev.g1.exp, at, 1), C1 = slotOf(cur.g1.exp, at, 1), P2 = slotOf(prev.g2.exp, at, 2), C2 = slotOf(cur.g2.exp, at, 2);
+      if (!P1 || !C1 || !P2 || !C2) return 'unknown';
+      if ('sig' in C1) return changedSide(P1.sig !== C1.sig, P2.sig !== C2.sig);
+      return jumpSide(P1.v, C1.v, P2.v, C2.v, Math.max(P1.h, C1.h, P2.h, C2.h));
+    }
+    return 'unknown';
+  });
+  const side = per.every((s) => s === per[0]) ? per[0] : 'unknown';
+  return { side, why: `×${prev.k}→×${cur.k}: ` + kinds.map((k, i) => `${k}=${per[i]}`).join(' ') };
+}
+
+/**
+ * cron differential ต่อไฟล์: patch ทั้ง v1 (ต้นฉบับ) และ v2 (ผล migrateOne) ด้วย `UP.patchReport` ที่ราคา/วันที่เดียวกัน
+ * บน grid 61 จุด แล้วเทียบ (ก) stock-meta 6 คีย์ภายใต้รูป (ข) ตัวเลขที่มองเห็นภายใต้รูป (ค) error ของ gate (ง) warning ของ gate
+ * ★ gate = UP.gateCheck ตัวเดียวกับ gateAfterPatch (expand ครั้งเดียวใช้ทั้ง gate และตัวเลข) · ตัวคูณแรกที่ต่าง = หยุด (early exit)
+ * ★ STALE_TODAY = วันที่ patch ระหว่างรัน (E27/W09 ไม่เดินตามปฏิทินจริง — ผลซ้ำได้ทุกวัน) แล้วคืนค่าเดิม
+ * ★ ขอบเขต (fix1 R10): เทียบ **สถานะหลัง patch เท่านั้น** — ความเท่ากันก่อน patch เป็นหน้าที่ของ migrateOne (ชั้น 1/2) ⇒ ผลต่างก่อน patch
+ *   ที่ cron รอบแรกซ่อมเอง หรือที่ cron ไม่แตะ (≤ GAP_REL · statics) ไม่ถูกนับเป็นความล้มเหลว · ไม่เทียบ r.changed/notes และทาง chartData≠null
+ *   · อินพุตของ decide() (ราคาเดิม/FV) เท่ากันโดยการสร้างบนใบที่ย้ายแล้ว (values.px = stock-meta.price — migrator ปฏิเสธใบที่ต่าง ·
+ *   fv = stock-meta.fairValue) ⇒ การตัดสิน freeze ไม่ต้องเทียบ
+ * ★ ข้อจำกัดของ "รูป": ครึ่งหน่วยของทศนิยมที่หยาบกว่ากว้างเมื่อข้อความฝั่งหนึ่งไม่มีทศนิยม (เช่น % เป้า 0.5 จุด) — grid 61 จุดช่วยจับเมื่อค่าข้ามขอบการปัด
+ * @param {string} srcV1  HTML v1 ต้นฉบับ
+ * @param {string} outV2  HTML v2 (migrateOne(srcV1).out)
+ * @param {string} name   ชื่อไฟล์ เช่น "AAPL.html"
+ * @param {{grid?:number[]}} [opts]  grid = ตัวคูณ (เทสใช้ย่อ) · ไม่ส่ง = CRON_GRID
+ * @returns {{ok:boolean, kinds:string[], k:number|null, detail:string[], side:'v1'|'v2'|'unknown'|null, sideWhy:string, formOnly:object[],
+ *            formParts:string[], valueDiff:object[], points:number, compared:number, retClass:number, relax:object}}
+ *   kinds: throw · throw-both · meta:<key> · visible · gate-error · gate-warn:<id> · (setup = อ่าน values.px/priceDate ของ v2 ไม่ได้)
+ *   side: ฝั่งที่ไม่นิ่งเมื่อตก (ดู failSide) · null เมื่อผ่าน — ★ v1-unstable = ผลของ v1 เปลี่ยนชนิด/ฐานระหว่างจุด grid ติดกันขณะ v2 นิ่ง
+ *     **ไม่ใช่คำตัดสินว่าฝั่งไหนถูก** (negative control: cron ก่อน fix wave ส่วน D ได้ v1-unstable 43 ใบ meta:pe ทั้งที่บั๊กอยู่ฝั่ง v2
+ *     ที่นิ่งบนฐานผิด) · v2-diff = กลับด้าน · unknown = ตกที่จุดแรกของ grid หรือชนิดให้ฝั่งขัดกัน
+ *   formOnly: ตัวอย่างตัวเลขที่ cron ทำให้ต่างแค่รูป ≤3 ตัวอย่างต่อใบ (fix1 R10 — ขนาด census) · formParts = ชุด part ที่พบรูปทั้งหมด
+ *     (ไม่รวมศูนย์ท้าย/คอมมา และไม่รวมผลต่างที่มีอยู่ก่อน patch) — ไม่ใช่ความล้มเหลว แต่ census ต้องเปิดเผย (part 'ret' = แถวรูปทศนิยมหมวด 6)
+ *   valueDiff: คู่ "ค่าต่างที่มีอยู่ก่อน patch" ที่ถูกข้ามจริงบน grid {part,label,v1,v2,relPct} (fix1 R1 — census เปิดเผยรายใบ)
+ *   retClass: จำนวนจุด grid ที่ v2 แก้สีช่อง .ret ค้างของ v1 (เปิดเผยเท่านั้น)
+ *   relax: จำนวนจุด grid ที่ข้อยกเว้นแต่ละตัวถูกใช้ (static ผลต่างก่อน patch · pyForm %/ปี ตามรูปของรวม · restate วงเล็บทวนล้วน ·
+ *     scale หน่วยใหญ่ของเงิน · era ศักราช) — ไม่เปลี่ยนผลตัดสิน ให้คนตรวจเห็นว่าใบไหน "ผ่านเพราะข้อยกเว้น"
+ */
+function cronDiff(srcV1, outV2, name, opts) {
+  const o = opts || {};
+  const UP = require('./update-prices.js');     // lazy: update-prices → check-reports → update-prices (cycle ตอนโหลด)
+  const res = { ok: true, kinds: [], k: null, detail: [], side: null, sideWhy: '', formOnly: [], formParts: [], valueDiff: [], points: 0, compared: 0, retClass: 0,
+    relax: { static: 0, pyForm: 0, restate: 0, scale: 0, era: 0 } };
+  const fail = (k, kinds, detail, sd) => Object.assign(res, { ok: false, k, kinds: [...new Set(kinds)], detail, side: sd ? sd.side : 'unknown', sideWhy: sd ? sd.why : '' });
+  const rd2 = RM.readReportData(outV2);
+  const vals = rd2.ok && RV.isV2(rd2.data) ? rd2.data.values : null;
+  const dateParts = vals ? cronDateParts(vals.priceDate) : null;
+  if (!vals || !Number.isFinite(vals.px) || !dateParts) return fail(null, ['setup'], ['v2 ไม่มี values.px/priceDate ที่ใช้ได้']);
+  const seen = new Set(), parts = new Set(), valueSeen = new Set();
+  // ผลต่างตัวเลขที่มีอยู่แล้วก่อน patch (ชั้น 1 ของ migrator ยอมรับไว้) — ดู statics ใน visibleCronDiff
+  let statics = new Map();
+  try { statics = visibleCronDiff(expandReport(srcV1), expandReport(outV2), vals, { collect: true }).statics; } catch (e) { statics = new Map(); }
+  const prevToday = process.env.STALE_TODAY;
+  process.env.STALE_TODAY = RV.isoOf(dateParts);
+  let prev = null, lastBoth = '';
+  try {
+    for (const k of (o.grid || CRON_GRID)) {
+      res.points++;
+      const newPrice = Math.round(vals.px * k * 100) / 100;
+      const p = { newPrice, dateParts, chartData: null };
+      let r1 = null, r2 = null, t1 = null, t2 = null;
+      try { r1 = UP.patchReport(srcV1, p); } catch (e) { t1 = e.message; }
+      try { r2 = UP.patchReport(outV2, p); } catch (e) { t2 = e.message; }
+      if (t1 && t2) { lastBoth = `v1 ${t1.slice(0, 100)} · v2 ${t2.slice(0, 100)}`; continue; }   // จุดนี้สองฝั่ง patch-failed เหมือนกัน (ไม่นับว่าเทียบ)
+      if (t1 || t2) return fail(k, ['throw'], [`×${k} ราคา ${newPrice}: ${t1 ? 'v1' : 'v2'} throw — ${(t1 || t2).slice(0, 200)}`], failSide(prev, { k, t1, t2 }, ['throw'], null));
+      res.compared++;
+      const kinds = [], detail = [];
+      // (ก) stock-meta ภายใต้รูป
+      const s1 = RM.readStockMeta(r1.html) || {}, s2 = RM.readStockMeta(r2.html) || {};
+      for (const key of CRON_META_KEYS) {
+        if (!sameMetaForm(s1[key], s2[key])) { kinds.push('meta:' + key); detail.push(`×${k} ราคา ${newPrice}: stock-meta.${key} v1 ${JSON.stringify(s1[key])} ≠ v2 ${JSON.stringify(s2[key])}`); }
+      }
+      // (ค)(ง) gate — expand ครั้งเดียวต่อฝั่ง (UP.gateCheck)
+      const g1 = cronGate(r1.html, name), g2 = cronGate(r2.html, name);
+      if (g1.codes.join(',') !== g2.codes.join(',')) { kinds.push('gate-error'); detail.push(`×${k} ราคา ${newPrice}: error v1 [${g1.codes}] ≠ v2 [${g2.codes}] — ${(g2.codes.length ? g2.detail : g1.detail).slice(0, 200)}`); }
+      if (g1.warns.join(',') !== g2.warns.join(',')) {
+        const cnt = (arr) => arr.reduce((m, id) => m.set(id, (m.get(id) || 0) + 1), new Map());
+        const c1 = cnt(g1.warns), c2 = cnt(g2.warns);
+        const diff = [...new Set([...c1.keys(), ...c2.keys()])].filter((id) => (c1.get(id) || 0) !== (c2.get(id) || 0));
+        for (const id of diff) kinds.push('gate-warn:' + id);
+        // ข้อความของ warning ตัวแรกที่ต่าง (จากฝั่งที่มี) — คนตัดสิน residue ต้องเห็นว่าฝั่งไหนผิดโดยไม่ต้องรันซ้ำ
+        const id0 = diff[0], side = c1.get(id0) ? 'v1' : 'v2', msg = (side === 'v1' ? g1 : g2).warnMsg[id0] || '';
+        detail.push(`×${k} ราคา ${newPrice}: warning v1 [${g1.warns}] ≠ v2 [${g2.warns}] — ${side} ${id0} ${msg}`.slice(0, 400));
+      }
+      // (ข) ตัวเลขที่มองเห็น — ต่อเมื่อ expand ได้ทั้งสองฝั่ง (expand ไม่ได้ฝั่งเดียว = gate-error ข้างบนแล้ว)
+      let at = null;
+      if (g1.exp && g2.exp) {
+        const v = visibleCronDiff(g1.exp, g2.exp, vals, { statics });
+        if (v.bad) { kinds.push('visible'); detail.push(`×${k} ราคา ${newPrice}: ${v.bad}`); at = v.at; }
+        if (v.retClass) res.retClass++;
+        for (const key of Object.keys(res.relax)) if (v.relax[key]) res.relax[key]++;   // นับเป็น "จำนวนจุด grid ที่ใช้ข้อยกเว้นนั้น"
+        for (const f of v.forms) {
+          parts.add(f.part);
+          const key = f.part + ':' + f.before + '→' + f.after;
+          // ≤3 ตัวอย่างต่อใบ · part ละ 1 ตัวอย่าง (ตัวแรกที่พบ) — การมี/ไม่มีของแต่ละ part อยู่ใน formParts ครบเสมอ
+          if (seen.has(key) || res.formOnly.length >= 3 || res.formOnly.some((x) => x.part === f.part)) continue;
+          seen.add(key); res.formOnly.push({ k, part: f.part, before: f.before, after: f.after });
+        }
+        for (const st of v.valueUsed) {
+          const key = `${st.part}|${st.v1}|${st.v2}`;
+          if (!valueSeen.has(key)) { valueSeen.add(key); res.valueDiff.push({ part: st.part, label: st.label, v1: st.v1, v2: st.v2, relPct: st.relPct }); }
+        }
+      }
+      const cur = { k, s1, s2, g1, g2 };
+      if (kinds.length) return fail(k, kinds, detail, failSide(prev, cur, [...new Set(kinds)], at));
+      prev = cur;
+    }
+    // ★ fix1 R5: ไม่มีจุดไหนเทียบได้เลย (สองฝั่ง throw ทุกจุด) = ไม่ใช่ "ผ่าน"
+    if (!res.compared) return fail(null, ['throw-both'], [`ไม่มีจุด grid ที่เทียบได้ — สองฝั่ง throw ทุกจุด (${lastBoth})`]);
+    return res;
+  } finally {
+    res.formParts = [...parts].sort();
+    if (prevToday === undefined) delete process.env.STALE_TODAY; else process.env.STALE_TODAY = prevToday;
+  }
+}
+
+/**
+ * ตัดสิน "เขียนไหม" ต่อไฟล์ (ใช้ทั้ง dry-run และ --write — census ของสองโหมดจึงตรงกันเสมอ)
+ * ★ แยกเป็นฟังก์ชันให้เทสตรึงได้โดยไม่ต้องเขียน reports/ (CLI ไม่มีตัวเลือกชี้ไดเรกทอรีอื่น — ตั้งใจ)
+ * @param {string} sym
+ * @param {object} r   ผล migrateOne
+ * @param {object|null} cd  ผล cronDiff (null = ไม่ได้สั่ง --cron-diff หรือ migrate ไม่ผ่าน)
+ * @returns {{write:boolean, out:string|null, entry:object}}  cron-diff ตก ⇒ write:false + entry.ok:false + reason `cron-diff <kinds>`
+ *   cron-diff ผ่านแต่มี formOnly ⇒ ยังเขียน (บันทึกลง entry.cronDiff ให้ census แสดงรายชื่อ)
+ */
+function planWrite(sym, r, cd) {
+  const entry = { sym, ok: !!r.ok, reason: r.reason || null, tokenised: r.sites.tokenised, literal: r.sites.literal, notes: r.notes, pyChanges: r.pyChanges || [] };
+  if (cd) {
+    entry.cronDiff = { ok: cd.ok, kinds: cd.kinds, k: cd.k, side: cd.side, sideWhy: cd.sideWhy, detail: cd.detail.slice(0, 3), formOnly: cd.formOnly,
+      formParts: cd.formParts || [], valueDiff: cd.valueDiff || [], retClass: cd.retClass || 0, relax: cd.relax, points: cd.points, compared: cd.compared };
+    if (r.ok && !cd.ok) { entry.ok = false; entry.reason = cronDiffReason(cd); }
+  }
+  const write = entry.ok && typeof r.out === 'string';
+  return { write, out: write ? r.out : null, entry };
+}
+
+/** เหตุผล residue ของ cron-diff (fix1 R6) — v1 ไม่นิ่ง / v2 ต่าง / ตัดสินฝั่งไม่ได้ (ดู failSide) */
+function cronDiffReason(cd) {
+  const k = cd.kinds.join(',');
+  return cd.side === 'v1' ? `cron-diff v1-unstable ${k}` : cd.side === 'v2' ? `cron-diff v2-diff ${k}` : `cron-diff ${k}`;
+}
+
+/** สรุป cron differential จาก entries ของ census (คิดใหม่จาก bySym ทุกครั้ง ⇒ รีรันแบตช์เดิมไม่นับซ้ำ) */
+function summarizeCronDiff(entries) {
+  const checked = entries.filter((e) => e.cronDiff);
+  const failByKind = {}, sec6Form = [], otherForm = [], retClass = [], valueDiff = [], relaxFiles = { static: [], pyForm: [], restate: [], scale: [], era: [] };
+  for (const e of checked) {
+    const c = e.cronDiff;
+    if (!c.ok) for (const k of c.kinds) (failByKind[k] = failByKind[k] || []).push(e.sym);
+    else {
+      // formParts = ชุด part ที่พบรูปทั้งหมด (ตัวอย่างใน formOnly ถูกตัดเหลือ ≤3) · census เก่าไม่มี formParts → ถอยไปดูตัวอย่าง
+      const partsOf = c.formParts || [...new Set((c.formOnly || []).map((f) => f.part))];
+      const ret = (c.formOnly || []).find((f) => f.part === 'ret');
+      if (partsOf.includes('ret')) sec6Form.push({ sym: e.sym, example: ret ? `${ret.before}→${ret.after} (×${ret.k})` : '' });
+      if (partsOf.some((x) => x !== 'ret')) otherForm.push(e.sym);
+      if ((c.valueDiff || []).length) valueDiff.push({ sym: e.sym, pairs: c.valueDiff });
+    }
+    if (c.retClass) retClass.push(e.sym);
+    if (c.ok) for (const k of Object.keys(relaxFiles)) if (c.relax && c.relax[k]) relaxFiles[k].push(e.sym);
+  }
+  for (const k of Object.keys(relaxFiles)) relaxFiles[k].sort();
+  for (const k of Object.keys(failByKind)) failByKind[k].sort();
+  return {
+    checked: checked.length, pass: checked.filter((e) => e.cronDiff.ok).length, fail: checked.filter((e) => !e.cronDiff.ok).map((e) => e.sym).sort(),
+    failByKind, formOnly: checked.filter((e) => e.cronDiff.ok && ((e.cronDiff.formParts || []).length || (e.cronDiff.formOnly || []).length)).map((e) => e.sym).sort(),
+    // fix1 R1: ค่าต่างที่มีอยู่ก่อน patch ที่ตัวเทียบข้าม (migration ชั้น 1 ยอมรับ ≤ GAP_REL) — รายใบ + ค่ามากสุดที่พบ
+    valueDiff: valueDiff.sort((a, b) => a.sym.localeCompare(b.sym)),
+    valueDiffMaxPct: valueDiff.reduce((m, x) => Math.max(m, ...x.pairs.map((p) => p.relPct || 0)), 0),
+    sec6Form: sec6Form.sort((a, b) => a.sym.localeCompare(b.sym)), otherForm: otherForm.sort(), retClass: retClass.sort(), relaxFiles,
+    failDetail: checked.filter((e) => !e.cronDiff.ok).sort((a, b) => a.sym.localeCompare(b.sym))
+      .map((e) => ({ sym: e.sym, reason: e.reason, kinds: e.cronDiff.kinds, k: e.cronDiff.k, side: e.cronDiff.side || 'unknown', sideWhy: e.cronDiff.sideWhy || '',
+        detail: (e.cronDiff.detail || []).join(' || ').slice(0, 400) })),
+  };
 }
 
 // ── CLI + census ──────────────────────────────────────────────────────────────
@@ -864,11 +1480,198 @@ function renderCensusMd(entries) {
       ? [...pyValueBySym.entries()].map(([sym, cs]) => `- ${sym}: ` + cs.map((c) => `${c.col} ${c.before} → ${c.after}`).join(' · ')).join('\n')
       : '- (ไม่มี)',
     '',
+    ...clauseMd(entries),
+    ...tildeMd(entries),
+    ...cronDiffMd(summarizeCronDiff(entries)),
+    ...finalSummaryMd(entries),
   ].join('\n');
 }
+
+// ── M2 (Part D) — "~" ที่ migrator เติมหน้า token เอง · เปิดเผยอย่างเดียว ไม่ใช่เกณฑ์ผ่าน/ตก ──────
+// ★ ทำไมต้องเปิดเผย: `maskText` ตัด [~≈] ทิ้งทั้งสองฝั่ง (ชั้น 2 ของ migrator) ⇒ การงอก "~" ไม่มีชั้นไหนเห็นเลย
+function tildeMd(entries) {
+  // ★ round 2 (review M1): เดิมพิมพ์ `Set.size` (จำนวน "ใบ") ลงช่อง "จุด" ⇒ สองช่องเท่ากันเสมอโดยบังเอิญ
+  //   (วันนี้ชื่อ site หนึ่ง ๆ โผล่ได้ไม่เกิน 1 ครั้งต่อใบ) · นับจำนวนครั้งจริงแยกจากจำนวนใบ
+  const bySite = new Map();      // site → {n: จำนวนจุด, syms: Set ของใบ}
+  let sites = 0;
+  const files = new Set();
+  for (const f of entries) {
+    if (!f.ok) continue;
+    for (const n of f.notes || []) {
+      if (!String(n).startsWith(TILDE_NOTE)) continue;
+      const site = String(n).slice(TILDE_NOTE.length);
+      const e = bySite.get(site) || { n: 0, syms: new Set() };
+      e.n++; e.syms.add(f.sym); bySite.set(site, e);
+      sites++; files.add(f.sym);
+    }
+  }
+  if (!sites) return [];
+  return [
+    '## "~" ที่ migrator เติมหน้า token เอง (ไม่มีในต้นฉบับตรงตำแหน่งนั้น)',
+    '',
+    'token เงินของ skeleton v2 สองจุด (`~{{rd:baseEps}}` · `~{{rd:sc<k>div}}`) เขียน "~" นำหน้าเสมอ — ใบที่ต้นฉบับไม่มี',
+    'เครื่องหมายนี้ตรงตำแหน่งนั้นจึง "งอก" ข้อความที่คนเห็น · ชั้น 2 มองไม่เห็นเพราะ `maskText` ตัด `[~≈]` ทิ้งทั้งสองฝั่ง',
+    '⇒ เปิดเผยอย่างเดียว ไม่ใช่เกณฑ์ผ่าน/ตก และไม่ใช่ความล้มเหลว (รูปของ skeleton v2 เป็นแบบนี้)',
+    '',
+    '| site | จุด | ใบ | รายชื่อ |', '|---|---|---|---|',
+    ...[...bySite.entries()].sort((a, b) => b[1].n - a[1].n || a[0].localeCompare(b[0]))
+      .map(([k, v]) => `| ${k} | ${v.n} | ${v.syms.size} | ${[...v.syms].sort().join(' ')} |`),
+    `| **รวม** | **${sites}** | **${files.size}** | |`,
+    '',
+  ];
+}
+
+// ── R2 (review I2): clause "รวมปันผล" ที่ถูกตัดออกจากหน้าจริง — ต้องบอกว่า **ข้อความอะไร** หายไปต่อใบ ────
+// ★ ทำไมต้องมี: Part D ให้หัวข้อเต็ม ๆ กับการ "งอก ~" ซึ่งเป็นเรื่องรูป แต่การ "ลบ $2.88/ปี ออกจากหน้าที่เผยแพร่แล้ว"
+//   กลับมีแค่บรรทัดที่เอ่ยถึงป้าย ⇒ ไม่สมมาตรกับกติกาของ wave นี้เอง ("เปลี่ยนข้อความที่คนเห็นได้เฉพาะที่เปิดเผย")
+function clauseMd(entries) {
+  const rows = [];
+  for (const f of entries) {
+    if (!f.ok) continue;
+    for (const n of f.notes || []) {
+      const m = CLAUSE_NOTE_RE.exec(String(n));
+      if (m) rows.push({ sym: f.sym, clause: m[1], tail: m[1].slice(NOTE_LABEL.length) });
+    }
+  }
+  if (!rows.length) return [];
+  rows.sort((a, b) => a.sym.localeCompare(b.sym));
+  const withText = rows.filter((r) => r.tail !== '');      // ★ ใบที่ "ข้อความของผู้เขียน" หายไปด้วย — ต้องอ่านทุกบรรทัด
+  const labelOnly = rows.filter((r) => r.tail === '');     // ป้ายอย่างเดียว (ไม่มีข้อความต่อท้าย) — นับรวมพอ
+  return [
+    '## clause "รวมปันผล" ที่ถูกตัดออกจากหน้าจริง (site `scnNote` · เฉพาะใบ `scnBasis.divIncluded = false`)',
+    '',
+    '`{{rd:scnNote}}` render เป็นค่าว่างเมื่อตัวเลขฉากของใบนั้นไม่ได้รวมปันผล ⇒ **ทั้ง clause** หายจากหน้าที่ผู้อ่านเห็น',
+    'ไม่ใช่แค่ป้าย " • รวมปันผล" · หัวข้อนี้บอกว่า **ข้อความอะไร** หายไปจากแต่ละใบ (ก่อน fix wave นี้ ข้อความท้าย clause',
+    'ค้างลอยอยู่บนหน้าโดยไม่มีที่อ้างอิง ซึ่งคือบั๊กที่แก้ไป) · ท้าย clause ที่กินได้ถูกจำกัดด้วย whitelist 3 รูปเท่านั้น',
+    '(เลขเงิน · คำเดียวติดกัน · วงเล็บสั้น) และต้องไม่กลืน token/ค่าของ site อื่น — รูปอื่น = ไม่กิน คง literal',
+    '',
+    `### ใบที่ข้อความของผู้เขียนหายไปด้วย (${withText.length} ใบ — ต้องอ่านรายบรรทัด)`,
+    '',
+    '| ใบ | site | clause ที่ถูกตัดทั้งก้อน | ข้อความท้าย clause ที่หายไป |', '|---|---|---|---|',
+    withText.length
+      ? withText.map((r) => `| ${r.sym} | scnNote | \`${r.clause.replace(/\|/g, '\\|')}\` | \`${r.tail.replace(/\|/g, '\\|')}\` |`).join('\n')
+      : '| — | | | |',
+    '',
+    `### ใบที่ตัดเฉพาะป้าย (ไม่มีข้อความต่อท้าย — ${labelOnly.length} ใบ)`,
+    '',
+    labelOnly.length ? labelOnly.map((r) => r.sym).join(' ') : '- (ไม่มี)',
+    '',
+    `รวม **${rows.length}** จุด / **${new Set(rows.map((r) => r.sym)).size}** ใบ`,
+    '',
+  ];
+}
+
+// ── สรุปสุดท้าย — Task 14 · เดิมสร้างด้วยสคริปต์ one-off แล้วต่อท้าย .md ด้วยมือ (หายทุกครั้งที่รัน --census ใหม่)
+//   ⇒ ย้ายเข้ามาในตัว render เอง: รีรัน `--census` ได้บล็อกเดิมเสมอ (คิดจาก entries ของสำมะโนล้วน ๆ)
+function finalSummaryMd(entries) {
+  const okE = entries.filter((e) => e.ok);
+  const res = entries.filter((e) => !e.ok);
+  const cronRes = res.filter((e) => /^cron-diff /.test(String(e.reason || '')));
+  const byReason = new Map();
+  for (const e of res) { const k = shortReason(e.reason); const v = byReason.get(k) || []; v.push(e.sym); byReason.set(k, v); }
+  const byBatch = new Map();
+  for (const e of entries) { const k = e.batch == null ? '(ไม่ระบุ)' : String(e.batch); byBatch.set(k, (byBatch.get(k) || 0) + 1); }
+  const siteCount = new Map();
+  for (const e of okE) for (const s of new Set(e.literal || [])) siteCount.set(s, (siteCount.get(s) || 0) + 1);
+  const cd = summarizeCronDiff(entries);
+  const pyValue = okE.filter((e) => (e.pyChanges || []).some((c) => c.kind === 'value'));
+  const pyValueCells = okE.reduce((n, e) => n + (e.pyChanges || []).filter((c) => c.kind === 'value').length, 0);
+  const pyFormCells = okE.reduce((n, e) => n + (e.pyChanges || []).filter((c) => c.kind === 'form').length, 0);
+  const vd = cd.valueDiff || [];
+  return [
+    '---',
+    '',
+    '## สรุปสุดท้าย — Task 14 (ระยะ 2 ส่วน E · ย้ายคลังครบ)',
+    '',
+    '> สร้างจาก entries ของสำมะโนโดย `renderCensusMd` เอง — รัน `--census` ซ้ำได้บล็อกเดิมทุกครั้ง',
+    '> (เดิมเป็นสคริปต์ one-off ที่ต่อท้ายไฟล์ด้วยมือ แล้วหายทุกครั้งที่ migrator เขียน .md ใหม่)',
+    '',
+    '| ผล | ใบ |', '|---|---|',
+    `| ย้ายเป็น v2 | **${okE.length}/${entries.length}** |`,
+    `| residue (คง v1) | **${res.length}** = migrator ${res.length - cronRes.length} + cron-diff ${cronRes.length} |`,
+    `| แบตช์ที่บันทึก | ${[...byBatch.entries()].sort((a, b) => (parseInt(a[0], 10) || 0) - (parseInt(b[0], 10) || 0)).map(([k, v]) => `${k}:${v}`).join(' · ')} |`,
+    '',
+    '### residue ต่อชนิด (รายชื่อครบ — input ระยะ 3)',
+    '',
+    '| ชนิด | ใบ | รายชื่อ |', '|---|---|---|',
+    byReason.size ? [...byReason.entries()].sort((a, b) => b[1].length - a[1].length || a[0].localeCompare(b[0]))
+      .map(([k, v]) => `| ${k} | ${v.length} | ${v.slice().sort().join(' ')} |`).join('\n') : '| — | 0 | |',
+    '',
+    `<details><summary>เหตุผล residue เต็มรายใบ (${res.length})</summary>`, '',
+    '| ใบ | เหตุผล |', '|---|---|',
+    res.slice().sort((a, b) => a.sym.localeCompare(b.sym)).map((e) => `| ${e.sym} | ${String(e.reason || '').replace(/\|/g, '\\|')} |`).join('\n') || '| — | — |',
+    '', '</details>', '',
+    '### site ที่คง literal ต่อชนิด (เฉพาะใบที่ย้าย · รวมทุกเหตุผลย่อย — เหตุผลย่อยดูตาราง "site ที่คง literal" ด้านบน ซึ่งนับรวมใบ residue ด้วย)',
+    '',
+    '| site | ใบ |', '|---|---|',
+    [...siteCount.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).map(([k, v]) => `| ${k} | ${v} |`).join('\n') || '| — | 0 |',
+    '',
+    '### การเปิดเผย (ใบที่ย้าย)',
+    '',
+    '| หมวด | ใบ | หมายเหตุ |', '|---|---|---|',
+    // ★ แถวที่มาจาก --cron-diff มีได้ก็ต่อเมื่อรัน --cron-diff จริง (ไม่งั้น .md จะพูดถึงสิ่งที่ไม่เคยตรวจ)
+    ...(cd.checked ? [
+      `| cron differential: ตรวจ / ผ่าน / ตก | ${cd.checked} / ${cd.pass} / ${cd.fail.length} | ตก = ${cd.fail.join(' ') || '—'} (ไม่เขียน · รายละเอียดในหัวข้อด้านบน) |`,
+      `| ค่าต่างที่มีอยู่ก่อน patch (migration ยอมรับ) | ${vd.length} | มากสุด ${(cd.valueDiffMaxPct || 0).toFixed(2)}% · ${vd.map((x) => x.sym).join(' ')} |`,
+      `| รูปทศนิยมหมวด 6 เปลี่ยน (เช่น 3.5→3) | ${cd.sec6Form.length} | รอเจ้าของตัดสินว่าเป็นรูปหรือค่า (นโยบายปัด fmtMos เดียว) · รายชื่อด้านล่าง |`,
+    ] : []),
+    `| %/ปี หมวด 6 ค่าขยับ (v2 คิด %/ปี จาก "รวม" ที่ปัดแล้ว) | ${pyValue.length} | ${pyValueCells} คอลัมน์ · รูปอย่างเดียว ${pyFormCells} คอลัมน์ · รายใบอยู่ในหัวข้อ %/ปี ด้านบน |`,
+    ...(cd.checked ? [
+      `| รูปตัวเลขอื่น (ราคา/หน่วยเงิน/ศักราช) | ${cd.otherForm.length} | |`,
+      `| สีช่อง .ret ของ v1 ค้าง — v2 คิดสีตามเครื่องหมาย | ${cd.retClass.length} | |`,
+    ] : []),
+    '',
+    ...(cd.sec6Form.length ? [`<details><summary>รูปทศนิยมหมวด 6 เปลี่ยน — ${cd.sec6Form.length} ใบ</summary>`, '',
+      cd.sec6Form.map((x) => x.sym).join(' '), '', '</details>', ''] : []),
+  ];
+}
+// ส่วน cron differential ของ census.md — แสดงเฉพาะเมื่อมีใบที่รันด้วย --cron-diff · รายชื่อ **ครบทุกตัว** (เจ้าของต้องตัดสินรายใบ)
+function cronDiffMd(cd) {
+  if (!cd.checked) return [];
+  const kinds = Object.entries(cd.failByKind).sort((a, b) => b[1].length - a[1].length);
+  return [
+    `## cron differential v1 ↔ v2 (\`--cron-diff\` · grid ราคา ×${CRON_GRID[0]}–×${CRON_GRID[CRON_GRID.length - 1]} ทีละ 0.005 · ${CRON_GRID.length} จุด)`,
+    '',
+    'เทียบผล `patchReport` ของ v1 ต้นฉบับกับ v2 ที่ราคา/วันที่เดียวกัน: stock-meta (price/mos/upside/fairValue/pe/dividendYield) ·',
+    'ตัวเลขที่มองเห็น · error/warning ของ gate — ใบที่ต่างนอกเหนือ "รูป" = residue (ไม่เขียน)',
+    '',
+    '| ผล | ใบ |', '|---|---|', `| ตรวจ | ${cd.checked} |`, `| ผ่าน | ${cd.pass} |`, `| ตก (ไม่เขียน) | ${cd.fail.length} |`, `| ผ่านแต่ต่างแค่รูป | ${cd.formOnly.length} |`,
+    '',
+    '### ตกตามชนิด', '', '| ชนิด | ใบ | รายชื่อ |', '|---|---|---|',
+    kinds.length ? kinds.map(([k, v]) => `| ${k} | ${v.length} | ${v.join(' ')} |`).join('\n') : '| — | 0 | |',
+    '',
+    '### ต่างแค่รูป (เขียนได้ · เปิดเผยให้เจ้าของตัดสิน)', '', '| ชนิด | ใบ | รายชื่อ |', '|---|---|---|',
+    `| รูปทศนิยมหมวด 6 เปลี่ยน (เช่น 3.5→3) | ${cd.sec6Form.length} | ${cd.sec6Form.map((x) => x.sym).join(' ')} |`,
+    `| รูปตัวเลขอื่น (เช่น ราคา 278→277.58 · หน่วย ล้านล้าน→แสนล้าน · ศักราช) | ${cd.otherForm.length} | ${cd.otherForm.join(' ')} |`,
+    `| สีช่อง .ret ของ v1 ค้าง — v2 คิดสีตามเครื่องหมาย | ${cd.retClass.length} | ${cd.retClass.join(' ')} |`,
+    '',
+    // fix1 R1: หมวดแยกจาก "ต่างแค่รูป" — ค่าที่คนเห็นต่างกันจริง (เล็กน้อย) มาตั้งแต่ก่อน patch และ cron ไม่แตะ
+    '### ค่าต่างที่มีอยู่ก่อน patch (migration ยอมรับ)', '',
+    `เกณฑ์: ห่างไม่เกิน GAP_REL ${(GAP_REL * 100).toFixed(1)}% (ชั้น 1 ของ migrator) · cron ไม่แตะทั้งสองฝั่ง · มากสุดที่พบ ${(cd.valueDiffMaxPct || 0).toFixed(2)}%`,
+    '', '| ชนิด | ใบ | มากสุด | รายชื่อ |', '|---|---|---|---|',
+    `| ค่าต่างที่มีอยู่ก่อน patch (migration ยอมรับ) | ${(cd.valueDiff || []).length} | ${(cd.valueDiffMaxPct || 0).toFixed(2)}% | ${(cd.valueDiff || []).map((x) => x.sym).join(' ')} |`,
+    '',
+    ...(cd.valueDiff || []).map((x) => `- ${x.sym}: ` + x.pairs.map((p) => `«${p.label}» ${p.v1} → ${p.v2} (${p.relPct}%)`).join(' · ')),
+    ...((cd.valueDiff || []).length ? [''] : []),
+    '### ใบที่ผ่านโดยใช้ข้อยกเว้นของตัวเทียบ (ไม่เปลี่ยนผลตัดสิน — เปิดเผยให้ตรวจ)', '', '| ข้อยกเว้น | ใบ | รายชื่อ |', '|---|---|---|',
+    `| ผลต่างที่มีก่อน patch — รูปหรือค่า (≤ GAP_REL · ค่าต่างรายใบอยู่ในหมวดด้านบน) | ${cd.relaxFiles.static.length} | ${cd.relaxFiles.static.join(' ')} |`,
+    `| %/ปี ต่างตามรูปของ "รวม" (ทั้งสองฝั่ง = f(รวมที่โชว์)) | ${cd.relaxFiles.pyForm.length} | ${cd.relaxFiles.pyForm.join(' ')} |`,
+    `| วงเล็บทวนวันที่ล้วน (migrator ลบ · f11) | ${cd.relaxFiles.restate.length} | ${cd.relaxFiles.restate.join(' ')} |`,
+    `| หน่วยใหญ่ของเงินต่างกัน ค่าเดียวกัน | ${cd.relaxFiles.scale.length} | ${cd.relaxFiles.scale.join(' ')} |`,
+    `| ปีคนละศักราช (2569 ↔ 2026) | ${cd.relaxFiles.era.length} | ${cd.relaxFiles.era.join(' ')} |`,
+    '',
+    ...(cd.fail.length ? ['### รายละเอียดใบที่ตก (ตัวคูณแรกที่ต่าง · ฝั่งที่ไม่นิ่ง)', '',
+      'v1-unstable = ผลของ v1 เปลี่ยนชนิด/ฐานระหว่างจุด grid ติดกันขณะ v2 นิ่ง — ไม่ใช่คำตัดสินว่าฝั่งไหนถูก', '',
+      ...cd.failDetail.map((x) => `- ${x.sym} — \`${x.reason}\` · side ${x.side} (${x.sideWhy}) · ${x.detail}`), ''] : []),
+    ...(cd.sec6Form.length ? ['<details><summary>ตัวอย่างรูปทศนิยมหมวด 6 ต่อใบ (v1 → v2 ที่ตัวคูณแรกที่พบ)</summary>', '', ...cd.sec6Form.map((x) => `- ${x.sym}: ${x.example}`), '', '</details>', ''] : []),
+  ];
+}
+
 // รวมเหตุผลชนิดเดียวกันเป็นแถวเดียว — ตัดตัวเลข/ชื่อช่องทิ้งก่อนนับ ("legend แสดง 53 แต่ FV = 56" กับ
 // "legend แสดง 74 แต่ FV = 80" คือเหตุผลเดียวกัน) ไม่งั้นตารางกลายเป็นรายชื่อไฟล์ที่นับอะไรไม่ได้
-const shortReason = (r) => String(r || '').split(/[:(]/)[0].replace(/-?[0-9][0-9.,]*/g, 'N').trim().slice(0, 80);
+// ★ fix1 R6: เหตุผลของ cron-diff (`cron-diff v1-unstable <kinds>`) ต้องโชว์ครบทุกตัวอักษรใน MD — ไม่ยุบ (ชนิดคือสาระ)
+const shortReason = (r) => (/^cron-diff /.test(String(r || '')) ? String(r)
+  : String(r || '').split(/[:(]/)[0].replace(/-?[0-9][0-9.,]*/g, 'N').trim().slice(0, 80));
 
 // ── --fixture: แช่แข็ง v2 ของ fixture v1 (test/fixtures/<SYM>.html) — ไม่แตะ reports/ ไม่แตะ v1 fixture ──
 // ★ migrator เขียนไฟล์เองแทนการ copy/แก้มือ (Task 9) — อ่านจาก test/fixtures/<SYM>.html เขียน `<SYM>-v2.html` ข้าง ๆ
@@ -905,15 +1708,31 @@ function mergeCensus(prevRaw, batch, entries, at) {
   // schema เดิม (ก่อน fix นี้) เป็นอาร์เรย์ของแบตช์ — ไม่มี consumer อื่นอ่านไฟล์นี้ (เช็คแล้ว) จึงเริ่มสะสมใหม่ได้ปลอดภัย
   const prev = prevRaw && !Array.isArray(prevRaw) ? prevRaw : { bySym: {}, batches: [] };
   const bySym = Object.assign({}, prev.bySym);
-  for (const e of entries) bySym[e.sym] = Object.assign({}, e, { batch, at });
+  // ★ fix1 R9: รันแบตช์ซ้ำหลัง --write — ใบที่เขียนไปแล้วถูก migrateOne ข้าม ("เป็น v2 แล้ว") ⇒ คงแถวเดิม (cronDiff/รูป/ค่าต่าง)
+  //   ไม่งั้น last-write-wins ลบการเปิดเผยของใบที่ย้ายสำเร็จทิ้ง · ใบที่ไม่เคยมีแถวมาก่อนยังบันทึกตามปกติ
+  for (const e of entries) {
+    const old = bySym[e.sym];
+    if (old && e.reason === ALREADY_V2 && old.reason !== ALREADY_V2) continue;
+    bySym[e.sym] = Object.assign({}, e, { batch, at });
+  }
   const batches = (prev.batches || []).filter((b) => b.batch !== batch);
   batches.push({ batch, at, syms: entries.map((e) => e.sym) });
-  return { bySym, batches };
+  // สรุป cron differential คิดจาก bySym ทั้งก้อน (ไม่ใช่สะสมต่อแบตช์) ⇒ idempotent เหมือน bySym
+  return { bySym, batches, cronDiff: summarizeCronDiff(Object.values(bySym)) };
 }
 
 function main(argv) {
-  if (argv.includes('--fixture')) return runFixture(argv.filter((a) => !a.startsWith('--')).map((a) => a.replace(/\.html$/i, '').toUpperCase()));
   const write = argv.includes('--write');
+  const cronFlag = argv.includes('--cron-diff');
+  // ★ M1 (fix wave Task 14): `--write` เดี่ยว ๆ เขียนได้โดยไม่ผ่าน cron differential ⇒ ใบที่เคยถูกตัดสินเป็น residue
+  //   ด้วย `cron-diff …` (BNY PTG THCOM WWD) จะถูกย้ายเงียบ ๆ ถ้ามีใครรันคำสั่งสั้น ๆ · ไม่มี flag ข้าม (ตั้งใจ)
+  // ★ round 2 (review M2): ยามนี้ต้องอยู่ **เหนือ** สาขา --fixture ไม่งั้นประโยค "เขียนอะไรก็ต้องมี --cron-diff"
+  //   เป็นจริงแค่บางเส้นทาง (วันนี้ --fixture เขียนแค่ test/fixtures/ จึงไม่อันตราย แต่ข้อความของยามต้องไม่โกหก)
+  if (write && !cronFlag) {
+    console.log('✗ --write ต้องมาคู่กับ --cron-diff เสมอ (cron differential เป็นยามชั้นสุดท้ายก่อนเขียน reports/) — ไม่มีตัวเลือกข้าม');
+    return 1;
+  }
+  if (argv.includes('--fixture')) return runFixture(argv.filter((a) => !a.startsWith('--')).map((a) => a.replace(/\.html$/i, '').toUpperCase()));
   const idx = (k) => { const i = argv.indexOf(k); return i < 0 ? null : argv[i + 1]; };
   const batch = idx('--batch') != null ? parseInt(idx('--batch'), 10) : null;
   const size = idx('--size') != null ? parseInt(idx('--size'), 10) : null;
@@ -923,35 +1742,67 @@ function main(argv) {
   let files = fs.readdirSync(REPORTS_DIR).filter((f) => /\.html$/i.test(f)).sort();
   if (syms.length) files = files.filter((f) => syms.includes(f.replace(/\.html$/i, '').toUpperCase()));
   if (batch != null && size != null) files = files.slice(batch * size, (batch + 1) * size);
+  const strict = argv.includes('--strict');
   const entries = [];
-  let ok = 0;
+  let ok = 0, cdFail = 0, cdForm = 0;
+  const errors = [];
+  const t0 = Date.now();
   for (const f of files) {
     const p = path.join(REPORTS_DIR, f);
-    const src = fs.readFileSync(p, 'utf8');
-    const r = migrateOne(src, f);
     const sym = f.replace(/\.html$/i, '');
-    entries.push({ sym, ok: r.ok, reason: r.reason || null, tokenised: r.sites.tokenised, literal: r.sites.literal, notes: r.notes, pyChanges: r.pyChanges || [] });
-    if (r.ok) {
-      ok++;
-      console.log(`✓ ${sym} (tokenised ${r.sites.tokenised.length}${r.sites.literal.length ? ' · literal ' + r.sites.literal.length + ': ' + [...new Set(r.sites.literal)].join(',') : ''})`);
-      if (write) fs.writeFileSync(p, r.out);
-    } else console.log(`✗ ${sym}: ${r.reason}`);
+    try {
+      const src = fs.readFileSync(p, 'utf8');
+      const r = migrateOne(src, f);
+      // migrateOne จับ throw ข้างในเป็นเหตุผล "migrator ระเบิด" — เป็น residue ของ census แต่เป็น **ความผิดพลาด** ของการรัน (exit 1)
+      if (!r.ok && /^migrator ระเบิด/.test(r.reason || '')) errors.push(`${sym}: ${r.reason}`);
+      const cd = cronFlag && r.ok ? cronDiff(src, r.out, f) : null;
+      const plan = planWrite(sym, r, cd);
+      entries.push(plan.entry);
+      if (cd && !cd.ok) cdFail++;
+      if (cd && cd.ok && (cd.formParts || []).length) cdForm++;
+      if (plan.write) {
+        if (write) fs.writeFileSync(p, plan.out);
+        ok++;
+        console.log(`✓ ${sym} (tokenised ${r.sites.tokenised.length}${r.sites.literal.length ? ' · literal ' + r.sites.literal.length + ': ' + [...new Set(r.sites.literal)].join(',') : ''})${cd ? ` · cron-diff ผ่าน ${cd.compared}/${cd.points} จุด${cd.formParts.length ? ' · รูป ' + cd.formParts.join(',') : ''}${cd.valueDiff.length ? ' · ค่าต่างก่อน patch ' + cd.valueDiff.length : ''}` : ''}`);
+      } else console.log(`✗ ${sym}: ${plan.entry.reason}${cd && !cd.ok ? ' — ' + (cd.detail[0] || '') : ''}`);
+    } catch (e) {
+      // throw ของ cronDiff / อ่านหรือเขียนไฟล์ไม่ได้ — ไม่เขียนใบนั้น (ถ้ายังไม่เขียน) · บันทึกลง census · exit 1
+      errors.push(`${sym}: ${e.message}`);
+      entries.push({ sym, ok: false, reason: 'ข้อผิดพลาดไม่คาดคิด: ' + e.message, tokenised: [], literal: [], notes: [], pyChanges: [] });
+      console.log(`✗ ${sym}: ข้อผิดพลาดไม่คาดคิด — ${e.message}`);
+    }
   }
-  console.log(`\nรวม: ย้ายได้ ${ok}/${files.length}${write ? ' (เขียนแล้ว)' : ' (dry-run)'}`);
+  console.log(`\nรวม: ย้ายได้ ${ok}/${files.length}${write ? ' (เขียนแล้ว)' : ' (dry-run)'} · residue ${files.length - ok}`
+    + (cronFlag ? ` · cron-diff ตก ${cdFail} (ไม่เขียน) · ต่างแค่รูป ${cdForm} · ${((Date.now() - t0) / 1000).toFixed(1)} วิ` : ''));
   if (census) {
-    fs.mkdirSync(census, { recursive: true });
-    const jf = path.join(census, 'migration-v2-census.json');
-    const prevRaw = fs.existsSync(jf) ? JSON.parse(fs.readFileSync(jf, 'utf8')) : null;
-    const merged = mergeCensus(prevRaw, batch == null ? null : batch, entries, new Date().toISOString());
-    fs.writeFileSync(jf, JSON.stringify(merged, null, 1));
-    fs.writeFileSync(path.join(census, 'migration-v2-census.md'), renderCensusMd(Object.values(merged.bySym)));
-    console.log(`census → ${jf} (${Object.keys(merged.bySym).length} ใบสะสม — idempotent ต่อ symbol)`);
+    try {
+      fs.mkdirSync(census, { recursive: true });
+      const jf = path.join(census, 'migration-v2-census.json');
+      const prevRaw = fs.existsSync(jf) ? JSON.parse(fs.readFileSync(jf, 'utf8')) : null;
+      const merged = mergeCensus(prevRaw, batch == null ? null : batch, entries, new Date().toISOString());
+      fs.writeFileSync(jf, JSON.stringify(merged, null, 1));
+      fs.writeFileSync(path.join(census, 'migration-v2-census.md'), renderCensusMd(Object.values(merged.bySym)));
+      console.log(`census → ${jf} (${Object.keys(merged.bySym).length} ใบสะสม — idempotent ต่อ symbol)`);
+    } catch (e) { errors.push('census: ' + e.message); console.log(`✗ census เขียนไม่ได้ — ${e.message}`); }
   }
-  return ok === files.length ? 0 : 1;
+  if (errors.length) console.log(`\n⛔ ข้อผิดพลาดไม่คาดคิด ${errors.length}: ${errors.slice(0, 5).join(' | ')}`);
+  return exitCode({ errors: errors.length, residue: files.length - ok, strict });
+}
+/**
+ * exit code ของ CLI (fix1 R8) — residue ไม่ใช่ความล้มเหลว: ใบที่ตัดสินแล้วว่า "ไม่ย้าย" คือผลปกติที่ census บันทึก
+ * ⇒ 0 เมื่อทุกใบถูกตัดสินครบ (ย้าย/residue) · 1 เฉพาะความผิดพลาดไม่คาดคิด (throw · เขียนไฟล์/census ไม่ได้)
+ * ★ เดิมคืน 1 เมื่อมี residue ใบใดใบหนึ่ง ⇒ chain `migrate --write … && npm run build && preserve-dates && … verify` ของ Task 14
+ *   หยุดทันทีหลังเขียน reports/ (ทุกแบตช์มี residue) · `--strict` = พฤติกรรมเดิม (residue ⇒ 1) สำหรับผู้เรียกที่ต้องการ
+ */
+function exitCode({ errors, residue, strict }) {
+  if (errors) return 1;
+  return strict && residue ? 1 : 0;
 }
 
 module.exports = {
-  migrateOne, extractValues, tokenise, buildRd, verifyPair, checkStripped, sameMoney, scnPyDiffs, scnPyCountGuard,
+  migrateOne, extractValues, tokenise, buildRd, verifyPair, checkStripped, sameMoney, scnPyDiffs, scnPyCountGuard, pyCell, main, noteTailOf, tailHitsOtherSite, HINT_NOTE_TAIL_RE,
+  cronDiff, cronGate, CRON_GRID, CRON_META_KEYS, sameMetaForm, cronDateParts, visibleCronDiff, pyExplained, planWrite, summarizeCronDiff, unitForm,
+  failSide, cronDiffReason, exitCode, ALREADY_V2,
   COPY_FIELDS, REQUIRED_SITES, TOLERANCE, GAP_REL, renderCensusMd, mergeCensus,
 };
 if (require.main === module) process.exit(main(process.argv.slice(2)));

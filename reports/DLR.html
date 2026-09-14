@@ -10,6 +10,38 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 205,
+  "values": {
+    "px": 188.58,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 198,
+    "fvHigh": 211.92,
+    "shares": 282000000,
+    "dps": 4.88,
+    "bvps": 95.6,
+    "scenarios": [
+      {
+        "tgt": 216.89,
+        "div": 14.64
+      },
+      {
+        "tgt": 249.5,
+        "div": 14.64
+      },
+      {
+        "tgt": 274.04,
+        "div": 14.64
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#15919B",
     "accentDark": "#0D656C",
@@ -41,18 +73,14 @@
     "min": 140,
     "max": 220,
     "grid": [160, 180, 200],
-    "fairLine": 205,
     "currency": "$",
     "highlight": [2, 6]
   },
   "gauge": {
     "min": 140,
     "max": 215,
-    "cur": 188.58,
-    "fair": 205,
     "fairLabelTop": false
-  },
-  "fv": 205
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +100,11 @@
     <div class="sub">REIT ดาต้าเซ็นเตอร์ระดับโลก • ~310 data centers ใน 50+ metros • colocation + hyperscale + interconnection (PlatformDIGITAL) • ได้ประโยชน์ AI/cloud demand</div>
     <div class="price-row">
       <div>
-        <div class="px">$188.58<small>(DLR)</small></div>
+        <div class="px">{{rd:px}}<small>(DLR)</small></div>
       </div>
-      <div class="chg">▲ +10.7% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $146.23 / $208.14<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / Digital Realty IR / Macrotrends
       </div>
@@ -87,7 +115,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">REIT — ใช้ Core FFO/share แทน GAAP EPS</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$53.2B</div><div class="d">~282M shares outstanding</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~282M shares outstanding</div></div>
       <div class="metric"><div class="k">P/FFO (TTM)</div><div class="v neu">~25.1x</div><div class="d">Core FFO/share $7.92 (TTM); GAAP EPS ~$2.08 → P/E ~95.7x ไม่สื่อความหมาย REIT</div></div>
       <div class="metric"><div class="k">P/FFO เฉลี่ย ~5 ปี</div><div class="v">~22–26x</div><div class="d">ปัจจุบันซื้อขาย premium เล็กน้อยจากค่าเฉลี่ย</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~2.0x</div><div class="d">BVPS ~$95.6 (REIT มักซื้อขายเหนือ book)</div></div>
@@ -113,7 +141,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#15919B"></i>ราคา DLR</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $205</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -143,8 +171,8 @@
         <div class="mval">$211.92</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $198.00 – $211.92</span></div>
-        <div class="r">$205</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี TTM ให้ค่าต่ำสุด ($198.00) สะท้อน Core FFO 4 ไตรมาสล่าสุดหลัง Q2/69 บีทคาด
@@ -161,14 +189,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $188.58</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $205</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$143.50<br><small>MOS 30%</small></span>
-          <span>$164.00<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$205<br><small>Fair Value</small></span>
-          <span style="text-align:right">$211.92<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$220.58<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -184,19 +212,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+8%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาเหมาะสม — ยังไม่มี Margin of Safety เพียงพอสำหรับ value investor; รอย่อ MOS 20% (~$164)</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$164.00</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$143.50</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $205</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="188.58" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -205,17 +233,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $188.58 • Core FFO ฐาน ~$7.92/share • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • Core FFO ฐาน ~$7.92/share{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>Core FFO +6%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$216.89</div>
-          <div class="ret pos">+15%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>Core FFO ปี 3</span><span>~$9.43</span></li>
             <li><span>P/FFO ออก</span><span>23x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$14.64</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>ดอกเบี้ยสูง กด REIT; การเติบโตชะลอ</span></li>
           </ul>
         </div>
@@ -223,12 +251,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>Core FFO +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$249.50</div>
-          <div class="ret pos">+32%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>Core FFO ปี 3</span><span>~$9.98</span></li>
             <li><span>P/FFO ออก</span><span>25x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$14.64</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>AI/cloud demand ต่อเนื่อง; FFO โต steady</span></li>
           </ul>
         </div>
@@ -236,12 +264,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>Core FFO +10%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$274.04</div>
-          <div class="ret pos">+45%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>Core FFO ปี 3</span><span>~$10.54</span></li>
             <li><span>P/FFO ออก</span><span>26x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$14.64</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>AI boom เร่งตัว; pricing power; re-rating P/FFO</span></li>
           </ul>
         </div>
@@ -291,8 +319,8 @@
       <h2>คุณภาพดี — ราคาพอเหมาะ รอย่อสะสม</h2>
       <p>Digital Realty เป็น data-center REIT ระดับโลกที่มี interconnection moat ผ่าน PlatformDIGITAL ได้ประโยชน์ตรงจาก AI/cloud demand ระลอกใหม่ leasing backlog record $1.9B และ development pipeline $10B yield 11.9% สะท้อนความแข็งแกร่งของธุรกิจ Q2/69 core FFO $2.13/share (+14% YoY) บีทคาด + ปรับเพิ่ม guidance ทั้งปีเป็น $8.15–$8.20 อย่างไรก็ตาม P/FFO ปัจจุบัน 25.1x MOS เพียง +2.9% เทียบกับ Fair Value $205 ขณะที่นักวิเคราะห์เป้าเฉลี่ย $220.58 (+13.0%) มองบวกกว่าฝั่งเรา กลยุทธ์: ถือได้สำหรับผู้มีอยู่แล้ว หากต้องการเพิ่ม Position รอโซน MOS 20% ($164) จะได้ margin of safety ที่ดีขึ้นชัดเจน</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$205 <span style="font-size:12px;color:#cab9a8">($198.00–$211.92)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +8%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$220.58 (Buy/Outperform)</div></div>
       </div>
       <div class="zone">

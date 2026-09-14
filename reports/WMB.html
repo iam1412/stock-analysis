@@ -10,6 +10,40 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 60,
+  "values": {
+    "px": 72.85,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 53.9,
+    "fvHigh": 64.1,
+    "eps": 2.29,
+    "shares": 1221600000,
+    "dps": 2.1,
+    "bvps": 12.28,
+    "baseEps": 2.29,
+    "scenarios": [
+      {
+        "tgt": 47.5,
+        "div": 6.4
+      },
+      {
+        "tgt": 76.4,
+        "div": 6.9
+      },
+      {
+        "tgt": 100.2,
+        "div": 7.2
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#d97706",
     "accentDark": "#aa4f09",
@@ -41,18 +75,14 @@
     "min": 55,
     "max": 80,
     "grid": [60, 65, 70, 75],
-    "fairLine": 60,
     "currency": "$",
     "highlight": [0, 6]
   },
   "gauge": {
     "min": 35,
     "max": 105,
-    "cur": 72.85,
-    "fair": 60,
     "fairLabelTop": true
-  },
-  "fv": 60
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +102,11 @@
     <div class="sub">Natural Gas Pipelines • Transco Backbone • 33,000+ Miles • AI/Data Center Demand</div>
     <div class="price-row">
       <div>
-        <div class="px">$72.85<small>(WMB)</small></div>
+        <div class="px">{{rd:px}}<small>(WMB)</small></div>
       </div>
-      <div class="chg">▲ +25.9% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569 (ปิดตลาด 16:00 EDT)<br>
+        ราคา ณ {{rd:priceDate}} (ปิดตลาด 16:00 EDT)<br>
         กรอบ 52 สัปดาห์ $55.82 – $80.08<br>
         ที่มา: Yahoo Finance, MarketBeat.com, Williams Investor Relations
       </div>
@@ -87,10 +117,10 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM / FY2025 · ณ ก.ค. 2569</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$89.0B</div><div class="d">1,221.6M shares outstanding</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">1,221.6M shares outstanding</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~31.81x</div><div class="d">EPS TTM $2.29 · เทียบ midstream peer ~15–20x</div></div>
       <div class="metric"><div class="k">EV/EBITDA (TTM)</div><div class="v">~15.3x</div><div class="d">EV ~$122.5B · EBITDA TTM ~$8.0B</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">5.93x</div><div class="d">BVPS ~$12.28 · equity ~$15.0B</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ~$12.28 · equity ~$15.0B</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$2,615M</div><div class="d">+18% YoY (GAAP) · adj. $2,571M +10%</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$2.29</div><div class="d">FY2025 GAAP $2.14 · adj. $2.10 (+9%)</div></div>
@@ -119,7 +149,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#d97706"></i>ราคา WMB</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $60.00</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -149,8 +179,8 @@
         <div class="mval">$64.12</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $53.9 – $64.1</span></div>
-        <div class="r">$60.00</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>น้ำหนัก:</b> EV/EBITDA 40% + DDM 30% + P/E 30% = $60.0<br>
@@ -170,13 +200,13 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $72.85</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $60.00</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$42.00<br><small>MOS 30%</small></span>
-          <span>$48.00<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$60.00<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$84.00<br><small>เป้าเฉลี่ย Analyst</small></span>
           <span style="text-align:right">$98.00<br><small>เป้าสูงสุด</small></span>
         </div>
@@ -194,19 +224,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−21%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาสูงกว่ามูลค่าเหมาะสม — ยังไม่มี Margin of Safety ในเชิง valuation อนุรักษ์นิยม รอจังหวะ pullback สู่โซน MOS 20% ($48) ก่อนสะสมเพิ่ม</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$48.00</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$42.00</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $60.00</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="72.85" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -215,17 +245,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $72.85 • EPS ฐาน ~$2.29 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −2%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$47.50</div>
-          <div class="ret neg">−26.0% รวมปันผล 3 ปี</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$2.16</span></li>
             <li><span>P/E ออก</span><span>22x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$6.40</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>ดีมานด์ AI ชะลอ multiple หดสู่ค่าเฉลี่ย midstream</span></li>
           </ul>
         </div>
@@ -233,12 +263,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +6%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$76.40</div>
-          <div class="ret pos">+14.3% รวมปันผล 3 ปี</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$2.73</span></li>
             <li><span>P/E ออก</span><span>28x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$6.90</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>EBITDA โตตาม guidance Transco ขยายต่อเนื่อง</span></li>
           </ul>
         </div>
@@ -246,12 +276,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +11%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$100.20</div>
-          <div class="ret pos">+47.4% รวมปันผล 3 ปี</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$3.13</span></li>
             <li><span>P/E ออก</span><span>32x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$7.20</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>ดีมานด์ AI/LNG เร่งตัว multiple พรีเมียมคงอยู่</span></li>
           </ul>
         </div>
@@ -306,8 +336,8 @@
         เชิงอนุรักษ์นิยมของเราอยู่ที่ $60.00 (MOS ~−25.8%) — ยังต่ำกว่าเป้าหมายนักวิเคราะห์เฉลี่ย ~$84 ที่สะท้อนมุมมอง growth
         มากกว่า สำหรับนักลงทุนเน้นปันผลระยะยาว yield ~2.79% ยังพอรับได้ แต่จุดเข้าที่ดีกว่าคือรอ pullback สู่โซน MOS 20%</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$60.00 <span style="font-size:12px;color:#cab9a8">($53.9–$64.1)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −21%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$84 (Buy — 25 analysts)</div></div>
       </div>
       <div class="zone">
@@ -323,7 +353,7 @@
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
-    ราคา ณ 11 ก.ย. 2569 · แหล่ง: Yahoo Finance (finance.yahoo.com/quote/WMB) · MarketBeat.com (marketbeat.com/stocks/NYSE/WMB) ·
+    ราคา ณ {{rd:priceDate}} · แหล่ง: Yahoo Finance (finance.yahoo.com/quote/WMB) · MarketBeat.com (marketbeat.com/stocks/NYSE/WMB) ·
     Williams Companies Q1 2026 Earnings Release (williams.com)
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 9 กรกฎาคม 2569 • สร้างด้วย stock-analyzer workflow</footer>

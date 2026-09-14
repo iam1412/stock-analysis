@@ -10,6 +10,37 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 62.54,
+  "values": {
+    "px": 62.02,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 58.76,
+    "fvHigh": 66.78,
+    "dps": 2.26,
+    "baseEps": 3.71,
+    "scenarios": [
+      {
+        "tgt": 45.39,
+        "div": 6.45
+      },
+      {
+        "tgt": 73.01,
+        "div": 7.33
+      },
+      {
+        "tgt": 96.09,
+        "div": 7.63
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#1a237e",
     "accentDark": "#0d1442",
@@ -41,17 +72,13 @@
     "min": 55,
     "max": 75,
     "grid": [60, 65, 70],
-    "fairLine": 62.54,
     "currency": "$",
     "highlight": [4, 7]
   },
   "gauge": {
     "min": 40,
-    "max": 72,
-    "cur": 62.02,
-    "fair": 62.54
-  },
-  "fv": 62.54
+    "max": 72
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -71,11 +98,11 @@
     <div class="sub">Dove • Knorr • Hellmann's • Vaseline • Global Consumer Staples ADR</div>
     <div class="price-row">
       <div>
-        <div class="px">$62.02<small>(UL)</small></div>
+        <div class="px">{{rd:px}}<small>(UL)</small></div>
       </div>
-      <div class="chg">▼ −8.5% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $54.75 – $74.98<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, Unilever plc SEC 6-K filings (FY2025)
       </div>
@@ -112,7 +139,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1a237e"></i>ราคา UL</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $62.54</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -140,8 +167,8 @@
         <div class="mval">$62.09</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $58.76 – $66.78</span></div>
-        <div class="r">$62.54</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/E ให้ค่าสูงสุด ($66.78) เพราะอิง EPS ปรับปรุง (forward, ไม่รวม one-off gain จากดีล demerge Ice Cream) คูณ P/E เป้าหมายใกล้เคียงค่าเฉลี่ย 5 ปีของบริษัทเอง
@@ -157,14 +184,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $62.02</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $62.54</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$43.78<br><small>MOS 30%</small></span>
-          <span>$50.03<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$62.54<br><small>Fair Value</small></span>
-          <span style="text-align:right">$66.78<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$69.08<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -179,19 +206,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+0.8%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>แทบไม่มี Margin of Safety</b><br>ราคาปัจจุบัน อยู่<b>ใกล้เคียง</b>มูลค่าเหมาะสมเฉลี่ย 3 วิธี ($62.54) นักลงทุนสาย value อาจรอจังหวะย่อสู่โซน MOS 20% ($50.03) หรือ MOS 30% ($43.78) เพื่อเพิ่ม safety margin</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$50.03</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$43.78</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $62.54</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="62.02" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -200,17 +227,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $62.02 • EPS ฐาน ~$3.71 (ปรับปรุง/forward) • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} (ปรับปรุง/forward){{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS -2%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$45.39</div>
-          <div class="ret neg">-16.4%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$3.49</span></li>
             <li><span>P/E ออก</span><span>13x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$6.45</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>การเติบโตออร์แกนิกชะลอตัว ต้นทุนวัตถุดิบ/FX กดดันมาร์จิ้น หุ้นถูก de-rate ต่ำกว่าค่าเฉลี่ยกลุ่ม</span></li>
           </ul>
         </div>
@@ -218,12 +245,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$73.01</div>
-          <div class="ret pos">+29.5%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$4.29</span></li>
             <li><span>P/E ออก</span><span>17x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$7.33</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>เติบโตยอดขายออร์แกนิก mid-single-digit ตามเป้าบริษัท มาร์จิ้นทรงตัว/ขยับขึ้นเล็กน้อยหลัง portfolio โฟกัสมากขึ้น</span></li>
           </ul>
         </div>
@@ -231,12 +258,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +9%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$96.09</div>
-          <div class="ret pos">+67.2%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$4.80</span></li>
             <li><span>P/E ออก</span><span>20x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$7.63</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Premiumization/Beauty &amp; Wellbeing โตแรง ตลาด Emerging Markets ฟื้นตัว มาร์จิ้นขยายเกินคาด หุ้นได้ re-rate multiple สูงขึ้น</span></li>
           </ul>
         </div>
@@ -286,8 +313,8 @@
       กระแสเงินสดอิสระและเงินปันผลยังมั่นคง (yield ~3.65%) แต่ราคาหุ้นที่ผันผวนในรอบปี (~-2.7%) ทำให้ปัจจุบันเทรดใกล้เคียงมูลค่าเหมาะสมเฉลี่ยมาก เหลือ margin of safety จำกัด
       เหมาะกับนักลงทุนที่มองหาหุ้นปันผลมั่นคงมากกว่าการเก็งกำไรส่วนต่างราคาระยะสั้น</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$62.54 <span style="font-size:12px;color:#cab9a8">($58.76–$66.78)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +0.8%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$68.59 (Buy)</div></div>
       </div>
       <div class="zone">

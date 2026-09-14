@@ -10,6 +10,38 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 29.1,
+  "values": {
+    "px": 22.06,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 26.8,
+    "fvHigh": 31.5,
+    "shares": 721000000,
+    "dps": 0.84,
+    "bvps": 13.07,
+    "scenarios": [
+      {
+        "tgt": 19.2,
+        "div": 2.52
+      },
+      {
+        "tgt": 32.1,
+        "div": 3
+      },
+      {
+        "tgt": 44,
+        "div": 4.8
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#166534",
     "accentDark": "#14532d",
@@ -41,18 +73,14 @@
     "min": 20,
     "max": 30,
     "grid": [22, 24, 26, 28],
-    "fairLine": 29.1,
     "currency": "$",
     "highlight": [3, 11]
   },
   "gauge": {
     "min": 18,
     "max": 34,
-    "cur": 22.06,
-    "fair": 29.1,
     "fairLabelTop": false
-  },
-  "fv": 29.1
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +100,11 @@
     <div class="sub">Timber REIT • 11M Acres • Pacific NW + US South • Timberlands • Wood Products • Real Estate</div>
     <div class="price-row">
       <div>
-        <div class="px">$22.06<small>(WY)</small></div>
+        <div class="px">{{rd:px}}<small>(WY)</small></div>
       </div>
-      <div class="chg">▼ −4.1% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $21.16 – $27.75<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, SEC 10-K/8-K filings (Weyerhaeuser IR)
       </div>
@@ -90,7 +118,7 @@
       <div class="metric"><div class="k">Market Cap</div><div class="v">$15.91B</div><div class="d">~721.0M หุ้น · NYSE: WY</div></div>
       <div class="metric"><div class="k">P/AFAD (Normalized)</div><div class="v neu">~15.0x</div><div class="d">AFAD ปกติ $1.50/หุ้น (เฉลี่ย FY22-25 ไม่รวมพีค 2021)</div></div>
       <div class="metric"><div class="k">P/AFAD (TTM, cycle-low)</div><div class="v neu">~34.6x</div><div class="d">AFAD 2025E ~$0.65/หุ้น — จุดต่ำวัฏจักร lumber</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.69x</div><div class="d">BVPS $13.07 (Q1 2569)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS $13.07 (Q1 2569)</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">~$330M</div><div class="d">EPS $0.45 ↓17% YoY จาก FY2024 $0.54</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$0.55</div><div class="d">ฟื้นเล็กน้อยจากจุดต่ำ FY2025 ($0.45)</div></div>
@@ -113,7 +141,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#166534"></i>ราคา WY</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $29.10</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -139,8 +167,8 @@
         <div class="mval">$26.80</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $26.80 – $31.50</span></div>
-        <div class="r">$29.10</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>หมายเหตุ:</b> WY เป็น timber REIT ที่กำไร/กระแสเงินสดผันผวนตามวัฏจักรราคาไม้แปรรูปรุนแรง (EPS FY2021 $3.47 → FY2025 $0.45) จึงใช้ <b>AFAD normalized</b> (เฉลี่ยหลายปีตัดปีพีค 2021 ออก) แทนตัวเลขปีล่าสุดที่ยังอยู่จุดต่ำวัฏจักร Method 1 และ 2 ให้ค่าใกล้เคียงกัน ($29.00–31.50) เพราะอิงกระแสเงินสด normalize แล้วเหมือนกัน ส่วน Method 3 (NAV ที่ดิน) ให้ค่าต่ำสุด ($26.80) เพราะเป็นมูลค่าทรัพย์สินสุทธิแบบอนุรักษ์นิยม ไม่รวมมูลค่าเพิ่มจากธุรกิจ Wood Products manufacturing และ Real Estate development FV เฉลี่ย $29.10 ใกล้เคียงเป้าหมาย analyst consensus $31.27 (12 นักวิเคราะห์ เรตติ้ง Buy) ยืนยันว่าราคาปัจจุบัน $22.50 ต่ำกว่ามูลค่าที่ควรจะเป็นในภาวะ lumber cycle ปกติ
@@ -154,15 +182,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $22.06</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $29.10</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$20.37<br><small>MOS 30%</small></span>
-          <span>$23.28<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$29.10<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$31.27<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$31.50<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -175,19 +203,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict good">
-        <div class="big">+24%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ส่วนเผื่อความปลอดภัยอยู่ในเกณฑ์ดี (MOS ≥20%) เหมาะสำหรับนักลงทุนที่เข้าใจและรับความผันผวนของวัฏจักรไม้แปรรูปได้ และมองข้ามจุดต่ำสุดของวัฏจักรปัจจุบันไปสู่การฟื้นตัว</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$23.28</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$20.37</div><div class="d">โซนถูกมาก (deep value, ต่ำกว่า 52wk low $21.16)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $29.10</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value, ต่ำกว่า 52wk low $21.16)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="22.06" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -196,17 +224,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $22.06 • AFAD normalized ฐาน ~$1.50/หุ้น • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • AFAD normalized ฐาน ~$1.50/หุ้น{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>AFAD −3%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$19.20</div>
-          <div class="ret neg">−1.5%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>AFAD ปี 3</span><span>~$1.37/sh</span></li>
             <li><span>Exit P/AFAD</span><span>14x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$2.52</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>ราคา lumber ต่ำต่อเนื่อง &lt;$400/MBF จาก housing starts อ่อนแอต่อเนื่อง ไม่มี supplemental dividend</span></li>
           </ul>
         </div>
@@ -214,12 +242,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>AFAD +4%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$32.10</div>
-          <div class="ret pos">+59.1%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>AFAD ปี 3</span><span>~$1.69/sh</span></li>
             <li><span>Exit P/AFAD</span><span>19x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$3.00</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>Lumber ฟื้นตัวสู่ระดับปกติ ~$450-500/MBF ตามดอกเบี้ยลดและ housing starts ฟื้น กลับมาจ่าย supplemental dividend บางส่วน</span></li>
           </ul>
         </div>
@@ -227,12 +255,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>AFAD +10%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$44.00</div>
-          <div class="ret pos">+121.2%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>AFAD ปี 3</span><span>~$2.00/sh</span></li>
             <li><span>Exit P/AFAD</span><span>22x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$4.80</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Housing boom รอบใหม่ + lumber supply ตึงตัวจาก sawmill closures ราคาพุ่งเกิน $600/MBF กลับมาจ่าย supplemental dividend เต็มรูปแบบเหมือนปี 2021-2022</span></li>
           </ul>
         </div>
@@ -279,8 +307,8 @@
       <h2>WY: Timber REIT คุณภาพสูง ราคาสะท้อน Lumber Cycle ขาลง — มี Upside รอการฟื้นตัว</h2>
       <p>Weyerhaeuser เป็นเจ้าของที่ดินป่าไม้เอกชนรายใหญ่ที่สุดในสหรัฐฯ (11 ล้านเอเคอร์ ครอบคลุม Pacific Northwest และ US South) ราคาหุ้นปัจจุบัน $22.50 สะท้อนภาวะ lumber cycle ขาลงรุนแรง (ราคาไม้แปรรูปคอมโพสิต ~$378/MBF ต่ำสุดในรอบหลายทศวรรษเมื่อปรับเงินเฟ้อ) กดดันกำไรและกระแสเงินสด AFAD ให้อยู่ต่ำกว่าค่าเฉลี่ยระยะยาวมาก เมื่อ normalize AFAD เฉลี่ย FY2022-2025 (ไม่รวมปี 2021 ที่ราคาพุ่งประวัติการณ์เกิน $1,500/MBF) ที่ ~$1.50/หุ้น มูลค่าเหมาะสมเฉลี่ย 3 วิธี ($31.50 P/AFAD + $29.00 Cash Return Yield + $26.80 NAV ที่ดิน) อยู่ที่ $29.10 ให้ Margin of Safety ~22.7% ที่ราคาปัจจุบัน เหมาะสำหรับนักลงทุนที่เข้าใจและยอมรับความผันผวนของวัฏจักรไม้แปรรูป มองข้ามจุดต่ำสุดปัจจุบันไปสู่การฟื้นตัวของ housing starts ในระยะ 2-3 ปีข้างหน้า</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$29.10 <span style="font-size:12px;color:#cab9a8">($26.80–$31.50)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +24%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$31.27 (Buy, 12 นักวิเคราะห์)</div></div>
       </div>
       <div class="zone">

@@ -10,6 +10,38 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 160,
+  "values": {
+    "px": 137.64,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 133,
+    "fvHigh": 174,
+    "shares": 220600000,
+    "dps": 6.48,
+    "bvps": 63.41,
+    "scenarios": [
+      {
+        "tgt": 144,
+        "div": 19
+      },
+      {
+        "tgt": 206,
+        "div": 20
+      },
+      {
+        "tgt": 243,
+        "div": 20
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#FF5800",
     "accentDark": "#bd3d00",
@@ -41,18 +73,14 @@
     "min": 120,
     "max": 170,
     "grid": [130, 140, 150, 160],
-    "fairLine": 160,
     "currency": "$",
     "highlight": [2, 4]
   },
   "gauge": {
     "min": 90,
     "max": 240,
-    "cur": 137.64,
-    "fair": 160,
     "fairLabelTop": true
-  },
-  "fv": 160
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +100,11 @@
     <div class="sub">Self-storage REIT อันดับ 2 ของสหรัฐฯ (~4,344 สาขา · 335M+ ตร.ฟุต) • ควบรวม Life Storage (ก.ค. 2566) → ก้าวขึ้นเป็นผู้นำระดับชาติ • แพลตฟอร์มบริหาร third-party ~970+ สาขา + tech yield optimization • หุ้นปันผล ~4.4% · REIT วัดด้วย P/FFO/AFFO (pe:null)</div>
     <div class="price-row">
       <div>
-        <div class="px">$137.64<small>(EXR)</small></div>
+        <div class="px">{{rd:px}}<small>(EXR)</small></div>
       </div>
-      <div class="chg">▲ +3.1% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $125.71 – $155.19<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, EXR Investor Relations
       </div>
@@ -87,10 +115,10 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">REIT — วัดด้วย FFO/AFFO ไม่ใช่ P/E</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">$30.4B</div><div class="d">~220.6M shares</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">~220.6M shares</div></div>
       <div class="metric"><div class="k">P/FFO (TTM 2025)</div><div class="v neu">~18.5x</div><div class="d">FFO/sh $7.90 · ต่ำกว่าค่าเฉลี่ยประวัติ 20–22x</div></div>
       <div class="metric"><div class="k">P/FFO Forward 2026</div><div class="v neu">~17.7x</div><div class="d">Consensus FFO $8.27/sh · Core FFO guide $8.05–$8.35</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">2.17x</div><div class="d">BVPS $63.41 · post-merger leverage สูง</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS $63.41 · post-merger leverage สูง</div></div>
 
       <div class="metric"><div class="k">รายได้ TTM</div><div class="v">$3.41B</div><div class="d">+3.7% YoY · FY2025 $3.38B</div></div>
       <div class="metric"><div class="k">FFO (FY2025)</div><div class="v pos">$7.90/sh</div><div class="d">Core FFO guide 2026: $8.05–$8.35/sh</div></div>
@@ -113,7 +141,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#FF5800"></i>ราคา EXR</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $160</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -142,8 +170,8 @@
         <div class="mval">$156</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $133 – $174</span></div>
-        <div class="r">$160</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>หมายเหตุ:</b> EXR เป็น REIT — P/E (GAAP) ไม่ใช่ตัวชี้วัดที่เหมาะสม เนื่องจาก depreciation ขนาดใหญ่ (~$715M/ปี) กด GAAP EPS ลง FFO ที่ตัด D&amp;A ออกสะท้อนกำไรจากการดำเนินงานจริงได้ดีกว่า
@@ -159,15 +187,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $137.64</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $160</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$112<br><small>MOS 30%</small></span>
-          <span>$128<br><small>MOS 20%</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">$155.70<br><small>เป้า Analyst</small></span>
-          <span style="text-align:right">$160<br><small>Fair Value</small></span>
-          <span style="text-align:right">$174<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -182,19 +210,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+14%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS ต่ำ — ราคาใกล้มูลค่าเหมาะสม ยังไม่ถึงโซน MOS 20%</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$128</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$112</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $160</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="137.64" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -203,17 +231,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $137.64 • FFO ฐาน ~$8.27/sh • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • FFO ฐาน ~$8.27/sh{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>FFO −2%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$144</div>
-          <div class="ret neg">+4.6% (3 ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>FFO ปี 3</span><span>~$7.78/sh</span></li>
             <li><span>P/FFO ออก</span><span>16x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$19</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>Street rate ลดต่อ, supply ล้น, leverage กดดัน</span></li>
           </ul>
         </div>
@@ -221,12 +249,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>FFO +4%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$206</div>
-          <div class="ret pos">+49.7% (3 ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>FFO ปี 3</span><span>~$9.30/sh</span></li>
             <li><span>P/FFO ออก</span><span>20x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$20</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>Street rate ฟื้น, synergy merger เต็มที่, platform เติบโต</span></li>
           </ul>
         </div>
@@ -234,12 +262,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>FFO +7%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$243</div>
-          <div class="ret pos">+76.5% (3 ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>FFO ปี 3</span><span>~$10.13/sh</span></li>
             <li><span>P/FFO ออก</span><span>22x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$20</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Consumer moves rebound, AI yield tech, sector re-rates</span></li>
           </ul>
         </div>
@@ -289,8 +317,8 @@
       <h2>EXR: Self-Storage Leader ใกล้ Fair Value — Dividend Shield แต่ MOS ยังต่ำ</h2>
       <p>Extra Space Storage คือ self-storage REIT อันดับ 2 ของสหรัฐฯ ที่สร้างขึ้นจากการควบรวม Life Storage ปี 2566 ทำให้มีสาขา 4,344 แห่งและแพลตฟอร์มบริหาร third-party ที่แข็งแกร่ง ณ ราคา $146.13 EXR ซื้อขายที่ P/FFO ~18.5x (ต่ำกว่าประวัติ 20–22x) dividend yield ~4.4% และ MOS ราว 8.7% จาก Fair Value $160 ที่ประมาณการไว้ ภาพรวม: ราคา "ยุติธรรม" สำหรับ income investor แต่ยังไม่ถึงโซน deep value สำหรับ value investor</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$160 <span style="font-size:12px;color:#cab9a8">($133–$174)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +14%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$155.70 (Buy)</div></div>
       </div>
       <div class="zone">

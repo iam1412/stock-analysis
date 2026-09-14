@@ -10,6 +10,20 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 125,
+  "values": {
+    "px": 239.79,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 113,
+    "fvHigh": 138,
+    "eps": 9.34,
+    "shares": 144900000,
+    "dps": 2.12,
+    "bvps": 61.2
+  },
   "theme": {
     "accent": "#d93147",
     "accentDark": "#a31e30",
@@ -41,17 +55,13 @@
     "min": 100,
     "max": 300,
     "grid": [150, 200, 250],
-    "fairLine": 125,
     "currency": "$",
     "highlight": [0, 7]
   },
   "gauge": {
     "min": 70,
-    "max": 300,
-    "cur": 239.79,
-    "fair": 125
-  },
-  "fv": 125
+    "max": 300
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -71,11 +81,11 @@
     <div class="sub">Steel (Flat Roll • Long Products) • Steel Fabrication • Metals Recycling • Aluminum Flat-Rolled JV • EAF (Electric Arc Furnace) Technology</div>
     <div class="price-row">
       <div>
-        <div class="px">$239.79<small>(STLD)</small></div>
+        <div class="px">{{rd:px}}<small>(STLD)</small></div>
       </div>
-      <div class="chg">▲ +52.9% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $119.89 – $288.74<br>
         ที่มา: Finviz.com, Google Finance, Yahoo Finance (7 ส.ค. 2569)
       </div>
@@ -86,7 +96,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">หุ้น cyclical — บางตัวเลขยังไม่สะท้อน mid-cycle เต็มที่</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">$34.7B</div><div class="d">~144.9M หุ้น</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">~144.9M หุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~25.67x</div><div class="d">EPS TTM $9.34 — สูงเพราะ TTM ยังลาก earnings trough ปี 2025</div></div>
       <div class="metric"><div class="k">P/E ตามวงจร (ผ่านมา)</div><div class="v">~8–15x</div><div class="d">ต่ำสุด ~6x (peak earnings 2022) สูงสุด ~24x (ปัจจุบัน, earnings trough)</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~3.9x</div><div class="d">BVPS ~$61.2 (ประมาณจาก Net Income TTM ÷ ROE)</div></div>
@@ -112,7 +122,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#d93147"></i>ราคา STLD</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $125</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -141,8 +151,8 @@
         <div class="mval">$138</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $113 – $138</span></div>
-        <div class="r">$125</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         ทั้ง 3 วิธีตั้งใจใช้ <b>EPS/EBITDA แบบ mid-cycle normalized</b> ไม่ใช่ตัวเลข TTM/2026E ที่ยังพองจากช่วงราคาเหล็กพุ่ง — จึงให้ Fair Value
@@ -159,14 +169,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $239.79</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $125</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$87.5<br><small>MOS 30%</small></span>
-          <span>$100<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$125<br><small>Fair Value</small></span>
-          <span style="text-align:right">$138<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$276<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -182,19 +192,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−92%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสมแบบ mid-cycle ~78% — ไม่มี margin of safety ในกรอบวินัยนี้ ตลาดกำลัง price-in การฟื้นตัวของวงจรเหล็ก (tariff + backlog + reshoring) ไม่ใช่กำไรระดับ through-cycle ปกติ</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$100</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$87.5</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $125</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม mid-cycle</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม mid-cycle</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="239.79" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -295,8 +305,8 @@
         จะเชื่อมั่นในวินัย mid-cycle (ระมัดระวัง) หรือเชื่อว่าวงจรขาขึ้นรอบนี้จะยืนระยะยาวกว่าปกติจากปัจจัยเชิงโครงสร้าง (tariff ถาวร + reshoring)
       </p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$125 <span style="font-size:12px;color:#cab9a8">($113–$138)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −92%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$276 (Moderate Buy)</div></div>
       </div>
       <div class="zone">

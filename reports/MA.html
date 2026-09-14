@@ -10,6 +10,38 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 590,
+  "values": {
+    "px": 569.19,
+    "priceDate": "2026-09-11",
+    "dateEra": "CE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 560,
+    "fvHigh": 620,
+    "shares": 884000000,
+    "dps": 3.48,
+    "baseEps": 16.52,
+    "scenarios": [
+      {
+        "tgt": 499,
+        "div": 13
+      },
+      {
+        "tgt": 754,
+        "div": 13
+      },
+      {
+        "tgt": 947,
+        "div": 13
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#EB001B",
     "accentDark": "#B00014",
@@ -41,18 +73,14 @@
     "min": 475,
     "max": 600,
     "grid": [500, 525, 550, 575],
-    "fairLine": 590,
     "currency": "$",
     "highlight": [7, 10]
   },
   "gauge": {
     "min": 413,
     "max": 645,
-    "cur": 569.19,
-    "fair": 590,
     "fairLabelTop": "-58px"
-  },
-  "fv": 590
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +100,11 @@
     <div class="sub">เครือข่ายชำระเงินทั่วโลก • บัตรเครดิต/เดบิต Mastercard &amp; Maestro • ชำระเงินข้ามพรมแดน (Cross-Border) • Cyber &amp; Intelligence Solutions • Data Analytics</div>
     <div class="price-row">
       <div>
-        <div class="px">$569.19<small>(MA)</small></div>
+        <div class="px">{{rd:px}}<small>(MA)</small></div>
       </div>
-      <div class="chg">▲ +3.1% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2026<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $464.52 – $601.77<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, MA 10-K
       </div>
@@ -87,7 +115,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM / FY2025</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">$503B</div><div class="d">หุ้น 884M shares</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">หุ้น 884M shares</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~28.9x</div><div class="d">ต่ำกว่าค่าเฉลี่ย 5 ปี</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~38x</div><div class="d">เคยซื้อขายที่พรีเมียมสูง</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">65.9x</div><div class="d">ทุนจดทะเบียนบางมาก (buyback)</div></div>
@@ -113,7 +141,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#EB001B"></i>ราคา MA</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $590</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -139,8 +167,8 @@
         <div class="mval">$632</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $560 – $620</span></div>
-        <div class="r">$590</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         เราถ่วงน้ำหนักไปที่วิธี P/E และ Forward P/E (วิธี 1 และ 3) ซึ่งเหมาะกับโมเดลธุรกิจเครือข่ายชำระเงินที่กำไรเติบโตสม่ำเสมอ ส่วน DDM ($185) ใช้เป็น "พื้น" เท่านั้น — ไม่ถ่วงน้ำหนักเท่ากัน เพราะ MA คืนทุนผู้ถือหุ้นผ่านการซื้อหุ้นคืนเป็นหลัก ปันผลจึงต่ำผิดปกติและทำให้ DDM ต่ำเกินจริง · <b>ไม่ใช้วิธี Justified P/BV</b> เพราะ ROE 232% และ P/BV 65.9x ถูกบิดเบือนจากทุนจดทะเบียนที่บางเกือบศูนย์ (ผลพวงจาก buyback + สินทรัพย์ไม่มีตัวตน) จะให้ผลลัพธ์ไร้ความหมาย · FV กลาง $590 ยังต่ำกว่าเป้านักวิเคราะห์เฉลี่ย $644.89 อย่างมีนัย
@@ -154,14 +182,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $569.19</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $590</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$413<br><small>MOS 30%</small></span>
-          <span>$472<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$590<br><small>Fair Value</small></span>
-          <span style="text-align:right">$620<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$645<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -175,19 +203,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+4%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาปัจจุบันต่ำกว่ามูลค่าเหมาะสม ~15% — มีส่วนเผื่อความปลอดภัยระดับปานกลาง เหมาะกับการทยอยสะสมหุ้นคุณภาพ มากกว่ารอจังหวะ deep value</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$472</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$413</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $590</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="569.19" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -196,17 +224,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $569.19 • EPS ฐาน ~$16.52 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS 8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$499</div>
-          <div class="ret neg">-10.0%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$20.81</span></li>
             <li><span>P/E ออก</span><span>24x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$13</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>การแข่งขัน fintech กดมาร์จิน + multiple หด</span></li>
           </ul>
         </div>
@@ -214,12 +242,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +15%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$754</div>
-          <div class="ret pos">+34.8%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$25.12</span></li>
             <li><span>P/E ออก</span><span>30x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$13</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>เติบโตตามเทรนด์ Cross-Border + บริการเสริม</span></li>
           </ul>
         </div>
@@ -227,12 +255,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +19%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$947</div>
-          <div class="ret pos">+68.7%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$27.84</span></li>
             <li><span>P/E ออก</span><span>34x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$13</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Value-added services + ข้ามพรมแดนเร่งตัว multiple ฟื้น</span></li>
           </ul>
         </div>
@@ -277,8 +305,8 @@
       <h2>หุ้นคุณภาพสูงในราคาที่เริ่มมีส่วนเผื่อ — น่าทยอยสะสม</h2>
       <p>Mastercard เป็นเครือข่ายชำระเงินระดับโลกที่มีคูเมืองสูง (duopoly กับ Visa) อัตรากำไรจากการดำเนินงาน ~58% และรายได้เติบโต +16.8% YoY ราคาที่ปรับฐาน −11.5% รอบปีมาจากการบีบ valuation มากกว่าพื้นฐานที่เสื่อม ทำให้ราคาปัจจุบัน $499.02 เปิดส่วนเผื่อความปลอดภัย ~15% จากมูลค่าเหมาะสม $590 และต่ำกว่าเป้านักวิเคราะห์เฉลี่ย $644.89 ราว 29% — เป็นจังหวะที่น่าสนใจสำหรับนักลงทุนระยะยาวที่เน้น compounder คุณภาพ</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$590 <span style="font-size:12px;color:#cab9a8">($560–$620)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +4%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$645 (Strong Buy)</div></div>
       </div>
       <div class="zone">

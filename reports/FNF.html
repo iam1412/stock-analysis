@@ -10,6 +10,20 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 52,
+  "values": {
+    "px": 44.13,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 40,
+    "fvHigh": 60,
+    "eps": 4.97,
+    "shares": 269000000,
+    "dps": 2.08,
+    "bvps": 26.97
+  },
   "theme": {
     "accent": "#0047AB",
     "accentDark": "#003087",
@@ -41,18 +55,14 @@
     "min": 40,
     "max": 60,
     "grid": [45, 50, 55],
-    "fairLine": 52,
     "currency": "$",
     "highlight": [1, 11]
   },
   "gauge": {
     "min": 30,
     "max": 70,
-    "cur": 44.13,
-    "fair": 52,
     "fairLabelTop": true
-  },
-  "fv": 52
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +82,11 @@
     <div class="sub">Largest US title insurance • F&amp;G Annuities &amp; Life • Real estate closing &amp; escrow • Mortgage cycle beneficiary • Dividend growth</div>
     <div class="price-row">
       <div>
-        <div class="px">$44.13<small>(FNF)</small></div>
+        <div class="px">{{rd:px}}<small>(FNF)</small></div>
       </div>
-      <div class="chg">▼ −17.2% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $42.78 – $61.40<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, Finviz
       </div>
@@ -87,10 +97,10 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 · อ้างอิง Yahoo Finance, StockAnalysis, Finviz, SEC 8-K</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">$11.9B</div><div class="d">~269M shares outstanding</div></div>
-      <div class="metric"><div class="k">P/E (Adj TTM)</div><div class="v neu">~8.9x</div><div class="d">Adj EPS $4.97 FY2025 · GAAP P/E ~22x (mark-to-market)</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">~269M shares outstanding</div></div>
+      <div class="metric"><div class="k">P/E (Adj TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">Adj EPS $4.97 FY2025 · GAAP P/E ~22x (mark-to-market)</div></div>
       <div class="metric"><div class="k">Forward P/E (Adj)</div><div class="v">~8.0x</div><div class="d">Adj EPS FY2026E ~$5.55 · consensus 4 นักวิเคราะห์</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.64x</div><div class="d">BVPS $26.97 · พีร์ FAF ~1.5x</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS $26.97 · พีร์ FAF ~1.5x</div></div>
 
       <div class="metric"><div class="k">Adj EPS FY2025</div><div class="v">$4.97</div><div class="d">FY2024: $4.63 · FY2026E: ~$5.55</div></div>
       <div class="metric"><div class="k">EPS GAAP (TTM)</div><div class="v">~$2.82</div><div class="d">ผลต่าง GAAP vs Adj จาก F&amp;G mark-to-market</div></div>
@@ -113,7 +123,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#0047AB"></i>ราคา FNF</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $52</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -139,8 +149,8 @@
         <div class="mval">$40.46</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $40 – $60</span></div>
-        <div class="r">$52</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>หมายเหตุ P/E anomaly ของ FNF:</b> GAAP EPS TTM เพียง ~$2.82 เพราะ Q4 2025 ขาดทุน GAAP (−$0.43/share) จากผลกระทบ mark-to-market ของพอร์ตลงทุน F&amp;G ซึ่งเป็นรายการไม่ใช่เงินสด ตัวเลขที่สะท้อนผลการดำเนินงานจริงคือ Adjusted EPS $4.97 (FY2025) วิธี P/E ให้มูลค่าสูงสุด $60 สะท้อน recovery ของตลาดอสังหาฯ ส่วน DDM $54.50 อิงกระแสเงินสดปันผล และ P/BV $40.46 เป็น floor ทางบัญชี เฉลี่ยสามวิธีได้ $51.65 ปัดเป็น $52 ใกล้เคียงราคาตลาดปัจจุบัน สะท้อนว่า FNF ซื้อขายใน fair value zone ยังไม่ถูกมากเว้นแต่ดอกเบี้ยลดเร็ว
@@ -154,14 +164,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $44.13</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $52</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$36.40<br><small>MOS 30%</small></span>
-          <span>$41.60<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$52<br><small>Fair Value</small></span>
-          <span style="text-align:right">$60<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$63.00<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -175,19 +185,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+15%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS ต่ำ — ราคาต่ำกว่า Fair Value แต่ยังไม่เข้าโซน "ถูก" ชัดเจน รอทยอยสะสมเมื่อดอกเบี้ยมีสัญญาณลด หรือราคาอ่อนถึงใต้ $44</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$41.60</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$36.40</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $52</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="44.13" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -279,8 +289,8 @@
       <h2>FNF ซื้อขายใกล้ Fair Value — รอ Catalyst ดอกเบี้ยขาลง</h2>
       <p>Fidelity National Financial คือ #1 title insurer สหรัฐฯ ที่ผ่านช่วงยากที่สุดในรอบทศวรรษ (2022–2024 อัตราดอกเบี้ยพุ่ง กด mortgage volume) มาได้พร้อม margin ที่ดีขึ้นและ F&amp;G ที่เติบโตต่อเนื่อง ราคาปัจจุบัน $50.18 สะท้อน adj P/E ~10.1x บน Adj EPS $4.97 ปี 2025 ยังไม่ถูกมากแม้ตลาดอสังหาฯ ฟื้น แต่ถ้าดอกเบี้ยยังสูงนาน recovery จะช้า นักวิเคราะห์ 4 คน consensus "Buy" เป้า $63.00 (+30.0%) ปันผล ~4.2%/ปี cushion ระหว่างรอ</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$52 <span style="font-size:12px;color:#cab9a8">($40–$60)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +15%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$63.00 (Buy)</div></div>
       </div>
       <div class="zone">

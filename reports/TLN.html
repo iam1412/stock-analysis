@@ -10,6 +10,36 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 329.76,
+  "values": {
+    "px": 312.74,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 277.41,
+    "fvHigh": 382.11,
+    "shares": 45700000,
+    "scenarios": [
+      {
+        "tgt": 188.53,
+        "div": 0
+      },
+      {
+        "tgt": 376.85,
+        "div": 0
+      },
+      {
+        "tgt": 608.53,
+        "div": 0
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#d8325b",
     "accentDark": "#a31f40",
@@ -40,17 +70,13 @@
     "min": 250,
     "max": 450,
     "grid": [300, 350, 400],
-    "fairLine": 329.76,
     "currency": "$",
     "highlight": [0, 10]
   },
   "gauge": {
     "min": 220,
-    "max": 480,
-    "cur": 312.74,
-    "fair": 329.76
-  },
-  "fv": 329.76
+    "max": 480
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -70,11 +96,11 @@
     <div class="sub">โรงไฟฟ้านิวเคลียร์ Susquehanna 2.5GW • สัญญาขายไฟให้ AWS 1,920MW ถึงปี 2585 • Independent Power Producer ~13.1GW ในตลาด PJM</div>
     <div class="price-row">
       <div>
-        <div class="px">$312.74<small>(TLN)</small></div>
+        <div class="px">{{rd:px}}<small>(TLN)</small></div>
       </div>
-      <div class="chg">▼ −21.8% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569 (StockAnalysis.com, ตรงกับ Yahoo Finance Δ0%)<br>
+        ราคา ณ {{rd:priceDate}} (StockAnalysis.com, ตรงกับ Yahoo Finance Δ0%)<br>
         กรอบ 52 สัปดาห์ $301.45 – $451.28<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, Talen Energy IR/SEC 10-Q
       </div>
@@ -111,7 +137,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#d8325b"></i>ราคา TLN</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $329.76</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -136,8 +162,8 @@
         <div class="mval">$277.41</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $277.41 – $382.11</span></div>
-        <div class="r">$329.76</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         2 ขาต่างกัน 1.38 เท่า (≤2.0) จึงเฉลี่ยตรงได้ตามเกณฑ์ dispersion 0.4c — ขา EV/EBITDA (ยึดตลาดผ่านมัธยฐานกลุ่ม peer) ให้ค่าสูงกว่าเพราะปีฐาน EBITDA เป็นตัวเลข guidance ล่าสุดที่รวม Cornerstone เต็มรูปแบบแล้ว
@@ -153,14 +179,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $312.74</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $329.76</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$230.83<br><small>MOS 30%</small></span>
-          <span>$263.81<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$329.76<br><small>Fair Value</small></span>
-          <span style="text-align:right">$382.11<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$467.69<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -175,19 +201,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+5%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>มี Margin of Safety เล็กน้อย แต่ยังไม่ถึงเกณฑ์มีนัยสำคัญ</b><br>ราคาปัจจุบันต่ำกว่า FV ที่คำนวณจากตัวคูณกลุ่ม IPP + DCF บนสัญญาที่เซ็นแล้วประมาณ 3.7% (จากแรงขายทั้งกลุ่มพลังงาน/ชิป AI ไม่ใช่ปัจจัยเฉพาะตัวบริษัท) แต่ยังไม่ถึงระดับที่ถือว่ามี margin of safety ที่มีนัยสำคัญ (เกณฑ์ ≥10%) นักลงทุนที่ต้องการส่วนเผื่อควรรอราคาย่อลงมาใกล้โซน MOS 20–30% หรือรอความชัดเจนของดีล/สัญญาใหม่ที่ยกระดับ EBITDA ฐานขึ้นจริง</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$263.81</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$230.83</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $329.76</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="312.74" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -196,17 +222,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $312.74 • EPS ฐาน (2026E consensus, Yahoo) ~$28.49 • ไม่มีปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน (2026E consensus, Yahoo) ~$28.49 • ไม่มีปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$188.53</div>
-          <div class="ret neg">−39.7%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$22.18</span></li>
             <li><span>P/E ออก</span><span>8.5x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>ราคา PJM ร่วง + AWS PPA เจอปัญหากำกับดูแล FERC + เลเวอเรจสูงกดตัวคูณ</span></li>
           </ul>
         </div>
@@ -214,12 +240,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$376.85</div>
-          <div class="ret pos">+20.5%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$35.89</span></li>
             <li><span>P/E ออก</span><span>10.5x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>AWS PPA + Cornerstone ตามแผน guidance ไม่มีตัวคูณรีเรต ธุรกิจโตเข้าหาราคาปัจจุบัน</span></li>
           </ul>
         </div>
@@ -227,12 +253,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +18%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$608.53</div>
-          <div class="ret pos">+94.6%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$46.81</span></li>
             <li><span>P/E ออก</span><span>13x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>ดีลสัญญาไฟใหม่กับ hyperscaler เพิ่ม + Keystone sale ปลดล็อกเงินสด buyback + ตัวคูณรีเรตใกล้ CEG</span></li>
           </ul>
         </div>
@@ -283,8 +309,8 @@
         ได้ Fair Value เฉลี่ย $329.76 (กรอบ $277.41–$382.11) สูงกว่าราคาปัจจุบัน $317.66 เล็กน้อย (MOS +3.7%) — ธุรกิจกำลังไปในทิศทางที่ดี (guidance ปรับขึ้น, ดีล AWS เดินหน้า, Cornerstone ปิดแล้ว) แต่ราคาร่วงลงมาตามแรงขายทั้งกลุ่มพลังงาน/ชิป AI ในวันเดียว (18 ส.ค. 2569) ไม่ใช่ข่าวเฉพาะตัวบริษัท ทำให้ส่วนต่างจาก FV แคบลงเหลือเพียงเล็กน้อย ยังไม่ถึงเกณฑ์ margin of safety ที่มีนัยสำคัญ
       </p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$329.76 <span style="font-size:12px;color:#cab9a8">($277.41–$382.11)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">MOS ~ +5%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$467.69 (Buy)</div></div>
       </div>
       <div class="zone">
@@ -300,7 +326,7 @@
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
     <b>Full disclosure — ทำไมตัวคูณของ TLN เองใช้ไม่ได้:</b> TLN ออกจากการฟื้นฟูกิจการ (Chapter 11) ในปี 2566 และใช้ fresh-start accounting ตีมูลค่าสินทรัพย์/ทุนใหม่ทั้งหมด บวกกับการขายสินทรัพย์ (เช่น Cumulus/data-center campus เดิม) และกำไร/ขาดทุนจากสัญญาป้องกันความเสี่ยงราคาไฟที่ผันผวนตามปี ทำให้ EV/EBITDA ของ TLN เองแกว่งจาก 12.86x (FY2023) → 23.29x (FY2024) → 122.67x (FY2025) → 67.71x (ปัจจุบัน) และ P/E จาก 28.32x (FY2023) → 11.40x (FY2024) → ไม่มีค่า (FY2025/ปัจจุบัน ขาดทุน) — ประวัติตัวคูณจึงใช้เป็นฐานประเมินมูลค่าไม่ได้ทั้งคู่ (รวมถึง P/BV ที่ book value ก็ตั้งใหม่จาก fresh-start เช่นกัน จึงไม่ใช้เป็นขาด้วย) รายงานนี้จึงใช้ (1) EV/EBITDA เทียบกลุ่ม IPP ที่มีนิวเคลียร์/สัญญาระยะยาว — Vistra 10.37x, NRG 12.61x (ใช้เป็นมัธยฐาน), Constellation 14.47x (ทั้งหมด TTM ณ 7 ส.ค. 2569 จาก stockanalysis.com) คูณกับ Adjusted EBITDA guidance FY2026 ของ TLN เอง ($2,125M กลาง) แทน — ข้อควรระวัง: การจับคู่นี้ผสมฐานเวลา (ตัวคูณ peer เป็น TTM แต่ EBITDA ของ TLN เป็นตัวเลข guidance ไปข้างหน้า) เป็นทางเลือกที่จำเป็นเพราะ EBITDA ระดับ TTM ของ TLN เองก็บิดเบือนจาก hedging เช่นกัน และทำให้ผลลัพธ์ค่อนข้าง generous กว่าหากใช้ตัวคูณ forward ของ peer (2) DCF บนกระแสเงินสด Adjusted FCF guidance FY2026 ($1,275M กลาง) ซึ่งต่างจาก GAAP FCF TTM ที่รายงานในงบ ($164M) อย่างมาก เพราะ Adjusted FCF ตัดรายจ่ายลงทุนเพื่อการเติบโต/M&A (เช่น Cornerstone) ออก ขณะที่ GAAP FCF รวมเงินสดจ่ายซื้อกิจการเข้าไปด้วย — ทดสอบความไว (0.4d): ปรับอัตราเติบโต 3–12%/ปี + terminal growth 1–3% ทำให้ FV ขา DCF เคลื่อนที่ระหว่าง $246.90–$366.73 (1.49 เท่า <2.0 เท่า) ผ่านเกณฑ์ขาอิสระ • net debt ที่ใช้เป็นข้อมูล ณ ไตรมาสหลังปิดดีล Cornerstone (มิ.ย. 2569) ขณะที่ EBITDA guidance ปี 2569 มีผลของ Cornerstone เต็มปีไม่ครบ (~7 เดือน) ทำให้ EV/EBITDA leg ค่อนข้างอนุรักษนิยมในทิศทางตรงข้าม และดีล Keystone sale ที่รอปิดอาจกระทบทั้งหนี้สุทธิและ EBITDA ในรอบถัดไป •
     <b>EPS(TTM) 2 แหล่งต่างกัน 0.5%:</b> Yahoo −$4.03 vs StockAnalysis −$4.05 — ทั้งคู่เป็น diluted EPS TTM ฐานเดียวกัน (NI −185M ÷ 45.7M หุ้น) ตัวเลขระดับงบ (StockAnalysis /financials) diluted EPS FY2025 เต็มปี = −$4.79 อยู่ในทิศทางเดียวกัน — ไม่กระทบ Fair Value เพราะรายงานนี้ไม่ใช้ P/E เป็นขาอยู่แล้ว •
-    ราคา ณ 11 ก.ย. 2569 จาก StockAnalysis.com (cross-check กับ Yahoo Finance ตรงกัน Δ0%) • ข้อมูลงบการเงิน/guidance จาก StockAnalysis.com และ Talen Energy Q2 2026 earnings release (GlobeNewswire, 5 ส.ค. 2569) • รายละเอียดสัญญา AWS จาก Talen Energy IR press release (11 มิ.ย. 2568) และ SEC Form 10-Q • ตัวคูณกลุ่ม peer จาก stockanalysis.com (Vistra/Constellation/NRG, 7 ส.ค. 2569) • rf จาก US 10-Year Treasury yield (4.65%, 7 ส.ค. 2569) • β จาก Yahoo Finance (5Y รายเดือน)
+    ราคา ณ {{rd:priceDate}} จาก StockAnalysis.com (cross-check กับ Yahoo Finance ตรงกัน Δ0%) • ข้อมูลงบการเงิน/guidance จาก StockAnalysis.com และ Talen Energy Q2 2026 earnings release (GlobeNewswire, 5 ส.ค. 2569) • รายละเอียดสัญญา AWS จาก Talen Energy IR press release (11 มิ.ย. 2568) และ SEC Form 10-Q • ตัวคูณกลุ่ม peer จาก stockanalysis.com (Vistra/Constellation/NRG, 7 ส.ค. 2569) • rf จาก US 10-Year Treasury yield (4.65%, 7 ส.ค. 2569) • β จาก Yahoo Finance (5Y รายเดือน)
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 18 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

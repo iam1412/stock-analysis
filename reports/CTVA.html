@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 83,
+  "values": {
+    "px": 83.9,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 78,
+    "fvHigh": 93,
+    "shares": 674000000,
+    "dps": 0.72,
+    "bvps": 36.36,
+    "baseEps": 3.7,
+    "scenarios": [
+      {
+        "tgt": 73.04,
+        "div": 2.3
+      },
+      {
+        "tgt": 104.92,
+        "div": 2.4
+      },
+      {
+        "tgt": 130.66,
+        "div": 2.5
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#46a149",
     "accentDark": "#2f7833",
@@ -41,18 +74,14 @@
     "min": 60,
     "max": 90,
     "grid": [70, 80],
-    "fairLine": 83,
     "currency": "$",
     "highlight": [0, 8]
   },
   "gauge": {
     "min": 55,
     "max": 100,
-    "cur": 83.9,
-    "fair": 83,
     "fairLabelTop": true
-  },
-  "fv": 83
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +101,11 @@
     <div class="sub">Agricultural seeds &amp; crop protection (DowDuPont spinoff 2019) • Pioneer &amp; Brevant seeds • Herbicides, fungicides, insecticides • Biologicals pipeline • 140+ countries • Innovation-led R&amp;D (~$1.2B/yr)</div>
     <div class="price-row">
       <div>
-        <div class="px">$83.90<small>(CTVA)</small></div>
+        <div class="px">{{rd:px}}<small>(CTVA)</small></div>
       </div>
-      <div class="chg">▲ +36.6% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $60.53 – $90.97<br>
         ที่มา: StockAnalysis, Yahoo Finance, Corteva IR
       </div>
@@ -87,10 +116,10 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">FY2025 ปีงบประมาณสิ้นสุด ธ.ค.</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">$56.5B</div><div class="d">~674M shares outstanding</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">~674M shares outstanding</div></div>
       <div class="metric"><div class="k">P/E (TTM adj.)</div><div class="v neu">~23.3x</div><div class="d">Adj. op. EPS FY2025 $3.34; Forward P/E ~21.3x (guidance FY2026E $3.60–3.80)</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">25–30x</div><div class="d">ช่วงปกติก่อนปรับ destocking 2023-24</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">2.31x</div><div class="d">BVPS $36.36 — ROE ต่ำเพราะ goodwill/intangibles สูง</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS $36.36 — ROE ต่ำเพราะ goodwill/intangibles สูง</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$1.20B</div><div class="d">GAAP EPS $1.60 (+23% YoY) · Op. EPS $3.34 (+30%)</div></div>
       <div class="metric"><div class="k">EPS (TTM adj.)</div><div class="v">~$3.34</div><div class="d">Adj. op. EPS FY2025 (non-GAAP) — ไม่รวมค่าตัดจำหน่าย/ปรับโครงสร้าง</div></div>
@@ -113,7 +142,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#4CAF50"></i>ราคา CTVA</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $83</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -142,8 +171,8 @@
         <div class="mval">$78.00</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $78 – $93</span></div>
-        <div class="r">$83</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/E ให้ค่าสูงสุดเพราะบริษัทปรับ guidance FY2026 Operating EPS ขึ้นเป็น $3.60–3.80 (เดิม $3.45–3.70) หลังผลงาน Q2 2569 แข็งแกร่ง (Op. EPS $2.30 vs $2.20 ปีก่อน)
@@ -161,15 +190,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $83.90</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $83</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$58.10<br><small>MOS 30%</small></span>
-          <span>$66.40<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$83<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$92<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$93<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -185,19 +214,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−1.1%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาปัจจุบันต่ำกว่า Fair Value เล็กน้อย — MOS ยังต่ำกว่าเกณฑ์ 10% · รอโอกาสซื้อที่ดีกว่า</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$66.40</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$58.10</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $83</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="83.9" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -206,17 +235,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $83.90 • EPS ฐาน ~$3.70 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +2%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$73.04</div>
-          <div class="ret neg">-12.9%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$3.93</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$2.30</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>Destocking กลับมา, Spin-off ล่าช้า, ราคาข้าวโพด/ถั่วเหลืองดิ่ง</span></li>
           </ul>
         </div>
@@ -224,12 +253,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$104.92</div>
-          <div class="ret pos">+25.1%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$4.66</span></li>
             <li><span>P/E ออก</span><span>22x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$2.40</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>Vylor spin-off สำเร็จ 1 ต.ค. 2569, margin expansion ต่อเนื่อง, biologicals แตะ $1B</span></li>
           </ul>
         </div>
@@ -237,12 +266,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +13%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$130.66</div>
-          <div class="ret pos">+55.7%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$5.34</span></li>
             <li><span>P/E ออก</span><span>24x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$2.50</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Vylor ได้ multiple premium 18-20x, New Corteva re-rate, ลิขสิทธิ์ seed genetics พุ่ง</span></li>
           </ul>
         </div>
@@ -296,8 +325,8 @@
          Analyst consensus $92.15 (20 คน, Buy) สูงกว่า FV เรา สะท้อน optimism ต่อ spin-off value unlock และ guidance ที่ปรับขึ้น
          แนวทางที่เหมาะสมคือ "ถือถ้ามีอยู่ — ทยอยสะสมเพิ่มเมื่อราคาต่ำกว่า $83" หรือ "เริ่มสะสมน้อยๆ และเพิ่มเมื่อราคาปรับลงใกล้ $66-70 (MOS 15-20%)"</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$83 <span style="font-size:12px;color:#cab9a8">($78–$93)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −1.1%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$92.15 (Buy)</div></div>
       </div>
       <div class="zone">

@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 251,
+  "values": {
+    "px": 162.95,
+    "priceDate": "2026-09-11",
+    "dateEra": "CE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 238,
+    "fvHigh": 260,
+    "analystTgt": 281.39,
+    "eps": 2.83,
+    "shares": 187950000,
+    "baseEps": 3.54,
+    "scenarios": [
+      {
+        "tgt": 138,
+        "div": null
+      },
+      {
+        "tgt": 271,
+        "div": null
+      },
+      {
+        "tgt": 400,
+        "div": null
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#0f9cb9",
     "accentDark": "#0b7084",
@@ -41,18 +74,14 @@
     "min": 50,
     "max": 300,
     "grid": [100, 150, 200, 250],
-    "fairLine": 251,
     "currency": "$",
     "highlight": [5, 8]
   },
   "gauge": {
     "min": 160,
     "max": 370,
-    "cur": 162.95,
-    "fair": 251,
     "fairLabelTop": "-58px"
-  },
-  "fv": 251
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +101,11 @@
     <div class="sub">ผู้เชี่ยวชาญการเชื่อมต่อ AI Datacenter • Active Electrical Cables (AEC), SerDes, Optical DSP</div>
     <div class="price-row">
       <div>
-        <div class="px">$162.95<small>(CRDO)</small></div>
+        <div class="px">{{rd:px}}<small>(CRDO)</small></div>
       </div>
-      <div class="chg">▼ −13.1% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ≈ 11 ก.ย. 2026 (ระหว่างวัน • ผันผวนสูง)<br>
+        ราคา ≈ {{rd:priceDate}} (ระหว่างวัน • ผันผวนสูง)<br>
         52 สัปดาห์: $86.48 – $308.67<br>
         ที่มา: StockAnalysis / CNBC / MarketBeat
       </div>
@@ -113,7 +142,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1a73e8"></i>ราคา CRDO</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $251</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -140,8 +169,8 @@
         <div class="mval">$260</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $238 – $260</span></div>
-        <div class="r">$251</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>หมายเหตุ:</b> ข้าม DDM เพราะไม่จ่ายปันผล • หุ้นนี้ valuation <b>แพงมาก</b> ทุกวิธีต้องตั้งสมมติฐานการเติบโตสูงต่อเนื่องหลายปี
@@ -156,14 +185,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $163</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $251</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$176<br><small>MOS 30%</small></span>
-          <span>$201<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$251<br><small>Fair Value</small></span>
-          <span style="text-align:right">$281<br><small>เป้า Analyst</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:analystTgt}}<br><small>เป้า Analyst</small></span>
           <span style="text-align:right">$350<br><small>เป้าสูงสุด</small></span>
         </div>
       </div>
@@ -178,19 +207,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict good">
-        <div class="big">+35%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>Margin of Safety สูง</b><br>ราคาปัจจุบัน $167.75 ต่ำกว่ามูลค่าเหมาะสม $251 ราว 33% → เกินเกณฑ์ MOS 20-30% ที่ถือว่าน่าสนใจสำหรับ value investor แต่ valuation สัมบูรณ์ (P/E TTM ~59x) ยังถือว่าสูงกว่าตลาดรวมอยู่ดี แม้ de-rate ลงมามากจากพีค</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$201</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$176</div><div class="d">โซนเผื่อความเสี่ยงมากขึ้น</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนเผื่อความเสี่ยงมากขึ้น</div></div>
         <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $226</div><div class="d">ใกล้ขอบล่างของ fair value</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="162.95" step="1">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -199,13 +228,13 @@
 
   <!-- ===== RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $162.95 • EPS ฐาน ~$3.54 (Non-GAAP FY26) → FY27 guide ~$6.27</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} (Non-GAAP FY26) → FY27 guide ~$6.27</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +25%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$138</div>
-          <div class="ret neg">รวม ~ −15.3% (≈ −5.4%/ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$6.9</span></li>
             <li><span>P/E ออก</span><span>20x</span></li>
@@ -216,8 +245,8 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +37%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$271</div>
-          <div class="ret pos">รวม ~ +66.3% (≈ +18.5%/ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$9.0</span></li>
             <li><span>P/E ออก</span><span>30x</span></li>
@@ -228,8 +257,8 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +48%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$400</div>
-          <div class="ret pos">รวม ~ +145.5% (≈ +34.9%/ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$11.4</span></li>
             <li><span>P/E ออก</span><span>35x</span></li>
@@ -280,9 +309,9 @@
       <h2>ธุรกิจโตเร็วระดับท็อป แต่ราคา "แพงมาก" — จ่ายเต็มราคาเพื่อการเติบโต</h2>
       <p>Credo เป็นหนึ่งในผู้ได้ประโยชน์ AI infrastructure ที่ชัดเจนที่สุด รายได้โต +206% และกำไรพลิกแกร่ง งบ Q1 FY2027 (1 ก.ย. 2026) ยังทำสถิติสูงและ guide ทั้งปีโต &gt;85% YoY แต่ราคาร่วง ~18.8% ในวันเดียวเพราะตลาดคาดหวังสูงเกินไป — ที่ราคา $167.75 หุ้นอยู่ต่ำกว่ามูลค่าเหมาะสมพอสมควร (MOS ~+33%) และ valuation สัมบูรณ์ผ่อนคลายลงมาก (P/E TTM ~59x จากพีค ~98x) แต่ยังสูงกว่าตลาดรวม ทำให้ margin of safety ดีขึ้นชัดเจนแต่ความเสี่ยง multiple de-rate เพิ่มเติมยังมีอยู่ สำหรับสาย value เริ่มน่าสนใจกว่าเดิมมาก ส่วนสาย growth ที่เชื่อ AEC/AI ต้องยอมรับความผันผวนและ valuation premium</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$251 <span style="font-size:12px;color:#a8b6cc">($238–$260)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">MOS ~ +35%</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">$281.39 (+72.7%)</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#a8b6cc">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">MOS ~ {{rd:mos}}</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">{{rd:analystTgt}} (+72.7%)</div></div>
       </div>
       <div class="zone">
         💡 <b>กลยุทธ์:</b> สาย value — เริ่มสะสมได้ที่ระดับราคาปัจจุบัน หรือรอย่อเพิ่มเมื่อราคา <b>ต่ำกว่า ~$226</b> (น่าสนใจที่ &lt;$201) • สาย growth — เข้าได้แบบ DCA ไซซ์เล็ก ยอมรับความผันผวน โดยติดตาม <b>การเติบโตรายได้ AEC, customer concentration และ guidance</b> เป็นตัวชี้วัดหลัก

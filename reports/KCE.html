@@ -10,6 +10,18 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 28.5,
+  "values": {
+    "px": 65.75,
+    "priceDate": "2026-09-14",
+    "dateEra": "CE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 26,
+    "fvHigh": 33,
+    "shares": 1182000000,
+    "dps": 1.2
+  },
   "theme": {
     "accent": "#1fa355",
     "accentDark": "#17783f",
@@ -41,7 +53,6 @@
     "min": 0,
     "max": 80,
     "grid": [20, 40, 60],
-    "fairLine": 28.5,
     "currency": "฿",
     "highlight": [2, 11],
     "gridFmt": "v.toFixed(0)",
@@ -50,11 +61,8 @@
   "gauge": {
     "min": 16,
     "max": 70,
-    "cur": 65.75,
-    "fair": 28.5,
     "fairLabelTop": true
-  },
-  "fv": 28.5
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +82,11 @@
     <div class="sub">แผ่นวงจรพิมพ์ (PCB) • เน้น PCB ยานยนต์ระดับโลก • ส่งออกเป็นหลัก (รายได้สกุล USD) • อุตสาหกรรม/สื่อสาร • ผู้ผลิต laminate ต้นน้ำของตัวเอง</div>
     <div class="price-row">
       <div>
-        <div class="px">฿65.75<small>(KCE)</small></div>
+        <div class="px">{{rd:px}}<small>(KCE)</small></div>
       </div>
-      <div class="chg">▲ +157.8% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2026<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿16.00 – ฿42.50<br>
         ที่มา: StockAnalysis.com • Investing.com • TradingView
       </div>
@@ -101,7 +109,7 @@
 
       <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿13.1 พันล้าน</div><div class="d">−12% YoY · กดดันจากบาทแข็ง</div></div>
       <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~18.9%</div><div class="d">ลดจาก ~22% · ทองแดง/บาทแข็ง</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.8%</div><div class="d">FY2025 รวม ฿1.20 (0.60+0.60)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">FY2025 รวม ฿1.20 (0.60+0.60)</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">~1.3</div><div class="d">ผันผวนสูงกว่าตลาด (หุ้นวัฏจักร)</div></div>
     </div>
   </section>
@@ -115,7 +123,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#31d875"></i>ราคา KCE</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿28.50</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -144,8 +152,8 @@
         <div class="mval">฿22.20</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿26 – ฿33</span></div>
-        <div class="r">฿28.50</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         ทั้ง 3 วิธีอิง <b>กำไร/ROE กลางรอบ (normalized)</b> เพราะตัวเลขปัจจุบันอยู่ก้นวัฏจักร — ถ้าใช้ EPS TTM ฿0.71 ตรง ๆ จะได้ P/E 52x ที่ไม่มีความหมาย
@@ -161,15 +169,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿65.75</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿28.50</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿19.95<br><small>MOS 30%</small></span>
-          <span>฿22.80<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿28.50<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">฿32.00<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">฿33.00<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -183,19 +191,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−131%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาปัจจุบัน <b>สูงกว่า</b> มูลค่าเหมาะสม — ไม่มีส่วนเผื่อความปลอดภัย (MOS ติดลบ) ราคาวิ่งนำการฟื้นของกำไรไปแล้ว</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿22.80</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿19.95</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿28.50</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="65.75" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -287,8 +295,8 @@
       <p>KCE เป็นผู้นำ PCB ยานยนต์ระดับโลกที่มีคุณภาพธุรกิจสูงและฐานะการเงินแข็งแรง วัฏจักรกำลังกลับตัว (ยอดขาย USD ทรงตัวหลังหดตัวยาว)
         แต่ราคาหุ้นพุ่งกว่า 2.6 เท่าจากก้นรอบ (~฿16 → ฿42.5) <b>นำหน้า</b> การฟื้นของกำไรไปมาก — วิ่งขึ้นต่อแบบเก็งกำไร/momentum โดยไม่มีข่าวเชิงพื้นฐานใหม่รองรับ ที่ราคานี้ไม่มีส่วนเผื่อความปลอดภัยเลย และเสี่ยงขาลงมากกว่าขาขึ้นยิ่งกว่าเดิม</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿28.50 <span style="font-size:12px;color:#cab9a8">(฿26–฿33)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ff8a80">MOS ~ −131%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ff8a80">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿32.00 (Hold)</div></div>
       </div>
       <div class="zone">

@@ -15,6 +15,38 @@
 -->
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 56.35,
+  "values": {
+    "px": 38.22,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 48.26,
+    "fvHigh": 66.37,
+    "shares": 2240000000,
+    "dps": 0.28,
+    "baseEps": 2.54,
+    "scenarios": [
+      {
+        "tgt": 34.8,
+        "div": 0.9
+      },
+      {
+        "tgt": 64,
+        "div": 0.97
+      },
+      {
+        "tgt": 80.74,
+        "div": 1.03
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#4172c8",
     "accentDark": "#2c5296",
@@ -46,18 +78,14 @@
     "min": 35,
     "max": 60,
     "grid": [40, 45, 50, 55],
-    "fairLine": 56.35,
     "currency": "$",
     "highlight": [1, 11]
   },
   "gauge": {
     "min": 35,
     "max": 70,
-    "cur": 38.22,
-    "fair": 56.35,
     "fairLabelTop": false
-  },
-  "fv": 56.35
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -78,14 +106,14 @@
     <div class="sub">ผู้บริหารสินทรัพย์ทางเลือกระดับโลก + นักลงทุนเจ้าของงบดุลขนาดใหญ่ • ถือหุ้น ~73% ใน Brookfield Asset Management (BAM) • ธุรกิจประกันภัย/บำนาญ Brookfield Wealth Solutions • พลังงานหมุนเวียน (BEP) • โครงสร้างพื้นฐาน (BIP) • Private Equity และอสังหาริมทรัพย์ทั่วโลก</div>
     <div class="price-row">
       <div>
-        <div class="px">$38.22<small>(BN)</small></div>
+        <div class="px">{{rd:px}}<small>(BN)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
            รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
-      <div class="chg">▼ −17.0% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569 (7 Jul 2026)<br>
+        ราคา ณ {{rd:priceDate}} (7 Jul 2026)<br>
         กรอบ 52 สัปดาห์ $37.93 – $49.57<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, Brookfield Q1 2026 Shareholder Letter, MarketBeat
       </div>
@@ -100,7 +128,7 @@
          • ธนาคาร → NIM / NPL / CASA / Loan growth / Cost-to-income   • REIT/กองอสังหา → Occupancy / DPU / NAV / Gearing   • ประกัน → Combined ratio / EV
          • หุ้นเติบโต-ขาดทุน → Revenue growth / Gross margin / FCF / Cash runway (ตัด P/E ออก) -->
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">$85.6B</div><div class="d">~2.24 พันล้านหุ้น</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">~2.24 พันล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~84.2x</div><div class="d">GAAP EPS ผันผวนสูงตาม realized/unrealized gains — ไม่ใช้เป็น valuation หลัก ดู P/DE แทน (Section 3)</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">n/m</div><div class="d">GAAP P/E ผันผวนสูงตามรอบ realization มาโดยตลอด ไม่ค่อยมีความหมายเชิงเปรียบเทียบ</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">2.43x</div><div class="d">เทียบ book value ตามบัญชี (GAAP) ซึ่งต่ำกว่ามูลค่าจริงมาก เพราะ BAM/ธุรกิจย่อยไม่ได้ mark-to-market เต็มในงบ</div></div>
@@ -112,7 +140,7 @@
 
       <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$79.1B</div><div class="d">FY2025 $75.1B — รวม AM fees, insurance premium, real estate/PE</div></div>
       <div class="metric"><div class="k">Operating Margin (Consolidated)</div><div class="v">32.3%</div><div class="d">รวมทุกธุรกิจ (AM+ประกัน+อสังหาฯ) ไม่ใช่ FRE margin เฉพาะธุรกิจจัดการสินทรัพย์</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~0.7%</div><div class="d">$0.07/ไตรมาส (ปรับขึ้น +17% ต้นปี 2569) → annualized ~$0.28 · payout ต่ำ เน้นลงทุนเพื่อโต</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">$0.07/ไตรมาส (ปรับขึ้น +17% ต้นปี 2569) → annualized ~$0.28 · payout ต่ำ เน้นลงทุนเพื่อโต</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">1.84</div><div class="d">สูงกว่าตลาดชัดเจน — ผันผวนตาม sentiment ตลาดทุน/ดอกเบี้ย และมุมมองต่อ alternative asset managers</div></div>
     </div>
   </section>
@@ -128,7 +156,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#4172c8"></i>ราคา BN</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $56.35</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -156,8 +184,8 @@
         <div class="mval">$54.41</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $48.26 – $66.37</span></div>
-        <div class="r">$56.35</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี SOTP ($66.37) อิงมูลค่าที่แท้จริงต่อหุ้นที่ผู้บริหาร Brookfield เปิดเผยเอง — สูงสุดในสามวิธีเพราะรวมมูลค่าตลาดเต็มของหุ้น BAM บวก NPV ของ carried interest และธุรกิจประกัน/อสังหาฯ ที่ยังไม่ mark-to-market ในบัญชี GAAP ส่วนวิธี P/DE ($48.26) ระมัดระวังสุดเพราะใช้มัลติเพิลตลาดกับ Distributable Earnings ปี 2568 เท่านั้น ไม่รวม upside จาก AUM growth ส่วนวิธี Conservative NAV ($54.41) เป็นฐานขั้นต่ำจากมูลค่าตลาดของหุ้นบริษัทในเครือที่จดทะเบียนบวกมูลค่าตามบัญชีของธุรกิจอื่น (ไม่รวม carry ในอนาคต) — เฉลี่ย 3 วิธี = $56.35 ต่ำกว่ามูลค่าที่แท้จริงที่ผู้บริหารเปิดเผยพอสมควร สะท้อนความระมัดระวังต่อความซับซ้อนของโครงสร้างบริษัทโฮลดิ้งหลายชั้น
@@ -171,15 +199,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $38.22</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $56.35</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$39.45<br><small>MOS 30%</small></span>
-          <span>$45.08<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$56.35<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$56.50<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$66.37<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -193,19 +221,19 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
-      <div class="mos-verdict good">
-        <div class="big">+32%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">Margin of Safety สูง — ราคาต่ำกว่ามูลค่าเหมาะสมชัดเจน ใกล้โซน deep value แล้ว เหมาะกับนักลงทุนที่เข้าใจความซับซ้อนของโครงสร้างโฮลดิ้งและพร้อมถือระยะยาว</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$45.08</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$39.45</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $56.35</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="38.22" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -214,17 +242,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $38.22 • EPS ฐาน ~$2.54 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −3%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$34.80</div>
-          <div class="ret neg">−6.6%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$2.32</span></li>
             <li><span>P/E ออก</span><span>15x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0.90</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>ตลาดทุนผันผวน/ดอกเบี้ยสูงกดดัน AUM growth, DE หดตัวเล็กน้อย, multiple compression</span></li>
           </ul>
         </div>
@@ -232,12 +260,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$64.00</div>
-          <div class="ret pos">+70.0%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$3.20</span></li>
             <li><span>P/E ออก</span><span>20x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0.97</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>AUM/FRE เติบโตตามแผน ~15-18%/ปี fundraising แข็งแกร่งต่อเนื่อง ตลาดเริ่มให้เครดิตมูลค่าที่แท้จริงมากขึ้น</span></li>
           </ul>
         </div>
@@ -245,12 +273,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +13%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$80.74</div>
-          <div class="ret pos">+113.9%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$3.67</span></li>
             <li><span>P/E ออก</span><span>22x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$1.03</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Carried interest realization เร่งตัว ธุรกิจประกันขยายตัวเร็ว ตลาด re-rate ราคาเข้าใกล้มูลค่าที่แท้จริง/SOTP breakup value</span></li>
           </ul>
         </div>
@@ -297,8 +325,8 @@
       <h2>โฮลดิ้งสินทรัพย์ทางเลือกระดับโลก — ส่วนลดขนาดใหญ่เทียบมูลค่าที่แท้จริง แต่โครงสร้างซับซ้อน</h2>
       <p>BN คือบริษัทแม่ของ Brookfield ecosystem ถือหุ้น ~73% ใน BAM (AUM แตะ $1 ล้านล้าน) บวกธุรกิจประกัน/บำนาญ พลังงานหมุนเวียน โครงสร้างพื้นฐาน และอสังหาริมทรัพย์ทั่วโลก ราคาปัจจุบัน $43.83 ต่ำกว่ามูลค่าเหมาะสมที่เราประเมิน $56.35 ราว 22% และต่ำกว่ามูลค่าที่แท้จริงที่ผู้บริหารเปิดเผยเอง ($66.37) มากถึง ~34% MOS สูงระดับนี้เหมาะกับนักลงทุนสาย value ที่เข้าใจความซับซ้อนของโครงสร้างโฮลดิ้งหลายชั้นและพร้อมถือระยะยาวรอ catalyst จาก carried interest realization</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$56.35 <span style="font-size:12px;color:#cab9a8">($48.26–$66.37)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +32%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$56.50 (Buy consensus, 11+ analysts)</div></div>
       </div>
       <div class="zone">

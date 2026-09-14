@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 92,
+  "values": {
+    "px": 114.64,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 71.93,
+    "fvHigh": 112.05,
+    "eps": 7.17,
+    "shares": 932000000,
+    "bvps": 51.38,
+    "baseEps": 7.17,
+    "scenarios": [
+      {
+        "tgt": 60.25,
+        "div": 8.4
+      },
+      {
+        "tgt": 98.2,
+        "div": 9.6
+      },
+      {
+        "tgt": 128.8,
+        "div": 10.2
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#ca3f50",
     "accentDark": "#982a38",
@@ -40,17 +73,13 @@
     "min": 80,
     "max": 130,
     "grid": [90, 100, 110, 120],
-    "fairLine": 92,
     "currency": "$",
     "highlight": [0, 9]
   },
   "gauge": {
     "min": 55,
-    "max": 130,
-    "cur": 114.64,
-    "fair": 92
-  },
-  "fv": 92
+    "max": 130
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -70,11 +99,11 @@
     <div class="sub">ธนาคารพาณิชย์ครบวงจรของแคนาดา • สินเชื่อที่อยู่อาศัยและรายย่อย • บริหารความมั่งคั่ง • ตลาดทุน • ธนาคารในสหรัฐฯ (CIBC Bank USA)</div>
     <div class="price-row">
       <div>
-        <div class="px">$114.64<small>(CM)</small></div>
+        <div class="px">{{rd:px}}<small>(CM)</small></div>
       </div>
-      <div class="chg">▲ +38.3% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $72.07 – $122.50<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, Google Finance
       </div>
@@ -86,9 +115,9 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ราคา USD • งบการเงินสกุล CAD (ปีบัญชีสิ้นสุด 31 ต.ค.)</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">$106.8B</div><div class="d">~932 ล้านหุ้น (Google Finance)</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~16.0x</div><div class="d">อิง EPS GAAP $7.17 (USD) ไม่ใช่ EPS สกุล CAD</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">อิง EPS GAAP $7.17 (USD) ไม่ใช่ EPS สกุล CAD</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ยย้อนหลัง</div><div class="v">~10.5x</div><div class="d">กรอบปกติกลุ่มธนาคารแคนาดา ~8–12x</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">~2.23x</div><div class="d">ราคา $118.70 ÷ BVPS $51.38 — สูงกว่าจุดสูงสุด 5 ปีของตัวเอง (1.68x)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~{{rd:pbv}}x</div><div class="d">ราคา $118.70 ÷ BVPS $51.38 — สูงกว่าจุดสูงสุด 5 ปีของตัวเอง (1.68x)</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">CAD 8,429 ล.</div><div class="d">+18.5% YoY (งวดสิ้นสุด 31 ต.ค. 2025)</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$7.17</div><div class="d">GAAP diluted · adjusted $7.40 · = CAD 10.09</div></div>
@@ -111,7 +140,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#ca3f50"></i>ราคา CM</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $92.00</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -136,8 +165,8 @@
         <div class="mval">$71.93</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $71.93 – $112.05</span></div>
-        <div class="r">$92.00</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>กับดักสกุลเงินที่ต้องระวัง:</b> CM จดทะเบียนที่ NYSE โดยตรง (ไม่ใช่ ADR) ราคาซื้อขายเป็น USD แต่งบการเงินทั้งชุดเป็น CAD —
@@ -172,15 +201,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $114.64</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $92.00</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$64.40<br><small>MOS 30%</small></span>
-          <span>$73.60<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$92.00<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$111.00<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$112.05<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -196,22 +225,22 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−25%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>แพงเมื่อเทียบกับประวัติของตัวเอง ไม่เหลือส่วนเผื่อความปลอดภัยที่ราคาปัจจุบัน</b><br>
         ราคา $118.70 สูงกว่ามูลค่าเหมาะสม $92.00 ประมาณ 29.0% ของ FV (หรือมี downside ~22.5% จากราคาปัจจุบันหากราคากลับสู่มูลค่าเหมาะสม)
         ตัวเลขนี้ไวต่อสมมติฐาน r (ที่ r 7.4% เป็น −19.1% · ที่ r 8.4% เป็น −38.0%) แต่ไม่พลิกข้อสรุปในกรอบใด ๆ —
         สำหรับนักลงทุนสายมูลค่า ยังเป็นจังหวะ "รอ" มากกว่า "ไล่ซื้อ" เพราะราคาไม่ได้เผื่ออะไรไว้ให้เลย</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$73.60</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$64.40</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $92.00</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="114.64" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -220,17 +249,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $114.64 • EPS ฐาน ~$7.17 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −4%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$60.25</div>
-          <div class="ret neg">−40.1% (≈ −15.7%/ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$6.34</span></li>
             <li><span>P/E ออก</span><span>9.5x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$8.40</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>ช็อกรีไฟแนนซ์สินเชื่อบ้านแคนาดา — สินเชื่อที่ปล่อยช่วงดอกเบี้ยต่ำครบกำหนดต่ออายุที่อัตราสูงกว่าเดิมมาก ค่างวดพุ่ง ราคาบ้านย่อ PCL ขึ้นแรง กำไรหด และ P/E ถูก de-rate กลับสู่ก้นกรอบประวัติศาสตร์</span></li>
           </ul>
         </div>
@@ -238,12 +267,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +6%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$98.20</div>
-          <div class="ret neg">−6.0% (≈ −2.0%/ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$8.54</span></li>
             <li><span>P/E ออก</span><span>11.5x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$9.60</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>กำไรโตต่อเนื่องตามสินเชื่อและ wealth แต่ P/E คลายจาก 16.6x กลับเข้ากรอบปกติ 11–12x — ผลตอบแทนรวมติดลบเล็กน้อยแม้กำไรยังโต เพราะจ่ายราคาแพงตั้งแต่วันเข้า</span></li>
           </ul>
         </div>
@@ -251,12 +280,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +10%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$128.80</div>
-          <div class="ret pos">+21.2% (≈ +6.6%/ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$9.54</span></li>
             <li><span>P/E ออก</span><span>13.5x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$10.20</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>เศรษฐกิจแคนาดา soft landing ดอกเบี้ยลงเป็นระเบียบ PCL ต่ำกว่าคาด ROE ยืน 15%+ ตลาดยอมให้ธนาคารแคนาดาเทรดสูงกว่ากรอบเดิมอย่างถาวร + CAD แข็งช่วยหนุนผลตอบแทนสกุล USD</span></li>
           </ul>
         </div>
@@ -313,8 +342,8 @@
       กล่าวคือ <b>ตลาดเทรดเหนือเป้าของนักวิเคราะห์เอง</b> นี่คือข้อค้นพบของรายงานฉบับนี้ ไม่ใช่การมองโลกในแง่ร้าย
       ข้อควรระวังที่สำคัญไม่แพ้กัน: ตัวเลขนี้แขวนอยู่กับ r 7.9% (rf พันธบัตรแคนาดา 10 ปี 3.643% + β 0.85 × ERP 5.0%) — ขยับ r เพียง ±0.5 จุด FV เคลื่อนไปที่ $86.00–$99.70 และถ้าใช้ขา justified P/B อย่างเดียว FV = $112.05 → MOS −5.9% จึงควรอ่านเป็นกรอบ ไม่ใช่จุดตัดสินเดียว</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$92.00 <span style="font-size:12px;color:#cab9a8">($71.93–$112.05)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −25%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$111.00 (Buy — ต่ำกว่าราคาปัจจุบัน)</div></div>
       </div>
       <div class="zone">
@@ -328,7 +357,7 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ 11 ก.ย. 2569 จาก Yahoo Finance ($118.70) cross-check ตรงกันกับ StockAnalysis.com และ Google Finance
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ {{rd:priceDate}} จาก Yahoo Finance ($118.70) cross-check ตรงกันกับ StockAnalysis.com และ Google Finance
     • งบการเงินย้อนหลัง 5 ปีและ TTM (สกุล CAD, ปีบัญชีสิ้นสุด 31 ต.ค.) จาก StockAnalysis.com • EPS ที่ใช้เป็นตัวหลักคือ GAAP diluted TTM $7.17 (Yahoo) ซึ่งต่ำกว่า adjusted EPS $7.40 (StockAnalysis) ~3% ตามธรรมเนียมการรายงานของธนาคารแคนาดา — เลือกตัวที่อนุรักษ์นิยมกว่า
     • BVPS $51.38 เป็นตัวเลขที่รายงานจริง (StockAnalysis) สกุล USD ใช้ตรงในสูตร Justified P/BV และในการคิด P/BV ปัจจุบัน 2.31x — ไม่ใช่ค่าประมาณจาก EPS ÷ ROE อีกต่อไป
     • ROE ที่ใช้ในสูตรคือ ROE ปกติ 12.8% = ค่าเฉลี่ย FY2021–2025 (14.8 / 13.0 / 9.7 / 12.8 / 13.7) ไม่ใช่ ROE TTM 15.4% ซึ่งอยู่สูงกว่าค่าเฉลี่ยรอบของตัวเอง

@@ -10,6 +10,20 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 286,
+  "values": {
+    "px": 314.47,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 261,
+    "fvHigh": 311,
+    "eps": 11.1,
+    "shares": 56300000,
+    "dps": 3.28,
+    "bvps": 56.83
+  },
   "theme": {
     "accent": "#F26522",
     "accentDark": "#b3480f",
@@ -41,7 +55,6 @@
     "min": 225,
     "max": 350,
     "grid": [250, 275, 300, 325],
-    "fairLine": 286,
     "currency": "$",
     "highlight": [0, 10],
     "gridFmt": "v.toFixed(0)",
@@ -50,11 +63,8 @@
   "gauge": {
     "min": 200,
     "max": 345,
-    "cur": 314.47,
-    "fair": 286,
     "fairLabelTop": true
-  },
-  "fv": 286
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +84,11 @@
     <div class="sub">Global #1 precision fluid dispensing · Adhesive/coating/sealant equipment · Electronics test/inspection · Medical fluid solutions · 60+ yr Dividend Aristocrat · ~60% aftermarket revenue · Westlake OH</div>
     <div class="price-row">
       <div>
-        <div class="px">$314.47<small>(NDSN)</small></div>
+        <div class="px">{{rd:px}}<small>(NDSN)</small></div>
       </div>
-      <div class="chg">▲ +35.6% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $207.08 – $307.74<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, AlphaSpread.com
       </div>
@@ -89,10 +99,10 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ กรกฎาคม 2569 · FY สิ้นสุด 31 ตุลาคม</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$17.7B</div><div class="d">~56.3 ล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM adj.)</div><div class="v neu">~28.3x</div><div class="d">EPS adj. TTM ~$11.10 · GAAP P/E ~31.7x</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~56.3 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM adj.)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS adj. TTM ~$11.10 · GAAP P/E ~31.7x</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~28–32x</div><div class="d">ต่ำกว่า 5Y avg เล็กน้อย บน adj. basis</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">5.53x</div><div class="d">BVPS ~$56.83 · leverage จาก buybacks</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ~$56.83 · leverage จาก buybacks</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$484.5M</div><div class="d">+3.7% YoY · Net margin ~17.3%</div></div>
       <div class="metric"><div class="k">EPS (TTM adj.)</div><div class="v">~$11.10</div><div class="d">GAAP TTM $9.38 · adj. FY2025 $10.24</div></div>
@@ -115,7 +125,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#F26522"></i>ราคา NDSN</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $286</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -137,8 +147,8 @@
         <div class="mval">$261.30</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $261 – $311</span></div>
-        <div class="r">$286</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         P/E Valuation ($311) สะท้อน quality premium ของ NDSN ที่ตลาดยินดีจ่ายตลอดประวัติศาสตร์ ส่วน EV/EBITDA ($261) ให้ค่าต่ำกว่าเพราะพิจารณา net debt ~$2B จากการซื้อกิจการที่ลด equity value ต่อหุ้น Fair Value เฉลี่ย $286 บ่งชี้ว่า NDSN ปัจจุบันซื้อขายเกิน fair value เล็กน้อย (~3.8%) เหมาะกับกลยุทธ์รอจังหวะพักฐานที่ $265–$275 มากกว่าซื้อทันที
@@ -152,14 +162,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $314</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $286</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$200.20<br><small>MOS 30%</small></span>
-          <span>$228.80<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$286<br><small>Fair Value</small></span>
-          <span style="text-align:right">$311<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$319<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -173,19 +183,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−10%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาเกิน Fair Value เล็กน้อย — ควรรอจังหวะพักฐาน</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$228.80</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$200.20</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $286</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="314.47" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -277,8 +287,8 @@
       <h2>คุณภาพชั้นนำ — รอจังหวะราคาพักฐาน</h2>
       <p>Nordson เป็น quality industrial compounder ชั้นนำระดับโลก ด้วยจุดแข็งที่แทบไม่มีคู่แข่งหักล้าง: aftermarket revenue ~60% สร้าง recurring cash flow สม่ำเสมอ, operating margin ~25–26% บ่งชี้ pricing power ในตลาด niche ที่ switching cost สูง, และประวัติ 60+ ปี Dividend Aristocrat ที่หาได้ยากในกลุ่ม industrial อย่างไรก็ตาม ราคาปัจจุบัน $297 ซื้อขายเกิน Fair Value $286 เล็กน้อย (~3.8%) ผู้ลงทุนระยะยาวอาจทยอยสะสมเมื่อราคาต่ำกว่า $286 และรอโอกาส deep value ที่ $229 (MOS 20%)</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$286 <span style="font-size:12px;color:#cab9a8">($261–$311)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −10%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$319 (Buy consensus)</div></div>
       </div>
       <div class="zone">

@@ -10,6 +10,40 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 158,
+  "values": {
+    "px": 140.37,
+    "priceDate": "2026-09-11",
+    "dateEra": "CE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 151,
+    "fvHigh": 165,
+    "analystTgt": 173.36,
+    "eps": 2.94,
+    "shares": 152800000,
+    "dps": 0.4,
+    "baseEps": 3,
+    "scenarios": [
+      {
+        "tgt": 102,
+        "div": null
+      },
+      {
+        "tgt": 160,
+        "div": null
+      },
+      {
+        "tgt": 234,
+        "div": null
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#1a73e8",
     "accentDark": "#1557b0",
@@ -41,18 +75,14 @@
     "min": 50,
     "max": 200,
     "grid": [100, 150],
-    "fairLine": 158,
     "currency": "$",
     "highlight": [1, 8]
   },
   "gauge": {
     "min": 100,
     "max": 230,
-    "cur": 140.37,
-    "fair": 158,
     "fairLabelTop": "-58px"
-  },
-  "fv": 158
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +102,11 @@
     <div class="sub">วัสดุและโซลูชันความบริสุทธิ์สูงสำหรับการผลิตเซมิคอนดักเตอร์ • ตัวกรอง วัสดุพิเศษ เคมีภัณฑ์ — ขาดไม่ได้ในการผลิตชิป AI ระดับล้ำหน้า</div>
     <div class="price-row">
       <div>
-        <div class="px">$140.37<small>(ENTG)</small></div>
+        <div class="px">{{rd:px}}<small>(ENTG)</small></div>
       </div>
-      <div class="chg">▲ +53.3% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ≈ 11 ก.ย. 2026 (ย่อลงตามแรงขายทั้งกลุ่มชิป/AI)<br>
+        ราคา ≈ {{rd:priceDate}} (ย่อลงตามแรงขายทั้งกลุ่มชิป/AI)<br>
         ร่วงจากจุดสูงสุด $186.94 (มิ.ย. 2026) ลงแตะ ~$119 (ก.ค. 2026) ดีดกลับหลังงบ Q2 แตะ $161.08 (12 ส.ค.) ก่อนย่อลงมาที่ $150.26<br>
         ที่มา: StockAnalysis / Yahoo Finance / Google Finance
       </div>
@@ -87,7 +117,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ FY2025 + Q2 2026 (8-K)</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$21.4B</div><div class="d">~152.8 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~152.8 ล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~48x</div><div class="d">non-GAAP EPS TTM ~$2.94 <span class="pill a">GAAP บิดเบือน</span></div></div>
       <div class="metric"><div class="k">P/E (TTM, GAAP)</div><div class="v neg">~70x</div><div class="d">GAAP EPS TTM ~$2.00 <span class="pill r">บวมจากตัดจำหน่าย CMC</span></div></div>
       <div class="metric"><div class="k">Forward P/E</div><div class="v">~41x</div><div class="d">EPS 2026E ~$3.4 (non-GAAP)</div></div>
@@ -113,7 +143,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1a73e8"></i>ราคา ENTG</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $158</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -140,8 +170,8 @@
         <div class="mval">$158</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $151 – $165</span></div>
-        <div class="r">$158</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>หมายเหตุ:</b> ข้าม DDM เพราะปันผลน้อยมาก (0.27%) ไม่มีนัยสำคัญ • ใช้ <b>non-GAAP EPS</b> เพราะ GAAP ถูกกดด้วยค่าตัดจำหน่ายสินทรัพย์ไม่มีตัวตน
@@ -156,14 +186,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $140</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $158</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$111<br><small>MOS 30%</small></span>
-          <span>$126<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$158<br><small>Fair Value</small></span>
-          <span style="text-align:right">$173<br><small>เป้า Analyst</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:analystTgt}}<br><small>เป้า Analyst</small></span>
           <span style="text-align:right">$205<br><small>เป้าสูงสุด</small></span>
         </div>
       </div>
@@ -178,19 +208,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+11%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>ไม่มีส่วนเผื่อความปลอดภัย</b><br>ราคาปัจจุบัน $150.26 ต่ำกว่ามูลค่าเหมาะสม $158 เล็กน้อย (~4.9%) → ตามเกณฑ์ value investor ยังไม่ถึงจุดซื้อที่ปลอดภัย (ต้อง MOS ≥20%) ราคาเทรดใกล้เคียงมูลค่าเหมาะสมพอดี</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$126</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$111</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
         <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $150</div><div class="d">ใกล้ขอบล่างของ fair value</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="140.37" step="1">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -199,13 +229,13 @@
 
   <!-- ===== RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $140.37 • EPS ฐาน ~$3.0 (non-GAAP)</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} (non-GAAP)</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +4%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$102</div>
-          <div class="ret neg">รวม ~ −27% (≈ −10%/ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$3.4</span></li>
             <li><span>P/E ออก</span><span>30x</span></li>
@@ -216,8 +246,8 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +12%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$160</div>
-          <div class="ret pos">รวม ~ +14% (≈ +4%/ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$4.2</span></li>
             <li><span>P/E ออก</span><span>38x</span></li>
@@ -228,8 +258,8 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +20%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$234</div>
-          <div class="ret pos">รวม ~ +67% (≈ +19%/ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$5.2</span></li>
             <li><span>P/E ออก</span><span>45x</span></li>
@@ -280,9 +310,9 @@
       <h2>ธุรกิจคูเมืองแข็ง โครงสร้าง AI หนุน — ราคาย่อตามแรงขายกลุ่มชิป กลับมาใกล้มูลค่าเหมาะสม</h2>
       <p>Entegris เป็นซัพพลายเออร์วัสดุและความบริสุทธิ์สูงที่ขาดไม่ได้ในการผลิตชิป AI ระดับล้ำหน้า โมเดล consumable ทนทานและความเข้มข้นของวัสดุที่เพิ่มตามโหนดใหม่เป็นแรงหนุนระยะยาวจริง — หลังหุ้นย่อแรงจากจุดสูงสุด $186.94 ลงไปแตะ ~$119 แล้วดีดกลับแรงหลังงบ Q2 (4 ส.ค.) แตะ $161.08 ก่อนย่อลงมาที่ $150.26 (18 ส.ค.) ตามแรงขายทั้งกลุ่มชิป/AI ราคาปัจจุบันใกล้เคียงมูลค่าเหมาะสม (ถูกกว่าเล็กน้อย ~5%) และต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ ($173.36) พอสมควร แต่ P/E ยังสูง (non-GAAP TTM ~51x) และภาระหนี้จากดีล CMC ยังกดกำไร GAAP</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$158 <span style="font-size:12px;color:#a8b6cc">($151–$165)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#81c995">MOS ~ +11%</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#81c995">$173.36 (+23.5%)</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#a8b6cc">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#81c995">MOS ~ {{rd:mos}}</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#81c995">{{rd:analystTgt}} (+23.5%)</div></div>
       </div>
       <div class="zone">
         💡 <b>กลยุทธ์:</b> สาย value — ราคาใกล้เคียงมูลค่าเหมาะสมแล้ว ไม่มีส่วนเผื่อความปลอดภัย ยังห่างจากจุดซื้อ MOS20 ที่ $126 (MOS30 ที่ $111) พอสมควร รอย่อเข้าโซนนี้ก่อนทยอยสะสม • สาย growth — หากเชื่อสตอรี่ materials intensity ระยะยาว ให้เข้าแบบ DCA และยอมรับความผันผวน โดยติดตาม <b>ปริมาณ wafer starts</b>, <b>การลดหนี้</b> และ <b>ผลกระทบกฎส่งออกจีน</b> เป็นตัวชี้วัดหลัก

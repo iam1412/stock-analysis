@@ -10,6 +10,37 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 64,
+  "values": {
+    "px": 61.38,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 57,
+    "fvHigh": 70,
+    "shares": 137020000,
+    "dps": 2,
+    "scenarios": [
+      {
+        "tgt": 61.56,
+        "div": 6.6
+      },
+      {
+        "tgt": 78.33,
+        "div": 7.2
+      },
+      {
+        "tgt": 86.68,
+        "div": 7.8
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#3a5dcf",
     "accentDark": "#26429c",
@@ -41,18 +72,14 @@
     "min": 50,
     "max": 70,
     "grid": [55, 60, 65],
-    "fairLine": 64,
     "currency": "$",
     "highlight": [0, 9]
   },
   "gauge": {
     "min": 40,
     "max": 90,
-    "cur": 61.38,
-    "fair": 64,
     "fairLabelTop": true
-  },
-  "fv": 64
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +99,11 @@
     <div class="sub">REIT คลังสินค้าอุตสาหกรรมแห่ง US-only • Bulk distribution · Light industrial · Last-mile logistics • 71.6M ตร.ฟุต ใน 15 ตลาดสำคัญ • Sun Belt + West Coast + Northeast</div>
     <div class="price-row">
       <div>
-        <div class="px">$61.38<small>(FR)</small></div>
+        <div class="px">{{rd:px}}<small>(FR)</small></div>
       </div>
-      <div class="chg">▲ +11.0% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $47.38 / $65.53<br>
         ที่มา: Yahoo Finance / StockAnalysis.com / Digrin.com / Motley Fool
       </div>
@@ -87,7 +114,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">Industrial REIT — อิง Core FFO/Share แทน GAAP EPS</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$8.41B</div><div class="d">หุ้น 137.02M หุ้น · NYSE: FR</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">หุ้น 137.02M หุ้น · NYSE: FR</div></div>
       <div class="metric"><div class="k">Core FFO/Share (2025A)</div><div class="v pos">$2.96</div><div class="d">+5.7% YoY · 2026E $3.13 consensus</div></div>
       <div class="metric"><div class="k">P/Core FFO (2026E)</div><div class="v neu">19.6x</div><div class="d">vs PLD 21.9x · EGP 21.1x · STAG 14.5x</div></div>
       <div class="metric"><div class="k">GAAP EPS (TTM)</div><div class="v">$2.58</div><div class="d">รวมกำไรขายอสังหา · ไม่สื่อ REIT ดู P/FFO</div></div>
@@ -113,7 +140,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#3a5dcf"></i>ราคา FR</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $64</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -139,8 +166,8 @@
         <div class="mval">$70.00</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $57 – $70</span></div>
-        <div class="r">$64</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี DDM ให้ค่าสูงสุด ($70) เพราะปันผลเติบโตสม่ำเสมอในอัตราสูง วิธี NAV อนุรักษ์นิยมที่สุด ($57) ใช้ cap rate 5.0% ซึ่งอาจสูงกว่าตลาดจริงเล็กน้อย วิธี P/FFO ($64) สมดุลที่สุด อิงการตีราคาเพื่อนในกลุ่มเดียวกัน ค่าเฉลี่ย $63.88 ปัดเป็น $64 สะท้อน fair to slight premium จากราคาปัจจุบัน $65.01
@@ -154,15 +181,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $61.38</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $64</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$44.80<br><small>MOS 30%</small></span>
-          <span>$51.20<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$64<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$67.88<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$70<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -175,19 +202,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+4%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาสูงกว่า Fair Value เล็กน้อย — ใกล้มูลค่าเหมาะสม รับปันผล 3.08% รอจังหวะ</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$51.20</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$44.80</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $64</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="61.38" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -196,17 +223,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $61.38 • Core FFO ฐาน ~$3.13 (2026E) • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • Core FFO ฐาน ~$3.13 (2026E){{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>FFO +3%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$61.56</div>
-          <div class="ret pos">+0.3% (ราคา) + ปันผล ~$6.60</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>Core FFO ปี 3</span><span>~$3.42</span></li>
             <li><span>P/FFO ออก</span><span>18x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$6.60</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>ดอกเบี้ยสูง/demand ชะลอ</span></li>
           </ul>
         </div>
@@ -214,12 +241,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>FFO +6%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$78.33</div>
-          <div class="ret pos">+27.6% (ราคา) + ปันผล ~$7.20</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>Core FFO ปี 3</span><span>~$3.73</span></li>
             <li><span>P/FFO ออก</span><span>21x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$7.20</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>mark-to-market rent + occupancy คงตัว</span></li>
           </ul>
         </div>
@@ -227,12 +254,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>FFO +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$86.68</div>
-          <div class="ret pos">+41.2% (ราคา) + ปันผล ~$7.80</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>Core FFO ปี 3</span><span>~$3.94</span></li>
             <li><span>P/FFO ออก</span><span>22x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$7.80</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>e-commerce/last-mile surge + rent premium</span></li>
           </ul>
         </div>
@@ -279,8 +306,8 @@
       <h2>Pure-Play US Industrial REIT คุณภาพดี — ราคาใกล้ Fair Value รับปันผลระหว่างรอจังหวะ</h2>
       <p>First Industrial Realty Trust เป็น pure-play US industrial REIT ที่มีพอร์ต 71.6M ตร.ฟุต ใน 15 ตลาดสำคัญ ครอบคลุมทั้ง bulk distribution, light industrial, และ last-mile logistics ทั้ง Sun Belt และ coastal markets ที่มีอุปสงค์โครงสร้างระยะยาวจาก e-commerce และโลจิสติกส์ Core FFO growth ระยะ 3–5 ปีถูกขับเคลื่อนด้วย rent mark-to-market tailwind ที่ยังมีอยู่มาก ปันผลเติบโตต่อเนื่อง 14 ปีในอัตรา 11%+ บ่งชี้ความแข็งแกร่ง ราคา $65.01 สูงกว่า Fair Value $64 เล็กน้อย (MOS -1.6%) — ถือว่าเต็มมูลค่าแล้ว ไม่ใช่จังหวะเข้าใหม่ที่ดีที่สุดสำหรับ deep value investor จุดซื้อที่ดีกว่าคือ &lt;$51 (MOS 20%) ในกรณีตลาดย่อจากดอกเบี้ยหรือ macro อ่อนตัว</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$64 <span style="font-size:12px;color:#cab9a8">($57–$70)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffab91">MOS ~ +4%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffab91">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$67.88 (Buy)</div></div>
       </div>
       <div class="zone">

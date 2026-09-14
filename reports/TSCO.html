@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 35,
+  "values": {
+    "px": 33.01,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 30.52,
+    "fvHigh": 37.06,
+    "eps": 2.03,
+    "shares": 526000000,
+    "dps": 0.96,
+    "baseEps": 2.03,
+    "scenarios": [
+      {
+        "tgt": 24.09,
+        "div": 2.59
+      },
+      {
+        "tgt": 43.52,
+        "div": 3.02
+      },
+      {
+        "tgt": 61.08,
+        "div": 3.31
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#C41E3A",
     "accentDark": "#8b0f25",
@@ -41,18 +74,14 @@
     "min": 20,
     "max": 60,
     "grid": [30, 40, 50],
-    "fairLine": 35,
     "currency": "$",
     "highlight": [1, 9]
   },
   "gauge": {
     "min": 24,
     "max": 60,
-    "cur": 33.01,
-    "fair": 35,
     "fairLabelTop": false
-  },
-  "fv": 35
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +101,11 @@
     <div class="sub">ร้านค้าปลีก rural lifestyle รายใหญ่สุดในสหรัฐฯ ~2,435 สาขา • อาหาร/อุปกรณ์ปศุสัตว์ เมล็ดพันธุ์ เครื่องมือ เสื้อผ้าทำงาน • Petsense by Tractor Supply (206 สาขา) • โปรแกรมสมาชิก Neighbor's Club ~40 ล้านคน</div>
     <div class="price-row">
       <div>
-        <div class="px">$33.01<small>(TSCO)</small></div>
+        <div class="px">{{rd:px}}<small>(TSCO)</small></div>
       </div>
-      <div class="chg">▼ −39.0% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $28.36 / $63.99 (ปรับฐานหุ้นแตกกิจการ 5-for-1 เมื่อปลายปี 2567)<br>
         ที่มา: Yahoo Finance / StockAnalysis.com / Google Finance / Tractor Supply IR (ข่าวผลประกอบการ)
       </div>
@@ -87,8 +116,8 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM / FY2025 (ปีงบประมาณสิ้นสุด ธ.ค. 2568)</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$17.4B</div><div class="d">~526M หุ้น (diluted)</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~16.3x</div><div class="d">EPS TTM $2.03 — ต่ำกว่าค่าเฉลี่ยย้อนหลังมาก</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~526M หุ้น (diluted)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM $2.03 — ต่ำกว่าค่าเฉลี่ยย้อนหลังมาก</div></div>
       <div class="metric"><div class="k">Same-Store Comps (Q1/69)</div><div class="v pos">+0.5%</div><div class="d">ticket +1.6%, traffic −1.0%</div></div>
       <div class="metric"><div class="k">Neighbor's Club Members</div><div class="v pos">~40 ล้านคน</div><div class="d">เพิ่มจาก ~30 ล้าน (2564) • >75% ของยอดขาย</div></div>
 
@@ -113,7 +142,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#C41E3A"></i>ราคา TSCO</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $35.0</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -139,8 +168,8 @@
         <div class="mval">$30.52</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $30.52 – $37.06 (รวม forward P/E 17x บน EPS FY26 guide $2.18)</span></div>
-        <div class="r">$35.0</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}} (รวม forward P/E 17x บน EPS FY26 guide $2.18)</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         P/E method ให้ค่าสูงสุดเพราะสมมติ multiple re-rate กลับบางส่วน (18x จาก 15.6x ปัจจุบัน) ขณะที่ Justified P/BV
@@ -157,14 +186,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $33.01</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $35.0</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$24.50<br><small>MOS 30%</small></span>
-          <span>$28.00<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$35.0<br><small>Fair Value</small></span>
-          <span style="text-align:right">$37.06<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$44.78<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -180,19 +209,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+6%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ไม่มี MOS — ราคาสูงกว่ามูลค่าเหมาะสม ~2.4% แม้ลดลงมามากแล้ว (−48.6% จาก ATH) แต่ FV เองก็ถูกปรับลดตามความเสี่ยงเชิงโครงสร้าง ยังไม่ใช่จุดที่ "ถูกจนไม่ต้องคิด"</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$28.00</div><div class="d">โซนน่าสนใจสำหรับ value — ใกล้ 52wk low $28.36</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$24.50</div><div class="d">โซนถูกมาก (deep value) — ต่ำกว่า 52wk low</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $35.0</div><div class="d">ราคาปัจจุบันอยู่ในโซนนี้แล้ว</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value — ใกล้ 52wk low $28.36</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value) — ต่ำกว่า 52wk low</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ราคาปัจจุบันอยู่ในโซนนี้แล้ว</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="33.01" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -201,17 +230,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $33.01 • EPS ฐาน ~$2.03 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −3%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$24.09</div>
-          <div class="ret neg">−19.2%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$1.85</span></li>
             <li><span>P/E ออก</span><span>13x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$2.59</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>Amazon/Walmart แย่งส่วนแบ่งจริง comps ติดลบต่อเนื่อง margin หดตัวถาวร</span></li>
           </ul>
         </div>
@@ -219,12 +248,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +6%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$43.52</div>
-          <div class="ret pos">+41.0%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$2.42</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$3.02</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>comps กลับสู่กรอบเป้าหมาย 1-3% ระยะยาว margin ฟื้นบางส่วน multiple re-rate ปานกลาง</span></li>
           </ul>
         </div>
@@ -232,12 +261,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +11%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$61.08</div>
-          <div class="ret pos">+95.1%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$2.78</span></li>
             <li><span>P/E ออก</span><span>22x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$3.31</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Neighbor's Club/digital ชนะใจลูกค้า comps เร่งกลับสู่ historical norm ตลาดให้ multiple กลับใกล้ค่าเฉลี่ยเดิม</span></li>
           </ul>
         </div>
@@ -314,8 +343,8 @@
         ต้านทานการแข่งขันได้ในระยะยาว
       </p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$35.0 <span style="font-size:12px;color:#cab9a8">($30.52–$37.06)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +6%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$44.78 (Buy, ช่วง $32–$70)</div></div>
       </div>
       <div class="zone">

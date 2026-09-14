@@ -10,6 +10,40 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 201,
+  "values": {
+    "px": 148.38,
+    "priceDate": "2026-09-11",
+    "dateEra": "CE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 188,
+    "fvHigh": 210,
+    "analystTgt": 223,
+    "eps": 5.92,
+    "shares": 337200000,
+    "dps": 0.91,
+    "baseEps": 9.4,
+    "scenarios": [
+      {
+        "tgt": 152,
+        "div": null
+      },
+      {
+        "tgt": 238,
+        "div": null
+      },
+      {
+        "tgt": 340,
+        "div": null
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#28a446",
     "accentDark": "#1d7733",
@@ -41,18 +75,14 @@
     "min": 120,
     "max": 220,
     "grid": [140, 160, 180, 200],
-    "fairLine": 201,
     "currency": "$",
     "highlight": [0, 10]
   },
   "gauge": {
     "min": 130,
     "max": 310,
-    "cur": 148.38,
-    "fair": 201,
     "fairLabelTop": "-58px"
-  },
-  "fv": 201
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +102,11 @@
     <div class="sub">ผู้ผลิตไฟฟ้าอิสระรายใหญ่สุดของสหรัฐ • นิวเคลียร์ (Comanche Peak), ก๊าซธรรมชาติ, ค้าปลีกไฟฟ้า, แบตเตอรี่</div>
     <div class="price-row">
       <div>
-        <div class="px">$148.38<small>(VST)</small></div>
+        <div class="px">{{rd:px}}<small>(VST)</small></div>
       </div>
-      <div class="chg">▼ −21.2% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ ปิดตลาด 11 ก.ย. 2026<br>
+        ราคา ณ ปิดตลาด {{rd:priceDate}}<br>
         ช่วงในวัน $162.91–$170.48 • ผันผวนสูง<br>
         ที่มา: StockAnalysis / MarketBeat / Yahoo Finance
       </div>
@@ -87,7 +117,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ FY2025 + Q1/2026 (SEC 10-K/8-K)</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$50.0B</div><div class="d">337.2 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">337.2 ล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM, GAAP)</div><div class="v">~25x</div><div class="d">EPS TTM $5.92 <span class="pill a">แกว่งจาก hedge</span></div></div>
       <div class="metric"><div class="k">P/E (Forward)</div><div class="v neu">~16x</div><div class="d">อิงกำไรหลัก ~$9–11/หุ้น</div></div>
       <div class="metric"><div class="k">ROE</div><div class="v">42.9%</div><div class="d">ROA 6.0% • leverage สูง</div></div>
@@ -113,7 +143,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1a73e8"></i>ราคา VST</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $201</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -140,8 +170,8 @@
         <div class="mval">$210</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $188 – $210</span></div>
-        <div class="r">$201</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>หมายเหตุ:</b> ข้าม DDM เพราะปันผลน้อยมาก (0.56%) — บริษัทคืนเงินผ่าน <b>ซื้อหุ้นคืน</b> เป็นหลัก • ใช้ <b>กำไรหลัก/Adj. EBITDA</b> แทน GAAP EPS
@@ -156,14 +186,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $148</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $201</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$141<br><small>MOS 30%</small></span>
-          <span>$161<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$201<br><small>Fair Value</small></span>
-          <span style="text-align:right">$223<br><small>เป้า Analyst</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:analystTgt}}<br><small>เป้า Analyst</small></span>
           <span style="text-align:right">$295<br><small>เป้าสูงสุด</small></span>
         </div>
       </div>
@@ -178,19 +208,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict good">
-        <div class="big">+26%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>มี Margin of Safety พอควร</b><br>ราคาปัจจุบัน $167.26 ต่ำกว่ามูลค่าเหมาะสม $201 ราว 17% → ตามเกณฑ์ value investor ถือว่า <b>เริ่มน่าสนใจ ทยอยสะสมได้</b> แต่ยังไม่ถึงโซนถูกมาก</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$161</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$141</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
         <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $170</div><div class="d">ใกล้ราคาปัจจุบัน</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="148.38" step="1">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -199,13 +229,13 @@
 
   <!-- ===== RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $148.38 • EPS ฐาน ~$9.4</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$152</div>
-          <div class="ret neg">รวม ~ +2% (≈ +1%/ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$10.9</span></li>
             <li><span>P/E ออก</span><span>14x</span></li>
@@ -216,8 +246,8 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +12%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$238</div>
-          <div class="ret pos">รวม ~ +60% (≈ +17.0%/ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$13.2</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
@@ -228,8 +258,8 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +18%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$340</div>
-          <div class="ret pos">รวม ~ +129% (≈ +32%/ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$15.4</span></li>
             <li><span>P/E ออก</span><span>22x</span></li>
@@ -280,9 +310,9 @@
       <h2>เดิมพัน "ไฟฟ้าเลี้ยง AI" คุณภาพดี — ราคาเริ่มมีส่วนเผื่อ</h2>
       <p>Vistra เป็นผู้ผลิตไฟฟ้าอิสระรายใหญ่สุดของสหรัฐ ที่ได้ประโยชน์ตรงจากดีมานด์ไฟฟ้า datacenter/AI ผ่านกองนิวเคลียร์–ก๊าซ และสัญญา PPA ระยะยาว หลังหุ้น derate จากจุดสูง $220 ลงมา ~$167 ทำให้เริ่มมี Margin of Safety ~17% เทียบมูลค่าเหมาะสม — แต่ต้องยอมรับว่ากำไร GAAP ผันผวนหนักและธีมยังขึ้นกับวัฏจักร AI/ราคาไฟ</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$201 <span style="font-size:12px;color:#a8b6cc">($188–$210)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">MOS ~ +26%</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">$223 (+50%)</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#a8b6cc">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">MOS ~ {{rd:mos}}</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">{{rd:analystTgt}} (+50%)</div></div>
       </div>
       <div class="zone">
         💡 <b>กลยุทธ์:</b> สาย value — ทยอยสะสมที่ระดับปัจจุบัน (น่าสนใจมากที่ &lt;$161 และถูกมากที่ &lt;$141) • สาย growth — เข้าได้แบบ DCA และติดตาม <b>การเซ็น PPA กับ hyperscaler</b>, <b>ราคาขายส่งไฟฟ้า</b> และ <b>Adj. EBITDA</b> เป็นตัวชี้วัดหลัก แทนการดู EPS GAAP รายไตรมาส

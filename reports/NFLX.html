@@ -10,6 +10,37 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 110,
+  "values": {
+    "px": 77.4,
+    "priceDate": "2026-09-11",
+    "dateEra": "CE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 99,
+    "fvHigh": 123,
+    "shares": 4210000000,
+    "baseEps": 3.17,
+    "scenarios": [
+      {
+        "tgt": 63,
+        "div": 0
+      },
+      {
+        "tgt": 112,
+        "div": 0
+      },
+      {
+        "tgt": 169,
+        "div": 0
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#E50914",
     "accentDark": "#B0060F",
@@ -41,7 +72,6 @@
     "min": 60,
     "max": 120,
     "grid": [80, 100],
-    "fairLine": 110,
     "currency": "$",
     "highlight": [0, 8],
     "gridFmt": "v.toFixed(0)",
@@ -50,11 +80,8 @@
   "gauge": {
     "min": 65,
     "max": 124,
-    "cur": 77.4,
-    "fair": 110,
     "fairLabelTop": "-58px"
-  },
-  "fv": 110
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +101,11 @@
     <div class="sub">สตรีมมิงทั่วโลก 300M+ สมาชิก • คอนเทนต์ Original (หนัง·ซีรีส์·สารคดี) • โฆษณา (ad-supported tier) • เกม • Live events/กีฬา</div>
     <div class="price-row">
       <div>
-        <div class="px">$77.40<small>(NFLX)</small></div>
+        <div class="px">{{rd:px}}<small>(NFLX)</small></div>
       </div>
-      <div class="chg">▼ −30.8% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2026<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $65.08 – $127.75 (หลังแตกพาร์)<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / Netflix IR / digrin.com
       </div>
@@ -115,7 +142,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#E50914"></i>ราคา NFLX</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $110</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -144,8 +171,8 @@
         <div class="mval">$99</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $99 – $123</span></div>
-        <div class="r">$110</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         ทั้งสามวิธีให้ค่าใกล้เคียงกันที่ ~$99–123 (เฉลี่ย $110) สอดคล้องเป้านักวิเคราะห์เฉลี่ย $114.15 — บ่งชี้ว่าราคาปัจจุบัน $68.95
@@ -161,15 +188,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $77.40</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $110</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$77<br><small>MOS 30%</small></span>
-          <span>$88<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$110<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$114<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$123<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -184,19 +211,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict good">
-        <div class="big">+30%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาต่ำกว่ามูลค่าเหมาะสม $110 อยู่มาก — ส่วนเผื่อความปลอดภัยกว้าง <b>แต่ขึ้นกับสมมติฐาน P/E/การเติบโต</b> (เช็คให้แน่ใจว่าไม่ใช่ value trap จากการชะลอตัวเชิงโครงสร้าง)</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$88</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$77</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $110</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="77.4" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -205,17 +232,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $77.40 • EPS ฐาน ~$3.17 • ไม่มีปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} • ไม่มีปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS 8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$63</div>
-          <div class="ret neg">−19%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$3.91</span></li>
             <li><span>P/E ออก</span><span>16x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>สมาชิกชะลอ + มัลติเพิลหดต่อ</span></li>
           </ul>
         </div>
@@ -223,12 +250,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +18%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$112</div>
-          <div class="ret pos">+45%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$5.09</span></li>
             <li><span>P/E ออก</span><span>22x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>โฆษณา+ราคาแพ็กเกจหนุนกำไร มัลติเพิลทรงตัว</span></li>
           </ul>
         </div>
@@ -236,12 +263,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +28%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$169</div>
-          <div class="ret pos">+118%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$6.50</span></li>
             <li><span>P/E ออก</span><span>26x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>โฆษณา/เกม/Live สเกลแรง re-rate กลับ</span></li>
           </ul>
         </div>
@@ -291,8 +318,8 @@
         จุดเด่นคือ margin ขยาย โฆษณา/เกม/Live เป็นเครื่องยนต์ใหม่ และ ROE 42.76% — <b>แต่ FV อ่อนไหวสูงต่อ P/E เป้าหมายและความยั่งยืนของการเติบโต</b>
         เหมาะกับนักลงทุนที่รับความผันผวน (Beta 1.49) และเชื่อว่าการ de-rate เกินจริง มากกว่าผู้ที่ต้องการ yield/ความนิ่ง</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$110 <span style="font-size:12px;color:#cab9a8">($99–123)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +30%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">($99–123)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$114 (Buy, 50 ราย)</div></div>
       </div>
       <div class="zone">

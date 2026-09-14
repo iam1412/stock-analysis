@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 109,
+  "values": {
+    "px": 122.25,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 104,
+    "fvHigh": 114,
+    "shares": 607000000,
+    "dps": 2.61,
+    "bvps": 25.6,
+    "baseEps": 5.42,
+    "scenarios": [
+      {
+        "tgt": 97.75,
+        "div": 8.3
+      },
+      {
+        "tgt": 139.44,
+        "div": 8.3
+      },
+      {
+        "tgt": 175.03,
+        "div": 8.3
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#c62828",
     "accentDark": "#8b0000",
@@ -41,18 +74,14 @@
     "min": 90,
     "max": 130,
     "grid": [100, 110, 120],
-    "fairLine": 109,
     "currency": "$",
     "highlight": [1, 9]
   },
   "gauge": {
     "min": 60,
     "max": 135,
-    "cur": 122.25,
-    "fair": 109,
     "fairLabelTop": false
-  },
-  "fv": 109
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +101,11 @@
     <div class="sub">Railroad duopoly แคนาดา • Pacific–Atlantic–Gulf Coast 24,000+ กม. • Grain • Intermodal • Energy • Potash</div>
     <div class="price-row">
       <div>
-        <div class="px">$122.25<small>(CNI)</small></div>
+        <div class="px">{{rd:px}}<small>(CNI)</small></div>
       </div>
-      <div class="chg">▲ +27.5% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569 16:00 ET (ตลาดปิด)<br>
+        ราคา ณ {{rd:priceDate}} 16:00 ET (ตลาดปิด)<br>
         กรอบ 52 สัปดาห์ $90.74 – $123.00<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, Macrotrends
       </div>
@@ -87,7 +116,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">อิง TTM / FY2025</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$74.2B</div><div class="d">~607 ล้านหุ้น (NYSE)</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~607 ล้านหุ้น (NYSE)</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~22.5x</div><div class="d">Forward P/E ~21.9x</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~20x</div><div class="d">ปัจจุบัน premium ~12% vs avg</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~4.8x</div><div class="d">BVPS ~$25.60 USD (CAD 34.58)</div></div>
@@ -113,7 +142,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#c62828"></i>ราคา CNI</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $109</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -142,8 +171,8 @@
         <div class="mval">$107.60</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $104 – $114</span></div>
-        <div class="r">$109</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         ทั้ง 3 วิธีให้ค่าใกล้เคียงกันในกรอบ $107–$111 สะท้อนธุรกิจ railroad ที่มีรายได้สม่ำเสมอแต่เติบโตช้า
@@ -159,14 +188,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $122.25</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $109</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$76.30<br><small>MOS 30%</small></span>
-          <span>$87.20<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$109<br><small>Fair Value</small></span>
-          <span style="text-align:right">$114<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$119.19<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -182,19 +211,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−12%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสม ~13% — ไม่มี margin of safety ณ ราคานี้ รอ pullback สู่โซน $105–$109 ก่อนพิจารณาสะสม</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$87.20</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$76.30</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $109</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="122.25" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -203,17 +232,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $122.25 • EPS ฐาน ~$5.42 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +2%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$97.75</div>
-          <div class="ret neg">−13.3% (3 ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$5.75</span></li>
             <li><span>P/E ออก</span><span>17x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$8.30</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>Freight slowdown, P/E de-rate</span></li>
           </ul>
         </div>
@@ -221,12 +250,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +7%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$139.44</div>
-          <div class="ret pos">+20.9% (3 ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$6.64</span></li>
             <li><span>P/E ออก</span><span>21x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$8.30</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>Freight ฟื้นตัว, PSR ดันมาร์จิน</span></li>
           </ul>
         </div>
@@ -234,12 +263,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$175.03</div>
-          <div class="ret pos">+50.0% (3 ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$7.61</span></li>
             <li><span>P/E ออก</span><span>23x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$8.30</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Nearshoring ดัน volume + pricing power</span></li>
           </ul>
         </div>
@@ -287,8 +316,8 @@
       <h2>Railroad คุณภาพสูง แต่ราคาเกิน FV ~13% — รอ Pullback ก่อน</h2>
       <p>CNI เป็น Class I railroad duopoly แห่งแคนาดา ครอง 24,000+ กม. เชื่อม Pacific–Atlantic–Gulf Coast ธุรกิจมีคูเมืองแข็งแกร่งในฐานะโครงสร้างพื้นฐานที่สร้างใหม่ไม่ได้ operating ratio ~62% ROE ~21% และปันผลเติบโตต่อเนื่อง ~8%/ปี สะท้อนคุณภาพที่ยอดเยี่ยม อย่างไรก็ตาม ราคาปัจจุบัน $122.78 อยู่เหนือ Fair Value เฉลี่ย ($109) ถึง ~13% และสูงกว่าเป้าเฉลี่ยนักวิเคราะห์ ($119.19) ด้วย — แนะนำ Hold ถ้ามีอยู่แล้ว รอ pullback สู่ $105–$109 ก่อนพิจารณาสะสมใหม่</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$109 <span style="font-size:12px;color:#cab9a8">($104–$114)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −12%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$119.19 (Moderate Buy)</div></div>
       </div>
       <div class="zone">
@@ -302,7 +331,7 @@
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
-    ราคา ณ 11 ก.ย. 2569 · แหล่ง: StockAnalysis.com (FY2025 · Q1/2569) · Yahoo Finance (Jul 2026 · ราคา/กราฟ) · Macrotrends (ประวัติงบการเงิน)
+    ราคา ณ {{rd:priceDate}} · แหล่ง: StockAnalysis.com (FY2025 · Q1/2569) · Yahoo Finance (Jul 2026 · ราคา/กราฟ) · Macrotrends (ประวัติงบการเงิน)
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 7 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

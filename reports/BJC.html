@@ -10,6 +10,38 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 19.3,
+  "values": {
+    "px": 16.3,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 10.6,
+    "fvHigh": 27.5,
+    "shares": 4008000000,
+    "dps": 0.51,
+    "baseEps": 0.99,
+    "scenarios": [
+      {
+        "tgt": 11.88,
+        "div": 1.53
+      },
+      {
+        "tgt": 20.57,
+        "div": 1.61
+      },
+      {
+        "tgt": 27.8,
+        "div": 1.65
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#1565c0",
     "accentDark": "#0d47a1",
@@ -41,7 +73,6 @@
     "min": 12,
     "max": 20,
     "grid": [14, 16, 18],
-    "fairLine": 19.3,
     "currency": "฿",
     "highlight": [0, 6],
     "gridFmt": "v.toFixed(0)",
@@ -50,11 +81,8 @@
   "gauge": {
     "min": 0,
     "max": 35,
-    "cur": 16.3,
-    "fair": 19.3,
     "fairLabelTop": true
-  },
-  "fv": 19.3
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +102,11 @@
     <div class="sub">Big C hypermarket • บรรจุภัณฑ์แก้ว-กระป๋อง • Healthcare &amp; Technical • ห่วงโซ่อุปทาน • ไทย+เวียดนาม (เครือ TCC)</div>
     <div class="price-row">
       <div>
-        <div class="px">฿16.30<small>(BJC)</small></div>
+        <div class="px">{{rd:px}}<small>(BJC)</small></div>
       </div>
-      <div class="chg">▼ −10.9% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿12.80 – ฿21.10<br>
         ที่มา: Yahoo Finance, Investing.com, SET Factsheet
       </div>
@@ -101,7 +129,7 @@
 
       <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿156B</div><div class="d">−2.5% YoY · ค้าปลีก+บรรจุภัณฑ์+ยา</div></div>
       <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">21.7%</div><div class="d">EBITDA margin ~11.6%</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~3.1%</div><div class="d">DPS ~฿0.51 · Payout ~52%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">DPS ~฿0.51 · Payout ~52%</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">0.23</div><div class="d">ความผันผวนต่ำมาก vs SET</div></div>
     </div>
   </section>
@@ -115,7 +143,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1565c0"></i>ราคา BJC</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿19.3</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -141,8 +169,8 @@
         <div class="mval">฿27.5</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿10.6 – ฿27.5</span></div>
-        <div class="r">฿19.3</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/E ให้ค่ากลาง ฿19.8 · DDM ให้ค่าต่ำ ฿10.6 เพราะ ROE (~3%) แทบไม่เหลือส่วนต่างจากต้นทุนทุน ทำให้ Gordon Growth penalize หนัก · DCF ให้ค่าสูง ฿27.5 เพราะบวก D&A กลับเข้ามา (ธุรกิจค้าปลีก+บรรจุภัณฑ์ใช้สินทรัพย์สูง) · FV เฉลี่ย ฿19.3 ถือว่าสมเหตุสมผลในฐานะ "มูลค่าองค์รวม" — ใกล้เคียงเป้าเฉลี่ยของนักวิเคราะห์ที่ ฿16–22 · ปัจจัยหลักที่จะทำให้ FV ขยับ: การฟื้นตัวของ ROE, ความก้าวหน้าใน Vision 2030 (เวียดนาม), และการลดหนี้
@@ -156,15 +184,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿16.30</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿19.3</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿13.5<br><small>MOS 30%</small></span>
-          <span>฿15.4<br><small>MOS 20%</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">฿16.0<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">฿19.3<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿27.5<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -177,19 +205,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+16%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">โซน Value — น่าสนใจสำหรับนักลงทุนระยะยาว</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿15.4</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿13.5</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿19.3</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="16.3" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -198,17 +226,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿16.30 • EPS ฐาน ~฿0.99 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿11.88</div>
-          <div class="ret neg">−17.7% รวม / −6.3%/ปี</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.99</span></li>
             <li><span>P/E ออก</span><span>12x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.53</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>บริโภคซบเซา หนี้ครัวเรือนสูง</span></li>
           </ul>
         </div>
@@ -216,12 +244,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +7%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿20.57</div>
-          <div class="ret pos">+36.1% รวม / +10.8%/ปี</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿1.21</span></li>
             <li><span>P/E ออก</span><span>17x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.61</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>Big C ฟื้น เวียดนามโต healthcare ขยาย</span></li>
           </ul>
         </div>
@@ -229,12 +257,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿27.80</div>
-          <div class="ret pos">+80.7% รวม / +21.8%/ปี</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿1.39</span></li>
             <li><span>P/E ออก</span><span>20x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.65</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>MM Vietnam เพิ่ม กำไร ท่องเที่ยวพุ่ง rerating</span></li>
           </ul>
         </div>
@@ -281,8 +309,8 @@
       <h2>Value Play ระยะยาว — รอ Catalyst ยืนยันก่อนสะสมหนัก</h2>
       <p>BJC ซื้อขายต่ำกว่า Book Value 50% และต่ำกว่า Fair Value ~22% สะท้อน pessimism ของตลาดต่อ earnings อ่อนแอในระยะสั้น อย่างไรก็ตาม BJC เป็น "ห่วงโซ่แห่งชีวิตประจำวัน" ของคนไทย — ตั้งแต่บรรจุภัณฑ์อาหาร ค้าปลีก ยาและวัสดุทางการแพทย์ ธุรกิจมีโครงสร้างที่แน่นหนาภายใต้เครือ TCC ความเสี่ยงหลักคือ <b>หนี้สูง + ROE ต่ำ</b> ซึ่งต้องจับตา; อย่างไรก็ตาม Catalyst สำคัญอย่าง Vietnam platform, Healthcare JV และ Big C expansion สามารถเร่ง ROE ได้ใน 2-3 ปีข้างหน้า</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿19.3 <span style="font-size:12px;color:#cab9a8">(฿10.6–฿27.5)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +16%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿16.0 (Neutral/Hold)</div></div>
       </div>
       <div class="zone">

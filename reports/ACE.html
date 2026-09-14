@@ -10,6 +10,37 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 1.43,
+  "values": {
+    "px": 1.31,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 1.32,
+    "fvHigh": 1.54,
+    "shares": 10050000000,
+    "baseEps": 0.09,
+    "scenarios": [
+      {
+        "tgt": 0.95,
+        "div": 0.03
+      },
+      {
+        "tgt": 1.7,
+        "div": 0.04
+      },
+      {
+        "tgt": 2.24,
+        "div": 0.05
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#2d7d46",
     "accentDark": "#1a5c30",
@@ -41,7 +72,6 @@
     "min": 1.25,
     "max": 1.45,
     "grid": [1.3, 1.35, 1.4],
-    "fairLine": 1.43,
     "currency": "฿",
     "highlight": [5, 9],
     "gridFmt": "v.toFixed(2)",
@@ -50,11 +80,8 @@
   "gauge": {
     "min": 0.9,
     "max": 1.8,
-    "cur": 1.31,
-    "fair": 1.43,
     "fairLabelTop": true
-  },
-  "fv": 1.43
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +101,11 @@
     <div class="sub">โรงไฟฟ้าชีวมวล • พลังงานแสงอาทิตย์ • พลังงานลม • สัญญา PPA กับ EGAT/PEA • Absolute Clean Energy PCL</div>
     <div class="price-row">
       <div>
-        <div class="px">฿1.31<small>(ACE)</small></div>
+        <div class="px">{{rd:px}}<small>(ACE)</small></div>
       </div>
-      <div class="chg">≈ ทรงตัว (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿1.26 – ฿1.34<br>
         ที่มา: SET Factsheet, Yahoo Finance, TradingView
       </div>
@@ -115,7 +142,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#2d7d46"></i>ราคา ACE</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿1.43</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -141,8 +168,8 @@
         <div class="mval">฿1.54</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿1.32 – ฿1.54</span></div>
-        <div class="r">฿1.43</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี EV/EBITDA ให้ค่าต่ำสุด (฿1.32) เนื่องจาก Net Debt สูง ฿7,396M กดมูลค่าต่อหุ้น ส่วนวิธี P/BV Peer ให้ค่าสูงสุด (฿1.54) สะท้อน Premium ที่ควรมีจาก PPA ระยะยาว Fair Value เฉลี่ย ฿1.43 (เฉลี่ย 3 วิธีเท่ากัน) อิงสมมติฐาน EPS เติบโตปานกลาง และ Peer Sector จากกลุ่มโรงไฟฟ้า RE ที่ซื้อขายใน SET
@@ -156,15 +183,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿1.31</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿1.43</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿1.00<br><small>MOS 30%</small></span>
-          <span>฿1.14<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿1.43<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">฿1.50<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">฿1.54<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -177,19 +204,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+8%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS ปานกลาง — ราคายังต่ำกว่า Fair Value แต่ยังไม่ถึงโซน Deep Value (MOS 20%+)</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿1.14</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿1.00</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿1.43</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="1.31" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -198,17 +225,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿1.31 • EPS ฐาน ~฿0.09 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿0.95</div>
-          <div class="ret neg">−27.5%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.077</span></li>
             <li><span>P/E ออก</span><span>12x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.03</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>ค่าไฟฟ้าตก, PPA ไม่ต่อ</span></li>
           </ul>
         </div>
@@ -216,12 +243,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿1.70</div>
-          <div class="ret pos">+29.8%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.113</span></li>
             <li><span>P/E ออก</span><span>15x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.04</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>ขยายกำลังผลิต RE ตามแผน</span></li>
           </ul>
         </div>
@@ -229,12 +256,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿2.24</div>
-          <div class="ret pos">+71.0%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.137</span></li>
             <li><span>P/E ออก</span><span>16x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.05</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>ชนะ PPA ใหม่, RE แพงขึ้น</span></li>
           </ul>
         </div>
@@ -281,8 +308,8 @@
       <h2>ACE — โรงไฟฟ้า RE กระแสเงินสดมั่นคง ราคาต่ำกว่า Fair Value ~10% แต่ขาด Catalyst</h2>
       <p>ACE เป็นผู้ผลิตไฟฟ้าจากพลังงานทดแทนที่มี PPA ระยะยาวกับ EGAT/PEA ทำให้รายได้คาดการณ์ได้ EBITDA Margin 35% บ่งบอกธุรกิจมีคุณภาพ แต่ ROE เพียง 4.7% และ Net Debt สูง ฿7,396M คือจุดอ่อนสำคัญ ราคา ฿1.28 ซื้อขายต่ำกว่า Book Value (P/BV 0.75x) และต่ำกว่า Fair Value ฿1.43 (~10.5% MOS) นักวิเคราะห์มีเป้า ฿1.50 (Upside ~17%) เหมาะกับนักลงทุนที่มองหาหุ้น Defensive กระแสเงินสดมั่นคงในพอร์ต RE ไทย แต่ไม่เหมาะสำหรับผู้ต้องการ Capital Gain เร็ว</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿1.43 <span style="font-size:12px;color:#cab9a8">(฿1.32–฿1.54)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +8%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿1.50 (TradingView)</div></div>
       </div>
       <div class="zone">

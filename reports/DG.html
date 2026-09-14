@@ -10,6 +10,20 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 126,
+  "values": {
+    "px": 124.58,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 115,
+    "fvHigh": 140,
+    "eps": 7.07,
+    "shares": 220600000,
+    "dps": 2.36,
+    "bvps": 40.09
+  },
   "theme": {
     "accent": "#b18700",
     "accentDark": "#886308",
@@ -41,18 +55,14 @@
     "min": 80,
     "max": 160,
     "grid": [100, 120, 140],
-    "fairLine": 126,
     "currency": "$",
     "highlight": [0, 4]
   },
   "gauge": {
     "min": 80,
     "max": 175,
-    "cur": 124.58,
-    "fair": 126,
     "fairLabelTop": true
-  },
-  "fv": 126
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +82,11 @@
     <div class="sub">~20,000 US dollar stores (rural &amp; suburban) • Everyday essentials &amp; consumables • Core low-income customer • "Back to Basics" turnaround • pOpshelf premium concept • DG Media Network • ~$43B revenue</div>
     <div class="price-row">
       <div>
-        <div class="px">$124.58<small>(DG)</small></div>
+        <div class="px">{{rd:px}}<small>(DG)</small></div>
       </div>
-      <div class="chg">▲ +26.3% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $95.11 – $158.23<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, SEC 8-K (DG)
       </div>
@@ -87,10 +97,10 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ Q1 FY2026 (พ.ค. 2569)</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">$27.5B</div><div class="d">220.6M หุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~17.6x</div><div class="d">EPS TTM $7.07 / ต่ำกว่าเฉลี่ย 5 ปี</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">220.6M หุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM $7.07 / ต่ำกว่าเฉลี่ย 5 ปี</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~22–25x</div><div class="d">ปัจจุบัน 16.6x — discount หนักจากช่วง peak</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">3.11x</div><div class="d">BVPS $40.09 / D/E 1.79x</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS $40.09 / D/E 1.79x</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$1.51B</div><div class="d">+34.4% YoY (ฟื้นตัวจาก FY2024 ต่ำสุด)</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$7.07</div><div class="d">FY2026 guidance $7.20–$7.45 (ปรับขึ้น)</div></div>
@@ -113,7 +123,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#FDC100"></i>ราคา DG</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $126</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -141,8 +151,8 @@
         <div class="mval">$127</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $115 – $140</span></div>
-        <div class="r">$126</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         ทั้ง 3 วิธีให้ผลค่อนข้างสอดคล้องกันที่ ~$125–127 ซึ่งใกล้เคียงกับราคาตลาดปัจจุบัน ($127.31) สะท้อนว่า DG ซื้อขายใกล้มูลค่าเหมาะสมมาก (สูงกว่า FV เพียงเล็กน้อย)
@@ -159,15 +169,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $124.58</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $126</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$88.20<br><small>MOS 30%</small></span>
-          <span>$100.80<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$126<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$131<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$140<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -182,19 +192,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+1.1%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS ติดลบเล็กน้อย — ราคาสูงกว่า Fair Value เล็กน้อย เต็มมูลค่าแล้ว รอโซน ≥20% เพื่อ margin ดีขึ้น</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$100.80</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$88.20</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $126</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="124.58" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -288,8 +298,8 @@
       <h2>Turnaround กำลังพิสูจน์ตัวเอง — ราคาใกล้ Fair Value รอ Pullback</h2>
       <p>Dollar General ผ่านช่วงวิกฤตที่เลวร้ายที่สุดในช่วง FY2024 (ปัญหา shrinkage + ลูกค้าหลักอ่อนแอ) และเริ่มฟื้นตัวอย่างชัดเจนใน FY2025 ด้วย EPS โต +34% และ gross margin กลับมาฟื้น ยุทธศาสตร์ "Back to Basics" กำลังให้ผล — Q1 FY2026 EPS +12.4% พร้อมกับ gross margin 31.6% ที่ดีที่สุดในหลายปี อย่างไรก็ตามราคา $127.31 สูงกว่า Fair Value $126 เล็กน้อย (MOS −1.0%) ทำให้แทบไม่มี upside ระยะสั้น นักลงทุน value อาจรอดูโซน $100–105 (MOS 20%) ซึ่งให้ความปลอดภัยมากกว่า</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$126 <span style="font-size:12px;color:#cab9a8">($115–$140)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ef9a9a">MOS ~ +1.1%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ef9a9a">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$131 (Buy)</div></div>
       </div>
       <div class="zone">

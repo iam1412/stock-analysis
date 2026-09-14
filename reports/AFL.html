@@ -12,6 +12,20 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 102,
+  "values": {
+    "px": 115.28,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 99,
+    "fvHigh": 107,
+    "eps": 7.59,
+    "shares": 527000000,
+    "dps": 2.35,
+    "bvps": 54.96
+  },
   "theme": {
     "accent": "#E31837",
     "accentDark": "#a01027",
@@ -43,18 +57,14 @@
     "min": 100,
     "max": 130,
     "grid": [110, 120],
-    "fairLine": 102,
     "currency": "$",
     "highlight": [0, 9]
   },
   "gauge": {
     "min": 68,
     "max": 132,
-    "cur": 115.28,
-    "fair": 102,
     "fairLabelTop": false
-  },
-  "fv": 102
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +84,11 @@
     <div class="sub">Supplemental health insurance • Aflac Japan (~70% revenue, cancer &amp; medical) • Aflac US (accident, hospital indemnity, disability) • "Duck" brand • Dividend Champion 42yr • ~5% annual buyback</div>
     <div class="price-row">
       <div>
-        <div class="px">$115.28<small>(AFL)</small></div>
+        <div class="px">{{rd:px}}<small>(AFL)</small></div>
       </div>
-      <div class="chg">▲ +7.5% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $96.95 – $120.29<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, MarketBeat
       </div>
@@ -89,10 +99,10 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ Q1 2026 (มี.ค. 2569)</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$60.8B</div><div class="d">~527M shares outstanding</div></div>
-      <div class="metric"><div class="k">P/E (TTM, adjusted)</div><div class="v neu">~15.2x</div><div class="d">Adj. EPS TTM $7.59</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~527M shares outstanding</div></div>
+      <div class="metric"><div class="k">P/E (TTM, adjusted)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">Adj. EPS TTM $7.59</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~13–15x</div><div class="d">ปัจจุบันแพงกว่า avg เล็กน้อย</div></div>
-      <div class="metric"><div class="k">P/BV (ex-AOCI)</div><div class="v neu">2.10x</div><div class="d">BVPS ex-AOCI $54.96</div></div>
+      <div class="metric"><div class="k">P/BV (ex-AOCI)</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ex-AOCI $54.96</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">~$3.65B</div><div class="d">Adj. EPS FY2025 = $7.49 (+3.9% YoY)</div></div>
       <div class="metric"><div class="k">EPS (TTM, adjusted)</div><div class="v">~$7.59</div><div class="d">Q2'25+Q3'25+Q4'25+Q1'26</div></div>
@@ -115,7 +125,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#E31837"></i>ราคา AFL</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $102</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -145,8 +155,8 @@
         <div class="mval">$107</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $99 – $107</span></div>
-        <div class="r">$102</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         ทั้ง 3 วิธีสอดคล้องกัน: P/E และ DDM ให้ $99 ขณะที่ Justified P/BV ให้ $107 สูงกว่าเพราะ BVPS ที่แข็งแกร่ง
@@ -163,13 +173,13 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $115.28</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $102</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$71<br><small>MOS 30%</small></span>
-          <span>$82<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$102<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$112<br><small>เป้าเฉลี่ย Analyst</small></span>
           <span style="text-align:right">$130<br><small>กรอบบน</small></span>
         </div>
@@ -188,19 +198,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−13%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาสูงกว่ามูลค่าเหมาะสม — ยังไม่มี Margin of Safety · รอโซน $82–99 ก่อนเข้าซื้อ</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$82</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$71</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $102</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="115.28" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -296,8 +306,8 @@
       <h2>Aflac: คุณภาพสูง แต่ราคาตลาดแพงกว่า FV ~18% — รอโซน $82–99</h2>
       <p>Aflac เป็นบริษัทประกันสุขภาพเสริมที่มีคุณภาพสูงและกระแสเงินสดมั่นคง ด้วยสถานะ Dividend Champion 42 ปีและ buyback เร่งรัด ~5%/ปี แต่ราคา $120.08 ณ ปัจจุบันสูงกว่า Fair Value $102 ประมาณ 18% ทำให้ไม่มี Margin of Safety สำหรับผู้ลงทุนแนว value ความเสี่ยงหลักคือ FX (JPY/USD) ที่อาจกดดัน EPS USD ต่อไป consensus นักวิเคราะห์ 14 คนให้ Hold เป้า $112 — ยังต่ำกว่าราคาตลาด แนะนำ <b>รอโซน $82–99</b> (MOS 20–30%) สำหรับนักลงทุน value; ผู้เน้น quality income อาจ accumulate อย่างระมัดระวังที่ &lt;$105</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$102 <span style="font-size:12px;color:#cab9a8">($99–$107)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −13%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$112 (Hold)</div></div>
       </div>
       <div class="zone">
@@ -311,7 +321,7 @@
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
-    แหล่งข้อมูล: Yahoo Finance (ราคา/กราฟ), StockAnalysis.com (งบการเงิน/นักวิเคราะห์), MarketBeat (consensus), StockTitan/SEC 8-K (adjusted EPS Q1 2026, FY2025), ราคา ณ 11 ก.ย. 2569
+    แหล่งข้อมูล: Yahoo Finance (ราคา/กราฟ), StockAnalysis.com (งบการเงิน/นักวิเคราะห์), MarketBeat (consensus), StockTitan/SEC 8-K (adjusted EPS Q1 2026, FY2025), ราคา ณ {{rd:priceDate}}
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 30 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

@@ -10,6 +10,38 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 3.25,
+  "values": {
+    "px": 3.18,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "ตั้งแต่ IPO",
+    "fvLow": 2.12,
+    "fvHigh": 4.14,
+    "shares": 609000000,
+    "bvps": 2.76,
+    "baseEps": 0.12,
+    "scenarios": [
+      {
+        "tgt": 2,
+        "div": 0.05
+      },
+      {
+        "tgt": 3,
+        "div": 0.15
+      },
+      {
+        "tgt": 6,
+        "div": 0.2
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#2e7d32",
     "accentDark": "#1b5e20",
@@ -41,18 +73,14 @@
     "min": 2.5,
     "max": 5.5,
     "grid": [3, 3.5, 4, 4.5, 5],
-    "fairLine": 3.25,
     "currency": "฿",
     "highlight": [0, 7]
   },
   "gauge": {
     "min": 1.5,
     "max": 8,
-    "cur": 3.18,
-    "fair": 3.25,
     "fairLabelTop": false
-  },
-  "fv": 3.25
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +100,11 @@
     <div class="sub">ร้านสลัดออร์แกนิก โอ้กะจู๋ • Healthy Organic Food • Oh! Juice • Joe Wings • ขยายสาขา 78 แห่ง • Premium Dining • IPO ต.ค. 2567</div>
     <div class="price-row">
       <div>
-        <div class="px">฿3.18<small>(OKJ)</small></div>
+        <div class="px">{{rd:px}}<small>(OKJ)</small></div>
       </div>
-      <div class="chg">▼ −35.9% (ตั้งแต่ IPO)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿2.86 – ฿6.30<br>
         ที่มา: SET, Yahoo Finance (OKJ.BK), OKJ IR
       </div>
@@ -89,7 +117,7 @@
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~฿1,937 ล้าน</div><div class="d">609 ล้านหุ้น @ ฿3.18</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">N/A</div><div class="d">TTM ขาดทุน −฿0.12/หุ้น (งบ 28 ส.ค. 69)</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.15x</div><div class="d">BVPS ~฿2.76 ต่อหุ้น</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ~฿2.76 ต่อหุ้น</div></div>
       <div class="metric"><div class="k">EV/EBITDA</div><div class="v">7.26x</div><div class="d">SET Factsheet EBITDA (3 ก.ค. 69) · EV ปรับราคาล่าสุด</div></div>
 
       <div class="metric"><div class="k">รายได้ FY2568</div><div class="v">฿2,744 ล้าน</div><div class="d">+12.6% YoY (FY67: ฿2,444M)</div></div>
@@ -113,7 +141,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#2e7d32"></i>ราคา OKJ</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿3.25</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -140,7 +168,7 @@
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสม (ยึดขา P/Sales ที่วัดจากตัวคูณ peer จริง — กฎ 0.4c/0.4d)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿2.12 (JPBV) – ฿4.14 (Fwd P/E) · ทั้งคู่เป็นบริบทฉากฟื้นตัว ไม่รวมเฉลี่ย</span></div>
-        <div class="r">฿3.25</div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>dispersion gate 0.4c/0.4d:</b> Forward P/E (Turnaround) ฿4.14 ใช้ EPS ฟื้นตัว ~฿0.23 ที่บริษัทยังไม่เคยทำได้ (สมมติ SSSG กลับบวก) และ Justified P/BV (Recovery) ฿2.12 ใช้ ROE 8% ที่ยังไม่เคยทำได้ (ROE TTM ล่าสุดติดลบ ~−4.3% หลังขาดทุนสุทธิ, FY68 เคยเป็นบวก 4.1%) — ทั้งคู่เป็นบริบทถาวรตาม 0.4d แม้ห่างจากขายึดตลาดไม่เกิน 2 เท่า จึงไม่รวมเฉลี่ย · FV = ขายึดตลาดที่เหลือเพียงขาเดียว (P/Sales) = ฿3.25 (ไม่มีตระกูล r/g ที่รวมได้) ที่มา: Yahoo Finance OKJ.BK, SET (set.or.th), OKJ IR (okjgroup.com), Brand Buffet, InfoQuest
@@ -154,15 +182,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿3.18</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿3.25</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿2.28<br><small>MOS 30%</small></span>
-          <span>฿2.60<br><small>MOS 20%</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">฿2.74<br><small>เป้า Analyst</small></span>
-          <span style="text-align:center">฿3.25<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿4.14<br><small>กรอบบน FV</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -175,19 +203,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+2%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาต่ำกว่า Fair Value เพียงเล็กน้อย — Margin of Safety ไม่พอ (+2.2%) ยังไม่ใช่จุดซื้อที่น่าสนใจ</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿2.60</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿2.28</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿3.25</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="3.18" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -196,17 +224,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿3.18 • EPS ฐาน ~฿0.12 (FY68) • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} (FY68){{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>Revenue −15%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿2.00</div>
-          <div class="ret neg">−35.5% รวม (−13.6%/ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>Revenue ปี 3</span><span>~฿1,500M</span></li>
             <li><span>P/S ออก</span><span>0.6x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.05</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>SSSG ติดลบต่อ แบรนด์ล้าสมัย</span></li>
           </ul>
         </div>
@@ -214,12 +242,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS ฟื้น +20%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿3.00</div>
-          <div class="ret neg">−0.9% รวม (−0.3%/ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.20</span></li>
             <li><span>P/E ออก</span><span>15x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.15</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>SSSG กลับเป็นบวก สินค้าใหม่ดึงลูกค้า</span></li>
           </ul>
         </div>
@@ -227,12 +255,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +40%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿6.00</div>
-          <div class="ret pos">+95.0% รวม (+24.9%/ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.33</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.20</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Healthy food trend ฟื้น, Baby Size ฮิต, OR ช่วยขยายสาขา</span></li>
           </ul>
         </div>
@@ -277,8 +305,8 @@
       <h2>OKJ: แบรนด์ Organic แข็งแกร่ง แต่ยังต้องพิสูจน์การฟื้นตัว — รอโซนที่ดีกว่าก่อนสะสม</h2>
       <p>โอ้กะจู๋เป็นแบรนด์ Healthy Food ที่มีเอกลักษณ์ชัดเจนในตลาดไทยและมีพันธมิตรเชิงกลยุทธ์อย่าง OR เป็นแรงหนุน อย่างไรก็ตามผลประกอบการกำลังเผชิญแรงกดดันเชิงโครงสร้างรุนแรง ทั้ง SSSG ติดลบ −39.4% ใน Q1/2569 และผลขาดทุนที่ต่อเนื่องจนกำไร TTM ล่าสุด (งบ 28 ส.ค. 2569) พลิกเป็นขาดทุนสุทธิ ราคาปัจจุบัน ฿3.18 ใกล้เคียง Fair Value ฿3.25 (ต่ำกว่าเล็กน้อย MOS เพียง +2.2%) และ asymmetry ของผลตอบแทนยังเอนไป downside ในทุก scenario ยกเว้น Bull ที่ต้องอาศัยการฟื้นตัวของ SSSG อย่างชัดเจน นักลงทุนที่เชื่อมั่นในศักยภาพระยะยาวควรรอสัญญาณ SSSG กลับเป็นบวก หรือราคาลงสู่โซน MOS 20% (฿2.60) ก่อนพิจารณาเข้าสะสม</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿3.25 <span style="font-size:12px;color:#cab9a8">(฿2.12–฿4.14)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +2%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿2.74 (n=2, ระมัดระวัง)</div></div>
       </div>
       <div class="zone">

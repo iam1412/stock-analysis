@@ -12,6 +12,37 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 15.31,
+  "values": {
+    "px": 14.34,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 14.69,
+    "fvHigh": 16.11,
+    "shares": 481000000,
+    "bvps": 5.22,
+    "scenarios": [
+      {
+        "tgt": 8.91,
+        "div": null
+      },
+      {
+        "tgt": 17.92,
+        "div": null
+      },
+      {
+        "tgt": 29.04,
+        "div": null
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#00a352",
     "accentDark": "#007a36",
@@ -43,18 +74,14 @@
     "min": 10,
     "max": 60,
     "grid": [20, 30, 40, 50],
-    "fairLine": 15.31,
     "currency": "$",
     "highlight": [0, 10]
   },
   "gauge": {
     "min": 10,
     "max": 18,
-    "cur": 14.34,
-    "fair": 15.31,
     "fairLabelTop": true
-  },
-  "fv": 15.31
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -75,14 +102,14 @@
     <div class="sub">แพลตฟอร์มโฆษณาโปรแกรมเมติกฝั่งผู้ซื้อ (independent DSP) • Connected TV (CTV) • Kokai AI platform • UID2 identity • Retail media data partnerships</div>
     <div class="price-row">
       <div>
-        <div class="px">$14.34<small>(TTD)</small></div>
+        <div class="px">{{rd:px}}<small>(TTD)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
            รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
-      <div class="chg">▼ −71.5% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569 (7 Aug 2026)<br>
+        ราคา ณ {{rd:priceDate}} (7 Aug 2026)<br>
         กรอบ 52 สัปดาห์ $12.83 – $56.77 (Yahoo Finance)<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, บริษัท (Q2 2026 earnings, 6 ส.ค. 2569)
       </div>
@@ -94,7 +121,7 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">TTM ถึง Q2 2026 (สิ้นสุด 30 มิ.ย. 2569)</div></div>
     <!-- ✏️ ปรับสำหรับ growth stock ที่ SBC สูง: ใช้ non-GAAP EPS เป็นหลัก + เพิ่มการ์ด FCF/หุ้น แทนเงินปันผล (ไม่มีปันผล) -->
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">$6.90B</div><div class="d">481M หุ้น (diluted, TTM)</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">481M หุ้น (diluted, TTM)</div></div>
       <div class="metric"><div class="k">P/E (TTM, GAAP)</div><div class="v neu">~17.1x</div><div class="d">EPS (TTM) $0.84 · Forward P/E ~12.2x (EPS fwd $1.13)</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~45x</div><div class="d">ช่วงปี 2564–2568 (รวมยุคเติบโตสูง 30%+)</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~2.7x</div><div class="d">BVPS ~$5.22</div></div>
@@ -122,7 +149,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#00cc66"></i>ราคา TTD</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $15.31</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -152,8 +179,8 @@
         <div class="mval">$16.11</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $14.69 – $16.11</span></div>
-        <div class="r">$15.31</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/FCF ($16.11) ให้ค่าสูงสุด เพราะ FCF ยังแข็งแรงกว่ากำไรบัญชีที่ถูก SBC กดไว้ — วิธี P/E (TTM GAAP, $15.12) ใกล้เคียงราคาตลาดปัจจุบันมาก
@@ -170,14 +197,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $14.34</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $15.31</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$10.72<br><small>MOS 30%</small></span>
-          <span>$12.25<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$15.31<br><small>Fair Value</small></span>
-          <span style="text-align:right">$16.11<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -193,19 +220,19 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
-      <div class="mos-verdict bad">
-        <div class="big">+6%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS ต่ำมาก — แม้ราคาจะร่วงมาแรงถึง ~76% จากจุดสูงสุด 52 สัปดาห์ ($56.77) แต่ตาม valuation ที่รีเบสจากงบ Q2 2569 ล่าสุด TTD ยังไม่ใช่ "หุ้นถูก" ชัดเจน เป็นเพียง "ราคาที่ใกล้เคียงมูลค่าที่ควรเป็น" เท่านั้น</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$12.25</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$10.72</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $15.31</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="14.34" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -214,13 +241,13 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $14.34 • EPS ฐาน (TTM, GAAP) $0.84 • ไม่มีปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน (TTM, GAAP) $0.84 • ไม่มีปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +2%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$8.91</div>
-          <div class="ret neg">−37.9%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$0.89</span></li>
             <li><span>P/E ออก</span><span>10x</span></li>
@@ -232,8 +259,8 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +10%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$17.92</div>
-          <div class="ret pos">+25.0%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$1.12</span></li>
             <li><span>P/E ออก</span><span>16x</span></li>
@@ -245,8 +272,8 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +20%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$29.04</div>
-          <div class="ret pos">+102.5%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$1.45</span></li>
             <li><span>P/E ออก</span><span>20x</span></li>
@@ -305,8 +332,8 @@
         ขณะที่โอกาสคือ Kokai AI platform และ UID2 identity อาจช่วยให้บริษัทรักษาตำแหน่ง DSP อิสระอันดับ 1 ไว้ได้
       </p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$15.31 <span style="font-size:12px;color:#cab9a8">($14.69–$16.11)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +6%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ (StockAnalysis)</div><div class="v" style="color:#a5d6a7">~$15.29 (Hold)</div></div>
       </div>
       <div class="zone">

@@ -12,6 +12,40 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 205,
+  "values": {
+    "px": 182.33,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 188,
+    "fvHigh": 227,
+    "eps": 9.41,
+    "shares": 1080000000,
+    "dps": 4.08,
+    "bvps": 51.7,
+    "baseEps": 9.41,
+    "scenarios": [
+      {
+        "tgt": 159.78,
+        "div": 12.36
+      },
+      {
+        "tgt": 212.94,
+        "div": 12.61
+      },
+      {
+        "tgt": 275.54,
+        "div": 12.85
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#E20074",
     "accentDark": "#a80055",
@@ -43,18 +77,14 @@
     "min": 160,
     "max": 240,
     "grid": [180, 200, 220],
-    "fairLine": 205,
     "currency": "$",
     "highlight": [4, 8]
   },
   "gauge": {
     "min": 130,
     "max": 230,
-    "cur": 182.33,
-    "fair": 205,
     "fairLabelTop": true
-  },
-  "fv": 205
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -75,14 +105,14 @@
     <div class="sub">Wireless postpaid/prepaid 5G network • Home Internet (fixed wireless broadband) • Enterprise B2B • Fiber joint-venture partnerships</div>
     <div class="price-row">
       <div>
-        <div class="px">$182.33<small>(TMUS)</small></div>
+        <div class="px">{{rd:px}}<small>(TMUS)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
            รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
-      <div class="chg">▼ −13.2% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569 (2 Jul 2026)<br>
+        ราคา ณ {{rd:priceDate}} (2 Jul 2026)<br>
         กรอบ 52 สัปดาห์ $165.66 – $261.56<br>
         ที่มา: StockAnalysis.com, Google Finance, Yahoo Finance
       </div>
@@ -95,7 +125,7 @@
     <!-- ✏️ ปรับชุด metric ให้เหมาะกับ wireless telecom: P/E, EV/EBITDA, Postpaid Phone Net Adds, ARPU, Home Internet subs, Revenue growth, FCF/share, Dividend yield -->
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">$196.9B</div><div class="d">~1.08B หุ้น (diluted)</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~19.4x</div><div class="d">EPS TTM $9.41 · ต่ำกว่าเฉลี่ย 5 ปี</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM $9.41 · ต่ำกว่าเฉลี่ย 5 ปี</div></div>
       <div class="metric"><div class="k">EV/Core EBITDA (FY26E)</div><div class="v">~7.4x</div><div class="d">Net debt ~$81.5B, guide EBITDA $37.1–37.5B</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~3.5x</div><div class="d">BVPS ~$51.7</div></div>
 
@@ -107,7 +137,7 @@
       <div class="metric"><div class="k">รายได้รวม (Q1 2569)</div><div class="v neu">$23.11B</div><div class="d">+10.6% YoY</div></div>
       <div class="metric"><div class="k">Core Adj. EBITDA (Q1)</div><div class="v pos">$9.2B</div><div class="d">+12% YoY · margin 49.1% ของ service rev</div></div>
       <div class="metric"><div class="k">FCF/หุ้น (FY26 guide)</div><div class="v pos">~$17.0</div><div class="d">Adj. FCF guide $18.1–18.7B</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.2%</div><div class="d">$4.08/หุ้น/ปี ($1.02/ไตรมาส) เริ่มจ่าย 2566</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">$4.08/หุ้น/ปี ($1.02/ไตรมาส) เริ่มจ่าย 2566</div></div>
     </div>
   </section>
 
@@ -122,7 +152,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#E20074"></i>ราคา TMUS</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $205</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -152,8 +182,8 @@
         <div class="mval">$227.16</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $188 – $227</span></div>
-        <div class="r">$205</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         P/FCF ให้ค่าสูงสุดเพราะ FCF yield ปัจจุบันของ TMUS (~9.6% ที่ราคาตลาด) สูงกว่าที่ใช้ประเมิน (7.5%) มาก — สะท้อนว่าตลาดยังไม่ให้เครดิตเต็มที่กับการเติบโตของ FCF
@@ -170,14 +200,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $182.33</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $205</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$143.50<br><small>MOS 30%</small></span>
-          <span>$164.00<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$205<br><small>Fair Value</small></span>
-          <span style="text-align:right">$227<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$255<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -193,19 +223,19 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
-      <div class="mos-verdict ok">
-        <div class="big">+11%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาพอใช้ — ต่ำกว่ามูลค่าเหมาะสมพอสมควร ทยอยสะสมได้ ยังไม่ถึงโซน deep value</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$164.00</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$143.50</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $205</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="182.33" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -214,17 +244,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $182.33 • EPS ฐาน ~$9.41 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +2%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$159.78</div>
-          <div class="ret neg">−5.6% (3 ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$9.99</span></li>
             <li><span>P/E ออก</span><span>16x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$12.36</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>แข่งขันราคารุนแรงขึ้น ARPU ทรงตัว P/E de-rate ต่อ</span></li>
           </ul>
         </div>
@@ -232,12 +262,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +6%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$212.94</div>
-          <div class="ret pos">+23.7% (3 ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$11.21</span></li>
             <li><span>P/E ออก</span><span>19x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$12.61</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>Postpaid/Home Internet โตต่อเนื่องตามแผน EBITDA guide</span></li>
           </ul>
         </div>
@@ -245,12 +275,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +10%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$275.54</div>
-          <div class="ret pos">+58.2% (3 ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$12.52</span></li>
             <li><span>P/E ออก</span><span>22x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$12.85</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Home Internet + enterprise B2B เร่งตัว FCF โตแรง buyback หนุนราคา</span></li>
           </ul>
         </div>
@@ -304,8 +334,8 @@
         ซึ่งอยู่ในโซน "ราคาพอใช้ ทยอยสะสมได้" — เหมาะกับนักลงทุนที่มองระยะยาวและเชื่อว่า operating momentum จะช่วยให้ตลาดกลับมาให้ premium valuation อีกครั้ง
       </p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$205 <span style="font-size:12px;color:#cab9a8">($188–$227)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +11%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$255 (Buy consensus, 28 สำนัก)</div></div>
       </div>
       <div class="zone">

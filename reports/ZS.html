@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 128,
+  "values": {
+    "px": 164.54,
+    "priceDate": "2026-09-11",
+    "dateEra": "CE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 120,
+    "fvHigh": 133,
+    "analystTgt": 193,
+    "eps": 4.1,
+    "shares": 162000000,
+    "baseEps": 4.1,
+    "scenarios": [
+      {
+        "tgt": 104,
+        "div": null
+      },
+      {
+        "tgt": 188,
+        "div": null
+      },
+      {
+        "tgt": 280,
+        "div": null
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#1d6fed",
     "accentDark": "#0f50b3",
@@ -41,18 +74,14 @@
     "min": 100,
     "max": 400,
     "grid": [200, 300],
-    "fairLine": 128,
     "currency": "$",
     "highlight": [0, 6]
   },
   "gauge": {
     "min": 80,
     "max": 270,
-    "cur": 164.54,
-    "fair": 128,
     "fairLabelTop": "-58px"
-  },
-  "fv": 128
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +101,11 @@
     <div class="sub">ผู้นำความปลอดภัยคลาวด์ Zero Trust (SSE/SASE) • Zscaler Internet Access / Private Access / AI Security</div>
     <div class="price-row">
       <div>
-        <div class="px">$164.54<small>(ZS)</small></div>
+        <div class="px">{{rd:px}}<small>(ZS)</small></div>
       </div>
-      <div class="chg">▼ −50.3% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ≈ 11 ก.ย. 2026 (14:55 EDT)<br>
+        ราคา ≈ {{rd:priceDate}} (14:55 EDT)<br>
         ปิดก่อนหน้า $124.06 • ดิ่งจากจุดสูง $337<br>
         ที่มา: StockAnalysis.com / Investing.com / CNBC
       </div>
@@ -87,7 +116,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ Q3 FY2026 (สิ้นสุด 31 ม.ค. 2026) + แนวโน้ม FY2026</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$26.7B</div><div class="d">~162 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~162 ล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM, GAAP)</div><div class="v neu">N/A</div><div class="d">EPS GAAP TTM −$0.49 <span class="pill r">ขาดทุน GAAP</span></div></div>
       <div class="metric"><div class="k">P/E (Non-GAAP, fwd)</div><div class="v">~40x</div><div class="d">EPS FY26 ~$4.10 (guide)</div></div>
       <div class="metric"><div class="k">P/E Non-GAAP (TTM)</div><div class="v">~43x</div><div class="d">EPS non-GAAP TTM ~$3.80</div></div>
@@ -113,7 +142,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1a73e8"></i>ราคา ZS</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $128</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -141,8 +170,8 @@
         <div class="mval">$133</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $120 – $133</span></div>
-        <div class="r">$128</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>หมายเหตุ:</b> ข้าม DDM เพราะ <b>ไม่จ่ายปันผล</b> • ใช้ <b>Non-GAAP EPS</b> เพราะ GAAP ยังขาดทุน (กระทบจาก SBC สูงตามธรรมชาติของ SaaS โต)
@@ -157,14 +186,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $165</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $128</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$90<br><small>MOS 30%</small></span>
-          <span>$102<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$128<br><small>Fair Value</small></span>
-          <span style="text-align:right">$193<br><small>เป้า Analyst</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:analystTgt}}<br><small>เป้า Analyst</small></span>
           <span style="text-align:right">$250<br><small>เป้าสูงสุด</small></span>
         </div>
       </div>
@@ -179,19 +208,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−29%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>ไม่มี Margin of Safety</b><br>ราคาปัจจุบัน $139.27 สูงกว่ามูลค่าเหมาะสม $128 ไปแล้ว ~9% → ตามเกณฑ์ value investor ถือว่า <b>ราคาแพงกว่าพื้นฐานเล็กน้อย</b> ยังไม่ใช่จุดซื้อที่มีส่วนเผื่อปลอดภัย</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$102</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$90</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
         <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $115</div><div class="d">ใกล้จุดต่ำสุด 52 สัปดาห์</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="164.54" step="1">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -200,13 +229,13 @@
 
   <!-- ===== RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $164.54 • EPS ฐาน ~$4.10 (non-GAAP)</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} (non-GAAP)</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$104</div>
-          <div class="ret neg">รวม ~ −37% (≈ −14%/ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$5.2</span></li>
             <li><span>P/E ออก</span><span>20x</span></li>
@@ -217,8 +246,8 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +18%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$188</div>
-          <div class="ret pos">รวม ~ +14% (≈ +4%/ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$6.7</span></li>
             <li><span>P/E ออก</span><span>28x</span></li>
@@ -229,8 +258,8 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +25%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$280</div>
-          <div class="ret pos">รวม ~ +70% (≈ +19%/ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$8.0</span></li>
             <li><span>P/E ออก</span><span>35x</span></li>
@@ -281,9 +310,9 @@
       <h2>ผู้นำ Zero Trust ที่ราคาปรับฐานมา "สมเหตุสมผล" แต่ MOS ยังบาง</h2>
       <p>Zscaler เป็นเจ้าตลาดความปลอดภัยคลาวด์ Zero Trust ที่ ARR/RPO/มาร์จิ้นยังเติบโตทำสถิติใหม่ต่อเนื่อง แม้ราคาหุ้นดิ่งกว่า 60% จากจุดสูง $337 มาต่ำสุด ~$115 ก่อนดีดกลับมา ~$139 ตามการ de-rate ของหุ้น SaaS multiple สูงแล้วฟื้นตัวหลังงบ Q3 ดีกว่าคาด — ที่ราคานี้มูลค่า <b>เหนือ fair value เล็กน้อย</b> ไม่มี margin of safety สำหรับสายเน้นส่วนเผื่อความปลอดภัย</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$128 <span style="font-size:12px;color:#a8b6cc">($120–$133)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ff8a80">MOS ~ −29%</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">$193 (+17%)</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#a8b6cc">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ff8a80">MOS ~ {{rd:mos}}</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">{{rd:analystTgt}} (+17%)</div></div>
       </div>
       <div class="zone">
         💡 <b>กลยุทธ์:</b> สาย value — รอย่อ/ทยอยสะสมเมื่อราคา <b>ต่ำกว่า ~$115–$128</b> (น่าสนใจมากที่ &lt;$102) เพื่อ MOS ที่กว้างขึ้น • สาย growth — เข้าได้แบบ DCA โดยติดตาม <b>การเติบโต ARR และ net new ARR รายไตรมาส</b> เป็นตัวชี้วัดหลักว่าโมเมนตัมยังอยู่หรือไม่

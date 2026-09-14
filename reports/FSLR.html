@@ -10,6 +10,37 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 232,
+  "values": {
+    "px": 209.03,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 205,
+    "fvHigh": 265,
+    "shares": 107400000,
+    "baseEps": 16.5,
+    "scenarios": [
+      {
+        "tgt": 155,
+        "div": 0
+      },
+      {
+        "tgt": 283,
+        "div": 0
+      },
+      {
+        "tgt": 377,
+        "div": 0
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#00A650",
     "accentDark": "#00753a",
@@ -41,18 +72,14 @@
     "min": 150,
     "max": 350,
     "grid": [200, 250, 300],
-    "fairLine": 232,
     "currency": "$",
     "highlight": [4, 7]
   },
   "gauge": {
     "min": 150,
     "max": 330,
-    "cur": 209.03,
-    "fair": 232,
     "fairLabelTop": true
-  },
-  "fv": 232
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +99,11 @@
     <div class="sub">ผู้ผลิตแผงโซลาร์ฟิล์มบาง CdTe • เครดิตภาษีผลิต IRA 45X • ผลิตในสหรัฐ • Backlog หลายปี 53.7 GW • ไม่เผชิญคู่แข่งจีน</div>
     <div class="price-row">
       <div>
-        <div class="px">$209.03<small>(FSLR)</small></div>
+        <div class="px">{{rd:px}}<small>(FSLR)</small></div>
       </div>
-      <div class="chg">▼ −21.7% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $176.47 – $320.95<br>
         ที่มา: StockAnalysis, Finviz, Yahoo Finance
       </div>
@@ -87,7 +114,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM / ล่าสุด</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">$22.4B</div><div class="d">107.4M หุ้น</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">107.4M หุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~14.0x</div><div class="d">Fwd P/E ~11.7x</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~18x</div><div class="d">ผันผวนตามวัฏจักร 10–40x</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">2.44</div><div class="d">BVPS $91.9</div></div>
@@ -113,7 +140,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#00A650"></i>ราคา FSLR</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $232</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -139,8 +166,8 @@
         <div class="mval">$240</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $205 – $265</span></div>
-        <div class="r">$232</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         ทั้งสามวิธีให้ค่าใกล้เคียง $224–240 สะท้อนว่าราคาปัจจุบัน $226.77 อยู่ใกล้มูลค่าเหมาะสม (undervalue เล็กน้อย) — จุดสำคัญคือ <b>เครดิตภาษีผลิต 45X ~$1.6B/ปี ≈ กำไรสุทธิทั้งก้อน (~$1.67B)</b> ถ้าตัดเครดิตออกกำไรจากการดำเนินงานล้วนจะบางลงมาก · FV จึงตั้งบนสมมติฐานว่า 45X ยังคงอยู่ (กฎหมาย OBBBA ก.ค. 68 ยืนยันคงถึงปี 2033) หากมีความเสี่ยงเชิงนโยบายเพิ่ม ต้องปรับ FV ลง · <i>หมายเหตุ: EPS(TTM) จาก Yahoo ($9.23) ต่ำกว่า StockAnalysis/งบทางการ ($16.22) มาก — ใช้ตัวหลังเพราะตรงกับ EPS(dil) TTM ในตารางงบทางการเป๊ะ น่าจะเป็นนิยาม GAAP/adjusted ที่ต่างกัน ไม่ใช่การตัดงวดผิด</i>
@@ -154,15 +181,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $209.03</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $232</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$162.40<br><small>MOS 30%</small></span>
-          <span>$185.60<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$232<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$247.30<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$265<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -175,19 +202,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+10%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาปัจจุบันต่ำกว่ามูลค่าเหมาะสมเพียงเล็กน้อย — MOS บางมาก ยังไม่ใช่โซนถูกสำหรับหุ้นวัฏจักร ควรรอย่อเพื่อ MOS ที่สูงขึ้น</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$185.60</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$162.40</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $232</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="209.03" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -196,17 +223,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $209.03 • EPS ฐาน ~$16.50 • ไม่มีปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} • ไม่มีปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$155</div>
-          <div class="ret neg">−26%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$14.15</span></li>
             <li><span>P/E ออก</span><span>11x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>45X อ่อนแอ/ราคาแผงดิ่ง</span></li>
           </ul>
         </div>
@@ -214,12 +241,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +7%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$283</div>
-          <div class="ret pos">+35%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$20.22</span></li>
             <li><span>P/E ออก</span><span>14x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>45X คงอยู่ · backlog ทยอยส่งมอบ</span></li>
           </ul>
         </div>
@@ -227,12 +254,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$377</div>
-          <div class="ret pos">+80%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$25.10</span></li>
             <li><span>P/E ออก</span><span>15x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>กำแพงภาษีจีน + กำลังผลิต 25GW เต็ม</span></li>
           </ul>
         </div>
@@ -279,8 +306,8 @@
       <h2>ผู้ผลิตโซลาร์สหรัฐคุณภาพสูง — ราคาสมเหตุสมผล แต่กำไรผูกกับนโยบาย 45X</h2>
       <p>First Solar เป็นผู้ผลิตแผงโซลาร์ฟิล์มบาง CdTe รายใหญ่รายเดียวของสหรัฐ มีความได้เปรียบเชิงโครงสร้างจากเครดิตภาษี IRA 45X, backlog 53.7GW และการไร้คู่แข่งจีน · ราคาปัจจุบัน $226.77 อยู่ต่ำกว่ามูลค่าเหมาะสม $232 เล็กน้อย (MOS บาง ~2.8%) และต่ำกว่าเป้านักวิเคราะห์เฉลี่ย $247 · <b>ข้อควรระวังหลัก: กำไร ~$1.6B/ปี มาจากเครดิต 45X ซึ่งเกือบเท่ากำไรสุทธิทั้งหมด</b> — เป็นทั้งจุดแข็ง (ล็อกถึง 2033) และความเสี่ยงเดียวที่ใหญ่ที่สุด (นโยบายเปลี่ยน = กำไรหด) · เหมาะทยอยสะสมในย่อ ไม่ไล่ราคา</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$232 <span style="font-size:12px;color:#cab9a8">($205–$265)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +10%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$247.30 (Buy)</div></div>
       </div>
       <div class="zone">

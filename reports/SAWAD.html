@@ -12,6 +12,38 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 34.4,
+  "values": {
+    "px": 22.2,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 32.4,
+    "fvHigh": 36.39,
+    "shares": 1661000000,
+    "dps": 0.7,
+    "baseEps": 3.24,
+    "scenarios": [
+      {
+        "tgt": 17.74,
+        "div": 2.1
+      },
+      {
+        "tgt": 33.88,
+        "div": 2.4
+      },
+      {
+        "tgt": 49.28,
+        "div": 2.8
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#2e7d32",
     "accentDark": "#1b5e20",
@@ -43,18 +75,14 @@
     "min": 20,
     "max": 40,
     "grid": [25, 30, 35],
-    "fairLine": 34.4,
     "currency": "฿",
     "highlight": [4, 7]
   },
   "gauge": {
     "min": 15,
     "max": 40,
-    "cur": 22.2,
-    "fair": 34.4,
     "fairLabelTop": true
-  },
-  "fv": 34.4
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +102,11 @@
     <div class="sub">จำนำทะเบียนรถ • สินเชื่อบุคคล • สินเชื่อนาโน • ฐานลูกค้า ~3 ล้านราย • &gt;5,700 สาขาทั่วไทย • SET50</div>
     <div class="price-row">
       <div>
-        <div class="px">฿22.20<small>(SAWAD)</small></div>
+        <div class="px">{{rd:px}}<small>(SAWAD)</small></div>
       </div>
-      <div class="chg">▼ −21.4% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿16.50 – ฿32.00<br>
         ที่มา: SET / Yahoo Finance / Google Finance
       </div>
@@ -115,7 +143,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#2e7d32"></i>ราคา SAWAD</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿34.40</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสูงสุดปี</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -143,8 +171,8 @@
         <div class="mval">฿36.39</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿32.40 – ฿36.39</span></div>
-        <div class="r">฿34.40</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี DDM ให้ค่าต่ำมาก (฿12.13) เนื่องจาก SAWAD ยังคง Payout ratio ต่ำเพื่อรักษาเงินทุนขยายสาขา (>5,700 สาขา) ดังนั้นจึงให้น้ำหนักหลักที่วิธี P/E และ Justified P/BV ซึ่งสะท้อนกำลังการสร้างรายได้จริงมากกว่า
@@ -160,15 +188,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿22.20</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿34.40</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿24.08<br><small>MOS 30%</small></span>
-          <span>฿27.52<br><small>MOS 20%</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">฿30.48<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">฿34.40<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿36.39<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -183,19 +211,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict good">
-        <div class="big">+35%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาต่ำกว่า Fair Value มาก — เข้าเขต "ถูกมาก" (deep value) เต็มตัว</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿27.52</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿24.08</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿34.40</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="22.2" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -204,17 +232,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿22.20 • EPS ฐาน ~฿3.24 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −3%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿17.74</div>
-          <div class="ret neg">−10.6% รวมปันผล</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿2.96</span></li>
             <li><span>P/E ออก</span><span>6x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿2.10</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>NPL พุ่ง / เศรษฐกิจซบ</span></li>
           </ul>
         </div>
@@ -222,12 +250,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿33.88</div>
-          <div class="ret pos">+63.4% รวมปันผล</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿4.08</span></li>
             <li><span>P/E ออก</span><span>8.3x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿2.40</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>NPL ลดลง / สาขาขยาย</span></li>
           </ul>
         </div>
@@ -235,12 +263,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿49.28</div>
-          <div class="ret pos">+134.6% รวมปันผล</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿4.93</span></li>
             <li><span>P/E ออก</span><span>10x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿2.80</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>ดอกเบี้ยลด / ROE ฟื้น 16%+</span></li>
           </ul>
         </div>
@@ -289,8 +317,8 @@
       <h2>น่าสนใจระดับกลาง — Non-Bank ชั้นนำ P/E ต่ำกว่าค่าเฉลี่ย 5 ปี อย่างมีนัย</h2>
       <p>SAWAD เป็นบริษัทสินเชื่อ Non-Bank ที่มีความได้เปรียบเชิงแข่งขันจากเครือข่ายสาขาหนาแน่น >5,700 แห่งและฐานลูกค้า ~3 ล้านรายในกลุ่มเป้าหมายที่ธนาคารพาณิชย์ยังเข้าถึงได้ยาก ปัจจุบัน P/E 7.28x ต่ำกว่าค่าเฉลี่ย 5 ปี (~10-12x) อย่างมีนัยสำคัญ สะท้อนความกังวลเรื่อง NPL และสภาวะดอกเบี้ยสูง ซึ่งถ้าปัจจัยเหล่านี้ผ่อนคลาย โอกาส P/E Re-rating สูงมาก Fair Value ฿34.40 (สมอ P/E + ตระกูล r/g ตาม dispersion gate 0.4c) ให้ MOS ~30.2% จากราคาปัจจุบัน ฿24.00 แหล่งข้อมูล: SET / Yahoo Finance / Google Finance (ยืนยัน 3 แหล่ง)</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿34.40 <span style="font-size:12px;color:#cab9a8">(฿32.40–฿36.39)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +35%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿30.48 (Buy)</div></div>
       </div>
       <div class="zone">

@@ -10,6 +10,40 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 337,
+  "values": {
+    "px": 245.54,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 299,
+    "fvHigh": 405,
+    "eps": 9.21,
+    "shares": 186700000,
+    "dps": 5,
+    "bvps": 105.47,
+    "baseEps": 11.5,
+    "scenarios": [
+      {
+        "tgt": 220,
+        "div": 15
+      },
+      {
+        "tgt": 367,
+        "div": 15.8
+      },
+      {
+        "tgt": 448,
+        "div": 16.2
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#4175c8",
     "accentDark": "#2c5596",
@@ -41,18 +75,14 @@
     "min": 200,
     "max": 400,
     "grid": [250, 300, 350],
-    "fairLine": 337,
     "currency": "$",
     "highlight": [4, 11]
   },
   "gauge": {
     "min": 200,
     "max": 450,
-    "cur": 245.54,
-    "fair": 337,
     "fairLabelTop": true
-  },
-  "fv": 337
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +102,11 @@
     <div class="sub">ระบบอิเล็กทรอนิกส์ F-35 &amp; สงครามอิเล็กทรอนิกส์ (EW) • ดาวเทียม ISR • วิทยุทหาร (tactical radio) • กล้องมองกลางคืน (night vision) • Integrated Mission Systems • Aviation Systems • Missile Solutions (แบรนด์ใหม่ Axyv)</div>
     <div class="price-row">
       <div>
-        <div class="px">$245.54<small>(LHX)</small></div>
+        <div class="px">{{rd:px}}<small>(LHX)</small></div>
       </div>
-      <div class="chg">▼ −15.1% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569 (7 Jul 2026)<br>
+        ราคา ณ {{rd:priceDate}} (7 Jul 2026)<br>
         กรอบ 52 สัปดาห์ $254.12 – $379.23<br>
         ที่มา: StockAnalysis.com, Google Finance, Yahoo Finance, L3Harris IR (SEC 8-K Q1 2026 &amp; FY2025 earnings release)
       </div>
@@ -87,10 +117,10 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">หลัง merger L3+Harris (2019) — backlog สถิติใหม่ $40.7B</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">$45.8B</div><div class="d">~186.7M หุ้น</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">~186.7M หุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM, GAAP)</div><div class="v neu">~27x</div><div class="d">EPS TTM $9.21 (GAAP)</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~22x</div><div class="d">ช่วง ~15x–36x (โดยประมาณ, 5 ปี)</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">2.33x</div><div class="d">BVPS $105.47 (31 มี.ค. 2569)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS $105.47 (31 มี.ค. 2569)</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">~$1.59B</div><div class="d">GAAP diluted EPS $8.53 · Non-GAAP $10.73</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$9.21</div><div class="d">FY26E guidance (GAAP) $11.40–$11.60</div></div>
@@ -113,7 +143,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#4175c8"></i>ราคา LHX</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $337</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -142,8 +172,8 @@
         <div class="mval">$405</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $299 – $405</span></div>
-        <div class="r">$337</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         FV คำนวณแบบถ่วงน้ำหนัก: P/E (forward) 35% + EV/EBITDA 30% + DCF 35% เพราะไม่มีวิธีใดวิธีหนึ่งเหมาะกับหุ้นกลาโหมสมบูรณ์แบบ —
@@ -160,15 +190,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $245.54</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $337</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$236<br><small>MOS 30%</small></span>
-          <span>$270<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$337<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$381<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$405<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -182,19 +212,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict good">
-        <div class="big">+27%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">Margin of Safety ระดับปานกลาง — ราคาปัจจุบันต่ำกว่ามูลค่าเหมาะสมพอสมควรแต่ไม่ใช่จุดเข้าราคาถูกมาก (deep value) เนื่องจากราคาปรับตัวขึ้นแรงในช่วงต้นปี 2569 ตามธีม defense budget supercycle และ Axyv spinoff catalyst</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$270</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$236</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $337</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="245.54" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -203,17 +233,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $245.54 • EPS ฐาน ~$11.50 (FY26E) • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} (FY26E){{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +2%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$220</div>
-          <div class="ret neg">−4.3%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$12.20</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$15.0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>งบกลาโหมสหรัฐฯ สะดุด (continuing resolution), Axyv spinoff กระทบ margin ระยะสั้น, P/E de-rate สู่ค่าเฉลี่ยกลุ่ม</span></li>
           </ul>
         </div>
@@ -221,12 +251,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +10%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$367</div>
-          <div class="ret pos">+55.9%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$15.31</span></li>
             <li><span>P/E ออก</span><span>24x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$15.8</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>backlog $40.7B แปลงเป็นรายได้ตามแผน, margin ขยายสู่เป้า low-16%, P/E ย่อลงเล็กน้อยจาก 32x เหลือ 24x</span></li>
           </ul>
         </div>
@@ -234,12 +264,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +13%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$448</div>
-          <div class="ret pos">+89.1%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$16.59</span></li>
             <li><span>P/E ออก</span><span>27x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$16.2</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Munitions Acceleration Council orders $25B แปลงเป็น backlog จริง + Axyv IPO ปลดล็อกมูลค่า + งบกลาโหม NATO เร่งตัวเร็วกว่าคาด</span></li>
           </ul>
         </div>
@@ -289,8 +319,8 @@
       <p>L3Harris เป็นหนึ่งใน defense prime อันดับต้นของสหรัฐฯ ที่มี backlog สถิติใหม่ $40.7B และแนวโน้มธุรกิจแข็งแกร่งจาก defense budget supercycle รวมถึง catalyst ใหม่จากการแยกธุรกิจ Missile Solutions (Axyv) ออก IPO
       แต่ราคาหุ้นรีเรทขึ้นแรงตั้งแต่ต้นปี 2569 ทำให้ valuation ตึงตัวขึ้นมาก (P/E TTM ~32x) MOS ปัจจุบันอยู่ในระดับปานกลาง ไม่ใช่จุดเข้าราคาถูกมาก เหมาะสำหรับผู้ลงทุนระยะยาวที่เชื่อในธีมกลาโหมมากกว่าการเก็งกำไรระยะสั้น</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$337 <span style="font-size:12px;color:#cab9a8">($299–$405)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +27%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$381 (Buy)</div></div>
       </div>
       <div class="zone">

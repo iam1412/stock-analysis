@@ -10,6 +10,40 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 6.36,
+  "values": {
+    "px": 7.05,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 6.2,
+    "fvHigh": 6.63,
+    "eps": 0.286,
+    "shares": 3825000000,
+    "dps": 0.2525,
+    "bvps": 3.61,
+    "baseEps": 0.31,
+    "scenarios": [
+      {
+        "tgt": 5.4,
+        "div": 0.76
+      },
+      {
+        "tgt": 7.45,
+        "div": 0.84
+      },
+      {
+        "tgt": 10.2,
+        "div": 0.95
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": "linear"
+    }
+  },
   "theme": {
     "accent": "#0288d1",
     "accentDark": "#01579b",
@@ -41,7 +75,6 @@
     "min": 3,
     "max": 9,
     "grid": [4, 5, 6, 7, 8],
-    "fairLine": 6.36,
     "currency": "฿",
     "highlight": [0, 9],
     "gridFmt": "v.toFixed(2)",
@@ -50,11 +83,8 @@
   "gauge": {
     "min": 4,
     "max": 8.5,
-    "cur": 7.05,
-    "fair": 6.36,
     "fairLabelTop": true
-  },
-  "fv": 6.36
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +104,11 @@
     <div class="sub">น้ำประปาอุตสาหกรรมและบำบัดน้ำเสียในนิคม WHA • ไฟฟ้าพลังงานสะอาด (Solar Private PPA &amp; FiT) • โครงสร้างพื้นฐานพลังงานสำหรับ Data Center</div>
     <div class="price-row">
       <div>
-        <div class="px">฿7.05<small>(WHAUP)</small></div>
+        <div class="px">{{rd:px}}<small>(WHAUP)</small></div>
       </div>
-      <div class="chg">▲ +72.8% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569 · Q2/2026 · FY2025<br>
+        ราคา ณ {{rd:priceDate}} · Q2/2026 · FY2025<br>
         กรอบ 52 สัปดาห์ ฿3.06 – ฿8.15<br>
         ที่มา: Investing.com / Yahoo Finance / WHA-UP IR
       </div>
@@ -90,9 +120,9 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 · FY2568 (2025)</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~฿26,966M</div><div class="d">3,825 ล้านหุ้น · มูลค่าพาร์ ฿1.00</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~24.7x</div><div class="d">EPS TTM ฿0.286/หุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM ฿0.286/หุ้น</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~20x</div><div class="d">ช่วง 15–25x ขึ้นกับวัฎจักรลงทุน</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.95x</div><div class="d">BVPS ~฿3.61 · premium เหนือ P/BV ประวัติ</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ~฿3.61 · premium เหนือ P/BV ประวัติ</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿1,173M (Norm.)</div><div class="d">+5% YoY (normalized) · FX loss ลดกำไรสุทธิ GAAP ฿1,016M</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.286</div><div class="d">Normalized EPS ~฿0.307 (1,173M ÷ 3,825M หุ้น)</div></div>
@@ -115,7 +145,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#0288d1"></i>ราคา WHAUP</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿6.36</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -144,8 +174,8 @@
         <div class="mval">฿6.32</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿6.20 – ฿6.63</span></div>
-        <div class="r">฿6.36</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี DDM ให้ค่าสูงสุด (฿6.63) เพราะ WHAUP มี payout ratio สูง (~82%) และกระแสเงินสดมั่นคงจากสัญญาระยะยาว
@@ -162,15 +192,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿7.05</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿6.36</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿4.45<br><small>MOS 30%</small></span>
-          <span>฿5.09<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿6.36<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">฿6.40<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">฿6.63<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -186,19 +216,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−11%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาตลาดสูงกว่า Fair Value — ยังไม่มี MOS · รอ Pullback</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿5.09</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿4.45</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿6.36</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="7.05" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -207,17 +237,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿7.05 • EPS ฐาน ~฿0.31 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +3%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿5.40</div>
-          <div class="ret neg">−12.6% total · −4.2%/ปี</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.34</span></li>
             <li><span>P/E ออก</span><span>16x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.76</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>Data Center ชะลอ · ดอกเบี้ยสูง</span></li>
           </ul>
         </div>
@@ -225,12 +255,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +10%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿7.45</div>
-          <div class="ret pos">+17.6% total · +5.9%/ปี</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.41</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.84</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>Data Center &amp; Solar โตต่อเนื่อง</span></li>
           </ul>
         </div>
@@ -238,12 +268,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +18%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿10.20</div>
-          <div class="ret pos">+58.2% total · +19.4%/ปี</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.51</span></li>
             <li><span>P/E ออก</span><span>20x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.95</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Hyperscaler ขยาย DC ไทยจริง · SMR</span></li>
           </ul>
         </div>
@@ -299,8 +329,8 @@
         นักลงทุนที่ถือแล้วอาจ hold รับปันผล 3.1% ผู้ที่ยังไม่มีควรรอ pullback สู่โซน ฿6.00–6.40
       </p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿6.36 <span style="font-size:12px;color:#cab9a8">(฿6.20–฿6.63)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −11%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿6.40 (7 Buy)</div></div>
       </div>
       <div class="zone">

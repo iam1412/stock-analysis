@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 90,
+  "values": {
+    "px": 83.61,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 88,
+    "fvHigh": 91,
+    "shares": 255300000,
+    "dps": 1.6,
+    "bvps": 54.94,
+    "baseEps": 4.5,
+    "scenarios": [
+      {
+        "tgt": 61.65,
+        "div": 4.8
+      },
+      {
+        "tgt": 93.78,
+        "div": 4.8
+      },
+      {
+        "tgt": 116.6,
+        "div": 4.8
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#15803d",
     "accentDark": "#0f4f26",
@@ -41,18 +74,14 @@
     "min": 60,
     "max": 100,
     "grid": [70, 80, 90],
-    "fairLine": 90,
     "currency": "$",
     "highlight": [0, 10]
   },
   "gauge": {
     "min": 55,
     "max": 100,
-    "cur": 83.61,
-    "fair": 90,
     "fairLabelTop": false
-  },
-  "fv": 90
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +101,11 @@
     <div class="sub">Flavors • Fragrances • Health &amp; Biosciences • Food Ingredients (Nourish)</div>
     <div class="price-row">
       <div>
-        <div class="px">$83.61<small>(IFF)</small></div>
+        <div class="px">{{rd:px}}<small>(IFF)</small></div>
       </div>
-      <div class="chg">▲ +32.8% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $59.14 – $84.45<br>
         ที่มา: StockAnalysis.com • Yahoo Finance • IFF Investor Relations
       </div>
@@ -90,7 +119,7 @@
       <div class="metric"><div class="k">Market Cap</div><div class="v">~$21.35B</div><div class="d">~255.3M shares outstanding</div></div>
       <div class="metric"><div class="k">P/E (TTM, GAAP)</div><div class="v neu">~24.3x</div><div class="d">Forward P/E (adj. FY2026E) ~17.7x</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~20–22x</div><div class="d">ผันผวนหลังควบรวม DuPont N&amp;B (2021) + หลายดีล divest</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">~1.52x</div><div class="d">BVPS $54.94 · D/E 0.45x</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~{{rd:pbv}}x</div><div class="d">BVPS $54.94 · D/E 0.45x</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">−$360M (loss)</div><div class="d">พลิกขาดทุนจาก loss on divestiture (Pharma Solutions, ปิดดีล 2025)</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$3.23</div><div class="d">GAAP; Adj. EPS Q1 2026 $1.25 (+4.2% YoY)</div></div>
@@ -99,7 +128,7 @@
 
       <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$10.79B</div><div class="d">FY2026 guide $10.5–10.8B (organic +1–4%)</div></div>
       <div class="metric"><div class="k">EBITDA Margin (adj.)</div><div class="v">~16.4%</div><div class="d">EBITDA TTM $1.766B · FY2026 guide $2.05–2.15B</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.9%</div><div class="d">$1.60/share ต่อปี</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">$1.60/share ต่อปี</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">0.94</div><div class="d">ใกล้เคียงตลาดโดยรวม</div></div>
     </div>
   </section>
@@ -113,7 +142,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#15803d"></i>ราคา IFF</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $90</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -143,8 +172,8 @@
         <div class="mval">$88.71</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $88 – $91</span></div>
-        <div class="r">$90</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         ทั้ง 3 วิธีให้ค่าใกล้เคียงกันมาก ($88.71–$90.80) เพราะทุกวิธีอิงจาก EPS/EBITDA ปีปฏิทิน FY2026 ที่ผ่านการยืนยันจาก
@@ -161,14 +190,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $83.61</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $90</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$63.00<br><small>MOS 30%</small></span>
-          <span>$72.00<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$90<br><small>Fair Value</small></span>
-          <span style="text-align:right">$91<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$91.21<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -184,19 +213,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+7%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาปัจจุบันต่ำกว่า Fair Value พอสมควร — มี margin of safety ระดับปานกลาง เหมาะทยอยสะสม</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$72.00</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$63.00</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $90</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="83.61" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -205,17 +234,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $83.61 • EPS ฐาน ~$4.50 (adj. FY2026E) • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} (adj. FY2026E){{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −3%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$61.65</div>
-          <div class="ret neg">−20.5%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$4.11</span></li>
             <li><span>P/E ออก</span><span>15x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$4.80</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>Organic growth ชะลอ · leverage สูงกดดัน re-rating · แข่งขันราคารุนแรง</span></li>
           </ul>
         </div>
@@ -223,12 +252,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$93.78</div>
-          <div class="ret pos">+17.9%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$5.21</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$4.80</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>Deleveraging ตามแผน + EBITDA growth ในกรอบ guide 3–8% + pure-play focus สำเร็จ</span></li>
           </ul>
         </div>
@@ -236,12 +265,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +9%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$116.60</div>
-          <div class="ret pos">+45.2%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$5.83</span></li>
             <li><span>P/E ออก</span><span>20x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$4.80</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Margin expansion เกินคาด + net debt ลดเร็ว + re-rating ใกล้เคียงคู่แข่ง Givaudan/Symrise</span></li>
           </ul>
         </div>
@@ -310,8 +339,8 @@
         20 คน) ราว 16% สะท้อนว่าตลาดยังรอความชัดเจนเรื่องการลดหนี้และผลลัพธ์ของการเป็น pure-play ก่อนให้ premium เต็มที่
         ความเสี่ยงหลักที่ต้องติดตามคือ leverage ที่ยังสูงกว่าคู่แข่งและความสามารถในการ execute synergies จากดีลควบรวมเดิม</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$90 <span style="font-size:12px;color:#cab9a8">($88–$91)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +7%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$91.21 (Buy · 20 คน)</div></div>
       </div>
       <div class="zone">

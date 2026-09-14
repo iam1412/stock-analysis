@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 103,
+  "values": {
+    "px": 56.92,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 92,
+    "fvHigh": 116,
+    "shares": 52540000,
+    "dps": 1.32,
+    "bvps": 30.32,
+    "baseEps": 7.7,
+    "scenarios": [
+      {
+        "tgt": 84.2,
+        "div": 3.96
+      },
+      {
+        "tgt": 126.1,
+        "div": 3.96
+      },
+      {
+        "tgt": 162.3,
+        "div": 3.96
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#003B71",
     "accentDark": "#002A52",
@@ -41,18 +74,14 @@
     "min": 40,
     "max": 120,
     "grid": [60, 80, 100],
-    "fairLine": 103,
     "currency": "$",
     "highlight": [3, 8]
   },
   "gauge": {
     "min": 45,
     "max": 125,
-    "cur": 56.92,
-    "fair": 103,
     "fairLabelTop": true
-  },
-  "fv": 103
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +101,11 @@
     <div class="sub">Government health &amp; human services outsourcing • Medicaid/Medicare enrollment &amp; appeals • Federal/state/international programs • Long-term sticky contracts • $5.3B revenue • Tysons, VA</div>
     <div class="price-row">
       <div>
-        <div class="px">$56.92<small>(MMS)</small></div>
+        <div class="px">{{rd:px}}<small>(MMS)</small></div>
       </div>
-      <div class="chg">▼ −31.5% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $52.73 – $100.00<br>
         ที่มา: StockAnalysis.com, MarketBeat, Investing.com
       </div>
@@ -87,10 +116,10 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM ณ มี.ค. 2569 · ยืนยัน ≥2 แหล่ง</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">$2.99B</div><div class="d">52.54 ล้านหุ้น · NYSE</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">52.54 ล้านหุ้น · NYSE</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~7.1x</div><div class="d">adj. P/E · GAAP P/E 8.2x</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~18x</div><div class="d">ปัจจุบันต่ำกว่าค่าเฉลี่ยมาก</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">~1.88x</div><div class="d">BVPS $30.32 · สินทรัพย์รัฐบาล</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~{{rd:pbv}}x</div><div class="d">BVPS $30.32 · สินทรัพย์รัฐบาล</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$373M</div><div class="d">Net margin ~7.0% · เติบโต YoY</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$7.70</div><div class="d">adj. TTM · GAAP $6.68 · Q2 FY26 adj. $2.07</div></div>
@@ -113,7 +142,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#003B71"></i>ราคา MMS</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $103</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -139,8 +168,8 @@
         <div class="mval">$92.04</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $92 – $116</span></div>
-        <div class="r">$103</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี DCF ให้ค่าสูงสุดเพราะสมมติฐานเติบโตต่อเนื่องระยะยาว ขณะที่ P/FCF ให้ค่าต่ำสุดเป็นการ conservative ที่สุด FV กลาง $103 สะท้อนธุรกิจที่มั่นคงกับรัฐบาลแต่มีความเสี่ยงนโยบายในระยะสั้น นักวิเคราะห์ 2 ราย (StockAnalysis.com) ให้เป้าเฉลี่ย $105 สอดคล้องกับการประเมินนี้ ที่มา: StockAnalysis.com (ราคา $54.82, adj. EPS TTM $7.70 รวม 4Q), MarketBeat (ราคา $54.79, ROE 25.1%), Investing.com (adj. EPS quarterly: Q3 FY25 $2.16, Q4 FY25 $1.62, Q1 FY26 $1.85, Q2 FY26 $2.07)
@@ -154,15 +183,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $56.92</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $103</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$72.10<br><small>MOS 30%</small></span>
-          <span>$82.40<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$103<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$105<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$115.95<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -175,19 +204,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict good">
-        <div class="big">+45%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">Deep Value — ราคาต่ำกว่ามูลค่าเหมาะสมอย่างมีนัยสำคัญ · ความปลอดภัยสูง</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$82.40</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$72.10</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $103</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="56.92" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -196,17 +225,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $56.92 • EPS ฐาน ~$7.70 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +3%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$84.20</div>
-          <div class="ret pos">+55%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$8.42</span></li>
             <li><span>P/E ออก</span><span>10x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$3.96</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>Medicaid cuts ต่อเนื่อง</span></li>
           </ul>
         </div>
@@ -214,12 +243,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$126.10</div>
-          <div class="ret pos">+128%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$9.70</span></li>
             <li><span>P/E ออก</span><span>13x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$3.96</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>ฟื้นตัว + contract ใหม่</span></li>
           </ul>
         </div>
@@ -227,12 +256,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$162.30</div>
-          <div class="ret pos">+192%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$10.82</span></li>
             <li><span>P/E ออก</span><span>15x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$3.96</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>ขยาย AI/digital gov</span></li>
           </ul>
         </div>
@@ -279,8 +308,8 @@
       <h2>Deep Value ที่ผิดปกติ — ตลาด Overreact ต่อ Medicaid Headwinds</h2>
       <p>Maximus Inc. (MMS) เป็นบริษัท government health &amp; human services outsourcing รายใหญ่ที่สุดในสหรัฐ ด้วยรายได้ $5.3B สัญญาระยะยาวกับรัฐบาลกลาง/รัฐ/นานาชาติ และ free cash flow แข็งแกร่ง $372M TTM ราคาหุ้นร่วงลง ~42% ในรอบปีเพราะตลาดกังวล Medicaid enrollment cuts ทำให้ P/E adj. เหลือ 7.1x ซึ่งต่ำกว่าค่าเฉลี่ยประวัติศาสตร์ 15–18x อย่างมาก มูลค่าเหมาะสม $103 บ่งชี้ upside ~88% Margin of Safety 47% ถือว่า deep value หายากในตลาดปัจจุบัน แม้ Bear case ก็ยังให้ผลตอบแทน +61% นักวิเคราะห์ให้เป้า $105 (Buy)</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$103 <span style="font-size:12px;color:#cab9a8">($92–$116)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +45%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$105 (Buy)</div></div>
       </div>
       <div class="zone">

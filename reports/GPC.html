@@ -10,6 +10,40 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 142,
+  "values": {
+    "px": 133.68,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 125,
+    "fvHigh": 150,
+    "eps": 7.37,
+    "shares": 139300000,
+    "dps": 4.25,
+    "bvps": 32.22,
+    "baseEps": 7.37,
+    "scenarios": [
+      {
+        "tgt": 110,
+        "div": 12.75
+      },
+      {
+        "tgt": 167,
+        "div": 13.47
+      },
+      {
+        "tgt": 221,
+        "div": 14.03
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#0067A5",
     "accentDark": "#003087",
@@ -41,18 +75,14 @@
     "min": 80,
     "max": 160,
     "grid": [100, 120, 140],
-    "fairLine": 142,
     "currency": "$",
     "highlight": [3, 7]
   },
   "gauge": {
     "min": 88,
     "max": 155,
-    "cur": 133.68,
-    "fair": 142,
     "fairLabelTop": true
-  },
-  "fv": 142
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +102,11 @@
     <div class="sub">NAPA Auto Parts automotive parts distribution • Motion Industries MRO/industrial • global operations 17+ countries • Dividend King 69+ consecutive years • Atlanta, GA</div>
     <div class="price-row">
       <div>
-        <div class="px">$133.68<small>(GPC)</small></div>
+        <div class="px">{{rd:px}}<small>(GPC)</small></div>
       </div>
-      <div class="chg">▲ +5.0% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $90.78 – $151.57<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, Digrin.com
       </div>
@@ -87,10 +117,10 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569 · adj EPS FY2025</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$18.6B</div><div class="d">~139.3 ล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM adj)</div><div class="v neu">~18.1x</div><div class="d">adj EPS FY2025 $7.37 (GAAP ยืบเขียวจาก Q4 charges)</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~139.3 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM adj)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">adj EPS FY2025 $7.37 (GAAP ยืบเขียวจาก Q4 charges)</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~19–21x</div><div class="d">ปัจจุบัน derate จาก margins ลด</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">4.15x</div><div class="d">BVPS ~$32.22 (TTM)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ~$32.22 (TTM)</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2024</div><div class="v">$904M</div><div class="d">adj ~$1,028M (−19% YoY GAAP)</div></div>
       <div class="metric"><div class="k">EPS adj FY2025</div><div class="v">~$7.37</div><div class="d">GAAP TTM $0.43 (ผิดปกติ — Q4 ตัดสินทรัพย์)</div></div>
@@ -113,7 +143,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#0067A5"></i>ราคา GPC</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $142</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -139,8 +169,8 @@
         <div class="mval">$150</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $125 – $150</span></div>
-        <div class="r">$142</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/E ให้ค่าต่ำสุด ($125) สะท้อนความระมัดระวังต่อ margin recovery — วิธี DDM และ Justified P/BV ให้ค่าสูงกว่า (~$149–150) เพราะ Dividend King ที่มี track record ยาวนานและ ROE สูงกว่า cost of equity อย่างมีนัย Fair Value $142 เป็นค่ากลางที่สมดุลระหว่างการคาดการณ์รายได้อนุรักษ์นิยมกับมูลค่าเชิงคุณภาพของแฟรนไชส์ NAPA และ Motion Industries
@@ -154,15 +184,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $133.68</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $142</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$99.40<br><small>MOS 30%</small></span>
-          <span>$113.60<br><small>MOS 20%</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">$134<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$142<br><small>Fair Value</small></span>
-          <span style="text-align:right">$150<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -175,19 +205,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+6%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS ระดับปานกลาง — ราคาต่ำกว่า FV แต่ยังไม่ถึง deep value · เหมาะสำหรับทยอยสะสม</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$113.60</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$99.40</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $142</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="133.68" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -196,17 +226,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $133.68 • EPS ฐาน ~$7.37 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −2%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$110</div>
-          <div class="ret neg">−18%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$6.94</span></li>
             <li><span>P/E ออก</span><span>14x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$12.75</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>Margin ไม่ฟื้น + automotive global อ่อนยาว</span></li>
           </ul>
         </div>
@@ -214,12 +244,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +7%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$167</div>
-          <div class="ret pos">+25%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$9.03</span></li>
             <li><span>P/E ออก</span><span>17x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$13.47</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>Margin ค่อยๆ ฟื้น + Motion Industries เติบโตดี</span></li>
           </ul>
         </div>
@@ -227,12 +257,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$221</div>
-          <div class="ret pos">+65%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$10.35</span></li>
             <li><span>P/E ออก</span><span>20x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$14.03</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Margin re-rate + M&amp;A synergies + industrial demand surge</span></li>
           </ul>
         </div>
@@ -279,8 +309,8 @@
       <h2>GPC — Value กับ Dividend King ที่ถูก Derate ชั่วคราว</h2>
       <p>Genuine Parts Company เป็นธุรกิจกระจายอะไหล่รถยนต์และอุตสาหกรรม (NAPA + Motion Industries) ที่ครองตลาดมากว่า 95 ปี โมเดลธุรกิจ "repair &amp; replace" มีความต้านทานเศรษฐกิจถดถอยสูงเพราะผู้บริโภคต้องซ่อมรถ ไม่ว่าเศรษฐกิจจะเป็นอย่างไร ราคาหุ้น derate ลงจากแรงกดดัน margin และ one-time charges ใน Q4 2025 ทำให้ P/E adj ลงมาที่ ~16x ซึ่งต่ำกว่า historical range 19–21x และให้ MOS ~17% จาก FV $142 สำหรับนักลงทุนระยะยาวที่เชื่อมั่นใน franchise คุณภาพ การรับปันผล 3.6%/ปีจาก Dividend King ระหว่างรอ re-rating ถือเป็นผลตอบแทน "รับเงินระหว่างรอ" ที่มีคุณค่า</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$142 <span style="font-size:12px;color:#cab9a8">($125–$150)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +6%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$134 (Buy consensus)</div></div>
       </div>
       <div class="zone">

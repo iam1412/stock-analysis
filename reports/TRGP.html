@@ -10,6 +10,38 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 248.22,
+  "values": {
+    "px": 290.25,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 242,
+    "fvHigh": 255,
+    "shares": 214700000,
+    "dps": 4.25,
+    "baseEps": 9.82,
+    "scenarios": [
+      {
+        "tgt": 193.14,
+        "div": 12
+      },
+      {
+        "tgt": 313.68,
+        "div": 13.5
+      },
+      {
+        "tgt": 435.51,
+        "div": 15.75
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#b45309",
     "accentDark": "#7c2d12",
@@ -41,7 +73,6 @@
     "min": 100,
     "max": 350,
     "grid": [150, 200, 250, 300],
-    "fairLine": 248.22,
     "currency": "$",
     "highlight": [0, 10],
     "gridFmt": "v.toFixed(0)",
@@ -49,11 +80,8 @@
   },
   "gauge": {
     "min": 150,
-    "max": 320,
-    "cur": 290.25,
-    "fair": 248.22
-  },
-  "fv": 248.22
+    "max": 320
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -73,11 +101,11 @@
     <div class="sub">ผู้นำ NGL Midstream ในลุ่มน้ำมัน Permian • Gathering &amp; Processing • Fractionation • Logistics &amp; LPG Export Terminal (Galena Park)</div>
     <div class="price-row">
       <div>
-        <div class="px">$290.25<small>(TRGP)</small></div>
+        <div class="px">{{rd:px}}<small>(TRGP)</small></div>
       </div>
-      <div class="chg">▲ +88.4% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $144.14 – $280.00<br>
         ที่มา: Finviz.com • Yahoo Finance • ประกาศผลประกอบการบริษัท (GlobeNewswire/SEC 8-K)
       </div>
@@ -88,7 +116,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ Q1/2569 (มี.ค. 69) · ราคา 9 ก.ค. 2569</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$62.3B</div><div class="d">หุ้น ~214.7 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">หุ้น ~214.7 ล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~28.5x</div><div class="d">EPS TTM $9.82 (Finviz) · เทียบ Yahoo Finance $10.19 → P/E 26.9x</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~15–20x</div><div class="d">ช่วง ~10x (จุดต่ำวัฏจักร 2566) – 28x (หลัง re-rate 2568-69)</div></div>
       <div class="metric"><div class="k">EV/EBITDA (TTM)</div><div class="v neu">~14.5x</div><div class="d">EV ~$77.7B (Mkt cap+หนี้สุทธิ) ÷ EBITDA TTM ~$5.2B</div></div>
@@ -100,7 +128,7 @@
 
       <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~$17B</div><div class="d">EBITDA margin ~29%</div></div>
       <div class="metric"><div class="k">Net Debt/EBITDA</div><div class="v">~3.6x</div><div class="d">เป้าหมายบริษัท 3.0–4.0x (ยังอยู่ในกรอบ) · หนี้รวม $19.13B (31 มี.ค. 69)</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.5%</div><div class="d">Forward $4.25/หุ้น · แผนขึ้นเป็น $5.00 ปี 2569 (+25%)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">Forward $4.25/หุ้น · แผนขึ้นเป็น $5.00 ปี 2569 (+25%)</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">~0.6–1.2x</div><div class="d">แตกต่างตามแหล่งข้อมูล/ช่วงเวลาคำนวณ (StockAnalysis 1.21 · Fool 0.90 · GuruFocus 1.07)</div></div>
     </div>
   </section>
@@ -114,7 +142,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#b45309"></i>ราคา TRGP</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $248.22</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -136,8 +164,8 @@
         <div class="mval">$254.16</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $242 – $255</span></div>
-        <div class="r">$248.22</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี EV/EBITDA ให้ค่าต่ำกว่าเพราะสมมติมัลติเปิลย่อลงจาก 14.5x TTM ปัจจุบันสู่ระดับปกติมากขึ้น ~12.25x forward สะท้อนความเสี่ยงว่าอัตราเติบโต EBITDA จะชะลอหลังปี 2569 ส่วนวิธี P/E ยังให้เครดิตมัลติเปิลพรีเมียม ~24x กับ EPS ปีหน้าที่โตต่อเนื่อง ค่าเฉลี่ย ~$248 ต่ำกว่าราคาปัจจุบัน $273.02 ~9-10% สะท้อนว่าตลาดได้ปรับราคารับข่าวดี (guidance ปรับขึ้น 2 ครั้งในปี 2569) ไปมากแล้ว
@@ -151,14 +179,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $290.25</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $248.22</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$173.75<br><small>MOS 30%</small></span>
-          <span>$198.58<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$248.22<br><small>Fair Value</small></span>
-          <span style="text-align:right">$255<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$286.60<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -172,19 +200,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−17%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาปัจจุบัน ($273.02) สูงกว่ามูลค่าเหมาะสม ($248.22) ~10% → Margin of Safety ติดลบ ไม่แนะนำไล่ซื้อเพิ่มที่ระดับราคานี้ ผู้ถือเดิมที่ได้ต้นทุนต่ำสามารถถือตามพื้นฐานระยะยาวได้ แต่ผู้ซื้อใหม่ควรรอจังหวะย่อตัว</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$198.58</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$173.75</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $248.22</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="290.25" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -193,17 +221,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $290.25 • EPS ฐาน ~$9.82 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS 3%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$193.14</div>
-          <div class="ret neg">-29.3%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$10.73</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$12.00</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>Permian drilling ชะลอ/NGL อ่อนตัว มัลติเปิลย่อกลับสู่ระดับ pre-rally</span></li>
           </ul>
         </div>
@@ -211,12 +239,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +10%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$313.68</div>
-          <div class="ret pos">+12.7%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$13.07</span></li>
             <li><span>P/E ออก</span><span>24x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$13.50</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>EBITDA โต low-double-digit ตาม guidance มัลติเปิลทรงตัวใกล้ปัจจุบัน</span></li>
           </ul>
         </div>
@@ -224,12 +252,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +18%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$435.51</div>
-          <div class="ret pos">+55.5%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$16.13</span></li>
             <li><span>P/E ออก</span><span>27x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$15.75</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Permian buildout/LPG export ต่อเนื่อง + M&amp;A เสริม ดันมัลติเปิลสูงต่อ</span></li>
           </ul>
         </div>
@@ -276,8 +304,8 @@
       <h2>ธุรกิจ Permian NGL ชั้นนำ แต่ราคาแพงกว่ามูลค่าเหมาะสม</h2>
       <p>Targa Resources เป็นผู้นำ NGL Midstream ในลุ่มน้ำมัน Permian ที่มีสถานะครบวงจรตั้งแต่ Gathering & Processing ไปจนถึง Fractionation และ LPG Export ผลประกอบการ FY2025 ทำสถิติสูงสุด (Adjusted EBITDA $4.96B, +19.7% YoY) และผู้บริหารปรับเพิ่ม guidance ปี 2569 ถึง 2 ครั้งเป็น $5.7-5.9B สะท้อนโมเมนตัมธุรกิจที่แข็งแกร่งต่อเนื่อง อย่างไรก็ตาม ราคาหุ้นที่พุ่งขึ้น +65.5% ใน ~1 ปีที่ผ่านมาได้ดันมัลติเปิล (P/E ~27.8x, EV/EBITDA ~14.5x) ขึ้นไปสูงกว่ามูลค่าเหมาะสมที่ประเมินได้ที่ ~$248.22 แล้ว ทำให้ Margin of Safety ติดลบ ~10% ที่ราคาปัจจุบัน $273.02 ธีมการเติบโตระยะยาวยังน่าสนใจ แต่จังหวะเข้าซื้อใหม่ควรรอราคาย่อตัวมากกว่าไล่ราคาที่จุดสูงสุดใหม่</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$248.22 <span style="font-size:12px;color:#cab9a8">($242–$255)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −17%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$286.60 (Moderate Buy)</div></div>
       </div>
       <div class="zone">

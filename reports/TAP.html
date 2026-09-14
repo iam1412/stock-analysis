@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 45.76,
+  "values": {
+    "px": 38.93,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 33.32,
+    "fvHigh": 58.2,
+    "eps": 4.72,
+    "shares": 186450000,
+    "bvps": 55.9,
+    "baseEps": 4.72,
+    "scenarios": [
+      {
+        "tgt": 24.7,
+        "div": 3.84
+      },
+      {
+        "tgt": 46.2,
+        "div": 5.76
+      },
+      {
+        "tgt": 63.72,
+        "div": 6
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#b45309",
     "accentDark": "#78350f",
@@ -41,7 +74,6 @@
     "min": 35,
     "max": 50,
     "grid": [40, 45],
-    "fairLine": 45.76,
     "currency": "$",
     "highlight": [4, 11],
     "gridFmt": "v.toFixed(0)",
@@ -49,11 +81,8 @@
   },
   "gauge": {
     "min": 25,
-    "max": 60,
-    "cur": 38.93,
-    "fair": 45.76
-  },
-  "fv": 45.76
+    "max": 60
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -73,11 +102,11 @@
     <div class="sub">Coors Light • Miller Lite • Blue Moon • Peroni (US license) • Staropramen • Zoa Energy</div>
     <div class="price-row">
       <div>
-        <div class="px">$38.93<small>(TAP)</small></div>
+        <div class="px">{{rd:px}}<small>(TAP)</small></div>
       </div>
-      <div class="chg">▼ −11.0% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $38.04 – $54.82<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, Molson Coors IR (ประกาศผล Q2/2026)
       </div>
@@ -88,10 +117,10 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบไตรมาส 2/2026 (ประกาศ 6 ส.ค. 2569) · EPS = Underlying (non-GAAP) ยกเว้นระบุ GAAP</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$7.26B</div><div class="d">186.45M หุ้นคงเหลือทุกคลาส (StockAnalysis /statistics)</div></div>
-      <div class="metric"><div class="k">P/E (Fwd, Underlying)</div><div class="v neu">~8.2x</div><div class="d">GAAP EPS ติดลบจาก impairment → ใช้ EPS Underlying FY2569E $4.72</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">186.45M หุ้นคงเหลือทุกคลาส (StockAnalysis /statistics)</div></div>
+      <div class="metric"><div class="k">P/E (Fwd, Underlying)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">GAAP EPS ติดลบจาก impairment → ใช้ EPS Underlying FY2569E $4.72</div></div>
       <div class="metric"><div class="k">EV/EBITDA (TTM)</div><div class="v">~6.0x</div><div class="d">EV $13.18B ÷ EBITDA underlying $2,208.7M · มัธยฐาน 5 ปีของตัวเอง 7.44x</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">~0.70x</div><div class="d">BVPS ~$55.9 (ประมาณจากหนี้ $7,914M ÷ D/E 0.76) · ต่ำกว่า book value</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~{{rd:pbv}}x</div><div class="d">BVPS ~$55.9 (ประมาณจากหนี้ $7,914M ÷ D/E 0.76) · ต่ำกว่า book value</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ TTM (GAAP)</div><div class="v neg">−$2,306M</div><div class="d">มาจาก Goodwill Impairment $3,645.7M + ตัดสินทรัพย์ไม่มีตัวตน $273.9M ใน Q3/2568 ทั้งก้อน</div></div>
       <div class="metric"><div class="k">EPS TTM — GAAP / Underlying</div><div class="v">−$11.99 / $5.08</div><div class="d">Underlying TTM = FY2568 $5.42 − ครึ่งแรกปี 2568 $2.54 + ครึ่งแรกปี 2569 $2.20</div></div>
@@ -117,7 +146,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#b45309"></i>ราคา TAP</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $45.76</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -143,8 +172,8 @@
         <div class="mval">$33.32</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสม (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $33.32 – $58.20</span></div>
-        <div class="r">$45.76</div>
+        <div class="l">มูลค่าเหมาะสม (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>วิธีถ่วงน้ำหนัก (กฎ 0.4c-bis):</b> FV = ค่าเฉลี่ยของ <b>ตระกูลละหนึ่งเสียง</b> — ขายึดตลาด (EV/EBITDA $58.20) กับขาที่ขับด้วย (r, g) (DDM $33.32) ⇒ ($58.20 + $33.32)/2 = <b>$45.76</b> · สองขาห่างกัน 1.75 เท่า (≤2.0) และเครื่องหมายเดียวกัน จึงเฉลี่ยได้ · การ์ด P/E เป็น "บริบท" ไม่เข้าเฉลี่ย เพราะตัวคูณของมันคือราคาตลาดเอง ไม่ใช่สมอที่วัดจากอดีต · <b>กรอบ FV $33.32 – $58.20</b><br>
@@ -161,15 +190,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $38.93</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $45.76</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$32.03<br><small>MOS 30%</small></span>
-          <span>$36.61<br><small>MOS 20%</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">$45.48<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$45.76<br><small>Fair Value</small></span>
-          <span style="text-align:right">$58.20<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -182,19 +211,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+15%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS พอใช้ — ต่ำกว่ามูลค่าเหมาะสมพอสมควร แต่ส่วนเผื่อยังไม่หนาพอสำหรับหุ้นที่กำไรอยู่ในขาลง ควรทยอยสะสมมากกว่าเข้าทีเดียว</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$36.61</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$32.03</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $45.76</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="38.93" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -203,17 +232,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $38.93 • EPS ฐาน ~$4.72 (Underlying FY2569E) • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} (Underlying FY2569E){{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −7%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$24.70</div>
-          <div class="ret neg">−26.7%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$3.80</span></li>
             <li><span>P/E ออก</span><span>6.5x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$3.84</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>ปริมาณขายสหรัฐฯ หดต่อเนื่อง ต้นทุนอะลูมิเนียมไม่ผ่อน · ปันผลถูกตัดครึ่ง · ตลาด de-rate ต่ำกว่า 6x</span></li>
           </ul>
         </div>
@@ -221,12 +250,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +1%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$46.20</div>
-          <div class="ret pos">+33.5%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$4.86</span></li>
             <li><span>P/E ออก</span><span>9.5x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$5.76</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>ปริมาณขายทรงตัวหลังปี 2569 · โครงการลดต้นทุน + ซื้อหุ้นคืนพยุง EPS · ปันผลคงเดิม</span></li>
           </ul>
         </div>
@@ -234,12 +263,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +4%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$63.72</div>
-          <div class="ret pos">+79.1%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$5.31</span></li>
             <li><span>P/E ออก</span><span>12x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$6.00</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>อุตสาหกรรมเบียร์สหรัฐฯ หยุดหดตัว · premiumization (Blue Moon/Peroni/Zoa) โต · ซื้อหุ้นคืนเร่งตัวจากวงเงินคงเหลือ $2.35B · ตัวคูณกลับสู่มัธยฐานเดิม</span></li>
           </ul>
         </div>
@@ -287,8 +316,8 @@
       <h2>ขาดทุนบัญชีเป็นเรื่อง non-cash ที่จบไปแล้ว ปันผลจ่ายจากเงินสดจริง แต่ฐานกำไรยังหด — ทยอยสะสม</h2>
       <p>TAP เป็นผู้ผลิตเบียร์รายใหญ่อันดับต้น ๆ ของสหรัฐฯ (Coors Light, Miller Lite) ที่กำลังเจอแรงกดดันเชิงโครงสร้างจากปริมาณขายที่หดตัว จนต้องบันทึก goodwill impairment $3,645.7M บวกการด้อยค่าสินทรัพย์ไม่มีตัวตน $273.9M ใน Q3/2568 ทำให้ EPS GAAP แบบ TTM ติดลบ −$11.99 — แต่ทั้งหมดเป็นรายการ <b>non-cash ก้อนเดียวไตรมาสเดียว</b> ไม่มีก้อนใหม่ในปี 2569 และครึ่งแรกปี 2569 บริษัทกลับมากำไร GAAP $2.03/หุ้น ฐานกำไรที่ใช้ประเมินจึงเป็น underlying EPS: TTM $5.08 และปี 2569 ตาม guidance $4.61–$4.82 (กลาง $4.72) · ธุรกิจยังสร้าง underlying EBITDA $2,208.7M และ FCF ระดับ $1.1B ต่อปี รองรับปันผล 4.71% ที่คิดเป็นเพียง ~33% ของกระแสเงินสดอิสระ · Fair Value $45.76 มาจากการถ่วง 2 ตระกูลสมมติฐาน (EV/EBITDA ที่มัธยฐาน 5 ปีของตัวเอง $58.20 กับ DDM $33.32) ให้ MOS ~11.0% ที่ราคา $40.74 — upside ผูกกับการที่ตลาดยอมให้ตัวคูณกลับเข้าหาค่าเฉลี่ยเดิม ซึ่งจะเกิดได้ก็ต่อเมื่อปริมาณขายหยุดหด จึงเหมาะกับนักลงทุนที่รับปันผลระหว่างรอ และควรทยอยสะสมมากกว่าเข้าทีเดียว</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$45.76 <span style="font-size:12px;color:#cab9a8">($33.32–$58.20)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +15%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$45.48 (Hold)</div></div>
       </div>
       <div class="zone">
@@ -301,7 +330,7 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ EPS adjusted ในอนาคต การใช้ Adjusted EPS แทน GAAP อาจไม่สะท้อนผลขาดทุนทางบัญชีที่แท้จริง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
-    ราคา ณ 11 ก.ย. 2569 อ้างอิง: StockAnalysis.com (https://stockanalysis.com/stocks/tap/) · Yahoo Finance (https://finance.yahoo.com/quote/TAP/) · Molson Coors Investor Relations — ประกาศผลไตรมาส 2/2026 (6 ส.ค. 2569) และผลปี 2568 · ข้อมูลกราฟ: Yahoo Finance Chart API · อัตราผลตอบแทนพันธบัตรสหรัฐ 10 ปี: Yahoo ^TNX
+    ราคา ณ {{rd:priceDate}} อ้างอิง: StockAnalysis.com (https://stockanalysis.com/stocks/tap/) · Yahoo Finance (https://finance.yahoo.com/quote/TAP/) · Molson Coors Investor Relations — ประกาศผลไตรมาส 2/2026 (6 ส.ค. 2569) และผลปี 2568 · ข้อมูลกราฟ: Yahoo Finance Chart API · อัตราผลตอบแทนพันธบัตรสหรัฐ 10 ปี: Yahoo ^TNX
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 18 สิงหาคม 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

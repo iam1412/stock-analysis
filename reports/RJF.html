@@ -10,6 +10,40 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 165,
+  "values": {
+    "px": 173.46,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 159,
+    "fvHigh": 182,
+    "eps": 10.58,
+    "shares": 194900000,
+    "dps": 2.16,
+    "bvps": 64.56,
+    "baseEps": 10.58,
+    "scenarios": [
+      {
+        "tgt": 145,
+        "div": 6.48
+      },
+      {
+        "tgt": 204,
+        "div": 6.48
+      },
+      {
+        "tgt": 264,
+        "div": 6.48
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#004B87",
     "accentDark": "#003070",
@@ -41,18 +75,14 @@
     "min": 140,
     "max": 190,
     "grid": [150, 160, 170, 180],
-    "fairLine": 165,
     "currency": "$",
     "highlight": [7, 10]
   },
   "gauge": {
     "min": 100,
     "max": 200,
-    "cur": 173.46,
-    "fair": 165,
     "fairLabelTop": true
-  },
-  "fv": 165
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +102,11 @@
     <div class="sub">Wealth management & investment banking • 8,700+ financial advisors • Raymond James Bank • Capital markets • St. Petersburg, FL</div>
     <div class="price-row">
       <div>
-        <div class="px">$173.46<small>(RJF)</small></div>
+        <div class="px">{{rd:px}}<small>(RJF)</small></div>
       </div>
-      <div class="chg">▲ +9.3% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $138.82 – $177.66<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, Finviz.com
       </div>
@@ -87,10 +117,10 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM ณ มิ.ย. 2569</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$33.8B</div><div class="d">~194.9 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~194.9 ล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~16.40x</div><div class="d">EPS TTM $10.58</div></div>
       <div class="metric"><div class="k">Forward P/E</div><div class="v">~14.63x</div><div class="d">FY2026E EPS $11.86</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">~2.69x</div><div class="d">BVPS $64.56</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~{{rd:pbv}}x</div><div class="d">BVPS $64.56</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">$2,147M</div><div class="d">+3.8% YoY vs FY2025</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$10.58</div><div class="d">FY2025: $10.30 · FY2024: $9.70</div></div>
@@ -113,7 +143,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#004B87"></i>ราคา RJF</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $165</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -139,8 +169,8 @@
         <div class="mval">$182</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $159 – $182</span></div>
-        <div class="r">$165</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/E TTM และ Forward P/E ให้ FV ใกล้เคียงกันที่ $159–$160 สะท้อนว่าตลาดตีราคา RJF ใกล้ FV บน TTM basis วิธี Justified P/BV ให้ค่าสูงกว่าที่ $182 เนื่องจากรวม growth premium (ROE 17.3% > COE 10%) ซึ่งสมเหตุสมผลสำหรับบริษัทที่ EPS โตเฉลี่ย ~13% CAGR ในช่วง 3 ปีที่ผ่านมา น้ำหนัก: 40% P/E + 35% Forward P/E + 25% P/BV = FV $165 สอดคล้องกับเป้าเฉลี่ยนักวิเคราะห์ $174 ราคาปัจจุบัน $168.12 อยู่สูงกว่า FV เล็กน้อย (premium ~1.9%)
@@ -154,15 +184,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $173.46</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $165</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$116<br><small>MOS 30%</small></span>
-          <span>$132<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$165<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$174<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$182<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -175,19 +205,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−5%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS ต่ำ — ราคาใกล้ Fair Value แล้ว ยังไม่มีส่วนลดเพียงพอ</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$132</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$116</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $165</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="173.46" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -196,17 +226,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $173.46 • EPS ฐาน ~$10.58 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +3%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$145</div>
-          <div class="ret neg">−13% (3 ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$11.56</span></li>
             <li><span>P/E ออก</span><span>12x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$6.48</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>ตลาดซบ, M&amp;A ชะลอ, rate cut กด NII</span></li>
           </ul>
         </div>
@@ -214,12 +244,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +10%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$204</div>
-          <div class="ret pos">+21% (3 ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$14.08</span></li>
             <li><span>P/E ออก</span><span>14x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$6.48</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>advisor โต, wealth management ขยาย, NII ทรงตัว</span></li>
           </ul>
         </div>
@@ -227,12 +257,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$264</div>
-          <div class="ret pos">+56% (3 ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$16.09</span></li>
             <li><span>P/E ออก</span><span>16x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$6.48</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>M&amp;A บูม, ดอกเบี้ยสูงหนุน NII, market share เพิ่ม</span></li>
           </ul>
         </div>
@@ -279,8 +309,8 @@
       <h2>RJF — คุณภาพดี แต่ราคาสูงกว่ามูลค่าเหมาะสมแล้ว</h2>
       <p>Raymond James Financial เป็นหนึ่งในบริษัทบริหารความมั่งคั่งชั้นนำของสหรัฐฯ ที่มีวัฒนธรรมอนุรักษ์นิยม ROE ยืนเหนือ 17% และ EPS โต ~13% CAGR ในช่วง 4 ปีที่ผ่านมา — คุณภาพธุรกิจเหนือ peer ส่วนใหญ่ อย่างไรก็ตาม ราคาปัจจุบัน $168.12 อยู่เหนือ Fair Value $165 เล็กน้อย (premium ~1.9%) ทำให้ Margin of Safety ติดลบ นักลงทุนสายคุณค่าควรรอจังหวะราคาอ่อนตัวสู่ $145–$155 เพื่อ MOS ที่เพียงพอก่อนสะสม</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$165 <span style="font-size:12px;color:#cab9a8">($159–$182)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −5%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$174 (Buy)</div></div>
       </div>
       <div class="zone">

@@ -19,6 +19,20 @@
 -->
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 181,
+  "values": {
+    "px": 178.53,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 141,
+    "fvHigh": 220,
+    "eps": 9.32,
+    "shares": 35500000,
+    "dps": 2.64,
+    "bvps": 78
+  },
   "theme": {
     "accent": "#8B1A1A",
     "accentDark": "#5A0F0F",
@@ -50,17 +64,13 @@
     "min": 150,
     "max": 200,
     "grid": [160, 170, 180, 190],
-    "fairLine": 181,
     "currency": "$",
     "highlight": [0, 6]
   },
   "gauge": {
     "min": 120,
-    "max": 230,
-    "cur": 178.53,
-    "fair": 181
-  },
-  "fv": 181
+    "max": 230
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -80,11 +90,11 @@
     <div class="sub">North America's #1 railcar lessor · 130,000+ fleet (tank/hopper/gondola/box) · Long-term lease contracts · Europe via AAE JV · 50+ yr Dividend Aristocrat · Chicago IL</div>
     <div class="price-row">
       <div>
-        <div class="px">$178.53<small>(GATX)</small></div>
+        <div class="px">{{rd:px}}<small>(GATX)</small></div>
       </div>
-      <div class="chg">▲ +13.8% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $148.20 – $205.56<br>
         ที่มา: StockAnalysis.com, Finviz.com, Yahoo Finance
       </div>
@@ -95,10 +105,10 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM ณ Q1 2026 · ยืนยัน ≥2 แหล่ง</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">$6.34B</div><div class="d">หุ้น ~35.5M ใบ</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~19.2x</div><div class="d">EPS $9.32 · ต่ำกว่า 5 ปีก่อน (21-23x)</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">หุ้น ~35.5M ใบ</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS $9.32 · ต่ำกว่า 5 ปีก่อน (21-23x)</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~21x</div><div class="d">ช่วง 18–24x ขึ้นกับวัฏจักร</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">2.29x</div><div class="d">BVPS $78.00 · asset-heavy lessor</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS $78.00 · asset-heavy lessor</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$216.0M</div><div class="d">+7.2% YoY (FY2024: $201.4M)</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$9.32</div><div class="d">Q1'26+Q4'25+Q3'25+Q2'25 ยืนยัน 2 แหล่ง</div></div>
@@ -121,7 +131,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#8B1A1A"></i>ราคา GATX</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $181</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ (เม.ย. 69 สูงสุด)</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -150,8 +160,8 @@
         <div class="mval">$216.84</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $141 – $220</span></div>
-        <div class="r">$181</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี Justified P/BV ให้ค่าสูงสุด ($216.84) สะท้อน ROE ที่แข็งแกร่งเทียบ cost of capital
@@ -168,15 +178,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $178.53</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $181</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$126.70<br><small>MOS 30%</small></span>
-          <span>$144.80<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$181.00<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$218.00<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$220.00<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -191,19 +201,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+1.4%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">หุ้นซื้อขายใกล้ Fair Value — ยังไม่มี Margin of Safety เพียงพอ รอโซนต่ำกว่า $145</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$144.80</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$126.70</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $181</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="178.53" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -300,8 +310,8 @@
       อย่างไรก็ตาม ราคาปัจจุบัน $184.63 ซื้อขายสูงกว่า Fair Value $181 เล็กน้อย (MOS ติดลบ ~2%) ไม่มี margin of safety
       นักวิเคราะห์ให้ Strong Buy เป้าเฉลี่ย $218.75 (+22.7%) แต่ด้วย leverage สูง (D/E ~3.4x) และดอกเบี้ยสูง กลยุทธ์ที่ดีที่สุดคือรอสะสมใกล้โซน $144–$165 (MOS 20–30%)</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$181 <span style="font-size:12px;color:#cab9a8">($141–$220)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffab91">MOS ~ +1.4%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffab91">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$218.75 (Strong Buy)</div></div>
       </div>
       <div class="zone">

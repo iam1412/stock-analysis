@@ -10,6 +10,37 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 117,
+  "values": {
+    "px": 103.01,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 110,
+    "fvHigh": 125,
+    "shares": 104200000,
+    "dps": 4.24,
+    "scenarios": [
+      {
+        "tgt": 110,
+        "div": 12.72
+      },
+      {
+        "tgt": 137,
+        "div": 13.5
+      },
+      {
+        "tgt": 172,
+        "div": 14.5
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#0e9cab",
     "accentDark": "#0b747f",
@@ -41,18 +72,14 @@
     "min": 95,
     "max": 120,
     "grid": [100, 105, 110, 115],
-    "fairLine": 117,
     "currency": "$",
     "highlight": [5, 8]
   },
   "gauge": {
     "min": 75,
     "max": 145,
-    "cur": 103.01,
-    "fair": 117,
     "fairLabelTop": true
-  },
-  "fv": 117
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +99,11 @@
     <div class="sub">อพาร์ตเมนต์ให้เช่า ~58,700 ยูนิตใน 15 ตลาด • Sun Belt หลัก: Dallas/Houston (TX), Tampa/Orlando/SE Florida, Phoenix, Denver, Atlanta, Charlotte, Raleigh, Nashville • Washington D.C. Metro • Development pipeline ~$800M–$1B • Dividend เพิ่มต่อเนื่อง 34 ปี</div>
     <div class="price-row">
       <div>
-        <div class="px">$103.01<small>(CPT)</small></div>
+        <div class="px">{{rd:px}}<small>(CPT)</small></div>
       </div>
-      <div class="chg">▲ +3.5% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $96.53 – $116.75<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, MarketBeat.com
       </div>
@@ -87,7 +114,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569 | REIT — เน้น FFO/Occupancy แทน P/E (GAAP บิดเบือนจาก depreciation)</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$10.7B</div><div class="d">~104.2M shares outstanding</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~104.2M shares outstanding</div></div>
       <div class="metric"><div class="k">P/FFO (2026E)</div><div class="v neu">~18.3x</div><div class="d">FFO/sh 2026E ~$6.24 · StockAnalysis estimate</div></div>
       <div class="metric"><div class="k">P/FFO (2025A)</div><div class="v">~16.9x</div><div class="d">FFO/sh 2025A ~$6.77 · ลดจากพีค 22x+</div></div>
       <div class="metric"><div class="k">EPS GAAP (TTM)</div><div class="v neu">$3.58</div><div class="d">บิดเบือนจาก D&amp;A $611M · ไม่ใช้ประเมินมูลค่า</div></div>
@@ -113,7 +140,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1dd9ed"></i>ราคา CPT</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $117</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -139,8 +166,8 @@
         <div class="mval">$118</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $110 – $125</span></div>
-        <div class="r">$117</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         ทั้ง 3 วิธีให้ค่าใกล้เคียงกัน ($110–$118) บ่งชี้ว่าราคา $114 อยู่ใกล้มูลค่าเหมาะสมมาก DDM ให้ค่าต่ำสุดสะท้อน g อนุรักษ์นิยม; P/FFO 18x สอดคล้องกับ ESS peer; NAV $118 สนับสนุนว่า portfolio มีมูลค่าพื้นฐาน — consensus นักวิเคราะห์ 24 คนที่ $114.40 ยืนยัน fairly valued MOS แคบ 2.2%
@@ -154,15 +181,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $103.01</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $117</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$81.90<br><small>MOS 30%</small></span>
-          <span>$93.60<br><small>MOS 20%</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">$114.40<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$117<br><small>Fair Value</small></span>
-          <span style="text-align:right">$125<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -175,19 +202,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+12%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS แคบ — ราคาใกล้ Fair Value; รอโอกาสที่ดีกว่า &lt;$107</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$93.60</div><div class="d">โซนน่าสนใจสำหรับ value (ใกล้ 52w low $96.53)</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$81.90</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value (ใกล้ 52w low $96.53)</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
         <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $107</div><div class="d">P/FFO &lt;16.5x · ราคาต่ำกว่า FV ชัดเจน</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="103.01" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -196,17 +223,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $103.01 • Core FFO ฐาน ~$6.50/sh • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • Core FFO ฐาน ~$6.50/sh{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>FFO +0%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$110</div>
-          <div class="ret neg">+6.8% (รวมปันผล)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>FFO ปี 3</span><span>~$6.50</span></li>
             <li><span>P/FFO ออก</span><span>15x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$12.72</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>Supply กดต่อเนื่อง · Occupancy ลด · FFO flat</span></li>
           </ul>
         </div>
@@ -214,12 +241,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>FFO +4%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$137</div>
-          <div class="ret pos">+33.0% (รวมปันผล)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>FFO ปี 3</span><span>~$7.31</span></li>
             <li><span>P/FFO ออก</span><span>17x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$13.50</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>Supply rolloff ปลาย 2569 · rent growth ฟื้น · NOI +4%</span></li>
           </ul>
         </div>
@@ -227,12 +254,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>FFO +7%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$172</div>
-          <div class="ret pos">+67.0% (รวมปันผล)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>FFO ปี 3</span><span>~$7.96</span></li>
             <li><span>P/FFO ออก</span><span>20x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$14.50</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Rate cut ดัน re-rate · Sun Belt migration accelerates · dev pipeline ROI</span></li>
           </ul>
         </div>
@@ -279,8 +306,8 @@
       <h2>CPT — Fairly Valued · คุณภาพดี แต่รอจังหวะราคาดีกว่า</h2>
       <p>Camden Property Trust เป็น Sun Belt apartment REIT คุณภาพสูงที่มีจุดแข็งชัดเจน: development pipeline ที่สร้าง value accretion ได้จริง (yield on cost > cap rate), dividend เพิ่มต่อเนื่อง 34 ปี, และ portfolio ที่กระจายใน 15 ตลาดหลักที่ demographics แข็งแกร่ง ราคา $114.49 ซื้อขายใกล้ Fair Value $117 (MOS ~2.2%) ซึ่งตรงกับ consensus นักวิเคราะห์ 24 คนที่ $114.40 — นักลงทุนระยะยาวที่เชื่อใน Sun Belt thesis และต้องการ income ที่เติบโตสามารถ initiate position เล็กได้ แต่ risk/reward ที่ดีกว่าอยู่ที่ &lt;$107 (P/FFO &lt;16.5x) หรือรอจนกว่า supply data จะดีกว่าคาดอย่างชัดเจน</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$117 <span style="font-size:12px;color:#cab9a8">($110–$125)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +12%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$114.40 (Hold)</div></div>
       </div>
       <div class="zone">

@@ -10,6 +10,38 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 40,
+  "values": {
+    "px": 38.43,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 36,
+    "fvHigh": 43,
+    "shares": 309800000,
+    "bvps": 26.02,
+    "baseEps": 3,
+    "scenarios": [
+      {
+        "tgt": 22.1,
+        "div": 0
+      },
+      {
+        "tgt": 41.7,
+        "div": 0
+      },
+      {
+        "tgt": 59.2,
+        "div": 0
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#2471A3",
     "accentDark": "#1A5276",
@@ -41,18 +73,14 @@
     "min": 30,
     "max": 45,
     "grid": [35, 40],
-    "fairLine": 40,
     "currency": "$",
     "highlight": [0, 5]
   },
   "gauge": {
     "min": 26,
     "max": 48,
-    "cur": 38.43,
-    "fair": 40,
     "fairLabelTop": true
-  },
-  "fv": 40
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +100,11 @@
     <div class="sub">Appalachian nat gas &amp; NGL E&amp;P • Marcellus &amp; Utica Shale • ~28% Antero Midstream stake • LNG export tailwind • Cyclical — Henry Hub sensitive</div>
     <div class="price-row">
       <div>
-        <div class="px">$38.43<small>(AR)</small></div>
+        <div class="px">{{rd:px}}<small>(AR)</small></div>
       </div>
-      <div class="chg">▲ +24.3% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $29.10 – $45.75<br>
         ที่มา: StockAnalysis.com · Finviz · Yahoo Finance · EIA · Antero Q1 2026
       </div>
@@ -90,7 +118,7 @@
       <div class="metric"><div class="k">Market Cap</div><div class="v">$11.91B</div><div class="d">309.8M หุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~11.5x</div><div class="d">EPS GAAP หนุนด้วยกำไร hedge; adj ต่ำกว่า</div></div>
       <div class="metric"><div class="k">Production</div><div class="v pos">3.9 Bcfe/d</div><div class="d">Q1/69 นิวไฮ (+13% YoY) · guide '69 ~4.1</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.48x</div><div class="d">BVPS $26.02</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS $26.02</div></div>
 
       <div class="metric"><div class="k">Realized Gas Price</div><div class="v">$5.57/Mcf</div><div class="d">พรีเมียม Henry Hub (NGL หนุน)</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$3.09</div><div class="d">GAAP · 2569E ~$4.43 · adj ~$3.0 mid-cycle</div></div>
@@ -113,7 +141,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#2471A3"></i>ราคา AR</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $40.00</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -139,8 +167,8 @@
         <div class="mval">$39.29</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $36 – $43</span></div>
-        <div class="r">$40.00</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี 1 (P/E normalized) ให้ค่าต่ำสุด $36 เพราะใช้ EPS mid-cycle ที่ราคาแก๊สปกติ (ไม่ใช่ปีที่ราคาแก๊สแรงอย่าง 2569) — เป็นด่านอนุรักษ์นิยม · วิธี 2 (SOTP) ให้ค่าสูงสุด $42 เพราะแยกมูลค่าหุ้น AM (~$10/หุ้น) ที่ตลาดมองข้ามในราคา AR · วิธี 3 คุมด้วยความสามารถทำกำไรบนส่วนผู้ถือหุ้น · FV กลาง $40 ถ่วงน้ำหนักไปทางอนุรักษ์นิยม เพราะกำไร E&amp;P ผันผวนสูงตาม Henry Hub — ตัวเลข 2569 ที่แรง (adj EPS ~$4.4) เป็น "ยอดรอบ" ไม่ใช่ค่าปกติ
@@ -154,14 +182,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $38.43</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $40.00</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$28.00<br><small>MOS 30%</small></span>
-          <span>$32.00<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$40.00<br><small>Fair Value</small></span>
-          <span style="text-align:right">$43.00<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$49.75<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -175,19 +203,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+4%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">มี MOS พอประมาณ — ต่ำกว่ามูลค่าเหมาะสมเล็กน้อย เหมาะทยอยสะสม แต่ยังไม่ใช่โซนถูกมาก (รอย่อใกล้ $32 จะปลอดภัยกว่าสำหรับหุ้น cyclical)</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$32.00</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$28.00</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $40.00</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="38.43" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -196,17 +224,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $38.43 • EPS ฐาน ~$3.00 (mid-cycle adj) • ไม่มีปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} (mid-cycle adj) • ไม่มีปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS -8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$22.10</div>
-          <div class="ret neg">−42.5%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$2.34</span></li>
             <li><span>P/E ออก</span><span>9.5x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>Henry Hub ทรุดสู่ ~$2 แก๊สล้นตลาด Permian</span></li>
           </ul>
         </div>
@@ -214,12 +242,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$41.70</div>
-          <div class="ret pos">+8.5%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$3.47</span></li>
             <li><span>P/E ออก</span><span>12x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>Henry Hub ~$3.25 · LNG demand หนุน NGL ค่อยเป็นค่อยไป</span></li>
           </ul>
         </div>
@@ -227,12 +255,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +18%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$59.20</div>
-          <div class="ret pos">+54.0%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$4.93</span></li>
             <li><span>P/E ออก</span><span>12x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>LNG export boom · Henry Hub $4+ · NGL premium พุ่ง</span></li>
           </ul>
         </div>
@@ -278,8 +306,8 @@
       <h2>ทยอยสะสมเมื่อราคาย่อ — หุ้นแก๊ส cyclical คุณภาพดี เล่นธีม LNG</h2>
       <p>Antero Resources เป็นหนึ่งในผู้ผลิตแก๊สธรรมชาติ + NGL รายใหญ่ของสหรัฐใน Marcellus/Utica Shale มีจุดแข็งเรื่อง NGL premium และธีม LNG export ระยะยาว บวกสัดส่วนใน Antero Midstream (~$10/หุ้น) ที่ตลาดมักมองข้าม ราคาปัจจุบัน $35.38 ต่ำกว่ามูลค่าเหมาะสม $40 (MOS ~+11.6%) แต่เนื่องจากกำไรผูกตรงกับ Henry Hub ที่ผันผวนสูง (ปี 2567 เคย EPS แค่ $0.18) ควรมองเป็นหุ้นทยอยสะสมเมื่อราคาย่อ ไม่ใช่ซื้อไล่ ตัวเลขปี 2569 ที่แรง (adj EPS ~$4.4) เป็นยอดรอบ ไม่ใช่ค่าปกติ</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$40.00 <span style="font-size:12px;color:#cab9a8">($36–$43)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +4%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$49.75 (Buy)</div></div>
       </div>
       <div class="zone">

@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 33.8,
+  "values": {
+    "px": 21.9,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 27.56,
+    "fvHigh": 42.04,
+    "shares": 300000000,
+    "dps": 1.05,
+    "bvps": 7.8,
+    "baseEps": 1.99,
+    "scenarios": [
+      {
+        "tgt": 23.21,
+        "div": 3.15
+      },
+      {
+        "tgt": 35.14,
+        "div": 3.46
+      },
+      {
+        "tgt": 47.43,
+        "div": 3.78
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#d67800",
     "accentDark": "#b84100",
@@ -41,18 +74,14 @@
     "min": 20,
     "max": 35,
     "grid": [25, 30],
-    "fairLine": 33.8,
     "currency": "฿",
     "highlight": [0, 7]
   },
   "gauge": {
     "min": 18,
     "max": 42,
-    "cur": 21.9,
-    "fair": 33.8,
     "fairLabelTop": true
-  },
-  "fv": 33.8
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +101,11 @@
     <div class="sub">อาหารพร้อมรับประทาน เบเกอรี่ สแนก OEM ให้ 7-Eleven • Eazy Taste, Eazy Bake, Kao Tang by NSL, Bake a Wish • นำเข้าเนื้อแช่แข็ง อาหารทะเล • NSL Inno Foods (ชีส)</div>
     <div class="price-row">
       <div>
-        <div class="px">฿21.90<small>(NSL)</small></div>
+        <div class="px">{{rd:px}}<small>(NSL)</small></div>
       </div>
-      <div class="chg">▼ −15.8% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿20.70 – ฿34.25<br>
         ที่มา: Yahoo Finance, Investing.com, NSL IR
       </div>
@@ -87,10 +116,10 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ Q1/2569 (ล่าสุด)</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">฿6.57 พันล้าน</div><div class="d">300 ล้านหุ้น (SET: Agro)</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">300 ล้านหุ้น (SET: Agro)</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~11.47x</div><div class="d">ต่ำกว่าค่าเฉลี่ย 5 ปี ~17x</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~17.1x</div><div class="d">ช่วง 11x–23x (2565–2569)</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">2.81x</div><div class="d">BVPS ฿7.80 (TTM Q1/69)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ฿7.80 (TTM Q1/69)</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿604 ล้าน</div><div class="d">+11.7% YoY (FY67: ฿541 ล.)</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿1.99</div><div class="d">FY2568: ฿2.01/หุ้น</div></div>
@@ -113,7 +142,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#ff8f00"></i>ราคา NSL</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿33.80</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -139,8 +168,8 @@
         <div class="mval">฿42.04</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿27.56 – ฿42.04</span></div>
-        <div class="r">฿33.80</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/E ให้ค่ากลางที่สมเหตุสมผล DDM ให้ค่าต่ำสุด (อนุรักษ์นิยม สมมติ r=9%) เนื่องจาก payout ratio ~53% ยังไม่สูงพอที่ DDM จะให้ค่าเต็ม Justified P/BV ให้ค่าสูงสุดเพราะ ROE ที่แข็งแกร่งต่อเนื่อง (26–31%) สะท้อน moat ในฐานะ OEM หลักของ 7-Eleven และ brand portfolio ที่ขยาย Fair Value เฉลี่ย ฿33.80 ชี้ว่าราคาปัจจุบัน ฿23.00 มี upside ราว 47% ก่อนถึงมูลค่าเหมาะสม
@@ -154,15 +183,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿21.90</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿33.80</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿23.66<br><small>MOS 30%</small></span>
-          <span>฿27.04<br><small>MOS 20%</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">฿28.63<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">฿33.80<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿42.04<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -175,19 +204,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict good">
-        <div class="big">+35%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">Deep Value Zone — ราคาปัจจุบันต่ำกว่า MOS 30% เหมาะสำหรับสะสมระยะยาว</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿27.04</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿23.66</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿33.80</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="21.9" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -196,17 +225,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿21.90 • EPS ฐาน ~฿1.99 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +2%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿23.21</div>
-          <div class="ret neg">+20.4% รวม (~6.4%/ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿2.11</span></li>
             <li><span>P/E ออก</span><span>11x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿3.15</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>เศรษฐกิจชะลอ ค่าจ้างขึ้น</span></li>
           </ul>
         </div>
@@ -214,12 +243,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿35.14</div>
-          <div class="ret pos">+76.3% รวม (~20.8%/ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿2.51</span></li>
             <li><span>P/E ออก</span><span>14x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿3.46</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>ขยาย SKU ส่งออก สาขา BAW</span></li>
           </ul>
         </div>
@@ -227,12 +256,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿47.43</div>
-          <div class="ret pos">+133.8% รวม (~32.7%/ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿2.79</span></li>
             <li><span>P/E ออก</span><span>17x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿3.78</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>ชนะ tender ใหม่ ส่งออก ASEAN</span></li>
           </ul>
         </div>
@@ -278,8 +307,8 @@
       <h2>Deep Value พื้นฐานแกร่ง — ราคาปัจจุบันต่ำกว่า MOS 30%</h2>
       <p>NSL Foods เป็นบริษัทอาหารไทยที่มีโมเดลธุรกิจโดดเด่น: เป็น OEM หลักของ 7-Eleven ทั่วประเทศพร้อมแบรนด์ตัวเองที่โตได้ ROE สูงกว่า 26% ต่อเนื่อง 4 ปี รายได้เติบโต CAGR ~18% แต่ราคาหุ้นย่อตัวลง 22.7% ในรอบปีจากแรงขาย sector rotation และกังวลต้นทุน ทำให้ P/E ลงมาที่ ~11x ต่ำกว่าค่าเฉลี่ย 5 ปีที่ ~17x อย่างมีนัยสำคัญ มูลค่าเหมาะสมเฉลี่ย 3 วิธีที่ ฿33.80 ให้ MOS 32% และ upside 47% จากราคาปัจจุบัน นักวิเคราะห์ 4 ราย Strong Buy เป้าเฉลี่ย ฿28.63</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿33.80 <span style="font-size:12px;color:#cab9a8">(฿27.56–฿42.04)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +35%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿28.63 (Strong Buy 4/4)</div></div>
       </div>
       <div class="zone">

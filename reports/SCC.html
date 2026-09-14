@@ -10,6 +10,19 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 212,
+  "values": {
+    "px": 265,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 198,
+    "fvHigh": 225,
+    "eps": 11,
+    "shares": 1200000000,
+    "dps": 5
+  },
   "theme": {
     "accent": "#c0392b",
     "accentDark": "#8c2317",
@@ -41,7 +54,6 @@
     "min": 175,
     "max": 275,
     "grid": [200, 225, 250],
-    "fairLine": 212,
     "currency": "฿",
     "highlight": [2, 11],
     "gridFmt": "v.toFixed(0)",
@@ -50,11 +62,8 @@
   "gauge": {
     "min": 140,
     "max": 275,
-    "cur": 265,
-    "fair": 212,
     "fairLabelTop": "-30px"
-  },
-  "fv": 212
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +83,11 @@
     <div class="sub">ซีเมนต์ &amp; ผลิตภัณฑ์ก่อสร้าง • เคมิคอลส์ SCGC (โพลิโอเลฟินส์ PE/PP/PVC • โครงการ LSP) • แพ็กเกจจิ้ง SCGP • ค้าปลีกวัสดุก่อสร้าง</div>
     <div class="price-row">
       <div>
-        <div class="px">฿265.00<small>(SCC)</small></div>
+        <div class="px">{{rd:px}}<small>(SCC)</small></div>
       </div>
-      <div class="chg">▲ +29.9% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569 (2026)<br>
+        ราคา ณ {{rd:priceDate}} (2026)<br>
         กรอบ 52 สัปดาห์ ฿152.50 – ฿253.00<br>
         ที่มา: StockAnalysis.com • Investing.com • SET (set.or.th)
       </div>
@@ -101,7 +110,7 @@
 
       <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿496,000 ล้าน</div><div class="d">3 ธุรกิจหลัก SCG</div></div>
       <div class="metric"><div class="k">อัตรากำไรสุทธิ</div><div class="v">~3.9%</div><div class="d">บางจากเคมีลงวงจร</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.9%</div><div class="d">DPS ~฿5.00</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">DPS ~฿5.00</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">~0.62</div><div class="d">ผันผวนต่ำกว่าตลาด</div></div>
     </div>
   </section>
@@ -115,7 +124,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#c0392b"></i>ราคา SCC</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿212.00</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -141,8 +150,8 @@
         <div class="mval">฿224.84</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿198 – ฿225</span></div>
-        <div class="r">฿212.00</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         ทั้ง 3 วิธีอิง <b>กำไร/ROE ปรับวงจร (normalized)</b> ไม่ใช่ตัวเลข TTM ที่ถูกกำไรพิเศษเคมี Q1/2569 ดันให้สูงผิดปกติ • วิธี P/E ให้ค่าต่ำสุด (฿198)
@@ -158,15 +167,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿265.00</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿212.00</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿148.40<br><small>MOS 30%</small></span>
-          <span>฿169.60<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿212.00<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">฿215.00<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">฿225.00<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -180,19 +189,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−25%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ส่วนเผื่อติดลบ — ราคาปัจจุบัน ฿241 แพงกว่ามูลค่าเหมาะสม ฿212 หุ้นเทรดบนกำไรพีคปิโตรเคมีที่อาจไม่ยั่งยืน ควรรอย่อลงสู่โซน MOS ก่อนพิจารณาเข้า</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿169.60</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿148.40</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿212.00</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="265" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -285,8 +294,8 @@
       จุดสำคัญคือ EPS TTM ฿16 ถูก <b>กำไรพิเศษปิโตรเคมี Q1/2569 ดันให้สูงผิดปกติ</b> (+466% YoY) ทำให้ P/E ดูถูก (15x) ทั้งที่บน EPS ปรับวงจร ~฿11 จะสูงถึง ~22x
       ที่ราคา ฿241 หุ้นได้วิ่งนำมูลค่าเหมาะสม ฿212 และเป้านักวิเคราะห์ ฿215 ไปแล้ว (MOS ติดลบ ~−14%) — เหมาะ "รอจังหวะย่อ" สู่โซน ฿170 หรือต่ำกว่า มากกว่าไล่ราคาที่จุดสูง</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿212.00 <span style="font-size:12px;color:#cab9a8">(฿198–฿225)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −25%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿215 (Hold/ระวัง)</div></div>
       </div>
       <div class="zone">

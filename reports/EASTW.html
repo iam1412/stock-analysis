@@ -10,6 +10,38 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 5.46,
+  "values": {
+    "px": 4.94,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 5.14,
+    "fvHigh": 5.78,
+    "shares": 1663730000,
+    "bvps": 6.9,
+    "baseEps": 0.06,
+    "scenarios": [
+      {
+        "tgt": 1.04,
+        "div": 0.04
+      },
+      {
+        "tgt": 3.66,
+        "div": 0.1
+      },
+      {
+        "tgt": 7.07,
+        "div": 0.2
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#0369A1",
     "accentDark": "#075985",
@@ -41,18 +73,14 @@
     "min": 1,
     "max": 6,
     "grid": [2, 3, 4, 5],
-    "fairLine": 5.46,
     "currency": "฿",
     "highlight": [3, 9]
   },
   "gauge": {
     "min": 1.6,
     "max": 5.8,
-    "cur": 4.94,
-    "fair": 5.46,
     "fairLabelTop": false
-  },
-  "fv": 5.46
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +100,11 @@
     <div class="sub">ท่อส่งน้ำดิบ-น้ำอุตสาหกรรมรายใหญ่ในภาคตะวันออก (EEC) • น้ำประปา-บำบัดน้ำเสีย • ลูกค้านิคมอุตสาหกรรม-โรงไฟฟ้า-ดาต้าเซ็นเตอร์ • JV กับ STECON ป้อนน้ำ Hyperscale Data Center</div>
     <div class="price-row">
       <div>
-        <div class="px">฿4.94<small>(EASTW)</small></div>
+        <div class="px">{{rd:px}}<small>(EASTW)</small></div>
       </div>
-      <div class="chg">▲ +96.0% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿1.57 – ฿4.74<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, SET Factsheet
       </div>
@@ -90,7 +118,7 @@
       <div class="metric"><div class="k">Market Cap</div><div class="v">฿8,219 ล้าน</div><div class="d">หุ้น 1,663.73 ล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~124.4x</div><div class="d">กำไรอยู่ในจุดต่ำสุดจากคดีท่อส่งน้ำ — P/E สูงผิดปกติ ไม่สะท้อนมูลค่าจริง</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~18x</div><div class="d">คำนวณจากกำไรเฉลี่ย 5 ปี (2564–2568) ก่อนกำไรทรุด</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.72x</div><div class="d">BVPS ~฿6.90 — ราคาต่ำกว่ามูลค่าทางบัญชี</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ~฿6.90 — ราคาต่ำกว่ามูลค่าทางบัญชี</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v neg">฿9.5 ล้าน</div><div class="d">ลดลงจาก ฿46.6 ล้าน (2567) และ ฿1,062 ล้าน (2564) — ผลจากแพ้คดีท่อส่งน้ำ EEC</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v neg">~฿0.038</div><div class="d">ต่ำสุดในรอบ 5 ปี สะท้อนกำไรที่ยังไม่ฟื้น</div></div>
@@ -113,7 +141,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#0369A1"></i>ราคา EASTW</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿5.46</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -142,8 +170,8 @@
         <div class="mval">฿2.34</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿5.14 – ฿5.78</span></div>
-        <div class="r">฿5.46</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         ใช้ EPS/ROE "ปรับฐาน" (เฉลี่ย 5 ปีย้อนหลัง) แทน TTM ที่ทรุดจากคดีท่อส่งน้ำ EEC (กำไรสุทธิ 2568 เหลือ ฿9.5 ล้าน จาก ฿1,062 ล้านปี 2564)
@@ -161,15 +189,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿4.94</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿5.46</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿3.82<br><small>MOS 30%</small></span>
-          <span>฿4.37<br><small>MOS 20%</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">฿4.68<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">฿5.46<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿5.78<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -184,19 +212,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+10%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS ติดลบ — ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสมเล็กน้อย ยังไม่มีส่วนเผื่อความปลอดภัยให้เข้าซื้อรอบนี้</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿4.37</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿3.82</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿5.46</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="4.94" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -205,17 +233,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿4.94 • EPS ฐาน ~฿0.06 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS 5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿1.04</div>
-          <div class="ret neg">-78.9%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.069</span></li>
             <li><span>P/E ออก</span><span>15x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.04</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>WHAUP แข่งราคาน้ำ EEC รุนแรง กำไรฟื้นช้ากว่าคาด สตอรี่ดาต้าเซ็นเตอร์ไม่ขยายผลจริง</span></li>
           </ul>
         </div>
@@ -223,12 +251,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +45%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿3.66</div>
-          <div class="ret neg">-25.9%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.183</span></li>
             <li><span>P/E ออก</span><span>20x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.10</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>ฟื้นตัวตามแผน ปริมาณน้ำ +12-15%/ปี ดีล Bridge Data Center ทยอยรับรู้รายได้ตามสัญญา 10 ปี</span></li>
           </ul>
         </div>
@@ -236,12 +264,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +70%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿7.07</div>
-          <div class="ret pos">+43.1%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.295</span></li>
             <li><span>P/E ออก</span><span>24x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.20</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>ปิดดีลดาต้าเซ็นเตอร์เพิ่ม + ขยายธุรกิจนอก EEC สำเร็จ มาร์จิ้นกลับสู่ระดับก่อนคดีท่อส่งน้ำ</span></li>
           </ul>
         </div>
@@ -295,8 +323,8 @@
         โดยเฉพาะเมื่อการแข่งขันจาก WHAUP ในตลาดน้ำอุตสาหกรรม EEC ยังเป็นความเสี่ยงต่อมาร์จิ้นและส่วนแบ่งลูกค้ารายใหม่ในระยะข้างหน้า
       </p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿5.46 <span style="font-size:12px;color:#cab9a8">(฿5.14–฿5.78)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +10%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">ไม่มีนักวิเคราะห์ปกคลุม (0 ราย)</div></div>
       </div>
       <div class="zone">

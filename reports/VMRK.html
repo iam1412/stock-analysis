@@ -10,6 +10,38 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 69.84,
+  "values": {
+    "px": 65.54,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 64.63,
+    "fvHigh": 73.15,
+    "analystTgt": 74.54,
+    "shares": 774940000,
+    "dps": 2.81,
+    "scenarios": [
+      {
+        "tgt": 60.9,
+        "div": 8.43
+      },
+      {
+        "tgt": 78.71,
+        "div": 8.94
+      },
+      {
+        "tgt": 94.62,
+        "div": 9.4
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#b42ddc",
     "accentDark": "#861ca6",
@@ -40,18 +72,14 @@
     "min": 55,
     "max": 75,
     "grid": [60, 65, 70],
-    "fairLine": 69.84,
     "currency": "$",
     "highlight": [5, 8]
   },
   "gauge": {
     "min": 45,
     "max": 78,
-    "cur": 65.54,
-    "fair": 69.84,
     "fairLabelTop": false
-  },
-  "fv": 69.84
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -71,11 +99,11 @@
     <div class="sub">อพาร์ตเมนต์ให้เช่า 184,592 ยูนิต • 634 ชุมชน • ควบรวม AvalonBay + Equity Residential • ชายฝั่งตะวันออก/ตะวันตก + Sunbelt</div>
     <div class="price-row">
       <div>
-        <div class="px">$65.54<small>(VMRK)</small></div>
+        <div class="px">{{rd:px}}<small>(VMRK)</small></div>
       </div>
-      <div class="chg">▲ +10.3% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $57.57 – $71.50<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, SEC EDGAR (8-K/10-Q ไตรมาส 2/2569), AvalonBay IR, Equity Residential IR
       </div>
@@ -99,7 +127,7 @@
       <div class="metric"><div class="k">หนี้รวม (30 มิ.ย. 2569)</div><div class="v neu">$17.34B</div><div class="d">EQR $8.26B + AVB $9.08B — ผลบวกตรงจาก 10-Q สองฉบับ</div></div>
       <div class="metric"><div class="k">หนี้สุทธิ / EBITDAre</div><div class="v neu">~4.4x</div><div class="d">EQR 4.28x · AVB 4.6x (ตัวเลขแยกก่อนควบรวม) · ระดับ investment grade</div></div>
       <div class="metric"><div class="k">NOI รวม (run-rate)</div><div class="v">~$4.18B</div><div class="d">EQR ~$2.10B + AVB ~$2.08B (annualize จากครึ่งปีแรก 2569)</div></div>
-      <div class="metric"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v pos">$74.54 (+13.7%)</div><div class="d">Yahoo n=10 · StockAnalysis $74.04 · เรตติ้ง Buy</div></div>
+      <div class="metric"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v pos">{{rd:analystTgt}} ({{rd:analystPct}})</div><div class="d">Yahoo n=10 · StockAnalysis $74.04 · เรตติ้ง Buy</div></div>
     </div>
   </section>
 
@@ -112,7 +140,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#b42ddc"></i>ราคา VMRK</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $69.84</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -138,8 +166,8 @@
         <div class="mval">$71.75</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $64.63 – $73.15</span></div>
-        <div class="r">$69.84</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>หมายเหตุสำคัญเรื่องฐานตัวเลข:</b> ดีลควบรวมเพิ่งปิดเมื่อ 17 ส.ค. 2569 ทำให้ <b>ตัวเลขต่อหุ้นย้อนหลัง (TTM) ทุกตัวที่ผู้ให้บริการข้อมูลแสดงใต้ ticker VMRK ใช้ไม่ได้</b> — ค่า EPS(TTM) ที่เห็นเป็นการเอากำไรของ Equity Residential เดี่ยว ๆ มาหารด้วยจำนวนหุ้นของบริษัทรวม จึงเป็นตัวเลขลูกผสมข้ามนิติบุคคล ส่วนค่าที่คำนวณจากงบเดิมล้วน ๆ ก็สะท้อนแค่ครึ่งเดียวของกิจการ ด้วยเหตุนี้รายงานฉบับนี้จึง <b>ไม่มีขา P/E เลย</b> และไม่นำอัตราส่วนย้อนหลังของ EQR (ROE, อัตรากำไร, D/E) มาบรรยายบริษัทรวม
@@ -156,15 +184,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $65.54</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $69.84</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$48.89<br><small>MOS 30%</small></span>
-          <span>$55.87<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$69.84<br><small>Fair Value</small></span>
-          <span style="text-align:right">$73.15<br><small>กรอบบน FV</small></span>
-          <span style="text-align:right">$74.54<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:analystTgt}}<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -177,19 +205,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+6%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ส่วนเผื่อบางมาก — ราคาเกาะมูลค่าเหมาะสม เหมาะกับนักลงทุนที่ต้องการกระแสปันผลและการเติบโตช้าแต่มั่นคง มากกว่าคนที่หวังส่วนต่างราคา</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$55.87</div><div class="d">โซนน่าสนใจสำหรับสาย value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$48.89</div><div class="d">โซนถูกมาก (ต่ำกว่าจุดต่ำสุด 52 สัปดาห์)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $69.84</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับสาย value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (ต่ำกว่าจุดต่ำสุด 52 สัปดาห์)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="65.54" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -198,17 +226,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $65.54 • FFO/หุ้น ฐาน ~$4.18 • ผลตอบแทนราคาล้วน ยังไม่นับปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • FFO/หุ้น ฐาน ~$4.18 • ผลตอบแทนราคาล้วน ยังไม่นับปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>FFO −1%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$60.90</div>
-          <div class="ret neg">−7%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>FFO ปี 3</span><span>~$4.06/หุ้น</span></li>
             <li><span>Exit P/FFO</span><span>15x</span></li>
-            <li><span>ปันผลสะสม 3 ปี</span><span>~$8.43</span></li>
+            <li><span>ปันผลสะสม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>ดอกเบี้ยยาวทะลุ 5% ค้าง คลื่นอุปทานยืดเยื้อ การรวมระบบสองบริษัทสะดุดจน synergy ไม่ถึงเป้า และกฎคุมค่าเช่าเข้มขึ้นในตลาดหลัก</span></li>
           </ul>
         </div>
@@ -216,12 +244,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>FFO +3.5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$78.71</div>
-          <div class="ret pos">+20%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>FFO ปี 3</span><span>~$4.63/หุ้น</span></li>
             <li><span>Exit P/FFO</span><span>17x</span></li>
-            <li><span>ปันผลสะสม 3 ปี</span><span>~$8.94</span></li>
+            <li><span>ปันผลสะสม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>อุปทานใหม่คลี่คลายตามคาด same-store NOI กลับมาโตปกติ synergy สุทธิ $125M เข้าครบตามตาราง ตัวคูณกลับสู่ค่ากลางของกลุ่ม</span></li>
           </ul>
         </div>
@@ -229,12 +257,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>FFO +6%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$94.62</div>
-          <div class="ret pos">+44%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>FFO ปี 3</span><span>~$4.98/หุ้น</span></li>
             <li><span>Exit P/FFO</span><span>19x</span></li>
-            <li><span>ปันผลสะสม 3 ปี</span><span>~$9.40</span></li>
+            <li><span>ปันผลสะสม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>ดอกเบี้ยยาวลง อุปทานใหม่หดตัวแรง ค่าเช่าเร่งตัว synergy ทำได้เกินเป้าที่ประกาศ และท่อโครงการ $4.4B ทยอยเปิดให้เช่าเติม NOI</span></li>
           </ul>
         </div>
@@ -283,9 +311,9 @@
       โจทย์สำคัญของนักลงทุนตอนนี้คือ <b>ยังไม่มีงบรวมชุดจริงให้ดู</b> — ตัวเลขต่อหุ้นย้อนหลังที่ผู้ให้บริการข้อมูลแสดงใต้ ticker ใหม่เป็นของกิจการเดิมครึ่งเดียวหรือเป็นการหารข้ามนิติบุคคล ใช้ประเมินมูลค่าไม่ได้ทั้งคู่ รายงานฉบับนี้จึงประกอบฐานรวมขึ้นเองจากผลจริงครึ่งปีแรก 2569 และงบดุล 30 มิ.ย. 2569 ของทั้งสองบริษัท ได้ FFO/หุ้นรวมราว $4.10 ก่อน synergy และ ~$4.26 เมื่อ synergy สุทธิ $125M เข้าครบ พร้อมหนี้รวม $17.34B และ NOI รวม run-rate ~$4.18B
       เมื่อประเมินด้วยสามวิธีจากคนละตระกูลสมมติฐาน — ตัวคูณ P/FFO, DDM บนปันผลที่ประกาศจริง $2.81/หุ้น และ NAV จาก cap rate — ได้กรอบ $64.63–$73.15 ค่าเฉลี่ย $69.84 ซึ่งเกาะกับราคาตลาดแทบสนิท ภาพที่ได้จึงเป็นหุ้นที่ตลาดตีราคาไว้ใกล้มูลค่าแล้ว ผลตอบแทนหลักจากนี้มาจากปันผลราว 4.2% ต่อปี บวกการเติบโตของ FFO และ synergy ที่ยังต้องพิสูจน์ ไม่ใช่จากส่วนต่างราคาที่ซ่อนอยู่ จุดพลิกที่ต้องจับตาคือผลประกอบการงบรวมชุดแรกช่วงปลาย ต.ค. 2569 และทิศทางดอกเบี้ยพันธบัตรยาว</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$69.84 <span style="font-size:12px;color:#cab9a8">($64.63–$73.15)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +6%</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$74.54 (Buy)</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~{{rd:analystTgt}} (Buy)</div></div>
       </div>
       <div class="zone">
         💡 <b>กลยุทธ์:</b> ราคาเกาะมูลค่าเหมาะสมแล้ว ส่วนเผื่อบางเกินกว่าจะไล่ซื้อ — โซนทยอยสะสมที่น่าสนใจคือต่ำกว่า $55.87 (MOS 20%) และโซนถูกจริงที่ต่ำกว่า $48.89 (MOS 30%) ซึ่งต้องรอเหตุการณ์กดดันชัดเจน เหมาะกับนักลงทุนที่ต้องการกระแสปันผลจากอสังหาริมทรัพย์เกรดสถาบัน ถือยาว 3–5 ปี ระหว่างรอ synergy เข้าครบและคลื่นอุปทานอพาร์ตเมนต์คลี่คลาย มากกว่าจะเป็นหุ้นเก็งส่วนต่างราคาระยะสั้น ผู้ที่สนใจควรรอดูงบรวมชุดแรกปลาย ต.ค. 2569 ก่อนเพิ่มน้ำหนัก

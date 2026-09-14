@@ -10,6 +10,38 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 280,
+  "values": {
+    "px": 176.2,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 274,
+    "fvHigh": 291,
+    "shares": 131000000,
+    "dps": 2,
+    "baseEps": 7.24,
+    "scenarios": [
+      {
+        "tgt": 210,
+        "div": 6
+      },
+      {
+        "tgt": 326,
+        "div": 6.3
+      },
+      {
+        "tgt": 413,
+        "div": 6.6
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#006272",
     "accentDark": "#004a56",
@@ -41,18 +73,14 @@
     "min": 150,
     "max": 300,
     "grid": [200, 250],
-    "fairLine": 280,
     "currency": "$",
     "highlight": [1, 7]
   },
   "gauge": {
     "min": 160,
     "max": 320,
-    "cur": 176.2,
-    "fair": 280,
     "fairLabelTop": true
-  },
-  "fv": 280
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +100,11 @@
     <div class="sub">Insurance data analytics near-monopoly &bull; ISO policy forms &amp; actuarial data &bull; Catastrophe modeling (AIR) &bull; 80%+ gross margin &bull; ~90% recurring revenue &bull; Pure-play post-divestitures &bull; Jersey City NJ</div>
     <div class="price-row">
       <div>
-        <div class="px">$176.20<small>(VRSK)</small></div>
+        <div class="px">{{rd:px}}<small>(VRSK)</small></div>
       </div>
-      <div class="chg">▼ −19.5% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $155.94 – $310.20<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, MarketBeat
       </div>
@@ -87,7 +115,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">Pure-play Insurance Analytics หลังขาย Wood Mackenzie &amp; Financial Services</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$23.1B</div><div class="d">131M shares (~$185/หุ้น)</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">131M shares (~$185/หุ้น)</div></div>
       <div class="metric"><div class="k">P/E adj. (TTM)</div><div class="v neu">~25.5x</div><div class="d">ต่ำกว่า 5 ปีเฉลี่ย 40–45x มาก</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย 5 ปี</div><div class="v">~42x</div><div class="d">กรอบ 35–52x</div></div>
       <div class="metric"><div class="k">Forward P/E (FY26)</div><div class="v neu">~23.7x</div><div class="d">FY26 adj EPS guidance $7.45–$7.75</div></div>
@@ -99,7 +127,7 @@
 
       <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~$3.10B</div><div class="d">+5.9% YoY · 90%+ recurring</div></div>
       <div class="metric"><div class="k">Gross Margin</div><div class="v pos">~78%</div><div class="d">Operating margin ~44%</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.1%</div><div class="d">$2.00/หุ้น/ปี · เติบโตต่อเนื่อง</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">$2.00/หุ้น/ปี · เติบโตต่อเนื่อง</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">0.69</div><div class="d">ความผันผวนต่ำกว่าตลาด</div></div>
     </div>
   </section>
@@ -113,7 +141,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#006272"></i>ราคา VRSK</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $280</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -139,8 +167,8 @@
         <div class="mval">$274</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $274 – $291</span></div>
-        <div class="r">$280</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         ทั้ง 3 วิธีให้ผลใกล้เคียงกัน ($274–$291) ยืนยันว่า VRSK ที่ $184.75 มี discount ต่อ Fair Value ราว 34% EV/EBITDA วิธีที่ 2 ให้ค่าสูงสุดเพราะ EBITDA margin ~55% สูงมากเมื่อเทียบกับ peers Forward P/E วิธีที่ 3 ให้ค่าต่ำสุดเพราะใช้ P/E 36x ซึ่งยังต่ำกว่าค่าเฉลี่ยประวัติศาสตร์ 42x มาก นักวิเคราะห์ 19 คน ตั้งเป้าเฉลี่ย $220.47 ซึ่ง upside เพียง 19% จากราคาปัจจุบัน — ต่ำกว่า Fair Value $280 ที่คำนวณจาก fundamentals
@@ -154,15 +182,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $176.20</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $280</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$196<br><small>MOS 30%</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>$220<br><small>เป้า Analyst</small></span>
-          <span style="text-align:center">$224<br><small>MOS 20%</small></span>
-          <span style="text-align:right">$280<br><small>Fair Value</small></span>
-          <span style="text-align:right">$291<br><small>กรอบบน FV</small></span>
+          <span style="text-align:center">{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:right">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -175,19 +203,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict good">
-        <div class="big">+37%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">Deep Value — ราคาต่ำกว่า Fair Value มากกว่า 30% — โซน MOS สูงมากสำหรับคุณภาพระดับนี้</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$224.00</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$196.00</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $280</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="176.2" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -196,17 +224,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $176.20 • EPS ฐาน ~$7.24 adj • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} adj{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −2%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$210</div>
-          <div class="ret neg">+19.2%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$6.81</span></li>
             <li><span>P/E ออก</span><span>30x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$6.00</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>ลูกค้าประกันลดใช้งาน AI disrupt บางส่วน</span></li>
           </ul>
         </div>
@@ -214,12 +242,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$326</div>
-          <div class="ret pos">+85.0%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$9.12</span></li>
             <li><span>P/E ออก</span><span>35x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$6.30</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>AI เสริม data business, moat คงอยู่ P/E re-rate</span></li>
           </ul>
         </div>
@@ -227,12 +255,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$413</div>
-          <div class="ret pos">+134.4%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$10.17</span></li>
             <li><span>P/E ออก</span><span>40x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$6.60</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>AI upsell พรีเมียม ขยายตลาด global insurance</span></li>
           </ul>
         </div>
@@ -279,8 +307,8 @@
       <h2>Deep Value ใน Near-Monopoly Data Business — ราคาต่ำกว่า Fair Value 34%</h2>
       <p>Verisk Analytics เป็นหนึ่งในธุรกิจ data analytics ที่มี moat สูงสุดในตลาด — บริษัทประกัน P&amp;C ในสหรัฐไม่สามารถกำหนดเบี้ยประกันโดยไม่ใช้ ISO policy forms และ actuarial data ของ Verisk ธุรกิจสร้าง ~90% recurring revenue, gross margin ~78%, EBITDA margin ~55% หลัง divestiture กลายเป็น pure-play insurance analytics ราคาปัจจุบัน $184.75 ซื้อขายที่ adj P/E เพียง 25.5x — ต่ำกว่าค่าเฉลี่ย 5 ปีที่ 42x อย่างมาก MOS +34% จาก Fair Value $280 ถือเป็น deep value สำหรับคุณภาพระดับนี้ แม้ Bear case EPS หดตัว ผลตอบแทนยังเป็นบวก สะท้อน asymmetric risk/reward ที่ดีมาก</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$280 <span style="font-size:12px;color:#cab9a8">($274–$291)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +37%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$220.47 (Buy — 19 analysts)</div></div>
       </div>
       <div class="zone">

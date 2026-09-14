@@ -10,6 +10,38 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 600,
+  "values": {
+    "px": 927.03,
+    "priceDate": "2026-09-11",
+    "dateEra": "CE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 488,
+    "fvHigh": 712,
+    "analystTgt": 1126,
+    "eps": 18.73,
+    "shares": 91500000,
+    "scenarios": [
+      {
+        "tgt": 440,
+        "div": null
+      },
+      {
+        "tgt": 990,
+        "div": null
+      },
+      {
+        "tgt": 1386,
+        "div": null
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#541ded",
     "accentDark": "#3a0fb3",
@@ -41,7 +73,6 @@
     "min": 0,
     "max": 1000,
     "grid": [200, 400, 600, 800],
-    "fairLine": 600,
     "currency": "$",
     "highlight": [0, 11],
     "dataFmt": "Math.round(d[1])"
@@ -49,11 +80,8 @@
   "gauge": {
     "min": 380,
     "max": 1430,
-    "cur": 927.03,
-    "fair": 600,
     "fairLabelTop": "-58px"
-  },
-  "fv": 600
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -73,11 +101,11 @@
     <div class="sub">ผู้ผลิตเลเซอร์ InP (EML/DFB) และชิป + ทรานสซีฟเวอร์เชิงแสง — ต้นกำเนิดแสงภายนอกที่ป้อน optical transceiver และ co-packaged optics (CPO) ของคลัสเตอร์ AI</div>
     <div class="price-row">
       <div>
-        <div class="px">$927.03<small>(LITE)</small></div>
+        <div class="px">{{rd:px}}<small>(LITE)</small></div>
       </div>
-      <div class="chg">▲ +359.9% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2026 (ปิดตลาด)<br>
+        ราคา ณ {{rd:priceDate}} (ปิดตลาด)<br>
         ต่ำกว่าจุดสูงสุด 52 สัปดาห์ $1,085.68 ราว 24%<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / SEC 8-K FY2026 / SEC 10-Q มี.ค. 2026
       </div>
@@ -88,8 +116,8 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ FY2026 เต็มปี (8-K Q4 ประกาศ 11 ส.ค. 2026)</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$84.8B</div><div class="d">91.5 ล้านหุ้น (สามัญ 88.6M + บุริมสิทธิ NVIDIA 2.9M แปลง 1:1) • fully diluted ~101M ⇒ ~$82.9B</div></div>
-      <div class="metric"><div class="k">P/E (Forward)</div><div class="v neu">~49.5x</div><div class="d">อิง EPS non-GAAP FY2027 consensus ~$18.73 <span class="pill r">พรีเมียมสูง</span></div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">91.5 ล้านหุ้น (สามัญ 88.6M + บุริมสิทธิ NVIDIA 2.9M แปลง 1:1) • fully diluted ~101M ⇒ ~$82.9B</div></div>
+      <div class="metric"><div class="k">P/E (Forward)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">อิง EPS non-GAAP FY2027 consensus ~$18.73 <span class="pill r">พรีเมียมสูง</span></div></div>
       <div class="metric"><div class="k">P/E (FY2026, non-GAAP)</div><div class="v">~106.9x</div><div class="d">EPS non-GAAP FY2026 $8.67 (บริษัทรายงานเองใน 8-K) • GAAP ขาดทุนจากรายการแปลงหนี้เป็นทุน</div></div>
       <div class="metric"><div class="k">EPS (non-GAAP FY2026)</div><div class="v">$8.67</div><div class="d pos">▲ +321% จาก $2.06 ใน FY2025 • กำไร non-GAAP $782.3M</div></div>
 
@@ -114,7 +142,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1a73e8"></i>ราคา LITE</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $600</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -139,8 +167,8 @@
         <div class="mval">$488</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $488 – $712</span></div>
-        <div class="r">$600</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>หมายเหตุ (full disclosure):</b> ใช้ <b>2 วิธีจาก 2 ตระกูลสมมติฐาน</b> — ขาที่ยึดตัวคูณตลาด (P/E) กับขาที่ยึด (r, g) (DCF) — ต่างกัน 1.46 เท่า (&lt; 2.0) จึงเฉลี่ยตรง ๆ ได้
@@ -158,14 +186,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $927</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $600</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$420<br><small>MOS 30%</small></span>
-          <span>$480<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$600<br><small>Fair Value</small></span>
-          <span style="text-align:right">$1,126<br><small>เป้า Analyst</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:analystTgt}}<br><small>เป้า Analyst</small></span>
           <span style="text-align:right">$1,400<br><small>เป้าสูงสุด</small></span>
         </div>
       </div>
@@ -180,20 +208,20 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−55%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>ไม่มี Margin of Safety — ราคาสูงกว่ามูลค่าเหมาะสม</b><br>ราคาปัจจุบัน $820.59 สูงกว่ามูลค่าเหมาะสม $600 ราว 37% หลังประเมินใหม่บนงบ FY2026 เต็มปี (EPS non-GAAP จริง $8.67 ไม่ใช่ ~$8.2 ที่ประมาณไว้เดิม) รอบก่อนตรึง FV ไว้ที่ $840 ด้วยตัวคูณเท่ากับตลาดขณะยังไม่มีงบเต็มปี รอบนี้เปลี่ยนเป็นตัวคูณที่เผื่อความเสี่ยงพลาดเป้า + เพิ่มขา DCF ⇒ FV ลดลง ต้องรอย่อลงมาที่ $480–$600 จึงจะเริ่มมี MOS
       </div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$480</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$420</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $600</div><div class="d">ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="927.03" step="1">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -202,13 +230,13 @@
 
   <!-- ===== RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $927.03 • ฐาน EPS non-GAAP FY26 $8.67 → FY27 $18.73 (consensus)</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • ฐาน EPS non-GAAP FY26 $8.67 → FY27 $18.73 (consensus)</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>FY27 ตามเป้า แล้วตัน</span></div>
         <div class="body">
-          <div class="tgt">$440</div>
-          <div class="ret neg">รวม ~ −52.5% (≈ −22.0%/ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3 (FY29)</span><span>$20.0</span></li>
             <li><span>P/E ออก</span><span>22x</span></li>
@@ -219,8 +247,8 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>FY28 +45% → FY29 +30%</span></div>
         <div class="body">
-          <div class="tgt">$990</div>
-          <div class="ret pos">รวม ~ +6.8% (≈ +2.2%/ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3 (FY29)</span><span>$35.3</span></li>
             <li><span>P/E ออก</span><span>28x</span></li>
@@ -231,8 +259,8 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>FY28 +60% → FY29 +40%</span></div>
         <div class="body">
-          <div class="tgt">$1,386</div>
-          <div class="ret pos">รวม ~ +49.5% (≈ +14.3%/ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3 (FY29)</span><span>$42.0</span></li>
             <li><span>P/E ออก</span><span>33x</span></li>
@@ -287,9 +315,9 @@
       <h2>ผู้จ่ายแสงให้ AI optics — ธุรกิจพลิกสำเร็จของจริง แต่ราคาวิ่งนำมูลค่าไปไกล</h2>
       <p>งบ FY2026 เต็มปียืนยันว่าการพลิกธุรกิจเป็นของจริง: รายได้ $3.01B (+83% YoY), op margin จาก −10.9% เป็น <b>+17.4%</b>, กำไร non-GAAP <b>$8.67/หุ้น</b> (จาก $2.06) และ NVIDIA ลงเงิน $2.0B เข้ามาเป็นผู้ถือหุ้นเชิงกลยุทธ์ ส่วนขาดทุน GAAP $6.94B ที่ดูน่าตกใจนั้น <b>เป็นรายการบัญชีจากการแปลงหุ้นกู้เป็นทุน ไม่ใช่เงินสด</b> และทำให้งบดุลดีขึ้นด้วยซ้ำ • ปัญหาจึงไม่ได้อยู่ที่ธุรกิจ แต่อยู่ที่ <b>ราคา</b> — ที่ ~$821 คือ 94.6 เท่าของกำไรปีที่เพิ่งจบ และ 43.8 เท่าของกำไรปีหน้าที่ยังไม่เกิดขึ้น เมื่อประเมินใหม่บนงบจริงได้มูลค่าเหมาะสม $600 ⇒ <b>ซื้อวันนี้คือจ่ายแพงกว่ามูลค่าราว 37%</b> ขณะที่นักวิเคราะห์ฝั่ง momentum ยังให้เป้าเฉลี่ย $1,126</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$600 <span style="font-size:12px;color:#a8b6cc">($488–$712)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ef9a9a">MOS ~ −55%</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">$1,126 (+21%)</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#a8b6cc">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ef9a9a">MOS ~ {{rd:mos}}</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">{{rd:analystTgt}} (+21%)</div></div>
       </div>
       <div class="zone">
         💡 <b>กลยุทธ์:</b> สาย value — ยังไม่ใช่จุดซื้อ รอย่อลงมา <b>ต่ำกว่า ~$600</b> (น่าสนใจจริงที่ &lt;$480) • สาย growth — ถ้าจะถือต้องยอมรับว่ากำลังจ่ายล่วงหน้าให้กำไรปี 2029 โดยติดตาม <b>capex AI ของ hyperscaler</b>, <b>การ ramp 1.6T / CPO / OCS</b>, <b>op margin non-GAAP (เป้า 39.5–40.5% ใน Q1 FY27)</b> และ <b>การแปลงกำไรเป็นกระแสเงินสด (FCF)</b> ซึ่งยังเป็นจุดอ่อนที่สุด

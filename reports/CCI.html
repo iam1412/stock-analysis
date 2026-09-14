@@ -10,6 +10,37 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 88,
+  "values": {
+    "px": 75.62,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 72.6,
+    "fvHigh": 99.76,
+    "shares": 436000000,
+    "dps": 4.25,
+    "scenarios": [
+      {
+        "tgt": 80.41,
+        "div": 12.75
+      },
+      {
+        "tgt": 100.4,
+        "div": 13.5
+      },
+      {
+        "tgt": 116.82,
+        "div": 14.25
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#3D1C6E",
     "accentDark": "#280F50",
@@ -41,50 +72,14 @@
     "min": 70,
     "max": 95,
     "grid": [75, 80, 85, 90],
-    "fairLine": 88,
     "currency": "$",
     "highlight": [7, 11]
   },
   "gauge": {
     "min": 55,
     "max": 115,
-    "cur": 75.62,
-    "fair": 88,
-    "fairLabelTop": true,
-    "spans": [
-      {
-        "lo": 55,
-        "hi": 65,
-        "color": "#c5221f",
-        "label": "อันตราย"
-      },
-      {
-        "lo": 65,
-        "hi": 76,
-        "color": "#f97316",
-        "label": "ถูกมาก"
-      },
-      {
-        "lo": 76,
-        "hi": 88,
-        "color": "#eab308",
-        "label": "ต่ำกว่า FV"
-      },
-      {
-        "lo": 88,
-        "hi": 99,
-        "color": "#22c55e",
-        "label": "เหนือ FV"
-      },
-      {
-        "lo": 99,
-        "hi": 115,
-        "color": "#3b82f6",
-        "label": "Premium"
-      }
-    ]
-  },
-  "fv": 88
+    "fairLabelTop": true
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -104,11 +99,11 @@
     <div class="sub">Largest US cell tower REIT • ~40,000 towers (pure-play post-fiber sale) • 5G densification tailwind • Verizon/AT&amp;T/T-Mobile tenants • ~5.5% dividend yield • Restructuring to reduce leverage</div>
     <div class="price-row">
       <div>
-        <div class="px">$75.62<small>(CCI)</small></div>
+        <div class="px">{{rd:px}}<small>(CCI)</small></div>
       </div>
-      <div class="chg">▼ −16.2% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $75.96 – $115.76<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, Globe Newswire
       </div>
@@ -119,7 +114,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">Tower REIT — ใช้ AFFO/sh แทน EPS เป็น Earnings Metric หลัก</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">$33.0B</div><div class="d">436M หุ้น (post-buyback ~423M)</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">436M หุ้น (post-buyback ~423M)</div></div>
       <div class="metric"><div class="k">P/AFFO (2026F)</div><div class="v neu">~16.8x</div><div class="d">AFFO/sh $4.59F (midpoint) — ต่ำกว่า AMT ~22x</div></div>
       <div class="metric"><div class="k">AFFO/sh 2026F</div><div class="v pos">$4.53–$4.65</div><div class="d">Updated หลังปิดขาย fiber/small cell พ.ค. 69</div></div>
       <div class="metric"><div class="k">AFFO/sh 2025</div><div class="v">$4.36</div><div class="d">ปีก่อน (รวม fiber ทั้งปี)</div></div>
@@ -151,7 +146,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#3D1C6E"></i>ราคา CCI</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $88.00</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -182,8 +177,8 @@
         <div class="mval">$99.76</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $72.60 – $99.76</span></div>
-        <div class="r">$88.00</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>P/AFFO ($91.80):</b> วิธีนี้เหมาะกับ tower REIT มากที่สุด — ใช้ P/AFFO 20x (discount 10% จาก AMT) สะท้อน DISH headwind + leveraged balance sheet
@@ -201,15 +196,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $75.62</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $88.00</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$61.60<br><small>MOS 30%</small></span>
-          <span>$70.40<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$88.00<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$99.07<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$99.76<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -225,19 +220,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+14%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">โซนต่ำกว่า Fair Value — น่าสนใจแต่ยังมีความเสี่ยง Transition</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$70.40</div><div class="d">โซนน่าสนใจสำหรับ value — ใกล้ 52W Low</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$61.60</div><div class="d">โซนถูกมาก (deep value) — ต้องมีเหตุการณ์เลวร้าย</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $88.00</div><div class="d">ราคาปัจจุบันอยู่ใต้ FV แล้ว</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value — ใกล้ 52W Low</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value) — ต้องมีเหตุการณ์เลวร้าย</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ราคาปัจจุบันอยู่ใต้ FV แล้ว</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="75.62" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -246,17 +241,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $75.62 • AFFO ฐาน ~$4.59 • รวมปันผล ~$4.25/ปี</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • AFFO ฐาน ~$4.59{{rd:scnNote}} ~$4.25/ปี</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>AFFO +1%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$80.41</div>
-          <div class="ret neg">+23.2%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$4.73</span></li>
             <li><span>P/E ออก</span><span>17x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$12.75</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>DISH ลาก / 5G หดตัว</span></li>
           </ul>
         </div>
@@ -264,12 +259,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>AFFO +3%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$100.40</div>
-          <div class="ret pos">+50.6%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$5.02</span></li>
             <li><span>P/E ออก</span><span>20x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$13.50</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>Pure-play re-rate / 5G เต็มสูบ</span></li>
           </ul>
         </div>
@@ -277,12 +272,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>AFFO +5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$116.82</div>
-          <div class="ret pos">+73.3%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$5.31</span></li>
             <li><span>P/E ออก</span><span>22x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$14.25</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Multiple re-rate = AMT / dividend ขึ้น</span></li>
           </ul>
         </div>
@@ -339,8 +334,8 @@
         ความเสี่ยงหลักคือ DISH headwind ยาวนานกว่าคาด + อัตราดอกเบี้ยที่ยังสูง
       </p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$88.00 <span style="font-size:12px;color:#cab9a8">($72.60–$99.76)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +14%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$99.07 (Buy · 21 คน)</div></div>
       </div>
       <div class="zone">

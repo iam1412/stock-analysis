@@ -10,6 +10,40 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 3.94,
+  "values": {
+    "px": 3.52,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 3.73,
+    "fvHigh": 4.14,
+    "eps": 0.17,
+    "shares": 3519000000,
+    "dps": 0.00444,
+    "bvps": 3.81,
+    "baseEps": 0.17,
+    "scenarios": [
+      {
+        "tgt": 2.19,
+        "div": 0.013
+      },
+      {
+        "tgt": 4.53,
+        "div": 0.013
+      },
+      {
+        "tgt": 6.14,
+        "div": 0.013
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#e65100",
     "accentDark": "#bf360c",
@@ -41,7 +75,6 @@
     "min": 3.2,
     "max": 4,
     "grid": [3.4, 3.6, 3.8],
-    "fairLine": 3.94,
     "currency": "฿",
     "highlight": [5, 9],
     "gridFmt": "v.toFixed(2)",
@@ -50,11 +83,8 @@
   "gauge": {
     "min": 0,
     "max": 100,
-    "cur": 3.52,
-    "fair": 3.94,
     "fairLabelTop": true
-  },
-  "fv": 3.94
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +104,11 @@
     <div class="sub">ค้าปลีกวัสดุก่อสร้าง-ตกแต่งบ้าน • Warehouse Format ครบวงจร • 37 สาขาทั่วไทย • House Brand โต 22% • คู่แข่ง HomePro-Global House</div>
     <div class="price-row">
       <div>
-        <div class="px">฿3.52<small>(DOHOME)</small></div>
+        <div class="px">{{rd:px}}<small>(DOHOME)</small></div>
       </div>
-      <div class="chg">▼ −9.7% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿3.02 – ฿4.52<br>
         ที่มา: Yahoo Finance, Investing.com, StockAnalysis.com
       </div>
@@ -90,9 +120,9 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.พ. 2569 · FY2568 (ปีบัญชีสิ้นสุด ธ.ค.)</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~฿12.4B</div><div class="d">3,519M หุ้น × ฿3.76</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~20.7x</div><div class="d">EPS TTM ฿0.17 · เทียบ SET Retail ~20x</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM ฿0.17 · เทียบ SET Retail ~20x</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~20–24x</div><div class="d">ช่วง FY2564–68 (ราคาผันผวน)</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">~0.92x</div><div class="d">BVPS ฿3.81 · ซื้อขายใกล้ book value</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~{{rd:pbv}}x</div><div class="d">BVPS ฿3.81 · ซื้อขายใกล้ book value</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿601M</div><div class="d">−10.8% YoY (FY67 ฿674M)</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.17</div><div class="d">FY68 ฿0.17 · FY67 ฿0.19</div></div>
@@ -115,7 +145,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#e65100"></i>ราคา DOHOME</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿3.94</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -141,8 +171,8 @@
         <div class="mval">฿3.73</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿3.73 – ฿4.14</span></div>
-        <div class="r">฿3.94</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/E Forward (฿4.14) และวิธี P/Sales (฿3.73) ห่างกันเพียง 1.1× จึงเฉลี่ยกันเป็นขายึดตลาด (สมอ) = ฿3.94 ส่วนวิธี EV/EBITDA (฿1.87) ไม่มีฐานตัวคูณที่ระบุชัดจาก peer/ประวัติ (ต่างจาก P/E ที่อ้างอิง median SET Retail sector) และห่างจากสมอถึง 2.1 เท่า — <b>dispersion gate 0.4c:</b> จึงเป็นบริบท ไม่รวมเฉลี่ย · ตระกูล r/g ไม่มีขาที่รวมได้ ⇒ FV = สมอ = ฿3.94 บ่งชี้ว่าราคาตลาดปัจจุบัน ฿3.86 ต่ำกว่ามูลค่าเหมาะสมเล็กน้อย (~2%) แต่ยังไม่ถึงเกณฑ์ Margin of Safety ผู้ลงทุนควรรอจุดเข้าต่ำกว่า ฿3.15 (MOS 20%) หรือ ฿2.76 (MOS 30%)
@@ -156,15 +186,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿3.52</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿3.94</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿2.76<br><small>MOS 30%</small></span>
-          <span>฿3.15<br><small>MOS 20%</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">฿3.71<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">฿3.94<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿4.14<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -177,19 +207,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+11%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาต่ำกว่า Fair Value เล็กน้อย — ยังไม่มี Margin of Safety เพียงพอ · รอจุดเข้าที่เหมาะสม</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿3.15</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿2.76</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿3.94</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="3.52" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -198,13 +228,13 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿3.52 • EPS ฐาน ~฿0.17 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿2.19</div>
-          <div class="ret neg">−37.8% (3 ปี) / −15%/ปี</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.146</span></li>
             <li><span>P/E ออก</span><span>15x</span></li>
@@ -216,8 +246,8 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +10%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿4.53</div>
-          <div class="ret pos">+28.7% (3 ปี) / +8.8%/ปี</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.226</span></li>
             <li><span>P/E ออก</span><span>20x</span></li>
@@ -229,8 +259,8 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +18%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿6.14</div>
-          <div class="ret pos">+74.4% (3 ปี) / +20.4%/ปี</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.279</span></li>
             <li><span>P/E ออก</span><span>22x</span></li>
@@ -281,8 +311,8 @@
       <h2>ราคาต่ำกว่า Fair Value เล็กน้อย — รอ Margin of Safety เพิ่ม</h2>
       <p>DOHOME เป็นผู้เล่นค้าปลีกวัสดุก่อสร้าง Warehouse Format ที่มีศักยภาพการขยายสาขาในระยะยาว ปัจจุบันราคา ฿3.86 ต่ำกว่า Fair Value ฿3.94 เพียงเล็กน้อย (~2%) แต่ยังไม่ถึงเกณฑ์ Margin of Safety โดยราคาตลาดได้ "price in" การฟื้นตัวกำไรปี 2569 ไปเกือบเต็มที่แล้ว ธุรกิจมีจุดอ่อนสำคัญคือ ROE ต่ำ 4.5% (ต่ำกว่า WACC ~9%) สะท้อนภาระหนี้สูง D/E 1.28x และ Net Margin ต่ำเพียง 2% แม้ Gross Margin จะปรับตัวดีขึ้นจาก House Brand นักวิเคราะห์ 12 คน (4 ซื้อ, 4 ถือ, 4 ขาย) ให้เป้า ฿3.71 ต่ำกว่าราคาตลาดเล็กน้อย กลยุทธ์ที่เหมาะสมคือ Wait-and-Watch รอหลักฐาน SSSG เป็นบวกหรือราคาย่อลงสู่โซน ฿2.76–฿3.15 ก่อนพิจารณาสะสม</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿3.94 <span style="font-size:12px;color:#cab9a8">(฿3.73–฿4.14)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +11%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿3.71 (Neutral)</div></div>
       </div>
       <div class="zone">

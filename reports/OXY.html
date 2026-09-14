@@ -12,6 +12,40 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 57,
+  "values": {
+    "px": 61.46,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 48,
+    "fvHigh": 72,
+    "eps": 3.8,
+    "shares": 994600000,
+    "dps": 1.04,
+    "bvps": 30.92,
+    "baseEps": 4.25,
+    "scenarios": [
+      {
+        "tgt": 26,
+        "div": 3.12
+      },
+      {
+        "tgt": 64,
+        "div": 3.12
+      },
+      {
+        "tgt": 97,
+        "div": 3.12
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#B22222",
     "accentDark": "#8B0000",
@@ -43,18 +77,14 @@
     "min": 30,
     "max": 70,
     "grid": [40, 50, 60],
-    "fairLine": 57,
     "currency": "$",
     "highlight": [2, 5]
   },
   "gauge": {
     "min": 30,
     "max": 80,
-    "cur": 61.46,
-    "fair": 57,
     "fairLabelTop": false
-  },
-  "fv": 57
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -75,12 +105,12 @@
     <div class="sub">Occidental Petroleum: Permian Basin E&amp;P leader (CrownRock acquisition 2023) + Midstream • Berkshire Hathaway ถือ ~26.6% (avg ~$60/sh ตามรายงาน Buffett) • OxyChem ขายให้ Berkshire $9.7B (ม.ค. 2569) ลดหนี้ครั้งใหญ่ • Stratos DAC (โรงงาน Direct Air Capture เชิงพาณิชย์แห่งแรกของโลก) • ผลิต ~1.43M BOE/day • ~2.1% dividend yield</div>
     <div class="price-row">
       <div>
-        <div class="px">$61.46<small>(OXY)</small></div>
+        <div class="px">{{rd:px}}<small>(OXY)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี จาก ก.ค. 2568 ($43.94) → มิ.ย. 2569 ($48.92) = +11.3% -->
-      <div class="chg">▲ +49.2% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $38.80 – $67.45<br>
         ที่มา: Yahoo Finance, Finviz, StockAnalysis.com
       </div>
@@ -91,10 +121,10 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">หลัง OxyChem divestiture (ม.ค. 2569)</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$61.1B</div><div class="d">994.6M shares outstanding</div></div>
-      <div class="metric"><div class="k">P/E (adj. norm.)</div><div class="v neu">~16.2x</div><div class="d">adj. EPS norm. $3.80; GAAP TTM สูงจาก OxyChem gain</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">994.6M shares outstanding</div></div>
+      <div class="metric"><div class="k">P/E (adj. norm.)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">adj. EPS norm. $3.80; GAAP TTM สูงจาก OxyChem gain</div></div>
       <div class="metric"><div class="k">Forward P/E 2026E</div><div class="v">~8.6–15x</div><div class="d">EPS 2026E $4–5.74 (consensus กว้างตาม oil)</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.99x</div><div class="d">BVPS $30.92 (equity $39.6B)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS $30.92 (equity $39.6B)</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$2.1B</div><div class="d">vs $2.9B ปี 2567 (ราคาน้ำมันลดลง)</div></div>
       <div class="metric"><div class="k">EPS adj. Q1 2569</div><div class="v">~$1.06</div><div class="d">beat คาด $0.59 โดย +79%; run-rate ~$4.24/ปี</div></div>
@@ -117,7 +147,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#B22222"></i>ราคา OXY</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $57</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -153,8 +183,8 @@
         <div class="mval">$72</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $48 – $72</span></div>
-        <div class="r">$57</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี EV/EBITDA ให้ค่าต่ำสุด ($48) เพราะหนี้ยังสูง ($13.3B) หลัง CrownRock; FCF yield สูงสุด ($72) สะท้อน potential ประหยัดดอกเบี้ยและ production growth;
@@ -170,15 +200,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $61.46</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $57</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$39.9<br><small>MOS 30%</small></span>
-          <span>$45.6<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$57<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$64.26<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$72<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -194,19 +224,19 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <!-- MOS 2.7% → class "bad" (<10%) -->
-      <div class="mos-verdict bad">
-        <div class="big">−8%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาใกล้เคียง Fair Value (เต็มมูลค่า mid-cycle) — ยังไม่มีส่วนเผื่อความปลอดภัย รอจังหวะย่อก่อนสะสมเพิ่ม</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$45.6</div><div class="d">โซนน่าสนใจสำหรับ value investor</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$39.9</div><div class="d">โซนถูกมาก (ราคา oil ตก / sentiment แย่)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $57</div><div class="d">ต่ำกว่ามูลค่าเหมาะสม mid-cycle</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value investor</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (ราคา oil ตก / sentiment แย่)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ต่ำกว่ามูลค่าเหมาะสม mid-cycle</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="61.46" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -215,17 +245,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $61.46 • EPS ฐาน ~$4.25 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −15%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$26</div>
-          <div class="ret neg">−58%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$2.61</span></li>
             <li><span>P/E ออก</span><span>10x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$3.12</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>น้ำมัน $50/bbl; recession กดดัน</span></li>
           </ul>
         </div>
@@ -233,12 +263,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$64</div>
-          <div class="ret pos">+4%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$4.92</span></li>
             <li><span>P/E ออก</span><span>13x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$3.12</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>น้ำมัน $65/bbl; deleverage ต่อ</span></li>
           </ul>
         </div>
@@ -246,12 +276,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$97</div>
-          <div class="ret pos">+58%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$6.46</span></li>
             <li><span>P/E ออก</span><span>15x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$3.12</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>น้ำมัน $80+/bbl; Permian expansion + DAC revenue</span></li>
           </ul>
         </div>
@@ -300,8 +330,8 @@
       <h2>OXY: Permian Powerhouse กำลัง Deleverage — ราคาปัจจุบันใกล้ Fair Value Mid-Cycle</h2>
       <p>Occidental Petroleum ผ่านจุดเปลี่ยนครั้งใหญ่: ขาย OxyChem ให้ Berkshire $9.7B → ลดหนี้จาก $20.8B สู่ $13.3B ใน 2 ไตรมาส ทำให้ FCF 2026E พุ่ง ~$7B (+52%) ราคา $55.47 ใกล้เคียง avg cost Buffett (~$60) และต่ำกว่า analyst consensus $64.26 สะท้อนตลาดฟื้นความเชื่อมั่นต่อ oil price และ deleveraging ราคาน้ำมัน mid-cycle $65/bbl ให้ FV ~$57 (MOS +2.7%) — ใกล้เคียงมูลค่าเหมาะสมแล้ว เหมาะรอจังหวะย่อสำหรับนักลงทุนที่เชื่อ oil demand ยังคงตัว และ Permian remains king of US shale</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$57 <span style="font-size:12px;color:#cab9a8">($48–$72)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −8%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$64.26 (Buy)</div></div>
       </div>
       <div class="zone">

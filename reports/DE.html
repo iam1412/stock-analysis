@@ -10,6 +10,40 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 521,
+  "values": {
+    "px": 675.74,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 450,
+    "fvHigh": 635,
+    "eps": 23.68,
+    "shares": 270000000,
+    "dps": 6.48,
+    "bvps": 101.53,
+    "baseEps": 17.65,
+    "scenarios": [
+      {
+        "tgt": 368,
+        "div": 20
+      },
+      {
+        "tgt": 537,
+        "div": 21
+      },
+      {
+        "tgt": 758,
+        "div": 21
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#367C2B",
     "accentDark": "#1f4d18",
@@ -41,18 +75,14 @@
     "min": 400,
     "max": 700,
     "grid": [500, 600],
-    "fairLine": 521,
     "currency": "$",
     "highlight": [0, 11]
   },
   "gauge": {
     "min": 300,
     "max": 760,
-    "cur": 675.74,
-    "fair": 521,
     "fairLabelTop": true
-  },
-  "fv": 521
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +102,11 @@
     <div class="sub">Agricultural equipment (John Deere) • Production &amp; Precision Ag • Small Ag &amp; Turf • Construction &amp; Forestry • Precision Agriculture technology • Financial Services</div>
     <div class="price-row">
       <div>
-        <div class="px">$675.74<small>(DE)</small></div>
+        <div class="px">{{rd:px}}<small>(DE)</small></div>
       </div>
-      <div class="chg">▲ +46.4% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $433.00 – $674.19<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, SEC EDGAR, MarketBeat
       </div>
@@ -90,7 +120,7 @@
       <div class="metric"><div class="k">Market Cap</div><div class="v">$182.4B</div><div class="d">270M shares outstanding</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~35.5x</div><div class="d">ทรอฟวัฏจักร EPS ต่ำกว่าปกติ</div></div>
       <div class="metric"><div class="k">P/E Normalized (~5 ปี)</div><div class="v">~29x</div><div class="d">EPS เฉลี่ย 5 ปี $23.68</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">6.66x</div><div class="d">BVPS $101.53 (ม.ค. 2569)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS $101.53 (ม.ค. 2569)</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$5.03B</div><div class="d">ลด 29% จาก FY2024 ($7.1B)</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$17.65</div><div class="d">Q3 2025–Q2 2026 รวมกัน</div></div>
@@ -113,7 +143,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#367C2B"></i>ราคา DE</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $521</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -139,8 +169,8 @@
         <div class="mval">$635</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $450 – $635</span></div>
-        <div class="r">$521</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>สำคัญ — Cyclical Stock:</b> DE อยู่ในทรอฟวัฏจักร ห้ามใช้ P/E TTM ~35x เปรียบเทียบตรงๆ (EPS ต่ำชั่วคราว ทำให้ P/E ดูแพงเกินจริง) • Method 1 (Normalized P/E $450): conservative ใช้ EPS 5 ปีเฉลี่ย • Method 2 (EV/EBITDA $479): กลาง — สะท้อน asset ทั้งบริษัทรวม balance sheet • Method 3 (Justified P/BV $635): optimistic — สมมติ ROE ฟื้นสู่ 30% กลางวัฏจักร = สะท้อน Precision Ag premium • FV เฉลี่ย $521 แสดงว่าราคาปัจจุบัน $626 ซื้อขายที่ Premium ~20% เหนือ Fair Value — ตลาดกำลัง Price-in การฟื้นตัวในอีก 1–2 ปีข้างหน้าแล้ว
@@ -154,14 +184,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $675.74</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $521</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$365<br><small>MOS 30%</small></span>
-          <span>$417<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$521<br><small>Fair Value</small></span>
-          <span style="text-align:right">$635<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$644<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -175,19 +205,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−30%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาสูงกว่า Fair Value — ซื้อขายในโซน Premium เหนือมูลค่าพื้นฐาน (ตลาด Price-in การฟื้นตัวล่วงหน้าแล้ว)</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$417</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$365</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $521</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="675.74" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -196,17 +226,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $675.74 • EPS ฐาน ~$17.65 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$368</div>
-          <div class="ret neg">−42.6%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$20.43</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$20</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>เกษตรยังซบเซา ฝนแล้ง</span></li>
           </ul>
         </div>
@@ -214,12 +244,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +15%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$537</div>
-          <div class="ret neg">−17.4%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$26.84</span></li>
             <li><span>P/E ออก</span><span>20x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$21</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>ฟื้นตัวค่อยๆ สู่ระดับปกติ</span></li>
           </ul>
         </div>
@@ -227,12 +257,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +25%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$758</div>
-          <div class="ret pos">+15.3%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$34.47</span></li>
             <li><span>P/E ออก</span><span>22x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$21</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>ฟื้นตัวเร็ว Precision Ag boom</span></li>
           </ul>
         </div>
@@ -279,8 +309,8 @@
       <h2>Premium Cyclical — ตลาด Price-in การฟื้นตัวแล้ว รอโอกาสดีกว่าจากราคานี้</h2>
       <p>Deere &amp; Company (DE) คือผู้นำระดับโลกด้านเครื่องจักรเกษตร (John Deere) ที่กำลังอยู่ในช่วงทรอฟวัฏจักร FY2024–2026 — รายได้ลดจาก $61.3B (FY2023 peak) เหลือ $47B TTM และ EPS ลดจาก $34.64 เหลือ $17.65 TTM อย่างไรก็ตาม ตลาดรับรู้การฟื้นตัวล่วงหน้าแล้ว ราคาพุ่ง +19.5% ในรอบปีและซื้อขายที่ Premium ~20% เหนือ Fair Value normalize $521 • จุดแข็งระยะยาว: Precision Agriculture Platform (See &amp; Spray AI, Operations Center, StarFire GPS) สร้างรายได้ recurring + ส่วนแบ่งตลาด Large Ag &gt;50% + การปรับต้นทุนเชิงรุก • CEO ยืนยัน FY2026 เป็น "bottom" และ C&amp;F segment ฟื้นแข็ง ชดเชยความอ่อนแอของ Large Ag ได้บางส่วน</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$521 <span style="font-size:12px;color:#cab9a8">($450–$635)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −30%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$644 (Buy — 24 นักวิเคราะห์)</div></div>
       </div>
       <div class="zone">

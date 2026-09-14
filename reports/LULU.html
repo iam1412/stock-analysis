@@ -10,6 +10,37 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 124,
+  "values": {
+    "px": 98.97,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 119,
+    "fvHigh": 130,
+    "shares": 110710000,
+    "bvps": 39.6,
+    "scenarios": [
+      {
+        "tgt": 71,
+        "div": 0
+      },
+      {
+        "tgt": 127,
+        "div": 0
+      },
+      {
+        "tgt": 206,
+        "div": 0
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#8C1515",
     "accentDark": "#6B1010",
@@ -41,18 +72,14 @@
     "min": 50,
     "max": 250,
     "grid": [100, 150, 200],
-    "fairLine": 124,
     "currency": "$",
     "highlight": [2, 11]
   },
   "gauge": {
     "min": 75,
     "max": 140,
-    "cur": 98.97,
-    "fair": 124,
     "fairLabelTop": true
-  },
-  "fv": 124
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +99,11 @@
     <div class="sub">Premium technical athletic apparel (yoga/running/training) • 54.9% gross margin • ~85% direct-to-consumer (stores + ecommerce) • international expansion (APAC/EMEA) • no owned manufacturing • Vancouver BC / Nasdaq</div>
     <div class="price-row">
       <div>
-        <div class="px">$98.97<small>(LULU)</small></div>
+        <div class="px">{{rd:px}}<small>(LULU)</small></div>
       </div>
-      <div class="chg">▼ −42.0% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $97.99 – $225.98<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, Nasdaq.com
       </div>
@@ -113,7 +140,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#8C1515"></i>ราคา LULU</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $124</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -139,8 +166,8 @@
         <div class="mval">$107</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">เฉลี่ยวิธี P/E + FCF · กรอบ $119 – $130</span></div>
-        <div class="r">$124</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">เฉลี่ยวิธี P/E + FCF · กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         งบ Q2 (3 ก.ย. 2569) ตัดไกด์กำไรทั้งปีทำให้ EPS forward ร่วงเหลือ $9.16 (จาก TTM GAAP $12.22) และ P/E ปัจจุบันอยู่ที่ 8.4x ต่ำสุดในประวัติบริษัท — มัธยฐาน P/E 5 ปีย้อนหลังอยู่ที่ 27.8x แต่มีเทรนด์ de-rate ต่อเนื่องทุกปี (FY2022 42.9x → FY2026 10.1x) จึงใช้มัธยฐานดิบไม่ได้เพราะสะท้อนยุคเติบโตสูงที่ผ่านไปแล้ว วิธี P/E และ FCF ($119–$130) ห่างกันแค่ 1.09 เท่า จึงเฉลี่ยตรงได้ FV = ($119+$130)÷2 = $124 (ปัดจาก $124.50) ขา Market Anchor ($107) ถูกถอดออกจากค่าเฉลี่ยและย้ายเป็นบริบทเท่านั้น เพราะเป็นเป้าที่นักวิเคราะห์เพิ่งปรับลงมาพร้อมเรตติ้ง Hold ยกแผงหลังข่าวเดียวกัน — สะท้อนว่าตลาดย้ายไปอยู่ตรงไหน ไม่ใช่พยานอิสระว่าหุ้นควรมีมูลค่าเท่าไร FV $124 ลดลงมากจากประเมินครั้งก่อน ($240) สอดคล้องกับข้อมูล fundamental ที่เปลี่ยนจริงหลังตัดไกด์ ไม่ใช่แค่ตลาดตื่นตระหนก ความเสี่ยง downside คือ EPS forward อาจถูกปรับลงอีกถ้า comparable sales สหรัฐฯ ไม่ฟื้น
@@ -154,15 +181,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $98.97</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $124</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$87<br><small>MOS 30%</small></span>
-          <span>$99<br><small>MOS 20%</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">$107<br><small>เป้าเฉลี่ย Analyst (บริบท)</small></span>
-          <span style="text-align:right">$124<br><small>Fair Value</small></span>
-          <span style="text-align:right">$130<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -175,19 +202,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict good">
-        <div class="big">+20%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS จริงหลังตัดไกด์ Q2 (3 ก.ย. 69) อยู่ที่ ~16.8% — โซนกลาง ไม่ใช่ deep value เหมือนก่อนหน้า Fair Value ลดลงมากตาม EPS forward ที่ร่วง (และถอด Market Anchor ออกจากค่าเฉลี่ยแล้ว) เหมาะสำหรับนักลงทุนที่ติดตาม US comparable sales ใกล้ชิดก่อนเพิ่มน้ำหนัก ไม่ใช่จังหวะทยอยสะสมหนักเหมือน MOS สูงในอดีต</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$99</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$87</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $124</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="98.97" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -196,17 +223,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $98.97 • EPS ฐาน (forward guided) $9.16 • ไม่มีปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน (forward guided) $9.16 • ไม่มีปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$71</div>
-          <div class="ret neg">−28.3%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$7.85</span></li>
             <li><span>P/E ออก</span><span>9x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>comps ไม่ฟื้น + แข่งขันกดดันต่อเนื่อง</span></li>
           </ul>
         </div>
@@ -214,12 +241,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$127</div>
-          <div class="ret pos">+28.3%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$10.60</span></li>
             <li><span>P/E ออก</span><span>12x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>comps stabilize ค่อยๆ ฟื้น + multiple re-rate เล็กน้อย</span></li>
           </ul>
         </div>
@@ -227,12 +254,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$206</div>
-          <div class="ret pos">+108.1%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$12.87</span></li>
             <li><span>P/E ออก</span><span>16x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>US comps ฟื้นจริง + Intl scale + multiple re-rate ใกล้ FY25</span></li>
           </ul>
         </div>
@@ -279,8 +306,8 @@
       <h2>De-rating หลังตัดไกด์ Q2 — MOS พอประมาณ ~13% ไม่ใช่ Deep Value อีกต่อไป</h2>
       <p>งบไตรมาส 2 (3 ก.ย. 2569) พร้อมตัดไกด์กำไรทั้งปีทำให้ EPS forward ร่วงจาก TTM $12.22 เหลือ $9.16 (−25%) และราคาหุ้นร่วงต่ออีก −15.3% หลังประกาศ Fair Value ที่คำนวณใหม่จึงลดลงมากจาก $240 เหลือ $124 (เฉลี่ยวิธี P/E + FCF เท่านั้น — ถอดขา Market Anchor/เป้านักวิเคราะห์ออกจากค่าเฉลี่ยแล้ว เพราะเป็นเป้าที่ปรับลงพร้อม Hold ยกแผงหลังข่าวเดียวกัน ไม่ใช่พยานอิสระ) สอดคล้องกับกำลังกำไรที่แท้จริงที่ลดลง ไม่ใช่แค่ตลาดตื่นตระหนกชั่วคราว Lululemon ยังเป็นแบรนด์ premium ที่มี gross margin 54.9% (สูงกว่า Nike) FCF $1.35B/ปี และ DTC ~85% แต่ระดับ MOS ปัจจุบัน (~17%) อยู่ในโซนกลาง ไม่ใช่ deep value เหมือนก่อนหน้านี้ ความเสี่ยงหลักคือ EPS forward อาจยังไม่ใช่ floor ถ้า US comparable sales ไม่ฟื้นและการแข่งขันยังกดดันต่อ</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$124 <span style="font-size:12px;color:#cab9a8">($119–$130)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +20%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด. (บริบท)</div><div class="v" style="color:#a5d6a7">~$107 (n=27, Hold)</div></div>
       </div>
       <div class="zone">

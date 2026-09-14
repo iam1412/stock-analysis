@@ -12,6 +12,20 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 87,
+  "values": {
+    "px": 83.21,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 82,
+    "fvHigh": 92,
+    "eps": 4.56,
+    "shares": 478000000,
+    "dps": 2.2,
+    "bvps": 4.8
+  },
   "theme": {
     "accent": "#003087",
     "accentDark": "#001a52",
@@ -43,18 +57,14 @@
     "min": 70,
     "max": 95,
     "grid": [75, 80, 85, 90],
-    "fairLine": 87,
     "currency": "$",
     "highlight": [4, 5]
   },
   "gauge": {
     "min": 55,
     "max": 110,
-    "cur": 83.21,
-    "fair": 87,
     "fairLabelTop": false
-  },
-  "fv": 87
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +84,11 @@
     <div class="sub">ผู้จัดจำหน่ายอาหาร-เครื่องดื่มรายใหญ่สุดในสหรัฐฯ (~17% market share) • รายได้ ~$83B TTM • ลูกค้า: ร้านอาหาร, โรงพยาบาล, โรงเรียน, โรงแรม, ผู้จัดเลี้ยง • ฝูงรถบรรทุกห้องเย็นใหญ่สุดในสหรัฐฯ (cold chain scale moat) • ปันผลต่อเนื่อง ~2.65% • ราคาสินค้าโภคภัณฑ์ลดหนุนกำไร</div>
     <div class="price-row">
       <div>
-        <div class="px">$83.21<small>(SYY)</small></div>
+        <div class="px">{{rd:px}}<small>(SYY)</small></div>
       </div>
-      <div class="chg">▲ +12.0% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $68.19 – $91.85<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, SEC EDGAR (8-K)
       </div>
@@ -89,8 +99,8 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569 · FY2025 สิ้นสุด มิ.ย. 2568</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$39.8B</div><div class="d">478M หุ้น outstanding</div></div>
-      <div class="metric"><div class="k">P/E (TTM adj.)</div><div class="v neu">~18.2x</div><div class="d">Adj. EPS TTM $4.56 · GAAP P/E ~23x</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">478M หุ้น outstanding</div></div>
+      <div class="metric"><div class="k">P/E (TTM adj.)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">Adj. EPS TTM $4.56 · GAAP P/E ~23x</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~19–21x</div><div class="d">ปัจจุบันต่ำกว่าค่าเฉลี่ยประวัติศาสตร์</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~17.3x</div><div class="d">BVPS $4.80 · สูงเพราะ leverage</div></div>
 
@@ -115,7 +125,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#003087"></i>ราคา SYY</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $87.00</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -141,8 +151,8 @@
         <div class="mval">$87.21</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $82.00 – $92.00</span></div>
-        <div class="r">$87.00</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         ทั้ง 3 วิธีให้ Fair Value ใกล้เคียงกันที่ $86–$87 สะท้อนลักษณะธุรกิจ Sysco ที่ stable, สร้าง FCF สม่ำเสมอ แม้ margin บางแต่ขนาดธุรกิจใหญ่ ($83B revenue) ชดเชยด้วย volume P/E ที่ 19x บน adj. EPS สอดคล้องกับ historical multiple ของ Sysco (17–21x) หุ้นซื้อขายใกล้ fair value ปัจจุบัน MOS เหลือ ~4.7% เท่านั้น ผู้ลงทุนแบบ value ควรรอโซน $70–$75 ซึ่งจะให้ MOS 15–20% ที่น่าสนใจกว่า
@@ -156,15 +166,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $83.21</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $87.00</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$60.90<br><small>MOS 30%</small></span>
-          <span>$69.60<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$87.00<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$87.00<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$92.00<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -177,19 +187,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+4%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS ต่ำ — ราคาใกล้มูลค่าเหมาะสม รอโอกาสจุดเข้าที่ดีกว่า</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$69.60</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$60.90</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $87.00</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="83.21" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -281,8 +291,8 @@
       <h2>Sysco — Defensive Leader ใกล้ Fair Value · รอจุดเข้าที่ดีกว่า</h2>
       <p>Sysco คือธุรกิจ foodservice distribution อันดับ 1 ของสหรัฐฯ ที่มี competitive moat แข็งแกร่งจาก scale + logistics network ซึ่งสร้างมาตลอด 50+ ปี รายได้ ~$83B TTM เติบโตสม่ำเสมอ U.S. local case volume กลับมาเร่งตัว +3.3% QoQ ใน Q3 FY2026 — สูงสุดในรอบ 3 ปี ขณะที่ gross margin ขยายตัวจาก commodity deflation อย่างไรก็ตาม ณ ราคา $82.93 หุ้นซื้อขายใกล้ Fair Value $87 (MOS เพียง ~4.7%) ไม่มีส่วนเผื่อความปลอดภัยมากพอสำหรับ value investor ผู้ลงทุนที่ต้องการ total return จะได้รับ ~9%/ปี ใน base case จาก EPS growth 5% + dividend 2.65% ซึ่งน่าสนใจสำหรับ defensive portfolio แต่ไม่น่าตื่นเต้นในแง่ capital gain</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$87.00 <span style="font-size:12px;color:#cab9a8">($82.00–$92.00)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +4%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$87.00 (Buy)</div></div>
       </div>
       <div class="zone">

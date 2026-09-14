@@ -10,6 +10,20 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 36,
+  "values": {
+    "px": 24.9,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 18,
+    "fvHigh": 59,
+    "eps": 4.08,
+    "shares": 1707600000,
+    "dps": 0.86,
+    "bvps": 31.07
+  },
   "theme": {
     "accent": "#1a237e",
     "accentDark": "#0d1453",
@@ -41,18 +55,14 @@
     "min": 15,
     "max": 40,
     "grid": [20, 25, 30, 35],
-    "fairLine": 36,
     "currency": "฿",
     "highlight": [0, 9]
   },
   "gauge": {
     "min": 15,
     "max": 65,
-    "cur": 24.9,
-    "fair": 36,
     "fairLabelTop": false
-  },
-  "fv": 36
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +82,11 @@
     <div class="sub">ประกันชีวิตขนาดกลาง-ใหญ่ของไทย • เบี้ยรวม 3 หมื่นล้าน+/ปี • ถือหุ้นโดย Bangkok Bank (BBL) 49% • ช่อง Bancassurance หลัก • ปันผลสม่ำเสมอ CAR 387%</div>
     <div class="price-row">
       <div>
-        <div class="px">฿24.90<small>(BLA)</small></div>
+        <div class="px">{{rd:px}}<small>(BLA)</small></div>
       </div>
-      <div class="chg">▲ +38.3% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿15.30–฿25.75<br>
         ที่มา: SET / Investing.com / bangkoklife.com / Yahoo Finance
       </div>
@@ -88,9 +98,9 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 · ที่มา: SET, Investing.com, bangkoklife.com</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~฿42,519 ล้าน</div><div class="d">หุ้น 1,707.6 ล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~6.1x</div><div class="d">EPS TTM ฿4.08 (FY2025)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM ฿4.08 (FY2025)</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~8–10x</div><div class="d">ต่ำกว่าค่าเฉลี่ยประวัติ</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.80x</div><div class="d">BVPS ฿31.07 (มี.ค. 69)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ฿31.07 (มี.ค. 69)</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">฿6,968 ล้าน</div><div class="d">+50% YoY จาก ฿4,634 ล้าน</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿4.08</div><div class="d">FY2025 = 6,968/1,707.6M หุ้น</div></div>
@@ -113,7 +123,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1a237e"></i>ราคา BLA</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿36.00</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -142,8 +152,8 @@
         <div class="mval">฿59.24</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿18.00 – ฿59.00</span></div>
-        <div class="r">฿36.00</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี Justified P/BV (฿59.24) สะท้อนว่า ROE 14.53% ของ BLA สูงกว่า Cost of Equity 10% มาก หากตลาดประเมินตามสมมติฐานนี้เต็ม ราคาควรสูงกว่านี้มาก
@@ -161,15 +171,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿24.90</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿36.00</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿25.20<br><small>MOS 30%</small></span>
-          <span>฿28.80<br><small>MOS 20%</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">฿29.10<br><small>เป้า Analyst</small></span>
-          <span style="text-align:right">฿36.00<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿59.00<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -184,19 +194,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict good">
-        <div class="big">+31%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">โซน Value Investor — น่าสนใจสะสม</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿28.80</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿25.20</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿36.00</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="24.9" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -291,8 +301,8 @@
       <h2>BLA: ประกันชีวิตไทยคุณภาพดี ราคาต่ำกว่ามูลค่า ~28% — Value Zone</h2>
       <p>กรุงเทพประกันชีวิต (BLA) เป็นบริษัทประกันชีวิตขนาดกลาง-ใหญ่ที่มีความแข็งแกร่งด้านพื้นฐาน: กำไร FY2568 โตก้าวกระโดด +50% YoY สู่ ฿6,968 ล้าน, เบี้ยปีแรกโต +19% YoY, CAR แข็งแกร่ง 387% และได้รับการหนุนหลังจากกลุ่ม BBL ผ่านช่อง Bancassurance 240+ สาขา ราคาปัจจุบัน ฿25.75 ซื้อขายที่ P/E เพียง 6.3x และ P/BV 0.83x — ต่ำกว่าค่าเฉลี่ยประวัติและต่ำกว่า ROE 14.5% ที่ควรได้รับ Justified P/BV สูงกว่า 1.0x แรงกดดันหลักคือ IFRS17 ทำให้กำไรผันผวน + ตลาดยัง "รอดู" ผลต่อเนื่อง ทำให้ Valuation ยังถูก</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿36.00 <span style="font-size:12px;color:#cab9a8">(฿18.00–฿59.00)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +31%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿29.10 (Buy)</div></div>
       </div>
       <div class="zone">

@@ -10,6 +10,19 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 87,
+  "values": {
+    "px": 94.66,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 79,
+    "fvHigh": 101,
+    "shares": 1274000000,
+    "dps": 2.66,
+    "bvps": 60.85
+  },
   "theme": {
     "accent": "#CC0000",
     "accentDark": "#990000",
@@ -41,7 +54,6 @@
     "min": 60,
     "max": 110,
     "grid": [70, 80, 90, 100],
-    "fairLine": 87,
     "currency": "$",
     "highlight": [5, 9],
     "gridFmt": "v.toFixed(0)",
@@ -50,11 +62,8 @@
   "gauge": {
     "min": 54,
     "max": 113,
-    "cur": 94.66,
-    "fair": 87,
     "fairLabelTop": true
-  },
-  "fv": 87
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +83,11 @@
     <div class="sub">~9,900 ร้านขายยา + Caremark PBM + Aetna ประกันสุขภาพ + Oak Street Health คลินิกปฐมภูมิ • วิกฤต Medicare Advantage MLR 2024 → EPS ทรุด → ฟื้นตัวรอบปี 2025–2026 • เปลี่ยน CEO ต.ค. 2024 (David Joyner) • PBM reform risk สหรัฐ</div>
     <div class="price-row">
       <div>
-        <div class="px">$94.66<small>(CVS)</small></div>
+        <div class="px">{{rd:px}}<small>(CVS)</small></div>
       </div>
-      <div class="chg">▲ +21.1% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $58.50 – $106.15<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, CVS Health IR
       </div>
@@ -92,7 +101,7 @@
       <div class="metric"><div class="k">Market Cap</div><div class="v">~$120.6B</div><div class="d">~1.274B shares outstanding</div></div>
       <div class="metric"><div class="k">P/E (TTM adj.)</div><div class="v neu">~14.6x</div><div class="d">Forward P/E 13.9x (2026E $7.40)</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~10–15x</div><div class="d">Adj. EPS: FY24 $5.42 → FY25 $6.75</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.56x</div><div class="d">BVPS ~$60.85 (ธ.ค. 2025)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ~$60.85 (ธ.ค. 2025)</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$1.73B</div><div class="d">GAAP; Adj. Net Income สูงกว่ามาก</div></div>
       <div class="metric"><div class="k">EPS adj. (TTM)</div><div class="v">~$7.07</div><div class="d">FY2025 adj. $6.75 | Q1'26 adj. $2.57</div></div>
@@ -115,7 +124,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#CC0000"></i>ราคา CVS</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $87</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -141,8 +150,8 @@
         <div class="mval">$85</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $79 – $101</span></div>
-        <div class="r">$87</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         ทั้ง 3 วิธีให้ค่า $85–$89 สอดคล้องกันดี ค่าเฉลี่ย $87 เป็น base case สำหรับ "ฟื้นตัวบางส่วน" — ไม่ใช่ full premium หากฟื้นตัวสมบูรณ์และ PBM ไม่ถูก disrupt อาจมี upside ถึง $100+ (bull FV ~$101) แต่ความเสี่ยง PBM delinking (กฎหมายผ่านแล้ว ม.ค. 2569) + Oak Street write-off ยังกดดัน multiple · ราคาปัจจุบัน $103.16 <strong>เกิน FV base case แล้ว ~18%</strong> สะท้อนว่าตลาดราคา recovery ไว้มากแล้ว
@@ -156,14 +165,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $94.66</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $87</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$61<br><small>MOS 30%</small></span>
-          <span>$70<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$87<br><small>Fair Value</small></span>
-          <span style="text-align:right">$101<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$105<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -177,19 +186,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−9%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาเกินมูลค่าเหมาะสม — หุ้นรีบาวน์ล่วงหน้าแล้ว ควรรอจุดสะสมที่ดีกว่า</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$70</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$61</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $87</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="94.66" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -281,8 +290,8 @@
       <h2>Recovery ราคาไว้แล้ว — รอสะสมใกล้ FV $87</h2>
       <p>CVS Health ผ่านจุดต่ำสุดของวิกฤต Aetna Medicare Advantage แล้ว: adj. EPS ฟื้นจาก $5.42 (FY67) สู่ $6.75 (FY68) และ guide $7.30–$7.50 (FY69) กับ Aetna MLR ดีขึ้นชัดเจนใน Q1 69 อย่างไรก็ตาม หุ้นได้ราคาความฟื้นตัวนี้ไปมากแล้ว — วิ่งขึ้น 66% ในรอบปีจนเกินมูลค่าเหมาะสม base case $87 ของเราอยู่ ~18% ความเสี่ยงสำคัญที่ยังหนักอยู่คือ PBM reform (กฎหมาย delinking ผ่านแล้ว อาจกระทบ Caremark ระยะกลาง) + Oak Street integration ไม่เป็นไปตามแผน + Aetna MA star ratings ยังกดดัน enrollment ผู้ซื้อใหม่ควรรอโอกาสที่ดีกว่า — ถ้าราคาลงมาใกล้ $87–$90 จะเป็นจุดเข้าที่สมเหตุสมผล</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$87 <span style="font-size:12px;color:#cab9a8">($79–$101)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −9%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$105 (Buy · 28 คน)</div></div>
       </div>
       <div class="zone">

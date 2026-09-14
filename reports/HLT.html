@@ -10,6 +10,19 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 221.24,
+  "values": {
+    "px": 306.19,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 212.4,
+    "fvHigh": 232.36,
+    "eps": 8.11,
+    "shares": 227650000,
+    "dps": 0.6
+  },
   "theme": {
     "accent": "#003580",
     "accentDark": "#001e4d",
@@ -41,18 +54,14 @@
     "min": 200,
     "max": 350,
     "grid": [250, 300],
-    "fairLine": 221.24,
     "currency": "$",
     "highlight": [0, 8]
   },
   "gauge": {
     "min": 140,
     "max": 400,
-    "cur": 306.19,
-    "fair": 221.24,
     "fairLabelTop": "-58px"
-  },
-  "fv": 221.24
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +81,11 @@
     <div class="sub">แฟรนไชส์และบริหารโรงแรมแบบ asset-light — Hilton, Waldorf Astoria, Conrad, Canopy, DoubleTree, Hampton, Tru, Home2 Suites • 30+ แบรนด์ • ~9,200 โรงแรม / 1.3 ล้านห้องทั่วโลก • รายได้หลักจากค่าธรรมเนียม franchise/management ไม่ใช่ค่าห้องพักตรง</div>
     <div class="price-row">
       <div>
-        <div class="px">$306.19<small>(HLT)</small></div>
+        <div class="px">{{rd:px}}<small>(HLT)</small></div>
       </div>
-      <div class="chg">▲ +19.2% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $253.54 / $358.00<br>
         ที่มา: StockAnalysis.com / MarketBeat / Hilton Investor Relations (8-K)
       </div>
@@ -87,8 +96,8 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">Asset-light franchisor — ดู RevPAR/NUG/Adjusted EPS แทน room revenue ตรง</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$69.7B</div><div class="d">~227.65M shares (ลดลง ~4.8% YoY จาก buyback)</div></div>
-      <div class="metric"><div class="k">P/E (TTM, adj.)</div><div class="v neu">~37.8x</div><div class="d">EPS adj. $8.11 (FY2025) — premium สูงกว่า MAR (~35x) มาก</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~227.65M shares (ลดลง ~4.8% YoY จาก buyback)</div></div>
+      <div class="metric"><div class="k">P/E (TTM, adj.)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS adj. $8.11 (FY2025) — premium สูงกว่า MAR (~35x) มาก</div></div>
       <div class="metric"><div class="k">P/E (Fwd, adj.)</div><div class="v neu">~34.6x</div><div class="d">อิง FY2026 guided EPS adj. $8.79–$8.91 (กลาง $8.85)</div></div>
       <div class="metric"><div class="k">P/FCF (TTM)</div><div class="v">~34.9x</div><div class="d">FCF/share ~$9.68 (FCF $2.20B ÷ shares)</div></div>
 
@@ -113,7 +122,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#003580"></i>ราคา HLT</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $221.24</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -139,8 +148,8 @@
         <div class="mval">$232.36</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $212.40 – $232.36</span></div>
-        <div class="r">$221.24</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>หมายเหตุ:</b> ข้าม DDM เพราะเงินปันผลต่ำมาก (yield 0.18%, payout ~9%) ไม่มีนัยสำคัญต่อ valuation — บริษัทเลือก buyback แทนปันผลเป็นหลัก วิธี P/E forward ให้ค่าต่ำสุดเพราะใช้ multiple อนุรักษ์นิยมกว่าเทียบ EPS ปีถัดไป ส่วน P/FCF ให้ค่าสูงสุดเพราะ FCF conversion ของโมเดล asset-light แข็งแกร่งกว่า earnings ธรรมดา ค่าเฉลี่ย $221.24 ต่ำกว่าราคาตลาดปัจจุบัน ($338.50) ถึง ~35% สะท้อนว่าตลาดให้ premium multiple สูงกว่าพื้นฐานระยะยาวมาก แม้เป้าหมายนักวิเคราะห์ (consensus ~$347-349) จะสูงกว่า FV ของเรามาก เพราะ street มักให้เครดิต NUG 6-7%/ปีต่อเนื่องระยะยาวที่ multiple สูงกว่าที่เราใช้
@@ -154,13 +163,13 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $306.19</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $221.24</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$154.87<br><small>MOS 30%</small></span>
-          <span>$176.99<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$221.24<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$347.33<br><small>เป้าเฉลี่ย Analyst</small></span>
           <span style="text-align:right">$383.00<br><small>เป้าสูงสุด Analyst</small></span>
         </div>
@@ -175,19 +184,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−38%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>ไม่มี Margin of Safety (ติดลบมาก)</b><br>ราคาปัจจุบัน $338.50 สูงกว่ามูลค่าเหมาะสม $221.24 ถึง ~53% (แบบ FV-based) → ตามเกณฑ์ value investor ถือว่า <b>แพงมาก</b> แม้ธุรกิจพื้นฐาน (NUG, RevPAR, asset-light FCF) จะยังแข็งแรง แต่ราคาได้สะท้อนความคาดหวังการเติบโตระยะยาวไปมากแล้ว</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$176.99</div><div class="d">โซนน่าสนใจสำหรับ value — ต่ำกว่าราคาปัจจุบันมาก</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$154.87</div><div class="d">โซนถูกมาก (deep value) — ต่ำกว่า 52wk low ปัจจุบันด้วย</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $221.24</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value — ต่ำกว่าราคาปัจจุบันมาก</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value) — ต่ำกว่า 52wk low ปัจจุบันด้วย</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="306.19" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -277,8 +286,8 @@
       <h2>HLT — ธุรกิจแข็งแกร่งจริง แต่ราคาแพงเกินมูลค่าพื้นฐานมาก</h2>
       <p>Hilton เป็นหนึ่งในผู้นำโมเดล asset-light hospitality ที่มี Net Unit Growth แข็งแกร่งต่อเนื่อง (6-7%/ปี) และ FCF conversion สูงจากธุรกิจ franchise/management fee พื้นฐานธุรกิจยังคงแข็งแรงต่อเนื่อง โดยเฉพาะ RevPAR ที่เร่งตัวขึ้นในปี 2569 และ pipeline การพัฒนาที่สูงสุดเป็นประวัติการณ์ อย่างไรก็ตาม ราคาหุ้นที่ปรับขึ้น +22.6% ในรอบปีที่ผ่านมาทำให้ P/E บน adjusted EPS แตะระดับ ~38-42x ซึ่งสูงกว่าค่าเฉลี่ยระยะยาวของตัวเองและสูงกว่าคู่แข่งอย่าง Marriott มาก Fair Value ของเราที่ $221.24 (อิง P/E และ P/FCF อนุรักษ์นิยม) ต่ำกว่าราคาตลาดปัจจุบันถึง ~35% แม้เป้าหมายนักวิเคราะห์ (consensus ~$347) จะยังคงเป็น Buy เพราะให้เครดิต NUG ระยะยาวที่ multiple สูงกว่า นักลงทุนที่เข้าซื้อ ณ ราคานี้จึงพึ่งพาการที่ตลาดยอมจ่าย premium multiple ต่อเนื่องไปอีกหลายปี ซึ่งมีความเสี่ยงหาก sentiment เปลี่ยนหรือ RevPAR ชะลอกว่าคาด</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$221.24 <span style="font-size:12px;color:#cab9a8">($212.40–$232.36)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ff8a80">MOS ~ −38%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ff8a80">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$347.33 (Buy)</div></div>
       </div>
       <div class="zone">

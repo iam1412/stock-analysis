@@ -1163,13 +1163,14 @@ gh pr create --base main --head claude/audit-p2-d-dual-mode --title "audit ร�
 
 ```bash
 # แบตช์ i (0..9)
-node tools/migrate-v2.js --batch i --size 100 --write --census docs/superpowers/audit/2026-09-11-stock-analyzer/ \
+node tools/migrate-v2.js --batch i --size 100 --write --cron-diff --census docs/superpowers/audit/2026-09-11-stock-analyzer/ \
  && npm run build > /dev/null && node tools/preserve-dates.js && npm run build > /dev/null \
  && node -e "const b=require('<scratch>/updated-before.json');const j=require('./reports.json');const rs=(j.reports||j);let bad=[];for(const r of rs){if(b[r.symbol]&&b[r.symbol]!==r.updated)bad.push(r.symbol+' '+b[r.symbol]+'→'+r.updated)}if(bad.length){console.error('updated ขยับ',bad.length,bad.slice(0,5));process.exit(1)}console.log('updated คงเดิมทุกใบ')" \
  && npm run verify > <scratch>/verify-i.txt 2>&1; tail -3 <scratch>/verify-i.txt
 git add reports reports.json docs/superpowers/audit/2026-09-11-stock-analyzer/migration-v2-census.*
 git commit -m "migrate(v2): แบตช์ i/10 (<SYM แรก>–<SYM ท้าย>) — ย้าย N ใบ · ข้าม M (census)"
 ```
+★ (Task 14a fix round 1 · 14 ก.ย. 2569) migrator **exit 0 แม้มี residue** — residue คือผลตัดสินปกติที่ census บันทึก ไม่ใช่ความล้มเหลว ⇒ chain `&&` ข้างบนเดินต่อถึง build/preserve-dates/verify ได้ (เดิม exit 1 เมื่อมี residue ใบใดใบหนึ่ง = หยุดทันทีหลังเขียน reports/ เพราะทุกแบตช์มี residue) · exit 1 = ข้อผิดพลาดไม่คาดคิดเท่านั้น (throw · เขียนไฟล์/census ไม่ได้) → หยุด + `git checkout -- reports reports.json` · ต้องการพฤติกรรมเดิมใช้ `--strict` · ใบที่ `--cron-diff` ตก = residue เหตุผล `cron-diff v1-unstable <kinds>` / `cron-diff v2-diff <kinds>` / `cron-diff <kinds>` (ตัดสินฝั่งไม่ได้) และไม่ถูกเขียน
 ★ ถ้า verify ตกในแบตช์ใด: ห้ามแก้รายงานมือ · `git checkout -- reports reports.json` คืนทั้งแบตช์ · หาสาเหตุใน migrator/gate (เทสใน Task 7/8 ต้องเพิ่มเคสนั้น) · แก้โค้ด commit แยก · รันแบตช์นั้นใหม่ · ถ้าเป็นใบเดี่ยว ๆ ที่ผ่าน round-trip แต่ verify ทั้งรีโปตก (เช่น check-site) ให้เพิ่มเหตุผล residue ใน migrator (`--exclude SYM` เขียนลง census) ไม่ใช่ข้าม verify
 - [ ] **Step 3: หลังครบ 10 แบตช์** — `rtk proxy node -e "…นับ v2/v1 ในคลัง…"`: พิมพ์ `v2 N · v1 M` · `rtk proxy node test/check-reports.js | tail -3` (error 0 · warning เทียบ baseline — W22/W23 ควร**ลด**เพราะสำเนาหายไป) · census.md สรุปสุดท้าย: ย้าย N/908 · residue M พร้อมเหตุผลต่อชนิด + รายชื่อ (เป็น input ของระยะ 3) · site literal ต่อชนิด (peCard/yieldCard/scn …) พร้อมนับ
 - [ ] **Step 4: Commit census + push สาขา** — (ยังไม่เปิด cron: เปิดหลัง PR merge ใน Task 15)

@@ -12,6 +12,19 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 113,
+  "values": {
+    "px": 105.33,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 85,
+    "fvHigh": 134,
+    "shares": 326000000,
+    "dps": 3.81,
+    "bvps": 43.35
+  },
   "theme": {
     "accent": "#cf7c15",
     "accentDark": "#975a0d",
@@ -43,18 +56,14 @@
     "min": 100,
     "max": 120,
     "grid": [105, 110, 115],
-    "fairLine": 113,
     "currency": "$",
     "highlight": [6, 11]
   },
   "gauge": {
     "min": 75,
     "max": 140,
-    "cur": 105.33,
-    "fair": 113,
     "fairLabelTop": false
-  },
-  "fv": 113
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +83,11 @@
     <div class="sub">สาธารณูปโภคไฟฟ้าและก๊าซธรรมชาติกำกับโดยรัฐ • Wisconsin / Illinois / Michigan / Minnesota • ~4.6 ล้านลูกค้า • We Energies · Wisconsin Public Service · Peoples Energy · Michigan Gas Utilities • เปลี่ยนผ่านพลังงานหมุนเวียน (ลม+โซลาร์) • Dividend Aristocrat เพิ่มปันผล 20+ ปีต่อเนื่อง • Milwaukee, WI</div>
     <div class="price-row">
       <div>
-        <div class="px">$105.33<small>(WEC)</small></div>
+        <div class="px">{{rd:px}}<small>(WEC)</small></div>
       </div>
-      <div class="chg">▼ −5.7% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $102.49 – $119.62<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, Digrin.com
       </div>
@@ -92,7 +101,7 @@
       <div class="metric"><div class="k">Market Cap</div><div class="v">~$34.3 พัน ล.</div><div class="d">~326 ล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~20.4x</div><div class="d">EPS TTM $5.17 · Forward P/E ~19.6x (EPS 2026e $5.60)</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~21–24x</div><div class="d">กรอบ utility premium 18–26x</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">~2.43x</div><div class="d">BVPS $43.35 (TTM) · ระดับปกติ utility</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~{{rd:pbv}}x</div><div class="d">BVPS $43.35 (TTM) · ระดับปกติ utility</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$1,556 ล้าน</div><div class="d">+2.1% YoY จาก $1,524 ล้าน (FY2024)</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$5.17</div><div class="d">FY2025 $4.81 · FY2024 $4.83 · Q2/2569 (29 ก.ค.) EPS $0.91 (+21.8% YoY) guidance reaffirm 2026e $5.51–5.61</div></div>
@@ -115,7 +124,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#E88C1A"></i>ราคา WEC</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $113.00</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -144,8 +153,8 @@
         <div class="mval">$85.40</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $85 – $134</span></div>
-        <div class="r">$113.00</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         DDM ให้ค่าสูงสุด ($134) เพราะ WEC มีประวัติเพิ่มปันผลต่อเนื่อง 20+ ปีและ payout ratio ~77% สม่ำเสมอ
@@ -162,15 +171,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $105.33</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $113.00</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$79.10<br><small>MOS 30%</small></span>
-          <span>$90.40<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$113.00<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$124.19<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$134.00<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -186,19 +195,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+7%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาปัจจุบันต่ำกว่า Fair Value เล็กน้อย — มี Margin of Safety จำกัด (~2.7%) ยังไม่ถึงจุดน่าสนใจ รอจังหวะ dip เพิ่มเติม</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$90.40</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$79.10</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $113.00</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="105.33" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -297,8 +306,8 @@
         อย่างไรก็ดี ราคาปัจจุบัน $109.91 ซื้อขายต่ำกว่า Fair Value $113.00 เล็กน้อย (MOS ~2.7%)
         นักลงทุนที่เน้น income อาจเริ่มสะสมได้ในราคานี้ แต่ value investor ที่ต้องการ MOS ควรรอ dip สู่แนว $100–$105</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$113.00 <span style="font-size:12px;color:#cab9a8">($85–$134)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +7%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$124.19 (Buy)</div></div>
       </div>
       <div class="zone">

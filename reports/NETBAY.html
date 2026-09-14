@@ -12,6 +12,40 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 22,
+  "values": {
+    "px": 12.1,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 20.6,
+    "fvHigh": 25,
+    "eps": 1.14,
+    "shares": 200000000,
+    "dps": 1.2,
+    "bvps": 2.52,
+    "baseEps": 1.14,
+    "scenarios": [
+      {
+        "tgt": 8.6,
+        "div": 3
+      },
+      {
+        "tgt": 25,
+        "div": 3.6
+      },
+      {
+        "tgt": 36,
+        "div": 4.2
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#5e35b1",
     "accentDark": "#4527a0",
@@ -43,18 +77,14 @@
     "min": 5,
     "max": 25,
     "grid": [10, 15, 20],
-    "fairLine": 22,
     "currency": "฿",
     "highlight": [3, 7]
   },
   "gauge": {
     "min": 7,
     "max": 28,
-    "cur": 12.1,
-    "fair": 22,
     "fairLabelTop": false
-  },
-  "fv": 22
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +104,11 @@
     <div class="sub">แพลตฟอร์ม B2B ดิจิทัล e-Customs • e-Logistics • ระบบแลกเปลี่ยนข้อมูลอิเล็กทรอนิกส์ supply chain • SaaS AI-Box สำหรับ trade facilitation ไทย</div>
     <div class="price-row">
       <div>
-        <div class="px">฿12.10<small>(NETBAY)</small></div>
+        <div class="px">{{rd:px}}<small>(NETBAY)</small></div>
       </div>
-      <div class="chg">▼ −41.0% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿9.05 – ฿25.00<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, Investing.com, SET
       </div>
@@ -92,7 +122,7 @@
       <div class="metric"><div class="k">Market Cap</div><div class="v">2,420 ล้านบาท</div><div class="d">200 ล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~10.61x</div><div class="d">EPS TTM ฿1.14 (Q2/68–Q1/69)</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~20–25x</div><div class="d">ปัจจุบัน discount จาก avg</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">4.80x</div><div class="d">BVPS ฿2.52 (FY2568)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ฿2.52 (FY2568)</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">265.6 ล้านบาท</div><div class="d">+23.0% YoY (FY2024: 215.9 ล้าน)</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿1.14</div><div class="d">Q2/2025–Q1/2026; FY2025 EPS ฿1.33</div></div>
@@ -115,7 +145,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#5e35b1"></i>ราคา NETBAY</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿22.0</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -141,8 +171,8 @@
         <div class="mval">฿21.6</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿20.6 – ฿25.0</span></div>
-        <div class="r">฿22.0</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/E ให้ค่าสูงสุด ฿25.0 สะท้อน upside หาก sentiment กลับมาหลัง Q1/2569 ที่อ่อนแอ วิธี DDM และ Justified P/BV ให้ค่า ฿20–22 ซึ่งสอดคล้องกัน FV เฉลี่ย ฿22.0 ถือเป็นค่ากลางที่สมเหตุสมผล ณ สมมติฐาน ROE 39% คงตัว, g=3–5%, r=9% ความเสี่ยงหลักคือ Q1/2569 รายได้ลด 23.9% YoY อาจสัญญาณว่าธุรกิจ e-Customs ชะลอตัวโครงสร้าง
@@ -156,15 +186,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿12.10</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿22.0</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿15.4<br><small>MOS 30%</small></span>
-          <span>฿17.6<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿22.0<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">฿25.0<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">฿25.0<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -177,19 +207,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict good">
-        <div class="big">+45%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ถูกมาก — Deep Value Zone · ราคาต่ำกว่ามูลค่าเหมาะสมกว่า 36% · ต้องตรวจสอบว่าไม่ใช่ Value Trap</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿17.6</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿15.4</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿22.0</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="12.1" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -198,17 +228,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿12.10 • EPS ฐาน ~฿1.14 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿8.6</div>
-          <div class="ret neg">−28.9% รวม / ~−10.7%/ปี</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿1.14</span></li>
             <li><span>P/E ออก</span><span>7.5x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿3.00</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>e-Customs หด ปันผลลด</span></li>
           </ul>
         </div>
@@ -216,12 +246,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +11%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿25.0</div>
-          <div class="ret pos">+106.6% รวม / ~+27.4%/ปี</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿1.56</span></li>
             <li><span>P/E ออก</span><span>16x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿3.60</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>SaaS โต / e-Custom ฟื้น</span></li>
           </ul>
         </div>
@@ -229,12 +259,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +18%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿36.0</div>
-          <div class="ret pos">+197.5% รวม / ~+43.8%/ปี</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿1.87</span></li>
             <li><span>P/E ออก</span><span>19x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿4.20</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>รัฐบาล digital + AI-Box โตแรง</span></li>
           </ul>
         </div>
@@ -280,8 +310,8 @@
       <h2>Deep Value ที่มีความเสี่ยงสูง — เหมาะกับนักลงทุนเชิง Contrarian</h2>
       <p>NETBAY เป็นธุรกิจ SaaS B2B คุณภาพสูง (ROE 39%, gross margin 73%, net margin 36%) ที่ถูกลงโทษหนักจากตลาดหลัง Q1/2569 อ่อนแอ ราคา ฿14.10 ให้ MOS 35.9% จาก Fair Value ฿22.0 และ dividend yield ~8.5% ที่ระดับนี้ ปัจจัยกำหนดทิศทางคือ: (1) ธุรกิจ e-Customs จะฟื้นตาม trade volume หรือชะลอเชิงโครงสร้าง (2) SaaS AI-Box scale ได้ตามแผนหรือไม่ และ (3) โปรเจกต์ภาครัฐ 2H2569 จะเป็น catalyst จริงหรือเลื่อนออกไป ถ้า Base case เป็นจริง upside 3 ปี ~77% หรือ ~21%/ปี เป็น risk-reward ที่น่าสนใจสำหรับนักลงทุนที่รับความเสี่ยงได้</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿22.0 <span style="font-size:12px;color:#cab9a8">(฿20.6–฿25.0)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +45%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿25.0 (BUY - Maybank)</div></div>
       </div>
       <div class="zone">

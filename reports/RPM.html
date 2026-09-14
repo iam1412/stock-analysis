@@ -12,6 +12,20 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 112,
+  "values": {
+    "px": 100.21,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 95,
+    "fvHigh": 129,
+    "eps": 5.85,
+    "shares": 127600000,
+    "dps": 2.16,
+    "bvps": 22.48
+  },
   "theme": {
     "accent": "#B03A2E",
     "accentDark": "#7B241C",
@@ -43,18 +57,14 @@
     "min": 95,
     "max": 120,
     "grid": [100, 105, 110, 115],
-    "fairLine": 112,
     "currency": "$",
     "highlight": [4, 5]
   },
   "gauge": {
     "min": 75,
     "max": 135,
-    "cur": 100.21,
-    "fair": 112,
     "fairLabelTop": false
-  },
-  "fv": 112
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +84,11 @@
     <div class="sub">Rust-Oleum coatings (DIY &amp; pro) · Tremco sealants &amp; roofing · Carboline industrial coatings · DAP caulks · Stonhard flooring · construction &amp; maintenance products · Dividend Aristocrat 50+ ปี · Medina, OH</div>
     <div class="price-row">
       <div>
-        <div class="px">$100.21<small>(RPM)</small></div>
+        <div class="px">{{rd:px}}<small>(RPM)</small></div>
       </div>
-      <div class="chg">▼ −8.3% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $92.92 – $129.12<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, Barchart
       </div>
@@ -89,8 +99,8 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$12.8B</div><div class="d">~127.6 ล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM adj.)</div><div class="v neu">~17.1x</div><div class="d">adj. EPS ~$5.85 · GAAP P/E ~21.4x</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~127.6 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM adj.)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">adj. EPS ~$5.85 · GAAP P/E ~21.4x</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~21–22x</div><div class="d">ช่วง 5 ปี ~18–28x</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~4.5x</div><div class="d">BVPS ~$22.48 · สูง เนื่องจากซื้อกิจการ goodwill</div></div>
 
@@ -115,7 +125,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#B03A2E"></i>ราคา RPM</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $112</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -141,8 +151,8 @@
         <div class="mval">$115</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $95 – $129</span></div>
-        <div class="r">$112</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         P/E Valuation ($117) ให้ค่าสูงสุด สะท้อนความสามารถสร้างกำไรที่ดีขึ้นอย่างต่อเนื่อง (GAAP EPS จาก $3.72 → $5.35 ใน 3 ปี) วิธี EV/EBITDA ($102) ให้ค่าต่ำกว่า เนื่องจาก RPM มีหนี้สุทธิค่อนข้างสูง (~$2.3B) จากกลยุทธ์ M&amp;A ส่วน DDM ($115) สะท้อนมูลค่าปันผลที่เพิ่มติดต่อกัน 50+ ปี เฉลี่ย 3 วิธีได้ ~$111 ปรับขึ้นเล็กน้อยเป็น $112 ให้พรีเมียม Dividend Aristocrat ราคาปัจจุบัน $111.15 อยู่ใกล้มูลค่าเหมาะสมมาก แสดงว่าหุ้น RPM มีราคาเป็นธรรม
@@ -156,15 +166,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $100.21</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $112</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$78.40<br><small>MOS 30%</small></span>
-          <span>$89.60<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$112<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$128.86<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$129<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -177,19 +187,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+11%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาใกล้มูลค่าเหมาะสม — ยังไม่มี MOS นัยสำคัญ · รอโซน &lt;$100 เพื่อ MOS 10%+</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$89.60</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$78.40</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $112</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="100.21" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -281,8 +291,8 @@
       <h2>ราคาเป็นธรรม — รอจังหวะสะสมในโซน &lt;$100</h2>
       <p>RPM International เป็นบริษัท Specialty Coatings ที่มีคุณภาพสูง — แบรนด์แข็งแกร่ง (Rust-Oleum, Tremco, Carboline, DAP) ครอบคลุมทั้ง DIY เชิงพาณิชย์ และอุตสาหกรรม กำไรเพิ่มขึ้นแข็งแกร่ง (EPS +44% ใน 3 ปี) และ Map to Grow initiative กำลังขยาย EBIT margin อย่างมีนัย สถานะ Dividend Aristocrat (50+ ปีเพิ่มปันผลต่อเนื่อง DGR 5 ปี 6.86%) ทำให้น่าถือระยะยาว อย่างไรก็ตาม ราคา $111.15 ใกล้มูลค่าเหมาะสม $112 มาก — MOS เพียง ~0.8% ไม่มีส่วนเผื่อความปลอดภัยนัยสำคัญ นักลงทุน value ควรรอราคาต่ำกว่า $100 (MOS 10%+) หรือ $89.60 (MOS 20%) สำหรับโซนซื้อที่ดีที่สุด</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$112 <span style="font-size:12px;color:#cab9a8">($95–$129)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +11%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$128.86 (Strong Buy)</div></div>
       </div>
       <div class="zone">

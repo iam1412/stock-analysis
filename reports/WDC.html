@@ -10,6 +10,20 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 372,
+  "values": {
+    "px": 447.18,
+    "priceDate": "2026-09-11",
+    "dateEra": "CE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 286,
+    "fvHigh": 470,
+    "analystTgt": 647,
+    "eps": 18.35,
+    "shares": 344700000,
+    "dps": 0.6
+  },
   "theme": {
     "accent": "#e0711b",
     "accentDark": "#a45314",
@@ -41,18 +55,14 @@
     "min": 0,
     "max": 800,
     "grid": [200, 400, 600],
-    "fairLine": 372,
     "currency": "$",
     "highlight": [0, 8]
   },
   "gauge": {
     "min": 240,
     "max": 720,
-    "cur": 447.18,
-    "fair": 372,
     "fairLabelTop": "-58px"
-  },
-  "fv": 372
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +82,11 @@
     <div class="sub">ผู้ผลิตฮาร์ดดิสก์ความจุสูงสำหรับคลาวด์/AI datacenter • หลังสปินออฟ SanDisk (ก.พ. 2025) เหลือธุรกิจ HDD ล้วน</div>
     <div class="price-row">
       <div>
-        <div class="px">$447.18<small>(WDC)</small></div>
+        <div class="px">{{rd:px}}<small>(WDC)</small></div>
       </div>
-      <div class="chg">▲ +197.7% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ≈ 11 ก.ย. 2026 (ผันผวนสูงมาก)<br>
+        ราคา ≈ {{rd:priceDate}} (ผันผวนสูงมาก)<br>
         ปิดก่อนหน้า $732.62 • ATH $799.87<br>
         ที่มา: StockAnalysis / Google Finance / MarketBeat
       </div>
@@ -87,7 +97,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">FY ก.ค. 2025 + งวด Q3 FY2026 (8-K)</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$154B</div><div class="d">344.7 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">344.7 ล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM, GAAP)</div><div class="v">~24x</div><div class="d">EPS TTM $18.35 <span class="pill a">บวมจากรายการพิเศษ</span></div></div>
       <div class="metric"><div class="k">P/E (Normalized FY26)</div><div class="v neu">~50x</div><div class="d">EPS หลัก ~$9/หุ้น (non-GAAP)</div></div>
       <div class="metric"><div class="k">Forward P/E</div><div class="v">~31x</div><div class="d">อิงประมาณการ EPS ข้างหน้า</div></div>
@@ -113,7 +123,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1a73e8"></i>ราคา WDC</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $372</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -141,8 +151,8 @@
         <div class="mval">$470</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $286 – $470</span></div>
-        <div class="r">$372</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>หมายเหตุ:</b> ข้าม DDM เพราะปันผลแทบเป็นศูนย์ (0.09%) • ใช้ <b>normalized non-GAAP EPS ~$9 (FY26)</b> เป็นฐาน ไม่ใช่ GAAP EPS TTM $18.35 ที่บวมจากรายการพิเศษหลังสปินออฟ
@@ -157,14 +167,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $447</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $372</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$260<br><small>MOS 30%</small></span>
-          <span>$298<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$372<br><small>Fair Value</small></span>
-          <span style="text-align:right">$647<br><small>เป้า Analyst</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:analystTgt}}<br><small>เป้า Analyst</small></span>
           <span style="text-align:right">$685<br><small>เป้าสูงสุด</small></span>
         </div>
       </div>
@@ -179,19 +189,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−20%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>ไม่มี Margin of Safety</b><br>ราคาปัจจุบัน $553 สูงกว่ามูลค่าเหมาะสม $372 ราว 49% → ตามเกณฑ์ value investor ถือว่า <b>แพงมาก (priced for perfection)</b> ราคาสะท้อนสมมติฐานว่ารอบ HDD จะไม่กลับ</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$298</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$260</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $372</div><div class="d">ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="447.18" step="1">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -281,9 +291,9 @@
       <h2>ธุรกิจกำลังพีคจาก AI storage — แต่ราคา "วิ่งเกินพื้นฐานไปไกล"</h2>
       <p>Western Digital หลังสปินออฟ SanDisk กลายเป็นผู้เล่น HDD ความจุสูงล้วน ที่ได้อานิสงส์เต็มจากดีมานด์เก็บข้อมูล AI/คลาวด์ มาร์จิ้นและกำไรทำสถิติ — แต่ราคาหุ้นวิ่ง ~589% ใน 12 เดือน ขึ้นไป $553 สูงกว่าทั้งมูลค่าพื้นฐาน ($372) และเป้าเฉลี่ยนักวิเคราะห์ ($647) สำหรับสาย value จึงไม่มีส่วนเผื่อความปลอดภัย และความเป็นหุ้นวัฏจักรทำให้ downside ใหญ่กว่า upside</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$372 <span style="font-size:12px;color:#a8b6cc">($286–$470)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ff8a80">MOS ~ −20%</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#ff8a80">$647 (+45%)</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#a8b6cc">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ff8a80">MOS ~ {{rd:mos}}</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#ff8a80">{{rd:analystTgt}} (+45%)</div></div>
       </div>
       <div class="zone">
         💡 <b>กลยุทธ์:</b> สาย value — ยังไม่ใช่จุดซื้อ รอย่อลึกหรือรอบวัฏจักรปรับฐานสู่โซน <b>&lt; $372</b> (น่าสนใจที่ &lt;$298) • สาย momentum ที่ถืออยู่ — ติดตาม <b>ราคาต่อ TB, capex hyperscaler และ supply discipline</b> เป็นสัญญาณเตือนรอบกลับ และจัดการความเสี่ยงเข้ม

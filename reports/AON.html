@@ -10,6 +10,20 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 374,
+  "values": {
+    "px": 302.69,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 355,
+    "fvHigh": 382,
+    "eps": 18.21,
+    "shares": 214000000,
+    "dps": 3.28,
+    "bvps": 46
+  },
   "theme": {
     "accent": "#1B3A6B",
     "accentDark": "#0F2444",
@@ -41,18 +55,14 @@
     "min": 280,
     "max": 380,
     "grid": [300, 320, 340, 360],
-    "fairLine": 374,
     "currency": "$",
     "highlight": [9, 11]
   },
   "gauge": {
     "min": 290,
     "max": 390,
-    "cur": 302.69,
-    "fair": 374,
     "fairLabelTop": false
-  },
-  "fv": 374
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +82,11 @@
     <div class="sub">นายหน้าประกันภัย/ประกันต่อระดับโลก • Risk Capital (Commercial Risk + Reinsurance) • Human Capital (Health + Wealth/บำนาญ) • NFP (middle-market)</div>
     <div class="price-row">
       <div>
-        <div class="px">$302.69<small>(AON)</small></div>
+        <div class="px">{{rd:px}}<small>(AON)</small></div>
       </div>
-      <div class="chg">▼ −11.2% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $304.59 / $381.00<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / Macrotrends
       </div>
@@ -88,7 +98,7 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM / FY2025</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~$65B</div><div class="d">หุ้นหมุนเวียน ~214M</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~16.6x</div><div class="d">EPS TTM $18.21 ต่ำกว่าค่าเฉลี่ย</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM $18.21 ต่ำกว่าค่าเฉลี่ย</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~22x</div><div class="d">ช่วง 18x–28x ในรอบ 5 ปี</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~6.6x</div><div class="d">BVPS ~$46 (หลัง NFP บวก)</div></div>
 
@@ -113,7 +123,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1B3A6B"></i>ราคา AON</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $374</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -139,8 +149,8 @@
         <div class="mval">$355.68</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $355 – $382</span></div>
-        <div class="r">$374</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         P/E TTM และ Forward P/E ให้ค่าใกล้กันที่ ~$382 สะท้อน premium ของ wide-moat franchise ส่วน P/FCF ที่ $356 ให้ค่าต่ำกว่าเนื่องจาก FCF margin ถูกกดด้วยต้นทุนบูรณาการ NFP ชั่วคราว · ไม่ใช้ DDM เนื่องจาก yield 1.0% ต่ำกว่า floor 1.5% (Aon เน้น buyback มากกว่าปันผล) · เฉลี่ย 3 วิธี ≈ $373.50 → ปัดเป็น $374
@@ -154,15 +164,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $302.69</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $374</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$261.80<br><small>MOS 30%</small></span>
-          <span>$299.20<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$374<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$382<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$382<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -175,19 +185,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+19%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS ปานกลาง — ราคาต่ำกว่ามูลค่าเหมาะสม เหมาะสะสมในโซนนี้สำหรับนักลงทุนระยะยาว</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$299.20</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$261.80</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $374</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="302.69" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -279,8 +289,8 @@
       <h2>Aon — Wide-Moat Broker คุณภาพสูงในราคาเหมาะสม</h2>
       <p>Aon เป็นนายหน้าประกันภัยและที่ปรึกษา HR ระดับ wide-moat ที่มีรายได้ recurring แข็งแกร่ง ROE 46.5% สะท้อน capital-light business model ชั้นเยี่ยม ราคาปัจจุบัน $361.93 ย่อลง −1.4% ในรอบปีเนื่องจากความกังวล NFP integration ทำให้ P/E TTM ลดลงเหลือ 18.1x ต่ำกว่าค่าเฉลี่ย 5 ปี (~22x) สร้าง MOS +3.2% เทียบ Fair Value $374 · นักวิเคราะห์ 22 ราย มีเป้าเฉลี่ย $382 (+11.3%) — ภาพรวมสนับสนุนการสะสมในระดับราคานี้สำหรับนักลงทุนระยะยาว</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$374 <span style="font-size:12px;color:#cab9a8">($355–$382)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +19%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$382 (Buy Consensus)</div></div>
       </div>
       <div class="zone">
