@@ -10,7 +10,7 @@
 | # | เกณฑ์ (spec §6 แถว "2") | ค่าที่วัดได้ | ผล |
 |---|---|---|---|
 | 1 | **สำเนาต่อค่า = 1** | ใบ v2 **865 ใบ** · ใบที่ยังมี literal ใน site บังคับ **0** · pseudo-error `V2TOKENS` ยิง **0/908** บน gate จริง | ✅ |
-| 2 | **regex ถอดค่า = 0 ใน cron/gate (ทาง v2)** — ใช้ถ้อยคำแคบตาม ruling Task 12 **R5** | `test/v2-path-test.js` **355/355 ผ่าน** — ค่าของช่องสำเนามาจาก JSON · cron ไม่เขียนช่องสำเนาด้วย regex · regex ที่เหลือเป็นตัวตรวจความสอดคล้อง | ✅ (ตามนิยาม R5) |
+| 2 | **regex ไม่ใช่ตัวตัดสินค่าในทาง v2** (ชื่อเกณฑ์ตามแผน: "regex ถอดค่าจาก HTML = 0 ใน cron/gate" — รายงานด้วยถ้อยคำแคบตาม ruling Task 12 **R5**) | `test/v2-path-test.js` **355/355 ผ่าน** — ค่าของช่องสำเนามาจาก JSON · cron ไม่เขียนช่องสำเนาด้วย regex · regex ที่เหลือเป็นตัวตรวจความสอดคล้อง | ✅ (ตามนิยาม R5) |
 | 3 | **`--heal-derived` ไม่จำเป็นอีก** | `node tools/update-prices.js --heal-derived` → **`heal-derived: 0/908 ไฟล์มีค่าค้าง • แก้ 0 จุด`** (ทั้ง v1 และ v2) | ✅ |
 
 **ตัวเลขประกอบ** (ข้อ 5): coverage ต่ำสุด **47/68** (v2) / 47/71 (v1) · warning รวม **247** (W22 ไม่ลด · W23 109→105) · residue v1 **43 ใบ 7 ชนิด** · cron รอบแรกบน v2 = **patch 0 ใบ · patch-failed 0** (อธิบายไว้ตรง ๆ ว่าทำไมจึงยังไม่ใช่หลักฐานของ write path)
@@ -21,13 +21,27 @@
 
 **นิยามที่ใช้วัด:** ใบ v2 ต้องมี token `{{rd:…}}` ที่ **ทุก site บังคับ** ในไฟล์ต้นฉบับ (ก่อน `expandReport`) —
 ไม่ใช่ "ไม่มีตัวเลขที่ไหนเลย" (การ์ดบางใบคง literal ไว้โดยตั้งใจ และ `patchDerived` ยังเขียนทับได้)
-site บังคับ 6 ช่องคือช่องที่ **cron ทาง v2 ไม่มีตัวเขียน HTML ให้แล้ว** ⇒ กลับเป็น literal เมื่อไร ค่าค้างถาวร:
-`.px` → `{{rd:px}}` · `.chg` → `{{rd:chg}}` · วันที่ราคาใน `<header>` → `{{rd:priceDate}}` · `#pxIn` → `{{rd:pxNum}}` ·
-`.big` → `{{rd:mos}}` · class ของกล่อง verdict → `{{rd:mosClass}}`
+**site บังคับ 7 ช่อง** คือช่องที่ **cron ทาง v2 ไม่มีตัวเขียน HTML ให้แล้ว** ⇒ กลับเป็น literal เมื่อไร ค่าค้างถาวร:
+`.px` → `{{rd:px}}` · **`#mCur` ("ปัจจุบัน …") → `{{rd:px}}`** · `.chg` → `{{rd:chg}}` · วันที่ราคาใน `<header>` → `{{rd:priceDate}}` ·
+`#pxIn` → `{{rd:pxNum}}` · `.big` → `{{rd:mos}}` · class ของกล่อง verdict → `{{rd:mosClass}}`
+
+> ★ **`#mCur` เพิ่มใน fix round 1 (R1)** — รอบแรกมี 6 ช่องตาม brief แต่รีวิวพิสูจน์ด้วย mutation บน `reports/AAPL.html` ว่า
+> `#mCur` มีคุณสมบัติ "ไม่มีตัวเขียนบนทาง v2" เหมือนอีก 6 ช่องเป๊ะ (ตัวเขียน v1 คือ `RM.MCUR_LABEL_PARTS_RE` ซึ่ง `patchReport`
+> ไม่เรียกแล้วเมื่อเป็น v2): เปลี่ยนเป็น literal แล้ว cron **ไม่เขียนทับ** เหลือแค่ `W22` ซึ่งเป็น warn ไม่บล็อกทั้ง push และ cron
+> · เทียบกับช่องที่ **ไม่** ควรอยู่ในรายการ: ช่องสรุป "ส่วนต่างจากราคา" ถูก `patchDerived` เขียนทับให้ในรอบถัดไป ⇒ ไม่ค้าง ⇒ อยู่นอกรายการถูกแล้ว
+> · ค่าใช้จ่ายในการเพิ่ม = ศูนย์: **865/865 ใบ v2 มี `{{rd:px}}` ใน `#mCur` ครบ** และ `_template/skeleton-{th,us}.html` ปล่อย token นี้มาให้อยู่แล้ว
+
+★★ **สองรายการที่ชื่อคล้ายกันแต่คนละอย่าง — ห้ามสับสน** (รอบแรกเขียนรวบเป็นเลขเดียวจนสื่อผิด · แก้ตาม R1):
+
+| รายการ | จำนวน | นับอะไร |
+|---|---|---|
+| `RV.REQUIRED_TOKEN_SITES` (`tools/report-values.js`) | **7** | **check ถาวรของ gate**: ช่องสำเนาที่ต้อง **คงเป็น token ตลอดไป** เพราะผูกกับ **ราคา/วันที่ราคา** ที่ cron ต้องเขียนทุกวัน — หลุดเมื่อไรค้างถาวร |
+| `REQUIRED_SITES` (`tools/migrate-v2.js:44`) | **14** | **รายการของ migrator**: ช่องที่ต้อง **tokenise สำเร็จตอนย้าย** ไม่งั้นไม่ย้ายทั้งใบ · กว้างกว่า เพราะรวมช่องที่ผูกกับ **FV** (`fvBox` `legend` `mFair` `mos20card` `mos30card` `vcellFv` `summary`) ซึ่งไม่ขยับตามราคา ⇒ ค้างแล้วไม่อันตรายเท่า และมี `W22` ดูแลความสอดคล้องอยู่ |
 
 **กลไกบังคับ = pseudo-error `V2TOKENS`** (`test/check-reports.js` · รายการ site เป็นเจ้าของเดียวที่ `RV.REQUIRED_TOKEN_SITES` ใน `tools/report-values.js`)
 — pseudo-id แบบเดียวกับ `V2SCHEMA`/`EXPAND`: อยู่นอกตาราง `CHECKS` ⇒ **ไม่มี E-code ใหม่ · ไม่ขยับจำนวน 48 error + 19 warning ที่ `gen-docs` นับ**
-(residual ที่ยอมรับ เหมือน `V2SCHEMA`: ไม่ถูกนับในเลข "N/48" ของไฟล์นั้น)
+(ตัวหารมาจาก `CHECKS` เท่านั้น) · **ผลข้างเคียงที่วัดได้จริง: ไฟล์ที่ติด `V2TOKENS` พิมพ์ `47/48` ไม่ใช่ `48/48`** เพราะตัวตั้ง
+(`errTotal − errors.length`) **รวม** pseudo-error ด้วย — พฤติกรรมเดียวกับ `V2SCHEMA`/`EXPAND` ทุกประการ (`docs/open-items.md` #41)
 
 ```bash
 # (ก) นับใบ v2/v1 + ใบที่ยังมี literal ใน site บังคับ — อ่าน source ตรง ๆ ไม่ผ่าน gate
@@ -55,13 +69,21 @@ V2TOKENS จาก gate จริง: 0
 
 **พิสูจน์ว่า check ไม่ใช่ของหลอก** (ไม่ได้ผ่านเพราะไม่ยิงอะไรเลย):
 
-- `test/self-test.js` มีเคส mutate **ครบทั้ง 6 site** — แทน token ด้วย literal รูปที่ token นั้น render ออกมาจริง (ใบยัง render/ผ่าน check อื่นได้ปกติ ⇒ พิสูจน์ว่าเดิม "ผ่านเงียบ")
+- `test/self-test.js` มีเคส mutate **ครบทั้ง 7 site** — แทน token ด้วย literal รูปที่ token นั้น render ออกมาจริง (ใบยัง render/ผ่าน check อื่นได้ปกติ ⇒ พิสูจน์ว่าเดิม "ผ่านเงียบ")
   แล้วยืนยัน 3 อย่างต่อ site: `missingTokenSites` ชี้เฉพาะ site นั้น · `checkHtml` ยิง `V2TOKENS` · ข้อความ error ระบุชื่อช่อง
-- ปิด check (`if (ctx.v2)` → `if (false)`) แล้วรัน `node test/self-test.js`: **ตก 7 เคส** (6 mutant + เคส "หน้าที่ render แล้ว + ไม่ส่ง `opts.source` → ต้องยิง") · เปิดคืน = 479/479 ผ่าน
-- ไม่ false-positive: fixture v2 ทั้ง 7 ใบ (`test/fixtures/*-v2.html`) และ **skeleton ทั้ง TH/US** มี token ครบทั้ง 6 site
+- ปิด check (`if (ctx.v2)` → `if (false)`) แล้วรัน `node test/self-test.js`: **ตก 7 เคส** (วัดตอนมี 6 site — 6 mutant + เคส "หน้าที่ render แล้ว + ไม่ส่ง `opts.source` → ต้องยิง") · หลังเพิ่ม site ที่ 7 จำนวนที่จะตกเป็น 8
+- ไม่ false-positive: fixture v2 ทั้ง 7 ใบ (`test/fixtures/*-v2.html`) และ **skeleton ทั้ง TH/US** มี token ครบทั้ง 7 site
 
-> **ข้อจำกัดที่ประกาศ:** `V2TOKENS` อ่าน `ctx.source` — ผู้เรียกที่ไม่ส่ง `opts.source` จะเห็นทุก site เป็น literal แล้วยิงทั้งใบ
-> (พฤติกรรมเดียวกับ `E44` โดยตั้งใจ) · ทาง production ส่ง source ครบทุกเส้นแล้ว: `checkFile` (gate) · `gateCheck` (cron) · `tools/migrate-v2.js`
+> **ข้อจำกัดที่ประกาศ** (รายละเอียดเต็ม → `docs/quality-gate.md` หัวข้อ "pseudo-error ที่อยู่นอกตาราง `CHECKS`"):
+> - **เป็น existence check ไม่ใช่ uniqueness check** — ถามว่า "ช่องนี้มี token อยู่ไหม" ไม่ได้ถามว่า "ช่องนี้เป็น token *ทั้งช่อง*"
+>   ⇒ literal ที่ **เพิ่มมาข้าง ๆ** token ที่ถูกต้อง (เช่นมี `<div class="big">` สองอันในใบเดียว) จะ **ผ่านเงียบ** · คลัง 14 ก.ย. 2569 ไม่มีเคสนี้
+>   (ใบ v2 ที่ `<div class="big">` ปรากฏ ≠ 1 ครั้ง = **0 ใบ**) · **ไม่เพิ่มการนับจำนวนโดยตั้งใจ** — จะทำให้ error ระดับ gate ผูกกับโครง HTML
+> - อ่าน `ctx.source` — ผู้เรียกที่ไม่ส่ง `opts.source` จะเห็นทุก site เป็น literal แล้วยิงทั้งใบ (พฤติกรรมเดียวกับ `E44` โดยตั้งใจ) ·
+>   ทาง production ส่ง source ครบทุกเส้นแล้ว: `checkFile` (gate) · `gateAfterPatch` (cron) · `tools/migrate-v2.js`
+> - **"ใบที่ยังมี literal ใน site บังคับ 0" (สคริปต์ ก) กับ "`V2TOKENS` 0/908" (gate ข) ไม่ใช่การวัดเดียวกันโดยนิยาม** —
+>   สคริปต์ (ก) คัดใบด้วย `RV.isV2(rd)` ล้วน ส่วน gate ยิงเมื่อ `ctx.v2` ซึ่งเป็นจริงก็ต่อเมื่อ `isV2` **และ** `validateValues`+`derive` ไม่ throw
+>   ⇒ ใบที่สคีมาเสียจะตกจากตัวหารของ gate แต่ยังอยู่ในตัวหารของสคริปต์ · **วันนี้พ้องกันเป๊ะเพราะ `V2SCHEMA` = 0/908** (วัดแล้ว) ·
+>   ถ้าวันไหน `V2SCHEMA` > 0 สองเลขนี้จะแยกกัน และ `V2SCHEMA` เป็นตัวพูดแทน (ตามที่โค้ดคอมเมนต์ไว้)
 
 ---
 
@@ -129,7 +151,7 @@ heal-derived: 0/908 ไฟล์มีค่าค้าง • แก้ 0 จ�
 
 | # | สิ่งที่ปิด | ที่อยู่ |
 |---|---|---|
-| 1 | `V2TOKENS` — check โครงสร้างถาวร + เคส self-test mutate ครบ 6 site | `tools/report-values.js` (`REQUIRED_TOKEN_SITES`/`missingTokenSites`) · `tools/report-meta.js` (`PX_TOKEN_RE` — parser-lint บังคับให้ regex `.px` มีเจ้าของเดียว) · `test/check-reports.js` · `test/self-test.js` |
+| 1 | `V2TOKENS` — check โครงสร้างถาวร + เคส self-test mutate ครบ **7 site** (`#mCur` เพิ่มใน fix round 1 · R1) | `tools/report-values.js` (`REQUIRED_TOKEN_SITES`/`missingTokenSites`) · `tools/report-meta.js` (`PX_TOKEN_RE`/`MCUR_TOKEN_RE` — parser-lint/กติกาเจ้าของเดียวของ regex `.px`/`#mCur`) · `test/check-reports.js` · `test/self-test.js` · เอกสาร `docs/quality-gate.md` |
 | 2 | เอกสารทาง cron v2 (pass derived บน view · keep-map · tripwire → `patch-failed` · กระจก stock-meta · ถ้อยคำ R5) | `docs/price-refresh.md` หัวข้อ "ใบ v2" · `CLAUDE.md` §9 บรรทัดแรกของลิสต์ |
 | 3 | เทสตรึงกระจก `healDerived` ไม่ทับ `pe`/`dividendYield` | `test/update-prices-test.js` เคส **N1** |
 | 4 | วงเล็บทวนวันที่ที่ parser อ่านไม่ออก → **note** (เดิมเงียบสนิททาง v2) | `tools/update-prices.js` (`v2DateEdits` + `derivedPassV2.notes` → `patchReport.notes` → บรรทัด log ของ cron) · เทส **N2** |
@@ -137,6 +159,11 @@ heal-derived: 0/908 ไฟล์มีค่าค้าง • แก้ 0 จ�
 **ข้อ 4 อธิบายเพิ่ม:** `parenDateAfter` อ่าน `(11 กย. 2569 ตลาดปิด)` ไม่ออก (เดือน `กย.` ไม่อยู่ในคลังชื่อเดือน) ⇒ ทาง v2 เดิม
 **ไม่มี edit และ tripwire ก็ข้าม** ⇒ วันเก่าค้างในวงเล็บถาวรโดยไม่มีใครเห็น · v1 ฟ้องเป็น note มาตลอด ⇒ ทาง v2 ฟ้องเท่ากันแล้ว
 **เป็น note ไม่ใช่ throw** โดยตั้งใจ (เขียนวงเล็บไม่ได้ ≠ ทั้งใบ patch ไม่ได้) · **คลังวันนี้ 0 ใบเข้าเคสนี้** — ปิดช่องว่าง ไม่ใช่แก้บั๊กที่กำลังเกิด
+
+> **ขอบเขตของ note (ประกาศไว้ — fix round 1 R4):** ตัวจับ `PAREN_DATEISH_RE` รู้จักเฉพาะรูป **"เลขอารบิก + ชื่อเดือนไทย + ปี 4 หลัก"**
+> (`/\(\s*\d{1,2}\s*[ก-๙.]+\s*\d{4}/`) ⇒ รูปอื่นที่ parser ก็อ่านไม่ออกเหมือนกัน — **เลขไทย** `(๑๑ ก.ย. ๒๕๖๙ …)` หรือ **ตัวเลขล้วน** `(11/09/2569 …)` —
+> จะยัง **เงียบ ไม่มี note** · **เป็น parity กับ v1 พอดี**: regex ของ v1 (`tools/update-prices.js` ในตัวเขียนวันที่ของ v1) เป็นสตริงเดียวกันทุก byte
+> ⇒ v1 ก็เงียบเท่ากัน และ brief ตั้งเกณฑ์ไว้ว่า "อย่างน้อยเท่ากับ v1" · **คลังวันนี้ 0 ใบเข้าเคสใดเคสหนึ่ง** (ใบ v2 ที่มีวงเล็บวันที่ติดกับวันที่ราคา = 2 ใบ คือ DPZ/HIG · อ่านออกทั้งคู่)
 
 ---
 

@@ -34,6 +34,10 @@ const PX_TOKEN_RE = new RegExp('<div class="px">\\s*\\{\\{rd:px\\}\\}');
 //   คลัง 908 ใบให้ผลเท่ากันทั้งสองรูป (ไม่มีใบไหนเว้นวรรคหลังสัญลักษณ์) ⇒ รวมคำศัพท์ไม่เปลี่ยนพฤติกรรม
 const MCUR_LABEL_RE = new RegExp('id="mCur"><div class="lab">ปัจจุบัน\\s*' + CUR_SRC + '?\\s*([\\d.,]+)');
 const MCUR_LABEL_PARTS_RE = new RegExp('(id="mCur"><div class="lab">ปัจจุบัน\\s*' + CUR_SRC + '?\\s*)([\\d.,]+)');
+// ★ รูป **token** ของป้าย #mCur บนใบ v2 (`ปัจจุบัน {{rd:px}}`) — คู่กับ PX_TOKEN_RE ข้างบน (V2TOKENS site ที่ 7)
+//   จงใจ**หลวมกว่า** MCUR_LABEL_PARTS_RE: ถามแค่ว่า "ป้ายนี้ผูกกับ token หรือยัง" ไม่ใช่ "มาร์กอัปเป็นรูปนี้เป๊ะ"
+//   — ถ้าผูกกับรูปเป๊ะ การจัดมาร์กอัปใหม่ที่ไม่มีอะไรเสียจะทำให้ error ระดับ gate ยิงทั้งคลัง (คลัง 14 ก.ย. 69: 865/865 ใบใช้รูปเดียวกันหมด)
+const MCUR_TOKEN_RE = /id="mCur"[\s\S]{0,160}?\{\{rd:px\}\}/;
 // คลาสกล่อง verdict — ฟังก์ชันล้วนของ MOS (cron เขียน · W04 ตรวจ · manifest f19 อ่าน)
 const VERDICT_CLASS_RE = /class="mos-verdict (bad|ok|good)"/;
 // กรอบ 52 สัปดาห์ในหัวรายงาน (ตัวคั่น – / &ndash; วงเล็บ — วัด 908 ใบ 12 ก.ย. 69 · ย้ายจาก tools/queue/prep.js)
@@ -65,4 +69,4 @@ const stripStockMeta = (html) => String(html).replace(new RegExp('\\n?' + STOCK_
 
 module.exports = { readStockMeta, readStockMetaState, readReportData, readHeaderPrice, stripStockMeta,
   STOCK_META_RE, STOCK_META_PARTS_RE, REPORT_DATA_RE, REPORT_DATA_PARTS_RE, CUR_SRC, PX_RE, PX_PARTS_RE, PX_TOKEN_RE, RANGE52_RE,
-  MCUR_LABEL_RE, MCUR_LABEL_PARTS_RE, VERDICT_CLASS_RE };
+  MCUR_LABEL_RE, MCUR_LABEL_PARTS_RE, MCUR_TOKEN_RE, VERDICT_CLASS_RE };

@@ -53,7 +53,8 @@ git commit -F …                    # title: price: refresh N symbols (YYYY-MM-
 1. **ราคา/วันที่ = เขียนลง JSON ที่เดียว** — `patchReport` เขียน `values.px` + `values.priceDate` แล้ว **return ก่อนตัวเขียนสำเนา HTML ของ v1**
    (`.px` · `#mCur` · `.big` · verdict class · `#pxIn` · `.chg` · วันที่ในหัว **ไม่ถูกแตะเลย** — ทั้งหมดเป็น `{{rd:…}}` ที่ `build` render ให้)
    ⇒ ช่องพวกนี้ต้องเป็น token เสมอ มิฉะนั้นค่าจะค้างถาวรเพราะไม่มีตัวเขียนไหนเอื้อมถึง — บังคับด้วย pseudo-error **`V2TOKENS`**
-   (`test/check-reports.js` · รายการ site อยู่ที่ `RV.REQUIRED_TOKEN_SITES` ใน `tools/report-values.js` · คลัง 14 ก.ย. 69 ยิง 0/908)
+   (`test/check-reports.js` · รายการ **7 ช่อง** อยู่ที่ `RV.REQUIRED_TOKEN_SITES` ใน `tools/report-values.js` — ตรงกับวงเล็บข้างบนทุกช่อง
+   · คลัง 14 ก.ย. 69 ยิง **0/908** · ขอบเขต/ข้อจำกัดที่ตรวจไม่ได้ → `docs/quality-gate.md` หัวข้อ "pseudo-error ที่อยู่นอกตาราง `CHECKS`")
 2. **pass derived ทำงานบน "view ที่ render แล้ว"** (`derivedPassV2`) — การ์ด P/E · Market Cap · P/S · ปันผล % · P/BV · % ของราคาเป้า ·
    หมวด 6 ที่ยังเป็น literal ยังต้องผ่าน `patchDerived` ตัวเดียวกับ v1 แต่ตัวอ่านของมันต้องเห็น **ค่าที่ render แล้ว** ไม่ใช่ `{{rd:px}}`
    ⇒ render token ทีละตัวเป็น view + จำ span ของแต่ละ token → `patchDerived(view)` → **keep-map** พาผลกลับมาวาง token คืนที่ขอบเดิม
@@ -63,6 +64,8 @@ git commit -F …                    # title: price: refresh N symbols (YYYY-MM-
    วันที่ราคาที่โชว์ทุกจุด (หัว · วงเล็บทวน · `.disc`) ต้องตรง `values.priceDate` — ผิดข้อไหน = **throw → `patch-failed`** เห็นในคิว ไม่ใช่เขียนผิดเงียบ ๆ
    · วงเล็บทวนวันที่ที่ตัวอ่านไม่รู้จัก (เดือนสะกดนอกคลัง เช่น `(11 กย. 2569 ตลาดปิด)`) = เขียนไม่ได้ แต่ต้อง **บันทึกเป็น `note`** ในบรรทัด log ของใบนั้น
    แบบเดียวกับ v1 (คลังวันนี้ 0 ใบ — ปิดช่องว่าง ไม่ใช่แก้บั๊กที่กำลังเกิด)
+   ★ **ขอบเขตของ note**: ตัวจับรู้จักเฉพาะรูป "เลขอารบิก + ชื่อเดือนไทย + ปี 4 หลัก" ⇒ รูปเลขไทย (`(๑๑ ก.ย. ๒๕๖๙ …)`) หรือตัวเลขล้วน
+   (`(11/09/2569 …)`) ยัง **เงียบทั้ง v1 และ v2** (regex เดียวกันทุก byte — parity ตั้งใจ ไม่ใช่ช่องว่างใหม่) · 0 ใบในคลังวันนี้
 5. **กระจก `stock-meta`** (`RV.mirrorStockMeta`) — เขียน **4 คีย์เท่านั้น**: `price` · `mos` · `upside` · `fairValue` ซึ่งเป็นฟังก์ชันล้วนของ `values.px` + `report-data.fv`
    ★ **`pe` กับ `dividendYield` ไม่ใช่ของกระจก** — สองคีย์นี้เป็นกระจกของ *การ์ดที่ผู้เขียนเลือกโชว์* (ฐาน adjusted/forward/DPS ของการ์ด)
    จึงเป็นของ **pass derived** (`patchDerived#2/#9`) เหมือน v1 ทุกประการ · กระจกรันหลัง pass และอ่าน `stock-meta` จากผลของ pass ⇒ ย้อนค่าที่ pass เพิ่งเขียนไม่ได้โดยโครงสร้าง

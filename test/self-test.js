@@ -1314,12 +1314,14 @@ require('./parser-lint.js')(ok);
     const idsOf = (src) => errIds(checkHtml(expandReport(src), 'BBL.html', { source: src }));
     ok(!idsOf(srcV2).has('V2TOKENS'), 'V2TOKENS: fixture v2 ที่ token ครบ → เงียบ');
     ok(!errIds(checkHtml(base, 'BBL.html')).has('V2TOKENS'), 'V2TOKENS: ใบ v1 ไม่แตะ (ไม่มี token ให้ใช้)');
-    ok(RV.REQUIRED_TOKEN_SITES.length === 6, `V2TOKENS: site บังคับ 6 ช่อง (มี ${RV.REQUIRED_TOKEN_SITES.length})`,
+    ok(RV.REQUIRED_TOKEN_SITES.length === 7, `V2TOKENS: site บังคับ 7 ช่อง (มี ${RV.REQUIRED_TOKEN_SITES.length})`,
       RV.REQUIRED_TOKEN_SITES.map((s) => s.id).join(','));
     // mutate ทีละ site: แทน token ด้วย literal รูปที่ token นั้น render ออกมาจริง (ใบยัง render/gate ได้ปกติ
     // ⇒ พิสูจน์ว่าเดิม "ผ่านเงียบ" ไม่ใช่ล้มด้วยเหตุอื่น) — ต้องยิง V2TOKENS และข้อความต้องระบุ site ที่หาย
     const MUT = {
       px: [RM.PX_TOKEN_RE, '<div class="px">฿999.00'],   // regex ของ .px ต้องมาจากเจ้าของเดียว (parser-lint)
+      // fix round 1 R1: ป้าย gauge #mCur — คืนเป็น literal รูปที่ token render จริง (cron ทาง v2 ไม่มีตัวเขียนช่องนี้ ⇒ ค้างถาวร)
+      mCur: [/(id="mCur"><div class="lab">ปัจจุบัน )\{\{rd:px\}\}/, '$1฿999.00'],
       chg: [/<div class="chg">\{\{rd:chg\}\}<\/div>/, '<div class="chg">▲ +9.9% (รอบปี)</div>'],
       priceDate: [/\{\{rd:priceDate\}\}/, '14 ก.ย. 2569'],
       pxIn: [/value="\{\{rd:pxNum\}\}"/, 'value="999"'],
