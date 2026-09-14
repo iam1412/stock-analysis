@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 152,
+  "values": {
+    "px": 185.7,
+    "priceDate": "2026-09-11",
+    "dateEra": "CE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 143,
+    "fvHigh": 160,
+    "analystTgt": 168.6,
+    "eps": 3.2,
+    "shares": 247000000,
+    "baseEps": 9.5,
+    "scenarios": [
+      {
+        "tgt": 102,
+        "div": null
+      },
+      {
+        "tgt": 192,
+        "div": null
+      },
+      {
+        "tgt": 281,
+        "div": null
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#1a73e8",
     "accentDark": "#1557b0",
@@ -41,18 +74,14 @@
     "min": 100,
     "max": 250,
     "grid": [150, 200],
-    "fairLine": 152,
     "currency": "$",
     "highlight": [0, 6]
   },
   "gauge": {
     "min": 95,
     "max": 285,
-    "cur": 185.7,
-    "fair": 152,
     "fairLabelTop": "-58px"
-  },
-  "fv": 152
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +101,11 @@
     <div class="sub">ซอฟต์แวร์คลาวด์ HR + การเงิน ฝัง AI agents (Workday Illuminate / Sana) • SaaS subscription</div>
     <div class="price-row">
       <div>
-        <div class="px">$185.70<small>(WDAY)</small></div>
+        <div class="px">{{rd:px}}<small>(WDAY)</small></div>
       </div>
-      <div class="chg">▼ −22.6% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ≈ 11 ก.ย. 2026 (intraday)<br>
+        ราคา ≈ {{rd:priceDate}} (intraday)<br>
         ปิด 10 ก.ค. 2026 ที่ $138.95 • ฟื้นขึ้น +26% จากจุดต่ำ 52 สัปดาห์<br>
         ที่มา: StockAnalysis.com / MacroTrends / Yahoo Finance
       </div>
@@ -87,7 +116,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ FY2026 (สิ้น ม.ค. 26) + Q1 FY2027</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$45.9B</div><div class="d">~247 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~247 ล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM, GAAP)</div><div class="v neu">~58x</div><div class="d">EPS GAAP TTM $3.20 <span class="pill a">SBC กดกำไร GAAP</span></div></div>
       <div class="metric"><div class="k">P/E (Non-GAAP)</div><div class="v pos">~20x</div><div class="d">EPS non-GAAP FY26 $9.23 • Fwd ~12.5x</div></div>
       <div class="metric"><div class="k">เงินปันผล</div><div class="v">0%</div><div class="d">ไม่จ่ายปันผล • เน้น buyback</div></div>
@@ -113,7 +142,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1a73e8"></i>ราคา WDAY</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $152</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -141,8 +170,8 @@
         <div class="mval">$160</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $143 – $160</span></div>
-        <div class="r">$152</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>หมายเหตุ:</b> ข้าม DDM เพราะ <b>ไม่จ่ายปันผล</b> • ใช้ <b>EPS non-GAAP</b> เป็นฐาน (P/E GAAP ~43x สูงเกินไปเพราะ SBC/restructuring กดกำไรบัญชี ไม่สะท้อนกำไรเงินสดจริง)
@@ -157,14 +186,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $186</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $152</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$106<br><small>MOS 30%</small></span>
-          <span>$122<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$152<br><small>Fair Value</small></span>
-          <span style="text-align:right">$168.6<br><small>เป้า Analyst</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:analystTgt}}<br><small>เป้า Analyst</small></span>
           <span style="text-align:right">$275<br><small>เป้าสูงสุด</small></span>
         </div>
       </div>
@@ -179,19 +208,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−22%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>ไม่มี Margin of Safety — ราคาแพงกว่ามูลค่าเหมาะสมเล็กน้อย</b><br>ราคาปัจจุบัน $157 สูงกว่ามูลค่าเหมาะสม $152 ราว 3% → ยังไม่ถึงโซนซื้อ MOS20 ($122) ผู้ที่รับความเสี่ยงต่ำควรรอย่อลงมาอีก</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$122</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$106</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
         <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $130</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="185.7" step="1">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -200,13 +229,13 @@
 
   <!-- ===== RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากราคาปัจจุบัน $157 • EPS ฐาน ~$9.5 (non-GAAP)</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากราคาปัจจุบัน $157 • EPS ฐาน ~{{rd:baseEps}} (non-GAAP)</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +6%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$102</div>
-          <div class="ret neg">รวม ~ −45% (≈ −18.1%/ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$11.3</span></li>
             <li><span>P/E ออก</span><span>9x</span></li>
@@ -217,8 +246,8 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +13%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$192</div>
-          <div class="ret pos">รวม ~ +3% (≈ +1.0%/ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$13.7</span></li>
             <li><span>P/E ออก</span><span>14x</span></li>
@@ -229,8 +258,8 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +18%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$281</div>
-          <div class="ret pos">รวม ~ +51% (≈ +14.7%/ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$15.6</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
@@ -281,9 +310,9 @@
       <h2>SaaS คุณภาพดี ราคาโดนทุบจนเริ่ม "ถูก" — แต่ต้องเชื่อว่า AI ไม่ทำลายโมเดล</h2>
       <p>Workday เป็นผู้นำ HR + Finance cloud ที่กระแสเงินสด recurring แข็งและ margin กำลังขยาย — ตลาดเคยลงโทษหุ้นหนักจากจุดสูงสุด (−45% จากพีค) เพราะกลัวการโตที่ช้าลงและความเสี่ยงว่า AI จะกัดกร่อนโมเดล seat-based แต่ราคาได้ฟื้นตัวขึ้นมาที่ ~$157 valuation (P/E non-GAAP ~15x) แล้ว ใกล้เคียงมูลค่าพื้นฐานมาก (แพงกว่าเล็กน้อย ~3%) เหมาะกับสาย value/contrarian ที่เชื่อว่าบริษัทจะ monetize AI agents ได้ มากกว่าโดน disrupt</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$152 <span style="font-size:12px;color:#a8b6cc">($143–$160)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#f28b82">MOS ~ −22%</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">$168.6 (-9.2%)</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#a8b6cc">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#f28b82">MOS ~ {{rd:mos}}</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">{{rd:analystTgt}} (-9.2%)</div></div>
       </div>
       <div class="zone">
         💡 <b>กลยุทธ์:</b> สาย value — เริ่มทยอยสะสมที่ <b>ต่ำกว่า ~$130</b> (น่าสนใจมากที่ &lt;$122, deep value ที่ &lt;$106) • ติดตามตัวชี้วัดหลัก: <b>การเติบโต subscription/cRPO</b> ว่าทรงที่ ~13–14% ได้ไหม และ <b>การ monetize AI agents</b> (จำนวนลูกค้า/รายได้จาก agent) เป็นสัญญาณว่าโมเดลรอดจาก AI disruption

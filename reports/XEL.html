@@ -10,6 +10,19 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 86.9,
+  "values": {
+    "px": 75.5,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 82.88,
+    "fvHigh": 90.91,
+    "shares": 624000000,
+    "dps": 2.37,
+    "bvps": 38.14
+  },
   "theme": {
     "accent": "#0d9488",
     "accentDark": "#0f766e",
@@ -41,18 +54,14 @@
     "min": 70,
     "max": 90,
     "grid": [75, 80, 85],
-    "fairLine": 86.9,
     "currency": "$",
     "highlight": [2, 4]
   },
   "gauge": {
     "min": 55,
     "max": 98,
-    "cur": 75.5,
-    "fair": 86.9,
     "fairLabelTop": false
-  },
-  "fv": 86.9
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +81,11 @@
     <div class="sub">Public Service Co. of Colorado • NSP-Minnesota • SPS Texas/New Mexico • 80% Carbon-Free Energy by 2030 • Wind &amp; Solar Leader • Regulated Utility Monopoly</div>
     <div class="price-row">
       <div>
-        <div class="px">$75.50<small>(XEL)</small></div>
+        <div class="px">{{rd:px}}<small>(XEL)</small></div>
       </div>
-      <div class="chg">▼ −7.0% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569 (งวดล่าสุด ไตรมาส 1 ปี 2569 / Q1 2026)<br>
+        ราคา ณ {{rd:priceDate}} (งวดล่าสุด ไตรมาส 1 ปี 2569 / Q1 2026)<br>
         กรอบ 52 สัปดาห์ $66.56 – $84.23<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, Digrin.com
       </div>
@@ -90,7 +99,7 @@
       <div class="metric"><div class="k">Market Cap</div><div class="v">~$47.11 พัน ล.</div><div class="d">~624 ล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~21.9x</div><div class="d">EPS TTM $3.44 · Forward P/E ~18.75x (EPS ~$4.25 est.)</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~19–22x</div><div class="d">กรอบ utility premium สำหรับผู้นำ renewables</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">~1.98x</div><div class="d">BVPS $38.14 (TTM)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~{{rd:pbv}}x</div><div class="d">BVPS $38.14 (TTM)</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ (TTM)</div><div class="v">$2.09 พัน ล.</div><div class="d">Net margin ~14.1%</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$3.44</div><div class="d">StockAnalysis $3.47 · Yahoo $3.42 (cross-verify ≤2%)</div></div>
@@ -113,7 +122,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#0d9488"></i>ราคา XEL</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $86.90</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -138,8 +147,8 @@
         <div class="mval">$82.88</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $82.88 – $90.91</span></div>
-        <div class="r">$86.90</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         DDM ให้ค่าสูงกว่า ($90.91) เพราะสะท้อนความมั่นคงของกระแสเงินสด/ปันผลที่โตต่อเนื่องของ regulated utility
@@ -155,14 +164,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $75.50</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $86.90</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$60.83<br><small>MOS 30%</small></span>
-          <span>$69.52<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$86.90<br><small>Fair Value</small></span>
-          <span style="text-align:right">$90.91<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$92.03<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -179,19 +188,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+13%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาปัจจุบันต่ำกว่า Fair Value เล็กน้อย มี Margin of Safety ~8.4% — ยังไม่ถึงเกณฑ์ 20% ที่ถือว่าปลอดภัยเต็มที่ เหมาะสำหรับทยอยสะสมระยะยาวมากกว่าเข้าเต็มไม้</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$69.52</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$60.83</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $86.90</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="75.5" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -290,8 +299,8 @@
         ความเสี่ยงหลักคือคดี Marshall Fire litigation ที่ยังค้างอยู่และ capex หนักที่กดกระแสเงินสด
         นักลงทุนที่เน้น dividend + defensive quality สามารถเริ่มทยอยสะสมได้ ส่วน value investor ที่ต้องการ MOS สูงควรรอจังหวะ $60–$70</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$86.90 <span style="font-size:12px;color:#cab9a8">($82.88–$90.91)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +13%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$92.03 (Buy)</div></div>
       </div>
       <div class="zone">

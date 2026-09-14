@@ -10,6 +10,40 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 290.66,
+  "values": {
+    "px": 314.22,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 274.56,
+    "fvHigh": 305.67,
+    "eps": 11.67,
+    "shares": 38000000,
+    "dps": 13.2,
+    "bvps": 69.8,
+    "baseEps": 11.67,
+    "scenarios": [
+      {
+        "tgt": 213,
+        "div": 36
+      },
+      {
+        "tgt": 341.4,
+        "div": 41.2
+      },
+      {
+        "tgt": 423.4,
+        "div": 43.3
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#251ded",
     "accentDark": "#150fb3",
@@ -40,17 +74,13 @@
     "min": 250,
     "max": 450,
     "grid": [300, 350, 400],
-    "fairLine": 290.66,
     "currency": "$",
     "highlight": [6, 9]
   },
   "gauge": {
     "min": 190,
-    "max": 400,
-    "cur": 314.22,
-    "fair": 290.66
-  },
-  "fv": 290.66
+    "max": 400
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -70,11 +100,11 @@
     <div class="sub">จัดจำหน่ายอุปกรณ์ปรับอากาศ ทำความร้อน และเครื่องทำความเย็น (HVAC/R) รายใหญ่ในอเมริกาเหนือ • เครือข่าย 700+ สาขา • ควบคุมโดยตระกูล Nahmad ผ่านหุ้น 2 ชั้น (WSO/WSO.B)</div>
     <div class="price-row">
       <div>
-        <div class="px">$314.22<small>(WSO)</small></div>
+        <div class="px">{{rd:px}}<small>(WSO)</small></div>
       </div>
-      <div class="chg">▼ −14.6% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569 (StockAnalysis.com, ตรงกับ Yahoo Finance)<br>
+        ราคา ณ {{rd:priceDate}} (StockAnalysis.com, ตรงกับ Yahoo Finance)<br>
         กรอบ 52 สัปดาห์ $300.66 – $459.00<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, Watsco IR (งบการเงิน)
       </div>
@@ -85,10 +115,10 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">TTM สิ้นสุด Q2 2569 (ไตรมาส 2/2026)</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">$11.9B</div><div class="d">38.0M หุ้น (รวม Class A+B ถัวเฉลี่ยเจือจาง)</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~26.9x</div><div class="d">EPS TTM $11.67</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">38.0M หุ้น (รวม Class A+B ถัวเฉลี่ยเจือจาง)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM $11.67</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~24x</div><div class="d">ช่วงเทรดปกติโดยประมาณ ~20–29x (cyclical)</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">~4.50x</div><div class="d">BVPS ~$69.8 (Equity/Shares โดยประมาณ)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~{{rd:pbv}}x</div><div class="d">BVPS ~$69.8 (Equity/Shares โดยประมาณ)</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$464M</div><div class="d">−7.0% YoY (FY2024 $499M)</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$11.67</div><div class="d">ลดจาก FY2025 $12.25 (−4.7%)</div></div>
@@ -97,7 +127,7 @@
 
       <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$7,284M</div><div class="d">−3.0% YoY</div></div>
       <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">27.5%</div><div class="d">OpM 9.0% • NetM 6.1% (TTM)</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~4.2%</div><div class="d">$13.20/ปี • payout ~72% ของ FCF</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">$13.20/ปี • payout ~72% ของ FCF</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">~1.0</div><div class="d">โดยประมาณ (distribution เบต้าปานกลาง)</div></div>
     </div>
   </section>
@@ -111,7 +141,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#251ded"></i>ราคา WSO</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $290.66</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -137,8 +167,8 @@
         <div class="mval">$305.67</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $274.56 – $305.67</span></div>
-        <div class="r">$290.66</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี DDM ให้ค่าต่ำสุดเพราะ r−g เพียง 5.0 จุด% ทำให้ตัวคูณไวต่อสมมติฐาน (sensitivity: r+0.5pp → FV ~$251, r−0.5pp → FV ~$305) ส่วน FCF yield ให้ค่าสูงสุดเพราะกระแสเงินสดยังแข็งแรงกว่ากำไรบัญชี (FCF $697M > NI $443M TTM) ทั้ง 3 วิธีให้กรอบ $274.56–$305.67 ใกล้เคียงกัน FV เฉลี่ย $290.66 ต่ำกว่าราคาตลาดปัจจุบัน สะท้อนว่าตลาดยัง price-in P/E ระดับสูงกว่าค่าเฉลี่ยแม้กำไรกำลังหดตัว
@@ -152,14 +182,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $314.22</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $290.66</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$203.46<br><small>MOS 30%</small></span>
-          <span>$232.53<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$290.66<br><small>Fair Value</small></span>
-          <span style="text-align:right">$305.67<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$382.20<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -173,19 +203,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−8%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>ไม่มี Margin of Safety (ราคาแพงกว่ามูลค่าเหมาะสม)</b><br>ราคาปัจจุบัน $330.10 สูงกว่ามูลค่าเหมาะสม $290.66 ประมาณ 13.6% นักลงทุนเน้นคุณค่าควรรอราคาย่อลงมาใกล้โซน MOS 20% หรือทยอยสะสม (DCA) แทนการซื้อครั้งเดียว</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$232.53</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$203.46</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $290.66</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="314.22" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -194,17 +224,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $314.22 • EPS ฐาน ~$11.67 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −3%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$213.00</div>
-          <div class="ret neg">≈ −21% (3 ปี, รวมปันผล)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$10.65</span></li>
             <li><span>P/E ออก</span><span>20x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$36</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>ภาคที่อยู่อาศัย/รีโนเวทซบเซาต่อเนื่อง กำไรหดตัวต่อ P/E de-rate</span></li>
           </ul>
         </div>
@@ -212,12 +242,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +4%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$341.40</div>
-          <div class="ret pos">≈ +22% (3 ปี, รวมปันผล)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$13.13</span></li>
             <li><span>P/E ออก</span><span>26x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$41.2</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>ดีมานด์เปลี่ยนเครื่อง/กฎ R-454B หนุนค่อยๆ ฟื้น กำไรกลับสู่แนวโน้มเติบโตปกติ</span></li>
           </ul>
         </div>
@@ -225,12 +255,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +9%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$423.40</div>
-          <div class="ret pos">≈ +49% (3 ปี, รวมปันผล)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$15.12</span></li>
             <li><span>P/E ออก</span><span>28x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$43.3</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>วัฏจักรเปลี่ยนเครื่อง+M&amp;A เร่งตัวพร้อมกัน ตลาดที่อยู่อาศัยฟื้นจากดอกเบี้ยลด</span></li>
           </ul>
         </div>
@@ -276,8 +306,8 @@
       <h2>ธุรกิจคุณภาพดี แต่ราคาแพงกว่ามูลค่าเหมาะสม — รอจังหวะที่ดีกว่า</h2>
       <p>Watsco เป็นผู้จัดจำหน่าย HVAC/R รายใหญ่สุดในอเมริกาเหนือ งบดุลแข็งแรง หนี้ต่ำ และมีโครงสร้างดีมานด์เชิงโครงสร้าง (replacement cycle + กฎสารทำความเย็นใหม่) หนุนระยะยาว แต่รายได้/กำไรกำลังอยู่ในช่วงหดตัวจากภาคที่อยู่อาศัยชะลอตัว ราคาปัจจุบัน $330.10 ยังสูงกว่า Fair Value จากทั้ง 3 วิธี ($274.56–$305.67) ราว 13.6% สะท้อนว่าตลาดยัง price-in P/E ระดับสูงกว่าค่าเฉลี่ยอยู่ ทั้งที่กำไรยังไม่ฟื้น นักลงทุนที่เน้น margin of safety ควรรอราคาย่อ ส่วนนักลงทุนระยะยาวที่เชื่อในวัฏจักร HVAC และรับปันผลได้ อาจถือ/ทยอยสะสมได้</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$290.66 <span style="font-size:12px;color:#cab9a8">($274.56–$305.67)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −8%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$382.20 (Hold)</div></div>
       </div>
       <div class="zone">
@@ -290,7 +320,7 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ 11 ก.ย. 2569 จาก StockAnalysis.com (cross-check กับ Yahoo Finance ตรงกัน) • ข้อมูลงบการเงิน/ประมาณการจาก StockAnalysis.com
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ {{rd:priceDate}} จาก StockAnalysis.com (cross-check กับ Yahoo Finance ตรงกัน) • ข้อมูลงบการเงิน/ประมาณการจาก StockAnalysis.com
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 8 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

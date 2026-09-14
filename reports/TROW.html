@@ -10,6 +10,40 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 125,
+  "values": {
+    "px": 106.29,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 104,
+    "fvHigh": 139,
+    "eps": 9.33,
+    "shares": 214000000,
+    "dps": 5.2,
+    "bvps": 49.21,
+    "baseEps": 9.33,
+    "scenarios": [
+      {
+        "tgt": 93.7,
+        "div": 15.6
+      },
+      {
+        "tgt": 132.6,
+        "div": 15.6
+      },
+      {
+        "tgt": 166.7,
+        "div": 15.6
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#1d8bed",
     "accentDark": "#0f66b3",
@@ -41,18 +75,14 @@
     "min": 80,
     "max": 130,
     "grid": [90, 100, 110, 120],
-    "fairLine": 125,
     "currency": "$",
     "highlight": [5, 8]
   },
   "gauge": {
     "min": 80,
     "max": 145,
-    "cur": 106.29,
-    "fair": 125,
     "fairLabelTop": true
-  },
-  "fv": 125
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +102,11 @@
     <div class="sub">บริษัทจัดการสินทรัพย์ Active ชั้นนำ AUM ~$1.89T (equity/fixed income/multi-asset) • Oak Hill Advisors (private credit/alts) • Dividend Aristocrat 35+ ปีติดต่อกัน (yield ~4.5%) • ไม่มีหนี้สุทธิ งบดุลแข็งแกร่ง • ก่อตั้ง พ.ศ. 2480</div>
     <div class="price-row">
       <div>
-        <div class="px">$106.29<small>(TROW)</small></div>
+        <div class="px">{{rd:px}}<small>(TROW)</small></div>
       </div>
-      <div class="chg">▲ +3.7% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $85.22 – $118.22<br>
         ที่มา: Yahoo Finance / StockAnalysis.com / Barchart.com
       </div>
@@ -87,10 +117,10 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$22.7B</div><div class="d">~214M หุ้น diluted</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~11.4x</div><div class="d">EPS TTM $9.33 (GAAP diluted)</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~214M หุ้น diluted</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM $9.33 (GAAP diluted)</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~17–22x</div><div class="d">ปัจจุบัน discount จาก peak 25x (2564)</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">2.16x</div><div class="d">BVPS $49.21 (net cash $3.3B)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS $49.21 (net cash $3.3B)</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">$2.19B</div><div class="d">Net income margin ~29.5%</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$9.33</div><div class="d">FY2025: $9.24 · FY2024: $9.15</div></div>
@@ -113,7 +143,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1d8bed"></i>ราคา TROW</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $125</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -142,8 +172,8 @@
         <div class="mval">$139.4</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $104 – $139</span></div>
-        <div class="r">$125</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         P/E Valuation ($131) และ Justified P/BV ($139) ให้มูลค่าสูงกว่า DDM ($104)
@@ -160,15 +190,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $106.29</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $125</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$87.50<br><small>MOS 30%</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>$98.17<br><small>เป้า Analyst</small></span>
-          <span style="text-align:center">$100.00<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$125.00<br><small>Fair Value</small></span>
-          <span style="text-align:right">$139.00<br><small>กรอบบน FV</small></span>
+          <span style="text-align:center">{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -184,19 +214,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+15%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS พอสมควร — ราคาต่ำกว่า Fair Value แต่ยังไม่ถึงโซน Deep Value</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$100.00</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$87.50</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $125</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="106.29" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -205,17 +235,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $106.29 • EPS ฐาน ~$9.33 • รวมปันผล ~$15.60</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}} ~$15.60</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −3%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$93.7</div>
-          <div class="ret neg">+2.8% (รวมปันผล 3 ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$8.52</span></li>
             <li><span>P/E ออก</span><span>11x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$15.60</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>AUM ไหลออกต่อเนื่อง ค่าธรรมเนียมถูกกด</span></li>
           </ul>
         </div>
@@ -223,12 +253,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +3%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$132.6</div>
-          <div class="ret pos">+39.4% (รวมปันผล 3 ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$10.20</span></li>
             <li><span>P/E ออก</span><span>13x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$15.60</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>AUM เติบโตตามตลาด P/E rerating เล็กน้อย</span></li>
           </ul>
         </div>
@@ -236,12 +266,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +6%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$166.7</div>
-          <div class="ret pos">+71.5% (รวมปันผล 3 ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$11.11</span></li>
             <li><span>P/E ออก</span><span>15x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$15.60</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Oak Hill/Alts โตแรง AUM inflow กลับมา P/E rerating</span></li>
           </ul>
         </div>
@@ -295,8 +325,8 @@
         private credit ผ่าน Oak Hill Advisors — P/E 12.3x ต่ำกว่าค่าเฉลี่ยประวัติมากเป็นโอกาสสำหรับนักลงทุน
         ที่เน้นปันผลระยะยาว ความเสี่ยงหลักคือ net equity outflow และ fee compression ที่เป็นโครงสร้าง</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$125 <span style="font-size:12px;color:#cab9a8">($104–$139)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +15%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$98 (Hold — 13 analysts)</div></div>
       </div>
       <div class="zone">

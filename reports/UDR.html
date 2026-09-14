@@ -10,12 +10,20 @@
 </script>
 <script type="application/json" id="report-data">
 {
-  "symbol": "UDR",
-  "currency": "USD",
+  "v": 2,
   "fv": 41,
+  "values": {
+    "px": 35.12,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 38,
+    "fvHigh": 46,
+    "shares": 330000000,
+    "dps": 1.74
+  },
   "theme": {
     "accent": "#4338ca",
-    "accentLight": "#a5b4fc",
     "chgBg": "var(--green-soft)",
     "chgColor": "#137333"
   },
@@ -37,7 +45,6 @@
     "min": 32,
     "max": 42,
     "grid": [34, 36, 38, 40],
-    "fairLine": 41,
     "currency": "$",
     "highlight": [0, 8],
     "dataFmt": "d[1].toFixed(2)",
@@ -45,9 +52,7 @@
   },
   "gauge": {
     "min": 22,
-    "max": 52,
-    "cur": 35.12,
-    "fair": 41
+    "max": 52
   }
 }
 </script>
@@ -68,11 +73,11 @@
     <div class="sub">Apartment REIT • ~58,000 Homes • Coastal + Sun Belt • Monthly Dividend</div>
     <div class="price-row">
       <div>
-        <div class="px">$35.12<small>(UDR)</small></div>
+        <div class="px">{{rd:px}}<small>(UDR)</small></div>
       </div>
-      <div class="chg">▲ +4.2% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $32.88 – $41.60<br>
         ที่มา: Yahoo Finance • Morningstar • BusinessWire
       </div>
@@ -83,10 +88,10 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$11.6B</div><div class="d">~330M shares</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~330M shares</div></div>
       <div class="metric"><div class="k">FFOA/share FY2025</div><div class="v pos">$2.54</div><div class="d">+2.4% YoY · เกินเป้าที่ตั้งไว้</div></div>
       <div class="metric"><div class="k">FFOA/share FY2026E</div><div class="v neu">$2.47–$2.57</div><div class="d">กลาง $2.52 (guidance)</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v pos">~5.0%</div><div class="d">$1.74/ปี ($0.145/เดือน)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v pos">~{{rd:yield}}</div><div class="d">$1.74/ปี ($0.145/เดือน)</div></div>
 
       <div class="metric"><div class="k">Occupancy</div><div class="v pos">~97%</div><div class="d">Same-store 53,468 homes</div></div>
       <div class="metric"><div class="k">Same-Store NOI Growth</div><div class="v">+2.3%</div><div class="d">FY2025 · Q4 +1.7% YoY</div></div>
@@ -109,7 +114,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#4338ca"></i>ราคา UDR</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $41</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -135,8 +140,8 @@
         <div class="mval">$38.67</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $38 – $46</span></div>
-        <div class="r">$41</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/FFOA Conservative ($38.10) กดดันจาก 2026 same-store NOI guidance ติดลบเพราะค่าใช้จ่ายเพิ่มเร็วกว่ารายได้ · วิธี P/FFOA Base ($45.36) สะท้อน multiple ปกติเมื่ออุปทานใหม่ลดลงปี 2027-2028 · วิธี DDM ($38.67) อิง yield ปันผล conservative เหมาะนักลงทุนระยะยาว ค่าเฉลี่ยสามวิธีได้ FV $41 สะท้อนว่าราคาปัจจุบันใกล้ Fair Value
@@ -150,14 +155,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $35.12</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $41</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$28.70<br><small>MOS 30%</small></span>
-          <span>$32.80<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$41<br><small>Fair Value</small></span>
-          <span style="text-align:right">$46<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$46.29<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -171,19 +176,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+14%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS บาง — ราคาใกล้ Fair Value · รอจังหวะ $33-37 จะน่าสนใจกว่า</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$32.80</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$28.70</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $41</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="35.12" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -275,8 +280,8 @@
       <h2>Apartment REIT คุณภาพ — รอจังหวะราคาดีกว่านี้</h2>
       <p>UDR เป็น apartment REIT ระดับกลางที่มีประวัติปันผลเติบโต 15 ปีติด portfolio กระจายดีทั้ง coastal และ Sun Belt occupancy สม่ำเสมอ ~97% และเพิ่งเปลี่ยนจ่ายปันผลรายเดือน อย่างไรก็ตาม 2026 same-store NOI guidance ติดลบจากค่าใช้จ่ายโตเร็วกว่ารายได้ และราคา $39.69 ใกล้ Fair Value $41 ทำให้ MOS บางเพียง 3.2% ยังไม่ถึงโซนน่า aggressive สำหรับ value investor</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$41 <span style="font-size:12px;color:#cab9a8">($38–$46)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +14%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$46.29 (Hold)</div></div>
       </div>
       <div class="zone">

@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 2.65,
+  "values": {
+    "px": 3.1,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 2.4,
+    "fvHigh": 3,
+    "shares": 641000000,
+    "dps": 0.14,
+    "bvps": 2.19,
+    "baseEps": 0.13,
+    "scenarios": [
+      {
+        "tgt": 1.86,
+        "div": 0.42
+      },
+      {
+        "tgt": 3.82,
+        "div": 0.42
+      },
+      {
+        "tgt": 5.66,
+        "div": 0.42
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#2e7d32",
     "accentDark": "#1b5e20",
@@ -41,18 +74,14 @@
     "min": 2,
     "max": 4,
     "grid": [2.5, 3, 3.5],
-    "fairLine": 2.65,
     "currency": "฿",
     "highlight": [2, 9]
   },
   "gauge": {
     "min": 1.5,
     "max": 4.2,
-    "cur": 3.1,
-    "fair": 2.65,
     "fairLabelTop": true
-  },
-  "fv": 2.65
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +101,11 @@
     <div class="sub">รับจัดการขนส่งระหว่างประเทศ (Freight Forwarding) • ทางเรือ (FCL/LCL) • ทางอากาศ • ขนส่งทางบกข้ามพรมแดน • พิธีการศุลกากร • Supply Chain Solutions</div>
     <div class="price-row">
       <div>
-        <div class="px">฿3.10<small>(WICE)</small></div>
+        <div class="px">{{rd:px}}<small>(WICE)</small></div>
       </div>
-      <div class="chg">▲ +19.2% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿2.20 – ฿3.78<br>
         ที่มา: SET, StockAnalysis.com, Investing.com
       </div>
@@ -87,10 +116,10 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 · อ้างอิง SET · StockAnalysis · Investing.com</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">฿1.99 พันล้าน</div><div class="d">641 ล้านหุ้น · Par ฿0.50</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">641 ล้านหุ้น · Par ฿0.50</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~27.2x</div><div class="d">กำไรฟื้นตัว หลัง COVID-boom สิ้นสุด · ราคาพุ่งเร็วกว่ากำไร</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~12–18x</div><div class="d">ช่วง COVID ต่ำสุด ~6x / สูงสุด ~25x</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.42x</div><div class="d">BVPS ฿2.19 · ตลาดให้ premium ต่ำ</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ฿2.19 · ตลาดให้ premium ต่ำ</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">฿85.2 ล้าน</div><div class="d">−26.2% YoY · margin ฝืดหลัง freight boom</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.13</div><div class="d">FY2025: ฿0.19 · FY2022: ฿0.85 (peak)</div></div>
@@ -113,7 +142,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#2e7d32"></i>ราคา WICE</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿2.65</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -142,8 +171,8 @@
         <div class="mval">฿2.56</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿2.40 – ฿3.00</span></div>
-        <div class="r">฿2.65</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/E Normalized ให้ค่าสูงสุด (฿3.00) เพราะอิงการฟื้นตัวของ margin กลับสู่ระดับ mid-cycle ฿0.20/หุ้น
@@ -162,15 +191,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿3.10</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿2.65</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿1.86<br><small>MOS 30%</small></span>
-          <span>฿2.12<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿2.65<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">฿2.65<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">฿3.00<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -186,19 +215,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−17%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาเหนือ Fair Value มาก (~39.6%) — ไม่มี MOS · รอโซนเข้าที่ &lt;฿2.65</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿2.12</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿1.86</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿2.65</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="3.1" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -207,17 +236,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿3.10 • EPS ฐาน ~฿0.13 (TTM) • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} (TTM){{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿1.86</div>
-          <div class="ret neg">−40.0%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.11</span></li>
             <li><span>P/E ออก</span><span>13x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.42</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>freight rate ลงต่อ ลูกค้าหดตัว</span></li>
           </ul>
         </div>
@@ -225,12 +254,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +15%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿3.82</div>
-          <div class="ret pos">+23.2%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.20</span></li>
             <li><span>P/E ออก</span><span>17x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.42</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>margin ฟื้นสู่ระดับ 2566 เส้นทาง ASEAN เติบโต</span></li>
           </ul>
         </div>
@@ -238,12 +267,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +30%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿5.66</div>
-          <div class="ret pos">+82.6%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.29</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.42</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>freight rate ฟื้นแรง M&amp;A ขยายธุรกิจ</span></li>
           </ul>
         </div>
@@ -292,8 +321,8 @@
       <h2>Cyclical Recovery Play — รอจุดเข้าที่ดีกว่า</h2>
       <p>WICE Logistics เป็นหุ้น freight forwarding ที่อยู่ในช่วง cyclical trough — รายได้เติบโต +16.9% แต่กำไรถูกกดจาก freight rate normalize หลัง COVID boom ราคาพุ่งแรงในช่วง มิ.ย.–ก.ค. 2569 มาที่ ฿3.70 อยู่เหนือ Fair Value ฿2.65 ถึง ~39.6% ไม่มี Margin of Safety และดูตึงเมื่อเทียบพื้นฐานที่ยังไม่ฟื้น Dividend yield ลดลงเหลือ ~4.3% ตามราคาที่ขึ้น หากกำไรฟื้นสู่ระดับ mid-cycle (EPS ~฿0.20+) upside จาก base case ที่จุดราคาปัจจุบันเหลือเพียง +3.2% ใน 3 ปี — ความน่าสนใจของจุดเข้าลดลงมากเทียบช่วงก่อนราคาพุ่ง</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿2.65 <span style="font-size:12px;color:#cab9a8">(฿2.40–฿3.00)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −17%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿2.65 (Strong Buy)</div></div>
       </div>
       <div class="zone">

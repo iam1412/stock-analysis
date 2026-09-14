@@ -10,6 +10,40 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 46.93,
+  "values": {
+    "px": 52.98,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 42,
+    "fvHigh": 52,
+    "eps": 3.9,
+    "shares": 352130000,
+    "dps": 2.04,
+    "bvps": 51.68,
+    "baseEps": 3.9,
+    "scenarios": [
+      {
+        "tgt": 42.9,
+        "div": 6.12
+      },
+      {
+        "tgt": 68.74,
+        "div": 6.31
+      },
+      {
+        "tgt": 100.81,
+        "div": 6.43
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#b91c1c",
     "accentDark": "#7f1d1d",
@@ -41,17 +75,13 @@
     "min": 45,
     "max": 70,
     "grid": [50, 55, 60, 65],
-    "fairLine": 46.93,
     "currency": "$",
     "highlight": [0, 3]
   },
   "gauge": {
     "min": 30,
-    "max": 75,
-    "cur": 52.98,
-    "fair": 46.93
-  },
-  "fv": 46.93
+    "max": 75
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -71,11 +101,11 @@
     <div class="sub">Chicken • Beef • Pork • Prepared Foods • Jimmy Dean • Hillshire Farm • Ball Park</div>
     <div class="price-row">
       <div>
-        <div class="px">$52.98<small>(TSN)</small></div>
+        <div class="px">{{rd:px}}<small>(TSN)</small></div>
       </div>
-      <div class="chg">▲ +3.1% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569 (StockAnalysis.com / Yahoo Finance, ปิดตลาด)<br>
+        ราคา ณ {{rd:priceDate}} (StockAnalysis.com / Yahoo Finance, ปิดตลาด)<br>
         กรอบ 52 สัปดาห์ $50.56 – $69.48<br>
         ที่มา: StockAnalysis.com • Yahoo Finance • Tyson Foods Investor Relations
       </div>
@@ -87,9 +117,9 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM ถึง 28 มี.ค. 2569 (Q2 FY2026) / FY2025 (ปิดงบ 27 ก.ย. 2568) · ณ 10 ก.ค. 2569</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">$18.66B</div><div class="d">352.13M shares outstanding</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~13.6x</div><div class="d">EPS TTM adj. $3.90 · peer Hormel/Pilgrim's Pride ~11–15x</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM adj. $3.90 · peer Hormel/Pilgrim's Pride ~11–15x</div></div>
       <div class="metric"><div class="k">P/E มัธยฐาน ~5 ปี</div><div class="v">~17.3x</div><div class="d">ฐาน EPS diluted GAAP · ช่วงกว้าง 8.7–43.9x ตามวงจร Beef (peak-earning FY21–22 ซื้อขาย 8.7–9.5x · trough-earning FY24–25 สูงถึง 25.0–43.9x)</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">~1.03x</div><div class="d">BVPS $51.68 · Debt/Equity ~0.44x</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~{{rd:pbv}}x</div><div class="d">BVPS $51.68 · Debt/Equity ~0.44x</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$474M (GAAP)</div><div class="d">Adj. $1,468M +33% YoY · GAAP กดดันจาก legal contingency accrual $653M + goodwill impairment Beef $343M</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$3.90</div><div class="d">Adj. (Q3FY25 $0.91+Q4FY25 $1.15+Q1FY26 $0.97+Q2FY26 $0.87) · GAAP TTM $1.27 · Forward FY2026E $4.04, FY2027E $4.52</div></div>
@@ -119,7 +149,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#b91c1c"></i>ราคา TSN</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $46.93</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -149,8 +179,8 @@
         <div class="mval">$42.00</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $42.00 – $52.00</span></div>
-        <div class="r">$46.93</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         EV/EBITDA ให้ค่าสูงสุด ($52.00) จากกำไรระดับ operating ที่ยังแข็งแกร่งกว่า GAAP earnings มาก ส่วน P/E ให้ค่ากลาง
@@ -169,14 +199,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $52.98</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $46.93</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$32.85<br><small>MOS 30%</small></span>
-          <span>$37.54<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$46.93<br><small>Fair Value</small></span>
-          <span style="text-align:right">$52.00<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$70.42<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -193,21 +223,21 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−13%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาปัจจุบัน $52.28 สูงกว่ามูลค่าเหมาะสมเชิงอนุรักษ์นิยม $46.93 ประมาณ 11% → <b>เต็มมูลค่า
         (overvalued เชิงอนุรักษ์นิยม)</b> ยังไม่ใช่จุดที่มี margin of safety ตามเกณฑ์ value investor แม้ธุรกิจ Chicken
         จะแข็งแกร่งก็ตาม นักลงทุนที่เน้น MOS ควรรอราคาย่อตัวลงมาใกล้โซน $33–38 ก่อนเข้าซื้อก้อนใหญ่</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$37.54</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$32.85</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $46.93</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="52.98" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -216,17 +246,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $52.98 • EPS ฐาน ~$3.90 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +0%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$42.90</div>
-          <div class="ret neg">−7.5% รวมปันผล 3 ปี (≈ −2.6%/ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$3.90</span></li>
             <li><span>P/E ออก</span><span>11x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$6.12</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>Beef segment ขาดทุนต่อเนื่องนานกว่าคาด ต้นทุนวัวยังสูง Chicken margin กลับสู่ค่าเฉลี่ยปกติ multiple de-rate</span></li>
           </ul>
         </div>
@@ -234,12 +264,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$68.74</div>
-          <div class="ret pos">+41.7% รวมปันผล 3 ปี (≈ +12.3%/ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$4.91</span></li>
             <li><span>P/E ออก</span><span>14x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$6.31</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>Cattle cycle เริ่มพลิกกลับปี 2570-2571 Beef ขาดทุนแคบลง Chicken margin ทรงตัวระดับดี Prepared Foods เติบโตมั่นคง</span></li>
           </ul>
         </div>
@@ -247,12 +277,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$100.81</div>
-          <div class="ret pos">+102.4% รวมปันผล 3 ปี (≈ +26.5%/ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$5.93</span></li>
             <li><span>P/E ออก</span><span>17x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$6.43</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Cattle supply ฟื้นเร็วกว่าคาด Beef กลับมาเป็นบวก Chicken margin สูงต่อเนื่อง buyback หนุน EPS + multiple re-rate ตามเป้า analyst</span></li>
           </ul>
         </div>
@@ -319,8 +349,8 @@
         เป้าหมายนักวิเคราะห์เฉลี่ย ~$70.42 พอสมควร สำหรับนักลงทุนระยะยาวที่เชื่อในการฟื้นตัวของ cattle cycle หุ้นนี้ยัง
         น่าติดตาม แต่ margin of safety ปัจจุบันยังไม่เอื้อต่อการเข้าซื้อก้อนใหญ่</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$46.93 <span style="font-size:12px;color:#cab9a8">($42.00–$52.00)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −13%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$70.42 (Hold, 13 นักวิเคราะห์)</div></div>
       </div>
       <div class="zone">

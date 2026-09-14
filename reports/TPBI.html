@@ -10,6 +10,19 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 3.9,
+  "values": {
+    "px": 3.82,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 3.8,
+    "fvHigh": 4.1,
+    "eps": 0.41,
+    "shares": 416880000,
+    "dps": 0.23
+  },
   "theme": {
     "accent": "#4a6fa5",
     "accentDark": "#2d4f82",
@@ -41,7 +54,6 @@
     "min": 2.5,
     "max": 4,
     "grid": [3, 3.5],
-    "fairLine": 3.9,
     "currency": "฿",
     "highlight": [1, 11],
     "gridFmt": "v.toFixed(2)",
@@ -50,11 +62,8 @@
   "gauge": {
     "min": 2,
     "max": 5,
-    "cur": 3.82,
-    "fair": 3.9,
     "fairLabelTop": true
-  },
-  "fv": 3.9
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +83,11 @@
     <div class="sub">ถุงพลาสติก · ฟิล์มยืดหยุ่น · บรรจุภัณฑ์อาหาร • ฟิล์มหลายชั้น · กระดาษบรรจุภัณฑ์ • ส่งออกไทย-UK-ออสเตรเลีย-ญี่ปุ่น-สหรัฐ</div>
     <div class="price-row">
       <div>
-        <div class="px">฿3.82<small>(TPBI)</small></div>
+        <div class="px">{{rd:px}}<small>(TPBI)</small></div>
       </div>
-      <div class="chg">▲ +26.5% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿2.78 – ฿3.42<br>
         ที่มา: StockAnalysis.com, SET Factsheet, Yahoo Finance
       </div>
@@ -115,7 +124,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#4a6fa5"></i>ราคา TPBI</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿3.90</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสูงสุดรอบปี</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -143,8 +152,8 @@
         <div class="mval">฿3.80</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿3.80 – ฿4.10</span></div>
-        <div class="r">฿3.90</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/E ให้ค่าสูงสุด ฿4.10 เพราะอิง P/E เป้า 10x ซึ่งเหมาะสมหาก TPBI ฟื้น ROE กลับไป 8–10% ได้
@@ -160,15 +169,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿3.82</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿3.90</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿2.73<br><small>MOS 30%</small></span>
-          <span>฿3.12<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿3.90<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">฿3.90<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">฿4.10<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -183,19 +192,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+2%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS อยู่ในเกณฑ์ดี — ราคาปัจจุบัน ฿3.10 ต่ำกว่ามูลค่าเหมาะสม ฿3.90 พอสมควร เหมาะสะสมทยอย</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿3.12</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿2.73</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿3.90</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="3.82" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -293,8 +302,8 @@
          ความเสี่ยงหลักคือ feedstock cost ที่ผันผวนตามราคาน้ำมัน และรายได้ FY2025 ที่หดตัว −13.6%
          กลยุทธ์ที่เหมาะสมคือ "ทยอยสะสมในโซน ฿3.00–3.15 เพื่อรับปันผล ติดตามการฟื้นตัว margin" มากกว่าหวัง capital gain ระยะสั้น</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿3.90 <span style="font-size:12px;color:#cab9a8">(฿3.80–฿4.10)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +2%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿3.90 (สะสม)</div></div>
       </div>
       <div class="zone">
@@ -308,7 +317,7 @@
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
-    ที่มาข้อมูล: StockAnalysis.com (BKK:TPBI), SET Factsheet (tpbi), Yahoo Finance (TPBI.BK) — ราคา ณ 14 ก.ย. 2569
+    ที่มาข้อมูล: StockAnalysis.com (BKK:TPBI), SET Factsheet (tpbi), Yahoo Finance (TPBI.BK) — ราคา ณ {{rd:priceDate}}
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 4 กรกฎาคม 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

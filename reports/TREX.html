@@ -10,6 +10,19 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 52,
+  "values": {
+    "px": 44.95,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 44,
+    "fvHigh": 60,
+    "eps": 1.79,
+    "shares": 103900000,
+    "bvps": 9.34
+  },
   "theme": {
     "accent": "#4A7C59",
     "accentDark": "#2E5940",
@@ -41,18 +54,14 @@
     "min": 30,
     "max": 55,
     "grid": [35, 40, 45, 50],
-    "fairLine": 52,
     "currency": "$",
     "highlight": [1, 8]
   },
   "gauge": {
     "min": 28,
     "max": 70,
-    "cur": 44.95,
-    "fair": 52,
     "fairLabelTop": true
-  },
-  "fv": 52
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +81,11 @@
     <div class="sub">#1 ผู้ผลิต Composite Decking ในสหรัฐฯ • วัสดุรีไซเคิล 95% • Outdoor Living Residential &amp; Commercial • Winchester, VA</div>
     <div class="price-row">
       <div>
-        <div class="px">$44.95<small>(TREX)</small></div>
+        <div class="px">{{rd:px}}<small>(TREX)</small></div>
       </div>
-      <div class="chg">▼ −7.0% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $29.77 – $68.78<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, WSJ Markets
       </div>
@@ -87,8 +96,8 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM ณ ก.ค. 2569</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$4.67B</div><div class="d">หุ้น ~103.9M หุ้น (Diluted)</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~25.1x</div><div class="d">EPS TTM $1.79 · ค่าเฉลี่ย 5 ปี ~35–45x</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">หุ้น ~103.9M หุ้น (Diluted)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM $1.79 · ค่าเฉลี่ย 5 ปี ~35–45x</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~35–45x</div><div class="d">ปัจจุบัน Discount ชัดเจนจาก Housing cycle</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">4.8x</div><div class="d">BVPS ~$9.34 · Equity $996M (บวกทุกปี)</div></div>
 
@@ -113,7 +122,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#4A7C59"></i>ราคา TREX</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $52.00</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -142,8 +151,8 @@
         <div class="mval">$47.37</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $44 – $60</span></div>
-        <div class="r">$52.00</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/E Normalized ให้ค่าสูงสุด $56 สะท้อน premium ของ #1 market share และ brand moat ที่แข็งแกร่ง
@@ -160,15 +169,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $44.95</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $52.00</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$36.40<br><small>MOS 30%</small></span>
-          <span>$41.60<br><small>MOS 20%</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">$48.50<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$52.00<br><small>Fair Value</small></span>
-          <span style="text-align:right">$60.00<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -184,19 +193,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+14%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS ต่ำ — ราคาใกล้ Fair Value ควรรอจังหวะ Pullback สู่โซน MOS 20%</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$41.60</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$36.40</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $52.00</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>&#129518; ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="44.95" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -297,8 +306,8 @@
         นักลงทุนระยาว (3–5 ปี) ที่ซื้อได้ในโซน MOS 20% ($41.60) หรือต่ำกว่า จะมี Risk/Reward ที่น่าสนใจกว่ามาก
       </p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$52.00 <span style="font-size:12px;color:#cab9a8">($44–$60)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +14%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$48.50 (Buy — 19 analysts)</div></div>
       </div>
       <div class="zone">
@@ -312,7 +321,7 @@
     <b>&#9888;&#65039; คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
-    ที่มาข้อมูล: Yahoo Finance (query1.finance.yahoo.com/v8/finance/chart/TREX), StockAnalysis.com/stocks/trex, WSJ Markets (wsj.com/market-data/quotes/TREX) — ราคา ณ 11 ก.ย. 2569
+    ที่มาข้อมูล: Yahoo Finance (query1.finance.yahoo.com/v8/finance/chart/TREX), StockAnalysis.com/stocks/trex, WSJ Markets (wsj.com/market-data/quotes/TREX) — ราคา ณ {{rd:priceDate}}
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 1 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

@@ -10,6 +10,38 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 197.2,
+  "values": {
+    "px": 182.18,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 166.05,
+    "fvHigh": 228.34,
+    "eps": 3.39,
+    "shares": 119000000,
+    "baseEps": 6.15,
+    "scenarios": [
+      {
+        "tgt": 120.96,
+        "div": 0
+      },
+      {
+        "tgt": 218.64,
+        "div": 0
+      },
+      {
+        "tgt": 328.44,
+        "div": 0
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#e1285f",
     "accentDark": "#aa1843",
@@ -40,17 +72,13 @@
     "min": 125,
     "max": 250,
     "grid": [150, 175, 200, 225],
-    "fairLine": 197.2,
     "currency": "$",
     "highlight": [2, 6]
   },
   "gauge": {
     "min": 100,
-    "max": 250,
-    "cur": 182.18,
-    "fair": 197.2
-  },
-  "fv": 197.2
+    "max": 250
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -70,11 +98,11 @@
     <div class="sub">ผู้ให้บริการขนส่งสินค้าแบบ Less-Than-Truckload (LTL) รายใหญ่ในอเมริกาเหนือ • เครือข่ายเทอร์มินัลทั่วสหรัฐฯ แคนาดา เม็กซิโก • กลยุทธ์หลักคือไล่ Operating Ratio ให้ทัน Old Dominion (ODFL)</div>
     <div class="price-row">
       <div>
-        <div class="px">$182.18<small>(XPO)</small></div>
+        <div class="px">{{rd:px}}<small>(XPO)</small></div>
       </div>
-      <div class="chg">▲ +26.6% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569 (StockAnalysis.com, ตรงกับ Yahoo Finance)<br>
+        ราคา ณ {{rd:priceDate}} (StockAnalysis.com, ตรงกับ Yahoo Finance)<br>
         กรอบ 52 สัปดาห์ $117.98 – $232.05<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, SEC 8-K (XPO Q2 2026 press release)
       </div>
@@ -85,8 +113,8 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ตัวเลขงบ TTM/FY2568 (2025) — ผูกกับ Operating Ratio (OR)</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">$21.7B</div><div class="d">~119M หุ้น (diluted)</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~53.7x</div><div class="d">EPS TTM GAAP $3.39 — อย่าใช้ตรง ๆ เป็นสมอ FV (ดูหมายเหตุ normalize)</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">~119M หุ้น (diluted)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM GAAP $3.39 — อย่าใช้ตรง ๆ เป็นสมอ FV (ดูหมายเหตุ normalize)</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">N/A</div><div class="d">pure-play LTL เพิ่ง ~4 ปี (หลัง spin-off RXO พ.ย. 2565) ไม่มีช่วงยาวพอเทียบ</div></div>
       <div class="metric"><div class="k">EV/Sales (TTM)</div><div class="v neu">3.24x</div><div class="d">EV $27.8B ÷ รายได้ TTM $8.57B</div></div>
 
@@ -111,7 +139,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#e1285f"></i>ราคา XPO</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $197.20</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -133,8 +161,8 @@
         <div class="mval">$228.34</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $166.05 – $228.34</span></div>
-        <div class="r">$197.20</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/E ให้ค่าต่ำกว่าเพราะใช้ P/E เป้าหมายที่ระมัดระวังกว่าราคาตลาดปัจจุบันสำหรับหุ้นวัฏจักรที่กำลังไล่ OR ส่วนวิธี EV/Sales ให้ค่าสูงกว่าเพราะผูกกับ margin ที่ยังปรับดีขึ้นต่อเนื่องได้อีก — ค่าเฉลี่ย $197.20 ใกล้เคียงราคาตลาดมาก สะท้อนว่าตลาดตั้งราคาแทบเต็มมูลค่าบนสมมติฐานไล่ OR ต่อเนื่องแล้ว
@@ -148,14 +176,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $182.18</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $197.20</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$138.04<br><small>MOS 30%</small></span>
-          <span>$157.76<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$197.20<br><small>Fair Value</small></span>
-          <span style="text-align:right">$228.34<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$231.83<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -169,19 +197,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+8%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>ไม่มี Margin of Safety (ราคาแพงกว่ามูลค่าเหมาะสมเล็กน้อย)</b><br>ตลาดตั้งราคาแทบเต็มมูลค่าบนสมมติฐานว่า Operating Ratio จะไล่ทัน ODFL ต่อเนื่อง หากการปรับปรุง OR สะดุดหรือช้ากว่าคาด มีความเสี่ยงที่ราคาจะปรับฐานแรงเพราะ P/E ปัจจุบันตึงตัวมาก นักลงทุนควรรอจังหวะย่อ/ราคาต่ำกว่า FV ก่อนเข้าเพิ่ม</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$157.76</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$138.04</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $197.20</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="182.18" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -190,17 +218,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $182.18 • EPS ฐาน ~$6.15 • ไม่จ่ายปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} • ไม่จ่ายปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +3%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$120.96</div>
-          <div class="ret neg">−33.6%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$6.72</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>OR หยุดพัฒนาที่ ~80% แข่งขันด้านราคารุนแรง/ปริมาณซบเซา ตลาดลด multiple จาก fwd P/E ~31x เหลือ ~18x</span></li>
           </ul>
         </div>
@@ -208,12 +236,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +14%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$218.64</div>
-          <div class="ret pos">+20.0%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$9.11</span></li>
             <li><span>P/E ออก</span><span>24x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>OR ดีขึ้นต่อเนื่อง ~150–200bps/ปี (อัตราที่ทำได้จริงปี 2568–69) ลงมาโซนกลาง-สูง 70% ภายใน 3 ปี ยังไม่ถึงระดับ ODFL</span></li>
           </ul>
         </div>
@@ -221,12 +249,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +24%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$328.44</div>
-          <div class="ret pos">+80.3%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$11.73</span></li>
             <li><span>P/E ออก</span><span>28x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>network optimization/AI ได้ผลเร็วกว่าคาด OR ไล่ทันเข้าใกล้โซน ~72–73% ภายใน 3 ปี พร้อมวัฏจักร freight เป็นขาขึ้น</span></li>
           </ul>
         </div>
@@ -271,8 +299,8 @@
       <h2>XPO: เรื่องราวไล่ตาม ODFL ที่ราคาเกือบเต็มมูลค่าแล้ว</h2>
       <p>XPO เป็นผู้ให้บริการ LTL รายใหญ่ในอเมริกาเหนือที่กำลังไล่ Operating Ratio ให้ทัน ODFL อย่างต่อเนื่อง (79.9% เทียบ 70.1% ใน Q2/2569) กำไรฟื้นตัวชัดเจนจากทั้งวัฏจักร freight ที่กำลังกลับมาและการปรับปรุงโครงสร้างต้นทุนของบริษัทเอง ราคาหุ้นปรับขึ้นแรง +56.7% ในรอบปีจนแทบเต็มมูลค่าเหมาะสม ($197.20) แล้ว โดย Fair Value ทั้งสองวิธีสะท้อนสมมติฐานว่า OR จะดีขึ้นต่อเนื่องแต่ยังไม่ถึงระดับ ODFL — หากทำได้ตามแผนมี upside จำกัด แต่หากสะดุดความเสี่ยงด้าน valuation ค่อนข้างสูงเพราะ P/E ปัจจุบันตึงตัวมาก</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$197.20 <span style="font-size:12px;color:#cab9a8">($166.05–$228.34)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +8%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$231.83 (Buy)</div></div>
       </div>
       <div class="zone">
@@ -285,7 +313,7 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ 11 ก.ย. 2569 จาก StockAnalysis.com (cross-check กับ Yahoo Finance ตรงกัน) • ข้อมูลงบการเงิน/ประมาณการจาก StockAnalysis.com • EPS/Operating Ratio กระทบยอดกับ SEC 8-K และผลประกอบการ Q1–Q2 2569 ของ XPO, Inc. (investors.xpo.com, sec.gov) และข้อมูล Operating Ratio ของ Old Dominion Freight Line จาก ir.odfl.com
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ {{rd:priceDate}} จาก StockAnalysis.com (cross-check กับ Yahoo Finance ตรงกัน) • ข้อมูลงบการเงิน/ประมาณการจาก StockAnalysis.com • EPS/Operating Ratio กระทบยอดกับ SEC 8-K และผลประกอบการ Q1–Q2 2569 ของ XPO, Inc. (investors.xpo.com, sec.gov) และข้อมูล Operating Ratio ของ Old Dominion Freight Line จาก ir.odfl.com
     <br><br>
     <b>หมายเหตุความโปร่งใส (Full disclosure):</b> EPS ที่ใช้เป็นฐานคำนวณ Fair Value คือ EPS forward (NTM) โดยประมาณเฉลี่ย $6.15 (เฉลี่ยจาก Yahoo Finance epsForward $6.41 และ StockAnalysis.com implied จาก fwd P/E 34.43x ≈ $5.88) แทนการใช้ EPS TTM (GAAP diluted) $3.39 ตรง ๆ เพราะ TTM ยังพ่วงไตรมาสที่ Operating Ratio สูงกว่าปัจจุบันมาก (H1/2568 เฉลี่ย 84.4% เทียบ Q2/2569 ที่ 79.9%) ถือเป็นกำไรที่ยังไม่สะท้อนโครงสร้างต้นทุนปัจจุบันเต็มที่ — สมมติฐานคือ ณ ส.ค. 2569 XPO อยู่ในช่วง "กำลังฟื้น/ไล่ OR ตาม ODFL" ของวัฏจักร freight ไม่ใช่จุดสูงสุดหรือต่ำสุดของวัฏจักร นอกจากนี้ EPS GAAP ไตรมาส Q2/2569 ($1.36) มีกำไรพิเศษจากการขายอสังหาริมทรัพย์ราว $0.06/หุ้น ซึ่งไม่ใช่กำไรจากธุรกิจหลัก จึงไม่ได้ใช้เป็นฐานสำหรับ FV โดยตรงเช่นกัน (EPS TTM ปรับ normalized ex รายการนี้ ≈ $3.33) — สำหรับการกระทบยอด EPS(TTM): Yahoo Finance รายงาน $3.50 ต่างจาก StockAnalysis.com ที่ $3.39 อยู่ 3.2% ทีมงานตรวจสอบด้วยการรวมผลประกอบการรายไตรมาสจริงจาก SEC 8-K/press release ของบริษัท (H2/2568 diluted EPS $1.17 = FY2568 $2.64 − H1/2568 $1.47 บวก H1/2569 $2.22 = Q1/2569 $0.86 + Q2/2569 $1.36 รวม = $3.39) ยืนยันว่าตัวเลข StockAnalysis.com ($3.39) ตรงกับข้อมูลปฐมภูมิ ส่วนตัวเลข Yahoo Finance ($3.50) น่าจะมาจากวิธีคำนวณ/ช่วงเวลาตัดรอบที่ต่างกันเล็กน้อย — ใช้ $3.39 เป็นค่า EPS(TTM) อ้างอิงในรายงานนี้
   </div>

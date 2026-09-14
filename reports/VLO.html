@@ -10,6 +10,40 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 188,
+  "values": {
+    "px": 390.42,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 148,
+    "fvHigh": 238,
+    "eps": 13.75,
+    "shares": 297000000,
+    "dps": 4.8,
+    "bvps": 78.13,
+    "baseEps": 17,
+    "scenarios": [
+      {
+        "tgt": 99,
+        "div": 14.4
+      },
+      {
+        "tgt": 177,
+        "div": 14.4
+      },
+      {
+        "tgt": 284,
+        "div": 15.6
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#C8102E",
     "accentDark": "#96001F",
@@ -41,18 +75,14 @@
     "min": 100,
     "max": 500,
     "grid": [200, 300, 400],
-    "fairLine": 188,
     "currency": "$",
     "highlight": [2, 11]
   },
   "gauge": {
     "min": 110,
     "max": 402,
-    "cur": 390.42,
-    "fair": 188,
     "fairLabelTop": false
-  },
-  "fv": 188
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -76,11 +106,11 @@
     <div class="sub">World's largest independent refiner (15 refineries, ~3.2M bbl/day) • Pure-play refining earnings + heavy crude advantage • Diamond Green Diesel (DGD, JV w/ Darling) — #1 renewable diesel producer (~1.3B gal/yr) + Ethanol 12 plants • Cyclical margins vs mid-cycle crack normalize $14–16/bbl • ~1.9% dividend yield + aggressive buybacks • Renewable diesel margin pressured by RIN/overcapacity</div>
     <div class="price-row">
       <div>
-        <div class="px">$390.42<small>(VLO)</small></div>
+        <div class="px">{{rd:px}}<small>(VLO)</small></div>
       </div>
-      <div class="chg">▲ +130.3% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $130.78 – $272.17<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, MarketBeat
       </div>
@@ -92,9 +122,9 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ 30 มิ.ย. 2569 — Cyclical: ดู Normalized EPS</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">$116.0B</div><div class="d">~297M shares</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~28.4x</div><div class="d">TTM EPS $13.75 — ผลจากวัฏจักร</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">TTM EPS $13.75 — ผลจากวัฏจักร</div></div>
       <div class="metric"><div class="k">Forward P/E (FY2026)</div><div class="v">~8.5x</div><div class="d">Margin recovery ใน FY2026</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">5.00x</div><div class="d">BVPS $78.13 (มี.ค. 2569)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS $78.13 (มี.ค. 2569)</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">$4.22B</div><div class="d">Q1 2026: $1.32B (+ฟื้นตัว)</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$13.75</div><div class="d">Q1 2569: $4.22 (annualized ~$16.88)</div></div>
@@ -117,7 +147,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#C8102E"></i>ราคา VLO</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $188</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -147,8 +177,8 @@
         <div class="mval">$238</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $148 – $238</span></div>
-        <div class="r">$188</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>หมายเหตุสำคัญ:</b> VLO เป็นหุ้น cyclical — การประเมินใช้ <b>EPS/EBITDA/FCF ที่ปรับ normalize ที่ mid-cycle crack spread ~$15/bbl</b>
@@ -168,13 +198,13 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $390.42</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $188</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$132<br><small>MOS 30%</small></span>
-          <span>$150<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$188<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$265<br><small>เป้าเฉลี่ย Analyst</small></span>
           <span style="text-align:right">$300<br><small>Bull Case</small></span>
         </div>
@@ -192,19 +222,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−108%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาสูงกว่ามูลค่าเหมาะสม mid-cycle — ตลาด Price-in crack spread ที่สูงกว่าปกติ</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$150</div><div class="d">โซนน่าสนใจสำหรับ value investor</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$132</div><div class="d">โซนถูกมาก (deep value / trough cycle)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $188</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม mid-cycle</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value investor</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value / trough cycle)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม mid-cycle</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="390.42" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -213,17 +243,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $390.42 • EPS ฐาน ~$17.00 (norm.) • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} (norm.){{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −10%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$99</div>
-          <div class="ret neg">−71.0%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$12.39</span></li>
             <li><span>P/E ออก</span><span>8.0x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$14.40</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>Crack spread ร่วง, DGD ขาดทุน</span></li>
           </ul>
         </div>
@@ -231,12 +261,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +3%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$177</div>
-          <div class="ret neg">−51.0%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$18.58</span></li>
             <li><span>P/E ออก</span><span>9.5x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$14.40</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>Mid-cycle crack spread, DGD ฟื้น</span></li>
           </ul>
         </div>
@@ -244,12 +274,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$284</div>
-          <div class="ret pos">−23.3%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$25.85</span></li>
             <li><span>P/E ออก</span><span>11.0x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$15.60</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Crack spread สูงต่อเนื่อง, DGD กำไร</span></li>
           </ul>
         </div>
@@ -299,8 +329,8 @@
       <h2>VLO: Pure-Play Refiner ชั้นนำ — แต่ราคาสูงกว่า Mid-Cycle FV แล้ว</h2>
       <p>Valero Energy เป็น <b>best-in-class refiner</b> ด้วย scale ที่ใหญ่ที่สุดในโลก (15 refineries, ~3.2M bbl/day), heavy crude advantage, และ FCF แข็งแกร่ง หุ้นวิ่งขึ้น +89% ใน 1 ปีบน crack spread ที่ฟื้นตัวแรงและ Q1 FY2026 ที่ดีกว่าคาด ที่ราคา $260 หุ้นซื้อขายที่ Forward P/E ~8.5x ซึ่งดูถูกในบริบทปัจจุบัน <b>แต่สูงกว่า mid-cycle normalized FV $188 ถึง +38%</b> ชี้ว่าตลาดกำลัง Price-in crack spread ที่สูงต่อเนื่องไปอีก 2-3 ปี กรณีฐาน (crack spread กลับ mid-cycle) ให้ผลตอบแทน 3 ปีติดลบ −26% สำหรับ value investor จุดเข้าที่น่าสนใจคือ $150–$188 หาก crack spread ปรับลดลงในอนาคต</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$188 <span style="font-size:12px;color:#cab9a8">($148–$238)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ff8a80">MOS ~ −108%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ff8a80">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$265 (Buy — 19 analysts)</div></div>
       </div>
       <div class="zone">

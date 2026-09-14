@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 22.32,
+  "values": {
+    "px": 26.75,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 19.69,
+    "fvHigh": 26.79,
+    "eps": 2.66,
+    "shares": 890000000,
+    "dps": 1.97,
+    "bvps": 13.8,
+    "scenarios": [
+      {
+        "tgt": 13.68,
+        "div": 5.02
+      },
+      {
+        "tgt": 22.36,
+        "div": 5.91
+      },
+      {
+        "tgt": 31.2,
+        "div": 6.8
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#d57a11",
     "accentDark": "#9b590d",
@@ -41,18 +74,14 @@
     "min": 20,
     "max": 30,
     "grid": [22, 24, 26, 28],
-    "fairLine": 22.32,
     "currency": "฿",
     "highlight": [2, 10]
   },
   "gauge": {
     "min": 14,
     "max": 31,
-    "cur": 26.75,
-    "fair": 22.32,
     "fairLabelTop": true
-  },
-  "fv": 22.32
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -73,14 +102,14 @@
     <div class="sub">ผู้ผลิตน้ำมันถั่วเหลืองสกัด/กากถั่วเหลืองรายใหญ่ของไทย แบรนด์ "องุ่น" • น้ำมันพืชหลากชนิด (ถั่วเหลือง ทานตะวัน ข้าวโพด คาโนลา มะกอก) • อาหารสัตว์ • ปลากระป๋อง • ส่งออกกากถั่วเหลืองเป็นวัตถุดิบอาหารสัตว์</div>
     <div class="price-row">
       <div>
-        <div class="px">฿26.75<small>(TVO)</small></div>
+        <div class="px">{{rd:px}}<small>(TVO)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
            รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
-      <div class="chg">▲ +10.5% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿21.00 – ฿26.75<br>
         ที่มา: StockAnalysis.com, SET (ตลาดหลักทรัพย์แห่งประเทศไทย), Yahoo Finance
       </div>
@@ -92,9 +121,9 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">หุ้นกึ่งวัฏจักร — ปันผลสูง + กำไรผันผวนตาม crush margin</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">฿23.81B</div><div class="d">~890 ล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~10.1x</div><div class="d">EPS TTM ฿2.66 (ปีที่กำไรดีกว่าค่าเฉลี่ย)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM ฿2.66 (ปีที่กำไรดีกว่าค่าเฉลี่ย)</div></div>
       <div class="metric"><div class="k">P/E เมื่อใช้ EPS normalized</div><div class="v">~13.7x</div><div class="d">EPS normalized (5ปี) ฿1.95</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">~1.94x</div><div class="d">BVPS ~฿13.80</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~{{rd:pbv}}x</div><div class="d">BVPS ~฿13.80</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">฿2,189 ล้าน</div><div class="d">+4.1% YoY</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿2.66</div><div class="d">FY2025 EPS ฿2.46 (basic) — TTM รวมงวดล่าสุด</div></div>
@@ -119,7 +148,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#ed8c1d"></i>ราคา TVO</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿22.32</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -147,8 +176,8 @@
         <div class="mval">฿19.69</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿19.69 – ฿26.79</span></div>
-        <div class="r">฿22.32</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         DDM ให้ค่าสูงสุด (฿26.79) เพราะปันผลปัจจุบัน ฿1.97/หุ้น สูงมากเทียบราคา (yield ~7.6%) — ต้องระวังว่าปันผลอิงกำไร FY2025 ที่เป็น cycle บน อาจลดลงได้หากกำไรปีถัดไปแย่ลง
@@ -164,14 +193,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿26.75</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿22.32</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿15.62<br><small>MOS 30%</small></span>
-          <span>฿17.86<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿22.32<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿26.79<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">฿27.75<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -186,19 +215,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−20%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาปัจจุบัน ฿26.00 สูงกว่ามูลค่าเหมาะสม normalized ฿22.32 — ไม่มี Margin of Safety ในกรอบ normalized valuation (ยังพอมี upside เทียบเป้านักวิเคราะห์และกรอบบน FV จาก DDM)</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿17.86</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿15.62</div><div class="d">โซนถูกมาก (deep value) — ใกล้เคียงจุดต่ำสุด FY2023 ที่กำไรตกต่ำสุด</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿22.32</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม normalized</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value) — ใกล้เคียงจุดต่ำสุด FY2023 ที่กำไรตกต่ำสุด</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม normalized</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="26.75" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -207,17 +236,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿26.75 • EPS ฐาน (normalized) ~฿1.95 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน (normalized) ~฿1.95{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿13.68</div>
-          <div class="ret neg">−30.1%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿1.52</span></li>
             <li><span>P/E ออก</span><span>9x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿5.02</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>crush margin หดตัวต่อเนื่อง ราคาถั่วเหลืองโลกผันผวนแรง นำเข้าแพงขึ้นจากค่าเงิน/ภาษี ปันผลถูกปรับลด</span></li>
           </ul>
         </div>
@@ -225,12 +254,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +3%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿22.36</div>
-          <div class="ret pos">+5.7%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿2.13</span></li>
             <li><span>P/E ออก</span><span>10.5x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿5.91</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>กำไรกลับสู่ค่าเฉลี่ยระยะยาว crush margin ปกติ ปันผลคงระดับใกล้เคียงปัจจุบัน</span></li>
           </ul>
         </div>
@@ -238,12 +267,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +10%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿31.20</div>
-          <div class="ret pos">+42.1%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿2.60</span></li>
             <li><span>P/E ออก</span><span>12x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿6.80</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>crush margin เอื้ออำนวยต่อเนื่อง demand กากถั่วเหลืองในไทยแข็งแกร่ง ปันผลปรับขึ้น</span></li>
           </ul>
         </div>
@@ -292,8 +321,8 @@
       Fair Value เฉลี่ยจาก 3 วิธี (Normalized P/E, DDM, Justified P/BV) อยู่ที่ ฿22.32 ต่ำกว่าราคาตลาด ฿26.00 ราว 16.5% — นักลงทุนที่เน้น value ควรรอจังหวะราคาย่อลงมาใกล้โซน MOS20 (฿17.86) หรือต่ำกว่า
       ผู้ที่ถือเพื่อรับปันผลระยะยาวยังพอรับได้ที่ราคาปัจจุบัน แต่ต้องยอมรับความเสี่ยงว่าปันผลอาจถูกปรับลดหากกำไรกลับสู่ค่าเฉลี่ย</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿22.32 <span style="font-size:12px;color:#cab9a8">(฿19.69–฿26.79)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −20%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿27.75 (Buy, 3 สำนัก)</div></div>
       </div>
       <div class="zone">

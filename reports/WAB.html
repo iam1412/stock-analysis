@@ -10,6 +10,19 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 248,
+  "values": {
+    "px": 283.22,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 241,
+    "fvHigh": 254,
+    "eps": 10.62,
+    "shares": 169700000,
+    "dps": 1.24
+  },
   "theme": {
     "accent": "#1A6FBF",
     "accentDark": "#0D4A8A",
@@ -41,18 +54,14 @@
     "min": 175,
     "max": 300,
     "grid": [200, 225, 250, 275],
-    "fairLine": 248,
     "currency": "$",
     "highlight": [0, 9]
   },
   "gauge": {
     "min": 150,
     "max": 340,
-    "cur": 283.22,
-    "fair": 248,
     "fairLabelTop": true
-  },
-  "fv": 248
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +81,11 @@
     <div class="sub">ระบบหัวรถจักรและขับเคลื่อน • ระบบเบรกและความปลอดภัย • Positive Train Control (PTC) • ระบบขนส่งมวลชนทางราง • โซลูชันดิจิทัลและซอฟต์แวร์ • ชิ้นส่วน Aftermarket • มรดก GE Transportation (2019)</div>
     <div class="price-row">
       <div>
-        <div class="px">$283.22<small>(WAB)</small></div>
+        <div class="px">{{rd:px}}<small>(WAB)</small></div>
       </div>
-      <div class="chg">▲ +38.5% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $184.26 – $284.91<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, Barchart, digrin.com
       </div>
@@ -87,9 +96,9 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 · ใช้ Adj EPS (non-GAAP) สำหรับ valuation เนื่องจาก GE Transportation PPA amortization</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">$48.1B</div><div class="d">~169.7 ล้านหุ้น (diluted)</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">~169.7 ล้านหุ้น (diluted)</div></div>
       <div class="metric"><div class="k">P/E (TTM, adj)</div><div class="v neu">~28.7x</div><div class="d">GAAP P/E ~38x บิดเบือนจาก PPA amortization GE Transportation</div></div>
-      <div class="metric"><div class="k">Forward P/E (adj)</div><div class="v">~26.7x</div><div class="d">อิง adj EPS FY2026e ~$10.62 (consensus 11 นักวิเคราะห์)</div></div>
+      <div class="metric"><div class="k">Forward P/E (adj)</div><div class="v">~{{rd:pe}}x</div><div class="d">อิง adj EPS FY2026e ~$10.62 (consensus 11 นักวิเคราะห์)</div></div>
       <div class="metric"><div class="k">EV/EBITDA</div><div class="v neu">~19.8x</div><div class="d">EV $51.7B / EBITDA TTM $2.61B</div></div>
 
       <div class="metric"><div class="k">EPS adj (TTM)</div><div class="v">~$9.40</div><div class="d">GAAP EPS TTM ~$7.07 · ต่างกันจาก PPA non-cash ~$2.33/หุ้น</div></div>
@@ -113,7 +122,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1A6FBF"></i>ราคา WAB</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $248</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -135,8 +144,8 @@
         <div class="mval">$241</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $241 – $254</span></div>
-        <div class="r">$248</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/E (adj) ให้ค่าสูงกว่าเล็กน้อยที่ $254 เพราะ adj EPS กำลังเติบโตดีและ multiple สำหรับบริษัทรถไฟ aftermarket-heavy สามารถ sustain ที่ 27x ได้ วิธี EV/EBITDA ให้ค่า $241 ซึ่งอนุรักษ์นิยมกว่า เนื่องจาก net debt $6B เป็นภาระที่สูงขึ้นหลังซื้อ L&T STS ค่าเฉลี่ย $248 สะท้อนว่า WAB ซื้อขายที่ premium เล็กน้อยเหนือ FV ซึ่งตลาดยินดีจ่ายสำหรับการเติบโตคุณภาพสูง
@@ -154,14 +163,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $283.22</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $248</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$174<br><small>MOS 30%</small></span>
-          <span>$198<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$248<br><small>Fair Value</small></span>
-          <span style="text-align:right">$254<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$300<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -175,19 +184,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−14%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสม — ยังไม่มี Margin of Safety · รอย่อสู่แถว $248 หรือต่ำกว่าเพื่อเพิ่ม MOS</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$198</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$174</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $248</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="283.22" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -278,8 +287,8 @@
       <h2>WAB: Quality Compounder รถไฟโลก · ราคาเหนือ FV เล็กน้อย · รอย่อสะสม</h2>
       <p>Wabtec คือ quality compounder ของอุตสาหกรรมรถไฟโลก ผสาน franchise อันทรงพลังจาก GE Transportation (หัวรถจักร, ดิจิทัล) กับ Westinghouse (ระบบเบรก, PTC) ครองตลาดที่มีคู่แข่งน้อย aftermarket recurring revenue ~35–40% ให้ความมั่นคงสูง FCF TTM $1.5B แข็งแกร่ง margin ขยายต่อเนื่อง และ adj EPS เติบโต double-digit อย่างไรก็ตามราคา $269.60 อยู่เหนือมูลค่าเหมาะสม $248 ราว 8.7% และ adj P/E ~28.7x ไม่มี margin of safety ณ ราคานี้ สำหรับผู้ที่ถือแล้วสามารถถือต่อได้โดยอิง bull case $437 ใน 3 ปี สำหรับผู้ที่ยังไม่มี แนะนำรอย่อสู่แถว $240–$250 (ใกล้ FV) หรือ MOS 20% ที่ $198</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$248 <span style="font-size:12px;color:#cab9a8">($241–$254)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −14%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$300 (Strong Buy · 11 คน)</div></div>
       </div>
       <div class="zone">
