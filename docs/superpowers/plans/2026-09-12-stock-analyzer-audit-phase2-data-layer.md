@@ -1187,7 +1187,7 @@ git commit -m "migrate(v2): แบตช์ i/10 (<SYM แรก>–<SYM ท้�
 
 **Files:** `test/check-reports.js` · `test/self-test.js` · `docs/open-items.md` · (docs ผ่าน gen-docs)
 
-- [ ] **Step 1**: นับ v1 ในคลังหลัง merge E · **ถ้า v1 = 0**: W22 `level: 'error'` (คงชื่อ · healer `'build'` · ปลดล็อกบรรทัด self-test "W21/W22/W23 ต้องเป็น warn" เฉพาะ W22 · convergence จาก Task 13) · `node tools/gen-docs.js` (นับ error/warn เปลี่ยน 47+18 → 48+17) · verify 18/18 · **ถ้า v1 > 0**: ไม่แตะ level · เขียน open-item ใหม่ "#36 W22 → E รอ v1 = 0 (residue M ใบ: <รายชื่อสั้น/ชนิด>)" · W21 คง warn ทั้งสองกรณี (healer = worker · จดใน open-item เดียวกัน)
+- [ ] **Step 1**: นับ v1 ในคลังหลัง merge E · **ถ้า v1 = 0**: W22 `level: 'error'` (คงชื่อ · **healer `'patchReport'`** — ★★ **แก้ 14 ก.ย. 2569 (พบใน Task 16 · ledger)**: Task 13 ยกเลิก `'build'` ออกจาก `HEALERS` ทั้งหมดระหว่างรอบแก้ของมัน (ไม่มี check ใดถูก break ได้ด้วย "stale render vs JSON" ล้วน ๆ — ใบ v2 ที่ commit แล้วมี token render เสมอ) แล้วขึ้นทะเบียน convergence ของ W22 ผ่าน `'patchReport'` แทน (กระจก stock-meta ของจริงคือตัวซ่อม) · ปลดล็อกบรรทัด self-test "W21/W22/W23 ต้องเป็น warn" เฉพาะ W22 · convergence จาก Task 13) · `node tools/gen-docs.js` (นับ error/warn เปลี่ยน 47+18 → 48+17) · verify 18/18 · **ถ้า v1 > 0**: ไม่แตะ level · เขียน open-item ใหม่ "#36 W22 → E รอ v1 = 0 (residue M ใบ: <รายชื่อสั้น/ชนิด>)" · W21 คง warn ทั้งสองกรณี (healer = worker · จดใน open-item เดียวกัน)
 - [ ] **Step 2**: `docs/open-items.md` ปิด/อัปเดตข้อที่ระยะ 2 แก้ (อย่างน้อย #14 f14 roe rule — ตรวจว่า f57 rule ทำงานบน v2 ไหม · #13/#33 ไม่เกี่ยว)
 - [ ] **Step 3: Commit** (สาขา `claude/audit-p2-f-prose` — task นี้ commit บนสาขา F เพื่อไม่เปิด PR เพิ่ม)
 
