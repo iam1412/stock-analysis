@@ -784,6 +784,19 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   }
   ok(Q.postcheckGuard('AAPL', { postcheck: 'pass', flaggedAt: '2026-09-01' }, null) === null, 'postcheckGuard: ไม่รู้ startedAt (state เก่า/เทส) → นับด้วยเสมอ เหมือน S.inRound');
   ok(Q.postcheckGuard('AAPL', { postcheck: 'pass' }, '2026-09-10') === null, 'postcheckGuard: แถวไม่มี flaggedAt เลย (ของเก่าก่อนมีฟีเจอร์รอบ) → นับด้วยเสมอ');
+  // รีวิว Task 10 F1: guard ต้องตัดสินจาก "postcheck ถูกสั่งในรอบนี้ไหม" (postcheckAt) ไม่ใช่ "flag เป็นของรอบนี้ไหม" (flaggedAt)
+  // เคสจริงที่เจอบ่อยขึ้นหลัง #26: แถวอายุสังเคราะห์คง flaggedAt เดิมไว้ ⇒ พอ flag จริงเปิดรอบใหม่ แถวนั้นหลุดรอบถาวร
+  // แต่ postcheck วันนี้ในรอบนี้จริง ๆ — เดิมยังถูกปฏิเสธ และข้อความสั่งให้ "postcheck ใหม่" ซึ่งแก้ไม่ได้ (postcheck ไม่แตะ flaggedAt) ⇒ เหลือแค่ --force
+  ok(Q.postcheckGuard('OLD', { postcheck: 'pass', flaggedAt: '2026-09-01', postcheckAt: '2026-09-05' }, '2026-09-05') === null,
+    'postcheckGuard: F1 — flaggedAt เก่ากว่ารอบ แต่ postcheckAt เป็นของรอบนี้ (≥ startedAt) → ผ่าน (postcheck สดจริง ไม่ใช่ค้าง)');
+  ok(Q.postcheckGuard('OLD', { postcheck: 'pass', flaggedAt: '2026-09-01', postcheckAt: '2026-09-08' }, '2026-09-05') === null,
+    'postcheckGuard: F1 — postcheckAt ใหม่กว่า startedAt → ผ่าน');
+  {
+    // เคสที่ #27 ตั้งใจบล็อกจริง ๆ ต้องยังถูกบล็อกเหมือนเดิม: postcheck ค้างจากรอบก่อน (postcheckAt เก่ากว่า startedAt ด้วย)
+    const stale2 = Q.postcheckGuard('OLD', { postcheck: 'pass', flaggedAt: '2026-09-01', postcheckAt: '2026-09-02' }, '2026-09-05');
+    ok(stale2 != null && /ค้างจากรอบก่อน/.test(stale2) && /--force/.test(stale2),
+      'postcheckGuard: F1 — postcheckAt เก่ากว่า startedAt ด้วย (ค้างจากรอบก่อนจริง) → ยังปฏิเสธเหมือนเดิม', String(stale2));
+  }
 }
 
 // ── 19e) parseArgs: --flag= (ค่าว่าง) ต้องล้มเหมือนไม่ใส่ค่า (C2 · carried) ──

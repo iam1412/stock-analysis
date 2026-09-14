@@ -230,6 +230,9 @@ function checkText(file, text) {
 function atomicWrite(file, content) {
   const tmp = `${file}.${process.pid}.${Math.random().toString(36).slice(2)}.tmp`;
   fs.writeFileSync(tmp, content);
+  // คัดลอก mode ของไฟล์เดิมมาที่ tmp ก่อน rename — `.githooks/pre-push` เป็น TARGETS ตัวหนึ่งและเป็น 100755
+  // ถ้าปล่อยให้ tmp ใช้ mode ปริยาย (0644 ตาม umask) git จะเลิกรัน hook โดยไม่เตือนใครเลย (รีวิว Task 10 F2)
+  try { fs.chmodSync(tmp, fs.statSync(file).mode & 0o777); } catch (_) { /* ไฟล์ปลายทางยังไม่มี = ใช้ค่าปริยาย */ }
   fs.renameSync(tmp, file);
 }
 

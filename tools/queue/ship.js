@@ -88,7 +88,11 @@ function pushOrExplain(sym) {
  *  คืน `null` = ผ่าน · string = เหตุผลที่ปฏิเสธ (แยกเป็นฟังก์ชันบริสุทธิ์ให้เทสยิงได้โดยไม่ต้องพึ่ง S.load()/git จริง) */
 function postcheckGuard(sym, rec, startedAt) {
   if (rec.postcheck !== 'pass') return `${sym}: postcheck ยังไม่ผ่าน (${rec.postcheck || 'ยังไม่รัน'}) — รัน npm run queue -- postcheck ${sym} ก่อน หรือ --force ถ้ารีวิวเองแล้ว`;
-  if (!S.inRound(rec, startedAt)) return `${sym}: postcheck ผ่านแล้วแต่ค้างจากรอบก่อน (flaggedAt ${rec.flaggedAt || '?'} เก่ากว่าที่รอบนี้เริ่ม ${startedAt}) — ยังไม่นับเป็น postcheck ของรอบนี้ รัน npm run queue -- postcheck ${sym} ใหม่ หรือ --force ถ้ารีวิวเองแล้ว`;
+  // สองทางที่นับว่า "เป็นของรอบนี้": flag เพิ่งเข้ามาในรอบนี้ (S.inRound) หรือ postcheck ถูกสั่งในรอบนี้ (postcheckAt)
+  // ต้องมีขาที่สองเพราะ postcheck ไม่เคยแตะ flaggedAt — แถวที่ flag เก่าแต่เพิ่ง postcheck วันนี้ (พบบ่อยหลัง #26 ที่แถว
+  // อายุสังเคราะห์คง flaggedAt เดิมไว้ ⇒ หลุดรอบถาวรเมื่อ flag จริงเปิดรอบใหม่) จะแก้ตามข้อความไม่ได้เลย เหลือแค่ --force (รีวิว Task 10 F1)
+  const freshPostcheck = !!(rec.postcheckAt && startedAt && rec.postcheckAt >= startedAt);
+  if (!S.inRound(rec, startedAt) && !freshPostcheck) return `${sym}: postcheck ผ่านแล้วแต่ค้างจากรอบก่อน (flaggedAt ${rec.flaggedAt || '?'} · postcheckAt ${rec.postcheckAt || '?'} เก่ากว่าที่รอบนี้เริ่ม ${startedAt}) — ยังไม่นับเป็น postcheck ของรอบนี้ รัน npm run queue -- postcheck ${sym} ใหม่ หรือ --force ถ้ารีวิวเองแล้ว`;
   return null;
 }
 
