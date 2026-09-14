@@ -10,6 +10,36 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 216,
+  "values": {
+    "px": 201.95,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 212,
+    "fvHigh": 222,
+    "shares": 433300000,
+    "scenarios": [
+      {
+        "tgt": 137.28,
+        "div": 0
+      },
+      {
+        "tgt": 237.3,
+        "div": 0
+      },
+      {
+        "tgt": 345.75,
+        "div": 0
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#eb1700",
     "accentDark": "#a51100",
@@ -41,18 +71,14 @@
     "min": 100,
     "max": 300,
     "grid": [150, 200, 250],
-    "fairLine": 216,
     "currency": "$",
     "highlight": [0, 5]
   },
   "gauge": {
     "min": 130,
     "max": 260,
-    "cur": 201.95,
-    "fair": 216,
     "fairLabelTop": true
-  },
-  "fv": 216
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +98,11 @@
     <div class="sub">แพลตฟอร์มส่งอาหาร-สินค้าออนไลน์อันดับ 1 ในสหรัฐฯ • Marketplace ร้านอาหาร/ร้านสะดวกซื้อ/ร้านขายยา/ของชำ • DashPass สมาชิกรายเดือน • โฆษณา (Ads) • Wolt &amp; Deliveroo ต่างประเทศ (ยุโรป/ตะวันออกกลาง)</div>
     <div class="price-row">
       <div>
-        <div class="px">$201.95<small>(DASH)</small></div>
+        <div class="px">{{rd:px}}<small>(DASH)</small></div>
       </div>
-      <div class="chg">▼ −20.6% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $143.30 – $285.50<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, SEC 8-K (Q2 2026 Earnings Release, 5 ส.ค. 2569)
       </div>
@@ -114,7 +140,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#eb1700"></i>ราคา DASH</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $216</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -143,8 +169,8 @@
         <div class="mval">$214</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $212 – $222</span></div>
-        <div class="r">$216</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/FCF ให้ค่าสูงสุด ($222) เพราะ FCF margin ของ DASH ยังแข็งแกร่งกว่าคู่แข่งส่วนใหญ่ในกลุ่ม delivery แม้ FCF/share
@@ -167,14 +193,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $201.95</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $216</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$151.20<br><small>MOS 30%</small></span>
-          <span>$172.80<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$216<br><small>Fair Value</small></span>
-          <span style="text-align:right">$222<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$254.43<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -190,19 +216,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+7%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS ระดับต่ำ-ปานกลาง — ราคาต่ำกว่ามูลค่าเหมาะสมเล็กน้อยหลังทบทวน FV ด้วยงบ Q2 2569 ยังไม่ถึงระดับ "ถูกมาก" และส่วนเผื่อความปลอดภัยยังจำกัด</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$172.80</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$151.20</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $216</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="201.95" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -211,17 +237,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $201.95 • FCF/share ฐาน ~$4.94 • ไม่มีปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • FCF/share ฐาน ~$4.94 • ไม่มีปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>FCF +5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$137.28</div>
-          <div class="ret neg">−32.0%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>FCF/share ปี 3</span><span>~$5.72</span></li>
             <li><span>P/FCF ออก</span><span>24x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>แข่งขันดุเดือด (Uber Eats/Grubhub), GOV growth ชะลอ, margin ถูกกดจาก promotion</span></li>
           </ul>
         </div>
@@ -229,12 +255,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>FCF +17%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$237.30</div>
-          <div class="ret pos">+17.5%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>FCF/share ปี 3</span><span>~$7.91</span></li>
             <li><span>P/FCF ออก</span><span>30x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>GOV โตต่อเนื่อง ~15-20%/ปี, EBITDA margin ขยายตามแผน, Wolt/Deliveroo คุมต้นทุนได้</span></li>
           </ul>
         </div>
@@ -242,12 +268,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>FCF +26%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$345.75</div>
-          <div class="ret pos">+71.2%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>FCF/share ปี 3</span><span>~$9.88</span></li>
             <li><span>P/FCF ออก</span><span>35x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Ads business เร่งตัว, international (Wolt/Deliveroo) breakeven เร็ว, new verticals (grocery/retail) ขยายตัวแรง</span></li>
           </ul>
         </div>
@@ -299,8 +325,8 @@
         MOS ปัจจุบันอยู่ในระดับต่ำ-ปานกลาง (+7.2%) เหมาะสำหรับนักลงทุนที่เชื่อมั่นในเรื่องราวการเติบโตระยะยาวของ platform economy มากกว่านักลงทุนสาย deep value ที่ต้องการส่วนเผื่อความปลอดภัยมากกว่านี้
       </p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$216 <span style="font-size:12px;color:#cab9a8">($212–$222)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">MOS ~ +7%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$254.43 (Buy, n=42)</div></div>
       </div>
       <div class="zone">

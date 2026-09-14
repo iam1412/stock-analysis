@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 73.72,
+  "values": {
+    "px": 68.52,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 73.11,
+    "fvHigh": 74.32,
+    "eps": 3.86,
+    "shares": 373000000,
+    "dps": 3.15,
+    "bvps": 44.26,
+    "scenarios": [
+      {
+        "tgt": 63.14,
+        "div": 9.74
+      },
+      {
+        "tgt": 86.02,
+        "div": 10.43
+      },
+      {
+        "tgt": 99.58,
+        "div": 10.84
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#0e7490",
     "accentDark": "#155e75",
@@ -41,17 +74,13 @@
     "min": 65,
     "max": 77.5,
     "grid": [67.5, 70, 72.5, 75],
-    "fairLine": 73.72,
     "currency": "$",
     "highlight": [1, 4]
   },
   "gauge": {
     "min": 48,
-    "max": 82,
-    "cur": 68.52,
-    "fair": 73.72
-  },
-  "fv": 73.72
+    "max": 82
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -71,11 +100,11 @@
     <div class="sub">New England Electric &amp; Gas • CT/MA/NH Monopoly • Offshore Wind Exit • Grid Modernization</div>
     <div class="price-row">
       <div>
-        <div class="px">$68.52<small>(ES)</small></div>
+        <div class="px">{{rd:px}}<small>(ES)</small></div>
       </div>
-      <div class="chg">▼ −7.2% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569 (งวดล่าสุด ไตรมาส 2 ปี 2569 / Q2 2026)<br>
+        ราคา ณ {{rd:priceDate}} (งวดล่าสุด ไตรมาส 2 ปี 2569 / Q2 2026)<br>
         กรอบ 52 สัปดาห์ $61.53 – $76.57<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, SEC 8-K (Eversource IR)
       </div>
@@ -89,7 +118,7 @@
       <div class="metric"><div class="k">Market Cap</div><div class="v">~$25.56 พัน ล.</div><div class="d">~373 ล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~17.75x</div><div class="d">EPS TTM (GAAP) $3.86 (รวมรายการพิเศษ Aquarion Water Q2/2569) · Forward P/E ~15.6x (core EPS 2026E guidance)</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~15–18x</div><div class="d">กรอบปกติของ regulated utility pure-play</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">~1.55x</div><div class="d">BVPS $44.26 (TTM)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~{{rd:pbv}}x</div><div class="d">BVPS $44.26 (TTM)</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ (TTM)</div><div class="v">$1.76 พัน ล.</div><div class="d">Net margin ~12.6%</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$3.86</div><div class="d">GAAP TTM ลดจาก $4.68 หลัง Q2/2569 มีรายการขาดทุนพิเศษจากดีลขาย Aquarion Water · Core (non-GAAP) Q2/2569 $0.87 ตรงเป้า · guidance ปี 2569 ยืนยันเดิม $4.57–$4.72</div></div>
@@ -112,7 +141,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#0e7490"></i>ราคา ES</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $73.72</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -138,8 +167,8 @@
         <div class="mval">$74.32</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $73.11 – $74.32</span></div>
-        <div class="r">$73.72</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         DDM ให้ค่าใกล้เคียง ($73.11) เพราะใช้อัตราเติบโตปันผล (g) แบบระมัดระวัง 4.5% ต่ำกว่า guidance บริษัท 5–7% เพื่อสะท้อนความเสี่ยงจากการปรับลด allowed ROE ของ FERC
@@ -155,15 +184,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $68.52</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $73.72</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$51.60<br><small>MOS 30%</small></span>
-          <span>$58.98<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$73.72<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$74.08<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$74.32<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -178,19 +207,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+7%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาปัจจุบันใกล้เคียง Fair Value มาก มี Margin of Safety +1.8% — ต่ำกว่าเกณฑ์ 10% ที่ถือว่าเริ่มมีส่วนเผื่อความปลอดภัย บ่งชี้ว่าหุ้นซื้อขายอยู่ที่ระดับใกล้เคียงมูลค่าที่แท้จริง ไม่มีส่วนลดด้านราคาให้มากนัก เหมาะกับการถือเพื่อรับปันผลมากกว่าการเข้าซื้อเพื่อหวังส่วนต่างราคา นักลงทุนที่ต้องการ MOS สูงควรรอราคาย่อตัวลงมากกว่านี้</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$58.98</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$51.60</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $73.72</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="68.52" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -199,17 +228,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $68.52 • EPS ฐาน ~$4.645 (guidance FY2569) • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~$4.645 (guidance FY2569){{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +1.5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$63.14</div>
-          <div class="ret neg">+6.4% รวม (~2.1%/ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$4.86</span></li>
             <li><span>P/E ออก</span><span>13x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$9.74</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>FERC ROE cut ลากยาว + rate case ล่าช้าในหลายรัฐ กดดัน multiple เพิ่มเติม</span></li>
           </ul>
         </div>
@@ -217,12 +246,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$86.02</div>
-          <div class="ret pos">+40.8% รวม / ~12.1%/ปี</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$5.38</span></li>
             <li><span>P/E ออก</span><span>16x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$10.43</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>EPS โตตาม guidance ระยะยาว 5–7%/ปี (ขอบล่าง) ตามแผนลงทุน $26.5 พันล้านดอลลาร์</span></li>
           </ul>
         </div>
@@ -230,12 +259,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +7%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$99.58</div>
-          <div class="ret pos">+61.2% รวม / ~17.3%/ปี</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$5.69</span></li>
             <li><span>P/E ออก</span><span>17.5x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$10.84</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>rate case ได้ข้อสรุปดี + allowed ROE ฟื้นตัว + capex เร่งตัวเกิน guidance หนุน re-rating</span></li>
           </ul>
         </div>
@@ -292,8 +321,8 @@
         นักวิเคราะห์ให้เป้าเฉลี่ย $74.08 สูงกว่าราคาปัจจุบันเล็กน้อย (+2.3%) เหมาะสำหรับนักลงทุนสาย income/dividend growth มากกว่าการเก็งกำไรส่วนต่างราคา
         ผู้ที่ต้องการ margin of safety จริงควรรอจังหวะราคาปรับฐานลงมาที่ $51.60–$58.98</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$73.72 <span style="font-size:12px;color:#cab9a8">($73.11–$74.32)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +7%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$74.08 (Hold)</div></div>
       </div>
       <div class="zone">

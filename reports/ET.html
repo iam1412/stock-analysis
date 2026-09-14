@@ -10,6 +10,18 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 24.02,
+  "values": {
+    "px": 21.55,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 23.68,
+    "fvHigh": 24.35,
+    "eps": 1.46,
+    "dps": 1.36
+  },
   "theme": {
     "accent": "#dd672c",
     "accentDark": "#a7491b",
@@ -40,17 +52,13 @@
     "min": 16,
     "max": 26,
     "grid": [18, 20, 22, 24],
-    "fairLine": 24.02,
     "currency": "$",
     "highlight": [2, 11]
   },
   "gauge": {
     "min": 16,
-    "max": 25,
-    "cur": 21.55,
-    "fair": 24.02
-  },
-  "fv": 24.02
+    "max": 25
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -70,11 +78,11 @@
     <div class="sub">ท่อขนส่งน้ำมันดิบ • ก๊าซธรรมชาติ • NGL • คลังส่งออก/จัดเก็บพลังงาน • จดทะเบียนเป็น Master Limited Partnership (MLP) สหรัฐฯ</div>
     <div class="price-row">
       <div>
-        <div class="px">$21.55<small>(ET)</small></div>
+        <div class="px">{{rd:px}}<small>(ET)</small></div>
       </div>
-      <div class="chg">▲ +28.0% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $16.18 – $20.81<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, Google Finance
       </div>
@@ -111,7 +119,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#dd672c"></i>ราคา ET</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $24.02</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -133,8 +141,8 @@
         <div class="mval">$24.35</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $23.68 – $24.35</span></div>
-        <div class="r">$24.02</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         Energy Transfer LP (ET) จดทะเบียนเป็น Master Limited Partnership (MLP) — นักลงทุนถือ "หน่วยลงทุน" (unit) ไม่ใช่หุ้นสามัญ ได้รับ "distribution" (ไม่ใช่เงินปันผล) และยื่นภาษีด้วยฟอร์ม K-1 (ไม่ใช่ 1099) ซึ่งมีผลภาษีจริงกับนักลงทุนต่างชาติ/บัญชีเกษียณสหรัฐฯ (อาจเจอ UBTI/withholding) ผู้ลงทุนไทยควรศึกษาก่อนถือหน่วย ด้วยเหตุนี้รายงานนี้ตัด P/E ออกจากขา valuation หลัก (เก็บไว้เป็นข้อมูลอ้างอิงในตาราง Key Metrics เท่านั้น) แล้วใช้ 2 วิธีที่เหมาะกับโครงสร้าง MLP แทน — EV/EBITDA ยึดตลาดล้วน (ไม่รับ r/g เป็น input) และ DCF บน distributable cash flow ที่เปิดเผยที่มา r/g ครบ ทั้งสองขาห่างกันเพียง 1.03 เท่า (<2.0x) จึงเฉลี่ยตรงได้ตามเกณฑ์ dispersion gate (0.4c) ได้ FV เฉลี่ย $24.02 กรอบ $23.68–$24.35 ใกล้เคียงเป้านักวิเคราะห์เฉลี่ย $24.24 (21 ราย) ซึ่งเป็นการยืนยันอิสระหลังคำนวณเสร็จ ไม่ใช่การ calibrate เข้าหาตัวเลขนี้แต่แรก
@@ -148,15 +156,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $21.55</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $24.02</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$16.81<br><small>MOS 30%</small></span>
-          <span>$19.22<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$24.02<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$24.24<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$24.35<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -169,19 +177,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+10%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>มี Margin of Safety ระดับปานกลาง</b><br>ราคายังต่ำกว่ามูลค่าเหมาะสมพอสมควรแต่ยังไม่ถึงระดับ deep value — เหมาะกับการทยอยสะสมระยะยาว โดยเฉพาะนักลงทุนที่ต้องการกระแสเงินสด (distribution yield 6.6%) มากกว่าการเก็งกำไรส่วนต่างราคา</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$19.22</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$16.81</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $24.02</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="21.55" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -273,8 +281,8 @@
       <h2>ทยอยสะสมได้ — MOS ~16% พร้อม distribution yield 6.6%</h2>
       <p>Energy Transfer LP เป็นหนึ่งใน MLP มิดสตรีมพลังงานรายใหญ่ที่สุดของสหรัฐฯ ธุรกิจส่วนใหญ่เป็นสัญญา fee-based สร้างกระแสเงินสดสม่ำเสมอและจ่าย distribution ต่อเนื่อง (ปัจจุบัน 6.46%/ปี) แต่แลกมาด้วยหนี้สูงสุดในกลุ่ม (Net Debt/EBITDA ~4.1x) และความซับซ้อนด้านภาษี K-1 ที่นักลงทุนต่างชาติต้องศึกษาก่อนถือหน่วย จากการประเมินมูลค่าด้วย EV/EBITDA ย้อนกลับสู่มัธยฐาน 5 ปี และ DCF บน distributable cash flow ได้ Fair Value เฉลี่ย $24.02 ต่อหน่วย ใกล้เคียงเป้านักวิเคราะห์เฉลี่ย $24.24 ราคาปัจจุบัน $21.05 จึงมี MOS ~12.4% อยู่ในโซนน่าสนใจสำหรับทยอยสะสมระยะยาว โดยเฉพาะนักลงทุนที่เน้นกระแสเงินสดมากกว่าการเก็งกำไรส่วนต่างราคา</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$24.02 <span style="font-size:12px;color:#cab9a8">($23.68–$24.35)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +10%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$24.24 (Strong Buy)</div></div>
       </div>
       <div class="zone">
@@ -287,7 +295,7 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ 11 ก.ย. 2569 จาก Yahoo Finance และ StockAnalysis.com (ต่างกัน 0%) • ข้อมูลงบการเงิน/อัตราส่วนย้อนหลังจาก StockAnalysis.com (stockanalysis.com/stocks/ET) • EPS(TTM) ระดับ quote ต่างกัน 2.7% ระหว่าง Yahoo ($1.42) กับ StockAnalysis ($1.46) — กระทบยอดที่ระดับงบแล้วพบ EPS TTM (dil.) ตามงบ = $1.47 ใกล้เคียง StockAnalysis (0.7%) สอดคล้องกับรูปแบบที่ Yahoo มักรายงาน TTM ล่าช้ากว่า 1 ไตรมาสหลังงบ Q2/2569 ที่เพิ่งประกาศ 4 ส.ค. 2569 จึงใช้ EPS ~$1.46–1.47 เป็นฐาน • ข้อมูลข้อพิพาททางกฎหมาย (Dakota Access Pipeline, Williams Companies) อ้างอิงจากรายงานข่าวและคำพิพากษาศาลที่เผยแพร่ต่อสาธารณะ
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ {{rd:priceDate}} จาก Yahoo Finance และ StockAnalysis.com (ต่างกัน 0%) • ข้อมูลงบการเงิน/อัตราส่วนย้อนหลังจาก StockAnalysis.com (stockanalysis.com/stocks/ET) • EPS(TTM) ระดับ quote ต่างกัน 2.7% ระหว่าง Yahoo ($1.42) กับ StockAnalysis ($1.46) — กระทบยอดที่ระดับงบแล้วพบ EPS TTM (dil.) ตามงบ = $1.47 ใกล้เคียง StockAnalysis (0.7%) สอดคล้องกับรูปแบบที่ Yahoo มักรายงาน TTM ล่าช้ากว่า 1 ไตรมาสหลังงบ Q2/2569 ที่เพิ่งประกาศ 4 ส.ค. 2569 จึงใช้ EPS ~$1.46–1.47 เป็นฐาน • ข้อมูลข้อพิพาททางกฎหมาย (Dakota Access Pipeline, Williams Companies) อ้างอิงจากรายงานข่าวและคำพิพากษาศาลที่เผยแพร่ต่อสาธารณะ
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 17 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

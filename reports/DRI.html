@@ -21,6 +21,38 @@
 -->
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 213.74,
+  "values": {
+    "px": 209.89,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 204.77,
+    "fvHigh": 228.96,
+    "shares": 114540000,
+    "dps": 6.48,
+    "baseEps": 10.64,
+    "scenarios": [
+      {
+        "tgt": 180.66,
+        "div": 20.63
+      },
+      {
+        "tgt": 261.37,
+        "div": 22.29
+      },
+      {
+        "tgt": 337.75,
+        "div": 23.15
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#5b8c00",
     "accentDark": "#3d6000",
@@ -52,18 +84,14 @@
     "min": 170,
     "max": 220,
     "grid": [180, 190, 200, 210],
-    "fairLine": 213.74,
     "currency": "$",
     "highlight": [1, 10]
   },
   "gauge": {
     "min": 145,
     "max": 235,
-    "cur": 209.89,
-    "fair": 213.74,
     "fairLabelTop": false
-  },
-  "fv": 213.74
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -84,14 +112,14 @@
     <div class="sub">Olive Garden (breadสticks/สลัดไม่อั้น) • LongHorn Steakhouse • Fine Dining: The Capital Grille, Eddie V's • Cheddar's Scratch Kitchen • Yard House • Chuy's Tex Mex (ซื้อกิจการ 2568) • Seasons 52 • Bahama Breeze</div>
     <div class="price-row">
       <div>
-        <div class="px">$209.89<small>(DRI)</small></div>
+        <div class="px">{{rd:px}}<small>(DRI)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
            รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
-      <div class="chg">▲ +16.5% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569 (Jul 2, 2026)<br>
+        ราคา ณ {{rd:priceDate}} (Jul 2, 2026)<br>
         กรอบ 52 สัปดาห์ $169.00 – $228.27<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, SEC 8-K (Darden IR), MarketBeat
       </div>
@@ -129,7 +157,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#5b8c00"></i>ราคา DRI</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $213.74</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -159,8 +187,8 @@
         <div class="mval">$204.77</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $204.77 – $228.96</span></div>
-        <div class="r">$213.74</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         DDM ให้ค่าสูงสุดเพราะ Darden เป็น dividend-growth compounder ที่เพิ่งปรับขึ้นปันผล 8% ต่อเนื่องเป็นปีที่ 6
@@ -177,15 +205,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $209.89</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $213.74</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$149.62<br><small>MOS 30%</small></span>
-          <span>$170.99<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$213.74<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$224.17<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$228.96<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -200,19 +228,19 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
-      <div class="mos-verdict bad">
-        <div class="big">+1.8%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ส่วนเผื่อความปลอดภัยบาง — ราคาใกล้เคียงมูลค่าเหมาะสม ยังไม่ใช่จังหวะเข้าซื้อที่ดีที่สุด</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$170.99</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$149.62</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $213.74</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="209.89" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -221,17 +249,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $209.89 • EPS ฐาน ~$10.64 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS 2%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$180.66</div>
-          <div class="ret neg">−4.1%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$11.29</span></li>
             <li><span>P/E ออก</span><span>16x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$20.63</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>ผู้บริโภคชะลอใช้จ่าย Olive Garden trade-down หนัก ต้นทุนอาหาร/แรงงานบีบ margin</span></li>
           </ul>
         </div>
@@ -239,12 +267,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$261.37</div>
-          <div class="ret pos">+35.1%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$13.40</span></li>
             <li><span>P/E ออก</span><span>19.5x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$22.29</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>Same-restaurant sales โต 2.5–3.5%/ปี ตามไกด์ FY2027 LongHorn/Olive Garden ยังแข็งแรง</span></li>
           </ul>
         </div>
@@ -252,12 +280,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +13%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$337.75</div>
-          <div class="ret pos">+71.9%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$15.35</span></li>
             <li><span>P/E ออก</span><span>22x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$23.15</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Chuy's synergy เกินคาด + ขยายสาขาเร่งตัว + margin ดีขึ้นจาก scale/tech investment</span></li>
           </ul>
         </div>
@@ -310,8 +338,8 @@
         จะให้ downside protection ที่ดีกว่า ส่วนนักลงทุนที่ถือครองอยู่แล้วยังได้รับปันผลเติบโตสม่ำเสมอในระหว่างรอ
       </p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$213.74 <span style="font-size:12px;color:#cab9a8">($204.77–$228.96)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +1.8%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$224.17 (Buy/Moderate Buy)</div></div>
       </div>
       <div class="zone">

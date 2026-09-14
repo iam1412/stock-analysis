@@ -10,6 +10,19 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 152.87,
+  "values": {
+    "px": 132.58,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 142.64,
+    "fvHigh": 163.1,
+    "shares": 208000000,
+    "dps": 4.66,
+    "bvps": 59.24
+  },
   "theme": {
     "accent": "#2b5fd9",
     "accentDark": "#1a3f99",
@@ -41,18 +54,14 @@
     "min": 120,
     "max": 160,
     "grid": [130, 140, 150],
-    "fairLine": 152.87,
     "currency": "$",
     "highlight": [2, 8]
   },
   "gauge": {
     "min": 100,
     "max": 170,
-    "cur": 132.58,
-    "fair": 152.87,
     "fairLabelTop": true
-  },
-  "fv": 152.87
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +81,11 @@
     <div class="sub">Detroit Edison Electric • MichCon Gas • Grid Modernization • Clean Energy Transition • Michigan Regulated Monopoly</div>
     <div class="price-row">
       <div>
-        <div class="px">$132.58<small>(DTE)</small></div>
+        <div class="px">{{rd:px}}<small>(DTE)</small></div>
       </div>
-      <div class="chg">▼ −2.2% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569 (งวดล่าสุด ไตรมาส 1 ปี 2569 / Q1 2026)<br>
+        ราคา ณ {{rd:priceDate}} (งวดล่าสุด ไตรมาส 1 ปี 2569 / Q1 2026)<br>
         กรอบ 52 สัปดาห์ $126.23 – $155.75<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, Yahoo Finance Chart API
       </div>
@@ -90,7 +99,7 @@
       <div class="metric"><div class="k">Market Cap</div><div class="v">~$27.6 พัน ล.</div><div class="d">~208 ล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~22.0x</div><div class="d">EPS TTM $6.03 · Forward P/E ~19.1x (EPS consensus FY26 $7.71)</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~18–22x</div><div class="d">กรอบ utility sector ทั่วไป</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">~2.24x</div><div class="d">BVPS $59.24 (TTM)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~{{rd:pbv}}x</div><div class="d">BVPS $59.24 (TTM)</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ (TTM)</div><div class="v">~$1.26 พัน ล.</div><div class="d">Net margin ~8.0% (กดดันจาก energy trading loss Q1'69)</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$6.03</div><div class="d">StockAnalysis $6.08 · Yahoo $5.98 (cross-verify ≤2%)</div></div>
@@ -113,7 +122,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#2b5fd9"></i>ราคา DTE</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $152.87</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -138,8 +147,8 @@
         <div class="mval">$142.64</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $142.64 – $163.10</span></div>
-        <div class="r">$152.87</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         DDM ให้ค่าสูงกว่า ($163.10) เพราะสะท้อนความมั่นคงของกระแสเงินสด/ปันผลของ regulated utility ที่โตต่อเนื่อง
@@ -155,15 +164,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $132.58</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $152.87</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$107.01<br><small>MOS 30%</small></span>
-          <span>$122.30<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$152.87<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$160.63<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$163.10<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -179,19 +188,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+13%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาปัจจุบันใกล้เคียง Fair Value มาก มี Margin of Safety เพียง ~1.7% — ต่ำกว่าเกณฑ์ 20% มาก ไม่เหมาะสำหรับเปิดสถานะใหม่ในมุมมอง value investing เหมาะสำหรับผู้ถือเดิมที่เน้นรับปันผลต่อเนื่องมากกว่า</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$122.30</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$107.01</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $152.87</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="132.58" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -290,8 +299,8 @@
         ความเสี่ยงหลักคือ Michigan regulatory risk (เพิ่งประกาศ rate pause) และ payout ratio ที่สูงถึง 76.7% ซึ่งจำกัดพื้นที่เพิ่มปันผลในอนาคต
         นักลงทุนที่เน้น dividend income (yield ~3.1%) ยังถือได้ต่อเนื่อง แต่ value investor ที่ต้องการ MOS สูงควรรอจังหวะราคาย่อลงมาที่ $122–$107 (MOS 20–30%)</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$152.87 <span style="font-size:12px;color:#cab9a8">($142.64–$163.10)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +13%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$160.63 (Buy)</div></div>
       </div>
       <div class="zone">
