@@ -71,7 +71,7 @@ V2TOKENS จาก gate จริง: 0
 
 - `test/self-test.js` มีเคส mutate **ครบทั้ง 7 site** — แทน token ด้วย literal รูปที่ token นั้น render ออกมาจริง (ใบยัง render/ผ่าน check อื่นได้ปกติ ⇒ พิสูจน์ว่าเดิม "ผ่านเงียบ")
   แล้วยืนยัน 3 อย่างต่อ site: `missingTokenSites` ชี้เฉพาะ site นั้น · `checkHtml` ยิง `V2TOKENS` · ข้อความ error ระบุชื่อช่อง
-- ปิด check (`if (ctx.v2)` → `if (false)`) แล้วรัน `node test/self-test.js`: **ตก 7 เคส** (วัดตอนมี 6 site — 6 mutant + เคส "หน้าที่ render แล้ว + ไม่ส่ง `opts.source` → ต้องยิง") · หลังเพิ่ม site ที่ 7 จำนวนที่จะตกเป็น 8
+- ปิด check (`if (ctx.v2)` → `if (false)`) แล้วรัน `node test/self-test.js`: **ตก 8 เคส** (7 mutant + เคส "หน้าที่ render แล้ว + ไม่ส่ง `opts.source` → ต้องยิง") · เปิดคืน = **482/482** ผ่าน
 - ไม่ false-positive: fixture v2 ทั้ง 7 ใบ (`test/fixtures/*-v2.html`) และ **skeleton ทั้ง TH/US** มี token ครบทั้ง 7 site
 
 > **ข้อจำกัดที่ประกาศ** (รายละเอียดเต็ม → `docs/quality-gate.md` หัวข้อ "pseudo-error ที่อยู่นอกตาราง `CHECKS`"):
@@ -155,6 +155,7 @@ heal-derived: 0/908 ไฟล์มีค่าค้าง • แก้ 0 จ�
 | 2 | เอกสารทาง cron v2 (pass derived บน view · keep-map · tripwire → `patch-failed` · กระจก stock-meta · ถ้อยคำ R5) | `docs/price-refresh.md` หัวข้อ "ใบ v2" · `CLAUDE.md` §9 บรรทัดแรกของลิสต์ |
 | 3 | เทสตรึงกระจก `healDerived` ไม่ทับ `pe`/`dividendYield` | `test/update-prices-test.js` เคส **N1** |
 | 4 | วงเล็บทวนวันที่ที่ parser อ่านไม่ออก → **note** (เดิมเงียบสนิททาง v2) | `tools/update-prices.js` (`v2DateEdits` + `derivedPassV2.notes` → `patchReport.notes` → บรรทัด log ของ cron) · เทส **N2** |
+| 5 | **เทสรอยต่อ cron ทาง v2 ครบสาย** (final review ส่วน F · I1 — ปิดหลังรีวิวรอบสุดท้าย) — เดิมไม่มีเทสไหนเดิน `patchReport` บนใบที่ footer ≥ `PROSE_TOKEN_SINCE` **พร้อมกับ**ราคาขยับ ⇒ `proseTokensIfNew` เป็น no-op ในทุกเคสที่มีอยู่ | `test/update-prices-test.js` เคส **N3** (BBL ฿ · DDOG $ — ตรึง (ก) prose เป็น token ครบ (ข) pass derived เขียนการ์ดครบและ converge (ค) กระจกไม่ทับ pe/dividendYield (ง) `gateAfterPatch` ผ่าน (จ) รันซ้ำ = idempotent) + **N3(ข)** (literal ที่เท่ากับราคา**เก่า**ต้องไม่ถูกแตะ ⇒ ฐานเทียบของ healer คือค่าหลัง patch) |
 
 **ข้อ 4 อธิบายเพิ่ม:** `parenDateAfter` อ่าน `(11 กย. 2569 ตลาดปิด)` ไม่ออก (เดือน `กย.` ไม่อยู่ในคลังชื่อเดือน) ⇒ ทาง v2 เดิม
 **ไม่มี edit และ tripwire ก็ข้าม** ⇒ วันเก่าค้างในวงเล็บถาวรโดยไม่มีใครเห็น · v1 ฟ้องเป็น note มาตลอด ⇒ ทาง v2 ฟ้องเท่ากันแล้ว
@@ -257,10 +258,10 @@ patch-rejected / patch-failed: 0 ทั้งล็อก
 ## 6. `npm run verify` — 18/18
 
 ```
-update-prices-test 417 passed · dead-ticker-test 51 · tag-apply-test 57/57 · queue-test 330/330 · docs-test ผ่าน
+update-prices-test 443 passed · dead-ticker-test 51 · tag-apply-test 57/57 · queue-test 330/330 · docs-test ผ่าน
 prep-stock-test 115 · tags-test 68/68 · report-values-test 99/99 · v2-path-test 355/355
 check-reports 908/908 · error 0 · warning 247 · ช่องต่ำสุด 47/68 (BRK-B)
-self-test 479/479 · ohlc-test ผ่าน · ta-engine-test ผ่าน · build · build-test 160/160
+self-test 482/482 · ohlc-test ผ่าน · ta-engine-test ผ่าน · build · build-test 160/160
 engine-exec 908/908 · skeleton-test 51/51 · check-site error 0 warning 0
 ```
 
