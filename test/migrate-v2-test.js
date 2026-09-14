@@ -103,6 +103,18 @@ const cmp = (r, f) => r.compare.find((c) => c.field === f);
   ok(TOLERANCE.f51([1.99], [2]) === true, 'D4: ช่องว่างจริงที่มากสุดในคลัง (0.5%) → ผ่าน');
   ok(GAP_REL <= 0.012, 'D4: เพดานชั้นกว้างสุด ≤ 1.2%', String(GAP_REL));
   ok(TOLERANCE.f51([100], [102]) === false, 'D4: ห่าง 2% = ตก (เกณฑ์เดิม 2.5% จะปล่อยผ่าน)');
+  // ★ คู่ขนานของ f36 (หมวด 6 hint "จากจุดเข้า") / f50 (ป้าย gauge "ปัจจุบัน") — ระยะ 3 Task 4 ผ่อนสองช่องนี้
+  //   ด้วย `roundsTo` เกณฑ์เดียวกับ f51/f52 (ต่างกันแค่เป็น scalar ไม่ใช่ array) ⇒ ต้องมีเคสคุมทั้งสองด้าน
+  //   ไม่งั้นการถอด `|| roundsTo(...)` ออก (หรือขยายให้กว้างเกิน) จะไม่มีเทสตัวไหนฟ้อง
+  for (const f of ['f36', 'f50']) {
+    // ผ่าน: v1 คือ "การปัดเศษที่ถูกต้อง" ของค่าที่ v2 render จาก values (ตัวอย่างจริงในสำมะโน AMKR/MTI)
+    ok(TOLERANCE[f](52, 51.73) === true, `D4: ${f} $52 = ราคาที่ v1 ปัดเป็นจำนวนเต็มจาก 51.73 → ผ่าน`);
+    ok(TOLERANCE[f](19, 18.9) === true, `D4: ${f} ฿19 ปัดจาก ฿18.9 → ผ่าน`);
+    // ตก: ค่าต่างจริงเกินการปัดเศษ — ครึ่งหน่วยวัดตามความละเอียดของ **ค่าที่ v1 พิมพ์** ไม่ใช่ค่ากว้างคงที่
+    ok(TOLERANCE[f](52, 50.9) === false, `D4: ${f} $52 vs $50.9 = ค่าขยับจริง (เกินครึ่งหน่วยของจำนวนเต็ม) → ตก`);
+    ok(TOLERANCE[f](18.9, 19.4) === false, `D4: ${f} v1 พิมพ์ทศนิยม 1 ตำแหน่ง ⇒ ครึ่งหน่วย 0.05 เท่านั้น ห่าง 0.5 = ตก`);
+    ok(TOLERANCE[f](100, 102) === false, `D4: ${f} ห่าง 2% = ตก (เพดานเดียวกับ f51/f52)`);
+  }
 }
 // ── D5 · f34/f35 เทียบกับ RV.derive เมื่ออ่านหน้า v2 ไม่ได้ ────────────────────
 {
@@ -342,29 +354,63 @@ const cmp = (r, f) => r.compare.find((c) => c.field === f);
 
 // ══════════════════════════════════════════════════════════════════════════════
 // Fix wave 2 (part-c-final-review.md follow-up) — ยามโครงสร้าง %/ปี ของหมวด 6 (scnPyCountGuard)
-// ★ เคสจริงในคลัง (RS.html): v1 เขียนต่อปีด้วยคำ "ต่อปี" ("−54% / −23% ต่อปี") ไม่ใช่หน่วย "%/ปี" — scenarioPlan()
-//   ยังอ่านออกว่าเป็นต่อปี (SCN_PERYEAR_AFTER รู้จักทั้ง "/ปี" และ "ต่อปี") shapeOk จึงยังผ่านและ tokenise สำเร็จ
-//   แต่ v2 render คงที่เป็น "(X%/ปี)" เสมอ ⇒ หน่วย "%/ปี" ที่คนเห็นงอกขึ้นมาโดยไม่มีในต้นฉบับ — ทั้ง TOLERANCE.f34/f35
-//   (ค่าตัวเลขใกล้กันพอ ≤1.0 pp) และมาสก์ชั้น 2 (.ret ถูก stripVolatile blank ทิ้ง) มองไม่เห็นเรื่องนี้เลย
-//   ⇒ ถ้าไม่มียามนี้ ใบจะย้ายผ่านเงียบ ๆ (ทดสอบนี้จึง pin พฤติกรรม: ถอด/ทำให้ยามนี้หลวมลง = r.ok กลับเป็น true)
+// ★ ยามนี้ปฏิเสธเมื่อ **จำนวนหน่วยต่อปีที่คนเห็น** ในหมวด 6 ไม่เท่าเดิม — ทั้ง TOLERANCE.f34/f35 (ค่าตัวเลขใกล้กันพอ
+//   ≤1.0 pp) และมาสก์ชั้น 2 (.ret ถูก stripVolatile blank ทิ้ง) มองไม่เห็นเรื่องนี้เลย ⇒ ถ้าไม่มียามนี้ ใบที่ v2 จะ
+//   "กลืน" ตัวเลขต่อปีทั้งจุดจะย้ายผ่านเงียบ ๆ (ทดสอบนี้จึง pin พฤติกรรม: ถอด/ทำให้ยามนี้หลวมลง = r.ok กลับเป็น true)
+// ★ ระยะ 3 Task 3 — mutation ของบล็อกนี้เปลี่ยนจาก "คำ ต่อปี แทนหน่วย %/ปี" (ซึ่งพิสูจน์แล้วว่าเป็น false positive
+//   ล้วน · ดูบล็อก T3 ด้านล่าง) มาเป็นเคสจริงของคลังที่ยามต้องจับ: **ACN.html** — ช่อง .ret เขียนคำอธิบายปันผล
+//   ต่อปีไว้ในวงเล็บ ("รวม ~ −14% (+ปันผล ~5%/ปี)") ซึ่ง scenarioPlan ข้าม (SCN_DIV_YIELD_BEFORE: เป็นอัตราปันผล
+//   ไม่ใช่ CAGR ของฉาก) แต่ v2 render ช่องนี้เป็น "−14%" เปล่า ⇒ หน่วยต่อปีหายจริง 1 จุดพร้อมคำอธิบาย
 // ══════════════════════════════════════════════════════════════════════════════
 {
+  // ทั้ง 3 คอลัมน์ไม่มี %/ปี ของฉากแล้ว (shapeOk = "ไม่มี py ครบทุกช่อง") — เหลือหน่วยต่อปีเฉพาะวงเล็บปันผลของ base
   const mutated = BBL
-    .replace('รวม ~ −9% (≈ −3.1%/ปี)', 'รวม ~ −9% / −3% ต่อปี')
-    .replace('รวม ~ +29% (≈ +8.9%/ปี)', 'รวม ~ +29% / +9% ต่อปี')
-    .replace('รวม ~ +59% (≈ +16.7%/ปี)', 'รวม ~ +59% / +17% ต่อปี');
-  ok(mutated !== BBL, 'guard2: mutation (คำ "ต่อปี" แทนหน่วย "%/ปี" ทั้ง 3 คอลัมน์) ไม่เป็น no-op');
+    .replace('รวม ~ −9% (≈ −3.1%/ปี)', 'รวม ~ −9% (ก่อนปันผล)')
+    .replace('รวม ~ +29% (≈ +8.9%/ปี)', 'รวม ~ +29% (+ปันผล ~5%/ปี)')
+    .replace('รวม ~ +59% (≈ +16.7%/ปี)', 'รวม ~ +59% (+ปันผล)');
+  ok(mutated !== BBL, 'guard2: mutation (รูปช่อง .ret แบบ ACN — คำอธิบายปันผลต่อปีในวงเล็บ) ไม่เป็น no-op');
   const r = mg(mutated);
-  // BBL fixture มีบรรทัดสมมติฐาน "EPS N%/ปี" ต่อคอลัมน์ (literal เสมอ ไม่ถูกแตะ) อยู่แล้ว 3 จุด ⇒ หลัง mutation
-  // หมวด 6 ของ v1 เหลือหน่วย %/ปี = 3 (แค่ EPS) แต่ v2 render เพิ่ม .ret อีก 3 = 6 — ไม่ใช่ 0→3 แบบ RS เป๊ะ ๆ
-  // (RS ไม่มีบรรทัด EPS สมมติฐาน) แต่กลไกเดียวกัน: จำนวนขยับเพราะ .ret เปลี่ยนหน่วย ไม่ใช่เพราะ EPS ซึ่งคงเดิม
-  ok(!r.ok, 'guard2: ใบที่ v2 จะทำให้จำนวนหน่วย %/ปี ในหมวด 6 ขยับ ต้องไม่ย้าย — ปฏิเสธทั้งใบ', r.ok ? 'ย้ายผ่าน (ยามหาย/หลวมไป)' : r.reason);
-  ok(!r.ok && /จำนวนช่อง %\/ปี ไม่เท่าเดิม \(v1 3 → v2 6\)/.test(r.reason || ''), 'guard2: เหตุผลระบุจำนวนก่อน/หลังชัดเจน (v1 3 → v2 6)', r.reason);
+  // BBL fixture มีบรรทัดสมมติฐาน "EPS N%/ปี" ต่อคอลัมน์ (literal เสมอ ไม่ถูกแตะ) อยู่แล้ว 3 จุด ⇒ v1 = 3 + วงเล็บ
+  // ปันผลของ base อีก 1 = 4 · v2 render .ret เป็นตัวเลขรวมเปล่า ⇒ เหลือ 3 (รูปเดียวกับ ACN เป๊ะ: v1 4 → v2 3)
+  ok(!r.ok, 'guard2: ใบที่ v2 จะทำให้จำนวนหน่วยต่อปีในหมวด 6 ขยับ ต้องไม่ย้าย — ปฏิเสธทั้งใบ', r.ok ? 'ย้ายผ่าน (ยามหาย/หลวมไป)' : r.reason);
+  ok(!r.ok && /จำนวนช่อง %\/ปี ไม่เท่าเดิม \(v1 4 → v2 3\)/.test(r.reason || ''), 'guard2: เหตุผลระบุจำนวนก่อน/หลังชัดเจน (v1 4 → v2 3)', r.reason);
   ok(!r.out, 'guard2: ไม่มี out เมื่อถูกปฏิเสธ — ทั้งใบไม่ย้าย ไม่ใช่คง literal บางส่วน');
   ok(!(r.notes || []).some((x) => /หมวด 6 คง literal/.test(x)), 'guard2: ไม่ถูก retry-คง-literal ดูดกลืนไปเงียบ ๆ — ต้องเป็น residue ตรง ๆ ให้คนตรวจตามที่ตกลงกัน', (r.notes || []).join(' | '));
-  // หมายเหตุ: เคสต้นแบบที่พบปัญหานี้จริงคือ reports/RS.html (v1 เขียน "ต่อปี" ล้วน ไม่มี "%/ปี" เลย → v1 0 → v2 3
-  // จุด) — ยืนยันด้วยมือระหว่างพัฒนา (ดู part-c-fixwave2-report.md) แต่ห้ามอ่าน reports/ จากเทสนี้ (fixture-lint.js
-  // บังคับ) จึงจำลองกลไกเดียวกันผ่าน BBL fixture ข้างบนแทน
+  // หมายเหตุ: ห้ามอ่าน reports/ จากเทสนี้ (fixture-lint.js บังคับ) จึงจำลองรูปของ ACN ผ่าน BBL fixture ข้างบนแทน
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// ระยะ 3 Task 3 — ยามนับหน่วยต่อปีต้องนับ "หน่วย" ไม่ใช่ "การสะกดหน่วย" (scnPyCountGuard/pyUnitCount/pyCell)
+// ★ ของจริงที่ตกยามผิด 4 ใบ (คลัง 15 ก.ย. 69): RS "−54% / −23% ต่อปี" (v1 0 → v2 3) · JMT "-7.6%ต่อปี" (4 → 7) ·
+//   SCGD "+0.3% ต่อปี" (3 → 6) · SNNP "~−8.3%ต่อปี" (3 → 6) — ทุกใบจำนวน "จุดต่อปีที่คนเห็น" เท่าเดิมเป๊ะ
+//   ต่างแค่ผู้เขียนสะกดหน่วยคนละรูป แล้ว v2 render หน่วยเดียวเสมอ ⇒ ยามเดิม (นับเฉพาะสตริง "%/ปี") เห็นเป็น
+//   "งอก/หาย" ทั้งที่ไม่มีอะไรงอกหาย · เจ้าของนิยาม "ต่อปี" ตัวจริงคือ DV.SCN_PERYEAR_AFTER (ตัวที่ scenarioPlan ใช้)
+// ══════════════════════════════════════════════════════════════════════════════
+{
+  const { pyUnitCount, pyCell } = require('../tools/migrate-v2.js');
+  const DVx = require('../tools/derived-values.js');
+  // ── (ก) นับหน่วย: ทุกรูปที่เจ้าของรับว่า "ต่อปี" ต้องนับเท่ากันหมด · ช่วงเวลา ("/ 3 ปี") ไม่ใช่ต่อปี ──
+  for (const u of ['%/ปี', '% ต่อปี', '%ต่อปี', '% / ปี', '%/yr', '% p.a.'])
+    ok(pyUnitCount('EPS +10' + u) === 1, `T3: นับหน่วยต่อปีรูป "${u}" ได้ (เจ้าของ DV.SCN_PERYEAR_AFTER รับรูปนี้)`, String(pyUnitCount('EPS +10' + u)));
+  ok(pyUnitCount('รวม ~ +59% / 3 ปี · โต 10% ในปี 2570 · กำไร 8% รอบปี') === 0, 'T3: "% / 3 ปี" / "ในปี" / "รอบปี" ไม่ใช่หน่วยต่อปี — ไม่นับ', String(pyUnitCount('รวม ~ +59% / 3 ปี · โต 10% ในปี 2570 · กำไร 8% รอบปี')));
+  ok(pyUnitCount('−54% / −23% ต่อปี') === pyUnitCount('−54% (−23%/ปี)'), 'T3: การสะกดหน่วยคนละรูปต้องนับได้เท่ากัน (รูป RS v1 ↔ รูป v2 render)');
+  ok(DVx.SCN_PERYEAR_AFTER instanceof RegExp && DVx.SCN_PERYEAR_AFTER.test('/ปี') && DVx.SCN_PERYEAR_AFTER.test('ต่อปี'), 'T3: เจ้าของนิยามต่อปี (DV.SCN_PERYEAR_AFTER) ถูก export ให้ migrator ต่อสายตรง ไม่ใช่สำเนา');
+  // ── (ข) ตัวเปิดเผย pyCell ต้องอ่านรูป "ต่อปี" ออกด้วย ไม่งั้นสำมะโนพิมพ์ before=null (แปลว่า "ไม่มี %/ปี จริง ๆ") ผิด ──
+  ok(pyCell('−23% ต่อปี') && pyCell('−23% ต่อปี').num === -23 && pyCell('−23% ต่อปี').dec === 0, 'T3: pyCell อ่าน "−23% ต่อปี" ออก (เดิมคืน null ⇒ สำมะโนรายงานเป็น value change ปลอม)', JSON.stringify(pyCell('−23% ต่อปี')));
+  ok(pyCell('+15.2%ต่อปี') && pyCell('+15.2%ต่อปี').dec === 1, 'T3: pyCell เก็บทศนิยม "ที่โชว์" ของรูปติดกัน (+15.2%ต่อปี) — JMT', JSON.stringify(pyCell('+15.2%ต่อปี')));
+  ok(pyCell('รวม ~ +23% (+ปันผล)') === null, 'T3: ช่องที่ไม่มีหน่วยต่อปีเลย ยังคืน null (ACN คอลัมน์ bull)');
+  // ── (ค) ใบที่ v1 สะกด "ต่อปี" ทั้ง 3 คอลัมน์ (รูป RS/SCGD) ต้องย้ายได้ และผลต่างที่เปิดเผยต้องเป็น "รูป" ไม่ใช่ "ค่า" ──
+  {
+    const mutated = BBL
+      .replace('รวม ~ −9% (≈ −3.1%/ปี)', 'รวม ~ −9% / −3.1% ต่อปี')
+      .replace('รวม ~ +29% (≈ +8.9%/ปี)', 'รวม ~ +29% / +8.9% ต่อปี')
+      .replace('รวม ~ +59% (≈ +16.7%/ปี)', 'รวม ~ +59% / +16.7% ต่อปี');
+    ok(mutated !== BBL, 'T3: mutation (สะกด "ต่อปี" ทั้ง 3 คอลัมน์ · ตัวเลขเท่าเดิมทุกตัว) ไม่เป็น no-op');
+    const r = mg(mutated);
+    ok(r.ok, 'T3: ใบที่ต่างแค่การสะกดหน่วย ต้องย้ายได้ (เคส RS/JMT/SCGD/SNNP — เดิมถูกยามปฏิเสธผิด)', r.reason);
+    ok(r.ok && !(r.notes || []).some((x) => /หมวด 6 คง literal/.test(x)), 'T3: ย้ายหมวด 6 จริง ไม่ใช่รอดเพราะถอยไปคง literal', (r.notes || []).join(' | '));
+    ok(r.ok && (r.pyChanges || []).length > 0 && (r.pyChanges || []).every((d) => d.kind === 'form'), 'T3: ผลต่าง %/ปี ที่เปิดเผยเป็น form ล้วน (ตัวเลขเท่าเดิม ต่างแค่รูป/การสะกด)', JSON.stringify(r.pyChanges));
+  }
 }
 
 // ══════════════════════════════════════════════════════════════════════════════
@@ -867,6 +913,180 @@ const cmp = (r, f) => r.compare.find((c) => c.field === f);
     ok(/\| psCard \| 2 \|/.test(md), 'A10: site literal นับเฉพาะใบที่ย้าย');
     ok(/\| MXL \| site summary match ≠ 1 \(0\) \|/.test(md), 'A10: ตารางเหตุผลเต็มรายใบ');
     ok(MG.renderCensusMd([e('AAPL', true)]) === MG.renderCensusMd([e('AAPL', true)]).replace(/$^/, ''), 'A10: render ซ้ำได้ผลเดิม (deterministic ยกเว้นบรรทัดเวลา)');
+  }
+  // ── ระยะ 3 Task 2 · ตัวค้นหา site ต้อง match ครั้งเดียวพอดีในรูปที่คลังใช้จริง ──────────────────
+  //   ทุกเคสเป็นสตริงในบรรทัด (fixture-lint ห้ามอ่าน reports/) ที่ **คัดลอกรูปจากใบจริง** ที่ census ฟ้อง
+  //   ยิงผ่าน MG.siteHits ซึ่งเดินทาง glob() เดียวกับ Tok.sub ⇒ เทสล้ม = migrator ล้มจริง ไม่ใช่สำเนาตรรกะ
+  {
+    const hits = (h, s) => MG.siteHits(h, s);
+    const one = (h, s, label, extra) => {
+      const m = hits(h, s);
+      ok(m.length === 1, `T2: ${label} — match 1 ครั้ง`, `ได้ ${m.length}`);
+      if (m.length === 1 && extra) extra(m[0]);
+    };
+    // (ก) legend — คำขยายฐานมูลค่าคั่นระหว่าง "มูลค่าเหมาะสม" กับตัวเลข (FANG/MPC/MU: 0 match)
+    const leg = (inner) => `<div class="legend">\n  <span><i style="background:#1a73e8"></i>ราคา X</span>\n  <span><i style="background:#1e8e3e"></i>${inner}</span>\n  <span><i style="background:#ea4335"></i>จุดสำคัญ</span>\n</div>`;
+    one(leg('มูลค่าเหมาะสม mid-cycle $172'), 'legend', 'legend คำขยายไม่มีวงเล็บ (รูป FANG)', (m) => {
+      ok(m[1].endsWith('มูลค่าเหมาะสม mid-cycle ') && m[0].slice(m[1].length) === '$172</span>', 'T2: legend — คำขยายอยู่ในกลุ่ม 1 · สกุลเงิน+เลขอยู่นอก', JSON.stringify(m[1].slice(-30)));
+    });
+    one(leg('มูลค่าเหมาะสม (normalized) $193'), 'legend', 'legend คำขยายในวงเล็บ (รูป MPC/MU)');
+    one(leg('มูลค่าเหมาะสม $150'), 'legend', 'legend รูปเดิมไม่มีคำขยาย (ต้องไม่พังเพราะการผ่อนรูป)', (m) => {
+      ok(m[1].endsWith('มูลค่าเหมาะสม ') && m[0].slice(m[1].length) === '$150</span>', 'T2: legend — รูปเดิม กลุ่ม 1 ยังจบที่คำว่า "มูลค่าเหมาะสม"', JSON.stringify(m[1].slice(-30)));
+    });
+    // ★ สกุลเงินสองตัวอักษร: `C$` ต้องตกเป็นของ ${CUR} ทั้งก้อน ไม่งั้น token render ออกมาเป็น "C C$172"
+    one(leg('มูลค่าเหมาะสม C$172'), 'legend', 'legend สกุล CAD (C$) ไม่ถูกกลืนเข้ากลุ่ม 1', (m) => {
+      ok(m[0].slice(m[1].length) === 'C$172</span>', 'T2: legend — "C$" อยู่นอกกลุ่ม 1 ครบทั้งสองตัวอักษร', JSON.stringify(m[0].slice(m[1].length)));
+    });
+    // ★ คำขยายที่มีตัวเลขอยู่ข้างใน — สมอ `</span>` ต้องบังคับให้ backtrack ไปคว้าเลขตัวจริง ไม่ใช่ "15"
+    one(leg('มูลค่าเหมาะสม (P/E 15x) $172'), 'legend', 'legend คำขยายมีตัวเลข — ต้องได้เลขตัวจริง', (m) => {
+      ok(m[0].slice(m[1].length) === '$172</span>', 'T2: legend — คว้า 172 ไม่ใช่ 15 ในคำขยาย', JSON.stringify(m[0].slice(m[1].length)));
+    });
+    ok(hits(leg('มูลค่าเหมาะสม จากสมมติฐานที่ยาวมากเกินเพดานยี่สิบสี่ตัวอักษรแน่นอน $172'), 'legend').length === 0,
+      'T2: legend — คำขยายยาวเกินเพดานไม่ match (เป็น residue ไม่ใช่เดาเอง)');
+    // (ก2) mFair — ผลลูกโซ่ของ (ก): ป้าย gauge คลาสเดียวกัน แต่ **ไม่มีสมอขวา** ⇒ ต้องคู่กับ lookahead `</div>`
+    const mf = (inner) => `<div class="mk" id="mFair"><div class="lab" style="background:#137333">${inner}</div></div>`;
+    one(mf('เหมาะสม (norm.) $193'), 'mFair', 'mFair คำขยายในวงเล็บที่ลงท้ายด้วยจุด (รูป MPC)', (m) => {
+      ok(m[0].slice(m[1].length) === '$193', 'T2: mFair — ไม่คว้าจุดใน "(norm.)" มาเป็นตัวเลข', JSON.stringify(m[0].slice(m[1].length)));
+    });
+    one(mf('เหมาะสม $905'), 'mFair', 'mFair รูปเดิมไม่มีคำขยาย');
+    ok(hits(mf('mid-cycle FV $172'), 'mFair').length === 0,
+      'T2: mFair — ป้ายที่ไม่มีคำว่า "เหมาะสม" เลย (รูป FANG) ยังไม่ match = residue โดยตั้งใจ');
+    // (ข) vcellFv — หัวข้อมีคำขยาย (AEM/BTG: 0 match) · ต้อง match ทั้งรูป range และรูปเดี่ยว
+    const vcAem = '<div class="vgrid">\n  <div class="vcell"><div class="k">มูลค่าเหมาะสม (ฉาก Base)</div><div class="v">$128.52 <span style="font-size:12px;color:#cab9a8">($120.62–$136.41)</span></div></div>\n  <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −56%</div></div>\n  <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$214.98 (Buy · 14 ราย)</div></div>\n</div>';
+    one(vcAem, 'vcellFv', 'vcellFv หัวข้อมีคำขยาย (รูป AEM)');
+    one(vcAem, 'vcellFvRange', 'vcellFvRange หัวข้อมีคำขยาย — rangeOk() อ่านรูปนี้');
+    one('<div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿18.91</div></div>', 'vcellFv', 'vcellFv รูปเดิมไม่มีคำขยาย');
+    // (ค) vcellTgt — ต้องไม่ไปโดนการ์ด .metric หัวข้อเดียวกันในหมวด 1 (BABA/STX/VRT: 2 match)
+    const tgtBoth = '<div class="metric"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v">$189</div><div class="d">สูงสุด $225</div></div>\n' + vcAem;
+    one(tgtBoth, 'vcellTgt', 'vcellTgt มีการ์ด .metric หัวข้อเดียวกันอยู่ด้วย (รูป BABA/STX/VRT)', (m) => {
+      ok(m[0].slice(m[1].length) === '$214.98', 'T2: vcellTgt — ได้ค่าของ vcell ไม่ใช่ของการ์ด .metric', JSON.stringify(m[0].slice(m[1].length)));
+    });
+    ok(hits('<div class="metric"><div class="k">เป้านักวิเคราะห์เฉลี่ย</div><div class="v">$355</div></div>', 'vcellTgt').length === 0,
+      'T2: vcellTgt — การ์ด .metric เดี่ยว ๆ ไม่ใช่ site นี้ (tokeniseTgtCard ดูแลแยก)');
+    // (ง) summary — ช่องสรุปที่มีคลาสสีมาด้วย (MXL `class="v pos"`: 0 match) · เจ้าของคือ DV.SUMMARY_RE
+    one('<div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v pos">ถูก ~2.3%</div></div>', 'summary', 'summary ช่องมีคลาสสี (รูป MXL)', (m) => {
+      ok(m[2] === 'ถูก ~2.3%' && m[1].includes('class="v pos"'), 'T2: summary — เนื้อในอยู่กลุ่ม 2 · คลาสคงอยู่ในกลุ่ม 1', JSON.stringify(m[1]));
+    });
+    one('<div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −56%</div></div>', 'summary', 'summary รูปคลัง v2 (class="v" + style)');
+    ok(require('../tools/derived-values.js').readSummaryCell('<div class="k">ส่วนต่างจากราคา</div><div class="v pos">ถูก ~2.3%</div>').shown === 2.3,
+      'T2: summary — readSummaryCell (f17/f18 ห่ออยู่) อ่านช่องที่มีคลาสสีได้แล้ว');
+  }
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// T5 (ระยะ 3 Task 5) — `v2Stability` / `--v2-grid`: เสถียรภาพของ **v2 เอง** บนกริดเดิม
+// ★ เกณฑ์ไม่ใช่ "รันซ้ำแล้วเหมือนเดิม" (deterministic ⇒ ไร้ความหมาย) แต่เป็นสมบัติของผลลัพธ์ข้ามราคา 61 จุด:
+//   (ก) gate error 0 (ข) ไม่ throw/patch-rejected (ค) MOS สวนทางราคาเสมอ — เทสนี้ยิงทั้งสามข้อให้ "ตกได้จริง"
+// ══════════════════════════════════════════════════════════════════════════════
+{
+  const MG = require('../tools/migrate-v2.js');
+  const envBefore = process.env.STALE_TODAY;
+  // ── (ค) ตัวตัดสินทิศทาง = ฟังก์ชันบริสุทธิ์ ⇒ ยิงตรงได้ทั้งสองด้าน ──
+  const dv = MG.mosDirViolations;
+  ok(dv([{ k: 0.9, price: 90, mos: 10.7 }, { k: 1, price: 100, mos: 0 }, { k: 1.1, price: 110, mos: -9.2 }]).length === 0,
+    'T5: ราคาขึ้น → MOS ลด = ไม่มีการละเมิด');
+  ok(dv([{ k: 0.9, price: 90, mos: 3 }, { k: 1, price: 100, mos: 3 }]).length === 0, 'T5: MOS เท่าเดิม (ปัดเศษ) = ยอมได้');
+  ok(dv([{ k: 0.9, price: 90, mos: 3 }, { k: 1, price: 100, mos: 3.1 }]).length === 1, 'T5: MOS ขึ้นตามราคา = ละเมิด 1 ช่วง (ฐานพลิก)');
+  ok(dv([{ k: 1, price: 100, mos: null }]).length === 1, 'T5: อ่าน MOS ไม่ได้ = ละเมิด (ไม่ใช่ข้ามเงียบ)');
+  ok(dv([{ k: 1, price: 100, mos: 5 }, { k: 1.005, price: 100, mos: 6 }]).length === 0, 'T5: ราคาชนกันหลังปัด 2 ตำแหน่ง = ไม่ตัดสินช่วงนั้น');
+  // ── คู่สะอาด: fixture v2 ที่ระยะ 2 แช่แข็งไว้ ต้องเสถียรทุกข้อ **บนกริดตั้งต้น** (ไม่ส่ง opts — กริดเดียวกับ cron differential) ──
+  {
+    const s = MG.v2Stability(FX.BBL_V2(), 'BBL.html');
+    ok(s.ok && s.patched === s.points && s.points === MG.CRON_GRID.length && s.points === 61,
+      'T5: fixture v2 สะอาด → เสถียรครบ 61 จุดของกริดตั้งต้น', JSON.stringify({ points: s.points, gateErr: s.gateErr, dirViol: s.dirViol, throws: s.throws }));
+    ok(s.gateErr.length === 0 && s.dirViol.length === 0 && s.throws.length === 0, 'T5: ไม่มี gate error / ผิดทิศ / throw');
+    ok(s.mosRange && s.mosRange[0] < s.mosRange[1], 'T5: MOS ขยับจริงตลอดกริด (ถ้านิ่งสนิท = ราคาไม่ได้ถูก patch)', JSON.stringify(s.mosRange));
+  }
+  // ── (ก) gate error ต้องทำให้ตก: ใบ v2 ที่มี literal ในช่องที่ต้องเป็น token → V2TOKENS ──
+  {
+    const bad = FX.BBL_V2().replace('<div class="px">{{rd:px}}', '<div class="px">฿999.00');
+    ok(bad !== FX.BBL_V2(), 'T5: mutation ไม่เป็น no-op (มี site .px ให้ทำลาย)');
+    const s = MG.v2Stability(bad, 'BBL.html', { grid: [1.0] });
+    ok(!s.ok && s.gateErr.length === 1 && /V2TOKENS/.test(s.gateErr[0]), 'T5: gate error หลัง patch = ไม่เสถียร (ตกข้อ ก)', JSON.stringify(s.gateErr));
+  }
+  // ── setup: ส่ง v1 เข้ามา = ตัดสินไม่ได้ ต้องตก ไม่ใช่ "ผ่านเพราะไม่มีอะไรให้ตรวจ" ──
+  {
+    const s = MG.v2Stability(FX.BBL(), 'BBL.html', { grid: [1.0] });
+    ok(!s.ok && /values\.px/.test(s.setup || ''), 'T5: อินพุตไม่ใช่ v2 → ok:false พร้อมเหตุผล setup', JSON.stringify({ ok: s.ok, setup: s.setup }));
+  }
+  ok(process.env.STALE_TODAY === envBefore, 'T5: v2Stability คืน STALE_TODAY ค่าเดิมหลังรัน', String(process.env.STALE_TODAY));
+  // ── ยามของ `--v2-baseline` ใน planWrite: ผ่อนเกณฑ์ได้เฉพาะ side==='v1' + v2 เสถียร เท่านั้น ──
+  {
+    const R = { ok: true, out: '<html>v2</html>', sites: { tokenised: [], literal: [] }, notes: [], pyChanges: [] };
+    const cdF = (side) => ({ ok: false, kinds: ['gate-warn:W22'], k: 0.86, side, sideWhy: `×0.855→×0.86: gate-warn:W22=${side}`,
+      detail: ['…'], formOnly: [], formParts: [], valueDiff: [], retClass: 0, relax: {}, points: 61, compared: 61 });
+    const stabOk = { ok: true, points: 61, patched: 61, mosRange: [-41.8, -4.8], warnIds: [] };
+    const stabBad = { ok: false, points: 61, patched: 61, mosRange: [-41.8, -4.8], warnIds: [], dirViol: ['ผิดทิศ'] };
+    const p0 = MG.planWrite('PTG', R, cdF('v1'));
+    ok(p0.write === false && p0.entry.reason === 'cron-diff v1-unstable gate-warn:W22', 'T5: ไม่สั่ง --v2-baseline = residue ตามเดิม', String(p0.entry.reason));
+    const p1 = MG.planWrite('PTG', R, cdF('v1'), { v2Baseline: true, stab: stabOk });
+    ok(p1.write === true && p1.entry.ok === true && p1.entry.reason === null, 'T5: --v2-baseline + side v1 + v2 เสถียร → เขียนได้', JSON.stringify(p1.entry.reason));
+    ok(p1.entry.v2Baseline && p1.entry.v2Baseline.was === 'cron-diff v1-unstable gate-warn:W22' && p1.entry.v2Baseline.patched === 61
+      && p1.entry.notes.some((n) => /v2-baseline \(ระยะ 3 Task 5\)/.test(n)), 'T5: บันทึกเหตุผลเดิม + หลักฐานเสถียรภาพลง census (ไม่ผ่อนเงียบ)', JSON.stringify(p1.entry.v2Baseline));
+    for (const side of ['v2', 'unknown']) {
+      const p = MG.planWrite('X', R, cdF(side), { v2Baseline: true, stab: stabOk });
+      ok(p.write === false && /^cron-diff /.test(p.entry.reason || ''), `T5: side '${side}' ไม่เข้าข่าย v2-baseline (ยังเป็น residue)`, String(p.entry.reason));
+    }
+    ok(MG.planWrite('X', R, cdF('v1'), { v2Baseline: true, stab: stabBad }).write === false, 'T5: v2 เองไม่เสถียร → ไม่เขียน แม้ side v1');
+    ok(MG.planWrite('X', R, cdF('v1'), { v2Baseline: true, stab: null }).write === false, 'T5: ไม่มีผล v2Stability → ไม่เขียน (ไม่ใช่ผ่านเพราะยังไม่ได้วัด)');
+  }
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// ระยะ 3 Task 6 — สำมะโนต้องไม่โกหกสองทาง (F1 ของรีวิว Task 5) + แถว residue ที่ค้างหลังรอบที่ไม่ได้ --census
+// ══════════════════════════════════════════════════════════════════════════════
+{
+  const MG = require('../tools/migrate-v2.js');
+  const mkCd = (extra) => Object.assign({ ok: false, kinds: ['gate-warn:W22'], k: 0.86, side: 'v1', sideWhy: '×0.855→×0.86: gate-warn:W22=v1',
+    detail: ['…'], formOnly: [], formParts: ['ret'], valueDiff: [], retClass: 0, relax: { static: true }, points: 61, compared: 61 }, extra || {});
+  const pair = [{ part: 'page', label: 'ราคาเป้า', v1: '8.02', v2: '8.01', relPct: 0.12 }];
+
+  // ── (ก) F1 repro: entry ที่เขียนด้วยเกณฑ์ v2-baseline ต้องไม่อยู่ใน fail และ valueDiff ต้องไม่หาย ──
+  {
+    const e = { sym: 'THCOM', ok: true, reason: null, tokenised: [], literal: [], notes: [], pyChanges: [],
+      v2Baseline: { was: 'cron-diff v1-unstable gate-warn:W22', sideWhy: 'x', points: 61, patched: 61, mosRange: [-1.4, 25.1], warnIds: [] },
+      cronDiff: mkCd({ valueDiff: pair }) };
+    const s = MG.summarizeCronDiff([e]);
+    ok(s.fail.length === 0 && s.failDetail.length === 0 && Object.keys(s.failByKind).length === 0, 'T6: v2-baseline ไม่ใช่ fail ของสำมะโน', JSON.stringify(s.fail));
+    ok(s.baselined.join() === 'THCOM' && s.baselineDetail[0].how === 'v2-baseline' && s.baselineDetail[0].was === 'cron-diff v1-unstable gate-warn:W22',
+      'T6: แยก bucket "ยอมรับทั้งที่ตัวเทียบไม่ผ่าน" พร้อมเหตุผลเดิม', JSON.stringify(s.baselineDetail));
+    ok(s.valueDiff.length === 1 && s.valueDiff[0].sym === 'THCOM' && s.valueDiffMaxPct === 0.12,
+      'T6: ค่าต่างที่คนเห็น (฿8.02→฿8.01) ยังอยู่ในตารางเปิดเผย ไม่ตกจาก branch c.ok', JSON.stringify(s.valueDiff));
+    ok(s.sec6Form.length === 1 && s.formOnly.join() === 'THCOM' && s.relaxFiles.static.join() === 'THCOM',
+      'T6: รูป/ข้อยกเว้นของใบที่เขียนแล้วก็ถูกเปิดเผย', JSON.stringify({ f: s.formOnly, r: s.relaxFiles.static }));
+  }
+  // ── (ข) residue จริง (ok:false ไม่มีป้าย v2Baseline) ยังต้องเป็น fail เหมือนเดิม — ยามไม่ถูกผ่อนเป็นวงกว้าง ──
+  {
+    const e = { sym: 'PTG', ok: false, reason: 'cron-diff v1-unstable gate-warn:W22', tokenised: [], literal: [], notes: [], pyChanges: [], cronDiff: mkCd({ valueDiff: pair }) };
+    const s = MG.summarizeCronDiff([e]);
+    ok(s.fail.join() === 'PTG' && s.baselined.length === 0 && s.valueDiff.length === 0 && s.failByKind['gate-warn:W22'].join() === 'PTG',
+      'T6: residue จริงยังเป็น fail (และไม่เอา valueDiff ของใบที่ไม่ได้เขียนมาปน)', JSON.stringify({ f: s.fail, b: s.baselined }));
+    ok(MG.cronAccepted(e) === false && MG.cronAccepted({ ok: true, cronDiff: mkCd() }) === true, 'T6: cronAccepted ยึด entry.ok ไม่ใช่ cronDiff.ok');
+  }
+  // ── (ค) mergeCensus: แถว residue เดิม + ไฟล์บนดิสก์เป็น v2 แล้ว ⇒ พลิกเป็น "ย้ายแล้ว" ไม่ค้างเป็น v1 ──
+  {
+    const skipped = { sym: 'MPC', ok: false, reason: MG.ALREADY_V2, tokenised: [], literal: [], notes: [], pyChanges: [] };
+    const oldMigFail = { sym: 'MPC', ok: false, reason: 'site legend match ≠ 1 (0)', tokenised: ['px', 'chg'], literal: ['legend'], notes: ['literal legend: x'], pyChanges: [{ col: 'bear', kind: 'form' }] };
+    const c1 = MG.mergeCensus(null, 1, [oldMigFail], '2026-09-14T00:00:00.000Z');
+    const c2 = MG.mergeCensus(c1, 2, [skipped], '2026-09-15T00:00:00.000Z');
+    ok(c2.bySym.MPC.ok === true && c2.bySym.MPC.reason === null && c2.bySym.MPC.migratedLater.was === 'site legend match ≠ 1 (0)',
+      'T6: แถว residue ที่ไฟล์กลายเป็น v2 แล้ว = ย้ายแล้ว (สำมะโนนับ v1 จากไฟล์จริง)', JSON.stringify(c2.bySym.MPC.migratedLater));
+    ok(c2.bySym.MPC.literal.length === 0 && c2.bySym.MPC.tokenised.length === 0 && c2.bySym.MPC.pyChanges.length === 0
+      && c2.bySym.MPC.migratedLater.keptDisclosure === false && c2.bySym.MPC.notes.some((n) => /ย้ายเป็น v2 ภายหลัง/.test(n)),
+      'T6: ตกที่ชั้น migrator → ล้างการเปิดเผยของความพยายามเดิม (migrator คนละรุ่น) เหลือหมายเหตุ', JSON.stringify(c2.bySym.MPC.notes));
+    const oldCronFail = Object.assign({}, oldMigFail, { sym: 'THCOM', reason: 'cron-diff v1-unstable gate-warn:W22', cronDiff: mkCd({ valueDiff: pair }) });
+    const c3 = MG.mergeCensus(c2, 2, [oldCronFail], '2026-09-15T00:00:00.000Z');
+    const c4 = MG.mergeCensus(c3, 3, [Object.assign({}, skipped, { sym: 'THCOM' })], '2026-09-15T01:00:00.000Z');
+    ok(c4.bySym.THCOM.ok === true && c4.bySym.THCOM.migratedLater.keptDisclosure === true && c4.bySym.THCOM.literal.join() === 'legend',
+      'T6: ตกที่ชั้น cron differential → migrateOne ผ่านแล้ว การเปิดเผยยังตรงไฟล์ ⇒ เก็บไว้', JSON.stringify(c4.bySym.THCOM.migratedLater));
+    ok(c4.cronDiff.fail.length === 0 && c4.cronDiff.baselined.join() === 'THCOM' && c4.cronDiff.baselineDetail[0].how === 'ย้ายภายหลังนอกสำมะโน'
+      && c4.cronDiff.valueDiff.length === 1, 'T6: สรุปหลังพลิกแถว = ไม่มี fail ค้าง · valueDiff ยังอยู่', JSON.stringify(c4.cronDiff.baselined));
+    // แถวที่ "ย้ายสำเร็จ" อยู่แล้ว ยังต้องคงเดิมทุก byte (เจตนาเดิมของ fix1 R9 — ห้าม last-write-wins ลบการเปิดเผยทิ้ง)
+    const c5 = MG.mergeCensus(c4, 4, [{ sym: 'AEM', ok: true, reason: null, tokenised: ['px'], literal: [], notes: [], pyChanges: [] }], '2026-09-15T02:00:00.000Z');
+    const c6 = MG.mergeCensus(c5, 5, [Object.assign({}, skipped, { sym: 'AEM' })], '2026-09-15T03:00:00.000Z');
+    ok(JSON.stringify(c6.bySym.AEM) === JSON.stringify(c5.bySym.AEM) && !c6.bySym.AEM.migratedLater, 'T6: แถวที่ย้ายสำเร็จอยู่แล้วไม่ถูกแตะ (fix1 R9 ยังมีผล)');
+    const md = MG.renderCensusMd(Object.values(c6.bySym));
+    ok(/ย้ายภายหลังโดยรอบที่ไม่ได้บันทึกสำมะโน \| \*\*2\*\*/.test(md) && /MPC THCOM/.test(md), 'T6: census.md เปิดเผยใบที่ย้ายภายหลังนอกสำมะโน', (md.split('\n').find((l) => /ย้ายภายหลัง/.test(l)) || '').slice(0, 120));
   }
 }
 }

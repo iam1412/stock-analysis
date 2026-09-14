@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 15.52,
+  "values": {
+    "px": 10.3,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 14.3,
+    "fvHigh": 16.74,
+    "shares": 400000000,
+    "dps": 0.64,
+    "bvps": 5.58,
+    "baseEps": 1.3,
+    "scenarios": [
+      {
+        "tgt": 8.3,
+        "div": 1.45
+      },
+      {
+        "tgt": 15.5,
+        "div": 2.07
+      },
+      {
+        "tgt": 25.09,
+        "div": 2.4
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#49a22f",
     "accentDark": "#367623",
@@ -40,17 +73,13 @@
     "min": 8,
     "max": 16,
     "grid": [10, 12, 14],
-    "fairLine": 15.52,
     "currency": "฿",
     "highlight": [1, 4]
   },
   "gauge": {
     "min": 9,
-    "max": 18,
-    "cur": 10.3,
-    "fair": 15.52
-  },
-  "fv": 15.52
+    "max": 18
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -70,11 +99,11 @@
     <div class="sub">ยาสามัญ/OTC • ผลิตภัณฑ์เสริมอาหาร • ผลิตภัณฑ์ดูแลคอ-ช่องปาก (Propoliz) • วิตามิน (Vita-C Series) • OEM/Distribution แบรนด์ third-party</div>
     <div class="price-row">
       <div>
-        <div class="px">฿10.30<small>(TMAN)</small></div>
+        <div class="px">{{rd:px}}<small>(TMAN)</small></div>
       </div>
-      <div class="chg">▼ −2.8% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569 (Yahoo Finance, StockAnalysis.com)<br>
+        ราคา ณ {{rd:priceDate}} (Yahoo Finance, StockAnalysis.com)<br>
         กรอบ 52 สัปดาห์ ฿9.95 – ฿13.6<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, SET.or.th, GuruFocus (MEGA peer P/E)
       </div>
@@ -88,7 +117,7 @@
       <div class="metric"><div class="k">Market Cap</div><div class="v">฿4,120 ล้าน</div><div class="d">400 ล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~8.5x</div><div class="d">ต่ำกว่ากลุ่มยาไทย (MEGA ~11.7–13.4x)</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">N/A — IPO ต.ค. 2567</div><div class="d">เทียบ MEGA Lifesciences ~11.7–13.4x ปัจจุบัน (เฉลี่ย 10 ปี ~21.9x)</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">~1.85x</div><div class="d">ราคา/BVPS TTM ฿5.58</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~{{rd:pbv}}x</div><div class="d">ราคา/BVPS TTM ฿5.58</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY68</div><div class="v">฿523 ล้าน</div><div class="d">+16.0% YoY (จาก ฿451 ล้าน)</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿1.30</div><div class="d">FY68 ฿1.31 — EPS ทรงตัวจาก dilution หุ้น (IPO ต.ค. 2567)</div></div>
@@ -111,7 +140,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#49a22f"></i>ราคา TMAN</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿15.52</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -133,8 +162,8 @@
         <div class="mval">฿16.74</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿14.30 – ฿16.74</span></div>
-        <div class="r">฿15.52</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/E ให้ค่าต่ำสุด ฿14.30 (อิงพหุคูณ MEGA Lifesciences ปัจจุบันที่ discount จากค่าเฉลี่ยระยะยาวมาก สะท้อนกลุ่มยา/OTC ไทยที่ยังไม่ re-rate) ส่วนวิธี Justified P/BV ให้ค่าสูงสุด ฿16.74 (ROE 25.0% สูงกว่าต้นทุนทุน 11.0% มาก) ทั้งสองวิธีเป็นคนละตระกูล (peer-multiple vs r,g-based) และห่างกันเพียง 1.17 เท่า (<2.0x) จึงเฉลี่ยได้อย่างมีเหตุผล FV กลาง ฿15.52
@@ -148,14 +177,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿10</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿15.52</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿10.86<br><small>MOS 30%</small></span>
-          <span>฿12.42<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿15.52<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿16.74<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">฿17.40<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -169,19 +198,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict good">
-        <div class="big">+34%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>มี Margin of Safety ที่ดี</b><br>ราคาปัจจุบันต่ำกว่ามูลค่าเหมาะสมพอสมควร เหมาะสำหรับนักลงทุนสาย value ที่รับความเสี่ยงหุ้น IPO ใหม่ได้ ควรติดตามงบไตรมาสถัดไปเพื่อยืนยันเสถียรภาพของมาร์จิ้นก่อนเพิ่มน้ำหนัก</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿12.42</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿10.86</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿15.52</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="10.3" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -190,17 +219,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿10 • EPS ฐาน ~฿1.30 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −3%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿8.30</div>
-          <div class="ret neg">−5.3% (3 ปี, ≈ −2%/ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿1.19</span></li>
             <li><span>P/E ออก</span><span>7x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.45</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>แข่งขันราคารุนแรง มาร์จิ้นกดต่อเนื่อง P/E de-rate ต่ำกว่าปัจจุบัน</span></li>
           </ul>
         </div>
@@ -208,12 +237,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +6%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿15.50</div>
-          <div class="ret pos">+70.6% (3 ปี, ≈ +19%/ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿1.55</span></li>
             <li><span>P/E ออก</span><span>10x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿2.07</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>รายได้โตต่อเนื่อง ~10–13%/ปี มาร์จิ้นทรงตัวใกล้ TTM P/E ขยับเข้าใกล้ discount ปกติของกลุ่ม</span></li>
           </ul>
         </div>
@@ -221,12 +250,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +14%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿25.09</div>
-          <div class="ret pos">+166.9% (3 ปี, ≈ +39%/ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿1.93</span></li>
             <li><span>P/E ออก</span><span>13x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿2.40</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>ธุรกิจ distribution third-party ขยายตัวแรง มาร์จิ้นดีขึ้น P/E re-rate ใกล้เคียง MEGA ปัจจุบัน</span></li>
           </ul>
         </div>
@@ -273,8 +302,8 @@
       <h2>TMAN: มูลค่าต่ำกว่าที่ควรจะเป็น (MOS ~29%) แต่ต้องจับตามาร์จิ้นที่ค่อยๆ ลดและ dilution</h2>
       <p>TMAN เพิ่งเข้าตลาด SET เมื่อ ต.ค. 2567 ราคาปัจจุบัน ฿11 ต่ำกว่ามูลค่าเหมาะสมประเมิน ฿15.52 (กรอบ ฿14.30–16.74) ด้วย MOS ~29.1% และซื้อขายที่ P/E เพียง ~8.5x เทียบกลุ่มยา/OTC ไทยอย่าง MEGA Lifesciences ที่ ~11.7–13.4x แต่ต้องระวังมาร์จิ้นขั้นต้นที่ลดลงต่อเนื่องตั้งแต่ปี 2565 (54.4%→46.6%) และการเพิ่มทุน/dilution ที่กด EPS ให้โตช้ากว่ากำไรสุทธิมาก เหมาะกับนักลงทุนสาย value ที่รับความผันผวนของหุ้น IPO ใหม่ได้ ควรติดตามงบ Q2/2569 (งวด เม.ย.–มิ.ย., ประกาศ 13 ส.ค. 2569) เพื่อยืนยันเสถียรภาพของมาร์จิ้นก่อนเพิ่มน้ำหนักการลงทุน</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿15.52 <span style="font-size:12px;color:#cab9a8">(฿14.30–฿16.74)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +34%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿17.40 (Buy, n=1)</div></div>
       </div>
       <div class="zone">
@@ -287,7 +316,7 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ 14 ก.ย. 2569 จาก Yahoo Finance และ StockAnalysis.com (ตรงกัน) • ข้อมูลงบการเงิน/ตัวคูณจาก StockAnalysis.com (financials/ratios, balance-sheet) • มูลค่าตลาด/Factsheet จาก SET.or.th • ตัวคูณเทียบกลุ่มจาก GuruFocus/Wisesheets (MEGA Lifesciences) • ข้อมูลแบรนด์/ธุรกิจจาก investor.tmanpharmaceutical.com และ SEC MD&A
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ {{rd:priceDate}} จาก Yahoo Finance และ StockAnalysis.com (ตรงกัน) • ข้อมูลงบการเงิน/ตัวคูณจาก StockAnalysis.com (financials/ratios, balance-sheet) • มูลค่าตลาด/Factsheet จาก SET.or.th • ตัวคูณเทียบกลุ่มจาก GuruFocus/Wisesheets (MEGA Lifesciences) • ข้อมูลแบรนด์/ธุรกิจจาก investor.tmanpharmaceutical.com และ SEC MD&A
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 8 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

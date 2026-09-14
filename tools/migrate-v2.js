@@ -15,8 +15,13 @@
  *     ภายใต้ "รูป" (stock-meta · ตัวเลขที่มองเห็น · error/warning ของ gate) — ต่าง = residue `cron-diff <ชนิด>` → จึงเขียน
  * ตัดสินไม่ได้ (ฐานการ์ดหลายตัว/หมวด 6 อ่านไม่ชัด) = การ์ดนั้นคง literal (สถานะเดิม) · ช่องบังคับหาย/ไม่ตรง = ไม่ย้ายทั้งใบ (residue)
  *
+ *   → (`--v2-grid` · ระยะ 3 Task 5) โหมดวินิจฉัย "v2 เองเสถียรไหม" บนกริดเดียวกัน โดยไม่เทียบกับ v1 เลย
+ *     (gate error 0 · ไม่ throw/patch-rejected · MOS สวนทางราคาทุกช่วง) — อ่านอย่างเดียว ไม่เขียนอะไร
+ *
  *   node tools/migrate-v2.js AAPL BBL            # dry-run รายตัว
  *   node tools/migrate-v2.js --batch 0 --size 100 --write --cron-diff --census docs/superpowers/audit/2026-09-11-stock-analyzer/
+ *   node tools/migrate-v2.js --v2-grid PTG                          # วินิจฉัยเสถียรภาพฝั่ง v2 (ไม่เขียน)
+ *   node tools/migrate-v2.js --cron-diff --v2-baseline BNY PTG …    # ใช้เกณฑ์ v2-as-baseline กับใบที่ระบุชื่อ (ดู planWrite)
  *   ★ exit 0 แม้มี residue (1 = ข้อผิดพลาดไม่คาดคิดเท่านั้น · `--strict` = residue ⇒ 1 แบบเดิม)
  * ★ หลัง --write: npm run build → node tools/preserve-dates.js → npm run build → npm run verify → commit (1 commit = 1 แบตช์)
  *
@@ -87,7 +92,13 @@ const TOLERANCE = {
   f20: (a, b) => near(a, b, 0.01, 0.06), f21: (a, b) => a == null ? b == null : near(a, b, 0.01, 0.06),
   f22: (a, b) => near(a, b, 0, 0.55), f26: (a, b) => near(a, b, 0.03, 0), f28: (a, b) => near(a, b, 0.03, 0.06),
   f29: (a, b) => near(a, b, 0, 0.06), f30: (a, b) => a == null ? b == null : near(a, b, 0, 0.06), f31: (a, b) => near(a, b, 0.01, 0.006),
-  f34: (a, b) => arrNear(a, b, 1.0), f35: (a, b) => arrNear(a, b, 1.0), f36: (a, b) => near(a, b, 0.005, 0.005),
+  f34: (a, b) => arrNear(a, b, 1.0), f35: (a, b) => arrNear(a, b, 1.0),
+  // f36 (หมวด 6 hint "จากจุดเข้า $px") / f50 (ป้าย gauge mCur "ปัจจุบัน $px") = ราคาที่ v1 พิมพ์ปัดเลขเองได้
+  // (฿19 vs ฿18.9 · $52 vs $51.73) — v1 คือค่าที่ผู้เขียนปัดเศษตอนพิมพ์ ส่วน v2 render ตรงกับราคาจริง (= f01) เป๊ะเสมอ
+  // ⇒ ยอมได้เมื่อ v1 เป็นการปัดเศษที่ถูกต้องของ v2 (`roundsTo` ตัวเดียวกับที่ f51/f52 ใช้) — **ไม่รับ `arrNearGap`**
+  //   (ชั้น GAP_REL 1.2% ของ f51/f52) ⇒ สองช่องนี้เข้มกว่า f51/f52 ไม่ใช่ "เกณฑ์เดียวกันทั้งดุ้น" (review Task 4 F4)
+  f36: (a, b) => near(a, b, 0.005, 0.005) || roundsTo(a, b),
+  f50: (a, b) => near(a, b, 0.005, 0.005) || roundsTo(a, b),
   // f51 (ป้าย scale) / f52 (การ์ดจุดซื้อ MOS20/30) = FV×0.8/0.7 ที่ v1 พิมพ์ปัดเลขเองได้ (74.59 vs 74.585 · 741.37 vs 741.30)
   // ⇒ ยอมได้ในช่วงเดียวกับ **gate เจ้าของช่องนี้เอง** (E18/E26 = 2.5%) — v2 ทำให้ค่าตรงสูตรเป๊ะ (ดู roundsTo/หมายเหตุ census)
   f51: (a, b) => arrNear(a, b, 0.006) || arrRounds(a, b) || arrNearGap(a, b), f52: (a, b) => arrNear(a, b, 0.006) || arrRounds(a, b) || arrNearGap(a, b),
@@ -156,15 +167,42 @@ const FVBOX_RANGE_RE = new RegExp(`(class="fv-box"[\\s\\S]*?กรอบ\\s*)${C
 // ★ รูป "เข้ม" = ต้องมีสัญลักษณ์สกุลเงิน **ครบทั้งสองตัว** เพราะ token render สกุลเงินเสมอ (money())
 //   ใบที่เขียน "(฿123–456)" (สกุลเงินตัวเดียว) ถ้าแทนทั้งคู่ ข้อความที่คนเห็นจะงอก "฿" ตัวที่สอง — ชั้น 2 จับได้จริง 4 ใบ
 const FVBOX_RANGE_STRICT_RE = new RegExp(`(class="fv-box"[\\s\\S]*?กรอบ\\s*)${CUR}\\s*[\\d.,]+(\\s*(?:–|-|&ndash;)\\s*)${CUR}\\s*[\\d.,]+`);
-const LEGEND_RE = new RegExp(`(<div class="legend">[\\s\\S]*?มูลค่าเหมาะสม\\s*)${CUR}?\\s*[\\d.,]+(\\s*<\\/span>)`);
-const MFAIR_RE = new RegExp(`(id="mFair"><div class="lab"[^>]*>เหมาะสม\\s*)${CUR}?\\s*[\\d.,]+`);
+// ★ ระยะ 3 Task 2 — "site legend match ≠ 1 (0)" 3 ใบ (FANG "มูลค่าเหมาะสม mid-cycle $172" · MPC "(normalized)" ·
+//   MU "(mid-cycle)"): ผู้เขียนเติม **คำขยายฐานมูลค่า** คั่นระหว่างคำว่า "มูลค่าเหมาะสม" กับตัวเลข ⇒ รูปเดิมที่รับได้
+//   แต่ `\s*` จึงไม่ match เลย · คำขยายเป็นถ้อยคำของผู้เขียน (ไม่ใช่ค่า) ต้องอยู่ใน **กลุ่ม 1** เพื่อคงไว้ทั้งก้อน
+//   ⇒ ยอมให้มีข้อความคั่น ≤24 ตัวอักษร ที่ไม่ข้ามขอบแท็ก (`[^<]`) แบบ lazy
+//   ★ ปลอดภัยเพราะมี **สมอสองข้าง**: `${CUR}?\s*[\d.,]+` ต้องจบพอดีที่ `</span>` ⇒ lazy ที่หยุดเร็วเกินไป
+//     (เช่นไปคว้า "15" ใน "(P/E 15x) $172") backtrack ต่อเองจนถึงเลขตัวจริง · และสัญลักษณ์สกุลเงินตกเป็นของ
+//     `${CUR}?` เสมอ ไม่ถูกกลืนเข้ากลุ่ม 1 (ไม่งั้น token จะ render เป็น "$ $172") — เทสตรึงทั้งสองเคสไว้
+//   ★ วัดคลัง 908 ใบ (15 ก.ย. 69): เปลี่ยนผลเฉพาะ 3 ใบนี้ (0→1) · ไม่มีใบไหน 1→0
+const LEGEND_RE = new RegExp(`(<div class="legend">[\\s\\S]*?มูลค่าเหมาะสม[^<]{0,24}?)${CUR}?\\s*[\\d.,]+(\\s*<\\/span>)`);
+// ★ ระยะ 3 Task 2 (ผลลูกโซ่) — คลาสเดียวกับ legend เป๊ะ: MPC เขียนป้าย gauge ว่า `เหมาะสม (norm.) $193`
+//   ⇒ พอแก้ legend ให้ผ่าน ใบนี้ไปตกที่ `site mFair match ≠ 1 (0)` แทน · ผ่อนรูปแบบเดียวกัน
+//   ★★ ต่างจาก legend ตรงที่รูปเดิม **ไม่มีสมอขวา** ⇒ ผ่อนเฉย ๆ ไม่ได้: lazy จะไปหยุดที่จุด `.` ใน "(norm.)"
+//      แล้วคว้า "." เป็น "ตัวเลข" (ทั้ง `.` และ `,` อยู่ใน `[\d.,]+`) · จึงเติม lookahead `(?=\s*</div>)` คู่กันเสมอ
+//      — เป็นการ **รัดให้แคบลง** ไม่ใช่กว้างขึ้น และไม่เพิ่มกลุ่มจับ (ตัวแทนใช้ `m[1]` ตัวเดียว)
+//   ★ FANG ไม่ได้แก้ด้วยข้อนี้: ป้ายของมันคือ `mid-cycle FV $172` — **ไม่มีคำว่า "เหมาะสม" เลย** = ผู้เขียนเปลี่ยน
+//     ถ้อยคำของป้าย ไม่ใช่เติมคำขยาย ⇒ จะจับได้ต้องเลิกใช้คำในป้ายเป็นยาม เหลือแต่ `id="mFair"` ซึ่งเป็นการ
+//     เปลี่ยนความหมายของ site (ยอมแทนตัวเลขในป้ายที่อ่านไม่ออกว่าเป็นค่าอะไร) — นอกขอบเขต Task 2 ⇒ คง residue
+//   ★ วัดคลัง 908 ใบ (15 ก.ย. 69): เปลี่ยนผลเฉพาะ MPC (0→1) · ไม่มีใบไหน 1→0
+const MFAIR_RE = new RegExp(`(id="mFair"><div class="lab"[^>]*>เหมาะสม[^<]{0,24}?)${CUR}?\\s*[\\d.,]+(?=\\s*<\\/div>)`);
 const SCALE_SEG_RE = /<div class="scale">[\s\S]*?<\/div>\s*<\/div>/;
 const SCALE_SPAN_RE = new RegExp(`(<span[^>]*>)\\s*${CUR}?\\s*[\\d.,]+(\\s*<br>\\s*<small>([\\s\\S]*?)<\\/small>)`, 'g');
 const MOSCARD_RE = (pct) => new RegExp(`(จุดซื้อ MOS ${pct}%<\\/div>\\s*<div class="v[^"]*">)\\s*${CUR}?\\s*[\\d.,]+`);
 const ZONE_RE = new RegExp(`(โซนเริ่มทยอยสะสม<\\/div>\\s*<div class="v[^"]*">\\s*(?:&lt;|<)\\s*)${CUR}?\\s*[\\d.,]+`);
-const VCELL_FV_RANGE_RE = new RegExp(`(<div class="k">มูลค่าเหมาะสม<\\/div>\\s*<div class="v"[^>]*>)\\s*${CUR}\\s*[\\d.,]+(\\s*<span[^>]*>\\()${CUR}\\s*[\\d.,]+([–\\-])${CUR}\\s*[\\d.,]+(\\)<\\/span>)`);
-const VCELL_FV_RE = new RegExp(`(<div class="k">มูลค่าเหมาะสม<\\/div>\\s*<div class="v"[^>]*>)\\s*${CUR}?\\s*[\\d.,]+`);
-const VCELL_TGT_RE = new RegExp(`(<div class="k">เป้านักวิเคราะห์[^<]*<\\/div>\\s*<div class="v"[^>]*>\\s*~?)${CUR}?\\s*[\\d.,]+`);
+// ★ ระยะ 3 Task 2 — vcell ทั้งสองตัวผูก **สมอซ้ายเป็น `<div class="vcell">`** และรับคำขยายหลังหัวข้อ:
+//   (ก) "site vcellFv match ≠ 1 (0)" 2 ใบ (AEM `มูลค่าเหมาะสม (ฉาก Base)` · BTG `มูลค่าเหมาะสม (normalized)`) —
+//       หัวข้อของ vcell มีคำขยายต่อท้าย ⇒ `<div class="k">มูลค่าเหมาะสม</div>` แบบเป๊ะไม่ match · แก้เป็น `[^<]*`
+//       (คำขยายอยู่ในกลุ่ม 1 = คงไว้) · ต้องแก้ **ทั้งรูป range และรูปเดี่ยว** เพราะ `rangeOk()` อ่านรูป range ตัวเดียวกัน
+//   (ข) "site vcellTgt match ≠ 1 (2)" 3 ใบ (BABA STX VRT): รูปเดิมไม่ได้ผูกกับ `.vcell` เลย ⇒ ไป match **การ์ด
+//       `.metric` หัวข้อเดียวกันในหมวด 1 ด้วย** (ใบที่มีทั้งสองจุดจึงได้ 2 = กำกวม = ไม่ย้ายทั้งใบ) · site นี้ชื่อ
+//       `vcellTgt` อยู่แล้ว ⇒ ผูกสมอให้ตรงชื่อ (การ์ด `.metric` เป็นงานของ `tokeniseTgtCard` คนละตัว)
+//   ★ `[^<]*` ของหัวข้อไม่ข้ามขอบแท็ก และ `<div class="vcell">` กันไม่ให้หลุดไปจุดอื่นของไฟล์
+//   ★ วัดคลัง 908 ใบ (15 ก.ย. 69): vcellFv เปลี่ยน 5 ใบ (AEM BTG MPC MU SHANG 0→1) · vcellTgt เปลี่ยน 8 ใบ
+//     (BABA STX VRT + v2 ที่ย้ายไปแล้ว AZN BMO CHE GULF HSY — ทั้งหมด 2→1) · ไม่มีใบไหน 1→0
+const VCELL_FV_RANGE_RE = new RegExp(`(<div class="vcell">\\s*<div class="k">มูลค่าเหมาะสม[^<]*<\\/div>\\s*<div class="v"[^>]*>)\\s*${CUR}\\s*[\\d.,]+(\\s*<span[^>]*>\\()${CUR}\\s*[\\d.,]+([–\\-])${CUR}\\s*[\\d.,]+(\\)<\\/span>)`);
+const VCELL_FV_RE = new RegExp(`(<div class="vcell">\\s*<div class="k">มูลค่าเหมาะสม[^<]*<\\/div>\\s*<div class="v"[^>]*>)\\s*${CUR}?\\s*[\\d.,]+`);
+const VCELL_TGT_RE = new RegExp(`(<div class="vcell">\\s*<div class="k">เป้านักวิเคราะห์[^<]*<\\/div>\\s*<div class="v"[^>]*>\\s*~?)${CUR}?\\s*[\\d.,]+`);
 const RESTATE_PRE_RE = /^(?:\s|<[^>]*>)*\(\s*/;                     // วงเล็บทวนวันที่ — คำศัพท์เดียวกับ PD.findRestatedDate
 const HINT_PX_RE = new RegExp(`(จากจุดเข้า\\s*)${CUR}?\\s*[\\d.,]+`);
 const HINT_EPS_RE = new RegExp(`(EPS ฐาน\\s*)~?\\s*${CUR}?\\s*([\\d.,]+)`);
@@ -255,7 +293,14 @@ const SCN_RET_TEXT_RE = /<div class="ret[^"]*">([\s\S]*?)<\/div>/g;
 //   ⇒ เครื่องหมายเป็นทางเลือก · `~`/`≈` อยู่นอกกลุ่มตัวเลข (ไม่ให้ parse พัง) · ยอมช่องว่างรอบ "/" เหมือน PY_UNIT_RE
 //   ★ `~`/`≈` ถูก **ตัดทิ้งก่อน parse** (ไม่อยู่ในรูปที่ match เลย) — ไม่งั้น "≈ +8.9%/ปี" กับ "+8.9%/ปี" จะนับเป็น
 //     "ข้อความเปลี่ยน" ทั้งที่ตัวเลขเท่าเดิม (การหาย/งอกของ ~ เป็นคนละเรื่อง — อยู่ใน maskText/หัวข้อ "~" ของสำมะโน)
-const PY_CELL_RE = /([+\-−]?\s*\d[\d.,]*)\s*%\s*\/\s*ปี/;
+// ★ ระยะ 3 Task 3 — หน่วย "ต่อปี" ที่ผู้เขียนใช้จริงมีหลายรูป ไม่ใช่ "%/ปี" อย่างเดียว (นับทั้งคลัง 15 ก.ย. 69:
+//   "%/ปี" 4266 · "% ต่อปี" 122 · "%/yr" 23 · "%ต่อปี" 21 · "% / ปี" 15) ⇒ ทั้งตัวเปิดเผย (pyCell) และยามนับหน่วย
+//   (pyUnitCount) ต้องอ่าน **หน่วยเดียวกับเจ้าของ** คือ `DV.SCN_PERYEAR_AFTER` (ตัวที่ scenarioPlan ใช้ตัดสินว่า %
+//   ก้อนนั้นเป็นต่อปีไหม) — ไม่ใช่สำเนาที่รู้จักแค่รูปเดียว ไม่งั้นใบที่เขียน "−23% ต่อปี" จะถูกอ่านว่า "ไม่มี %/ปี"
+//   ทั้งที่มี (RS/JMT/SCGD/SNNP ตกยามนับเพราะเหตุนี้ ทั้งที่ v2 ไม่ได้งอก/หายหน่วยจริง)
+//   ★ ต่อสายจาก `.source` ของเจ้าของโดยตรง (ตัด `^` ที่ใช้ยึดหัวออก) — เจ้าของเปลี่ยนรูป ตัวนี้ตามทันทีไม่ต้องแก้สองที่
+const PY_AFTER_SRC = DV.SCN_PERYEAR_AFTER.source.replace(/^\^/, '');
+const PY_CELL_RE = new RegExp(`([+\\-−]?\\s*\\d[\\d.,]*)\\s*%(?:${PY_AFTER_SRC})`, 'i');
 /**
  * อ่านตัวเลข "%/ปี" ตัวแรกของข้อความช่อง .ret — คืนทั้ง **รูปที่โชว์** (dec) และค่าที่ parse ได้
  * @returns {{text:string, num:number, dec:number}|null} null = ไม่มี %/ปี ในช่องนั้นจริง ๆ (ไม่ใช่ "อ่านไม่ออก")
@@ -292,20 +337,32 @@ function scnPyDiffs(exp0, exp1) {
 }
 
 // ── ยามโครงสร้าง %/ปี ของหมวด 6 (review final wave 2 — จุดบอดที่การขุด item 2 เจอ) ─────────
-// ★ นับ "หน่วย" %/ปี เท่านั้น (ไม่ใช่รูปเลขมีเครื่องหมายแบบ PY_CELL_RE ข้างบน) — สโคปเฉพาะหมวด 6 (DV.scenarioBlock.sec)
-//   เพราะ "%/ปี" โผล่ในบล็อกนี้ได้หลายที่ที่ไม่ใช่ .ret (เช่น "EPS +10%/ปี" ในสมมติฐานต่อคอลัมน์ · "~-2.2%/ปี" มี "~"
+// ★ นับ "หน่วย" ต่อปี เท่านั้น (ไม่ใช่รูปเลขมีเครื่องหมายแบบ PY_CELL_RE ข้างบน) — สโคปเฉพาะหมวด 6 (DV.scenarioBlock.sec)
+//   เพราะหน่วยนี้โผล่ในบล็อกนี้ได้หลายที่ที่ไม่ใช่ .ret (เช่น "EPS +10%/ปี" ในสมมติฐานต่อคอลัมน์ · "~-2.2%/ปี" มี "~"
 //   นำหน้าไม่ใช่เครื่องหมาย +/-) — เดิม (item 2) ใช้ PY_CELL_RE ซึ่งพลาดรูปพวกนี้ไปเงียบ ๆ (พิสูจน์: AMATA "~-2.2%/ปี")
-//   ⇒ ถ้านับด้วยรูปเลขมีเครื่องหมาย จะไม่เห็นว่า 5 ใบ "งอก/หาย" ตัวเลขทั้งจุด (JMT 4→7 · RS 0→3 ฯลฯ) เพราะ noise เท่ากับ signal
-const PY_UNIT_RE = /%\s*\/\s*ปี/g;
+//   ⇒ ถ้านับด้วยรูปเลขมีเครื่องหมาย จะไม่เห็นว่าใบไหน "งอก/หาย" ตัวเลขทั้งจุด เพราะ noise เท่ากับ signal
+// ★ ระยะ 3 Task 3 — สิ่งที่นับต้องเป็น **หน่วย** ไม่ใช่ **การสะกดหน่วย**: เดิมนับเฉพาะ `%/ปี` ⇒ ใบที่ผู้เขียนสะกด
+//   "−23% ต่อปี" ถูกอ่านว่า "ไม่มีหน่วยต่อปี" แล้ว v2 (ซึ่ง render หน่วยเดียวเสมอ) ดูเหมือน "งอก" หน่วยขึ้นมา
+//   ทั้งที่จำนวนจุดต่อปีที่คนเห็นเท่าเดิมเป๊ะ (RS 0→3 · JMT 4→7 · SCGD/SNNP 3→6 = false positive ล้วน)
+//   ⇒ ใช้ `DV.SCN_PERYEAR_AFTER` เจ้าของนิยาม "ต่อปี" ตัวเดียวกับที่ scenarioPlan ใช้ ⇒ ยามเห็นเท่าที่ตัวย้ายเห็น
+//   ★ ยามยังมีฟัน: ACN (v1 4 → v2 3) ยังตกอยู่ เพราะช่อง .ret เขียน "รวม ~ −14% (+ปันผล ~5%/ปี)" ซึ่ง v2 render
+//     เป็น "−14%" เปล่า ⇒ หน่วยต่อปีหายจริง 1 จุด (คำอธิบายปันผลหายไปกับมันด้วย)
+const PY_UNIT_RE = /%/g;
+/** จำนวน "หน่วยต่อปี" ในข้อความหนึ่ง — ทุกรูปที่เจ้าของ (DV.SCN_PERYEAR_AFTER) รับว่าเป็นต่อปี นับเท่ากันหมด */
+function pyUnitCount(text) {
+  const s = String(text == null ? '' : text);
+  let n = 0;
+  for (const m of s.matchAll(PY_UNIT_RE)) if (DV.SCN_PERYEAR_AFTER.test(s.slice(m.index + 1, m.index + 16))) n++;
+  return n;
+}
 /**
- * เทียบ "จำนวน" หน่วย %/ปี ในหมวด 6 ระหว่าง expand(v1) กับ expand(v2) — เป็นยามปฏิเสธ ไม่ใช่ tolerance ของค่า
+ * เทียบ "จำนวน" หน่วยต่อปีในหมวด 6 ระหว่าง expand(v1) กับ expand(v2) — เป็นยามปฏิเสธ ไม่ใช่ tolerance ของค่า
  * @returns {string|null} เหตุผลปฏิเสธ (เมื่อจำนวนต่างกัน) หรือ null (เท่ากัน/อ่านหมวด 6 ไม่ได้ฝั่งใดฝั่งหนึ่ง — ไม่ตัดสิน)
  */
 function scnPyCountGuard(exp0, exp1) {
   const b0 = DV.scenarioBlock(exp0), b1 = DV.scenarioBlock(exp1);
   if (!b0 || !b1) return null;                    // อ่านไม่ได้ = ไม่ประดิษฐ์การเทียบ ปล่อยพฤติกรรมเดิม (ให้ชั้นอื่นตัดสิน)
-  const c0 = (b0.sec.match(PY_UNIT_RE) || []).length;
-  const c1 = (b1.sec.match(PY_UNIT_RE) || []).length;
+  const c0 = pyUnitCount(b0.sec), c1 = pyUnitCount(b1.sec);
   return c0 === c1 ? null : `จำนวนช่อง %/ปี ไม่เท่าเดิม (v1 ${c0} → v2 ${c1})`;
 }
 
@@ -1374,21 +1431,108 @@ function cronDiff(srcV1, outV2, name, opts) {
   }
 }
 
+// ── เสถียรภาพของ v2 เอง บนกริดเดิม (ระยะ 3 Task 5 · `--v2-grid`) ─────────────────────────────
+// ★ ทำไมต้องมีทั้งที่มี `--cron-diff` อยู่แล้ว: `cronDiff` ตอบคำถาม "v2 ให้ผลเท่ากับ v1 ไหม" ซึ่งใช้ตัดสิน
+//   ไม่ได้อีกต่อไปเมื่อ **ฝั่งที่ไม่นิ่งคือ v1** (`side:'v1'` — BNY PTG THCOM WWD ทั้งสี่ใบ) : v1 เป็น baseline
+//   เปรียบเทียบตอนระยะ 2 เท่านั้น หลัง merge แล้ว v2 คือ baseline ของระบบ ⇒ คำถามที่ถูกต้องคือ "v2 เองนิ่งไหม"
+// ★ ไม่ใช่ "รันซ้ำสองรอบแล้วต้องเหมือนกัน" (โค้ด deterministic ⇒ เทสนั้นไม่มีความหมาย) — เกณฑ์คือสมบัติของ **ผลลัพธ์**
+//   ที่ราคาต่างกัน 61 จุด: (ก) gate error = 0 ทุกจุด (ข) ไม่มี throw/patch-rejected (ค) MOS ขยับสวนทางราคาเสมอ
+//   (ค) คือเกณฑ์เดียวที่จับ "ฐานพลิก" ได้จริง — MOS = (FV−px)/FV ⇒ ราคาขึ้น MOS ต้องไม่เพิ่ม ถ้าเพิ่ม = ตัวหาร/ฐานเปลี่ยนกลางกริด
+// ★ ใช้บล็อกเดิมทั้งหมด (CRON_GRID · cronDateParts · UP.patchReport · cronGate · RM.readStockMeta) — ไม่มีสำเนาตรรกะ
+//   ต่างจาก cronDiff แค่ "อ่านคอลัมน์ v2 อย่างเดียว ไม่เทียบกับ v1"
+/**
+ * (ค) ทิศทาง MOS ↔ ราคา — กริดเรียงราคาขึ้น ⇒ MOS ต้อง **ไม่เพิ่ม** · เท่ากันได้ (MOS ที่โชว์ปัดเศษ 1 ตำแหน่ง)
+ * ★ อ่าน MOS ไม่ได้ที่จุดไหน = ตัดสินไม่ได้ ⇒ นับเป็นการละเมิด (ไม่ใช่ข้ามเงียบ — กติกาเดียวกับ check-site
+ *   "regex หาไม่เจอต้องฟ้อง ไม่ใช่ปล่อยผ่าน")
+ * @param {{k:number,price:number,mos:number|null}[]} series  เรียงตามลำดับกริด (ราคาขึ้น)
+ * @returns {string[]} ข้อความละเมิด (ว่าง = ทิศทางถูกทุกช่วง)
+ */
+function mosDirViolations(series) {
+  const out = [], mosOf = [];
+  for (const pt of series || []) {
+    if (pt.mos == null) { out.push(`×${pt.k} ราคา ${pt.price}: อ่าน MOS หลัง patch ไม่ได้`); continue; }
+    mosOf.push(pt);
+  }
+  for (let i = 1; i < mosOf.length; i++) {
+    const a = mosOf[i - 1], b = mosOf[i];
+    if (b.price <= a.price) continue;                      // ราคาไม่ได้ขึ้นจริง (กริดปัด 2 ตำแหน่งชนกันได้) = ไม่ตัดสิน
+    if (b.mos > a.mos + 1e-9) out.push(`×${a.k}→×${b.k} ราคา ${a.price}→${b.price}: MOS ${a.mos} → ${b.mos} (ขึ้นตามราคา = ผิดทิศ)`);
+  }
+  return out;
+}
+
+/**
+ * @param {string} outV2  HTML v2 (migrateOne(srcV1).out หรือไฟล์ที่ย้ายแล้ว)
+ * @param {string} name   ชื่อไฟล์ เช่น "PTG.html"
+ * @param {{grid?:number[]}} [opts]
+ * @returns {{ok:boolean, points:number, patched:number, setup:string|null, throws:string[], gateErr:string[], dirViol:string[],
+ *            warnIds:string[], mosRange:[number,number]|null, series:{k:number,price:number,mos:number|null,warns:string[]}[]}}
+ */
+function v2Stability(outV2, name, opts) {
+  const o = opts || {};
+  const UP = require('./update-prices.js');     // lazy: เหตุผลเดียวกับ cronDiff (วงจรตอนโหลด)
+  const res = { ok: true, points: 0, patched: 0, setup: null, throws: [], gateErr: [], dirViol: [], warnIds: [], mosRange: null, series: [] };
+  const rd2 = RM.readReportData(outV2);
+  const vals = rd2.ok && RV.isV2(rd2.data) ? rd2.data.values : null;
+  const dateParts = vals ? cronDateParts(vals.priceDate) : null;
+  if (!vals || !Number.isFinite(vals.px) || !dateParts) { res.ok = false; res.setup = 'v2 ไม่มี values.px/priceDate ที่ใช้ได้'; return res; }
+  const prevToday = process.env.STALE_TODAY;
+  process.env.STALE_TODAY = RV.isoOf(dateParts);
+  try {
+    for (const k of (o.grid || CRON_GRID)) {
+      res.points++;
+      const newPrice = Math.round(vals.px * k * 100) / 100;
+      let r = null;
+      try { r = UP.patchReport(outV2, { newPrice, dateParts, chartData: null }); }
+      catch (e) { res.throws.push(`×${k} ราคา ${newPrice}: throw — ${String(e.message).slice(0, 200)}`); continue; }
+      res.patched++;
+      const g = cronGate(r.html, name);
+      // patch-rejected ของ cron ตัวจริง = "patch แล้ว gate ตก" ⇒ ที่นี่วัดด้วยชุด error ของ gate หลัง patch (ตัวเดียวกับ gateAfterPatch)
+      if (g.codes.length) res.gateErr.push(`×${k} ราคา ${newPrice}: error [${g.codes}] — ${String(g.detail).slice(0, 200)}`);
+      const meta = RM.readStockMeta(r.html) || {};
+      const rdv = RM.readReportData(r.html);
+      const mosMeta = typeof meta.mos === 'number' ? meta.mos
+        : (rdv.ok && rdv.data && rdv.data.values && typeof rdv.data.values.mos === 'number' ? rdv.data.values.mos : null);
+      for (const w of g.warns) if (!res.warnIds.includes(w)) res.warnIds.push(w);
+      res.series.push({ k, price: newPrice, mos: mosMeta, warns: g.warns.slice() });
+    }
+  } finally {
+    if (prevToday === undefined) delete process.env.STALE_TODAY; else process.env.STALE_TODAY = prevToday;
+  }
+  res.dirViol = mosDirViolations(res.series);
+  const mosOf = res.series.filter((p) => p.mos != null);
+  if (mosOf.length) res.mosRange = [Math.min(...mosOf.map((x) => x.mos)), Math.max(...mosOf.map((x) => x.mos))];
+  res.ok = res.throws.length === 0 && res.gateErr.length === 0 && res.dirViol.length === 0 && res.patched === res.points;
+  return res;
+}
+
 /**
  * ตัดสิน "เขียนไหม" ต่อไฟล์ (ใช้ทั้ง dry-run และ --write — census ของสองโหมดจึงตรงกันเสมอ)
  * ★ แยกเป็นฟังก์ชันให้เทสตรึงได้โดยไม่ต้องเขียน reports/ (CLI ไม่มีตัวเลือกชี้ไดเรกทอรีอื่น — ตั้งใจ)
  * @param {string} sym
  * @param {object} r   ผล migrateOne
  * @param {object|null} cd  ผล cronDiff (null = ไม่ได้สั่ง --cron-diff หรือ migrate ไม่ผ่าน)
+ * @param {{v2Baseline?:boolean, stab?:object|null}} [opts]  ระยะ 3 Task 5 — ดูบล็อก "v2 เป็น baseline" ข้างล่าง
  * @returns {{write:boolean, out:string|null, entry:object}}  cron-diff ตก ⇒ write:false + entry.ok:false + reason `cron-diff <kinds>`
  *   cron-diff ผ่านแต่มี formOnly ⇒ ยังเขียน (บันทึกลง entry.cronDiff ให้ census แสดงรายชื่อ)
  */
-function planWrite(sym, r, cd) {
+function planWrite(sym, r, cd, opts) {
+  const o = opts || {};
   const entry = { sym, ok: !!r.ok, reason: r.reason || null, tokenised: r.sites.tokenised, literal: r.sites.literal, notes: r.notes, pyChanges: r.pyChanges || [] };
   if (cd) {
     entry.cronDiff = { ok: cd.ok, kinds: cd.kinds, k: cd.k, side: cd.side, sideWhy: cd.sideWhy, detail: cd.detail.slice(0, 3), formOnly: cd.formOnly,
       formParts: cd.formParts || [], valueDiff: cd.valueDiff || [], retClass: cd.retClass || 0, relax: cd.relax, points: cd.points, compared: cd.compared };
-    if (r.ok && !cd.ok) { entry.ok = false; entry.reason = cronDiffReason(cd); }
+    // ★ v2 เป็น baseline (ระยะ 3 Task 5 · `--v2-baseline`): cron differential ตัดสินด้วยคำถาม "v2 เท่ากับ v1 ไหม"
+    //   ซึ่งใช้ไม่ได้เมื่อ `failSide` ชี้ว่า **ฝั่งที่ไม่นิ่งคือ v1** — v1 เป็น baseline เปรียบเทียบของระยะ 2 เท่านั้น
+    //   หลัง merge แล้ว v2 คือ baseline ของระบบ ⇒ แทนที่ด้วยเกณฑ์ "v2 เองเสถียรบนกริดเดิมไหม" (v2Stability)
+    //   เงื่อนไขครบทั้งสามข้อเท่านั้นจึงเขียน: (1) สั่ง `--v2-baseline` พร้อมระบุชื่อใบชัดเจน (2) side === 'v1'
+    //   (3) v2Stability ผ่านทุกข้อ — side 'v2'/'unknown' หรือ v2 ไม่เสถียร = residue ตามเดิม ไม่มีทางลัด
+    const stab = o.v2Baseline ? o.stab : null;
+    if (r.ok && !cd.ok && o.v2Baseline && cd.side === 'v1' && stab && stab.ok) {
+      entry.v2Baseline = { was: cronDiffReason(cd), sideWhy: cd.sideWhy, points: stab.points, patched: stab.patched, mosRange: stab.mosRange, warnIds: stab.warnIds };
+      entry.notes = entry.notes.concat([`v2-baseline (ระยะ 3 Task 5): เดิม "${cronDiffReason(cd)}" — ฝั่งที่ไม่นิ่งคือ v1 `
+        + `(${cd.sideWhy}) · v2 เองเสถียร ${stab.patched}/${stab.points} จุด (gate error 0 · ไม่ throw · MOS สวนทางราคาทุกช่วง)`]);
+    } else if (r.ok && !cd.ok) { entry.ok = false; entry.reason = cronDiffReason(cd); }
   }
   const write = entry.ok && typeof r.out === 'string';
   return { write, out: write ? r.out : null, entry };
@@ -1400,34 +1544,52 @@ function cronDiffReason(cd) {
   return cd.side === 'v1' ? `cron-diff v1-unstable ${k}` : cd.side === 'v2' ? `cron-diff v2-diff ${k}` : `cron-diff ${k}`;
 }
 
+/**
+ * "แถวนี้ถูกเขียนลง reports/ แล้วหรือไม่" — คำถามที่สรุป cron differential ต้องใช้แยก fail ออกจากที่เหลือ
+ * ★ ระยะ 3 Task 6 (F1 ของรีวิว Task 5): `cd.ok` **ไม่ใช่** คำตอบนั้นอีกต่อไป — ตั้งแต่ `--v2-baseline`
+ *   (ระยะ 3 Task 5) ใบที่ `cd.ok === false` ถูกเขียนได้เมื่อฝั่งที่ไม่นิ่งคือ v1 และ v2 เองเสถียร
+ *   ⇒ ยึด `entry.ok` เป็นผู้ตัดสิน (planWrite เขียน `ok:false` ให้เฉพาะ residue จริง) และใช้ `entry.v2Baseline`
+ *   เป็นป้ายบอก "ยอมรับด้วยเกณฑ์ v2-as-baseline" เท่านั้น · ใบที่ mergeCensus ปั๊ม `migratedLater` ให้
+ *   (ย้ายภายหลังโดยรอบที่ไม่ได้บันทึกสำมะโน) ก็เข้าทางเดียวกันเพราะ `ok:true`
+ */
+function cronAccepted(e) { return e.ok !== false || !!e.v2Baseline; }
+
 /** สรุป cron differential จาก entries ของ census (คิดใหม่จาก bySym ทุกครั้ง ⇒ รีรันแบตช์เดิมไม่นับซ้ำ) */
 function summarizeCronDiff(entries) {
   const checked = entries.filter((e) => e.cronDiff);
   const failByKind = {}, sec6Form = [], otherForm = [], retClass = [], valueDiff = [], relaxFiles = { static: [], pyForm: [], restate: [], scale: [], era: [] };
   for (const e of checked) {
     const c = e.cronDiff;
-    if (!c.ok) for (const k of c.kinds) (failByKind[k] = failByKind[k] || []).push(e.sym);
+    if (!cronAccepted(e)) for (const k of c.kinds) (failByKind[k] = failByKind[k] || []).push(e.sym);
     else {
       // formParts = ชุด part ที่พบรูปทั้งหมด (ตัวอย่างใน formOnly ถูกตัดเหลือ ≤3) · census เก่าไม่มี formParts → ถอยไปดูตัวอย่าง
       const partsOf = c.formParts || [...new Set((c.formOnly || []).map((f) => f.part))];
       const ret = (c.formOnly || []).find((f) => f.part === 'ret');
       if (partsOf.includes('ret')) sec6Form.push({ sym: e.sym, example: ret ? `${ret.before}→${ret.after} (×${ret.k})` : '' });
       if (partsOf.some((x) => x !== 'ret')) otherForm.push(e.sym);
+      // ★ F1: `valueDiff` เคยอยู่ใต้ branch `c.ok` เท่านั้น ⇒ ค่าที่คนเห็นเปลี่ยนของใบที่เขียนด้วยเกณฑ์ v2-baseline
+      //   (เช่น THCOM ฿8.02→฿8.01) หลุดจากตารางเปิดเผยทั้งที่ไฟล์ถูกเขียนไปแล้ว
       if ((c.valueDiff || []).length) valueDiff.push({ sym: e.sym, pairs: c.valueDiff });
     }
     if (c.retClass) retClass.push(e.sym);
-    if (c.ok) for (const k of Object.keys(relaxFiles)) if (c.relax && c.relax[k]) relaxFiles[k].push(e.sym);
+    if (cronAccepted(e)) for (const k of Object.keys(relaxFiles)) if (c.relax && c.relax[k]) relaxFiles[k].push(e.sym);
   }
   for (const k of Object.keys(relaxFiles)) relaxFiles[k].sort();
   for (const k of Object.keys(failByKind)) failByKind[k].sort();
+  const accepted = checked.filter(cronAccepted);
   return {
-    checked: checked.length, pass: checked.filter((e) => e.cronDiff.ok).length, fail: checked.filter((e) => !e.cronDiff.ok).map((e) => e.sym).sort(),
-    failByKind, formOnly: checked.filter((e) => e.cronDiff.ok && ((e.cronDiff.formParts || []).length || (e.cronDiff.formOnly || []).length)).map((e) => e.sym).sort(),
+    checked: checked.length, pass: accepted.filter((e) => e.cronDiff.ok).length, fail: checked.filter((e) => !cronAccepted(e)).map((e) => e.sym).sort(),
+    // ยอมรับทั้งที่ตัวเทียบไม่ผ่าน (v2-as-baseline ระยะ 3 Task 5 · หรือย้ายภายหลังนอกสำมะโน) — แยก bucket ไม่ปนกับ pass
+    baselined: accepted.filter((e) => !e.cronDiff.ok).map((e) => e.sym).sort(),
+    baselineDetail: accepted.filter((e) => !e.cronDiff.ok).sort((a, b) => a.sym.localeCompare(b.sym)).map((e) => ({
+      sym: e.sym, was: (e.v2Baseline && e.v2Baseline.was) || (e.migratedLater && e.migratedLater.was) || cronDiffReason(e.cronDiff),
+      how: e.v2Baseline ? 'v2-baseline' : 'ย้ายภายหลังนอกสำมะโน', sideWhy: (e.v2Baseline && e.v2Baseline.sideWhy) || e.cronDiff.sideWhy || '' })),
+    failByKind, formOnly: accepted.filter((e) => (e.cronDiff.formParts || []).length || (e.cronDiff.formOnly || []).length).map((e) => e.sym).sort(),
     // fix1 R1: ค่าต่างที่มีอยู่ก่อน patch ที่ตัวเทียบข้าม (migration ชั้น 1 ยอมรับ ≤ GAP_REL) — รายใบ + ค่ามากสุดที่พบ
     valueDiff: valueDiff.sort((a, b) => a.sym.localeCompare(b.sym)),
     valueDiffMaxPct: valueDiff.reduce((m, x) => Math.max(m, ...x.pairs.map((p) => p.relPct || 0)), 0),
     sec6Form: sec6Form.sort((a, b) => a.sym.localeCompare(b.sym)), otherForm: otherForm.sort(), retClass: retClass.sort(), relaxFiles,
-    failDetail: checked.filter((e) => !e.cronDiff.ok).sort((a, b) => a.sym.localeCompare(b.sym))
+    failDetail: checked.filter((e) => !cronAccepted(e)).sort((a, b) => a.sym.localeCompare(b.sym))
       .map((e) => ({ sym: e.sym, reason: e.reason, kinds: e.cronDiff.kinds, k: e.cronDiff.k, side: e.cronDiff.side || 'unknown', sideWhy: e.cronDiff.sideWhy || '',
         detail: (e.cronDiff.detail || []).join(' || ').slice(0, 400) })),
   };
@@ -1566,6 +1728,7 @@ function clauseMd(entries) {
 function finalSummaryMd(entries) {
   const okE = entries.filter((e) => e.ok);
   const res = entries.filter((e) => !e.ok);
+  const later = entries.filter((e) => e.migratedLater);
   const cronRes = res.filter((e) => /^cron-diff /.test(String(e.reason || '')));
   const byReason = new Map();
   for (const e of res) { const k = shortReason(e.reason); const v = byReason.get(k) || []; v.push(e.sym); byReason.set(k, v); }
@@ -1589,6 +1752,10 @@ function finalSummaryMd(entries) {
     '| ผล | ใบ |', '|---|---|',
     `| ย้ายเป็น v2 | **${okE.length}/${entries.length}** |`,
     `| residue (คง v1) | **${res.length}** = migrator ${res.length - cronRes.length} + cron-diff ${cronRes.length} |`,
+    // ★ ระยะ 3 Task 6: ใบที่รอบหลังย้ายไปโดยไม่ได้สั่ง --census (สำมะโนรู้จากไฟล์จริงตอนรีรัน ไม่ใช่จากผลการย้าย)
+    ...(later.length ? [`| ในนั้น: ย้ายภายหลังโดยรอบที่ไม่ได้บันทึกสำมะโน | **${later.length}** — ${later.map((e) => e.sym).sort().join(' ')} |`,
+      // ผลตามมาที่ต้องบอกเอง ไม่งั้น "ย้าย N" กับ "cron differential ตรวจ M" ของสองตารางกระทบยอดกันไม่ได้
+      `| ในนั้น: ไม่มีบันทึก cron differential (รอบที่ย้ายไม่ได้เขียนสำมะโน) | **${later.filter((e) => !e.cronDiff).length}** — ${later.filter((e) => !e.cronDiff).map((e) => e.sym).sort().join(' ') || '—'} |`] : []),
     `| แบตช์ที่บันทึก | ${[...byBatch.entries()].sort((a, b) => (parseInt(a[0], 10) || 0) - (parseInt(b[0], 10) || 0)).map(([k, v]) => `${k}:${v}`).join(' · ')} |`,
     '',
     '### residue ต่อชนิด (รายชื่อครบ — input ระยะ 3)',
@@ -1612,6 +1779,7 @@ function finalSummaryMd(entries) {
     // ★ แถวที่มาจาก --cron-diff มีได้ก็ต่อเมื่อรัน --cron-diff จริง (ไม่งั้น .md จะพูดถึงสิ่งที่ไม่เคยตรวจ)
     ...(cd.checked ? [
       `| cron differential: ตรวจ / ผ่าน / ตก | ${cd.checked} / ${cd.pass} / ${cd.fail.length} | ตก = ${cd.fail.join(' ') || '—'} (ไม่เขียน · รายละเอียดในหัวข้อด้านบน) |`,
+      `| ยอมรับทั้งที่ตัวเทียบไม่ผ่าน (v2-as-baseline / ย้ายภายหลัง) | ${(cd.baselined || []).length} | ${(cd.baselined || []).join(' ') || '—'} |`,
       `| ค่าต่างที่มีอยู่ก่อน patch (migration ยอมรับ) | ${vd.length} | มากสุด ${(cd.valueDiffMaxPct || 0).toFixed(2)}% · ${vd.map((x) => x.sym).join(' ')} |`,
       `| รูปทศนิยมหมวด 6 เปลี่ยน (เช่น 3.5→3) | ${cd.sec6Form.length} | รอเจ้าของตัดสินว่าเป็นรูปหรือค่า (นโยบายปัด fmtMos เดียว) · รายชื่อด้านล่าง |`,
     ] : []),
@@ -1635,8 +1803,14 @@ function cronDiffMd(cd) {
     'เทียบผล `patchReport` ของ v1 ต้นฉบับกับ v2 ที่ราคา/วันที่เดียวกัน: stock-meta (price/mos/upside/fairValue/pe/dividendYield) ·',
     'ตัวเลขที่มองเห็น · error/warning ของ gate — ใบที่ต่างนอกเหนือ "รูป" = residue (ไม่เขียน)',
     '',
-    '| ผล | ใบ |', '|---|---|', `| ตรวจ | ${cd.checked} |`, `| ผ่าน | ${cd.pass} |`, `| ตก (ไม่เขียน) | ${cd.fail.length} |`, `| ผ่านแต่ต่างแค่รูป | ${cd.formOnly.length} |`,
+    '| ผล | ใบ |', '|---|---|', `| ตรวจ | ${cd.checked} |`, `| ผ่าน | ${cd.pass} |`, `| ตก (ไม่เขียน) | ${cd.fail.length} |`,
+    `| ยอมรับทั้งที่ตัวเทียบไม่ผ่าน (v2-as-baseline / ย้ายภายหลัง) | ${(cd.baselined || []).length} |`, `| ผ่านแต่ต่างแค่รูป | ${cd.formOnly.length} |`,
     '',
+    ...((cd.baselined || []).length ? ['### ยอมรับทั้งที่ตัวเทียบไม่ผ่าน — `--v2-baseline` (ระยะ 3 Task 5) หรือย้ายภายหลังนอกสำมะโน', '',
+      'เกณฑ์ "v2 = v1" ใช้ไม่ได้เมื่อฝั่งที่ไม่นิ่งคือ v1 ⇒ แทนด้วย "v2 เองเสถียรบนกริดเดิม" (`v2Stability`) — เขียนแล้ว ไม่ใช่ residue',
+      '(คอลัมน์ "ทาง" = `v2-baseline` เมื่อรอบที่ย้ายบันทึกสำมะโนไว้เอง · `ย้ายภายหลังนอกสำมะโน` เมื่อรู้จากไฟล์จริงตอนรีรัน)', '',
+      '| ใบ | เหตุผลเดิมของตัวเทียบ | ทาง | ฝั่งที่ไม่นิ่ง |', '|---|---|---|---|',
+      ...(cd.baselineDetail || []).map((x) => `| ${x.sym} | \`${x.was}\` | ${x.how} | ${x.sideWhy || '—'} |`), ''] : []),
     '### ตกตามชนิด', '', '| ชนิด | ใบ | รายชื่อ |', '|---|---|---|',
     kinds.length ? kinds.map(([k, v]) => `| ${k} | ${v.length} | ${v.join(' ')} |`).join('\n') : '| — | 0 | |',
     '',
@@ -1712,13 +1886,53 @@ function mergeCensus(prevRaw, batch, entries, at) {
   //   ไม่งั้น last-write-wins ลบการเปิดเผยของใบที่ย้ายสำเร็จทิ้ง · ใบที่ไม่เคยมีแถวมาก่อนยังบันทึกตามปกติ
   for (const e of entries) {
     const old = bySym[e.sym];
-    if (old && e.reason === ALREADY_V2 && old.reason !== ALREADY_V2) continue;
+    if (old && e.reason === ALREADY_V2 && old.reason !== ALREADY_V2) {
+      if (old.ok) continue;                        // แถวเดิม = ใบที่ย้ายสำเร็จ (การเปิดเผยครบ) — คงไว้ตามเจตนาเดิมของ fix1 R9
+      // ★ ระยะ 3 Task 6: แถวเดิมเป็น **residue** แต่ไฟล์บนดิสก์เป็น v2 แล้ว ⇒ มีรอบหลังย้ายไปโดยไม่ได้สั่ง --census
+      //   (ระยะ 3 Task 2–5 ย้าย 18 ใบแบบนี้) · คงแถว residue ไว้ = สำมะโนรายงาน v1 มากกว่าความจริง (43 แทน 25)
+      //   ตัวเลขต้องมาจากไฟล์จริงเสมอ จึงพลิกเป็น "ย้ายแล้ว" พร้อมบันทึกเหตุผล residue เดิมไว้ใน `migratedLater`
+      //   ▸ การเปิดเผย (tokenised/literal/pyChanges) เก็บไว้ได้เฉพาะแถวที่ตกที่ **ชั้น cron differential** (มี `cronDiff`
+      //     ⇒ migrateOne ผ่าน ผลที่บันทึกตรงกับสิ่งที่เขียนจริง) · แถวที่ตกที่ **ชั้น migrator** บันทึกไว้จากความพยายาม
+      //     ที่ล้มเหลวด้วย migrator คนละรุ่น (ระยะ 3 แก้ตัวค้นหา site แล้ว) ⇒ ล้างทิ้ง ไม่เก็บของที่รู้ว่าไม่ตรงไฟล์
+      const keep = !!old.cronDiff;
+      bySym[e.sym] = Object.assign({}, old, keep ? {} : { tokenised: [], literal: [], pyChanges: [] }, {
+        ok: true, reason: null, batch, at,
+        migratedLater: { was: old.reason, batch: old.batch == null ? null : old.batch, at: old.at || null, keptDisclosure: keep },
+        notes: (keep ? old.notes || [] : []).concat([`ย้ายเป็น v2 ภายหลังโดยรอบที่ไม่ได้บันทึกสำมะโน (เหตุผล residue เดิม: ${old.reason})`
+          + (keep ? '' : ' · ล้างรายการ tokenised/literal/pyChanges ของความพยายามเดิมทิ้ง — migrator คนละรุ่น')]),
+      });
+      continue;
+    }
     bySym[e.sym] = Object.assign({}, e, { batch, at });
   }
   const batches = (prev.batches || []).filter((b) => b.batch !== batch);
   batches.push({ batch, at, syms: entries.map((e) => e.sym) });
   // สรุป cron differential คิดจาก bySym ทั้งก้อน (ไม่ใช่สะสมต่อแบตช์) ⇒ idempotent เหมือน bySym
   return { bySym, batches, cronDiff: summarizeCronDiff(Object.values(bySym)) };
+}
+
+/** `--v2-grid`: พิมพ์ผล `v2Stability` ต่อใบ (ใบที่ยังเป็น v1 → ทดสอบบน draft ของ migrateOne · ใบที่เป็น v2 แล้ว → ทดสอบไฟล์จริง) */
+function runV2Grid(files) {
+  let bad = 0;
+  for (const f of files) {
+    const sym = f.replace(/\.html$/i, '');
+    const src = fs.readFileSync(path.join(REPORTS_DIR, f), 'utf8');
+    const rd = RM.readReportData(src);
+    const already = rd.ok && RV.isV2(rd.data);
+    const r = already ? { ok: true, out: src } : migrateOne(src, f);
+    if (!r.ok) { bad++; console.log(`✗ ${sym}: อ่านฝั่ง v2 ไม่ได้ (migrateOne ไม่ผ่าน) — ${r.reason}`); continue; }
+    const s = v2Stability(r.out, f);
+    if (!s.ok) bad++;
+    const head = `${s.ok ? '✓' : '✗'} ${sym}${already ? ' (v2 อยู่แล้ว)' : ' (draft)'}: patch ${s.patched}/${s.points} จุด`
+      + (s.mosRange ? ` · MOS ${s.mosRange[0]} … ${s.mosRange[1]}` : '') + (s.warnIds.length ? ` · warning ${s.warnIds.join(',')}` : ' · warning 0');
+    console.log(head);
+    if (s.setup) console.log(`   setup: ${s.setup}`);
+    for (const m of s.throws.slice(0, 3)) console.log(`   throw: ${m}`);
+    for (const m of s.gateErr.slice(0, 3)) console.log(`   gate-error: ${m}`);
+    for (const m of s.dirViol.slice(0, 3)) console.log(`   ทิศทาง: ${m}`);
+  }
+  console.log(`\nv2-grid: เสถียร ${files.length - bad}/${files.length}`);
+  return bad ? 1 : 0;
 }
 
 function main(argv) {
@@ -1742,9 +1956,20 @@ function main(argv) {
   let files = fs.readdirSync(REPORTS_DIR).filter((f) => /\.html$/i.test(f)).sort();
   if (syms.length) files = files.filter((f) => syms.includes(f.replace(/\.html$/i, '').toUpperCase()));
   if (batch != null && size != null) files = files.slice(batch * size, (batch + 1) * size);
+  // ★ `--v2-grid` (ระยะ 3 Task 5) = โหมดวินิจฉัยอย่างเดียว อ่านไฟล์อย่างเดียว ไม่เขียน reports/ ไม่เขียน census
+  //   ⇒ ไม่ผ่านยาม `--write ต้องมาคู่กับ --cron-diff` เพราะไม่มีเส้นทางเขียนให้ข้าม
+  if (argv.includes('--v2-grid')) return runV2Grid(files);
+  // ★ `--v2-baseline` (ระยะ 3 Task 5): เปลี่ยนเกณฑ์ของ cron differential จาก "v2 = v1" เป็น "v2 เองเสถียร"
+  //   **เฉพาะใบที่ failSide ชี้ว่า v1 คือฝั่งที่ไม่นิ่ง** — บังคับให้ระบุชื่อใบเสมอ (ห้ามกวาดทั้งคลัง) ด้วยเหตุผลเดียวกับยาม M1:
+  //   เกณฑ์ที่ผ่อนแล้วกวาดทั้งคลังได้ = ใบที่ยังไม่มีใครดูจะถูกย้ายเงียบ ๆ · ต้องมาคู่ `--cron-diff` เพราะต้องมีผล cd ให้ดูฝั่ง
+  const v2Baseline = argv.includes('--v2-baseline');
+  if (v2Baseline && (!cronFlag || !syms.length)) {
+    console.log('✗ --v2-baseline ต้องมาคู่กับ --cron-diff และต้องระบุชื่อใบชัดเจน (ห้ามใช้กับการกวาดทั้งคลัง/--batch)');
+    return 1;
+  }
   const strict = argv.includes('--strict');
   const entries = [];
-  let ok = 0, cdFail = 0, cdForm = 0;
+  let ok = 0, cdFail = 0, cdForm = 0, cdBase = 0;
   const errors = [];
   const t0 = Date.now();
   for (const f of files) {
@@ -1756,14 +1981,19 @@ function main(argv) {
       // migrateOne จับ throw ข้างในเป็นเหตุผล "migrator ระเบิด" — เป็น residue ของ census แต่เป็น **ความผิดพลาด** ของการรัน (exit 1)
       if (!r.ok && /^migrator ระเบิด/.test(r.reason || '')) errors.push(`${sym}: ${r.reason}`);
       const cd = cronFlag && r.ok ? cronDiff(src, r.out, f) : null;
-      const plan = planWrite(sym, r, cd);
+      // เกณฑ์ v2-as-baseline คิดเฉพาะใบที่ cron differential ตกโดยฝั่ง v1 (ไม่เสียเวลา 61 จุดกับใบอื่น)
+      const stab = v2Baseline && cd && !cd.ok && cd.side === 'v1' ? v2Stability(r.out, f) : null;
+      const plan = planWrite(sym, r, cd, { v2Baseline, stab });
       entries.push(plan.entry);
-      if (cd && !cd.ok) cdFail++;
+      if (cd && !cd.ok) { if (plan.entry.v2Baseline) cdBase++; else cdFail++; }
       if (cd && cd.ok && (cd.formParts || []).length) cdForm++;
+      if (stab) console.log(`   v2-grid ${sym}: ${stab.ok ? 'เสถียร' : 'ไม่เสถียร'} ${stab.patched}/${stab.points} จุด`
+        + (stab.mosRange ? ` · MOS ${stab.mosRange[0]} … ${stab.mosRange[1]}` : '')
+        + [...stab.throws, ...stab.gateErr, ...stab.dirViol].slice(0, 2).map((m) => `\n     ${m}`).join(''));
       if (plan.write) {
         if (write) fs.writeFileSync(p, plan.out);
         ok++;
-        console.log(`✓ ${sym} (tokenised ${r.sites.tokenised.length}${r.sites.literal.length ? ' · literal ' + r.sites.literal.length + ': ' + [...new Set(r.sites.literal)].join(',') : ''})${cd ? ` · cron-diff ผ่าน ${cd.compared}/${cd.points} จุด${cd.formParts.length ? ' · รูป ' + cd.formParts.join(',') : ''}${cd.valueDiff.length ? ' · ค่าต่างก่อน patch ' + cd.valueDiff.length : ''}` : ''}`);
+        console.log(`✓ ${sym} (tokenised ${r.sites.tokenised.length}${r.sites.literal.length ? ' · literal ' + r.sites.literal.length + ': ' + [...new Set(r.sites.literal)].join(',') : ''})${cd ? (cd.ok ? ` · cron-diff ผ่าน ${cd.compared}/${cd.points} จุด` : ` · v2-baseline (เดิม ${cronDiffReason(cd)})`) + `${cd.formParts.length ? ' · รูป ' + cd.formParts.join(',') : ''}${cd.valueDiff.length ? ' · ค่าต่างก่อน patch ' + cd.valueDiff.length : ''}` : ''}`);
       } else console.log(`✗ ${sym}: ${plan.entry.reason}${cd && !cd.ok ? ' — ' + (cd.detail[0] || '') : ''}`);
     } catch (e) {
       // throw ของ cronDiff / อ่านหรือเขียนไฟล์ไม่ได้ — ไม่เขียนใบนั้น (ถ้ายังไม่เขียน) · บันทึกลง census · exit 1
@@ -1773,7 +2003,7 @@ function main(argv) {
     }
   }
   console.log(`\nรวม: ย้ายได้ ${ok}/${files.length}${write ? ' (เขียนแล้ว)' : ' (dry-run)'} · residue ${files.length - ok}`
-    + (cronFlag ? ` · cron-diff ตก ${cdFail} (ไม่เขียน) · ต่างแค่รูป ${cdForm} · ${((Date.now() - t0) / 1000).toFixed(1)} วิ` : ''));
+    + (cronFlag ? ` · cron-diff ตก ${cdFail} (ไม่เขียน)${cdBase ? ` · v2-baseline ${cdBase} (v1 ไม่นิ่ง + v2 เสถียร ⇒ เขียน)` : ''} · ต่างแค่รูป ${cdForm} · ${((Date.now() - t0) / 1000).toFixed(1)} วิ` : ''));
   if (census) {
     try {
       fs.mkdirSync(census, { recursive: true });
@@ -1799,10 +2029,23 @@ function exitCode({ errors, residue, strict }) {
   return strict && residue ? 1 : 0;
 }
 
+// ── ตัวค้นหา site (ระยะ 3 Task 2) ────────────────────────────────────────────
+/** regex ของ site ที่ระยะ 3 Task 2 แก้ความแม่นยำ — เปิดให้เทสยิงตรง (เจ้าของยังเป็นไฟล์นี้ไฟล์เดียว)
+ *  ★ `summary` ชี้ไปที่ `DV.SUMMARY_RE` ตัวจริง ไม่ใช่สำเนา — เทสจะได้ล้มเมื่อเจ้าของเปลี่ยน */
+const SITE_RE = { legend: LEGEND_RE, mFair: MFAIR_RE, vcellFv: VCELL_FV_RE, vcellFvRange: VCELL_FV_RANGE_RE, vcellTgt: VCELL_TGT_RE, get summary() { return DV.SUMMARY_RE; } };
+/** จำนวน/ผลการ match ของ site หนึ่งใน html — **ทางเดียวกับที่ `Tok.sub` ใช้** (glob เดิม) ไม่ใช่สำเนาตรรกะ
+ *  กติกาของ migrator คือ "ทุก site ต้อง match ครั้งเดียวพอดี" ⇒ เทสอ่าน `.length` ตัวนี้ได้ตรง ๆ */
+function siteHits(html, site) {
+  const re = SITE_RE[site];
+  if (!re) throw new Error(`ไม่รู้จัก site ${site}`);
+  return [...String(html).matchAll(glob(re))];
+}
+
 module.exports = {
-  migrateOne, extractValues, tokenise, buildRd, verifyPair, checkStripped, sameMoney, scnPyDiffs, scnPyCountGuard, pyCell, main, noteTailOf, tailHitsOtherSite, HINT_NOTE_TAIL_RE,
-  cronDiff, cronGate, CRON_GRID, CRON_META_KEYS, sameMetaForm, cronDateParts, visibleCronDiff, pyExplained, planWrite, summarizeCronDiff, unitForm,
-  failSide, cronDiffReason, exitCode, ALREADY_V2,
+  SITE_RE, siteHits,
+  migrateOne, extractValues, tokenise, buildRd, verifyPair, checkStripped, sameMoney, scnPyDiffs, scnPyCountGuard, pyCell, pyUnitCount, main, noteTailOf, tailHitsOtherSite, HINT_NOTE_TAIL_RE,
+  cronDiff, v2Stability, mosDirViolations, cronGate, CRON_GRID, CRON_META_KEYS, sameMetaForm, cronDateParts, visibleCronDiff, pyExplained, planWrite, summarizeCronDiff, unitForm,
+  failSide, cronDiffReason, exitCode, ALREADY_V2, cronAccepted,
   COPY_FIELDS, REQUIRED_SITES, TOLERANCE, GAP_REL, renderCensusMd, mergeCensus,
 };
 if (require.main === module) process.exit(main(process.argv.slice(2)));
