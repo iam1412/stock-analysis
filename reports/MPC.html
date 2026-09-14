@@ -12,6 +12,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 193,
+  "values": {
+    "px": 395.93,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 164,
+    "fvHigh": 244,
+    "eps": 15.32,
+    "shares": 291900000,
+    "dps": 3.91,
+    "bvps": 55.57,
+    "scenarios": [
+      {
+        "tgt": 111,
+        "div": 11.73
+      },
+      {
+        "tgt": 198,
+        "div": 11.73
+      },
+      {
+        "tgt": 298,
+        "div": 11.73
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#CC0000",
     "accentDark": "#990000",
@@ -43,18 +76,14 @@
     "min": 100,
     "max": 500,
     "grid": [200, 300, 400],
-    "fairLine": 193,
     "currency": "$",
     "highlight": [2, 11]
   },
   "gauge": {
     "min": 110,
     "max": 407,
-    "cur": 395.93,
-    "fair": 193,
     "fairLabelTop": true
-  },
-  "fv": 193
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +103,11 @@
     <div class="sub">Largest US independent refiner (~3.1M bbl/day, 16% US capacity) • MPLX LP midstream (~65% owned) • Speedway sold 2021 ($21B → buybacks) • Berkshire Hathaway holding • ~$25B+ returned via buybacks (share count −52% from 2021 peak) • Cyclical EPS (crack spread driven) • ~1.5% dividend yield</div>
     <div class="price-row">
       <div>
-        <div class="px">$395.93<small>(MPC)</small></div>
+        <div class="px">{{rd:px}}<small>(MPC)</small></div>
       </div>
-      <div class="chg">▲ +103.1% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $158.00 – $299.05<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, TIKR.com
       </div>
@@ -90,7 +119,7 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569 — EPS เป็นวัฏจักร (ขึ้นกับ crack spread)</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">$115.6B</div><div class="d">291.9M shares — ลดจาก 638M (2021)</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~25.8x</div><div class="d">EPS TTM $15.32 — cyclical, ดูค่า normalized</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM $15.32 — cyclical, ดูค่า normalized</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~9x</div><div class="d">ช่วง 4x (สูงสุด FY22) – 19x (ปัจจุบัน)</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">7.1x</div><div class="d">BVPS ~$55.57 — premium จาก buyback &amp; MPLX</div></div>
 
@@ -115,7 +144,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#CC0000"></i>ราคา MPC</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม (normalized) $193</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม (normalized) {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -145,8 +174,8 @@
         <div class="mval">$244</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value — Normalized)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $164 – $244</span></div>
-        <div class="r">$193</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value — Normalized)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>หมายเหตุสำคัญ:</b> EPS ของ MPC เป็น "วัฏจักร" (cyclical) สูงมากในปี FY2022 ($28/share crack $30+/bbl)
@@ -165,13 +194,13 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $395.93</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม (norm.) $193</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม (norm.) {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$135.1<br><small>MOS 30%</small></span>
-          <span>$154.4<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$193<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$285<br><small>เป้าเฉลี่ย Analyst</small></span>
           <span style="text-align:right">$320<br><small>กรอบบน</small></span>
         </div>
@@ -190,19 +219,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−105%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาสูงกว่ามูลค่าเหมาะสม (normalized) — ยังไม่มี Margin of Safety บนฐาน mid-cycle</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$154.4</div><div class="d">โซนน่าสนใจสำหรับ value investor</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$135.1</div><div class="d">โซนถูกมาก — ใกล้ trough crack spread FY2024</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $193</div><div class="d">ใกล้/ต่ำกว่า Fair Value (normalized)</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value investor</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก — ใกล้ trough crack spread FY2024</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่า Fair Value (normalized)</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="395.93" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -211,17 +240,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $395.93 • EPS ฐาน (normalized) ~$17.00 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน (normalized) ~$17.00{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −10%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$111</div>
-          <div class="ret neg">−72.0%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$12.39</span></li>
             <li><span>P/E ออก</span><span>9x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$11.73</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>Crack collapse + ซบเซา</span></li>
           </ul>
         </div>
@@ -229,12 +258,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +3%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$198</div>
-          <div class="ret neg">−50.0%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$18.58</span></li>
             <li><span>P/E ออก</span><span>10x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$11.73</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>Crack กลับ mid-cycle + buybacks</span></li>
           </ul>
         </div>
@@ -242,12 +271,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$298</div>
-          <div class="ret pos">−24.7%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$23.88</span></li>
             <li><span>P/E ออก</span><span>12x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$11.73</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Crack สูงยาว + buyback เร็ว + MPLX growth</span></li>
           </ul>
         </div>
@@ -297,8 +326,8 @@
       <h2>MPC — ธุรกิจยอดเยี่ยม แต่ราคาตลาดแพงกว่ามูลค่า normalized ถึง ~54%</h2>
       <p>Marathon Petroleum เป็นผู้กลั่นน้ำมันอิสระที่ใหญ่ที่สุดในสหรัฐฯ ด้วยโครงสร้างธุรกิจที่แข็งแกร่ง (MPLX สร้าง FCF ที่มั่นคง, buyback ลดหุ้น 52%, Berkshire backing) แต่ราคาปัจจุบัน $296.88 สูงกว่ามูลค่าเหมาะสมบนฐาน mid-cycle crack spread ($193) ประมาณ 54% สะท้อนว่าตลาดกำลัง pricing in crack spread ที่สูงผิดปกติจากวิกฤตอิหร่าน หากสถานการณ์คลี่คลาย ราคาจะกลับมาสู่ระดับ $180–220 Analyst consensus target $285 ต่ำกว่าราคาปัจจุบันเล็กน้อย (-3.8%) — นักลงทุนระยะยาวควรรอโซน &lt; $193 เพื่อ risk/reward ที่ดีกว่า</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม (normalized)</div><div class="v">$193 <span style="font-size:12px;color:#cab9a8">($164–$244)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −105%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม (normalized)</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$285 (Buy consensus)</div></div>
       </div>
       <div class="zone">
