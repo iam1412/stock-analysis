@@ -1193,6 +1193,24 @@ require('./parser-lint.js')(ok);
   ok(allIds(checkHtml(renderedOk, 'BBL.html')).has('E44'), 'E44: หน้าที่ render แล้ว + ไม่ส่ง opts.source → ยิง (นี่คือเหตุผลที่ gateCheck/migrate ต้องส่ง source)');
   ok(!allIds(checkHtml(renderedOk, 'BBL.html', { source: healed44.html })).has('E44'), 'E44: ส่ง source (ต้นฉบับที่เป็น token) → เงียบ');
 
+  // W24 (fix round 1 · finding 2): อ่าน footer ไม่ได้ = ตัดสินไม่ได้ ⇒ **ห้ามเงียบ** (CLAUDE.md §8 กฎข้อ 1)
+  // คลังจริงมีคลาสนี้ 12 ใบ (เดือนล้วน "มิถุนายน 2569" · ช่วงข้ามเดือน "31 ก.ค. – 2 ส.ค. 2026")
+  {
+    const ids = (h) => allIds(checkHtml(expandReport(h), 'BBL.html', { source: h }));
+    const setRaw = (h, txt) => h.replace(/(ข้อมูล\s*ณ\s*)\d{1,2}\s*[ก-๙.]+\s*\d{4}/, (m, a) => a + txt);
+    for (const [txt, why] of [['มิถุนายน 2569', 'เดือนล้วน'], ['31 ก.ค. – 2 ส.ค. 2026', 'ช่วงข้ามเดือน']]) {
+      const bad = setRaw(newSrc, txt);
+      ok(bad !== newSrc && footerDate(bad) === null, `W24: footer "${txt}" (${why}) → footerDate อ่านไม่ได้จริง`);
+      const set = ids(bad);
+      ok(set.has('W24') && !set.has('E44'), `W24: ${why} → W24 ยิงแทน E44 (ไม่เงียบทั้งคู่)`, [...set].join(','));
+    }
+    ok(!ids(oldSrc).has('W24') && !ids(newSrc).has('W24'), 'W24: footer อ่านได้ → เงียบ (ทั้งใบเก่า/ใบใหม่)');
+    const v1Bad = setRaw(base, 'มิถุนายน 2569');
+    ok(v1Bad !== base && !ids(v1Bad).has('W24'), 'W24: ใบ v1 ไม่แตะ (ไม่มี token ให้ใช้ ⇒ E44 ไม่เกี่ยว)');
+    ok(CHECKS.find((c) => c.id === 'W24').level === 'warn' && CHECKS.find((c) => c.id === 'W24').healer == null,
+      'W24: เป็น warn + ไม่มี healer (ยก E44 ให้ยิงแทน = บล็อก push ใบเก่า 11 ใบที่ประตูวันที่ตั้งใจยกเว้น)');
+  }
+
   // ทาง cron/heal (tools/update-prices.js) ต้องมีประตูวันที่เดียวกับ E44 เป๊ะ
   ok(UPp.proseTokensIfNew(newSrc, rdV2, smV2).changes.length === hits.length, 'E44: cron/heal (proseTokensIfNew) แปลงให้บนใบใหม่');
   ok(UPp.proseTokensIfNew(oldSrc, rdV2, smV2).changes.length === 0 && UPp.proseTokensIfNew(oldSrc, rdV2, smV2).html === oldSrc,

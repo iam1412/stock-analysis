@@ -856,12 +856,33 @@ const CHECKS = [
   { id: 'E44', level: 'error', healer: 'proseTokens', label: 'prose ของใบใหม่: ตัวเลขผูกราคาต้องเป็น {{rd:…}}', fn: (c) => {
     if (!c.v2) return null;                       // v1 = ไม่มี token ให้ใช้ (ใบเก่าทั้งหมด) → เงียบ
     const f = footerDate(c.source);
+    // อ่านวันที่ไม่ได้ = ตัดสินไม่ได้ → ข้ามที่นี่ แต่ **ไม่เงียบ**: W24 ข้างล่างฟ้องแทน (fix round 1 · finding 2)
     if (!f || f.iso < RV.PROSE_TOKEN_SINCE) return null;
     const hits = RV.proseBoundHits(c.source, c.dv);
     if (!hits.length) return null;
     return `prose ผูกราคา ${hits.length} จุด (ใบวิเคราะห์ ${f.iso} ≥ ${RV.PROSE_TOKEN_SINCE} ต้องเขียนเป็น {{rd:…}} ให้ build render): `
       + hits.slice(0, 3).map((h) => `${h.label} "${h.text}" → {{rd:${h.token}}}`).join(' · ')
       + (hits.length > 3 ? ` · (อีก ${hits.length - 3} จุด)` : '');
+  } },
+
+  // ── W24 (fix round 1 · finding 2): ประตูวันที่ของ E44 fail-open เมื่ออ่าน footer ไม่ได้ — ต้องไม่เงียบ ──
+  // CLAUDE.md §8 กฎข้อ (1): check ที่ดึงค่าด้วย regex ต้องฟ้องเมื่อ **หาไม่เจอ** ไม่ใช่ปล่อยผ่าน
+  // `footerDate()` คืน null เมื่อวันที่เป็นช่วงข้ามเดือน ("31 ก.ค. – 2 ส.ค. 2026") หรือเดือนล้วน ("มิถุนายน 2569")
+  // ⇒ ทั้ง E44 และตัวซ่อม (`proseTokensIfNew`) ข้ามไฟล์นั้นทั้งใบ (คลัง 14 ก.ย. 69: 12 ใบ · v2 11 ใบ)
+  // ★ **เป็น warn ไม่ใช่ error โดยจำเป็น ไม่ใช่เพื่อความสะดวก**: ยก E44 ให้ยิงบนใบอ่านวันที่ไม่ได้ =
+  //   บล็อก push ของ 11 ใบเก่าที่ประตูวันที่ตั้งใจยกเว้นไว้ตั้งแต่ต้น (ทั้ง 11 ใบเขียนวันที่ที่คนอ่านออกว่า
+  //   ก่อน SINCE ชัดเจน — ไม่มีอะไรถูกซ่อน) · ตัวกันของ "ใบใหม่จริง" อยู่ที่ `tools/queue/postcheck.js:49`
+  //   ซึ่งฟ้อง "อ่านวันที่ footer ไม่ได้" ทุกครั้งที่ re-analyze + โครง skeleton เขียนรูปที่ parse ได้อยู่แล้ว
+  // ★ **ห้ามขยาย FOOTER_RE เป็นของแถม** — เป็นตัวอ่านร่วมของ preflight(triage)/preserve-dates/postcheck
+  //   ขยายแล้ว 12 ใบนี้จะเปลี่ยน bucket ของรอบคิวทันที และ "เดือนล้วน" ต้องตัดสินเองว่าใช้วันที่ 1 หรือวันสุดท้าย
+  //   ⇒ แยกเป็น task ของตัวเอง (open-items #37)
+  { id: 'W24', level: 'warn', healer: null, label: 'footer "ข้อมูล ณ" อ่านไม่ได้ → E44 ตัดสินไม่ได้', fn: (c) => {
+    if (!c.v2 || footerDate(c.source)) return null;
+    const s = String(c.source), fi = s.lastIndexOf('<footer');
+    const raw = fi < 0 ? '(ไม่มี <footer>)' : ((s.slice(fi).match(/ข้อมูล\s*ณ[^<•]{0,40}/) || ['(ไม่มีวลี "ข้อมูล ณ")'])[0]).trim();
+    const n = RV.proseBoundHits(s, c.dv).length;
+    return `อ่านวันที่วิเคราะห์จาก footer ไม่ได้ — "${raw}" ⇒ E44 ตัดสินไม่ได้ว่าเป็นใบใหม่ (ข้ามทั้งใบ) · ใบนี้มี prose ผูกราคา ${n} จุด`
+      + ' · แก้เป็นวันที่เดียวที่ parse ได้ ("14 ก.ย. 2569") — ช่วงข้ามเดือน/เดือนล้วน ตัวอ่านไม่รับ';
   } },
 
   // ── W21/W22/W23 (ระยะ 1 WS1 ข้อ 2): manifest ทำให้ "เงียบ" ไม่เท่ากับ "สะอาด" อีกต่อไป ──

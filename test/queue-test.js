@@ -979,7 +979,7 @@ catch (e) { nFail++; console.error('✗ earnings-calendar-test ระเบิ�
     const savedToday = process.env.STALE_TODAY;
     process.env.STALE_TODAY = FXq.TODAY;
     let ids;
-    try { ids = checkHtml(expandReport(out), 'AAPL.html').errors.map((e) => e.id); } finally { if (savedToday === undefined) delete process.env.STALE_TODAY; else process.env.STALE_TODAY = savedToday; }
+    try { ids = checkHtml(expandReport(out), 'AAPL.html', { source: out }).errors.map((e) => e.id); } finally { if (savedToday === undefined) delete process.env.STALE_TODAY; else process.env.STALE_TODAY = savedToday; }
     ok(!ids.includes('E30') && !ids.includes('E31'), 'F4 --set fv=300: checkHtml(expandReport) ไม่มี E30/E31', ids.join(','));
     // --del บน v2 ก็รันกระจก (ค่าสุดท้ายหลังทุก op) · --set-meta คีย์กระจกอื่นบน v2 ถูกปฏิเสธ · คีย์ไม่ใช่กระจก (pe) ใช้ได้
     const tmp2 = writeTmp('mirror-del.html', src.replace(/("mos":)(-?[0-9.]+)/, '$199'));

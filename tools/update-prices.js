@@ -513,7 +513,7 @@ function patchReport(html, p) {
     //   · ก่อน derivedPassV2 ⇒ token ที่เพิ่งวางลงไปเข้าไปอยู่ใน spans ของ pass นั้นด้วย (ได้สิทธิ์ "token ชนะ")
     //     และเพราะ proseTokens เป็น render-neutral (มี tripwire ในตัว) `view` ที่ pass สร้างและส่งให้ keepMap
     //     จึงเป็นสตริงเดิมทุกไบต์ — สิ่งที่ keep-map เทียบ/การันตีไม่เปลี่ยน มีแต่ช่วงที่ถูก token คุ้มครองเพิ่มขึ้น
-    // ★ จำกัดที่ "ใบใหม่" (footer ≥ PROSE_TOKEN_SINCE) = ขอบเขตเดียวกับ E44 เป๊ะ — ไม่ไล่แปลงคลังเก่า 1,533 จุด
+    // ★ จำกัดที่ "ใบใหม่" (footer ≥ PROSE_TOKEN_SINCE) = ขอบเขตเดียวกับ E44 เป๊ะ — ไม่ไล่แปลงคลังเก่า 1,534 จุด
     //   ใน 550 ใบกลางดึกโดยไม่มีใครรีวิว (fix-on-touch ของใบเก่าเป็นงานระยะ 3 ตามที่ W23 ประกาศไว้)
     const pt = proseTokensIfNew(out2, rd, sm);
     const dv2 = derivedPassV2(pt.html, rd.values.px, { prevPriceDate });
