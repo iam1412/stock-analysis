@@ -10,6 +10,20 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 185,
+  "values": {
+    "px": 125.13,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 172,
+    "fvHigh": 189,
+    "eps": 4.43,
+    "shares": 29200000,
+    "dps": 1.54,
+    "bvps": 23.39
+  },
   "theme": {
     "accent": "#0057A4",
     "accentDark": "#003D75",
@@ -41,17 +55,13 @@
     "min": 100,
     "max": 200,
     "grid": [120, 140, 160, 180],
-    "fairLine": 185,
     "currency": "$",
     "highlight": [0, 6]
   },
   "gauge": {
     "min": 100,
-    "max": 210,
-    "cur": 125.13,
-    "fair": 185
-  },
-  "fv": 185
+    "max": 210
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -71,11 +81,11 @@
     <div class="sub">US #1 ผู้ผลิตมิเตอร์น้ำ · Smart AMI meters (ORION platform) · Flow measurement &amp; water quality · 31+ yr Dividend Aristocrat · EPA/infrastructure-driven replacement cycle · Milwaukee WI</div>
     <div class="price-row">
       <div>
-        <div class="px">$125.13<small>(BMI)</small></div>
+        <div class="px">{{rd:px}}<small>(BMI)</small></div>
       </div>
-      <div class="chg">▼ −30.7% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $112.09 – $249.56<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, Macrotrends
       </div>
@@ -86,8 +96,8 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">$3.65B</div><div class="d">~29.2M shares diluted</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~28.2x</div><div class="d">EPS TTM $4.43 (GAAP)</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">~29.2M shares diluted</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM $4.43 (GAAP)</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~45x</div><div class="d">ช่วง 35–58x (premium franchise)</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">5.3x</div><div class="d">BVPS $23.39 (TTM)</div></div>
 
@@ -112,7 +122,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#0057A4"></i>ราคา BMI</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $185</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -138,8 +148,8 @@
         <div class="mval">$172</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $172 – $189</span></div>
-        <div class="r">$185</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         ทั้ง 3 วิธีให้ FV อยู่ในช่วงแคบ $172–$189 สะท้อนความสอดคล้องกันดี P/E ให้ค่า $186 เพราะ BMI เป็น premium compounder EV/EBITDA ให้ $189 ยืนยันคุณภาพธุรกิจที่ market premium สมเหตุสมผล P/FCF ให้ $172 เพราะใช้ตัวคูณอนุรักษ์นิยม ค่ากลาง $185 เหมาะสำหรับนักลงทุนที่เน้น conservative margin of safety
@@ -153,14 +163,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $125.13</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $185</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$130<br><small>MOS 30%</small></span>
-          <span>$148<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$185<br><small>Fair Value</small></span>
-          <span style="text-align:right">$189<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$210<br><small>Bull target</small></span>
         </div>
       </div>
@@ -174,19 +184,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict good">
-        <div class="big">+32%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">โซนน่าสนใจ — ราคาต่ำกว่า Fair Value พอมีส่วนเผื่อ เหมาะทยอยสะสม</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$148</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$130</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $185</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="125.13" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -277,8 +287,8 @@
       <h2>BMI — คุณภาพสูง ราคาต่ำกว่า FV ~18% น่าทยอยสะสม</h2>
       <p>Badger Meter คือ near-monopoly ในตลาด US municipal water metering ที่มี moat ยาวนาน ขับเคลื่อนโดย AMI smart meter replacement cycle หลายทศวรรษ ราคาปัจจุบัน $150.98 ต่ำกว่า Fair Value $185 ราว 18% เป็นผลจากการ de-rating ชั่วคราวเรื่อง tariff และ Q1/2026 EPS ที่ชะลอ ไม่ใช่ปัญหาเชิงโครงสร้าง Dividend Aristocrat 31+ ปีบวกกับ base case ผลตอบแทน ~60% ใน 3 ปี ทำให้น่าทยอยสะสมในโซนปัจจุบัน</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$185 <span style="font-size:12px;color:#cab9a8">($172–$189)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +32%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$150.44 (Buy — 13 analysts)</div></div>
       </div>
       <div class="zone">
@@ -291,7 +301,7 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลราคา: Yahoo Finance API (11 ก.ย. 2569) · ข้อมูลพื้นฐาน: StockAnalysis.com · ข้อมูลเพิ่มเติม: Macrotrends
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลราคา: Yahoo Finance API ({{rd:priceDate}}) · ข้อมูลพื้นฐาน: StockAnalysis.com · ข้อมูลเพิ่มเติม: Macrotrends
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 1 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

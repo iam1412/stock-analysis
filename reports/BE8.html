@@ -10,6 +10,18 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 6.5,
+  "values": {
+    "px": 5.3,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 4.63,
+    "fvHigh": 9,
+    "shares": 264700000,
+    "bvps": 10.37
+  },
   "theme": {
     "accent": "#7b1fa2",
     "accentDark": "#4a148c",
@@ -41,18 +53,14 @@
     "min": 4,
     "max": 7,
     "grid": [5, 6],
-    "fairLine": 6.5,
     "currency": "฿",
     "highlight": [1, 9],
     "gridFmt": "v.toFixed(2)"
   },
   "gauge": {
     "min": 3,
-    "max": 10,
-    "cur": 5.3,
-    "fair": 6.5
-  },
-  "fv": 6.5
+    "max": 10
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +80,11 @@
     <div class="sub">ที่ปรึกษา Digital Transformation ครบวงจร • CRM (Salesforce Summit Partner) • Data Analytics (Google Cloud, Tableau) • AI Platform "PRISM" • MuleSoft Integration • ASEAN Expansion</div>
     <div class="price-row">
       <div>
-        <div class="px">฿5.30<small>(BE8)</small></div>
+        <div class="px">{{rd:px}}<small>(BE8)</small></div>
       </div>
-      <div class="chg">▲ +1.9% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿4.10 – ฿8.00<br>
         ที่มา: SET.or.th · beryl8.com/investor-relations · Settrade PDF (Q1/69) · Liberator.co.th
       </div>
@@ -88,7 +96,7 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ไตรมาส 1/2569 และปีงบการเงิน 2568</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~฿1,403 ล้าน</div><div class="d">264.7 ล้านหุ้น · MAI</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.51x</div><div class="d">BVPS ~฿10.37 · ใกล้ Book</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ~฿10.37 · ใกล้ Book</div></div>
       <div class="metric"><div class="k">Revenue FY2568</div><div class="v neu">฿2,391 ล้าน</div><div class="d">ลดลง −5.8% YoY</div></div>
       <div class="metric"><div class="k">EPS FY2568</div><div class="v neg">฿0.21</div><div class="d">ลดลงจาก ฿0.58 (FY2567)</div></div>
 
@@ -113,7 +121,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#7b1fa2"></i>ราคา BE8</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿6.50</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -139,8 +147,8 @@
         <div class="mval">฿9.00</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿4.63 – ฿9.00</span></div>
-        <div class="r">฿6.50</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/Sales (฿5.87) สะท้อนปัจจุบัน — วิธี Justified P/BV (฿4.63) อนุรักษ์นิยม เน้นว่า ROE ต้องฟื้น — วิธี Recovery P/E (฿9.00) สะท้อน upside หาก backlog ฿1,800 ล้านแปลงรายได้สำเร็จ มูลค่าเฉลี่ย (5.87+4.63+9.00)/3 = ฿6.50 สอดคล้องกับ Liberator HOLD ฿5.80 และกรอบล่าง broker ฿7.70
@@ -154,15 +162,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿5.30</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿6.50</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿4.55<br><small>MOS 30%</small></span>
-          <span>฿5.20<br><small>MOS 20%</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">฿5.80<br><small>Liberator HOLD</small></span>
-          <span style="text-align:right">฿6.50<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿9.00<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -175,19 +183,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+18%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS ระดับปานกลาง — ผ่านเกณฑ์ขั้นต่ำ 10% แล้วแต่ยังไม่ถึงโซนถูกมาก รอโซน MOS 20% (฿5.20) ก่อนเพิ่มน้ำหนักเต็มที่</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿5.20</div><div class="d">โซนน่าสนใจสำหรับ value investor</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿4.55</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿6.50</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value investor</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="5.3" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -279,8 +287,8 @@
       <h2>BE8 — ราคาแพงกว่ามูลค่าเหมาะสมเล็กน้อย รอสัญญาณ margin ฟื้นก่อนเพิ่มน้ำหนัก</h2>
       <p>เบริล 8 พลัส เป็นผู้นำ Digital Consulting ในไทยด้วย Salesforce Summit Partnership ที่ตัวเดียว และ backlog ฿1,800 ล้านที่แข็งแกร่ง แต่กำลังเผชิญแรงกดดันด้าน margin รุนแรงจากต้นทุนที่พุ่งในช่วงเปลี่ยนผ่านโมเดลธุรกิจ ราคาปัจจุบัน ฿6.75 อยู่เหนือ FV ฿6.50 เล็กน้อย (MOS ~ −3.8%) ยังไม่ถึงโซน deep value ที่ ฿5.20 (MOS 20%) หรือ ฿4.55 (MOS 30%) กรอบ FV อยู่ที่ ฿4.63–฿9.00 ผลประกอบการ H2/2569 จะเป็นตัวชี้ขาดว่า margin ฟื้นตัวจริงหรือเป็น structural problem</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿6.50 <span style="font-size:12px;color:#cab9a8">(฿4.63–฿9.00)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffab91">MOS ~ +18%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffab91">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿5.80 (Liberator: HOLD)</div></div>
       </div>
       <div class="zone">

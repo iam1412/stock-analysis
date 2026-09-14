@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 43.5,
+  "values": {
+    "px": 52.25,
+    "priceDate": "2026-09-14",
+    "dateEra": "CE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 34,
+    "fvHigh": 50,
+    "shares": 1000000000,
+    "dps": 1.3,
+    "bvps": 14.74,
+    "baseEps": 2.17,
+    "scenarios": [
+      {
+        "tgt": 32.6,
+        "div": 3.6
+      },
+      {
+        "tgt": 51.7,
+        "div": 4
+      },
+      {
+        "tgt": 73.2,
+        "div": 4.5
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#b98413",
     "accentDark": "#86600e",
@@ -41,7 +74,6 @@
     "min": 35,
     "max": 60,
     "grid": [40, 45, 50, 55],
-    "fairLine": 43.5,
     "currency": "฿",
     "highlight": [6, 10],
     "dataFmt": "d[1].toFixed(2)"
@@ -49,11 +81,8 @@
   "gauge": {
     "min": 28,
     "max": 62,
-    "cur": 52.25,
-    "fair": 43.5,
     "fairLabelTop": true
-  },
-  "fv": 43.5
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -73,11 +102,11 @@
     <div class="sub">เครื่องดื่มชูกำลัง "คาราบาวแดง" • ส่งออก CLMV / จีน / UK (แบรนด์ฟุตบอล Carabao) • ค้าปลีก "ถูกดี มีมาตรฐาน" • บรรจุภัณฑ์อะลูมิเนียม/แก้ว ครบวงจร</div>
     <div class="price-row">
       <div>
-        <div class="px">฿52.25<small>(CBG)</small></div>
+        <div class="px">{{rd:px}}<small>(CBG)</small></div>
       </div>
-      <div class="chg">▲ +16.1% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2026 (ปิดล่าสุด)<br>
+        ราคา ณ {{rd:priceDate}} (ปิดล่าสุด)<br>
         กรอบ 52 สัปดาห์ ฿32.75 – ฿62.00<br>
         ที่มา: StockAnalysis.com • TradingView • Yahoo Finance • Investing.com
       </div>
@@ -100,7 +129,7 @@
 
       <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿20.4 พันล้าน</div><div class="d">+3.8% YoY (FY2025)</div></div>
       <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~24.6–28%</div><div class="d">1Q26 หด → 26% • 2Q26F ~24.6% (KKPS) จากต้นทุนอลูมิเนียม/ก๊าซพุ่ง</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.5%</div><div class="d">DPS ~฿1.30 • payout ~60–65% (yield ลดเพราะราคาขึ้น)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">DPS ~฿1.30 • payout ~60–65% (yield ลดเพราะราคาขึ้น)</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">~0.52</div><div class="d">ผันผวนต่ำกว่าตลาด</div></div>
     </div>
   </section>
@@ -114,7 +143,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#e8a921"></i>ราคา CBG</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿43.5</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -140,8 +169,8 @@
         <div class="mval">฿36.85</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿34 – ฿50</span></div>
-        <div class="r">฿43.5</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/E ให้ค่าสูงสุด (฿49.9) เพราะให้เครดิตแบรนด์เครื่องดื่มชั้นนำและมุมมองโบรกเกอร์ที่ดีขึ้น ส่วน DDM (฿34.1) และ Justified P/BV (฿36.85) ต่ำกว่าเพราะ ROE/ปันผลปัจจุบันยังถูกกดจากกำไรที่หดตัว (ยังไม่มีตัวเลขจริงยืนยันการฟื้นตัว) — FV กลางถ่วงน้ำหนัก P/E ~55% / Justified P/BV ~25% / DDM ~20% = <b>฿43.5</b> (เพิ่มจาก ฿42.3 เดิม) ซึ่ง<b>ต่ำกว่าราคาตลาด ฿51.50 ถึง ~18%</b> — ราคาวิ่งนำหน้าไปมากกว่าที่วิธีประเมินแบบอนุรักษ์นิยมนี้จะรองรับ แม้แต่เป้าเฉลี่ยนักวิเคราะห์ (StockAnalysis.com ~฿47.23) ก็ยังต่ำกว่าราคาตลาดปัจจุบัน
@@ -155,15 +184,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿52.25</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿43.5</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿30.45<br><small>MOS 30%</small></span>
-          <span>฿34.80<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿43.5<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">฿47.23<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">฿50<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -176,19 +205,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−20%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาปัจจุบัน <b>สูงกว่ามูลค่าเหมาะสมชัดเจน</b> หลังรีบาวด์แรง ~18% ในเดือนเดียว — ไม่มี Margin of Safety ในมุม value (เทรดแพงกว่ามูลค่าประเมิน ~18%) ควรรอราคาย่อเข้าโซน ฿34–35 หรือต่ำกว่าจึงจะมีส่วนเผื่อความปลอดภัย</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿34.80</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿30.45</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿43.5</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="52.25" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -197,17 +226,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿52.25 • EPS ฐาน ~฿2.17 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −2%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿32.6</div>
-          <div class="ret neg">−30.7%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿2.04</span></li>
             <li><span>P/E ออก</span><span>16x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿3.6</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>กำไรหดต่อ, ต้นทุนอลูมิเนียม/ก๊าซกดมาร์จิ้น, ส่งออกซบ, ราคาย่อ de-rate กลับ</span></li>
           </ul>
         </div>
@@ -215,12 +244,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +6%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿51.7</div>
-          <div class="ret pos">+6.6%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿2.58</span></li>
             <li><span>P/E ออก</span><span>20x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿4.0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>กำไรฟื้นตามฤดูกาล, ในประเทศโต แต่ราคาปัจจุบันสะท้อนไปมากแล้ว</span></li>
           </ul>
         </div>
@@ -228,12 +257,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿73.2</div>
-          <div class="ret pos">+48.7%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿3.05</span></li>
             <li><span>P/E ออก</span><span>24x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿4.5</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>ส่งออก+ถูกดี ทำกำไรเกินคาด, broker re-rate ต่อ (เช่น KKPS เป้า ฿59)</span></li>
           </ul>
         </div>
@@ -281,8 +310,8 @@
       <h2>แบรนด์แข็ง แต่ราคาวิ่งนำหน้าไปมากแล้ว — รอสัญญาณกำไรจริงยืนยัน</h2>
       <p>CBG เป็นแบรนด์เครื่องดื่มชูกำลังชั้นนำที่มี moat และตลาดในประเทศเริ่มฟื้น แต่กำไรยังหดตัว YoY ต่อเนื่อง (FY2025 −18%, 1Q26 −20%, KGI คาด 2Q26 ยัง −20% YoY) จากมาร์จิ้นถูกบีบ (อลูมิเนียม/ก๊าซ +12–15% QoQ) และส่งออก CLMV ที่ทรุด ราคาหุ้นรีบาวด์แรง ~18% ในเดือนเดียวจากโบรกเกอร์ปรับเพิ่มคำแนะนำ/ราคาเป้าหมาย (KGI, KKPS) บนความคาดหวังการฟื้นตัวของกำไรปี 2569–71 — แต่เป็นการ re-rate ล่วงหน้า ราคาปัจจุบัน ฿51.50 เทรด<b>สูงกว่ามูลค่าเหมาะสม ฿43.5 ถึง ~18%</b> (แพงกว่าแม้แต่เป้าเฉลี่ยนักวิเคราะห์ ~฿47.23) จึง<b>ยังไม่มี Margin of Safety</b> เหมาะกับการเฝ้ารอราคาย่อเข้าโซน ฿34–35 หรือรอกำไร 2Q/2569 ออกมายืนยันการฟื้นตัวจริงก่อนสะสม</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿43.5 <span style="font-size:12px;color:#cab9a8">(฿34–฿50)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −20%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿47.23 (Buy, ต่ำกว่าราคาตลาด)</div></div>
       </div>
       <div class="zone">

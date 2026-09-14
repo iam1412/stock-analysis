@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 1065,
+  "values": {
+    "px": 1079.65,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 986,
+    "fvHigh": 1125,
+    "shares": 165000000,
+    "dps": 22.92,
+    "bvps": 364.87,
+    "baseEps": 51.15,
+    "scenarios": [
+      {
+        "tgt": 1066,
+        "div": 68.76
+      },
+      {
+        "tgt": 1498,
+        "div": 73.68
+      },
+      {
+        "tgt": 1945,
+        "div": 79.02
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#aa8a33",
     "accentDark": "#826213",
@@ -41,18 +74,14 @@
     "min": 900,
     "max": 1200,
     "grid": [950, 1000, 1050, 1100, 1150],
-    "fairLine": 1065,
     "currency": "$",
     "highlight": [8, 10]
   },
   "gauge": {
     "min": 700,
     "max": 1450,
-    "cur": 1079.65,
-    "fair": 1065,
     "fairLabelTop": true
-  },
-  "fv": 1065
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +101,11 @@
     <div class="sub">ผู้จัดการสินทรัพย์รายใหญ่ที่สุดในโลก (~$13.9T AUM) • iShares ETF franchise • Active fixed income • Alternatives (GIP infrastructure, HPS credit, Preqin data) • Aladdin technology platform</div>
     <div class="price-row">
       <div>
-        <div class="px">$1,079.65<small>(BLK)</small></div>
+        <div class="px">{{rd:px}}<small>(BLK)</small></div>
       </div>
-      <div class="chg">≈ ทรงตัว (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $917.39 – $1,219.94<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, BlackRock IR (SEC 8-K Q2 2026)
       </div>
@@ -94,7 +123,7 @@
 
       <div class="metric"><div class="k">EPS Adj. (TTM)</div><div class="v">~$51.15</div><div class="d">Q3'25 $11.55 + Q4'25 $13.16 + Q1'26 $12.53 + Q2'26 $13.91</div></div>
       <div class="metric"><div class="k">P/E (Adj. TTM)</div><div class="v neu">~21.4x</div><div class="d">Forward P/E FY2026E: ~20.2x · ประวัติ ~20-24x</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v">~2.96x</div><div class="d">BVPS $364.87 (Q1'26) · Justified P/BV ~1.6x</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v">~{{rd:pbv}}x</div><div class="d">BVPS $364.87 (Q1'26) · Justified P/BV ~1.6x</div></div>
       <div class="metric"><div class="k">ROE (TTM)</div><div class="v pos">~23.2%</div><div class="d">สูงจาก Q2 beat + performance fees · normalized ~13-14%</div></div>
 
       <div class="metric"><div class="k">เงินปันผล (Fwd.)</div><div class="v">~2.12%</div><div class="d">$22.92/ปี · $5.73/ไตรมาส · เติบโต 16 ปีต่อเนื่อง</div></div>
@@ -113,7 +142,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#C9A84C"></i>ราคา BLK</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $1,065</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -142,8 +171,8 @@
         <div class="mval">$986</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $986 – $1,125</span></div>
-        <div class="r">$1,065</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         ทั้ง 3 วิธีให้ค่าใกล้เคียงกันที่ $986–$1,125 (avg. $1,065) ซึ่งสะท้อนว่า BLK ซื้อขายใกล้ FV หลังราคาพุ่งขึ้นแรงจาก Q2 beat
@@ -161,13 +190,13 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $1,079.65</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $1,065</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$746<br><small>MOS 30%</small></span>
-          <span>$852<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$1,065<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$1,200<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$1,450<br><small>เป้าสูง Analyst</small></span>
         </div>
@@ -185,19 +214,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−1.4%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS ต่ำ — ราคาใกล้เคียง FV มาก แทบไม่มีส่วนเผื่อ</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$852</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$746</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $1,065</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="1079.65" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -206,17 +235,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $1,079.65 • EPS ฐาน ~$51.15 adj. • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} adj.{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$1,066</div>
-          <div class="ret neg">-1.3%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$59.22</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$68.76</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>AUM growth ชะลอ fee pressure หลัง re-rate ขึ้นมาแรง</span></li>
           </ul>
         </div>
@@ -224,12 +253,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +10%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$1,498</div>
-          <div class="ret pos">+38.7%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$68.08</span></li>
             <li><span>P/E ออก</span><span>22x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$73.68</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>Synergies เต็มที่ + AUM ไป $18T+</span></li>
           </ul>
         </div>
@@ -237,12 +266,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$1,945</div>
-          <div class="ret pos">+80.2%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$77.79</span></li>
             <li><span>P/E ออก</span><span>25x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$79.02</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Alts + Aladdin ดัน margin expansion เกิน 47%</span></li>
           </ul>
         </div>
@@ -292,8 +321,8 @@
       <h2>BlackRock — ผู้จัดการสินทรัพย์ที่ยิ่งใหญ่ที่สุดในโลก ซื้อขายใกล้ Fair Value</h2>
       <p>BLK เป็น franchise ระดับโลกที่หาได้ยากมาก: ครอง #1 ETF (iShares), #1 risk platform (Aladdin), และกำลังขยายสู่ alternative assets ผ่าน 3 M&amp;A ใหญ่ใน 12 เดือน (GIP, HPS, Preqin) ทำให้ครบ "solutions-era asset management" ทั้ง passive + active + alts + tech ใน platform เดียว ราคาพุ่งขึ้น +6.6% หลังรายงาน Q2 2026 เกินคาด (AUM record $15.34T, adj. EPS $13.91 beat +$1.21) แล้วขึ้นต่อแตะ $1,098.84 อยู่เหนือ FV $1,065 เล็กน้อย ~3.2% (P/E adj. TTM 21.4x เทียบประวัติ 20-24x) ไม่ถูกไม่แพง ความเสี่ยงหลักคือ market-beta สูง (Beta 1.43), ROE TTM ที่พุ่งขึ้นอาจไม่ยั่งยืน และ integration risk จาก 3 ดีลใหญ่ แต่ผลตอบแทนระยะยาวแข็งแกร่งหากซื้อในโซนเหมาะสม</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$1,065 <span style="font-size:12px;color:#cab9a8">($986–$1,125)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −1.4%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$1,281 (Buy)</div></div>
       </div>
       <div class="zone">

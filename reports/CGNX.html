@@ -22,6 +22,38 @@
 -->
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 50,
+  "values": {
+    "px": 64.22,
+    "priceDate": "2026-09-11",
+    "dateEra": "CE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 46.72,
+    "fvHigh": 53.28,
+    "shares": 166420000,
+    "dps": 0.34,
+    "baseEps": 1.48,
+    "scenarios": [
+      {
+        "tgt": 44.7,
+        "div": 1
+      },
+      {
+        "tgt": 67.5,
+        "div": 1.1
+      },
+      {
+        "tgt": 130.2,
+        "div": 1.2
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#0f9f8d",
     "accentDark": "#0b7568",
@@ -52,17 +84,13 @@
     "min": 30,
     "max": 80,
     "grid": [40, 50, 60, 70],
-    "fairLine": 50,
     "currency": "$",
     "highlight": [2, 8]
   },
   "gauge": {
     "min": 30,
-    "max": 80,
-    "cur": 64.22,
-    "fair": 50
-  },
-  "fv": 50
+    "max": 80
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -83,14 +111,14 @@
     <div class="sub">Machine Vision Systems • AI-Powered Inspection (OneVision) • Industrial & Logistics Automation • Robotics Guidance</div>
     <div class="price-row">
       <div>
-        <div class="px">$64.22<small>(CGNX)</small></div>
+        <div class="px">{{rd:px}}<small>(CGNX)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
            รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
-      <div class="chg">▲ +55.2% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ ปิดตลาด 11 ก.ย. 2026 (16:00 EDT)<br>
+        ราคา ณ ปิดตลาด {{rd:priceDate}} (16:00 EDT)<br>
         กรอบ 52 สัปดาห์ $32.55 – $72.88<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, stockanalysis.com/financials
       </div>
@@ -133,7 +161,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#20ead1"></i>ราคา CGNX</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $50.00</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -159,8 +187,8 @@
       </div>
 
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $46.72 – $53.28</span></div>
-        <div class="r">$50.00</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <!-- ✏️ หมายเหตุ: วิธีไหนให้ค่าสูง/ต่ำเพราะอะไร, ทำไม FV กลางจึงสมเหตุสมผล -->
@@ -175,14 +203,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $64.22</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $50.00</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$35.00<br><small>MOS 30%</small></span>
-          <span>$40.00<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$50.00<br><small>Fair Value</small></span>
-          <span style="text-align:right">$53.28<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$77.40<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -197,19 +225,19 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
-      <div class="mos-verdict bad">
-        <div class="big">−28%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>ไม่มี Margin of Safety (ราคาแพงกว่ามูลค่าเหมาะสม)</b><br>ราคาปัจจุบัน $66.80 สูงกว่ามูลค่าเหมาะสม $50.00 ราว 34% สะท้อนตลาดกำลังจ่ายพรีเมียมสำหรับธีม AI-vision/หุ่นยนต์และแนวโน้มฟื้นตัวของกำไร นักลงทุนสาย value ควรรอปรับฐานหรือทยอยสะสมเฉพาะโซนราคาต่ำกว่า Fair Value</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$40.00</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$35.00</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $50.00</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="64.22" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -218,17 +246,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $64.22 • EPS ฐาน ~$1.48 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$44.70</div>
-          <div class="ret neg">−28.8% (3 ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$1.86</span></li>
             <li><span>P/E ออก</span><span>24x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$1.00</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>Capex การผลิตทั่วโลกชะลอ ดีมานด์ automotive/สมาร์ทโฟนอ่อนแรง กระแส AI-vision แผ่วลง P/E คลายพรีเมียมกลับสู่โซนวัฏจักรปกติ</span></li>
           </ul>
         </div>
@@ -236,12 +264,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +15%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$67.50</div>
-          <div class="ret pos">+6.8% (3 ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$2.25</span></li>
             <li><span>P/E ออก</span><span>30x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$1.10</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>ฟื้นตัวต่อเนื่องตามคาด กำไรโตปานกลาง แต่ P/E ปรับฐานลงจากระดับสูงปัจจุบันสู่ระดับที่สมเหตุสมผลมากขึ้น</span></li>
           </ul>
         </div>
@@ -249,12 +277,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +28%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$130.20</div>
-          <div class="ret pos">+104.6% (3 ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$3.10</span></li>
             <li><span>P/E ออก</span><span>42x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$1.20</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>ดีมานด์ AI-หุ่นยนต์/automation เร่งตัวแรงกว่าคาด OneVision/AI-vision เจาะตลาดใหม่ได้ต่อเนื่อง ตลาดยังให้พรีเมียมสูงต่อเนื่อง</span></li>
           </ul>
         </div>
@@ -301,8 +329,8 @@
       <h2>ธุรกิจคุณภาพดี แต่ราคาแพงเกินมูลค่าที่ประเมินได้</h2>
       <p>Cognex เป็นผู้นำ niche machine vision ที่ได้อานิสงส์จากธีม AI-vision และ automation/หุ่นยนต์ในโรงงาน กำไรกำลังฟื้นตัวต่อเนื่องจากจุดต่ำสุดวัฏจักรปี 2566 แต่ราคาหุ้นที่พุ่งขึ้น +52% ในรอบ 1 ปีทำให้ P/E TTM สูงถึง 78.6x และ forward P/E ~45x ซึ่งสูงกว่ามูลค่าเหมาะสมที่ประเมินได้ (~$50) ราว 34% — ไม่มี Margin of Safety ณ ราคาปัจจุบัน เหมาะสำหรับผู้เชื่อมั่นในธีมระยะยาวที่รับความเสี่ยง valuation ได้ มากกว่านักลงทุนสาย value ที่ต้องการส่วนเผื่อความปลอดภัย</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$50.00 <span style="font-size:12px;color:#cab9a8">($46.72–$53.28)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −28%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$77.40 (Buy)</div></div>
       </div>
       <div class="zone">
@@ -315,7 +343,7 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มา: StockAnalysis.com (ราคา/EPS/เป้านักวิเคราะห์), Yahoo Finance (cross-check ราคา/EPS/ปันผล) — ราคา ณ 11 ก.ย. 2569
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มา: StockAnalysis.com (ราคา/EPS/เป้านักวิเคราะห์), Yahoo Finance (cross-check ราคา/EPS/ปันผล) — ราคา ณ {{rd:priceDate}}
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 13 ก.ค. 2026 • สร้างด้วย stock-analyzer workflow</footer>
 

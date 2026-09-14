@@ -10,6 +10,20 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 68,
+  "values": {
+    "px": 58.25,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 65,
+    "fvHigh": 71,
+    "eps": 4.07,
+    "shares": 146000000,
+    "dps": 1.1,
+    "bvps": 29.49
+  },
   "theme": {
     "accent": "#003087",
     "accentDark": "#002060",
@@ -41,17 +55,13 @@
     "min": 45,
     "max": 70,
     "grid": [50, 55, 60, 65],
-    "fairLine": 68,
     "currency": "$",
     "highlight": [5, 9]
   },
   "gauge": {
     "min": 44,
-    "max": 76,
-    "cur": 58.25,
-    "fair": 68
-  },
-  "fv": 68
+    "max": 76
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -71,11 +81,11 @@
     <div class="sub">Premier Midwest regional bank · 60+ ปีปันผลเพิ่มต่อเนื่อง · สินทรัพย์ ~$37B · สินเชื่อคุณภาพสูง NPL ต่ำ · Wealth Management · Payment Services · Kansas City MO</div>
     <div class="price-row">
       <div>
-        <div class="px">$58.25<small>(CBSH)</small></div>
+        <div class="px">{{rd:px}}<small>(CBSH)</small></div>
       </div>
-      <div class="chg">▲ +16.2% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $46.99 – $63.19<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, S&amp;P Global Market Intelligence
       </div>
@@ -87,9 +97,9 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ธนาคารภูมิภาค · ตัวเลข ณ Q1/2569</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~$8.5B</div><div class="d">~146M หุ้น (diluted)</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~14.3x</div><div class="d">EPS TTM $4.07 · ต่ำกว่า historical avg ~16x</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM $4.07 · ต่ำกว่า historical avg ~16x</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~15–17x</div><div class="d">ช่วง 12–18x ตาม interest rate cycle</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">~1.98x</div><div class="d">BVPS $29.49 (Q1/2569) · P/TBV ~2.23x</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~{{rd:pbv}}x</div><div class="d">BVPS $29.49 (Q1/2569) · P/TBV ~2.23x</div></div>
 
       <div class="metric"><div class="k">NIM (Net Interest Margin)</div><div class="v pos">~3.3%</div><div class="d">NII FY2568 $1,112M · avg assets ~$34B</div></div>
       <div class="metric"><div class="k">Efficiency Ratio</div><div class="v">~57%</div><div class="d">FY2568 57.1% · ดีกว่า peer avg ~60%</div></div>
@@ -112,7 +122,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#003087"></i>ราคา CBSH</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $68</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -138,8 +148,8 @@
         <div class="mval">$67</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $65 – $71</span></div>
-        <div class="r">$68</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         Justified P/BV ให้ค่าสูงสุด $71 อิง ROE ~16% ที่สูงกว่า peer average P/E (TTM) อนุรักษ์นิยมสุดที่ $65 Forward P/E ให้ $67 อิง consensus FY2569 $4.17 FV เฉลี่ย $68 สอดคล้องกับ analyst high target $69 และสะท้อน franchise value ของธนาคารที่มี track record 60+ ปีปันผลเพิ่มต่อเนื่อง ราคาปัจจุบัน $58.34 ต่ำกว่า FV ราว 14% — โอกาสที่ดีสำหรับนักลงทุนระยะยาว
@@ -153,15 +163,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $58.25</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $68</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$47.60<br><small>MOS 30%</small></span>
-          <span>$54.40<br><small>MOS 20%</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">$59.25<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$68<br><small>Fair Value</small></span>
-          <span style="text-align:right">$71<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -174,19 +184,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+14%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS อยู่ในระดับพอใช้ — ราคาต่ำกว่า Fair Value แต่ยังไม่ถึงโซน "ถูกมาก" สำหรับนักลงทุนที่ต้องการ MOS สูง ควรรอโซนต่ำกว่า $54.40</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$54.40</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$47.60</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $68</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="58.25" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -278,8 +288,8 @@
       <h2>ธนาคารภูมิภาคคุณภาพสูงสุด — ราคาต่ำกว่า Fair Value ~14%</h2>
       <p>Commerce Bancshares คือหนึ่งในธนาคารภูมิภาคที่มีคุณภาพดีที่สุดในสหรัฐ ด้วยประวัติ 60+ ปีปันผลเพิ่มต่อเนื่อง NPL ratio best-in-class และ ROE ~16% สูงกว่าค่าเฉลี่ยกลุ่ม บ่งชี้ความสามารถพิเศษในการจัดสรรทุน ราคาปัจจุบัน $58.34 ต่ำกว่า Fair Value $68 ราว 14% อิง P/E 16x และ Justified P/BV 2.40x ที่สอดคล้องกับ franchise value และ ROE ระยะยาว แนวโน้มดอกเบี้ยขาลงจาก Fed จะเป็นตัวเร่ง EPS growth ในปี 2569–2570 รวมกับ Wealth Management และ Payment Services ที่สร้าง fee income หนุน total return</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$68 <span style="font-size:12px;color:#cab9a8">($65–$71)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +14%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$59.25 (Hold)</div></div>
       </div>
       <div class="zone">

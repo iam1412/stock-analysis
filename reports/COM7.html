@@ -10,6 +10,40 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 29.56,
+  "values": {
+    "px": 28.5,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 27.8,
+    "fvHigh": 30.65,
+    "eps": 1.94,
+    "shares": 2358000000,
+    "dps": 1.1,
+    "bvps": 4.63,
+    "baseEps": 1.94,
+    "scenarios": [
+      {
+        "tgt": 26.95,
+        "div": 3.5
+      },
+      {
+        "tgt": 40.88,
+        "div": 4
+      },
+      {
+        "tgt": 54.19,
+        "div": 4.5
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#1d6ded",
     "accentDark": "#0f4fb3",
@@ -41,7 +75,6 @@
     "min": 15,
     "max": 35,
     "grid": [20, 25, 30],
-    "fairLine": 29.56,
     "currency": "฿",
     "highlight": [2, 9],
     "gridFmt": "v.toFixed(0)",
@@ -50,11 +83,8 @@
   "gauge": {
     "min": 18,
     "max": 32,
-    "cur": 28.5,
-    "fair": 29.56,
     "fairLabelTop": true
-  },
-  "fv": 29.56
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +104,11 @@
     <div class="sub">Studio7 / iStudio (ตัวแทน Apple) • BaNANA ค้าปลีกไอที/มือถือ • อุปกรณ์เสริม-แกดเจ็ต • บริการ iCare ศูนย์ซ่อม • หน้าร้าน 1,000+ สาขา + ออนไลน์</div>
     <div class="price-row">
       <div>
-        <div class="px">฿28.50<small>(COM7)</small></div>
+        <div class="px">{{rd:px}}<small>(COM7)</small></div>
       </div>
-      <div class="chg">▲ +14.0% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿18.20 – ฿30.00<br>
         ที่มา: StockAnalysis • Investing.com • SET
       </div>
@@ -90,7 +120,7 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">TTM / FY2025</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~฿67.2 พันล.</div><div class="d">~2,358 ล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~14.7x</div><div class="d">EPS ฿1.94 (TTM)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS ฿1.94 (TTM)</div></div>
       <div class="metric"><div class="k">P/E มัธยฐาน 3 ปี</div><div class="v">~15.8x</div><div class="d">ปี 2566–68 · กรอบ 12.7–23.5x</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~6.2x</div><div class="d">BVPS ฿4.63 (สูงตาม ROE)</div></div>
 
@@ -101,7 +131,7 @@
 
       <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿90 พันล.</div><div class="d">+11% YoY</div></div>
       <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~13.7%</div><div class="d">margin บางแบบค้าปลีก IT</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~3.9%</div><div class="d">฿1.10/หุ้น (FY2025)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">฿1.10/หุ้น (FY2025)</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">~1.1</div><div class="d">ผันผวนตามวงจรบริโภค</div></div>
     </div>
   </section>
@@ -115,7 +145,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1d6ded"></i>ราคา COM7</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿29.56</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -141,8 +171,8 @@
         <div class="mval">฿27.8</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿27.8 – ฿30.65</span></div>
-        <div class="r">฿29.56</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         DDM และ Justified P/BV ใช้สมมติฐาน (r,g) ชุดเดียวกันจึงนับเป็นตระกูลเดียว (เฉลี่ย ฿28.5) ถ่วงน้ำหนักเท่ากับขา P/E (฿30.65) ได้ FV กลางที่ ฿29.56 — Justified P/BV ให้ค่าต่ำสุดเพราะ "ลดทอน" ROE ลงจาก peak 47% เป็น 30% เผื่อความเสี่ยงที่อัตรากำไรค้าปลีก IT จะถูกบีบในระยะยาว ส่วน P/E สูงสุดเพราะยึดมัธยฐานย้อนหลัง 3 ปีที่ยังสูงกว่าอีกสองขา — ต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ ฿34.06 อยู่พอสมควร (มุมมองอนุรักษ์นิยมกว่า)
@@ -156,14 +186,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿28.50</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿29.56</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿20.69<br><small>MOS 30%</small></span>
-          <span>฿23.65<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿29.56<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿30.65<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">฿34.06<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -177,19 +207,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+4%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาต่ำกว่ามูลค่าเหมาะสมเพียงเล็กน้อย — ส่วนเผื่อความปลอดภัยแทบไม่มี ยังไม่ใช่จุดเข้าของ value investor</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿23.65</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿20.69</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿29.56</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="28.5" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -198,17 +228,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿28.50 • EPS ฐาน ~฿1.94 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿26.95</div>
-          <div class="ret pos">+6.8%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿2.25</span></li>
             <li><span>P/E ออก</span><span>12x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿3.5</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>กำลังซื้ออ่อน วงจรมือถือชะลอ</span></li>
           </ul>
         </div>
@@ -216,12 +246,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +12%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿40.88</div>
-          <div class="ret pos">+57.5%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿2.73</span></li>
             <li><span>P/E ออก</span><span>15x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿4.0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>โตตามวงจร IT/AI device + ขยายสาขา</span></li>
           </ul>
         </div>
@@ -229,12 +259,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +18%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿54.19</div>
-          <div class="ret pos">+105.9%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿3.19</span></li>
             <li><span>P/E ออก</span><span>17x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿4.5</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>iPhone/AI PC cycle แรง + margin บริการดีขึ้น</span></li>
           </ul>
         </div>
@@ -279,8 +309,8 @@
       <h2>ธุรกิจดี ROE สูง — แต่ราคาปัจจุบันสะท้อนพื้นฐานเกือบเต็มแล้ว</h2>
       <p>COM7 เป็นผู้นำค้าปลีก IT/แกดเจ็ตของไทยที่มีคุณภาพกิจการสูง: ROE ~47%, asset-light, กำไรโตเลขสองหลัก และปันผลสม่ำเสมอ ~3.8% ปัญหาเดียวคือ "ราคา" — ที่ ฿29.25 หุ้นซื้อขายใกล้เคียงมูลค่าเหมาะสม ฿29.56 มาก (ห่างเพียง ~1%) แทบไม่มีส่วนเผื่อความปลอดภัยเหลือ และเคยแตะกรอบบน 52 สัปดาห์มาแล้ว จึงเป็นหุ้นพื้นฐานดีที่ควร "รอจังหวะ" มากกว่า "ไล่ราคา"</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿29.56 <span style="font-size:12px;color:#cab9a8">(฿27.8–฿30.65)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">MOS ~ +4%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿34.06 (Strong Buy)</div></div>
       </div>
       <div class="zone">
@@ -293,7 +323,7 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มาข้อมูล: StockAnalysis.com • Investing.com • SET (ตลาดหลักทรัพย์ฯ) • ราคา ณ 14 ก.ย. 2569
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มาข้อมูล: StockAnalysis.com • Investing.com • SET (ตลาดหลักทรัพย์ฯ) • ราคา ณ {{rd:priceDate}}
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 9 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

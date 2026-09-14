@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 172,
+  "values": {
+    "px": 147.97,
+    "priceDate": "2026-09-11",
+    "dateEra": "CE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 158,
+    "fvHigh": 183,
+    "analystTgt": 185.45,
+    "eps": 3.17,
+    "shares": 46000000,
+    "baseEps": 3.5,
+    "scenarios": [
+      {
+        "tgt": 124,
+        "div": null
+      },
+      {
+        "tgt": 201,
+        "div": null
+      },
+      {
+        "tgt": 293,
+        "div": null
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#199e9e",
     "accentDark": "#127272",
@@ -41,18 +74,14 @@
     "min": 100,
     "max": 200,
     "grid": [125, 150, 175],
-    "fairLine": 172,
     "currency": "$",
     "highlight": [1, 6]
   },
   "gauge": {
     "min": 110,
     "max": 240,
-    "cur": 147.97,
-    "fair": 172,
     "fairLabelTop": "-58px"
-  },
-  "fv": 172
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +101,11 @@
     <div class="sub">เครื่องตรวจสอบ (inspection) และวัดมิติ (metrology) สำหรับ advanced packaging — ตรวจ HBM, 2.5D/3D และ heterogeneous integration ที่หนุน AI accelerator + co-packaged optics (CPO)</div>
     <div class="price-row">
       <div>
-        <div class="px">$147.97<small>(CAMT)</small></div>
+        <div class="px">{{rd:px}}<small>(CAMT)</small></div>
       </div>
-      <div class="chg">▲ +19.5% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2026 (ปิดตลาด) • ร่วงแรงจากแรงขายกลุ่มเซมิ<br>
+        ราคา ณ {{rd:priceDate}} (ปิดตลาด) • ร่วงแรงจากแรงขายกลุ่มเซมิ<br>
         ช่วง 52 สัปดาห์ $75.75 – $215.99<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / Investing.com
       </div>
@@ -113,7 +142,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1a73e8"></i>ราคา CAMT</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $172</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -142,8 +171,8 @@
         <div class="mval">$183</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $158 – $183</span></div>
-        <div class="r">$172</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>หมายเหตุ:</b> ข้าม DDM/P/BV — บริษัท <b>ไม่จ่ายปันผล</b> (0%) และ P/BV ไม่เหมาะกับธุรกิจ asset-light ที่มูลค่าอยู่ที่ IP/เทคโนโลยี •
@@ -159,13 +188,13 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $148</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $172</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$120<br><small>MOS 30%</small></span>
-          <span>$138<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$172<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$187<br><small>เป้า Analyst</small></span>
           <span style="text-align:right">$220<br><small>เป้าสูงสุด</small></span>
         </div>
@@ -181,19 +210,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+14%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>Margin of Safety บางมาก</b><br>ราคาปัจจุบัน $165.38 ต่ำกว่ามูลค่าเหมาะสม $172 เล็กน้อย ~4% → ตามเกณฑ์ value investor ยังไม่เข้าเกณฑ์ deep value ส่วนเผื่อความปลอดภัยยังบาง ยังไม่ใช่จุดซื้อที่ปลอดภัยชัดเจน</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$137.60</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$120.40</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
         <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $155</div><div class="d">ใกล้ขอบล่างของ fair value</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="147.97" step="1">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -202,13 +231,13 @@
 
   <!-- ===== RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $147.97 • EPS ฐาน ~$3.5</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$124</div>
-          <div class="ret neg">รวม ~ −16% (≈ −6%/ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$4.4</span></li>
             <li><span>P/E ออก</span><span>28x</span></li>
@@ -219,8 +248,8 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +18%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$201</div>
-          <div class="ret pos">รวม ~ +36% (≈ +11%/ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$5.7</span></li>
             <li><span>P/E ออก</span><span>35x</span></li>
@@ -231,8 +260,8 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +28%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$293</div>
-          <div class="ret pos">รวม ~ +98% (≈ +26%/ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$7.3</span></li>
             <li><span>P/E ออก</span><span>40x</span></li>
@@ -283,9 +312,9 @@
       <h2>ผู้เล่นเฉพาะทางใน inspection ของ AI packaging — ราคาใกล้มูลค่าเหมาะสม (MOS บาง) และผันผวนสูง</h2>
       <p>Camtek เป็นผู้นำเครื่องตรวจสอบ/วัดมิติสำหรับ advanced packaging (HBM, 2.5D/3D, heterogeneous integration ที่หนุน CPO) — เป็น play ตรงต่อ capex แพ็กเกจจิ้งของ AI กำไรสูง งบดุลแกร่ง ไม่มีหนี้ก้อนใหญ่ แต่ที่ราคา ~$165 ตลาดสะท้อนความคาดหวัง AI ไปมากแล้ว (P/E ~52x) ส่วนเผื่อความปลอดภัยจึงบาง บวกกับความเสี่ยง China exposure และวัฏจักรที่ทำให้หุ้นแกว่งสองหลักเป็นเรื่องปกติ สาย growth ที่เชื่อวงจร packaging ยังเห็น upside ตามเป้านักวิเคราะห์</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$172 <span style="font-size:12px;color:#a8b6cc">($158–$183)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">MOS ~ +14%</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">$185.45 (+25%)</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#a8b6cc">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">MOS ~ {{rd:mos}}</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">{{rd:analystTgt}} (+25%)</div></div>
       </div>
       <div class="zone">
         💡 <b>กลยุทธ์:</b> สาย value — รอย่อ/ทยอยสะสมเมื่อราคา <b>ต่ำกว่า ~$155</b> (น่าสนใจที่ &lt;$138, ถูกมากที่ &lt;$120) • สาย growth — เข้าได้แบบ DCA และยอมรับความผันผวนสูง โดยติดตาม <b>วงจร capex advanced packaging</b>, <b>คำสั่งซื้อ HBM/CPO</b>, <b>China export control</b> และ <b>gross margin</b> เป็นตัวชี้วัดหลัก

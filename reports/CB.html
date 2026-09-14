@@ -10,6 +10,19 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 350,
+  "values": {
+    "px": 338.25,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 322,
+    "fvHigh": 377,
+    "eps": 27.93,
+    "dps": 3.88,
+    "bvps": 189.93
+  },
   "theme": {
     "accent": "#003876",
     "accentDark": "#00254f",
@@ -41,18 +54,14 @@
     "min": 260,
     "max": 360,
     "grid": [280, 300, 320, 340],
-    "fairLine": 350,
     "currency": "$",
     "highlight": [0, 9]
   },
   "gauge": {
     "min": 220,
     "max": 400,
-    "cur": 338.25,
-    "fair": 350,
     "fairLabelTop": true
-  },
-  "fv": 350
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +81,11 @@
     <div class="sub">บริษัทประกันภัย P&amp;C รายใหญ่สุดในโลก (Bermuda-domiciled, NYSE: CB) • NA Commercial &amp; Personal Lines • Overseas General Insurance • Asia Life Insurance (กลุ่มเติบโตสูง 50+ ประเทศ) • Reinsurance • Berkshire Hathaway ถือหุ้น ~6.7B (Buffett's secret เปิดเผย 2024)</div>
     <div class="price-row">
       <div>
-        <div class="px">$338.25<small>(CB)</small></div>
+        <div class="px">{{rd:px}}<small>(CB)</small></div>
       </div>
-      <div class="chg">▲ +22.1% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $264.10 – $365.29<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, Finviz
       </div>
@@ -88,9 +97,9 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ณ ก.ค. 2569 · ตรวจสอบ ≥2 แหล่ง</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">$133 B</div><div class="d">อันดับ 1 P&amp;C ในโลก</div></div>
-      <div class="metric"><div class="k">P/E (core TTM)</div><div class="v neu">~12.1x</div><div class="d">Core operating EPS $27.93 TTM</div></div>
+      <div class="metric"><div class="k">P/E (core TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">Core operating EPS $27.93 TTM</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">12–15x</div><div class="d">Premium P&amp;C insurer, range 10–16x</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.78x</div><div class="d">BVPS $189.93 · Tangible BV $126.65</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS $189.93 · Tangible BV $126.65</div></div>
 
       <div class="metric"><div class="k">Core Operating EPS FY2025</div><div class="v">$24.79</div><div class="d">+10.8% YoY · ปีสถิติสูงสุด</div></div>
       <div class="metric"><div class="k">Core Operating EPS (TTM)</div><div class="v">~$27.93</div><div class="d">Q2'25 $6.10 + Q3 $7.49 + Q4 $7.52 + Q1'26 $6.82</div></div>
@@ -113,7 +122,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#003876"></i>ราคา CB</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $350</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -143,8 +152,8 @@
         <div class="mval">$322</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $322 – $377</span></div>
-        <div class="r">$350</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/E (core) ให้ค่าสูงสุด $377 สะท้อน EPS ที่แข็งแกร่งในช่วง combined ratio ระดับ record;
@@ -161,15 +170,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $338.25</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $350</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$245<br><small>MOS 30%</small></span>
-          <span>$280<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$350<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$357<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$377<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -186,19 +195,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+3%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาสูงกว่ามูลค่าเหมาะสมเล็กน้อย (MOS -0.6%) — ยังไม่มี margin of safety นัก รอจังหวะย่อดีกว่า</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$280</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$245</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $350</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="338.25" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -301,8 +310,8 @@
         กลยุทธ์ที่ดีคือ <b>รอจังหวะย่อตัว</b> เพื่อเข้าสะสมในโซน MOS 15–20% ($280–$297)
       </p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$350 <span style="font-size:12px;color:#cab9a8">($322–$377)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ff8a80">MOS ~ +3%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ff8a80">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$357 (Buy)</div></div>
       </div>
       <div class="zone">

@@ -10,6 +10,18 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 21,
+  "values": {
+    "px": 19.9,
+    "priceDate": "2026-09-14",
+    "dateEra": "CE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 17.74,
+    "fvHigh": 23.22,
+    "shares": 15890000000,
+    "dps": 1
+  },
   "theme": {
     "accent": "#0d9e8e",
     "accentDark": "#097769",
@@ -41,7 +53,6 @@
     "min": 17,
     "max": 22,
     "grid": [18, 19, 20, 21],
-    "fairLine": 21,
     "currency": "฿",
     "highlight": [4, 7],
     "gridFmt": "v.toFixed(1)",
@@ -50,11 +61,8 @@
   "gauge": {
     "min": 14,
     "max": 26,
-    "cur": 19.9,
-    "fair": 21,
     "fairLabelTop": true
-  },
-  "fv": 21
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +82,11 @@
     <div class="sub">เครือโรงพยาบาลเอกชนใหญ่ที่สุดในไทย • Bangkok Hospital • Samitivej • BNH • Phyathai • Paolo • Royal • ผู้ป่วยในประเทศ + Medical Tourism (ผู้ป่วยต่างชาติ)</div>
     <div class="price-row">
       <div>
-        <div class="px">฿19.90<small>(BDMS)</small></div>
+        <div class="px">{{rd:px}}<small>(BDMS)</small></div>
       </div>
-      <div class="chg">▲ +5.3% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2026<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿17.40 – ฿22.90<br>
         ที่มา: StockAnalysis.com • Investing.com • Yahoo Finance
       </div>
@@ -115,7 +123,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#0fb6a3"></i>ราคา BDMS</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿21</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -141,8 +149,8 @@
         <div class="mval">฿17.74</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿17.74 – ฿23.22</span></div>
-        <div class="r">฿21.00</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี DDM ให้ค่าสูงสุด (฿23.2) เพราะหุ้น defensive ปันผลสูง r ต่ำ ส่วน Justified P/BV ให้ค่าต่ำสุด (฿17.7) เพราะ ROE ปัจจุบัน ~16% หนุน P/BV เหมาะสมแค่ ~2.5x
@@ -157,14 +165,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿19.90</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿21.00</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿14.70<br><small>MOS 30%</small></span>
-          <span>฿16.80<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿21.00<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿23.22<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">฿25.02<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -179,19 +187,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+5%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาต่ำกว่ามูลค่าเหมาะสมพอประมาณ — โซนทยอยสะสมสำหรับหุ้นคุณภาพ defensive แต่ MOS ยังไม่กว้างมาก</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿16.80</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿14.70</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿21.00</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="19.9" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -284,8 +292,8 @@
       ราคาปรับฐานลงรอบปี ~22% จากการ de-rating ของ valuation และกำไรที่ชะลอ ทำให้ P/E ลงมาเหลือ ~18.6x ต่ำกว่าค่าเฉลี่ยในอดีตมาก
       มูลค่าเหมาะสมเฉลี่ย ฿21 ให้ MOS ~12% — น่าสนใจสำหรับการทยอยสะสม แต่ยังไม่ถึงโซน deep value ควรรอจังหวะย่อเพิ่ม MOS ให้กว้างขึ้น</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿21.00 <span style="font-size:12px;color:#cab9a8">(฿17.74–฿23.22)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +5%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿25.02 (Strong Buy)</div></div>
       </div>
       <div class="zone">

@@ -10,6 +10,40 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 816,
+  "values": {
+    "px": 904.77,
+    "priceDate": "2026-09-11",
+    "dateEra": "CE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 794,
+    "fvHigh": 835,
+    "eps": 19.88,
+    "shares": 443000000,
+    "dps": 5.88,
+    "bvps": 65.57,
+    "baseEps": 19.88,
+    "scenarios": [
+      {
+        "tgt": 846,
+        "div": 17.64
+      },
+      {
+        "tgt": 1187,
+        "div": 17.64
+      },
+      {
+        "tgt": 1469,
+        "div": 17.64
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#E31837",
     "accentDark": "#a80f24",
@@ -41,17 +75,13 @@
     "min": 800,
     "max": 1050,
     "grid": [850, 900, 950, 1000],
-    "fairLine": 816,
     "currency": "$",
     "highlight": [2, 6]
   },
   "gauge": {
     "min": 571,
-    "max": 1096,
-    "cur": 904.77,
-    "fair": 816
-  },
-  "fv": 816
+    "max": 1096
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -71,11 +101,11 @@
     <div class="sub">ร้านค้าส่งสมาชิก (warehouse club) ขาย bulk ใกล้ทุน • ค่าสมาชิกรายปี = แหล่งกำไรหลัก (renewal >90%) • Kirkland Signature • อีคอมเมิร์ซ/ปั๊มน้ำมัน/ร้านยา</div>
     <div class="price-row">
       <div>
-        <div class="px">$904.77<small>(COST)</small></div>
+        <div class="px">{{rd:px}}<small>(COST)</small></div>
       </div>
-      <div class="chg">≈ ทรงตัว (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2026<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $844.06 – $1,096.50<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / Google Finance
       </div>
@@ -87,7 +117,7 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">TTM สิ้นสุด Q2 FY2026 (ก.พ. 2026) + ข้อมูล ณ มิ.ย. 2026</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~$400.8B</div><div class="d">หุ้น ~443 ล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~45.5x</div><div class="d">EPS TTM $19.88 <span class="pill a">premium สูง</span></div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM $19.88 <span class="pill a">premium สูง</span></div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~40x</div><div class="d">กรอบ 32–52x • ซื้อแพงมาเสมอ</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~13.8x</div><div class="d">BVPS $65.57 • ROE สูงผลักราคาบัญชีขึ้น</div></div>
 
@@ -112,7 +142,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#E31837"></i>ราคา COST</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $816</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -138,8 +168,8 @@
         <div class="mval">$817.62</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $794 – $835</span></div>
-        <div class="r">$816</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         Fair Value $816 = ค่าเฉลี่ย 3 วิธีที่อิงกระแสเงินสด/กำไร: P/E ($835), DCF ($794), EV/EBITDA ($818) — สอดคล้องกันแน่นในกรอบ $794–$835 • <b>หมายเหตุ DDM (ฐานล่างเชิงอนุรักษ์):</b> ถ้าประเมินจากปันผลปกติล้วน (yield 0.62%) ด้วย Gordon Growth จะได้เพียง ~$582 — แต่ COST คืนเงินส่วนใหญ่ผ่าน buyback + ปันผลพิเศษ ($15 ปี 2023, $20 ปี 2024) จึงใช้ DDM เป็นเพียง "พื้นต่ำสุด" ไม่ถ่วงน้ำหนักเต็มในค่าเฉลี่ย (ถ่วงเต็มจะกด FV ต่ำเกินจริงสำหรับ compounder จ่ายปันผลน้อย) • ราคา $961 ยังสูงกว่า FV $816 อยู่ ~18% สะท้อน premium ที่ตลาดจ่ายล่วงหน้า — แต่ยังต่ำกว่าเป้านักวิเคราะห์เฉลี่ย $1,083 (ช่องว่างนี้คือมุมมองที่ตลาดมองโลกดีกว่าโมเดลของเรา)
@@ -153,13 +183,13 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $904.77</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $816</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$571<br><small>MOS 30%</small></span>
-          <span>$653<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$816<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$1,083<br><small>เป้าเฉลี่ย Analyst</small></span>
           <span style="text-align:right">$1,096<br><small>52w High</small></span>
         </div>
@@ -174,19 +204,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−11%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสม ~17% — ธุรกิจยอดเยี่ยม แต่ราคา premium เกินไปสำหรับ value investor</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$653</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$571</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $816</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="904.77" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -195,17 +225,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $904.77 • EPS ฐาน ~$19.88 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$846</div>
-          <div class="ret neg">−6.5%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$23.01</span></li>
             <li><span>P/E ออก</span><span>36x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$17.64</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>P/E compression + ชะลอสมาชิกใหม่</span></li>
           </ul>
         </div>
@@ -213,12 +243,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +11%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$1,187</div>
-          <div class="ret pos">+31.2%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$27.19</span></li>
             <li><span>P/E ออก</span><span>43x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$17.64</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>เติบโตต่อเนื่อง สาขาใหม่ตปท. + e-commerce</span></li>
           </ul>
         </div>
@@ -226,12 +256,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$1,469</div>
-          <div class="ret pos">+62.4%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$30.23</span></li>
             <li><span>P/E ออก</span><span>48x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$17.64</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>ขยายตลาดใหม่ + ปันผลพิเศษ + ค่าสมาชิกขึ้นราคา</span></li>
           </ul>
         </div>
@@ -278,8 +308,8 @@
       <h2>ธุรกิจชั้นเยี่ยม — แต่ราคา Premium เกินมูลค่า ทยอยสะสมเมื่อย่อตัว</h2>
       <p>Costco คือ consumer staples ที่ดีที่สุดในโลก: ค่าสมาชิก renewal >90% สร้าง recurring revenue คาดการณ์ได้, Kirkland Signature รักษาลูกค้า, ROE 31% และ EPS CAGR ~13% พิสูจน์ว่าโมเดลธุรกิจทำงาน อย่างไรก็ตาม ราคาปัจจุบัน $961 สูงกว่า Fair Value $816 ราว 18% — ตลาดจ่าย premium ล่วงหน้าเกินไปสำหรับนักลงทุนเน้นมูลค่า (FV ของเรามาจาก P/E + DCF + EV/EBITDA ที่อิงกระแสเงินสด; ปันผลล้วนให้เพียง ~$582 ใช้เป็นพื้นต่ำเท่านั้น) นักลงทุนระยะยาวที่ซื้อในราคานี้ต้องหวังพึ่ง EPS growth ให้ "เติบโตมารับ" ราคาปัจจุบัน โดย Base case ให้ผลตอบแทน ~25% ใน 3 ปี (CAGR ~7.6%) — ต่ำกว่าศักยภาพของหุ้น เพราะจุดเข้าแพง กลยุทธ์ที่เหมาะสมคือรอย่อตัวมาในโซน $816–$850 ก่อนสะสม</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$816 <span style="font-size:12px;color:#cab9a8">($794–$835)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −11%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$1,083 (Buy)</div></div>
       </div>
       <div class="zone">
@@ -292,7 +322,7 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลอ้างอิง: StockAnalysis.com, Yahoo Finance, Costco IR/10-K, digrin.com (ราคารายเดือน) • ราคา ณ 11 ก.ย. 2026
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลอ้างอิง: StockAnalysis.com, Yahoo Finance, Costco IR/10-K, digrin.com (ราคารายเดือน) • ราคา ณ {{rd:priceDate}}
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 26 มิ.ย. 2026 • สร้างด้วย stock-analyzer workflow</footer>
 

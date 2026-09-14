@@ -12,6 +12,19 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 125,
+  "values": {
+    "px": 87.76,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 110,
+    "fvHigh": 135,
+    "eps": 6.16,
+    "shares": 121000000,
+    "dps": 4.96
+  },
   "theme": {
     "accent": "#b9890f",
     "accentDark": "#84630b",
@@ -43,18 +56,14 @@
     "min": 80,
     "max": 130,
     "grid": [90, 100, 110, 120],
-    "fairLine": 125,
     "currency": "$",
     "highlight": [4, 11]
   },
   "gauge": {
     "min": 85,
     "max": 155,
-    "cur": 87.76,
-    "fair": 125,
     "fairLabelTop": true
-  },
-  "fv": 125
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +83,11 @@
     <div class="sub">Clorox bleach • Pine-Sol • Glad bags & wraps • Fresh Step cat litter • Burt's Bees • Hidden Valley Ranch • KC Masterpiece BBQ • Kingsford charcoal • ~25% international revenue • Recovering from 2023 ALPHV ransomware attack</div>
     <div class="price-row">
       <div>
-        <div class="px">$87.76<small>(CLX)</small></div>
+        <div class="px">{{rd:px}}<small>(CLX)</small></div>
       </div>
-      <div class="chg">▼ −22.0% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $84.70 – $132.03<br>
         ที่มา: Yahoo Finance / StockAnalysis.com / Clorox IR (PR Newswire)
       </div>
@@ -89,7 +98,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">FY2025 (สิ้นปี มิ.ย. 2568) · FY2026 guidance</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$10.6B</div><div class="d">~121M shares</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~121M shares</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~14.25x</div><div class="d">GAAP EPS TTM $6.16</div></div>
       <div class="metric"><div class="k">Forward P/E (adj)</div><div class="v">~16x</div><div class="d">FY2026 adj EPS guide $5.45–$5.65</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~23x</div><div class="d">ปกติ 20–28x สำหรับ staples</div></div>
@@ -115,7 +124,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#edb31d"></i>ราคา CLX</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $125</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -141,8 +150,8 @@
         <div class="mval">$146</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $110 – $135</span></div>
-        <div class="r">$125</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี EV/EBITDA ให้ค่าสูงสุด ($146) เพราะ EBITDA TTM ยังแข็งแกร่ง; DDM ให้ต่ำสุด ($103) เพราะ yield-based model กดด้วยอัตราดอกเบี้ย; P/E ตรงกลาง ($122) อิงประมาณการปีปัจจุบัน · เฉลี่ย ~$124 ปัดเป็น $125 เป็น FV กลาง · ความเสี่ยงหลัก: ERP disruption ต่อเนื่อง, gross margin ต่ำกว่าคาด → หาก FY2026 adj EPS ออกมาที่ $5.45 จะกด FV ลงสู่ $115
@@ -156,14 +165,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $87.76</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $125</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$87.50<br><small>MOS 30%</small></span>
-          <span>$100.00<br><small>MOS 20%</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">$105<br><small>เป้า Analyst</small></span>
-          <span style="text-align:center">$125<br><small>Fair Value</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$155<br><small>กรอบบน FV</small></span>
         </div>
       </div>
@@ -177,19 +186,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict good">
-        <div class="big">+30%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS สูง — ราคาต่ำกว่ามูลค่าเหมาะสมอย่างมีนัยสำคัญ · เหมาะสำหรับนักลงทุน Value ที่รับความเสี่ยง ERP ได้</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$100.00</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$87.50</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $125</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="87.76" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -281,8 +290,8 @@
       <h2>CLX: Value Play ในหุ้น Consumer Staples ที่ถูกกดชั่วคราว — ERP Headwind สร้างโอกาสซื้อ</h2>
       <p>Clorox เป็นธุรกิจ consumer staples ที่แข็งแกร่งในระดับโลก มีแบรนด์ iconic หลายสิบปีที่ครอง market share ในหมวดที่จำเป็น ปัจจัยลบในปัจจุบันทั้งหมดเป็นชั่วคราว: ERP transition (SAP) กำลังกด EPS ~$0.90/share และลดรายได้ ~6-9% ใน FY2026 แต่เป็น one-time implementation cost ที่จะคลี่คลายเมื่อ rollout สำเร็จ · FY2025 GAAP EPS $6.52 พิสูจน์ว่าธุรกิจหลักแข็ง เมื่อไม่มี disruption · ปันผล 5.25% ให้ผลตอบแทนระหว่างรอฟื้นตัว · ราคาปัจจุบัน $94 อยู่ในโซน deep value เทียบ FV $125 และต่ำกว่าค่า P/E ประวัติศาสตร์อย่างมีนัยสำคัญ</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$125 <span style="font-size:12px;color:#cab9a8">($110–$135)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +30%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$103–$105 (Hold/Reduce)</div></div>
       </div>
       <div class="zone">

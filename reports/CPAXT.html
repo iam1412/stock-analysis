@@ -12,6 +12,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 15.3,
+  "values": {
+    "px": 14.6,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 13.43,
+    "fvHigh": 16.49,
+    "shares": 10428000000,
+    "dps": 0.71,
+    "bvps": 29,
+    "baseEps": 0.91,
+    "scenarios": [
+      {
+        "tgt": 12.74,
+        "div": 2.13
+      },
+      {
+        "tgt": 17.34,
+        "div": 2.27
+      },
+      {
+        "tgt": 21.8,
+        "div": 2.35
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#1763e8",
     "accentDark": "#0e47ad",
@@ -43,7 +76,6 @@
     "min": 14,
     "max": 20,
     "grid": [16, 18],
-    "fairLine": 15.3,
     "currency": "฿",
     "highlight": [0, 11],
     "gridFmt": "v.toFixed(0)",
@@ -52,11 +84,8 @@
   "gauge": {
     "min": 10,
     "max": 18,
-    "cur": 14.6,
-    "fair": 15.3,
     "fairLabelTop": true
-  },
-  "fv": 15.3
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -77,11 +106,11 @@
     <div class="sub">Makro ค้าส่งแบบ Cash &amp; Carry (B2B) • Lotus's ไฮเปอร์มาร์เก็ต–ค้าปลีก • พื้นที่เช่าศูนย์การค้า • Makro PRO &amp; Lotus's SMART App (อีคอมเมิร์ซของชำเบอร์ 1 ไทย) • ขยายภูมิภาค</div>
     <div class="price-row">
       <div>
-        <div class="px">฿14.60<small>(CPAXT)</small></div>
+        <div class="px">{{rd:px}}<small>(CPAXT)</small></div>
       </div>
-      <div class="chg">▼ −25.5% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569 (2026)<br>
+        ราคา ณ {{rd:priceDate}} (2026)<br>
         กรอบ 52 สัปดาห์ ฿13.90 – ฿23.40<br>
         ที่มา: SET • StockAnalysis.com • Investing.com
       </div>
@@ -99,7 +128,7 @@
       <div class="metric"><div class="k">Market Cap</div><div class="v">฿152.2 พันล้าน</div><div class="d">~10,428 ล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~16.0x</div><div class="d">EPS ฿0.91 · ราคา ฿14.60</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~22x</div><div class="d">เคยสูง 30x+ ช่วงควบ Lotus's</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.50x</div><div class="d">BVPS ~฿29 (book มี goodwill สูง)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ~฿29 (book มี goodwill สูง)</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">฿9,356 ล.</div><div class="d">−11.5% YoY (จากฐานสูง FY24)</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.91</div><div class="d">TTM ถึง Q1/2569 (กำไร ฿9.5 พันล.)</div></div>
@@ -108,7 +137,7 @@
 
       <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿523.9 พันล้าน</div><div class="d">+4.7% YoY (Q1/69 ฿136,050 ล.)</div></div>
       <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~16.0%</div><div class="d">net margin บาง ~1.8% (ค้าปลีก)</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~4.9%</div><div class="d">DPS ฿0.71 · payout ~78%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">DPS ฿0.71 · payout ~78%</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">~1.31</div><div class="d">ผันผวนสูงกว่าตลาด</div></div>
     </div>
   </section>
@@ -122,7 +151,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1763e8"></i>ราคา CPAXT</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿15.30</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -154,8 +183,8 @@
         <div class="mval">฿16.49</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿13.43 – ฿16.49</span></div>
-        <div class="r">฿15.30</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <!-- ✏️ หมายเหตุ: วิธีไหนให้ค่าสูง/ต่ำเพราะอะไร, ทำไม FV กลางจึงสมเหตุสมผล -->
@@ -173,15 +202,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿14.60</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿15.30</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿10.71<br><small>MOS 30%</small></span>
-          <span>฿12.24<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿15.30<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">฿16.36<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">฿16.49<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -197,19 +226,19 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
-      <div class="mos-verdict bad">
-        <div class="big">+5%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ส่วนเผื่อความปลอดภัยบาง — ราคาใกล้มูลค่าเหมาะสม ไม่ใช่จังหวะ "ของถูก"</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿12.24</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿10.71</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿15.30</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="14.6" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -218,17 +247,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿14.60 • EPS ฐาน ~฿0.91 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿12.74</div>
-          <div class="ret neg">+1.8%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.91</span></li>
             <li><span>P/E ออก</span><span>14x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿2.13</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>กำลังซื้อในประเทศซบ กำไรไม่โต ตลาด de-rate</span></li>
           </ul>
         </div>
@@ -236,12 +265,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +6%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿17.34</div>
-          <div class="ret pos">+34%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿1.08</span></li>
             <li><span>P/E ออก</span><span>16x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿2.27</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>ขยายสาขา + ออนไลน์โต ดอกเบี้ยลด margin ฟื้น</span></li>
           </ul>
         </div>
@@ -249,12 +278,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +10%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿21.80</div>
-          <div class="ret pos">+65%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿1.21</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿2.35</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>synergy Lotus's เต็มที่ + ขยายภูมิภาคสำเร็จ re-rate</span></li>
           </ul>
         </div>
@@ -308,8 +337,8 @@
       เทียบราคา ฿14.60 ให้ส่วนเผื่อความปลอดภัยเพียง ~5% — สอดคล้องกับเป้าเฉลี่ยนักวิเคราะห์ ฿16.36 ที่เรตติ้ง "Hold" คือ upside จำกัด
       จุดเด่นคือ downside ถูกพยุงด้วยปันผลสูง แต่ต้องเห็นกำไรเร่งตัวจริงจึงจะปลดล็อก upside กรณีฐาน</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿15.30 <span style="font-size:12px;color:#cab9a8">(฿13.43–฿16.49)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +5%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿16.36 (Hold)</div></div>
       </div>
       <div class="zone">

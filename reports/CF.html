@@ -10,6 +10,40 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 89,
+  "values": {
+    "px": 133.07,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 74,
+    "fvHigh": 103,
+    "eps": 11.08,
+    "shares": 159000000,
+    "dps": 2,
+    "bvps": 33.66,
+    "baseEps": 7.5,
+    "scenarios": [
+      {
+        "tgt": 64,
+        "div": 6
+      },
+      {
+        "tgt": 104,
+        "div": 6
+      },
+      {
+        "tgt": 164,
+        "div": 6
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#4A7729",
     "accentDark": "#2E5216",
@@ -41,18 +75,14 @@
     "min": 60,
     "max": 140,
     "grid": [80, 100, 120],
-    "fairLine": 89,
     "currency": "$",
     "highlight": [2, 11]
   },
   "gauge": {
     "min": 55,
     "max": 155,
-    "cur": 133.07,
-    "fair": 89,
     "fairLabelTop": false
-  },
-  "fv": 89
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +102,11 @@
     <div class="sub">#1 ผู้ผลิตปุ๋ยไนโตรเจนสาธารณะโลก · แอมโมเนีย/ยูเรีย/UAN/DEF · โรงงาน Donaldsonville LA (complex ใหญ่สุดในโลก) · ต้นทุนต่ำจากก๊าซธรรมชาติ US · Green Ammonia &amp; Hydrogen · Deerfield IL</div>
     <div class="price-row">
       <div>
-        <div class="px">$133.07<small>(CF)</small></div>
+        <div class="px">{{rd:px}}<small>(CF)</small></div>
       </div>
-      <div class="chg">▲ +59.8% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $75.42 – $141.96<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, Google Finance
       </div>
@@ -88,7 +118,7 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">หุ้น Cyclical — TTM สูงกว่า mid-cycle · ดู EPS Norm. ด้านล่าง</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">$21.16B</div><div class="d">~159 ล้านหุ้น (diluted)</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~12.0x</div><div class="d">EPS TTM $11.08 — ช่วงวงจรขาขึ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM $11.08 — ช่วงวงจรขาขึ้น</div></div>
       <div class="metric"><div class="k">P/E (Mid-Cycle norm.)</div><div class="v neu">~15.5x</div><div class="d">อิง EPS norm. ~$7.50 (เฉลี่ย FY21–25 ex.peak)</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">4.0x</div><div class="d">BVPS $33.66 (TTM Mar 2569)</div></div>
 
@@ -118,7 +148,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#4A7729"></i>ราคา CF</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $89</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -147,8 +177,8 @@
         <div class="mval">$74</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $74 – $103</span></div>
-        <div class="r">$89</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>สำคัญ (Cyclical Stock):</b> CF เป็นหุ้น Cyclical สูง — EPS ขึ้นลงตาม: (1) ราคาไนโตรเจน/แอมโมเนียโลก (2) ราคาก๊าซธรรมชาติ US (Henry Hub) และ (3) Demand ปุ๋ยเกษตร (ขึ้นกับ Corn/Wheat Area planted)
@@ -166,14 +196,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $133.07</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $89</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$62.30<br><small>MOS 30%</small></span>
-          <span>$71.20<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$89<br><small>Fair Value</small></span>
-          <span style="text-align:right">$103<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$125<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -189,19 +219,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−50%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาสูงกว่า Fair Value (Mid-Cycle) — Market Pricing ช่วงวงจรขาขึ้น ยังไม่มี MOS</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$71.20</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$62.30</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $89</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="133.07" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -210,17 +240,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $133.07 • EPS ฐาน ~$7.50 (norm. mid-cycle) • รวมปันผล ~$6</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} (norm. mid-cycle){{rd:scnNote}} ~$6</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$64</div>
-          <div class="ret neg">−51.9%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$6.43</span></li>
             <li><span>P/E ออก</span><span>9x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$6.00</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>ราคา NH₃ ดิ่ง + Gas US สูง</span></li>
           </ul>
         </div>
@@ -228,12 +258,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$104</div>
-          <div class="ret neg">−21.8%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$8.68</span></li>
             <li><span>P/E ออก</span><span>12x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$6.00</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>Mid-cycle ราคาไนโตรเจนปกติ</span></li>
           </ul>
         </div>
@@ -241,12 +271,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$164</div>
-          <div class="ret pos">+23.2%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$11.41</span></li>
             <li><span>P/E ออก</span><span>14x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$6.00</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>ราคา NH₃ สูงต่อ + Green Ammonia premium</span></li>
           </ul>
         </div>
@@ -299,8 +329,8 @@
       สำหรับ Value Investor — จุดเข้าน่าสนใจอยู่ใกล้ $89–$95 และน่าสะสมมากขึ้นที่ต่ำกว่า $71 (MOS 20%) ซึ่งอาจเกิดขึ้นเมื่อวงจรราคาไนโตรเจนปรับลง
       ผู้ที่เชื่อใน Green Ammonia/Hydrogen Thesis หรือว่าราคาไนโตรเจนจะสูงต่อยาว อาจ Justify ราคาสูงกว่านี้ได้ แต่ต้องยอมรับ Cyclical Risk</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$89 <span style="font-size:12px;color:#cab9a8">($74–$103)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −50%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$125 (Hold — 21 คน)</div></div>
       </div>
       <div class="zone">
