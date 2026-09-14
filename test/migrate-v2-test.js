@@ -868,6 +868,63 @@ const cmp = (r, f) => r.compare.find((c) => c.field === f);
     ok(/\| MXL \| site summary match ≠ 1 \(0\) \|/.test(md), 'A10: ตารางเหตุผลเต็มรายใบ');
     ok(MG.renderCensusMd([e('AAPL', true)]) === MG.renderCensusMd([e('AAPL', true)]).replace(/$^/, ''), 'A10: render ซ้ำได้ผลเดิม (deterministic ยกเว้นบรรทัดเวลา)');
   }
+  // ── ระยะ 3 Task 2 · ตัวค้นหา site ต้อง match ครั้งเดียวพอดีในรูปที่คลังใช้จริง ──────────────────
+  //   ทุกเคสเป็นสตริงในบรรทัด (fixture-lint ห้ามอ่าน reports/) ที่ **คัดลอกรูปจากใบจริง** ที่ census ฟ้อง
+  //   ยิงผ่าน MG.siteHits ซึ่งเดินทาง glob() เดียวกับ Tok.sub ⇒ เทสล้ม = migrator ล้มจริง ไม่ใช่สำเนาตรรกะ
+  {
+    const hits = (h, s) => MG.siteHits(h, s);
+    const one = (h, s, label, extra) => {
+      const m = hits(h, s);
+      ok(m.length === 1, `T2: ${label} — match 1 ครั้ง`, `ได้ ${m.length}`);
+      if (m.length === 1 && extra) extra(m[0]);
+    };
+    // (ก) legend — คำขยายฐานมูลค่าคั่นระหว่าง "มูลค่าเหมาะสม" กับตัวเลข (FANG/MPC/MU: 0 match)
+    const leg = (inner) => `<div class="legend">\n  <span><i style="background:#1a73e8"></i>ราคา X</span>\n  <span><i style="background:#1e8e3e"></i>${inner}</span>\n  <span><i style="background:#ea4335"></i>จุดสำคัญ</span>\n</div>`;
+    one(leg('มูลค่าเหมาะสม mid-cycle $172'), 'legend', 'legend คำขยายไม่มีวงเล็บ (รูป FANG)', (m) => {
+      ok(m[1].endsWith('มูลค่าเหมาะสม mid-cycle ') && m[0].slice(m[1].length) === '$172</span>', 'T2: legend — คำขยายอยู่ในกลุ่ม 1 · สกุลเงิน+เลขอยู่นอก', JSON.stringify(m[1].slice(-30)));
+    });
+    one(leg('มูลค่าเหมาะสม (normalized) $193'), 'legend', 'legend คำขยายในวงเล็บ (รูป MPC/MU)');
+    one(leg('มูลค่าเหมาะสม $150'), 'legend', 'legend รูปเดิมไม่มีคำขยาย (ต้องไม่พังเพราะการผ่อนรูป)', (m) => {
+      ok(m[1].endsWith('มูลค่าเหมาะสม ') && m[0].slice(m[1].length) === '$150</span>', 'T2: legend — รูปเดิม กลุ่ม 1 ยังจบที่คำว่า "มูลค่าเหมาะสม"', JSON.stringify(m[1].slice(-30)));
+    });
+    // ★ สกุลเงินสองตัวอักษร: `C$` ต้องตกเป็นของ ${CUR} ทั้งก้อน ไม่งั้น token render ออกมาเป็น "C C$172"
+    one(leg('มูลค่าเหมาะสม C$172'), 'legend', 'legend สกุล CAD (C$) ไม่ถูกกลืนเข้ากลุ่ม 1', (m) => {
+      ok(m[0].slice(m[1].length) === 'C$172</span>', 'T2: legend — "C$" อยู่นอกกลุ่ม 1 ครบทั้งสองตัวอักษร', JSON.stringify(m[0].slice(m[1].length)));
+    });
+    // ★ คำขยายที่มีตัวเลขอยู่ข้างใน — สมอ `</span>` ต้องบังคับให้ backtrack ไปคว้าเลขตัวจริง ไม่ใช่ "15"
+    one(leg('มูลค่าเหมาะสม (P/E 15x) $172'), 'legend', 'legend คำขยายมีตัวเลข — ต้องได้เลขตัวจริง', (m) => {
+      ok(m[0].slice(m[1].length) === '$172</span>', 'T2: legend — คว้า 172 ไม่ใช่ 15 ในคำขยาย', JSON.stringify(m[0].slice(m[1].length)));
+    });
+    ok(hits(leg('มูลค่าเหมาะสม จากสมมติฐานที่ยาวมากเกินเพดานยี่สิบสี่ตัวอักษรแน่นอน $172'), 'legend').length === 0,
+      'T2: legend — คำขยายยาวเกินเพดานไม่ match (เป็น residue ไม่ใช่เดาเอง)');
+    // (ก2) mFair — ผลลูกโซ่ของ (ก): ป้าย gauge คลาสเดียวกัน แต่ **ไม่มีสมอขวา** ⇒ ต้องคู่กับ lookahead `</div>`
+    const mf = (inner) => `<div class="mk" id="mFair"><div class="lab" style="background:#137333">${inner}</div></div>`;
+    one(mf('เหมาะสม (norm.) $193'), 'mFair', 'mFair คำขยายในวงเล็บที่ลงท้ายด้วยจุด (รูป MPC)', (m) => {
+      ok(m[0].slice(m[1].length) === '$193', 'T2: mFair — ไม่คว้าจุดใน "(norm.)" มาเป็นตัวเลข', JSON.stringify(m[0].slice(m[1].length)));
+    });
+    one(mf('เหมาะสม $905'), 'mFair', 'mFair รูปเดิมไม่มีคำขยาย');
+    ok(hits(mf('mid-cycle FV $172'), 'mFair').length === 0,
+      'T2: mFair — ป้ายที่ไม่มีคำว่า "เหมาะสม" เลย (รูป FANG) ยังไม่ match = residue โดยตั้งใจ');
+    // (ข) vcellFv — หัวข้อมีคำขยาย (AEM/BTG: 0 match) · ต้อง match ทั้งรูป range และรูปเดี่ยว
+    const vcAem = '<div class="vgrid">\n  <div class="vcell"><div class="k">มูลค่าเหมาะสม (ฉาก Base)</div><div class="v">$128.52 <span style="font-size:12px;color:#cab9a8">($120.62–$136.41)</span></div></div>\n  <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −56%</div></div>\n  <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$214.98 (Buy · 14 ราย)</div></div>\n</div>';
+    one(vcAem, 'vcellFv', 'vcellFv หัวข้อมีคำขยาย (รูป AEM)');
+    one(vcAem, 'vcellFvRange', 'vcellFvRange หัวข้อมีคำขยาย — rangeOk() อ่านรูปนี้');
+    one('<div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿18.91</div></div>', 'vcellFv', 'vcellFv รูปเดิมไม่มีคำขยาย');
+    // (ค) vcellTgt — ต้องไม่ไปโดนการ์ด .metric หัวข้อเดียวกันในหมวด 1 (BABA/STX/VRT: 2 match)
+    const tgtBoth = '<div class="metric"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v">$189</div><div class="d">สูงสุด $225</div></div>\n' + vcAem;
+    one(tgtBoth, 'vcellTgt', 'vcellTgt มีการ์ด .metric หัวข้อเดียวกันอยู่ด้วย (รูป BABA/STX/VRT)', (m) => {
+      ok(m[0].slice(m[1].length) === '$214.98', 'T2: vcellTgt — ได้ค่าของ vcell ไม่ใช่ของการ์ด .metric', JSON.stringify(m[0].slice(m[1].length)));
+    });
+    ok(hits('<div class="metric"><div class="k">เป้านักวิเคราะห์เฉลี่ย</div><div class="v">$355</div></div>', 'vcellTgt').length === 0,
+      'T2: vcellTgt — การ์ด .metric เดี่ยว ๆ ไม่ใช่ site นี้ (tokeniseTgtCard ดูแลแยก)');
+    // (ง) summary — ช่องสรุปที่มีคลาสสีมาด้วย (MXL `class="v pos"`: 0 match) · เจ้าของคือ DV.SUMMARY_RE
+    one('<div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v pos">ถูก ~2.3%</div></div>', 'summary', 'summary ช่องมีคลาสสี (รูป MXL)', (m) => {
+      ok(m[2] === 'ถูก ~2.3%' && m[1].includes('class="v pos"'), 'T2: summary — เนื้อในอยู่กลุ่ม 2 · คลาสคงอยู่ในกลุ่ม 1', JSON.stringify(m[1]));
+    });
+    one('<div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −56%</div></div>', 'summary', 'summary รูปคลัง v2 (class="v" + style)');
+    ok(require('../tools/derived-values.js').readSummaryCell('<div class="k">ส่วนต่างจากราคา</div><div class="v pos">ถูก ~2.3%</div>').shown === 2.3,
+      'T2: summary — readSummaryCell (f17/f18 ห่ออยู่) อ่านช่องที่มีคลาสสีได้แล้ว');
+  }
 }
 }
 

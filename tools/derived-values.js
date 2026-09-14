@@ -180,7 +180,13 @@ function epsBasesOf(text) {
 // `readSummaryCell` คือตัวอ่านที่ field-manifest (f17/f18) ห่อ · at/len ให้ตัวเขียนใช้ตำแหน่งเดียวกัน
 // (กัน "อ่านที่หนึ่ง เขียนอีกที่หนึ่ง") — ★ at/len เป็น offset ของ **สตริงที่ส่งเข้ามา** ⇒ ตัวเขียนต้อง
 // เรียก summaryPlan บนสตริงเดียวกับที่มันจะ splice
-const SUMMARY_RE = /(<div class="k">ส่วนต่างจากราคา<\/div>\s*<div class="v"[^>]*>)([\s\S]*?)(<\/div>)/;
+// ★ ระยะ 3 Task 2 — `class="v[^"]*"` ไม่ใช่ `class="v"` เป๊ะ: ใบเก่าบางใบใส่คลาสสีมากับช่องนี้
+//   (MXL `<div class="v pos">ถูก ~2.3%</div>`) ⇒ รูปเดิมอ่านไม่เจอ **ทั้งสาย**: f17/f18 ของ field-manifest
+//   (required) เป็น null · `summaryPlan` (healer #11) เขียนไม่ได้ · migrator ก็หา site `summary` ไม่เจอ
+//   ⇒ ช่องสรุปของใบนั้นค้างถาวรโดยไม่มีใครเห็น · แก้ที่ **เจ้าของเดียว** ตัวนี้ ไม่ใช่ทำสำเนา regex ในผู้เรียก
+//   ★ วัดคลัง 908 ใบ (15 ก.ย. 69): เปลี่ยนผลเฉพาะ MXL (0→1) ใบเดียว · ไม่มีใบไหน 1→0
+//   ★ `summary` **ไม่ได้อยู่ใน** REQUIRED_TOKEN_SITES (tools/report-values.js) ⇒ V2TOKENS ไม่ได้ใช้ regex นี้
+const SUMMARY_RE = /(<div class="k">ส่วนต่างจากราคา<\/div>\s*<div class="v[^"]*"[^>]*>)([\s\S]*?)(<\/div>)/;
 function readSummaryCell(html) {
   const m = String(html).match(SUMMARY_RE);
   if (!m) return null;

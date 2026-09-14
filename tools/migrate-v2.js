@@ -156,15 +156,42 @@ const FVBOX_RANGE_RE = new RegExp(`(class="fv-box"[\\s\\S]*?กรอบ\\s*)${C
 // ★ รูป "เข้ม" = ต้องมีสัญลักษณ์สกุลเงิน **ครบทั้งสองตัว** เพราะ token render สกุลเงินเสมอ (money())
 //   ใบที่เขียน "(฿123–456)" (สกุลเงินตัวเดียว) ถ้าแทนทั้งคู่ ข้อความที่คนเห็นจะงอก "฿" ตัวที่สอง — ชั้น 2 จับได้จริง 4 ใบ
 const FVBOX_RANGE_STRICT_RE = new RegExp(`(class="fv-box"[\\s\\S]*?กรอบ\\s*)${CUR}\\s*[\\d.,]+(\\s*(?:–|-|&ndash;)\\s*)${CUR}\\s*[\\d.,]+`);
-const LEGEND_RE = new RegExp(`(<div class="legend">[\\s\\S]*?มูลค่าเหมาะสม\\s*)${CUR}?\\s*[\\d.,]+(\\s*<\\/span>)`);
-const MFAIR_RE = new RegExp(`(id="mFair"><div class="lab"[^>]*>เหมาะสม\\s*)${CUR}?\\s*[\\d.,]+`);
+// ★ ระยะ 3 Task 2 — "site legend match ≠ 1 (0)" 3 ใบ (FANG "มูลค่าเหมาะสม mid-cycle $172" · MPC "(normalized)" ·
+//   MU "(mid-cycle)"): ผู้เขียนเติม **คำขยายฐานมูลค่า** คั่นระหว่างคำว่า "มูลค่าเหมาะสม" กับตัวเลข ⇒ รูปเดิมที่รับได้
+//   แต่ `\s*` จึงไม่ match เลย · คำขยายเป็นถ้อยคำของผู้เขียน (ไม่ใช่ค่า) ต้องอยู่ใน **กลุ่ม 1** เพื่อคงไว้ทั้งก้อน
+//   ⇒ ยอมให้มีข้อความคั่น ≤24 ตัวอักษร ที่ไม่ข้ามขอบแท็ก (`[^<]`) แบบ lazy
+//   ★ ปลอดภัยเพราะมี **สมอสองข้าง**: `${CUR}?\s*[\d.,]+` ต้องจบพอดีที่ `</span>` ⇒ lazy ที่หยุดเร็วเกินไป
+//     (เช่นไปคว้า "15" ใน "(P/E 15x) $172") backtrack ต่อเองจนถึงเลขตัวจริง · และสัญลักษณ์สกุลเงินตกเป็นของ
+//     `${CUR}?` เสมอ ไม่ถูกกลืนเข้ากลุ่ม 1 (ไม่งั้น token จะ render เป็น "$ $172") — เทสตรึงทั้งสองเคสไว้
+//   ★ วัดคลัง 908 ใบ (15 ก.ย. 69): เปลี่ยนผลเฉพาะ 3 ใบนี้ (0→1) · ไม่มีใบไหน 1→0
+const LEGEND_RE = new RegExp(`(<div class="legend">[\\s\\S]*?มูลค่าเหมาะสม[^<]{0,24}?)${CUR}?\\s*[\\d.,]+(\\s*<\\/span>)`);
+// ★ ระยะ 3 Task 2 (ผลลูกโซ่) — คลาสเดียวกับ legend เป๊ะ: MPC เขียนป้าย gauge ว่า `เหมาะสม (norm.) $193`
+//   ⇒ พอแก้ legend ให้ผ่าน ใบนี้ไปตกที่ `site mFair match ≠ 1 (0)` แทน · ผ่อนรูปแบบเดียวกัน
+//   ★★ ต่างจาก legend ตรงที่รูปเดิม **ไม่มีสมอขวา** ⇒ ผ่อนเฉย ๆ ไม่ได้: lazy จะไปหยุดที่จุด `.` ใน "(norm.)"
+//      แล้วคว้า "." เป็น "ตัวเลข" (ทั้ง `.` และ `,` อยู่ใน `[\d.,]+`) · จึงเติม lookahead `(?=\s*</div>)` คู่กันเสมอ
+//      — เป็นการ **รัดให้แคบลง** ไม่ใช่กว้างขึ้น และไม่เพิ่มกลุ่มจับ (ตัวแทนใช้ `m[1]` ตัวเดียว)
+//   ★ FANG ไม่ได้แก้ด้วยข้อนี้: ป้ายของมันคือ `mid-cycle FV $172` — **ไม่มีคำว่า "เหมาะสม" เลย** = ผู้เขียนเปลี่ยน
+//     ถ้อยคำของป้าย ไม่ใช่เติมคำขยาย ⇒ จะจับได้ต้องเลิกใช้คำในป้ายเป็นยาม เหลือแต่ `id="mFair"` ซึ่งเป็นการ
+//     เปลี่ยนความหมายของ site (ยอมแทนตัวเลขในป้ายที่อ่านไม่ออกว่าเป็นค่าอะไร) — นอกขอบเขต Task 2 ⇒ คง residue
+//   ★ วัดคลัง 908 ใบ (15 ก.ย. 69): เปลี่ยนผลเฉพาะ MPC (0→1) · ไม่มีใบไหน 1→0
+const MFAIR_RE = new RegExp(`(id="mFair"><div class="lab"[^>]*>เหมาะสม[^<]{0,24}?)${CUR}?\\s*[\\d.,]+(?=\\s*<\\/div>)`);
 const SCALE_SEG_RE = /<div class="scale">[\s\S]*?<\/div>\s*<\/div>/;
 const SCALE_SPAN_RE = new RegExp(`(<span[^>]*>)\\s*${CUR}?\\s*[\\d.,]+(\\s*<br>\\s*<small>([\\s\\S]*?)<\\/small>)`, 'g');
 const MOSCARD_RE = (pct) => new RegExp(`(จุดซื้อ MOS ${pct}%<\\/div>\\s*<div class="v[^"]*">)\\s*${CUR}?\\s*[\\d.,]+`);
 const ZONE_RE = new RegExp(`(โซนเริ่มทยอยสะสม<\\/div>\\s*<div class="v[^"]*">\\s*(?:&lt;|<)\\s*)${CUR}?\\s*[\\d.,]+`);
-const VCELL_FV_RANGE_RE = new RegExp(`(<div class="k">มูลค่าเหมาะสม<\\/div>\\s*<div class="v"[^>]*>)\\s*${CUR}\\s*[\\d.,]+(\\s*<span[^>]*>\\()${CUR}\\s*[\\d.,]+([–\\-])${CUR}\\s*[\\d.,]+(\\)<\\/span>)`);
-const VCELL_FV_RE = new RegExp(`(<div class="k">มูลค่าเหมาะสม<\\/div>\\s*<div class="v"[^>]*>)\\s*${CUR}?\\s*[\\d.,]+`);
-const VCELL_TGT_RE = new RegExp(`(<div class="k">เป้านักวิเคราะห์[^<]*<\\/div>\\s*<div class="v"[^>]*>\\s*~?)${CUR}?\\s*[\\d.,]+`);
+// ★ ระยะ 3 Task 2 — vcell ทั้งสองตัวผูก **สมอซ้ายเป็น `<div class="vcell">`** และรับคำขยายหลังหัวข้อ:
+//   (ก) "site vcellFv match ≠ 1 (0)" 2 ใบ (AEM `มูลค่าเหมาะสม (ฉาก Base)` · BTG `มูลค่าเหมาะสม (normalized)`) —
+//       หัวข้อของ vcell มีคำขยายต่อท้าย ⇒ `<div class="k">มูลค่าเหมาะสม</div>` แบบเป๊ะไม่ match · แก้เป็น `[^<]*`
+//       (คำขยายอยู่ในกลุ่ม 1 = คงไว้) · ต้องแก้ **ทั้งรูป range และรูปเดี่ยว** เพราะ `rangeOk()` อ่านรูป range ตัวเดียวกัน
+//   (ข) "site vcellTgt match ≠ 1 (2)" 3 ใบ (BABA STX VRT): รูปเดิมไม่ได้ผูกกับ `.vcell` เลย ⇒ ไป match **การ์ด
+//       `.metric` หัวข้อเดียวกันในหมวด 1 ด้วย** (ใบที่มีทั้งสองจุดจึงได้ 2 = กำกวม = ไม่ย้ายทั้งใบ) · site นี้ชื่อ
+//       `vcellTgt` อยู่แล้ว ⇒ ผูกสมอให้ตรงชื่อ (การ์ด `.metric` เป็นงานของ `tokeniseTgtCard` คนละตัว)
+//   ★ `[^<]*` ของหัวข้อไม่ข้ามขอบแท็ก และ `<div class="vcell">` กันไม่ให้หลุดไปจุดอื่นของไฟล์
+//   ★ วัดคลัง 908 ใบ (15 ก.ย. 69): vcellFv เปลี่ยน 5 ใบ (AEM BTG MPC MU SHANG 0→1) · vcellTgt เปลี่ยน 8 ใบ
+//     (BABA STX VRT + v2 ที่ย้ายไปแล้ว AZN BMO CHE GULF HSY — ทั้งหมด 2→1) · ไม่มีใบไหน 1→0
+const VCELL_FV_RANGE_RE = new RegExp(`(<div class="vcell">\\s*<div class="k">มูลค่าเหมาะสม[^<]*<\\/div>\\s*<div class="v"[^>]*>)\\s*${CUR}\\s*[\\d.,]+(\\s*<span[^>]*>\\()${CUR}\\s*[\\d.,]+([–\\-])${CUR}\\s*[\\d.,]+(\\)<\\/span>)`);
+const VCELL_FV_RE = new RegExp(`(<div class="vcell">\\s*<div class="k">มูลค่าเหมาะสม[^<]*<\\/div>\\s*<div class="v"[^>]*>)\\s*${CUR}?\\s*[\\d.,]+`);
+const VCELL_TGT_RE = new RegExp(`(<div class="vcell">\\s*<div class="k">เป้านักวิเคราะห์[^<]*<\\/div>\\s*<div class="v"[^>]*>\\s*~?)${CUR}?\\s*[\\d.,]+`);
 const RESTATE_PRE_RE = /^(?:\s|<[^>]*>)*\(\s*/;                     // วงเล็บทวนวันที่ — คำศัพท์เดียวกับ PD.findRestatedDate
 const HINT_PX_RE = new RegExp(`(จากจุดเข้า\\s*)${CUR}?\\s*[\\d.,]+`);
 const HINT_EPS_RE = new RegExp(`(EPS ฐาน\\s*)~?\\s*${CUR}?\\s*([\\d.,]+)`);
@@ -1799,7 +1826,20 @@ function exitCode({ errors, residue, strict }) {
   return strict && residue ? 1 : 0;
 }
 
+// ── ตัวค้นหา site (ระยะ 3 Task 2) ────────────────────────────────────────────
+/** regex ของ site ที่ระยะ 3 Task 2 แก้ความแม่นยำ — เปิดให้เทสยิงตรง (เจ้าของยังเป็นไฟล์นี้ไฟล์เดียว)
+ *  ★ `summary` ชี้ไปที่ `DV.SUMMARY_RE` ตัวจริง ไม่ใช่สำเนา — เทสจะได้ล้มเมื่อเจ้าของเปลี่ยน */
+const SITE_RE = { legend: LEGEND_RE, mFair: MFAIR_RE, vcellFv: VCELL_FV_RE, vcellFvRange: VCELL_FV_RANGE_RE, vcellTgt: VCELL_TGT_RE, get summary() { return DV.SUMMARY_RE; } };
+/** จำนวน/ผลการ match ของ site หนึ่งใน html — **ทางเดียวกับที่ `Tok.sub` ใช้** (glob เดิม) ไม่ใช่สำเนาตรรกะ
+ *  กติกาของ migrator คือ "ทุก site ต้อง match ครั้งเดียวพอดี" ⇒ เทสอ่าน `.length` ตัวนี้ได้ตรง ๆ */
+function siteHits(html, site) {
+  const re = SITE_RE[site];
+  if (!re) throw new Error(`ไม่รู้จัก site ${site}`);
+  return [...String(html).matchAll(glob(re))];
+}
+
 module.exports = {
+  SITE_RE, siteHits,
   migrateOne, extractValues, tokenise, buildRd, verifyPair, checkStripped, sameMoney, scnPyDiffs, scnPyCountGuard, pyCell, main, noteTailOf, tailHitsOtherSite, HINT_NOTE_TAIL_RE,
   cronDiff, cronGate, CRON_GRID, CRON_META_KEYS, sameMetaForm, cronDateParts, visibleCronDiff, pyExplained, planWrite, summarizeCronDiff, unitForm,
   failSide, cronDiffReason, exitCode, ALREADY_V2,
