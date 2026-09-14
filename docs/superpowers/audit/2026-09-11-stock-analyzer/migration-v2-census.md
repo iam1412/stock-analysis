@@ -1,6 +1,6 @@
 # census การย้าย v1 → v2 (ระยะ 2 ส่วน C)
 
-อัปเดต: 14/9/2569 18:26:19 (Asia/Bangkok)
+อัปเดต: 14/9/2569 20:44:33 (Asia/Bangkok)
 
 | ผล | ใบ |
 |---|---|
@@ -94,73 +94,103 @@
 
 | ชนิด | จุด (คอลัมน์) | ใบ |
 |---|---|---|
-| รูปเลขเปลี่ยนแต่ค่าเท่าเดิม (form) | 372 | — |
-| ค่าจริงขยับ (value) | 93 | 62 |
+| รูปเลขเปลี่ยนแต่ค่าเท่าเดิม (form) | 408 | — |
+| ค่าจริงขยับ (value) | 57 | 53 |
 
 ### ใบที่ %/ปี ขยับค่าจริง (ก่อน → หลัง ต่อคอลัมน์)
 
 - AEHR: bull +16.6%/ปี → +16%/ปี
-- AMATA: base null → +11%/ปี · bull null → +25%/ปี
 - AMZN: bear −12.5%/ปี → −12%/ปี · bull +14.5%/ปี → +14%/ปี
 - ANET: base −1%/ปี → −1.4%/ปี
-- ASW: bear null → +1.6%/ปี · base null → +17%/ปี · bull null → +33%/ปี
+- ASW: bear 1.8%/ปี → +1.6%/ปี
 - AZN: bull +21.5%/ปี → +21%/ปี
 - CCEP: bull +15.5%/ปี → +15%/ปี
-- CHG: bear null → +7%/ปี · base null → +23%/ปี · bull null → +32%/ปี
 - CIEN: bear -1%/ปี → −1.4%/ปี
-- CKP: bear null → +5%/ปี · base null → +23%/ปี · bull null → +37%/ปี
 - COCOCO: base +10.4%/ปี → +11%/ปี
 - COHR: bull +15.5%/ปี → +15%/ปี
 - CPN: bear −3.5%/ปี → −3%/ปี
 - CRDO: base +18.5%/ปี → +18%/ปี
 - DELL: base −6.5%/ปี → −6%/ปี
-- ES: bear null → +2.0%/ปี · base null → +12%/ปี · bull null → +17%/ปี
+- ES: bear 2.1%/ปี → +2.0%/ปี
 - ETN: bull +14.5%/ปี → +14%/ปี
+- FER: base +1.9%/ปี → +2.0%/ปี
+- FICO: bear +0.8%/ปี → +1.0%/ปี
 - FN: bear +1.5%/ปี → +1.6%/ปี
-- FSMART: bear −10.5%/ปี → −10%/ปี · base null → +10%/ปี · bull null → +28%/ปี
+- FSMART: bear −10.5%/ปี → −10%/ปี
 - FTS: base +4.5%/ปี → +4%/ปี
-- GFPT: base null → +16%/ปี · bull null → +24%/ปี
 - IBM: bear −12.5%/ปี → −12%/ปี
 - ICHI: base +26.5%/ปี → +26%/ปี
 - ICLR: base +1.5%/ปี → +1.6%/ปี
-- III: bear -1.3%/ปี → −1.4%/ปี · base null → +26%/ปี · bull null → +38%/ปี
+- III: bear -1.3%/ปี → −1.4%/ปี
 - INTC: bull +23.5%/ปี → +23%/ปี
 - JBL: bear -1%/ปี → −1.4%/ปี
 - KKP: base −1.3%/ปี → −1.4%/ปี
 - KLINIQ: bear +1.4%/ปี → +1.3%/ปี
 - KTB: base +1.4%/ปี → +1.3%/ปี
-- M: base null → +3%/ปี · bull null → +19%/ปี
 - MCK: bear -1.3%/ปี → −1.4%/ปี
 - MKSI: bear +1%/ปี → +1.3%/ปี
 - MPWR: base +14.5%/ปี → +14%/ปี
 - MTSI: bear +1%/ปี → +0.6%/ปี
-- NSL: bear null → +6%/ปี · base null → +21%/ปี · bull null → +33%/ปี
-- ONTO: base null → +4%/ปี
-- OR: base +14.5%/ปี → +14%/ปี
-- OWL: bear null → +8%/ปี · base null → +22%/ปี · bull null → +34%/ปี
-- PNW: base null → +11%/ปี · bull null → +14%/ปี
+- OR: bear +0.9%/ปี → +1.0%/ปี · base +14.5%/ปี → +14%/ปี
+- PNW: bear -0.8%/ปี → −1.0%/ปี
+- PR9: bear -1.1%/ปี → −1.0%/ปี
 - RY: base −1.2%/ปี → −1.4%/ปี
 - SAP: base +0.7%/ปี → +0.6%/ปี
 - SCAP: bear −4.4%/ปี → −5%/ปี
 - SE: base +16.5%/ปี → +16%/ปี
-- SHR: bear null → +7%/ปี · base null → +22%/ปี · bull null → +35%/ปี
-- SIRI: bear null → +5%/ปี · base null → +18%/ปี · bull null → +29%/ปี
-- SMPC: bear +1.4%/ปี → +1.3%/ปี · base null → +12%/ปี · bull null → +21%/ปี
+- SMPC: bear +1.4%/ปี → +1.3%/ปี · bull 21.5%/ปี → +21%/ปี
 - SPCX: bull +18.5%/ปี → +18%/ปี
 - STRL: base +1.4%/ปี → +1.3%/ปี
 - SYNEX: bear +1.7%/ปี → +1.6%/ปี
 - TD: bear −20.4%/ปี → −21%/ปี
 - TDY: bear −3.5%/ปี → −3%/ปี
 - THREL: base −0.8%/ปี → −0.7%/ปี
-- TOA: bear null → +5%/ปี · base null → +20%/ปี · bull null → +31%/ปี
 - TPG: bear −11.4%/ปี → −12%/ปี
 - TSEM: base +2%/ปี → +1.6%/ปี
 - TSN: bear −2.6%/ปี → −2%/ปี · bull +26.5%/ปี → +26%/ปี
 - TU: bear -1%/ปี → −1.4%/ปี
 - TXN: bear −3.5%/ปี → −3%/ปี
 - VST: bear +1%/ปี → +0.7%/ปี
-- WAT: base null → +9%/ปี · bull null → +21%/ปี
 - WPM: base −9.3%/ปี → −10%/ปี
+
+## clause "รวมปันผล" ที่ถูกตัดออกจากหน้าจริง (site `scnNote` · เฉพาะใบ `scnBasis.divIncluded = false`)
+
+`{{rd:scnNote}}` render เป็นค่าว่างเมื่อตัวเลขฉากของใบนั้นไม่ได้รวมปันผล ⇒ **ทั้ง clause** หายจากหน้าที่ผู้อ่านเห็น
+ไม่ใช่แค่ป้าย " • รวมปันผล" · หัวข้อนี้บอกว่า **ข้อความอะไร** หายไปจากแต่ละใบ (ก่อน fix wave นี้ ข้อความท้าย clause
+ค้างลอยอยู่บนหน้าโดยไม่มีที่อ้างอิง ซึ่งคือบั๊กที่แก้ไป) · ท้าย clause ที่กินได้ถูกจำกัดด้วย whitelist 3 รูปเท่านั้น
+(เลขเงิน · คำเดียวติดกัน · วงเล็บสั้น) และต้องไม่กลืน token/ค่าของ site อื่น — รูปอื่น = ไม่กิน คง literal
+
+### ใบที่ข้อความของผู้เขียนหายไปด้วย (7 ใบ — ต้องอ่านรายบรรทัด)
+
+| ใบ | site | clause ที่ถูกตัดทั้งก้อน | ข้อความท้าย clause ที่หายไป |
+|---|---|---|---|
+| ARE | scnNote | ` • รวมปันผล $2.88/ปี` | ` $2.88/ปี` |
+| BMY | scnNote | ` • รวมปันผล $2.52/yr` | ` $2.52/yr` |
+| CF | scnNote | ` • รวมปันผล ~$6` | ` ~$6` |
+| CME | scnNote | ` • รวมปันผลปกติ` | `ปกติ` |
+| JBHT | scnNote | ` • รวมปันผล $5.40` | ` $5.40` |
+| KIM | scnNote | ` • รวมปันผล ~$1.04/ปี` | ` ~$1.04/ปี` |
+| NTV | scnNote | ` • รวมปันผล (ประมาณ)` | ` (ประมาณ)` |
+
+### ใบที่ตัดเฉพาะป้าย (ไม่มีข้อความต่อท้าย — 135 ใบ)
+
+A AAON ABT ACE AEP AIT AJG ALL AMRZ AMT AP APD ARES ATO AWK BAC BAX BIZ BKI BLK BRO BX C CASY CCET CHD CI CL CMI COST CPT CRL CSX CTVA CVX CW DCI DELTA DHR DLR DOHOME DUK EASTW EGP EHC EME EMR ETR EVR EXC EXPD EXPO EXR FAST FDS FDX FR GEHC GILD GPC GS HAL HEI HRL HUM IR ITT ITW JCI KAMART KKR KMB KNSL KO KR KVUE L LDOS LPH MAA MAR MCD MCK MDT MEDEZE MET MKC MOG-A MRSH MS MSI NCAP NETBAY NNN NSC OXY PG PH PLD PPG PRU PSA RACE RF RGA RGLD RMD RNR ROK ROL ROP RSG RTX SF SFT SKR SNP SO TGT TJX TMO TNP TPL TQM UFPI UI USFD VIBHA VICI VRSK WICE WM WST YUM ZBH
+
+รวม **142** จุด / **142** ใบ
+
+## "~" ที่ migrator เติมหน้า token เอง (ไม่มีในต้นฉบับตรงตำแหน่งนั้น)
+
+token เงินของ skeleton v2 สองจุด (`~{{rd:baseEps}}` · `~{{rd:sc<k>div}}`) เขียน "~" นำหน้าเสมอ — ใบที่ต้นฉบับไม่มี
+เครื่องหมายนี้ตรงตำแหน่งนั้นจึง "งอก" ข้อความที่คนเห็น · ชั้น 2 มองไม่เห็นเพราะ `maskText` ตัด `[~≈]` ทิ้งทั้งสองฝั่ง
+⇒ เปิดเผยอย่างเดียว ไม่ใช่เกณฑ์ผ่าน/ตก และไม่ใช่ความล้มเหลว (รูปของ skeleton v2 เป็นแบบนี้)
+
+| site | จุด | ใบ | รายชื่อ |
+|---|---|---|---|
+| scn1div | 24 | 24 | ALNY AS AUR BSX CBRS CSGP CWST FICO GRAB IIG INSM IQV JAZZ LYV MNST MRNA NRF NTRA OMCL OUST PONY RBC RCAT THREL |
+| scn2div | 24 | 24 | ALNY AS AUR BSX CBRS CSGP CWST FICO GRAB IIG INSM IQV JAZZ LYV MNST MRNA NRF NTRA OMCL OUST PONY RBC RCAT THREL |
+| scn3div | 24 | 24 | ALNY AS AUR BSX CBRS CSGP CWST FICO GRAB IIG INSM IQV JAZZ LYV MNST MRNA NRF NTRA OMCL OUST PONY RBC RCAT THREL |
+| hintEps | 11 | 11 | AAPL APP BAY CAT CBOE COHR CPW IT KTB MNST SITM |
+| **รวม** | **83** | **34** | |
 
 ## cron differential v1 ↔ v2 (`--cron-diff` · grid ราคา ×0.85–×1.15 ทีละ 0.005 · 61 จุด)
 
@@ -951,10 +981,10 @@ v1-unstable = ผลของ v1 เปลี่ยนชนิด/ฐานร�
 
 ---
 
-## สรุปสุดท้าย — Task 14 (ระยะ 2 ส่วน E · ย้ายคลังครบ 10 แบตช์)
+## สรุปสุดท้าย — Task 14 (ระยะ 2 ส่วน E · ย้ายคลังครบ)
 
-> สร้างจาก `migration-v2-census.json` หลังแบตช์สุดท้าย ด้วย `node summary.js <census.json> >> <census.md>` (สคริปต์อยู่ใน task-14-report.md) —
-> คิดจาก JSON อย่างเดียว · migrator ที่รัน `--census` ซ้ำจะเขียน .md ใหม่ทั้งไฟล์ (บล็อกนี้หาย ต้องต่อท้ายใหม่)
+> สร้างจาก entries ของสำมะโนโดย `renderCensusMd` เอง — รัน `--census` ซ้ำได้บล็อกเดิมทุกครั้ง
+> (เดิมเป็นสคริปต์ one-off ที่ต่อท้ายไฟล์ด้วยมือ แล้วหายทุกครั้งที่ migrator เขียน .md ใหม่)
 
 | ผล | ใบ |
 |---|---|
@@ -971,14 +1001,14 @@ v1-unstable = ผลของ v1 เปลี่ยนชนิด/ฐานร�
 | ค่าไม่ตรงชั้น N | 4 | AMKR LWLG MTI TMAN |
 | site legend match ≠ N | 3 | FANG MPC MU |
 | site vcellTgt match ≠ N | 3 | BABA STX VRT |
+| cron-diff v1-unstable gate-warn:W22 | 2 | PTG THCOM |
 | FV ไม่ตรงกันเอง | 2 | PNC TEAM |
 | site vcellFv match ≠ N | 2 | AEM BTG |
 | กรอบ FV สองที่ไม่ตรงกัน | 2 | ALLE POET |
-| mFair แสดง N แต่ FV = N | 1 | SAPPE |
-| site summary match ≠ N | 1 | MXL |
-| cron-diff v1-unstable gate-warn:W22 | 2 | PTG THCOM |
 | cron-diff v1-unstable meta:dividendYield,visible | 1 | BNY |
 | cron-diff v1-unstable visible | 1 | WWD |
+| mFair แสดง N แต่ FV = N | 1 | SAPPE |
+| site summary match ≠ N | 1 | MXL |
 
 <details><summary>เหตุผล residue เต็มรายใบ (43)</summary>
 
@@ -1030,7 +1060,7 @@ v1-unstable = ผลของ v1 เปลี่ยนชนิด/ฐานร�
 
 </details>
 
-### site ที่คง literal ต่อชนิด (เฉพาะ 865 ใบที่ย้าย · รวมทุกเหตุผลย่อย — เหตุผลย่อยดูตาราง "site ที่คง literal" ด้านบน ซึ่งนับรวมใบ residue ด้วย)
+### site ที่คง literal ต่อชนิด (เฉพาะใบที่ย้าย · รวมทุกเหตุผลย่อย — เหตุผลย่อยดูตาราง "site ที่คง literal" ด้านบน ซึ่งนับรวมใบ residue ด้วย)
 
 | site | ใบ |
 |---|---|
@@ -1056,10 +1086,10 @@ v1-unstable = ผลของ v1 เปลี่ยนชนิด/ฐานร�
 
 | หมวด | ใบ | หมายเหตุ |
 |---|---|---|
-| cron differential: ตรวจ / ผ่าน / ตก | 869 / 865 / 4 | ตก = BNY PTG THCOM WWD (ไม่เขียน · รายละเอียดในหัวข้อ cron differential) |
-| ค่าต่างที่มีอยู่ก่อน patch (migration ยอมรับ) | 34 | มากสุด 0.99% · AEE ANI BF-B BWXT CBOE CHAYO CMS DD DUK EPG EQIX EXE FDS GLOBAL HSY IIG IVL JAZZ LDOS LPH MFC MMS PRINC RYAN SBAC SECURE SKR SNX SPCX SYM TGH TRMB TRU WICE (ป้ายและค่า v1 → v2 รายใบอยู่ด้านบน) |
+| cron differential: ตรวจ / ผ่าน / ตก | 869 / 865 / 4 | ตก = BNY PTG THCOM WWD (ไม่เขียน · รายละเอียดในหัวข้อด้านบน) |
+| ค่าต่างที่มีอยู่ก่อน patch (migration ยอมรับ) | 34 | มากสุด 0.99% · AEE ANI BF-B BWXT CBOE CHAYO CMS DD DUK EPG EQIX EXE FDS GLOBAL HSY IIG IVL JAZZ LDOS LPH MFC MMS PRINC RYAN SBAC SECURE SKR SNX SPCX SYM TGH TRMB TRU WICE |
 | รูปทศนิยมหมวด 6 เปลี่ยน (เช่น 3.5→3) | 692 | รอเจ้าของตัดสินว่าเป็นรูปหรือค่า (นโยบายปัด fmtMos เดียว) · รายชื่อด้านล่าง |
-| %/ปี หมวด 6 ค่าขยับ (v2 คิด %/ปี จาก "รวม" ที่ปัดแล้ว) | 62 | 93 คอลัมน์ · รูปอย่างเดียว 372 คอลัมน์ · รายใบอยู่ในหัวข้อ %/ปี ด้านบน · ไปพร้อมคำถาม fmtMos |
+| %/ปี หมวด 6 ค่าขยับ (v2 คิด %/ปี จาก "รวม" ที่ปัดแล้ว) | 53 | 57 คอลัมน์ · รูปอย่างเดียว 408 คอลัมน์ · รายใบอยู่ในหัวข้อ %/ปี ด้านบน |
 | รูปตัวเลขอื่น (ราคา/หน่วยเงิน/ศักราช) | 147 | |
 | สีช่อง .ret ของ v1 ค้าง — v2 คิดสีตามเครื่องหมาย | 491 | |
 

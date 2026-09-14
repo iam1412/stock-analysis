@@ -169,7 +169,74 @@ const RESTATE_PRE_RE = /^(?:\s|<[^>]*>)*\(\s*/;                     // วงเ
 const HINT_PX_RE = new RegExp(`(จากจุดเข้า\\s*)${CUR}?\\s*[\\d.,]+`);
 const HINT_EPS_RE = new RegExp(`(EPS ฐาน\\s*)~?\\s*${CUR}?\\s*([\\d.,]+)`);
 const HINT_NOTE_RE = / • รวมปันผล/;
+// ★ I1 (fix wave Task 14): `{{rd:scnNote}}` render ว่างเมื่อ `scnBasis.divIncluded === false` ⇒ ถ้าแทนแค่ป้าย
+//   " • รวมปันผล" ข้อความที่ผู้เขียนต่อท้ายใน clause เดียวกัน ("$2.88/ปี" · "ปกติ" · "(ประมาณ)") จะค้างอยู่โดยไม่มี
+//   ที่อ้างอิง — คนอ่านเห็นเลขลอย/คำติดกัน (วัดจริง 7 ใบ: ARE BMY CF CME JBHT KIM NTV)
+//   ⇒ กิน clause ทั้งก้อนจนถึงขอบแท็ก `<` หรือ " • " ของ clause ถัดไป (อันไหนมาก่อน) ให้ token เดียวคุมทั้ง clause
+//   ★ ใช้ **เฉพาะ divIncluded=false** — ใบที่ divIncluded=true token render ป้ายกลับมาเป๊ะ แต่ข้อความต่อท้ายจะหาย
+//     ถ้ากินเข้าไปด้วย (13 ใบมีข้อความต่อท้ายจริง เช่น AMGN " ~$10.08/ปี" · SPI " • กรอบอ้างอิง…") ⇒ ต้องไม่กิน
+// ★★ round 2 (review I3): รอบแรกกินแบบ "อะไรก็ได้จนถึง `<` หรือ ` • `" ⇒ **ไม่มีเพดาน** — reviewer พิสูจน์ว่า
+//    ประโยคทั้งประโยค (ADV-4) · ข้อความอ้างฐานบัญชี (ADV-7) · หรือแม้แต่ค่าที่ token ของ site อื่นพิมพ์ไว้ (ADV-6)
+//    ถูกลบเงียบ ๆ ได้ทั้งหมด โดย checkStripped (นับ "ป้าย" ไม่ได้ดูสิ่งที่ติดมากับป้าย) · ชั้น 2 และ cron differential
+//    (ซึ่งตัด clause ทิ้งทั้งคู่) มองไม่เห็นเลย ⇒ เปลี่ยนเป็น **whitelist ของรูปที่พบจริงในคลัง** เท่านั้น
+//    รูปอื่น = ไม่กิน → คง site `scnNote` เป็น literal (สถานะเดิม) ตามทางถอยที่ไฟล์นี้ใช้กับ site ไม่บังคับทุกตัว
+const NOTE_LABEL = ' • รวมปันผล';
+//   (1) เลขเงินท้าย clause (+ suffix /ปี · /yr ได้) — ARE $2.88/ปี · BMY $2.52/yr · CF ~$6 · JBHT $5.40 · KIM ~$1.04/ปี
+const NOTE_TAIL_MONEY = ` ?[~≈]?\\s?${CUR}\\s?[\\d][\\d.,]{0,12}(?:\\s?\\/\\s?(?:ปี|yr))?`;
+//   (2) คำเดียวติดกันไม่เว้นวรรค (ไม่มีช่องว่างนำหน้าเลย) — CME "ปกติ"
+const NOTE_TAIL_GLUED = '[^\\s<(]{1,16}';
+//   (3) วงเล็บสั้น — NTV "(ประมาณ)"
+const NOTE_TAIL_PAREN = ' ?\\([^()<]{1,30}\\)';
+// ★ เพดานความยาวอยู่ในตัว quantifier ทุกรูป (≤ ~20 ตัวอักษรของเนื้อหา) — สั้นกว่าประโยคมาก ตามกติกา round 2
+const NOTE_TAIL_SRC = `(?:${NOTE_TAIL_MONEY}|${NOTE_TAIL_GLUED}|${NOTE_TAIL_PAREN})?`;
+// clause = ป้าย + ท้ายที่อยู่ใน whitelist (หรือว่าง) แล้วต้องจบพอดีที่ขอบแท็ก `<` / clause ถัดไป " • " / ท้ายสตริง
+//   ⇒ ท้ายที่ไม่อยู่ใน whitelist ทำให้ regex นี้ **ไม่ match เลย** (ไม่ใช่ match แบบสั้นลง) — ตั้งใจ: ตัวเทียบจะได้
+//     ไม่ตัดอะไรทิ้งแทนที่จะตัดครึ่ง ๆ กลาง ๆ · ฝั่ง v1/v2 เหมือนกันอยู่แล้วเมื่อไม่กิน จึงยังเทียบผ่าน
+const HINT_NOTE_TAIL_RE = new RegExp(NOTE_LABEL + NOTE_TAIL_SRC + '(?=<| • |$)');
+// รูป global ของ clause เดียวกัน — ใช้ทั้งชั้น 2 (stripVolatile) และมุมมองของ cron differential (cronView)
+// ★ ต้องเป็น clause เต็ม ไม่ใช่แค่ป้าย: ใบ divIncluded=false ตัดทั้ง clause จริง ⇒ ตัวเทียบที่ตัดแค่ป้ายจะเห็น
+//   ข้อความ/ตัวเลขท้าย clause ของ v1 เหลือค้างฝั่งเดียวแล้วฟ้อง "visible" ทั้งที่เป็นผลของการแก้บั๊กนี้เอง
+const HINT_NOTE_TAIL_G = glob(HINT_NOTE_TAIL_RE);
+/** ข้อความท้าย clause ที่ (จะ) ถูกกิน — '' = ไม่มี · null = รูปไม่อยู่ใน whitelist (ห้ามกิน) */
+function noteTailOf(html) {
+  const m = HINT_NOTE_TAIL_RE.exec(String(html));
+  return m ? m[0].slice(NOTE_LABEL.length) : null;
+}
+/**
+ * ยามชั้นสอง (round 2 · review I3 "defense in depth") — ช่วงที่จะถูกกินต้องไม่กลืน "ของ site อื่น" ไปด้วย
+ *   (ก) **token ของ site อื่นอยู่ในช่วง** — เคส ADV-6 ตัวจริง: hint ที่เขียน `EPS ฐาน ~$19.16` ไว้ **หลัง** ป้าย
+ *       ⇒ `{{rd:baseEps}}` ถูกลบทั้ง token ค่าที่คนเห็นหายทั้งจุด (ยามนี้แม่นเพราะดู "ตำแหน่ง" ไม่ใช่เดาจากตัวเลข)
+ *   (ข) **ตัวเลขในช่วงตรงกับค่าที่ token ของ site อื่น render** — กันกรณีที่ whitelist ดันเข้ารูปเงินพอดี
+ *       ★ ชุดที่เทียบ = ค่าที่ token **พิมพ์ออกมาจริง** เท่านั้น · ไม่ใช่ตัวหารของการ์ด (eps/dps/bvps/shares/revenue —
+ *         token render เป็น P/E · ปันผล% · P/BV · Market Cap ไม่ใช่ตัวเลขพวกนั้น) ไม่งั้นจะฟ้องปลอมทันที เพราะ
+ *         `values.dps` **คือ** เลขปันผลตัวเดียวกับที่ hint เขียน (ARE 2.88 · BMY 2.52 · JBHT 5.40 · KIM 1.04)
+ *       ★ ไม่รวม `sc{k}div` ด้วยเหตุผลเดียวกัน: ปันผลของฉากกับปันผลใน hint เป็น **ปริมาณเดียวกันโดยการสร้าง**
+ *         (CF: hint "~$6" = ปันผลรวม 3 ปี = `scenarios[k].div` 6) ⇒ เท่ากันคือเรื่องปกติ ไม่ใช่การชน
+ * @returns {string|null} เหตุผลที่ต้องปฏิเสธ หรือ null = ผ่าน
+ */
+function tailHitsOtherSite(tail, values) {
+  const t = String(tail);
+  if (/\{\{rd:/.test(t)) return `token ของ site อื่นอยู่ในช่วงที่จะกิน (${(t.match(/\{\{rd:[a-zA-Z0-9]+\}\}/) || [''])[0]})`;
+  const nums = (t.match(/[\d][\d.,]*/g) || [])
+    .map((n) => parseFloat(n.replace(/,/g, '').replace(/\.$/, ''))).filter((n) => Number.isFinite(n));
+  if (!nums.length) return null;
+  const fv = values._fv != null ? values._fv : values.fv;
+  const others = [values.px, fv, values.fvLow, values.fvHigh, values.analystTgt, values.baseEps];
+  for (const s of values.scenarios || []) others.push(s.tgt);
+  if (fv > 0) { others.push(Math.round(fv * 0.8 * 100) / 100); others.push(Math.round(fv * 0.7 * 100) / 100); }
+  for (const n of nums) for (const o of others) if (o != null && Math.abs(n - o) < 1e-9) return `ตัวเลข ${n} ตรงกับค่าที่ token ของ site อื่น render`;
+  return null;
+}
+// ── R2 (review I2): สำมะโนต้องบอกว่า "อะไรหายไปจากหน้าจริง" ไม่ใช่แค่ว่าป้ายหาย ────────────────
+const CLAUSE_NOTE = 'ตัด clause ';
+const clauseNote = (clause) => `${CLAUSE_NOTE}"${clause}" 1 จุด — ตัวเลขฉากของใบนี้ไม่ได้รวมปันผล (scenarioPlan conv=plain)`;
+const CLAUSE_NOTE_RE = /^ตัด clause "([\s\S]*)" (\d+) จุด/;
 const HINT_DIV_RE = /<div class="hint">[\s\S]*?<\/div>/;
+// ── M2 (Part D · fix wave Task 14): token เงิน 2 จุดเขียน "~" นำหน้าเสมอ (hintEps · scn{k}div) ทั้งที่ต้นฉบับ
+//   บางใบไม่มี "~" ตรงตำแหน่งนั้น ⇒ ข้อความที่คนเห็น "งอก" เครื่องหมายประมาณค่า · ชั้น 2 มองไม่เห็นเพราะ
+//   maskText ตัด [~≈] ทิ้งทั้งสองฝั่ง ⇒ ต้อง **เปิดเผยในสำมะโน** (ไม่เปลี่ยนพฤติกรรม — รูปของ skeleton v2 เป็นแบบนี้)
+const TILDE_RE = /[~≈]/;
+const TILDE_NOTE = 'เติม ~ หน้า token: ';
 const SCN_TGT_RE = new RegExp(`(<div class="tgt">\\s*)${CUR}?\\s*[\\d.,]+`);
 const SCN_RET_RE = /<div class="ret[^"]*">[\s\S]*?<\/div>/;
 const SCN_DPS_RE = new RegExp(`(ปันผล[^<]*<\\/span>\\s*<span>\\s*)[~≈]?\\s*${CUR}?\\s*[\\d.,]+`);
@@ -180,7 +247,27 @@ const FOOTER_RE = /<footer[\s\S]*<\/footer>/;
 // ── การเปิดเผย %/ปี ของหมวด 6 (review รอบ final F2) — ตัวหาข้อความ "%/ปี" ในช่อง .ret เพื่อสำมะโนเท่านั้น
 //   ไม่ใช่ตัวตัดสินย้าย/ไม่ย้าย (นั้นเป็นหน้าที่ TOLERANCE.f34/f35 อยู่แล้ว) — แค่ให้คนอ่านเห็นว่าใบไหนตัวเลขที่คนเห็นขยับ
 const SCN_RET_TEXT_RE = /<div class="ret[^"]*">([\s\S]*?)<\/div>/g;
-const PY_CELL_RE = /([+\-−]\s*[\d][\d.,]*%\/ปี)/;
+// ★ fix wave Task 14 (Part A) — ตัวเดิมพลาด 2 ทาง:
+//   (1) บังคับต้องมีเครื่องหมายนำหน้า `[+\-−]` ⇒ ช่องที่เขียน "~11.0%/ปี" / "≈ 4%/ปี" (ไม่มีเครื่องหมาย) อ่านไม่ออกเลย
+//       → census พิมพ์ before = null 44 คอลัมน์ 18 ใบ แล้วตกเป็น "value" โดยไม่เคยเทียบอะไรจริง
+//   (2) นับทศนิยมจาก **ตัวเลขที่ parse แล้ว** (`decOf(numOf(a))`) ไม่ใช่รูปที่โชว์ — "+2.0" → 2 → 0 ตำแหน่ง
+//       ⇒ 1.9 → 2.0 ถูกตัดสินว่า "form" ทั้งที่ตัวเลขที่คนเห็นขยับจริง (FER FICO OR PNW PR9)
+//   ⇒ เครื่องหมายเป็นทางเลือก · `~`/`≈` อยู่นอกกลุ่มตัวเลข (ไม่ให้ parse พัง) · ยอมช่องว่างรอบ "/" เหมือน PY_UNIT_RE
+//   ★ `~`/`≈` ถูก **ตัดทิ้งก่อน parse** (ไม่อยู่ในรูปที่ match เลย) — ไม่งั้น "≈ +8.9%/ปี" กับ "+8.9%/ปี" จะนับเป็น
+//     "ข้อความเปลี่ยน" ทั้งที่ตัวเลขเท่าเดิม (การหาย/งอกของ ~ เป็นคนละเรื่อง — อยู่ใน maskText/หัวข้อ "~" ของสำมะโน)
+const PY_CELL_RE = /([+\-−]?\s*\d[\d.,]*)\s*%\s*\/\s*ปี/;
+/**
+ * อ่านตัวเลข "%/ปี" ตัวแรกของข้อความช่อง .ret — คืนทั้ง **รูปที่โชว์** (dec) และค่าที่ parse ได้
+ * @returns {{text:string, num:number, dec:number}|null} null = ไม่มี %/ปี ในช่องนั้นจริง ๆ (ไม่ใช่ "อ่านไม่ออก")
+ */
+function pyCell(text) {
+  const m = PY_CELL_RE.exec(String(text == null ? '' : text));
+  if (!m) return null;
+  const shown = m[1].replace(/\s+/g, '').replace(/−/g, '-').replace(/,/g, '');   // "+0.8" · "-2.2" · "11.0"
+  const num = parseFloat(shown);
+  if (!Number.isFinite(num)) return null;
+  return { text: m[0].trim(), num, dec: (shown.split('.')[1] || '').length };
+}
 /**
  * เทียบข้อความ "%/ปี" ต่อคอลัมน์ (bear/base/bull) ระหว่างหน้า expand v1 (exp0) กับ v2 (exp1)
  * @returns {{col:string, before:string, after:string, kind:'form'|'value'}[]} เฉพาะคอลัมน์ที่ข้อความเปลี่ยนจริง
@@ -194,14 +281,11 @@ function scnPyDiffs(exp0, exp1) {
   const labels = ['bear', 'base', 'bull'];
   const out = [];
   for (let i = 0; i < 3; i++) {
-    const b = (before[i].match(PY_CELL_RE) || [])[0] || null;
-    const a = (after[i].match(PY_CELL_RE) || [])[0] || null;
+    const B = pyCell(before[i]), A = pyCell(after[i]);
+    const b = B ? B.text : null, a = A ? A.text : null;
     if (b === a) continue;                                       // ทั้งคู่ null (ไม่มี %/ปี) หรือข้อความเท่ากันเป๊ะ = ไม่เปลี่ยน
-    let kind = 'value';
-    if (b != null && a != null) {
-      const bn = numOf(b), an = numOf(a), dec = decOf(an);
-      if (bn != null && an != null && parseFloat(bn.toFixed(dec)) === an) kind = 'form';
-    }
+    // ★ ปัดค่าเดิมตาม **ทศนิยมที่ฝั่งใหม่โชว์จริง** (A.dec) — เท่ากัน = ต่างแค่รูป · ไม่เท่า = ค่าที่คนเห็นขยับ
+    const kind = B && A && parseFloat(B.num.toFixed(A.dec)) === A.num ? 'form' : 'value';
     out.push({ col: labels[i], before: b, after: a, kind });
   }
   return out;
@@ -488,10 +572,25 @@ function tokeniseScn(sec, values, info, sites, notes) {
     const em = HINT_EPS_RE.exec(hm[0]);
     const shown = em ? (em[0].match(new RegExp(`${CUR}\\s*[\\d.,]+$`)) || [''])[0] : '';
     const want = info.cur + RV.fmtPrice(values.baseEps);
-    if (em && sameMoney(shown, want)) ht.sub('hintEps', HINT_EPS_RE, (m) => m[1] + '~{{rd:baseEps}}');
-    else { ht.literal('hintEps', em ? `รูปเงินต่าง ("${shown}" ≠ "${want}")` : 'ไม่พบ'); delete values.baseEps; }
+    if (em && sameMoney(shown, want)) {
+      if (!TILDE_RE.test(em[0].slice(em[1].length))) notes.push(TILDE_NOTE + 'hintEps');   // M2 (Part D) — ดู TILDE_NOTE
+      ht.sub('hintEps', HINT_EPS_RE, (m) => m[1] + '~{{rd:baseEps}}');
+    } else { ht.literal('hintEps', em ? `รูปเงินต่าง ("${shown}" ≠ "${want}")` : 'ไม่พบ'); delete values.baseEps; }
   }
-  ht.sub('scnNote', HINT_NOTE_RE, () => '{{rd:scnNote}}');
+  // I1: divIncluded=false ⇒ token render ว่าง ต้องกิน clause ทั้งก้อน · true ⇒ token render ป้ายเดิมเป๊ะ กินแค่ป้าย
+  // ★ round 2 (I3): กินได้เฉพาะท้าย clause ที่อยู่ใน whitelist (NOTE_TAIL_*) และไม่ชนค่าของ site อื่น
+  //   รูปอื่น/ชนค่า = ไม่กินเลย → คง literal (สถานะเดิมของใบนั้น) ไม่ใช่เดาขอบเขตแล้วลบข้อความของผู้เขียนทิ้ง
+  const divOut = !!(values.scnBasis && values.scnBasis.divIncluded === false);
+  if (!divOut || !HINT_NOTE_RE.test(ht.html)) {
+    ht.sub('scnNote', HINT_NOTE_RE, () => '{{rd:scnNote}}');       // ไม่มีป้าย = literal "ไม่พบ" ตามเดิม
+  } else {
+    // ★ ดูบน `ht.html` (หลังแทน hint/hintEps แล้ว) ไม่ใช่ต้นฉบับ — token ของ site อื่นจึงมองเห็นได้ในช่วงที่จะกิน
+    const tail = noteTailOf(ht.html);
+    const hit = tail == null ? null : tailHitsOtherSite(tail, values);
+    if (tail == null) ht.literal('scnNote', 'ท้าย clause ไม่อยู่ในรูปที่รู้จัก — ไม่กิน');
+    else if (hit) ht.literal('scnNote', `${hit} — ไม่กิน`);
+    else ht.sub('scnNote', HINT_NOTE_TAIL_RE, () => '{{rd:scnNote}}');
+  }
   if (ht.err) return { reason: 'หมวด 6: ' + ht.err };
   const t = new Tok(sec.slice(0, hm.index) + ht.html + sec.slice(hm.index + hm[0].length), sites, notes);
   // คอลัมน์: หาแท็กเปิดด้วย regex เจ้าของเดิม แล้วตัดช่วง [เปิดตัวนี้, เปิดตัวถัดไป)
@@ -520,7 +619,10 @@ function tokeniseScn(sec, values, info, sites, notes) {
         // ★ F3: ปันผลฉากเป็นตัวเลขที่คนเห็น และไม่มีช่องไหนในชั้น 1 ตรวจ (f39 ไม่อยู่ใน COPY_FIELDS)
         const shown = (hits[0][0].match(new RegExp(`${CUR}\\s*[\\d.,]+$`)) || [''])[0];
         const want = info.cur + RV.fmtPrice(values.scenarios[i].div);
-        if (sameMoney(shown, want)) edits.push({ what: `scn${k}div`, start: a + hits[0].index, end: a + hits[0].index + hits[0][0].length, text: hits[0][1] + `~{{rd:sc${k}div}}` });
+        if (sameMoney(shown, want)) {
+          if (!TILDE_RE.test(hits[0][0].slice(hits[0][1].length))) notes.push(TILDE_NOTE + `scn${k}div`);   // M2 (Part D)
+          edits.push({ what: `scn${k}div`, start: a + hits[0].index, end: a + hits[0].index + hits[0][0].length, text: hits[0][1] + `~{{rd:sc${k}div}}` });
+        }
         else { sites.literal.push(`scn${k}div`); notes.push(`literal scn${k}div: รูปเงินต่าง ("${shown}" ≠ "${want}")`); }
       }
     }
@@ -650,7 +752,12 @@ const stripVolatile = (h) => h.replace(/<div class="ret[^"]*">[\s\S]*?<\/div>/g,
   .replace(/<div class="chg"[^>]*>[\s\S]*?<\/div>/i, '<div class="chg"></div>')
   // ช่องสรุป "ส่วนต่างจากราคา" = คลังคำคงที่ของ cron (เหมือน .chg/.ret) — ชั้น 1 ตรวจแทนว่าตรงกับ .big ของ v2
   .replace(glob(DV.SUMMARY_RE), (m, a, body, z) => a + z)
-  .replace(/ราคา ณ[^<]*/g, 'ราคา ณ').replace(/ • รวมปันผล/g, '');
+  // ★ I1: ตัด clause "รวมปันผล" **ทั้งก้อน** (ไม่ใช่แค่ป้าย) — ใบ divIncluded=false ตัดทั้ง clause จริงตาม HINT_NOTE_TAIL_RE
+  //   ส่วนใบ divIncluded=true ทั้งสองฝั่งมีข้อความเดียวกัน ⇒ ตัดเท่ากันทั้งคู่ = no-op ต่อการเทียบ
+  //   ★ round 2 (I3): regex นี้ match **เฉพาะ clause ที่ท้ายอยู่ใน whitelist** ⇒ ใบที่ท้ายเป็นรูปอื่น (ประโยค/ข้อความ
+  //     อ้างฐานบัญชี) จะไม่ถูกตัดจากฝั่งไหนเลย ⇒ ถ้ามีทางไหนลบมันทิ้งจริง ชั้น 2 **จะเห็น** (เดิมตาบอดทั้งช่วง)
+  //   ยามว่า "หายได้เมื่อไร/หายอะไรไป" อยู่ที่ checkStripped (นับป้าย + ต้อง divIncluded=false + รูปต้องอยู่ใน whitelist)
+  .replace(/ราคา ณ[^<]*/g, 'ราคา ณ').replace(HINT_NOTE_TAIL_G, '');
 
 /** สิ่งที่ `stripVolatile` blank ทิ้งในชั้น 2 แต่ไม่มีช่องไหนในชั้น 1 ครอบคลุม — ยืนยันตรงนี้แทน (review รอบ 1 F4/F5) */
 function checkStripped(exp0, exp1, values, notes) {
@@ -661,7 +768,12 @@ function checkStripped(exp0, exp1, values, notes) {
   if (c1 < c0) {
     const b = values.scnBasis;
     if (!b || b.divIncluded) return 'ข้อความ " • รวมปันผล" หายไปทั้งที่ผลตอบแทนยังรวมปันผล';
-    notes.push(`ตัด " • รวมปันผล" ${c0 - c1} จุด — ตัวเลขฉากของใบนี้ไม่ได้รวมปันผล (scenarioPlan conv=plain)`);
+    // ★ round 2 (review I3): ยามเดิมนับได้แค่ "ป้ายหายกี่จุด" ไม่เคยดูว่า **อะไร** หายไปกับมัน ⇒ ประโยคทั้งประโยค
+    //   หายได้โดยทุกชั้นเขียว · ตอนนี้บังคับว่า clause ที่หายต้องอยู่ในรูป whitelist (HINT_NOTE_TAIL_RE) ทุกจุด
+    //   และ **บันทึกข้อความที่หายจริงลง note** เพื่อให้สำมะโนเปิดเผยได้ (R2) — ไม่ใช่บอกแค่ว่าป้ายหาย
+    const gone = exp0.match(HINT_NOTE_TAIL_G) || [];
+    if (gone.length !== c0) return `clause "รวมปันผล" ที่หายไปไม่อยู่ในรูปที่อนุญาต (${gone.length}/${c0} จุดเข้ารูป) — ห้ามตัดข้อความที่เดาขอบเขตไม่ได้`;
+    for (const g of gone) notes.push(clauseNote(g));
   }
   // (ข) คลาสของช่อง ret (f38 นับจำนวนให้แล้ว) — การ "สลับ" pos↔neg ไม่เปลี่ยนจำนวน จึงเปิดเผยเป็น note
   const cls = (h) => (h.match(/class="ret (?:pos|neg)"/g) || []).join(',');
@@ -918,8 +1030,8 @@ function pureRestate(exp) {
 //   ("2 ต.ค. 2569" · "ต.ค. 2569") ทั้งสองฝั่ง — "กำไร 2569 ล้าน" vs "2026 ล้าน" = ค่าต่าง ไม่ใช่ศักราช
 const ERA_CTX_RE = new RegExp('(?:' + PD.MONTH_ALT + ')\\s*$');
 const eraCtx = (t, idx) => ERA_CTX_RE.test(t.slice(Math.max(0, idx - 20), idx));
-const DIV_TEXT_RE = / • รวมปันผล/g;
-/** มุมมองที่ใช้เทียบของหน้า expand หนึ่งฝั่ง: ตัดวงเล็บทวน (ถ้าตัดสินให้ตัด) → (collect: stripVolatile) → ตัด " • รวมปันผล" → แยกส่วน */
+const DIV_TEXT_RE = HINT_NOTE_TAIL_G;    // clause เต็ม (ไม่ใช่แค่ป้าย) — ดูหมายเหตุที่ HINT_NOTE_TAIL_G
+/** มุมมองที่ใช้เทียบของหน้า expand หนึ่งฝั่ง: ตัดวงเล็บทวน (ถ้าตัดสินให้ตัด) → (collect: stripVolatile) → ตัด clause "รวมปันผล" → แยกส่วน */
 function cronView(exp, drop, collect) {
   let h = exp;
   if (drop) { const q = pureRestate(h); if (q) h = q.drop(); }
@@ -1368,8 +1480,150 @@ function renderCensusMd(entries) {
       ? [...pyValueBySym.entries()].map(([sym, cs]) => `- ${sym}: ` + cs.map((c) => `${c.col} ${c.before} → ${c.after}`).join(' · ')).join('\n')
       : '- (ไม่มี)',
     '',
+    ...clauseMd(entries),
+    ...tildeMd(entries),
     ...cronDiffMd(summarizeCronDiff(entries)),
+    ...finalSummaryMd(entries),
   ].join('\n');
+}
+
+// ── M2 (Part D) — "~" ที่ migrator เติมหน้า token เอง · เปิดเผยอย่างเดียว ไม่ใช่เกณฑ์ผ่าน/ตก ──────
+// ★ ทำไมต้องเปิดเผย: `maskText` ตัด [~≈] ทิ้งทั้งสองฝั่ง (ชั้น 2 ของ migrator) ⇒ การงอก "~" ไม่มีชั้นไหนเห็นเลย
+function tildeMd(entries) {
+  // ★ round 2 (review M1): เดิมพิมพ์ `Set.size` (จำนวน "ใบ") ลงช่อง "จุด" ⇒ สองช่องเท่ากันเสมอโดยบังเอิญ
+  //   (วันนี้ชื่อ site หนึ่ง ๆ โผล่ได้ไม่เกิน 1 ครั้งต่อใบ) · นับจำนวนครั้งจริงแยกจากจำนวนใบ
+  const bySite = new Map();      // site → {n: จำนวนจุด, syms: Set ของใบ}
+  let sites = 0;
+  const files = new Set();
+  for (const f of entries) {
+    if (!f.ok) continue;
+    for (const n of f.notes || []) {
+      if (!String(n).startsWith(TILDE_NOTE)) continue;
+      const site = String(n).slice(TILDE_NOTE.length);
+      const e = bySite.get(site) || { n: 0, syms: new Set() };
+      e.n++; e.syms.add(f.sym); bySite.set(site, e);
+      sites++; files.add(f.sym);
+    }
+  }
+  if (!sites) return [];
+  return [
+    '## "~" ที่ migrator เติมหน้า token เอง (ไม่มีในต้นฉบับตรงตำแหน่งนั้น)',
+    '',
+    'token เงินของ skeleton v2 สองจุด (`~{{rd:baseEps}}` · `~{{rd:sc<k>div}}`) เขียน "~" นำหน้าเสมอ — ใบที่ต้นฉบับไม่มี',
+    'เครื่องหมายนี้ตรงตำแหน่งนั้นจึง "งอก" ข้อความที่คนเห็น · ชั้น 2 มองไม่เห็นเพราะ `maskText` ตัด `[~≈]` ทิ้งทั้งสองฝั่ง',
+    '⇒ เปิดเผยอย่างเดียว ไม่ใช่เกณฑ์ผ่าน/ตก และไม่ใช่ความล้มเหลว (รูปของ skeleton v2 เป็นแบบนี้)',
+    '',
+    '| site | จุด | ใบ | รายชื่อ |', '|---|---|---|---|',
+    ...[...bySite.entries()].sort((a, b) => b[1].n - a[1].n || a[0].localeCompare(b[0]))
+      .map(([k, v]) => `| ${k} | ${v.n} | ${v.syms.size} | ${[...v.syms].sort().join(' ')} |`),
+    `| **รวม** | **${sites}** | **${files.size}** | |`,
+    '',
+  ];
+}
+
+// ── R2 (review I2): clause "รวมปันผล" ที่ถูกตัดออกจากหน้าจริง — ต้องบอกว่า **ข้อความอะไร** หายไปต่อใบ ────
+// ★ ทำไมต้องมี: Part D ให้หัวข้อเต็ม ๆ กับการ "งอก ~" ซึ่งเป็นเรื่องรูป แต่การ "ลบ $2.88/ปี ออกจากหน้าที่เผยแพร่แล้ว"
+//   กลับมีแค่บรรทัดที่เอ่ยถึงป้าย ⇒ ไม่สมมาตรกับกติกาของ wave นี้เอง ("เปลี่ยนข้อความที่คนเห็นได้เฉพาะที่เปิดเผย")
+function clauseMd(entries) {
+  const rows = [];
+  for (const f of entries) {
+    if (!f.ok) continue;
+    for (const n of f.notes || []) {
+      const m = CLAUSE_NOTE_RE.exec(String(n));
+      if (m) rows.push({ sym: f.sym, clause: m[1], tail: m[1].slice(NOTE_LABEL.length) });
+    }
+  }
+  if (!rows.length) return [];
+  rows.sort((a, b) => a.sym.localeCompare(b.sym));
+  const withText = rows.filter((r) => r.tail !== '');      // ★ ใบที่ "ข้อความของผู้เขียน" หายไปด้วย — ต้องอ่านทุกบรรทัด
+  const labelOnly = rows.filter((r) => r.tail === '');     // ป้ายอย่างเดียว (ไม่มีข้อความต่อท้าย) — นับรวมพอ
+  return [
+    '## clause "รวมปันผล" ที่ถูกตัดออกจากหน้าจริง (site `scnNote` · เฉพาะใบ `scnBasis.divIncluded = false`)',
+    '',
+    '`{{rd:scnNote}}` render เป็นค่าว่างเมื่อตัวเลขฉากของใบนั้นไม่ได้รวมปันผล ⇒ **ทั้ง clause** หายจากหน้าที่ผู้อ่านเห็น',
+    'ไม่ใช่แค่ป้าย " • รวมปันผล" · หัวข้อนี้บอกว่า **ข้อความอะไร** หายไปจากแต่ละใบ (ก่อน fix wave นี้ ข้อความท้าย clause',
+    'ค้างลอยอยู่บนหน้าโดยไม่มีที่อ้างอิง ซึ่งคือบั๊กที่แก้ไป) · ท้าย clause ที่กินได้ถูกจำกัดด้วย whitelist 3 รูปเท่านั้น',
+    '(เลขเงิน · คำเดียวติดกัน · วงเล็บสั้น) และต้องไม่กลืน token/ค่าของ site อื่น — รูปอื่น = ไม่กิน คง literal',
+    '',
+    `### ใบที่ข้อความของผู้เขียนหายไปด้วย (${withText.length} ใบ — ต้องอ่านรายบรรทัด)`,
+    '',
+    '| ใบ | site | clause ที่ถูกตัดทั้งก้อน | ข้อความท้าย clause ที่หายไป |', '|---|---|---|---|',
+    withText.length
+      ? withText.map((r) => `| ${r.sym} | scnNote | \`${r.clause.replace(/\|/g, '\\|')}\` | \`${r.tail.replace(/\|/g, '\\|')}\` |`).join('\n')
+      : '| — | | | |',
+    '',
+    `### ใบที่ตัดเฉพาะป้าย (ไม่มีข้อความต่อท้าย — ${labelOnly.length} ใบ)`,
+    '',
+    labelOnly.length ? labelOnly.map((r) => r.sym).join(' ') : '- (ไม่มี)',
+    '',
+    `รวม **${rows.length}** จุด / **${new Set(rows.map((r) => r.sym)).size}** ใบ`,
+    '',
+  ];
+}
+
+// ── สรุปสุดท้าย — Task 14 · เดิมสร้างด้วยสคริปต์ one-off แล้วต่อท้าย .md ด้วยมือ (หายทุกครั้งที่รัน --census ใหม่)
+//   ⇒ ย้ายเข้ามาในตัว render เอง: รีรัน `--census` ได้บล็อกเดิมเสมอ (คิดจาก entries ของสำมะโนล้วน ๆ)
+function finalSummaryMd(entries) {
+  const okE = entries.filter((e) => e.ok);
+  const res = entries.filter((e) => !e.ok);
+  const cronRes = res.filter((e) => /^cron-diff /.test(String(e.reason || '')));
+  const byReason = new Map();
+  for (const e of res) { const k = shortReason(e.reason); const v = byReason.get(k) || []; v.push(e.sym); byReason.set(k, v); }
+  const byBatch = new Map();
+  for (const e of entries) { const k = e.batch == null ? '(ไม่ระบุ)' : String(e.batch); byBatch.set(k, (byBatch.get(k) || 0) + 1); }
+  const siteCount = new Map();
+  for (const e of okE) for (const s of new Set(e.literal || [])) siteCount.set(s, (siteCount.get(s) || 0) + 1);
+  const cd = summarizeCronDiff(entries);
+  const pyValue = okE.filter((e) => (e.pyChanges || []).some((c) => c.kind === 'value'));
+  const pyValueCells = okE.reduce((n, e) => n + (e.pyChanges || []).filter((c) => c.kind === 'value').length, 0);
+  const pyFormCells = okE.reduce((n, e) => n + (e.pyChanges || []).filter((c) => c.kind === 'form').length, 0);
+  const vd = cd.valueDiff || [];
+  return [
+    '---',
+    '',
+    '## สรุปสุดท้าย — Task 14 (ระยะ 2 ส่วน E · ย้ายคลังครบ)',
+    '',
+    '> สร้างจาก entries ของสำมะโนโดย `renderCensusMd` เอง — รัน `--census` ซ้ำได้บล็อกเดิมทุกครั้ง',
+    '> (เดิมเป็นสคริปต์ one-off ที่ต่อท้ายไฟล์ด้วยมือ แล้วหายทุกครั้งที่ migrator เขียน .md ใหม่)',
+    '',
+    '| ผล | ใบ |', '|---|---|',
+    `| ย้ายเป็น v2 | **${okE.length}/${entries.length}** |`,
+    `| residue (คง v1) | **${res.length}** = migrator ${res.length - cronRes.length} + cron-diff ${cronRes.length} |`,
+    `| แบตช์ที่บันทึก | ${[...byBatch.entries()].sort((a, b) => (parseInt(a[0], 10) || 0) - (parseInt(b[0], 10) || 0)).map(([k, v]) => `${k}:${v}`).join(' · ')} |`,
+    '',
+    '### residue ต่อชนิด (รายชื่อครบ — input ระยะ 3)',
+    '',
+    '| ชนิด | ใบ | รายชื่อ |', '|---|---|---|',
+    byReason.size ? [...byReason.entries()].sort((a, b) => b[1].length - a[1].length || a[0].localeCompare(b[0]))
+      .map(([k, v]) => `| ${k} | ${v.length} | ${v.slice().sort().join(' ')} |`).join('\n') : '| — | 0 | |',
+    '',
+    `<details><summary>เหตุผล residue เต็มรายใบ (${res.length})</summary>`, '',
+    '| ใบ | เหตุผล |', '|---|---|',
+    res.slice().sort((a, b) => a.sym.localeCompare(b.sym)).map((e) => `| ${e.sym} | ${String(e.reason || '').replace(/\|/g, '\\|')} |`).join('\n') || '| — | — |',
+    '', '</details>', '',
+    '### site ที่คง literal ต่อชนิด (เฉพาะใบที่ย้าย · รวมทุกเหตุผลย่อย — เหตุผลย่อยดูตาราง "site ที่คง literal" ด้านบน ซึ่งนับรวมใบ residue ด้วย)',
+    '',
+    '| site | ใบ |', '|---|---|',
+    [...siteCount.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).map(([k, v]) => `| ${k} | ${v} |`).join('\n') || '| — | 0 |',
+    '',
+    '### การเปิดเผย (ใบที่ย้าย)',
+    '',
+    '| หมวด | ใบ | หมายเหตุ |', '|---|---|---|',
+    // ★ แถวที่มาจาก --cron-diff มีได้ก็ต่อเมื่อรัน --cron-diff จริง (ไม่งั้น .md จะพูดถึงสิ่งที่ไม่เคยตรวจ)
+    ...(cd.checked ? [
+      `| cron differential: ตรวจ / ผ่าน / ตก | ${cd.checked} / ${cd.pass} / ${cd.fail.length} | ตก = ${cd.fail.join(' ') || '—'} (ไม่เขียน · รายละเอียดในหัวข้อด้านบน) |`,
+      `| ค่าต่างที่มีอยู่ก่อน patch (migration ยอมรับ) | ${vd.length} | มากสุด ${(cd.valueDiffMaxPct || 0).toFixed(2)}% · ${vd.map((x) => x.sym).join(' ')} |`,
+      `| รูปทศนิยมหมวด 6 เปลี่ยน (เช่น 3.5→3) | ${cd.sec6Form.length} | รอเจ้าของตัดสินว่าเป็นรูปหรือค่า (นโยบายปัด fmtMos เดียว) · รายชื่อด้านล่าง |`,
+    ] : []),
+    `| %/ปี หมวด 6 ค่าขยับ (v2 คิด %/ปี จาก "รวม" ที่ปัดแล้ว) | ${pyValue.length} | ${pyValueCells} คอลัมน์ · รูปอย่างเดียว ${pyFormCells} คอลัมน์ · รายใบอยู่ในหัวข้อ %/ปี ด้านบน |`,
+    ...(cd.checked ? [
+      `| รูปตัวเลขอื่น (ราคา/หน่วยเงิน/ศักราช) | ${cd.otherForm.length} | |`,
+      `| สีช่อง .ret ของ v1 ค้าง — v2 คิดสีตามเครื่องหมาย | ${cd.retClass.length} | |`,
+    ] : []),
+    '',
+    ...(cd.sec6Form.length ? [`<details><summary>รูปทศนิยมหมวด 6 เปลี่ยน — ${cd.sec6Form.length} ใบ</summary>`, '',
+      cd.sec6Form.map((x) => x.sym).join(' '), '', '</details>', ''] : []),
+  ];
 }
 // ส่วน cron differential ของ census.md — แสดงเฉพาะเมื่อมีใบที่รันด้วย --cron-diff · รายชื่อ **ครบทุกตัว** (เจ้าของต้องตัดสินรายใบ)
 function cronDiffMd(cd) {
@@ -1468,9 +1722,17 @@ function mergeCensus(prevRaw, batch, entries, at) {
 }
 
 function main(argv) {
-  if (argv.includes('--fixture')) return runFixture(argv.filter((a) => !a.startsWith('--')).map((a) => a.replace(/\.html$/i, '').toUpperCase()));
   const write = argv.includes('--write');
   const cronFlag = argv.includes('--cron-diff');
+  // ★ M1 (fix wave Task 14): `--write` เดี่ยว ๆ เขียนได้โดยไม่ผ่าน cron differential ⇒ ใบที่เคยถูกตัดสินเป็น residue
+  //   ด้วย `cron-diff …` (BNY PTG THCOM WWD) จะถูกย้ายเงียบ ๆ ถ้ามีใครรันคำสั่งสั้น ๆ · ไม่มี flag ข้าม (ตั้งใจ)
+  // ★ round 2 (review M2): ยามนี้ต้องอยู่ **เหนือ** สาขา --fixture ไม่งั้นประโยค "เขียนอะไรก็ต้องมี --cron-diff"
+  //   เป็นจริงแค่บางเส้นทาง (วันนี้ --fixture เขียนแค่ test/fixtures/ จึงไม่อันตราย แต่ข้อความของยามต้องไม่โกหก)
+  if (write && !cronFlag) {
+    console.log('✗ --write ต้องมาคู่กับ --cron-diff เสมอ (cron differential เป็นยามชั้นสุดท้ายก่อนเขียน reports/) — ไม่มีตัวเลือกข้าม');
+    return 1;
+  }
+  if (argv.includes('--fixture')) return runFixture(argv.filter((a) => !a.startsWith('--')).map((a) => a.replace(/\.html$/i, '').toUpperCase()));
   const idx = (k) => { const i = argv.indexOf(k); return i < 0 ? null : argv[i + 1]; };
   const batch = idx('--batch') != null ? parseInt(idx('--batch'), 10) : null;
   const size = idx('--size') != null ? parseInt(idx('--size'), 10) : null;
@@ -1538,7 +1800,7 @@ function exitCode({ errors, residue, strict }) {
 }
 
 module.exports = {
-  migrateOne, extractValues, tokenise, buildRd, verifyPair, checkStripped, sameMoney, scnPyDiffs, scnPyCountGuard,
+  migrateOne, extractValues, tokenise, buildRd, verifyPair, checkStripped, sameMoney, scnPyDiffs, scnPyCountGuard, pyCell, main, noteTailOf, tailHitsOtherSite, HINT_NOTE_TAIL_RE,
   cronDiff, cronGate, CRON_GRID, CRON_META_KEYS, sameMetaForm, cronDateParts, visibleCronDiff, pyExplained, planWrite, summarizeCronDiff, unitForm,
   failSide, cronDiffReason, exitCode, ALREADY_V2,
   COPY_FIELDS, REQUIRED_SITES, TOLERANCE, GAP_REL, renderCensusMd, mergeCensus,
