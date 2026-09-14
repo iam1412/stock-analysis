@@ -10,6 +10,40 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 148,
+  "values": {
+    "px": 119.24,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 97,
+    "fvHigh": 183,
+    "eps": 14.75,
+    "shares": 347000000,
+    "dps": 5.6,
+    "bvps": 99.79,
+    "baseEps": 14.75,
+    "scenarios": [
+      {
+        "tgt": 125,
+        "div": 16.97
+      },
+      {
+        "tgt": 186,
+        "div": 17.47
+      },
+      {
+        "tgt": 262,
+        "div": 17.81
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#003B70",
     "accentDark": "#002550",
@@ -41,18 +75,14 @@
     "min": 80,
     "max": 160,
     "grid": [100, 120, 140],
-    "fairLine": 148,
     "currency": "$",
     "highlight": [5, 9]
   },
   "gauge": {
     "min": 85,
     "max": 165,
-    "cur": 119.24,
-    "fair": 148,
     "fairLabelTop": true
-  },
-  "fv": 148
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +102,11 @@
     <div class="sub">Life insurance &amp; annuities • PGIM asset management (~$1.4T AUM) • Retirement solutions • Group insurance • International (Japan, Brazil) • ~5% dividend yield</div>
     <div class="price-row">
       <div>
-        <div class="px">$119.24<small>(PRU)</small></div>
+        <div class="px">{{rd:px}}<small>(PRU)</small></div>
       </div>
-      <div class="chg">▲ +14.7% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $91.89 – $119.76<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, Prudential Financial IR
       </div>
@@ -87,10 +117,10 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ใช้ Adjusted Operating EPS — สะท้อนธุรกิจประกันที่แท้จริง</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$41.4B</div><div class="d">~347 ล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (Adj. Operating TTM)</div><div class="v neu">~8.1x</div><div class="d">EPS adj. $14.75 TTM</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~347 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (Adj. Operating TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS adj. $14.75 TTM</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">9–11x</div><div class="d">ปัจจุบันถูกกว่าเฉลี่ยประวัติศาสตร์</div></div>
-      <div class="metric"><div class="k">P/BV (Adj. Book)</div><div class="v neu">1.19x</div><div class="d">Adj. BVPS $99.79 (Q1/2569)</div></div>
+      <div class="metric"><div class="k">P/BV (Adj. Book)</div><div class="v neu">{{rd:pbv}}x</div><div class="d">Adj. BVPS $99.79 (Q1/2569)</div></div>
 
       <div class="metric"><div class="k">กำไร Adj. Operating FY2568</div><div class="v">$14.43/หุ้น</div><div class="d">+14.3% YoY vs $12.62 ปีก่อน</div></div>
       <div class="metric"><div class="k">EPS Adj. Operating TTM</div><div class="v">~$14.75</div><div class="d">Q2–Q4/68 + Q1/69 รวม</div></div>
@@ -113,7 +143,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#003B70"></i>ราคา PRU</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $148</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -142,8 +172,8 @@
         <div class="mval">$97</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $97 – $183</span></div>
-        <div class="r">$148</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         P/E ที่ 10x Adj. Operating EPS ให้ $147.5 ซึ่งสอดคล้องกับ mid-cycle valuation ของบริษัทประกันชีวิตชั้นนำ
@@ -161,15 +191,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $119.24</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $148</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$104<br><small>MOS 30%</small></span>
-          <span>$118<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$148<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$165<br><small>เป้าสูง Bull</small></span>
-          <span style="text-align:right">$183<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -185,19 +215,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+19%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาต่ำกว่ามูลค่าเหมาะสมพอสมควร — มี MOS ที่ดี บวกปันผล ~5% ช่วยลดความเสี่ยง</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$118</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$104</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $148</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="119.24" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -206,17 +236,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $119.24 • EPS ฐาน ~$14.75 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +2%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$125</div>
-          <div class="ret pos">+5%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$15.65</span></li>
             <li><span>P/E ออก</span><span>8x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$16.97</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>ญี่ปุ่นซบเซา อัตราดอกเบี้ยลด</span></li>
           </ul>
         </div>
@@ -224,12 +254,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$186</div>
-          <div class="ret pos">+56%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$18.58</span></li>
             <li><span>P/E ออก</span><span>10x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$17.47</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>PGIM เติบโต ดอกเบี้ยทรงตัว</span></li>
           </ul>
         </div>
@@ -237,12 +267,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +14%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$262</div>
-          <div class="ret pos">+120%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$21.85</span></li>
             <li><span>P/E ออก</span><span>12x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$17.81</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>PGIM AUM พุ่ง Revaluation ถึง 12x</span></li>
           </ul>
         </div>
@@ -297,8 +327,8 @@
         ราคาปัจจุบัน $109.20 ให้ MOS ~26% เมื่อเทียบ FV $148 — เหมาะกับนักลงทุนแนว Value + Income ที่ต้องการ Yield สูงพร้อม Upside
       </p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$148 <span style="font-size:12px;color:#cab9a8">($97–$183)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +19%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$101 (Hold)</div></div>
       </div>
       <div class="zone">

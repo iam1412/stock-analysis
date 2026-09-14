@@ -12,6 +12,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 270,
+  "values": {
+    "px": 248.72,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 246,
+    "fvHigh": 298,
+    "eps": 22.72,
+    "shares": 66000000,
+    "dps": 3.68,
+    "baseEps": 22.72,
+    "scenarios": [
+      {
+        "tgt": 234,
+        "div": 11
+      },
+      {
+        "tgt": 326,
+        "div": 11
+      },
+      {
+        "tgt": 426,
+        "div": 11
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#30a636",
     "accentDark": "#237627",
@@ -43,17 +76,13 @@
     "min": 175,
     "max": 300,
     "grid": [200, 225, 250, 275],
-    "fairLine": 270,
     "currency": "$",
     "highlight": [0, 11]
   },
   "gauge": {
     "min": 160,
-    "max": 310,
-    "cur": 248.72,
-    "fair": 270
-  },
-  "fv": 270
+    "max": 310
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -73,11 +102,11 @@
     <div class="sub">Life &amp; health reinsurance worldwide • Mortality · Longevity · Critical illness · Financial solutions • #1 life reinsurer globally • St. Louis, MO</div>
     <div class="price-row">
       <div>
-        <div class="px">$248.72<small>(RGA)</small></div>
+        <div class="px">{{rd:px}}<small>(RGA)</small></div>
       </div>
-      <div class="chg">▲ +36.3% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $165.52 – $229.21<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, Barchart.com
       </div>
@@ -88,8 +117,8 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย.–ก.ค. 2569 · อิง Adj. Operating EPS</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$16.4B</div><div class="d">~66 ล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (Adj. Operating)</div><div class="v neu">~10.9x</div><div class="d">Adj. EPS FY2025 = $22.72</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~66 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (Adj. Operating)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">Adj. EPS FY2025 = $22.72</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~10–13x</div><div class="d">Adj. operating P/E ปกติ 10–14x</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">1.06x</div><div class="d">BVPS TTM = $199.79</div></div>
 
@@ -114,7 +143,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#41c848"></i>ราคา RGA</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $270</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -140,8 +169,8 @@
         <div class="mval">$298</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $246 – $298</span></div>
-        <div class="r">$270</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี Forward P/E ให้ค่าสูงสุด ($298) สะท้อนความคาดหวังการเติบโต EPS แรง 19% ในปี FY2026 ขณะที่ Justified P/BV ต่ำสุด ($246) เนื่องจาก ROE อยู่ในระดับปานกลางเทียบกับต้นทุนทุน ค่าเฉลี่ย 3 วิธี = $272 ปัดเป็น $270 เป็น Fair Value เชิงอนุรักษ์นิยม RGA ยังซื้อขายต่ำกว่า FV ราว 21% ถือว่ามี Margin of Safety ที่น่าสนใจสำหรับนักลงทุนเน้นคุณค่า
@@ -155,15 +184,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $248.72</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $270</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$189<br><small>MOS 30%</small></span>
-          <span>$216<br><small>MOS 20%</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">$252<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$270<br><small>Fair Value</small></span>
-          <span style="text-align:right">$298<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -176,19 +205,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+8%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS น่าสนใจ — ราคาต่ำกว่า Fair Value ราว 21% เหมาะสมสำหรับนักลงทุนเน้นคุณค่า</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$216</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$189</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $270</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="248.72" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -197,17 +226,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $248.72 • EPS ฐาน ~$22.72 (Adj.) • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} (Adj.){{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +3%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$234</div>
-          <div class="ret neg">-6%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$24.83</span></li>
             <li><span>P/E ออก</span><span>9x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$11.0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>อัตรามรณกรรมพุ่งสูง/เหตุพิเศษ</span></li>
           </ul>
         </div>
@@ -215,12 +244,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$326</div>
-          <div class="ret pos">+31%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$28.62</span></li>
             <li><span>P/E ออก</span><span>11x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$11.0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>ขยาย Asia-Pacific + Financial Solutions</span></li>
           </ul>
         </div>
@@ -228,12 +257,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$426</div>
-          <div class="ret pos">+71%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$31.92</span></li>
             <li><span>P/E ออก</span><span>13x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$11.0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Longevity บูม + M&amp;A + re-rating</span></li>
           </ul>
         </div>
@@ -279,8 +308,8 @@
       <h2>RGA: Life Re ผู้นำโลก ราคา Undervalued — MOS 21% น่าสะสม</h2>
       <p>Reinsurance Group of America ครองตำแหน่ง #1 ในโลกด้าน Life &amp; Health Reinsurance ด้วยสถานะที่แทบทดแทนไม่ได้ในตลาด mortality, longevity, และ financial solutions ธุรกิจมีกระแสเงินสดสม่ำเสมอ (Operating CF $4–5B/ปี) beta ต่ำมาก (0.48) และ EPS Adj. กำลังเข้าสู่ช่วงขยายตัวแรง คาดการณ์ $27.07 (+19%) ในปี FY2026 ราคาปัจจุบัน $212.65 ยังต่ำกว่า Fair Value $270 ราว 21% และต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ $252 อีก 19% เหมาะสำหรับนักลงทุนที่ต้องการ quality defensive business ในราคาสมเหตุสมผล</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$270 <span style="font-size:12px;color:#cab9a8">($246–$298)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +8%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$252 (Buy 6/10)</div></div>
       </div>
       <div class="zone">

@@ -10,6 +10,18 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 142,
+  "values": {
+    "px": 155,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 129,
+    "fvHigh": 157,
+    "shares": 3970000000,
+    "dps": 8.75
+  },
   "theme": {
     "accent": "#2e9e4f",
     "accentDark": "#1f6f37",
@@ -41,7 +53,6 @@
     "min": 100,
     "max": 180,
     "grid": [120, 140, 160],
-    "fairLine": 142,
     "currency": "฿",
     "highlight": [1, 5],
     "gridFmt": "v.toFixed(0)",
@@ -50,11 +61,8 @@
   "gauge": {
     "min": 95,
     "max": 170,
-    "cur": 155,
-    "fair": 142,
     "fairLabelTop": true
-  },
-  "fv": 142
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +82,11 @@
     <div class="sub">สำรวจ-ผลิตก๊าซธรรมชาติ &amp; น้ำมันดิบ • แหล่งอ่าวไทย (เอราวัณ-บงกช) • โครงการต่างประเทศ (มาเลเซีย, โอมาน, แอลจีเรีย, โมซัมบิก LNG) • CCS / พลังงานคาร์บอนต่ำ</div>
     <div class="price-row">
       <div>
-        <div class="px">฿155.00<small>(PTTEP)</small></div>
+        <div class="px">{{rd:px}}<small>(PTTEP)</small></div>
       </div>
-      <div class="chg">▲ +44.9% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569 (2026)<br>
+        ราคา ณ {{rd:priceDate}} (2026)<br>
         กรอบ 52 สัปดาห์ ฿104.00 – ฿164.00<br>
         ที่มา: SET, StockAnalysis.com, Yahoo Finance, Investing.com
       </div>
@@ -115,7 +123,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#2e9e4f"></i>ราคา PTTEP</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿142.00</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -141,8 +149,8 @@
         <div class="mval">฿157.32</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿129 – ฿157</span></div>
-        <div class="r">฿142.00</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี Justified P/BV ให้ค่าสูงสุด (฿157) เพราะ ROE 11% สูงกว่า r ที่ตั้งไว้ ส่วนต่างจึงหนุนมูลค่า •
@@ -158,14 +166,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿155.00</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿142.00</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿99.40<br><small>MOS 30%</small></span>
-          <span>฿113.60<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿142.00<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿157.00<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">฿160.82<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -181,19 +189,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−9%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ส่วนเผื่อปานกลาง-บาง — ราคาต่ำกว่ามูลค่าเหมาะสมเล็กน้อย เหมาะทยอยสะสมรับปันผล แต่ควรรอย่อช่วงน้ำมันอ่อนเพื่อ MOS ที่ปลอดภัยกว่า</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿113.60</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿99.40</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿142.00</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="155" step="0.25">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.25">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -287,8 +295,8 @@
       และปันผล ~6.27% ที่ราคา ฿144.50 หุ้นซื้อขายสูงกว่ามูลค่าเหมาะสม ฿142 เล็กน้อย (MOS −1.8%) เป็นโซนเต็มมูลค่า
       แต่ต้องตระหนักว่านี่คือหุ้น cyclical ที่แกว่งตามราคาน้ำมัน — ควรรอย่อและกระจายเข้าซื้อ ไม่ทุ่มในจุดเดียว</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿142.00 <span style="font-size:12px;color:#cab9a8">(฿129–฿157)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ff8a80">MOS ~ −9%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ff8a80">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿160.82 (Buy)</div></div>
       </div>
       <div class="zone">

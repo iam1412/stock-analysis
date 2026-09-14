@@ -12,6 +12,38 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 31.6,
+  "values": {
+    "px": 37.5,
+    "priceDate": "2026-09-14",
+    "dateEra": "CE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 29.8,
+    "fvHigh": 33.5,
+    "shares": 2170000000,
+    "dps": 1.6,
+    "baseEps": 2.86,
+    "scenarios": [
+      {
+        "tgt": 23.5,
+        "div": 4.8
+      },
+      {
+        "tgt": 34.5,
+        "div": 4.8
+      },
+      {
+        "tgt": 41,
+        "div": 5.2
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#dd2c41",
     "accentDark": "#a71b2c",
@@ -43,7 +75,6 @@
     "min": 25,
     "max": 40,
     "grid": [30, 35],
-    "fairLine": 31.6,
     "currency": "฿",
     "highlight": [0, 9],
     "gridFmt": "v.toFixed(0)",
@@ -52,11 +83,8 @@
   "gauge": {
     "min": 20,
     "max": 43,
-    "cur": 37.5,
-    "fair": 31.6,
     "fairLabelTop": "-58px"
-  },
-  "fv": 31.6
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -77,11 +105,11 @@
     <div class="sub">โรงไฟฟ้าก๊าซ IPP/SPP • พลังงานหมุนเวียน (ลม·แสงอาทิตย์·ชีวมวล) • พอร์ตต่างประเทศ ออสเตรเลีย·ลาว·อินโดนีเซีย • โครงสร้างพื้นฐาน &amp; สาธารณูปโภค (น้ำ·คมนาคม·สุขภาพ)</div>
     <div class="price-row">
       <div>
-        <div class="px">฿37.50<small>(RATCH)</small></div>
+        <div class="px">{{rd:px}}<small>(RATCH)</small></div>
       </div>
-      <div class="chg">▲ +35.1% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2026<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿25.25 – ฿39.50<br>
         ที่มา: StockAnalysis.com • SET • Yahoo Finance
       </div>
@@ -108,7 +136,7 @@
 
       <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿24.5 พันล้าน</div><div class="d">FY2025 (−21% จากฐานสูงปีก่อน)</div></div>
       <div class="metric"><div class="k">อัตรากำไรสุทธิ</div><div class="v">~25%</div><div class="d">รวมส่วนแบ่งกำไรบริษัทร่วม</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~4.3%</div><div class="d">฿1.60/หุ้น/ปี • จ่ายปีละ 2 ครั้ง</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">฿1.60/หุ้น/ปี • จ่ายปีละ 2 ครั้ง</div></div>
       <div class="metric"><div class="k">Payout Ratio</div><div class="v">~56%</div><div class="d">฿1.60 / EPS ฿2.86</div></div>
     </div>
   </section>
@@ -122,7 +150,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#dd2c41"></i>ราคา RATCH</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿31.6</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -151,8 +179,8 @@
         <div class="mval">฿33.5</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿29.8 – ฿33.5</span></div>
-        <div class="r">฿31.6</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <!-- ✏️ หมายเหตุ: วิธีไหนให้ค่าสูง/ต่ำเพราะอะไร, ทำไม FV กลางจึงสมเหตุสมผล -->
@@ -167,14 +195,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿37.50</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿31.6</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿22.12<br><small>MOS 30%</small></span>
-          <span>฿25.28<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿31.6<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿33.5<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">฿35.76<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -189,19 +217,19 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
-      <div class="mos-verdict bad">
-        <div class="big">−19%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสมไปแล้ว (MOS ติดลบ) หลังราคาปรับขึ้นแรง ~20% ในช่วงสั้น — ไม่มีส่วนเผื่อความปลอดภัยเหลือ เหมาะกับผู้ถือเดิมที่รับปันผลต่อเนื่อง ไม่แนะนำเข้าซื้อใหม่จนกว่าจะย่อกลับมาใกล้มูลค่าเหมาะสมหรือต่ำกว่า</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿25.28</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿22.12</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿31.6</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="37.5" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -210,17 +238,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿37.50 • EPS ฐาน ~฿2.86 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −3%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿23.5</div>
-          <div class="ret neg">−25%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿2.61</span></li>
             <li><span>P/E ออก</span><span>9.0x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿4.80</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>กำไรหด · FX/ดอกเบี้ยกดดัน</span></li>
           </ul>
         </div>
@@ -228,12 +256,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +3%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿34.5</div>
-          <div class="ret pos">+5%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿3.13</span></li>
             <li><span>P/E ออก</span><span>11.0x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿4.80</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>โครงการใหม่ COD ตามแผน</span></li>
           </ul>
         </div>
@@ -241,12 +269,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +6%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿41.0</div>
-          <div class="ret pos">+23%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿3.41</span></li>
             <li><span>P/E ออก</span><span>12.0x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿5.20</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>M&amp;A · พลังงานหมุนเวียนเร่งโต</span></li>
           </ul>
         </div>
@@ -293,8 +321,8 @@
       <h2>หุ้นปันผลคุณภาพ — ราคาวิ่งแซงมูลค่าเหมาะสมแล้ว เน้นถือเพื่อปันผล ไม่ใช่จังหวะเข้าใหม่</h2>
       <p>RATCH เป็นผู้ผลิตไฟฟ้าชั้นนำที่มีกระแสเงินสดจากสัญญาขายไฟระยะยาวและพอร์ตต่างประเทศที่กระจายความเสี่ยง จุดเด่นคือปันผล ~4.4% ที่มั่นคงและราคาซื้อขายต่ำกว่ามูลค่าทางบัญชี (P/BV ~0.79x) อย่างไรก็ตาม ROE ที่ต่ำ (~6.4%) จากทุนหนักและภาระดอกเบี้ย รวมถึงการเติบโตที่ช้า ทำให้มูลค่าเหมาะสมเฉลี่ยอยู่ที่ ฿31.6 — ต่ำกว่าราคาปัจจุบันไปแล้วถึง ~24% หลังราคาปรับขึ้นแรงในเดือน ก.ค. ราคาจึงตึงตัวกว่าปัจจัยพื้นฐานไปมาก เหมาะกับผู้ถือเดิมสาย defensive ที่ต้องการกระแสปันผลสม่ำเสมอ มากกว่าผู้ที่จะเข้าซื้อใหม่หวัง capital gain</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿31.6 <span style="font-size:12px;color:#cab9a8">(฿29.8–฿33.5)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ef5350">MOS ~ −19%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ef5350">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿35.76 (Buy)</div></div>
       </div>
       <div class="zone">

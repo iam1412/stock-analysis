@@ -10,6 +10,38 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 37,
+  "values": {
+    "px": 42,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 33,
+    "fvHigh": 41,
+    "shares": 28500000000,
+    "dps": 2.1,
+    "baseEps": 3.2,
+    "scenarios": [
+      {
+        "tgt": 26.28,
+        "div": 5.5
+      },
+      {
+        "tgt": 43.2,
+        "div": 6.3
+      },
+      {
+        "tgt": 52.39,
+        "div": 7
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#00a3a3",
     "accentDark": "#007373",
@@ -41,7 +73,6 @@
     "min": 30,
     "max": 45,
     "grid": [35, 40],
-    "fairLine": 37,
     "currency": "฿",
     "highlight": [0, 11],
     "gridFmt": "v.toFixed(0)",
@@ -50,11 +81,8 @@
   "gauge": {
     "min": 25,
     "max": 44,
-    "cur": 42,
-    "fair": 37,
     "fairLabelTop": true
-  },
-  "fv": 37
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +102,11 @@
     <div class="sub">ก๊าซธรรมชาติ (จัดหา-แยก-ท่อส่ง) • ปิโตรเคมี &amp; การกลั่น • ค้าน้ำมัน-ค้าปลีก (OR) • สำรวจ-ผลิต (PTTEP) • ไฟฟ้า-พลังงานใหม่ (GPSC)</div>
     <div class="price-row">
       <div>
-        <div class="px">฿42.00<small>(PTT)</small></div>
+        <div class="px">{{rd:px}}<small>(PTT)</small></div>
       </div>
-      <div class="chg">▲ +36.6% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569 (2026)<br>
+        ราคา ณ {{rd:priceDate}} (2026)<br>
         กรอบ 52 สัปดาห์ ฿29.75 – ฿38.00<br>
         ที่มา: SET, StockAnalysis.com, Yahoo Finance, Investing.com
       </div>
@@ -89,7 +117,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM ถึง Q1/2569</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿1.20 ล้านล้าน</div><div class="d">หุ้น ~28.5 พันล้าน</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">หุ้น ~28.5 พันล้าน</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~11.7x</div><div class="d">ต่ำกว่าค่าเฉลี่ยอุตสาหกรรมโลก</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~11–12x</div><div class="d">กรอบ 9–14x</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">0.63x</div><div class="d">ต่ำกว่า 1 เท่า มาหลายปี</div></div>
@@ -101,7 +129,7 @@
 
       <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿3.0 ล้านล้าน</div><div class="d">อิงราคาน้ำมัน-ก๊าซ</div></div>
       <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~10%</div><div class="d">ธุรกิจ commodity มาร์จิ้นบาง</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~5.0%</div><div class="d">DPS ฿2.10 · payout ~90%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">DPS ฿2.10 · payout ~90%</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">~0.9</div><div class="d">ผันผวนใกล้ตลาด</div></div>
     </div>
   </section>
@@ -115,7 +143,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#00a3a3"></i>ราคา PTT</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿37.00</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -141,8 +169,8 @@
         <div class="mval">฿41.40</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿33 – ฿41</span></div>
-        <div class="r">฿37.00</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี DDM ให้ค่าต่ำสุด (฿33) เพราะ PTT เป็นหุ้นปันผลสูง-โตช้า ตัวคูณ g จึงจำกัด • Justified P/BV ให้ค่าสูงสุด (฿40)
@@ -157,15 +185,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿42.00</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿37.00</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿25.90<br><small>MOS 30%</small></span>
-          <span>฿29.60<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿37.00<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">฿39.50<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">฿41.00<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -179,19 +207,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−14%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ส่วนเผื่อบาง — ราคาปัจจุบันใกล้มูลค่าเหมาะสม เหมาะ "ถือกินปันผล" มากกว่าหวัง capital gain เร็ว รอย่อเพื่อ MOS ที่ดีกว่า</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿29.60</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿25.90</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿37.00</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="42" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -200,17 +228,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿42.00 • EPS ฐาน ~฿3.20 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −3%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿26.28</div>
-          <div class="ret neg">−24% (รวมปันผล)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿2.92</span></li>
             <li><span>P/E ออก</span><span>9x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿5.5</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>ราคาน้ำมันต่ำยาว มาร์จิ้นหด</span></li>
           </ul>
         </div>
@@ -218,12 +246,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +4%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿43.20</div>
-          <div class="ret pos">+18% (รวมปันผล)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿3.60</span></li>
             <li><span>P/E ออก</span><span>12x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿6.3</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>พลังงานทรงตัว ปันผลสม่ำเสมอ</span></li>
           </ul>
         </div>
@@ -231,12 +259,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿52.39</div>
-          <div class="ret pos">+41% (รวมปันผล)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿4.03</span></li>
             <li><span>P/E ออก</span><span>13x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿7.0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>ราคาน้ำมันสูง + re-rating P/BV</span></li>
           </ul>
         </div>
@@ -284,8 +312,8 @@
       ที่ราคา ฿37.50 หุ้นซื้อขายสูงกว่ามูลค่าเหมาะสม ฿37.00 เพียงเล็กน้อย (MOS -1.4%) จึงเหมาะเป็นหุ้น "ถือกินปันผลระยะยาว"
       มากกว่าซื้อเพิ่มตอนนี้ ผู้เน้น value ควรรอย่อสู่โซน ฿29–30 เพื่อ MOS ที่ปลอดภัยกว่า</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿37.00 <span style="font-size:12px;color:#cab9a8">(฿33–฿41)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ff8a65">MOS ~ −14%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ff8a65">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿39.50 (Outperform)</div></div>
       </div>
       <div class="zone">

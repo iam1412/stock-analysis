@@ -12,6 +12,37 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 33,
+  "values": {
+    "px": 17.5,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 27,
+    "fvHigh": 41.26,
+    "shares": 1200000000,
+    "baseEps": 2.25,
+    "scenarios": [
+      {
+        "tgt": 15.75,
+        "div": 1.41
+      },
+      {
+        "tgt": 28.34,
+        "div": 1.48
+      },
+      {
+        "tgt": 44.49,
+        "div": 1.55
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#1565c0",
     "accentDark": "#0d47a1",
@@ -43,7 +74,6 @@
     "min": 15,
     "max": 35,
     "grid": [20, 25, 30],
-    "fairLine": 33,
     "currency": "฿",
     "highlight": [0, 11],
     "gridFmt": "v.toFixed(0)",
@@ -52,11 +82,8 @@
   "gauge": {
     "min": 10,
     "max": 50,
-    "cur": 17.5,
-    "fair": 33,
     "fairLabelTop": true
-  },
-  "fv": 33
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -76,11 +103,11 @@
     <div class="sub">โรงพยาบาลเอกชนขนาดใหญ่ กรุงเทพตะวันออก • Medical Tourism + ผู้ป่วยนอก-ใน • เครือข่ายพันธมิตรโรงพยาบาล • บริการการแพทย์ครบวงจร</div>
     <div class="price-row">
       <div>
-        <div class="px">฿17.50<small>(RAM)</small></div>
+        <div class="px">{{rd:px}}<small>(RAM)</small></div>
       </div>
-      <div class="chg">▼ −5.9% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569 / งบ FY2568 / ไตรมาส Q1/2569<br>
+        ราคา ณ {{rd:priceDate}} / งบ FY2568 / ไตรมาส Q1/2569<br>
         กรอบ 52 สัปดาห์ ฿16.60 – ฿22.90<br>
         ที่มา: Yahoo Finance (RAM.BK), SET Factsheet (set.or.th), investor.ram-hosp.co.th
       </div>
@@ -117,7 +144,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1565c0"></i>ราคา RAM</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿33.00</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -143,8 +170,8 @@
         <div class="mval">฿41.26</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿27.00 – ฿41.26</span></div>
-        <div class="r">฿33.00</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/E ให้ค่าอนุรักษ์นิยมที่สุด (฿27) เพราะ P/E เป้าหมาย 12x ยังต่ำกว่าค่าเฉลี่ยอุตสาหกรรม Justified P/BV ให้ค่าสูงสุด (฿41) เนื่องจาก ROE 13.9% ดีกว่า required return อย่างชัดเจน DCF (฿31) ให้ค่ากลางสมเหตุสมผล เฉลี่ย 3 วิธีได้ ฿33 ซึ่งมี Upside กว่า 82% จากราคาปัจจุบัน — สะท้อนว่า RAM ซื้อขายต่ำกว่ามูลค่าเหมาะสมอย่างมีนัย
@@ -158,15 +185,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿17.50</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿33.00</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
           <span>฿20.45<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span>฿23.10<br><small>MOS 30%</small></span>
-          <span>฿26.40<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿33.00<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿41.26<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -179,19 +206,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict good">
-        <div class="big">+47%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS สูง — โซน Deep Value ราคาถูกกว่ามูลค่าเหมาะสมมาก</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿26.40</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿23.10</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿33.00</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="17.5" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -200,17 +227,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿17.50 • EPS ฐาน ~฿2.25 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿15.75</div>
-          <div class="ret neg">−1.9% (รวมปันผล) / −0.6%/ปี</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿2.25</span></li>
             <li><span>P/E ออก</span><span>7x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.41</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>เศรษฐกิจซบเซา คู่แข่งแข็งแกร่ง</span></li>
           </ul>
         </div>
@@ -218,12 +245,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿28.34</div>
-          <div class="ret pos">+70.4% (รวมปันผล) / +19.4%/ปี</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿2.83</span></li>
             <li><span>P/E ออก</span><span>10x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.48</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>Medical Tourism ฟื้น ขยายเครือข่าย</span></li>
           </ul>
         </div>
@@ -231,12 +258,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿44.49</div>
-          <div class="ret pos">+163.1% (รวมปันผล) / +38.1%/ปี</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿3.42</span></li>
             <li><span>P/E ออก</span><span>13x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.55</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Medical Tourism พุ่ง ขยายพอร์ตแข็งแกร่ง</span></li>
           </ul>
         </div>
@@ -283,8 +310,8 @@
       <h2>Undervalued Healthcare — P/BV &lt; 1x + MOS 45%</h2>
       <p>RAM ซื้อขายต่ำกว่ามูลค่าทางบัญชี (P/BV 0.98x) และ P/E เพียง 8x ทั้งที่ ROE ฟื้นมาที่ 13.9% ใน FY2568 มูลค่าเหมาะสมเฉลี่ย ฿33 (กรอบ ฿27–฿41) ให้ Upside กว่า 82% จากราคาปัจจุบัน สำหรับนักลงทุนระยะกลาง-ยาว ราคา ฿18 ให้ Margin of Safety 45% ซึ่งเป็นโซน deep value ที่ไม่บ่อยในหุ้น Healthcare ไทย อย่างไรก็ดี ควรติดตาม Q2–Q3/2569 เพื่อยืนยันการฟื้นตัวหลัง Q1/2569 ที่กำไรลด 29% YoY ก่อนเพิ่มน้ำหนักการลงทุน</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿33.00 <span style="font-size:12px;color:#cab9a8">(฿27.00–฿41.26)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +47%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿20.45 (เป้าบน ฿23)</div></div>
       </div>
       <div class="zone">

@@ -12,6 +12,40 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 106,
+  "values": {
+    "px": 107.25,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 92,
+    "fvHigh": 116,
+    "eps": 5.03,
+    "shares": 1740000000,
+    "dps": 1.28,
+    "bvps": 24.44,
+    "baseEps": 5.75,
+    "scenarios": [
+      {
+        "tgt": 92,
+        "div": 4.08
+      },
+      {
+        "tgt": 162,
+        "div": 4.84
+      },
+      {
+        "tgt": 208,
+        "div": 5.11
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#0099d5",
     "accentDark": "#0073A8",
@@ -43,18 +77,14 @@
     "min": 80,
     "max": 120,
     "grid": [90, 100, 110],
-    "fairLine": 106,
     "currency": "$",
     "highlight": [7, 10]
   },
   "gauge": {
     "min": 60,
     "max": 135,
-    "cur": 107.25,
-    "fair": 106,
     "fairLabelTop": true
-  },
-  "fv": 106
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +104,11 @@
     <div class="sub">Online brokerage &amp; wealth management • ~$11.8T client assets • TD Ameritrade integration complete • Net interest income + trading fees + asset mgmt fees</div>
     <div class="price-row">
       <div>
-        <div class="px">$107.25<small>(SCHW)</small></div>
+        <div class="px">{{rd:px}}<small>(SCHW)</small></div>
       </div>
-      <div class="chg">▲ +13.5% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $83.96 – $107.50<br>
         ที่มา: Yahoo Finance, Investing.com, StockAnalysis.com
       </div>
@@ -90,9 +120,9 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569 — TTM/Q1 2026</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~$186.6B</div><div class="d">~1.74B shares diluted</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~21.3x</div><div class="d">EPS GAAP TTM $5.03</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS GAAP TTM $5.03</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~20–22x</div><div class="d">range ประวัติ 15–30x</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">4.39x</div><div class="d">BVPS ~$24.44 (Mar'26)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ~$24.44 (Mar'26)</div></div>
 
       <div class="metric"><div class="k">รายได้ TTM (Q1'26)</div><div class="v">$24.8B</div><div class="d">+30% YoY; FY25 $23.9B</div></div>
       <div class="metric"><div class="k">EPS (TTM GAAP)</div><div class="v">~$5.03</div><div class="d">Q1'26 adj $1.43 (+38% YoY)</div></div>
@@ -115,7 +145,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#00A0DF"></i>ราคา SCHW</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $106</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -140,8 +170,8 @@
         <div class="mval">$92</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $92 – $116 (เฉลี่ย 2 วิธีหลัก weighted 60:40)</span></div>
-        <div class="r">$106</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}} (เฉลี่ย 2 วิธีหลัก weighted 60:40)</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         P/E valuation ให้ค่าสูงกว่า ($116) สะท้อนการฟื้นตัวของ earnings ที่แข็งแกร่ง ขณะที่ Justified P/BV ($92) ให้ค่าอนุรักษ์นิยมกว่าเพราะ BVPS ยังต่ำจาก accumulated deficit/buyback
@@ -158,13 +188,13 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $107.25</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $106</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$74.20<br><small>MOS 30%</small></span>
-          <span>$84.80<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$106<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$116<br><small>เป้าเฉลี่ย Analyst</small></span>
           <span style="text-align:right">$135<br><small>กรอบบน FV</small></span>
         </div>
@@ -181,19 +211,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−1.2%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS ปานกลาง — ยังถูกกว่า Fair Value แต่ยังไม่ถึง deep value (MOS 20%) • ราคาปัจจุบันใกล้โซนสะสมที่สมเหตุสมผล</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$84.80</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$74.20</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $106</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="107.25" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -202,17 +232,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $107.25 • EPS ฐาน ~$5.75 (adj FY2026e) • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} (adj FY2026e){{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +2%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$92</div>
-          <div class="ret pos">-10.4% (3 ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$6.10</span></li>
             <li><span>P/E ออก</span><span>15x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$4.08</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>อัตราดอกเบี้ยสูงนาน NIM ทรง, trading ชะลอ</span></li>
           </ul>
         </div>
@@ -220,12 +250,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +12%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$162</div>
-          <div class="ret pos">+55.6% (3 ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$8.08</span></li>
             <li><span>P/E ออก</span><span>20x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$4.84</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>AUM เติบโต + NIM ฟื้น + TD synergy เต็มที่</span></li>
           </ul>
         </div>
@@ -233,12 +263,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +18%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$208</div>
-          <div class="ret pos">+98.7% (3 ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$9.45</span></li>
             <li><span>P/E ออก</span><span>22x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$5.11</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Fed cut อีก 200bps, AUM แตะ $15T, buyback ขนาดใหญ่</span></li>
           </ul>
         </div>
@@ -288,8 +318,8 @@
       <h2>SCHW — Discount บนธุรกิจ Wealth Mgmt ที่ฟื้นตัวแล้ว</h2>
       <p>Charles Schwab คือบริษัทที่ผสม brokerage + wealth management + banking ขนาดใหญ่ที่สุดใน US ด้วย AUM $11.8T และบัญชีลูกค้า 39 ล้านใบ หลังผ่านพ้นวิกฤต cash sorting ปี 2566–67 ที่กดหุ้นลงหนัก บริษัทฟื้นตัวชัดเจน: Q1'26 EPS adj $1.43 (+38% YoY), NIM 2.88%, pre-tax margin 49.2% — ผลประกอบการดีสุดเป็นประวัติการณ์ แต่ราคาหุ้น $90.55 ยังต่ำกว่า Fair Value $106 และต่ำกว่า consensus นักวิเคราะห์ $116 ถึง ~22% สะท้อน discount ที่น่าสนใจสำหรับนักลงทุน value</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$106 <span style="font-size:12px;color:#cab9a8">($92–$116)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −1.2%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$116 (Moderate Buy)</div></div>
       </div>
       <div class="zone">

@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 247,
+  "values": {
+    "px": 252.28,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 235,
+    "fvHigh": 256,
+    "shares": 74000000,
+    "dps": 1.9,
+    "bvps": 99.75,
+    "baseEps": 8.39,
+    "scenarios": [
+      {
+        "tgt": 220,
+        "div": 6
+      },
+      {
+        "tgt": 339,
+        "div": 6.73
+      },
+      {
+        "tgt": 499,
+        "div": 8
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#B8860B",
     "accentDark": "#8B6508",
@@ -41,18 +74,14 @@
     "min": 150,
     "max": 350,
     "grid": [200, 250, 300],
-    "fairLine": 247,
     "currency": "$",
     "highlight": [0, 4]
   },
   "gauge": {
     "min": 130,
     "max": 340,
-    "cur": 252.28,
-    "fair": 247,
     "fairLabelTop": true
-  },
-  "fv": 247
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +101,11 @@
     <div class="sub">Gold &amp; silver royalties &amp; streams • Mount Milligan (BC), Pueblo Viejo (DR), Cortez (NV) • Zero mining operations — leveraged gold price upside, low cost structure • ~0.94% dividend, growing</div>
     <div class="price-row">
       <div>
-        <div class="px">$252.28<small>(RGLD)</small></div>
+        <div class="px">{{rd:px}}<small>(RGLD)</small></div>
       </div>
-      <div class="chg">▲ +44.3% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $150.75 – $306.25<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, Macrotrends
       </div>
@@ -87,10 +116,10 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย.–ก.ค. 2569 • TTM = 12 เดือนล่าสุด</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$18.7B</div><div class="d">~74M หุ้น (diluted)</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~74M หุ้น (diluted)</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~24.1x</div><div class="d">ต่ำกว่าค่าเฉลี่ย royalty peers ~28–35x</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~30x</div><div class="d">ช่วง 20–45x ตามรอบทองคำ</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">2.53x</div><div class="d">BVPS ~$99.75 (Mar 26)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ~$99.75 (Mar 26)</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$332.5M</div><div class="d">+38.4% YoY vs FY2024 $240.1M</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$8.39</div><div class="d">FY2025: $6.69 • FY2024: $5.04</div></div>
@@ -113,7 +142,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#B8860B"></i>ราคา RGLD</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $247</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -141,8 +170,8 @@
         <div class="mval">$249</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $235 – $256</span></div>
-        <div class="r">$247</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         P/CF ให้ค่าสูงสุด ($256) สะท้อน cash conversion ที่ดีเยี่ยมของโมเดล royalty (ไม่มีค่าใช้จ่ายเหมือง) •
@@ -160,14 +189,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $252.28</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $247</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$172.90<br><small>MOS 30%</small></span>
-          <span>$197.60<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$247<br><small>Fair Value</small></span>
-          <span style="text-align:right">$256<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$325<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -184,19 +213,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−2%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">แทบไม่มีส่วนเผื่อ — ราคาปัจจุบันสูงกว่า Fair Value เล็กน้อย (MOS -0.5%)</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$197.60</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$172.90</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $247</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="252.28" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -205,17 +234,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $252.28 • EPS ฐาน ~$8.39 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$220</div>
-          <div class="ret neg">-12.8% (3 ปีรวม, ≈ -4.5%/ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$9.71</span></li>
             <li><span>P/E ออก</span><span>22x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$6.00</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>ทองคำย่อ $2,500 กดราคา RGLD</span></li>
           </ul>
         </div>
@@ -223,12 +252,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +15%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$339</div>
-          <div class="ret pos">+34.4% (3 ปีรวม, ≈ +10.4%/ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$12.78</span></li>
             <li><span>P/E ออก</span><span>26x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$6.73</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>ทองคำ $3,000–3,500 + mine ramp-up</span></li>
           </ul>
         </div>
@@ -236,12 +265,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +25%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$499</div>
-          <div class="ret pos">+97.8% (3 ปีรวม, ≈ +25.5%/ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$16.38</span></li>
             <li><span>P/E ออก</span><span>30x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$8.00</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>ทองคำ $4,000+ • RGLD เพิ่มสตรีมใหม่</span></li>
           </ul>
         </div>
@@ -292,8 +321,8 @@
       <h2>Gold Royalty ที่ดีที่สุด — ราคาใกล้โซนน่าสนใจ</h2>
       <p>Royal Gold (RGLD) คือบริษัท royalty &amp; streaming ทองคำชั้นนำที่มีโมเดลธุรกิจ asset-light ที่สุดในอุตสาหกรรม รับรายได้โดยตรงจากการผลิตทองคำโดยไม่มีความเสี่ยงค่าขุด/ค่าดำเนินงานเหมือง ในสภาพแวดล้อมที่ทองคำยืนสูงเหนือ $3,000/oz RGLD ได้ประโยชน์เต็มเม็ดเต็มหน่วย Revenue TTM $966M (+35% YoY) และ OCF $862M สะท้อนพลัง leverage นี้ ราคาปัจจุบัน $248.14 ใกล้เคียง Fair Value $247 (แทบไม่มีส่วนเผื่อ) และยังต่ำกว่าเป้า analyst เฉลี่ย $325 อย่างมีนัยสำคัญ เหมาะสำหรับนักลงทุนที่ต้องการ gold exposure คุณภาพสูงในพอร์ตระยะยาว</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$247 <span style="font-size:12px;color:#cab9a8">($235–$256)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −2%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$325 (Buy)</div></div>
       </div>
       <div class="zone">
