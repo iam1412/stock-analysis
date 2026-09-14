@@ -21,6 +21,38 @@
 -->
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 92,
+  "values": {
+    "px": 122.73,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 37,
+    "fvHigh": 112.5,
+    "shares": 526299999.99999994,
+    "bvps": 37.46,
+    "baseEps": 4.7,
+    "scenarios": [
+      {
+        "tgt": 75,
+        "div": 4.2
+      },
+      {
+        "tgt": 113,
+        "div": 6.3
+      },
+      {
+        "tgt": 168,
+        "div": 10.5
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#c8860a",
     "accentDark": "#7a5c06",
@@ -52,18 +84,14 @@
     "min": 80,
     "max": 140,
     "grid": [100, 120],
-    "fairLine": 92,
     "currency": "$",
     "highlight": [0, 9]
   },
   "gauge": {
     "min": 55,
     "max": 145,
-    "cur": 122.73,
-    "fair": 92,
     "fairLabelTop": false
-  },
-  "fv": 92
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -84,14 +112,14 @@
     <div class="sub">ผู้ผลิตรถบรรทุกหนักพรีเมียม Kenworth, Peterbilt (สหรัฐฯ) และ DAF (ยุโรป) • PACCAR Parts อะไหล่หลังการขายมาร์จิ้นสูง • PACCAR Financial Services สินเชื่อ/ลีสซิ่งรถบรรทุก • ส่วนแบ่งตลาด Class 8 ทั่วโลก ~29%</div>
     <div class="price-row">
       <div>
-        <div class="px">$122.73<small>(PCAR)</small></div>
+        <div class="px">{{rd:px}}<small>(PCAR)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
            รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
-      <div class="chg">▲ +24.7% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569 (7 Jul 2026, ตลาดสหรัฐฯ)<br>
+        ราคา ณ {{rd:priceDate}} (7 Jul 2026, ตลาดสหรัฐฯ)<br>
         กรอบ 52 สัปดาห์ $92.25 – $131.88<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, MarketBeat
       </div>
@@ -106,10 +134,10 @@
          • ธนาคาร → NIM / NPL / CASA / Loan growth / Cost-to-income   • REIT/กองอสังหา → Occupancy / DPU / NAV / Gearing   • ประกัน → Combined ratio / EV
          • หุ้นเติบโต-ขาดทุน → Revenue growth / Gross margin / FCF / Cash runway (ตัด P/E ออก) -->
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">$64.6B</div><div class="d">~526.3M หุ้น</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">~526.3M หุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~26.5x</div><div class="d">EPS TTM ลดลง ~29% YoY จากจุดต่ำวงจร</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~14x</div><div class="d">10x (พีค FY2023) – 27x (จุดต่ำปัจจุบัน)</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">3.28x</div><div class="d">BVPS $37.46 — ROE คุณภาพสูงกว่าคู่แข่ง</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS $37.46 — ROE คุณภาพสูงกว่าคู่แข่ง</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$2.38B</div><div class="d">−42.9% YoY (จากจุดพีค FY2024)</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$4.70</div><div class="d">ฟื้นจากจุดต่ำ FY2025 $4.51 — consensus FY2027 ~$6.56</div></div>
@@ -134,7 +162,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#c8860a"></i>ราคา PCAR</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $92</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -163,8 +191,8 @@
         <div class="mval">$89.90</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $37 – $112.50</span></div>
-        <div class="r">$92</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <!-- ✏️ หมายเหตุ: วิธีไหนให้ค่าสูง/ต่ำเพราะอะไร, ทำไม FV กลางจึงสมเหตุสมผล -->
@@ -179,13 +207,13 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $122.73</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $92</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$64.40<br><small>MOS 30%</small></span>
-          <span>$73.60<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$92<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$123<br><small>เป้าเฉลี่ย Analyst</small></span>
           <span style="text-align:right">$140<br><small>เป้าสูงสุด Analyst</small></span>
         </div>
@@ -201,19 +229,19 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
-      <div class="mos-verdict bad">
-        <div class="big">−33%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>ไม่มี Margin of Safety</b><br>ราคาปัจจุบัน $124.35 สูงกว่ามูลค่าเหมาะสม $92 ราว 35% → ตามเกณฑ์ value investor ถือว่า <b>แพง</b> ที่จุดนี้ของวงจร (EPS ยังไม่ฟื้นเต็มที่) ยังไม่ใช่จุดซื้อที่ปลอดภัย</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$73.60</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$64.40</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $92</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="122.73" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -222,17 +250,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $122.73 • EPS ฐาน ~$4.70 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$75</div>
-          <div class="ret neg">−35.5%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$4.70</span></li>
             <li><span>P/E ออก</span><span>16x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$4.20</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>ดีมานด์รถบรรทุกซบเซาต่อเนื่อง freight recession ยืดเยื้อ ไม่มี upcycle ใหม่ P/E ถูกกดจากมุมมองระมัดระวัง</span></li>
           </ul>
         </div>
@@ -240,12 +268,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +17%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$113</div>
-          <div class="ret neg">−2.8%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$7.53</span></li>
             <li><span>P/E ออก</span><span>15x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$6.30</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>ทยอยฟื้นตัวสู่ mid-cycle ตามคาด อุตสาหกรรมกลับเข้าสู่วงจรปกติ Parts/Financial Services พยุงกำไรฐาน</span></li>
           </ul>
         </div>
@@ -253,12 +281,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +28%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$168</div>
-          <div class="ret pos">+45.4%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$9.86</span></li>
             <li><span>P/E ออก</span><span>17x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$10.50</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Freight upcycle แรง + pre-buy คึกคักก่อน EPA 2570 กำไรทำ new peak เหนือปี 2566 P/E ขยายตัวตาม sentiment เชิงบวก</span></li>
           </ul>
         </div>
@@ -307,8 +335,8 @@
       <h2>แบรนด์รถบรรทุกพรีเมียมคุณภาพสูง แต่ราคาวิ่งนำหน้าการฟื้นตัวของกำไรไปมากแล้ว</h2>
       <p>PACCAR เป็นผู้นำตลาดรถบรรทุกหนักพรีเมียมที่มี moat แข็งแกร่งจากแบรนด์ Kenworth/Peterbilt/DAF ธุรกิจ Parts อะไหล่มาร์จิ้นสูงที่ทำหน้าที่เป็นตัวกันชนวงจร และงบดุลแข็งแรงมาก อย่างไรก็ตาม ราคาหุ้นปัจจุบันที่ $124.35 เทรดบน P/E TTM สูงถึง ~26.5x เพราะ EPS ยังอยู่จุดต่ำของวงจร ($4.70) เมื่อประเมินด้วย EPS mid-cycle ที่ปรับวงจรแล้ว (~$7.50) มูลค่าเหมาะสมอยู่ที่ราว $92 ต่ำกว่าราคาตลาดปัจจุบันราว 35% นักลงทุนที่เข้าซื้อตอนนี้กำลังเดิมพันว่าวงจรขาขึ้นรอบใหม่ (หนุนจาก pre-buy ก่อน EPA 2570) จะดันกำไรกลับสู่หรือเกินจุดพีคปี 2566 เร็วกว่าที่ตลาดเผื่อไว้</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$92 <span style="font-size:12px;color:#cab9a8">($37–$112.50)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −33%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$123 (Hold)</div></div>
       </div>
       <div class="zone">

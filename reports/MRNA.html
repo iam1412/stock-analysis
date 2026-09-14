@@ -10,6 +10,37 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 49.33,
+  "values": {
+    "px": 143.97,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 37.72,
+    "fvHigh": 76.95,
+    "analystTgt": 89.33,
+    "shares": 399240000,
+    "scenarios": [
+      {
+        "tgt": 42,
+        "div": 0
+      },
+      {
+        "tgt": 62,
+        "div": 0
+      },
+      {
+        "tgt": 170,
+        "div": 0
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#d13899",
     "accentDark": "#9d2571",
@@ -40,17 +71,13 @@
     "min": 0,
     "max": 200,
     "grid": [50, 100, 150],
-    "fairLine": 49.33,
     "currency": "$",
     "highlight": [1, 11]
   },
   "gauge": {
     "min": 20,
-    "max": 167,
-    "cur": 143.97,
-    "fair": 49.33
-  },
-  "fv": 49.33
+    "max": 167
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -68,11 +95,11 @@
     <div class="sub">วัคซีน mRNA • Spikevax (โควิด) • mRESVIA (RSV) • intismeran autogene — วัคซีนมะเร็งเฉพาะบุคคลร่วมกับ Merck</div>
     <div class="price-row">
       <div>
-        <div class="px">$143.97<small>(MRNA)</small></div>
+        <div class="px">{{rd:px}}<small>(MRNA)</small></div>
       </div>
-      <div class="chg">▲ +430.1% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569 (Yahoo Finance, ตรงกับ StockAnalysis.com และ TradingView)<br>
+        ราคา ณ {{rd:priceDate}} (Yahoo Finance, ตรงกับ StockAnalysis.com และ TradingView)<br>
         กรอบ 52 สัปดาห์ $22.28 – $176.66<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, TradingView
       </div>
@@ -94,7 +121,7 @@
       <div class="metric"><div class="k">FCF (TTM)</div><div class="v neg">−$1,244M</div><div class="d">FY2025 −$2,065M · เผาเงินสดต่อเนื่อง</div></div>
 
       <div class="metric"><div class="k">เงินสดสุทธิ/หุ้น</div><div class="v">$14.06</div><div class="d">คิดเป็น 10.5% ของราคา</div></div>
-      <div class="metric"><div class="k">เป้านักวิเคราะห์</div><div class="v neu">$89.33 (−38.0%)</div><div class="d">n=18 · Hold — ค่าเฉลี่ยยังค้างก่อนข่าว</div></div>
+      <div class="metric"><div class="k">เป้านักวิเคราะห์</div><div class="v neu">{{rd:analystTgt}} ({{rd:analystPct}})</div><div class="d">n=18 · Hold — ค่าเฉลี่ยยังค้างก่อนข่าว</div></div>
       <div class="metric"><div class="k">กรอบ 52 สัปดาห์</div><div class="v">$22.28 – $176.66</div><div class="d">จุดสูงทำเมื่อ 19–20 ส.ค. 2569</div></div>
       <div class="metric"><div class="k">เงินปันผล</div><div class="v">0%</div><div class="d">ไม่จ่ายปันผล</div></div>
     </div>
@@ -109,7 +136,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#d13899"></i>ราคา MRNA</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $49.33</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -134,8 +161,8 @@
         <div class="mval">$46.84</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสม (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $37.72 – $76.95</span></div>
-        <div class="r">$49.33</div>
+        <div class="l">มูลค่าเหมาะสม (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>ทำไม FV จึงเป็นขาเดียว ไม่ใช่ค่าเฉลี่ย:</b> กติกาของรีโปกำหนดว่า DCF/rNPV ที่มูลค่าขึ้นกับสิ่งที่บริษัท<b>ยังไม่เคยทำได้จริง</b> จะนับเป็นขาอิสระได้ต่อเมื่อ FCF ล่าสุดเป็นบวก
@@ -160,15 +187,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $143.97</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#067647">เหมาะสม $49.33</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#067647">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$34.53<br><small>MOS 30%</small></span>
-          <span>$39.46<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$49.33<br><small>Fair Value</small></span>
-          <span style="text-align:right">$76.95<br><small>กรอบบน FV</small></span>
-          <span style="text-align:right">$89.33<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:analystTgt}}<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -184,19 +211,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−192%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>ไม่มี Margin of Safety — ราคาสูงกว่ามูลค่าเหมาะสมมาก</b><br>ราคา $133.32 อยู่เหนือ FV $49.33 ถึง 2.7 เท่า และเหนือกรอบบนของ FV ($76.95) อยู่ 73% นักลงทุนที่เข้าที่ราคานี้กำลังจ่ายล่วงหน้าเต็มจำนวนสำหรับความสำเร็จข้ามมะเร็งหลายชนิดที่<b>ยังไม่มีผลการทดลองรองรับ</b> ผู้ที่ถือกำไรอยู่ควรพิจารณาลดสัดส่วน ส่วนผู้ที่ยังไม่มี ควรรอตัวเลข hazard ratio ฉบับเต็มก่อน</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$39.46</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$34.53</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $49.33</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="143.97" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -205,17 +232,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $143.97 • ไม่จ่ายปันผล • ฐาน: ยอดขายสูงสุดปรับความเสี่ยง × EV/Sales ขาออก</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • ไม่จ่ายปันผล • ฐาน: ยอดขายสูงสุดปรับความเสี่ยง × EV/Sales ขาออก</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>Bear</span><span>เฉพาะมะเร็งผิวหนัง</span></div>
         <div class="body">
-          <div class="tgt">$42.00</div>
-          <div class="ret neg">−70.8% รวม 3 ปี (−33.7%/ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>ยอดขายสูงสุด (ปรับความเสี่ยง)</span><span>~$3B</span></li>
             <li><span>EV/Sales ขาออก</span><span>4.2x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>hazard ratio ที่เปิดเผยจริงอ่อนกว่าคาด (≥0.80) พรีเมียมอ็อนโคโลยีคลายออกเกือบหมด ธุรกิจวัคซีนเดิมยังหดตัวและต้องระดมทุนเพิ่ม</span></li>
           </ul>
         </div>
@@ -223,12 +250,12 @@
       <div class="col base">
         <div class="top"><span>Base</span><span>มะเร็งผิวหนัง + NSCLC บางส่วน</span></div>
         <div class="body">
-          <div class="tgt">$62.00</div>
-          <div class="ret neg">−56.9% รวม 3 ปี (−24.5%/ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>ยอดขายสูงสุด (ปรับความเสี่ยง)</span><span>~$11.4B</span></li>
             <li><span>EV/Sales ขาออก</span><span>6.3x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>ขึ้นทะเบียนในมะเร็งผิวหนังสำเร็จ เริ่มขายปี 2571 มูลค่าค่อย ๆ ถูกปลดล็อกตามการลดความเสี่ยง หักกลบกับเงินสดที่ยังเผาอยู่</span></li>
           </ul>
         </div>
@@ -236,12 +263,12 @@
       <div class="col bull">
         <div class="top"><span>Bull</span><span>สำเร็จข้ามมะเร็งหลายชนิด</span></div>
         <div class="body">
-          <div class="tgt">$170.00</div>
-          <div class="ret pos">+18.1% รวม 3 ปี (+5.7%/ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>ยอดขายสูงสุด (ปรับความเสี่ยง)</span><span>~$29B</span></li>
             <li><span>EV/Sales ขาออก</span><span>11.3x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>hazard ratio เด่นชัด (&lt;0.70) INTerpath-002 (NSCLC) อ่านผลบวก แพลตฟอร์มถูกยอมรับข้ามมะเร็ง — ตรงกับเป้าสูงสุดของ BofA และ Jefferies</span></li>
           </ul>
         </div>
@@ -296,9 +323,9 @@
         สิ่งที่ควรจับตาไม่ใช่ราคา แต่คือ <b>hazard ratio ฉบับเต็ม</b> ที่จะเปิดเผยในงานประชุมแพทย์ และผลของ INTerpath-002 ในมะเร็งปอด — สองตัวนี้จะตัดสินว่าราคาวันนี้คือการมองการณ์ไกล หรือการจ่ายล่วงหน้าเกินตัว
       </p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$49.33 <span style="font-size:12px;color:#cab9a8">($37.72–$76.95)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −192%</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$89.33 (Hold)</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~{{rd:analystTgt}} (Hold)</div></div>
       </div>
       <div class="zone">
         <b>กลยุทธ์:</b> หลีกเลี่ยงการไล่ราคา ณ ระดับนี้ — ไม่มีส่วนเผื่อความปลอดภัยเหลืออยู่เลย และรูปทรงผลตอบแทนเสียเปรียบชัดเจน (Bull +27.5% เทียบ Bear −68.5% ใน 3 ปี)
@@ -313,7 +340,7 @@
     <b>คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะตัวคูณ EV/Sales ของกลุ่มเทียบเคียง, ยอดขายสูงสุดของ intismeran, ราคาต่อคอร์ส, อัตราการเข้าถึงผู้ป่วย, โอกาสสำเร็จของการทดลองที่ยังไม่อ่านผล และอัตราคิดลด
     หุ้นตัวนี้เพิ่งผ่านการรีไพรซ์จากเหตุการณ์เดียวและมีความผันผวนสูงมาก ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ
-    • ราคา ณ 11 ก.ย. 2569 จาก Yahoo Finance (cross-check กับ StockAnalysis.com และ TradingView ตรงกันทั้งสามแหล่ง)
+    • ราคา ณ {{rd:priceDate}} จาก Yahoo Finance (cross-check กับ StockAnalysis.com และ TradingView ตรงกันทั้งสามแหล่ง)
     • ข้อมูลงบการเงิน FY2564–FY2568 และ TTM จาก StockAnalysis.com และ Yahoo Finance
     • ผลการทดลอง Phase 3 INTerpath-001 จากข่าวประชาสัมพันธ์ Moderna และ Merck ลงวันที่ 19 ส.ค. 2569
     • ผลประกอบการและเป้าหมายไตรมาส 2/2569 จากการแถลงผลประกอบการวันที่ 31 ก.ค. 2569

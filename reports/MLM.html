@@ -10,6 +10,20 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 602,
+  "values": {
+    "px": 509.96,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 566,
+    "fvHigh": 654,
+    "eps": 18.21,
+    "shares": 60500000,
+    "dps": 3.32,
+    "bvps": 165.54
+  },
   "theme": {
     "accent": "#4A6FA5",
     "accentDark": "#2E4E7E",
@@ -41,18 +55,14 @@
     "min": 450,
     "max": 700,
     "grid": [500, 550, 600, 650],
-    "fairLine": 602,
     "currency": "$",
     "highlight": [4, 11]
   },
   "gauge": {
     "min": 390,
     "max": 730,
-    "cur": 509.96,
-    "fair": 602,
     "fairLabelTop": false
-  },
-  "fv": 602
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +82,11 @@
     <div class="sub">Top-2 US aggregates producer (crushed stone / sand / gravel) • IIJA federal infrastructure multi-year tailwind • Local pricing power (quarry monopoly, permits) • Ready-mix concrete &amp; asphalt downstream • Secular infrastructure spending beneficiary</div>
     <div class="price-row">
       <div>
-        <div class="px">$509.96<small>(MLM)</small></div>
+        <div class="px">{{rd:px}}<small>(MLM)</small></div>
       </div>
-      <div class="chg">▼ −16.8% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $525.38 – $710.97<br>
         ที่มา: StockAnalysis ($581.46), Yahoo Finance ($584.63), Martin Marietta IR
       </div>
@@ -87,10 +97,10 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ 30 มิ.ย. 2569 / FY2025 = ปีงบ 31 ธ.ค. 2568</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$30.9B</div><div class="d">~60.5 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~60.5 ล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~28x</div><div class="d">EPS TTM continuing ops $18.21</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~28–34x</div><div class="d">ช่วง normalized; FY2024 สูงเพราะ divestiture gain</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">3.08x</div><div class="d">BVPS $165.54 (FY2025)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS $165.54 (FY2025)</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$990M</div><div class="d">−45.4% YoY (FY2024 บวม divestiture gain $1.3B)</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$18.21</div><div class="d">Continuing ops Q2–Q4 2025 + Q1 2026</div></div>
@@ -118,7 +128,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#4A6FA5"></i>ราคา MLM</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $602</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -147,8 +157,8 @@
         <div class="mval">$566</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $566 – $654</span></div>
-        <div class="r">$602</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         EV/EBITDA ให้ค่าสูงสุด ($654) เพราะ aggregates มี EBITDA margin สูง (~37%) และ peer VMC ซื้อขายที่ ~18–19x
@@ -165,14 +175,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $510</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $602</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$421<br><small>MOS 30%</small></span>
-          <span>$482<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$602<br><small>Fair Value</small></span>
-          <span style="text-align:right">$654<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$683<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -189,19 +199,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+15%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาใกล้มูลค่าเหมาะสม — MOS น้อย รอโซนที่ดีกว่า</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$482</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$421</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $602</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="509.96" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -299,8 +309,8 @@
       โอกาสซื้อที่ดีกว่าคือรอให้ราคาย่อลงสู่แนว $480–$500 (MOS 20%) ซึ่งอาจเกิดได้ถ้าตลาดยัง de-rate Lhoist deal หรือ construction slowdown ชัดเจนขึ้น
       Base case 3 ปีให้ผลตอบแทน ~5.8%/ปี (รวมปันผล) ไม่โดดเด่น แต่ bull case ที่ IIJA fully ramped + Lhoist synergies อาจให้ ~13.5%/ปี</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$602 <span style="font-size:12px;color:#cab9a8">($566–$654)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +15%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$683 (Buy — 23 นักวิเคราะห์)</div></div>
       </div>
       <div class="zone">

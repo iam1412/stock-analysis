@@ -10,6 +10,19 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 100,
+  "values": {
+    "px": 69.1,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 94,
+    "fvHigh": 108,
+    "eps": 3.76,
+    "shares": 384000000,
+    "dps": 1.76
+  },
   "theme": {
     "accent": "#C8102E",
     "accentDark": "#8B0A1F",
@@ -41,18 +54,14 @@
     "min": 60,
     "max": 110,
     "grid": [70, 80, 90, 100],
-    "fairLine": 100,
     "currency": "$",
     "highlight": [0, 11]
   },
   "gauge": {
     "min": 60,
     "max": 120,
-    "cur": 69.1,
-    "fair": 100,
     "fairLabelTop": false
-  },
-  "fv": 100
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +81,11 @@
     <div class="sub">ผู้นำโลกอันดับ 1 ด้านลิฟต์และบันไดเลื่อน (แยกตัวจาก United Technologies ปี 2563) • ~2.2 ล้านยูนิตภายใต้สัญญาบริการ • บริการ 70% รายได้ (recurring/annuity สูง) • ติดตั้งใหม่ 30% (linked กับก่อสร้าง) • ขยายตลาด Global Urbanization • China exposure จัดการได้</div>
     <div class="price-row">
       <div>
-        <div class="px">$69.10<small>(OTIS)</small></div>
+        <div class="px">{{rd:px}}<small>(OTIS)</small></div>
       </div>
-      <div class="chg">▼ −25.5% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $69.16 – $101.42<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, Otis Investor Relations
       </div>
@@ -87,8 +96,8 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิถุนายน 2569 / FY2025</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$26.5B</div><div class="d">384M shares · NYSE: OTIS</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~18.4x</div><div class="d">EPS TTM $3.76 (GAAP diluted)</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">384M shares · NYSE: OTIS</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM $3.76 (GAAP diluted)</div></div>
       <div class="metric"><div class="k">P/E adj (TTM)</div><div class="v">~17.1x</div><div class="d">Adj EPS FY2025 $4.05 (+6% YoY)</div></div>
       <div class="metric"><div class="k">Forward P/E</div><div class="v neu">~16.3x</div><div class="d">FY2026E adj EPS ~$4.24</div></div>
 
@@ -113,7 +122,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#C8102E"></i>ราคา OTIS</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $100</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -139,8 +148,8 @@
         <div class="mval">$94.00</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $94 – $108</span></div>
-        <div class="r">$100</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         ทั้ง 3 วิธีให้ค่า FV อยู่ในกรอบ $94–$108 สะท้อนความสอดคล้องของการประเมิน วิธี EV/EBITDA ให้ค่าสูงสุดเพราะสะท้อน strategic value ของ service backlog 2.2 ล้านยูนิต DDM ให้ค่าต่ำสุดเนื่องจากเป็น conservative approach อิง dividend เป็นหลัก มูลค่ากลาง $100 สมเหตุผลสำหรับ Industrial leader ที่มีกระแสเงินสดสม่ำเสมอสูง ยืนยันโดย analyst consensus $95.43 (15 นักวิเคราะห์ · Buy)
@@ -154,15 +163,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $69.10</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $100</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$70.00<br><small>MOS 30%</small></span>
-          <span>$80.00<br><small>MOS 20%</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">$95.43<br><small>เป้า Analyst</small></span>
-          <span style="text-align:right">$100<br><small>Fair Value</small></span>
-          <span style="text-align:right">$108<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -175,19 +184,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict good">
-        <div class="big">+31%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS สูง — ราคาต่ำกว่ามูลค่าเหมาะสม 28% · โซนสะสมระยะยาวที่น่าสนใจ</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$80.00</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$70.00</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $100</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="69.1" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -278,8 +287,8 @@
       <h2>Otis: Industrial Quality ที่ราคา Discount — Service Flywheel ยังแข็งแกร่ง</h2>
       <p>OTIS คือ "toll road" ของอุตสาหกรรมลิฟต์โลก — ทุกยูนิตที่ติดตั้งสร้าง recurring service revenue ยาว 20–30 ปี ด้วย 2.2 ล้านยูนิตภายใต้สัญญา, Service segment margin 25.1% (all-time high), FCF $1.67B ต่อปี และ modernization backlog พุ่ง +30% YoY พื้นฐานธุรกิจระยะยาวแข็งแกร่งมาก ราคาที่ร่วงลง 27% ในรอบปีจากแรงกดดันจีนและวัฏจักรก่อสร้าง ทำให้ OTIS ซื้อขายที่ discount ลึกกว่าปกติ MOS 28% ต่ำกว่า Fair Value $100 ที่อิง 3 วิธีประเมิน ณ จุดนี้ความเสี่ยง/ผลตอบแทนเอียงไปทาง upside อย่างชัดเจนสำหรับนักลงทุนระยะยาวที่รอ Service flywheel ทำงานต่อเนื่อง</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$100 <span style="font-size:12px;color:#cab9a8">($94–$108)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +31%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$95.43 (Buy · 15 คน)</div></div>
       </div>
       <div class="zone">
@@ -293,7 +302,7 @@
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) แรงกดดันจากตลาดจีน และวัฏจักรก่อสร้างโลก
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
-    แหล่งข้อมูล: Yahoo Finance (ราคา/chart ณ 11 ก.ย. 2569), StockAnalysis.com (financials/forecast), Otis Investor Relations (FY2025 earnings release/FY2026 guidance)
+    แหล่งข้อมูล: Yahoo Finance (ราคา/chart ณ {{rd:priceDate}}), StockAnalysis.com (financials/forecast), Otis Investor Relations (FY2025 earnings release/FY2026 guidance)
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 30 มิถุนายน 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

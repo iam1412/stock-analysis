@@ -10,6 +10,36 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 91,
+  "values": {
+    "px": 85.82,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 83,
+    "fvHigh": 99,
+    "baseEps": 3.07,
+    "scenarios": [
+      {
+        "tgt": 78.1,
+        "div": 0
+      },
+      {
+        "tgt": 103.48,
+        "div": 0
+      },
+      {
+        "tgt": 120.68,
+        "div": 0
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#CC0000",
     "accentDark": "#990000",
@@ -41,18 +71,14 @@
     "min": 80,
     "max": 105,
     "grid": [85, 90, 95, 100],
-    "fairLine": 91,
     "currency": "$",
     "highlight": [1, 11]
   },
   "gauge": {
     "min": 60,
     "max": 115,
-    "cur": 85.82,
-    "fair": 91,
     "fairLabelTop": false
-  },
-  "fv": 91
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +98,11 @@
     <div class="sub">จำหน่ายอะไหล่รถยนต์ aftermarket • DIY &amp; Professional • 6,100+ สาขาทั่วอเมริกาเหนือ • buyback-driven compounder (ไม่มีเงินปันผล)</div>
     <div class="price-row">
       <div>
-        <div class="px">$85.82<small>(ORLY)</small></div>
+        <div class="px">{{rd:px}}<small>(ORLY)</small></div>
       </div>
-      <div class="chg">▼ −9.1% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $84.76 / $108.72<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / O'Reilly Investor Relations / Macrotrends
       </div>
@@ -113,7 +139,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#CC0000"></i>ราคา ORLY</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $91</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -135,8 +161,8 @@
         <div class="mval">$99.08</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $83 – $99</span></div>
-        <div class="r">$91</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         P/E Valuation ($82.89) อิง P/E 27x ซึ่งอยู่ตรงกลางช่วงประวัติศาสตร์ 25–30x เหมาะกับ EPS growth ~10%/ปี · EV/EBITDA ($99.08) สะท้อน pricing power และ FCF yield ที่แข็งแกร่ง · ไม่มี DDM (ไม่มีเงินปันผล) · ไม่มี Justified P/BV (equity ติดลบจาก buyback) · เฉลี่ย 2 วิธี = (82.89+99.08)/2 ≈ $91
@@ -150,15 +176,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $85.82</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $91</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$63.70<br><small>MOS 30%</small></span>
-          <span>$72.80<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$91<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$97<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$99<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -171,19 +197,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+6%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS ต่ำมาก — ราคาใกล้ fair value ยังไม่มี buffer เพียงพอ</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$72.80</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$63.70</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $91</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="85.82" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -192,17 +218,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $85.82 • EPS ฐาน ~$3.07 • ไม่มีปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} • ไม่มีปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$78.10</div>
-          <div class="ret neg">−9%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$3.55</span></li>
             <li><span>P/E ออก</span><span>22x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>SSS ชะลอ + margin squeeze</span></li>
           </ul>
         </div>
@@ -210,12 +236,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +9%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$103.48</div>
-          <div class="ret pos">+21%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$3.98</span></li>
             <li><span>P/E ออก</span><span>26x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>SSS 3-4% + buyback ต่อเนื่อง</span></li>
           </ul>
         </div>
@@ -223,12 +249,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$120.68</div>
-          <div class="ret pos">+41%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$4.31</span></li>
             <li><span>P/E ออก</span><span>28x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>SSS 5%+ + Mexico expansion</span></li>
           </ul>
         </div>
@@ -274,8 +300,8 @@
       <h2>Compounder คุณภาพสูง — ราคาใกล้ Fair Value รอจังหวะซื้อที่ดีกว่า</h2>
       <p>ORLY เป็น compounder คุณภาพสูง EPS CAGR ~10% (organic + buyback) มี ROIC 16.5% และ FCF ~$1.8B/ปี Equity ติดลบไม่ใช่ความเสี่ยงหนี้ แต่เป็นผลของการ buyback อย่างสม่ำเสมอ ราคาปัจจุบัน $89.55 เกือบเท่า fair value $91 (MOS เพียง +1.6%) ยังไม่มี buffer เพียงพอสำหรับ value investor · เหมาะถือยาว แต่ควรรอซื้อใกล้ $72–77 เพื่อ MOS ที่ดีกว่า</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$91 <span style="font-size:12px;color:#cab9a8">($83–$99)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +6%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$97 (Buy)</div></div>
       </div>
       <div class="zone">
