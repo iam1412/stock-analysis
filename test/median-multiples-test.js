@@ -25,5 +25,15 @@ module.exports = function medianTest(ok) {
     ok(r.median == null && r.curErr && /CAD/.test(r.curErr) && /USD/.test(r.curErr), 'ผสมสกุล (งบ CAD · ราคา USD) → median null + curErr (เคส CP)');
   }).then(() => MM.oneSymbol('Y', false, { ...deps, finRow: (p, keys) => ({ datekey: ['TTM', fy(2025), fy(2024)], epsDiluted: [5, 5, 4] })[keys[0]] })).then((r) => {
     ok(r.median == null && r.used.length === 2, `MIN_POINTS: 2 ปี < ${MM.MIN_POINTS} → median null`);
+    // open-item #32: median-multiples.js เคยนับทุกคอลัมน์ FY ที่ datekey parse ได้ (rows.length) ส่วน
+    // fyYears ของ tools/fetch-fundamentals.js (Task 24) นับเฉพาะคอลัมน์ที่มี EPS(dil) จริง — สองตัวขัดกันได้
+    // บนหุ้นเดียวกัน (FY ที่ไม่มี EPS แต่ datekey ยัง parse ได้ เช่น pre-IPO/ก่อนเข้าตลาด) ⇒ ตอนนี้ต้องนับเลขเดียวกัน
+    return MM.oneSymbol('Z', false, { ...deps, finRow: (p, keys) => ({ datekey: ['TTM', fy(2025), fy(2024), fy(2023), fy(2022)], epsDiluted: [5, 5, 4, '-', 3] })[keys[0]] });
+  }).then((r) => {
+    ok(r.rows.length === 4, 'open-item #32: rows ยังมีครบ 4 คอลัมน์ FY ที่ datekey parse ได้ (คงไว้ให้ worker เห็นเหตุผลที่ปีนั้นถูกข้าม)');
+    ok(r.fyYears === 3, 'open-item #32: fyYears นับเฉพาะ FY ที่มี EPS(dil) จริง (FY2023="-" ไม่นับ) = 3 ไม่ใช่ 4');
+    const FF = require('../tools/fetch-fundamentals.js');
+    ok(r.fyYears === FF.fyEpsCountFromArrays(['TTM', fy(2025), fy(2024), fy(2023), fy(2022)], [5, 5, 4, '-', 3]),
+      'open-item #32: median-multiples.js ใช้ fyEpsCountFromArrays ตัวเดียวกับ fetch-fundamentals.js เป๊ะ — กันสองเครื่องมือดริฟท์กันอีก');
   });
 };

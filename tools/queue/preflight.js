@@ -55,20 +55,35 @@ function ageQueue(today, opts) {
     .filter((r) => r.footerAge != null && r.footerAge > STALE_DAYS).sort((a, b) => b.footerAge - a.footerAge);
 }
 
+/** flaggedAt ของแถวอายุสังเคราะห์ (open-item #26) — ต้อง "ต่อเนื่อง" ข้ามวันถ้ายังเป็นเคสเดิมที่ยังไม่ ship
+ *  ★ ทำไมต้องมี: plan() เดิมตั้ง `flaggedAt: today` ให้แถวสังเคราะห์ทุกครั้งไม่ว่าจะเคยเจอมาก่อนหรือไม่ ⇒ preflight
+ *  ที่รันคนละวันในรอบเดียวกัน (เช่น worker ยังไม่เสร็จ ยังไม่ ship) จะได้ flaggedAt ใหม่ทุกวัน ⇒ isNewFlag() เห็นว่า
+ *  flag "เปลี่ยน" ⇒ upsertRow ล้าง model/prepAt/postcheck ของรอบเดิมทิ้งเงียบ ๆ (กู้คืนได้ด้วย prep <SYM>/--model มือ
+ *  เท่านั้น) ทั้งที่ตัวคิวอายุไม่ได้มี "flag เขียนใหม่" แบบ price-flags.json จริง — เป็นเคสเดิมที่ preflight สร้างขึ้นเอง
+ *  ทุกครั้งที่รัน ⇒ ต้องผูกความต่อเนื่องกับ state (opts.priorStocks) ไม่ใช่ประทับวันนี้ดะ
+ *  กติกา: เคยเป็น 'age-gt-90d' มาก่อน + มี flaggedAt เดิม + **ยังไม่ ship** (shippedAt ว่าง) ⇒ ใช้ flaggedAt เดิม
+ *  ไม่งั้น (ครั้งแรก หรือเคย ship ไปแล้วแต่ดันโผล่ใน ageQueue อีก — ship ล้ม/footer ยังไม่ขยับ) ⇒ วันนี้ (รอบใหม่จริง) */
+function synthAge(prior, today) {
+  if (prior && prior.reason === 'age-gt-90d' && prior.flaggedAt && !prior.shippedAt) return prior.flaggedAt;
+  return today;
+}
+
 /** triage + เติมราคาเดิม/สกุลจาก stock-meta ของไฟล์ (อ่านดิสก์ — ส่วนที่เทสไม่ครอบ)
  *  opts.earningsAfterOf(sym) → boolean|null = งบออกหลังวันวิเคราะห์ไหม (Task 17 ใส่ของจริงจาก earnings-calendar.json)
  *  ยังไม่มี = null ⇒ flip ยกเป็น LIGHT ด้วยอายุ footer อย่างเดียว (triage.STALE_DAYS)
  *  opts.ageLimit (default 5) · opts.listReports/opts.footerAgeOf — คิวตามอายุ (WS6 ข้อ 3): เติมแถวสังเคราะห์
  *  reason:'age-gt-90d' synthetic:true ให้ใบที่อายุเกิน STALE_DAYS และยังไม่มี flag อยู่แล้ว แก่สุดก่อน ตัดที่ ageLimit
- *  (0 = --no-age ไม่เติมเลย) — ผ่าน triage() เหมือนแถวจริงทุกอย่าง (ได้ bucket LIGHT/action/skip ตามกติกาเดียวกัน) */
+ *  (0 = --no-age ไม่เติมเลย) — ผ่าน triage() เหมือนแถวจริงทุกอย่าง (ได้ bucket LIGHT/action/skip ตามกติกาเดียวกัน)
+ *  opts.priorStocks = state.stocks ของรอบนี้ (open-item #26) — ให้ synthAge() ตัดสิน flaggedAt ต่อเนื่องได้ */
 function plan(flags, today, opts) {
   const o = opts || {};
   const ageOf = o.footerAgeOf || footerAgeFS(today);
   const limit = o.ageLimit == null ? AGE_LIMIT_DEFAULT : o.ageLimit;
+  const prior = o.priorStocks || {};
   const have = new Set(flags.map((f) => f.symbol));
   const extra = limit > 0
     ? ageQueue(today, { ...o, footerAgeOf: ageOf }).filter((r) => !have.has(r.symbol)).slice(0, limit)
-      .map((r) => ({ symbol: r.symbol, reason: 'age-gt-90d', synthetic: true, flaggedAt: today }))
+      .map((r) => ({ symbol: r.symbol, reason: 'age-gt-90d', synthetic: true, flaggedAt: synthAge(prior[r.symbol], today) }))
     : [];
   const rows = triage([...flags, ...extra], {
     footerAgeOf: ageOf,
@@ -214,7 +229,8 @@ function preflight(opts) {
   // ปฏิทินงบ (Task 17) — อ่านที่นี่ ไม่ใช่ใน plan() เพราะ plan เป็นส่วนที่ queue-test ยิงแบบ offline (ห้ามแตะ reports/)
   const cal = EC.load();
   const withLast = Object.values(cal.symbols || {}).filter((e) => e && e.last).length;
-  const rows = plan(flags, today, { ...o, ageLimit, earningsAfterOf: o.earningsAfterOf || earningsAfterOfWith(cal, readReport) });
+  const s = S.load();   // ★ (open-item #26) ต้องอ่านก่อน plan() — synthAge() ใน plan ต้องใช้ state เดิมตัดสิน flaggedAt ต่อเนื่องของแถวอายุ
+  const rows = plan(flags, today, { ...o, ageLimit, earningsAfterOf: o.earningsAfterOf || earningsAfterOfWith(cal, readReport), priorStocks: s.stocks });
   console.log(`\n=== คิว price-flags ${flags.length} รายการ · ${today} ===\n${renderTable(rows)}`);
   const nCal = Object.keys(cal.symbols || {}).length;
   console.log(nCal
@@ -225,7 +241,6 @@ function preflight(opts) {
     console.log(`อายุเกิน ${STALE_DAYS} วัน ${aq.length} ใบ (รอบนี้เอา ${rows.filter((r) => r.synthetic).length} แก่สุด · --age N ปรับได้): ${aq.slice(0, 10).map((r) => `${r.symbol}(${r.footerAge}d)`).join(' ')}${aq.length > 10 ? ' …' : ''}`);
     console.log('   (แถวอายุเป็นงานเสริม ไม่ได้อยู่ใน price-flags.json — ship --prepatch จะรายงานว่ายังเหลือแถวต้องส่ง LLM จนกว่าจะทำจบ หรือตัดออกด้วย --no-age)');
   }
-  const s = S.load();
   s.startedAt = roundStart(rows, s.startedAt || null, today, s.stocks);   // ★ ก่อน upsertRow — ต้องเทียบกับแถวที่ state จำไว้
   for (const r of rows) s.stocks[r.symbol] = upsertRow(s.stocks[r.symbol], r);
   S.save(s);   // บันทึก snapshot ก่อน pre-patch — patch ล้มก็ต้องเหลือราคาเดิมให้ postcheck ใช้
@@ -261,4 +276,4 @@ function preflight(opts) {
   return rows;
 }
 
-module.exports = { preflight, plan, ageQueue, earningsAfterOfWith, patchTargets, renderTable, manualSteps, loadFlags, parseGateFailures, roundStart, isNewFlag, upsertRow, applyGateResult };
+module.exports = { preflight, plan, ageQueue, earningsAfterOfWith, patchTargets, renderTable, manualSteps, loadFlags, parseGateFailures, roundStart, isNewFlag, upsertRow, applyGateResult, synthAge };

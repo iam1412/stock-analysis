@@ -223,6 +223,19 @@ function checkText(file, text) {
   return null;
 }
 
+/** เขียนไฟล์แบบ atomic (tmp แล้ว rename) — open-item #30: เดิมเขียนทับ TARGETS ทั้ง 5 ไฟล์ตรง ๆ ด้วย
+ *  `fs.writeFileSync` เฉย ๆ ⇒ process ถูกขัดจังหวะกลางเขียน (kill/ไฟดับ/crash) ทิ้งไฟล์ไว้ค้างครึ่งเดียว (เอกสารพัง
+ *  ครึ่งไฟล์ในคลัง) · `fs.renameSync` เป็น syscall เดียวที่ atomic บน filesystem เดียวกัน ⇒ ผู้อ่านเห็นได้แค่ "เนื้อเก่า
+ *  เต็มไฟล์" หรือ "เนื้อใหม่เต็มไฟล์" ไม่มีสภาวะกึ่งกลาง · ชื่อ tmp ผูก pid+random กันชนกันเองเมื่อรันหลาย process/CI พร้อมกัน */
+function atomicWrite(file, content) {
+  const tmp = `${file}.${process.pid}.${Math.random().toString(36).slice(2)}.tmp`;
+  fs.writeFileSync(tmp, content);
+  // คัดลอก mode ของไฟล์เดิมมาที่ tmp ก่อน rename — `.githooks/pre-push` เป็น TARGETS ตัวหนึ่งและเป็น 100755
+  // ถ้าปล่อยให้ tmp ใช้ mode ปริยาย (0644 ตาม umask) git จะเลิกรัน hook โดยไม่เตือนใครเลย (รีวิว Task 10 F2)
+  try { fs.chmodSync(tmp, fs.statSync(file).mode & 0o777); } catch (_) { /* ไฟล์ปลายทางยังไม่มี = ใช้ค่าปริยาย */ }
+  fs.renameSync(tmp, file);
+}
+
 /** ไฟล์ไหนไม่ตรงโค้ดบ้าง — [] = ตรงหมด (test/docs-test.js เรียกตัวนี้) */
 function check() {
   const out = [];
@@ -236,7 +249,7 @@ function check() {
   return out;
 }
 
-module.exports = { render, renderText, check, checkText, TARGETS, GEN, STEP_LABELS, VERIFY, CRON, checksTable, prepushBlock, proseOf, headerCols, mdCell, codeRange, verifyChainPlain, verifyList, stepIndex };
+module.exports = { render, renderText, check, checkText, TARGETS, GEN, STEP_LABELS, VERIFY, CRON, checksTable, prepushBlock, proseOf, headerCols, mdCell, codeRange, verifyChainPlain, verifyList, stepIndex, atomicWrite };
 
 if (require.main === module) {
   if (process.argv.includes('--check')) {
@@ -248,7 +261,7 @@ if (require.main === module) {
   for (const f of TARGETS) {
     const { text, used } = render(f);
     const changed = text !== fs.readFileSync(path.join(ROOT, f), 'utf8');
-    if (changed) fs.writeFileSync(path.join(ROOT, f), text);
+    if (changed) atomicWrite(path.join(ROOT, f), text);   // open-item #30 — tmp แล้ว rename กันไฟล์ค้างครึ่งเดียวถ้าถูกขัดจังหวะกลางเขียน
     console.log(`${changed ? '✎' : '·'} ${f} (marker ${used})`);
   }
 }

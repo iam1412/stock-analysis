@@ -29,7 +29,7 @@
  *   ⇒ ต้องระบุ `SYM:<yahoo ticker กระดานท้องถิ่น>` ไม่งั้นได้ตัวคูณผสมสองฐาน (เคส UMC 9 ก.ย. 69:
  *   ผสมฐานได้ 20.8x · ฐาน NT$ ที่ถูกคือ 10.5x)
  */
-const { fetchFinPage, finRow } = require('./fetch-fundamentals.js');
+const { fetchFinPage, finRow, fyEpsCountFromArrays } = require('./fetch-fundamentals.js');
 
 const MIN_POINTS = 3;          // < 3 จุด = ประวัติสั้นเกินสรุปมัธยฐาน (CRDO/GWRE/PATH 9 ก.ย. 69)
 // ★ ตัวคูณสุดขั้วต้อง **ตัดออกจากการคิดมัธยฐาน** ไม่ใช่แค่เตือน (แก้ 9 ก.ย. 69)
@@ -98,6 +98,10 @@ async function oneSymbol(spec, th, deps) {
   const eps = D.finRow(page, ['epsDiluted', 'epsdil']);
   const dk = D.finRow(page, ['datekey']);
   if (!eps || !dk) throw new Error('อ่านแถว EPS(dil)/datekey จากงบไม่ได้');
+  // ★ open-item #32: นับ "FY ที่มี EPS(dil) จริง" ด้วยกติกาเดียวกับ fetch-fundamentals.js เป๊ะ ๆ (fyEpsCountFromArrays)
+  //   ไม่ใช่นับทุกคอลัมน์ FY ที่ datekey parse ได้ (`rows` ข้างล่างยังคง 1 แถว/คอลัมน์ที่ parse ได้ต่อไป — เพื่อให้
+  //   worker เห็นเหตุผลที่ปีนั้นถูกข้าม — แต่ตัวเลขสรุปที่ใช้เทียบกับ vend.fyYears ต้องมาจากฟังก์ชันนี้เท่านั้น)
+  const fyYears = fyEpsCountFromArrays(dk, eps);
   const closes = await D.monthlyCloses(priceTicker);
   // ★★ กับดักผสมสกุลเงิน (CLAUDE.md §8 ชั้น 0.4b — "EV ต้องใช้ราคาสกุลเดียวกับงบ")
   //   หุ้นที่จดข้ามตลาด (CPKC/CNI/แคนาดา · ADR) ทำงบสกุลหนึ่งแต่ราคากระดานที่ดึงมาเป็นอีกสกุล
@@ -106,7 +110,7 @@ async function oneSymbol(spec, th, deps) {
   const finCur = await D.statementCurrency(page.src);
   const pxCur = closes.currency;
   if (finCur && pxCur && finCur !== pxCur) {
-    return { sym, priceTicker, rows: [], used: [], dropped: [], median: null,
+    return { sym, priceTicker, rows: [], used: [], dropped: [], median: null, fyYears,
       curErr: `งบเป็น ${finCur} แต่ราคา ${priceTicker} เป็น ${pxCur} — ตัวคูณจะเพี้ยนตามอัตราแลกเปลี่ยน` };
   }
 
@@ -134,7 +138,7 @@ async function oneSymbol(spec, th, deps) {
   }
   const used = raw.filter((r) => !r.outlier).map((r) => r.pe);
   const dropped = raw.filter((r) => r.outlier);
-  return { sym, priceTicker, rows, used, dropped, median: used.length >= MIN_POINTS ? med(used) : null };
+  return { sym, priceTicker, rows, used, dropped, fyYears, median: used.length >= MIN_POINTS ? med(used) : null };
 }
 
 function report(r) {
@@ -143,6 +147,9 @@ function report(r) {
   // ★ หัวบล็อกต้องขึ้นต้นด้วย "=== ตัวคูณมัธยฐานย้อนหลัง" ให้ตรงกับช่อง {{MEDIANS}} ใน
   //   `_template/agent-prompt.md` และที่ SKILL.md STEP 3 อ้างถึง — worker หาบล็อกนี้ด้วยชื่อ
   L.push(`=== ตัวคูณมัธยฐานย้อนหลัง: ${r.sym}${tag} — P/E (ราคาเฉลี่ยของงวด ÷ EPS diluted ของงวดนั้น) ===`);
+  // ★ ต้องตรงกับบรรทัด "FY ที่มี EPS(dil) จริง: N" ที่ fetch-fundamentals.js printFinancialTable พิมพ์ (open-item #32
+  //   — สองเครื่องมือใช้ fyEpsCountFromArrays ตัวเดียวกันแล้ว เลขนี้จึงต้องตรงกันเป๊ะบนหุ้นเดียวกันเสมอ)
+  if (r.fyYears != null) L.push(`  FY ที่มี EPS(dil) จริง: ${r.fyYears}`);
   for (const row of r.rows) {
     if (row.pe == null) { L.push(`  ${row.key}  — ข้าม: ${row.skip}`); continue; }
     const line = `  ${row.key}  EPS ${row.eps.toFixed(2)}  ราคาเฉลี่ย ${row.avg.toFixed(2)} (${row.months} เดือน)  →  P/E ${row.pe.toFixed(1)}x`;

@@ -56,6 +56,31 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   ok(F.footerDate(wrap('22–23 มิ.ย. 2569')).iso === '2026-06-22' && F.footerDate(wrap('22–23 มิ.ย. 2569')).era === 'BE', 'footerDate: ช่วงวัน (en dash) ใช้วันแรก (31 ใบในคลัง)');
   ok(F.footerDate(wrap('22-23 มิ.ย. 2026')).iso === '2026-06-22' && F.footerDate(wrap('22-23 มิ.ย. 2026')).era === 'CE', 'footerDate: ช่วงวัน (ASCII hyphen) ใช้วันแรก');
   ok(F.footerDate('<footer>ไม่มีวันที่</footer>') === null && F.footerDate('<p>ข้อมูล ณ 1 ม.ค. 2569</p>') === null, 'footerDate: ไม่มี footer/ไม่มีวันที่ใน footer → null (ไม่หยิบจากเนื้อหา)');
+  ok(F.footerDate(wrap('10 ก.ย. 2569')).form === 'day', 'footerDate: รูปวันเดียว = form "day"');
+
+  // ── #38 (ระยะ 3 Task 8): รูปแบบที่ตัวอ่านเดิมคืน null ⇒ 12 ใบในคลังหลุดประตูวันที่ของ E44/preflight ──
+  // ★ กติกา "เดือนล้วน" = **วันที่ 1 ของเดือนนั้น** (ระมัดระวัง) — ทำให้ใบดู *เก่ากว่า* ความจริงเล็กน้อย
+  //   ไม่ใช่ใหม่กว่า ⇒ ไม่มี false-fresh ที่จะทำให้ dedup 7 วัน / staleness 90 วัน ข้ามใบที่ควรถูกคิว
+  ok(F.footerDate(wrap('มกราคม 2569')).iso === '2026-01-01' && F.footerDate(wrap('มกราคม 2569')).form === 'month',
+    'footerDate: เดือนล้วน (ชื่อเต็ม พ.ศ.) → วันที่ 1 ของเดือน (AMATAV)');
+  ok(F.footerDate(wrap('ธันวาคม 2568')).iso === '2025-12-01' && F.footerDate(wrap('ธันวาคม 2568')).era === 'BE', 'footerDate: เดือนล้วน ปี พ.ศ. คนละปี ค.ศ. (TKN)');
+  ok(F.footerDate(wrap('เม.ย. 2569')).iso === '2026-04-01' && F.footerDate(wrap('เม.ย. 2569')).day === 1, 'footerDate: เดือนล้วน (ย่อมีจุด) (SABINA)');
+  ok(F.footerDate(wrap('มิถุนายน 2026')).iso === '2026-06-01' && F.footerDate(wrap('มิถุนายน 2026')).era === 'CE', 'footerDate: เดือนล้วน ปี ค.ศ.');
+  // ช่วงข้ามเดือน = ใช้ "วันแรก" ให้ตรงกับช่วงวัน–วันในเดือนเดียวกันที่มีอยู่เดิม (เก่ากว่า = ระมัดระวังเหมือนกัน)
+  ok(F.footerDate(wrap('31 ก.ค. – 2 ส.ค. 2026')).iso === '2026-07-31' && F.footerDate(wrap('31 ก.ค. – 2 ส.ค. 2026')).form === 'range',
+    'footerDate: ช่วงข้ามเดือน (เว้นวรรครอบ en dash) → วันแรก (AMZN)');
+  ok(F.footerDate(wrap('24 มิ.ย.–13 ส.ค. 2026')).iso === '2026-06-24', 'footerDate: ช่วงข้ามเดือน ไม่เว้นวรรครอบ dash (MU)');
+  ok(F.footerDate(wrap('24 มิ.ย.-13 ส.ค. 2569')).iso === '2026-06-24', 'footerDate: ช่วงข้ามเดือน ASCII hyphen + พ.ศ.');
+  // ปีที่ประกาศเป็นของวันสุดท้ายเสมอ ⇒ เดือนแรก > เดือนสุดท้าย = คร่อมปีใหม่ วันแรกต้องถอยปี (เก่ากว่า)
+  ok(F.footerDate(wrap('31 ธ.ค. – 2 ม.ค. 2569')).iso === '2025-12-31', 'footerDate: ช่วงคร่อมปี → วันแรกถอยไป 1 ปี');
+  // ★ ห้ามหลวมไปกว่านี้: "เดือนล้วน" ต้องเป็นชื่อเดือนจริง ไม่ใช่คำไทยอะไรก็ได้ที่ตามด้วยเลข 4 หลัก
+  //   (ไม่งั้น "ข้อมูล ณ ราคาปิด 2569" / "ข้อมูล ณ FY2568" จะกลายเป็นวันที่วิเคราะห์ปลอม)
+  ok(F.footerDate(wrap('FY2568')) === null && F.footerDate(wrap('ไตรมาส 2 ปี 2569')) === null && F.footerDate(wrap('ราคาปิด 2569')) === null,
+    'footerDate: คำที่ไม่ใช่ชื่อเดือน + เลข 4 หลัก → null ตามเดิม (เดือนล้วนใช้คลังชื่อเดือนจริงเท่านั้น)');
+  // วลีเดียวกันซ้ำใน footer: ตัวแรกที่ "อ่านออก" ชนะเหมือนเดิม — รูปใหม่ต้องไม่ไปแย่งจับวลีที่ไม่ใช่วันที่
+  ok(F.footerDate('<footer>ข้อมูล ณ ราคาปิด · ข้อมูล ณ 10 ก.ย. 2569</footer>').iso === '2026-09-10',
+    'footerDate: วลี "ข้อมูล ณ" ที่ไม่ใช่วันที่ ไม่บังวลีวันที่จริงที่ตามมา');
+
   ok(F.ageDays('2026-09-01', '2026-09-11') === 10, 'ageDays: 10 วัน');
   ok(/^\d{4}-\d{2}-\d{2}$/.test(F.todayBangkok()), 'todayBangkok: รูป ISO');
 }
@@ -162,6 +187,38 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   const synDefault = rowsDefault.filter((r) => r.synthetic).map((r) => r.symbol);
   ok(synDefault.length === 5, 'plan: ไม่ใส่ ageLimit → default 5 (มี 6 ใบเข้าเกณฑ์ จึงตัดเหลือ 5)', synDefault.join(','));
   ok(synDefault.join(',') === 'FLAGGED,OLD1,OLD2,OLD4,OLD5' && !synDefault.includes('OLD3'), 'plan: ตัวที่ถูกตัดคือใบอ่อนสุด (OLD3 95d)', synDefault.join(','));
+}
+
+// ── 6c) preflight: plan — แถวอายุสังเคราะห์ (synthetic) ต้อง "ต่อเนื่อง" flaggedAt ข้ามวัน (open-item #26) ──
+//   เดิม plan() ตั้ง flaggedAt: today ให้แถวสังเคราะห์ทุกครั้งไม่ว่าจะเคยเจอมาก่อนหรือไม่ ⇒ preflight ที่รันคนละวัน
+//   ในรอบเดียวกัน (ยังไม่ ship) จะได้ flaggedAt ใหม่ทุกวัน ⇒ isNewFlag() เห็นว่า flag "เปลี่ยน" ⇒ upsertRow ล้าง
+//   model/prepAt/postcheck ของรอบเดิมทิ้งทั้งที่ยังไม่มีอะไรเปลี่ยนจริง — กู้คืนได้ด้วย prep <SYM>/--model มือเท่านั้น
+{
+  const P = require('../tools/queue/preflight.js');
+  const ages = { OLD: 200 };
+  const opts = (priorStocks) => ({ ageLimit: 5, listReports: () => Object.keys(ages), footerAgeOf: (s) => ages[s], priorStocks });
+
+  // วันแรก: ยังไม่เคยมีสถานะของ OLD ⇒ flaggedAt = วันนี้
+  const day1 = P.plan([], '2026-09-01', opts({}));
+  const rowDay1 = day1.find((r) => r.symbol === 'OLD');
+  ok(rowDay1 && rowDay1.flaggedAt === '2026-09-01', 'plan: แถวอายุครั้งแรก → flaggedAt = วันนี้', JSON.stringify(rowDay1));
+
+  // จำลองว่า prep แล้ว (model/prepAt ถูกเขียนไว้จริง) แต่ยังไม่ ship
+  const stocks = { OLD: P.upsertRow(undefined, rowDay1) };
+  stocks.OLD.model = 'sonnet'; stocks.OLD.prepAt = '2026-09-01';
+
+  // วันถัดมา: preflight รันซ้ำในรอบเดียวกัน (OLD ยังไม่ ship) → flaggedAt ต้องคงเดิม ไม่ใช่วันนี้
+  const day2 = P.plan([], '2026-09-02', opts(stocks));
+  const rowDay2 = day2.find((r) => r.symbol === 'OLD');
+  ok(rowDay2 && rowDay2.flaggedAt === '2026-09-01', 'plan: open-item #26 — แถวอายุยังไม่ ship รันข้ามวัน → flaggedAt คงเดิม (ต่อเนื่อง ไม่ใช่วันนี้)', JSON.stringify(rowDay2));
+  const merged = P.upsertRow(stocks.OLD, rowDay2);
+  ok(merged.model === 'sonnet' && merged.prepAt === '2026-09-01', 'plan+upsertRow: open-item #26 — model/prepAt ของรอบเดิมไม่ถูกล้างทั้งที่ preflight รันข้ามวัน', JSON.stringify(merged));
+
+  // หลัง ship แล้ว (shippedAt ติดมา) แต่ ageQueue ยังคืนตัวนี้อีก (ship ล้ม/footer ยังไม่ขยับ) → ต้องถือเป็นรอบใหม่จริง (flaggedAt = วันนี้)
+  const shippedStocks = { OLD: { ...merged, shippedAt: '2026-09-02' } };
+  const day3 = P.plan([], '2026-09-03', opts(shippedStocks));
+  const rowDay3 = day3.find((r) => r.symbol === 'OLD');
+  ok(rowDay3 && rowDay3.flaggedAt === '2026-09-03', 'plan: แถวอายุที่เคย ship ไปแล้วแต่ยังโผล่ใน ageQueue อีก → flaggedAt = วันนี้ (รอบใหม่จริง ไม่ใช่ของค้าง)', JSON.stringify(rowDay3));
 }
 
 // ── 7) prep (ส่วนบริสุทธิ์): parseVendor · snapshotDiff · assemblePrompt · hardStock ──
@@ -715,6 +772,31 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
     try { Q.resolveModel('AAPL', rec, over); } catch (e) { threw = e.message; }
     ok(/^AAPL: โมเดล "haiku" ไม่รู้จัก \(ใช้ sonnet\|opus\)$/.test(threw || ''), `resolveModel: ${label} → ปฏิเสธด้วยชื่อโมเดลที่พิมพ์ผิด (ไม่ใช่ "ไม่มี model ใน state")`, String(threw));
   }
+
+  // open-item #27: guard postcheck ของ shipStock ต้องผูกกับขอบเขตรอบ (roundStart) — postcheck:'pass' ที่ค้างจาก
+  // รอบก่อน (flaggedAt เก่ากว่า startedAt ของรอบนี้) ต้องไม่พา ship <SYM> commit ได้โดยไม่สั่ง postcheck ใหม่
+  ok(Q.postcheckGuard('AAPL', { postcheck: null }, '2026-09-10') != null, 'postcheckGuard: ไม่เคย postcheck → ปฏิเสธ');
+  ok(Q.postcheckGuard('AAPL', { postcheck: 'review' }, '2026-09-10') != null, 'postcheckGuard: postcheck=review → ปฏิเสธ');
+  ok(Q.postcheckGuard('AAPL', { postcheck: 'pass', flaggedAt: '2026-09-12' }, '2026-09-10') === null, 'postcheckGuard: postcheck=pass ของรอบนี้ (flaggedAt ≥ startedAt) → ผ่าน');
+  {
+    const stale = Q.postcheckGuard('AAPL', { postcheck: 'pass', flaggedAt: '2026-09-01' }, '2026-09-10');
+    ok(stale != null && /ค้างจากรอบก่อน/.test(stale) && /postcheck ผ่านแล้ว/.test(stale) && /--force/.test(stale), 'postcheckGuard: open-item #27 — postcheck=pass แต่ flaggedAt เก่ากว่า startedAt (ค้างจากรอบก่อน) → ปฏิเสธ ไม่ใช่ผ่านเงียบ ๆ', String(stale));
+  }
+  ok(Q.postcheckGuard('AAPL', { postcheck: 'pass', flaggedAt: '2026-09-01' }, null) === null, 'postcheckGuard: ไม่รู้ startedAt (state เก่า/เทส) → นับด้วยเสมอ เหมือน S.inRound');
+  ok(Q.postcheckGuard('AAPL', { postcheck: 'pass' }, '2026-09-10') === null, 'postcheckGuard: แถวไม่มี flaggedAt เลย (ของเก่าก่อนมีฟีเจอร์รอบ) → นับด้วยเสมอ');
+  // รีวิว Task 10 F1: guard ต้องตัดสินจาก "postcheck ถูกสั่งในรอบนี้ไหม" (postcheckAt) ไม่ใช่ "flag เป็นของรอบนี้ไหม" (flaggedAt)
+  // เคสจริงที่เจอบ่อยขึ้นหลัง #26: แถวอายุสังเคราะห์คง flaggedAt เดิมไว้ ⇒ พอ flag จริงเปิดรอบใหม่ แถวนั้นหลุดรอบถาวร
+  // แต่ postcheck วันนี้ในรอบนี้จริง ๆ — เดิมยังถูกปฏิเสธ และข้อความสั่งให้ "postcheck ใหม่" ซึ่งแก้ไม่ได้ (postcheck ไม่แตะ flaggedAt) ⇒ เหลือแค่ --force
+  ok(Q.postcheckGuard('OLD', { postcheck: 'pass', flaggedAt: '2026-09-01', postcheckAt: '2026-09-05' }, '2026-09-05') === null,
+    'postcheckGuard: F1 — flaggedAt เก่ากว่ารอบ แต่ postcheckAt เป็นของรอบนี้ (≥ startedAt) → ผ่าน (postcheck สดจริง ไม่ใช่ค้าง)');
+  ok(Q.postcheckGuard('OLD', { postcheck: 'pass', flaggedAt: '2026-09-01', postcheckAt: '2026-09-08' }, '2026-09-05') === null,
+    'postcheckGuard: F1 — postcheckAt ใหม่กว่า startedAt → ผ่าน');
+  {
+    // เคสที่ #27 ตั้งใจบล็อกจริง ๆ ต้องยังถูกบล็อกเหมือนเดิม: postcheck ค้างจากรอบก่อน (postcheckAt เก่ากว่า startedAt ด้วย)
+    const stale2 = Q.postcheckGuard('OLD', { postcheck: 'pass', flaggedAt: '2026-09-01', postcheckAt: '2026-09-02' }, '2026-09-05');
+    ok(stale2 != null && /ค้างจากรอบก่อน/.test(stale2) && /--force/.test(stale2),
+      'postcheckGuard: F1 — postcheckAt เก่ากว่า startedAt ด้วย (ค้างจากรอบก่อนจริง) → ยังปฏิเสธเหมือนเดิม', String(stale2));
+  }
 }
 
 // ── 19e) parseArgs: --flag= (ค่าว่าง) ต้องล้มเหมือนไม่ใส่ค่า (C2 · carried) ──
@@ -817,7 +899,8 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   } });
   const lines = cap(() => Sh5.status());
   ok(lines.length === 10, 'status: มีแถวค้างจากรอบก่อน → เพิ่มอีก 1 บรรทัด (รวม 10)', String(lines.length));
-  ok(/^ค้างจากรอบก่อน 1: OLDPEND$/.test(lines[9]), 'status: นับเฉพาะ LIGHT/FULL ของรอบก่อนที่ยังไม่ ship และไม่ skip', lines[9]);
+  // open-item #28: ข้อความชัดขึ้น — "ยังไม่นับเป็น flag ใหม่ของรอบนี้" (ruling: ไม่แก้พฤติกรรม roundStart)
+  ok(/^ค้างจากรอบก่อน — ยังไม่นับเป็น flag ใหม่ของรอบนี้ \(1\): OLDPEND$/.test(lines[9]), 'status: นับเฉพาะ LIGHT/FULL ของรอบก่อนที่ยังไม่ ship และไม่ skip', lines[9]);
   ok(/· 0\/1$/.test(lines[0]), 'status: X/Y ยังนับเฉพาะแถวของรอบนี้ (แถวรอบก่อนไม่เข้าตัวหาร)', lines[0]);
   ok(!lines.slice(0, 9).some((l) => /OLDPEND|OLDDONE|OLDSKIP|OLDFLIP/.test(l)), 'status: แถวรอบก่อนไม่ปนเข้าบรรทัดของรอบนี้', lines.slice(0, 9).join(' | '));
   ok((lines.find((l) => /^ยังไม่เริ่ม/.test(l)) || '').includes('INROUND'), 'status: แถวของรอบนี้ยังขึ้นตามเดิม', lines.find((l) => /^ยังไม่เริ่ม/.test(l)));

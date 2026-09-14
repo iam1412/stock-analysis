@@ -424,10 +424,11 @@ function yieldLine(dps, price, yDivYieldRaw, saYield) {
  *  แต่บริษัทอาจมีงบ 8+ ปี ⇒ ต้องนับจากอาร์เรย์เต็มเสมอ ไม่งั้น `checkFyYears` จะเทียบกับเพดานพิมพ์ ไม่ใช่ความจริง
  *  TTM ไม่นับเป็น FY (ใช้ datekey ตัดออก — แนวเดียวกับ tableEpsTTM) · ไม่มีแถว EPS(dil) เลย → null (เทียบไม่ได้)
  */
-function fyEpsCount(fin) {
-  if (!fin) return null;
-  const dk = finRow(fin, ['datekey']);
-  const eps = finRow(fin, ['epsDiluted', 'epsdil']);
+/** ส่วนบริสุทธิ์ของ fyEpsCount — แยกออกมาให้ tools/median-multiples.js เรียกใช้ตัวเดียวกันได้ (open-item #32:
+ *  เดิม median-multiples.js มีลอจิกนับ FY ของตัวเอง (นับทุกคอลัมน์ที่ datekey parse ได้ ไม่สนว่ามี EPS จริงไหม)
+ *  ⇒ ขัดกับกติกานี้ (นับเฉพาะคอลัมน์ที่มี EPS(dil) จริง) ได้บนหุ้นตัวเดียวกัน — export ฟังก์ชันนี้แทนให้ทั้งสองที่
+ *  เรียกกฎเดียวกันเป๊ะ ๆ ไม่ต้องคัดลอกลอจิก (และไม่มีทางดริฟท์กันอีก) */
+function fyEpsCountFromArrays(dk, eps) {
   if (!dk || !eps) return null;
   let n = 0;
   for (let i = 0; i < eps.length; i++) {
@@ -435,6 +436,12 @@ function fyEpsCount(fin) {
     if (Number.isFinite(asNum(eps[i]))) n++;
   }
   return n;
+}
+function fyEpsCount(fin) {
+  if (!fin) return null;
+  const dk = finRow(fin, ['datekey']);
+  const eps = finRow(fin, ['epsDiluted', 'epsdil']);
+  return fyEpsCountFromArrays(dk, eps);
 }
 function printFinancialTable(pages, finErr) {
   const [fin, bs, ratio] = pages;
@@ -549,8 +556,10 @@ function forecastLine(y, sa, fc, currentFY) {
   if (!fc || !Array.isArray(fc.years) || !fc.years.length) return null;
   // พิมพ์เก่า→ใหม่ให้อ่านเป็นไทม์ไลน์ (fc.years เก็บใหม่→เก่าตามแบบตาราง [3])
   const head = '[2c] forecast (SA /forecast/): ' + fc.years.slice().reverse().map((r) => `FY${r.fy}e EPS ${fmt(r.eps)}`).join(' · ');
+  // ★ #35: asNum() คืน null เฉพาะตอน parse ไม่ได้/ไม่มีค่า (vendor ไม่ส่งมา) — ต่างจาก 0 ที่เป็นตัวเลขจริง
+  // (forward estimate จริงเป็น 0 ได้) ⇒ ห้ามเช็ค `v === 0` เป็น "ไม่มีค่า" อีกต่อไป — ใช้ sentinel `v == null` เท่านั้น
   const v = asNum(y && y.epsFwd);
-  if (!Number.isFinite(v) || v === 0) return `${head} — ไม่มี epsFwd จาก Yahoo ให้เทียบงวด (ตรวจเองว่าตัวเลข forward ที่จะใช้เป็นปีงบไหน)`;
+  if (v == null) return `${head} — ไม่มี epsFwd จาก Yahoo ให้เทียบงวด (ตรวจเองว่าตัวเลข forward ที่จะใช้เป็นปีงบไหน)`;
   let best = null;
   for (const r of fc.years) {
     const d = Math.abs(r.eps - v) / Math.abs(v);
@@ -651,6 +660,9 @@ module.exports = {
   yahooSession,
   // ตัวดึงงบรายปี — ใช้ร่วมกับ tools/median-multiples.js (ตัวคูณมัธยฐานย้อนหลัง · CLAUDE.md §8 ชั้น 0.4b)
   fetchFinPage, finRow,
+  // จำนวน FY ที่มี EPS(dil) จริง — เจ้าของเดียวของกติกานับ (open-item #7/#32): fyEpsCount ใช้กับ printFinancialTable
+  // เอง · fyEpsCountFromArrays ให้ tools/median-multiples.js เรียกตรงบนอาร์เรย์ dk/eps ที่ตัวเองดึงมาแล้ว (กัน DI ของเทสพัง)
+  fyEpsCount, fyEpsCountFromArrays,
   // ตัวพิมพ์ตาราง [3] — export ให้ test/prep-stock-test.js ยืนยันว่า SHARES_NOTE ถูกพิมพ์จริงเมื่อมีแถว shares (Task 24 · open-item #10)
   printFinancialTable,
   SHARES_LABEL, SHARES_NOTE, EPS_TABLE_PASS_PCT, EPS_TABLE_ABS_TOL, SHARES_WARN_PCT, YIELD_WARN_PP,

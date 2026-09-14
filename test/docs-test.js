@@ -59,6 +59,56 @@ ok(bad.length === 0, 'gen-docs --check: ทุกไฟล์ตรงโค้�
   ok(!!ok1, 'checkText: marker ปิดครบแต่เนื้อไม่ตรงโค้ด ต้องยังฟ้อง (sanity ของ fixture ข้างบน)', ok1 && ok1.why);
 }
 
+// (ก-5) atomicWrite: เขียนไฟล์ชั่วคราวแล้ว rename — ไฟล์เดิมต้องไม่ค้างครึ่งเดียวถ้า process ถูกขัดจังหวะกลางเขียน
+// (open-item #30 — เดิม gen-docs.js เขียนทับ TARGETS ตรง ๆ ด้วย fs.writeFileSync เฉย ๆ)
+{
+  const os = require('os');
+  const { atomicWrite } = require('../tools/gen-docs.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'gen-docs-atomic-'));
+  const target = path.join(dir, 'target.md');
+
+  // ปกติ: เขียนสำเร็จ → เนื้อไฟล์เปลี่ยนจริง และไม่มีไฟล์ .tmp ค้างเหลือ
+  fs.writeFileSync(target, 'ORIGINAL-1');
+  atomicWrite(target, 'NEW-CONTENT');
+  ok(fs.readFileSync(target, 'utf8') === 'NEW-CONTENT', 'atomicWrite: เขียนสำเร็จ → เนื้อไฟล์เปลี่ยนจริง');
+  ok(fs.readdirSync(dir).length === 1, 'atomicWrite: เขียนสำเร็จ → ไม่มีไฟล์ .tmp ค้างเหลือ', fs.readdirSync(dir).join(' '));
+
+  // จำลอง process ถูกขัดจังหวะกลางเขียนไฟล์ชั่วคราว (kill/crash) — ไฟล์เดิมต้องไม่ถูกแตะเลย ไม่ค้างครึ่งเดียว
+  fs.writeFileSync(target, 'ORIGINAL-2');
+  const origWrite = fs.writeFileSync;
+  fs.writeFileSync = (p, ...rest) => {
+    if (String(p) !== target) throw new Error('จำลอง process ถูกฆ่ากลางเขียนไฟล์ชั่วคราว');
+    return origWrite(p, ...rest);
+  };
+  let threw = null;
+  try { atomicWrite(target, 'WOULD-BE-PARTIAL'); } catch (e) { threw = e.message; }
+  fs.writeFileSync = origWrite;
+  ok(!!threw, 'atomicWrite: ขัดจังหวะกลางเขียน tmp → throw ออกมาจริง (ไม่กลืนเงียบ)', String(threw));
+  ok(fs.readFileSync(target, 'utf8') === 'ORIGINAL-2', 'atomicWrite: open-item #30 — ไฟล์เดิมไม่ถูกแตะเลยเมื่อขัดจังหวะกลางเขียน (ไม่ค้างครึ่งเดียว)', fs.readFileSync(target, 'utf8'));
+
+  // รีวิว Task 10 F2: ไฟล์เป้าหมายหนึ่งใน TARGETS คือ `.githooks/pre-push` ซึ่งเป็น mode 100755 —
+  // writeFileSync(tmp) + renameSync ไม่คัดลอก mode เดิม ⇒ hook กลายเป็น 0644 แล้ว git เลิกรันโดยไม่เตือน
+  {
+    const exec = path.join(dir, 'hook.sh');
+    fs.writeFileSync(exec, '#!/bin/sh\necho old\n');
+    fs.chmodSync(exec, 0o755);
+    atomicWrite(exec, '#!/bin/sh\necho new\n');
+    const mode = fs.statSync(exec).mode & 0o777;
+    ok(mode === 0o755, 'atomicWrite: F2 — คง exec bit ของไฟล์เดิม (0755) ไว้หลัง rename (กัน .githooks/pre-push ตายเงียบ)', mode.toString(8));
+    ok(fs.readFileSync(exec, 'utf8').includes('echo new'), 'atomicWrite: F2 — เนื้อไฟล์ exec ยังถูกเขียนจริง');
+    fs.rmSync(exec);
+  }
+  // ไฟล์ใหม่ (ยังไม่มีของเดิม) ต้องเขียนได้ ไม่ throw จาก statSync
+  {
+    const fresh = path.join(dir, 'fresh.md');
+    atomicWrite(fresh, 'BRAND-NEW');
+    ok(fs.readFileSync(fresh, 'utf8') === 'BRAND-NEW', 'atomicWrite: F2 — ไฟล์ปลายทางยังไม่มี → เขียนได้ตามปกติ (ไม่ throw จาก statSync)');
+    fs.rmSync(fresh);
+  }
+
+  fs.rmSync(dir, { recursive: true, force: true });
+}
+
 // (ข) วลีที่ยกเลิกแล้ว (phase0-exit §3 11 วลี + ระยะ 1) — hit = กฎเก่าหลุดกลับมา
 const FORBIDDEN = [
   /\bsequential\b(?!.*tags\.json)/i, /เวฟ ≤3/, /Sonnet เป็น default ทุกชั้น/, /ห้าม controller\/worker เรียก advisor ตรง/, /ไม่มี Opus แล้ว/,
