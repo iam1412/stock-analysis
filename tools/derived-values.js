@@ -1051,7 +1051,7 @@ module.exports = {
   SUMMARY_RE, readSummaryCell, fmtMos, MOS_BIG_RE, readMosBig, SUMMARY_CANON_RE, summaryPlan,
   // หมวด 6 (ผลตอบแทนฉาก 3 ปี) — W17 + ตัวซ่อม
   TOL_RET_PP, TOL_RET_REL, TOL_PY_PP, SCN_TIGHT, SCN_VOTE_RATIO, CONV_PP,
-  SCN_COL_OPEN, scenarioColumns, scenarioBlock, scenarioPlan, retTokens, retOff, pyOff, retWrite, retShown,
+  SCN_COL_OPEN, SCN_PERYEAR_AFTER, scenarioColumns, scenarioBlock, scenarioPlan, retTokens, retOff, pyOff, retWrite, retShown,
   // สมอตายวนกลับ — W18 + tools/spotcheck.js
   DA_GAP, DA_ANCHORED, deadAnchor,
   // ปันผล % + P/BV — W19/W20 + ตัวซ่อม

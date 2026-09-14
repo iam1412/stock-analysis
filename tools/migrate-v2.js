@@ -282,7 +282,14 @@ const SCN_RET_TEXT_RE = /<div class="ret[^"]*">([\s\S]*?)<\/div>/g;
 //   ⇒ เครื่องหมายเป็นทางเลือก · `~`/`≈` อยู่นอกกลุ่มตัวเลข (ไม่ให้ parse พัง) · ยอมช่องว่างรอบ "/" เหมือน PY_UNIT_RE
 //   ★ `~`/`≈` ถูก **ตัดทิ้งก่อน parse** (ไม่อยู่ในรูปที่ match เลย) — ไม่งั้น "≈ +8.9%/ปี" กับ "+8.9%/ปี" จะนับเป็น
 //     "ข้อความเปลี่ยน" ทั้งที่ตัวเลขเท่าเดิม (การหาย/งอกของ ~ เป็นคนละเรื่อง — อยู่ใน maskText/หัวข้อ "~" ของสำมะโน)
-const PY_CELL_RE = /([+\-−]?\s*\d[\d.,]*)\s*%\s*\/\s*ปี/;
+// ★ ระยะ 3 Task 3 — หน่วย "ต่อปี" ที่ผู้เขียนใช้จริงมีหลายรูป ไม่ใช่ "%/ปี" อย่างเดียว (นับทั้งคลัง 15 ก.ย. 69:
+//   "%/ปี" 4266 · "% ต่อปี" 122 · "%/yr" 23 · "%ต่อปี" 21 · "% / ปี" 15) ⇒ ทั้งตัวเปิดเผย (pyCell) และยามนับหน่วย
+//   (pyUnitCount) ต้องอ่าน **หน่วยเดียวกับเจ้าของ** คือ `DV.SCN_PERYEAR_AFTER` (ตัวที่ scenarioPlan ใช้ตัดสินว่า %
+//   ก้อนนั้นเป็นต่อปีไหม) — ไม่ใช่สำเนาที่รู้จักแค่รูปเดียว ไม่งั้นใบที่เขียน "−23% ต่อปี" จะถูกอ่านว่า "ไม่มี %/ปี"
+//   ทั้งที่มี (RS/JMT/SCGD/SNNP ตกยามนับเพราะเหตุนี้ ทั้งที่ v2 ไม่ได้งอก/หายหน่วยจริง)
+//   ★ ต่อสายจาก `.source` ของเจ้าของโดยตรง (ตัด `^` ที่ใช้ยึดหัวออก) — เจ้าของเปลี่ยนรูป ตัวนี้ตามทันทีไม่ต้องแก้สองที่
+const PY_AFTER_SRC = DV.SCN_PERYEAR_AFTER.source.replace(/^\^/, '');
+const PY_CELL_RE = new RegExp(`([+\\-−]?\\s*\\d[\\d.,]*)\\s*%(?:${PY_AFTER_SRC})`, 'i');
 /**
  * อ่านตัวเลข "%/ปี" ตัวแรกของข้อความช่อง .ret — คืนทั้ง **รูปที่โชว์** (dec) และค่าที่ parse ได้
  * @returns {{text:string, num:number, dec:number}|null} null = ไม่มี %/ปี ในช่องนั้นจริง ๆ (ไม่ใช่ "อ่านไม่ออก")
@@ -319,20 +326,32 @@ function scnPyDiffs(exp0, exp1) {
 }
 
 // ── ยามโครงสร้าง %/ปี ของหมวด 6 (review final wave 2 — จุดบอดที่การขุด item 2 เจอ) ─────────
-// ★ นับ "หน่วย" %/ปี เท่านั้น (ไม่ใช่รูปเลขมีเครื่องหมายแบบ PY_CELL_RE ข้างบน) — สโคปเฉพาะหมวด 6 (DV.scenarioBlock.sec)
-//   เพราะ "%/ปี" โผล่ในบล็อกนี้ได้หลายที่ที่ไม่ใช่ .ret (เช่น "EPS +10%/ปี" ในสมมติฐานต่อคอลัมน์ · "~-2.2%/ปี" มี "~"
+// ★ นับ "หน่วย" ต่อปี เท่านั้น (ไม่ใช่รูปเลขมีเครื่องหมายแบบ PY_CELL_RE ข้างบน) — สโคปเฉพาะหมวด 6 (DV.scenarioBlock.sec)
+//   เพราะหน่วยนี้โผล่ในบล็อกนี้ได้หลายที่ที่ไม่ใช่ .ret (เช่น "EPS +10%/ปี" ในสมมติฐานต่อคอลัมน์ · "~-2.2%/ปี" มี "~"
 //   นำหน้าไม่ใช่เครื่องหมาย +/-) — เดิม (item 2) ใช้ PY_CELL_RE ซึ่งพลาดรูปพวกนี้ไปเงียบ ๆ (พิสูจน์: AMATA "~-2.2%/ปี")
-//   ⇒ ถ้านับด้วยรูปเลขมีเครื่องหมาย จะไม่เห็นว่า 5 ใบ "งอก/หาย" ตัวเลขทั้งจุด (JMT 4→7 · RS 0→3 ฯลฯ) เพราะ noise เท่ากับ signal
-const PY_UNIT_RE = /%\s*\/\s*ปี/g;
+//   ⇒ ถ้านับด้วยรูปเลขมีเครื่องหมาย จะไม่เห็นว่าใบไหน "งอก/หาย" ตัวเลขทั้งจุด เพราะ noise เท่ากับ signal
+// ★ ระยะ 3 Task 3 — สิ่งที่นับต้องเป็น **หน่วย** ไม่ใช่ **การสะกดหน่วย**: เดิมนับเฉพาะ `%/ปี` ⇒ ใบที่ผู้เขียนสะกด
+//   "−23% ต่อปี" ถูกอ่านว่า "ไม่มีหน่วยต่อปี" แล้ว v2 (ซึ่ง render หน่วยเดียวเสมอ) ดูเหมือน "งอก" หน่วยขึ้นมา
+//   ทั้งที่จำนวนจุดต่อปีที่คนเห็นเท่าเดิมเป๊ะ (RS 0→3 · JMT 4→7 · SCGD/SNNP 3→6 = false positive ล้วน)
+//   ⇒ ใช้ `DV.SCN_PERYEAR_AFTER` เจ้าของนิยาม "ต่อปี" ตัวเดียวกับที่ scenarioPlan ใช้ ⇒ ยามเห็นเท่าที่ตัวย้ายเห็น
+//   ★ ยามยังมีฟัน: ACN (v1 4 → v2 3) ยังตกอยู่ เพราะช่อง .ret เขียน "รวม ~ −14% (+ปันผล ~5%/ปี)" ซึ่ง v2 render
+//     เป็น "−14%" เปล่า ⇒ หน่วยต่อปีหายจริง 1 จุด (คำอธิบายปันผลหายไปกับมันด้วย)
+const PY_UNIT_RE = /%/g;
+/** จำนวน "หน่วยต่อปี" ในข้อความหนึ่ง — ทุกรูปที่เจ้าของ (DV.SCN_PERYEAR_AFTER) รับว่าเป็นต่อปี นับเท่ากันหมด */
+function pyUnitCount(text) {
+  const s = String(text == null ? '' : text);
+  let n = 0;
+  for (const m of s.matchAll(PY_UNIT_RE)) if (DV.SCN_PERYEAR_AFTER.test(s.slice(m.index + 1, m.index + 16))) n++;
+  return n;
+}
 /**
- * เทียบ "จำนวน" หน่วย %/ปี ในหมวด 6 ระหว่าง expand(v1) กับ expand(v2) — เป็นยามปฏิเสธ ไม่ใช่ tolerance ของค่า
+ * เทียบ "จำนวน" หน่วยต่อปีในหมวด 6 ระหว่าง expand(v1) กับ expand(v2) — เป็นยามปฏิเสธ ไม่ใช่ tolerance ของค่า
  * @returns {string|null} เหตุผลปฏิเสธ (เมื่อจำนวนต่างกัน) หรือ null (เท่ากัน/อ่านหมวด 6 ไม่ได้ฝั่งใดฝั่งหนึ่ง — ไม่ตัดสิน)
  */
 function scnPyCountGuard(exp0, exp1) {
   const b0 = DV.scenarioBlock(exp0), b1 = DV.scenarioBlock(exp1);
   if (!b0 || !b1) return null;                    // อ่านไม่ได้ = ไม่ประดิษฐ์การเทียบ ปล่อยพฤติกรรมเดิม (ให้ชั้นอื่นตัดสิน)
-  const c0 = (b0.sec.match(PY_UNIT_RE) || []).length;
-  const c1 = (b1.sec.match(PY_UNIT_RE) || []).length;
+  const c0 = pyUnitCount(b0.sec), c1 = pyUnitCount(b1.sec);
   return c0 === c1 ? null : `จำนวนช่อง %/ปี ไม่เท่าเดิม (v1 ${c0} → v2 ${c1})`;
 }
 
@@ -1840,7 +1859,7 @@ function siteHits(html, site) {
 
 module.exports = {
   SITE_RE, siteHits,
-  migrateOne, extractValues, tokenise, buildRd, verifyPair, checkStripped, sameMoney, scnPyDiffs, scnPyCountGuard, pyCell, main, noteTailOf, tailHitsOtherSite, HINT_NOTE_TAIL_RE,
+  migrateOne, extractValues, tokenise, buildRd, verifyPair, checkStripped, sameMoney, scnPyDiffs, scnPyCountGuard, pyCell, pyUnitCount, main, noteTailOf, tailHitsOtherSite, HINT_NOTE_TAIL_RE,
   cronDiff, cronGate, CRON_GRID, CRON_META_KEYS, sameMetaForm, cronDateParts, visibleCronDiff, pyExplained, planWrite, summarizeCronDiff, unitForm,
   failSide, cronDiffReason, exitCode, ALREADY_V2,
   COPY_FIELDS, REQUIRED_SITES, TOLERANCE, GAP_REL, renderCensusMd, mergeCensus,
