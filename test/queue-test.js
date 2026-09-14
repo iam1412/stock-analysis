@@ -189,6 +189,38 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   ok(synDefault.join(',') === 'FLAGGED,OLD1,OLD2,OLD4,OLD5' && !synDefault.includes('OLD3'), 'plan: ตัวที่ถูกตัดคือใบอ่อนสุด (OLD3 95d)', synDefault.join(','));
 }
 
+// ── 6c) preflight: plan — แถวอายุสังเคราะห์ (synthetic) ต้อง "ต่อเนื่อง" flaggedAt ข้ามวัน (open-item #26) ──
+//   เดิม plan() ตั้ง flaggedAt: today ให้แถวสังเคราะห์ทุกครั้งไม่ว่าจะเคยเจอมาก่อนหรือไม่ ⇒ preflight ที่รันคนละวัน
+//   ในรอบเดียวกัน (ยังไม่ ship) จะได้ flaggedAt ใหม่ทุกวัน ⇒ isNewFlag() เห็นว่า flag "เปลี่ยน" ⇒ upsertRow ล้าง
+//   model/prepAt/postcheck ของรอบเดิมทิ้งทั้งที่ยังไม่มีอะไรเปลี่ยนจริง — กู้คืนได้ด้วย prep <SYM>/--model มือเท่านั้น
+{
+  const P = require('../tools/queue/preflight.js');
+  const ages = { OLD: 200 };
+  const opts = (priorStocks) => ({ ageLimit: 5, listReports: () => Object.keys(ages), footerAgeOf: (s) => ages[s], priorStocks });
+
+  // วันแรก: ยังไม่เคยมีสถานะของ OLD ⇒ flaggedAt = วันนี้
+  const day1 = P.plan([], '2026-09-01', opts({}));
+  const rowDay1 = day1.find((r) => r.symbol === 'OLD');
+  ok(rowDay1 && rowDay1.flaggedAt === '2026-09-01', 'plan: แถวอายุครั้งแรก → flaggedAt = วันนี้', JSON.stringify(rowDay1));
+
+  // จำลองว่า prep แล้ว (model/prepAt ถูกเขียนไว้จริง) แต่ยังไม่ ship
+  const stocks = { OLD: P.upsertRow(undefined, rowDay1) };
+  stocks.OLD.model = 'sonnet'; stocks.OLD.prepAt = '2026-09-01';
+
+  // วันถัดมา: preflight รันซ้ำในรอบเดียวกัน (OLD ยังไม่ ship) → flaggedAt ต้องคงเดิม ไม่ใช่วันนี้
+  const day2 = P.plan([], '2026-09-02', opts(stocks));
+  const rowDay2 = day2.find((r) => r.symbol === 'OLD');
+  ok(rowDay2 && rowDay2.flaggedAt === '2026-09-01', 'plan: open-item #26 — แถวอายุยังไม่ ship รันข้ามวัน → flaggedAt คงเดิม (ต่อเนื่อง ไม่ใช่วันนี้)', JSON.stringify(rowDay2));
+  const merged = P.upsertRow(stocks.OLD, rowDay2);
+  ok(merged.model === 'sonnet' && merged.prepAt === '2026-09-01', 'plan+upsertRow: open-item #26 — model/prepAt ของรอบเดิมไม่ถูกล้างทั้งที่ preflight รันข้ามวัน', JSON.stringify(merged));
+
+  // หลัง ship แล้ว (shippedAt ติดมา) แต่ ageQueue ยังคืนตัวนี้อีก (ship ล้ม/footer ยังไม่ขยับ) → ต้องถือเป็นรอบใหม่จริง (flaggedAt = วันนี้)
+  const shippedStocks = { OLD: { ...merged, shippedAt: '2026-09-02' } };
+  const day3 = P.plan([], '2026-09-03', opts(shippedStocks));
+  const rowDay3 = day3.find((r) => r.symbol === 'OLD');
+  ok(rowDay3 && rowDay3.flaggedAt === '2026-09-03', 'plan: แถวอายุที่เคย ship ไปแล้วแต่ยังโผล่ใน ageQueue อีก → flaggedAt = วันนี้ (รอบใหม่จริง ไม่ใช่ของค้าง)', JSON.stringify(rowDay3));
+}
+
 // ── 7) prep (ส่วนบริสุทธิ์): parseVendor · snapshotDiff · assemblePrompt · hardStock ──
 {
   const Pp = require('../tools/queue/prep.js');
@@ -740,6 +772,18 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
     try { Q.resolveModel('AAPL', rec, over); } catch (e) { threw = e.message; }
     ok(/^AAPL: โมเดล "haiku" ไม่รู้จัก \(ใช้ sonnet\|opus\)$/.test(threw || ''), `resolveModel: ${label} → ปฏิเสธด้วยชื่อโมเดลที่พิมพ์ผิด (ไม่ใช่ "ไม่มี model ใน state")`, String(threw));
   }
+
+  // open-item #27: guard postcheck ของ shipStock ต้องผูกกับขอบเขตรอบ (roundStart) — postcheck:'pass' ที่ค้างจาก
+  // รอบก่อน (flaggedAt เก่ากว่า startedAt ของรอบนี้) ต้องไม่พา ship <SYM> commit ได้โดยไม่สั่ง postcheck ใหม่
+  ok(Q.postcheckGuard('AAPL', { postcheck: null }, '2026-09-10') != null, 'postcheckGuard: ไม่เคย postcheck → ปฏิเสธ');
+  ok(Q.postcheckGuard('AAPL', { postcheck: 'review' }, '2026-09-10') != null, 'postcheckGuard: postcheck=review → ปฏิเสธ');
+  ok(Q.postcheckGuard('AAPL', { postcheck: 'pass', flaggedAt: '2026-09-12' }, '2026-09-10') === null, 'postcheckGuard: postcheck=pass ของรอบนี้ (flaggedAt ≥ startedAt) → ผ่าน');
+  {
+    const stale = Q.postcheckGuard('AAPL', { postcheck: 'pass', flaggedAt: '2026-09-01' }, '2026-09-10');
+    ok(stale != null && /ค้างจากรอบก่อน/.test(stale) && /postcheck ผ่านแล้ว/.test(stale) && /--force/.test(stale), 'postcheckGuard: open-item #27 — postcheck=pass แต่ flaggedAt เก่ากว่า startedAt (ค้างจากรอบก่อน) → ปฏิเสธ ไม่ใช่ผ่านเงียบ ๆ', String(stale));
+  }
+  ok(Q.postcheckGuard('AAPL', { postcheck: 'pass', flaggedAt: '2026-09-01' }, null) === null, 'postcheckGuard: ไม่รู้ startedAt (state เก่า/เทส) → นับด้วยเสมอ เหมือน S.inRound');
+  ok(Q.postcheckGuard('AAPL', { postcheck: 'pass' }, '2026-09-10') === null, 'postcheckGuard: แถวไม่มี flaggedAt เลย (ของเก่าก่อนมีฟีเจอร์รอบ) → นับด้วยเสมอ');
 }
 
 // ── 19e) parseArgs: --flag= (ค่าว่าง) ต้องล้มเหมือนไม่ใส่ค่า (C2 · carried) ──
@@ -842,7 +886,8 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   } });
   const lines = cap(() => Sh5.status());
   ok(lines.length === 10, 'status: มีแถวค้างจากรอบก่อน → เพิ่มอีก 1 บรรทัด (รวม 10)', String(lines.length));
-  ok(/^ค้างจากรอบก่อน 1: OLDPEND$/.test(lines[9]), 'status: นับเฉพาะ LIGHT/FULL ของรอบก่อนที่ยังไม่ ship และไม่ skip', lines[9]);
+  // open-item #28: ข้อความชัดขึ้น — "ยังไม่นับเป็น flag ใหม่ของรอบนี้" (ruling: ไม่แก้พฤติกรรม roundStart)
+  ok(/^ค้างจากรอบก่อน — ยังไม่นับเป็น flag ใหม่ของรอบนี้ \(1\): OLDPEND$/.test(lines[9]), 'status: นับเฉพาะ LIGHT/FULL ของรอบก่อนที่ยังไม่ ship และไม่ skip', lines[9]);
   ok(/· 0\/1$/.test(lines[0]), 'status: X/Y ยังนับเฉพาะแถวของรอบนี้ (แถวรอบก่อนไม่เข้าตัวหาร)', lines[0]);
   ok(!lines.slice(0, 9).some((l) => /OLDPEND|OLDDONE|OLDSKIP|OLDFLIP/.test(l)), 'status: แถวรอบก่อนไม่ปนเข้าบรรทัดของรอบนี้', lines.slice(0, 9).join(' | '));
   ok((lines.find((l) => /^ยังไม่เริ่ม/.test(l)) || '').includes('INROUND'), 'status: แถวของรอบนี้ยังขึ้นตามเดิม', lines.find((l) => /^ยังไม่เริ่ม/.test(l)));

@@ -81,10 +81,23 @@ function pushOrExplain(sym) {
   }
 }
 
+/** open-item #27: guard postcheck ของ shipStock เดิมดู `rec.postcheck === 'pass'` เฉยๆ ไม่ผูกกับขอบเขตรอบ (roundStart)
+ *  ⇒ postcheck ที่ผ่านไปตั้งแต่รอบก่อน (แถวยังไม่ทันถูก ship ตอนนั้น แล้วรอบใหม่มาเปิด startedAt ทับไปโดยแถวนี้ยัง
+ *  ไม่ถูกแตะ) จะยังพา `ship <SYM>` commit ได้ทันทีโดยไม่ต้องสั่ง postcheck ใหม่ — ทั้งที่ตัว state ก็มีกลไก `S.inRound`
+ *  อยู่แล้ว (ใช้ใน status()/closeIssueIfNoLlmRows()) แต่ shipStock ไม่เคยเรียก
+ *  คืน `null` = ผ่าน · string = เหตุผลที่ปฏิเสธ (แยกเป็นฟังก์ชันบริสุทธิ์ให้เทสยิงได้โดยไม่ต้องพึ่ง S.load()/git จริง) */
+function postcheckGuard(sym, rec, startedAt) {
+  if (rec.postcheck !== 'pass') return `${sym}: postcheck ยังไม่ผ่าน (${rec.postcheck || 'ยังไม่รัน'}) — รัน npm run queue -- postcheck ${sym} ก่อน หรือ --force ถ้ารีวิวเองแล้ว`;
+  if (!S.inRound(rec, startedAt)) return `${sym}: postcheck ผ่านแล้วแต่ค้างจากรอบก่อน (flaggedAt ${rec.flaggedAt || '?'} เก่ากว่าที่รอบนี้เริ่ม ${startedAt}) — ยังไม่นับเป็น postcheck ของรอบนี้ รัน npm run queue -- postcheck ${sym} ใหม่ หรือ --force ถ้ารีวิวเองแล้ว`;
+  return null;
+}
+
 function shipStock(sym, opts) {
   const o = opts || {};
-  const rec = S.load().stocks[sym] || {};
-  if (rec.postcheck !== 'pass' && !o.force) throw new Error(`${sym}: postcheck ยังไม่ผ่าน (${rec.postcheck || 'ยังไม่รัน'}) — รัน npm run queue -- postcheck ${sym} ก่อน หรือ --force ถ้ารีวิวเองแล้ว`);
+  const st = S.load();
+  const rec = st.stocks[sym] || {};
+  const guardErr = postcheckGuard(sym, rec, st.startedAt);
+  if (guardErr && !o.force) throw new Error(guardErr);
   const model = resolveModel(sym, rec, o.model);   // ก่อน verify/keepDates เสมอ — ล้มตรงนี้ราคาถูกที่สุด (C1)
   if (o.tags) must('node', ['tools/tag-apply.js', sym, ...o.tags.split(/\s+/).filter(Boolean)], 'tag-apply');
   verify();
@@ -244,7 +257,8 @@ function status() {
   console.log(`ไม่ใช้ agent/ข้าม ${other.length}: ${other.join(' ') || '-'}`);
   console.log(`pre-patch อย่างเดียว (ไม่ส่ง LLM) ${prepatchOnly.length}: ${prepatchOnly.map(([k, r]) => k + (r.prepatchShippedAt ? '✓' : '')).join(' ') || '-'}`);
   console.log(`pre-patch push แล้ว ${prepatchShipped.length}: ${prepatchShipped.join(' ') || '-'}`);
-  if (stale.length) console.log(`ค้างจากรอบก่อน ${stale.length}: ${stale.join(' ')}`);
+  // open-item #28 (ruling: ไม่แก้พฤติกรรมของ roundStart — เปลี่ยนแค่ข้อความให้ชัดว่าทำไมแถวพวกนี้ไม่ถูกนับเป็นรอบนี้)
+  if (stale.length) console.log(`ค้างจากรอบก่อน — ยังไม่นับเป็น flag ใหม่ของรอบนี้ (${stale.length}): ${stale.join(' ')}`);
 }
 
-module.exports = { shipStock, shipPrepatch, status, commitMessage, commitArgs, trailer, resolveModel, closeIssueIfEmpty, closeIssueIfNoLlmRows, prepatchBlockers, prepatchCandidates, parsePorcelain, pendingCommitFor, STOCK_FILES, TITLE };
+module.exports = { shipStock, shipPrepatch, status, commitMessage, commitArgs, trailer, resolveModel, closeIssueIfEmpty, closeIssueIfNoLlmRows, prepatchBlockers, prepatchCandidates, parsePorcelain, pendingCommitFor, postcheckGuard, STOCK_FILES, TITLE };
