@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 16.5,
+  "values": {
+    "px": 14.7,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 15,
+    "fvHigh": 18.14,
+    "eps": 1,
+    "dps": 0.21,
+    "bvps": 3.14,
+    "baseEps": 1,
+    "scenarios": [
+      {
+        "tgt": 8.57,
+        "div": 0.44
+      },
+      {
+        "tgt": 19.97,
+        "div": 0.69
+      },
+      {
+        "tgt": 34.56,
+        "div": 0.82
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#00796b",
     "accentDark": "#004d40",
@@ -41,17 +74,13 @@
     "min": 5,
     "max": 20,
     "grid": [10, 15],
-    "fairLine": 16.5,
     "currency": "฿",
     "highlight": [2, 9]
   },
   "gauge": {
     "min": 5,
-    "max": 22,
-    "cur": 14.7,
-    "fair": 16.5
-  },
-  "fv": 16.5
+    "max": 22
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -71,11 +100,11 @@
     <div class="sub">ตู้เต่าบิน BOYA · GINKA EV Charger · ระบบสื่อสาร/IoT &amp; Enterprise Solutions · SOLARTA โซลาร์ · Electronic Manufacturing Services (EMS) · ขยาย ASEAN</div>
     <div class="price-row">
       <div>
-        <div class="px">฿14.70<small>(FORTH)</small></div>
+        <div class="px">{{rd:px}}<small>(FORTH)</small></div>
       </div>
-      <div class="chg">▲ +113.0% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿5.45 – ฿18.90<br>
         ที่มา: Yahoo Finance, Investing.com, StockAnalysis
       </div>
@@ -89,7 +118,7 @@
       <div class="metric"><div class="k">Market Cap</div><div class="v">฿14,404 ล.</div><div class="d">หุ้น 935 ล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~14.70x</div><div class="d">EPS TTM ฿1.00 · Sector avg ~15x</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~15–18x</div><div class="d">ช่วง 2564–2568 (ประมาณ)</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">4.68x</div><div class="d">BVPS ฿3.14 · ROE สูง 31%</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ฿3.14 · ROE สูง 31%</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿823.7 ล.</div><div class="d">+273% YoY (vs ฿221 ล. ปี 2567)</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿1.00</div><div class="d">FY2568 ฿0.88 · +267% YoY</div></div>
@@ -112,7 +141,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#00796b"></i>ราคา FORTH</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿16.50</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -142,8 +171,8 @@
         <div class="mval">฿18.14</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿15.00 – ฿18.14</span></div>
-        <div class="r">฿16.50</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/E ให้ค่าต่ำสุด ฿15.00 (conservative — ใช้ P/E 15x) สะท้อนว่าราคาปัจจุบัน ฿17.00 ตึงตัวกว่าค่าประเมินฝั่งอนุรักษ์นิยมแล้ว ·
@@ -159,15 +188,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿14.70</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿16.50</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿11.55<br><small>MOS 30%</small></span>
-          <span>฿13.20<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿16.50<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">฿17.00<br><small>ปัจจุบัน</small></span>
-          <span style="text-align:right">฿18.14<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -184,19 +213,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+11%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS ต่ำ — ราคาใกล้ Fair Value · รอโอกาสย่อดีกว่า</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿13.20</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿11.55</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿16.50</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="14.7" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -205,17 +234,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿14.70 • EPS ฐาน ~฿1.00 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿8.57</div>
-          <div class="ret neg">−38.7% (3 ปี) / −15.1%/ปี</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.86</span></li>
             <li><span>P/E ออก</span><span>10x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.44</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>Enterprise backlog ไม่ต่อเนื่อง · NPL พุ่ง · EV ล่าช้า</span></li>
           </ul>
         </div>
@@ -223,12 +252,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +10%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿19.97</div>
-          <div class="ret pos">+40.5% (3 ปี) / +12.0%/ปี</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿1.33</span></li>
             <li><span>P/E ออก</span><span>15x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.69</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>Enterprise backlog ต่อเนื่อง · GINKA EV โต · FSMART ขยาย</span></li>
           </ul>
         </div>
@@ -236,12 +265,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +20%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿34.56</div>
-          <div class="ret pos">+140.7% (3 ปี) / +34.0%/ปี</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿1.73</span></li>
             <li><span>P/E ออก</span><span>20x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.82</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>EV Charger 50,000+ จุด · BOYA IPO · ASEAN ขยายเต็มสูบ</span></li>
           </ul>
         </div>
@@ -293,8 +322,8 @@
       <h2>ราคาแตะ Fair Value แล้ว · รอจังหวะย่อก่อนสะสม</h2>
       <p>FORTH เป็นกลุ่มธุรกิจ Tech/IoT ไทยที่หลากหลาย ครอบคลุมตั้งแต่ตู้ขายสินค้าอัตโนมัติ (BOYA/เต่าบิน), EV Charger (GINKA), ระบบสื่อสาร IoT ภาครัฐ, จนถึง EMS และ Fintech (FSMART บุญเติม) · ปี 2568 เป็นปีที่ยอดเยี่ยมผิดปกติ กำไรโต +273% จาก Enterprise Backlog ขนาดใหญ่ ซึ่งตลาดรับรู้แล้วผ่านการ re-rating ราคาจาก ฿5–7 สู่ ฿17+ · Fair Value เฉลี่ย 3 วิธีอยู่ที่ ฿16.50 หมายความว่าราคาปัจจุบัน ฿17.00 มี MOS ติดลบเล็กน้อย ~-3% ซึ่งไม่เหลือส่วนเผื่อความปลอดภัยสำหรับ value investor ทั่วไป · <b>กลยุทธ์ที่ดีคือ รอย่อมา ฿13–14 (MOS 15–20%) แล้วสะสม</b> หรือถือรอถ้ามั่นใจใน New S-curve (EV/BOYA IPO)</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿16.50 <span style="font-size:12px;color:#cab9a8">(฿15.00–฿18.14)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +11%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿10.90 (Yuanta — เป้าเก่า ก่อน rally)</div></div>
       </div>
       <div class="zone">

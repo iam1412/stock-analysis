@@ -10,6 +10,19 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 4.72,
+  "values": {
+    "px": 3.92,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 4.16,
+    "fvHigh": 5.23,
+    "shares": 700000000,
+    "dps": 0.32,
+    "bvps": 3.15
+  },
   "theme": {
     "accent": "#1976d2",
     "accentDark": "#0d47a1",
@@ -41,7 +54,6 @@
     "min": 2.5,
     "max": 5,
     "grid": [3, 3.5, 4, 4.5],
-    "fairLine": 4.72,
     "currency": "฿",
     "highlight": [0, 9],
     "gridFmt": "v.toFixed(2)",
@@ -50,11 +62,8 @@
   "gauge": {
     "min": 3.2,
     "max": 5.4,
-    "cur": 3.92,
-    "fair": 4.72,
     "fairLabelTop": false
-  },
-  "fv": 4.72
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +83,11 @@
     <div class="sub">IT Services ครบวงจร · SAP &amp; Oracle Implementation · Cybersecurity · Cloud &amp; Data Platform · AI/Digital Transformation สำหรับองค์กรขนาดใหญ่</div>
     <div class="price-row">
       <div>
-        <div class="px">฿3.92<small>(GABLE)</small></div>
+        <div class="px">{{rd:px}}<small>(GABLE)</small></div>
       </div>
-      <div class="chg">▲ +36.1% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿2.88 – ฿4.44<br>
         ที่มา: SET Factsheet, StockAnalysis.com, Yahoo Finance, G-Able IR
       </div>
@@ -92,7 +101,7 @@
       <div class="metric"><div class="k">Market Cap</div><div class="v">฿2,744 ล้าน</div><div class="d">700.0 ล้านหุ้น · free float 200.4 ล้านหุ้น (28.6%)</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~7.2x</div><div class="d">กลุ่ม IT ไทย: MFEC 9.5x · ITNS 9.4x · BBIK 12.1x · NETBAY 12.6x</div></div>
       <div class="metric"><div class="k">P/E มัธยฐานปิดปี</div><div class="v">~8.9x</div><div class="d">มีแค่ 3 จุดตั้งแต่ IPO: FY2566 12.2x · FY2567 8.9x · FY2568 7.8x</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.24x</div><div class="d">BVPS ฿3.15 (30 มิ.ย. 2569) · มัธยฐานปิดปีเอง 1.03x</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ฿3.15 (30 มิ.ย. 2569) · มัธยฐานปิดปีเอง 1.03x</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">฿383 ล้าน</div><div class="d">+64.8% YoY (ปีก่อนช่วงเดียวกัน ฿233 ล้าน)</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">฿0.55</div><div class="d">฿383 ล้าน ÷ 700 ล้านหุ้น · ประมาณการล่วงหน้า ~฿0.48</div></div>
@@ -101,7 +110,7 @@
 
       <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿6,526 ล้าน</div><div class="d">+10.4% YoY · FY2568: ฿6,237 ล้าน</div></div>
       <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v neg">20.3% TTM</div><div class="d">ครึ่งปีแรก 2569 เหลือ 18.3% · Q2 17.3% — ต่ำกว่าเป้าบริษัท 20–21%</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">8.2%</div><div class="d">฿0.32/หุ้น (TTM) · payout 58% · XD ล่าสุด 30 เม.ย. 2569</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">{{rd:yield}}</div><div class="d">฿0.32/หุ้น (TTM) · payout 58% · XD ล่าสุด 30 เม.ย. 2569</div></div>
       <div class="metric"><div class="k">Backlog</div><div class="v">฿7,318 ล้าน</div><div class="d">นิวไฮ ณ สิ้น Q2/2569 (+12% YoY) — เป้าทั้งปี ฿6,500–7,500 ล้าน</div></div>
     </div>
   </section>
@@ -115,7 +124,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1976d2"></i>ราคา GABLE</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿4.72</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -145,8 +154,8 @@
         <div class="mval">฿4.73</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿4.16 – ฿5.23</span></div>
-        <div class="r">฿4.72</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>วิธีถ่วงน้ำหนัก:</b> DDM กับ Justified P/BV ใช้ (r, g) ชุดเดียวกัน จึงนับเป็น<b>เสียงเดียว</b> (ค่าเฉลี่ยตระกูล ฿4.74) ถ่วงกับเสียงของขาที่ยึดตลาด (P/E + EV/EBITDA เฉลี่ย ฿4.70) ได้ ฿4.72 — ขาที่ห่างกันมากสุดต่างกันเพียง 1.26 เท่า จึงเฉลี่ยได้โดยไม่ผิดกฎ dispersion
@@ -162,15 +171,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿3.92</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿4.72</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿3.30<br><small>MOS 30%</small></span>
-          <span>฿3.78<br><small>MOS 20%</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">฿4.20<br><small>เป้า Analyst</small></span>
-          <span style="text-align:right">฿4.72<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿5.23<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -183,19 +192,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+17%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ถูกกว่ามูลค่าพอสมควร แต่ยังไม่ถึงโซนส่วนเผื่อ 20% · ผลตอบแทนปันผล ~8% เป็นตัวหนุนหลักระหว่างรอ</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿3.78</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿3.30</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿4.72</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="3.92" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -291,8 +300,8 @@
       <h2>ปันผล ~8% คือเหตุผลหลักที่ถือ — ไม่ใช่ deep value อย่างที่ตัวเลขรอบก่อนบอก</h2>
       <p>GABLE เป็นผู้ให้บริการไอทีองค์กรชั้นนำของไทย มี backlog นิวไฮ ฿7,318 ล้าน กำไรครึ่งปีแรกโต 94.8% YoY งบดุลเป็นเงินสดสุทธิ และจ่ายปันผลจากกำไรจริงที่ผลตอบแทนราว 8% ต่อปี ทั้งหมดนี้ยังจริงอยู่ แต่<b>การประเมินมูลค่ารอบนี้แก้จุดที่ฉบับก่อนพลาด</b>: P/E เป้าหมาย 12x ที่เคยใช้ไม่เคยเป็นตัวคูณที่ตลาดให้หุ้นตัวนี้จริง (มีข้อมูลปิดปีแค่ 3 จุดตั้งแต่ IPO และแนวโน้มลดลงทุกปี) เมื่อยึดตัวคูณที่วัดได้จริงร่วมกับต้นทุนส่วนทุนที่สมจริงขึ้นสำหรับหุ้นที่ free float เพียง 28.6% มูลค่าเหมาะสมลดจาก ฿7.45 เหลือ ฿4.72 และส่วนเผื่อความปลอดภัยหดจาก 46.6% เหลือระดับกลาง ๆ · สัญญาณเตือนใหม่ที่ต้องจับตาคืออัตรากำไรขั้นต้นไตรมาส 2 ที่เหลือ 17.3% ต่ำกว่าเป้าบริษัทเอง ทำให้กำไรไตรมาสหดตัว 21.5% YoY แม้รายได้ยังโต</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿4.72 <span style="font-size:12px;color:#cab9a8">(฿4.16–฿5.23)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +17%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿4.20 (n=1)</div></div>
       </div>
       <div class="zone">

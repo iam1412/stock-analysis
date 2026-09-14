@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 280.39,
+  "values": {
+    "px": 323.66,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 246.5,
+    "fvHigh": 311.58,
+    "eps": 6.74,
+    "shares": 1040000000,
+    "dps": 1.88,
+    "baseEps": 6.74,
+    "scenarios": [
+      {
+        "tgt": 218.47,
+        "div": 6.09
+      },
+      {
+        "tgt": 328.02,
+        "div": 6.09
+      },
+      {
+        "tgt": 465.07,
+        "div": 6.09
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#0066cc",
     "accentDark": "#004499",
@@ -41,18 +74,14 @@
     "min": 250,
     "max": 400,
     "grid": [275, 300, 325, 350, 375],
-    "fairLine": 280.39,
     "currency": "$",
     "highlight": [5, 8]
   },
   "gauge": {
     "min": 196.27,
     "max": 400,
-    "cur": 323.66,
-    "fair": 280.39,
     "fairLabelTop": true
-  },
-  "fv": 280.39
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +101,11 @@
     <div class="sub">เครื่องยนต์เจ็ต CFM56 · LEAP (กับ Safran) · GE9X • บริการซ่อมบำรุงเครื่องยนต์ (MRO/Aftermarket) • เครื่องยนต์ทางทหาร F110/F404/T901 • หลัง spin-off GE Vernova (เม.ย. 2567) และ GE HealthCare (ม.ค. 2566) เหลือธุรกิจการบิน-กลาโหมล้วน</div>
     <div class="price-row">
       <div>
-        <div class="px">$323.66<small>(GE)</small></div>
+        <div class="px">{{rd:px}}<small>(GE)</small></div>
       </div>
-      <div class="chg">▲ +4.8% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569 (2 Jul 2026)<br>
+        ราคา ณ {{rd:priceDate}} (2 Jul 2026)<br>
         กรอบ 52 สัปดาห์ $243.34 – $382.97<br>
         ที่มา: StockAnalysis.com, StatMuse Money, GE Aerospace IR (ราคาปิดรายเดือน/ผลประกอบการ)
       </div>
@@ -99,7 +128,7 @@
 
       <div class="metric"><div class="k">รายได้ TTM (adj.)</div><div class="v neu">~$45.9B</div><div class="d">FY25 $42.3B + Q1'26 growth 29%</div></div>
       <div class="metric"><div class="k">Operating Margin (adj.)</div><div class="v">~21–24%</div><div class="d">หนุนจาก services/aftermarket มาร์จิ้นสูง</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~0.6%</div><div class="d">$0.47/ไตรมาส ($1.88/ปี) payout ~20%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">$0.47/ไตรมาส ($1.88/ปี) payout ~20%</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">1.35</div><div class="d">ผันผวนกว่าตลาดปานกลาง-สูง</div></div>
     </div>
   </section>
@@ -113,7 +142,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#0066cc"></i>ราคา GE</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $280.39</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -141,8 +170,8 @@
         <div class="mval">$311.58</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $246.50 – $311.58</span></div>
-        <div class="r">$280.39</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี Forward P/E ให้ค่าต่ำสุดเพราะใช้ P/E ที่อนุรักษ์นิยมกว่ากับ EPS ปีหน้าที่ยังไม่เกิดขึ้นจริง ส่วน Justified P/BV ให้ค่าสูงสุดเพราะ ROE ของ GE สูงกว่าอุตสาหกรรมทั่วไปมาก (แม้ปรับลดจากตัวเลขจริงแล้ว)
@@ -157,14 +186,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $323.66</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $280.39</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$196.27<br><small>MOS 30%</small></span>
-          <span>$224.31<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$280.39<br><small>Fair Value</small></span>
-          <span style="text-align:right">$311.58<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$357.56<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -179,19 +208,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−15%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS ติดลบ — ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสมโดยประมาณ ~35% ไม่มีส่วนเผื่อความปลอดภัยสำหรับการเข้าซื้อใหม่ ณ ระดับนี้</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$224.31</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$196.27</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $280.39</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="323.66" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -200,17 +229,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $323.66 • EPS ฐาน ~$6.74 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$218.47</div>
-          <div class="ret neg">−30.6%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$7.80</span></li>
             <li><span>P/E ออก</span><span>28x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$6.09</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>LEAP ramp สะดุด/ต้นทุนวัสดุพุ่ง + P/E หดตัวกลับสู่ค่าเฉลี่ยประวัติศาสตร์</span></li>
           </ul>
         </div>
@@ -218,12 +247,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +15%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$328.02</div>
-          <div class="ret neg">+3.2%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$10.25</span></li>
             <li><span>P/E ออก</span><span>32x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$6.09</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>services/aftermarket เติบโตตามแผน backlog $190B ทยอยรับรู้รายได้ปกติ</span></li>
           </ul>
         </div>
@@ -231,12 +260,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +22%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$465.07</div>
-          <div class="ret pos">+45.6%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$12.24</span></li>
             <li><span>P/E ออก</span><span>38x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$6.09</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>LEAP deliveries เร่งตัวแรง + defense orders เพิ่ม + margin expansion เกินคาด</span></li>
           </ul>
         </div>
@@ -285,8 +314,8 @@
       อย่างไรก็ตาม ราคาหุ้นที่ทะยานขึ้น +39.8% ในรอบปีจนใกล้ระดับสูงสุดตลอดกาล ทำให้ valuation ตึงตัวมาก (P/E ~56x) เกินกว่าที่วิธีประเมินมูลค่าแบบดั้งเดิมจะรองรับได้
       แม้แต่เป้าเฉลี่ยของนักวิเคราะห์ ($357.56) ก็ยังต่ำกว่าราคาปัจจุบัน — MOS ติดลบชัดเจน จึงเหมาะกับการติดตามรอจังหวะย่อตัวมากกว่าไล่ซื้อ ณ ราคานี้</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$280.39 <span style="font-size:12px;color:#cab9a8">($246.50–$311.58)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −15%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$357.56 (Moderate Buy)</div></div>
       </div>
       <div class="zone">

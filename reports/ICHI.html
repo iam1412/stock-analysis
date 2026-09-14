@@ -10,6 +10,40 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 20.5,
+  "values": {
+    "px": 13.6,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 17,
+    "fvHigh": 23.92,
+    "eps": 1.05,
+    "shares": 1300000000,
+    "dps": 1.15,
+    "bvps": 4.35,
+    "baseEps": 1.05,
+    "scenarios": [
+      {
+        "tgt": 11.55,
+        "div": 3.45
+      },
+      {
+        "tgt": 23.81,
+        "div": 3.73
+      },
+      {
+        "tgt": 32.47,
+        "div": 4.05
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#2e7d32",
     "accentDark": "#1b5e20",
@@ -41,18 +75,14 @@
     "min": 10,
     "max": 22.5,
     "grid": [12.5, 15, 17.5, 20],
-    "fairLine": 20.5,
     "currency": "฿",
     "highlight": [1, 4]
   },
   "gauge": {
     "min": 10,
     "max": 25,
-    "cur": 13.6,
-    "fair": 20.5,
     "fairLabelTop": true
-  },
-  "fv": 20.5
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +102,11 @@
     <div class="sub">ชาเขียวพร้อมดื่ม No.1 ไทย (Ichitan) · RTD tea · น้ำดื่ม PH+ Alkaline · ส่งออก CLMV · Gross Margin ~29% · founder-led</div>
     <div class="price-row">
       <div>
-        <div class="px">฿13.60<small>(ICHI)</small></div>
+        <div class="px">{{rd:px}}<small>(ICHI)</small></div>
       </div>
-      <div class="chg">▲ +10.6% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿10.20 – ฿15.20<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, Investing.com
       </div>
@@ -88,7 +118,7 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 · TTM = 12 เดือนล่าสุด</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">฿17,680 ล้าน</div><div class="d">หุ้น 1,300 ล้านหุ้น · SET mid-cap</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~13.0x</div><div class="d">EPS TTM ฿1.05 · ต่ำกว่า FMCG เฉลี่ย 18–22x</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM ฿1.05 · ต่ำกว่า FMCG เฉลี่ย 18–22x</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~18x</div><div class="d">ช่วง 12–26x (ต่ำสุดช่วงกำไรฟื้น)</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~3.1x</div><div class="d">BVPS ฿4.35 · ROE สูงหนุน premium</div></div>
 
@@ -99,7 +129,7 @@
 
       <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿7,256 ล้าน</div><div class="d">FY2568 (−4.7% YoY · สงครามราคาชาเขียว)</div></div>
       <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~29%</div><div class="d">Gross margin ขยายตัวจาก 22% ใน FY2565</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~8.5%</div><div class="d">฿1.15/หุ้น (FY2568) · จ่ายปีละ 2 ครั้ง</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">฿1.15/หุ้น (FY2568) · จ่ายปีละ 2 ครั้ง</div></div>
       <div class="metric"><div class="k">หนี้สิน</div><div class="v">฿88 ล้าน</div><div class="d">D/E เกือบ 0 · Net cash position แข็งแกร่ง</div></div>
     </div>
   </section>
@@ -113,7 +143,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#2e7d32"></i>ราคา ICHI</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿20.50</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -139,8 +169,8 @@
         <div class="mval">฿16.97</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿17.00 – ฿23.92</span></div>
-        <div class="r">฿20.50</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี DDM ให้ค่าสูงสุด (฿23.92) สะท้อนนโยบายปันผลสูงและการเติบโตที่มั่นคง ขณะที่ Justified P/BV (฿16.97) ให้ค่าต่ำสุดเนื่องจาก BVPS ต่ำ (บริษัทจ่ายปันผลออกมากทำให้ equity สะสมน้อย) FV เฉลี่ย ฿20.50 สมเหตุสมผลในฐานะ FMCG ชั้นนำที่มีกำไรฟื้น, dividend yield สูง และฐานะทางการเงินแข็งแกร่ง แหล่งที่มา: StockAnalysis.com, Investing.com, Yahoo Finance
@@ -154,15 +184,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿13.60</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿20.50</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿14.35<br><small>MOS 30%</small></span>
-          <span>฿16.40<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿20.50<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">฿21.00<br><small>กรอบกลาง FV</small></span>
-          <span style="text-align:right">฿23.92<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -175,19 +205,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict good">
-        <div class="big">+34%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">โซน Deep Value — ราคาต่ำกว่า FV มาก เหมาะสะสมระยะกลาง–ยาว</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿16.40</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿14.35</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿20.50</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="13.6" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -196,17 +226,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿13.60 • EPS ฐาน ~฿1.05 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿11.55</div>
-          <div class="ret neg">+10.3% รวม 3 ปี (~+3.3%/ปี รวมปันผล)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿1.05</span></li>
             <li><span>P/E ออก</span><span>11x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿3.45</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>สงครามราคาชาเขียวรุนแรง กำไรทรง</span></li>
           </ul>
         </div>
@@ -214,12 +244,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿23.81</div>
-          <div class="ret pos">+102.5% รวม 3 ปี (~+26.5%/ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿1.32</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿3.73</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>PH+ โต + ชาเขียวฟื้น + CLMV ขยาย</span></li>
           </ul>
         </div>
@@ -227,12 +257,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿32.47</div>
-          <div class="ret pos">+168.5% รวม 3 ปี (~+39.0%/ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿1.48</span></li>
             <li><span>P/E ออก</span><span>22x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿4.05</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>สร้าง category ใหม่ + ส่งออกระเบิด</span></li>
           </ul>
         </div>
@@ -278,8 +308,8 @@
       <h2>ICHI — Deep Value + High Yield: ชาเขียว No.1 ในราคา Undervalued</h2>
       <p>อิชิตัน กรุ๊ป คือผู้นำตลาดชาเขียวพร้อมดื่มในไทยที่มีคูเมืองแข็งแกร่ง (แบรนด์ + distribution) กำไรฟื้นตัวต่อเนื่อง 3 ปี Gross Margin ขยายจาก 22% มาที่ 29% และ ROE ทะลุ 23.5% — สูงกว่า cost of equity อย่างชัดเจน ที่ราคาปัจจุบัน ฿14.30 หุ้นมี MOS ~30% จาก Fair Value ฿20.50 พร้อม dividend yield ~8% เป็น downside buffer Base case 3 ปีให้ผลตอบแทน ~24%/ปี จากทั้ง EPS growth + P/E re-rating + ปันผล ความเสี่ยงหลักคือสงครามราคาในตลาดชาเขียวที่อาจชะลอ revenue growth แต่ margin expansion และ new segment (PH+ Alkaline) ช่วยรับมือได้</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿20.50 <span style="font-size:12px;color:#cab9a8">(฿17.00–฿23.92)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +34%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿14.47 (BUY · 6 ราย)</div></div>
       </div>
       <div class="zone">

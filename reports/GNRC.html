@@ -10,6 +10,38 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 207,
+  "values": {
+    "px": 186.99,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 166,
+    "fvHigh": 245,
+    "shares": 59100000,
+    "bvps": 45.4,
+    "baseEps": 9.9,
+    "scenarios": [
+      {
+        "tgt": 119,
+        "div": 0
+      },
+      {
+        "tgt": 290,
+        "div": 0
+      },
+      {
+        "tgt": 479,
+        "div": 0
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#E8650A",
     "accentDark": "#B54E07",
@@ -41,18 +73,14 @@
     "min": 100,
     "max": 350,
     "grid": [150, 200, 250, 300],
-    "fairLine": 207,
     "currency": "$",
     "highlight": [2, 8]
   },
   "gauge": {
     "min": 100,
     "max": 340,
-    "cur": 186.99,
-    "fair": 207,
     "fairLabelTop": false
-  },
-  "fv": 207
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +100,11 @@
     <div class="sub">เครื่องกำเนิดไฟฟ้าสำรอง Standby Generators &bull; ระบบพลังงาน C&amp;I &bull; Energy Storage &amp; Clean Energy Tech &bull; Backup Power สำหรับ Data Center</div>
     <div class="price-row">
       <div>
-        <div class="px">$186.99<small>(GNRC)</small></div>
+        <div class="px">{{rd:px}}<small>(GNRC)</small></div>
       </div>
-      <div class="chg">▲ +11.3% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $134.80 – $296.44<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, Digrin.com
       </div>
@@ -90,7 +118,7 @@
       <div class="metric"><div class="k">Market Cap</div><div class="v">$11.05B</div><div class="d">~59.1 ล้านหุ้น · NYSE</div></div>
       <div class="metric"><div class="k">P/E TTM (GAAP)</div><div class="v neu">49.6x</div><div class="d">Forward P/E 18.3–21.8x (นิยามงวดต่างกันตามแหล่ง)</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~40–60x</div><div class="d">ช่วงปกติ pre-boom 25–35x</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">4.12x</div><div class="d">BVPS ~$45.40 · ทุน $2,675M</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ~$45.40 · ทุน $2,675M</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2024</div><div class="v">$316M</div><div class="d">EPS $5.39 · +47% YoY จาก FY2023</div></div>
       <div class="metric"><div class="k">EPS TTM (GAAP)</div><div class="v">$4.35</div><div class="d">Fwd EPS ~$9.90 (StockAnalysis implied 21.8x) ใช้ในวิธี P/E</div></div>
@@ -113,7 +141,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#E8650A"></i>ราคา GNRC</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $207</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -139,8 +167,8 @@
         <div class="mval">$245</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $166 – $245</span></div>
-        <div class="r">$207</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         P/E method ให้ $208 (คิดบน EPS fwd $9.90 &times; P/E 21x); EV/EBITDA ให้ $166 (conservative — กดดันจาก net debt $1.24B และ EBITDA margin ที่ยังฟื้นอยู่); FCF yield ให้ $245 (optimistic — สมมติ FCF กลับสู่ FY2024 peak ได้) ราคาปัจจุบัน $215.86 สูงกว่า FV กลาง ~4.3% สะท้อนว่าตลาดเริ่ม price-in การฟื้นตัวของกำไรหลังงบ Q2 2569 (29 ก.ค.) ออกมาดีกว่าคาด ค่าเฉลี่ย 3 วิธี = ($208 + $166 + $245) / 3 = $207
@@ -154,14 +182,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $186.99</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $207</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$145<br><small>MOS 30%</small></span>
-          <span>$166<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$207<br><small>Fair Value</small></span>
-          <span style="text-align:right">$245<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$285.51<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -175,19 +203,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+10%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาสูงกว่า Fair Value ~4.3% — Margin of Safety ติดลบ ณ ราคาปัจจุบัน ควรรอย่อเข้าโซนซื้อ</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$166</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$145</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
         <div class="metric"><div class="k">โซนเริ่มพิจารณา</div><div class="v neu">&lt; $207</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>&#x1F9EE; ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="186.99" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -196,17 +224,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $186.99 &bull; EPS ฐาน ~$9.90 (fwd, FY2026E) &bull; ไม่มีปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} &bull; EPS ฐาน ~{{rd:baseEps}} (fwd, FY2026E) &bull; ไม่มีปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>&#x1F43B; Bear</span><span>EPS -7%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$119</div>
-          <div class="ret neg">-36.4%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$7.96</span></li>
             <li><span>P/E ออก</span><span>15x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>demand C&amp;I พลิกลด / battery storage แย่งตลาด residential</span></li>
           </ul>
         </div>
@@ -214,12 +242,12 @@
       <div class="col base">
         <div class="top"><span>&#x2696;&#xFE0F; Base</span><span>EPS +10%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$290</div>
-          <div class="ret pos">+55.1%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$13.18</span></li>
             <li><span>P/E ออก</span><span>22x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>Data center + C&amp;I เติบโตสม่ำเสมอ valuation normalize สู่ 22x</span></li>
           </ul>
         </div>
@@ -227,12 +255,12 @@
       <div class="col bull">
         <div class="top"><span>&#x1F680; Bull</span><span>EPS +20%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$479</div>
-          <div class="ret pos">+156.2%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$17.11</span></li>
             <li><span>P/E ออก</span><span>28x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Data center boom + international expansion + grid reliability megatrend</span></li>
           </ul>
         </div>
@@ -279,8 +307,8 @@
       <h2>ราคาสูงกว่า Fair Value เล็กน้อย — MOS ติดลบ รอย่อเข้าโซน $166–$207 เพื่อความปลอดภัย</h2>
       <p>Generac Holdings เป็นผู้นำตลาด backup power ที่ได้รับ tailwind จริงจาก Data Center boom และ grid reliability ราคาปัจจุบัน $215.86 ฟื้นตัว +9.5% จากจุดต่ำเดือน ก.ค. 2569 ($197.11) หลังงบ Q2 2569 (29 ก.ค.) ออกมาดีกว่าคาด — EPS TTM (GAAP) ฟื้นเป็น $4.35 จาก FY2025 เต็มปีที่ $2.69 ยืนยันเทรนด์ recovery ชัดเจน แต่ราคายังต่ำกว่าจุดสูงสุด $292.81 (มิ.ย. 2569) ถึง -26.3% ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสมเฉลี่ย $207 เล็กน้อย ~4.3% สะท้อนว่าตลาดเริ่ม price-in การฟื้นตัวของกำไรแล้ว Scenario Base (EPS +10%/ปี จากฐาน fwd ~$9.90, P/E ออก 22x) ให้ผลตอบแทน +34.3% ใน 3 ปี นักลงทุน value ควรรอย่อเข้าโซน $166–$207 (MOS 0–20%) เพื่อ risk/reward ที่ดีกว่า ผู้ถือ long-term อาจ hold ได้หาก C&amp;I + Data Center thesis ยืนยันต่อเนื่อง แต่ downside หากกำไรพลิกทรุดอีกครั้ง (จับตา guidance ไตรมาสหน้าปลาย ต.ค. 2569)</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$207 <span style="font-size:12px;color:#cab9a8">($166–$245)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +10%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$285.51 (Buy – 16 analysts)</div></div>
       </div>
       <div class="zone">

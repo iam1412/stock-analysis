@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 157,
+  "values": {
+    "px": 166.4,
+    "priceDate": "2026-09-11",
+    "dateEra": "CE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 148,
+    "fvHigh": 164,
+    "analystTgt": 194.31,
+    "eps": 3.7,
+    "shares": 861000000,
+    "dps": 1.12,
+    "scenarios": [
+      {
+        "tgt": 123,
+        "div": null
+      },
+      {
+        "tgt": 173,
+        "div": null
+      },
+      {
+        "tgt": 274,
+        "div": null
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#ed1d3e",
     "accentDark": "#b30f29",
@@ -41,18 +74,14 @@
     "min": 50,
     "max": 300,
     "grid": [100, 150, 200, 250],
-    "fairLine": 157,
     "currency": "$",
     "highlight": [1, 8]
   },
   "gauge": {
     "min": 100,
     "max": 220,
-    "cur": 166.4,
-    "fair": 157,
     "fairLabelTop": "-58px"
-  },
-  "fv": 157
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +101,11 @@
     <div class="sub">ผู้นำใยแก้วนำแสง (optical fiber/cable), คอนเนกเตอร์ และกระจกพิเศษ • ป้อนโครงข่าย optical interconnect ของ data center AI และ co-packaged optics (CPO)</div>
     <div class="price-row">
       <div>
-        <div class="px">$166.40<small>(GLW)</small></div>
+        <div class="px">{{rd:px}}<small>(GLW)</small></div>
       </div>
-      <div class="chg">▲ +86.8% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2026 (ราคาปิด)<br>
+        ราคา ณ {{rd:priceDate}} (ราคาปิด)<br>
         จุดสูงสุดตลอดกาล $271.78 (30 มิ.ย. 2569, intraday) • ช่วง 52 สัปดาห์ $61.44 – $271.78<br>
         ที่มา: StockAnalysis.com / Google Finance / MarketBeat
       </div>
@@ -89,7 +118,7 @@
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~$143.27B</div><div class="d">~861 ล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~76.5x</div><div class="d">GAAP EPS ยังต่ำจาก restructuring <span class="pill r">บิดเบือน</span></div></div>
-      <div class="metric"><div class="k">P/E (Forward)</div><div class="v">~45.0x</div><div class="d">EPS fwd FY2026 ~$3.70 (core, consensus)</div></div>
+      <div class="metric"><div class="k">P/E (Forward)</div><div class="v">~{{rd:pe}}x</div><div class="d">EPS fwd FY2026 ~$3.70 (core, consensus)</div></div>
       <div class="metric"><div class="k">EPS (TTM, GAAP)</div><div class="v">$2.17</div><div class="d">Core EPS FY2025 $2.52</div></div>
 
       <div class="metric"><div class="k">รายได้ FY2025 (GAAP)</div><div class="v">$15.63B</div><div class="d pos">▲ +19% YoY • Core $16.41B</div></div>
@@ -113,7 +142,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1a73e8"></i>ราคา GLW</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $157</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -142,8 +171,8 @@
         <div class="mval">$164</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $148 – $164</span></div>
-        <div class="r">$157</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>หมายเหตุ:</b> ใช้ <b>core/forward EPS</b> เป็นฐาน เพราะ GAAP EPS (TTM $2.17) ยังถูกบิดเบือนบางส่วนจากรายการ restructuring → P/E TTM ~76.5x ไม่สะท้อนกำลังกำไรจริงเต็มที่
@@ -158,14 +187,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $166.40</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $157</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$109.90<br><small>MOS 30%</small></span>
-          <span>$125.60<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$157<br><small>Fair Value</small></span>
-          <span style="text-align:right">$194.31<br><small>เป้า Analyst</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:analystTgt}}<br><small>เป้า Analyst</small></span>
           <span style="text-align:right">$274<br><small>Bull 3ปี</small></span>
         </div>
       </div>
@@ -180,19 +209,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−6%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>ไม่มี Margin of Safety — แพงกว่ามูลค่าเหมาะสมเล็กน้อย</b><br>ราคาปัจจุบัน $165.96 สูงกว่ามูลค่าเหมาะสม $157 ราว 5.7% หลังหุ้นฟื้นตัวแรงจากจุดต่ำ $134.13 (30 ก.ค. 2026) → ห่างจากโซนน่าสนใจของ value investor มากขึ้น (MOS 20% อยู่ที่ $125.60)</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$125.60</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$109.90</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
         <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $148</div><div class="d">ใกล้ขอบล่างของ fair value</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="166.4" step="1">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -201,13 +230,13 @@
 
   <!-- ===== RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $166.40 • EPS core ฐาน ~$3.12</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS core ฐาน ~$3.12</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +12%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$123</div>
-          <div class="ret neg">รวม ~ −26.1% (≈ −9.6%/ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$4.38</span></li>
             <li><span>P/E ออก</span><span>28x</span></li>
@@ -218,8 +247,8 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +20%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$173</div>
-          <div class="ret pos">รวม ~ +4.0% (≈ +1.3%/ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$5.39</span></li>
             <li><span>P/E ออก</span><span>32x</span></li>
@@ -230,8 +259,8 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +30%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$274</div>
-          <div class="ret pos">รวม ~ +64.7% (≈ +18.1%/ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$6.86</span></li>
             <li><span>P/E ออก</span><span>40x</span></li>
@@ -283,9 +312,9 @@
       <h2>ผู้นำ AI optical กับ Springboard Plan ทะเยอทะยาน — ฟื้นตัวแรงจากจุดต่ำหลังงบ Q2 ดีกว่าคาด ตอนนี้แพงกว่ามูลค่าเหมาะสมเล็กน้อย</h2>
       <p>Corning กลายเป็นหนึ่งใน supplier โครงสร้างพื้นฐานที่สำคัญของยุค AI — ใยแก้ว, connector, multicore fiber และ glass substrate สำหรับ CPO ป้อนโครงข่าย optical interconnect ของ data center โดยตรง ดีลกับ NVIDIA/Meta/Amazon และ Springboard Plan ที่ตั้งเป้ารายได้ annualized $20B สิ้นปี 2569, $30B สิ้นปี 2571, $40B สิ้นปี 2573 หนุน narrative การเติบโตระยะยาวชัดเจน — หุ้นเคยพุ่งทำจุดสูงสุดตลอดกาลใหม่ $271.78 (30 มิ.ย. 2026) ก่อนร่วงแรงสองรอบ: AI-valuation pullback ทั้งตลาดต้น ก.ค. แล้วร่วงเพิ่มอีกหลังงบ Q2 2026 (28 ก.ค. 2569) ที่ core EPS $0.78 (+30% YoY) core sales $4.74B (+17% YoY) ดีกว่าคาดแต่ guide Q3 บ่งชี้โมเมนตัมชะลอ (sell-the-news) ลงไปแตะ $134.13 (30 ก.ค. 2026) ก่อนฟื้นตัวแรงกลับมาที่ $165.96 (8 ก.ย. 2026, +86.3% ในรอบปี) forward P/E core ~44.9x สูงขึ้นตามราคา และแพงกว่ามูลค่าเหมาะสมเล็กน้อยแล้ว (MOS −5.7%) ขณะที่เป้านักวิเคราะห์เฉลี่ย $194.31 ยังสูงกว่าราคาปัจจุบัน (+17.1%)</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$157 <span style="font-size:12px;color:#a8b6cc">($148–$164)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">MOS ~ −6%</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">$194.31 (+16.8%)</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#a8b6cc">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">MOS ~ {{rd:mos}}</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">{{rd:analystTgt}} (+16.8%)</div></div>
       </div>
       <div class="zone">
         💡 <b>กลยุทธ์:</b> สาย value — รอย่อ/ทยอยสะสมเมื่อราคา <b>ต่ำกว่า ~$148</b> (น่าสนใจที่ &lt;$125.60) • สาย growth — เข้าได้แบบ DCA และยอมรับความผันผวนสูง โดยติดตาม <b>งบ Q3 2026</b> (guide EPS $0.85–0.89), <b>ความคืบหน้า Springboard Plan</b> และ <b>capex/หนี้</b> เป็นตัวชี้วัดหลัก

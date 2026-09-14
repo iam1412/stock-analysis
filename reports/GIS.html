@@ -10,6 +10,38 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 33.7,
+  "values": {
+    "px": 35.85,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 32.73,
+    "fvHigh": 35.5,
+    "shares": 534630000,
+    "dps": 2.44,
+    "bvps": 13.8,
+    "scenarios": [
+      {
+        "tgt": 22.4,
+        "div": 6.88
+      },
+      {
+        "tgt": 35.53,
+        "div": 7.32
+      },
+      {
+        "tgt": 44.46,
+        "div": 7.32
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#003087",
     "accentDark": "#001a52",
@@ -41,18 +73,14 @@
     "min": 30,
     "max": 50,
     "grid": [35, 40, 45],
-    "fairLine": 33.7,
     "currency": "$",
     "highlight": [1, 7]
   },
   "gauge": {
     "min": 20,
     "max": 55,
-    "cur": 35.85,
-    "fair": 33.7,
     "fairLabelTop": true
-  },
-  "fv": 33.7
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +100,11 @@
     <div class="sub">Cheerios • Lucky Charms • Betty Crocker • Pillsbury • Haagen-Dazs • Blue Buffalo pet food • Yoplait • Old El Paso • Global food brands 100+ ประเทศ</div>
     <div class="price-row">
       <div>
-        <div class="px">$35.85<small>(GIS)</small></div>
+        <div class="px">{{rd:px}}<small>(GIS)</small></div>
       </div>
-      <div class="chg">▼ −23.1% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $31.75 – $51.33<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, Google Finance
       </div>
@@ -90,7 +118,7 @@
       <div class="metric"><div class="k">Market Cap</div><div class="v">~$19.17B</div><div class="d">534.63M หุ้น (คงเหลือ)</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">n/m</div><div class="d">GAAP ขาดทุนจาก impairment • adj. P/E ~11.0x</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~16–18x</div><div class="d">P/E(adj.) ปัจจุบันต่ำกว่าประวัติศาสตร์มาก</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">~2.60x</div><div class="d">BVPS ~$13.80 (ประมาณจาก D/E)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~{{rd:pbv}}x</div><div class="d">BVPS ~$13.80 (ประมาณจาก D/E)</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v neg">−$87.6M</div><div class="d">impairment $1.8B (ไม่ใช่เงินสด) เทียบ FY2025 $2,285M</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v neg">$(0.16)</div><div class="d">Adj. $3.55 FY2026 (−16% YoY) • FY2027 guide $3.00–3.20</div></div>
@@ -113,7 +141,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#003087"></i>ราคา GIS</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $33.70</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -139,8 +167,8 @@
         <div class="mval">$32.73</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $32.73 – $35.50</span></div>
-        <div class="r">$33.70</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         ทั้ง 3 วิธียึด EPS/กระแสเงินสด<b>หลังปรับ (adjusted)</b> เป็นฐาน ไม่ใช้ GAAP EPS TTM $(0.16) ที่บิดเบือนจาก non-cash impairment ครั้งเดียว วิธี EV/EBITDA และ DDM ให้ค่าใกล้เคียงกันที่ $32.7–32.9 ขณะที่ P/E ให้ค่าสูงสุดที่ $35.50 มูลค่าเหมาะสมเฉลี่ย $33.70 ต่ำกว่าราคาปัจจุบัน $39.20 ~16% สะท้อนว่าราคาฟื้นตัวขึ้นมาเร็วกว่าที่พื้นฐาน (ซึ่งยังอ่อนแอลงต่อเนื่องตาม FY2027 guidance) จะรองรับได้
@@ -154,14 +182,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $35.85</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $33.70</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$23.59<br><small>MOS 30%</small></span>
-          <span>$26.96<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$33.70<br><small>Fair Value</small></span>
-          <span style="text-align:right">$35.50<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$37.56<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -175,19 +203,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−6%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>ไม่มี Margin of Safety (ราคาแพงกว่ามูลค่าเหมาะสม)</b><br>ราคาฟื้นตัวขึ้นมาเร็วกว่าพื้นฐาน หลัง GAAP EPS พลิกขาดทุนจาก impairment $1.8B และ FY2027 guidance ยังชี้ adj. EPS ลดต่อ; รอราคาย่อกลับเข้าโซน MOS ก่อนสะสม</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$26.96</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$23.59</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $33.70</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="35.85" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -196,17 +224,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $35.85 • EPS ฐาน adj. FY2027 guide $3.10 (กลางกรอบ) • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน adj. FY2027 guide $3.10 (กลางกรอบ){{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี (ปีที่ 2–3)</span></div>
         <div class="body">
-          <div class="tgt">$22.40</div>
-          <div class="ret neg">−18.3% (3 ปี รวมปันผล)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$2.80</span></li>
             <li><span>P/E ออก</span><span>8x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$6.88 (สมมติปรับลดปีสุดท้าย)</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}} (สมมติปรับลดปีสุดท้าย)</span></li>
             <li><span>สถานการณ์</span><span>Volume ลดต่อ GLP-1+Private label กัด share, impairment รอบใหม่</span></li>
           </ul>
         </div>
@@ -214,12 +242,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +2%/ปี (ปีที่ 2–3)</span></div>
         <div class="body">
-          <div class="tgt">$35.53</div>
-          <div class="ret pos">+19.5% (3 ปี รวมปันผล)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$3.23</span></li>
             <li><span>P/E ออก</span><span>11x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$7.32</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>adj. EPS นิ่งตัวหลัง FY2027 ปรับฐาน ตลาดให้ multiple กลับบางส่วน</span></li>
           </ul>
         </div>
@@ -227,12 +255,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +5%/ปี (ปีที่ 2–3)</span></div>
         <div class="body">
-          <div class="tgt">$44.46</div>
-          <div class="ret pos">+44.4% (3 ปี รวมปันผล)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$3.42</span></li>
             <li><span>P/E ออก</span><span>13x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$7.32</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Pet food ฟื้นหลัง impairment, pricing power กลับมา, re-rating</span></li>
           </ul>
         </div>
@@ -280,8 +308,8 @@
       <h2>ราคาฟื้นตัวเร็วเกินพื้นฐาน — รอย่อกลับสู่โซน MOS</h2>
       <p>General Mills เป็นบริษัทอาหาร consumer staples ที่มีแบรนด์แข็งแกร่งระดับโลก (Cheerios, Lucky Charms, Haagen-Dazs, Blue Buffalo) แต่กำลังเผชิญ structural headwinds จาก GLP-1 drugs, volume decline และ trade-down ไป private label ล่าสุดบริษัทตัดค่าความนิยม (goodwill impairment) $1.8B ใน FY2026 โดยเฉพาะธุรกิจ Pet food (Blue Buffalo) ที่เคยเป็นความหวังหลัก ทำให้ GAAP EPS TTM พลิกเป็นขาดทุน $(0.16) ขณะที่ adjusted EPS ลดลงจริง 16% (เกินกรอบที่เคยประเมิน 10–15%) และ FY2027 guidance ยังชี้ adj. EPS ลดต่ออีกเป็น $3.00–3.20 แม้ราคาหุ้นจะเคยร่วงลงมาแตะ $33.81 แต่ได้ฟื้นตัวขึ้นมาที่ $39.20 เร็วกว่าที่พื้นฐานรองรับได้ ทำให้ปัจจุบัน<b>ไม่มี Margin of Safety</b> (ราคาสูงกว่ามูลค่าเหมาะสมประมาณ 16%) และสูงกว่าเป้าเฉลี่ยนักวิเคราะห์ $37.56 (n=18) ด้วย นักลงทุน income ที่ต้องการปันผล 6.2% ยังพอถือได้เพราะ FCF ยังบวก แต่ผู้ที่มองหาจุดเข้าใหม่ควรรอราคาย่อกลับสู่โซน MOS ก่อน</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$33.70 <span style="font-size:12px;color:#cab9a8">($32.73–$35.50)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ff8a80">MOS ~ −6%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ff8a80">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#ffab91">~$37.56 (Hold/Reduce, n=18)</div></div>
       </div>
       <div class="zone">

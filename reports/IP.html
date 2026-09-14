@@ -15,13 +15,45 @@
 </script>
 <script type="application/json" id="report-data">
 {
-  "symbol": "IP",
-  "name": "International Paper",
-  "currency": "$",
-  "price": 36.49,
-  "fairValue": 39.44,
-  "mos": 0.075,
+  "v": 2,
   "fv": 39.44,
+  "values": {
+    "px": 34.36,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 37,
+    "fvHigh": 42,
+    "shares": 529600000,
+    "dps": 1.85,
+    "bvps": 29.32,
+    "baseEps": 1.38,
+    "scenarios": [
+      {
+        "tgt": 22.1,
+        "div": 5.55
+      },
+      {
+        "tgt": 37.8,
+        "div": 5.55
+      },
+      {
+        "tgt": 51,
+        "div": 5.55
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": "cagr"
+    }
+  },
+  "theme": {
+    "accent": "#78350f",
+    "accentDark": "#451a03",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
+  },
   "chart": {
     "data": [
       ["ต.ค.25", 38.64],
@@ -41,24 +73,11 @@
     "max": 45,
     "grid": [30, 35, 40],
     "currency": "$",
-    "fairLine": 39.44,
     "highlight": [4, 6]
   },
   "gauge": {
     "min": 24,
-    "max": 52,
-    "mos30": 27.61,
-    "mos20": 31.55,
-    "fair": 39.44,
-    "fv_high": 42,
-    "analyst_tgt": 48,
-    "cur": 34.36
-  },
-  "theme": {
-    "accent": "#78350f",
-    "accentDark": "#451a03",
-    "chgBg": "var(--red-soft)",
-    "chgColor": "#c5221f"
+    "max": 52
   }
 }
 </script>
@@ -79,11 +98,11 @@
     <div class="sub">Corrugated Packaging • DS Smith • Containerboard • Industrial</div>
     <div class="price-row">
       <div>
-        <div class="px">$34.36<small>(IP)</small></div>
+        <div class="px">{{rd:px}}<small>(IP)</small></div>
       </div>
-      <div class="chg">▼ −11.1% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $29.26–$50.25<br>
         ที่มา: StockAnalysis.com • Yahoo Finance • SEC 8-K
       </div>
@@ -97,7 +116,7 @@
       <div class="metric"><div class="k">Market Cap</div><div class="v">~$18.20B</div><div class="d">529.6M shares outstanding</div></div>
       <div class="metric"><div class="k">EV / EBITDA (TTM)</div><div class="v neu">~11.5x</div><div class="d">EV $28.50B / EBITDA $2.48B</div></div>
       <div class="metric"><div class="k">EV/EBITDA FY2026 guide</div><div class="v pos">~7.9x</div><div class="d">EBITDA guide $3.5–3.7B</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.17x</div><div class="d">BVPS $29.32 (FY2025)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS $29.32 (FY2025)</div></div>
 
       <div class="metric"><div class="k">EPS adj. FY2025</div><div class="v neg">−$0.20</div><div class="d">ถูกกดจาก integration costs $958M</div></div>
       <div class="metric"><div class="k">EPS (TTM, GAAP)</div><div class="v neg">−$6.50</div><div class="d">ขาดทุนด้อยค่า; Yahoo −$5.39 (นิยามต่าง) — P/E ใช้ฐาน forward</div></div>
@@ -121,7 +140,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#78350f"></i>ราคา IP</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $39.44</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -147,8 +166,8 @@
         <div class="mval">$39.62</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $37 – $42</span></div>
-        <div class="r">$39.44</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         ทั้ง 3 วิธีให้ค่าในช่วง $37–42 เฉลี่ยที่ ~$39.44 ใกล้เคียงกัน — วิธีที่ 1 และ 2 อิง FY2026-27 consensus (EPS forward FY2027E ปรับเป็น $2.99 ตาม SA forecast/Yahoo ล่าสุด) วิธีที่ 3 ใช้ EBITDA mid-point (50% probability ระหว่าง FY2026 guide $3.6B และ FY2027 target $5.75B) FV $39.44 สะท้อนกรณีกลาง integration on track โดยไม่ตั้งสมมติฐาน synergy เต็มจำนวน
@@ -162,14 +181,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $34.36</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $39.44</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$27.61<br><small>MOS 30%</small></span>
-          <span>$31.55<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$39.44<br><small>Fair Value</small></span>
-          <span style="text-align:right">$42.00<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$48.00<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -183,19 +202,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+13%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาต่ำกว่ามูลค่าเหมาะสม ~7.5% ($36.49 vs FV $39.44) — margin of safety ยังไม่มาก โซนน่าสนใจกว่าคือต่ำกว่า $31.55 (MOS 20%)</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$31.55</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$27.61</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $39.44</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="34.36" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -204,17 +223,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $34.36 • EPS ฐาน ~$1.38 (FY2026E) • total% ไม่รวมปันผล (ปันผลแสดงแยกในตาราง)</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} (FY2026E) • total% ไม่รวมปันผล (ปันผลแสดงแยกในตาราง)</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +10%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$22.10</div>
-          <div class="ret neg">−36% (~−13.8%/ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$1.84</span></li>
             <li><span>P/E ออก</span><span>12x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$5.55</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>integration ล่าช้า ราคากระดาษลง</span></li>
           </ul>
         </div>
@@ -222,12 +241,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +25%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$37.80</div>
-          <div class="ret pos">+10% (~+3.2%/ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$2.70</span></li>
             <li><span>P/E ออก</span><span>14x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$5.55</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>DS Smith synergies ตามแผน $514M</span></li>
           </ul>
         </div>
@@ -235,12 +254,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +35%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$51.00</div>
-          <div class="ret pos">+48% (~+14.0%/ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$3.40</span></li>
             <li><span>P/E ออก</span><span>15x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$5.55</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>synergies เกินเป้า + containerboard rebound</span></li>
           </ul>
         </div>
@@ -287,8 +306,8 @@
       <h2>ราคาต่ำกว่า Fair Value ~7.5% — เพิ่ม MOS ที่ต่ำกว่า $31.55</h2>
       <p>IP เป็น "กรณีพิสูจน์ execution" — ที่ราคา $36.49 อยู่ต่ำกว่า FV $39.44 ราว 7.5% ซึ่งสะท้อนความไม่แน่ใจของตลาดต่อ FY2027E EPS forward $2.99 ที่ P/E 14x ว่า synergies DS Smith จะส่งมอบตามแผนหรือไม่ เป้า analyst เฉลี่ย $48.00 (11 สำนัก) สูงกว่าปัจจุบันถึง 31.5% แต่ยังต้องรอ execution พิสูจน์ จุดที่น่าสนใจสำหรับเพิ่ม margin คือต่ำกว่า $35.50 (MOS ~10%) หรือ $31.55 (MOS 20%)</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$39.44 <span style="font-size:12px;color:#cab9a8">($37–$42)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">MOS ~ +13%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 11 ด.</div><div class="v" style="color:#a5d6a7">~$48.00 (Buy)</div></div>
       </div>
       <div class="zone">
@@ -302,7 +321,7 @@
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ EPS กลางวัฏจักร, synergy delivery, multiple และการฟื้นตัวของตลาด containerboard
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
-    ราคา ณ 11 ก.ย. 2569 จาก StockAnalysis.com และ Yahoo Finance • EPS estimates: StockAnalysis.com consensus 12 analysts
+    ราคา ณ {{rd:priceDate}} จาก StockAnalysis.com และ Yahoo Finance • EPS estimates: StockAnalysis.com consensus 12 analysts
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 9 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

@@ -10,6 +10,40 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 164,
+  "values": {
+    "px": 136.61,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 149,
+    "fvHigh": 192,
+    "eps": 6.22,
+    "shares": 69100000,
+    "dps": 2.8,
+    "bvps": 34.23,
+    "baseEps": 6.22,
+    "scenarios": [
+      {
+        "tgt": 85,
+        "div": 8.7
+      },
+      {
+        "tgt": 166,
+        "div": 9.3
+      },
+      {
+        "tgt": 228,
+        "div": 10.5
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#E8601C",
     "accentDark": "#B84A14",
@@ -41,18 +75,14 @@
     "min": 120,
     "max": 200,
     "grid": [140, 160, 180],
-    "fairLine": 164,
     "currency": "$",
     "highlight": [0, 9]
   },
   "gauge": {
     "min": 100,
     "max": 210,
-    "cur": 136.61,
-    "fair": 164,
     "fairLabelTop": true
-  },
-  "fv": 164
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +102,11 @@
     <div class="sub">Global independent investment bank • #1 restructuring advisor (25+ yrs) • M&amp;A advisory &amp; financial valuation (middle market $100M–$3B) • ~$2.6B revenue, growing dividend • Employee ownership culture</div>
     <div class="price-row">
       <div>
-        <div class="px">$136.61<small>(HLI)</small></div>
+        <div class="px">{{rd:px}}<small>(HLI)</small></div>
       </div>
-      <div class="chg">▼ −23.7% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $131.31 – $211.78<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, Macrotrends
       </div>
@@ -88,9 +118,9 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 · FY2026 สิ้นสุด มี.ค. 2569</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~$9.4B</div><div class="d">69.1M shares outstanding</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~22.0x</div><div class="d">EPS TTM $6.22 (GAAP diluted)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM $6.22 (GAAP diluted)</div></div>
       <div class="metric"><div class="k">Forward P/E</div><div class="v">~16.8x</div><div class="d">ตลาดคาด EPS ฟื้นแข็ง FY2027</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">3.99x</div><div class="d">BVPS $34.23 (มี.ค. 2569)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS $34.23 (มี.ค. 2569)</div></div>
 
       <div class="metric"><div class="k">รายได้ FY2026</div><div class="v">$2,618M</div><div class="d">+9.6% YoY (FY2025: $2,389M)</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$6.22</div><div class="d">GAAP diluted · FY2025: $5.82</div></div>
@@ -113,7 +143,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#E8601C"></i>ราคา HLI</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $164</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -139,8 +169,8 @@
         <div class="mval">$191.69</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $149 – $192</span></div>
-        <div class="r">$164</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         P/E และ DDM ให้ค่าใกล้เคียงกัน (~$150) สะท้อนการคาดการณ์ EPS/ปันผลที่อนุรักษ์นิยม ส่วน Justified P/BV ให้ค่าสูงกว่า ($192) เพราะ ROE 18%+ ของ HLI สูงมากสำหรับ advisory firm ค่าเฉลี่ยสามวิธีที่ $164 จึงสมเหตุสมผลในฐานะ base case ราคาปัจจุบัน $139.54 ต่ำกว่า FV ประมาณ 15%
@@ -154,15 +184,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $136.61</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $164</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$114.80<br><small>MOS 30%</small></span>
-          <span>$131.20<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$164<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$172.50<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$192<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -175,19 +205,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+17%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS พอสมควร — ราคาต่ำกว่ามูลค่าเหมาะสม เหมาะสะสมทยอย</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$131.20</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$114.80</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $164</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="136.61" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -196,17 +226,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $136.61 • EPS ฐาน ~$6.22 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$85</div>
-          <div class="ret neg">−31%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$5.33</span></li>
             <li><span>P/E ออก</span><span>16x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$8.70</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>M&amp;A แห้งนาน · Restructuring ไม่ฟื้น</span></li>
           </ul>
         </div>
@@ -214,12 +244,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +10%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$166</div>
-          <div class="ret pos">+28%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$8.28</span></li>
             <li><span>P/E ออก</span><span>20x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$9.30</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>M&amp;A ฟื้น + Restructuring แข็งแกร่ง</span></li>
           </ul>
         </div>
@@ -227,12 +257,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$228</div>
-          <div class="ret pos">+75%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$9.48</span></li>
             <li><span>P/E ออก</span><span>24x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$10.50</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Super cycle M&amp;A + Restructuring ใหญ่</span></li>
           </ul>
         </div>
@@ -278,8 +308,8 @@
       <h2>HLI: Quality Advisory Franchise ในราคาน่าสนใจหลังปรับฐาน 30%</h2>
       <p>Houlihan Lokey คือธนาคารเพื่อการลงทุนอิสระระดับโลกที่มี moat ชัดเจน 2 ด้าน: (1) <b>#1 Restructuring Advisor</b> ที่ครองตำแหน่งนาน 25+ ปีต่อเนื่อง ทำให้ได้ fee แม้ตลาดซบเซา และ (2) <b>ความเชี่ยวชาญ middle market M&amp;A</b> ที่ธนาคารขนาดใหญ่ไม่ให้ priority หลังปรับฐาน ~30% จาก 52-สัปดาห์สูงสุด ราคาปัจจุบัน $139.54 ต่ำกว่า Fair Value $164 ประมาณ 15% และต่ำกว่าเป้านักวิเคราะห์ $172.50 กว่า 23% โดย fundamentals ยังแข็ง (ROE 18.2%, FCF margin 26%, ปันผลเติบโต) สถานการณ์นี้สร้าง entry point ที่น่าสนใจสำหรับนักลงทุนที่เชื่อว่า M&amp;A จะฟื้นและ restructuring cycle ยังอยู่</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$164 <span style="font-size:12px;color:#cab9a8">($149–$192)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +17%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$172.50 (Hold)</div></div>
       </div>
       <div class="zone">

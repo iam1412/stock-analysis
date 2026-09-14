@@ -10,6 +10,37 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 14.06,
+  "values": {
+    "px": 18.9,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 14,
+    "fvHigh": 14.12,
+    "dps": 0.35,
+    "baseEps": 0.55,
+    "scenarios": [
+      {
+        "tgt": 10.34,
+        "div": 0.75
+      },
+      {
+        "tgt": 17.36,
+        "div": 1.05
+      },
+      {
+        "tgt": 24.15,
+        "div": 1.2
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#ab8b0e",
     "accentDark": "#7b650a",
@@ -40,17 +71,13 @@
     "min": 10,
     "max": 30,
     "grid": [15, 20, 25],
-    "fairLine": 14.06,
     "currency": "$",
     "highlight": [1, 7]
   },
   "gauge": {
     "min": 9,
-    "max": 30,
-    "cur": 18.9,
-    "fair": 14.06
-  },
-  "fv": 14.06
+    "max": 30
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -70,11 +97,11 @@
     <div class="sub">CNC Systems • Industrial Robots • Factory Automation</div>
     <div class="price-row">
       <div>
-        <div class="px">$18.90<small>(FANUY)</small></div>
+        <div class="px">{{rd:px}}<small>(FANUY)</small></div>
       </div>
-      <div class="chg">▲ +14.2% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569 (StockAnalysis.com OTC quote, ตรงกับ Yahoo Finance)<br>
+        ราคา ณ {{rd:priceDate}} (StockAnalysis.com OTC quote, ตรงกับ Yahoo Finance)<br>
         กรอบ 52 สัปดาห์ $12.27 – $27.54<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, Investing.com/Google Finance (ราคาตลาดแม่ TYO:6954), TradingEconomics (FX), SEC EDGAR (F-6 POS 2023, อัตรา ADR)
       </div>
@@ -111,7 +138,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#edc31d"></i>ราคา FANUY</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $14.06</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -133,8 +160,8 @@
         <div class="mval">$14.12</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $14.00 – $14.12</span></div>
-        <div class="r">$14.06</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/E ใช้ EPS normalized เฉลี่ย 5 ปีแทน EPS TTM (¥178.47) เพราะ Fanuc เป็นหุ้น cyclical ตามวงจร capex เครื่องจักร/หุ่นยนต์อุตสาหกรรม — EPS จริงแกว่งระหว่าง ¥140–179 ในรอบ 5 ปีล่าสุด ราคาปัจจุบันสะท้อน P/E TTM สูงถึง ~38-40 เท่า ขณะที่ peer average อยู่ที่ ~28 เท่า ทั้งสองวิธีให้ FV ใกล้เคียงกันที่ $14.00–$14.12 ต่อ ADR ต่ำกว่าราคาตลาดปัจจุบันมาก บ่งชี้ว่าตลาดกำลังให้ premium สูงกับแนวโน้มฟื้นตัวของวงจรอัตโนมัติ/หุ่นยนต์
@@ -148,14 +175,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $18.90</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $14.06</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$9.84<br><small>MOS 30%</small></span>
-          <span>$11.25<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$14.06<br><small>Fair Value</small></span>
-          <span style="text-align:right">$14.12<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$23.33<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -169,19 +196,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−34%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>ไม่มี Margin of Safety (ราคาแพงกว่ามูลค่าเหมาะสมมาก)</b><br>ราคาตลาดสูงกว่ามูลค่าเหมาะสมโดยประมาณ ~51% นักลงทุนที่ยังไม่ถือควรรอจังหวะราคาย่อ ผู้ถืออยู่แล้วควรติดตามความเสี่ยง valuation อย่างใกล้ชิด</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$11.25</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$9.84</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $14.06</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="18.9" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -190,17 +217,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $18.90 • EPS ฐาน ~$0.55 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$10.34</div>
-          <div class="ret neg">−41.3% (3 ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$0.47</span></li>
             <li><span>P/E ออก</span><span>22x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0.75</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>วงจร capex ชะลอตัวรุนแรง คู่แข่งจีนแย่งส่วนแบ่ง ปันผลถูกลด</span></li>
           </ul>
         </div>
@@ -208,12 +235,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +4%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$17.36</div>
-          <div class="ret neg">−2.6% (3 ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$0.62</span></li>
             <li><span>P/E ออก</span><span>28x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$1.05</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>ฟื้นตัวปกติของวงจรอัตโนมัติ P/E ค่อยๆ ลดสู่ค่าเฉลี่ยกลุ่ม</span></li>
           </ul>
         </div>
@@ -221,12 +248,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$24.15</div>
-          <div class="ret pos">+34.1% (3 ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$0.69</span></li>
             <li><span>P/E ออก</span><span>35x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$1.20</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>วงจรหุ่นยนต์/humanoid-automation เติบโตต่อเนื่องจาก reshoring และ AI factory</span></li>
           </ul>
         </div>
@@ -271,8 +298,8 @@
       <h2>แพงกว่ามูลค่าเหมาะสมมาก — MOS ติดลบ ~51%</h2>
       <p>Fanuc เป็นผู้นำตลาด CNC/หุ่นยนต์อุตสาหกรรมระดับโลกที่งบดุลแข็งแกร่งและ ROE มั่นคง แต่ราคาฝั่ง ADR ที่วิ่งขึ้น +52% ในรอบปีทำให้ปัจจุบันเทรดที่ P/E ~38-40 เท่า สูงกว่าค่าเฉลี่ยกลุ่มอุตสาหกรรม (~28 เท่า) มาก เมื่อใช้ EPS normalized ตามวงจรร่วมกับ DCF จาก FCF ได้ Fair Value ราว $14.00–$14.12 ต่อ ADR ต่ำกว่าราคาตลาดปัจจุบันมาก นักลงทุนที่เน้น value ควรรอราคาย่อลงมาใกล้โซน MOS 20-30% ก่อนพิจารณาสะสม</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$14.06 <span style="font-size:12px;color:#cab9a8">($14.00–$14.12)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −34%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$23.33 (Buy — TYO consensus: Moderate Buy 7B/3H/1S จาก 11 analysts)</div></div>
       </div>
       <div class="zone">
@@ -285,7 +312,7 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ADR ณ 11 ก.ย. 2569 จาก StockAnalysis.com (ตรงกับ Yahoo Finance) • ราคาตลาดแม่ Tokyo Stock Exchange (6954) จาก Investing.com/Google Finance • อัตราแลกเปลี่ยน USD/JPY ¥162.41 จาก TradingEconomics (13 ก.ค. 2569) • อัตรา ADR 2:1 ยืนยันจาก SEC EDGAR Form F-6 POS (2023) + cross-check ผ่านสมการ P/E และ market cap parity • งบการเงิน/ประมาณการจาก StockAnalysis.com (fetch-fundamentals) • เป้าราคานักวิเคราะห์จาก Yahoo Finance, Investing.com, MarketBeat, MarketScreener
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ADR ณ {{rd:priceDate}} จาก StockAnalysis.com (ตรงกับ Yahoo Finance) • ราคาตลาดแม่ Tokyo Stock Exchange (6954) จาก Investing.com/Google Finance • อัตราแลกเปลี่ยน USD/JPY ¥162.41 จาก TradingEconomics (13 ก.ค. 2569) • อัตรา ADR 2:1 ยืนยันจาก SEC EDGAR Form F-6 POS (2023) + cross-check ผ่านสมการ P/E และ market cap parity • งบการเงิน/ประมาณการจาก StockAnalysis.com (fetch-fundamentals) • เป้าราคานักวิเคราะห์จาก Yahoo Finance, Investing.com, MarketBeat, MarketScreener
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 14 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

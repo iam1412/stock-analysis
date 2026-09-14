@@ -10,6 +10,18 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 5.2,
+  "values": {
+    "px": 4.48,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 4.67,
+    "fvHigh": 5.76,
+    "shares": 804530000,
+    "bvps": 1.77
+  },
   "theme": {
     "accent": "#37474f",
     "accentDark": "#263238",
@@ -41,7 +53,6 @@
     "min": 1,
     "max": 6,
     "grid": [2, 3, 4, 5],
-    "fairLine": 5.2,
     "currency": "฿",
     "highlight": [0, 10],
     "gridFmt": "v.toFixed(2)",
@@ -50,11 +61,8 @@
   "gauge": {
     "min": 1.4,
     "max": 6.5,
-    "cur": 4.48,
-    "fair": 5.2,
     "fairLabelTop": true
-  },
-  "fv": 5.2
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +82,11 @@
     <div class="sub">ก่อสร้าง Data Center · ระบบ IT · โครงสร้างพื้นฐานโทรคมนาคม · Network Integration · Cyber Security • Maintenance &amp; Services</div>
     <div class="price-row">
       <div>
-        <div class="px">฿4.48<small>(INSET)</small></div>
+        <div class="px">{{rd:px}}<small>(INSET)</small></div>
       </div>
-      <div class="chg">▲ +181.8% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿1.50 – ฿4.28<br>
         ที่มา: SET, Yahoo Finance, Investing.com
       </div>
@@ -92,7 +100,7 @@
       <div class="metric"><div class="k">Market Cap</div><div class="v">฿3.60 พัน ล.</div><div class="d">804.53 ล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~51.5x</div><div class="d">Forward P/E ~18x (ปี 2026)</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~20–22x</div><div class="d">ปัจจุบัน TTM สูง (กำไรฟื้นตัว)</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">2.53x</div><div class="d">BVPS ฿1.77</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ฿1.77</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2024</div><div class="v">฿88.9 ล.</div><div class="d">EPS ฿0.11 (FY2024)</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.08</div><div class="d">TTM มี.ค. 69; Forward EPS ~฿0.235</div></div>
@@ -115,7 +123,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#37474f"></i>ราคา INSET</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿5.20</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -141,8 +149,8 @@
         <div class="mval">฿5.76</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿4.67 – ฿5.76</span></div>
-        <div class="r">฿5.20</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/E Forward ให้ค่า ฿5.17 โดยอิง EPS ปี 2026 ที่ตลาดคาดฟื้นแรง (Forward P/E ~18x) คูณกับ P/E เป้า 22x ของกลุ่ม ICT ไทย วิธี DCF ได้ ฿4.67 อนุรักษ์นิยมกว่าเพราะใช้ FCF ที่ยังต่ำ วิธี EV/EBITDA ให้ ฿5.76 เนื่องจาก EBITDA margin ดีกว่า Net Margin ค่าเฉลี่ยสามวิธีที่ ฿5.20 สมเหตุสมผลและรวม upside จากการฟื้นตัวของรายได้และกำไรไว้แล้ว
@@ -156,15 +164,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿4.48</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿5.20</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿3.64<br><small>MOS 30%</small></span>
-          <span>฿4.16<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿5.20<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">฿5.27<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">฿5.76<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -177,19 +185,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+14%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS อยู่ในโซน "น่าสนใจ — ทยอยสะสม" ราคาต่ำกว่า Fair Value แต่ MOS ยังไม่ถึง 20% เต็ม ๆ ควรรอจังหวะดีหรือทยอยเข้า</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿4.16</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿3.64</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿5.20</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="4.48" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -281,8 +289,8 @@
       <h2>INSET — หุ้น Data Center Play ราคาวิ่งแรง ยังมี Upside แต่ Margin of Safety บาง</h2>
       <p>Infraset PCL เป็น "pure play" data center และ ICT infrastructure ที่ได้ประโยชน์โดยตรงจากการลงทุนของ hyperscaler ในไทย ราคาหุ้นวิ่ง +134% ในรอบปีสะท้อนกระแสนี้ไปมากแล้ว มูลค่าเหมาะสมที่ ฿5.20 (เฉลี่ย 3 วิธี: P/E Forward, DCF, EV/EBITDA) ยังชี้ว่ามี upside ~23% แต่ต้อง depend ว่า EPS จะฟื้นตามที่ตลาดคาด (Forward P/E ~18x) จริงหรือไม่ จุดเสี่ยงหลักคือ gross margin ต่ำ (7–13%) และรายได้ผันผวนตาม project cycle ซึ่งทำให้การประเมิน "กำไรปกติ" ยาก สำหรับนักลงทุนที่รับความผันผวนได้ MOS ~19% ณ ราคา ฿4.22 เพียงพอสำหรับทยอยสะสม แต่ควรรอให้กำไรฟื้นจริงก่อนเพิ่มน้ำหนัก</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿5.20 <span style="font-size:12px;color:#cab9a8">(฿4.67–฿5.76)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +14%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿5.27 (Strong Buy)</div></div>
       </div>
       <div class="zone">

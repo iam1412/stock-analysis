@@ -10,6 +10,40 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 1090,
+  "values": {
+    "px": 957.27,
+    "priceDate": "2026-09-11",
+    "dateEra": "CE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 899,
+    "fvHigh": 1250,
+    "analystTgt": 1233,
+    "eps": 34.94,
+    "shares": 269000000,
+    "dps": 2,
+    "baseEps": 14.5,
+    "scenarios": [
+      {
+        "tgt": 732,
+        "div": null
+      },
+      {
+        "tgt": 1190,
+        "div": null
+      },
+      {
+        "tgt": 1824,
+        "div": null
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#1a73e8",
     "accentDark": "#1557b0",
@@ -41,18 +75,14 @@
     "min": 400,
     "max": 1400,
     "grid": [600, 800, 1000, 1200],
-    "fairLine": 1090,
     "currency": "$",
     "highlight": [0, 8]
   },
   "gauge": {
     "min": 680,
     "max": 1480,
-    "cur": 957.27,
-    "fair": 1090,
     "fairLabelTop": "-58px"
-  },
-  "fv": 1090
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +102,11 @@
     <div class="sub">อุปกรณ์ผลิตไฟฟ้า–ส่งไฟ • กังหันก๊าซ, กริด, นิวเคลียร์, ลม • ซัพพลายเออร์หลักของ "AI power buildout"</div>
     <div class="price-row">
       <div>
-        <div class="px">$957.27<small>(GEV)</small></div>
+        <div class="px">{{rd:px}}<small>(GEV)</small></div>
       </div>
-      <div class="chg">▲ +63.6% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2026 (ปิด 16:00 ET) ที่ $1,014.75<br>
+        ราคา ณ {{rd:priceDate}} (ปิด 16:00 ET) ที่ $1,014.75<br>
         หลังรายงานผล Q2/2026 (22 ก.ค.) Adj. EPS พลาดคาด แต่ orders/backlog แข็งแกร่ง<br>
         ที่มา: StockAnalysis / Yahoo Finance / GE Vernova IR
       </div>
@@ -87,7 +117,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ FY2025 + Q2/2026 (8-K)</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$258B</div><div class="d">~269 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~269 ล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM, GAAP)</div><div class="v">~27x</div><div class="d">EPS TTM $34.94 <span class="pill a">บวมจากกำไรพิเศษ</span></div></div>
       <div class="metric"><div class="k">P/E (Forward)</div><div class="v neu">~71x</div><div class="d">EPS หลักคาด ~$13.5–14/หุ้น (หลัง Q2 miss)</div></div>
       <div class="metric"><div class="k">เงินปันผล</div><div class="v">0.21%</div><div class="d">$2.00/ปี • เพิ่งเพิ่ม 2 เท่า</div></div>
@@ -113,7 +143,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1a73e8"></i>ราคา GEV</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $1,090</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -141,8 +171,8 @@
         <div class="mval">$1,120</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $899 – $1,250</span></div>
-        <div class="r">$1,090</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>หมายเหตุ:</b> ข้าม DDM เพราะปันผลน้อยมาก (0.19%) ไม่มีนัยสำคัญ • EPS TTM แบบ GAAP ($34.94) <b>บวมจากกำไรครั้งเดียว</b>
@@ -158,14 +188,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $957</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $1,090</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$763<br><small>MOS 30%</small></span>
-          <span>$872<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$1,090<br><small>Fair Value</small></span>
-          <span style="text-align:right">$1,233<br><small>เป้า Analyst</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:analystTgt}}<br><small>เป้า Analyst</small></span>
           <span style="text-align:right">$1,424<br><small>เป้าสูงสุด</small></span>
         </div>
       </div>
@@ -180,19 +210,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+12%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>Margin of Safety ต่ำมาก</b><br>ราคาปัจจุบัน $1,015 ต่ำกว่ามูลค่าเหมาะสม $1,090 เพียง ~7% → ยังไม่ถึงเกณฑ์ value investor (MOS20-30%) ยังไม่ใช่จุดซื้อที่ปลอดภัย</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$872</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$763</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
         <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $1,050</div><div class="d">ใกล้ขอบล่างของ fair value</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="957.27" step="1">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -201,13 +231,13 @@
 
   <!-- ===== RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $957 • EPS ฐาน ~$14.5</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$732</div>
-          <div class="ret neg">รวม ~ −24% (≈ −8.7%/ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$18.3</span></li>
             <li><span>P/E ออก</span><span>40x</span></li>
@@ -218,8 +248,8 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +18%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$1,190</div>
-          <div class="ret pos">รวม ~ +24% (≈ +7.4%/ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$23.8</span></li>
             <li><span>P/E ออก</span><span>50x</span></li>
@@ -230,8 +260,8 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +28%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$1,824</div>
-          <div class="ret pos">รวม ~ +91% (≈ +24.1%/ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$30.4</span></li>
             <li><span>P/E ออก</span><span>60x</span></li>
@@ -282,9 +312,9 @@
       <h2>ธุรกิจอยู่ใจกลางเมกะเทรนด์ไฟ AI แต่ราคา ณ ตอนนี้ "ไม่ถูก"</h2>
       <p>GE Vernova เป็นซัพพลายเออร์หลักของการสร้างกำลังไฟฟ้าเพื่อรองรับ AI — Q2/2026 orders/backlog แข็งแกร่งเป็นประวัติการณ์ ยกไกด์ FCF ขึ้นมาก แม้ adj. EPS พลาดคาด แต่ที่ราคา ~$1,015 ตลาดยังสะท้อนการเติบโตสูงไว้แล้ว (forward P/E ~47x) สำหรับสาย value ยังมีส่วนเผื่อความปลอดภัยจำกัด ส่วนสาย growth ที่เชื่อธีมไฟ AI ยังเห็น upside จาก backlog ที่แข็งแกร่งขึ้น</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$1,090 <span style="font-size:12px;color:#a6c4b8">($899–$1,250)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">MOS ~ +12%</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">$1,233 (+28.8%)</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#a6c4b8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">MOS ~ {{rd:mos}}</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">{{rd:analystTgt}} (+28.8%)</div></div>
       </div>
       <div class="zone">
         💡 <b>กลยุทธ์:</b> สาย value — รอย่อ/ทยอยสะสมเมื่อราคา <b>ต่ำกว่า ~$1,050</b> (น่าสนใจที่ &lt;$872) • สาย growth — เข้าได้แบบ DCA และยอมรับความผันผวนสูง โดยติดตาม <b>orders/backlog กังหันก๊าซ</b>, <b>การขยายมาร์จิ้น</b> และ <b>FCF</b> เป็นตัวชี้วัดหลัก

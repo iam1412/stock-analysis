@@ -10,6 +10,40 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 310,
+  "values": {
+    "px": 321.57,
+    "priceDate": "2026-09-11",
+    "dateEra": "CE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 295,
+    "fvHigh": 325,
+    "analystTgt": 488,
+    "eps": 16.35,
+    "shares": 274000000,
+    "dps": 4.8,
+    "baseEps": 24,
+    "scenarios": [
+      {
+        "tgt": 297,
+        "div": null
+      },
+      {
+        "tgt": 506,
+        "div": null
+      },
+      {
+        "tgt": 674,
+        "div": null
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#1a73e8",
     "accentDark": "#1557b0",
@@ -41,18 +75,14 @@
     "min": 200,
     "max": 800,
     "grid": [400, 600],
-    "fairLine": 310,
     "currency": "$",
     "highlight": [0, 8]
   },
   "gauge": {
     "min": 190,
     "max": 660,
-    "cur": 321.57,
-    "fair": 310,
     "fairLabelTop": "-58px"
-  },
-  "fv": 310
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +102,11 @@
     <div class="sub">เจ้าของ TurboTax • QuickBooks • Credit Karma • Mailchimp • ผู้ช่วย AI "Intuit Assist"</div>
     <div class="price-row">
       <div>
-        <div class="px">$321.57<small>(INTU)</small></div>
+        <div class="px">{{rd:px}}<small>(INTU)</small></div>
       </div>
-      <div class="chg">▼ −51.8% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ≈ 11 ก.ย. 2026 (ฟื้นตัวจากจุดต่ำสุด 52 สัปดาห์ ~$253)<br>
+        ราคา ≈ {{rd:priceDate}} (ฟื้นตัวจากจุดต่ำสุด 52 สัปดาห์ ~$253)<br>
         กรอบ 52 สัปดาห์ $252.84 – $813.70<br>
         ที่มา: StockAnalysis / Yahoo Finance / MarketBeat
       </div>
@@ -87,8 +117,8 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ FY2025 (สิ้นสุด ก.ค. 2025) + Q3 FY2026</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$88.1B</div><div class="d">~274 ล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM, GAAP)</div><div class="v">~19.7x</div><div class="d">EPS TTM $16.35 <span class="pill g">ฟื้นตัวจากจุดต่ำสุด</span></div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~274 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM, GAAP)</div><div class="v">~{{rd:pe}}x</div><div class="d">EPS TTM $16.35 <span class="pill g">ฟื้นตัวจากจุดต่ำสุด</span></div></div>
       <div class="metric"><div class="k">P/E (Non-GAAP, fwd)</div><div class="v neu">~13.4x</div><div class="d">Non-GAAP EPS FY26 ~$24</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย 5 ปี</div><div class="v">~33x</div><div class="d">เคยซื้อขายที่ 35–45x</div></div>
 
@@ -113,7 +143,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1a73e8"></i>ราคา INTU</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $310</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -142,8 +172,8 @@
         <div class="mval">$295</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $295 – $325</span></div>
-        <div class="r">$310</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>หมายเหตุ:</b> ใช้ multiple ที่ <b>อนุรักษ์นิยมมาก</b> (~14x non-GAAP เทียบค่าเฉลี่ยอดีต ~33x) เพื่อสะท้อนความเสี่ยง
@@ -159,14 +189,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $322</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $310</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$217<br><small>MOS 30%</small></span>
-          <span>$248<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$310<br><small>Fair Value</small></span>
-          <span style="text-align:right">$488<br><small>เป้า Analyst</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:analystTgt}}<br><small>เป้า Analyst</small></span>
           <span style="text-align:right">$600<br><small>เป้าสูงสุด</small></span>
         </div>
       </div>
@@ -182,19 +212,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−4%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>แทบไม่มี Margin of Safety (ราคาใกล้เคียงมูลค่าเหมาะสม)</b><br>ราคาปัจจุบัน $312.81 สูงกว่ามูลค่าเหมาะสม $310 เล็กน้อย (~1%) → อยู่ในโซน "เต็มมูลค่า" ไม่มี downside cushion เหลือแล้ว นักลงทุน value ควรรอย่อลงมาที่ $248 (MOS 20%) หรือต่ำกว่าก่อนสะสม</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$248</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$217</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
         <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $260</div><div class="d">ต่ำกว่าราคาปัจจุบัน ~17%</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="321.57" step="1">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -203,13 +233,13 @@
 
   <!-- ===== RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $321.57 • EPS ฐาน ~$24 (non-GAAP)</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} (non-GAAP)</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +4%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$297</div>
-          <div class="ret neg">รวม ~ −8% (≈ −3%/ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$27.0</span></li>
             <li><span>P/E ออก</span><span>11x</span></li>
@@ -220,8 +250,8 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +12%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$506</div>
-          <div class="ret pos">รวม ~ +57% (≈ +16%/ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$33.7</span></li>
             <li><span>P/E ออก</span><span>15x</span></li>
@@ -232,8 +262,8 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +16%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$674</div>
-          <div class="ret pos">รวม ~ +110% (≈ +28%/ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$37.5</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
@@ -285,9 +315,9 @@
       <h2>ธุรกิจคุณภาพสูงที่ตลาดทิ้ง — โอกาส value ที่มาพร้อมความเสี่ยง AI</h2>
       <p>Intuit เป็นเจ้าตลาดซอฟต์แวร์การเงิน SMB + ผู้บริโภค ที่ ROE ~22% และยังโตเลขสองหลัก ราคาเคยร่วง ~69% จากความกลัวว่า AI จะดิสรัปต์ TurboTax ก่อนจะฟื้นตัวขึ้นมาที่ ~$313 (P/E ~19x) ทำให้ตอนนี้แทบไม่เหลือ margin of safety เทียบ fair value อนุรักษ์นิยม $310 (MOS ~−1%) แต่ upside ยังมหาศาลหากความกลัว AI เกินจริง (เป้านักวิเคราะห์เฉลี่ย $488) — ต้องยอมรับว่าการดิสรัปต์เป็นความเสี่ยงจริง</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$310 <span style="font-size:12px;color:#a8b6cc">($295–$325)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −4%</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">$488 (+52%)</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#a8b6cc">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">{{rd:analystTgt}} (+52%)</div></div>
       </div>
       <div class="zone">
         💡 <b>กลยุทธ์:</b> สาย value — ทยอยสะสมได้ที่ระดับนี้ น่าสนใจมากขึ้นเมื่อ <b>ต่ำกว่า ~$248</b> (deep value &lt;$217) • ติดตามตัวชี้วัดหลัก: <b>การเติบโต QuickBooks/SMB</b>, ส่วนแบ่ง <b>TurboTax</b> ในฤดูภาษีถัดไป และการ <b>monetize Intuit Assist</b> — ถ้าธุรกิจป้องกัน AI ได้ upside จะใหญ่กว่าความเสี่ยงขาลงมาก

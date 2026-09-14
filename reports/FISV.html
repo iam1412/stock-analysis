@@ -16,6 +16,38 @@
 -->
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 67,
+  "values": {
+    "px": 51.58,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 59,
+    "fvHigh": 72,
+    "eps": 8.44,
+    "shares": 533299999.99999994,
+    "baseEps": 8.44,
+    "scenarios": [
+      {
+        "tgt": 43.44,
+        "div": 0
+      },
+      {
+        "tgt": 73.76,
+        "div": 0
+      },
+      {
+        "tgt": 106.3,
+        "div": 0
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#e36f18",
     "accentDark": "#a54f00",
@@ -47,18 +79,14 @@
     "min": 45,
     "max": 70,
     "grid": [50, 55, 60, 65],
-    "fairLine": 67,
     "currency": "$",
     "highlight": [2, 8]
   },
   "gauge": {
     "min": 40,
     "max": 85,
-    "cur": 51.58,
-    "fair": 67,
     "fairLabelTop": true
-  },
-  "fv": 67
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -79,14 +107,14 @@
     <div class="sub">Clover POS & merchant acquiring • Core banking/processing สำหรับธนาคาร-สหกรณ์ • Card issuer processing • Digital payments & output solutions</div>
     <div class="price-row">
       <div>
-        <div class="px">$51.58<small>(FISV)</small></div>
+        <div class="px">{{rd:px}}<small>(FISV)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
            รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
-      <div class="chg">▼ −22.7% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $47.04 – $175.92<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, Fiserv Investor Relations (Q4/FY2025 + Q1 2026 earnings release)
       </div>
@@ -102,8 +130,8 @@
          • หุ้นเติบโต-ขาดทุน → Revenue growth / Gross margin / FCF / Cash runway (ตัด P/E ออก)
          • FISV: ใช้ P/E (TTM) บนฐาน adjusted EPS (ไม่ใช่ GAAP ที่ถูกกดจาก D&A/amortization สินทรัพย์ไม่มีตัวตนจากดีล First Data) ตัดการ์ด P/BV ออก (fintech โครงสร้างทุนไม่เทียบธนาคาร) แทนด้วย Clover GPV growth + P/FCF -->
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">$27.5B</div><div class="d">533.3M หุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~6.1x</div><div class="d">บน adjusted EPS $8.44 (GAAP P/E ~8.85x)</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">533.3M หุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">บน adjusted EPS $8.44 (GAAP P/E ~8.85x)</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~32x</div><div class="d">ช่วง 2021-2025 (ก่อนราคาดิ่ง)</div></div>
       <div class="metric"><div class="k">P/FCF (TTM)</div><div class="v neu">~6.3x</div><div class="d">FCF/หุ้น ~$8.33 · FCF conversion ~93%</div></div>
 
@@ -130,7 +158,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#e87722"></i>ราคา FISV</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $67</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -163,8 +191,8 @@
         <div class="mval">$59.10</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $59 – $72</span></div>
-        <div class="r">$67</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <!-- ✏️ หมายเหตุ: วิธีไหนให้ค่าสูง/ต่ำเพราะอะไร, ทำไม FV กลางจึงสมเหตุสมผล -->
@@ -182,15 +210,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $51.58</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $67</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$46.90<br><small>MOS 30%</small></span>
-          <span>$53.60<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$67<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$70<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$72<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -206,19 +234,19 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
-      <div class="mos-verdict good">
-        <div class="big">+23%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">มี Margin of Safety ระดับดี — แต่มาพร้อมความเสี่ยง execution ที่สูงกว่าหุ้น value ทั่วไป เพราะราคาสะท้อนความไม่แน่นอนของ turnaround ภายใต้ CEO ใหม่</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$53.60</div><div class="d">โซนน่าสนใจสำหรับ value (ใกล้ราคาปัจจุบันมาก)</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$46.90</div><div class="d">โซนถูกมาก (deep value) — ใกล้จุดต่ำสุดรอบปี $49.05</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $67</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value (ใกล้ราคาปัจจุบันมาก)</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value) — ใกล้จุดต่ำสุดรอบปี $49.05</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="51.58" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -227,17 +255,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $51.58 • EPS ฐาน ~$8.44 • ไม่มีปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} • ไม่มีปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$43.44</div>
-          <div class="ret neg">−15.8%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$7.24</span></li>
             <li><span>P/E ออก</span><span>6x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0 (ไม่จ่ายปันผล)</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}} (ไม่จ่ายปันผล)</span></li>
             <li><span>สถานการณ์</span><span>Financial Solutions attrition ลากยาว, Clover ไม่ฟื้น, ตลาดคง "value trap" label</span></li>
           </ul>
         </div>
@@ -245,12 +273,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +3%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$73.76</div>
-          <div class="ret pos">+43.0%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$9.22</span></li>
             <li><span>P/E ออก</span><span>8x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0 (ไม่จ่ายปันผล)</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}} (ไม่จ่ายปันผล)</span></li>
             <li><span>สถานการณ์</span><span>Clover เติบโต mid-single-digit, Financial Solutions ทรงตัว, ตลาดค่อยๆ คืนความเชื่อมั่นให้ CEO ใหม่</span></li>
           </ul>
         </div>
@@ -258,12 +286,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$106.30</div>
-          <div class="ret pos">+106.1%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$10.63</span></li>
             <li><span>P/E ออก</span><span>10x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0 (ไม่จ่ายปันผล)</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}} (ไม่จ่ายปันผล)</span></li>
             <li><span>สถานการณ์</span><span>Turnaround สำเร็จ Clover GPV กลับสู่ 10-15%, Financial Solutions attrition หยุด, multiple re-rate บางส่วน</span></li>
           </ul>
         </div>
@@ -319,8 +347,8 @@
         ปัจจุบัน ตลาดดูเหมือนตีราคาสถานการณ์เลวร้ายไปมากแล้ว เปิดช่องให้มี Margin of Safety ในระดับที่น่าสนใจสำหรับนักลงทุนที่รับความเสี่ยง execution ได้
       </p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$67 <span style="font-size:12px;color:#cab9a8">($59–$72)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +23%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$70 (Hold, 34 นักวิเคราะห์)</div></div>
       </div>
       <div class="zone">

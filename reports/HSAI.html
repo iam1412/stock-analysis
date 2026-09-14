@@ -10,6 +10,17 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 16.53,
+  "values": {
+    "px": 17.31,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 16.47,
+    "fvHigh": 16.59,
+    "eps": 0.44
+  },
   "theme": {
     "accent": "#16a288",
     "accentDark": "#107563",
@@ -40,17 +51,13 @@
     "min": 15,
     "max": 30,
     "grid": [20, 25],
-    "fairLine": 16.53,
     "currency": "$",
     "highlight": [4, 10]
   },
   "gauge": {
     "min": 10,
-    "max": 30,
-    "cur": 17.31,
-    "fair": 16.53
-  },
-  "fv": 16.53
+    "max": 30
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -70,11 +77,11 @@
     <div class="sub">ผู้นำตลาดเซนเซอร์ Lidar ระดับโลก • ADAS รถยนต์ไร้คนขับ • หุ่นยนต์ AMR/Delivery • Robotaxi</div>
     <div class="price-row">
       <div>
-        <div class="px">$17.31<small>(HSAI)</small></div>
+        <div class="px">{{rd:px}}<small>(HSAI)</small></div>
       </div>
-      <div class="chg">▼ −27.1% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569 (StockAnalysis.com, ตรงกับ Google Finance ต่าง &lt;1%)<br>
+        ราคา ณ {{rd:priceDate}} (StockAnalysis.com, ตรงกับ Google Finance ต่าง &lt;1%)<br>
         กรอบ 52 สัปดาห์ $14.40 – $30.85<br>
         ที่มา: StockAnalysis.com, Google Finance, SEC EDGAR (Form 20-F/6-K), Hesai Investor Relations
       </div>
@@ -86,7 +93,7 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">TTM = 4 ไตรมาสล่าสุด ณ Q1/2569</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~$2.39B</div><div class="d">~156.2M ADS-equiv (อัตราส่วนใหม่ 1 ADS=8 หุ้นสามัญ มีผล 10 ก.ค.69)</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~39.3x</div><div class="d">EPS TTM $0.44/ADS</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM $0.44/ADS</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">N/A</div><div class="d">ขาดทุนต่อเนื่อง 2564-2567 พลิกกำไรปี 2568</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~1.8x</div><div class="d">ประมาณจาก NI/ROE (ไม่เปิดเผยงบดุลเต็ม)</div></div>
 
@@ -111,7 +118,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#27e2c0"></i>ราคา HSAI</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $16.53</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -133,8 +140,8 @@
         <div class="mval">$16.59</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $16.47 – $16.59</span></div>
-        <div class="r">$16.53</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         ทั้งสองวิธีให้ค่าใกล้เคียงกันมาก ($16.47-16.59) เพราะสะท้อนสมมติฐานเดียวกัน (เติบโต 30%+ แต่คูณ multiple แบบระมัดระวังจาก risk premium ของ ADR จีน) — ไม่ใช้เป้านักวิเคราะห์เฉลี่ย $30.31 เป็น FV เพราะดูเหมือนยังไม่รวม discount ความเสี่ยง regulatory/DoD list เต็มที่ FV ที่ได้ ($16.53) ใกล้เคียงราคาปัจจุบันมาก แสดงว่าตลาดเริ่ม price-in ความเสี่ยงไปมากแล้วแต่ยังไม่ถึงจุดที่ถูกเกินพื้นฐาน
@@ -148,14 +155,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $17.31</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $16.53</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$11.57<br><small>MOS 30%</small></span>
-          <span>$13.22<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$16.53<br><small>Fair Value</small></span>
-          <span style="text-align:right">$16.59<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$30.31<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -169,19 +176,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−5%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>MOS ต่ำกว่าเกณฑ์ปลอดภัย (&lt;10%)</b><br>ราคาปัจจุบันใกล้เคียงมูลค่าเหมาะสมที่ประเมินไว้มาก นักลงทุนที่เน้น value ควรรอราคาย่อลงมาใกล้โซน MOS20 ($13.22) ก่อนเข้าซื้อ โดยเฉพาะเมื่อความเสี่ยง DoD 1260H/คดีความยังไม่คลี่คลาย</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$13.22</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$11.57</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $16.53</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="17.31" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -272,8 +279,8 @@
       <h2>ธุรกิจแข็งแกร่ง เติบโตสูง แต่ราคาเริ่มใกล้มูลค่าเหมาะสม ท่ามกลางความเสี่ยง Regulatory ที่ยังไม่คลี่คลาย</h2>
       <p>Hesai Group เป็นผู้นำตลาด lidar ระดับโลก รายได้โต 41.9% (TTM) พลิกทำกำไร GAAP ต่อเนื่อง และมีเงินสดสุทธิหนาแน่น แต่ราคาร่วง 41% ในรอบปีจากความกังวลเรื่องบัญชี DoD 1260H "Chinese Military Company" ที่ยังไม่คลี่คลาย (อยู่ระหว่างอุทธรณ์) รวมถึงคดีความแบบกลุ่มที่ยังไม่จบ FV ที่ประเมินได้ ($16.53) ใกล้เคียงราคาปัจจุบันมาก ทำให้ MOS ติดลบเล็กน้อย (−0.9%) — ราคาแพงกว่า FV เล็กน้อย ต่ำกว่าเกณฑ์ปลอดภัย แม้พื้นฐานธุรกิจจะยังแข็งแรงและมี upside ระยะยาวจาก robotics/robotaxi หากปัญหา regulatory คลี่คลายในทางบวก</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$16.53 <span style="font-size:12px;color:#cab9a8">($16.47–$16.59)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −5%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$30.31 (Strong Buy)</div></div>
       </div>
       <div class="zone">
@@ -286,7 +293,7 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ 11 ก.ย. 2569 จาก StockAnalysis.com (cross-check กับ Google Finance ต่างกัน &lt;1%) • ข้อมูลงบการเงิน 5 ปี + TTM จาก StockAnalysis.com (หน่วยเดิม RMB แปลงเป็น USD ที่ ~6.78 CNY/USD) • ผลประกอบการ Q1/2569 จาก Hesai Investor Relations press release และ SEC Form 6-K • สถานะ DoD 1260H List/คดีความจาก SEC filings, Hesai IR appeal notice, Rimon Law analysis • อัตราส่วน ADS จาก SEC Form 20-F/6-K และ StockTitan
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ {{rd:priceDate}} จาก StockAnalysis.com (cross-check กับ Google Finance ต่างกัน &lt;1%) • ข้อมูลงบการเงิน 5 ปี + TTM จาก StockAnalysis.com (หน่วยเดิม RMB แปลงเป็น USD ที่ ~6.78 CNY/USD) • ผลประกอบการ Q1/2569 จาก Hesai Investor Relations press release และ SEC Form 6-K • สถานะ DoD 1260H List/คดีความจาก SEC filings, Hesai IR appeal notice, Rimon Law analysis • อัตราส่วน ADS จาก SEC Form 20-F/6-K และ StockTitan
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 31 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

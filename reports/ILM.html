@@ -12,6 +12,18 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 17.5,
+  "values": {
+    "px": 13.8,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 17.17,
+    "fvHigh": 17.74,
+    "shares": 505000000,
+    "dps": 1
+  },
   "theme": {
     "accent": "#1565c0",
     "accentDark": "#0d47a1",
@@ -43,7 +55,6 @@
     "min": 12,
     "max": 18,
     "grid": [14, 16],
-    "fairLine": 17.5,
     "currency": "฿",
     "highlight": [4, 7],
     "gridFmt": "v.toFixed(1)",
@@ -52,11 +63,8 @@
   "gauge": {
     "min": 10,
     "max": 22,
-    "cur": 13.8,
-    "fair": 17.5,
     "fairLabelTop": true
-  },
-  "fv": 17.5
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -76,11 +84,11 @@
     <div class="sub">ค้าปลีก-ค้าส่งเฟอร์นิเจอร์และของตกแต่งบ้านอันดับ 1 ของไทย • แบรนด์ Index Living Mall • ผลิตและจำหน่ายเฟอร์นิเจอร์ดีไซเนอร์ • ให้เช่าพื้นที่ • ก่อตั้ง 2516</div>
     <div class="price-row">
       <div>
-        <div class="px">฿13.80<small>(ILM)</small></div>
+        <div class="px">{{rd:px}}<small>(ILM)</small></div>
       </div>
-      <div class="chg">▼ −3.5% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿12.10 – ฿16.20<br>
         ที่มา: Yahoo Finance, SET Factsheet, StockAnalysis.com
       </div>
@@ -117,7 +125,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1565c0"></i>ราคา ILM</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿17.50</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -146,8 +154,8 @@
         <div class="mval">฿17.74</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿17.17 – ฿17.74</span></div>
-        <div class="r">฿17.50</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         ทั้ง 3 วิธีให้ค่าใกล้เคียงกันในกรอบ ฿17.17–17.74 สะท้อนความสอดคล้องของโมเดล
@@ -165,15 +173,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿13.80</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿17.50</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿12.25<br><small>MOS 30%</small></span>
-          <span>฿14.00<br><small>MOS 20%</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">฿16.50<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">฿17.50<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿17.74<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -189,19 +197,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict good">
-        <div class="big">+21%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">โซนน่าซื้อ — ราคาต่ำกว่ามูลค่าเหมาะสมอย่างมีนัยสำคัญ</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿14.00</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿12.25</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿17.50</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="13.8" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -299,8 +307,8 @@
         แม้กำไรจะโตช้าในระยะสั้นจากภาวะเศรษฐกิจชะลอ แต่ yield ปันผลสูงช่วยลด downside risk ได้มาก
         เมื่อตลาดอสังหาและกำลังซื้อผู้บริโภคฟื้นตัว ILM มีศักยภาพ re-rating P/E กลับสู่ 12–14x ได้</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿17.50 <span style="font-size:12px;color:#cab9a8">(฿17.17–฿17.74)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +21%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿16.50 (Buy)</div></div>
       </div>
       <div class="zone">
