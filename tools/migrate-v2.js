@@ -87,9 +87,14 @@ const TOLERANCE = {
   f20: (a, b) => near(a, b, 0.01, 0.06), f21: (a, b) => a == null ? b == null : near(a, b, 0.01, 0.06),
   f22: (a, b) => near(a, b, 0, 0.55), f26: (a, b) => near(a, b, 0.03, 0), f28: (a, b) => near(a, b, 0.03, 0.06),
   f29: (a, b) => near(a, b, 0, 0.06), f30: (a, b) => a == null ? b == null : near(a, b, 0, 0.06), f31: (a, b) => near(a, b, 0.01, 0.006),
-  f34: (a, b) => arrNear(a, b, 1.0), f35: (a, b) => arrNear(a, b, 1.0), f36: (a, b) => near(a, b, 0.005, 0.005),
+  f34: (a, b) => arrNear(a, b, 1.0), f35: (a, b) => arrNear(a, b, 1.0),
+  // f36 (หมวด 6 hint "จากจุดเข้า $px") / f50 (ป้าย gauge mCur "ปัจจุบัน $px") = ราคาที่ v1 พิมพ์ปัดเลขเองได้
+  // (฿19 vs ฿18.9 · $52 vs $51.73) เหมือน f51/f52 ทุกประการ — v1 คือค่าที่ผู้เขียนปัดเศษตอนพิมพ์ ส่วน v2 render
+  // ตรงกับราคาจริง (= f01) เป๊ะเสมอ ⇒ ยอมได้เมื่อ v1 เป็นการปัดเศษที่ถูกต้องของ v2 (roundsTo) เกณฑ์เดียวกับ f51/f52
+  f36: (a, b) => near(a, b, 0.005, 0.005) || roundsTo(a, b),
   // f51 (ป้าย scale) / f52 (การ์ดจุดซื้อ MOS20/30) = FV×0.8/0.7 ที่ v1 พิมพ์ปัดเลขเองได้ (74.59 vs 74.585 · 741.37 vs 741.30)
   // ⇒ ยอมได้ในช่วงเดียวกับ **gate เจ้าของช่องนี้เอง** (E18/E26 = 2.5%) — v2 ทำให้ค่าตรงสูตรเป๊ะ (ดู roundsTo/หมายเหตุ census)
+  f50: (a, b) => near(a, b, 0.005, 0.005) || roundsTo(a, b),
   f51: (a, b) => arrNear(a, b, 0.006) || arrRounds(a, b) || arrNearGap(a, b), f52: (a, b) => arrNear(a, b, 0.006) || arrRounds(a, b) || arrNearGap(a, b),
   f54: (a, b) => arrNear(a, b, 0.006),
 };
