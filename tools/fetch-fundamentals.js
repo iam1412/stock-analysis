@@ -556,8 +556,10 @@ function forecastLine(y, sa, fc, currentFY) {
   if (!fc || !Array.isArray(fc.years) || !fc.years.length) return null;
   // พิมพ์เก่า→ใหม่ให้อ่านเป็นไทม์ไลน์ (fc.years เก็บใหม่→เก่าตามแบบตาราง [3])
   const head = '[2c] forecast (SA /forecast/): ' + fc.years.slice().reverse().map((r) => `FY${r.fy}e EPS ${fmt(r.eps)}`).join(' · ');
+  // ★ #35: asNum() คืน null เฉพาะตอน parse ไม่ได้/ไม่มีค่า (vendor ไม่ส่งมา) — ต่างจาก 0 ที่เป็นตัวเลขจริง
+  // (forward estimate จริงเป็น 0 ได้) ⇒ ห้ามเช็ค `v === 0` เป็น "ไม่มีค่า" อีกต่อไป — ใช้ sentinel `v == null` เท่านั้น
   const v = asNum(y && y.epsFwd);
-  if (!Number.isFinite(v) || v === 0) return `${head} — ไม่มี epsFwd จาก Yahoo ให้เทียบงวด (ตรวจเองว่าตัวเลข forward ที่จะใช้เป็นปีงบไหน)`;
+  if (v == null) return `${head} — ไม่มี epsFwd จาก Yahoo ให้เทียบงวด (ตรวจเองว่าตัวเลข forward ที่จะใช้เป็นปีงบไหน)`;
   let best = null;
   for (const r of fc.years) {
     const d = Math.abs(r.eps - v) / Math.abs(v);

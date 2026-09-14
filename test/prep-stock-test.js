@@ -358,6 +358,13 @@ ok(P.parseArgs(['CGNX', '--brand']).error != null, 'parseArgs: --brand ไม่
       'fromForecast: โครง payload เปลี่ยน (ไม่เจอ estimates) → null ไม่เดา');
     ok(F.forecastLine({ epsFwd: 1 }, null, null, '2025') === null, 'forecastLine: ไม่มี fc → null (ไม่พิมพ์บรรทัด [2c])');
     ok(/ไม่มี epsFwd/.test(F.forecastLine(null, null, fc, '2025')), 'forecastLine: Yahoo ล่ม/ไม่มี epsFwd → พิมพ์ปีงบไว้ให้ worker เทียบเอง');
+    ok(/ไม่มี epsFwd/.test(F.forecastLine({ epsFwd: undefined }, null, fc, '2025')), 'forecastLine: y.epsFwd undefined (vendor ไม่ส่งค่ามา) → "ไม่มี epsFwd"');
+    ok(/ไม่มี epsFwd/.test(F.forecastLine({}, null, fc, '2025')), 'forecastLine: y ไม่มีคีย์ epsFwd เลย (vendor ไม่ส่งค่ามา) → "ไม่มี epsFwd"');
+    // open-item #35: epsFwd ที่ vendor ส่งมาจริงเท่ากับ 0 (ไม่ใช่ "ไม่มีค่า") ต้องแยกออกจากกรณีข้างบน —
+    // ต้องพิมพ์ผลเทียบ FY จริง (ไม่ตรง FY ไหนเพราะ 0 ห่างจากทุกปีเกิน tolerance) ไม่ใช่ "ไม่มี epsFwd"
+    const lZero = F.forecastLine({ epsFwd: 0 }, null, fc, a.fy);
+    ok(!/ไม่มี epsFwd/.test(lZero), '★ #35 forecastLine: epsFwd = 0 จริง (forward estimate จริงเป็น 0) ≠ "ไม่มีค่า" — ต้องไม่พิมพ์ "ไม่มี epsFwd"', lZero);
+    ok(/ไม่ตรง FY ไหน/.test(lZero), '★ #35 forecastLine: epsFwd = 0 ห่างทุกปีเกิน tolerance → "ไม่ตรง FY ไหน" (ตัดสินได้จริง ไม่ใช่ค่าว่าง)', lZero);
   });
 }
 // currentFY ของบรรทัด [2c] = ปีงบล่าสุดที่ปิดแล้วจากตาราง [3] (คอลัมน์แรกที่ไม่ใช่ TTM)
