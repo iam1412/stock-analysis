@@ -12,6 +12,20 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 188.4,
+  "values": {
+    "px": 186,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 152,
+    "fvHigh": 224.8,
+    "eps": 11.24,
+    "shares": 329700000,
+    "dps": 5.06,
+    "bvps": 112.83
+  },
   "theme": {
     "accent": "#c62828",
     "accentDark": "#b71c1c",
@@ -43,7 +57,6 @@
     "min": 185,
     "max": 197.5,
     "grid": [187.5, 190, 192.5, 195],
-    "fairLine": 188.4,
     "currency": "฿",
     "highlight": [0, 8],
     "gridFmt": "v.toFixed(0)",
@@ -51,11 +64,8 @@
   },
   "gauge": {
     "min": 100,
-    "max": 230,
-    "cur": 186,
-    "fair": 188.4
-  },
-  "fv": 188.4
+    "max": 230
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -75,11 +85,11 @@
     <div class="sub">เจ้าของแบรนด์มาม่า (No.1 instant noodle ไทย) · ส่งออก 60+ ประเทศ · Defensive Consumer Staples · ปันผลสม่ำเสมอ · ไม่มีหนี้สุทธิ</div>
     <div class="price-row">
       <div>
-        <div class="px">฿186.00<small>(TFMAMA)</small></div>
+        <div class="px">{{rd:px}}<small>(TFMAMA)</small></div>
       </div>
-      <div class="chg">▼ −4.6% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569 · งบ FY2025 (FY2568)<br>
+        ราคา ณ {{rd:priceDate}} · งบ FY2025 (FY2568)<br>
         กรอบ 52 สัปดาห์ ฿185.50 – ฿199.00<br>
         ที่มา: SET Factsheet / Yahoo Finance / StockAnalysis.com / Investing.com
       </div>
@@ -91,9 +101,9 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 · ที่มา: SET, StockAnalysis, Investing.com</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">฿61,324 ล้าน</div><div class="d">329.7 ล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~16.5x</div><div class="d">EPS FY2568 ฿11.24</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS FY2568 ฿11.24</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~17–20x</div><div class="d">ช่วง 13–22x ตาม cycle</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.65x</div><div class="d">BVPS ~฿112.83</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ~฿112.83</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿3,710 ล้าน</div><div class="d">ลด −17.2% YoY จากปีแข็งแกร่ง FY2567</div></div>
       <div class="metric"><div class="k">EPS (FY2568 TTM)</div><div class="v">~฿11.24</div><div class="d">FY2567: ฿13.59 · FY2566: ฿11.46</div></div>
@@ -116,7 +126,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#c62828"></i>ราคา TFMAMA</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿188.4</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ (Jan–Feb สูงสุดรอบปี)</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -145,8 +155,8 @@
         <div class="mval">฿152.0</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿152.0 – ฿224.8</span></div>
-        <div class="r">฿188.4</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/E ให้ค่าสูงสุด ฿224.8 เพราะ EPS ปี 2567 (฿13.59) สูงผิดปกติ ปี 2568 EPS ลดลงเหลือ ฿11.24 ·
@@ -164,15 +174,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿186.0</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿188.4</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿131.9<br><small>MOS 30%</small></span>
-          <span>฿150.7<br><small>MOS 20%</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">฿186.5<br><small>ราคาปัจจุบัน</small></span>
-          <span style="text-align:center">฿188.4<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿224.8<br><small>กรอบบน FV</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -188,19 +198,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+1.3%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาใกล้เคียงมูลค่าพื้นฐานมาก (ต่ำกว่า FV ~1%) — แทบไม่เหลือ Margin of Safety ในราคานี้</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿150.7</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿131.9</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿188.4</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="186" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -296,8 +306,8 @@
       <h2>แบรนด์มาม่าแข็งแกร่ง · ราคาปัจจุบันใกล้เคียง FV มาก · แทบไม่เหลือ Margin of Safety</h2>
       <p>TFMAMA (ไทยเพรซิเดนท์ฟูดส์) คือบริษัท Consumer Staples ชั้นนำของไทย เจ้าของแบรนด์มาม่าที่ครองตลาดบะหมี่กึ่งสำเร็จรูปเกินครึ่งตลาด ด้วยงบดุลแข็งแกร่ง ไม่มีหนี้ และการส่งออกกว่า 60 ประเทศ บริษัทมี Moat ที่แข็งแกร่ง ราคาหุ้นปัจจุบัน ฿186.5 ใกล้เคียง Fair Value ฿188.4 มาก (สมอ P/E + Justified P/BV — DDM เป็นบริบท) ต่ำกว่า FV เพียง ~1.0% แทบไม่เหลือ Margin of Safety ผู้ลงทุนเน้น Value ควรรอโซนต่ำกว่า ฿150.7 (MOS 20%) เพื่อ Margin of Safety ที่เหมาะสมกว่านี้</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿188.4 <span style="font-size:12px;color:#cab9a8">(฿152.0–฿224.8)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +1.3%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿195–200 (Neutral/Hold)</div></div>
       </div>
       <div class="zone">

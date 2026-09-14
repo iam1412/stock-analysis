@@ -20,6 +20,39 @@
 -->
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 28.25,
+  "values": {
+    "px": 42.13,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 25.5,
+    "fvHigh": 31,
+    "eps": 0.51,
+    "shares": 602710000,
+    "bvps": 5.4,
+    "baseEps": 0.51,
+    "scenarios": [
+      {
+        "tgt": 13.6,
+        "div": 0
+      },
+      {
+        "tgt": 35,
+        "div": 0
+      },
+      {
+        "tgt": 122.85,
+        "div": 0
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#5f9f19",
     "accentDark": "#447312",
@@ -50,17 +83,13 @@
     "min": 20,
     "max": 100,
     "grid": [40, 60, 80],
-    "fairLine": 28.25,
     "currency": "$",
     "highlight": [1, 10]
   },
   "gauge": {
     "min": 15,
-    "max": 90,
-    "cur": 42.13,
-    "fair": 28.25
-  },
-  "fv": 28.25
+    "max": 90
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -80,11 +109,11 @@
     <div class="sub">AI-Powered AS/RS Warehouse Robotics • Walmart Strategic Partner & ผู้ถือหุ้นใหญ่ • GreenBox Systems JV (SoftBank) • Robotics-as-a-Service</div>
     <div class="price-row">
       <div>
-        <div class="px">$42.13<small>(SYM)</small></div>
+        <div class="px">{{rd:px}}<small>(SYM)</small></div>
       </div>
-      <div class="chg">▼ −48.0% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ ปิดตลาด 11 ก.ย. 2569 (16:00 EDT)<br>
+        ราคา ณ ปิดตลาด {{rd:priceDate}} (16:00 EDT)<br>
         กรอบ 52 สัปดาห์ $38.19 – $87.88<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, stockanalysis.com/forecast
       </div>
@@ -97,7 +126,7 @@
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">$25.39B</div><div class="d">602.71M หุ้น (fully diluted)</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neg">N/A</div><div class="d">ขาดทุนบัญชี TTM (EPS −$0.07) — พลิกกำไร 2 ไตรมาสล่าสุด</div></div>
-      <div class="metric"><div class="k">P/E Forward (FY26e)</div><div class="v neu">~82.6x</div><div class="d">อิง EPS consensus $0.51 (17 นักวิเคราะห์) — ยังแพงกว่าตลาดมาก</div></div>
+      <div class="metric"><div class="k">P/E Forward (FY26e)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">อิง EPS consensus $0.51 (17 นักวิเคราะห์) — ยังแพงกว่าตลาดมาก</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~7.8x</div><div class="d">BVPS $5.40 — ธุรกิจ asset-light</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ Q2 FY2026</div><div class="v pos">$9.4M</div><div class="d">พลิกกำไรจาก Q2 FY2025 ที่ขาดทุน $9.9M</div></div>
@@ -121,7 +150,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#89de2b"></i>ราคา SYM</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $28.25</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -146,8 +175,8 @@
       </div>
 
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $25.50 – $31.00</span></div>
-        <div class="r">$28.25</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี FCF Yield ให้ค่าสูงกว่าเล็กน้อยเพราะสะท้อนกระแสเงินสดจริงที่แข็งแกร่งกว่ากำไรบัญชี (ผลจากโมเดลเก็บเงินมัดจำล่วงหน้า) ส่วนวิธี P/E ใช้ EPS forward ที่เพิ่งพลิกบวกทำให้ฐานกำไรยังต่ำ —
@@ -163,14 +192,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $42.13</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $28.25</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$19.78<br><small>MOS 30%</small></span>
-          <span>$22.60<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$28.25<br><small>Fair Value</small></span>
-          <span style="text-align:right">$31.00<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$65.67<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -185,19 +214,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−49%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>ไม่มี Margin of Safety — ราคาแพงกว่ามูลค่าเหมาะสมมาก</b><br>ราคาปัจจุบัน $43.64 สูงกว่ามูลค่าเหมาะสม $28.25 ที่ประเมินได้ราว 54.5% (เกือบ 1.55 เท่าของ FV) → ตามเกณฑ์ value investor ถือว่า <b>แพงเกินไปมาก</b> ไม่ใช่จุดซื้อ ยกเว้นเชื่อมั่นสูงในเรื่องเล่าการเติบโตระยะยาวเกินกว่าที่ตัวเลขปัจจุบันจะสนับสนุนได้</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$22.60</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$19.78</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $28.25</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="42.13" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -206,17 +235,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $42.13 • EPS ฐาน ~$0.51 • ไม่มีปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} • ไม่มีปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +10%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$13.60</div>
-          <div class="ret neg">−67.7% (3 ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$0.68</span></li>
             <li><span>P/E ออก</span><span>20x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>การเติบโตชะลอแรงกว่าคาด Walmart ชะลอ capex/เลื่อนโครงการใหม่ คู่แข่ง AutoStore/Dematic กดมาร์จิ้น ตลาดคลายพรีเมียม growth กลับสู่ P/E ระดับอุตสาหกรรมทั่วไป</span></li>
           </ul>
         </div>
@@ -224,12 +253,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +40%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$35.00</div>
-          <div class="ret neg">−16.9% (3 ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$1.40</span></li>
             <li><span>P/E ออก</span><span>25x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>รายได้โตต่อเนื่องตาม backlog Walmart + ลูกค้าใหม่ margin ขยายตามการใช้กำลังผลิต แต่ตลาดปรับ P/E ลงจากระดับสูงมากในปัจจุบันสู่ระดับใกล้เคียงพื้นฐานมากขึ้น</span></li>
           </ul>
         </div>
@@ -237,12 +266,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +75%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$122.85</div>
-          <div class="ret pos">+191.6% (3 ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$2.73</span></li>
             <li><span>P/E ออก</span><span>45x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>GreenBox JV กับ SoftBank ขยายตัวเร็ว ลูกค้าใหม่นอกเหนือ Walmart เพิ่มขึ้นมาก margin ขยายเร็วกว่าคาดจาก operating leverage ตลาดยังให้พรีเมียมสูงต่อธีม physical-AI/หุ่นยนต์คลังสินค้า</span></li>
           </ul>
         </div>
@@ -292,8 +321,8 @@
       อย่างไรก็ตาม ราคาหุ้นที่ $43.64 คิดเป็น forward P/E ~75–85x สูงกว่ามูลค่าเหมาะสมที่ประเมินได้ (~$28.25 จาก EPS forward + FCF yield) ราว 54.5% — ไม่มี Margin of Safety เลย
       เหมาะสำหรับผู้เชื่อมั่นสูงในธีม physical-AI/หุ่นยนต์คลังสินค้าระยะยาวที่รับความเสี่ยง valuation ได้ มากกว่านักลงทุนสาย value ที่ต้องการส่วนเผื่อความปลอดภัย</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$28.25 <span style="font-size:12px;color:#cab9a8">($25.50–$31.00)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −49%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">$65.67 (Buy)</div></div>
       </div>
       <div class="zone">
@@ -306,7 +335,7 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มา: StockAnalysis.com (ราคา/EPS/เป้านักวิเคราะห์/ประมาณการ), Yahoo Finance (cross-check ราคา/EPS/เป้าราคา) — ราคา ณ 11 ก.ย. 2569
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มา: StockAnalysis.com (ราคา/EPS/เป้านักวิเคราะห์/ประมาณการ), Yahoo Finance (cross-check ราคา/EPS/เป้าราคา) — ราคา ณ {{rd:priceDate}}
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 13 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

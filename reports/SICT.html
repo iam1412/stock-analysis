@@ -10,6 +10,40 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 3.21,
+  "values": {
+    "px": 2.94,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 1.86,
+    "fvHigh": 4.57,
+    "eps": 0.16,
+    "shares": 480000000,
+    "dps": 0.025,
+    "bvps": 1.62,
+    "baseEps": 0.16,
+    "scenarios": [
+      {
+        "tgt": 2.24,
+        "div": 0.08
+      },
+      {
+        "tgt": 4.5,
+        "div": 0.08
+      },
+      {
+        "tgt": 6.63,
+        "div": 0.08
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#283593",
     "accentDark": "#1a237e",
@@ -41,7 +75,6 @@
     "min": 2,
     "max": 3.5,
     "grid": [2.25, 2.5, 2.75, 3, 3.25],
-    "fairLine": 3.21,
     "currency": "฿",
     "highlight": [2, 10],
     "gridFmt": "v.toFixed(2)",
@@ -50,11 +83,8 @@
   "gauge": {
     "min": 1.5,
     "max": 4.75,
-    "cur": 2.94,
-    "fair": 3.21,
     "fairLabelTop": true
-  },
-  "fv": 3.21
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +104,11 @@
     <div class="sub">ออกแบบไมโครชิป RFID • NFC • Animal ID • Automotive Immobilizer • Industrial IoT • Fabless IC Design สัญชาติไทย</div>
     <div class="price-row">
       <div>
-        <div class="px">฿2.94<small>(SICT)</small></div>
+        <div class="px">{{rd:px}}<small>(SICT)</small></div>
       </div>
-      <div class="chg">▲ +13.1% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿2.20 – ฿3.54<br>
         ที่มา: StockAnalysis.com, valueinvesting.io, Yahoo Finance (SICT.BK), Google Finance
       </div>
@@ -90,9 +120,9 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ Q1/2569 (ล่าสุด)</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~฿1.41 พัน ล.</div><div class="d">480 ล้านหุ้น × ฿3.20</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~18.4x</div><div class="d">EPS TTM ฿0.16</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM ฿0.16</div></div>
       <div class="metric"><div class="k">P/E ประวัติศาสตร์</div><div class="v">15–25x</div><div class="d">ช่วง IC Design MAI</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.81x</div><div class="d">BVPS ฿1.62 (FY2568)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ฿1.62 (FY2568)</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿80 ล้าน</div><div class="d">−21% YoY (จาก ฿101 ล้าน)</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.16</div><div class="d">FY2568: ฿0.17 / Q1/69: ฿0.05</div></div>
@@ -115,7 +145,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#283593"></i>ราคา SICT</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿3.21</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -143,8 +173,8 @@
         <div class="mval">฿1.86</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿1.86 – ฿4.57</span></div>
-        <div class="r">฿3.21</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี DCF ให้ค่าสูงสุด (฿4.57) สะท้อนศักยภาพการเติบโตจาก Animal ID ในบราซิล/แอฟริกา และผลิตภัณฑ์ IoT ใหม่ที่คาดว่าจะเปิดตัว
@@ -160,15 +190,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿2.94</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿3.21</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿2.25<br><small>MOS 30%</small></span>
-          <span>฿2.57<br><small>MOS 20%</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">฿2.94<br><small>เป้า Analyst (ล่าสุดที่มี)</small></span>
-          <span style="text-align:right">฿3.21<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿4.57<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -183,19 +213,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+8%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาเต็มมูลค่าแล้ว — ไม่มี margin of safety เหลือ รอราคาย่อก่อนเพิ่มน้ำหนัก</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿2.57</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿2.25</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿3.21</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="2.94" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -204,17 +234,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿2.94 • EPS ฐาน ~฿0.16 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿2.24</div>
-          <div class="ret neg">−21.1% รวม 3 ปี / −7.6%/ปี</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.160</span></li>
             <li><span>P/E ออก</span><span>14x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.08</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>ตลาด RFID ซบเซา กำไรทรงตัว</span></li>
           </ul>
         </div>
@@ -222,12 +252,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +12%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿4.50</div>
-          <div class="ret pos">+55.8% รวม 3 ปี / +15.9%/ปี</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.225</span></li>
             <li><span>P/E ออก</span><span>20x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.08</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>Animal ID + IoT ฟื้นตัว กำไรฟื้น</span></li>
           </ul>
         </div>
@@ -235,12 +265,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +20%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿6.63</div>
-          <div class="ret pos">+128.2% รวม 3 ปี / +31.7%/ปี</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.276</span></li>
             <li><span>P/E ออก</span><span>24x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.08</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>ชนะออร์เดอร์ใหม่ ส่งออกบราซิล/แอฟริกา</span></li>
           </ul>
         </div>
@@ -290,8 +320,8 @@
       <h2>SICT: Turnaround play ของ IC Design สัญชาติไทย — ราคาไล่ตามมูลค่าเหมาะสมแล้ว รอย่อก่อนเพิ่มน้ำหนัก</h2>
       <p>Silicon Craft Technology คือบริษัท IC Design Fabless รายเดียวในตลาดหลักทรัพย์ไทย ออกแบบและจำหน่ายชิป RFID, NFC, Automotive Immobilizer และ Animal ID ภายใต้แบรนด์ "SIC" รายได้เติบโต 4.3% ในปี 2568 แต่กำไรลดลงต่อเนื่อง 2 ปีจากการแข่งขันและ Semiconductor Oversupply ที่กดดัน Gross Margin จาก 52% เหลือ 43% ราคาปรับขึ้นแรงมาที่ ฿3.20 (+21.2% รอบปี) จนใกล้เคียง Fair Value ฿3.21 มาก (MOS เหลือเพียง +0.3%) ถือว่าเต็มมูลค่าแล้ว ไม่มี margin of safety เหลือสำหรับนักลงทุน VI ที่ต้องการ MOS ≥20% (เป้า ฿2.57) Catalyst หลักคือ Animal ID ตลาดบราซิลและ IoT ผลิตภัณฑ์ใหม่ที่คาดเปิดตัวปี 2569 ซึ่งถ้าเป็นไปตามแผนจะผลักดัน EPS กลับมาโตได้ในระยะ 2–3 ปี แต่ในระยะสั้นราคาขึ้นมาเร็วกว่าปัจจัยพื้นฐาน จึงควรรอจังหวะย่อก่อนเพิ่มน้ำหนัก</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿3.21 <span style="font-size:12px;color:#cab9a8">(฿1.86–฿4.57)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +8%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด. (ล่าสุดที่มี)</div><div class="v" style="color:#a5d6a7">~฿2.94</div></div>
       </div>
       <div class="zone">

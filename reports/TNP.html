@@ -12,6 +12,40 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 3.4,
+  "values": {
+    "px": 2.84,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 2.57,
+    "fvHigh": 4.21,
+    "eps": 0.26,
+    "shares": 800000000,
+    "dps": 0.11,
+    "bvps": 1.71,
+    "baseEps": 0.26,
+    "scenarios": [
+      {
+        "tgt": 2.84,
+        "div": 0.33
+      },
+      {
+        "tgt": 4.15,
+        "div": 0.33
+      },
+      {
+        "tgt": 5.53,
+        "div": 0.33
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#2e7d32",
     "accentDark": "#1b5e20",
@@ -43,7 +77,6 @@
     "min": 2.6,
     "max": 3.6,
     "grid": [2.8, 3, 3.2, 3.4],
-    "fairLine": 3.4,
     "currency": "฿",
     "highlight": [1, 7],
     "gridFmt": "v.toFixed(2)",
@@ -52,11 +85,8 @@
   "gauge": {
     "min": 2,
     "max": 4.5,
-    "cur": 2.84,
-    "fair": 3.4,
     "fairLabelTop": true
-  },
-  "fv": 3.4
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -76,11 +106,11 @@
     <div class="sub">ซูเปอร์สโตร์ค้าส่ง-ค้าปลีกสินค้าอุปโภคบริโภค 56 สาขาภาคเหนือ • แบรนด์ "ธนพิริยะ" เชียงราย • อสังหาริมทรัพย์เพื่อเช่า</div>
     <div class="price-row">
       <div>
-        <div class="px">฿2.84<small>(TNP)</small></div>
+        <div class="px">{{rd:px}}<small>(TNP)</small></div>
       </div>
-      <div class="chg">≈ ทรงตัว (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿2.28 – ฿3.52<br>
         ที่มา: SET Factsheet, StockAnalysis.com, Yahoo Finance
       </div>
@@ -94,7 +124,7 @@
       <div class="metric"><div class="k">Market Cap</div><div class="v">฿2,272 ล้าน</div><div class="d">800 ล้านหุ้น · Par ฿0.25</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~10.92x</div><div class="d">EPS TTM ฿0.26</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~16.8x</div><div class="d">ช่วง 10.95x – 22.07x</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.66x</div><div class="d">BVPS ฿1.71 · เติบโตดี</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ฿1.71 · เติบโตดี</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">฿213 ล้าน</div><div class="d">+14.6% YoY</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.26</div><div class="d">FY2025 ฿0.27</div></div>
@@ -117,7 +147,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#2e7d32"></i>ราคา TNP</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿3.40</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -143,8 +173,8 @@
         <div class="mval">฿4.21</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿2.57 – ฿4.21</span></div>
-        <div class="r">฿3.40</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         P/E Valuation ให้ค่ากลาง ฿3.38 อิง EPS ฿0.26 × P/E 13x (ระมัดระวังจากค่าเฉลี่ย 5 ปี ~16.8x) · DDM ให้ค่าต่ำ ฿2.57 เพราะ Payout Ratio เพียง 39% และ g=5% อนุรักษ์นิยม · Justified P/BV สูง ฿4.21 สะท้อน ROE 16% เกินกว่า r=9.5% อย่างมีนัย ชี้ให้เห็นว่าบริษัทสร้างผลตอบแทนเหนือต้นทุนทุน ค่าเฉลี่ยทั้ง 3 วิธี = ฿3.40 ถือเป็นประมาณการอนุรักษ์นิยมกลาง
@@ -158,15 +188,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿2.84</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿3.40</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿2.38<br><small>MOS 30%</small></span>
-          <span>฿2.72<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿3.40<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">฿3.59<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">฿4.21<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -179,19 +209,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+16%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS พอสมควร — ราคาต่ำกว่า Fair Value ฿3.40 อยู่ ~฿0.52 เหมาะสะสมแบบทยอย</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿2.72</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿2.38</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿3.40</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="2.84" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -200,17 +230,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿2.84 • EPS ฐาน ~฿0.26 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +3%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿2.84</div>
-          <div class="ret neg">+0%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.284</span></li>
             <li><span>P/E ออก</span><span>10x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.33</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>ค้าปลีกชะลอ แข่งขันรุนแรง</span></li>
           </ul>
         </div>
@@ -218,12 +248,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +10%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿4.15</div>
-          <div class="ret pos">+46%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.346</span></li>
             <li><span>P/E ออก</span><span>12x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.33</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>ขยายสาขา P/E re-rate กลับ</span></li>
           </ul>
         </div>
@@ -231,12 +261,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿5.53</div>
-          <div class="ret pos">+95%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.395</span></li>
             <li><span>P/E ออก</span><span>14x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.33</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>ขยาย+Margin ดี+P/E re-rate</span></li>
           </ul>
         </div>
@@ -282,8 +312,8 @@
       <h2>Value Play ระดับภูมิภาค — P/E ต่ำ ROE ดี ปันผลสม่ำเสมอ</h2>
       <p>TNP (ธนพิริยะ) คือผู้นำค้าส่ง-ค้าปลีกสินค้าอุปโภคบริโภคในภาคเหนือ มี 56 สาขาที่เชียงรายและจังหวัดใกล้เคียง ธุรกิจมีความมั่นคงสูง รายได้เติบโต ~8%/ปี Gross Margin ปรับขึ้นต่อเนื่อง ROE ~16% กับ D/E เพียง 0.08x บ่งชี้คุณภาพธุรกิจดี ราคาปัจจุบัน ฿2.88 ให้ P/E เพียง 10.95x ต่ำกว่าค่าเฉลี่ย 5 ปีที่ ~16.8x อย่างมีนัย สะท้อนว่าตลาดยัง Undervalue หุ้น Small-Cap ภูมิภาคนี้ MOS ~15.3% จากมูลค่าเหมาะสม ฿3.40 บวกกับปันผล Yield ~3.7% ทำให้ผลตอบแทนรวมน่าสนใจสำหรับนักลงทุน VI ระยะกลาง-ยาว</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿3.40 <span style="font-size:12px;color:#cab9a8">(฿2.57–฿4.21)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +16%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿3.59 (Strong Buy)</div></div>
       </div>
       <div class="zone">

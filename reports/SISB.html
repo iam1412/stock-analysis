@@ -12,6 +12,19 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 10.96,
+  "values": {
+    "px": 9.05,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 8.08,
+    "fvHigh": 12.44,
+    "shares": 940000000,
+    "dps": 0.51,
+    "bvps": 4.43
+  },
   "theme": {
     "accent": "#315ed8",
     "accentDark": "#1f42a3",
@@ -43,18 +56,14 @@
     "min": 8,
     "max": 13,
     "grid": [9, 10, 11, 12],
-    "fairLine": 10.96,
     "currency": "฿",
     "highlight": [4, 11]
   },
   "gauge": {
     "min": 6.5,
     "max": 17.5,
-    "cur": 9.05,
-    "fair": 10.96,
     "fairLabelTop": true
-  },
-  "fv": 10.96
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -75,14 +84,14 @@
     <div class="sub">โรงเรียนนานาชาติหลักสูตรสิงคโปร์ Singapore International School of Bangkok • 6 แคมปัส (กทม./ปริมณฑล, ระยอง, เชียงใหม่) • นักเรียน ~4,594 คน • เก็บค่าเทอมล่วงหน้า • แคมปัสที่ 7 รังสิตอยู่ระหว่างก่อสร้าง เปิด ส.ค. 2570</div>
     <div class="price-row">
       <div>
-        <div class="px">฿9.05<small>(SISB)</small></div>
+        <div class="px">{{rd:px}}<small>(SISB)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
            รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
-      <div class="chg">▼ −23.3% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569 (ปิดตลาด SET)<br>
+        ราคา ณ {{rd:priceDate}} (ปิดตลาด SET)<br>
         กรอบ 52 สัปดาห์ ฿9.35 – ฿16.50<br>
         ที่มา: stockanalysis.com, SET.or.th, Yahoo Finance
       </div>
@@ -97,10 +106,10 @@
          • ธนาคาร → NIM / NPL / CASA / Loan growth / Cost-to-income   • REIT/กองอสังหา → Occupancy / DPU / NAV / Gearing   • ประกัน → Combined ratio / EV
          • หุ้นเติบโต-ขาดทุน → Revenue growth / Gross margin / FCF / Cash runway (ตัด P/E ออก) -->
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">฿8.51 พันล้าน</div><div class="d">~940 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">~940 ล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~10.3x</div><div class="d">ต่ำกว่าค่าเฉลี่ยเดิม 15-20x มาก หลัง de-rate</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~18x</div><div class="d">ช่วงพีคก่อนโดนดาวน์เกรด 2568-69</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">2.04x</div><div class="d">BVPS ~฿4.43</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ~฿4.43</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿962 ล้าน</div><div class="d">+8.7% YoY</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿1.00</div><div class="d">FY2568 เต็มปี ฿1.02 (สิ้นสุด มี.ค. 69)</div></div>
@@ -125,7 +134,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#315ed8"></i>ราคา SISB</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿10.96</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -155,8 +164,8 @@
         <div class="mval">฿12.44</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿8.08 – ฿12.44</span></div>
-        <div class="r">฿10.96</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         DDM ให้ค่าต่ำสุด (฿8.08) เพราะยึดตามปันผลปัจจุบันที่ยังต่ำเทียบราคาหุ้น ส่วน Justified P/BV ให้ค่าสูงสุด (฿12.44) เพราะ ROE ~24% ยังสูงกว่าธุรกิจโรงเรียนทั่วไปมาก แม้ชะลอตัว
@@ -171,14 +180,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿9.05</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿10.96</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿7.67<br><small>MOS 30%</small></span>
-          <span>฿8.77<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿10.96<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿12.44<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">฿13.05<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -194,19 +203,19 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
-      <div class="mos-verdict ok">
-        <div class="big">+17%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS ต่ำกว่าเกณฑ์ value investor (ควร ≥20%) — ราคาปัจจุบันใกล้เคียงมูลค่าเหมาะสม ไม่ถูกไม่แพง แต่ยังไม่มีส่วนเผื่อความปลอดภัยเพียงพอเมื่อคำนึงถึงความไม่แน่นอนของ enrollment</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿8.77</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿7.67</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿10.96</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="9.05" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -300,8 +309,8 @@
       <p>SISB เป็นธุรกิจโรงเรียนนานาชาติที่มีคุณภาพเชิงโครงสร้าง (ROE ~24%, net cash, เก็บเงินล่วงหน้า, pricing power) แต่ปี 2568-2569 เผชิญปัญหา enrollment ต่ำกว่าเป้าต่อเนื่อง ทำให้นักวิเคราะห์ทยอยปรับลดประมาณการและราคาหุ้นลงมาเกือบ 30% ในรอบปี
       ราคาปัจจุบัน ฿10.30 ใกล้เคียง Fair Value ที่เราประเมิน (฿10.96) มากกว่าเป้าเฉลี่ยนักวิเคราะห์ (฿13.05) ซึ่งยังมองบวกกว่าตัวเลขจริงที่เห็น สัญญาณบวกเดียวที่ยังพอเห็นคือยอดจองล่วงหน้า/เงินมัดจำนักเรียนใหม่ที่ยังไม่ทรุดตาม แต่ยังไม่มากพอจะสรุปว่าธุรกิจกลับมาโตแล้ว</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿10.96 <span style="font-size:12px;color:#cab9a8">(฿8.08–฿12.44)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +17%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿13.05 (Buy, 7 โบรก)</div></div>
       </div>
       <div class="zone">

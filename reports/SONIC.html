@@ -10,6 +10,38 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 1.74,
+  "values": {
+    "px": 1.5,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 1.67,
+    "fvHigh": 1.83,
+    "eps": 0.167,
+    "shares": 842680000,
+    "bvps": 2.08,
+    "scenarios": [
+      {
+        "tgt": 1.15,
+        "div": 0.13
+      },
+      {
+        "tgt": 2.1,
+        "div": 0.18
+      },
+      {
+        "tgt": 3.3,
+        "div": 0.22
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#1a5fa8",
     "accentDark": "#0d3d73",
@@ -41,7 +73,6 @@
     "min": 1.4,
     "max": 1.8,
     "grid": [1.5, 1.6, 1.7],
-    "fairLine": 1.74,
     "currency": "฿",
     "highlight": [5, 10],
     "gridFmt": "v.toFixed(2)",
@@ -50,11 +81,8 @@
   "gauge": {
     "min": 1,
     "max": 2.2,
-    "cur": 1.5,
-    "fair": 1.74,
     "fairLabelTop": false
-  },
-  "fv": 1.74
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +102,11 @@
     <div class="sub">ขนส่งสินค้าระหว่างประเทศ (ทางอากาศ • ทางทะเล • ทางบก) • โลจิสติกส์ครบวงจร • ตัวแทนออกของ • คลังสินค้า</div>
     <div class="price-row">
       <div>
-        <div class="px">฿1.50<small>(SONIC)</small></div>
+        <div class="px">{{rd:px}}<small>(SONIC)</small></div>
       </div>
-      <div class="chg">▲ +2.7% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿1.38 – ฿1.66<br>
         ที่มา: SET, Investing.com, Yahoo Finance
       </div>
@@ -90,9 +118,9 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 • แหล่ง: SET Factsheet, Investing.com</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~฿1,264 ล้าน</div><div class="d">842.68 ล้านหุ้น • มูลค่าหุ้นที่ชำระแล้ว ฿421.34 ล้าน</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~9.0x</div><div class="d">EPS TTM ฿0.167 • ต่ำกว่าค่าเฉลี่ยกลุ่ม ~11–13x</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM ฿0.167 • ต่ำกว่าค่าเฉลี่ยกลุ่ม ~11–13x</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~11–14x</div><div class="d">ช่วงบูมโควิด 2021–22 สูงสุด • ปกติ 10–12x</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.72x</div><div class="d">BVPS ฿2.08 • ซื้อขายต่ำกว่าบัญชี — ผลตอบแทนต่ำสมเหตุผล</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ฿2.08 • ซื้อขายต่ำกว่าบัญชี — ผลตอบแทนต่ำสมเหตุผล</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2567</div><div class="v">฿173.1 ล้าน</div><div class="d">+32.1% YoY จาก FY2566 ฿131 ล้าน • ฟื้นตัวจากปีต่ำสุด</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.167</div><div class="d">FY2567: ฿0.205 • FY2566: ฿0.156 • FY2565: ฿0.420</div></div>
@@ -115,7 +143,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1a5fa8"></i>ราคา SONIC</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿1.74</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -141,8 +169,8 @@
         <div class="mval">฿1.73</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿1.67 – ฿1.83</span></div>
-        <div class="r">฿1.74</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี EV/EBITDA ให้มูลค่าสูงสุด (฿1.83) สะท้อนศักยภาพการขยาย Margin เมื่อรายได้ฟื้นตัวครบ วิธี P/E ให้ค่ากลาง (฿1.67) เหมาะสมกับ EPS ที่ยังฟื้นตัวไม่เต็มที่ วิธี Justified P/BV (฿1.73) สะท้อนความจริงที่ ROE ปัจจุบัน 8% ยังไม่สูงพอที่จะ justify P/BV เกิน 1x มูลค่าเฉลี่ย ฿1.74 อิงสมมติฐานอัตราการเติบโต g=3% และ Required Return r=9% ซึ่งสมเหตุสมผลสำหรับบริษัทขนส่งขนาดกลางที่มีงบดุลแข็งแกร่ง
@@ -156,15 +184,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿1.50</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿1.74</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿1.22<br><small>MOS 30%</small></span>
-          <span>฿1.39<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿1.74<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">฿1.74<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">฿1.83<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -177,19 +205,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+14%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ส่วนต่างปานกลาง — ซื้อขายต่ำกว่า Fair Value แต่ยังไม่ถึงโซน Deep Value (MOS ≥20%)</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿1.39</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿1.22</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿1.74</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="1.5" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -198,17 +226,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿1.50 • EPS ฐาน ~฿0.167 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~฿0.167{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿1.15</div>
-          <div class="ret neg">−15%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.143</span></li>
             <li><span>P/E ออก</span><span>8x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.13</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>ค่าระวางลดยาว + เศรษฐกิจโลกชะลอ</span></li>
           </ul>
         </div>
@@ -216,12 +244,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿2.10</div>
-          <div class="ret pos">+52%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.210</span></li>
             <li><span>P/E ออก</span><span>10x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.18</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>รายได้ฟื้นตัวต่อเนื่อง ค่าระวางทรงตัว</span></li>
           </ul>
         </div>
@@ -229,12 +257,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿3.30</div>
-          <div class="ret pos">+135%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.254</span></li>
             <li><span>P/E ออก</span><span>13x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.22</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>ค่าระวางฟื้นแรง + ขยายเส้นทางใหม่ + ค่าเงินบาทเอื้อ</span></li>
           </ul>
         </div>
@@ -281,8 +309,8 @@
       <h2>ต่ำกว่า Fair Value ~14% — น่าจับตา รอโซนสะสม MOS ≥20%</h2>
       <p>SONIC เป็นบริษัท Freight Forwarding ขนาดกลางที่มีงบดุลแข็งแกร่ง (P/BV 0.72x) และจ่ายปันผลสม่ำเสมอ (~4%) ผ่านวัฏจักรขาลงของค่าระวางได้โดยยังมีกำไร กำไรและรายได้เริ่มฟื้นตัวใน FY2567 (+39% รายได้ +32% กำไร) แต่ยังห่างจากจุดสูงสุดปี 2565 มาก ราคาปัจจุบัน ฿1.50 ต่ำกว่ามูลค่าเหมาะสม ฿1.74 ประมาณ 14% (MOS 13.8%) ซึ่งให้ส่วนเผื่อความปลอดภัยพอประมาณ แต่ยังไม่ถึงโซน "น่าซื้อเต็มที่" (MOS ≥20% ที่ ฿1.39) Catalyst หลักคือการฟื้นตัวของค่าระวางโลกและปริมาณการค้า ซึ่งเป็นปัจจัยภายนอกที่ควบคุมไม่ได้</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿1.74 <span style="font-size:12px;color:#cab9a8">(฿1.67–฿1.83)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +14%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้าประเมิน 12 ด.</div><div class="v" style="color:#a5d6a7">~฿1.74 (Neutral)</div></div>
       </div>
       <div class="zone">

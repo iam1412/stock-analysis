@@ -10,6 +10,20 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 27.8,
+  "values": {
+    "px": 25.25,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 25.2,
+    "fvHigh": 31.2,
+    "eps": 1.8,
+    "shares": 594290000,
+    "dps": 1.5,
+    "bvps": 16.53
+  },
   "theme": {
     "accent": "#0d47a1",
     "accentDark": "#002171",
@@ -41,7 +55,6 @@
     "min": 17.5,
     "max": 30,
     "grid": [20, 22.5, 25, 27.5],
-    "fairLine": 27.8,
     "currency": "฿",
     "highlight": [1, 10],
     "gridFmt": "v.toFixed(0)",
@@ -49,11 +62,8 @@
   },
   "gauge": {
     "min": 0,
-    "max": 100,
-    "cur": 25.25,
-    "fair": 27.8
-  },
-  "fv": 27.8
+    "max": 100
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -73,11 +83,11 @@
     <div class="sub">โฮลดิ้งประกันวินาศภัย • ทิพยประกันภัย (Top 5 non-life) ถือหุ้น ~75% • เบี้ยประกันรวม ฿15,000+ ล้าน/ปี • ปันผลสม่ำเสมอทุกปี</div>
     <div class="price-row">
       <div>
-        <div class="px">฿25.25<small>(TIPH)</small></div>
+        <div class="px">{{rd:px}}<small>(TIPH)</small></div>
       </div>
-      <div class="chg">▲ +15.8% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿17.80 – ฿23.80<br>
         ที่มา: Yahoo Finance, SET.or.th, Google Finance
       </div>
@@ -91,7 +101,7 @@
       <div class="metric"><div class="k">Market Cap</div><div class="v">฿15,006 ล้าน</div><div class="d">594.29 ล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~14.03x</div><div class="d">EPS TTM ฿1.80 (ต่ำกว่าค่าเฉลี่ยกลุ่ม)</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~14x</div><div class="d">ช่วง 11–18x ขึ้นกับปีภัยพิบัติ</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.53x</div><div class="d">BVPS ฿16.53 (equity ฿9.83B)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ฿16.53 (equity ฿9.83B)</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">฿1,003 ล้าน</div><div class="d">ลดลง −32.9% YoY (มาตรฐาน IFRS17)</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿1.80</div><div class="d">FY2567 = ฿2.52 | FY2566 = ฿2.96</div></div>
@@ -114,7 +124,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#0d47a1"></i>ราคา TIPH</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿27.80</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -140,8 +150,8 @@
         <div class="mval">฿27.01</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿25.20 – ฿31.20</span></div>
-        <div class="r">฿27.80</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี DDM ให้ค่าสูงสุด (฿31.20) เนื่องจาก TIPH มีประวัติจ่ายปันผลสม่ำเสมอและ yield สูง สะท้อนว่าตลาดมองเป็น income stock มากกว่า growth วิธี P/E ให้ค่าต่ำสุด (฿25.20) เพราะ EPS TTM ฿1.80 ยังได้รับผลกระทบจากการเปลี่ยนมาตรฐาน IFRS17 ใน FY2568 วิธี Justified P/BV (฿27.01) สะท้อนความสามารถในการสร้าง ROE เหนือ cost of equity อยู่ในระดับปานกลาง ค่าเฉลี่ย ฿27.80 เหมาะสม — ราคาปัจจุบัน ฿23.30 ต่ำกว่า FV ราว 16%
@@ -155,15 +165,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿25.25</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿27.80</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿19.46<br><small>MOS 30%</small></span>
-          <span>฿22.24<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿27.80<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">฿28.50<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">฿31.20<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -176,19 +186,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+9%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาต่ำกว่า Fair Value — โซนทยอยสะสม (MOS 10–20%)</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿22.24</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿19.46</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿27.80</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="25.25" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -279,8 +289,8 @@
       <h2>TIPH — Income Stock ราคา Discount กับ Fair Value ~16% | Yield 6.4%</h2>
       <p>ทิพย กรุ๊ป โฮลดิ้งส์ (TIPH) คือ holding company ที่ถือหุ้นหลักในทิพยประกันภัย ซึ่งเป็นบริษัทประกันวินาศภัย Top 5 ของไทย ด้วยเบี้ยประกันรับรวม ฿15,000+ ล้าน/ปี ธุรกิจประกันวินาศภัยมีลักษณะ defensive — รายได้สม่ำเสมอจากเบี้ยต่ออายุ และ EPS ขึ้นลงตามเหตุการณ์ภัยพิบัติ ปัจจุบันราคา ฿23.30 ต่ำกว่า Fair Value ฿27.80 ราว 16.2% อยู่ในโซนทยอยสะสม — ไม่ได้ถูกมากแบบ deep value แต่ไม่แพง พร้อม yield 6.4% เป็น cushion ระหว่างรอ re-rating EPS ฐาน TTM ฿1.80 ยังถูกกดด้วยการเปลี่ยนมาตรฐาน IFRS17 ใน FY2568 ซึ่งคาดว่า normalize ใน FY2569 และ EPS จะกลับขึ้นสู่ ฿2.00–฿2.50</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿27.80 <span style="font-size:12px;color:#cab9a8">(฿25.20–฿31.20)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +9%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿28.50 (ทยอยสะสม)</div></div>
       </div>
       <div class="zone">

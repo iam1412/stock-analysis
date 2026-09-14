@@ -12,6 +12,20 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 2.5,
+  "values": {
+    "px": 2.08,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 2.19,
+    "fvHigh": 2.89,
+    "eps": 0.2,
+    "shares": 6229000000,
+    "dps": 0.11,
+    "bvps": 2.31
+  },
   "theme": {
     "accent": "#e65100",
     "accentDark": "#bf360c",
@@ -43,18 +57,14 @@
     "min": 1.5,
     "max": 2.75,
     "grid": [1.75, 2, 2.25, 2.5],
-    "fairLine": 2.5,
     "currency": "฿",
     "highlight": [0, 9]
   },
   "gauge": {
     "min": 1.4,
     "max": 2.8,
-    "cur": 2.08,
-    "fair": 2.5,
     "fairLabelTop": true
-  },
-  "fv": 2.5
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +84,11 @@
     <div class="sub">เช่าซื้อรถพาณิชย์/บรรทุก/เกษตร • Non-bank สินเชื่อยานยนต์ • 400+ สาขาทั่วไทย • NPL บริหารดี • ปันผลสม่ำเสมอ 23 ปีติดต่อกัน</div>
     <div class="price-row">
       <div>
-        <div class="px">฿2.08<small>(THANI)</small></div>
+        <div class="px">{{rd:px}}<small>(THANI)</small></div>
       </div>
-      <div class="chg">▲ +30.0% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿1.40 – ฿2.06<br>
         ที่มา: Yahoo Finance, StockAnalysis, Investing.com
       </div>
@@ -90,9 +100,9 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 • TTM = ย้อนหลัง 12 เดือน</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~฿12,956 ล้าน</div><div class="d">หุ้น 6,229 ล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~10.4x</div><div class="d">EPS TTM ฿0.20 · ถูกกว่า sector</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM ฿0.20 · ถูกกว่า sector</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~11–13x</div><div class="d">non-bank leasing SET เฉลี่ย</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.90x</div><div class="d">BVPS ฿2.31 · ต่ำกว่า 1x</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ฿2.31 · ต่ำกว่า 1x</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v pos">฿1,235 ล้าน</div><div class="d">+54.3% YoY vs FY2024</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.20</div><div class="d">FY2025: ฿0.18 · ฟื้นตัวต่อเนื่อง</div></div>
@@ -101,7 +111,7 @@
 
       <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿3,613 ล้าน</div><div class="d">ลดลงจาก peak (NPL cleanup)</div></div>
       <div class="metric"><div class="k">NPL Ratio</div><div class="v">~3.8%</div><div class="d">Q4/67 ทรงตัว · บริหารเชิงรุก</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~5.3%</div><div class="d">฿0.11/หุ้น · XD มี.ค. 69 · 23 ปีติดต่อกัน</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">฿0.11/หุ้น · XD มี.ค. 69 · 23 ปีติดต่อกัน</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">0.30</div><div class="d">ความผันผวนต่ำกว่าตลาดมาก</div></div>
     </div>
   </section>
@@ -115,7 +125,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#e65100"></i>ราคา THANI</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿2.50</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -144,8 +154,8 @@
         <div class="mval">฿2.19</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿2.19 – ฿2.89</span></div>
-        <div class="r">฿2.50</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี DDM ให้ค่าสูงสุด (฿2.89) สะท้อนประวัติจ่ายปันผลต่อเนื่อง 23 ปีของ THANI
@@ -163,15 +173,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿2.08</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿2.50</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿1.75<br><small>MOS 30%</small></span>
-          <span>฿2.00<br><small>MOS 20%</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">฿2.22<br><small>เป้า Analyst</small></span>
-          <span style="text-align:right">฿2.50<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿2.89<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -186,19 +196,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+17%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">น่าซื้อ — โซน Value Investor (MOS &gt; 20%)</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿2.00</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿1.75</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿2.50</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="2.08" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -295,8 +305,8 @@
         MOS +26.4% จาก Fair Value ฿2.50 บ่งชี้ว่าตลาดยังไม่ให้ราคาเต็มกับศักยภาพการฟื้นตัว
         Analyst consensus Strong Buy เป้า ฿2.22 รองรับ thesis ด้วย Dividend yield ~6% เป็นรายได้ระหว่างรอ</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿2.50 <span style="font-size:12px;color:#cab9a8">(฿2.19–฿2.89)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +17%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿2.22 (Strong Buy · 3 สถาบัน)</div></div>
       </div>
       <div class="zone">
@@ -312,7 +322,7 @@
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวน ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
     แหล่งข้อมูล: Yahoo Finance (THANI.BK ราคา/กราฟรายเดือน), StockAnalysis.com (งบการเงิน/analyst targets), Investing.com (ราคา/P/BV/ROE cross-verify)
-    · ราคา ณ 14 ก.ย. 2569 · ข้อมูลงบการเงิน TTM Mar 2569
+    · ราคา ณ {{rd:priceDate}} · ข้อมูลงบการเงิน TTM Mar 2569
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

@@ -10,6 +10,38 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 2.04,
+  "values": {
+    "px": 1.45,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 1.8,
+    "fvHigh": 2.23,
+    "shares": 17574000000,
+    "dps": 0.13,
+    "baseEps": 0.24,
+    "scenarios": [
+      {
+        "tgt": 1.28,
+        "div": 0.39
+      },
+      {
+        "tgt": 1.94,
+        "div": 0.42
+      },
+      {
+        "tgt": 2.64,
+        "div": 0.45
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#37474f",
     "accentDark": "#263238",
@@ -41,7 +73,6 @@
     "min": 1.2,
     "max": 2.2,
     "grid": [1.4, 1.6, 1.8, 2],
-    "fairLine": 2.04,
     "currency": "฿",
     "highlight": [2, 4],
     "gridFmt": "v.toFixed(2)",
@@ -50,11 +81,8 @@
   "gauge": {
     "min": 1,
     "max": 2.5,
-    "cur": 1.45,
-    "fair": 2.04,
     "fairLabelTop": true
-  },
-  "fv": 2.04
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +102,11 @@
     <div class="sub">พัฒนาโครงการที่อยู่อาศัยครบทุกระดับ • คอนโดมิเนียม บ้านเดี่ยว ทาวน์โฮม • บริหารอสังหาฯ &amp; โรงแรม • ปันผลสม่ำเสมอ</div>
     <div class="price-row">
       <div>
-        <div class="px">฿1.45<small>(SIRI)</small></div>
+        <div class="px">{{rd:px}}<small>(SIRI)</small></div>
       </div>
-      <div class="chg">▲ +3.6% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿1.26 – ฿1.60<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, SET Factsheet
       </div>
@@ -115,7 +143,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#37474f"></i>ราคา SIRI</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿2.04</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -141,8 +169,8 @@
         <div class="mval">฿2.08</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿1.80 – ฿2.23</span></div>
-        <div class="r">฿2.04</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี DDM ให้ค่าสูงสุด (฿2.23) เพราะ SIRI มีประวัติจ่ายปันผลต่อเนื่องสม่ำเสมอ แม้อัตราปันผลลดลงในปีล่าสุด (฿0.13 vs ฿0.17 ปีก่อน) วิธี P/E (฿1.80) อนุรักษ์นิยมสุด ใช้ EPS FY2025 ที่ลดลง และ P/E target 7.5x ซึ่งต่ำกว่า sector average เล็กน้อย Justified P/BV (฿2.08) ให้ค่ากลาง สะท้อนว่า ROE 7.9% ต่ำกว่า cost of equity 9% ทำให้ P/BV ที่สมเหตุสมผลควรต่ำกว่า 1x แต่ราคาปัจจุบัน 0.51x P/BV ถือว่า discount มากเกินไป เฉลี่ย 3 วิธีได้ Fair Value ฿2.04
@@ -156,15 +184,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿1.45</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿2.04</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿1.43<br><small>MOS 30%</small></span>
-          <span>฿1.63<br><small>MOS 20%</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">฿1.69<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">฿2.04<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿2.23<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -177,19 +205,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict good">
-        <div class="big">+29%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">โซน Value — ราคาต่ำกว่ามูลค่าเหมาะสมอย่างมีนัยสำคัญ เหมาะทยอยสะสม</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿1.63</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿1.43</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿2.04</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="1.45" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -198,17 +226,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿1.45 • EPS ฐาน ~฿0.24 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −1%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿1.28</div>
-          <div class="ret neg">+15.2% รวม 3 ปี (~4.8%/ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.23</span></li>
             <li><span>P/E ออก</span><span>5.5x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.39</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>อสังหาฯ ชะลอ เศรษฐกิจอ่อนแอ ราคาบ้านลง</span></li>
           </ul>
         </div>
@@ -216,12 +244,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿1.94</div>
-          <div class="ret pos">+62.8% รวม 3 ปี (~17.6%/ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.28</span></li>
             <li><span>P/E ออก</span><span>7.0x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.42</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>เศรษฐกิจฟื้น คอนโดฯ และบ้านกลับมา LTV ผ่อนคลาย</span></li>
           </ul>
         </div>
@@ -229,12 +257,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +9%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿2.64</div>
-          <div class="ret pos">+113.1% รวม 3 ปี (~28.7%/ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.31</span></li>
             <li><span>P/E ออก</span><span>8.5x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.45</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>นักท่องเที่ยวต่างชาติซื้อคอนโดฯ เพิ่ม นโยบายรัฐหนุน</span></li>
           </ul>
         </div>
@@ -281,8 +309,8 @@
       <h2>Value Play ที่ Yield สูง — ราคาถูกมากแต่ต้องอดทนรอ</h2>
       <p>SIRI ซื้อขายที่ P/E 6.0x และ P/BV 0.51x ต่ำกว่าค่าเฉลี่ยประวัติศาสตร์อย่างมาก ด้วย Dividend Yield สูงถึง ~8.84% ทำให้แม้ราคาทรงตัว ผู้ถือหุ้นก็ยังได้รับผลตอบแทนจากปันผลสม่ำเสมอ ภาพรวมปี 2569–2571 ขึ้นกับการฟื้นตัวของตลาดอสังหาฯ ไทย โดยเฉพาะบ้านเดี่ยวที่ยังซบเซา อย่างไรก็ดี segment คอนโดฯ เริ่มส่งสัญญาณฟื้น Q1/2569 EPS ขยับขึ้น YoY ราคาปัจจุบันยังอยู่ต่ำกว่า Fair Value ~28% สะท้อน deep discount ที่ให้ margin of safety ดีสำหรับ value investor ระยะยาวที่รับความผันผวนระยะสั้นได้</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿2.04 <span style="font-size:12px;color:#cab9a8">(฿1.80–฿2.23)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +29%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿1.69 (Strong Buy)</div></div>
       </div>
       <div class="zone">

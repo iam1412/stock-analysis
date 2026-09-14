@@ -10,6 +10,40 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 123,
+  "values": {
+    "px": 121.14,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 113,
+    "fvHigh": 128,
+    "eps": 9.15,
+    "shares": 106700000,
+    "dps": 4.48,
+    "bvps": 51.96,
+    "baseEps": 9.15,
+    "scenarios": [
+      {
+        "tgt": 100.65,
+        "div": 13.2
+      },
+      {
+        "tgt": 137.67,
+        "div": 13.2
+      },
+      {
+        "tgt": 172.95,
+        "div": 13.2
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#8B1A2B",
     "accentDark": "hsl(351,70%,28%)",
@@ -41,18 +75,14 @@
     "min": 90,
     "max": 140,
     "grid": [100, 110, 120, 130],
-    "fairLine": 123,
     "currency": "$",
     "highlight": [5, 10]
   },
   "gauge": {
     "min": 80,
     "max": 140,
-    "cur": 121.14,
-    "fair": 123,
     "fairLabelTop": false
-  },
-  "fv": 123
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +102,11 @@
     <div class="sub">Jif peanut butter · Folgers coffee · Smucker's jams &amp; jellies · Hostess/Twinkies · Meow Mix · Milk-Bone · Café Bustelo · Dividend Aristocrat · Orrville OH</div>
     <div class="price-row">
       <div>
-        <div class="px">$121.14<small>(SJM)</small></div>
+        <div class="px">{{rd:px}}<small>(SJM)</small></div>
       </div>
-      <div class="chg">▲ +17.0% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $88.25 – $127.65<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, Digrin.com
       </div>
@@ -87,10 +117,10 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล FY2026 (สิ้นสุด เม.ย. 2569) · อิง Adj EPS</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$12.9B</div><div class="d">~106.7M shares outstanding</div></div>
-      <div class="metric"><div class="k">P/E (Adj TTM)</div><div class="v neu">~13.2x</div><div class="d">Adj EPS $9.15 · GAAP EPS เป็นลบ (goodwill impairment)</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~106.7M shares outstanding</div></div>
+      <div class="metric"><div class="k">P/E (Adj TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">Adj EPS $9.15 · GAAP EPS เป็นลบ (goodwill impairment)</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~17x</div><div class="d">De-rated หลังซื้อ Hostess (พ.ย. 2566) leverage สูง</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">2.33x</div><div class="d">BVPS $51.96 · ต่ำจาก goodwill write-down Hostess</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS $51.96 · ต่ำจาก goodwill write-down Hostess</div></div>
 
       <div class="metric"><div class="k">รายได้ FY2026</div><div class="v">$9.05B</div><div class="d">+3.7% YoY · รวม Hostess เต็มปีแรก</div></div>
       <div class="metric"><div class="k">Adj EPS FY2026</div><div class="v">~$9.15</div><div class="d">ไม่รวม amortization/impairment one-time · FY2027 est. $10.01</div></div>
@@ -118,7 +148,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#8B1A2B"></i>ราคา SJM</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $123</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -148,8 +178,8 @@
         <div class="mval">$127.46</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $113 – $128</span></div>
-        <div class="r">$123</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         P/E และ FCF ให้ค่าใกล้เคียงกัน ($128 / $127) สะท้อนกำไรปรับแล้วที่แข็งแกร่งและ FCF ที่สูง
@@ -166,15 +196,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $121.14</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $123</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$86.10<br><small>MOS 30%</small></span>
-          <span>$98.40<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$123<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$125<br><small>เป้าเฉลี่ย Analyst ~$123.63</small></span>
-          <span style="text-align:right">$128<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -189,19 +219,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+1.5%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS ระดับ "พอสมควร" — ราคาต่ำกว่า FV แต่ไม่มาก · รอโซน MOS 20% ($98–100) เพื่อ margin ที่ดีขึ้น</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$98.40</div><div class="d">โซนน่าสนใจ · ใกล้ 52wk low $88.25</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$86.10</div><div class="d">โซนถูกมาก (deep value) · ต่ำกว่า 52wk low ปัจจุบัน</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $123</div><div class="d">ต่ำกว่า Fair Value → คุ้มค่าสำหรับ Dividend Aristocrat</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจ · ใกล้ 52wk low $88.25</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value) · ต่ำกว่า 52wk low ปัจจุบัน</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ต่ำกว่า Fair Value → คุ้มค่าสำหรับ Dividend Aristocrat</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="121.14" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -210,17 +240,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $121.14 • Adj EPS ฐาน ~$9.15 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • Adj EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$100.65</div>
-          <div class="ret neg">-6.0%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$9.15</span></li>
             <li><span>P/E ออก</span><span>11x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$13.20</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>Hostess drag ยืดเยื้อ · volume ไม่ฟื้น · leverage ค้าง</span></li>
           </ul>
         </div>
@@ -228,12 +258,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$137.67</div>
-          <div class="ret pos">+24.5%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$10.59</span></li>
             <li><span>P/E ออก</span><span>13x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$13.20</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>Hostess synergy + ลดหนี้ตามแผน + volume ฟื้น</span></li>
           </ul>
         </div>
@@ -241,12 +271,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$172.95</div>
-          <div class="ret pos">+53.7%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$11.53</span></li>
             <li><span>P/E ออก</span><span>15x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$13.20</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Hostess พลิกฟื้นเต็ม + P/E re-rating + ลดหนี้เร็ว</span></li>
           </ul>
         </div>
@@ -299,8 +329,8 @@
       ณ ราคา $122.37 หุ้นซื้อขายที่ adj P/E ~13.4x ต่ำกว่า historical 17x — แต่ MOS ~0.5% แทบไม่เหลือ margin สำหรับ value investor หัวกะทิ
       กลยุทธ์ที่ดีที่สุดคือทยอยสะสมที่ $98–105 (MOS 15–20%) และถือยาวรับปันผล ~4%/ปี ระหว่างรอ SJM ลดหนี้และ P/E re-rate</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$123 <span style="font-size:12px;color:#cab9a8">($113–$128)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +1.5%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$123.63 (Buy · 21 analysts)</div></div>
       </div>
       <div class="zone">

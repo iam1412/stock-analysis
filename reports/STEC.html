@@ -10,6 +10,38 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 15.44,
+  "values": {
+    "px": 17.9,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 13.37,
+    "fvHigh": 17.87,
+    "shares": 1498000000,
+    "dps": 0.55,
+    "bvps": 13.24,
+    "scenarios": [
+      {
+        "tgt": 8,
+        "div": 0.9
+      },
+      {
+        "tgt": 14.56,
+        "div": 1.5
+      },
+      {
+        "tgt": 24.75,
+        "div": 1.95
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#37474f",
     "accentDark": "#263238",
@@ -41,7 +73,6 @@
     "min": 0,
     "max": 20,
     "grid": [5, 10, 15],
-    "fairLine": 15.44,
     "currency": "฿",
     "highlight": [1, 10],
     "gridFmt": "v.toFixed(0)",
@@ -50,11 +81,8 @@
   "gauge": {
     "min": 10,
     "max": 24,
-    "cur": 17.9,
-    "fair": 15.44,
     "fairLabelTop": false
-  },
-  "fv": 15.44
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +102,11 @@
     <div class="sub">Holdco ของ STEC — รับเหมาก่อสร้างขนาดใหญ่ (รถไฟฟ้า ทางด่วน สนามบิน เขื่อน) • สาธารณูปโภค &amp; พลังงาน • โลจิสติกส์ &amp; ขนส่ง • Data Center &amp; จัดเก็บเอกสาร</div>
     <div class="price-row">
       <div>
-        <div class="px">฿17.90<small>(STECON)</small></div>
+        <div class="px">{{rd:px}}<small>(STECON)</small></div>
       </div>
-      <div class="chg">▲ +118.3% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿5.25 – ฿19.80<br>
         ที่มา: SET Factsheet • Yahoo Finance (STECON.BK) • StockAnalysis.com | งบ FY2568 / Q2 2569 (ประกาศ 13 ส.ค. 69)
       </div>
@@ -92,7 +120,7 @@
       <div class="metric"><div class="k">Market Cap</div><div class="v">~฿26,814 ล้าน</div><div class="d">~1,498 ล้านหุ้น (Par ฿1)</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~12.44x</div><div class="d">ต่ำกว่า Sector ~13–16x แต่ Forward P/E 19.1x (คาดกำไรลด)</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~13–16x</div><div class="d">TTM ถูกกว่าเฉลี่ย แต่ Forward แพงกว่า</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.35x</div><div class="d">BVPS ~฿13.24/หุ้น (ยังไม่มีงบดุลใหม่รอบนี้)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ~฿13.24/หุ้น (ยังไม่มีงบดุลใหม่รอบนี้)</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">~฿1,957 ล้าน</div><div class="d">ฟื้นตัวแรงจากขาดทุน FY2567 (−฿2,357 ล้าน)</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿1.31</div><div class="d">Holdco + รับรู้กำไรบริษัทย่อย — อาจใกล้จุดพีค</div></div>
@@ -115,7 +143,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#37474f"></i>ราคา STECON</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿15.44</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -141,8 +169,8 @@
         <div class="mval">฿13.37</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿13.37 – ฿17.87</span></div>
-        <div class="r">฿15.44</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>หมายเหตุ:</b> รอบนี้ปรับฐาน EPS ที่ใช้ประเมินจาก EPS TTM ฿1.31 เป็น <b>EPS normalized ฿1.08</b> เพราะกำไร TTM ฟื้นตัวแรงจากขาดทุน FY2567 (−฿2,357 ล้าน) มาเป็น ~฿1,957 ล้าน ซึ่งอาจเป็นจุดพีคจากงานใหญ่ที่ใกล้ปิดโครงการ — สอดคล้องกับที่ตลาดให้ Forward EPS เพียง ฿0.85 (Forward P/E 19.1x เทียบ P/E ปัจจุบัน 12.4x) บ่งชี้นักวิเคราะห์คาดกำไรปีหน้าลดลง • FV เฉลี่ยถ่วงน้ำหนักใหม่ ฿15.44 (จากเดิม ฿17.00) ต่ำกว่าราคาปัจจุบัน ฿16.30 เล็กน้อย (~−6%) • ควรรองบ Q2/2569 ที่จะประกาศ 13 ส.ค. 2569 ก่อนสรุปทิศทางกำไรที่แท้จริง
@@ -156,13 +184,13 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿17.90</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿15.44</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿10.81<br><small>MOS 30%</small></span>
-          <span>฿12.35<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿15.44<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">฿17.46<br><small>เป้า Analyst</small></span>
           <span style="text-align:right">฿17.87<br><small>P/BV Target</small></span>
         </div>
@@ -177,19 +205,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−16%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาปัจจุบันสูงกว่า Fair Value เล็กน้อย (~6%) — ยังไม่มี Margin of Safety ชัดเจน + กำไร TTM อาจเป็นจุดพีค · ควรรองบ Q2/2569 (13 ส.ค. 69) ก่อนสะสมเพิ่ม</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿12.35</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿10.81</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿15.44</div><div class="d">ใกล้/ต่ำกว่า Fair Value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่า Fair Value</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="17.9" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -198,17 +226,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿17.90 • EPS ฐาน (TTM) ~฿1.31 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน (TTM) ~฿1.31{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −15%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿8.00</div>
-          <div class="ret neg">−50%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.80</span></li>
             <li><span>P/E ออก</span><span>10x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.90</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>งบ 13 ส.ค. เผยกำไรร่วงแรงตาม Forward EPS ฿0.85 + Backlog ใหม่มาช้า/งบฯ รัฐถูกตัด</span></li>
           </ul>
         </div>
@@ -216,12 +244,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS −5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿14.56</div>
-          <div class="ret neg">−10%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿1.12</span></li>
             <li><span>P/E ออก</span><span>13x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.50</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>กำไร Normalize ลงจากพีค TTM ตามที่ตลาดคาด แต่ Mega Project ใหม่ช่วยพยุงบางส่วน</span></li>
           </ul>
         </div>
@@ -229,12 +257,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿24.75</div>
-          <div class="ret pos">+49%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿1.65</span></li>
             <li><span>P/E ออก</span><span>15x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.95</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Backlog ใหม่จาก Land Bridge/EEC/MRT ชดเชยงานเก่าที่จบไปได้ทัน กำไรไม่ทรุดตามที่ตลาดกลัว</span></li>
           </ul>
         </div>
@@ -282,8 +310,8 @@
       <h2>STECON: กำไร TTM ฟื้นตัวแรงแต่อาจถึงจุดพีค — ราคาสูงกว่า Fair Value เล็กน้อย รอผลประกอบการ Q2/2569 ก่อนสะสมเพิ่ม</h2>
       <p>STECON Group (ซิโน-ไทย เอ็นจีเนียรริ่ง) คือ Holding Company ที่ถือหุ้นในกลุ่มรับเหมาก่อสร้างขนาดใหญ่ที่สุดแห่งหนึ่งของไทย ด้วยประสบการณ์กว่า 60 ปี ในงานรถไฟฟ้า ทางด่วน สนามบิน และโรงไฟฟ้า หุ้นปรับโครงสร้างเป็น Holdco ต.ค. 2567 และราคาพุ่ง +102.5% ในรอบปีรับกระแส Mega Project • EPS TTM ฟื้นตัวแรงมาที่ ฿1.31 (P/E 12.44x) จากขาดทุน FY2567 แต่ Forward EPS ที่ตลาดคาดเหลือเพียง ฿0.85 (Forward P/E 19.1x) บ่งชี้ว่ากำไร TTM อาจเป็นจุดพีคชั่วคราว — รายงานนี้จึงใช้ EPS normalized ฿1.08 ประเมิน FV ใหม่ที่ ฿15.44 (จากเดิม ฿17.00) ต่ำกว่าราคาปัจจุบัน ฿16.30 เล็กน้อย ~6% • นักวิเคราะห์ให้เป้า ฿17.11–17.80 • กลยุทธ์: รองบ Q2/2569 (ประกาศ 13 ส.ค. 69) ก่อนสะสมเพิ่ม เน้นทยอยซื้อในโซน ฿12.35–15.44 (MOS 20%–Fair Value) มากกว่าไล่ซื้อตอนนี้</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿15.44 <span style="font-size:12px;color:#cab9a8">(฿13.37–฿17.87)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −16%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿17.46 (ช่วง ฿17.11–17.80)</div></div>
       </div>
       <div class="zone">

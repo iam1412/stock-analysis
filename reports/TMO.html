@@ -10,6 +10,40 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 503,
+  "values": {
+    "px": 609.82,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 466,
+    "fvHigh": 539,
+    "eps": 22.87,
+    "shares": 380000000,
+    "dps": 1.88,
+    "bvps": 197,
+    "baseEps": 22.87,
+    "scenarios": [
+      {
+        "tgt": 529.4,
+        "div": 5.64
+      },
+      {
+        "tgt": 633.82,
+        "div": 5.64
+      },
+      {
+        "tgt": 719.44,
+        "div": 5.64
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#DA2B2B",
     "accentDark": "#A11C1C",
@@ -41,18 +75,14 @@
     "min": 450,
     "max": 650,
     "grid": [500, 550, 600],
-    "fairLine": 503,
     "currency": "$",
     "highlight": [6, 10]
   },
   "gauge": {
     "min": 450,
     "max": 636,
-    "cur": 609.82,
-    "fair": 503,
     "fairLabelTop": false
-  },
-  "fv": 503
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +102,11 @@
     <div class="sub">เครื่องมือ/น้ำยาวิทยาศาสตร์ชีวภาพรายใหญ่สุดโลก • Life Sciences Solutions • Analytical Instruments • Specialty Diagnostics • Lab Products &amp; Biopharma Services (CRO/CDMO)</div>
     <div class="price-row">
       <div>
-        <div class="px">$609.82<small>(TMO)</small></div>
+        <div class="px">{{rd:px}}<small>(TMO)</small></div>
       </div>
-      <div class="chg">▲ +7.5% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $401.45 / $643.99<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / Macrotrends
       </div>
@@ -87,8 +117,8 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล FY2025 / TTM · อิง Adj. EPS</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$232B</div><div class="d">~380M shares</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~26.7x</div><div class="d">อิง Adj. EPS $22.87 · GAAP P/E ~28x</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~380M shares</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">อิง Adj. EPS $22.87 · GAAP P/E ~28x</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~25–30x</div><div class="d">ปัจจุบันต่ำกว่าเฉลี่ย</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~3.1x</div><div class="d">BVPS ~$197 · ค่อนข้างสมเหตุ</div></div>
 
@@ -113,7 +143,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#DA2B2B"></i>ราคา TMO</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $503</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -139,8 +169,8 @@
         <div class="mval">$466.20</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $466 – $539</span></div>
-        <div class="r">$503</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/E (Adj.) ให้ค่ากลาง $503.14 วิธี Forward P/E สูงสุด $539 สะท้อนการเติบโต FY26 วิธี P/FCF ให้ค่าต่ำสุด $466 เนื่องจาก capex สูงช่วงขยายกำลังการผลิต เฉลี่ย 3 วิธี = $502.78 ≈ $503 ซึ่งใกล้เคียงราคาตลาด $513 แสดงว่า TMO ซื้อขายในราคาเหมาะสม (slight premium) ไม่ได้ถูกหรือแพงเกินไป
@@ -154,14 +184,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $609.82</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $503</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$352.10<br><small>MOS 30%</small></span>
-          <span>$402.40<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$503<br><small>Fair Value</small></span>
-          <span style="text-align:right">$539<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$596<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -175,19 +205,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−21%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาสูงกว่ามูลค่าเหมาะสมเล็กน้อย (~2%) — ยังไม่มี MOS · รอย่อสู่ใกล้ $503 หรือต่ำกว่า</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$402.40</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$352.10</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $503</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="609.82" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -196,17 +226,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $609.82 • EPS ฐาน ~$22.87 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$529.40</div>
-          <div class="ret neg">-13.2%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$26.47</span></li>
             <li><span>P/E ออก</span><span>20x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$5.64</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>tariff/China กดหนัก · biopharma ชะลอ</span></li>
           </ul>
         </div>
@@ -214,12 +244,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$633.82</div>
-          <div class="ret pos">+3.9%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$28.81</span></li>
             <li><span>P/E ออก</span><span>22x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$5.64</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>biopharma ฟื้น · China คลาย · PPD ขยาย</span></li>
           </ul>
         </div>
@@ -227,12 +257,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +11%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$719.44</div>
-          <div class="ret pos">+18.0%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$31.28</span></li>
             <li><span>P/E ออก</span><span>23x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$5.64</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>ดีลใหม่ CDMO · AI-driven drug discovery · M&amp;A</span></li>
           </ul>
         </div>
@@ -278,8 +308,8 @@
       <h2>Compounder คุณภาพสูง — ราคาเหมาะสม รอย่อสะสม</h2>
       <p>Thermo Fisher Scientific ผู้นำ life-science tools ระดับโลก มีคูเมืองลึก (recurring consumables ~85%, scale moat, switching cost สูง) และธุรกิจ biopharma กำลังฟื้นตัว ราคา $513 ที่ P/E 22x adj. ≈ Fair Value $503 (MOS −2.0%) หมายความว่าตลาดประเมินมูลค่าค่อนข้างเหมาะสมแล้ว ยังไม่มี margin of safety ที่แท้จริง นักวิเคราะห์ 29 รายมีเป้าเฉลี่ย $596 (+1%) สะท้อน upside ระยะกลาง-ยาว ความเสี่ยงสำคัญใกล้ตัวคือ tariff/China (~$400M) และ P/E ที่ไม่ถูก</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$503 <span style="font-size:12px;color:#cab9a8">($466–$539)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −21%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$596 (Buy)</div></div>
       </div>
       <div class="zone">

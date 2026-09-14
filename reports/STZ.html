@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 167,
+  "values": {
+    "px": 122.45,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 144,
+    "fvHigh": 188,
+    "shares": 170750000,
+    "dps": 4.12,
+    "bvps": 46.04,
+    "baseEps": 11.74,
+    "scenarios": [
+      {
+        "tgt": 143.65,
+        "div": 13
+      },
+      {
+        "tgt": 217.44,
+        "div": 13
+      },
+      {
+        "tgt": 296.97,
+        "div": 13
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#c8860a",
     "accentDark": "#8b5c00",
@@ -41,7 +74,6 @@
     "min": 100,
     "max": 180,
     "grid": [120, 140, 160],
-    "fairLine": 167,
     "currency": "$",
     "highlight": [4, 11],
     "gridFmt": "v.toFixed(0)",
@@ -49,11 +81,8 @@
   },
   "gauge": {
     "min": 100,
-    "max": 210,
-    "cur": 122.45,
-    "fair": 167
-  },
-  "fv": 167
+    "max": 210
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -73,11 +102,11 @@
     <div class="sub">เบียร์นำเข้าอันดับ 1 สหรัฐฯ — Modelo · Corona · Pacifico • ไวน์ &amp; สุรา (Robert Mondavi, Kim Crawford) • การลงทุนใน Canopy Growth (กัญชา)</div>
     <div class="price-row">
       <div>
-        <div class="px">$122.45<small>(STZ)</small></div>
+        <div class="px">{{rd:px}}<small>(STZ)</small></div>
       </div>
-      <div class="chg">▼ −6.8% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $126.45 – $171.00<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, Google Finance
       </div>
@@ -117,7 +146,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#c8860a"></i>ราคา STZ</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $167</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -143,8 +172,8 @@
         <div class="mval">$168.96</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $144 – $188</span></div>
-        <div class="r">$167</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/E ให้ค่าสูงสุด ($188) สะท้อนศักยภาพเมื่อ sentiment กลับมา · DDM ให้ค่าต่ำสุด ($144) เพราะ r−g margin แคบ อ่อนไหวต่อการปรับ assumption · EV/EBITDA ($169, input ณ FY2026 — shares/net debt ยังไม่ refresh เพราะผลต่างต่อ FV เฉลี่ย <2 จุด% MOS) ใกล้เคียงราคาตลาดสะท้อน sector ที่มีหนี้สูง · <b>FV กลาง $167</b> สะท้อน upside ที่มีอยู่จริงหากธุรกิจ Beer ฟื้นตัวและ Canopy drag ลดลง · ทั้ง 3 วิธีอิง <b>Adjusted EPS</b> เพื่อตัดผลกระทบ non-cash impairment ออก
@@ -158,15 +187,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $122.45</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $167</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$116.90<br><small>MOS 30%</small></span>
-          <span>$133.60<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$167<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$170.83<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$188<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -179,19 +208,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict good">
-        <div class="big">+27%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS ปานกลาง — มีส่วนต่างความปลอดภัยพอสมควร เหมาะสะสมทยอย</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$133.60</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$116.90</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $167</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="122.45" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -200,17 +229,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $122.45 • EPS ฐาน ~$11.74 (Adjusted) • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} (Adjusted){{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −2%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$143.65</div>
-          <div class="ret neg">+27.9%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$11.05</span></li>
             <li><span>P/E ออก</span><span>13x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$13.00</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>Tariff กระทบหนัก · Beer volume ลด · Canopy ยังเป็น drag</span></li>
           </ul>
         </div>
@@ -218,12 +247,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$217.44</div>
-          <div class="ret pos">+88.2%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$13.59</span></li>
             <li><span>P/E ออก</span><span>16x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$13.00</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>Beer ฟื้น · Tariff ผ่อนคลาย · Wine/Spirits divestitures เสร็จสิ้น</span></li>
           </ul>
         </div>
@@ -231,12 +260,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +10%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$296.97</div>
-          <div class="ret pos">+153.1%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$15.63</span></li>
             <li><span>P/E ออก</span><span>19x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$13.00</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Modelo ครองตลาดต่อ · ขยาย premium tier · Canopy ตัดออก → P/E re-rate</span></li>
           </ul>
         </div>
@@ -283,8 +312,8 @@
       <h2>เบียร์ที่ดีที่สุดสหรัฐฯ ราคา Discount — Accumulate</h2>
       <p>STZ เป็นเจ้าของแบรนด์เบียร์อันดับ 1 ของสหรัฐฯ (Modelo Especial) พร้อม moat ทางแบรนด์ที่แข็งแกร่งยาวนาน หุ้นเคลื่อนไหวในกรอบ $130–$158 ในรอบปีที่ผ่านมา (ปัจจุบัน +3.3% รอบปี) จากความกังวลเรื่อง Tariff + Canopy Growth drag ก่อนหน้า + การชะลอ growth ทำให้ Forward P/E ลงมาเพียง ~11.2x — discount ใหญ่จากค่าเฉลี่ยประวัติศาสตร์ FCF ยังแข็งแกร่ง ($1.83B) รองรับปันผลและลดหนี้ได้ MOS ~16.7% เหนือ Fair Value $167 เริ่มให้ margin of safety ที่น่าสนใจ แต่ยังไม่ถึง deep value — กลยุทธ์เหมาะสม คือ <b>ทยอยสะสมในโซนต่ำกว่า $139</b> โดยเฉพาะถ้าราคาลงถึง MOS 20% zone ($133.60)</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$167 <span style="font-size:12px;color:#cab9a8">($144–$188)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +27%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$170.83 (Buy)</div></div>
       </div>
       <div class="zone">
@@ -297,7 +326,7 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ EPS adjusted ในอนาคต การใช้ Adjusted EPS แทน GAAP อาจไม่สะท้อนผลขาดทุนจริง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
-    ราคา ณ 11 ก.ย. 2569 อ้างอิง: StockAnalysis.com (https://stockanalysis.com/stocks/stz/) · Yahoo Finance (https://finance.yahoo.com/quote/STZ/) · Google Finance (https://www.google.com/finance/quote/STZ:NYSE) · Constellation Brands Investor Relations · ข้อมูลกราฟ: Yahoo Finance Chart API
+    ราคา ณ {{rd:priceDate}} อ้างอิง: StockAnalysis.com (https://stockanalysis.com/stocks/stz/) · Yahoo Finance (https://finance.yahoo.com/quote/STZ/) · Google Finance (https://www.google.com/finance/quote/STZ:NYSE) · Constellation Brands Investor Relations · ข้อมูลกราฟ: Yahoo Finance Chart API
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 17 สิงหาคม 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
