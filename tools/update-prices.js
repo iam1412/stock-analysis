@@ -67,6 +67,7 @@ const { findPriceDate, findRestatedDate, parenDateAfter, allDiscDates, renderTha
 const RV = require('./report-values.js');   // ระยะ 2: format/derive มาตรฐานอยู่ที่นี่ (เจ้าของเดียว) — cron ใช้ร่วมกับ build/gate
 const { mosBand, fmtPrice, annualChg, styledRD } = RV;
 const { keepMap } = require('./keep-map.js');   // ระยะ 2 ส่วน D: วาง token {{rd:…}} กลับหลัง pass derived บน view ที่ render
+const { footerDate } = require('./queue/footer-date.js');   // ระยะ 2 ส่วน F: "ใบใหม่" (E44) ตัดสินจาก footer "ข้อมูล ณ" ของไฟล์
 const MAX_PTS = 13;          // กราฟรายเดือน ~1 ปี (E37)
 const DRIFT_FREEZE = 0.15;   // ราคาใหม่ต่างจากในรายงาน > 15% → freeze (prose จะผิดความหมาย · เดิม 10% — ขยับขึ้นลดภาระ re-analysis)
 const SUSPECT_FREEZE = 0.25; // ต่าง > 25% → สงสัย split/ticker เปลี่ยน/ข้อมูลเพี้ยน
@@ -505,13 +506,23 @@ function patchReport(html, p) {
     need(RM.STOCK_META_PARTS_RE, 'stock-meta (เขียนกลับ)');
     const out2 = html.replace(RM.REPORT_DATA_PARTS_RE, (m, a, body, z) => a + '\n' + styledRD(rd) + '\n' + z);
     // ตัวตั้ง = values.px (ปัด 2 ตำแหน่ง) ตัวเดียวกับที่ token render — ราคาดิบทำให้ช่องอย่าง "จากจุดเข้า {{rd:px}}" ถูกแก้ต่าง 1 สตางค์แล้ว token ต้องชนะเปล่า ๆ
-    const dv2 = derivedPassV2(out2, rd.values.px, { prevPriceDate });
+    // prose ผูกราคา (E44 · ระยะ 2 ส่วน F): แทน literal ที่ **เท่ากับค่าที่ token render ณ ตอนนี้ทุก byte** ด้วย {{rd:…}}
+    // ★ ทำ **หลังเขียน values ใหม่ ก่อน derivedPassV2** โดยเจตนา:
+    //   · หลังเขียน values ⇒ เทียบกับ "ค่าหลัง patch" ⇒ รอบนี้เนื้อหาที่คนอ่านเห็นไม่เปลี่ยนแม้แต่ไบต์เดียว
+    //     (ถ้าทำก่อนเขียน จะกลายเป็น cron ไปเขียนตัวเลขในย่อหน้าใหม่ = สิ่งที่ §9 ห้าม)
+    //   · ก่อน derivedPassV2 ⇒ token ที่เพิ่งวางลงไปเข้าไปอยู่ใน spans ของ pass นั้นด้วย (ได้สิทธิ์ "token ชนะ")
+    //     และเพราะ proseTokens เป็น render-neutral (มี tripwire ในตัว) `view` ที่ pass สร้างและส่งให้ keepMap
+    //     จึงเป็นสตริงเดิมทุกไบต์ — สิ่งที่ keep-map เทียบ/การันตีไม่เปลี่ยน มีแต่ช่วงที่ถูก token คุ้มครองเพิ่มขึ้น
+    // ★ จำกัดที่ "ใบใหม่" (footer ≥ PROSE_TOKEN_SINCE) = ขอบเขตเดียวกับ E44 เป๊ะ — ไม่ไล่แปลงคลังเก่า 1,533 จุด
+    //   ใน 550 ใบกลางดึกโดยไม่มีใครรีวิว (fix-on-touch ของใบเก่าเป็นงานระยะ 3 ตามที่ W23 ประกาศไว้)
+    const pt = proseTokensIfNew(out2, rd, sm);
+    const dv2 = derivedPassV2(pt.html, rd.values.px, { prevPriceDate });
     if (dv2.overridden) notes.push(`derived v2: token ชนะ ${dv2.overridden} span (pass derived พยายามแก้ช่องที่เป็น {{rd:…}} — ตัดทิ้ง)`);
     // กระจก stock-meta เขียน **หลัง** pass และอ่าน stock-meta จากผลของ pass (fix wave F1) — แตะแค่ price/mos/upside/fairValue
     // pe/dividendYield เป็นของ pass derived (patchDerived#2/#9 บน view) เหมือน v1 ⇒ กระจกย้อนค่าที่ pass เพิ่งเขียนไม่ได้
     const out3 = RV.mirrorStockMeta(dv2.html);
     const d = RV.derive(rd, sm);
-    return { html: out3, changed: out3 !== html, chg, mos: round(d.mos, 1), derived: dv2.changes, notes };
+    return { html: out3, changed: out3 !== html, chg, mos: round(d.mos, 1), derived: pt.changes.concat(dv2.changes), notes };
   }
 
   let out = html.replace(RM.REPORT_DATA_PARTS_RE,
@@ -678,6 +689,16 @@ function v2DateTripwire(rendered, pd, iso) {
   if (bad.length) throw new Error(`derivedPassV2: วันที่ราคาที่โชว์ ≠ values.priceDate ${iso} — ${bad.join(' · ')} (เขียนกลับไม่ได้)`);
 }
 
+// ---------- v2: prose ผูกราคา → token (healer ของ E44) — ระยะ 2 ส่วน F ----------
+// ขอบเขต = **ใบใหม่เท่านั้น** (footer "ข้อมูล ณ" ≥ RV.PROSE_TOKEN_SINCE) ซึ่งเป็นเงื่อนไขเดียวกับที่ E44 ใช้ตัดสิน
+// ⇒ ตัวตรวจกับตัวซ่อมมีขอบเขตเท่ากันเป๊ะ (กติกาเดียวกับ W19/W20) และคลังเก่า 908 ใบไม่ถูกแตะแม้แต่ไฟล์เดียววันนี้
+// ★ ไฟล์ที่ไม่มี footer/อ่านวันที่ไม่ออก = ไม่ใช่ "ใบใหม่" → ไม่แตะ (เดาไม่ได้ก็ไม่เขียน)
+function proseTokensIfNew(html, rd, sm) {
+  const f = footerDate(html);
+  if (!f || f.iso < RV.PROSE_TOKEN_SINCE) return { html, changes: [] };
+  return RV.proseTokens(html, rd, sm);
+}
+
 // ---------- v2: pass derived บน view ที่ render แล้ว (token เป็นเจ้าของ) — ระยะ 2 ส่วน D ----------
 // ทำไมไม่เรียก patchDerived บนต้นฉบับตรง ๆ: ตัวอ่านของมันต้องเห็นค่าที่ render (currencyOf อ่าน .px = "{{rd:px}}" → null ·
 // ช่องผสม "~{{rd:analystTgt}} (-3%)" ต้องรู้ราคาเป้า) · วิธี: render token ทีละตัว → view + span ต่อ token →
@@ -785,7 +806,9 @@ function gateCheck(html, name) {
   let expanded;
   try { expanded = expandReport(html); }
   catch (e) { return { ok: false, codes: ['EXPAND'], detail: `EXPAND expandReport: ${e.message}`.slice(0, 400), expanded: null, warnings: [] }; }
-  const r = checkHtml(expanded, name);
+  // ★ ต้องส่ง source (ต้นฉบับก่อน expand) เสมอ — ระยะ 2 ส่วน F: E44 อ่าน ctx.source เพื่อดูว่า prose ยังเป็น literal ไหม
+  //   ไม่ส่ง = ctx.source กลายเป็นหน้าที่ render แล้ว ⇒ token ทุกตัวหน้าตาเป็น literal ⇒ ใบใหม่ทุกใบตกทันที
+  const r = checkHtml(expanded, name, { source: html });
   if (!r.errors.length) return { ok: true, codes: [], detail: '', expanded, warnings: r.warnings };
   const codes = [...new Set(r.errors.map((e) => e.id))];
   return { ok: false, codes, detail: r.errors.map((e) => `${e.id} ${e.msg}`).join(' ; ').slice(0, 400), expanded, warnings: r.warnings };
@@ -889,13 +912,16 @@ function healDerived(opts) {
         if (!(px > 0)) { noPrice++; continue; }
         const smH = RM.readStockMeta(html);
         if (!smH) { noPrice++; continue; }
-        const p2 = derivedPassV2(html, px, { prose: opts.prose });
+        // E44 (ระยะ 2 ส่วน F): --heal-derived เป็นทางที่คน (worker/controller) ใช้เคลียร์ E44 ตอนเขียนใบใหม่
+        //   ขอบเขต/ลำดับเดียวกับ cron (proseTokensIfNew ก่อน pass derived) — ไม่มีราคาใหม่ให้เขียน ตัวตั้งคือ values.px เดิม
+        const pt = proseTokensIfNew(html, rdH, smH);
+        const p2 = derivedPassV2(pt.html, px, { prose: opts.prose });
         const mirrored = RV.mirrorStockMeta(p2.html);
         // fix wave M7: ซ่อมที่กระจกอย่างเดียว (pass ไม่เปลี่ยนอะไร แต่ stock-meta.price/mos/upside/fairValue ไม่ตรง values/fv)
         //   ต้องนับว่า "แตะ" ด้วย — เดิมนับเฉพาะ changes ของ pass ⇒ BBL fairValue ×1.2 (E30/E31) ถูกข้ามเงียบ ไม่เขียน
         const smM = RM.readStockMeta(mirrored);
         const mirrorLine = mirrored !== p2.html ? [`stock-meta กระจก ${RV.MIRROR_KEYS.filter((k) => smH[k] !== smM[k]).map((k) => `${k} ${smH[k]} → ${smM[k]}`).join(' · ')} (จาก values.px/fv)`] : [];
-        r = { html: mirrored, changes: p2.changes.concat(p2.overridden ? [`token ชนะ ${p2.overridden} span`] : [], mirrorLine), v2: true };
+        r = { html: mirrored, changes: pt.changes.concat(p2.changes, p2.overridden ? [`token ชนะ ${p2.overridden} span`] : [], mirrorLine), v2: true };
       } else {
         // ราคาที่ใช้เป็นตัวตั้ง = ราคาใน header (.px) — ตัวเดียวกับที่ gate ใช้เทียบ (E41/E42) ไม่ใช่ stock-meta
         const hp = RM.readHeaderPrice(html);
@@ -1168,6 +1194,6 @@ function pxOf(html, sm) {
   return r && RV.isV2(r.data) && r.data.values && Number.isFinite(r.data.values.px) ? r.data.values.px : sm.price;
 }
 
-module.exports = { derivedPassV2, mirrorStockMetaV2, healDerived, fvOf, pxOf, mosBand, fmtPrice, fmtLike, toYahooSymbol, fetchChart, buildChartData, niceBounds, annualChg, decide, currencyMatches, isIntradayQuote, detectMixedBasis, detectStaleQuotes, missedSessions, probeCap, capByCohort, controlTickers, unverifiedCohorts, classifyStale, patchReport, gateAfterPatch, gateCheck, mergeFlags, commitFlags, styledRD, commitBody, THAI_MONTHS, MOS_FLIP_DEADBAND_PP };
+module.exports = { derivedPassV2, proseTokensIfNew, mirrorStockMetaV2, healDerived, fvOf, pxOf, mosBand, fmtPrice, fmtLike, toYahooSymbol, fetchChart, buildChartData, niceBounds, annualChg, decide, currencyMatches, isIntradayQuote, detectMixedBasis, detectStaleQuotes, missedSessions, probeCap, capByCohort, controlTickers, unverifiedCohorts, classifyStale, patchReport, gateAfterPatch, gateCheck, mergeFlags, commitFlags, styledRD, commitBody, THAI_MONTHS, MOS_FLIP_DEADBAND_PP };
 
 if (require.main === module) main().catch((e) => { console.error(e); process.exit(1); });

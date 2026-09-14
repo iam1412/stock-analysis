@@ -784,7 +784,7 @@ function checkStripped(exp0, exp1, values, notes) {
 function verifyPair(src, out, name, exp0, ctx0, values, notes) {
   let exp1;
   try { exp1 = expandReport(out); } catch (e) { return { reason: 'expand v2 ไม่ได้: ' + e.message }; }
-  const gate1 = checkHtml(exp1, name);
+  const gate1 = checkHtml(exp1, name, { source: out });   // ระยะ 2 ส่วน F: E44 อ่าน ctx.source (ต้นฉบับ v2 ที่มี token) ไม่ใช่หน้าที่ render แล้ว
   const c1 = gate1.ctx;
   const v1 = ctx0.mf && ctx0.mf.values ? ctx0.mf.values : {};
   const v2 = c1.mf && c1.mf.values ? c1.mf.values : {};
@@ -909,7 +909,7 @@ function runOnce(src, name, noScn, st) {
     if (rdS.ok && RV.isV2(rdS.data)) return fail(ALREADY_V2);
     let exp0;
     try { exp0 = expandReport(src); } catch (e) { return fail('expand v1 ไม่ได้: ' + e.message); }
-    const gate0 = checkHtml(exp0, name);
+    const gate0 = checkHtml(exp0, name, { source: src });
     if (gate0.errors.length) return fail('gate ตกก่อนย้าย: ' + gate0.errors.map((e) => e.id + ' ' + e.msg).join(' | '));
     const ctx0 = gate0.ctx;
 

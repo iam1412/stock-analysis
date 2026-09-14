@@ -1145,6 +1145,60 @@ require('./parser-lint.js')(ok);
   }
 }
 
+// ── E44 (ระยะ 2 ส่วน F · spec B(ข)): ใบใหม่ห้ามพิมพ์ตัวเลขผูกราคาเป็น literal ใน prose + healer proseTokens ──
+// ★ ต้องอยู่ **ก่อน** บล็อก E-policy ข้างล่าง — CONVERGED ถูกอ่านที่นั่น
+// ★ เคสนี้พิสูจน์ 4 อย่าง: (1) ใบใหม่ที่มี literal → ยิง (2) healer จริง (RV.proseTokens ที่ cron/heal เรียก) ทำให้เงียบ
+//   + idempotent + **ข้อความที่ render ไม่เปลี่ยนแม้แต่ไบต์เดียว** (3) ใบเก่า (footer < SINCE) เงียบทั้งที่เนื้อหาเหมือนกันเป๊ะ
+//   (4) ต้องอ่าน ctx.source ไม่ใช่หน้าที่ render แล้ว — ไม่งั้นใบที่เขียนถูก (ใช้ token ครบ) จะตกทุกใบ
+{
+  const RVp = require('../tools/report-values.js');
+  const UPp = require('../tools/update-prices.js');
+  const { footerDate } = require('../tools/queue/footer-date.js');
+  const TH_MON = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
+  const rawV2 = FX.BBL_V2();
+  const rdV2 = RM.readReportData(rawV2).data, smV2 = RM.readStockMeta(rawV2);
+  const dV2 = RVp.derive(rdV2, smV2);
+  // วันที่ footer = ข้อมูลของไฟล์ (ค.ศ. ตามที่ fixture ใช้) — คำนวณจาก PROSE_TOKEN_SINCE เพื่อไม่ให้เทสเน่าเมื่อเลื่อนวัน
+  const setFooter = (h, iso) => {
+    const p = RVp.parseIso(iso);
+    return h.replace(/(ข้อมูล\s*ณ\s*)\d{1,2}\s*[ก-๙.]+\s*\d{4}/, (m, a) => `${a}${p.day} ${TH_MON[p.monIdx]} ${p.yearCE}`);
+  };
+  // "ใบที่คนเขียนตัวเลขเป็น literal" — ปรับ literal ที่มีอยู่แล้วใน fixture ให้ตรงรูปที่ token render (ไม่งั้น healer
+  // แตะไม่ได้ตามกติกา "ต้องเท่ากันทุก byte" แล้วเคส convergence จะพิสูจน์อะไรไม่ได้)
+  const literalise = (h) => {
+    let out = h;
+    for (const x of [...RVp.proseBoundHits(h, dV2)].reverse()) out = out.slice(0, x.at) + RVp.TOKENS[x.token](dV2) + out.slice(x.at + x.len);
+    return out;
+  };
+  const fires44 = (h) => allIds(checkHtml(expandReport(h), 'BBL.html', { source: h })).has('E44');
+
+  const oldSrc = literalise(rawV2);                                  // footer เดิม (24 ก.ค. 2026 < SINCE)
+  const newSrc = setFooter(oldSrc, RVp.PROSE_TOKEN_SINCE);           // ใบใหม่ (footer = SINCE พอดี)
+  const hits = RVp.proseBoundHits(newSrc, dV2);
+  ok(newSrc !== oldSrc && footerDate(newSrc).iso === RVp.PROSE_TOKEN_SINCE, 'E44: ตั้ง footer เป็นวัน SINCE ได้จริง', footerDate(newSrc) && footerDate(newSrc).iso);
+  ok(hits.length >= 4, `E44: fixture (literalise แล้ว) มี prose ผูกราคา ${hits.length} จุด`, hits.map((h) => h.token + ':' + h.text).join(' '));
+  ok(!fires44(rawV2) && !fires44(oldSrc), 'E44: ใบเก่า (footer < SINCE) เงียบ แม้ prose จะเป็น literal ทั้งใบ — ของเก่าเป็นงานระยะ 3');
+  ok(fires44(newSrc), 'E44: ใบใหม่ที่ prose เป็น literal → ยิง');
+
+  const healed44 = RVp.proseTokens(newSrc, rdV2, smV2);
+  ok(healed44.changes.length === hits.length && healed44.html !== newSrc, `E44: healer แทนครบทุกจุด (${healed44.changes.length}/${hits.length})`, healed44.changes.join(' | '));
+  ok(!fires44(healed44.html), 'E44: หลัง proseTokens → เงียบ');
+  ok(RVp.proseTokens(healed44.html, rdV2, smV2).html === healed44.html, 'E44: healer idempotent');
+  ok(RVp.renderValues(healed44.html, rdV2, smV2) === RVp.renderValues(newSrc, rdV2, smV2),
+    'E44: healer ไม่เปลี่ยนข้อความที่คนอ่านเห็นแม้แต่ไบต์เดียว (cron จึงรันได้ทั้งที่ §9 ห้ามแตะ prose)');
+  CONVERGED.add('E44');
+
+  // ตัวตรวจต้องอ่าน source ก่อน expand — บนหน้าที่ render แล้ว ใบที่ "เขียนถูกทุกจุด" จะกลายเป็น literal ทั้งใบ
+  const renderedOk = RVp.renderValues(healed44.html, rdV2, smV2);
+  ok(allIds(checkHtml(renderedOk, 'BBL.html')).has('E44'), 'E44: หน้าที่ render แล้ว + ไม่ส่ง opts.source → ยิง (นี่คือเหตุผลที่ gateCheck/migrate ต้องส่ง source)');
+  ok(!allIds(checkHtml(renderedOk, 'BBL.html', { source: healed44.html })).has('E44'), 'E44: ส่ง source (ต้นฉบับที่เป็น token) → เงียบ');
+
+  // ทาง cron/heal (tools/update-prices.js) ต้องมีประตูวันที่เดียวกับ E44 เป๊ะ
+  ok(UPp.proseTokensIfNew(newSrc, rdV2, smV2).changes.length === hits.length, 'E44: cron/heal (proseTokensIfNew) แปลงให้บนใบใหม่');
+  ok(UPp.proseTokensIfNew(oldSrc, rdV2, smV2).changes.length === 0 && UPp.proseTokensIfNew(oldSrc, rdV2, smV2).html === oldSrc,
+    'E44: cron/heal ไม่แตะใบเก่าเลย (ขอบเขตตัวซ่อม = ขอบเขตตัวตรวจ · คลัง 908 ใบวันนี้ไม่ถูกเขียนแม้ไฟล์เดียว)');
+}
+
 // ── E-policy (spec WS2 ข้อ 3 · แผนระยะ 1 Global Constraints): error ที่ไม่อยู่ในรายการ grandfather ต้อง
 //    (ก) ประกาศ healer ที่รู้จัก และ (ข) มีเคส convergence ในไฟล์นี้ (mutate → check ยิง → healer → check เงียบ)
 //    ไม่งั้น E ใหม่ = cron ล้มทั้งวันแบบเคลียร์ไม่ได้ (บทเรียน 22–24 ส.ค. 69 / run #54) ──
@@ -1157,7 +1211,9 @@ require('./parser-lint.js')(ok);
   //   (ไม่เคยมี "เลขที่ render ไปแล้วค้าง" ในไฟล์ต้นฉบับเอง) ⇒ คู่ f69/f44 ที่เคยใช้สาธิต 'build' จริง ๆ ไม่ตรงกันได้
   //   เฉพาะตอน JSON สองจุดขัดกัน (JSON-vs-JSON) ซึ่งต้องมีฟังก์ชันซ่อมจริง (mirrorStockMetaV2 ที่ patchReport เรียก)
   //   ไม่ใช่แค่ "expand ใหม่" ⇒ healer ที่ถูกต้องของเคสนั้นคือ 'patchReport' (มีอยู่แล้วในเซ็ตนี้) ไม่ใช่ 'build'
-  const HEALERS = new Set(['patchReport', ...[1, 2, 3, 5, 6, 7, 8, 9, 10, 11].map((n) => 'patchDerived#' + n)]);
+  // 'proseTokens' (ระยะ 2 ส่วน F) = RV.proseTokens ที่ cron (patchReport ทาง v2) และ --heal-derived เรียกผ่าน
+  //   proseTokensIfNew — ประตูวันที่เดียวกับ E44 ⇒ ทุก error ที่ E44 ยิงมีตัวซ่อมที่รันอัตโนมัติจริง
+  const HEALERS = new Set(['patchReport', 'proseTokens', ...[1, 2, 3, 5, 6, 7, 8, 9, 10, 11].map((n) => 'patchDerived#' + n)]);
   for (const id of ['W16', 'W17', 'W19', 'W20']) ok(CHECKS.find((c) => c.id === id).level === 'error', `ระยะ 1: ${id} ต้องเป็น error (ยกจาก warn 12 ก.ย. 2569 — คงชื่อ)`);
   const errs = CHECKS.filter((c) => c.level === 'error');
   ok(errs.length >= 43, `E-policy: มี error ≥43 ตัว (ได้ ${errs.length})`);

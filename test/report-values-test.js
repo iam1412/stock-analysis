@@ -195,5 +195,55 @@ const rd = () => ({
   assert(RV.annualChg([['a', 100], ['b', 100.5]], 'รอบปี').text === '≈ ทรงตัว รอบปี', 'annualChg flat (FLAT_PP 0.75)');
   assert(RV.mosBand(9.9) === 'bad' && RV.mosBand(10) === 'ok' && RV.mosBand(20) === 'good', 'mosBand');
 }
+// ── E44 (ระยะ 2 ส่วน F · spec B(ข)): prose ผูกราคา + healer proseTokens ─────────────────────
+// ค่าจาก fixture: px 188 · fv 195 · mos20 156 · mos30 136.5 · mos "+4%" · analystTgt 205 (+9%)
+{
+  const d = RV.derive(rd(), sm);
+  const hits = (html) => RV.proseBoundHits(html, d);
+  const ids = (html) => hits(html).map((h) => h.token).join(',');
+  assert(RV.TOKENS.px(d) === '฿188.00' && RV.TOKENS.fv(d) === '฿195.00' && RV.TOKENS.mos20(d) === '฿156.00' && RV.TOKENS.mos(d) === '+4%',
+    'E44 fixture: ค่าที่ token render ตามที่เทสข้างล่างอ้าง');
+  assert(/^\d{4}-\d{2}-\d{2}$/.test(RV.PROSE_TOKEN_SINCE), 'PROSE_TOKEN_SINCE เป็น ISO: ' + RV.PROSE_TOKEN_SINCE);
+
+  // (1) จับของจริง
+  assert(ids('<p>ราคาปัจจุบัน ฿188.00 สูงกว่ามูลค่าเหมาะสม ฿195.00 เล็กน้อย</p>') === 'px,fv', 'hits: ราคาปัจจุบัน + มูลค่าเหมาะสม → px,fv (' + ids('<p>ราคาปัจจุบัน ฿188.00 สูงกว่ามูลค่าเหมาะสม ฿195.00</p>') + ')');
+  assert(ids('<div class="txt">รอโซน MOS 20% ที่ ฿156.00 ก่อนเพิ่ม</div>') === 'mos20', 'hits: โซน MOS 20% → mos20');
+  assert(ids('<li>จุดเข้าซื้อใกล้ ฿136.50 (MOS 30%)</li>') === 'mos30', 'hits: ทางกลับ "ราคา (MOS 30%)" → mos30');
+  assert(ids('<div class="hint">ส่วนเผื่อความปลอดภัยเหลือ ~4% เท่านั้น</div>') === 'mos', 'hits: ส่วนเผื่อ ~4% → mos');
+  assert(ids('<p>นักวิเคราะห์ 20 ราย เป้าเฉลี่ย ฿205.00 (+9%)</p>') === 'analystTgt,analystPct', 'hits: เป้าเฉลี่ย ฿205.00 (+9%) → analystTgt,analystPct');
+
+  // (2) ไม่จับของที่ไม่ใช่ (false positive ที่วัดจากคลังจริง 908 ใบ)
+  const quiet = (html, why) => assert(hits(html).length === 0, 'ต้องเงียบ — ' + why + ' (ได้ ' + ids(html) + ')');
+  quiet('<p>โซนน่าสะสมคือ MOS 20% ขึ้นไป</p>', 'MOS 20% เปล่า ๆ = เกณฑ์คงที่ ไม่ใช่ค่าที่ derive จากราคา');
+  quiet('<p>MOS พอประมาณ (10–20%) ยังไม่ถึงโซน deep value</p>', 'ช่วง MOS แบบไม่มีเครื่องหมาย/คำประมาณ');
+  quiet('<p>การขยายกำลังผลิตที่ราคา ~฿220,000 ต่อคอร์ส</p>', '"ที่ราคา" ถูกตัดทิ้งทั้งคำ (MRNA: ราคายา ไม่ใช่ราคาหุ้น)');
+  quiet('<p>ราคาปัจจุบัน · EPS ฐาน ฿21.70 ต่อหุ้น</p>', 'ช่องว่างข้ามคำ "EPS" ไม่ได้ (คลังจริง: PB)');
+  quiet('<p>WTI $77 → Fair Value ฿120.00 ในฉากอนุรักษ์นิยม</p>', 'FV ของฉาก sensitivity ไม่เท่ากับ fv ที่ไฟล์ประกาศ ⇒ ไม่มี token ไหน render ได้');
+  quiet('<p>นักวิเคราะห์ให้เป้าสูงสุด ฿260.00 (+38%)</p>', 'เป้าสูงสุด ≠ values.analystTgt ⇒ ยังเป็นเขตของ W15 เหมือนเดิม');
+  quiet('<p>รายได้รวม ฿140,000 ล้านบาท เติบโต 8%</p>', 'ตัวเลขเงินที่ไม่มีป้ายผูกราคา');
+  quiet('<div class="v">฿188.00</div><div class="d">ราคาปัจจุบัน ฿188.00</div>', 'การ์ด (.v/.d) อยู่นอกขอบเขต prose — E41/E42/E43 คุมอยู่แล้ว');
+  quiet('<p>ราคาปัจจุบัน {{rd:px}} ต่ำกว่ามูลค่าเหมาะสม {{rd:fv}}</p>', 'เขียนเป็น token แล้ว = สิ่งที่ E44 ต้องการ');
+
+  // (3) ไม่มี d (ไม่รู้ค่าที่ไฟล์ประกาศ) → กลุ่มที่ต้องยืนยันค่าเงียบ · กลุ่มที่ป้ายปักความหมายไว้แล้วยังยิง
+  assert(RV.proseBoundHits('<p>มูลค่าเหมาะสม ฿195.00 ขณะราคาปัจจุบัน ฿188.00</p>').map((h) => h.token).join(',') === 'px',
+    'ไม่ส่ง d: fv เงียบ (ยืนยันไม่ได้) · px ยังยิง (ป้ายปักความหมายแล้ว)');
+
+  // (4) healer: แทนเฉพาะที่ตรงกันทุก byte · ของที่ไม่ตรงไม่แตะ · idempotent · เนื้อหาที่ render เท่าเดิม
+  const src = '<p>ราคาปัจจุบัน ฿188.00 ต่ำกว่ามูลค่าเหมาะสม ฿195.00 (MOS +4%) · เป้า ฿999 (+400%) · โซน MOS 20% ที่ ฿156.00</p>';
+  const r1 = RV.proseTokens(src, rd(), sm);
+  assert(r1.changes.length === 4 && /\{\{rd:px\}\}/.test(r1.html) && /\{\{rd:fv\}\}/.test(r1.html) && /\{\{rd:mos\}\}/.test(r1.html) && /\{\{rd:mos20\}\}/.test(r1.html),
+    'proseTokens: แทน px/fv/mos/mos20 ครบ 4 จุด (' + r1.changes.length + ': ' + r1.changes.join(' | ') + ')');
+  assert(/เป้า ฿999 \(\+400%\)/.test(r1.html), 'proseTokens: เป้า ฿999 (+400%) ไม่ตรงค่าที่ประกาศ → ไม่แตะ');
+  assert(RV.renderValues(r1.html, rd(), sm) === RV.renderValues(src, rd(), sm), 'proseTokens: ข้อความที่ render เท่าเดิมทุก byte (cron แตะ prose ไม่ได้ — §9)');
+  const r2 = RV.proseTokens(r1.html, rd(), sm);
+  assert(r2.html === r1.html && r2.changes.length === 0, 'proseTokens: idempotent');
+
+  // (5) เลขถูกแต่รูปแบบไม่ตรง (คลังเขียน "฿188" ขณะ token render "฿188.00") = ฟ้อง แต่ **ห้ามเขียน**
+  //     (ถ้ายอมแทน cron จะไปเขียนตัวเลขในย่อหน้าใหม่ — "฿188" กับราคา 188.40 ต่างกันจริงแต่อยู่ในเกณฑ์ปัด)
+  const loose = '<p>ราคาปัจจุบัน ฿188 ต่ำกว่ามูลค่าเหมาะสม ฿195</p>';
+  assert(ids(loose) === 'px,fv', 'ตรวจ: ยอมรับการปัด ("฿188" = ราคา 188) → ยังฟ้อง');
+  const rl = RV.proseTokens(loose, rd(), sm);
+  assert(rl.html === loose && rl.changes.length === 0, 'เขียน: รูปแบบไม่ตรงทุก byte → ไม่แตะ (ให้คนแก้เป็น token เอง)');
+}
 console.log(`report-values-test: ${n - fails}/${n} ผ่าน`);
 process.exit(fails ? 1 : 0);

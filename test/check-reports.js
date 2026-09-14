@@ -34,6 +34,8 @@ const RM = require('../tools/report-meta.js');   // เจ้าของเด�
 const MF = require('../tools/field-manifest.js');
 // ระยะ 2 (ส่วน D): ไฟล์ v2 เก็บตัวเลขราคา/FV/MOS ที่เดียวใน report-data.values — gate อ่านสำเนาจากที่นั่นผ่าน derive (เจ้าของเดียว)
 const RV = require('../tools/report-values.js');
+// วันที่วิเคราะห์ = footer "ข้อมูล ณ" — ตัวอ่านชุดเดียวกับ runbook/preserve-dates (E44 ใช้ตัดสินว่า "ใบใหม่" ไหม)
+const { footerDate } = require('../tools/queue/footer-date.js');
 // โหลดครั้งเดียวต่อ process — self-test จะฉีดของปลอมผ่าน opts.tagData แทน
 let _tagCache = null;
 function tagDefaults() {
@@ -840,6 +842,26 @@ const CHECKS = [
         bad.push(`ราคาเป้า ${target} ระบุ ${shown}% แต่เทียบราคา ${c.px} = ${exp.toFixed(1)}%`);
     }
     return bad.length ? [...new Set(bad)].join(' ; ') : null;
+  } },
+
+  // ── E44 (ระยะ 2 ส่วน F · spec B(ข)): ใบใหม่ห้ามพิมพ์ตัวเลขผูกราคาเป็น literal ใน prose ──
+  // W15 เตือนได้แค่ "% ของราคาเป้า" และ cron แตะ prose ไม่ได้เลย (CLAUDE.md §9) ⇒ ราคา/FV/MOS/โซน MOS ที่พิมพ์
+  // ไว้ในย่อหน้าค้างกับราคาเก่าไปตลอด โดยไม่มีตัวซ่อมไหนเอื้อมถึง (วัดคลัง 14 ก.ย. 69: 5,293 จุดใน 907 ใบ)
+  // ★ เลิกไล่ซ่อมของเก่า — **ปิดทางเกิดใหม่แทน**: ใบที่วิเคราะห์ตั้งแต่ RV.PROSE_TOKEN_SINCE ต้องเขียนเป็น {{rd:…}}
+  //   ใบเก่า (footer < SINCE) เงียบสนิท = W15 ดูแลเหมือนเดิม · ของเก่าเป็นงานระยะ 3 (fix-on-touch แบบ W23)
+  // ★ อ่าน `c.source` (ก่อน expand) เสมอ — บน HTML ที่ render แล้ว token ทุกตัวจะกลายเป็น literal แล้วฟ้องทั้งใบ
+  //   (ผู้เรียกที่ไม่ส่ง opts.source จึงต้องแก้: tools/update-prices.js gateCheck · tools/migrate-v2.js)
+  // ★ ขอบเขต = `RV.proseBoundHits` ตัวเดียวกับที่ healer (`RV.proseTokens`) ใช้ — ตัวตรวจกับตัวซ่อมถามคำถามเดียวกัน
+  //   ต่างกันแค่ "ยอมรับการปัด" (ตรวจ) vs "ต้องเท่ากันทุก byte" (เขียน) — ดูเหตุผลใน tools/report-values.js
+  { id: 'E44', level: 'error', healer: 'proseTokens', label: 'prose ของใบใหม่: ตัวเลขผูกราคาต้องเป็น {{rd:…}}', fn: (c) => {
+    if (!c.v2) return null;                       // v1 = ไม่มี token ให้ใช้ (ใบเก่าทั้งหมด) → เงียบ
+    const f = footerDate(c.source);
+    if (!f || f.iso < RV.PROSE_TOKEN_SINCE) return null;
+    const hits = RV.proseBoundHits(c.source, c.dv);
+    if (!hits.length) return null;
+    return `prose ผูกราคา ${hits.length} จุด (ใบวิเคราะห์ ${f.iso} ≥ ${RV.PROSE_TOKEN_SINCE} ต้องเขียนเป็น {{rd:…}} ให้ build render): `
+      + hits.slice(0, 3).map((h) => `${h.label} "${h.text}" → {{rd:${h.token}}}`).join(' · ')
+      + (hits.length > 3 ? ` · (อีก ${hits.length - 3} จุด)` : '');
   } },
 
   // ── W21/W22/W23 (ระยะ 1 WS1 ข้อ 2): manifest ทำให้ "เงียบ" ไม่เท่ากับ "สะอาด" อีกต่อไป ──
