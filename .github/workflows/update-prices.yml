@@ -1,11 +1,17 @@
-# Cron อัปเดตราคาหุ้น + วันที่ราคา ลง reports/*.html ทุกวัน (07:17 น. ไทย)
+# Cron อัปเดตราคาหุ้น + วันที่ราคา ลง reports/*.html ทุกวัน (04:15 น. ไทย วันถัดไป — เดิม 07:17 น. ไทย)
 # รายละเอียด: docs/price-refresh.md · ตัวรัน: tools/update-prices.js (deterministic ไม่มี LLM)
 # push เข้า main → Cloudflare Workers Builds deploy เว็บให้เองตามปกติ
 name: price-refresh
 
 on:
   schedule:
-    - cron: '17 0 * * *' # 00:17 UTC = 07:17 Asia/Bangkok (หลังตลาด US ปิด + ได้ราคาปิด SET ล่าสุด)
+    # 21:15 UTC = 04:15 Asia/Bangkok วันถัดไป — เลื่อนจาก 00:17 UTC เดิม (open-item #33)
+    # เหตุผล: GitHub ไม่รันตรงเวลา config — วัดจริง 12 วันล่าสุด (2 ก.ย.–13 ก.ย. 69) skew นิ่งที่ 4.30–4.61 ชม.
+    # (สัปดาห์ก่อนหน้าขยับถึง 5.41 ชม. · เคยมีเหตุการณ์ผิดปกติ 3 วัน 27–29 ส.ค. 69 ที่ skew พุ่งถึง 6.9–11.2 ชม.
+    # — ไม่ใช้เป็นฐานตั้งเวลาเพราะทำให้สมการไม่มีทางออก แต่ isIntradayQuote guard ยังกันไว้เป็นตาข่ายสุดท้าย)
+    # ตั้ง 21:15 UTC ให้ actual run จริงตกช่วง 21:15–~02:40 UTC เสมอ: หลัง US close 21:00 UTC (ครอบ EDT+EST)
+    # อย่างน้อย 15 นาที และก่อน SET เปิด 03:00 UTC (10:00 น. ไทย) อย่างน้อย ~20–70 นาที ขึ้นกับ skew วันนั้น
+    - cron: '15 21 * * *'
   workflow_dispatch: {}
 
 permissions:
