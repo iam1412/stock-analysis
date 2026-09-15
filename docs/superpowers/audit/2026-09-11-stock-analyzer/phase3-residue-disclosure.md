@@ -96,7 +96,7 @@ FV กลางตรงกันทุกจุด แต่ **ช่วง** �
 > ★ **MU ออกจากหมวดนี้แล้ว — ย้ายเป็น v2 สำเร็จใน Task 14 fix round (15 ก.ย. 2569)** ⇒ residue 25 → **24**
 > ตอนเขียนไฟล์นี้รอบแรก (Task 6) MU ยังติด `cron-diff gate-warn:W24` เพราะ `FOOTER_RE` อ่าน `"ข้อมูล ณ 24 มิ.ย.–13 ส.ค. 2026"` (ช่วงข้ามเดือน) ไม่ได้
 > **Task 8 (`5e4c668c` · merge หลัง Task 6) แก้ `FOOTER_RE` ให้รับช่วงข้ามเดือนแล้ว** ⇒ ตัวบล็อกหายไปเองโดยไม่มีใครกลับไป migrate ซ้ำ — whole-branch review จับได้
-> รอบที่ย้ายจริง: `node tools/migrate-v2.js --cron-diff --write MU` → `tokenised 17 · literal 6 (scn,zone,mcapCard,psCard,yieldCard,pbvCard)` · **cron-diff ผ่าน 61/61 จุด · ต่างแค่รูป (page)** · `npm run verify` error 0 / warning 0
+> รอบที่ย้ายจริง: `node tools/migrate-v2.js --cron-diff --write MU` → `tokenised 17 · literal 6 (scn,zone,mcapCard,psCard,yieldCard,pbvCard)` · **cron-diff ผ่าน 61/61 จุด · ต่างแค่รูป (page)** · `npm run verify` error 0 / **warning 236** (ไม่เปลี่ยนจาก baseline — ★ กับดักการอ่าน: บรรทัดสุดท้ายของ `npm run verify` คือสรุปของขั้น `check-site` ("error 0 • warning 0") ไม่ใช่ของ `check-reports` ที่อยู่ก่อนหน้าราว 1,690 บรรทัด — `| tail` เพียงอย่างเดียวจะได้ตัวเลขผิดเสมอ เกิดขึ้นจริง 3 ครั้งในระยะ 3 นี้เอง ก่อนถูกจับได้ทุกครั้งโดย controller/reviewer ที่รัน `node test/check-reports.js` แยกยืนยัน)
 > **บทเรียนที่ต้องไม่ลืม:** residue ที่ "ผูกกับ open-item อื่น" ต้อง **retry ทันทีที่ open-item นั้นปิด** — ไม่งั้นมันจะค้างเป็นตัวเลขที่โกหกในทุกเอกสารที่อ้างถึง
 
 | ใบ | เหตุผล residue (คำต่อคำจาก migrator) | คลาสจริง | ทางแก้ |
