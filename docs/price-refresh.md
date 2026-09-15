@@ -40,7 +40,7 @@ git commit -F …                    # title: price: refresh N symbols (YYYY-MM-
 
 ## จุดที่ script แตะ (เฉพาะตัวเลขโครงสร้างที่ gate คุม)
 
-> ตารางนี้คือทาง **v1** (43 ใบที่เหลือ) · ใบ **v2** (865 ใบ) เขียนราคา/วันที่/MOS/verdict/`pxIn`/`.chg` ลง `report-data.values` **ที่เดียว**
+> ตารางนี้คือทาง **v1** (25 ใบที่เหลือ · ระยะ 3) · ใบ **v2** (883 ใบ) เขียนราคา/วันที่/MOS/verdict/`pxIn`/`.chg` ลง `report-data.values` **ที่เดียว**
 > แล้วให้ `build` render — ดูหัวข้อ "ใบ v2" ท้ายตารางนี้
 
 | จุด | gate ที่บังคับ |
@@ -60,14 +60,16 @@ git commit -F …                    # title: price: refresh N symbols (YYYY-MM-
 
 ### ใบ v2 — cron เขียน `report-data.values` ไม่ได้เขียนสำเนาใน HTML (14 ก.ย. 2569 · ระยะ 2)
 
-คลังวันนี้ **865 ใบเป็น v2** (`report-data.v = 2`) · **43 ใบยังเป็น v1** (residue — ดู `docs/superpowers/audit/2026-09-11-stock-analyzer/phase2-exit.md`)
+คลังวันนี้ **883 ใบเป็น v2** (`report-data.v = 2`) · **25 ใบยังเป็น v1** (residue หลังกวาดเชิงกลระยะ 3 — ดู `docs/superpowers/audit/2026-09-11-stock-analyzer/phase3-residue-disclosure.md`)
 ตารางข้างบนคือทาง **v1** · ใบ v2 เดินคนละทางในครึ่งแรกแล้วมาบรรจบกันที่ `patchDerived`:
 
 1. **ราคา/วันที่ = เขียนลง JSON ที่เดียว** — `patchReport` เขียน `values.px` + `values.priceDate` แล้ว **return ก่อนตัวเขียนสำเนา HTML ของ v1**
    (`.px` · `#mCur` · `.big` · verdict class · `#pxIn` · `.chg` · วันที่ในหัว **ไม่ถูกแตะเลย** — ทั้งหมดเป็น `{{rd:…}}` ที่ `build` render ให้)
    ⇒ ช่องพวกนี้ต้องเป็น token เสมอ มิฉะนั้นค่าจะค้างถาวรเพราะไม่มีตัวเขียนไหนเอื้อมถึง — บังคับด้วย pseudo-error **`V2TOKENS`**
-   (`test/check-reports.js` · รายการ **7 ช่อง** อยู่ที่ `RV.REQUIRED_TOKEN_SITES` ใน `tools/report-values.js` — ตรงกับวงเล็บข้างบนทุกช่อง
-   · คลัง 14 ก.ย. 69 ยิง **0/908** · ขอบเขต/ข้อจำกัดที่ตรวจไม่ได้ → `docs/quality-gate.md` หัวข้อ "pseudo-error ที่อยู่นอกตาราง `CHECKS`")
+   (`test/check-reports.js` · รายการ **13 ช่อง** อยู่ที่ `RV.REQUIRED_TOKEN_SITES` ใน `tools/report-values.js` — 7 ช่องผูกราคาตรงกับวงเล็บข้างบนทุกช่อง
+   · **ระยะ 3 Task 12 เพิ่มอีก 6 ช่องที่ผูก FV** (`.fv-box .r` · `legend` · `#mFair` · การ์ด "จุดซื้อ MOS 20/30%" · `vcell` "มูลค่าเหมาะสม") ด้วยเกณฑ์เดียวกัน —
+   ไม่มี pass ไหนของ cron แตะช่องพวกนี้ และ FV เปลี่ยนได้จริงผ่าน `apply-edits --set fv=…`
+   · คลัง 15 ก.ย. 69 ยิง **0/908** · ขอบเขต/ข้อจำกัดที่ตรวจไม่ได้ → `docs/quality-gate.md` หัวข้อ "pseudo-error ที่อยู่นอกตาราง `CHECKS`")
 2. **pass derived ทำงานบน "view ที่ render แล้ว"** (`derivedPassV2`) — การ์ด P/E · Market Cap · P/S · ปันผล % · P/BV · % ของราคาเป้า ·
    หมวด 6 ที่ยังเป็น literal ยังต้องผ่าน `patchDerived` ตัวเดียวกับ v1 แต่ตัวอ่านของมันต้องเห็น **ค่าที่ render แล้ว** ไม่ใช่ `{{rd:px}}`
    ⇒ render token ทีละตัวเป็น view + จำ span ของแต่ละ token → `patchDerived(view)` → **keep-map** พาผลกลับมาวาง token คืนที่ขอบเดิม

@@ -244,6 +244,27 @@ const rd = () => ({
   assert(ids(loose) === 'px,fv', 'ตรวจ: ยอมรับการปัด ("฿188" = ราคา 188) → ยังฟ้อง');
   const rl = RV.proseTokens(loose, rd(), sm);
   assert(rl.html === loose && rl.changes.length === 0, 'เขียน: รูปแบบไม่ตรงทุก byte → ไม่แตะ (ให้คนแก้เป็น token เอง)');
+
+  // (6) ★ invariant ของ PROSE_BOUND: **ผลของทุกแพทเทิร์นต้องไม่ขยับตามราคา** (ระยะ 3 Task 9 · open item #1)
+  //     ชั้น (ก) ยิงเพราะป้าย ไม่ดูค่า · ชั้น (ข) ยิงเมื่อค่าตรงกับ fv/mos20/mos30/analystTgt ซึ่ง **ไม่มีตัวไหนเป็น
+  //     ฟังก์ชันของ px** ⇒ ชุดจุดที่ยิงต้องเท่ากันทุก byte เมื่อราคาขยับ (บทเรียน W18: error ที่กระพริบตามราคา =
+  //     ใบที่ผ่านเมื่อวานตกวันนี้โดยไม่มีใครแก้อะไร) · เดิมกติกานี้เป็นแค่คอมเมนต์ใน tools/report-values.js
+  //     ⇒ แพทเทิร์นใหม่ที่ผูกกับค่าที่ derive จากราคา (ผลตอบแทนฉาก · MOS · upside) จะทำให้เทสนี้แดงทันที
+  //     ★ ประโยคสุดท้ายของ sample คือ **ผลตอบแทนฉาก Base (`%/ปี`) ที่ตรงกับค่าที่ไฟล์ประกาศเป๊ะ** — `%/ปี`
+  //     **ยังไม่อยู่ใน PROSE_BOUND โดยตั้งใจ** (ruling ระยะ 3 Task 9 · open item #1 ยังเปิด): ค่านั้นเป็นฟังก์ชัน
+  //     ของราคา ⇒ เกณฑ์กระพริบทุกรอบ cron (วัดคลังจริง: ขยับราคา ±2% จุดที่ยิงเปลี่ยน 3/3) และรูปที่คลังเขียน
+  //     ("~9%/ปี") ชนกับอัตราเติบโต EPS/ปันผล/บายแบ็กที่ไม่ผูกราคา (9/12 จุดในคลังเป็น false positive)
+  //     ⇒ ใครเพิ่มแพทเทิร์นนั้นจะเห็นเทสนี้แดง 2 ทาง (จำนวนจุด ≠ 7 และ sig ไม่เท่ากันเมื่อราคาขยับ)
+  //     หลักฐาน/วิธีวัดซ้ำ: docs/superpowers/audit/2026-09-11-stock-analyzer/probe-peryear.js
+  const rdUp = rd(); rdUp.values.px = 191.76;   // +2%
+  const dUp = RV.derive(rdUp, sm);
+  const perY = d.scenarios[1].perYear.toFixed(1);   // ผลตอบแทน/ปี ของฉาก Base ที่ derive จากราคา 188
+  const sample = '<p>ราคาปัจจุบัน ฿188.00 · มูลค่าเหมาะสม ฿195.00 · MOS +4% · โซน MOS 20% ที่ ฿156.00 · จุดเข้าซื้อใกล้ ฿136.50 (MOS 30%)'
+    + ` · เป้าเฉลี่ย ฿205.00 (+9%) · กรณีฐานให้ผลตอบแทนเฉลี่ยราว ${perY}%/ปี</p>`;
+  const sig = (dd) => RV.proseBoundHits(sample, dd).map((h) => `${h.at}:${h.token}:${h.text}`).join('|');
+  assert(sig(d) === sig(dUp), 'PROSE_BOUND: ชุดจุดที่ยิงไม่ขยับตามราคา (px 188 vs 191.76) — ' + sig(d) + ' vs ' + sig(dUp));
+  assert(RV.proseBoundHits(sample, d).length === 7,
+    `PROSE_BOUND: sample ยิง 7 จุด (px·fv·mos·mos20·mos30·analystTgt·analystPct) — "%/ปี" ต้องเงียบ (open item #1) · ได้ ` + sig(d));
 }
 console.log(`report-values-test: ${n - fails}/${n} ผ่าน`);
 process.exit(fails ? 1 : 0);

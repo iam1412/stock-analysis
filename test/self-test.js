@@ -1333,8 +1333,20 @@ require('./parser-lint.js')(ok);
     const idsOf = (src) => errIds(checkHtml(expandReport(src), 'BBL.html', { source: src }));
     ok(!idsOf(srcV2).has('V2TOKENS'), 'V2TOKENS: fixture v2 ที่ token ครบ → เงียบ');
     ok(!errIds(checkHtml(base, 'BBL.html')).has('V2TOKENS'), 'V2TOKENS: ใบ v1 ไม่แตะ (ไม่มี token ให้ใช้)');
-    ok(RV.REQUIRED_TOKEN_SITES.length === 7, `V2TOKENS: site บังคับ 7 ช่อง (มี ${RV.REQUIRED_TOKEN_SITES.length})`,
+    // ★ ระยะ 3 Task 12 — ขยายจาก 7 (ผูกราคา) เป็น 13 ช่อง: + 6 ช่องผูก FV ที่ migrator บังคับตอนย้ายอยู่แล้ว
+    //   (`REQUIRED_SITES` 14 ช่อง) และ **ไม่มีตัวเขียน HTML ทาง v2** เหมือนกัน ⇒ กลับเป็น literal เมื่อไรค้างถาวร
+    //   `summary` เป็นช่องที่ 14 ของ migrator ที่ **ยังไม่เข้า** — มี `summaryPlan` (patchDerived #11) เป็นตัวเขียน
+    ok(RV.REQUIRED_TOKEN_SITES.length === 13, `V2TOKENS: site บังคับ 13 ช่อง (มี ${RV.REQUIRED_TOKEN_SITES.length})`,
       RV.REQUIRED_TOKEN_SITES.map((s) => s.id).join(','));
+    ok(!RV.REQUIRED_TOKEN_SITES.some((s) => s.id === 'summary'),
+      'V2TOKENS: `summary` ยังอยู่นอกรายการโดยตั้งใจ (summaryPlan/patchDerived #11 เขียนช่องนี้ได้ ⇒ ไม่ค้างถาวร)');
+    // รายการต้องเป็น **สับเซตของ REQUIRED_SITES ของ migrator** เสมอ — ถ้าเพิ่ม site ที่ migrator ไม่ได้ผูก token ให้
+    // ใบ v2 ที่ย้ายมาแล้วจะตก gate ทั้งคลังทันที (เจ้าของรูป = migrator ที่เดียว)
+    {
+      const MG = require('../tools/migrate-v2.js');
+      const extra = RV.REQUIRED_TOKEN_SITES.map((s) => s.id).filter((id) => !MG.REQUIRED_SITES.includes(id));
+      ok(extra.length === 0, 'V2TOKENS: ทุก site ⊆ REQUIRED_SITES ของ migrator (ไม่งั้นใบที่ย้ายมาแล้วตกทั้งคลัง)', extra.join(','));
+    }
     // mutate ทีละ site: แทน token ด้วย literal รูปที่ token นั้น render ออกมาจริง (ใบยัง render/gate ได้ปกติ
     // ⇒ พิสูจน์ว่าเดิม "ผ่านเงียบ" ไม่ใช่ล้มด้วยเหตุอื่น) — ต้องยิง V2TOKENS และข้อความต้องระบุ site ที่หาย
     const MUT = {
@@ -1346,6 +1358,14 @@ require('./parser-lint.js')(ok);
       pxIn: [/value="\{\{rd:pxNum\}\}"/, 'value="999"'],
       big: [/<div class="big">\{\{rd:mos\}\}<\/div>/, '<div class="big">+9.9%</div>'],
       verdict: [/class="mos-verdict \{\{rd:mosClass\}\}"/, 'class="mos-verdict ok"'],
+      // ── ระยะ 3 Task 12: 6 ช่องผูก FV (มิวเทชันต้อง **ผูกสมอกับ site ของตัวเอง** ไม่ใช่ /\{\{rd:fv\}\}/ เปล่า ๆ
+      //    เพราะ token fv ปรากฏหลายที่ในใบเดียว — replace ตัวแรกจะไปโดน site อื่นแล้ว assert "ขาดเฉพาะ site นั้น" ล้ม)
+      fvBox: [/(class="fv-box"[\s\S]*?<div class="r">)\{\{rd:fv\}\}/, '$1฿999.00'],
+      legend: [/(<div class="legend">[\s\S]*?มูลค่าเหมาะสม[^<]{0,24}?)\{\{rd:fv\}\}/, '$1฿999.00'],
+      mFair: [/(id="mFair"><div class="lab"[^>]*>เหมาะสม[^<]{0,24}?)\{\{rd:fv\}\}/, '$1฿999.00'],
+      mos20card: [/(จุดซื้อ MOS 20%<\/div>\s*<div class="v[^"]*">)\{\{rd:mos20\}\}/, '$1฿999.00'],
+      mos30card: [/(จุดซื้อ MOS 30%<\/div>\s*<div class="v[^"]*">)\{\{rd:mos30\}\}/, '$1฿999.00'],
+      vcellFv: [/(<div class="vcell">\s*<div class="k">มูลค่าเหมาะสม[^<]*<\/div>\s*<div class="v"[^>]*>)\{\{rd:fv\}\}/, '$1฿999.00'],
     };
     for (const site of RV.REQUIRED_TOKEN_SITES) {
       const [re, lit] = MUT[site.id];

@@ -203,15 +203,18 @@ function renderValues(html, rd, sm) {
 // แล้วราคาที่คนเห็นก็ค้างตลอดไปเพราะ cron ทาง v2 เขียนแต่ JSON ⇒ กลับไปเป็นโรคเดิมที่ระยะ 2 ทั้งระยะมาแก้
 // ⇒ check โครงสร้างถาวร: ใบที่ประกาศ v2 **ต้องมี token ที่ทุก site บังคับ** ใน *ต้นฉบับก่อน expand*
 // ★ นับคลังก่อนเปิด (14 ก.ย. 2569): 865 ใบ v2 · ขาด 0 ใบ · skeleton th/us ผ่านทั้งคู่
-// ★ ทำไม 7 site นี้: เป็นช่องที่ **cron ทาง v2 ไม่มีตัวเขียน HTML ให้แล้ว** (patchReport return ก่อนตัวเขียนสำเนา v1)
+//   · **ระยะ 3 Task 12 (15 ก.ย. 2569)**: ขยายเป็น **13 ช่อง** (+6 ช่องผูก FV — ดูบล็อก "ชั้นที่ 2" ใต้รายการ) ·
+//     นับคลังก่อนเปิด: v2 883 ใบ · ขาด 0 ใบทั้ง 6 ช่อง · skeleton th/us + fixtures v2 ทั้ง 7 ใบผ่าน
+// ★ ทำไม site พวกนี้: เป็นช่องที่ **cron ทาง v2 ไม่มีตัวเขียน HTML ให้แล้ว** (patchReport return ก่อนตัวเขียนสำเนา v1)
 //   ⇒ ถ้าช่องไหนกลับเป็น literal ค่าจะค้างโดยไม่มีตัวซ่อมไหนเอื้อมถึง · ช่องอื่น (การ์ด P/E · ปันผล · หมวด 6 ·
 //   **ช่องสรุป "ส่วนต่างจากราคา"**) ยังมี pass derived เขียนทับได้อยู่ จึงไม่อยู่ในรายการบังคับ
 //   (วัดด้วย mutation รอบรีวิว: ช่องสรุปที่ถูกเปลี่ยนเป็น literal ถูก `patchDerived` เขียนทับให้ในรอบถัดไป ⇒ ไม่ค้าง ·
 //    ส่วน `#mCur` ที่ถูกเปลี่ยนเป็น literal **ไม่มีใครเขียนทับ** เหลือแค่ W22 ซึ่งเป็น warn ⇒ ต้องอยู่ในรายการ — fix round 1 R1)
 // ★★ **อย่าสับสนกับ `REQUIRED_SITES` (14 ช่อง) ใน tools/migrate-v2.js** — คนละรายการ คนละหน้าที่:
-//   · `REQUIRED_SITES` (migrator) = ช่องที่ **ต้อง tokenise สำเร็จตอนย้าย** ไม่งั้นไม่ย้ายทั้งใบ (กว้างกว่า: รวม fvBox/legend/mFair/การ์ด MOS/vcell)
-//     ช่องพวกนั้นผูกกับ **FV** ซึ่งไม่ขยับตามราคา ⇒ ค้างแล้วไม่อันตรายเท่า และมี W22 ดูแลความสอดคล้องอยู่
-//   · `REQUIRED_TOKEN_SITES` (ที่นี่) = ช่องที่ **ต้องคงเป็น token ตลอดไป** เพราะผูกกับ **ราคา/วันที่ราคา** ที่ cron ต้องเขียนทุกวัน
+//   · `REQUIRED_SITES` (migrator) = ช่องที่ **ต้อง tokenise สำเร็จตอนย้าย** ไม่งั้นไม่ย้ายทั้งใบ
+//   · `REQUIRED_TOKEN_SITES` (ที่นี่) = ช่องที่ **ต้องคงเป็น token ตลอดไป** (หลังย้ายแล้วห้ามมีใครเขียน literal ทับกลับ)
+//   ⇒ **ที่นี่ต้องเป็นสับเซตของที่นั่นเสมอ** (self-test ตรึงไว้) · ส่วนต่างที่เหลือรอบนี้ = `summary` ช่องเดียว
+//     (14 − 13) ซึ่งมี `summaryPlan` เป็นตัวเขียน จึงไม่เข้าเกณฑ์ "ไม่มีใครเอื้อมถึง" — open-items #44
 // ★★★ **ขอบเขตที่ตรวจ = "มี token อยู่" ไม่ใช่ "ช่องนี้เป็น token ทั้งช่อง"** (fix round 1 R3 · m2): literal ที่ **เพิ่มมา
 //   ข้าง ๆ** token ที่ถูกต้อง (เช่นมี `<div class="big">` สองอัน) จะผ่านเงียบ — คลัง 14 ก.ย. 69 ไม่มีเคสนี้ (ใบ v2 ที่
 //   `<div class="big">` ปรากฏ ≠ 1 ครั้ง = 0 ใบ) · ไม่เพิ่ม uniqueness check โดยตั้งใจ: การนับจำนวนครั้งของมาร์กอัป
@@ -226,6 +229,29 @@ const REQUIRED_TOKEN_SITES = [
   { id: 'pxIn', token: 'pxNum', where: 'ช่องกรอกราคา #pxIn', has: (s) => /id="pxIn"[^>]*\bvalue="\{\{rd:pxNum\}\}"/.test(s) },
   { id: 'big', token: 'mos', where: 'MOS ตัวใหญ่ .big', has: (s) => /<div class="big">\s*\{\{rd:mos\}\}\s*<\/div>/.test(s) },
   { id: 'verdict', token: 'mosClass', where: 'คลาสกล่อง verdict', has: (s) => /class="mos-verdict \{\{rd:mosClass\}\}"/.test(s) },
+  // ── ชั้นที่ 2: ช่องผูก **FV** (ระยะ 3 Task 12) ───────────────────────────────────────────────
+  // เดิมเว้นไว้เพราะ "FV ไม่ขยับตามราคา ⇒ ค้างแล้วไม่อันตรายเท่า และมี W22 ดูแล" — เหตุผลนั้นไม่พอ:
+  //   (ก) เกณฑ์คัดเข้ารายการจริง ๆ คือ **"cron ทาง v2 ไม่มีตัวเขียน HTML ให้ช่องนี้"** ไม่ใช่ "ขยับตามราคาไหม" —
+  //       และ 6 ช่องนี้ไม่มีตัวเขียนเช่นกัน (ค้นทั้ง tools/derived-values.js + tools/update-prices.js + tools/keep-map.js
+  //       ไม่มี pass ไหนแตะ `fv-box` / `legend` / `#mFair` / การ์ด "จุดซื้อ MOS" / `vcell` เลย)
+  //   (ข) FV **เปลี่ยนได้จริง** — `apply-edits --set fv=…` เขียน `report-data.values.fv` แล้วจบ ⇒ ถ้าช่องไหนเป็น
+  //       literal ค่าที่คนเห็นแยกออกจาก JSON ทันที เหลือแต่ `W22` ซึ่งเป็น **warn** (ไม่บล็อก push · open-items #25/#36)
+  //   (ค) migrator บังคับทั้ง 6 ช่องนี้อยู่แล้วตอนย้าย (`REQUIRED_SITES` required:true) ⇒ ใบ v2 ทุกใบมีอยู่แล้ว
+  //       การเพิ่มเข้า gate จึงเป็นการ **กันเขียน literal ทับกลับ** ไม่ใช่การตั้งเกณฑ์ใหม่ที่คลังยังไม่ถึง
+  // ★ วัดคลังก่อนเปิด (15 ก.ย. 2569): v2 883 ใบ (+ residue v1 25 ใบที่ check นี้ไม่แตะ) → **ขาด 0 ใบทั้ง 6 ช่อง** ·
+  //   skeleton th/us ผ่านทั้งคู่ · fixtures v2 ทั้ง 7 ใบผ่าน
+  // ★★ **รูปของแต่ละช่องต้องตรงกับตัวแทนของ migrator เป๊ะ** (tools/migrate-v2.js: FVBOX_R_RE · LEGEND_RE · MFAIR_RE ·
+  //   MOSCARD_RE · VCELL_FV_RE/VCELL_FV_RANGE_RE) — ที่นั่นคือ "เจ้าของรูป" · ที่นี่คือ "มี token อยู่ที่นั่นไหม"
+  //   (self-test ตรึงไว้ว่ารายการนี้ต้องเป็นสับเซตของ `MG.REQUIRED_SITES` เสมอ)
+  // ★★★ ช่องที่ 14 ของ migrator — `summary` ("ส่วนต่างจากราคา") — **ยังไม่เข้ารายการโดยตั้งใจ**: มันมีตัวเขียนจริง
+  //   (`summaryPlan` = patchDerived #11 · ระยะ 1 ข้อ D) ⇒ ไม่เข้าเกณฑ์ "ไม่มีใครเอื้อมถึง" และการยกเป็น error จะ
+  //   เปลี่ยนสภาพที่ cron ซ่อมเองได้ให้กลายเป็น `patch-rejected` กักไฟล์ (open-items #44)
+  { id: 'fvBox', token: 'fv', where: 'กล่อง fv-box ช่อง .r', has: (s) => /class="fv-box"[\s\S]*?<div class="r">\s*\{\{rd:fv\}\}/.test(s) },
+  { id: 'legend', token: 'fv', where: 'legend ของกราฟ ("มูลค่าเหมาะสม …")', has: (s) => /<div class="legend">[\s\S]*?มูลค่าเหมาะสม[^<]{0,24}?\{\{rd:fv\}\}\s*<\/span>/.test(s) },
+  { id: 'mFair', token: 'fv', where: 'ป้าย gauge #mFair ("เหมาะสม …")', has: (s) => /id="mFair"><div class="lab"[^>]*>เหมาะสม[^<]{0,24}?\{\{rd:fv\}\}\s*<\/div>/.test(s) },
+  { id: 'mos20card', token: 'mos20', where: 'การ์ด "จุดซื้อ MOS 20%"', has: (s) => /จุดซื้อ MOS 20%<\/div>\s*<div class="v[^"]*">\s*\{\{rd:mos20\}\}/.test(s) },
+  { id: 'mos30card', token: 'mos30', where: 'การ์ด "จุดซื้อ MOS 30%"', has: (s) => /จุดซื้อ MOS 30%<\/div>\s*<div class="v[^"]*">\s*\{\{rd:mos30\}\}/.test(s) },
+  { id: 'vcellFv', token: 'fv', where: 'vcell "มูลค่าเหมาะสม" (กล่องสรุป)', has: (s) => /<div class="vcell">\s*<div class="k">มูลค่าเหมาะสม[^<]*<\/div>\s*<div class="v"[^>]*>\s*\{\{rd:fv\}\}/.test(s) },
 ];
 /** site บังคับที่ **ไม่ได้** เป็น token ในต้นฉบับ → [{id, token, where}] · ว่าง = ครบ
  *  ★ รับ **source ก่อน expand** เสมอ (ctx.source) เหมือน proseBoundHits — ส่ง HTML ที่ render แล้วมา = ขาดทุก site */
