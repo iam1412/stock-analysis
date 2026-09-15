@@ -1,11 +1,25 @@
-# Cron อัปเดตราคาหุ้น + วันที่ราคา ลง reports/*.html ทุกวัน (07:17 น. ไทย)
+# Cron อัปเดตราคาหุ้น + วันที่ราคา ลง reports/*.html ทุกวัน (04:00 น. ไทย วันถัดไป — เดิม 07:17 น. ไทย)
 # รายละเอียด: docs/price-refresh.md · ตัวรัน: tools/update-prices.js (deterministic ไม่มี LLM)
 # push เข้า main → Cloudflare Workers Builds deploy เว็บให้เองตามปกติ
 name: price-refresh
 
 on:
   schedule:
-    - cron: '17 0 * * *' # 00:17 UTC = 07:17 Asia/Bangkok (หลังตลาด US ปิด + ได้ราคาปิด SET ล่าสุด)
+    # 21:00 UTC = 04:00 Asia/Bangkok วันถัดไป — เลื่อนจาก 00:17 UTC เดิม (open-item #33)
+    # ★ ห้ามขยับให้เร็วกว่า 21:00 และห้ามขยับให้ช้ากว่านี้ — 21:00 คือจุดเดียวที่ปลอดภัยทั้งสองด้าน:
+    #   ขอบล่าง 21:00 UTC = 16:00 ET ในฤดู EST (US close ครอบทั้ง EDT/EST) · guard isIntradayQuote เป็น
+    #     `now < regularEnd` แบบ strict ⇒ ที่ 21:00 เป๊ะยังนับเป็นราคาปิด ไม่ต้องเสีย buffer
+    #     (open-items #33 เสนอ 20:30 UTC = 15:30 ET ในฤดู EST = กลาง session US ⇒ ได้ราคา intraday — ห้ามใช้)
+    #   ขอบบน 02:55 UTC ไม่ใช่ 03:00 — SET เปิดสุ่ม 09:55–10:00 น. ไทย แต่ Yahoo ตั้ง regular.start ไว้ 10:00 เป๊ะ
+    #   หักเวลารันอีก ~8 นาที — readdirSync().sort() กระจายหุ้นไทยตลอด A–Z + FETCH_DELAY_MS 450 ⇒ ตัวท้าย
+    #     (T*/U*/V*/W*) ถูก fetch ที่ createdAt + ~8 นาที (วัดจาก log รอบ 13 ก.ย. 69: จบลูป +7 นาที 38 วิ)
+    # ⇒ รับ skew ได้สูงสุด 5.78 ชม. · GitHub ไม่รันตรงเวลา config: skew ปัจจุบัน (2–13 ก.ย. 69) = 4.30–4.61 ชม.
+    #   ⇒ เริ่มรันจริง ~01:18–01:37 UTC, fetch หุ้นไทยตัวท้ายจบ ~01:26–01:45 UTC ⇒ margin 70–89 นาที
+    # ⚠️ skew ไม่คงที่และไม่มี config ใดปลอดภัย 100% — dead-ticker-canary.yml ในรีโปนี้วัดได้ 5.59 ชม.
+    #   (14 ก.ย. 69 · margin เหลือ 12 นาที) และ 6.35 ชม. (31 ส.ค. 69 · ทะลุ ceiling) · update-prices เองเคยขึ้น
+    #   5.41 ชม. (30 ส.ค.–1 ก.ย.) และ 6.9–11.2 ชม. 3 วันติด (27–29 ส.ค.) ⇒ ต้องวัด skew ซ้ำเป็นระยะ
+    #   รายละเอียด/ตัวเลขเต็ม: docs/price-refresh.md §ภาพรวม
+    - cron: '0 21 * * *'
   workflow_dispatch: {}
 
 permissions:
