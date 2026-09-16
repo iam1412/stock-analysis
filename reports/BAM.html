@@ -4,22 +4,22 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น บริหารสินทรัพย์กรุงเทพพาณิชย์ (BAM) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"BAM","currency":"THB","price":6.55,"fairValue":8.1,"mos":19.1,"upside":23.7,"pe":11.7,"dividendYield":7.6,"roe":12.17}
+{"symbol":"BAM","currency":"THB","price":6.55,"fairValue":7.34,"mos":10.8,"upside":12.1,"pe":28.5,"dividendYield":7.6,"roe":1.7}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 8.1,
+  "fv": 7.34,
   "values": {
     "px": 6.55,
     "priceDate": "2026-09-16",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
-    "fvLow": 7.28,
+    "fvLow": 3.87,
     "fvHigh": 8.58,
-    "eps": 0.56,
+    "eps": 0.23,
     "shares": 3228000000,
     "dps": 0.5
   },
@@ -88,25 +88,25 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ ฿6.20 – ฿8.60<br>
-        ที่มา: Yahoo Finance, investor.bam.co.th, AiO Panphol, Investing.com
+        กรอบ 52 สัปดาห์ ฿6.20 – ฿8.45<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, investor.bam.co.th, Investing.com
       </div>
     </div>
   </header>
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูลปี 2568 (FY2025)</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM + ปี 2568 (FY2025)</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿21,143 ล้าน</div><div class="d">~3,228 ล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS ปี 2568: ฿0.56</div></div>
-      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~13.0x</div><div class="d">ช่วง 2564–2568</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.50x</div><div class="d">ต่ำกว่า Book Value มาก</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿21,170 ล้าน</div><div class="d">~3,232 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM ฿0.23 (ปี 2568 เต็มปี ฿0.56)</div></div>
+      <div class="metric"><div class="k">P/E มัธยฐาน 5 ปี</div><div class="v">~21.4x</div><div class="d">ช่วง 12.6–24.5x (2564–2568)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.48x</div><div class="d">ต่ำกว่า Book Value มาก (BVPS ~฿13.68)</div></div>
 
-      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿1,812 ล้าน</div><div class="d">+13.1% YoY</div></div>
-      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.56</div><div class="d">ปี 2568 (ฐาน: 3,228M หุ้น)</div></div>
-      <div class="metric"><div class="k">BVPS</div><div class="v">~฿13.92</div><div class="d">Total Equity ฿44,914 ล้าน</div></div>
-      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~12.2% / 3.9%</div><div class="d">เพิ่มขึ้นจาก 11.8% ปี 2567</div></div>
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿1,812 ล้าน</div><div class="d">+13.1% YoY (TTM ล่าสุดทรุดเหลือ ~฿752 ล้าน)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.23</div><div class="d">ทรุดจากพอร์ต NPL/NPA ผันผวน (ปี 2568 เต็มปี ฿0.56)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿13.68</div><div class="d">Total Equity ~฿44,195 ล้าน</div></div>
+      <div class="metric"><div class="k">ROE (TTM) / FY2568</div><div class="v neu">~1.7% / 4.1%</div><div class="d">ทรุดจากกำไรผันผวน — เฉลี่ย 5 ปี ~4.7%</div></div>
 
       <div class="metric"><div class="k">ผลเรียกเก็บรวม FY2568</div><div class="v neu">฿17,857 ล้าน</div><div class="d">+17.8% YoY — สูงสุดในรอบหลายปี</div></div>
       <div class="metric"><div class="k">อัตรากำไรสุทธิ</div><div class="v">~10.1%</div><div class="d">กำไรสุทธิ/ผลเรียกเก็บ</div></div>
@@ -117,7 +117,7 @@
 
   <!-- ===== 2. PRICE CHART ===== -->
   <section>
-    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ม.ค. 2568 – ม.ค. 2569</div></div>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ต.ค. 2568 – ก.ย. 2569</div></div>
     <div class="card">
       <div class="chart-wrap">
         <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
@@ -128,10 +128,11 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ราคา BAM เปิดปี 2568 ที่ ฿8.15 ก่อนร่วงลงแรงในเดือนมีนาคม (฿6.75) จากความกังวลเศรษฐกิจและแรงขายสถาบัน
-        ฟื้นตัวกลับขึ้นช่วงพฤษภาคม–มิถุนายน (฿8.00) จากผลประกอบการไตรมาส 1/2568 ที่ดีและผลเรียกเก็บสูงเป็นประวัติการณ์
-        อย่างไรก็ตามราคาย่อตัวลงอีกครั้งในช่วงปลายปีสู่โซน ฿6.45–6.80 จากสภาพตลาดโดยรวมที่ซบเซา
-        ณ ต้นปี 2569 ราคาอยู่ที่ ฿6.95 ต่ำกว่ามูลค่าเหมาะสม ฿8.10 ประมาณ 14% พร้อม Dividend Yield ~7.2%
+        ราคา BAM ในรอบ ~1 ปีที่ผ่านมา (ต.ค. 2568 – ก.ย. 2569) เคลื่อนไหวในกรอบ ฿6.35–8.00 เปิดเดือนตุลาคม 2568 ที่ ฿6.75
+        แล้วไต่ขึ้นแรงช่วงพฤศจิกายน–มกราคมสู่จุดสูงสุดของรอบที่ ฿8.00 จากแรงซื้อคาดหวังผลประกอบการดี
+        ก่อนทยอยอ่อนตัวตลอดไตรมาสแรกของปี 2569 (ก.พ.–เม.ย. ฿7.10–7.60) และร่วงลงแรงเดือนพฤษภาคมสู่ ฿6.45 จากความกังวลกำไรที่แผ่วลง
+        จากนั้นแกว่งตัว sideways ในกรอบ ฿6.35–6.90 ตลอดไตรมาสสุดท้าย สะท้อนตลาดที่ปรับมุมมองลงหลังเห็นกำไรสุทธิ TTM
+        ทรุดจากพอร์ต NPL/NPA ที่ผันผวน ราคาปัจจุบัน {{rd:px}} เทียบมูลค่าเหมาะสม {{rd:fv}} คิดเป็น {{rd:mos}}
       </p>
     </div>
   </section>
@@ -141,26 +142,27 @@
     <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿0.56 × P/E เป้าหมาย ~13x — อิง P/E เฉลี่ย 5 ปีย้อนหลัง (ช่วง 12–15x) ปรับลดเล็กน้อยจากความผันผวน EPS ของธุรกิจ AMC</div></div>
-        <div class="mval">฿7.28</div>
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS ปรับฐาน ฿0.51 (เฉลี่ยย้อนหลัง 2566–2568) × P/E เป้าหมาย ~14.4x — เฉลี่ยมัธยฐาน P/E ย้อนหลังของ BAM เอง 2 ปีล่าสุด (ปี 2568 12.6x, ปี 2567 16.2x) สะท้อนโซน re-rate ปัจจุบันมากกว่ามัธยฐานเต็ม 5 ปี 21.4x (ช่วง 12.6–24.5x)</div></div>
+        <div class="mval">฿7.34</div>
       </div>
       <div class="vmethod">
         <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.50 × (1+3%) = ฿0.515; g = 3%, r = 9% → FV = D₁/(r−g) — สะท้อนธุรกิจที่จ่ายปันผลสม่ำเสมอ Payout ~89%</div></div>
         <div class="mval">฿8.58</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">3. Target P/BV</div><div class="mdesc">ประวัติ P/BV สูงสุด ~0.65x (ก่อน IPO ราคาต่ำ) ตั้งเป้า P/BV 0.60x × BVPS ฿13.92 — สะท้อน discount สำหรับ AMC ที่ถือ NPL/NPA ไม่ liquid; ค่า P/BV ทฤษฎี (ROE 12.17%−g 3%)/(r 11%−g 3%) = 1.15x แต่ตลาดให้ส่วนลดมากกว่า</div></div>
-        <div class="mval">฿8.35</div>
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">ROE เฉลี่ย 5 ปีย้อนหลัง (2564–2568) ~4.7% (แทน ROE TTM ~1.7% ที่ทรุดจากกำไรผันผวน) กับ g = 3%, r = 9% (ชุดเดียวกับ DDM) → (ROE−g)/(r−g) = 0.283x × BVPS ฿13.68</div></div>
+        <div class="mval">฿3.87</div>
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        วิธี DDM ให้ค่าสูงสุด (฿8.58) เนื่องจาก BAM มี Payout ratio สูงถึง ~89% และ Dividend Yield ~7% ถือเป็นจุดแข็งด้านกระแสเงินสดผู้ถือหุ้น
-        วิธี P/E ให้ค่าต่ำสุด (฿7.28) เพราะ EPS ปีล่าสุดค่อนข้างต่ำเทียบกับอดีต (peak EPS ปี 2565: ฿0.84)
-        วิธี Justified P/BV (฿8.35) ใช้ target P/BV 0.60x ซึ่งเหมาะสมกับ AMC ที่มี ROE~12% แต่ asset เป็น NPL/NPA — Fair Value เฉลี่ย ฿8.10 สมเหตุสมผล
-        ยืนยันข้ามแหล่ง: ราคา ฿6.95 (Yahoo Finance 5 ม.ค. 2569) vs ฿6.80 (AiO Panphol) ต่างกัน ~2.2% ใช้ Yahoo Finance เป็นหลักเพราะข้อมูลใหม่กว่า
+        กำไรสุทธิ TTM ทรุดเหลือ ฿752 ล้าน จาก ฿1,812 ล้านในปี 2568 (EPS TTM ~฿0.23 เทียบ ~฿0.56 ของปีเต็ม) ตามธุรกิจบริหารสินทรัพย์ที่รับรู้กำไรขายพอร์ต NPL/NPA เป็นรอบไม่สม่ำเสมอทุกไตรมาส — เป็นความผันผวนของธุรกิจ ยังไม่ใช่สัญญาณเสื่อมถอยเชิงโครงสร้างที่ชัดเจน แต่ต้องติดตามใกล้ชิด
+        วิธี P/E ใช้ EPS ปรับฐาน ฿0.51 (เฉลี่ยย้อนหลัง 3 ปี) คูณ P/E เป้าหมาย ~14.4x (เฉลี่ยมัธยฐานย้อนหลัง 2 ปีล่าสุด) ได้ ฿7.34
+        วิธี DDM (D₁ ฿0.515, r 9%, g 3%) ให้ ฿8.58 และวิธี Justified P/BV ใช้ (r,g) ชุดเดียวกันแต่ปรับ ROE เป็นค่าเฉลี่ย 5 ปีย้อนหลัง ~4.7% แทน ROE TTM ที่ทรุด ได้เพียง ฿3.87 — ขาสองตัวนี้ (ตระกูลเดียวกัน r,g) ห่างกันถึง 2.2 เท่า และห่างจากขา P/E เกิน 2 เท่าเช่นกัน จึงห้ามเฉลี่ยรวมตามกฎ 0.4c
+        ใช้ขา P/E (฿7.34) เป็นมูลค่าเหมาะสมหลักเพราะยึดมัธยฐาน P/E จริงที่ตลาดเคยให้กับ BAM เอง ส่วน DDM (฿8.58) และ Justified P/BV (฿3.87) เก็บไว้เป็นกรอบบริบทบนล่างเท่านั้น — มูลค่าเหมาะสม {{rd:fv}}
+        ยืนยันข้ามแหล่ง: ราคา ฿6.55 ตรงกันทั้ง Yahoo Finance และ StockAnalysis ณ 16 ก.ย. 2569
       </p>
     </div>
   </section>
@@ -177,15 +179,15 @@
         <div class="scale">
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿7.61<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:center">฿7.11<br><small>เป้าเฉลี่ย Analyst</small></span>
           <span style="text-align:right">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน ฿6.95 อยู่ใน "โซน MOS 10–20%" ซึ่งเป็นระดับ "ราคาพอใช้ — ทยอยสะสมได้"
-        ราคาสูงกว่า MOS 20% (฿6.48) ไม่มากนัก ผู้ที่ต้องการ margin of safety มากกว่านี้ควรรอโซน ฿6.00–6.50
-        นักวิเคราะห์ IAA consensus มีเป้าเฉลี่ย ฿7.61 ซึ่งต่ำกว่า Fair Value ฿8.10 เล็กน้อย สะท้อนมุมมอง conservative ต่อธุรกิจ AMC ในปัจจุบัน
+        ราคาปัจจุบัน {{rd:px}} อยู่ใกล้มูลค่าเหมาะสม {{rd:fv}} มาก ส่วนลดที่เคยมีแคบลงหลังปรับมุมมองกำไรที่ผันผวนขึ้น
+        ผู้ที่ต้องการ margin of safety มากกว่านี้ควรรอโซน MOS 20% ที่ {{rd:mos20}} หรือ MOS 30% ที่ {{rd:mos30}}
+        เป้าเฉลี่ยนักวิเคราะห์ (Yahoo ฿7.07 · StockAnalysis ฿7.14 เฉลี่ย ~฿7.11) ใกล้เคียงกับมูลค่าเหมาะสมที่ประเมินไว้ สะท้อนมุมมอง conservative ต่อธุรกิจ AMC ในปัจจุบัน
       </p>
     </div>
   </section>
@@ -196,7 +198,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">ราคาพอใช้ — ทยอยสะสมได้ · ยังไม่ถึง Deep Value Zone (MOS 20%)</div>
+        <div class="txt">ใกล้มูลค่าเหมาะสม — ส่วนเผื่อความปลอดภัยแคบ ยังไม่ถึงโซนน่าสะสม (MOS 20%)</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -215,52 +217,52 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿6.95 • EPS ฐาน ~฿0.56 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน TTM ~฿0.23 (normalize ~฿0.51) • รวมปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿6.50</div>
-          <div class="ret neg">+21.5% รวม 3 ปี (~+6.7%/ปี)</div>
+          <div class="tgt">฿3.30</div>
+          <div class="ret neg">−36.6% รวม 3 ปี (~−13.6%/ปี)</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿0.56</span></li>
-            <li><span>P/E ออก</span><span>11.6x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.50</span></li>
-            <li><span>สถานการณ์</span><span>NPL ใหม่ช้า กำไรทรงตัว ราคาหดตัวเล็กน้อย</span></li>
+            <li><span>EPS ปี 3</span><span>~฿0.30</span></li>
+            <li><span>P/E ออก</span><span>11.0x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.90</span></li>
+            <li><span>สถานการณ์</span><span>กำไรไม่ฟื้นจากผลผันผวนพอร์ต NPL/NPA ตลาดยังคง P/E ต่ำต่อเนื่อง ปันผลถูกปรับลด</span></li>
           </ul>
         </div>
       </div>
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿8.50</div>
-          <div class="ret pos">+39.5% รวม 3 ปี (~+11.7%/ปี)</div>
+          <div class="tgt">฿7.00</div>
+          <div class="ret pos">+25.0% รวม 3 ปี (~+7.7%/ปี)</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿0.71</span></li>
-            <li><span>P/E ออก</span><span>12.0x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.60</span></li>
-            <li><span>สถานการณ์</span><span>กำไรโตตามเป้า 2,000 ล้าน ปี 2569 ผลเรียกเก็บสม่ำเสมอ</span></li>
+            <li><span>EPS ปี 3</span><span>~฿0.50</span></li>
+            <li><span>P/E ออก</span><span>14.0x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.20</span></li>
+            <li><span>สถานการณ์</span><span>กำไรฟื้นกลับสู่ระดับ FY2568 ภายในปี 3 ตามเป้ากำไร ~2,000 ล้าน ปี 2569</span></li>
           </ul>
         </div>
       </div>
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿11.00</div>
-          <div class="ret pos">+60.5% รวม 3 ปี (~+17.3%/ปี)</div>
+          <div class="tgt">฿10.40</div>
+          <div class="ret pos">+83.2% รวม 3 ปี (~+22.4%/ปี)</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿0.85</span></li>
-            <li><span>P/E ออก</span><span>13.0x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.80</span></li>
-            <li><span>สถานการณ์</span><span>FIDF เร่งขาย NPL + ราคาอสังหาฯ ฟื้น P/BV re-rate</span></li>
+            <li><span>EPS ปี 3</span><span>~฿0.65</span></li>
+            <li><span>P/E ออก</span><span>16.0x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.65</span></li>
+            <li><span>สถานการณ์</span><span>FIDF เร่งขาย NPL + กำไรฟื้นแรงเหนือระดับปกติ ตลาด re-rate P/E ขึ้น</span></li>
           </ul>
         </div>
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      Base case อิงกำไรปี 2569 เป้า ~฿2,000 ล้าน (+10%) และโตต่อเนื่อง 8%/ปี ในปีถัดไป
-      แม้ Bear case กำไรไม่โต ผลตอบแทนรวมยังเป็นบวก ~6.7%/ปี เพราะปันผล ~฿0.50/ปี ให้ Yield ~7% หนุนไว้
-      ตัวแปรสำคัญ: อัตราการเรียกเก็บหนี้ (Collection Rate), ราคาทรัพย์สินอสังหาฯ ในพอร์ต NPA และปริมาณ NPL ใหม่จาก FIDF
+      Base case อิงกำไรฟื้นตัวกลับสู่ระดับ FY2568 ภายในปี 3 (EPS ~฿0.50) หลังผลกระทบความผันผวนพอร์ต NPL/NPA ปีนี้คลี่คลาย
+      Bear case สะท้อนความเสี่ยงจริงหากกำไรไม่ฟื้นและตลาดยังคง P/E ต่ำต่อเนื่อง — ต่างจากรอบก่อนที่ยังไม่มีสัญญาณกำไรผันผวนชัดเจน
+      ตัวแปรสำคัญ: อัตราการเรียกเก็บหนี้ (Collection Rate), ความสม่ำเสมอของกำไรจากพอร์ต NPL/NPA, ราคาทรัพย์สินอสังหาฯ ในพอร์ต NPA และปริมาณ NPL ใหม่จาก FIDF
     </p>
   </section>
 
@@ -282,6 +284,7 @@
       <div class="box risk">
         <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
         <ul>
+          <li><b>กำไรผันผวนสูงรายไตรมาส:</b> กำไรสุทธิ TTM ล่าสุดทรุดเหลือ ฿752 ล้าน จาก FY2568 ฿1,812 ล้าน เพราะรับรู้กำไรขายพอร์ต NPL/NPA ไม่สม่ำเสมอ ทำให้ P/E ที่คำนวณจาก EPS ช่วงใดช่วงหนึ่งอาจไม่สะท้อนกำลังกำไรจริง</li>
           <li><b>คุณภาพสินทรัพย์ NPL/NPA:</b> มูลค่าจริงขึ้นอยู่กับการประเมิน ซึ่งอาจต่ำกว่าบัญชีหากเศรษฐกิจแย่ลงหรือราคาอสังหาฯ ร่วง</li>
           <li><b>ความเสี่ยงอัตราดอกเบี้ย:</b> BAM มีหนี้สินสูง (Total D/E ~1.9x) หากดอกเบี้ยขึ้นจะเพิ่มต้นทุนการเงิน กดดันอัตรากำไร</li>
           <li><b>นโยบายรัฐและ FIDF:</b> ในฐานะ AMC ของรัฐ นโยบายการปล่อย NPL และราคาซื้อขึ้นอยู่กับ FIDF ซึ่งอาจไม่ตรงกับผลประโยชน์ผู้ถือหุ้น</li>
@@ -296,18 +299,18 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>BAM — Yield Play ที่มีส่วนลด · ทยอยสะสมที่ราคาปัจจุบัน</h2>
-      <p>BAM เป็น AMC รายใหญ่ที่สุดในไทยมี FIDF หนุนหลัง ธุรกิจมีความสม่ำเสมอ จ่ายปันผลสูงต่อเนื่อง
-      ราคาปัจจุบัน ฿6.95 มี MOS ~14% และ Dividend Yield ~7.2% ทำให้ผลตอบแทนรวม (capital gain + ปันผล) ใน Base case อยู่ที่ ~11.7%/ปี
-      แม้แต่ Bear case ยังให้ผลตอบแทน ~6.7%/ปี เพราะปันผลสูงหนุนไว้
-      เหมาะกับนักลงทุนที่ต้องการกระแสเงินสดสม่ำเสมอ รอรับ Dividend Yield ~7% และ capital gain เมื่อ sentiment ตลาดดีขึ้น</p>
+      <h2>BAM — Yield Play แต่กำไรผันผวนสูง · MOS แคบ รอฟื้นตัวก่อนเพิ่มน้ำหนัก</h2>
+      <p>BAM ยังเป็น AMC รายใหญ่ที่สุดในไทยมี FIDF หนุนหลัง และให้ Dividend Yield {{rd:yield}} ต่อเนื่อง
+      แต่กำไรสุทธิ TTM ล่าสุดทรุดเหลือ ฿752 ล้าน จาก ฿1,812 ล้านในปี 2568 ตามความผันผวนของกำไรจากพอร์ต NPL/NPA ทำให้ EPS TTM เหลือเพียง ~฿0.23 (เทียบ ~฿0.56 ของปีเต็ม)
+      ราคาปัจจุบัน {{rd:px}} มี MOS เพียง {{rd:mos}} เทียบมูลค่าเหมาะสม {{rd:fv}} แคบกว่ารอบก่อนมาก สะท้อนว่าส่วนลดที่เคยมีถูกปรับลดลงตามความไม่แน่นอนของกำไรที่เพิ่มขึ้น
+      เหมาะกับนักลงทุนที่เน้นกระแสเงินสดจากปันผลเป็นหลักมากกว่าคาดหวัง capital gain ระยะสั้น ควรติดตามผลประกอบการไตรมาสถัดไปเพื่อยืนยันว่ากำไรที่ทรุดเป็นความผันผวนชั่วคราวหรือแนวโน้มเสื่อมถอยเชิงโครงสร้าง</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿7.61 (Buy/Hold)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿7.11 (Hold)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ทยอยสะสมที่ราคาปัจจุบัน (฿6.95) รับ Dividend Yield ~7% รอ capital gain สู่ FV ฿8.10 — เพิ่มน้ำหนักหากราคาหลุด ฿6.48 (MOS 20%) หรือ ฿5.67 (MOS 30%) ซึ่งเป็นโซน deep value ที่น่าซื้อหนักมาก
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน {{rd:px}} ใกล้เคียงมูลค่าเหมาะสม {{rd:fv}} มาก MOS จึงแคบ เหมาะถือรับปันผลมากกว่าเพิ่มน้ำหนักใหม่ตอนนี้ — รอสะสมเมื่อราคาลงมาที่โซน MOS 20% ({{rd:mos20}}) หรือ MOS 30% ({{rd:mos30}}) ซึ่งคุ้มความเสี่ยงกำไรผันผวนมากกว่า
       </div>
     </div>
   </section>
@@ -317,9 +320,9 @@
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
-    แหล่งข้อมูล: Yahoo Finance (BAM.BK — ราคา + กราฟรายเดือน 1 ปี), investor.bam.co.th (Financial Highlights 2568), AiO Panphol (ราคา/ปันผล/BVPS), Investing.com (Financial Ratios), PostToday (ผลประกอบการ FY2568 +13%)
+    แหล่งข้อมูล: Yahoo Finance (BAM.BK — ราคา + กราฟรายเดือน 1 ปี + EPS/PE), StockAnalysis.com (งบย้อนหลัง 5 ปี + EPS TTM), investor.bam.co.th (Financial Highlights 2568), Investing.com (Financial Ratios), PostToday (ผลประกอบการ FY2568 +13%)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 5 มกราคม 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 16 กันยายน 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
