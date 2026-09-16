@@ -5,24 +5,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น Index Living Mall (ILM) — Stock Analysis Dashboard</title>
 <!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง -->
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"ILM","currency":"THB","price":13.7,"fairValue":17.5,"mos":21.7,"upside":27.7,"pe":8.87,"dividendYield":7.3,"roe":11.14}
+{"symbol":"ILM","currency":"THB","price":13.7,"fairValue":19.88,"mos":31.1,"upside":45.1,"pe":9.07,"dividendYield":7.3,"roe":12.1}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 17.5,
+  "fv": 19.88,
   "values": {
     "px": 13.7,
     "priceDate": "2026-09-16",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
     "fvLow": 17.17,
-    "fvHigh": 17.74,
+    "fvHigh": 21.74,
     "shares": 505000000,
-    "dps": 1
+    "dps": 1,
+    "analystTgt": 14.6,
+    "eps": 1.51,
+    "bvps": 12.44,
+    "baseEps": 1.51
   },
   "theme": {
     "accent": "#1565c0",
@@ -97,28 +101,28 @@
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.พ. 2569 · ยืนยัน ≥3 แหล่ง</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ย. 2569 · ยืนยัน ≥3 แหล่ง</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~฿6.92B</div><div class="d">505M หุ้น · Free float 24.5%</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~8.87x</div><div class="d">ต่ำกว่าค่าเฉลี่ย 10 ปีที่ ~16x</div></div>
-      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~12–16x</div><div class="d">ช่วง 9–21x ในรอบ 10 ปี</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">~0.97x</div><div class="d">ต่ำกว่า median 5 ปีที่ 1.7x</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~9.07x</div><div class="d">ต่ำกว่ามัธยฐานย้อนหลัง 5 ปีที่ ~14.4x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~14.4x</div><div class="d">ช่วง 9.4–17.5x ใน 5 ปีที่ผ่านมา (มัธยฐาน)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~1.10x</div><div class="d">ต่ำกว่า median 5 ปีที่ 1.7x</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿753M</div><div class="d">+1.1% YoY · margin 7.5%</div></div>
-      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿1.43</div><div class="d">FY2568 ฿1.49 · FY2567 ฿1.48</div></div>
-      <div class="metric"><div class="k">BVPS</div><div class="v">~฿13.07</div><div class="d">Book Value ต่อหุ้น (StockAnalysis)</div></div>
-      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~11.1% / 5.3%</div><div class="d">ROIC ~8.7% · สม่ำเสมอ</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿1.51</div><div class="d">FY2568 ฿1.49 · FY2567 ฿1.48</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿12.44</div><div class="d">คำนวณจาก NI TTM ÷ ROE 12.1% ÷ 505M หุ้น</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~12.1% / 5.3%</div><div class="d">ROIC ~8.7% · สม่ำเสมอ</div></div>
 
-      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿9.95B</div><div class="d">+1.1% YoY · gross margin 48%</div></div>
-      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~48.2%</div><div class="d">เพิ่มต่อเนื่องจาก 43.8% ปี 64</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~7.30%</div><div class="d">฿1.00/หุ้น · payout ~70% · จ่ายปีละ 2 ครั้ง</div></div>
-      <div class="metric"><div class="k">FCF</div><div class="v">฿1.20B</div><div class="d">OCF ฿1.98B · Capex ~฿780M</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿10.25B</div><div class="d">+2.4% YoY · gross margin 48.9%</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~48.9%</div><div class="d">เพิ่มต่อเนื่องจาก 43.8% ปี 64</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~7.30%</div><div class="d">฿1.00/หุ้น · payout ~66% · จ่ายปีละ 2 ครั้ง</div></div>
+      <div class="metric"><div class="k">FCF</div><div class="v">฿1.28B</div><div class="d">FY2568 ฿1.20B · FY2567 ฿0.89B</div></div>
     </div>
   </section>
 
   <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.พ. 2568 – ก.พ. 2569 · รายเดือน · 13 จุด</div></div>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ต.ค. 2568 – ก.ย. 2569 · รายเดือน · 12 จุด</div></div>
     <div class="card">
       <div class="chart-wrap">
         <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
@@ -129,10 +133,10 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ราคา ILM ปรับตัวขึ้นแตะ <b>฿15.60–16.20</b> ช่วงมี.ค.–เม.ย. 2568 หนุนจากการฟื้นตัวของการบริโภคภายในประเทศ
-        ก่อนกลับมาอ่อนตัวสู่ <b>฿12.50–13.50</b> ในช่วงพ.ค.–ก.พ. 2569 ตามภาวะเศรษฐกิจชะลอและกำลังซื้อครัวเรือนที่ถูกกดดัน
-        ราคาปัจจุบัน <b>฿12.90</b> ต่ำกว่ามูลค่าเหมาะสมประมาณ <b>26%</b> และใกล้โซนจุดซื้อ MOS 30% ที่ ฿12.25
-        ผลตอบแทนรอบปี (ก.พ. 68 → ก.พ. 69) อยู่ที่ <b>−9.8%</b>
+        ราคา ILM ปรับตัวขึ้นแตะจุดสูงสุดในรอบปีที่ <b>฿14.70</b> ช่วง ก.พ. 2569 หนุนจากการฟื้นตัวของการบริโภคระยะสั้น
+        ก่อนอ่อนตัวลงมาที่ <b>฿12.50</b> ในเดือน พ.ค. 2569 ตามภาวะเศรษฐกิจชะลอและกำลังซื้อครัวเรือนที่ถูกกดดัน
+        จากนั้นทยอยฟื้นตัวกลับมาที่ {{rd:px}} ในเดือน ก.ย. 2569 ซึ่งยังต่ำกว่ามูลค่าเหมาะสม {{rd:fv}} อยู่มาก ({{rd:mos}})
+        และอยู่ต่ำกว่าโซนจุดซื้อ MOS 30% ที่ {{rd:mos30}} เล็กน้อย ผลตอบแทนรอบปีอยู่ที่ {{rd:chg}}
       </p>
     </div>
   </section>
@@ -142,27 +146,28 @@
     <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿1.47 (ค่าเฉลี่ย 3 ปี) × P/E เป้าหมาย ~12x — ค่าเฉลี่ยอุตสาหกรรมค้าปลีกไทย ต่ำกว่า median 10 ปีที่ 16x</div></div>
-        <div class="mval">฿17.64</div>
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿1.51 (TTM) × P/E เป้าหมาย ~14.4x — มัธยฐานย้อนหลัง 5 ปีของ ILM เอง (ช่วง 9.4–17.5x)</div></div>
+        <div class="mval">฿21.74</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿1.00 × (1+g); g 3%, r 9% → ธุรกิจมั่นคง จ่ายปันผลสม่ำเสมอ payout ~70%</div></div>
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿1.00 × (1+g); g 3%, r 9% → ธุรกิจมั่นคง จ่ายปันผลสม่ำเสมอ payout ~66%</div></div>
         <div class="mval">฿17.17</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 11.14% − g 3%)/(r 9% − g 3%) ≈ 1.36 × BVPS ฿13.07</div></div>
-        <div class="mval">฿17.74</div>
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 12.10% − g 3%)/(r 9% − g 3%) ≈ 1.52 × BVPS ฿12.44</div></div>
+        <div class="mval">฿18.87</div>
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ทั้ง 3 วิธีให้ค่าใกล้เคียงกันในกรอบ ฿17.17–17.74 สะท้อนความสอดคล้องของโมเดล
-        วิธี P/E ใช้ P/E ที่ 12x ซึ่งอนุรักษ์นิยม (ต่ำกว่าค่าเฉลี่ยประวัติศาสตร์ 16x) เพื่อสะท้อนสภาพแวดล้อมเศรษฐกิจที่ยังชะลอ
-        วิธี Justified P/BV สะท้อนว่าบริษัทที่ ROE ~11% ควรซื้อขายที่ P/BV สูงกว่าระดับปัจจุบัน 0.97x
-        DDM ยืนยันว่ากระแสปันผลที่ stable ที่ yield ~8% มีมูลค่าสูงกว่าราคาตลาดมาก
-        นักวิเคราะห์ 2 คน มีราคาเป้าเฉลี่ยที่ ฿16.50 (range ฿15.00–18.00) สอดคล้องกับ Fair Value ของเรา
+        วิธี P/E ให้ค่าสูงสุดในกรอบเพราะอิงมัธยฐาน P/E ย้อนหลัง 5 ปีที่ 14.4x ซึ่งสูงกว่า P/E ปัจจุบันของหุ้นที่ ~9.07x มาก
+        สะท้อนว่าตลาดให้มูลค่าต่ำกว่าค่าเฉลี่ยประวัติศาสตร์ตัวเองอย่างมีนัยสำคัญในช่วงเศรษฐกิจชะลอ
+        DDM และ Justified P/BV ใช้สมมติฐาน (r,g) ชุดเดียวกันจึงนับเป็นตระกูลเดียว เฉลี่ยกันได้ ฿18.02 ก่อนถ่วงกับขา P/E
+        Justified P/BV สะท้อนว่าบริษัทที่ ROE ~12.1% ควรซื้อขายที่ P/BV สูงกว่าระดับปัจจุบัน ~1.10x
+        DDM ยืนยันว่ากระแสปันผลที่ stable ยัง cover ราคาตลาดได้สบาย
+        นักวิเคราะห์ 2 คน มีราคาเป้าเฉลี่ยที่ {{rd:analystTgt}} ({{rd:analystPct}}) ต่ำกว่า Fair Value ของเรา สะท้อนมุมมองที่ระมัดระวังกว่า
       </p>
     </div>
   </section>
@@ -178,17 +183,17 @@
         </div>
         <div class="scale">
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span style="text-align:center">{{rd:analystTgt}}<br><small>เป้าเฉลี่ย Analyst</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿16.50<br><small>เป้าเฉลี่ย Analyst</small></span>
           <span style="text-align:right">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน ฿12.90 อยู่ใกล้โซน <b>MOS 30%</b> (฿12.25) ซึ่งถือเป็นโซน deep value
-        MOS ปัจจุบันอยู่ที่ <b>~26%</b> เข้าโซน "น่าซื้อ" สำหรับ value investor
-        ราคายังต่ำกว่าเป้าของนักวิเคราะห์เฉลี่ยที่ ฿16.50 ถึง ~28%
-        และต่ำกว่า Fair Value เฉลี่ย ฿17.50 ถึง ~35.7%
+        ราคาปัจจุบัน {{rd:px}} อยู่ต่ำกว่าโซน <b>MOS 30%</b> ({{rd:mos30}}) เล็กน้อย ซึ่งถือเป็นโซน deep value
+        MOS ปัจจุบันอยู่ที่ <b>{{rd:mos}}</b> เข้าโซน "น่าซื้อ" สำหรับ value investor
+        ราคายังต่ำกว่าเป้าของนักวิเคราะห์เฉลี่ยที่ {{rd:analystTgt}} ({{rd:analystPct}})
+        และต่ำกว่า Fair Value เฉลี่ย {{rd:fv}} อยู่มาก
       </p>
     </div>
   </section>
@@ -218,15 +223,15 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿13.70 • EPS ฐาน ~฿1.43 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~฿1.51 • รวมปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿11.44</div>
-          <div class="ret neg">+1.8%/ปี</div>
+          <div class="tgt">฿12.08</div>
+          <div class="ret neg">+3.3%/ปี</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿1.43</span></li>
+            <li><span>EPS ปี 3</span><span>~฿1.51</span></li>
             <li><span>P/E ออก</span><span>8x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~฿3.00</span></li>
             <li><span>สถานการณ์</span><span>เศรษฐกิจซบ กำไรทรงตัว</span></li>
@@ -236,10 +241,10 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿19.90</div>
-          <div class="ret pos">+18.9%/ปี</div>
+          <div class="tgt">฿21.00</div>
+          <div class="ret pos">+21.3%/ปี</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿1.66</span></li>
+            <li><span>EPS ปี 3</span><span>~฿1.75</span></li>
             <li><span>P/E ออก</span><span>12x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~฿3.15</span></li>
             <li><span>สถานการณ์</span><span>เศรษฐกิจฟื้น กำไรโตตามรายได้</span></li>
@@ -249,10 +254,10 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿25.20</div>
-          <div class="ret pos">+27.6%/ปี</div>
+          <div class="tgt">฿26.60</div>
+          <div class="ret pos">+29.7%/ปี</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿1.80</span></li>
+            <li><span>EPS ปี 3</span><span>~฿1.90</span></li>
             <li><span>P/E ออก</span><span>14x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~฿3.25</span></li>
             <li><span>สถานการณ์</span><span>บูมอสังหา กำไรพุ่ง re-rating</span></li>
@@ -261,10 +266,10 @@
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      แม้ใน Bear case ที่กำไรทรงตัวและ P/E ลดเหลือ 8x ผู้ลงทุนยังได้รับผลตอบแทนรวม ~+12% ใน 3 ปี (~3.8%/ปี)
-      จากการรองรับของเงินปันผลสูงถึง ~฿3.00 ต่อ 3 ปี (yield ~7.9%)
-      Base case ที่ EPS โต 5%/ปี และ P/E กลับสู่ 12x ให้ผลตอบแทนสูงถึง ~79% รวม (~21%/ปี)
-      Bull case ที่ตลาดอสังหา/ค้าปลีกฟื้นตัวแรง กำไรโต 8%/ปี และ re-rating P/E ให้ผลตอบแทนสูงถึง ~121% (~30%/ปี)
+      แม้ใน Bear case ที่กำไรทรงตัวและ P/E ลดเหลือ 8x ผู้ลงทุนยังได้รับผลตอบแทนรวม ~+10% ใน 3 ปี (~3.3%/ปี)
+      จากการรองรับของเงินปันผลสูงถึง ~฿3.00 ต่อ 3 ปี (yield ~7.3%/ปี)
+      Base case ที่ EPS โต 5%/ปี และ P/E ทรงตัวที่ 12x ให้ผลตอบแทนสูงถึง ~76% รวม (~21%/ปี)
+      Bull case ที่ตลาดอสังหา/ค้าปลีกฟื้นตัวแรง กำไรโต 8%/ปี และ re-rating P/E ให้ผลตอบแทนสูงถึง ~118% (~30%/ปี)
       <b>ความเสี่ยงต่ำ (downside จำกัด) แต่ upside สูง</b> เป็นคุณสมบัติหลักของ ILM ณ ราคาปัจจุบัน
     </p>
   </section>
@@ -276,10 +281,10 @@
       <div class="box cat">
         <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
         <ul>
-          <li><b>Dividend Yield สูงที่สุดในกลุ่ม:</b> yield ~7.9% สูงมากสำหรับหุ้นค้าปลีกไทย ดึงดูดนักลงทุนแนว income investing โดยเฉพาะในยุคดอกเบี้ยปรับลง</li>
+          <li><b>Dividend Yield สูงที่สุดในกลุ่ม:</b> yield ~7.3% สูงมากสำหรับหุ้นค้าปลีกไทย ดึงดูดนักลงทุนแนว income investing โดยเฉพาะในยุคดอกเบี้ยปรับลง</li>
           <li><b>ตลาดอสังหาริมทรัพย์ฟื้นตัว:</b> เมื่อตลาดบ้าน/คอนโดกลับมา ILM เป็นหนึ่งในผู้รับประโยชน์โดยตรงที่สุด (demand เฟอร์นิเจอร์ตามยอดโอนโครงการ)</li>
           <li><b>Gross Margin ขยายตัวต่อเนื่อง:</b> อัตรากำไรขั้นต้นเพิ่มจาก 43.8% ปี 64 สู่ 48.2% ปี 68 สะท้อน pricing power และ product mix ที่ดีขึ้น</li>
-          <li><b>P/BV ต่ำกว่า 1x:</b> ราคาต่ำกว่ามูลค่าทางบัญชีเป็นครั้งแรก เป็น value signal ชัดเจนในเชิง fundamental</li>
+          <li><b>P/BV ใกล้ 1x:</b> ราคาซื้อขายใกล้เคียงมูลค่าทางบัญชี (~1.10x) เป็น value signal ชัดเจนในเชิง fundamental</li>
           <li><b>กลยุทธ์ออนไลน์และ Omnichannel:</b> ILM ขยาย e-commerce และ digital platform เพิ่มช่องทางขายโดยไม่เพิ่ม fixed cost ของสาขา</li>
           <li><b>FCF แข็งแกร่ง:</b> FCF ~฿1.2B/ปี รองรับทั้งปันผลสูงและ capex ขยายสาขาได้โดยไม่ต้องกู้เพิ่ม</li>
         </ul>
@@ -290,7 +295,7 @@
           <li><b>กำลังซื้อผู้บริโภคซบเซา:</b> เฟอร์นิเจอร์เป็นสินค้า discretionary ที่ถูกตัดก่อนเมื่อเศรษฐกิจชะลอและหนี้ครัวเรือนสูง</li>
           <li><b>การแข่งขันจาก IKEA และออนไลน์:</b> การเติบโตของ IKEA ในไทยและแพลตฟอร์ม e-commerce จีน (Lazada/Shopee) กดดันส่วนแบ่งตลาดและ margin</li>
           <li><b>ตลาดอสังหาชะลอตัว:</b> ยอดโอนคอนโดและบ้านที่ชะลอตัวกดดัน demand เฟอร์นิเจอร์โดยตรง โดยเฉพาะ segment mid-to-high</li>
-          <li><b>Debt สุทธิสูง:</b> net debt ~฿3.9B (D/E ~0.59x) อาจกดดันงบในกรณีดอกเบี้ยปรับขึ้นหรือรายได้ลดลงฉับพลัน</li>
+          <li><b>Debt สุทธิสูง:</b> net debt ~฿4.10B (D/E ~0.66x) อาจกดดันงบในกรณีดอกเบี้ยปรับขึ้นหรือรายได้ลดลงฉับพลัน</li>
           <li><b>Free Float ต่ำ:</b> free float เพียง ~24.5% ทำให้ราคาผันผวนง่ายและ liquidity จำกัดสำหรับนักลงทุนสถาบัน</li>
         </ul>
       </div>
@@ -302,18 +307,18 @@
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
       <h2>ILM — Deep Value พร้อม Dividend Shield ราคาต่ำกว่า Book Value</h2>
-      <p>ILM คือผู้นำค้าปลีกเฟอร์นิเจอร์ไทยที่มีธุรกิจมั่นคง กำไรสม่ำเสมอกว่า 5 ปี และปันผลสูงถึง ~8%/ปี
-        ณ ราคา ฿12.90 หุ้นซื้อขายต่ำกว่ามูลค่าทางบัญชี (P/BV ~0.97x) และมี MOS ~26% จาก Fair Value เฉลี่ย ฿17.50
+      <p>ILM คือผู้นำค้าปลีกเฟอร์นิเจอร์ไทยที่มีธุรกิจมั่นคง กำไรสม่ำเสมอกว่า 5 ปี และปันผลสูงถึง ~7.3%/ปี
+        ณ ราคา {{rd:px}} หุ้นซื้อขายใกล้มูลค่าทางบัญชี (P/BV ~1.10x) และมี MOS {{rd:mos}} จาก Fair Value เฉลี่ย {{rd:fv}}
         แม้กำไรจะโตช้าในระยะสั้นจากภาวะเศรษฐกิจชะลอ แต่ yield ปันผลสูงช่วยลด downside risk ได้มาก
-        เมื่อตลาดอสังหาและกำลังซื้อผู้บริโภคฟื้นตัว ILM มีศักยภาพ re-rating P/E กลับสู่ 12–14x ได้</p>
+        เมื่อตลาดอสังหาและกำลังซื้อผู้บริโภคฟื้นตัว ILM มีศักยภาพ re-rating P/E กลับสู่มัธยฐาน 5 ปีที่ 14.4x ได้</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿16.50 (Buy)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">{{rd:analystTgt}} ({{rd:analystPct}}) · Sell</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ทยอยสะสมใน <b>โซน ฿12.25–14.00</b> (MOS 20–30%) รับ Dividend Yield ~7–8% ระหว่างรอ
-        ตั้งราคาเป้าหมาย ฿17.50 (Fair Value) ถึง ฿19.90 (Base case 3 ปี) · <b>ไม่แนะนำสำหรับนักลงทุนที่ต้องการ capital gain เร็ว</b>
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมใน <b>โซน {{rd:mos30}}–{{rd:mos20}}</b> (MOS 20–30%) รับ Dividend Yield ~7.3% ระหว่างรอ
+        ตั้งราคาเป้าหมาย {{rd:fv}} (Fair Value) ถึง ฿21.00 (Base case 3 ปี) · <b>ไม่แนะนำสำหรับนักลงทุนที่ต้องการ capital gain เร็ว</b>
         เหมาะกับนักลงทุนแนว Value + Income ที่อดทนรอการฟื้นตัวของเศรษฐกิจและตลาดอสังหา
       </div>
     </div>
@@ -326,7 +331,7 @@
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
     แหล่งข้อมูล: Yahoo Finance (ILM.BK) · StockAnalysis.com (BKK:ILM) · SET Factsheet · Investing.com · AlphaSpread.com · งบการเงิน FY2568 (Q4/2568)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ กุมภาพันธ์ 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 16 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
