@@ -8,6 +8,12 @@
 `npm run queue -- preflight` → `ship --prepatch` ทันที ทำให้: `git pull --rebase origin main` · อ่านคิว · **ความสดอ่านจากวันที่ footer "ข้อมูล ณ" ของแต่ละใบ** (ไม่ใช่ `reports.json.updated` — bulk freshHash ชนกันได้ 13 ใบ 9 ก.ย. 2569) · สด ≤7 วัน = ข้าม (ธีม/โควตา → หาตัวใหม่ · ระบุชื่อ → ข้ามพร้อมแจ้ง) · เกิน 7 วัน = UPDATE · ยังไม่มี = NEW · จากคิว price-flags → triage ตาม `tools/queue/triage.js` (PREPATCH = ราคาอย่างเดียว ไม่ส่ง LLM — `mos-sign-flip` ระยะ 1 ข้อ D / LIGHT / FULL / PLUMBING / REJECTED / DELIST)
 กันซ้ำข้าม session = push รายตัวผ่าน `npm run queue -- ship <SYM>` (pull --rebase มากับลำดับ push ของทุกตัวอยู่แล้ว)
 
+**`ship <SYM>` ตอน tree มีหลายใบค้าง (โหมดขนาน — worker เสร็จพร้อมกัน)** · แก้ 21 ก.ย. 2569:
+- `git pull --rebase` ล้มทันทีเมื่อ tree ไม่สะอาด ⇒ ใบที่ไม่ใช่ใบสุดท้ายจะ **commit แล้วเลื่อน push** (พิมพ์บอก · exit 0 ไม่ใช่ error) แล้วขึ้น origin พร้อมใบถัดไปที่ tree สะอาด — เป็นพฤติกรรมที่ตั้งใจ ไม่ใช่ของเสีย
+- สถานะ "push แล้ว" (`shippedAt`) **ถามจาก git** ไม่ใช่จำว่า "ship ตัวนี้ push เอง": `ship`/`status` เรียก `reconcile()` ที่เทียบ `committedSha` กับ `origin/main` (เป็น ancestor ไหม) แล้วตกมาเทียบ `committedSubject` ใน `git log origin/main --since=<วันของรอบ>` เมื่อ rebase เขียน sha ใหม่ ⇒ ใบที่ถูกใบสุดท้ายพา push ไปด้วยไม่ค้าง "รอ push" อีก
+- `ship <SYM>` ซ้ำบนใบที่ขึ้น origin แล้ว = **ปรับสถานะให้อย่างเดียว** (ข้าม `npm run verify` และข้ามประตู postcheck — ประตูนั้นเป็นของการเผยแพร่ ไม่ใช่ของการแก้สมุดบัญชี) · stage ว่างแยกสามทางแล้ว: `pushed` / `unpushed` (push ต่อ) / `unknown` (worker ยังไม่ได้เขียนจริง)
+- **trailer `Co-Authored-By` มาจากป้าย `<meta ai-model>` ในใบ** (รุ่นที่ worker รันจริง ประทับเอง) ไม่ใช่ `state.model` ซึ่งเป็นแค่ *แผน* ของ `prep` · `--model` ที่ขัดกับใบ = ล้ม ไม่เดาให้ · `postcheck` บันทึกรุ่นที่รันจริงจากใบทับแผนให้ด้วย
+
 ## 2. กลไก courier (ปรึกษา advisor แทน worker)
 
 > กติกาโมเดล/effort = CLAUDE.md §3.2 (ที่เดียว) — หัวข้อนี้มีแต่กลไก courier

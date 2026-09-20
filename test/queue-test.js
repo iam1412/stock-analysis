@@ -1200,6 +1200,108 @@ function testApplyEditsStdin(ok) {
 }
 const applyEditsRacePromise = testApplyEditsStdin(ok);
 
+// ── 19h) ship: "push แล้วหรือยัง" ต้องถามจาก git ไม่ใช่จำว่า "ฉัน push เอง" (บั๊ก 1 · รอบ 20 ก.ย. 69) ──
+//   เคสจริง: tree มีรายงานค้างหลายใบ ⇒ ship ใบแรก ๆ commit สำเร็จแต่ `git pull --rebase` ล้ม ("cannot pull with rebase:
+//   You have unstaged changes") ⇒ ไม่เคยบันทึก shippedAt · ใบสุดท้าย (tree สะอาด) push ให้ทั้งกอง ⇒ commit ขึ้น origin ครบ
+//   แต่ status ค้าง "รอ push" ถาวร และ ship ซ้ำตอบ "worker ยังไม่ได้เขียนไฟล์?" ซึ่งชี้ผิดทาง
+{
+  const Sh = require('../tools/queue/ship.js');
+  const SUBJ = 'analyze: update GNRC — UPDATE (MOS −16.5%)';
+
+  // landedOnOrigin — sha เป็น ancestor = จบ · ไม่ใช่ ancestor แต่ subject อยู่บน origin = ขึ้นไปแล้ว (rebase เขียน sha ใหม่)
+  ok(Sh.landedOnOrigin({ ancestor: true, originSubjects: '', subject: null }) === true, 'landedOnOrigin: sha เป็น ancestor ของ origin/main → ขึ้นไปแล้ว');
+  ok(Sh.landedOnOrigin({ ancestor: false, originSubjects: `chore: x\n${SUBJ}\nprice: y`, subject: SUBJ }) === true,
+    'landedOnOrigin: sha ไม่ใช่ ancestor (ship ใบถัดไป pull --rebase เขียน stack ใหม่) แต่ subject อยู่บน origin → ขึ้นไปแล้ว');
+  ok(Sh.landedOnOrigin({ ancestor: false, originSubjects: 'chore: x\nprice: y', subject: SUBJ }) === false, 'landedOnOrigin: ไม่เจอ subject บน origin → ยังไม่ขึ้น');
+  ok(Sh.landedOnOrigin({ ancestor: false, originSubjects: SUBJ, subject: null }) === false, 'landedOnOrigin: ไม่มี subject ให้เทียบ → ไม่เดา (false)');
+  ok(Sh.landedOnOrigin({ ancestor: false, originSubjects: 'ราคาเช้า 20 ก.ย.', subject: 'ราคาเช้า 20 ก.ย.' }) === true, 'landedOnOrigin: --message หัวข้ออิสระ เทียบตรงตัวอักษรได้ (ไม่ผูกกับรูป analyze: …)');
+
+  // shipPhaseOf — สามเฟสที่ stage ว่างแล้วต้องแยกออกจากกัน
+  const rec = { committedSha: 'abc123', committedSubject: SUBJ, committedAt: '2026-09-20', postcheck: 'pass' };
+  ok(Sh.shipPhaseOf('GNRC', rec, { ancestor: true, originSubjects: '', unpushed: '' }) === 'pushed', 'shipPhaseOf: ancestor → pushed');
+  ok(Sh.shipPhaseOf('GNRC', rec, { ancestor: false, originSubjects: SUBJ, unpushed: '' }) === 'pushed', 'shipPhaseOf: sha ถูก rebase เขียนใหม่ แต่ subject อยู่บน origin → pushed (ไม่ใช่ unknown)');
+  ok(Sh.shipPhaseOf('GNRC', rec, { ancestor: false, originSubjects: '', unpushed: SUBJ }) === 'unpushed', 'shipPhaseOf: commit อยู่ในเครื่อง ยังไม่ขึ้น origin → unpushed');
+  ok(Sh.shipPhaseOf('GNRC', rec, { ancestor: false, originSubjects: '', unpushed: '' }) === 'unknown', 'shipPhaseOf: ไม่เจอที่ไหนเลย → unknown (worker ยังไม่ได้เขียน / cwd-stray)');
+  // origin/main ในเครื่องเก่า (ไม่ fetch) = false negative ฝั่งปลอดภัย — ตอบ unpushed แล้ว push ซ้ำ ดีกว่าประทับว่า push แล้วทั้งที่ยังไม่
+  ok(Sh.shipPhaseOf('GNRC', rec, { ancestor: false, originSubjects: '', unpushed: `${SUBJ}\nchore: z` }) === 'unpushed', 'shipPhaseOf: origin/main ในเครื่องเก่า → unpushed (false negative ฝั่งปลอดภัย ไม่ใช่ pushed ปลอม)');
+  // แถวเก่าก่อนมี committedSubject (state ถูกล้าง/รุ่นก่อนแก้บั๊ก) — ยังกู้ได้ด้วยรูป commit มาตรฐาน
+  const legacy = { postcheck: 'pass', postcheckAt: '2026-09-20' };
+  ok(Sh.shipPhaseOf('GNRC', legacy, { ancestor: false, originSubjects: SUBJ, unpushed: '' }) === 'pushed', 'shipPhaseOf: แถวเก่าไม่มี committedSubject → ตกมาใช้รูป analyze: add|update <SYM> บน origin');
+  ok(Sh.shipPhaseOf('GNR', legacy, { ancestor: false, originSubjects: SUBJ, unpushed: '' }) === 'unknown', 'shipPhaseOf: แถวเก่า — \\b กัน prefix ชนกัน (GNR ≠ GNRC)');
+  ok(Sh.shipPhaseOf('GNRC', legacy, { ancestor: false, originSubjects: '', unpushed: SUBJ }) === 'unpushed', 'shipPhaseOf: แถวเก่าที่ commit ยังไม่ push → unpushed เหมือนเดิม (ของ pendingCommitFor)');
+  ok(Sh.shipPhaseOf('GNRC', {}, { ancestor: false, originSubjects: '', unpushed: '' }) === 'unknown', 'shipPhaseOf: แถวว่าง → unknown');
+  // ★ ขาสำรองที่หลวม (รูป analyze: …) ต้องมีหลักฐานว่ารอบนี้ทำงานจริงกำกับ ไม่งั้นกลายเป็นบั๊กเดิมแบบกลับด้าน:
+  //   `ship <SYM> --model X` ตอน state หาย (ทางที่ C1 ออกแบบไว้) จะไปเจอ commit ของการวิเคราะห์ครั้งก่อนบน origin
+  //   แล้วตอบ "ขึ้นไปแล้ว" + ปิด issue ทั้งที่ worker ยังไม่ได้เขียนไฟล์
+  ok(Sh.shipPhaseOf('GNRC', {}, { ancestor: false, originSubjects: SUBJ, unpushed: '' }) === 'unknown',
+    'shipPhaseOf: แถวว่าง (state หาย) + เจอ commit เก่าของหุ้นนี้บน origin → unknown ไม่ใช่ pushed (กันชี้ผิดทางแบบกลับด้าน)');
+  ok(Sh.shipPhaseOf('GNRC', { postcheck: 'pass' }, { ancestor: false, originSubjects: SUBJ, unpushed: '' }) === 'pushed',
+    'shipPhaseOf: แถวเก่าที่ postcheck ของรอบนี้ผ่านแล้ว → ขาสำรองทำงานตามเดิม');
+
+  // rowsToHeal — ปรับ **ทั้งกอง** เพราะใบสุดท้ายของกองเป็นคน push ให้ทุกใบ
+  const stocks = {
+    GNRC: { postcheck: 'pass', committedSubject: 'analyze: update GNRC — UPDATE' },        // commit อยู่บน origin แล้ว
+    PPG: { postcheck: 'pass', committedSha: 'deadbee' },                                    // เหมือนกัน
+    SSP: { postcheck: 'review', committedSubject: 'analyze: update SSP — UPDATE' },         // ship ด้วย --force ก็ต้อง heal
+    CHD: { postcheck: 'pass', shippedAt: '2026-09-20', committedSha: 'cafe' },              // บันทึกแล้ว — ไม่แตะซ้ำ
+    IDLE: { bucket: 'LIGHT', flaggedAt: '2026-09-20' },                                     // worker ยังไม่ได้ทำ — ห้าม heal
+    LOCAL: { postcheck: 'pass', committedSha: 'feed' },                                     // commit ยังไม่ขึ้น origin
+  };
+  const healed = Sh.rowsToHeal(stocks, (sym) => (['GNRC', 'PPG', 'SSP'].includes(sym) ? 'pushed' : sym === 'LOCAL' ? 'unpushed' : 'unknown'));
+  ok(healed.join(' ') === 'GNRC PPG SSP', 'rowsToHeal: ปรับทุกแถวที่ git ยืนยันว่าอยู่บน origin แล้ว (รวมใบที่ ship ด้วย --force)', healed.join(' '));
+  ok(!healed.includes('CHD') && !healed.includes('LOCAL'), 'rowsToHeal: ใบที่บันทึกแล้ว/ยังไม่ขึ้น origin ไม่ถูกแตะ', healed.join(' '));
+  ok(Sh.rowsToHeal({ IDLE: { bucket: 'LIGHT' } }, () => 'pushed').length === 0, 'rowsToHeal: แถวที่ไม่มีร่องรอยว่าทำงานจริง (ไม่มี postcheck/committed*) ไม่ heal แม้ subject จะไปชนกับของรอบก่อน');
+  ok(Sh.rowsToHeal(null, () => 'pushed').length === 0 && Sh.rowsToHeal({}, () => 'pushed').length === 0, 'rowsToHeal: state ว่าง → []');
+
+  // ฟิลด์ใหม่ต้องเป็น "ของรอบ" — flag ใหม่มาแล้วยังค้าง = ship รอบถัดไปคิดว่า commit เก่าคือของรอบนี้
+  const S6 = require('../tools/queue/state.js');
+  ok(['committedSha', 'committedSubject', 'committedAt'].every((f) => S6.ROUND_FIELDS.includes(f)), 'ROUND_FIELDS: committedSha/committedSubject/committedAt ถูกล้างเมื่อขึ้นรอบใหม่', S6.ROUND_FIELDS.join(' '));
+  const P6 = require('../tools/queue/preflight.js');
+  const again6 = P6.upsertRow({ bucket: 'LIGHT', flaggedAt: '2026-09-01', postcheck: 'pass', committedSha: 'abc', committedSubject: 'analyze: update X — UPDATE', committedAt: '2026-09-02', shippedAt: '2026-09-02' },
+    { symbol: 'X', reason: 'drift-gt-15pct', bucket: 'LIGHT', flaggedAt: '2026-09-20', oldPrice: 12, currency: 'USD', footerAge: 40, skip: null });
+  ok(!again6.committedSha && !again6.committedSubject && !again6.committedAt, 'upsertRow: flag ใหม่ → ล้าง committed* ของรอบก่อนด้วย', JSON.stringify(again6));
+}
+
+// ── 19i) ship: trailer Co-Authored-By ต้องมาจากป้าย <meta ai-model> ในใบ (บั๊ก 2 · รอบ 20 ก.ย. 69) ──
+//   `state.model` เป็นแค่ **แผน** ของ prep (`--model || หุ้นยาก?opus:sonnet`) ไม่มีใครเขียนทับเมื่อ controller เปลี่ยนใจตอน spawn
+//   ⇒ GNRC (แผน sonnet · รัน opus) ได้ trailer "Sonnet 5" · SSP (แผน opus · รัน sonnet) ได้ "Opus 5" — สลับกันพอดีโดยบังเอิญ
+{
+  const Sh = require('../tools/queue/ship.js');
+  const RM = require('../tools/report-meta.js');
+
+  ok(RM.readAiModel('<meta name="ai-model" content="Claude Opus 5">') === 'Claude Opus 5', 'readAiModel: อ่านป้ายในใบ');
+  ok(RM.readAiModel('<p>ไม่มีป้าย</p>') === null && RM.readAiModel('<meta name="ai-model" content="  ">') === null, 'readAiModel: ไม่มีป้าย/ว่าง → null');
+  ok(RM.parseAiModel('Claude Opus 4.8').key === 'opus' && RM.parseAiModel('Claude Opus 4.8').text === 'Claude Opus 4.8', 'parseAiModel: แยกตระกูลแต่เก็บข้อความรุ่นไว้ตรงตัว');
+  ok(RM.parseAiModel('Claude Sonnet') === null && RM.parseAiModel('') === null, 'parseAiModel: รูปไม่ครบ → null');
+
+  // เคส GNRC: ใบบอก Opus 5 · state บอก sonnet → ต้องได้ Opus และเตือนว่าไม่ตรงกัน
+  const gnrc = Sh.resolveTrailer('GNRC', 'Claude Opus 5', { model: 'sonnet' }, null);
+  ok(gnrc.key === 'opus' && gnrc.trailer === 'Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>', 'resolveTrailer: เคส GNRC — ใบ Opus ชนะแผน sonnet ของ prep', JSON.stringify(gnrc));
+  ok(/state บอกโมเดล "sonnet"/.test(gnrc.warn || '') && /Claude Opus 5/.test(gnrc.warn || ''), 'resolveTrailer: ไม่ตรงกับ state → เตือนให้เห็น ไม่เงียบ', String(gnrc.warn));
+  // เคส SSP: ใบบอก Sonnet 5 · state บอก opus (prep ตัดสินว่าหุ้นยาก) → ต้องได้ Sonnet
+  const ssp = Sh.resolveTrailer('SSP', 'Claude Sonnet 5', { model: 'opus' }, null);
+  ok(ssp.key === 'sonnet' && ssp.trailer === 'Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>', 'resolveTrailer: เคส SSP — ใบ Sonnet ชนะแผน opus ของ prep', JSON.stringify(ssp));
+  // รุ่นย่อยต้องลอกจากใบตรงตัว ไม่ใช่ MODEL_NAME (ไม่งั้นใบ 4.8 ได้ trailer 5)
+  ok(Sh.resolveTrailer('X', 'Claude Opus 4.8', { model: 'opus' }, null).trailer === 'Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>', 'resolveTrailer: ข้อความ trailer ลอกจากใบตรงตัว (Opus 4.8 ไม่กลายเป็น Opus 5)');
+  ok(Sh.resolveTrailer('X', 'Claude Sonnet 5', { model: 'sonnet' }, null).warn === null, 'resolveTrailer: ใบตรงกับ state → ไม่เตือน');
+  ok(Sh.resolveTrailer('X', 'Claude Opus 5', { model: 'sonnet' }, 'opus').key === 'opus', 'resolveTrailer: --model ตรงกับใบ → ผ่าน');
+
+  const thrown = (fn) => { try { fn(); return null; } catch (e) { return e.message; } };
+  const conflict = thrown(() => Sh.resolveTrailer('GNRC', 'Claude Opus 5', { model: 'sonnet' }, 'sonnet'));
+  ok(/--model sonnet ขัดกับป้ายในใบ/.test(conflict || '') && /Claude Opus 5/.test(conflict || ''), 'resolveTrailer: --model ขัดกับใบ → ล้ม ไม่เดาให้ (เดา = ทำบั๊กเดิมซ้ำ)', String(conflict));
+  const haiku = thrown(() => Sh.resolveTrailer('X', 'Claude Haiku 4.5', {}, null));
+  ok(/นอกกติกา/.test(haiku || ''), 'resolveTrailer: ใบประทับ Haiku → ล้ม (CLAUDE.md §3.2)', String(haiku));
+  const fable = thrown(() => Sh.resolveTrailer('X', 'Claude Fable 5.1', { model: 'sonnet' }, null));
+  ok(/นอกกติกา/.test(fable || ''), 'resolveTrailer: ตระกูลนอก sonnet/opus ไม่ถูกกลบด้วย state.model', String(fable));
+  const junk = thrown(() => Sh.resolveTrailer('X', 'Opus', { model: 'sonnet' }, null));
+  ok(/อ่านไม่ออก/.test(junk || ''), 'resolveTrailer: ป้ายรูปผิด → ล้มพร้อมบอกรูปที่ต้องการ (ไม่เงียบไปใช้ state)', String(junk));
+
+  // ไม่มีป้ายในใบเลย (ไฟล์หาย/ยังไม่เขียน) → ทางเดิม: --model > state.model · ไม่มีอะไรเลยก็ล้มข้อความเดิม
+  ok(Sh.resolveTrailer('X', null, { model: 'sonnet' }, null).trailer === Sh.trailer('sonnet'), 'resolveTrailer: ไม่มีป้ายในใบ → ใช้ state.model ตามเดิม');
+  ok(Sh.resolveTrailer('X', null, {}, 'opus').key === 'opus', 'resolveTrailer: ไม่มีป้ายในใบ แต่ใส่ --model → ผ่าน');
+  ok(/ไม่มี model ใน state/.test(thrown(() => Sh.resolveTrailer('X', null, {}, null)) || ''), 'resolveTrailer: ไม่มีทั้งป้ายและ model → ข้อความเดิมของ resolveModel');
+}
+
 // ─────────────────────────── (Task 10–14 แทรกเทสเหนือบรรทัดนี้) ───────────────────────────
 Promise.all([Promise.resolve(pending), applyEditsRacePromise])
   .catch((e) => { nFail++; console.error('✗ earnings-calendar-test/apply-edits-race ระเบิด (async) — ' + (e && e.message)); })

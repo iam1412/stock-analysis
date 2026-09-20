@@ -10,6 +10,7 @@ const path = require('path');
 const { run, ROOT } = require('./sh.js');
 const S = require('./state.js');
 const { footerDate, todayBangkok } = require('./footer-date.js');
+const { parseAiModel } = require('../report-meta.js');
 
 const REPORTS = path.join(ROOT, 'reports');
 const MODEL_RE = { sonnet: /sonnet/i, opus: /opus/i };
@@ -84,7 +85,14 @@ function postcheck(sym, opts) {
     issues.push(`manifest: ช่อง required อ่านไม่ได้ ${ctx.mf.missing.join(' ')} (W21 — worker เขียนโครงไม่ครบ)`);
 
   const verdict = issues.length ? 'review' : 'pass';
-  S.update(sym, { postcheck: verdict, postcheckAt: todayBangkok() });
+  // ★ บันทึก "โมเดลที่รันจริง" จากป้ายในใบทับแผนของ prep — `state.model` เดิมเป็นแค่แผน (`--model || หุ้นยาก?opus:sonnet`)
+  //   ที่ไม่มีใครเขียนทับเมื่อ controller เปลี่ยนใจตอน spawn ⇒ trailer ของ ship ผิดมาแล้ว (GNRC/SSP 20 ก.ย. 69)
+  //   ไม่บันทึกเมื่อ `--model` ที่สั่งมาขัดกับใบ — เคสนั้นขึ้นเป็น issue ให้คนตัดสินก่อน (ห้ามเลือกข้างเงียบ ๆ)
+  const ran = parseAiModel(ctx.aiModel);
+  const conflicted = !!(o.model && ran && o.model !== ran.key);
+  const modelPatch = ran && !conflicted && ran.key !== rec.model ? { model: ran.key } : {};
+  if (modelPatch.model) console.log(`ℹ บันทึกโมเดลที่รันจริงจากป้ายในใบ: ${rec.model || '-'} → ${ran.key} ("${ran.text}")`);
+  S.update(sym, { postcheck: verdict, postcheckAt: todayBangkok(), ...modelPatch });
   console.log(`\n=== postcheck ${sym}: ${verdict === 'pass' ? '✅ ผ่าน' : `⚠ ต้องดู ${issues.length} ข้อ`} ===`);
   for (const i of issues) console.log('  ✗ ' + i);
   for (const n of notes) console.log('  · ' + n);

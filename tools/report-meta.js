@@ -64,9 +64,26 @@ function readHeaderPrice(html) {
   return Number.isFinite(price) ? { currency: m[1], price, raw: m[2] } : null;
 }
 
+/** ป้าย <meta name="ai-model"> — โมเดลที่ worker ประทับว่า "รันจริง" (ground truth เดียวที่ไม่ใช่ *แผน* ของ prep)
+ *  ★ `test/check-reports.js` (ctx.aiModel ของ E28) มีสำเนา regex ของตัวเองอยู่ก่อนแล้ว — จงใจไม่แตะ เพราะการแก้ check
+ *    ผูกกฎ self-test (CLAUDE.md §8) · parser-lint คุมเฉพาะ stock-meta/report-data/.px ไม่รวมป้ายนี้
+ *  คืนสตริงตามที่ประทับไว้ (เช่น "Claude Opus 5") · ไม่มีป้าย/ว่าง → null */
+const AI_MODEL_RE = /<meta\s+name=["']ai-model["']\s+content=["']([^"']*)["']/i;
+function readAiModel(html) { const m = String(html).match(AI_MODEL_RE); return m && m[1].trim() ? m[1].trim() : null; }
+
+/** แยกป้าย ai-model → { key, text } (key = ตระกูลตัวเล็ก: 'opus' | 'sonnet' | 'haiku' | …) · รูปไม่ตรง/ไม่มี → null
+ *  รูปที่รับ = รูปเดียวกับที่ E28 บังคับ ("Claude <ตระกูล> <เวอร์ชัน>") — ตัวเลือกรุ่นอยู่ในข้อความ ไม่ใช่ใน key
+ *  (ใบที่ประทับ "Claude Opus 4.8" ต้องได้ trailer 4.8 ไม่ใช่ 5 ⇒ ผู้ใช้ค่านี้ต้องใช้ `text` ตรงตัว) */
+const AI_MODEL_FMT = /^Claude\s+([A-Za-z]+)\s+\d+(?:\.\d+)?$/;
+function parseAiModel(aiModel) {
+  const t = String(aiModel == null ? '' : aiModel).trim();
+  const m = AI_MODEL_FMT.exec(t);
+  return m ? { key: m[1].toLowerCase(), text: t } : null;
+}
+
 /** ตัดบล็อก stock-meta ออก (สำหรับ freshHash — บล็อกนี้เป็น "กระจก" ไม่ใช่เนื้อหา) */
 const stripStockMeta = (html) => String(html).replace(new RegExp('\\n?' + STOCK_META_RE.source, 'i'), '');
 
-module.exports = { readStockMeta, readStockMetaState, readReportData, readHeaderPrice, stripStockMeta,
+module.exports = { readStockMeta, readStockMetaState, readReportData, readHeaderPrice, readAiModel, parseAiModel, stripStockMeta,
   STOCK_META_RE, STOCK_META_PARTS_RE, REPORT_DATA_RE, REPORT_DATA_PARTS_RE, CUR_SRC, PX_RE, PX_PARTS_RE, PX_TOKEN_RE, RANGE52_RE,
-  MCUR_LABEL_RE, MCUR_LABEL_PARTS_RE, MCUR_TOKEN_RE, VERDICT_CLASS_RE };
+  MCUR_LABEL_RE, MCUR_LABEL_PARTS_RE, MCUR_TOKEN_RE, VERDICT_CLASS_RE, AI_MODEL_RE, AI_MODEL_FMT };
