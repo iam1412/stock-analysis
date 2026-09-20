@@ -7,14 +7,16 @@
  *               → build → verify → commit "price: …" → push · กันตัวที่ worker วิเคราะห์ใหม่แล้วโดนกวาดไปด้วย
  *               · รอบที่มีแต่ PREPATCH (flip ในย่าน — ระยะ 1 ข้อ D) ปิด issue ตรงนี้ด้วย เพราะไม่มี `ship <SYM>` ตามมา
  * ★ ไม่ทำแทน: ตัดสิน publish/skip (postcheck ต้อง pass หรือ --force หลังรีวิวเอง)
- * ★ โมเดลของรอบมาจาก state (ตอน prep) หรือ --model — ตรวจก่อนลงมือทุกครั้ง (ป้าย Co-Authored-By ต้องตรงกับที่รันจริง)
+ * ★ โมเดลของ trailer มาจาก **ป้าย `<meta ai-model>` ในใบ** (รุ่นที่ worker รันจริง) — `state.model`/`--model` เป็นแค่ตัวสำรอง
+ *   และเป็นตัวที่ทำ trailer ผิดมาแล้ว (บั๊ก 20 ก.ย. 69 — ดู resolveTrailer)
+ * ★ "push แล้วหรือยัง" ก็ถามจาก git เช่นกัน (`reconcile`) ไม่ใช่จำว่า "ฉัน push เอง" — ตัวสุดท้ายของกอง push ให้ทั้งกอง
  */
 const fs = require('fs');
 const path = require('path');
 const { run, must, ROOT } = require('./sh.js');
 const S = require('./state.js');
 const { todayBangkok, footerDate } = require('./footer-date.js');
-const { readStockMeta } = require('../report-meta.js');
+const { readStockMeta, readAiModel, parseAiModel } = require('../report-meta.js');
 
 const FLAGS = path.join(ROOT, 'price-flags.json');
 const TITLE = 'Price-refresh flags — หุ้นรอ re-analysis';   // ต้องตรงกับ update-prices.yml / dead-ticker-canary.yml
@@ -31,6 +33,34 @@ function resolveModel(sym, rec, override) {
   if (!MODEL_NAME[m]) throw new Error(`${sym}: โมเดล "${m}" ไม่รู้จัก (ใช้ sonnet|opus)`);
   return m;
 }
+/** โมเดล + ข้อความ trailer ที่จะใช้ commit (ส่วนบริสุทธิ์ — รับสตริง ai-model มาตรง ๆ ให้เทสยิงได้)
+ *  ★ ความจริงอยู่ที่ **ใบ**: `<meta ai-model>` คือรุ่นที่ worker รันจริงแล้วประทับเอง · `state.model` เป็นแค่ **แผน** ของ prep
+ *    (`--model || (หุ้นยาก ? opus : sonnet)`) ที่ไม่มีใครเขียนทับเมื่อ controller เปลี่ยนใจตอน spawn
+ *    ⇒ รอบ 20 ก.ย. 69: GNRC (แผน sonnet · รัน opus) ได้ trailer "Sonnet 5" · SSP (แผน opus · รัน sonnet) ได้ "Opus 5"
+ *      — ไม่ใช่การหยิบ record สลับกัน แต่เป็นสองความคลาดเคลื่อนคนละใบที่บังเอิญสลับกันพอดี
+ *  ลำดับความจริง: ใบ > --model > state.model
+ *  ★ `--model` ที่ขัดกับใบ = **ล้ม** ไม่เดาให้ (เดา = ทำบั๊กเดิมซ้ำ) · state ที่ขัดกับใบ = เตือนแล้วใช้ตามใบ
+ *  ★ ข้อความ trailer ลอกจากใบตรงตัว ไม่ใช่ MODEL_NAME[key] — ใบที่ประทับ "Claude Opus 4.8" ต้องไม่ได้ trailer "Opus 5" */
+function resolveTrailer(sym, aiModel, rec, override) {
+  const file = parseAiModel(aiModel);
+  if (aiModel && !file) throw new Error(`${sym}: ป้าย ai-model ในใบ ("${aiModel}") อ่านไม่ออก — ต้องเป็นรูป "Claude <ตระกูล> <เวอร์ชัน>" (E28) แก้ใบก่อน`);
+  if (!file) {   // ไม่มีป้ายในใบเลย (ไฟล์หาย/ยังไม่เขียน) — ทางเดิม: state/--model · gate จะฟ้อง E28 ต่อเองอยู่แล้ว
+    const key = resolveModel(sym, rec, override);
+    return { key, trailer: trailer(key), warn: null, source: override ? 'flag' : 'state' };
+  }
+  if (!MODEL_NAME[file.key]) throw new Error(`${sym}: ใบประทับ ai-model "${file.text}" — นอกกติกา §3.2 (Sonnet/Opus เท่านั้น) ตรวจว่า worker รันด้วยรุ่นอะไรจริงก่อน push`);
+  if (override && override !== file.key) throw new Error(`${sym}: --model ${override} ขัดกับป้ายในใบ "${file.text}" — ใบคือรุ่นที่รันจริง (worker ประทับเอง) · ถ้าป้ายในใบผิดให้แก้ใบ ไม่ใช่ push ด้วยป้ายที่ขัดกัน`);
+  const warn = rec && rec.model && rec.model !== file.key
+    ? `${sym}: state บอกโมเดล "${rec.model}" (แผนของ prep) แต่ใบประทับ "${file.text}" — ใช้ตามใบ แล้วอัปเดต state ให้`
+    : null;
+  return { key: file.key, trailer: `Co-Authored-By: ${file.text} <noreply@anthropic.com>`, warn, source: 'report' };
+}
+/** อ่านป้าย ai-model จากไฟล์รายงาน (ไม่มีไฟล์ = null — ให้ resolveTrailer ตกไปทางเดิม) */
+function reportAiModel(sym) {
+  const fp = path.join(ROOT, 'reports', sym + '.html');
+  return fs.existsSync(fp) ? readAiModel(fs.readFileSync(fp, 'utf8')) : null;
+}
+
 function commitMessage(sym, rec, sm) {
   const mode = (rec && rec.mode) || 'UPDATE';
   const mos = sm && Number.isFinite(sm.mos) ? ` (MOS ${sm.mos < 0 ? '−' : '+'}${Math.abs(sm.mos)}%)` : '';
@@ -69,6 +99,87 @@ function unpushedSubjects() {
   const om = run('git', ['log', 'origin/main..HEAD', '--format=%s']);
   return om.code === 0 ? om.out : run('git', ['log', '@{u}..HEAD', '--format=%s']).out;
 }
+/** แถวนี้ "ขึ้น origin/main แล้ว" ไหม — ส่วนบริสุทธิ์ (รับผลลัพธ์ git มาเป็น argument)
+ *  ★ sha อย่างเดียวไม่พอ: `ship` ใบถัดไปทำ `pull --rebase` = เขียน commit ใหม่ทั้ง stack (cron push ราคาทุกวัน ⇒ เกิดจริง)
+ *    ⇒ sha ที่บันทึกไว้จะไม่เป็น ancestor ของ origin/main ทั้งที่งานขึ้นไปแล้ว → ตกลงมาเทียบ **subject ตรงตัวอักษร**
+ *  ★ เทียบ subject เป๊ะ ๆ ไม่ใช่รูป `analyze: …` เพราะ `--message` ของผู้ใช้เขียนหัวข้อเป็นอะไรก็ได้ */
+function landedOnOrigin({ ancestor, originSubjects, subject }) {
+  if (ancestor) return true;
+  if (!subject) return false;
+  const want = String(subject).trim();
+  return String(originSubjects || '').split('\n').some((l) => l.trim() === want);
+}
+/** เฟสของงานหุ้นตัวนี้ในสายตา git (ส่วนบริสุทธิ์) — 'pushed' | 'unpushed' | 'unknown'
+ *  g = { ancestor, originSubjects, unpushed } ที่ caller ดึงมาให้ (`gitPhaseInputs`)
+ *  ★ แถวเก่าที่ไม่มี `committedSubject` (state ก่อนแก้บั๊ก / ถูกล้าง) ยังกู้ได้ด้วยรูป commit มาตรฐาน
+ *    `analyze: add|update <SYM>` — ปลอดภัยเพราะ caller จำกัด `--since` ไว้ที่วันของรอบนี้แล้ว */
+function shipPhaseOf(sym, rec, g) {
+  const subject = rec && rec.committedSubject;
+  const inp = g || {};
+  if (landedOnOrigin({ ancestor: inp.ancestor, originSubjects: inp.originSubjects, subject })) return 'pushed';
+  // ★ ขาสำรองนี้หลวม (รูป commit มาตรฐาน ไม่ใช่ subject เป๊ะ) ⇒ ต้องมี **หลักฐานว่ารอบนี้ทำงานจริง** (`postcheck`) กำกับ
+  //   ไม่งั้น `ship <SYM>` บนแถวว่าง (state หาย — ทางที่ C1 ออกแบบไว้ให้ใช้ `--model`) จะไปเจอ commit ของการวิเคราะห์
+  //   ครั้งก่อนบน origin แล้วตอบ "ขึ้นไปแล้ว" ทั้งที่ worker ยังไม่ได้เขียนไฟล์ = ชี้ผิดทางแบบกลับด้านของบั๊กเดิม
+  //   (`--since` ของ caller เป็นราย **วัน**: re-flag วันเดียวกันหลัง ship อาจชนกับ commit ก่อนหน้าได้ในทางทฤษฎี —
+  //    ไม่เกิดจริงกับ cron 04:00 น. และแถวใหม่ทุกแถวมี committedSubject ซึ่งมี MOS อยู่ในหัวข้อแล้ว)
+  if (!subject && rec && rec.postcheck && pendingCommitFor(sym, inp.originSubjects)) return 'pushed';
+  if (landedOnOrigin({ ancestor: false, originSubjects: inp.unpushed, subject })) return 'unpushed';
+  if (pendingCommitFor(sym, inp.unpushed)) return 'unpushed';
+  return 'unknown';
+}
+/** log ของ origin/main ที่จำกัดขอบเขตด้วยวันของรอบ (เวลาไทย — CLAUDE.md §7) */
+function originSubjectsSince(since) {
+  // ★ ไม่มีวันที่ของรอบ = ไม่สแกน origin เลย (คืน '') — สแกนแบบไม่จำกัดขอบเขตคือทางที่ทำให้ commit ของการวิเคราะห์
+  //   ครั้งก่อนถูกนับเป็นงานของรอบนี้ · แถวที่มี committedSha ยังตรวจด้วย ancestor ได้อยู่แล้วโดยไม่ต้องใช้ log
+  if (!since) return '';
+  const r = run('git', ['log', 'origin/main', '--format=%s', `--since=${since}T00:00:00+07:00`]);
+  return r.code === 0 ? r.out : '';
+}
+/** ★ ไม่ `git fetch`: origin/main ในเครื่องอาจเก่ากว่าจริง ⇒ ตอบ "ยังไม่ขึ้น" ได้ — เป็น false negative ฝั่งปลอดภัย
+ *  (แค่ยังไม่ปรับสถานะรอบนี้ ไม่ใช่ประทับว่า push แล้วทั้งที่ยังไม่ push) */
+function gitPhaseInputs(rec) {
+  const r = rec || {};
+  const sha = r.committedSha;
+  const since = r.committedAt || r.postcheckAt || r.prepAt || r.flaggedAt || null;
+  const ancestor = !!sha && run('git', ['merge-base', '--is-ancestor', sha, 'origin/main']).code === 0;
+  return { ancestor, originSubjects: ancestor ? '' : originSubjectsSince(since), unpushed: unpushedSubjects() };
+}
+/** แถวไหนควรถูกประทับ `shippedAt` (ส่วนบริสุทธิ์ — `phaseOf` เป็น callback ที่ถาม git)
+ *  เงื่อนไข: ยังไม่มี shippedAt · มีร่องรอยว่างานถูกทำจริง (committed* หรือ postcheck) · git ยืนยันว่าอยู่บน origin แล้ว */
+function rowsToHeal(stocks, phaseOf) {
+  return Object.entries(stocks || {})
+    .filter(([, r]) => r && !r.shippedAt && (r.committedSha || r.committedSubject || r.postcheck))
+    .filter(([sym, r]) => phaseOf(sym, r) === 'pushed')
+    .map(([sym]) => sym);
+}
+/** ปรับสถานะให้ตรงความจริงของ git — **ทั้งกอง** ไม่ใช่เฉพาะ sym ที่เพิ่ง ship
+ *  (บั๊ก 20 ก.ย. 69: tree มีหลายใบค้าง ⇒ ship ใบแรก ๆ commit ได้แต่ pull --rebase ล้ม ⇒ ไม่เคยบันทึก shippedAt
+ *   พอใบสุดท้าย tree สะอาดแล้ว push มันพาทั้งกองขึ้นไป แต่สมุดบัญชียังค้าง "รอ push" ถาวร) */
+function reconcile() {
+  const st = S.load();
+  const healed = rowsToHeal(st.stocks, (sym, rec) => shipPhaseOf(sym, rec, gitPhaseInputs(rec)));
+  if (!healed.length) return [];
+  const today = todayBangkok();
+  for (const sym of healed) st.stocks[sym].shippedAt = st.stocks[sym].committedAt || today;
+  S.save(st);
+  return healed;
+}
+/** ไฟล์ tracked ที่ยังค้างใน working tree — `git pull --rebase` ล้มทันทีถ้ามี ("cannot pull with rebase") */
+function dirtyTracked() {
+  return parsePorcelain(run('git', ['status', '--porcelain', '--untracked-files=no']).out).map((e) => e.path);
+}
+/** push ถ้า tree สะอาด · ไม่สะอาด = **เลื่อน** ไม่ใช่ error — worker หลายตัวเขียนเสร็จพร้อมกันคือโหมดปกติ (CLAUDE.md §3.3
+ *  verify/push รายแบตช์) · commit อยู่ในเครื่องแล้วและ state จำ committedSha ไว้แล้ว ⇒ ใบถัดไปที่ tree สะอาดพาขึ้นไปเอง
+ *  คืน true = push แล้ว · false = เลื่อน */
+function pushIfClean(sym) {
+  const dirty = dirtyTracked();
+  if (!dirty.length) { pushOrExplain(sym); return true; }
+  console.log(`ℹ commit ของ ${sym} เรียบร้อยแล้ว แต่ยัง **ไม่ push** — tree ยังมีไฟล์ค้าง ${dirty.length} รายการ: ${dirty.slice(0, 8).join(' ')}${dirty.length > 8 ? ' …' : ''}`);
+  console.log('  (git pull --rebase ล้มทันทีเมื่อ tree ไม่สะอาด — ไม่ใช่ของเสีย)');
+  console.log(`  ⇒ commit นี้จะขึ้น origin พร้อม ship ใบถัดไปที่ tree สะอาด · หรือเคลียร์ไฟล์ค้างแล้วรัน npm run queue -- ship ${sym} ซ้ำ (จะข้าม commit ไป push อย่างเดียว)`);
+  return false;
+}
+
 /** args ของ `git commit` ที่จำกัดขอบเขตด้วย pathspec (ส่วนบริสุทธิ์)
  *  ★ `git commit -m …` เปล่า ๆ commit **index ทั้งก้อน** ⇒ การลบรายงานที่ `git rm` ค้างไว้ (DELIST) หลุดเข้า commit
  *    "price: …"/"analyze: …" โดยไม่มี `tag-apply --prune` ไปด้วย → tags-test ตกบน main · ใส่ `--` + รายชื่อไฟล์กันไว้ */
@@ -100,32 +211,65 @@ function shipStock(sym, opts) {
   const o = opts || {};
   const st = S.load();
   const rec = st.stocks[sym] || {};
+
+  // 0) งานนี้ขึ้น origin ไปแล้วและไม่มีอะไรใหม่ในใบ ⇒ เหลือแค่ "บันทึกความจริง" — ห้ามเสีย npm run verify (นาที ๆ) ฟรี
+  //    และต้องไม่ติด postcheckGuard/--force ด้วย เพราะประตูนั้นเป็นประตูของการ *เผยแพร่* ไม่ใช่ของการแก้สมุดบัญชี
+  //    (ใบที่ ship ด้วย --force ไปแล้วจะมี postcheck:'review' ค้าง — ต้อง heal ได้โดยไม่ต้อง --force ซ้ำ)
+  const reportDirty = !!run('git', ['status', '--porcelain', '--', `reports/${sym}.html`]).out.trim();
+  if (!o.tags && !o.message && !reportDirty && shipPhaseOf(sym, rec, gitPhaseInputs(rec)) === 'pushed') {
+    const healed = reconcile();
+    console.log(`✅ ${sym} อยู่บน origin/main แล้ว${rec.committedSha ? ` (${rec.committedSha.slice(0, 9)})` : ' (ยืนยันจาก git log)'} — ไม่มีอะไรต้อง commit`);
+    console.log(healed.length ? `   ปรับสถานะให้ตรง git ${healed.length} ใบ: ${healed.join(' ')}` : '   สถานะตรงกับ git อยู่แล้ว');
+    closeIssueIfEmpty();
+    return;
+  }
+
   const guardErr = postcheckGuard(sym, rec, st.startedAt);
   if (guardErr && !o.force) throw new Error(guardErr);
-  const model = resolveModel(sym, rec, o.model);   // ก่อน verify/keepDates เสมอ — ล้มตรงนี้ราคาถูกที่สุด (C1)
+  // โมเดล/trailer ต้องตัดสินก่อน verify/keepDates เสมอ — ล้มตรงนี้ราคาถูกที่สุด (C1)
+  const tr = resolveTrailer(sym, reportAiModel(sym), rec, o.model);
+  if (tr.warn) console.log('⚠ ' + tr.warn);
   if (o.tags) must('node', ['tools/tag-apply.js', sym, ...o.tags.split(/\s+/).filter(Boolean)], 'tag-apply');
   verify();
   keepDates();
   const files = STOCK_FILES(sym).filter((f) => fs.existsSync(path.join(ROOT, f)));
   must('git', ['add', '--', ...files], 'git add');
   if (run('git', ['diff', '--cached', '--quiet']).code === 0) {
-    // stage ว่างมีสองสาเหตุ แยกให้ออก: commit ไปแล้วแต่ push ล้ม (รันซ้ำ = push ต่อ) vs worker ไม่ได้เขียนไฟล์จริง
-    if (pendingCommitFor(sym, unpushedSubjects())) {
-      console.log(`ℹ commit ของ ${sym} มีอยู่แล้ว (ยังไม่ push) — push ต่อ`);
-      pushOrExplain(sym);
-      S.update(sym, { shippedAt: todayBangkok() });
-      console.log(`✅ ${sym} push แล้ว (commit เดิม)`);
+    // stage ว่างมีสามสาเหตุ แยกให้ออก (เดิมรวบเป็น "worker ยังไม่ได้เขียนไฟล์" ทางเดียว = ชี้ผิดทาง):
+    //   pushed  = commit ไปแล้วและขึ้น origin แล้ว (ใบอื่นของกองพาขึ้นไป) → แค่บันทึกสถานะ
+    //   unpushed = commit ไปแล้วแต่ยังไม่ขึ้น origin → push ต่อ
+    //   unknown  = ไม่พบ commit ที่ไหนเลย → worker ยังไม่ได้เขียนจริง ๆ (หรือ cwd-stray)
+    const phase = shipPhaseOf(sym, rec, gitPhaseInputs(rec));
+    if (phase === 'pushed') {
+      const healed = reconcile();
+      console.log(`✅ ${sym} อยู่บน origin/main แล้ว — ไม่มีอะไรต้อง commit${healed.length ? ` · ปรับสถานะ ${healed.length} ใบ: ${healed.join(' ')}` : ''}`);
       closeIssueIfEmpty();
       return;
     }
-    throw new Error(`ไม่มีอะไรให้ commit — worker ยังไม่ได้เขียน reports/${sym}.html? (เช็ค cwd-stray)`);
+    if (phase === 'unpushed') {
+      console.log(`ℹ commit ของ ${sym} มีอยู่แล้ว (ยังไม่ push) — push ต่อ`);
+      if (!pushIfClean(sym)) return;
+      S.update(sym, { shippedAt: todayBangkok() });
+      const healed = reconcile();
+      console.log(`✅ ${sym} push แล้ว (commit เดิม)${healed.length ? ` · พาใบที่ค้างขึ้นด้วย: ${healed.join(' ')}` : ''}`);
+      closeIssueIfEmpty();
+      return;
+    }
+    throw new Error(`${sym}: ไม่มีอะไรให้ commit และไม่พบ commit ของหุ้นนี้ทั้งในเครื่องและบน origin/main\n`
+      + `  · worker ยังไม่ได้เขียน reports/${sym}.html? (เช็ค cwd-stray — STEP 0)\n`
+      + `  · หรือใบนี้ถูก push ไปนานแล้วนอกขอบเขตรอบนี้ — ตรวจด้วย: git log origin/main --oneline -- reports/${sym}.html`);
   }
   const sm = readStockMeta(fs.readFileSync(path.join(ROOT, 'reports', sym + '.html'), 'utf8'));
   const msg = o.message || commitMessage(sym, rec, sm);
-  must('git', commitArgs(`${msg}\n\n${trailer(model)}`, files), 'git commit');
-  pushOrExplain(sym);
+  must('git', commitArgs(`${msg}\n\n${tr.trailer}`, files), 'git commit');
+  // ★ บันทึกทันทีหลัง commit **ก่อน** push — push ล้ม/ถูกเลื่อน แล้วสมุดบัญชีต้องยังรู้ว่า commit นี้มีอยู่จริง
+  //   (นี่คือหลักฐานที่ `reconcile()` ใช้ตามหาใบบน origin ภายหลัง แม้ rebase จะเขียน sha ใหม่ก็ยังเหลือ subject)
+  S.update(sym, { committedSha: run('git', ['rev-parse', 'HEAD']).out.trim() || null, committedSubject: msg, committedAt: todayBangkok(), model: tr.key });
+  if (!pushIfClean(sym)) return;
   S.update(sym, { shippedAt: todayBangkok() });
+  const healed = reconcile();
   console.log(`✅ ${sym} push แล้ว: ${msg}`);
+  if (healed.length) console.log(`   push นี้พาใบที่ค้างขึ้น origin ด้วย ${healed.length}: ${healed.join(' ')}`);
   closeIssueIfEmpty();
 }
 
@@ -233,6 +377,10 @@ function closeIssueIfNoLlmRows(stocks, close, startedAt) {
  *  ★ PREPATCH (flip ในย่าน — ระยะ 1 ข้อ D) มีบรรทัดของตัวเอง: ไม่ใช่ "ยังไม่เริ่ม" (ไม่มี worker ให้รอ) และไม่ใช่ "ไม่ใช้ agent/ข้าม"
  *    (มันมีงานจริงคือ pre-patch + ship --prepatch) · ยกเว้นใบที่ gate ตกหลัง pre-patch — อันนั้นต้องคงป้ายเหตุผลไว้ที่ "ไม่ใช้ agent/ข้าม" */
 function status() {
+  // ★ ถามความจริงจาก git ก่อนพิมพ์ — "รอ push" ที่ค้างเพราะใบอื่นเป็นคน push ให้ ต้องหายเองตรงนี้ (บั๊ก 20 ก.ย. 69)
+  //   เขียน state จริง (ไม่ใช่แค่แสดงผล) เพราะ `closeIssueIfNoLlmRows` อ่าน `!r.shippedAt` ไปตัดสินปิด issue ด้วย
+  const healed = reconcile();
+  if (healed.length) console.log(`ℹ ปรับสถานะตาม git: ${healed.length} ใบอยู่บน origin/main แล้ว → ${healed.join(' ')}`);
   const s = S.load();
   const rows = Object.entries(s.stocks).filter(([, r]) => S.inRound(r, s.startedAt));   // (Task 21) แถวรอบเก่าไม่ใช่งานของรอบนี้
   // ★ (รีวิว C) แถวที่ค้างจาก**รอบก่อน** ไม่ได้อยู่ใน X/Y และไม่บล็อกการปิด issue — ถ้าไม่พิมพ์ก็หายเงียบไปเลย
@@ -265,4 +413,5 @@ function status() {
   if (stale.length) console.log(`ค้างจากรอบก่อน — ยังไม่นับเป็น flag ใหม่ของรอบนี้ (${stale.length}): ${stale.join(' ')}`);
 }
 
-module.exports = { shipStock, shipPrepatch, status, commitMessage, commitArgs, trailer, resolveModel, closeIssueIfEmpty, closeIssueIfNoLlmRows, prepatchBlockers, prepatchCandidates, parsePorcelain, pendingCommitFor, postcheckGuard, STOCK_FILES, TITLE };
+module.exports = { shipStock, shipPrepatch, status, commitMessage, commitArgs, trailer, resolveModel, resolveTrailer, reportAiModel,
+  landedOnOrigin, shipPhaseOf, rowsToHeal, reconcile, dirtyTracked, pushIfClean, closeIssueIfEmpty, closeIssueIfNoLlmRows, prepatchBlockers, prepatchCandidates, parsePorcelain, pendingCommitFor, postcheckGuard, STOCK_FILES, TITLE };

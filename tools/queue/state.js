@@ -8,7 +8,10 @@
  *                 · mode, model, effort, prepAt, escalated, epsScreen, snapDeltas  ← prep (`escalated` ที่นี่ = **boolean** ของ EPS screen)
  *                 · fyYears                                                        ← prep (Task 24 · #7 GABLE — จำนวน FY ที่มี EPS(dil) จริงในตาราง [3] · postcheck เทียบกับ f55)
  *                 · postcheck: 'pass'|'review', postcheckAt                        ← postcheck
+ *                 · committedSha, committedSubject, committedAt                    ← ship <SYM> ทันทีหลัง `git commit` (ก่อน push — push ล้มก็ยังมีหลักฐาน)
  *                 · shippedAt | prepatchShippedAt }                                ← ship <SYM> / ship --prepatch
+ * ★ `shippedAt` ไม่ได้แปลว่า "ship ตัวนี้ push เอง" อีกต่อไป — มันคือ "commit ของหุ้นนี้อยู่บน origin/main แล้ว" ที่
+ *   `reconcile()` ใน ship.js ยืนยันกับ git จริง ๆ (ตัวสุดท้ายของกองมักเป็นคน push ให้ทั้งกอง)
  * ★ `escalated` ของ triage (สตริง `'age'`|`'earnings'` = ยก PREPATCH→LIGHT) และ `synthetic` (แถวคิวอายุ) เป็นของ **แถวในรอบนั้น
  *   ไม่ถูกบันทึกลงไฟล์นี้** — ชื่อชนกับ `escalated` ของ prep แต่คนละความหมาย
  * env QUEUE_DIR = override โฟลเดอร์ (เทสใช้)
@@ -46,7 +49,8 @@ function save(s) {
  *  รายการบังคับจากรีวิว: shippedAt/postcheck/postcheckAt/prepAt/prePatchRejected/prepatchShippedAt/mode/model
  *  + `prePatched` ที่เพิ่มเอง — `prep.js` อ่านค่านี้ไปบอก worker ว่า "ราคา patch มาแล้ว" ค้าง = สั่งงาน worker ผิด
  *  (`escalated`/`effort`/`epsScreen`/`snapDeltas` ไม่ล้าง — เป็นข้อมูลประกอบ ไม่มีใครอ่านไปตัดสินใจ และ prep เขียนทับทุกครั้ง) */
-const ROUND_FIELDS = ['shippedAt', 'postcheck', 'postcheckAt', 'prepAt', 'prePatchRejected', 'prepatchShippedAt', 'mode', 'model', 'prePatched'];
+const ROUND_FIELDS = ['shippedAt', 'postcheck', 'postcheckAt', 'prepAt', 'prePatchRejected', 'prepatchShippedAt', 'mode', 'model', 'prePatched',
+  'committedSha', 'committedSubject', 'committedAt'];
 /** แถวนี้เป็นของรอบปัจจุบันไหม — ใช้กรองก่อนนับ/ก่อนปิด issue (แถวรอบเก่าไม่ใช่งานของรอบนี้)
  *  ★ ไม่มี `startedAt` (state เก่า/เทส) หรือแถวไม่มี `flaggedAt` = นับด้วยเสมอ — กันของเดิมหายเงียบ */
 const inRound = (rec, startedAt) => !startedAt || !rec || !rec.flaggedAt || rec.flaggedAt >= startedAt;
