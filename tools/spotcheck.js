@@ -56,6 +56,8 @@ function spotcheck(html, name, deep) {
   for (const m of c.methods || []) {
     if (m.val == null || !m.val) continue;
     if (DV.deadAnchor(m.desc)) continue;                    // W18 จับแล้ว
+    // W25 (สมอตายฝั่ง forward) จับแล้วเช่นกัน — ขาที่ gate ตัดสินได้ ไม่ต้องมาอยู่ในรายการ "ให้คนไล่อ่าน" ซ้ำ
+    if (DV.fwdDeadAnchor(m.desc, m.val, c.baseEPS, DV.DA_ANCHORED.test(m.desc))) continue;
     const d = (m.val - px) / px;
     if (Math.abs(d) <= NEAR_PRICE)
       out.push(`สมอตาย? ขา "${m.name}" = ${m.val} ห่างราคา ${(d * 100).toFixed(1)}% — อ่าน mdesc ว่าตัวคูณมาจากไหน: ${(m.desc || '').slice(0, 110)}`);

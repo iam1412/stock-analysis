@@ -1042,6 +1042,80 @@ function deadAnchor(desc) {
   return Math.abs(gap) <= DA_GAP ? { target, current, gap: gap * 100 } : null;
 }
 
+// ── สมอตายฝั่ง forward (dead anchor, forward basis) — W25 · CLAUDE.md §8 ชั้น 0.4e ──────
+// จุดบอดของ W18 ที่พิสูจน์ด้วยเคสจริง (GNRC ก่อนแก้ 20 ก.ย. 69 · commit 8b65787d):
+//   "EPS fwd $9.90 (implied จาก StockAnalysis forward multiple ~21.8 เท่า) × P/E 21x" ราคา $207.44
+//   ⇒ ขานี้คืนราคาตลาดกลับมา (mval $208 ห่างราคา 0.3%) แต่ **W18 เงียบสนิท** เพราะ:
+//     1) ไม่มีคำว่า "เป้าหมาย/target" → `DA_TGT_*` อ่านตัวคูณเป้าไม่เจอ
+//     2) ไม่มีคำว่า "ปัจจุบัน/current" → `DA_CUR` อ่านตัวคูณปัจจุบันไม่เจอ
+//     3) ตัวคูณปัจจุบันที่ W18 จะเทียบคือฐาน **GAAP TTM** (47.6x) ซึ่งห่างจาก 21x คนละโลก
+//   ⇒ gate ผ่าน 48/48 เงียบ ใบอยู่บนเว็บ 39 วัน (วัดจริง — ดู docs/quality-gate.md §0.4e)
+//
+// ★ ต่างจาก W18 สองจุด แต่ **หลักการเดียวกัน** (ตัวคูณ vs ตัวคูณ ทั้งคู่เป็นข้อความคงที่ใน mdesc
+//   ⇒ ไม่แตะราคาเลย ⇒ cron ขยับราคาแล้วผลไม่กระพริบ · ยืนยันแล้ว: ไม่มี mdesc ใบไหนใน 908 ใบ
+//   มี token {{rd:…}} อยู่ข้างใน จึงไม่มีทางที่ตัวเลขในนี้จะ render ตามราคา):
+//     (ก) อ่าน "ตัวคูณเป้า" แบบ **โครงสร้าง ไม่ใช่คำ** — N ที่พิมพ์ไว้ และมีฐาน E ที่ E × N = mval
+//         (±0.5% เท่านั้น — หลวมกว่านี้จะจับคู่มั่ว: วัดแล้วที่ ±2% ได้ NI/SSNC เป็น false positive
+//          เพราะไปหยิบตัวเลขคนละตัวในบรรทัดมาคูณกันแล้วบังเอิญใกล้ mval)
+//     (ข) "ตัวคูณปัจจุบัน" ขยายจาก spot ล้วน ๆ ไปถึงฐาน **forward/NTM/TTM/implied** — ทั้งหมดนี้คือ
+//         ตัวคูณที่คิดจากราคาวันนี้ทั้งสิ้น (ราคา ÷ EPS ฐานใดฐานหนึ่ง) ⇒ ลอกมาเป็นเป้า = สมอตายเหมือนกัน
+//         ★ ไม่รวม `FY####` / ตัวคูณของปีงบ — นั่นคือตัวคูณ *ประวัติ* ที่วัดจริง ไม่ใช่ของวันนี้
+//           (ตัดแล้ว false positive หายไป 6 ใบ: BALL/BRK-B/EXPE/ILMN/OHTL/TFM)
+const FWD_GAP = 0.07;          // เกณฑ์เดียวกับ DA_GAP — ตัวคูณเป้าห่างตัวคูณที่คิดจากราคา ≤7% = ลอกมา
+const FWD_MVAL_TOL = 0.005;    // E × N ต้องได้ mval แทบเป๊ะ จึงจะเชื่อว่านี่คือสูตรของขานั้นจริง
+const FWD_NUMX = '([0-9]+(?:\\.[0-9]+)?)\\s*(?:x\\b|เท่า)';
+const FWD_MULT = new RegExp('(?:~|≈)?\\s*' + FWD_NUMX, 'ig');
+const FWD_SPOT = new RegExp('(?:forward|fwd|NTM|TTM|implied|ปัจจุบัน|current|วันนี้|spot|ล่าสุด)[^0-9]{0,34}?(?:~|≈)?\\s*' + FWD_NUMX, 'ig');
+const FWD_MONEY = /[$฿]\s*([0-9,]+(?:\.[0-9]+)?)/g;
+// ตัวคูณที่มีคำบอกว่าเป็น "ของเมื่อก่อน" — MTD: "ประวัติ P/E fair ~32–35x (ก่อนปี 2022 ซื้อขายที่ >35x)"
+const FWD_HIST = /ก่อนปี|ประวัติ|เคย|อดีต|historical|ย้อนหลัง/i;
+// ตัวคูณที่ *คำนวณจากสูตร* (justified P/BV = (ROE−g)/(r−g)) = มีที่มาจริง ไม่ใช่ลอกจากตลาด (เคส KYCCF)
+const FWD_FORMULA = /justified|P\/BV\s*เหมาะสม\s*=|=\s*\(\s*ROE|\(ROE[^)]*-\s*g/i;
+// ★ คำสารภาพว่า **ตัวตั้ง (EPS ฐาน)** ถูกถอดมาจากราคา ÷ ตัวคูณ — "คลาสที่ 5" ตาม memory price-derived-staleness
+//   ต้องมี "จาก/from" เสมอ: "implied multiple ปัจจุบัน 19.6x" (FR) พูดถึงตัวคูณ ไม่ใช่ที่มาของ EPS
+const FWD_PROV = /(?:market-)?implied\s*(?:จาก|from)|ถอด(?:ได้)?จาก|derived from|ย้อนจาก|คำนวณกลับจาก|=\s*ราคา\s*÷/i;
+
+// desc + mval (+ baseEps ของใบ) → { target, base, spot, gap } เมื่อเป็นสมอตายฝั่ง forward · null เมื่อไม่ใช่/ตัดสินไม่ได้
+// **เงียบเมื่อ parse ไม่ได้** ตามแบบ W18/E21 — อ่านไม่ครบ = ไม่ฟ้อง
+function fwdDeadAnchor(desc, mval, baseEps, anchored) {
+  const d = String(desc || '');
+  // ★ คำสมอจริง (peer/กลุ่ม/sector/มัธยฐาน) พูดถึงที่มาของ **ตัวคูณ** — ไม่ได้ไถ่ถอน **EPS ฐาน** ที่ถอดมาจากราคา
+  //   ⇒ มีคำสารภาพ provenance เมื่อไหร่ ให้ข้ามการยกเว้นนั้น (เคส XEL: "market-implied จาก Forward P/E
+  //   18.75x ≈ $4.25 × P/E เป้าหมาย ~19.5x (กรอบ utility sector 18–21x)" — EPS = ราคา÷18.75 ⇒ FV = 1.04 × ราคา)
+  if (!d || !(mval > 0) || FWD_FORMULA.test(d) || (anchored && !FWD_PROV.test(d))) return null;
+  const bases = [];
+  if (baseEps > 0) bases.push(baseEps);          // EPS ฐานของหมวด 6 (values.baseEps) — เคส GNRC ที่วงเล็บยาวจนจับคู่ในบรรทัดไม่ได้
+  let m;
+  FWD_MONEY.lastIndex = 0;
+  while ((m = FWD_MONEY.exec(d))) { const v = parseFloat(m[1].replace(/,/g, '')); if (v > 0) bases.push(v); }
+  if (!bases.length) return null;
+  const tgts = [];
+  FWD_MULT.lastIndex = 0;
+  while ((m = FWD_MULT.exec(d))) {
+    const n = parseFloat(m[1]);
+    if (!(n > 0)) continue;
+    const e = bases.find((b) => Math.abs(b * n - mval) / mval <= FWD_MVAL_TOL);
+    if (e) tgts.push({ n, e });
+  }
+  if (!tgts.length) return null;                 // อ่านสูตรของขานี้ไม่ออก → ไม่เดา
+  const spots = [];
+  FWD_SPOT.lastIndex = 0;
+  while ((m = FWD_SPOT.exec(d))) {
+    const n = parseFloat(m[1]);
+    if (!(n > 0)) continue;
+    if (FWD_HIST.test(d.slice(Math.max(0, m.index - 28), m.index))) continue;
+    spots.push(n);
+  }
+  let best = null;
+  for (const t of tgts) for (const s of spots) {
+    if (Math.abs(t.n - s) < 1e-9) continue;      // ตัวเลขตัวเดียวกันถูกอ่านสองรอบ ไม่ใช่การเทียบ
+    const gap = (t.n - s) / s;
+    if (Math.abs(gap) <= FWD_GAP && (!best || Math.abs(gap) < Math.abs(best.gap)))
+      best = { target: t.n, base: t.e, spot: s, gap: gap * 100 };
+  }
+  return best;
+}
+
 module.exports = {
   TOL_PE_REL, TOL_PE_ABS, TOL_TGT_PP, TOL_MCAP_REL, MCAP_ULP, MCAP_BAND,
   PE_LABEL_SKIP, TGT_LABEL_STRICT, PCT_NOT_VS_PRICE, QUOTE_CONTEXT, MONEY_PCT_SRC, CARD_SRC,
@@ -1054,6 +1128,8 @@ module.exports = {
   SCN_COL_OPEN, SCN_PERYEAR_AFTER, scenarioColumns, scenarioBlock, scenarioPlan, retTokens, retOff, pyOff, retWrite, retShown,
   // สมอตายวนกลับ — W18 + tools/spotcheck.js
   DA_GAP, DA_ANCHORED, deadAnchor,
+  // สมอตายฝั่ง forward — W25 (จุดบอดของ W18 · เคส GNRC 20 ก.ย. 69)
+  FWD_GAP, FWD_MVAL_TOL, FWD_SPOT, FWD_PROV, fwdDeadAnchor,
   // ปันผล % + P/BV — W19/W20 + ตัวซ่อม
   DENOM_BAND, TOL_DENOM_REL, DENOM_MIN_PREC, YIELD_LABEL, PBV_LABEL, currencyOf, denomTokens, assignBases, denomOff,
   yieldCardPlan, pbvCardPlan, yieldMetaPlan, yieldPlan, pbvPlan,
