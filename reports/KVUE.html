@@ -17,42 +17,42 @@
 <title>วิเคราะห์หุ้น Kenvue (KVUE) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"KVUE","currency":"USD","price":17.81,"fairValue":20,"mos":11,"upside":12.3,"pe":21,"dividendYield":4.65,"roe":13}
+{"symbol":"KVUE","currency":"USD","price":17.81,"fairValue":20.04,"mos":11.1,"upside":12.5,"pe":21,"dividendYield":4.72,"roe":15.6}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 20,
+  "fv": 20.04,
   "values": {
     "px": 17.81,
     "priceDate": "2026-09-18",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
-    "fvLow": 18.7,
-    "fvHigh": 21.53,
+    "fvLow": 17.3,
+    "fvHigh": 22.78,
     "eps": 0.85,
     "shares": 1920000000,
-    "dps": 0.828,
+    "dps": 0.84,
     "bvps": 6.46,
     "baseEps": 0.85,
     "scenarios": [
       {
-        "tgt": 15.61,
-        "div": 2.51
+        "tgt": 13.11,
+        "div": 2.52
       },
       {
-        "tgt": 28.42,
-        "div": 2.56
+        "tgt": 25.86,
+        "div": 2.57
       },
       {
-        "tgt": 36.55,
-        "div": 2.58
+        "tgt": 33.95,
+        "div": 2.62
       }
     ],
     "scnBasis": {
       "years": 3,
-      "divIncluded": false,
-      "perYear": null
+      "divIncluded": true,
+      "perYear": "cagr"
     }
   },
   "theme": {
@@ -117,7 +117,7 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ $14.02–$22.87<br>
+        กรอบ 52 สัปดาห์ $14.02–$20.13<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, Google Finance
       </div>
     </div>
@@ -129,17 +129,17 @@
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">หุ้น ~1.92B</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM $0.85 (GAAP)</div></div>
-      <div class="metric"><div class="k">Forward P/E</div><div class="v">~14.6x</div><div class="d">EPS FY2026E ~$1.22</div></div>
+      <div class="metric"><div class="k">Forward P/E</div><div class="v">~15.1x</div><div class="d">EPS FY2026E ~$1.18 (SA)</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~2.8x</div><div class="d">BVPS ~$6.46 (หลัง spin-off)</div></div>
 
-      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">~$1.63B</div><div class="d">GAAP EPS $0.85 · อยู่ระหว่าง restructure</div></div>
-      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$0.85</div><div class="d">FY2026E ~$1.22 (forward consensus)</div></div>
+      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">~$1.66B</div><div class="d">GAAP EPS $0.85 · อยู่ระหว่าง restructure</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$0.85</div><div class="d">FY2026E ~$1.18 (forward consensus)</div></div>
       <div class="metric"><div class="k">BVPS</div><div class="v">~$6.46</div><div class="d">Total equity ~$12.4B</div></div>
-      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~13% / ~4%</div><div class="d">กดด้วย goodwill จาก JNJ spinoff</div></div>
+      <div class="metric"><div class="k">ROE</div><div class="v pos">~15.6%</div><div class="d">ROE TTM · กดด้วย goodwill จาก JNJ spinoff</div></div>
 
-      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~$15.0B</div><div class="d">ทรงตัว — ปรับพอร์ตหลัง spin-off</div></div>
-      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~52%</div><div class="d">แบรนด์ consumer premium</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~4.65%</div><div class="d">$0.828/หุ้น/ปี · จ่ายสม่ำเสมอ</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~$15.4B</div><div class="d">ทรงตัว — ปรับพอร์ตหลัง spin-off</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~58%</div><div class="d">แบรนด์ consumer premium</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~4.72%</div><div class="d">$0.84/หุ้น/ปี · จ่ายสม่ำเสมอ</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">~0.49</div><div class="d">defensive consumer staples</div></div>
     </div>
   </section>
@@ -157,33 +157,30 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        KVUE ผ่านปีที่ผันผวนหนักตั้งแต่ spin-off จาก J&amp;J ปี 2566 หุ้นเปิดจาก $21.44 (ก.ค. 2568) แล้วร่วงแรงไปแตะจุดต่ำสุดที่ ~$14.37 (ต.ค. 2568) ตามข้อกังวลเรื่อง margin compression และดอกเบี้ยสูงกดหุ้น yield จากนั้นฟื้นตัวมาที่ $19+ ในช่วง ม.ค.–ก.พ. 2569 เมื่อ FY2025 ออกมาดีกว่าคาด ก่อนย่อตัวอีกครั้งช่วง มี.ค.–พ.ค. 2569 ปัจจุบัน $19.20 ต่ำกว่าจุดเริ่มต้น 1 ปีที่ $21.44 → ผลตอบแทนรอบปี −10.4% แต่ yield ปันผล 4.38% ช่วยชดเชยส่วนหนึ่ง
+        ตามกราฟรายเดือน KVUE แตะจุดต่ำสุดราว $14.37 ในช่วง ต.ค. 2568 แล้วดีดกลับเหนือ $17 ใน พ.ย. 2568 และแกว่งในกรอบ $17–19 ตลอด 2569 (สูงสุดรายเดือน ~$19.24 เดือน ก.ค.) · ราคาปลายกราฟ {{rd:px}} · ตามข้อมูล StockAnalysis (ณ 18 ก.ย. 2569) Kimberly-Clark เสนอซื้อกิจการ Kenvue มูลค่ารวม ~$40B รอการอนุมัติจากหน่วยงานกำกับดูแล (ออสเตรเลียอนุมัติแล้วมีเงื่อนไขขายแบรนด์ Carefree/Stayfree · EU อยู่ระหว่างพิจารณา) ราคาหุ้นจึงมีแรงยึดจากดีลนี้ ไม่ได้ขึ้นกับพื้นฐานเดี่ยว ๆ อย่างเดียว · ไม่ได้ตรวจเงื่อนไขต่อหุ้นของดีลจากแหล่งปฐมภูมิ
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation (TTM)</div><div class="mdesc">EPS adj. $0.85 × P/E เป้าหมาย ~22x — consumer health แบรนด์ premium ค่าเฉลี่ยเพื่อน ~20–24x · ใช้ 22x เป็นกลาง</div></div>
-        <div class="mval">$18.70</div>
+        <div><div class="mname">1. P/E Valuation (TTM)</div><div class="mdesc">EPS $0.85 (GAAP TTM) × P/E 26.8x — มัธยฐานย้อนหลังของ KVUE เอง (3 จุด: FY2023 24.4x · FY2025 26.8x · FY2024 38.6x ราคาเฉลี่ยงวด ÷ EPS) ที่มาจากประวัติ ไม่ใช่จาก P/E ปัจจุบัน · หมายเหตุ EPS ปี 2024 ต่ำจาก restructuring ทำมัธยฐานสูงกว่าปกติ</div></div>
+        <div class="mval">$22.78</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล $0.828 × (1+4%) = $0.861; g 4%, r 8% → DDM = $0.861 / (0.08−0.04) — สะท้อน FCF แข็งแกร่ง</div></div>
-        <div class="mval">$21.53</div>
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล $0.84 × (1+3%) = $0.865; g 3%, r 8% (สมมติฐานของเราเอง) → DDM = $0.865 / (0.08−0.03) — FCF TTM ~$1.9B ครอบคลุมปันผล ~$1.6B</div></div>
+        <div class="mval">$17.30</div>
       </div>
-      <div class="vmethod">
-        <div><div class="mname">3. Forward P/E (FY2026E)</div><div class="mdesc">EPS FY2026E ~$1.22 × 17x forward — peer Haleon/Reckitt ~16–18x forward · discount จาก TTM เพราะ restructuring ยังไม่จบ</div></div>
-        <div class="mval">$20.74</div>
-      </div>
+
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        วิธี DDM ให้ค่าสูงสุด ($21.53) เพราะ FCF yield รองรับการเติบโตปันผล 4% ได้ · วิธี TTM P/E ให้ต่ำสุด ($18.70) เพราะ EPS GAAP ถูกกดด้วยต้นทุน restructuring · Forward P/E ($20.74) สะท้อน EPS normalize FY2026E ได้ดีที่สุด · มูลค่าเฉลี่ย $20 บอกว่าหุ้น ณ $19.20 ซื้อขายใกล้ fair value — MOS บางมาก +4%
+        FV เฉลี่ยจาก 2 ตระกูลอิสระ: P/E ที่วัดจากมัธยฐานประวัติ ($22.78) และ DDM ($17.30 — r 8%/g 3% เป็นสมมติฐานของเราเอง อ่อนไหวมาก: g 4% ให้ ~$21.8) สองขาห่างกันไม่ถึง 2 เท่าจึงเฉลี่ยได้ · ตัด Forward P/E (ตัวคูณ peer ที่ประมาณเอง ไม่มีค่ามัธยฐานที่วัดได้) และเป้านักวิเคราะห์ออกจากขา FV เหลือเป็นบริบทเท่านั้น · MOS {{rd:mos}} ณ ราคา {{rd:px}} — ตัวเลขนี้ไม่รวมผลของดีลควบรวมกับ Kimberly-Clark ซึ่งเป็นตัวกำหนดราคาระยะสั้น
       </p>
     </div>
   </section>
@@ -206,7 +203,7 @@
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน $19.20 ใกล้ fair value $20 มาก MOS เพียง +4% ไม่ถึง 10% ที่ถือว่าน่าสนใจ นักวิเคราะห์เฉลี่ย $19.50 ก็ใกล้ราคาตลาด สะท้อนว่าตลาดรับรู้ recovery story ไปแล้ว การเข้าซื้อที่ดีควรรอโซน MOS 20% ที่ $16 หรือต่ำกว่าเพื่อ cushion ที่เหมาะสม
+        ราคาปัจจุบัน {{rd:px}} ต่ำกว่า fair value {{rd:fv}} เล็กน้อย (MOS {{rd:mos}}) อยู่ในโซนกลาง 10–20% เป้านักวิเคราะห์เฉลี่ย ~$19.50 (Hold) สูงกว่าตลาดราว 9% แต่เป็นเพียงบริบท การเข้าซื้อที่ cushion เหมาะสมควรรอโซน MOS 20% ที่ {{rd:mos20}} หรือต่ำกว่า
       </p>
     </div>
   </section>
@@ -217,7 +214,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">MOS บางมาก — ราคาใกล้ Fair Value เกินไป ยังไม่มี cushion เพียงพอ</div>
+        <div class="txt">MOS ปานกลาง — ราคาต่ำกว่า Fair Value เล็กน้อย cushion ยังไม่หนา และราคาผูกกับดีลควบรวม</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -279,7 +276,7 @@
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      Base case สะท้อนการ normalize EPS จาก $0.85 TTM → $1.22+ FY2026E เมื่อต้นทุน spin-off/restructuring หมดไป ประกอบกับ organic growth จากแบรนด์ OTC ที่แข็งแกร่ง (Tylenol ครองส่วนแบ่ง ~40% ในตลาด pain relief US) และการขยายตัวในตลาดอินเดีย/เอเชียตะวันออกเฉียงใต้ ความเสี่ยงหลักคือการแข่งขันจาก private label และการชะลอตัวของ consumer spending
+      Base case สะท้อนการ normalize EPS จาก $0.85 TTM → ~$1.18 FY2026E (consensus) เมื่อต้นทุน spin-off/restructuring หมดไป ประกอบกับ organic growth จากแบรนด์ OTC ที่แข็งแกร่ง (Tylenol ครองส่วนแบ่ง ~40% ในตลาด pain relief US) และการขยายตัวในตลาดอินเดีย/เอเชียตะวันออกเฉียงใต้ ความเสี่ยงหลักคือการแข่งขันจาก private label และการชะลอตัวของ consumer spending
     </p>
   </section>
 
@@ -290,17 +287,18 @@
       <div class="box cat">
         <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
         <ul>
-          <li><b>EPS normalize FY2026:</b> ต้นทุน spin-off/restructuring หมดไป → EPS กระโดดจาก $0.85 → $1.22+ (+44%) เป็น re-rating catalyst สำคัญ</li>
+          <li><b>EPS normalize FY2026:</b> ต้นทุน spin-off/restructuring หมดไป → EPS กระโดดจาก $0.85 → ~$1.18 (+39%) เป็น re-rating catalyst สำคัญ</li>
           <li><b>Tylenol ครองตลาด OTC:</b> Pain relief market share ~40% ในสหรัฐฯ ลูกค้าภักดีสูง pricing power ดี</li>
-          <li><b>Yield สูง 4.28%:</b> ปันผล $0.828/ปี ดึงดูด income investor โดยเฉพาะในสภาวะดอกเบี้ยขาลง</li>
+          <li><b>Yield สูง ~4.7%:</b> ปันผล $0.828/ปี ดึงดูด income investor โดยเฉพาะในสภาวะดอกเบี้ยขาลง</li>
           <li><b>GLP-1 indirect tailwind:</b> ผู้ใช้ยา GLP-1 มีแนวโน้มใช้ OTC health products เพิ่ม (nausea → antacids, joint pain → Tylenol)</li>
           <li><b>ตลาดเกิดใหม่:</b> รับมรดก distribution JNJ ในอินเดีย อินโดนีเซีย บราซิล — consumer health เติบโตสูง</li>
-          <li><b>FCF แข็งแกร่ง:</b> FCF/share ~$1.30 รองรับการเพิ่มปันผลและ buyback ระยะกลาง</li>
+          <li><b>FCF แข็งแกร่ง:</b> FCF/share ~$1.00 (FCF TTM $1.9B) รองรับการเพิ่มปันผลและ buyback ระยะกลาง</li>
         </ul>
       </div>
       <div class="box risk">
         <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
         <ul>
+          <li><b>ดีลควบรวม Kimberly-Clark:</b> อยู่ระหว่างรออนุมัติ (EU พิจารณาอยู่ ต้องขายสินทรัพย์เพื่อผ่านการอนุมัติ) — ผลลัพธ์กำหนดราคาระยะสั้น มากกว่า valuation แบบ standalone</li>
           <li><b>Private label competition:</b> OTC drugs ถูก generic/house brand แย่งส่วนแบ่งในช่องทาง mass retail กดดัน margin</li>
           <li><b>Goodwill สูง:</b> Goodwill &amp; intangibles $20B+ จาก JNJ valuation เสี่ยง impairment ถ้า revenue ต่ำกว่าคาด</li>
           <li><b>Tariff ต้นทุน:</b> KVUE ผลิตในหลายประเทศ tariff สหรัฐฯ อาจกระทบ COGS แบรนด์ที่ผลิตนอกอเมริกา</li>
@@ -316,14 +314,14 @@
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
       <h2>Hold — แบรนด์ดี แต่ MOS บางเกินไปสำหรับ new entry</h2>
-      <p>KVUE เป็น consumer health company ที่มีแบรนด์ระดับโลก (Tylenol, Neutrogena, Listerine, Band-Aid) และกระแสเงินสดสม่ำเสมอพอรองรับปันผล 4.28% ได้ EPS TTM $0.85 ถูกกดด้วยต้นทุน restructuring หลัง spin-off แต่กำลัง normalize ไปที่ $1.22+ FY2026E ราคาปัจจุบัน $19.20 ใกล้ fair value $20 — MOS เพียง +4% ผู้ที่ถืออยู่ควร hold รับปันผล 4.38% ขณะรอ EPS normalize ผู้ที่ยังไม่ถือควรรอสะสมที่ $16–18 (MOS 10–20%) เพื่อ risk/reward ที่ดีกว่า</p>
+      <p>KVUE เป็น consumer health company ที่มีแบรนด์ระดับโลก (Tylenol, Neutrogena, Listerine, Band-Aid) และกระแสเงินสดสม่ำเสมอพอรองรับปันผลราว 4.7% ได้ EPS TTM $0.85 ถูกกดด้วยต้นทุน restructuring หลัง spin-off แต่กำลัง normalize ไปที่ ~$1.18 FY2026E ราคาปัจจุบัน {{rd:px}} ต่ำกว่า fair value {{rd:fv}} — MOS {{rd:mos}} ผู้ที่ถืออยู่ควร hold รับปันผลขณะรอผลดีลควบรวม ผู้ที่ยังไม่ถือควรรอสะสมที่โซน MOS 20% ({{rd:mos20}}) เพื่อ risk/reward ที่ดีกว่า</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$19.50 (Hold)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ผู้ถืออยู่: Hold รับปันผล 4.28% รอ EPS normalize FY2026 · ผู้ยังไม่ถือ: รอสะสมที่ $16–18 (MOS 10–20%) หรือ $14 (MOS 30% ใกล้ 52-week low) สำหรับ position ใหญ่
+        💡 <b>กลยุทธ์:</b> ผู้ถืออยู่: Hold รับปันผลราว 4.7% รอผลดีลและ EPS normalize FY2026 · ผู้ยังไม่ถือ: รอสะสมที่โซน MOS 20% ({{rd:mos20}}) หรือ MOS 30% ({{rd:mos30}} ใกล้ 52-week low) สำหรับ position ใหญ่
       </div>
     </div>
   </section>
@@ -334,7 +332,7 @@
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ {{rd:priceDate}} · ที่มา: StockAnalysis.com, Yahoo Finance, Google Finance
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 17 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
