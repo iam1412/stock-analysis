@@ -6,12 +6,12 @@
 <title>วิเคราะห์หุ้น TE Connectivity (TEL) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"TEL","currency":"USD","price":205.42,"fairValue":227,"mos":9.5,"upside":10.5,"pe":20.1,"dividendYield":1.52,"roe":23.3}
+{"symbol":"TEL","currency":"USD","price":205.42,"fairValue":229,"mos":10.3,"upside":11.5,"pe":20.1,"dividendYield":1.52,"roe":23.3}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 227,
+  "fv": 229,
   "values": {
     "px": 205.42,
     "priceDate": "2026-09-18",
@@ -156,26 +156,23 @@
 
   <!-- ===== VALUATION ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">3 วิธี เฉลี่ยถ่วงน้ำหนัก</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">2 ตระกูลอิสระ เฉลี่ยเท่ากัน</div></div>
     <div class="card">
       <div class="vmethod">
         <div><div class="mname">1. P/E Valuation <span class="pill g">สมเหตุผล</span></div><div class="mdesc">EPS ปีงบปัจจุบัน (คาดการณ์) $11.45 × P/E 19x (มัธยฐาน P/E ย้อนหลัง 5 ปีของ TEL = 19.0x ช่วง 13.9–27.0x · ฐาน EPS เป็นประมาณการปีงบปัจจุบันซึ่งอาจสูงกว่า GAAP TTM $10.21 — เปิดเผยความต่างของฐาน)</div></div>
         <div class="mval">$218</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. DCF (2-stage)</div><div class="mdesc">FCF TTM $3.3B โต ~7% 5 ปีแรก, WACC ~8.5%, Terminal 3% หักหนี้สุทธิ ~$4.6B ÷ ~289.5M หุ้น — สะท้อนกระแสเงินสดสม่ำเสมอจากพอร์ตกระจายตัว (industrial/transportation) + แรงเสริม AI</div></div>
+        <div><div class="mname">2. DCF (2-stage)</div><div class="mdesc">ตารางคำนวณ (หน่วย $ล้าน): FCF TTM 3,315 โต 7%/ปี → ปี1–5 = 3,547 / 3,795 / 4,061 / 4,345 / 4,649 · คิดลด WACC 8.5% ได้ PV ปี1–5 รวม 15,900 · Terminal (g 3%) = 4,649×1.03÷(8.5%−3%) = 87,072 → PV 57,907 · EV ≈ 73,807 · หักหนี้สุทธิ 4,579 (หนี้ 5,818 − เงินสด 1,239) = ส่วนของผู้ถือหุ้น 69,228 ÷ 289.5M หุ้น ≈ $239 · หมายเหตุ: Terminal คิดเป็น ~78% ของ EV จึงอ่อนไหวต่อ WACC/g มาก</div></div>
         <div class="mval">$239</div>
       </div>
-      <div class="vmethod">
-        <div><div class="mname">3. Analyst Intrinsic</div><div class="mdesc">ค่าเฉลี่ยจากเป้านักวิเคราะห์ ({{rd:analystTgt}}, 18 ราย) ปรับลด ~10% ด้วยส่วนเผื่อความปลอดภัย</div></div>
-        <div class="mval">$224</div>
-      </div>
+
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        <b>หมายเหตุ:</b> ข้าม DDM และ P/BV เพราะปันผล (yield ~1.52%) ไม่ใช่เหตุผลหลักในการถือ และพอร์ตเน้น growth จากการเชื่อมต่อ
+        <b>หมายเหตุ:</b> FV = เฉลี่ยเท่ากันของ P/E (มัธยฐานย้อนหลัง) และ DCF — เป้านักวิเคราะห์ ({{rd:analystTgt}}, 18 ราย) ใช้เป็นบริบทตรวจความสอดคล้องเท่านั้น ไม่ได้เป็นขาของ FV · ข้าม DDM และ P/BV เพราะปันผล (yield ~1.52%) ไม่ใช่เหตุผลหลักในการถือ และพอร์ตเน้น growth จากการเชื่อมต่อ
         TEL ต่างจากหุ้น AI สาย momentum ตรงที่ <b>valuation ยังสมเหตุผล (P/E ~20x, fwd ~18x)</b> มีปันผล + กระแสเงินสดสม่ำเสมอ จึงให้น้ำหนัก
         กรอบ <b>Value/GARP</b> ที่ใช้กำไรเดินหน้าเป็นฐาน
       </p>
@@ -217,7 +214,7 @@
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
         <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $204</div><div class="d">ใต้มูลค่าเหมาะสม ~10%</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $206</div><div class="d">ใต้มูลค่าเหมาะสม ~10%</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
@@ -317,7 +314,7 @@
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">{{rd:analystTgt}} ({{rd:analystPct}})</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> สาย value/GARP — ทยอยสะสมเมื่อย่อต่ำกว่า ~$204 และเพิ่มน้ำหนักเมื่อถึงโซน MOS 20% (<b>{{rd:mos20}}</b>) (น่าสนใจมากที่โซน MOS 30% {{rd:mos30}}) • ติดตาม <b>การเติบโต Digital Data Networks (AI)</b>, <b>การฟื้นวัฏจักรยานยนต์/อุตสาหกรรม</b> และ <b>ออเดอร์/ค่าเงิน</b> เป็นตัวชี้วัดหลัก
+        💡 <b>กลยุทธ์:</b> สาย value/GARP — ทยอยสะสมเมื่อย่อต่ำกว่า ~$206 และเพิ่มน้ำหนักเมื่อถึงโซน MOS 20% (<b>{{rd:mos20}}</b>) (น่าสนใจมากที่โซน MOS 30% {{rd:mos30}}) • ติดตาม <b>การเติบโต Digital Data Networks (AI)</b>, <b>การฟื้นวัฏจักรยานยนต์/อุตสาหกรรม</b> และ <b>ออเดอร์/ค่าเงิน</b> เป็นตัวชี้วัดหลัก
       </div>
     </div>
   </section>
