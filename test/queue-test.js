@@ -102,7 +102,7 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   for (const [r, b] of Object.entries(want)) ok(T.bucketOf(r) === b, `bucketOf(${r}) = ${b}`, T.bucketOf(r));
   ok(T.bucketOf('drift-gt-10pct') === 'LIGHT' && T.bucketOf('อะไรก็ไม่รู้') === 'UNKNOWN', 'bucketOf: drift เกณฑ์อื่น = LIGHT · ไม่รู้จัก = UNKNOWN');
   const flags = [{ symbol: 'A', reason: 'mos-sign-flip' }, { symbol: 'B', reason: 'mos-sign-flip' }, { symbol: 'C', reason: 'not-on-exchange' }, { symbol: 'D', reason: 'suspect-split-or-data' }, { symbol: 'E', reason: 'mos-sign-flip' }, { symbol: 'F', reason: 'mos-sign-flip' }, { symbol: 'G', reason: 'drift-gt-15pct' }];
-  const rows = T.triage(flags, { footerAgeOf: (s) => ({ A: 3, B: 40, C: 10, D: null, E: 120, F: 30, G: 3 })[s], earningsAfterOf: (s) => s === 'F' });
+  const rows = T.triage(flags, { footerAgeOf: (s) => ({ A: 3, B: 40, C: 10, D: null, E: 120, F: 30, G: 3 })[s], earningsAfterOf: (s) => s === 'F', lightRule: 'legacy' });
   const by = Object.fromEntries(rows.map((r) => [r.symbol, r]));
   ok(by.A.bucket === 'PREPATCH' && !by.A.skip && by.A.escalated === null && by.B.bucket === 'PREPATCH', 'flip อายุปกติ → PREPATCH (ไม่ skip — patch ราคาไม่มีโทษ)');
   ok(by.E.bucket === 'LIGHT' && by.E.escalated === 'age' && /90/.test(by.E.action), 'flip อายุ 120 วัน → ยกเป็น LIGHT (age)');
@@ -174,7 +174,7 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   const P = require('../tools/queue/preflight.js');
   // 6 ใบเกิน 90 วัน (FLAGGED OLD1 OLD2 OLD4 OLD5 OLD3) — ต้องมากกว่า 5 ถึงจะพิสูจน์ว่า default ageLimit ตัดจริง
   const ages = { OLD1: 200, OLD2: 150, OLD3: 95, OLD4: 120, OLD5: 110, MID: 60, FLAGGED: 300 };
-  const rows = P.plan([{ symbol: 'FLAGGED', reason: 'drift-gt-15pct' }], '2026-09-12', { ageLimit: 2, listReports: () => Object.keys(ages), footerAgeOf: (s) => ages[s] });
+  const rows = P.plan([{ symbol: 'FLAGGED', reason: 'drift-gt-15pct' }], '2026-09-12', { ageLimit: 2, lightRule: 'legacy', listReports: () => Object.keys(ages), footerAgeOf: (s) => ages[s] });
   const syn = rows.filter((r) => r.synthetic);
   ok(syn.map((r) => r.symbol).join(',') === 'OLD1,OLD2' && syn.every((r) => r.reason === 'age-gt-90d' && r.bucket === 'LIGHT'), 'plan: แถวอายุสังเคราะห์ 2 ตัวแก่สุด (ไม่รวม FLAGGED ที่มี flag อยู่แล้ว · MID ไม่ถึง 90)', syn.map((r) => r.symbol).join(','));
   ok(P.ageQueue('2026-09-12', { listReports: () => Object.keys(ages), footerAgeOf: (s) => ages[s] }).length === 6, 'ageQueue: นับทุกใบเกิน 90 วัน (6) ก่อนตัด');
@@ -404,7 +404,7 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   }
 
   const tpl = fs.readFileSync(path.join(ROOT, '_template', 'agent-prompt.md'), 'utf8');
-  const p = Pp.assemblePrompt(tpl, { SYMBOL: 'AAPL', MARKET: 'US', MODE: 'UPDATE-LIGHT', WORKTREE: '/wt', CURRENT_TAGS: 'consumer-tech', MEDIANS: '=== ตัวคูณมัธยฐานย้อนหลัง: AAPL ===\n  ★ มัธยฐาน 28.0x', FUNDAMENTALS: PREP_OUT }, Pp.extraBlock({ sym: 'AAPL', mode: 'UPDATE-LIGHT', prePatched: '2026-09-11', oldPrice: 297.21, price: 301.5, baseEPS: 7.1, epsTTM: 7.36, epsScreen: 3.66, snap: ['เป้า ใบ 300 · vendor 312'], medWarn: [], hard: false, hardWhy: '' }));
+  const p = Pp.assemblePrompt(tpl, { SYMBOL: 'AAPL', MARKET: 'US', MODE: 'UPDATE-LIGHT', WORKTREE: '/wt', CURRENT_TAGS: 'consumer-tech', MEDIANS: '=== ตัวคูณมัธยฐานย้อนหลัง: AAPL ===\n  ★ มัธยฐาน 28.0x', FUNDAMENTALS: PREP_OUT }, Pp.extraBlock({ lightRule: 'legacy', sym: 'AAPL', mode: 'UPDATE-LIGHT', prePatched: '2026-09-11', oldPrice: 297.21, price: 301.5, baseEPS: 7.1, epsTTM: 7.36, epsScreen: 3.66, snap: ['เป้า ใบ 300 · vendor 312'], medWarn: [], hard: false, hardWhy: '' }));
   // ★ ตรวจ token ค้างบน prompt ที่ "ถอดบล็อก FUNDAMENTALS ออกแล้ว" — ตัว prep-stock เองพิมพ์คำว่า
   //   `{{FUNDAMENTALS}}` ในหัวบล็อก ("วางทั้ง block ลง {{FUNDAMENTALS}}") ⇒ ข้อความที่ถูกแทน *เข้าไป*
   //   มี `{{…}}` ติดมาโดยชอบธรรม · assemblePrompt จึงตรวจ token กับ template ไม่ใช่ผลลัพธ์ (Step 5 ก็ว่า
@@ -431,9 +431,9 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   ok(miss, 'assemblePrompt: ส่วน worker ขาด {{WORKTREE}} → throw (ค่าที่เตรียมไว้ห้ามหายเงียบ)');
 
   // EPS screen > 2% ต้องเปลี่ยนโหมดจริง ไม่ใช่เตือนอย่างเดียว — ไม่งั้นหัว prompt ({{MODE}}) กับบล็อกท้ายขัดกัน
-  const esc = Pp.extraBlock({ sym: 'A', mode: 'UPDATE', escalated: true, prePatched: null, baseEPS: 7.1, epsTTM: 7.36, epsScreen: 3.66, snap: [], medWarn: [], hard: false, hardWhy: '' });
+  const esc = Pp.extraBlock({ lightRule: 'legacy', sym: 'A', mode: 'UPDATE', escalated: true, prePatched: null, baseEPS: 7.1, epsTTM: 7.36, epsScreen: 3.66, snap: [], medWarn: [], hard: false, hardWhy: '' });
   ok(/ยกระดับจาก UPDATE-LIGHT เป็น UPDATE เต็ม/.test(esc) && /โหมดในหัว prompt เปลี่ยนแล้ว/.test(esc), 'extraBlock: escalated → บอกว่าโหมดในหัว prompt เปลี่ยนแล้ว', esc);
-  const noEsc = Pp.extraBlock({ sym: 'A', mode: 'UPDATE-LIGHT', escalated: false, prePatched: null, baseEPS: 7.3, epsTTM: 7.36, epsScreen: 0.8, snap: [], medWarn: [], hard: false, hardWhy: '' });
+  const noEsc = Pp.extraBlock({ lightRule: 'legacy', sym: 'A', mode: 'UPDATE-LIGHT', escalated: false, prePatched: null, baseEPS: 7.3, epsTTM: 7.36, epsScreen: 0.8, snap: [], medWarn: [], hard: false, hardWhy: '' });
   ok(!/ยกระดับ/.test(noEsc) && /FV เดิมยืนได้/.test(noEsc), 'extraBlock: EPS screen ≤2% → ไม่มีคำว่ายกระดับ', noEsc);
 
   // #7: prompt ต้องบอก worker ว่ามี EPS จริงกี่ปี ก่อนเขียนป้าย "P/E เฉลี่ย ~N ปี"
@@ -750,7 +750,7 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   ok(P.earningsAfterOfWith({ symbols: { NOFOOT: { last: '2026-07-30' } } }, (s) => html[s])('NOFOOT') === null, 'earningsAfterOf: footer ไม่มีวันที่ → null');
   // ต่อกับ triage จริง: flip + งบออกหลังวิเคราะห์ → LIGHT/earnings (plan ส่งตัวนี้เข้า triage ตรง ๆ)
   const rows = P.plan([{ symbol: 'XAAA', reason: 'mos-sign-flip' }], '2026-09-12',
-    { ageLimit: 0, footerAgeOf: () => 3, earningsAfterOf: f });
+    { ageLimit: 0, lightRule: 'legacy', footerAgeOf: () => 3, earningsAfterOf: f });
   ok(rows[0].bucket === 'LIGHT' && rows[0].escalated === 'earnings', 'plan: ส่ง earningsAfterOf เข้า triage แล้ว flip ถูกยกเป็น LIGHT');
 }
 
@@ -1300,6 +1300,94 @@ const applyEditsRacePromise = testApplyEditsStdin(ok);
   ok(Sh.resolveTrailer('X', null, { model: 'sonnet' }, null).trailer === Sh.trailer('sonnet'), 'resolveTrailer: ไม่มีป้ายในใบ → ใช้ state.model ตามเดิม');
   ok(Sh.resolveTrailer('X', null, {}, 'opus').key === 'opus', 'resolveTrailer: ไม่มีป้ายในใบ แต่ใส่ --model → ผ่าน');
   ok(/ไม่มี model ใน state/.test(thrown(() => Sh.resolveTrailer('X', null, {}, null)) || ''), 'resolveTrailer: ไม่มีทั้งป้ายและ model → ข้อความเดิมของ resolveModel');
+}
+
+// ── W11) กฎ LIGHT/FULL ใหม่ (22 ก.ย. 69): LIGHT ⇔ ไม่มีงบใหม่หลัง footer · ไม่รู้ = FULL · ขยับ >30% = FULL · EPS screen เป็นแค่คำเตือน ──
+{
+  const T = require('../tools/queue/triage.js');
+  const P = require('../tools/queue/preflight.js');
+  const Pp = require('../tools/queue/prep.js');
+  const EC = require('../tools/earnings-calendar.js');
+  const html = { USAA: '<footer>ข้อมูล ณ 1 ก.ค. 2569</footer>', USBB: '<footer>ข้อมูล ณ 5 ส.ค. 2569</footer>', USCC: '<footer>ข้อมูล ณ 1 ก.ค. 2569</footer>',
+    THAA: '<footer>ข้อมูล ณ 1 ก.ค. 2569</footer>', THBB: '<footer>ข้อมูล ณ 20 ส.ค. 2569</footer>' };
+  const cal = { symbols: { USAA: { last: '2026-07-30', next: null }, USBB: { last: '2026-07-30', next: null } } };
+  const st = P.statementAfterOfWith(cal, (s) => html[s] || null, { today: '2026-09-22', isThai: (s) => /^TH/.test(s), sec: null });
+  const one = (flag, statementAfterOf, extra) => T.triage([flag], { footerAgeOf: () => 30, statementAfterOf, ...(extra || {}) })[0];
+  const noStmt = () => ({ after: false, detail: 'ไม่มีงบใหม่' });
+
+  // 1) งบออกหลัง footer ⇒ FULL (แม้เป็น flip ที่เคยจบที่ PREPATCH)
+  ok(st('USAA').after === true && st('USAA').source === 'calendar', 'W11: ปฏิทิน last หลัง footer → after=true', JSON.stringify(st('USAA')));
+  const r1 = one({ symbol: 'USAA', reason: 'mos-sign-flip' }, st);
+  ok(r1.bucket === 'FULL' && r1.escalated === 'statement' && r1.stmtWhy, 'W11: มีงบใหม่หลัง footer → FULL (flip ไม่จบที่ PREPATCH)', r1.bucket);
+  // 2) ไม่มีงบ + ขยับ 10% ⇒ LIGHT (นอกคิว = prep.decideMode) · flip ในคิวยังเป็น PREPATCH (ไม่ถูกดันเป็น FULL)
+  ok(st('USBB').after === false, 'W11: ปฏิทิน last ก่อน footer → after=false');
+  ok(Pp.decideMode({ exists: true, rec: {}, lightRule: 'new', stmt: st('USBB') }).mode === 'UPDATE-LIGHT', 'W11: นอกคิว ไม่มีงบใหม่ (ขยับ ~10%) → UPDATE-LIGHT (BUG-026: เดิมเป็น UPDATE เสมอ)');
+  ok(one({ symbol: 'USBB', reason: 'mos-sign-flip', diffPct: 10 }, st).bucket === 'PREPATCH', 'W11: ไม่มีงบ + flip ขยับ 10% → PREPATCH ไม่ใช่ FULL');
+  // 3) ไม่มีงบ + drift 20% ⇒ LIGHT
+  const r3 = one({ symbol: 'USBB', reason: 'drift-gt-15pct', diffPct: -20 }, st);
+  ok(r3.bucket === 'LIGHT' && r3.drift === 20, 'W11: ไม่มีงบ + drift 20% → LIGHT', JSON.stringify([r3.bucket, r3.drift]));
+  // 4) ไม่มีงบ + drift 35% ⇒ FULL · suspect-split ที่ขยับ 25–30% ⇒ LIGHT (ตัดสินจากค่า ไม่ใช่ชื่อ reason)
+  const r4 = one({ symbol: 'USBB', reason: 'suspect-split-or-data', diffPct: 35 }, st);
+  ok(r4.bucket === 'FULL' && r4.escalated === 'drift30', 'W11: ไม่มีงบ + drift 35% → FULL', JSON.stringify([r4.bucket, r4.escalated]));
+  ok(one({ symbol: 'USBB', reason: 'suspect-split-or-data', diffPct: 28 }, st).bucket === 'LIGHT', 'W11: suspect-split ที่ขยับ 28% (≤30) ไม่มีงบ → LIGHT');
+  ok(one({ symbol: 'USBB', reason: 'suspect-split-or-data' }, st).bucket === 'FULL', 'W11: suspect-split ไม่มีค่าขยับให้ดู → FULL (ไม่เดา)');
+  ok(one({ symbol: 'USBB', reason: 'drift-gt-15pct', diffPct: 30 }, st).bucket === 'LIGHT', 'W11: ขยับ 30.0% พอดี ไม่ใช่ >30 → LIGHT');
+  // 5) TH: เส้นตายส่งงบ SET ตกหลัง footer ⇒ FULL · ไม่มีเส้นตาย ⇒ LIGHT
+  ok(st('THAA').after === true && st('THAA').source === 'set-deadline' && /2026-08-14/.test(st('THAA').detail), 'W11: TH footer 1 ก.ค. → เส้นตาย 14 ส.ค. ตกหลัง footer → มีงบใหม่', JSON.stringify(st('THAA')));
+  ok(one({ symbol: 'THAA', reason: 'drift-gt-15pct', diffPct: 18 }, st).bucket === 'FULL', 'W11: TH เส้นตายผ่านหลัง footer → FULL');
+  ok(st('THBB').after === false, 'W11: TH footer 20 ส.ค. (หลังเส้นตาย 14 ส.ค. ก่อน 14 พ.ย.) → ไม่มีงบใหม่', JSON.stringify(st('THBB')));
+  ok(EC.thDeadlinesBetween('2025-12-01', '2026-03-05').join() === '2026-03-01', 'W11: เส้นตายงบปี = 31 ธ.ค. + 60 วัน (1 มี.ค.)', EC.thDeadlinesBetween('2025-12-01', '2026-03-05').join());
+  ok(EC.thDeadlinesBetween('2026-05-15', '2026-05-15').length === 0 && EC.thDeadlinesBetween('2026-05-14', '2026-05-15').join() === '2026-05-15', 'W11: ช่วง (from, to] — เส้นตายตรงวัน footer ไม่นับ ตรงวันนี้นับ');
+  // 6) ไม่รู้วันงบ ⇒ FULL
+  ok(st('USCC').after === null, 'W11: US ไม่มี last + ไม่ใช้ SEC → null', JSON.stringify(st('USCC')));
+  const r6 = one({ symbol: 'USCC', reason: 'drift-gt-15pct', diffPct: 16 }, st);
+  ok(r6.bucket === 'FULL' && r6.escalated === 'stmt-unknown', 'W11: ไม่รู้วันงบ → FULL', JSON.stringify([r6.bucket, r6.escalated]));
+  ok(one({ symbol: 'X', reason: 'drift-gt-15pct', diffPct: 16 }, null).bucket === 'FULL' && P.statementAfterOfWith(cal, () => null)('USAA').after === null, 'W11: ไม่มีตัวอ่านงบ/อ่าน footer ไม่ได้ → null → FULL');
+  // SEC fallback (ฉีด fetcher — ห้ามยิง network)
+  const urls = [];
+  const fetchText = (u) => { urls.push(u); return u.includes('company_tickers') ? JSON.stringify({ 0: { cik_str: 320193, ticker: 'AAPL' }, 1: { cik_str: 1067983, ticker: 'BRK-B' } })
+    : JSON.stringify({ filings: { recent: { form: ['8-K', '10-Q', '10-K/A', '4', '10-K'], filingDate: ['2026-09-01', '2026-08-01', '2026-09-10', '2026-09-15', '2026-05-01'] } } }); };
+  const cache = new Map();
+  ok(EC.secLastStatement('AAPL', { fetchText, cache }) === '2026-08-01', 'W11: SEC ใช้เฉพาะ 10-K/10-Q/20-F/40-F ต้นฉบับ (8-K, 10-K/A, Form 4 ไม่นับ)');
+  EC.secLastStatement('BRK.B', { fetchText, cache });
+  ok(urls.filter((u) => /company_tickers/.test(u)).length === 1 && /CIK0001067983/.test(urls[urls.length - 1]), 'W11: SEC — แคช ticker→CIK ต่อ process · จุด → ขีด · CIK เติม 10 หลัก', urls.join(' '));
+  ok(EC.secLastStatement('NOPE', { fetchText, cache }) === null && EC.secLastStatement('AAPL', { fetchText: () => { throw new Error('net'); } }) === null, 'W11: SEC หา ticker ไม่เจอ/ดึงไม่ได้ → null ไม่ throw');
+  const stSec = P.statementAfterOfWith({ symbols: {} }, () => '<footer>ข้อมูล ณ 1 ก.ค. 2569</footer>', { today: '2026-09-22', isThai: () => false, sec: (x) => EC.secLastStatement(x, { fetchText, cache }) });
+  ok(stSec('AAPL').after === true && stSec('AAPL').source === 'sec', 'W11: ไม่มี calendar last → ถอยไป SEC (10-Q 1 ส.ค. หลัง footer 1 ก.ค.)', JSON.stringify(stSec('AAPL')));
+  // 7) EPS ต่างจาก vendor 40% แต่ไม่มีงบใหม่ ⇒ LIGHT + คำเตือน 2 ฐาน (ไม่เปลี่ยนโหมด)
+  const dm = Pp.decideMode({ exists: true, rec: { bucket: 'LIGHT' }, lightRule: 'new', stmt: null });
+  const eb = Pp.extraBlock({ lightRule: 'new', sym: 'A', mode: dm.mode, modeWhy: dm.why, prePatched: null, baseEPS: 5, epsTTM: 3, epsScreen: 40, snap: [], medWarn: [], hard: false });
+  ok(dm.mode === 'UPDATE-LIGHT' && /โหมด \*\*UPDATE-LIGHT\*\*/.test(eb) && /⚠ EPS \(คำเตือน — ไม่เปลี่ยนโหมด\)/.test(eb) && /ใบ "EPS ฐาน" 5/.test(eb) && /vendor 3 \(GAAP TTM diluted\)/.test(eb) && !/ยกระดับจาก UPDATE-LIGHT/.test(eb), 'W11: EPS ต่าง 40% ไม่มีงบ → ยัง LIGHT + เตือนเห็นสองฐาน', eb);
+  ok(Pp.decideMode({ exists: true, rec: {}, lightRule: 'new', stmt: { after: true, detail: 'x' } }).mode === 'UPDATE' && Pp.decideMode({ exists: true, rec: {}, lightRule: 'new', stmt: { after: null } }).mode === 'UPDATE' && Pp.decideMode({ exists: true, rec: { bucket: 'FULL' }, lightRule: 'new', stmt: { after: false } }).mode === 'UPDATE' && Pp.decideMode({ exists: false, rec: {}, lightRule: 'new' }).mode === 'NEW', 'W11: decideMode — มีงบ/ไม่รู้/bucket FULL = UPDATE · ไม่มีไฟล์ = NEW');
+  // 8) --light-rule legacy คืนพฤติกรรมเดิม
+  ok(T.lightRuleFromArgv(['node', 'queue.js', 'prep', 'AAA', '--light-rule', 'legacy'], {}) === 'legacy' && T.lightRuleFromArgv(['x'], { LIGHT_RULE: 'legacy' }) === 'legacy' && T.lightRuleFromArgv(['x'], {}) === 'new', 'W11: lightRuleFromArgv — argv/env · default new');
+  let bad = null; try { T.lightRuleFromArgv(['--light-rule', 'foo'], {}); } catch (e) { bad = e; }
+  ok(bad && /new\|legacy/.test(bad.message), 'W11: --light-rule ค่าแปลก → throw');
+  const legacyRow = T.triage([{ symbol: 'USAA', reason: 'drift-gt-15pct', diffPct: 40 }], { footerAgeOf: () => 30, lightRule: 'legacy', statementAfterOf: st })[0];
+  ok(legacyRow.bucket === 'LIGHT' && legacyRow.stmt === undefined, 'W11: legacy → ไม่ดูงบ/ค่าขยับ (drift-gt = LIGHT เดิม)');
+  ok(Pp.decideMode({ exists: true, rec: {}, lightRule: 'legacy', stmt: { after: false } }).mode === 'UPDATE', 'W11: legacy decideMode นอกคิว = UPDATE (พฤติกรรมเดิม)');
+  const ebL = Pp.extraBlock({ lightRule: 'legacy', sym: 'A', mode: 'UPDATE', escalated: true, prePatched: null, baseEPS: 5, epsTTM: 3, epsScreen: 40, snap: [], medWarn: [], hard: false });
+  ok(/ยกระดับจาก UPDATE-LIGHT เป็น UPDATE เต็ม/.test(ebL), 'W11: legacy → EPS screen ยังยกเป็น UPDATE เต็ม (บล็อก prep)');
+  // ทุก reason ยังครอบคลุมภายใต้กฎใหม่
+  for (const reason of Object.keys(T.BUCKET)) {
+    const base = T.bucketOf(reason);
+    for (const after of [true, false, null]) {
+      const r = one({ symbol: 'USBB', reason, diffPct: 20 }, () => ({ after }));
+      const isContent = ['PREPATCH', 'LIGHT', 'FULL'].includes(base);
+      ok(isContent ? ['PREPATCH', 'LIGHT', 'FULL'].includes(r.bucket) : r.bucket === base, `W11: กฎใหม่ครอบ ${reason} (stmt=${after}) → ${r.bucket}`);
+      if (isContent && after !== false) ok(r.bucket === 'FULL', `W11: ${reason} + stmt=${after} → FULL`);
+    }
+  }
+  ok(one({ symbol: 'USBB', reason: 'mos-sign-flip' }, noStmt, { footerAgeOf: () => 120 }).bucket === 'LIGHT', 'W11: flip + ไม่มีงบ + footer >90 วัน → LIGHT (age เดิม)');
+  ok(one({ symbol: 'USBB', reason: 'bad-chart' }, noStmt).bucket === 'FULL', 'W11: bad-chart = FULL เสมอ');
+  // BUG-001 · BUG-008
+  const hsN = Pp.hardStock({}, { baseEPS: 2 }, { epsTTM: -0.4 });
+  ok(hsN.hard && /vendor EPS TTM ≤ 0/.test(hsN.why) && !Pp.hardStock({}, { baseEPS: 2 }, { epsTTM: 1 }).hard, 'W11/BUG-001: vendor EPS TTM ≤ 0 → หุ้นยาก (pre-profit) แม้ EPS ฐานใบเก่าเป็นบวก');
+  const eOld = Pp.extraBlock({ lightRule: 'new', sym: 'A', mode: 'UPDATE-LIGHT', prePatched: null, priceFresh: true, priceDate: '2026-09-21', lastSession: '2026-09-21', oldPrice: 10, price: 11, epsScreen: null, snap: [], medWarn: [], hard: false });
+  const eStale = Pp.extraBlock({ lightRule: 'new', sym: 'A', mode: 'UPDATE-LIGHT', prePatched: '2026-09-10', priceFresh: false, priceDate: '2026-09-10', lastSession: '2026-09-21', epsScreen: null, snap: [], medWarn: [], hard: false, marketOpen: false });
+  ok(/ห้ามรัน update-prices ซ้ำ/.test(eOld) && !/ยังไม่ได้ pre-patch/.test(eOld), 'W11/BUG-008: priceDate ≥ session ล่าสุด → ราคาสดแล้วแม้ state ไม่มี prePatched');
+  ok(/ยังไม่สด/.test(eStale) && /update-prices.js --write --force A/.test(eStale) && !/ห้ามรัน update-prices ซ้ำ/.test(eStale), 'W11/BUG-008: priceDate เก่ากว่า session → บอกให้รัน update-prices แม้ state มี prePatched');
+  ok(Pp.lastSessionISO(false, new Date('2026-09-20T12:00:00Z')) === '2026-09-18' && Pp.lastSessionISO(false, new Date('2026-09-22T12:00:00Z')) === '2026-09-21', 'W11/BUG-008: lastSessionISO US — อาทิตย์ → ศุกร์ · ช่วงเช้า ET วันอังคารก่อนปิด → จันทร์');
 }
 
 // ─────────────────────────── (Task 10–14 แทรกเทสเหนือบรรทัดนี้) ───────────────────────────

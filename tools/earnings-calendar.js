@@ -124,6 +124,84 @@ function reportSymbols(dir) {
     });
 }
 
+
+// ───────────────────────── "มีงบใหม่หลังวันที่ footer ไหม" (กฎ UPDATE-LIGHT/FULL · docs/decisions.md §9) ─────────────────────────
+// นิยาม: "งบ" = งบรายไตรมาส/รายปีเท่านั้น (8-K/guidance/M&A ไม่นับ — ช่องโหว่ที่รู้แล้ว) · ตัดสินไม่ได้ = null ⇒ triage ถือเป็น FULL
+/** เส้นตายส่งงบของ SET — ตารางปรับได้ (ไม่ใช่ค่าตายตัวในโค้ด) · ตรวจกับ set.or.th 22 ก.ย. 69:
+ *  https://www.set.or.th/en/listing/listed-company/simplified-regulations/disclosure/periodic-disclosure
+ *  - งบไตรมาส (สอบทานแล้ว) ภายใน 45 วันหลังสิ้นไตรมาส · งบประจำปี (ตรวจสอบแล้ว) ภายใน 2 เดือน (ไม่มีงบ Q4) หรือ 3 เดือน (มีงบ Q4)
+ *  - งบที่ยังไม่สอบทาน/ตรวจสอบ ส่งได้ภายใน 30 วัน (ทางเลือก) · เส้นตายตรงวันหยุด เลื่อนไปวันทำการถัดไป (ไม่คิดที่นี่)
+ *  ใช้ 45/60 = เส้นตายที่เร็วกว่าของแต่ละชนิด (ผิดทางปลอดภัย: เจอเส้นตายเร็ว ⇒ FULL บ่อยขึ้น) · ไตรมาสสิ้น 31 มี.ค./30 มิ.ย./30 ก.ย. = quarterDays · 31 ธ.ค. = annualDays
+ *  ★ ข้อจำกัด: บริษัทที่ยื่นก่อนเส้นตายและ footer อยู่ระหว่างวันยื่นกับเส้นตาย จะถูกมองว่า "ยังไม่มีงบใหม่" */
+const TH_FILING = { quarterDays: 45, annualDays: 60, quarterEnds: ['03-31', '06-30', '09-30'], annualEnd: '12-31' };
+const addDaysISO = (iso, n) => new Date(Date.parse(iso) + n * 86400000).toISOString().slice(0, 10);
+/** เส้นตายส่งงบ SET ที่ตกในช่วง (fromIso, toIso] — เรียงเก่า→ใหม่ */
+function thDeadlinesBetween(fromIso, toIso, table) {
+  const t = table || TH_FILING;
+  const y0 = +String(fromIso).slice(0, 4) - 1, y1 = +String(toIso).slice(0, 4);
+  const out = [];
+  for (let y = y0; y <= y1; y++) {
+    for (const md of t.quarterEnds) out.push(addDaysISO(`${y}-${md}`, t.quarterDays));
+    out.push(addDaysISO(`${y}-${t.annualEnd}`, t.annualDays));
+  }
+  return out.filter((d) => d > fromIso && d <= toIso).sort();
+}
+
+const SEC_UA = 'Mozilla/5.0';
+const SEC_STATEMENT_FORMS = /^(10-K|10-KT|10-Q|20-F|40-F)$/;   // ฉบับแก้ไข (/A) และ 6-K/8-K ไม่นับ
+/** curl -A (sec.gov บล็อก UA ว่าง) — ดึงทีละ URL แบบ sync · เทสฉีด fetchText แทนตัวนี้เสมอ (ห้ามยิง network) */
+function curlText(url) {
+  return require('child_process').execFileSync('curl', ['-sSL', '--max-time', '20', '-A', SEC_UA, url], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+}
+/** วันยื่นงบล่าสุด (10-K/10-Q/20-F/40-F) จาก SEC submissions → 'YYYY-MM-DD' | null (หา ticker/CIK ไม่เจอ/ดึงไม่ได้ = null ไม่ throw)
+ *  opts.fetchText(url) → string (sync) · opts.cache = Map (ticker→CIK map เก็บใต้ key '__tickers' ต่อ process) */
+function secLastStatement(sym, opts) {
+  const o = opts || {};
+  const fetchText = o.fetchText || curlText;
+  const cache = o.cache || new Map();
+  try {
+    if (!cache.has('__tickers')) {
+      const j = JSON.parse(fetchText('https://www.sec.gov/files/company_tickers.json'));
+      const m = {};
+      for (const e of Object.values(j)) if (e && e.ticker) m[String(e.ticker).toUpperCase()] = e.cik_str;
+      cache.set('__tickers', m);
+    }
+    const cik = cache.get('__tickers')[String(sym).toUpperCase().replace(/\./g, '-')];
+    if (!cik) return null;
+    const sub = JSON.parse(fetchText(`https://data.sec.gov/submissions/CIK${String(cik).padStart(10, '0')}.json`));
+    const r = sub && sub.filings && sub.filings.recent;
+    if (!r || !Array.isArray(r.form) || !Array.isArray(r.filingDate)) return null;
+    let best = null;
+    r.form.forEach((f, i) => { const d = r.filingDate[i]; if (SEC_STATEMENT_FORMS.test(f) && /^\d{4}-\d{2}-\d{2}$/.test(d) && (!best || d > best)) best = d; });
+    return best;
+  } catch (_) { return null; }
+}
+
+/**
+ * มีงบไตรมาส/ปีใหม่หลังวันที่ footer ไหม (ส่วนบริสุทธิ์ — ไม่แตะดิสก์/network เอง)
+ * → { after: true|false|null, source, last, detail } — null = ตัดสินไม่ได้ (⇒ FULL)
+ * ลำดับ: ปฏิทิน Yahoo (`last`) → [TH] เส้นตาย SET → [US] SEC submissions (ฉีด opts.sec ได้เท่านั้น) → null
+ * TH: after=true ถ้าปฏิทินบอก หรือมีเส้นตายตกระหว่าง footer..วันนี้ · ไม่มีทั้งสอง = false (เส้นตายเป็นกฎหมาย ตัดสินได้เสมอ)
+ * opts: { footerIso, today, th, cal:{symbols}, sec:(sym)→'YYYY-MM-DD'|null, table }
+ */
+function statementAfter(sym, opts) {
+  const o = opts || {};
+  if (!o.footerIso) return { after: null, source: null, last: null, detail: 'อ่านวันที่ footer ไม่ได้' };
+  const e = ((o.cal && o.cal.symbols) || {})[sym];
+  const calLast = e && e.last ? e.last : null;
+  const calAfter = calLast ? o.footerIso < calLast : null;
+  if (o.th) {
+    const dl = thDeadlinesBetween(o.footerIso, o.today, o.table);
+    if (calAfter) return { after: true, source: 'calendar', last: calLast, detail: `ปฏิทิน: ประกาศงบ ${calLast} หลัง footer ${o.footerIso}` };
+    if (dl.length) return { after: true, source: 'set-deadline', last: dl[dl.length - 1], detail: `เส้นตายส่งงบ SET ${dl.join(',')} ตกหลัง footer ${o.footerIso}` };
+    return { after: false, source: calLast ? 'calendar+set-deadline' : 'set-deadline', last: calLast, detail: `ไม่มีเส้นตายส่งงบ SET ระหว่าง ${o.footerIso}..${o.today}${calLast ? ` · ปฏิทิน last ${calLast}` : ''}` };
+  }
+  if (calLast) return { after: calAfter, source: 'calendar', last: calLast, detail: `ปฏิทิน: ประกาศงบ ${calLast} ${calAfter ? 'หลัง' : 'ก่อน/ตรงกับ'} footer ${o.footerIso}` };
+  const s = o.sec ? o.sec(sym) : null;
+  if (s) return { after: o.footerIso < s, source: 'sec', last: s, detail: `SEC: 10-K/10-Q ล่าสุดยื่น ${s} ${o.footerIso < s ? 'หลัง' : 'ก่อน/ตรงกับ'} footer ${o.footerIso}` };
+  return { after: null, source: null, last: null, detail: 'ไม่รู้วันงบล่าสุด (ไม่มีวันที่ในปฏิทิน · SEC ไม่ได้/ไม่ใช้)' };
+}
+
 const argVal = (flag, dflt) => { const i = process.argv.indexOf(flag); return i > 0 && process.argv[i + 1] != null ? process.argv[i + 1] : dflt; };
 
 async function main() {
@@ -157,5 +235,5 @@ async function main() {
   }
 }
 
-module.exports = { fetchNextEarnings, roll, build, nodateRatio, load, reportSymbols, FILE, ABORT_AFTER, RETRY_DELAYS };
+module.exports = { fetchNextEarnings, roll, build, nodateRatio, load, reportSymbols, FILE, ABORT_AFTER, RETRY_DELAYS, TH_FILING, thDeadlinesBetween, secLastStatement, statementAfter };
 if (require.main === module) main().catch((e) => { console.error('✗', e.message); process.exit(1); });

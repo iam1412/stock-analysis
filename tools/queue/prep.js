@@ -12,6 +12,7 @@ const path = require('path');
 const { run, ROOT } = require('./sh.js');
 const S = require('./state.js');
 const { todayBangkok } = require('./footer-date.js');
+const { lightRuleFromArgv } = require('./triage.js');
 const RM = require('../report-meta.js');   // เจ้าของเดียวของ regex stock-meta/report-data/.px + กรอบ 52 สัปดาห์
 const { usSessionOpen, setSessionOpen } = require('./market.js');
 const DV = require('../derived-values.js');
@@ -22,7 +23,7 @@ const REPORTS = path.join(ROOT, 'reports');
 const TEMPLATE = path.join(ROOT, '_template', 'agent-prompt.md');
 const TOKENS = ['SYMBOL', 'MARKET', 'MODE', 'WORKTREE', 'CURRENT_TAGS', 'MEDIANS', 'FUNDAMENTALS'];
 const VERBATIM = new Set(['AI_MODEL']);   // token ที่ template ตั้งใจส่งต่อให้ worker เติมเอง (ป้าย ai-model) — ห้ามแทน ห้ามฟ้อง
-const EPS_SCREEN_PCT = 2;   // SKILL 5C ข้อ 2
+const EPS_SCREEN_PCT = 2;   // SKILL 5C ข้อ 2 — กฎใหม่ (22 ก.ย. 69): เป็นแค่คำเตือน ไม่เปลี่ยนโหมด · `--light-rule legacy` ยังยกเป็น UPDATE เหมือนเดิม
 
 const num = (s) => { if (s == null) return null; const n = parseFloat(String(s).replace(/[,%]/g, '')); return Number.isFinite(n) ? n : null; };
 // ★ ไม่มีการแปลงสัดส่วน→% อีกแล้ว: ทั้งสองแหล่งพิมพ์เป็น % อยู่แล้ว (Yahoo ผ่าน pct() = `N%` ·
@@ -177,6 +178,7 @@ function hardStock(rec, ctx, v) {
   const why = [];
   if (rec && rec.bucket === 'FULL') why.push(`${rec.reason || 'split/chart'}`);
   if (ctx && ctx.baseEPS != null && ctx.baseEPS <= 0) why.push('pre-profit (EPS ฐาน ≤ 0)');
+  if (v && v.epsTTM != null && v.epsTTM <= 0) why.push('pre-profit (vendor EPS TTM ≤ 0)');   // BUG-001: baseEPS ของใบเก่าอาจยังบวกทั้งที่ตอนนี้ขาดทุน
   if (v && v.priceWarn) why.push('ราคา cross-source ต่าง 2–5%');
   return { hard: why.length > 0, why: why.join(' · ') };
 }
@@ -201,17 +203,54 @@ function assemblePrompt(template, vals, extra) {
   return `${out}\n\n${extra}\n`;
 }
 
+/** เลือกโหมดตามกฎ LIGHT/FULL (ส่วนบริสุทธิ์) — BUG-026: เดิม UPDATE เสมอถ้าไม่อยู่ในคิว ⇒ LIGHT เลือกนอกคิวไม่ได้
+ *  ลำดับ: ไม่มีไฟล์ = NEW · แถวคิวที่ triage ตัดสินแล้ว (bucket LIGHT/FULL) ใช้ตามนั้น · นอกคิว (ไม่มี bucket) = ตัดสินจาก stmt
+ *  (`{after}` จาก EC.statementAfter): false = LIGHT · true/null = UPDATE เต็ม (ไม่รู้ = FULL)
+ *  legacy = พฤติกรรมเดิมทุกไบต์ (LIGHT เฉพาะ bucket LIGHT) */
+function decideMode({ exists, rec, lightRule, stmt }) {
+  if (!exists) return { mode: 'NEW', why: 'ไม่มีไฟล์' };
+  const b = rec && rec.bucket;
+  if (b === 'LIGHT') return { mode: 'UPDATE-LIGHT', why: 'triage: LIGHT' };
+  if (lightRule === 'legacy') return { mode: 'UPDATE', why: 'legacy' };
+  if (b === 'FULL') return { mode: 'UPDATE', why: 'triage: FULL' };
+  if (stmt && stmt.after === false) return { mode: 'UPDATE-LIGHT', why: `ไม่มีงบใหม่หลัง footer — ${stmt.detail || stmt.source}` };
+  return { mode: 'UPDATE', why: stmt && stmt.after === true ? `มีงบใหม่หลัง footer — ${stmt.detail}` : `ไม่รู้วันงบล่าสุด ⇒ FULL${stmt && stmt.detail ? ' — ' + stmt.detail : ''}` };
+}
+
+/** วันของ session ล่าสุดที่ปิดแล้ว (ISO ของกระดานนั้น) — BUG-008: ใช้เทียบ priceDate ในใบว่าราคาสดจริงไหม
+ *  ไม่รู้วันหยุดตลาด (วันหยุด = ประมาณเกินไป 1 วัน ⇒ ใบที่ patch แล้วดูเก่า → บอกให้รัน update-prices ซ้ำได้ ไม่อันตราย) */
+function lastSessionISO(th, now) {
+  const tz = th ? 'Asia/Bangkok' : 'America/New_York', closeMin = th ? 16 * 60 + 30 : 16 * 60;
+  const d = now || new Date();
+  const { dow, min } = require('./market.js').partsIn(tz, d);
+  let back = 0;
+  if (dow === 'Sat') back = 1; else if (dow === 'Sun') back = 2; else if (min < closeMin) back = dow === 'Mon' ? 3 : 1;
+  const iso = new Date(d.getTime() - back * 86400000).toLocaleDateString('en-CA', { timeZone: tz });
+  return iso;
+}
+
 function extraBlock(i) {
   const L = ['=== บันทึกจาก runbook (controller) — อ่านก่อนเริ่ม ==='];
-  L.push(`- โหมด **${i.mode}** · ${i.prePatched
-    ? `ราคาในไฟล์ patch แล้ว ${i.prePatched} (${i.oldPrice ?? '?'} → ${i.price ?? '?'}) ⇒ **ห้ามรัน update-prices ซ้ำ** ยกเว้น SKILL 5B ข้อ 3 (แก้ fairValue — ปลอดภัยแล้วเพราะ lock)`
-    : `ราคายังไม่ได้ pre-patch — โหมด UPDATE รัน \`node tools/update-prices.js --write --force ${i.sym}\` ตาม SKILL STEP 1 ได้ · ตลาด${i.marketOpen ? 'เปิดอยู่ — ราคาจะเป็น intraday รอปิดตลาดก่อนรัน' : 'ปิดแล้ว รันได้'}`}`);
-  if (i.epsScreen != null) L.push(`- EPS ในใบ ${i.baseEPS} vs vendor ${i.epsTTM} = ต่าง ${i.epsScreen.toFixed(1)}% → ${i.epsScreen <= EPS_SCREEN_PCT
-    ? 'FV เดิมยืนได้ (UPDATE-LIGHT ตาม 5C ข้อ 2)'
-    : i.escalated
-      ? '**ยกระดับจาก UPDATE-LIGHT เป็น UPDATE เต็ม** (5C ข้อ 2) — โหมดในหัว prompt เปลี่ยนแล้ว · ตรวจ dil/basic/งวดตาม STEP 2 ก่อน'
-      : '**ยกระดับเป็น UPDATE เต็ม** (5C ข้อ 2) — ตรวจ dil/basic/งวดตาม STEP 2 ก่อน'}`);
-  else L.push('- EPS screen: เทียบไม่ได้ (อ่าน EPS ฐานในใบหรือ vendor ไม่ได้) — ตรวจเองตาม STEP 2');
+  // BUG-008: ถ้ารู้ priceDate จริง (priceFresh true/false) ใช้ค่านั้นตัดสิน — ไม่เชื่อ state.prePatched อย่างเดียว (cron ประทับราคาสดให้ใบที่ไม่ได้ผ่าน preflight ได้)
+  const fresh = i.priceFresh === true || (i.priceFresh == null && !!i.prePatched);
+  const stamp = i.priceFresh != null ? `priceDate ${i.priceDate} ${i.priceFresh ? '≥' : '<'} session ล่าสุด ${i.lastSession}` : `patch แล้ว ${i.prePatched}`;
+  L.push(`- โหมด **${i.mode}**${i.modeWhy ? ` (${i.modeWhy})` : ''} · ${fresh
+    ? `ราคาในไฟล์สดแล้ว (${stamp}; ${i.oldPrice ?? '?'} → ${i.price ?? '?'}) ⇒ **ห้ามรัน update-prices ซ้ำ** ยกเว้น SKILL 5B ข้อ 3 (แก้ fairValue — ปลอดภัยแล้วเพราะ lock)`
+    : `ราคาในไฟล์ยังไม่สด${i.priceFresh === false ? ` (${stamp})` : ' (ยังไม่ได้ pre-patch)'} — โหมด UPDATE รัน \`node tools/update-prices.js --write --force ${i.sym}\` ตาม SKILL STEP 1 ได้ · ตลาด${i.marketOpen ? 'เปิดอยู่ — ราคาจะเป็น intraday รอปิดตลาดก่อนรัน' : 'ปิดแล้ว รันได้'}`}`);
+  if (i.lightRule === 'legacy') {
+    if (i.epsScreen != null) L.push(`- EPS ในใบ ${i.baseEPS} vs vendor ${i.epsTTM} = ต่าง ${i.epsScreen.toFixed(1)}% → ${i.epsScreen <= EPS_SCREEN_PCT
+      ? 'FV เดิมยืนได้ (UPDATE-LIGHT ตาม 5C ข้อ 2)'
+      : i.escalated
+        ? '**ยกระดับจาก UPDATE-LIGHT เป็น UPDATE เต็ม** (5C ข้อ 2) — โหมดในหัว prompt เปลี่ยนแล้ว · ตรวจ dil/basic/งวดตาม STEP 2 ก่อน'
+        : '**ยกระดับเป็น UPDATE เต็ม** (5C ข้อ 2) — ตรวจ dil/basic/งวดตาม STEP 2 ก่อน'}`);
+    else L.push('- EPS screen: เทียบไม่ได้ (อ่าน EPS ฐานในใบหรือ vendor ไม่ได้) — ตรวจเองตาม STEP 2');
+  } else {
+    // กฎใหม่: EPS screen ลดเป็นคำเตือน — แสดงสองฐานให้เห็นว่าต่างกันเพราะฐานหรือเพราะงวด (ไม่เปลี่ยนโหมด)
+    const both = `ใบ "EPS ฐาน" ${i.baseEPS ?? '?'} (ฐานที่ FV ของใบใช้ — อาจ adj./normalized) vs vendor ${i.epsTTM ?? '?'} (GAAP TTM diluted)`;
+    L.push(i.epsScreen == null
+      ? `- ⚠ EPS (คำเตือน — ไม่เปลี่ยนโหมด): เทียบไม่ได้ — ${both}`
+      : `- ${i.epsScreen > EPS_SCREEN_PCT ? '⚠ ' : ''}EPS (คำเตือน — ไม่เปลี่ยนโหมด): ${both} = ต่าง ${i.epsScreen.toFixed(1)}%${i.epsScreen > EPS_SCREEN_PCT ? ' → ตรวจว่าต่างเพราะฐานคนละแบบ (adj vs GAAP) หรือเพราะงบใหม่/split จริง · ถ้าเจองบใหม่/split ที่กฎ prep มองไม่เห็น ยกเป็น UPDATE เต็มตาม STEP 5C ข้อ 2' : ' (ตรงกัน)'}`);
+  }
   if (i.fyYears != null) L.push(`- FY ที่มี EPS จริง: ${i.fyYears} ปี — ป้าย "P/E เฉลี่ย ~M ปี" ห้ามเกิน ${i.fyYears}`);
   // ข้อ 1 (plan gap — Task 21 Step 2): กับดักเชิงกลจาก fetch-fundamentals ต้องขึ้นเป็นหัวข้อแยก ไม่จมอยู่กลางบล็อก FUNDAMENTALS
   if (i.traps && i.traps.length) L.push(`- **กับดักที่ prep พบ (ต้องจัดการก่อนเขียนเลข)**:\n${i.traps.map((t) => '    · ' + t).join('\n')}`);
@@ -250,7 +289,18 @@ async function prep(sym, opts) {
   const th = exists ? (sm && sm.currency === 'THB') : !!o.th;
   const rec = S.load().stocks[sym] || {};
   checkNotPrepatch(sym, rec);   // C2: PREPATCH ไม่ส่ง LLM — ปฏิเสธก่อนยิง network ใด ๆ ข้างล่าง
-  let mode = o.mode || (!exists ? 'NEW' : rec.bucket === 'LIGHT' ? 'UPDATE-LIGHT' : 'UPDATE');
+  const lightRule = o.lightRule || lightRuleFromArgv();
+  // BUG-026: นอกคิว (ไม่มี bucket LIGHT/FULL) ตัดสินจากกฎ "มีงบใหม่หลัง footer ไหม" — ทางเดิม UPDATE เสมอ
+  let stmt = null;
+  if (exists && !o.mode && lightRule === 'new' && rec.bucket !== 'LIGHT' && rec.bucket !== 'FULL') {
+    const P = require('./preflight.js');
+    const EC = require('../earnings-calendar.js');
+    const read = () => html;
+    const sec = o.sec !== undefined ? o.sec : (() => { const cache = new Map(); return (x) => EC.secLastStatement(x, { cache }); })();
+    stmt = (o.statementAfterOf || P.statementAfterOfWith(EC.load(), read, { sec, isThai: () => !!th }))(sym);
+  }
+  const dm = o.mode ? { mode: o.mode, why: '--mode' } : decideMode({ exists, rec, lightRule, stmt });
+  let mode = dm.mode;
   let escalated = false;
 
   // 1. prep-stock ครั้งเดียว (มัน spawn fetch-fundamentals + fetch-facts ให้แล้ว — ห้ามดึงซ้ำ)
@@ -275,12 +325,14 @@ async function prep(sym, opts) {
     // (ไม่งั้นหัว prompt บอก UPDATE-LIGHT แต่บล็อกท้ายบอกให้ทำ UPDATE เต็ม = สองสัญญาณขัดกัน
     //  และ state ก็บันทึกโหมดที่ยังไม่ยกระดับ) · prep-stock รันไปแล้วด้วย `--update` ซึ่งเหมือนกัน
     // ทั้งสองโหมด (ต่างกันแค่ NEW/ไม่ NEW) ⇒ ไม่ต้องรันซ้ำ
-    if (!o.mode && mode === 'UPDATE-LIGHT' && epsScreen != null && epsScreen > EPS_SCREEN_PCT) { mode = 'UPDATE'; escalated = true; }
+    if (lightRule === 'legacy' && !o.mode && mode === 'UPDATE-LIGHT' && epsScreen != null && epsScreen > EPS_SCREEN_PCT) { mode = 'UPDATE'; escalated = true; }
   }
 
   // 5. tags · 6. ยาก/โมเดล/effort
   const tags = T.tagsOf(sym, T.loadTags()).join(' ');
   const hs = hardStock(rec, ctx, vend);
+  const priceIso = ctx && ctx.priceAge && ctx.priceAge.iso, lastSession = lastSessionISO(th);
+  const priceFresh = priceIso ? priceIso >= lastSession : null;
   const model = o.model || (hs.hard ? 'opus' : 'sonnet');
   const effort = hs.hard ? 'high' : 'medium';
 
@@ -288,15 +340,15 @@ async function prep(sym, opts) {
   const prompt = assemblePrompt(fs.readFileSync(TEMPLATE, 'utf8'),
     { SYMBOL: sym, MARKET: th ? 'TH' : 'US', MODE: mode, WORKTREE: ROOT, CURRENT_TAGS: tags, MEDIANS: med.text, FUNDAMENTALS: ps.out },
     // ยังไม่ pre-patch = worker ต้องรัน update-prices เอง ⇒ ต้องบอกด้วยว่าตลาดเปิดอยู่ไหม (--force ข้าม guard intraday เอง)
-    extraBlock({ sym, mode, escalated, prePatched: rec.prePatched, marketOpen: th ? setSessionOpen() : usSessionOpen(), oldPrice: rec.oldPrice, price: sm && sm.price, baseEPS: ctx && ctx.baseEPS, epsTTM: vend.epsTTM, epsScreen, snap, medWarn: med.warn, hard: hs.hard, hardWhy: hs.why, fyYears: vend.fyYears, traps: vend.traps }));
+    extraBlock({ sym, mode, modeWhy: dm.why, lightRule, priceFresh, priceDate: priceIso, lastSession, escalated, prePatched: rec.prePatched, marketOpen: th ? setSessionOpen() : usSessionOpen(), oldPrice: rec.oldPrice, price: sm && sm.price, baseEPS: ctx && ctx.baseEPS, epsTTM: vend.epsTTM, epsScreen, snap, medWarn: med.warn, hard: hs.hard, hardWhy: hs.why, fyYears: vend.fyYears, traps: vend.traps }));
   fs.mkdirSync(S.PREP_DIR, { recursive: true });
   const file = path.join(S.PREP_DIR, sym + '.md');
   fs.writeFileSync(file, prompt);
-  S.update(sym, { mode, escalated, model, effort, prepAt: todayBangkok(), epsScreen, snapDeltas: snap.length, currency: th ? 'THB' : 'USD', fyYears: vend.fyYears });
+  S.update(sym, { mode, modeWhy: dm.why, lightRule, escalated, model, effort, prepAt: todayBangkok(), epsScreen, snapDeltas: snap.length, currency: th ? 'THB' : 'USD', fyYears: vend.fyYears });
 
   console.log(`\n=== prep ${sym} เสร็จ → ${path.relative(ROOT, file)} ===`);
-  console.log(`โหมด ${mode}${escalated ? ' (ยกระดับจาก UPDATE-LIGHT เพราะ EPS screen)' : ''} · model **${model}** · effort ${effort}${hs.hard ? ` · หุ้นยาก: ${hs.why}` : ''}`);
-  if (epsScreen != null) console.log(`EPS screen: ${epsScreen.toFixed(1)}% ${epsScreen > EPS_SCREEN_PCT ? '⇒ UPDATE เต็ม' : '(ผ่าน)'}`);
+  console.log(`โหมด ${mode} (${dm.why})${escalated ? ' (ยกระดับจาก UPDATE-LIGHT เพราะ EPS screen)' : ''} · model **${model}** · effort ${effort}${hs.hard ? ` · หุ้นยาก: ${hs.why}` : ''}`);
+  if (epsScreen != null) console.log(`EPS screen: ${epsScreen.toFixed(1)}% ${epsScreen > EPS_SCREEN_PCT ? (lightRule === 'legacy' ? '⇒ UPDATE เต็ม' : '⚠ คำเตือน (กฎใหม่ไม่เปลี่ยนโหมด — ดูสองฐานใน prompt)') : '(ผ่าน)'}`);
   if (snap.length) console.log(`snapshot vendor ค้าง ${snap.length} จุด (อยู่ใน prompt แล้ว)`);
   if (med.warn.length) console.log(`⚠ มัธยฐาน: ${med.warn.join(' · ')}`);
   console.log('\n── ขั้นที่ต้องทำเอง ──');
@@ -308,4 +360,4 @@ async function prep(sym, opts) {
   return { file, mode, model, effort, hard: hs.hard };
 }
 
-module.exports = { prep, parseVendor, snapshotDiff, assemblePrompt, extraBlock, hardStock, checkNotPrepatch, medianBlock, TOKENS, EPS_SCREEN_PCT };
+module.exports = { prep, decideMode, lastSessionISO, parseVendor, snapshotDiff, assemblePrompt, extraBlock, hardStock, checkNotPrepatch, medianBlock, TOKENS, EPS_SCREEN_PCT };
