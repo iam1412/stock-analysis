@@ -5,39 +5,39 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น ZEN Corporation Group (ZEN) — Stock Analysis Dashboard</title>
 <!-- ★ โมเดล AI ที่ใช้วิเคราะห์จริง — gate E28 บังคับ -->
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — gate E29–31 -->
 <script type="application/json" id="stock-meta">
-{"symbol":"ZEN","currency":"THB","price":5.55,"fairValue":4.6,"mos":-20.7,"upside":-17.1,"pe":31.97,"dividendYield":1.8,"roe":4.92}
+{"symbol":"ZEN","currency":"THB","price":5.55,"fairValue":5.14,"mos":-8,"upside":-7.4,"pe":37,"dividendYield":1.8,"roe":4.92}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 4.6,
+  "fv": 5.14,
   "values": {
     "px": 5.55,
     "priceDate": "2026-09-18",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
-    "fvLow": 2.9,
-    "fvHigh": 5.6,
+    "fvLow": 4.82,
+    "fvHigh": 5.46,
     "analystTgt": 5.8,
     "shares": 298180000,
     "dps": 0.1,
-    "bvps": 4.57,
-    "baseEps": 0.28,
+    "bvps": 4.91,
+    "baseEps": 0.15,
     "scenarios": [
       {
-        "tgt": 3.6,
+        "tgt": 2.57,
+        "div": 0.2
+      },
+      {
+        "tgt": 6.74,
         "div": 0.3
       },
       {
-        "tgt": 7.02,
-        "div": 0.45
-      },
-      {
-        "tgt": 10.12,
-        "div": 0.6
+        "tgt": 9.38,
+        "div": 0.36
       }
     ],
     "scnBasis": {
@@ -74,9 +74,9 @@
       ["ส.ค.26", 5.4],
       ["ก.ย.26", 5.55]
     ],
-    "min": 4.5,
-    "max": 6.5,
-    "grid": [5, 5.5, 6],
+    "min": 5,
+    "max": 6.25,
+    "grid": [5.25, 5.5, 5.75, 6],
     "currency": "฿",
     "highlight": [2, 8],
     "gridFmt": "v.toFixed(2)",
@@ -111,7 +111,7 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ ฿5.00 – ฿8.20<br>
+        กรอบ 52 สัปดาห์ ฿5.05 – ฿6.80<br>
         ที่มา: Yahoo Finance · StockAnalysis · Investing.com
       </div>
     </div>
@@ -119,28 +119,28 @@
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 · ที่มา StockAnalysis + Investing.com</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ 22 ก.ย. 2569 · ที่มา Yahoo Finance + StockAnalysis</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">298.18 ล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~32x</div><div class="d">EPS ต่ำชั่วคราว FY2025</div></div>
-      <div class="metric"><div class="k">P/E Forward</div><div class="v">~22.8x</div><div class="d">EPS ฟื้นตัว ปี 2569E</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ฿4.57 · ซื้อขายเหนือมูลบัญชี</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~37x</div><div class="d">EPS ต่ำชั่วคราว FY2025 (SA 36.1x)</div></div>
+      <div class="metric"><div class="k">P/E Forward</div><div class="v">~24x</div><div class="d">ประมาณการ vendor (งวดไม่ยืนยัน)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ฿4.91 · ซื้อขายเหนือมูลบัญชี</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">฿45.84 ล้าน</div><div class="d">−19.4% YoY · margin 1.15%</div></div>
-      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.16</div><div class="d">FY25: ฿0.15 · FY24: ฿0.19 · FY23: ฿0.53</div></div>
-      <div class="metric"><div class="k">BVPS</div><div class="v">~฿4.57</div><div class="d">Equity ฿1,464M · มั่นคง</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.15</div><div class="d">FY25: ฿0.15 · FY24: ฿0.19 · FY23: ฿0.53</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿4.91</div><div class="d">Equity ฿1,464M · มั่นคง</div></div>
       <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~4.9% / 2.7%</div><div class="d">ROE ต่ำ — อยู่ช่วงฟื้นตัว</div></div>
 
-      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿3.92 พันล้าน</div><div class="d">−2.8% YoY · 300+ สาขา</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿3.87 พันล้าน</div><div class="d">−4.9% YoY · 300+ สาขา</div></div>
       <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">39.6%</div><div class="d">ลดลงจาก 43% ปี FY23 (ค่าแรง/วัตถุดิบ)</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.80%</div><div class="d">฿0.10/หุ้น · payout ~61%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.80%</div><div class="d">฿0.10/หุ้น · payout ~67%</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">0.35</div><div class="d">ผันผวนต่ำมาก vs SET</div></div>
     </div>
   </section>
 
   <!-- ===== 2. PRICE CHART (~1 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ต.ค. 2568 – ก.ย. 2569</div></div>
     <div class="card">
       <div class="chart-wrap">
         <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
@@ -151,9 +151,9 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ราคา ZEN ในรอบ 1 ปีที่ผ่านมา (ก.ค. 2568 – ก.ค. 2569) เคลื่อนไหวในกรอบแคบ ฿5.25–฿5.95 สะท้อนภาพ
-        ฐานกำไรที่ยังอ่อนตัว ราคาสูงสุดใน 52 สัปดาห์อยู่ที่ ฿8.20 เมื่อต้น ปี 2568 (ก่อนช่วง 1 ปีนี้)
-        ปัจจุบันราคาย่อตัวลงมา −9.2% จากต้นงวด สะท้อนความผิดหวังในผลประกอบการ FY2025 ที่กำไรลดลง −19%
+        ราคา ZEN ในรอบ 1 ปีที่ผ่านมา (ต.ค. 2568 – ก.ย. 2569) เคลื่อนไหวในกรอบแคบ ฿5.25–฿6.10 สะท้อนภาพ
+        ฐานกำไรที่ยังอ่อนตัว กรอบ 52 สัปดาห์อยู่ที่ ฿5.05–฿6.80
+        ปัจจุบันราคาย่อตัวลงจากต้นงวด สะท้อนความผิดหวังในผลประกอบการ FY2025 ที่กำไรลดลง −19%
         อย่างไรก็ตามค่า Beta เพียง 0.35 แสดงว่าหุ้นมีเสถียรภาพสูงและไม่ผันผวนตาม SET มากนัก
       </p>
     </div>
@@ -161,29 +161,26 @@
 
   <!-- ===== 3. VALUATION ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี (ตระกูล P/E เดียว)</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation (Forward)</div><div class="mdesc">EPS adj. ฿0.28 × P/E เป้าหมาย ~20x — EPS ฟื้นตัวจากนักวิเคราะห์คาด FY2026E; P/E 20x สมเหตุสมผลสำหรับร้านอาหารไทยเติบโตช้า</div></div>
-        <div class="mval">฿5.60</div>
+        <div><div class="mname">1. P/E Valuation (TTM)</div><div class="mdesc">EPS ฿0.15 (TTM) × P/E 32.1x = ฿4.82 — 32.1x คือมัธยฐาน P/E ย้อนหลัง 4 ปีที่มีกำไร (FY2022–2025 ช่วง 25.0–38.9x) มาจากประวัติของ ZEN เอง ไม่ใช่จาก P/E ปัจจุบัน</div></div>
+        <div class="mval">฿4.82</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. EV/EBITDA</div><div class="mdesc">EBITDA TTM ฿290.64M × 8.5x (sector multiple) − Net Debt ฿810M = Enterprise Value ฿2,470M; FV/หุ้น = ฿1,660M ÷ 298M หุ้น</div></div>
-        <div class="mval">฿5.57</div>
-      </div>
-      <div class="vmethod">
-        <div><div class="mname">3. DDM / Gordon Growth</div><div class="mdesc">D₁ = ฿0.17 (ปันผลยั่งยืน avg 3 ปี) × (1+g); g 3%, r 9% → ฿0.175 ÷ 0.06 — DDM ให้ค่าต่ำเพราะปันผลหดตัวตามกำไร</div></div>
-        <div class="mval">฿2.92</div>
+        <div><div class="mname">2. P/E Valuation (EPS เฉลี่ย 2 ปี)</div><div class="mdesc">EPS ฿0.17 (เฉลี่ย FY2024–2025 = (0.19+0.15)/2) × P/E 32.1x = ฿5.46 — มัธยฐานตัวเดียวกัน · ตระกูลเดียวกับวิธี 1 นับเป็นเสียงเดียว</div></div>
+        <div class="mval">฿5.46</div>
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        วิธี P/E (Forward) และ EV/EBITDA ให้ค่าใกล้เคียงกันที่ ฿5.57–5.60 อิงการฟื้นตัวของกำไร
-        DDM ให้ค่าต่ำที่สุดเพราะปันผลลดลงแรงจาก ฿0.30 → ฿0.10 ตามกำไรที่หดตัว
-        Fair Value เฉลี่ย ฿4.60 ต่ำกว่าราคาตลาดปัจจุบัน ฿5.40 สะท้อนว่าราคา ZEN
-        ณ ปัจจุบันรวม "upside กำไรฟื้นตัว" ไว้มากแล้ว ผู้ลงทุนที่ซื้อตอนนี้ต้องเชื่อว่า
+        ★ การประเมินตระกูลเดียว (P/E บนมัธยฐานย้อนหลัง) — สองวิธีต่างกันแค่ฐาน EPS จึงนับเป็นเสียงเดียว
+        ถ้าใช้ P/E ต่ำสุดในประวัติ 25.0x ค่าจะเป็น ~฿3.75–4.25 (MOS ลึกขึ้น) และถ้าใช้ 38.9x จะสูงถึง ~฿5.8–6.6
+        ไม่ได้ใช้ EV/EBITDA (ไม่มีมัธยฐานที่วัดได้) · ไม่ได้ใช้ DDM (ปันผล ฿0.10 ให้ค่าต่ำกว่าอีกขาเกิน 2 เท่า) · เป้านักวิเคราะห์ (1 ราย) เป็นบริบทเท่านั้น
+        Fair Value เฉลี่ย {{rd:fv}} ต่ำกว่าราคาตลาดปัจจุบัน {{rd:px}} เล็กน้อย ราคา ZEN
+        ณ ปัจจุบันรวม "upside กำไรฟื้นตัว" ไว้แล้ว ผู้ลงทุนที่ซื้อตอนนี้ต้องเชื่อว่า
         กำไรจะฟื้นได้ตามคาดหรือสูงกว่านั้น
       </p>
     </div>
@@ -207,10 +204,10 @@
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคา ฿5.40 อยู่เหนือ Fair Value เฉลี่ย ฿4.60 ประมาณ 17% สะท้อนว่านักลงทุนได้
-        รวมความคาดหวังการฟื้นตัวกำไรไว้ในราคาแล้ว นักวิเคราะห์ตั้งเป้าเฉลี่ยที่ ฿5.80 (+5%)
-        ซึ่งใกล้เคียงกับวิธี P/E Forward และ EV/EBITDA (฿5.57–5.60) โซนน่าสนใจสำหรับ Value Investor
-        อยู่ที่ ฿3.68 (MOS 20%) ซึ่งยังห่างจากราคาปัจจุบันพอสมควร
+        ราคา {{rd:px}} อยู่เหนือ Fair Value เฉลี่ย {{rd:fv}} เล็กน้อย สะท้อนว่านักลงทุนได้
+        รวมความคาดหวังการฟื้นตัวกำไรไว้ในราคาแล้ว นักวิเคราะห์ (1 ราย) ตั้งเป้าที่ {{rd:analystTgt}} ({{rd:analystPct}})
+        เป็นบริบทเท่านั้น ไม่ได้เป็นขาของ Fair Value · โซนน่าสนใจสำหรับ Value Investor
+        อยู่ที่ {{rd:mos20}} (MOS 20%) ซึ่งยังห่างจากราคาปัจจุบันพอสมควร
       </p>
     </div>
   </section>
@@ -226,7 +223,7 @@
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
         <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มพิจารณาสะสม</div><div class="v neu">&lt; ฿4.60</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">โซนเริ่มพิจารณาสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
@@ -240,7 +237,7 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} (FY2026E){{rd:scnNote}}</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} (TTM FY2025){{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
@@ -248,34 +245,34 @@
           <div class="tgt">{{rd:sc1tgt}}</div>
           <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿0.24</span></li>
-            <li><span>P/E ออก</span><span>15x</span></li>
+            <li><span>EPS ปี 3</span><span>~฿0.13</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>รายได้หด กำไรหด</span></li>
           </ul>
         </div>
       </div>
       <div class="col base">
-        <div class="top"><span>⚖️ Base</span><span>EPS +12%/ปี</span></div>
+        <div class="top"><span>⚖️ Base</span><span>EPS +20%/ปี</span></div>
         <div class="body">
           <div class="tgt">{{rd:sc2tgt}}</div>
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿0.39</span></li>
-            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>EPS ปี 3</span><span>~฿0.26</span></li>
+            <li><span>P/E ออก</span><span>26x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>กำไรฟื้น สาขาใหม่หนุน</span></li>
           </ul>
         </div>
       </div>
       <div class="col bull">
-        <div class="top"><span>🚀 Bull</span><span>EPS +18%/ปี</span></div>
+        <div class="top"><span>🚀 Bull</span><span>EPS +25%/ปี</span></div>
         <div class="body">
           <div class="tgt">{{rd:sc3tgt}}</div>
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿0.46</span></li>
-            <li><span>P/E ออก</span><span>22x</span></li>
+            <li><span>EPS ปี 3</span><span>~฿0.29</span></li>
+            <li><span>P/E ออก</span><span>32x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>ขยาย ASEAN + SSSG ฟื้น</span></li>
           </ul>
@@ -283,9 +280,9 @@
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      Base case อิงการฟื้นตัวของ EPS สู่ระดับ ฿0.39 ภายใน 3 ปี (จากจุดต่ำ ฿0.15 ปี FY2025)
+      Base case อิงการฟื้นตัวของ EPS สู่ระดับ ฿0.26 ภายใน 3 ปี (จากจุดต่ำ ฿0.15 ปี FY2025 · P/E ออก 26x ต่ำกว่ามัธยฐาน 32.1x)
       โดยมีปัจจัยหนุนคือการเปิด 34 สาขาใหม่/ปี และการขยายแบรนด์ AKA ไปยัง ASEAN
-      อย่างไรก็ตาม ณ ราคาปัจจุบัน ฿5.40 ซึ่งอยู่เหนือ Fair Value แล้ว
+      อย่างไรก็ตาม ณ ราคาปัจจุบัน {{rd:px}} ซึ่งอยู่เหนือ Fair Value แล้ว
       ผลตอบแทนขึ้นอยู่กับว่ากำไรจะฟื้นได้จริงตามคาดหรือไม่ หาก Bear case เกิดขึ้น ขาดทุนมีนัยสำคัญ
     </p>
   </section>
@@ -297,7 +294,7 @@
       <div class="box cat">
         <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
         <ul>
-          <li><b>กำไรฟื้นตัวจากฐานต่ำ:</b> EPS FY2025 ที่ ฿0.15 อยู่ในจุดต่ำสุด นักวิเคราะห์คาด FY2026E ที่ ฿0.28 (+87%) — การฟื้นตัวนี้เป็นแรงขับเคลื่อนหลักของ Upside</li>
+          <li><b>กำไรฟื้นตัวจากฐานต่ำ:</b> EPS FY2025 ที่ ฿0.15 อยู่ในจุดต่ำสุด vendor คาด EPS ข้างหน้า ฿0.24 (งวดไม่ยืนยัน) — การฟื้นตัวนี้เป็นแรงขับเคลื่อนหลักของ Upside</li>
           <li><b>การขยายสาขา 34 แห่ง/ปี:</b> ZEN วางแผนเปิดสาขาใหม่ 34 แห่งในปี 2569 ทั้งไทยและ Laos (Mega Mall Vientiane) เพิ่มฐานรายได้ในอนาคต</li>
           <li><b>แบรนด์ AKA — เป้า ฿1 พันล้าน:</b> แบรนด์ AKA (Shabu-Yakiniku) เป็นเครื่องยนต์เติบโตหลัก มีเป้ายอดขาย ฿1 พันล้าน ยังมีศักยภาพขยายใน Hypermarket และ Lifestyle Mall</li>
           <li><b>ขยายสู่ ASEAN (Laos):</b> เปิดตลาด Laos Q4/2568 ด้วย 4 แบรนด์ (ZEN, On the Table, Khiang, Lao Yuan) รองรับการเติบโตระยะกลาง-ยาว</li>
@@ -310,9 +307,9 @@
         <ul>
           <li><b>Gross Margin หดตัวต่อเนื่อง:</b> GM ลดจาก 46% (FY22) เหลือ 39.6% (FY25) จากต้นทุนวัตถุดิบและค่าแรงสูงขึ้น — ถ้าไม่สามารถปรับราคาขายได้ ROE จะยังต่ำ</li>
           <li><b>การแข่งขันสูงใน Japanese Casual Dining:</b> ตลาดร้านอาหารญี่ปุ่นในไทยแข่งขันรุนแรง ทั้ง Oishi, MK, Fuji และผู้เล่นอิสระ กระทบ SSSG</li>
-          <li><b>P/E สูง 32x ณ ปัจจุบัน:</b> ราคาปัจจุบันซื้อขายที่ P/E TTM 32x สูงมากสำหรับร้านอาหาร Net margin 1% — ถ้ากำไรไม่ฟื้นตามคาด ราคาจะปรับลงแรง</li>
+          <li><b>P/E สูง 37x ณ ปัจจุบัน:</b> ราคาปัจจุบันซื้อขายที่ P/E TTM 37x สูงมากสำหรับร้านอาหาร Net margin 1% — ถ้ากำไรไม่ฟื้นตามคาด ราคาจะปรับลงแรง</li>
           <li><b>กำไรสุทธิผันผวนสูง:</b> กำไรปรับตัวจาก ฿157.6M (FY23) เหลือ ฿45.8M (FY25) ใน 2 ปี สะท้อนความเปราะบางของ Operating leverage</li>
-          <li><b>ปันผลลดลง:</b> DPS ลดจาก ฿0.30 เหลือ ฿0.10 ใน 3 ปี ผลตอบแทนปันผล 1.9% ต่ำเมื่อเทียบกับดอกเบี้ยพันธบัตร</li>
+          <li><b>ปันผลลดลง:</b> DPS ลดจาก ฿0.30 เหลือ ฿0.10 ใน 3 ปี ผลตอบแทนปันผล 1.8% ต่ำเมื่อเทียบกับดอกเบี้ยพันธบัตร</li>
           <li><b>ความเสี่ยงเศรษฐกิจ-การท่องเที่ยว:</b> รายได้พึ่งพาการบริโภคในห้างค้าปลีก ถ้าเศรษฐกิจชะลอหรือกำลังซื้อตกค่าใช้จ่ายร้านอาหารเป็นสิ่งแรกที่ลด</li>
         </ul>
       </div>
@@ -326,20 +323,20 @@
       <h2>ราคาแพงกว่า Fair Value — รอโอกาสเมื่อผลประกอบการยืนยันการฟื้นตัว</h2>
       <p>ZEN Corporation Group เป็นเครือร้านอาหารญี่ปุ่นและไทยที่แข็งแกร่งที่สุดในตลาด SET
         ด้วยแบรนด์ที่รู้จักดี (Shabushi, AKA, ZEN) และเครือข่ายสาขากว่า 300 จุดทั่วประเทศ
-        อย่างไรก็ตาม กำไรสุทธิที่ลดลงแรงในปี FY2024–2025 ทำให้ EPS TTM อยู่ที่เพียง ฿0.16
-        ส่งผลให้ P/E TTM สูงถึง 32x ซึ่งแพงสำหรับธุรกิจที่มี Net margin เพียง 1.15%
-        Fair Value เฉลี่ยจาก 3 วิธีอยู่ที่ ฿4.60 ต่ำกว่าราคาตลาด ฿5.40 — หมายความว่า
+        อย่างไรก็ตาม กำไรสุทธิที่ลดลงแรงในปี FY2024–2025 ทำให้ EPS TTM อยู่ที่เพียง ฿0.15
+        ส่งผลให้ P/E TTM สูงถึง 37x ซึ่งแพงสำหรับธุรกิจที่มี Net margin เพียง 1.15%
+        Fair Value เฉลี่ยจาก 2 วิธี (ตระกูล P/E เดียว) อยู่ที่ {{rd:fv}} ต่ำกว่าราคาตลาด {{rd:px}} เล็กน้อย — หมายความว่า
         ราคาปัจจุบันได้รวมความคาดหวังการฟื้นตัวกำไรไว้แล้ว ผู้ลงทุนควรรอยืนยันว่า
-        EPS จะฟื้นตัวสู่ระดับ ฿0.28–0.39 ตามที่คาด ก่อนพิจารณาเข้าซื้อ</p>
+        EPS จะฟื้นตัวสู่ระดับ ฿0.24–0.26 ตามที่คาด ก่อนพิจารณาเข้าซื้อ</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~{{rd:analystTgt}} (+4.5% upside)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~{{rd:analystTgt}} ({{rd:analystPct}})</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> รอซื้อที่ ฿4.60 หรือต่ำกว่า (= Fair Value) สำหรับ Value Investor
+        💡 <b>กลยุทธ์:</b> รอซื้อที่ {{rd:fv}} หรือต่ำกว่า (= Fair Value) สำหรับ Value Investor
         หรือรอยืนยัน EPS ฟื้นตัวจริง (Q3/Q4 2569) ก่อนเข้าซื้อที่ราคาปัจจุบัน
-        โซน MOS 20% (฿3.68) คือ Deep Value Entry ที่น่าสนใจที่สุด
+        โซน MOS 20% ({{rd:mos20}}) คือ Deep Value Entry ที่น่าสนใจที่สุด
       </div>
     </div>
   </section>
@@ -352,9 +349,9 @@
     ที่มาข้อมูล: (1) Yahoo Finance — https://finance.yahoo.com/quote/ZEN.BK/ (ราคา + กราฟ 1 ปี) ·
     (2) StockAnalysis.com — https://stockanalysis.com/quote/bkk/ZEN/ (งบการเงิน EPS BVPS ROE) ·
     (3) Investing.com — https://www.investing.com/equities/zen-corp (ราคา P/E ROA เป้านักวิเคราะห์) ·
-    (4) AlphaSpread — https://www.alphaspread.com/security/set/zen/analyst-estimates (เป้านักวิเคราะห์) · ข้อมูล ณ 3 ก.ค. 2569
+    (4) AlphaSpread — https://www.alphaspread.com/security/set/zen/analyst-estimates (เป้านักวิเคราะห์) · ข้อมูล ณ 22 ก.ย. 2569
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 22 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
