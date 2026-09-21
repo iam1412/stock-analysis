@@ -6,35 +6,35 @@
 <title>วิเคราะห์หุ้น ไทยออพติคอล กรุ๊ป (TOG) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"TOG","currency":"THB","price":7,"fairValue":7.63,"mos":8.3,"upside":9,"pe":10.7,"dividendYield":7.14,"roe":13.5}
+{"symbol":"TOG","currency":"THB","price":7,"fairValue":6.24,"mos":-12.2,"upside":-10.9,"pe":12.5,"dividendYield":7.14,"roe":11.2}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 7.63,
+  "fv": 6.24,
   "values": {
     "px": 7,
-    "priceDate": "2026-09-18",
+    "priceDate": "2026-09-21",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
-    "fvLow": 7.29,
-    "fvHigh": 7.81,
+    "fvLow": 6.16,
+    "fvHigh": 6.31,
     "shares": 474320000,
     "dps": 0.5,
-    "bvps": 5.41,
-    "baseEps": 0.71,
+    "bvps": 5.01,
+    "baseEps": 0.56,
     "scenarios": [
       {
-        "tgt": 4.72,
-        "div": 1.3
+        "tgt": 3.72,
+        "div": 1.2
       },
       {
-        "tgt": 8.25,
+        "tgt": 6.54,
         "div": 1.5
       },
       {
-        "tgt": 11.57,
-        "div": 1.65
+        "tgt": 8.46,
+        "div": 1.6
       }
     ],
     "scnBasis": {
@@ -80,7 +80,7 @@
     "dataFmt": "d[1].toFixed(2)"
   },
   "gauge": {
-    "min": 5,
+    "min": 4,
     "max": 8.5,
     "fairLabelTop": false
   }
@@ -116,28 +116,28 @@
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">TTM / FY2568 (2025) | ราคา ณ 17 ก.ค. 2569</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">TTM / FY2568 (2025) | ราคา ณ {{rd:priceDate}}</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~฿3,320 ล้าน</div><div class="d">~474.32 ล้านหุ้น (Par ฿1)</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~10.70x</div><div class="d">ต่ำกว่าค่าเฉลี่ยกลุ่มผู้ผลิตส่งออก</div></div>
-      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~9–14x</div><div class="d">ปัจจุบันซื้อขายค่อนไปทางล่างของช่วง</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ~฿5.41/หุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~12.5x</div><div class="d">สูงกว่ามัธยฐาน 5 ปีของตัวเอง (11.0x) เพราะ EPS TTM ลดลง</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~10.6–12.1x</div><div class="d">มัธยฐาน 11.0x (วัดจาก 5 FY ที่มี EPS จริง) — P/E ปัจจุบันอยู่เหนือช่วงนี้</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ~฿5.01/หุ้น (ประมาณ)</div></div>
 
-      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">~฿338.8 ล้าน</div><div class="d">−15.1% YoY (TTM)</div></div>
-      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.71</div><div class="d">ลดจาก ฿0.90 ปี 2566 ตามกำไรที่หดตัว</div></div>
-      <div class="metric"><div class="k">BVPS</div><div class="v">~฿5.41</div><div class="d">คำนวณจากราคา ÷ P/BV (7.30/1.35)</div></div>
-      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~13.5% / 5.4%</div><div class="d">ROE ลดจาก 19.6% (FY2566) ตามกำไรที่อ่อนตัว</div></div>
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">~฿334 ล้าน</div><div class="d">−18.9% YoY • TTM ~฿266 ล้าน</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.56</div><div class="d">ลดจาก ฿0.90 (FY2566) และ ฿0.71 (FY2568) ตามกำไรที่หดตัว</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿5.01</div><div class="d">ประมาณจาก NI TTM ÷ ROE ÷ หุ้น (ไม่ใช่ค่างบดุลตรง)</div></div>
+      <div class="metric"><div class="k">ROE (TTM)</div><div class="v pos">~11.2%</div><div class="d">ลดจาก 19.6% (FY2566) ตามกำไรที่อ่อนตัว</div></div>
 
-      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿3,600 ล้าน</div><div class="d">+1.2% YoY — เติบโตชะลอตัว</div></div>
-      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~21.1%</div><div class="d">Operating margin ~11.0% / Net margin ~9.4%</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~7.14%</div><div class="d">DPS ~฿0.50/หุ้น • Payout ~62.9%</div></div>
-      <div class="metric"><div class="k">Debt/Equity</div><div class="v">0.57x</div><div class="d">Current ratio ~1.68x — สภาพคล่องดี</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿3,569 ล้าน</div><div class="d">+2.3% YoY — เติบโตชะลอตัว</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~22.4%</div><div class="d">Operating margin ~11.9% / Net margin ~7.4%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~7.14%</div><div class="d">DPS ~฿0.50/หุ้น • Payout ~89% ของ EPS TTM</div></div>
+      <div class="metric"><div class="k">Debt/Equity</div><div class="v">0.66x</div><div class="d">หนี้ ~฿1,585 ล้าน เทียบเงินสด ~฿124 ล้าน</div></div>
     </div>
   </section>
 
   <!-- ===== 2. PRICE CHART ===== -->
   <section>
-    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ส.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ต.ค. 2568 – ก.ย. 2569</div></div>
     <div class="card">
       <div class="chart-wrap">
         <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
@@ -148,33 +148,29 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ราคาแกว่งตัวในกรอบแคบ ฿6.50–฿7.25 ตลอดครึ่งปีหลัง 2568 ก่อนร่วงลงแตะจุดต่ำสุดรอบปีที่ ฿6.50 ใน ม.ค. 2569 ตามภาวะตลาดหุ้นไทยที่ผันผวน • ก.พ. 2569 ดีดตัวขึ้นแรงสู่ ฿7.20 รับงบไตรมาส 4/2568 ก่อนย่อลงมาแกว่งในกรอบ ฿6.65–7.10 ช่วง มี.ค.–มิ.ย. • ไตรมาส 3/2569 (ก.ค.) ฟื้นตัวขึ้นปิดที่ ฿7.65 ใกล้จุดสูงสุดรอบปี ฿8.70 (ก.ย. 2568) สะท้อนแรงซื้อกลับจากปันผลที่ยังสูง ~6.54% แม้กำไรสุทธิจะหดตัว −15.1% YoY ▲ +8.5% รอบปี
+        ราคาแกว่งตัวในกรอบแคบ ฿6.50–฿7.20 ตั้งแต่ ต.ค. 2568 ถึง เม.ย. 2569 โดยจุดต่ำสุดในกราฟคือ ฿6.50 ใน ม.ค. 2569 • ก.พ. 2569 ดีดขึ้นสู่ ฿7.20 • ก.ค. 2569 ขึ้นเป็นจุดสูงสุดในกราฟที่ ฿7.65 ก่อนย่อลงต่อเนื่องสองเดือน • กรอบ 52 สัปดาห์ ฿6.25–฿7.75 • ปันผล ฿0.50/หุ้นให้ผลตอบแทน ~7.14% ณ ราคาล่าสุด แม้กำไร TTM จะหดตัวต่อเนื่อง
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿0.71 × P/E เป้าหมาย ~11x — ใกล้ค่าเฉลี่ยกลุ่มผู้ผลิต/ส่งออกชิ้นส่วนทัศนศาสตร์ไทย ~9–14x แม้กำไรหดตัวแต่ปันผลสม่ำเสมอหนุน multiple</div></div>
-        <div class="mval">฿7.81</div>
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿0.56 × P/E เป้าหมาย 11.0x — 11.0x คือมัธยฐานย้อนหลัง 5 FY ของ TOG เอง (ช่วง 10.6–12.1x วัดจากราคาเฉลี่ยรายปี ÷ EPS) ไม่ได้มาจาก P/E ปัจจุบัน</div></div>
+        <div class="mval">฿6.16</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.50 × (1+g); g 2%, r 9% → เติบโตต่ำเพราะรายได้เริ่มอิ่มตัวและ payout สูงกว่า 60%</div></div>
-        <div class="mval">฿7.29</div>
-      </div>
-      <div class="vmethod">
-        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 13.5% − g 2%)/(r 10% − g 2%) ≈ 1.44x × BVPS ฿5.41</div></div>
-        <div class="mval">฿7.79</div>
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.50 × (1+g) = ฿0.505; g 1%, r 9% (สมมติฐานของผู้วิเคราะห์เอง) → 0.505 ÷ 0.08 ≈ ฿6.31 — ต่างตระกูลจาก P/E (อิงปันผลจ่ายจริง) แต่ payout ~89% ของ EPS TTM จึงตั้ง g ต่ำ</div></div>
+        <div class="mval">฿6.31</div>
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        <b>หมายเหตุ:</b> ทั้งสามวิธีให้ค่าใกล้เคียงกันในกรอบแคบ ฿7.29–฿7.81 สะท้อนว่า TOG เป็นหุ้น mature exporter ที่ตลาดตีราคาค่อนข้างสมเหตุสมผลแล้ว • DDM ให้ค่าต่ำสุดเพราะสมมติการเติบโตของเงินปันผลต่ำ (g 2%) ตามรายได้ที่เริ่มอิ่มตัว • Justified P/BV และ P/E ใกล้เคียงกันเพราะ ROE 13.5% ยังสูงกว่าต้นทุนทุนพอสมควร • FV เฉลี่ย ฿7.63 สูงกว่าราคาตลาดเล็กน้อย บ่งชี้ MOS จำกัดแต่ยังมีส่วนต่างบวก
+        <b>หมายเหตุ:</b> โครงสร้างถูกปรับใหม่ (UPDATE) — ตัดขา Justified P/BV ออกเพราะ BVPS ตรวจจากงบดุลไม่ได้ (ประมาณได้เพียง ~฿5.0) และใช้ (r,g) ชุดเดียวกับ DDM จึงนับเป็นเสียงเดียวอยู่แล้ว • ตัดขา "เป้านักวิเคราะห์" ออก (ไม่มีนักวิเคราะห์ติดตาม) • เหลือ 2 ขา: P/E ตามมัธยฐาน 5 ปี × EPS TTM และ DDM ให้ค่าใกล้กัน (฿6.16 vs ฿6.31 ต่างกันไม่ถึง 2 เท่า) • ทั้งคู่ผูกกับกำไร/ปันผลระดับปัจจุบัน จึงเป็นการประเมินที่เปราะต่อการฟื้นหรือหดของ EPS: หาก EPS กลับไป ฿0.71 (FY2568) ที่ 11.0x ได้ ฿7.81 ซึ่งจะทำให้ MOS เป็นบวก • DDM ขึ้นกับ r/g ที่ผู้วิเคราะห์สมมติเอง จึงมีความไม่แน่นอนสูง
       </p>
     </div>
   </section>
@@ -192,12 +188,12 @@
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿7.81<br><small>เป้าเฉลี่ย Analyst</small></span>
+
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน ฿7.65 อยู่สูงกว่า Fair Value ฿7.63 เล็กน้อยมาก (~0.3%) — ใกล้เคียงมูลค่าที่ควรจะเป็นแล้ว ไม่ถูกและไม่แพง • ไม่มีนักวิเคราะห์สถาบันติดตามอย่างเป็นทางการ (small-cap, สภาพคล่องซื้อขายต่ำ) จึงใช้ค่าเฉลี่ยจากวิธี P/E เป็นตัวแทนเป้าหมายในกราฟ • โซน MOS 20% ที่ ฿6.10 และ MOS 30% ที่ ฿5.34 เป็นระดับที่น่าสนใจสำหรับการทยอยสะสมเพิ่มหากราคาปรับฐาน
+        ราคาปัจจุบัน {{rd:px}} อยู่สูงกว่า Fair Value {{rd:fv}} ({{rd:mos}}) — ราคาตลาดตีมูลค่าไว้เต็มแล้วเมื่อเทียบกับ EPS TTM • ไม่มีนักวิเคราะห์สถาบันติดตาม (small-cap, สภาพคล่องซื้อขายต่ำ) จึงไม่มีเป้านักวิเคราะห์และไม่ใช้เป็นขา FV • โซน MOS 20% ที่ {{rd:mos20}} และ MOS 30% ที่ {{rd:mos30}} เป็นระดับที่น่าสนใจสำหรับการทยอยสะสมหากราคาปรับฐาน
       </p>
     </div>
   </section>
@@ -208,7 +204,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">ราคาปัจจุบันต่ำกว่า Fair Value ~6.9% — เริ่มมี MOS แต่ยังไม่ถึงเกณฑ์ 10% ของนักลงทุนสาย value แต่มีปันผลสูง ~6.54% ช่วยชดเชยระหว่างรอ</div>
+        <div class="txt">ราคาปัจจุบัน {{rd:px}} สูงกว่า Fair Value {{rd:fv}} — ยังไม่มีส่วนต่างบวกให้ ส่วนปันผลที่จ่ายอยู่ให้ผลตอบแทนราว 7.14% ช่วยชดเชยระหว่างรอ (payout ~89% ของ EPS TTM จึงมีความเสี่ยงถูกปรับลด)</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -235,7 +231,7 @@
           <div class="tgt">{{rd:sc1tgt}}</div>
           <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿0.59</span></li>
+            <li><span>EPS ปี 3</span><span>~฿0.47</span></li>
             <li><span>P/E ออก</span><span>8x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>รายได้ส่งออกหดตัว ค่าเงินบาทแข็ง กดกำไรต่อเนื่อง</span></li>
@@ -248,7 +244,7 @@
           <div class="tgt">{{rd:sc2tgt}}</div>
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿0.75</span></li>
+            <li><span>EPS ปี 3</span><span>~฿0.59</span></li>
             <li><span>P/E ออก</span><span>11x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>รายได้ทรงตัว-โตช้า อุปสงค์เลนส์แว่นตาโลกยังสม่ำเสมอ</span></li>
@@ -261,8 +257,8 @@
           <div class="tgt">{{rd:sc3tgt}}</div>
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿0.89</span></li>
-            <li><span>P/E ออก</span><span>13x</span></li>
+            <li><span>EPS ปี 3</span><span>~฿0.71</span></li>
+            <li><span>P/E ออก</span><span>12x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>ออเดอร์ส่งออกฟื้นตัว ขยายกำลังผลิต margin ดีขึ้นจากผลิตภัณฑ์มูลค่าสูง (progressive/photochromic)</span></li>
           </ul>
@@ -270,7 +266,7 @@
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      ผลตอบแทนอ้างอิงราคาซื้อ ฿7.65 • EPS ฐาน ฿0.71 อิงจาก P/E 10.70x ที่ราคาตลาด • ปันผลประมาณการอิงนโยบาย payout ~60–65% ของกำไรสุทธิ ปรับตามการเติบโตของ EPS แต่ละสถานการณ์ • Base case สมมติรายได้ส่งออกทรงตัว-โตเล็กน้อยตามอุปสงค์เลนส์แว่นตาโลกที่มีความยืดหยุ่นต่อวัฏจักรเศรษฐกิจต่ำ • ความเสี่ยงหลักคือค่าเงินบาทแข็งค่าและต้นทุนวัตถุดิบ/พลังงานที่ผันผวน
+      ผลตอบแทนอ้างอิงจุดเข้า {{rd:px}} • EPS ฐาน ฿0.56 (TTM) • P/E ออก 11x ของ Base = มัธยฐาน 5 ปีของ TOG เอง (Bull 12x = ขอบบนของช่วงประวัติ 10.6–12.1x) ไม่ใช่ P/E ปัจจุบัน • ปันผลสมมติ ฿0.50/หุ้น/ปีคงที่ใน Base (payout สูง ~89% ของ EPS TTM) และลดลงใน Bear • Base case สมมติรายได้ส่งออกทรงตัว-โตเล็กน้อยตามอุปสงค์เลนส์แว่นตาโลกที่มีความยืดหยุ่นต่อวัฏจักรเศรษฐกิจต่ำ • ความเสี่ยงหลักคือค่าเงินบาทแข็งค่าและต้นทุนวัตถุดิบ/พลังงานที่ผันผวน
     </p>
   </section>
 
@@ -281,20 +277,20 @@
       <div class="box cat">
         <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
         <ul>
-          <li><b>เงินปันผลสูงสม่ำเสมอ:</b> Yield ~6.54% พร้อม payout ratio ~62.9% ของกำไร ให้ผลตอบแทนเงินสดที่น่าสนใจระหว่างรอการฟื้นตัวของราคา</li>
+          <li><b>เงินปันผลสูงสม่ำเสมอ:</b> Yield ~7.14% (DPS ฿0.50) และ FCF FY2568 ~฿288 ล้าน ครอบคลุมเงินปันผลรวม ~฿237 ล้าน ให้ผลตอบแทนเงินสดที่น่าสนใจระหว่างรอการฟื้นตัว</li>
           <li><b>ฐานลูกค้ากระจายทั่วโลก:</b> ส่งออกผ่านบริษัทย่อยในอเมริกาเหนือ ยุโรป และเอเชียแปซิฟิก ลดความเสี่ยงจากการพึ่งพาตลาดใดตลาดหนึ่ง</li>
           <li><b>อุปสงค์เลนส์แว่นตาที่ยืดหยุ่นต่อวัฏจักรเศรษฐกิจ:</b> สายตาผิดปกติเป็นความจำเป็นพื้นฐาน ทำให้ demand ค่อนข้างสม่ำเสมอไม่ผันผวนตามวัฏจักรเศรษฐกิจโลกมากนัก</li>
-          <li><b>งบดุลแข็งแรง:</b> Debt/Equity เพียง 0.57x และ Current ratio 1.68x ให้ความยืดหยุ่นทางการเงินสูง รองรับการลงทุนขยายกำลังผลิตหรือจ่ายปันผลต่อเนื่อง</li>
+          <li><b>งบดุลยังบริหารได้:</b> Debt/Equity 0.66x (หนี้ ~฿1,585 ล้าน เทียบเงินสด ~฿124 ล้าน) ยังไม่สูงจนเกินรับ แต่หนี้เพิ่มขึ้นจาก ~฿661 ล้านใน FY2565 — ต้องติดตามต่อ</li>
           <li><b>โอกาสขยับไปผลิตภัณฑ์มูลค่าสูง:</b> เลนส์ progressive และ photochromic มี margin สูงกว่าเลนส์ single-vision ทั่วไป หากสัดส่วนเพิ่มขึ้นจะช่วยหนุน gross margin</li>
         </ul>
       </div>
       <div class="box risk">
         <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
         <ul>
-          <li><b>กำไรหดตัวต่อเนื่อง:</b> กำไรสุทธิ TTM ลดลง −15.1% YoY และ EPS ลดจาก ฿0.90 (FY2566) เหลือ ฿0.71 — ROE ลดจาก 19.6% เหลือ 13.5% ในช่วงเดียวกัน</li>
+          <li><b>กำไรหดตัวต่อเนื่อง:</b> กำไรสุทธิ TTM ~฿266 ล้าน ต่ำกว่า FY2568 (~฿334 ล้าน) และ FY2566 (~฿426 ล้าน) EPS ลดจาก ฿0.90 (FY2566) เหลือ ฿0.56 — ROE ลดจาก 19.6% เหลือ 11.2% และปันผล ฿0.50 คิดเป็น ~89% ของ EPS TTM จึงเสี่ยงถูกปรับลด</li>
           <li><b>ค่าเงินบาทแข็ง:</b> รายได้ส่วนใหญ่มาจากการส่งออก การแข็งค่าของเงินบาทกระทบรายได้และกำไรเมื่อแปลงกลับเป็นบาท</li>
-          <li><b>รายได้เติบโตชะลอตัว:</b> รายได้ TTM โต +1.2% YoY เท่านั้น ชะลอลงมากจากช่วงก่อนหน้า สะท้อนภาวะตลาดเลนส์แว่นตาโลกที่เริ่มอิ่มตัวหรือแข่งขันสูงขึ้น</li>
-          <li><b>สภาพคล่องการซื้อขายต่ำ:</b> เป็นหุ้น small-cap ไม่มีนักวิเคราะห์สถาบันติดตามอย่างเป็นทางการ ปริมาณซื้อขายรายวันต่ำ (~1 แสนหุ้น) ทำให้ราคาผันผวนง่ายจากคำสั่งซื้อขายขนาดเล็ก</li>
+          <li><b>รายได้เติบโตชะลอตัว:</b> รายได้ TTM โต +2.3% YoY เท่านั้น ชะลอลงมากจากช่วงก่อนหน้า สะท้อนภาวะตลาดเลนส์แว่นตาโลกที่เริ่มอิ่มตัวหรือแข่งขันสูงขึ้น</li>
+          <li><b>สภาพคล่องการซื้อขายต่ำ:</b> เป็นหุ้น small-cap ไม่มีนักวิเคราะห์สถาบันติดตามอย่างเป็นทางการ ปริมาณซื้อขายค่อนข้างต่ำ ทำให้ราคาผันผวนง่ายจากคำสั่งซื้อขายขนาดเล็ก</li>
           <li><b>การแข่งขันจากผู้ผลิตต่างชาติ:</b> คู่แข่งจากจีนและประเทศต้นทุนต่ำอื่นอาจกดดันราคาขายและส่วนแบ่งตลาดในระยะยาว</li>
           <li><b>ต้นทุนวัตถุดิบ/พลังงานผันผวน:</b> วัตถุดิบพลาสติกและแก้วสำหรับเลนส์รวมถึงต้นทุนพลังงานในการผลิตและเคลือบผิว อาจผันผวนตามราคาน้ำมันและปิโตรเคมี</li>
         </ul>
@@ -306,15 +302,15 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>TOG: ผู้ผลิตเลนส์แว่นตาส่งออกที่มั่นคง ปันผลสูง แต่กำไรกำลังอ่อนตัว — MOS จำกัด เหมาะกับนักลงทุนสาย Dividend</h2>
-      <p>ไทยออพติคอล กรุ๊ป เป็นผู้ผลิตและส่งออกเลนส์แว่นตา (ทั้งพลาสติกและแก้ว) รายใหญ่ของไทย ด้วยฐานลูกค้ากระจายทั่วโลกผ่านบริษัทย่อยในอเมริกาเหนือ ยุโรป และเอเชียแปซิฟิก งบดุลแข็งแรง (D/E 0.57x) และจ่ายปันผลสม่ำเสมอในระดับสูง ~6.54% แต่ในรอบปีที่ผ่านมากำไรสุทธิหดตัว −15.1% และ ROE ลดลงจาก 19.6% เหลือ 13.5% ตามรายได้ที่เติบโตชะลอตัวเหลือเพียง +1.2% • ราคาปัจจุบัน ฿7.65 ใกล้เคียงกับ Fair Value เฉลี่ย ฿7.63 มาก (MOS ~0.3%) ทำให้ส่วนเผื่อความปลอดภัยแทบไม่เหลือ แต่ปันผลสูงช่วยชดเชยความเสี่ยงด้านราคาได้ในระดับหนึ่ง</p>
+      <h2>TOG: ผู้ผลิตเลนส์แว่นตาส่งออกที่มั่นคง ปันผลสูง แต่กำไรกำลังอ่อนตัว — ราคาสูงกว่า FV เหมาะเฉพาะสาย Dividend</h2>
+      <p>ไทยออพติคอล กรุ๊ป เป็นผู้ผลิตและส่งออกเลนส์แว่นตา (ทั้งพลาสติกและแก้ว) รายใหญ่ของไทย ด้วยฐานลูกค้ากระจายทั่วโลกผ่านบริษัทย่อยในอเมริกาเหนือ ยุโรป และเอเชียแปซิฟิก งบดุลอยู่ในระดับรับได้ (D/E 0.66x) และจ่ายปันผลสม่ำเสมอในระดับสูง ~7.14% แต่กำไรสุทธิ TTM หดตัวต่อเนื่อง (EPS ฿0.56 จาก ฿0.90 ใน FY2566) และ ROE ลดลงจาก 19.6% เหลือ 11.2% ตามรายได้ที่เติบโตชะลอตัวเหลือเพียง +2.3% • ราคาปัจจุบัน {{rd:px}} สูงกว่า Fair Value เฉลี่ย {{rd:fv}} ({{rd:mos}}) ทำให้ไม่มีส่วนเผื่อความปลอดภัย และ FV ประเมินจากสองตระกูลที่ผูกกับกำไรปัจจุบัน — ปันผลสูงช่วยชดเชยได้ในระดับหนึ่งแต่ payout ~89% ของ EPS TTM ไม่ยั่งยืนหากกำไรไม่ฟื้น</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿7.81 (ไม่มี Analyst Coverage อย่างเป็นทางการ)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">ไม่มี (ไม่มี Analyst Coverage อย่างเป็นทางการ)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> เหมาะสำหรับนักลงทุนสาย Dividend ที่ต้องการกระแสเงินสดสม่ำเสมอ ~6-7%/ปี มากกว่าเก็งกำไรส่วนต่างราคา • รอทยอยสะสมในโซน ฿6.10–6.50 (MOS 20%+) จะให้ margin of safety ที่ดีกว่า • ติดตามผลประกอบการ Q3/2569 (คาด ส.ค. 2569) อย่างใกล้ชิดเพื่อดูสัญญาณกำไรหยุดหดตัวหรือไม่ก่อนเพิ่มน้ำหนักลงทุน
+        💡 <b>กลยุทธ์:</b> เหมาะสำหรับนักลงทุนสาย Dividend ที่ต้องการกระแสเงินสดสม่ำเสมอ ~7%/ปี มากกว่าเก็งกำไรส่วนต่างราคา • รอทยอยสะสมในโซน MOS 20% ที่ {{rd:mos20}} หรือต่ำกว่า จะให้ margin of safety ที่ดีกว่า • ติดตามผลประกอบการ Q3/2569 (คาดประกาศ ~24 พ.ย. 2569 ตาม StockAnalysis) อย่างใกล้ชิดเพื่อดูสัญญาณกำไรหยุดหดตัวหรือไม่ก่อนเพิ่มน้ำหนักลงทุน
       </div>
     </div>
   </section>
@@ -325,7 +321,7 @@
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มา: StockAnalysis.com (bkk/TOG) • Yahoo Finance (TOG.BK) • SET.or.th • Thai Optical Group Investor Relations
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 17 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 22 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
