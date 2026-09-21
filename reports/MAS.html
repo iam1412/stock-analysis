@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น Masco Corporation (MAS) — Stock Analysis Dashboard</title>
 <!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง -->
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"MAS","currency":"USD","price":68.06,"fairValue":65,"mos":-4.7,"upside":-4.5,"pe":16.8,"dividendYield":1.88,"roe":null}
+{"symbol":"MAS","currency":"USD","price":68.06,"fairValue":65,"mos":-4.7,"upside":-4.5,"pe":15.7,"dividendYield":1.88,"roe":null}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -20,9 +20,9 @@
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
     "fvLow": 54,
-    "fvHigh": 74,
-    "eps": 4.04,
-    "shares": 210000000,
+    "fvHigh": 76,
+    "eps": 4.33,
+    "shares": 196387430,
     "dps": 1.28
   },
   "theme": {
@@ -88,7 +88,7 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ $58.16 – $81.82<br>
+        กรอบ 52 สัปดาห์ $58.16 – $83.64<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, Digrin.com
       </div>
     </div>
@@ -96,22 +96,22 @@
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569 • TTM = Trailing Twelve Months</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ 21 ก.ย. 2569 • TTM = Trailing Twelve Months</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">210M shares diluted</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM $4.04 (diluted)</div></div>
-      <div class="metric"><div class="k">P/E เฉลี่ย ~4 ปี</div><div class="v">~18.1x</div><div class="d">ช่วง 16.4x – 20.1x</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">196.4M หุ้นคงเหลือ (ฐาน Market Cap)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM $4.33 (diluted)</div></div>
+      <div class="metric"><div class="k">P/E มัธยฐาน 5 ปี</div><div class="v">~17.6x</div><div class="d">ช่วง 13.8x – 37.5x (FY21–FY25)</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">N/A</div><div class="d">Equity ติดลบ (buyback-driven)</div></div>
 
-      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$858M</div><div class="d">EPS FY25 $3.86/หุ้น</div></div>
-      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$4.04</div><div class="d">FY25=$3.86 / FY24=$3.76</div></div>
-      <div class="metric"><div class="k">ROIC (TTM)</div><div class="v pos">~30.7%</div><div class="d">สูงมาก — ROE บิดเบือนจาก negative equity</div></div>
-      <div class="metric"><div class="k">FCF (TTM)</div><div class="v pos">$943M</div><div class="d">FCF yield ~5.5% บนราคาปัจจุบัน</div></div>
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$810M</div><div class="d">EPS FY25 $3.86/หุ้น</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$4.33</div><div class="d">FY25=$3.86 / FY24=$3.76</div></div>
+      <div class="metric"><div class="k">Net Margin (TTM)</div><div class="v pos">~11.6%</div><div class="d">Gross 37.2% • Operating 17.8%</div></div>
+      <div class="metric"><div class="k">FCF (TTM)</div><div class="v pos">$1,126M</div><div class="d">FCF yield ~8.4% บน Market Cap</div></div>
 
-      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~$7,679M</div><div class="d">FY25 $7,562M (-2.2% YoY)</div></div>
-      <div class="metric"><div class="k">EBITDA Margin (TTM)</div><div class="v">~16.6%</div><div class="d">EBITDA TTM $1,278M</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.88%</div><div class="d">$1.28/ปี • เพิ่มขึ้น 23 ปีติดต่อกัน</div></div>
-      <div class="metric"><div class="k">Beta</div><div class="v">1.31</div><div class="d">ผันผวนกว่าตลาดเล็กน้อย</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~$7,620M</div><div class="d">FY25 $7,562M (-3.4% YoY)</div></div>
+      <div class="metric"><div class="k">Operating Margin (TTM)</div><div class="v">~17.8%</div><div class="d">FY25 16.7% • FY24 17.4%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.88%</div><div class="d">$1.28/ปี • payout ~30% ของ EPS</div></div>
+      <div class="metric"><div class="k">หนี้สิน / เงินสด</div><div class="v">$3,493M / $548M</div><div class="d">หนี้สุทธิ ~$2,945M</div></div>
     </div>
   </section>
 
@@ -128,33 +128,30 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        MAS เปิดช่วงวิเคราะห์ที่ ~$68 (ก.ค. 68) สูงขึ้นสู่ ~$73 ใน ส.ค. ก่อนถูกกดดันจากตลาดที่อยู่อาศัยซบเซาและ tariff uncertainty ลงมาต่ำสุดที่ ~$60 ในมี.ค. 69 หลังจากนั้นฟื้นตัวแข็งแกร่งใน เม.ย.–มิ.ย. 69 ตอบรับ EPS Q1/26 ที่ดีกว่าคาด ($1.05 vs consensus $0.95) และคาดหวังการฟื้นตัวของ R&amp;R ในครึ่งหลังปี 69 ราคาปิด +19.4% รอบปีสูงกว่า Fair Value $65 อย่างมีนัยสำคัญ
+        กราฟรายเดือนเริ่มที่ ~$65 (ต.ค. 68) ทรงตัวแถว $63–66 จนสิ้นปี 68 ขึ้นแตะ ~$72 ใน ก.พ. 69 ก่อนย่อลงต่ำสุดรายเดือน ~$60 ใน มี.ค. 69 แล้วดีดกลับสูงสุด ~$81 ใน มิ.ย. 69 จากนั้นย่อลงมาปิดรายเดือนล่าสุดที่ {{rd:px}} — ปัจจุบันอยู่ใกล้ Fair Value {{rd:fv}} มากกว่าช่วงจุดสูงสุดกลางปี
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี (2 ตระกูลสมมติฐาน)</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation (Normalized)</div><div class="mdesc">EPS adj. $3.92 × P/E เป้าหมาย 19x — EPS เฉลี่ยปรับ cycle (FY23–TTM avg $3.92) คูณ P/E historical midpoint 19x (ช่วงประวัติ 16x–20x)</div></div>
-        <div class="mval">$74.48</div>
+        <div><div class="mname">1. P/E Valuation (Normalized)</div><div class="mdesc">EPS $4.33 (TTM diluted) × P/E เป้าหมาย 17.6x — 17.6x คือมัธยฐาน 5 ปีของ MAS (ราคาเฉลี่ยรายปี ÷ EPS diluted FY21–FY25: 37.5x/14.4x/13.8x/20.0x/17.6x) มาจากประวัติ ไม่ใช่จาก P/E ปัจจุบัน (~15.7x)</div></div>
+        <div class="mval">$76.21</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = $1.350 (ปันผล $1.28 × 1.055); g 5.5%, r 8.0% — ปันผลเติบโต 3yr CAGR 5.3% ใช้อัตราอนุรักษ์นิยม 5.5%; r 8.0% เหมาะกับหุ้น dividend compounder</div></div>
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = $1.350 (ปันผล $1.28 × 1.055); g 5.5%, r 8.0% — r และ g เป็นสมมติฐานของเราเอง (ไม่ใช่ค่าที่วัดจากตลาด) จึงไวต่อ r−g มาก · ตระกูลสมมติฐานอิสระจากขา P/E</div></div>
         <div class="mval">$54.02</div>
       </div>
-      <div class="vmethod">
-        <div><div class="mname">3. EV/EBITDA</div><div class="mdesc">EBITDA TTM $1,278M × 13x target multiple (historical avg 12.0x) − Net Debt $2,914M ÷ 210M shares — เหมาะสมที่สุดสำหรับ Masco เพราะ equity ติดลบ</div></div>
-        <div class="mval">$65.24</div>
-      </div>
+
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        P/E ให้ค่าสูงสุด $74 เพราะ EPS ฟื้นตัวดีและ P/E 19x ไม่แพงสำหรับธุรกิจ R&amp;R คุณภาพสูง DDM ให้ค่าต่ำสุด $54 เพราะ payout ratio ต่ำ (28%) — Masco เน้น buyback มากกว่าปันผล EV/EBITDA กลาง $65 น่าเชื่อถือที่สุดเพราะไม่ขึ้นกับ book equity ที่ถูกบิดเบือนจาก aggressive buyback Fair Value เฉลี่ย $65 แสดงว่าราคาปัจจุบัน $81.37 ซื้อขายที่ premium ~25% เหนือมูลค่าเหมาะสม
+        รอบนี้ตัดขา EV/EBITDA เดิมออก (ตัวคูณ 13x ไม่มีมัธยฐานที่วัดได้รองรับ และ EBITDA ตรวจซ้ำไม่ได้จากข้อมูลรอบนี้) และไม่ใช้เป้านักวิเคราะห์เป็นขา — เหลือ 2 ตระกูล: P/E ที่ยึดมัธยฐานประวัติ (ค่าสูงกว่า) กับ DDM ที่พึ่งสมมติฐาน r/g (ค่าต่ำกว่า) สองขาห่างกันราว 1.4 เท่า จึงเฉลี่ยได้ตามกฎ ความไวของ MOS: ถ้าใช้ขา P/E เดี่ยว ๆ ราคาจะต่ำกว่ามูลค่าประมาณ 11% แต่ถ้าใช้ DDM เดี่ยว ๆ ราคาจะสูงกว่ามูลค่าประมาณ 26% ⇒ ข้อสรุปว่า "ใกล้มูลค่าเหมาะสม" ขึ้นกับการถ่วงสองตระกูลนี้ ราคาปัจจุบัน {{rd:px}} อยู่เหนือ Fair Value {{rd:fv}} เล็กน้อย ({{rd:mos}})
       </p>
     </div>
   </section>
@@ -173,11 +170,11 @@
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
-          <span style="text-align:right">$81<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$80<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน $81.37 อยู่สูงกว่า Fair Value $65 ประมาณ 25% และเกือบถึงเป้านักวิเคราะห์ $81 (consensus 20 คน) ราคาสะท้อน optimism เรื่องการฟื้นตัวของ R&amp;R และผลงาน Q1/26 ที่ดีกว่าคาด สำหรับนักลงทุน Value โซนน่าสนใจเริ่มต่ำกว่า $65 และโซน MOS 20% ที่ $52
+        ราคาปัจจุบัน {{rd:px}} อยู่เหนือ Fair Value {{rd:fv}} เล็กน้อย ({{rd:mos}}) และต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ ~$80 (18 คน, consensus Buy — ใช้เป็นบริบทเท่านั้น ไม่ได้เป็นขาของ FV) สำหรับนักลงทุน Value โซนน่าสนใจเริ่มที่ Fair Value {{rd:fv}} ลงมา และโซน MOS 20% ที่ {{rd:mos20}}
       </p>
     </div>
   </section>
@@ -188,7 +185,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">ราคาแพงกว่ามูลค่าเหมาะสม — ยังไม่มี MOS ณ ราคาปัจจุบัน</div>
+        <div class="txt">ราคาสูงกว่ามูลค่าเหมาะสมเล็กน้อย — ยังไม่มี MOS ณ ราคาปัจจุบัน</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -207,17 +204,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $81.37 • EPS ฐาน ~$4.04 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~$4.33 • ยังไม่รวมปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS -3%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$62.77</div>
-          <div class="ret neg">-21.4%</div>
+          <div class="tgt">$55.33</div>
+          <div class="ret neg">-18.7%</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$3.68</span></li>
-            <li><span>P/E ออก</span><span>16x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$3.96</span></li>
+            <li><span>EPS ปี 3</span><span>~$3.95</span></li>
+            <li><span>P/E ออก</span><span>14x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$3.84</span></li>
             <li><span>สถานการณ์</span><span>R&amp;R ซบเซา อัตราดอกเบี้ยสูงนาน housing starts ต่ำ</span></li>
           </ul>
         </div>
@@ -225,12 +222,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$88.29</div>
-          <div class="ret pos">+8.5%</div>
+          <div class="tgt">$88.18</div>
+          <div class="ret pos">+29.6%</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$4.67</span></li>
-            <li><span>P/E ออก</span><span>18x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$4.05</span></li>
+            <li><span>EPS ปี 3</span><span>~$5.01</span></li>
+            <li><span>P/E ออก</span><span>17.6x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$4.27</span></li>
             <li><span>สถานการณ์</span><span>R&amp;R ฟื้นตัวปานกลาง อัตราดอกเบี้ยลดลง pricing power ดีขึ้น</span></li>
           </ul>
         </div>
@@ -238,19 +235,19 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +9%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$108.22</div>
-          <div class="ret pos">+33.0%</div>
+          <div class="tgt">$112.20</div>
+          <div class="ret pos">+64.9%</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$5.22</span></li>
+            <li><span>EPS ปี 3</span><span>~$5.61</span></li>
             <li><span>P/E ออก</span><span>20x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$4.26</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$4.48</span></li>
             <li><span>สถานการณ์</span><span>R&amp;R boom, Behr/Delta market share gains, Hansgrohe ขยายตลาดเอเชีย</span></li>
           </ul>
         </div>
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      Base case ให้ผลตอบแทน +8.5% ใน 3 ปี (~2.8%/ปี) ซึ่งต่ำกว่าที่คาดสำหรับหุ้นที่มี beta 1.31 เนื่องจากราคาเริ่มต้นสูงกว่า fair value ผลตอบแทนหลักมาจากการขยาย EPS ผ่าน buyback (3-5%/ปี) + ปันผล ~1.57%/ปี Bull case ต้องอาศัยการฟื้นตัวของตลาดที่อยู่อาศัยอย่างชัดเจนและ P/E expansion กลับ 20x+ หมายเหตุ: ROIC 30.7% สะท้อนคุณภาพธุรกิจชั้น 1 แต่ราคาปัจจุบัน discount ไว้แล้ว
+      Base case ให้ผลตอบแทน +29.6% ใน 3 ปี (~9.0%/ปี ไม่รวมปันผล) โดย EPS โต 5%/ปี (buyback ลด share count: หุ้นถัวเฉลี่ย diluted 232M ใน FY22 เหลือ 205M ใน TTM) แล้วออกที่ P/E 17.6x (มัธยฐานประวัติ) — ราคาเป้าเป็นสมมติฐาน ผลตอบแทนคำนวณจากจุดเข้าราคาปัจจุบัน Bear ใช้ P/E 14x (ใกล้จุดต่ำสุดในประวัติ 13.8x) และ EPS ลดลง Bull ต้องอาศัยตลาดที่อยู่อาศัยฟื้นชัดเจนและ P/E กลับไป 20x (สูงสุดของช่วงปกติ FY23–FY25)
     </p>
   </section>
 
@@ -263,9 +260,9 @@
         <ul>
           <li><b>R&amp;R Cycle ฟื้นตัว:</b> อัตราดอกเบี้ยที่ลดลงจะกระตุ้น home equity borrowing และการลงทุน Repair &amp; Remodel ซึ่งเป็น 80%+ ของรายได้ Masco โดดเดี่ยวจาก new construction ที่ผันผวนมากกว่า</li>
           <li><b>Behr Paint &amp; Delta Pricing Power:</b> แบรนด์ชั้น 1 ทั้งคู่ มีส่วนแบ่งตลาดสูงใน Big-box retail ผ่าน exclusive distribution ทำให้ปรับราคาได้ง่ายกว่าคู่แข่ง</li>
-          <li><b>Hansgrohe Premium Expansion:</b> ยุโรปและเอเชีย-แปซิฟิกเปิดรับสินค้า premium bath/kitchen ราคาสูง Hansgrohe เป็นแบรนด์ German luxury ที่ Masco ถือ 78% stake</li>
-          <li><b>Share Buyback Engine:</b> FCF $943M/ปี หนุน buyback ต่อเนื่อง (ลด share count ~3-5%/ปี) เพิ่ม EPS per share แม้รายได้ทรงตัว เป็น value creation สม่ำเสมอ</li>
-          <li><b>Margin Recovery:</b> EBITDA margin ฟื้นตัวใน FY2026 (Q1 gross margin 36%+ vs 35% ปีก่อน) จากต้นทุน commodity ที่ลดลงและ efficiency improvement</li>
+          <li><b>Hansgrohe Premium Expansion:</b> ยุโรปและเอเชีย-แปซิฟิกเปิดรับสินค้า premium bath/kitchen ราคาสูง Hansgrohe เป็นแบรนด์ German luxury ในกลุ่ม Masco</li>
+          <li><b>Share Buyback Engine:</b> FCF TTM $1,126M หนุน buyback ต่อเนื่อง (หุ้นถัวเฉลี่ย diluted 232M ใน FY22 → 205M ใน TTM) เพิ่ม EPS per share แม้รายได้ทรงตัว</li>
+          <li><b>Margin Recovery:</b> Gross margin TTM 37.2% เทียบ FY25 35.7% และ FY24 36.3% — Operating margin TTM 17.8% เทียบ FY25 16.7% แสดงแนวโน้มปรับตัวดีขึ้น</li>
         </ul>
       </div>
       <div class="box risk">
@@ -273,8 +270,8 @@
         <ul>
           <li><b>Housing Market Sensitivity:</b> แม้ R&amp;R ผันผวนน้อยกว่า new construction แต่ยังคงอ่อนไหวต่ออัตราดอกเบี้ยสูง ถ้า Fed ไม่ลด rate ในปี 2026 R&amp;R spend อาจชะลอตัว</li>
           <li><b>Tariff &amp; Supply Chain:</b> Masco นำเข้าวัตถุดิบและสินค้าจากจีน tariff ใหม่ 25%+ อาจกดดัน gross margin โดยเฉพาะ Liberty Hardware ที่ผลิตในเอเชียเป็นหลัก</li>
-          <li><b>Negative Equity &amp; Leverage:</b> Total debt $3.3B เทียบ equity ติดลบ ($-186M FY25) Net debt/EBITDA ~2.3x ยังจัดการได้แต่จำกัด financial flexibility ในภาวะดอกเบี้ยสูง</li>
-          <li><b>Valuation Premium Risk:</b> ราคาปัจจุบัน EV/EBITDA 15.6x เหนือค่าเฉลี่ยประวัติ 12x มาก ความผิดหวังในผลประกอบการหรือ R&amp;R outlook อาจทำให้ multiple compress รุนแรง</li>
+          <li><b>Negative Equity &amp; Leverage:</b> Total debt TTM $3,493M เทียบเงินสด $548M (หนี้สุทธิ ~$2,945M) และ equity ติดลบ ยังจัดการได้ด้วย FCF แต่จำกัด financial flexibility ในภาวะดอกเบี้ยสูง</li>
+          <li><b>Multiple &amp; Assumption Risk:</b> ขา P/E ยึดมัธยฐาน 17.6x ที่กว้างมาก (13.8x–37.5x) และขา DDM ไวต่อ r−g — ถ้า multiple ย่อเข้าหาจุดต่ำ 13.8x หรือกำไรผิดคาด FV จะต่ำลงมาก</li>
           <li><b>Competition from Private Label:</b> Behr Paint เผชิญการแข่งขันจาก Sherwin-Williams และ brand ส่วนตัวของ retailer ส่วนแบ่งตลาดอาจถูกกัดกินหากเศรษฐกิจชะลอ</li>
         </ul>
       </div>
@@ -285,15 +282,15 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>คุณภาพสูง แต่ราคาแพงกว่ามูลค่าเหมาะสม — รอโซน $65 ก่อนเข้าซื้อ</h2>
-      <p>Masco Corporation เป็นธุรกิจ Repair &amp; Remodel ชั้นนำที่มีแบรนด์แข็งแกร่ง (Delta, Behr, Hansgrohe) ROIC 30.7% และ FCF ที่แข็งแกร่ง $943M/ปี สะท้อนคุณภาพธุรกิจชั้น 1 อย่างไรก็ดี ราคาปัจจุบัน $81.37 อยู่เหนือ Fair Value $65 ประมาณ 25% โดย EV/EBITDA TTM 15.6x สูงกว่า historical average 12x มาก บ่งชี้ว่าตลาดได้ price in การฟื้นตัวของ R&amp;R ไว้แล้ว ผู้ถือหุ้นเดิม hold ต่อไปได้ แต่สำหรับนักลงทุนใหม่ควรรอโซน Fair Value $65 หรือต่ำกว่าเพื่อ upside ที่เหมาะสม</p>
+      <h2>คุณภาพสูง ราคาใกล้มูลค่าเหมาะสม — รอโซน MOS 20% ก่อนเพิ่มน้ำหนัก</h2>
+      <p>Masco Corporation เป็นธุรกิจ Repair &amp; Remodel ชั้นนำที่มีแบรนด์แข็งแกร่ง (Delta, Behr, Hansgrohe) มี FCF TTM $1,126M และ operating margin 17.8% ราคาปัจจุบัน {{rd:px}} อยู่เหนือ Fair Value {{rd:fv}} เล็กน้อย ({{rd:mos}}) ซึ่งอยู่ในย่านความคลาดเคลื่อนของการประเมิน (ขา P/E และ DDM ห่างกัน) ผู้ถือหุ้นเดิม hold ต่อไปได้ ส่วนนักลงทุนใหม่ควรรอโซน Fair Value {{rd:fv}} หรือต่ำกว่าเพื่อ MOS ที่เหมาะสม</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$81 (Buy 7/Hold 12/Sell 1)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$80 (18 คน, consensus Buy)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> Hold ถ้าถือไว้แล้ว — Masco เป็น dividend compounder (23 ปีติดต่อกัน) + buyback machine คุณภาพสูง สำหรับนักลงทุนใหม่รอโซน $65–$68 (Fair Value) หรือ $52 (MOS 20%) ที่จะให้ upside และ MOS เพียงพอ หากตลาดที่อยู่อาศัยฟื้นหรือ Fed ลด rate หุ้นอาจ re-rate สูงขึ้นได้ แต่จาก $81 upside จำกัด risk/reward ไม่คุ้ม
+        💡 <b>กลยุทธ์:</b> Hold ถ้าถือไว้แล้ว — Masco เป็น buyback machine คุณภาพสูงที่จ่ายปันผลต่อเนื่อง สำหรับนักลงทุนใหม่รอโซน Fair Value {{rd:fv}} หรือ MOS 20% ที่ {{rd:mos20}} ที่จะให้ MOS เพียงพอ หากตลาดที่อยู่อาศัยฟื้นหรือดอกเบี้ยลดลง หุ้นอาจ re-rate สูงขึ้นได้ แต่ ณ ราคาปัจจุบัน upside ต่อ FV ยังจำกัด
       </div>
     </div>
   </section>
@@ -305,7 +302,7 @@
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
     แหล่งข้อมูล: Yahoo Finance finance.yahoo.com/quote/MAS, StockAnalysis.com stockanalysis.com/stocks/mas, Digrin.com digrin.com/stocks/detail/MAS, StockAnalysis Ratios stockanalysis.com/stocks/mas/financials/ratios
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 30 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
