@@ -8,33 +8,33 @@
 <meta name="ai-model" content="Claude Sonnet 5">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"RATCH","currency":"THB","price":38.5,"fairValue":31.6,"mos":-21.8,"upside":-17.9,"pe":13.5,"dividendYield":4.2,"roe":6.4}
+{"symbol":"RATCH","currency":"THB","price":38,"fairValue":28.4,"mos":-33.8,"upside":-25.3,"pe":14.8,"dividendYield":4.2,"roe":6.1}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 31.6,
+  "fv": 28.4,
   "values": {
-    "px": 38.5,
-    "priceDate": "2026-09-18",
+    "px": 38,
+    "priceDate": "2026-09-21",
     "dateEra": "CE",
     "chgSuffix": "รอบปี",
-    "fvLow": 29.8,
-    "fvHigh": 33.5,
-    "shares": 2170000000,
+    "fvLow": 26.9,
+    "fvHigh": 29.8,
+    "shares": 2175000000,
     "dps": 1.6,
-    "baseEps": 2.86,
+    "baseEps": 2.56,
     "scenarios": [
       {
-        "tgt": 23.5,
+        "tgt": 21,
         "div": 4.8
       },
       {
-        "tgt": 34.5,
+        "tgt": 29.4,
         "div": 4.8
       },
       {
-        "tgt": 41,
+        "tgt": 36.6,
         "div": 5.2
       }
     ],
@@ -70,7 +70,7 @@
       ["มิ.ย.26", 31.5],
       ["ก.ค.26", 38.5],
       ["ส.ค.26", 38.5],
-      ["ก.ย.26", 38.5]
+      ["ก.ย.26", 38]
     ],
     "min": 25,
     "max": 40,
@@ -81,7 +81,7 @@
     "dataFmt": "d[1].toFixed(2)"
   },
   "gauge": {
-    "min": 20,
+    "min": 17,
     "max": 43,
     "fairLabelTop": "-58px"
   }
@@ -110,7 +110,7 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ ฿25.25 – ฿39.50<br>
+        กรอบ 52 สัปดาห์ ฿25.50 – ฿39.75<br>
         ที่มา: StockAnalysis.com • SET • Yahoo Finance
       </div>
     </div>
@@ -118,26 +118,26 @@
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ FY2025 + ล่าสุด Q1/2026</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ FY2025 + TTM ล่าสุด</div></div>
     <!-- ✏️ ปรับการ์ด metric ให้เหมาะกับหุ้น/เซกเตอร์ได้อิสระ — gate ไม่บังคับชุด metric (เปลี่ยน label / สลับ / เพิ่ม-ลดการ์ดได้)
          • คงป้าย "P/E (TTM)", "P/BV", "เงินปันผล", "ROE" ไว้ถ้าหุ้นมีจริง → W10 cross-check กับ stock-meta · ไม่มี (ขาดทุน/ไม่ปันผล) = ตัดการ์ดออก + ตั้ง stock-meta เป็น null
          • ธนาคาร → NIM / NPL / CASA / Loan growth / Cost-to-income   • REIT/กองอสังหา → Occupancy / DPU / NAV / Gearing   • ประกัน → Combined ratio / EV
          • หุ้นเติบโต-ขาดทุน → Revenue growth / Gross margin / FCF / Cash runway (ตัด P/E ออก) -->
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">฿83.5 พันล้าน</div><div class="d">หุ้น ~2.17 พันล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~13.5x</div><div class="d">ราคา ฿39.25 / EPS ฿2.86</div></div>
-      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~10–11x</div><div class="d">กรอบ ~9–13x ตามวัฏจักร</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">~0.79x</div><div class="d">ต่ำกว่า 1 เท่า — ซื้อขายต่ำกว่าทุน</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿82.5 พันล้าน</div><div class="d">หุ้น ~2.17 พันล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~14.8x</div><div class="d">ราคา ฿38.00 / EPS ฿2.56</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~10.5x (มัธยฐาน)</div><div class="d">กรอบ ~8–15x ตามวัฏจักร (FY2021–25)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~0.82x</div><div class="d">ต่ำกว่า 1 เท่า — ซื้อขายต่ำกว่าทุน</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">฿6.22 พันล้าน</div><div class="d">+1.5% YoY (รายได้ −21%)</div></div>
-      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿2.86</div><div class="d">FY2025 (จาก ฿2.82 ปีก่อน)</div></div>
-      <div class="metric"><div class="k">BVPS</div><div class="v">~฿45.6</div><div class="d">ส่วนผู้ถือหุ้นหลัก Q1/2026</div></div>
-      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~6.4% / ~2%</div><div class="d">ต่ำ — ทุนหนัก + ดอกเบี้ยจ่ายสูง</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿2.56</div><div class="d">TTM (FY2025 ฿2.86)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿46.3</div><div class="d">StockAnalysis ล่าสุด</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~6.1% / ~2%</div><div class="d">ต่ำ — ทุนหนัก + ดอกเบี้ยจ่ายสูง</div></div>
 
-      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿24.5 พันล้าน</div><div class="d">FY2025 (−21% จากฐานสูงปีก่อน)</div></div>
-      <div class="metric"><div class="k">อัตรากำไรสุทธิ</div><div class="v">~25%</div><div class="d">รวมส่วนแบ่งกำไรบริษัทร่วม</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿34.1 พันล้าน</div><div class="d">TTM (FY2025 ฿24.5 พันล้าน −21%)</div></div>
+      <div class="metric"><div class="k">อัตรากำไรสุทธิ</div><div class="v">~16%</div><div class="d">TTM (FY2025 ~25%) รวมส่วนแบ่งกำไรบริษัทร่วม</div></div>
       <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">฿1.60/หุ้น/ปี • จ่ายปีละ 2 ครั้ง</div></div>
-      <div class="metric"><div class="k">Payout Ratio</div><div class="v">~56%</div><div class="d">฿1.60 / EPS ฿2.86</div></div>
+      <div class="metric"><div class="k">Payout Ratio</div><div class="v">~63%</div><div class="d">฿1.60 / EPS ฿2.56</div></div>
     </div>
   </section>
 
@@ -155,36 +155,33 @@
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
         <!-- ✏️ บรรยายการเคลื่อนไหวราคา ~1 ปี: จุดสูง/ต่ำ, เปลี่ยนแปลง %, สาเหตุหลัก -->
-        ราคาแตะจุดต่ำสุดรอบปีที่ ~฿25.25 (ก.ย. 2025) ช่วงตลาดกังวลรายได้ที่หดตัวจากฐานสูงและภาระดอกเบี้ย จากนั้นฟื้นตัวแรงตามภาพปันผลที่มั่นคงและ COD ของโครงการใหม่ พักฐานสั้น ๆ ในกรอบ ฿29–31 ช่วงต้นปี ก่อนพุ่งขึ้นแรงในเดือน ก.ค. 2026 แตะจุดสูงสุดรอบปีใหม่ที่ ~฿39.25 ปัจจุบัน ฿39.25 — เพิ่มขึ้น ~+55% จากจุดต่ำสุดรอบปี และอยู่ใกล้ขอบบนของช่วง 52 สัปดาห์ (฿25.25–39.50) เส้นประเขียวคือมูลค่าเหมาะสมเฉลี่ย ฿31.6 ซึ่งราคาได้วิ่งแซงขึ้นไปแล้วมาก
+        ราคาแตะจุดต่ำสุดรอบปีที่ ~฿25.50 (ก.ย. 2025) ช่วงตลาดกังวลรายได้ที่หดตัวจากฐานสูงและภาระดอกเบี้ย จากนั้นฟื้นตัวแรงตามภาพปันผลที่มั่นคงและ COD ของโครงการใหม่ พักฐานสั้น ๆ ในกรอบ ฿29–31 ช่วงต้นปี ก่อนพุ่งขึ้นแรงในเดือน ก.ค. 2026 แตะจุดสูงสุดรอบปีใหม่ราว ฿39.75 (ขอบบนของช่วง 52 สัปดาห์ ฿25.50–39.75) ก่อนย่อลงมาปิดที่ {{rd:px}} ใกล้ขอบบนของกรอบ เส้นประเขียวคือมูลค่าเหมาะสมเฉลี่ย {{rd:fv}} ซึ่งราคาได้วิ่งแซงขึ้นไปแล้วมาก
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 ตระกูล</div></div>
     <div class="card">
       <!-- ✏️ เลือก ≥2 วิธีให้เหมาะกับหุ้น — gate เช็คคณิตเฉพาะวิธีชื่อ "P/E" (E21) และ "Justified P/BV" (E22) เมื่อมีวิธีนั้น
            ธนาคาร → เน้น P/BV / Residual income   • REIT → DDM / NAV   • หุ้นไม่ปันผล → ตัด DDM ออก ใช้ P/E + DCF/Justified P/BV -->
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿2.86 × P/E เป้าหมาย ~11.0x — สอดคล้องค่าเฉลี่ยในอดีตของกลุ่มสาธารณูปโภคที่จ่ายปันผลสม่ำเสมอ</div></div>
-        <div class="mval">฿31.5</div>
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿2.56 × P/E เป้าหมาย ~10.5x — มัธยฐาน P/E ย้อนหลัง 5 ปีของ RATCH เอง (FY2021–FY2025 กรอบ 8.1–15.1x วัดจากราคาเฉลี่ยรายปี ÷ EPS) มาจากประวัติ ไม่ได้อิงจาก P/E ปัจจุบัน</div></div>
+        <div class="mval">฿26.9</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿1.60 × (1+g); g 2.5%, r 8.0% → 1.64 / (8.0%−2.5%) — สะท้อนหุ้นปันผลสูงที่โตช้า (เน้นกระแสเงินสดปันผล)</div></div>
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿1.60 × (1+g); g 2.5%, r 8.0% → 1.64 / (8.0%−2.5%) — สะท้อนหุ้นปันผลสูงที่โตช้า (ปันผล ฿1.60 = DPS ล่าสุด ราว 63% ของ EPS TTM · g/r เป็นสมมติฐานของผู้วิเคราะห์)</div></div>
         <div class="mval">฿29.8</div>
       </div>
-      <div class="vmethod">
-        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 6.4% − g 2.5%)/(r 7.8% − g 2.5%) ≈ 0.736 × BVPS ฿45.6</div></div>
-        <div class="mval">฿33.5</div>
-      </div>
+      <!-- Justified P/BV ถอดออก: ใช้ (r,g) ชุดเดียวกับ DDM = เสียงเดียว -->
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <!-- ✏️ หมายเหตุ: วิธีไหนให้ค่าสูง/ต่ำเพราะอะไร, ทำไม FV กลางจึงสมเหตุสมผล -->
-        วิธี DDM ให้ค่าต่ำสุด (฿29.8) เพราะ RATCH เป็นหุ้นปันผลสูงที่อัตราเติบโตต่ำ ค่าจึงไวต่อสมมติฐาน g/r • Justified P/BV ให้ค่าสูงสุด (฿33.5) เพราะถึง ROE จะต่ำ (~6.4%) แต่ราคาซื้อขายต่ำกว่ามูลค่าทางบัญชี (P/BV ~0.79x) ทำให้มี upside ทางทฤษฎีถ้าผลตอบแทนทุนกลับมาที่ระดับ "ปกติ" • P/E (฿31.5) อยู่ตรงกลางและน่าเชื่อถือที่สุดสำหรับหุ้นที่กำไรอิงสัญญาขายไฟระยะยาว • ค่ากลางเฉลี่ย ฿31.6 จึงสมเหตุสมผล และต่ำกว่าเป้านักวิเคราะห์ ฿35.76 (แต่ต่ำกว่าราคาตลาดปัจจุบันที่ ฿39.25 มาก)
+        FV มาจาก 2 ตระกูลที่เป็นอิสระต่อกัน (ตัวคูณกำไรกับกระแสปันผล) เฉลี่ยเท่ากัน • P/E (฿26.9) ยึดมัธยฐานย้อนหลัง 10.5x ซึ่งต่ำกว่า P/E ปัจจุบัน จึงให้ค่าต่ำกว่า DDM (฿29.8) ที่ไวต่อสมมติฐาน g/r · สองขาห่างกันเพียง ~1.1 เท่า จึงเฉลี่ยได้ • ถอด Justified P/BV ออกเพราะใช้ (r,g) ชุดเดียวกับ DDM (นับเสียงเดียว) และตัวเลขของ vendor ขัดกันเอง (P/B 0.73x ไม่ตรงราคา ÷ BVPS) • เป้าเฉลี่ยนักวิเคราะห์ ฿40.81 (n=9) เป็นบริบทตรวจสอบเท่านั้น ไม่ใช่ขาของ FV • ความไว: ถ้า P/E เป้าหมายเป็น 12x แทน 10.5x FV จะเป็น ~฿30.3 (ราคาตลาดยังสูงกว่า FV นั้นอยู่ราวหนึ่งในสี่) — ผลนี้เป็นการประเมินตระกูลเดียวที่มีตัวคูณวัดจริง ควรอ่านเป็นกรอบ ไม่ใช่ตัวเลขตายตัว • ค่ากลางเฉลี่ย {{rd:fv}} ต่ำกว่าราคาตลาดปัจจุบัน {{rd:px}}
       </p>
     </div>
   </section>
@@ -203,11 +200,11 @@
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
-          <span style="text-align:right">฿35.76<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿40.81<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน ฿39.25 สูงกว่ามูลค่าเหมาะสม ฿31.6 ไปแล้ว (MOS ~ −24%) และสูงกว่าเป้าเฉลี่ยนักวิเคราะห์ ฿35.76 ไปแล้วเช่นกัน — สะท้อนว่าหุ้น "แพงกว่าพื้นฐาน" ไปมากหลังราคาวิ่งแรงในเดือน ก.ค. เสน่ห์เดิมที่ปันผล ~4.4% เจือจางลงตามราคาที่สูงขึ้น • โซนน่าสะสมเชิง value อยู่ที่ < ฿25.3 (MOS 20%) ซึ่งยังห่างจากราคาปัจจุบันมาก
+        ราคาปัจจุบัน {{rd:px}} สูงกว่ามูลค่าเหมาะสม {{rd:fv}} ไปแล้ว (MOS ~ {{rd:mos}}) แม้จะยังต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ ฿40.81 เล็กน้อย — สะท้อนว่าหุ้น "แพงกว่าพื้นฐาน" หลังราคาวิ่งแรงในเดือน ก.ค. เสน่ห์เดิมที่ปันผล ~4.2% เจือจางลงตามราคาที่สูงขึ้น • โซนน่าสะสมเชิง value อยู่ที่ < {{rd:mos20}} (MOS 20%) ซึ่งยังห่างจากราคาปัจจุบันมาก
       </p>
     </div>
   </section>
@@ -246,7 +243,7 @@
           <div class="tgt">{{rd:sc1tgt}}</div>
           <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿2.61</span></li>
+            <li><span>EPS ปี 3</span><span>~฿2.34</span></li>
             <li><span>P/E ออก</span><span>9.0x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>กำไรหด · FX/ดอกเบี้ยกดดัน</span></li>
@@ -259,8 +256,8 @@
           <div class="tgt">{{rd:sc2tgt}}</div>
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿3.13</span></li>
-            <li><span>P/E ออก</span><span>11.0x</span></li>
+            <li><span>EPS ปี 3</span><span>~฿2.80</span></li>
+            <li><span>P/E ออก</span><span>10.5x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>โครงการใหม่ COD ตามแผน</span></li>
           </ul>
@@ -272,7 +269,7 @@
           <div class="tgt">{{rd:sc3tgt}}</div>
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿3.41</span></li>
+            <li><span>EPS ปี 3</span><span>~฿3.05</span></li>
             <li><span>P/E ออก</span><span>12.0x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>M&amp;A · พลังงานหมุนเวียนเร่งโต</span></li>
@@ -281,7 +278,7 @@
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      ผลตอบแทนรวม = ส่วนต่างราคา + ปันผลสะสม 3 ปี เทียบจุดเข้า ฿39.25 • หลังราคาวิ่งขึ้นแรงจน MOS ติดลบ กรณีฐานเหลือผลตอบแทนเพียง ~+0% (ราคาเข้าที่แพงขึ้นหักล้างส่วนต่างเป้าราคาเกือบหมด เหลือแค่ปันผลราว ~12% ใน 3 ปี) และกรณี Bear ติดลบลึกถึง ~−28% เพราะ MOS ที่หายไป • จุดเด่นของ RATCH คือ "พื้น" ปันผล ~4.4%/ปี ที่ช่วยพยุงผลตอบแทนแม้ในกรณี Bear • ระวัง EPS ที่อาจผันผวนจากกำไร/ขาดทุนอัตราแลกเปลี่ยน ส่วนแบ่งกำไรบริษัทร่วม และรายการพิเศษ
+      ผลตอบแทนรวม = ส่วนต่างราคา + ปันผลสะสม 3 ปี เทียบจุดเข้า {{rd:px}} • หลังราคาวิ่งขึ้นแรงจน MOS ติดลบ กรณีฐานให้ผลตอบแทนรวม {{rd:sc2ret}} (เป้าราคาต่ำกว่าจุดเข้า ปันผลราว ~13% ใน 3 ปีช่วยชดเชยบางส่วน) และกรณี Bear {{rd:sc1ret}} เพราะ MOS ที่หายไป • จุดเด่นของ RATCH คือ "พื้น" ปันผล ~4.2%/ปี ที่ช่วยพยุงผลตอบแทนแม้ในกรณี Bear • ระวัง EPS ที่อาจผันผวนจากกำไร/ขาดทุนอัตราแลกเปลี่ยน ส่วนแบ่งกำไรบริษัทร่วม และรายการพิเศษ
     </p>
   </section>
 
@@ -292,21 +289,21 @@
       <div class="box cat">
         <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
         <ul>
-          <li><b>ปันผลสูงมั่นคง ~4.4%:</b> จ่ายปีละ 2 ครั้ง ฿1.60/หุ้น ต่อเนื่อง 3 ปี payout ~56% — เป็น "พื้น" ผลตอบแทนที่น่าสนใจในยุคดอกเบี้ยขาลง</li>
+          <li><b>ปันผลสูงมั่นคง ~4.2%:</b> จ่ายปีละ 2 ครั้ง ฿1.60/หุ้น ต่อเนื่อง 3 ปี payout ~63% — เป็น "พื้น" ผลตอบแทนที่น่าสนใจในยุคดอกเบี้ยขาลง</li>
           <li><b>กระแสเงินสดจากสัญญาขายไฟระยะยาว (PPA):</b> โรงไฟฟ้า IPP/SPP มีรายได้ค่าความพร้อมจ่ายที่คาดการณ์ได้ ลดความผันผวนของกำไรหลัก</li>
           <li><b>ขยายพอร์ตพลังงานหมุนเวียน:</b> ตั้งเป้าเพิ่มสัดส่วน renewable (ลม·แสงอาทิตย์) ทั้งในและต่างประเทศ หนุนการเติบโตระยะยาวและภาพ ESG</li>
           <li><b>พอร์ตต่างประเทศกระจายความเสี่ยง:</b> ออสเตรเลีย·ลาว·อินโดนีเซีย ช่วยลดการพึ่งพาตลาดไทยและกฎเกณฑ์ค่าไฟในประเทศ</li>
-          <li><b>ซื้อขายต่ำกว่ามูลค่าทางบัญชี (P/BV ~0.79x):</b> ส่วนเผื่อด้านสินทรัพย์ — มี upside หาก ROE ฟื้นและตลาดให้มูลค่าใกล้ทุนมากขึ้น</li>
+          <li><b>ซื้อขายต่ำกว่ามูลค่าทางบัญชี (P/BV ~0.82x):</b> ส่วนเผื่อด้านสินทรัพย์ — มี upside หาก ROE ฟื้นและตลาดให้มูลค่าใกล้ทุนมากขึ้น</li>
           <li><b>โครงการใหม่ทยอย COD:</b> กำลังการผลิตที่เพิ่มและการลงทุนโครงสร้างพื้นฐาน (น้ำ·คมนาคม·สุขภาพ) หนุนกำไรปีถัด ๆ ไป</li>
         </ul>
       </div>
       <div class="box risk">
         <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
         <ul>
-          <li><b>ROE ต่ำ (~6.4%):</b> ทุนหนักและภาระดอกเบี้ยจ่ายสูงกดผลตอบแทนต่อส่วนผู้ถือหุ้น — เป็นเหตุผลหลักที่ตลาดให้ P/BV < 1</li>
+          <li><b>ROE ต่ำ (~6.1%):</b> ทุนหนักและภาระดอกเบี้ยจ่ายสูงกดผลตอบแทนต่อส่วนผู้ถือหุ้น — เป็นเหตุผลหลักที่ตลาดให้ P/BV < 1</li>
           <li><b>กำไรผันผวนจากรายการนอกธุรกิจหลัก:</b> กำไร/ขาดทุนอัตราแลกเปลี่ยน (FX) ส่วนแบ่งกำไรบริษัทร่วม และรายการพิเศษ ทำให้ EPS แต่ละไตรมาสแกว่ง</li>
           <li><b>รายได้ FY2025 หดตัว −21%:</b> จากฐานสูงปีก่อน สะท้อนวัฏจักรโครงการ/รายได้ก่อสร้างที่ไม่สม่ำเสมอ</li>
-          <li><b>ความเสี่ยงดอกเบี้ย & หนี้สูง:</b> หนี้รวม ~฿110 พันล้าน — ต้นทุนการเงินที่สูงขึ้นกระทบกำไรและความสามารถจ่ายปันผล</li>
+          <li><b>ความเสี่ยงดอกเบี้ย & หนี้สูง:</b> หนี้รวม ~฿115 พันล้าน — ต้นทุนการเงินที่สูงขึ้นกระทบกำไรและความสามารถจ่ายปันผล</li>
           <li><b>กฎเกณฑ์ค่าไฟ & นโยบายพลังงาน:</b> การเปลี่ยนแปลงโครงสร้างค่า Ft / สัญญาขายไฟ และนโยบายภาครัฐกระทบรายได้ระยะยาว</li>
           <li><b>การเติบโตต่ำ:</b> เป็นหุ้น defensive ปันผล ไม่ใช่หุ้นเติบโต — upside ส่วนต่างราคาจำกัด หากซื้อที่ราคาใกล้มูลค่าเหมาะสม</li>
         </ul>
@@ -319,14 +316,14 @@
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
       <h2>หุ้นปันผลคุณภาพ — ราคาวิ่งแซงมูลค่าเหมาะสมแล้ว เน้นถือเพื่อปันผล ไม่ใช่จังหวะเข้าใหม่</h2>
-      <p>RATCH เป็นผู้ผลิตไฟฟ้าชั้นนำที่มีกระแสเงินสดจากสัญญาขายไฟระยะยาวและพอร์ตต่างประเทศที่กระจายความเสี่ยง จุดเด่นคือปันผล ~4.4% ที่มั่นคงและราคาซื้อขายต่ำกว่ามูลค่าทางบัญชี (P/BV ~0.79x) อย่างไรก็ตาม ROE ที่ต่ำ (~6.4%) จากทุนหนักและภาระดอกเบี้ย รวมถึงการเติบโตที่ช้า ทำให้มูลค่าเหมาะสมเฉลี่ยอยู่ที่ ฿31.6 — ต่ำกว่าราคาปัจจุบันไปแล้วถึง ~24% หลังราคาปรับขึ้นแรงในเดือน ก.ค. ราคาจึงตึงตัวกว่าปัจจัยพื้นฐานไปมาก เหมาะกับผู้ถือเดิมสาย defensive ที่ต้องการกระแสปันผลสม่ำเสมอ มากกว่าผู้ที่จะเข้าซื้อใหม่หวัง capital gain</p>
+      <p>RATCH เป็นผู้ผลิตไฟฟ้าชั้นนำที่มีกระแสเงินสดจากสัญญาขายไฟระยะยาวและพอร์ตต่างประเทศที่กระจายความเสี่ยง จุดเด่นคือปันผล ~4.2% ที่มั่นคงและราคาซื้อขายต่ำกว่ามูลค่าทางบัญชี (P/BV ~0.82x) อย่างไรก็ตาม ROE ที่ต่ำ (~6.1%) จากทุนหนักและภาระดอกเบี้ย รวมถึงการเติบโตที่ช้า ทำให้มูลค่าเหมาะสมเฉลี่ยอยู่ที่ {{rd:fv}} (MOS {{rd:mos}}) — ราคาปัจจุบันสูงกว่ามูลค่าดังกล่าวมากหลังราคาปรับขึ้นแรงในเดือน ก.ค. ราคาจึงตึงตัวกว่าปัจจัยพื้นฐานไปมาก เหมาะกับผู้ถือเดิมสาย defensive ที่ต้องการกระแสปันผลสม่ำเสมอ มากกว่าผู้ที่จะเข้าซื้อใหม่หวัง capital gain</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ef5350">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿35.76 (Buy)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿40.81 (Buy)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ผู้ถือเดิมสาย dividend ถือรับ yield ~4.4% ต่อได้ • ไม่แนะนำไล่ซื้อที่ราคาปัจจุบันเพราะ MOS ติดลบแล้ว • นักลงทุนสาย value ควรรอย่อเข้าใกล้ ฿25.3–31.6 (MOS 20%–Fair Value) เพื่อส่วนเผื่อความปลอดภัยที่เหมาะสม • ไม่เหมาะกับผู้ที่หวังการเติบโตของกำไรหรือ capital gain เร็ว
+        💡 <b>กลยุทธ์:</b> ผู้ถือเดิมสาย dividend ถือรับ yield ~4.2% ต่อได้ • ไม่แนะนำไล่ซื้อที่ราคาปัจจุบันเพราะ MOS ติดลบแล้ว • นักลงทุนสาย value ควรรอย่อเข้าใกล้ {{rd:mos20}}–{{rd:fv}} (MOS 20%–Fair Value) เพื่อส่วนเผื่อความปลอดภัยที่เหมาะสม • ไม่เหมาะกับผู้ที่หวังการเติบโตของกำไรหรือ capital gain เร็ว
       </div>
     </div>
   </section>
@@ -335,9 +332,9 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มาข้อมูล: StockAnalysis.com • SET (ตลาดหลักทรัพย์ฯ) • Yahoo Finance (ข้อมูล ณ 25 ก.ค. 2026)
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มาข้อมูล: StockAnalysis.com • SET (ตลาดหลักทรัพย์ฯ) • Yahoo Finance (ข้อมูล ณ 21 ก.ย. 2026)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 25 ก.ค. 2026 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2026 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
