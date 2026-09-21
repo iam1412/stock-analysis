@@ -8,15 +8,15 @@
 <meta name="ai-model" content="Claude Sonnet 5">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"JMT","currency":"THB","price":10.6,"fairValue":11.47,"mos":7.6,"upside":8.2,"pe":16.3,"dividendYield":6.32,"roe":5.59}
+{"symbol":"JMT","currency":"THB","price":10.7,"fairValue":11.47,"mos":6.7,"upside":7.2,"pe":16.5,"dividendYield":6.26,"roe":5.59}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
   "fv": 11.47,
   "values": {
-    "px": 10.6,
-    "priceDate": "2026-09-18",
+    "px": 10.7,
+    "priceDate": "2026-09-21",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
     "fvLow": 10.4,
@@ -72,7 +72,7 @@
       ["มิ.ย.26", 11.6],
       ["ก.ค.26", 12],
       ["ส.ค.26", 11],
-      ["ก.ย.26", 10.6]
+      ["ก.ย.26", 10.7]
     ],
     "min": 8,
     "max": 13,
@@ -109,7 +109,7 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ ฿7.65 – ฿13.50<br>
+        กรอบ 52 สัปดาห์ ฿7.65 – ฿13.00<br>
         ที่มา: Yahoo Finance, Investing.com, Google Finance (cross-verified)
       </div>
     </div>
@@ -119,7 +119,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ Q1/2569 · FY2568</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿15.5B</div><div class="d">~1,461 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿15.6B</div><div class="d">~1,461 ล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM ฿0.65 · กำไรกำลังฟื้น</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~12–22x</div><div class="d">ปัจจุบัน 18x · ช่วงกลาง</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ฿18.76 · ต่ำกว่า Book</div></div>
@@ -131,7 +131,7 @@
 
       <div class="metric"><div class="k">รายได้ FY2568</div><div class="v neu">฿4,802 ล้าน</div><div class="d">ลด 12.3% YoY</div></div>
       <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~64%</div><div class="d">ธุรกิจ NPL margin สูงแต่ volatile</div></div>
-      <div class="metric"><div class="k">เงินปันผล (TTM)</div><div class="v">~6.32%</div><div class="d">฿0.67/หุ้น · จ่ายปีละ 2 ครั้ง</div></div>
+      <div class="metric"><div class="k">เงินปันผล (TTM)</div><div class="v">~6.26%</div><div class="d">฿0.67/หุ้น · จ่ายปีละ 2 ครั้ง</div></div>
       <div class="metric"><div class="k">D/E Ratio</div><div class="v pos">0.36x</div><div class="d">FY2568 · ลดลงต่อเนื่อง</div></div>
     </div>
   </section>
@@ -179,7 +179,7 @@
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/E ให้ค่าต่ำสุด (฿10.40) เพราะ EPS TTM อยู่ในจุดต่ำสุดรอบ 4 ปี · DDM (฿11.50) สะท้อน yield ที่จ่ายสม่ำเสมอ 5.8% ·
         Justified P/BV (฿12.51) สูงสุดเพราะ BVPS ฿18.76 ยังแข็งแกร่ง ราคาปัจจุบันซื้อขายต่ำกว่า Book ·
-        ค่าเฉลี่ย ฿11.47 อยู่ใกล้ราคาตลาดมาก สะท้อนว่า JMT ณ ปัจจุบัน "ราคายุติธรรม" ยังไม่ถูกพอสำหรับ margin of safety เต็มรูปแบบ ·
+        ค่าเฉลี่ย ฿{{rd:fv}} อยู่ใกล้ราคาตลาดมาก สะท้อนว่า JMT ณ ปัจจุบัน "ราคายุติธรรม" ยังไม่ถูกพอสำหรับ margin of safety เต็มรูปแบบ ·
         เป้าเฉลี่ยนักวิเคราะห์ 7 ราย = ฿10.28 (Neutral) ซึ่งต่ำกว่าราคาตลาดปัจจุบัน
       </p>
     </div>
@@ -203,8 +203,8 @@
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน ฿11.70 อยู่เหนือมูลค่าเหมาะสม ฿11.47 เพียงเล็กน้อย (~2%) บ่งชี้ว่า JMT ซื้อขายที่ระดับ "ราคายุติธรรม" ไม่ใช่โซน undervalue ·
-        โซนน่าสนใจสำหรับ value investor อยู่ที่ต่ำกว่า ฿11.47 โดยมี margin of safety เต็มที่ต้องลงไปถึง ฿9.18 (MOS 20%) หรือ ฿8.03 (MOS 30%) ·
+        ราคาปัจจุบัน ฿{{rd:px}} อยู่ต่ำกว่ามูลค่าเหมาะสม ฿{{rd:fv}} เล็กน้อย บ่งชี้ว่า JMT ซื้อขายที่ระดับ "ราคายุติธรรม" ไม่ใช่โซน undervalue ·
+        โซนน่าสนใจสำหรับ value investor อยู่ที่ต่ำกว่า ฿{{rd:fv}} โดยมี margin of safety เต็มที่ต้องลงไปถึง ฿{{rd:mos20}} (MOS 20%) หรือ ฿{{rd:mos30}} (MOS 30%) ·
         เป้านักวิเคราะห์เฉลี่ย ฿10.28 บ่งชี้ downside จากราคาปัจจุบัน สะท้อนความกังวลเรื่องกำไรระยะสั้น
       </p>
     </div>
@@ -317,9 +317,9 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>ราคายุติธรรม — รอโซนเข้าซื้อ MOS ≥ 20% ที่ ฿9.18 ลงมา</h2>
+      <h2>ราคายุติธรรม — รอโซนเข้าซื้อ MOS ≥ 20% ที่ ฿{{rd:mos20}} ลงมา</h2>
       <p>JMT เป็นผู้นำธุรกิจบริหารหนี้ NPL ของไทย มีพอร์ตหนี้สะสมขนาดใหญ่และ JK AMC เป็น pipeline รายได้ระยะยาว แต่กำไรปี 2567–2568 ถูกกดดันจากการตั้ง provision สูงและอัตราหนี้ครัวเรือนระดับสูง
-      ราคาปัจจุบัน ฿11.70 อยู่ในโซน "Fair Value" ตามโมเดล (~฿11.47 เฉลี่ย 3 วิธี) ไม่มี margin of safety เพียงพอสำหรับ value investor ·
+      ราคาปัจจุบัน ฿{{rd:px}} อยู่ในโซน "Fair Value" ตามโมเดล (~฿{{rd:fv}} เฉลี่ย 3 วิธี) ไม่มี margin of safety เพียงพอสำหรับ value investor ·
       เป้าเฉลี่ยนักวิเคราะห์ 7 รายอยู่ที่ ฿10.28 (Neutral) ต่ำกว่าราคาตลาด ·
       Dividend yield ~5.8% ที่ราคาปัจจุบันช่วยหนุน downside แต่หากต้องการ total return ดีต้องรอราคาร่วงสู่โซน ฿9–10
       </p>
@@ -329,7 +329,7 @@
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿10.28 (Neutral · 3B/1H/3S)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> รอราคาร่วงสู่ ฿9.18 ลงมา (MOS 20%) เพื่อ margin of safety ที่เหมาะสม · ถือปัจจุบัน: yield ~5.8% ชดเชยความเสี่ยง · ไม่ขายหากถือต้นทุนต่ำกว่า ฿9 · ติดตาม Q2/2569 (ส.ค. 2569) หาก EPS ฟื้นเกิน ฿0.20/ไตรมาส = สัญญาณบวก
+        💡 <b>กลยุทธ์:</b> รอราคาร่วงสู่ ฿{{rd:mos20}} ลงมา (MOS 20%) เพื่อ margin of safety ที่เหมาะสม · ถือปัจจุบัน: yield ~5.8% ชดเชยความเสี่ยง · ไม่ขายหากถือต้นทุนต่ำกว่า ฿9 · ติดตาม Q2/2569 (ส.ค. 2569) หาก EPS ฟื้นเกิน ฿0.20/ไตรมาส = สัญญาณบวก
       </div>
     </div>
   </section>
@@ -341,7 +341,7 @@
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
     แหล่งข้อมูล: (1) Yahoo Finance — JMT.BK ราคา ณ {{rd:priceDate}}, กราฟรายเดือน 1 ปี; (2) Investing.com — cross-verify ราคา ฿11.80/P/E 18x/BVPS/Analyst consensus; (3) JMT Network Services IR (jmtnetwork.co.th) — Financial Highlights FY2568, รายได้/กำไร/EPS/ROE; (4) StockAnalysis.com — รายได้/กำไร FY2021–FY2568, ประวัติปันผล; (5) AIO Panphol — งบการเงิน BVPS ฿18.76 Q1/2569
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 22 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
