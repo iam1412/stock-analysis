@@ -6,34 +6,34 @@
 <title>วิเคราะห์หุ้น Axon Enterprise (AXON) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"AXON","currency":"USD","price":447.76,"fairValue":460,"mos":2.7,"upside":2.7,"pe":64,"dividendYield":null,"roe":6.2}
+{"symbol":"AXON","currency":"USD","price":447.76,"fairValue":468,"mos":4.3,"upside":4.5,"pe":186.6,"dividendYield":null,"roe":6.2}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 460,
+  "fv": 468,
   "values": {
     "px": 447.76,
     "priceDate": "2026-09-18",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
-    "fvLow": 350,
-    "fvHigh": 545,
-    "eps": 7,
+    "fvLow": 371,
+    "fvHigh": 559,
+    "eps": 2.4,
     "shares": 81237415,
-    "bvps": 51,
-    "baseEps": 7,
+    "bvps": 45.2,
+    "baseEps": 2.4,
     "scenarios": [
       {
-        "tgt": 404.7,
+        "tgt": 334,
         "div": 0
       },
       {
-        "tgt": 586.35,
+        "tgt": 616,
         "div": 0
       },
       {
-        "tgt": 734,
+        "tgt": 872,
         "div": 0
       }
     ],
@@ -114,16 +114,16 @@
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูลราคา/งบ TTM ณ 18 ก.ย. 2569 (StockAnalysis + Yahoo) · non-GAAP adj EPS ใช้เป็นฐาน FV (SBC สูง) · GAAP TTM EPS $2.40</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูลราคา/งบ TTM ณ 18 ก.ย. 2569 (StockAnalysis + Yahoo + SEC XBRL) · GAAP TTM EPS $2.40 ถูกดันด้วยรายได้นอกการดำเนินงาน Q1 ปี 2569 · FV ใช้ P/S ไม่ใช้ EPS</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">หุ้นคงเหลือ ~81.2M (StockAnalysis)</div></div>
-      <div class="metric"><div class="k">P/E (non-GAAP, TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">adj EPS $7.00 · GAAP P/E ~186x (EPS GAAP $2.40)</div></div>
-      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~78x (GAAP)</div><div class="d">มัธยฐาน FY2022–24 (64–90x, 3 ปี · ตัด FY2025 ที่ 439x) ฐาน GAAP EPS</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">~8.8x</div><div class="d">BVPS ~$51 · ROE ต่ำเพราะ SBC</div></div>
+      <div class="metric"><div class="k">P/E (GAAP, TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS GAAP $2.40 — ถูกดันโดยรายได้นอกการดำเนินงาน Q1 ปี 2569 จึงไม่สะท้อนกำไรปกติ</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~78x (GAAP)</div><div class="d">มัธยฐาน FY2022–24 (64–90x, 3 ปี · ตัด FY2025 ที่ 439x) · ไม่ใช้เป็นขาของ FV (ปีฐานมีรายได้นอกการดำเนินงานปน)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~9.9x</div><div class="d">BVPS ~$45.2 · ROE ต่ำตามบัญชี</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">~$125M (GAAP)</div><div class="d">EPS GAAP $1.51 · TTM กำไรสุทธิ ~$199M (EPS $2.40)</div></div>
-      <div class="metric"><div class="k">EPS (non-GAAP, TTM)</div><div class="v">~$7.00</div><div class="d">GAAP EPS TTM $2.40 (SBC กดกำไร) · consensus FY2026E $7.67</div></div>
-      <div class="metric"><div class="k">BVPS</div><div class="v">~$51</div><div class="d">book value เติบโตตาม retained earnings</div></div>
+      <div class="metric"><div class="k">EPS GAAP TTM (ตัดไตรมาส Q1 ≈ $0.36)</div><div class="v">~$2.40</div><div class="d">Q1 ปี 2569 = $2.05 (รายได้นอกการดำเนินงาน $189.0M) · 3 ไตรมาสที่เหลือ ~$0.36 · ไม่ใช้เป็นฐาน FV</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$45.2</div><div class="d">ส่วนผู้ถือหุ้น $3.67B (10-Q ไตรมาส 2 ปี 2569) ÷ หุ้น 81.24M</div></div>
       <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~6.2%</div><div class="d">ROE TTM (StockAnalysis) ต่ำตามบัญชี — SBC+ลงทุนกด net income</div></div>
 
       <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$3.22B</div><div class="d">+34.6% YoY (FY2025 $2.78B, +33.5%)</div></div>
@@ -158,26 +158,22 @@
 
   <!-- ===== 3. VALUATION ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">2 ตระกูลสมมติฐาน (P/E 2 ขา นับเสียงเดียว + DCF) · non-GAAP adj EPS เป็นฐาน</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">ตระกูลเดียว (ตัวคูณรายได้ย้อนหลัง: EV/Sales + P/S นับเสียงเดียว) — เชื่อมั่นต่ำ · ไม่ใช้ EPS เพราะกำไร GAAP TTM มีรายการนอกการดำเนินงานก้อนเดียว</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation (non-GAAP TTM)</div><div class="mdesc">EPS adj. $7.00 (non-GAAP TTM) × P/E 50x — ตัวคูณนี้เป็นดุลยพินิจ ไม่ใช่มัธยฐาน: มัธยฐานที่วัดได้ 77.9x คิดบนฐาน GAAP EPS (ที่ถูก SBC กด) จึงใช้กับ adj EPS ไม่ได้ (77.9x × $7.00 = $545 นับ SBC ซ้ำ) · 50x ต่ำกว่า P/E ปัจจุบันบนฐานเดียวกัน ~64x</div></div>
-        <div class="mval">$350.00</div>
+        <div><div class="mname">1. EV/Sales (มัธยฐานย้อนหลัง × รายได้ TTM)</div><div class="mdesc">รายได้ TTM $3,219M × EV/Sales 11.9x = EV $38.2B − หนี้ $1,851M + เงินสด $693M = มูลค่าหุ้น $37.0B ÷ หุ้นคงเหลือ 81.24M — 11.9x = มัธยฐานของ EV/Sales รายปี FY2022–25 (7.7x / 9.7x / 14.0x / 19.7x = (ราคาเฉลี่ยของปี × หุ้นถัวเฉลี่ยปรับลด + หนี้ − เงินสด ณ สิ้นปี) ÷ รายได้ · คำนวณจากตารางงบ 5 ปีและราคาเฉลี่ยในบล็อกมัธยฐาน) · ตัวคูณมาจากประวัติ ไม่ใช่จากตัวคูณปัจจุบัน</div></div>
+        <div class="mval">$455.69</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. Forward P/E (FY2026E)</div><div class="mdesc">EPS $7.67 (FY2026E consensus, StockAnalysis) × Forward P/E 52x — แก้จาก $8.70 เดิมให้ตรง consensus; P/E family เดียวกับขาที่ 1 จึงนับรวมเป็นเสียงเดียว</div></div>
-        <div class="mval">$398.84</div>
-      </div>
-      <div class="vmethod">
-        <div><div class="mname">3. Growth-DCF / EV-Sales</div><div class="mdesc">DCF (ค่าเดิมจากรอบก่อน — ยังคำนวณซ้ำไม่ได้): Revenue CAGR 26% → 15%, EBIT margin ขยายสู่ 20%+, WACC 10% · ⚠ ตรวจซ้ำคร่าว ๆ ด้วย EBIT margin 6%→20%, tax 21%, WACC 10%, g 4%, net debt $1.16B ได้ราว $183/หุ้น (ไวต่อ margin/SBC มาก) — ขานี้จึงเป็นส่วนที่ไม่แน่นอนที่สุด · EV/Sales ที่ราคาปัจจุบัน ~10x ของ FY2026E Rev ~$3.64B</div></div>
-        <div class="mval">$545.00</div>
+        <div><div class="mname">2. P/S Valuation (มัธยฐานย้อนหลัง × รายได้/หุ้น TTM)</div><div class="mdesc">รายได้ $3,219M ÷ หุ้นคงเหลือ 81.24M = $39.62/หุ้น × P/S 12.1x — 12.1x = มัธยฐานของ P/S รายปี FY2022–25 (7.9x / 10.1x / 14.1x / 19.7x = ราคาเฉลี่ยของปี × หุ้นถัวเฉลี่ยปรับลด ÷ รายได้) · ตัวคูณมาจากประวัติ ไม่ใช่จาก P/S ปัจจุบัน (~11.3x) · <b>ตระกูลเดียวกับขาที่ 1</b> (ตัวคูณของรายได้ · ต่างกันแค่การหัก/บวกหนี้สุทธิ) จึงนับเป็นเสียงเดียว ไม่ใช่การยืนยันอิสระ</div></div>
+        <div class="mval">$480.00</div>
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        วิธี P/E TTM ($350) ให้ค่าต่ำสุด เพราะใช้กำไรปัจจุบันซึ่งถูกกด SBC · ขา P/E ทั้งสอง (TTM $350 และ Forward $398.84) ใช้สมมติฐานตระกูลเดียวกัน นับเป็นเสียงเดียว = เฉลี่ย $374.42 · DCF ($545) เป็นอีกตระกูล · FV = ($374.42 + $545) / 2 = $459.71 ปัดเป็น <b>$460</b> — ปรับจากรอบก่อน ($449) เพราะแก้ EPS ฟอร์เวิร์ดตาม consensus และรวมสองขา P/E เป็นเสียงเดียว · กรอบ $350–$545 กว้างมาก สะท้อนความไม่แน่นอนของสมมติฐาน margin/SBC
+        <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">FV = ($455.69 + $480.00) / 2 = $467.85 ปัดเป็น <b>{{rd:fv}}</b> — ยืนบน <b>ตระกูลเดียว (ตัวคูณของรายได้ย้อนหลัง)</b> ไม่มีขาอิสระที่สองมายืนยัน จึงเชื่อมั่นต่ำ · ความไว: ใช้ตัวคูณปีที่ 2 จาก 4 (EV/Sales 9.7x → $371 · P/S 10.1x → $401) ถึงปีที่ 3 (EV/Sales 14.0x → $541 · P/S 14.1x → $559) · ช่วงกว้างสุดตามประวัติ (ปีต่ำสุด–สูงสุด) ราว $310–$780 · <b>ขาที่ถอดออก (และเหตุผล):</b> (1) P/E บน GAAP — EPS TTM $2.40 มี Q1 ปี 2569 อยู่ $2.05 ซึ่ง SEC XBRL (10-Q) แสดงรายได้นอกการดำเนินงานอื่น $189.0M (กำไรก่อนภาษี $200.2M เทียบกำไรจากการดำเนินงาน $29.2M; ยังไม่ได้เปิดอ่านหมายเหตุงบว่าเป็นรายการอะไร) ตัดไตรมาสนั้น EPS 3 ไตรมาสที่เหลือ = −0.03 + 0.03 + 0.36 = ~$0.36 จึงไม่ใช้เป็นฐาน · มัธยฐาน P/E 77.9x (FY2022–24) ก็ไม่ใช้ เพราะปีฐานมีรายได้นอกการดำเนินงานปนอยู่ (FY2025 มี $99.9M ขณะกำไรจากการดำเนินงานติดลบ $62.1M) (2) non-GAAP adj EPS $7.00 — ไม่ผ่านการตรวจกับแหล่งปฐมภูมิ จึงถอดออกทั้งจาก FV และ scenario (consensus FY2026E $7.67 ของ vendor เป็นบริบทเท่านั้น) (3) DCF $545 — ทำซ้ำไม่ได้ (ตรวจคร่าว ๆ ได้ราว $183) จึงไม่เก็บไว้เป็นขา (4) เป้านักวิเคราะห์ $706 — ไม่ใช่ขาของ FV</p>
       </p>
     </div>
   </section>
@@ -230,42 +226,42 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} (non-GAAP) • ไม่มีปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • รายได้/หุ้น TTM ~$39.62 × P/S ออก • ไม่มีปันผล</div></div>
     <div class="scn">
       <div class="col bear">
-        <div class="top"><span>🐻 Bear</span><span>EPS +15%/ปี</span></div>
+        <div class="top"><span>🐻 Bear</span><span>รายได้ +12%/ปี</span></div>
         <div class="body">
           <div class="tgt">{{rd:sc1tgt}}</div>
           <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$10.65</span></li>
-            <li><span>P/E ออก</span><span>38x</span></li>
+            <li><span>รายได้/หุ้น ปี 3</span><span>~$55.67</span></li>
+            <li><span>P/S ออก</span><span>6x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>growth ชะลอ + multiple หดตัว</span></li>
           </ul>
         </div>
       </div>
       <div class="col base">
-        <div class="top"><span>⚖️ Base</span><span>EPS +23%/ปี</span></div>
+        <div class="top"><span>⚖️ Base</span><span>รายได้ +20%/ปี</span></div>
         <div class="body">
           <div class="tgt">{{rd:sc2tgt}}</div>
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$13.03</span></li>
-            <li><span>P/E ออก</span><span>45x</span></li>
+            <li><span>รายได้/หุ้น ปี 3</span><span>~$68.47</span></li>
+            <li><span>P/S ออก</span><span>9x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>รายได้โตต่อเนื่อง, margin ขยาย</span></li>
           </ul>
         </div>
       </div>
       <div class="col bull">
-        <div class="top"><span>🚀 Bull</span><span>EPS +28%/ปี</span></div>
+        <div class="top"><span>🚀 Bull</span><span>รายได้ +26%/ปี</span></div>
         <div class="body">
           <div class="tgt">{{rd:sc3tgt}}</div>
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$14.68</span></li>
-            <li><span>P/E ออก</span><span>50x</span></li>
+            <li><span>รายได้/หุ้น ปี 3</span><span>~$79.27</span></li>
+            <li><span>P/S ออก</span><span>11x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>AI/international expansion + re-rating</span></li>
           </ul>
@@ -273,7 +269,7 @@
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      การคาดการณ์ใช้ non-GAAP adj EPS $7.00 เป็นฐาน (consensus FY2026E $7.67) เติบโตต่อ 3 ปีตาม scenario แล้วคูณ P/E exit ของแต่ละสถานการณ์ · ไม่มีปันผล · Bear ({{rd:sc1ret}}) เกิดหาก growth ชะลอ + multiple หดเหลือ 38x · Base ({{rd:sc2ret}}) ต้องอาศัย EPS โต ~23%/ปีและ P/E ออก 45x — สูงกว่า FV ปัจจุบันมาก จึงเป็นกรณีที่ growth ทำได้ตามคาดต่อเนื่อง 3 ปี ไม่ใช่ค่ากลางที่สอดคล้อง FV · Bull ({{rd:sc3ret}}) เกิดหากมี re-rating เพิ่ม · ผลตอบแทนเป็นสมมติฐาน ไม่ใช่คำพยากรณ์
+      การคาดการณ์ใช้รายได้/หุ้น TTM $39.62 (รายได้ $3,219M ÷ หุ้น 81.24M · ไม่ปรับ dilution) เป็นฐาน เติบโตต่อ 3 ปีตามอัตราของแต่ละสถานการณ์ แล้วคูณ P/S ออก · ไม่ใช้ EPS เพราะกำไร GAAP TTM ไม่สะอาด (ดูหมวด 3) · Bear ({{rd:sc1ret}}) = รายได้โตเพียง 12%/ปี และ P/S หดเหลือ 6x ต่ำกว่าทุกปีในประวัติ (7.9–19.7x) · Base ({{rd:sc2ret}}) = รายได้โต 20%/ปี (ต่ำกว่า TTM +34.6%) และ P/S ออก 9x ต่ำกว่ามัธยฐาน 12.1x ตามการเติบโตที่ชะลอ — ผลตอบแทนสูงกว่าส่วนต่างของ FV เพราะ FV คิดจากรายได้ปัจจุบัน ไม่ได้รวมการเติบโต 3 ปี · Bull ({{rd:sc3ret}}) = รายได้โต 26%/ปี และ P/S 11x · ผลตอบแทนเป็นสมมติฐาน ไม่ใช่คำพยากรณ์
     </p>
   </section>
 
@@ -297,7 +293,7 @@
         <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
         <ul>
           <li><b>ราคาผันผวนแรง:</b> ลดลงราว 21% ภายในเดือน ก.ย. 2569 และ 52 สัปดาห์กว้าง $339–$792 — ความคาดหวัง growth เปลี่ยนเร็ว</li>
-          <li><b>Valuation premium สูงขึ้นอีก:</b> P/E ~{{rd:pe}}x non-GAAP (GAAP ~186x) — ถ้า growth ชะลอเพียงเล็กน้อย multiple หดแรง</li>
+          <li><b>Valuation premium สูง + กำไร GAAP ไม่สะอาด:</b> P/E GAAP ~{{rd:pe}}x บนกำไรที่มีรายได้นอกการดำเนินงานก้อนเดียว (Q1 ปี 2569) — ถ้า growth ชะลอเพียงเล็กน้อย multiple หดแรง</li>
           <li><b>SBC สูง:</b> Stock-based compensation กด GAAP earnings อย่างมีนัยสำคัญ — dilution ผู้ถือหุ้น</li>
           <li><b>งบภาครัฐ:</b> ลูกค้าหลักคือ ตำรวจ/หน่วยงานความปลอดภัย — พึ่งงบรัฐบาล ซึ่งผันผวนตามการเมือง</li>
           <li><b>Scrutiny การใช้กำลัง:</b> ความกังวลด้านสิทธิมนุษยชน TASER — กฎหมายจำกัดการใช้อาจกระทบยอดขาย</li>
@@ -312,8 +308,8 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>ราคาใกล้มูลค่าเหมาะสม แต่กรอบ FV กว้างมาก — รอโซน MOS ก่อนทยอยสะสม</h2>
-      <p>Axon Enterprise เป็นผู้นำเทคโนโลยีความปลอดภัยสาธารณะที่มี moat ระบบนิเวศ (TASER + body camera + Evidence cloud) รายได้ TTM $3.22B (+34.6% YoY) กำไร GAAP บาง (EPS TTM $2.40 · margin สุทธิ 6.2%) เพราะ SBC สูง จึงใช้ non-GAAP adj EPS $7.00 เป็นฐาน FV · ราคาปัจจุบัน {{rd:px}} เทียบ Fair Value {{rd:fv}} (MOS {{rd:mos}}) โดย FV มาจาก 2 ตระกูล: P/E (2 ขา นับเสียงเดียว) และ DCF ที่ไวต่อสมมติฐาน margin มาก (ตรวจซ้ำคร่าว ๆ ได้ต่ำกว่าค่าเดิมมาก) จึงควรมองกรอบ {{rd:fvLow}}–{{rd:fvHigh}} มากกว่าจุดเดียว · นักวิเคราะห์ consensus เป้าเฉลี่ย $706 (19 ราย) · ราคาและตัวเลขงบอ้างอิง StockAnalysis/Yahoo ณ 18 ก.ย. 2569</p>
+      <h2>ราคาใกล้มูลค่าเหมาะสมตามตัวคูณรายได้ แต่ FV ยืนบนตระกูลเดียว — เชื่อมั่นต่ำ รอโซน MOS ก่อนทยอยสะสม</h2>
+      <p>Axon Enterprise เป็นผู้นำเทคโนโลยีความปลอดภัยสาธารณะที่มี moat ระบบนิเวศ (TASER + body camera + Evidence cloud) รายได้ TTM $3.22B (+34.6% YoY) แต่กำไร GAAP ไม่ใช่ฐานที่ใช้ประเมินได้: EPS TTM $2.40 มาจากไตรมาส Q1 ปี 2569 เพียงไตรมาสเดียว ($2.05) ซึ่งเป็นรายได้นอกการดำเนินงาน $189.0M (กำไรจากการดำเนินงานไตรมาสนั้นเพียง $29.2M) ตัดไตรมาสนั้นออก 3 ไตรมาสที่เหลือรวมเพียง ~$0.36/หุ้น · ราคาปัจจุบัน {{rd:px}} เทียบ Fair Value {{rd:fv}} (ส่วนต่าง {{rd:mos}}) โดย FV มาจาก <b>ตระกูลเดียว</b> คือตัวคูณรายได้มัธยฐานย้อนหลัง (EV/Sales + P/S) × รายได้ TTM — ไม่มีขาอิสระที่สองมายืนยัน (ตัดขา P/E, non-GAAP EPS และ DCF ออกเพราะตรวจสอบ/ทำซ้ำไม่ได้) จึงเชื่อมั่นต่ำ ควรมองกรอบ {{rd:fvLow}}–{{rd:fvHigh}} (และช่วงกว้างสุดตามประวัติ ~$310–$780) มากกว่าจุดเดียว · นักวิเคราะห์ consensus เป้าเฉลี่ย $706 (19 ราย) ไม่ใช่ขาของ FV · ราคาและตัวเลขงบอ้างอิง StockAnalysis/Yahoo/SEC XBRL ณ 18 ก.ย. 2569</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
