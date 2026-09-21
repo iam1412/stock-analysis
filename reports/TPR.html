@@ -6,34 +6,34 @@
 <title>วิเคราะห์หุ้น Tapestry (TPR) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"TPR","currency":"USD","price":115,"fairValue":102,"mos":-12.7,"upside":-11.3,"pe":15.8,"dividendYield":1.61,"roe":197.13}
+{"symbol":"TPR","currency":"USD","price":115,"fairValue":83,"mos":-38.6,"upside":-27.8,"pe":15.8,"dividendYield":1.61,"roe":197.13}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 102,
+  "fv": 83,
   "values": {
     "px": 115,
     "priceDate": "2026-09-18",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
-    "fvLow": 99,
-    "fvHigh": 105,
+    "fvLow": 81,
+    "fvHigh": 84,
     "eps": 7.27,
     "shares": 199390000,
     "dps": 1.85,
     "bvps": 3.47,
     "scenarios": [
       {
-        "tgt": 73,
+        "tgt": 56,
         "div": 5.55
       },
       {
-        "tgt": 125,
+        "tgt": 100,
         "div": 5.75
       },
       {
-        "tgt": 175,
+        "tgt": 164,
         "div": 6
       }
     ],
@@ -78,7 +78,7 @@
     "highlight": [1, 4]
   },
   "gauge": {
-    "min": 60,
+    "min": 40,
     "max": 185,
     "fairLabelTop": true
   }
@@ -114,11 +114,11 @@
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM = FY2026 เต็มปี (ปิดงบ 13 ส.ค. 2569) ณ 17 ส.ค. 2569</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM = FY2026 เต็มปี (ปิดงบ 13 ส.ค. 2569) ณ 22 ก.ย. 2569</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">$22.93B</div><div class="d">199.39M หุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">15.82x</div><div class="d">EPS(dil) TTM $7.27 (รวมกำไรพิเศษขาย SW)</div></div>
-      <div class="metric"><div class="k">Forward P/E</div><div class="v">13.02x</div><div class="d">epsFwd consensus $8.83</div></div>
+      <div class="metric"><div class="k">Forward P/E</div><div class="v">14.59x</div><div class="d">epsFwd consensus ~$7.88 (ถอดจาก fwd P/E ของ StockAnalysis)</div></div>
       <div class="metric"><div class="k">P/BV (บริบท)</div><div class="v neu">~33.1x</div><div class="d">BVPS ~$3.47 — ทุนบางจาก buyback ไม่ใช้เป็นขา FV</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">$1,528M</div><div class="d">Net margin 19.1% (สูงผิดปกติ)</div></div>
@@ -135,7 +135,7 @@
 
   <!-- ===== 2. PRICE CHART ===== -->
   <section>
-    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">รายเดือน ก.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">รายเดือน ต.ค. 2568 – ก.ย. 2569</div></div>
     <div class="card">
       <div class="chart-wrap">
         <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
@@ -146,37 +146,37 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ราคา TPR ร่วงแรง −16.1% เพียงวันเดียวหลังประกาศงบ FY2026 เต็มปี (13 ส.ค. 2569) จาก $153.74 สู่ $128.98 แม้ EPS(dil) เติบโตก้าวกระโดดจาก $0.82 (FY2025) เป็น $7.27 (FY2026/TTM) เพราะตลาดตีความว่า margin ที่พุ่งขึ้น (NetM 19.1% เทียบค่าเฉลี่ยปกติ 12–14%) ส่วนหนึ่งมาจากกำไรพิเศษจากการขาย Stuart Weitzman (ส.ค. 2568) ไม่ใช่ operating margin ที่ยั่งยืนทั้งหมด
-        ตลอดรอบปีที่ผ่านมา (ก.ย. 2568 – ส.ค. 2569) ราคาให้ผลตอบแทนรวม ▲ +13.9% จากจุดต่ำ $109.28 (พ.ย. 2568) สู่จุดสูงสุด $155.47 (ก.พ. 2569) ก่อนย่อกลับมาที่ $128.98 หลังงบ FY2026
+        ราคา TPR ย่อลงต่อเนื่องหลังจุดสูง $152.37 (สิ้นเดือน ก.ค. 2569) มาที่ $123.39 (ส.ค.) และ {{rd:px}} ปัจจุบัน แม้ EPS(dil) เติบโตก้าวกระโดดจาก $0.82 (FY2025) เป็น $7.27 (FY2026/TTM) เพราะตลาดตีความว่า margin ที่พุ่งขึ้น (NetM 19.1% เทียบค่าเฉลี่ยปกติ 12–14%) ส่วนหนึ่งมาจากกำไรพิเศษจากการขาย Stuart Weitzman (ส.ค. 2568) ไม่ใช่ operating margin ที่ยั่งยืนทั้งหมด
+        ตลอดรอบปีที่ผ่านมา (ต.ค. 2568 – ก.ย. 2569) ราคาให้ผลตอบแทนรวม ▲ +4.7% จากจุดต่ำ $109.28 (พ.ย. 2568) สู่จุดสูงสุด $155.47 (ก.พ. 2569) ก่อนย่อกลับมาที่ {{rd:px}}
         กรอบ 52 สัปดาห์เต็ม $92.62–$164.80 กว้างกว่าที่เห็นในกราฟรายเดือน สะท้อนความผันผวนระหว่างวันที่สูง
-        เส้นสีเขียว = มูลค่าเหมาะสม $102 (normalized) — ราคาปัจจุบัน trading เหนือ FV ประมาณ 26%
+        เส้นสีเขียว = มูลค่าเหมาะสม {{rd:fv}} (ตัวคูณมัธยฐานย้อนหลัง 5 ปี บนฐาน normalized) — ราคาปัจจุบันซื้อขายเหนือเส้นนี้
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี — ไม่ใช้ Justified P/BV (ทุนบางเกินไป)</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี (ตัวคูณมัธยฐานย้อนหลังทั้งคู่) — ไม่ใช้ Justified P/BV (ทุนบางเกินไป) และไม่ใช้เป้านักวิเคราะห์เป็นขา</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation (Normalized EPS)</div><div class="mdesc">EPS normalized $6.99 (NetM 17.4% = OpM 23.3% TTM × conversion เฉลี่ยปกติ 74.7% — ตัดกำไรพิเศษขาย Stuart Weitzman ออก แต่เก็บ operating margin ที่ดีขึ้นจริงไว้) × P/E 15x — accessible luxury ปกติ 12–18x</div></div>
-        <div class="mval">$105</div>
+        <div><div class="mname">1. P/E Valuation (Normalized EPS)</div><div class="mdesc">EPS normalized $6.99 (NetM 17.4% = OpM 23.3% TTM × conversion เฉลี่ยปกติ 74.7% — ตัดกำไรพิเศษขาย Stuart Weitzman ออก แต่เก็บ operating margin ที่ดีขึ้นจริงไว้) × P/E 12x (มัธยฐาน P/E ย้อนหลัง FY2022–26 = 12.05x จาก StockAnalysis ratios; ตระกูลเดียวกับวิธีที่ 2)</div></div>
+        <div class="mval">$84</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. EV/EBITDA Valuation</div><div class="mdesc">EBITDA TTM ~$2,045M (EBIT $1,865M = OpM 23.3% × รายได้ $8,004M + D&A ประมาณ $180M) × EV/EBITDA 11x = EV $22,495M − หนี้สุทธิ $2,804M (หนี้ $3,956M − เงินสด $1,152M) ÷ หุ้น 199.39M</div></div>
-        <div class="mval">$99</div>
+        <div><div class="mname">2. EV/EBITDA Valuation</div><div class="mdesc">EBITDA TTM ~$2,045M (EBIT $1,865M = OpM 23.3% × รายได้ $8,004M + D&A ประมาณ $180M) × EV/EBITDA 9.3x (มัธยฐาน FY2022–26 = 9.28x จาก StockAnalysis ratios; ตระกูลเดียวกับวิธีที่ 1) = EV $18,978M − หนี้สุทธิ $2,804M (หนี้ $3,956M − เงินสด $1,152M) ÷ หุ้น 199.39M</div></div>
+        <div class="mval">$81</div>
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ทั้ง 2 วิธีให้ค่า FV ใกล้เคียงกันมากในช่วง $99–$105 เฉลี่ย $102 สะท้อนว่าราคาปัจจุบัน $128.98 ซื้อขาย premium เหนือ FV อยู่ประมาณ 26%
+        ทั้ง 2 วิธีให้ค่าในช่วง $81–$84 เฉลี่ย {{rd:fv}} ซึ่งเป็นตัวคูณกำไรบนฐานเดียวกัน จึงนับเป็นตระกูลเดียว (single-family valuation) ราคาปัจจุบัน {{rd:px}} ซื้อขาย premium เหนือ FV — ความไว: ถ้าใช้ P/E 15x แทนมัธยฐาน FV ขยับเป็น ~$105 (ราคายังสูงกว่า FV เพียงเล็กน้อย) แสดงว่าข้อสรุป "ราคาไม่ถูก" ไวต่อการที่ตลาดยอมจ่ายตัวคูณสูงกว่าอดีตต่อไป (P/E ย้อนหลังปี FY2026 19.3x, FY2025 98.8x จากกำไรต่ำผิดปกติ)
         EPS(dil) TTM จริง $7.27 พุ่งขึ้นก้าวกระโดดจาก FY2025 ที่ต่ำผิดปกติ $0.82 (มีค่าใช้จ่ายพิเศษจากดีล Capri ที่ล้มไป) — ไม่ใช้ทั้งสองปีเป็นฐานตรงๆ แต่ปรับ NetM ให้สอดคล้องกับ operating margin ที่ดีขึ้นจริง (OpM 23.3% TTM สูงกว่าค่าเฉลี่ยปกติ FY2022–24 ~17.5% จาก mix Coach ที่แข็งแกร่งขึ้น + ลดความซับซ้อนหลังขาย Stuart Weitzman) แต่ตัดกำไรพิเศษออกจาก NetM conversion ได้ EPS normalized ~$6.99 เป็นฐานประเมินมูลค่า
-        epsFwd consensus นักวิเคราะห์อยู่ที่ $8.83 สูงกว่าฐาน normalized ของเราพอสมควร สะท้อนว่า Street เชื่อมั่นใน margin sustainability มากกว่าเรา — เป็นความเสี่ยงด้าน upside ที่ต้องติดตามผลประกอบการ 1–2 ไตรมาสถัดไป
-        P/BV ~37.2x และ ROE 197.1% ไม่มีความหมายเชิงเปรียบเทียบ เพราะส่วนของผู้ถือหุ้นบางมากจากการซื้อหุ้นคืนต่อเนื่อง (233M หุ้น FY2024 → 199.39M หุ้นปัจจุบัน) — ใช้เป็นบริบทเท่านั้น ไม่ใช่ขา FV
-        นักวิเคราะห์ 20 คน ให้ราคาเป้าเฉลี่ย $167.00 (Buy, +29.5%) สูงกว่า FV ของเราชัดเจน สะท้อนมุมมองที่เชื่อว่า margin ปัจจุบันยั่งยืนกว่าที่เราประเมินไว้
-        ที่มาราคาเป้า: ข้อมูลรวม (n=20 นักวิเคราะห์, เป้าเฉลี่ย $167.00, ส.ค. 2569)
+        epsFwd consensus ~$7.88 (ถอดจาก fwd P/E 14.42x ของ StockAnalysis ซึ่งอาจเป็นปีงบถัดไป) สูงกว่าฐาน normalized $6.99 เล็กน้อย — ต้องติดตามผลประกอบการ 1–2 ไตรมาสถัดไปว่า margin ยืนได้จริง
+        P/BV ~33.1x และ ROE 197.1% ไม่มีความหมายเชิงเปรียบเทียบ เพราะส่วนของผู้ถือหุ้นบางมากจากการซื้อหุ้นคืนต่อเนื่อง (233M หุ้น FY2024 → 199.39M หุ้นปัจจุบัน) — ใช้เป็นบริบทเท่านั้น ไม่ใช่ขา FV
+        นักวิเคราะห์ให้ราคาเป้าเฉลี่ย $166.50 (StockAnalysis ณ 22 ก.ย. 2569) สูงกว่า FV ของเราชัดเจน — ใช้เป็นบริบทตรวจความสอดคล้องเท่านั้น ไม่เป็นขาของ FV
+        ที่มาราคาเป้า: StockAnalysis (เป้าเฉลี่ย $166.50, ก.ย. 2569)
       </p>
     </div>
   </section>
@@ -195,14 +195,14 @@
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
-          <span style="text-align:right">$167<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$166.50<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน $128.98 อยู่สูงกว่ามูลค่าเหมาะสม $102 ประมาณ 26% — ไม่มี Margin of Safety
-        โซน MOS 20% ($82) และ MOS 30% ($71) ยังห่างจากราคาปัจจุบันพอสมควร บ่งชี้ว่าตลาดยัง pricing ใน margin premium ที่เราเชื่อว่าส่วนหนึ่งเป็น one-time
-        เป้าเฉลี่ย Analyst $167 สูงกว่า FV ของเราชัดเจน สะท้อนมุมมองที่มองบวกกว่าเรื่องความยั่งยืนของ margin FY2026
-        การลงทุนที่ราคา $128.98 ต้องการความเชื่อมั่นว่า margin ที่ดีขึ้น (OpM 23.3%) จะคงอยู่ต่อเนื่อง ไม่ใช่แค่ one-time gain ปีนี้
+        ราคาปัจจุบัน {{rd:px}} อยู่สูงกว่ามูลค่าเหมาะสม {{rd:fv}} — ไม่มี Margin of Safety
+        โซน MOS 20% ({{rd:mos20}}) และ MOS 30% ({{rd:mos30}}) ยังห่างจากราคาปัจจุบันพอสมควร บ่งชี้ว่าตลาดยัง pricing ใน margin premium และตัวคูณที่สูงกว่ามัธยฐานย้อนหลัง
+        เป้าเฉลี่ย Analyst $166.50 สูงกว่า FV ของเราชัดเจน สะท้อนมุมมองที่มองบวกกว่าเรื่องความยั่งยืนของ margin FY2026
+        การลงทุนที่ราคาปัจจุบันต้องการความเชื่อมั่นว่า margin ที่ดีขึ้น (OpM 23.3%) และตัวคูณระดับปัจจุบันจะคงอยู่ต่อเนื่อง
       </p>
     </div>
   </section>
@@ -213,7 +213,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">ราคาสูงกว่า Fair Value ~26% — ไม่มี Margin of Safety; ตลาดยัง price-in margin premium ที่ยังพิสูจน์ความยั่งยืนไม่ได้เต็มที่</div>
+        <div class="txt">ราคาสูงกว่า Fair Value — ไม่มี Margin of Safety; ตลาดยัง price-in margin premium และตัวคูณที่สูงกว่ามัธยฐานย้อนหลัง (FV เป็นตระกูลเดียว ไวต่อตัวคูณ)</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -241,7 +241,7 @@
           <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$5.62</span></li>
-            <li><span>P/E ออก</span><span>13x</span></li>
+            <li><span>P/E ออก</span><span>10x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>margin เสื่อมกลับสู่ระดับปกติ 12–14%, Kate Spade ยังอ่อน, China ชะลอ</span></li>
           </ul>
@@ -254,7 +254,7 @@
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$8.33</span></li>
-            <li><span>P/E ออก</span><span>15x</span></li>
+            <li><span>P/E ออก</span><span>12x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>Coach โต moderate ต่อเนื่อง margin ทรงตัวใกล้ระดับ normalized</span></li>
           </ul>
@@ -267,19 +267,19 @@
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$10.91</span></li>
-            <li><span>P/E ออก</span><span>16x</span></li>
+            <li><span>P/E ออก</span><span>15x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
-            <li><span>สถานการณ์</span><span>margin สูงคงอยู่ใกล้ epsFwd consensus $8.83, Coach + China momentum แข็งแกร่ง</span></li>
+            <li><span>สถานการณ์</span><span>margin สูงคงอยู่ EPS โตเกิน consensus (~$7.88), ตัวคูณกลับไป 15x, Coach + China momentum แข็งแกร่ง</span></li>
           </ul>
         </div>
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      Scenario Base (+6%/ปี) ให้ผลตอบแทนใกล้ 0% (+1.4%) จากราคาปัจจุบัน สะท้อนว่าราคาได้ price-in การเติบโตระดับ moderate ไปมากแล้ว
-      Bull case ต้องการ margin ปัจจุบัน (OpM 23.3%, NetM 19.1%) คงอยู่ต่อเนื่องใกล้เคียง epsFwd consensus $8.83 ไม่ใช่แค่ effect ชั่วคราวจากการขาย Stuart Weitzman
-      Bear case ที่ margin เสื่อมกลับสู่ระดับปกติ 12–14% พร้อม P/E ลดเหลือ 13x จากความผิดหวังของตลาด อาจเห็นราคาลงได้ถึง ~39%
+      Scenario Base (+6%/ปี, P/E ออก 12x ตามมัธยฐานย้อนหลัง) ให้ผลตอบแทนรวม {{rd:sc2ret}} จากราคาปัจจุบัน สะท้อนว่าราคาปัจจุบันได้ price-in ตัวคูณสูงกว่าอดีตไปแล้ว
+      Bull case ต้องการ margin ปัจจุบัน (OpM 23.3%, NetM 19.1%) คงอยู่ต่อเนื่อง EPS โต 16%/ปี และตัวคูณ 15x ไม่ใช่แค่ effect ชั่วคราวจากการขาย Stuart Weitzman
+      Bear case ที่ margin เสื่อมกลับสู่ระดับปกติ 12–14% พร้อม P/E ลดเหลือ 10x จากความผิดหวังของตลาด ให้ผลตอบแทนรวม {{rd:sc1ret}}
       การซื้อหุ้นคืนต่อเนื่อง (233M หุ้น FY2024 → 199.39M หุ้นปัจจุบัน) ช่วยหนุน EPS ต่อหุ้นแต่เพิ่มความเสี่ยงจาก leverage สูง (D/E 5.72x)
-      ผลตอบแทนรวมปันผล 3 ปีอยู่ในช่วง ~$5.55–$6.00 (ประมาณ yield 1.43% × 3 ปี + การเติบโตเล็กน้อย)
+      ผลตอบแทนรวมปันผล 3 ปีอยู่ในช่วง ~$5.55–$6.00 (ประมาณ $1.85/หุ้น/ปี × 3 ปี + การเติบโตเล็กน้อย)
     </p>
   </section>
 
@@ -293,7 +293,7 @@
           <li><b>Coach Brand Momentum:</b> Coach เติบโต 31% YoY ใน Q3 FY2026 ด้วย Gen Z customer acquisition strategy; แบรนด์แข็งแกร่งสุดในรอบทศวรรษ</li>
           <li><b>Greater China Expansion:</b> รายได้ China โต >30% YoY; ตลาดหรูราคาประหยัดในจีนมีศักยภาพสูงมาก เนื่องจากชนชั้นกลางจีนเติบโต</li>
           <li><b>Strategic Focus:</b> ขาย Stuart Weitzman ออกไปแล้ว (ส.ค. 2568) ทำให้ management โฟกัสเฉพาะ Coach + Kate Spade; ลด complexity</li>
-          <li><b>Aggressive Buybacks:</b> จำนวนหุ้นลดจาก 233M (FY2024) เหลือ 199.39M ปัจจุบัน (-14%) หนุน EPS ต่อหุ้นโตเร็วกว่ากำไรสุทธิ; dividend $1.85/หุ้น (yield 1.43%)</li>
+          <li><b>Aggressive Buybacks:</b> จำนวนหุ้นลดจาก 233M (FY2024) เหลือ 199.39M ปัจจุบัน (-14%) หนุน EPS ต่อหุ้นโตเร็วกว่ากำไรสุทธิ; dividend $1.85/หุ้น (yield 1.61%)</li>
           <li><b>FY2026 Results Beat:</b> EPS(dil) จริง $7.27 (+787% YoY จากฐานต่ำ FY2025 $0.82) OpM ขยายเป็น 23.3% จาก mix Coach ที่แข็งแกร่งขึ้น + operating leverage</li>
           <li><b>Tariff Resilience:</b> brand power ทำให้ pass-through pricing ได้บางส่วน; gross margin ยังแข็งแกร่ง 76%+</li>
         </ul>
@@ -302,7 +302,7 @@
         <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
         <ul>
           <li><b>Kate Spade Decline:</b> รายได้ Kate Spade -10% YoY ใน Q3; brand positioning ไม่ชัดเจน ต้องใช้เงิน marketing + time เพื่อ turnaround</li>
-          <li><b>High Valuation Premium:</b> Forward P/E 16.31x (epsFwd $8.83) และ TTM P/E 17.74x ยังสูงกว่า P/E บนฐาน EPS normalized ~18.4x; ถ้า margin ไม่ยั่งยืนจะเห็น multiple + EPS compression พร้อมกัน</li>
+          <li><b>High Valuation Premium:</b> ตัวคูณปัจจุบัน (TTM P/E ~15.8x, EV/EBITDA ~12.6x) สูงกว่ามัธยฐานย้อนหลัง 5 ปี (P/E 12.05x, EV/EBITDA 9.28x); ถ้า margin ไม่ยั่งยืนจะเห็น multiple + EPS compression พร้อมกัน</li>
           <li><b>Leverage สูง:</b> D/E 5.72x; หนี้สุทธิ $2.80B (หนี้ $3,956M เงินสด $1,152M); ถ้าดอกเบี้ยสูงต่อเนื่องหรือ FCF อ่อนแอจะกดดัน balance sheet</li>
           <li><b>Tariff &amp; Trade Risk:</b> สินค้าจากจีน/เวียดนามถูก tariff กดดัน gross margin; Kate Spade เจอผลกระทบ 440bps ใน Q3</li>
           <li><b>China Geopolitical Risk:</b> รายได้ China สูง แต่ความตึงเครียด US-China อาจกระทบ consumer sentiment หรือ market access</li>
@@ -316,15 +316,15 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>Coach แข็งแกร่ง แต่งบ FY2026 มี margin ผิดปกติ — ราคาซื้อขาย Premium เหนือ Fair Value ~26% หลัง normalize</h2>
-      <p>Tapestry ปิดงบ FY2026 เต็มปี (13 ส.ค. 2569) ด้วย EPS(dil) $7.27 พุ่งจาก FY2025 ที่ต่ำผิดปกติ $0.82 — ก้าวกระโดดนี้ส่วนหนึ่งมาจาก operating margin ที่ดีขึ้นจริง (OpM 23.3%) และอีกส่วนจากกำไรพิเศษขาย Stuart Weitzman (ส.ค. 2568) เราจึงใช้ EPS normalized ~$6.99 เป็นฐานประเมินมูลค่า ได้ FV ~$102 ต่ำกว่าราคาปัจจุบัน $128.98 ประมาณ 26% Coach ยังเป็นแบรนด์หลักที่แข็งแกร่ง (~89% ของรายได้) แต่ Kate Spade ยังเป็นจุดอ่อน และ leverage สูง (D/E 5.72x) เป็นความเสี่ยง สำหรับราคาปัจจุบัน $128.98 นักลงทุนต้องการความเชื่อมั่นว่า margin ระดับสูงนี้จะคงอยู่ต่อเนื่องใกล้เคียง epsFwd consensus $8.83 เพื่อให้ได้ผลตอบแทนที่น่าพอใจ</p>
+      <h2>Coach แข็งแกร่ง แต่งบ FY2026 มี margin ผิดปกติ — ราคาซื้อขาย Premium เหนือ Fair Value เมื่อใช้ตัวคูณมัธยฐานย้อนหลังบนฐาน normalize</h2>
+      <p>Tapestry ปิดงบ FY2026 เต็มปี (13 ส.ค. 2569) ด้วย EPS(dil) $7.27 พุ่งจาก FY2025 ที่ต่ำผิดปกติ $0.82 — ก้าวกระโดดนี้ส่วนหนึ่งมาจาก operating margin ที่ดีขึ้นจริง (OpM 23.3%) และอีกส่วนจากกำไรพิเศษขาย Stuart Weitzman (ส.ค. 2568) เราจึงใช้ EPS normalized ~$6.99 เป็นฐานประเมินมูลค่า ได้ FV ~{{rd:fv}} (ตัวคูณมัธยฐานย้อนหลัง 5 ปี — ตระกูลเดียว ไวต่อตัวคูณ) ต่ำกว่าราคาปัจจุบัน {{rd:px}} Coach ยังเป็นแบรนด์หลักที่แข็งแกร่ง (~89% ของรายได้) แต่ Kate Spade ยังเป็นจุดอ่อน และ leverage สูง (D/E 5.72x) เป็นความเสี่ยง สำหรับราคาปัจจุบัน {{rd:px}} นักลงทุนต้องการความเชื่อมั่นว่า margin ระดับสูงและตัวคูณระดับปัจจุบันจะคงอยู่ต่อเนื่อง เพื่อให้ได้ผลตอบแทนที่น่าพอใจ</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$167 (Buy • 20 คน)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$166.50 (Buy)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน $128.98 เหนือ Fair Value ~26% — ไม่เหมาะสำหรับ value investor แบบ conservative; สำหรับ growth investor ที่เชื่อใน margin sustainability ของ Coach อาจทยอยสะสมได้แต่ต้อง monitor ผลประกอบการ 1-2 ไตรมาสถัดไปว่า margin ยืนได้จริง โซนเป้าหมายเหมาะสมสำหรับเพิ่มน้ำหนักคือ $102 (FV) หรือ $82 (MOS 20%)
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน {{rd:px}} เหนือ Fair Value — ไม่เหมาะสำหรับ value investor แบบ conservative; สำหรับ growth investor ที่เชื่อใน margin sustainability ของ Coach อาจทยอยสะสมได้แต่ต้อง monitor ผลประกอบการ 1-2 ไตรมาสถัดไปว่า margin ยืนได้จริง โซนเป้าหมายเหมาะสมสำหรับเพิ่มน้ำหนักคือ {{rd:fv}} (FV) หรือ {{rd:mos20}} (MOS 20%)
       </div>
     </div>
   </section>
@@ -336,7 +336,7 @@
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
     แหล่งที่มา: Yahoo Finance (ราคา/กราฟ ณ {{rd:priceDate}}), StockAnalysis.com (งบการเงิน/analyst targets), Finviz (metrics cross-verify), Tapestry IR / BusinessWire (FY2026 full-year earnings, 13 ส.ค. 2569), Caleres IR (Stuart Weitzman divestiture, ส.ค. 2568)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 17 สิงหาคม 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 22 กันยายน 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
