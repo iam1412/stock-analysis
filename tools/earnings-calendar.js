@@ -124,9 +124,174 @@ function reportSymbols(dir) {
     });
 }
 
+
+// ───────────────────────── "มีงบใหม่หลังวันที่ footer ไหม" (กฎ UPDATE-LIGHT/FULL · docs/decisions.md §9) ─────────────────────────
+// นิยาม: "งบ" = งบรายไตรมาส/รายปีเท่านั้น (8-K/guidance/M&A ไม่นับ — ช่องโหว่ที่รู้แล้ว) · ตัดสินไม่ได้ = null ⇒ triage ถือเป็น FULL
+/** เส้นตายส่งงบของ SET — ตารางปรับได้ (ไม่ใช่ค่าตายตัวในโค้ด) · ตรวจกับ set.or.th 22 ก.ย. 69:
+ *  https://www.set.or.th/en/listing/listed-company/simplified-regulations/disclosure/periodic-disclosure
+ *  - งบไตรมาส (สอบทานแล้ว) ภายใน 45 วันหลังสิ้นไตรมาส · งบประจำปี (ตรวจสอบแล้ว) ภายใน 2 เดือน (ไม่มีงบ Q4) หรือ 3 เดือน (มีงบ Q4)
+ *  - งบที่ยังไม่สอบทาน/ตรวจสอบ ส่งได้ภายใน 30 วัน (ทางเลือก) · เส้นตายตรงวันหยุด เลื่อนไปวันทำการถัดไป (ไม่คิดที่นี่)
+ *  ใช้ 45/60 = เส้นตายที่เร็วกว่าของแต่ละชนิด (ผิดทางปลอดภัย: เจอเส้นตายเร็ว ⇒ FULL บ่อยขึ้น) · ไตรมาสสิ้น 31 มี.ค./30 มิ.ย./30 ก.ย. = quarterDays · 31 ธ.ค. = annualDays
+ *  ★ ข้อจำกัด: บริษัทที่ยื่นก่อนเส้นตายและ footer อยู่ระหว่างวันยื่นกับเส้นตาย จะถูกมองว่า "ยังไม่มีงบใหม่" */
+const TH_FILING = { quarterDays: 45, annualDays: 60, quarterEnds: ['03-31', '06-30', '09-30'], annualEnd: '12-31' };
+const addDaysISO = (iso, n) => new Date(Date.parse(iso) + n * 86400000).toISOString().slice(0, 10);
+/** เส้นตายส่งงบ SET ที่ตกในช่วง (fromIso, toIso] — เรียงเก่า→ใหม่ */
+function thDeadlinesBetween(fromIso, toIso, table) {
+  const t = table || TH_FILING;
+  const y0 = +String(fromIso).slice(0, 4) - 1, y1 = +String(toIso).slice(0, 4);
+  const out = [];
+  for (let y = y0; y <= y1; y++) {
+    for (const md of t.quarterEnds) out.push(addDaysISO(`${y}-${md}`, t.quarterDays));
+    out.push(addDaysISO(`${y}-${t.annualEnd}`, t.annualDays));
+  }
+  return out.filter((d) => d > fromIso && d <= toIso).sort();
+}
+
+const SEC_STATEMENT_FORMS = /^(10-K|10-KT|10-Q)$/;   // งบรายไตรมาส/ปีของผู้ยื่นในประเทศ · ฉบับแก้ไข (/A) และ 6-K/8-K ไม่นับ
+const SEC_FPI_ANNUAL_FORMS = /^(20-F|40-F)$/;         // FPI ยื่นงบปีเป็น 20-F/40-F ปีละครั้ง ส่วนรายไตรมาสมาทาง 6-K (เรายังไม่นับ 6-K) ⇒ วันงบล่าสุดจากฟอร์มเหล่านี้ตัดสินไม่ได้
+// ★ SEC fair-access policy: `www.sec.gov` (company_tickers.json) ตอบ 403 ถ้า User-Agent ไม่ประกาศ "ชื่อ + ช่องทางติดต่อ" (Mozilla/5.0 เปล่า ๆ ก็ 403)
+//   ส่วน `data.sec.gov` (submissions) รับ UA อะไรก็ได้ ⇒ UA มาจาก env `SEC_USER_AGENT` เท่านั้น (เจ้าของเป็นคนกำหนด — ห้ามฝังค่าใน repo)
+//   ไม่ตั้ง env = ห้ามดึงแผนที่ ticker→CIK จาก www.sec.gov (kind 'no-ua') · ดึง submissions ด้วย CIK ที่รู้อยู่แล้วจาก tools/sec-ciks.json ได้ด้วย UA เปล่า ๆ
+const SEC_FALLBACK_UA = 'Mozilla/5.0';   // ใช้กับ data.sec.gov เท่านั้น เมื่อไม่มี env และรู้ CIK จากแผนที่ที่ commit แล้ว
+const CIKS_FILE = path.join(__dirname, 'sec-ciks.json');   // { "AAPL": "0000320193", … } เฉพาะ ticker US ที่มีรายงาน · สร้างด้วย --sec-refresh-ciks
+const secUA = () => (process.env.SEC_USER_AGENT || '').trim() || null;
+/** curl -A — ดึงทีละ URL แบบ sync · เทสฉีด fetchText(url, ua) แทนตัวนี้เสมอ (ห้ามยิง network) */
+function curlText(url, ua) {
+  return require('child_process').execFileSync('curl', ['-sSL', '--fail', '--max-time', '20', '-A', ua || SEC_FALLBACK_UA, url], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+}
+/** แผนที่ ticker→CIK ที่ commit ไว้ → object | null (ไม่มีไฟล์/พัง = null · ไม่ throw) */
+function loadCiks(file) {
+  try { const j = JSON.parse(fs.readFileSync(file || CIKS_FILE, 'utf8')); return j && typeof j === 'object' && !Array.isArray(j) ? j : null; }
+  catch (_) { return null; }
+}
+const pad10 = (n) => String(n).padStart(10, '0');
+/** วันยื่นงบล่าสุด (10-K/10-Q/20-F/40-F) จาก SEC submissions → { date: 'YYYY-MM-DD'|null, kind, cik } (ไม่ throw)
+ *  kind: null (เจอวัน) · 'no-ua' (ไม่มี env SEC_USER_AGENT และไม่มีแผนที่ CIK ที่ commit ⇒ **ไม่ยิง network เลย**) · 'fetch-failed' (curl/SEC ล้ม/JSON พัง)
+ *  · 'fpi' (พบแต่ 20-F/40-F ไม่มี 10-K/10-Q = ผู้ยื่นต่างประเทศ: งบไตรมาสอยู่ใน 6-K ที่เราไม่นับ ⇒ วันงบล่าสุดไม่ทราบ ⇒ FULL — ข้อจำกัดที่ยอมรับ แพงกว่าแต่ปลอดภัย)
+ *  · '6k-only' (มี 6-K แต่ไม่พบฟอร์มงบ = FPI) · '6k-only' (มี 6-K แต่ไม่พบฟอร์มงบ = FPI) · 'no-statement-forms' (มี filing แต่ไม่มีฟอร์มงบเลย)
+ *  opts: fetchText(url, ua) → string (sync) · cache = Map · ua (override env — เทส) · ciks (override ไฟล์: object | null = ไม่มีแผนที่) */
+function secLookup(sym, opts) {
+  const o = opts || {};
+  const fetchText = o.fetchText || curlText;
+  const cache = o.cache || new Map();
+  const ua = o.ua !== undefined ? o.ua : secUA();
+  const key = String(sym).toUpperCase();
+  try {
+    const ciks = o.ciks !== undefined ? o.ciks : loadCiks();
+    let cik = null;
+    if (ciks) {
+      cik = ciks[key] || ciks[key.replace(/\./g, '-')] || null;   // มีแผนที่ที่ commit = ใช้เป็นหลัก ไม่ยิง network ขอแผนที่
+      if (!cik) return { date: null, kind: 'no-cik', cik: null };
+    } else {
+      if (!ua) return { date: null, kind: 'no-ua', cik: null };   // www.sec.gov ต้องมี UA ที่ประกาศตัวตน — ไม่มี = ไม่ลอง (ไม่ใช่ 403)
+      if (!cache.has('__tickers')) {
+        const j = JSON.parse(fetchText('https://www.sec.gov/files/company_tickers.json', ua));
+        const m = {};
+        for (const e of Object.values(j)) if (e && e.ticker) m[String(e.ticker).toUpperCase()] = e.cik_str;
+        cache.set('__tickers', m);
+      }
+      cik = cache.get('__tickers')[key.replace(/\./g, '-')];
+      if (!cik) return { date: null, kind: 'no-cik', cik: null };
+    }
+    const sub = JSON.parse(fetchText(`https://data.sec.gov/submissions/CIK${pad10(cik)}.json`, ua || SEC_FALLBACK_UA));
+    const r = sub && sub.filings && sub.filings.recent;
+    if (!r || !Array.isArray(r.form) || !Array.isArray(r.filingDate)) return { date: null, kind: 'fetch-failed', cik: pad10(cik) };
+    let best = null, bestFpi = null, has6k = false;
+    r.form.forEach((f, i) => {
+      if (f === '6-K') has6k = true;
+      const d = r.filingDate[i];
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(d)) return;
+      if (SEC_STATEMENT_FORMS.test(f) && (!best || d > best)) best = d;
+      else if (SEC_FPI_ANNUAL_FORMS.test(f) && (!bestFpi || d > bestFpi)) bestFpi = d;
+    });
+    // มี 10-K/10-Q = ผู้ยื่นในประเทศ (รวมที่ย้ายจาก 20-F มา 10-Q) → ใช้วันล่าสุดของทุกฟอร์มงบ · มีแต่ 20-F/40-F → fpi (ไม่ทราบ)
+    if (best && bestFpi && bestFpi > best) best = bestFpi;
+    if (!best && bestFpi) return { date: null, kind: 'fpi', cik: pad10(cik) };
+    return best ? { date: best, kind: null, cik: pad10(cik) } : { date: null, kind: has6k ? '6k-only' : 'no-statement-forms', cik: pad10(cik) };
+  } catch (_) { return { date: null, kind: 'fetch-failed', cik: null }; }
+}
+/** เหมือน secLookup แต่คืนแค่วัน (เข้ากันได้กับผู้เรียกเดิม) */
+const secLastStatement = (sym, opts) => secLookup(sym, opts).date;
+
+/** --sec-refresh-ciks: ดึง company_tickers.json (ต้อง SEC_USER_AGENT) แล้วเขียน tools/sec-ciks.json เฉพาะ ticker US ของเรา
+ *  ดึงไม่ได้/ไม่มี UA = ไม่แตะไฟล์เดิม คืน { ok:false, why } · opts: fetchText, ua, file, symbols (ทั้งหมดที่มีรายงาน = [[SYM, ysym]]) */
+function secRefreshCiks(opts) {
+  const o = opts || {};
+  const ua = o.ua !== undefined ? o.ua : secUA();
+  const file = o.file || CIKS_FILE;
+  if (!ua) return { ok: false, why: 'no-ua — ตั้ง env SEC_USER_AGENT (ชื่อ + ช่องทางติดต่อ ที่เจ้าของกำหนด) ก่อน · ไฟล์เดิมไม่ถูกแตะ' };
+  let tickers;
+  try {
+    const j = JSON.parse((o.fetchText || curlText)('https://www.sec.gov/files/company_tickers.json', ua));
+    tickers = {};
+    for (const e of Object.values(j)) if (e && e.ticker) tickers[String(e.ticker).toUpperCase()] = e.cik_str;
+    if (!Object.keys(tickers).length) throw new Error('company_tickers.json ว่าง');
+  } catch (e) { return { ok: false, why: `fetch-failed — ${e.message} · ไฟล์เดิมไม่ถูกแตะ` }; }
+  const syms = (o.symbols || reportSymbols()).filter(([, y]) => !isTH(y)).map(([s]) => s).sort();
+  const out = {}, missing = [];
+  for (const s of syms) {
+    const c = tickers[s.toUpperCase()] || tickers[s.toUpperCase().replace(/\./g, '-')];
+    if (c) out[s] = pad10(c); else missing.push(s);
+  }
+  // ผลตัดแล้วว่าง (map ของ SEC ไม่ว่างแต่ไม่ตรงสักตัว เช่นรูปแบบ JSON เปลี่ยน) = เหมือน map ว่าง: ไม่เขียน — เขียน `{}` จะทำให้ loadCiks ถือว่าทุก ticker US เป็น no-cik ตลอดไปโดยไม่มีอะไรฟ้อง
+  if (!Object.keys(out).length) return { ok: false, why: `ไม่มี ticker ของเราตรงกับ company_tickers.json สักตัว (${syms.length} ticker US ที่มีรายงาน · SEC ${Object.keys(tickers).length}) — รูปแบบข้อมูลเปลี่ยน? · ไฟล์เดิมไม่ถูกแตะ` };
+  const tmp = file + '.tmp';   // เขียนแล้ว rename ทับ (atomic) — ล้มกลางคันไม่ทิ้งไฟล์ครึ่งเดียว
+  try { fs.writeFileSync(tmp, JSON.stringify(out, null, 1) + '\n'); fs.renameSync(tmp, file); }
+  catch (e) { try { fs.unlinkSync(tmp); } catch (_) { /* ไม่มี tmp */ } return { ok: false, why: `เขียนไฟล์ไม่สำเร็จ — ${e.message} · ไฟล์เดิมไม่ถูกแตะ` }; }
+  return { ok: true, n: Object.keys(out).length, missing, file };
+}
+
+/** --sec-probe: พิมพ์ต่อ ticker — CIK · วันยื่นงบล่าสุด · kind (ok|6k-only|no-cik|fetch-failed|no-ua|no-statement-forms) → string[] */
+function secProbe(syms, opts) {
+  const cache = new Map();
+  return syms.map((s) => {
+    const r = secLookup(s, { ...(opts || {}), cache });
+    return `${String(s).toUpperCase().padEnd(8)} cik=${r.cik || '-'} latest=${r.date || '-'} kind=${r.date ? 'ok' : r.kind}`;
+  });
+}
+
+/**
+ * มีงบไตรมาส/ปีใหม่หลังวันที่ footer ไหม (ส่วนบริสุทธิ์ — ไม่แตะดิสก์/network เอง)
+ * → { after: true|false|null, source, last, detail } — null = ตัดสินไม่ได้ (⇒ FULL)
+ * ลำดับ: ปฏิทิน Yahoo (`last`) → [TH] เส้นตาย SET → [US] SEC submissions (ฉีด opts.sec ได้เท่านั้น) → null
+ * TH: after=true ถ้าปฏิทินบอก หรือมีเส้นตายตกระหว่าง footer..วันนี้ · ไม่มีทั้งสอง = false (เส้นตายเป็นกฎหมาย ตัดสินได้เสมอ)
+ * opts: { footerIso, today, th, cal:{symbols}, sec:(sym)→'YYYY-MM-DD'|null, table }
+ */
+function statementAfter(sym, opts) {
+  const o = opts || {};
+  if (!o.footerIso) return { after: null, source: null, last: null, kind: 'footer-unreadable', detail: 'footer-unreadable — อ่านวันที่ footer ไม่ได้' };
+  const e = ((o.cal && o.cal.symbols) || {})[sym];
+  const calLast = e && e.last ? e.last : null;
+  const calAfter = calLast ? o.footerIso < calLast : null;
+  if (o.th) {
+    const dl = thDeadlinesBetween(o.footerIso, o.today, o.table);
+    if (calAfter) return { after: true, source: 'calendar', last: calLast, detail: `ปฏิทิน: ประกาศงบ ${calLast} หลัง footer ${o.footerIso}` };
+    if (dl.length) return { after: true, source: 'set-deadline', last: dl[dl.length - 1], detail: `เส้นตายส่งงบ SET ${dl.join(',')} ตกหลัง footer ${o.footerIso}` };
+    return { after: false, source: calLast ? 'calendar+set-deadline' : 'set-deadline', last: calLast, detail: `ไม่มีเส้นตายส่งงบ SET ระหว่าง ${o.footerIso}..${o.today}${calLast ? ` · ปฏิทิน last ${calLast}` : ''}` };
+  }
+  if (calLast) return { after: calAfter, source: 'calendar', last: calLast, detail: `ปฏิทิน: ประกาศงบ ${calLast} ${calAfter ? 'หลัง' : 'ก่อน/ตรงกับ'} footer ${o.footerIso}` };
+  const raw = o.sec ? o.sec(sym) : null;   // string (วัน) | { date, kind } | null
+  const s = raw && typeof raw === 'object' ? raw.date : raw;
+  if (s) return { after: o.footerIso < s, source: 'sec', last: s, detail: `SEC: 10-K/10-Q ล่าสุดยื่น ${s} ${o.footerIso < s ? 'หลัง' : 'ก่อน/ตรงกับ'} footer ${o.footerIso}` };
+  const kind = !o.sec ? 'no-source' : (raw && typeof raw === 'object' && raw.kind) || 'no-cik';
+  return { after: null, source: null, last: null, kind, detail: `${kind} — ไม่รู้วันงบล่าสุด (ไม่มีวันที่ในปฏิทิน${o.sec ? ' · SEC ไม่มีข้อมูล' : ' · ไม่ได้ใช้ SEC'})` };
+}
+
 const argVal = (flag, dflt) => { const i = process.argv.indexOf(flag); return i > 0 && process.argv[i + 1] != null ? process.argv[i + 1] : dflt; };
 
 async function main() {
+  if (process.argv.includes('--sec-refresh-ciks')) {
+    const r = secRefreshCiks();
+    if (!r.ok) { console.error('✗ sec-refresh-ciks: ' + r.why); process.exit(1); }
+    console.log(`sec-refresh-ciks: เขียน ${r.file} · ${r.n} ticker US${r.missing.length ? ` · ไม่พบ CIK ${r.missing.length}: ${r.missing.slice(0, 15).join(' ')}${r.missing.length > 15 ? ' …' : ''}` : ''}`);
+    return;
+  }
+  if (process.argv.includes('--sec-probe')) {
+    const syms = process.argv.slice(process.argv.indexOf('--sec-probe') + 1).filter((x) => !x.startsWith('--'));
+    if (!syms.length) throw new Error('--sec-probe ต้องมี ticker อย่างน้อยหนึ่งตัว');
+    for (const l of secProbe(syms)) console.log(l);
+    return;
+  }
   const write = process.argv.includes('--write');
   const outFile = argVal('--out', FILE);
   const limit = +argVal('--limit', 0) || 0;
@@ -157,5 +322,5 @@ async function main() {
   }
 }
 
-module.exports = { fetchNextEarnings, roll, build, nodateRatio, load, reportSymbols, FILE, ABORT_AFTER, RETRY_DELAYS };
+module.exports = { fetchNextEarnings, roll, build, nodateRatio, load, reportSymbols, FILE, ABORT_AFTER, RETRY_DELAYS, TH_FILING, thDeadlinesBetween, secLookup, secLastStatement, secRefreshCiks, secProbe, loadCiks, CIKS_FILE, statementAfter };
 if (require.main === module) main().catch((e) => { console.error('✗', e.message); process.exit(1); });

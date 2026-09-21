@@ -17,17 +17,18 @@ let cmd, has, val, sym;
 try { ({ cmd, has, val, sym } = require('./queue/args.js').parseArgs(process.argv.slice(2))); }
 catch (e) { console.error('✗ ' + e.message); process.exit(1); }
 const usage = `ใช้: npm run queue -- <คำสั่ง> [ตัวเลือก]
-  preflight [--no-patch] [--allow-intraday] [--allow-dirty] [--age N] [--no-age]
+  preflight [--no-patch] [--allow-intraday] [--allow-dirty] [--age N] [--no-age] [--light-rule new|legacy]
   ship --prepatch
-  prep <SYM> [--mode NEW|UPDATE|UPDATE-LIGHT] [--model sonnet|opus] [--brand "#hex"] [--median-spec SYM:TICKER] [--th]
+  prep <SYM> [--mode NEW|UPDATE|UPDATE-LIGHT] [--model sonnet|opus] [--brand "#hex"] [--median-spec SYM:TICKER] [--th] [--light-rule new|legacy]
   postcheck <SYM> [--model sonnet|opus]
   ship <SYM> [--tags "slug slug"] [--message "…"] [--model sonnet|opus] [--force]
-  status`;
+  status
+  (--light-rule legacy = กฎ LIGHT/FULL เดิม · env LIGHT_RULE=legacy ก็ได้ · ship รับแต่ไม่ใช้)`;
 
 (async () => {
   switch (cmd) {
-    case 'preflight': require('./queue/preflight.js').preflight({ noPatch: has('--no-patch'), allowIntraday: has('--allow-intraday'), allowDirty: has('--allow-dirty'), age: val('--age') != null ? +val('--age') : null, noAge: has('--no-age') }); break;
-    case 'prep': if (!sym) throw new Error(usage); await require('./queue/prep.js').prep(sym, { mode: val('--mode'), model: val('--model'), brand: val('--brand'), medianSpec: val('--median-spec'), th: has('--th') }); break;
+    case 'preflight': require('./queue/preflight.js').preflight({ noPatch: has('--no-patch'), allowIntraday: has('--allow-intraday'), allowDirty: has('--allow-dirty'), age: val('--age') != null ? +val('--age') : null, noAge: has('--no-age'), lightRule: val('--light-rule') }); break;
+    case 'prep': if (!sym) throw new Error(usage); await require('./queue/prep.js').prep(sym, { mode: val('--mode'), model: val('--model'), brand: val('--brand'), medianSpec: val('--median-spec'), th: has('--th'), lightRule: val('--light-rule') }); break;
     case 'postcheck': if (!sym) throw new Error(usage); process.exitCode = require('./queue/postcheck.js').postcheck(sym, { model: val('--model') }).issues.length ? 1 : 0; break;
     case 'ship': {
       // เช็คก่อน require — สองโหมดนี้คนละงานกัน (ใบเดียว vs ราคาทั้งชุด) ใส่คู่กันแปลว่าพิมพ์ผิด ห้ามเดาให้
