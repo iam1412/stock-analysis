@@ -4,44 +4,45 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น Air Products and Chemicals (APD) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"APD","currency":"USD","price":284.18,"fairValue":248,"mos":-14.6,"upside":-12.7,"pe":23.6,"dividendYield":2.55,"roe":12.35}
+{"symbol":"APD","currency":"USD","price":284.18,"fairValue":309,"mos":8,"upside":8.7,"pe":21.1,"dividendYield":2.55,"roe":0.02}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 248,
+  "fv": 309,
   "values": {
     "px": 284.18,
     "priceDate": "2026-09-18",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
-    "fvLow": 240,
-    "fvHigh": 263,
-    "shares": 222000000,
+    "fvLow": 255,
+    "fvHigh": 363,
+    "shares": 222685530,
     "dps": 7.24,
-    "bvps": 96,
-    "baseEps": 12.03,
+    "bvps": 62.35,
+    "baseEps": 13.44,
     "scenarios": [
       {
-        "tgt": 223.55,
-        "div": 22.5
+        "tgt": 249.67,
+        "div": 23
       },
       {
-        "tgt": 272.27,
-        "div": 23.5
+        "tgt": 336.15,
+        "div": 24.2
       },
       {
-        "tgt": 327.18,
-        "div": 24.5
+        "tgt": 435.13,
+        "div": 25.4
       }
     ],
     "scnBasis": {
       "years": 3,
       "divIncluded": false,
       "perYear": null
-    }
+    },
+    "analystTgt": 345.11
   },
   "theme": {
     "accent": "#0E7C86",
@@ -78,8 +79,8 @@
     "highlight": [0, 10]
   },
   "gauge": {
-    "min": 230,
-    "max": 310,
+    "min": 200,
+    "max": 380,
     "fairLabelTop": false
   }
 }
@@ -98,7 +99,7 @@
       <span class="tag">Dividend Aristocrat</span>
     </div>
     <h1>Air Products and Chemicals, Inc.</h1>
-    <div class="sub">ก๊าซอุตสาหกรรม (ออกซิเจน/ไนโตรเจน/ไฮโดรเจน) • on-site/merchant สัญญา take-or-pay • โครงการ clean hydrogen (NEOM, Louisiana) • Dividend Aristocrat 44 ปี</div>
+    <div class="sub">ก๊าซอุตสาหกรรม (ออกซิเจน/ไนโตรเจน/ไฮโดรเจน) • on-site/merchant สัญญา take-or-pay • โครงการ clean hydrogen NEOM (เลิก Louisiana ก.ค. 2569) • Dividend Aristocrat</div>
     <div class="price-row">
       <div>
         <div class="px">{{rd:px}}<small>(APD)</small></div>
@@ -106,29 +107,29 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ $229.11 / $307.96<br>
-        ที่มา: StockAnalysis.com / Yahoo Finance / Air Products IR / Macrotrends
+        กรอบ 52 สัปดาห์ $229.11 / $314.87<br>
+        ที่มา: StockAnalysis.com / Yahoo Finance / Air Products IR (Q3 FY26 release, SEC 8-K)
       </div>
     </div>
   </header>
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">FY2025 (ปีงบสิ้น ก.ย.) · Adj EPS ปรับรายการพิเศษ</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งวดล่าสุด Q3 FY26 (มิ.ย. 2569) · ปีงบสิ้น 30 ก.ย. · Adj EPS ปรับรายการพิเศษ</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~222M shares</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~23.6x</div><div class="d">อิง adj EPS $12.03 (GAAP TTM $9.46)</div></div>
-      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~25x</div><div class="d">ช่วง 18x–32x</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">~3.0x</div><div class="d">BVPS ~$96</div></div>
+      <div class="metric"><div class="k">P/E (adj FY26E)</div><div class="v neu">~21.1x</div><div class="d">อิง adj EPS guide $13.44 (GAAP TTM −$0.21)</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~4 ปี</div><div class="v">~27.0x</div><div class="d">มัธยฐาน FY21–FY24 (GAAP) ช่วง 15.3x–29.4x</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~4.6x</div><div class="d">BVPS ~$62.35</div></div>
 
-      <div class="metric"><div class="k">กำไรสุทธิ FY25</div><div class="v">ขาดทุน GAAP</div><div class="d">charges $3.7B หักออก; adj net ~$2.67B</div></div>
-      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$12.03 adj</div><div class="d">GAAP TTM $9.46 (ฟื้นตัว)</div></div>
-      <div class="metric"><div class="k">BVPS</div><div class="v">~$96</div><div class="d">equity ~$21.3B</div></div>
-      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~12.4% / ~4.8%</div><div class="d">กด capex H2 megaproject</div></div>
+      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">ขาดทุน GAAP −$47M</div><div class="d">charge โครงการ $2.9B (ก่อนภาษี) Q3 FY26; adj ~$3.0B</div></div>
+      <div class="metric"><div class="k">EPS adj FY26E</div><div class="v">~$13.44</div><div class="d">guide $13.39–$13.49 · GAAP TTM −$0.21</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$62.35</div><div class="d">equity รวม NCI ~$16.6B</div></div>
+      <div class="metric"><div class="k">ROE / ROIC</div><div class="v neu">~0% / ~8.9%</div><div class="d">ROE GAAP ต่ำจาก charge Q3 FY26</div></div>
 
-      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~$12.0B</div><div class="d">ทรงตัว YoY</div></div>
-      <div class="metric"><div class="k">Operating Margin</div><div class="v">~24.1%</div><div class="d">ROIC 5.2% (ต่ำ capex H2)</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.55%</div><div class="d">$7.24/ปี · Aristocrat 44 ปีติด</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~$12.6B</div><div class="d">+4.5% YoY</div></div>
+      <div class="metric"><div class="k">Operating Margin</div><div class="v">~24.7%</div><div class="d">FCF TTM −$301M (−$1.35/หุ้น)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.55%</div><div class="d">$7.24/ปี · Dividend Aristocrat</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">~0.75</div><div class="d">ผันผวนต่ำกว่าตลาด</div></div>
     </div>
   </section>
@@ -146,33 +147,29 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ราคา APD แกว่งตัวในกรอบ $243–$300 ตลอดปีที่ผ่านมา จุดต่ำสุดที่ $242.59 ใน ต.ค. 68 จากแรงกดดันด้าน capex และกังวล FCF ติดลบ ก่อนฟื้นตัวสู่ $300 ในช่วง เม.ย. 69 ตาม sentiment H2 และ activist Mantle Ridge ดัน CEO ใหม่ลดความเสี่ยง ราคาปัจจุบัน $277.79 ต่ำกว่าจุดสูงสุดรอบปี ~7% และอยู่เหนือ Fair Value $248 ราว 12%
+        ราคาปิดรายเดือน APD แกว่งในกรอบ $242.59 (ต.ค. 68) ถึง $309.46 (ส.ค. 69) ตลอดปีที่ผ่านมา (กรอบ 52 สัปดาห์ $229.11–$314.87) ราคาปัจจุบัน {{rd:px}} ต่ำกว่าจุดสูงสุดรายเดือนของรอบปี และต่ำกว่า Fair Value {{rd:fv}} เล็กน้อย ({{rd:mos}}) ปลาย มิ.ย. 69 บริษัทประกาศเลิกโครงการ Louisiana Clean Energy Complex, Casa Grande และโครงการ clean energy ขนาดเล็ก (charge ก่อนภาษี ~$2.9B) แล้วยก guide adj EPS FY26 เป็น $13.39–$13.49
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี · อิง Adj EPS $12.03</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">2 ตระกูล (P/E ยึดตลาด + DDM) · อิง Adj EPS FY26 guide $13.44</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation (Adj)</div><div class="mdesc">Adj EPS $12.03 × P/E เป้าหมาย ~20x — อิง P/E ต่ำกว่าค่าเฉลี่ย 5 ปี สะท้อน FCF ติดลบจาก capex H2</div></div>
-        <div class="mval">$240.60</div>
+        <div><div class="mname">1. P/E Valuation (Adj)</div><div class="mdesc">Adj EPS $13.44 (guide FY2026 กลางช่วง $13.39–$13.49) × P/E 27.0x — มัธยฐาน P/E ย้อนหลัง FY21–FY24 ที่วัดจริง (4 จุด ช่วง 15.3x–29.4x, ฐาน GAAP)</div></div>
+        <div class="mval">$362.88</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. Forward P/E FY26E</div><div class="mdesc">FY26E adj EPS ~$12.80 × P/E เป้าหมาย 20.5x — นักวิเคราะห์คาด EPS เติบโตพอประมาณ CEO ใหม่ควบคุม capex</div></div>
-        <div class="mval">$262.40</div>
-      </div>
-      <div class="vmethod">
-        <div><div class="mname">3. DDM / Gordon Growth</div><div class="mdesc">D₁ = $7.24/ปี ÷ (r 8.5% − g 5.5%) = $7.24 ÷ 0.03 — Dividend Aristocrat 44 ปี เติบโตปันผลสม่ำเสมอ</div></div>
-        <div class="mval">$241.33</div>
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = $7.24 × 1.055 = $7.64 ÷ (r 8.5% − g 5.5% = 3.0%) — ปันผลขึ้นต่อเนื่องยาวนาน payout ~54% ของ adj EPS</div></div>
+        <div class="mval">$254.61</div>
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ทั้ง 3 วิธีให้ค่าใกล้เคียงกันในช่วง $240–$262 สะท้อนว่า APD ที่ P/E adj 20x เป็นมาตรฐานสมเหตุสมผล เมื่อ FCF ยังติดลบจาก megaproject H2 DDM ให้ค่าต่ำกว่าเล็กน้อย ($241) เพราะ payout ratio สูงขณะ capex หนัก Forward P/E ($262) สูงกว่าเพราะนักวิเคราะห์คาด EPS ปรับขึ้น FY26 นักวิเคราะห์ส่วนใหญ่ (23 ราย เป้าเฉลี่ย $328) ให้เครดิต H2 มากกว่า แต่ผมระมัดระวังกว่าเรื่องความเสี่ยง capex
+        รอบนี้จัด FV ใหม่ให้เหลือ 2 ตระกูลอิสระ: P/E ยึดตลาด (ตัวคูณ 27.0x = มัธยฐานที่วัดจริง ไม่ใช่ตัวคูณปัจจุบัน) และ DDM (r/g ชุดเดียว) ทั้งสองขาห่างกัน ~1.4 เท่า จึงเฉลี่ยได้ · เป้านักวิเคราะห์ ({{rd:analystTgt}}) ไม่เป็นขาของ FV เป็นแค่จุดเทียบ · Forward P/E ตัดออกเพราะเป็นตระกูล P/E เดียวกัน · ข้อควรระวัง: มัธยฐาน 27.0x มาจากเพียง 4 ปีฐาน GAAP (FY22–FY23 ช่วงรายได้โต 17–23% และ FCF ยังบวก ต่างจากตอนนี้ที่ FCF ติดลบ) จึงเป็นขาที่ค่อนข้างเอื้อ — ถ้าใช้ P/E 21x แทน FV เฉลี่ยจะลดเหลือประมาณ $268 · ตัวเลขนี้เป็นการประเมินของผู้เขียน ยังไม่ได้ยืนยันด้วยวิธีที่สาม
       </p>
     </div>
   </section>
@@ -190,12 +187,12 @@
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:analystTgt}}<br><small>เป้าเฉลี่ย Analyst</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
-          <span style="text-align:right">$328<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน $277.79 อยู่เหนือ Fair Value $248 ราว 12% → MOS เป็นลบ หมายถึงซื้อที่นี่จ่ายแพงกว่ามูลค่าที่ประเมิน โซนน่าสนใจ (MOS 20%) อยู่ที่ $198.40 ซึ่งห่างจากราคาปัจจุบันราว 29% นักวิเคราะห์ 23 รายเป้าเฉลี่ย $328 (+8%) ให้เครดิต H2 megaproject เต็มที่ ซึ่งผมมองว่า risk/reward ยังไม่น่าดึงดูดในราคานี้
+        ราคาปัจจุบัน {{rd:px}} ต่ำกว่า Fair Value {{rd:fv}} เล็กน้อย ({{rd:mos}}) → MOS บาง ยังไม่ถึงโซนน่าสนใจ (MOS 20%) ที่ {{rd:mos20}} เป้าเฉลี่ยนักวิเคราะห์ {{rd:analystTgt}} ({{rd:analystPct}}) สูงกว่า FV ของผม เพราะให้ตัวคูณสูงกว่าและเครดิตการฟื้นตัวของ FCF หลังลด capex เต็มที่ ซึ่งผมมองว่า risk/reward ในราคานี้ยังพอรับได้แต่ไม่ถูก
       </p>
     </div>
   </section>
@@ -206,7 +203,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">ราคาแพงกว่ามูลค่าเหมาะสม — ยังไม่มี Margin of Safety</div>
+        <div class="txt">ราคาต่ำกว่ามูลค่าเหมาะสมเล็กน้อย — Margin of Safety บาง (ยังไม่ถึงโซน 20%)</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -233,10 +230,11 @@
           <div class="tgt">{{rd:sc1tgt}}</div>
           <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$13.15</span></li>
+            <li><span>EPS ปี 3</span><span>~$14.69</span></li>
             <li><span>P/E ออก</span><span>17x</span></li>
+            <li><span>ที่มาตัวคูณ</span><span>ใกล้ P/E ต่ำสุดที่วัดได้ 15.3x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
-            <li><span>สถานการณ์</span><span>capex H2 บานปลาย, ROIC ต่ำต่อเนื่อง</span></li>
+            <li><span>สถานการณ์</span><span>NEOM/ต้นทุนบานปลาย, FCF ฟื้นช้า, de-rate</span></li>
           </ul>
         </div>
       </div>
@@ -246,10 +244,11 @@
           <div class="tgt">{{rd:sc2tgt}}</div>
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$14.33</span></li>
-            <li><span>P/E ออก</span><span>19x</span></li>
+            <li><span>EPS ปี 3</span><span>~$16.01</span></li>
+            <li><span>P/E ออก</span><span>21x</span></li>
+            <li><span>ที่มาตัวคูณ</span><span>~22% ต่ำกว่ามัธยฐาน 27.0x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
-            <li><span>สถานการณ์</span><span>H2 คืบหน้า, FCF กลับบวกปลาย 3 ปี</span></li>
+            <li><span>สถานการณ์</span><span>NEOM คืบหน้า, FCF กลับบวกหลังลด capex</span></li>
           </ul>
         </div>
       </div>
@@ -259,16 +258,17 @@
           <div class="tgt">{{rd:sc3tgt}}</div>
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$15.58</span></li>
-            <li><span>P/E ออก</span><span>21x</span></li>
+            <li><span>EPS ปี 3</span><span>~$17.41</span></li>
+            <li><span>P/E ออก</span><span>25x</span></li>
+            <li><span>ที่มาตัวคูณ</span><span>~7% ต่ำกว่ามัธยฐาน 27.0x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
-            <li><span>สถานการณ์</span><span>H2 NEOM/Louisiana เปิดตัว, re-rating</span></li>
+            <li><span>สถานการณ์</span><span>FCF ฟื้นเร็ว, re-rating เข้าใกล้มัธยฐาน</span></li>
           </ul>
         </div>
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      การคาดการณ์อิง adj EPS FY25 $12.03 เป็นฐาน สถานการณ์ Base (EPS +6%/ปี) ให้ผลตอบแทนรวม ~−2% จากราคานี้ (กำไรทุนติดลบ บวกปันผลรวม ~$23.50) สะท้อนว่าการซื้อที่ $277.79 มี upside จำกัดแม้ใน Base case Bull case ตรงกับเป้า consensus $328 (+8%) ซึ่งต้องการ re-rating P/E กลับ 21x และ H2 megaproject สำเร็จตามแผน ความเสี่ยงหลักคือ Bear case ที่ capex H2 บานปลายและ P/E compression ลงสู่ 17x
+      การคาดการณ์อิง adj EPS FY26 guide $13.44 เป็นฐาน (ราคาเป้าเป็นสมมติฐาน ไม่รวมปันผลในผลตอบแทนรวม) สถานการณ์ Base (EPS +6%/ปี, P/E ออก 21x) ให้ผลตอบแทนรวม {{rd:sc2ret}} จากจุดเข้า ตัวคูณทุกฉากต่ำกว่ามัธยฐานที่วัดได้ 27.0x เพราะ FCF ยังติดลบและ ROIC ต่ำ Bull case ให้ P/E ออก 25x และต้องการให้ FCF ฟื้นตามแผนลด capex ส่วนความเสี่ยงหลักคือ Bear case ที่ต้นทุน NEOM บานปลายและ P/E compression ลงสู่ 17x
     </p>
   </section>
 
@@ -280,22 +280,22 @@
         <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
         <ul>
           <li><b>Oligopoly Moat:</b> ตลาดก๊าซอุตสาหกรรมโลก ~80% อยู่ใน Linde / Air Liquide / APD สัญญา take-or-pay ทำให้รายได้มั่นคงมาก</li>
-          <li><b>Clean Hydrogen Megatrend:</b> โครงการ NEOM (ซาอุ) + Louisiana ถ้าสำเร็จ = รายได้ระยะยาวจาก H2 ที่ยังไม่มีคู่แข่งชัดเจน</li>
-          <li><b>Dividend Aristocrat 44 ปี:</b> เพิ่มปันผลทุกปีต่อเนื่อง 44 ปี คุ้มค่าสำหรับผู้ลงทุนระยะยาว income-focused</li>
-          <li><b>Activist Mantle Ridge:</b> บีบ CEO ใหม่ให้ลดความเสี่ยง capex + focus ธุรกิจ core → ลด overspend risk</li>
+          <li><b>NEOM + ลดความเสี่ยง capex:</b> บริษัทเลิก Louisiana และ Casa Grande (charge ~$2.9B ก่อนภาษี) เหลือ NEOM ที่เพิ่งตกลงสัญญาขายแอมโมเนียหมุนเวียนกับ Yara · capex FY26 ลดเหลือ ~$3.5B</li>
+          <li><b>Dividend Aristocrat:</b> เพิ่มปันผลต่อเนื่องยาวนาน ปันผล $7.24/หุ้น (~2.55%) เหมาะกับผู้ลงทุนระยะยาว income-focused</li>
+          <li><b>ผู้บริหารชุดใหม่:</b> CEO Eduardo Menezes (หลัง proxy contest ที่จบ ม.ค. 2568) หันมาลดความเสี่ยง capex และเลิกโครงการ clean energy ที่ไม่คุ้ม → ลด overspend risk</li>
           <li><b>Cost Pass-Through:</b> สัญญา on-site ส่วนใหญ่ผ่านต้นทุนพลังงานให้ลูกค้า กัน margin squeeze</li>
-          <li><b>Consensus Upside $328:</b> นักวิเคราะห์ 23 ราย เป้าเฉลี่ย $328 (+8%) ถ้า H2 ถูก re-rate = upside สูง</li>
+          <li><b>Consensus Upside:</b> นักวิเคราะห์ (~22 ราย) เป้าเฉลี่ย {{rd:analystTgt}} ({{rd:analystPct}}) และ adj EPS ปีงบ 2569 ถูกยก guide เป็น $13.39–$13.49</li>
         </ul>
       </div>
       <div class="box risk">
         <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
         <ul>
-          <li><b>FCF ติดลบ:</b> capex H2 megaproject ทำ FCF −$16.9/share ต่อเนื่อง กดดัน balance sheet และ flexibility</li>
-          <li><b>ROIC ต่ำกว่า WACC:</b> ROIC 5.2% ต่ำกว่า WACC ~8% = ทำลายมูลค่าในระยะสั้น-กลาง</li>
-          <li><b>Execution Risk H2:</b> NEOM และ Louisiana เป็นโครงการใหม่ขนาดใหญ่ ความเสี่ยง cost overrun / delay สูง</li>
+          <li><b>FCF ติดลบ:</b> FCF TTM −$301M (−$1.35/หุ้น) และ FY25 −$3.77B · หนี้รวม ~$18.3B เทียบเงินสด ~$1.0B กดดัน balance sheet</li>
+          <li><b>กำไร GAAP ถูกกด:</b> TTM ขาดทุน −$0.21/หุ้น จาก charge เลิกโครงการ ~$2.9B ก่อนภาษี (Q3 FY26 GAAP −$6.47/หุ้น) equity ลดลง BVPS ~$62.35</li>
+          <li><b>Execution Risk NEOM:</b> โครงการขนาดใหญ่ยังเหลืออยู่ ความเสี่ยง cost overrun / delay และอาจมี charge เพิ่มถ้าตัดสินใจเลิกอีก</li>
           <li><b>ราคาพลังงานผันผวน:</b> แม้ pass-through แต่ delay ราคาพลังงานขึ้นกะทันหันกระทบ margin ชั่วคราว</li>
-          <li><b>GAAP EPS ผันผวน:</b> charges ขนาดใหญ่ ($3.7B FY25) ทำให้ GAAP เข้าใจยาก นักลงทุนบางส่วนหนี</li>
-          <li><b>Valuation ตึง:</b> P/E adj 23x ยังสูงเมื่อ FCF ติดลบ ถ้า H2 ล่าช้า = P/E compression กดดันราคา</li>
+          <li><b>GAAP EPS ผันผวน:</b> charges ขนาดใหญ่สองปีติด (FY25 และ Q3 FY26) ทำให้ GAAP เข้าใจยาก ต้องพึ่งตัวเลข adj</li>
+          <li><b>Valuation ไม่ถูก:</b> P/E adj FY26E ~21x เมื่อ FCF ยังติดลบ ถ้า NEOM ล่าช้า = P/E compression กดดันราคา</li>
         </ul>
       </div>
     </div>
@@ -305,15 +305,15 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>APD: Oligopoly Moat แข็งแกร่ง แต่ราคาแพงกว่า Fair Value 12% — รอย่อก่อนสะสม</h2>
-      <p>Air Products เป็นผู้นำ oligopoly ก๊าซอุตสาหกรรมโลก รายได้มั่นคงจากสัญญา take-or-pay และเป็น Dividend Aristocrat 44 ปีติดต่อกัน อย่างไรก็ตาม capex H2 megaproject (NEOM/Louisiana) ขนาดใหญ่ทำให้ FCF ติดลบ −$16.9/sh และ ROIC เพียง 5.2% ต่ำกว่า WACC ในระยะนี้ นักวิเคราะห์ 23 ราย เป้าเฉลี่ย $328 ให้เครดิต H2 เต็มที่ แต่ผมประเมิน FV ที่ $248 (conservative — ไม่รวม H2 upside เต็มที่) ที่ราคา $277.79 = MOS −12.0% หมายถึงจ่ายแพงกว่ามูลค่า ควรรอย่อสู่ใกล้ $198 (MOS 20%) หรือดู activist ปลดล็อก capex ก่อนสะสม</p>
+      <h2>APD: Oligopoly Moat แข็งแกร่ง หลังเลิก Louisiana ความเสี่ยง capex ลดลง — ราคาใกล้ Fair Value รอย่อก่อนสะสม</h2>
+      <p>Air Products เป็นผู้นำ oligopoly ก๊าซอุตสาหกรรมโลก รายได้มั่นคงจากสัญญา take-or-pay และเป็น Dividend Aristocrat ปลาย มิ.ย. 69 บริษัทเลิกโครงการ Louisiana และ Casa Grande (charge ~$2.9B ก่อนภาษี) ทำให้ GAAP TTM ขาดทุน แต่ adj EPS FY26 guide ยกเป็น $13.39–$13.49 และ capex ลดเหลือ ~$3.5B FCF TTM ยังติดลบ −$1.35/หุ้น ผมประเมิน FV ที่ {{rd:fv}} จาก P/E มัธยฐานที่วัดจริง 27.0x คู่กับ DDM ที่ราคา {{rd:px}} ({{rd:mos}}) ส่วนเผื่อยังบาง ควรรอย่อสู่โซน {{rd:mos20}} (MOS 20%) ก่อนสะสม เป้านักวิเคราะห์ {{rd:analystTgt}} เป็นจุดเทียบ ไม่ใช่ส่วนหนึ่งของ FV</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$328 (Moderate Buy)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~{{rd:analystTgt}} (Buy)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> รอราคาย่อสู่ใกล้ $248 (Fair Value) หรือดีกว่าที่ $198 (MOS 20%) ก่อนสะสม · ติดตาม activist Mantle Ridge + ความคืบหน้า H2 NEOM/Louisiana · นักลงทุน income-focused รับปันผล 2.6% ได้ระหว่างรอ · ถ้า H2 re-rate สำเร็จ upside $328 น่าสนใจมาก
+        💡 <b>กลยุทธ์:</b> รอราคาย่อสู่โซน MOS 20% ที่ {{rd:mos20}} ก่อนสะสมเต็มที่ · ติดตามความคืบหน้า NEOM + FCF/capex ในงบ Q4 FY26 (5 พ.ย. 2569) · นักลงทุน income-focused รับปันผล ~2.6% ได้ระหว่างรอ · เป้านักวิเคราะห์ {{rd:analystTgt}} ต้องอาศัยตัวคูณสูงกว่าที่ผมใช้ในฉาก Base
       </div>
     </div>
   </section>
@@ -324,7 +324,7 @@
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลอ้างอิง: StockAnalysis.com · Yahoo Finance · Air Products and Chemicals Investor Relations · Macrotrends · ราคา ณ {{rd:priceDate}}
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 26 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
