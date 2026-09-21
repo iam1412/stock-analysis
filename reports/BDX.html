@@ -4,23 +4,23 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น Becton Dickinson (BDX) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"BDX","currency":"USD","price":180.94,"fairValue":195,"mos":7.2,"upside":7.8,"pe":14.3,"dividendYield":2.32,"roe":14.4}
+{"symbol":"BDX","currency":"USD","price":180.94,"fairValue":197,"mos":8.2,"upside":8.9,"pe":14.3,"dividendYield":2.32,"roe":14.4}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 195,
+  "fv": 197,
   "values": {
     "px": 180.94,
     "priceDate": "2026-09-18",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
-    "fvLow": 174,
+    "fvLow": 148,
     "fvHigh": 237,
     "eps": 12.62,
-    "shares": 275000000,
+    "shares": 272386800,
     "dps": 4.2,
     "bvps": 84.61,
     "baseEps": 12.62,
@@ -73,14 +73,14 @@
       ["ก.ย.26", 180.94]
     ],
     "min": 120,
-    "max": 200,
-    "grid": [140, 160, 180],
+    "max": 220,
+    "grid": [140, 160, 180, 200],
     "currency": "$",
     "highlight": [0, 10]
   },
   "gauge": {
     "min": 120,
-    "max": 220
+    "max": 250
   }
 }
 </script>
@@ -106,7 +106,7 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ $127.59 – $187.35<br>
+        กรอบ 52 สัปดาห์ $140.11 – $213.08 (StockAnalysis)<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, BD Investor Relations (investors.bd.com)
       </div>
     </div>
@@ -114,17 +114,17 @@
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">New BD — หลังแยก Biosciences &amp; Diagnostics ให้ Waters (ก.พ. 2569)</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">New BD — หลังแยก Biosciences &amp; Diagnostics (ตามรายงานเดิม)</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~275M shares (หลัง ASR $2B)</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~272.4M shares คงเหลือ (StockAnalysis)</div></div>
       <div class="metric"><div class="k">P/E (forward FY2026)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS adj. guide $12.62 mid</div></div>
-      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~20–25x</div><div class="d">ปัจจุบัน discount ช่วง restructuring</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~32x</div><div class="d">มัธยฐาน GAAP dil. (27.5–40.6x) — คนละฐานกับ EPS adj.</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ~$84.61 (มีหนี้สูงจาก C.R. Bard)</div></div>
 
-      <div class="metric"><div class="k">รายได้ TTM (New BD)</div><div class="v">~$19.2B</div><div class="d">FY2026 guide; +2–3% organic</div></div>
-      <div class="metric"><div class="k">EPS adj. FY2026 (guide)</div><div class="v">~$12.62</div><div class="d">$12.52–$12.72 (raised Q2'26)</div></div>
-      <div class="metric"><div class="k">BVPS</div><div class="v">~$84.61</div><div class="d">Equity $24.1B / ~285M shares</div></div>
-      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~14.4% / ~6%</div><div class="d">Adjusted basis; GAAP ต่ำกว่า (amort.)</div></div>
+      <div class="metric"><div class="k">รายได้ FY2026e (New BD)</div><div class="v">~$19.3B</div><div class="d">consensus SA; TTM ตามงบ $22.5B (คนละฐาน)</div></div>
+      <div class="metric"><div class="k">EPS adj. FY2026e</div><div class="v">~$12.62</div><div class="d">consensus (StockAnalysis) • GAAP TTM $3.33</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$84.61</div><div class="d">ประมาณการเดิม — vendor ไม่ส่ง BVPS ตรวจซ้ำไม่ได้</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~14.4% adj.</div><div class="d">GAAP ROE 6.6% (vendor) — ต่ำกว่าเพราะ amortization</div></div>
 
       <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~46.8%</div><div class="d">Adj. op. margin ~25% (FY2025)</div></div>
       <div class="metric"><div class="k">FCF (New BD est.)</div><div class="v">~$2.5B/ปี</div><div class="d">หลังแยก Biosciences ออก</div></div>
@@ -135,7 +135,7 @@
 
   <!-- ===== 2. PRICE CHART ===== -->
   <section>
-    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – มิ.ย. 2569</div></div>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ต.ค. 2568 – ก.ย. 2569</div></div>
     <div class="card">
       <div class="chart-wrap">
         <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
@@ -146,21 +146,20 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        BDX ปรับตัวขึ้น <b>+10.7%</b> ในช่วง 1 ปี (ก.ค. 2568–มิ.ย. 2569) จาก $140 สู่ $155
-        โดยมีจุดสูงสุดที่ <b>$176</b> ในเดือน ก.พ. 2569 หลังบริษัทเสร็จสิ้นการแยกธุรกิจ Biosciences &amp; Diagnostic Solutions
-        ให้กับ Waters Corporation (9 ก.พ. 2569) และรับเงิน $4B ซึ่งนำไปซื้อหุ้นคืน $2B + ชำระหนี้ $2B
-        จากนั้นราคาย่อลงสู่ $147–$157 เนื่องจากนักลงทุนยังรอดูผลงาน "New BD" ในฐานะบริษัท medical devices ล้วน ๆ
-        ราคาปัจจุบัน $155.19 ยังต่ำกว่ามูลค่าเหมาะสม $195 อยู่ราว 20%
+        BDX ปรับตัวขึ้นราว <b>+29%</b> ในช่วง 1 ปี จากราว $140 (ต.ค. 2568) สู่ {{rd:px}} ปลายกราฟ
+        โดยมีจุดสูงสุดรายเดือนที่ <b>$188</b> ในเดือน ส.ค. 2569 และต่ำสุด ~$147 ในเดือน พ.ค. 2569
+        ช่วงกลางปีราคาย่อลงเพราะนักลงทุนรอดูผลงานของ New BD ในฐานะบริษัท medical devices ล้วน ๆ ก่อนดีดกลับ
+        เทียบกับมูลค่าเหมาะสม {{rd:fv}} ส่วนเผื่อปัจจุบัน {{rd:mos}}
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 ตระกูลสมมติฐาน</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $12.62 × P/E 16x = $202 — medtech เสถียรหลังแยกธุรกิจ; discount จาก peer (ABT 28x, SYK 30x) สะท้อนช่วง restructuring + หนี้สูง</div></div>
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $12.62 × P/E 16x = $202 — สมมติฐานเชิงอนุรักษ์ (fwd P/E ปัจจุบันต่ำกว่า 16x); มัธยฐาน GAAP 32.2x ใช้กับ EPS adj. ไม่ได้ (ดูคำอธิบายด้านล่าง)</div></div>
         <div class="mval">$202</div>
       </div>
       <div class="vmethod">
@@ -176,11 +175,10 @@
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        วิธี P/E ($202) ให้ค่ากลางที่สมเหตุสมผลที่สุดสำหรับ medical devices ที่มีการเติบโตสม่ำเสมอ
-        Justified P/BV ($237) สูงกว่าเพราะ ROE 14% ดีกว่า cost of equity — สะท้อนว่าบริษัทสร้างมูลค่าได้แม้มีหนี้สูง
-        DDM ($148) ให้ค่าต่ำสุดเพราะ yield ต่ำ (2.7%) + g ที่สมเหตุสมผลที่ 6%; เป็น floor สำหรับนักลงทุนที่เน้นปันผล
-        FV เฉลี่ย $195 สอดคล้องกับ consensus analyst ~$178 (12-เดือน) ที่ยังอนุรักษ์นิยมกว่า เนื่องจาก transition risk
-        <b>ที่มาข้อมูล:</b> BD Investor Relations (Q2 FY2026 press release), StockAnalysis.com, Yahoo Finance
+        FV = เฉลี่ย 2 ตระกูลสมมติฐาน: (P/E $202 + ค่าเฉลี่ย Justified P/BV กับ DDM $192.5) ÷ 2 ≈ $197 — Justified P/BV ($237) กับ DDM ($148) ใช้ (r 9%, g 6%) ชุดเดียวกัน จึงนับเป็นเสียงเดียว (กฎ 0.4c-bis; เดิมเฉลี่ยสามวิธีตรง ๆ = $195)
+        P/E ใช้ EPS adj. FY2026e $12.62 × 16x เป็นสมมติฐาน: มัธยฐานย้อนหลัง 32.2x (27.5–40.6x, 5 ปี) วัดบน GAAP diluted EPS (~$5–6) ที่ถูกกดด้วย amortization จึงเทียบตรงกับ EPS adj. ไม่ได้ (12.62 × 32.2 = $406 ไม่สมเหตุผล) — ตัวคูณ 16x ยังไม่มีสมอวัดจริงบนฐาน adj.
+        Justified P/BV ใช้ ROE adj. 14.4% ขณะที่ ROE ตามงบ (vendor) 6.6% — ขานี้จึงอ่อนไหวมาก; เป้า analyst เฉลี่ย $195.67 เป็นเพียงข้อตรวจสอบ ไม่ได้เป็นขา
+        <b>ที่มาข้อมูล:</b> Yahoo Finance, StockAnalysis.com (forecast/statistics/financials), BD Investor Relations (รายงานเดิม)
       </p>
     </div>
   </section>
@@ -197,16 +195,16 @@
         <div class="scale">
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$178<br><small>เป้า Analyst</small></span>
+          <span style="text-align:center">$195.67<br><small>เป้า Analyst</small></span>
           <span style="text-align:right">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคา $155.19 อยู่ใกล้ <b>โซน MOS 20%</b> ($156) — เข้าเขตน่าสนใจสำหรับนักลงทุน value ระยะยาว
-        ราคาต่ำกว่ามูลค่าเหมาะสม $195 อยู่ ~20% (MOS 20.4%) และต่ำกว่าเป้า analyst เฉลี่ย $178 ราว 15%
-        ความเสี่ยงหลักคือ transition หลัง spinoff + หนี้สูง $15-17B แต่ Dividend Aristocrat 53 ปีและ Beta 0.28
-        ช่วยลดความเสี่ยงด้านราคาในระยะสั้น โซน deep value อยู่ที่ MOS 30% = $136 ซึ่งใกล้เคียง 52-wk low $127
+        ราคา {{rd:px}} ยังอยู่เหนือ <b>โซน MOS 20%</b> ({{rd:mos20}}) — ส่วนเผื่อปัจจุบัน {{rd:mos}} ต่ำกว่ามูลค่าเหมาะสม {{rd:fv}}
+        เป้า analyst เฉลี่ย $195.67 (14 ราย) ใช้เป็นข้อตรวจสอบเท่านั้น ไม่ใช่ขาของ FV
+        ความเสี่ยงหลักคือ transition หลังแยกธุรกิจ + หนี้สูง $15-17B แต่ปันผลต่อเนื่องและ Beta 0.28
+        ช่วยลดความเสี่ยงด้านราคาในระยะสั้น โซน deep value = MOS 30% ที่ {{rd:mos30}} · กรอบ 52 สัปดาห์ $140.11 – $213.08
       </p>
     </div>
   </section>
@@ -217,7 +215,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">MOS ดี — ราคาต่ำกว่ามูลค่าเหมาะสมมากพอสำหรับการเริ่มสะสม</div>
+        <div class="txt">MOS บาง — ราคาใกล้มูลค่าเหมาะสม ส่วนเผื่อความปลอดภัยน้อย รอโซน MOS 20% เพื่อสะสม</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -279,10 +277,10 @@
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      กรณีฐาน (Base): EPS โต 6%/ปี อิง guidance FY2026 ที่ $12.62 และ EPS growth 3 ปีของ FY2027 ($13.39 +6.7%)
-      P/E ออก 16x เป็นระดับอนุรักษ์นิยมเทียบ peer (ABT 28x, SYK 30x) — สะท้อนว่า New BD ยังพิสูจน์ตัวหลัง spinoff
-      ผลตอบแทน 63% ใน 3 ปีคิดเป็น CAGR ~18%/ปี รวมปันผล Aristocrat สม่ำเสมอ ~2.7%/ปี
-      <b>ความเสี่ยงสำคัญ Bear:</b> integration ล่าช้า + หนี้กด P/E = ผลตอบแทนต่ำ ~15% ใน 3 ปี
+      กรณีฐาน (Base): EPS โต 6%/ปี อิงฐาน EPS adj. FY2026e (consensus) P/E ออก 16x เป็นสมมติฐานเชิงอนุรักษ์เทียบตัวคูณ GAAP ย้อนหลัง 32x
+      (คนละฐาน EPS จึงเทียบตรงไม่ได้) — สะท้อนว่า New BD ยังพิสูจน์ตัวหลังแยกธุรกิจ
+      ผลตอบแทน Base 3 ปีคือ {{rd:sc2ret}} รวมปันผลสม่ำเสมอ ~2.3%/ปี
+      <b>ความเสี่ยงสำคัญ Bear:</b> integration ล่าช้า + หนี้กด P/E = {{rd:sc1ret}} ใน 3 ปี
     </p>
   </section>
 
@@ -295,7 +293,7 @@
         <ul>
           <li><b>New BD = pure-play medical devices:</b> หลังแยก Biosciences ออก เหลือ core segments ที่มีมาร์จินสูง — Medication Management, Infusion, Pharmaceutical Systems + Integrated Diagnostics</li>
           <li><b>Dividend Aristocrat 53 ปี:</b> ขึ้นปันผลต่อเนื่องตั้งแต่ปี 2516 — ความมั่นคงสำหรับ income investor ในทุกสภาวะตลาด</li>
-          <li><b>ASR + debt reduction:</b> ใช้เงิน $4B จากการขาย Biosciences ซื้อหุ้นคืน $2B + ชำระหนี้ $2B → EPS per share เพิ่ม + ดอกเบี้ยลด</li>
+          <li><b>ลดหนี้/ซื้อหุ้นคืน:</b> ตามรายงานเดิมนำเงินจากการแยกธุรกิจไปซื้อหุ้นคืนและชำระหนี้ (ยอดยังไม่ยืนยันรอบนี้) → EPS ต่อหุ้นเพิ่ม + ดอกเบี้ยลด</li>
           <li><b>Innovation pipeline:</b> CentroVena One™ (central line insertion), Alaris infusion system, Kiestra lab automation — เทคโนโลยีที่คู่แข่งยากลอกเลียน</li>
           <li><b>Margin expansion opportunity:</b> adj. op. margin ~25% ยังต่ำกว่า peer ABT (~28%) — มีโอกาสขยายตัวเมื่อ portfolio focus ขึ้น + recall costs จบ</li>
           <li><b>Aging population + ประเทศกำลังพัฒนา:</b> demand สำหรับ medical devices สูงขึ้นตามโครงสร้างประชากรโลก และการเข้าถึงระบบสุขภาพในเอเชีย/ลาตินอเมริกา</li>
@@ -309,7 +307,7 @@
           <li><b>Transition / execution risk:</b> New BD ต้องพิสูจน์ว่าเติบโตได้หลัง spinoff — ถ้า organic growth ต่ำกว่า guidance นักลงทุนจะ re-rate ลง</li>
           <li><b>FX headwinds:</b> รายได้ ~50% นอก US — ดอลลาร์แข็งกดรายได้รายงาน (FX-neutral growth มักดีกว่า reported)</li>
           <li><b>การแข่งขัน:</b> ABT, Baxter, ICU Medical ใน infusion; Roche, Siemens ใน diagnostics — pricing pressure บน Alaris platform ที่เก่าลง</li>
-          <li><b>GAAP EPS ต่ำมาก:</b> amortization จาก Bard กด GAAP EPS เหลือ ~$4/share — นักลงทุนที่ใช้ GAAP อาจมองว่าแพง (P/E GAAP ~27x)</li>
+          <li><b>GAAP EPS ต่ำมาก:</b> GAAP EPS TTM $3.33 (StockAnalysis; Yahoo แสดง $5.77 คนละฐาน) ต่ำกว่า adj. $12.62 มาก — นักลงทุนที่ใช้ GAAP จะเห็น P/E สูง (~31x)</li>
         </ul>
       </div>
     </div>
@@ -321,23 +319,20 @@
     <div class="verdict">
       <h2>BDX: Value กับ Dividend Aristocrat ในช่วง Transition — โอกาสสะสมที่ MOS 20%</h2>
       <p>
-        Becton, Dickinson เสร็จสิ้น strategic transformation ครั้งใหญ่: แยก Biosciences &amp; Diagnostics ให้ Waters (ก.พ. 2569)
-        กลายเป็น <b>New BD — pure-play medical devices &amp; diagnostics</b> ที่มี revenue ~$19B
-        และ adj. op. margin ~25% ที่มีโอกาสขยายตัว ราคา $155.19 ต่ำกว่า Fair Value $195 อยู่ 20.4%
-        และต่ำกว่า 52-wk high $187 ถึง ~17% สะท้อน <b>discount ช่วง transition + การตลาด re-rating</b>
-        ที่ยังไม่สะท้อนศักยภาพ New BD อย่างเต็มที่
-        สำหรับนักลงทุนระยะยาวที่ต้องการ <b>stability + income</b>: Dividend Aristocrat 53 ปี (yield 2.7%)
-        + Beta 0.28 ทำให้เป็นหุ้นป้องกันความเสี่ยงชั้นดี ความเสี่ยงหลักคือหนี้สูงและ execution หลัง spinoff
+        Becton, Dickinson เป็น medical devices &amp; diagnostics ที่ผ่านการแยกธุรกิจ Biosciences &amp; Diagnostics (ตามรายงานเดิม — วันที่/ยอดเงินยังไม่ยืนยันกับแหล่งปฐมภูมิรอบนี้)
+        รายได้ FY2026e ~$19.3B (StockAnalysis) ราคาปัจจุบัน {{rd:px}} เทียบ Fair Value {{rd:fv}} ส่วนเผื่อ {{rd:mos}} — บางกว่าเกณฑ์ MOS 20%
+        ตัวเลข EPS adj. $12.62 เป็นฐานของ FY2026e ขณะที่ GAAP TTM $3.33 ต่ำกว่ามาก (amortization + ต้นทุนแยกธุรกิจ) จึงต้องอ่านคู่กัน
+        สำหรับนักลงทุนระยะยาวที่ต้องการ <b>stability + income</b>: ปันผล 2.32% + Beta 0.28 ป้องกันความเสี่ยงได้ดี ความเสี่ยงหลักคือหนี้สูงและ execution หลังแยกธุรกิจ
       </p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$178 (Buy 14/14)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$195.67 (14 ราย, Buy)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ทยอยสะสมที่ราคา &lt;$156 (MOS 20%) โดยเฉพาะเมื่อตลาดกังวลเรื่อง recalls หรือ FX
-        เพิ่มน้ำหนักที่ &lt;$136 (MOS 30%) หาก macro กด ระยะสั้นรับปันผล $4.20/ปี (2.7%) ระหว่างรอ re-rating
-        กรณีฐาน 3 ปีมีโอกาสคืน +63% รวมปันผล หากผู้บริหาร execute ได้ตาม guidance
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมเมื่อราคาลงมาที่โซน MOS 20% (&lt; {{rd:mos20}}) โดยเฉพาะเมื่อตลาดกังวลเรื่อง recalls หรือ FX
+        เพิ่มน้ำหนักที่โซน MOS 30% (&lt; {{rd:mos30}}) หาก macro กด ระยะสั้นรับปันผล $4.20/ปี (2.32%) ระหว่างรอ re-rating
+        กรณีฐาน 3 ปี: {{rd:sc2ret}} (รวมปันผล) หากผู้บริหาร execute ได้ตาม guidance — ราคาเป้าเป็นสมมติฐาน ไม่ใช่การรับประกัน
       </div>
     </div>
   </section>
@@ -349,7 +344,7 @@
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
     ที่มาข้อมูล: BD Investor Relations (Q1–Q2 FY2026 press releases · investors.bd.com), Yahoo Finance (ราคา ณ {{rd:priceDate}}), StockAnalysis.com (งบการเงิน), SEC EDGAR (8-K FY2026)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 29 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
