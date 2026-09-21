@@ -4,22 +4,22 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น CenterPoint Energy (CNP) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"CNP","currency":"USD","price":38.22,"fairValue":39.56,"mos":3.4,"upside":3.5,"pe":23.4,"dividendYield":2.41,"roe":9.56}
+{"symbol":"CNP","currency":"USD","price":38.22,"fairValue":35.38,"mos":-8.0,"upside":-7.4,"pe":22.8,"dividendYield":2.41,"roe":9.83}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 39.56,
+  "fv": 35.38,
   "values": {
     "px": 38.22,
     "priceDate": "2026-09-18",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
-    "fvLow": 39.01,
-    "fvHigh": 40.11,
-    "shares": 654000000,
+    "fvLow": 31.75,
+    "fvHigh": 39.01,
+    "shares": 658720288,
     "dps": 0.92,
     "bvps": 17.44
   },
@@ -51,14 +51,14 @@
       ["ส.ค.26", 39.6],
       ["ก.ย.26", 38.22]
     ],
-    "min": 36,
-    "max": 46,
-    "grid": [38, 40, 42, 44],
+    "min": 32.5,
+    "max": 45,
+    "grid": [35, 37.5, 40, 42.5],
     "currency": "$",
     "highlight": [8, 11]
   },
   "gauge": {
-    "min": 25,
+    "min": 20,
     "max": 50,
     "fairLabelTop": false
   }
@@ -85,30 +85,30 @@
       </div>
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ {{rd:priceDate}} (StockAnalysis.com, 14:05 น. EDT)<br>
-        กรอบ 52 สัปดาห์ $35.59 – $45.22<br>
-        ที่มา: StockAnalysis.com, Yahoo Finance, Digrin.com
+        ราคา ณ {{rd:priceDate}} (ราคาปิด, StockAnalysis.com)<br>
+        กรอบ 52 สัปดาห์ $37.22 – $45.26<br>
+        ที่มา: StockAnalysis.com, Yahoo Finance, Yahoo Finance Chart API
       </div>
     </div>
   </header>
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 — อ้างอิง StockAnalysis.com · Yahoo Finance</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ 21 ก.ย. 2569 — อ้างอิง StockAnalysis.com · Yahoo Finance</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$25.00B</div><div class="d">~654M shares outstanding</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~23.4x</div><div class="d">EPS TTM $1.63 (StockAnalysis) · Yahoo $1.63 ตรงกัน · Forward P/E ~22.6x (EPS 2026F non-GAAP $1.89–1.91)</div></div>
-      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~18–23x</div><div class="d">กลุ่ม regulated electric/gas utility มักเทรด 15–20x — CNP อยู่ขอบบนกว่าปกติจาก Houston data-center growth story ล่าสุด</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS $17.44 (Q1 2569) · ROE (EPS/BVPS) ~9.56%</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$25.18B</div><div class="d">~658.7M shares outstanding (StockAnalysis /statistics/)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~22.8x</div><div class="d">EPS TTM $1.68 (StockAnalysis · Yahoo ตรงกัน) · Forward P/E ~20.0x บน FY2026e EPS $1.91 (vendor แสดง 18.3–19.1x โดยอิง FY2027e $2.09)</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~18.9x (มัธยฐาน)</div><div class="d">ราคาเฉลี่ยรายปี ÷ EPS diluted FY2021–FY2025 = 10.7–23.3x (ช่วงกว้าง — FY2021 ถูกกดจากกำไรก้อนใหญ่ครั้งเดียว) · 3 ปีล่าสุด 18.6–23.3x</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS $17.44 (งบ Q1 2569 — vendor ไม่ส่ง BVPS ล่าสุด) · ROE ~9.8% (vendor TTM)</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$1,052M</div><div class="d">+3.2% YoY · EPS diluted FY2025 $1.60 (+1.3% YoY, ต้นทุน Hurricane Beryl กดดันบางส่วน)</div></div>
-      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$1.63</div><div class="d">FY2025 diluted $1.60 · TTM รวม Q1 2569 $1.63 · Consensus 2026F non-GAAP $1.89–1.91 (+8%)</div></div>
-      <div class="metric"><div class="k">BVPS</div><div class="v">~$17.44</div><div class="d">Equity $11,449M (Q1 2569) · Total debt $25,289M · D/E 2.21x</div></div>
-      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~9.56% / ~2.84%</div><div class="d">คำนวณจาก EPS/BVPS · ต่ำกว่ากลุ่ม peer growth บางส่วนเพราะต้นทุนพายุปี 2567 กดกำไรชั่วคราว</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$1.68</div><div class="d">FY2025 diluted $1.60 · TTM $1.68 · Consensus FY2026e $1.91 · FY2027e $2.09</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$17.44</div><div class="d">Equity $11,449M (Q1 2569) · หนี้รวมล่าสุด $24,642M · D/E 2.10x (vendor TTM)</div></div>
+      <div class="metric"><div class="k">ROE</div><div class="v pos">~9.8%</div><div class="d">Yahoo 9.83% / StockAnalysis 9.8% (TTM) · ใกล้เคียงต้นทุนทุน จึงไม่มี premium จากผลตอบแทนส่วนทุน</div></div>
 
       <div class="metric"><div class="k">รายได้ FY2025</div><div class="v neu">$9.36B</div><div class="d">+8.3% YoY (จาก $8.64B FY2024) · รายได้เกือบทั้งหมดจากธุรกิจ regulated</div></div>
       <div class="metric"><div class="k">อัตรากำไรสุทธิ</div><div class="v">~11.2%</div><div class="d">$1,052M / $9,357M (FY2025) — สอดคล้องกับ utility regulated ทั่วไป (10–17%)</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.41%</div><div class="d">$0.92/หุ้น/ปี ตรงกัน StockAnalysis/Digrin · yield 2.02–2.10% · Payout ratio 55.2% · DGR guidance ปรับลดมาที่ 6%/ปี (ราคาขึ้นล่าสุด ก.พ. 2569 +4.55%) · เพิ่มต่อเนื่องหลังปรับฐานปี 2563</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.41%</div><div class="d">$0.92/หุ้น/ปี ตรงกัน StockAnalysis/Digrin · ประกาศจ่ายรายไตรมาส $0.24/หุ้น (16 ก.ค. 2569 → run-rate $0.96/ปี) · ปันผล TTM 2.41% ตามราคาปัจจุบัน</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">0.45</div><div class="d">ผันผวนต่ำกว่าตลาด — ธุรกิจ regulated เกือบทั้งหมด แต่มีความเสี่ยงเฉพาะจากพายุ Gulf Coast</div></div>
     </div>
   </section>
@@ -126,29 +126,29 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        CNP เริ่มต้นที่ราว $37.71 (ส.ค. 2568) แกว่งตัวในกรอบแคบ $37–40 ต่อเนื่องจนถึงเดือนมกราคม 2569 ก่อนเด้งขึ้นแรงแตะ $43.50 ในเดือนกุมภาพันธ์ 2569 (+9.6% MoM) หลังผลประกอบการออกมาดีกว่าคาดและตลาดคลายกังวลหลังบริษัทได้ข้อสรุป grid-hardening plan กับ Public Utility Commission of Texas ภายหลัง Hurricane Beryl จากนั้นแกว่งตัวในกรอบ $42–44 ต่อเนื่องจนถึงปัจจุบันที่ $43.81 ผลตอบแทนรอบปี +16.2%
+        CNP ปิดต้นกราฟ (ต.ค. 2568) ที่ราว $38.24 แล้วขึ้นแรงเดือน ก.พ. 2569 แตะ $43.50 (+9.6% MoM) และแกว่งในกรอบ $42–44 จนถึง มิ.ย. 2569 (ปิดรายเดือนสูงสุด $44.04) ก่อนอ่อนลงต่อเนื่อง ก.ค.–ก.ย. จนอยู่ที่ {{rd:px}} ใกล้ขอบล่างกรอบ 52 สัปดาห์ ($37.22) — ผลตอบแทนรอบปีทรงตัวเมื่อเทียบต้นกราฟ
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION (เฉลี่ย 2 วิธี) ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี — DDM (หลัก) + P/E (เสริม)</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี — DDM + P/E (มัธยฐานย้อนหลัง)</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. DDM / Gordon Growth (วิธีหลัก)</div><div class="mdesc">D₀ = ปันผลปัจจุบัน $0.92 → D₁ = D₀×(1+g) = $0.92×1.06 = $0.9752; g 6% (ตรงกับ dividend growth guidance ล่าสุดของบริษัทที่ปรับลดมาที่ 6%/ปี), r 8.5% (risk-free ~4.3% + beta ต่ำ 0.45 กับ utility equity risk premium) → FV = D₁/(r−g) = $0.9752/(8.5%−6%) = $39.01 — เหมาะกับ regulated utility ที่กระแสเงินสด/ปันผลคาดการณ์ได้สูง</div></div>
+        <div><div class="mname">1. DDM / Gordon Growth</div><div class="mdesc">D₀ = ปันผล TTM $0.92 → D₁ = D₀×(1+g) = $0.92×1.06 = $0.9752; g 6% (สมมติฐานของผู้วิเคราะห์ — ปันผลรายไตรมาสล่าสุด $0.24 = $0.96/ปี สอดคล้องกับทิศทางนี้), r 8.5% (risk-free ~4.3% + beta ต่ำ 0.45 กับ utility equity risk premium) → FV = D₁/(r−g) = $0.9752/(8.5%−6%) = $39.01 — อ่อนไหวมากต่อ r−g (ถ้า r−g = 3% ได้ ~$32.5)</div></div>
         <div class="mval">$39.01</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. P/E Valuation (เสริม)</div><div class="mdesc">EPS adj. $1.91 (consensus FY2026 non-GAAP, สอดคล้อง guidance บริษัท $1.89–1.91) × P/E เป้าหมาย 21x — ต่ำกว่า forward P/E ตลาดปัจจุบัน (~22.6x) เล็กน้อยเพื่อความอนุรักษ์นิยม</div></div>
-        <div class="mval">$40.11</div>
+        <div><div class="mname">2. P/E Valuation (มัธยฐานย้อนหลัง)</div><div class="mdesc">EPS $1.68 (TTM, GAAP diluted) × P/E เป้าหมาย 18.9x = $31.75 — 18.9x คือมัธยฐานที่วัดจากราคาเฉลี่ยรายปี ÷ EPS diluted ของ CNP เอง FY2021–FY2025 (5 จุด) ไม่ได้อิง P/E ปัจจุบัน (~22.8x) · ใช้ EPS GAAP TTM ให้ฐานเดียวกับที่วัดมัธยฐาน (ไม่ใช้ non-GAAP forward)</div></div>
+        <div class="mval">$31.75</div>
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}} · ถ่วงน้ำหนักเท่ากัน DDM 50% + P/E 50%</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ทั้งสองวิธีให้ค่าใกล้เคียงกันเพราะอิง growth guidance ล่าสุดของบริษัทเป็นหลัก (dividend growth 6%/ปี และ EPS 2569 consensus ที่สอดคล้องกับ guidance non-GAAP $1.89–1.91) Fair Value เฉลี่ย $39.56 ต่ำกว่าราคาตลาดปัจจุบัน $43.81 ประมาณ 10.7% และต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ $46.13 มากกว่านั้นอีก สะท้อนว่าตลาดให้ premium สูงกับเรื่องราว Houston data-center load growth และแผน rate-base growth เกิน 11%/ปี มากกว่าที่โมเดลอนุรักษ์นิยมนี้ประเมิน
+        DDM ให้ค่าสูงกว่า P/E เพราะสมมติ g 6% ตลอดกาลกับ r−g แคบ (2.5%) ขณะที่ P/E ผูกกับมัธยฐานย้อนหลัง 18.9x — สองขาต่างตระกูลสมมติฐานและให้ค่าห่างกันไม่ถึง 2 เท่า จึงเฉลี่ยเท่ากันได้ Fair Value {{rd:fv}} ต่ำกว่าราคาปัจจุบัน {{rd:px}} ({{rd:mos}}) และต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ $45.35 (Yahoo, 17 ราย · ใช้เป็นบริบทเปรียบเทียบเท่านั้น ไม่ได้เป็นขาของ FV) สะท้อนว่าตลาดยังให้ premium กับเรื่องราว load growth ในฮุสตัน/อินเดียนาจากดีมานด์ data center มากกว่าที่โมเดลอนุรักษ์นิยมนี้ประเมิน
       </p>
     </div>
   </section>
@@ -167,11 +167,11 @@
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
-          <span style="text-align:right">$46.13<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$45.35<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน <b>$43.81</b> อยู่สูงกว่า Fair Value $39.56 ประมาณ 10.7% และสูงกว่ากรอบบนของ valuation ($40.11) เช่นกัน — สะท้อนว่าตลาดให้ premium สูงกับ CNP จากเรื่องราว Houston load growth/data-center demand และแผนลงทุน 10 ปี $65.5 พันล้านดอลลาร์ที่ผลักดัน rate base growth เกิน 11%/ปี เป้านักวิเคราะห์เฉลี่ย $46.13 (Buy consensus จาก 18 นักวิเคราะห์ กรอบ $39–$50) ยังคงสูงกว่าราคาตลาดปัจจุบันเล็กน้อย สะท้อนมุมมองเชิงบวกกว่าโมเดล DDM+P/E อนุรักษ์นิยมนี้ โซน MOS 20% ที่ $31.65 อยู่ใกล้เคียงจุดต่ำสุดรอบ 52 สัปดาห์ ($35.59) แต่ยังต่ำกว่า สะท้อนว่าเป็นโซนราคาที่หายากสำหรับ utility growth story นี้
+        ราคาปัจจุบัน <b>{{rd:px}}</b> สูงกว่า Fair Value {{rd:fv}} เล็กน้อย ({{rd:mos}}) และอยู่ใต้ขา DDM ($39.01) แต่สูงกว่าขา P/E ($31.75) — สะท้อนตลาดที่จ่าย premium ให้ utility ที่มี load growth จาก data center (Q2 2569: non-GAAP EPS $0.40, ยืนยัน guidance ทั้งปี, ขยายแผนลงทุน 10 ปีเพิ่ม $1.2B โดยไม่ต้องออกหุ้นเพิ่ม) เป้านักวิเคราะห์เฉลี่ย $45.35 (Buy, 17 ราย) สูงกว่าราคาตลาดปัจจุบัน โซน MOS 20% ที่ {{rd:mos20}} ต่ำกว่าจุดต่ำสุดรอบ 52 สัปดาห์ ($37.22) มาก จึงเป็นโซนที่ไม่น่าถึงนอกจากตลาดปรับฐานรุนแรง
       </p>
     </div>
   </section>
@@ -182,7 +182,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">ราคาปัจจุบันสูงกว่า Fair Value ~9.7–10.7% — ไม่มี Margin of Safety ณ ราคานี้ (Overvalued)</div>
+        <div class="txt">ราคาปัจจุบันสูงกว่า Fair Value เล็กน้อย — ไม่มี Margin of Safety ณ ราคานี้ (Overvalued เล็กน้อย)</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -201,15 +201,15 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $38.22 • EPS ฐาน ~$1.63 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~$1.68 • รวมปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +2%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$29.41</div>
-          <div class="ret neg">−15.4% (3 ปี)</div>
+          <div class="tgt">$30.26</div>
+          <div class="ret neg">−13.2% (3 ปี)</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$1.73</span></li>
+            <li><span>EPS ปี 3</span><span>~$1.78</span></li>
             <li><span>P/E ออก</span><span>17x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~$2.93</span></li>
             <li><span>สถานการณ์</span><span>Regulatory lag หลายรัฐ + ต้นทุนซ่อมแซมพายุ (Beryl-style) สูงกว่าคาด กดดัน ROE ที่รับรู้จริงและทำให้ P/E de-rate ลงมา</span></li>
@@ -219,32 +219,32 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$43.12</div>
-          <div class="ret pos">+20.9% (3 ปี) ~6.5%/ปี</div>
+          <div class="tgt">$40.28</div>
+          <div class="ret pos">+13.5% (3 ปี) ~4.3%/ปี</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$2.05</span></li>
-            <li><span>P/E ออก</span><span>21x</span></li>
+            <li><span>EPS ปี 3</span><span>~$2.12</span></li>
+            <li><span>P/E ออก</span><span>19x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~$3.10</span></li>
-            <li><span>สถานการณ์</span><span>EPS โตตาม guidance บริษัท (7–9%/ปี กลาง 8% ผ่านปี 2578) จากแผนลงทุน $65.5B/10ปี หนุน rate base growth เกิน 11%/ปี แต่ P/E ปรับลดจากระดับปัจจุบันที่ตึงตัว (~26.9x) ลงสู่ระดับปกติมากขึ้น ~21x</span></li>
+            <li><span>สถานการณ์</span><span>EPS โต 8%/ปี (สมมติฐาน — โตต่อเนื่องจากแผนลงทุนที่ขยายและ load growth) แต่ P/E ปรับลงสู่ระดับมัธยฐานย้อนหลัง ~19x จากระดับปัจจุบัน ~22.8x</span></li>
           </ul>
         </div>
       </div>
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +10%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$52.06</div>
-          <div class="ret pos">+44.5% (3 ปี) ~13.1%/ปี</div>
+          <div class="tgt">$53.76</div>
+          <div class="ret pos">+48.9% (3 ปี) ~14.2%/ปี</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$2.17</span></li>
+            <li><span>EPS ปี 3</span><span>~$2.24</span></li>
             <li><span>P/E ออก</span><span>24x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~$3.16</span></li>
-            <li><span>สถานการณ์</span><span>ดีมานด์ data center ในพื้นที่ Houston เร่งตัวเกินแผน ผลักดัน rate base growth เกิน 11% และ EPS เกิน guidance บนพร้อม P/E ยังทรงตัวสูงจากความเชื่อมั่นตลาด</span></li>
+            <li><span>สถานการณ์</span><span>ดีมานด์ data center ในฮุสตัน/อินเดียนาเร่งตัวเกินแผน EPS โต 10%/ปี และ P/E ยังทรงตัวสูง 24x (ใกล้ระดับสูงสุดของช่วง FY2021–FY2025 ที่ 23.3x)</span></li>
           </ul>
         </div>
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      สมมติฐานอิง EPS TTM ปัจจุบัน $1.63 เป็นฐาน Bear ใช้ EPS growth ต่ำกว่า guidance (2%/ปี) สะท้อนความเสี่ยง regulatory lag/storm cost พร้อม P/E de-rate ลงมา 17x Base ใช้ guidance EPS growth บริษัท 7–9%/ปี (กลาง 8%) กับ P/E ปรับลดจากระดับปัจจุบันที่ตึงตัว (~26.9x) มาสู่ 21x สะท้อน multiple normalization Bull รวม upside จาก data center demand เกินแผนพร้อม P/E คงระดับสูง 24x จากความเชื่อมั่นตลาดต่อเนื่อง
+      สมมติฐานอิง EPS TTM $1.68 เป็นฐาน Bear ใช้ EPS growth 2%/ปี สะท้อนความเสี่ยง regulatory lag/storm cost พร้อม P/E de-rate ลง 17x Base ใช้ EPS growth 8%/ปี (สมมติฐานผู้วิเคราะห์) กับ P/E 19x ตามมัธยฐานย้อนหลัง 18.9x ให้สอดคล้อง Fair Value Bull รวม upside จาก data center demand เกินแผนพร้อม P/E 24x ผลตอบแทนรวมปันผลสะสม 3 ปี (ปันผลรวมคำนวณจาก DPS $0.92 โตตามสถานการณ์)
     </p>
   </section>
 
@@ -255,21 +255,21 @@
       <div class="box cat">
         <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
         <ul>
-          <li><b>Houston load growth:</b> เมืองโตเร็วที่สุดใน US (ประชากร + data center) หนุนดีมานด์ไฟฟ้าเพิ่มเติมนอกเหนือแผนลงทุนปัจจุบัน</li>
-          <li><b>แผนลงทุน 10 ปี $65.5B:</b> ผลักดัน rate base growth เกิน 11%/ปีผ่านปี 2573 และ EPS guidance 7–9%/ปี (กลาง 8%) ผ่านปี 2578 — เร็วกว่ากลุ่ม utility ทั่วไป</li>
-          <li><b>Grid resilience หลัง Beryl:</b> ได้ข้อตกลง grid-hardening plan กับ Public Utility Commission of Texas ลดความเสี่ยง storm-cost/reputational ระยะยาว</li>
-          <li><b>Dividend growth ฟื้นตัว:</b> เป้าหมาย DGR 6%/ปี พร้อมยกระดับ payout ratio (ปัจจุบัน 55.2%) สู่ระดับปกติมากขึ้นหลังปรับฐานปี 2563</li>
-          <li><b>กระจายความเสี่ยง regulatory:</b> ธุรกิจกำกับดูแลหลายรัฐ (เท็กซัส, อินเดียนา, มินนิโซตา, โอไฮโอ, หลุยเซียนา, มิสซิสซิปปี, โอกลาโฮมา)</li>
+          <li><b>Load growth ฮุสตัน/อินเดียนา:</b> ดีมานด์ไฟฟ้าจาก data center และการเติบโตของพื้นที่ (Q2 2569 บริษัทระบุ major load growth)</li>
+          <li><b>แผนลงทุน 10 ปีขยายเพิ่ม $1.2B:</b> ประกาศพร้อมผล Q2 2569 (28 ก.ค.) โดยไม่ต้องออกหุ้นเพิ่ม และยืนยัน guidance ทั้งปี</li>
+          <li><b>ผลงานดีกว่าคาด:</b> Q2 2569 non-GAAP EPS $0.40 เหนือประมาณการตลาด</li>
+          <li><b>ปันผลรายไตรมาส $0.24:</b> ประกาศ 16 ก.ค. 2569 (run-rate $0.96/ปี สูงกว่า DPS TTM $0.92)</li>
+          <li><b>ประหยัดค่าไฟลูกค้าเท็กซัส:</b> บริษัทระบุ affordability savings ~$5 พันล้านดอลลาร์ใน 10 ปี ลดแรงกดดันด้านกำกับดูแล</li>
           <li><b>Beta ต่ำ 0.45:</b> โปรไฟล์ defensive ให้ความมั่นคงต่อพอร์ตในช่วงตลาดผันผวน</li>
         </ul>
       </div>
       <div class="box risk">
         <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
         <ul>
-          <li><b>Leverage สูง:</b> D/E ~2.21x จากแผน capex หนัก ทำให้อ่อนไหวต่อดอกเบี้ยระยะยาวที่สูงขึ้น</li>
+          <li><b>Leverage สูง:</b> D/E ~2.1x (vendor TTM 2.10x) จากแผน capex หนัก ทำให้อ่อนไหวต่อดอกเบี้ยระยะยาวที่สูงขึ้น</li>
           <li><b>ความเสี่ยงพายุ Gulf Coast:</b> พื้นที่บริการฮุสตันเสี่ยงต่อ hurricane/พายุรุนแรงเหมือน Beryl (2567) กระทบต้นทุนซ่อมแซมและภาพลักษณ์บริษัท</li>
           <li><b>Regulatory lag หลายรัฐ:</b> รอบ rate case ในแต่ละรัฐสร้างช่องว่างระหว่างเงินลงทุนกับการคืนทุนผ่านอัตราค่าไฟ/ก๊าซ กดดัน ROE ระยะสั้น</li>
-          <li><b>Valuation ตึงตัว:</b> P/E TTM ~26.9x สูงกว่าค่าเฉลี่ยกลุ่ม utility มาก และไม่มี Margin of Safety ที่ราคาปัจจุบัน (~−10.7%)</li>
+          <li><b>Valuation ตึงตัว:</b> P/E TTM ~22.8x สูงกว่ามัธยฐานย้อนหลัง 18.9x และไม่มี Margin of Safety ที่ราคาปัจจุบัน ({{rd:mos}})</li>
           <li><b>ความเสี่ยง equity dilution:</b> แผน capex ขนาดใหญ่มักต้องออกหุ้นเพิ่มทุนบางส่วน กดดัน EPS growth ต่อหุ้นให้ต่ำกว่า rate base growth</li>
           <li><b>ดีมานด์ data center อาจไม่ realize ตามคาด:</b> หากดีมานด์ hyperscaler ชะลอตัวหรือมี efficiency gain ลดโหลดที่คาดการณ์ไว้</li>
         </ul>
@@ -281,15 +281,15 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>CNP: Regulated Utility เติบโตเร็วสุดในกลุ่ม แต่ราคาปัจจุบันตึงตัวเกินพื้นฐานพอสมควร</h2>
-      <p>CenterPoint Energy เป็น regulated electric utility ในพื้นที่ฮุสตัน (Houston Electric) และก๊าซธรรมชาติในหลายรัฐ (เท็กซัส, อินเดียนา, มินนิโซตา, โอไฮโอ, หลุยเซียนา, มิสซิสซิปปี, โอกลาโฮมา) หนุนด้วยดีมานด์ไฟฟ้าเร่งตัวจากการเติบโตของฮุสตัน (เมืองโตเร็วที่สุดใน US) และดีมานด์ data center ผลักดันแผนลงทุน 10 ปี $65.5 พันล้านดอลลาร์ที่ให้ rate base growth เกิน 11%/ปีผ่านปี 2573 และ EPS guidance 7–9%/ปี (กลาง 8%) ผ่านปี 2578 หลัง Hurricane Beryl (2567) บริษัทได้ข้อตกลง grid resilience plan กับ Texas regulator ช่วยลดความเสี่ยง storm-cost ระยะยาว ราคาปัจจุบัน $43.81 สูงกว่า Fair Value $39.56 (จากโมเดล DDM+P/E อนุรักษ์นิยม) ประมาณ 10.7% สะท้อนว่าตลาดให้ premium สูงกับเรื่องราวการเติบโตจาก Houston/data-center demand มากกว่าที่โมเดลนี้ประเมิน ความเสี่ยงหลักคือ leverage สูง (D/E 2.21x) ที่อ่อนไหวต่อดอกเบี้ยระยะยาว และความเสี่ยงพายุเฉพาะพื้นที่ Gulf Coast นักลงทุนเน้น growth/income ที่ถือหุ้นอยู่แล้วสามารถถือต่อรับ dividend growth ~6%/ปีได้ ส่วนนักลงทุนใหม่ควรรอจังหวะราคาย่อลงมาใกล้ $39–40 (ใกล้ Fair Value) ก่อนเข้าซื้อเพื่อมี margin of safety ที่เหมาะสมกว่า</p>
+      <h2>CNP: Regulated Utility ที่มี load growth แต่ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสมเล็กน้อย</h2>
+      <p>CenterPoint Energy เป็น regulated electric utility ในพื้นที่ฮุสตัน และธุรกิจก๊าซธรรมชาติหลายรัฐ หนุนด้วยดีมานด์ไฟฟ้าเร่งตัวจาก data center ในฮุสตันและอินเดียนา ผล Q2 2569 (28 ก.ค.) ดีกว่าคาด (non-GAAP EPS $0.40) บริษัทยืนยัน guidance ทั้งปีและขยายแผนลงทุน 10 ปีเพิ่ม $1.2B โดยไม่ต้องออกหุ้นเพิ่ม ราคาปัจจุบัน {{rd:px}} สูงกว่า Fair Value {{rd:fv}} (เฉลี่ย DDM $39.01 กับ P/E มัธยฐานย้อนหลัง $31.75) — {{rd:mos}} ตลาดจ่าย premium ให้เรื่องราวการเติบโตมากกว่าที่โมเดลนี้ประเมิน ความเสี่ยงหลักคือ leverage สูง (D/E ~2.1x) ที่อ่อนไหวต่อดอกเบี้ยระยะยาว และความเสี่ยงพายุ Gulf Coast ผู้ถือเดิมถือต่อรับปันผลได้ ส่วนนักลงทุนใหม่ควรรอราคาย่อใกล้ Fair Value เพื่อให้มี margin of safety ที่เหมาะสมกว่า ผลงวดถัดไปประกาศ 22 ต.ค. 2569</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$46.13 (Buy)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$45.35 (Buy)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> รอราคาย่อลงมาโซน $39–40 (ใกล้ Fair Value) หรือ $31.65 (MOS 20%) ก่อนเข้าซื้อใหม่เพื่อมี MOS ~10–20% ผู้ถือเดิมถือต่อได้สำหรับพอร์ต growth/income รับ dividend yield 2.10% + DGR guidance 6%/ปี ส่วนโซน MOS 30% เต็ม ($27.69) ต่ำกว่าจุดต่ำสุดรอบ 52 สัปดาห์มาก อาจไม่มาถึงนอกจาก market-wide correction หรือ regulatory setback รุนแรง
+        💡 <b>กลยุทธ์:</b> รอราคาย่อลงใกล้ Fair Value {{rd:fv}} หรือโซน MOS 20% ที่ {{rd:mos20}} ก่อนเข้าซื้อใหม่ ผู้ถือเดิมถือต่อสำหรับพอร์ต growth/income รับปันผล ~2.4% ต่อปี โซน MOS 30% ({{rd:mos30}}) ต่ำกว่าจุดต่ำสุดรอบ 52 สัปดาห์มาก อาจไม่มาถึงนอกจาก market-wide correction
       </div>
     </div>
   </section>
@@ -301,7 +301,7 @@
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
     แหล่งข้อมูล: StockAnalysis.com (stockanalysis.com/stocks/cnp) · Yahoo Finance (finance.yahoo.com/quote/CNP) · Yahoo Finance Chart API (query1.finance.yahoo.com) · Digrin.com (digrin.com/stocks/detail/CNP) · งวดล่าสุดที่รายงาน: ปีงบประมาณ 2568 (FY2025) + Q1 2569
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 9 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
