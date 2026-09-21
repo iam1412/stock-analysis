@@ -4,21 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น Iron Mountain (IRM) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"IRM","currency":"USD","price":114.34,"fairValue":107,"mos":-6.9,"upside":-6.4,"pe":null,"dividendYield":3,"roe":null}
+{"symbol":"IRM","currency":"USD","price":114.34,"fairValue":96.5,"mos":-18.5,"upside":-15.6,"pe":null,"dividendYield":3,"roe":null}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 107,
+  "fv": 96.5,
   "values": {
     "px": 114.34,
     "priceDate": "2026-09-18",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
-    "fvLow": 87.89,
-    "fvHigh": 126.08,
+    "fvLow": 89.14,
+    "fvHigh": 103.8,
     "shares": 298000000,
     "dps": 3.46,
     "scenarios": [
@@ -39,7 +39,8 @@
       "years": 3,
       "divIncluded": true,
       "perYear": null
-    }
+    },
+    "analystTgt": 146.2
   },
   "theme": {
     "accent": "#c57f08",
@@ -76,8 +77,8 @@
     "highlight": [2, 7]
   },
   "gauge": {
-    "min": 70,
-    "max": 140,
+    "min": 60,
+    "max": 150,
     "fairLabelTop": false
   }
 }
@@ -115,18 +116,18 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">REIT — ใช้ AFFO/share แทน GAAP EPS</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~298M shares outstanding</div></div>
-      <div class="metric"><div class="k">P/AFFO (TTM, FY25A)</div><div class="v neu">~22.9x</div><div class="d">AFFO/share $5.17 (FY2025); GAAP P/E ~129x ไม่สื่อความหมาย REIT (D&amp;A สูง)</div></div>
-      <div class="metric"><div class="k">P/AFFO (FY26E Forward)</div><div class="v neu">~20.3x</div><div class="d">อิง guidance AFFO/share $5.79–$5.86 (กลาง $5.825)</div></div>
-      <div class="metric"><div class="k">Net Debt/EBITDA</div><div class="v">~5.3–5.8x</div><div class="d">ประมาณการ, เป้าบริษัท ≤5.5x (leverage ค่อนข้างสูง)</div></div>
+      <div class="metric"><div class="k">P/AFFO (FY25A)</div><div class="v neu">~22.1x</div><div class="d">AFFO/share $5.17 (FY2025, ตัวเลขจากรายงานเดิม); GAAP P/E ~81x (EPS TTM $1.40) ไม่สื่อความหมาย REIT (D&amp;A สูง)</div></div>
+      <div class="metric"><div class="k">P/AFFO (FY26E Forward)</div><div class="v neu">~19.4x</div><div class="d">อิง guidance ที่ปรับขึ้นใน Q2: AFFO/share $5.87–$5.93 (กลาง $5.90)</div></div>
+      <div class="metric"><div class="k">Net Lease-Adjusted Leverage</div><div class="v pos">4.8x</div><div class="d">Q2 2026 — ต่ำสุดนับจากก่อนแปลงเป็น REIT ปี 2014 (ยังเป็นภาระเมื่อ capex data center สูง)</div></div>
 
       <div class="metric"><div class="k">AFFO/Share FY2025</div><div class="v">$5.17</div><div class="d">+13.9% YoY จาก $4.54 (FY2024)</div></div>
-      <div class="metric"><div class="k">AFFO/Share Q1 2026</div><div class="v pos">$1.43</div><div class="d">+22% YoY, beat guidance $0.04</div></div>
-      <div class="metric"><div class="k">AFFO/Share FY2026E</div><div class="v pos">$5.79–$5.86</div><div class="d">Guidance กลาง +13% YoY — Project Matterhorn เร่งตัว</div></div>
-      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$7.25B</div><div class="d">Revenue guidance FY26 +10–13% YoY</div></div>
+      <div class="metric"><div class="k">AFFO/Share Q2 2026</div><div class="v pos">$1.44</div><div class="d">+16% YoY (Q2 2026, ประกาศ 5 ส.ค. 2569)</div></div>
+      <div class="metric"><div class="k">AFFO/Share FY2026E</div><div class="v pos">$5.87–$5.93</div><div class="d">Guidance ที่ยกขึ้น กลาง +14% YoY — Project Matterhorn เร่งตัว</div></div>
+      <div class="metric"><div class="k">Revenue Guidance FY26</div><div class="v neu">$7.94–$8.01B</div><div class="d">+16% ที่จุดกลาง; Adj. EBITDA $2.945–$2.975B (+15%)</div></div>
 
       <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">$3.46/share ต่อปี (รายไตรมาส $0.865)</div></div>
-      <div class="metric"><div class="k">Payout Ratio (Div/AFFO)</div><div class="v">~67%</div><div class="d">อิง AFFO FY2025A $5.17 — เหลือพื้นที่ reinvest data center</div></div>
-      <div class="metric"><div class="k">Data Center Revenue Mix</div><div class="v pos">~35–40%</div><div class="d">+30%+ YoY (Project Matterhorn hyperscale build-out)</div></div>
+      <div class="metric"><div class="k">Payout Ratio (Div/AFFO)</div><div class="v">~59%</div><div class="d">DPS $3.46 ÷ AFFO/share FY26E กลาง $5.90 — เหลือพื้นที่ reinvest data center</div></div>
+      <div class="metric"><div class="k">Data Center Growth</div><div class="v pos">+39% YoY</div><div class="d">Q2 2026: leasing 13 MW, YTD 110 MW, ~325 MW รอ energize ใน 24 เดือน</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">~0.9</div><div class="d">ประมาณ — REIT hybrid ผันผวนกว่า storage-only peer</div></div>
     </div>
   </section>
@@ -144,38 +145,35 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ราคา IRM เริ่มต้นรอบปีที่ <b>$89.29 (ส.ค. 68)</b> ก่อนปรับฐานลงแตะจุดต่ำสุดรอบปีที่ <b>$81.72 (ธ.ค. 68)</b> จากความกังวลเรื่อง leverage สูงและดอกเบี้ย
-        ต้นปี 69 ฟื้นตัวชัดเจน และ <b>เม.ย. 69 พุ่งทะลุ $125</b> หลังผลประกอบการ Q1/2026 รายงาน AFFO/share $1.43 (+22% YoY) เกินคาด + guidance ปี 2026 แข็งแกร่ง (AFFO +13% midpoint)
-        แตะจุดสูงสุดรอบปีที่ <b>$127.38 (พ.ค. 69)</b> ก่อนย่อตัวลงมาซื้อขายที่ <b>$118.28</b> ปัจจุบัน รวมผลตอบแทน <b>+32.5% ตลอดรอบปี</b> สะท้อน re-rating จาก Project Matterhorn
+        ตามราคาปิดสิ้นเดือน IRM เริ่มกราฟที่ <b>$102.95 (ต.ค. 68)</b> ก่อนปรับฐานลงจุดต่ำสุดของกราฟที่ <b>$82.95 (ธ.ค. 68)</b>
+        ต้นปี 69 ฟื้นตัวชัดเจน และ <b>เม.ย. 69 ปิดสิ้นเดือนที่ $125.99</b> หลังผลประกอบการ Q1/2026 ออกมาดี
+        แตะจุดสูงสุดของกราฟที่ <b>$128.25 (พ.ค. 69)</b> ก่อนย่อตัวลงมาซื้อขายที่ {{rd:px}} ณ {{rd:priceDate}} หลังผลประกอบการ Q2/2026 (AFFO/share $1.44, +16% YoY) และการยก guidance ทั้งปี ตลาดไม่ได้ขยับขึ้นตามอีก
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี — AFFO-based (REIT)</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี — DDM ตระกูลเดียว (REIT)</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/AFFO (TTM, FY2025A)</div><div class="mdesc">AFFO/share $5.17 × P/AFFO เป้าหมาย 17x — เผื่อ blend ธุรกิจ records (โต low-single-digit) + data center (โตเร็ว)</div></div>
-        <div class="mval">$87.89</div>
+        <div><div class="mname">1. DDM แบบ Gordon</div><div class="mdesc">DPS $3.46 × (1+5%) = D1 $3.633 ÷ (r 8.5% − g 5.0%) = $103.80 — r และ g เป็นสมมติฐานของผู้วิเคราะห์ (g 5% ต่ำกว่าการขึ้นปันผลปีล่าสุด +12.6% และ AFFO guide +14%)</div></div>
+        <div class="mval">$103.80</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. Forward P/AFFO (FY2026E)</div><div class="mdesc">FY26E AFFO/share $5.825 (guidance กลาง) × P/AFFO 18.5x — mix data center เพิ่มสัดส่วน ดัน multiple ขึ้นเล็กน้อย</div></div>
-        <div class="mval">$107.76</div>
+        <div><div class="mname">2. DDM สองระยะ (ตระกูลเดียวกับวิธี 1)</div><div class="mdesc">ปันผลโต 8%/ปี 3 ปี: D1 $3.737 · D2 $4.036 · D3 $4.359 จากนั้น g 4% → D4 $4.533; TV ณ ปีที่ 3 = $4.533 ÷ (8.5% − 4%) = $100.73; PV = $3.44 + $3.43 + ($4.359 + $100.73) ÷ 1.085³ $82.27 = $89.14 ต่อหุ้น — r 8.5% ชุดเดียวกับวิธี 1 จึงนับเป็นเสียงเดียวกัน</div></div>
+        <div class="mval">$89.14</div>
       </div>
-      <div class="vmethod">
-        <div><div class="mname">3. 2-Year Forward P/AFFO (FY2027E)</div><div class="mdesc">FY27E AFFO/share ~$6.47 (+11% ประมาณ ชะลอจาก 13%) × P/AFFO 19.5x — mix data center ~45% ของรายได้</div></div>
-        <div class="mval">$126.08</div>
-      </div>
+
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        วิธี TTM ให้ค่าต่ำสุด ($87.89) เพราะยังสะท้อนธุรกิจ records/document storage ที่โตช้าเป็นสัดส่วนใหญ่
-        วิธี FY26E ($107.76) และ FY27E ($126.08) ให้น้ำหนักกับ mix shift ไปทาง data center (Project Matterhorn โต &gt;30%/ปี) ที่ควรได้ multiple สูงกว่า
-        ค่าเฉลี่ย 3 วิธี = $107.24 ปัดเป็น <b>$107</b> — ต่ำกว่าราคาตลาดปัจจุบัน $118.28 ราว 10% บ่งชี้ว่าตลาดให้ premium ล่วงหน้ากับ growth story ไปมากแล้ว
-        ใช้ P/AFFO แทน GAAP P/E เพราะ IRM มี D&amp;A สูงจากทั้งพอร์ต real estate และ digital infrastructure ทำให้ GAAP EPS ต่ำกว่ากระแสเงินสดจริงมาก
+        <b>ข้อจำกัดสำคัญ: ตระกูลสมมติฐานเดียว (single-family valuation)</b> — ทั้งสองวิธีใช้ r 8.5% จึงนับเป็นเสียงเดียว และค่า FV ไวต่อ r/g มาก: ถ้า r = 8.0% วิธี 1 ขึ้นเป็น $121.10 (MOS พลิกเป็นบวก) ถ้า r = 9.0% ลงเหลือ $90.83
+        ครั้งนี้ตัดวิธี P/AFFO เดิม (17x / 18.5x / 19.5x) ออกจาก FV เพราะตัวคูณเป็นค่าที่ตั้งเองไม่มีมัธยฐานย้อนหลังที่วัดได้ (P/E มัธยฐานของ IRM ใช้ไม่ได้ กำไรใกล้ศูนย์) และวิธี FCF/DCF ทำไม่ได้เพราะ FCF หลังลงทุนเป็นลบ (TTM −$436M ตาม StockAnalysis) — เป้านักวิเคราะห์อยู่นอก FV เป็นเพียงบริบท
+        ค่าเฉลี่ย 2 วิธี = $96.47 ปัดเป็น <b>$96.5</b> — ต่ำกว่าราคาตลาดปัจจุบัน {{rd:px}} ซึ่งเทรดที่ P/AFFO ~19.4x บนกลางไกด์ FY26 บ่งชี้ว่าตลาดจ่ายพรีเมียมให้ growth data center เกินกว่าที่ปันผลปัจจุบันรองรับ
+        ใช้ปันผลแทน GAAP P/E เพราะ IRM มี D&amp;A สูงจากทั้งพอร์ต real estate และ digital infrastructure ทำให้ GAAP EPS ต่ำกว่ากระแสเงินสดจริงมาก
       </p>
     </div>
   </section>
@@ -194,13 +192,13 @@
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
-          <span style="text-align:right">$133<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$146<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน $118.28 สูงกว่า Fair Value $107 ราว 10.5% — ซื้อขายในโซน "ตึงเกินมูลค่าเหมาะสม" จาก re-rating หลัง Q1/2026 beat
-        โซน MOS 20% ที่ $85.60 และ MOS 30% ที่ $74.90 (ใกล้เคียงจุดต่ำสุดรอบปี $77.77–$81.72) เป็นจุดสะสมที่ปลอดภัยกว่าสำหรับ value investor
-        เป้านักวิเคราะห์เฉลี่ย $133 (+5.0% upside) สูงกว่า Fair Value เพราะตลาดให้น้ำหนัก growth momentum/multiple expansion มากกว่าฐาน AFFO ปัจจุบัน
+        ราคาปัจจุบัน {{rd:px}} สูงกว่า Fair Value {{rd:fv}} ({{rd:mos}}) — ซื้อขายในโซน "ตึงเกินมูลค่าเหมาะสม" ตาม DDM ที่สมมติ r 8.5% / g 5%
+        โซน MOS 20% ที่ {{rd:mos20}} และ MOS 30% ที่ {{rd:mos30}} (ใกล้จุดต่ำสุด 52 สัปดาห์ $77.77) เป็นจุดสะสมที่ปลอดภัยกว่าสำหรับ value investor
+        เป้านักวิเคราะห์เฉลี่ย {{rd:analystTgt}} ({{rd:analystPct}}) สูงกว่า Fair Value มาก เพราะตลาดให้น้ำหนัก growth momentum ของ AFFO (+14% ปี 2026) มากกว่าสูตรปันผลที่ FV ใช้ — ไม่ได้นำเป้านี้มาเป็นขาของ FV
       </p>
     </div>
   </section>
@@ -211,7 +209,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt"><b>ไม่มี Margin of Safety</b><br>ราคาปัจจุบัน $118.28 สูงกว่ามูลค่าเหมาะสม $107 ราว 10.5% → ตามเกณฑ์ value investor ถือว่า <b>ตึง</b> ยังไม่ใช่จุดซื้อที่ปลอดภัย รอย่อตัวก่อน</div>
+        <div class="txt"><b>ไม่มี Margin of Safety</b><br>ราคาปัจจุบัน {{rd:px}} สูงกว่ามูลค่าเหมาะสม {{rd:fv}} → ตามเกณฑ์ value investor ถือว่า <b>ตึง</b> ยังไม่ใช่จุดซื้อที่ปลอดภัย รอย่อตัวก่อน</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -273,10 +271,10 @@
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      การฉายภาพใช้ AFFO/share เป็นตัวชี้วัดหลัก (มาตรฐาน REIT) แทน GAAP EPS ซึ่งถูกกด D&amp;A สูงมาก (GAAP EPS TTM เพียง $0.92)
-      ปันผลรวม 3 ปี สมมติเติบโตช้า ~5%/ปี จากฐาน $3.46 (IRM มีประวัติขึ้นปันผลต่อเนื่องแต่ payout ratio ~67% จำกัดอัตราเร่ง)
-      Leverage สูง (Net Debt/EBITDA ~5.3–5.8x) + capex data center หนักเป็นความเสี่ยงหลักที่อาจกด multiple ในกรณี Bear
-      Base case +23% ใน 3 ปี (ทบต้น ~7%/ปี) สมเหตุสมผลหาก Project Matterhorn ส่งมอบตามแผนและไม่มี dilution/downgrade เครดิตเพิ่มเติม
+      การฉายภาพใช้ AFFO/share เป็นตัวชี้วัดหลัก (มาตรฐาน REIT) แทน GAAP EPS ซึ่งถูกกด D&amp;A สูงมาก (GAAP EPS TTM เพียง $1.40)
+      ปันผลรวม 3 ปี สมมติเติบโตช้า ~5%/ปี จากฐาน $3.46 (IRM ขึ้นปันผลต่อเนื่อง และ payout ~59% ของ AFFO FY26E จำกัดอัตราเร่ง)
+      Leverage (net lease-adjusted 4.8x) ลดลงแล้ว แต่ capex data center หนัก (FCF หลังลงทุนยังติดลบ) เป็นความเสี่ยงหลักที่อาจกด multiple ในกรณี Bear · P/AFFO ขาออก 16x/19x/21x เป็นสมมติฐานของฉาก ไม่ใช่ขาของ FV
+      Base case ประมาณ +27% ใน 3 ปี (ทบต้น ~8%/ปี รวมปันผล จากจุดเข้า) สมเหตุสมผลหาก Project Matterhorn ส่งมอบตามแผนและไม่มี dilution/downgrade เครดิตเพิ่มเติม
     </p>
   </section>
 
@@ -289,19 +287,19 @@
         <ul>
           <li><b>Project Matterhorn (Data Center):</b> segment โต &gt;30% YoY ดึง multiple ทั้งบริษัทขึ้น; สัดส่วนรายได้เพิ่มจาก ~35% สู่ ~45%+ ในไม่กี่ปีข้างหน้า</li>
           <li><b>Records Management Moat:</b> 225,000+ enterprise customers, contractual recurring revenue, switching cost สูง (ทำลาย/ย้ายเอกสารต้องผ่าน IRM)</li>
-          <li><b>Q1 2026 Beat:</b> AFFO/share $1.43 (+22% YoY) เกิน guidance $0.04; FY2026 guidance ยกขึ้น AFFO/share $5.79–$5.86 (+13% midpoint)</li>
+          <li><b>Q2 2026:</b> AFFO/share $1.44 (+16% YoY); ยก FY2026 guidance เป็น AFFO/share $5.87–$5.93 (+14% midpoint), ตามที่ประกาศ 5 ส.ค. 2569</li>
           <li><b>AI Infrastructure Demand:</b> hyperscale/colocation demand ต่อเนื่องหนุน data center pipeline ทั่วโลก</li>
-          <li><b>Revenue Guidance แข็งแกร่ง:</b> FY2026 revenue +10–13% YoY, Adjusted EBITDA +12–14% YoY</li>
-          <li><b>Analyst Consensus Positive:</b> 11 นักวิเคราะห์ เป้าเฉลี่ย $133 (Buy) สูงกว่าราคาปัจจุบัน ~12%</li>
+          <li><b>Revenue Guidance แข็งแกร่ง:</b> FY2026 revenue $7.94–$8.01B (+16% midpoint), Adjusted EBITDA $2.945–$2.975B (+15%)</li>
+          <li><b>Analyst Consensus Positive:</b> 10 นักวิเคราะห์ เป้าเฉลี่ย {{rd:analystTgt}} ({{rd:analystPct}}) เรทติ้ง Buy — เป็นบริบท ไม่ใช่ส่วนหนึ่งของ FV</li>
         </ul>
       </div>
       <div class="box risk">
         <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
         <ul>
-          <li><b>Leverage สูง:</b> Net Debt/EBITDA ~5.3–5.8x สูงกว่า REIT ทั่วไป จำกัดความยืดหยุ่นทางการเงินหากดอกเบี้ยขึ้นต่อ</li>
-          <li><b>Payout Ratio สูง:</b> Div/AFFO ~67% เหลือ margin สำหรับ reinvest data center capex ไม่มากนัก อาจต้องพึ่ง debt/equity เพิ่ม</li>
+          <li><b>Leverage และหนี้:</b> หนี้รวม ~$19.9B (TTM) แม้ net lease-adjusted leverage 4.8x ลดลง จำกัดความยืดหยุ่นทางการเงินหากดอกเบี้ยขึ้นต่อ</li>
+          <li><b>ปันผลสูงกว่า FCF:</b> ปันผลจ่ายจริง ~$1.0B (TTM) มากกว่ากระแสเงินสดอิสระหลังลงทุน (ติดลบ) — ต้องพึ่ง debt/equity เพิ่ม</li>
           <li><b>Data Center Capex หนัก:</b> Project Matterhorn ต้องการเงินทุนต่อเนื่องสูง; หาก funding cost เพิ่ม yield spread แคบลง</li>
-          <li><b>Valuation ตึงแล้ว:</b> ราคาปัจจุบันสูงกว่า Fair Value ~10.5% สะท้อนว่าตลาด price-in growth ไปมากแล้ว ความเสี่ยงขาลงหาก guidance พลาด</li>
+          <li><b>Valuation ตึงแล้ว:</b> ราคาปัจจุบัน {{rd:px}} สูงกว่า Fair Value {{rd:fv}} ({{rd:mos}}) สะท้อนว่าตลาด price-in growth ไปมากแล้ว ความเสี่ยงขาลงหาก guidance พลาด</li>
           <li><b>ธุรกิจ Records โตช้า:</b> ~55–65% ของรายได้ยังเป็น physical storage/records ที่โต low-single-digit เป็น drag ต่อ growth รวม</li>
           <li><b>การแข่งขัน Data Center:</b> Digital Realty, Equinix, และ hyperscaler self-build อาจกดดัน pricing/market share ระยะยาว</li>
         </ul>
@@ -314,14 +312,14 @@
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
       <h2>คุณภาพดี แต่ราคาตึง — รอย่อสะสม</h2>
-      <p>Iron Mountain เป็น hybrid REIT ที่ผสาน records/document storage ซึ่งมี moat แข็งแกร่งจาก 225,000+ enterprise customers เข้ากับ data center REIT ที่กำลังเติบโตเร็วผ่าน Project Matterhorn (&gt;30% YoY) ผลประกอบการ Q1 2026 ยืนยันโมเมนตัมด้วย AFFO/share $1.43 (+22% YoY) เกิน guidance และบริษัทยกเป้า FY2026 ขึ้นเป็น AFFO/share $5.79–$5.86 อย่างไรก็ตาม ราคาปัจจุบัน $118.28 ได้ re-rate ขึ้นมาแรง (+32.5% ในรอบปี) จนสูงกว่า Fair Value $107 ที่ประเมินจาก P/AFFO ราว 10.5% MOS จึงติดลบ ยังไม่ใช่จุดซื้อที่ปลอดภัยตามเกณฑ์ value investor แม้เป้านักวิเคราะห์เฉลี่ย $133 จะบ่งชี้ upside เพิ่มเติมหาก growth story ดำเนินต่อ กลยุทธ์: ผู้ถืออยู่แล้วถือต่อรับปันผล ~2.9% + growth, นักลงทุนใหม่รอย่อสู่โซน MOS 20% ($85.60) หรืออย่างน้อยใกล้ Fair Value ($107) ก่อนเริ่มสะสม</p>
+      <p>Iron Mountain เป็น hybrid REIT ที่ผสาน records/document storage ซึ่งมี moat แข็งแกร่งจาก 225,000+ enterprise customers เข้ากับ data center REIT ที่กำลังเติบโตเร็วผ่าน Project Matterhorn (&gt;30% YoY) ผลประกอบการ Q1 2026 ยืนยันโมเมนตัมด้วย AFFO/share $1.43 (+22% YoY) เกิน guidance และบริษัทยกเป้า FY2026 ขึ้นเป็น AFFO/share $5.79–$5.86 อย่างไรก็ตาม ราคาปัจจุบัน {{rd:px}} สูงกว่า Fair Value {{rd:fv}} ที่ประเมินจาก DDM (ตระกูลสมมติฐานเดียว ไวต่อ r/g) MOS จึงติดลบ ({{rd:mos}}) ยังไม่ใช่จุดซื้อที่ปลอดภัยตามเกณฑ์ value investor แม้เป้านักวิเคราะห์เฉลี่ย {{rd:analystTgt}} ({{rd:analystPct}}) จะบ่งชี้ upside หาก growth story ดำเนินต่อ ผลไตรมาส 2 ยกไกด์ทั้งปีและ leverage ลดลงเหลือ 4.8x ช่วยคุณภาพ แต่ยังไม่พอให้ราคาต่ำกว่า FV กลยุทธ์: ผู้ถืออยู่แล้วถือต่อรับปันผล ~{{rd:yield}} + growth, นักลงทุนใหม่รอย่อสู่โซน MOS 20% ({{rd:mos20}}) หรืออย่างน้อยใกล้ Fair Value ({{rd:fv}}) ก่อนเริ่มสะสม</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$133 (Buy)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$146 (Buy)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ถือต่อสำหรับผู้มีอยู่แล้ว (data center growth + ปันผล ~2.9%) — นักลงทุนใหม่รอย่อสู่ใกล้ Fair Value $107 หรือโซน MOS 20% ($85.60) เพื่อ margin of safety ที่ดีกว่า; ติดตาม leverage (Net Debt/EBITDA) และความคืบหน้า Project Matterhorn เป็นตัวชี้วัดหลักในไตรมาสถัดไป
+        💡 <b>กลยุทธ์:</b> ถือต่อสำหรับผู้มีอยู่แล้ว (data center growth + ปันผล ~{{rd:yield}}) — นักลงทุนใหม่รอย่อสู่ใกล้ Fair Value {{rd:fv}} หรือโซน MOS 20% ({{rd:mos20}}) เพื่อ margin of safety ที่ดีกว่า; ติดตาม leverage (Net Debt/EBITDA) และความคืบหน้า Project Matterhorn เป็นตัวชี้วัดหลักในไตรมาสถัดไป
       </div>
     </div>
   </section>
@@ -332,7 +330,7 @@
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/AFFO เป้าหมาย, อัตราเติบโต AFFO (g), และความคืบหน้า Project Matterhorn ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • แหล่งข้อมูล: StockAnalysis.com / Yahoo Finance / Iron Mountain Q1 2026 &amp; FY2025 Earnings Releases (SEC 8-K)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 9 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
