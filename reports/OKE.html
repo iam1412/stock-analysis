@@ -6,18 +6,18 @@
 <title>วิเคราะห์หุ้น ONEOK (OKE) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"OKE","currency":"USD","price":93.46,"fairValue":99.46,"mos":6,"upside":6.4,"pe":16.17,"dividendYield":4.58,"roe":16.3}
+{"symbol":"OKE","currency":"USD","price":93.46,"fairValue":99.17,"mos":5.8,"upside":6.1,"pe":16.17,"dividendYield":4.58,"roe":16.3}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 99.46,
+  "fv": 99.17,
   "values": {
     "px": 93.46,
     "priceDate": "2026-09-18",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
-    "fvLow": 92.48,
+    "fvLow": 91.9,
     "fvHigh": 112.35,
     "eps": 5.78,
     "shares": 630400000,
@@ -30,7 +30,7 @@
         "div": 13.1
       },
       {
-        "tgt": 113.28,
+        "tgt": 112.58,
         "div": 13.48
       },
       {
@@ -42,7 +42,8 @@
       "years": 3,
       "divIncluded": true,
       "perYear": null
-    }
+    },
+    "analystTgt": 101.05
   },
   "theme": {
     "accent": "#de722c",
@@ -107,7 +108,7 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ $64.02 – $96.07<br>
+        กรอบ 52 สัปดาห์ $64.02 – $99.84<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, Google Finance
       </div>
     </div>
@@ -115,11 +116,11 @@
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM / FY2025 · ณ ส.ค. 2569</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM / FY2025 · ณ ก.ย. 2569</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">630.4M shares outstanding</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~16.17x</div><div class="d">EPS TTM $5.78 · forward PE ~15.1x</div></div>
-      <div class="metric"><div class="k">EV/EBITDA (TTM)</div><div class="v">~11.1x</div><div class="d">EV ~$92.7B · EBITDA TTM ~$8.35B</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~16.17x</div><div class="d">EPS TTM $5.78 · P/E FY2026e ~15.9x (EPS $5.89)</div></div>
+      <div class="metric"><div class="k">EV/EBITDA (TTM)</div><div class="v">~11.0x</div><div class="d">EV ~$91.8B · EBITDA TTM ~$8.35B</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ~$35.58 · equity ~$22.4B</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$3,393M</div><div class="d">+11.8% YoY vs FY2024 $3,034M</div></div>
@@ -143,7 +144,7 @@
 
   <!-- ===== 2. PRICE CHART ===== -->
   <section>
-    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – มิ.ย. 2569</div></div>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ต.ค. 2568 – ก.ย. 2569</div></div>
     <div class="card">
       <div class="chart-wrap">
         <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
@@ -154,11 +155,10 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ราคา OKE เริ่มต้น ~$73 ในเดือน ก.ย. 2568 แล้วปรับลดลงต่อเนื่องสู่จุดต่ำสุดที่ ~$67 ในเดือน ต.ค. 2568
-        ตามแรงกดดันจากอัตราดอกเบี้ยสูงและความกังวลเรื่องหนี้สินหลังเข้าซื้อกิจการ
-        จากนั้นพื้นฐานธุรกิจ fee-based ที่มั่นคงและ guidance ที่แข็งแกร่งหนุนราคาฟื้นตัวต่อเนื่อง
-        ทำสถิติสูงสุดรอบปีใหม่ที่ $94.99 ในเดือน ส.ค. 2569 (ราคาปัจจุบัน)
-        ผลตอบแทนรอบปี +30.2% (ไม่รวมปันผล ~4.5%) รวมผลตอบแทนทั้งสิ้น ~+35%
+        ราคา OKE ปิดสิ้นเดือน ต.ค. 2568 ที่ ~$67 (จุดต่ำสุดของกราฟ) แล้วปรับขึ้นต่อเนื่อง
+        โดยมีจุดพักช่วง พ.ค. 2569 (~$84) จนปิดเดือน ส.ค. 2569 ที่ ~$96 (สูงสุดของกราฟรายเดือน)
+        ก่อนอ่อนตัวเล็กน้อยสู่ราคาปัจจุบัน {{rd:px}} ในเดือน ก.ย. 2569
+        ผลตอบแทนรอบปีดูป้ายที่หัวรายงาน (ไม่รวมปันผล ~4.6%/ปี)
       </p>
     </div>
   </section>
@@ -168,8 +168,8 @@
     <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">3 วิธี — EV/EBITDA · DDM · P/E</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) $5.78 × P/E เป้าหมาย ~16x — Peer midstream (Kinder Morgan, Williams, Targa) ซื้อขายที่ 15–18x; ใช้ 16x เป็นค่าเหมาะสม</div></div>
-        <div class="mval">$92.48</div>
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) $5.78 × P/E เป้าหมาย 15.9x — เป็นมัธยฐาน P/E ย้อนหลัง 5 ปีของ OKE เอง (FY2021–FY2025 ช่วง 11.9–16.8x · ราคาเฉลี่ยของงวด ÷ EPS ของงวด) มาจากประวัติ ไม่ได้มาจาก P/E ปัจจุบัน</div></div>
+        <div class="mval">$91.90</div>
       </div>
       <div class="vmethod">
         <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล $4.28 × (1+5%); g 5%, r 9% → $4.494 / (9%−5%) — เหมาะกับ midstream cash-generative สูง · ปันผลเติบโตสม่ำเสมอ 25+ ปี</div></div>
@@ -184,9 +184,9 @@
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        DDM ให้ค่าสูงสุด (~$112.35) สะท้อนปันผลที่เติบโตต่อเนื่องและ yield สูง Justified P/BV (~$100.52) อิง ROE ที่แข็งแกร่งขึ้น P/E (~$92.48) ให้ค่าต่ำสุดเพราะ EPS ยังถูกกดจาก amortization หลังซื้อกิจการ ·
-        <b>วิธีถ่วงน้ำหนัก:</b> DDM กับ Justified P/BV ใช้สมมติฐาน (r 9%, g 5%) ชุดเดียวกัน จึงนับเป็น "เสียงเดียว" (เฉลี่ยกันได้ $106.44) แล้วจึงเฉลี่ยกับขา P/E ที่ยึดตลาด → FV = ($92.48 + $106.44)/2 = $99.46 ไม่ใช่ค่าเฉลี่ยตรงของทั้งสามวิธี (~$101.78) ซึ่งจะทำให้สมมติฐาน r/g ชุดเดียวถ่วงน้ำหนัก 2 ต่อ 1 เหนือขาที่ยึดตลาด (กฎถ่วงตามตระกูลสมมติฐาน 0.4c-bis)
-        EV/EBITDA เป็น primary metric เสริมสำหรับ midstream — ปัจจุบัน ~11.1x vs peer median ~12x สนับสนุนกรอบ FV นี้<br>
+        DDM ให้ค่าสูงสุด (~$112.35) สะท้อนปันผลที่เติบโตต่อเนื่องและ yield สูง Justified P/BV (~$100.52) อิง ROE ที่แข็งแกร่งขึ้น P/E (~$91.90) ให้ค่าต่ำสุดเพราะ EPS ยังถูกกดจาก amortization หลังซื้อกิจการ ·
+        <b>วิธีถ่วงน้ำหนัก:</b> DDM กับ Justified P/BV ใช้สมมติฐาน (r 9%, g 5% เป็นสมมติฐานของผู้วิเคราะห์เอง) ชุดเดียวกัน จึงนับเป็น "เสียงเดียว" (เฉลี่ยกันได้ $106.44) แล้วจึงเฉลี่ยกับขา P/E ที่ยึดมัธยฐานประวัติ → FV = ($91.90 + $106.44)/2 = $99.17 ไม่ใช่ค่าเฉลี่ยตรงของทั้งสามวิธี ซึ่งจะทำให้สมมติฐาน r/g ชุดเดียวถ่วงน้ำหนัก 2 ต่อ 1 (กฎถ่วงตามตระกูลสมมติฐาน 0.4c-bis) · เป้าเฉลี่ยนักวิเคราะห์ไม่ใช่ขาของ FV (ใช้เป็นบริบทตรวจความสอดคล้องเท่านั้น) ·
+        EV/EBITDA ปัจจุบัน ~11.0x (EV ~$91.8B ÷ EBITDA TTM ~$8.35B) ใช้เป็นบริบทเท่านั้น ไม่เป็นขา FV เพราะยังไม่มีมัธยฐานย้อนหลังที่วัดได้<br>
         <b>หมายเหตุ leverage:</b> Net debt/EBITDA ~4.0x สูงกว่า target 3.5x — management ตั้งเป้าลดหนี้ใน 2–3 ปี; ความเสี่ยงดอกเบี้ยควรติดตาม
       </p>
     </div>
@@ -204,17 +204,17 @@
         <div class="scale">
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$96.34<br><small>เป้า Analyst</small></span>
           <span style="text-align:right">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:center">{{rd:analystTgt}}<br><small>เป้า Analyst</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน $94.99 อยู่ต่ำกว่ามูลค่าเหมาะสม $99.46 ประมาณ 4.5% (MOS ~4.5%)
-        อยู่ในโซนใกล้ fair value มาก ยังไม่ถึงโซน MOS 20% ($79.57)
-        เป้าของนักวิเคราะห์ consensus ~21 ราย อยู่ที่ ~$96.34 (Buy) สูงกว่าราคาปัจจุบัน ~1.4%
-        จุดสะสมที่น่าสนใจคือต่ำกว่า $79.57 (MOS20%) สำหรับ value investor
-        สำหรับนักลงทุนระยะยาวที่เน้นปันผล ราคาปัจจุบันยังให้ yield ~4.51% ซึ่งน่าพอใจ
+        ราคาปัจจุบัน {{rd:px}} อยู่ต่ำกว่ามูลค่าเหมาะสม {{rd:fv}} (MOS {{rd:mos}})
+        อยู่ในโซนใกล้ fair value มาก ยังไม่ถึงโซน MOS 20% ({{rd:mos20}})
+        เป้าของนักวิเคราะห์ consensus ~19 ราย อยู่ที่ {{rd:analystTgt}} ({{rd:analystPct}}) (Buy) สูงกว่า FV เล็กน้อย — ไม่ได้นำมาเป็นขาของ FV
+        จุดสะสมที่น่าสนใจคือต่ำกว่า {{rd:mos20}} (MOS 20%) สำหรับ value investor
+        สำหรับนักลงทุนระยะยาวที่เน้นปันผล ราคาปัจจุบันยังให้ yield ~4.58% ซึ่งน่าพอใจ
       </p>
     </div>
   </section>
@@ -266,7 +266,7 @@
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$7.08</span></li>
-            <li><span>P/E ออก</span><span>16x</span></li>
+            <li><span>P/E ออก</span><span>15.9x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>ลดหนี้ตามแผน EBITDA เติบโต</span></li>
           </ul>
@@ -306,7 +306,7 @@
           <li><b>Synergy จาก Acquisitions:</b> Magellan + EnLink + Medallion มอบ cost synergy ~$400M/ปีเมื่อ fully integrated + การเชื่อมโยงเครือข่ายที่แข็งแกร่งขึ้น</li>
           <li><b>การเติบโตของ NGL &amp; LNG:</b> ความต้องการ natural gas liquids และ LNG exports สหรัฐฯ เพิ่มสูง รองรับปริมาณที่ผ่านท่อระยะยาว</li>
           <li><b>ลดหนี้เร็ว:</b> FCF สูง ~$2.4–2.9B/ปี ช่วยลด leverage จาก ~4.0x สู่ target 3.5x ใน 2–3 ปี เปิดทางการ rerating</li>
-          <li><b>ปันผลเติบโตต่อเนื่อง:</b> ขึ้นปันผลทุกปี 25+ ปี อัตราการขึ้น ~5%/ปี; yield ~4.8% สูงกว่า Treasuries ระยะยาว</li>
+          <li><b>ปันผลเติบโตต่อเนื่อง:</b> ขึ้นปันผลทุกปี 25+ ปี อัตราการขึ้น ~5%/ปี; yield ~4.6% สูงกว่า Treasuries ระยะยาว</li>
           <li><b>ดอกเบี้ยขาลง:</b> หาก Fed ลดดอกเบี้ยต่อเนื่อง midstream / yield stocks ได้รับประโยชน์โดยตรงจาก re-rating</li>
         </ul>
       </div>
@@ -331,17 +331,17 @@
       <h2>สะสมทยอย · รอจังหวะ pullback สู่โซน MOS 20%</h2>
       <p>ONEOK เป็น midstream giant ที่มีพื้นฐาน fee-based แข็งแกร่ง ปันผลเติบโตต่อเนื่อง 25+ ปี
         และ network ขนาดใหญ่ที่เพิ่งขยายจาก Magellan + EnLink + Medallion
-        ราคาปัจจุบัน $94.99 ให้ MOS ~4.5% ต่ำกว่า FV $99.46 ราคาเข้าใกล้มูลค่าเหมาะสมมากแล้ว
+        ราคาปัจจุบัน {{rd:px}} ให้ MOS {{rd:mos}} ต่ำกว่า FV {{rd:fv}} ราคาเข้าใกล้มูลค่าเหมาะสมมากแล้ว
         ประเด็น leverage ~4.0x EBITDA ต้องติดตาม แต่ FCF ที่แข็งแกร่ง ~$2.9B/ปี (TTM) หนุนแผนลดหนี้
-        สำหรับนักลงทุนเน้นปันผลระยะยาว yield ~4.51% ณ ราคาปัจจุบันยังน่าสนใจ
-        กลยุทธ์ที่เหมาะสมคือรอ pullback สู่โซน MOS 20% ($79.57) ก่อนเพิ่มน้ำหนัก</p>
+        สำหรับนักลงทุนเน้นปันผลระยะยาว yield ~4.58% ณ ราคาปัจจุบันยังน่าสนใจ
+        กลยุทธ์ที่เหมาะสมคือรอ pullback สู่โซน MOS 20% ({{rd:mos20}}) ก่อนเพิ่มน้ำหนัก</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$96.34 (Buy — ~21 analysts)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">{{rd:analystTgt}} (Buy — ~19 analysts)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> รอ pullback สู่โซน $79.57–85 (MOS 15–20%) ก่อนเพิ่มน้ำหนัก · จุดซื้อ deep value ที่ $69.62 (MOS 30%) ·
+        💡 <b>กลยุทธ์:</b> รอ pullback สู่โซน {{rd:mos20}}–$84 (MOS 15–20%) ก่อนเพิ่มน้ำหนัก · จุดซื้อ deep value ที่ {{rd:mos30}} (MOS 30%) ·
         นักลงทุนเน้นปันผลรับ yield ~4.5–5.5% ระยะยาว · ติดตาม Net debt/EBITDA ให้ลดลงสู่ 3.5x ตามแผน ·
         ตัด stoploss หากปันผลถูกตัดลด (ซึ่งโอกาสต่ำมาก เนื่องจาก FCF coverage ดี)
       </div>
@@ -355,7 +355,7 @@
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
     ราคา ณ {{rd:priceDate}} · แหล่ง: StockAnalysis.com (stockanalysis.com/stocks/OKE/) · Yahoo Finance (finance.yahoo.com/quote/OKE/) · Google Finance (google.com/finance/quote/OKE:NYSE) · StockAnalysis Financials (stockanalysis.com/stocks/OKE/financials/)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 17 สิงหาคม 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 กันยายน 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
