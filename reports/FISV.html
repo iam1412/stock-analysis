@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น Fiserv, Inc. (FISV) — Stock Analysis Dashboard</title>
 <!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง (Opus→"Claude Opus 4.8", Sonnet→"Claude Sonnet 4.6") — gate E28 บังคับ -->
-<meta name="ai-model" content="Claude Opus 4.8">
+<meta name="ai-model" content="Claude Sonnet 5">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"FISV","currency":"USD","price":47.19,"fairValue":67,"mos":29.6,"upside":42,"pe":5.6,"dividendYield":null,"roe":13}
+{"symbol":"FISV","currency":"USD","price":47.19,"fairValue":138,"mos":65.8,"upside":192.4,"pe":9,"dividendYield":null,"roe":10.7}
 </script>
 <!--
   report-data: ธีมสี + ข้อมูลกราฟ/gauge ต่อหุ้น (build เอาไปวาด)  ดู schema เต็มใน CLAUDE.md ข้อ 9
@@ -17,28 +17,28 @@
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 67,
+  "fv": 138,
   "values": {
     "px": 47.19,
     "priceDate": "2026-09-18",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
-    "fvLow": 59,
-    "fvHigh": 72,
-    "eps": 8.44,
-    "shares": 533299999.99999994,
-    "baseEps": 8.44,
+    "fvLow": 134,
+    "fvHigh": 143,
+    "eps": 5.22,
+    "shares": 531766721,
+    "baseEps": 5.22,
     "scenarios": [
       {
-        "tgt": 43.44,
+        "tgt": 40.28,
         "div": 0
       },
       {
-        "tgt": 73.76,
+        "tgt": 85.56,
         "div": 0
       },
       {
-        "tgt": 106.3,
+        "tgt": 131.52,
         "div": 0
       }
     ],
@@ -76,15 +76,15 @@
       ["ส.ค.26", 53.31],
       ["ก.ย.26", 47.19]
     ],
-    "min": 45,
-    "max": 70,
-    "grid": [50, 55, 60, 65],
+    "min": 25,
+    "max": 150,
+    "grid": [50, 75, 100, 125],
     "currency": "$",
     "highlight": [2, 11]
   },
   "gauge": {
     "min": 40,
-    "max": 85,
+    "max": 150,
     "fairLabelTop": true
   }
 }
@@ -115,35 +115,35 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ $47.04 – $175.92<br>
-        ที่มา: StockAnalysis.com, Yahoo Finance, Fiserv Investor Relations (Q4/FY2025 + Q1 2026 earnings release)
+        กรอบ 52 สัปดาห์ $47.04 – $135.32<br>
+        ที่มา: StockAnalysis.com, Yahoo Finance
       </div>
     </div>
   </header>
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ณ 3 ก.ค. 2569</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ณ 21 ก.ย. 2569</div></div>
     <!-- ✏️ ปรับการ์ด metric ให้เหมาะกับหุ้น/เซกเตอร์ได้อิสระ — gate ไม่บังคับชุด metric (เปลี่ยน label / สลับ / เพิ่ม-ลดการ์ดได้)
          • คงป้าย "P/E (TTM)", "P/BV", "เงินปันผล", "ROE" ไว้ถ้าหุ้นมีจริง → W10 cross-check กับ stock-meta · ไม่มี (ขาดทุน/ไม่ปันผล) = ตัดการ์ดออก + ตั้ง stock-meta เป็น null
          • ธนาคาร → NIM / NPL / CASA / Loan growth / Cost-to-income   • REIT/กองอสังหา → Occupancy / DPU / NAV / Gearing   • ประกัน → Combined ratio / EV
          • หุ้นเติบโต-ขาดทุน → Revenue growth / Gross margin / FCF / Cash runway (ตัด P/E ออก)
-         • FISV: ใช้ P/E (TTM) บนฐาน adjusted EPS (ไม่ใช่ GAAP ที่ถูกกดจาก D&A/amortization สินทรัพย์ไม่มีตัวตนจากดีล First Data) ตัดการ์ด P/BV ออก (fintech โครงสร้างทุนไม่เทียบธนาคาร) แทนด้วย Clover GPV growth + P/FCF -->
+         • FISV: ตัวเลข GAAP diluted ตามงบ (adjusted EPS ตรวจสอบกับแหล่งที่สองไม่ได้จึงไม่ใช้) -->
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">533.3M หุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">บน adjusted EPS $8.44 (GAAP P/E ~8.85x)</div></div>
-      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~32x</div><div class="d">ช่วง 2021-2025 (ก่อนราคาดิ่ง)</div></div>
-      <div class="metric"><div class="k">P/FCF (TTM)</div><div class="v neu">~6.3x</div><div class="d">FCF/หุ้น ~$8.33 · FCF conversion ~93%</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">531.8M หุ้นคงเหลือ</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">บน GAAP EPS $5.22 (ตัวเลข adjusted ตรวจสอบไม่ได้)</div></div>
+      <div class="metric"><div class="k">P/E มัธยฐาน ~5 ปี</div><div class="v">~25.6x</div><div class="d">ช่วง 23.6–55.3x (FY2021–FY2025)</div></div>
+      <div class="metric"><div class="k">FCF (TTM)</div><div class="v neu">$3.93B</div><div class="d">~$7.31/หุ้น · P/FCF ~6.5x</div></div>
 
-      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$3.20B</div><div class="d">GAAP EPS $6.34 (+18% YoY)</div></div>
-      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$8.44</div><div class="d">Adjusted (non-GAAP) · GAAP TTM ~$5.91</div></div>
-      <div class="metric"><div class="k">BVPS</div><div class="v">~$48.5</div><div class="d">รวม goodwill/intangibles จากดีล First Data</div></div>
-      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~13% / 5%</div><div class="d">GAAP basis</div></div>
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$3.48B</div><div class="d">GAAP EPS $6.34 (+18% YoY)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$5.22</div><div class="d">GAAP diluted · NI $2.80B</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$20.9B</div><div class="d">−1.2% YoY</div></div>
+      <div class="metric"><div class="k">Operating margin</div><div class="v neu">21.4%</div><div class="d">จาก 28.7% ใน FY2024</div></div>
 
-      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$21.1B</div><div class="d">+1.9% YoY · organic 1-3% guide FY26</div></div>
-      <div class="metric"><div class="k">Clover GPV Growth</div><div class="v pos">+9-12%</div><div class="d">Q1'26 ex-gateway conversion; guide 10-15% FY26</div></div>
+      <div class="metric"><div class="k">หนี้รวม / เงินสด</div><div class="v neu">$28.0B / $0.6B</div><div class="d">D/E ~1.04</div></div>
+      <div class="metric"><div class="k">ROE</div><div class="v neu">~10.7%</div><div class="d">TTM (FY2025 13.0%)</div></div>
       <div class="metric"><div class="k">เงินปันผล</div><div class="v">ไม่จ่าย</div><div class="d">เน้น buyback + reinvest แทน</div></div>
-      <div class="metric"><div class="k">Beta</div><div class="v">0.84</div><div class="d">ผันผวนน้อยกว่าตลาดในอดีต (ก่อนวิกฤต Q3'25)</div></div>
+      <div class="metric"><div class="k">หุ้นถัวเฉลี่ยปรับลด</div><div class="v">537M</div><div class="d">จาก 672M (FY2021)</div></div>
     </div>
   </section>
 
@@ -162,13 +162,8 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        <!-- ✏️ บรรยายการเคลื่อนไหวราคา ~1 ปี: จุดสูง/ต่ำ, เปลี่ยนแปลง %, สาเหตุหลัก -->
-        หุ้น FISV เริ่มปีที่ $138.18 (ส.ค. 2568) ก่อนจะ<b>ร่วงหนัก ~48% ในเดือนเดียว</b> (ก.ย.→ต.ค. 2568) หลังประกาศงบ Q3/2568
-        ที่ผิดหวังอย่างรุนแรง — บริษัทตัดลดเป้า adjusted EPS ปี 2568 จาก $10.15-10.30 เหลือ $8.50-8.60 พร้อมเปิดเผยการชะลอตัวรุนแรง
-        ของธุรกิจ Financial Solutions (banking core) และ Clover volume ที่โตต่ำกว่าคาด ราคาแตะจุดต่ำสุดรอบปีที่ $49.05 (มิ.ย. 2569)
-        ก่อนฟื้นตัวเล็กน้อยมาที่ $52.33 หลังการเปลี่ยนตัว CEO เป็น Takis Georgakopoulos (มิ.ย. 2569) และงบ Q1/2569 ที่ผลประกอบการ
-        Clover เริ่มมีสัญญาณบวก (GPV +9-12% ex-gateway) รวมทั้งปี ราคาลดลง <b>~62.1%</b> สะท้อนความกังวลเรื่องความน่าเชื่อถือของ
-        management guidance และคุณภาพการเติบโตระยะยาวของทั้ง Financial Solutions และ Clover
+        ราคา FISV ปรับลงจาก $66.69 (ต.ค. 2568) มาอยู่ที่ {{rd:px}} (ก.ย. 2569) ใกล้ต่ำสุดของกรอบ 52 สัปดาห์ที่ $47.04
+        StockAnalysis รายงานว่า CEO ใหม่ Takis Georgakopoulos ปรับลดไกด์ปี 2026 และงบ Q2/2026 (6 ส.ค.) รายได้ลดลง ~4% รายไตรมาส
       </p>
     </div>
   </section>
@@ -179,27 +174,21 @@
     <div class="card">
       <!-- ✏️ เลือก 3 วิธี: P/E (adjusted), P/FCF, Conservative P/E (GAAP) — ตัด DDM (ไม่จ่ายปันผล) และ P/BV (fintech เทียบ P/BV ธนาคารไม่เหมาะ, BVPS พองจาก goodwill First Data) -->
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $8.44 × P/E 8.5x — ต่ำกว่าค่าเฉลี่ยประวัติศาสตร์ ~32x มาก สะท้อนตลาดตีราคาว่า growth ชะลอตัวถาวร แต่สูงกว่า P/E ปัจจุบัน 6.2x ที่เป็น "ราคาตื่นตระหนก" หลัง Q3'25 miss</div></div>
-        <div class="mval">$71.74</div>
+        <div><div class="mname">1. P/E Valuation (GAAP)</div><div class="mdesc">EPS $5.22 (TTM, GAAP diluted) × P/E 25.6x — ตัวคูณนี้คือมัธยฐาน 5 ปีที่วัดจากราคาเฉลี่ยรายปี ÷ EPS (ช่วง 23.6–55.3x) มาจากประวัติ ไม่ได้ลอกจาก P/E ปัจจุบัน · EPS adjusted ของรอบก่อน ($8.44) ตรวจสอบกับแหล่งที่สองไม่ได้จึงไม่ใช้</div></div>
+        <div class="mval">$133.63</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. P/FCF Valuation</div><div class="mdesc">FCF/หุ้น $8.33 × P/FCF เป้าหมาย 8.5x — FCF conversion ~93% ของ adjusted EPS ยังแข็งแรง แม้กำไรบัญชีถูกกดจาก D&A/amortization สินทรัพย์ไม่มีตัวตนจากดีล First Data (2019)</div></div>
-        <div class="mval">$70.81</div>
-      </div>
-      <div class="vmethod">
-        <div><div class="mname">3. Conservative P/E (GAAP)</div><div class="mdesc">EPS GAAP $5.91 × P/E 10x — ฐานระมัดระวังสุด กรณี Financial Solutions attrition ลากยาวกว่าคาดและ Clover ไม่ฟื้นตามเป้า 10-15% GPV</div></div>
-        <div class="mval">$59.10</div>
+        <div><div class="mname">2. P/FCF Valuation</div><div class="mdesc">FCF/หุ้น $7.31 × P/FCF 19.6x — (FCF/หุ้น = TTM 3,926M หารหุ้นถัวเฉลี่ย 537M) มัธยฐาน 5 ปีคำนวณจากราคาเฉลี่ยรายปี ÷ FCF/หุ้น (19.1x, 19.6x, 19.5x, 20.7x, 25.7x) มาจากประวัติ ไม่ได้อิงตัวคูณปัจจุบัน</div></div>
+        <div class="mval">$143.28</div>
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        <!-- ✏️ หมายเหตุ: วิธีไหนให้ค่าสูง/ต่ำเพราะอะไร, ทำไม FV กลางจึงสมเหตุสมผล -->
-        วิธี P/E adjusted ($71.7) และ P/FCF ($70.8) ให้ค่าใกล้เคียงกัน สะท้อนว่า adjusted EPS ของ Fiserv สอดคล้องกับกระแสเงินสดจริง
-        (ไม่ใช่ "ตัวเลขแต่งบัญชี") — วิธี Conservative GAAP P/E ($59.1) เป็นฐานล่างกรณีปัญหา Financial Solutions/Clover ลึกกว่าที่คิด
-        ทั้ง 3 วิธีคอนเวิร์จในกรอบ $59-72 จึงใช้ค่าเฉลี่ย $67 เป็น Fair Value (ต่ำกว่าเป้าเฉลี่ย analyst consensus $70 เล็กน้อย
-        เพื่อสะท้อนความไม่แน่นอนของ execution ภายใต้ CEO ใหม่ที่เพิ่งรับตำแหน่งเดือน มิ.ย. 2569)
+        ข้อจำกัดสำคัญ: 2 ขานี้ (P/E และ P/FCF) ล้วนใช้ตัวคูณมัธยฐานย้อนหลังที่วัดช่วงก่อนราคาดิ่ง และกำไร/FCF เป็นฐานเดียวกัน จึงถือได้ว่ามูลค่าอิง<b>ตระกูลเดียว (ตัวคูณกำไร-เงินสดย้อนหลัง)</b>
+        และไม่มีขาอิสระมายืนยัน ผล MOS สูงมาก ({{rd:mos}}) จึงเป็นประมาณการที่ยังไม่ยืนยัน · ความไวต่อสมมติฐาน: หากตัวคูณ P/E เหลือ 9x (ระดับปัจจุบัน) มูลค่า ≈ ราคาตลาด
+        และเป้าเฉลี่ย analyst ~$60 ให้ส่วนต่างราว 1 ใน 4 ของราคาเป้า — เป้า analyst ไม่ถูกนำมาเป็นขาของ FV
       </p>
     </div>
   </section>
@@ -214,17 +203,16 @@
           <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
+          <span style="text-align:left">$60<br><small>เป้าเฉลี่ย Analyst (บริบท)</small></span>
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
-          <span style="text-align:right">$70<br><small>เป้าเฉลี่ย Analyst</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน $52.33 อยู่<b>ต่ำกว่า MOS 20% ($53.60) เล็กน้อย</b> — เข้าใกล้โซนน่าสนใจสำหรับนักลงทุนสาย value แล้ว
-        แต่ยังไม่ถึงโซน deep value ที่ MOS 30% ($46.90) ราคาปัจจุบันยังต่ำกว่าทั้ง Fair Value และเป้าเฉลี่ย analyst ($70)
-        สะท้อนว่าตลาดยังกังวลเรื่อง execution risk ภายใต้ผู้บริหารชุดใหม่มากกว่าที่ analyst consensus สะท้อน
+        ราคาปัจจุบัน {{rd:px}} ต่ำกว่าทุกโซนที่คำนวณจาก FV มาก และต่ำกว่าเป้าเฉลี่ย analyst (~$60) ด้วย — ช่องว่างขนาดนี้บอกว่าตลาดไม่เชื่อตัวคูณย้อนหลัง
+        จึงไม่ควรอ่านเป็นสัญญาณซื้อโดยตรง เป้า analyst แสดงเป็นบริบทเท่านั้น ไม่ได้เป็นขาของ FV
       </p>
     </div>
   </section>
@@ -236,11 +224,11 @@
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">มี Margin of Safety ระดับดี — แต่มาพร้อมความเสี่ยง execution ที่สูงกว่าหุ้น value ทั่วไป เพราะราคาสะท้อนความไม่แน่นอนของ turnaround ภายใต้ CEO ใหม่</div>
+        <div class="txt">ตัวเลข MOS สูงมากเพราะอิงตัวคูณมัธยฐานย้อนหลังก่อนราคาดิ่ง — ต้องถือเป็นประมาณการที่ยังไม่ยืนยัน ไม่ใช่ส่วนเผื่อที่เชื่อได้เต็มที่</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value (ใกล้ราคาปัจจุบันมาก)</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value) — ใกล้จุดต่ำสุดรอบปี $49.05</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">อิง FV ที่ยังไม่ยืนยัน</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">อิง FV ที่ยังไม่ยืนยัน</div></div>
         <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
@@ -263,10 +251,10 @@
           <div class="tgt">{{rd:sc1tgt}}</div>
           <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$7.24</span></li>
-            <li><span>P/E ออก</span><span>6x</span></li>
+            <li><span>EPS ปี 3</span><span>~$4.48</span></li>
+            <li><span>P/E ออก</span><span>9x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}} (ไม่จ่ายปันผล)</span></li>
-            <li><span>สถานการณ์</span><span>Financial Solutions attrition ลากยาว, Clover ไม่ฟื้น, ตลาดคง "value trap" label</span></li>
+            <li><span>สถานการณ์</span><span>รายได้หดต่อเนื่อง margin ลดลงอีก ตลาดยังให้ตัวคูณต่ำเหมือนวันนี้</span></li>
           </ul>
         </div>
       </div>
@@ -276,10 +264,10 @@
           <div class="tgt">{{rd:sc2tgt}}</div>
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$9.22</span></li>
-            <li><span>P/E ออก</span><span>8x</span></li>
+            <li><span>EPS ปี 3</span><span>~$5.70</span></li>
+            <li><span>P/E ออก</span><span>15x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}} (ไม่จ่ายปันผล)</span></li>
-            <li><span>สถานการณ์</span><span>Clover เติบโต mid-single-digit, Financial Solutions ทรงตัว, ตลาดค่อยๆ คืนความเชื่อมั่นให้ CEO ใหม่</span></li>
+            <li><span>สถานการณ์</span><span>รายได้ทรงตัว ลดต้นทุนช่วยหนุน EPS ตลาดคืนตัวคูณบางส่วน</span></li>
           </ul>
         </div>
       </div>
@@ -289,18 +277,17 @@
           <div class="tgt">{{rd:sc3tgt}}</div>
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$10.63</span></li>
-            <li><span>P/E ออก</span><span>10x</span></li>
+            <li><span>EPS ปี 3</span><span>~$6.58</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}} (ไม่จ่ายปันผล)</span></li>
-            <li><span>สถานการณ์</span><span>Turnaround สำเร็จ Clover GPV กลับสู่ 10-15%, Financial Solutions attrition หยุด, multiple re-rate บางส่วน</span></li>
+            <li><span>สถานการณ์</span><span>ฟื้นตัวสำเร็จ ลดต้นทุนได้ตามเป้า ตัวคูณกลับใกล้ระดับก่อนราคาดิ่ง</span></li>
           </ul>
         </div>
       </div>
     </div>
-    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      Fiserv ไม่จ่ายปันผล (เน้น buyback + ลงทุนซ้ำ) ผลตอบแทนทั้งหมดจึงมาจาก price return ล้วนๆ — ช่วงผลตอบแทนกว้างมาก (−17% ถึง +103%)
-      สะท้อนว่าหุ้นนี้อยู่ในจุดเปลี่ยนผ่านสำคัญ (inflection point): หาก execution ของ CEO ใหม่ประสบความสำเร็จ upside มีนัยสำคัญเพราะ
-      multiple ปัจจุบัน (6.2x adjusted P/E) กดต่ำมากเทียบค่าเฉลี่ยประวัติศาสตร์ 32x แต่หากปัญหาเชิงโครงสร้างยังคงอยู่ ก็มีโอกาสขาดทุนเพิ่ม
+      <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Fiserv ไม่จ่ายปันผล ผลตอบแทนจึงมาจาก price return ล้วน ๆ — ฉากใช้ GAAP EPS TTM $5.22 เป็นฐาน และตัวคูณออกเป็นสมมติฐาน
+      (Bear 9x ≈ ระดับที่ตลาดให้ในปัจจุบัน · Base 15x · Bull 20x ซึ่งยังต่ำกว่ามัธยฐานย้อนหลัง 25.6x) — ช่วงผลตอบแทนกว้างมากเพราะหุ้นอยู่ในจุดเปลี่ยนผ่าน
     </p>
   </section>
 
@@ -312,22 +299,21 @@
         <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
         <ul>
           <!-- ✏️ 4–6 ข้อ: เขียน <b>หัวข้อ:</b> รายละเอียด -->
-          <li><b>Clover value-added services เร่งตัว:</b> VAS revenue +18% YoY (Q1'26), เป็น 27% ของ Clover revenue — mix shift ไปสินค้า margin สูงกว่า POS ฮาร์ดแวร์ล้วน</li>
-          <li><b>FCF conversion แข็งแรง:</b> FCF $4.44B (~93% ของ adjusted net income) พิสูจน์ว่าธุรกิจยังสร้างเงินสดได้จริง แม้ GAAP EPS ถูกกดจาก amortization</li>
-          <li><b>Valuation กดต่ำมาก:</b> P/E adjusted ~6.2x เทียบค่าเฉลี่ยประวัติศาสตร์ ~32x — Even หากไม่กลับไปสูงเท่าเดิม การ re-rate บางส่วนให้ upside มาก</li>
-          <li><b>ผู้บริหารใหม่ + Commerce Hub:</b> CEO Takis Georgakopoulos (อดีต Global Head of Payments, JPMorgan) เข้ารับตำแหน่ง มิ.ย. 2569 พร้อม Commerce Hub ที่ประมวลผล volume โต >200% YoY</li>
-          <li><b>Buyback ต่อเนื่อง:</b> บริษัทลดจำนวนหุ้นผ่าน buyback สม่ำเสมอ ช่วยหนุน EPS growth แม้รายได้โตช้า</li>
+          <li><b>FCF ยังแข็งแรง:</b> FCF TTM ~$3.9B (~$7.3/หุ้น) สูงกว่ากำไรสุทธิ GAAP TTM ($2.8B) — ธุรกิจยังสร้างเงินสดได้</li>
+          <li><b>Valuation กดต่ำ:</b> P/E GAAP ~{{rd:pe}}x เทียบมัธยฐานย้อนหลัง 5 ปี 25.6x — หากผลประกอบการนิ่ง การ re-rate บางส่วนให้ upside มาก</li>
+          <li><b>โครงการลดต้นทุน:</b> StockAnalysis รายงาน Project Elevate เป้าลดต้นทุน $500M พร้อมรวมหน่วย Financial และ Merchant เข้าด้วยกัน</li>
+          <li><b>Buyback:</b> หุ้นถัวเฉลี่ยปรับลดลดจาก 672M (FY2021) เหลือ 537M (TTM) ช่วยหนุน EPS ต่อหุ้น</li>
         </ul>
       </div>
       <div class="box risk">
         <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
         <ul>
           <!-- ✏️ 4–6 ข้อ: เขียน <b>หัวข้อ:</b> รายละเอียด -->
-          <li><b>Financial Solutions (core banking) หดตัวต่อเนื่อง:</b> Organic revenue ลด 4% ใน Q4'25 จาก client attrition — เป็นปัญหาเชิงโครงสร้าง ไม่ใช่แค่ปัจจัยชั่วคราว และกระทบต่อเนื่องถึง H1/2569</li>
-          <li><b>ความน่าเชื่อถือของ guidance เสียหาย:</b> บริษัทตัดเป้า adjusted EPS ปี 2568 กลางปีจาก $10.15-10.30 เหลือ $8.50-8.60 — ตลาดยังไม่มั่นใจ management execution</li>
-          <li><b>Clover growth ยังไม่ฟื้นเต็มที่:</b> GPV โต 9-12% ต่ำกว่าเป้าระยะยาว 10-15% และมีผล one-time (fee elimination) บดบังตัวเลขที่แท้จริง</li>
-          <li><b>ความเสี่ยงช่วงเปลี่ยนผ่าน CEO:</b> Georgakopoulos เพิ่งรับตำแหน่งไม่ถึงเดือน — กลยุทธ์ turnaround ยังไม่พิสูจน์ผล อาจมีการปรับโครงสร้าง/ตัดขาดทุนเพิ่มเติม</li>
-          <li><b>การแข่งขันดุเดือด:</b> Clover เผชิญคู่แข่งจาก Square (Block), Toast, Stripe ในตลาด SMB POS ที่ margin ถูกกดดัน</li>
+          <li><b>รายได้หดตัว:</b> รายได้ TTM $20.9B (−1.2% YoY) และ Q2/2026 ลดลง ~4% รายไตรมาส (ตามที่ StockAnalysis รายงาน) — ไม่ใช่แค่เรื่องตัวคูณ</li>
+          <li><b>ความน่าเชื่อถือของ guidance:</b> CEO ใหม่ปรับลดไกด์ปี 2026 หลังรับตำแหน่งไม่นาน — ตลาดยังไม่มั่นใจ execution</li>
+          <li><b>ความไม่นิ่งของผู้บริหาร:</b> President ลาออกโดยอ้างข้อสัญญา "good reason" และมีแรงกดดันจาก activist (JANA Partners) — สะท้อนความไม่แน่นอนเชิงบริหาร</li>
+          <li><b>หนี้สูง:</b> หนี้รวม ~$28.0B เทียบเงินสด ~$0.6B (D/E ~1.04) — ลดความยืดหยุ่นหากกระแสเงินสดอ่อนลง</li>
+          <li><b>Margin ลดลง:</b> Operating margin TTM 21.4% จาก 28.7% ใน FY2024 — กำไรลดเร็วกว่ารายได้</li>
         </ul>
       </div>
     </div>
@@ -337,24 +323,23 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>Fiserv: หุ้น Value/Turnaround ที่มี MOS แต่ยังต้องพิสูจน์ execution</h2>
+      <h2>Fiserv: หุ้นที่ถูกตีราคาต่ำมากเทียบประวัติตัวเอง แต่ตัวเลข FV เป็นค่าประมาณที่ยังตรวจสอบไม่ได้</h2>
       <p>
-        Fiserv ร่วงจากจุดสูงสุดกว่า 62% ในรอบปีที่ผ่านมา หลังงบ Q3/2568 เผยปัญหาเชิงโครงสร้าง 2 จุด: (1) Financial Solutions
-        (ธุรกิจ core banking) หดตัวจาก client attrition ต่อเนื่อง และ (2) Clover เติบโตต่ำกว่าเป้าที่ตั้งไว้สูงเกินจริง อย่างไรก็ตาม
-        FCF ยังแข็งแรง (conversion ~93%) และ Clover เริ่มมีสัญญาณฟื้นตัว (VAS +18%, GPV +9-12% ex-gateway) ภายใต้ CEO ใหม่
-        ที่มีประสบการณ์ตรงด้าน payments — ประเมินว่าปัญหา Financial Solutions มีลักษณะ<b>เชิงโครงสร้าง</b> (ต้องใช้เวลาแก้)
-        ขณะที่ Clover ผสมทั้ง<b>ปัจจัยรอบวงจร</b> (fee elimination one-time) และความท้าทายเชิงแข่งขันระยะยาว ที่ P/E adjusted ~6.2x
-        ปัจจุบัน ตลาดดูเหมือนตีราคาสถานการณ์เลวร้ายไปมากแล้ว เปิดช่องให้มี Margin of Safety ในระดับที่น่าสนใจสำหรับนักลงทุนที่รับความเสี่ยง execution ได้
+        ราคาลดลงกว่า 60% จากช่วงสูงสุดของกรอบ 52 สัปดาห์ ขณะที่ StockAnalysis รายงานว่า CEO ใหม่ Takis Georgakopoulos ปรับลดไกด์ปี 2026 หลังรับตำแหน่งไม่นาน
+        และงบ Q2/2026 (6 ส.ค.) รายได้ลดลง ~4% รายไตรมาส แต่ FCF ยังแข็งแรง (TTM ~$3.9B) ราคาปัจจุบันซื้อขายที่ ~{{rd:pe}}x ของ GAAP EPS
+        เทียบมัธยฐานย้อนหลัง 5 ปี 25.6x — ค่ามัธยฐานที่วัดได้ทั้งสองขา (P/E และ P/FCF) ให้มูลค่าสูงกว่าราคามาก
+        แต่ช่วงเวลาที่ใช้วัดคือก่อนราคาดิ่ง และธุรกิจกำลังหดตัว จึงอ่านเป็น "ส่วนต่างที่ตลาดกำลังปฏิเสธ" มากกว่าส่วนเผื่อความปลอดภัยที่เชื่อได้
+        ควรถือค่านี้เป็นประมาณการที่ยังไม่ยืนยัน (เป้าเฉลี่ยนักวิเคราะห์ ~$60 ให้ภาพระมัดระวังกว่ามาก)
       </p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$70 (Hold, 34 นักวิเคราะห์)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$60.44 (Hold, 27 นักวิเคราะห์)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> เหมาะกับนักลงทุนสาย value/contrarian ที่ยอมรับความเสี่ยง execution สูงได้ — ทยอยสะสมต่ำกว่า $54 (ใกล้โซน MOS 20%)
-        และรอติดตามงบ Q2/2569 (ก.ค. 2569) เพื่อยืนยันว่า Financial Solutions attrition เริ่มชะลอตัวจริงตามที่ผู้บริหารส่งสัญญาณ
-        ไม่แนะนำสำหรับนักลงทุนที่ต้องการความชัดเจนสูง หรือไม่สบายใจกับหุ้นที่เพิ่งเปลี่ยน CEO กลางวิกฤต
+        💡 <b>กลยุทธ์:</b> อย่าอ้างอิง FV นี้เป็นจุดซื้อเดี่ยว ๆ — MOS สูงมากเพราะใช้ตัวคูณย้อนหลังก่อนหุ้นถูกลดคุณภาพ
+        ควรรอติดตามงบ Q3/2026 (28 ต.ค. 2569) ว่ารายได้และ FCF หยุดหดตัวหรือไม่ และติดตามผลโครงการลดต้นทุน
+        ไม่เหมาะกับนักลงทุนที่ต้องการความชัดเจนสูง
       </div>
     </div>
   </section>
@@ -364,9 +349,9 @@
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
-    แหล่งข้อมูล: StockAnalysis.com, Yahoo Finance, Fiserv Investor Relations (Q4/FY2025 + Q1 2026 earnings releases), TIKR.com
+    แหล่งข้อมูล: StockAnalysis.com, Yahoo Finance (ตัวเลขงบและราคา ณ 18 ก.ย. 2569)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
