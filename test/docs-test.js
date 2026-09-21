@@ -10,7 +10,7 @@ const ROOT = path.join(__dirname, '..');
 let n = 0, fails = 0;
 const ok = (c, label, detail) => { n++; if (c) return; fails++; console.error(`✗ ${label}${detail ? ' — ' + detail : ''}`); };
 const list = (dir, re) => fs.readdirSync(path.join(ROOT, dir)).filter((f) => re.test(f)).map((f) => `${dir}/${f}`);
-const DOCS = ['CLAUDE.md', 'README.md', ...list('docs', /\.md$/), '.claude/skills/stock-analyzer/SKILL.md', '_template/agent-prompt.md', ...list('.github/workflows', /\.yml$/)];
+const DOCS = ['CLAUDE.md', 'README.md', ...list('docs', /\.md$/), '.claude/skills/stock-analyzer/SKILL.md', '.claude/skills/stock-controller/SKILL.md', '_template/agent-prompt.md', ...list('.github/workflows', /\.yml$/)];
 // docs-test.js เอง exclude — ต้นฉบับของมันมีวลี/แพตเทิร์นต้องห้ามอยู่ตรง ๆ (นิยาม regex ที่ใช้ตรวจ ไม่ใช่ของที่หลุดมาในโค้ดจริง)
 const CODE = [...list('tools', /\.js$/), ...list('test', /\.js$/)].filter((f) => f !== 'test/docs-test.js');
 
