@@ -8,19 +8,19 @@
 <meta name="ai-model" content="Claude Sonnet 5">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"FDS","currency":"USD","price":283.83,"fairValue":278.07,"mos":-2.1,"upside":-2,"pe":18.7,"dividendYield":1.63,"roe":27.03}
+{"symbol":"FDS","currency":"USD","price":283.83,"fairValue":381.34,"mos":25.6,"upside":34.4,"pe":18.7,"dividendYield":1.63,"roe":27.03}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 278.07,
+  "fv": 381.34,
   "values": {
     "px": 283.83,
     "priceDate": "2026-09-18",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
     "fvLow": 278.07,
-    "fvHigh": 288.61,
+    "fvHigh": 484.6,
     "eps": 15.19,
     "shares": 35570000,
     "dps": 4.64,
@@ -75,14 +75,14 @@
       ["ก.ย.26", 283.83]
     ],
     "min": 200,
-    "max": 325,
-    "grid": [225, 250, 275, 300],
+    "max": 400,
+    "grid": [250, 300, 350],
     "currency": "$",
     "highlight": [4, 10]
   },
   "gauge": {
-    "min": 180,
-    "max": 316,
+    "min": 240,
+    "max": 520,
     "fairLabelTop": true
   }
 }
@@ -113,8 +113,8 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ $185.00 – $370.98<br>
-        ที่มา: Yahoo Finance, StockAnalysis.com (10 ก.ย. 2569), MarketBeat/WallStreetZen (7 ส.ค. 2569)
+        กรอบ 52 สัปดาห์ $185.00 – $338.53<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com (18 ก.ย. 2569), MarketBeat/WallStreetZen (7 ส.ค. 2569)
       </div>
     </div>
   </header>
@@ -169,20 +169,20 @@
 
   <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">Conservative FV จาก 2 วิธีหลัก + 1 cross-check</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">FV จาก 2 ตระกูล (P/E มัธยฐานประวัติ + Justified P/BV) — EV/EBITDA เป็นบริบท</div></div>
     <div class="card">
       <!-- ✏️ เลือก ≥2 วิธีให้เหมาะกับหุ้น — gate เช็คคณิตเฉพาะวิธีชื่อ "P/E" (E21) และ "Justified P/BV" (E22) เมื่อมีวิธีนั้น
            ธนาคาร → เน้น P/BV / Residual income   • REIT → DDM / NAV   • หุ้นไม่ปันผล → ตัด DDM ออก ใช้ P/E + DCF/Justified P/BV -->
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) $15.19 × P/E เป้าหมาย ~19x — ต่ำกว่าเฉลี่ย 5 ปี (~30–34x) และต่ำกว่า peers (SPGI ~27.8x, MSCI ~32x) มาก สะท้อนส่วนลด AI-fear ที่ยังไม่คลี่คลายเต็มที่</div></div>
-        <div class="mval">$288.61</div>
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS $15.19 (TTM) × P/E 31.9x — เป็นมัธยฐาน P/E 5 ปีงบ (FY2021–FY2025: 28.9–41.4x) ที่วัดจากราคาเฉลี่ยรายปี ÷ EPS ของปีนั้น ไม่ได้มาจาก P/E ปัจจุบัน (~18.7x) · ตลาดตอนนี้จ่ายต่ำกว่ามัธยฐานมากเพราะกลัว AI disruption จึงเป็นขาที่มองว่า multiple กลับสู่ประวัติ</div></div>
+        <div class="mval">$484.60</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. EV/EBITDA Cross-check</div><div class="mdesc">EV/EBITDA ปัจจุบัน ~9.61x ต่ำกว่ากลุ่ม data/analytics ทั่วไปที่มักซื้อขาย ~11–13x ถ้า re-rate สู่ 11x จะได้ราคาโดยประมาณ ~$286 (เป็น sanity check ไม่ใช่วิธีหลัก)</div></div>
-        <div class="mval">$286.26</div>
+        <div><div class="mname">2. EV/EBITDA (บริบท — ไม่นับใน FV)</div><div class="mdesc">EV/EBITDA ปัจจุบัน ~9.6x ต่ำกว่าช่วง ~11–13x ที่เคยอ้างสำหรับกลุ่ม data/analytics แต่ไม่มีมัธยฐานที่วัดได้และตรวจซ้ำไม่ได้ จึงไม่ใช้เป็นขาของ FV</div></div>
+        <div class="mval">—</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 27.03% − g 5%)/(r 9.5% − g 5%) ≈ 4.90x × BVPS $56.80</div></div>
+        <div><div class="mname">3. Justified P/BV (ROE-g)/(r-g)</div><div class="mdesc">P/BV เหมาะสม = (ROE 27.03% − g 5%)/(r 9.5% − g 5%) ≈ 4.90x × BVPS $56.80</div></div>
         <div class="mval">$278.07</div>
       </div>
       <div class="fv-box">
@@ -191,8 +191,8 @@
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <!-- ✏️ หมายเหตุ: วิธีไหนให้ค่าสูง/ต่ำเพราะอะไร, ทำไม FV กลางจึงสมเหตุสมผล -->
-        ทั้ง 3 วิธีให้ค่าใกล้กันมาก ($278–$289) เพราะฐาน EPS/ROE/BVPS สอดคล้องกัน — เลือกค่า <b>ต่ำสุด (Justified P/BV $278.07)</b> เป็น Fair Value หลักตามหลัก conservative
-        เพื่อไม่ overestimate การ re-rate ของตลาดต่อธุรกิจ subscription data ที่ยังมีความเสี่ยง AI disruption ค้างอยู่ (ดู section 5)
+        FV = เฉลี่ย 2 ตระกูลที่ต่างกัน: P/E ที่ยึดมัธยฐานประวัติ $484.60 กับ Justified P/BV (r 9.5%, g 5% — สมมติฐาน) $278.07 ต่างกัน ~1.7 เท่า (ไม่ถึง 2 เท่า จึงเฉลี่ยได้) ·
+        ขา P/E สมมติว่า multiple กลับสู่ประวัติซึ่งเป็นสมมติฐานที่เสี่ยง เพราะตลาดตอนนี้ตีราคาความเสี่ยง AI disruption — ถ้ามองแค่ขา Justified P/BV อย่างเดียว FV จะอยู่ราว $278 และราคาปัจจุบันจะสูงกว่ามูลค่าเล็กน้อย (ราคาพอดีมูลค่า) จึงต้องอ่านค่า FV นี้อย่างระวัง
       </p>
     </div>
   </section>
@@ -207,15 +207,15 @@
           <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
+          <span style="text-align:center">$266.75<br><small>เป้าเฉลี่ย Analyst</small></span>
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$261.19<br><small>เป้าเฉลี่ย Analyst</small></span>
           <span style="text-align:right">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบันอยู่ต่ำกว่า Fair Value ($278.07) เล็กน้อย และซื้อขายใกล้เป้าเฉลี่ยนักวิเคราะห์ 12 เดือน ($261.19 ตาม StockAnalysis.com จาก 18 analysts ณ 10 ก.ย. 2569 · Yahoo Finance ~$265.56 จาก 16 analysts — ต่ำกว่า ~$292 ในรอบวิเคราะห์ ก.ค. 2569) — เรตติ้งเดือน ส.ค. 2569: Strong Buy 2, Hold 10, Sell 2, Strong Sell 4 (ฉันทามติ "Hold")
+        ราคาปัจจุบัน {{rd:px}} ต่ำกว่า Fair Value {{rd:fv}} แต่สูงกว่าเป้าเฉลี่ยนักวิเคราะห์ 12 เดือน (เป้า $266.75 ตาม StockAnalysis.com และ Yahoo Finance จาก 16 analysts ณ 18 ก.ย. 2569 — เป้าเป็นเพียงบริบท ไม่ใช่ขาของ FV) — เรตติ้งเดือน ส.ค. 2569: Strong Buy 2, Hold 10, Sell 2, Strong Sell 4 (ฉันทามติ "Hold")
         สะท้อนความเห็นแตกแยกเรื่องผลกระทบ AI ต่อโมเดลธุรกิจ subscription data ระยะยาว (กรอบเป้านักวิเคราะห์ $210 – $340)
       </p>
     </div>
@@ -228,7 +228,7 @@
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">MOS ต่ำ — ราคาต่ำกว่ามูลค่าเหมาะสมเพียงเล็กน้อย ส่วนเผื่อความปลอดภัยยังไม่พอ รอจุดซื้อ MOS 20% ก่อนทยอยสะสม</div>
+        <div class="txt">MOS ระดับดี — ราคาต่ำกว่ามูลค่าเหมาะสมเกิน 20% แต่ FV พึ่งขา P/E ที่ยึดมัธยฐานประวัติ (ตลาดตอนนี้จ่ายต่ำกว่ามาก) ต้องอ่านอย่างระวัง ขา Justified P/BV อย่างเดียวให้ MOS ใกล้ศูนย์</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -307,7 +307,7 @@
           <!-- ✏️ 4–6 ข้อ: เขียน <b>หัวข้อ:</b> รายละเอียด -->
           <li><b>Google Cloud / Gemini Enterprise partnership (มิ.ย. 2569):</b> ฝัง AI agent เข้า Workstation โดยตรง — เปลี่ยน narrative จาก "AI แทนที่ FactSet" เป็น "AI เสริม FactSet" คล้ายที่ RELX ทำสำเร็จ</li>
           <li><b>Subscription moat แข็งแรง:</b> ข้อมูลเฉพาะทาง (fundamentals, estimates, ownership) ผูกกับ workflow นักลงทุนสถาบัน switching cost สูง</li>
-          <li><b>Valuation ต่ำกว่าประวัติศาสตร์มาก:</b> P/E ~16.5x เทียบเฉลี่ย 5 ปี ~30–34x และต่ำกว่า SPGI (~28x)/MSCI (~32x) มาก — ส่วนลดเกินจริงเทียบ moat ที่ยังอยู่</li>
+          <li><b>Valuation ต่ำกว่าประวัติศาสตร์มาก:</b> P/E ราว 18–19x เทียบมัธยฐาน 5 ปีงบ ~31.9x และต่ำกว่า SPGI (~28x)/MSCI (~32x) มาก — ส่วนลดเกินจริงเทียบ moat ที่ยังอยู่</li>
           <li><b>ปันผลเพิ่มต่อเนื่อง 25+ ปี:</b> Dividend Aristocrat แสดงวินัยทางการเงินและกระแสเงินสดมั่นคง</li>
           <li><b>Buyback ต่อเนื่อง:</b> ลดจำนวนหุ้นหมุนเวียนหนุน EPS growth เพิ่มเติมจากรายได้</li>
           <li><b>International expansion:</b> ขยายฐานลูกค้านอกสหรัฐฯ (ยุโรป/เอเชีย) เพิ่มโอกาสเติบโตนอกตลาดอิ่มตัว</li>
@@ -332,18 +332,18 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>น่าติดตาม — Value Play ในธุรกิจ Moat แข็งที่ถูก AI-fear กดราคา แต่ MOS ยังไม่พอ</h2>
+      <h2>น่าติดตาม — Value Play ในธุรกิจ Moat แข็งที่ถูก AI-fear กดราคา แต่ FV พึ่งสมมติฐาน multiple กลับประวัติ</h2>
       <p>FactSet เป็นตัวอย่าง classic "AI-fear de-rate" คล้าย RELX/MSCI/SPGI: ราคาผันผวนหนักในรอบปีที่ผ่านมาจากความกลัวว่า LLM จะทำลายธุรกิจ subscription research
       แต่ปัจจัยพื้นฐาน (ROE ~27%, operating margin ~31–35%, ปันผลเพิ่มต่อเนื่อง 25+ ปี, moat จาก switching cost สูง) ยังแข็งแรง และล่าสุดบริษัทเลือกเดินเกม
-      "ผนวก AI เข้าเป็นส่วนหนึ่งของ Workstation" ผ่านพันธมิตร Google Cloud/Gemini แทนที่จะถูก AI แทนที่ — MOS ยังต่ำกว่าเกณฑ์น่าสะสม แต่ valuation
-      ที่ต่ำกว่าเฉลี่ย 5 ปีและต่ำกว่า peers มากเมื่อเทียบ ROE ที่ยังสูง ทำให้เป็นหุ้นที่ควรติดตามใกล้ชิด รอราคาลงมาสู่โซน MOS 20% ก่อนเพิ่มน้ำหนักลงทุน</p>
+      "ผนวก AI เข้าเป็นส่วนหนึ่งของ Workstation" ผ่านพันธมิตร Google Cloud/Gemini แทนที่จะถูก AI แทนที่ — MOS จากขา P/E ประวัติดูสูง แต่ขา Justified P/BV บอกว่าราคาใกล้มูลค่าเหมาะสม
+      จึงควรติดตามใกล้ชิดและทยอยสะสมอย่างระมัดระวัง ไม่ควรเชื่อ FV ตัวเดียวเต็มที่</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#ffd180">~$261.19 (Hold · 18 สำนัก)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#ffd180">~$266.75 (Hold · 16 สำนัก)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ทยอยสะสมช่วง $220–$250 (ใกล้โซน MOS 20%) แบ่งเป็นหลายไม้ ไม่ all-in ที่ราคาเดียว — ติดตามผลจากพันธมิตร Google Cloud/Gemini
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมใกล้โซน MOS 30% ({{rd:mos30}}) ถึง MOS 20% ({{rd:mos20}}) แบ่งเป็นหลายไม้ ไม่ all-in ที่ราคาเดียว — ติดตามผลจากพันธมิตร Google Cloud/Gemini
         และทิศทาง organic revenue growth ในช่วง 2-3 ไตรมาสข้างหน้าเป็นสัญญาณยืนยันว่า AI เป็นตัวเสริมไม่ใช่ตัวทำลายธุรกิจ ก่อนเพิ่มน้ำหนักลงทุน
       </div>
     </div>
@@ -355,7 +355,7 @@
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • แหล่งข้อมูล: Yahoo Finance (finance.yahoo.com/quote/FDS), StockAnalysis.com (stockanalysis.com/stocks/fds), FactSet Investor Relations (investor.factset.com), WallStreetZen (analyst targets), Macrotrends (P/E history)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 11 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
