@@ -9,10 +9,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น PRG (บมจ. พี อาร์ จี คอร์ปอเรชั่น) — Stock Analysis Dashboard</title>
 <!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง (Opus→"Claude Opus 4.8", Sonnet→"Claude Sonnet 4.6") — gate E28 บังคับ -->
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"PRG","currency":"THB","price":11.1,"fairValue":8.88,"mos":-25,"upside":-20,"pe":11.76,"dividendYield":6.8,"roe":6.41}
+{"symbol":"PRG","currency":"THB","price":11,"fairValue":11.61,"mos":5.3,"upside":5.5,"pe":12.79,"dividendYield":6.9,"roe":6.7}
 </script>
 <!--
   report-data: ธีมสี + ข้อมูลกราฟ/gauge ต่อหุ้น (build เอาไปวาด) ดู schema เต็มใน CLAUDE.md ข้อ 9
@@ -22,29 +22,29 @@
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 8.88,
+  "fv": 11.61,
   "values": {
-    "px": 11.1,
-    "priceDate": "2026-09-18",
+    "px": 11,
+    "priceDate": "2026-09-21",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
-    "fvLow": 8.11,
-    "fvHigh": 9.55,
-    "shares": 763000000,
+    "fvLow": 9.55,
+    "fvHigh": 13.67,
+    "shares": 764497914,
     "dps": 0.76,
     "bvps": 12.35,
-    "baseEps": 0.78,
+    "baseEps": 0.86,
     "scenarios": [
       {
-        "tgt": 5.12,
+        "tgt": 6.46,
         "div": 1.6
       },
       {
-        "tgt": 9.8,
+        "tgt": 11.28,
         "div": 2.28
       },
       {
-        "tgt": 12.77,
+        "tgt": 17.22,
         "div": 2.4
       }
     ],
@@ -80,17 +80,17 @@
       ["มิ.ย.26", 9.15],
       ["ก.ค.26", 10.6],
       ["ส.ค.26", 11],
-      ["ก.ย.26", 11.1]
+      ["ก.ย.26", 11]
     ],
     "min": 8,
     "max": 12,
     "grid": [9, 10, 11],
     "currency": "฿",
-    "highlight": [0, 11]
+    "highlight": [0, 10]
   },
   "gauge": {
-    "min": 6,
-    "max": 12.4,
+    "min": 7,
+    "max": 14.5,
     "fairLabelTop": true
   }
 }
@@ -121,7 +121,7 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ ฿7.00 – ฿9.50<br>
+        กรอบ 52 สัปดาห์ ฿8.00 – ฿11.90<br>
         ที่มา: StockAnalysis.com / Yahoo Finance (PRG.BK) / SET (set.or.th)
       </div>
     </div>
@@ -129,25 +129,25 @@
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ FY2025 (FY2568) + TTM ถึง มี.ค. 2569</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ FY2025 (FY2568) + TTM ล่าสุด ณ ก.ย. 2569</div></div>
     <!-- ✏️ ปรับการ์ด metric ให้เหมาะกับหุ้น/เซกเตอร์ได้อิสระ — gate ไม่บังคับชุด metric (เปลี่ยน label / สลับ / เพิ่ม-ลดการ์ดได้)
          • คงป้าย "P/E (TTM)", "P/BV", "เงินปันผล", "ROE" ไว้ถ้าหุ้นมีจริง → W10 cross-check กับ stock-meta · ไม่มี (ขาดทุน/ไม่ปันผล) = ตัดการ์ดออก + ตั้ง stock-meta เป็น null
          • ธนาคาร → NIM / NPL / CASA / Loan growth / Cost-to-income   • REIT/กองอสังหา → Occupancy / DPU / NAV / Gearing   • ประกัน → Combined ratio / EV
          • หุ้นเติบโต-ขาดทุน → Revenue growth / Gross margin / FCF / Cash runway (ตัด P/E ออก) -->
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">฿8,469 ล้าน</div><div class="d">~763 ล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~11.76x</div><div class="d">SET 11.71x / Investing 11.76x</div></div>
-      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~10–14x</div><div class="d">แกว่งตามวัฏจักรราคาข้าว-กำไร</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">~{{rd:pbv}}x</div><div class="d">ต่ำกว่ามูลค่าทางบัญชี (BVPS ฿12.35)</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿8,410 ล้าน</div><div class="d">~764.5 ล้านหุ้น (StockAnalysis แสดง ~฿8.49 พันล้าน)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~12.79x</div><div class="d">StockAnalysis 12.91x / Yahoo 12.6x (EPS TTM ฿0.86)</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~15.9x</div><div class="d">มัธยฐาน 5 ปี (ช่วง 10.3–21.7x) แกว่งตามกำไร</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~{{rd:pbv}}x</div><div class="d">ต่ำกว่ามูลค่าทางบัญชี (BVPS ฿12.35 ณ สิ้น FY2568)</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿597.3 ล้าน</div><div class="d">▲ +39.2% YoY (จาก ฿429.1 ล้าน)</div></div>
-      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.78</div><div class="d">FY2568 ฿0.78, FY2567 ฿0.60</div></div>
-      <div class="metric"><div class="k">BVPS</div><div class="v">~฿12.35</div><div class="d">ส่วนของผู้ถือหุ้น ~฿9,425 ล้าน</div></div>
-      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~6.4% / 5.1%</div><div class="d">ฟื้นตัวตามกำไรที่โตแรง</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.86</div><div class="d">TTM ฿0.86 · FY2568 ฿0.78 · FY2567 ฿0.60</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿12.35</div><div class="d">ส่วนของผู้ถือหุ้น ~฿9,425 ล้าน (สิ้น FY2568)</div></div>
+      <div class="metric"><div class="k">ROE</div><div class="v pos">~6.7%</div><div class="d">ฟื้นตัวตามกำไร แต่ยังต่ำกว่าต้นทุนทุน ~9.5%</div></div>
 
-      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿2,539 ล้าน</div><div class="d">▲ +13.0% YoY (FY2568 vs FY2567)</div></div>
-      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~10.7%</div><div class="d">FY2567 8.9% → FY2568 10.0% → TTM 10.7%</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">฿0.76/หุ้น/ปี (2 งวด × ฿0.38) Payout ~97%</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿2,524 ล้าน</div><div class="d">TTM +1.7% YoY · FY2568 ฿2,691 ล้าน (+13.0% YoY)</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~11.0%</div><div class="d">FY2567 8.9% → FY2568 10.0% → TTM 11.0% (OpM TTM 1.2%)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">฿0.76/หุ้น/ปี (2 งวด × ฿0.38) Payout ~88% ของ EPS TTM (~97% ของ FY2568)</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">~0.5–0.7</div><div class="d">ผันผวนต่ำกว่าตลาด แต่สภาพคล่องน้อย</div></div>
     </div>
   </section>
@@ -168,30 +168,26 @@
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
         <!-- ✏️ บรรยายการเคลื่อนไหวราคา ~1 ปี: จุดสูง/ต่ำ, เปลี่ยนแปลง %, สาเหตุหลัก -->
-        ราคาช่วง ก.ค. 2568 – ก.ค. 2569 ไต่ขึ้นต่อเนื่องจาก ฿7.70 สู่จุดสูงสุด ฿9.40 ในเดือน ม.ค. 2569 ตามกำไรสุทธิ FY2568 ที่เติบโตแรง 39% YoY และ gross margin ที่ฟื้นตัว
-        ก่อนย่อลงมาแถว ฿8.85–8.90 ช่วง ก.พ.–มี.ค. 2569 (rice cycle + แรงขายรับปันผล) แล้วกลับขึ้นทรงตัวแถว ฿9.15–9.20 ในช่วง 3 เดือนหลัง ปิดที่ ฿9.20 ณ ต้น ก.ค. 2569
-        คิดเป็นผลตอบแทนรอบปี ประมาณ +19.5% (ยังไม่รวมปันผล ~8.3%/ปี)
+        ราคารายเดือนช่วง ต.ค. 2568 – ก.ย. 2569 ไต่จาก ฿8.40 ขึ้นมาแถว ฿9.00–9.40 ในช่วง ธ.ค. 2568 – ก.พ. 2569 ตามกำไรสุทธิ FY2568 ที่เติบโตแรง 39% YoY
+        ย่อลงแถว ฿8.85–8.90 ช่วง มี.ค.–เม.ย. 2569 แล้วทะยานขึ้นแตะ ฿10.60 ใน ก.ค. และ ฿11.00 ใน ส.ค.–ก.ย. 2569 (ใกล้กรอบบน 52 สัปดาห์ ฿11.90) หลังงบล่าสุดที่ออกปลาย ส.ค. 2569
+        คิดเป็นผลตอบแทนรอบปี ประมาณ +31% (ยังไม่รวมปันผล ~{{rd:yield}}/ปี) — ราคาวิ่งนำกำไรค่อนข้างมาก
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 ตระกูล</div></div>
     <div class="card">
       <!-- ✏️ เลือก ≥2 วิธีให้เหมาะกับหุ้น — gate เช็คคณิตเฉพาะวิธีชื่อ "P/E" (E21) และ "Justified P/BV" (E22) เมื่อมีวิธีนั้น
            ธนาคาร → เน้น P/BV / Residual income   • REIT → DDM / NAV   • หุ้นไม่ปันผล → ตัด DDM ออก ใช้ P/E + DCF/Justified P/BV -->
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿0.78 × P/E เป้าหมาย ~11.5x — ใกล้เคียง P/E ปัจจุบันและค่าเฉลี่ยของหุ้นข้าวไทย (gross margin บาง กำไรผันผวนตามราคาข้าว)</div></div>
-        <div class="mval">฿8.97</div>
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS ฿0.86 (TTM) × P/E เป้าหมาย 15.9x — มัธยฐานย้อนหลัง 5 ปีของ PRG เอง (FY2021–FY2025: 16.5x/12.3x/21.7x/15.9x/10.3x ช่วง 10.3–21.7x) ไม่ได้มาจาก P/E ปัจจุบัน · ระวัง OpM TTM เพียง 1.2% กำไรสุทธิพึ่งรายการนอกธุรกิจหลัก</div></div>
+        <div class="mval">฿13.67</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.76 × (1+g); g 0.5%, r 8.5% → payout สูงมาก (~97%) เหลือเงินทุนสะสมโตต่ำ จึงใช้ g เกือบศูนย์</div></div>
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.76 × (1+g) = ฿0.764; g 0.5%, r 8.5% (สมมติฐานของผู้เขียนเอง) → 0.764 ÷ 0.08 · payout สูง (~88–97%) เหลือเงินทุนสะสมโตต่ำ จึงใช้ g เกือบศูนย์ · ตัด Justified P/BV ออกจาก FV รอบนี้ (BVPS งวดล่าสุดตรวจซ้ำไม่ได้ และเป็นตระกูล r,g เดียวกับ DDM)</div></div>
         <div class="mval">฿9.55</div>
-      </div>
-      <div class="vmethod">
-        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 6.4% − g 0.5%)/(r 9.5% − g 0.5%) ≈ 0.66 × BVPS ฿12.35</div></div>
-        <div class="mval">฿8.11</div>
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
@@ -199,9 +195,9 @@
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <!-- ✏️ หมายเหตุ: วิธีไหนให้ค่าสูง/ต่ำเพราะอะไร, ทำไม FV กลางจึงสมเหตุสมผล -->
-        วิธี DDM ให้ค่าสูงสุด (฿9.55) เพราะ dividend yield ปัจจุบันสูงถึง 8.3% เมื่อคิดกลับด้วยต้นทุนทุนที่ต่ำ ส่วน Justified P/BV ให้ค่าต่ำสุด (฿8.11)
-        เพราะ ROE เพียง ~6.4% ต่ำกว่าต้นทุนทุน (~9.5%) สะท้อนธุรกิจสีข้าว-บรรจุภัณฑ์ margin บางไม่ได้สร้างมูลค่าเพิ่มสูงนัก — Fair Value เฉลี่ย ฿8.88 ใกล้เคียงราคาตลาดปัจจุบัน
-        (฿9.20) มาก บ่งชี้ว่าหุ้นซื้อขายที่ระดับเกือบเท่ามูลค่าพื้นฐานแล้วหลังราคาวิ่งขึ้น 19.5% ในรอบปีที่ผ่านมา
+        FV มาจากสองตระกูลอิสระ: P/E (มัธยฐานประวัติ) ให้ค่าสูงสุด {{rd:fvHigh}} ส่วน DDM (ปันผล) ให้ค่าต่ำสุด {{rd:fvLow}} ห่างกันราว 1.4 เท่า (ไม่เกิน 2.0 เท่า จึงเฉลี่ยได้) — Fair Value เฉลี่ย {{rd:fv}} ใกล้เคียงราคาตลาดปัจจุบัน {{rd:px}} มาก
+        ความไวต่อสมมติฐาน: ช่วง P/E ประวัติกว้าง 10.3–21.7x ถ้าใช้ต่ำสุด 10.3x ขา P/E เหลือ ~฿8.86 และ FV เฉลี่ยราว ฿9.21 ซึ่งราคาตลาดจะสูงกว่าราว 19% · ขา P/E เชื่อถือได้จำกัดเพราะกำไรสุทธิ (NetM 26.2%) สูงกว่ากำไรจากธุรกิจหลัก (OpM 1.2%) มาก
+        และ FCF ติดลบ (TTM ประมาณ −฿42 ล้าน) จึงมองว่าราคาที่วิ่งขึ้น ~31% ในรอบปีไปไกลกว่าที่กระแสเงินสดสนับสนุน
       </p>
     </div>
   </section>
@@ -219,13 +215,13 @@
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿9.55<br><small>เป้าเฉลี่ย Analyst</small></span>
+
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        PRG เป็นหุ้นขนาดเล็ก (Market Cap ~฿7,020 ล้าน) ไม่มีนักวิเคราะห์สถาบันรายงาน consensus ราคาเป้าอย่างเป็นทางการ (Settrade Analyst Consensus: 0 สำนัก)
-        จึงใช้กรอบบนของ Fair Value (วิธี DDM ที่ ฿9.55) เป็นตัวแทนเพดานสมเหตุสมผลแทนเป้า analyst ราคาปัจจุบัน ฿9.20 อยู่สูงกว่า Fair Value กลางเล็กน้อยแต่ยังต่ำกว่ากรอบบน
+        PRG เป็นหุ้นขนาดเล็ก (Market Cap ~฿8,410 ล้าน) Yahoo Finance และ StockAnalysis ไม่แสดงเป้าราคานักวิเคราะห์ จึงไม่มีเป้าให้เทียบและไม่ใช้เป็นขาของ Fair Value
+        ราคาปัจจุบัน {{rd:px}} อยู่ต่ำกว่า Fair Value {{rd:fv}} เล็กน้อย และอยู่ภายในกรอบ {{rd:fvLow}}–{{rd:fvHigh}} แต่เหนือโซนซื้อ MOS 20% ที่ {{rd:mos20}}
         สะท้อนว่าราคาวิ่งนำหน้ากำไรไปพอสมควรแล้วหลังผลประกอบการฟื้นตัวแรงในปีที่ผ่านมา
       </p>
     </div>
@@ -238,7 +234,7 @@
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt"><b>ไม่มี Margin of Safety</b> — ราคาปัจจุบัน ฿9.20 อยู่ <b>สูงกว่า</b> Fair Value ฿8.88 ประมาณ 3.6% ใกล้เคียงมูลค่าพื้นฐานมาก แต่ยังไม่ใช่จุดเข้าซื้อที่มี margin ตามหลัก Value Investing</div>
+        <div class="txt"><b>Margin of Safety บาง</b> — ราคาปัจจุบัน {{rd:px}} อยู่ <b>ต่ำกว่า</b> Fair Value {{rd:fv}} เพียงเล็กน้อย ใกล้เคียงมูลค่าพื้นฐานมาก แต่ยังไม่ใช่จุดเข้าซื้อที่มี margin ตามหลัก Value Investing (โซนซื้อ MOS 20% อยู่ที่ {{rd:mos20}})</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -265,8 +261,8 @@
           <div class="tgt">{{rd:sc1tgt}}</div>
           <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿0.57</span></li>
-            <li><span>P/E ออก</span><span>9.0x</span></li>
+            <li><span>EPS ปี 3</span><span>~฿0.63</span></li>
+            <li><span>P/E ออก</span><span>10.3x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>ราคาข้าวตกต่ำ/แข่งขันดุ margin หดตัว ปันผลลดตามกำไร</span></li>
           </ul>
@@ -278,8 +274,8 @@
           <div class="tgt">{{rd:sc2tgt}}</div>
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿0.85</span></li>
-            <li><span>P/E ออก</span><span>11.5x</span></li>
+            <li><span>EPS ปี 3</span><span>~฿0.94</span></li>
+            <li><span>P/E ออก</span><span>12.0x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>ธุรกิจข้าวหลักทรงตัว-โตช้า ธุรกิจใหม่ (อาหาร-โลจิสติกส์) เริ่มมีรายได้บ้าง</span></li>
           </ul>
@@ -291,8 +287,8 @@
           <div class="tgt">{{rd:sc3tgt}}</div>
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿0.98</span></li>
-            <li><span>P/E ออก</span><span>13.0x</span></li>
+            <li><span>EPS ปี 3</span><span>~฿1.08</span></li>
+            <li><span>P/E ออก</span><span>15.9x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>ธุรกิจ diversification (plant-based/อาหารพร้อมทาน/โลจิสติกส์) สร้างรายได้ใหม่ตามแผนเพิ่มยอดขายเท่าตัวใน 5 ปี</span></li>
           </ul>
@@ -300,7 +296,7 @@
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      สมมติฐานอิง EPS ฐาน (TTM) ฿0.78 คูณอัตราเติบโตแต่ละ scenario เป็นเวลา 3 ปี แล้วออกที่ P/E ตามความเชื่อมั่นตลาด บวกปันผลสะสม (ลดตามกำไรใน Bear, คงที่ใกล้เคียงปัจจุบันใน Base/Bull)
+      สมมติฐานอิง EPS ฐาน (TTM) {{rd:baseEps}} คูณอัตราเติบโตแต่ละ scenario เป็นเวลา 3 ปี แล้วออกที่ P/E ที่วัดจากประวัติของ PRG เอง: Bear = ต่ำสุด 10.3x, Base = 12.0x (ระหว่างต่ำสุดกับมัธยฐาน 15.9x เพราะคุณภาพกำไรที่พึ่งรายการนอกธุรกิจหลัก), Bull = มัธยฐาน 15.9x บวกปันผลสะสม (ลดตามกำไรใน Bear, คงที่ใกล้เคียงปัจจุบันใน Base/Bull)
       Bear สะท้อนความเสี่ยงวัฏจักรราคาข้าว/ต้นทุนวัตถุดิบผันผวนที่กดกำไรและปันผลลง ส่วน Bull ต้องอาศัยแผนปรับโครงสร้างธุรกิจใหม่ (ลงทุน 1–2 พันล้านบาทในอาหาร-โลจิสติกส์ เป้าเพิ่มยอดขายเป็น 2 เท่าใน 5 ปี) ที่ยังอยู่ระหว่างดำเนินการและไม่มีสัญญาณผลลัพธ์ชัดเจนในปัจจุบัน
     </p>
   </section>
@@ -314,22 +310,23 @@
         <ul>
           <!-- ✏️ 4–6 ข้อ: เขียน <b>หัวข้อ:</b> รายละเอียด -->
           <li><b>แบรนด์แข็งแกร่ง "มาบุญครอง":</b> เป็นแบรนด์ข้าวสารบรรจุถุงที่คนไทยรู้จักมายาวนาน มีส่วนแบ่งตลาดและช่องทางจัดจำหน่ายทั่วประเทศ</li>
-          <li><b>ปันผลสูงสม่ำเสมอ:</b> yield ~8.3% ที่ราคาปัจจุบัน (จ่าย 2 งวด/ปี งวดละ ฿0.38) นโยบายจ่ายขั้นต่ำ 30% ของกำไรสุทธิ แต่จ่ายจริงสูงถึง ~97%</li>
+          <li><b>ปันผลสูงสม่ำเสมอ:</b> yield ~{{rd:yield}} ที่ราคาปัจจุบัน (จ่าย 2 งวด/ปี งวดละ ฿0.38) นโยบายจ่ายขั้นต่ำ 30% ของกำไรสุทธิ แต่จ่ายจริงสูงถึง ~97%</li>
           <li><b>งบดุลแข็งแรง หนี้ต่ำมาก:</b> Debt/Equity เพียง ~0.04 เท่า สภาพคล่องหมุนเวียนดี ทนทานต่อภาวะวัฏจักรราคาข้าวขาลงได้นาน</li>
           <li><b>ปรับโครงสร้างธุรกิจครั้งใหญ่ในรอบทศวรรษ:</b> ตั้งงบลงทุน 1–2 พันล้านบาท ขยายสู่อาหารพร้อมทาน/plant-based/อาหารสำหรับผู้ป่วย และโลจิสติกส์ เป้าเพิ่มยอดขายรวมเป็น 2 เท่า (~5,000 ล้านบาท) ใน 5 ปี</li>
-          <li><b>กำไรฟื้นตัวแรง:</b> กำไรสุทธิ FY2568 โต 39.2% YoY, รายได้โต 13.0% YoY, gross margin ฟื้นจาก 8.9% เป็น 10.7% (TTM)</li>
+          <li><b>กำไรฟื้นตัวแรง:</b> กำไรสุทธิ FY2568 โต 39.2% YoY, รายได้โต 13.0% YoY, gross margin ฟื้นจาก 8.9% เป็น 11.0% (TTM)</li>
         </ul>
       </div>
       <div class="box risk">
         <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
         <ul>
           <!-- ✏️ 4–6 ข้อ: เขียน <b>หัวข้อ:</b> รายละเอียด -->
-          <li><b>วัฏจักรราคาข้าว/ต้นทุนวัตถุดิบ:</b> ธุรกิจสีข้าวมี gross margin บาง (~10.7%) ผันผวนตามราคาข้าวเปลือก สภาพอากาศ และนโยบายภาครัฐด้านข้าว กระทบกำไรได้มากในปีที่ต้นทุนพุ่ง (เห็นได้จาก margin ที่เคยสูงถึง 18.4% ปี 2565 แล้วร่วงเหลือ 8.9% ปี 2567)</li>
-          <li><b>ROE ต่ำกว่าต้นทุนทุน:</b> ROE ปัจจุบัน ~6.4% ต่ำกว่าอัตราผลตอบแทนที่นักลงทุนควรเรียกร้อง (~9.5%) สะท้อนธุรกิจหลัก (สีข้าว) สร้างมูลค่าเพิ่มได้จำกัด</li>
+          <li><b>วัฏจักรราคาข้าว/ต้นทุนวัตถุดิบ:</b> ธุรกิจสีข้าวมี gross margin บาง (~11.0%) และ OpM TTM เพียง 1.2% ผันผวนตามราคาข้าวเปลือก สภาพอากาศ และนโยบายภาครัฐด้านข้าว กระทบกำไรได้มากในปีที่ต้นทุนพุ่ง (เห็นได้จาก margin ที่เคยสูงถึง 18.4% ปี 2565 แล้วร่วงเหลือ 8.9% ปี 2567)</li>
+          <li><b>ROE ต่ำกว่าต้นทุนทุน:</b> ROE ปัจจุบัน ~6.7% ต่ำกว่าอัตราผลตอบแทนที่นักลงทุนควรเรียกร้อง (~9.5%) สะท้อนธุรกิจหลัก (สีข้าว) สร้างมูลค่าเพิ่มได้จำกัด</li>
           <li><b>ความเสี่ยงธุรกิจใหม่ยังพิสูจน์ไม่ได้:</b> แผนขยายสู่อาหารพร้อมทาน-โลจิสติกส์เป็นการเปลี่ยนทิศทางธุรกิจครั้งใหญ่ ยังไม่มี track record ชัดเจน อาจเผชิญการแข่งขันสูงและใช้เวลานานกว่าจะสร้างกำไรตามเป้า</li>
-          <li><b>Dilution จากใบสำคัญแสดงสิทธิ (Warrant):</b> จำนวนหุ้นเพิ่มจาก ~693 ล้านหุ้น (2566) เป็น ~763 ล้านหุ้น (TTM) จากการใช้สิทธิ PRG-W ต่อเนื่อง อาจกดดัน EPS/DPS ต่อหุ้นในอนาคตหากออกวอร์แรนท์ใหม่เพิ่ม</li>
+          <li><b>Dilution จากใบสำคัญแสดงสิทธิ (Warrant):</b> จำนวนหุ้นเพิ่มจาก ~693 ล้านหุ้น (2566) เป็น ~764 ล้านหุ้น (TTM) จากการใช้สิทธิ PRG-W ต่อเนื่อง อาจกดดัน EPS/DPS ต่อหุ้นในอนาคตหากออกวอร์แรนท์ใหม่เพิ่ม</li>
           <li><b>สภาพคล่องจำกัด:</b> เป็นหุ้นขนาดเล็ก-กลาง มูลค่าซื้อขายรายวันไม่สูงนัก ไม่มีนักวิเคราะห์สถาบันติดตามอย่างเป็นทางการ ราคาผันผวนง่ายจากคำสั่งซื้อขายขนาดเล็ก</li>
-          <li><b>Payout ratio สูงเกินนโยบาย:</b> จ่ายปันผลจริง ~97% ของกำไรสุทธิ (นโยบายขั้นต่ำ 30%) หากกำไรปีใดหดตัว เงินปันผลอาจถูกปรับลดแรงตามไปด้วย</li>
+          <li><b>คุณภาพกำไรและกระแสเงินสด:</b> กำไรสุทธิ TTM (NetM 26.2%) สูงกว่ากำไรจากธุรกิจหลักมาก (OpM 1.2%) และ FCF ติดลบต่อเนื่อง (TTM ประมาณ −฿42 ล้าน) หนี้รวมเพิ่มเป็น ~฿364 ล้าน จาก ~฿175 ล้านสิ้น FY2568 — ยังไม่ได้แยกองค์ประกอบกำไรจากงบ</li>
+          <li><b>Payout ratio สูงเกินนโยบาย:</b> จ่ายปันผลจริง ~88–97% ของกำไรสุทธิ (นโยบายขั้นต่ำ 30%) หากกำไรปีใดหดตัว เงินปันผลอาจถูกปรับลดแรงตามไปด้วย</li>
         </ul>
       </div>
     </div>
@@ -340,17 +337,17 @@
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
       <h2>PRG: หุ้นปันผลสูงธุรกิจข้าว — ราคาใกล้มูลค่าเหมาะสม แทบไม่มี Margin of Safety</h2>
-      <p>PRG (เดิมชื่อ Patum Rice Mill and Granary / ข้าวมาบุญครอง) เป็นผู้ผลิต-จำหน่ายข้าวสารบรรจุถุงรายใหญ่ของไทย งบดุลแข็งแรง หนี้ต่ำมาก และจ่ายปันผลสูงสม่ำเสมอ (~8.3%)
-      กำไรฟื้นตัวแรงในปี 2568 (+39.2% YoY) หนุนราคาหุ้นวิ่งขึ้น 19.5% ในรอบปีที่ผ่านมา ทำให้ราคาปัจจุบัน ฿9.20 ขยับมาใกล้เคียงมูลค่าเหมาะสมที่ประเมินได้ (฿8.88) มากแล้ว
-      แทบไม่เหลือ margin of safety สำหรับนักลงทุนใหม่ ธุรกิจหลักยัง margin บางและผันผวนตามวัฏจักรราคาข้าว ขณะที่แผนปรับโครงสร้างสู่ธุรกิจอาหาร-โลจิสติกส์ใหม่ยังต้องรอพิสูจน์ผลลัพธ์</p>
+      <p>PRG (เดิมชื่อ Patum Rice Mill and Granary / ข้าวมาบุญครอง) เป็นผู้ผลิต-จำหน่ายข้าวสารบรรจุถุงรายใหญ่ของไทย งบดุลแข็งแรง หนี้ต่ำ และจ่ายปันผลสูงสม่ำเสมอ (~{{rd:yield}})
+      กำไรฟื้นตัวแรงในปี 2568 (+39.2% YoY) หนุนราคาหุ้นวิ่งขึ้นราว 31% ในรอบปีที่ผ่านมา ทำให้ราคาปัจจุบัน {{rd:px}} ขยับมาใกล้เคียงมูลค่าเหมาะสมที่ประเมินได้ ({{rd:fv}}) มากแล้ว
+      แทบไม่เหลือ margin of safety สำหรับนักลงทุนใหม่ ธุรกิจหลักยัง margin บาง (OpM TTM 1.2%) กำไรสุทธิพึ่งรายการนอกธุรกิจหลักและ FCF ติดลบ ขณะที่แผนปรับโครงสร้างสู่ธุรกิจอาหาร-โลจิสติกส์ใหม่ยังต้องรอพิสูจน์ผลลัพธ์</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿9.55 (ไม่มี consensus เป็นทางการ)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">ไม่พบเป้าจาก Yahoo/StockAnalysis</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ยังไม่แนะนำไล่ราคาที่ระดับปัจจุบัน — รอสะสมในโซน ฿7.10–7.50 (MOS ~20%) ลงไป หรือรอสัญญาณชัดเจนจากธุรกิจใหม่ (อาหาร-โลจิสติกส์) ก่อนเพิ่มน้ำหนัก
-        ผู้ถือหุ้นเดิมที่เน้นปันผลสูงอาจถือต่อได้เพื่อรับ yield ~8.3% แต่ผู้ซื้อใหม่ควรรอราคาย่อตัวลงให้มี margin of safety มากกว่านี้ หรือติดตามความคืบหน้าแผนขยายธุรกิจก่อนตัดสินใจเพิ่มเติม
+        💡 <b>กลยุทธ์:</b> ยังไม่แนะนำไล่ราคาที่ระดับปัจจุบัน — รอสะสมในโซน {{rd:mos30}}–{{rd:mos20}} (MOS 30%–20%) ลงไป หรือรอสัญญาณชัดเจนจากธุรกิจใหม่ (อาหาร-โลจิสติกส์) และกำไรจากธุรกิจหลักก่อนเพิ่มน้ำหนัก
+        ผู้ถือหุ้นเดิมที่เน้นปันผลสูงอาจถือต่อได้เพื่อรับ yield ~{{rd:yield}} แต่ผู้ซื้อใหม่ควรรอราคาย่อตัวลงให้มี margin of safety มากกว่านี้ หรือติดตามความคืบหน้าแผนขยายธุรกิจก่อนตัดสินใจเพิ่มเติม
       </div>
     </div>
   </section>
@@ -359,10 +356,10 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลจาก StockAnalysis.com, Yahoo Finance (PRG.BK), SET (set.or.th), Investing.com, efin.finance ณ 3–5 ก.ค. 2569
-    หุ้น PRG ไม่มี analyst consensus เป็นทางการ (Settrade: 0 สำนักวิเคราะห์)
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลจาก StockAnalysis.com, Yahoo Finance (PRG.BK), SET (set.or.th), ณ 21 ก.ย. 2569
+    ไม่พบเป้าราคานักวิเคราะห์ (analyst target) ของ PRG ใน Yahoo Finance/StockAnalysis ณ วันที่จัดทำ
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 5 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
