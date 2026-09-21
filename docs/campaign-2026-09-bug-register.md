@@ -22,7 +22,7 @@
 ปิดแล้ว = แก้จบหรือไม่ต้องแก้ · บรรเทา = มีทางเลี่ยงแต่ต้นเหตุยังอยู่ · เปิด = ยังไม่แก้ · เลื่อน = ตัดสินใจไม่แก้ตอนนี้ (เหตุผลในคอลัมน์งาน) · รอเจ้าของ = ต้องการคำตัดสิน
 
 ## งาน W (ข้อเสนอของ advisor)
-W1 patchDerived การ์ด/shares · W2 postcheck↔gate (CE, --as-of) · W3 ฐาน EPS ใน prep · W4 prep note/สกุลเงิน/parser 52wk · W5 gate ฟ้องผิด · W6 ADR/FX ในบล็อกมัธยฐาน · W7 เช็คใหม่ของ gate · W8 apply-edits · W9 เอกสารแหล่งข้อมูลสำรอง · W10 บันทึกอย่างเดียว (แก้แล้วในสคริปต์แคมเปญ) · **W11 กฎ UPDATE-LIGHT/FULL (ต้องแก้ · เจ้าของสั่ง)** · **W1, W9 = ต้องแก้ (advisor วินิจฉัย)** · W2 ยุบ: BUG-002/014 เป็นเรื่องนโยบาย footer พ.ศ./ค.ศ. (รอเจ้าของ) และ BUG-028 เฉพาะแคมเปญ
+W1 ความแม่นตัวตรวจการ์ด P/E + shares (tools/derived-values.js) · W2 postcheck↔gate (CE, --as-of) · W3 ฐาน EPS ใน prep · W4 prep note/สกุลเงิน/parser 52wk · W5 gate ฟ้องผิด · W6 ADR/FX ในบล็อกมัธยฐาน · W7 เช็คใหม่ของ gate · W8 apply-edits · W9 เอกสารแหล่งข้อมูลสำรอง · W10 บันทึกอย่างเดียว (แก้แล้วในสคริปต์แคมเปญ) · **W11 กฎ UPDATE-LIGHT/FULL (ต้องแก้ · เจ้าของสั่ง)** · **W1, W9 = ต้องแก้ (advisor วินิจฉัย)** · W2 ยุบ: BUG-002/014 เป็นเรื่องนโยบาย footer พ.ศ./ค.ศ. (รอเจ้าของ) และ BUG-028 เฉพาะแคมเปญ
 
 ## ทะเบียน
 | รหัส | ประเภท | สรุปปัญหา | หลักฐาน/หุ้น | สถานะ | **คำวินิจฉัย (advisor 22 ก.ย.)** | งาน |
@@ -68,7 +68,7 @@ W1 patchDerived การ์ด/shares · W2 postcheck↔gate (CE, --as-of) · W
 | GAP-009 | โค้ด/gate/tool รีโป | check-reports ไม่จับ "P/E เฉลี่ย ~N ปี" ที่ยาวกว่า EPS จริง (E41 ข้ามป้ายเชิงประวัติ) | AMRZ, GABLE | เปิด | ทำเมื่อพบซ้ำ: ใบแรกหลังแคมเปญที่ ship ด้วย analyst เป็นขา FV / Bear>ราคา / dead-anchor | W7 |
 | GAP-010 | โค้ด/gate/tool รีโป | DCF ที่ย้อนคำนวณจาก input ไม่ได้ (ARM $258 vs ~$40–45) gate ไม่ทำ | ARM ALAB | เลื่อน | ทำเมื่อพบซ้ำ: ใบแรกหลังแคมเปญที่ ship ด้วย analyst เป็นขา FV / Bear>ราคา / dead-anchor | W7 (บางส่วน) |
 | GAP-011 | โค้ด/gate/tool รีโป | median-multiples ไม่ตรวจ regime change (CSGP ปัดมัธยฐาน EV/Sales เพราะมาร์จิ้นเปลี่ยน) | CSGP | เลื่อน | ไม่แก้ — ทำอัตโนมัติไม่ได้ / เป็นงานวิจัย | - |
-| GAP-012 | โค้ด/gate/tool รีโป | patchDerived อ่านการ์ด "P/E FY2025 (วัดได้)" เป็น P/E สด → cron อาจเขียนทับ (ความเสี่ยง cron จริง) | TIDLOR | เปิด | ต้องแก้ตอนนี้ — งาน W1 | W1 |
+| GAP-012 | โค้ด/gate/tool รีโป | patchDerived อ่านการ์ด "P/E FY2025 (วัดได้)" เป็น P/E สด → cron อาจเขียนทับ (ความเสี่ยงแฝง: dry-run 908 = 0 ใบเสี่ยงคืนนี้ · ไฟล์ที่ต้องแก้คือ tools/derived-values.js) | TIDLOR | เปิด | ต้องแก้ตอนนี้ — งาน W1 | W1 |
 | GAP-013 | โค้ด/gate/tool รีโป | --set values.shares ไม่มีผลต่อ Market Cap ที่ heal คำนวณ (24.46→24.70 ค้าง) | TVO | เปิด | ต้องแก้ตอนนี้ — งาน W1 | W1 |
 | PROCESS-001 | prompt/rubric แคมเปญ | rubric ของ auditor (นักบิน) ขัดกับ prompt ของ worker ที่บังคับทิ้งขา analyst/dead anchor | w03 | ปิดแล้ว | ไม่ต้องแก้ (ปิดแล้ว) | W10 |
 | PROCESS-002 | ไม่ใช่บั๊ก (บันทึก) | auditor ของ ALAB รายงานว่า HEAD เป็นรายงาน PANW — ตรวจแล้วไม่จริง (auditor ผิด) | ALAB | ปิดแล้ว | ไม่ต้องแก้ (ปิดแล้ว) | W10 |
