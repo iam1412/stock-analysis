@@ -58,6 +58,7 @@ test/                   # เทสทุกชั้นของ gate (รา�
 
 # ── เอกสาร ──
 CLAUDE.md               # กฎสำหรับ Claude · .claude/skills/stock-analyzer/SKILL.md = ★ ขั้นตอนวิเคราะห์ต่อหุ้น (source of truth)
+                        #   .claude/skills/stock-controller/SKILL.md = กติกา controller ฉบับเต็ม (หลายหุ้น/เวฟ §3 · cron+คิว §9 — CLAUDE.md เหลือแต่สรุป)
 DESIGN.md DEPLOY.md     # ระบบดีไซน์ GUI (ฟอนต์/สี brand-forward/mobile) / คู่มือ deploy
 docs/                   # quality-gate.md · templates.md · counters.md · price-refresh.md · ta-chart.md · orchestration.md
                         #   open-items.md = ทะเบียนของค้าง · decisions.md = ที่มา/หลักฐานของกฎใน CLAUDE.md · superpowers/ = spec/plan/audit
@@ -156,7 +157,7 @@ GitHub Actions ([`update-prices.yml`](.github/workflows/update-prices.yml)) ต�
 node tools/update-prices.js AAPL           # dry-run ตัวเดียว (โชว์ว่าจะเปลี่ยนอะไร ไม่เขียนไฟล์)
 node tools/update-prices.js --write AAPL   # เขียนจริง → ตามด้วย build + preserve-dates + build + verify
 npm run test:prices                        # unit test offline (fixture + mock Yahoo)
-npm run queue -- preflight                 # runbook เคลียร์คิว price-flags (preflight → prep → postcheck → ship)
+npm run queue -- preflight                 # runbook เคลียร์คิว price-flags (preflight → ship --prepatch → prep → postcheck → ship)
 ```
 
 > กลไกเต็ม / กติกา freeze / วิธี debug: [`docs/price-refresh.md`](docs/price-refresh.md)

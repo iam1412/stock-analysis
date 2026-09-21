@@ -1,0 +1,56 @@
+---
+name: stock-controller
+description: กติกา controller ฉบับเต็ม (§3 หลายหุ้น/เวฟ · §9 cron ราคา + คิว price-flags) — ใช้เมื่อสั่งวิเคราะห์หลายตัว/ธีม/เวฟ · เคลียร์คิว price-flags · แตะ cron/update-prices · ตีความ flag หุ้นตาย · controller/session หลักเท่านั้น — worker ห้ามเรียกและห้ามทำตาม (ยึด `_template/agent-prompt.md` + stock-analyzer)
+---
+
+# Stock Controller — กติกา controller ฉบับเต็ม (§3 หลายตัว/เวฟ · §9 cron ราคา + คิว)
+
+> ย้ายมาจาก `CLAUDE.md` §3 และ §9 **ฉบับหลัง cleanup 21 ก.ย. 69** (แตก bullet + หลักฐาน/วันที่วัดจริงย้ายไป `docs/decisions.md` แล้ว) **คำต่อคำ** · ปรับเฉพาะป้ายอ้างอิง 3 จุด: เติม "stock-analyzer" หน้า SKILL ×2 และวงเล็บ `verify:cron` · ต้นฉบับก่อน cleanup (ย่อหน้าเดิมทั้งก้อน) อยู่ `docs/decisions.md` §3.2/§9 — เพื่อไม่ให้ worker แบกกติกาที่ไม่ใช่ของตัวเองทุก turn — CLAUDE.md ถูก inject ให้ทั้ง controller และ worker แยกบทบาทไม่ได้ และ §3/§9 ติดป้าย [controller] = worker ห้ามทำตามอยู่แล้ว
+> **เลขหัวข้อ/เลขข้อ (§3.1–§3.5, §9) คงเดิม** เพราะโค้ด/เอกสารทั้ง repo อ้างถึง "CLAUDE.md §3.x / §9" — ใน CLAUDE.md เหลือเป็นสรุปสั้น (stub) ที่ชี้มาที่นี่ · **CLAUDE.md §3/§9 เป็นสรุปย่อของไฟล์นี้ — ถ้าเห็นว่าสองที่ขัดกัน ให้ถือเป็นบั๊กของ stub แล้วแจ้งเจ้าของให้แก้**
+> ข้อความด้านล่างที่อ้าง §5 (และ § อื่นของ CLAUDE.md ถ้ามี) = หัวข้อของ `CLAUDE.md` (ไม่ได้ย้าย) · หลักฐาน/ที่มา/วันที่วัดจริง → `docs/decisions.md` (เลข § เดียวกัน) · กลไกรายละเอียด → `docs/orchestration.md` · `docs/price-refresh.md`
+
+## 3. [controller] วิเคราะห์หลายตัว / เป็นกลุ่ม (parallel agents)
+
+ใช้เมื่อสั่งหลายตัวหรือธีม · **กลไก courier/analyze-wave/ต้นทุน → `docs/orchestration.md` (กฎอยู่ที่นี่ที่เดียว)** · invariant ที่ห้ามหลุด:
+
+1. **ก่อนเริ่ม (§3.1)**: `git pull --rebase origin main` → อ่านวันที่ footer "ข้อมูล ณ" ของแต่ละใบ (runbook `preflight` ทำให้) · **`reports.json.updated` ใช้ตัดสินความสดไม่ได้** (freshHash ชนกันได้) · สด ≤7 วัน **ไม่ทำซ้ำ** (ธีม→หาตัวแทน · ระบุชื่อ→ข้ามพร้อมแจ้ง) · เกิน 7 วัน = UPDATE · ยังไม่มี = NEW
+2. **โมเดล (§3.2)** — ❌ **Haiku ทุกขั้น** (ผลวัด/วันที่ที่มาของกฎข้อนี้ → `docs/decisions.md` §3.2)
+   - **Sonnet = default ของหุ้นส่วนใหญ่** · **Opus = escalate เฉพาะ "หุ้นยาก"** → ส่ง `model:"opus"` เฉพาะตัวนั้นใน `stocks[]`
+   - **เกณฑ์ "หุ้นยาก" (ชุดเดียว ใช้ทั้ง Opus escalate และ effort high)**: IPO <1 ปี / spinoff / split / cyclical / pre-profit / ราคา cross-source ต่าง >5%
+   - ★★ **บังคับ pin `model` ทุก `analyze-wave`/`Agent` call เสมอ** ("sonnet" หรือ "opus" ตามที่ตั้งใจ) — **ห้ามพึ่ง env var** เพราะ `CLAUDE_CODE_SUBAGENT_MODEL` **ตั้งผ่าน `settings.json` ไม่ได้** (harness กรองตัวแปรนี้ทิ้งเป็นการเฉพาะ ทั้งชั้น project และ local) ⇒ default ที่ไม่ pin **ไม่แน่นอน** · ผิดกติกาเพราะ "ไม่รู้ว่าได้อะไร" (ค่าใช้จ่าย + ป้าย `ai-model` ไม่ตรงแผน) ไม่ใช่เพราะ Opus ต้องห้าม · ทาง `analyze-wave` แน่นอนเพราะ script pin `'sonnet'` เองที่ `analyze-wave.js:20` · ทาง `Agent` tool ไม่แน่นอน
+   - **เช็คก่อนเริ่มเวฟด้วย probe subagent จริง** (spawn ไม่ใส่ `model` แล้วให้ตอบบรรทัด "You are powered by the model named …") — `echo $CLAUDE_CODE_SUBAGENT_MODEL` **ใช้ไม่ได้** มันเห็นแค่ env ของ Bash ไม่ใช่ของ spawner
+   - ป้าย `ai-model` ในรายงานต้องตรงกับโมเดลที่รันจริง → controller spot-check ทุกใบ
+   - หุ้นยาก → worker effort **high** + ปรึกษา `advisor` **ผ่าน courier subagent เท่านั้น** ก่อน spawn แล้วฝังแนวทางลง prompt (**worker เรียกตรง = ห้ามเชิงนโยบาย** ไม่ใช่ "ทำไม่ได้" เพราะ harness ไม่ได้บล็อกให้ · วิธี/เหตุผล `docs/orchestration.md` §2) · courier ล้มเหลว → หยุดถาม user
+   - ตัดสิน publish/skip กำกวม → advisor ก่อน (เรียกตรง · courier เมื่อ context ใหญ่จน unavailable) ยังกำกวม → หยุด ping user
+3. **(โหมดขนาน) spawn (§3.3)**: 1 หุ้น/agent (กันเลขปนข้ามหุ้น — ตัวร้าย #1) · prompt = `_template/agent-prompt.md` + STEP 0 กัน cwd-stray · คุม effort ต่อ worker → workflow **`analyze-wave`**
+   - **★ ข้อห้ามจริงคือ "หลายหุ้นใน 1 run" ไม่ใช่ "หลาย run"** — `stocks[]` ต้องมี **1 ตัวเสมอ** · รันหลาย run ขนานกันได้ (1 หุ้น/run)
+   - **จำนวนที่ขนานเป็นดุลพินิจ ไม่ใช่ค่าตายตัว** — ขนานมาก = เสี่ยง rate limit ทั้งชุด (เคยพังจริง) → ramp ขึ้นทีละขั้น เจอ rate limit ให้หาร N ครึ่ง
+   - **ก่อนขนานต้องทำ 1 อย่าง: verify/push รายแบตช์ ไม่ใช่รายตัว** (verify เป็น gate ทั้งรีโป ไฟล์ worker ที่ยังเขียนไม่เสร็จจะทำ gate ตกและบล็อกตัวที่ดีแล้ว) · สีแบรนด์/price-flags/tags มี lock แล้ว (`tools/lockfile.js`) — worker รัน pick-brand เองได้
+4. **(โหมดทีละตัว) push รายตัว (§3.4)**: worker เสร็จ 1 ตัว → controller ตรวจ → verify + push ทันที (Bash call เดียว §5) ก่อน spawn ตัวถัดไป · จำนวนหุ้นต่อรอบไม่จำกัด · **ห้าม agent push เอง** · ห้าม push ซ้อน session
+5. **โควตา (§3.5)**: ของดีไม่พอโควตา → ลดจำนวนเองได้ ไม่ต้องถาม แต่แจ้งเหตุผล (คุณภาพ > โควตา)
+
+---
+
+## 9. [controller] Price refresh อัตโนมัติ (cron) + คิว
+
+**ตารางเวลา** — GitHub Actions รัน `tools/update-prices.js` ทุกวัน config ตั้ง **21:00 UTC** (= 04:00 น. ไทยวันถัดไป) · **ห้ามขยับ**: เป็นเวลาที่เร็วที่สุดที่ยังหลัง US close ทั้งฤดู EDT/EST จึงเหลือ margin ฝั่ง SET มากที่สุด · skew จริงของ GitHub ไม่คงที่ ⇒ ไม่มี config ใดปลอดภัย 100% → `docs/price-refresh.md` · ที่มาของการย้ายเวลา (open-item #33) → `docs/decisions.md` §9
+
+**cron patch เฉพาะตัวเลขโครงสร้าง** (ราคา · วันที่ราคา · กราฟ `report-data.chart` (data/min/max/grid/highlight) · MOS · `.chg` · verdict class · `#pxIn` · ป้าย gauge `#mCur` — รายการเปิด ไม่ใช่รายการปิด) แล้ว verify + push เอง (ชุดย่อย `verify:cron` — §8 ของ CLAUDE.md) · นอกจากนี้ **ยังแตะ**:
+- ช่องสรุปส่วนต่างจากราคา **ทั้งช่อง** (คลังคำคงที่ `MOS ~ ±X%` ให้ตรงกับ `.big` — `summaryPlan` = healer #11) + `class` ของกล่อง verdict — สองอย่างนี้ derive จาก MOS ล้วน ๆ จึงไม่นับเป็น prose
+- ผลตอบแทนฉาก Bear/Base/Bull ในหมวด 6 + ป้าย "จากจุดเข้า" (`scenarioPlan` — รักษาฐาน "รวมปันผล" และสูตร `%/ปี` ของใบนั้นไว้)
+- ปันผล % ในการ์ด + `stock-meta.dividendYield` + P/BV (`yieldPlan`/`pbvPlan` — ตัวหาร DPS/BVPS ที่บรรทัด `.d` พิมพ์เอง · W19/W20 (= error))
+- P/E ที่โชว์ในการ์ด + `stock-meta.pe` + % ในการ์ดราคาเป้า + Market Cap + P/S (`patchDerived` — ตัวตั้งคือราคาที่เพิ่ง patch ตัวหาร/ตัวลบคือ EPS/ราคาเป้าที่รายงานพิมพ์เอง จึงไม่มีอะไรให้ cron เดา · E41/E42/E43 บังคับ · P/S อ้างข้ามการ์ด = W16 (= error))
+
+**cron ไม่แตะ**: prose · EPS · FV · ราคาเป้า (เป็นสมมติฐาน) · วันที่วิเคราะห์ (คงเดิมผ่าน preserve-dates) · คำว่าถูก/แพงใน `.txt` ของกล่อง verdict (เป็น prose) · % ของราคาเป้าใน prose **ยังไม่แตะ** (= W15 เตือนให้คนแก้ หรือ `--heal-derived --prose`) · **ตัดสินไม่ได้ = ไม่แตะ** — `yieldPlan`/`pbvPlan`: DPS รายไตรมาส/พิเศษ/ตามแผน/ผลบวกหลายงวด/ยอดรวม/สกุลอื่น/พิมพ์หลักเดียว/หลุดย่าน 0.6–1.67 · `scenarioPlan`: ฉากที่ตัดสินไม่ได้ ตรงกับที่ W17 เงียบเป๊ะ ๆ
+- W06 ที่ยังยิงหลัง cron = healer กับ checker ไม่สมมาตร **ต้องแก้โค้ด ไม่ใช่แก้ใบ** · ใบที่ worker เพิ่งเขียน (NEW/UPDATE) อาจยิง W06 จนกว่า cron รอบถัดไปจะซ่อม — ไม่ใช่บั๊กโค้ด
+
+**freeze ลง `price-flags.json` เมื่อ**: ต่าง >15% · MOS พลิกเกิน dead-band ±5 จุด (flip ในย่านไม่ส่ง LLM · ช่องสรุป cron เขียนเอง) · สงสัย split (flip ใน ±5 จุด = patch ผ่าน · หลุดขอบ gauge = ขยายขอบเอง) · patch แล้ว gate ตก (`patch-rejected` — กักกันรายไฟล์ ไม่ล้มทั้งวัน)
+
+- **ใบ v2 (884/908 ใบ ณ 21 ก.ย. 69 · open-items #36): cron แก้ `report-data.values` เท่านั้น** — ราคา/วันที่ราคา/MOS/`.chg`/verdict class/`#pxIn`/ป้าย gauge `#mCur` + ช่องที่ผูก **FV** (`.fv-box .r` · `legend` · `#mFair` · การ์ด "จุดซื้อ MOS 20/30%" · `vcell` "มูลค่าเหมาะสม") เป็น `{{rd:…}}` ที่ `build` render ให้ ⇒ cron **ไม่เขียนสำเนาใน HTML เลย** (13 ช่องนี้ต้องเป็น token เสมอ — pseudo-error `V2TOKENS` บังคับ · เกณฑ์ = cron ไม่มีตัวเขียนให้ · `summary` อยู่นอกรายการเพราะมี `summaryPlan` เขียนให้ — open-items #44) · การ์ดที่ derive จากราคา (P/E · Market Cap · P/S · ปันผล % · P/BV · % เป้า · หมวด 6 ที่ยัง literal) ยังผ่าน `patchDerived` เหมือน v1 แต่ทำบน view ที่ render แล้ว (`derivedPassV2` + keep-map — **token ชนะเสมอ** เมื่อชนกัน) · กระจก `stock-meta` เขียนแค่ `price/mos/upside/fairValue` (**`pe`/`dividendYield` เป็นของ pass derived เหมือน v1**) · เขียนกลับไม่ได้/วันที่ไม่ตรง = `patch-failed` เห็นในคิว ไม่เงียบ · 24 ใบที่ยังเป็น v1 เดินทางเดิมทุก byte → `docs/price-refresh.md` หัวข้อ "ใบ v2"
+- **"เคลียร์คิว price-flags"** = runbook `npm run queue -- preflight` → `ship --prepatch` → ต่อหุ้น `prep <SYM>` → spawn worker (pin model) → `postcheck <SYM>` → `ship <SYM>`
+  - `ship --prepatch` push ราคาที่ patch ทันที ให้ tree สะอาดก่อน worker เริ่ม (ไม่งั้น commit รายหุ้นจะพา reports.json ของใบข้างเคียงที่ยังไม่ commit ไปด้วย) · **`mos-sign-flip` = bucket PREPATCH จบตรงนี้ ไม่ spawn worker** · preflight ยกเป็น UPDATE-LIGHT เองเมื่ออายุ >90 วัน/งบออกหลังวิเคราะห์ · รอบที่มีแต่ PREPATCH ปิด issue ที่ `ship --prepatch` เลย
+  - `ship <SYM>` = verify → commit 1 หุ้น → push · ปิด issue เมื่อคิวว่าง · **runbook นี้ (ทั้ง chain ข้างบนรวมกัน)** ทำ pull/triage ครบทุก reason/pre-patch/prep-stock/มัธยฐาน/EPS screen/snapshot/ประกอบ prompt/gate/spotcheck/verify/commit รายหุ้น/push/ปิด issue — และ `preflight`/`prep`/`postcheck` **พิมพ์ขั้นที่ยังต้องทำเอง**ทุกครั้ง
+  - เกณฑ์ triage ต่อ reason = `tools/queue/triage.js` (queue-test บังคับให้ครบทุก reason) + คำอธิบายใน stock-analyzer SKILL STEP 0 · flag ราคาหายเองเมื่อรายงานสด/ไฟล์ถูกลบ · `not-on-exchange` ถอนได้แค่ TradingView เจอ ticker กลับมา · ไฟล์ถูกลบ · หรือ `--alive <SYM>` (`--force` ไม่เคลียร์ — ตั้งใจ)
+- **canary หุ้นตาย** — Yahoo ไม่ 404 เวลาหุ้นถูกเพิกถอน มัน serve ราคาค้าง ⇒ drift 0% ⇒ cron จับไม่ได้ · ปิดจุดบอดด้วย flag `not-on-exchange` แบบ **2 ชั้น**: quote ค้าง ≥3 session (pre-filter รายวัน) **และ** TradingView ไม่พบ ticker — **ห้ามใช้ชั้นแรกเดี่ยว ๆ** (`regularMarketTime` ค้างที่ "วันซื้อขายล่าสุด" ⇒ หุ้นสภาพคล่องต่ำโดน false positive) · เสริมด้วย full sweep รายสัปดาห์ `.github/workflows/dead-ticker-canary.yml` · เป็น **ตัวชี้ให้ไปดู ไม่ใช่คำตัดสิน** — ยืนยันแหล่งปฐมภูมิ (SEC Form 25 / ประกาศตลาด) ก่อนลบเสมอ
+- **ตลาดยังเปิด = ข้ามตัวนั้น ไม่ patch ไม่ flag** (`isIntradayQuote`) — ราคากลาง session เป็น intraday ไม่ใช่ราคาปิด · cron ตั้งเวลาไว้หลังตลาดปิดอยู่แล้วจึงไม่กระทบ แต่ **รันมือ/`workflow_dispatch` ตอนเย็นไทย = กลาง session US จะเห็น "ข้ามเพราะตลาดเปิด N"** (ไม่ใช่ของเสีย) · `--force`/`--alive`/`--allow-intraday` ข้าม guard นี้ ⇒ re-analysis ตาม stock-analyzer SKILL ยังประทับราคาได้ตามปกติ · v8 chart ไม่มี `marketState` จริง — ใช้ `currentTradingPeriod` 2 เงื่อนไข → `docs/price-refresh.md`
+- **ticker เปลี่ยนชื่อ** (เช่น BKI→BKIH) → `tools/symbol-map.json` **+ ย้าย key เดิมใน `tags.json` ด้วย `node tools/tag-apply.js --rename <OLD> <NEW>`** (ไม่ทำ = tag เดิมค้างใต้ ticker เก่าที่ไม่มีรายงานแล้ว → corpus check ใน `test/tags-test.js` ฟ้อง) · canary โครงแหล่งข้อมูลรายสัปดาห์ = `.github/workflows/fundamentals-canary.yml` · debug → `docs/price-refresh.md`
