@@ -4,23 +4,23 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น มาสเตอร์ สไตล์ (MASTER) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"MASTER","currency":"THB","price":8.5,"fairValue":10.7,"mos":20.6,"upside":25.9,"pe":12.5,"dividendYield":4.7,"roe":5.75}
+{"symbol":"MASTER","currency":"THB","price":8.6,"fairValue":11.18,"mos":23.1,"upside":30,"pe":12.1,"dividendYield":4.7,"roe":6.32}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 10.7,
+  "fv": 11.18,
   "values": {
-    "px": 8.5,
-    "priceDate": "2026-09-18",
+    "px": 8.6,
+    "priceDate": "2026-09-21",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
-    "fvLow": 10.2,
-    "fvHigh": 11.48,
-    "eps": 0.68,
-    "shares": 301710000,
+    "fvLow": 10.5,
+    "fvHigh": 11.86,
+    "eps": 0.71,
+    "shares": 301711736,
     "dps": 0.4,
     "bvps": 11.44
   },
@@ -50,7 +50,7 @@
       ["มิ.ย.26", 8.6],
       ["ก.ค.26", 9],
       ["ส.ค.26", 8.85],
-      ["ก.ย.26", 8.5]
+      ["ก.ย.26", 8.6]
     ],
     "min": 7,
     "max": 12,
@@ -87,29 +87,29 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ ฿7.15 – ฿15.60<br>
-        ที่มา: Yahoo Finance, StockAnalysis.com, Settrade.com
+        กรอบ 52 สัปดาห์ ฿7.15 – ฿13.50<br>
+        ที่มา: Yahoo Finance (quoteSummary), StockAnalysis.com (quote/สถิติ), StockAnalysis.com (งบ/forecast)
       </div>
     </div>
   </header>
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 · FY2025 (ปีสิ้นสุด ธ.ค. 2568)</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ 21 ก.ย. 2569 · FY2025 (ปีสิ้นสุด ธ.ค. 2568) + TTM</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿2,565 ล้าน</div><div class="d">301.71 ล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM ฿0.68 · ต่ำกว่าค่าเฉลี่ยอุตสาหกรรม</div></div>
-      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~18–22x</div><div class="d">ช่วง 2564–2568 · ปัจจุบันต่ำมาก</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿2,595 ล้าน</div><div class="d">301.71 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM ฿0.71 · ต่ำกว่ามัธยฐานย้อนหลัง 32.5x</div></div>
+      <div class="metric"><div class="k">P/E มัธยฐาน (FY2023–25)</div><div class="v">~32.5x</div><div class="d">ช่วง 24.1–41.2x · 3 ปีที่วัดได้ · ราคาเฉลี่ยงวด ÷ EPS</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ฿11.44 · ต่ำกว่า 1x = ราคา < มูลค่าทางบัญชี</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v neg">฿198 ล้าน</div><div class="d">ลดลง −61% YoY จาก ฿508 ล้าน (FY2024)</div></div>
-      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.68</div><div class="d">FY2025 กำไรตก (FY2024: ฿1.68)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.71</div><div class="d">FY2025: ฿0.66 (FY2024: ฿1.68)</div></div>
       <div class="metric"><div class="k">BVPS</div><div class="v">~฿11.44</div><div class="d">มูลค่าทางบัญชีต่อหุ้น · FY2025</div></div>
-      <div class="metric"><div class="k">ROE / ROA</div><div class="v neu">~5.75% / 4.6%</div><div class="d">ลดลงจาก ~14.5% ปี 2567 ตามกำไรที่หดตัว</div></div>
+      <div class="metric"><div class="k">ROE</div><div class="v neu">~6.3% (TTM)</div><div class="d">ลดลงจาก ~15.7% ปี 2567 ตามกำไรที่หดตัว</div></div>
 
-      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿1,860 ล้าน</div><div class="d">FY2025: ฿1,899 ล้าน (−12% YoY)</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿1,827 ล้าน</div><div class="d">FY2025: ฿1,899 ล้าน (−12% YoY)</div></div>
       <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v pos">54.3%</div><div class="d">ลดลงจาก 60.3% (FY2024) แต่ยังสูงเป็น structural</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">FY2025: ฿0.40/หุ้น · XD มี.ค. 2568</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">฿0.40/หุ้น (StockAnalysis)</div></div>
       <div class="metric"><div class="k">Revenue Growth</div><div class="v neg">−12% YoY</div><div class="d">FY2025 vs FY2024 · เศรษฐกิจชะลอ + แข่งขันรุนแรง</div></div>
     </div>
   </section>
@@ -127,41 +127,36 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ราคา MASTER ในช่วง 1 ปี (ก.ค. 2568 – ก.ค. 2569) ทรงตัวประมาณ ฿8.70 เทียบจุดเริ่มต้น ฿8.75 คิดเป็น −0.6% รอบปี
-        อย่างไรก็ตาม ราคาผ่านความผันผวนสูง โดยดิ่งลงต่ำสุดที่ ฿7.15 ในเดือน ส.ค. 2568 จากความกังวลเรื่องกำไร FY2025 ที่หดตัวหนัก
-        แล้วฟื้นแรงขึ้นแตะ ฿11.00 ใน ต.ค. 2568 หลังมีข่าวการขยายสาขาและมองหาพันธมิตรต่างประเทศ
-        ก่อนจะย่อลงมาเคลื่อนไหวในกรอบ ฿8.20–8.70 ตั้งแต่ปลายปี 2568 ถึงปัจจุบัน
-        ราคาปัจจุบัน ฿8.70 อยู่ต่ำกว่ามูลค่าเหมาะสม ฿10.70 ประมาณ 19%
+        ตามราคาปิดรายเดือนในกราฟ (ต.ค. 2568 – ก.ย. 2569) ราคาเริ่มที่ ฿10.30 ผันผวนแรง
+        ต่ำสุดรายเดือน ฿7.45 ใน ธ.ค. 2568 สูงสุด ฿11.00 ใน ก.พ. 2569 แล้วเคลื่อนไหวราว ฿8.20–9.00 ตั้งแต่ มี.ค. 2569
+        กรอบ 52 สัปดาห์ (ราคาระหว่างวัน) อยู่ที่ ฿7.15–13.50
+        ราคาปัจจุบัน {{rd:px}} อยู่ต่ำกว่ามูลค่าเหมาะสม {{rd:fv}} (MOS ~ {{rd:mos}})
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿0.68 × P/E เป้าหมาย ~15x — อิง P/E ที่เหมาะสมสำหรับ beauty hospital กำลังฟื้นตัว (discount จาก historical ~20x)</div></div>
-        <div class="mval">฿10.20</div>
-      </div>
-      <div class="vmethod">
-        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.40 × (1+g); g 5%, r 9% → FV = 0.42 / (9%−5%) = ฿10.50 — อิงอัตราปันผลที่คงที่และฐานดอกเบี้ยในไทย</div></div>
+        <div><div class="mname">1. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.40 × (1+g); g 5%, r 9% → FV = 0.42 / (9%−5%) = ฿10.50 — อิงอัตราปันผลที่คงที่และฐานดอกเบี้ยในไทย</div></div>
         <div class="mval">฿10.50</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">3. DCF (Free Cash Flow)</div><div class="mdesc">FCF/หุ้น ~฿0.69 × (1+5%) / (WACC 9% − g 3%) = ฿0.72/6% — อิงกระแสเงินสดปัจจุบัน discount ด้วย WACC 9%</div></div>
-        <div class="mval">฿11.48</div>
+        <div><div class="mname">2. DCF (Free Cash Flow)</div><div class="mdesc">FCF TTM ฿222 ล้าน ÷ 301.71 ล้านหุ้น = ฿0.736/หุ้น · โต 3%/ปี 5 ปี → ฿0.758 / 0.781 / 0.804 / 0.828 / 0.853 · r 9% (สมมติฐานของผู้วิเคราะห์) → PV ปี 1–5 = ฿3.11 · TV = 0.853 × 1.025 / (9% − 2.5%) = ฿13.45 → PV ฿8.74 (TV = 74% ของมูลค่า) · รวม ฿11.86/หุ้น</div></div>
+        <div class="mval">฿11.86</div>
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        วิธี P/E ให้ค่าต่ำสุด (฿10.20) เพราะ EPS FY2025 ถูก depress จากค่าใช้จ่ายขยายสาขาและเศรษฐกิจชะลอ
-        วิธี DDM (฿10.50) สะท้อนมูลค่าจากการจ่ายปันผลที่ต่อเนื่อง yield ~4.6%
-        วิธี DCF (฿11.48) ให้ค่าสูงสุดโดยสะท้อนกระแสเงินสดที่ยังเป็นบวก แม้กำไรจะหด
-        FV กลาง ฿10.70 ถือเป็นค่าที่สมเหตุสมผลสำหรับหุ้นที่กำลังผ่านช่วง trough cycle
-        หากกำไรฟื้นกลับสู่ระดับ FY2023-67 (EPS ~฿1.40-1.70) มูลค่าที่แท้จริงอาจสูงถึง ฿20–25 ได้
+        <b>โครงสร้าง FV ปรับใหม่ 21 ก.ย. 2569:</b> ตัดขา P/E เป้าหมาย ~15x (ไม่มีมัธยฐานที่วัดได้รองรับ) และขาเป้านักวิเคราะห์ออก ·
+        DDM (฿10.50) และ DCF (฿11.86) ใช้ r 9% ที่ผู้วิเคราะห์ตั้งเองทั้งคู่ จึงนับเป็นตระกูลสมมติฐานเดียว (single-family) — ค่าต่างกันไม่เกิน 2 เท่าจึงเฉลี่ยได้ ·
+        ความไว: ถ้าใช้เฉพาะ DDM ได้ส่วนต่างจากราคาราว 18.1% ถ้าใช้เฉพาะ DCF ราว 27.5% ·
+        P/E TTM ปัจจุบัน {{rd:pe}}x เทียบมัธยฐานย้อนหลัง 32.5x (FY2023–25, 3 จุด) — ไม่ใช้เป็นขา เพราะราคาเฉลี่ยงวดปี 2566–67 (฿54–57) สูงกว่าราคาปัจจุบันราว 6 เท่า
+        ขณะที่ EPS ตกจาก ฿1.68 เหลือ ฿0.71 · 32.5x × ฿0.71 = ฿23.08 เป็นเพียงกรณีเชิงบริบทหากตลาดกลับมาให้พรีเมียมเดิม ซึ่งยังไม่มีหลักฐานรองรับ
       </p>
     </div>
   </section>
@@ -178,16 +173,16 @@
         <div class="scale">
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿9.73<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:center">฿9.75<br><small>เป้าเฉลี่ย Analyst</small></span>
           <span style="text-align:right">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน ฿8.70 อยู่ในโซน MOS 20% (฿8.56) คือเพิ่งพ้นโซนน่าสนใจมาเล็กน้อย
-        นักวิเคราะห์ประเมิน consensus target ที่฿9.73 (สูงสุด ฿11.00 / ต่ำสุด ฿8.65)
-        หาก EPS ฟื้นตัวในปี 2569-70 ราคาเป้าหมายจากมูลค่าพื้นฐานที่ ฿10.70 ยังมี upside ~23%
-        โซน MOS 30% (฿7.49) ถือเป็น "all-in zone" หากรับความเสี่ยงได้
+        ราคาปัจจุบัน {{rd:px}} อยู่ในโซน MOS 20% (ต่ำกว่า {{rd:mos20}}) แต่ยังไม่ถึงโซน MOS 30% ({{rd:mos30}})
+        เป้าเฉลี่ยนักวิเคราะห์ ฿9.75 (Yahoo n=4 · StockAnalysis: Buy) ใช้เป็นเพียงเครื่องตรวจความสอดคล้อง ไม่ได้เป็นขาของ FV
+        มูลค่าเหมาะสม {{rd:fv}} ให้ upside {{rd:upside}} ถ้าสมมติฐานกระแสเงินสดเป็นจริง ·
+        โซน MOS 30% ถือเป็น "all-in zone" หากรับความเสี่ยงได้
       </p>
     </div>
   </section>
@@ -198,7 +193,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">ราคาพอใช้ — ทยอยสะสมได้ ใกล้โซน MOS 20%</div>
+        <div class="txt">ราคาน่าสนใจ — อยู่ในโซน MOS 20% ทยอยสะสมได้</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -217,15 +212,15 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿8.70 • EPS ฐาน ~฿0.68 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~฿0.71 • ไม่รวมปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿6.20</div>
-          <div class="ret neg">−28.7% (~−10.6%/ปี)</div>
+          <div class="tgt">฿6.10</div>
+          <div class="ret neg">−29.1% (~−10.8%/ปี)</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿0.58</span></li>
+            <li><span>EPS ปี 3</span><span>~฿0.61</span></li>
             <li><span>P/E ออก</span><span>10x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~฿0.90</span></li>
             <li><span>สถานการณ์</span><span>เศรษฐกิจซบ แข่งขันรุนแรง กำไรหดต่อเนื่อง</span></li>
@@ -235,10 +230,10 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +12%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿13.38</div>
-          <div class="ret pos">+68.7% (~+19.1%/ปี)</div>
+          <div class="tgt">฿14.00</div>
+          <div class="ret pos">+62.8% (~+17.6%/ปี)</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿0.96</span></li>
+            <li><span>EPS ปี 3</span><span>~฿1.00</span></li>
             <li><span>P/E ออก</span><span>14x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~฿1.20</span></li>
             <li><span>สถานการณ์</span><span>กำไรฟื้น ขยายสาขา เมกะเทรนด์ความงามหนุน</span></li>
@@ -248,10 +243,10 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +20%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿21.13</div>
-          <div class="ret pos">+143.2% (~+33.9%/ปี)</div>
+          <div class="tgt">฿22.14</div>
+          <div class="ret pos">+157.4% (~+37.0%/ปี)</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿1.17</span></li>
+            <li><span>EPS ปี 3</span><span>~฿1.23</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~฿1.50</span></li>
             <li><span>สถานการณ์</span><span>ขยายสู่อาเซียน กำไรกลับสู่ peak OOH Media บูม</span></li>
@@ -260,10 +255,10 @@
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      ผลตอบแทน Base Case ~19%/ปีสูงเพราะคิดจาก EPS ฐานที่ถูก depress ในปี FY2025
+      ผลตอบแทน Base Case ~17.6%/ปีสูงเพราะคิดจาก EPS ฐานที่ถูก depress (ราคาเป้าเป็นสมมติฐาน ไม่รวมปันผล)
       หาก MASTER ฟื้น EPS กลับสู่ระดับ FY2024 (~฿1.68) P/E 14x จะให้ราคา ~฿23.5 ซึ่งสะท้อน upside ขนาดใหญ่จากกรณีฟื้นตัวจริง
       Bear Case สะท้อนความเสี่ยงหาก MASTER ไม่สามารถดึงรายได้กลับมาได้และยังคงเผชิญแรงกดดัน
-      ปันผล yield ~4.6% ช่วยรองรับ downside ในทุก scenario
+      ปันผล yield {{rd:yield}} ช่วยรองรับ downside ในทุก scenario
     </p>
   </section>
 
@@ -274,12 +269,12 @@
       <div class="box cat">
         <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
         <ul>
-          <li><b>เมกะเทรนด์ความงาม:</b> ตลาดศัลยกรรมความงามไทยและอาเซียนยังขยายตัวต่อเนื่อง คนรุ่นใหม่ใส่ใจรูปลักษณ์มากขึ้น MASTER มีแบรนด์ Masterpiece Hospital ที่แข็งแกร่ง</li>
-          <li><b>ฟื้นตัวจากกำไร trough:</b> FY2025 เชื่อว่าเป็นจุดต่ำสุดของวัฏจักรกำไร บริษัทวางเป้าฟื้น ~12% ในปี 2569 การ compare base ต่ำจะหนุนผลงานในปีต่อๆ ไป</li>
-          <li><b>P/BV ต่ำกว่า 1x:</b> ราคาหุ้นต่ำกว่ามูลค่าทางบัญชี (P/BV 0.76x) สะท้อน margin of safety ด้านสินทรัพย์ที่ชัดเจน</li>
-          <li><b>Dividend yield 4.6%:</b> ปันผลสม่ำเสมอแม้กำไรตก สะท้อน cash generation ที่ดี รองรับ downside ให้ผู้ถือหุ้น</li>
-          <li><b>OOH Media Segment:</b> ธุรกิจ Out-of-Home Media เป็น revenue stream เสริมที่มี asset-light margin ดี ช่วย diversify รายได้</li>
-          <li><b>ขยายสาขา + อาเซียน:</b> แผนเปิดสาขาใหม่ในไทยและสำรวจตลาด CLMV ซึ่งมีกำลังซื้อด้านความงามเพิ่มขึ้น</li>
+          <li><b>เมกะเทรนด์ความงาม:</b> ธุรกิจศัลยกรรมความงามภายใต้แบรนด์ Masterpiece Hospital ได้ประโยชน์หากความต้องการด้านความงามระยะยาวยังเติบโต</li>
+          <li><b>กำไรเริ่มทรงตัว:</b> กำไรสุทธิ TTM ฿215 ล้าน สูงกว่า FY2025 (฿198 ล้าน) และ OpM TTM 14.6% ไม่แย่ไปกว่า FY2025 (14.4%) · ประมาณการ StockAnalysis: EPS FY2026e ฿0.70, FY2027e ฿0.88 · งบไตรมาสถัดไปคาดออก 24 พ.ย. 2569</li>
+          <li><b>P/BV ต่ำกว่า 1x:</b> ราคาหุ้นต่ำกว่ามูลค่าทางบัญชี (P/BV {{rd:pbv}}x) สะท้อน margin of safety ด้านสินทรัพย์</li>
+          <li><b>Dividend yield {{rd:yield}}:</b> ปันผล ฿0.40/หุ้น เทียบ EPS TTM ฿0.71 (payout ~56%) รองรับ downside ให้ผู้ถือหุ้น</li>
+          <li><b>OOH Media Segment:</b> ธุรกิจ Out-of-Home Media เป็น revenue stream เสริมที่ช่วย diversify รายได้</li>
+          <li><b>กระแสเงินสดเป็นบวก:</b> FCF TTM ฿222 ล้าน สูงกว่ากำไรสุทธิ · เงินสด ฿115 ล้าน เทียบหนี้ ฿535 ล้าน D/E 0.15</li>
         </ul>
       </div>
       <div class="box risk">
@@ -290,7 +285,7 @@
           <li><b>เศรษฐกิจไทยชะลอ:</b> ความงามเป็น discretionary spending ลูกค้าลดจ่ายเมื่อเศรษฐกิจแย่ โดยเฉพาะในกลุ่ม middle income</li>
           <li><b>ค่าใช้จ่ายขยายสาขาสูง:</b> การขยายสาขาต้องใช้ capex สูงและมี ramp-up period ที่อาจกดดัน margin ในระยะสั้น</li>
           <li><b>ความเสี่ยงด้านการแพทย์/กฎหมาย:</b> ธุรกิจศัลยกรรมมีความเสี่ยงด้าน medical malpractice และกฎระเบียบ ซึ่งอาจกระทบชื่อเสียงและต้นทุน</li>
-          <li><b>ROE ต่ำ:</b> ROE ที่ 5.75% (ต่ำกว่า cost of equity) สะท้อนว่าบริษัทยังไม่ได้ใช้ทุนได้คุ้มค่า จนกว่ากำไรจะฟื้น</li>
+          <li><b>ROE ต่ำ:</b> ROE TTM ที่ 6.3% (ต่ำกว่า cost of equity) สะท้อนว่าบริษัทยังไม่ได้ใช้ทุนได้คุ้มค่า จนกว่ากำไรจะฟื้น</li>
         </ul>
       </div>
     </div>
@@ -300,21 +295,21 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>MASTER — Recovery Play ใน Beauty Megatrend, MOS ~19%</h2>
+      <h2>MASTER — Recovery Play ใน Beauty Megatrend</h2>
       <p>
         มาสเตอร์ สไตล์ (MASTER) เป็นผู้นำคลินิกศัลยกรรมความงามในไทยภายใต้แบรนด์ Masterpiece Hospital ที่ได้รับประโยชน์จากเมกะเทรนด์ความงามระยะยาว
-        อย่างไรก็ตาม FY2025 เป็นปีที่ยากมาก กำไรหายไปกว่า 61% จากแรงกดดันเศรษฐกิจและการแข่งขัน ทำให้ราคาหุ้นถูกกดลงมาต่ำกว่ามูลค่าทางบัญชี (P/BV 0.76x)
-        ณ ราคา ฿8.70 มูลค่าเหมาะสมที่ ฿10.70 สะท้อน upside ~23% และ MOS ~19% ซึ่งอยู่ในโซน "ทยอยสะสม"
-        หาก thesis ฟื้นตัวเป็นจริง (EPS กลับสู่ ฿1.40+ ภายใน 2-3 ปี) หุ้นมี multi-bagger potential
+        อย่างไรก็ตาม FY2025 เป็นปีที่ยากมาก กำไรหายไปกว่า 61% ทำให้ราคาหุ้นอยู่ต่ำกว่ามูลค่าทางบัญชี (P/BV {{rd:pbv}}x)
+        ณ ราคา {{rd:px}} มูลค่าเหมาะสม {{rd:fv}} (DDM + DCF ตระกูลสมมติฐานเดียว) สะท้อน upside {{rd:upside}} ซึ่งอยู่ในโซน "ทยอยสะสม"
+        หาก thesis ฟื้นตัวเป็นจริง (EPS กลับสู่ ฿1.40+ ภายใน 2-3 ปี) หุ้นมี upside ขนาดใหญ่
         ทว่าความเสี่ยงหลักคือ "ฟื้นช้ากว่าคาด" หรือ "แข่งขันรุนแรงจนกำไรไม่กลับมา"
       </p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿9.73 (HOLD/Buy ผสม)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿9.75 (Buy · n=4)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ทยอยสะสม ใกล้โซน MOS 20% (฿8.56) — หาก EPS ฟื้นตัวและรายได้ปี 2569 กลับมาเติบโต ราคาเป้า Base Case ที่ ฿13.38 (+46%) เป็นไปได้
+        💡 <b>กลยุทธ์:</b> ทยอยสะสม ราคา {{rd:px}} อยู่ในโซน MOS 20% (ต่ำกว่า {{rd:mos20}}) — หาก EPS ฟื้นตัวและรายได้ปี 2569 กลับมาเติบโต ราคาเป้า Base Case ที่ ฿14.00 (+62.8%) เป็นไปได้
         จุดตัดขาดทุนหากกำไร FY2569 ไม่ฟื้นหรือต่ำกว่า FY2025 ต่อเนื่อง
       </div>
     </div>
@@ -325,9 +320,9 @@
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
-    แหล่งข้อมูล: Yahoo Finance (MASTER.BK · ราคา {{rd:priceDate}}), StockAnalysis.com (BKK:MASTER · งบ FY2025 สิ้นสุด ธ.ค. 2568), AiO/Panphol (เงินปันผล XD มี.ค. 2568), Settrade.com (เป้านักวิเคราะห์), LINE Today / The Better (กำไร FY2025 + แนวโน้ม FY2569)
+    แหล่งข้อมูล: Yahoo Finance (MASTER.BK · ราคา {{rd:priceDate}}), StockAnalysis.com (BKK:MASTER · งบ FY2025 สิ้นสุด ธ.ค. 2568 + TTM · forecast · เป้านักวิเคราะห์)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
