@@ -4,23 +4,23 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น Interactive Brokers (IBKR) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"IBKR","currency":"USD","price":90.69,"fairValue":84,"mos":-8,"upside":-7.4,"pe":38.92,"dividendYield":0.39,"roe":23.6}
+{"symbol":"IBKR","currency":"USD","price":90.69,"fairValue":49.69,"mos":-82.5,"upside":-45.2,"pe":35.99,"dividendYield":0.39,"roe":24}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 84,
+  "fv": 49.69,
   "values": {
     "px": 90.69,
     "priceDate": "2026-09-18",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
-    "fvLow": 76.89,
-    "fvHigh": 88,
-    "eps": 2.33,
-    "shares": 433000000,
+    "fvLow": 47.88,
+    "fvHigh": 51.49,
+    "eps": 2.52,
+    "shares": 453078171,
     "dps": 0.35,
     "bvps": 23.6
   },
@@ -52,15 +52,15 @@
       ["ส.ค.26", 97.29],
       ["ก.ย.26", 90.69]
     ],
-    "min": 60,
-    "max": 100,
-    "grid": [70, 80, 90],
+    "min": 40,
+    "max": 120,
+    "grid": [60, 80, 100],
     "currency": "$",
     "highlight": [2, 10]
   },
   "gauge": {
-    "min": 55,
-    "max": 100,
+    "min": 30,
+    "max": 110,
     "fairLabelTop": false
   }
 }
@@ -87,7 +87,7 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ $51.95/$97.84<br>
+        กรอบ 52 สัปดาห์ $58.95/$98.75<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / Interactive Brokers Investor Relations
       </div>
     </div>
@@ -95,21 +95,21 @@
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569 · แหล่ง: StockAnalysis / Yahoo Finance / IBKR IR</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ 21 ก.ย. 2569 · แหล่ง: StockAnalysis / Yahoo Finance / IBKR IR</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">หุ้น ~433M หุ้น (diluted)</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM $2.33 · สูงกว่าค่าเฉลี่ยย้อนหลัง</div></div>
-      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~28–35x</div><div class="d">ช่วง 52 สัปดาห์: P/E ~20–42x</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">หุ้นคงเหลือ ~453M หุ้น (StockAnalysis)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM $2.52 · สูงกว่ามัธยฐาน 5 ปีเกือบเท่าตัว</div></div>
+      <div class="metric"><div class="k">P/E มัธยฐาน ~5 ปี</div><div class="v">~19x</div><div class="d">ช่วง FY2021–FY2025: 14.6–26.0x (ราคาเฉลี่ยปี ÷ EPS ปีนั้น)</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~3.8x</div><div class="d">BVPS ~$23.6 · สะท้อน ROE สูง</div></div>
 
-      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">~$962M</div><div class="d">+28% YoY · pretax margin 74%</div></div>
-      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$2.33</div><div class="d">FY2568: $2.22 · แบบ split-adj (4:1 มิ.ย.2567)</div></div>
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">~$984M</div><div class="d">+30% YoY · TTM $1,126M</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$2.52</div><div class="d">FY2568: $2.22 · แบบ split-adj (4:1 มิ.ย.2567)</div></div>
       <div class="metric"><div class="k">BVPS</div><div class="v">~$23.60</div><div class="d">ทุนต่อหุ้น · zero long-term debt</div></div>
-      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~23.6% / 1.8%</div><div class="d">ROE สูงต่อเนื่อง · ฐานทุนแข็งแกร่ง</div></div>
+      <div class="metric"><div class="k">ROE</div><div class="v pos">~24.0%</div><div class="d">ROE สูงต่อเนื่อง (FY2568 23.5%) · ฐานทุนแข็งแกร่ง</div></div>
 
-      <div class="metric"><div class="k">รายได้ TTM (Net)</div><div class="v neu">~$6.4B</div><div class="d">NII ~57% + Commission ~39% + อื่น</div></div>
-      <div class="metric"><div class="k">Pretax / Net Margin</div><div class="v">~74% / ~70%</div><div class="d">margin สูงระดับ best-in-class โบรกเกอร์</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~0.39%</div><div class="d">$0.35/ปี · $0.35 quarterly (special + regular)</div></div>
+      <div class="metric"><div class="k">รายได้ TTM (Net)</div><div class="v neu">~$6.8B</div><div class="d">+21% YoY (TTM) · FY2568 $6.2B</div></div>
+      <div class="metric"><div class="k">Operating / Net Margin</div><div class="v">~78% / ~16.5%</div><div class="d">Net margin ต่ำเพราะกำไรส่วนหนึ่งเป็นของ non-controlling interest (IBG LLC)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~0.39%</div><div class="d">DPS $0.35/ปี (ตาม vendor) · ไม่ใช่ income stock</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">~0.85</div><div class="d">ต่ำกว่าตลาด · ผันผวนน้อยกว่าโบรกเกอร์ทั่วไป</div></div>
     </div>
   </section>
@@ -127,37 +127,33 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ราคา IBKR ไต่จาก $65.56 (ก.ค. 2568) ขึ้นสู่ $89.82 (มิ.ย. 2569) รวม <b>+37.0% รอบปี</b> ขับเคลื่อนหลักจากการเติบโตของบัญชีลูกค้า +30% YoY และรายได้ดอกเบี้ยสุทธิ (NII) ที่ยังอยู่ในระดับสูง
-        ราคาแตะจุดต่ำ $62.24 (ส.ค. 2568) จากความกังวลแมคโคร จากนั้นฟื้นตัวต่อเนื่องผ่านแนว FV $84 ในเดือน เม.ย. 2569 และเร่งสูงขึ้นถึง $89.82
-        · ปัจจุบัน <b>ราคาสูงกว่า FV $84 อยู่ ~7%</b> · นักวิเคราะห์ 11 รายมีเป้าเฉลี่ย ~$88
-        ที่มาข้อมูล: Yahoo Finance monthly closes (ก.ค. 2568 – มิ.ย. 2569) / Interactive Brokers Investor Relations
+        ราคา IBKR เคลื่อนจาก $70.36 (ต.ค. 2568) มาอยู่ที่ {{rd:px}} ({{rd:priceDate}}) ตามกำไรที่โตต่อเนื่อง (EPS TTM $2.52 เทียบ FY2568 $2.22)
+        จุดต่ำสุดรายเดือนในกราฟคือ $64.31 (ธ.ค. 2568) และจุดสูงสุด $97.29 (ส.ค. 2569) · ทุกเดือนในกราฟปิดสูงกว่ามูลค่าเหมาะสม {{rd:fv}}
+        (ซึ่งยึด P/E มัธยฐาน 5 ปี) · นักวิเคราะห์ 13 รายมีเป้าเฉลี่ยสูงกว่าราคาปัจจุบัน (ดูหมวด 4)
+        ที่มาข้อมูล: Yahoo Finance monthly closes (ต.ค. 2568 – ก.ย. 2569) / Interactive Brokers Investor Relations
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">2 วิธี (ตระกูล P/E เดียว)</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation (TTM)</div><div class="mdesc">EPS (TTM) $2.33 × P/E เป้าหมาย ~33x — P/E สมเหตุสมผลสำหรับโบรกเกอร์เติบโต EPS CAGR ~23% (ต่ำกว่าปัจจุบัน 38x เพราะ rate-normalization risk)</div></div>
-        <div class="mval">$76.89</div>
+        <div><div class="mname">1. P/E Valuation (TTM)</div><div class="mdesc">EPS $2.52 (TTM) × P/E เป้าหมาย 19x — 19x คือมัธยฐาน 5 ปีของตัวเอง (FY2021–FY2025 ช่วง 14.6–26.0x) วัดจากประวัติ ไม่ได้มาจาก P/E ปัจจุบัน</div></div>
+        <div class="mval">$47.88</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. Forward P/E (FY2569E)</div><div class="mdesc">EPS FY2569E $2.62 × P/E เป้าหมาย 33x — อิง consensus estimate EPS +13% YoY ที่ P/E สมเหตุสมผลเดียวกัน</div></div>
-        <div class="mval">$86.46</div>
-      </div>
-      <div class="vmethod">
-        <div><div class="mname">3. DCF (10Y, g=13%, r=9%)</div><div class="mdesc">FCF เติบโต 13%/ปี ช่วงสูง (5 ปี) → 7%/ปี terminal · ส่วนลด 9% · โครงสร้าง asset-light + zero debt ให้ความน่าเชื่อถือ DCF สูง</div></div>
-        <div class="mval">$88.00</div>
+        <div><div class="mname">2. Forward P/E (FY2026E)</div><div class="mdesc">EPS $2.71 (FY2026E) × P/E เป้าหมาย 19x — consensus SA · P/E มัธยฐานเดียวกับวิธี 1 = ตระกูลเดียวกัน นับเป็น 1 เสียง</div></div>
+        <div class="mval">$51.49</div>
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        วิธี P/E (TTM) ให้ค่าต่ำสุด $76.89 เพราะ EPS TTM สะท้อนสภาพดอกเบี้ยสูง ซึ่งอาจไม่ยั่งยืนหาก Fed ลดดอกเบี้ย · Forward P/E และ DCF ให้ค่าสูงขึ้น ($86–88) สะท้อนการเติบโตบัญชี +30%/ปี · FV เฉลี่ย $83.78 ≈ <b>$84</b> (กลม) สอดคล้องกับเป้าเฉลี่ยนักวิเคราะห์ ~$88 · ปัจจุบัน $89.82 > FV $84 (MOS −6.9%) · DDM ตัดออก เพราะ yield เพียง 0.39% ไม่ใช่ income stock
-        ที่มา: StockAnalysis.com, Yahoo Finance, Macrotrends, Interactive Brokers Investor Relations
+        <b>Single-family valuation:</b> ทั้งสองวิธีอยู่ตระกูล P/E เดียวกัน (มัธยฐาน 19x × EPS TTM และ EPS FY2026E) จึงนับเป็นเสียงเดียว · FV เฉลี่ยของสองวิธี = <b>{{rd:fv}}</b> · ปัจจุบัน {{rd:px}} สูงกว่า FV มาก (MOS {{rd:mos}}) · <b>ประมาณการนี้ยังไม่ผ่านการยืนยันด้วยวิธีอื่น</b> — ความไว: แม้ใช้ P/E สูงสุดในช่วง 5 ปี (26.0x) × EPS TTM $2.52 = $65.52 ก็ยังต่ำกว่าราคาตลาด ตลาดจ่ายตัวคูณสูงกว่าทุกปีในประวัติ (re-rate) ⇒ ตีความ MOS ติดลบมากว่า "ราคาอยู่เหนือกรอบตัวคูณย้อนหลัง" ไม่ใช่ราคาเป้าที่จะลงไปถึง FV แน่นอน · ไม่ใช้ DCF เพราะ FCF ของโบรกเกอร์ผันผวนตามยอดเงินลูกค้า (FY2568 $15.7B เทียบ FY2567 $8.7B) ไม่สะท้อนเงินสดที่แจกได้ · เป้านักวิเคราะห์เป็นเพียงบริบท ไม่ใช่ขาของ FV · DDM ตัดออก เพราะ yield เพียง 0.39%
+        ที่มา: StockAnalysis.com, Yahoo Finance, Interactive Brokers Investor Relations (มัธยฐาน P/E คำนวณจากราคาเฉลี่ยปี ÷ EPS ปีนั้น)
       </p>
     </div>
   </section>
@@ -175,12 +171,12 @@
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
-          <span style="text-align:right">$88<br><small>เป้าเฉลี่ย Analyst</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$105.74<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน $89.82 อยู่ <b>สูงกว่า FV $84 ราว 7%</b> (MOS −6.9%) · โซนน่าสนใจสำหรับ value investor เริ่มที่ MOS 20% = $67.20 (ห่างจากปัจจุบัน ~25%) ถึง MOS 30% = $58.80 · เป้าเฉลี่ยนักวิเคราะห์ $88 ใกล้เคียงราคาปัจจุบัน สะท้อนว่า upside จำกัดจากระดับนี้
+        ราคาปัจจุบัน {{rd:px}} อยู่ <b>สูงกว่า FV {{rd:fv}} มาก</b> (MOS {{rd:mos}}) · โซน MOS 20% = {{rd:mos20}} ถึง MOS 30% = {{rd:mos30}} ห่างจากราคาตลาดกว่าครึ่ง เพราะ FV ยึด P/E มัธยฐาน 5 ปี (19x) ขณะที่ตลาดจ่ายราว 36x · เป้าเฉลี่ยนักวิเคราะห์ $105.74 (n=13, สูงกว่าราคา ~16.6%) เป็นบริบทเท่านั้น ไม่ใช่ขาของ FV
       </p>
     </div>
   </section>
@@ -191,7 +187,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">ราคาสูงกว่ามูลค่าเหมาะสม — ยังไม่มี Margin of Safety · รอย่อสู่ $67–$75 เพื่อจุดเข้าที่ดีกว่า</div>
+        <div class="txt">ราคาสูงกว่ามูลค่าเหมาะสมมาก — ไม่มี Margin of Safety ตามกรอบ P/E ย้อนหลัง (ประมาณการยังไม่ยืนยันด้วยวิธีอื่น ดูหมวด 3)</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -210,42 +206,42 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $89.82 • EPS ฐาน ~$2.33 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~$2.52 • ไม่รวมปันผล</div></div>
     <div class="scn">
       <div class="col bear">
-        <div class="top"><span>🐻 Bear</span><span>EPS +8%/ปี</span></div>
+        <div class="top"><span>🐻 Bear</span><span>EPS +10%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$76.44</div>
-          <div class="ret neg">−15%</div>
+          <div class="tgt">$50.25</div>
+          <div class="ret neg">−45%</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$2.94</span></li>
-            <li><span>P/E ออก</span><span>26x</span></li>
+            <li><span>EPS ปี 3</span><span>~$3.35</span></li>
+            <li><span>P/E ออก</span><span>15x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~$1.05</span></li>
             <li><span>สถานการณ์</span><span>Fed ลดดอกเบี้ยเร็ว NII หด · บัญชีโตช้า</span></li>
           </ul>
         </div>
       </div>
       <div class="col base">
-        <div class="top"><span>⚖️ Base</span><span>EPS +13%/ปี</span></div>
+        <div class="top"><span>⚖️ Base</span><span>EPS +18%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$100.80</div>
-          <div class="ret pos">+12%</div>
+          <div class="tgt">$78.66</div>
+          <div class="ret neg">−13%</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$3.36</span></li>
-            <li><span>P/E ออก</span><span>30x</span></li>
+            <li><span>EPS ปี 3</span><span>~$4.14</span></li>
+            <li><span>P/E ออก</span><span>19x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~$1.05</span></li>
             <li><span>สถานการณ์</span><span>บัญชีโต ~20%/ปี · NII ทรงตัว · margin ดี</span></li>
           </ul>
         </div>
       </div>
       <div class="col bull">
-        <div class="top"><span>🚀 Bull</span><span>EPS +16%/ปี</span></div>
+        <div class="top"><span>🚀 Bull</span><span>EPS +20%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$120.12</div>
-          <div class="ret pos">+34%</div>
+          <div class="tgt">$113.10</div>
+          <div class="ret pos">+25%</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$3.64</span></li>
-            <li><span>P/E ออก</span><span>33x</span></li>
+            <li><span>EPS ปี 3</span><span>~$4.35</span></li>
+            <li><span>P/E ออก</span><span>26x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~$1.05</span></li>
             <li><span>สถานการณ์</span><span>บัญชีโต >30%/ปี · ขยายตลาดใหม่ · ดอกเบี้ยคงสูง</span></li>
           </ul>
@@ -253,7 +249,7 @@
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      Base case สะท้อน EPS CAGR ตามประวัติศาสตร์ ~13% + P/E ปรับลงจาก 38x → 30x (rate-normalization) · Bull case ต้องการบัญชีโต >30% ต่อเนื่อง + ดอกเบี้ยยังอยู่สูง · Bear case เกิดจาก Fed ลดดอกเบี้ยเร็ว กระทบ NII ซึ่งเป็น ~57% ของรายได้ + P/E compress · ปันผลรวม 3 ปี ~$1.05 ต่อหุ้น (yield ต่ำ ไม่ใช่ income play) · ผลตอบแทน Base +12% ใน 3 ปี ไม่น่าดึงดูดเทียบกับ P/E 38x ปัจจุบัน
+      Base: EPS +18%/ปี (consensus FY2026E $2.71 และ FY2027E $3.19 = โต ~+22% แล้วชะลอ ~+18%) × P/E ออก 19x = มัธยฐาน 5 ปี · Bull: EPS +20%/ปี × P/E 26x = สูงสุดในช่วง 5 ปี · Bear: EPS +10%/ปี (Fed ลดดอกเบี้ยเร็ว กระทบ NII) × P/E 15x ≈ ต่ำสุดในช่วง 5 ปี (14.6x) · ราคาเป้าเป็นสมมติฐาน · ปันผลรวม 3 ปี ~$1.05 ต่อหุ้นไม่รวมในผลตอบแทน · แม้ Bull case ต้องอาศัย P/E ที่ระดับสูงสุดในประวัติ จึงได้ผลตอบแทนราว +25% ใน 3 ปี
     </p>
   </section>
 
@@ -267,7 +263,7 @@
           <li><b>บัญชีลูกค้าเติบโตเร็ว:</b> บัญชี 3.4M+ เพิ่ม +30% YoY ต่อเนื่อง · ขยายฐานในเอเชีย ยุโรป ลาตินอเมริกา</li>
           <li><b>NII สูงยาวกว่าคาด:</b> หาก Fed คงดอกเบี้ยสูงนาน → NII ยังเป็น driver หลัก ~57% รายได้ · เงินลูกค้าโต</li>
           <li><b>Moat ต้นทุนต่ำ:</b> ค่าคอมมิชชันถูกที่สุดในอุตสาหกรรม + platform ครอบ 150+ ตลาด → ดึง professional/active trader</li>
-          <li><b>Pretax Margin ระดับ World-class:</b> ~74% สูงกว่าคู่แข่งมาก → scale ไปกับรายได้โดยไม่เพิ่ม cost มาก</li>
+          <li><b>Operating Margin ระดับ World-class:</b> ~78% (TTM) สูงกว่าคู่แข่งมาก → scale ไปกับรายได้โดยไม่เพิ่ม cost มาก</li>
           <li><b>ปริมาณเทรดเพิ่ม:</b> ความผันผวนตลาดสูง → commission income เพิ่ม (hedge ให้ NII)</li>
           <li><b>Zero long-term debt + FCF แข็ง:</b> งบดุลสะอาด buyback + special dividend ได้ยืดหยุ่น</li>
         </ul>
@@ -276,7 +272,7 @@
         <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
         <ul>
           <li><b>Rate-cut headwind:</b> NII ~57% รายได้ · Fed ลดดอกเบี้ยเร็ว = กระทบรายได้ฝั่งดอกเบี้ยโดยตรง</li>
-          <li><b>Valuation ตึงตัว P/E 38x:</b> สูงกว่า FV $84 อยู่ ~7% · downside risk สูงหาก EPS growth ชะลอ</li>
+          <li><b>Valuation ตึงตัว:</b> P/E ปัจจุบันสูงกว่ามัธยฐาน 5 ปี (19x) เกือบเท่าตัว · downside risk สูงหาก EPS growth ชะลอ (consensus ชะลอจาก ~+22% เป็น ~+18%)</li>
           <li><b>Dual-class governance:</b> Thomas Peterffy ควบคุมผ่าน IBG LLC · public ถือ economic interest ~15-25% ไม่มีอำนาจโหวต</li>
           <li><b>Zero-commission competition:</b> Robinhood, Schwab, Fidelity ยิง commission ฟรี → กดดัน commission revenue ระยะยาว</li>
           <li><b>ปริมาณเทรดผันผวน:</b> ตลาดสงบ → volume ตก → commission ลด · รายได้ขึ้นกับ market sentiment</li>
@@ -290,15 +286,15 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>IBKR — โบรกเกอร์คุณภาพสูง แต่ราคาสะท้อนไปแล้ว · รอย่อสู่ $67 น่าสนใจกว่า</h2>
-      <p>Interactive Brokers เป็นโบรกเกอร์ออนไลน์คุณภาพสูง: บัญชีลูกค้าโต +30%/ปี, EPS CAGR ~23%, pretax margin 74%, zero debt และ platform ครอบ 150+ ตลาดทั่วโลก อย่างไรก็ตาม ราคา $89.82 (P/E 38x) สะท้อนการเติบโตระยะ 2–3 ปีข้างหน้าไปเรียบร้อยแล้ว MOS ติดลบ −6.9% และนักวิเคราะห์ 11 รายมีเป้าเฉลี่ยเพียง $88 ≈ ราคาปัจจุบัน ชี้ว่า upside จำกัด · ความเสี่ยงหลักคือ rate-cut กระทบ NII และ valuation compress หาก EPS growth ชะลอ · สำหรับนักลงทุนระยะยาวควรรอย่อใกล้ $67–$75 (MOS 10–20%) เพื่อ margin of safety ที่เหมาะสมกว่า</p>
+      <h2>IBKR — โบรกเกอร์คุณภาพสูง แต่ราคาอยู่เหนือกรอบตัวคูณในประวัติ</h2>
+      <p>Interactive Brokers เป็นโบรกเกอร์ออนไลน์คุณภาพสูง: EPS โตจาก $0.81 (FY2021) เป็น $2.22 (FY2025), operating margin ~78% (TTM), zero long-term debt และ platform ครอบ 150+ ตลาดทั่วโลก อย่างไรก็ตาม ราคาตลาดซื้อขายที่ P/E ~36x สูงกว่าทุกปีในช่วง 5 ปี (ช่วง 14.6–26.0x, มัธยฐาน 19x) ทำให้ FV จากตัวคูณย้อนหลัง (ตระกูล P/E เดียว) อยู่ที่ {{rd:fv}} และ MOS {{rd:mos}} — ประมาณการนี้ยังไม่ยืนยันด้วยวิธีอื่น และตลาดอาจยังจ่ายตัวคูณสูงต่อได้ตราบที่กำไรโต ~+18–22%/ปี · นักวิเคราะห์ 13 รายมีเป้าเฉลี่ย $105.74 (สูงกว่าราคา ~16.6%) เป็นบริบทที่ตรงข้ามกับ FV ของเรา · ความเสี่ยงหลักคือ rate-cut กระทบ NII และ de-rating หาก EPS growth ชะลอ</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$88 (Hold/Moderate Buy)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$106 (Buy · n=13)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ปัจจุบัน $89.82 สูงกว่า FV $84 อยู่ ~7% · <b>รอย่อสู่โซน $67–$75</b> (MOS 10–20%) ก่อนสะสม · ถ้าถือแล้ว — คงไว้ได้หาก thesis บัญชีโต +30% ยังอยู่ แต่ระวัง rate-cut กระทบ NII · ผลตอบแทน Base case 3 ปีเพียง +12% จากระดับนี้ ไม่ดึงดูดเทียบ risk
+        💡 <b>กลยุทธ์:</b> ปัจจุบัน {{rd:px}} สูงกว่า FV {{rd:fv}} มาก ({{rd:mos}}) · ไม่มีส่วนเผื่อความปลอดภัยตามกรอบ P/E ย้อนหลัง จึงไม่ใช่จุดเข้าเชิง value · ถ้าถือแล้ว — คงไว้ได้หากกำไรยังโต ~+18%/ปี ตาม consensus แต่ระวัง rate-cut กระทบ NII และการ de-rate · ผลตอบแทน Base case 3 ปีติดลบตามสมมติฐาน P/E 19x (ดูหมวด 6)
       </div>
     </div>
   </section>
@@ -309,7 +305,7 @@
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มาข้อมูล: StockAnalysis.com / Yahoo Finance / Interactive Brokers Investor Relations / Macrotrends (ราคา ณ {{rd:priceDate}})
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 26 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
