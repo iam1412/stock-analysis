@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น ResMed Inc. (RMD) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
 {"symbol":"RMD","currency":"USD","price":224.99,"fairValue":245,"mos":8.2,"upside":8.9,"pe":19.31,"dividendYield":1.07,"roe":25.25}
 </script>
@@ -106,7 +106,7 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ $180.27 / $293.81<br>
+        กรอบ 52 สัปดาห์ $180.26 / $284.87<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / ResMed Investor Relations / Macrotrends
       </div>
     </div>
@@ -146,7 +146,7 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ราคา RMD ร่วงลง −26.3% ในรอบปี (ก.ค. 2568 – มิ.ย. 2569) จากระดับ $272 ลงมา $200 โดยแรงกดดันหลักคือกระแสความกลัว GLP-1 (ยาลดน้ำหนัก) ที่นักลงทุนเกรงจะลดจำนวนผู้ป่วย sleep apnea ระยะยาว ราคาแตะจุดต่ำสุด พ.ค. 2569 ที่ $190.57 ก่อนฟื้นตัวบางส่วน ปัจจุบัน $200.29 ยังต่ำกว่า Fair Value $245 อย่างมีนัยสำคัญ สะท้อน MOS +18.2%
+        ราคา RMD ร่วงลง −26.3% ในรอบปี (ก.ค. 2568 – มิ.ย. 2569) จากระดับ ~$272 ลงมาแถว {{rd:px}} โดยแรงกดดันหลักคือกระแสความกลัว GLP-1 (ยาลดน้ำหนัก) ที่นักลงทุนเกรงจะลดจำนวนผู้ป่วย sleep apnea ระยะยาว ราคาแตะจุดต่ำสุด พ.ค. 2569 ที่ $190.57 ก่อนฟื้นตัวบางส่วน ปัจจุบัน {{rd:px}} ยังต่ำกว่า Fair Value {{rd:fv}} เล็กน้อย สะท้อน MOS {{rd:mos}}
       </p>
     </div>
   </section>
@@ -172,7 +172,7 @@
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ทั้ง 3 วิธีให้ค่าใกล้กันมาก ($238–$251) สะท้อนว่าราคาปัจจุบัน $200 ต่ำกว่ามูลค่าพื้นฐานอย่างชัดเจน วิธี P/E (TTM) ใช้ Multiple 23x ซึ่งอนุรักษ์นิยมกว่าค่าเฉลี่ยประวัติศาสตร์ (~28x) แต่เหมาะสมกับสภาวะตลาดที่ยังกังวล GLP-1 วิธี DCF ยืนยันว่าแม้โตช้าลง 10%/ปี ราคายังต่ำกว่า intrinsic value · DDM ให้ผลตอบแทนต่ำเพราะ yield 1.2% เป็นเพียง floor — ไม่ใช่วิธีหลักสำหรับ growth stock ประเภทนี้
+        ทั้ง 3 วิธีให้ค่าใกล้กันมาก ($238–$251) สะท้อนว่าราคาปัจจุบัน {{rd:px}} ยังต่ำกว่ามูลค่าพื้นฐานอยู่บ้างแต่ส่วนเผื่อความปลอดภัยบางลง วิธี P/E (TTM) ใช้ Multiple 23x ซึ่งอนุรักษ์นิยมกว่าค่าเฉลี่ยประวัติศาสตร์ (~28x) แต่เหมาะสมกับสภาวะตลาดที่ยังกังวล GLP-1 วิธี DCF ยืนยันว่าแม้โตช้าลง 10%/ปี ราคายังต่ำกว่า intrinsic value · DDM ให้ผลตอบแทนต่ำเพราะ yield 1.2% เป็นเพียง floor — ไม่ใช่วิธีหลักสำหรับ growth stock ประเภทนี้
       </p>
     </div>
   </section>
@@ -190,12 +190,12 @@
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">$248<br><small>เป้าเฉลี่ย Analyst</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
-          <span style="text-align:right">$261<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน $200.29 อยู่ในโซน MOS 20% ($196) และต่ำกว่า Fair Value $245 ราว 18% นักวิเคราะห์ 19 ราย ให้เป้าเฉลี่ย $261 (+19%) ราคาอยู่ใกล้ก้นกระดาษแผ่น 52 สัปดาห์ $180.27 ถือว่าเป็นโซนสะสมที่น่าสนใจสำหรับนักลงทุนเน้นคุณภาพ
+        ราคาปัจจุบัน {{rd:px}} อยู่เหนือจุดซื้อ MOS 20% ({{rd:mos20}}) และต่ำกว่า Fair Value {{rd:fv}} เพียงเล็กน้อย (MOS {{rd:mos}}) นักวิเคราะห์ 16 ราย ให้เป้าเฉลี่ย $247.56 (+10%) ราคาอยู่เหนือกรอบล่าง 52 สัปดาห์ $180.26 ราว 25% ยังไม่ใช่โซนสะสมเชิงลึก
       </p>
     </div>
   </section>
@@ -206,7 +206,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">ราคาต่ำกว่า Fair Value — โซนน่าสนใจสะสม · ใกล้จุดซื้อ MOS 20%</div>
+        <div class="txt">ราคาต่ำกว่า Fair Value เล็กน้อย — ส่วนเผื่อความปลอดภัยบาง · รอราคาลงใกล้จุดซื้อ MOS 20%</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -268,7 +268,7 @@
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      แม้ใน Bear Case (+7%/ปี) ยังให้ผลตอบแทน +21% ใน 3 ปี สะท้อนว่าราคาปัจจุบัน $200 มี downside protection ค่อนข้างดี Base Case (+10%/ปี) ซึ่งใกล้เคียงกับ CAGR ประวัติศาสตร์ ให้ผลตอบแทน +52% ปันผลสะสม ~$7.20/3 ปี รวมอยู่ในการคำนวณ (yield ~1.2%/ปี) · ตัวเลขนี้ไม่รวมการ re-rating Multiple กรณีกระแส GLP-1 คลาย
+      ผลตอบแทนแต่ละฉากดูจากตารางด้านบน (คำนวณจากจุดเข้า {{rd:px}}) Base Case ซึ่งใกล้เคียงกับ CAGR ประวัติศาสตร์ ปันผลสะสม ~$7.20/3 ปี รวมอยู่ในการคำนวณ (yield ~1.2%/ปี) · ตัวเลขนี้ไม่รวมการ re-rating Multiple กรณีกระแส GLP-1 คลาย
     </p>
   </section>
 
@@ -306,14 +306,14 @@
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
       <h2>Value Pick — ผู้นำ Sleep Apnea คุณภาพสูง ถูกกดราคาเกินจริง</h2>
-      <p>ResMed เป็นผู้นำตลาด sleep apnea ระดับโลก มีธุรกิจ recurring revenue (หน้ากาก/อุปกรณ์) ที่แข็งแกร่ง ROIC 27% หนี้ต่ำ (D/E 0.13) และ SaaS กำลังเติบโต ราคาร่วง −26% ในรอบปีจากความกลัว GLP-1 ที่ข้อมูลจริงยังไม่สนับสนุน ทำให้ P/E เหลือ 19x (ต่ำกว่าเฉลี่ย 5 ปีที่ ~28x) Fair Value $245 (MOS +18.2%) นักวิเคราะห์ 19 ราย เป้าเฉลี่ย $261 (+19%) เหมาะสำหรับนักลงทุนระยะกลาง-ยาวที่เชื่อว่า GLP-1 ไม่ได้กระทบมากอย่างที่ตลาดกังวล</p>
+      <p>ResMed เป็นผู้นำตลาด sleep apnea ระดับโลก มีธุรกิจ recurring revenue (หน้ากาก/อุปกรณ์) ที่แข็งแกร่ง ROIC 27% หนี้ต่ำ (D/E 0.13) และ SaaS กำลังเติบโต ราคาปรับลงจากระดับสูงเพราะความกลัว GLP-1 ที่ข้อมูลจริงยังไม่สนับสนุน ทำให้ P/E อยู่ราว 21x (ต่ำกว่าเฉลี่ย 5 ปีที่ ~28x) Fair Value {{rd:fv}} (MOS {{rd:mos}}) นักวิเคราะห์ 16 ราย เป้าเฉลี่ย $247.56 (+10%) เหมาะสำหรับนักลงทุนระยะกลาง-ยาวที่เชื่อว่า GLP-1 ไม่ได้กระทบมากอย่างที่ตลาดกังวล</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$261 (Buy)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$248 (Buy)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน $200 ใกล้ MOS 20% ($196) — เหมาะสะสมทยอยซื้อสำหรับนักลงทุนระยะยาว · เพิ่มน้ำหนักถ้าราคาลงสู่ $180–196 (Deep Value) · รอดูผลการศึกษา GLP-1 ต่อ CPAP adherence เพิ่มเติมก่อนตัดสินใจหนัก
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน {{rd:px}} ยังเหนือ MOS 20% ({{rd:mos20}}) — ทยอยซื้อเล็กน้อยได้สำหรับนักลงทุนระยะยาว · เพิ่มน้ำหนักถ้าราคาลงสู่ $180–196 (Deep Value) · รอดูผลการศึกษา GLP-1 ต่อ CPAP adherence เพิ่มเติมก่อนตัดสินใจหนัก
       </div>
     </div>
   </section>
@@ -324,7 +324,7 @@
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มาข้อมูล: StockAnalysis.com / Yahoo Finance / ResMed Investor Relations (Annual Report FY2025 Q4) / Macrotrends
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 26 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
