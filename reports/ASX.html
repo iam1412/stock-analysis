@@ -6,34 +6,34 @@
 <title>วิเคราะห์หุ้น ASE Technology (ASX) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"ASX","currency":"USD","price":41.63,"fairValue":32,"mos":-30.1,"upside":-23.1,"pe":50.2,"dividendYield":0.7,"roe":17}
+{"symbol":"ASX","currency":"USD","price":41.63,"fairValue":10.8,"mos":-285.5,"upside":-74.1,"pe":50.2,"dividendYield":0.7,"roe":17}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 32,
+  "fv": 10.8,
   "values": {
     "px": 41.63,
     "priceDate": "2026-09-18",
     "dateEra": "CE",
     "chgSuffix": "รอบปี",
-    "fvLow": 24,
-    "fvHigh": 40,
+    "fvLow": 8.4,
+    "fvHigh": 13.1,
     "eps": 0.83,
     "shares": 2199000000,
     "dps": 0.3,
-    "baseEps": 1.2,
+    "baseEps": 0.83,
     "scenarios": [
       {
-        "tgt": 21,
+        "tgt": 10.5,
         "div": null
       },
       {
-        "tgt": 42,
+        "tgt": 22.7,
         "div": null
       },
       {
-        "tgt": 57,
+        "tgt": 35.9,
         "div": null
       }
     ],
@@ -71,14 +71,14 @@
       ["ส.ค.26", 36.95],
       ["ก.ย.26", 41.63]
     ],
-    "min": 10,
+    "min": 0,
     "max": 50,
-    "grid": [20, 30, 40],
+    "grid": [10, 20, 30, 40],
     "currency": "$",
     "highlight": [1, 8]
   },
   "gauge": {
-    "min": 20,
+    "min": 5,
     "max": 52,
     "fairLabelTop": "-58px"
   }
@@ -106,7 +106,7 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}} (ราคาปิดล่าสุดที่ชำระแล้ว)<br>
-        ที่มา: StockAnalysis.com / Google Finance / Yahoo Finance
+        ที่มา: StockAnalysis.com / Google Finance / Yahoo Finance (FX: TWD=X 31.85)
       </div>
     </div>
   </header>
@@ -118,14 +118,14 @@
       <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~2.20 พันล้าน ADR (4.40 พันล้านหุ้นสามัญ ÷ 2)</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~50x</div><div class="d">EPS TTM $0.83 <span class="pill r">พรีเมียมสูง</span></div></div>
       <div class="metric"><div class="k">Forward P/E</div><div class="v">~40x</div><div class="d">EPS 2026 คาด ~$1.05 (ประมาณการเดิม ตรวจซ้ำไม่ได้)</div></div>
-      <div class="metric"><div class="k">EPS (TTM, ต่อ ADR)</div><div class="v">$0.83</div><div class="d pos">▲ NT$13.2/หุ้น × 2 ÷ 31.8 (TWD/USD)</div></div>
+      <div class="metric"><div class="k">EPS (TTM, ต่อ ADR)</div><div class="v">$0.83</div><div class="d pos">▲ NT$13.2/หุ้น × 2 ÷ 31.85 (TWD/USD, Yahoo TWD=X)</div></div>
 
-      <div class="metric"><div class="k">รายได้ FY2025</div><div class="v">$20.5B</div><div class="d pos">▲ +8.4% YoY (NT$645B)</div></div>
+      <div class="metric"><div class="k">รายได้ FY2025</div><div class="v">$20.3B</div><div class="d pos">▲ +8.4% YoY (NT$645B)</div></div>
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$1.3B</div><div class="d pos">▲ +25.2% YoY • net margin ~6.3%</div></div>
       <div class="metric"><div class="k">ROE</div><div class="v">~17%</div><div class="d">Gross margin ~19.5% (TTM รวมกลุ่ม)</div></div>
-      <div class="metric"><div class="k">EPS FY2025 (พื้นฐาน)</div><div class="v">$0.56</div><div class="d">NT$8.89/หุ้น (dil.) × 2 ÷ 31.8</div></div>
+      <div class="metric"><div class="k">EPS FY2025 (พื้นฐาน)</div><div class="v">$0.56</div><div class="d">NT$8.89/หุ้น (dil.) × 2 ÷ 31.85</div></div>
 
-      <div class="metric"><div class="k">รายได้ TTM</div><div class="v">$22.4B</div><div class="d pos">▲ +14.5% YoY • ATM โต ~30%</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v">$22.3B</div><div class="d pos">▲ +14.5% YoY • ATM โต ~30%</div></div>
       <div class="metric"><div class="k">รายได้ LEAP 2026 (คาด)</div><div class="v">&gt;$3.5B</div><div class="d pos">▲ ปรับขึ้น ~10% จาก AI demand</div></div>
       <div class="metric"><div class="k">เงินปันผล (Yield)</div><div class="v">~{{rd:yield}}</div><div class="d">$0.30/ADR (TTM) • payout ~36%</div></div>
       <div class="metric"><div class="k">ช่วง 52 สัปดาห์</div><div class="v" style="font-size:18px">$10.93 – $45.52</div><div class="d">หุ้นขึ้น ~3.8 เท่าในรอบปี</div></div>
@@ -157,20 +157,20 @@
     <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">2 วิธี เฉลี่ย • USD/ADR</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation <span class="pill r">ระมัดระวัง</span></div><div class="mdesc">EPS $1.20 (normalized ต่อ ADR) × 19.7x — 19.7x = มัธยฐาน P/E ประวัติ FY2023–25 ของ 3711.TW (15.8x / 19.7x / 21.3x วัดจากราคาเฉลี่ยงวด ÷ EPS dil.) ใช้ช่วง 3 ปีล่าสุดแทนมัธยฐาน 5 ปี (15.8x) เพราะ mix AI packaging เปลี่ยนสเกลธุรกิจ ไม่ใช่ตัวคูณปัจจุบัน (~50x)</div></div>
-        <div class="mval">$24</div>
+        <div><div class="mname">1. P/E Valuation <span class="pill r">ระมัดระวัง</span></div><div class="mdesc">EPS $0.83 (TTM ต่อ ADR = NT$13.2 × 2 ÷ 31.85) × 15.8x — 15.8x = มัธยฐาน P/E 5 ปี FY2021–25 ของ 3711.TW (ช่วง 6.6–21.3x วัดจากราคาเฉลี่ยงวด ÷ EPS dil.) ไม่ใช่ตัวคูณปัจจุบัน (~50x) · เปลี่ยนจากรอบก่อนที่ใช้ EPS normalized $1.20 (ไม่มีแหล่งรองรับ สูงกว่า TTM 45%) และมัธยฐาน 3 ปี 19.7x — ใช้ TTM ที่ตรวจย้อนกลับได้กับงบ + มัธยฐาน 5 ปีที่ controller วัดมา</div></div>
+        <div class="mval">$13.1</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. DCF (2-stage)</div><div class="mdesc">FCF โต ~22% 5 ปีแรกแล้วชะลอ, WACC ~9.5%, Terminal ~3% — ยกมาจากรอบก่อน <b>ตรวจซ้ำไม่ได้</b> (FCF TTM ติดลบ NT$42B จาก capex หนัก) จึงถือเป็นขาที่ยืนยันไม่ได้ ใช้ร่วมกับ P/E ตามโครงเดิม</div></div>
-        <div class="mval">$40</div>
+        <div><div class="mname">2. P/S Valuation</div><div class="mdesc">รายได้ต่อ ADR $9.98 × 0.85x (ยอดขาย TTM NT$711.2B ÷ หุ้น dil. 4,476M = NT$158.9/หุ้น × 2 ÷ 31.85 → ต่อ ADR) — 0.85x = มัธยฐาน P/S 5 ปี FY2021–25 ของ 3711.TW (1.21 / 1.14 / 0.85 / 0.59 / 0.84x = ราคาเฉลี่ยงวดชุดเดียวกับ P/E ÷ รายได้ต่อหุ้น dil.) ไม่ใช่ตัวคูณปัจจุบัน · <b>แทนขา DCF เดิม $40 ที่ถอดออก</b> เพราะ FCF TTM ติดลบ NT$42B (ตารางงบ) ทำ DCF ที่ตรวจซ้ำได้ไม่ได้ และตัวเลข $40 ของรอบก่อนไม่มีตาราง cash flow ยืนยัน</div></div>
+        <div class="mval">$8.4</div>
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        <b>หมายเหตุ:</b> ข้าม DDM/P/BV (ปันผล yield ~0.7% ไม่ใช่ตัวขับมูลค่า) • เป้านักวิเคราะห์ (Yahoo $51, n=1) ถอดออกจากขา FV เหลือเป็นบริบท • ASE เป็น OSAT ที่ได้อานิสงส์ AI packaging
-        แต่เป็นธุรกิจ <b>วัฏจักร margin บาง</b> (gross ~19.5%, net ~8.5% TTM) ต่างจากผู้ออกแบบชิป — P/E ~50x ในปัจจุบันยังสะท้อนความคาดหวัง AI สูงอยู่ • FV นี้ประเมินจาก 2 ขาเท่านั้น (ขา DCF ยืนยันไม่ได้) จึงเป็นประมาณการที่ยังไม่ผ่านการตรวจ
+        <b>หมายเหตุ:</b> ข้าม DDM/P/BV (ปันผล yield ~0.7% ไม่ใช่ตัวขับมูลค่า) และข้าม DCF (FCF ติดลบ) • เป้านักวิเคราะห์ (Yahoo $51, n=1) ถอดออกจากขา FV เหลือเป็นบริบท • อัตราแลกเปลี่ยน 31.85 TWD/USD = Yahoo Finance (TWD=X) ปิด 18 ก.ย. 2026 · อัตราส่วน ADS: 1 ADR = 2 หุ้นสามัญ ยืนยันด้วยราคา ADR ×FX ÷ 2 = ราคา 3711.TW (ADR 41.63 × 31.78 ÷ 2 ≈ NT$661 เทียบปิด NT$663 วันที่ 21 ก.ย.) • ขั้นตอนนี้ FV มาจากตัวคูณมัธยฐานย้อนหลังทั้งสองขา (P/E และ P/S ใช้ราคาเฉลี่ยชุดเดียวกัน แต่ตัวหารคนละอย่าง คือกำไรกับยอดขาย) จึงต่ำกว่าราคามากเพราะ AI re-rating ทำให้ตลาดจ่ายเกินระดับที่เคยเป็น — ส่วนต่างเกิน 40% นี้ <b>ยังไม่มีพยานอิสระ (DCF/รายได้ AI) ยืนยัน</b> ถือเป็นการประมาณเชิงอนุรักษ์ที่ยังไม่ผ่านการตรวจ • ASE เป็น OSAT ที่ได้อานิสงส์ AI packaging
+        แต่เป็นธุรกิจ <b>วัฏจักร margin บาง</b> (gross ~19.5%, net ~8.5% TTM) ต่างจากผู้ออกแบบชิป — P/E ~50x ในปัจจุบันยังสะท้อนความคาดหวัง AI สูงอยู่ • FV นี้ประเมินจาก 2 ขา (P/E และ P/S ตัวคูณมัธยฐาน) จึงเป็นประมาณการที่ยังไม่ผ่านการตรวจ
         จึงใช้กรอบ <b>Value/Margin of Safety</b> ที่อนุรักษ์นิยม • ตัวเลขทุกตัวแปลงเป็น <b>USD ต่อ ADR</b> (1 ADR = 2 หุ้นสามัญ)
       </p>
     </div>
@@ -206,12 +206,12 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt"><b>ไม่มี Margin of Safety</b><br>ราคาปัจจุบัน {{rd:px}} สูงกว่ามูลค่าเหมาะสม {{rd:fv}} → ตามเกณฑ์ value investor ถือว่า <b>แพงกว่ามูลค่า</b> สำหรับธุรกิจ OSAT วัฏจักร (ประมาณการนี้ยังไม่ผ่านการตรวจครบ) ยังไม่ใช่จุดซื้อที่ปลอดภัย</div>
+        <div class="txt"><b>ไม่มี Margin of Safety</b><br>ราคาปัจจุบัน {{rd:px}} สูงกว่ามูลค่าเหมาะสม {{rd:fv}} → ตามเกณฑ์ value investor ถือว่า <b>แพงกว่ามูลค่า</b> สำหรับธุรกิจ OSAT วัฏจักร (ประมาณการนี้ยังไม่ผ่านการตรวจครบ และส่วนต่างเกิน 40% ไม่มีพยานอิสระ) ยังไม่ใช่จุดซื้อที่ปลอดภัย</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
         <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $28</div><div class="d">ใกล้ขอบล่างของ fair value</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $11</div><div class="d">ต่ำกว่า fair value เล็กน้อย</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD/ADR)</label>
@@ -233,8 +233,8 @@
           <div class="tgt">{{rd:sc1tgt}}</div>
           <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>$1.5</span></li>
-            <li><span>P/E ออก</span><span>14x</span></li>
+            <li><span>EPS ปี 3</span><span>$1.05</span></li>
+            <li><span>P/E ออก</span><span>10x</span></li>
             <li><span>สถานการณ์</span><span>วงจรชิปชะลอ / margin ATM ถดถอย</span></li>
           </ul>
         </div>
@@ -245,8 +245,8 @@
           <div class="tgt">{{rd:sc2tgt}}</div>
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>$2.1</span></li>
-            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>EPS ปี 3</span><span>$1.43</span></li>
+            <li><span>P/E ออก</span><span>15.8x</span></li>
             <li><span>สถานการณ์</span><span>AI packaging โตตามแนวโน้ม</span></li>
           </ul>
         </div>
@@ -257,8 +257,8 @@
           <div class="tgt">{{rd:sc3tgt}}</div>
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>$2.6</span></li>
-            <li><span>P/E ออก</span><span>22x</span></li>
+            <li><span>EPS ปี 3</span><span>$1.82</span></li>
+            <li><span>P/E ออก</span><span>19.7x</span></li>
             <li><span>สถานการณ์</span><span>CPO + 2.5D/3D ครองตลาด AI assembly</span></li>
           </ul>
         </div>
@@ -312,7 +312,7 @@
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">$51 (Yahoo, n=1)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> สาย value — รอย่อ/ทยอยสะสมเมื่อราคา <b>ต่ำกว่า ~$28</b> (น่าสนใจที่ &lt;$25) • สาย growth — เข้าได้แบบ DCA และยอมรับความผันผวนสูง โดยติดตาม <b>ดีมานด์ advanced packaging AI/CPO</b>, <b>margin ของกลุ่ม ATM</b> และ <b>ค่าเงิน TWD/วงจรชิป</b> เป็นตัวชี้วัดหลัก
+        💡 <b>กลยุทธ์:</b> สาย value — รอย่อ/ทยอยสะสมเมื่อราคา <b>ต่ำกว่า ~$11</b> (น่าสนใจที่ &lt;$9) • สาย growth — เข้าได้แบบ DCA และยอมรับความผันผวนสูง โดยติดตาม <b>ดีมานด์ advanced packaging AI/CPO</b>, <b>margin ของกลุ่ม ATM</b> และ <b>ค่าเงิน TWD/วงจรชิป</b> เป็นตัวชี้วัดหลัก
       </div>
     </div>
   </section>
