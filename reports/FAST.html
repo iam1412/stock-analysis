@@ -16,10 +16,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น Fastenal (FAST) — Stock Analysis Dashboard</title>
 <!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง (Opus→"Claude Opus 4.8", Sonnet→"Claude Sonnet 4.6") — gate E28 บังคับ -->
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"FAST","currency":"USD","price":49.01,"fairValue":40,"mos":-22.5,"upside":-18.4,"pe":41.68,"dividendYield":1.96,"roe":33.84}
+{"symbol":"FAST","currency":"USD","price":49.01,"fairValue":41.36,"mos":-18.5,"upside":-15.6,"pe":41.89,"dividendYield":1.96,"roe":34.33}
 </script>
 <!--
   report-data: ธีมสี + ข้อมูลกราฟ/gauge ต่อหุ้น (build เอาไปวาด)  ดู schema เต็มใน CLAUDE.md ข้อ 9
@@ -33,29 +33,29 @@
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 40,
+  "fv": 41.36,
   "values": {
     "px": 49.01,
     "priceDate": "2026-09-18",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
-    "fvLow": 38.42,
-    "fvHigh": 42.7,
+    "fvLow": 28.9,
+    "fvHigh": 47.77,
     "shares": 1150000000,
     "dps": 0.96,
     "bvps": 3.41,
-    "baseEps": 1.13,
+    "baseEps": 1.17,
     "scenarios": [
       {
-        "tgt": 35.1,
+        "tgt": 36.23,
         "div": 2.88
       },
       {
-        "tgt": 46.72,
+        "tgt": 48.49,
         "div": 3.08
       },
       {
-        "tgt": 57.24,
+        "tgt": 59.17,
         "div": 3.24
       }
     ],
@@ -134,7 +134,7 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ $38.97 / $50.63<br>
+        กรอบ 52 สัปดาห์ $38.97 / $52.91<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / Fastenal Investor Relations / Macrotrends
       </div>
     </div>
@@ -149,16 +149,16 @@
          • หุ้นเติบโต-ขาดทุน → Revenue growth / Gross margin / FCF / Cash runway (ตัด P/E ออก) -->
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">หุ้น ~1.15B หุ้น (post 2:1 split พ.ค.2025)</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~41.68x</div><div class="d">แพงกว่าค่าเฉลี่ย 5 ปี ~38x</div></div>
-      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~38x</div><div class="d">กรอบประวัติ ~28–46x</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~41.89x</div><div class="d">แพงกว่าค่าเฉลี่ย 5 ปี ~33x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~33x</div><div class="d">กรอบประวัติ ~27–39x (มัธยฐาน 33.4x)</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~14.4x</div><div class="d">BVPS ~$3.41 (post-split)</div></div>
 
-      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">~$1.25B</div><div class="d">+8.6% YoY</div></div>
-      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$1.13</div><div class="d">FY25: $1.09 · FY24: $1.00</div></div>
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">~$1.26B</div><div class="d">+9.3% YoY</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$1.17</div><div class="d">FY25: $1.09 · FY24: $1.00</div></div>
       <div class="metric"><div class="k">BVPS</div><div class="v">~$3.41</div><div class="d">post-split (2:1 พ.ค.2025)</div></div>
-      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~33.8% / 22.1%</div><div class="d">สม่ำเสมอต่อเนื่อง</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~34.3% / 22.1%</div><div class="d">สม่ำเสมอต่อเนื่อง</div></div>
 
-      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~$8.20B</div><div class="d">CAGR ~8% (FY21–FY25)</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~$8.75B</div><div class="d">CAGR ~8% (FY21–FY25)</div></div>
       <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~45%</div><div class="d">Operating Margin 20.2%</div></div>
       <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.96%</div><div class="d">$0.96/ปี · payout ~80%</div></div>
       <div class="metric"><div class="k">ROIC</div><div class="v pos">~31.5%</div><div class="d">D/E ~0.11 (หนี้น้อย)</div></div>
@@ -180,35 +180,31 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ราคา FAST ในรอบปีที่ผ่านมา (ก.ค. 2568–มิ.ย. 2569) แกว่งในกรอบ $40–$50 โดยมีจุดสูงสุดที่ $49.66 ในเดือน ส.ค. 68 ก่อนย่อลงแรงช่วง ต.ค.–ธ.ค. 68 สู่ระดับ $40 ตามความกังวลภาวะการผลิต จากนั้นฟื้นตัวค่อยเป็นค่อยไปกลับสู่ $47.10 ผลตอบแทนรอบปี +2.1% (จาก $46.13→$47.10) สะท้อนธุรกิจทรงตัวแต่ราคายังตึงตัวเมื่อเทียบกับ Fair Value $40
+        ราคา FAST ในรอบปีที่ผ่านมา (ต.ค. 2568–ก.ย. 2569) แกว่งในกรอบ $40–$50 โดยจุดต่ำสุดรายเดือนอยู่ที่ $40.13 ในเดือน ธ.ค. 68 จากนั้นฟื้นตัวต่อเนื่องจนแตะจุดสูงสุด $49.31 ในเดือน ส.ค. 69 และปิดล่าสุดที่ {{rd:px}} ผลตอบแทนรอบปีราว +19.1% (จาก $41.15 → $49.01) ราคาไต่ขึ้นเร็วกว่ากำไร จึงตึงตัวเมื่อเทียบกับ Fair Value {{rd:fv}}
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี (P/E · P/FCF)</div></div>
     <div class="card">
       <!-- ✏️ เลือก ≥2 วิธีให้เหมาะกับหุ้น — gate เช็คคณิตเฉพาะวิธีชื่อ "P/E" (E21) และ "Justified P/BV" (E22) เมื่อมีวิธีนั้น
            ธนาคาร → เน้น P/BV / Residual income   • REIT → DDM / NAV   • หุ้นไม่ปันผล → ตัด DDM ออก ใช้ P/E + DCF/Justified P/BV -->
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) $1.13 × P/E เป้าหมาย ~34x — ใช้ P/E ที่เหมาะสมสำหรับการเติบโต ~8%/ปี (discount จาก P/E ปัจจุบัน 42x)</div></div>
-        <div class="mval">$38.42</div>
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) $1.17 × P/E เป้าหมาย 33.4x — 33.4x คือมัธยฐาน P/E ย้อนหลัง 5 ปีงบ FY2021–FY2025 ของ FAST เอง (ราคาเฉลี่ยของปี ÷ EPS ปรับลด ช่วง 27.4–38.5x) มาจากประวัติ ไม่ได้อิงตัวคูณปัจจุบัน · กรอบ FV ใช้เฉลี่ยของปลายล่าง–ปลายบนของทั้งสองวิธี</div></div>
+        <div class="mval">$39.08</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. Forward P/E (FY26E)</div><div class="mdesc">EPS FY26E ~$1.22 × Forward P/E ~35x — นักวิเคราะห์ consensus EPS growth ~8% YoY · P/E เป้าสมเหตุสมผล</div></div>
-        <div class="mval">$42.70</div>
-      </div>
-      <div class="vmethod">
-        <div><div class="mname">3. EV/EBITDA</div><div class="mdesc">EBITDA ~$1.76B × 26x EV/EBITDA − Net Debt ~$0.3B ÷ 1.15B shares — Peers อยู่ที่ ~22–28x</div></div>
-        <div class="mval">$39.53</div>
+        <div><div class="mname">2. P/FCF (มัธยฐานย้อนหลัง)</div><div class="mdesc">FCF/หุ้น $1.0043 × P/FCF 43.4x — FCF/หุ้น คือ FCF TTM ÷ หุ้นปรับลด และ 43.4x คือมัธยฐาน P/FCF ย้อนหลัง 5 ปีงบของ FAST เอง (ราคาเฉลี่ยของปี ÷ FCF/หุ้น: FY21 50.3x · FY22 38.8x · FY23 25.6x · FY24 43.4x · FY25 45.9x) มาจากประวัติ ไม่ใช่ตัวคูณปัจจุบัน (P/FCF ปัจจุบัน ~48.8x) · ฐานกระแสเงินสด ต่างจากฐานกำไรของวิธี 1</div></div>
+        <div class="mval">$43.63</div>
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ทั้ง 3 วิธีให้ค่าใกล้เคียงกันในกรอบ $38–$43 ยืนยันว่า FV ~$40 สมเหตุสมผล วิธี Forward P/E ให้ค่าสูงสุด ($42.70) เพราะตั้งสมมติฐาน EPS เติบโต ส่วน P/E (TTM) ให้ต่ำสุด ($38.42) อิงกำไรปัจจุบัน ราคา $47.10 จึงแพงกว่า FV ~18% หมายความว่าตลาดตั้งราคาไว้สูงกว่าที่พื้นฐานจะรองรับได้ DDM ถูกละเว้นเพราะ payout ~80% ทำให้ g≈r ผลลัพธ์ไวต่อสมมติฐานเกินไป
+        FV เฉลี่ยจาก 2 ตระกูลที่วัดจากประวัติของ FAST เอง: P/E ($39.08 · ฐานกำไร) และ P/FCF ($43.63 · ฐานกระแสเงินสด) ห่างกันราว 1.1 เท่า ขาเดิมที่ตัดออก: Forward P/E ~35x (ใกล้ P/E ล่วงหน้าปัจจุบัน จึงเป็นสมอตายวนกลับ และเป็น P/E ตระกูลเดียวกับวิธี 1) และ EV/EBITDA 26x (ตัวคูณ peer ที่ไม่มีค่าวัดจริงรองรับ) DDM ถูกละเว้นเพราะ payout ~82% ทำให้ g≈r ผลลัพธ์ไวต่อสมมติฐานเกินไป · ความไว: ที่ปลายล่างของประวัติ (P/E 27.4x · P/FCF 25.6x) FV ~$28.9 ส่วนปลายบน (38.5x · 50.3x) ~$47.8 — ราคาปัจจุบัน {{rd:px}} อยู่เหนือ FV กลาง และใกล้ปลายบนของกรอบประวัติ
       </p>
     </div>
   </section>
@@ -227,11 +223,11 @@
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
-          <span style="text-align:right">$46.66<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$48.84<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน $47.10 อยู่สูงกว่า Fair Value $40 ราว 18% จึงอยู่ในโซน "แพงกว่ามูลค่า" นักวิเคราะห์ 17 รายมีเป้าเฉลี่ย $46.66 (ใกล้ราคาปัจจุบัน) สะท้อน consensus เป็น Hold โซนซื้อที่น่าสนใจคือต่ำกว่า $40 (ใกล้ FV) และโซน Deep Value คือ $28–32 (MOS 20–30%)
+        ราคาปัจจุบัน {{rd:px}} อยู่สูงกว่า Fair Value {{rd:fv}} ราว 18% จึงอยู่ในโซน "แพงกว่ามูลค่า" นักวิเคราะห์ 13 รายมีเป้าเฉลี่ย $48.84 (ใกล้ราคาปัจจุบัน) สะท้อน consensus เป็น Hold โซนซื้อที่น่าสนใจคือต่ำกว่า {{rd:fv}} (ใกล้ FV) และโซน Deep Value คือ {{rd:mos30}}–{{rd:mos20}} (MOS 30–20%)
       </p>
     </div>
   </section>
@@ -270,7 +266,7 @@
           <div class="tgt">{{rd:sc1tgt}}</div>
           <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$1.35</span></li>
+            <li><span>EPS ปี 3</span><span>~$1.39</span></li>
             <li><span>P/E ออก</span><span>26x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>ภาคการผลิต Recession ยอดขายชะลอ</span></li>
@@ -283,7 +279,7 @@
           <div class="tgt">{{rd:sc2tgt}}</div>
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$1.46</span></li>
+            <li><span>EPS ปี 3</span><span>~$1.52</span></li>
             <li><span>P/E ออก</span><span>32x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>Onsite ขยาย P/E หดจาก re-rate</span></li>
@@ -296,7 +292,7 @@
           <div class="tgt">{{rd:sc3tgt}}</div>
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$1.59</span></li>
+            <li><span>EPS ปี 3</span><span>~$1.64</span></li>
             <li><span>P/E ออก</span><span>36x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Onsite + FMI ขยายเร็ว digital leap</span></li>
@@ -305,7 +301,7 @@
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      Base Case คาดผลตอบแทน ~−0.8% ใน 3 ปี (รวมปันผล +$3.08 = +5.7%) เพราะ P/E หดจาก 42x สู่ 32x ชดเชยการเติบโต EPS Bull Case ถึง +22% เฉพาะ capital gain (รวมปันผล ~+29%) หาก Onsite + FMI เร่งตัวและตลาดให้ premium ต่อ Bear Case −25% หาก manufacturing recession กดยอดขาย ราคา $47 ที่ P/E 42x มี risk-reward ไม่สมดุล
+      Base Case คาดผลตอบแทน ~−1.1% ใน 3 ปี (รวมปันผล +$3.08 = +5.2%) เพราะ P/E หดจาก 42x สู่ 32x ชดเชยการเติบโต EPS Bull Case ถึง +20.7% เฉพาะ capital gain (รวมปันผล ~+27%) หาก Onsite + FMI เร่งตัวและตลาดให้ premium ต่อ Bear Case −26% หาก manufacturing recession กดยอดขาย ณ จุดเข้า {{rd:px}} ที่ P/E 42x มี risk-reward ไม่สมดุล
     </p>
   </section>
 
@@ -342,15 +338,15 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>ธุรกิจเยี่ยม แต่ราคาตึงเกินไป — รอย่อสู่โซน $32–40</h2>
-      <p>Fastenal เป็นธุรกิจจัดจำหน่าย MRO/อุตสาหกรรมคุณภาพสูง ROIC 31% ต่อเนื่อง ด้วยโมเดล Onsite (&gt;2,600 แห่ง) และ FMI vending (136,638 หน่วย) ที่ฝังลึกในห่วงโซ่การผลิตของลูกค้า สร้าง moat แบบ switching cost ปันผลเติบโต 25+ ปี — แต่ราคาปัจจุบัน $47.10 ที่ P/E 42x แพงกว่า Fair Value $40 ราว 18% สำหรับบริษัทที่เติบโต ~8%/ปี ทั้งนักวิเคราะห์ 17 ราย Consensus "Hold" ที่ $46.66 ยืนยันว่าราคาตลาดสะท้อน potential ไปมากแล้ว</p>
+      <h2>ธุรกิจเยี่ยม แต่ราคาตึงเกินไป — รอย่อสู่โซน {{rd:mos30}}–{{rd:fv}}</h2>
+      <p>Fastenal เป็นธุรกิจจัดจำหน่าย MRO/อุตสาหกรรมคุณภาพสูง ROIC 31% ต่อเนื่อง ด้วยโมเดล Onsite (&gt;2,600 แห่ง) และ FMI vending (136,638 หน่วย) ที่ฝังลึกในห่วงโซ่การผลิตของลูกค้า สร้าง moat แบบ switching cost ปันผลเติบโต 25+ ปี — แต่ราคาปัจจุบัน {{rd:px}} ที่ P/E 42x แพงกว่า Fair Value {{rd:fv}} ราว 18% สำหรับบริษัทที่เติบโต ~8%/ปี ทั้งนักวิเคราะห์ 13 ราย Consensus "Hold" ที่ $48.84 ยืนยันว่าราคาตลาดสะท้อน potential ไปมากแล้ว</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$46.66 (Hold)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$48.84 (Hold)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> รอย่อสู่ใกล้ FV $40 (MOS 0%) หรือดีกว่าคือ $32–35 (MOS 20–30%) ก่อนสะสม ณ ราคา $47 ผลตอบแทนคาดการณ์ Base Case ต่ำกว่า bond ไม่คุ้มความเสี่ยง หากถือเพื่อปันผล ควรมี time horizon 5+ ปีและรับได้กับ P/E compression
+        💡 <b>กลยุทธ์:</b> รอย่อสู่ใกล้ FV {{rd:fv}} (MOS 0%) หรือดีกว่าคือ {{rd:mos30}}–{{rd:mos20}} (MOS 30–20%) ก่อนสะสม ณ จุดเข้า {{rd:px}} ผลตอบแทนคาดการณ์ Base Case ต่ำกว่า bond ไม่คุ้มความเสี่ยง หากถือเพื่อปันผล ควรมี time horizon 5+ ปีและรับได้กับ P/E compression
       </div>
     </div>
   </section>
@@ -361,7 +357,7 @@
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มา: StockAnalysis.com / Yahoo Finance / Fastenal Investor Relations / Macrotrends
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 26 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
