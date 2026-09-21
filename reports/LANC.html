@@ -8,34 +8,34 @@
 <meta name="ai-model" content="Claude Sonnet 5">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"LANC","currency":"USD","price":99.92,"fairValue":144,"mos":30.6,"upside":44.1,"pe":17.97,"dividendYield":4,"roe":17.23}
+{"symbol":"LANC","currency":"USD","price":99.92,"fairValue":139.5,"mos":28.4,"upside":39.6,"pe":14.32,"dividendYield":4,"roe":18.7}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 144,
+  "fv": 139.5,
   "values": {
     "px": 99.92,
     "priceDate": "2026-09-18",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
-    "fvLow": 134,
-    "fvHigh": 168,
-    "shares": 27420000,
+    "fvLow": 116,
+    "fvHigh": 163,
+    "shares": 27291000,
     "dps": 4,
     "bvps": 38.07,
-    "baseEps": 6.39,
+    "baseEps": 6.98,
     "scenarios": [
       {
-        "tgt": 102,
+        "tgt": 84,
         "div": 12
       },
       {
-        "tgt": 148,
+        "tgt": 126,
         "div": 12.36
       },
       {
-        "tgt": 177,
+        "tgt": 162,
         "div": 12.72
       }
     ],
@@ -43,7 +43,8 @@
       "years": 3,
       "divIncluded": true,
       "perYear": null
-    }
+    },
+    "analystTgt": 146.6
   },
   "theme": {
     "accent": "#C41E3A",
@@ -108,28 +109,28 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ $104.28 – $190.96<br>
-        ที่มา: Yahoo Finance API • StockAnalysis.com • meyka.com • SEC Form 8-K
+        กรอบ 52 สัปดาห์ $98.00 – $182.56<br>
+        ที่มา: Yahoo Finance chart API • Yahoo quoteSummary • StockAnalysis.com
       </div>
     </div>
   </header>
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM ณ ก.ค. 2569</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">FY2026 (ปีงบสิ้นสุด มิ.ย. 2569) · TTM</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">27.42 ล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~17.97x</div><div class="d">เทียบค่าเฉลี่ย 5 ปี ~24x</div></div>
-      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~24x</div><div class="d">กรอบ 18x–32x</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">27.29 ล้านหุ้น (คงเหลือ)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~14.3x</div><div class="d">EPS TTM $6.98 (FY2026)</div></div>
+      <div class="metric"><div class="k">EPS คาดการณ์ FY2027e</div><div class="v">~$6.73</div><div class="d">FY2028e $7.23 (StockAnalysis /forecast/)</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ~$38.07</div></div>
 
-      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$167.4M</div><div class="d">+42.3% จาก FY2023</div></div>
-      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$6.39</div><div class="d">FY2025: $6.07 · FY2024: $5.76</div></div>
-      <div class="metric"><div class="k">BVPS</div><div class="v">~$38.07</div><div class="d">Equity $1.04B · หนี้สุทธิต่ำ</div></div>
-      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~17.23% / 10.97%</div><div class="d">ROIC 20.74% — คุณภาพสูง</div></div>
+      <div class="metric"><div class="k">กำไรสุทธิ FY2026</div><div class="v">$191M</div><div class="d">+14% YoY · FY2025 $167M</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$6.98</div><div class="d">FY2026 = TTM · FY2025: $6.07 · FY2024: $5.76</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$38.07</div><div class="d">Equity ~$1.04B · หนี้สุทธิ ~$229M (หนี้ $254M − เงินสด $25M)</div></div>
+      <div class="metric"><div class="k">ROE</div><div class="v pos">~18.7%</div><div class="d">ROE FY2026 (StockAnalysis) — คุณภาพสูง</div></div>
 
-      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$1.94B</div><div class="d">FY2025: $1.91B · +2.8% YoY</div></div>
-      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">24.19%</div><div class="d">Operating margin 11.91%</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$1.93B</div><div class="d">FY2025: $1.91B · +1.1% YoY</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">24.7%</div><div class="d">Operating margin 12.3%</div></div>
       <div class="metric"><div class="k">เงินปันผล</div><div class="v">~4.00%</div><div class="d">$4.00/ปี · 61+ ปีติดต่อกัน (Dividend King)</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">0.33</div><div class="d">ผันผวนต่ำมาก vs ตลาด</div></div>
     </div>
@@ -137,7 +138,7 @@
 
   <!-- ===== 2. PRICE CHART ===== -->
   <section>
-    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ส.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ต.ค. 2568 – ก.ย. 2569 (ราคาปิดรายเดือน)</div></div>
     <div class="card">
       <div class="chart-wrap">
         <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
@@ -148,39 +149,38 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        หุ้นร่วงแรงตลอดปี จาก ~$182 (ส.ค. 68) สู่ต่ำสุด ~$104 ช่วง เม.ย.–พ.ค. 69 (-43%) ก่อนฟื้นบางส่วนถึง ~$115 ปัจจุบัน
-        แรงกดดันหลักมาจาก 3 ปัจจัย: (1) บริษัทเปลี่ยนชื่อเป็น The Marzetti Company (MZTI) มีผล 1 ก.ค. 68 ทำให้นักลงทุน Passive index rebalance
-        (2) ต้นทุนวัตถุดิบ (น้ำมันถั่วเหลือง ข้าวโพด) ยังกดมาร์จิน (3) ธุรกิจ Foodservice ชะลอตัว อย่างไรก็ตาม dividend ยังคงจ่าย $4/ปี
-        และ EPS TTM ยืนที่ $6.39 สะท้อนพื้นฐานยังแข็งแกร่ง
+        ราคาปิดรายเดือนสูงสุดในกราฟคือ ~$172 (ม.ค. 69) และอ่อนตัวลงต่อเนื่องจนถึงราคาล่าสุด {{rd:px}} ซึ่งอยู่ใกล้ขอบล่างของกรอบ 52 สัปดาห์ ($98.00 – $182.56)
+        ขณะที่ EPS TTM (FY2026) เพิ่มเป็น $6.98 จาก $6.07 ใน FY2025 และปันผลยังจ่าย $4/ปี — คือราคาลดลงแรงกว่าที่กำไรสะท้อน (P/E หดตัว)
+        สาเหตุเฉพาะของการขายลงยังไม่ได้ยืนยันจากแหล่งปฐมภูมิในรอบนี้ จึงไม่ระบุเป็นข้อเท็จจริง
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">3 วิธี · น้ำหนัก P/E 40%, DDM 35%, Justified P/BV 25%</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">3 วิธี · 2 ตระกูลสมมติฐาน: (DDM + Justified P/BV) 50% · DCF 50%</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $6.39 × P/E เป้าหมาย ~21x — ค่าเฉลี่ย 5 ปีอยู่ที่ 24x; ใช้ 21x สะท้อนการเปลี่ยน brand/rerating risk + margin pressure ระยะสั้น</div></div>
-        <div class="mval">$134.19</div>
+        <div><div class="mname">1. DCF (FCF 5 ปี + Terminal)</div><div class="mdesc">สมมติฐานของผู้วิเคราะห์เอง: FCF FY2026 $206M โต 4%/ปี 5 ปี = $214.2M / $222.8M / $231.7M / $241.0M / $250.6M; r 9.5%, g ปลายทาง 3.0% → TV = $250.6M × 1.03 / 0.065 = $3,972M (PV $2,523M = 74% ของ EV) + PV FCF $885M = EV $3,408M − หนี้สุทธิ $229M = $3,179M ÷ 27.29M หุ้น (ตระกูลอิสระจาก DDM/P-BV)</div></div>
+        <div class="mval">$116.47</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. DDM / Gordon Growth Model</div><div class="mdesc">D₁ = ปันผล $4.00 × (1+g); g 4.0%, r 7.0% — เหมาะสำหรับ Dividend King ที่จ่ายปันผลมา 61+ ปี ใช้ discount rate 7% สะท้อน risk premium</div></div>
+        <div><div class="mname">2. DDM / Gordon Growth Model</div><div class="mdesc">D₁ = ปันผล $4.00 × (1+g); g 4.0%, r 7.0% — Dividend King จ่ายปันผลมา 61+ ปี (ตระกูล r,g เดียวกับ Justified P/BV = นับเป็น 1 เสียง)</div></div>
         <div class="mval">$138.67</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 17.23% − g 4.0%)/(r 7.0% − g 4.0%) ≈ 4.41x × BVPS $38.07 — บริษัทสร้าง ROE สม่ำเสมอ ROIC 20.7%</div></div>
-        <div class="mval">$167.89</div>
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 18.7% − g 4.0%)/(r 7.0% − g 4.0%) ≈ 4.90x × BVPS $38.07 — (r,g) ชุดเดียวกับ DDM = ตระกูลเดียว; ROE FY2026 สูง ทำให้ค่านี้เป็นขอบบนของกรอบ</div></div>
+        <div class="mval">$186.54</div>
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        วิธี Justified P/BV ให้ค่าสูงสุด ($167) เพราะ ROE 17%+ สูงกว่า cost of equity มาก สะท้อนความแข็งแกร่งของ moat แบรนด์
-        DDM ให้ค่ากลาง ($138) บนสมมติฐาน dividend growth 4%/ปี ซึ่งสอดคล้องกับ CAGR 5 ปีที่ผ่านมา
-        P/E ให้ค่าต่ำสุด ($134) เพราะปรับ target multiple ลดจากค่าเฉลี่ยประวัติ 24x เหลือ 21x สะท้อนความไม่แน่นอนระยะสั้น
-        มูลค่าเฉลี่ยถ่วงน้ำหนักที่ <strong>$144</strong> ต่ำกว่าเป้า analyst เฉลี่ย $159 ซึ่งแสดงว่ามีแนวโน้ม upside เพิ่มเติมเมื่อ margin ฟื้นตัว
+        โครงสร้าง FV ปรับใหม่ในรอบนี้: ตัดขา P/E ที่ใช้ตัวคูณ 21x/24x เดิมออก เพราะไม่มีมัธยฐานย้อนหลังที่วัดได้ (ดึงข้อมูลไม่สำเร็จ) และเป้า analyst ไม่ถูกใช้เป็นขา FV — ใช้เป็นบริบทเท่านั้น
+        FV = (ค่าเฉลี่ยตระกูล DDM + Justified P/BV = $162.60 ให้ (r,g) ชุดเดียวกันนับเสียงเดียว + DCF $116.47) ÷ 2 = <strong>{{rd:fv}}</strong> (กรอบ {{rd:fvLow}}–{{rd:fvHigh}})
+        ตระกูล DDM/P-BV อ่อนไหวต่อ r และ g มาก (g 4% ใกล้ r 7%) ส่วน DCF อิงกระแสเงินสดจริง FY2026 — สองตระกูลห่างกัน ~1.4 เท่า จึงเฉลี่ยได้ · หากใช้ DCF ขาเดียว ($116) ส่วนเผื่อจะบางลงมากเหลือระดับเลขหลักเดียวถึงต้นเลขสอง (single-family sensitivity) ดังนั้นควรอ่าน MOS ในรายงานนี้เป็นช่วง ไม่ใช่จุดเดียว
+        เป้า analyst เฉลี่ย {{rd:analystTgt}} ({{rd:analystPct}}) อยู่ใกล้ FV จึงเป็นข้อมูลประกอบที่สอดคล้องกัน (ไม่ใช่ที่มาของ FV)
       </p>
     </div>
   </section>
@@ -198,15 +198,14 @@
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
-          <span style="text-align:right">$159<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">{{rd:analystTgt}}<br><small>เป้าเฉลี่ย Analyst</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน $114.80 อยู่ในโซน MOS 20% ที่ $115.20 (ต่ำกว่าจุดตัดเล็กน้อย) — เข้าเขตซื้อ value investing ระดับ "น่าสนใจ" แล้ว
-        ห่างจาก Fair Value $144 ประมาณ 25% (MOS ~20%) และห่างจากเป้า analyst $159 ถึง 38%
-        สำหรับ Dividend King ที่มี brand moat และ ROIC 20%+ โซนนี้ถือว่ามี margin of safety ที่น่าพิจารณา
-        โซน deep value อยู่ที่ต่ำกว่า $101 (MOS 30%) หากตลาดยังกดดันต่อจากการเปลี่ยนชื่อ/margin pressure
+        ราคาปัจจุบัน {{rd:px}} ต่ำกว่าจุด MOS 20% ({{rd:mos20}}) แล้ว แต่ยังสูงกว่าจุด MOS 30% ({{rd:mos30}}) เล็กน้อย — เข้าเขต "น่าสนใจ" ตามกรอบ value investing
+        ส่วนต่างจาก Fair Value {{rd:fv}} คือ {{rd:mos}} และต่ำกว่าเป้า analyst {{rd:analystTgt}} ({{rd:analystPct}})
+        FV ครึ่งหนึ่งมาจากตระกูล (r,g) เดียว จึงไม่ควรตีความเป็นจุดเดียว · โซน deep value คือต่ำกว่า {{rd:mos30}} (MOS 30%)
       </p>
     </div>
   </section>
@@ -217,7 +216,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">ส่วนต่างความปลอดภัยพอสมควร — อยู่ใกล้โซนน่าสนใจ (10–25%) สำหรับ Dividend King ที่มี moat แบรนด์แข็งแกร่ง</div>
+        <div class="txt">ส่วนต่างความปลอดภัยสูง — เข้าโซนน่าสนใจ (MOS ≥20%) แต่ FV ขึ้นกับสมมติฐาน r/g ของตระกูล DDM/P-BV ครึ่งหนึ่ง จึงควรอ่านเป็นช่วง ไม่ใช่จุดเดียว</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -244,34 +243,34 @@
           <div class="tgt">{{rd:sc1tgt}}</div>
           <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$6.39</span></li>
-            <li><span>P/E ออก</span><span>16x</span></li>
+            <li><span>EPS ปี 3</span><span>~$6.98</span></li>
+            <li><span>P/E ออก</span><span>12x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>Margin กดต่อ, volume ไม่โต</span></li>
           </ul>
         </div>
       </div>
       <div class="col base">
-        <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
+        <div class="top"><span>⚖️ Base</span><span>EPS +4%/ปี</span></div>
         <div class="body">
           <div class="tgt">{{rd:sc2tgt}}</div>
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$7.40</span></li>
-            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>EPS ปี 3</span><span>~$7.85</span></li>
+            <li><span>P/E ออก</span><span>16x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>Margin ฟื้น + foodservice โต</span></li>
           </ul>
         </div>
       </div>
       <div class="col bull">
-        <div class="top"><span>🚀 Bull</span><span>EPS +8%/ปี</span></div>
+        <div class="top"><span>🚀 Bull</span><span>EPS +7%/ปี</span></div>
         <div class="body">
           <div class="tgt">{{rd:sc3tgt}}</div>
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$8.05</span></li>
-            <li><span>P/E ออก</span><span>22x</span></li>
+            <li><span>EPS ปี 3</span><span>~$8.55</span></li>
+            <li><span>P/E ออก</span><span>19x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Brand rerating + M&amp;A synergy</span></li>
           </ul>
@@ -279,10 +278,10 @@
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      Bear case: แม้ EPS ไม่โต แต่ dividend ยังช่วยพยุง total return ใกล้ break-even (-1%) เพราะผลตอบแทนรวมรวม ~$12 ปันผล 3 ปี
-      Base case: EPS +5%/ปีสอดคล้องกับ Revenue growth +3% + margin expansion ปกติ ให้ผลตอบแทนรวม ~40% ใน 3 ปี (~12%/ปี)
-      Bull case: การ rebranding เป็น Marzetti ช่วย unlock brand value ใหม่ + ขยาย foodservice partnerships + M&A ในกลุ่ม premium dressing
-      สมมติฐาน: จ่ายปันผล $4/ปีต่อเนื่อง (61+ ปีไม่เคยลด), EPS TTM ฐาน $6.39 ณ ก.ค. 69
+      Bear case: EPS ไม่โต และ P/E ออกที่ 12x (de-rating จาก ~14x ปัจจุบัน) — ผลตอบแทนรวม {{rd:sc1ret}} รวมปันผล ~{{rd:sc1div}} ใน 3 ปี
+      Base case: EPS +4%/ปี (รายได้โต ~1–3% + margin ขยับเล็กน้อย) P/E ออก 16x — ผลตอบแทนรวม {{rd:sc2ret}}
+      Bull case: EPS +7%/ปี จาก margin ฟื้นและ foodservice ขยาย P/E ออก 19x — ผลตอบแทนรวม {{rd:sc3ret}}
+      P/E ออกทั้งสามเป็นสมมติฐานของผู้วิเคราะห์ (ไม่มีมัธยฐานย้อนหลังที่วัดได้) · สมมติฐาน: ปันผล $4/ปีต่อเนื่อง, EPS ฐาน $6.98 (FY2026)
     </p>
   </section>
 
@@ -296,20 +295,20 @@
           <li><b>Dividend King 61+ ปี:</b> จ่ายปันผลเพิ่มขึ้นทุกปีมา 6 ทศวรรษ ไม่เคยลด — ให้ความมั่นใจนักลงทุนระยะยาว</li>
           <li><b>Rebranding เป็น Marzetti:</b> การเปลี่ยนชื่อตามแบรนด์หลักช่วยให้ตลาดจดจำบริษัทได้ชัดขึ้น เพิ่ม brand awareness ทั้ง retail &amp; foodservice</li>
           <li><b>Foodservice Partnership:</b> สัญญากับร้านอาหารชั้นนำ (Chick-fil-A, Red Lobster, Cracker Barrel) ช่วยสร้าง recurring revenue ที่มั่นคง</li>
-          <li><b>Margin Recovery:</b> ต้นทุนวัตถุดิบ (น้ำมันถั่วเหลือง, ข้าวสาลี) เริ่มผ่อนคลาย หากฟื้น gross margin กลับ 26%+ จะหนุน EPS โดยตรง</li>
-          <li><b>Net Cash Position:</b> หนี้สุทธิต่ำ ($37M debt) cash-rich balance sheet — พร้อม M&amp;A หรือ buyback เพื่อ enhance shareholder value</li>
+          <li><b>Margin Recovery:</b> gross margin ขยับจาก 23.9% (FY2025) เป็น 24.7% (FY2026) และ operating margin จาก 12.0% เป็น 12.3% — หากต่อเนื่องจะหนุน EPS โดยตรง</li>
+          <li><b>FCF แข็งแรง:</b> FCF FY2026 $206M (FY2025 $203M) ครอบคลุมปันผล ~$110M/ปี และรองรับการลดหนี้</li>
           <li><b>Premium Niche Brands:</b> Marzetti, Sister Schubert's, New York Bakery เป็น market leader ในกลุ่ม premium dressings &amp; frozen breads ที่คู่แข่งทำได้ยาก</li>
         </ul>
       </div>
       <div class="box risk">
         <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
         <ul>
-          <li><b>Margin Pressure ต่อเนื่อง:</b> ราคาวัตถุดิบ (commodity oil, wheat) ยังมีความไม่แน่นอน gross margin ยังต่ำกว่าค่าเฉลี่ย 5 ปีที่ 26%+</li>
-          <li><b>Ticker Change Impact:</b> LANC→MZTI ทำให้หลุดออกจากบาง passive index fund กดราคาระยะสั้น และอาจยังคงกดต่อในช่วง rebalance</li>
-          <li><b>Revenue Growth ชะลอ:</b> ยอดขาย +3% YoY ต่ำกว่าคาด บริษัทอาจยังไม่สามารถ pricing power ในสภาพแวดล้อมที่ผู้บริโภคระมัดระวังการจ่าย</li>
+          <li><b>Margin Pressure ต่อเนื่อง:</b> ราคาวัตถุดิบ (commodity oil, wheat) ยังมีความไม่แน่นอน gross margin 24.7% ยังเปราะบางต่อต้นทุน</li>
+          <li><b>Leverage เพิ่ม:</b> หนี้รวมเพิ่มจาก $56M (FY2025) เป็น $254M (FY2026) ขณะเงินสดลดจาก $161M เป็น $25M (หนี้สุทธิ ~$229M) — ยังไม่ได้ตรวจสาเหตุจากเอกสารปฐมภูมิ · การเปลี่ยน ticker LANC→MZTI เป็นแค่ข้อมูลอ้างอิงที่ต้องระวัง</li>
+          <li><b>Revenue Growth ชะลอ:</b> ยอดขาย +1.1% YoY (FY2026) ต่ำกว่าคาด บริษัทอาจยังไม่สามารถใช้ pricing power ในสภาพแวดล้อมที่ผู้บริโภคระมัดระวังการจ่าย</li>
           <li><b>Foodservice Concentration:</b> ลูกค้ารายใหญ่ไม่กี่รายมีสัดส่วนสูง — หากสัญญาไม่ต่ออายุหรือแข่งขันแย่งชิงจาก private label กระทบ revenue</li>
           <li><b>Private Label Competition:</b> ซุปเปอร์มาร์เก็ตขยาย private label dressings &amp; frozen bread — กดดัน volume &amp; pricing ของแบรนด์ premium</li>
-          <li><b>Small Cap Liquidity:</b> Market cap ~$3.2B ทำให้ volume บางวันต่ำ bid-ask spread กว้าง ไม่เหมาะกับนักลงทุนที่ต้องการ exit เร็ว</li>
+          <li><b>Small Cap Liquidity:</b> Market cap ~{{rd:mcap}} ทำให้ volume บางวันต่ำ bid-ask spread กว้าง ไม่เหมาะกับนักลงทุนที่ต้องการ exit เร็ว</li>
         </ul>
       </div>
     </div>
@@ -323,19 +322,19 @@
       <p>
         The Marzetti Company (เดิม Lancaster Colony) เป็นบริษัทอาหารพิเศษที่มี brand moat แข็งแกร่งในกลุ่ม dressings, sauces, และ frozen bread
         ด้วยประวัติจ่ายปันผลเพิ่มขึ้นติดต่อกัน 61+ ปี (Dividend King), ROE 17%+, และ ROIC 20%+ บ่งชี้ถึงคุณภาพธุรกิจระดับสูง
-        ราคาร่วง -37% ในรอบปีจากสองแรงกดดันชั่วคราว: การเปลี่ยนชื่อ (ticker LANC→MZTI ทำให้ถูก index rebalance)
-        และ margin pressure จาก commodity cost เป็นโอกาสให้ value investor พิจารณาสะสมในโซนที่ราคาใกล้ MOS 20%
-        ยิ่งถ้าทั้งสองปัจจัยนี้ผ่อนคลาย P/E re-rate กลับค่าเฉลี่ย 24x มี upside 34%+ ก่อนรวมปันผล 3.48%/ปี
+        ราคาอ่อนตัวลงมากในรอบปีขณะที่ EPS และ FCF เพิ่มขึ้น ทำให้ P/E หดตัว แต่หนี้สุทธิเพิ่มเป็น ~$229M (สาเหตุยังไม่ได้ตรวจแหล่งปฐมภูมิ)
+        เป็นโอกาสให้ value investor พิจารณาสะสมเมื่อราคาต่ำกว่า MOS 20% โดยรับปันผล $4.00/ปีระหว่างรอ
+        และต้องติดตามว่า margin และกระแสเงินสดยังพอรองรับภาระหนี้ใหม่
       </p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$159 (Moderate Buy)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">{{rd:analystTgt}} ({{rd:analystPct}}) · Buy</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ทยอยสะสมในโซน $110–$120 (ใกล้ MOS 20%) รับปันผล 3.48%/ปีระหว่างรอ margin ฟื้น
-        ถ้าหุ้นลงอีกถึง $101 (MOS 30%) ถือเป็น deep value zone ที่น่าซื้อเพิ่ม
-        เป้าหมาย Fair Value $144 (upside ~25%) หรือเป้า analyst $159 (upside ~38%) ภายใน 12–24 เดือน
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมเมื่อราคาต่ำกว่า MOS 20% ({{rd:mos20}}) รับปันผล $4.00/ปีระหว่างรอ margin ฟื้น
+        ถ้าหุ้นลงถึง {{rd:mos30}} (MOS 30%) ถือเป็น deep value zone ที่น่าซื้อเพิ่ม
+        เป้าหมาย Fair Value {{rd:fv}} (upside {{rd:upside}}) หรือเป้า analyst {{rd:analystTgt}} ภายใน 12–24 เดือน
         เหมาะกับนักลงทุน defensive ที่เน้น dividend income + moderate growth
       </div>
     </div>
@@ -346,9 +345,9 @@
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
-    ที่มาข้อมูล: Yahoo Finance API (ราคา/กราฟ) · StockAnalysis.com (financial statements) · meyka.com (cross-verify) · SEC Form 8-K (FY2025 earnings) · StockAnalysis MZTI statistics (P/E, P/BV, ROE) · ตรวจสอบ ≥2 แหล่งอิสระ
+    ที่มาข้อมูล: Yahoo Finance API (ราคา/กราฟ) · StockAnalysis.com (financial statements/forecast) · Yahoo quoteSummary (EPS, เป้านักวิเคราะห์, กรอบ 52 สัปดาห์) · StockAnalysis MZTI statistics (P/E, P/BV, ROE) · ตรวจสอบ ≥2 แหล่งอิสระ
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 12 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
