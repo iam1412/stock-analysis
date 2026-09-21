@@ -4,38 +4,38 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น Microchip Technology (MCHP) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Opus 4.8">
+<meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"MCHP","currency":"USD","price":73.27,"fairValue":70,"mos":-4.7,"upside":-4.5,"pe":20.6,"dividendYield":2.48,"roe":30}
+{"symbol":"MCHP","currency":"USD","price":73.27,"fairValue":68.5,"mos":-7,"upside":-6.5,"pe":19.7,"dividendYield":2.48,"roe":30}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 70,
+  "fv": 68.5,
   "values": {
     "px": 73.27,
     "priceDate": "2026-09-18",
     "dateEra": "CE",
     "chgSuffix": "รอบปี",
-    "fvLow": 58,
-    "fvHigh": 85,
-    "analystTgt": 113,
-    "eps": 3.55,
-    "shares": 543000000,
+    "fvLow": 49,
+    "fvHigh": 88,
+    "analystTgt": 108.64,
+    "eps": 3.72,
+    "shares": 543008691,
     "dps": 1.82,
     "bvps": 11.87,
-    "baseEps": 1.64,
+    "baseEps": 3.65,
     "scenarios": [
       {
-        "tgt": 45,
+        "tgt": 56,
         "div": 5
       },
       {
-        "tgt": 89,
+        "tgt": 101,
         "div": 5.75
       },
       {
-        "tgt": 159,
+        "tgt": 144,
         "div": 6
       }
     ],
@@ -107,7 +107,7 @@
       </div>
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ {{rd:priceDate}} (16:00 น. ET, ปิดตลาด) ลดลง 3.93% ระหว่างวัน<br>
+        ราคา ณ {{rd:priceDate}} (16:00 น. ET, ปิดตลาด)<br>
         กรอบ 52 สัปดาห์ $48.52 – $105.91<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / Google Finance
       </div>
@@ -116,21 +116,21 @@
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">TTM + FY2026 consensus</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">TTM + consensus FY2027E</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">543.0 ล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (Normalized)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS mid-cycle $3.55 <span class="pill a">TTM P/E จริง ~385x บิดเบือน</span></div></div>
-      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~18x–35x</div><div class="d">พีค supercycle 2021–22 → trough 2024–25</div></div>
+      <div class="metric"><div class="k">P/E (Normalized)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS mid-cycle $3.72 <span class="pill a">TTM P/E จริง ~108x บิดเบือน</span></div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~17.5x–34x</div><div class="d">มัธยฐาน 23.8x (ปีงบสิ้น มี.ค. 2022–2024 · ตัดปี FY2026 ที่ EPS ใกล้ศูนย์)</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~6.2x</div><div class="d">BVPS $11.87 (ฐานทุนบางจากหนี้ M&amp;A)</div></div>
 
-      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">~$120M</div><div class="d pos">พลิกจากขาดทุน FY2025 (~-$5M)</div></div>
-      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$0.22</div><div class="d">จุดต่ำสุดวงจร — ไม่ใช้ตรงในการประเมินมูลค่า</div></div>
+      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">~$367M</div><div class="d pos">พลิกจากขาดทุน FY2025 (-$2.7M) · FY2026 $119M</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$0.68</div><div class="d">Diluted · FY2026 อยู่ที่ $0.22 (จุดต่ำสุดวงจร) — ไม่ใช้ตรงในการประเมินมูลค่า</div></div>
       <div class="metric"><div class="k">BVPS</div><div class="v">~$11.87</div><div class="d">Equity $6.43B / 543M หุ้น</div></div>
-      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~30% / 13.4%</div><div class="d">Normalized mid-cycle <span class="pill a">TTM จริง 3.4%/2.2%</span></div></div>
+      <div class="metric"><div class="k">ROE (Normalized)</div><div class="v pos">~30%</div><div class="d">EPS mid-cycle ÷ BVPS <span class="pill a">TTM จริง 7.2%</span></div></div>
 
-      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$4.71B</div><div class="d">FY2025 ต่ำสุด $4.40B → ฟื้นตัว</div></div>
-      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">57.7%</div><div class="d">Op margin TTM 11.2% (mid-cycle ปกติ ~30%+)</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.48%</div><div class="d">$1.82/ปี • Payout ~51% (ของ EPS normalized)</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$5.12B</div><div class="d">FY2025 ต่ำสุด $4.40B → TTM +20.9% YoY</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">60.2%</div><div class="d">Op margin TTM 16.2% (FY2023–24 ~34–37%)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.48%</div><div class="d">$1.82/ปี • Payout ~49% (ของ EPS normalized)</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">1.73</div><div class="d">ผันผวนสูงกว่าตลาด (cyclical semis)</div></div>
     </div>
   </section>
@@ -148,36 +148,32 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ราคาผันผวนหนักในรอบปี จากจุดต่ำ <b>$53.00 (พ.ย. 2025)</b> ก่อนไตรมาสฟื้นตัวชัด พุ่งขึ้นเป็น <b>$94.65 (พ.ค. 2026 จุดสูงสุดรอบปี)</b>
-        ก่อนย่อลงมาปิดที่ $84.15 (ก.ค. 2026) รวมผลตอบแทนทั้งปี <b>+32.1%</b> ขับเคลื่อนจากสัญญาณ <b>inventory correction ใกล้จบ</b> และคำสั่งซื้อ (book-to-bill) เริ่มฟื้นตัว
+        ราคาผันผวนหนักในรอบปี จากจุดต่ำ <b>$53.58 (พ.ย. 2025)</b> พุ่งขึ้นเป็น <b>$94.65 (พ.ค. 2026 จุดสูงสุดรอบปี)</b>
+        ก่อนย่อลงมาที่ระดับ $74.29 ในเดือน ก.ค. 2026 และทรงตัวแถว $73 ในเดือน ก.ย. — ผลตอบแทนรอบปีดูป้ายด้านบน ราคาขับเคลื่อนจากความหวังว่า <b>inventory correction ใกล้จบ</b> และ EPS จะฟื้นตัวเร็ว (consensus FY2027E $3.65 เทียบ TTM $0.68)
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี • ใช้ EPS normalized</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 ตระกูล (P/E + DCF) • ใช้ EPS normalized</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation <span class="pill a">EPS Normalized</span></div><div class="mdesc">EPS normalized (mid-cycle) $3.55 × P/E เป้าหมาย 24x — เฉลี่ยกลุ่ม MCU/Analog (TXN ~28x, ADI ~26x) หักส่วนลดจากหนี้สุทธิที่สูงกว่าเพื่อน</div></div>
-        <div class="mval">$85</div>
+        <div><div class="mname">1. P/E Valuation <span class="pill a">EPS Normalized</span></div><div class="mdesc">EPS normalized (mid-cycle) $3.72 × P/E เป้าหมาย 23.8x — มัธยฐาน P/E ย้อนหลังของ MCHP เอง (33.9x / 17.5x / 23.8x ปีงบสิ้น มี.ค. 2022 / 2023 / 2024 ตัดปี FY2026 ออกเพราะกำไรเกือบศูนย์ ตัวคูณสุดขั้ว) ซึ่งมาจากประวัติ ไม่ได้มาจาก P/E ปัจจุบัน · ที่มาของ EPS normalized ดูหมายเหตุด้านล่าง</div></div>
+        <div class="mval">$88</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. DCF (FCF Recovery Path)</div><div class="mdesc">กระแสเงินสดอิสระฟื้นจาก TTM $871M → normalized ~$2.2B ใน 5 ปี, WACC 9.5%, Terminal g 3% — หักหนี้สุทธิ $5.4B</div></div>
-        <div class="mval">$58</div>
-      </div>
-      <div class="vmethod">
-        <div><div class="mname">3. EV/EBITDA (Normalized)</div><div class="mdesc">EBITDA normalized ~$2.5B (มาร์จิ้น ~40% บนรายได้ mid-cycle ~$6.2B) × EV/EBITDA เป้า 17x กลุ่ม analog/MCU — หักหนี้สุทธิ $5.4B</div></div>
-        <div class="mval">$68</div>
+        <div><div class="mname">2. DCF (FCF Recovery Path)</div><div class="mdesc">สมมติฐานของผู้วิเคราะห์เอง: FCF ปีที่ 1–5 = $1.40B / $1.85B / $2.30B / $2.60B / $2.80B (จาก TTM $1.11B · ยังต่ำกว่า FY2023 $3.14B) · r = 10%, g = 2.5% · PV ของ FCF 5 ปี $8.04B + TV $38.27B (FCF ปี 5 × 1.025 ÷ 7.5%) คิดลด = $23.76B (TV 74.7% ของ EV) → EV $31.80B − หนี้สุทธิ $5.13B (หนี้ $5.40B − เงินสด $0.27B) = Equity $26.68B ÷ 543.0M หุ้น</div></div>
+        <div class="mval">$49</div>
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        <b>หมายเหตุ:</b> ใช้ <b>EPS normalized (mid-cycle) $3.55</b> แทน EPS TTM ($0.22) ที่เป็นจุดต่ำสุดของวงจร — คำนวณจากค่าเฉลี่ย EPS พีค FY2023 $4.02, FY2024 $3.48 และ consensus FY2027E $3.16
-        ใช้ TTM ตรง ๆ จะได้ P/E TTM บิดเบือนถึง ~385x • วิธี DCF และ EV/EBITDA ให้ค่าต่ำกว่า P/E เพราะสมมติการฟื้นตัวแบบระมัดระวัง (conservative) และคิดลดความเสี่ยงเลเวอเรจจากหนี้สุทธิ $5.4B
-        ราคาปัจจุบัน ($84.15) ใกล้เคียงขอบบนของกรอบ FV ($85) แล้ว แสดงว่าตลาดกำลังราคาเผื่อ recovery scenario ที่ค่อนข้างมองบวกไปมาก
+        <b>หมายเหตุ:</b> ใช้ <b>EPS normalized (mid-cycle) $3.72</b> แทน EPS TTM ($0.68) ที่ยังต่ำกว่าระดับปกติมาก — คำนวณจากค่าเฉลี่ย EPS FY2023 $4.02, FY2024 $3.48 และ consensus FY2027E $3.65 (ปีงบสิ้น มี.ค. 2027) · ใช้ TTM ตรง ๆ จะได้ P/E TTM บิดเบือนถึง ~108x
+        FV เฉลี่ยจาก 2 ตระกูลอิสระ คือ P/E บนมัธยฐานประวัติ ($88) กับ DCF ที่แจกแจงตารางครบ ($49) ซึ่งห่างกัน 1.8 เท่า (ไม่เกิน 2 เท่า) · ถ้าใช้ P/E ขาเดียว FV จะสูงกว่าราคาราวหนึ่งในห้า ถ้าใช้ DCF ขาเดียว FV จะต่ำกว่าราคาราวหนึ่งในสาม จึงอ่าน FV เป็นกรอบกว้าง ไม่ใช่จุดแม่นยำ · ตัดขา EV/EBITDA เดิมออกเพราะตัวคูณ 17x เป็นค่าที่ตั้งเอง ไม่มีมัธยฐานที่วัดได้รองรับ และไม่ใช้เป้านักวิเคราะห์เป็นขา FV
+        ราคาปัจจุบัน {{rd:px}} อยู่เหนือมูลค่าเหมาะสม {{rd:fv}} เล็กน้อย ({{rd:mos}}) แต่ยังอยู่ในกรอบ {{rd:fvLow}}–{{rd:fvHigh}} ตลาดจึงราคาเผื่อการฟื้นตัวไปพอสมควรแล้ว
       </p>
     </div>
   </section>
@@ -200,8 +196,8 @@
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคา $84.15 อยู่สูงกว่ามูลค่าเหมาะสมฐาน (Fair Value $70) ประมาณ 20% และใกล้เคียงขอบบนของกรอบ FV ($85) เกือบเต็มแล้ว
-        ยังต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ ($113) ซึ่งสะท้อนมุมมองบวกกว่าต่อความเร็วการฟื้นตัวของวงจร MCU/analog
+        ราคาปัจจุบัน {{rd:px}} อยู่สูงกว่ามูลค่าเหมาะสมฐาน ({{rd:fv}}) เล็กน้อย ({{rd:mos}}) และอยู่ในกรอบ FV ({{rd:fvLow}}–{{rd:fvHigh}})
+        ยังต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ ({{rd:analystTgt}}, {{rd:analystPct}}) ซึ่งสะท้อนมุมมองบวกกว่าต่อความเร็วการฟื้นตัวของวงจร MCU/analog — เป้านี้เป็นบริบท ไม่ได้ใช้เป็นขาของ FV
       </p>
     </div>
   </section>
@@ -212,7 +208,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt"><b>ไม่มี Margin of Safety</b><br>ราคาปัจจุบัน $84.15 สูงกว่ามูลค่าเหมาะสม (normalized) $70 ราว 20% → ราคาสะท้อนการฟื้นตัวของวงจรไปมากแล้ว รอย่อสู่โซน MOS 20% ($56) หรือ MOS 30% ($49) จะปลอดภัยกว่าสำหรับสาย value</div>
+        <div class="txt"><b>ไม่มี Margin of Safety</b><br>ราคาปัจจุบัน {{rd:px}} สูงกว่ามูลค่าเหมาะสม (normalized) {{rd:fv}} เล็กน้อย → ราคาสะท้อนการฟื้นตัวของวงจรไปพอสมควรแล้ว รอย่อสู่โซน MOS 20% ({{rd:mos20}}) หรือ MOS 30% ({{rd:mos30}}) จะปลอดภัยกว่าสำหรับสาย value</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -234,12 +230,12 @@
     <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} (FY2026E){{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
-        <div class="top"><span>🐻 Bear</span><span>EPS +15%/ปี</span></div>
+        <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
         <div class="body">
           <div class="tgt">{{rd:sc1tgt}}</div>
           <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$2.49</span></li>
+            <li><span>EPS ปี 3</span><span>~$3.13</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>วงจรสะดุดซ้ำ / อุตสาหกรรม-ยานยนต์อ่อนตัว</span></li>
@@ -247,25 +243,25 @@
         </div>
       </div>
       <div class="col base">
-        <div class="top"><span>⚖️ Base</span><span>EPS +35%/ปี</span></div>
+        <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
         <div class="body">
           <div class="tgt">{{rd:sc2tgt}}</div>
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$4.04</span></li>
+            <li><span>EPS ปี 3</span><span>~$4.60</span></li>
             <li><span>P/E ออก</span><span>22x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
-            <li><span>สถานการณ์</span><span>ฟื้นตัวตามแผน แตะ consensus FY27 EPS $3.16 แล้วโตต่อ</span></li>
+            <li><span>สถานการณ์</span><span>ฟื้นตัวตามแผน EPS ปีที่ 3 ใกล้ consensus FY2028E $4.57</span></li>
           </ul>
         </div>
       </div>
       <div class="col bull">
-        <div class="top"><span>🚀 Bull</span><span>EPS +55%/ปี</span></div>
+        <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
         <div class="body">
           <div class="tgt">{{rd:sc3tgt}}</div>
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$6.11</span></li>
+            <li><span>EPS ปี 3</span><span>~$5.55</span></li>
             <li><span>P/E ออก</span><span>26x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>supercycle ใหม่ (edge AI/IoT + อุตสาหกรรม/ยานยนต์เร่งพร้อมกัน)</span></li>
@@ -275,7 +271,7 @@
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
       3 ปีข้างหน้ามี dispersion สูงมากตามลักษณะ cyclical semiconductor — Bear case แทบพลิกกลับผลตอบแทนทั้งหมดหากการฟื้นตัวสะดุด ขณะที่ Bull case อาศัย supercycle ใหม่ที่ยังไม่ยืนยัน
-      Base case (EPS แตะ consensus FY27 $3.16 พอดี) ให้ผลตอบแทนบวกเพียงเล็กน้อยเพราะเข้าซื้อที่ราคาเกือบเต็มมูลค่าแล้ว
+      ทุก scenario เริ่มจาก EPS ฐาน consensus FY2027E $3.65 (ปีงบสิ้น มี.ค. 2027) · Base case (EPS โตเพียง 8%/ปี ปีที่ 3 ราว $4.60 ใกล้ consensus FY2028E) ให้ผลตอบแทนบวกชัดเจน แต่เป็นมูลค่าในอนาคต — ทอนกลับเป็นมูลค่าปัจจุบันที่ 10% ต่อปีแล้วต่ำกว่าเป้าดิบมาก จึงไม่ขัดกับ FV ในหมวด 3
     </p>
   </section>
 
@@ -291,15 +287,15 @@
           <li><div><b>พอร์ตกว้าง + ฐานลูกค้ากระจาย:</b> ผู้นำ MCU (8/16/32-bit) อันดับ 3 โลก ลูกค้ากว่า 100,000 ราย ลดความเสี่ยงจากลูกค้ารายใหญ่รายเดียว</div></li>
           <li><div><b>Serial acquirer พร้อมกลับมา:</b> ประวัติควบรวมกิจการ (Microsemi, Atmel) สร้างมูลค่าระยะยาว — เมื่อ net debt ลดลงมีโอกาสเสริมพอร์ตอีกครั้ง</div></li>
           <li><div><b>ปันผลต่อเนื่อง + มุ่งลดหนี้:</b> ผู้บริหารคงเป้าหมายจ่ายปันผล พร้อมเร่งลดหนี้จากดีล M&amp;A เมื่อ FCF ฟื้นตัว</div></li>
-          <li><div><b>Consensus เห็น EPS เพิ่มเท่าตัว:</b> คาด EPS จาก FY2026E $1.64 → FY2027E $3.16 สะท้อนช่วงต้นของการฟื้นตัวที่ยังมีทางขึ้นต่อหากดำเนินตามแผน</div></li>
+          <li><div><b>Consensus เห็น EPS เพิ่มหลายเท่า:</b> คาด EPS จาก FY2026 จริง $0.22 → FY2027E $3.65 → FY2028E $4.57 สะท้อนช่วงต้นของการฟื้นตัวที่ยังมีทางขึ้นต่อหากดำเนินตามแผน</div></li>
         </ul>
       </div>
       <div class="box risk">
         <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
         <ul>
           <li><div><b>Cyclical ลึก:</b> รายได้เคยหดจาก $8.44B (FY2023) เหลือ $4.40B (FY2025) กว่า 47% ความผันผวนสูงกว่ากลุ่ม non-cyclical มาก</div></li>
-          <li><div><b>หนี้สูงจากดีล M&amp;A:</b> หนี้รวม $5.64B เทียบเงินสดเพียง $240M กดฐานทุนให้บาง ทำให้ ROE ที่รายงานผันผวนสูง</div></li>
-          <li><div><b>ความเสี่ยงจาก valuation ที่บิดเบือน:</b> TTM P/E (~385x) ทำให้อ่านค่าผิวเผินยาก หาก recovery ช้ากว่าคาด EPS normalized ที่ประเมินไว้ ($3.55) อาจไม่เกิดขึ้นจริง</div></li>
+          <li><div><b>หนี้สูงจากดีล M&amp;A:</b> หนี้รวม $5.40B เทียบเงินสดเพียง $272M (TTM) กดฐานทุนให้บาง ทำให้ ROE ที่รายงานผันผวนสูง</div></li>
+          <li><div><b>ความเสี่ยงจาก valuation ที่บิดเบือน:</b> TTM P/E (~108x) ทำให้อ่านค่าผิวเผินยาก หาก recovery ช้ากว่าคาด EPS normalized ที่ประเมินไว้ ($3.72) อาจไม่เกิดขึ้นจริง</div></li>
           <li><div><b>การแข่งขันสูง:</b> แข่งกับ Texas Instruments, STMicro, NXP, Infineon, Renesas ในตลาด MCU/analog กดดัน margin จากการแข่งขันด้านราคา</div></li>
           <li><div><b>พึ่งพาอุตสาหกรรม/ยานยนต์สูง:</b> สองกลุ่มนี้รวมกันเป็นสัดส่วนใหญ่ของรายได้ — หากภาคการผลิตโลกชะลอซ้ำ recovery อาจสะดุด</div></li>
           <li><div><b>ความเสี่ยงจีน/ภูมิรัฐศาสตร์:</b> ส่งออกชิปและซัพพลายเชนเสี่ยงต่อกฎเกณฑ์การค้าสหรัฐ-จีน กระทบทั้งดีมานด์และต้นทุน</div></li>
@@ -314,16 +310,16 @@
     <div class="verdict">
       <h2>ฟื้นตัวจริง แต่ราคาวิ่งนำหน้าพื้นฐานไปมากแล้ว</h2>
       <p>Microchip Technology เป็นผู้นำ MCU อันดับ 3 โลกและชิป analog คุณภาพสูง กำลังฟื้นจาก inventory correction ที่ลึกที่สุดครั้งหนึ่งของอุตสาหกรรม (รายได้หดจาก $8.44B เหลือ $4.40B ในสองปี)
-      สัญญาณฟื้นตัวชัดเจนขึ้นเรื่อย ๆ (consensus คาด EPS เพิ่มกว่าเท่าตัวจาก FY2026 ไป FY2027) แต่ราคาหุ้นที่วิ่งขึ้น +32% ในรอบปีได้สะท้อนการฟื้นตัวไปมากแล้ว
+      สัญญาณฟื้นตัวชัดเจนขึ้นเรื่อย ๆ (consensus คาด EPS เพิ่มหลายเท่าจาก FY2026 $0.22 ไป FY2027E $3.65) แต่ราคาหุ้นที่วิ่งขึ้นจากจุดต่ำรอบปีได้สะท้อนการฟื้นตัวไปพอสมควรแล้ว
       เมื่อเทียบกับ EPS ปกติแบบ mid-cycle (ไม่ใช่ TTM ที่บิดเบือน) จึงยังไม่มี margin of safety ที่ระดับราคาปัจจุบัน</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#d8abb1">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ff8a80">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">{{rd:analystTgt}} (+54%, Buy)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">{{rd:analystTgt}} ({{rd:analystPct}}, Buy)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> สาย value — รอย่อสู่โซน MOS 20% ($56) หรือ MOS 30% ($49) ก่อนเข้าสะสม • สาย growth/cyclical-recovery ที่เชื่อว่าวงจรฟื้นต่อเนื่องอาจถือหรือทยอยเข้าซื้อแบบ DCA
-        แต่ต้องยอมรับว่า margin of safety ปัจจุบันติดลบ ~20% และความผันผวนสูงตามวัฏจักรชิป — ติดตาม book-to-bill ratio และ guidance รายไตรมาสเป็นตัวชี้วัดหลัก
+        💡 <b>กลยุทธ์:</b> สาย value — รอย่อสู่โซน MOS 20% ({{rd:mos20}}) หรือ MOS 30% ({{rd:mos30}}) ก่อนเข้าสะสม • สาย growth/cyclical-recovery ที่เชื่อว่าวงจรฟื้นต่อเนื่องอาจถือหรือทยอยเข้าซื้อแบบ DCA
+        แต่ต้องยอมรับว่า margin of safety ปัจจุบัน {{rd:mos}} และความผันผวนสูงตามวัฏจักรชิป — ติดตาม book-to-bill ratio และ guidance รายไตรมาสเป็นตัวชี้วัดหลัก
       </div>
     </div>
   </section>
@@ -334,7 +330,7 @@
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ <b>EPS normalized/mid-cycle</b> ที่เป็นการประมาณการของผู้วิเคราะห์ ไม่ใช่ตัวเลขที่บริษัทประกาศ และอัตราการฟื้นตัวของวงจรอุตสาหกรรม/ยานยนต์ ซึ่งเป็นจุดถกเถียงหลัก
     ราคาหุ้นกลุ่มเซมิคอนดักเตอร์มีความผันผวนสูงตามวัฏจักร ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลจาก StockAnalysis.com (ราคา/EPS/งบการเงิน), Yahoo Finance (กราฟราคา), Google Finance (cross-verify ราคา)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 8 ก.ค. 2026 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2026 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
