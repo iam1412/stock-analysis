@@ -4,21 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น Nucor Corporation (NUE) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Opus 5">
+<meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"NUE","currency":"USD","price":248.38,"fairValue":162,"mos":-53.3,"upside":-34.8,"pe":19.8,"dividendYield":0.9,"roe":12.9}
+{"symbol":"NUE","currency":"USD","price":248.38,"fairValue":154,"mos":-61.3,"upside":-38,"pe":19.8,"dividendYield":0.9,"roe":12.9}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 162,
+  "fv": 154,
   "values": {
     "px": 248.38,
     "priceDate": "2026-09-18",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
-    "fvLow": 147,
-    "fvHigh": 180,
+    "fvLow": 138,
+    "fvHigh": 169,
     "eps": 12.52,
     "shares": 226900000,
     "dps": 2.24,
@@ -114,14 +114,14 @@
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ สิงหาคม 2569 · EPS วัฏจักร — ระวัง P/E TTM สูงผิดปกติ</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ 21 ก.ย. 2569 · EPS วัฏจักร — ระวัง P/E TTM สูงผิดปกติ</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">226.9M หุ้นคงเหลือ (ลดจาก 293M ปี 2021 จาก buyback)</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">{{rd:pe}}x</div><div class="d">สูงแบบ "cyclical trough" — EPS TTM $12.52 ยังต่ำกว่า mid-cycle</div></div>
-      <div class="metric"><div class="k">P/E มัธยฐาน 5 ปีงบ</div><div class="v">9.5x</div><div class="d">ช่วง 4.5–21.5x — ต่ำตอนกำไรพีค สูงตอนกำไรทรุด (กลับทิศ)</div></div>
+      <div class="metric"><div class="k">P/E มัธยฐาน 5 ปีงบ</div><div class="v">8.9x</div><div class="d">ช่วง 4.0–19.2x — ต่ำตอนกำไรพีค สูงตอนกำไรทรุด (กลับทิศ)</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ~$97.43 · มัธยฐาน 5 ปีงบ 1.73x</div></div>
 
-      <div class="metric"><div class="k">กำไรสุทธิ (TTM)</div><div class="v">$2,877M</div><div class="d">ฟื้นจากจุดต่ำ FY2025 $1,737M · พีค $7,576M (FY2022)</div></div>
+      <div class="metric"><div class="k">กำไรสุทธิ (TTM)</div><div class="v">$2,873M</div><div class="d">ฟื้นจากจุดต่ำ FY2025 $1,737M · พีค $7,576M (FY2022)</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">$12.52</div><div class="d">Q3'25–Q2'26 · normalized mid-cycle ~$15.50</div></div>
       <div class="metric"><div class="k">BVPS</div><div class="v">~$97.43</div><div class="d">ส่วนทุน ~$22.1B ÷ 226.9M หุ้น · buyback หนุนต่อเนื่อง</div></div>
       <div class="metric"><div class="k">ROE (TTM)</div><div class="v pos">~12.9%</div><div class="d">ฐานส่วนทุนปลายงวด (vendor 14.5% ใช้ส่วนทุนเฉลี่ย) · mid-cycle ~16%</div></div>
@@ -146,9 +146,9 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        หุ้น NUE พุ่งขึ้น +98.6% ในรอบปี (ก.ย. 2568 – ส.ค. 2569) จาก $135.43 สู่ $268.91
+        หุ้น NUE ขึ้นแรงในรอบปี (ต.ค. 2568 – ก.ย. 2569) จากราว $150 ปลาย ต.ค. 2568 สู่ {{rd:px}} ณ {{rd:priceDate}}
         แรงหนุนหลักคือนโยบาย Section 232 tariffs เหล็กที่เข้มข้นขึ้นในปี 2568–69 และการฟื้นตัวของกำไรจากจุดต่ำ (EPS FY2025 $7.52 → TTM $12.52)
-        ราคาเร่งแรงช่วง เม.ย.–พ.ค. 2569 (ทะลุ $250) ย่อลงใน มิ.ย. แล้วกลับขึ้นทำจุดสูงใหม่ในไตรมาส 3 ปัจจุบัน $268.91 ยังสูงกว่า Fair Value mid-cycle $162 อยู่มาก
+        ราคาเร่งแรงช่วง เม.ย.–พ.ค. 2569 (ทะลุ $250) ย่อลงใน มิ.ย. แล้วกลับขึ้นทำจุดสูงใหม่ในไตรมาส 3 (สูงสุด 52 สัปดาห์ $280.11) ราคาล่าสุดยังสูงกว่า Fair Value mid-cycle {{rd:fv}} อยู่มาก
         สะท้อนว่าตลาดกำลัง "pricing in" ซุปเปอร์ไซเคิลรอบใหม่จากโครงสร้างพื้นฐาน + tariff premium + reshoring
       </p>
     </div>
@@ -156,18 +156,14 @@
 
   <!-- ===== 3. VALUATION ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">3 วิธี · ใช้ EPS normalized mid-cycle สำหรับ cyclical</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">2 ขา · ใช้ EPS normalized mid-cycle สำหรับ cyclical</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation (EPS normalized mid-cycle)</div><div class="mdesc">EPS ปกติวัฏจักร $15.50 × P/E เป้าหมาย 10.5x — EPS mid-cycle มาจากรายได้ปกติ ~$36,000M ที่ net margin 9.8% (กำไรสุทธิ ~$3,530M) หาร 226.9M หุ้น ไม่ใช่ EPS TTM $12.52 ซึ่งยังต่ำกว่าระดับปกติ · ที่มาของตัวคูณ 10.5 เท่า อยู่ในหมายเหตุด้านล่าง</div></div>
-        <div class="mval">$163</div>
+        <div><div class="mname">1. P/E Valuation (EPS normalized mid-cycle)</div><div class="mdesc">EPS ปกติวัฏจักร $15.50 × P/E เป้าหมาย 8.9x — EPS mid-cycle มาจากรายได้ปกติ ~$36,000M ที่ net margin 9.8% (กำไรสุทธิ ~$3,530M) หาร 226.9M หุ้น ไม่ใช่ EPS TTM $12.52 ซึ่งยังต่ำกว่าระดับปกติ · ตัวคูณ 8.9 เท่า = มัธยฐาน 5 ปีงบที่วัดจริง (FY2021–25) จากประวัติของ NUE เอง ไม่ใช่ P/E ปัจจุบัน</div></div>
+        <div class="mval">$138</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. EV/EBITDA ปกติวัฏจักร (mid-cycle)</div><div class="mdesc">EBITDA ปกติ ~$5,800M (รายได้ ~$36,000M ที่ operating margin 13.0% = $4,680M บวก D&amp;A ประมาณการ ~$1,100M) คูณ EV/EBITDA เป้า 6.5 เท่า = EV $37,700M ลบหนี้สุทธิ $4,407M (หนี้ $7,099M − เงินสด $2,692M) = ส่วนทุน $33,293M หาร 226.9M หุ้น ≈ $147 · ตัวคูณอ้างอิงค่าเฉลี่ยทั้งวัฏจักร 5.1 เท่า และปีปกติล่าสุด FY2023 ที่ 6.0 เท่า</div></div>
-        <div class="mval">$147</div>
-      </div>
-      <div class="vmethod">
-        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 16.0% − g 3.0%)/(r 10.5% − g 3.0%) = 13.0/7.5 ≈ 1.73 × BVPS $97.43 — ROE ปกติ 16.0% มาจากกำไรสุทธิปกติ $3,530M ต่อส่วนทุน $22,105M · r 10.5% อิงพันธบัตรสหรัฐฯ 10 ปี (สกุล USD ตรงกับกระแสเงินสด) บวกเบี้ยความเสี่ยงของหุ้นวัฏจักรเบต้าสูง</div></div>
+        <div><div class="mname">2. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 16.0% − g 3.0%)/(r 10.5% − g 3.0%) = 13.0/7.5 ≈ 1.73 × BVPS $97.43 — ROE ปกติ 16.0% มาจากกำไรสุทธิปกติ $3,530M ต่อส่วนทุน $22,105M · r 10.5% อิงพันธบัตรสหรัฐฯ 10 ปี (สกุล USD ตรงกับกระแสเงินสด) บวกเบี้ยความเสี่ยงของหุ้นวัฏจักรเบต้าสูง (r และ g เป็นสมมติฐานของเราเอง)</div></div>
         <div class="mval">$169</div>
       </div>
       <div class="fv-box">
@@ -175,17 +171,17 @@
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        <b>หมายเหตุสำคัญ (Cyclical Steel):</b> EPS TTM ขยับจาก $10.10 เป็น $12.52 (+24%) ตามงวดงบที่เลื่อนไปเป็น Q3'25–Q2'26 — แต่ <b>มูลค่าเหมาะสมกลับลดลงเล็กน้อยจาก $168 เป็น $162</b>
-        เพราะรอบนี้ยึดกฎหุ้นวัฏจักรเข้มขึ้น: ตัวคูณต้อง anchor ที่<b>ราคาเฉลี่ยของหน้าต่าง TTM ($196.34) และมัธยฐานประวัติ ไม่ใช่ราคา spot</b> และ EPS ที่ใช้ต้องเป็นค่าปกติตลอดวัฏจักร ไม่ใช่ TTM ที่กำลังไต่ขึ้น
-        <b>EPS ปกติวัฏจักร $15.50</b> (เดิม $15.00) มาจากรายได้ปกติ ~$36,000M ที่ net margin 9.8% หาร 226.9M หุ้น — ขยับขึ้นเพียง 3% เพราะฐานรายได้ใหญ่ขึ้น ไม่ใช่เพราะ TTM สูงขึ้น
-        มาร์จิ้น 9.8% นี้สูงกว่าค่าเฉลี่ยหลังซุปเปอร์ไซเคิล (FY2023–25 = 8.3%) และสูงกว่าปีที่ดีที่สุดก่อนโควิดแล้ว จึงถือว่าให้เครดิต tariff + product mix เต็มที่แล้ว
-        <b>ที่มาของ P/E เป้าหมาย 10.5 เท่า:</b> มัธยฐาน 5 ปีงบ = 9.49 เท่า (ค่าอ้างอิงจากงบจริง) · justified P/E จากขา (r,g) = 1.73 หารด้วย ROE 16.0% ≈ 10.8 เท่า · ราคาเฉลี่ยหน้าต่าง TTM $196.34 หารด้วย EPS ปกติ $15.50 = 12.7 เท่า
-        เลือก 10.5 เท่า คือให้เครดิตการ re-rating บางส่วน แต่ไม่ยอมจ่ายเท่าที่ตลาดจ่ายจริง — ถ้าใช้ 12.7 เท่าตามตลาด มูลค่าจะเป็น ~$197 ซึ่งก็ยังต่ำกว่าราคาปัจจุบัน
-        <b>การถ่วงน้ำหนักตามตระกูลสมมติฐาน (กฎ 0.4c-bis):</b> ขา P/E ($163) กับ EV/EBITDA ($147) เป็นตระกูล "ตัวคูณอิงตลาด" เฉลี่ยได้ $155 · ขา Justified P/BV ($169) เป็นตระกูล (r,g) นับเป็นอีกหนึ่งเสียง
-        ⇒ Fair Value = ($155 + $169) หาร 2 = <b>$162</b> (กรอบ $147–$180 · ขาต่ำสุดกับสูงสุดต่างกันเพียง 1.15 เท่า จึงเฉลี่ยได้ตามกฎ)
-        <b>บริบทที่ไม่นับเป็นขา:</b> P/BV มัธยฐาน 1.73 เท่า คูณ BVPS $97.43 = $169 (เลขบังเอิญตรงกับขา 3 แต่เป็นสมอตาย ไม่ผูกกับฉากกำไร จึงใช้ยืนยันเท่านั้น) · P/FCF มัธยฐาน 7.74 เท่า บน FCF ปกติ ~$2,650M ให้เพียง ~$90/หุ้น ซึ่งบิดเบือนเพราะ Nucor อยู่ในรอบ capex หนัก (โรงรีดแผ่น West Virginia)
-        <b>ด้านตรงข้าม (เปิดเผยให้ครบ):</b> ถ้าใช้กำไรสุทธิเฉลี่ย 5 ปีงบ ($4,527M) บนหุ้นคงเหลือวันนี้ จะได้ EPS ปกติสูงถึง ~$19.95 และที่ 10.5 เท่า จะได้ ~$209 — แต่ค่าเฉลี่ยนั้นถูกดันโดยซุปเปอร์ไซเคิล 2564–65 (net margin 18%+) ซึ่งเป็นเหตุการณ์พิเศษจากภาวะขาดแคลนหลังโควิด
-        นี่คือช่องว่างหลักระหว่างรายงานฉบับนี้กับเป้านักวิเคราะห์ $283.56 ซึ่งอิง forward EPS $18.83–$21.22 (ระดับใกล้พีค ไม่ใช่ mid-cycle) ราคา $268.91 จึงแพงกว่ามูลค่าเหมาะสม ~66%
+        <b>หมายเหตุสำคัญ (Cyclical Steel):</b> รอบนี้จัดองค์ประกอบ FV ใหม่ให้ยึดกฎหุ้นวัฏจักร: ตัวคูณต้อง anchor ที่<b>มัธยฐานประวัติที่วัดจริง ไม่ใช่ราคา spot</b> และ EPS ที่ใช้ต้องเป็นค่าปกติตลอดวัฏจักร ไม่ใช่ TTM ที่กำลังไต่ขึ้น
+        <b>EPS ปกติวัฏจักร $15.50</b> มาจากรายได้ปกติ ~$36,000M ที่ net margin 9.8% หาร 226.9M หุ้น
+        มาร์จิ้น 9.8% นี้สูงกว่าค่าเฉลี่ยหลังซุปเปอร์ไซเคิล (FY2023–25 = 8.3%) จึงถือว่าให้เครดิต tariff + product mix เต็มที่แล้ว
+        <b>ที่มาของ P/E เป้าหมาย 8.9 เท่า:</b> มัธยฐาน 5 ปีงบ (FY2021–FY2025) ของราคาเฉลี่ยรายปี ÷ EPS diluted รายปี = 8.9 เท่า (ช่วง 4.0–19.2 เท่า · 5 จุดจริง) — ค่านี้มาจากประวัติของหุ้นเอง ไม่ได้มาจาก P/E ปัจจุบัน
+        ปีกำไรทรุด (FY2024–25) ได้ 18–19 เท่า ปีกำไรพีค (FY2021–22) ได้ 4–5 เท่า จึงเลือกมัธยฐานที่อยู่ตรงกลางแทนค่าปลายทางใดปลายทางหนึ่ง
+        <b>การถ่วงน้ำหนักตามตระกูลสมมติฐาน (กฎ 0.4c-bis):</b> ขา P/E ($138) เป็นตระกูล "ตัวคูณอิงตลาดที่วัดจริง" · ขา Justified P/BV ($169) เป็นตระกูล (r,g) นับเป็นอีกหนึ่งเสียง
+        ⇒ Fair Value = ($138 + $169) หาร 2 ≈ <b>{{rd:fv}}</b> (กรอบ {{rd:fvLow}}–{{rd:fvHigh}} · สองขาต่างกัน 1.22 เท่า จึงเฉลี่ยได้ตามกฎ)
+        <b>ขาที่ถอดออก:</b> ขา EV/EBITDA เดิม (ตัวคูณเป้า 6.5 เท่า อ้างค่าเฉลี่ยวัฏจักร 5.1 เท่า) ถอดออกจาก FV เพราะบล็อกตัวคูณมัธยฐานรอบนี้ไม่มีค่า EV/EBITDA ที่วัดได้ และตัวคูณนั้นตรวจซ้ำไม่ได้ · เป้านักวิเคราะห์ก็ไม่ใช่ขาของ FV (ใช้เป็นบริบทเท่านั้น)
+        <b>ความอ่อนไหวและข้อจำกัด:</b> ถ้าใช้ P/E 10.5 เท่า (justified P/E จากขา (r,g) ≈ 10.8 เท่า) ขา P/E จะเป็น ~$163 และ FV ≈ $166 · ถ้าใช้กำไรสุทธิเฉลี่ย 5 ปีงบ ($4,527M → EPS ~$19.95 บนหุ้นคงเหลือ) ที่ 8.9 เท่า ขา P/E ≈ $178 และ FV ≈ $173 (ราคาสูงกว่า FV ~44%) — ทุกกรณีราคาสูงกว่า FV เกิน 40% แต่ค่านี้ขึ้นกับ EPS ปกติ $15.50 ซึ่งเป็นประมาณการของเราเอง จึงถือเป็นค่าประมาณที่ยังยืนยันเต็มที่ไม่ได้
+        <b>ข้อสังเกตเรื่องตระกูลเดียว:</b> มีตัวคูณที่วัดจริงเพียงตระกูล P/E เดียว ส่วนอีกขาเป็นสมมติฐาน (r,g) ของเราเอง (single measured family)
+        นี่คือช่องว่างหลักระหว่างรายงานฉบับนี้กับเป้านักวิเคราะห์ ~$283.63 ซึ่งอิง forward EPS FY2026e $19.13 – FY2027e $19.77 (ระดับใกล้พีค ไม่ใช่ mid-cycle) · ราคาปัจจุบัน {{rd:px}} คิดเป็น ~16.0 เท่าของ EPS ปกติ $15.50 เทียบมัธยฐานประวัติ 8.9 เท่า
         แหล่งข้อมูล: StockAnalysis.com (https://stockanalysis.com/stocks/NUE/) · Yahoo Finance (https://finance.yahoo.com/quote/NUE/) · Google Finance (https://www.google.com/finance/quote/NUE:NYSE)
       </p>
     </div>
@@ -205,14 +201,15 @@
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
-          <span style="text-align:right">$283.56<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$283.63<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน $268.91 <b>สูงกว่า Fair Value mid-cycle $162 ราว 66%</b> และอยู่เหนือกรอบบน $180 มาก แสดงว่าตลาดกำลัง "premium pricing"
+        ราคาปัจจุบัน {{rd:px}} <b>สูงกว่า Fair Value mid-cycle {{rd:fv}} มาก</b> (MOS {{rd:mos}}) และอยู่เหนือกรอบบน {{rd:fvHigh}} แสดงว่าตลาดกำลัง "premium pricing"
         บนความคาดหวังว่าวัฏจักรเหล็กรอบนี้จะยาวนานกว่าปกติ (tariff protection + infrastructure spending + reshoring)
-        จุดซื้อ MOS 20% อยู่ที่ $129.60 และ MOS 30% ที่ $113.40 ซึ่งต่ำกว่าราคาปัจจุบันมาก แต่เป็นระดับที่เพิ่งเห็นจริงเมื่อ ก.ย. 2568 ($135.43)
-        เป้าเฉลี่ยนักวิเคราะห์ $283.56 (16 ราย) สูงกว่า FV ของเรา เพราะใช้ EPS forward $18.83–$21.22 ซึ่งเป็นระดับใกล้พีค ไม่ใช่ mid-cycle
+        จุดซื้อ MOS 20% อยู่ที่ {{rd:mos20}} และ MOS 30% ที่ {{rd:mos30}} ซึ่งต่ำกว่าราคาปัจจุบันมาก แต่เป็นระดับที่ใกล้กับราคาช่วง ต.ค. 2568 (ราวสิ้นเดือน ~$150)
+        เป้าเฉลี่ยนักวิเคราะห์ ~$283.63 (Yahoo Finance, 16 ราย; StockAnalysis $285.19) สูงกว่า FV ของเรา เพราะใช้ EPS forward FY2026e $19.13 – FY2027e $19.77 ซึ่งเป็นระดับใกล้พีค ไม่ใช่ mid-cycle
+        (เป้านี้ใช้เป็นบริบทตรวจความสอดคล้องเท่านั้น ไม่ได้เป็นขาของ FV)
       </p>
     </div>
   </section>
@@ -226,7 +223,7 @@
         <div class="txt">ราคาสูงกว่า Fair Value mid-cycle — ไม่มี Margin of Safety · Priced for perfection</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value (ห่างจากราคา ~52%)</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value (ห่างจากราคา ~50%)</div></div>
         <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก deep value (ต้องรอ downcycle)</div></div>
         <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม mid-cycle</div></div>
       </div>
@@ -284,12 +281,12 @@
         </div>
       </div>
     </div>
-    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      <b>คำเตือน cyclical:</b> ผลตอบแทน base case −31.8% (≈ −12.0%/ปี) และ bear case −50.4% (≈ −20.8%/ปี) สะท้อนความเสี่ยงของ cyclical ที่ซื้อ "บน peak tariff optimism"
+<p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      <b>คำเตือน cyclical:</b> ผลตอบแทน base case {{rd:sc2ret}} และ bear case {{rd:sc1ret}} สะท้อนความเสี่ยงของ cyclical ที่ซื้อ "บน peak tariff optimism"
       ถ้าราคาเหล็กย่อลงสู่ปกติหรือ tariff ถูกผ่อนปรน EPS จะหดลงเร็ว และ P/E ก็จะหดตาม (double compression) — สังเกตว่า Bear ใช้ P/E ออก 14 เท่า <i>สูงกว่า</i> Base ที่ 11 เท่าโดยตั้งใจ
-      เพราะหุ้นวัฏจักรมักได้ตัวคูณสูงตอนกำไรทรุด (FY2025 EPS $7.52 ได้ P/E 21.5 เท่า) การจับ EPS ต่ำคู่กับตัวคูณต่ำจะเป็นการลงโทษซ้ำสองที่ไม่สมจริง
-      ในทางกลับกัน bull case (+27.7% หรือ ≈ +8.5%/ปี) ทำได้ถ้า infrastructure spending เร่งตัว + tariff ยืนยาว + demand จาก data center/grid + reshoring จริง — แต่แม้ในฉากที่ดีที่สุดก็ยังชนะพันธบัตรไม่ขาด
-      <b>นักลงทุนแบบ value ควรรอโอกาสเข้าใกล้ FV ($147–$180) หรือต่ำกว่า</b> ซึ่งจะเกิดขึ้นเมื่อ steel cycle ปรับฐาน
+      เพราะหุ้นวัฏจักรมักได้ตัวคูณสูงตอนกำไรทรุด (FY2025 EPS $7.52 ได้ P/E 18.2 เท่า เทียบ FY2023 ที่ 8.9 เท่า) การจับ EPS ต่ำคู่กับตัวคูณต่ำจะเป็นการลงโทษซ้ำสองที่ไม่สมจริง
+      ในทางกลับกัน bull case ({{rd:sc3ret}}) ทำได้ถ้า infrastructure spending เร่งตัว + tariff ยืนยาว + demand จาก data center/grid + reshoring จริง
+      <b>นักลงทุนแบบ value ควรรอโอกาสเข้าใกล้ FV ({{rd:fvLow}}–{{rd:fvHigh}}) หรือต่ำกว่า</b> ซึ่งจะเกิดขึ้นเมื่อ steel cycle ปรับฐาน
     </p>
   </section>
 
@@ -316,7 +313,7 @@
           <li><b>Overcapacity Global:</b> จีน อินเดีย ยังมีกำลังผลิตส่วนเกิน ต้องพึ่ง tariff protection ตลอดเวลา</li>
           <li><b>ราคาเศษเหล็ก (Scrap):</b> ต้นทุนหลักของ EAF คือเศษเหล็ก ราคาผันผวนตาม cycle รถยนต์/อุตสาหกรรม กดทอน margin</li>
           <li><b>ดอกเบี้ยสูง + อสังหาซบเซา:</b> demand เหล็ก rebar/bar สำหรับก่อสร้างลดลงตามตลาดอสังหา</li>
-          <li><b>Valuation ไม่มี Cushion:</b> P/E TTM 21.5 เท่า บน cyclical EPS ที่กำลังฟื้น (เทียบมัธยฐาน 5 ปีงบ 9.5 เท่า) = ไม่มีส่วนลด downside รุนแรงถ้า earnings ไม่ฟื้นตามคาด</li>
+          <li><b>Valuation ไม่มี Cushion:</b> P/E TTM {{rd:pe}} เท่า บน cyclical EPS ที่กำลังฟื้น (เทียบมัธยฐาน 5 ปีงบ 8.9 เท่า) = ไม่มีส่วนลด downside รุนแรงถ้า earnings ไม่ฟื้นตามคาด</li>
           <li><b>รอบ capex หนัก:</b> FCF (TTM) เหลือ $1,583M จาก $4,898M ในปีงบ 2566 และ FY2025 ติดลบ −$188M จากการสร้างโรงรีดแผ่น West Virginia — บีบพื้นที่ buyback/ปันผลในระยะสั้น อีกทั้งจังหวะซื้อหุ้นคืนช้าลงชัดเจน (หุ้นถัวเฉลี่ย 231M → 230M)</li>
         </ul>
       </div>
@@ -329,16 +326,16 @@
     <div class="verdict">
       <h2>Nucor — ธุรกิจเหล็กที่ดีที่สุดในสหรัฐฯ แต่ราคาแพงเกิน mid-cycle fair value</h2>
       <p>Nucor เป็นบริษัทที่ดีที่สุดในอุตสาหกรรมเหล็กสหรัฐฯ — mini-mill EAF ต้นทุนต่ำ, buyback เชิงรุก, ปันผล Aristocrat 50+ ปี และได้ประโยชน์เต็มจาก tariff protection
-      กำไรกำลังฟื้นจริง: EPS (TTM) ขึ้นจาก $10.10 เป็น $12.52 (+24%) รายได้ +17.2% YoY และ net margin กลับมาที่ 8.0% จากจุดต่ำ 5.3% ในปีงบ 2568
-      อย่างไรก็ตาม ราคาปัจจุบัน $268.91 <b>สูงกว่า Fair Value mid-cycle ~$162 ถึง ~66%</b> โดยที่ตลาดกำลัง "buy the tariff super-cycle story" บน EPS ที่ยังฟื้นไม่เต็มที่ (TTM $12.52 vs normalized $15.50)
-      ในมุมมอง value investing: ไม่มี Margin of Safety เลย base case ผลตอบแทน 3 ปีติดลบ ~32% และแม้แต่ bull case ก็ให้เพียง ~8.5%/ปี ความเสี่ยงขาลงจาก policy reversal หรือ steel cycle peak มีนัยสำคัญ</p>
+      กำไรกำลังฟื้นจริง: EPS (TTM) $12.52 เทียบ FY2025 $7.52 (+66%) รายได้ TTM +17.2% YoY และ net margin กลับมาที่ 8.0% จากจุดต่ำ 5.3% ในปีงบ 2568
+      อย่างไรก็ตาม ราคาปัจจุบัน {{rd:px}} อยู่เหนือ Fair Value mid-cycle {{rd:fv}} มาก (MOS {{rd:mos}}) โดยที่ตลาดกำลัง "buy the tariff super-cycle story" บน EPS ที่ยังฟื้นไม่เต็มที่ (TTM $12.52 vs normalized $15.50)
+      ในมุมมอง value investing: ไม่มี Margin of Safety เลย base case ผลตอบแทน 3 ปีติดลบ และแม้แต่ bull case ก็ให้เพียงราว {{rd:sc3ret}} ความเสี่ยงขาลงจาก policy reversal หรือ steel cycle peak มีนัยสำคัญ</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ef9a9a">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$283.56 (Buy · 16 นักวิเคราะห์)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$283.63 (Buy · 16 นักวิเคราะห์)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> รอโอกาสเข้าใกล้ FV ($147–$180) หรือต่ำกว่า หลัง steel cycle ปรับฐาน · ถ้าถือแล้ว — monitor tariff news (Section 232) กับราคาเหล็กแผ่น HRC เป็นหลัก · สำหรับผู้เชื่อใน super cycle ยาว ≥5 ปี อาจรับ premium นี้ได้ แต่ต้องรับ downside risk เต็มที่
+        💡 <b>กลยุทธ์:</b> รอโอกาสเข้าใกล้ FV ({{rd:fvLow}}–{{rd:fvHigh}}) หรือต่ำกว่า หลัง steel cycle ปรับฐาน · ถ้าถือแล้ว — monitor tariff news (Section 232) กับราคาเหล็กแผ่น HRC เป็นหลัก · สำหรับผู้เชื่อใน super cycle ยาว ≥5 ปี อาจรับ premium นี้ได้ แต่ต้องรับ downside risk เต็มที่
       </div>
     </div>
   </section>
@@ -350,7 +347,7 @@
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
     ราคา ณ {{rd:priceDate}} · ที่มา: StockAnalysis.com (https://stockanalysis.com/stocks/NUE/) · Yahoo Finance (https://finance.yahoo.com/quote/NUE/) · Google Finance (https://www.google.com/finance/quote/NUE:NYSE)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 17 สิงหาคม 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
