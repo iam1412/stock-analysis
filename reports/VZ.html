@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น Verizon Communications (VZ) — Stock Analysis Dashboard</title>
 <!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง (Opus→"Claude Opus 4.8", Sonnet→"Claude Sonnet 4.6") — gate E28 บังคับ -->
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"VZ","currency":"USD","price":48.09,"fairValue":48.38,"mos":0.6,"upside":0.6,"pe":11.7,"dividendYield":5.88,"roe":19.4}
+{"symbol":"VZ","currency":"USD","price":48.09,"fairValue":44.07,"mos":-9.1,"upside":-8.4,"pe":12.5,"dividendYield":5.88,"roe":15.8}
 </script>
 <!--
   report-data: ธีมสี + ข้อมูลกราฟ/gauge ต่อหุ้น (build เอาไปวาด)  ดู schema เต็มใน CLAUDE.md ข้อ 9
@@ -16,16 +16,16 @@
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 48.38,
+  "fv": 44.07,
   "values": {
     "px": 48.09,
     "priceDate": "2026-09-18",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
-    "fvLow": 44.41,
-    "fvHigh": 53.52,
-    "eps": 4.11,
-    "shares": 4179999999.9999995,
+    "fvLow": 39.55,
+    "fvHigh": 52.76,
+    "eps": 3.84,
+    "shares": 4154775202,
     "dps": 2.83,
     "bvps": 24.85
   },
@@ -64,8 +64,8 @@
     "highlight": [0, 5]
   },
   "gauge": {
-    "min": 33,
-    "max": 53,
+    "min": 29,
+    "max": 55,
     "fairLabelTop": true
   }
 }
@@ -101,21 +101,21 @@
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งวด Q1 FY2026 (สิ้นสุด มี.ค. 2569) + TTM</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">TTM ล่าสุด (StockAnalysis) — ข้อมูลเชิงธุรกิจบางรายการอ้าง Q1/2569</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">$201.0B</div><div class="d">หุ้นคงเหลือ ~4.18B หุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM $4.11 (GAAP)</div></div>
-      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~9.0x</div><div class="d">กรอบ 7–11x historically</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$199.6B</div><div class="d">หุ้นคงเหลือ ~4.15B หุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM $3.84 (GAAP diluted)</div></div>
+      <div class="metric"><div class="k">P/E มัธยฐาน 5 ปี</div><div class="v">~10.3x</div><div class="d">FY2021–2025 กรอบ 9.0–13.4x</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ~$24.85</div></div>
 
-      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">$17.34B</div><div class="d">Net margin ~12.5%</div></div>
-      <div class="metric"><div class="k">EPS ปรับปรุง FY2026E</div><div class="v">~$4.97</div><div class="d">Guidance $4.95–$4.99 (+5–6% YoY)</div></div>
+      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">$16.17B</div><div class="d">Net margin ~11.6%</div></div>
+      <div class="metric"><div class="k">EPS ปรับปรุง FY2026E</div><div class="v">~$5.03</div><div class="d">ฉันทามติ analyst (non-GAAP) • ไม่ใช้เป็นฐาน FV</div></div>
       <div class="metric"><div class="k">BVPS</div><div class="v">~$24.85</div><div class="d">Equity เฉลี่ย Q1/69 $103.9B</div></div>
-      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~19.4% / 5.6%</div><div class="d">ROE annualized Q1/69</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~15.8%</div><div class="d">ROE TTM (StockAnalysis)</div></div>
 
-      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$139.2B</div><div class="d">Q1/69 รายได้รวม $34.4B (+2.9% YoY)</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$138.9B</div><div class="d">โต +1.4% YoY (TTM)</div></div>
       <div class="metric"><div class="k">Wireless Service Rev.</div><div class="v">$20.6B/ไตรมาส</div><div class="d">Mobility+Broadband รวม $22.9B (+1.6%)</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~5.88%</div><div class="d">$2.83/หุ้น/ปี • เพิ่มต่อเนื่อง 21 ปี</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~5.88%</div><div class="d">$2.83/หุ้น/ปี • ขึ้นปันผลต่อเนื่องหลายปี</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">~0.24</div><div class="d">ผันผวนต่ำกว่าตลาดมาก (defensive)</div></div>
     </div>
   </section>
@@ -133,40 +133,38 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ราคาแกว่งในกรอบ $39.74–$50.20 ตลอด ~1 ปีที่ผ่านมา จุดต่ำสุดช่วง ต.ค. 2568 ($39.74) ก่อนไต่ขึ้นแรงหลังปิดดีลควบรวม
-        Frontier Communications (20 ม.ค. 2569) และประกาศขึ้นเป้า EPS ปรับปรุงปี 2569 ทำจุดสูงสุดที่ $50.20–$50.62 ช่วง
-        ก.พ.–มี.ค. 2569 ก่อนย่อกลับลงมาที่ $42.34–$42.56 ช่วง มิ.ย.–ก.ค. 2569 จากความกังวลภาระหนี้เพิ่มขึ้นหลังควบรวม
-        และแรงกดดันการแข่งขันจาก Fixed Wireless/Starlink — ผลตอบแทนรอบปี (จุดแรก $42.76 ก.ค. 2568 → จุดล่าสุด $42.56
-        ก.ค. 2569) ≈ −0.5% แทบทรงตัว
+        ราคาแกว่งในกรอบ $39.74–$50.20 (ราคาปิดรายเดือน) ตลอด ~1 ปีที่ผ่านมา จุดต่ำสุดช่วง ต.ค. 2568 ($39.74) ไต่ขึ้นเป็น $50.14–$50.20
+        ช่วง ก.พ.–มี.ค. 2569 ก่อนย่อลงที่ $42.34 ใน มิ.ย. 2569 แล้วฟื้นกลับมา $50.02 ใน ส.ค. 2569 และปิดเดือน ก.ย. ที่ $48.09
+        (ป้าย % รอบปีอ้างจากจุดแรกถึงจุดล่าสุดของกราฟ) — สาเหตุการเคลื่อนไหวรายเดือนไม่ได้ตรวจซ้ำกับแหล่งข่าวรอบนี้
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">2 ตระกูลสมมติฐาน</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $4.97 × P/E เป้าหมาย ~9.5x — ใกล้เคียงค่าเฉลี่ยกลุ่ม telecom (VZ ซื้อขาย 7–11x historically)</div></div>
-        <div class="mval">$47.22</div>
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS $3.84 (TTM GAAP) × P/E เป้าหมาย 10.3x — มัธยฐานย้อนหลัง FY2021–2025 ของ VZ เอง (5 จุด ช่วง 9.0–13.4x) ไม่ได้อิงจาก P/E ปัจจุบัน</div></div>
+        <div class="mval">$39.55</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล $2.83 × (1+g); g 2%, r 8.5% (สะท้อน beta ต่ำ ~0.24 แต่ปรับเพิ่มเผื่อความเสี่ยงหนี้หลังควบรวม Frontier)</div></div>
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล $2.83 × (1+g); g 2%, r 8.5% (สมมติฐานของเราเอง เผื่อความเสี่ยงหนี้) — ตระกูล (r,g) เดียวกับข้อ 3 นับเป็นเสียงเดียว</div></div>
         <div class="mval">$44.41</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 16% − g 2%)/(r 8.5% − g 2%) ≈ 2.15x × BVPS $24.85</div></div>
-        <div class="mval">$53.52</div>
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 15.8% − g 2%)/(r 8.5% − g 2%) ≈ 2.12x × BVPS $24.85 (ตระกูลเดียวกับ DDM)</div></div>
+        <div class="mval">$52.76</div>
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        DDM ให้ค่าต่ำสุดเพราะปันผล VZ โตช้า (g ~2%/ปี สอดคล้องประวัติขึ้น 21 ปีติดต่อกันแต่ทีละไม่กี่%) ขณะที่ Justified
-        P/BV ให้ค่าสูงสุดเพราะใช้ ROE ปกติ 16% (อนุรักษ์นิยมกว่า ROE รายงาน 19.4% ที่ยังไม่รวมผลกระตุ้นเต็มที่จาก Frontier)
-        P/E บนฐาน EPS ปรับปรุงปี 2569 ที่บริษัทเพิ่งปรับเป้าขึ้นอยู่ตรงกลาง — FV เฉลี่ย $48.38 ใกล้เคียงเป้านักวิเคราะห์เฉลี่ย
-        (~$51) และสมเหตุสมผลกับสถานะหุ้นปันผลสูง เติบโตต่ำแต่มั่นคง
+        FV = เฉลี่ยของ 2 ตระกูล: (1) P/E มัธยฐานประวัติ $39.55 และ (2) ตระกูล (r,g) ชุดเดียว = ค่าเฉลี่ย DDM $44.41 กับ Justified P/BV $52.76 = $48.58
+        (นับเป็นเสียงเดียว) → FV ≈ {{rd:fv}} · ความไว: ถ้าใช้เฉพาะ P/E ประวัติ FV ต่ำกว่านี้ ถ้าใช้เฉพาะตระกูล (r,g) สูงกว่า ·
+        เปลี่ยน r ±0.5 จุดจะขยับ DDM ราว ±$3–4 · เป้านักวิเคราะห์และ EPS ปรับปรุง (non-GAAP) ไม่ใช้เป็นขาของ FV
+        จึงต่างจากรอบก่อนที่ใช้ EPS ปรับปรุง $4.97 × 9.5x
       </p>
     </div>
   </section>
@@ -184,13 +182,13 @@
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
-          <span style="text-align:right">$51.00<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$51.58<br><small>เป้าเฉลี่ย Analyst</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน $42.56 ต่ำกว่ามูลค่าเหมาะสม $48.38 อยู่ราว 12% และต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ ($51.00, Buy consensus
-        จาก 26 สำนัก) ชัดเจน — ยังไม่ถึงโซน MOS 20–30% ที่น่าสนใจเข้าสะสมเต็มที่ แต่ปันผล 6.65% ช่วยลดความเสี่ยงด้านราคา
+        ราคาปัจจุบัน {{rd:px}} สูงกว่ามูลค่าเหมาะสม {{rd:fv}} เล็กน้อย ({{rd:mos}}) แต่ต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ ($51.58, Buy consensus
+        จาก 22–25 สำนัก) — ยังไม่ถึงโซน MOS 20–30% แต่ปันผล ~5.9% ช่วยลดความเสี่ยงด้านราคา
       </p>
     </div>
   </section>
@@ -201,7 +199,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">ไม่มี MOS — ราคาอยู่ที่มูลค่าเหมาะสมพอดี ยังไม่เข้าโซนน่าสะสม</div>
+        <div class="txt">ราคาสูงกว่ามูลค่าเหมาะสมเล็กน้อย — ไม่มี MOS ยังไม่เข้าโซนน่าสะสม</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -220,16 +218,16 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $42.56 • EPS ฐาน ~$4.97 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน $3.84 (TTM GAAP) • ผลตอบแทนราคาไม่รวมปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS -2%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$37.42</div>
-          <div class="ret neg">−12.1% (3 ปี)</div>
+          <div class="tgt">$32.53</div>
+          <div class="ret neg">−32.4% (3 ปี)</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$4.68</span></li>
-            <li><span>P/E ออก</span><span>8.0x</span></li>
+            <li><span>EPS ปี 3</span><span>~$3.61</span></li>
+            <li><span>P/E ออก</span><span>9.0x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~$8.49</span></li>
             <li><span>สถานการณ์</span><span>แข่งขันดุจาก FWA/Starlink กด wireless service revenue ติดลบ, การผนวก Frontier ล่าช้า/ต้นทุนบานปลาย</span></li>
           </ul>
@@ -238,11 +236,11 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +4%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$53.11</div>
-          <div class="ret pos">+45.5% (3 ปี)</div>
+          <div class="tgt">$44.49</div>
+          <div class="ret neg">−7.5% (3 ปี)</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$5.59</span></li>
-            <li><span>P/E ออก</span><span>9.5x</span></li>
+            <li><span>EPS ปี 3</span><span>~$4.32</span></li>
+            <li><span>P/E ออก</span><span>10.3x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~$8.83</span></li>
             <li><span>สถานการณ์</span><span>Wireless service revenue โต 3–4%/ปีตามแผน, ผนวก Frontier สำเร็จ ลดหนี้สู่เป้า 2.0–2.25x ภายในปี 2570</span></li>
           </ul>
@@ -251,11 +249,11 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$68.87</div>
-          <div class="ret pos">+83.4% (3 ปี)</div>
+          <div class="tgt">$58.05</div>
+          <div class="ret pos">+20.7% (3 ปี)</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$6.26</span></li>
-            <li><span>P/E ออก</span><span>11.0x</span></li>
+            <li><span>EPS ปี 3</span><span>~$4.84</span></li>
+            <li><span>P/E ออก</span><span>12.0x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~$9.19</span></li>
             <li><span>สถานการณ์</span><span>Fiber (Frontier+Fios) เร่งเติบโตเกินคาด, FWA broadband net adds แข็งแกร่งต่อเนื่อง, deleverage เร็วกว่าแผน</span></li>
           </ul>
@@ -263,8 +261,8 @@
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      สมมติฐานอิงแนวโน้มปัจจุบัน: postpaid phone net adds กลับมาเป็นบวกครั้งแรกในรอบ 13 ปี (Q1/2569 +55K), broadband
-      net adds 341K/ไตรมาส (FWA 214K + fiber 127K) และ management guidance EPS ปรับปรุงปี 2569 ที่ $4.95–$4.99
+      สมมติฐานอิงแนวโน้มปัจจุบัน: EPS GAAP TTM $3.84 (ลด 10.7% YoY) เป็นฐาน · P/E ออกอิงมัธยฐานประวัติ 10.3x (ช่วง 9.0–13.4x) ·
+      ข้อมูล Q1/2569 (postpaid phone net adds +55K, broadband net adds 341K) มาจากรอบวิเคราะห์ก่อน ยังไม่ตรวจซ้ำกับ Q2 · ผู้บริหารระบุว่า postpaid phone net adds อยู่ระดับบนของ guidance (หัวข่าว StockAnalysis)
     </p>
   </section>
 
@@ -277,9 +275,9 @@
         <ul>
           <li><b>Frontier fiber ผนวกสำเร็จ:</b> ปิดดีล $20B เมื่อ 20 ม.ค. 2569 เพิ่มฐานลูกค้า fiber และขยาย footprint เป็น ~30M passings (เป้าระยะกลาง 40–50M) เร่งการเติบโตของ fiber broadband</li>
           <li><b>Postpaid phone net adds กลับมาเป็นบวก:</b> Q1/2569 +55K ราย ครั้งแรกในไตรมาสแรกในรอบ 13 ปี สะท้อนกลยุทธ์ myPlan และโปรโมชั่นเริ่มได้ผล</li>
-          <li><b>ปันผลสูง มั่นคง เพิ่มต่อเนื่อง 21 ปี:</b> yield ~6.65% รองรับ downside risk และดึงดูดนักลงทุนสาย income</li>
+          <li><b>ปันผลสูง มั่นคง:</b> yield ~5.9% ($2.83/หุ้น) รองรับ downside risk และดึงดูดนักลงทุนสาย income</li>
           <li><b>Broadband (FWA + fiber) โตแรง:</b> net adds 341K/ไตรมาสล่าสุด รวมผู้ใช้ broadband กว่า 16.8M ราย เป็นเครื่องยนต์เติบโตใหม่นอกเหนือมือถือ</li>
-          <li><b>Guidance ปรับขึ้น:</b> ผู้บริหารปรับเป้า EPS ปรับปรุงปี 2569 ขึ้นเป็น $4.95–$4.99 (โต 5–6%) หลังผลประกอบการ Q1 แข็งแกร่งกว่าคาด</li>
+          <li><b>Guidance/ฉันทามติ:</b> ฉันทามติ EPS ปรับปรุง FY2026 ~$5.03 และผู้บริหารระบุ postpaid phone net adds อยู่ระดับบนของ guidance</li>
         </ul>
       </div>
       <div class="box risk">
@@ -299,18 +297,18 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>หุ้นปันผลสูงเสถียร มี MOS ปานกลาง — เหมาะกับนักลงทุนสาย income ที่รับความเสี่ยงหนี้เพิ่มจาก Frontier ได้</h2>
+      <h2>หุ้นปันผลสูงเสถียร แต่ราคาสูงกว่ามูลค่าเหมาะสมเล็กน้อย — เหมาะกับสาย income ที่รับความเสี่ยงหนี้ได้</h2>
       <p>Verizon อยู่ระหว่างการเปลี่ยนผ่านจากผู้นำ wireless แบบดั้งเดิมสู่ผู้เล่นครบวงจร wireless+fiber+FWA หลังปิดดีลควบรวม
       Frontier Communications ที่ขยาย fiber footprint อย่างมีนัยสำคัญ แม้หนี้จะเพิ่มขึ้นในระยะสั้น แต่กระแสเงินสดจากธุรกิจ
-      หลักที่มั่นคงและปันผล 6.65% ที่เพิ่มต่อเนื่อง 21 ปีติดต่อกัน ทำให้ความเสี่ยงด้านราคาจำกัด ราคาปัจจุบันมี MOS ~12%
-      เทียบมูลค่าเหมาะสม เหมาะกับการทยอยสะสมระยะยาวมากกว่าเก็งกำไรระยะสั้น</p>
+      หลักที่มั่นคงและปันผล ~5.9% ทำให้ความเสี่ยงด้านราคาจำกัด แต่ราคาปัจจุบัน {{rd:px}} สูงกว่ามูลค่าเหมาะสม {{rd:fv}}
+      ({{rd:mos}}) จึงยังไม่มีส่วนเผื่อ เหมาะกับการรอจังหวะและถือระยะยาวมากกว่าเก็งกำไรระยะสั้น</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$51.00 (Buy)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$51.58 (Buy)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ทยอยสะสมสำหรับพอร์ตสาย income/ปันผล โดยเฉพาะช่วงราคาต่ำกว่า $40–41 (MOS ≥20%) จะน่าสนใจมากขึ้น
+        💡 <b>กลยุทธ์:</b> รอจังหวะสำหรับพอร์ตสาย income/ปันผล โดยเฉพาะช่วงราคาต่ำกว่า {{rd:mos20}} (MOS ≥20%) จะน่าสนใจมากขึ้น
         ติดตามความคืบหน้าการลดหนี้หลังควบรวม Frontier และแนวโน้ม postpaid phone net adds ในไตรมาสถัดไปเป็นตัวชี้วัดสำคัญ
       </div>
     </div>
@@ -322,7 +320,7 @@
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลจาก StockAnalysis.com, Yahoo Finance, CNBC, Verizon Investor Relations (Q1 2026 earnings release), รายงาน 10-Q ก.พ.–เม.ย. 2569
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 6 กรกฎาคม 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 22 กันยายน 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
