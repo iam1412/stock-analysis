@@ -536,6 +536,16 @@ reject('W14', addCard('4. EV/EBITDA', 'EBITDA $4.0B (mid-point FY2026 $3.6B guid
     reject('E41', setCardD(PE_LABEL, `EPS GAAP ${cur}${epsFor(peShown * 1.6)} • Adj. TTM ~${cur}${epsFor(peShown)}`), 'E41: การ์ดประกาศ 2 ฐาน (GAAP/Adj.) และค่าที่โชว์ตรงฐานหนึ่ง → เงียบ (เคส PWR)');
     // ป้ายเชิงประวัติ ("P/E เฉลี่ย ~5 ปี" 475 การ์ดในคลัง) ไม่ใช่ ราคา÷EPS ปัจจุบัน — ห้ามฟ้อง
     reject('E41', setCardD(PE_HIST, `EPS (TTM) ${cur}${epsFor(peShown * 3)}`), 'E41: การ์ด P/E เชิงประวัติ (เฉลี่ย/มัธยฐาน) → ไม่ใช่ ราคา÷EPS ต้องเงียบ');
+    // W1: P/E "วัดได้" ของปีงบ (ราคาเฉลี่ยปีนั้น ÷ EPS ปีนั้น) ไม่ใช่ spot ÷ EPS — ตัวตรวจต้องเงียบ (ตัวซ่อมก็ข้าม · เคส TIDLOR)
+    const asMeasured = (h) => setCardD('P/E FY2025 (วัดได้)', `EPS FY2025 ${cur}${epsFor(peShown * 3)}`)(
+      h.replace(`<div class="k">${PE_HIST}</div>`, '<div class="k">P/E FY2025 (วัดได้)</div>'));
+    reject('E41', asMeasured, 'E41: การ์ด "P/E FY2025 (วัดได้)" = ตัวคูณที่วัดจากราคาเฉลี่ยของปี ไม่ใช่ ราคา÷EPS → ต้องเงียบ');
+    reject('E41', (h) => setCardD('Forward P/E (FY2026E)', `EPS FY2026E ${cur}${epsFor(peShown)}`)(
+      h.replace(`<div class="k">${PE_HIST}</div>`, '<div class="k">Forward P/E (FY2026E)</div>').replace(/(<div class="k">Forward P\/E \(FY2026E\)<\/div>\s*<div class="v[^"]*"[^>]*>)[^<]*/, `$1~${peShown}x`)),
+      'E41: Forward P/E (FY2026E) ที่ตรงกับ ราคา÷EPS ประมาณการ → เงียบ (ไม่ถูกจัดเป็น "วัดได้")');
+    expect('E41', 'error', (h) => setCardD('Forward P/E (FY2026E)', `EPS FY2026E ${cur}${epsFor(peShown * 1.5)}`)(
+      h.replace(`<div class="k">${PE_HIST}</div>`, '<div class="k">Forward P/E (FY2026E)</div>').replace(/(<div class="k">Forward P\/E \(FY2026E\)<\/div>\s*<div class="v[^"]*"[^>]*>)[^<]*/, `$1~${peShown}x`)),
+      'E41: Forward P/E (FY2026E) ค้าง (ราคา÷EPS ประมาณการ ≠ ที่โชว์) → ต้องจับ (ไม่ถูกข้ามเป็น "วัดได้")');
     // stock-meta.pe = กระจกของค่าที่โชว์ → ต้องยืนบนฐาน EPS ที่ไฟล์ประกาศ (เคส ARM/JBL/STX/FORM ที่การ์ดถูกแต่ sm ค้าง)
     expect('E41', 'error', (h) => mutJson('stock-meta', (d) => { d.pe = peShown * 2; })(setCardD(PE_LABEL, `EPS (TTM) ${cur}${epsFor(peShown)}`)(h)),
       'E41: stock-meta.pe ค้างเป็น 2 เท่าของฐานที่ไฟล์ประกาศ → ต้องจับ (เคส ARM/JBL/STX/FORM)');

@@ -43,10 +43,20 @@ const MCAP_ULP = 0.55;
 // ราคาที่ implied จากการ์ด (Market Cap ÷ หุ้น) ต้องอยู่ในย่านเดียวกับราคาปัจจุบัน — หลุดย่าน = คนละฐาน
 // (ADR/ADS · หุ้นบางคลาส · cap ของทั้งกลุ่มแต่หุ้นเฉพาะคลาส) ⇒ **ไม่ตรวจ ไม่เขียน** อย่าเดา
 const MCAP_BAND = [0.4, 2.5];
+// values.shares (v2) ต้องห่างจำนวนหุ้นที่การ์ดพิมพ์ไม่เกินนี้ ถึงจะใช้แทนเลขที่ปัด — ต่ำกว่า TOL_MCAP_REL เพื่อให้ E43 (อ่านเลขที่พิมพ์) ไม่ฟ้องผลที่ซ่อม
+const VSHARES_BAND = 0.025;
 
 // ป้ายการ์ด P/E ที่ **ไม่ใช่** ราคา÷EPS ปัจจุบัน — ตัวคูณอ้างอิงเชิงประวัติ/เพื่อน/วัฏจักร
 // (สำรวจ 908 ใบ 19 ส.ค. 69: "P/E เฉลี่ย ~5 ปี" 475 การ์ด · "P/E มัธยฐาน 5 ปีงบ" · "P/E Mid-Cycle (norm.)")
 const PE_LABEL_SKIP = /เฉลี่ย|มัธยฐาน|median|average|\bavg\b|peer|mid-?cycle|ย้อนหลัง|historic|ประวัติ|เป้า|target|กรอบ|ช่วง/i;
+// ป้าย P/E ที่ "วัดได้" ของปีงบที่ผ่านมาแล้ว (ราคาเฉลี่ยของปีนั้น ÷ EPS ปีนั้น) — ไม่ใช่ ราคา spot ÷ EPS ⇒ ห้ามซ่อมตามราคา
+// ("P/E FY2025 (วัดได้)" · "P/E measured" · "ราคาเฉลี่ย ÷ EPS FY2025") · ★ คำที่ **ชัดเจนเท่านั้น**: ป้าย "FY2025"/"ปีงบ" เปล่า ๆ
+// กำกวม — วัด 22 ก.ย. 69: ZM "P/E GAAP (FY2026)" · WAT "P/E (FY2025 organic)" · MRK "P/E (EPS FY2025 ปีงบเต็ม)" คือ spot ÷ EPS ของปีนั้น
+// (ตัวหลักของใบ + stock-meta.pe ยืนบนการ์ดนั้น) ต้องซ่อมตามราคาต่อ — ข้ามแล้ว heal-derived ทั้งคลังไม่เป็น 0 และ E41 ฟ้อง FMC/WAT/WDC
+// (ห้ามนับป้ายด้วย regex — "\bE\b" ชน "P/E" · พิสูจน์ด้วยเทสใน test/update-prices-test.js บล็อก W1)
+const PE_MEASURED = /วัดได้|measured|ราคาเฉลี่ย\s*[÷/]/i;
+const PE_FORWARD = /forward|fwd|ล่วงหน้า|NTM/i;   // ป้ายที่มีคำเหล่านี้ = spot ÷ EPS ประมาณการ → ซ่อมต่อแม้มีคำว่า "วัดได้" ปนมา
+const isPeSkipped = (label) => PE_LABEL_SKIP.test(label) || (PE_MEASURED.test(label) && !PE_FORWARD.test(label));
 // ป้ายการ์ด (E42) / บริบทนำหน้าในเนื้อความ (W15) ที่บอกว่าเลขก้อนนี้คือ "ราคาเป้า"
 const TGT_LABEL_STRICT = /เป้า(?:ราคา|เฉลี่ย|นักวิเคราะห์)?|analyst|consensus|price\s*target/i;
 // "$<เป้า> (+X%)" — เลขเงิน + วงเล็บที่ขึ้นต้นด้วย % ที่มีเครื่องหมาย
@@ -108,6 +118,17 @@ function parseShares(text) {
 const nearMcap = (calc, shown, numStr, scale) =>
   Math.abs(calc - shown) <= Math.max(TOL_MCAP_REL * Math.abs(shown), MCAP_ULP * Math.pow(10, -decOf(numStr)) * (scale || 1));
 
+/**
+ * จำนวนหุ้นของไฟล์ v2 จาก `report-data.values.shares` (ค่าเต็ม ไม่ปัดเหมือนที่การ์ดพิมพ์ "~889.5M หุ้น")
+ * ⇒ null สำหรับ v1 (ไม่มี values) → เดิมทุก byte · ทำงานบน view ที่ render แล้วได้ เพราะ report-data ยังอยู่ในไฟล์
+ * (GAP-013: เดิม patchDerived อ่านแต่ตัวเลขที่ปัดในการ์ด ⇒ ตั้ง values.shares แล้ว Market Cap ไม่เปลี่ยน)
+ */
+function v2Shares(html) {
+  const rd = RM.readReportData(html).data;
+  const v = rd && rd.v === 2 && rd.values && rd.values.shares;
+  return typeof v === 'number' && isFinite(v) && v >= 1e5 ? v : null;
+}
+
 /** การ์ด Market Cap ที่ "ตรวจได้" → { label, shown, num, scale, shares } (ข้ามเมื่ออ่านไม่ได้ / คนละฐาน) */
 function mcapCards(html, price) {
   const out = [];
@@ -117,7 +138,7 @@ function mcapCards(html, price) {
     const label = clean(m[1]);
     if (!MCAP_LABEL.test(label) || PE_LABEL_SKIP.test(label)) continue;
     const a = parseAmount(m[3]);
-    const shares = parseShares(m[5]);
+    const shares = parseShares(m[5]);   // ตัวตรวจ (E43) อ่านเลขที่การ์ดพิมพ์ — ตัวซ่อม v2 ใช้ values.shares เฉพาะที่ห่างเลขนี้ ≤ VSHARES_BAND
     if (!a || !shares) continue;
     const ratio = a.value / shares / price;
     if (!(price > 0) || ratio < MCAP_BAND[0] || ratio > MCAP_BAND[1]) continue;   // คนละฐาน → เงียบ
@@ -242,7 +263,7 @@ function peCards(html) {
   let m;
   while ((m = re.exec(html))) {
     const label = clean(m[1]);
-    if (!/P\/E/i.test(label) || PE_LABEL_SKIP.test(label)) continue;
+    if (!/P\/E/i.test(label) || isPeSkipped(label)) continue;
     const vm = clean(m[3]).match(/(-?[0-9]+(?:\.[0-9]+)?)\s*x/i);
     if (!vm) continue;
     const shown = parseFloat(vm[1]);
@@ -796,11 +817,12 @@ function patchDerived(html, price, opts) {
   if (!(price > 0)) return { html, changes };
   let out = html;
   const allEps = [];
+  const vShares = v2Shares(html);   // GAP-013 · v1 = null
 
   // 1) การ์ด P/E → ราคา ÷ EPS ของการ์ดนั้น (หลายฐาน → เลือกฐานที่ค่าเดิมยืนอยู่ ไม่สลับฐานให้)
   out = out.replace(cardRe(), (m, k, vOpen, vBody, tail, dBody) => {
     const label = clean(k);
-    if (!/P\/E/i.test(label) || PE_LABEL_SKIP.test(label)) return m;
+    if (!/P\/E/i.test(label) || isPeSkipped(label)) return m;
     const eps = epsBasesOf(dBody);
     if (!eps.length) return m;
     let done = false;
@@ -852,11 +874,20 @@ function patchDerived(html, price, opts) {
   out = out.replace(cardRe(), (m, k, vOpen, vBody, tail, dBody) => {
     const label = clean(k);
     if (!MCAP_LABEL.test(label) || PE_LABEL_SKIP.test(label)) return m;
-    const a = parseAmount(vBody), shares = parseShares(dBody);
-    if (!a || !shares) return m;
-    const ratio = a.value / shares / price;
+    const a = parseAmount(vBody), printed = parseShares(dBody);
+    if (!a || !printed) return m;
+    const ratio = a.value / printed / price;
     if (ratio < MCAP_BAND[0] || ratio > MCAP_BAND[1]) return m;
-    const want = fmtLikeNum(price * shares / a.scale, a.num);
+    let want = fmtLikeNum(price * printed / a.scale, a.num);
+    let shares = printed;
+    // GAP-013: v2 → values.shares (ค่าเต็ม ไม่ปัด) เขียนแทนเลขที่การ์ดพิมพ์ปัดไว้ · เงื่อนไข 2 ข้อ:
+    //  (1) values.shares ต้องห่างเลขที่การ์ดพิมพ์ ≤ VSHARES_BAND (คนละฐาน/ADR/หลายคลาส = ไม่เชื่อ · และไม่ทำให้ E43 ที่อ่านเลขที่พิมพ์ฟ้อง)
+    //  (2) การ์ดที่ตรงกับ ราคา × เลขที่พิมพ์ อยู่แล้ว (สดตามกติกาเดิม) ไม่เขียนทับด้วยเศษปัดของ values.shares ⇒ ไม่ churn ทั้งคลัง
+    //      · ค้างเมื่อไรจึงเขียนจาก values.shares
+    if (vShares && Math.abs(vShares - printed) / vShares <= VSHARES_BAND && want !== a.num) {
+      shares = vShares;
+      want = fmtLikeNum(price * shares / a.scale, a.num);
+    }
     if (want === a.num || !isFinite(parseFloat(want))) return m;
     const body = vBody.replace(/([0-9][0-9,]*(?:\.[0-9]+)?)/, want);
     if (body === vBody) return m;
@@ -1118,7 +1149,7 @@ function fwdDeadAnchor(desc, mval, baseEps, anchored) {
 
 module.exports = {
   TOL_PE_REL, TOL_PE_ABS, TOL_TGT_PP, TOL_MCAP_REL, MCAP_ULP, MCAP_BAND,
-  PE_LABEL_SKIP, TGT_LABEL_STRICT, PCT_NOT_VS_PRICE, QUOTE_CONTEXT, MONEY_PCT_SRC, CARD_SRC,
+  PE_LABEL_SKIP, isPeSkipped, v2Shares, TGT_LABEL_STRICT, PCT_NOT_VS_PRICE, QUOTE_CONTEXT, MONEY_PCT_SRC, CARD_SRC,
   MCAP_LABEL, PS_LABEL, SCALES, scaleOf, parseAmount, parseShares, mcapCards, psCards, nearMcap,
   fmtLikeNum, cardRe, epsBasesOf, peCards, targetCells, basisFor, nearPE, patchDerived,
   // ช่องสรุป "ส่วนต่างจากราคา" — f17/f18 ของ field-manifest · W06 + ตัวเขียน patchDerived#11 (ระยะ 1 ข้อ D)
