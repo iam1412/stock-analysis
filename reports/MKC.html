@@ -4,37 +4,37 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น McCormick &amp; Company (MKC) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"MKC","currency":"USD","price":48.72,"fairValue":58,"mos":16,"upside":19,"pe":16.2,"dividendYield":3.94,"roe":12.94}
+{"symbol":"MKC","currency":"USD","price":48.72,"fairValue":65.3,"mos":25.4,"upside":34,"pe":15.8,"dividendYield":3.94,"roe":14.2}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 58,
+  "fv": 65.3,
   "values": {
     "px": 48.72,
     "priceDate": "2026-09-18",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
-    "fvLow": 57,
-    "fvHigh": 59.85,
-    "eps": 3,
-    "shares": 268000000,
+    "fvLow": 57.05,
+    "fvHigh": 73.54,
+    "eps": 3.09,
+    "shares": 268851552,
     "dps": 1.92,
-    "bvps": 17.4,
-    "baseEps": 3,
+    "bvps": 26.02,
+    "baseEps": 3.09,
     "scenarios": [
       {
-        "tgt": 60.66,
+        "tgt": 62.57,
         "div": 5.76
       },
       {
-        "tgt": 71.4,
+        "tgt": 73.6,
         "div": 5.76
       },
       {
-        "tgt": 83.16,
+        "tgt": 85.64,
         "div": 5.76
       }
     ],
@@ -82,7 +82,7 @@
   },
   "gauge": {
     "min": 42,
-    "max": 74,
+    "max": 78,
     "fairLabelTop": false
   }
 }
@@ -109,7 +109,7 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ $44.82 / $78.03<br>
+        กรอบ 52 สัปดาห์ $44.82 / $72.41<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / McCormick Investor Relations / Macrotrends
       </div>
     </div>
@@ -117,20 +117,20 @@
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569 · FY พ.ย. 2568</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ 21 ก.ย. 2569 · FY พ.ย. 2568 · Q2 FY26 (พ.ค. 2569)</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">268M shares</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">Adj EPS $3.00 TTM</div></div>
-      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">25–30x</div><div class="d">de-rated จากระดับ premium</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">~2.8x</div><div class="d">BVPS ~$17.40</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">268.85M shares (รวมทุกคลาส)</div></div>
+      <div class="metric"><div class="k">P/E (FY26E)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS FY26E $3.09 · TTM GAAP 8.1x บิดเบือนจากกำไรพิเศษ</div></div>
+      <div class="metric"><div class="k">P/E มัธยฐาน ~5 ปี</div><div class="v">31.1x</div><div class="d">FY21–25 ช่วง 25.1–35.5x · de-rate ต่อเนื่อง</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~1.9x</div><div class="d">BVPS ~$26.02</div></div>
 
-      <div class="metric"><div class="k">กำไรสุทธิ FY25</div><div class="v">~$803M</div><div class="d">adj EPS $3.00 (+1.7% YoY)</div></div>
-      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$3.00</div><div class="d">Adjusted EPS · GAAP ~$2.48</div></div>
-      <div class="metric"><div class="k">BVPS</div><div class="v">~$17.40</div><div class="d">สุทธิจาก goodwill สูง acquisitions</div></div>
-      <div class="metric"><div class="k">ROE / ROIC</div><div class="v pos">~12.9% / 7.1%</div><div class="d">ROA ~4.5% · goodwill กดค่า</div></div>
+      <div class="metric"><div class="k">กำไรสุทธิ FY25</div><div class="v">~$789M</div><div class="d">EPS (GAAP dil.) $2.93 (+0.3% YoY)</div></div>
+      <div class="metric"><div class="k">EPS FY2025 (GAAP)</div><div class="v">~$2.93</div><div class="d">TTM GAAP $6.01 รวมกำไรพิเศษ Q1 FY26 (EPS $3.77) — ไม่ใช่ฐานปกติ</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$26.02</div><div class="d">Q2 FY26 (StockAnalysis) · goodwill ~$6.3B</div></div>
+      <div class="metric"><div class="k">ROE (FY25)</div><div class="v pos">~14.2%</div><div class="d">TTM 24.7% รวมกำไรพิเศษ · goodwill กดค่า</div></div>
 
-      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~$6.84B</div><div class="d">+1.8% YoY · FY25</div></div>
-      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">37.9%</div><div class="d">Operating Margin 15.7% · FCF/Share $2.75</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~$7.39B</div><div class="d">+9.5% YoY · TTM (FY25 $6.84B)</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">38.9%</div><div class="d">TTM · Operating Margin 16.5% · FCF $1.02B (~$3.79/หุ้น)</div></div>
       <div class="metric"><div class="k">เงินปันผล</div><div class="v">~3.94%</div><div class="d">$1.92/ปี · Dividend King 102 ปีต่อเนื่อง</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">0.40</div><div class="d">defensive staple · ผันผวนต่ำ</div></div>
     </div>
@@ -149,25 +149,21 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ราคา MKC ร่วงลง −26.2% ในรอบปี จาก $70.63 (ก.ค. 68) เหลือ $52.18 (มิ.ย. 69) · ช่วง ก.ค.–ก.พ. 69 ราคาแกว่งในกรอบ $61–$71 ก่อนดิ่งแรงใน มี.ค. 69 เหลือ $50.44 หลังบริษัทปรับ guidance ลง (volume miss ใน Consumer segment และแรงกดดัน tariff) · จุดต่ำสุดรอบปี $47.37 ใน พ.ค. 69 (highlight) ก่อนฟื้นบางส่วนกลับมา $52 · ราคาปัจจุบันอยู่ต่ำกว่า Fair Value $58 และต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ $60
+        ราคา MKC ลดลงจาก $64.16 (ต.ค. 68) · ช่วง ต.ค. 68–ก.พ. 69 แกว่งในกรอบ $62–$71 (สูงสุด $71.04 ก.พ. 69) ก่อนดิ่งแรงใน มี.ค. 69 เหลือ $50.44 · จุดต่ำสุดรอบปี $47.37 ใน พ.ค. 69 (highlight) ก่อนแกว่ง $50–$54 และมาอยู่ที่ {{rd:px}} ใน ก.ย. 69 · ช่วงหลังมีข่าวดีลเข้าซื้อกิจการอาหารของ Unilever (ดูหมวด 7) และ regulator อังกฤษเปิดตรวจสอบ — ไม่ยืนยันว่าเป็นสาเหตุเดียวของราคา · ราคาปัจจุบันอยู่ต่ำกว่า Fair Value {{rd:fv}} และต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ $60.23
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation (Adjusted EPS)</div><div class="mdesc">Adj EPS $3.00 × P/E เป้าหมาย ~19x — ใช้ 19x (ต่ำกว่าค่าเฉลี่ย 5 ปีที่ 25-30x สะท้อนความระมัดระวัง)</div></div>
-        <div class="mval">$57.00</div>
+        <div><div class="mname">1. P/E Valuation (GAAP EPS FY2025)</div><div class="mdesc">EPS $2.93 (FY2025) × P/E 25.1x — 25.1x คือ P/E จริงของ FY2025 (ราคาเฉลี่ยปี $73.60 ÷ EPS $2.93) ซึ่งต่ำสุดใน 5 FY ที่วัดได้ (มัธยฐาน 31.1x ช่วง 25.1–35.5x) · เลือกจุดต่ำสุดเพราะ P/E ลดลงต่อเนื่อง และดีลควบรวม Unilever Foods ทำให้ฐานเปลี่ยน — มาจากประวัติ ไม่ใช่จาก P/E ปัจจุบัน</div></div>
+        <div class="mval">$73.54</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. Forward P/E (FY26E)</div><div class="mdesc">FY26E EPS $3.15 × P/E เป้าหมาย ~19x — สะท้อนการฟื้นตัว volume + de Mexico acquisition</div></div>
-        <div class="mval">$59.85</div>
-      </div>
-      <div class="vmethod">
-        <div><div class="mname">3. DDM / Gordon Growth</div><div class="mdesc">D₁ = $1.92×1.04; g 4%, r 7.5% → $1.9968÷0.035 ≈ $57.05 (Dividend King จ่าย 102 ปีต่อเนื่อง)</div></div>
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = $1.92×1.04; g 4%, r 7.5% (สมมติฐานของเราเอง · คนละตระกูลกับ P/E) → $1.9968÷0.035 ≈ $57.05 (Dividend King จ่าย 102 ปีต่อเนื่อง)</div></div>
         <div class="mval">$57.05</div>
       </div>
       <div class="fv-box">
@@ -175,7 +171,7 @@
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ทั้ง 3 วิธีให้ค่าใกล้เคียงกัน ($57–$60) ซึ่งสอดคล้องกับเป้านักวิเคราะห์ ~$60 · P/E 19x อนุรักษ์นิยมกว่าค่าเฉลี่ยประวัติศาสตร์ (25–30x) แต่เหมาะสมในภาวะ higher-for-longer rates + organic growth ชะลอ · DDM หนุน thesis Dividend King (yield 3.7% + g 4% = total return ~7.7% สมเหตุสมผลสำหรับ defensive staple)
+        2 วิธีต่างตระกูล (P/E ตัวคูณมาจากประวัติจริง · DDM ใช้ r/g ที่เราสมมติ) ให้ค่า $57.05–$73.54 ห่างกัน ~1.3 เท่า จึงเฉลี่ยได้ตามกฎ · ขา P/E อ่อนไหวมาก: ถ้าใช้ 20x แทน 25.1x มูลค่ารวมจะเหลือ ~$57.8 (ส่วนเผื่อเหลือราว 16 เปอร์เซ็นต์) ⇒ ผลขึ้นกับว่าตลาดคืน P/E ให้แค่ไหนหลังดีลควบรวม · ไม่ใช้ EPS TTM $6.01 เพราะรวมกำไรพิเศษ Q1 FY26 (~$1.0B ตามงบรายไตรมาส StockAnalysis — ยังไม่ได้ตรวจสาเหตุจากเอกสารบริษัท) · เป้าเฉลี่ยนักวิเคราะห์ $60.23 (15 ราย) ไม่ใช่ขาของ FV เป็นแค่จุดเทียบ · DDM หนุน thesis Dividend King (yield ~3.9% + g 4%)
       </p>
     </div>
   </section>
@@ -192,13 +188,13 @@
         <div class="scale">
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$60.23<br><small>เป้าเฉลี่ย Analyst</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
-          <span style="text-align:right">$60<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน $52.18 อยู่ต่ำกว่า Fair Value $58 ประมาณ $5.82 (MOS +10%) · ราคาผ่านโซน MOS 20% ($46.40) ไปแล้วในช่วง พ.ค. 69 ($47.37) · ขณะนี้อยู่ในโซน "น่าสนใจ" ระหว่าง MOS 20% กับ Fair Value · นักวิเคราะห์ 15 รายเฉลี่ยเป้า $60 (+9% จากราคาปัจจุบัน) สอดคล้องกับ FV ของเรา
+        ราคาปัจจุบัน {{rd:px}} อยู่ต่ำกว่า Fair Value {{rd:fv}} (MOS {{rd:mos}}) · ขณะนี้อยู่ในช่วงระหว่างโซน MOS 30% ({{rd:mos30}}) กับ MOS 20% ({{rd:mos20}}) · ราคาต่ำสุดรอบปี $47.37 ใน พ.ค. 69 · นักวิเคราะห์ 15 รายเฉลี่ยเป้า $60.23 (ช่วง $52–$75) ต่ำกว่า FV ของเรา เพราะขา P/E ของเราใช้ตัวคูณประวัติ 25.1x
       </p>
     </div>
   </section>
@@ -209,7 +205,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">MOS ระดับพอใช้ — ราคาต่ำกว่า Fair Value แต่ยังไม่ถึงโซน deep value · เหมาะทยอยสะสมสำหรับ income investor ที่ต้องการ yield 3.7%</div>
+        <div class="txt">MOS ระดับดี (≥20%) — แต่ FV พึ่งตัวคูณ P/E 25.1x ที่ไวต่อสมมติฐาน (ที่ 20x ส่วนเผื่อเหลือราว 16 เปอร์เซ็นต์) จึงเหมาะทยอยสะสม ไม่ใช่ all-in · yield ~3.9%</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -236,7 +232,7 @@
           <div class="tgt">{{rd:sc1tgt}}</div>
           <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$3.37</span></li>
+            <li><span>EPS ปี 3</span><span>~$3.48</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>growth ชะลอ tariff กด margin</span></li>
@@ -249,7 +245,7 @@
           <div class="tgt">{{rd:sc2tgt}}</div>
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$3.57</span></li>
+            <li><span>EPS ปี 3</span><span>~$3.68</span></li>
             <li><span>P/E ออก</span><span>20x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>volume ฟื้น + pricing + de Mexico</span></li>
@@ -262,7 +258,7 @@
           <div class="tgt">{{rd:sc3tgt}}</div>
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$3.78</span></li>
+            <li><span>EPS ปี 3</span><span>~$3.89</span></li>
             <li><span>P/E ออก</span><span>22x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>re-rating + GLP-1 tailwind + acquisitions</span></li>
@@ -271,7 +267,7 @@
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      การคาดการณ์อิง Adj EPS ฐาน $3.00 (FY25) · ปันผลสมมติ $1.92/ปีคงที่ (รวม 3 ปี ~$5.76) · P/E ออกต่ำกว่าค่าเฉลี่ยประวัติศาสตร์ (25–30x) เพื่อความอนุรักษ์นิยม · แม้ Bear case ยังให้ผลตอบแทน +16% ซึ่งสะท้อน downside protection ของ Dividend King และ defensive staple ที่มี moat ด้านแบรนด์
+      การคาดการณ์อิง EPS ฐาน $3.09 (FY26E consensus StockAnalysis) · ปันผลสมมติ $1.92/ปีคงที่ (รวม 3 ปี ~$5.76 · ไม่รวมใน % ผลตอบแทน) · P/E ออก 18/20/22x ต่ำกว่ามัธยฐานย้อนหลัง 31.1x (ช่วง 25.1–35.5x) เพื่อความอนุรักษ์นิยม · Bear case ให้ {{rd:sc1ret}} จาก P/E ปัจจุบันที่ต่ำ · ยังไม่รวมผลของดีล Unilever Foods (ทั้ง EPS dilution/หนี้/synergies)
     </p>
   </section>
 
@@ -282,12 +278,12 @@
       <div class="box cat">
         <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
         <ul>
-          <li><b>Dividend King 102 ปี:</b> จ่ายปันผลต่อเนื่องไม่ขาดกว่าศตวรรษ yield 3.7% ดึงดูด income investor และสะท้อน financial discipline สูง</li>
+          <li><b>Dividend King 102 ปี:</b> จ่ายปันผลต่อเนื่องไม่ขาดกว่าศตวรรษ yield ~3.9% ดึงดูด income investor และสะท้อน financial discipline สูง</li>
           <li><b>Flavor Solutions B2B sticky:</b> สัญญาระยะยาวกับผู้ผลิตอาหาร/ร้านอาหารชั้นนำ switching cost สูง รายได้มั่นคง (~42% ของ revenue)</li>
           <li><b>Volume recovery + pricing:</b> volume กลับมาเป็นบวกหลังปีที่ผ่านมา pricing power จากแบรนด์ strength รับต้นทุน commodity</li>
           <li><b>GLP-1 / Health trend tailwind:</b> ผู้บริโภคที่ใช้ GLP-1 ยังต้องการ flavor เข้มข้น (กินน้อยลงแต่อยากอร่อย) = demand หนุน McCormick</li>
-          <li><b>de Mexico acquisition:</b> เข้าซื้อ Cholula de Mexico หนุน Q2 FY26 +16.7% ขยาย Latin America market share</li>
-          <li><b>De-rating opportunity:</b> P/E ดิ่งจาก 25–30x เหลือ 17x (ต่ำสุดรอบ 10 ปี) ขณะ fundamental ยังแข็ง = window สะสมสำหรับ value investor</li>
+          <li><b>Mexico acquisition + Flavor Solutions:</b> ยอดขาย Q2 FY26 (ไตรมาสสิ้น พ.ค. 69) $1,937M +16.7% YoY (StockAnalysis) · ข่าว 25 มิ.ย. 69 ระบุแรงหนุนจาก Mexico acquisition และ Flavor Solutions</li>
+          <li><b>De-rating opportunity:</b> P/E {{rd:pe}}x บน EPS FY26E เทียบ 25.1–35.5x ใน FY21–25 (มัธยฐาน 31.1x) ขณะรายได้ยังโต = window สะสมสำหรับ value investor (ถ้าดีลควบรวมไม่ทำให้ฐานกำไรเปลี่ยนมาก)</li>
         </ul>
       </div>
       <div class="box risk">
@@ -296,7 +292,8 @@
           <li><b>Organic growth ช้า ~2–3%:</b> market saturation ในตลาดพัฒนาแล้ว + consumer staples growth ต่ำเชิงโครงสร้าง อาจไม่ justify P/E re-rating</li>
           <li><b>ต้นทุน commodity / Tariff:</b> พริกไทย, วานิลลา, pepper มีราคาผันผวน + tariff นำเข้าวัตถุดิบกดดัน gross margin</li>
           <li><b>Private-label competition:</b> Consumer segment เผชิญ private-label ราคาถูกกว่า โดยเฉพาะในช่วง inflation ที่ผู้บริโภค trade down</li>
-          <li><b>Financial leverage จาก acquisitions:</b> Net Debt ~$4.7B, goodwill สูง (กว่า 50% ของ total assets) จำกัด flexibility ถ้า rates ยังสูง</li>
+          <li><b>Financial leverage จาก acquisitions:</b> Net Debt ~$4.6B (Q2 FY26), goodwill ~$6.3B จาก total assets ~$16.5B (~38%) จำกัด flexibility ถ้า rates ยังสูง</li>
+          <li><b>ดีลอาหาร Unilever:</b> ตามพาดหัวข่าว StockAnalysis (ก.ย. 69) McCormick วางแผนซื้อกิจการอาหารส่วนใหญ่ของ Unilever คาดปิดปี 2027 เป้า synergies $600M แต่ regulator อังกฤษเปิดตรวจสอบ (16 ก.ย. 69) · เงื่อนไข/การเงินของดีลยังตรวจจากเอกสารต้นทางไม่ได้ในรอบนี้ และตัวเลขในรายงานเป็น standalone</li>
           <li><b>Consumer confidence:</b> ภาวะเศรษฐกิจชะลอ อาจกด foodservice demand ส่งผลต่อ Flavor Solutions segment</li>
         </ul>
       </div>
@@ -308,14 +305,14 @@
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
       <h2>McCormick: Dividend King ถูกกดราคา — Value/Income Play คุณภาพสูง</h2>
-      <p>McCormick ผู้นำเครื่องเทศ/flavor ระดับโลกที่มีแบรนด์แข็ง (McCormick, French's, Frank's RedHot, Cholula) ถูกกดราคา −26% ในรอบปีจากความกังวล volume + tariff จน P/E ดิ่งเหลือ 17x (ต่ำกว่าค่าเฉลี่ย 25–30x มาก) ขณะที่ fundamental ยังแข็ง: Dividend King 102 ปี, Flavor Solutions B2B sticky, FCF แข็งแกร่ง ($2.75/share) และ volume กลับมาเป็นบวก · Fair Value $58 (MOS +10%) อิงทั้ง P/E, Forward P/E และ DDM ให้ค่าใกล้กัน ($57–$60) · นักวิเคราะห์ 15 ราย เป้าเฉลี่ย $60 (+9%) สอดคล้องกัน</p>
+      <p>McCormick ผู้นำเครื่องเทศ/flavor ระดับโลกที่มีแบรนด์แข็ง (McCormick, French's, Frank's RedHot, Cholula) ราคาลดลงในรอบปี · EPS GAAP TTM $6.01 บิดเบือนจากกำไรพิเศษ Q1 FY26 จึงใช้ EPS FY2025 $2.93 และ FY26E $3.09 · fundamental: Dividend King 102 ปี, Flavor Solutions B2B sticky, FCF TTM ~$1.02B · Fair Value {{rd:fv}} (MOS {{rd:mos}}) เฉลี่ยจาก P/E (ตัวคูณต่ำสุดที่วัดได้ 25.1x) กับ DDM ต่างตระกูลกัน แต่ไวต่อตัวคูณ (ที่ 20x ส่วนเผื่อเหลือราว 16 เปอร์เซ็นต์) · ดีลอาหาร Unilever ยังไม่รวมในตัวเลข · นักวิเคราะห์ 15 ราย เป้าเฉลี่ย $60.23 ต่ำกว่า FV</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$60 (Moderate Buy)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$60.23 (Buy: 4 Strong Buy · 3 Buy · 8 Hold)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ทยอยสะสมที่ราคาต่ำกว่า $58 สำหรับ value/income investor ที่ต้องการ yield 3.7% + upside 11–37% ใน 1–3 ปี · โซน deep value อยู่ที่ &lt;$46.40 (MOS 20%) ซึ่งผ่านมาแล้วในพ.ค. 69 · ไม่เหมาะสำหรับ growth investor ที่คาด P/E re-rating เร็ว เพราะ organic growth ยังช้า ~2–3%
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมที่ราคาต่ำกว่า {{rd:fv}} สำหรับ value/income investor ที่ต้องการ yield ~3.9% · โซน MOS 20% อยู่ที่ {{rd:mos20}} และ MOS 30% ที่ {{rd:mos30}} (ราคาปัจจุบันอยู่ในโซนนี้) · ไม่เหมาะสำหรับ growth investor ที่คาด P/E re-rating เร็ว เพราะ organic growth ยังช้า ~2–3% และดีลควบรวมยังมีความไม่แน่นอน
       </div>
     </div>
   </section>
@@ -326,7 +323,7 @@
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลอ้างอิง: StockAnalysis.com / Yahoo Finance / McCormick Investor Relations / Macrotrends · ราคา ณ {{rd:priceDate}}
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 26 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
