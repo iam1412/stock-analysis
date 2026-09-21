@@ -4,17 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น โรงพยาบาลพระราม 9 (PR9) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"PR9","currency":"THB","price":19.6,"fairValue":20.84,"mos":6,"upside":6.3,"pe":19.03,"dividendYield":2.55,"roe":14}
+{"symbol":"PR9","currency":"THB","price":19.3,"fairValue":20.84,"mos":7.4,"upside":8,"pe":18.74,"dividendYield":2.59,"roe":14}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
   "fv": 20.84,
   "values": {
-    "px": 19.6,
-    "priceDate": "2026-09-18",
+    "px": 19.3,
+    "priceDate": "2026-09-21",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
     "fvLow": 17.42,
@@ -70,7 +70,7 @@
       ["มิ.ย.26", 17.7],
       ["ก.ค.26", 17.9],
       ["ส.ค.26", 19],
-      ["ก.ย.26", 19.6]
+      ["ก.ย.26", 19.3]
     ],
     "min": 14,
     "max": 24,
@@ -107,7 +107,7 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}} (FY2568 Q1/2569)<br>
-        กรอบ 52 สัปดาห์ ฿15.70 – ฿25.25<br>
+        กรอบ 52 สัปดาห์ ฿15.70 – ฿24.20<br>
         ที่มา: Yahoo Finance, SET Factsheet, StockAnalysis.com
       </div>
     </div>
@@ -117,8 +117,8 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">อิงงบ FY2025 · Q1/2026 ล่าสุด</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">฿15,411 ล้าน</div><div class="d">786.3 ล้านหุ้น · SET</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~19.03x</div><div class="d">EPS TTM ฿1.03</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿15,176 ล้าน</div><div class="d">786.3 ล้านหุ้น · SET</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~18.74x</div><div class="d">EPS TTM ฿1.03</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~22x</div><div class="d">ช่วง 18–28x (ขึ้นลงตามรอบ)</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ฿7.47 (FY2568)</div></div>
 
@@ -129,7 +129,7 @@
 
       <div class="metric"><div class="k">รายได้ FY2568</div><div class="v neu">฿5,341 ล้าน</div><div class="d">+13.9% YoY · สถิติสูงสุด</div></div>
       <div class="metric"><div class="k">Gross Margin</div><div class="v">36.6%</div><div class="d">ปรับขึ้นจาก 34.3% ปีก่อน</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.55%</div><div class="d">฿0.50/หุ้น · Ex-div เม.ย. 69</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.59%</div><div class="d">฿0.50/หุ้น · Ex-div เม.ย. 69</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">~0.7</div><div class="d">ผันผวนต่ำกว่าตลาด SET</div></div>
     </div>
   </section>
@@ -149,7 +149,7 @@
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
         ราคาเริ่มต้นปีที่ ฿21.97 (ม.ค. 2568) สูงสุดรอบปีที่ ฿22.46 (ก.พ. 2568) ก่อนปรับลงแรงตาม Sentiment ตลาดโรงพยาบาลไทยในช่วง Q1–Q2 2568 ที่มีแรงกดดันจากการแข่งขันและต้นทุน
         จุดต่ำสุดที่ ฿15.70 (52W Low) ก่อนฟื้นตัวช่วง Q4 ตามผลประกอบการ FY2568 ที่แข็งแกร่ง กำไรโต 15% กลุ่มผู้ป่วยอาหรับเติบโตต่อเนื่อง
-        ปัจจุบัน ฿18.20 ต่ำกว่า Fair Value ฿20.84 ประมาณ 12.7% ซึ่งถือว่ามี Margin of Safety พอควร
+        ปัจจุบัน {{rd:px}} ต่ำกว่า Fair Value {{rd:fv}} ซึ่งถือว่ามี Margin of Safety พอควร
       </p>
     </div>
   </section>
@@ -178,7 +178,7 @@
         วิธี P/E ให้ค่าสูงสุด (฿23.10) สะท้อน Premium ที่นักลงทุนยินดีจ่ายสำหรับการเติบโตของโรงพยาบาลเอกชนพรีเมียม
         วิธี EV/EBITDA (฿22.00) เหมาะสมสำหรับธุรกิจที่มี Asset-heavy และกระแสเงินสดมั่นคง
         วิธี Justified P/BV (฿17.42) ให้ค่าอนุรักษ์นิยม เนื่องจาก ROE ปัจจุบัน 14% ยังต่ำกว่า peer ระดับ premium อย่าง BDMS/BH
-        มูลค่าเฉลี่ย ฿20.84 จึงสะท้อนความเป็นจริงที่ PR9 เป็นหุ้นคุณภาพ แต่ยังต้องพิสูจน์ว่าสามารถรักษา ROE ≥15% ได้อย่างยั่งยืน
+        มูลค่าเฉลี่ย {{rd:fv}} จึงสะท้อนความเป็นจริงที่ PR9 เป็นหุ้นคุณภาพ แต่ยังต้องพิสูจน์ว่าสามารถรักษา ROE ≥15% ได้อย่างยั่งยืน
       </p>
     </div>
   </section>
@@ -196,14 +196,14 @@
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿22.58<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿22.92<br><small>เป้าเฉลี่ย Analyst</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน ฿18.20 อยู่ใต้ Fair Value ฿20.84 ประมาณ 12.7% สอดคล้องกับ Consensus ของ 13 นักวิเคราะห์ที่ประเมิน "Strong Buy"
-        เป้าเฉลี่ย ฿22.58 (Upside 24%) บ่งชี้ว่าตลาดยังมองว่า PR9 ถูก Undervalue อยู่ในขณะนี้
-        โซน MOS 20% ที่ ฿16.67 ผ่านมาแล้วในช่วง ส.ค.-ก.ย. 2568 ซึ่งเป็นโอกาสสะสมที่ดี
+        ราคาปัจจุบัน {{rd:px}} อยู่ใต้ Fair Value {{rd:fv}} สอดคล้องกับ Consensus ของ 14 นักวิเคราะห์ที่ประเมิน "Strong Buy"
+        เป้าเฉลี่ย ฿22.92 (Upside 19%) บ่งชี้ว่าตลาดยังมองว่า PR9 ถูก Undervalue อยู่ในขณะนี้
+        โซน MOS 20% ที่ {{rd:mos20}} ผ่านมาแล้วในช่วง ส.ค.-ก.ย. 2568 ซึ่งเป็นโอกาสสะสมที่ดี
       </p>
     </div>
   </section>
@@ -295,7 +295,7 @@
           <li><b>ขยาย Bed Capacity:</b> PR9 อยู่ระหว่างขยายศูนย์เฉพาะทาง (Oncology, Cardio) เพิ่ม Capacity รองรับความต้องการที่เพิ่มขึ้น FY2569–2570</li>
           <li><b>Gross Margin ปรับขึ้นต่อเนื่อง:</b> จาก 34.3% (FY2567) → 36.6% (FY2568) บ่งชี้ว่า Operational Leverage เริ่มทำงาน ยิ่งรายได้โต Margin ยิ่งดีขึ้น</li>
           <li><b>กำไรสถิติสูงสุดต่อเนื่อง:</b> 4 ปีติดต่อกัน (FY2565–2568) แสดง Execution คุณภาพสูง ทีมบริหารมีประสบการณ์ดึงผู้ป่วยต่างชาติ</li>
-          <li><b>Analyst Consensus Strong Buy:</b> 13 นักวิเคราะห์ให้ Buy ทั้งหมด เป้าเฉลี่ย ฿22.58 Upside 24% — ยังไม่สะท้อนมูลค่าในราคา</li>
+          <li><b>Analyst Consensus Strong Buy:</b> 14 นักวิเคราะห์ให้ Buy ทั้งหมด เป้าเฉลี่ย ฿22.92 Upside 19% — ยังไม่สะท้อนมูลค่าในราคา</li>
         </ul>
       </div>
       <div class="box risk">
@@ -318,16 +318,16 @@
     <div class="verdict">
       <h2>ทยอยสะสมได้ — โรงพยาบาลพรีเมียมที่ราคายังต่ำกว่า Fair Value</h2>
       <p>PR9 เป็นโรงพยาบาลเอกชนที่มีการเติบโตต่อเนื่องและชัดเจน กำไรโตทุกปี 4 ปีติดต่อกัน โดยมีจุดแข็งด้าน Medical Tourism ตะวันออกกลางที่เป็น Niche สำคัญ
-      ราคาปัจจุบัน ฿18.20 ต่ำกว่ามูลค่าเหมาะสมเฉลี่ย ฿20.84 ประมาณ 12.7% (MOS ~12.7%) ซึ่งยังพอมี Margin of Safety แต่ไม่มากนัก
+      ราคาปัจจุบัน {{rd:px}} ต่ำกว่ามูลค่าเหมาะสมเฉลี่ย {{rd:fv}} (MOS {{rd:mos}}) ซึ่งยังพอมี Margin of Safety แต่ไม่มากนัก
       จุดสำคัญคือ Base Case ผลตอบแทนรวม 3 ปี ~58.5% (~16.6%/ปี) หากกำไรโตตาม Consensus ฿897M ในปี 2569
-      Analyst 13 ราย Consensus Strong Buy เป้าเฉลี่ย ฿22.58 สนับสนุนมุมมองนี้</p>
+      Analyst 14 ราย Consensus Strong Buy เป้าเฉลี่ย ฿22.92 สนับสนุนมุมมองนี้</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿22.58 (Strong Buy · 13 ราย)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿22.92 (Strong Buy · 14 ราย)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ทยอยสะสมในช่วง ฿16–19 · เพิ่ม Position หากราคาลงไปใน MOS 20% โซน ฿16.67 · Stop Loss แนะนำ ฿14.59 (MOS 30% พลิกเป็น Downside) · เป้าระยะ 12 เดือน ฿22–23 · ระยะ 3 ปี ฿27 (Base Case)
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมในช่วง ฿16–19 · เพิ่ม Position หากราคาลงไปใน MOS 20% โซน {{rd:mos20}} · Stop Loss แนะนำ {{rd:mos30}} (MOS 30% พลิกเป็น Downside) · เป้าระยะ 12 เดือน ฿22–23 · ระยะ 3 ปี ฿27 (Base Case)
       </div>
     </div>
   </section>
@@ -339,7 +339,7 @@
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
     ที่มา: Yahoo Finance (PR9.BK), SET Factsheet (02 ก.ค. 2569), StockAnalysis.com (BKK:PR9), Bualuang Securities Research, KaoHoon International
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
