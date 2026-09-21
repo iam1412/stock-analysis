@@ -6,33 +6,33 @@
 <title>วิเคราะห์หุ้น East Water (EASTW) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"EASTW","currency":"THB","price":4.92,"fairValue":5.46,"mos":9.9,"upside":11,"pe":124.4,"dividendYield":0.21,"roe":0.64}
+{"symbol":"EASTW","currency":"THB","price":4.9,"fairValue":3.75,"mos":-30.7,"upside":-23.5,"pe":67,"dividendYield":0.2,"roe":1.2}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 5.46,
+  "fv": 3.75,
   "values": {
-    "px": 4.92,
-    "priceDate": "2026-09-18",
+    "px": 4.9,
+    "priceDate": "2026-09-21",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
-    "fvLow": 5.14,
-    "fvHigh": 5.78,
+    "fvLow": 3.48,
+    "fvHigh": 4.01,
     "shares": 1663730000,
     "bvps": 6.9,
-    "baseEps": 0.06,
+    "baseEps": 0.07,
     "scenarios": [
       {
-        "tgt": 1.04,
-        "div": 0.04
+        "tgt": 0.97,
+        "div": 0.07
       },
       {
-        "tgt": 3.66,
-        "div": 0.1
+        "tgt": 3.69,
+        "div": 0.15
       },
       {
-        "tgt": 7.07,
+        "tgt": 6.88,
         "div": 0.2
       }
     ],
@@ -68,7 +68,7 @@
       ["มิ.ย.26", 4.62],
       ["ก.ค.26", 5.2],
       ["ส.ค.26", 4.86],
-      ["ก.ย.26", 4.92]
+      ["ก.ย.26", 4.9]
     ],
     "min": 1,
     "max": 6,
@@ -105,7 +105,7 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ ฿1.57 – ฿4.74<br>
+        กรอบ 52 สัปดาห์ ฿1.75 – ฿5.95<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, SET Factsheet
       </div>
     </div>
@@ -113,28 +113,28 @@
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบปี 2568 (FY2025) + ราคา ก.ค. 2569</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ TTM ล่าสุด + FY2568 (FY2025) • ราคา 21 ก.ย. 2569</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">฿8,186 ล้าน</div><div class="d">หุ้น 1,663.73 ล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~124.4x</div><div class="d">กำไรอยู่ในจุดต่ำสุดจากคดีท่อส่งน้ำ — P/E สูงผิดปกติ ไม่สะท้อนมูลค่าจริง</div></div>
-      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~18x</div><div class="d">คำนวณจากกำไรเฉลี่ย 5 ปี (2564–2568) ก่อนกำไรทรุด</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ~฿6.90 — ราคาต่ำกว่ามูลค่าทางบัญชี</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿8,152 ล้าน</div><div class="d">หุ้น 1,663.73 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~67.0x</div><div class="d">กำไรอยู่ในจุดต่ำสุดจากคดีท่อส่งน้ำ — P/E สูงผิดปกติ ไม่สะท้อนมูลค่าจริง</div></div>
+      <div class="metric"><div class="k">P/E มัธยฐานย้อนหลัง</div><div class="v">~15.6x</div><div class="d">FY2021–2023 (3 ปีที่เชื่อได้ ช่วง 15.3–25.0x) — ตัดปี 2567–2568 ที่ P/E เกิน 100x ออก</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ~฿6.90 — ราคาต่ำกว่ามูลค่าทางบัญชีเล็กน้อย</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v neg">฿9.5 ล้าน</div><div class="d">ลดลงจาก ฿46.6 ล้าน (2567) และ ฿1,062 ล้าน (2564) — ผลจากแพ้คดีท่อส่งน้ำ EEC</div></div>
-      <div class="metric"><div class="k">EPS (TTM)</div><div class="v neg">~฿0.038</div><div class="d">ต่ำสุดในรอบ 5 ปี สะท้อนกำไรที่ยังไม่ฟื้น</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v neg">~฿0.07</div><div class="d">กำไรสุทธิ TTM ฿122 ล้าน ÷ 1,664 ล้านหุ้น — เริ่มฟื้นจากจุดต่ำสุดแต่ยังต่ำกว่า FY2564 (฿0.64) มาก</div></div>
       <div class="metric"><div class="k">BVPS</div><div class="v">~฿6.90</div><div class="d">มูลค่าทางบัญชีต่อหุ้น</div></div>
-      <div class="metric"><div class="k">ROE / ROA</div><div class="v neg">~0.64% / 1.23%</div><div class="d">ต่ำผิดปกติ — เฉลี่ย 5 ปี ~3.7% สะท้อนภาพจริงกว่า</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v neg">~1.2% (TTM)</div><div class="d">ROE ต่ำผิดปกติ — FY2564 อยู่ที่ 9.5% ก่อนกำไรทรุด</div></div>
 
-      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿3,570 ล้าน</div><div class="d">ลดลง 13.1% YoY — ปริมาณน้ำ EEC ลดจากฝนตกชุกปี 2568</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿3,621 ล้าน</div><div class="d">TTM ลด 3.4% YoY (FY2568 ฿3,570 ล้าน ลด 13.1% จากฝนตกชุกปี 2568 กดปริมาณน้ำ EEC)</div></div>
       <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v pos">~28.8%</div><div class="d">Operating margin ~16.0% — ธุรกิจหลักยังทำกำไรได้ดี</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v neg">~0.21%</div><div class="d">฿0.01/หุ้น (2568) ลดจาก ฿0.42 (2564) ตาม payout ≥30% ของกำไรสุทธิ</div></div>
-      <div class="metric"><div class="k">Debt/Equity</div><div class="v neu">1.29x</div><div class="d">Current ratio 0.35 — สภาพคล่องระยะสั้นต้องติดตาม</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v neg">~0.20%</div><div class="d">฿0.01/หุ้น (2568) ลดจาก ฿0.42 (2564) ตาม payout ≥30% ของกำไรสุทธิ</div></div>
+      <div class="metric"><div class="k">Debt/Equity</div><div class="v neu">1.27x</div><div class="d">Current ratio 0.35 — สภาพคล่องระยะสั้นต้องติดตาม</div></div>
     </div>
   </section>
 
   <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">รายเดือน ก.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">รายเดือน ต.ค. 2568 – ก.ย. 2569</div></div>
     <div class="card">
       <div class="chart-wrap">
         <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
@@ -145,40 +145,37 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ราคาช่วง ก.ค.–ธ.ค. 2568 แกว่งในกรอบต่ำ ฿1.92–2.72 สะท้อนความกังวลหลังกำไรทรุดจากคดีท่อส่งน้ำ EEC ที่แพ้ในชั้นศาลปกครองสูงสุด
-        ก่อนจะพลิกกลับเป็นขาขึ้นแรงตั้งแต่ ม.ค. 2569 (฿2.86) ต่อเนื่องถึง เม.ย.–พ.ค. 2569 (฿4.26 → ฿4.62) หลังมีข่าวดีลน้ำอุตสาหกรรมป้อน
-        Bridge Data Center III ร่วมกับ STECON และกระแสหุ้นกลุ่มรับอานิสงส์ดาต้าเซ็นเตอร์ใน EEC จนแตะระดับสูงสุดในรอบปีที่ ฿4.74
-        ก่อนปิดที่ ฿4.68 ณ ต้น ก.ค. 2569 รวมผลตอบแทนรอบปี +107.1% — เป็นการรีเรตติ้งจาก sentiment เก็งกำไรมากกว่าอิงพื้นฐานกำไรที่ยังไม่ฟื้น
+        ราคาช่วง พ.ย. 2568 – ม.ค. 2569 แกว่งในกรอบต่ำ ฿1.92–1.98 สะท้อนความกังวลหลังกำไรทรุดจากคดีท่อส่งน้ำ EEC ที่แพ้ในชั้นศาลปกครองสูงสุด
+        ก่อนจะพลิกกลับเป็นขาขึ้นแรงตั้งแต่ ก.พ. 2569 (฿2.86) ต่อเนื่องถึง พ.ค.–มิ.ย. 2569 (฿4.26 → ฿4.62) หลังมีข่าวดีลน้ำอุตสาหกรรมป้อน
+        Bridge Data Center III ร่วมกับ STECON และกระแสหุ้นกลุ่มรับอานิสงส์ดาต้าเซ็นเตอร์ใน EEC จนแตะจุดสูงสุดของกราฟที่ ฿5.20 ณ สิ้น ก.ค. 2569
+        ก่อนย่อลง ฿4.86 (ส.ค.) และทรงตัวแถว ฿4.90 ณ 21 ก.ย. 2569 รวมผลตอบแทนรอบปี {{rd:chg}} — เป็นการรีเรตติ้งจาก sentiment เก็งกำไรมากกว่าอิงพื้นฐานกำไรที่ยังไม่ฟื้น
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">สมอยึดตลาด 2 วิธี (Justified P/BV = บริบท — dispersion gate 0.4c)</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">P/E มัธยฐานย้อนหลัง + DCF — 2 ตระกูลอิสระ</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation (EPS ปรับฐาน)</div><div class="mdesc">EPS ปรับฐาน ฿0.257 (เฉลี่ยกำไรสุทธิ 5 ปีย้อนหลัง 2564–2568 หารหุ้น) × P/E เป้าหมาย ~20x — สะท้อน utility ฟื้นตัวหลังคดีท่อส่งน้ำจบ</div></div>
-        <div class="mval">฿5.14</div>
+        <div><div class="mname">1. P/E Valuation (EPS ปรับฐาน)</div><div class="mdesc">EPS ปรับฐาน ฿0.257 (เฉลี่ยกำไรสุทธิ 5 ปี 2564–TTM หารหุ้น 1,664 ล้านหุ้น) × P/E เป้าหมาย 15.6x — เป็นมัธยฐานประวัติศาสตร์ที่วัดจริง (FY2021–2023 = 15.3x / 15.6x / 25.0x; ตัดปี 2567–2568 ที่ P/E เกิน 100x ออก) มาจากประวัติ ไม่ได้ลอกจาก P/E ปัจจุบัน</div></div>
+        <div class="mval">฿4.01</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. EV/EBITDA</div><div class="mdesc">EBITDA 2569E ฿1,848 ล้าน (EBITDA 2568 ฿1,650 ล้าน ×1.12 ตามแนวโน้มปริมาณน้ำ +12–15%) × EV/EBITDA เป้าหมาย 12.5x หักหนี้สุทธิโดยประมาณ ฿13,500 ล้าน</div></div>
-        <div class="mval">฿5.78</div>
-      </div>
-      <div class="vmethod">
-        <div><div class="mname">3. Justified P/BV (บริบท — ห่างจากขายึดตลาด >2× ไม่รวมในกรอบ FV)</div><div class="mdesc">P/BV เหมาะสม = (ROE 3.7% − g 1.5%)/(r 8.0% − g 1.5%) ≈ 0.338x × BVPS ฿6.90</div></div>
-        <div class="mval">฿2.34</div>
+        <div><div class="mname">2. DCF (กระแสเงินสดอิสระส่วนของผู้ถือหุ้น — สมมติฐานของเราเอง)</div><div class="mdesc">FCF TTM ฿350 ล้าน (หลังดอกเบี้ย/capex ตามตาราง StockAnalysis) โต 5%/ปี 5 ปี = ฿368 / 386 / 405 / 425 / 447 ล้าน · r 9% · g ระยะยาว 2% → TV = 447×1.02/(9%−2%) ≈ ฿6,509 ล้าน · PV(FCF 5 ปี) ≈ ฿1,567 ล้าน + PV(TV) ≈ ฿4,230 ล้าน = ฿5,797 ล้าน ÷ 1,664 ล้านหุ้น = ฿3.48 (TV คิดเป็น 73% ของมูลค่า ≤75%) — r, g, อัตราโต 5% เป็นสมมติฐานของเราเอง และ FCF ผันผวนมาก (FY2568 ฿137 ล้าน · FY2564–2567 ติดลบทุกปี)</div></div>
+        <div class="mval">฿3.48</div>
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ใช้ EPS/ROE "ปรับฐาน" (เฉลี่ย 5 ปีย้อนหลัง) แทน TTM ที่ทรุดจากคดีท่อส่งน้ำ EEC (กำไรสุทธิ 2568 เหลือ ฿9.5 ล้าน จาก ฿1,062 ล้านปี 2564)
-        เพราะ P/E-TTM ที่ 124x ไม่มีความหมายในการประเมินมูลค่า — วิธี EV/EBITDA ให้ค่าสูงสุด (฿5.78) เพราะ EBITDA ยังทรงตัวได้ดีกว่ากำไรสุทธิมาก
-        (ผลกระทบส่วนใหญ่อยู่ที่ระดับ D&A/ดอกเบี้ยจากทรัพย์สินท่อที่คืนให้รัฐ) ส่วน Justified P/BV ให้ค่าต่ำสุด (฿2.34) เพราะ ROE ปัจจุบันยังอ่อนแอมาก
-        <b>dispersion gate 0.4c:</b> Justified P/BV (฿2.34) ห่างจากสมอยึดตลาด (฿5.46) ถึง 2.3 เท่า (>2.0×) จึงจัดเป็นบริบท ไม่รวมในค่าเฉลี่ย — FV ใหม่ = ถ่วงตระกูล = สมอยึดตลาด (เฉลี่ย P/E ฿5.14 + EV/EBITDA ฿5.78) = ฿5.46 ตระกูล r/g ไม่มีขาที่รวมได้ (มีแค่ Justified P/BV ซึ่งหลุดกรอบ) จึงไม่มีเสียงที่สอง FV = สมอล้วนๆ
-        ใกล้เคียงราคาตลาด ฿5.55 สะท้อนว่าตลาดได้ปรับราคาไปข้างหน้า (price-in) สตอรี่ฟื้นตัว+ดาต้าเซ็นเตอร์ไปมากแล้ว
+        ใช้ EPS "ปรับฐาน" (เฉลี่ย 5 ปีย้อนหลัง) แทน EPS TTM ที่ทรุดจากคดีท่อส่งน้ำ EEC (กำไรสุทธิ 2568 เหลือ ฿9.5 ล้าน จาก ฿1,062 ล้านปี 2564)
+        เพราะ P/E-TTM ราว 67x ไม่มีความหมายในการประเมินมูลค่า — ปรับรอบ 21 ก.ย. 2569: ถอดวิธี EV/EBITDA เดิมออกเพราะตัวเลข EBITDA และหนี้สุทธิที่ใช้ตรวจซ้ำจากแหล่งที่เปิดอ่านไม่ได้ และตัวคูณ 12.5x ไม่มีมัธยฐานที่วัดจริงรองรับ
+        ถอด Justified P/BV ออกจากการ์ด (ใช้ r/g ชุดเดียวกับ DCF จึงนับเสียงเดียวอยู่แล้ว) และเปลี่ยน P/E เป้าหมายจาก 20x เป็น 15.6x ตามมัธยฐานที่วัดจริง
+        <b>FV = เฉลี่ย 2 ตระกูลอิสระ</b> คือ P/E ฿4.01 (ตัวคูณ) กับ DCF ฿3.48 (กระแสเงินสด) ห่างกันไม่เกิน 2 เท่า จึงเฉลี่ยได้ = {{rd:fv}}
+        <b>ความไวต่อสมมติฐาน:</b> P/E ขึ้นกับ EPS ปรับฐานเป็นหลัก — ถ้าใช้ EPS TTM ฿0.073 × 15.6x ได้เพียง ฿1.14 ขณะที่ DCF ไวต่อ FCF ที่เคยติดลบ จึงไม่ควรตีความ FV เป็นตัวเลขแม่นยำ
+        ราคาปัจจุบัน {{rd:px}} สูงกว่า FV {{rd:fv}} ชัดเจน สะท้อนว่าตลาด price-in สตอรี่ฟื้นตัว+ดาต้าเซ็นเตอร์ไปเกินกว่าที่พื้นฐานที่วัดได้รองรับ
       </p>
     </div>
   </section>
@@ -195,15 +192,15 @@
         <div class="scale">
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿4.68<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:center">{{rd:fvLow}}<br><small>กรอบล่าง FV</small></span>
           <span style="text-align:right">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน ฿5.55 อยู่ "เหนือ" มูลค่าเหมาะสมโดยประมาณเล็กน้อย (FV ฿5.46) หลังรีเรตติ้งขึ้นแรง +107% ในรอบปี
-        ไม่มีนักวิเคราะห์ปกคลุมหุ้นตัวนี้อย่างเป็นทางการ (SETTRADE consensus = 0 ราย) จึงใช้กรอบบน FV (฿5.78 จากวิธี EV/EBITDA) เป็นเพดานอ้างอิงแทนเป้า analyst
-        โซน MOS 20–30% (฿3.82–4.37) เป็นจุดที่น่าสนใจกว่าสำหรับการทยอยสะสมระยะยาว
+        ราคาปัจจุบัน {{rd:px}} อยู่ "เหนือ" มูลค่าเหมาะสมโดยประมาณ (FV {{rd:fv}}) และเหนือกรอบบน FV ({{rd:fvHigh}}) หลังรีเรตติ้งขึ้นแรงในรอบปี
+        ไม่มีนักวิเคราะห์ปกคลุมหุ้นตัวนี้อย่างเป็นทางการ (SETTRADE consensus = 0 ราย) จึงใช้กรอบ FV จาก P/E และ DCF เป็นเพดานอ้างอิงแทนเป้า analyst
+        โซน MOS 20–30% ({{rd:mos30}}–{{rd:mos20}}) เป็นจุดที่น่าสนใจกว่าสำหรับการทยอยสะสมระยะยาว
       </p>
     </div>
   </section>
@@ -214,7 +211,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">MOS ติดลบ — ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสมเล็กน้อย ยังไม่มีส่วนเผื่อความปลอดภัยให้เข้าซื้อรอบนี้</div>
+        <div class="txt">MOS ติดลบชัดเจน — ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสมมาก ไม่มีส่วนเผื่อความปลอดภัยให้เข้าซื้อรอบนี้</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -241,21 +238,21 @@
           <div class="tgt">{{rd:sc1tgt}}</div>
           <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿0.069</span></li>
-            <li><span>P/E ออก</span><span>15x</span></li>
+            <li><span>EPS ปี 3</span><span>~฿0.081</span></li>
+            <li><span>P/E ออก</span><span>12x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>WHAUP แข่งราคาน้ำ EEC รุนแรง กำไรฟื้นช้ากว่าคาด สตอรี่ดาต้าเซ็นเตอร์ไม่ขยายผลจริง</span></li>
           </ul>
         </div>
       </div>
       <div class="col base">
-        <div class="top"><span>⚖️ Base</span><span>EPS +45%/ปี</span></div>
+        <div class="top"><span>⚖️ Base</span><span>EPS +50%/ปี</span></div>
         <div class="body">
           <div class="tgt">{{rd:sc2tgt}}</div>
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿0.183</span></li>
-            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>EPS ปี 3</span><span>~฿0.236</span></li>
+            <li><span>P/E ออก</span><span>15.6x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>ฟื้นตัวตามแผน ปริมาณน้ำ +12-15%/ปี ดีล Bridge Data Center ทยอยรับรู้รายได้ตามสัญญา 10 ปี</span></li>
           </ul>
@@ -267,8 +264,8 @@
           <div class="tgt">{{rd:sc3tgt}}</div>
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿0.295</span></li>
-            <li><span>P/E ออก</span><span>24x</span></li>
+            <li><span>EPS ปี 3</span><span>~฿0.344</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>ปิดดีลดาต้าเซ็นเตอร์เพิ่ม + ขยายธุรกิจนอก EEC สำเร็จ มาร์จิ้นกลับสู่ระดับก่อนคดีท่อส่งน้ำ</span></li>
           </ul>
@@ -276,8 +273,8 @@
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      หมายเหตุ: เนื่องจากกำไรปี 2568 อยู่ในจุดต่ำสุดผิดปกติจากคดีท่อส่งน้ำ EEC การประมาณการใช้ "EPS ฐาน" ที่สูงกว่า TTM เล็กน้อย (~฿0.06 สะท้อนการฟื้นตัวบางส่วนที่เห็นแล้วใน EBITDA)
-      แทนการอิง EPS TTM (฿0.038) ตรงๆ ซึ่งจะทำให้ตัวเลข %growth ผันผวนเกินจริง — Bear case สะท้อนความเสี่ยงจริงจากการแข่งขันของ WHAUP ในตลาดน้ำอุตสาหกรรม EEC
+      หมายเหตุ: EPS ฐานของฉากคาดการณ์ใช้ EPS TTM (฿0.07 = กำไรสุทธิ TTM ฿122 ล้าน ÷ 1,664 ล้านหุ้น) เป็นจุดเริ่ม ต่างจาก EPS ปรับฐานที่ใช้ใน Fair Value — P/E ออกอิงมัธยฐาน 15.6x (Base) และช่วงที่วัดได้ 15.3–25.0x (Bull ใช้ขอบบน 20x) ส่วน Bear ใช้ 12x ต่ำกว่าช่วงที่วัดได้ เป็นการ de-rating จริงจัง
+      เพราะฐานกำไรต่ำมาก อัตราโต %/ปี จึงสูงตามฐานและผันผวนเกินจริงได้ — Bear case สะท้อนความเสี่ยงจริงจากการแข่งขันของ WHAUP ในตลาดน้ำอุตสาหกรรม EEC
       ทั้งนี้ผลตอบแทนคาดการณ์มีความไม่แน่นอนสูงกว่าหุ้น utility ทั่วไป เพราะฐานกำไรเพิ่งผ่านจุดต่ำสุดมาไม่นาน
     </p>
   </section>
@@ -293,7 +290,7 @@
           <li><b>Guidance 2569 ฟื้นตัว:</b> ผู้บริหารคาดปริมาณน้ำโต 12-15% จากปี 2568 ที่ฝนตกชุกกดปริมาณขาย — ปีนี้กลับสู่ภาวะปกติ</li>
           <li><b>ขยายธุรกิจนอก EEC:</b> รุกตลาดใหม่นอกพื้นที่เดิม ลดสัดส่วนพึ่งพา EEC เพียงอย่างเดียว พร้อมเดินหน้าลดน้ำสูญเสีย (non-revenue water) จาก ~30% เหลือครึ่งหนึ่ง</li>
           <li><b>คดีท่อส่งน้ำจบแล้ว:</b> ศาลปกครองสูงสุดตัดสินจบคดีแล้ว (ไม่ใช่ความเสี่ยงค้างที่ไม่รู้ผล) ตลาดรับรู้ผลกระทบต่อกำไรไปมากแล้วในราคาปัจจุบัน เปิดทางให้โฟกัสธุรกิจใหม่</li>
-          <li><b>P/BV ต่ำกว่า 1 เท่า:</b> ราคาซื้อขายที่ 0.68x book value แม้กำไรจะทรุดหนัก แต่สินทรัพย์โครงสร้างพื้นฐานน้ำยังมีมูลค่าและกระแสเงินสดจากธุรกิจหลัก</li>
+          <li><b>P/BV ต่ำกว่า 1 เท่า:</b> ราคาซื้อขายที่ {{rd:pbv}}x book value แม้กำไรจะทรุดหนัก แต่สินทรัพย์โครงสร้างพื้นฐานน้ำยังมีมูลค่าและกระแสเงินสดจากธุรกิจหลัก</li>
         </ul>
       </div>
       <div class="box risk">
@@ -317,9 +314,9 @@
       <h2>ราคาวิ่งนำหน้าพื้นฐาน — รอจังหวะย่อก่อนสะสม</h2>
       <p>
         EASTW เพิ่งผ่านจุดต่ำสุดของกำไรจากการแพ้คดีท่อส่งน้ำ EEC มูลค่าสัมปทานเดิมกว่า 2.5 หมื่นล้านบาท ทำให้กำไรสุทธิปี 2568 เหลือเพียง ฿9.5 ล้าน
-        จากที่เคยทำได้ ฿1,062 ล้านในปี 2564 แต่ราคาหุ้นกลับวิ่งขึ้นแรง +107% ในรอบปีที่ผ่านมา นำโดยกระแสข่าวดีลน้ำอุตสาหกรรมป้อนดาต้าเซ็นเตอร์ (Bridge Data Center III ร่วมกับ STECON)
-        และความคาดหวังการฟื้นตัวปี 2569 (+12-15%) หลังปีฝนตกชุกผ่านไป จากการประเมินมูลค่า — สมอยึดตลาด (P/E ปรับฐาน + EV/EBITDA เฉลี่ยกัน) ฿5.46 ส่วน Justified P/BV (฿2.34) ห่างเกิน 2 เท่าจึงเป็นบริบทนอกกรอบ (dispersion gate 0.4c) ได้ Fair Value ฿5.46
-        ใกล้เคียงราคาตลาดปัจจุบัน ฿5.55 มาก — สะท้อนว่าตลาด "price-in" สตอรี่ฟื้นตัวไปมากแล้ว MOS ติดลบเล็กน้อย (-1.6%) หมายความว่ายังไม่มีส่วนเผื่อความปลอดภัยให้เข้าซื้อ ณ ราคานี้
+        จากที่เคยทำได้ ฿1,062 ล้านในปี 2564 (TTM ฟื้นเป็น ฿122 ล้าน) แต่ราคาหุ้นวิ่งขึ้นแรงในรอบปีที่ผ่านมา นำโดยกระแสข่าวดีลน้ำอุตสาหกรรมป้อนดาต้าเซ็นเตอร์ (Bridge Data Center III ร่วมกับ STECON)
+        จากการประเมินมูลค่า — P/E ปรับฐานที่มัธยฐาน 15.6x ให้ ฿4.01 และ DCF ให้ ฿3.48 เฉลี่ยเป็น Fair Value {{rd:fv}}
+        ต่ำกว่าราคาตลาดปัจจุบัน {{rd:px}} — MOS ติดลบ ({{rd:mos}}) หมายความว่าตลาด "price-in" สตอรี่ฟื้นตัวไปเกินกว่าที่พื้นฐานรองรับ ไม่มีส่วนเผื่อความปลอดภัยให้เข้าซื้อ ณ ราคานี้
         โดยเฉพาะเมื่อการแข่งขันจาก WHAUP ในตลาดน้ำอุตสาหกรรม EEC ยังเป็นความเสี่ยงต่อมาร์จิ้นและส่วนแบ่งลูกค้ารายใหม่ในระยะข้างหน้า
       </p>
       <div class="vgrid">
@@ -328,8 +325,8 @@
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">ไม่มีนักวิเคราะห์ปกคลุม (0 ราย)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> รอสะสมในโซน MOS 20-30% (฿3.82–4.37) ซึ่งให้ส่วนเผื่อความปลอดภัยเพียงพอสำหรับหุ้นที่กำไรเพิ่งฟื้นตัวและยังมีความเสี่ยงจากการแข่งขัน
-        ไม่แนะนำไล่ราคาที่ระดับปัจจุบัน (฿5.55) ที่ใกล้ 52-week high เพราะ valuation อิง sentiment ดาต้าเซ็นเตอร์มากกว่ากำไรจริงที่ยังต้องพิสูจน์การฟื้นตัวอีกหลายไตรมาส
+        💡 <b>กลยุทธ์:</b> รอสะสมในโซน MOS 20-30% ({{rd:mos30}}–{{rd:mos20}}) ซึ่งให้ส่วนเผื่อความปลอดภัยเพียงพอสำหรับหุ้นที่กำไรเพิ่งฟื้นตัวและยังมีความเสี่ยงจากการแข่งขัน
+        ไม่แนะนำไล่ราคาที่ระดับปัจจุบัน ({{rd:px}}) ที่ใกล้จุดสูงของช่วง 52 สัปดาห์ เพราะ valuation อิงกระแสดาต้าเซ็นเตอร์มากกว่ากำไรจริงที่ยังต้องพิสูจน์การฟื้นตัวอีกหลายไตรมาส
       </div>
     </div>
   </section>
@@ -338,9 +335,9 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูล ณ ก.ค. 2569 จาก StockAnalysis.com, Yahoo Finance, ตลาดหลักทรัพย์แห่งประเทศไทย (SET) และข่าวสำนักต่างๆ (Isranews, Kaohoon, Green Network Thailand)
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูล ณ 21 ก.ย. 2569 จาก StockAnalysis.com, Yahoo Finance, ตลาดหลักทรัพย์แห่งประเทศไทย (SET) และข่าวสำนักต่างๆ (Isranews, Kaohoon, Green Network Thailand)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 18 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
