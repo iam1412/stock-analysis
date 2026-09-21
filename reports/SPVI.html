@@ -4,37 +4,37 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น เอส พี วี ไอ (SPVI) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"SPVI","currency":"THB","price":3.5,"fairValue":4.2,"mos":16.7,"upside":20,"pe":9.25,"dividendYield":4.29,"roe":21.3}
+{"symbol":"SPVI","currency":"THB","price":3.54,"fairValue":4.44,"mos":20.3,"upside":25.4,"pe":8.43,"dividendYield":4.24,"roe":26.6}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 4.2,
+  "fv": 4.44,
   "values": {
-    "px": 3.5,
-    "priceDate": "2026-09-18",
+    "px": 3.54,
+    "priceDate": "2026-09-21",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
-    "fvLow": 3.9,
-    "fvHigh": 4.8,
+    "fvLow": 4.15,
+    "fvHigh": 4.73,
     "shares": 400000000,
     "dps": 0.15,
     "bvps": 1.73,
-    "baseEps": 0.34,
+    "baseEps": 0.42,
     "scenarios": [
       {
-        "tgt": 2.61,
-        "div": 0.38
+        "tgt": 2.06,
+        "div": 0.36
       },
       {
-        "tgt": 5.76,
-        "div": 0.5
+        "tgt": 4.86,
+        "div": 0.45
       },
       {
-        "tgt": 8.26,
-        "div": 0.55
+        "tgt": 7.08,
+        "div": 0.54
       }
     ],
     "scnBasis": {
@@ -69,7 +69,7 @@
       ["มิ.ย.26", 3.12],
       ["ก.ค.26", 3.5],
       ["ส.ค.26", 3.84],
-      ["ก.ย.26", 3.5]
+      ["ก.ย.26", 3.54]
     ],
     "min": 2,
     "max": 5,
@@ -108,30 +108,30 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ ฿1.86 – ฿3.76<br>
-        ที่มา: SET, Investing.com, StockAnalysis.com
+        กรอบ 52 สัปดาห์ ฿2.00 – ฿4.04<br>
+        ที่มา: SET, Yahoo Finance, StockAnalysis.com
       </div>
     </div>
   </header>
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ 22 ก.ย. 2569</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">฿1,400 ล้าน</div><div class="d">400 ล้านหุ้น · par ฿0.50</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~9.25x</div><div class="d">ต่ำกว่าค่าเฉลี่ยเซกเตอร์ค้าปลีกเทค</div></div>
-      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~11–14x</div><div class="d">ช่วง P/E ย้อนหลัง 5 ปี</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ฿1.73 / ส่วนทุน ฿692.9 ล้าน</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿1,416 ล้าน</div><div class="d">400 ล้านหุ้น · par ฿0.50</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~8.4x</div><div class="d">ต่ำกว่ามัธยฐานของตัวเองย้อนหลัง 5 ปี</div></div>
+      <div class="metric"><div class="k">P/E มัธยฐาน ~5 ปี</div><div class="v">~18.9x</div><div class="d">ช่วง 7.4–22.7x (FY2564–2568 · ราคาเฉลี่ยรายปี ÷ EPS)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ฿1.73 (ตามส่วนทุนงวดก่อน — ยังตรวจกับงบล่าสุดไม่ได้)</div></div>
 
-      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">฿136.6 ล้าน</div><div class="d">+146.2% จาก FY2567 (฿48.4 ล้าน)</div></div>
-      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.34</div><div class="d">FY2568 ฿0.25 · FY2567 ฿0.12</div></div>
-      <div class="metric"><div class="k">BVPS</div><div class="v">~฿1.73</div><div class="d">ส่วนทุน TTM ฿692.9 ล้าน</div></div>
-      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~21.3% / 10.6%</div><div class="d">ROE ฟื้นตัวดีจากปี 2567</div></div>
+      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">฿168 ล้าน</div><div class="d">+247% จาก FY2567 (฿48.4 ล้าน) · FY2568 ฿102 ล้าน</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.42</div><div class="d">FY2568 ฿0.25 · FY2567 ฿0.12</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿1.73</div><div class="d">ส่วนทุนงวดก่อน ฿692.9 ล้าน</div></div>
+      <div class="metric"><div class="k">ROE (TTM)</div><div class="v pos">~26.6%</div><div class="d">FY2568 16.8% · FY2567 8.4%</div></div>
 
-      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿8,504 ล้าน</div><div class="d">+22.5% YoY (FY2568: ฿8,361 ล้าน)</div></div>
-      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~11.1%</div><div class="d">ค้าปลีก Apple มาร์จิ้นต่ำ / บริการสูงกว่า</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~4.29%</div><div class="d">฿0.15/หุ้น · yield สูงสำหรับหุ้นค้าปลีก</div></div>
-      <div class="metric"><div class="k">Beta</div><div class="v">0.15</div><div class="d">ความผันผวนต่ำมาก เทียบตลาด SET</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿8,529 ล้าน</div><div class="d">+18.9% YoY (FY2568: ฿8,361 ล้าน)</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~11.5%</div><div class="d">ค้าปลีก Apple มาร์จิ้นต่ำ / บริการสูงกว่า</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~4.24%</div><div class="d">฿0.15/หุ้น · yield สูงสำหรับหุ้นค้าปลีก</div></div>
+      <div class="metric"><div class="k">D/E</div><div class="v">0.22</div><div class="d">เงินสด ฿182 ล้าน · หนี้ ฿150 ล้าน</div></div>
     </div>
   </section>
 
@@ -148,39 +148,35 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ราคา SPVI ขยับขึ้นอย่างโดดเด่นในรอบปี — เริ่มต้นที่ฐาน ฿2.02 ในเดือน ก.ค. 2568
-        ก่อนพุ่งแตะระดับสูงสุด 52 สัปดาห์ที่ ฿3.76 ในเดือน ธ.ค. 2568 หลังจากบริษัทรายงานผลกำไรฟื้นตัวชัดเจน
-        ตามแรงซื้อจากสินค้า iPhone 17 series และ Mac รุ่นใหม่ ราคาปรับลดลงบ้างในช่วง ม.ค.–มี.ค. 2569
-        ก่อนดีดตัวกลับมาสู่ระดับ ฿3.16 ปัจจุบัน คิดเป็นผลตอบแทนรอบปี <b>+56.4%</b>
+        ราคา SPVI ขยับขึ้นอย่างโดดเด่นในรอบปี — ปิดรายเดือนที่ ฿2.28 ในเดือน ต.ค. 2568 ต่ำสุดของกราฟที่ ฿2.16 ในเดือน ธ.ค. 2568
+        ก่อนไต่ขึ้นตามกำไรที่ฟื้นตัวต่อเนื่องจนแตะ ฿3.84 ในเดือน ส.ค. 2569 (ราคาสูงสุดรอบ 52 สัปดาห์ ฿4.04)
+        แล้วพักตัวลงมาที่ระดับปัจจุบันในเดือน ก.ย. 2569 ผลตอบแทนรอบปีตามป้ายด้านบน <b>{{rd:chg}}</b>
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 ตระกูล</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿0.34 × P/E เป้าหมาย ~12x — ค่าเฉลี่ย Apple reseller ที่มีรายได้บริการเติบโต ต่ำกว่าค่าเฉลี่ย SET consumer tech ~14–16x</div></div>
-        <div class="mval">฿4.08</div>
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS ฿0.25 (เฉลี่ย FY2564–2568 5 ปี — EPS normalized ไม่ใช้ TTM ฿0.42 เพราะมาร์จิ้นสุทธิ 2.0% สูงกว่าค่ากลาง 1.2–2.3%) × P/E 18.9x (มัธยฐานย้อนหลัง 5 ปีที่วัดจริง ช่วง 7.4–22.7x — มาจากประวัติ ไม่ได้มาจาก P/E ปัจจุบัน) · ตัวคูณช่วงกว้าง: ที่ P/E 7.4x (ปี FY2568) ได้ ฿1.85</div></div>
+        <div class="mval">฿4.73</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. P/S Valuation</div><div class="mdesc">รายได้ต่อหุ้น ฿21.26 × P/S เป้าหมาย 0.19x — อิงค่าเฉลี่ยผู้จัดจำหน่าย Apple ระดับ Premium Reseller ในภูมิภาคเอเชีย</div></div>
-        <div class="mval">฿4.04</div>
-      </div>
-      <div class="vmethod">
-        <div><div class="mname">3. EV/EBITDA Valuation</div><div class="mdesc">EBITDA TTM ฿327 ล้าน × EV/EBITDA เป้าหมาย 5x (conservative สำหรับค้าปลีกมาร์จิ้นต่ำ) + เงินสด ฿360 ล้าน − หนี้ ฿168 ล้าน ÷ 400 ล้านหุ้น = ฿4.48</div></div>
-        <div class="mval">฿4.48</div>
+        <div><div class="mname">2. DCF (กระแสเงินสดอิสระ)</div><div class="mdesc">สมมติฐานของเรา: FCF ฐาน ฿150 ล้าน (ต่ำกว่า TTM ฿186 ล้านและ FY2568 ฿294 ล้าน เพราะ FCF แกว่ง −฿15.8 ถึง ฿403 ล้าน) โต 4%/ปี 5 ปี = ฿156 · 162 · 169 · 175 · 182 ล้าน · r 12% · g ระยะยาว 2% · PV FCF 5 ปี ฿604 ล้าน + PV ของ TV (฿182 × 1.02 ÷ 0.10 = ฿1,861 ล้าน) ฿1,056 ล้าน = ฿1,659 ล้าน (TV 64%) ÷ 400 ล้านหุ้น = ฿4.15 ไม่รวมเงินสดสุทธิ ฿32 ล้าน</div></div>
+        <div class="mval">฿4.15</div>
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        P/E (฿4.08) และ P/S (฿4.04) ให้ค่าใกล้เคียงกัน สะท้อนธุรกิจค้าปลีกที่มาร์จิ้นต่ำแต่มีรายได้บริการเติบโต
-        EV/EBITDA (฿4.48) ให้ค่าสูงกว่าเล็กน้อยเพราะบริษัทมีเงินสดสุทธิเป็นบวก (เงินสด ฿360 ล้าน หนี้ ฿168 ล้าน)
-        Fair Value ฿4.20 เป็นค่ากลางที่สมเหตุสมผล ณ ระดับ P/E 12x ซึ่งต่ำกว่าค่าเฉลี่ยเซกเตอร์เทคค้าปลีกเอเชียที่ ~14–16x
-        สมมติฐานหลัก: EPS เติบโต 10–12%/ปีตามการขยายสาขาและรายได้บริการ Apple
+        Fair Value = เฉลี่ยของ P/E (฿4.73) และ DCF (฿4.15) ซึ่งเป็นคนละตระกูลสมมติฐาน และห่างกันไม่เกิน 2 เท่า
+        ถอด 3 ขาเดิมออก: P/S และ EV/EBITDA ใช้ตัวคูณที่ไม่มีค่ามัธยฐานที่วัดจริงรองรับ จึงไม่นำมาเป็นขา
+        ไม่มีเป้านักวิเคราะห์จาก Yahoo/StockAnalysis (ไม่มีข้อมูล) จึงไม่ใช้เป็นขา
+        ความไว: P/E 12x × EPS ฿0.25 = ฿3.00 (MOS ลดเหลือติดลบ) ขณะที่ EPS TTM ฿0.42 × 18.9x = ฿7.94 (สูงเกินจริงเพราะ EPS ใกล้จุดสูง) — ผลจึงไวต่อการเลือก EPS และตัวคูณ
+        สมมติฐานหลัก: กำไรรอบปกติใกล้ ฿0.25/หุ้น และ FCF โต 4%/ปี
       </p>
     </div>
   </section>
@@ -198,14 +194,13 @@
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿4.50<br><small>เป้าเฉลี่ย</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน ฿3.16 ต่ำกว่ามูลค่าเหมาะสม ฿4.20 ประมาณ 25% (MOS ~24.8%) อยู่ระหว่างโซน MOS 30% (฿2.94) และ MOS 20% (฿3.36)
-        มี upside ~33% สู่ Fair Value หากธุรกิจเติบโตตามสมมติฐาน
-        โซนน่าสนใจสะสม: ต่ำกว่า ฿3.36 (MOS 20%) · deep value: ต่ำกว่า ฿2.94 (MOS 30%)
+        ราคาปัจจุบัน {{rd:px}} ต่ำกว่ามูลค่าเหมาะสม {{rd:fv}} ({{rd:mos}}) — ยืนอยู่ใกล้โซน MOS 20% ({{rd:mos20}}) และเหนือโซน MOS 30% ({{rd:mos30}})
+        มี upside {{rd:upside}} สู่ Fair Value หากกำไรรอบปกติและ FCF เป็นไปตามสมมติฐาน
+        โซนน่าสนใจสะสม: ต่ำกว่า {{rd:mos20}} · deep value: ต่ำกว่า {{rd:mos30}}
       </p>
     </div>
   </section>
@@ -238,51 +233,50 @@
     <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
-        <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
+        <div class="top"><span>🐻 Bear</span><span>EPS −15%/ปี</span></div>
         <div class="body">
           <div class="tgt">{{rd:sc1tgt}}</div>
           <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿0.29</span></li>
-            <li><span>P/E ออก</span><span>9x</span></li>
+            <li><span>EPS ปี 3</span><span>~฿0.26</span></li>
+            <li><span>P/E ออก</span><span>8x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
-            <li><span>สถานการณ์</span><span>Apple ลดโควต้า APR / แข่งขันออนไลน์รุนแรง</span></li>
+            <li><span>สถานการณ์</span><span>กำไรกลับสู่ระดับรอบปกติ / Apple ลดโควต้า APR / แข่งขันออนไลน์รุนแรง</span></li>
           </ul>
         </div>
       </div>
       <div class="col base">
-        <div class="top"><span>⚖️ Base</span><span>EPS +12%/ปี</span></div>
+        <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
         <div class="body">
           <div class="tgt">{{rd:sc2tgt}}</div>
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿0.48</span></li>
-            <li><span>P/E ออก</span><span>12x</span></li>
+            <li><span>EPS ปี 3</span><span>~฿0.49</span></li>
+            <li><span>P/E ออก</span><span>10x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
-            <li><span>สถานการณ์</span><span>iPhone supercycle + ขยายสาขา + บริการเติบโต</span></li>
+            <li><span>สถานการณ์</span><span>กำไรทรงตัวสูงกว่ารอบปกติเล็กน้อย + บริการเติบโต</span></li>
           </ul>
         </div>
       </div>
       <div class="col bull">
-        <div class="top"><span>🚀 Bull</span><span>EPS +20%/ปี</span></div>
+        <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
         <div class="body">
           <div class="tgt">{{rd:sc3tgt}}</div>
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.59</span></li>
-            <li><span>P/E ออก</span><span>14x</span></li>
+            <li><span>P/E ออก</span><span>12x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
-            <li><span>สถานการณ์</span><span>Apple Intelligence ดัน upgrade cycle + Vision Pro + ขยาย corporate</span></li>
+            <li><span>สถานการณ์</span><span>รอบอัปเกรดอุปกรณ์ Apple ต่อเนื่อง + ขยายช่องทางและบริการ</span></li>
           </ul>
         </div>
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      ผลตอบแทน Base case ~98.1% ใน 3 ปี (CAGR ~25.9%) อิงการฟื้นตัวของ EPS และ P/E re-rating จาก 9.25x สู่ 12x
-      ปัจจัยเร่ง: รอบซัพเปอร์ไซเคิล iPhone ใหม่ การขยายสาขา iStudio และการเติบโตของรายได้บริการ (อัตรากำไรสูงกว่าการขายฮาร์ดแวร์)
-      ปัจจัยเสี่ยง: มาร์จิ้นบางทำให้ผลกำไรอ่อนไหวต่อต้นทุน; ไม่มี moat ชัดเจน
-      ปันผล ฿0.15/หุ้น (yield ~4.7%) เป็นผลตอบแทนเพิ่มเติมที่น่าสนใจสำหรับผู้ถือระยะกลาง
-      หมายเหตุ: EPS ปี 3 base = ฿0.34 × (1.12)³ ≈ ฿0.48 · tgt = ฿0.48 × 12x = ฿5.76 + ปันผลรวม ฿0.50 · total return (5.76+0.50−3.16)/3.16 ≈ +98.1%
+      ผลตอบแทน Base case {{rd:sc2ret}} ใน 3 ปี อิงกำไรทรงตัวใกล้ระดับ TTM (EPS +5%/ปี) และ P/E ออก 10x ซึ่งต่ำกว่ามัธยฐานย้อนหลัง 18.9x และสูงกว่า P/E ปัจจุบัน — ไม่ได้พึ่งการ re-rating ขึ้นไปถึงค่ามัธยฐาน
+      Bear คือกำไรกลับสู่ระดับ FY2568 (~฿0.26) พร้อม P/E 8x · Bull คือกำไรโต 12%/ปี พร้อม P/E 12x
+      ปัจจัยเสี่ยง: มาร์จิ้นบางทำให้ผลกำไรอ่อนไหวต่อต้นทุน; ไม่มี moat ชัดเจน · ปันผล ฿0.15/หุ้นเป็นผลตอบแทนเพิ่มเติม (ปันผลรวม 3 ปี ฿0.36 / ฿0.45 / ฿0.54 ตาม Bear/Base/Bull)
+      หมายเหตุ: EPS ปี 3 base = ฿0.42 × (1.05)³ ≈ ฿0.49 · ราคาเป้า = ฿0.486 × 10x ≈ ฿4.86 + ปันผลรวม ฿0.45 · จุดเข้า = ราคาปัจจุบัน
     </p>
   </section>
 
@@ -293,12 +287,12 @@
       <div class="box cat">
         <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
         <ul>
-          <li><b>Apple Intelligence &amp; iPhone supercycle:</b> การเปิดตัว Apple Intelligence ในไทยและ iPhone รุ่นใหม่กระตุ้น upgrade cycle ผู้ใช้ทั่วประเทศ ฐาน iOS ในไทยใหญ่และเติบโตต่อเนื่อง</li>
+          <li><b>รอบอัปเกรดอุปกรณ์ Apple:</b> รายได้ TTM โต +18.9% YoY สะท้อนแรงซื้อ iPhone/Mac รุ่นใหม่ในไทย</li>
           <li><b>รายได้บริการ (Services) มาร์จิ้นสูง:</b> iCenter และ SP Service &amp; Repair ให้อัตรากำไรสูงกว่าการขายฮาร์ดแวร์ การขยายศูนย์บริการช่วยยกระดับ gross margin รวมของบริษัท</li>
           <li><b>ขยายช่องทางหลากหลาย:</b> U•Store by SPVi เจาะตลาดนักศึกษา; AIS Shop ขยาย reach ทั่วประเทศโดยไม่ต้องลงทุน capex สูง; Mobi Online รองรับการขายออนไลน์</li>
-          <li><b>ฐานะการเงินแข็งแกร่ง:</b> เงินสด ฿360 ล้าน หนี้ลดลงเหลือ ฿168 ล้าน (เงินสดสุทธิเป็นบวก) เหมาะขยายกิจการหรือจ่ายปันผลเพิ่ม</li>
-          <li><b>กำไรฟื้นตัวแข็งแกร่ง:</b> กำไร TTM ฿136.6 ล้าน เพิ่มขึ้น +146% จาก FY2567 สะท้อนการปรับโครงสร้างต้นทุนสำเร็จและรอบการขาย iPhone ที่ดี</li>
-          <li><b>Beta ต่ำ ความเสี่ยงตลาดน้อย:</b> Beta 0.15 — ราคาไม่ผันผวนตามตลาดรุนแรง เหมาะสำหรับพอร์ตที่ต้องการความเสถียร พร้อม dividend yield ~4.7%</li>
+          <li><b>ฐานะการเงินแข็งแกร่ง:</b> เงินสด ฿182 ล้าน หนี้ ฿150 ล้าน (เงินสดสุทธิเป็นบวกเล็กน้อย) D/E 0.22</li>
+          <li><b>กำไรฟื้นตัวแข็งแกร่ง:</b> กำไร TTM ฿168 ล้าน เพิ่มขึ้นจาก FY2567 (฿48.4 ล้าน) และ FY2568 (฿102 ล้าน) ตามรายได้และมาร์จิ้นที่ดีขึ้น (สุทธิ 2.0%)</li>
+          <li><b>ปันผลสม่ำเสมอ:</b> ปันผล ฿0.15/หุ้น (yield ~4.2%) payout ราว 36% ของ EPS TTM</li>
         </ul>
       </div>
       <div class="box risk">
@@ -307,8 +301,8 @@
           <li><b>มาร์จิ้นบาง อ่อนไหวต่อต้นทุน:</b> gross margin เพียง ~11% ทำให้ต้นทุนสินค้าที่เพิ่มขึ้นจากค่าเงินบาท/USD หรือการปรับส่วนลดจาก Apple กระทบกำไรอย่างมีนัยสำคัญ</li>
           <li><b>การแข่งขันจาก Apple Online &amp; Marketplace:</b> Apple Store Online และ marketplace (Shopee, Lazada) เข้าถึงผู้บริโภคตรง ลดความจำเป็นในการซื้อผ่านร้านกายภาพ</li>
           <li><b>พึ่งพา Apple เป็นหลัก:</b> Apple อาจปรับเงื่อนไขสัญญา APR หรือลดโควต้า ซึ่ง SPVI ไม่มีอำนาจต่อรอง รายได้ 95%+ ผูกกับผลิตภัณฑ์ Apple</li>
-          <li><b>Market cap เล็ก สภาพคล่องต่ำ:</b> Market cap ฿1.26B ทำให้ปริมาณซื้อขายต่อวันต่ำ ราคาผันผวนได้เมื่อมีแรงซื้อ/ขายก้อนใหญ่</li>
-          <li><b>รายได้กระจุก Q4:</b> ยอดขาย iPhone ส่วนใหญ่อยู่ในไตรมาส 4 หากเปิดตัวล่าช้าหรือขาดสต็อกกระทบรายได้ทั้งปีอย่างมีนัยสำคัญ</li>
+          <li><b>Market cap เล็ก สภาพคล่องต่ำ:</b> Market cap ราว ฿1.4 พันล้าน ทำให้ปริมาณซื้อขายต่อวันต่ำ ราคาผันผวนได้เมื่อมีแรงซื้อ/ขายก้อนใหญ่</li>
+          <li><b>กำไรและ FCF แกว่ง:</b> FCF ย้อนหลังตั้งแต่ −฿15.8 ถึง ฿403 ล้าน และ P/E ย้อนหลังกว้าง 7.4–22.7x ทำให้ประเมินมูลค่ามีความไม่แน่นอนสูง</li>
           <li><b>การขยายสาขามีค่าใช้จ่ายสูง:</b> การเปิด iStudio ใหม่ต้องลงทุน capex สูงและยึดมาตรฐาน Apple Store Experience ซึ่งจำกัดความยืดหยุ่นด้านต้นทุน</li>
         </ul>
       </div>
@@ -321,20 +315,19 @@
     <div class="verdict">
       <h2>SPVI — Apple Gateway ไทย · MOS ดี · กำไรฟื้นตัวชัด</h2>
       <p>SPVI คือ "ประตู Apple" ในประเทศไทย ครอบคลุมทั้งการขายและบริการหลังขายผ่าน iStudio, iBeat, U•Store และ iCenter
-      กำไรฟื้นตัวแข็งแกร่ง +146% YoY สู่ ฿136.6 ล้าน TTM สะท้อนการปรับโครงสร้างต้นทุนสำเร็จและรอบการขาย iPhone ที่ดี
-      ฐานะการเงินแกร่ง: เงินสดสุทธิเป็นบวก (เงินสด ฿360M หนี้ ฿168M) · yield ปันผล ~4.7% น่าสนใจ
-      ราคาปัจจุบัน ฿3.16 ต่ำกว่า Fair Value ฿4.20 ราว 25% (MOS 24.8%) — upside ~33% พร้อมปันผลสม่ำเสมอ
-      ความเสี่ยงหลัก: มาร์จิ้นบางและพึ่งพา Apple เกือบ 100% ไม่เหมาะสำหรับผู้ต้องการ moat ชัดเจน
+      กำไร TTM ฿168 ล้าน (EPS ฿0.42) สูงกว่า FY2568 (฿102 ล้าน) มาก แต่ Fair Value ใช้ EPS รอบปกติ ฿0.25 และ DCF เพื่อไม่เหมาจุดสูงเป็นค่าปกติ
+      ฐานะการเงิน: เงินสด ฿182 ล้าน หนี้ ฿150 ล้าน · yield ปันผล ~4.2%
+      ราคาปัจจุบัน {{rd:px}} ต่ำกว่า Fair Value {{rd:fv}} ({{rd:mos}}) — upside {{rd:upside}} พร้อมปันผล
+      ความเสี่ยงหลัก: มาร์จิ้นบาง กำไรแกว่ง และพึ่งพา Apple เกือบ 100% ไม่เหมาะสำหรับผู้ต้องการ moat ชัดเจน
       </p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้าตลาด (ประมาณ)</div><div class="v" style="color:#a5d6a7">~฿4.50 (Speculative Buy)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์</div><div class="v" style="color:#a5d6a7">ไม่มีเป้านักวิเคราะห์</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ทยอยสะสมได้ที่ราคาต่ำกว่า ฿3.36 (MOS 20%) — เหมาะสำหรับผู้ลงทุนระยะกลาง 2–3 ปี ที่เชื่อใน Apple ecosystem growth ในไทย
-        ราคา deep value ฿2.94 (MOS 30%) หากตลาดปรับตัวลงเป็นโอกาสสะสมเพิ่มเติม
-        รับปันผล ~4.7% ระหว่างถือ · ติดตามผลประกอบการ Q2/2569 (ส.ค. 2569) และยอดจอง iPhone รุ่นใหม่
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมที่ราคาไม่เกิน {{rd:mos20}} (MOS 20%) — เหมาะสำหรับผู้ลงทุนระยะกลาง 2–3 ปี ที่ยอมรับกำไรที่แกว่ง
+        ราคา deep value {{rd:mos30}} (MOS 30%) เป็นโอกาสสะสมเพิ่มเติม · รับปันผล ~4.2% ระหว่างถือ · ติดตามงบไตรมาส 3/2569 (คาดออก 6 พ.ย. 2569)
       </div>
     </div>
   </section>
@@ -344,9 +337,9 @@
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
-    แหล่งข้อมูล: SET (set.or.th) · Investing.com · StockAnalysis.com · Yahoo Finance · spvi.co.th · ข้อมูล ณ 4 ก.ค. 2569
+    แหล่งข้อมูล: SET (set.or.th) · StockAnalysis.com · Yahoo Finance · spvi.co.th · ข้อมูล ณ 22 ก.ย. 2569
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 4 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 22 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
