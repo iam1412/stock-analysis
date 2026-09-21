@@ -4,35 +4,35 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น เบอร์ลี่ ยุคเกอร์ (BJC) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"BJC","currency":"THB","price":18,"fairValue":19.3,"mos":6.7,"upside":7.2,"pe":15,"dividendYield":2.8,"roe":3.3}
+{"symbol":"BJC","currency":"THB","price":17.7,"fairValue":28,"mos":36.8,"upside":58.2,"pe":12.1,"dividendYield":2.9,"roe":5.5}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 19.3,
+  "fv": 28,
   "values": {
-    "px": 18,
-    "priceDate": "2026-09-18",
+    "px": 17.7,
+    "priceDate": "2026-09-21",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
-    "fvLow": 10.6,
-    "fvHigh": 27.5,
+    "fvLow": 27.1,
+    "fvHigh": 29,
     "shares": 4008000000,
     "dps": 0.51,
-    "baseEps": 0.99,
+    "baseEps": 1,
     "scenarios": [
       {
-        "tgt": 11.88,
+        "tgt": 12,
         "div": 1.53
       },
       {
-        "tgt": 20.57,
+        "tgt": 24.5,
         "div": 1.61
       },
       {
-        "tgt": 27.8,
+        "tgt": 33.7,
         "div": 1.65
       }
     ],
@@ -68,11 +68,11 @@
       ["มิ.ย.26", 14.7],
       ["ก.ค.26", 16.2],
       ["ส.ค.26", 15.5],
-      ["ก.ย.26", 18]
+      ["ก.ย.26", 17.7]
     ],
-    "min": 12,
-    "max": 20,
-    "grid": [14, 16, 18],
+    "min": 10,
+    "max": 30,
+    "grid": [15, 20, 25],
     "currency": "฿",
     "highlight": [0, 6],
     "gridFmt": "v.toFixed(0)",
@@ -107,7 +107,7 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ ฿12.80 – ฿21.10<br>
+        กรอบ 52 สัปดาห์ ฿12.80 – ฿20.50<br>
         ที่มา: Yahoo Finance, Investing.com, SET Factsheet
       </div>
     </div>
@@ -115,21 +115,21 @@
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 · แหล่ง: StockAnalysis, Investing.com, SET</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ 21 ก.ย. 2569 · แหล่ง: StockAnalysis, Yahoo Finance, SET</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿72.1B</div><div class="d">หุ้น ~4,008 ล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~15.0x</div><div class="d">ต่ำกว่าค่าเฉลี่ย 5 ปี อย่างมีนัย</div></div>
-      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~25.9x</div><div class="d">ช่วง 19.5x – 31.3x (2563–2567)</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.49x</div><div class="d">ซื้อสินทรัพย์ต่ำกว่ามูลค่าบัญชี</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿70.9B</div><div class="d">หุ้น ~4,008 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~12.1x</div><div class="d">EPS TTM ฿1.46 (FY2568: ฿1.00) · ต่ำกว่ามัธยฐาน 5 ปี</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~27.1x</div><div class="d">มัธยฐาน · ช่วง 19.5x – 38.7x (2564–2568)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.57x</div><div class="d">ซื้อสินทรัพย์ต่ำกว่ามูลค่าบัญชี</div></div>
 
-      <div class="metric"><div class="k">กำไรสุทธิ FY2567</div><div class="v">~฿4.0B</div><div class="d">−14.7% YoY (TTM)</div></div>
-      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.99</div><div class="d">FY2566: ฿1.20 · FY2565: ฿1.25</div></div>
-      <div class="metric"><div class="k">BVPS</div><div class="v">~฿30.00</div><div class="d">ทุนต่อหุ้น (สินทรัพย์รวม ฿337B)</div></div>
-      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~3.3% / 1.5%</div><div class="d">ต่ำเพราะฐานทุน+สินทรัพย์ใหญ่มาก</div></div>
+      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">~฿5.9B</div><div class="d">FY2568: ฿4.0B (ทรงตัว YoY)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿1.46</div><div class="d">FY2568: ฿1.00 · FY2566: ฿1.20 · FY2565: ฿1.25</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿31.0</div><div class="d">ทุนต่อหุ้น (หนี้ ฿175B ÷ D/E 1.41 ≈ ทุน ฿124B)</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~5.5%</div><div class="d">TTM (FY2568: 3.9%) ต่ำเพราะฐานทุนใหญ่มาก</div></div>
 
-      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿156B</div><div class="d">−2.5% YoY · ค้าปลีก+บรรจุภัณฑ์+ยา</div></div>
-      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">21.7%</div><div class="d">EBITDA margin ~11.6%</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">DPS ~฿0.51 · Payout ~52%</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿158B</div><div class="d">−6.1% YoY · ค้าปลีก+บรรจุภัณฑ์+ยา</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">21.8%</div><div class="d">Operating margin ~8.2%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">DPS ~฿0.51 · Payout ~51% ของ EPS FY2568</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">0.23</div><div class="d">ความผันผวนต่ำมาก vs SET</div></div>
     </div>
   </section>
@@ -147,33 +147,33 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        BJC ขึ้นแตะ <b>฿20.5</b> ในเดือน ก.พ. 2568 จากแรงเก็งกำไรและคาดหวังฟื้นตัวของการบริโภค แต่ย้อนลงแรงตั้งแต่ มี.ค. เมื่อผลประกอบการ Q1 ต่ำกว่าคาด กำลังซื้อในประเทศชะลอตัว นักท่องเที่ยวยังต่ำกว่าเป้า และ Big C ปิดปรับปรุงสาขาบางส่วน ราคาแตะจุดต่ำสุด <b>฿13.1</b> ใน มิ.ย. ก่อนฟื้นตัวเล็กน้อยในช่วงปลายปี ราคาปัจจุบัน ฿15.00 <b>ยังต่ำกว่า Fair Value ฿19.3 อยู่ ~22%</b> สะท้อน MOS ที่น่าสนใจสำหรับนักลงทุนระยะยาว
+        ในรอบ 12 เดือนที่ผ่านมา BJC แกว่งในกรอบ 52 สัปดาห์ ฿12.80–฿20.50 โดยปิดรายเดือนสูงสุดในกราฟที่ ฿18.3 (ต.ค. 2568) ก่อนอ่อนตัวลงต่อเนื่อง จุดต่ำสุดรายเดือน ฿14.1 อยู่ที่ เม.ย. 2569 ตามกำลังซื้อในประเทศที่ยังอ่อนและกำไรที่ยังไม่ฟื้นชัด แล้วฟื้นขึ้นในช่วง ก.ค.–ก.ย. 2569 จนราคาปัจจุบัน {{rd:px}} <b>ยังต่ำกว่า Fair Value {{rd:fv}} (MOS {{rd:mos}})</b> แต่ FV นี้มาจากตัวคูณ P/E ย้อนหลังตระกูลเดียว จึงอ่านเป็นกรอบ ไม่ใช่ค่าเดียวที่ยืนยันแล้ว
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 ขา (ตระกูล P/E)</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿0.99 × P/E เป้าหมาย 20x — ค่าเฉลี่ย 5 ปี ~26x แต่ใช้ 20x (discount สำหรับ earnings cycle อ่อน + หนี้สินสูง)</div></div>
-        <div class="mval">฿19.8</div>
+        <div><div class="mname">1. P/E Valuation (EPS FY2568)</div><div class="mdesc">EPS ฿1.00 (FY2568) × P/E 27.1x — 27.1x คือมัธยฐาน P/E ย้อนหลัง 5 ปีที่วัดจากราคาเฉลี่ยงวด ÷ EPS (ช่วง 19.5x–38.7x) ไม่ได้มาจาก P/E ปัจจุบัน · ใช้ EPS ปีงบเต็มแทน TTM เพราะ TTM ฿1.46 สูงกว่าปีงบ ~46% และยังตรวจไม่ได้ว่ามีรายการพิเศษหรือไม่</div></div>
+        <div class="mval">฿27.1</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.51 × (1+g); g 4%, r 9% → ฝั่งล่าง สะท้อนอัตรา payout ต่ำเมื่อเทียบทุน</div></div>
+        <div><div class="mname">2. P/E Valuation (EPS เฉลี่ย 5 ปี)</div><div class="mdesc">EPS ฿1.07 (เฉลี่ย FY2564–2568: 0.89/1.25/1.20/1.00/1.00) × P/E 27.1x — ตระกูลเดียวกับวิธีที่ 1 (P/E ประวัติ) นับเป็นเสียงเดียว ค่าสองขาห่างกันไม่เกิน 2 เท่าจึงเฉลี่ยได้</div></div>
+        <div class="mval">฿29.0</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">DDM (ตรวจเป็นบริบท ไม่นับใน FV)</div><div class="mdesc">D₁ = ฿0.51 × 1.04 ÷ (r 9% − g 4%) ≈ ฿10.6 — ห่างจากขา P/E เกิน 2 เท่า (กฎ 0.4c) จึงไม่นำมาเฉลี่ย ใช้เป็นตัวสะท้อนว่าถ้าตลาดไม่ให้ P/E ระดับเดิม ผลตอบแทนต่ำกว่านี้ได้มาก</div></div>
         <div class="mval">฿10.6</div>
-      </div>
-      <div class="vmethod">
-        <div><div class="mname">3. DCF (Simplified)</div><div class="mdesc">FCF/หุ้น ~฿1.65 (operating cash − capex) ÷ (WACC 9% − g 3%) — สะท้อนธุรกิจ asset-heavy ที่มี D&A สูง</div></div>
-        <div class="mval">฿27.5</div>
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        วิธี P/E ให้ค่ากลาง ฿19.8 · DDM ให้ค่าต่ำ ฿10.6 เพราะ ROE (~3%) แทบไม่เหลือส่วนต่างจากต้นทุนทุน ทำให้ Gordon Growth penalize หนัก · DCF ให้ค่าสูง ฿27.5 เพราะบวก D&A กลับเข้ามา (ธุรกิจค้าปลีก+บรรจุภัณฑ์ใช้สินทรัพย์สูง) · FV เฉลี่ย ฿19.3 ถือว่าสมเหตุสมผลในฐานะ "มูลค่าองค์รวม" — ใกล้เคียงเป้าเฉลี่ยของนักวิเคราะห์ที่ ฿16–22 · ปัจจัยหลักที่จะทำให้ FV ขยับ: การฟื้นตัวของ ROE, ความก้าวหน้าใน Vision 2030 (เวียดนาม), และการลดหนี้
+        ขา P/E ทั้งสองอยู่ในตระกูลเดียวกัน (ตัวคูณมัธยฐานย้อนหลัง 27.1x คูณ EPS ปีงบ ฿1.00 และ EPS เฉลี่ย 5 ปี ฿1.07) จึงเป็นการประเมินตระกูลเดียว — ความไวต่อสมมติฐาน: ถ้าตลาดให้เพียง P/E ต่ำสุดในประวัติ 19.5x FV ลดเหลือประมาณ ฿19.5–20.9 (MOS ยังเป็นบวก) แต่ถ้าให้ DDM ที่ r 9% g 4% จะได้ ~฿10.6 ซึ่งต่ำกว่าราคาตลาด · DDM ไม่นับใน FV เพราะห่างเกิน 2 เท่า · ตัวเลขเป้านักวิเคราะห์ไม่เป็นขา FV เป็นเพียงจุดตรวจความสมเหตุสมผล · หมายเหตุ: EPS TTM ฿1.46 (NI ฿5.9B) สูงกว่าปีงบมาก หากเป็นกำไรถาวรจริง FV จะสูงขึ้นอีก แต่ยังไม่ยืนยันที่มา · ปัจจัยที่ทำให้ FV ขยับ: การฟื้นตัวของ ROE, การลดหนี้ และผลของธุรกิจเวียดนาม
       </p>
     </div>
   </section>
@@ -188,15 +188,15 @@
           <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
+          <span>฿16.96<br><small>เป้าเฉลี่ย Analyst</small></span>
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
-          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿16.0<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:center">{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:right">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคา ฿15.00 อยู่ใน <b>โซน MOS 20%+ (value zone)</b> เพราะต่ำกว่า FV ฿19.3 อยู่ ~22.3% · ราคาปัจจุบันต่ำกว่าจุดซื้อ MOS 20% (฿15.4) เล็กน้อย สะท้อนว่าตลาดให้ discount บน earnings outlook ที่อ่อนแอ · <b>Analyst consensus "Neutral/Hold"</b> (16 analysts, เป้าเฉลี่ย ฿16.0) · JPMorgan ล่าสุด (พ.ค. 69) downgrade เป็น Sell เป้า ฿12.0 · หุ้นมี Beta 0.23 จึงเป็น "ป้อมปราการ" ต้านทาน market downturn ได้ดี
+        ราคา {{rd:px}} อยู่ใน <b>โซน MOS 30%+ (deep value)</b> ตามตัวเลข เพราะต่ำกว่า FV {{rd:fv}} (MOS {{rd:mos}}) และต่ำกว่าทั้งจุดซื้อ MOS 20% ({{rd:mos20}}) และ MOS 30% ({{rd:mos30}}) · แต่ FV เป็นตระกูล P/E ย้อนหลังตระกูลเดียว จึงควรอ่านร่วมกับความไวที่ P/E 19.5x (ยังมี MOS เป็นบวก) · <b>Analyst consensus "Buy"</b> (15 analysts) แต่เป้าเฉลี่ยอยู่ต่ำกว่าราคาตลาดเล็กน้อย จึงเป็นเพียงจุดตรวจ ไม่ใช่ขา FV · หุ้นมี Beta ต่ำจึงเป็นหุ้นเชิงป้องกันได้ดี
       </p>
     </div>
   </section>
@@ -207,7 +207,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">โซน Value — น่าสนใจสำหรับนักลงทุนระยะยาว</div>
+        <div class="txt">โซน Value — น่าสนใจ แต่ FV ตระกูล P/E เดียว ยังไม่ยืนยันข้ามวิธี</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -234,10 +234,10 @@
           <div class="tgt">{{rd:sc1tgt}}</div>
           <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿0.99</span></li>
+            <li><span>EPS ปี 3</span><span>~฿1.00</span></li>
             <li><span>P/E ออก</span><span>12x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
-            <li><span>สถานการณ์</span><span>บริโภคซบเซา หนี้ครัวเรือนสูง</span></li>
+            <li><span>สถานการณ์</span><span>บริโภคซบเซา EPS ไม่โต de-rating</span></li>
           </ul>
         </div>
       </div>
@@ -247,10 +247,10 @@
           <div class="tgt">{{rd:sc2tgt}}</div>
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿1.21</span></li>
-            <li><span>P/E ออก</span><span>17x</span></li>
+            <li><span>EPS ปี 3</span><span>~฿1.22</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
-            <li><span>สถานการณ์</span><span>Big C ฟื้น เวียดนามโต healthcare ขยาย</span></li>
+            <li><span>สถานการณ์</span><span>ธุรกิจฟื้นตัวช้า ๆ P/E ยังต่ำกว่ามัธยฐาน</span></li>
           </ul>
         </div>
       </div>
@@ -260,16 +260,16 @@
           <div class="tgt">{{rd:sc3tgt}}</div>
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿1.39</span></li>
-            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>EPS ปี 3</span><span>~฿1.40</span></li>
+            <li><span>P/E ออก</span><span>24x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
-            <li><span>สถานการณ์</span><span>MM Vietnam เพิ่ม กำไร ท่องเที่ยวพุ่ง rerating</span></li>
+            <li><span>สถานการณ์</span><span>กำไรโตเร็ว ROE ฟื้น rerating บางส่วน</span></li>
           </ul>
         </div>
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      Base case คาด EPS ฟื้นตัว +7%/ปี จาก (1) Big C เร่ง footprint หลังปิดปรับปรุง (2) MM Mega Market Vietnam ที่ซื้อมาเริ่มมีส่วนช่วยรายได้ (3) Healthcare logistics joint venture กับ DHL เพิ่ม margin · P/E ออก 17x ยังต่ำกว่าค่าเฉลี่ยประวัติศาสตร์ · Bear case สมมติ demand หดตัว / หนี้กดดัน · Bull case สมมติ rerating เมื่อ ROE ฟื้น + เวียดนามโตเกินคาด · ทุก scenario ยังได้รับปันผล ~3.4%/ปี เป็น floor ของผลตอบแทน
+      Base case คาด EPS ฟื้นตัว +7%/ปี จากฐานปีงบ ฿1.00 · P/E ออก 20x ใกล้ต่ำสุดในประวัติ 5 ปี (19.5x) และต่ำกว่ามัธยฐาน 27.1x มาก เพื่อไม่ให้สมมติ rerating เต็มที่ · Bear case สมมติ EPS ไม่โตและ de-rating เหลือ 12x · Bull case สมมติ EPS +12%/ปีและ P/E 24x · ทุก scenario ยังได้รับปันผลราว ฿0.51/หุ้นต่อปี เป็น floor ของผลตอบแทน
     </p>
   </section>
 
@@ -280,22 +280,22 @@
       <div class="box cat">
         <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
         <ul>
-          <li><b>Vietnam Platform (Vision 2030):</b> เข้าซื้อ MM Mega Market Vietnam มูลค่า ฿22.5B (ก.พ. 69) ตั้งเป้าขายต่างประเทศ 30% ของรายได้ (จาก 10%) + แผนขยาย 24 สาขาในเวียดนามถึง 2573</li>
-          <li><b>Healthcare Logistics JV กับ DHL:</b> ตั้ง joint venture ด้าน healthcare logistics ใช้เครือข่าย Big C + expertise DHL — ขยายตลาดที่มี margin สูงกว่าค้าปลีก</li>
-          <li><b>Big C Footprint Expansion:</b> เร่งเปิดสาขาใหม่หลังปิดปรับปรุง (2568) + โมเดล The Color (proximity store) เพิ่มความครอบคลุมในตัวเมือง</li>
+          <li><b>แพลตฟอร์มต่างประเทศ (เวียดนาม):</b> กลยุทธ์ขยายรายได้ต่างประเทศตามที่ฝ่ายบริหารสื่อสาร — ยังไม่ได้ตรวจรายละเอียดดีลจากแหล่งปฐมภูมิในรอบนี้ จึงไม่ระบุตัวเลข</li>
+          <li><b>Healthcare / Technical:</b> ธุรกิจเฮลท์แคร์และห่วงโซ่อุปทานที่ margin สูงกว่าค้าปลีก ช่วยเพิ่มสัดส่วนกำไรได้หากขยายต่อ</li>
+          <li><b>Big C Footprint:</b> ปรับปรุงและเพิ่มสาขา รวมถึงโมเดล proximity store เพิ่มความครอบคลุมในตัวเมือง</li>
           <li><b>Packaging Margin Recovery:</b> บรรจุภัณฑ์แก้ว-กระป๋องได้ประโยชน์จากต้นทุนพลังงานลดลง + demand กลับมาหลังลูกค้า FMCG ปรับ inventory</li>
-          <li><b>P/BV 0.49x = ต่ำสุดในรอบนาน:</b> ตลาดซื้อสินทรัพย์ที่ราคา Book ต่ำกว่าครึ่ง ถ้า ROE ฟื้นแม้เพียงเล็กน้อยอาจ trigger rerating แรง</li>
-          <li><b>Defensive กำลังซื้อ + Dividend:</b> Beta 0.23 + ปันผล ~3.4% ทำให้ BJC เป็น "หุ้นป้องกัน" ในช่วงตลาดผันผวน</li>
+          <li><b>P/BV ต่ำกว่า 1x:</b> ตลาดซื้อสินทรัพย์ที่ราคาต่ำกว่า Book ถ้า ROE ฟื้นแม้เพียงเล็กน้อยอาจ trigger rerating</li>
+          <li><b>Defensive + Dividend:</b> Beta ต่ำ + ปันผลราว 3% ทำให้ BJC เป็น "หุ้นป้องกัน" ในช่วงตลาดผันผวน</li>
         </ul>
       </div>
       <div class="box risk">
         <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
         <ul>
-          <li><b>หนี้สินสูง (D/E ~1.3x):</b> หนี้รวม ~฿161B ต่อทุน ~฿126B — ดอกเบี้ยสูงกดกำไร ถ้า rate ขึ้นหรือ refinance แพงขึ้น ทำให้ EPS ยิ่งอ่อน</li>
-          <li><b>ROE ต่ำมาก (3.3%):</b> สะท้อนว่าธุรกิจยังสร้างผลตอบแทนจากทุนได้น้อย — ถ้า ROE ไม่ฟื้น valuation จะถูก discount ต่อเนื่อง</li>
+          <li><b>หนี้สินสูง (D/E ~1.4x):</b> หนี้รวม ~฿175B ต่อทุน ~฿124B — ดอกเบี้ยสูงกดกำไร ถ้า rate ขึ้นหรือ refinance แพงขึ้น EPS ยิ่งอ่อน</li>
+          <li><b>ROE ต่ำ (~5.5% TTM):</b> ธุรกิจยังสร้างผลตอบแทนจากทุนได้น้อย — ถ้า ROE ไม่ฟื้น valuation จะถูก discount ต่อเนื่อง</li>
           <li><b>การบริโภคไทยซบเซา:</b> หนี้ครัวเรือนสูง กำลังซื้อกลุ่ม lower-middle ยังอ่อนแอ ซึ่งเป็นฐานลูกค้าหลัก Big C</li>
-          <li><b>JPMorgan Downgrade (พ.ค. 69):</b> เป้า ฿12.0 (−28% จากราคาปัจจุบัน) เป็น signal ว่า sell-side บางส่วนมองผลประกอบการใน 12 เดือนข้างหน้าไม่ดี</li>
-          <li><b>ความเสี่ยง Vietnam Integration:</b> MM Mega Market Vietnam เป็น acquisition ขนาดใหญ่ — ถ้า integration ช้า / synergy ต่ำกว่าคาด จะกดดัน free cash flow</li>
+          <li><b>รายได้หดตัว:</b> รายได้ TTM ลดลง ~6% YoY และ EPS TTM (฿1.46) สูงกว่าปีงบมากโดยยังไม่ยืนยันที่มา — ถ้าเป็นรายการพิเศษ กำไรปกติอาจต่ำกว่าที่เห็น</li>
+          <li><b>ความเสี่ยงการรวมกิจการต่างประเทศ:</b> การขยายต่างประเทศถ้า integration ช้า / synergy ต่ำกว่าคาด จะกดดัน free cash flow</li>
           <li><b>การแข่งขันค้าปลีก:</b> e-Commerce (Lazada/Shopee/TikTok shop) + convenience store (7-11, Lotus's) ยังกดดัน traffic Big C hypermarket อย่างต่อเนื่อง</li>
         </ul>
       </div>
@@ -306,15 +306,15 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>Value Play ระยะยาว — รอ Catalyst ยืนยันก่อนสะสมหนัก</h2>
-      <p>BJC ซื้อขายต่ำกว่า Book Value 50% และต่ำกว่า Fair Value ~22% สะท้อน pessimism ของตลาดต่อ earnings อ่อนแอในระยะสั้น อย่างไรก็ตาม BJC เป็น "ห่วงโซ่แห่งชีวิตประจำวัน" ของคนไทย — ตั้งแต่บรรจุภัณฑ์อาหาร ค้าปลีก ยาและวัสดุทางการแพทย์ ธุรกิจมีโครงสร้างที่แน่นหนาภายใต้เครือ TCC ความเสี่ยงหลักคือ <b>หนี้สูง + ROE ต่ำ</b> ซึ่งต้องจับตา; อย่างไรก็ตาม Catalyst สำคัญอย่าง Vietnam platform, Healthcare JV และ Big C expansion สามารถเร่ง ROE ได้ใน 2-3 ปีข้างหน้า</p>
+      <h2>Value Play ระยะยาว — สะสมแบบแบ่งซื้อ รอกำไรยืนยัน</h2>
+      <p>BJC ซื้อขายต่ำกว่า Book Value และต่ำกว่า Fair Value ตามตัวเลข สะท้อน pessimism ของตลาดต่อ earnings ระยะสั้น ธุรกิจเป็นห่วงโซ่ชีวิตประจำวัน (บรรจุภัณฑ์ ค้าปลีก ยา) ภายใต้เครือ TCC ความเสี่ยงหลักคือ <b>หนี้สูง + ROE ต่ำ</b> · FV มาจากตระกูล P/E ย้อนหลังตระกูลเดียว ความไว: ที่ P/E ต่ำสุดในประวัติ 19.5x ยังมี MOS เป็นบวก แต่ DDM ให้ค่าต่ำกว่าราคาตลาด จึงไม่ควรมองเป็นค่ายืนยัน</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿16.0 (Neutral/Hold)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿16.96 (Buy)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ทยอยสะสมในโซนปัจจุบัน (MOS &gt;20%) โดยแบ่งซื้อ — ขั้นแรก ฿14.5–15.5 · ขั้นสองเพิ่มถ้าราคาลงถึง MOS 30% (~฿13.5) · ตั้ง stop-loss/re-evaluate ถ้า EPS ยังไม่ฟื้นภายใน 4 ไตรมาส · กรณีตลาดเชื่อ Vietnam story → upside ถึง ฿20-22 ระยะกลาง
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมแบบแบ่งซื้อในโซนปัจจุบัน โดยไม่ซื้อหนักทีเดียวเพราะ FV ตระกูลเดียว · ตั้งจุด re-evaluate ถ้า EPS ไม่ยืนยันระดับ ฿1.0–1.5 ในไตรมาสถัดไป
       </div>
     </div>
   </section>
@@ -326,7 +326,7 @@
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
     แหล่งข้อมูล: Yahoo Finance (BJC.BK), Investing.com, SET Factsheet (02/07/2569), StockAnalysis.com (BKK:BJC), investor.bjc.co.th, companiesmarketcap.com, wisesheets.io
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
