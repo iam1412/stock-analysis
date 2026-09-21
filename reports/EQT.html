@@ -4,23 +4,23 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น EQT Corporation (EQT) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"EQT","currency":"USD","price":50,"fairValue":58,"mos":13.8,"upside":16,"pe":9.5,"dividendYield":1.32,"roe":14.2}
+{"symbol":"EQT","currency":"USD","price":50,"fairValue":43.6,"mos":-14.7,"upside":-12.8,"pe":11.6,"dividendYield":1.32,"roe":11.1}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 58,
+  "fv": 43.6,
   "values": {
     "px": 50,
     "priceDate": "2026-09-18",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
-    "fvLow": 52,
-    "fvHigh": 72,
-    "eps": 5.27,
-    "shares": 622000000,
+    "fvLow": 38.8,
+    "fvHigh": 48.4,
+    "eps": 4.31,
+    "shares": 625516000,
     "dps": 0.66,
     "bvps": 40.36
   },
@@ -52,17 +52,17 @@
       ["ส.ค.26", 54.18],
       ["ก.ย.26", 50]
     ],
-    "min": 45,
-    "max": 65,
-    "grid": [50, 55, 60],
+    "min": 40,
+    "max": 70,
+    "grid": [50, 60],
     "currency": "$",
     "highlight": [5, 11],
     "gridFmt": "v.toFixed(0)",
     "dataFmt": "d[1].toFixed(2)"
   },
   "gauge": {
-    "min": 35,
-    "max": 80,
+    "min": 25,
+    "max": 75,
     "fairLabelTop": true
   }
 }
@@ -89,41 +89,41 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ $48.47 – $68.24<br>
-        ที่มา: StockAnalysis.com ($52.32) / Yahoo Finance ($52.41) / EIA Natural Gas Report
+        กรอบ 52 สัปดาห์ $47.94 – $68.24<br>
+        ที่มา: StockAnalysis.com ({{rd:px}}) / Yahoo Finance ({{rd:px}}) / งบการเงินบริษัท (FY2025 + TTM)
       </div>
     </div>
   </header>
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM / Q1 2569 (มี.ค. 2569)</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM / FY2025 (StockAnalysis ณ 18 ก.ย. 2569)</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">622M หุ้น (post-Equitrans)</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM $5.27 (GAAP diluted)</div></div>
-      <div class="metric"><div class="k">Forward P/E (FY26)</div><div class="v">~10.9x</div><div class="d">EPS คาด FY2026 $4.58</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">625.5M หุ้นคงเหลือ (post-Equitrans)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM $4.31 (GAAP diluted)</div></div>
+      <div class="metric"><div class="k">Forward P/E (FY26)</div><div class="v">~12.4x</div><div class="d">EPS คาด FY2026 $4.03 (SA forecast)</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS $40.36 (TTM)</div></div>
 
-      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">$3,564M</div><div class="d">Net margin 34.7%</div></div>
-      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$5.27</div><div class="d">Q1 2026 adj. EPS $2.33 (beat est.)</div></div>
+      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">$2,712M</div><div class="d">Net margin 29.2%</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$4.31</div><div class="d">GAAP diluted · FY2025 $3.31</div></div>
       <div class="metric"><div class="k">BVPS</div><div class="v">~$40.36</div><div class="d">Total equity $25.1B (TTM)</div></div>
-      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~14.2% / 8.5%</div><div class="d">ฟื้นตัวจากปี Equitrans acquisition</div></div>
+      <div class="metric"><div class="k">ROE (TTM)</div><div class="v pos">~11.1%</div><div class="d">FY2023 13.3% · FY2024 1.2% · FY2025 9.0%</div></div>
 
-      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$10.3B</div><div class="d">FY2025: $8.6B · Q1 2026 แข็งแกร่ง</div></div>
-      <div class="metric"><div class="k">EBITDA TTM</div><div class="v">$7.4B</div><div class="d">FY2025: $5.85B (ฐานมั่นคง)</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$9.3B</div><div class="d">FY2025: $8.2B · TTM +30.8% YoY</div></div>
+      <div class="metric"><div class="k">Operating margin TTM</div><div class="v">46.2%</div><div class="d">FY2025 42.7% · FY2024 6.8%</div></div>
       <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.32%</div><div class="d">$0.66/ปี — เล็กน้อย เน้น FCF buyback</div></div>
-      <div class="metric"><div class="k">Net Debt</div><div class="v neg">$5.7B</div><div class="d">ลดจาก $9.3B (FY2024) → ดีขึ้นชัด</div></div>
+      <div class="metric"><div class="k">Net Debt</div><div class="v neg">$5.5B</div><div class="d">หนี้ $5.66B − เงินสด $0.11B · FY2024 $9.2B</div></div>
 
-      <div class="metric"><div class="k">Production</div><div class="v">~6.1 Bcfe/day</div><div class="d">ใหญ่สุดในสหรัฐ (Appalachian)</div></div>
-      <div class="metric"><div class="k">FCF TTM</div><div class="v pos">$4.1B</div><div class="d">ฟื้นตัวจาก $573M FY2024</div></div>
-      <div class="metric"><div class="k">EV/EBITDA (FY25)</div><div class="v">6.6x</div><div class="d">EV ~$38.4B / EBITDA FY25 $5.85B</div></div>
-      <div class="metric"><div class="k">Analyst Target</div><div class="v pos">~$69.32</div><div class="d">25 นักวิเคราะห์: 16 Strong Buy · 0 Sell</div></div>
+      <div class="metric"><div class="k">Gross margin TTM</div><div class="v">80.7%</div><div class="d">FY2024 58.1% · ผันตามราคาก๊าซ</div></div>
+      <div class="metric"><div class="k">FCF TTM</div><div class="v pos">$3.8B</div><div class="d">FY2025 $2.8B · FY2024 $573M</div></div>
+      <div class="metric"><div class="k">Debt / Equity</div><div class="v">0.20</div><div class="d">FY2024 0.39 · FY2023 0.40</div></div>
+      <div class="metric"><div class="k">Analyst Target</div><div class="v pos">~$67.69</div><div class="d">StockAnalysis: Strong Buy · Yahoo $67.58 (n=26)</div></div>
     </div>
   </section>
 
   <!-- ===== 2. PRICE CHART ===== -->
   <section>
-    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – มิ.ย. 2569</div></div>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ต.ค. 2568 – ก.ย. 2569</div></div>
     <div class="card">
       <div class="chart-wrap">
         <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
@@ -134,33 +134,29 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสูง/ต่ำสุด</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        EQT แตะระดับสูงสุด ~$68.24 ในช่วง ส.ค.–ก.ย. 2568 หนุนโดยความต้องการก๊าซธรรมชาติในฤดูร้อน (cooling demand + LNG export) จากนั้นย่อตัวลงต่อเนื่องท่ามกลางความกังวลราคา Henry Hub สู่ระดับต่ำสุด ~$48.47 ในช่วง ม.ค. 2569 ก่อนฟื้นตัวพร้อมราคาก๊าซที่กระโดดแตะ ~$5/MMBtu ต้นปี 2569 ราคาปัจจุบัน $52.35 ยังต่ำกว่า FV $58 และ consensus target $69 สะท้อนความระแวงระยะสั้น
+        ราคาปิดรายเดือนสูงสุดในกรอบกราฟคือ ~$63.64 (มี.ค. 2569) ก่อนย่อตัวลงต่อเนื่องจนราคาปัจจุบัน {{rd:px}} อยู่ที่ระดับต่ำสุดของกราฟรายเดือน ใกล้ขอบล่างกรอบ 52 สัปดาห์ ($47.94 – $68.24) ราคายังต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ ~$67.69 แต่สูงกว่า FV {{rd:fv}} ที่คำนวณจากมัธยฐาน P/E ประวัติและ ROE ระดับกลางวัฏจักร
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">3 วิธี — อิงก๊าซ mid-cycle ~$3.25–3.75/MMBtu</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">2 ตระกูล — มัธยฐาน P/E ย้อนหลัง + Justified P/BV (ROE กลางวัฏจักร)</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. EV/EBITDA (Mid-Cycle) — วิธีหลักสำหรับ E&amp;P</div><div class="mdesc">EBITDA ปกติ (normalized mid-cycle gas ~$3.50/MMBtu) ~$5.5B × EV/EBITDA 7.0x = EV $38.5B → หักหนี้สุทธิ $5.7B = Equity Value $32.8B ÷ 622M หุ้น</div></div>
-        <div class="mval">$52.7</div>
+        <div><div class="mname">1. P/E ที่มัธยฐานย้อนหลัง (Mid-Cycle Multiple)</div><div class="mdesc">EPS $4.31 (TTM, GAAP diluted) × P/E 9.0x — 9.0x คือมัธยฐานย้อนหลัง FY2022–FY2025 (จุด 8.6x / 9.0x / 16.2x, ตัดปี FY2024 ที่กำไรทรุด) ไม่ได้มาจาก P/E ปัจจุบัน</div></div>
+        <div class="mval">$38.8</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. P/E Normalized (FY2026 Consensus)</div><div class="mdesc">EPS adj. $4.58 × P/E 13x — อิง forward EPS FY2026 (consensus 25 นักวิเคราะห์) · P/E 13x สมเหตุสมผลกับ E&amp;P ที่มี midstream integration</div></div>
-        <div class="mval">$59.5</div>
-      </div>
-      <div class="vmethod">
-        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 12% − g 4%)/(r 9% − g 4%) ≈ 1.60x × BVPS $40.36 — ใช้ ROE normalized 12% (ต่ำกว่า TTM 14.2% เพื่อความระมัดระวัง)</div></div>
-        <div class="mval">$64.6</div>
+        <div><div class="mname">2. Justified P/BV (ROE กลางวัฏจักร)</div><div class="mdesc">P/BV เหมาะสม = (ROE 10% − g 4%)/(r 9% − g 4%) = 1.20x × BVPS $40.36 — ROE 10% ≈ เฉลี่ย FY2021–TTM ที่มีข้อมูล (13.3% / 16.8% / 9.0% / 1.2% / 11.1%)</div></div>
+        <div class="mval">$48.4</div>
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}} (ตาม gas price scenario)</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        <b>EQT เป็นหุ้นวัฏจักร (cyclical) ตามราคาก๊าซธรรมชาติ</b> — EV/EBITDA mid-cycle (วิธีที่ 1) เป็นวิธีหลักที่นักวิเคราะห์ E&amp;P นิยมใช้ เพราะสะท้อนมูลค่าองค์กรโดยไม่ขึ้นกับโครงสร้างทุน ให้ FV $52.7 ซึ่งใกล้เคียงราคาปัจจุบัน P/E normalized (วิธีที่ 2) ให้ $59.5 อิง consensus EPS FY2026 Justified P/BV (วิธีที่ 3) ให้สูงสุด $64.6 สะท้อน ROE ที่ฟื้นตัวหลัง Equitrans integration เฉลี่ย 3 วิธี = $58.9 ปัดเป็น $58 · ถ้าก๊าซยืนเหนือ $3.75/MMBtu FV กระโดดสู่ $65–72 · ถ้าหล่นต่ำกว่า $2.50 กดลงสู่ $38–45
+        <b>EQT เป็นหุ้นวัฏจักร (cyclical) ตามราคาก๊าซธรรมชาติ</b> — FV ประกอบจาก 2 ตระกูลที่วัดจริง: (1) P/E มัธยฐานย้อนหลัง 9.0x × EPS TTM $4.31 = $38.8 และ (2) Justified P/BV ที่ ROE กลางวัฏจักร 10% = $48.4 เฉลี่ย = $43.6 · ขา EV/EBITDA และขา P/E ที่อิงเป้านักวิเคราะห์/ตัวคูณที่สมมติเองในรอบก่อนถูกถอดออก เพราะไม่มีตัวคูณมัธยฐานที่วัดได้รองรับ · sensitivity: ถ้าใช้ P/E ปีล่าสุด 16.2x ขา 1 = $69.8 · ถ้า ROE 12% ขา 2 = $64.6 · ถ้า ROE 8% ขา 2 = $32.3 — MOS จึงไวต่อสมมติฐานมาก และยังเป็นตัวเลขประมาณการ (EPS FY2026e $4.03 / FY2027e $3.89 ต่ำกว่า TTM)
       </p>
     </div>
   </section>
@@ -178,12 +174,12 @@
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
-          <span style="text-align:right">$69.32<br><small>เป้าเฉลี่ย Analyst</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$67.69<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน $52.35 ต่ำกว่า FV $58 ราว 9.7% และต่ำกว่า consensus analyst target $69.32 ราว 32% สะท้อนว่าตลาดยังกดดันจากความผันผวนราคาก๊าซระยะสั้น โซน MOS 20% ($46.40) อยู่ใกล้ 52-week low ซึ่งเป็นจุด risk/reward ที่น่าสนใจมากสำหรับนักลงทุนระยะกลาง ราคาขณะนี้ยังไม่ถึง deep value zone แต่ให้ upside พอประมาณจาก base case
+        ราคาปัจจุบัน {{rd:px}} สูงกว่า FV {{rd:fv}} (MOS ติดลบ) แต่ต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ ~$67.69 ราว 26% — ช่องว่างนี้บอกว่านักวิเคราะห์ใช้ราคาก๊าซ/มัลติเปิลสูงกว่ามัธยฐานประวัติของ EQT เอง โซน MOS 20% ({{rd:mos20}}) ต่ำกว่าขอบล่างกรอบ 52 สัปดาห์ ($47.94) จึงต้องอาศัยราคาก๊าซหรือ EPS ที่เปลี่ยนไปมากกว่าจะถึงโซนนั้น
       </p>
     </div>
   </section>
@@ -194,7 +190,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">MOS พอประมาณ — ยังมี upside แต่ยังไม่ถึงโซน value ที่ดี ราคาก๊าซ mid-cycle เป็นตัวแปรสำคัญ</div>
+        <div class="txt">MOS ติดลบ — ราคาสูงกว่า FV ที่อิงมัธยฐาน P/E ประวัติและ ROE กลางวัฏจักร ยังไม่มีส่วนเผื่อ ต้องรอราคาลงหรือ EPS/ราคาก๊าซดีกว่าฐาน</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value investor</div></div>
@@ -213,50 +209,50 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $50.00 • EPS ฐาน ~$4.50 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~$4.31 • รวมปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$36.80</div>
-          <div class="ret neg">−26.4% (3 ปี)</div>
+          <div class="tgt">$33.80</div>
+          <div class="ret neg">−32.4% (3 ปี)</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$3.86</span></li>
-            <li><span>P/E ออก</span><span>9x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$2.08</span></li>
+            <li><span>EPS ปี 3</span><span>~$3.70</span></li>
+            <li><span>P/E ออก</span><span>8.6x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$2.00</span></li>
             <li><span>สถานการณ์</span><span>ก๊าซหล่นต่ำ &lt;$2.50/MMBtu</span></li>
           </ul>
         </div>
       </div>
       <div class="col base">
-        <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
+        <div class="top"><span>⚖️ Base</span><span>EPS +3%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$70.20</div>
-          <div class="ret pos">+40.4% (3 ปี) ≈ +12.0%/ปี</div>
+          <div class="tgt">$44.40</div>
+          <div class="ret neg">−11.2% (3 ปี) ≈ −3.9%/ปี</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$5.67</span></li>
-            <li><span>P/E ออก</span><span>12x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$2.18</span></li>
+            <li><span>EPS ปี 3</span><span>~$4.71</span></li>
+            <li><span>P/E ออก</span><span>9.0x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$2.00</span></li>
             <li><span>สถานการณ์</span><span>ก๊าซ $3.25–3.75 + LNG demand</span></li>
           </ul>
         </div>
       </div>
       <div class="col bull">
-        <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
+        <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$98.10</div>
-          <div class="ret pos">+96.2% (3 ปี) ≈ +25.2%/ปี</div>
+          <div class="tgt">$74.70</div>
+          <div class="ret pos">+49.4% (3 ปี) ≈ +14.3%/ปี</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$6.84</span></li>
-            <li><span>P/E ออก</span><span>14x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$2.28</span></li>
+            <li><span>EPS ปี 3</span><span>~$6.06</span></li>
+            <li><span>P/E ออก</span><span>12x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$2.00</span></li>
             <li><span>สถานการณ์</span><span>ก๊าซ &gt;$4.00 + Power demand surge</span></li>
           </ul>
         </div>
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      <b>หมายเหตุ:</b> EQT เป็นหุ้นวัฏจักร — ผลตอบแทนขึ้นอยู่กับราคา Henry Hub มาก Base case อิงก๊าซ mid-cycle $3.25–3.75/MMBtu ซึ่งสมเหตุสมผลในบริบท LNG export growth + data center power demand ที่กำลังเร่งตัว Vertical integration กับ Equitrans ช่วยลดต้นทุนขนส่งและเพิ่ม EBITDA stability คาดการณ์ข้างต้นไม่รวมการ buyback หุ้น ซึ่ง management ประกาศใช้ FCF ~$4B/ปีเป็นส่วนหนึ่ง (upside เพิ่มเติม)
+      <b>หมายเหตุ:</b> EQT เป็นหุ้นวัฏจักร — ผลตอบแทนขึ้นอยู่กับราคา Henry Hub มาก Base case ใช้ EPS โต 3%/ปีจากฐาน TTM $4.31 และ P/E ออก 9.0x (มัธยฐานย้อนหลัง) ซึ่งให้ผลตอบแทนต่ำกว่าจุดเข้าเพราะ EPS FY2026e/FY2027e ตาม consensus ($4.03/$3.89) ต่ำกว่า TTM · Bull ใช้ P/E 12x (ระหว่างมัธยฐานกับ 16.2x ของ FY2025) · ตัวเลขทุกฉากรวมปันผล ~$2.00 ใน 3 ปี และไม่รวม buyback (FCF TTM $3.8B)
     </p>
   </section>
 
@@ -269,18 +265,18 @@
         <ul>
           <li><b>LNG Export Boom:</b> สหรัฐกำลังขยาย LNG export capacity อย่างรวดเร็ว — Sabine Pass, Plaquemines, Golden Pass — EQT เป็น feedgas supplier รายใหญ่สุดในประเทศ ความต้องการก๊าซส่งออกเพิ่มขึ้นโดยตรงหนุนราคาและปริมาณขาย</li>
           <li><b>Data Center Power Demand:</b> AI/cloud data center ต้องการไฟฟ้ามหาศาล — ก๊าซธรรมชาติเป็นแหล่งพลังงาน "dispatchable" ที่สะอาดและเชื่อถือได้ที่สุดสำหรับ baseload ประกอบ renewable EQT อยู่ในตำแหน่งที่ดีที่สุดรับ megatrend นี้</li>
-          <li><b>Equitrans Integration (Vertical):</b> การควบรวม Equitrans Midstream ในปี 2024 ทำให้ EQT ควบคุมท่อส่งก๊าซตั้งแต่หัวบ่อถึงปลายทาง ลดต้นทุน gathering &amp; transportation $0.50–0.70/Mcf และเพิ่ม EBITDA margin อย่างมีนัยสำคัญ</li>
-          <li><b>Olympus Merger (Scale):</b> รวม Olympus Energy (private Appalachian) ในปี 2024 เพิ่ม production และ inventory หลุมคุณภาพสูงใน core Marcellus ขยาย EQT สู่ระดับผู้ผลิตที่เหนือกว่าคู่แข่งคนอื่นในทุกด้าน</li>
-          <li><b>FCF Machine:</b> FCF TTM $4.1B คิดเป็น ~12.5% FCF yield ที่ราคาปัจจุบัน management ใช้ FCF paydown หนี้ (ลดจาก $9.3B → $5.7B) และ buyback — สร้าง per-share value ต่อเนื่อง</li>
+          <li><b>Equitrans Integration (Vertical):</b> การควบรวม Equitrans Midstream ในปี 2024 ทำให้ EQT ควบคุมท่อส่งก๊าซตั้งแต่หัวบ่อถึงปลายทาง ลดความเสี่ยงด้านการขนส่งและช่วยให้ margin คงที่ขึ้น (gross margin TTM 80.7%)</li>
+          <li><b>Balance Sheet Repair:</b> หนี้ลดจาก $9.4B (FY2024) เป็น $5.7B (TTM) และ D/E จาก 0.39 เป็น 0.20 — เพิ่มความยืดหยุ่นหากราคาก๊าซผันผวน</li>
+          <li><b>FCF Machine:</b> FCF TTM $3.8B (FY2025 $2.8B) คิดเป็น ~12% FCF yield ที่ราคาปัจจุบัน — ใช้ paydown หนี้และสร้าง per-share value ต่อเนื่อง หากราคาก๊าซไม่ตกลง</li>
           <li><b>US Energy Policy:</b> นโยบายส่งเสริมความมั่นคงด้านพลังงานในประเทศ + LNG export อนุมัติเพิ่ม เป็นลมหนุนระยะยาวสำหรับผู้ผลิตก๊าซภายในประเทศ</li>
         </ul>
       </div>
       <div class="box risk">
         <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
         <ul>
-          <li><b>ราคาก๊าซผันผวน (ความเสี่ยงหลัก):</b> Henry Hub เคยลงต่ำกว่า $2.00/MMBtu ในปี 2024 ทำให้ EPS ดิ่งและ FY2024 กำไรเหลือ $242M เท่านั้น ราคาก๊าซขึ้นกับสภาพอากาศ, LNG export demand, renewable substitution — ทำนายยาก</li>
-          <li><b>Leverage สูงจาก Acquisition:</b> Net debt $5.7B (ลดแล้ว แต่ยังสูง) อัตราส่วน Net Debt/EBITDA ~1.0x (ณ FY2025 EBITDA) — ยังบริหารได้ แต่ถ้าก๊าซตก EBITDA หดตัวเร็ว leverage ขึ้นเร็ว</li>
-          <li><b>Dilution จากหุ้นใหม่:</b> Share count เพิ่มจาก ~323M (FY2021) → ~622M (TTM) เพราะใช้หุ้นซื้อกิจการ นักลงทุนต้องตรวจ per-share metrics เสมอ (EPS / FCF per share)</li>
+          <li><b>ราคาก๊าซผันผวน (ความเสี่ยงหลัก):</b> ราคาก๊าซที่อ่อนตัวทำให้ EPS FY2024 ดิ่งเหลือ $0.45 และกำไรสุทธิ $231M เท่านั้น ราคาก๊าซขึ้นกับสภาพอากาศ, LNG export demand, renewable substitution — ทำนายยาก</li>
+          <li><b>Leverage จาก Acquisition:</b> Net debt $5.5B (ลดลงแล้ว แต่ยังมีนัย) — ถ้าก๊าซตก EBITDA หดตัวเร็ว leverage จะขึ้นเร็ว</li>
+          <li><b>Dilution จากหุ้นใหม่:</b> Share count เพิ่มจาก ~323M (FY2021) → ~629M (TTM ถัวเฉลี่ยปรับลด) เพราะใช้หุ้นซื้อกิจการ นักลงทุนต้องตรวจ per-share metrics เสมอ (EPS / FCF per share)</li>
           <li><b>Regulatory Risk:</b> นโยบายสิ่งแวดล้อม, methane emission rules, federal drilling regulations อาจเพิ่มต้นทุนหรือจำกัด production บางพื้นที่ในระยะยาว</li>
           <li><b>Appalachian Basin Concentration:</b> EQT ผลิตในพื้นที่เดียว (Marcellus/Utica) — ราคา basis differential กับ Henry Hub อาจกว้างขึ้นหากท่อขนส่งออกจาก basin ติดขัด</li>
           <li><b>Execution Risk — Integration:</b> การรวม Equitrans + Olympus ยังอยู่ระหว่าง integration — cost synergy และ operational efficiency อาจใช้เวลาและเกิดค่าใช้จ่ายที่ไม่คาดคิด</li>
@@ -294,14 +290,14 @@
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
       <h2>EQT: ผู้ผลิตก๊าซรายใหญ่สุดสหรัฐ — ราคา Cyclical กด แต่โครงสร้างธุรกิจแข็งแกร่ง</h2>
-      <p>EQT Corporation คือการเดิมพันบน natural gas structural bull case — LNG export, AI data center power demand, และความมั่นคงพลังงานสหรัฐ ด้วย Equitrans integration EQT กลายเป็นบริษัทที่ควบคุมห่วงโซ่การผลิตครบวงจร ลดต้นทุนและเพิ่ม margin อย่างถาวร ราคาหุ้นปัจจุบัน $52.35 สะท้อนความกังวลระยะสั้นเรื่องราคาก๊าซ แต่ยังต่ำกว่า fair value mid-cycle ราว 10% และต่ำกว่า consensus analyst target 32% FCF yield ~12.5% ใช้ paydown หนี้และ buyback อย่างต่อเนื่อง ผู้ลงทุนระยะกลาง (2–3 ปี) ที่เชื่อใน natural gas demand growth จาก LNG + data centers จะได้ประโยชน์จากการถือ EQT ในราคาปัจจุบัน อย่างไรก็ตาม ความผันผวนราคาก๊าซเป็นความเสี่ยงสำคัญที่ต้องยอมรับ</p>
+      <p>EQT Corporation คือการเดิมพันบน natural gas — LNG export, AI data center power demand และความมั่นคงพลังงานสหรัฐ หลังรวม Equitrans งบดุลดีขึ้นชัด (หนี้ $9.4B → $5.7B, FCF TTM $3.8B) แต่ราคาปัจจุบัน {{rd:px}} สูงกว่า FV {{rd:fv}} ที่อิงมัธยฐาน P/E ประวัติ 9.0x และ ROE กลางวัฏจักร 10% (MOS {{rd:mos}}) และ EPS ที่ตลาดคาด (FY2026e $4.03, FY2027e $3.89) ต่ำกว่า TTM $4.31 เป้าเฉลี่ยนักวิเคราะห์ ~$67.69 สูงกว่า FV มาก จึงใช้เป็นข้อมูลประกอบเท่านั้น ไม่ได้ถูกนับเป็นขาของ FV ความไวต่อสมมติฐานสูง (ROE 8–12% ให้ขา 2 อยู่ที่ $32–65) ความผันผวนราคาก๊าซเป็นความเสี่ยงสำคัญ</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$69.32 (Buy — 25 analysts)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$67.69 (Strong Buy — StockAnalysis)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน $52.35 อยู่ใต้ FV mid-cycle เล็กน้อย (MOS 9.7%) เหมาะสำหรับ <b>ทยอยสะสมสำหรับนักลงทุนที่เชื่อใน natural gas long-term thesis</b> โซนน่าสนใจกว่าคือ MOS 20% = $46.40 ซึ่งใกล้ 52-week low หากราคาก๊าซผันผวนลง ใครมองระยะยาว 3–5 ปี ควรตั้ง limit order รับในโซน $46–50 ระวังความเสี่ยง commodity cycle — ห้ามใช้ margin หรือลงทุนเกิน 5–8% ของ portfolio
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน {{rd:px}} อยู่เหนือ FV {{rd:fv}} (MOS {{rd:mos}}) ยังไม่มีส่วนเผื่อ — เหมาะกับ <b>รอ</b> มากกว่าเร่งสะสม โซน MOS 20% = {{rd:mos20}} และ MOS 30% = {{rd:mos30}} ต่ำกว่าราคานี้มาก ผู้ที่เชื่อ natural gas thesis ระยะยาวอาจทยอยสะสมเล็กน้อยโดยรับรู้ว่าอยู่เหนือ FV · ระวังความเสี่ยง commodity cycle — ห้ามใช้ margin หรือลงทุนเกิน 5–8% ของ portfolio
       </div>
     </div>
   </section>
@@ -310,12 +306,12 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐาน mid-cycle gas price ที่อาจคลาดเคลื่อนจากความเป็นจริง EQT เป็นหุ้นวัฏจักรที่ผลประกอบการผันผวนตามราคา Henry Hub สูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ
-    • ราคาหุ้น: StockAnalysis.com ($52.32) และ Yahoo Finance ($52.41) ณ 2 ก.ค. 2569 — ตรงกันใน 0.2% (ผ่าน cross-verify)
+    • ราคาหุ้น: StockAnalysis.com ({{rd:px}}) และ Yahoo Finance ({{rd:px}}) ณ 18 ก.ย. 2569 — ตรงกัน 0% (ผ่าน cross-verify) · EPS TTM $4.31 ตรงกันทั้งสองแหล่ง
     • ข้อมูลการเงิน: StockAnalysis.com (financials, balance sheet, cash flow), Yahoo Finance (quote, history)
-    • Analyst targets &amp; ratings: StockAnalysis.com/forecast (25 นักวิเคราะห์ — Jefferies $75, Freedom Broker $79, Morgan Stanley $68, Truist $65)
-    • Henry Hub &amp; industry context: EIA Weekly Natural Gas Report (ม.ค. 2569: $4.98/MMBtu)
+    • Analyst targets &amp; ratings: StockAnalysis.com/forecast (เป้าเฉลี่ย $67.69 · Yahoo $67.58, n=26 · ใช้เป็นข้อมูลประกอบ ไม่ใช่ขาของ FV)
+    • ตัวคูณมัธยฐาน P/E FY2022–FY2025 คำนวณจากราคาเฉลี่ยรายปี ÷ EPS diluted · forecast EPS FY2026e $4.03 / FY2027e $3.89 (StockAnalysis)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 2 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
