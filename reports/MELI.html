@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น MercadoLibre (MELI) — Stock Analysis Dashboard</title>
 <!-- ★ โมเดล AI ที่ใช้วิเคราะห์จริง — gate E28 บังคับ -->
-<meta name="ai-model" content="Claude Opus 4.8">
+<meta name="ai-model" content="Claude Sonnet 5">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"MELI","currency":"USD","price":1787.39,"fairValue":2025,"mos":11.7,"upside":13.3,"pe":47.2,"dividendYield":null,"roe":28.5}
+{"symbol":"MELI","currency":"USD","price":1787.39,"fairValue":2100,"mos":14.9,"upside":17.5,"pe":48.6,"dividendYield":null,"roe":27.5}
 </script>
 <!--
   report-data: ธีมสี MercadoLibre — เหลือง (#F5D800) บนพื้น navy-blue เข้ม
@@ -17,29 +17,29 @@
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 2025,
+  "fv": 2100,
   "values": {
     "px": 1787.39,
     "priceDate": "2026-09-18",
     "dateEra": "CE",
     "chgSuffix": "รอบปี",
-    "fvLow": 1767,
-    "fvHigh": 2353,
-    "eps": 37.87,
+    "fvLow": 1911,
+    "fvHigh": 2289,
+    "eps": 36.75,
     "shares": 50700000,
     "bvps": 133.1,
-    "baseEps": 37.87,
+    "baseEps": 36.75,
     "scenarios": [
       {
-        "tgt": 1728,
+        "tgt": 1677,
         "div": 0
       },
       {
-        "tgt": 3494,
+        "tgt": 3391,
         "div": 0
       },
       {
-        "tgt": 5196,
+        "tgt": 5042,
         "div": 0
       }
     ],
@@ -112,7 +112,7 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}} (StockAnalysis.com / Yahoo Finance)<br>
-        กรอบ 52 สัปดาห์ $1,495.00 – $2,645.22<br>
+        กรอบ 52 สัปดาห์ $1,495.00 – $2,548.50<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / MercadoLibre IR 10-K
       </div>
     </div>
@@ -120,19 +120,19 @@
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ FY2025 (10-K) + TTM Q1/2026 · ราคา ณ 29 มิ.ย. 2026</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ FY2025 (10-K) + TTM ล่าสุด (StockAnalysis) · ราคา ณ {{rd:priceDate}}</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~50.7 ล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~47.20x</div><div class="d">EPS TTM $37.87 · ราคาปรับลง −36% รอบปี</div></div>
-      <div class="metric"><div class="k">P/E (Forward)</div><div class="v">~44.2x</div><div class="d">EPS FY26E ~$40.43 (consensus)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~48.64x</div><div class="d">EPS TTM $36.75 · ราคาปรับลงรอบปี</div></div>
+      <div class="metric"><div class="k">P/E (Forward)</div><div class="v">~46.2x</div><div class="d">EPS FY26E ~$38.69 (StockAnalysis consensus)</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~{{rd:pbv}}x</div><div class="d">BVPS ~$133.10 (ROE สูง ดัน P/BV)</div></div>
 
-      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">~$1.92B</div><div class="d neg">▼ −6.8% YoY (ลงทุนหนัก logistics+fintech)</div></div>
-      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$37.87</div><div class="d">EPS FY25 ~$39.40 · FY26E ~$40.43</div></div>
-      <div class="metric"><div class="k">BVPS</div><div class="v">~$133.10</div><div class="d">ROE ~28.5% (แข็งแกร่ง)</div></div>
-      <div class="metric"><div class="k">ROE / Op. Margin</div><div class="v pos">~28.5% / ~9.95%</div><div class="d">margin กดชั่วคราว จาก logistics + fintech credit</div></div>
+      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">~$1.86B</div><div class="d neg">▼ −6.7% เทียบ FY2025 (ลงทุนหนัก logistics+fintech)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$36.75</div><div class="d">EPS FY25 ~$39.39 · FY26E ~$38.69</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$133.10</div><div class="d">ROE ~27.5% (แข็งแกร่ง)</div></div>
+      <div class="metric"><div class="k">ROE / Op. Margin</div><div class="v pos">~27.5% / ~8.3%</div><div class="d">margin กดชั่วคราว จาก logistics + fintech credit</div></div>
 
-      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~$31.80B</div><div class="d pos">▲ +42.1% YoY · RevCAGR 5ปี ~39%</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~$35.18B</div><div class="d pos">▲ +46.0% YoY · RevCAGR FY21→FY25 ~42%</div></div>
       <div class="metric"><div class="k">Rev. Growth Trend</div><div class="v pos">2021→2025: $7.1B→$28.9B</div><div class="d">5ปีเติบโต ~4x (รวม FX inflation อาร์เจนตินา)</div></div>
       <div class="metric"><div class="k">เงินปันผล</div><div class="v">ไม่จ่าย</div><div class="d">Re-invest ทั้งหมดสู่ logistics + fintech</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">~1.35</div><div class="d">ผันผวนสูง — EM + high-beta tech</div></div>
@@ -141,7 +141,7 @@
 
   <!-- ===== 2. PRICE CHART (~1 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">มิ.ย. 2025 – มิ.ย. 2026 · รายเดือน (13 จุด)</div></div>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ต.ค. 2025 – ก.ย. 2026 · รายเดือน (12 จุด)</div></div>
     <div class="card">
       <div class="chart-wrap">
         <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
@@ -152,33 +152,30 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        MELI ร่วงลง <b>−35.9% ในรอบปี</b> (จาก ~$2,614 เดือน มิ.ย. 2025 → $1,675 มิ.ย. 2026) แม้รายได้โต +42% YoY — สะท้อน <b>การ de-rate multiple</b> ในหมู่หุ้น EM growth ที่ตลาดกังวล <b>FX/อัตราเงินเฟ้ออาร์เจนตินา</b> + ลงทุนหนักด้าน logistics &amp; fintech credit กด margin ชั่วคราว จุดต่ำสุดแถว <b>~$1,495 (ต.ค. 2025)</b> ก่อนรีบาวด์อ่อน ๆ ถึงปัจจุบัน ราคาปัจจุบันอยู่ใกล้บริเวณ 52w low — ต่ำกว่ามูลค่าเหมาะสมของเรา ~$2,025 ราว 17%
+        MELI ปรับลงในรอบปี (ปิดสิ้นเดือน ต.ค. 2025 ที่ ~$2,327 ต่ำสุดรายเดือนในกราฟ ~$1,696 เดือน พ.ค. 2026) แม้รายได้ TTM โต +46% YoY — สะท้อน <b>การ de-rate multiple</b> ในหมู่หุ้น EM growth ที่ตลาดกังวล <b>FX/อัตราเงินเฟ้ออาร์เจนตินา</b> + ลงทุนหนักด้าน logistics &amp; fintech credit กด margin ชั่วคราว (Op. margin TTM ~8.3% เทียบ ~14.6% ใน FY2023) กรอบ 52 สัปดาห์ $1,495 – $2,548.50 ราคาปัจจุบัน {{rd:px}} อยู่เหนือจุดต่ำสุดราว 20% และต่ำกว่าจุดสูงสุดราว 30% — ต่ำกว่ามูลค่าเหมาะสมของเรา {{rd:fv}} ({{rd:mos}})
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">3 วิธี เฉลี่ย · ข้าม DDM (ไม่จ่ายปันผล)</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">2 การ์ดในตระกูล P/E (นับเป็น 1 เสียง) · ข้าม DDM (ไม่จ่ายปันผล)</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation <span class="pill a">Fwd EPS</span></div><div class="mdesc">EPS $40.43 (FY2026E consensus) × P/E เป้าหมาย ~48x — สมเหตุสมผลสำหรับ hyper-growth 40% แต่หักส่วน EM risk premium; ต่ำกว่า historical peak ~70x มาก</div></div>
-        <div class="mval">$1,941</div>
+        <div><div class="mname">1. P/E Valuation <span class="pill a">มัธยฐาน FY2024–25</span></div><div class="mdesc">EPS $36.75 (TTM diluted) × P/E 52x — 52x = มัธยฐานของ P/E จริง FY2024 (46.8x) และ FY2025 (57.3x) จากราคาเฉลี่ยรายปี ÷ EPS ปีนั้น เลือกสองปีล่าสุดเพราะสเกลกำไร (EPS ~$38–39) ใกล้ปัจจุบัน — มาจากประวัติ ไม่ได้มาจาก P/E ปัจจุบัน</div></div>
+        <div class="mval">$1,911</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. DCF (2-stage, 10% discount rate)</div><div class="mdesc">FCF margin 7%/9%/11% ปี 1–3 จาก Rev FY26–28E $40.5B/$52B/$64B; Terminal FCF×1.03/(10%−3%); PV รวม ÷ 50.7M หุ้น</div></div>
-        <div class="mval">$1,767</div>
+        <div><div class="mname">2. P/E Valuation <span class="pill b">มัธยฐานเต็ม 4 ปี</span></div><div class="mdesc">EPS $36.75 (TTM diluted) × P/E 62.3x — 62.3x = มัธยฐาน 4 จุด FY2022–25 (96.4x / 67.4x / 57.3x / 46.8x; ตัด FY2021 926x ที่กำไรเกือบศูนย์) · ตระกูลเดียวกับข้อ 1 (EPS ตัวเดียวกัน) นับเป็น 1 เสียง และเป็นขอบบนเพราะ multiple ลดลงตามกำไรที่ขยาย</div></div>
+        <div class="mval">$2,289</div>
       </div>
-      <div class="vmethod">
-        <div><div class="mname">3. EV/Sales (FY26E) <span class="pill b">อนุรักษ์นิยม</span></div><div class="mdesc">3x EV/Sales บน Rev FY26E $40.5B → EV $121.5B; หัก Net Debt ~$2.2B = $119.3B ÷ 50.7M หุ้น — 3x ต่ำกว่าเพียร์ growth 30–40% (ปกติ 4–6x) สะท้อน EM discount</div></div>
-        <div class="mval">$2,353</div>
-      </div>
+
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        <b>หมายเหตุ:</b> ข้าม DDM เพราะ MELI <b>ไม่จ่ายเงินปันผล</b> (re-invest ทั้งหมด) · <b>P/E (Fwd)</b> ให้ค่าต่ำสุด — สะท้อนความเสี่ยงที่ multiple อาจถูกกดถ้ารายได้สะดุด · <b>EV/Sales</b> ให้สูงสุดเพราะมอง top-line momentum แต่ใช้ 3x ซึ่งอนุรักษ์นิยมสำหรับ 40% grower · <b>DCF</b> เป็นกลาง สมมุติ FCF margin ขยาย 7%→11% ใน 3 ปี · ⚠️ <b>FV ไวต่อสมมุติฐานมาก:</b> อาร์เจนตินา FX ทรุดหนัก / NPL fintech พุ่ง → FV อาจต่ำกว่า $1,500; ถ้าเติบโต 50%+ → FV เกิน $2,500
+        <b>หมายเหตุ (single-family valuation):</b> ข้าม DDM เพราะ MELI <b>ไม่จ่ายเงินปันผล</b> · การ์ดทั้งสองใช้ EPS TTM เดียวกัน คูณ P/E ที่วัดจากประวัติจริงของ MELI เอง จึงเป็นตระกูลเดียว (ห่างกันไม่ถึง 2 เท่า เฉลี่ยได้) · ไม่ใช้ DCF เพราะ FCF ของ MELI (TTM ~$12.4B เทียบกำไรสุทธิ ~$1.9B) ปนกระแสเงินสดจากเงินฝาก/สินเชื่อ fintech จึงสร้างตารางที่ตรวจซ้ำได้อย่างซื่อสัตย์ไม่ได้ · ไม่ใช้เป้านักวิเคราะห์เป็นขา (ใช้เป็นบริบทเท่านั้น) · ⚠️ <b>ความไวของ MOS:</b> ถ้าใช้ P/E 52x อย่างเดียว FV ≈ $1,911 (ราคาต่ำกว่า FV เพียงเล็กน้อย); ถ้าใช้ 62.3x อย่างเดียว FV ≈ $2,289 (ราคาต่ำกว่า FV มากกว่าเท่าตัว) — ข้อสรุปขึ้นกับ multiple เกือบทั้งหมด · อาร์เจนตินา FX ทรุดหนัก / NPL fintech พุ่ง → EPS และ multiple ลดพร้อมกัน
       </p>
     </div>
   </section>
@@ -196,14 +193,14 @@
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
-          <span style="text-align:right">$2,217<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$2,265<br><small>เป้าเฉลี่ย Analyst</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคา $1,675 อยู่ <b>ต่ำกว่า Fair Value $2,025 ราว 17%</b> — MOS ระดับ "ok" สำหรับหุ้น hyper-growth EM ที่มีความเสี่ยงสูง
-        ราคาปัจจุบันอยู่ระหว่างโซน MOS 20% ($1,620) กับ Fair Value — ผ่านจุด deep value แล้ว แต่ยังมี upside ถ้าธุรกิจเติบโตตามประมาณ
-        เป้า consensus นักวิเคราะห์ 24 ราย (Buy) ที่ $2,217 สอดคล้องกับ FV ของเรา · ⚠️ <b>ใช้ position sizing เล็กกว่าปกติ</b> เพราะ Beta 1.35 + EM/FX risk
+        ราคาปัจจุบัน {{rd:px}} <b>ต่ำกว่า Fair Value {{rd:fv}}</b> ({{rd:mos}}) — MOS ระดับ "ok" สำหรับหุ้น hyper-growth EM ที่มีความเสี่ยงสูง
+        ราคาอยู่เหนือโซน MOS 20% ({{rd:mos20}}) และต่ำกว่า Fair Value — ยังไม่ถึงโซน deep value แต่ยังมี upside ถ้าธุรกิจเติบโตตามประมาณ
+        เป้า consensus นักวิเคราะห์ 24 ราย (Buy) ที่ ~$2,265 อยู่ในกรอบ FV ของเรา (ไม่ได้นับเป็นขาของ FV) · ⚠️ <b>ใช้ position sizing เล็กกว่าปกติ</b> เพราะ Beta 1.35 + EM/FX risk
       </p>
     </div>
   </section>
@@ -214,7 +211,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt"><b>Margin of Safety พอสมควร (สำหรับ EM Growth)</b><br>ราคาปัจจุบัน $1,675.10 ต่ำกว่ามูลค่าเหมาะสม $2,025 ราว 17.3% — สำหรับหุ้น hyper-growth ตลาดเกิดใหม่ที่มี Beta 1.35 ถือว่า<b>น่าสนใจ แต่ยังไม่ถึง deep value</b> ควรรอจังหวะเพิ่มเมื่อ sentiment ดีขึ้นหรือราคาลงถึงโซน MOS 20%</div>
+        <div class="txt"><b>Margin of Safety พอสมควร (สำหรับ EM Growth)</b><br>ราคาปัจจุบัน {{rd:px}} ต่ำกว่ามูลค่าเหมาะสม {{rd:fv}} ({{rd:mos}}) — สำหรับหุ้น hyper-growth ตลาดเกิดใหม่ที่มี Beta 1.35 ถือว่า<b>น่าสนใจ แต่ยังไม่ถึง deep value</b> และผลขึ้นกับ P/E ที่เลือกมาก (ดูความไวใน section 3) ควรรอจังหวะเพิ่มเมื่อ sentiment ดีขึ้นหรือราคาลงถึงโซน MOS 20%</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -241,7 +238,7 @@
           <div class="tgt">{{rd:sc1tgt}}</div>
           <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$57.60</span></li>
+            <li><span>EPS ปี 3</span><span>~$55.89</span></li>
             <li><span>P/E ออก</span><span>30x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>FX อาร์เจนตินาทรุด / NPL fintech พุ่ง</span></li>
@@ -254,7 +251,7 @@
           <div class="tgt">{{rd:sc2tgt}}</div>
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$83.20</span></li>
+            <li><span>EPS ปี 3</span><span>~$80.74</span></li>
             <li><span>P/E ออก</span><span>42x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>GMV โต / Mercado Pago ขยาย / margin ดีขึ้น</span></li>
@@ -267,7 +264,7 @@
           <div class="tgt">{{rd:sc3tgt}}</div>
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$103.92</span></li>
+            <li><span>EPS ปี 3</span><span>~$100.84</span></li>
             <li><span>P/E ออก</span><span>50x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Fintech re-rates / AI commerce / LatAm middle class โต</span></li>
@@ -276,7 +273,7 @@
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      ⚠️ <b>ระวัง: ช่วง Base–Bull กว้างมาก</b> — แสดงว่า MELI เป็น high-conviction/high-risk bet สถานการณ์ Bear แทบไม่ให้ผลตอบแทน (EPS โต 15%/ปี แต่ multiple de-rate → flat) · Base ให้ผลดีมากถ้ากำไรโตได้ 30%/ปี · ตัวเลขคำนวณจาก EPS ฐาน $37.87 × (1+g)³ = EPS ปี 3 × P/E ออก = ราคาเป้า · MELI ไม่จ่ายปันผล ผลตอบแทนทั้งหมดมาจาก capital gain · ⚠️ <b>หมายเหตุ FX:</b> ~34% รายได้มาจากอาร์เจนตินา อัตราเงินเฟ้อสูง inflate USD revenue growth — volume จริงต่ำกว่าตัวเลขที่เห็น
+      ⚠️ <b>ระวัง: ช่วง Base–Bull กว้างมาก</b> — แสดงว่า MELI เป็น high-conviction/high-risk bet สถานการณ์ Bear แทบไม่ให้ผลตอบแทน (EPS โตช้ากว่า Base แต่ multiple de-rate → flat) · Base ให้ผลดีมากถ้ากำไรโตได้ 30%/ปี · ตัวเลขคำนวณจาก EPS ฐาน $36.75 × (1+g)³ = EPS ปี 3 × P/E ออก = ราคาเป้า (consensus FY2026E $38.69 = +5% และ FY2027E $56.45 จาก StockAnalysis — ปีแรกช้ากว่า Bear แต่ปีถัดไปเร่งเร็วกว่า Base) · MELI ไม่จ่ายปันผล ผลตอบแทนทั้งหมดมาจาก capital gain · ⚠️ <b>หมายเหตุ FX:</b> ~34% รายได้มาจากอาร์เจนตินา อัตราเงินเฟ้อสูง inflate USD revenue growth — volume จริงต่ำกว่าตัวเลขที่เห็น
     </p>
   </section>
 
@@ -290,7 +287,7 @@
           <li><b>ฐานผู้ใช้ขยาย:</b> ~230M unique active users ใน LatAm — penetration ยังต่ำ e-commerce เพิ่งเริ่ม ยังโตได้อีกมาก</li>
           <li><b>Mercado Pago — fintech engine:</b> Total Payment Volume (TPV) โตต่อเนื่อง ลูกค้าสินเชื่อเพิ่ม credit risk ลดลง → margin fintech ดีขึ้น</li>
           <li><b>Mercado Envíos — Logistics moat:</b> ควบคุม last-mile delivery เป็นของตัว ลดต้นทุน + เร็วกว่าคู่แข่ง = ข้อได้เปรียบยาวนาน</li>
-          <li><b>Valuation de-rate = โอกาส:</b> หุ้นถูกขายออกแม้ Rev +42% — ถ้า sentiment กลับ (FX stabilize / margin recover) multiple re-rate เร็ว</li>
+          <li><b>Valuation de-rate = โอกาส:</b> หุ้นถูกขายออกแม้ Rev +46% — ถ้า sentiment กลับ (FX stabilize / margin recover) multiple re-rate เร็ว</li>
           <li><b>LatAm middle class growth:</b> GDP ต่อหัวในบราซิล / เม็กซิโก / โคลอมเบียยังโต — ฐานลูกค้า e-commerce ขยายได้ยาวนาน</li>
           <li><b>Mercado Ads:</b> โฆษณาบนแพลตฟอร์ม margin สูง เติบโตเร็ว เริ่มเป็น contributor สำคัญของรายได้รวม</li>
         </ul>
@@ -301,8 +298,8 @@
           <li><b>⚠️ FX / อาร์เจนตินา inflation:</b> ~34% รายได้มาจากอาร์เจนตินา — peso อ่อน = USD revenue "ดูดี" แต่ volume จริงต่ำกว่า เสถียรภาพการเมือง/เศรษฐกิจเปราะบาง</li>
           <li><b>⚠️ Fintech Credit Risk:</b> Mercado Crédito ขยายสินเชื่อเร็ว — รอบเศรษฐกิจ LatAm ชะลอ อาจทำให้ credit loss พุ่ง กด earnings</li>
           <li><b>การแข่งขัน:</b> Amazon ขยายใน LatAm, Shopee (Sea Limited) รุกบราซิล, Shein/Temu — competition ทั้งในและนอกภูมิภาค</li>
-          <li><b>Beta 1.35 — ผันผวนสูง:</b> เป็นหุ้น EM high-beta → ร่วงแรงในภาวะ risk-off / dollar แข็ง (ดังที่เห็นจากการร่วง −36% รอบปีนี้)</li>
-          <li><b>Margin investment cycle:</b> ลงทุนหนักด้าน logistics + fintech กด operating margin ไว้ที่ ~10% ถ้า payoff ช้ากว่าคาด → กำไรต่ำกว่า model</li>
+          <li><b>Beta 1.35 — ผันผวนสูง:</b> เป็นหุ้น EM high-beta → ร่วงแรงในภาวะ risk-off / dollar แข็ง (ดังที่เห็นจากราคาที่ปรับลงรอบปีนี้)</li>
+          <li><b>Margin investment cycle:</b> ลงทุนหนักด้าน logistics + fintech กด operating margin ไว้ที่ ~8% ถ้า payoff ช้ากว่าคาด → กำไรต่ำกว่า model</li>
           <li><b>Regulatory risk LatAm:</b> บราซิล / เม็กซิโก กฎระเบียบ fintech + e-commerce เปลี่ยนเร็ว — tax, interoperability, data sovereignty</li>
         </ul>
       </div>
@@ -314,14 +311,14 @@
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
       <h2>MELI: Hyper-Growth ที่ถูก De-rated — น่าสนใจ แต่ต้องทนความผันผวน EM</h2>
-      <p>MercadoLibre คือ "Amazon + PayPal + FedEx" แห่งลาตินอเมริกา ด้วยรายได้โต +42% YoY แต่ราคาหุ้นร่วง −36% ในรอบปีเดียวกัน — สะท้อนความกังวล FX อาร์เจนตินา, fintech credit risk, และ multiple de-rate ของหุ้น EM growth ราคาปัจจุบัน $1,675.10 ให้ MOS ~17.3% จากมูลค่าเหมาะสม $2,025 — ถือว่า "น่าสนใจ" สำหรับนักลงทุนที่ยอมรับความเสี่ยง EM และถือระยะยาว แต่ยังไม่ถึงระดับ deep value สำหรับ value investor สายอนุรักษ์นิยม</p>
+      <p>MercadoLibre คือ "Amazon + PayPal + FedEx" แห่งลาตินอเมริกา ด้วยรายได้ TTM โต +46% YoY แต่ราคาหุ้นปรับลงในรอบปีเดียวกัน — สะท้อนความกังวล FX อาร์เจนตินา, fintech credit risk, และ multiple de-rate ของหุ้น EM growth ราคาปัจจุบัน {{rd:px}} ให้ MOS {{rd:mos}} จากมูลค่าเหมาะสม {{rd:fv}} (ประเมินจาก P/E ประวัติ 52–62x บน EPS TTM) — ถือว่า "น่าสนใจ" สำหรับนักลงทุนที่ยอมรับความเสี่ยง EM และถือระยะยาว แต่ยังไม่ถึงระดับ deep value สำหรับ value investor สายอนุรักษ์นิยม</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#b0a870">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$2,217 (Buy · 24 ราย)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$2,265 (Buy · 24 ราย)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ทยอยสะสมที่ &lt; $1,750 ด้วย position เล็ก (High-beta EM = sizing ≤ 3–5% port) · เพิ่มหนักถ้าราคาลงถึงโซน MOS 20% ($1,620) หรือ MOS 30% ($1,418) · ⚠️ <b>ต้องติดตาม:</b> quarterly earnings + Mercado Pago TPV + FX Argentina + NPL ratio ทุกไตรมาส
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมด้วย position เล็ก (High-beta EM = sizing ≤ 3–5% port) · เพิ่มหนักถ้าราคาลงถึงโซน MOS 20% ({{rd:mos20}}) หรือ MOS 30% ({{rd:mos30}}) · ⚠️ <b>ต้องติดตาม:</b> quarterly earnings + Mercado Pago TPV + FX Argentina + NPL ratio ทุกไตรมาส
       </div>
     </div>
   </section>
@@ -333,7 +330,7 @@
     MELI เป็นหุ้น Beta สูงในตลาดเกิดใหม่ที่มีความเสี่ยงเฉพาะตัว (EM risk, FX, fintech credit, regulatory) ผู้ลงทุนควรศึกษาเพิ่มและพิจารณาความเสี่ยงของตัวเองก่อนตัดสินใจ •
     ราคา ณ {{rd:priceDate}} · ที่มา: StockAnalysis.com · Yahoo Finance · MercadoLibre IR/10-K · digrin.com (chart data)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 29 มิ.ย. 2026 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2026 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
