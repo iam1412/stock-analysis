@@ -6,35 +6,35 @@
 <title>วิเคราะห์หุ้น Constellation Energy (CEG) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"CEG","currency":"USD","price":254.71,"fairValue":279,"mos":8.7,"upside":9.5,"pe":24.7,"dividendYield":0.67,"roe":15.1}
+{"symbol":"CEG","currency":"USD","price":254.71,"fairValue":227,"mos":-12.2,"upside":-10.9,"pe":24.7,"dividendYield":0.67,"roe":15.1}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 279,
+  "fv": 227,
   "values": {
     "px": 254.71,
     "priceDate": "2026-09-18",
     "dateEra": "CE",
     "chgSuffix": "รอบปี",
-    "fvLow": 233,
-    "fvHigh": 320,
+    "fvLow": 198,
+    "fvHigh": 256,
     "analystTgt": 348.3,
     "eps": 10.33,
     "shares": 354307379,
     "dps": 1.71,
-    "baseEps": 12.13,
+    "baseEps": 10.33,
     "scenarios": [
       {
-        "tgt": 197,
+        "tgt": 167,
         "div": null
       },
       {
-        "tgt": 291,
+        "tgt": 264,
         "div": null
       },
       {
-        "tgt": 395,
+        "tgt": 337,
         "div": null
       }
     ],
@@ -79,7 +79,7 @@
     "highlight": [0, 8]
   },
   "gauge": {
-    "min": 180,
+    "min": 140,
     "max": 470,
     "fairLabelTop": "-58px"
   }
@@ -156,27 +156,25 @@
 
   <!-- ===== VALUATION ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">3 วิธี เฉลี่ยถ่วงน้ำหนัก</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">2 ตระกูลสมมติฐาน (P/E + P/S) เฉลี่ยเท่ากัน</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS consensus ปีงบถัดไป $12.13 × P/E 19.2x (มัธยฐานย้อนหลัง FY2023–25 ที่วัดจริง; ช่วง 17.3–41.5x)</div></div>
-        <div class="mval">$233</div>
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS $10.33 (GAAP diluted TTM) × P/E 19.2x (มัธยฐานย้อนหลัง FY2023–25 คือราคาเฉลี่ยของปี ÷ GAAP diluted EPS ฐานเดียวกับ EPS ที่คูณ · เพียง 3 จุด ช่วง 17.3–41.5x กว้าง 2.4 เท่า — ใช้ค่ากลาง ไม่ปัดขึ้น · EPS TTM มีกำไรเฮดจ์ปน)</div></div>
+        <div class="mval">$198</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. Forward earnings power (FY2027e)</div><div class="mdesc">EPS FY2027e $13.29 × 20x ÷ 1.09 (ส่วนลด 1 ปีที่ cost of equity ~9% · 20x = มัธยฐาน 19.2x ปัดขึ้นเล็กน้อยรับผลจากการรวม Calpine · เป็นสมมติฐาน) — ตระกูลเดียวกับวิธี 1</div></div>
-        <div class="mval">$244</div>
+        <div><div class="mname">2. P/S Valuation (ตระกูลยอดขาย)</div><div class="mdesc">ยอดขายต่อหุ้น TTM $93.06 (รายได้ $31.27B ÷ หุ้นถัวเฉลี่ยปรับลด 336M) × P/S 2.75x (มัธยฐาน FY2023–25 = ราคาเฉลี่ยของปี × หุ้นถัวเฉลี่ยปรับลด ÷ รายได้ = 1.25x / 2.75x / 3.78x — ผู้เขียนคำนวณเองจากตารางงบ [3] และราคาเฉลี่ยรายปีที่ controller วัด ช่วงกว้าง 3 เท่า)</div></div>
+        <div class="mval">$256</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">3. Analyst target (มูลค่าปัจจุบัน)</div><div class="mdesc">เป้านักวิเคราะห์เฉลี่ย 12 เดือน $348.3 (n=20, Buy) ÷ 1.09 = $320 — ตลาดสมมติ AI demand หนุนราคาขายไฟ</div></div>
-        <div class="mval">$320</div>
-      </div>
+        </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        <b>หมายเหตุ:</b> FV = เฉลี่ยของ 2 ตระกูลสมมติฐาน: (วิธี 1 + วิธี 2 เป็นตระกูล P/E ตัวคูณย้อนหลัง → ค่าเฉลี่ย ~$238.5) และ (วิธี 3 อิงเป้านักวิเคราะห์ $320) → ($238.5 + $320) ÷ 2 ≈ {{rd:fv}} · ข้าม DDM เพราะปันผลน้อยมาก (0.67%) · ตัวคูณ P/E ที่ใช้มาจากมัธยฐานย้อนหลังของหุ้นเอง ไม่ได้ลอกจากตัวคูณปัจจุบัน ·
-        ช่วงห่างระหว่าง 2 ตระกูล 1.34 เท่า (ไม่เกิน 2.0) จึงเฉลี่ยได้ — fair value {{rd:fv}} อยู่ <b>สูงกว่าราคาตลาดเล็กน้อย</b> ({{rd:px}})
+        <b>หมายเหตุ:</b> FV = เฉลี่ยของ 2 ตระกูล (P/E บนฐาน GAAP + P/S) → ($198 + $256) ÷ 2 ≈ {{rd:fv}} · <b>ถอดเป้านักวิเคราะห์ออกจากขา FV</b> (เดิมถ่วง 50%) — เหลือเป็นบริบทเทียบเท่านั้น · ถอดวิธี "P/E × EPS consensus" ออกเพราะคูณตัวคูณ GAAP กับ EPS ฐาน adjusted (คนละฐาน) และซ้ำตระกูล P/E · ข้าม DDM เพราะปันผลน้อยมาก (0.67%) ·
+        <b>ข้อจำกัดที่ต้องรู้:</b> (1) ตัวคูณทั้งสองมีแค่ 3 จุดและช่วงกว้าง (P/E 2.4 เท่า · P/S 3.0 เท่า) จึงเป็นค่ากลางที่ไม่แน่นอนสูง · (2) P/S มัธยฐาน 2.75x ตกใกล้ P/S ปัจจุบันบนฐานเดียวกัน (~2.74x) โดยบังเอิญจากค่าที่วัด ไม่ได้ลอกมา — ขานี้จึงบอกได้แค่ว่า "ราคาอยู่แถวกลางประวัติ" ไม่ใช่ส่วนลดจริง · (3) P/S ไม่สะท้อนการเปลี่ยนมาร์จิ้นหลังรวม Calpine · ช่วงห่างสองตระกูล 1.29 เท่า (ไม่เกิน 2.0) จึงเฉลี่ยได้ — fair value {{rd:fv}} อยู่ <b>ต่ำกว่าราคาตลาดเล็กน้อย</b> ({{rd:px}})
       </p>
     </div>
   </section>
@@ -199,8 +197,8 @@
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาตลาด {{rd:px}} อยู่ <b>ใกล้เคียงมูลค่าเหมาะสม</b> ในเชิงพื้นฐาน (ต่ำกว่าเล็กน้อย) — และยัง <b>ต่ำกว่าเป้าหมาย 12 เดือน</b> ของนักวิเคราะห์ ({{rd:analystTgt}}, Buy)
-        สะท้อนว่าตลาดได้คลายความร้อนแรงของธีม AI power ลงมาบ้างแล้ว แต่ยังไม่ถึงโซน deep value
+        ราคาตลาด {{rd:px}} อยู่ <b>สูงกว่ามูลค่าเหมาะสมเล็กน้อย</b> ในเชิงพื้นฐาน — แม้ยัง <b>ต่ำกว่าเป้าหมาย 12 เดือน</b> ของนักวิเคราะห์ ({{rd:analystTgt}}, Buy · แสดงเป็นบริบท ไม่ใช่ขาของ FV)
+        สะท้อนว่าตลาดยังคงจ่ายพรีเมียมธีม AI power อยู่บางส่วน และยังไม่ถึงโซน deep value
       </p>
     </div>
   </section>
@@ -211,12 +209,12 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt"><b>Margin of Safety บางมาก</b><br>ราคาปัจจุบัน {{rd:px}} ต่ำกว่ามูลค่าเหมาะสม {{rd:fv}} ({{rd:mos}}) → ตามเกณฑ์ value investor ถือว่า <b>ราคาสมเหตุสมผล (fair)</b> แต่ยังไม่มีส่วนเผื่อความปลอดภัยที่หนาพอ</div>
+        <div class="txt"><b>ไม่มี Margin of Safety</b><br>ราคาปัจจุบัน {{rd:px}} สูงกว่ามูลค่าเหมาะสม {{rd:fv}} ({{rd:mos}}) → ตามเกณฑ์ value investor ถือว่า <b>ราคาสูงกว่า fair เล็กน้อย</b> และยังไม่มีส่วนเผื่อความปลอดภัย</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
         <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $235</div><div class="d">ใกล้ขอบล่างของกรอบ fair value</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">เมื่อราคาลงมาต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
@@ -230,7 +228,7 @@
 
   <!-- ===== RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} (adjusted)</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} (GAAP TTM)</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +5%/ปี</span></div>
@@ -238,7 +236,7 @@
           <div class="tgt">{{rd:sc1tgt}}</div>
           <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>$14.0</span></li>
+            <li><span>EPS ปี 3</span><span>$12.0</span></li>
             <li><span>P/E ออก</span><span>14x</span></li>
             <li><span>สถานการณ์</span><span>ราคาไฟอ่อน / ดีล AI ชะลอ</span></li>
           </ul>
@@ -250,8 +248,8 @@
           <div class="tgt">{{rd:sc2tgt}}</div>
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>$16.1</span></li>
-            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>EPS ปี 3</span><span>$13.7</span></li>
+            <li><span>P/E ออก</span><span>19.2x</span></li>
             <li><span>สถานการณ์</span><span>Calpine กลืน + PPA เดินตามแผน</span></li>
           </ul>
         </div>
@@ -262,7 +260,7 @@
           <div class="tgt">{{rd:sc3tgt}}</div>
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>$18.0</span></li>
+            <li><span>EPS ปี 3</span><span>$15.3</span></li>
             <li><span>P/E ออก</span><span>22x</span></li>
             <li><span>สถานการณ์</span><span>ดีล AI/datacenter ระเบิดเต็มที่</span></li>
           </ul>
@@ -270,7 +268,7 @@
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      ความเสี่ยง–ผลตอบแทน <b>เอียงบวก</b> (Bear ราว −23% vs Bull ราว +55%) แต่ <b>base case ให้ผลตอบแทนปานกลาง</b> (~4–5%/ปี ยังไม่รวมปันผล) เพราะเข้าซื้อที่ราคาใกล้มูลค่าพื้นฐานแล้ว
+      ความเสี่ยง–ผลตอบแทน <b>ค่อนข้างสมมาตร</b> (Bear ราว −34% vs Bull ราว +32% · EPS ฐาน GAAP TTM ที่รวมกำไรเฮดจ์ ตัวคูณขาออกเทียบมัธยฐาน 19.2x) และ <b>base case ให้ผลตอบแทนต่ำ</b> (~1%/ปี ยังไม่รวมปันผล) เพราะเข้าซื้อที่ราคาสูงกว่ามูลค่าพื้นฐานเล็กน้อย
       upside ที่แท้จริงผูกกับว่าดีลป้อนไฟ AI จะแปลงเป็นกำไร/ราคาขายไฟที่สูงขึ้นได้จริงเร็วแค่ไหน
     </p>
   </section>
@@ -308,15 +306,15 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>สินทรัพย์หายากของยุค AI แต่ราคาตอนนี้ "สมเหตุสมผล ไม่ถูก"</h2>
-      <p>Constellation เป็นเจ้าของฟลีตนิวเคลียร์ใหญ่สุดของสหรัฐฯ — ไฟฐานปลอดคาร์บอน 24/7 ที่ AI/datacenter ต้องการอย่างยิ่ง ทำให้มีอำนาจต่อรองราคาและดีล PPA ระยะยาวที่มั่นคง แต่ที่ราคา {{rd:px}} ตลาดได้สะท้อนพรีเมียม "AI power" ไปมากแล้ว fair value ({{rd:fv}}) จึงใกล้ราคา — ส่วนเผื่อความปลอดภัยบางมาก</p>
+      <h2>สินทรัพย์หายากของยุค AI แต่ราคาตอนนี้ "แพงกว่ามูลค่าเหมาะสมเล็กน้อย"</h2>
+      <p>Constellation เป็นเจ้าของฟลีตนิวเคลียร์ใหญ่สุดของสหรัฐฯ — ไฟฐานปลอดคาร์บอน 24/7 ที่ AI/datacenter ต้องการอย่างยิ่ง ทำให้มีอำนาจต่อรองราคาและดีล PPA ระยะยาวที่มั่นคง แต่ที่ราคา {{rd:px}} ตลาดได้สะท้อนพรีเมียม "AI power" ไปมากแล้ว fair value ({{rd:fv}}) จึงต่ำกว่าราคาเล็กน้อย — ไม่มีส่วนเผื่อความปลอดภัย</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#a6c6b9">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">MOS ~ {{rd:mos}}</div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ef9a9a">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">{{rd:analystTgt}} ({{rd:analystPct}})</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> สาย value — รอย่อ/ทยอยสะสมเมื่อราคา <b>ต่ำกว่า ~$235</b> (น่าสนใจมากที่โซน MOS 20% ที่ {{rd:mos20}}) • สาย growth — เข้าได้แบบ DCA ยอมรับความผันผวน โดยติดตาม <b>ความคืบหน้าดีล PPA datacenter</b>, <b>การกลืน Calpine</b> และ <b>ราคาขายไฟ</b> เป็นตัวชี้วัดหลัก
+        💡 <b>กลยุทธ์:</b> สาย value — รอย่อ/ทยอยสะสมเมื่อราคา <b>ต่ำกว่ามูลค่าเหมาะสม {{rd:fv}}</b> (น่าสนใจมากที่โซน MOS 20% ที่ {{rd:mos20}}) • สาย growth — เข้าได้แบบ DCA ยอมรับความผันผวน โดยติดตาม <b>ความคืบหน้าดีล PPA datacenter</b>, <b>การกลืน Calpine</b> และ <b>ราคาขายไฟ</b> เป็นตัวชี้วัดหลัก
       </div>
     </div>
   </section>
