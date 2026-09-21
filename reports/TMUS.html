@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น T-Mobile US (TMUS) — Stock Analysis Dashboard</title>
 <!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง (Opus→"Claude Opus 4.8", Sonnet→"Claude Sonnet 4.6") — gate E28 บังคับ -->
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
 {"symbol":"TMUS","currency":"USD","price":168.18,"fairValue":205,"mos":18,"upside":21.9,"pe":17.9,"dividendYield":2.4,"roe":18.2}
@@ -157,7 +157,7 @@
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
         ราคาขึ้นทำจุดสูงสุดที่ ~$252 ช่วง ส.ค. 2568 แล้วปรับฐานลงต่อเนื่องเหลือ ~$168 ในเดือน มิ.ย. 2569 (ต่ำสุดในรอบปี)
-        ก่อนฟื้นตัวเล็กน้อยมาที่ $177.52 ปัจจุบัน — รวมลดลง ~29.6% ในรอบ 1 ปี สาเหตุหลักจากตลาดกังวลการแข่งขันด้านราคา
+        ก่อนฟื้นตัวเล็กน้อยมาที่ ${{rd:px}} ปัจจุบัน — รวมลดลง ~29.6% ในรอบ 1 ปี สาเหตุหลักจากตลาดกังวลการแข่งขันด้านราคา
         ในกลุ่ม wireless, ต้นทุนรวม UScellular merger, และ valuation ที่เคย premium สูงเทียบ AT&T/Verizon เริ่ม de-rate ลง
         แม้ operating metrics (postpaid net adds, ARPU, Home Internet) ยังเติบโตแข็งแกร่งต่อเนื่อง
       </p>
@@ -188,7 +188,7 @@
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         P/FCF ให้ค่าสูงสุดเพราะ FCF yield ปัจจุบันของ TMUS (~9.6% ที่ราคาตลาด) สูงกว่าที่ใช้ประเมิน (7.5%) มาก — สะท้อนว่าตลาดยังไม่ให้เครดิตเต็มที่กับการเติบโตของ FCF
         หลัง capex โครงข่าย 5G เริ่มลดลง ส่วน P/E ให้ค่าต่ำสุดเพราะใช้ multiple อนุรักษ์นิยม (20x ต่ำกว่าเฉลี่ย 5 ปี) กัน downside จากการแข่งขันราคา
-        EV/EBITDA อยู่กึ่งกลาง — ใช้ multiple 8.0x ซึ่งยัง premium กว่า AT&T/Verizon (~6.5–7x) ตามอัตราเติบโต subscriber ที่เหนือกว่า Fair Value เฉลี่ย $205
+        EV/EBITDA อยู่กึ่งกลาง — ใช้ multiple 8.0x ซึ่งยัง premium กว่า AT&T/Verizon (~6.5–7x) ตามอัตราเติบโต subscriber ที่เหนือกว่า Fair Value เฉลี่ย ${{rd:fv}}
         จึงเป็นตัวเลขที่สมเหตุสมผลระหว่างความระมัดระวังด้าน P/E และมุมมองบวกด้าน FCF
       </p>
     </div>
@@ -212,7 +212,7 @@
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน $177.52 อยู่ต่ำกว่า Fair Value ($205) ~13.4% และต่ำกว่าเป้าเฉลี่ยของนักวิเคราะห์ (~$255, Buy consensus จาก 28 สำนัก) ถึง ~30%
+        ราคาปัจจุบัน ${{rd:px}} เทียบกับ Fair Value (${{rd:fv}}) และต่ำกว่าเป้าเฉลี่ยของนักวิเคราะห์ (~$255, Buy consensus จาก 28 สำนัก) ถึง ~30%
         สะท้อนว่าตลาดยัง price-in ความกังวลเรื่องการแข่งขันและภาระหนี้มากกว่าที่ปัจจัยพื้นฐาน (postpaid growth, ARPU, Home Internet) จะสมควรได้รับ
       </p>
     </div>
@@ -330,7 +330,7 @@
         TMUS ยังคงเป็นผู้นำการเติบโตในกลุ่ม wireless carrier ใหญ่ 3 เจ้าของสหรัฐฯ ด้วย postpaid net adds ที่แข็งแกร่งสุด (+217K บัญชี, churn ต่ำสุด 1.04%),
         ARPU ที่โตต่อเนื่อง (+3.9% YoY) และธุรกิจ Home Internet (fixed wireless) ที่ขยายตัวเร็ว (+500K+ ต่อไตรมาส สู่ ~9M+ ราย) ซึ่งเป็นตัวขับเคลื่อนใหม่นอกเหนือจาก wireless หลัก
         อย่างไรก็ตาม ราคาหุ้นปรับตัวลงแรง ~30% จากจุดสูงสุดในรอบปี จากความกังวลเรื่องการแข่งขันด้านราคาที่รุนแรงขึ้นและภาระหนี้จากดีล Sprint/UScellular
-        ทำให้ P/E ปัจจุบัน (~18.9x) ต่ำกว่าค่าเฉลี่ยย้อนหลัง 5 ปีอย่างมีนัยสำคัญ Fair Value เฉลี่ย 3 วิธี (EV/EBITDA, P/E, P/FCF) อยู่ที่ ~$205 ให้ MOS ~13.4%
+        ทำให้ P/E ปัจจุบัน (~18.9x) ต่ำกว่าค่าเฉลี่ยย้อนหลัง 5 ปีอย่างมีนัยสำคัญ Fair Value เฉลี่ย 3 วิธี (EV/EBITDA, P/E, P/FCF) อยู่ที่ ~${{rd:fv}}
         ซึ่งอยู่ในโซน "ราคาพอใช้ ทยอยสะสมได้" — เหมาะกับนักลงทุนที่มองระยะยาวและเชื่อว่า operating momentum จะช่วยให้ตลาดกลับมาให้ premium valuation อีกครั้ง
       </p>
       <div class="vgrid">
@@ -351,7 +351,7 @@
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลจาก StockAnalysis.com, Google Finance, Yahoo Finance, T-Mobile Q1 2026 earnings release และ MarketBeat/analyst consensus
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 2 กรกฎาคม 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 22 กันยายน 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
