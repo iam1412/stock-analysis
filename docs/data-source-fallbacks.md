@@ -28,8 +28,8 @@
 - `curl` เปล่า (ไม่มี `-A`) → **HTTP 403** ทั้ง `www.sec.gov/files/company_tickers.json` และ `data.sec.gov` companyconcept · WebFetch ก็ถูกปฏิเสธ (บันทึกใน memory)
 - `www.sec.gov/files/company_tickers.json` → **403** เมื่อ UA = `"Mozilla/5.0"` **และ** เมื่อ UA = ชื่อโปรเจกต์เปล่า ๆ (`"StockResearch"`) (หน้า HTML ขนาด 1.9 KB) · ได้ **200** (800 KB, 10,459 รายการ) เฉพาะเมื่อ UA มี **ชื่อ + ที่อยู่ติดต่อ** ตามนโยบาย fair-access ของ SEC
 - `data.sec.gov` (`submissions`, `companyconcept`) → รับ `-A "Mozilla/5.0"` ได้ (**200**)
-- รูปแบบ UA ที่ใช้กับ `www.sec.gov`: `"<ชื่อโปรเจกต์> <อีเมลติดต่อ>"` — **เจ้าของรีโปเป็นผู้เลือกสตริงติดต่อ** (ห้ามใส่อีเมลส่วนตัวลงในเอกสาร/ไฟล์ที่ commit) · ตัวแปรสภาพแวดล้อม `SEC_USER_AGENT` (งานพี่น้อง PR #57 (W11) ที่ยังไม่ merge จะอ่านค่านี้) — ระหว่างนี้ส่งด้วย `-A` เอง
-- แผน: จะมีแผนที่ ticker→CIK ที่ commit ในรีโป (งานพี่น้อง ยังไม่ merge) เพื่อไม่ต้องดึง `company_tickers.json` ทุกครั้ง
+- รูปแบบ UA ที่ใช้กับ `www.sec.gov`: `"<ชื่อโปรเจกต์> <อีเมลติดต่อ>"` — **เจ้าของรีโปเป็นผู้เลือกสตริงติดต่อ** (ห้ามใส่อีเมลส่วนตัวลงในเอกสาร/ไฟล์ที่ commit) · ตัวแปรสภาพแวดล้อม `SEC_USER_AGENT` (PR #57 (W11) merge แล้ว — ใช้เฉพาะ `--sec-refresh-ciks`; การถามวันที่งบปกติไม่ต้องตั้ง เพราะมีแผนที่ `tools/sec-ciks.json` และ `data.sec.gov` รับ UA ทั่วไป) — ถ้าดึงเองด้วย curl ส่งด้วย `-A`
+- มีแผนที่ ticker→CIK ที่ commit ในรีโป (`tools/sec-ciks.json` — PR #57 merge แล้ว) เพื่อไม่ต้องดึง `company_tickers.json` ทุกครั้ง
 - **403 จาก fallback ให้ตรวจ User-Agent ก่อนสรุปว่าแหล่งล่ม** (ดูตารางข้อ 0)
 - ใช้ `rtk proxy curl` เสมอ — hook rtk ตัด/ย่อ output ได้ (§6)
 
