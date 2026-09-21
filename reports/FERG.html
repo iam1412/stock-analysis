@@ -6,42 +6,43 @@
 <title>วิเคราะห์หุ้น Ferguson Enterprises (FERG) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"FERG","currency":"USD","price":214.43,"fairValue":227.91,"mos":5.9,"upside":6.3,"pe":20.3,"dividendYield":1.7,"roe":32.3}
+{"symbol":"FERG","currency":"USD","price":214.43,"fairValue":198.73,"mos":-7.9,"upside":-7.3,"pe":20.9,"dividendYield":1.7,"roe":32}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 227.91,
+  "fv": 198.73,
   "values": {
     "px": 214.43,
     "priceDate": "2026-09-18",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
-    "fvLow": 217.54,
-    "fvHigh": 238.28,
-    "eps": 10.56,
+    "fvLow": 179.18,
+    "fvHigh": 220.61,
+    "eps": 10.24,
     "shares": 194000000,
     "dps": 3.56,
-    "baseEps": 10.56,
+    "baseEps": 10.24,
     "scenarios": [
       {
-        "tgt": 173.52,
-        "div": 9
+        "tgt": 168.22,
+        "div": 10.7
       },
       {
-        "tgt": 305.9,
+        "tgt": 265.73,
         "div": 11.5
       },
       {
-        "tgt": 433.62,
-        "div": 13
+        "tgt": 389.34,
+        "div": 12.4
       }
     ],
     "scnBasis": {
       "years": 3,
       "divIncluded": true,
       "perYear": null
-    }
+    },
+    "analystTgt": 287.48
   },
   "theme": {
     "accent": "#872adf",
@@ -70,15 +71,15 @@
       ["ส.ค.26", 224.51],
       ["ก.ย.26", 214.43]
     ],
-    "min": 200,
+    "min": 180,
     "max": 280,
-    "grid": [220, 240, 260],
+    "grid": [200, 220, 240, 260],
     "currency": "$",
     "highlight": [6, 11]
   },
   "gauge": {
-    "min": 160,
-    "max": 285
+    "min": 130,
+    "max": 300
   }
 }
 </script>
@@ -104,7 +105,7 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}} (Yahoo Finance, ตรงกับ StockAnalysis.com, Δ=0%)<br>
-        กรอบ 52 สัปดาห์ $207.64 – $271.64<br>
+        กรอบ 52 สัปดาห์ $212.82 – $271.64<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, SEC EDGAR (10-Q/8-K), Ferguson Investor Relations (corporate.ferguson.com)
       </div>
     </div>
@@ -112,25 +113,25 @@
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ 7 ส.ค. 2569 • EPS/งบ TTM เม.ย.68–มี.ค.69 (กระทบยอด — ดูหมายเหตุด้านล่าง)</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ 21 ก.ย. 2569 • EPS/งบ TTM ล่าสุดตาม StockAnalysis (ดูหมายเหตุด้านล่าง)</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">194M หุ้น diluted (TTM)</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM กระทบยอดใหม่ $10.56 (ดูหมายเหตุความโปร่งใสด้านล่าง)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM diluted $10.24 (StockAnalysis · ตรงกับ Yahoo $10.16 ต่าง 0.8%)</div></div>
       <div class="metric"><div class="k">P/E มัธยฐาน 5 งวดบัญชี</div><div class="v">20.6x</div><div class="d">ช่วง 14.6x–22.4x (ก.ค. 2565–ธ.ค. 2568, ราคาเฉลี่ย ÷ EPS diluted วัดจริง)</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">~7.9x</div><div class="d">BVPS ประมาณจาก Equity = หนี้สินรวม $6,081M ÷ D/E 0.96</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~6.7x</div><div class="d">BVPS ประมาณจาก Equity = หนี้ $6,887M ÷ D/E 1.11 ≈ $6,204M</div></div>
 
-      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">$2,073M</div><div class="d">เม.ย.68–มี.ค.69 (ใกล้เคียง NI ที่ EPS กระทบยอดบ่งชี้ ≈$2,049M ต่าง ~1.2%)</div></div>
-      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$10.56</div><div class="d">กระทบยอด 4 ไตรมาสล่าสุดจากงบบริษัทเอง (ดูหมายเหตุด้านล่าง)</div></div>
-      <div class="metric"><div class="k">BVPS</div><div class="v">~$32.65</div><div class="d">Equity ประมาณ $6,334M ÷ หุ้น 194M</div></div>
-      <div class="metric"><div class="k">ROE (TTM)</div><div class="v pos">~32.3%</div><div class="d">NI/Equity ประมาณการ ผูกกับ EPS ที่กระทบยอดแล้ว</div></div>
+      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">$1,987M</div><div class="d">TTM ตามตารางงบ StockAnalysis (FY2025 $1,886M)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$10.24</div><div class="d">NI $1,987M ÷ หุ้น diluted 194M (ดูหมายเหตุด้านล่าง)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$32.07</div><div class="d">Equity ประมาณ $6,204M ÷ หุ้นคงเหลือ 193.45M</div></div>
+      <div class="metric"><div class="k">ROE (TTM)</div><div class="v pos">~32.0%</div><div class="d">NI $1,987M ÷ Equity ประมาณ $6,204M (ประมาณการ)</div></div>
 
-      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$31.6B</div><div class="d">+9.3% YoY (รวมงวด transition 5 เดือน)</div></div>
-      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">31.0%</div><div class="d">Op margin 9.2% • Net margin 6.6% (TTM)</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$31.4B</div><div class="d">+5.2% YoY (TTM ตามตารางงบ)</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">30.6%</div><div class="d">Op margin 8.5% • Net margin 6.3% (TTM)</div></div>
       <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">$3.56/หุ้น/ปี</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">~1.1 (ประมาณ)</div><div class="d">อ้างอิงลักษณะธุรกิจวัฏจักรปานกลาง ยังไม่ยืนยันเชิงปริมาณ</div></div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.7">
-      <b>⚠️ หมายเหตุความโปร่งใส (EPS Reconciliation):</b> ผู้ให้บริการข้อมูลรายงาน EPS (TTM) ของ FERG ไม่ตรงกัน (Yahoo Finance $10.29 · StockAnalysis.com quote $10.04 · ตารางงบย้อนหลังของ StockAnalysis $10.68 — สเปรดสูงถึง ~6%) สาเหตุคือ Ferguson เพิ่งเปลี่ยนรอบปีบัญชีจาก 31 ก.ค. เป็น 31 ธ.ค. ผ่านช่วง transition period 5 เดือน (ส.ค.–ธ.ค. 2568) ทำให้แต่ละผู้ให้บริการตัดหน้าต่าง TTM คนละช่วงเวลา (บางเจ้ายังอิงไตรมาสปีบัญชีเก่า Feb–Apr/May–Jul บางเจ้าปนงวด transition แบบไม่ตรงช่วงกัน) รายงานนี้จึงย้อนไปกระทบยอด diluted EPS จากงบต้นฉบับของบริษัทเองแทนการเลือกข้างผู้ให้บริการ: <b>EPS(TTM เม.ย.2568–มี.ค.2569) = EPS ปีปฏิทิน 2568 เต็มปี $10.16 (reported diluted, จาก press release "Ferguson Reports Strong Calendar 2025 Results and Issues 2026 Guidance" ลงวันที่ 24 ก.พ. 2569) − EPS ไตรมาส 1 ปีปฏิทิน 2568 (three months ended 31 มี.ค. 2568) $1.73 (ตัวเลขเปรียบเทียบที่เปิดเผยใน press release "Ferguson Reports First Quarter Ended March 31, 2026" ลงวันที่ 5 พ.ค. 2569) + EPS ไตรมาส 1 ปีปฏิทิน 2569 (three months ended 31 มี.ค. 2569) $2.13 (จาก release เดียวกัน) = $10.56</b> ใช้เป็นฐานเดียวตลอดทั้งรายงานนี้ทั้ง valuation/scenario/stock-meta — ตรวจทานได้: กำไรสุทธิ TTM ที่ EPS นี้บ่งชี้ (10.56×194M ≈ $2,049M) ใกล้เคียงกับกำไรสุทธิ TTM $2,073M ที่ StockAnalysis รายงานในตารางงบ ต่างกันเพียง ~1.2% ยืนยันความสมเหตุสมผล FERG มีกำหนดประกาศงบไตรมาสถัดไป (Q2 ปีปฏิทิน 2569) ประมาณ <b>10 ส.ค. 2569</b> ซึ่งจะทำให้หน้าต่าง TTM ขยับไปอีกช่วง ผู้อ่านควรตรวจสอบตัวเลขล่าสุดหลังวันดังกล่าว
+      <b>⚠️ หมายเหตุความโปร่งใส (EPS):</b> Ferguson เปลี่ยนรอบปีบัญชีจาก 31 ก.ค. เป็น 31 ธ.ค. (มีงวด transition 5 เดือนในปี 2568) ทำให้ EPS TTM ของผู้ให้บริการข้อมูลตัดหน้าต่างต่างกันได้ ณ 18 ก.ย. 2569 อ่านได้: Yahoo Finance $10.16 · StockAnalysis.com $10.24 · ตารางงบของ StockAnalysis (กำไรสุทธิ $1,987M ÷ หุ้น diluted 194M) $10.24 — ทั้งสามแหล่งต่างกันไม่เกิน 0.8% รายงานนี้จึงใช้ <b>EPS TTM $10.24</b> เป็นฐานเดียวทั้ง valuation/scenario/stock-meta (รอบก่อนใช้ค่ากระทบยอดเอง $10.56 ซึ่งสูงกว่าทุกแหล่งที่ตรวจได้ราว 3% จึงเลิกใช้) — EPS ปีปฏิทิน 2568 (FY2025) ตามตารางงบ $9.62 · ประกาศงบไตรมาสถัดไปราว 9 พ.ย. 2569 (StockAnalysis) ซึ่งจะขยับหน้าต่าง TTM อีกครั้ง
     </p>
   </section>
 
@@ -147,7 +148,7 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ราคาทำจุดต่ำรอบปีที่ $222.63 (ธ.ค. 2568) ระหว่างตลาดกังวลดอกเบี้ยค้างสูงกดดันงานก่อสร้าง ก่อนไต่ขึ้นแรงสู่จุดสูงรอบปีที่ $267.71 (เม.ย. 2569) หลัง Ferguson รายงานงบไตรมาส 1 ปีปฏิทิน 2569 กำไรและ buyback แข็งแกร่งกว่าคาด จากนั้นย่อตัวลงมาช่วง พ.ค.–ก.ค. 2569 ตามความไม่แน่นอนเรื่องทิศทางดอกเบี้ย ก่อนฟื้นกลับมาที่ $256.69 ในเดือน ส.ค. 2569 รอผลประกอบการไตรมาส 2 ปีปฏิทิน 2569 ที่จะประกาศราว 10 ส.ค. 2569 — รวมผลตอบแทนรอบปี +14.3%
+        ราคาเคลื่อนไหวในกรอบกว้างตลอดปี: ปิดสิ้นเดือนสูงสุด $267.71 (เม.ย. 2569) ก่อนอ่อนตัวต่อเนื่องเป็น $234.33 (ก.ค.) $224.51 (ส.ค.) และ {{rd:px}} ล่าสุด ใกล้ต่ำสุดของกรอบ 52 สัปดาห์ ($212.82) — ผลตอบแทนรอบปีติดลบราว 13.7% (จากปิดสิ้นเดือน ต.ค. 2568 $248.50) ขณะที่ EPS TTM ยังเติบโต จึงเป็นการ de-rate ของตัวคูณ ไม่ใช่กำไรหด
       </p>
     </div>
   </section>
@@ -157,19 +158,19 @@
     <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM กระทบยอด) $10.56 × P/E เป้าหมาย 20.6x (มัธยฐาน P/E ย้อนหลัง 5 งวดปิดบัญชีของ FERG เอง — ราคาเฉลี่ยแต่ละงวด ÷ EPS diluted ของงวดนั้น, ช่วง 14.6x–22.4x ก.ค. 2565–ธ.ค. 2568) — ต่ำกว่า P/E ปัจจุบัน 21.4x เพียงเล็กน้อย (~4%) สะท้อนว่าตัวคูณตลาดตอนนี้ใกล้เคียงค่ากลางระยะยาวของหุ้นเองอยู่แล้ว</div></div>
-        <div class="mval">$217.54</div>
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM diluted) $10.24 × P/E เป้าหมาย 20.6x = $210.94 — 20.6x คือมัธยฐาน P/E ย้อนหลัง 5 งวดปิดบัญชีของ FERG เอง (ราคาเฉลี่ยแต่ละงวด ÷ EPS diluted ของงวดนั้น, ช่วง 14.6x–22.4x, ก.ค. 2565–ธ.ค. 2568) มาจากประวัติหุ้น ไม่ได้ลอกจาก P/E ปัจจุบัน (ซึ่งบังเอิญอยู่ใกล้กัน) · กรอบ FV ใช้ P/E 18.6x–22.6x (±2x จากมัธยฐาน)</div></div>
+        <div class="mval">$210.94</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. DCF (Free Cash Flow to Equity, Gordon Growth)</div><div class="mdesc">FCF/หุ้น (TTM) $10.31 (FCF $2,001M ÷ หุ้น 194M) × (1+g)/(r−g); r 8.5% (UST10Y ~4.2%, ส.ค. 2569 + β~0.85 × ERP 5%), g 4.0% ระยะยาว — sensitivity ที่ r±0.5pp: FV $214–$268 (r−g แคบกว่า 5pp ตามเกณฑ์ sanity gate)</div></div>
-        <div class="mval">$238.28</div>
+        <div><div class="mname">2. DCF (Free Cash Flow to Equity, Gordon Growth)</div><div class="mdesc">FCF ปกติ = ค่าเฉลี่ย FCF 4 ปีงบ (FY2022 $859M · FY2023 $2,282M · FY2024 $1,501M · FY2025 $1,603M = $1,561M ตามตารางงบ StockAnalysis) ÷ หุ้นคงเหลือ 193.45M = $8.07/หุ้น (ใช้ค่าเฉลี่ยเพราะ FCF ผันผวนตามเงินทุนหมุนเวียน: TTM เพียง $1,118M) → FCF ปีหน้า $8.07 × 1.04 = $8.39 → มูลค่า = $8.39 ÷ (r 8.5% − g 4.0%) = $186.5 · r และ g เป็นสมมติฐานของรายงานนี้ (ไม่ใช่ค่าที่วัดได้) — sensitivity r 8.0%–9.0%: $168–$210</div></div>
+        <div class="mval">$186.52</div>
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ทั้งสองวิธีมาจากคนละสมมติฐาน (P/E ยึดมัธยฐานตัวคูณย้อนหลัง 5 งวดของ FERG เอง ไม่ผูกกับ (r,g); DCF ใช้ r,g อิสระ) จึงนับเป็นคนละตระกูลตามกฎ 0.4c-bis เฉลี่ยตรงได้ — ผลต่างกันราว 9.5% ระหว่าง P/E ($217.54) ที่สะท้อนฐานประวัติศาสตร์ของหุ้นเอง กับ DCF ($238.28) ที่สะท้อนกระแสเงินสดคาดการณ์ล่วงหน้า — FV เฉลี่ย $227.91 ใกล้เคียงราคาปัจจุบันมาก แทบไม่มี margin of safety
+        สองวิธีมาจากคนละตระกูล (P/E ยึดมัธยฐานตัวคูณย้อนหลังของ FERG เอง ไม่ผูก (r,g); DCF ใช้ FCF ปกติ 4 ปีงบกับ r,g ที่สมมติ) จึงเฉลี่ยตรงได้ — ผลต่างราว 12% ระหว่าง P/E ($210.94) กับ DCF ($186.52) · <b>ข้อจำกัด:</b> ขา DCF พึ่งสมมติฐาน r/g ที่ไม่ได้วัด (ทุก 0.5pp ของ r ขยับ ~$20) และ FCF ปกติต่ำกว่า EPS เพราะหลายปีที่ผ่านมามีการลงทุนหมุนเวียนสูง · เป้าเฉลี่ยนักวิเคราะห์ (ประมาณ $287) ใช้เป็นบริบทเท่านั้น ไม่ใช่ขาของ FV · DCF เดิมที่ใช้ FCF/หุ้น $10.31 ถูกแทนที่ เพราะตารางงบล่าสุดทำซ้ำเลขนั้นไม่ได้ · ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสมเล็กน้อย ไม่มี margin of safety
       </p>
     </div>
   </section>
@@ -188,11 +189,11 @@
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
-          <span style="text-align:right">$279.42<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$287.48<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบันอยู่ในกรอบบนของ Fair Value ($217.54–$238.28) และต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ (19 สำนัก, Buy) ที่ $279.42 มาก — MOS แทบไม่มี (~0.7%) สะท้อนราคาที่ซื้อขายใกล้เคียงมูลค่าเหมาะสมตามโมเดลนี้ ขณะที่มุมมองตลาด/นักวิเคราะห์ยังมองบวกกว่าโมเดล valuation เชิงอนุรักษ์นิยมของรายงานนี้พอสมควร
+        ราคาปัจจุบัน {{rd:px}} อยู่เหนือกรอบบนของ Fair Value ({{rd:fvLow}}–{{rd:fvHigh}}) เล็กน้อย และต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ (21 สำนัก, Buy) ที่ {{rd:analystTgt}} มาก — ตามโมเดลนี้ (P/E มัธยฐานย้อนหลัง + DCF FCF ปกติ) ราคาซื้อขายสูงกว่ามูลค่าเหมาะสมเล็กน้อย ไม่มีส่วนเผื่อความปลอดภัย ขณะที่มุมมองนักวิเคราะห์บวกกว่าโมเดลอนุรักษ์นิยมนี้พอสมควร
       </p>
     </div>
   </section>
@@ -203,7 +204,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt"><b>แทบไม่มี Margin of Safety (ราคาใกล้เคียงมูลค่าเหมาะสมมาก)</b><br>ราคาปัจจุบันต่ำกว่ามูลค่าเหมาะสมที่ประเมินได้เพียง ~0.7% แทบไม่มีส่วนเผื่อความปลอดภัย — นักลงทุนที่ยังไม่มีสถานะควรรอจังหวะราคาย่อตัวลงมาที่โซน MOS 20–30% มากกว่าไล่ซื้อ ณ ระดับนี้</div>
+        <div class="txt"><b>ไม่มี Margin of Safety (ราคาสูงกว่ามูลค่าเหมาะสมเล็กน้อย)</b><br>ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสมที่ประเมินได้ ไม่มีส่วนเผื่อความปลอดภัย (ดูตัวเลข MOS ด้านซ้าย) — นักลงทุนที่ยังไม่มีสถานะควรรอจังหวะราคาย่อตัวลงมาที่โซน MOS 20–30% มากกว่าไล่ซื้อ ณ ระดับนี้</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -230,7 +231,7 @@
           <div class="tgt">{{rd:sc1tgt}}</div>
           <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$9.64</span></li>
+            <li><span>EPS ปี 3</span><span>~$9.35</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>เศรษฐกิจสหรัฐฯ ชะลอ ดอกเบี้ยค้างสูงต่อเนื่อง กดตลาดที่อยู่อาศัย/งานก่อสร้างใหม่ ยอดขายหด M&A ชะลอ P/E de-rate</span></li>
@@ -243,10 +244,10 @@
           <div class="tgt">{{rd:sc2tgt}}</div>
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$13.30</span></li>
-            <li><span>P/E ออก</span><span>23x</span></li>
+            <li><span>EPS ปี 3</span><span>~$12.90</span></li>
+            <li><span>P/E ออก</span><span>20.6x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
-            <li><span>สถานการณ์</span><span>วงจร repair/remodel และ non-residential ทรงตัวถึงโตเล็กน้อย M&A roll-up ต่อเนื่อง buyback หนุน EPS P/E ออก 23x ยังสูงกว่ามัธยฐานย้อนหลัง 5 งวด (20.6x) เล็กน้อย สะท้อนมุมมองบวกต่อโมเมนตัม M&A ต่อเนื่อง</span></li>
+            <li><span>สถานการณ์</span><span>วงจร repair/remodel และ non-residential ทรงตัวถึงโตเล็กน้อย M&A roll-up ต่อเนื่อง buyback หนุน EPS P/E ออก 20.6x เท่ามัธยฐานย้อนหลัง 5 งวด (ไม่มี re-rate)</span></li>
           </ul>
         </div>
       </div>
@@ -256,16 +257,16 @@
           <div class="tgt">{{rd:sc3tgt}}</div>
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$16.06</span></li>
-            <li><span>P/E ออก</span><span>27x</span></li>
+            <li><span>EPS ปี 3</span><span>~$15.57</span></li>
+            <li><span>P/E ออก</span><span>25x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
-            <li><span>สถานการณ์</span><span>Fed ลดดอกเบี้ยจริงจัง ตลาดที่อยู่อาศัย/งานก่อสร้างฟื้นแรง ดีล M&A accretive ต่อเนื่อง นักลงทุนให้ premium multiple สูงกว่ามัธยฐานย้อนหลัง (20.6x) มาก สะท้อนความเชื่อมั่นในวัฏจักรฟื้นตัวรอบใหม่</span></li>
+            <li><span>สถานการณ์</span><span>Fed ลดดอกเบี้ยจริงจัง ตลาดที่อยู่อาศัย/งานก่อสร้างฟื้นแรง ดีล M&A accretive ต่อเนื่อง นักลงทุนให้ premium multiple 25x สูงกว่ามัธยฐานย้อนหลัง (20.6x) สะท้อนความเชื่อมั่นในวัฏจักรฟื้นตัวรอบใหม่ (ใกล้ระดับสูงสุดในประวัติ 22.4x)</span></li>
           </ul>
         </div>
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      ทุก scenario ใช้ EPS ฐาน (TTM กระทบยอด) $10.56 คูณอัตราเติบโตต่อปี 3 ปี แล้วออกด้วย P/E ตามสถานการณ์ + ปันผลสะสมโดยประมาณ — Bear สะท้อนความเสี่ยงวัฏจักรก่อสร้าง/ดอกเบี้ยตามที่ระบุในหัวข้อความเสี่ยง Bull ต้องอาศัยทั้งการฟื้นตัวของวัฏจักรและการ re-rate ของตลาดพร้อมกัน จึงมีโอกาสเกิดต่ำกว่า Base
+      ทุก scenario ใช้ EPS ฐาน (TTM) $10.24 คูณอัตราเติบโตต่อปี 3 ปี แล้วออกด้วย P/E ตามสถานการณ์ + ปันผลสะสมโดยประมาณ — Bear สะท้อนความเสี่ยงวัฏจักรก่อสร้าง/ดอกเบี้ยตามที่ระบุในหัวข้อความเสี่ยง Bull ต้องอาศัยทั้งการฟื้นตัวของวัฏจักรและการ re-rate ของตลาดพร้อมกัน จึงมีโอกาสเกิดต่ำกว่า Base
     </p>
   </section>
 
@@ -278,7 +279,7 @@
         <ul>
           <li><b>เบอร์ 1 ตลาดกระจายสินค้าประปา/HVAC สหรัฐฯ:</b> ตลาดยังกระจัดกระจาย (fragmented) เปิดช่องทำ M&A roll-up ต่อเนื่องหลายสิบดีล/ปี หนุนรายได้และ synergy margin</li>
           <li><b>สัดส่วน repair & remodel (R&R) สูง:</b> ผันผวนน้อยกว่ายอดขายบ้านสร้างใหม่ ช่วยพยุงรายได้ในช่วงดอกเบี้ยสูง</li>
-          <li><b>Buyback แข็งแกร่ง:</b> ซื้อคืนหุ้น $236M ใน Q1 ปีปฏิทิน 2569 + วงเงินใหม่ $2B หนุน EPS growth แม้ยอดขายโตช้า</li>
+          <li><b>Buyback ต่อเนื่อง:</b> หุ้น diluted ลดจาก 207M (FY2023) เป็น 194M (TTM) ตามตารางงบ หนุน EPS growth แม้ยอดขายโตช้า</li>
           <li><b>ปันผลเติบโตต่อเนื่อง:</b> policy คืนเงินผู้ถือหุ้นชัดเจนขึ้นหลังย้าย primary listing มา NYSE</li>
           <li><b>Digital/private-label penetration:</b> เพิ่ม margin ระยะยาวผ่านช่องทางดิจิทัลและสินค้า private label</li>
           <li><b>วงจรดอกเบี้ยขาลง:</b> หาก Fed ลดดอกเบี้ยต่อในปี 2569–2570 จะหนุนตลาดที่อยู่อาศัยและงานก่อสร้างให้พักฟื้น</li>
@@ -288,9 +289,9 @@
         <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
         <ul>
           <li><b>วัฏจักรก่อสร้าง/ดอกเบี้ย:</b> ยอดขายผูกกับดอกเบี้ยและตลาดที่อยู่อาศัยสหรัฐฯ โดยตรง ดอกเบี้ยสูงต่อเนื่อง/ตลาดบ้านซบเซา = รายได้เสี่ยงหดตัว</li>
-          <li><b>หนี้สินจาก M&A ต่อเนื่อง:</b> D/E ~0.96x และงบดุลใหญ่ขึ้นตามการเข้าซื้อกิจการ อาจกดดันเมื่อดอกเบี้ยสูง</li>
-          <li><b>Valuation ตึงตัว:</b> ซื้อขายที่ P/E (TTM กระทบยอด) ~21.4x สูงกว่ามัธยฐานย้อนหลัง 5 งวดบัญชี (20.6x) เล็กน้อย หากตลาดปรับลดมุมมองการเติบโต อาจเห็น de-rating ของ multiple กลับสู่ค่ากลางระยะยาว</li>
-          <li><b>ความไม่แน่นอนช่วงเปลี่ยนรอบปีบัญชี:</b> เพิ่งเปลี่ยนจาก 31 ก.ค. เป็น 31 ธ.ค. ข้อมูลเปรียบเทียบย้อนหลังยังไม่นิ่งเต็มที่ ผู้ให้บริการข้อมูลภายนอกยังคำนวณ TTM ไม่ตรงกัน (ดูหมายเหตุ section 1)</li>
+          <li><b>หนี้สินจาก M&A ต่อเนื่อง:</b> D/E ~1.11x (TTM) และงบดุลใหญ่ขึ้นตามการเข้าซื้อกิจการ อาจกดดันเมื่อดอกเบี้ยสูง</li>
+          <li><b>Valuation ตึงตัว:</b> ซื้อขายที่ P/E (TTM) ~{{rd:pe}}x สูงกว่ามัธยฐานย้อนหลัง 5 งวดบัญชี (20.6x) เล็กน้อย หากตลาดปรับลดมุมมองการเติบโต อาจเห็น de-rating ของ multiple กลับสู่ค่ากลางระยะยาว</li>
+          <li><b>ความไม่แน่นอนช่วงเปลี่ยนรอบปีบัญชี:</b> เพิ่งเปลี่ยนจาก 31 ก.ค. เป็น 31 ธ.ค. ข้อมูลเปรียบเทียบย้อนหลังยังไม่นิ่งเต็มที่ ผู้ให้บริการข้อมูลภายนอกอาจตัดหน้าต่าง TTM ต่างกันเล็กน้อย (ดูหมายเหตุ section 1)</li>
           <li><b>การแข่งขัน:</b> ผู้จัดจำหน่ายรายอื่นและผู้ผลิตที่ขายตรงถึงผู้รับเหมา (direct-to-contractor) กดดัน margin ระยะยาว</li>
           <li><b>ต้นทุนวัสดุ/ภาษีนำเข้า:</b> ความเสี่ยงจากภาษีนำเข้าเหล็ก/ทองแดงและห่วงโซ่อุปทานวัสดุก่อสร้างกระทบต้นทุนสินค้า</li>
         </ul>
@@ -302,15 +303,15 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>FERG: ธุรกิจเบอร์ 1 ของอุตสาหกรรม ราคาซื้อขายใกล้เคียงมูลค่าเหมาะสมมาก</h2>
-      <p>Ferguson เป็นผู้จัดจำหน่ายอุปกรณ์ประปา/HVAC เบอร์ 1 ในสหรัฐฯ ที่โตต่อเนื่องด้วยกลยุทธ์ M&A roll-up บนตลาดที่ยังกระจัดกระจาย พร้อมกระแสเงินสดแข็งแกร่งหนุน buyback และปันผลเติบโต ราคาปัจจุบันใกล้เคียงมูลค่าเหมาะสมที่ประเมินได้ (จาก P/E ที่ยึดมัธยฐานตัวคูณย้อนหลัง 5 งวดของหุ้นเอง + DCF โดยใช้ EPS TTM ที่กระทบยอดจากงบต้นฉบับ $10.56) ต่างกันไม่ถึง 1% — ไม่ใช่หุ้นที่ "ถูก" แต่ก็ไม่ได้แพงเกินตัวเช่นกัน ณ จุดนี้ แม้ธุรกิจพื้นฐานยังแข็งแกร่ง</p>
+      <h2>FERG: ธุรกิจเบอร์ 1 ของอุตสาหกรรม แต่ราคาสูงกว่ามูลค่าเหมาะสมเล็กน้อย</h2>
+      <p>Ferguson เป็นผู้จัดจำหน่ายอุปกรณ์ประปา/HVAC เบอร์ 1 ในสหรัฐฯ ที่โตต่อเนื่องด้วยกลยุทธ์ M&A roll-up บนตลาดที่ยังกระจัดกระจาย พร้อมกระแสเงินสดแข็งแกร่งหนุน buyback และปันผลเติบโต ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสมที่ประเมินได้เล็กน้อย (P/E มัธยฐานย้อนหลัง 5 งวดของหุ้นเอง × EPS TTM $10.24 คู่กับ DCF จาก FCF ปกติ 4 ปีงบ) — ไม่ใช่หุ้นที่ "ถูก" แต่ก็ไม่ได้แพงเกินตัวเช่นกัน ณ จุดนี้ แม้ธุรกิจพื้นฐานยังแข็งแกร่ง</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$279.42 (Buy)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">{{rd:analystTgt}} (Buy)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> รอจังหวะราคาย่อตัวลงมาใกล้โซน MOS 20% (~$182) ถึง MOS 30% (~$160) ก่อนเข้าสะสมเพื่อให้มีส่วนเผื่อความปลอดภัยจริง — ราคาปัจจุบันใกล้เคียงมูลค่าเหมาะสมมาก (MOS ~0.7%) จึงยังไม่ใช่จังหวะไล่ซื้อ แม้จะไม่ได้แพงเกินตัวก็ตาม
+        💡 <b>กลยุทธ์:</b> รอจังหวะราคาย่อตัวลงมาใกล้โซน MOS 20% ({{rd:mos20}}) ถึง MOS 30% ({{rd:mos30}}) ก่อนเข้าสะสมเพื่อให้มีส่วนเผื่อความปลอดภัยจริง — ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสมเล็กน้อย จึงยังไม่ใช่จังหวะไล่ซื้อ แม้จะไม่ได้แพงเกินตัวก็ตาม
       </div>
     </div>
   </section>
@@ -319,9 +320,9 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ {{rd:priceDate}} จาก Yahoo Finance (ตรงกับ StockAnalysis.com) • EPS (TTM) กระทบยอดจากงบต้นฉบับ SEC EDGAR (10-Q/8-K) และ press release ของ Ferguson (corporate.ferguson.com) — ดูหมายเหตุความโปร่งใสในหัวข้อ 1 • ข้อมูลงบย้อนหลัง 5 ปีจาก StockAnalysis.com
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ {{rd:priceDate}} จาก Yahoo Finance (ตรงกับ StockAnalysis.com) • EPS (TTM) จาก StockAnalysis.com และ Yahoo Finance — ดูหมายเหตุในหัวข้อ 1 • ข้อมูลงบย้อนหลัง 5 ปีจาก StockAnalysis.com
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 8 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
