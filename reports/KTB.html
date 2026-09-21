@@ -6,24 +6,24 @@
 <title>วิเคราะห์หุ้น ธนาคารกรุงไทย (KTB) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"KTB","currency":"THB","price":45,"fairValue":33.2,"mos":-35.5,"upside":-26.2,"pe":12.9,"dividendYield":5.9,"roe":10.5}
+{"symbol":"KTB","currency":"THB","price":45.5,"fairValue":33.2,"mos":-37,"upside":-27,"pe":12.7,"dividendYield":5.9,"roe":10.5}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
   "fv": 33.2,
   "values": {
-    "px": 45,
-    "priceDate": "2026-09-18",
+    "px": 45.5,
+    "priceDate": "2026-09-21",
     "dateEra": "CE",
     "chgSuffix": "รอบปี",
     "fvLow": 30.9,
     "fvHigh": 36,
-    "eps": 3.5,
+    "eps": 3.57,
     "shares": 13980000000,
     "dps": 2.67,
     "bvps": 33.63,
-    "baseEps": 3.5,
+    "baseEps": 3.57,
     "scenarios": [
       {
         "tgt": 28,
@@ -70,7 +70,7 @@
       ["มิ.ย.26", 38],
       ["ก.ค.26", 44.25],
       ["ส.ค.26", 43.25],
-      ["ก.ย.26", 45]
+      ["ก.ย.26", 45.5]
     ],
     "min": 25,
     "max": 50,
@@ -107,7 +107,7 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ≈ {{rd:priceDate}}<br>
-        ใกล้จุดสูงสุด 52 สัปดาห์ (฿44.00)<br>
+        ใกล้จุดสูงสุด 52 สัปดาห์ (฿46.00)<br>
         ที่มา: SET / Stockanalysis / Yahoo Finance
       </div>
     </div>
@@ -118,7 +118,7 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">TTM + งบ FY2025 + Q1/2026</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~13.98 พันล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v">~{{rd:pe}}x</div><div class="d">EPS TTM ฿3.50 <span class="pill a">เหนือเฉลี่ย 5 ปี</span></div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v">~{{rd:pe}}x</div><div class="d">EPS TTM ฿3.57 <span class="pill a">เหนือเฉลี่ย 5 ปี</span></div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~{{rd:pbv}}x</div><div class="d">BVPS ฿33.63 • สูงกว่ากลุ่มค่อนข้างมาก</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย 5 ปี</div><div class="v">~8.5x</div><div class="d">กรอบ ~6–11x</div></div>
 
@@ -130,7 +130,7 @@
       <div class="metric"><div class="k">NIM / Credit cost</div><div class="v">2.48% / 1.14%</div><div class="d">NIM ลดตามดอกเบี้ยขาลง</div></div>
       <div class="metric"><div class="k">NPL / Coverage</div><div class="v neu">2.90% / 204%</div><div class="d">คุณภาพหนี้ดีขึ้น • สำรองแกร่ง</div></div>
       <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">฿2.67/ปี (รวมพิเศษ) • Payout 60–77%</div></div>
-      <div class="metric"><div class="k">ช่วง 52 สัปดาห์</div><div class="v" style="font-size:18px">฿21.40 – ฿44.00</div><div class="d">ราคาอยู่ขอบบนสุด</div></div>
+      <div class="metric"><div class="k">ช่วง 52 สัปดาห์</div><div class="v" style="font-size:18px">฿24.30 – ฿46.00</div><div class="d">ราคาอยู่ขอบบนสุด</div></div>
     </div>
     <div class="grid g3" style="margin-top:12px">
       <div class="metric"><div class="k">เงินกองทุน CET1</div><div class="v">18.60%</div><div class="d">Q1/2026 • แกร่งมาก</div></div>
@@ -182,7 +182,7 @@
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>หมายเหตุ:</b> ไม่ใช้ DCF เพราะกระแสเงินสดอิสระไม่มีความหมายสำหรับธนาคาร → แทนด้วย <b>Justified P/BV</b>
         ซึ่งเป็นวิธีมาตรฐานของหุ้นแบงก์ • DDM ใช้ปันผลปกติ (ไม่นับปันผลพิเศษ ฿0.60 ที่เป็นครั้งคราว) เพื่อความระมัดระวัง
-        ราคาเป้าหมายนักวิเคราะห์เฉลี่ยอยู่ ~฿35–36 (สูงสุด ฿41 — Pi Securities ฿38.50, กสิกร ฿37.5) สอดคล้องกับกรอบบนของวิธีเรา
+        ราคาเป้าหมายนักวิเคราะห์เฉลี่ยอยู่ ~฿46.3 (Yahoo n=20 / StockAnalysis ฿46.35 ระดับ Buy) ซึ่งสูงกว่ากรอบ Fair Value ของวิธีเรา — ใช้เป็นบริบทเท่านั้น ไม่ได้เป็นขาของ FV
       </p>
     </div>
   </section>
@@ -205,7 +205,7 @@
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคา ฿43.50 อยู่ <b>สูงกว่ามูลค่าเหมาะสมค่อนข้างมาก</b> (~31%) และเกินเป้าสูงสุดของนักวิเคราะห์ (฿41) ไปแล้ว — สะท้อนว่าตลาดได้
+        ราคา {{rd:px}} อยู่ <b>สูงกว่ามูลค่าเหมาะสมค่อนข้างมาก</b> และใกล้เป้าเฉลี่ยของนักวิเคราะห์ (~฿46.3) — สะท้อนว่าตลาดได้
         re-rate KTB ขึ้นมาจาก deep value (P/BV เคยต่ำกว่า 0.7x) สู่ P/BV ~1.05x แล้ว ตามคุณภาพหนี้ที่ดีขึ้นและปันผลที่จูงใจ
         upside ที่เหลือจึงจำกัด ต้องอาศัยการเพิ่ม payout/ROE หรือดอกเบี้ยที่ทรงตัวกว่าคาด
       </p>
@@ -218,7 +218,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt"><b>ไม่มี Margin of Safety</b><br>ราคาปัจจุบัน ฿43.50 สูงกว่ามูลค่าเหมาะสม ฿33.2 ราว 31% → ตามเกณฑ์ value investor ถือว่า <b>แพงพอสมควร</b> ควรรอราคาย่อ หรือรับผลตอบแทนหลักผ่านปันผลแทน capital gain</div>
+        <div class="txt"><b>ไม่มี Margin of Safety</b><br>ราคาปัจจุบัน {{rd:px}} สูงกว่ามูลค่าเหมาะสม {{rd:fv}} → MOS {{rd:mos}} → ตามเกณฑ์ value investor ถือว่า <b>แพงพอสมควร</b> ควรรอราคาย่อ หรือรับผลตอบแทนหลักผ่านปันผลแทน capital gain</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -306,7 +306,7 @@
           <li><div><b>ดอกเบี้ยขาลงกด NIM:</b> กนง. ลดดอกเบี้ยนโยบายเหลือ 1.00% (ก.พ. 2026) และตลาดคาดลดอีก 1 ครั้ง — NIM ลงมาที่ 2.48% และมีแนวโน้มถูกบีบต่อ กระทบรายได้ดอกเบี้ยซึ่งเป็นรายได้หลัก</div></li>
           <li><div><b>เศรษฐกิจไทยชะลอ:</b> กนง. ส่งสัญญาณเศรษฐกิจมีแนวโน้มชะลอจากความเสี่ยงภายนอก (สงคราม/การค้า) กระทบกำลังซื้อครัวเรือนและความต้องการสินเชื่อ → สินเชื่อโตช้า</div></li>
           <li><div><b>คุณภาพหนี้ SME/รายย่อย:</b> แม้ NPL รวมลดลง แต่หนี้ครัวเรือนไทยสูงและการช่วยลูกหนี้/ปรับโครงสร้างหนี้เชิงรุก อาจทำให้ NPL กลับมาเพิ่มหากเศรษฐกิจแย่กว่าคาด</div></li>
-          <li><div><b>ราคาเต็มมูลค่า:</b> ราคา ฿43.50 อยู่ใกล้จุดสูงสุด 52 สัปดาห์และเหนือ Fair Value ~31% — MOS ติดลบมาก ความเสี่ยงย่อตัวสูงหากผลประกอบการหรือปันผลต่ำกว่าคาด</div></li>
+          <li><div><b>ราคาเต็มมูลค่า:</b> ราคา {{rd:px}} อยู่ใกล้จุดสูงสุด 52 สัปดาห์และเหนือ Fair Value ({{rd:fv}}) — MOS ติดลบมาก ความเสี่ยงย่อตัวสูงหากผลประกอบการหรือปันผลต่ำกว่าคาด</div></li>
           <li><div><b>ปันผลพิเศษไม่ยั่งยืน:</b> yield ~7.9% ส่วนหนึ่งมาจากปันผลพิเศษ ฿0.60 ที่เป็นครั้งคราว — payout ปกติ ~60% หากปีถัดไปไม่มีพิเศษ yield จะลดลง</div></li>
           <li><div><b>ความเสี่ยงเชิงนโยบาย:</b> ในฐานะแบงก์รัฐ อาจถูกใช้เป็นเครื่องมือนโยบาย (พักหนี้/ปล่อยสินเชื่อตามนโยบาย) ซึ่งบางครั้งไม่สอดคล้องผลตอบแทนผู้ถือหุ้น</div></li>
         </ul>
@@ -319,11 +319,11 @@
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
       <h2>แบงก์ปันผลเด่น พื้นฐานแกร่งขึ้น — แต่ราคา ณ ตอนนี้ "เต็มมูลค่า"</h2>
-      <p>KTB พลิกจากหุ้น deep value มาเป็นหนึ่งในแบงก์ที่ทำกำไรสูงสุดและจ่ายปันผลเด่นที่สุดในกลุ่ม กำไรโตต่อเนื่อง (FY2025 +4.5%, Q1/2026 +6.2%) คุณภาพหนี้ดีขึ้น (NPL 2.90%, coverage 204%) และฐานทุนแกร่ง (CET1 18.6%) เปิดทางเพิ่มปันผล — แต่ที่ราคา ~฿43.50 (ทำจุดสูงสุดรอบปีใหม่) ตลาด re-rate P/BV ขึ้นมาที่ ~1.29x แล้ว สำหรับสาย value จึงไม่มีส่วนเผื่อความปลอดภัยเลย ผลตอบแทนหลักจากนี้น่าจะมาจากปันผล ~5–7%/ปี มากกว่า capital gain ส่วนแรงกดดันหลักคือดอกเบี้ยขาลงที่บีบ NIM</p>
+      <p>KTB พลิกจากหุ้น deep value มาเป็นหนึ่งในแบงก์ที่ทำกำไรสูงสุดและจ่ายปันผลเด่นที่สุดในกลุ่ม กำไรโตต่อเนื่อง (FY2025 +4.5%, Q1/2026 +6.2%) คุณภาพหนี้ดีขึ้น (NPL 2.90%, coverage 204%) และฐานทุนแกร่ง (CET1 18.6%) เปิดทางเพิ่มปันผล — แต่ที่ราคา ~{{rd:px}} (ใกล้จุดสูงสุดรอบปี) ตลาด re-rate P/BV ขึ้นมาที่ ~{{rd:pbv}}x แล้ว สำหรับสาย value จึงไม่มีส่วนเผื่อความปลอดภัยเลย ผลตอบแทนหลักจากนี้น่าจะมาจากปันผล ~5–7%/ปี มากกว่า capital gain ส่วนแรงกดดันหลักคือดอกเบี้ยขาลงที่บีบ NIM</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#bcd2ee">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffb4ab">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿35–36 (Buy)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿46.3 (Buy)</div></div>
       </div>
       <div class="zone">
         💡 <b>กลยุทธ์:</b> สาย value — รอย่อ/ทยอยสะสมเมื่อราคา <b>ต่ำกว่า ~฿33</b> (น่าสนใจมากที่ &lt;฿27) • สายปันผล — เข้าได้แบบ DCA เพื่อรับ yield ~7% และยอมรับ upside ราคาที่จำกัด โดยติดตาม <b>ทิศทางดอกเบี้ย กนง.</b> (กระทบ NIM), <b>คุณภาพหนี้ SME/รายย่อย</b> และ <b>นโยบายปันผล/payout</b> เป็นตัวชี้วัดหลัก
@@ -337,7 +337,7 @@
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะอัตราเติบโตปันผล/EPS, required return (r), ROE ระยะยาว และทิศทางดอกเบี้ยนโยบายซึ่งกระทบ NIM ของธนาคารโดยตรง
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ {{rd:priceDate}} • ที่มา: SET (ตลาดหลักทรัพย์ฯ), Stockanalysis.com, Yahoo Finance, งบ KTB FY2025/Q1-2026, BOT (กนง.), บทวิเคราะห์ Pi Securities / กสิกร / InnovestX
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 24–25 ก.ค. 2026 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2026 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
