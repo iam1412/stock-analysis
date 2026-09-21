@@ -8,20 +8,20 @@
 <meta name="ai-model" content="Claude Sonnet 5">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"TTD","currency":"USD","price":13.92,"fairValue":15.31,"mos":9.1,"upside":10,"pe":16.6,"dividendYield":null,"roe":16.1}
+{"symbol":"TTD","currency":"USD","price":13.92,"fairValue":17.88,"mos":22.1,"upside":28.4,"pe":16.6,"dividendYield":null,"roe":16.1}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 15.31,
+  "fv": 17.88,
   "values": {
     "px": 13.92,
     "priceDate": "2026-09-18",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
-    "fvLow": 14.69,
-    "fvHigh": 16.11,
-    "shares": 481000000,
+    "fvLow": 17.14,
+    "fvHigh": 18.62,
+    "shares": 472795104,
     "bvps": 5.22,
     "scenarios": [
       {
@@ -79,7 +79,7 @@
   },
   "gauge": {
     "min": 10,
-    "max": 18,
+    "max": 20,
     "fairLabelTop": true
   }
 }
@@ -109,8 +109,8 @@
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ {{rd:priceDate}} (7 Aug 2026)<br>
-        กรอบ 52 สัปดาห์ $12.83 – $56.77 (Yahoo Finance)<br>
+        ราคา ณ {{rd:priceDate}}<br>
+        กรอบ 52 สัปดาห์ $12.83 – $56.39 (Yahoo Finance)<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, บริษัท (Q2 2026 earnings, 6 ส.ค. 2569)
       </div>
     </div>
@@ -121,19 +121,19 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">TTM ถึง Q2 2026 (สิ้นสุด 30 มิ.ย. 2569)</div></div>
     <!-- ✏️ ปรับสำหรับ growth stock ที่ SBC สูง: ใช้ non-GAAP EPS เป็นหลัก + เพิ่มการ์ด FCF/หุ้น แทนเงินปันผล (ไม่มีปันผล) -->
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">481M หุ้น (diluted, TTM)</div></div>
-      <div class="metric"><div class="k">P/E (TTM, GAAP)</div><div class="v neu">~16.6x</div><div class="d">EPS (TTM) $0.84 · Forward P/E ~12.2x (EPS fwd $1.13)</div></div>
-      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~45x</div><div class="d">ช่วงปี 2564–2568 (รวมยุคเติบโตสูง 30%+)</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">472.8M หุ้นคงเหลือ (รวมทุกคลาส)</div></div>
+      <div class="metric"><div class="k">P/E (TTM, GAAP)</div><div class="v neu">~16.6x</div><div class="d">EPS (TTM) $0.84 · Forward P/E ~13.9x (Yahoo, EPS fwd $1.01 = FY2027e; FY2026e $1.16)</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">ใช้ไม่ได้</div><div class="d">4 จาก 5 ปีมี P/E เกิน 100x (กำไรเกือบศูนย์) จึงไม่มีมัธยฐานที่เชื่อถือได้ · ปี 2568 ~70.6x</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~2.7x</div><div class="d">BVPS ~$5.22</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">$407M (GAAP)</div><div class="d">FY2025 $443M · Net margin 13.6% (TTM) ลดจาก 15.3% (FY2025)</div></div>
-      <div class="metric"><div class="k">EPS (TTM, GAAP)</div><div class="v">$0.84</div><div class="d">EPS forward (FY26 consensus) $1.13 · ไม่มีเลข non-GAAP ยืนยันรอบนี้</div></div>
-      <div class="metric"><div class="k">FCF/หุ้น (TTM)</div><div class="v">~$1.79</div><div class="d">FCF TTM $863M ÷ 481M หุ้น</div></div>
+      <div class="metric"><div class="k">EPS (TTM, GAAP)</div><div class="v">$0.84</div><div class="d">EPS forward (Yahoo) $1.01 = FY2027e · FY2026e $1.16 · ไม่มีเลข non-GAAP ยืนยันรอบนี้</div></div>
+      <div class="metric"><div class="k">FCF/หุ้น (TTM)</div><div class="v">~$1.83</div><div class="d">FCF TTM $863M ÷ 472.8M หุ้น</div></div>
       <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~16.1% / ~10%</div><div class="d">ROE (TTM) ใกล้เคียง FY2025 (16.3%) แม้กำไรชะลอ</div></div>
 
       <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~$2.99B</div><div class="d">+11.6% YoY (TTM) ชะลอจาก +18.5% (FY2025)</div></div>
       <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~76.9%</div><div class="d">ลดจากค่าเฉลี่ย ~80-82% ในอดีต (FY2022 82.2%)</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">ไม่จ่าย</div><div class="d">คืนทุนผ่าน buyback ($164M ใน Q1'26)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">ไม่จ่าย</div><div class="d">ไม่มีปันผลตาม Yahoo/StockAnalysis</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">~1.6</div><div class="d">ผันผวนสูงกว่าตลาดมาก</div></div>
     </div>
   </section>
@@ -153,9 +153,8 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ราคาร่วงจาก $49.01 (ก.ย. 2568) ต่อเนื่องมาตลอดปี ก่อนร่วงแรงอีกครั้ง −21.9% ในวันเดียวหลังงบ Q2 2569 (6 ส.ค. 2569) มาอยู่ที่ $13.80 — รวมทั้งปีลดลง ~72%
-        สาเหตุหลัก: (1) รายได้ TTM เติบโตชะลอเหลือ 11.6% (จาก 18.5% ใน FY2025) ต่ำกว่าที่ตลาดคาด กระทบความเชื่อมั่นรุนแรง (2) แรงกดดันแข่งขันต่อเนื่องจาก Amazon DSP
-        ที่ได้พาร์ทเนอร์ CTV พิเศษ (Disney+, ESPN, Hulu ผ่านดีล Amazon) แย่งส่วนแบ่งงบโฆษณา CTV (3) เป้าราคานักวิเคราะห์ยังกระจายมาก — บางส่วนยังไม่อัปเดตหลังงบ
+        ราคาร่วงจาก $50.28 (ต.ค. 2568) ต่อเนื่องมาตลอดปี ก่อนร่วงแรงอีกครั้งหลังงบ Q2 2569 (ราว −30% ตามข่าว StockAnalysis) มาอยู่ที่ {{rd:px}} — รวมทั้งปีลดลง ~72%
+        สาเหตุหลัก: (1) รายได้ Q2 โตเพียง ~3% YoY ($715M) ต่ำกว่าที่ตลาดคาด และ TTM ชะลอเหลือ 11.6% (จาก 18.5% ใน FY2025) (2) แรงกดดันแข่งขันในตลาด DSP/CTV (3) บริษัทประกาศลดพนักงาน ~15%
         แม้ราคาจะร่วงมาลึกมากแล้ว แต่ยังไม่มีสัญญาณฟื้นตัวชัดเจนของอัตราเติบโตรายได้
       </p>
     </div>
@@ -163,30 +162,25 @@
 
   <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">2 วิธี · ตระกูลเดียว (FCF)</div></div>
     <div class="card">
-      <!-- ✏️ หุ้นไม่ปันผล + SBC สูง → ตัด DDM ออก ใช้ P/E (GAAP TTM) + Forward P/E + P/FCF — รีเบสจาก GAAP EPS หลังงบ Q2 2569 (ไม่มีเลข non-GAAP ยืนยันรอบนี้) -->
+      <!-- ✏️ หุ้นไม่ปันผล: ไม่มีตัวคูณมัธยฐานที่วัดได้ (P/E ย้อนหลังใช้ไม่ได้) จึงใช้ DCF ที่แสดงตารางครบ + Justified P/FCF ตระกูลเดียวกัน — ไม่ใช้เป้านักวิเคราะห์/ตัวคูณเดา -->
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM, GAAP) $0.84 × P/E 18x — คูณต่ำกว่าค่าเฉลี่ยประวัติศาสตร์ ~45x มาก สะท้อนการเติบโตชะลอตัวถาวร + ความเสี่ยงแข่งขันจาก Amazon DSP</div></div>
-        <div class="mval">$15.12</div>
+        <div><div class="mname">1. DCF (FCF 5 ปี + Terminal)</div><div class="mdesc">สมมติฐานของเราเอง: FCF ฐาน $863M (TTM) คงที่ทุกปี (ไม่ให้เครดิตการเติบโต เพราะ SBC สูง/รายได้ชะลอ) · r = 12% · g ปลาย = 2% · FCF ปี 1–5 = $863M/ปี → PV รวม $3,111M (ตัวคูณส่วนลด 3.605) · TV = 863×1.02/(0.12−0.02) = $8,803M → PV $4,995M (TV = 62% ของทั้งหมด) · มูลค่ารวม $8,106M ÷ 472.8M หุ้น = $17.14 · ไม่บวกเงินสดสุทธิ (เงินสดส่วนหนึ่งอาจเป็นของลูกค้า)</div></div>
+        <div class="mval">$17.14</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. Forward P/E Valuation</div><div class="mdesc">EPS forward (FY26 consensus) $1.13 × P/E 13x — ใกล้เคียง forward P/E ตลาดปัจจุบัน (Yahoo 12.2x / StockAnalysis 14.1x)</div></div>
-        <div class="mval">$14.69</div>
-      </div>
-      <div class="vmethod">
-        <div><div class="mname">3. P/FCF Valuation</div><div class="mdesc">FCF/หุ้น (TTM) $1.79 × P/FCF เป้าหมาย 9x — ใช้กระแสเงินสดจริงเป็นฐานที่ระมัดระวัง สมมติ Amazon DSP แย่งส่วนแบ่ง CTV ต่อเนื่อง</div></div>
-        <div class="mval">$16.11</div>
+        <div><div class="mname">2. Justified P/FCF (ตระกูลเดียวกับ DCF — นับเป็น 1 เสียง)</div><div class="mdesc">FCF/หุ้น (TTM) $1.83 × (1+g)/(r−g) = 1.02/0.10 = 10.2x (r 12%, g 2% ชุดเดียวกับ DCF ไม่ใช่ตัวคูณจากตลาด) = $18.62 · ทั้งสองวิธีต่างกัน 1.09 เท่า (&lt;2.0x) จึงเฉลี่ยได้</div></div>
+        <div class="mval">$18.62</div>
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        วิธี P/FCF ($16.11) ให้ค่าสูงสุด เพราะ FCF ยังแข็งแรงกว่ากำไรบัญชีที่ถูก SBC กดไว้ — วิธี P/E (TTM GAAP, $15.12) ใกล้เคียงราคาตลาดปัจจุบันมาก
-        เพราะใช้ P/E 18x ที่ใกล้ตลาดกำหนดจริง (16.4x) — วิธี Forward P/E ($14.69) เป็นฐานระมัดระวังสุด สะท้อนความเสี่ยงที่การเติบโตจะชะลอต่อ
-        ทั้ง 3 วิธีคอนเวิร์จแคบในกรอบ $14.69-16.11 จึงใช้ค่าเฉลี่ย $15.31 เป็น Fair Value — ใกล้เคียงเป้าหมายนักวิเคราะห์ StockAnalysis หลังงบ ($15.29, Hold)
-        มาก สะท้อนว่าหลังร่วงแรงจากงบ Q2 2569 ราคาหุ้นเริ่มสะท้อนความเสี่ยงที่แท้จริงแล้ว ไม่ใช่ทั้ง "ถูกเกินจริง" หรือ "แพงเกินไป"
+        <b>ประเมินตระกูลเดียว (single-family)</b> — ตัวคูณ P/E ย้อนหลังใช้ไม่ได้ (4 จาก 5 ปีเกิน 100x) และไม่มีมัธยฐาน P/S/EV วัดไว้ จึงไม่ใช้ตัวคูณที่เดาเอง และไม่ใช้เป้านักวิเคราะห์เป็นขาของ FV
+        ความไวของผล (DCF ขาเดียว): r 11% → ~$19.0 · r 13% → ~$15.6 · g 1% → ~$16.1 · ถ้า FCF ลดถาวร 20% จะได้ ~$13.7 ซึ่งเท่ากับราคาตลาด — นั่นคือสิ่งที่ตลาดกำลัง price-in
+        FCF ของ TTD สูงกว่ากำไรสุทธิมาก ($863M vs $407M) เพราะ SBC ถูกบวกกลับ ผลจึงอาจสูงเกินจริงหากมองต้นทุน SBC เป็นต้นทุนจริง ประมาณการนี้ยังไม่ผ่านการยืนยันจากวิธีอิสระตระกูลอื่น
       </p>
     </div>
   </section>
@@ -208,9 +202,8 @@
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน $13.80 อยู่ต่ำกว่า Fair Value ($15.31) เล็กน้อย (MOS ~9.9%) — ยังไม่เข้าโซน MOS 20-30% ที่ถือว่า "ถูก" ชัดเจน
-        เป้าหมายนักวิเคราะห์แตกต่างกันมากหลังงบ: Yahoo เฉลี่ย $24.05 (30 ราย อาจยังไม่อัปเดตครบ) vs StockAnalysis $15.29 (Hold, ข้อมูล 7 ส.ค. 2569)
-        ซึ่งใกล้เคียง Fair Value ของเรามาก — ค่าหลังน่าเชื่อถือกว่าเพราะเป็นข้อมูลใหม่กว่าและสะท้อนงบที่เพิ่งประกาศ
+        ราคาปัจจุบัน {{rd:px}} อยู่ต่ำกว่า Fair Value ({{rd:fv}}) — MOS {{rd:mos}} ตามการประเมินตระกูลเดียว (DCF) ที่มีความไวต่อ r/g สูง
+        เป้านักวิเคราะห์เฉลี่ยราว $13.6 (Yahoo 30 ราย · StockAnalysis Hold) เป็นเพียงบริบทเปรียบเทียบ ไม่ได้ใช้เป็นขาของ Fair Value
       </p>
     </div>
   </section>
@@ -222,7 +215,7 @@
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">MOS ต่ำมาก — แม้ราคาจะร่วงมาแรงถึง ~76% จากจุดสูงสุด 52 สัปดาห์ ($56.77) แต่ตาม valuation ที่รีเบสจากงบ Q2 2569 ล่าสุด TTD ยังไม่ใช่ "หุ้นถูก" ชัดเจน เป็นเพียง "ราคาที่ใกล้เคียงมูลค่าที่ควรเป็น" เท่านั้น</div>
+        <div class="txt">ราคาต่ำกว่ามูลค่าตาม DCF แต่เป็นการประเมินตระกูลเดียวที่ไวต่อ r/g และ SBC — ราคาร่วงราว ~75% จากจุดสูงสุด 52 สัปดาห์ ($56.39) สะท้อนตลาดกังวลว่า FCF จะลดลง ควรถือ MOS นี้เป็นค่าประมาณ ไม่ใช่ความมั่นใจสูง</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -284,9 +277,9 @@
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      TTD ไม่จ่ายปันผล — ผลตอบแทนทั้งหมดมาจาก capital gain (price return) เท่านั้น บริษัทคืนเงินผู้ถือหุ้นผ่านการซื้อหุ้นคืน ($164M ใน Q1 2569 เพียงไตรมาสเดียว)
-      ที่ราคา $13.80 หลังงบ Q2 2569 ตลาดกำลัง price-in ความเสี่ยงจากการเติบโตชะลอตัวลงมาก (TTM +11.6% จาก +18.5% FY2025) — ถ้า Amazon DSP กัดกร่อนต่อจนเติบโต
-      หลุดต่ำกว่านี้ (bear) หุ้นมีดาวน์ไซด์อีกมาก ~35% ส่วนกรณี Kokai พลิกกลับมาเร่งการเติบโต (bull) มี upside สูงมากเพราะฐานราคาต่ำมากแล้ว
+      TTD ไม่จ่ายปันผล — ผลตอบแทนทั้งหมดมาจาก capital gain (price return) เท่านั้น
+      ที่ราคา {{rd:px}} หลังงบ Q2 2569 ตลาดกำลัง price-in ความเสี่ยงจากการเติบโตชะลอตัวลงมาก (Q2 โต ~3% YoY · TTM +11.6% จาก +18.5% FY2025) — ถ้าการแข่งขันกัดกร่อนต่อจนเติบโต
+      หลุดต่ำกว่านี้ (bear) หุ้นมีดาวน์ไซด์อีกมาก ~36% ส่วนกรณี Kokai พลิกกลับมาเร่งการเติบโต (bull) มี upside สูงมากเพราะฐานราคาต่ำมากแล้ว
     </p>
   </section>
 
@@ -298,22 +291,22 @@
         <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
         <ul>
           <li><b>Kokai AI platform:</b> อัปเกรดแพลตฟอร์มด้วย AI คาดหวังปรับปรุงประสิทธิภาพ targeting/bidding — ถ้าเปลี่ยนผ่านสำเร็จ อาจช่วยรักษา take rate และดึงลูกค้ากลับมา</li>
-          <li><b>Retention สูง:</b> customer retention เหนือ 95% ต่อเนื่อง แสดงว่าลูกค้าหลักยังผูกพันกับแพลตฟอร์มแม้เจอความปั่นป่วนจากคู่แข่ง</li>
+          <li><b>ปรับโครงสร้างต้นทุน:</b> บริษัทประกาศลดพนักงาน ~15% และจัดองค์กรเป็นหน่วยย่อย (ตามข่าว StockAnalysis หลังงบ Q2 2569) — อาจช่วยประคองกำไรหากรายได้ยังชะลอ</li>
           <li><b>UID2 identity solution:</b> ทางเลือกแทน third-party cookie ที่กำลังถูก deprecate ช่วยสร้าง moat ด้าน identity/targeting ที่ไม่ผูกกับ walled garden</li>
-          <li><b>Valuation ลดความเสี่ยงแล้ว:</b> หลังราคาร่วง ~76% จากจุดสูงสุด 52 สัปดาห์ P/E (GAAP TTM) เหลือ ~16.4x จาก ~45x เฉลี่ยในอดีต ระดับความคาดหวังของตลาดต่ำลงมาก ทำให้ downside risk จาก valuation เองจำกัดลง</li>
-          <li><b>FCF แข็งแกร่ง + buyback:</b> ยังสร้าง FCF ~$863M (TTM) และซื้อหุ้นคืนต่อเนื่อง ($164M ใน Q1 2569) แสดงความเชื่อมั่นของบริษัทต่อธุรกิจตนเอง</li>
+          <li><b>Valuation ลดความเสี่ยงแล้ว:</b> หลังราคาร่วง ~75% จากจุดสูงสุด 52 สัปดาห์ P/E (GAAP TTM) เหลือ ~16.4x ระดับความคาดหวังของตลาดต่ำลงมาก ทำให้ downside risk จาก valuation เองจำกัดลง</li>
+          <li><b>FCF แข็งแกร่ง:</b> ยังสร้าง FCF ~$863M (TTM) แม้ส่วนหนึ่งเป็นผลจากการบวกกลับ SBC และเงินสด $1.49B เทียบหนี้ $434M</li>
           <li><b>ตลาด CTV ยังโตต่อเนื่อง:</b> งบโฆษณา Connected TV โดยรวมยังขยายตัว — TTD อาจไม่ได้ market share เพิ่มเท่าเดิม แต่ตลาดที่ใหญ่ขึ้นยังช่วยหนุนรายได้พื้นฐาน</li>
         </ul>
       </div>
       <div class="box risk">
         <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
         <ul>
-          <li><b>Amazon DSP เป็นภัยคุกคามเชิงโครงสร้าง:</b> Amazon ได้ดีลพาร์ทเนอร์ CTV พิเศษ (Disney+, ESPN, Hulu) + ข้อมูล retail media + CPM ต่ำกว่า ทำให้ inventory พรีเมียมบางส่วนเข้าถึงได้ผ่าน Amazon DSP เท่านั้น — เป็นความเสี่ยงต่อ moat ระยะยาวของ TTD ไม่ใช่แค่ความผันผวนชั่วคราว</li>
-          <li><b>การเติบโตชะลอตัวต่อเนื่อง:</b> จาก 18.5% (FY2025) เหลือ 11.6% (TTM ถึง Q2 2569) — งบ 6 ส.ค. 2569 ทำราคาร่วง −21.9% วันเดียว ยังไม่เห็นจุดตกต่ำสุด (bottom) ชัดเจน หากชะลอต่อเนื่องลงต่ำกว่า 10% จะกดดัน valuation เพิ่มอีก</li>
+          <li><b>การแข่งขันจาก DSP รายใหญ่ (เช่น Amazon):</b> เป็นความเสี่ยงต่อ moat ระยะยาวของ TTD — รายงานนี้ไม่ได้ยืนยันรายละเอียดดีลพาร์ทเนอร์ CTV ของคู่แข่งจากแหล่งปฐมภูมิ จึงไม่ระบุรายชื่อ</li>
+          <li><b>การเติบโตชะลอตัวต่อเนื่อง:</b> จาก 18.5% (FY2025) เหลือ 11.6% (TTM ถึง Q2 2569) และ Q2 โตเพียง ~3% YoY — หลังงบราคาร่วงราว 30% ยังไม่เห็นจุดตกต่ำสุด (bottom) ชัดเจน หากชะลอต่อเนื่องจะกดดัน valuation เพิ่มอีก</li>
           <li><b>Margin compression:</b> Operating margin ลดจาก 20.3% (FY2025) เหลือ 19.6% (TTM) และ Net margin ลดจาก 15.3% เหลือ 13.6% ในช่วงเดียวกัน สะท้อนต้นทุนดำเนินงานเพิ่มขึ้นเร็วกว่ารายได้</li>
           <li><b>Stock-based compensation สูง:</b> SBC ยังกดกำไรบัญชีต่อเนื่อง — รายงานนี้ใช้ GAAP EPS ($0.84 TTM) ล้วนเป็นฐาน valuation เพราะไม่มีเลข non-GAAP ที่ยืนยันได้รอบนี้ (เลี่ยงอ้างอิงตัวเลข non-GAAP เก่าที่อาจไม่ตรงสถานการณ์ปัจจุบัน)</li>
           <li><b>Ad tech เป็นวัฏจักรกับเศรษฐกิจ:</b> งบโฆษณาแบรนด์อ่อนไหวต่อภาวะเศรษฐกิจถดถอย/ความไม่แน่นอนมหภาค กระทบ TTD โดยตรงเพราะรายได้ผูกกับ spend ของนักการตลาด</li>
-          <li><b>Analyst targets แตกต่างกันมากหลังงบ:</b> Yahoo เฉลี่ย $24.05 (30 ราย อาจยังไม่อัปเดตครบหลังงบ 6 ส.ค.) vs StockAnalysis $15.29 (Hold, ข้อมูล 7 ส.ค. 2569) — ค่าหลังใกล้เคียง Fair Value ของเรามาก สะท้อนมุมมองหลังงบที่ระมัดระวังขึ้นมาก</li>
+          <li><b>Analyst targets:</b> เป้าเฉลี่ยราว $13.6 (Yahoo 30 ราย · StockAnalysis Hold) ใกล้ราคาตลาด สะท้อนมุมมองหลังงบที่ระมัดระวัง — ไม่ได้ใช้เป็นขาของ Fair Value</li>
         </ul>
       </div>
     </div>
@@ -323,22 +316,21 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>ร่วงแรงหลังงบ Q2 2569 — ยังไม่ใช่ของถูกชัดเจน แต่ downside จำกัดลงมากแล้ว</h2>
+      <h2>ร่วงแรงหลังงบ Q2 2569 — ต่ำกว่ามูลค่าตาม DCF แต่ประมาณการไวต่อสมมติฐาน</h2>
       <p>
-        The Trade Desk ร่วงลง ~76% จากจุดสูงสุด 52 สัปดาห์ ($56.77) รวมถึงร่วงแรง −21.9% วันเดียวหลังงบ Q2 2569 (6 ส.ค. 2569) ที่แสดงการเติบโตรายได้ชะลอตัวต่อเนื่องจาก 18.5% (FY2025) เหลือ 11.6% (TTM)
-        พร้อมแรงกดดันคู่แข่ง Amazon DSP ที่รุกตลาด CTV หลังปรับฐานรุนแรง P/E (GAAP TTM) เหลือเพียง ~16.4x จากค่าเฉลี่ย ~45x ในอดีต ทำให้ระดับความคาดหวังของตลาดต่ำลงมาก การประเมินมูลค่าที่รีเบสจาก GAAP EPS ล่าสุด
-        (P/E + Forward P/E + P/FCF) ให้ Fair Value เฉลี่ย $15.31 ใกล้เคียงราคาตลาดปัจจุบัน $13.80 มาก (MOS เพียง +9.9%)
-        สะท้อนว่าราคาปัจจุบันไม่ใช่ "ของถูกที่ตลาดมองข้าม" แต่ก็ไม่ได้แพงเกินพื้นฐาน — ความเสี่ยงหลักคือ Amazon DSP อาจกัดกร่อน moat ของ TTD ต่อเนื่อง
-        ขณะที่โอกาสคือ Kokai AI platform และ UID2 identity อาจช่วยให้บริษัทรักษาตำแหน่ง DSP อิสระอันดับ 1 ไว้ได้
+        The Trade Desk ร่วงลง ~75% จากจุดสูงสุด 52 สัปดาห์ ($56.39) รวมถึงร่วงแรงหลังงบ Q2 2569 ที่รายได้โตเพียง ~3% YoY และการเติบโต TTM ชะลอจาก 18.5% (FY2025) เหลือ 11.6%
+        การประเมินมูลค่าใช้ DCF (FCF คงที่ r 12% g 2%) และ Justified P/FCF ตระกูลเดียวกัน ให้ Fair Value เฉลี่ย {{rd:fv}} เทียบราคาตลาด {{rd:px}} (MOS {{rd:mos}})
+        แต่เป็นการประเมินตระกูลเดียวที่ไวต่อ r/g และ SBC — หาก FCF ลดถาวร ~20% มูลค่าจะเท่าราคาตลาด ความเสี่ยงหลักคือการแข่งขันใน DSP/CTV
+        ขณะที่โอกาสคือ Kokai AI platform และ UID2 identity อาจช่วยให้บริษัทรักษาตำแหน่งไว้ได้
       </p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ (StockAnalysis)</div><div class="v" style="color:#a5d6a7">~$15.29 (Hold)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ (StockAnalysis)</div><div class="v" style="color:#a5d6a7">~$13.6 (Hold)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> สำหรับนักลงทุนที่ยอมรับความเสี่ยงสูงได้ อาจทยอยสะสมเป็นส่วนน้อยของพอร์ต (satellite position) โดยรอราคาลงมาที่โซน MOS 20-30% ($10.72-$12.25)
-        เพื่อให้มี margin of safety ที่แท้จริงก่อนเพิ่มน้ำหนัก ไม่แนะนำให้ all-in ที่ราคาปัจจุบันเพราะ valuation ยังไม่ถูกพอที่จะชดเชยความเสี่ยงเชิงโครงสร้างจาก Amazon DSP —
+        💡 <b>กลยุทธ์:</b> สำหรับนักลงทุนที่ยอมรับความเสี่ยงสูงได้ อาจทยอยสะสมเป็นส่วนน้อยของพอร์ต (satellite position) โดยรอโซน MOS 20-30% ({{rd:mos30}}–{{rd:mos20}})
+        เพื่อให้มี margin of safety ที่แท้จริงก่อนเพิ่มน้ำหนัก ไม่แนะนำให้ all-in เพราะประมาณการเป็นตระกูลเดียวและเติบโตชะลอ —
         ติดตามผลประกอบการ 2-3 ไตรมาสข้างหน้าว่าอัตราเติบโตรายได้หยุดชะลอตัวหรือไม่ ก่อนตัดสินใจเพิ่มสถานะอย่างมีนัยสำคัญ
       </div>
     </div>
@@ -350,7 +342,7 @@
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • แหล่งข้อมูล: StockAnalysis.com, Yahoo Finance, บริษัท (Q2 2026 earnings, 6 ส.ค. 2569), AdExchanger
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 9 ส.ค. 2569 (9 Aug 2026) • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 22 ก.ย. 2569 (22 Sep 2026) • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
