@@ -6,15 +6,15 @@
 <title>วิเคราะห์หุ้น ไทยยูเนี่ยน กรุ๊ป (TU) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"TU","currency":"THB","price":12.7,"fairValue":13.3,"mos":4.5,"upside":4.7,"pe":10.4,"dividendYield":6.3,"roe":11}
+{"symbol":"TU","currency":"THB","price":13.3,"fairValue":13.3,"mos":0,"upside":0,"pe":10.4,"dividendYield":6,"roe":11}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
   "fv": 13.3,
   "values": {
-    "px": 12.7,
-    "priceDate": "2026-09-18",
+    "px": 13.3,
+    "priceDate": "2026-09-21",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
     "fvLow": 12.5,
@@ -52,8 +52,8 @@
     "verdictText": "#ebf6fd",
     "vcellLabel": "#ffffff",
     "badge": "#0a6fb5",
-    "chgBg": "var(--red-soft)",
-    "chgColor": "#c5221f"
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#137333"
   },
   "chart": {
     "data": [
@@ -68,13 +68,13 @@
       ["มิ.ย.26", 11.7],
       ["ก.ค.26", 12.2],
       ["ส.ค.26", 12.6],
-      ["ก.ย.26", 12.7]
+      ["ก.ย.26", 13.3]
     ],
     "min": 11,
     "max": 14,
     "grid": [12, 13],
     "currency": "฿",
-    "highlight": [0, 5],
+    "highlight": [5, 11],
     "gridFmt": "v.toFixed(0)",
     "dataFmt": "d[1].toFixed(2)"
   },
@@ -115,9 +115,9 @@
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ 17 สิงหาคม 2569</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ 22 กันยายน 2569</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">฿49.02 พันล้าน</div><div class="d">~3.86 พันล้านหุ้น</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿51.34 พันล้าน</div><div class="d">~3.86 พันล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~10.4x</div><div class="d">ต่ำกว่าค่าเฉลี่ยตลาด • หุ้นมูลค่า</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~11–13x</div><div class="d">กรอบช่วงวัฏจักรอาหารทะเล</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">1.06x</div><div class="d">ต่ำกว่ามูลค่าทางบัญชี</div></div>
@@ -177,7 +177,7 @@
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         ทั้งสามวิธีให้ค่าใกล้เคียงกันที่ ฿13.2–14.2 — วิธี Justified P/BV ให้ค่าสูงสุดเพราะ ROE (10.6%) ยังสูงกว่าต้นทุนทุนที่ใช้ (r 9.5%)
         ทำให้ P/BV เหมาะสม > 1 เท่า ขณะที่ราคาซื้อขายจริงเพียง 0.82 เท่า สะท้อน discount จากความเป็นวัฏจักร/ความเสี่ยงภาษี
-        เราถ่วงน้ำหนัก P/E และ DDM (ทนทานกว่าสำหรับผู้ส่งออกวัฏจักร) จึงตั้ง FV กลางที่ ฿13.30 ใกล้เป้านักวิเคราะห์เฉลี่ย ~฿13.2
+        เราถ่วงน้ำหนัก P/E และ DDM (ทนทานกว่าสำหรับผู้ส่งออกวัฏจักร) จึงตั้ง FV กลางที่ {{rd:fv}} ใกล้เป้านักวิเคราะห์เฉลี่ย ~฿13.2
       </p>
     </div>
   </section>
@@ -200,8 +200,8 @@
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน ฿12.70 อยู่ต่ำกว่ามูลค่าเหมาะสม ฿13.30 ราว 4.5% — Margin of Safety ยังจำกัด ยังไม่เข้าโซนน่าสนใจมากนัก
-        แต่ยังไม่ถึงโซน deep value (MOS 30% ที่ ฿9.31) เป้านักวิเคราะห์เฉลี่ย ~฿14.88 (ฉันทามติ "ซื้อ" จาก 14 นักวิเคราะห์ +17.2%)
+        ราคาปัจจุบัน {{rd:px}} เทียบมูลค่าเหมาะสม {{rd:fv}} — Margin of Safety แทบไม่เหลือ ยังไม่เข้าโซนน่าสนใจมากนัก
+        แต่ยังไม่ถึงโซน deep value (MOS 30% ที่ {{rd:mos30}}) เป้านักวิเคราะห์เฉลี่ย ~฿14.88 (ฉันทามติ "ซื้อ" จาก 14 นักวิเคราะห์ +17.2%)
       </p>
     </div>
   </section>
@@ -274,7 +274,7 @@
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      สมมติฐานผลตอบแทนรวมจากจุดเข้า ฿12.70 (ส่วนต่างราคา + เงินปันผลสะสม 3 ปี) กรณีฐานให้ผลตอบแทนเฉลี่ยราว 12%/ปี
+      สมมติฐานผลตอบแทนรวมจากจุดเข้า {{rd:px}} (ส่วนต่างราคา + เงินปันผลสะสม 3 ปี) กรณีฐานให้ผลตอบแทนเฉลี่ยราว 12%/ปี
       ขับเคลื่อนหลักจากการขยายมาร์จิ้นและการเติบโตของ PetCare ขณะที่กรณีหมีสะท้อนแรงกดดันจากภาษีนำเข้าสหรัฐฯ ราคาวัตถุดิบ และค่าเงิน
     </p>
   </section>
@@ -315,7 +315,7 @@
       <h2>หุ้นมูลค่า/ปันผลที่ราคาต่ำกว่ามูลค่า — น่าสะสมแบบมีวินัย</h2>
       <p>TU เป็นผู้นำอาหารทะเลระดับโลกที่ซื้อขายที่ P/E ~10.4x และ P/BV 1.06x ต่ำกว่ามูลค่าทางบัญชี ขณะที่มาร์จิ้นทำสถิติสูงสุดและ
       ธุรกิจ PetCare เป็นเครื่องยนต์เติบโตใหม่ ผลตอบแทนปันผล ~6.3% ที่สม่ำเสมอบวกกับ buyback ทำให้เป็นหุ้นเชิงรับที่น่าถือ
-      ความเสี่ยงหลักคือหนี้สูง (D/E 1.42x) ภาษีนำเข้าสหรัฐฯ ราคาวัตถุดิบ และค่าเงิน — ราคาปัจจุบัน ฿12.70 ต่ำกว่ามูลค่าเหมาะสม ฿13.30 ราว 4.5%
+      ความเสี่ยงหลักคือหนี้สูง (D/E 1.42x) ภาษีนำเข้าสหรัฐฯ ราคาวัตถุดิบ และค่าเงิน — ราคาปัจจุบัน {{rd:px}} เทียบมูลค่าเหมาะสม {{rd:fv}}
       ให้ Margin of Safety ที่ยังจำกัด</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
@@ -323,7 +323,7 @@
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿14.88 (ซื้อ)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ทยอยสะสมในโซน &lt; ฿13.30 เพื่อรับปันผล ~6.3% ระหว่างรอ re-rate; เพิ่มน้ำหนักเด่นชัดเมื่อหลุดต่ำกว่า ฿10.64 (MOS 20%) และโซนถูกมากที่ ฿9.31 (MOS 30%) — เหมาะกับพอร์ตเน้นปันผล/เชิงรับ ไม่ใช่หุ้นเติบโตเร็ว
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมในโซน &lt; {{rd:fv}} เพื่อรับปันผล ~6.3% ระหว่างรอ re-rate; เพิ่มน้ำหนักเด่นชัดเมื่อหลุดต่ำกว่า ฿10.64 (MOS 20%) และโซนถูกมากที่ {{rd:mos30}} (MOS 30%) — เหมาะกับพอร์ตเน้นปันผล/เชิงรับ ไม่ใช่หุ้นเติบโตเร็ว
       </div>
     </div>
   </section>
@@ -334,7 +334,7 @@
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มาข้อมูล: StockAnalysis.com • Investing.com • SET/Settrade.com • Thai Union IR • Yahoo Finance (ราคาปิดรายเดือนจริง)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 17 สิงหาคม 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 22 กันยายน 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
