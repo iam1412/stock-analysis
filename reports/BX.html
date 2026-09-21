@@ -6,34 +6,34 @@
 <title>วิเคราะห์หุ้น Blackstone Inc. (BX) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"BX","currency":"USD","price":124.96,"fairValue":131,"mos":4.6,"upside":4.8,"pe":28,"dividendYield":3.79,"roe":31.4}
+{"symbol":"BX","currency":"USD","price":124.96,"fairValue":156,"mos":19.9,"upside":24.8,"pe":28,"dividendYield":3.79,"roe":31.4}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 131,
+  "fv": 156,
   "values": {
     "px": 124.96,
     "priceDate": "2026-09-18",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
-    "fvLow": 123,
-    "fvHigh": 143,
+    "fvLow": 124,
+    "fvHigh": 187,
     "eps": 4.47,
     "shares": 1243813031,
     "dps": 4.74,
     "scenarios": [
       {
-        "tgt": 126.36,
-        "div": 14.5
+        "tgt": 117.12,
+        "div": 14.2
       },
       {
-        "tgt": 164.43,
-        "div": 16.3
+        "tgt": 157,
+        "div": 16
       },
       {
-        "tgt": 194.81,
-        "div": 18.5
+        "tgt": 220.4,
+        "div": 17.3
       }
     ],
     "scnBasis": {
@@ -78,7 +78,7 @@
   },
   "gauge": {
     "min": 100,
-    "max": 175,
+    "max": 200,
     "fairLabelTop": false
   }
 }
@@ -113,14 +113,14 @@
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">Alternative Asset Manager — ใช้ Distributable Earnings (DE) แทน GAAP EPS</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">Alternative Asset Manager — GAAP EPS ผันผวนจาก unrealized gains จึงใช้มัธยฐาน P/E หลายปี + ปันผล</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~$155B</div><div class="d">1.24B หุ้นรวมทุกคลาส (StockAnalysis)</div></div>
-      <div class="metric"><div class="k">P/DE (TTM)</div><div class="v neu">~22.4x</div><div class="d">DE/share $5.57 (FY2025 — ตรวจซ้ำกับงวดล่าสุดไม่ได้)</div></div>
-      <div class="metric"><div class="k">P/DE เฉลี่ย ~5 ปี</div><div class="v">~24x</div><div class="d">กรอบ 18–35x ตามวัฏจักร</div></div>
+      <div class="metric"><div class="k">P/E มัธยฐานย้อนหลัง</div><div class="v">~41.8x</div><div class="d">ราคาเฉลี่ยรายปี ÷ EPS diluted · 4 ปี (ตัด FY2021 12.9x ผิดปกติ)</div></div>
+      <div class="metric"><div class="k">ช่วง P/E ย้อนหลัง</div><div class="v">39.4–54.2x</div><div class="d">FY2022–FY2025 · EPS GAAP ต่ำกว่า DE จึงตัวคูณสูง</div></div>
       <div class="metric"><div class="k">GAAP P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">GAAP EPS TTM $4.47 (FY2025 $3.87) — ผันผวนสูงจาก unrealized gains</div></div>
 
-      <div class="metric"><div class="k">DE/Share (TTM)</div><div class="v pos">$5.57</div><div class="d">FY26E DE/share ~$6.50 (+17% YoY)</div></div>
+      <div class="metric"><div class="k">EPS FY2026E (consensus)</div><div class="v pos">$6.02</div><div class="d">vs TTM $4.47 · FY2027E $7.48 (SA /forecast/)</div></div>
       <div class="metric"><div class="k">Fee-Related Earnings (FRE)</div><div class="v">$5.7B</div><div class="d">+9% YoY — recurring revenue base</div></div>
       <div class="metric"><div class="k">AUM รวม</div><div class="v pos">$1.275T</div><div class="d">+13% YoY · perpetual capital 46% ของ fee-AUM</div></div>
       <div class="metric"><div class="k">ROE</div><div class="v pos">~31.4%</div><div class="d">สูงมากสำหรับ asset-light business</div></div>
@@ -147,35 +147,31 @@
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
         ราคาปิดรายเดือนของ BX ลดจากจุดสูง $154.14 (ธ.ค. 2568) สู่จุดต่ำ $113.37 (ก.พ. 2569) ราว −26% ก่อนฟื้นถึง $143.24 (ส.ค. 2569) แล้วย่อกลับมาอยู่ที่ {{rd:px}} ปัจจุบัน
         กรอบ 52 สัปดาห์ $101.73–$190.09 แรงกดดันหลักมาจากความกังวลว่าดอกเบี้ยสูงนาน ทำให้การ exit กองทุน Private Equity และ Real Estate ล่าช้า ส่งผลกด realization income
-        ราคาปัจจุบัน {{rd:px}} ต่ำกว่า Fair Value {{rd:fv}} ที่คำนวณจาก DE-based valuation เพียงเล็กน้อย — ส่วนเผื่อความปลอดภัยยังบาง
+        ราคาปัจจุบัน {{rd:px}} ต่ำกว่า Fair Value {{rd:fv}} ที่คำนวณจาก P/E มัธยฐานย้อนหลัง + DDM (MOS {{rd:mos}}) — อยู่ใกล้จุดซื้อ MOS 20%
       </p>
     </div>
   </section>
 
-  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <!-- ===== 3. VALUATION (เฉลี่ย 2 วิธี) ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี — DE-based (ไม่ใช้ GAAP EPS)</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธีต่างตระกูล — P/E own-history + DDM</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/DE (TTM) Valuation</div><div class="mdesc">DE/share (TTM) $5.57 × P/DE เป้าหมาย ~22x — ระดับกลางวัฏจักร (historical 18–35x); ให้น้ำหนัก DE รายปีปัจจุบัน</div></div>
-        <div class="mval">$122.54</div>
+        <div><div class="mname">1. P/E มัธยฐานย้อนหลัง (own-history)</div><div class="mdesc">EPS $4.47 (TTM, GAAP diluted) × 41.8x — มัธยฐาน P/E ของ BX FY2022–FY2025 (39.4x/43.6x/54.2x/40.1x · ราคาเฉลี่ยปี ÷ EPS ปีนั้น · ตัด FY2021 ที่ 12.9x เป็นกำไรพิเศษ) · GAAP ผันผวนจาก unrealized gains จึงใช้มัธยฐานหลายปีแทนตัวคูณ spot</div></div>
+        <div class="mval">$186.85</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. Forward P/DE (FY26E) Valuation</div><div class="mdesc">DE/share FY2026E ~$6.50 (consensus) × P/DE 22x — อิง earning power ปีหน้าเมื่อ realization กลับมา ให้ค่าสูงกว่า TTM</div></div>
-        <div class="mval">$143.00</div>
-      </div>
-      <div class="vmethod">
-        <div><div class="mname">3. Dividend Yield Valuation</div><div class="mdesc">ปันผล FY26E ~$4.90 ÷ fair yield 3.8% — อิงระดับ yield ที่เหมาะสมสำหรับ alt asset manager คุณภาพสูง (กรอบประวัติ 3–5%)</div></div>
-        <div class="mval">$128.95</div>
+        <div><div class="mname">2. Dividend Discount (DDM แบบ Gordon)</div><div class="mdesc">ปันผล $4.74 (TTM) × (1+g 5%) ÷ (r 9% − g 5%) = $4.977 ÷ 0.04 — r/g เป็นสมมติฐานของรายงาน (ปันผลผันแปรตาม realization) ไม่ได้อิงตัวคูณตลาดวันนี้</div></div>
+        <div class="mval">$124.43</div>
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        วิธี Forward P/DE ให้ค่าสูงสุด ($143) สะท้อน earning power ปีหน้าเมื่อ realization กลับมาเต็มที่ ขณะที่ TTM P/DE ให้ค่าอนุรักษ์นิยมกว่า ($123)
-        BX ไม่เหมาะใช้ GAAP P/E เพราะ GAAP รวม unrealized gains/losses ที่ผันผวนสูงมาก DE คือตัวชี้วัดที่สะท้อนความสามารถในการจ่ายเงินสดจริง
-        มูลค่ากลาง $131 สอดคล้องกับ forward P/DE ~20x ซึ่งให้ส่วนลดจาก historical average ที่ 24x อย่างสมเหตุสมผล เนื่องจากดอกเบี้ยยังสูงกว่า pre-2022
+        สองขาห่างกันมาก ($186.85 vs $124.43) เพราะต่างตระกูล: P/E มัธยฐานย้อนหลัง 41.8x บนกำไร GAAP ให้ค่าสูง (EPS GAAP ของ BX ต่ำกว่า DE ตัวคูณจึงสูงเสมอ · ปัจจุบันซื้อขายต่ำกว่ามัธยฐานของตัวเองมาก) ส่วน DDM ให้ค่าต่ำกว่าเพราะอิงเงินสดที่จ่ายจริง
+        ค่าเฉลี่ย {{rd:fv}} จึงเป็นการถ่วงสองมุมมอง ไม่ใช่ค่าที่ยืนยันแม่นยำ — ตัวเลข DE/share ที่รายงานฉบับก่อนใช้ตรวจซ้ำกับงวดล่าสุดไม่ได้ จึงถอดออกจากทุกขา
+        เป้านักวิเคราะห์ $144.38 ใช้เป็นข้อมูลเทียบเท่านั้น ไม่ใช่ขาของ FV
       </p>
     </div>
   </section>
@@ -192,15 +188,14 @@
         <div class="scale">
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$144.38<br><small>เป้าเฉลี่ย Analyst</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
-          <span style="text-align:right">$144.38<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน {{rd:px}} อยู่ต่ำกว่า Fair Value {{rd:fv}} เล็กน้อย (MOS {{rd:mos}}) ถือเป็นโซน "ราคาใกล้มูลค่า"
-        ยังสูงกว่าจุด MOS 20% ({{rd:mos20}}) พอสมควร บ่งชี้ว่าส่วนเผื่อความปลอดภัยยังบาง — รอราคาย่อสู่โซนซื้อ
-        นักวิเคราะห์ 21 ราย (Yahoo) มีเป้าเฉลี่ย $144.38 สูงกว่า Fair Value ของรายงานนี้ — ใช้เป็นข้อมูลเทียบเท่านั้น ไม่ได้เป็นขาของ FV
+        ราคาปัจจุบัน {{rd:px}} อยู่ต่ำกว่า Fair Value {{rd:fv}} (MOS {{rd:mos}}) ใกล้จุด MOS 20% ({{rd:mos20}}) แต่ FV มาจากสองขาที่ห่างกันมาก ส่วนเผื่อจึงมีความไม่แน่นอนสูง
+        นักวิเคราะห์ 21 ราย (Yahoo) มีเป้าเฉลี่ย $144.38 ต่ำกว่า Fair Value ของรายงานนี้ — ใช้เป็นข้อมูลเทียบเท่านั้น ไม่ได้เป็นขาของ FV
       </p>
     </div>
   </section>
@@ -211,7 +206,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">MOS ต่ำ — ราคาใกล้มูลค่าเหมาะสม รอโซนซื้อ MOS 20%</div>
+        <div class="txt">MOS ปานกลาง — ราคาใกล้โซนซื้อ MOS 20% แต่ FV ไม่แน่นอนสูง</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -230,42 +225,42 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • DE ฐาน ~$5.57/share{{rd:scnNote}}</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน TTM $4.47{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
-        <div class="top"><span>🐻 Bear</span><span>DE +8%/ปี</span></div>
+        <div class="top"><span>🐻 Bear</span><span>EPS +6%/ปี</span></div>
         <div class="body">
           <div class="tgt">{{rd:sc1tgt}}</div>
           <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
-            <li><span>DE ปี 3</span><span>~$7.02</span></li>
-            <li><span>P/DE ออก</span><span>18x</span></li>
+            <li><span>EPS ปี 3</span><span>~$5.32</span></li>
+            <li><span>P/E ออก</span><span>22x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>ดอกเบี้ยสูงยาว realization ช้า</span></li>
           </ul>
         </div>
       </div>
       <div class="col base">
-        <div class="top"><span>⚖️ Base</span><span>DE +12%/ปี</span></div>
+        <div class="top"><span>⚖️ Base</span><span>EPS +12%/ปี</span></div>
         <div class="body">
           <div class="tgt">{{rd:sc2tgt}}</div>
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
-            <li><span>DE ปี 3</span><span>~$7.83</span></li>
-            <li><span>P/DE ออก</span><span>21x</span></li>
+            <li><span>EPS ปี 3</span><span>~$6.28</span></li>
+            <li><span>P/E ออก</span><span>25x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>Fed ลดดอกเบี้ย realization ฟื้น AUM โต</span></li>
           </ul>
         </div>
       </div>
       <div class="col bull">
-        <div class="top"><span>🚀 Bull</span><span>DE +15%/ปี</span></div>
+        <div class="top"><span>🚀 Bull</span><span>EPS +18%/ปี</span></div>
         <div class="body">
           <div class="tgt">{{rd:sc3tgt}}</div>
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
-            <li><span>DE ปี 3</span><span>~$8.47</span></li>
-            <li><span>P/DE ออก</span><span>23x</span></li>
+            <li><span>EPS ปี 3</span><span>~$7.35</span></li>
+            <li><span>P/E ออก</span><span>30x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>ดอกเบี้ยลดเร็ว PE/RE exit บูม AUM $1.7T+</span></li>
           </ul>
@@ -273,10 +268,9 @@
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      การคาดการณ์อิงจาก DE/share ฐาน $5.57 (TTM 2025) × อัตราเติบโต 3 ปี × P/DE ที่เหมาะสม + ปันผลรวม 3 ปี (ประมาณ ~85% ของ DE)
-      แม้กรณี Bear ก็ยังให้ผลตอบแทนเป็นบวกเล็กน้อยรวมปันผล เนื่องจาก FRE (recurring) ค้ำฐาน DE ไว้แม้ realization จะช้า
-      ความเสี่ยงหลักคือ multiple compression หาก sentiment ต่อ private markets ยังเป็นลบ หรือ GAAP losses กดราคาในระยะสั้น
-      ผลตอบแทนรวม (capital gain + ปันผล ~3.8%/ปี) ทำให้ base case ราคาเป้าสูงกว่าจุดเข้าราว 32% และรวมปันผล 3 ปี ≈ ~45%
+      การคาดการณ์อิงจาก EPS GAAP diluted ฐาน $4.47 (TTM) × อัตราเติบโต 3 ปี × P/E ออกที่เป็นสมมติฐานของแต่ละฉาก (22x/25x/30x — ต่ำกว่ามัธยฐานย้อนหลัง 41.8x ทั้งหมด) + ปันผลรวม 3 ปี ($4.74/ปี คงที่ใน Bear · โต 6%/ปี ใน Base · 10%/ปี ใน Bull) · consensus FY2026E EPS $6.02 สูงกว่าฐาน TTM มาก จึงเป็นข้อมูลเทียบ ไม่ได้ใช้ตรง ๆ
+      กรณี Bear ราคาเป้าต่ำกว่าจุดเข้าเล็กน้อย แต่เมื่อรวมปันผลรวม 3 ปีแล้วยังเป็นบวกเล็กน้อย ความเสี่ยงหลักคือ multiple compression หาก sentiment ต่อ private markets ยังเป็นลบ หรือ GAAP losses กดราคาในระยะสั้น
+      Base case ราคาเป้าเทียบจุดเข้า {{rd:sc2ret}} (ยังไม่รวมปันผล)
     </p>
   </section>
 
@@ -316,15 +310,15 @@
       <h2>BX: เจ้าตลาด Alt Asset โลก — ราคาถูกกดจากความกลัวดอกเบี้ย</h2>
       <p>Blackstone คือ franchise สินทรัพย์ทางเลือกที่แข็งแกร่งที่สุดในโลก AUM $1.275T, FRE recurring $5.7B, ROE ~31%
          ราคาอยู่ต่ำกว่าจุดสูง 52 สัปดาห์ ($190.09) ราว 34% จากความกังวลดอกเบี้ยสูงที่ชะลอการ exit กองทุน
-         ที่ P/DE ~22.4x เทียบกับ historical average 24x และ forward P/DE ~19.2x (FY26E) ส่วนลดไม่มาก
-         ปันผล ~3.8% + เป้านักวิเคราะห์เฉลี่ย $144.38 = upside ถ้าดอกเบี้ยลดในระยะอันใกล้ แต่ส่วนเผื่อของรายงานนี้ยังบาง</p>
+         P/E GAAP ปัจจุบัน ~{{rd:pe}}x ต่ำกว่ามัธยฐานย้อนหลังของตัวเอง 41.8x (ตัวคูณ GAAP สูงเพราะ EPS ถูกกดจาก unrealized items) และ consensus EPS FY2026E $6.02
+         ปันผล ~3.8% + เป้านักวิเคราะห์เฉลี่ย $144.38 = upside ถ้าดอกเบี้ยลดในระยะอันใกล้ FV มาจากสองขาที่ห่างกัน จึงควรมองส่วนเผื่อเป็นช่วง ไม่ใช่ตัวเลขเดียว</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$144.38 (Buy consensus)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน {{rd:px}} (MOS {{rd:mos}}) ยังบาง · รอทยอยสะสมที่โซน {{rd:mos20}} (MOS 20%) · ถือระยะยาว 2–3 ปี รอ realization cycle ฟื้น + ดอกเบี้ยลด · รับปันผล ~3.8%/ปี ระหว่างรอ
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน {{rd:px}} (MOS {{rd:mos}}) ใกล้โซนสะสม · ทยอยสะสมที่โซน {{rd:mos20}} (MOS 20%) · ถือระยะยาว 2–3 ปี รอ realization cycle ฟื้น + ดอกเบี้ยลด · รับปันผล ~3.8%/ปี ระหว่างรอ
       </div>
     </div>
   </section>
@@ -332,10 +326,10 @@
   <!-- ===== DISCLAIMER ===== -->
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
-    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/DE เป้าหมาย, อัตราเติบโต DE, และสมมติฐาน realization cycle
-    BX เป็น alternative asset manager ที่ใช้ Distributable Earnings (DE) แทน GAAP EPS — GAAP EPS มีความผันผวนสูงจาก unrealized gains/losses และไม่ใช่ตัวชี้วัดที่เหมาะสม
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะตัวคูณ P/E ย้อนหลัง (GAAP), r/g ของ DDM, อัตราเติบโต EPS และสมมติฐาน realization cycle
+    BX เป็น alternative asset manager — GAAP EPS มีความผันผวนสูงจาก unrealized gains/losses จึงใช้มัธยฐาน P/E หลายปี ร่วมกับ DDM และไม่ใช้ตัวเลข DE/share ที่ตรวจซ้ำไม่ได้
     ปันผลผันแปรตาม DE จริง อาจลดลงในปีที่ realization ต่ำ ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
-    ที่มาข้อมูล: StockAnalysis.com (ราคา/DE/Financials) · Yahoo Finance (ราคา/52w range) · Blackstone Investor Relations Q1 2025 (AUM/FRE/DE) · Macrotrends (historical P/E)
+    ที่มาข้อมูล: StockAnalysis.com (ราคา/EPS/Financials) · Yahoo Finance (ราคา/52w range) · Blackstone Investor Relations (AUM/FRE) · Macrotrends (historical P/E)
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
