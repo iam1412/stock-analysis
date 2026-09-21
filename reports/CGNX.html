@@ -9,7 +9,7 @@
 <meta name="ai-model" content="Claude Sonnet 5">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"CGNX","currency":"USD","price":61.56,"fairValue":50,"mos":-23.1,"upside":-18.8,"pe":78.6,"dividendYield":0.55,"roe":9.75}
+{"symbol":"CGNX","currency":"USD","price":61.56,"fairValue":47.25,"mos":-30.3,"upside":-23.2,"pe":59.2,"dividendYield":0.55,"roe":11.15}
 </script>
 <!--
   report-data: ธีมสี + ข้อมูลกราฟ/gauge ต่อหุ้น (build เอาไปวาด)  ดู schema เต็มใน docs/templates.md
@@ -23,28 +23,28 @@
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 50,
+  "fv": 47.25,
   "values": {
     "px": 61.56,
     "priceDate": "2026-09-18",
     "dateEra": "CE",
     "chgSuffix": "รอบปี",
-    "fvLow": 46.72,
-    "fvHigh": 53.28,
-    "shares": 166420000,
+    "fvLow": 38.76,
+    "fvHigh": 55.74,
+    "shares": 168223842,
     "dps": 0.34,
-    "baseEps": 1.48,
+    "baseEps": 1.69,
     "scenarios": [
       {
-        "tgt": 44.7,
+        "tgt": 38.3,
         "div": 1
       },
       {
-        "tgt": 67.5,
+        "tgt": 64.3,
         "div": 1.1
       },
       {
-        "tgt": 130.2,
+        "tgt": 98.2,
         "div": 1.2
       }
     ],
@@ -119,7 +119,7 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ ปิดตลาด {{rd:priceDate}} (16:00 EDT)<br>
-        กรอบ 52 สัปดาห์ $32.55 – $72.88<br>
+        กรอบ 52 สัปดาห์ $34.60 – $72.88<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, stockanalysis.com/financials
       </div>
     </div>
@@ -127,24 +127,24 @@
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ TTM / Q1 FY2026</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ TTM (งวดล่าสุดตาม StockAnalysis)</div></div>
     <!-- ✏️ ปรับการ์ด metric ให้เหมาะกับหุ้น/เซกเตอร์ได้อิสระ — gate ไม่บังคับชุด metric (เปลี่ยน label / สลับ / เพิ่ม-ลดการ์ดได้)
          • คงป้าย "P/E (TTM)", "P/BV", "เงินปันผล", "ROE" ไว้ถ้าหุ้นมีจริง → W10 cross-check กับ stock-meta · ไม่มี (ขาดทุน/ไม่ปันผล) = ตัดการ์ดออก + ตั้ง stock-meta เป็น null
          • ธนาคาร → NIM / NPL / CASA / Loan growth / Cost-to-income   • REIT/กองอสังหา → Occupancy / DPU / NAV / Gearing   • ประกัน → Combined ratio / EV
          • หุ้นเติบโต-ขาดทุน → Revenue growth / Gross margin / FCF / Cash runway (ตัด P/E ออก) -->
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">$10.24B</div><div class="d">166.42M หุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~78.60x</div><div class="d">แพงกว่าค่าเฉลี่ยตลาดมาก — EPS TTM ยังฟื้นจากจุดต่ำวัฏจักร</div></div>
-      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~52.6x</div><div class="d">38.3x (2565) – 78.6x (ปัจจุบัน)</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">~7.5x</div><div class="d">สูงมาก — มูลค่าธุรกิจส่วนใหญ่ไม่ได้อยู่ในสินทรัพย์ตามบัญชี</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$10.36B</div><div class="d">168.22M หุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~59.2x</div><div class="d">แพงกว่าค่าเฉลี่ยตลาดมาก — EPS TTM ยังฟื้นจากจุดต่ำวัฏจักร</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~53.6x (มัธยฐาน)</div><div class="d">43.9x (2565) – 73.1x (2566)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~6.9x</div><div class="d">สูงมาก — มูลค่าธุรกิจส่วนใหญ่ไม่ได้อยู่ในสินทรัพย์ตามบัญชี</div></div>
 
-      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">~$113M</div><div class="d">+9.7% YoY (ประมาณจาก EPS $0.62→$0.68 × หุ้น)</div></div>
-      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$0.85</div><div class="d">FY2025 $0.68 → ฟื้นตัวต่อเนื่องเป็น TTM $0.85 (Q1 FY26 กำไรสุทธิ $57.3M)</div></div>
-      <div class="metric"><div class="k">BVPS</div><div class="v">~$8.88</div><div class="d">P/BV ~7.5x — โครงสร้างธุรกิจ asset-light เน้น IP/ซอฟต์แวร์</div></div>
-      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~9.75% / 6.23%</div><div class="d">ต่ำกว่าค่าเฉลี่ยกลุ่มเทคโนโลยี เพราะกำไรยังไม่กลับสู่จุดสูงสุดวัฏจักร (ปี 2564 ROE เคยเกิน 15%)</div></div>
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">~$114M</div><div class="d">+7.5% YoY (EPS $0.62→$0.68 · หุ้นถัวเฉลี่ย ~169M)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$1.04</div><div class="d">FY2025 $0.68 → TTM $1.04 (กำไรสุทธิ TTM ~$175M) · forward FY2026e $1.69 (ประมาณการ vendor)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$8.88</div><div class="d">P/BV ~6.9x — โครงสร้างธุรกิจ asset-light เน้น IP/ซอฟต์แวร์</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~11.15%</div><div class="d">ต่ำกว่าค่าเฉลี่ยกลุ่มเทคโนโลยี เพราะกำไรยังไม่กลับสู่จุดสูงสุดวัฏจักร (ปี 2564 ROE ~20.8%)</div></div>
 
-      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~$994M (FY2025)</div><div class="d">ฟื้นตัวจากจุดต่ำ FY2023 $837.6M · Q1 FY2026 $268.4M</div></div>
-      <div class="metric"><div class="k">อัตรากำไรสุทธิ</div><div class="v">13.62%</div><div class="d">ต่ำกว่าจุดสูงสุดวัฏจักร (เคย &gt;20% ปี 2564) สะท้อน R&amp;D/AI ลงทุนต่อเนื่อง</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~$1.09B (TTM)</div><div class="d">+17.1% YoY · FY2025 $994M · จุดต่ำ FY2023 $838M</div></div>
+      <div class="metric"><div class="k">อัตรากำไรสุทธิ</div><div class="v">16.1%</div><div class="d">ต่ำกว่าจุดสูงสุดวัฏจักร (เคย &gt;20% ปี 2564) สะท้อน R&amp;D/AI ลงทุนต่อเนื่อง</div></div>
       <div class="metric"><div class="k">เงินปันผล</div><div class="v">~0.55%</div><div class="d">$0.34/หุ้น/ปี payout ต่ำ เน้นลงทุนเติบโต + ซื้อหุ้นคืน</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">~1.4</div><div class="d">หุ้นเทคโนโลยีทุน capex-cycle ผันผวนสูงกว่าตลาด (ประมาณ)</div></div>
     </div>
@@ -166,24 +166,24 @@
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
         <!-- ✏️ บรรยายการเคลื่อนไหวราคา ~1 ปี: จุดสูง/ต่ำ, เปลี่ยนแปลง %, สาเหตุหลัก -->
-        ราคาปรับตัวลงแตะจุดต่ำสุดรอบ 1 ปีที่ ~$36.0 ในเดือน ธ.ค. 2568 จากความกังวลภาคการผลิต/capex อิเล็กทรอนิกส์ชะลอตัว ก่อนพลิกฟื้นแรงตั้งแต่ ก.พ. 2569 ตามดีมานด์ machine vision ที่ฟื้นตัวพร้อมกระแสการลงทุน AI-หุ่นยนต์ในโรงงาน พุ่งแตะจุดสูงสุดรอบปีที่ $72.42 ใน มิ.ย. 2569 ก่อนย่อลงมาปิดที่ $66.80 รวมผลตอบแทน ~+52% ในรอบ 1 ปี
+        ราคาปรับตัวลงแตะจุดต่ำสุดรอบ 1 ปีที่ ~$36.0 ในเดือน ธ.ค. 2568 จากความกังวลภาคการผลิต/capex อิเล็กทรอนิกส์ชะลอตัว ก่อนพลิกฟื้นแรงตั้งแต่ ก.พ. 2569 ตามดีมานด์ machine vision ที่ฟื้นตัวพร้อมกระแสการลงทุน AI-หุ่นยนต์ในโรงงาน พุ่งแตะจุดสูงสุดรอบปีที่ $72.42 ใน มิ.ย. 2569 ก่อนย่อลงมาปิดที่ {{rd:px}} รวมผลตอบแทน ~+49% ในรอบ 1 ปี
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี</div></div>
     <div class="card">
       <!-- ✏️ เลือก ≥2 วิธีให้เหมาะกับหุ้น — gate เช็คคณิตเฉพาะวิธีชื่อ "P/E" (E21) และ "Justified P/BV" (E22) เมื่อมีวิธีนั้น
            ธนาคาร → เน้น P/BV / Residual income   • REIT → DDM / NAV   • หุ้นไม่ปันผล → ตัด DDM ออก ใช้ P/E + DCF/Justified P/BV -->
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS forward (NTM) $1.48 × P/E เป้าหมาย ~36x — ใช้ EPS คาดการณ์แทน TTM เพราะกำไรยังฟื้นจากจุดต่ำวัฏจักร 2566-67 · P/E 36x อนุรักษ์นิยมกว่า forward P/E ตลาดปัจจุบัน ~45x</div></div>
-        <div class="mval">$53.28</div>
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS $1.04 (TTM) × P/E 53.6x = $55.74 — ตัวคูณคือมัธยฐานย้อนหลัง 5 ปีของ CGNX เอง (ราคาเฉลี่ยรายปี ÷ EPS ปรับลด ช่วง 43.9x–73.1x) ไม่ได้ลอกจากตัวคูณ ณ ราคาปัจจุบัน · ตัวคูณสูงเพราะ EPS ในอดีตอยู่ในช่วงต่ำของวัฏจักร</div></div>
+        <div class="mval">$55.74</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. DCF (2-Stage EPS Growth)</div><div class="mdesc">EPS ปี 2 $1.78 → ปี 3 $2.13 (โต 20%/ปี จาก EPS forward $1.48) × P/E ขาออก 28x = มูลค่าปลายทาง $59.68 → คิดลดกลับ 3 ปีที่ r 8.5%</div></div>
-        <div class="mval">$46.72</div>
+        <div><div class="mname">2. DCF (FCF 5 ปี + Terminal)</div><div class="mdesc">FCF TTM $268M โต 12%/ปี 5 ปี → $300M / $336M / $377M / $422M / $472M · คิดลดที่ r 9.5% (PV 5 ปี $1,435M) · Terminal g 3% → TV $7,484M (PV $4,754M ≈ 77% ของ EV) · EV $6,189M + เงินสดสุทธิ $331M (เงินสด $404M − หนี้ $72.5M) = $6,520M ÷ 168.22M หุ้น (สมมติฐานการเติบโต/r เป็นของผู้วิเคราะห์ ไม่ใช่ค่าที่วัดจากตลาด)</div></div>
+        <div class="mval">$38.76</div>
       </div>
 
       <div class="fv-box">
@@ -192,7 +192,7 @@
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <!-- ✏️ หมายเหตุ: วิธีไหนให้ค่าสูง/ต่ำเพราะอะไร, ทำไม FV กลางจึงสมเหตุสมผล -->
-        Method P/E (ใช้ EPS forward, P/E อนุรักษ์นิยม 36x) ให้ค่าสูงกว่าเพราะสะท้อนแนวโน้มฟื้นตัวเร็ว ส่วน DCF 2-stage ให้ค่าต่ำกว่าเพราะคิดลดกระแสเงินสดอนาคตด้วย r 8.5% — เฉลี่ย 2 วิธีได้ Fair Value $50.00 ต่ำกว่าราคาตลาดปัจจุบันที่ยังจ่ายพรีเมียมสูงจากกระแส AI-หุ่นยนต์/automation (ตัดวิธี Justified P/BV ออกเพราะ CGNX เป็นธุรกิจ asset-light ที่ book value ต่ำกว่ามูลค่าจริงมาก ไม่เหมาะกับวิธีนี้)
+        Method P/E (มัธยฐานย้อนหลัง 53.6x บน EPS TTM) ให้ค่าสูงกว่า ส่วน DCF จาก FCF ให้ค่าต่ำกว่าเพราะคิดลดกระแสเงินสดด้วย r 9.5% และ g ปลายทาง 3% — สองขาเป็นคนละตระกูล (ตัวคูณตลาดย้อนหลัง vs กระแสเงินสดคิดลด) ต่างกัน ~1.4 เท่า จึงเฉลี่ยได้ · ค่าเฉลี่ยคือ Fair Value ตามกล่องด้านบน ต่ำกว่าราคาตลาดที่ยังจ่ายพรีเมียมจากกระแส AI-หุ่นยนต์/automation · เป้าเฉลี่ยนักวิเคราะห์ ($80.05) ใช้เป็นบริบทเท่านั้น ไม่เป็นส่วนของ FV (ตัดวิธี Justified P/BV และ DDM เพราะ CGNX เป็นธุรกิจ asset-light ปันผลต่ำ)
       </p>
     </div>
   </section>
@@ -211,11 +211,11 @@
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
-          <span style="text-align:right">$77.40<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$80.05<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน ($66.80) อยู่เหนือมูลค่าเหมาะสม ($50.00) และกรอบบนของ Fair Value ($53.28) แต่ยังต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ ($77.40) — ฝั่ง sell-side ให้เครดิต momentum/ธีม AI-หุ่นยนต์มากกว่าการประเมินมูลค่าเชิงพื้นฐานแบบอนุรักษ์นิยม
+        ราคาปัจจุบัน ({{rd:px}}) อยู่เหนือมูลค่าเหมาะสม ({{rd:fv}}) และกรอบบนของ Fair Value ({{rd:fvHigh}}) แต่ยังต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ ($80.05) — ฝั่ง sell-side ให้เครดิต momentum/ธีม AI-หุ่นยนต์มากกว่าการประเมินมูลค่าเชิงพื้นฐานแบบอนุรักษ์นิยม
       </p>
     </div>
   </section>
@@ -227,7 +227,7 @@
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt"><b>ไม่มี Margin of Safety (ราคาแพงกว่ามูลค่าเหมาะสม)</b><br>ราคาปัจจุบัน $66.80 สูงกว่ามูลค่าเหมาะสม $50.00 ราว 34% สะท้อนตลาดกำลังจ่ายพรีเมียมสำหรับธีม AI-vision/หุ่นยนต์และแนวโน้มฟื้นตัวของกำไร นักลงทุนสาย value ควรรอปรับฐานหรือทยอยสะสมเฉพาะโซนราคาต่ำกว่า Fair Value</div>
+        <div class="txt"><b>ไม่มี Margin of Safety (ราคาแพงกว่ามูลค่าเหมาะสม)</b><br>ราคาปัจจุบัน {{rd:px}} สูงกว่ามูลค่าเหมาะสม {{rd:fv}} ราว 30% สะท้อนตลาดกำลังจ่ายพรีเมียมสำหรับธีม AI-vision/หุ่นยนต์และแนวโน้มฟื้นตัวของกำไร นักลงทุนสาย value ควรรอปรับฐานหรือทยอยสะสมเฉพาะโซนราคาต่ำกว่า Fair Value</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -254,8 +254,8 @@
           <div class="tgt">{{rd:sc1tgt}}</div>
           <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$1.86</span></li>
-            <li><span>P/E ออก</span><span>24x</span></li>
+            <li><span>EPS ปี 3</span><span>~$2.13</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>Capex การผลิตทั่วโลกชะลอ ดีมานด์ automotive/สมาร์ทโฟนอ่อนแรง กระแส AI-vision แผ่วลง P/E คลายพรีเมียมกลับสู่โซนวัฏจักรปกติ</span></li>
           </ul>
@@ -267,21 +267,21 @@
           <div class="tgt">{{rd:sc2tgt}}</div>
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$2.25</span></li>
-            <li><span>P/E ออก</span><span>30x</span></li>
+            <li><span>EPS ปี 3</span><span>~$2.57</span></li>
+            <li><span>P/E ออก</span><span>25x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>ฟื้นตัวต่อเนื่องตามคาด กำไรโตปานกลาง แต่ P/E ปรับฐานลงจากระดับสูงปัจจุบันสู่ระดับที่สมเหตุสมผลมากขึ้น</span></li>
           </ul>
         </div>
       </div>
       <div class="col bull">
-        <div class="top"><span>🚀 Bull</span><span>EPS +28%/ปี</span></div>
+        <div class="top"><span>🚀 Bull</span><span>EPS +22%/ปี</span></div>
         <div class="body">
           <div class="tgt">{{rd:sc3tgt}}</div>
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$3.10</span></li>
-            <li><span>P/E ออก</span><span>42x</span></li>
+            <li><span>EPS ปี 3</span><span>~$3.07</span></li>
+            <li><span>P/E ออก</span><span>32x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>ดีมานด์ AI-หุ่นยนต์/automation เร่งตัวแรงกว่าคาด OneVision/AI-vision เจาะตลาดใหม่ได้ต่อเนื่อง ตลาดยังให้พรีเมียมสูงต่อเนื่อง</span></li>
           </ul>
@@ -289,7 +289,7 @@
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      คำนวณจาก EPS ฐาน (forward NTM) $1.48 เติบโตตามอัตราของแต่ละสถานการณ์เป็นเวลา 3 ปี คูณ P/E ขาออกที่ต่างกันตามความเชื่อมั่นตลาด รวมปันผลสะสม 3 ปี — ช่วง Bear/Bull กว้างมากสะท้อนความผันผวนของหุ้นวัฏจักรที่กำลังถูกประเมินค่าแบบ growth stock
+      คำนวณจาก EPS ฐาน FY2026e {{rd:baseEps}} (ประมาณการ vendor; ปีงบ ธ.ค. 2569 เหลืออีก ~1 ไตรมาส) เติบโตตามอัตราของแต่ละสถานการณ์เป็นเวลา 3 ปี คูณ P/E ขาออกที่ต่ำกว่ามัธยฐานย้อนหลัง 53.6x เพราะมัธยฐานนั้นวัดบน EPS ช่วงต่ำวัฏจักร — เมื่อ EPS ฟื้นเต็มที่ตัวคูณควรลดลง รวมปันผลสะสม 3 ปี — ช่วง Bear/Bull กว้างมากสะท้อนความผันผวนของหุ้นวัฏจักรที่กำลังถูกประเมินค่าแบบ growth stock
     </p>
   </section>
 
@@ -311,11 +311,11 @@
       <div class="box risk">
         <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
         <ul>
-          <li><b>ความเสี่ยง Valuation:</b> เทรดที่ P/E TTM 78.6x / forward 45.2x แพงกว่าค่าเฉลี่ยตลาดมาก ราคาตั้งอยู่บนสมมติฐานฟื้นตัวแรง หากผิดคาดจะปรับฐานรุนแรง</li>
+          <li><b>ความเสี่ยง Valuation:</b> เทรดที่ P/E TTM ~59x / forward FY2026e ~36x แพงกว่าค่าเฉลี่ยตลาดมาก ราคาตั้งอยู่บนสมมติฐานฟื้นตัวแรง หากผิดคาดจะปรับฐานรุนแรง</li>
           <li><b>ลูกค้ากระจุกตัว/วัฏจักรสูง:</b> รายได้พึ่งพาลูกค้าสมาร์ทโฟน/อิเล็กทรอนิกส์รายใหญ่ ปริมาณ capex ผันผวนตามวัฏจักรอุตสาหกรรม</li>
           <li><b>ความเสี่ยงมหภาค/การค้า:</b> สงครามการค้า/ภาษีนำเข้า หรือการชะลอ capex การผลิตทั่วโลก (โดยเฉพาะจีน/ยานยนต์) กระทบดีมานด์</li>
           <li><b>การแข่งขันสูง:</b> คู่แข่งอย่าง Keyence, Basler และสตาร์ทอัพ AI-vision กดดันราคาขาย/มาร์จิ้น</li>
-          <li><b>ปันผลต่ำ:</b> yield เพียง 0.51% แทบไม่ช่วยพยุงผลตอบแทนหากราคาหุ้นปรับฐาน ผลตอบแทนพึ่งพากำไร/มัลติเปิลเกือบทั้งหมด</li>
+          <li><b>ปันผลต่ำ:</b> yield เพียง 0.55% แทบไม่ช่วยพยุงผลตอบแทนหากราคาหุ้นปรับฐาน ผลตอบแทนพึ่งพากำไร/มัลติเปิลเกือบทั้งหมด</li>
           <li><b>ความเสี่ยงค่าเงิน:</b> สัดส่วนรายได้ต่างประเทศสูง เงินดอลลาร์แข็งค่ากดดันกำไรเมื่อแปลงสกุล</li>
         </ul>
       </div>
@@ -327,14 +327,14 @@
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
       <h2>ธุรกิจคุณภาพดี แต่ราคาแพงเกินมูลค่าที่ประเมินได้</h2>
-      <p>Cognex เป็นผู้นำ niche machine vision ที่ได้อานิสงส์จากธีม AI-vision และ automation/หุ่นยนต์ในโรงงาน กำไรกำลังฟื้นตัวต่อเนื่องจากจุดต่ำสุดวัฏจักรปี 2566 แต่ราคาหุ้นที่พุ่งขึ้น +52% ในรอบ 1 ปีทำให้ P/E TTM สูงถึง 78.6x และ forward P/E ~45x ซึ่งสูงกว่ามูลค่าเหมาะสมที่ประเมินได้ (~$50) ราว 34% — ไม่มี Margin of Safety ณ ราคาปัจจุบัน เหมาะสำหรับผู้เชื่อมั่นในธีมระยะยาวที่รับความเสี่ยง valuation ได้ มากกว่านักลงทุนสาย value ที่ต้องการส่วนเผื่อความปลอดภัย</p>
+      <p>Cognex เป็นผู้นำ niche machine vision ที่ได้อานิสงส์จากธีม AI-vision และ automation/หุ่นยนต์ในโรงงาน กำไรกำลังฟื้นตัวต่อเนื่องจากจุดต่ำสุดวัฏจักรปี 2566 แต่ราคาหุ้นที่พุ่งขึ้น +49% ในรอบ 1 ปีทำให้ P/E TTM สูงถึง ~59x และ forward FY2026e ~36x ซึ่งสูงกว่ามูลค่าเหมาะสมที่ประเมินได้ ({{rd:fv}}) ราว 30% — ไม่มี Margin of Safety ณ ราคาปัจจุบัน เหมาะสำหรับผู้เชื่อมั่นในธีมระยะยาวที่รับความเสี่ยง valuation ได้ มากกว่านักลงทุนสาย value ที่ต้องการส่วนเผื่อความปลอดภัย</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$77.40 (Buy)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$80.05 (Buy)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> รอราคาย่อลงมาใกล้โซน MOS20 (~$40) หรือต่ำกว่า Fair Value $50 ก่อนเข้าสะสม หากเชื่อมั่นธีม AI-vision/หุ่นยนต์ระยะยาวอาจแบ่งเข้าสัดส่วนเล็กได้ แต่ไม่แนะนำไล่ราคาที่จุดสูงหลังพุ่งแรงในรอบปีที่ผ่านมา
+        💡 <b>กลยุทธ์:</b> รอราคาย่อลงมาใกล้โซน MOS20 ({{rd:mos20}}) หรือต่ำกว่า Fair Value {{rd:fv}} ก่อนเข้าสะสม หากเชื่อมั่นธีม AI-vision/หุ่นยนต์ระยะยาวอาจแบ่งเข้าสัดส่วนเล็กได้ แต่ไม่แนะนำไล่ราคาที่จุดสูงหลังพุ่งแรงในรอบปีที่ผ่านมา
       </div>
     </div>
   </section>
@@ -345,7 +345,7 @@
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มา: StockAnalysis.com (ราคา/EPS/เป้านักวิเคราะห์), Yahoo Finance (cross-check ราคา/EPS/ปันผล) — ราคา ณ {{rd:priceDate}}
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 13 ก.ค. 2026 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2026 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
