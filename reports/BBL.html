@@ -6,34 +6,34 @@
 <title>วิเคราะห์หุ้น ธนาคารกรุงเทพ (BBL) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"BBL","currency":"THB","price":193.5,"fairValue":195,"mos":0.8,"upside":0.8,"pe":8.67,"dividendYield":6.2,"roe":7.3}
+{"symbol":"BBL","currency":"THB","price":194,"fairValue":177,"mos":-9.6,"upside":-8.8,"pe":8.81,"dividendYield":5.15,"roe":7.3}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 195,
+  "fv": 177,
   "values": {
-    "px": 193.5,
-    "priceDate": "2026-09-18",
+    "px": 194,
+    "priceDate": "2026-09-21",
     "dateEra": "CE",
     "chgSuffix": "รอบปี",
-    "fvLow": 162,
+    "fvLow": 158,
     "fvHigh": 225,
     "shares": 1910000000,
-    "dps": 12,
+    "dps": 10,
     "baseEps": 22,
     "scenarios": [
       {
-        "tgt": 150,
-        "div": 27
+        "tgt": 124,
+        "div": 26
       },
       {
-        "tgt": 216,
-        "div": 33
+        "tgt": 178,
+        "div": 31
       },
       {
-        "tgt": 270,
-        "div": 38
+        "tgt": 243,
+        "div": 35
       }
     ],
     "scnBasis": {
@@ -68,7 +68,7 @@
       ["มิ.ย.26", 179.5],
       ["ก.ค.26", 191.5],
       ["ส.ค.26", 191],
-      ["ก.ย.26", 193.5]
+      ["ก.ย.26", 194]
     ],
     "min": 150,
     "max": 200,
@@ -105,7 +105,7 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ≈ {{rd:priceDate}}<br>
-        ทำนิวไฮรอบ 52 สัปดาห์ (฿139.5–฿197)<br>
+        กรอบ 52 สัปดาห์ ฿147–฿204<br>
         ที่มา: SET / stockanalysis.com / Investing
       </div>
     </div>
@@ -116,8 +116,8 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ FY2025 + ไตรมาส Q1/2026</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~1.91 พันล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~8.7x</div><div class="d">ใกล้ค่าเฉลี่ย <span class="pill g">ต่ำกว่าปกติเล็กน้อย</span></div></div>
-      <div class="metric"><div class="k">P/E เฉลี่ย ~5–10 ปี</div><div class="v">~9.3x</div><div class="d">กรอบ 5.2–14.9x</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~8.8x</div><div class="d">ใกล้ค่าเฉลี่ย <span class="pill g">ต่ำกว่าปกติเล็กน้อย</span></div></div>
+      <div class="metric"><div class="k">P/E มัธยฐาน 5 ปี</div><div class="v">~7.4x</div><div class="d">กรอบ 6.0–9.0x (FY2021–25)</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v pos">~0.65x</div><div class="d">ต่ำกว่ามูลค่าทางบัญชีมาก</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">฿46,007 ล้าน</div><div class="d pos">▲ +1.8% YoY</div></div>
@@ -128,7 +128,7 @@
       <div class="metric"><div class="k">NIM</div><div class="v neu">2.49%</div><div class="d">Q1/26 (FY25 2.72%) บีบจากดอกเบี้ยลง</div></div>
       <div class="metric"><div class="k">NPL / Coverage</div><div class="v">3.0% / 324%</div><div class="d">สำรองหนาแบบอนุรักษ์นิยม</div></div>
       <div class="metric"><div class="k">CET1 / CAR</div><div class="v pos">~16.4% / 20.9%</div><div class="d">เงินกองทุนแกร่งสุดในกลุ่ม</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">฿12/ปี (FY25) • Payout ~50%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">฿10/ปี (FY25) • Payout ~41%</div></div>
     </div>
   </section>
 
@@ -145,23 +145,23 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        หุ้นปรับขึ้นแรง <b>+26% ในรอบปี</b> จากโซน ~฿155 (ส.ค. 2025) ผันผวนระหว่างทาง (ลงแตะ ~฿149 ก.ย. 2025 และย่อรอบสอง ~฿163 เม.ย. 2026) ก่อนไต่ขึ้นต่อเนื่องช่วง พ.ค.–ก.ค. 2026 จนทำ <b>นิวไฮรอบ 52 สัปดาห์ที่ ~฿197</b>
-        ขับเคลื่อนด้วย <b>ปันผลที่กระโดดขึ้น</b> (FY25 DPS ฿12 จาก ฿8.5) และเงินกองทุนแกร่ง — สวนทางกับกำไรที่เริ่มอ่อนลงในปี 2026 จาก <b>วัฏจักรดอกเบี้ยขาลง</b> (กนง. ลดดอกเบี้ยเหลือ 1.00%) ทำให้ราคาวิ่งแซงมูลค่าเหมาะสมไปแล้วเล็กน้อย
+        หุ้นปรับขึ้นแรงในรอบปี จากโซน ~฿158 (ต.ค. 2025) ผันผวนระหว่างทาง (ย่อ ~฿158 ม.ค. 2026 และ ~฿163 เม.ย. 2026) ก่อนไต่ขึ้นต่อเนื่องช่วง พ.ค.–ก.ย. 2026 จนแตะ <b>กรอบ 52 สัปดาห์ ฿147–฿204</b>
+        ขับเคลื่อนด้วย <b>ปันผลที่เพิ่มขึ้น</b> (FY25 DPS ฿10 จาก ฿8.5) และเงินกองทุนแกร่ง — สวนทางกับกำไรที่อ่อนลงจาก <b>วัฏจักรดอกเบี้ยขาลง</b> (กนง. ลดดอกเบี้ยเหลือ 1.00%) ทำให้ราคาวิ่งแซงมูลค่าเหมาะสมไปแล้ว
       </p>
     </div>
   </section>
 
   <!-- ===== VALUATION ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี (หุ้นธนาคาร — ใช้ P/BV แทน DCF)</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">P/E + เฉลี่ย DDM/P-BV (2 ตระกูล • ธนาคารใช้ P/BV แทน DCF)</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">Normalized EPS ~฿22 × P/E เฉลี่ย ~9.0x (กลางกรอบ 5 ปี)</div></div>
-        <div class="mval">฿198</div>
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">Normalized EPS ~฿22 × P/E มัธยฐาน 5 ปี ~7.4x (FY2021–25 วัดจริง)</div></div>
+        <div class="mval">฿163</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผลยั่งยืน ~฿10.5 × (1+g); g 3%, r 9.5%</div></div>
-        <div class="mval">฿162</div>
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล FY25 ฿10 × (1+g); g 3%, r 9.5%</div></div>
+        <div class="mval">฿158</div>
       </div>
       <div class="vmethod">
         <div><div class="mname">3. Justified P/BV <span class="pill g">แทน DCF</span></div><div class="mdesc">P/BV เหมาะสม = (ROE 7.8% − g 3%)/(r 9.5% − g 3%) ≈ 0.74 × BVPS ฿302</div></div>
@@ -172,9 +172,9 @@
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        <b>หมายเหตุ:</b> หุ้นธนาคารไม่ใช้ DCF (กระแสเงินสดอิสระไม่มีความหมายสำหรับธนาคาร) จึงใช้ <b>Justified P/BV</b> แทน
-        วิธี DDM ให้ค่าต่ำสุดเพราะ ROE ของ BBL ต่ำ (ทุนหนา/อนุรักษ์นิยม) และเราใช้ปันผล "ยั่งยืน" ฿10.5 (FY25 ฿12 มาจาก payout ที่กระโดดเป็น 50% อาจไม่คงทุกปี)
-        ส่วน Justified P/BV ชี้ว่าแม้ ROE ต่ำ มูลค่าทางบัญชี ฿302 ก็ยัง <b>สูงกว่าราคาตลาด</b> — หลังราคาย่อลงมาที่ ฿191 ค่ากลาง ฿195 กลับ <b>สูงกว่าราคาปัจจุบันเล็กน้อยแล้ว</b> (แทบไม่มีส่วนต่าง)
+        <b>หมายเหตุ:</b> หุ้นธนาคารไม่ใช้ DCF จึงใช้ <b>Justified P/BV</b> แทน · DDM และ Justified P/BV ใช้ (r,g) ชุดเดียวกัน = <b>ตระกูลเดียว นับเสียงเดียว</b> จึงคิด FV = (P/E + ค่าเฉลี่ย DDM/P-BV) ÷ 2 ≈ {{rd:fv}}
+        ขา P/E ใช้มัธยฐานย้อนหลัง 5 ปีที่วัดจริง (7.4x ช่วง 6.0–9.0x) แทนค่ากลาง ~9x เดิม และเป้านักวิเคราะห์ไม่เป็นขาของ FV (ใช้เป็นบริบทเท่านั้น)
+        DDM ใช้ปันผลจ่ายจริง FY25 ฿10 (ตัวเลขเดิม ฿12 ไม่ตรงประวัติจ่ายจริง: ฿2 + ฿8) · Justified P/BV ชี้ว่า BVPS ฿302 สูงกว่าราคาตลาด แต่ ROE ต่ำ (~7.3%) ทำให้ตลาดไม่ให้ P/BV เต็ม 1 เท่า — ราคาปัจจุบัน {{rd:px}} จึงอยู่<b>เหนือ</b>ค่ากลาง {{rd:fv}}
       </p>
     </div>
   </section>
@@ -192,13 +192,13 @@
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿201<br><small>เป้าสูงสุด Analyst</small></span>
+          <span style="text-align:right">฿202<br><small>เป้าเฉลี่ย Analyst</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคา ฿191 อยู่ <b>ต่ำกว่ามูลค่าเหมาะสมเล็กน้อย</b> (FV ฿195) และ <b>ใกล้เคียงเป้าหมายเฉลี่ย 12 เดือน</b> ของนักวิเคราะห์ (~฿189, consensus "Hold" ชี้ downside ~1%)
-        สะท้อนว่าหุ้นวิ่งขึ้นแรงมาเกือบเต็มมูลค่าแล้วจากธีม "ปันผลสูง/หุ้นปลอดภัย" ขณะที่นักวิเคราะห์ยังกังวลกำไรปี 2026 ที่กดดันจากดอกเบี้ยขาลง
+        ราคา {{rd:px}} อยู่ <b>สูงกว่ามูลค่าเหมาะสมของเรา</b> ({{rd:fv}}) แต่ <b>ใกล้เป้าหมายเฉลี่ย 12 เดือน</b> ของนักวิเคราะห์ (~฿202, consensus "Buy" 20 ราย) — ต่างกันเพราะเราใช้ P/E มัธยฐาน 7.4x ขณะที่ตลาด/นักวิเคราะห์ให้ตัวคูณสูงกว่านั้น
+        สะท้อนว่าหุ้นวิ่งเกินมูลค่าจากธีม "ปันผลสูง/หุ้นปลอดภัย" ขณะที่กำไรปี 2026 ยังถูกกดดันจากดอกเบี้ยขาลง
       </p>
     </div>
   </section>
@@ -209,7 +209,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt"><b>แทบไม่มี margin of safety</b><br>ราคาปัจจุบัน ฿191 ต่ำกว่ามูลค่าเหมาะสม ฿195 เพียงเล็กน้อย (MOS ~2%, เกือบเต็มมูลค่า) → ตามเกณฑ์ value investor ถือว่า <b>ยังไม่ใช่จุดเข้าใหม่ที่ปลอดภัยพอ</b> ควรรอราคาย่อกลับสู่โซน MOS 20% (฿156) หรือต่ำกว่าก่อนเพิ่มสถานะ</div>
+        <div class="txt"><b>ราคาสูงกว่ามูลค่าเหมาะสม</b><br>ราคาปัจจุบัน {{rd:px}} สูงกว่ามูลค่าเหมาะสม {{rd:fv}} ({{rd:mos}}) → ไม่มี margin of safety ตามเกณฑ์ value investor <b>ไม่ใช่จุดเข้าใหม่ที่ปลอดภัย</b> ควรรอราคาย่อกลับสู่โซน MOS 20% ({{rd:mos20}}) หรือต่ำกว่าก่อนเพิ่มสถานะ</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -237,7 +237,7 @@
           <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿20.7</span></li>
-            <li><span>P/E ออก</span><span>7.2x</span></li>
+            <li><span>P/E ออก</span><span>6.0x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>ดอกเบี้ยลงลึก/NPL พุ่ง</span></li>
           </ul>
@@ -250,7 +250,7 @@
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿24.0</span></li>
-            <li><span>P/E ออก</span><span>9.0x</span></li>
+            <li><span>P/E ออก</span><span>7.4x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>กำไรทรงตัว • ปันผลสูง</span></li>
           </ul>
@@ -263,7 +263,7 @@
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿27.0</span></li>
-            <li><span>P/E ออก</span><span>10.0x</span></li>
+            <li><span>P/E ออก</span><span>9.0x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>ศก.ฟื้น • สินเชื่อโต • re-rate</span></li>
           </ul>
@@ -271,7 +271,7 @@
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      <b>ปันผลเป็นหัวใจของผลตอบแทน:</b> ที่ yield ~6.3% เพียงเก็บปันผลก็เป็นสัดส่วนใหญ่ของ total return ใน Base case
+      <b>ปันผลเป็นหัวใจของผลตอบแทน:</b> ที่ yield ~5.2% เพียงเก็บปันผลก็เป็นสัดส่วนใหญ่ของ total return ใน Base case (P/E ออกอิงมัธยฐาน 7.4x, Bear = ต่ำสุดในอดีต 6.0x, Bull = สูงสุด 9.0x)
       โอกาส re-rate มาจาก P/BV ที่ยังต่ำกว่า 1 (~0.65x) แม้ต่ำกว่าค่าเฉลี่ยในอดีตน้อยลงหลังราคาวิ่งขึ้นแรง — หากตลาดให้ multiple กลับสู่ค่าเฉลี่ย upside ยังพอมี
       แต่ Bear case เตือนว่า NIM ที่ถูกบีบจากดอกเบี้ยขาลง + สินเชื่อหดตัว อาจกดกำไรต่อเนื่อง
     </p>
@@ -284,9 +284,9 @@
       <div class="box cat">
         <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
         <ul>
-          <li><div><b>ปันผลพุ่ง + yield สูง:</b> FY2025 จ่ายปันผลรวม ฿12/หุ้น (interim ฿2 + final ฿10) จาก ฿8.5 ปีก่อน ดัน payout เป็น ~50% — yield ~6.3% ที่ราคาปัจจุบัน ยังทำให้เป็น "หุ้นปันผลปลอดภัย" ในยุคดอกเบี้ยต่ำ</div></li>
+          <li><div><b>ปันผลเพิ่ม + yield สูง:</b> FY2025 จ่ายปันผลรวม ฿10/หุ้น (interim ฿2 + final ฿8) จาก ฿8.5 ปีก่อน ดัน payout เป็น ~41% — yield ~5.2% ที่ราคาปัจจุบัน ยังทำให้เป็น "หุ้นปันผลปลอดภัย" ในยุคดอกเบี้ยต่ำ</div></li>
           <li><div><b>เงินกองทุนแกร่งสุดในกลุ่ม:</b> CAR 20.9%, CET1 16.4% (Q1/26) สูงกว่าเกณฑ์ ธปท. มาก — รองรับการขยายสินเชื่อ, ดูดซับ NPL และเพิ่มปันผล/ซื้อหุ้นคืนได้อีก</div></li>
-          <li><div><b>Valuation ยังไม่แพง:</b> P/E ~8.7x และ P/BV ~0.65x ยังต่ำกว่าค่าเฉลี่ยอดีต (P/E ~9.3x) แม้ส่วนลดแคบลงหลังราคาวิ่งขึ้นแรง — ยังซื้อแบงก์ที่ราคา ~65% ของมูลค่าบัญชี</div></li>
+          <li><div><b>Valuation ยังไม่แพง:</b> P/E ~8.8x สูงกว่ามัธยฐาน 5 ปี (~7.4x) แต่ P/BV ~0.65x ยังต่ำกว่า 1 เท่า — ยังซื้อแบงก์ที่ราคา ~65% ของมูลค่าบัญชี</div></li>
           <li><div><b>สำรองหนา/คุณภาพสินทรัพย์คุม:</b> coverage ratio 324% และ NPL ทรงตัว ~3.0% — กันชนวัฏจักรเศรษฐกิจ และเปิดโอกาส "ปล่อยสำรอง" หนุนกำไรเมื่อเศรษฐกิจฟื้น</div></li>
           <li><div><b>เครือข่ายต่างประเทศ/Permata:</b> เป็นแบงก์ไทยที่มีฐานต่างประเทศกว้างสุด (Bank Permata อินโดนีเซีย + สาขาในเอเชีย) กระจายความเสี่ยงจากเศรษฐกิจไทยที่โตช้า</div></li>
           <li><div><b>คุมต้นทุนได้ดี:</b> Q1/26 ค่าใช้จ่ายดำเนินงานลด 12% (cost-to-income 44.7%) ช่วยพยุงกำไรท่ามกลางรายได้ดอกเบี้ยที่ลดลง</div></li>
@@ -299,7 +299,7 @@
           <li><div><b>สินเชื่อหดตัว/เศรษฐกิจอ่อน:</b> ธปท. หั่นคาด GDP ปี 2026 เหลือ ~1.5% สินเชื่อรวมในระบบยังหดตัว แบงก์ระมัดระวังปล่อยกู้ SME/รายย่อย → การเติบโตของพอร์ตจำกัด</div></li>
           <li><div><b>ROE ต่ำเรื้อรัง:</b> ROE ~7.3% ต่ำกว่าต้นทุนทุน — ทุนที่หนาเกินไปกดผลตอบแทนผู้ถือหุ้น เป็นเหตุผลหลักที่ตลาดให้ P/BV ต่ำกว่า 1 (อาจเป็น "value trap" ถ้า ROE ไม่ฟื้น)</div></li>
           <li><div><b>คุณภาพสินทรัพย์ในวัฏจักรลง:</b> Q1/26 ยังตั้งสำรอง ฿9,003 ล้าน สะท้อนความกังวล — หากเศรษฐกิจ/SME แย่ลง NPL และ credit cost อาจสูงขึ้นกดดันกำไร</div></li>
-          <li><div><b>ปันผลอาจไม่ยั่งยืนทุกปี:</b> payout ที่กระโดดเป็น 50% (FY25) อิงกำไรที่ผันผวน — หากกำไรลดต่อเนื่อง DPS อาจถูกปรับลง yield จึงไม่การันตี</div></li>
+          <li><div><b>ปันผลอาจไม่ยั่งยืนทุกปี:</b> payout ที่เพิ่มเป็น ~41% (FY25) อิงกำไรที่ผันผวน — หากกำไรลดต่อเนื่อง DPS อาจถูกปรับลง yield จึงไม่การันตี</div></li>
           <li><div><b>เงินบาทแข็ง/Permata:</b> บาทแข็งกระทบรายได้แปลงกลับจากต่างประเทศ และผลประกอบการ Bank Permata อินโดนีเซียขึ้นกับเศรษฐกิจ/ค่าเงินรูเปียห์</div></li>
         </ul>
       </div>
@@ -311,14 +311,14 @@
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
       <h2>แบงก์อนุรักษ์นิยม ทุนแกร่ง ปันผลดี — ราคาวิ่งเกินมูลค่าเหมาะสมไปแล้วเล็กน้อย</h2>
-      <p>ธนาคารกรุงเทพเป็นแบงก์ที่ใหญ่สุดด้านสินทรัพย์ เน้นลูกค้าธุรกิจขนาดใหญ่และมีเครือข่ายต่างประเทศกว้างสุดในกลุ่ม จุดเด่นคือ <b>เงินกองทุนแกร่ง (CAR ~21%) สำรองหนา (coverage 324%) และปันผลที่กระโดดขึ้นเป็น ฿12/หุ้น (yield ~6.3% ที่ราคาปัจจุบัน)</b> ทำให้เป็นหุ้นปันผลเชิงรับที่น่าถือ — แต่ ROE ที่ต่ำ (~7.3%) และกำไรที่กำลังถูกบีบจากดอกเบี้ยขาลง ทำให้ upside ถูกจำกัด แม้ราคาย่อลงมาที่ ฿191 แล้ว margin of safety ก็ยังบางมาก (MOS ~+2%) เหมาะกับการ "รอจังหวะย่อเพิ่ม" มากกว่าไล่ซื้อ</p>
+      <p>ธนาคารกรุงเทพเป็นแบงก์ที่ใหญ่สุดด้านสินทรัพย์ เน้นลูกค้าธุรกิจขนาดใหญ่และมีเครือข่ายต่างประเทศกว้างสุดในกลุ่ม จุดเด่นคือ <b>เงินกองทุนแกร่ง (CAR ~21%) สำรองหนา (coverage 324%) และปันผลที่เพิ่มขึ้นเป็น ฿10/หุ้น (yield ~5.2% ที่ราคาปัจจุบัน)</b> ทำให้เป็นหุ้นปันผลเชิงรับที่น่าถือ — แต่ ROE ที่ต่ำ (~7.3%) และกำไรที่กำลังถูกบีบจากดอกเบี้ยขาลง ทำให้ upside ถูกจำกัด ราคา {{rd:px}} สูงกว่ามูลค่าเหมาะสม {{rd:fv}} ({{rd:mos}}) เหมาะกับการ "รอจังหวะย่อ" มากกว่าไล่ซื้อ</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#aeb2bd">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿189 (Hold)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿202 (Buy)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> สาย value/ปันผล — ราคาปัจจุบันสูงกว่าโซนน่าสะสมแล้ว รอทยอยสะสมเมื่อราคา <b>ต่ำกว่า ฿195</b> (น่าสนใจมากที่ &lt;฿156) เพื่อล็อก yield สูง • ติดตาม <b>ทิศทางดอกเบี้ย กนง. และ NIM</b>, <b>แนวโน้มสินเชื่อ/NPL</b> และ <b>นโยบายปันผล (payout)</b> เป็นตัวชี้วัดหลัก — จุดเสี่ยงสำคัญคือ ROE ที่ไม่ฟื้นจะทำให้ P/BV ต่ำต่อไป (value trap)
+        💡 <b>กลยุทธ์:</b> สาย value/ปันผล — ราคาปัจจุบันสูงกว่าโซนน่าสะสมแล้ว รอทยอยสะสมเมื่อราคา <b>ต่ำกว่า {{rd:fv}}</b> (น่าสนใจมากที่ &lt;{{rd:mos20}}) เพื่อล็อก yield สูง • ติดตาม <b>ทิศทางดอกเบี้ย กนง. และ NIM</b>, <b>แนวโน้มสินเชื่อ/NPL</b> และ <b>นโยบายปันผล (payout)</b> เป็นตัวชี้วัดหลัก — จุดเสี่ยงสำคัญคือ ROE ที่ไม่ฟื้นจะทำให้ P/BV ต่ำต่อไป (value trap)
       </div>
     </div>
   </section>
@@ -329,7 +329,7 @@
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ Normalized EPS, อัตราเติบโตปันผล (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต ซึ่งอ่อนไหวต่อทิศทางดอกเบี้ยและเศรษฐกิจไทย
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • อ้างอิงงบจริง FY2025 (กำไรสุทธิ ฿46,007 ล้าน) และ Q1/2026 (กำไรสุทธิ ฿10,994 ล้าน) จาก Bangkok Bank IR / Thairath / SET • ราคา ณ ~{{rd:priceDate}} จาก SET, stockanalysis.com, Investing.com
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 24 ก.ค. 2026 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2026 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
