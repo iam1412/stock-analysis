@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น TQM Alpha (TQM) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
 {"symbol":"TQM","currency":"THB","price":15.5,"fairValue":16.5,"mos":6.1,"upside":6.5,"pe":13.36,"dividendYield":7.1,"roe":25.6}
 </script>
@@ -14,7 +14,7 @@
   "fv": 16.5,
   "values": {
     "px": 15.5,
-    "priceDate": "2026-09-18",
+    "priceDate": "2026-09-21",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
     "fvLow": 14.8,
@@ -108,7 +108,7 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ ฿10.60 – ฿15.70<br>
+        กรอบ 52 สัปดาห์ ฿10.60 – ฿18.10<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, Investing.com
       </div>
     </div>
@@ -119,7 +119,7 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM ณ มิ.ย. 2569</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~฿9.15B</div><div class="d">590.35 ล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~13.36x</div><div class="d">EPS TTM ฿1.16 / ราคา ฿14.00</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~13.36x</div><div class="d">EPS TTM ฿1.16 / ราคา {{rd:px}}</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~15–18x</div><div class="d">ช่วงสูง ≤ 20x ช่วงต่ำ ~11x</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~{{rd:pbv}}x</div><div class="d">BVPS ฿4.90 (2568)</div></div>
 
@@ -148,7 +148,7 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        TQM เริ่มรอบปีราว ฿14.70 (มิ.ย. 2568) ขยับขึ้นแตะจุดสูงรอบ ฿15.20 (ก.ค. 2568) สั้น ๆ ก่อนปรับลงแรงเหลือ ฿11.50 ในเดือน ธ.ค. 2568 (จุดต่ำสุดรอบ) สาเหตุหลักจากกำไร TTM หดตัว ~14% YoY กดดัน sentiment ประกอบกับ sector rotation ออกจากหุ้นปันผลขนาดกลาง ปี 2569 เริ่มฟื้นตัวได้ดีขึ้น โดยเดือน ก.พ. 2569 แตะ ฿14.40 ก่อนย่อกลับ ปัจจุบันราคา ฿14.00 ลดลง ~4.8% ในรอบปี ยังต่ำกว่า Fair Value ฿16.50 อยู่ประมาณ 15%
+        TQM เริ่มรอบปีราว ฿14.70 (มิ.ย. 2568) ขยับขึ้นแตะจุดสูงรอบ ฿15.20 (ก.ค. 2568) สั้น ๆ ก่อนปรับลงแรงเหลือ ฿11.50 ในเดือน ธ.ค. 2568 (จุดต่ำสุดรอบ) สาเหตุหลักจากกำไร TTM หดตัว ~14% YoY กดดัน sentiment ประกอบกับ sector rotation ออกจากหุ้นปันผลขนาดกลาง ปี 2569 เริ่มฟื้นตัวได้ดีขึ้น โดยเดือน ก.พ. 2569 แตะ ฿14.40 ก่อนย่อกลับ ปัจจุบันราคา {{rd:px}} ยังต่ำกว่า Fair Value {{rd:fv}} (MOS ~{{rd:mos}})
       </p>
     </div>
   </section>
@@ -174,7 +174,7 @@
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        วิธี P/E ให้มูลค่าสูงสุด (฿17.40) สะท้อน P/E ปกติที่ 15x ซึ่งต่ำกว่าอดีตช่วงดี (18–20x) · DDM (฿16.19) ระวังอ่อนไหวต่อ g สูง จึงใช้ g อนุรักษ์ที่ 3% · Justified P/BV (฿15.82) ต่ำสุดเพราะ BVPS ยังต่ำ (~฿4.90) แม้ ROE สูง 25.6% · FV เฉลี่ย ≈ ฿16.47 → ปัดเป็น ฿16.50 ซึ่งบังเอิญตรงกับ Analyst Consensus Target ฿16.50 (2 นักวิเคราะห์ Strong Buy)
+        วิธี P/E ให้มูลค่าสูงสุด (฿17.40) สะท้อน P/E ปกติที่ 15x ซึ่งต่ำกว่าอดีตช่วงดี (18–20x) · DDM (฿16.19) ระวังอ่อนไหวต่อ g สูง จึงใช้ g อนุรักษ์ที่ 3% · Justified P/BV (฿15.82) ต่ำสุดเพราะ BVPS ยังต่ำ (~฿4.90) แม้ ROE สูง 25.6% · FV เฉลี่ย ≈ ฿16.47 → ปัดเป็น {{rd:fv}} (เป้า Analyst ฿20.00 จาก 2 ราย ใช้เป็นบริบทเท่านั้น ไม่ใช่ขาของ FV)
       </p>
     </div>
   </section>
@@ -192,12 +192,12 @@
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿16.50<br><small>เป้าเฉลี่ย Analyst</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">฿20.00<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน ฿14.00 อยู่ใน "โซนน่าสนใจ" ระหว่าง MOS20% (฿13.20) และ Fair Value (฿16.50) — MOS ~15.2% บ่งชี้ว่าหุ้นยังซื้อขายต่ำกว่ามูลค่าเหมาะสม แต่ไม่ถึง deep value zone (MOS30% = ฿11.55) ซึ่งสะท้อนภาพว่าตลาดเริ่มรับรู้ recovery แล้วบางส่วน
+        ราคาปัจจุบัน {{rd:px}} ต่ำกว่า Fair Value ({{rd:fv}}) — MOS ~{{rd:mos}} ยังไม่ถึงโซน MOS20% ({{rd:mos20}}) และ deep value (MOS30% = {{rd:mos30}}) ซึ่งสะท้อนภาพว่าตลาดเริ่มรับรู้ recovery แล้วบางส่วน
       </p>
     </div>
   </section>
@@ -208,7 +208,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">ไม่มี MOS แล้ว — ราคาขึ้นมาเหนือ Fair Value ฿16.50 · ยังเหมาะสำหรับนักลงทุนที่ยอมรับความเสี่ยงปานกลางและต้องการ Dividend Yield ~8%</div>
+        <div class="txt">MOS บาง — ราคาใกล้ Fair Value {{rd:fv}} · ยังเหมาะสำหรับนักลงทุนที่ยอมรับความเสี่ยงปานกลางและต้องการ Dividend Yield ~8%</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -308,14 +308,14 @@
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
       <h2>โบรกเกอร์ประกันภัยเบอร์ 1 ราคาน่าสนใจ — Dividend Play + Turnaround Potential</h2>
-      <p>TQM Alpha PCL คือผู้นำตลาดโบรกเกอร์ประกันภัยไทยที่กำลังผ่านช่วง margin compression จากต้นทุนที่เพิ่มขึ้น แต่ยังรักษา ROE ~25.6% และจ่ายปันผล Yield ~7.9% ได้อย่างสม่ำเสมอ ราคาปัจจุบัน ฿14.00 ซื้อขายที่ P/E 12x ซึ่งต่ำกว่าค่าเฉลี่ยอดีต 15–18x บ่งชี้ว่าตลาดยัง price-in ความกังวลกำไรระยะสั้น สร้าง MOS ~15.2% จาก Fair Value ฿16.50 (สอดคล้องกับ Consensus Analyst Target) นักวิเคราะห์ 2 ราย (Strong Buy) มองว่า Upside +17.9% ในระยะ 12 เดือน Catalyst หลักคือ Fintech platform ที่จะเริ่ม contribute positively + กำไรฟื้นตัวจาก trough</p>
+      <p>TQM Alpha PCL คือผู้นำตลาดโบรกเกอร์ประกันภัยไทยที่กำลังผ่านช่วง margin compression จากต้นทุนที่เพิ่มขึ้น แต่ยังรักษา ROE ~25.6% และจ่ายปันผล Yield ~7.9% ได้อย่างสม่ำเสมอ ราคาปัจจุบัน {{rd:px}} ซื้อขายที่ P/E ~13x ซึ่งต่ำกว่าค่าเฉลี่ยอดีต 15–18x บ่งชี้ว่าตลาดยัง price-in ความกังวลกำไรระยะสั้น สร้าง MOS ~{{rd:mos}} จาก Fair Value {{rd:fv}} นักวิเคราะห์ 2 ราย (Buy) ตั้งเป้า ฿20.00 ในระยะ 12 เดือน Catalyst หลักคือ Fintech platform ที่จะเริ่ม contribute positively + กำไรฟื้นตัวจาก trough</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#b0bad3">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿16.50 (Strong Buy)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿20.00 (Buy)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ทยอยสะสมที่ราคา &lt; ฿14.50 (MOS &gt; 12%) รับ Dividend Yield &gt;7.5% ระหว่างรอ Turnaround · เพิ่มน้ำหนักอีกรอบหาก ฿13.20 (MOS20%) ถูกทดสอบ · ตั้ง Target ฿16.50–฿18.00 ระยะ 12–18 เดือน · Stop loss แนว ฿10.60 (52W low) หากกำไรหดต่อเกิน 3 ไตรมาสติดต่อกัน
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมเมื่อราคาย่อเข้าใกล้ {{rd:mos20}} (MOS20%) รับ Dividend Yield &gt;7.5% ระหว่างรอ Turnaround · เพิ่มน้ำหนักอีกรอบหาก {{rd:mos20}} (MOS20%) ถูกทดสอบ · ตั้ง Target {{rd:fv}}–{{rd:fvHigh}} ระยะ 12–18 เดือน · Stop loss แนว ฿10.60 (52W low) หากกำไรหดต่อเกิน 3 ไตรมาสติดต่อกัน
       </div>
     </div>
   </section>
@@ -326,7 +326,7 @@
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มาข้อมูล: StockAnalysis.com (BKK:TQM), Yahoo Finance (TQM.BK), Investing.com, tqmalpha.com (Investor Relations) — ราคา ณ {{rd:priceDate}}
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 25 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 22 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
