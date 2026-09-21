@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น เมเจอร์ ซีนีเพล็กซ์ (MAJOR) — Stock Analysis Dashboard</title>
 <!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง -->
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) -->
 <script type="application/json" id="stock-meta">
 {"symbol":"MAJOR","currency":"THB","price":6.95,"fairValue":9.6,"mos":27.6,"upside":38.1,"pe":7.6,"dividendYield":3.6,"roe":12.3}
@@ -16,7 +16,7 @@
   "fv": 9.6,
   "values": {
     "px": 6.95,
-    "priceDate": "2026-09-18",
+    "priceDate": "2026-09-21",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
     "fvLow": 6.56,
@@ -89,7 +89,7 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ ฿6.25 – ฿9.45<br>
+        กรอบ 52 สัปดาห์ ฿6.25 – ฿8.30<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, Investing.com
       </div>
     </div>
@@ -132,7 +132,7 @@
         ในรอบ 12 เดือน (ก.ค. 2568 – ก.ค. 2569) ราคา MAJOR เริ่มต้นที่ ฿8.00 แล้วปรับลงต่อเนื่อง
         จุดต่ำสุดที่ ฿6.70 (ก.ย. 68 และ มิ.ย. 69) สะท้อนความกังวลรายได้รวมยังต่ำกว่า pre-COVID
         ปลายปี 68 ราคาทรงตัวในกรอบ ฿6.70–฿6.95 ก่อนฟื้นเล็กน้อยสู่ ฿6.95 ใน ก.ค. 69
-        ผลตอบแทนรอบปี −13.1% (฿8.00 → ฿6.95) ต่ำกว่า Fair Value ฿9.60 อย่างมีนัยสำคัญ
+        ผลตอบแทนรอบปี −13.1% (฿8.00 → ฿6.95) ต่ำกว่า Fair Value {{rd:fv}} อย่างมีนัยสำคัญ
       </p>
     </div>
   </section>
@@ -161,7 +161,7 @@
         วิธี P/E (฿10.10) ให้ค่ากลางสมเหตุสมผล อิง EPS ปี 68 ที่ฟื้นจาก COVID และ P/E เป้าหมายอนุรักษ์นิยม 12x
         วิธี DDM (฿6.56) ให้ค่าต่ำสุดเพราะ MAJOR ยังปันผลในระดับต่ำ (฿0.25/หุ้น ปี 68 vs ฿0.65 ปี 66)
         วิธี Justified P/BV (฿12.13) ให้ค่าสูงสุด สะท้อน ROE ที่ดี + margin ของ entertainment business
-        Fair Value เฉลี่ย ฿9.60 ใกล้เคียงเป้า analyst เฉลี่ย ฿9.85 — ยืนยันว่าหุ้นยัง Undervalued ที่ราคาปัจจุบัน
+        Fair Value เฉลี่ย {{rd:fv}} สูงกว่าเป้า analyst เฉลี่ย ฿8.26 — ยังเป็นการประเมินที่มองบวกกว่า consensus (เป้า analyst ใช้เป็นบริบท ไม่ใช่ขาของ FV)
       </p>
     </div>
   </section>
@@ -184,9 +184,9 @@
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคา ฿6.95 อยู่ต่ำกว่า Fair Value ฿9.60 ประมาณ 27.6% — ใกล้ MOS 30% zone (฿6.72) มาก
-        ราคาปัจจุบันต่ำกว่าแม้แต่จุด 52 สัปดาห์ต่ำสุดในครึ่งปีแรก (฿6.25 พ.ค. 68)
-        Analyst consensus "Buy" 5 คน เป้าเฉลี่ย ฿9.85 upside +41.7% จากราคาปัจจุบัน
+        ราคา {{rd:px}} อยู่ต่ำกว่า Fair Value {{rd:fv}} ประมาณ 27.6% — ใกล้ MOS 30% zone ({{rd:mos30}}) มาก
+        ราคาปัจจุบันอยู่ใกล้ต่ำสุด 52 สัปดาห์ (฿6.25) มากกว่าสูงสุด (฿8.30)
+        Analyst consensus "Buy" 4 คน เป้าเฉลี่ย ฿8.26 upside +18.9% จากราคาปัจจุบัน
       </p>
     </div>
   </section>
@@ -216,7 +216,7 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿6.95 • EPS ฐาน ~฿0.84 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~฿0.84 • รวมปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
@@ -300,7 +300,7 @@
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
       <h2>Undervalued — โรงหนังอันดับ 1 ไทย ราคาต่ำกว่ามูลค่า ~28%</h2>
-      <p>MAJOR ซื้อขายที่ P/E เพียง 7.56x และ P/BV 1.05x ต่ำกว่า Fair Value ฿9.60 ราว 28% (MOS 27.6%)
+      <p>MAJOR ซื้อขายที่ P/E เพียง 7.56x และ P/BV 1.05x ต่ำกว่า Fair Value {{rd:fv}} ราว 28% (MOS 27.6%)
       ในภาวะที่ตลาดยัง discount ผลกระทบ COVID และ streaming อยู่ แต่พื้นฐานธุรกิจแข็งแกร่ง — ครองตลาดโรงหนัง #1 ไทย
       FCF แข็งแกร่ง ฿795 ล้าน Beta ต่ำ 0.32 ปันผลกลับมา และ Analyst consensus "Buy" 5/6 คน เป้า ฿9.85
       ความเสี่ยงหลักคือ streaming disruption และหนี้สูง แต่ในราคาปัจจุบันมี margin of safety คุ้มครองอยู่ดี</p>
@@ -310,7 +310,7 @@
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿9.85 (Buy · 5/6)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ทยอยสะสมที่ &lt;฿7.68 (MOS &gt;20%) โดยเฉพาะเมื่อราคาใกล้ ฿6.72–฿7.00 (MOS 27–30%) รอ re-rating เมื่อ EPS ฟื้นตัวชัดเจนหรือปันผลขึ้น — เหมาะกับผู้ลงทุนระยะ 2–3 ปีที่รับ Beta ต่ำ + ปันผล
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมที่ &lt;฿7.68 (MOS &gt;20%) โดยเฉพาะเมื่อราคาใกล้ {{rd:mos30}}–฿7.00 (MOS 27–30%) รอ re-rating เมื่อ EPS ฟื้นตัวชัดเจนหรือปันผลขึ้น — เหมาะกับผู้ลงทุนระยะ 2–3 ปีที่รับ Beta ต่ำ + ปันผล
       </div>
     </div>
   </section>
@@ -322,7 +322,7 @@
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
     แหล่งข้อมูล: Yahoo Finance (MAJOR.BK), StockAnalysis.com/quote/bkk/MAJOR/, Investing.com/equities/major-cineplex · ราคา ณ {{rd:priceDate}} · งบการเงิน FY2568 (ปีสิ้นสุด 31 ธ.ค. 2568)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
