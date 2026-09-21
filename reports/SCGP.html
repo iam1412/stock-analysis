@@ -4,44 +4,45 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น เอสซีจี แพคเกจจิ้ง (SCGP) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Opus 4.8">
+<meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"SCGP","currency":"THB","price":31.25,"fairValue":21,"mos":-48.8,"upside":-32.8,"pe":25.2,"dividendYield":1.9,"roe":6}
+{"symbol":"SCGP","currency":"THB","price":30.75,"fairValue":20.68,"mos":-48.7,"upside":-32.7,"pe":21.8,"dividendYield":2.44,"roe":8.2}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 21,
+  "fv": 20.68,
   "values": {
-    "px": 31.25,
-    "priceDate": "2026-09-18",
+    "px": 30.75,
+    "priceDate": "2026-09-21",
     "dateEra": "CE",
     "chgSuffix": "รอบปี",
-    "fvLow": 16.3,
-    "fvHigh": 25.55,
+    "fvLow": 16.97,
+    "fvHigh": 24.39,
     "shares": 4293000000,
-    "dps": 0.6,
+    "dps": 0.75,
     "bvps": 17.95,
-    "baseEps": 1.1,
+    "baseEps": 1.41,
     "scenarios": [
       {
-        "tgt": 14.5,
-        "div": 1.5
-      },
-      {
-        "tgt": 25,
+        "tgt": 18.6,
         "div": 2
       },
       {
-        "tgt": 33.5,
-        "div": 2.4
+        "tgt": 32,
+        "div": 2.3
+      },
+      {
+        "tgt": 42.9,
+        "div": 2.7
       }
     ],
     "scnBasis": {
       "years": 3,
       "divIncluded": true,
       "perYear": null
-    }
+    },
+    "analystTgt": 33.79
   },
   "theme": {
     "accent": "#2fa25f",
@@ -69,7 +70,7 @@
       ["มิ.ย.26", 28.5],
       ["ก.ค.26", 30.5],
       ["ส.ค.26", 30.25],
-      ["ก.ย.26", 31.25]
+      ["ก.ย.26", 30.75]
     ],
     "min": 10,
     "max": 35,
@@ -81,7 +82,7 @@
   },
   "gauge": {
     "min": 12,
-    "max": 33,
+    "max": 36,
     "fairLabelTop": true
   }
 }
@@ -108,7 +109,7 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}} (ปิดตลาด)<br>
-        กรอบ 52 สัปดาห์ ฿14.90 – ฿28.50<br>
+        กรอบ 52 สัปดาห์ ฿14.90 – ฿32.25<br>
         ที่มา: StockAnalysis.com • Investing.com • SET (set.or.th)
       </div>
     </div>
@@ -118,19 +119,19 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM / FY2025</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿134.2 พันล้าน</div><div class="d">~4,293 ล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~25.2x</div><div class="d">สูงกว่าค่าเฉลี่ยกลุ่ม (กำไรช่วงฟื้นตัว)</div></div>
-      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~18–20x</div><div class="d">กรอบกว้างตามวัฏจักรราคากระดาษ</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿132.0 พันล้าน</div><div class="d">~4,293 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~21.8x</div><div class="d">EPS TTM ฟื้นแรงจาก FY2025 (P/E FY2025 ตามราคาเฉลี่ยปี 17.3x)</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~32x (มัธยฐาน)</div><div class="d">ช่วง 17.3–41.7x — กว้าง 2.4 เท่า ตามวัฏจักรราคากระดาษ</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">เทียบ BVPS ~฿17.95</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">~฿4,069 ล้าน</div><div class="d">+10% YoY</div></div>
-      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿1.10</div><div class="d">EPS FY2025 ~฿0.95 • ฟื้นจาก Q1/2026</div></div>
-      <div class="metric"><div class="k">BVPS</div><div class="v">~฿17.95</div><div class="d">คำนวณจาก P/BV 1.56x</div></div>
-      <div class="metric"><div class="k">ROE / ROA</div><div class="v neu">~6.0% / ~2.5%</div><div class="d">ต่ำกว่าต้นทุนทุน — ยังกดดัน valuation</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿1.41</div><div class="d">EPS FY2025 ~฿0.95 • TTM ฟื้นแรง</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿17.95</div><div class="d">ค่าเดิมในรายงาน (สอดคล้อง ROE 8.2% × ส่วนผู้ถือหุ้นเฉลี่ย ±5%)</div></div>
+      <div class="metric"><div class="k">ROE / D/E</div><div class="v neu">~8.2% / 0.66x</div><div class="d">ใกล้ต้นทุนทุน (สมมติ 8.5%) — ยังกดดัน valuation</div></div>
 
-      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿121.5 พันล้าน</div><div class="d">FY2025 ฿124.4 พันล้าน (−6% YoY)</div></div>
-      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~18.6%</div><div class="d">ดีขึ้นจากต้นทุนเศษกระดาษ/พลังงานลด</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">FY2025 ฿0.60/หุ้น (จ่ายงวดสุดท้าย เม.ย. 2026)</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿122.4 พันล้าน</div><div class="d">FY2025 ฿124.4 พันล้าน (−6% YoY)</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~20.1%</div><div class="d">TTM สูงกว่า FY2025 (17.9%) • OpM 8.5%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">DPS 12 เดือนล่าสุด ฿0.75/หุ้น (StockAnalysis)</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">~1.0</div><div class="d">อิงวัฏจักรเศรษฐกิจ/ราคากระดาษ</div></div>
     </div>
   </section>
@@ -148,33 +149,30 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ราคา SCGP เริ่มรอบปีราว ฿17 (มิ.ย. 2568) แล้วอ่อนลงแตะจุดต่ำสุดรอบ ~฿15.60 (พ.ย. 2568) ท่ามกลางราคากระดาษอ่อนและกำไรหด จากนั้นค่อย ๆ ฟื้นตามผลประกอบการ — โดยเฉพาะ Q1/2569 ที่กำไรสุทธิโต +74% YoY จากการฟื้นตัวของอินโดนีเซียและต้นทุนที่ลดลง ราคาพุ่งแรงในไตรมาส 2/2569 จาก ~฿20 ขึ้นมาทดสอบ ~฿28 ใกล้จุดสูงสุด 52 สัปดาห์ (+64.7% รอบปี · กว่า +79% จากก้นรอบ พ.ย.) ทำให้ราคาปัจจุบัน "วิ่งนำ" พื้นฐานไปไกลกว่ามูลค่าเหมาะสมที่เราประเมิน
+        ราคา SCGP เริ่มรอบปีราว ฿18 (ต.ค. 2568) แล้วอ่อนลงแตะจุดต่ำสุดรอบ ~฿15.60 (พ.ย. 2568) ก่อนฟื้นต่อเนื่องตามกำไรที่ดีขึ้น (กำไรสุทธิ TTM ฿6,030 ล้าน เทียบ FY2025 ฿4,069 ล้าน) ราคาไต่จาก ~฿20 ช่วง ม.ค.–มี.ค. 2569 ผ่าน ฿28 ในเดือน มิ.ย. 2569 และล่าสุดอยู่ใกล้จุดสูงสุด 52 สัปดาห์ (฿32.25) — ราคาจึง "วิ่งนำ" มูลค่าเหมาะสมที่เราประเมินไปไกล
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี (2 ตระกูล)</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿1.10 × P/E เป้าหมาย ~19x — กลางวัฏจักร (ต่ำกว่า P/E ปัจจุบัน 25x เพราะกำไรยังต่ำกว่าศักยภาพ)</div></div>
-        <div class="mval">฿20.90</div>
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿1.41 × P/E เป้าหมาย 17.3x — ตัวคูณที่วัดจริงของปีล่าสุด (FY2025: ราคาเฉลี่ยปี ÷ EPS 0.95) ไม่ได้มาจาก P/E ปัจจุบัน · ไม่ใช้มัธยฐาน 5 ปี 32.1x เพราะช่วงกว้าง 2.4 เท่า (17.3–41.7x) และ 4 ใน 5 ปีเป็นยุคก่อนราคา de-rate ปี 2568 จึงไม่ใช่สเกลปัจจุบัน</div></div>
+        <div class="mval">฿24.39</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 8% − g 3%)/(r 8.5% − g 3%) ≈ 0.91 × BVPS ฿17.95 (ใช้ ROE ฟื้นตัว 8%; ที่ ROE จริง ~6% จะได้ค่าต่ำกว่านี้มาก)</div></div>
-        <div class="mval">฿16.32</div>
+        <div><div class="mname">2. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 8.2% − g 3%)/(r 8.5% − g 3%) ≈ 0.945 × BVPS ฿17.95 (ROE TTM 8.2%; r และ g เป็นสมมติฐานของเราเอง — ตระกูล (r,g) นับเป็นเสียงเดียว)</div></div>
+        <div class="mval">฿16.97</div>
       </div>
-      <div class="vmethod">
-        <div><div class="mname">3. EV/EBITDA</div><div class="mdesc">EBITDA เป้า FY2026 ฿18,300 ล้าน × 9x = EV ฿164,700 ล้าน − หนี้สุทธิ ~฿55,000 ล้าน ÷ 4,293 ล้านหุ้น</div></div>
-        <div class="mval">฿25.55</div>
-      </div>
+
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        วิธี Justified P/BV ให้ค่าต่ำสุด (฿16.3) เพราะ ROE (~6–8%) ยังต่ำใกล้/ต่ำกว่าต้นทุนทุน — บริษัทยัง "ไม่สร้างมูลค่าส่วนเกิน" จากทุนมากนัก ส่วน EV/EBITDA ให้ค่าสูงสุด (฿25.6) เพราะอิง EBITDA เป้าหมายปี 2026 ที่ฝ่ายบริหารตั้งไว้ ค่ากลาง ฿21 สะท้อนหุ้นวัฏจักรที่กำไรกำลังฟื้นแต่ยังไม่เต็มศักยภาพ — และต่ำกว่าราคาตลาด ฿28 อย่างมีนัย
+        FV = เฉลี่ยสองตระกูลอิสระ (P/E ตัวคูณวัดจริง + Justified P/BV) ห่างกัน 1.4 เท่า จึงเฉลี่ยได้ · ขา Justified P/BV ต่ำกว่าเพราะ ROE ~8.2% ใกล้ต้นทุนทุน บริษัทยังสร้างมูลค่าส่วนเกินจากทุนไม่มาก · ตลาดซื้อขายสูงกว่าขา P/E (ขาที่ไม่ใช้ r,g) อยู่ราวหนึ่งในสี่ — จึงยืนยันได้ว่าราคาแพงกว่าฐานกำไร ไม่ได้ขึ้นกับ r/g ชุดเดียว · ตัดขา EV/EBITDA เดิมออก: ใช้ EBITDA เป้าฝ่ายบริหารที่ตรวจซ้ำไม่ได้และตัวคูณ 9x ที่ไม่มีมัธยฐานวัดจริงรองรับ · เป้านักวิเคราะห์เป็นเพียงบริบท ไม่เป็นขา FV
       </p>
     </div>
   </section>
@@ -192,12 +190,12 @@
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿25.26<br><small>เป้าเฉลี่ย Analyst</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:analystTgt}}<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน ฿28 อยู่ <b>เหนือ</b> ทั้งมูลค่าเหมาะสม (฿21) เป้าเฉลี่ยนักวิเคราะห์ (~฿25.3) และกรอบบนของ FV (฿25.6) สะท้อนว่าตลาดได้ราคา "การฟื้นตัวเต็มที่" ไปแล้วล่วงหน้า โซนน่าสะสมจริง ๆ อยู่ที่ ≤ ฿21 และจะ "ถูก" ชัดเจนเมื่อ ≤ ฿16.8 (MOS 20%)
+        ราคาปัจจุบัน {{rd:px}} อยู่ <b>เหนือ</b> ทั้งมูลค่าเหมาะสม ({{rd:fv}}) และกรอบบนของ FV ({{rd:fvHigh}}) แต่ยังต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ {{rd:analystTgt}} ({{rd:analystPct}}) — ตลาดให้ราคา "การฟื้นตัวเต็มที่" ไปแล้ว โซนน่าสะสมจริง ๆ อยู่ที่ ≤ {{rd:fv}} และจะ "ถูก" ชัดเจนเมื่อ ≤ {{rd:mos20}} (MOS 20%)
       </p>
     </div>
   </section>
@@ -235,7 +233,7 @@
           <div class="tgt">{{rd:sc1tgt}}</div>
           <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿1.04</span></li>
+            <li><span>EPS ปี 3</span><span>~฿1.33</span></li>
             <li><span>P/E ออก</span><span>14x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>ราคากระดาษอ่อน • อุปสงค์ซบ</span></li>
@@ -248,10 +246,10 @@
           <div class="tgt">{{rd:sc2tgt}}</div>
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿1.39</span></li>
+            <li><span>EPS ปี 3</span><span>~฿1.78</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
-            <li><span>สถานการณ์</span><span>ฟื้นตัวต่อเนื่อง • EBITDA โตตามเป้า</span></li>
+            <li><span>สถานการณ์</span><span>ฟื้นตัวต่อเนื่อง • มาร์จิ้นทรงตัว</span></li>
           </ul>
         </div>
       </div>
@@ -261,16 +259,16 @@
           <div class="tgt">{{rd:sc3tgt}}</div>
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿1.67</span></li>
+            <li><span>EPS ปี 3</span><span>~฿2.14</span></li>
             <li><span>P/E ออก</span><span>20x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
-            <li><span>สถานการณ์</span><span>M&amp;A หนุน • วัฏจักรกระดาษขาขึ้น</span></li>
+            <li><span>สถานการณ์</span><span>วัฏจักรกระดาษขาขึ้น • ต้นทุนต่ำ</span></li>
           </ul>
         </div>
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      ที่ราคาเข้า ฿28 แม้กรณี Base (กำไรโต +8%/ปี, P/E ออก 18x) ผลตอบแทน 3 ปียังติดลบเล็กน้อย (~−4% รวมปันผล) สะท้อนว่าราคาวิ่งนำพื้นฐานไปมาก — ต้องเข้ากรณี Bull (กำไรโตแรง + วัฏจักรขาขึ้น) จึงจะได้ผลตอบแทนบวก ความเสี่ยง-ผลตอบแทนที่ราคานี้จึง "ไม่คุ้ม" สำหรับนักลงทุนเน้นคุณค่า
+      ที่จุดเข้า {{rd:px}} กรณี Base (กำไรโต +8%/ปี, P/E ออก 18x ใกล้ตัวคูณวัดจริงปีล่าสุด 17.3x) ให้ผลตอบแทน 3 ปี {{rd:sc2ret}} รวมปันผล — ผลบวกมาจากกำไรที่ต้องโตต่อเนื่อง ไม่ใช่จากราคาถูก ขณะที่กรณี Bear ({{rd:sc1ret}}) ชี้ว่าหากกำไรหลุดจากจุดฟื้นตัวและตัวคูณลดลง ขาดทุนใหญ่กว่ากำไรกรณี Base ความเสี่ยง-ผลตอบแทนที่ราคานี้จึงไม่มี MOS รองรับ
     </p>
   </section>
 
@@ -281,22 +279,22 @@
       <div class="box cat">
         <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
         <ul>
-          <li><b>กำไรฟื้นตัวแรง:</b> Q1/2026 กำไรสุทธิ +74% YoY (฿1,566 ล้าน) จากการฟื้นของอินโดนีเซีย ประสิทธิภาพการผลิต และต้นทุนเศษกระดาษ/พลังงานลด</li>
-          <li><b>เป้า EBITDA โต:</b> ฝ่ายบริหารตั้งเป้า EBITDA FY2026 ฿18,300 ล้าน (จาก ฿17,210 ล้าน) อัตราใช้กำลังผลิตกระดาษ ~90%</li>
-          <li><b>ขยายผ่าน M&amp;A:</b> เดินหน้าซื้อกิจการบรรจุภัณฑ์ผู้บริโภค (consumer packaging) เพิ่มสินค้ามูลค่าสูง ฐานอาเซียนกว้าง (เวียดนาม อินโดนีเซีย ฟิลิปปินส์)</li>
-          <li><b>ต้นทุนวัตถุดิบเอื้อ:</b> ราคาเศษกระดาษและพลังงานที่ลดลงช่วยหนุนมาร์จิน (gross margin TTM ~18.6%)</li>
+          <li><b>กำไรฟื้นตัวแรง:</b> กำไรสุทธิ TTM ฿6,030 ล้าน (NetM 4.9%) เทียบ FY2025 ฿4,069 ล้าน (3.3%) · EPS TTM ฿1.41 เทียบ ฿0.95</li>
+          <li><b>มาร์จินดีขึ้น:</b> อัตรากำไรขั้นต้น TTM 20.1% เทียบ FY2025 17.9% และ OpM 8.5% เทียบ 6.8%</li>
+          <li><b>กระแสเงินสดแข็ง:</b> FCF TTM ฿10,575 ล้าน (FY2025 ฿10,615 ล้าน) สูงกว่ากำไรสุทธิ รองรับปันผล DPS ฿0.75 และการลดหนี้</li>
+          <li><b>งบดุลปรับดีขึ้นเล็กน้อย:</b> D/E 0.66x (FY2025 0.70x) เงินสด ฿11.9 พันล้าน</li>
           <li><b>แบ็คอัพจาก SCG:</b> เป็นบริษัทในเครือ SCC (ปูนซิเมนต์ไทย) ฐานะการเงินมั่นคง เข้าถึงทุนได้</li>
         </ul>
       </div>
       <div class="box risk">
         <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
         <ul>
-          <li><b>ราคาวิ่งนำพื้นฐาน:</b> ราคา ฿28 อยู่เหนือ FV (฿21) และเป้านักวิเคราะห์ (~฿25.3) — P/E 25x แพงสำหรับหุ้นวัฏจักร MOS ติดลบ ~33%</li>
-          <li><b>ROE ต่ำ:</b> ROE ~6% ใกล้/ต่ำกว่าต้นทุนทุน — ยังไม่สร้างมูลค่าส่วนเกินจากทุน กด Justified P/BV ให้ต่ำ</li>
+          <li><b>ราคาวิ่งนำพื้นฐาน:</b> ราคา {{rd:px}} อยู่เหนือ FV ({{rd:fv}}) แม้ยังต่ำกว่าเป้านักวิเคราะห์ — MOS {{rd:mos}} สำหรับหุ้นวัฏจักรที่กำไรเพิ่งฟื้น</li>
+          <li><b>ROE ต่ำ:</b> ROE ~8.2% ใกล้/ต่ำกว่าต้นทุนทุน — ยังไม่สร้างมูลค่าส่วนเกินจากทุนมาก กด Justified P/BV ให้ต่ำ</li>
           <li><b>วัฏจักร & ราคากระดาษ:</b> กำไรอ่อนไหวสูงต่ออุปสงค์ ราคากระดาษ/เยื่อ และเศษกระดาษรีไซเคิล — รอบขาลงกดกำไรเร็ว</li>
           <li><b>ความเสี่ยง FX:</b> รายได้/ต้นทุนหลายสกุล (VND IDR PHP USD) อ่อนไหวต่ออัตราแลกเปลี่ยน</li>
-          <li><b>หนี้จาก M&amp;A:</b> การขยายผ่านซื้อกิจการเพิ่มหนี้ (รวม ~฿64.7 พันล้าน) ภาระดอกเบี้ยกดผลตอบแทนหากดอกเบี้ยสูง</li>
-          <li><b>รายได้หด:</b> รายได้ FY2025 −6% YoY — การเติบโตยอดขายยังต้องพิสูจน์ แม้กำไรฟื้นจากต้นทุน</li>
+          <li><b>ภาระหนี้:</b> หนี้รวม ~฿62.2 พันล้าน (D/E 0.66x) ภาระดอกเบี้ยกดผลตอบแทนหากดอกเบี้ยสูง</li>
+          <li><b>รายได้หด:</b> รายได้ TTM −4.7% YoY (FY2025 −6.3%) — การเติบโตยอดขายยังต้องพิสูจน์ แม้กำไรฟื้นจากมาร์จิน</li>
         </ul>
       </div>
     </div>
@@ -307,14 +305,14 @@
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
       <h2>กำไรฟื้นจริง แต่ราคาวิ่งนำไปไกล — รอย่อ</h2>
-      <p>SCGP กำลังอยู่ในช่วงฟื้นตัวของกำไร (Q1/2026 +74% YoY) จากต้นทุนที่ลดลงและการฟื้นของอินโดนีเซีย เป็นเรื่องราวเชิงคุณภาพที่ดี แต่ราคาหุ้นที่พุ่งจาก ~฿13 มาแตะ ~฿28 (จุดสูง 52 สัปดาห์) ได้สะท้อน "การฟื้นตัวเต็มที่" ไปล่วงหน้าแล้ว — ซื้อขายที่ P/E ~25x เหนือมูลค่าเหมาะสม ฿21 และเป้านักวิเคราะห์เฉลี่ย ~฿25.3 จึงไม่มี Margin of Safety (ติดลบ ~33%) แม้กรณีฐานผลตอบแทน 3 ปียังติดลบเล็กน้อย เหมาะ "เฝ้ารอจุดเข้า" มากกว่าไล่ราคา</p>
+      <p>SCGP อยู่ในช่วงฟื้นตัวของกำไร (กำไรสุทธิ TTM ฿6,030 ล้าน เทียบ FY2025 ฿4,069 ล้าน) จากมาร์จินที่ดีขึ้น แต่ราคาที่พุ่งจากต่ำสุดรอบ ~฿15.6 มาใกล้จุดสูง 52 สัปดาห์ (฿32.25) ได้สะท้อนการฟื้นตัวไปมากแล้ว — มูลค่าเหมาะสมจากสองตระกูล (P/E ตัวคูณวัดจริงปีล่าสุด + Justified P/BV) อยู่ที่ {{rd:fv}} ต่ำกว่าราคา (MOS {{rd:mos}}) แม้เป้านักวิเคราะห์เฉลี่ย {{rd:analystTgt}} ({{rd:analystPct}}) จะสูงกว่า ซึ่งเราไม่นับเป็นขา FV จึงไม่มี Margin of Safety เหมาะ "เฝ้ารอจุดเข้า" มากกว่าไล่ราคา</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿25.26 (Buy เฉลี่ย 17 ราย)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">{{rd:analystTgt}} (Buy เฉลี่ย 18 ราย)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> รอย่อเข้าโซน ≤ ฿21 จึงเริ่มทยอยสะสม และจะ "น่าสนใจ" ชัดที่ ≤ ฿16.8 (MOS 20%) — ที่ราคา ฿28 ปัจจุบันความเสี่ยง-ผลตอบแทนไม่คุ้มสำหรับนักลงทุนเน้นคุณค่า ผู้ถืออยู่แล้วอาจพิจารณาล็อกกำไรบางส่วน
+        💡 <b>กลยุทธ์:</b> รอย่อเข้าโซน ≤ {{rd:fv}} จึงเริ่มทยอยสะสม และจะ "น่าสนใจ" ชัดที่ ≤ {{rd:mos20}} (MOS 20%) — ที่ราคาปัจจุบัน {{rd:px}} ความเสี่ยง-ผลตอบแทนไม่คุ้มสำหรับนักลงทุนเน้นคุณค่า ผู้ถืออยู่แล้วอาจพิจารณาล็อกกำไรบางส่วน
       </div>
     </div>
   </section>
@@ -325,7 +323,7 @@
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มาข้อมูล: StockAnalysis.com, Investing.com, SET (set.or.th), SCGP Investor Relations
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 24 มิ.ย. 2026 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 22 ก.ย. 2026 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
