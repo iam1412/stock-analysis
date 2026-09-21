@@ -4,37 +4,37 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น Prudential Financial (PRU) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"PRU","currency":"USD","price":118.4,"fairValue":148,"mos":20,"upside":25,"pe":8,"dividendYield":4.73,"roe":14.6}
+{"symbol":"PRU","currency":"USD","price":118.4,"fairValue":125,"mos":5.3,"upside":5.6,"pe":10.7,"dividendYield":4.73,"roe":12}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 148,
+  "fv": 125,
   "values": {
     "px": 118.4,
     "priceDate": "2026-09-18",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
     "fvLow": 97,
-    "fvHigh": 183,
-    "eps": 14.75,
-    "shares": 347000000,
+    "fvHigh": 137,
+    "eps": 11.06,
+    "shares": 345212683,
     "dps": 5.6,
-    "bvps": 99.79,
-    "baseEps": 14.75,
+    "bvps": 91.47,
+    "baseEps": 11.06,
     "scenarios": [
       {
-        "tgt": 125,
+        "tgt": 94,
         "div": 16.97
       },
       {
-        "tgt": 186,
+        "tgt": 132,
         "div": 17.47
       },
       {
-        "tgt": 262,
+        "tgt": 193,
         "div": 17.81
       }
     ],
@@ -99,7 +99,7 @@
       <span class="tag">S&amp;P 500</span>
     </div>
     <h1>Prudential Financial</h1>
-    <div class="sub">Life insurance &amp; annuities • PGIM asset management (~$1.4T AUM) • Retirement solutions • Group insurance • International (Japan, Brazil) • ~5% dividend yield</div>
+    <div class="sub">Life insurance &amp; annuities • PGIM asset management • Retirement solutions • Group insurance • International (Japan, Brazil) • ~5% dividend yield</div>
     <div class="price-row">
       <div>
         <div class="px">{{rd:px}}<small>(PRU)</small></div>
@@ -107,28 +107,28 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ $91.89 – $119.76<br>
-        ที่มา: Yahoo Finance, StockAnalysis.com, Prudential Financial IR
+        กรอบ 52 สัปดาห์ $91.89 – $127.72<br>
+        ที่มา: Yahoo Finance quoteSummary, Yahoo Finance chart API, StockAnalysis.com (งบ FY2021–FY2025 + TTM)
       </div>
     </div>
   </header>
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ใช้ Adjusted Operating EPS — สะท้อนธุรกิจประกันที่แท้จริง</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ใช้ GAAP diluted EPS ที่ยืนยันได้ 2 แหล่ง (Adj. operating เป็นบริบท ไม่ใช่ฐาน FV)</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~347 ล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (Adj. Operating TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS adj. $14.75 TTM</div></div>
-      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">9–11x</div><div class="d">ปัจจุบันถูกกว่าเฉลี่ยประวัติศาสตร์</div></div>
-      <div class="metric"><div class="k">P/BV (Adj. Book)</div><div class="v neu">{{rd:pbv}}x</div><div class="d">Adj. BVPS $99.79 (Q1/2569)</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~345 ล้านหุ้น (คงเหลือ)</div></div>
+      <div class="metric"><div class="k">P/E (GAAP diluted TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS GAAP diluted $11.06 TTM</div></div>
+      <div class="metric"><div class="k">P/E มัธยฐานย้อนหลัง (4 ปีงบ)</div><div class="v">12.4x</div><div class="d">ช่วง 4.5–15.7x · FY2022 ขาดทุนตัดออก</div></div>
+      <div class="metric"><div class="k">P/BV (GAAP Book)</div><div class="v neu">{{rd:pbv}}x</div><div class="d">GAAP BVPS $91.47 (StockAnalysis)</div></div>
 
-      <div class="metric"><div class="k">กำไร Adj. Operating FY2568</div><div class="v">$14.43/หุ้น</div><div class="d">+14.3% YoY vs $12.62 ปีก่อน</div></div>
-      <div class="metric"><div class="k">EPS Adj. Operating TTM</div><div class="v">~$14.75</div><div class="d">Q2–Q4/68 + Q1/69 รวม</div></div>
-      <div class="metric"><div class="k">Book Value/Share (Adj.)</div><div class="v">~$99.79</div><div class="d">Q1/2569 · GAAP BVPS $90.83</div></div>
-      <div class="metric"><div class="k">Operating ROE</div><div class="v pos">~14.6%</div><div class="d">Q1/2569 · ขยายตัว +80 bps YoY</div></div>
+      <div class="metric"><div class="k">EPS GAAP diluted FY2568</div><div class="v">$9.99/หุ้น</div><div class="d">+33.2% YoY vs $7.50 ปีก่อน</div></div>
+      <div class="metric"><div class="k">EPS GAAP diluted TTM</div><div class="v">~$11.06</div><div class="d">Yahoo $11.03 · ต่างกัน 0.3%</div></div>
+      <div class="metric"><div class="k">Book Value/Share (GAAP)</div><div class="v">~$91.47</div><div class="d">StockAnalysis · ไม่ใช่ adj. book</div></div>
+      <div class="metric"><div class="k">ROE (GAAP TTM)</div><div class="v pos">~12.0%</div><div class="d">FY2568 11.4% · FY2567 9.5%</div></div>
 
-      <div class="metric"><div class="k">PGIM AUM</div><div class="v neu">$1.43T</div><div class="d">+3% YoY · Total AUM $1.76T</div></div>
-      <div class="metric"><div class="k">Operating ROE เป้า</div><div class="v">14%+</div><div class="d">บรรลุ 15% ทั้งปี FY2568</div></div>
+      <div class="metric"><div class="k">D/E (TTM)</div><div class="v neu">1.64x</div><div class="d">หนี้ $56.7B · เงินสด $15.2B</div></div>
+      <div class="metric"><div class="k">Net margin (TTM)</div><div class="v">5.9%</div><div class="d">FY2568 5.8% · FY2567 3.8%</div></div>
       <div class="metric"><div class="k">เงินปันผล (Forward)</div><div class="v">~4.73%</div><div class="d">$5.60/ปี · $1.40/ไตรมาส</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">~1.1</div><div class="d">อ่อนไหวต่ออัตราดอกเบี้ยสูง</div></div>
     </div>
@@ -147,28 +147,28 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        PRU ปรับตัวขึ้น +5.4% ในรอบปี จากประมาณ $103.58 (ก.ค. 2568) มาอยู่ที่ $109.20 (มิ.ย. 2569)
-        โดยทำจุดสูงสุดที่ $112.88 เดือนธันวาคม 2568 ก่อนปรับลงแรงในช่วง ก.พ.–มี.ค. 2569 ลงถึง $97.69
-        เนื่องจากความกังวลเรื่องความผันผวนตลาดและญี่ปุ่นระงับการขายประกันชั่วคราว
-        แต่ฟื้นกลับขึ้นในช่วง พ.ค.–มิ.ย. 2569 หลังผลประกอบการ Q1/2569 ดีเกินคาด (+9.7% YoY ในด้าน adj. operating EPS)
+        ตามกราฟรายเดือน PRU เริ่มที่ประมาณ $104 (ต.ค. 2568) ขึ้นไป $112.88 (ธ.ค. 2568)
+        ก่อนปรับลงในช่วง ก.พ.–เม.ย. 2569 ถึงต่ำสุด $97.69 (มี.ค. 2569)
+        แล้วฟื้นตัวแรงถึงสูงสุดของปี $122.08 (ก.ค. 2569) และปิดเดือนล่าสุดแถว $118
+        (ไม่ระบุสาเหตุรายเหตุการณ์ เพราะยังไม่ได้ตรวจแหล่งปฐมภูมิรอบนี้)
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">2 ตระกูลสมมติฐาน</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation (Adjusted Operating)</div><div class="mdesc">EPS adj. $14.75 × P/E 10x — อิง mid-cycle สำหรับบริษัทประกันชีวิตชั้นนำ (ประวัติ 9–12x)</div></div>
-        <div class="mval">$147.5</div>
+        <div><div class="mname">1. P/E Valuation (GAAP diluted)</div><div class="mdesc">EPS $11.06 (TTM GAAP diluted) × P/E 12.4x — มัธยฐานย้อนหลัง 4 ปีงบของ PRU เอง (FY2021, FY2023–2025; FY2022 ขาดทุนตัดออก ช่วง 4.5–15.7x) มาจากประวัติ ไม่ได้มาจาก P/E ปัจจุบัน</div></div>
+        <div class="mval">$137</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 14.6% − g 3.5%)/(r 9.0% − g 3.5%) ≈ 2.02x × BVPS $90.83 (GAAP)</div></div>
-        <div class="mval">$183</div>
+        <div><div class="mname">2. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 12.0% − g 3.5%)/(r 9.5% − g 3.5%) ≈ 1.42x × BVPS $91.47 (GAAP) — ตระกูล (r,g) เดียวกับ DDM</div></div>
+        <div class="mval">$130</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">3. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล $5.60 × (1+3.5%) = $5.80; g 3.5%, r 9.5% — สะท้อนมุมมองตลาด yield-driven</div></div>
+        <div><div class="mname">3. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล $5.60 × (1+3.5%) = $5.80; g 3.5%, r 9.5% — (r,g) ชุดเดียวกับ P/BV จึงนับเป็นเสียงเดียว (เฉลี่ย P/BV+DDM = $113)</div></div>
         <div class="mval">$97</div>
       </div>
       <div class="fv-box">
@@ -176,11 +176,11 @@
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        P/E ที่ 10x Adj. Operating EPS ให้ $147.5 ซึ่งสอดคล้องกับ mid-cycle valuation ของบริษัทประกันชีวิตชั้นนำ
-        Justified P/BV ที่ 2.02x ให้ $183 สูงกว่าเนื่องจาก ROE ของ PRU (14.6%) สูงกว่าค่าเฉลี่ยอุตสาหกรรม
-        DDM ให้เพียง $97 สะท้อนมุมมองของตลาดที่ใช้ yield-based valuation ซึ่งเป็น floor ของราคา
-        ค่าเฉลี่ยถ่วงน้ำหนัก (P/E 50%, P/BV 30%, DDM 20%) = $148 — ราคาปัจจุบัน $109.20 ให้ MOS ~26%
-        นักวิเคราะห์ Wall Street ส่วนใหญ่ (18 คน) ให้เป้า $101 ซึ่งต่ำกว่ามาก สะท้อนความกังวลระยะสั้นเรื่อง Japan &amp; ALT income
+        FV = เฉลี่ยของ 2 ตระกูล: P/E ที่วัดจริง $137 และตระกูล (r,g) เดียวกัน (Justified P/BV $130 + DDM $97 = เฉลี่ย $113) ⇒ ($137 + $113)/2 ≈ {{rd:fv}}
+        ประมาณการนี้เป็น valuation ตระกูลแรกที่ยึดตลาด (P/E มัธยฐานย้อนหลัง) เทียบกับตระกูลที่ขึ้นกับ r/g ที่เป็นสมมติฐานของเรา จึงมีความไม่แน่นอน
+        หากใช้เฉพาะ P/E ได้ $137 ส่วนเฉพาะตระกูล r/g ได้ $113 — MOS อ่อนไหวตามน้ำหนักนี้
+        ฐาน EPS เปลี่ยนจาก Adj. Operating เป็น GAAP diluted เพราะ P/E มัธยฐานวัดบน GAAP และ Adj. operating ตรวจซ้ำกับแหล่งปฐมภูมิรอบนี้ไม่ได้
+        เป้านักวิเคราะห์ (15 คน, Hold) ~$113.40 ใช้เป็นบริบทเท่านั้น ไม่ได้เป็นส่วนของ FV
       </p>
     </div>
   </section>
@@ -198,15 +198,14 @@
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
-          <span style="text-align:right">$165<br><small>เป้าสูง Bull</small></span>
+
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน $109.20 อยู่ต่ำกว่ามูลค่าเหมาะสม $148 ถึง ~26% (MOS)
-        โซน MOS 20% อยู่ที่ $118 ซึ่งราคาปัจจุบันอยู่ใกล้เคียง ทำให้เริ่มทยอยสะสมได้แล้ว
-        โซน MOS 30% (Deep Value) ที่ $104 อยู่ใกล้กับจุดต่ำสุดรอบปีที่ $97.69 และเป้านักวิเคราะห์ $101
-        สังเกตว่า consensus analyst ที่ $101 สะท้อนความระมัดระวังระยะสั้น แต่ต่ำกว่า DDM floor ($97) เล็กน้อย
+        ราคาปัจจุบัน {{rd:px}} อยู่ต่ำกว่ามูลค่าเหมาะสม {{rd:fv}} ({{rd:mos}}) — ส่วนเผื่อบาง
+        โซน MOS 20% อยู่ที่ {{rd:mos20}} และโซน MOS 30% (Deep Value) ที่ {{rd:mos30}} ซึ่งใกล้ต่ำสุดรอบปี $97.69
+        เป้าเฉลี่ยนักวิเคราะห์ราว $113.40 (Hold) อยู่ใกล้ราคาตลาด — ไม่ใช่ตัวชี้ว่าถูกหรือแพง
       </p>
     </div>
   </section>
@@ -217,7 +216,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">ราคาต่ำกว่ามูลค่าเหมาะสมพอสมควร — มี MOS ที่ดี บวกปันผล ~5% ช่วยลดความเสี่ยง</div>
+        <div class="txt">ส่วนเผื่อบาง — ราคาใกล้มูลค่าเหมาะสม อาศัยปันผลช่วยลดความเสี่ยง (FV มาจาก 2 ตระกูล ความไม่แน่นอนสูง)</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -244,45 +243,44 @@
           <div class="tgt">{{rd:sc1tgt}}</div>
           <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$15.65</span></li>
+            <li><span>EPS ปี 3</span><span>~$11.74</span></li>
             <li><span>P/E ออก</span><span>8x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
-            <li><span>สถานการณ์</span><span>ญี่ปุ่นซบเซา อัตราดอกเบี้ยลด</span></li>
+            <li><span>สถานการณ์</span><span>กำไรโตช้า P/E de-rate</span></li>
           </ul>
         </div>
       </div>
       <div class="col base">
-        <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
+        <div class="top"><span>⚖️ Base</span><span>EPS +6%/ปี</span></div>
         <div class="body">
           <div class="tgt">{{rd:sc2tgt}}</div>
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$18.58</span></li>
+            <li><span>EPS ปี 3</span><span>~$13.17</span></li>
             <li><span>P/E ออก</span><span>10x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
-            <li><span>สถานการณ์</span><span>PGIM เติบโต ดอกเบี้ยทรงตัว</span></li>
+            <li><span>สถานการณ์</span><span>กำไรโตต่อเนื่อง P/E ~10x</span></li>
           </ul>
         </div>
       </div>
       <div class="col bull">
-        <div class="top"><span>🚀 Bull</span><span>EPS +14%/ปี</span></div>
+        <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
         <div class="body">
           <div class="tgt">{{rd:sc3tgt}}</div>
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$21.85</span></li>
-            <li><span>P/E ออก</span><span>12x</span></li>
+            <li><span>EPS ปี 3</span><span>~$15.54</span></li>
+            <li><span>P/E ออก</span><span>12.4x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
-            <li><span>สถานการณ์</span><span>PGIM AUM พุ่ง Revaluation ถึง 12x</span></li>
+            <li><span>สถานการณ์</span><span>กำไรฟื้นแรง กลับสู่ P/E มัธยฐาน</span></li>
           </ul>
         </div>
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      แม้ใน Bear case ที่ EPS โตแค่ 2%/ปี และ P/E ออกที่ 8x ผลตอบแทนรวมยังเป็นบวก +30% จากปันผล ~$16.97 ใน 3 ปี
-      Base case (+8%/ปี, P/E 10x) ให้ผลตอบแทนรวม +86% รวมปันผล ซึ่งน่าสนใจมากสำหรับหุ้น defensive yield
-      PRU มีการเติบโต EPS adj. ต่อเนื่อง: $12.62 (FY67) → $14.43 (FY68) → $14.75 TTM (Q1/69)
-      ปันผล $5.60/ปี ช่วย cushion ผลตอบแทนในทุกสถานการณ์ (yield on cost ~5.1%)
+      ราคาเป้าแต่ละฉากเป็นสมมติฐาน (EPS GAAP diluted $11.06 เป็นฐาน) — Bear ให้ P/E ออก 8x ต่ำกว่าประวัติ, Base ใช้ ~10x, Bull กลับสู่มัธยฐาน 12.4x
+      EPS GAAP diluted ที่วัดได้: $6.74 (FY2566) → $7.50 (FY2567) → $9.99 (FY2568) → $11.06 TTM — FY2565 ขาดทุน (−$4.49)
+      ปันผล $5.60/ปี ช่วยรองรับผลตอบแทน แต่ผลตอบแทนฉาก Bear อาจติดลบตามราคาเป้า
     </p>
   </section>
 
@@ -293,22 +291,20 @@
       <div class="box cat">
         <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
         <ul>
-          <li><b>PGIM AUM ขยายตัว:</b> AUM ทะลุ $1.43T (+3% YoY) โดยเฉพาะ Private Credit &amp; Fixed Income ที่กำลังเป็นที่ต้องการ — margin expansion เป้า PGIM กำลังบรรลุเป้าตามแผน</li>
-          <li><b>Operating ROE แข็งแกร่ง:</b> 14.6% Q1/2569 ขยายตัว +80 bps YoY บรรลุเป้าหมายระยะยาว 14%+ — หนุนการ re-rating จาก 7.4x เป็น 9–10x</li>
-          <li><b>Capital-light หลัง Fortitude Re:</b> การขาย legacy life block ให้ Fortitude Re ลดความเสี่ยงด้านอัตราดอกเบี้ยและเพิ่มความยืดหยุ่นทางทุน — คืนเงิน ~$3B/ปี ผ่านปันผล+ซื้อหุ้นคืน</li>
-          <li><b>International diversification:</b> ญี่ปุ่นและบราซิลเป็นแหล่งรายได้ที่มั่นคง ตลาดเกิดใหม่ Asia ยังเติบโตสูงระยะยาว</li>
-          <li><b>อัตราดอกเบี้ยสูง:</b> Investment spread ขยายตัวในสภาพดอกเบี้ยสูง หนุนกำไรจาก fixed income portfolio ที่ใหญ่</li>
-          <li><b>เงินปันผลยั่งยืน:</b> $5.60/ปี yield ~5.13% บน adjusted book value ที่เพิ่มขึ้นต่อเนื่อง ปันผลขึ้น 4% ต่อปี</li>
+          <li><b>กำไรฟื้นต่อเนื่อง:</b> EPS GAAP diluted ขึ้นจาก $6.74 (FY2566) เป็น $11.06 TTM และ ROE ปีงบ 11.4% (FY2568) เป็น 12.0% TTM</li>
+          <li><b>P/E ต่ำกว่ามัธยฐานประวัติ:</b> P/E ปัจจุบันต่ำกว่ามัธยฐาน 12.4x ของ PRU เอง — มี upside หากกำไรทรงตัว</li>
+          <li><b>Forward EPS สูงกว่า TTM:</b> ฉันทามติ FY2026e $14.42 (basis ของนักวิเคราะห์ น่าจะเป็น adj. operating — ไม่ใช่ GAAP) ใช้เป็นบริบท ไม่ใช่ฐาน FV</li>
+          <li><b>เงินปันผล:</b> $5.60/ปี (yield ~4.7%) payout ~51% ของกำไร GAAP</li>
         </ul>
       </div>
       <div class="box risk">
         <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
         <ul>
-          <li><b>ญี่ปุ่น — ระงับขายประกัน:</b> ปัญหาการระงับการขายประกันบางผลิตภัณฑ์ชั่วคราวในญี่ปุ่น (market misconduct review) กระทบรายได้ International segment ระยะสั้น</li>
-          <li><b>Alternative Investment Income ผันผวน:</b> ALT income ต่ำกว่าเป้าใน Q1/2569 กระทบ EPS รายไตรมาส — แม้ไม่ใช่ underlying trend แต่ตลาดมักตอบสนองรุนแรง</li>
+          <li><b>กำไรผันผวน:</b> FY2565 ขาดทุน (EPS −$4.49) และ P/E ย้อนหลังกว้าง 4.5–15.7x — ฐาน P/E ไม่นิ่ง</li>
+          <li><b>ภาระหนี้:</b> D/E 1.64x เพิ่มจาก 1.25x (FY2568) หนี้ $56.7B เทียบเงินสด $15.2B</li>
           <li><b>ความเสี่ยงอัตราดอกเบี้ย:</b> หากดอกเบี้ยลดเร็วหรือ yield curve inverted — กระทบ spread และ investment return ของ portfolio ประกัน</li>
-          <li><b>Analyst consensus ต่ำ:</b> เป้านักวิเคราะห์เฉลี่ย $101 ต่ำกว่าราคาตลาด สะท้อน near-term caution — อาจกดดัน sentiment</li>
-          <li><b>การแข่งขัน Asset Management:</b> PGIM เผชิญการแข่งขันจาก BlackRock, Vanguard, Apollo — fee compression ในอุตสาหกรรม</li>
+          <li><b>เป้านักวิเคราะห์:</b> เฉลี่ยราว $113.40 (Hold, 15 คน) ต่ำกว่าราคาตลาดเล็กน้อย — upside จาก consensus จำกัด</li>
+          <li><b>การแข่งขัน Asset Management:</b> fee compression ในอุตสาหกรรมบริหารสินทรัพย์ (ข้อสังเกตทั่วไป)</li>
         </ul>
       </div>
     </div>
@@ -318,23 +314,21 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>Value Dividend — PRU ถูกเกินจริง ปันผล 5% หนุนผลตอบแทนทุกสถานการณ์</h2>
+      <h2>Value Dividend — PRU ใกล้มูลค่าเหมาะสม ส่วนเผื่อบาง ปันผล ~5% ช่วยรองรับ</h2>
       <p>
-        Prudential Financial เป็นบริษัทประกันชีวิตและ Asset Manager ชั้นนำของสหรัฐ ที่มีผลตอบแทนผู้ถือหุ้น (Operating ROE) 14.6%
-        แต่ตลาดยังให้ราคาเพียง 7.4x Adj. Operating EPS — ต่ำกว่า mid-cycle valuation ที่ 10x อย่างมีนัยสำคัญ
-        ปัจจัยกดดันระยะสั้นได้แก่ประเด็นญี่ปุ่นและ ALT income ผันผวน แต่ธุรกิจหลัก (PGIM, US Retirement, International) ยังเติบโตแข็งแกร่ง
-        ปันผล $5.60/ปี (~5.13%) เป็น "ตาข่ายความปลอดภัย" — แม้ใน Bear case ผลตอบแทน 3 ปียังเป็นบวก +30%
-        ราคาปัจจุบัน $109.20 ให้ MOS ~26% เมื่อเทียบ FV $148 — เหมาะกับนักลงทุนแนว Value + Income ที่ต้องการ Yield สูงพร้อม Upside
+        Prudential Financial เป็นบริษัทประกันชีวิตและ Asset Manager ของสหรัฐ ROE GAAP ~12.0% ซื้อขายที่ P/E GAAP ~{{rd:pe}}x เทียบมัธยฐานย้อนหลัง 12.4x
+        การประเมินรอบนี้ใช้ EPS GAAP diluted ($11.06) ที่วัดได้ 2 แหล่ง แทน Adj. operating ที่ตรวจซ้ำไม่ได้ — FV จึงลดลงจากรอบก่อนอย่างมีนัย
+        ราคาปัจจุบัน {{rd:px}} เทียบ FV {{rd:fv}} ให้ MOS {{rd:mos}} — ส่วนเผื่อบาง เหมาะกับนักลงทุนแนว Income ที่รับความไม่แน่นอนของ FV 2 ตระกูลได้
+        ปันผล $5.60/ปี (~4.7%) ช่วยรองรับผลตอบแทน แต่ไม่ได้รับประกันผลบวกในทุกฉาก
       </p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$101 (Hold)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$113.40 (Hold)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน $109 อยู่ใกล้โซน MOS 20% ($118) — เริ่มทยอยสะสมได้ โดยเฉพาะในวันที่ราคาปรับลงใกล้ $104 (MOS 30%)
-        ปันผล ~5.1% ช่วยลดความเสี่ยงด้านเวลา — รอ re-rating เมื่อตลาดรับรู้ถึง ROE ที่แข็งแกร่งและ PGIM momentum
-        Downside จำกัดด้วย dividend yield floor · Upside อยู่ที่ +35% หากตลาด re-rate สู่ 10x
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน {{rd:px}} ยังสูงกว่าโซน MOS 20% ({{rd:mos20}}) — รอราคาปรับลงใกล้โซนนั้น หรือใกล้ MOS 30% ({{rd:mos30}}) ก่อนสะสม
+        ปันผล ~4.7% ช่วยลดความเสี่ยงด้านเวลา · ความเสี่ยง: กำไร GAAP ผันผวน (FY2565 ขาดทุน) และ FV มาจากสมมติฐานสองตระกูลที่ต่างกัน
       </div>
     </div>
   </section>
@@ -344,9 +338,9 @@
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
-    แหล่งข้อมูล: Yahoo Finance (ราคา $109.20 ณ 29 มิ.ย. 2569 · chart data จริงจาก Yahoo API), StockAnalysis.com (metrics/balance sheet · BVPS · EPS GAAP), Prudential Financial IR Q1 2026 press release (adj. operating EPS $3.61 · PGIM AUM $1.43T · Operating ROE 14.6% · adj. BVPS $99.79), Zacks/StockAnalysis.com (analyst consensus $101 · 18 analysts · Hold)
+    แหล่งข้อมูล: Yahoo Finance (ราคาตามหัวรายงาน · chart data จริงจาก Yahoo API · EPS TTM $11.03), StockAnalysis.com (งบ FY2021–FY2025 + TTM · EPS GAAP diluted $11.06 · BVPS $91.47 · ROE · forecast FY2026e $14.42 · เป้านักวิเคราะห์ $113.40 · 15 คน · Hold)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 29 มิถุนายน 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
