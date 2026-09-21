@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น Vulcan Materials (VMC) — Stock Analysis Dashboard</title>
 <!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง -->
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) -->
 <script type="application/json" id="stock-meta">
 {"symbol":"VMC","currency":"USD","price":240.83,"fairValue":265,"mos":9.1,"upside":10,"pe":28.6,"dividendYield":0.86,"roe":13.46}
@@ -89,7 +89,7 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ $252.35 / $331.09<br>
+        กรอบ 52 สัปดาห์ $240.69 / $331.09<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / Vulcan Materials IR / Macrotrends
       </div>
     </div>
@@ -97,7 +97,7 @@
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569 · adj EPS $8.42 (TTM)</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ย. 2569 · adj EPS $8.42 (TTM)</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">131.1M shares outstanding</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">adj EPS $8.42 · premium sector</div></div>
@@ -132,7 +132,7 @@
         ราคา VMC เคลื่อนไหว +11.9% ในรอบปี (ก.ค. 68 $274.67 → มิ.ย. 69 $307.27) สะท้อนความแข็งแกร่งของธุรกิจ aggregates
         จุดสูงสุด ก.พ. 69 ที่ $310.00 หลัง Q4 FY25 งบดีและ IIJA spending เร่งตัว
         แต่มี.ค. 69 ย่อลงสู่ $272.30 จากความกังวลเศรษฐกิจชะลอ ก่อนดีดกลับสู่ระดับปัจจุบัน
-        ราคาซื้อขายเหนือ Fair Value $265 ตลอดช่วงปี บ่งชี้ว่าตลาด pricing moat premium ไว้สูง
+        ราคาซื้อขายเหนือ Fair Value {{rd:fv}} ตลอดช่วงปี บ่งชี้ว่าตลาด pricing moat premium ไว้สูง
       </p>
     </div>
   </section>
@@ -161,7 +161,7 @@
         วิธี P/E (adj TTM) ให้ค่าต่ำสุด $252.60 เพราะ TTM EPS รวมผลขาดทุนพิเศษบางไตรมาส
         วิธี Forward P/E FY26E สูงสุด $276.00 สะท้อนการเติบโตที่คาดไว้
         วิธี P/FCF $265.36 อยู่กลางและมีความน่าเชื่อถือสูงสำหรับธุรกิจ asset-heavy ที่กระแสเงินสดมั่นคง
-        ค่าเฉลี่ยสาม วิธี = $264.65 ≈ <b>$265</b> · ราคาปัจจุบัน $307.27 สูงกว่า FV ทุกวิธี (MOS −16.0%)
+        ค่าเฉลี่ยสาม วิธี = $264.65 ≈ <b>{{rd:fv}}</b> · ราคาปัจจุบัน {{rd:px}} เทียบ FV (MOS {{rd:mos}})
       </p>
     </div>
   </section>
@@ -184,9 +184,9 @@
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคา $307.27 สูงกว่า Fair Value $265 อยู่ ~16% (MOS ติดลบ) บ่งชี้ว่าตลาด pricing moat และ IIJA tailwind ไว้แล้ว
+        ราคา {{rd:px}} เทียบ Fair Value {{rd:fv}} (MOS {{rd:mos}}) บ่งชี้ว่าตลาด pricing moat และ IIJA tailwind ไว้แล้ว
         นักวิเคราะห์ 23 ราย เป้าเฉลี่ย $327 (+20% จากราคาปัจจุบัน) แต่ยังต่ำกว่า P/E ปัจจุบัน 36.5x
-        โซนน่าสนใจเริ่มต้นที่ &lt;$265 (Fair Value) · โซน MOS 20% ที่ $212.00 เป็นจุด deep value
+        โซนน่าสนใจเริ่มต้นที่ &lt;{{rd:fv}} (Fair Value) · โซน MOS 20% ที่ {{rd:mos20}} เป็นจุด deep value
       </p>
     </div>
   </section>
@@ -216,7 +216,7 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $307.27 • EPS ฐาน ~$8.42 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~$8.42 • รวมปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +5%/ปี</span></div>
@@ -299,7 +299,7 @@
       <h2>ธุรกิจชั้นเยี่ยม แต่ราคาแพง — รอย่อใกล้ $212</h2>
       <p>Vulcan Materials คือผู้นำ aggregates สหรัฐที่มี moat แข็งแกร่งที่สุดในเซกเตอร์ (quarry permit = irreplaceable asset, pricing power ท้องถิ่น)
          ได้ประโยชน์โดยตรงจาก IIJA $1.2T และ reshoring mega-projects ทำให้ demand ระยะยาวสดใส
-         อย่างไรก็ตาม ราคา $307.27 ที่ P/E 36.5x แพงเกินกว่าการเติบโต ~9%/ปี — Fair Value 3 วิธีเฉลี่ย $265 (MOS −16.0%)
+         อย่างไรก็ตาม ราคา {{rd:px}} ที่ P/E {{rd:pe}}x เทียบการเติบโต ~9%/ปี — Fair Value 3 วิธีเฉลี่ย {{rd:fv}} (MOS {{rd:mos}})
          นักวิเคราะห์ 23 ราย เป้าเฉลี่ย $327 ให้ upside เพียง +6% จากระดับปัจจุบัน ไม่คุ้มค่าความเสี่ยง
          สำหรับนักลงทุนระยะยาว: ธุรกิจดีมากแต่ต้องรอราคาย่อ</p>
       <div class="vgrid">
@@ -308,7 +308,7 @@
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$327 (Buy/Outperform)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> รอราคาย่อใกล้ $265 (Fair Value) เพื่อ MOS เป็นบวก · จุดสะสมแรก &lt;$265 · deep value zone $212 (MOS 20%) · ที่ $307 ราคาแพงเกินไปสำหรับ return ที่คาดหวัง — moat ดีมากแต่ต้องรอจังหวะ
+        💡 <b>กลยุทธ์:</b> รอราคาย่อใกล้ {{rd:fv}} (Fair Value) เพื่อ MOS เป็นบวก · จุดสะสมแรก &lt;{{rd:fv}} · deep value zone {{rd:mos20}} (MOS 20%) · ที่ $307 ราคาแพงเกินไปสำหรับ return ที่คาดหวัง — moat ดีมากแต่ต้องรอจังหวะ
       </div>
     </div>
   </section>
@@ -320,7 +320,7 @@
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
     แหล่งข้อมูล: StockAnalysis.com / Yahoo Finance / Vulcan Materials Investor Relations / Macrotrends · ราคา ณ {{rd:priceDate}}
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 26 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 22 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
