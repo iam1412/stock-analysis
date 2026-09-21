@@ -5,38 +5,38 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น ดิทโต้ (ประเทศไทย) (DITTO) — Stock Analysis Dashboard</title>
 <!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง -->
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"DITTO","currency":"THB","price":12.7,"fairValue":16.6,"mos":23.5,"upside":30.7,"pe":14.4,"dividendYield":3.94,"roe":15.98}
+{"symbol":"DITTO","currency":"THB","price":13,"fairValue":15.07,"mos":13.7,"upside":15.9,"pe":14.29,"dividendYield":3.85,"roe":16.52}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 16.6,
+  "fv": 15.07,
   "values": {
-    "px": 12.7,
-    "priceDate": "2026-09-18",
+    "px": 13,
+    "priceDate": "2026-09-21",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
-    "fvLow": 15,
-    "fvHigh": 17.83,
-    "eps": 0.88,
+    "fvLow": 12.19,
+    "fvHigh": 18.08,
+    "eps": 0.91,
     "shares": 693900000,
     "dps": 0.5,
     "bvps": 5.71,
-    "baseEps": 0.88,
+    "baseEps": 0.91,
     "scenarios": [
       {
-        "tgt": 13.44,
+        "tgt": 10.93,
         "div": 1.5
       },
       {
-        "tgt": 22.78,
+        "tgt": 19.38,
         "div": 1.8
       },
       {
-        "tgt": 30.4,
+        "tgt": 26.73,
         "div": 1.95
       }
     ],
@@ -72,7 +72,7 @@
       ["มิ.ย.26", 14],
       ["ก.ค.26", 15.9],
       ["ส.ค.26", 14.3],
-      ["ก.ย.26", 12.7]
+      ["ก.ย.26", 13]
     ],
     "min": 10,
     "max": 18,
@@ -108,7 +108,7 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ ฿9.90 – ฿15.80<br>
+        กรอบ 52 สัปดาห์ ฿9.90 – ฿16.80<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, investor.dittothailand.com
       </div>
     </div>
@@ -116,28 +116,28 @@
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 / FY2568</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ 21 ก.ย. 2569 / FY2568 + TTM</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿8.8B</div><div class="d">หุ้น 693.9 ล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM ฿0.88</div></div>
-      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~15–18x</div><div class="d">ช่วง 13–20x ตามวัฏจักร</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿9.0B</div><div class="d">หุ้น 693.9 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM ฿0.91</div></div>
+      <div class="metric"><div class="k">P/E มัธยฐาน ~4 ปี</div><div class="v">~32x</div><div class="d">ช่วง 13.4–60.5x (ตัด FY2565 ที่ 134x)</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ฿5.71</div></div>
 
-      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿599 ล้าน</div><div class="d">+31% YoY • All Time High</div></div>
-      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.88</div><div class="d">FY2568: ฿0.86 (+31% YoY)</div></div>
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿599 ล้าน</div><div class="d">+31% YoY • TTM ฿634 ล้าน</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.91</div><div class="d">FY2568: ฿0.86 (+31% YoY)</div></div>
       <div class="metric"><div class="k">BVPS</div><div class="v">~฿5.71</div><div class="d">Equity ฿3,963 ล้าน (TTM)</div></div>
-      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~16.0% / 8.3%</div><div class="d">ROIC 16.2% • Debt/Equity 0.02x</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~16.5%</div><div class="d">ROE (TTM) • Debt/Equity 0.01x</div></div>
 
-      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿3,342 ล้าน</div><div class="d">FY2568: ฿3,169M (+30% YoY)</div></div>
-      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">25.8%</div><div class="d">Gross margin ลดจาก 33% (2565)</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~3.94%</div><div class="d">฿0.50/หุ้น FY2568 • Payout ~58%</div></div>
-      <div class="metric"><div class="k">Current Ratio</div><div class="v">2.20x</div><div class="d">สภาพคล่องแข็งแกร่ง • D/E 0.02x</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿3,592 ล้าน</div><div class="d">FY2568: ฿3,169M (+30% YoY) • TTM +33% YoY</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">23.9%</div><div class="d">Gross margin (TTM) ลดจาก 33% (2565)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~3.85%</div><div class="d">฿0.50/หุ้น FY2568 • Payout ~58%</div></div>
+      <div class="metric"><div class="k">Current Ratio</div><div class="v">2.20x</div><div class="d">สภาพคล่องแข็งแกร่ง • D/E 0.01x</div></div>
     </div>
   </section>
 
   <!-- ===== 2. PRICE CHART ===== -->
   <section>
-    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ต.ค. 2568 – ก.ย. 2569</div></div>
     <div class="card">
       <div class="chart-wrap">
         <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
@@ -148,33 +148,33 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ราคา DITTO ผ่านช่วงผันผวนในรอบปีที่ผ่านมา เริ่มต้นที่ ฿11.40 (ก.ค. 2568) และแตะระดับต่ำสุดที่ประมาณ ฿9.50–฿10.70 ในช่วงมี.ค.–เม.ย. 2569 ก่อนฟื้นตัวแข็งแกร่งในไตรมาส 2/2569 ขึ้นสู่ ฿15.30 สาเหตุหลักจากผลประกอบการ FY2568 ที่สร้าง All Time High ทั้งรายได้และกำไร ประกอบกับการขยายธุรกิจ AI/Automation และโครงการภาครัฐที่เดินหน้าต่อเนื่องในปี 2569 ทำให้ผู้ลงทุนกลับมาให้ความสนใจ ราคาปัจจุบัน ฿15.30 อยู่ต่ำกว่า Fair Value เล็กน้อยที่ ฿16.60 และยังต่ำกว่ากรอบสูงสุด 52 สัปดาห์ที่ ฿15.80
+        ราคา DITTO เริ่มรอบปีที่ ฿11.90 (ต.ค. 2568) แตะจุดต่ำสุดรายเดือน ฿10.70 (มี.ค. 2569) ก่อนฟื้นแรงในไตรมาส 2/2569 ถึงจุดสูงสุดรายเดือน ฿15.90 (ก.ค. 2569) หลังผลประกอบการ FY2568 สร้างสถิติสูงสุดทั้งรายได้และกำไร แล้วย่อลงตามตลาด ราคาปัจจุบัน {{rd:px}} อยู่ต่ำกว่า Fair Value {{rd:fv}} และต่ำกว่ากรอบสูงสุด 52 สัปดาห์ ฿16.80 ราว 23% โดยยังสูงกว่าจุดต่ำสุด 52 สัปดาห์ ฿9.90 ราว 31%
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">2 ตระกูลสมมติฐาน (3 วิธี)</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿0.88 × P/E เป้าหมาย ~17x — อ้างอิง P/E เฉลี่ยกลุ่ม Technology Services ไทย (~15–18x) ปรับด้วยการเติบโตกำไร +30% YoY</div></div>
-        <div class="mval">฿15.00</div>
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿0.91 × P/E 13.4x — ตัวคูณที่วัดจริง FY2568 (ราคาเฉลี่ยปี ÷ EPS ปรับลด ฿0.86) มัธยฐาน 4 ปี 32.2x ไม่ใช้เพราะช่วงกว้าง 4.5 เท่า (60.5x→27.0x→13.4x) จากช่วง re-rate ปี 2564–2567 ไม่ได้ตั้งจาก P/E ปัจจุบัน</div></div>
+        <div class="mval">฿12.19</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.50 × (1+g); g 7%, r 10% → D₁=฿0.535 / (10%−7%) — สะท้อนการเติบโตปันผลที่เพิ่มขึ้นต่อเนื่องตั้งแต่ FY2565</div></div>
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.50 × (1+g); g 7%, r 10% → D₁=฿0.535 / (10%−7%) — สมมติฐาน g/r ของผู้วิเคราะห์ (ROE 16.5% × retention ~42% ≈ 7%) ตระกูล r,g เดียวกับ Justified P/BV นับเป็น 1 เสียง</div></div>
         <div class="mval">฿17.83</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 16.0% − g 7%)/(r 10% − g 7%) ≈ 2.99 × BVPS ฿5.71 — ROE สูงกว่า Cost of Equity หนุน Premium valuation</div></div>
-        <div class="mval">฿17.07</div>
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 16.5% − g 7%)/(r 10% − g 7%) ≈ 3.17 × BVPS ฿5.71 — (r,g) ชุดเดียวกับ DDM จึงถ่วงร่วมเป็นตระกูลเดียว</div></div>
+        <div class="mval">฿18.08</div>
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        วิธี P/E ให้ค่าต่ำสุดที่ ฿15.00 เพราะ EPS TTM ยังไม่สะท้อนการเติบโตปีหน้าเต็มที่ ขณะที่วิธี DDM ให้สูงสุด ฿17.83 เพราะสมมติฐาน g=7% เป็น Conservative ในขณะที่บริษัทประกาศเป้าโตไม่ต่ำกว่า 15-20% ปี 2569 วิธี Justified P/BV ที่ ฿17.07 สะท้อน ROE ที่สม่ำเสมอและงบดุลแข็งแกร่ง (D/E แทบศูนย์) ค่าเฉลี่ยทั้งสามวิธีที่ ฿16.60 จึงเป็นกรอบที่สมเหตุสมผลสำหรับ Base case
+        FV = เฉลี่ยของ 2 ตระกูล: (P/E ที่วัดจริง ฿12.19 + ค่าเฉลี่ย DDM/Justified P/BV ฿17.96) ÷ 2 = {{rd:fv}} — ไม่เฉลี่ยสามวิธีตรง ๆ เพราะ DDM กับ P/BV ใช้ (r,g) ชุดเดียวกัน ทั้งสองตระกูลห่างกัน 1.5 เท่า (ไม่เกิน 2 เท่า) ความไวต่อสมมติฐาน: ถ้าใช้ P/E ตระกูลเดียวส่วนต่างเทียบราคาเป็น −6.6% ถ้าใช้ DDM/P/BV ตระกูลเดียวเป็น +27.6% จึงควรอ่านเป็นกรอบ ไม่ใช่จุดเดียว ไม่มีเป้านักวิเคราะห์จาก vendor ใน FV (ข้อมูลไม่มี)
       </p>
     </div>
   </section>
@@ -192,12 +192,12 @@
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿17.00<br><small>เป้า Analyst</small></span>
+          <span style="text-align:right">฿16.80<br><small>สูงสุด 52 สัปดาห์</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน ฿15.30 อยู่ต่ำกว่า Fair Value ฿16.60 เพียง 7.8% (MOS ต่ำ) สะท้อนว่าตลาดเริ่ม Re-rate หุ้นขึ้นมาแล้วหลังผลประกอบการดีเยี่ยมในปี 2568 นักลงทุนสถาบันที่ต้องการ MOS ≥20% จะรอโซนที่ ฿13.28 ลงไป ซึ่งเกิดได้ในกรณีตลาดปรับฐานหรือผลประกอบการชะลอ โซนปัจจุบันเหมาะสำหรับนักลงทุนที่เน้นมองภาพระยะกลาง-ยาว และเชื่อมั่นว่า DITTO จะบรรลุเป้าโต 15-20% ในปี 2569
+        ราคาปัจจุบัน {{rd:px}} อยู่ต่ำกว่า Fair Value {{rd:fv}} (MOS {{rd:mos}} — ระดับปานกลาง) ยังไม่ถึงโซน MOS 20% ที่ {{rd:mos20}} ซึ่งเกิดได้หากตลาดปรับฐานหรือผลประกอบการชะลอ โซนปัจจุบันเหมาะกับนักลงทุนที่มองภาพระยะกลาง-ยาวและยอมรับว่า FV มาจากสมมติฐานสองตระกูลที่ให้ค่าต่างกัน
       </p>
     </div>
   </section>
@@ -208,7 +208,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">MOS ต่ำ — ราคาใกล้ Fair Value · ความปลอดภัยจำกัด · รอโซนที่ดีกว่า</div>
+        <div class="txt">MOS ปานกลาง — ราคาต่ำกว่า Fair Value บางส่วน · ยังไม่ถึงโซน MOS 20%</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -235,8 +235,8 @@
           <div class="tgt">{{rd:sc1tgt}}</div>
           <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿0.96</span></li>
-            <li><span>P/E ออก</span><span>14x</span></li>
+            <li><span>EPS ปี 3</span><span>~฿0.99</span></li>
+            <li><span>P/E ออก</span><span>11x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>งบภาครัฐหยุดชะงัก กำไรทรงตัว</span></li>
           </ul>
@@ -248,8 +248,8 @@
           <div class="tgt">{{rd:sc2tgt}}</div>
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿1.34</span></li>
-            <li><span>P/E ออก</span><span>17x</span></li>
+            <li><span>EPS ปี 3</span><span>~฿1.38</span></li>
+            <li><span>P/E ออก</span><span>14x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>โตตามเป้า 15-20% ภาครัฐ+เอกชน</span></li>
           </ul>
@@ -261,16 +261,16 @@
           <div class="tgt">{{rd:sc3tgt}}</div>
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿1.52</span></li>
-            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>EPS ปี 3</span><span>~฿1.57</span></li>
+            <li><span>P/E ออก</span><span>17x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
-            <li><span>สถานการณ์</span><span>AI/Carbon expansion + M&A ใหม่</span></div></li>
+            <li><span>สถานการณ์</span><span>AI/Carbon expansion + M&A ใหม่</span></li>
           </ul>
         </div>
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      สมมติฐาน: Base case สอดคล้องกับเป้าการเติบโต 15-20% ที่บริษัทประกาศสำหรับปี 2569 และรายได้ที่โตต่อเนื่องทุกปีตั้งแต่ปี 2564 Bull case สะท้อนโอกาสจากการขยายแพลตฟอร์ม AI Automation และ ESG Carbon Platform ไปสู่ตลาดภูมิภาค Bear case สะท้อนความเสี่ยงหากนโยบายภาครัฐชะลอตัวและตลาด Re-rate P/E ลง ผลตอบแทนนี้ไม่รวมผลกระทบจากการเปลี่ยนแปลง P/E Multiple ที่อาจสูงหรือต่ำกว่าสมมติฐาน
+      สมมติฐาน: EPS ฐาน ฿0.91 (TTM) โต 3%/15%/20% ต่อปี และ P/E ออก 11x/14x/17x — Bear ต่ำกว่า P/E ปีล่าสุดที่วัดได้ (13.4x) สะท้อน de-rating, Base อยู่ใกล้ระดับนั้นจึงไม่พึ่งการขยายตัวคูณ, Bull คือ re-rate บางส่วนที่ยังต่ำกว่ามัธยฐานย้อนหลัง 32x มาก ปันผลรวมเป็นสมมติฐาน เป้าโตรายได้ 15-20% ปี 2569 ที่บริษัทประกาศเป็นข้อมูลจากรอบวิเคราะห์ก่อน ไม่ได้ตรวจซ้ำกับแหล่งปฐมภูมิในรอบนี้ รายได้โตต่อเนื่องทุกปีตั้งแต่ปี 2564 (ตารางงบ)
     </p>
   </section>
 
@@ -285,7 +285,7 @@
           <li><b>AI &amp; Automation Platform:</b> DITTO ลงทุนใน Growpro Consulting และพัฒนาโซลูชัน AI Document Intelligence ที่ผสม OCR + NLP เพิ่ม Value-added ให้ลูกค้า Enterprise รายใหญ่</li>
           <li><b>ESG &amp; Carbon Services:</b> เทรนด์ ESG ที่บังคับใช้มากขึ้นในไทยเปิดโอกาสให้ DITTO ขยาย Carbon Platform สู่องค์กรที่ต้องรายงาน GHG — บริษัทมีเรตติ้ง SET ESG AAA</li>
           <li><b>Cybersecurity Growth:</b> ตลาด Cybersecurity ไทยโต 12-15%/ปี บริษัทเริ่มรุกตลาดนี้ผ่านพาร์ทเนอร์ชิปกับผู้ผลิตระดับโลก สร้าง Recurring Revenue stream ใหม่</li>
-          <li><b>งบดุลแข็งแกร่ง มีเงินสดสุทธิ:</b> D/E เพียง 0.02x, Current Ratio 2.2x, Net Cash ฿0.72/หุ้น เอื้อต่อการลงทุน M&amp;A ขยาย Platform โดยไม่กดดันงบการเงิน</li>
+          <li><b>งบดุลแข็งแกร่ง มีเงินสดสุทธิ:</b> D/E เพียง 0.02x, Current Ratio 2.2x, Net Cash ฿0.74/หุ้น เอื้อต่อการลงทุน M&amp;A ขยาย Platform โดยไม่กดดันงบการเงิน</li>
           <li><b>Dividend Uptrend:</b> ปันผลเพิ่มขึ้นทุกปีจาก ฿0.008 (2564) สู่ ฿0.50 (2568) — สะท้อนกำไรสุทธิที่ขยายตัวและความมั่นใจของผู้บริหาร</li>
         </ul>
       </div>
@@ -293,10 +293,10 @@
         <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
         <ul>
           <li><b>การพึ่งพาภาครัฐสูง:</b> รายได้จากโครงการภาครัฐคิดเป็นสัดส่วนสำคัญ ความล่าช้าในการอนุมัติงบประมาณหรือการเปลี่ยนนโยบายรัฐบาลกระทบรายได้โดยตรง</li>
-          <li><b>Gross Margin ลดลงต่อเนื่อง:</b> จาก 33% (FY2565) เหลือ 25.8% (TTM) สะท้อนการแข่งขันที่รุนแรงและต้นทุนสินค้าที่สูงขึ้น หากเทรนด์นี้ไม่หยุดจะกดดัน Bottom line</li>
+          <li><b>Gross Margin ลดลงต่อเนื่อง:</b> จาก 33% (FY2565) เหลือ 23.9% (TTM) สะท้อนการแข่งขันที่รุนแรงและต้นทุนสินค้าที่สูงขึ้น หากเทรนด์นี้ไม่หยุดจะกดดัน Bottom line</li>
           <li><b>การแข่งขันจากยักษ์ใหญ่:</b> Canon, Konica Minolta, Ricoh ต่างรุกตลาด Document Management Solutions ในไทย ขณะที่ Cloud solutions จาก Microsoft/Google ลดความต้องการ Hardware</li>
-          <li><b>MOS ต่ำ ณ ราคาปัจจุบัน:</b> MOS เพียง 7.8% หมายความว่าหากผลประกอบการไม่เป็นไปตามเป้า ราคาหุ้นอาจปรับลงอย่างรวดเร็วโดยไม่มีเบาะรองรับ</li>
-          <li><b>ขนาดธุรกิจยังเล็ก:</b> Market Cap ~฿10.6B อาจมีสภาพคล่องจำกัด และการลงทุนครั้งใหญ่จาก Strategic Investor อาจเปลี่ยนทิศทางบริษัทได้</li>
+          <li><b>MOS ยังไม่ถึงเกณฑ์ 20%:</b> MOS {{rd:mos}} หมายความว่าหากผลประกอบการไม่เป็นไปตามเป้า ราคาหุ้นอาจปรับลงโดยมีเบาะรองรับจำกัด และ FV ขึ้นกับสมมติฐาน r,g ของ DDM/P/BV</li>
+          <li><b>ขนาดธุรกิจยังเล็ก:</b> Market Cap ~฿9.0B อาจมีสภาพคล่องจำกัด และการลงทุนครั้งใหญ่จาก Strategic Investor อาจเปลี่ยนทิศทางบริษัทได้</li>
           <li><b>Digital Disruption:</b> AI-powered document processing ที่ถูกลงและ Paperless trend อาจกัดเซาะธุรกิจ Copy/Print หลักในระยะยาว บริษัทต้องเร่ง Transformation ให้ทัน</li>
         </ul>
       </div>
@@ -307,15 +307,15 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>DITTO: Growth Story ที่น่าสนใจ แต่ MOS ต่ำ ณ ราคาปัจจุบัน</h2>
-      <p>DITTO (ประเทศไทย) เป็น Growth Story ที่ชัดเจน — กำไรสุทธิโตทุกปีจาก ฿201M (2564) สู่ ฿599M (2568) คิดเป็น CAGR 5 ปี ~25% งบดุลแข็งแกร่งแทบไม่มีหนี้ และผู้บริหารประกาศเป้าโต 15-20% ปี 2569 อย่างมั่นใจ การขยายสู่ AI Automation, Cybersecurity และ ESG Carbon Platform สร้างแหล่งรายได้ใหม่ที่มี Margin สูงกว่าธุรกิจ Hardware เดิม อย่างไรก็ตาม ณ ราคา ฿15.30 MOS เพียง 7.8% ต่ำกว่าเกณฑ์ Value Investor ที่ 20% ราคาปัจจุบันสะท้อน Upside จำกัดในระยะสั้น แต่ Base case 3 ปียังให้ผลตอบแทน ~17%/ปี สำหรับผู้ที่เชื่อมั่นในการเติบโตระยะกลาง</p>
+      <h2>DITTO: Growth Story ที่น่าสนใจ ราคาต่ำกว่า FV แต่ MOS ยังไม่ถึง 20%</h2>
+      <p>DITTO (ประเทศไทย) เป็น Growth Story ที่ชัดเจน — กำไรสุทธิโตทุกปีจาก ฿201M (2564) สู่ ฿599M (2568) คิดเป็น CAGR 5 ปี ~25% งบดุลแข็งแกร่งแทบไม่มีหนี้ และผู้บริหารประกาศเป้าโต 15-20% ปี 2569 อย่างมั่นใจ การขยายสู่ AI Automation, Cybersecurity และ ESG Carbon Platform สร้างแหล่งรายได้ใหม่ที่มี Margin สูงกว่าธุรกิจ Hardware เดิม อย่างไรก็ตาม ณ ราคา {{rd:px}} MOS {{rd:mos}} ยังต่ำกว่าเกณฑ์ Value Investor ที่ 20% และ FV อิงสองตระกูลที่ให้ค่าต่างกัน (P/E ตามที่วัดจริง vs DDM/P/BV) Base case 3 ปีให้ผลตอบแทน {{rd:sc2ret}} ซึ่งพึ่งการเติบโตของ EPS เป็นหลัก สำหรับผู้ที่เชื่อมั่นในการเติบโตระยะกลาง</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#b2dfdb">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿17.00 (ข้อมูลจำกัด)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">ไม่มีข้อมูล vendor</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> สำหรับนักลงทุนระยะยาวที่เน้น Growth — พิจารณาสะสมหากราคาปรับลงสู่โซน ฿13–฿14 (MOS 15–20%) ซึ่งให้ Risk/Reward ที่ดีกว่า ผู้ที่ถืออยู่แล้วสามารถ Hold ต่อหากเชื่อมั่นการเติบโต 15-20% ปี 2569 นักลงทุนแบบ Conservative ควรรอโซน MOS ≥20% ที่ ฿13.28 ก่อน
+        💡 <b>กลยุทธ์:</b> สำหรับนักลงทุนระยะยาวที่เน้น Growth — ราคา {{rd:px}} อยู่ในโซนทยอยสะสม (ต่ำกว่า FV) ผู้ที่ถืออยู่แล้วสามารถ Hold ต่อหากเชื่อมั่นการเติบโตของกำไร นักลงทุนแบบ Conservative ควรรอโซน MOS ≥20% ที่ {{rd:mos20}} ก่อน
       </div>
     </div>
   </section>
@@ -327,7 +327,7 @@
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
     แหล่งข้อมูล: StockAnalysis.com (stockanalysis.com/quote/bkk/DITTO/), Yahoo Finance (finance.yahoo.com/quote/DITTO.BK/), investor.dittothailand.com, thestorythailand.com • ราคา ณ {{rd:priceDate}}
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
