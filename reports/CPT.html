@@ -4,34 +4,34 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น Camden Property Trust (CPT) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"CPT","currency":"USD","price":99.12,"fairValue":117,"mos":15.3,"upside":18,"pe":null,"dividendYield":4.28,"roe":null}
+{"symbol":"CPT","currency":"USD","price":99.12,"fairValue":110,"mos":9.9,"upside":11,"pe":null,"dividendYield":4.28,"roe":null}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 117,
+  "fv": 110,
   "values": {
     "px": 99.12,
     "priceDate": "2026-09-18",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
-    "fvLow": 110,
-    "fvHigh": 125,
-    "shares": 104200000,
+    "fvLow": 105,
+    "fvHigh": 115,
+    "shares": 104146188,
     "dps": 4.24,
     "scenarios": [
       {
-        "tgt": 110,
+        "tgt": 95,
         "div": 12.72
       },
       {
-        "tgt": 137,
+        "tgt": 123,
         "div": 13.5
       },
       {
-        "tgt": 172,
+        "tgt": 153,
         "div": 14.5
       }
     ],
@@ -39,7 +39,8 @@
       "years": 3,
       "divIncluded": false,
       "perYear": null
-    }
+    },
+    "analystTgt": 116.65
   },
   "theme": {
     "accent": "#0e9cab",
@@ -104,27 +105,27 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ $96.53 – $116.75<br>
-        ที่มา: StockAnalysis.com, Yahoo Finance, MarketBeat.com
+        กรอบ 52 สัปดาห์ $96.53 – $119.81<br>
+        ที่มา: StockAnalysis.com, Yahoo Finance, SEC EDGAR
       </div>
     </div>
   </header>
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569 | REIT — เน้น FFO/Occupancy แทน P/E (GAAP บิดเบือนจาก depreciation)</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ 21 ก.ย. 2569 | REIT — เน้น FFO/Occupancy แทน P/E (GAAP บิดเบือนจาก depreciation)</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~104.2M shares outstanding</div></div>
-      <div class="metric"><div class="k">P/FFO (2026E)</div><div class="v neu">~18.3x</div><div class="d">FFO/sh 2026E ~$6.24 · StockAnalysis estimate</div></div>
-      <div class="metric"><div class="k">P/FFO (2025A)</div><div class="v">~16.9x</div><div class="d">FFO/sh 2025A ~$6.77 · ลดจากพีค 22x+</div></div>
-      <div class="metric"><div class="k">EPS GAAP (TTM)</div><div class="v neu">$3.58</div><div class="d">บิดเบือนจาก D&amp;A $611M · ไม่ใช้ประเมินมูลค่า</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~104.15M shares outstanding (รวมทุกคลาส)</div></div>
+      <div class="metric"><div class="k">P/FFO (2026E)</div><div class="v neu">~14.7x</div><div class="d">FFO/sh 2026E ~$6.76 · StockAnalysis estimate</div></div>
+      <div class="metric"><div class="k">P/FFO (2025A)</div><div class="v">~14.6x</div><div class="d">FFO/sh 2025A ~$6.77 · ราคาเฉลี่ยปี 2025 ($112.33) ÷ FFO = 16.6x</div></div>
+      <div class="metric"><div class="k">EPS GAAP (TTM)</div><div class="v neu">$3.07</div><div class="d">บิดเบือนจาก D&amp;A $611M · ไม่ใช้ประเมินมูลค่า</div></div>
 
       <div class="metric"><div class="k">Core FFO/sh 2025A</div><div class="v pos">$6.77</div><div class="d">Revenue FY2025: $1,587M (+2.3% YoY)</div></div>
-      <div class="metric"><div class="k">Core FFO/sh 2026E</div><div class="v">~$6.50</div><div class="d">StockAnalysis $6.24 + core adjustments estimate</div></div>
-      <div class="metric"><div class="k">Annualized NOI</div><div class="v">~$917M</div><div class="d">Q1 2569 EBITDA $229M × 4 · margin ~57%</div></div>
-      <div class="metric"><div class="k">Net Debt/EBITDA</div><div class="v neu">~4.8x</div><div class="d">ประมาณการ · ใกล้เคียง MAA 4.5x · อุตสาหกรรม</div></div>
+      <div class="metric"><div class="k">Core FFO/sh 2026E</div><div class="v">~$6.76</div><div class="d">StockAnalysis forecast (flat vs 2025A)</div></div>
+      <div class="metric"><div class="k">EBITDA (proxy NOI)</div><div class="v">~$889M</div><div class="d">รายได้ TTM $1,584M × (OpM 17.5% + D&amp;A ~38.5%) · ต่ำกว่า NOI จริงเล็กน้อย (หัก G&amp;A)</div></div>
+      <div class="metric"><div class="k">Net Debt/EBITDA</div><div class="v neu">~5.4x</div><div class="d">หนี้ $4,873M − เงินสด $45M = $4,828M ÷ EBITDA proxy $889M</div></div>
 
-      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$1,584M</div><div class="d">Stable; Q1 2569 $391M (+0.2% QoQ)</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$1,584M</div><div class="d">Stable; FY2025 $1,587M</div></div>
       <div class="metric"><div class="k">Occupancy</div><div class="v pos">~95.5%</div><div class="d">Sun Belt ภายใต้แรงกดดัน supply wave 2568–2569</div></div>
       <div class="metric"><div class="k">เงินปันผล</div><div class="v">~4.28%</div><div class="d">$4.24/sh ปี ($1.06/ไตรมาส) · เพิ่มต่อเนื่อง 34 ปี</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">0.81</div><div class="d">Volatility ต่ำกว่า S&amp;P · เหมาะ income investor</div></div>
@@ -133,7 +134,7 @@
 
   <!-- ===== 2. PRICE CHART ===== -->
   <section>
-    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ที่มา Yahoo Finance · รายเดือน 13 จุด ก.ค. 2568 – มิ.ย. 2569</div></div>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ที่มา Yahoo Finance · รายเดือน 12 จุด ต.ค. 2568 – ก.ย. 2569</div></div>
     <div class="card">
       <div class="chart-wrap">
         <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
@@ -144,33 +145,33 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        CPT เริ่มรอบปีจาก $109.20 ในเดือน ก.ค. 2568 ปรับขึ้นเล็กน้อยก่อนเผชิญแรงขาย ราคาดิ่งลงสู่จุดต่ำสุดรอบปีที่ ~$97.66 ในเดือน มี.ค. 2569 สะท้อนความกังวลเรื่องอุปทานอพาร์ทเมนต์ใน Sun Belt ที่ยังสูงและ occupancy ที่ถูกกดดัน จากนั้นฟื้นตัวแข็งแกร่ง แตะ $116.74 ใน มิ.ย. 2569 ก่อนปิด $114.49 สิ้นเดือน ผลตอบแทนรอบปี +4.8% สะท้อน sentiment ที่ดีขึ้นหลัง supply wave เริ่มผ่านพ้น
+        CPT เริ่มรอบจากราว $99 ในเดือน ต.ค. 2568 ขึ้นไปยืนแถว $110 ช่วง ธ.ค. 2568 ก่อนถูกกดลงสู่จุดต่ำสุดรายเดือน ~$97.66 ในเดือน มี.ค. 2569 จากความกังวลเรื่องอุปทานอพาร์ทเมนต์ใน Sun Belt จากนั้นฟื้นขึ้นแตะ ~$114.49 ปลาย มิ.ย. 2569 แล้วอ่อนตัวต่อเนื่องสองเดือน กลับมาที่ระดับ {{rd:px}} ในปัจจุบัน ใกล้ต่ำสุดของกรอบ 52 สัปดาห์ ($96.53)
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี · REIT ใช้ P/FFO, DDM, NAV — ไม่ใช้ P/E (pe:null)</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี (ต่างตระกูลสมมติฐาน) · REIT ใช้ P/FFO, DDM, NAV — ไม่ใช้ P/E (pe:null)</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/FFO Valuation</div><div class="mdesc">Core FFO/sh 2026E ~$6.50 × P/FFO เป้าหมาย 18x — Apartment REIT Sun Belt ซื้อขาย discount จากพีค 22x+; 18x สะท้อน recovery trajectory คล้าย ESS (18.3x) รวม development pipeline premium ของ CPT</div></div>
-        <div class="mval">$117</div>
+        <div><div class="mname">1. P/FFO Valuation</div><div class="mdesc">FFO/sh 2026E $6.76 (StockAnalysis) × P/FFO 16.6x = $112 — 16.6x = ราคาเฉลี่ยปี 2025 $112.33 ÷ FFO/sh 2025A $6.77 (วัดจริงจุดเดียว จึงเป็นสมอที่บาง) · ไม่ใช้ตัวคูณ peer/พีคย้อนหลังที่ตรวจซ้ำไม่ได้ และไม่ใช้ตัวคูณปัจจุบัน</div></div>
+        <div class="mval">$112</div>
       </div>
       <div class="vmethod">
         <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = $4.24 × 1.035 = $4.39; g = 3.5% (อิง 5yr DGR 5.03% · moderate ลงช่วง supply headwind), r = 7.5% → FV = 4.39 / (0.075 − 0.035) = $110 · dividend 34 ปีต่อเนื่องสนับสนุน g ระยะยาว</div></div>
         <div class="mval">$110</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">3. NAV (Asset Value)</div><div class="mdesc">NOI annualized ~$917M / Cap rate 5.5% = Gross Assets $16,673M − Net Debt ~$4,400M (4.8x EBITDA) = Equity $12,273M / 104.2M shares — Cap rate 5.5% สะท้อน Sun Belt apartment premium · dev pipeline ~$800M</div></div>
-        <div class="mval">$118</div>
+        <div><div class="mname">3. NAV (Asset Value)</div><div class="mdesc">EBITDA proxy ~$889M (รายได้ TTM $1,584M × 56.1%) / Cap rate 5.5% (สมมติฐาน ตรวจซ้ำกับตลาดไม่ได้) = Gross Assets $16,164M − Net Debt $4,828M (หนี้ $4,873M − เงินสด $45M) = Equity $11,336M / 104.15M shares = $109 · ใช้ EBITDA แทน NOI จึงอนุรักษ์เล็กน้อย</div></div>
+        <div class="mval">$109</div>
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ทั้ง 3 วิธีให้ค่าใกล้เคียงกัน ($110–$118) บ่งชี้ว่าราคา $114 อยู่ใกล้มูลค่าเหมาะสมมาก DDM ให้ค่าต่ำสุดสะท้อน g อนุรักษ์นิยม; P/FFO 18x สอดคล้องกับ ESS peer; NAV $118 สนับสนุนว่า portfolio มีมูลค่าพื้นฐาน — consensus นักวิเคราะห์ 24 คนที่ $114.40 ยืนยัน fairly valued MOS แคบ 2.2%
+        ทั้ง 3 วิธีให้ค่าใกล้เคียงกัน ($109–$112) ราคา {{rd:px}} จึงต่ำกว่ามูลค่าเหมาะสม {{rd:fv}} เล็กน้อย ({{rd:mos}}) · เป้านักวิเคราะห์เฉลี่ย 24 คนที่ {{rd:analystTgt}} (Hold) ใช้เป็นข้อมูลเทียบเท่านั้น ไม่ได้เป็นขาของ FV · หมายเหตุ: ตัวเลข FFO/EBITDA ในรอบนี้ปรับใหม่จากข้อมูลล่าสุด ขาที่ตรวจซ้ำไม่ได้ (NOI จริง, occupancy, ตัวคูณ peer) ถูกถอดหรือระบุว่าเป็นสมมติฐาน
       </p>
     </div>
   </section>
@@ -187,13 +188,13 @@
         <div class="scale">
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$114.40<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$116.65<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        CPT ซื้อขายที่ $114.49 ต่ำกว่า Fair Value $117 เพียง ~2.2% — ตลาดและ consensus นักวิเคราะห์ 24 คน (เป้า $114.40) เห็นตรงกันว่าหุ้น fairly valued จุดซื้อที่น่าสนใจสำหรับ value investor คือ MOS 20% ที่ $93.60 ซึ่งใกล้เคียงจุดต่ำสุดรอบปี $96.53 ที่เห็นใน มี.ค. 2569 โซนสะสมที่สมเหตุสมผลกว่าคือ &lt;$107 (P/FFO &lt;16.5x)
+        CPT ซื้อขายที่ {{rd:px}} ต่ำกว่า Fair Value {{rd:fv}} ({{rd:mos}}) — จุดซื้อ MOS 20% อยู่ที่ {{rd:mos20}} ซึ่งต่ำกว่าจุดต่ำสุดของกรอบ 52 สัปดาห์ ($96.53) ราคาเป้านักวิเคราะห์เฉลี่ย {{rd:analystTgt}} ({{rd:analystPct}}) อยู่สูงกว่า FV ของรายงานนี้ โซนสะสมที่สมเหตุสมผลคือ &lt;$95 (P/FFO &lt;14x)
       </p>
     </div>
   </section>
@@ -204,12 +205,12 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">MOS แคบ — ราคาใกล้ Fair Value; รอโอกาสที่ดีกว่า &lt;$107</div>
+        <div class="txt">MOS แคบ — ราคาใกล้ Fair Value; รอโอกาสที่ดีกว่า &lt;$95</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value (ใกล้ 52w low $96.53)</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value (ต่ำกว่า 52w low $96.53)</div></div>
         <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $107</div><div class="d">P/FFO &lt;16.5x · ราคาต่ำกว่า FV ชัดเจน</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $95</div><div class="d">P/FFO &lt;14x · ราคาต่ำกว่า FV ชัดเจน</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
@@ -223,7 +224,7 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • Core FFO ฐาน ~$6.50/sh{{rd:scnNote}}</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • FFO ฐาน ~$6.76/sh{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>FFO +0%/ปี</span></div>
@@ -231,34 +232,34 @@
           <div class="tgt">{{rd:sc1tgt}}</div>
           <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
-            <li><span>FFO ปี 3</span><span>~$6.50</span></li>
-            <li><span>P/FFO ออก</span><span>15x</span></li>
+            <li><span>FFO ปี 3</span><span>~$6.76</span></li>
+            <li><span>P/FFO ออก</span><span>14x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>Supply กดต่อเนื่อง · Occupancy ลด · FFO flat</span></li>
           </ul>
         </div>
       </div>
       <div class="col base">
-        <div class="top"><span>⚖️ Base</span><span>FFO +4%/ปี</span></div>
+        <div class="top"><span>⚖️ Base</span><span>FFO +3%/ปี</span></div>
         <div class="body">
           <div class="tgt">{{rd:sc2tgt}}</div>
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
-            <li><span>FFO ปี 3</span><span>~$7.31</span></li>
-            <li><span>P/FFO ออก</span><span>17x</span></li>
+            <li><span>FFO ปี 3</span><span>~$7.39</span></li>
+            <li><span>P/FFO ออก</span><span>16.6x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
-            <li><span>สถานการณ์</span><span>Supply rolloff ปลาย 2569 · rent growth ฟื้น · NOI +4%</span></li>
+            <li><span>สถานการณ์</span><span>Supply rolloff ปลาย 2569 · rent growth ฟื้น · FFO +3%</span></li>
           </ul>
         </div>
       </div>
       <div class="col bull">
-        <div class="top"><span>🚀 Bull</span><span>FFO +7%/ปี</span></div>
+        <div class="top"><span>🚀 Bull</span><span>FFO +6%/ปี</span></div>
         <div class="body">
           <div class="tgt">{{rd:sc3tgt}}</div>
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
-            <li><span>FFO ปี 3</span><span>~$7.96</span></li>
-            <li><span>P/FFO ออก</span><span>20x</span></li>
+            <li><span>FFO ปี 3</span><span>~$8.05</span></li>
+            <li><span>P/FFO ออก</span><span>19x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Rate cut ดัน re-rate · Sun Belt migration accelerates · dev pipeline ROI</span></li>
           </ul>
@@ -266,7 +267,7 @@
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      การฉายภาพอิง Core FFO/sh เป็น proxy แทน EPS (เหมาะกว่าสำหรับ REIT) Bear case อิง supply headwind ยาวนานและ P/FFO re-rate ลง; Base case ตาม supply rolloff ปลาย 2569–2570 ที่ consensus คาด; Bull case อิง rate cut + household formation surge จาก Millennial/Gen-Z + development pipeline ROI สูงกว่า cap rate ตลาด ปันผล ~3.7% เป็นหมอนรองในทุก scenario
+      การฉายภาพอิง Core FFO/sh เป็น proxy แทน EPS (เหมาะกว่าสำหรับ REIT) Bear case อิง supply headwind ยาวนานและ P/FFO re-rate ลง; Base case ตาม supply rolloff ปลาย 2569–2570 ที่ consensus คาด; Bull case อิง rate cut + household formation surge จาก Millennial/Gen-Z + development pipeline ROI สูงกว่า cap rate ตลาด ปันผล ~4.3% เป็นหมอนรองในทุก scenario
     </p>
   </section>
 
@@ -304,14 +305,14 @@
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
       <h2>CPT — Fairly Valued · คุณภาพดี แต่รอจังหวะราคาดีกว่า</h2>
-      <p>Camden Property Trust เป็น Sun Belt apartment REIT คุณภาพสูงที่มีจุดแข็งชัดเจน: development pipeline ที่สร้าง value accretion ได้จริง (yield on cost > cap rate), dividend เพิ่มต่อเนื่อง 34 ปี, และ portfolio ที่กระจายใน 15 ตลาดหลักที่ demographics แข็งแกร่ง ราคา $114.49 ซื้อขายใกล้ Fair Value $117 (MOS ~2.2%) ซึ่งตรงกับ consensus นักวิเคราะห์ 24 คนที่ $114.40 — นักลงทุนระยะยาวที่เชื่อใน Sun Belt thesis และต้องการ income ที่เติบโตสามารถ initiate position เล็กได้ แต่ risk/reward ที่ดีกว่าอยู่ที่ &lt;$107 (P/FFO &lt;16.5x) หรือรอจนกว่า supply data จะดีกว่าคาดอย่างชัดเจน</p>
+      <p>Camden Property Trust เป็น Sun Belt apartment REIT คุณภาพสูงที่มีจุดแข็งชัดเจน: development pipeline ที่สร้าง value accretion ได้จริง (yield on cost > cap rate), dividend เพิ่มต่อเนื่อง 34 ปี, และ portfolio ที่กระจายใน 15 ตลาดหลักที่ demographics แข็งแกร่ง ราคา {{rd:px}} ซื้อขายใกล้ Fair Value {{rd:fv}} ({{rd:mos}}) ต่ำกว่าเป้านักวิเคราะห์ 24 คนที่ {{rd:analystTgt}} — นักลงทุนระยะยาวที่เชื่อใน Sun Belt thesis และต้องการ income ที่เติบโตสามารถ initiate position เล็กได้ แต่ risk/reward ที่ดีกว่าอยู่ที่ &lt;$95 (P/FFO &lt;14x) หรือรอจนกว่า supply data จะดีกว่าคาดอย่างชัดเจน</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$114.40 (Hold)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$116.65 (Hold)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> รอซื้อที่ &lt;$107 (MOS &gt;8.5%) สำหรับ position เต็ม หรือ initiate small position ตอนนี้แล้วเพิ่มหาก supply data ดีกว่าคาด — ถือระยะยาว 3-5 ปีรับทั้งปันผล ~3.7% ที่เพิ่มต่อเนื่อง และ capital gain จาก FFO recovery + development pipeline ROI
+        💡 <b>กลยุทธ์:</b> รอซื้อที่ &lt;$95 (MOS &gt;13%) สำหรับ position เต็ม หรือ initiate small position ตอนนี้แล้วเพิ่มหาก supply data ดีกว่าคาด — ถือระยะยาว 3-5 ปีรับทั้งปันผล ~4.3% ที่เพิ่มต่อเนื่อง และ capital gain จาก FFO recovery + development pipeline ROI
       </div>
     </div>
   </section>
@@ -320,9 +321,9 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/FFO เป้าหมาย, cap rate, อัตราเติบโต (g), และผลตอบแทนที่ต้องการ (r) ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
-    แหล่งข้อมูล: StockAnalysis.com (ราคา $114.49 · 24 นักวิเคราะห์ · FFO estimates), Yahoo Finance (ราคา $114.53 · chart data รายเดือน 13 จุด · 52w range $96.53–$116.75), MarketBeat.com (ราคา $114.69 · consensus target $114.67), digrin.com (ปันผล $4.24/sh · 34 ปี · 5yr DGR 5.03%), StockAnalysis.com Financials (รายได้ $1,587M · D&A $611.77M) · ราคาอ้างอิง 3 แหล่งต่างกัน ≤0.2% ยืนยัน $114.49 ถูกต้อง ณ 30 มิ.ย. 2569
+    แหล่งข้อมูล: StockAnalysis.com (ราคา $99.12 · 24 นักวิเคราะห์ · FFO $6.77/$6.76 · งบ 5 ปี), Yahoo Finance (ราคา $99.12 · chart รายเดือน 12 จุด · 52w range $96.53–$119.81 · เป้า $116.28), digrin.com (ปันผล $4.24/sh · 34 ปี · 5yr DGR 5.03% — ไม่ได้ตรวจซ้ำรอบนี้) · ราคา 2 แหล่งตรงกัน ณ 18 ก.ย. 2569
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 30 มิถุนายน 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
