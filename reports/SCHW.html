@@ -5,39 +5,39 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น Charles Schwab (SCHW) — Stock Analysis Dashboard</title>
 <!-- ★ AI model ที่ใช้วิเคราะห์จริง -->
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"SCHW","currency":"USD","price":105.25,"fairValue":106,"mos":0.7,"upside":0.7,"pe":20.9,"dividendYield":1.22,"roe":20}
+{"symbol":"SCHW","currency":"USD","price":105.25,"fairValue":113,"mos":6.9,"upside":7.4,"pe":19.2,"dividendYield":1.22,"roe":20.3}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 106,
+  "fv": 113,
   "values": {
     "px": 105.25,
     "priceDate": "2026-09-18",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
-    "fvLow": 92,
-    "fvHigh": 116,
-    "eps": 5.03,
-    "shares": 1740000000,
+    "fvLow": 97,
+    "fvHigh": 130,
+    "eps": 5.49,
+    "shares": 1729335714,
     "dps": 1.28,
-    "bvps": 24.44,
-    "baseEps": 5.75,
+    "bvps": 25.42,
+    "baseEps": 6.49,
     "scenarios": [
       {
-        "tgt": 92,
-        "div": 4.08
+        "tgt": 90,
+        "div": 3.9
       },
       {
-        "tgt": 162,
-        "div": 4.84
+        "tgt": 151,
+        "div": 4.2
       },
       {
-        "tgt": 208,
-        "div": 5.11
+        "tgt": 202,
+        "div": 4.5
       }
     ],
     "scnBasis": {
@@ -109,7 +109,7 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ $83.96 – $107.50<br>
+        กรอบ 52 สัปดาห์ $83.96 – $114.53<br>
         ที่มา: Yahoo Finance, Investing.com, StockAnalysis.com
       </div>
     </div>
@@ -117,15 +117,15 @@
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569 — TTM/Q1 2026</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ 21 ก.ย. 2569 — TTM</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$183.1B</div><div class="d">~1.74B shares diluted</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS GAAP TTM $5.03</div></div>
-      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~20–22x</div><div class="d">range ประวัติ 15–30x</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ~$24.44 (Mar'26)</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$182B</div><div class="d">~1.73B shares outstanding</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS diluted TTM $5.49</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~23.6x (มัธยฐาน)</div><div class="d">ช่วง 19.3–25.1x จาก 5 FY</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ~$25.42 (StockAnalysis)</div></div>
 
-      <div class="metric"><div class="k">รายได้ TTM (Q1'26)</div><div class="v">$24.8B</div><div class="d">+30% YoY; FY25 $23.9B</div></div>
-      <div class="metric"><div class="k">EPS (TTM GAAP)</div><div class="v">~$5.03</div><div class="d">Q1'26 adj $1.43 (+38% YoY)</div></div>
+      <div class="metric"><div class="k">รายได้ TTM (Q1'26)</div><div class="v">$26.0B</div><div class="d">+20% YoY; FY25 $23.9B</div></div>
+      <div class="metric"><div class="k">EPS (TTM GAAP)</div><div class="v">~$5.49</div><div class="d">diluted TTM; FY25 $4.65</div></div>
       <div class="metric"><div class="k">Net Interest Margin</div><div class="v pos">2.88%</div><div class="d">Q1'26; NII $3.14B/qtr</div></div>
       <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~20% / 2.0%</div><div class="d">Q1'26 ann. ROE ~23%; ฟื้นตัวต่อเนื่อง</div></div>
 
@@ -149,10 +149,9 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ราคา SCHW ช่วง 12 เดือนที่ผ่านมาลดลง ~7.4% จาก $97.73 (ก.ค. 2568) สู่ $90.55 ปัจจุบัน
-        ราคาแตะจุดสูงสุด $103.92 ในเดือน ม.ค. 2569 หลังผลประกอบการ Q4'25 ดีกว่าคาด และพันธบัตร run-off เริ่มชัดเจน
-        ก่อนปรับลงตาม sell-on-news และความกังวลตลาดกว้าง ราคาแตะจุดต่ำในเดือน พ.ค. 2569 ที่ $87.35
-        ก่อนฟื้นกลับมาในเดือน มิ.ย. 2569 รับข่าว Schwab ปรับเพิ่มปันผล 19% และผลลัพธ์ Q1'26 ที่แข็งแกร่ง
+        ราคาปิดรายเดือนของ SCHW ช่วง 12 เดือนที่ผ่านมาเพิ่มขึ้น ~11% จาก $94.52 (ต.ค. 2568) สู่ราคาล่าสุด {{rd:px}}
+        จุดสูงสุดของราคาปิดรายเดือนคือ $109.82 ในเดือน ส.ค. 2569 และจุดต่ำคือ $87.35 ในเดือน พ.ค. 2569
+        ก่อนฟื้นขึ้นมาเหนือ $100 ตั้งแต่เดือน ก.ค. 2569 (ข้อมูลจากกราฟรายเดือน ไม่ได้ระบุสาเหตุของการเคลื่อนไหว)
       </p>
     </div>
   </section>
@@ -162,22 +161,21 @@
     <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">2 วิธีหลัก</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $5.80 × P/E 20x = $116 — อิง FY2026 guidance ที่ guidance tracking above $5.70–5.80; ใช้ multiple 20x (discount จาก avg hist. 22x สะท้อนความไม่แน่นอน rate)</div></div>
-        <div class="mval">$116</div>
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS $5.49 (TTM diluted) × P/E 23.6x = $129.6 — P/E 23.6x คือมัธยฐานย้อนหลัง 5 FY (ราคาเฉลี่ยของปี ÷ EPS ของปีนั้น ช่วง 19.3–25.1x) ที่มาจากประวัติ ไม่ได้มาจาก P/E ปัจจุบัน</div></div>
+        <div class="mval">$130</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 20% − g 5%)/(r 9% − g 5%) ≈ 3.75x × BVPS $24.44 — สะท้อน ROE ที่ฟื้นตัวกลับหลังผ่านพ้นช่วง cash sorting</div></div>
-        <div class="mval">$92</div>
+        <div><div class="mname">2. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 20.3% − g 5%)/(r 9% − g 5%) ≈ 3.8x × BVPS $25.42 = $97 — r และ g เป็นสมมติฐานของผู้วิเคราะห์ (ROE 20.27% และ BVPS จาก StockAnalysis)</div></div>
+        <div class="mval">$97</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}} (เฉลี่ย 2 วิธีหลัก weighted 60:40)</span></div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}} (เฉลี่ย 2 วิธี น้ำหนักเท่ากัน)</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        P/E valuation ให้ค่าสูงกว่า ($116) สะท้อนการฟื้นตัวของ earnings ที่แข็งแกร่ง ขณะที่ Justified P/BV ($92) ให้ค่าอนุรักษ์นิยมกว่าเพราะ BVPS ยังต่ำจาก accumulated deficit/buyback
-        FV $106 คือค่ากลางแบบ weighted (P/E 60% + P/BV 40%) — เฉลี่ยเลขเรียบง่าย = $104 ปรับขึ้นเล็กน้อยสะท้อน earnings momentum ที่แข็งแกร่งกว่า BV สุทธิ
-        หมายเหตุ: DDM (2-stage, g 12%→4%, r 9%) ให้ค่าเพียง ~$37 เพราะ Schwab จ่ายปันผลต่ำ (payout ~22%) เน้น reinvest การเติบโต — จึงใช้เป็น reference floor เท่านั้น ไม่นับในค่าเฉลี่ย
-        นักวิเคราะห์ 23 คน ให้ Buy/Strong Buy 17 คน Hold 5 คน Sell 1 คน (consensus เป้าเฉลี่ย $116, สูงสุด $137)
+        P/E valuation ให้ $130 (ตัวคูณอิงตลาด/ประวัติ) ขณะที่ Justified P/BV ให้ $97 (ตัวคูณอิงสมมติฐาน r,g) — สองวิธีต่างตระกูลกัน ห่างกันไม่ถึง 2 เท่า จึงเฉลี่ยเท่ากันได้ FV = ($130 + $97)/2 ≈ {{rd:fv}}
+        ความอ่อนไหว: ถ้าใช้ P/E 19.3x (ต่ำสุดของช่วงประวัติ) ขา P/E = $106 และ FV ≈ $102 ส่วนถ้าใช้ 25.1x ขา P/E = $138 และ FV ≈ $118
+        หมายเหตุ: DDM (r 9%) ให้ค่าต่ำมากเพราะ payout ต่ำ (ปันผล $1.28/ปี) จึงไม่นับเป็นขา · เป้าเฉลี่ยนักวิเคราะห์ $124.95 (20 คน, Buy) ใช้เป็นบริบทเปรียบเทียบเท่านั้น ไม่ได้เป็นส่วนของ FV
       </p>
     </div>
   </section>
@@ -195,14 +193,14 @@
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
-          <span style="text-align:right">$116<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$135<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$125<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคา $90.55 อยู่ระหว่างโซน MOS 20% ($84.80) และ Fair Value ($106) — มี upside ~17% ถึง FV
-        ราคาปัจจุบันต่ำกว่า consensus นักวิเคราะห์ที่ $116 ถึง ~22% สะท้อนว่าตลาดยังให้ discount กับ Schwab ทั้งที่ earnings ฟื้นแล้ว
-        จุดซื้อที่ MOS 20% คือ $84.80 (ใกล้แนวรับ 52 สัปดาห์ที่ $83.96) เป็นโซน deep value ที่น่าสนใจมาก
+        ราคาปัจจุบัน {{rd:px}} อยู่ระหว่างโซน MOS 20% ({{rd:mos20}}) และ Fair Value ({{rd:fv}}) — ใกล้ FV มาก
+        เป้าเฉลี่ยนักวิเคราะห์ $124.95 อยู่เหนือ FV ของเรา ซึ่งอิงมัธยฐาน P/E ย้อนหลังและ Justified P/BV ไม่ได้อิงเป้านักวิเคราะห์
+        จุดซื้อที่ MOS 20% คือ {{rd:mos20}} ซึ่งอยู่ใกล้แนวรับ 52 สัปดาห์ที่ $83.96 พอสมควร
       </p>
     </div>
   </section>
@@ -213,7 +211,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">MOS ปานกลาง — ยังถูกกว่า Fair Value แต่ยังไม่ถึง deep value (MOS 20%) • ราคาปัจจุบันใกล้โซนสะสมที่สมเหตุสมผล</div>
+        <div class="txt">MOS ต่ำ — ราคาใกล้ Fair Value ส่วนเผื่อความปลอดภัยยังบาง • ทยอยสะสมได้เมื่อราคาย่อเข้าใกล้โซน MOS 20%</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -240,34 +238,34 @@
           <div class="tgt">{{rd:sc1tgt}}</div>
           <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$6.10</span></li>
-            <li><span>P/E ออก</span><span>15x</span></li>
+            <li><span>EPS ปี 3</span><span>~$6.89</span></li>
+            <li><span>P/E ออก</span><span>13x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>อัตราดอกเบี้ยสูงนาน NIM ทรง, trading ชะลอ</span></li>
           </ul>
         </div>
       </div>
       <div class="col base">
-        <div class="top"><span>⚖️ Base</span><span>EPS +12%/ปี</span></div>
+        <div class="top"><span>⚖️ Base</span><span>EPS +9%/ปี</span></div>
         <div class="body">
           <div class="tgt">{{rd:sc2tgt}}</div>
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$8.08</span></li>
-            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>EPS ปี 3</span><span>~$8.40</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>AUM เติบโต + NIM ฟื้น + TD synergy เต็มที่</span></li>
           </ul>
         </div>
       </div>
       <div class="col bull">
-        <div class="top"><span>🚀 Bull</span><span>EPS +18%/ปี</span></div>
+        <div class="top"><span>🚀 Bull</span><span>EPS +14%/ปี</span></div>
         <div class="body">
           <div class="tgt">{{rd:sc3tgt}}</div>
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$9.45</span></li>
-            <li><span>P/E ออก</span><span>22x</span></li>
+            <li><span>EPS ปี 3</span><span>~$9.62</span></li>
+            <li><span>P/E ออก</span><span>21x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Fed cut อีก 200bps, AUM แตะ $15T, buyback ขนาดใหญ่</span></li>
           </ul>
@@ -275,8 +273,8 @@
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      การฉายภาพข้างต้นอิงสมมติฐาน EPS ฐาน $5.75 (adj FY2026 guidance) พร้อมสมมติฐาน P/E exit ที่แตกต่างกัน
-      Base case ($162) สอดคล้องกับ consensus นักวิเคราะห์ที่ให้เป้า $116 ปีหน้า และ EPS ที่เติบโตต่อเนื่อง
+      การฉายภาพข้างต้นอิงสมมติฐาน EPS ฐาน $6.49 (FY2026e ตาม consensus ของ StockAnalysis) และ P/E exit ที่ต่างกัน (Bear 13x ต่ำกว่าช่วงประวัติ 19.3–25.1x, Base 18x, Bull 21x) ราคาเป้าเป็นสมมติฐานของผู้วิเคราะห์
+      Base case ให้เป้า $151 ซึ่งสูงกว่า FV เพราะใช้ EPS ปี 3 ที่โตต่อเนื่อง ขณะที่ FV วัดจาก EPS ปัจจุบัน
       หุ้น SCHW มี operating leverage สูง — AUM ทุก $1T เพิ่ม asset mgmt fee ~$3–4B/ปี อัตโนมัติ ไม่ต้องเพิ่มต้นทุนมาก
       ความเสี่ยงหลักคือ ดอกเบี้ย Fed (กระทบ NIM) และ cash sorting ที่อาจกลับมาหาก Fed ถือ rates สูงนานผิดคาด
     </p>
@@ -315,16 +313,16 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>SCHW — Discount บนธุรกิจ Wealth Mgmt ที่ฟื้นตัวแล้ว</h2>
-      <p>Charles Schwab คือบริษัทที่ผสม brokerage + wealth management + banking ขนาดใหญ่ที่สุดใน US ด้วย AUM $11.8T และบัญชีลูกค้า 39 ล้านใบ หลังผ่านพ้นวิกฤต cash sorting ปี 2566–67 ที่กดหุ้นลงหนัก บริษัทฟื้นตัวชัดเจน: Q1'26 EPS adj $1.43 (+38% YoY), NIM 2.88%, pre-tax margin 49.2% — ผลประกอบการดีสุดเป็นประวัติการณ์ แต่ราคาหุ้น $90.55 ยังต่ำกว่า Fair Value $106 และต่ำกว่า consensus นักวิเคราะห์ $116 ถึง ~22% สะท้อน discount ที่น่าสนใจสำหรับนักลงทุน value</p>
+      <h2>SCHW — ธุรกิจ Wealth Mgmt ที่ฟื้นตัวแล้ว ราคาใกล้มูลค่าเหมาะสม</h2>
+      <p>Charles Schwab คือบริษัทที่ผสม brokerage + wealth management + banking ขนาดใหญ่ที่สุดใน US ด้วย AUM $11.8T และบัญชีลูกค้า 39 ล้านใบ หลังผ่านพ้นวิกฤต cash sorting ปี 2566–67 กำไรฟื้นชัดเจน: EPS diluted TTM $5.49 เทียบ FY2025 $4.65 และ FY2024 $2.99 ราคาปัจจุบัน {{rd:px}} อยู่ต่ำกว่า Fair Value {{rd:fv}} เล็กน้อย และต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ $124.95 ส่วนเผื่อความปลอดภัยยังบาง</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$116 (Moderate Buy)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$125 (Buy)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน $90.55 มี MOS ~14.6% ถึง Fair Value — เหมาะสำหรับ <b>ทยอยสะสม</b> ที่ราคานี้ได้เลย; เพิ่มน้ำหนักที่โซน MOS 20% ($84–$85) ซึ่งใกล้กับ 52-week low $83.96 — เป็น risk/reward ที่ดีมาก
-        Base case upside ~83% ใน 3 ปี (รวมปันผล) ถ้า NIM ฟื้นและ AUM โตตาม trajectory ปัจจุบัน
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน {{rd:px}} มี MOS {{rd:mos}} ถึง Fair Value — ถือ/ทยอยสะสมเล็กน้อยได้ แต่รอเพิ่มน้ำหนักที่โซน MOS 20% ({{rd:mos20}})
+        Base case ให้ผลตอบแทนรวมราว +48% ใน 3 ปี (รวมปันผล) ส่วน Bear ราว −11% และ Bull ราว +96% ถ้า EPS โตตามสมมติฐาน
         Risk หลักคือ Fed ค้าง rate สูงนาน + TD Bank ขาย block shares — เหมาะกับนักลงทุนระยะกลาง-ยาว ที่รับความผันผวนระยะสั้นได้
       </div>
     </div>
@@ -337,7 +335,7 @@
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
     แหล่งข้อมูล: Yahoo Finance (ราคา/chart), StockAnalysis.com (งบการเงิน/สถิติ), Investing.com (ราคา cross-check), MarketBeat/Public.com (consensus นักวิเคราะห์), SEC 8-K Q1'26 (ผลประกอบการ), Charles Schwab Press Room (ปันผล)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 30 มิถุนายน 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
