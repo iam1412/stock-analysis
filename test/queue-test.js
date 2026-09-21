@@ -1348,11 +1348,11 @@ const applyEditsRacePromise = testApplyEditsStdin(ok);
   const fetchText = (u) => { urls.push(u); return u.includes('company_tickers') ? JSON.stringify({ 0: { cik_str: 320193, ticker: 'AAPL' }, 1: { cik_str: 1067983, ticker: 'BRK-B' } })
     : JSON.stringify({ filings: { recent: { form: ['8-K', '10-Q', '10-K/A', '4', '10-K'], filingDate: ['2026-09-01', '2026-08-01', '2026-09-10', '2026-09-15', '2026-05-01'] } } }); };
   const cache = new Map();
-  ok(EC.secLastStatement('AAPL', { fetchText, cache }) === '2026-08-01', 'W11: SEC ใช้เฉพาะ 10-K/10-Q/20-F/40-F ต้นฉบับ (8-K, 10-K/A, Form 4 ไม่นับ)');
-  EC.secLastStatement('BRK.B', { fetchText, cache });
+  ok(EC.secLastStatement('AAPL', { ua: 'test-ua', ciks: null, fetchText, cache }) === '2026-08-01', 'W11: SEC ใช้เฉพาะ 10-K/10-Q/20-F/40-F ต้นฉบับ (8-K, 10-K/A, Form 4 ไม่นับ)');
+  EC.secLastStatement('BRK.B', { ua: 'test-ua', ciks: null, fetchText, cache });
   ok(urls.filter((u) => /company_tickers/.test(u)).length === 1 && /CIK0001067983/.test(urls[urls.length - 1]), 'W11: SEC — แคช ticker→CIK ต่อ process · จุด → ขีด · CIK เติม 10 หลัก', urls.join(' '));
-  ok(EC.secLastStatement('NOPE', { fetchText, cache }) === null && EC.secLastStatement('AAPL', { fetchText: () => { throw new Error('net'); } }) === null, 'W11: SEC หา ticker ไม่เจอ/ดึงไม่ได้ → null ไม่ throw');
-  const stSec = P.statementAfterOfWith({ symbols: {} }, () => '<footer>ข้อมูล ณ 1 ก.ค. 2569</footer>', { today: '2026-09-22', isThai: () => false, sec: (x) => EC.secLastStatement(x, { fetchText, cache }) });
+  ok(EC.secLastStatement('NOPE', { ua: 'test-ua', ciks: null, fetchText, cache }) === null && EC.secLastStatement('AAPL', { ua: 'test-ua', ciks: null, fetchText: () => { throw new Error('net'); } }) === null, 'W11: SEC หา ticker ไม่เจอ/ดึงไม่ได้ → null ไม่ throw');
+  const stSec = P.statementAfterOfWith({ symbols: {} }, () => '<footer>ข้อมูล ณ 1 ก.ค. 2569</footer>', { today: '2026-09-22', isThai: () => false, sec: (x) => EC.secLastStatement(x, { ua: 'test-ua', ciks: null, fetchText, cache }) });
   ok(stSec('AAPL').after === true && stSec('AAPL').source === 'sec', 'W11: ไม่มี calendar last → ถอยไป SEC (10-Q 1 ส.ค. หลัง footer 1 ก.ค.)', JSON.stringify(stSec('AAPL')));
   // 7) EPS ต่างจาก vendor 40% แต่ไม่มีงบใหม่ ⇒ LIGHT + คำเตือน 2 ฐาน (ไม่เปลี่ยนโหมด)
   const dm = Pp.decideMode({ exists: true, rec: { bucket: 'LIGHT' }, lightRule: 'new', stmt: null });
@@ -1395,9 +1395,9 @@ const applyEditsRacePromise = testApplyEditsStdin(ok);
   const okTick = (u) => (u.includes('company_tickers') ? JSON.stringify({ 0: { cik_str: 1, ticker: 'FPI' }, 1: { cik_str: 2, ticker: 'ODD' }, 2: { cik_str: 3, ticker: 'BOOM' } })
     : /CIK0000000001/.test(u) ? JSON.stringify({ filings: { recent: { form: ['6-K', '6-K'], filingDate: ['2026-08-01', '2026-07-01'] } } })
     : /CIK0000000002/.test(u) ? JSON.stringify({ filings: { recent: { form: ['4'], filingDate: ['2026-08-01'] } } }) : (() => { throw new Error('curl exit 22'); })());
-  ok(EC.secLookup('NOPE', { fetchText: okTick, cache: cache2 }).kind === 'no-cik' && EC.secLookup('FPI', { fetchText: okTick, cache: cache2 }).kind === '6k-only' && EC.secLookup('ODD', { fetchText: okTick, cache: cache2 }).kind === 'no-statement-forms' && EC.secLookup('BOOM', { fetchText: okTick, cache: cache2 }).kind === 'fetch-failed', 'W11: secLookup แยก kind — no-cik · 6k-only · no-statement-forms · fetch-failed');
-  ok(EC.secLookup('AAPL', { fetchText: () => { throw new Error('boom'); }, cache: new Map() }).kind === 'fetch-failed', 'W11: curl/SEC ล้มตั้งแต่ ticker map → fetch-failed (ไม่ใช่ null เงียบ)');
-  const stFail = P.statementAfterOfWith({ symbols: {} }, () => '<footer>ข้อมูล ณ 1 ก.ค. 2569</footer>', { today: '2026-09-22', isThai: () => false, sec: (x) => EC.secLookup(x, { fetchText: okTick, cache: cache2 }) });
+  ok(EC.secLookup('NOPE', { ua: 'test-ua', ciks: null, fetchText: okTick, cache: cache2 }).kind === 'no-cik' && EC.secLookup('FPI', { ua: 'test-ua', ciks: null, fetchText: okTick, cache: cache2 }).kind === '6k-only' && EC.secLookup('ODD', { ua: 'test-ua', ciks: null, fetchText: okTick, cache: cache2 }).kind === 'no-statement-forms' && EC.secLookup('BOOM', { ua: 'test-ua', ciks: null, fetchText: okTick, cache: cache2 }).kind === 'fetch-failed', 'W11: secLookup แยก kind — no-cik · 6k-only · no-statement-forms · fetch-failed');
+  ok(EC.secLookup('AAPL', { ua: 'test-ua', ciks: null, fetchText: () => { throw new Error('boom'); }, cache: new Map() }).kind === 'fetch-failed', 'W11: curl/SEC ล้มตั้งแต่ ticker map → fetch-failed (ไม่ใช่ null เงียบ)');
+  const stFail = P.statementAfterOfWith({ symbols: {} }, () => '<footer>ข้อมูล ณ 1 ก.ค. 2569</footer>', { today: '2026-09-22', isThai: () => false, sec: (x) => EC.secLookup(x, { ua: 'test-ua', ciks: null, fetchText: okTick, cache: cache2 }) });
   ok(stFail('BOOM').after === null && stFail('BOOM').kind === 'fetch-failed' && stFail('NOPE').kind === 'no-cik' && stFail('FPI').kind === '6k-only', 'W11: statementAfterOfWith ส่ง kind ของ unknown ต่อ');
   ok(P.statementAfterOfWith({ symbols: {} }, () => '<p>ไม่มี footer</p>', { today: '2026-09-22', isThai: () => false })('ZZZ').kind === 'footer-unreadable', 'W11: footer อ่านไม่ได้ → kind footer-unreadable');
   const sumRows = P.plan([{ symbol: 'BOOM', reason: 'drift-gt-15pct', diffPct: 20 }, { symbol: 'FPI', reason: 'mos-sign-flip' }, { symbol: 'USBB', reason: 'drift-gt-15pct', diffPct: 20 }], '2026-09-22',
@@ -1418,6 +1418,68 @@ const applyEditsRacePromise = testApplyEditsStdin(ok);
     ok(sh2.sym === 'AAPL' && sh2.cmd === 'ship', 'W11: ship รับ --light-rule แต่ไม่ถือเป็น symbol');
     let e2 = null; try { A2.parseArgs(['prep', 'AAPL', '--light-rule']).val('--light-rule'); } catch (e) { e2 = e; }
     ok(e2 && /--light-rule ต้องมีค่า/.test(e2.message), 'W11: --light-rule ไม่มีค่า → error');
+  }
+  // ── SEC_USER_AGENT / แผนที่ CIK ที่ commit / --sec-refresh-ciks / --sec-probe (offline ทั้งหมด) ──
+  {
+    const throwing = () => { throw new Error('ห้ามยิง network'); };
+    let calls = 0;
+    const counted = () => { calls++; throw new Error('ห้ามยิง network'); };
+    // ไม่มี UA + ไม่มีแผนที่ ⇒ no-ua โดยไม่แตะ fetcher เลย (mutation: ถ้าเผลอยิง จะนับ calls)
+    const nu = EC.secLookup('AAPL', { ua: null, ciks: null, fetchText: counted, cache: new Map() });
+    ok(nu.kind === 'no-ua' && nu.date === null && calls === 0, 'W11/SEC: ไม่มี SEC_USER_AGENT + ไม่มีแผนที่ → no-ua และไม่มีการเรียก network', JSON.stringify(nu) + ' calls=' + calls);
+    const saved = process.env.SEC_USER_AGENT; delete process.env.SEC_USER_AGENT;
+    ok(EC.secLookup('AAPL', { ciks: null, fetchText: throwing, cache: new Map() }).kind === 'no-ua', 'W11/SEC: env SEC_USER_AGENT ว่าง → no-ua (ไม่ใช่ 403/fetch-failed)');
+    if (saved !== undefined) process.env.SEC_USER_AGENT = saved;
+    // มีแผนที่ที่ commit: ไม่ขอ company_tickers · ไม่มี UA ก็ยิง data.sec.gov ด้วย Mozilla/5.0 ได้
+    const seen = [];
+    const subs = (u, ua) => { seen.push([u, ua]); return JSON.stringify({ filings: { recent: { form: ['10-Q'], filingDate: ['2026-08-01'] } } }); };
+    const m1 = EC.secLookup('AAPL', { ua: null, ciks: { AAPL: '0000320193', 'BRK-B': '1067983' }, fetchText: subs, cache: new Map() });
+    ok(m1.date === '2026-08-01' && m1.cik === '0000320193' && seen.length === 1 && /data\.sec\.gov\/submissions\/CIK0000320193\.json/.test(seen[0][0]) && seen[0][1] === 'Mozilla/5.0', 'W11/SEC: มีแผนที่ + ไม่มี UA → ดึงเฉพาะ submissions ด้วย UA สำรอง ไม่ขอ company_tickers', JSON.stringify(seen));
+    ok(EC.secLookup('BRK.B', { ua: null, ciks: { 'BRK-B': '1067983' }, fetchText: subs, cache: new Map() }).cik === '1067983'.padStart(10, '0'), 'W11/SEC: แผนที่ — จุด → ขีด · CIK เติม 10 หลัก');
+    const nc = EC.secLookup('NOPE', { ua: 'ua-x', ciks: { AAPL: '320193' }, fetchText: throwing, cache: new Map() });
+    ok(nc.kind === 'no-cik', 'W11/SEC: มีแผนที่แต่ไม่มี ticker → no-cik โดยไม่ยิง network', JSON.stringify(nc));
+    // ไม่มีแผนที่ + มี UA ⇒ ขอ company_tickers ด้วย UA นั้น
+    const seen2 = [];
+    const both = (u, ua) => { seen2.push([u, ua]); return u.includes('company_tickers') ? JSON.stringify({ 0: { cik_str: 320193, ticker: 'AAPL' } }) : JSON.stringify({ filings: { recent: { form: ['10-K'], filingDate: ['2026-05-01'] } } }); };
+    const w = EC.secLookup('AAPL', { ua: 'ua-x', ciks: null, fetchText: both, cache: new Map() });
+    ok(w.date === '2026-05-01' && seen2[0][0].includes('www.sec.gov/files/company_tickers.json') && seen2[0][1] === 'ua-x' && seen2[1][1] === 'ua-x', 'W11/SEC: ไม่มีแผนที่ + มี UA → ขอ company_tickers ด้วย UA ที่ตั้ง', JSON.stringify(seen2));
+    // loadCiks
+    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'ciks-'));
+    ok(EC.loadCiks(path.join(tmp, 'ไม่มี.json')) === null, 'W11/SEC: loadCiks ไม่มีไฟล์ → null');
+    fs.writeFileSync(path.join(tmp, 'bad.json'), '{oops'); fs.writeFileSync(path.join(tmp, 'ok.json'), '{"AAPL":"0000320193"}');
+    ok(EC.loadCiks(path.join(tmp, 'bad.json')) === null && EC.loadCiks(path.join(tmp, 'ok.json')).AAPL === '0000320193', 'W11/SEC: loadCiks ไฟล์พัง → null · ไฟล์ดี → object');
+    ok(!fs.existsSync(EC.CIKS_FILE) || EC.loadCiks() !== undefined, 'W11/SEC: CIKS_FILE ชี้ tools/sec-ciks.json');
+    // --sec-refresh-ciks
+    const tk = () => JSON.stringify({ 0: { cik_str: 320193, ticker: 'AAPL' }, 1: { cik_str: 1067983, ticker: 'BRK-B' }, 2: { cik_str: 1046179, ticker: 'TSM' } });
+    const target = path.join(tmp, 'sec-ciks.json');
+    fs.writeFileSync(target, '{"OLD":"0000000001"}\n');
+    const symbols = [['AAPL', 'AAPL'], ['BBL', 'BBL.BK'], ['BRK.B', 'BRK-B'], ['GHOST', 'GHOST']];
+    const r0 = EC.secRefreshCiks({ ua: null, fetchText: throwing, file: target, symbols });
+    ok(r0.ok === false && /no-ua/.test(r0.why) && fs.readFileSync(target, 'utf8') === '{"OLD":"0000000001"}\n', 'W11/SEC: refresh ไม่มี UA → ไม่ยิง network · ไฟล์เดิมไม่ถูกแตะ', r0.why);
+    const r1x = EC.secRefreshCiks({ ua: 'ua-x', fetchText: throwing, file: target, symbols });
+    ok(r1x.ok === false && /fetch-failed/.test(r1x.why) && fs.readFileSync(target, 'utf8') === '{"OLD":"0000000001"}\n', 'W11/SEC: refresh ดึงล้ม → ไฟล์เดิมไม่ถูกแตะ + บอกเหตุผล', r1x.why);
+    const r2x = EC.secRefreshCiks({ ua: 'ua-x', fetchText: () => '{}', file: target, symbols });
+    ok(r2x.ok === false && fs.readFileSync(target, 'utf8') === '{"OLD":"0000000001"}\n', 'W11/SEC: refresh ได้ map ว่าง → ไม่เขียนทับ');
+    const r3x = EC.secRefreshCiks({ ua: 'ua-x', fetchText: tk, file: target, symbols });
+    const written = JSON.parse(fs.readFileSync(target, 'utf8'));
+    ok(r3x.ok && JSON.stringify(written) === JSON.stringify({ AAPL: '0000320193', 'BRK.B': '0001067983' }) && r3x.missing.join() === 'GHOST' && !('BBL' in written) && !('TSM' in written), 'W11/SEC: refresh เขียนเฉพาะ ticker US ที่มีรายงาน (ตัด TH/ที่ไม่มีรายงาน) · เติม 10 หลัก · รายงาน missing', JSON.stringify(written));
+    // --sec-probe
+    const probeFetch = (u) => (u.includes('company_tickers') ? JSON.stringify({ 0: { cik_str: 320193, ticker: 'AAPL' }, 1: { cik_str: 1046179, ticker: 'TSM' }, 2: { cik_str: 9, ticker: 'BOOM' } })
+      : /CIK0000320193/.test(u) ? JSON.stringify({ filings: { recent: { form: ['10-Q', '8-K'], filingDate: ['2026-08-01', '2026-09-01'] } } })
+      : /CIK0001046179/.test(u) ? JSON.stringify({ filings: { recent: { form: ['6-K'], filingDate: ['2026-08-01'] } } }) : (() => { throw new Error('403'); })());
+    const pl = EC.secProbe(['AAPL', 'TSM', 'NOPE', 'BOOM'], { ua: 'ua-x', ciks: null, fetchText: probeFetch });
+    ok(/^AAPL\s+cik=0000320193 latest=2026-08-01 kind=ok$/.test(pl[0]) && /kind=6k-only$/.test(pl[1]) && /kind=no-cik$/.test(pl[2]) && /kind=fetch-failed$/.test(pl[3]), 'W11/SEC: --sec-probe พิมพ์ CIK · วันงบล่าสุด · kind (ok|6k-only|no-cik|fetch-failed)', pl.join(' | '));
+    ok(/kind=no-ua$/.test(EC.secProbe(['AAPL'], { ua: null, ciks: null, fetchText: throwing })[0]), 'W11/SEC: --sec-probe ไม่มี UA → kind=no-ua');
+    // triage + สรุป preflight กรณีผสม · stmtNote ลง state
+    const stMix = P.statementAfterOfWith({ symbols: {} }, () => '<footer>ข้อมูล ณ 1 ก.ค. 2569</footer>', { today: '2026-09-22', isThai: () => false,
+      sec: (x) => (x === 'AAA' ? EC.secLookup(x, { ua: null, ciks: null, fetchText: throwing }) : x === 'BBB' ? EC.secLookup(x, { ua: 'u', ciks: null, fetchText: throwing, cache: new Map() }) : EC.secLookup(x, { ua: 'u', ciks: { CCC: '5' }, fetchText: () => JSON.stringify({ filings: { recent: { form: ['6-K'], filingDate: ['2026-08-01'] } } }) }))});
+    const rowsMix = P.plan([{ symbol: 'AAA', reason: 'mos-sign-flip' }, { symbol: 'BBB', reason: 'drift-gt-15pct', diffPct: 20 }, { symbol: 'CCC', reason: 'mos-sign-flip' }, { symbol: 'AAA2', reason: 'drift-gt-15pct', diffPct: 20 }], '2026-09-22',
+      { ageLimit: 0, footerAgeOf: () => 30, statementAfterOf: (x) => stMix(x === 'AAA2' ? 'AAA' : x) });
+    const by2 = Object.fromEntries(rowsMix.map((r) => [r.symbol, r]));
+    ok(by2.AAA.bucket === 'PREPATCH' && by2.AAA.stmtKind === 'no-ua' && by2.AAA.stmtNote === 'statement-unknown' && by2.AAA2.bucket === 'FULL' && by2.BBB.bucket === 'FULL' && by2.CCC.bucket === 'PREPATCH', 'W11/SEC: no-ua ปฏิบัติเหมือน unknown อื่น — flip คง PREPATCH · แถว worker = FULL', JSON.stringify(rowsMix.map((r) => [r.symbol, r.bucket, r.stmtKind])));
+    const mixLine = P.unknownSummary(rowsMix);
+    ok(mixLine === '⚠ statement unknown: 4 (fetch-failed 1 · no-ua 2) · 6k-only 1', 'W11/SEC: สรุป preflight แบบผสม แสดง no-ua', mixLine);
+    ok(P.upsertRow(null, by2.AAA).stmtNote === 'statement-unknown', 'W11: upsertRow เก็บ stmtNote ลง state');
   }
   // BUG-001 · BUG-008
   const hsN = Pp.hardStock({}, { baseEPS: 2 }, { epsTTM: -0.4 });

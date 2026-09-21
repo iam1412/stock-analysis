@@ -211,7 +211,7 @@ function upsertRow(old, r) {
   const keep = isNewFlag(old, r)
     ? Object.fromEntries(Object.entries(old || {}).filter(([k]) => !S.ROUND_FIELDS.includes(k)))
     : { ...(old || {}) };
-  return { ...keep, reason: r.reason, bucket: r.bucket, oldPrice: r.oldPrice, currency: r.currency, footerAge: r.footerAge, skip: r.skip, flaggedAt: r.flaggedAt || null, stmtKind: r.stmtKind || null, stmt: r.stmt === undefined ? null : r.stmt, stmtWhy: r.stmtWhy || null, diffPct: r.diffPct ?? null };
+  return { ...keep, reason: r.reason, bucket: r.bucket, oldPrice: r.oldPrice, currency: r.currency, footerAge: r.footerAge, skip: r.skip, flaggedAt: r.flaggedAt || null, stmtKind: r.stmtKind || null, stmtNote: r.stmtNote || null, stmt: r.stmt === undefined ? null : r.stmt, stmtWhy: r.stmtWhy || null, diffPct: r.diffPct ?? null };
 }
 
 /** ผล gate หลัง pre-patch → ประทับลงแถว state (ส่วนบริสุทธิ์ — เทสยิงได้โดยไม่ต้องรัน update-prices/check-reports)
@@ -235,8 +235,8 @@ function unknownSummary(rows) {
   if (!u.length) return null;
   const kinds = {};
   for (const r of u) { const k = r.stmtKind || 'unknown'; kinds[k] = (kinds[k] || 0) + 1; }
-  const other = Object.entries(kinds).filter(([k]) => k !== 'fetch-failed').map(([k, n]) => `${k} ${n}`).join(' · ');
-  return `⚠ statement unknown: ${u.length} (fetch-failed ${kinds['fetch-failed'] || 0})${other ? ` · ${other}` : ''}`;
+  const other = Object.entries(kinds).filter(([k]) => k !== 'fetch-failed' && k !== 'no-ua').map(([k, n]) => `${k} ${n}`).join(' · ');
+  return `⚠ statement unknown: ${u.length} (fetch-failed ${kinds['fetch-failed'] || 0}${kinds['no-ua'] ? ` · no-ua ${kinds['no-ua']}` : ''})${other ? ` · ${other}` : ''}`;
 }
 
 /** ★ รายการขั้นที่ script ทำแทนไม่ได้ — พิมพ์ทุกครั้ง นี่คือตัววัด "ขั้นที่ต้องจำ ≤5" (KPI ระยะ 0) */
