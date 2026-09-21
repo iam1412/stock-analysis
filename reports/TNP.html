@@ -5,38 +5,38 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น ทีเอ็นพี (TNP) — Stock Analysis Dashboard</title>
 <!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง -->
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"TNP","currency":"THB","price":2.86,"fairValue":3.4,"mos":15.9,"upside":18.9,"pe":11,"dividendYield":3.85,"roe":16.08}
+{"symbol":"TNP","currency":"THB","price":2.88,"fairValue":3.73,"mos":22.8,"upside":29.5,"pe":10.67,"dividendYield":3.82,"roe":16.32}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 3.4,
+  "fv": 3.73,
   "values": {
-    "px": 2.86,
-    "priceDate": "2026-09-18",
+    "px": 2.88,
+    "priceDate": "2026-09-21",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
     "fvLow": 2.57,
-    "fvHigh": 4.21,
-    "eps": 0.26,
+    "fvHigh": 4.3,
+    "eps": 0.27,
     "shares": 800000000,
     "dps": 0.11,
     "bvps": 1.71,
-    "baseEps": 0.26,
+    "baseEps": 0.27,
     "scenarios": [
       {
-        "tgt": 2.84,
+        "tgt": 2.95,
         "div": 0.33
       },
       {
-        "tgt": 4.15,
+        "tgt": 4.31,
         "div": 0.33
       },
       {
-        "tgt": 5.53,
+        "tgt": 5.75,
         "div": 0.33
       }
     ],
@@ -44,7 +44,8 @@
       "years": 3,
       "divIncluded": false,
       "perYear": null
-    }
+    },
+    "analystTgt": 3.73
   },
   "theme": {
     "accent": "#2e7d32",
@@ -72,11 +73,11 @@
       ["มิ.ย.26", 2.86],
       ["ก.ค.26", 2.9],
       ["ส.ค.26", 2.88],
-      ["ก.ย.26", 2.86]
+      ["ก.ย.26", 2.88]
     ],
-    "min": 2.6,
-    "max": 3.6,
-    "grid": [2.8, 3, 3.2, 3.4],
+    "min": 2.5,
+    "max": 4,
+    "grid": [3, 3.5],
     "currency": "฿",
     "highlight": [1, 7],
     "gridFmt": "v.toFixed(2)",
@@ -111,7 +112,7 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ ฿2.28 – ฿3.52<br>
+        กรอบ 52 สัปดาห์ ฿2.62 – ฿3.42<br>
         ที่มา: SET Factsheet, StockAnalysis.com, Yahoo Finance
       </div>
     </div>
@@ -119,28 +120,28 @@
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 · แหล่ง SET, StockAnalysis</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ 22 ก.ย. 2569 · แหล่ง SET, StockAnalysis</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">฿2,288 ล้าน</div><div class="d">800 ล้านหุ้น · Par ฿0.25</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~11.00x</div><div class="d">EPS TTM ฿0.26</div></div>
-      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~16.8x</div><div class="d">ช่วง 10.95x – 22.07x</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿2,304 ล้าน</div><div class="d">800 ล้านหุ้น · Par ฿0.25</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~10.67x</div><div class="d">EPS TTM ฿0.27</div></div>
+      <div class="metric"><div class="k">P/E มัธยฐาน ~5 ปี</div><div class="v">~18.2x</div><div class="d">ช่วง 10.3x – 23.7x</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ฿1.71 · เติบโตดี</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">฿213 ล้าน</div><div class="d">+14.6% YoY</div></div>
-      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.26</div><div class="d">FY2025 ฿0.27</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.27</div><div class="d">FY2025 ฿0.27</div></div>
       <div class="metric"><div class="k">BVPS</div><div class="v">~฿1.71</div><div class="d">เพิ่มขึ้นทุกปีต่อเนื่อง</div></div>
-      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~16.1% / 9.8%</div><div class="d">สม่ำเสมอ D/E ต่ำ 0.08x</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~16.3% / 9.8%</div><div class="d">สม่ำเสมอ D/E ต่ำ 0.08x</div></div>
 
-      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿3,240 ล้าน</div><div class="d">เติบโต +8.4% YoY</div></div>
-      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">18.2%</div><div class="d">เพิ่มขึ้นจาก 16.8% ใน FY23</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~3.85%</div><div class="d">฿0.11/หุ้น · จ่ายปีละ 2 ครั้ง</div></div>
-      <div class="metric"><div class="k">EV/EBITDA</div><div class="v">6.92x</div><div class="d">Payout ratio ~39%</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿3,250 ล้าน</div><div class="d">เติบโต +11.0% YoY</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">18.1%</div><div class="d">เพิ่มขึ้นจาก 16.8% ใน FY23</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~3.82%</div><div class="d">฿0.11/หุ้น · จ่ายปีละ 2 ครั้ง</div></div>
+      <div class="metric"><div class="k">EV/EBITDA</div><div class="v">6.92x</div><div class="d">Payout ratio ~41%</div></div>
     </div>
   </section>
 
   <!-- ===== 2. PRICE CHART ===== -->
   <section>
-    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ราคารายเดือน ก.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ราคารายเดือน ต.ค. 2568 – ก.ย. 2569</div></div>
     <div class="card">
       <div class="chart-wrap">
         <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
@@ -151,33 +152,33 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ราคา TNP ผันผวนในช่วง ฿2.66–฿3.18 ตลอดปี โดยแตะจุดสูง ฿3.18 ในเดือน ส.ค. 2568 จากนั้นย่อตัวลงต่ำสุด ฿2.66 เดือน ต.ค. 2568 ก่อนฟื้นตัวกลับมาในช่วงต้นปี 2569 ราคาปัจจุบัน ฿2.88 ยังต่ำกว่ามูลค่าเหมาะสม ฿3.40 ประมาณ 15% ผลตอบแทนราคา รอบปี +2.9% (จาก ฿2.80 → ฿2.88) รวมปันผล ~3.7% รวมสุทธิประมาณ +6.6%
+        ราคา TNP ผันผวนในช่วง ฿2.66–฿3.02 ตลอดปี โดยต่ำสุด ฿2.66 เดือน พ.ย. 2568 แล้วฟื้นขึ้นแตะจุดสูง ฿3.02 เดือน พ.ค. 2569 ก่อนย่อกลับมาแถว ฿2.9 ราคาปัจจุบัน {{rd:px}} ยังต่ำกว่ามูลค่าเหมาะสม {{rd:fv}} ประมาณ {{rd:mos}} ผลตอบแทนราคาตามกราฟ ต.ค. 2568 → ก.ย. 2569 ราว +2% รวมปันผล ~3.8% รวมสุทธิประมาณ +6%
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">2 ตระกูล: P/E + DDM/Justified P/BV</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿0.26 × P/E เป้าหมาย ~13x — ต่ำกว่าค่าเฉลี่ย 5 ปี ~16.8x สะท้อนความระมัดระวัง</div></div>
-        <div class="mval">฿3.38</div>
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS ฿0.27 × P/E 14.9x — มัธยฐานของ FY2023–25 ที่วัดจากประวัติ (10.3x/14.9x/18.2x ไม่ได้มาจาก P/E ปัจจุบัน) · มัธยฐาน 5 ปีเต็ม 18.2x จะได้ ฿4.91 แต่ไม่ใช้เพราะ P/E ลดลงต่อเนื่อง 23.7x → 10.3x จึงเลือกช่วงล่าสุดที่สเกลธุรกิจใกล้ปัจจุบัน</div></div>
+        <div class="mval">฿4.02</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ฿0.1155 (0.11×1.05); g 5%, r 9.5% → เหมาะสำหรับหุ้นปันผลสม่ำเสมอ Payout 39%</div></div>
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ฿0.1155 (0.11×1.05); g 5%, r 9.5% → เหมาะสำหรับหุ้นปันผลสม่ำเสมอ Payout 41% · (r,g) ชุดเดียวกับ Justified P/BV จึงนับเป็นตระกูลเดียว</div></div>
         <div class="mval">฿2.57</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 16.08% − g 5%)/(r 9.5% − g 5%) ≈ 2.46x × BVPS ฿1.71</div></div>
-        <div class="mval">฿4.21</div>
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 16.32% − g 5%)/(r 9.5% − g 5%) ≈ 2.52x × BVPS ฿1.71 (ตระกูลเดียวกับ DDM)</div></div>
+        <div class="mval">฿4.30</div>
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        P/E Valuation ให้ค่ากลาง ฿3.38 อิง EPS ฿0.26 × P/E 13x (ระมัดระวังจากค่าเฉลี่ย 5 ปี ~16.8x) · DDM ให้ค่าต่ำ ฿2.57 เพราะ Payout Ratio เพียง 39% และ g=5% อนุรักษ์นิยม · Justified P/BV สูง ฿4.21 สะท้อน ROE 16% เกินกว่า r=9.5% อย่างมีนัย ชี้ให้เห็นว่าบริษัทสร้างผลตอบแทนเหนือต้นทุนทุน ค่าเฉลี่ยทั้ง 3 วิธี = ฿3.40 ถือเป็นประมาณการอนุรักษ์นิยมกลาง
+        FV คำนวณตามตระกูลสมมติฐาน: P/E ให้ ฿4.02 (EPS ฿0.27 × 14.9x) ส่วน DDM ฿2.57 กับ Justified P/BV ฿4.30 ใช้ (r,g) ชุดเดียวกันจึงนับเป็นหนึ่งเสียง (ค่าเฉลี่ย ฿3.44) ⇒ FV = (4.02 + 3.44)/2 = ฿3.73 · ความอ่อนไหวต่อ P/E: ถ้าใช้มัธยฐาน 5 ปีเต็ม 18.2x FV จะราว ฿4.18 ถ้าใช้ P/E ต่ำสุด FY2025 10.3x FV จะราว ฿3.11 · เป้านักวิเคราะห์ (Strong Buy, 2 ราย) ใช้เป็นบริบทตรวจความสอดคล้องเท่านั้น ไม่ใช่ขาของ FV
       </p>
     </div>
   </section>
@@ -195,12 +196,12 @@
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿3.59<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">{{rd:analystTgt}}<br><small>เป้าเฉลี่ย Analyst</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน ฿2.88 อยู่ระหว่างโซน MOS 20% (฿2.72) และมูลค่าเหมาะสม (฿3.40) MOS ~15.3% บ่งชี้ว่าราคาตลาดยังต่ำกว่า Fair Value แต่ยังไม่ถึงระดับ Deep Value · Analyst ตั้งเป้า ฿3.59 (Strong Buy) ชี้ upside ~24.7% จากระดับปัจจุบัน
+        ราคาปัจจุบัน {{rd:px}} อยู่ระหว่างโซน MOS 30% ({{rd:mos30}}) และ MOS 20% ({{rd:mos20}}) MOS {{rd:mos}} บ่งชี้ว่าราคาตลาดต่ำกว่า Fair Value {{rd:fv}} แต่ยังไม่ถึงระดับ Deep Value · Analyst ตั้งเป้า {{rd:analystTgt}} ({{rd:analystPct}}) (Strong Buy) ใช้เป็นบริบทเท่านั้น
       </p>
     </div>
   </section>
@@ -211,7 +212,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">MOS พอสมควร — ราคาต่ำกว่า Fair Value ฿3.40 อยู่ ~฿0.52 เหมาะสะสมแบบทยอย</div>
+        <div class="txt">MOS ดี — ราคาต่ำกว่า Fair Value {{rd:fv}} เหมาะสะสมแบบทยอย</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -238,7 +239,7 @@
           <div class="tgt">{{rd:sc1tgt}}</div>
           <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿0.284</span></li>
+            <li><span>EPS ปี 3</span><span>~฿0.295</span></li>
             <li><span>P/E ออก</span><span>10x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>ค้าปลีกชะลอ แข่งขันรุนแรง</span></li>
@@ -251,7 +252,7 @@
           <div class="tgt">{{rd:sc2tgt}}</div>
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿0.346</span></li>
+            <li><span>EPS ปี 3</span><span>~฿0.359</span></li>
             <li><span>P/E ออก</span><span>12x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>ขยายสาขา P/E re-rate กลับ</span></li>
@@ -264,7 +265,7 @@
           <div class="tgt">{{rd:sc3tgt}}</div>
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿0.395</span></li>
+            <li><span>EPS ปี 3</span><span>~฿0.411</span></li>
             <li><span>P/E ออก</span><span>14x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>ขยาย+Margin ดี+P/E re-rate</span></li>
@@ -273,7 +274,7 @@
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      Scenario ทั้งหมดใช้ EPS TTM ฿0.26 เป็นฐาน · Bear ถือว่า P/E Compression ลงต่ำสุดที่ 10x ยังให้ผลตอบแทนรวมบวกเล็กน้อย ~10% · Base อิงการเติบโต EPS ย้อนหลัง ~10–15%/ปี โดย P/E กลับไปที่ 12x ซึ่งยังต่ำกว่าค่าเฉลี่ย 5 ปี · Bull ถ้าตลาดให้ P/E ที่เหมาะสมขึ้นพร้อมการเติบโตเร็ว upside เกิน 100% ปันผลรวม ~฿0.33 ยังไม่รวมในตัวเลข % ผลตอบแทนจริงสูงกว่าอีก ~11–12%
+      Scenario ทั้งหมดใช้ EPS TTM ฿0.27 เป็นฐาน · Bear ถือว่า P/E Compression ลงต่ำสุดที่ 10x (ใกล้ระดับต่ำสุดของ FY2025 10.3x) ผลตอบแทนราคาเกือบเท่าทุน · Base อิงการเติบโต EPS ย้อนหลัง ~10–15%/ปี โดย P/E กลับไปที่ 12x ซึ่งยังต่ำกว่ามัธยฐาน 5 ปี · Bull ถ้าตลาดให้ P/E ที่เหมาะสมขึ้นพร้อมการเติบโตเร็ว upside ราว 100% ปันผลรวม ~฿0.33 ยังไม่รวมในตัวเลข % ผลตอบแทนจริงสูงกว่าอีก ~11–12%
     </p>
   </section>
 
@@ -288,8 +289,8 @@
           <li><b>Gross Margin ปรับขึ้น:</b> อัตรากำไรขั้นต้นเพิ่มจาก 16.8% (FY23) สู่ 18.3% (FY25) ชี้ว่า Pricing Power และประสิทธิภาพการจัดซื้อดีขึ้น</li>
           <li><b>รายได้เติบโตสม่ำเสมอ:</b> รายได้โตเฉลี่ย ~8% ต่อปี (FY22–25) Net Profit โต 14.6% YoY ใน FY25</li>
           <li><b>ฐานะการเงินแข็งแกร่ง:</b> D/E เพียง 0.08x Current Ratio 2.02x กองทุนสำรองเพียงพอ ไม่มีความเสี่ยงทางการเงิน</li>
-          <li><b>P/E Re-rating:</b> P/E ปัจจุบัน 10.95x ต่ำกว่าค่าเฉลี่ย 5 ปี ~16.8x อย่างมาก หาก Sentiment ตลาดฟื้นตัว upside จาก Re-rating สูง</li>
-          <li><b>เงินปันผลสม่ำเสมอ:</b> จ่ายปีละ 2 ครั้ง ปันผลเติบโต ~10%/ปี ใน 5 ปีที่ผ่านมา Yield ~3.7% ดึงดูดนักลงทุนระยะยาว</li>
+          <li><b>P/E Re-rating:</b> P/E ปัจจุบัน ~10.7x ต่ำกว่ามัธยฐาน 5 ปี ~18.2x อย่างมาก หาก Sentiment ตลาดฟื้นตัว upside จาก Re-rating สูง</li>
+          <li><b>เงินปันผลสม่ำเสมอ:</b> จ่ายปีละ 2 ครั้ง ปันผลเติบโต ~10%/ปี ใน 5 ปีที่ผ่านมา Yield ~3.8% ดึงดูดนักลงทุนระยะยาว</li>
         </ul>
       </div>
       <div class="box risk">
@@ -310,14 +311,14 @@
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
       <h2>Value Play ระดับภูมิภาค — P/E ต่ำ ROE ดี ปันผลสม่ำเสมอ</h2>
-      <p>TNP (ธนพิริยะ) คือผู้นำค้าส่ง-ค้าปลีกสินค้าอุปโภคบริโภคในภาคเหนือ มี 56 สาขาที่เชียงรายและจังหวัดใกล้เคียง ธุรกิจมีความมั่นคงสูง รายได้เติบโต ~8%/ปี Gross Margin ปรับขึ้นต่อเนื่อง ROE ~16% กับ D/E เพียง 0.08x บ่งชี้คุณภาพธุรกิจดี ราคาปัจจุบัน ฿2.88 ให้ P/E เพียง 10.95x ต่ำกว่าค่าเฉลี่ย 5 ปีที่ ~16.8x อย่างมีนัย สะท้อนว่าตลาดยัง Undervalue หุ้น Small-Cap ภูมิภาคนี้ MOS ~15.3% จากมูลค่าเหมาะสม ฿3.40 บวกกับปันผล Yield ~3.7% ทำให้ผลตอบแทนรวมน่าสนใจสำหรับนักลงทุน VI ระยะกลาง-ยาว</p>
+      <p>TNP (ธนพิริยะ) คือผู้นำค้าส่ง-ค้าปลีกสินค้าอุปโภคบริโภคในภาคเหนือ มี 56 สาขาที่เชียงรายและจังหวัดใกล้เคียง ธุรกิจมีความมั่นคงสูง รายได้เติบโต ~8%/ปี Gross Margin ปรับขึ้นต่อเนื่อง ROE ~16% กับ D/E เพียง 0.08x บ่งชี้คุณภาพธุรกิจดี ราคาปัจจุบัน {{rd:px}} ให้ P/E เพียง ~10.7x ต่ำกว่ามัธยฐาน 5 ปีที่ ~18.2x อย่างมีนัย สะท้อนว่าตลาดยัง Undervalue หุ้น Small-Cap ภูมิภาคนี้ MOS {{rd:mos}} จากมูลค่าเหมาะสม {{rd:fv}} บวกกับปันผล Yield ~3.8% ทำให้ผลตอบแทนรวมน่าสนใจสำหรับนักลงทุน VI ระยะกลาง-ยาว</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿3.59 (Strong Buy)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~{{rd:analystTgt}} (Strong Buy)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> เหมาะสะสมทยอยในโซน ฿2.50–฿2.88 เป้า Fair Value ฿3.40 (upside ~18%) รับปันผลระหว่างถือ Yield ~3.7% ตั้ง Stop Loss บริเวณ ฿2.20 ต่ำกว่า 52W Low หากราคาลงถึง ฿2.38 (MOS 30%) เป็นโอกาส Deep Value
+        💡 <b>กลยุทธ์:</b> เหมาะสะสมทยอยที่ราคาปัจจุบัน {{rd:px}} ลงไปถึงโซน MOS 30% ({{rd:mos30}}) เป้า Fair Value {{rd:fv}} รับปันผลระหว่างถือ Yield ~3.8% ตั้ง Stop Loss บริเวณ ฿2.45 ต่ำกว่า 52W Low ฿2.62 หากราคาลงถึง {{rd:mos30}} เป็นโอกาส Deep Value
       </div>
     </div>
   </section>
@@ -326,9 +327,9 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • แหล่งข้อมูล: SET Factsheet (3 ก.ค. 2569), StockAnalysis.com (งบการเงิน/อัตราส่วน), Yahoo Finance (ราคารายเดือน ~1 ปี), Finnomena.com (ผลตอบแทนรอบปี) · ยืนยัน ≥2 แหล่ง: ราคา ฿2.88 ตรงกัน (SET+StockAnalysis), P/E ~10.95x ตรงกัน (SET+StockAnalysis)
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • แหล่งข้อมูล: SET Factsheet (3 ก.ค. 2569; ราคา/EPS ปรับด้วย StockAnalysis 21 ก.ย. 2569), StockAnalysis.com (งบการเงิน/อัตราส่วน), Yahoo Finance (ราคารายเดือน ~1 ปี), Finnomena.com (ผลตอบแทนรอบปี) · ยืนยัน ≥2 แหล่ง: ราคา ฿2.88 ตรงกัน (Yahoo+StockAnalysis), P/E ~10.7x และ EPS ฿0.27 ตรงกัน (Yahoo+StockAnalysis)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 22 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
