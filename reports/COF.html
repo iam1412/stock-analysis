@@ -5,37 +5,37 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น Capital One Financial (COF) — Stock Analysis Dashboard</title>
 <!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง (Opus→"Claude Opus 4.8", Sonnet→"Claude Sonnet 4.6") — gate E28 บังคับ -->
-<meta name="ai-model" content="Claude Opus 4.8">
+<meta name="ai-model" content="Claude Sonnet 5">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"COF","currency":"USD","price":202.43,"fairValue":212,"mos":4.5,"upside":4.7,"pe":10.5,"dividendYield":1.58,"roe":15}
+{"symbol":"COF","currency":"USD","price":202.43,"fairValue":150,"mos":-35,"upside":-25.9,"pe":10.5,"dividendYield":1.58,"roe":15}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 212,
+  "fv": 150,
   "values": {
     "px": 202.43,
     "priceDate": "2026-09-18",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
     "fvLow": 84,
-    "fvHigh": 251,
+    "fvHigh": 216,
     "eps": 19.3,
-    "shares": 616000000,
+    "shares": 613484836,
     "dps": 3.2,
     "baseEps": 19.3,
     "scenarios": [
       {
-        "tgt": 174,
+        "tgt": 126,
         "div": 8.64
       },
       {
-        "tgt": 260,
+        "tgt": 184,
         "div": 10.56
       },
       {
-        "tgt": 353,
+        "tgt": 355,
         "div": 11.52
       }
     ],
@@ -73,15 +73,15 @@
       ["ส.ค.26", 214.51],
       ["ก.ย.26", 202.43]
     ],
-    "min": 160,
-    "max": 260,
-    "grid": [180, 200, 220, 240],
+    "min": 125,
+    "max": 250,
+    "grid": [150, 175, 200, 225],
     "currency": "$",
     "highlight": [2, 5]
   },
   "gauge": {
-    "min": 140,
-    "max": 260,
+    "min": 80,
+    "max": 280,
     "fairLabelTop": true
   }
 }
@@ -111,7 +111,7 @@
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ {{rd:priceDate}} (2 Jul 2026)<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $174.24 – $259.64<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, SEC 8-K (Q1 2026 earnings release)
       </div>
@@ -126,13 +126,13 @@
          • ธนาคาร → NIM / NPL / CASA / Loan growth / Cost-to-income   • REIT/กองอสังหา → Occupancy / DPU / NAV / Gearing   • ประกัน → Combined ratio / EV
          • หุ้นเติบโต-ขาดทุน → Revenue growth / Gross margin / FCF / Cash runway (ตัด P/E ออก) -->
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">$124.7B</div><div class="d">~616M หุ้น (เพิ่ม ~60% YoY จากดีล Discover)</div></div>
-      <div class="metric"><div class="k">P/E (TTM, GAAP)</div><div class="v neu">~42x</div><div class="d">บิดเบือนจากต้นทุนควบรวม — ดู P/E adj. ด้านล่าง</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$124.1B</div><div class="d">~613M หุ้น (เพิ่ม ~60% YoY จากดีล Discover)</div></div>
+      <div class="metric"><div class="k">P/E (TTM, GAAP)</div><div class="v neu">~12.5x</div><div class="d">GAAP EPS TTM $16.19 ต่ำกว่า adj. เพราะต้นทุนควบรวม — ดู P/E adj. ด้านล่าง</div></div>
       <div class="metric"><div class="k">P/E (Adjusted, normalized)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS adj. $19.30 (คาดการณ์ FY2026, ตัด one-time)</div></div>
       <div class="metric"><div class="k">P/TBV</div><div class="v neu">1.9x</div><div class="d">TBVPS $107.76 (Q1 2569)</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ Q1 FY2026</div><div class="v">$2.2B</div><div class="d">+57% YoY (รวม Discover เต็มไตรมาสแรก)</div></div>
-      <div class="metric"><div class="k">EPS (TTM, GAAP)</div><div class="v">~$4.89</div><div class="d">Q1 adj. EPS $4.42 (ตัด amortization+integration cost)</div></div>
+      <div class="metric"><div class="k">EPS (TTM, GAAP)</div><div class="v">~$16.19</div><div class="d">GAAP diluted (StockAnalysis: NI $10.2B ÷ 630M หุ้น) · Yahoo แสดง $18.16 คนละฐาน · Q1 adj. EPS $4.42</div></div>
       <div class="metric"><div class="k">TBVPS</div><div class="v">~$107.76</div><div class="d">Tangible book value ต่อหุ้น ณ 31 มี.ค. 2569</div></div>
       <div class="metric"><div class="k">ROE (Normalized)</div><div class="v pos">~15%</div><div class="d">ROA ~1.6% — เป้าหมายหลัง synergy เต็มรูปแบบปี 2570</div></div>
 
@@ -161,27 +161,27 @@
         <!-- ✏️ บรรยายการเคลื่อนไหวราคา ~1 ปี: จุดสูง/ต่ำ, เปลี่ยนแปลง %, สาเหตุหลัก -->
         ราคาขึ้นแตะจุดสูงสุดรอบปีที่ $242 ในเดือน ธ.ค. 2568 ก่อนร่วงแรงต่อเนื่องช่วง ม.ค.–มี.ค. 2569 ลงมาแตะจุดต่ำ $182.43 ในเดือน มี.ค. 2569
         หลังตลาดกังวลต้นทุนควบรวม Discover ที่กดกำไร GAAP และรายงานผล Q1 2026 พลาดคาดการณ์ (adjusted EPS $4.42 ต่ำกว่าคาด $4.51)
-        จากนั้นเริ่มฟื้นตัวช่วง เม.ย.–ก.ค. 2569 ตามความชัดเจนของแผนย้ายระบบบัตร Discover เข้าสู่แพลตฟอร์มของ Capital One
-        รวมทั้งปีราคาลดลง ~9.7% (รอบปี) แม้ปัจจัยพื้นฐานระยะยาว (Discover Network) จะแข็งแกร่งขึ้น</p>
+        จากนั้นเริ่มฟื้นตัวช่วง เม.ย.–ส.ค. 2569 (ปิดเดือน ส.ค. ที่ $214.51) ตามความชัดเจนของแผนย้ายระบบบัตร Discover เข้าสู่แพลตฟอร์มของ Capital One
+        ก่อนย่อลงในเดือน ก.ย. 2569 รวมทั้งปีราคาลดลง ~8.0% (รอบปี) แม้ปัจจัยพื้นฐานระยะยาว (Discover Network) จะแข็งแกร่งขึ้น</p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">ถ่วงตามตระกูลสมมติฐาน (3 วิธี = 2 เสียง)</div></div>
     <div class="card">
       <!-- ✏️ เลือก ≥2 วิธีให้เหมาะกับหุ้น — gate เช็คคณิตเฉพาะวิธีชื่อ "P/E" (E21) และ "Justified P/BV" (E22) เมื่อมีวิธีนั้น
            ธนาคาร → เน้น P/BV / Residual income   • REIT → DDM / NAV   • หุ้นไม่ปันผล → ตัด DDM ออก ใช้ P/E + DCF/Justified P/BV -->
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $19.30 × P/E 13x — EPS ปกติ (normalized) หลังตัด purchase accounting/integration cost; P/E 13x สะท้อนการ re-rate ขึ้นจาก fwd P/E ปัจจุบัน ~10x เมื่อ synergy ชัดเจนขึ้น</div></div>
-        <div class="mval">$251</div>
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $19.30 × P/E 7.8x — EPS ปกติ (normalized) หลังตัด purchase accounting/integration cost; P/E 7.8x = มัธยฐานย้อนหลังของ COF เอง (FY2021–FY2024, ช่วง 5.4–13.1x, ตัด FY2025 ที่กำไรทรุดชั่วคราวออก) แทนที่ 13x เดิมซึ่งเป็นตัวคูณที่ตั้งเอง</div></div>
+        <div class="mval">$151</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล $3.20 × (1+g); g 5%, r 9% → payout ratio ต่ำ (~17%) ทำให้ DDM เป็นเพียง "ฐานล่าง" ไม่ใช่ตัวชี้วัดหลัก (กำไรส่วนใหญ่เก็บไว้ทำ buyback)</div></div>
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล $3.20 × (1+g); g 5%, r 9% → payout ratio ต่ำ (~17%) ทำให้ DDM เป็นเพียง "ฐานล่าง" ไม่ใช่ตัวชี้วัดหลัก (กำไรส่วนใหญ่เก็บไว้ทำ buyback) — นับเป็น 1 เสียงร่วมกับ Justified P/TBV (ตระกูล r,g เดียวกัน)</div></div>
         <div class="mval">$84</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">3. Justified P/TBV</div><div class="mdesc">P/TBV เหมาะสม = (ROE 15% − g 6%)/(r 10.5% − g 6%) ≈ 2.0 × TBVPS $107.76 — ROE normalized สะท้อนเป้าหมายหลัง synergy เต็มรูปแบบปี 2570</div></div>
+        <div><div class="mname">3. Justified P/TBV</div><div class="mdesc">P/TBV เหมาะสม = (ROE 15% − g 6%)/(r 10.5% − g 6%) ≈ 2.0 × TBVPS $107.76 — ROE normalized สะท้อนเป้าหมายหลัง synergy เต็มรูปแบบปี 2570 — ถ่วงร่วมกับ DDM เป็น 1 เสียง (ค่าเฉลี่ย $84 กับ $216 = $150)</div></div>
         <div class="mval">$216</div>
       </div>
       <div class="fv-box">
@@ -190,10 +190,9 @@
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <!-- ✏️ หมายเหตุ: วิธีไหนให้ค่าสูง/ต่ำเพราะอะไร, ทำไม FV กลางจึงสมเหตุสมผล -->
-        FV คำนวณแบบถ่วงน้ำหนัก (ไม่ใช่ค่าเฉลี่ยธรรมดา): P/E 45% + Justified P/TBV 40% + DDM 15%
-        เนื่องจาก COF เป็นธนาคารบัตรเครดิตที่ payout ratio ต่ำ (~17%) DDM จึงประเมินค่าต่ำเกินจริง (ให้น้ำหนักน้อยเป็นแค่ฐานอ้างอิง)
-        ส่วน P/E บน EPS ปรับปรุง (adjusted, ตัดต้นทุนควบรวม Discover ที่เป็น one-time) และ P/TBV เป็นตัวชี้วัดหลักตามมาตรฐานหุ้นธนาคาร
-        FV $212 ใกล้เคียงกับเป้าราคาเฉลี่ยนักวิเคราะห์ ($250) แต่ระมัดระวังกว่าเพราะยังมีความไม่แน่นอนช่วง integration
+        FV = (P/E ตัวคูณมัธยฐาน $151 + ค่าเฉลี่ยตระกูล ROE/r,g ของ DDM $84 กับ Justified P/TBV $216 = $150) ÷ 2 = {{rd:fv}} — 2 ตระกูลสมมติฐานอิสระ ถ่วงเสียงละเท่ากัน
+        DDM กับ Justified P/TBV ใช้ (r,g) ชุดเดียวกันจึงนับเป็นเสียงเดียว ส่วน P/E ใช้ตัวคูณที่วัดจริงจากประวัติของ COF (มัธยฐาน 7.8x) ไม่ใช่ตัวคูณปัจจุบัน
+        เป้าราคาเฉลี่ยนักวิเคราะห์ ($258, n=22) เป็นเพียงบริบทเทียบ ไม่ได้เป็นขาของ FV — ตัวคูณมัธยฐานมาจากช่วง FY2021–FY2024 ก่อนควบรวม Discover จึงอาจต่ำกว่าระดับที่ธุรกิจหลังควบรวมสมควรได้ (ประมาณการนี้ยังไม่ผ่านการยืนยันด้วยวิธีอื่น)
       </p>
     </div>
   </section>
@@ -211,13 +210,13 @@
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
-          <span style="text-align:right">$250<br><small>เป้าเฉลี่ย Analyst</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$258<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน ($205.12) ใกล้เคียงกับมูลค่าเหมาะสม ($212) มาก — ต่างกันเพียง ~3% สะท้อนว่าตลาดเริ่มรับรู้ปัจจัยพื้นฐานหลังควบรวมแล้วบางส่วน
-        แต่ยังต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ ($250) ~19% ซึ่งสะท้อนมุมมองบวกต่อ synergy จาก Discover Network ที่ยังไม่เกิดเต็มที่
+        ราคาปัจจุบัน {{rd:px}} สูงกว่ามูลค่าเหมาะสม {{rd:fv}} ราว 35% (MOS {{rd:mos}}) — ตลาดตีราคาเหนือระดับที่ตัวคูณมัธยฐานย้อนหลังของ COF รองรับ
+        และยังต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ ($258) ~22% ซึ่งสะท้อนมุมมองบวกต่อ synergy จาก Discover Network ที่ยังไม่เกิดเต็มที่
       </p>
     </div>
   </section>
@@ -229,7 +228,7 @@
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">Margin of Safety ต่ำมาก — ราคาปัจจุบันเกือบเท่ามูลค่าเหมาะสม ยังไม่ใช่จุดเข้าที่มี MOS สูงพอสำหรับ value investor แม้ downside risk จำกัดเพราะราคาปรับลงมามากแล้วในปีนี้</div>
+        <div class="txt">Margin of Safety ติดลบ — ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสมที่ประเมินจากตัวคูณมัธยฐานย้อนหลัง ยังไม่ใช่จุดเข้าสำหรับ value investor (ผลขึ้นกับสมมติฐานตัวคูณก่อนควบรวม — ถ้าตลาด re-rate ตามโมเดลเครือข่ายปิด FV จะสูงกว่านี้)</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -257,7 +256,7 @@
           <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$19.30</span></li>
-            <li><span>P/E ออก</span><span>9x</span></li>
+            <li><span>P/E ออก</span><span>6.5x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>Integration สะดุด, credit loss พุ่งจากพอร์ต Discover, synergy ล่าช้า</span></li>
           </ul>
@@ -270,7 +269,7 @@
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$23.64</span></li>
-            <li><span>P/E ออก</span><span>11x</span></li>
+            <li><span>P/E ออก</span><span>7.8x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>Synergy $2.5B ตามแผนปี 2570, credit quality ทรงตัว, NIM คงที่</span></li>
           </ul>
@@ -283,7 +282,7 @@
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$27.12</span></li>
-            <li><span>P/E ออก</span><span>13x</span></li>
+            <li><span>P/E ออก</span><span>13.1x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Discover Network ขยายปริมาณธุรกรรมเร่งตัว + re-rate multiple ตามโมเดล closed-loop แบบ AXP</span></li>
           </ul>
@@ -291,10 +290,10 @@
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      Base case (+31.9% รวมปันผล 3 ปี) อิงกับแผน synergy รวม $2.5B (cost + revenue) ที่ฝ่ายบริหารตั้งเป้าให้เห็นผลเต็มที่ภายในปี 2570
+      Base case ({{rd:sc2ret}} รวมปันผล 3 ปี, P/E ออกที่มัธยฐาน 7.8x) อิงกับแผน synergy รวม $2.5B (cost + revenue) ที่ฝ่ายบริหารตั้งเป้าให้เห็นผลเต็มที่ภายในปี 2570
       พร้อมการย้ายพอร์ตบัตร Discover เข้าระบบ back-office ของ Capital One (เริ่ม ก.ค. 2569) และคุณภาพสินเชื่อที่ทรงตัว/ดีขึ้นต่อเนื่อง (charge-off ลดลง YoY)
       Bear case เกิดได้หากเศรษฐกิจถดถอย ผู้บริโภคกลุ่มความเสี่ยงสูง (subprime) ที่ Discover ถืออยู่มากกว่า COF เดิม ทำให้ credit loss เร่งตัวเร็วกว่าคาด
-      Bull case ต้องอาศัย Discover Network ขยายปริมาณธุรกรรมจากผู้ค้ารายอื่น (ไม่ใช่แค่บัตร COF) และตลาดให้ premium multiple เทียบเท่า American Express closed-loop
+      Bull case ต้องอาศัย Discover Network ขยายปริมาณธุรกรรมจากผู้ค้ารายอื่น (ไม่ใช่แค่บัตร COF) และตลาดให้ premium multiple เทียบเท่า American Express closed-loop (P/E ออก 13.1x = สูงสุดที่วัดได้ FY2024 · Bear 6.5x = FY2022)
     </p>
   </section>
 
@@ -309,7 +308,7 @@
           <li><b>Discover Network — moat ระยะยาว:</b> เป็นเครือข่ายชำระเงินของตัวเอง (เหมือน Visa/Mastercard) ทำให้ประหยัด interchange fee และเปิดรายได้ใหม่จากการรับ third-party issuer เข้าเครือข่าย คาดว่าเป็น synergy หลักระยะ 3–5 ปี</li>
           <li><b>Synergy เป้าหมาย $2.5B:</b> ผสมทั้ง cost synergy (รวมระบบ back-office, ปิดซ้ำซ้อน) และ revenue synergy (ปริมาณธุรกรรมเครือข่าย) คาดเห็นผลเต็มรูปแบบภายในปี 2570</li>
           <li><b>คุณภาพสินเชื่อดีขึ้นต่อเนื่อง:</b> Domestic Card charge-off ลดลง 109 bps YoY และ delinquency ลดลง 55 bps YoY สะท้อนวินัยการปล่อยสินเชื่อที่ดีทั้งพอร์ตเดิมและพอร์ต Discover</li>
-          <li><b>Valuation ยังไม่แพงเทียบ normalized EPS:</b> P/E adjusted ~10.6x ต่ำกว่าค่าเฉลี่ยธนาคารบัตรเครดิตคุณภาพสูง เปิดช่องให้ re-rate เมื่อตลาดเริ่มมองข้ามต้นทุนควบรวมชั่วคราว</li>
+          <li><b>Valuation เทียบ normalized EPS:</b> P/E adjusted ~{{rd:pe}}x สูงกว่ามัธยฐานย้อนหลังของ COF (7.8x) แต่เปิดช่องให้ re-rate เมื่อตลาดเริ่มมองข้ามต้นทุนควบรวมชั่วคราว</li>
           <li><b>Buyback + เงินทุนแข็งแกร่ง:</b> CET1 ratio 14.4% สูงกว่าเกณฑ์ขั้นต่ำมาก เปิดทางให้ซื้อหุ้นคืนต่อเนื่องหลังลดหนี้จากดีล Discover</li>
         </ul>
       </div>
@@ -317,7 +316,7 @@
         <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
         <ul>
           <!-- ✏️ 4–6 ข้อ: เขียน <b>หัวข้อ:</b> รายละเอียด -->
-          <li><b>GAAP EPS บิดเบือนรุนแรง:</b> Purchase accounting (amortization ของพอร์ต Discover ที่ acquire มา $477M/ไตรมาส) + integration cost ($415M/ไตรมาส) ทำให้ P/E GAAP (~42x) สูงเกินจริงมาก นักลงทุนที่ไม่ normalize อาจตีความผิด</li>
+          <li><b>GAAP EPS บิดเบือนรุนแรง:</b> Purchase accounting (amortization ของพอร์ต Discover ที่ acquire มา $477M/ไตรมาส) + integration cost ($415M/ไตรมาส) ทำให้ GAAP EPS ต่ำกว่า adjusted (TTM GAAP $16.19 เทียบ adj. normalized ~$19.30) นักลงทุนที่ไม่ normalize อาจตีความผิด</li>
           <li><b>คุณภาพสินเชื่อ Discover เดิมอ่อนกว่า COF:</b> พอร์ต Discover มี charge-off rate สูงกว่าพอร์ตเดิมของ Capital One ในอดีต หากเศรษฐกิจถดถอยจะกดดันตัวเลข credit loss ของทั้งกลุ่มเร็วกว่าคาด</li>
           <li><b>Integration risk — เทคโนโลยี/ระบบ:</b> การย้ายบัญชี Discover เข้าระบบ back-office ของ COF (เริ่ม ก.ค. 2569, เสร็จสมบูรณ์ต้นปี 2571) มีความเสี่ยงด้าน operation/downtime/customer experience</li>
           <li><b>Synergy อาจล่าช้ากว่าแผน:</b> ประวัติการควบรวมธนาคารขนาดใหญ่มักใช้เวลานานกว่าที่ประกาศไว้ในตอนแรก และ regulatory scrutiny (Fed/OCC) อาจชะลอขั้นตอนบางส่วน</li>
@@ -332,18 +331,18 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>COF — Discover moat มีจริง แต่ราคาสะท้อนไปแล้วเกือบเต็ม</h2>
+      <h2>COF — Discover moat มีจริง แต่ราคาสูงกว่ามูลค่าเหมาะสมเชิงประวัติ</h2>
       <p>Capital One หลังควบรวม Discover Financial (พ.ค. 2568) กลายเป็นผู้เล่นบัตรเครดิตรายเดียวในสหรัฐฯ ที่เป็นเจ้าของเครือข่ายชำระเงินตัวเอง คล้าย American Express
       แต่ตัวเลข GAAP ยังบิดเบือนหนักจากต้นทุนควบรวม (purchase accounting + integration cost รวม ~$1.08/หุ้นต่อไตรมาส) ทำให้ต้องดู Adjusted EPS ($4.42/ไตรมาส, ~$19.30/ปี normalized) เป็นหลัก
-      ที่ราคา $205.12 หุ้นเทรดที่ P/E adjusted เพียง ~10.6x และ P/TBV 1.9x ซึ่งไม่แพง แต่ราคาก็ขยับใกล้มูลค่าเหมาะสม ($212) ไปมากแล้ว ทำให้ Margin of Safety เหลือน้อย (~3%)
+      ที่ราคา {{rd:px}} หุ้นเทรดที่ P/E adjusted ~{{rd:pe}}x และ P/TBV 1.9x สูงกว่ามัธยฐาน P/E ย้อนหลัง 7.8x และสูงกว่ามูลค่าเหมาะสม {{rd:fv}} ทำให้ Margin of Safety ติดลบ ({{rd:mos}})
       คุณภาพสินเชื่อกำลังดีขึ้นต่อเนื่อง (charge-off ลดลง YoY) แต่ยังต้องจับตา integration risk และความไม่แน่นอนของ synergy timeline ปี 2570</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$250 (Buy consensus)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$258 (Buy consensus, n=22)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> รอสะสมช่วงราคาย่อลงมาใกล้โซน MOS 20% ($170) หรือต่ำกว่า แทนการไล่ซื้อที่ราคาปัจจุบันซึ่ง MOS เหลือน้อย
+        💡 <b>กลยุทธ์:</b> รอสะสมช่วงราคาย่อลงมาใกล้โซน MOS 20% ({{rd:mos20}}) หรือต่ำกว่า แทนการไล่ซื้อที่ราคาปัจจุบันซึ่ง MOS ติดลบ
         เหมาะกับนักลงทุนที่เชื่อมั่นในเรื่อง Discover Network synergy ระยะยาว (3–5 ปี) และรับความเสี่ยงด้าน integration/credit cycle ได้
         ติดตามตัวเลข charge-off rate และความคืบหน้าการย้ายระบบบัตร Discover (เริ่ม ก.ค. 2569) เป็นตัวชี้วัดหลักทุกไตรมาส
       </div>
@@ -354,9 +353,9 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูล ณ 2 ก.ค. 2569 จาก StockAnalysis.com, Yahoo Finance, SEC 8-K Q1 2026 Earnings Release, MarketBeat/ChartMill (analyst targets) — ตัวเลข Adjusted EPS เป็นค่าประมาณ normalized ตัดต้นทุนควบรวม Discover ที่เป็น one-time
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูล ณ 21 ก.ย. 2569 จาก StockAnalysis.com, Yahoo Finance, SEC 8-K Q1 2026 Earnings Release (เป้านักวิเคราะห์ $258 จาก StockAnalysis/Yahoo) — ตัวเลข Adjusted EPS เป็นค่าประมาณ normalized ตัดต้นทุนควบรวม Discover ที่เป็น one-time
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 2 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
