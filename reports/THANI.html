@@ -5,26 +5,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น ราชธานี ลิสซิ่ง (THANI) — Stock Analysis Dashboard</title>
 <!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง -->
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"THANI","currency":"THB","price":2.18,"fairValue":2.5,"mos":12.8,"upside":14.7,"pe":10.9,"dividendYield":5,"roe":8.8}
+{"symbol":"THANI","currency":"THB","price":2.18,"fairValue":2.95,"mos":26.1,"upside":35.3,"pe":10.4,"dividendYield":5,"roe":9.6}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 2.5,
+  "fv": 2.95,
   "values": {
     "px": 2.18,
-    "priceDate": "2026-09-18",
+    "priceDate": "2026-09-21",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
-    "fvLow": 2.19,
-    "fvHigh": 2.89,
-    "eps": 0.2,
+    "fvLow": 2.89,
+    "fvHigh": 3,
+    "eps": 0.21,
     "shares": 6229000000,
     "dps": 0.11,
-    "bvps": 2.31
+    "bvps": 2.31,
+    "baseEps": 0.21,
+    "analystTgt": 2.73
   },
   "theme": {
     "accent": "#e65100",
@@ -55,14 +57,14 @@
       ["ก.ย.26", 2.18]
     ],
     "min": 1.5,
-    "max": 2.75,
-    "grid": [1.75, 2, 2.25, 2.5],
+    "max": 3.5,
+    "grid": [2, 2.5, 3],
     "currency": "฿",
     "highlight": [0, 9]
   },
   "gauge": {
-    "min": 1.4,
-    "max": 2.8,
+    "min": 1.5,
+    "max": 3.1,
     "fairLabelTop": true
   }
 }
@@ -89,7 +91,7 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ ฿1.40 – ฿2.06<br>
+        กรอบ 52 สัปดาห์ ฿1.55 – ฿2.44<br>
         ที่มา: Yahoo Finance, StockAnalysis, Investing.com
       </div>
     </div>
@@ -97,20 +99,20 @@
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 • TTM = ย้อนหลัง 12 เดือน</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ 22 ก.ย. 2569 • TTM = ย้อนหลัง 12 เดือน</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~฿13,579 ล้าน</div><div class="d">หุ้น 6,229 ล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM ฿0.20 · ถูกกว่า sector</div></div>
-      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~11–13x</div><div class="d">non-bank leasing SET เฉลี่ย</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM ฿0.21 · ต่ำกว่ามัธยฐานย้อนหลังของตัวเอง</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~14.3x</div><div class="d">มัธยฐาน 5 FY (2021–25) · ช่วง 8.7–15.8x</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ฿2.31 · ต่ำกว่า 1x</div></div>
 
-      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v pos">฿1,235 ล้าน</div><div class="d">+54.3% YoY vs FY2024</div></div>
-      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.20</div><div class="d">FY2025: ฿0.18 · ฟื้นตัวต่อเนื่อง</div></div>
+      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v pos">฿1,315 ล้าน</div><div class="d">+14.5% vs FY2025 (฿1,148 ล้าน)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.21</div><div class="d">FY2025: ฿0.18 · FY2023: ฿0.21 (ยังไม่เกิน peak FY2022 ฿0.28)</div></div>
       <div class="metric"><div class="k">BVPS</div><div class="v">~฿2.31</div><div class="d">Equity ฿14,415 ล้าน (TTM)</div></div>
-      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~8.8% / 2.8%</div><div class="d">ฟื้นตัว · เป้า 10%+ ปี 2569</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~9.6%</div><div class="d">ROE TTM · FY2025 8.4% · FY2022 14.6%</div></div>
 
-      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿3,613 ล้าน</div><div class="d">ลดลงจาก peak (NPL cleanup)</div></div>
-      <div class="metric"><div class="k">NPL Ratio</div><div class="v">~3.8%</div><div class="d">Q4/67 ทรงตัว · บริหารเชิงรุก</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿2,184 ล้าน</div><div class="d">รายได้สุทธิ (NI ÷ Net margin 60.2%) · ตามนิยาม SA</div></div>
+      <div class="metric"><div class="k">NPL Ratio</div><div class="v">~3.8%</div><div class="d">ตัวเลข Q4/67 — ยังไม่ได้ยืนยันรอบล่าสุด</div></div>
       <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">฿0.11/หุ้น · XD มี.ค. 69 · 23 ปีติดต่อกัน</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">0.30</div><div class="d">ความผันผวนต่ำกว่าตลาดมาก</div></div>
     </div>
@@ -118,7 +120,7 @@
 
   <!-- ===== 2. PRICE CHART ===== -->
   <section>
-    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ต.ค. 2568 – ก.ย. 2569</div></div>
     <div class="card">
       <div class="chart-wrap">
         <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
@@ -129,40 +131,32 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ราคา THANI ในรอบปีผ่านมาเคลื่อนไหวในกรอบ ฿1.40–฿2.06 สะท้อนการฟื้นตัวของกำไรหลังผ่านจุดต่ำสุด
-        ช่วง ส.ค. 68 พุ่งขึ้นแตะ ฿2.06 (52W High) หลังกำไร Q2/68 ดีกว่าคาด ก่อนย่อตัวลงมาทรงตัวแถว ฿1.65–฿1.85
-        ไตรมาส 1/69 ราคาฟื้นกลับขึ้นมาที่ ฿1.84 หลังประกาศกำไรดีต่อเนื่องและปันผล ฿0.11/หุ้น
-        ผลตอบแทนรอบปี +10.8% ยังต่ำกว่ามูลค่าเหมาะสม ฿2.50 มี Upside ~36%
+        ราคา THANI ในรอบ 52 สัปดาห์เคลื่อนไหวในกรอบ ฿1.55–฿2.44 ช่วง ต.ค. 68 – มิ.ย. 69 ทรงตัวแถว ฿1.6–฿1.9
+        ก่อนกระโดดขึ้นเป็น ฿2.24 ในเดือน ก.ค. 69 แล้วย่อเล็กน้อยและอยู่ที่ {{rd:px}} ณ {{rd:priceDate}} (ตัวเลขรายเดือนจาก Yahoo Finance)
+        ผลตอบแทนรอบปี {{rd:chg}} ราคายังต่ำกว่ามูลค่าเหมาะสม {{rd:fv}} (Upside {{rd:upside}}) ตามสมมติฐานหมวด 3 ซึ่งพึ่งพา P/E มัธยฐานย้อนหลังสูงกว่าตัวคูณปัจจุบัน
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">3 วิธี · non-bank leasing</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">2 วิธี · non-bank leasing</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿0.20 × P/E เป้าหมาย ~12x — ค่า P/E เฉลี่ย sector non-bank leasing ไทย 11–13x (ปัจจุบัน 9.2x ถูกกว่า sector)</div></div>
-        <div class="mval">฿2.40</div>
+        <div><div class="mname">1. P/E Valuation (มัธยฐานย้อนหลัง)</div><div class="mdesc">EPS ฿0.21 (TTM) × P/E เป้าหมาย 14.3x = ฿3.00 — 14.3x คือมัธยฐาน P/E ของ THANI เอง 5 FY (2021–2025; ราคาเฉลี่ยปี ÷ EPS ปรับลด; ช่วง 8.7–15.8x) ที่มาจากประวัติ ไม่ใช่จาก P/E ปัจจุบัน ({{rd:pe}}x) · ช่วงหลังปี 2021–23 ราคาสูงกว่านี้ ตัวคูณจึงอาจไม่กลับไปถึง</div></div>
+        <div class="mval">฿3.00</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.11 × (1+5%) = ฿0.1155; g 5%, r 9% → FV = 0.1155/(0.09−0.05) — ปันผลสม่ำเสมอ 23 ปี growth rate ประมาณ 5%/ปี</div></div>
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.11 × (1+5%) = ฿0.1155; g 5%, r 9% (สมมติฐานของผู้วิเคราะห์เอง) → FV = 0.1155/(0.09−0.05) — ปันผลสม่ำเสมอ 23 ปี · Justified P/BV (ROE 9.6% → 1.15 × BVPS ฿2.31 = ฿2.66) ใช้ r,g ชุดเดียวกัน จึงนับเป็นเสียงเดียวกับ DDM และไม่ถ่วงเพิ่ม</div></div>
         <div class="mval">฿2.89</div>
-      </div>
-      <div class="vmethod">
-        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 8.8% − g 5%)/(r 9% − g 5%) ≈ 0.95 × BVPS ฿2.31 — ROE คาดฟื้นสู่ 10%+ ใน 2–3 ปี</div></div>
-        <div class="mval">฿2.19</div>
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        วิธี DDM ให้ค่าสูงสุด (฿2.89) สะท้อนประวัติจ่ายปันผลต่อเนื่อง 23 ปีของ THANI
-        วิธี Justified P/BV ให้ค่าต่ำสุด (฿2.19) เพราะ ROE ปัจจุบัน 8.8% ยังต่ำกว่าระดับที่ support P/BV = 1x
-        วิธี P/E กลางๆ ที่ ฿2.40 ด้วย P/E 12x ซึ่งเป็นระดับ historical ของกลุ่ม non-bank
-        FV เฉลี่ย ฿2.50 สอดคล้องกับเป้าเฉลี่ย analyst ที่ ฿2.22 (3 สถาบัน Strong Buy)
-        และ upside ที่ชัดเจนจากทั้ง 3 วิธียืนยันว่าหุ้นยังถูกกว่ามูลค่าที่แท้จริง
+        FV เป็นค่าเฉลี่ยของ 2 วิธีที่เป็นอิสระต่อกัน: P/E มัธยฐานย้อนหลัง (฿3.00) กับ DDM (฿2.89) — เป้า analyst {{rd:analystTgt}} (4 สถาบัน) ใช้เป็นบริบทตรวจความสอดคล้องเท่านั้น ไม่ได้เป็นส่วนของ FV
+        ข้อควรระวัง: FV นี้ไวต่อตัวคูณ P/E และสมมติฐาน r/g — ถ้าใช้ P/E 12x (ต่ำกว่ามัธยฐาน) FV จะลดลงเหลือราว ฿2.70 และหาก P/E ไม่ขยับจากระดับปัจจุบันเลย FV จะอยู่ราว ฿2.53 ส่วนต่างจากราคาจึงบางลงมาก
       </p>
     </div>
   </section>
@@ -179,15 +173,15 @@
         <div class="scale">
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿2.22<br><small>เป้า Analyst</small></span>
+          <span style="text-align:center">{{rd:analystTgt}}<br><small>เป้า Analyst</small></span>
           <span style="text-align:right">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน ฿1.84 อยู่ต่ำกว่ามูลค่าเหมาะสม ฿2.50 ประมาณ 26% (MOS ~26.4%)
-        และยังต่ำกว่าเป้าเฉลี่ย analyst ที่ ฿2.22 ราคาปัจจุบันอยู่ต่ำกว่า MOS 20% (฿2.00) แสดงว่าอยู่ใน Value Zone
-        P/BV 0.80x ต่ำกว่า NAV ยืนยัน downside protection — หุ้นซื้อต่ำกว่าทรัพย์สินสุทธิต่อหุ้น
+        ราคาปัจจุบัน {{rd:px}} ต่ำกว่ามูลค่าเหมาะสม {{rd:fv}} (MOS ~{{rd:mos}}) และต่ำกว่าเป้าเฉลี่ย analyst {{rd:analystTgt}}
+        ราคาอยู่ระหว่างจุด MOS 20% ({{rd:mos20}}) กับ MOS 30% ({{rd:mos30}}) จึงอยู่ใน Value Zone แต่ยังไม่ถึงโซน deep value
+        P/BV {{rd:pbv}}x ใกล้/ต่ำกว่า NAV ต่อหุ้น — ให้ downside cushion บางส่วน แต่ ROE ~9.6% ยังไม่สูงพอจะรองรับ P/BV เกิน 1x
       </p>
     </div>
   </section>
@@ -217,17 +211,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿2.18 • EPS ฐาน ~฿0.20 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} • รวมปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +2%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿1.70</div>
-          <div class="ret neg">-2.2%/ปี</div>
+          <div class="tgt">฿1.78</div>
+          <div class="ret neg">-1.1%/ปี</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿0.21</span></li>
+            <li><span>EPS ปี 3</span><span>~฿0.22</span></li>
             <li><span>P/E ออก</span><span>8x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.34</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.33</span></li>
             <li><span>สถานการณ์</span><span>เศรษฐกิจชะลอ ยานยนต์อ่อนแอ NPL สูงขึ้น</span></li>
           </ul>
         </div>
@@ -235,12 +229,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿2.52</div>
-          <div class="ret pos">+10.0%/ปี</div>
+          <div class="tgt">฿2.91</div>
+          <div class="ret pos">+14.4%/ปี</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿0.25</span></li>
-            <li><span>P/E ออก</span><span>10x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.38</span></li>
+            <li><span>EPS ปี 3</span><span>~฿0.26</span></li>
+            <li><span>P/E ออก</span><span>11x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.35</span></li>
             <li><span>สถานการณ์</span><span>ตลาดรถบรรทุก/เกษตรฟื้น กำไรเพิ่มต่อเนื่อง</span></li>
           </ul>
         </div>
@@ -248,21 +242,21 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿3.37</div>
-          <div class="ret pos">+20.2%/ปี</div>
+          <div class="tgt">฿3.84</div>
+          <div class="ret pos">+24.6%/ปี</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿0.28</span></li>
-            <li><span>P/E ออก</span><span>12x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.42</span></li>
+            <li><span>EPS ปี 3</span><span>~฿0.30</span></li>
+            <li><span>P/E ออก</span><span>13x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.38</span></li>
             <li><span>สถานการณ์</span><span>เศรษฐกิจไทยฟื้นแรง loan growth กลับมา ROE ทะลุ 12%</span></li>
           </ul>
         </div>
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      ผลตอบแทน Base case +16.5%/ปี รวมปันผล dividend yield ~6% ถือเป็นผลตอบแทนที่น่าสนใจสำหรับหุ้น Beta ต่ำ (0.30)
-      แม้ใน Bear case ผลตอบแทนยังเป็นบวก +3.5%/ปี เพราะปันผลช่วยประคับประคอง (downside cushion)
-      ความเสี่ยง downside จำกัดเพราะ P/BV เพียง 0.80x ซื้อต่ำกว่าทรัพย์สินสุทธิ ยากที่จะขาดทุนในระยะยาว
+      ผลตอบแทน Base case +14.4%/ปี รวมปันผล (yield ~{{rd:yield}}) — ตัวคูณออก 11x ต่ำกว่ามัธยฐานย้อนหลัง 14.3x จึงยังเผื่อไว้บางส่วน หุ้น Beta ต่ำ (0.30)
+      ใน Bear case (P/E 8x ใกล้จุดต่ำสุดย้อนหลัง 8.7x) ผลตอบแทนติดลบเล็กน้อยราว -1.1%/ปี โดยปันผลช่วยลดการขาดทุน
+      ราคาเป้าและ P/E ออกเป็นสมมติฐานของผู้วิเคราะห์ ไม่ใช่การรับประกัน
     </p>
   </section>
 
@@ -273,22 +267,22 @@
       <div class="box cat">
         <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
         <ul>
-          <li><b>กำไรฟื้นตัวต่อเนื่อง:</b> TTM กำไร ฿1,235 ล้าน +73.7% YoY สะท้อน NPL cleanup สำเร็จ + margin ดีขึ้น</li>
-          <li><b>ปันผลสม่ำเสมอ 23 ปี:</b> ประวัติจ่ายปันผลยาวนาน Yield ~6% เป็น income stock คุณภาพ</li>
+          <li><b>กำไรฟื้นตัวต่อเนื่อง:</b> TTM กำไร ฿1,315 ล้าน เทียบ FY2025 ฿1,148 ล้าน และ FY2024 ฿800 ล้าน — OpM 77.0%</li>
+          <li><b>ปันผลสม่ำเสมอ 23 ปี:</b> ประวัติจ่ายปันผลยาวนาน Yield ~{{rd:yield}} เป็น income stock</li>
           <li><b>ตลาดรถเพื่อการพาณิชย์ฟื้น:</b> รถบรรทุก/รถเกษตรมีความต้องการรองรับการขยายโครงสร้างพื้นฐาน EEC</li>
-          <li><b>Analyst Strong Buy ทุกราย:</b> 3 สถาบัน เป้าเฉลี่ย ฿2.22 — consensus bullish เด่นชัด</li>
-          <li><b>P/BV ต่ำกว่า 1x:</b> ซื้อต่ำกว่า Net Asset Value = downside protection ชัดเจน</li>
-          <li><b>ROE เป้า 10%+:</b> นักวิเคราะห์คาด ROE ฟื้นสู่ 10.56% ใน FY2026 ดัน Justified P/BV สูงขึ้น</li>
+          <li><b>Analyst Strong Buy:</b> 4 สถาบัน เป้าเฉลี่ย {{rd:analystTgt}} — consensus bullish (ใช้เป็นบริบท ไม่ใช่ส่วนของ FV)</li>
+          <li><b>P/BV ต่ำกว่า 1x:</b> P/BV {{rd:pbv}}x ต่ำกว่า Net Asset Value ต่อหุ้นเล็กน้อย</li>
+          <li><b>EPS ฟื้น:</b> consensus (SA) EPS FY2026e ฿0.22 · FY2027e ฿0.24 — ROE ที่ขยับขึ้นช่วยหนุน Justified P/BV</li>
         </ul>
       </div>
       <div class="box risk">
         <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
         <ul>
-          <li><b>NPL สูงอยู่ที่ ~3.8%:</b> อุตสาหกรรมยานยนต์ไทยชะลอตัว ลูกค้าบางส่วนมีปัญหาการชำระหนี้</li>
+          <li><b>NPL ~3.8% (ตัวเลขเก่า ยังไม่ยืนยันใหม่):</b> อุตสาหกรรมยานยนต์ไทยชะลอตัว ลูกค้าบางส่วนมีปัญหาการชำระหนี้</li>
           <li><b>กำลังซื้อรถพาณิชย์อ่อนแอ:</b> การผลิตรถในไทยลดลง ยอดขายรถบรรทุกยังฟื้นตัวช้า</li>
           <li><b>การแข่งขันสูง:</b> ธนาคารพาณิชย์และ non-bank รายใหญ่แข่งเรื่องดอกเบี้ยและเงื่อนไข</li>
           <li><b>ดอกเบี้ยขาขึ้น:</b> ต้นทุนการระดมทุนสูงขึ้น กดดัน Net Interest Margin</li>
-          <li><b>Portfolio ลดลง:</b> Total loan ลดจาก ฿52B (FY2023) เหลือ ฿38B (TTM) สะท้อน risk-off mode</li>
+          <li><b>พอร์ตหดตัว:</b> หนี้สินที่มีภาระดอกเบี้ยลดจาก ฿41.7B (FY2023) เหลือ ฿23.8B (TTM) สะท้อนพอร์ตสินเชื่อที่หดลง — รายได้/กำไรโตช้ากว่าที่คาดได้หากไม่กลับมาขยายสินเชื่อ</li>
         </ul>
       </div>
     </div>
@@ -300,18 +294,17 @@
     <div class="verdict">
       <h2>THANI: Non-bank ปันผลดี กำไรฟื้น P/BV ต่ำกว่า 1x — โซน Value ชัดเจน</h2>
       <p>ราชธานี ลิสซิ่ง เป็น non-bank leader ด้านเช่าซื้อรถพาณิชย์/บรรทุก/เกษตร ที่มีประวัติยาวนานและจ่ายปันผลต่อเนื่อง 23 ปี
-        กำไร TTM ฟื้นตัวแข็งแกร่ง +73.7% YoY หลังผ่านช่วง NPL cleanup ราคาปัจจุบัน ฿1.84 ซื้อขายที่ P/BV เพียง 0.80x
-        ต่ำกว่า Net Asset Value และ P/E เพียง 9.2x ต่ำกว่า sector เฉลี่ย 11–13x อย่างมีนัยสำคัญ
-        MOS +26.4% จาก Fair Value ฿2.50 บ่งชี้ว่าตลาดยังไม่ให้ราคาเต็มกับศักยภาพการฟื้นตัว
-        Analyst consensus Strong Buy เป้า ฿2.22 รองรับ thesis ด้วย Dividend yield ~6% เป็นรายได้ระหว่างรอ</p>
+        กำไร TTM ฿1,315 ล้าน ฟื้นจาก FY2024 (฿800 ล้าน) แต่ยังไม่ถึงระดับ FY2022 (฿1,753 ล้าน) ราคาปัจจุบัน {{rd:px}} ซื้อขายที่ P/BV {{rd:pbv}}x
+        และ P/E {{rd:pe}}x ต่ำกว่ามัธยฐานย้อนหลังของตัวเอง 14.3x — MOS {{rd:mos}} จาก Fair Value {{rd:fv}} มาจาก P/E มัธยฐานและ DDM ซึ่งไวต่อสมมติฐาน
+        Analyst consensus Strong Buy เป้า {{rd:analystTgt}} และ Dividend yield ~{{rd:yield}} เป็นรายได้ระหว่างรอ</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿2.22 (Strong Buy · 3 สถาบัน)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~{{rd:analystTgt}} (Strong Buy · 4 สถาบัน)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ทยอยสะสมในโซน ฿1.75–฿2.00 (MOS 20–30%) รับปันผล ~6%/ปีระหว่างรอ rerating
-        เป้าราคา Base case ฿2.52 ใน 3 ปี คิดเป็น CAGR ~16.5% รวมปันผล · Stop-loss แนวรับ ฿1.55 (ต่ำกว่า 52W Low)
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมในโซน {{rd:mos30}}–{{rd:mos20}} (MOS 20–30%) รับปันผล ~{{rd:yield}}/ปีระหว่างรอ rerating
+        เป้าราคา Base case ฿2.91 ใน 3 ปี คิดเป็น CAGR ~14.4% รวมปันผล · Stop-loss แนวรับ ฿1.55 (ใกล้ 52W Low)
       </div>
     </div>
   </section>
@@ -322,9 +315,9 @@
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวน ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
     แหล่งข้อมูล: Yahoo Finance (THANI.BK ราคา/กราฟรายเดือน), StockAnalysis.com (งบการเงิน/analyst targets), Investing.com (ราคา/P/BV/ROE cross-verify)
-    · ราคา ณ {{rd:priceDate}} · ข้อมูลงบการเงิน TTM Mar 2569
+    · ราคา ณ {{rd:priceDate}} · ข้อมูลงบการเงิน TTM ล่าสุด ณ 22 ก.ย. 2569 (StockAnalysis)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 22 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
