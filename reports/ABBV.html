@@ -4,36 +4,36 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น AbbVie (ABBV) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"ABBV","currency":"USD","price":263.96,"fairValue":244,"mos":-8.2,"upside":-7.6,"pe":25.9,"dividendYield":2.62,"roe":null}
+{"symbol":"ABBV","currency":"USD","price":263.96,"fairValue":233,"mos":-13.3,"upside":-11.7,"pe":24.3,"dividendYield":2.62,"roe":null}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 244,
+  "fv": 233,
   "values": {
     "px": 263.96,
     "priceDate": "2026-09-18",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
     "fvLow": 190,
-    "fvHigh": 298,
-    "eps": 10.19,
+    "fvHigh": 265,
+    "eps": 10.87,
     "shares": 1770000000,
     "dps": 6.92,
-    "baseEps": 14.18,
+    "baseEps": 13.97,
     "scenarios": [
       {
-        "tgt": 248.16,
+        "tgt": 244.24,
         "div": 21
       },
       {
-        "tgt": 399.4,
+        "tgt": 371.87,
         "div": 22
       },
       {
-        "tgt": 497.76,
+        "tgt": 467.4,
         "div": 23
       }
     ],
@@ -106,23 +106,23 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ $181.75 – $255.99<br>
-        ที่มา: stockanalysis.com, digrin.com, news.abbvie.com
+        กรอบ 52 สัปดาห์ $190.75 – $267.47<br>
+        ที่มา: stockanalysis.com, finance.yahoo.com, news.abbvie.com
       </div>
     </div>
   </header>
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ 21 ก.ย. 2569</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">$467.2B</div><div class="d">1.77 พันล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E adj. (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS adj. TTM ~$10.19 · GAAP P/E 125x</div></div>
-      <div class="metric"><div class="k">Forward P/E (FY2026)</div><div class="v">~18.7x</div><div class="d">EPS adj. guidance $14.08–14.28</div></div>
-      <div class="metric"><div class="k">EV/EBITDA</div><div class="v neu">17.2x</div><div class="d">EBITDA FY2025: $23.2B</div></div>
+      <div class="metric"><div class="k">P/E adj. (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS adj. TTM ~$10.87 · GAAP P/E 74.6x</div></div>
+      <div class="metric"><div class="k">Forward P/E (FY2026)</div><div class="v">~19.0x</div><div class="d">EPS adj. guidance $13.87–14.07</div></div>
+      <div class="metric"><div class="k">EV/EBITDA</div><div class="v neu">22.9x</div><div class="d">EBITDA FY2025: $23.2B · EV ~$531B</div></div>
 
-      <div class="metric"><div class="k">Revenue TTM</div><div class="v neu">$62.8B</div><div class="d">+9.5% YoY · FY2025 $61.2B</div></div>
-      <div class="metric"><div class="k">EPS adj. TTM</div><div class="v">~$10.19</div><div class="d">GAAP EPS TTM $2.03 (amortization ลด)</div></div>
+      <div class="metric"><div class="k">Revenue TTM</div><div class="v neu">$64.4B</div><div class="d">+10.4% YoY · FY2025 $61.2B</div></div>
+      <div class="metric"><div class="k">EPS adj. TTM</div><div class="v">~$10.87</div><div class="d">GAAP EPS TTM $3.54 (amortization/IPR&amp;D ลด)</div></div>
       <div class="metric"><div class="k">ROA</div><div class="v">10.0%</div><div class="d">ROE n/a (equity ติดลบ — Allergan)</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">0.31</div><div class="d">ความผันผวนต่ำมาก vs ตลาด</div></div>
 
@@ -135,7 +135,7 @@
 
   <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">มิ.ย. 2568 – มิ.ย. 2569</div></div>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ต.ค. 2568 – ก.ย. 2569</div></div>
     <div class="card">
       <div class="chart-wrap">
         <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
@@ -146,34 +146,34 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ABBV เริ่มต้นปีที่ $179.76 ในมิ.ย. 2568 และพุ่งขึ้นแรงสู่ $226 ในก.ย. 2568 หลังผลประกอบการ Q2 2025 ดีเกินคาดและ Skyrizi เติบโตแข็งแกร่ง ก่อนเกิดแรงขายทำกำไรกลับมาที่ $205-214 ในส.ค.-ต.ค. 2568 จากนั้นทรงตัวในโซน $215-230 ตลอดปลายปี 2568 ถึงต้นปี 2569 ก่อนพุ่งแรงขึ้นอีกครั้งในมิ.ย. 2569 สู่ $254 หลัง Q1 2026 Adjusted EPS $2.65 เกินคาดและบริษัทยกระดับคำแนะนำ EPS ทั้งปี ผลตอบแทน 1 ปี +41.5%
+        ABBV เริ่มกราฟที่ราว $218 ในต.ค. 2568 ขึ้นมาทรงตัวโซน $223-232 ช่วงปลายปี 2568 ถึงต้นปี 2569 ก่อนย่อลงต่ำสุด ~$211 ในเม.ย. 2569 จากนั้นพุ่งแรงในมิ.ย. 2569 สู่ ~$252 หลังผล Q1 2026 (Adjusted EPS $2.65 เกินคาด) และไต่ต่อเป็นจุดสูงสุดของช่วงที่ ~$264 ในก.ย. 2569 หลังผล Q2 2026 (Adjusted EPS $3.65, +22.9% YoY) ผลตอบแทน 1 ปีตามป้ายด้านบน
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี (3 ตระกูลสมมติฐาน)</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation (adj. EPS)</div><div class="mdesc">EPS adj. $14.18 (FY2026 guidance กลาง) × P/E เป้า 21x — ค่าเฉลี่ยภาคยา Div. Aristocrat กลุ่ม JNJ/LLY/PFE ≈ 20-22x; ใช้ 21x สะท้อนคุณภาพ pipeline Skyrizi+Rinvoq ที่เติบโตกว่า 30%</div></div>
-        <div class="mval">$297.78</div>
+        <div><div class="mname">1. P/E Valuation (adj. EPS)</div><div class="mdesc">EPS adj. $13.97 (FY2026 guidance กลางของช่วง $13.87–14.07 · รวมผลลบจาก IPR&amp;D ~$0.58 และ Apogee ~$0.14) × P/E เป้า 19x — สมอ = P/E ของ ABBV เองที่ราคาเฉลี่ยรายปี ÷ adj EPS ~17.8x (FY2024) และ ~20.6x (FY2025) ใช้กลางช่วง 19x · GAAP P/E ย้อนหลังใช้ไม่ได้ (มัธยฐาน 64.8x บิดเบือนจาก amortization Allergan)</div></div>
+        <div class="mval">$265.43</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. DDM / Gordon Growth Model</div><div class="mdesc">D₁ = ปันผลปัจจุบัน $6.92 × (1+6%) = $7.33; g 6% (อิง Skyrizi/Rinvoq + Botox growth); r 9% (WACC โดยประมาณ) → $7.33 ÷ (0.09−0.06) = $7.33 ÷ 0.03</div></div>
-        <div class="mval">$244.33</div>
+        <div><div class="mname">2. DDM / Gordon Growth Model</div><div class="mdesc">D₁ = ปันผลปัจจุบัน $6.92 × (1+6%) = $7.335; g 6% (อิง Skyrizi/Rinvoq + Botox growth); r 9% (WACC โดยประมาณ) → $7.335 ÷ (0.09−0.06) = $7.335 ÷ 0.03</div></div>
+        <div class="mval">$244.51</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">3. EV/EBITDA</div><div class="mdesc">EBITDA FY2026E ~$25B (FY2025 $23.2B +8%); Sector multiple 16x → Target EV $400B − Net Debt $64B = $336B ÷ 1.77B หุ้น — penalize จาก Allergan debt; Sector ยา 14-18x ใช้ค่ากลาง 16x</div></div>
-        <div class="mval">$189.83</div>
+        <div><div class="mname">3. EV/EBITDA</div><div class="mdesc">EBITDA FY2026E ~$25B (FY2025 $23.2B +8%); Sector multiple 16x → Target EV $400B − Net Debt $64.3B (หนี้ $70.9B − เงินสด $6.6B) = $335.7B ÷ 1.767B หุ้น — penalize จาก Allergan debt; Sector ยา 14-18x ใช้ค่ากลาง 16x (สมมติฐานเซกเตอร์ ไม่ได้วัดตัวคูณ EV/EBITDA ย้อนหลังของ ABBV)</div></div>
+        <div class="mval">$189.98</div>
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        วิธี P/E ให้ค่าสูงสุด ($298) สะท้อนศักยภาพการเติบโต EPS จาก Skyrizi+Rinvoq · วิธี DDM ให้ค่ากลาง ($244) เหมาะกับ Dividend Aristocrat ที่จ่ายเงินปันผลเพิ่มมา 54 ปี · วิธี EV/EBITDA ให้ค่าต่ำสุด ($190) เพราะถูก penalize จากหนี้สูง ($73B) จากการซื้อ Allergan ปี 2563 · ค่าเฉลี่ย 3 วิธี ≈ $244 ต่ำกว่าราคาปัจจุบัน ~4.2% → หุ้นซื้อขายอยู่ใกล้ fair value เล็กน้อย · นักวิเคราะห์ 32 คน เฉลี่ย $254.38 สอดคล้องว่าราคาปัจจุบันอยู่ในโซน fair-to-slightly-premium
-        <br><br><b>แหล่งข้อมูล ≥2 แหล่ง:</b> (1) stockanalysis.com/stocks/abbv/ — ราคา $254.31 วันที่ 29 มิ.ย. 2569, EPS GAAP TTM $2.03, yield 2.72%, Market Cap $449.3B · (2) news.abbvie.com รายงานผล Q4 2568 (adj. EPS FY2025 $10.00, rev. $61.16B, Skyrizi $17.6B, Rinvoq $8.3B) · (3) prnewswire.com — AbbVie Q1 2569 (adj. EPS $2.65 เกินคาด $0.07, rev. $15.0B +12.4%, guidance ยกระดับ $14.08-$14.28) · (4) stockanalysis.com/stocks/abbv/forecast/ — consensus $254.38 จาก 32 นักวิเคราะห์ · ราคา cross-check: digrin.com $254.31 = stockanalysis.com $254.31 (ต่างกัน 0%) ✓
+        วิธี P/E ให้ค่าสูงสุด ($265) สะท้อนการเติบโต EPS จาก Skyrizi+Rinvoq · วิธี DDM ให้ค่ากลาง ($245) เหมาะกับ Dividend Aristocrat ที่จ่ายเงินปันผลเพิ่มมา 54 ปี · วิธี EV/EBITDA ให้ค่าต่ำสุด ($190) เพราะถูก penalize จากหนี้สูง ($71B) จากการซื้อ Allergan ปี 2563 · ค่าเฉลี่ยของสามตระกูลสมมติฐาน = {{rd:fv}} ต่ำกว่าราคาปัจจุบัน {{rd:px}} ({{rd:mos}}) → หุ้นซื้อขายเหนือ fair value · นักวิเคราะห์ 28 คน เฉลี่ย $278.61 (+5.6%) สูงกว่า FV ของเรา เพราะฐาน EPS/ตัวคูณของฝั่งขายต่างจากสมมติฐานนี้ (P/E เป้า 19x บนกำไรที่ยังมีภาระ IPR&amp;D)
+        <br><br><b>แหล่งข้อมูล ≥2 แหล่ง:</b> (1) stockanalysis.com/stocks/abbv/ — ราคาปิดวันที่ 18 ก.ย. 2569, EPS GAAP TTM $3.54, yield 2.62%, Market Cap $466.45B · (2) Yahoo Finance quoteSummary — ราคา/EPS ตรงกับ (1) ต่าง 0% ✓ · (3) news.abbvie.com — ผล Q2 2569 (31 ก.ค. 2569: adj. EPS $3.65 +22.9% YoY, guidance FY2026 $13.87-$14.07 รวม Apogee dilution $0.14) · adj. EPS TTM $10.87 = Q3 2568 $1.86 + Q4 2568 $2.71 + Q1 2569 $2.65 + Q2 2569 $3.65 · (4) stockanalysis.com/stocks/abbv/forecast/ — FY2026e EPS $14.01 / FY2027e $16.27, consensus target $278.61 จาก 28 นักวิเคราะห์
       </p>
     </div>
   </section>
@@ -191,12 +191,12 @@
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
-          <span style="text-align:right">$254.38<br><small>เป้าเฉลี่ย Analyst</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$278.61<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน $254.31 อยู่เหนือ Fair Value $244 ประมาณ 4.2% → หุ้นซื้อขายในโซน "Fair-to-slight-Premium" เป้าหมายนักวิเคราะห์เฉลี่ย $254.38 ยืนยันว่าตลาดมองว่าราคาปัจจุบันสะท้อนมูลค่าที่เหมาะสม · โซน MOS 20% ที่ $195.20 และ MOS 30% ที่ $170.80 เป็นจุดที่น่าสะสมเพิ่มหากราคาย่อลงอย่างมีนัยสำคัญ
+        ราคาปัจจุบัน {{rd:px}} อยู่เหนือ Fair Value {{rd:fv}} (MOS {{rd:mos}}) → หุ้นซื้อขายในโซน "แพงกว่ามูลค่า" ขณะที่เป้าหมายนักวิเคราะห์เฉลี่ย $278.61 สูงกว่าราคา แต่ตัวเลข FV ของเรายึด P/E เป้า 19x บน EPS ปี 2569 ที่ยังมีภาระ IPR&amp;D · โซน MOS 20% ที่ {{rd:mos20}} และ MOS 30% ที่ {{rd:mos30}} เป็นจุดที่น่าสะสมหากราคาย่อลงอย่างมีนัยสำคัญ
       </p>
     </div>
   </section>
@@ -207,7 +207,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">ราคาเหนือ Fair Value เล็กน้อย — ใกล้ Fair Value แต่ไม่มี MOS</div>
+        <div class="txt">ราคาเหนือ Fair Value — ไม่มี Margin of Safety ณ ราคานี้</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -234,7 +234,7 @@
           <div class="tgt">{{rd:sc1tgt}}</div>
           <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$15.51</span></li>
+            <li><span>EPS ปี 3</span><span>~$15.27</span></li>
             <li><span>P/E ออก</span><span>16x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>Skyrizi ชะลอ, คู่แข่งกด</span></li>
@@ -247,7 +247,7 @@
           <div class="tgt">{{rd:sc2tgt}}</div>
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$18.87</span></li>
+            <li><span>EPS ปี 3</span><span>~$18.59</span></li>
             <li><span>P/E ออก</span><span>20x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>Skyrizi+Rinvoq เติบโตต่อ</span></li>
@@ -260,7 +260,7 @@
           <div class="tgt">{{rd:sc3tgt}}</div>
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$21.58</span></li>
+            <li><span>EPS ปี 3</span><span>~$21.25</span></li>
             <li><span>P/E ออก</span><span>22x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Pipeline ใหม่ + Skyrizi label ใหม่</span></li>
@@ -269,7 +269,7 @@
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      ผลตอบแทนคำนวณจากราคา $254.31 · EPS ฐาน = $14.18 (FY2026 guidance กลาง) · อัตราเติบโต EPS 3 ปีขึ้นอยู่กับ Skyrizi ซึ่ง AbbVie คาดว่าจะแตะ $20B+ ในปีถัดไป + Rinvoq ที่กำลังขยาย label ใหม่ (atopic dermatitis, Crohn's) · Beta ต่ำ 0.31 ช่วยลด downside · Scenario Bear ยังให้ผลบวกเพราะปันผล $21+ รวม 3 ปี
+      ผลตอบแทนคำนวณจากจุดเข้า {{rd:px}} · EPS ฐาน = {{rd:baseEps}} (FY2026 guidance กลาง) · อัตราเติบโต EPS 3 ปีขึ้นอยู่กับ Skyrizi ซึ่ง AbbVie คาดว่าจะแตะ $20B+ ในปีถัดไป + Rinvoq ที่กำลังขยาย label ใหม่ (atopic dermatitis, Crohn's) · Beta ต่ำ 0.31 ช่วยลด downside · Scenario Bear ได้ผลใกล้ศูนย์ เพราะปันผล ~$21 รวม 3 ปีชดเชย de-rating เกือบทั้งหมด
     </p>
   </section>
 
@@ -283,16 +283,16 @@
           <li><b>Skyrizi — เครื่องยนต์หลัก:</b> รายได้ FY2025 $17.6B (+49.7%) AbbVie คาดรายได้รวม Skyrizi+Rinvoq แตะ $27B+ ภายในปี 2570 ทดแทน Humira ได้สำเร็จ</li>
           <li><b>Rinvoq ขยาย Label ใหม่:</b> ได้รับอนุมัติ FDA ใน atopic dermatitis, Crohn's disease, ulcerative colitis ทำให้ addressable market กว้างขึ้นมาก</li>
           <li><b>Neuroscience เติบโตแรง:</b> Botox Therapeutic +14.9% · Vraylar (bipolar, schizophrenia) ยังเติบโต · Qulipta สำหรับ migraine เพิ่งเริ่มต้น</li>
-          <li><b>Dividend Aristocrat 54 ปี:</b> จ่ายเงินปันผลเพิ่มขึ้นทุกปีมา 54 ปีติดต่อกัน yield 2.72% + DPS growth ~5-6%/ปี</li>
+          <li><b>Dividend Aristocrat 54 ปี:</b> จ่ายเงินปันผลเพิ่มขึ้นทุกปีมา 54 ปีติดต่อกัน yield 2.62% + DPS growth ~5-6%/ปี</li>
           <li><b>Pipeline ระยะ Phase 3:</b> ABBV-951 (Parkinson's), lutikizumab (pain), navitoclax (myelofibrosis) diversify ออกจาก immunology</li>
-          <li><b>Acquisition Apogee Therapeutics:</b> เสริม IL-13/IL-4 program ใน atopic dermatitis แข่งกับ Dupixent ของ Sanofi/Regeneron</li>
+          <li><b>Acquisition Apogee Therapeutics (คาดปิด Q3 2569):</b> เสริม IL-13/IL-4 program ใน atopic dermatitis แข่งกับ Dupixent ของ Sanofi/Regeneron · guidance ปี 2569 รวมผลลบ ~$0.14/หุ้นแล้ว</li>
         </ul>
       </div>
       <div class="box risk">
         <h3><span class="ic">&#9660;</span>Risks — ความเสี่ยง</h3>
         <ul>
           <li><b>Humira LOE ยาวนาน:</b> รายได้ Humira FY2025 เหลือ $4.5B (-49.4%) และจะลดต่อเนื่อง biosimilars ยังมีราคาถูกกว่ามาก</li>
-          <li><b>หนี้สูงจาก Allergan:</b> Total Debt $72.9B · EV $514B vs Market Cap $449B · ดอกเบี้ยกดดัน Free Cash Flow และทำให้ EPS GAAP ต่ำมากเทียบ adj.</li>
+          <li><b>หนี้สูงจาก Allergan:</b> Total Debt $70.9B · EV ~$531B vs Market Cap $466B · ดอกเบี้ยกดดัน Free Cash Flow และทำให้ EPS GAAP ต่ำมากเทียบ adj.</li>
           <li><b>IRA Drug Price Negotiation:</b> รัฐบาลสหรัฐฯ มีอำนาจเจรจาราคายา Medicare Skyrizi อาจถูกเจรจาในอนาคต</li>
           <li><b>Rinvoq Safety Concern:</b> FDA กำหนด Black Box Warning สำหรับ JAK inhibitor กระทบการสั่งจ่ายในบางกลุ่มผู้ป่วย</li>
           <li><b>Concentration Risk:</b> Skyrizi+Rinvoq คิดเป็น ~42% ของรายได้รวม ถ้าคู่แข่ง (Sanofi Dupixent/AstraZeneca) บุกหนัก อาจกด market share</li>
@@ -307,14 +307,14 @@
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
       <h2>ABBV: Fair Value Zone — Hold / รอโอกาสสะสม</h2>
-      <p>AbbVie เปลี่ยนผ่านสำเร็จจาก Humira-dependent ไปสู่ Skyrizi+Rinvoq Portfolio ที่เติบโตแข็งแกร่ง · FY2025 Skyrizi +49.7% และ Rinvoq +38.8% ชดเชย Humira ที่ลดลง 49.4% ได้อย่างสมบูรณ์ · บริษัทจ่ายเงินปันผลเพิ่มขึ้นมา 54 ปีติดต่อกัน (Dividend Aristocrat) และมี Beta ต่ำเพียง 0.31 เหมาะสำหรับนักลงทุนที่ต้องการ Defensive + Income · อย่างไรก็ตาม ราคาปัจจุบัน $254.31 อยู่เหนือ Fair Value $244 ประมาณ 4.2% ทำให้ไม่มี Margin of Safety · กลยุทธ์ที่เหมาะสมคือ Hold หากถือแล้ว และรอโอกาสสะสมเมื่อราคาย่อมาต่ำกว่า $244 หรือใกล้โซน MOS 20% ($195)</p>
+      <p>AbbVie เปลี่ยนผ่านสำเร็จจาก Humira-dependent ไปสู่ Skyrizi+Rinvoq Portfolio ที่เติบโตแข็งแกร่ง · FY2025 Skyrizi +49.7% และ Rinvoq +38.8% ชดเชย Humira ที่ลดลง 49.4% ได้อย่างสมบูรณ์ · บริษัทจ่ายเงินปันผลเพิ่มขึ้นมา 54 ปีติดต่อกัน (Dividend Aristocrat) และมี Beta ต่ำเพียง 0.31 เหมาะสำหรับนักลงทุนที่ต้องการ Defensive + Income · อย่างไรก็ตาม ราคาปัจจุบัน {{rd:px}} อยู่เหนือ Fair Value {{rd:fv}} (MOS {{rd:mos}}) ทำให้ไม่มี Margin of Safety · กลยุทธ์ที่เหมาะสมคือ Hold หากถือแล้ว และรอโอกาสสะสมเมื่อราคาย่อมาต่ำกว่า {{rd:fv}} หรือใกล้โซน MOS 20% ({{rd:mos20}})</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$254.38 (Buy — 32 คน)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$278.61 (Buy — 28 คน)</div></div>
       </div>
       <div class="zone">
-        &#128161; <b>กลยุทธ์:</b> Hold หากถือแล้ว ปันผล 2.72%+DPS growth ยังน่าสนใจ · ผู้ที่ยังไม่ถือ: รอราคาย่อมาต่ำกว่า $244 (โซน Fair Value) หรือที่ $195 (MOS 20%) เพื่อมี Safety Margin · ระยะยาว Skyrizi+Rinvoq ยังมีพื้นที่เติบโตถึงปี 2570+
+        &#128161; <b>กลยุทธ์:</b> Hold หากถือแล้ว ปันผล 2.62%+DPS growth ยังน่าสนใจ · ผู้ที่ยังไม่ถือ: รอราคาย่อมาต่ำกว่า {{rd:fv}} (โซน Fair Value) หรือที่ {{rd:mos20}} (MOS 20%) เพื่อมี Safety Margin · ระยะยาว Skyrizi+Rinvoq ยังมีพื้นที่เติบโตถึงปี 2570+
       </div>
     </div>
   </section>
@@ -324,9 +324,9 @@
     <b>&#9888;&#65039; คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
-    แหล่งข้อมูล: stockanalysis.com/stocks/abbv/ · news.abbvie.com · prnewswire.com (AbbVie Q1 2569) · stockanalysis.com/stocks/abbv/forecast/ · digrin.com/stocks/detail/ABBV/price
+    แหล่งข้อมูล: stockanalysis.com/stocks/abbv/ · news.abbvie.com · news.abbvie.com (AbbVie Q2 2569) · stockanalysis.com/stocks/abbv/forecast/ · finance.yahoo.com/quote/ABBV
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 29 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
