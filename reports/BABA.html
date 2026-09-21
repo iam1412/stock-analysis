@@ -4,36 +4,36 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น Alibaba (BABA) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Opus 4.8">
+<meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"BABA","currency":"USD","price":113.24,"fairValue":135,"mos":16.1,"upside":19.2,"pe":17.7,"dividendYield":0.93,"roe":9}
+{"symbol":"BABA","currency":"USD","price":113.24,"fairValue":97,"mos":-16.7,"upside":-14.3,"pe":25.9,"dividendYield":0.93,"roe":6.4}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 135,
+  "fv": 97,
   "values": {
     "px": 113.24,
     "priceDate": "2026-09-18",
     "dateEra": "CE",
     "chgSuffix": "รอบปี",
-    "fvLow": 122,
-    "fvHigh": 150,
-    "analystTgt": 189,
-    "eps": 6.4,
+    "fvLow": 95,
+    "fvHigh": 99,
+    "analystTgt": 186,
+    "eps": 4.38,
     "dps": 1.05,
-    "baseEps": 6.4,
+    "baseEps": 5.6,
     "scenarios": [
       {
-        "tgt": 77,
+        "tgt": 49,
         "div": null
       },
       {
-        "tgt": 136,
+        "tgt": 119,
         "div": null
       },
       {
-        "tgt": 210,
+        "tgt": 184,
         "div": null
       }
     ],
@@ -78,7 +78,7 @@
     "highlight": [0, 8]
   },
   "gauge": {
-    "min": 80,
+    "min": 60,
     "max": 240,
     "fairLabelTop": "-58px"
   }
@@ -105,31 +105,31 @@
       </div>
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ≈ {{rd:priceDate}} (ปิด 22 มิ.ย.)<br>
-        ปิดก่อนหน้า $107.10 • ใกล้ขอบล่าง 52 สัปดาห์<br>
-        ที่มา: stockanalysis.com / Yahoo Finance / CNN Markets
+        ราคา ≈ {{rd:priceDate}} (NYSE)<br>
+        ช่วง 52 สัปดาห์ $91.99 – $192.67 • ADR 1 = 8 หุ้นสามัญ<br>
+        ที่มา: stockanalysis.com / Yahoo Finance / SEC Form 6-K (20 ส.ค. 2026)
       </div>
     </div>
   </header>
 
   <!-- ===== KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ FY2026 (สิ้นสุด มี.ค. 2026)</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ FY2026 (สิ้นสุด มี.ค. 2026) + TTM ถึง มิ.ย. 2026 • แปลง RMB→USD @ 6.785</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$245B</div><div class="d">ADR ≈ 8 หุ้นสามัญ</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v">~18x</div><div class="d">EPS TTM ~$6.4/ADR <span class="pill g">ถูกกว่าเทคสหรัฐ</span></div></div>
-      <div class="metric"><div class="k">EPS (TTM)</div><div class="v neu">~$6.4</div><div class="d">ต่อ ADR (USD) • ▼ จากกำไรลดจาก capex</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">0.93%</div><div class="d">$1.05/ปี/ADR • Payout ~16%</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$281B</div><div class="d">SA: 2.49B ADS-equiv. • 1 ADR = 8 หุ้นสามัญ</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v">~25.9x</div><div class="d">EPS TTM $4.38/ADR (GAAP) <span class="pill a">กำไรถูกกด</span></div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v neu">$4.38</div><div class="d">ต่อ ADR (USD) • RMB29.76 • ▼ FY26 เทียบเท่า ~$6.5</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">0.93%</div><div class="d">$1.05/ปี/ADR • Payout ~24% ของ EPS TTM</div></div>
 
-      <div class="metric"><div class="k">รายได้ FY2026</div><div class="v">$148.4B</div><div class="d pos">▲ +3% YoY (RMB1.02 ล้านล้าน)</div></div>
-      <div class="metric"><div class="k">กำไรสุทธิ FY2026</div><div class="v">$15.35B</div><div class="d neg">▼ −19% YoY (capex AI กดกำไร)</div></div>
-      <div class="metric"><div class="k">Alibaba Cloud (Q4 FY26)</div><div class="v pos">+38% YoY</div><div class="d">ลูกค้าภายนอก +40% • AI ~$5.3B run-rate</div></div>
-      <div class="metric"><div class="k">ROE (TTM)</div><div class="v neu">~9%</div><div class="d">ต่ำกว่าค่ามัธยฐาน 10 ปี (~18%)</div></div>
+      <div class="metric"><div class="k">รายได้ FY2026</div><div class="v">~$151B</div><div class="d pos">▲ +3% YoY (RMB1.02 ล้านล้าน @ 6.785)</div></div>
+      <div class="metric"><div class="k">กำไรสุทธิ FY2026</div><div class="v">~$15.6B</div><div class="d neg">▼ −18% YoY (RMB105.9B • TTM RMB73.3B)</div></div>
+      <div class="metric"><div class="k">Alibaba Cloud (Q1 FY27)</div><div class="v pos">+45% YoY</div><div class="d">AI Cloud & Compute RMB48.4B • งวด มิ.ย. 2026</div></div>
+      <div class="metric"><div class="k">ROE (TTM)</div><div class="v neu">~6.4%</div><div class="d">FY2026 9.2% • ลดลงตามกำไร TTM</div></div>
 
-      <div class="metric"><div class="k">รายได้ AI (Q4 FY26)</div><div class="v">~RMB9B</div><div class="d pos">โต 3 หลัก 11 ไตรมาสติด</div></div>
-      <div class="metric"><div class="k">Capex AI (FY27 คาด)</div><div class="v neg">&gt;RMB380B</div><div class="d">ลงทุนหนัก กด FCF ระยะสั้น</div></div>
-      <div class="metric"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v">$189</div><div class="d">สูงสุด $225 • Moderate/Strong Buy</div></div>
-      <div class="metric"><div class="k">ช่วง 52 สัปดาห์</div><div class="v" style="font-size:18px">$104 – $193</div><div class="d">ราคาอยู่ใกล้จุดต่ำสุดของปี</div></div>
+      <div class="metric"><div class="k">รายได้ AI (Q1 FY27)</div><div class="v">3 หลัก %</div><div class="d pos">โตระดับ 3 หลัก 12 ไตรมาสติด</div></div>
+      <div class="metric"><div class="k">Capex AI (FY27 guidance เดิม)</div><div class="v neg">&gt;RMB380B</div><div class="d">FCF TTM −RMB76.6B • กดกำไรระยะสั้น</div></div>
+      <div class="metric"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v">$186</div><div class="d">n=39 • Strong Buy (SA/Yahoo)</div></div>
+      <div class="metric"><div class="k">ช่วง 52 สัปดาห์</div><div class="v" style="font-size:18px">$92 – $193</div><div class="d">ห่างจุดสูงสุดปี ~41%</div></div>
     </div>
   </section>
 
@@ -146,35 +146,32 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        หุ้นพุ่งแรงในครึ่งหลังปี 2025 จากกระแส <b>AI cloud + Qwen</b> ทำจุดสูงสุด <b>~$193</b> (ปลายปี 2025) ก่อน <b>ย่อลงต่อเนื่องสู่ ~$105</b> (มิ.ย. 2026)
-        จากความกังวลว่า <b>capex AI มหาศาล</b> กัดกำไร/กระแสเงินสด (กำไร FY2026 −19%), แรงกดดันจากการแข่งขัน Quick Commerce และจีนคุมเข้มอีคอมเมิร์ซ
+        หุ้นพุ่งแรงในครึ่งหลังปี 2025 จากกระแส <b>AI cloud + Qwen</b> ทำจุดสูงสุด 52 สัปดาห์ <b>~$193</b> ก่อน <b>ย่อลงต่อเนื่อง</b> (จุดต่ำสุดรายเดือนของกราฟ ~$96 ใน มิ.ย. 2026 · ต่ำสุด 52 สัปดาห์ ~$92)
+        จากความกังวลว่า <b>capex AI มหาศาล</b> กัดกำไร/กระแสเงินสด (กำไร FY2026 −18% และ non-GAAP งวด มิ.ย. 2026 −38% YoY) แล้วรีบาวด์ขึ้นมาใกล้ระดับปัจจุบัน
       </p>
     </div>
   </section>
 
   <!-- ===== VALUATION ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">3 วิธี เฉลี่ยถ่วงน้ำหนัก</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">2 วิธี (P/E + P/S) เฉลี่ย</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation <span class="pill a">ฐานหลัก</span></div><div class="mdesc">EPS ~$6.4 × P/E ~19x (ให้เครดิตการฟื้นตัวของกำไร Cloud/AI แต่คิดส่วนลดความเสี่ยงจีน)</div></div>
-        <div class="mval">$122</div>
+        <div><div class="mname">1. P/E Valuation <span class="pill a">ฐานหลัก</span></div><div class="mdesc">EPS normalized $5.6 × P/E 17x — EPS = เฉลี่ย 4 งวด USD/ADS (FY24 $4.35 · FY25 $7.44 · FY26 $6.23 · TTM $4.38; แปลงด้วย USD/CNY เฉลี่ยของปีนั้น) ตรงกับประมาณการ FY27e ของ SA (5.71) • P/E 17x = ส่วนลด ~15% จากมัธยฐานย้อนหลัง 5 ปี 22.2x (12.6–45.4x วัดบนฐาน USD/ADS เดียวกัน) เพราะความเสี่ยงจีน/ADR</div></div>
+        <div class="mval">$95</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. DCF (2-stage)</div><div class="mdesc">FCF ฟื้นหลังพีค capex, WACC ~11% (ความเสี่ยงจีน/ADR), Terminal 3% — รวมมูลค่า Cloud/AI</div></div>
-        <div class="mval">$135</div>
-      </div>
-      <div class="vmethod">
-        <div><div class="mname">3. Analyst Intrinsic</div><div class="mdesc">ค่ากลาง fair-value สาย value (อนุรักษ์นิยมกว่าเป้าฝั่งตลาด avg $189)</div></div>
-        <div class="mval">$150</div>
+        <div><div class="mname">2. P/S Valuation</div><div class="mdesc">รายได้ต่อ ADS $62.0 (TTM RMB1,045B ÷ 2,485.6M ADS ÷ 6.785) × P/S 1.6x — 1.6x = ระดับต่ำสุดของช่วงมาร์จิ้นบาง FY24–FY25 (1.59–1.63x) ไม่ใช่มัธยฐาน 2.0x เพราะมาร์จิ้นสุทธิ TTM 7.0% และ op margin 4.6% ต่ำกว่าปีเหล่านั้น</div></div>
+        <div class="mval">$99</div>
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        <b>หมายเหตุ:</b> ข้าม DDM เพราะปันผลน้อย (0.98%) ไม่มีนัยสำคัญ • ใช้กรอบ <b>Value Investor / Margin of Safety</b> ที่อนุรักษ์นิยม
-        จึงต่ำกว่าเป้านักวิเคราะห์เฉลี่ย ($189) อย่างมีนัยสำคัญ เพราะคิด <b>ส่วนลดความเสี่ยงเชิงโครงสร้างของจีน/ADR</b> (กฎหมาย, VIE, ความเสี่ยงเพิกถอน)
+        <b>หมายเหตุ:</b> ข้าม DDM (ปันผล 0.93% ไม่มีนัยสำคัญ) และ DCF (FCF TTM ติดลบ RMB76.6B จาก capex AI ประมาณการยังไม่น่าเชื่อถือ) • ใช้กรอบ <b>Value Investor / Margin of Safety</b> ที่อนุรักษ์นิยม
+        จึงต่ำกว่าเป้านักวิเคราะห์เฉลี่ย ({{rd:analystTgt}}) มาก เพราะคิด <b>ส่วนลดความเสี่ยงเชิงโครงสร้างของจีน/ADR</b> (กฎหมาย, VIE, ความเสี่ยงเพิกถอน) •
+        <b>ฐานแปลงสกุล:</b> USD/CNY 6.785 = อัตราแปลงสะดวกของบริษัทเอง (รายได้ RMB268,953M = US$39,639M, SEC 6-K งวด มิ.ย. 2026) สอดคล้อง Yahoo spot 6.70 (18–21 ก.ย. 2026) · 1 ADS = 8 หุ้นสามัญ · EPS TTM RMB29.76 ÷ 6.785 = $4.39 ตรง quote $4.38–4.43 · EPS เป็น GAAP รวมผลตราสารลงทุนที่ผันผวน จึงใช้ค่า normalized · ประมาณการ SA (5.71 / 8.02) ระบุสกุลไม่ชัดเจน จึงใช้เป็นเพียงข้อมูลประกอบ ไม่ใช่ขา FV
       </p>
     </div>
   </section>
@@ -193,12 +190,12 @@
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">{{rd:analystTgt}}<br><small>เป้า Analyst</small></span>
-          <span style="text-align:right">$225<br><small>เป้าสูงสุด</small></span>
+          <span style="text-align:right">$193<br><small>สูงสุด 52 สัปดาห์</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคา $105 อยู่ <b>ต่ำกว่ามูลค่าเหมาะสม</b> ~22% และ <b>ต่ำกว่าเป้า 12 เดือน</b> ของนักวิเคราะห์ ($189) อย่างมาก
-        (Wall Street: ส่วนใหญ่ Buy) — ตลาดยังกังวล capex/กำไร แต่เชิงมูลค่าเริ่มมี <b>ส่วนเผื่อความปลอดภัย</b> สำหรับสาย value ที่รับความเสี่ยงจีนได้
+        ราคาปัจจุบัน {{rd:px}} อยู่ <b>สูงกว่ามูลค่าเหมาะสม</b> {{rd:fv}} แต่ <b>ต่ำกว่าเป้า 12 เดือน</b> ของนักวิเคราะห์ ({{rd:analystTgt}}) มาก
+        (Wall Street: ส่วนใหญ่ Buy) — ตลาดตีมูลค่าการฟื้นของกำไร Cloud/AI ไปบางส่วนแล้ว จึงยัง<b>ไม่มีส่วนเผื่อความปลอดภัย</b>ตามเกณฑ์อนุรักษ์นิยมของรายงานนี้
       </p>
     </div>
   </section>
@@ -209,12 +206,12 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt"><b>มี Margin of Safety พอสมควร</b><br>ราคาปัจจุบัน $105 ต่ำกว่ามูลค่าเหมาะสม $135 ราว 22% → ตามเกณฑ์ value investor ถือว่า <b>เริ่มน่าสนใจ</b> เป็นโซนทยอยสะสมสำหรับผู้รับความเสี่ยงจีนได้</div>
+        <div class="txt"><b>ไม่มี Margin of Safety</b><br>ราคาปัจจุบัน {{rd:px}} สูงกว่ามูลค่าเหมาะสม {{rd:fv}} → ตามเกณฑ์ value investor <b>ยังไม่ถึงโซนซื้อ</b> · รอโซน MOS 20% ที่ {{rd:mos20}}</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
         <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $110</div><div class="d">ใกล้ขอบล่าง 52 สัปดาห์</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $80</div><div class="d">ต่ำกว่าขอบล่าง 52 สัปดาห์ (~$92)</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
@@ -231,12 +228,12 @@
     <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}</div></div>
     <div class="scn">
       <div class="col bear">
-        <div class="top"><span>🐻 Bear</span><span>EPS +0%/ปี</span></div>
+        <div class="top"><span>🐻 Bear</span><span>EPS −10%/ปี</span></div>
         <div class="body">
           <div class="tgt">{{rd:sc1tgt}}</div>
           <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>$6.4</span></li>
+            <li><span>EPS ปี 3</span><span>$4.1</span></li>
             <li><span>P/E ออก</span><span>12x</span></li>
             <li><span>สถานการณ์</span><span>capex ไม่คุ้ม / จีนคุมเข้ม</span></li>
           </ul>
@@ -248,7 +245,7 @@
           <div class="tgt">{{rd:sc2tgt}}</div>
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>$8.5</span></li>
+            <li><span>EPS ปี 3</span><span>$7.5</span></li>
             <li><span>P/E ออก</span><span>16x</span></li>
             <li><span>สถานการณ์</span><span>Cloud/AI โต กำไรฟื้น</span></li>
           </ul>
@@ -260,7 +257,7 @@
           <div class="tgt">{{rd:sc3tgt}}</div>
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>$10.5</span></li>
+            <li><span>EPS ปี 3</span><span>$9.2</span></li>
             <li><span>P/E ออก</span><span>20x</span></li>
             <li><span>สถานการณ์</span><span>AI cloud จ่ายผลเต็มที่</span></li>
           </ul>
@@ -268,7 +265,7 @@
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      ความเสี่ยง–ผลตอบแทน <b>เอียงไปทางบวก</b> เพราะเข้าซื้อต่ำกว่ามูลค่าพื้นฐานแล้ว — <b>base case ให้ผลตอบแทนราว +9%/ปี</b>
+      EPS ฐาน $5.6 = ค่า normalized (สูงกว่า EPS TTM $4.38 — Bear จึงตั้งให้ EPS ลดต่อจนเท่าระดับ TTM) • ความเสี่ยง–ผลตอบแทน <b>ยังไม่คุ้ม</b> เพราะเข้าซื้อเหนือมูลค่าพื้นฐาน — <b>base case ให้ผลตอบแทนราว +2%/ปี</b> ส่วน Bear ขาดทุนลึกกว่า
       ตัวแปรชี้ขาดคือ <b>กำไร Cloud/AI จะฟื้นจริงหลังพีค capex หรือไม่</b> และความเสี่ยงเชิงโครงสร้าง (จีน/ADR) จะคลี่คลายเพียงใด
     </p>
   </section>
@@ -280,18 +277,18 @@
       <div class="box cat">
         <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
         <ul>
-          <li><div><b>Alibaba Cloud เร่งตัว:</b> Q4 FY2026 รายได้ +38% YoY (ลูกค้าภายนอก +40%) — ผู้นำคลาวด์จีน รับอานิสงส์ดีมานด์ AI</div></li>
-          <li><div><b>AI โตทบต้น:</b> รายได้ AI โต 3 หลัก <b>11 ไตรมาสติดต่อกัน</b>, run-rate ~$5.3B, AI ~30% ของรายได้คลาวด์</div></li>
+          <li><div><b>Alibaba Cloud เร่งตัว:</b> งวด มิ.ย. 2026 (Q1 FY27) รายได้คลาวด์ภายนอกโต +45% YoY — ผู้นำคลาวด์จีน รับอานิสงส์ดีมานด์ AI</div></li>
+          <li><div><b>AI โตทบต้น:</b> รายได้ผลิตภัณฑ์ AI โตระดับ 3 หลัก <b>12 ไตรมาสติดต่อกัน</b> (SEC 6-K 20 ส.ค. 2026)</div></li>
           <li><div><b>Qwen ผู้นำโอเพนโมเดล:</b> ตระกูล Qwen (เช่น Qwen3.6-Plus) เป็นหนึ่งในโมเดลโอเพนซอร์สท็อปของโลก — ดึงนักพัฒนา/ลูกค้าเข้า Model Studio</div></li>
           <li><div><b>ชิป AI ของตัวเอง:</b> T-Head ส่งมอบชิป Zhenwu ~470,000 ตัว (ก.พ. 2026), รายได้ระดับ RMB10B — ลดพึ่งพาชิปต่างชาติ</div></li>
-          <li><div><b>Valuation ถูก:</b> P/E ~16x ต่ำกว่าเทคสหรัฐมาก, ราคาใกล้จุดต่ำสุด 52 สัปดาห์ — downside เริ่มจำกัด</div></li>
+          <li><div><b>Valuation บนกำไรฟื้น:</b> P/E GAAP TTM ~25.8x สูงเพราะกำไรถูกกด แต่ fwd P/E ~14x (SA; ฐาน EPS ประมาณการตรวจสกุลไม่ได้) และราคายังต่ำกว่าเป้านักวิเคราะห์มาก</div></li>
           <li><div><b>คืนทุนผู้ถือหุ้น:</b> โครงการซื้อหุ้นคืนขนาดใหญ่ + เริ่มจ่ายปันผล — งบดุลเงินสดสูง</div></li>
         </ul>
       </div>
       <div class="box risk">
         <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
         <ul>
-          <li><div><b>Capex AI กดกำไร/FCF:</b> Capex FY2027 คาด <b>&gt;RMB380B</b>, กระแสเงินสดดำเนินงานหดแรง, กำไรสุทธิ FY2026 −19% — เสี่ยงถ้าผลตอบแทนไม่คุ้ม</div></li>
+          <li><div><b>Capex AI กดกำไร/FCF:</b> Capex FY2027 คาด <b>&gt;RMB380B</b>, กระแสเงินสดดำเนินงานหดแรง, กำไรสุทธิ FY2026 −18%, งวด มิ.ย. 2026 รายได้จากการดำเนินงาน −57% และ non-GAAP −38% YoY (ลงทุนเทคโนโลยี + goodwill impairment + กำไรลงทุนลด) — เสี่ยงถ้าผลตอบแทนไม่คุ้ม</div></li>
           <li><div><b>มาโคร/กฎหมายจีน:</b> เศรษฐกิจจีนชะลอ + ทางการคุมเข้มอีคอมเมิร์ซ/แพลตฟอร์มอีกครั้ง — กระทบรายได้หลัก</div></li>
           <li><div><b>ความเสี่ยง ADR/เพิกถอน:</b> โครงสร้าง VIE + ประเด็น HFCAA/ตรวจสอบบัญชี + ความตึงเครียดสหรัฐ–จีน เป็นความเสี่ยงเชิงโครงสร้างของ ADR</div></li>
           <li><div><b>การแข่งขันรุนแรง:</b> Quick Commerce/อีคอมเมิร์ซแข่งเดือด (PDD, JD, ByteDance) + คลาวด์แข่งกับ Tencent/Huawei — กดมาร์จิ้น</div></li>
@@ -306,15 +303,15 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>ผู้นำ AI-cloud จีนราคาถูก — แต่แลกด้วยความเสี่ยงเชิงโครงสร้าง</h2>
-      <p>Alibaba กำลัง "เดิมพันใหญ่" ด้วยการทุ่ม capex มหาศาลเพื่อชิงตำแหน่งผู้นำ AI cloud — Cloud โต +38% และ Qwen เป็นโมเดลโอเพนระดับโลก แต่กำไรระยะสั้นถูกกดและกระแสเงินสดตึง ที่ราคา ~$105 (P/E ~16x, ต่ำกว่าเทคสหรัฐมาก) เริ่มมีส่วนเผื่อความปลอดภัย ~22% สำหรับผู้ที่ยอมรับความเสี่ยงจีน/ADR ได้</p>
+      <h2>ผู้นำ AI-cloud จีน — แต่กำไรถูกกดและราคาเหนือมูลค่าเหมาะสมแบบอนุรักษ์</h2>
+      <p>Alibaba กำลัง "เดิมพันใหญ่" ด้วยการทุ่ม capex มหาศาลเพื่อชิงตำแหน่งผู้นำ AI cloud — Cloud โต +45% และ Qwen เป็นโมเดลโอเพนระดับโลก แต่กำไรระยะสั้นถูกกดและกระแสเงินสดติดลบ ที่ราคา {{rd:px}} ตลาดตีมูลค่าการฟื้นของกำไรไปบางส่วนแล้ว (เหนือมูลค่าเหมาะสม {{rd:fv}}) จึงยังไม่มีส่วนเผื่อความปลอดภัยสำหรับสาย value</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#a8b6cc">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">{{rd:analystTgt}} (+67%)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">{{rd:analystTgt}} ({{rd:analystPct}})</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> สาย value — โซนปัจจุบัน &lt;$110 เริ่มทยอยสะสมได้ (น่าสนใจมากที่ &lt;$95) แต่ <b>คุมขนาดพอร์ต</b> เพราะความเสี่ยงจีน/ADR • ติดตาม <b>การฟื้นของกำไร Cloud/AI หลังพีค capex</b> และ <b>FCF</b> เป็นตัวชี้วัดหลัก
+        💡 <b>กลยุทธ์:</b> สาย value — รอโซน MOS 20% ที่ {{rd:mos20}} (ลึกสุด MOS 30% ที่ {{rd:mos30}}) และ <b>คุมขนาดพอร์ต</b> เพราะความเสี่ยงจีน/ADR • ติดตาม <b>การฟื้นของกำไร Cloud/AI หลังพีค capex</b> และ <b>FCF</b> เป็นตัวชี้วัดหลัก
       </div>
     </div>
   </section>
@@ -323,9 +320,9 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะการฟื้นตัวของกำไร Cloud/AI หลังพีค capex และ "ส่วนลดความเสี่ยงจีน/ADR" ซึ่งเป็นจุดถกเถียงหลัก
-    หุ้นจีน/ADR มีความเสี่ยงเชิงโครงสร้าง (VIE, กฎหมาย, ความเสี่ยงเพิกถอน) และราคาผันผวนสูง ผู้ลงทุนควรศึกษาเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • อ้างอิงงบจริง: Alibaba FY2026 (สิ้นสุด มี.ค. 2026, ผล 12 พ.ค. 2026) + SEC Form 6-K
+    หุ้นจีน/ADR มีความเสี่ยงเชิงโครงสร้าง (VIE, กฎหมาย, ความเสี่ยงเพิกถอน) และราคาผันผวนสูง ผู้ลงทุนควรศึกษาเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • อ้างอิงงบจริง: Alibaba FY2026 (สิ้นสุด มี.ค. 2026) + June quarter 2026 (ผล 20 ส.ค. 2026) + SEC Form 6-K
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 22–23 มิ.ย. 2026 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2026 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
