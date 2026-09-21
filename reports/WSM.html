@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น Williams-Sonoma (WSM) — Stock Analysis Dashboard</title>
 <!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง (Opus→"Claude Opus 4.8", Sonnet→"Claude Sonnet 4.6") — gate E28 บังคับ -->
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"WSM","currency":"USD","price":224.2,"fairValue":202.12,"mos":-10.9,"upside":-9.8,"pe":25.1,"dividendYield":1.36,"roe":55.3}
+{"symbol":"WSM","currency":"USD","price":224.2,"fairValue":170.68,"mos":-31.4,"upside":-23.9,"pe":23,"dividendYield":1.36,"roe":55}
 </script>
 <!--
   report-data: ธีมสี + ข้อมูลกราฟ/gauge ต่อหุ้น (build เอาไปวาด)  ดู schema เต็มใน CLAUDE.md ข้อ 9
@@ -16,30 +16,30 @@
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 202.12,
+  "fv": 170.68,
   "values": {
     "px": 224.2,
     "priceDate": "2026-09-18",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
-    "fvLow": 180.3,
-    "fvHigh": 220.67,
-    "eps": 8.93,
-    "shares": 117750000,
+    "fvLow": 155.93,
+    "fvHigh": 185.44,
+    "eps": 9.76,
+    "shares": 117779173,
     "dps": 3.04,
-    "baseEps": 8.93,
+    "baseEps": 9.76,
     "scenarios": [
       {
-        "tgt": 138.55,
-        "div": 8.66
+        "tgt": 115.8,
+        "div": 9.12
       },
       {
-        "tgt": 223.44,
-        "div": 10.03
+        "tgt": 220.86,
+        "div": 9.68
       },
       {
-        "tgt": 301.2,
-        "div": 10.94
+        "tgt": 301.67,
+        "div": 10.26
       }
     ],
     "scnBasis": {
@@ -83,7 +83,7 @@
     "highlight": [2, 8]
   },
   "gauge": {
-    "min": 141.48,
+    "min": 110,
     "max": 252,
     "fairLabelTop": true
   }
@@ -114,34 +114,34 @@
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ {{rd:priceDate}} (2 Jul 2026)<br>
-        กรอบ 52 สัปดาห์ $161.76 – $244.65<br>
-        ที่มา: StockAnalysis.com, Yahoo Finance, SEC EDGAR (8-K)
+        ราคา ณ {{rd:priceDate}} (18 Sep 2026)<br>
+        กรอบ 52 สัปดาห์ $165.51 – $254.89<br>
+        ที่มา: StockAnalysis.com, Yahoo Finance, งบการเงินบริษัท
       </div>
     </div>
   </header>
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">FY2025 (สิ้นสุด 1 ก.พ. 2569) + TTM ล่าสุด</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">FY2025 (สิ้นสุด 1 ก.พ. 2569) + TTM ถึง 2 ส.ค. 2569</div></div>
     <!-- ✏️ ปรับการ์ด metric ให้เหมาะกับหุ้น/เซกเตอร์ได้อิสระ — gate ไม่บังคับชุด metric (เปลี่ยน label / สลับ / เพิ่ม-ลดการ์ดได้)
          • คงป้าย "P/E (TTM)", "P/BV", "เงินปันผล", "ROE" ไว้ถ้าหุ้นมีจริง → W10 cross-check กับ stock-meta · ไม่มี (ขาดทุน/ไม่ปันผล) = ตัดการ์ดออก + ตั้ง stock-meta เป็น null
          • ธนาคาร → NIM / NPL / CASA / Loan growth / Cost-to-income   • REIT/กองอสังหา → Occupancy / DPU / NAV / Gearing   • ประกัน → Combined ratio / EV
          • หุ้นเติบโต-ขาดทุน → Revenue growth / Gross margin / FCF / Cash runway (ตัด P/E ออก) -->
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$26.40 พันล้าน</div><div class="d">~117.75 ล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM $8.93 <span class="pill a">สูงกว่าปกติ</span></div></div>
-      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~17x</div><div class="d">กรอบ 8–26x (ผันผวนตามวัฏจักรบ้าน)</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$26.41 พันล้าน</div><div class="d">~117.78 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM $9.76 <span class="pill a">สูงกว่าปกติ</span></div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~14x</div><div class="d">กรอบ 8.0–20.4x · มัธยฐาน 11.5x (5 ปีงบ)</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~14.2x</div><div class="d">สูงจาก equity ต่ำ (ซื้อหุ้นคืนต่อเนื่อง)</div></div>
 
-      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$1.10 พันล้าน</div><div class="d">+18.5% YoY</div></div>
-      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$8.93</div><div class="d">FY2025 diluted EPS $8.84 (สถิติสูงสุด)</div></div>
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$1.09 พันล้าน</div><div class="d">−3.3% YoY (จาก $1.13 พันล้าน)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$9.76</div><div class="d">FY2025 diluted EPS $8.84 (สูงสุดใน 5 ปีงบที่ดู)</div></div>
       <div class="metric"><div class="k">BVPS</div><div class="v">~$16.0</div><div class="d">Equity ลดจาก buyback สะสม</div></div>
-      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~55.3% / 20.5%</div><div class="d">ROE สูงผิดปกติจาก equity ต่ำ</div></div>
+      <div class="metric"><div class="k">ROE</div><div class="v pos">~55.0%</div><div class="d">ROE สูงผิดปกติจาก equity ต่ำ</div></div>
 
-      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$7.88 พันล้าน</div><div class="d">+1.3% YoY (comp +4.8% Q1 FY26)</div></div>
-      <div class="metric"><div class="k">Operating Margin</div><div class="v">16.2% (Q1) / 18.1% (FY25)</div><div class="d">สูงสุดในกลุ่ม home retail ของสหรัฐฯ</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.36%</div><div class="d">$3.04/ปี • เพิ่ม 15% มี.ค. 2569 • payout ~34%</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$8.01 พันล้าน</div><div class="d">+2.2% YoY (ไตรมาสล่าสุด Q2 +6.7% YoY)</div></div>
+      <div class="metric"><div class="k">Operating Margin</div><div class="v">17.8% (TTM) / 18.2% (FY25)</div><div class="d">สูงสุดในกลุ่ม home retail ของสหรัฐฯ</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.36%</div><div class="d">$3.04/ปี • เพิ่ม 15% มี.ค. 2569 • payout ~31%</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">1.46</div><div class="d">ผันผวนกว่าตลาดเฉลี่ย</div></div>
     </div>
   </section>
@@ -162,31 +162,27 @@
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
         <!-- ✏️ บรรยายการเคลื่อนไหวราคา ~1 ปี: จุดสูง/ต่ำ, เปลี่ยนแปลง %, สาเหตุหลัก -->
-        ราคาหุ้น WSM แกว่งในกรอบ $178.59–$233.10 ตลอด ~1 ปีที่ผ่านมา จุดต่ำสุดอยู่ช่วง ธ.ค. 2568 ($178.59) หลังตลาดกังวลผลกระทบภาษีนำเข้า (tariff)
-        ต่อ gross margin จากนั้นฟื้นตัวแรงช่วง ม.ค.–ก.พ. 2569 ($204–206) ตามผลประกอบการ Q4 FY2025 ที่ทำสถิติ EPS สูงสุด แล้วย่อลงมาอีกครั้งช่วง มี.ค.–เม.ย. 2569
-        ก่อนไต่ขึ้นทำจุดสูงสุดรอบปีที่ $233.10 ในเดือน มิ.ย. 2569 จากผลประกอบการ Q1 FY2026 ที่ comp โต 4.8% เกินคาด ปิดที่ $227.53 รวมผลตอบแทนรอบปี +21.6%
-        (ไม่รวมปันผล) สะท้อนความเชื่อมั่นตลาดต่อความสามารถรักษา margin ท่ามกลางแรงกดดันภาษีนำเข้าและตลาดที่อยู่อาศัยที่ยังอ่อนแอ
+        ราคาหุ้น WSM แกว่งในกรอบราคาสิ้นเดือน $178.59–$233.10 ตลอด ~1 ปีที่ผ่านมา จุดต่ำสุดอยู่ช่วง ธ.ค. 2568 ($178.59) จากนั้นฟื้นตัวช่วง ม.ค.–ก.พ. 2569
+        ($204–206) แล้วย่อลงช่วง มี.ค.–เม.ย. 2569 ก่อนไต่ขึ้นทำจุดสูงสุดของกราฟที่ $233.10 ในเดือน มิ.ย. 2569 และไหลลงเล็กน้อยเป็น $228.25 (ส.ค.)
+        และล่าสุดในเดือน ก.ย. 2569 ผลตอบแทนรอบปีของกราฟ (ไม่รวมปันผล) อยู่ที่ราว +15% จากจุดแรกของกราฟ (ต.ค. 2568) ขณะที่รายได้ไตรมาสล่าสุด (สิ้นสุด 2 ส.ค. 2569)
+        โต +6.7% YoY เร่งจาก +4.35% ในไตรมาสก่อน (StockAnalysis)
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 ตระกูลสมมติฐาน</div></div>
     <div class="card">
       <!-- ✏️ เลือก ≥2 วิธีให้เหมาะกับหุ้น — gate เช็คคณิตเฉพาะวิธีชื่อ "P/E" (E21) และ "Justified P/BV" (E22) เมื่อมีวิธีนั้น
            ธนาคาร → เน้น P/BV / Residual income   • REIT → DDM / NAV   • หุ้นไม่ปันผล → ตัด DDM ออก ใช้ P/E + DCF/Justified P/BV -->
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $8.93 × P/E เป้าหมาย ~23x — ต่ำกว่า P/E ปัจจุบัน (25.5x) สะท้อนความเสี่ยงจากตลาดที่อยู่อาศัยชะลอตัว</div></div>
-        <div class="mval">$205.39</div>
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS $9.76 (TTM) × 19x — 19x = ค่าเฉลี่ยของ P/E ปีงบล่าสุด 2 ปีที่วัดจริง (18.3x FY2024, 20.4x FY2025 · ราคาเฉลี่ยของปี ÷ EPS ปรับลด) ไม่ได้มาจาก P/E ปัจจุบัน · มัธยฐาน 5 ปีงบ = 11.5x (กรอบ 8.0–20.4x) แต่ 3 ปีแรกของช่วง (8.0–11.5x) เป็นช่วงก่อนที่ operating margin ขึ้นมาอยู่ ~18% จึงไม่ใช้เป็นเป้าตรง ๆ (ดู sensitivity ด้านล่าง)</div></div>
+        <div class="mval">$185.44</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล $3.04 × (1+g); g 9%, r 10.5% → สะท้อนประวัติเพิ่มปันผลสองหลักต่อเนื่อง</div></div>
-        <div class="mval">$220.67</div>
-      </div>
-      <div class="vmethod">
-        <div><div class="mname">3. DCF (FCF 2-stage)</div><div class="mdesc">FCF/หุ้น ~$8.98 โต 9%/ปี (5 ปี) → terminal 3.5%, WACC ~10% (CAPM: rf 4.2% + β1.46×ERP 4.5%)</div></div>
-        <div class="mval">$180.30</div>
+        <div><div class="mname">2. DCF (FCF 2-stage)</div><div class="mdesc">สมมติฐานของผู้เขียนเอง: FCF/หุ้นฐาน $10.01 = FCF เฉลี่ย 3 งวด (FY2025 $1,139M · FY2026 $1,055M · TTM $1,343M = $1,179M) ÷ หุ้นคงเหลือ 117.78M · โต 6%/ปี 5 ปี → $10.61 / $11.25 / $11.92 / $12.64 / $13.40 · r 10.5% · terminal g 3% → TV $183.97 · PV ของ FCF 5 ปี $44.26 + PV ของ TV $111.67 = $155.93/หุ้น (TV = 72% ของมูลค่า)</div></div>
+        <div class="mval">$155.93</div>
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
@@ -194,10 +190,11 @@
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <!-- ✏️ หมายเหตุ: วิธีไหนให้ค่าสูง/ต่ำเพราะอะไร, ทำไม FV กลางจึงสมเหตุสมผล -->
-        DDM ให้ค่าสูงสุด เพราะ WSM เป็นหุ้นปันผลเติบโตต่อเนื่อง (เพิ่ม 15% มี.ค. 2569) — DCF ให้ค่าต่ำสุด เพราะใช้ discount rate ที่สูงกว่า
-        (WACC ~10% ตาม beta 1.46) สะท้อนความผันผวนของธุรกิจ discretionary ที่อ่อนไหวต่อตลาดที่อยู่อาศัย · ไม่ใช้ Justified P/BV เพราะ WSM
-        ซื้อหุ้นคืนต่อเนื่องหลายปีจน equity เหลือน้อย ทำให้ ROE (~55%) สูงผิดปกติและตีความ P/BV ที่เหมาะสมไม่ได้ตรงไปตรงมา — FV เฉลี่ย $202
-        ต่ำกว่าราคาตลาด ($227.53) ราว 11–13% สอดคล้องกับเป้าเฉลี่ยนักวิเคราะห์ ~$207 ที่บ่งชี้ว่าหุ้นวิ่งนำหน้าปัจจัยพื้นฐานไปพอสมควรหลัง +48% ในรอบปี
+        FV = เฉลี่ยของ 2 ตระกูลอิสระ: P/E ที่ยึดตัวคูณย้อนหลังที่วัดจริง กับ DCF ที่ตั้งสมมติฐานเอง (สองขาห่างกันไม่ถึง 2 เท่า) · ตัด DDM ออกจากขา (ปันผลเพียง ~31% ของ EPS
+        และ g ที่ใช้เดิม 9% ใกล้ r 10.5% มากจนผลไวเกินไป — D₁ $3.31 ÷ 1.5% ≈ $220.9 แสดงเป็นบริบทเท่านั้น) · ไม่ใช้ Justified P/BV เพราะ equity ต่ำจาก buyback ทำให้ ROE ~55% ตีความไม่ได้ ·
+        เป้าเฉลี่ยนักวิเคราะห์ไม่ถูกใช้เป็นขา FV · Sensitivity: P/E ขา 11.5x (มัธยฐาน) ให้ $112 → FV ราว $134 · P/E 20.4x (FY ล่าสุด) ให้ $199 → FV ราว $177.6 (ราคาสูงกว่า FV ราว 1 ใน 4 ของ FV) · P/E 23x (เท่าปัจจุบัน) → FV ราว $190 (ราคาสูงกว่า FV ราวหนึ่งในห้า) ·
+        ข้อควรระวัง: กำไรสุทธิไตรมาส Q2 ($338.1M) ใกล้เคียง operating income ($338.5M) ผิดปกติ อาจมีรายการพิเศษ ทำให้ EPS TTM $9.76 สูงกว่า EPS ปีงบ $8.84 (ที่มาของรายการไม่ได้ตรวจสอบ) ·
+        หากใช้ EPS $8.84 ขา P/E จะเหลือ ~$168 · ตระกูลสมมติฐานจึงสรุปว่าประเมินได้ค่อนข้างกว้าง มุมมองเป็นประมาณการไม่ใช่ค่าที่ยืนยันได้
       </p>
     </div>
   </section>
@@ -215,14 +212,14 @@
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
-          <span style="text-align:right">$207<br><small>เป้าเฉลี่ย Analyst</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$247.85<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน $227.53 อยู่ <b>สูงกว่าทั้งกรอบบนของ Fair Value ($220.67) และเป้าเฉลี่ยนักวิเคราะห์ ($207)</b> — ตลาดให้ premium
-        เพิ่มเติมจากความเชื่อมั่นต่อความสามารถรักษา operating margin ระดับสูงสุดในอุตสาหกรรม (~18%) และการเติบโตของ B2B/DTC
-        อย่างไรก็ตามในเชิง valuation ล้วนถือว่าตึงตัว นักลงทุนที่เน้น margin of safety อาจรอจังหวะย่อตัวเข้าใกล้โซน $180–$202
+        ราคาปัจจุบัน {{rd:px}} อยู่ <b>สูงกว่ากรอบบนของ Fair Value ({{rd:fvHigh}})</b> แต่ต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ ($247.85, 20 ราย) — ตลาดให้ premium
+        จากความเชื่อมั่นต่อ operating margin ระดับสูง (~18%) และรายได้ที่เร่งตัวขึ้น ในเชิง valuation ที่ยึด P/E ย้อนหลังและ DCF ถือว่าตึงตัว
+        นักลงทุนที่เน้น margin of safety อาจรอจังหวะย่อตัวเข้าใกล้โซน {{rd:mos30}}–{{rd:mos20}}
       </p>
     </div>
   </section>
@@ -234,7 +231,7 @@
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">ราคาสูงกว่า Fair Value ราว 12.6% — ยังไม่ถึงโซน Value หลังหุ้นวิ่งขึ้น +48% ในรอบปี</div>
+        <div class="txt">ราคาสูงกว่า Fair Value ชัดเจน — ยังไม่ถึงโซน Value และไกลจากส่วนเผื่อความปลอดภัย</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -261,10 +258,10 @@
           <div class="tgt">{{rd:sc1tgt}}</div>
           <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$8.15</span></li>
-            <li><span>P/E ออก</span><span>17x</span></li>
+            <li><span>EPS ปี 3</span><span>~$8.91</span></li>
+            <li><span>P/E ออก</span><span>13x (ระหว่างมัธยฐาน 11.5x กับ FY2024 18.3x)</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
-            <li><span>สถานการณ์</span><span>ตลาดที่อยู่อาศัยซบเซาต่อเนื่อง comp ติดลบ margin หดจาก tariff</span></li>
+            <li><span>สถานการณ์</span><span>ตลาดที่อยู่อาศัยซบเซาต่อเนื่อง ยอดขายติดลบ margin หดจากต้นทุนนำเข้า P/E ถอยสู่ระดับต่ำ · ปันผลคงที่</span></li>
           </ul>
         </div>
       </div>
@@ -274,10 +271,10 @@
           <div class="tgt">{{rd:sc2tgt}}</div>
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$10.64</span></li>
-            <li><span>P/E ออก</span><span>21x</span></li>
+            <li><span>EPS ปี 3</span><span>~$11.62</span></li>
+            <li><span>P/E ออก</span><span>19x (ค่าเดียวกับขา P/E ของ FV)</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
-            <li><span>สถานการณ์</span><span>comp โตต่อเนื่องระดับ 3-5% margin ทรงตัวใกล้ 17-18% ตามแผนบริษัท</span></li>
+            <li><span>สถานการณ์</span><span>รายได้โตต่อเนื่องระดับ 3-5% margin ทรงตัวใกล้ 17-18% · ปันผลโตตาม EPS</span></li>
           </ul>
         </div>
       </div>
@@ -287,8 +284,8 @@
           <div class="tgt">{{rd:sc3tgt}}</div>
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$12.55</span></li>
-            <li><span>P/E ออก</span><span>24x</span></li>
+            <li><span>EPS ปี 3</span><span>~$13.71</span></li>
+            <li><span>P/E ออก</span><span>22x (สูงกว่า FY2025 ที่ 20.4x เล็กน้อย)</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>B2B และ West Elm ฟื้นตัวแรง margin ขยายต่อ ตลาดที่อยู่อาศัยพลิกฟื้น</span></li>
           </ul>
@@ -296,9 +293,9 @@
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      สถานการณ์ Base คาดผลตอบแทนใกล้ทรงตัว (+2.6% ใน 3 ปี รวมปันผล) สะท้อนว่าราคาปัจจุบันได้ price-in การเติบโตระดับปานกลางไปมากแล้ว
-      ผลตอบแทนที่ดีขึ้นอย่างมีนัยสำคัญต้องพึ่งพา Bull case ที่ West Elm ฟื้นตัวและ B2B ขยายตัวต่อเนื่อง ขณะที่ Bear case (ตลาดบ้านซบเซา + P/E compress)
-      อาจทำให้ขาดทุนกว่า 1 ใน 3 ของเงินต้น — ความไม่สมมาตรของ risk/reward นี้เป็นเหตุผลหลักที่ MOS ติดลบ
+      สถานการณ์ Base คาดผลตอบแทนใกล้ทรงตัว (+2.8% ใน 3 ปี รวมปันผล) สะท้อนว่าราคาปัจจุบันได้ price-in การเติบโตระดับปานกลางไปมากแล้ว
+      ผลตอบแทนที่ดีขึ้นอย่างมีนัยสำคัญต้องพึ่งพา Bull case ที่ margin ขยายและตลาดที่อยู่อาศัยพลิกฟื้น ขณะที่ Bear case (ตลาดบ้านซบเซา + P/E compress)
+      อาจทำให้ขาดทุนเกินหนึ่งในสามของเงินต้น (ตัวเลข Bear ขึ้นกับ P/E ออก 13x ซึ่งเป็นสมมติฐานเข้มงวด) — ความไม่สมมาตรของ risk/reward นี้เป็นเหตุผลหลักที่ MOS ติดลบ
     </p>
   </section>
 
@@ -310,22 +307,21 @@
         <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
         <ul>
           <!-- ✏️ 4–6 ข้อ: เขียน <b>หัวข้อ:</b> รายละเอียด -->
-          <li><b>Operating margin สูงสุดในกลุ่ม:</b> ~18% เทียบเพื่อนบ้านเฉลี่ย ~10% จาก DTC mix สูงและวินัยด้านต้นทุน</li>
-          <li><b>DTC/E-commerce ~66-67%:</b> ต้นทุนหน้าร้านต่ำ ปรับตัวไว กำไรต่อหน่วยดีกว่าคู่แข่งที่พึ่งพาหน้าร้าน</li>
-          <li><b>B2B ขยายตัวเร่งตัว:</b> โต 10% ปี FY2025, Q4 ทำสถิติ comp +13.7% จากสัญญาโรงแรม-องค์กรที่ยังมีช่องเติบโตอีกมาก</li>
-          <li><b>Dividend Aristocrat candidate:</b> เพิ่มปันผลต่อเนื่องหลายปี ล่าสุด +15% มี.ค. 2569 payout ratio ต่ำ (~34%) เหลือพื้นที่โตอีกมาก</li>
-          <li><b>Buyback ต่อเนื่อง:</b> ลดจำนวนหุ้นหนุน EPS growth แม้รายได้โตช้า</li>
-          <li><b>Every brand comp บวก:</b> Q1 FY2026 ทุกแบรนด์ให้ comp เป็นบวก นำโดย West Elm ที่กลับมาฟื้นตัว (+8.5%)</li>
+          <li><b>Operating margin สูง:</b> ~17.8% (TTM) และ ~18.2% (FY2025) ตามตารางงบ StockAnalysis</li>
+          <li><b>รายได้เร่งตัว:</b> ไตรมาสล่าสุด (สิ้นสุด 2 ส.ค. 2569) +6.7% YoY เทียบ +4.35% ไตรมาสก่อน</li>
+          <li><b>FCF แข็งแรง:</b> FCF TTM $1,343M (FY2026 $1,055M) เงินสด $1.03 พันล้านต่อหนี้ $1.53 พันล้าน</li>
+          <li><b>ปันผลเติบโต:</b> DPS $3.04/ปี payout ratio ต่ำ (~31% ของ EPS) เหลือพื้นที่โตต่อ</li>
+          <li><b>Buyback ต่อเนื่อง:</b> หุ้นถัวเฉลี่ยปรับลดลดจาก 153M (FY2022) เหลือ 121M (TTM) หนุน EPS growth แม้รายได้โตช้า</li>
         </ul>
       </div>
       <div class="box risk">
         <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
         <ul>
           <!-- ✏️ 4–6 ข้อ: เขียน <b>หัวข้อ:</b> รายละเอียด -->
-          <li><b>Valuation ตึงตัว:</b> P/E TTM ~25.5x สูงกว่าค่าเฉลี่ย 5 ปี (~17x) มาก หลังหุ้นวิ่ง +48% ในรอบปี ราคาสูงกว่า FV โดยประมาณ</li>
+          <li><b>Valuation ตึงตัว:</b> P/E TTM ~{{rd:pe}}x สูงกว่า P/E ปีงบล่าสุด 20.4x และมัธยฐาน 5 ปีงบ 11.5x ราคาสูงกว่า FV ชัดเจน</li>
           <li><b>ตลาดที่อยู่อาศัยชะลอตัว:</b> อัตราดอกเบี้ยสูง + ยอดขายบ้านซบเซา กดดันการใช้จ่ายซื้อเฟอร์นิเจอร์/ของแต่งบ้าน</li>
-          <li><b>แรงกดดันภาษีนำเข้า (Tariff):</b> gross margin หด 30 bps ใน Q1 FY2026 จากต้นทุนสินค้านำเข้าที่สูงขึ้น</li>
-          <li><b>West Elm เพิ่งฟื้นตัว:</b> เคยเป็นจุดอ่อนของกลุ่มมานาน ความยั่งยืนของการฟื้นตัวยังต้องพิสูจน์อีกหลายไตรมาส</li>
+          <li><b>ต้นทุนนำเข้า/ภาษีนำเข้า:</b> gross margin TTM 45.7% ต่ำกว่า FY2026 (46.2%) และ FY2025 (46.5%) ตามตารางงบ</li>
+          <li><b>คุณภาพกำไร TTM:</b> กำไรสุทธิ Q2 ใกล้เท่า operating income อาจมีรายการพิเศษ — EPS TTM $9.76 อาจไม่ยั่งยืนเมื่อเทียบ $8.84 ของปีงบ</li>
           <li><b>Beta สูง (1.46):</b> ผันผวนกว่าตลาด อ่อนไหวต่อภาวะเศรษฐกิจถดถอย/ความเชื่อมั่นผู้บริโภค</li>
           <li><b>Equity ต่ำจาก buyback:</b> ROE/P/BV ที่สูงผิดปกติทำให้การประเมินมูลค่าด้วยวิธี book-based ตีความยาก</li>
         </ul>
@@ -337,19 +333,18 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>คุณภาพธุรกิจดีเยี่ยม แต่ราคาแพงเกินไปสำหรับจุดเข้าใหม่</h2>
-      <p>Williams-Sonoma เป็นผู้นำ home furnishings พรีเมียมที่มี operating margin สูงสุดในอุตสาหกรรม (~18%) หนุนด้วยสัดส่วน DTC/e-commerce
-      ที่สูงถึง ~66-67% และธุรกิจ B2B ที่กำลังเติบโตเร่งตัว บริษัทยังเป็นหุ้นปันผลเติบโตต่อเนื่อง (เพิ่ม 15% ล่าสุด) ด้วย payout ratio ต่ำ
-      อย่างไรก็ตาม หลังราคาหุ้นวิ่งขึ้น +48% ในช่วง ~1 ปีที่ผ่านมา ราคาปัจจุบัน ($227.53) สูงกว่ามูลค่าเหมาะสมโดยประมาณ ($202.12) ราว 12.6%
-      และสูงกว่าเป้าเฉลี่ยนักวิเคราะห์ (~$207) เช่นกัน — ธุรกิจดีแต่ไม่มีส่วนเผื่อความปลอดภัยสำหรับนักลงทุนใหม่ในราคานี้</p>
+      <h2>คุณภาพธุรกิจดี แต่ราคาแพงเกินไปสำหรับจุดเข้าใหม่</h2>
+      <p>Williams-Sonoma เป็นผู้ค้าปลีก home furnishings พรีเมียมที่มี operating margin ระดับสูง (~18%) รายได้ไตรมาสล่าสุดเร่งขึ้นเป็น +6.7% YoY
+      และเป็นหุ้นปันผลที่มี payout ratio ต่ำ อย่างไรก็ตาม ราคาปัจจุบัน ({{rd:px}}) สูงกว่ามูลค่าเหมาะสมโดยประมาณ ({{rd:fv}}) ที่ประเมินจาก P/E ย้อนหลังที่วัดจริงและ DCF
+      แม้เป้าเฉลี่ยนักวิเคราะห์ ($247.85) จะสูงกว่าราคา (ไม่ใช้เป็นขา FV) — ธุรกิจดีแต่ไม่มีส่วนเผื่อความปลอดภัยสำหรับนักลงทุนใหม่ในราคานี้ และมูลค่าไวต่อสมมติฐาน P/E เป้าหมาย</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$207 (Moderate Buy)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$247.85 (Buy)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> รอจังหวะย่อตัวเข้าใกล้โซน $180–$202 (MOS 20-30%) ก่อนเข้าซื้อใหม่ ผู้ที่ถือหุ้นอยู่แล้วอาจถือต่อรับปันผลที่เติบโตต่อเนื่อง
-        แต่ผู้ที่ยังไม่มีสถานะควรรอความชัดเจนเรื่องผลกระทบภาษีนำเข้าและทิศทางตลาดที่อยู่อาศัยก่อนตัดสินใจซื้อใหม่ในราคาปัจจุบัน
+        💡 <b>กลยุทธ์:</b> รอจังหวะย่อตัวเข้าใกล้โซน {{rd:mos30}}–{{rd:mos20}} (MOS 30-20%) ก่อนเข้าซื้อใหม่ ผู้ที่ถือหุ้นอยู่แล้วอาจถือต่อรับปันผล
+        แต่ผู้ที่ยังไม่มีสถานะควรรอความชัดเจนเรื่องต้นทุนนำเข้าและทิศทางตลาดที่อยู่อาศัยก่อนตัดสินใจซื้อใหม่ในราคาปัจจุบัน
       </div>
     </div>
   </section>
@@ -358,9 +353,9 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลจาก StockAnalysis.com, Yahoo Finance, SEC EDGAR (8-K/10-Q filings), บริษัท
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลจาก StockAnalysis.com, Yahoo Finance, งบการเงินบริษัท
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 2 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 22 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
