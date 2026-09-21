@@ -4,36 +4,36 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น Dow Inc. (DOW) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"DOW","currency":"USD","price":28.73,"fairValue":34,"mos":15.5,"upside":18.3,"pe":null,"dividendYield":4.9,"roe":null}
+{"symbol":"DOW","currency":"USD","price":28.73,"fairValue":23.77,"mos":-20.9,"upside":-17.3,"pe":null,"dividendYield":4.9,"roe":null}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 34,
+  "fv": 23.77,
   "values": {
     "px": 28.73,
     "priceDate": "2026-09-18",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
-    "fvLow": 30,
-    "fvHigh": 42,
-    "shares": 720000000,
+    "fvLow": 20.9,
+    "fvHigh": 24.03,
+    "shares": 722340711,
     "dps": 1.4,
     "bvps": 22.5,
-    "baseEps": 2.9,
+    "baseEps": 2.38,
     "scenarios": [
       {
-        "tgt": 13.5,
+        "tgt": 10.8,
+        "div": 2.1
+      },
+      {
+        "tgt": 23.5,
         "div": 4.2
       },
       {
-        "tgt": 38.5,
-        "div": 4.2
-      },
-      {
-        "tgt": 65,
+        "tgt": 44,
         "div": 4.2
       }
     ],
@@ -41,7 +41,8 @@
       "years": 3,
       "divIncluded": true,
       "perYear": null
-    }
+    },
+    "analystTgt": 34.44
   },
   "theme": {
     "accent": "#CC0000",
@@ -80,8 +81,8 @@
     "dataFmt": "d[1].toFixed(2)"
   },
   "gauge": {
-    "min": 18,
-    "max": 46,
+    "min": 14,
+    "max": 40,
     "fairLabelTop": false
   }
 }
@@ -108,30 +109,30 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ $20.40 – $42.74<br>
-        ที่มา: StockAnalysis.com, Yahoo Finance, MarketBeat
+        กรอบ 52 สัปดาห์ $20.65 – $42.74<br>
+        ที่มา: StockAnalysis.com, Yahoo Finance, Dow IR
       </div>
     </div>
   </header>
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569 — อยู่ในช่วงฟื้นตัวจากวัฏจักรต่ำ</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ 21 ก.ย. 2569 (งบ Q2/2569 ออก 23 ก.ค.) — ฟื้นตัวจากวัฏจักรต่ำ</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">720M หุ้น</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">722M หุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">N/A</div><div class="d">ขาดทุน TTM (impairment)</div></div>
-      <div class="metric"><div class="k">EV/EBITDA (ปัจจุบัน)</div><div class="v neu">~12x</div><div class="d">ต่ำในวัฏจักร; mid-cycle ~7-9x</div></div>
+      <div class="metric"><div class="k">EPS GAAP Q2/26</div><div class="v pos">$0.99</div><div class="d">เทียบ –$1.18 ปีก่อน (IR)</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS $22.50 (FY2025)</div></div>
 
-      <div class="metric"><div class="k">EPS GAAP (TTM)</div><div class="v neg">–$4.00</div><div class="d">รวม impairment Sadara &amp; restructuring</div></div>
-      <div class="metric"><div class="k">EPS ปรับปรุง Q1/26</div><div class="v neu">–$0.14</div><div class="d">ดีขึ้นมาก; 2026E ~$2.90</div></div>
-      <div class="metric"><div class="k">EBITDA (ดำเนินงาน)</div><div class="v">$873M</div><div class="d">Q1/26; ปี 2024 = $4.7B</div></div>
-      <div class="metric"><div class="k">Net Debt</div><div class="v neg">–$15.5B</div><div class="d">Leverage 3x; ความเสี่ยงหลัก</div></div>
+      <div class="metric"><div class="k">EPS GAAP (TTM)</div><div class="v neg">–$1.82</div><div class="d">TTM (SA) รวม impairment/restructuring; FY2025 –$3.70</div></div>
+      <div class="metric"><div class="k">EPS ปรับปรุง Q2/26</div><div class="v pos">$1.44</div><div class="d">จาก –$0.42 ปีก่อน; FY2026e ฉันทามติ ~$2.38 (SA)</div></div>
+      <div class="metric"><div class="k">EBITDA (ดำเนินงาน)</div><div class="v">$2.31B</div><div class="d">Q2/26; +$1.61B YoY (IR)</div></div>
+      <div class="metric"><div class="k">Net Debt</div><div class="v neg">–$15.2B</div><div class="d">หนี้ $19.4B − เงินสด $4.2B (SA รวม lease); IR: LTD−เงินสด ≈ $13.2B</div></div>
 
-      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$39.3B</div><div class="d">ลดจาก $56.9B (FY2022)</div></div>
-      <div class="metric"><div class="k">EBITDA Margin</div><div class="v">~10%</div><div class="d">ต่ำในวัฏจักร; peak 2021 ~19%</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$41.3B</div><div class="d">ลดจาก $56.9B (FY2022); Q2/26 $12.1B (+20% YoY)</div></div>
+      <div class="metric"><div class="k">EBITDA Margin Q2/26</div><div class="v">~19%</div><div class="d">$2.31B ÷ $12.1B; TTM ต่ำกว่านี้มาก</div></div>
       <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">$1.40/ปี ($0.35/ไตรมาส) — ลด 50% ก.ค. 2568</div></div>
-      <div class="metric"><div class="k">52 สัปดาห์</div><div class="v">$20.40–$42.74</div><div class="d">ผันผวนสูง ตาม PE spreads</div></div>
+      <div class="metric"><div class="k">52 สัปดาห์</div><div class="v">$20.65–$42.74</div><div class="d">ผันผวนสูง ตามวัฏจักรโพลิเอทิลีน</div></div>
     </div>
   </section>
 
@@ -148,33 +149,29 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        DOW ลงไปแตะต่ำสุดในรอบ 52 สัปดาห์ที่ ~$20.40 หลังประกาศลดเงินปันผล 50% ในเดือน ก.ค. 2568 จากนั้นฟื้นตัวแรงมาแตะ $42.74 ในเดือน มี.ค. 2569 จากการปรับตัวขึ้นของ PE spread ในตลาดโพลิเอทิลีนและ sentiment เชิงบวกต่อโครงการ "Transform to Outperform" ก่อนที่จะย่อตัวกลับสู่ช่วง $27-28 ในปัจจุบัน ตาม Citi ปรับลดเป้าและกดดันจากตลาดเคมีที่ยังไม่เต็มรูปแบบฟื้นตัว
+        DOW ลงไปแตะต่ำสุดในรอบ 52 สัปดาห์ที่ ~$20.65 หลังลดเงินปันผล 50% ในเดือน ก.ค. 2568 จากนั้นฟื้นตัวแรงจนแตะ $42.74 ในช่วง มี.ค. 2569 ก่อนย่อตัวลงมาอยู่ที่ $27.36 ณ สิ้นเดือน มิ.ย. และแกว่งราว $28-31 ตั้งแต่ ก.ค.–ก.ย. แม้งบ Q2/2569 (ออก 23 ก.ค.) จะพลิกเป็นกำไร — ราคาสะท้อนความไม่แน่ใจว่าระดับกำไรนี้ยั่งยืนหรือไม่ (ฉันทามติ EPS FY2027e ต่ำกว่า FY2026e)
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">3 วิธี — อิง EPS กลางวัฏจักร</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">2 ตระกูล — EPS เฉลี่ยรอบวัฏจักร × P/E มัธยฐาน + DDM</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. Normalized P/E (Mid-Cycle)</div><div class="mdesc">EPS norm. $3.50 × P/E 11x = $38.50 — อิง EPS กลางวัฏจักร (2026E $2.90 + recovery trajectory); ส่วนลด P/E 11x สำหรับ commodity chemicals</div></div>
-        <div class="mval">$38.50</div>
+        <div><div class="mname">1. P/E เฉลี่ยรอบวัฏจักร (มัธยฐานย้อนหลัง)</div><div class="mdesc">EPS $2.67 (เฉลี่ย FY2021–FY2025 รวมปีขาดทุน) × P/E 8.8x = $23.50 — 8.8x คือมัธยฐานที่วัดจริงของ DOW (FY2021 7.2x · FY2022 8.8x · FY2024 33.5x; ตัด FY2023 65.7x ที่กำไรทรุด; FY2025 ขาดทุนจึงข้าม) ช่วงกว้าง 4.7 เท่า</div></div>
+        <div class="mval">$23.50</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. EV/EBITDA</div><div class="mdesc">Mid-cycle EBITDA $5.0B × 8x = EV $40B; หัก Net Debt $15.5B = Equity $24.5B ÷ 720M หุ้น — อิง EBITDA กลางวัฏจักร (ปี 2023-24 อยู่ที่ $4.2-4.7B)</div></div>
-        <div class="mval">$34.03</div>
-      </div>
-      <div class="vmethod">
-        <div><div class="mname">3. Dividend Yield (DDM)</div><div class="mdesc">D₁ = $1.40×1.04; g 4%, r 9% → DDM = $1.456÷0.05 = $29.12 — อิงเงินปันผล $1.40/ปี (หลังลด 50% ก.ค. 68) + discount rate 9% สำหรับ investment grade chemical; g 4% สมมติ FCF ฟื้นตัวค่อยๆ กับ pricing power ระยะยาว</div></div>
-        <div class="mval">$29.12</div>
+        <div><div class="mname">2. Dividend Yield (DDM)</div><div class="mdesc">D₁ = $1.40×1.03 = $1.442; g 3%, r 9% → DDM = $1.442÷0.06 = $24.03 — DPS $1.40/ปี (ลด 50% ก.ค. 2568) FCF TTM $1.46B (≈$2.02/หุ้น) ครอบปันผลได้ แต่ EPS GAAP ยังติดลบ; r 9% คงเดิม, g ลดจาก 4% เป็น 3% เพราะเพิ่งตัดปันผลและวัฏจักรยังไม่ยืนยัน</div></div>
+        <div class="mval">$24.03</div>
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        <b>สำคัญ:</b> DOW เป็นหุ้น <b>Cyclical</b> — EPS GAAP ปัจจุบัน (-$4.00 TTM) ไม่สะท้อนกำลังทำกำไรจริง เนื่องจากมีการบันทึก impairment สินทรัพย์ Sadara (~$292M) และค่าใช้จ่าย restructuring "Transform to Outperform" มูลค่าเหมาะสม <b>ต้องอิง EPS กลางวัฏจักร</b> ซึ่งประมาณ $3.50/หุ้น (ระหว่าง FY2024 $1.57 และ 2026E $2.90 ของนักวิเคราะห์) วิธี P/E ($38.50) ให้ค่าสูงสุด เพราะ multiple ฟื้นตัวจากระดับ trough; EV/EBITDA ($34.03) อิงการฟื้นตัวของ EBITDA กลับสู่ระดับ $5B; DDM ($29.12) อิงเงินปันผล $1.40/ปี g 4% r 9% — เฉลี่ย 3 วิธี = ($38.50+$34.03+$29.12)÷3 = $33.88 ≈ $34
+        <b>สำคัญ:</b> DOW เป็นหุ้น <b>Cyclical</b> — EPS GAAP TTM (–$1.82) ติดลบจาก impairment/restructuring (รวมรายการค่าประกัน Sadara $292M ใน H1/2569) จึงใช้ EPS เฉลี่ย 5 ปี $2.67 = (8.38+6.28+0.82+1.57−3.70)÷5 × P/E มัธยฐานที่วัดจริง 8.8x = $23.50 คู่กับ DDM $24.03 (r 9% g 3%) — สองตระกูลสมมติฐานที่ไม่ได้ยึดตัวคูณจากราคาตลาดวันนี้ เฉลี่ย ($23.50+$24.03)÷2 ได้มูลค่าเหมาะสม {{rd:fv}} · ตัดขา EV/EBITDA เดิมออก (ตัวคูณ 8x และ EBITDA กลางวัฏจักร $5B เป็นค่าที่ตั้งเอง ไม่มีมัธยฐานที่วัดได้) และตัดเป้านักวิเคราะห์ออกจาก FV (ใช้เป็นบริบท) · บริบทกรอบล่าง: ฉันทามติ EPS FY2026e $2.38 × 8.8x = $20.94 · งบ Q2/2569 ดีกว่ามาก (operating EPS $1.44, EBITDA $2.31B) แต่ฉันทามติ EPS FY2027e $1.78 ต่ำกว่า FY2026e ⇒ ตลาดยังไม่มองว่านี่คือระดับปกติ
       </p>
     </div>
   </section>
@@ -192,12 +189,12 @@
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
-          <span style="text-align:right">$40.28<br><small>เป้าเฉลี่ย Analyst</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:analystTgt}}<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน $27.50 อยู่ในโซน MOS 20% ($27.20) — สัญญาณ <b>น่าสนใจสะสม</b> ในมุมมอง deep value สำหรับผู้รับความเสี่ยงได้ในหุ้นวัฏจักร เป้าหมายนักวิเคราะห์เฉลี่ย $40.28 (+29.1% จากปัจจุบัน) สะท้อนการฟื้นตัวของ PE spread ในปี 2569-70 ความเสี่ยงหลักคือ Net Debt $15.5B ที่จำกัด financial flexibility และโอกาสลดเงินปันผลอีกครั้งหากวัฏจักรฟื้นช้ากว่าคาด
+        ราคาปัจจุบัน {{rd:px}} สูงกว่ามูลค่าเหมาะสม {{rd:fv}} และอยู่เหนือโซน MOS 20% ที่ {{rd:mos20}} — ยังไม่ถึงโซนสะสมตามเกณฑ์มูลค่า เป้าหมายนักวิเคราะห์เฉลี่ย {{rd:analystTgt}} ({{rd:analystPct}}) สะท้อนมุมมองว่า EPS จะฟื้นเกินค่าเฉลี่ย 5 ปี (ใช้เป็นบริบท ไม่ได้อยู่ใน FV) ความเสี่ยงหลักคือหนี้สุทธิ ~$15.2B ที่จำกัด financial flexibility และโอกาสลดเงินปันผลอีกครั้งหากวัฏจักรกลับทิศ
       </p>
     </div>
   </section>
@@ -208,11 +205,11 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">MOS พอใช้ — อยู่บริเวณ MOS 20% ราคา $27.50 ใกล้โซนสะสมน่าสนใจสำหรับหุ้นวัฏจักร</div>
+        <div class="txt">ราคาแพงกว่ามูลค่าเหมาะสม (MOS ติดลบ) — รอราคาย่อหรือหลักฐานว่า EPS ยั่งยืนสูงกว่าค่าเฉลี่ย 5 ปี ก่อนสะสม</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจ (ราคาปัจจุบัน ≈ จุดนี้)</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซน deep value — ใกล้ 52wk low</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจ (ราคาต้องย่อลงจากปัจจุบัน)</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซน deep value — ต่ำกว่า 52wk low</div></div>
         <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
@@ -236,9 +233,9 @@
           <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$1.50</span></li>
-            <li><span>P/E ออก</span><span>9x</span></li>
+            <li><span>P/E ออก</span><span>7.2x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
-            <li><span>สถานการณ์</span><span>PE spreads กดดันต่อ, ลดปันผลซ้ำ</span></li>
+            <li><span>สถานการณ์</span><span>PE spreads กดดันต่อ, ลดปันผลซ้ำ (สมมติ DPS ครึ่งหนึ่ง)</span></li>
           </ul>
         </div>
       </div>
@@ -248,8 +245,8 @@
           <div class="tgt">{{rd:sc2tgt}}</div>
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$3.50</span></li>
-            <li><span>P/E ออก</span><span>11x</span></li>
+            <li><span>EPS ปี 3</span><span>~$2.67</span></li>
+            <li><span>P/E ออก</span><span>8.8x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>PE spreads ฟื้นตัว, Path2Zero เริ่มผล</span></li>
           </ul>
@@ -262,7 +259,7 @@
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$5.00</span></li>
-            <li><span>P/E ออก</span><span>13x</span></li>
+            <li><span>P/E ออก</span><span>8.8x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>PE spread พุ่ง, ดีมานด์บรรจุภัณฑ์โลกฟื้น</span></li>
           </ul>
@@ -270,7 +267,7 @@
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      ผลตอบแทนขึ้นอยู่กับการฟื้นตัวของ <b>PE spread</b> (ส่วนต่างราคาโพลิเอทิลีน vs ต้นทุนวัตถุดิบ ethane/naphtha) และ <b>ดีมานด์บรรจุภัณฑ์โลก</b> ซึ่งเป็น ~50% ของรายได้ DOW ปัจจัยกดดันหลักคือหนี้ Net Debt $15.5B (ดอกเบี้ยต่อปี ~$800M) ที่จะกัดกร่อนกำไรในสถานการณ์ Bear; ในสถานการณ์ Base/Bull การลด leverage และการฟื้นตัวของ EBITDA กลับสู่ $5-7B จะเป็นตัวหนุนใหญ่ — EPS ปี 3 ทุก scenario ไม่รวม impairment พิเศษ
+      ผลตอบแทนขึ้นอยู่กับการฟื้นตัวของ <b>PE spread</b> (ส่วนต่างราคาโพลิเอทิลีน vs ต้นทุนวัตถุดิบ) และ <b>ดีมานด์บรรจุภัณฑ์โลก</b> · ทุกฉากใช้ P/E ออกจากช่วงที่วัดจริงของ DOW (ต่ำสุด 7.2x ใน Bear · มัธยฐาน 8.8x ใน Base/Bull) ไม่ใช่ตัวคูณปัจจุบัน — Base = EPS เฉลี่ย 5 ปี (สอดคล้อง FV) · Bull = EPS $5.00 (ใกล้ระดับ FY2021–22 ที่ $6-8) · ปัจจัยกดดันหลักคือหนี้สุทธิ ~$15.2B ที่กัดกร่อนกำไรในสถานการณ์ Bear; ในสถานการณ์ Base/Bull การลดหนี้และ EBITDA ที่ต่อเนื่องจาก Q2/2569 ($2.31B) เป็นตัวหนุน — EPS ปี 3 ทุกฉากไม่รวม impairment พิเศษ
     </p>
   </section>
 
@@ -281,22 +278,22 @@
       <div class="box cat">
         <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
         <ul>
-          <li><b>PE Spread ฟื้นตัว:</b> โพลิเอทิลีน (PE) คิดเป็น ~50% ของรายได้ — หาก ethylene-naphtha spread กลับสู่ระดับ mid-cycle จะ unlock EBITDA $1.5-2B เพิ่ม</li>
-          <li><b>"Transform to Outperform":</b> โครงการ restructuring ลดต้นทุน $1.5B+ ภายใน 2568-69 รวมปิดโรงงานไม่ทำกำไรและลดพนักงาน 2,300 คน</li>
-          <li><b>Path2Zero Cracker:</b> โครงการ low-carbon ethylene cracker ใน Alberta (ร่วม MEGlobal) ตอบสนอง ESG demand ด้านบรรจุภัณฑ์ยั่งยืน ซึ่งนักลงทุน ESG ยินดีจ่ายส่วนเพิ่ม</li>
-          <li><b>ตลาดบรรจุภัณฑ์ฟื้น:</b> ดีมานด์ e-commerce และบรรจุภัณฑ์อาหารระยะยาวหนุน PE demand โดยเฉพาะในตลาด emerging market ที่เติบโต 3-5%/ปี</li>
-          <li><b>ลด Leverage:</b> เป้า DOW เจรจาขายสินทรัพย์และลด Net Debt — ทุก $1B ที่ลดหนี้ได้ช่วย EPS ~$0.05-0.08 ผ่านดอกเบี้ยที่ลดลง</li>
-          <li><b>Valuation ต่ำ:</b> ราคาปัจจุบันซื้อขายที่ discount ต่อ book value เพียง 1.22x และ EV/EBITDA mid-cycle ต่ำกว่า peer LyondellBasell/BASF</li>
+          <li><b>ราคาขายฟื้น:</b> ราคาขายเฉลี่ย +20% YoY ใน Q2/2569 นำโดยโพลิเอทิลีนทุกภูมิภาค — operating EBITDA $2.31B (+$1.61B YoY) ตามรายงาน IR</li>
+          <li><b>"Transform to Outperform":</b> เป้าปรับปรุง EBITDA ระยะใกล้ ≥$2B และลดพนักงาน ~4,500 ตำแหน่ง; IR Q2/2569 ระบุผลประโยชน์ในปี 2569 เกิน $1.3B และจะเร่งขึ้นต่อเนื่องถึงปี 2570</li>
+          <li><b>Path2Zero Cracker:</b> โครงการ ethylene cracker net-zero ที่ Fort Saskatchewan (Alberta) กลับมาเดินหน้าช่วงต้นปี 2569 — ระยะยาวเพิ่มกำลังผลิตแต่ยังต้องใช้เงินลงทุนสูง</li>
+          <li><b>ตลาดบรรจุภัณฑ์:</b> ดีมานด์บรรจุภัณฑ์อาหารและ e-commerce เป็นฐานของดีมานด์ PE ระยะยาว (มุมมองทั่วไป ไม่ใช่ตัวเลขที่ยืนยันรอบนี้)</li>
+          <li><b>ลด Leverage:</b> กระแสเงินสดจากการดำเนินงาน 6 เดือนแรก $2.45B (IR) — ทุก $1B ที่ลดหนี้ได้ช่วย EPS ~$0.05-0.08 ผ่านดอกเบี้ยที่ลดลง (ประมาณการ)</li>
+          <li><b>กำไรพลิกกลับ:</b> Q2/2569 GAAP EPS $0.99 เทียบ –$1.18 ปีก่อน; ฉันทามติ EPS FY2026e $2.38 เทียบ TTM –$1.82</li>
         </ul>
       </div>
       <div class="box risk">
         <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
         <ul>
-          <li><b>Leverage สูง:</b> Net Debt $15.5B (leverage 3x+ ต่อ EBITDA ปัจจุบัน) จำกัด financial flexibility — หากวัฏจักรฟืดยาวนาน เสี่ยง credit downgrade และลดปันผลอีกครั้ง</li>
+          <li><b>Leverage สูง:</b> หนี้สุทธิ ~$15.2B (SA รวม lease; IR: LTD−เงินสด ≈ $13.2B) จำกัด financial flexibility — หากวัฏจักรฟืดยาวนาน เสี่ยง credit downgrade และลดปันผลอีกครั้ง</li>
           <li><b>วัฏจักรเคมียืดเยื้อ:</b> Overcapacity จากจีน (new PE capacity ขนาดใหญ่เข้าตลาด) กดดัน PE spread ให้อยู่ต่ำกว่า mid-cycle ได้นานกว่าที่ตลาดคาด</li>
-          <li><b>Sadara Exposure:</b> Joint venture ใน Saudi Arabia ยังมีปัญหา — DOW ต้องบันทึก guarantee liability $292M ใน Q1/26 ความเสี่ยง impairment เพิ่มเติมยังมีอยู่</li>
-          <li><b>ต้นทุนพลังงาน:</b> natural gas/naphtha คิดเป็น ~20-30% ต้นทุน DOW — ราคาพลังงานพุ่งกระทบ EBITDA margin ทันที</li>
-          <li><b>ลดปันผลซ้ำ:</b> DOW ลด 50% ไปแล้วใน ก.ค. 68 หาก FCF ไม่ครอบปันผล $1B/ปี ในปีนี้มีความเสี่ยงที่ต้องลดอีก ซึ่งจะกดหุ้น</li>
+          <li><b>Sadara Exposure:</b> Joint venture ใน Saudi Arabia ยังมีปัญหา — DOW บันทึกค่าใช้จ่ายก่อนภาษี $292M จากการปรับ guarantee liability ใน H1/2569 และระงับการรับรู้ equity loss (IR Q2/26) ความเสี่ยงเพิ่มเติมยังมีอยู่</li>
+          <li><b>ต้นทุนพลังงาน:</b> natural gas/naphtha เป็นต้นทุนวัตถุดิบหลัก — ราคาพลังงานพุ่งกระทบ EBITDA margin ทันที</li>
+          <li><b>ลดปันผลซ้ำ:</b> DOW ลด 50% ไปแล้วใน ก.ค. 68 FCF TTM $1.46B ครอบปันผล ~$1.0B/ปี แต่ FY2025 FCF ติดลบ (–$1.6B) หากวัฏจักรกลับทิศมีความเสี่ยงต้องลดอีก</li>
           <li><b>Tariff &amp; Trade:</b> สงครามการค้าสหรัฐ-จีน/ยุโรป กระทบ export ของ DOW และต้นทุน import raw material — ความไม่แน่นอนสูง</li>
         </ul>
       </div>
@@ -307,15 +304,15 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>หุ้นวัฏจักร Deep Value — ความเสี่ยงสูง ผลตอบแทนสูงหากวัฏจักรเคมีฟื้น</h2>
-      <p>DOW Inc. เป็น materials science giant ที่ผ่านช่วงวัฏจักรต่ำสุดในรอบ 5 ปี — EBITDA ลดจาก $10.7B (2564) สู่ $1.1B (2568) จากการ oversupply ของ PE ในเอเชียและดีมานด์โลกที่อ่อนตัว การลดเงินปันผล 50% ใน ก.ค. 2568 ช่วยรักษา cash flow แต่สะท้อนความยากลำบาก ณ ปัจจุบัน ในราคา $27.50 ซื้อขายที่ MOS ~19% ต่อ Fair Value $34 ซึ่งอิง EPS กลางวัฏจักร $3.50 × 11x PE — <b>เหมาะสำหรับนักลงทุนที่อดทนรอการฟื้นตัวของวัฏจักรเคมีและรับความเสี่ยง leverage ได้</b> ไม่เหมาะสำหรับผู้ต้องการรายได้ปันผลที่มั่นคง</p>
+      <h2>หุ้นวัฏจักรที่ฟื้นแล้วบางส่วน — ราคาแพงกว่ามูลค่าเฉลี่ยรอบวัฏจักร ต้องพึ่ง EPS ที่สูงกว่าเดิม</h2>
+      <p>DOW Inc. เป็นผู้ผลิต materials science ที่ผ่านช่วงวัฏจักรต่ำในรอบหลายปี (FY2025 รายได้ $40.0B ขาดทุนสุทธิ $2.6B) แต่ Q2/2569 พลิกเป็นกำไร (operating EBITDA $2.31B, operating EPS $1.44) จากราคาขายเฉลี่ย +20% YoY และโครงการ Transform to Outperform · ราคาปัจจุบัน {{rd:px}} สูงกว่ามูลค่าเหมาะสม {{rd:fv}} (MOS {{rd:mos}}) ซึ่งอิง EPS เฉลี่ย 5 ปี $2.67 × 8.8x และ DDM — ตลาดจึงราคาการฟื้นตัวเกินค่าเฉลี่ยรอบวัฏจักรไปบางส่วนแล้ว <b>เหมาะสำหรับผู้ที่เชื่อว่า EPS จะยั่งยืนเหนือ $2.67 และรับความเสี่ยง leverage ได้</b> ไม่เหมาะสำหรับผู้ต้องการรายได้ปันผลที่มั่นคง</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$40.28 (Moderate Buy)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~{{rd:analystTgt}} (Buy)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> สะสมบริเวณ MOS 20% ($27.20) ในลักษณะ Dollar-Cost Average — <b>ไม่ซื้อก้อนใหญ่ครั้งเดียว</b> เพราะวัฏจักรเคมียังไม่ชัดเจน ถ้าราคาลงถึง MOS 30% ($23.80) อาจเพิ่มสัดส่วน; ตั้ง stop loss ที่ $19 (ต่ำกว่า 52wk low) เพื่อป้องกันกรณี balance sheet deterioration; เป้าขายบริเวณ $38-42 (เมื่อ PE spread ฟื้นเต็มและ EBITDA กลับ $5B+)
+        💡 <b>กลยุทธ์:</b> ราคายังอยู่เหนือมูลค่าเหมาะสม — รอสะสมบริเวณ MOS 20% ({{rd:mos20}}) แบบ Dollar-Cost Average ไม่ซื้อก้อนใหญ่ครั้งเดียว; ถึง MOS 30% ({{rd:mos30}}) ค่อยเพิ่มสัดส่วน · หรือรอหลักฐานว่า EPS ยั่งยืนสูงกว่าค่าเฉลี่ย 5 ปี ($2.67) จากงบ Q3 (22 ต.ค. 2569) ก่อนทบทวน FV ขึ้น · stop loss ที่ $19 (ต่ำกว่า 52wk low) กันกรณี balance sheet เสื่อม
       </div>
     </div>
   </section>
@@ -325,9 +322,9 @@
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐาน EPS กลางวัฏจักร ซึ่งอาจคลาดเคลื่อนสูงสำหรับหุ้น Cyclical; EPS GAAP TTM ติดลบจาก impairment พิเศษ ไม่ใช่การดำเนินงานปกติ
     ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
-    ที่มาข้อมูล: StockAnalysis.com (ราคา $27.42, งบการเงิน TTM, ณ 30 มิ.ย. 2569) • Yahoo Finance (ราคา $27.92, 52wk range $20.40–$42.74) • MarketBeat (เป้านักวิเคราะห์ $40.28, 22 นักวิเคราะห์, Moderate Buy) • Dow Investor Relations (Q1/2026 Earnings Release, Operating EBITDA $873M, Operating EPS –$0.14) • DividendPower.org (ประวัติเงินปันผล, ลด 50% ก.ค. 2568)
+    ที่มาข้อมูล: StockAnalysis.com (ราคา {{rd:px}} ณ {{rd:priceDate}}, งบการเงิน TTM ถึง Q2/2569, ฉันทามติ EPS FY2026e/27e) • Yahoo Finance (ราคา, 52wk range $20.65–$42.74, เป้านักวิเคราะห์เฉลี่ย 16 ราย) • Dow Investor Relations (Q2/2026 Earnings Release 23 ก.ค. 2569: operating EBITDA $2.31B, operating EPS $1.44, GAAP EPS $0.99) • Dow IR (ลดปันผล 50% ก.ค. 2568)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 30 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
