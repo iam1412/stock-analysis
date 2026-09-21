@@ -8,19 +8,19 @@
 <meta name="ai-model" content="Claude Sonnet 5">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"MSCI","currency":"USD","price":552.87,"fairValue":585,"mos":5.5,"upside":5.8,"pe":30.3,"dividendYield":1.48,"roe":null}
+{"symbol":"MSCI","currency":"USD","price":552.87,"fairValue":689,"mos":19.8,"upside":24.6,"pe":30.3,"dividendYield":1.48,"roe":null}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 585,
+  "fv": 689,
   "values": {
     "px": 552.87,
     "priceDate": "2026-09-18",
     "dateEra": "CE",
     "chgSuffix": "รอบปี",
-    "fvLow": 557,
-    "fvHigh": 613,
+    "fvLow": 658,
+    "fvHigh": 719,
     "eps": 18.26,
     "shares": 72800000,
     "dps": 8.2,
@@ -73,15 +73,15 @@
       ["ส.ค.26", 570.64],
       ["ก.ย.26", 552.87]
     ],
-    "min": 525,
-    "max": 650,
-    "grid": [550, 575, 600, 625],
+    "min": 500,
+    "max": 700,
+    "grid": [550, 600, 650],
     "currency": "$",
     "highlight": [5, 7]
   },
   "gauge": {
-    "min": 410,
-    "max": 692,
+    "min": 460,
+    "max": 740,
     "fairLabelTop": "-58px"
   }
 }
@@ -108,7 +108,7 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ $501.08 – $644.68<br>
+        กรอบ 52 สัปดาห์ $501.08 – $644.77<br>
         ที่มา: StockAnalysis.com / Google Finance / MSCI IR (SEC 8-K)
       </div>
     </div>
@@ -120,8 +120,8 @@
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~72.8 ล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~30.28x</div><div class="d">EPS TTM $18.26 <span class="pill">สมเหตุสมผลสำหรับ wide-moat</span></div></div>
-      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~40x</div><div class="d">กรอบ 30–55x · ถูกกว่าเฉลี่ยมากขึ้นหลังราคาร่วง</div></div>
-      <div class="metric"><div class="k">Operating Margin</div><div class="v pos">~55.4%</div><div class="d">world-class แต่บาง segment เริ่มถูกกดดัน</div></div>
+      <div class="metric"><div class="k">P/E มัธยฐาน ~5 ปี (FY2021–25)</div><div class="v">~39.4x</div><div class="d">กรอบ 35.9–61.9x · P/E ปัจจุบันต่ำกว่ามัธยฐานชัดเจน</div></div>
+      <div class="metric"><div class="k">Operating Margin</div><div class="v pos">~55.7%</div><div class="d">world-class แต่บาง segment เริ่มถูกกดดัน</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">~$1.33B</div><div class="d pos">▲ รายได้ +12.2% YoY (Q2)</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$18.26</div><div class="d pos">FY2025 $15.69 · Q2'26 adj. EPS $4.94 (+18.5% YoY) · CAGR ~14%</div></div>
@@ -129,7 +129,7 @@
       <div class="metric"><div class="k">BVPS</div><div class="v neg">−$38.05</div><div class="d">Equity ติดลบจากซื้อหุ้นคืนหนัก — ไม่ใช้ P/BV</div></div>
 
       <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$3.33B</div><div class="d pos">▲ +12.2% YoY (Q2) · RevCAGR ~12%</div></div>
-      <div class="metric"><div class="k">อัตรากำไรจากการดำเนินงาน</div><div class="v">55.4%</div><div class="d">Recurring subscription ~95% retention · net new sales ชะลอบางกลุ่ม</div></div>
+      <div class="metric"><div class="k">อัตรากำไรจากการดำเนินงาน</div><div class="v">55.7%</div><div class="d">Recurring subscription ~95% retention · net new sales ชะลอบางกลุ่ม</div></div>
       <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.48%</div><div class="d">$8.20/ปี · โต ~10%/ปี · Payout ~45%</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">1.26</div><div class="d">ผันผวนมากกว่าตลาดเล็กน้อย</div></div>
     </div>
@@ -163,24 +163,25 @@
     <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation (Forward)</div><div class="mdesc">EPS Forward ~$21.14 × P/E เป้าหมาย ~29x — wide-moat recurring subscription แต่ลดจาก 32x เดิม สะท้อนความเสี่ยง net-new sales ชะลอ</div></div>
-        <div class="mval">$613</div>
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS $18.26 (TTM) × 39.4x — มัธยฐาน P/E ย้อนหลัง 5 ปีงบ (FY2021–25, ราคาเฉลี่ยรายปี ÷ EPS diluted; กรอบ 35.9–61.9x) มาจากประวัติของหุ้นเอง ไม่ได้ลอกจาก P/E ปัจจุบัน 30.3x</div></div>
+        <div class="mval">$719</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. DCF (2-stage)</div><div class="mdesc">EPS ฐาน $18.26 โต 13%/ปี (5 ปี) → terminal 4%, WACC 9% — ปรับ growth ลงจาก 14% เดิมตามสัญญาณชะลอ</div></div>
-        <div class="mval">$557</div>
+        <div><div class="mname">2. DCF (FCF/หุ้น 10 ปี)</div><div class="mdesc">FCF TTM $1,598M ÷ 72.7M หุ้นคงเหลือ = $21.98/หุ้น · โต 10%/ปี ปี 1–5 (24.18 · 26.60 · 29.26 · 32.18 · 35.40) และ 7%/ปี ปี 6–10 (37.88 · 40.53 · 43.37 · 46.40 · 49.65) · terminal g 4% → TV $1,033 ที่ปี 10 · r 9% (สมมติฐานของเราเอง) · PV กระแส 10 ปี $222 + PV TV $436 = $658/หุ้น (TV ~66% ของมูลค่า)</div></div>
+        <div class="mval">$658</div>
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        <b>หมายเหตุ:</b> หลังงบ Q2 2026 (ประกาศ 21 ก.ค. 2026) EPS TTM ขยับขึ้นเป็น $18.26 (+4.5% จากรอบก่อน) แต่หุ้นร่วง
-        เกือบ 12% ในวันประกาศ จาก (1) EPS/รายได้ต่ำกว่าคาดเล็กน้อย (2) ปรับเพิ่มประมาณการค่าใช้จ่ายปี 2026 และ
-        (3) net new recurring subscription sales ชะลอแรงในกลุ่ม Analytics/Sustainability — วิธี P/E Forward ใช้ EPS
-        consensus ~$21.14 (จาก fwd P/E 26.05x) คูณ P/E เป้าหมาย 29x = $613 ส่วน DCF ปรับ growth stage แรกลงเหลือ 13%/ปี
-        บนฐาน EPS ใหม่ = $557 · <b>FV เฉลี่ย $585 = MOS ~5.8%</b> จากราคาปัจจุบัน $550.79 — เริ่มมีส่วนเผื่อความปลอดภัย
-        เล็กน้อยเป็นครั้งแรกในรอบหลายเดือน ต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ $692 (Buy) พอสมควร
+        <b>หมายเหตุ:</b> หลังงบ Q2 2026 (ประกาศ 21 ก.ค. 2026) EPS TTM ขยับขึ้นเป็น $18.26 แต่หุ้นร่วงเกือบ 12% ในวันประกาศ
+        จาก EPS/รายได้ต่ำกว่าคาดเล็กน้อย ปรับเพิ่มประมาณการค่าใช้จ่ายปี 2026 และ net new recurring subscription sales ชะลอในกลุ่ม
+        Analytics/Sustainability · รอบนี้จัดองค์ประกอบ FV ใหม่: ตัดขา forward P/E ที่ถอด EPS จากราคา ÷ fwd P/E (ผูกราคาวันนี้) ออก
+        และตัด DCF เดิมที่ตรวจซ้ำไม่ได้ · ใช้ (1) P/E × มัธยฐานย้อนหลัง 5 ปีงบ (รวมช่วง 2021–22 ที่ตัวคูณสูง 44–62x
+        จึงเป็นขาที่เอนขึ้น) และ (2) DCF ที่ระบุตารางกระแสเงินสดครบ ทั้งสองขาห่างกันไม่ถึง 2 เท่า ·
+        <b>FV เฉลี่ย {{rd:fv}} = MOS {{rd:mos}}</b> จากราคาปัจจุบัน {{rd:px}} · ความไว: หากใช้ P/E ต่ำสุดในประวัติ 35.9x (= $656) FV จะเป็น ~$657 (ต่ำกว่า FV หลักราว $32)
+        · เป้าเฉลี่ยนักวิเคราะห์ $692 (Buy) แสดงเป็นบริบทเปรียบเทียบเท่านั้น ไม่ใช่ขาของ FV
       </p>
     </div>
   </section>
@@ -198,13 +199,13 @@
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
-          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$692<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน <b>$550.79</b> อยู่ <b>ต่ำกว่า Fair Value $585</b> ประมาณ 5.8% เริ่มมีส่วนเผื่อความปลอดภัยเล็กน้อยหลัง
-        หุ้นร่วงแรงจากงบ Q2 2026 โซน MOS 20% ที่ <b>$468</b> และ MOS 30% ที่ <b>$410</b> เป็นจุดสะสมน่าสนใจยิ่งขึ้น
+        ราคาปัจจุบัน <b>{{rd:px}}</b> อยู่ <b>ต่ำกว่า Fair Value {{rd:fv}}</b> (MOS {{rd:mos}}) เริ่มใกล้โซน MOS 20% หลัง
+        หุ้นร่วงแรงจากงบ Q2 2026 โซน MOS 20% ที่ <b>{{rd:mos20}}</b> และ MOS 30% ที่ <b>{{rd:mos30}}</b> เป็นจุดสะสมน่าสนใจ
         เป้าเฉลี่ยนักวิเคราะห์ <b>$692</b> (Rating: Buy) สูงกว่า FV ของเรา สะท้อนมุมมองนักวิเคราะห์ที่ยังเชื่อมั่นการเติบโตระยะยาว
       </p>
     </div>
@@ -216,7 +217,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">MOS ต่ำ — ราคาต่ำกว่า Fair Value เล็กน้อย ยังไม่ถือเป็นส่วนเผื่อความปลอดภัยที่มากพอ</div>
+        <div class="txt">MOS ปานกลาง — ราคาต่ำกว่า Fair Value ใกล้โซน 20% เริ่มมีส่วนเผื่อความปลอดภัยพอสมควร</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -322,16 +323,16 @@
       <p>MSCI Inc. เป็น <b>franchise ระดับโลกที่แทบแทนที่ไม่ได้</b> — ดัชนี MSCI เป็น benchmark มาตรฐานสำหรับ ETF กองทุนมูลค่ากว่า $15 ล้านล้านทั่วโลก
       ธุรกิจ subscription-based ที่มี retention rate ~95% สร้างรายได้ recurring ที่มั่นคงและเติบโต ~12%/ปี งบ Q2 2026 (21 ก.ค.)
       ยังโตแรง (EPS TTM $18.26, +18.5% YoY adj.) แต่หุ้นร่วงเกือบ 12% เพราะตลาดกังวล net new subscription sales ชะลอ +
-      ปรับเพิ่มค่าใช้จ่ายปี 2026 มากกว่าพอใจกับกำไรที่ยังโต ราคาปัจจุบัน $550.79 ต่ำกว่า Fair Value $585 ราว 5.8%
-      P/E ~30.2x ต่ำกว่าค่าเฉลี่ย 5 ปีที่ ~40x ชัดเจน</p>
+      ปรับเพิ่มค่าใช้จ่ายปี 2026 มากกว่าพอใจกับกำไรที่ยังโต ราคาปัจจุบัน {{rd:px}} ต่ำกว่า Fair Value {{rd:fv}} (MOS {{rd:mos}})
+      P/E ~30.3x ต่ำกว่ามัธยฐาน 5 ปีงบที่ ~39.4x ชัดเจน</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$692 (Buy)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ราคาปัจจุบันต่ำกว่า Fair Value เล็กน้อย — เริ่มมี MOS แต่ยังไม่มากพอสำหรับ value investor เคร่งครัด
-        โซนน่าสนใจยิ่งขึ้นที่ <b>&lt; $468 (MOS 20%)</b> หรือ <b>&lt; $410 (MOS 30%)</b> หากตลาดยังกังวล net new sales ต่อ
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบันต่ำกว่า Fair Value — เริ่มมี MOS ใกล้เกณฑ์ 20% ของ value investor เคร่งครัด
+        โซนน่าสนใจยิ่งขึ้นที่ <b>&lt; {{rd:mos20}} (MOS 20%)</b> หรือ <b>&lt; {{rd:mos30}} (MOS 30%)</b> หากตลาดยังกังวล net new sales ต่อ
         สำหรับ quality-growth investor ที่ให้น้ำหนักความทนทานธุรกิจ ราคานี้เริ่มน่าสนใจทยอยสะสมได้แล้ว
       </div>
     </div>
@@ -342,9 +343,9 @@
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r)
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
-    แหล่งข้อมูล: StockAnalysis.com, Google Finance, MSCI Investor Relations / SEC 8-K, digrin.com (ราคาย้อนหลัง) — ตรวจสอบ ≥2 แหล่งอิสระ ณ 25 ก.ค. 2026
+    แหล่งข้อมูล: StockAnalysis.com, Google Finance, MSCI Investor Relations / SEC 8-K, digrin.com (ราคาย้อนหลัง) — ตรวจสอบ ≥2 แหล่งอิสระ ณ 21 ก.ย. 2026
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 25 ก.ค. 2026 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2026 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
