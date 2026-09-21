@@ -6,33 +6,33 @@
 <title>วิเคราะห์หุ้น KKR & Co. Inc. (KKR) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"KKR","currency":"USD","price":98.81,"fairValue":105,"mos":5.9,"upside":6.3,"pe":22.8,"dividendYield":0.79,"roe":7.3}
+{"symbol":"KKR","currency":"USD","price":98.81,"fairValue":114,"mos":13.3,"upside":15.4,"pe":31.6,"dividendYield":0.79,"roe":7.3}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 105,
+  "fv": 114,
   "values": {
     "px": 98.81,
     "priceDate": "2026-09-18",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
-    "fvLow": 97,
-    "fvHigh": 110,
+    "fvLow": 94,
+    "fvHigh": 125,
     "shares": 898000000,
     "dps": 0.78,
     "bvps": 60,
     "scenarios": [
       {
-        "tgt": 110.16,
+        "tgt": 62.6,
         "div": 2.34
       },
       {
-        "tgt": 140.79,
+        "tgt": 118.29,
         "div": 2.34
       },
       {
-        "tgt": 160,
+        "tgt": 157.87,
         "div": 2.34
       }
     ],
@@ -77,7 +77,7 @@
     "highlight": [2, 4]
   },
   "gauge": {
-    "min": 80,
+    "min": 70,
     "max": 150,
     "fairLabelTop": false
   }
@@ -113,15 +113,15 @@
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">Alt Asset Manager — ดู ANI/share แทน GAAP EPS</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">Alt Asset Manager — GAAP EPS ผันผวนสูง อ่านคู่กับ FRE</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">898M shares approx.</div></div>
-      <div class="metric"><div class="k">P/ANI (TTM)</div><div class="v neu">~22.8x</div><div class="d">ANI/Share $4.87 (TTM) — ตัววัดหลัก alt mgr</div></div>
-      <div class="metric"><div class="k">P/ANI เฉลี่ย ~3 ปี</div><div class="v">20–24x</div><div class="d">ปัจจุบันต่ำกว่าค่าเฉลี่ย (re-rating potential)</div></div>
+      <div class="metric"><div class="k">P/E (GAAP TTM)</div><div class="v neu">~31.6x</div><div class="d">EPS (dil.) TTM $3.13 · GAAP ผันผวนจาก mark-to-market</div></div>
+      <div class="metric"><div class="k">P/E มัธยฐาน ~3 ปี</div><div class="v">35.9x</div><div class="d">วัดจาก FY2023–25 (ช่วง 14.7–56.0x กว้างมาก) — ราคาเฉลี่ยปี ÷ EPS ปีนั้น</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~{{rd:pbv}}x</div><div class="d">Book value per share ~$60</div></div>
 
-      <div class="metric"><div class="k">ANI FY2025</div><div class="v">~$4.3B</div><div class="d">ANI/Share $4.87 (+3.6% YoY)</div></div>
-      <div class="metric"><div class="k">GAAP EPS (TTM)</div><div class="v">~$3.13</div><div class="d">ผันผวนสูง (mark-to-market) ไม่ใช่ตัววัดหลัก · ขึ้นจาก FY25 $2.53</div></div>
+      <div class="metric"><div class="k">ANI FY2025</div><div class="v">~$4.3B</div><div class="d">ANI/Share $4.87 (+3.6% YoY) — ตัวเลขบริษัทยกมาจากรอบก่อน ไม่ได้ตรวจซ้ำรอบนี้ ไม่ใช้ใน FV</div></div>
+      <div class="metric"><div class="k">GAAP EPS (TTM)</div><div class="v">~$3.13</div><div class="d">ผันผวนสูง (mark-to-market) ไม่ใช่ตัววัดหลัก · ขึ้นจาก FY2025 $2.34</div></div>
       <div class="metric"><div class="k">FRE (Fee-Related Earnings)</div><div class="v pos">$3.7B</div><div class="d">$4.13/sh · margin 69% · recurring มั่นคง</div></div>
       <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~7.3% / ~2.1%</div><div class="d">GAAP-based; ANI ROE สูงกว่า</div></div>
 
@@ -145,33 +145,30 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        KKR ร่วงหนัก −33% จากจุดสูงสุด $129.95 (ก.ย. 68) สู่จุดต่ำสุด $87.68 (ก.พ. 69) กดดันโดยความกังวลดอกเบี้ยสูง-นาน ซึ่งชะลอ realization (การ exit กองทุน Private Equity) และกดดัน valuation multiple ของ alt asset managers ทั้งกลุ่ม ก่อนฟื้นตัวแรงต่อเนื่องช่วง มี.ค.–ส.ค. 69 กลับขึ้นมาที่ $110.97 ตามการ re-pricing ความคาดหวัง rate cut ราคาปัจจุบันสูงกว่า Fair Value $105 อยู่ราว 5.7% (MOS ติดลบเล็กน้อย)
+        ราคาปิดรายเดือนร่วงราว −31% จากจุดสูงสุดในกราฟ $127.48 (ธ.ค. 68) สู่จุดต่ำสุด $87.68 (ก.พ. 69) กดดันโดยความกังวลดอกเบี้ยสูง-นาน ซึ่งชะลอ realization (การ exit กองทุน Private Equity) และกดดัน valuation multiple ของ alt asset managers ทั้งกลุ่ม ก่อนฟื้นตัวช่วง มี.ค.–ส.ค. 69 ถึง $109.72 แล้วย่อกลับมาที่ {{rd:px}} ณ {{rd:priceDate}} ปัจจุบันอยู่ต่ำกว่า Fair Value {{rd:fv}} ({{rd:mos}})
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี · อิง ANI (Adjusted Net Income)</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">2 วิธี ตระกูลเดียว (P/E มัธยฐานย้อนหลัง) · นับเป็นเสียงเดียว</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/ANI (TTM)</div><div class="mdesc">ANI/Share (TTM) $4.87 × P/ANI เป้าหมาย 20x — ระดับ peer ที่เหมาะสม (BX ซื้อขาย 22–25x, APO 18–20x) อิงคุณภาพ FRE ของ KKR</div></div>
-        <div class="mval">$97.40</div>
+        <div><div class="mname">1. P/E (TTM × มัธยฐานย้อนหลัง)</div><div class="mdesc">EPS $3.13 (TTM) × 35.9x — มัธยฐาน P/E ปีงบ FY2023–25 ที่วัดจริง (ราคาเฉลี่ยปี ÷ EPS ปีนั้น) มาจากประวัติ ไม่ได้ลอกจาก P/E ปัจจุบัน · ตระกูล P/E</div></div>
+        <div class="mval">$112.37</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. Forward P/ANI (FY2026E)</div><div class="mdesc">ANI/Share FY26E ~$6.00 × Forward P/ANI 18x — นักวิเคราะห์คาด ANI เร่งตัวจากเป้า EPS $7–8 ของ KKR บวก FRE ขยาย + realization ฟื้น</div></div>
-        <div class="mval">$108.00</div>
+        <div><div class="mname">2. P/E (EPS เฉลี่ย 3 ปี × มัธยฐาน)</div><div class="mdesc">EPS $3.24 (เฉลี่ย FY2023–25: 4.09, 3.28, 2.34) × 35.9x — normalize กำไร mark-to-market ที่แกว่ง · ตระกูล P/E เดียวกับวิธี 1 นับเป็นเสียงเดียว (สองขาห่างกันไม่ถึง 2 เท่า)</div></div>
+        <div class="mval">$116.20</div>
       </div>
-      <div class="vmethod">
-        <div><div class="mname">3. SOTP (Sum-of-the-Parts)</div><div class="mdesc">FRE $3.7B × 25x (recurring premium) + Global Atlantic (insurance permanent capital ~$20/sh) + Strategic Holdings + balance sheet → รวม ~$109.60/sh</div></div>
-        <div class="mval">$109.60</div>
-      </div>
+
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        วิธี P/ANI TTM ($97.40) อนุรักษ์นิยมที่สุด เพราะ ANI ปัจจุบันยังถูกกดจาก realization ต่ำ Forward P/ANI ($108) และ SOTP ($109.60) สะท้อน upside จากการฟื้นตัวของ exit activity และการ scale ของ Global Atlantic ค่าเฉลี่ยที่ $105 สมเหตุสมผล โดยไม่ได้ assume rerating ที่สมบูรณ์
+        FV มาจากตระกูลเดียว (P/E มัธยฐานย้อนหลัง 35.9x ซึ่งวัดจาก 3 ปีงบที่เชื่อได้ ช่วง 14.7–56.0x กว้าง 3.8 เท่า) จึงไวต่อตัวคูณมาก: ที่ 30x บน EPS TTM FV ≈ $94 (ต่ำกว่าราคาตลาดราว 5%) ที่ 40x ≈ $125 (สูงกว่าราคาตลาดราว 27%) — กรอบ FV ในการ์ดคือ 30–40x · ถอดขา P/ANI ตัวคูณ peer, Forward P/ANI และ SOTP ออกเพราะไม่มีตัวคูณที่วัดได้/ตรวจซ้ำไม่ได้ · เป้านักวิเคราะห์ ($128.67) เป็นบริบทเท่านั้น · ตัวเลข ANI/FRE/AUM ในรายงานยกมาจากรอบก่อน ไม่ได้ตรวจซ้ำรอบนี้
       </p>
     </div>
   </section>
@@ -190,11 +187,11 @@
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
-          <span style="text-align:right">$126<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$128.67<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน $110.97 อยู่สูงกว่า Fair Value ($105) เล็กน้อย — margin of safety ติดลบ (−5.7%) ไม่มีส่วนเผื่อความปลอดภัยแล้วในระดับราคานี้ นักวิเคราะห์ 20 รายให้เป้าเฉลี่ย $126 (+18%) ซึ่งยังสูงกว่า Fair Value ของเราอย่างมีนัยสำคัญ สะท้อนความเชื่อมั่นใน rerating เมื่อ realization ฟื้น
+        ราคาปัจจุบัน {{rd:px}} อยู่ต่ำกว่า Fair Value ({{rd:fv}}) โดยมีส่วนเผื่อ {{rd:mos}} แต่ FV อิงตัวคูณ P/E ที่ช่วงกว้าง ส่วนเผื่อจึงไม่แน่นอน นักวิเคราะห์ 20 รายให้เป้าเฉลี่ย $128.67 (+30%) สูงกว่า Fair Value ของเรา — ไม่ใช้เป็นขาใน FV
       </p>
     </div>
   </section>
@@ -205,7 +202,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">MOS ติดลบเล็กน้อย — ราคา $110.97 สูงกว่า Fair Value $105 หลังรีบาวด์แรงจากจุดต่ำ $87.68 ควรรอย่อกลับสู่โซน $84–$95 ก่อนทยอยสะสมเพิ่ม</div>
+        <div class="txt">ราคา {{rd:px}} ต่ำกว่า Fair Value {{rd:fv}} ระดับหนึ่ง แต่ FV ไวต่อตัวคูณ P/E มาก — ทยอยสะสมเมื่อเข้าโซน MOS 20% ที่ {{rd:mos20}} เป็นหลัก</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -224,50 +221,50 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • ANI ฐาน ~$4.87/sh{{rd:scnNote}}</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน GAAP TTM ~$3.13/sh{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
-        <div class="top"><span>🐻 Bear</span><span>ANI +10%/ปี</span></div>
+        <div class="top"><span>🐻 Bear</span><span>EPS +0%/ปี</span></div>
         <div class="body">
           <div class="tgt">{{rd:sc1tgt}}</div>
           <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
-            <li><span>ANI ปี 3</span><span>~$6.48</span></li>
-            <li><span>P/ANI ออก</span><span>17x</span></li>
+            <li><span>EPS ปี 3</span><span>~$3.13</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
-            <li><span>สถานการณ์</span><span>realization ฟื้นช้า ดอกเบี้ยสูงต่อเนื่อง</span></li>
+            <li><span>สถานการณ์</span><span>EPS ไม่โต + P/E ลดลงสู่ช่วงต่ำของประวัติ</span></li>
           </ul>
         </div>
       </div>
       <div class="col base">
-        <div class="top"><span>⚖️ Base</span><span>ANI +15%/ปี</span></div>
+        <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
         <div class="body">
           <div class="tgt">{{rd:sc2tgt}}</div>
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
-            <li><span>ANI ปี 3</span><span>~$7.41</span></li>
-            <li><span>P/ANI ออก</span><span>19x</span></li>
+            <li><span>EPS ปี 3</span><span>~$3.94</span></li>
+            <li><span>P/E ออก</span><span>30x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
-            <li><span>สถานการณ์</span><span>FRE ขยาย + realization ฟื้น ตาม rate cut cycle</span></li>
+            <li><span>สถานการณ์</span><span>EPS โตเฉลี่ย + P/E ลดลงเหลือ 30x เมื่อกำไรฟื้น (ต่ำกว่ามัธยฐาน 35.9x ที่วัดจากปีกำไรต่ำ)</span></li>
           </ul>
         </div>
       </div>
       <div class="col bull">
-        <div class="top"><span>🚀 Bull</span><span>ANI +18%/ปี</span></div>
+        <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
         <div class="body">
           <div class="tgt">{{rd:sc3tgt}}</div>
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
-            <li><span>ANI ปี 3</span><span>~$8.00</span></li>
-            <li><span>P/ANI ออก</span><span>20x</span></li>
+            <li><span>EPS ปี 3</span><span>~$4.40</span></li>
+            <li><span>P/E ออก</span><span>35.9x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
-            <li><span>สถานการณ์</span><span>บรรลุเป้า EPS $7–8 + rerating สู่ multiple ปกติ</span></li>
+            <li><span>สถานการณ์</span><span>EPS ฟื้นแรง + ตัวคูณคงมัธยฐานย้อนหลัง 35.9x</span></li>
           </ul>
         </div>
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      การคาดการณ์อิง Adjusted Net Income (ANI) ซึ่งเป็น metric หลักของ alt asset managers ไม่ใช่ GAAP EPS (ผันผวนจาก mark-to-market) ตัวเลจเร่ง ANI 15–18% อยู่ในกรอบเป้าหมายของ KKR เอง (adj EPS $7–8 ภายในปี FY2026) และอาศัยการฟื้นตัวของ exit market + AUM scaling จาก Global Atlantic
+      การคาดการณ์อิง GAAP EPS (dil.) TTM $3.13 ตามฐานเดียวกับ FV — อัตราเติบโตและ P/E ออกเป็นสมมติฐานของเราเอง (Base ใช้ 30x ต่ำกว่ามัธยฐานประวัติ 35.9x เพราะมัธยฐานวัดจากปีกำไรต่ำ) ส่วน consensus FY2026e EPS $6.32 (StockAnalysis) น่าจะคนละเกณฑ์กับ GAAP จึงไม่ใช้ · ราคาเป้าไม่ผูกกับราคาปัจจุบัน
     </p>
   </section>
 
@@ -282,7 +279,7 @@
           <li><b>Global Atlantic (Insurance):</b> ถือ 100% = permanent capital base + insurance float ลดความผันผวน ANI เพิ่ม predictability</li>
           <li><b>AUM Scale $744B (+17%):</b> ขนาดและ brand ของ KKR เป็น moat — LP ใหญ่ทั่วโลกเลือก KKR เพราะ track record + diversification ข้าม asset class</li>
           <li><b>Rate Cut Cycle:</b> เมื่อดอกเบี้ยลด → realization activity ฟื้น (IPO/M&amp;A market เปิด) → Carried Interest + ANI เร่งตัว → multiple rerating</li>
-          <li><b>เป้านักวิเคราะห์ $126 (+18%):</b> Consensus Buy จาก 20 รายสะท้อนความเชื่อมั่นในโมเดลธุรกิจระยะยาว</li>
+          <li><b>เป้านักวิเคราะห์ $128.67 (+30%):</b> Consensus Buy จาก 20 รายสะท้อนความเชื่อมั่นในโมเดลธุรกิจระยะยาว</li>
           <li><b>Strategic Holdings:</b> กำไรจากบริษัทในพอร์ตที่ถือระยะยาว (ไม่ขาย) เพิ่ม ANI โดยไม่ต้อง exit — สร้าง recurring income stream ใหม่</li>
         </ul>
       </div>
@@ -291,7 +288,7 @@
         <ul>
           <li><b>Realization Risk (cyclical):</b> ดอกเบี้ยสูงต่อเนื่อง → IPO/M&amp;A ชะงัก → Carried Interest ล่าช้า → ANI ต่ำกว่าคาด — ความเสี่ยงหลักระยะสั้น</li>
           <li><b>GAAP ผันผวนสูง:</b> GAAP EPS แกว่งรุนแรงจาก mark-to-market portfolio → อาจทำให้ผู้ลงทุน retail เข้าใจผิด/panic sell</li>
-          <li><b>เป้า EPS $7–8 ต้องการตลาดเอื้อ:</b> ทำได้เฉพาะเมื่อ exit market เปิดกว้าง — ถ้า higher-for-longer ยาวนาน เป้านี้เลื่อนออกไป</li>
+          <li><b>EPS ต้องฟื้นสู่ consensus:</b> FY2026e $6.32 สูงราว 2 เท่าของ EPS TTM $3.13 — ทำได้เฉพาะเมื่อ exit market เปิดกว้าง ถ้า higher-for-longer ยาวนานจะเลื่อนออกไป</li>
           <li><b>การแข่งขัน BX / Apollo / Ares:</b> Blackstone (AUM $1T+), Apollo, Ares โตเร็ว — LP มีทางเลือกมากขึ้น กดดัน fee rate</li>
           <li><b>Regulatory Risk:</b> Private credit และ insurance (Global Atlantic) อยู่ใน regulatory spotlight — กฎเกณฑ์ใหม่อาจเพิ่มต้นทุน compliance</li>
           <li><b>Key Man Risk:</b> Henry Kravis / George Roberts ผู้ก่อตั้งสูงวัย — succession risk แม้ทีมผู้บริหารรุ่นใหม่จะแข็งแกร่ง</li>
@@ -305,14 +302,14 @@
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
       <h2>KKR — Alt Asset Giant ถูกกดราคา: Value Pick ถ้าเชื่อ Realization ฟื้น</h2>
-      <p>KKR เป็นผู้นำระดับโลกด้าน Alternative Asset Management (AUM $744B +17%) ที่มี FRE recurring มั่นคง ($3.7B margin 69%) + ประกัน Global Atlantic เป็น permanent capital base + Strategic Holdings สร้าง income ระยะยาว ราคาฟื้นตัวแรง +26.5% จากจุดต่ำสุด $87.68 (ก.พ. 69) มาอยู่ที่ $110.97 สูงกว่า Fair Value $105 เล็กน้อยแล้ว (MOS −5.7%) — P/ANI ขยับใกล้ค่าเฉลี่ยประวัติศาสตร์มากขึ้น ลด margin of safety สำหรับนักลงทุนใหม่ ผู้ที่ถืออยู่แล้วยังได้ประโยชน์จาก rate cut cycle และการเร่งตัวของ ANI ตาม KKR เป้าหมาย $7–8 (adj EPS ภายใน FY2026) ส่วนนักลงทุนใหม่ควรรอย่อ</p>
+      <p>KKR เป็นผู้นำระดับโลกด้าน Alternative Asset Management (AUM $744B +17%) ที่มี FRE recurring มั่นคง ($3.7B margin 69%) + ประกัน Global Atlantic เป็น permanent capital base + Strategic Holdings สร้าง income ระยะยาว ราคาฟื้นจากจุดต่ำสุดรายเดือน $87.68 (ก.พ. 69) มาอยู่ที่ {{rd:px}} ต่ำกว่า Fair Value {{rd:fv}} ({{rd:mos}}) — แต่ FV มาจากตระกูล P/E ตระกูลเดียวที่ช่วงตัวคูณกว้าง จึงควรถือเป็นประมาณการหยาบ ผู้ที่ถืออยู่แล้วยังได้ประโยชน์จากการฟื้นของ realization ส่วนนักลงทุนใหม่ควรทยอยเข้าและเน้นโซน MOS 20%</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$126 (Buy consensus)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$128.67 (Buy consensus)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน $110.97 สูงกว่า FV เล็กน้อย — รอย่อกลับสู่โซน $84–95 (MOS 10–20%) ก่อนทยอยสะสมเพิ่ม · เป้าระยะกลาง $105 (FV) · ระยะยาว $126+ ถ้า realization + FRE ฟื้นตามเป้า · หยุดตัดขาดทุนถ้าหลุด $75 (ต่ำกว่า MOS 30% อย่างมีนัย)
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน {{rd:px}} ต่ำกว่า FV {{rd:fv}} · ทยอยสะสมเมื่อเข้าโซน MOS 20% ที่ {{rd:mos20}} · เป้าระยะกลางคือ FV {{rd:fv}} · ระยะยาวเป้านักวิเคราะห์ $128.67 ถ้า realization + FRE ฟื้น · ทบทวนสมมติฐานถ้าหลุดจุด MOS 30% ที่ {{rd:mos30}}
       </div>
     </div>
   </section>
@@ -323,7 +320,7 @@
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/ANI เป้าหมาย, อัตราเติบโต ANI และสภาวะ realization market ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มาข้อมูล: StockAnalysis.com · Yahoo Finance · KKR Investor Relations · SEC Filings
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 12 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
