@@ -6,18 +6,18 @@
 <title>วิเคราะห์หุ้น Church &amp; Dwight (CHD) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"CHD","currency":"USD","price":94.75,"fairValue":114,"mos":16.9,"upside":20.3,"pe":30.5,"dividendYield":1.3,"roe":17}
+{"symbol":"CHD","currency":"USD","price":94.75,"fairValue":110,"mos":13.9,"upside":16.1,"pe":30.5,"dividendYield":1.3,"roe":17}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 114,
+  "fv": 110,
   "values": {
     "px": 94.75,
     "priceDate": "2026-09-18",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
-    "fvLow": 110,
+    "fvLow": 99,
     "fvHigh": 117,
     "eps": 3.11,
     "shares": 237203907,
@@ -80,7 +80,7 @@
     "highlight": [2, 4]
   },
   "gauge": {
-    "min": 79.8,
+    "min": 75,
     "max": 117,
     "fairLabelTop": false
   }
@@ -120,7 +120,7 @@
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~237.2 ล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM $3.11 (GAAP)</div></div>
-      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~29–32x</div><div class="d">Adj. median 29.2x · GAAP median 31.8x (SA 5yr)</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~31.8x</div><div class="d">มัธยฐาน GAAP 5 ปี (ช่วง 26.1–52.6x · ราคาเฉลี่ยรายปี ÷ EPS diluted)</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ~$18.3 (equity ~$4.3B, D/E 0.56x)</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$737M</div><div class="d">+26% YoY (FY24 มีรายการพิเศษ)</div></div>
@@ -158,8 +158,8 @@
     <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $3.78 (FY2026E ตาม guidance บริษัท +6–8% จาก adj. FY2025 $3.53 ที่ประกาศจริงใน 8-K) × P/E 29.2x (มัธยฐาน adj. P/E 3 ปีย้อนหลัง: ราคาเฉลี่ยรายปี ÷ adj EPS ปีเดียวกัน — ไม่ใช่ตัวคูณปัจจุบัน) = $110</div></div>
-        <div class="mval">$110</div>
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS $3.11 (TTM GAAP diluted) × P/E 31.8x (มัธยฐาน 5 ปีย้อนหลังที่วัดจริง: ราคาเฉลี่ยรายปี ÷ EPS diluted ปีเดียวกัน, ช่วง 26.1–52.6x — ไม่ใช่ตัวคูณปัจจุบัน ~30x) = $99</div></div>
+        <div class="mval">$99</div>
       </div>
       <div class="vmethod">
         <div><div class="mname">2. EV/EBITDA</div><div class="mdesc">EBITDA TTM $1,323M (OpM 18.1% + D&amp;A ~$196M บน revenue TTM $6,229M) × fair multiple 22x = EV $29.1B; หัก net debt $2.17B (debt $2,428M − cash $255M) / 237.2M หุ้น — Peer เฉลี่ยกลุ่ม consumer staples ระดับ 20–25x; CHD ปัจจุบันเทรดที่ ~18.6x (ตัวคูณเป้า 22x มาจากช่วง peer ไม่ใช่ตัวคูณปัจจุบัน)</div></div>
@@ -174,7 +174,7 @@
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        วิธี P/E ให้ค่าต่ำสุด ($110) ใช้ EPS adj. FY2026E guidance ของบริษัท ($3.78) คูณตัวคูณมัธยฐาน adj. P/E ย้อนหลัง 3 ปี (29.2x — วัดจากราคาเฉลี่ยรายปี ไม่ใช่ราคาปัจจุบัน กันสมอตายวนกลับ); EV/EBITDA ($114) และ FCF Yield ($117) ให้ค่าสูงกว่าเล็กน้อย สะท้อน FCF ที่แข็งแกร่งและ asset-light business model ทั้งสามวิธีใช้สมมติฐานคนละชุด (ไม่มีขาไหนใช้ r,g ร่วมกัน) จึงเฉลี่ยตรง ๆ ได้ — ส่วนต่างสูงสุด/ต่ำสุด 1.06 เท่า มูลค่าเหมาะสมเฉลี่ย {{rd:fv}} กรอบ {{rd:fvLow}}–{{rd:fvHigh}}
+        วิธี P/E ให้ค่าต่ำสุด ($99) ใช้ EPS GAAP TTM ($3.11) คูณมัธยฐาน P/E ย้อนหลัง 5 ปีที่วัดจริง (31.8x — จากราคาเฉลี่ยรายปี ไม่ใช่ราคาปัจจุบัน กันสมอตายวนกลับ); EV/EBITDA ($114) และ FCF Yield ($117) ให้ค่าสูงกว่า สะท้อน FCF ที่แข็งแกร่งและ asset-light business model — หมายเหตุ: ตัวคูณ 22x และ FCF yield 4% เป็นสมมติฐานที่ยังไม่มีมัธยฐานย้อนหลังที่วัดได้รองรับ (ยังไม่ได้วัดจากข้อมูลจริง) ทั้งสามวิธีใช้สมมติฐานคนละชุด (ไม่มีขาไหนใช้ r,g ร่วมกัน) จึงเฉลี่ยตรง ๆ ได้ — ส่วนต่างสูงสุด/ต่ำสุด 1.18 เท่า มูลค่าเหมาะสมเฉลี่ย {{rd:fv}} กรอบ {{rd:fvLow}}–{{rd:fvHigh}}
       </p>
     </div>
   </section>
@@ -295,7 +295,7 @@
           <li><b>Tariff &amp; Input Cost:</b> CHD นำเข้าวัตถุดิบและผลิตภัณฑ์บางส่วนจากต่างประเทศ ภาษีนำเข้า 2025-2026 กดดัน COGS และ margin recovery</li>
           <li><b>Organic Growth Deceleration:</b> รายได้ปี 2568-2569 โต &lt;2% YoY ต่ำกว่า target long-term 3-4% อาจสะท้อน market share pressure จาก private label + competitors</li>
           <li><b>M&amp;A Integration Risk:</b> การซื้อแบรนด์ใหม่มีความเสี่ยง goodwill impairment หากทำ over-price หรือ integration ล้มเหลว (เคยเกิดกับ Waterpik ช่วงแรก)</li>
-          <li><b>Valuation ยังพรีเมียมกว่าตลาด:</b> P/E (TTM GAAP) ~30x สูงกว่าตลาดกว้างอย่างมีนัย แม้ adj. P/E ~25x (บน guidance FY2026 EPS adj. $3.78) จะต่ำกว่ามัธยฐาน adj. ย้อนหลัง 29.2x ของตัวเอง — หาก EPS growth ไม่เป็นไปตาม guidance หรือ sentiment ตลาดเปลี่ยน multiple compression ยังกดราคาได้</li>
+          <li><b>Valuation ยังพรีเมียมกว่าตลาด:</b> P/E (TTM GAAP) ~30x สูงกว่าตลาดกว้างอย่างมีนัย แม้ P/E ล่วงหน้า ~24x (vendor forward) จะต่ำกว่ามัธยฐานย้อนหลัง 5 ปี 31.8x ของตัวเอง — หาก EPS growth ไม่เป็นไปตาม guidance หรือ sentiment ตลาดเปลี่ยน multiple compression ยังกดราคาได้</li>
           <li><b>Leverage จาก Buyback ต่อเนื่อง:</b> CHD ทำ share buyback สม่ำเสมอ ทำให้ D/E (TTM) อยู่ที่ ~0.56x (equity ยังเป็นบวก ~$4.3B) — ระดับจัดการได้ แต่หากทำต่อเนื่องช่วงกำไรชะลอ อาจเพิ่มความเสี่ยงทางการเงินและจำกัดความยืดหยุ่นสำหรับ M&amp;A ใหม่</li>
           <li><b>Dollar Strength:</b> ~20% รายได้จาก International ถ้า USD แข็งค่า จะกระทบ FX translation และลดรายได้ที่รายงาน</li>
         </ul>
@@ -327,7 +327,7 @@
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
     แหล่งข้อมูล: Yahoo Finance / StockAnalysis.com (ราคา ณ 18 ก.ย. 2569, งบการเงิน/EBITDA/FCF TTM, เป้านักวิเคราะห์เฉลี่ย {{rd:analystTgt}}), SEC EDGAR 8-K ของบริษัท (adj. EPS actual FY2025 $3.53 · guidance FY2026 adj. +6–8%)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 20 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
