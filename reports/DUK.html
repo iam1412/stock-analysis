@@ -8,19 +8,19 @@
 <meta name="ai-model" content="Claude Sonnet 5">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"DUK","currency":"USD","price":117.53,"fairValue":131.68,"mos":10.7,"upside":12,"pe":17.6,"dividendYield":3.69,"roe":9.9}
+{"symbol":"DUK","currency":"USD","price":117.53,"fairValue":128.35,"mos":8.4,"upside":9.2,"pe":17.6,"dividendYield":3.69,"roe":9.9}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 131.68,
+  "fv": 128.35,
   "values": {
     "px": 117.53,
     "priceDate": "2026-09-18",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
     "fvLow": 118,
-    "fvHigh": 140,
+    "fvHigh": 133,
     "eps": 6.66,
     "shares": 779700000,
     "dps": 4.34,
@@ -44,7 +44,8 @@
       "years": 3,
       "divIncluded": false,
       "perYear": null
-    }
+    },
+    "analystTgt": 137.28
   },
   "theme": {
     "accent": "#2e7d32",
@@ -120,7 +121,7 @@
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~$91.64B</div><div class="d">หุ้น ~779.7 ล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~17.65x</div><div class="d">EPS TTM $6.66 · ปกติสำหรับ utility</div></div>
-      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~19–22x</div><div class="d">ช่วง Utility peers 18–24x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~20x</div><div class="d">มัธยฐาน 5 ปี 20.0x (ช่วง 18.5–32.9x)</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ~$70.02 · เหมาะสมสำหรับ utility</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$4.91B</div><div class="d">EPS $6.31 · รายได้ $31.8B (+6.2% YoY)</div></div>
@@ -137,7 +138,7 @@
 
   <!-- ===== 2. PRICE CHART (~1 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ย. 2568 – ส.ค. 2569</div></div>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ต.ค. 2568 – ก.ย. 2569</div></div>
     <div class="card">
       <div class="chart-wrap">
         <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
@@ -148,8 +149,8 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ราคา DUK เคลื่อนไหวในกรอบ <b>$117.21 – $130.94</b> ตลอด 12 เดือน เริ่มต้นที่ $123.75 ก.ย. 2568 ก่อนทะยานสู่จุดสูงสุด <b>$130.94 มี.ค. 2569</b> หนุนด้วยความต้องการไฟฟ้าจาก AI Data Center และ Grid Modernization
-        ส่วน <b>ธ.ค. 2568 ลงสู่ $117.21</b> เป็นจุดต่ำสุดช่วง bond yield spike · ราคาปัจจุบัน $123.92 ใกล้เคียงจุดเริ่มต้นรอบปี <b>≈ ทรงตัว (+0.1%)</b> (total return รวมปันผล ~3.6%)
+        ราคา DUK เคลื่อนไหวในกรอบ <b>$117.21 – $130.94</b> ตลอด 12 เดือน เริ่มต้นที่ $124.30 ต.ค. 2568 ก่อนทะยานสู่จุดสูงสุด <b>$130.94 มี.ค. 2569</b> หนุนด้วยความต้องการไฟฟ้าจาก AI Data Center และ Grid Modernization
+        ส่วน <b>ธ.ค. 2568 ลงสู่ $117.21</b> เป็นจุดต่ำสุดช่วง bond yield spike · ราคาปัจจุบัน {{rd:px}} ต่ำกว่าจุดเริ่มต้นรอบปี <b>▼ ~−5.4% (รอบปี)</b> (รวมปันผล ~3.7% ≈ −1.7%)
       </p>
     </div>
   </section>
@@ -159,8 +160,8 @@
     <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธีเหมาะกับ Regulated Utility</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) $6.66 × P/E เป้าหมาย ~21x — อิง utility sector premium สำหรับ Dividend King ที่มีฐาน regulated rate ชัดเจน</div></div>
-        <div class="mval">$139.86</div>
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) $6.66 × P/E เป้าหมาย 20.0x — มัธยฐาน P/E ย้อนหลัง 5 ปีของ DUK เอง (ราคาเฉลี่ยงวด ÷ EPS งวดนั้น: 19.0/18.5/26.4/32.9/20.0x) ไม่ใช่ P/E ปัจจุบัน</div></div>
+        <div class="mval">$133.20</div>
       </div>
       <div class="vmethod">
         <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = $4.51 (D₀ $4.34 × 1+g); g 4%, r 7.5% (utility discount rate) → V = D₁/(r−g) = 4.51/0.035 — สะท้อน yield-driven pricing</div></div>
@@ -175,7 +176,7 @@
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        วิธี P/E ให้ค่าสูงสุด (~$140) เพราะตลาดมองว่า AI/Data Center load growth จะหนุน EPS ระยะยาว · DDM (~$129) และ Justified P/BV (~$118) ใช้สมมติฐาน (r,g) ชุดเดียวกัน จึงนับเป็น<b>ตระกูลเดียว</b> — เฉลี่ยกันเองก่อนเป็น ~$123.5 แล้วจึงเฉลี่ยกับขา P/E ที่ยึดตลาด: <b>FV = (139.86 + 123.5)/2 ≈ $131.68</b> (ไม่ใช่เฉลี่ยตรงทั้งสามวิธี ตามกฎ 0.4c-bis) · ปรับขึ้นจากรอบก่อน ($126) ราว +4.5% ตาม EPS/ROE/เงินปันผลที่โตขึ้นปกติในรอบปีที่ผ่านมา ไม่ใช่การเปลี่ยนโครงธุรกิจ · <b>ราคาตลาด $123.92 ต่ำกว่า FV เล็กน้อย</b> (≈ fair value zone, MOS จำกัด)
+        วิธี P/E ให้ค่าสูงสุด (~$133) โดยใช้ตัวคูณมัธยฐานย้อนหลัง 20.0x (ปรับจาก 21x เดิมที่เป็นค่าประมาณ ไม่มีที่มาวัดได้) · DDM (~$129) และ Justified P/BV (~$118) ใช้สมมติฐาน (r,g) ชุดเดียวกัน จึงนับเป็น<b>ตระกูลเดียว</b> — เฉลี่ยกันเองก่อนเป็น ~$123.5 แล้วจึงเฉลี่ยกับขา P/E: <b>FV = (133.20 + 123.5)/2 ≈ $128.35</b> (ไม่ใช่เฉลี่ยตรงทั้งสามวิธี ตามกฎ 0.4c-bis) · เป้านักวิเคราะห์ไม่ใช่ขาของ FV เป็นเพียงบริบทเทียบ · <b>ราคาตลาด {{rd:px}} ต่ำกว่า FV เล็กน้อย</b> (≈ fair value zone, MOS จำกัด)
       </p>
     </div>
   </section>
@@ -193,12 +194,12 @@
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
-          <span style="text-align:right">$137.94<br><small>เป้าเฉลี่ย Analyst</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$137.28<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน <b>$123.92</b> อยู่ต่ำกว่า Fair Value $131.68 เล็กน้อย (ต่ำกว่า ~$7.76 หรือ MOS +5.9%) บ่งชี้ว่า DUK ซื้อขายใกล้เคียงมูลค่าเหมาะสมแต่ยังมี Margin of Safety จำกัด (ไม่ถึงเกณฑ์ปลอดภัย &lt;10%) ในฐานะ <b>Dividend King + AI/Data Center beneficiary</b> · เป้านักวิเคราะห์เฉลี่ย $137.94 (Buy consensus, n=18) ยังมี upside จากระดับปัจจุบัน · โซน MOS 20% ที่ $105.34 เป็นจุดที่น่าสนใจมากสำหรับ value investor เมื่อราคาย่อตัวลงมา
+        ราคาปัจจุบัน <b>{{rd:px}}</b> อยู่ต่ำกว่า Fair Value {{rd:fv}} เล็กน้อย (MOS {{rd:mos}}) บ่งชี้ว่า DUK ซื้อขายใกล้เคียงมูลค่าเหมาะสมแต่ยังมี Margin of Safety จำกัด (ไม่ถึงเกณฑ์ปลอดภัย &lt;10%) ในฐานะ <b>Dividend King + AI/Data Center beneficiary</b> · เป้านักวิเคราะห์เฉลี่ย {{rd:analystTgt}} (Buy consensus, n=18) ยังมี upside จากระดับปัจจุบัน · โซน MOS 20% ที่ {{rd:mos20}} เป็นจุดที่น่าสนใจมากสำหรับ value investor เมื่อราคาย่อตัวลงมา
       </p>
     </div>
   </section>
@@ -309,14 +310,14 @@
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
       <h2>DUK: Dividend King ใกล้มูลค่าเหมาะสม — MOS จำกัด รอจังหวะสะสมเพิ่ม</h2>
-      <p>Duke Energy เป็น regulated electric &amp; gas utility ที่แข็งแกร่งที่สุดในสหรัฐฯ รายหนึ่ง ด้วยฐาน <b>8.4 ล้านลูกค้าไฟฟ้า</b> ใน 6 รัฐ Monopoly franchise ที่ regulator คุ้มครอง ประกอบกับ <b>กระแสรายได้มั่นคง</b> จาก rate-based growth และ <b>AI/Data Center tailwind</b> ใน Carolinas ทำให้ EPS น่าจะโต 5–7%/ปีในช่วง 5 ปีข้างหน้า ปันผล $4.34/ปี (+3.50% yield) ปรับขึ้น 52 ปีต่อเนื่อง สะท้อน commitment ผู้บริหารต่อผู้ถือหุ้น ราคาปัจจุบัน $123.92 <b>ต่ำกว่า Fair Value $131.68 เล็กน้อย</b> — นักลงทุนที่เน้น Margin of Safety ควรรอราคาลงมาใกล้โซน MOS 20% ที่ $105.34 ก่อนสะสมเพิ่มเต็มที่ ส่วนผู้ถือหุ้นอยู่แล้วสามารถ hold เพื่อรับปันผลต่อเนื่องได้</p>
+      <p>Duke Energy เป็น regulated electric &amp; gas utility ที่แข็งแกร่งที่สุดในสหรัฐฯ รายหนึ่ง ด้วยฐาน <b>8.4 ล้านลูกค้าไฟฟ้า</b> ใน 6 รัฐ Monopoly franchise ที่ regulator คุ้มครอง ประกอบกับ <b>กระแสรายได้มั่นคง</b> จาก rate-based growth และ <b>AI/Data Center tailwind</b> ใน Carolinas ทำให้ EPS น่าจะโต 5–7%/ปีในช่วง 5 ปีข้างหน้า ปันผล $4.34/ปี (+3.69% yield) ปรับขึ้น 52 ปีต่อเนื่อง สะท้อน commitment ผู้บริหารต่อผู้ถือหุ้น ราคาปัจจุบัน {{rd:px}} <b>ต่ำกว่า Fair Value {{rd:fv}} เล็กน้อย</b> — นักลงทุนที่เน้น Margin of Safety ควรรอราคาลงมาใกล้โซน MOS 20% ที่ {{rd:mos20}} ก่อนสะสมเพิ่มเต็มที่ ส่วนผู้ถือหุ้นอยู่แล้วสามารถ hold เพื่อรับปันผลต่อเนื่องได้</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$137.94 (Buy)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$137.28 (Buy)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> Hold สำหรับผู้ถือหุ้นอยู่แล้ว เพื่อรับปันผล Dividend King · DCA เล็กน้อยได้ที่ราคาปัจจุบันเนื่องจาก MOS ยังจำกัด (~5.9%) · รอสะสมเพิ่มเต็มไม้ที่โซน MOS 20% ($105.34) หรือต่ำกว่า เมื่อ bond yield spike หรือ market correction · ไม่เหมาะสำหรับนักลงทุนที่ต้องการ MOS &gt;10% ณ ราคาปัจจุบัน
+        💡 <b>กลยุทธ์:</b> Hold สำหรับผู้ถือหุ้นอยู่แล้ว เพื่อรับปันผล Dividend King · DCA เล็กน้อยได้ที่ราคาปัจจุบันเนื่องจาก MOS ยังจำกัด ({{rd:mos}}) · รอสะสมเพิ่มเต็มไม้ที่โซน MOS 20% ({{rd:mos20}}) หรือต่ำกว่า เมื่อ bond yield spike หรือ market correction · ไม่เหมาะสำหรับนักลงทุนที่ต้องการ MOS &gt;10% ณ ราคาปัจจุบัน
       </div>
     </div>
   </section>
@@ -328,7 +329,7 @@
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
     ราคา ณ {{rd:priceDate}} · แหล่งข้อมูล: StockAnalysis.com (https://stockanalysis.com/stocks/DUK/), Yahoo Finance (https://finance.yahoo.com/quote/DUK/), Google Finance (https://www.google.com/finance/quote/DUK:NYSE) · EPS(TTM) $6.66 GAAP (สามแหล่งตรงกัน — คำนวณจาก NI $5,183M ÷ หุ้นถัวเฉลี่ยถ่วงน้ำหนักปรับลด 778M)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 17 สิงหาคม 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
