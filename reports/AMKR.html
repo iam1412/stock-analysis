@@ -6,19 +6,19 @@
 <title>วิเคราะห์หุ้น Amkor Technology (AMKR) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"AMKR","currency":"USD","price":50.3,"fairValue":45,"mos":-11.8,"upside":-10.5,"pe":22.6,"dividendYield":0.66,"roe":12.5}
+{"symbol":"AMKR","currency":"USD","price":50.3,"fairValue":33,"mos":-52.4,"upside":-34.4,"pe":22.6,"dividendYield":0.66,"roe":12.5}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 45,
+  "fv": 33,
   "values": {
     "px": 50.3,
     "priceDate": "2026-09-18",
     "dateEra": "CE",
     "chgSuffix": "รอบปี",
-    "fvLow": 38,
-    "fvHigh": 52,
+    "fvLow": 28,
+    "fvHigh": 38,
     "analystTgt": 76.4,
     "eps": 2.23,
     "shares": 248452472,
@@ -155,15 +155,15 @@
 
   <!-- ===== VALUATION ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">2 ตระกูล (P/E มัธยฐาน + DCF) เฉลี่ยเท่ากัน</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">2 ตระกูล (P/E มัธยฐาน + P/S มัธยฐาน) เฉลี่ยเท่ากัน</div></div>
     <div class="card">
       <div class="vmethod">
         <div><div class="mname">1. P/E Valuation <span class="pill r">ระมัดระวัง</span></div><div class="mdesc">EPS(TTM) $2.23 × P/E 17x (มัธยฐาน P/E ย้อนหลัง 5 ปีของ AMKR เอง 16.9x ช่วง 6.8–21.8x — ไม่ใช้ P/E ปัจจุบัน ~22.6x เป็นสมอ)</div></div>
         <div class="mval">$38</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. DCF (2-stage)</div><div class="mdesc">FCF โตต่อเนื่องจาก AI Computing + ดีล TSMC Arizona (prepayment รับปี 2027) แต่ capex หนัก $2.5–3.0B/ปี กด FCF ระยะสั้น (FCF TTM ติดลบ ~$172M), WACC ~10%, Terminal 3% — ขานี้เป็นสมมติฐาน (r,g) เดิมที่ไม่ได้วัดใหม่รอบนี้ ถือเป็นตระกูลที่สองรองจาก P/E มัธยฐาน</div></div>
-        <div class="mval">$52</div>
+        <div><div class="mname">2. P/S Valuation (มัธยฐานย้อนหลัง)</div><div class="mdesc">Sales/หุ้น TTM $30.0 (รายได้ $7,458M ÷ 248.45M หุ้น) × P/S 0.94x (มัธยฐาน P/S 5 ปี FY2021–25 คำนวณจากราคาเฉลี่ยรายปี ÷ รายได้ต่อหุ้น: 0.91 / 0.73 / 1.01 / 1.22 / 0.94 ช่วง 0.73–1.22x — ไม่ใช้ P/S ปัจจุบัน ~1.7x เป็นสมอ) — ตระกูลยอดขาย (ไม่ใช่ (r,g)) แทนขา DCF เดิม ($52) ที่ถอดออกเพราะ FCF TTM ติดลบ ~$172M จึงสร้างตาราง FCF ที่ตรวจซ้ำได้ไม่ได้ · หมายเหตุ: net margin TTM 7.4% สูงกว่าค่ามัธยฐานย้อนหลัง ~5.6% ขานี้จึงอาจต่ำกว่าจริงหากมาร์จิ้นยืนได้</div></div>
+        <div class="mval">$28</div>
       </div>
 
       <div class="fv-box">
@@ -187,15 +187,15 @@
           <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$32<br><small>MOS 30%</small></span>
-          <span>$36<br><small>MOS 20%</small></span>
+          <span>$23<br><small>MOS 30%</small></span>
+          <span>$26<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">{{rd:analystTgt}}<br><small>เป้า Analyst</small></span>
           <span style="text-align:right">$90<br><small>เป้าสูงสุด</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        หลังงบ Q2 FY2026 (27 ก.ค. 2569) ราคาร่วงแรงก่อนจะฟื้นตัวกลับมาอยู่ที่ {{rd:px}} <b>สูงกว่ามูลค่าเหมาะสม ({{rd:fv}}) เล็กน้อย ไม่มี MOS</b> ({{rd:mos}}) แต่ยัง <b>ต่ำกว่าเป้าหมาย 12 เดือนเฉลี่ย</b> ของนักวิเคราะห์มาก ({{rd:analystTgt}})
+        หลังงบ Q2 FY2026 (27 ก.ค. 2569) ราคาร่วงแรงก่อนจะฟื้นตัวกลับมาอยู่ที่ {{rd:px}} <b>สูงกว่ามูลค่าเหมาะสม ({{rd:fv}}) ชัดเจน ไม่มี MOS</b> ({{rd:mos}} — ประมาณการนี้ยังไม่ยืนยันด้วยตัวคูณ forward: FY2026e $2.57 × 17x ≈ $44 ยังต่ำกว่าราคา) แต่ยัง <b>ต่ำกว่าเป้าหมาย 12 เดือนเฉลี่ย</b> ของนักวิเคราะห์มาก ({{rd:analystTgt}})
         — ตัวเลขเป้านักวิเคราะห์นี้อาจยังไม่สะท้อนการปรับประมาณการหลังงบ Q2 เต็มที่ ราคาเป้าเฉลี่ยจึง <b>สูงกว่าราคาปัจจุบัน {{rd:analystPct}}</b> ซึ่งกว้างผิดปกติ (จึงไม่นำมาเป็นขาของ FV) — P/E TTM ลดฮวบจาก ~39x เหลือ ~22.6x สะท้อนความกังวลเรื่องความยั่งยืนของ margin/segment Communications มากกว่าธุรกิจถดถอยจริง
       </p>
     </div>
@@ -207,7 +207,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt"><b>ไม่มี Margin of Safety (ราคาสูงกว่ามูลค่าเหมาะสมเล็กน้อย)</b><br>หลังราคาปรับตัวกลับหลังงบ Q2 FY2026 ราคาปัจจุบัน {{rd:px}} อยู่<b>สูงกว่ามูลค่าเหมาะสม {{rd:fv}}</b> ({{rd:mos}}) ยังห่างจากโซนน่าสนใจ (MOS 20% ที่ {{rd:mos20}}) — ต้องรอราคาย่อลงมากพอหรือความชัดเจนเรื่อง Communications segment ก่อนถือว่าถูก</div>
+        <div class="txt"><b>ไม่มี Margin of Safety (ราคาสูงกว่ามูลค่าเหมาะสมชัดเจน)</b><br>หลังราคาปรับตัวกลับหลังงบ Q2 FY2026 ราคาปัจจุบัน {{rd:px}} อยู่<b>สูงกว่ามูลค่าเหมาะสม {{rd:fv}}</b> ({{rd:mos}}) ยังห่างจากโซนน่าสนใจ (MOS 20% ที่ {{rd:mos20}}) — ต้องรอราคาย่อลงมากพอหรือความชัดเจนเรื่อง Communications segment ก่อนถือว่าถูก</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -266,7 +266,7 @@
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      หลังราคาฟื้นตัวขึ้นมาเหนือมูลค่าเหมาะสมเล็กน้อย ความเสี่ยง–ผลตอบแทนที่จุดเข้านี้ <b>แคบลงกว่าช่วงราคาร่วง</b> — กรณี base (P/E ออก 17x ≈ มัธยฐานย้อนหลัง) ให้ผลตอบแทนบวกพอประมาณใน 3 ปี จาก EPS ที่โตต่อเนื่องแม้ Communications segment อ่อนตัว
+      หลังราคาฟื้นตัวขึ้นมาเหนือมูลค่าเหมาะสมชัดเจน ความเสี่ยง–ผลตอบแทนที่จุดเข้านี้ <b>แคบลงกว่าช่วงราคาร่วง</b> — กรณี base (P/E ออก 17x ≈ มัธยฐานย้อนหลัง) ให้ผลตอบแทนบวกพอประมาณใน 3 ปี จาก EPS ที่โตต่อเนื่องแม้ Communications segment อ่อนตัว
       อย่างไรก็ตามกรณี bear ยังคงลงแรงได้เพราะหุ้น OSAT เป็น <b>cyclical</b> และลูกค้ากระจุกตัว (Apple) — เมื่อวัฏจักรพลิกหรือ Communications อ่อนตัวกว่าคาด ทั้ง EPS และ P/E จะหดพร้อมกัน
     </p>
   </section>
@@ -305,8 +305,8 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>งบ Q2 ทุบสถิติแต่ตลาด de-rate แรงจากความกังวล Communications segment — ราคาฟื้นตัวขึ้นสูงกว่ามูลค่าเหมาะสมเล็กน้อย</h2>
-      <p>Amkor รายงานงบ Q2 FY2026 (27 ก.ค. 2569) ทุบสถิติรายได้ $1.9B (+26% YoY) และ EPS $0.70 (โตกว่า 3 เท่า YoY) พร้อม guide Q3 ต่อเนื่องทั้งรายได้/margin/EPS แต่หุ้นกลับร่วงแรง ~24% ในวันเดียวหลังตลาดกังวลแนวโน้ม segment Communications ที่จะลดลง high-single-digit QoQ ใน Q3 (ย้ายฐานผลิต SiP ไปเวียดนาม + ข้อจำกัดซัพพลาย memory) รวมถึงภาระ capital intensity จากดีล TSMC 10 ปีที่ Arizona ที่เพิ่งประกาศ ทำให้ที่ราคา {{rd:px}} ปัจจุบัน P/E TTM de-rate ลงมาที่ ~22.6x จากที่เคยแตะ ~39x — สูงกว่ามูลค่าเหมาะสม ({{rd:fv}}) เล็กน้อย ไม่มี MOS ({{rd:mos}}) และยังต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ ({{rd:analystTgt}}) มาก แต่ธุรกิจยัง cyclical และ Communications segment ยังมีความไม่แน่นอน จึงไม่มี Margin of Safety ที่มีนัยสำคัญในตอนนี้</p>
+      <h2>งบ Q2 ทุบสถิติแต่ตลาด de-rate แรงจากความกังวล Communications segment — ราคาฟื้นตัวขึ้นสูงกว่ามูลค่าเหมาะสมชัดเจน</h2>
+      <p>Amkor รายงานงบ Q2 FY2026 (27 ก.ค. 2569) ทุบสถิติรายได้ $1.9B (+26% YoY) และ EPS $0.70 (โตกว่า 3 เท่า YoY) พร้อม guide Q3 ต่อเนื่องทั้งรายได้/margin/EPS แต่หุ้นกลับร่วงแรง ~24% ในวันเดียวหลังตลาดกังวลแนวโน้ม segment Communications ที่จะลดลง high-single-digit QoQ ใน Q3 (ย้ายฐานผลิต SiP ไปเวียดนาม + ข้อจำกัดซัพพลาย memory) รวมถึงภาระ capital intensity จากดีล TSMC 10 ปีที่ Arizona ที่เพิ่งประกาศ ทำให้ที่ราคา {{rd:px}} ปัจจุบัน P/E TTM de-rate ลงมาที่ ~22.6x จากที่เคยแตะ ~39x — สูงกว่ามูลค่าเหมาะสม ({{rd:fv}}) ชัดเจน ไม่มี MOS ({{rd:mos}}) และยังต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ ({{rd:analystTgt}}) มาก แต่ธุรกิจยัง cyclical และ Communications segment ยังมีความไม่แน่นอน จึงไม่มี Margin of Safety ที่มีนัยสำคัญในตอนนี้</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#a8b6cc">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
