@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น Brookfield Corporation (BN) — Stock Analysis Dashboard</title>
 <!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง (Opus→"Claude Opus 4.8", Sonnet→"Claude Sonnet 4.6") — gate E28 บังคับ -->
-<meta name="ai-model" content="Claude Opus 4.8">
+<meta name="ai-model" content="Claude Sonnet 5">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"BN","currency":"USD","price":37.51,"fairValue":56.35,"mos":33.4,"upside":50.2,"pe":84.2,"dividendYield":0.7,"roe":2.8}
+{"symbol":"BN","currency":"USD","price":37.51,"fairValue":51.15,"mos":26.7,"upside":36.4,"pe":69.5,"dividendYield":0.7,"roe":2.3}
 </script>
 <!--
   report-data: ธีมสี Brookfield Navy (#1a2d4f seed, สร้างผ่าน tools/brandtheme.js) + ข้อมูลกราฟ/gauge
@@ -16,15 +16,15 @@
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 56.35,
+  "fv": 51.15,
   "values": {
     "px": 37.51,
     "priceDate": "2026-09-18",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
     "fvLow": 48.26,
-    "fvHigh": 66.37,
-    "shares": 2240000000,
+    "fvHigh": 54.03,
+    "shares": 2232351451,
     "dps": 0.28,
     "baseEps": 2.54,
     "scenarios": [
@@ -76,8 +76,8 @@
       ["ก.ย.26", 37.51]
     ],
     "min": 35,
-    "max": 60,
-    "grid": [40, 45, 50, 55],
+    "max": 55,
+    "grid": [40, 45, 50],
     "currency": "$",
     "highlight": [1, 11]
   },
@@ -113,8 +113,8 @@
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ {{rd:priceDate}} (7 Jul 2026)<br>
-        กรอบ 52 สัปดาห์ $37.93 – $49.57<br>
+        ราคา ณ {{rd:priceDate}}<br>
+        กรอบ 52 สัปดาห์ $36.67 – $49.57<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, Brookfield Q1 2026 Shareholder Letter, MarketBeat
       </div>
     </div>
@@ -122,24 +122,24 @@
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">AUM (BAM) ทะลุ $1 ล้านล้าน • ราคาทรงตัว ~1 ปี • ส่วนลดสูงเทียบมูลค่าที่แท้จริง</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">AUM (BAM) ทะลุ $1 ล้านล้าน • ราคาปรับลงรอบปี • ส่วนลดสูงเทียบมูลค่าที่แท้จริง</div></div>
     <!-- ✏️ ปรับการ์ด metric ให้เหมาะกับหุ้น/เซกเตอร์ได้อิสระ — gate ไม่บังคับชุด metric (เปลี่ยน label / สลับ / เพิ่ม-ลดการ์ดได้)
          • คงป้าย "P/E (TTM)", "P/BV", "เงินปันผล", "ROE" ไว้ถ้าหุ้นมีจริง → W10 cross-check กับ stock-meta · ไม่มี (ขาดทุน/ไม่ปันผล) = ตัดการ์ดออก + ตั้ง stock-meta เป็น null
          • ธนาคาร → NIM / NPL / CASA / Loan growth / Cost-to-income   • REIT/กองอสังหา → Occupancy / DPU / NAV / Gearing   • ประกัน → Combined ratio / EV
          • หุ้นเติบโต-ขาดทุน → Revenue growth / Gross margin / FCF / Cash runway (ตัด P/E ออก) -->
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">~2.24 พันล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~84.2x</div><div class="d">GAAP EPS ผันผวนสูงตาม realized/unrealized gains — ไม่ใช้เป็น valuation หลัก ดู P/DE แทน (Section 3)</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">~2.23 พันล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~69.5x</div><div class="d">GAAP EPS ผันผวนสูงตาม realized/unrealized gains — ไม่ใช้เป็น valuation หลัก ดู P/DE แทน (Section 3)</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">n/m</div><div class="d">GAAP P/E ผันผวนสูงตามรอบ realization มาโดยตลอด ไม่ค่อยมีความหมายเชิงเปรียบเทียบ</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">2.43x</div><div class="d">เทียบ book value ตามบัญชี (GAAP) ซึ่งต่ำกว่ามูลค่าจริงมาก เพราะ BAM/ธุรกิจย่อยไม่ได้ mark-to-market เต็มในงบ</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">2.08x</div><div class="d">เทียบ book value ตามบัญชี (GAAP) ซึ่งต่ำกว่ามูลค่าจริงมาก เพราะ BAM/ธุรกิจย่อยไม่ได้ mark-to-market เต็มในงบ</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$1.14B</div><div class="d">+141% YoY (realized gains ฟื้นตัวแรง)</div></div>
-      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$0.51</div><div class="d">GAAP EPS ลุ่ม ๆ ดอน ๆ — Distributable Earnings $2.54/หุ้น (FY2025) คือตัวชี้วัดหลักที่ผู้บริหารใช้สื่อสาร</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$0.54</div><div class="d">GAAP EPS ลุ่ม ๆ ดอน ๆ — Distributable Earnings $2.54/หุ้น (FY2025) คือตัวชี้วัดหลักที่ผู้บริหารใช้สื่อสาร</div></div>
       <div class="metric"><div class="k">BVPS</div><div class="v">~$18.04</div><div class="d">Common equity $42.7B/2.367B หุ้น (Q1 2026) — ต่ำกว่ามูลค่าจริงมาก</div></div>
-      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~2.8% / 0.2%</div><div class="d">ต่ำเพราะฐานทุน/สินทรัพย์ตามบัญชี (รวม insurance float $180B) ไม่สะท้อนมูลค่าจริง; DE/BVPS ≈ 14% (คำนวณเอง เพื่อเทียบเคียง)</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~2.3% / 0.2%</div><div class="d">ต่ำเพราะฐานทุน/สินทรัพย์ตามบัญชี (รวม insurance float $180B) ไม่สะท้อนมูลค่าจริง; DE/BVPS ≈ 14% (คำนวณเอง เพื่อเทียบเคียง)</div></div>
 
-      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$79.1B</div><div class="d">FY2025 $75.1B — รวม AM fees, insurance premium, real estate/PE</div></div>
-      <div class="metric"><div class="k">Operating Margin (Consolidated)</div><div class="v">32.3%</div><div class="d">รวมทุกธุรกิจ (AM+ประกัน+อสังหาฯ) ไม่ใช่ FRE margin เฉพาะธุรกิจจัดการสินทรัพย์</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$80.7B</div><div class="d">FY2025 $77.7B — รวม AM fees, insurance premium, real estate/PE</div></div>
+      <div class="metric"><div class="k">Operating Margin (Consolidated)</div><div class="v">27.2%</div><div class="d">รวมทุกธุรกิจ (AM+ประกัน+อสังหาฯ) ไม่ใช่ FRE margin เฉพาะธุรกิจจัดการสินทรัพย์</div></div>
       <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">$0.07/ไตรมาส (ปรับขึ้น +17% ต้นปี 2569) → annualized ~$0.28 · payout ต่ำ เน้นลงทุนเพื่อโต</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">1.84</div><div class="d">สูงกว่าตลาดชัดเจน — ผันผวนตาม sentiment ตลาดทุน/ดอกเบี้ย และมุมมองต่อ alternative asset managers</div></div>
     </div>
@@ -160,35 +160,31 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ราคาเปิดรอบปีที่ ~$43.81 (ส.ค. 2568) ไต่ขึ้นทำจุดสูงสุดรอบปีที่ ~$47.00 ในเดือน พ.ย. 2568 หลังผลประกอบการ Q3 2568 แข็งแกร่งและ fundraising ทำสถิติ ก่อนร่วงลงต่อเนื่องแตะจุดต่ำสุดที่ ~$40.47 ในเดือน มี.ค. 2569 (ระหว่างทางแตะ 52-week low $37.93) จากความกังวลอัตราดอกเบี้ยและราคา BAM ที่ปรับฐานแรง (~-16% ใน Q1 2569) ก่อนฟื้นตัวกลับมาที่ ~$43.83 หลังผลประกอบการ Q1 2569 ที่ Distributable Earnings เติบโตต่อเนื่องและ AUM ของ BAM ทะลุ $1 ล้านล้านดอลลาร์ สุทธิรวมทั้งปีราคาแทบไม่เปลี่ยนแปลง (≈ ทรงตัว) แม้จะมีความผันผวนสูงระหว่างทาง
+        ราคาเริ่มต้นรอบปีที่ ~$46.05 (ต.ค. 2568) ไต่ขึ้นทำจุดสูงสุดรายเดือนที่ ~$47.00 ในเดือน พ.ย. 2568 ก่อนอ่อนตัวต่อเนื่องแตะ ~$40.47 ในเดือน มี.ค. 2569 จากความกังวลอัตราดอกเบี้ยและราคา BAM ที่ปรับฐาน ก่อนฟื้นไป ~$45.59 ในเดือน พ.ค. 2569 แล้วลดลงต่อเนื่องในเดือน มิ.ย.–ก.ย. 2569 จนปิดล่าสุดที่ราคาต่ำสุดของกราฟรอบปี (กรอบ 52 สัปดาห์ $36.67–$49.57) สุทธิรวมทั้งปีราคาปรับลงตามป้ายผลตอบแทนรอบปีด้านบน โดยที่ผลประกอบการ Q2 2569 (13 ส.ค. 2569) ประกาศกำไรเติบโต 15% ตามพาดหัวประกาศบริษัท แต่ราคาไม่ตอบสนองในเชิงบวก
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี — เน้น Sum-of-the-Parts เพราะโครงสร้างโฮลดิ้งซับซ้อน</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธีคนละตระกูล (P/DE + Conservative NAV) — SOTP ของผู้บริหารใช้เป็นบริบทเท่านั้น</div></div>
     <div class="card">
       <!-- ✏️ เลือก ≥2 วิธีให้เหมาะกับหุ้น — gate เช็คคณิตเฉพาะวิธีชื่อ "P/E" (E21) และ "Justified P/BV" (E22) เมื่อมีวิธีนั้น
            BN เป็นโฮลดิ้งซับซ้อน (asset manager + insurance + balance sheet) → ไม่ใช้ P/E เป็นหลัก (GAAP EPS ผันผวนจาก realized/unrealized gains) ใช้ SOTP + market multiple แทน -->
       <div class="vmethod">
-        <div><div class="mname">1. Sum-of-the-Parts (SOTP)</div><div class="mdesc">BAM stake (73% ของมูลค่าตลาด BAM ~$74.9B) $24.42/หุ้น + ธุรกิจประกัน (Brookfield Wealth Solutions) + อสังหาริมทรัพย์ + Private Equity + NPV ของ carried interest (ประเมินโดยผู้บริหาร) $41.95/หุ้น = มูลค่าที่แท้จริงต่อหุ้นที่ผู้บริหารเปิดเผยเอง ณ 31 มี.ค. 2569 (ลดจาก $68 เหตุราคา BAM ปรับฐาน ~16% ใน Q1)</div></div>
-        <div class="mval">$66.37</div>
-      </div>
-      <div class="vmethod">
-        <div><div class="mname">2. Price / Distributable Earnings (P/DE)</div><div class="mdesc">Distributable Earnings (รวม realizations) FY2025 $2.54 × P/DE เป้าหมาย ~19x — มัลติเพิลตลาดระมัดระวังสำหรับ alternative asset manager + insurance hybrid (ต่ำกว่าค่าเฉลี่ยกลุ่ม 20-25x เพราะยังไม่รวม upside เต็มจาก AUM ที่โต 18%/ปี)</div></div>
+        <div><div class="mname">1. Price / Distributable Earnings (P/DE)</div><div class="mdesc">Distributable Earnings (รวม realizations) FY2025 $2.54 × P/DE เป้าหมาย ~19x — มัลติเพิลตลาดระมัดระวังสำหรับ alternative asset manager + insurance hybrid (ต่ำกว่าค่าเฉลี่ยกลุ่ม 20-25x เพราะยังไม่รวม upside เต็มจาก AUM ที่โต 18%/ปี) — 19x เป็นสมมติฐานเทียบกลุ่ม ไม่ใช่มัธยฐานที่วัดจากประวัติ (ตัวคูณมัธยฐานของ BN ที่วัดได้เป็น GAAP P/E ซึ่งใช้กับ DE ไม่ได้) ขณะที่ราคาซื้อขายอยู่ที่ราว 14.8x ของ DE FY2025</div></div>
         <div class="mval">$48.26</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">3. Conservative NAV (Public Stakes + Book)</div><div class="mdesc">BAM stake (ราคาตลาด) $24.42 + หุ้นบริษัทในเครือที่จดทะเบียน (BEP/BIP/BBU) ~$10.44 + Insurance group capital (มูลค่าตามบัญชี ไม่รวม premium) $8.84 + อสังหาริมทรัพย์ตามบัญชี (BPG) $10.71 = มูลค่าฐานขั้นต่ำแบบระมัดระวัง (ไม่รวม carried interest ในอนาคต)</div></div>
-        <div class="mval">$54.41</div>
+        <div><div class="mname">2. Conservative NAV (Public Stakes + Book)</div><div class="mdesc">BAM stake (73% × มูลค่าตลาด BAM $73.51B ÷ หุ้น BN 2.232B ณ 18 ก.ย. 2569) $24.04 + หุ้นบริษัทในเครือที่จดทะเบียน (BEP/BIP/BBU) ~$10.44 + Insurance group capital (มูลค่าตามบัญชี ไม่รวม premium) $8.84 + อสังหาริมทรัพย์ตามบัญชี (BPG) $10.71 = มูลค่าฐานขั้นต่ำแบบระมัดระวัง (ไม่รวม carried interest ในอนาคต)</div></div>
+        <div class="mval">$54.03</div>
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        วิธี SOTP ($66.37) อิงมูลค่าที่แท้จริงต่อหุ้นที่ผู้บริหาร Brookfield เปิดเผยเอง — สูงสุดในสามวิธีเพราะรวมมูลค่าตลาดเต็มของหุ้น BAM บวก NPV ของ carried interest และธุรกิจประกัน/อสังหาฯ ที่ยังไม่ mark-to-market ในบัญชี GAAP ส่วนวิธี P/DE ($48.26) ระมัดระวังสุดเพราะใช้มัลติเพิลตลาดกับ Distributable Earnings ปี 2568 เท่านั้น ไม่รวม upside จาก AUM growth ส่วนวิธี Conservative NAV ($54.41) เป็นฐานขั้นต่ำจากมูลค่าตลาดของหุ้นบริษัทในเครือที่จดทะเบียนบวกมูลค่าตามบัญชีของธุรกิจอื่น (ไม่รวม carry ในอนาคต) — เฉลี่ย 3 วิธี = $56.35 ต่ำกว่ามูลค่าที่แท้จริงที่ผู้บริหารเปิดเผยพอสมควร สะท้อนความระมัดระวังต่อความซับซ้อนของโครงสร้างบริษัทโฮลดิ้งหลายชั้น
+        รอบนี้ตัด SOTP ($66.37 ตามมูลค่าที่แท้จริงที่ผู้บริหารเปิดเผย ณ 31 มี.ค. 2569) ออกจาก FV เพราะตรวจซ้ำกับงบ Q2 2569 ไม่ได้ (ไฟล์ PDF ของประกาศ Q2 เปิดไม่ได้) และไม่มีตารางที่ทำซ้ำตัวเลขได้ — ใช้เป็นบริบทเท่านั้น ส่วนเป้านักวิเคราะห์ ($54.40) เป็นบริบทตรวจความสอดคล้อง ไม่ใช่ขาของ FV วิธี P/DE ($48.26) ใช้มัลติเพิลกลุ่มกับ Distributable Earnings FY2025 ไม่รวม upside จาก AUM growth ส่วน Conservative NAV ($54.03) ใช้มูลค่าตลาดของ BAM ที่วัดใหม่ บวกกลุ่มบริษัทในเครือ ประกัน และอสังหาฯ ตามค่าที่ประเมินไว้รอบก่อน (ยังไม่ได้ mark ใหม่ — ความไม่แน่นอนข้อนี้ระบุไว้) — เฉลี่ย 2 วิธี = {{rd:fv}} และควรอ่านเป็นประมาณการที่ยังไม่ผ่านการตรวจซ้ำครบทุกองค์ประกอบ
       </p>
     </div>
   </section>
@@ -206,12 +202,12 @@
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
-          <span style="text-align:right">$56.50<br><small>เป้าเฉลี่ย Analyst</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$54.40<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน $43.83 อยู่ต่ำกว่ามูลค่าเหมาะสม $56.35 ประมาณ 22.2% และอยู่ใกล้โซน MOS 20% ($45.08) มาก — เข้าใกล้โซน deep value (MOS 30% ที่ $39.45) พอสมควร เป้าเฉลี่ยนักวิเคราะห์ ~$56.50 (จากกว่า 8 สำนัก ช่วง $51.38–$61) ใกล้เคียงกับ Fair Value ของเราอย่างมาก สนับสนุนมุมมองว่าราคาปัจจุบัน undervalued ทั้งเทียบมุมมองตลาดและมูลค่าที่แท้จริงที่ผู้บริหารเปิดเผย
+        ราคาปัจจุบัน {{rd:px}} อยู่ต่ำกว่ามูลค่าเหมาะสม {{rd:fv}} (MOS {{rd:mos}}) เลยโซน MOS 20% ({{rd:mos20}}) ลงมาแล้ว และเข้าใกล้โซน MOS 30% ({{rd:mos30}}) เป้าเฉลี่ยนักวิเคราะห์ ~$54.40 (10 สำนัก ตาม Yahoo Finance) สูงกว่าราคาปัจจุบันชัดเจนและใกล้เคียงกรอบบน FV เป็นการตรวจความสอดคล้องเท่านั้น ไม่ได้ใช้เป็นขาของ FV
       </p>
     </div>
   </section>
@@ -285,7 +281,7 @@
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      "EPS ฐาน" ในที่นี้หมายถึง Distributable Earnings (DE) ต่อหุ้น ไม่ใช่ GAAP EPS ที่ผันผวนสูง — Base case สมมติ AUM/FRE เติบโต ~15-18%/ปีตามแผนบริษัท ทำให้ DE โตเฉลี่ย ~8%/ปี และตลาดค่อย ๆ ให้มัลติเพิลสูงขึ้นจาก ~19x ปัจจุบันสู่ 20x (ยังต่ำกว่ามูลค่าที่แท้จริงของผู้บริหาร) Bear case สะท้อนความเสี่ยงจากอัตราดอกเบี้ยและภาวะตลาดทุนที่กดดัน fundraising ส่วน Bull case คือกรณีตลาด re-rate ราคาเข้าใกล้ SOTP breakup value เต็มที่ พร้อม carried interest realization ที่เร่งตัวขึ้น
+      "EPS ฐาน" ในที่นี้หมายถึง Distributable Earnings (DE) ต่อหุ้น ไม่ใช่ GAAP EPS ที่ผันผวนสูง — Base case สมมติ AUM/FRE เติบโต ~15-18%/ปีตามแผนบริษัท ทำให้ DE โตเฉลี่ย ~8%/ปี และตลาดค่อย ๆ ให้มัลติเพิลสูงขึ้นจาก ~14.8x ของ DE FY2025 ณ ราคาล่าสุด สู่ 20x ณ ปีที่ 3 (ยังต่ำกว่าค่าเฉลี่ยกลุ่ม 20-25x) Bear case สะท้อนความเสี่ยงจากอัตราดอกเบี้ยและภาวะตลาดทุนที่กดดัน fundraising ส่วน Bull case คือกรณีตลาด re-rate ราคาเข้าใกล้ SOTP breakup value เต็มที่ พร้อม carried interest realization ที่เร่งตัวขึ้น
     </p>
   </section>
 
@@ -299,7 +295,7 @@
           <li><b>AUM ทะลุ $1 ล้านล้านดอลลาร์:</b> BAM (BN ถือ ~73%) มี AUM เกิน $1 ล้านล้าน ณ Q1 2569 fee-bearing capital ทะลุ $600B และ LTM fee-related earnings $3.1B โต 18% YoY</li>
           <li><b>Fundraising แข็งแกร่งต่อเนื่อง:</b> ระดมทุนได้ $112B ในปี 2568 และ $21B ใน Q1 2569 — หนุนรายได้ค่าธรรมเนียมสม่ำเสมอในระยะยาว</li>
           <li><b>ธุรกิจประกัน (Brookfield Wealth Solutions) เติบโตเร็ว:</b> group capital โตจาก $5.7B (2565) เป็น $19.8B (สิ้นปี 2568) — สินทรัพย์ประกัน $180B หนุน float ต้นทุนต่ำเพื่อลงทุนต่อ</li>
-          <li><b>ส่วนลดขนาดใหญ่เทียบมูลค่าที่แท้จริง:</b> ผู้บริหารประเมิน IV ที่ $66.37/หุ้น เทียบราคาตลาด $43.83 — ส่วนลด ~34% เปิดโอกาส re-rating หากตลาดเริ่มมองเห็นมูลค่าที่ซ่อนใน SOTP</li>
+          <li><b>ส่วนลดขนาดใหญ่เทียบมูลค่าที่แท้จริง:</b> ผู้บริหารประเมิน IV ที่ $66.37/หุ้น เทียบราคาตลาดปัจจุบัน {{rd:px}} — ส่วนลดกว้างมาก (ตัวเลขผู้บริหารตรวจซ้ำกับ Q2 ไม่ได้ จึงไม่ใช้เป็นขา FV) เปิดโอกาส re-rating หากตลาดเริ่มมองเห็นมูลค่าที่ซ่อนใน SOTP</li>
           <li><b>Carried interest backlog ขนาดใหญ่:</b> กองทุนที่ raise ไปแล้วแต่ยังไม่ realize มูลค่ามหาศาล — จะทยอย crystallize เป็น distributable earnings ในอีกหลายปีข้างหน้า</li>
           <li><b>Buyback + dividend growth:</b> ปรับขึ้นปันผล +17% ต้นปี 2569 พร้อมซื้อหุ้นคืนเมื่อราคาต่ำกว่ามูลค่าที่แท้จริงมาก</li>
         </ul>
@@ -308,8 +304,8 @@
         <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
         <ul>
           <li><b>โครงสร้างซับซ้อนสูง (holding company discount):</b> นักลงทุนจำนวนมากเข้าใจโครงสร้าง BN→BAM→BEP/BIP/BBU ได้ยาก ทำให้ตีราคาต่ำกว่ามูลค่าจริง — ส่วนลดอาจคงอยู่นาน</li>
-          <li><b>Beta สูง (1.84):</b> อ่อนไหวต่อ sentiment ตลาดทุน/อัตราดอกเบี้ยมากกว่าตลาดโดยรวม เห็นได้จากความผันผวนในรอบปีที่ผ่านมา (สูง $47 → ต่ำ $37.93)</li>
-          <li><b>GAAP earnings ผันผวนสูง/ไม่สะท้อนกำไรที่แท้จริง:</b> EPS TTM เพียง $0.51 ทำให้ P/E ดูแพงมาก (>80x) อาจทำให้นักลงทุนทั่วไปเข้าใจผิดเรื่อง valuation</li>
+          <li><b>Beta สูง (1.84):</b> อ่อนไหวต่อ sentiment ตลาดทุน/อัตราดอกเบี้ยมากกว่าตลาดโดยรวม เห็นได้จากความผันผวนในรอบปีที่ผ่านมา (สูง $47 → ต่ำ ~$37.51)</li>
+          <li><b>GAAP earnings ผันผวนสูง/ไม่สะท้อนกำไรที่แท้จริง:</b> EPS TTM เพียง $0.54 ทำให้ P/E ดูแพงมาก (~70x) อาจทำให้นักลงทุนทั่วไปเข้าใจผิดเรื่อง valuation</li>
           <li><b>ความเสี่ยงจากอัตราดอกเบี้ย:</b> ธุรกิจ real estate, infrastructure และ insurance (fixed-income heavy) อ่อนไหวต่อทิศทางดอกเบี้ยระยะยาว</li>
           <li><b>Fundraising อาจชะลอ:</b> หากตลาดทุนผันผวนต่อเนื่อง LP อาจชะลอการจัดสรรเงินเข้ากองทุนใหม่ กระทบ fee-related earnings growth</li>
           <li><b>Free cash flow ติดลบ:</b> บริษัทมี FCF ติดลบ (TTM) จากการลงทุนขยายธุรกิจต่อเนื่อง — ต้องพึ่งพาตลาดทุน/หนี้สำหรับการเติบโตในระยะสั้น</li>
@@ -323,14 +319,14 @@
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
       <h2>โฮลดิ้งสินทรัพย์ทางเลือกระดับโลก — ส่วนลดขนาดใหญ่เทียบมูลค่าที่แท้จริง แต่โครงสร้างซับซ้อน</h2>
-      <p>BN คือบริษัทแม่ของ Brookfield ecosystem ถือหุ้น ~73% ใน BAM (AUM แตะ $1 ล้านล้าน) บวกธุรกิจประกัน/บำนาญ พลังงานหมุนเวียน โครงสร้างพื้นฐาน และอสังหาริมทรัพย์ทั่วโลก ราคาปัจจุบัน $43.83 ต่ำกว่ามูลค่าเหมาะสมที่เราประเมิน $56.35 ราว 22% และต่ำกว่ามูลค่าที่แท้จริงที่ผู้บริหารเปิดเผยเอง ($66.37) มากถึง ~34% MOS สูงระดับนี้เหมาะกับนักลงทุนสาย value ที่เข้าใจความซับซ้อนของโครงสร้างโฮลดิ้งหลายชั้นและพร้อมถือระยะยาวรอ catalyst จาก carried interest realization</p>
+      <p>BN คือบริษัทแม่ของ Brookfield ecosystem ถือหุ้น ~73% ใน BAM (AUM แตะ $1 ล้านล้าน) บวกธุรกิจประกัน/บำนาญ พลังงานหมุนเวียน โครงสร้างพื้นฐาน และอสังหาริมทรัพย์ทั่วโลก ราคาปัจจุบัน {{rd:px}} ต่ำกว่ามูลค่าเหมาะสมที่เราประเมิน {{rd:fv}} (MOS {{rd:mos}}) และต่ำกว่ามูลค่าที่แท้จริงที่ผู้บริหารเปิดเผยเมื่อ Q1 2569 ($66.37 ซึ่งตรวจซ้ำไม่ได้) มาก MOS ระดับนี้เหมาะกับนักลงทุนสาย value ที่เข้าใจความซับซ้อนของโครงสร้างโฮลดิ้งหลายชั้นและพร้อมถือระยะยาวรอ catalyst จาก carried interest realization</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$56.50 (Buy consensus, 11+ analysts)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$54.40 (Buy consensus, 10 analysts)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ทยอยสะสมที่ราคาปัจจุบัน ~$43.83 (MOS ~22%) เพิ่มสถานะเมื่อเข้าใกล้โซน MOS 30% ที่ ~$39.45 · ติดตาม AUM/FRE growth ของ BAM และการเติบโตของ Brookfield Wealth Solutions เป็นตัวชี้วัดหลักแทน GAAP EPS ที่ผันผวน · เหมาะเป็นสถานะระยะยาว (3-5 ปี) มากกว่าเก็งกำไรระยะสั้น
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมที่ราคาปัจจุบัน {{rd:px}} (MOS {{rd:mos}}) เพิ่มสถานะเมื่อเข้าใกล้โซน MOS 30% ที่ {{rd:mos30}} · ติดตาม AUM/FRE growth ของ BAM และการเติบโตของ Brookfield Wealth Solutions เป็นตัวชี้วัดหลักแทน GAAP EPS ที่ผันผวน · เหมาะเป็นสถานะระยะยาว (3-5 ปี) มากกว่าเก็งกำไรระยะสั้น
       </div>
     </div>
   </section>
@@ -341,7 +337,7 @@
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • แหล่งข้อมูล: Yahoo Finance · StockAnalysis.com · Brookfield Corporation Investor Relations (Q1 2026 Shareholder Letter, 6-K filings) · MarketBeat/WallStreetZen/Public.com (เป้านักวิเคราะห์)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 7 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
