@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น Sprouts Farmers Market (SFM) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
 {"symbol":"SFM","currency":"USD","price":70.79,"fairValue":110,"mos":35.6,"upside":55.4,"pe":13.6,"dividendYield":null,"roe":38.4}
 </script>
@@ -106,7 +106,7 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ $64.75 – $171.15<br>
+        กรอบ 52 สัปดาห์ $64.75 – $121.05<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, Macrotrends
       </div>
     </div>
@@ -114,7 +114,7 @@
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 · แหล่ง: Yahoo Finance, StockAnalysis, Macrotrends</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ย. 2569 · แหล่ง: Yahoo Finance, StockAnalysis, Macrotrends</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">97 ล้านหุ้น (diluted 98M)</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM $5.21 · ต่ำกว่า 5 ปีเฉลี่ย</div></div>
@@ -146,7 +146,7 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        SFM เปิดช่วง ก.ค. 2568 ที่ระดับต่ำสุดรอบปี $70.91 หลังตกจากจุดสูง $171.15 เนื่องจาก Q1 2569 รายงาน Comparable Store Sales −1.7% ต่ำกว่าคาด ราคาทยอยฟื้นตัวผ่านครึ่งหลังปี 2568 ก่อนปรับลงอีกครั้งในช่วง มี.ค.–เม.ย. 2569 ($74.99) จากความกังวลเศรษฐกิจ แล้วฟื้นกลับมาที่ $89.30 ใน ก.ค. 2569 · ผลตอบแทนรอบปี (ก.ค.68–ก.ค.69) = +25.9% · ราคาปัจจุบันอยู่ต่ำกว่า Fair Value $110 ราว 19%
+        SFM เปิดช่วง ก.ค. 2568 ที่ระดับต่ำสุดรอบปี $70.91 หลังตกจากจุดสูง $171.15 เนื่องจาก Q1 2569 รายงาน Comparable Store Sales −1.7% ต่ำกว่าคาด ราคาทยอยฟื้นตัวผ่านครึ่งหลังปี 2568 ก่อนปรับลงอีกครั้งในช่วง มี.ค.–เม.ย. 2569 ($74.99) จากความกังวลเศรษฐกิจ แล้วอยู่ที่ {{rd:px}} ณ ก.ย. 2569 (ใกล้ต่ำสุดของกรอบ 52 สัปดาห์ $64.75) · ราคาปัจจุบันอยู่ต่ำกว่า Fair Value {{rd:fv}} ราว {{rd:mos}}
       </p>
     </div>
   </section>
@@ -172,7 +172,7 @@
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ทั้ง 3 วิธีให้ค่าใกล้เคียงกัน ($104–$114) ชี้ว่า SFM มีมูลค่าเหมาะสมแถว $110 · P/E Valuation ให้ค่าต่ำสุดเพราะใช้ P/E เพียง 20x (อนุรักษ์นิยม) เทียบประวัติ 25–35x · EV/EBITDA และ Justified P/BV ให้ค่าสูงกว่าเล็กน้อย · ถ้า comps กลับมาเติบโต ตลาดอาจ re-rate P/E สูงขึ้นได้อีก · ความเสี่ยง: หาก EPS FY2026 ต่ำกว่า guidance ($5.32–5.48) FV อาจปรับลง
+        ทั้ง 3 วิธีให้ค่าใกล้เคียงกัน ($104–$114) ชี้ว่า SFM มีมูลค่าเหมาะสมแถว {{rd:fv}} · P/E Valuation ให้ค่าต่ำสุดเพราะใช้ P/E เพียง 20x (อนุรักษ์นิยม) เทียบประวัติ 25–35x · EV/EBITDA และ Justified P/BV ให้ค่าสูงกว่าเล็กน้อย · ถ้า comps กลับมาเติบโต ตลาดอาจ re-rate P/E สูงขึ้นได้อีก · ความเสี่ยง: หาก EPS FY2026 ต่ำกว่า guidance ($5.32–5.48) FV อาจปรับลง
       </p>
     </div>
   </section>
@@ -189,13 +189,13 @@
         <div class="scale">
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$92.43<br><small>เป้า Analyst</small></span>
+          <span style="text-align:center">$95.00<br><small>เป้า Analyst</small></span>
           <span style="text-align:right">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน $89.30 อยู่ใกล้โซน MOS 20% ($88) — แปลว่าถือว่า "น่าสนใจ" ในเชิง Value แต่ยังไม่ถึง Deep Value (MOS 30% = $77) · เป้านักวิเคราะห์เฉลี่ย $92.43 ใกล้ราคาปัจจุบัน (upside ~3.5%) ชี้ว่า Street ระมัดระวัง · หาก comps ฟื้นตัวกลับมาบวก ราคาเป้าหมายและ FV ควรปรับขึ้น
+        ราคาปัจจุบัน {{rd:px}} ต่ำกว่าโซน Deep Value (MOS 30% = {{rd:mos30}}) แล้ว — แปลว่าตลาดให้ส่วนลดสูงกว่าที่ FV รองรับ ควรตรวจว่า comps ที่อ่อนลงเป็นเรื่องชั่วคราวหรือโครงสร้าง · เป้านักวิเคราะห์เฉลี่ย $95.00 สูงกว่าราคาปัจจุบันราว 35% · หาก comps ฟื้นตัวกลับมาบวก ราคาเป้าหมายและ FV ควรปรับขึ้น
       </p>
     </div>
   </section>
@@ -206,7 +206,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">ส่วนต่างพอใช้ — ราคาใกล้โซน MOS 20% น่าทยอยสะสมสำหรับนักลงทุนระยะกลาง-ยาว</div>
+        <div class="txt">ส่วนต่างกว้าง — ราคาต่ำกว่าโซน MOS 30% แต่ต้องยืนยันว่า comps อ่อนลงชั่วคราว</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -284,7 +284,7 @@
           <li><b>Margin ขยายตัว:</b> Gross Margin เพิ่มจาก 36.9% FY2023 → 38.8% FY2025 ด้วย product mix shift ไปสินค้า private label + bulk food ที่ margin สูงกว่า</li>
           <li><b>Balance Sheet แกร่ง:</b> หนี้สินทางการเงินต่ำมาก ($81.6M) มี net cash จ่ายสุทธิ ~$175M — ยืดหยุ่นสูง สามารถ buyback หุ้นหรือ accelerate expansion</li>
           <li><b>Comps Rebound Potential:</b> Q1 2569 −1.7% เป็น "low base" — ถ้าฟื้นกลับมาบวกใน H2 2569 ราคาหุ้นอาจ re-rate แรง</li>
-          <li><b>Valuation Reset:</b> ราคาปัจจุบัน P/E 17x ต่ำสุดในรอบหลายปี (vs ประวัติ 25–35x) — ให้ margin of safety สำหรับนักลงทุนเชิง value</li>
+          <li><b>Valuation Reset:</b> ราคาปัจจุบัน P/E ~{{rd:pe}}x ต่ำสุดในรอบหลายปี (vs ประวัติ 25–35x) — ให้ margin of safety สำหรับนักลงทุนเชิง value</li>
         </ul>
       </div>
       <div class="box risk">
@@ -306,14 +306,14 @@
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
       <h2>SFM: หุ้น Growth-at-Reasonable-Price ที่ถูก Re-rate ลงจากความผิดหวัง Comps</h2>
-      <p>Sprouts Farmers Market เป็นธุรกิจที่มีคุณภาพสูง (ROE 38%, gross margin 38.8%, แทบไม่มีหนี้สินทางการเงิน) แต่ราคาหุ้นผ่านช่วงผันผวนในรอบปี — ตกลงจากจุดสูง $171 มาต่ำสุด $70.91 หลัง Q1 2569 รายงาน Comparable Store Sales −1.7% ต่ำกว่าคาด ทำให้ตลาด de-rate P/E จาก 30–35x เหลือ 17x ก่อนฟื้นตัวกลับมา +25.9% ในรอบปี · ณ ราคาปัจจุบัน $89.30 ซื้อขายใกล้ MOS 20% ของ Fair Value $110 — ให้ส่วนต่างความปลอดภัยพอใช้สำหรับนักลงทุนระยะกลาง-ยาว · catalyst หลักคือ Comps กลับมาบวกใน H2 2569 ซึ่งอาจนำไปสู่การ re-rate P/E กลับขึ้นอย่างรวดเร็ว · อย่างไรก็ดี ความเสี่ยงด้านการแข่งขันจาก Walmart/Amazon และแนวโน้ม organic ที่กำลังถูก democratize ต้องติดตามอย่างใกล้ชิด</p>
+      <p>Sprouts Farmers Market เป็นธุรกิจที่มีคุณภาพสูง (ROE 38%, gross margin 38.8%, แทบไม่มีหนี้สินทางการเงิน) แต่ราคาหุ้นผ่านช่วงผันผวนในรอบปี — ตกลงจากจุดสูง $171 มาต่ำสุด $70.91 หลัง Q1 2569 รายงาน Comparable Store Sales −1.7% ต่ำกว่าคาด ทำให้ตลาด de-rate P/E จาก 30–35x เหลือ 17x และราคายังอยู่ใกล้ต่ำสุด 52 สัปดาห์ · ณ ราคาปัจจุบัน {{rd:px}} ต่ำกว่า MOS 30% ของ Fair Value {{rd:fv}} — ให้ส่วนต่างความปลอดภัยกว้าง แต่ต้องติดตาม comps · catalyst หลักคือ Comps กลับมาบวกใน H2 2569 ซึ่งอาจนำไปสู่การ re-rate P/E กลับขึ้นอย่างรวดเร็ว · อย่างไรก็ดี ความเสี่ยงด้านการแข่งขันจาก Walmart/Amazon และแนวโน้ม organic ที่กำลังถูก democratize ต้องติดตามอย่างใกล้ชิด</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$92.43 (Buy)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$95.00 (Buy)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน $89.30 ใกล้โซน MOS 20% ($88) เหมาะสำหรับทยอยสะสมระยะยาว โดยเฉพาะถ้า Q2 2569 Comps ดีขึ้น · เพิ่มน้ำหนักที่โซน Deep Value $77 (MOS 30%) หากราคาปรับลงอีก · ผลตอบแทน Base Case 3 ปี ~+63.8% ถ้า EPS โตได้ 12%/ปีและ P/E re-rate กลับ 20x · ไม่มีปันผล — ต้องพึ่ง Capital Gain ล้วน
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน {{rd:px}} ต่ำกว่าโซน Deep Value {{rd:mos30}} (MOS 30%) เหมาะสำหรับทยอยสะสมระยะยาวเป็นงวด โดยเฉพาะถ้า Comps ดีขึ้น · ผลตอบแทน Base Case 3 ปี ~+63.8% ถ้า EPS โตได้ 12%/ปีและ P/E re-rate กลับ 20x · ไม่มีปันผล — ต้องพึ่ง Capital Gain ล้วน
       </div>
     </div>
   </section>
@@ -324,7 +324,7 @@
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มา: Yahoo Finance (ราคา $89.30 ณ 3 ก.ค. 2569 · ราคารายเดือน 1 ปี), StockAnalysis.com (งบการเงิน FY2025 · EPS TTM $5.21 · analyst target $92.43), Macrotrends (รายได้ย้อนหลัง · อัตรากำไร)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
