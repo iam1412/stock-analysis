@@ -116,7 +116,7 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งวด TTM ถึงไตรมาส Q3 FY2026 (มิ.ย. 2569) เว้นแต่ระบุเป็นอื่น</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">หุ้น 61.3M หุ้น (diluted)</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM $8.93 (ราคา 339.27 ÷ EPS)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM $8.93 (ราคา {{rd:px}} ÷ EPS)</div></div>
       <div class="metric"><div class="k">P/E มัธยฐาน 5 ปี</div><div class="v">28.7x</div><div class="d">ช่วง 25.6–39.1x (FY2021–FY2025, ราคาเฉลี่ยรายปีงบ ÷ EPS diluted งวดนั้น)</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~7.8x</div><div class="d">BVPS ~$41.3 (ประมาณจาก Equity/หุ้น)</div></div>
 
@@ -174,7 +174,7 @@
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/FCF ให้ค่าสูงสุดเพราะยังไม่ได้ปรับลงตามมัธยฐานย้อนหลัง ส่วน P/E (TTM) ให้ค่าต่ำสุดเพราะยึดมัธยฐาน P/E ย้อนหลัง 5 ปีของหุ้นเอง (28.7x) ที่ต่ำกว่าตัวคูณที่ตลาดให้อยู่ในปัจจุบันมาก
-        FV $300.96 ต่ำกว่าราคาตลาดปัจจุบัน ($339.27) สะท้อนว่าหุ้นเทรดที่พรีเมียมสูงกว่าค่ากลาง 5 ปีของตัวเอง margin of safety ติดลบ · <b>วิธีถ่วงน้ำหนัก:</b> ขา 1 (P/E TTM) กับขา 2 (P/E NTM) ใช้ตัวคูณมัธยฐานตัวเดียวกัน 28.7x จึงเป็น<b>ตระกูลเดียว นับเป็นเสียงเดียว</b> ตามกฎ 0.4c-bis — เฉลี่ยกันได้ $282.12 แล้วจึงถ่วงกับขา P/FCF ($319.80) เป็น $300.96 (ไม่ใช่เฉลี่ยตรงสามขาซึ่งจะให้น้ำหนักตัวคูณ P/E ชุดเดียว 2 ต่อ 1)
+        FV {{rd:fv}} ต่ำกว่าราคาตลาดปัจจุบัน ({{rd:px}}) สะท้อนว่าหุ้นเทรดที่พรีเมียมสูงกว่าค่ากลาง 5 ปีของตัวเอง margin of safety ติดลบ · <b>วิธีถ่วงน้ำหนัก:</b> ขา 1 (P/E TTM) กับขา 2 (P/E NTM) ใช้ตัวคูณมัธยฐานตัวเดียวกัน 28.7x จึงเป็น<b>ตระกูลเดียว นับเป็นเสียงเดียว</b> ตามกฎ 0.4c-bis — เฉลี่ยกันได้ $282.12 แล้วจึงถ่วงกับขา P/FCF ($319.80) เป็น {{rd:fv}} (ไม่ใช่เฉลี่ยตรงสามขาซึ่งจะให้น้ำหนักตัวคูณ P/E ชุดเดียว 2 ต่อ 1)
       </p>
     </div>
   </section>
@@ -209,7 +209,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt"><b>ไม่มี Margin of Safety (ราคาแพงกว่ามูลค่าเหมาะสมค่อนข้างมาก)</b><br>ราคาปัจจุบัน $339.27 สูงกว่า FV $300.96 ประมาณ 12.7% นักลงทุนใหม่ควรรอจังหวะย่อตัวก่อนทยอยสะสม ผู้ถือเดิมยังถือได้ตามธีมการเติบโตของ aftermarket</div>
+        <div class="txt"><b>ไม่มี Margin of Safety (ราคาแพงกว่ามูลค่าเหมาะสมค่อนข้างมาก)</b><br>ราคาปัจจุบัน {{rd:px}} สูงกว่า FV {{rd:fv}} ประมาณ 12.7% นักลงทุนใหม่ควรรอจังหวะย่อตัวก่อนทยอยสะสม ผู้ถือเดิมยังถือได้ตามธีมการเติบโตของ aftermarket</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -309,7 +309,7 @@
     <div class="verdict">
       <h2>คุณภาพธุรกิจดี แต่ราคาตึงมาก — รอจังหวะย่อใหญ่ก่อนสะสม</h2>
       <p>Woodward เป็นธุรกิจคุณภาพสูงในตลาด engine control systems ของอากาศยาน ได้อานิสงส์จากการ ramp ของ aftermarket เครื่องยนต์ LEAP/GTF ที่มาร์จิ้นสูงกว่างานติดตั้งใหม่มาก
-      ทำให้ ROE และมาร์จิ้นขยายตัวต่อเนื่อง แต่หลังราคาวิ่งขึ้น +43.6% ในรอบปี หุ้นเทรดที่พรีเมียม (P/E TTM ~38.0x เทียบมัธยฐานย้อนหลัง 5 ปี 28.7x) จนมูลค่าเหมาะสมที่ประเมินได้ ($300.96) ต่ำกว่าราคาตลาดค่อนข้างมาก
+      ทำให้ ROE และมาร์จิ้นขยายตัวต่อเนื่อง แต่หลังราคาวิ่งขึ้น +43.6% ในรอบปี หุ้นเทรดที่พรีเมียม (P/E TTM ~38.0x เทียบมัธยฐานย้อนหลัง 5 ปี 28.7x) จนมูลค่าเหมาะสมที่ประเมินได้ ({{rd:fv}}) ต่ำกว่าราคาตลาดค่อนข้างมาก
       ความเสี่ยงหลักอยู่ที่ความผันผวนของฝั่ง Industrial (รถบรรทุกจีน/oil & gas) ที่เคยฉุดผลประกอบการมาก่อน</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
@@ -330,7 +330,7 @@
     ข้อมูลงบการเงิน FY2020–FY2025 และ TTM จาก StockAnalysis.com • ปีบัญชี Woodward สิ้นสุด 30 ก.ย. ของทุกปี ไม่ใช่ปีปฏิทิน •
     ข้อมูลสัดส่วน aftermarket/OEM จาก Woodward IR ข่าวประชาสัมพันธ์ผลประกอบการ FY2025 (ir.woodward.com)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 7 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 22 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
