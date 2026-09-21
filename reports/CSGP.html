@@ -6,19 +6,19 @@
 <title>วิเคราะห์หุ้น CoStar Group (CSGP) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"CSGP","currency":"USD","price":29.09,"fairValue":52.03,"mos":44.1,"upside":78.9,"pe":null,"dividendYield":null,"roe":0.9}
+{"symbol":"CSGP","currency":"USD","price":29.09,"fairValue":91.86,"mos":68.3,"upside":215.8,"pe":null,"dividendYield":null,"roe":0.9}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 52.03,
+  "fv": 91.86,
   "values": {
     "px": 29.09,
     "priceDate": "2026-09-18",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
-    "fvLow": 47.65,
-    "fvHigh": 56.42,
+    "fvLow": 87.52,
+    "fvHigh": 100.69,
     "shares": 405197588,
     "bvps": 18.87,
     "scenarios": [
@@ -27,11 +27,11 @@
         "div": 0
       },
       {
-        "tgt": 75.69,
+        "tgt": 86.09,
         "div": 0
       },
       {
-        "tgt": 108.42,
+        "tgt": 143.6,
         "div": 0
       }
     ],
@@ -70,14 +70,14 @@
       ["ก.ย.26", 29.09]
     ],
     "min": 20,
-    "max": 80,
-    "grid": [40, 60],
+    "max": 100,
+    "grid": [40, 60, 80],
     "currency": "$",
     "highlight": [0, 8]
   },
   "gauge": {
     "min": 20,
-    "max": 100,
+    "max": 120,
     "fairLabelTop": true
   }
 }
@@ -116,7 +116,7 @@
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">$11.79B</div><div class="d">~405.2M หุ้นคงเหลือ (StockAnalysis /statistics/); ถัวเฉลี่ยปรับลด TTM ~418M</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~162x</div><div class="d">GAAP EPS TTM $0.18 ใกล้ 0 (Homes.com burn) — ไม่ reliable ใช้ EV/Revenue แทน</div></div>
-      <div class="metric"><div class="k">EV/Revenue (TTM)</div><div class="v">~3.3x</div><div class="d">ต่ำกว่ามัธยฐาน 5 ปี ~10.9x (คำนวณจากราคาเฉลี่ยรายปี × หุ้นถัวเฉลี่ย ช่วงที่ margin สูงกว่านี้มาก)</div></div>
+      <div class="metric"><div class="k">EV/Revenue (TTM)</div><div class="v">~3.3x</div><div class="d">ต่ำกว่ามัธยฐาน 5 ปีของตัวเอง 10.9x มาก (คำนวณจากตาราง [3]: ราคาเฉลี่ยรายปี × หุ้นถัวเฉลี่ย + หนี้ − เงินสดปลายปี ÷ รายได้ — ต่ำสุดรายปี 9.9x)</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ~$18.87 (equity $7.95B / ~419.5M หุ้น)</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$7M</div><div class="d">ลดจาก $139M (FY24), $375M (FY23) — Homes.com burn</div></div>
@@ -154,24 +154,24 @@
 
   <!-- ===== 3. VALUATION ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">Sum-of-Parts + EV/Revenue (P/E ไม่ reliable เพราะ Homes.com burn)</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">EV/Revenue ที่ตัวคูณมัธยฐานย้อนหลังของหุ้นเอง — ตระกูลเดียว ยังไม่ผ่านการยืนยัน (P/E ไม่ reliable เพราะ Homes.com burn)</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. Sum-of-Parts (แยกมูลค่าตามธุรกิจ)</div><div class="mdesc">Commercial (CoStar+LoopNet) EBITDA $642M × 19x EV/EBITDA + Apartments.com revenue $1,248M × 6.5x + Homes.com option value ~$300M + net cash $111M ÷ 405.2M หุ้น (อินพุต/ตัวคูณยกจากรอบก่อน ไม่ได้ตรวจซ้ำและไม่มีมัธยฐานวัดจริง)</div></div>
-        <div class="mval">$51.14</div>
+        <div><div class="mname">1. EV/Revenue ที่มัธยฐาน 5 ปีของ CSGP เอง</div><div class="mdesc">Revenue TTM $3.556B × EV/Revenue 10.9x + net cash $111M ÷ 405.2M หุ้น · 10.9x = มัธยฐาน 5 ปีที่วัดจากตาราง [3] (ไม่ใช่ตัวคูณปัจจุบัน ไม่ใช่ค่าตั้งเอง)</div></div>
+        <div class="mval">$96.20</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. EV/Revenue (whole-company, ตัดปัจจัย EPS บิดเบือน)</div><div class="mdesc">Revenue TTM $3.556B × EV/Revenue 6.0x + net cash $111M ÷ 405.2M หุ้น · 6.0x เป็นตัวคูณที่ตั้งเอง (ไม่ใช่ค่าวัดจริง): มัธยฐาน 5 ปีของ CSGP เองที่วัดได้ ~10.9x เกิดในช่วง Op margin 11–22% (FY2021–23) ขณะนี้ 2.2% จึงหักลดลงราว 45% · ตัวคูณปัจจุบัน ~3.3x ไม่ได้ใช้เป็นที่มา</div></div>
-        <div class="mval">$52.93</div>
+        <div><div class="mname">2. EV/Revenue ที่ค่าล่าสุดที่วัดได้ (FY2025)</div><div class="mdesc">Revenue TTM $3.556B × EV/Revenue 9.9x + net cash $111M ÷ 405.2M หุ้น · 9.9x = ตัวคูณปีงบ FY2025 ที่วัดจากตาราง [3] · ★ ตระกูลเดียวกับวิธี 1 (ตัวคูณ×รายได้เหมือนกัน) นับเป็นเสียงเดียว ไม่ใช่การยืนยันอิสระ — ใส่ไว้เพื่อแสดงช่วงผลลัพธ์</div></div>
+        <div class="mval">$87.52</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}} (วิธี 1+2)</span></div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}} (EV/Revenue 9.9x–11.4x ตระกูลเดียว)</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        FV = ค่าเฉลี่ยวิธี 1 (Sum-of-Parts) และ 2 (EV/Revenue) ที่ชี้ไปทาง ~$51–53 ใกล้กัน แต่ทั้งคู่ใช้ตัวคูณที่ตั้งเอง (ไม่มีมัธยฐาน P/E ใช้ได้ — กำไรเกือบศูนย์ทำให้ 3 ใน 5 ปีตัดออก) จึงเป็นการประเมินที่ยังไม่ผ่านการยืนยันด้วยตัวคูณวัดจริง · กรอบ = ค่าเฉลี่ยเมื่อ EV/Revenue ขยับ 5x–7x
-        <b>ตัวเช็คอิสระ (ไม่รวมในค่าเฉลี่ย):</b> ที่ FV นี้ EV ≈ $21.0B = ~26x Adjusted EBITDA กลางกรอบ guidance ปี 2569 ($780–820M) เทียบ ~14.6x ที่ราคาตลาด และเป้าเฉลี่ยนักวิเคราะห์ (ตัวแทนฉันทามติ ไม่ใช่ขาของ FV) ต่ำกว่า FV มาก — MOS เกิน 40% จึงถือว่าประมาณการสูงและ<b>ยังไม่ได้รับการยืนยัน</b>
-        ไม่ใช้ DCF/DDM เพราะยังไม่มีตารางกระแสเงินสดที่ตรวจซ้ำได้ และไม่มีปันผล
+        <b>FV นี้ = ค่าเฉลี่ยของสองการคำนวณในตระกูลเดียว (EV/Revenue) และยังไม่ผ่านการยืนยัน:</b> ตัวคูณมัธยฐาน 5 ปีของ CSGP เอง 10.9x วัดจากตาราง [3] (ราคาเฉลี่ยรายปี × หุ้นถัวเฉลี่ยปรับลด + หนี้ − เงินสดปลายปี ÷ รายได้): 9.9x (FY2025) · 10.7x (FY2024) · 11.4x (FY2023) · 10.9x (FY2022) · 15.7x (FY2021) — เป็นค่าประมาณ เพราะใช้หุ้นถัวเฉลี่ยไม่ใช่หุ้นคงเหลือ · กรอบ = 9.9x–11.4x (ต่ำสุด และค่าที่สองจากสูงสุด ตัด 15.7x ของ FY2021)
+        การหักส่วนลด 45% เพราะ margin ต่ำที่เคยใช้ถูกตัดออก: ปี FY2024–25 ที่ Op margin ประมาณ 0% ตลาดยังให้ 9.9–10.7x จึงไม่มีหลักฐานรองรับส่วนลดนั้น · แต่ 9 เดือนที่ผ่านมาตลาดให้เพียง ~3.3x ซึ่งประวัติของตัวเองอธิบายไม่ได้ (regime ใหม่) — ตัวคูณ 6.0x จะได้ราว $53 และ 3.3x คือราคาตลาด (ส่วนต่างเป็นศูนย์โดยโครงสร้าง)
+        <b>ตัวเช็คอิสระ (ไม่ใช่ขาของ FV) ค้านตัวเลขนี้:</b> ที่ FV นี้ EV ≈ $37.1B = ~46x Adjusted EBITDA กลางกรอบ guidance ปี 2569 ($780–820M) เทียบ ~14.6x ที่ราคาตลาด และเป้าเฉลี่ยนักวิเคราะห์ต่ำกว่า FV มาก — MOS เกิน 40% จึงเป็นเพียงขอบบน <b>ยังไม่ได้รับการยืนยัน</b> · ไม่ใช้ Sum-of-Parts เดิม (EBITDA Commercial, 19x, 6.5x, Homes.com option) เพราะไม่มีตารางที่ตรวจซ้ำได้และไม่มีตัวคูณวัดจริง · ไม่ใช้ DCF/DDM เพราะยังไม่มีตารางกระแสเงินสดที่ตรวจซ้ำได้ และไม่มีปันผล
       </p>
     </div>
   </section>
@@ -186,9 +186,9 @@
           <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
-          <span style="text-align:center">$37.30<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span>$37.30<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:center">{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span style="text-align:center">{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
@@ -206,7 +206,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">MOS สูง (>20%) — ราคาต่ำกว่ามูลค่าเหมาะสมมาก แต่ตัวเลขนี้อิงตัวคูณที่ตั้งเองและยังไม่ได้รับการยืนยัน ควรถือเป็นขอบบนของช่วงประมาณการ</div>
+        <div class="txt">MOS สูงมาก (>40%) — แต่มาจากขาเดียว (EV/Revenue ที่ตัวคูณมัธยฐานย้อนหลังของหุ้นเอง) และขัดกับเป้านักวิเคราะห์กับตัวเช็ค EV/EBITDA — ยังไม่ได้รับการยืนยัน ควรถือเป็นขอบบนของช่วงประมาณการ ไม่ใช่ส่วนเผื่อที่พิสูจน์แล้ว</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -225,7 +225,7 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • อิง revenue TTM $3.556B + EV/Revenue exit multiple (ไม่ใช้ EPS เพราะ GAAP EPS ใกล้ศูนย์) • ไม่มีปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • อิง revenue TTM $3.556B + EV/Revenue exit multiple ที่ผูกกับช่วงมัธยฐานย้อนหลัง (ไม่ใช้ EPS เพราะ GAAP EPS ใกล้ศูนย์) • ไม่มีปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>Rev +6%/ปี</span></div>
@@ -247,9 +247,9 @@
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>Revenue ปี 3</span><span>~$5,268M</span></li>
-            <li><span>EV/Revenue ออก</span><span>5.8x</span></li>
+            <li><span>EV/Revenue ออก</span><span>6.6x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}} (ไม่จ่าย)</span></li>
-            <li><span>สถานการณ์</span><span>Residential รักษา EBITDA เป็นบวกต่อจาก Q2, Commercial โตสองหลักต่อเนื่อง, multiple ฟื้นเป็น ~5.8x</span></li>
+            <li><span>สถานการณ์</span><span>Residential รักษา EBITDA เป็นบวกต่อจาก Q2, Commercial โตสองหลักต่อเนื่อง, multiple ฟื้นครึ่งทางจาก ~3.3x ไปสู่ต่ำสุดรายปีของช่วงย้อนหลัง 9.9x (จุดกึ่งกลาง 6.6x — สมมติฐานสถานการณ์ เป้า Base ต่ำกว่า FV ราว 6%)</span></li>
           </ul>
         </div>
       </div>
@@ -260,9 +260,9 @@
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>Revenue ปี 3</span><span>~$5,843M</span></li>
-            <li><span>EV/Revenue ออก</span><span>7.5x</span></li>
+            <li><span>EV/Revenue ออก</span><span>9.9x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}} (ไม่จ่าย)</span></li>
-            <li><span>สถานการณ์</span><span>Residential ขยาย margin เร็วกว่าคาด + ซื้อหุ้นคืนต่อเนื่อง (13.75M หุ้น/$587M ใน 2569 ถึง Q2) + re-rate กลับสู่ ~7.5x</span></li>
+            <li><span>สถานการณ์</span><span>Residential ขยาย margin เร็วกว่าคาด + ซื้อหุ้นคืนต่อเนื่อง (13.75M หุ้น/$587M ใน 2569 ถึง Q2) + re-rate เต็มกลับสู่ต่ำสุดรายปีของช่วงย้อนหลัง ~9.9x (FY2025)</span></li>
           </ul>
         </div>
       </div>
@@ -270,7 +270,7 @@
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
       เพราะ GAAP EPS ใกล้ศูนย์และผันผวนสูงจาก Homes.com amortization/spend การใช้ P/E ธรรมดาไม่ให้ภาพที่มีประโยชน์ —
       โมเดลนี้จึงใช้ revenue growth × EV/Revenue exit multiple แทน ซึ่งสะท้อนมูลค่าธุรกิจได้ตรงกว่าในช่วง transition
-      ในกรณี Bear ผลตอบแทนเป็นลบเล็กน้อยจาก multiple ที่ลดลงกว่าปัจจุบัน — ราคา exit ทุกฉากอิงสมมติฐานตัวคูณที่ตั้งเอง (จำนวนหุ้นคงที่ ไม่รวม buyback เพิ่ม)
+      ในกรณี Bear ผลตอบแทนเป็นลบเล็กน้อยจาก multiple ที่ลดลงกว่าปัจจุบัน (2.5x เป็นสมมติฐานของฉาก) · Base ใช้จุดกึ่งกลางระหว่างตัวคูณปัจจุบันกับต่ำสุดรายปีย้อนหลัง และ Bull ใช้ต่ำสุดรายปีย้อนหลัง (9.9x ตัวคูณที่วัดจากตาราง [3]) — ผลตอบแทน Base/Bull สูงมากเพราะตัวคูณกลับสู่ระดับที่ตลาดเคยให้ ไม่ใช่การพยากรณ์ที่ยืนยันแล้ว (จำนวนหุ้นคงที่ ไม่รวม buyback เพิ่ม)
       และราคาอาจต่ำกว่าจุดต่ำสุด 52 สัปดาห์ $25.89 ได้หากมี guidance cut รอบใหม่
     </p>
   </section>
@@ -295,9 +295,9 @@
         <ul>
           <li><b>ความยั่งยืนของกำไรยังไม่พิสูจน์:</b> Residential เป็นบวกเพียงไตรมาสเดียว ($12M) และ GAAP EPS TTM ยังแค่ $0.18 — ถ้าไตรมาสถัดไปกลับไปขาดทุนภาพ "inflection" จะพังทันที</li>
           <li><b>ราคายังต่ำมากแม้ผลดี:</b> ตลาดไม่ให้ราคาตามผลไตรมาส 2 (ราคา $29 ใกล้ต่ำสุดรอบปี) — อาจสะท้อนความกังวลที่ผมไม่ได้ตรวจยืนยัน เช่น คุณภาพกำไรหรือการแข่งขัน</li>
-          <li><b>FV ไม่ผ่านการยืนยันด้วยตัวคูณวัดจริง:</b> ทั้ง 2 วิธีใช้ตัวคูณที่ตั้งเอง และ FV ที่ ~26x EBITDA กลางกรอบ guidance สูงกว่ามาก ถ้าตลาดคงตัวคูณต่ำ MOS จะหายไป</li>
+          <li><b>FV อยู่บนขาเดียวและขัดกับตัวเช็คอิสระ:</b> ตัวคูณมัธยฐานย้อนหลัง 10.9x ให้ FV ที่เท่ากับ ~46x EBITDA กลางกรอบ guidance (ตลาด ~14.6x) และสูงกว่าเป้านักวิเคราะห์มาก ถ้าตลาดคงตัวคูณต่ำ MOS จะหายไป</li>
           <li><b>คู่แข่งใน residential แข็งแกร่ง:</b> Zillow ครองส่วนแบ่งตลาดหลักอยู่แล้ว การแย่งชิงพื้นที่ต้องใช้เงินมหาศาลต่อเนื่อง ไม่รับประกันว่า Homes.com จะไล่ทันได้จริง</li>
-          <li><b>P/E ไม่ reliable, valuation ต้องพึ่ง multiple assumption:</b> ที่ตลาดให้อยู่ตอนนี้ (EV/Revenue ~3.3x) FV จะต่ำกว่าที่คำนวณได้มาก</li>
+          <li><b>P/E ไม่ reliable, valuation ต้องพึ่ง multiple assumption:</b> ที่ตลาดให้อยู่ตอนนี้ (EV/Revenue ~3.3x) ส่วนต่างเป็นศูนย์ ผลลัพธ์ทั้งช่วงขึ้นกับว่าตัวคูณจะกลับมาหรือไม่</li>
         </ul>
       </div>
     </div>
@@ -307,12 +307,12 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>ผลประกอบการเริ่มพลิก แต่ราคายังไม่ตอบรับ — MOS สูงแต่ยังไม่ผ่านการยืนยัน</h2>
+      <h2>ผลประกอบการเริ่มพลิก แต่ราคายังไม่ตอบรับ — MOS สูงมากจากขาเดียว ยังไม่ผ่านการยืนยัน</h2>
       <p>
         ราคาลดลงราว 58% จากต้นกราฟ ขณะที่ผลไตรมาส 2 ปี 2569 ดีขึ้นชัด: รายได้ +18% เป็น $925M, กำไรสุทธิ $55M, Adj. EBITDA $184M และ Residential เป็นบวกครั้งแรก
         FCF TTM +$227M งบดุลเป็น net cash เล็กน้อย ($111M) และบริษัทซื้อหุ้นคืนต่อเนื่อง — ทิศทางธุรกิจดีกว่าที่ราคาสะท้อน
-        แต่ FV ในรายงานนี้ ({{rd:fv}}) มาจากตัวคูณที่ตั้งเอง ไม่ใช่ค่าวัดจริง และเท่ากับ ~26x EBITDA กลางกรอบ guidance ขณะที่เป้านักวิเคราะห์เฉลี่ยอยู่ที่ $37.30 เท่านั้น
-        จึงควรอ่าน MOS ว่าเป็นขอบบนของช่วงประมาณการ ไม่ใช่ส่วนเผื่อความปลอดภัยที่พิสูจน์แล้ว · เหมาะกับนักลงทุนที่รับความผันผวนสูงได้ ไม่ใช่หุ้น "ปลอดภัย" สำหรับพอร์ตอนุรักษ์นิยม
+        FV ในรายงานนี้ ({{rd:fv}}) มาจากขาเดียว คือ EV/Revenue ที่ตัวคูณมัธยฐานย้อนหลังของหุ้นเอง (วัดได้ แต่เป็นตัวคูณของยุคที่ตลาดให้ราคาสูงกว่านี้มาก) และเท่ากับ ~46x EBITDA กลางกรอบ guidance ขณะที่เป้านักวิเคราะห์เฉลี่ยอยู่ที่ $37.30 เท่านั้น
+        จึงควรอ่าน MOS ว่าเป็นขอบบนของช่วงประมาณการ ไม่ใช่ส่วนเผื่อความปลอดภัยที่พิสูจน์แล้ว — ความเชื่อมั่นต่อ FV ต่ำ · เหมาะกับนักลงทุนที่รับความผันผวนสูงได้ ไม่ใช่หุ้น "ปลอดภัย" สำหรับพอร์ตอนุรักษ์นิยม
       </p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
@@ -320,7 +320,7 @@
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$37.30 (Buy, 20 ราย)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ถ้าสนใจ ควรทยอยสะสมในสัดส่วนจำกัด (satellite position) เพราะ FV ยังไม่ผ่านการยืนยัน และ downside ยังเปิดหากผลไตรมาสถัดไป (งบ 27 ต.ค. 2569) ไม่ต่อเนื่อง —
+        💡 <b>กลยุทธ์:</b> ถ้าสนใจ ควรทยอยสะสมในสัดส่วนจำกัด (satellite position) เพราะ FV อยู่บนขาเดียวและยังไม่ผ่านการยืนยัน และ downside ยังเปิดหากผลไตรมาสถัดไป (งบ 27 ต.ค. 2569) ไม่ต่อเนื่อง —
         ติดตาม 3 สัญญาณ: (1) Residential Adj. EBITDA ยังเป็นบวกต่อไหม (2) Commercial Adj. EBITDA ทรงตัวระดับ $170M+ ต่อไตรมาสไหม (3) FCF ยังเป็นบวกต่อเนื่องไหม
       </div>
     </div>
