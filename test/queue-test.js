@@ -1360,8 +1360,8 @@ const applyEditsRacePromise = testApplyEditsStdin(ok);
   ok(dm.mode === 'UPDATE-LIGHT' && /โหมด \*\*UPDATE-LIGHT\*\*/.test(eb) && /⚠ EPS \(คำเตือน — ไม่เปลี่ยนโหมด\)/.test(eb) && /ใบ "EPS ฐาน" 5/.test(eb) && /vendor 3 \(GAAP TTM diluted\)/.test(eb) && !/ยกระดับจาก UPDATE-LIGHT/.test(eb), 'W11: EPS ต่าง 40% ไม่มีงบ → ยัง LIGHT + เตือนเห็นสองฐาน', eb);
   ok(Pp.decideMode({ exists: true, rec: {}, lightRule: 'new', stmt: { after: true, detail: 'x' } }).mode === 'UPDATE' && Pp.decideMode({ exists: true, rec: {}, lightRule: 'new', stmt: { after: null } }).mode === 'UPDATE' && Pp.decideMode({ exists: true, rec: { bucket: 'FULL' }, lightRule: 'new', stmt: { after: false } }).mode === 'UPDATE' && Pp.decideMode({ exists: false, rec: {}, lightRule: 'new' }).mode === 'NEW', 'W11: decideMode — มีงบ/ไม่รู้/bucket FULL = UPDATE · ไม่มีไฟล์ = NEW');
   // 8) --light-rule legacy คืนพฤติกรรมเดิม
-  ok(T.lightRuleFromArgv(['node', 'queue.js', 'prep', 'AAA', '--light-rule', 'legacy'], {}) === 'legacy' && T.lightRuleFromArgv(['x'], { LIGHT_RULE: 'legacy' }) === 'legacy' && T.lightRuleFromArgv(['x'], {}) === 'new', 'W11: lightRuleFromArgv — argv/env · default new');
-  let bad = null; try { T.lightRuleFromArgv(['--light-rule', 'foo'], {}); } catch (e) { bad = e; }
+  ok(T.parseLightRule('legacy', {}) === 'legacy' && T.parseLightRule(null, { LIGHT_RULE: 'legacy' }) === 'legacy' && T.parseLightRule(null, {}) === 'new' && T.parseLightRule('new', { LIGHT_RULE: 'legacy' }) === 'new', 'W11: parseLightRule — ค่า flag ชนะ env · default new');
+  let bad = null; try { T.parseLightRule('foo', {}); } catch (e) { bad = e; }
   ok(bad && /new\|legacy/.test(bad.message), 'W11: --light-rule ค่าแปลก → throw');
   const legacyRow = T.triage([{ symbol: 'USAA', reason: 'drift-gt-15pct', diffPct: 40 }], { footerAgeOf: () => 30, lightRule: 'legacy', statementAfterOf: st })[0];
   ok(legacyRow.bucket === 'LIGHT' && legacyRow.stmt === undefined, 'W11: legacy → ไม่ดูงบ/ค่าขยับ (drift-gt = LIGHT เดิม)');
@@ -1375,11 +1375,50 @@ const applyEditsRacePromise = testApplyEditsStdin(ok);
       const r = one({ symbol: 'USBB', reason, diffPct: 20 }, () => ({ after }));
       const isContent = ['PREPATCH', 'LIGHT', 'FULL'].includes(base);
       ok(isContent ? ['PREPATCH', 'LIGHT', 'FULL'].includes(r.bucket) : r.bucket === base, `W11: กฎใหม่ครอบ ${reason} (stmt=${after}) → ${r.bucket}`);
-      if (isContent && after !== false) ok(r.bucket === 'FULL', `W11: ${reason} + stmt=${after} → FULL`);
+      if (isContent && after === true) ok(r.bucket === 'FULL', `W11: ${reason} + stmt=true → FULL`);
+      // ไม่ทราบ: flip (PREPATCH) ห้ามยกเป็น worker · แถว worker (LIGHT/FULL) = FULL
+      if (isContent && after === null) ok(base === 'PREPATCH' ? r.bucket === 'PREPATCH' : r.bucket === 'FULL', `W11: ${reason} + stmt=null → ${base === 'PREPATCH' ? 'PREPATCH' : 'FULL'}`, r.bucket);
     }
   }
   ok(one({ symbol: 'USBB', reason: 'mos-sign-flip' }, noStmt, { footerAgeOf: () => 120 }).bucket === 'LIGHT', 'W11: flip + ไม่มีงบ + footer >90 วัน → LIGHT (age เดิม)');
   ok(one({ symbol: 'USBB', reason: 'bad-chart' }, noStmt).bucket === 'FULL', 'W11: bad-chart = FULL เสมอ');
+  // follow-up: ไม่ทราบวันงบ แยกชนิด · flip ไม่ถูกยกเป็น worker · สรุปใน preflight
+  const unk = () => ({ after: null, kind: 'fetch-failed', detail: 'fetch-failed — ทดสอบ' });
+  const rp = one({ symbol: 'USCC', reason: 'mos-sign-flip' }, unk);
+  ok(rp.bucket === 'PREPATCH' && rp.stmtNote === 'statement-unknown' && rp.stmtKind === 'fetch-failed' && /fetch-failed/.test(rp.stmtWhy), 'W11: PREPATCH + null → PREPATCH + note statement-unknown (kind ใน stmtWhy)', JSON.stringify([rp.bucket, rp.stmtNote, rp.stmtWhy]));
+  const rd = one({ symbol: 'USCC', reason: 'drift-gt-15pct', diffPct: 20 }, unk);
+  ok(rd.bucket === 'FULL' && rd.escalated === 'stmt-unknown', 'W11: drift-20 + null → FULL', JSON.stringify([rd.bucket, rd.escalated]));
+  ok(one({ symbol: 'USCC', reason: 'mos-sign-flip' }, unk, { footerAgeOf: () => 120 }).bucket === 'LIGHT', 'W11: PREPATCH + null + footer >90 วัน → LIGHT (age เดิม — เจตนาคงพฤติกรรมเก่า)');
+  ok(one({ symbol: 'USAA', reason: 'mos-sign-flip' }, st).bucket === 'FULL' && one({ symbol: 'USBB', reason: 'mos-sign-flip' }, st).bucket === 'PREPATCH', 'W11: mos-sign-flip × stmt true → FULL · false → PREPATCH');
+  // ชนิดของ unknown จาก SEC (ฉีด fetcher) — curl/SEC ล้ม ≠ ไม่มีข้อมูลผู้ยื่น
+  const cache2 = new Map();
+  const okTick = (u) => (u.includes('company_tickers') ? JSON.stringify({ 0: { cik_str: 1, ticker: 'FPI' }, 1: { cik_str: 2, ticker: 'ODD' }, 2: { cik_str: 3, ticker: 'BOOM' } })
+    : /CIK0000000001/.test(u) ? JSON.stringify({ filings: { recent: { form: ['6-K', '6-K'], filingDate: ['2026-08-01', '2026-07-01'] } } })
+    : /CIK0000000002/.test(u) ? JSON.stringify({ filings: { recent: { form: ['4'], filingDate: ['2026-08-01'] } } }) : (() => { throw new Error('curl exit 22'); })());
+  ok(EC.secLookup('NOPE', { fetchText: okTick, cache: cache2 }).kind === 'no-cik' && EC.secLookup('FPI', { fetchText: okTick, cache: cache2 }).kind === '6k-only' && EC.secLookup('ODD', { fetchText: okTick, cache: cache2 }).kind === 'no-statement-forms' && EC.secLookup('BOOM', { fetchText: okTick, cache: cache2 }).kind === 'fetch-failed', 'W11: secLookup แยก kind — no-cik · 6k-only · no-statement-forms · fetch-failed');
+  ok(EC.secLookup('AAPL', { fetchText: () => { throw new Error('boom'); }, cache: new Map() }).kind === 'fetch-failed', 'W11: curl/SEC ล้มตั้งแต่ ticker map → fetch-failed (ไม่ใช่ null เงียบ)');
+  const stFail = P.statementAfterOfWith({ symbols: {} }, () => '<footer>ข้อมูล ณ 1 ก.ค. 2569</footer>', { today: '2026-09-22', isThai: () => false, sec: (x) => EC.secLookup(x, { fetchText: okTick, cache: cache2 }) });
+  ok(stFail('BOOM').after === null && stFail('BOOM').kind === 'fetch-failed' && stFail('NOPE').kind === 'no-cik' && stFail('FPI').kind === '6k-only', 'W11: statementAfterOfWith ส่ง kind ของ unknown ต่อ');
+  ok(P.statementAfterOfWith({ symbols: {} }, () => '<p>ไม่มี footer</p>', { today: '2026-09-22', isThai: () => false })('ZZZ').kind === 'footer-unreadable', 'W11: footer อ่านไม่ได้ → kind footer-unreadable');
+  const sumRows = P.plan([{ symbol: 'BOOM', reason: 'drift-gt-15pct', diffPct: 20 }, { symbol: 'FPI', reason: 'mos-sign-flip' }, { symbol: 'USBB', reason: 'drift-gt-15pct', diffPct: 20 }], '2026-09-22',
+    { ageLimit: 0, footerAgeOf: () => 30, statementAfterOf: (x) => (x === 'USBB' ? { after: false } : stFail(x)) });
+  const sumLine = P.unknownSummary(sumRows);
+  ok(sumLine === '⚠ statement unknown: 2 (fetch-failed 1) · 6k-only 1', 'W11: preflight สรุป unknown — นับ fetch-failed แยก', sumLine);
+  ok(P.unknownSummary(P.plan([{ symbol: 'USBB', reason: 'drift-gt-15pct', diffPct: 20 }], '2026-09-22', { ageLimit: 0, footerAgeOf: () => 30, statementAfterOf: () => ({ after: false }) })) === null, 'W11: ไม่มี unknown → ไม่พิมพ์บรรทัดสรุป');
+  ok(P.upsertRow(null, sumRows[0]).stmtKind === 'fetch-failed', 'W11: upsertRow เก็บ stmtKind ลง state');
+  // --light-rule ลงทะเบียนใน args.js: ทั้งสองรูป · ก่อน/หลัง symbol · symbol ต้องไม่เป็น LEGACY
+  {
+    const A2 = require('../tools/queue/args.js');
+    const forms = [['prep', 'AAPL', '--light-rule', 'legacy'], ['prep', '--light-rule', 'legacy', 'AAPL'], ['prep', 'AAPL', '--light-rule=legacy'], ['prep', '--light-rule=legacy', 'AAPL']];
+    for (const f of forms) {
+      let r; try { r = A2.parseArgs(f); } catch (e) { r = { err: e.message }; }
+      ok(r.sym === 'AAPL' && r.val && r.val('--light-rule') === 'legacy' && r.cmd === 'prep', `W11: args — ${f.join(' ')} → sym AAPL · light-rule legacy`, JSON.stringify([r.cmd, r.sym, r.err]));
+    }
+    const sh2 = A2.parseArgs(['ship', 'AAPL', '--light-rule', 'legacy']);
+    ok(sh2.sym === 'AAPL' && sh2.cmd === 'ship', 'W11: ship รับ --light-rule แต่ไม่ถือเป็น symbol');
+    let e2 = null; try { A2.parseArgs(['prep', 'AAPL', '--light-rule']).val('--light-rule'); } catch (e) { e2 = e; }
+    ok(e2 && /--light-rule ต้องมีค่า/.test(e2.message), 'W11: --light-rule ไม่มีค่า → error');
+  }
   // BUG-001 · BUG-008
   const hsN = Pp.hardStock({}, { baseEPS: 2 }, { epsTTM: -0.4 });
   ok(hsN.hard && /vendor EPS TTM ≤ 0/.test(hsN.why) && !Pp.hardStock({}, { baseEPS: 2 }, { epsTTM: 1 }).hard, 'W11/BUG-001: vendor EPS TTM ≤ 0 → หุ้นยาก (pre-profit) แม้ EPS ฐานใบเก่าเป็นบวก');

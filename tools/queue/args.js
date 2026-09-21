@@ -1,5 +1,5 @@
 'use strict';
-const VALUE_FLAGS = new Set(['--mode', '--model', '--brand', '--median-spec', '--tags', '--message', '--age']);
+const VALUE_FLAGS = new Set(['--mode', '--model', '--brand', '--median-spec', '--tags', '--message', '--age', '--light-rule']);
 /** แยก argv ของ runbook: รับทั้ง --flag value และ --flag=value · flag ที่ต้องมีค่าแล้วไม่มี = error ชัด ไม่ใช่ garbage
  *  ★ แตก `--flag=value` **เฉพาะ flag ใน VALUE_FLAGS** — boolean flag ที่พิมพ์ `--force=true` เคยถูกแตกเป็น
  *    ['--force','true'] แล้ว 'true' กลายเป็น positional ตัวแรก ⇒ `ship --force=true AAPL` ไป ship หุ้นชื่อ "TRUE"

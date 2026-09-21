@@ -7,7 +7,9 @@
  * ★ กฎ LIGHT/FULL ใหม่ (เจ้าของตัดสิน 22 ก.ย. 69 · docs/decisions.md §9) — default; `--light-rule legacy` = พฤติกรรมเดิม 1 release:
  *   LIGHT ⇔ ไม่มีงบไตรมาส/ปีที่ประกาศหลังวันที่ footer "ข้อมูล ณ" · FULL ถ้ามีงบใหม่ / **ตัดสินวันงบไม่ได้** / ราคาขยับ >30% (ค่า `diffPct` ที่ cron บันทึก)
  *   ช่วงกลาง drift 15–30% ไม่มีงบใหม่ = LIGHT · BUCKET ข้างล่างคือ bucket ฐานตาม reason (legacy) — กฎใหม่ปรับทับใน triage()
- *   ★ `diffPct` = เทียบราคา**ในรายงาน** (ไม่ใช่ปิดเมื่อวาน): ใบที่ถูก freeze ไว้หลายวันจะสะสม — ดู ISSUE ใน decisions.md
+ *   ★ `diffPct` = เทียบกับราคาที่เก็บ**ในรายงาน** (= ราคาที่ cron patch ครั้งล่าสุด) — ในภาวะปกติคือราคาปิดเมื่อวาน · สะสมเกินหนึ่งวันเฉพาะแถวที่ถูก freeze ค้างหลายวัน
+ *   และการสะสมผิดทางปลอดภัย (FULL เกินจริง ไม่ใช่ขาด) · ช่องโหว่ที่ยอมรับ: split อัตราเล็ก (~20–25% เช่น 5:4) ผ่านเป็น LIGHT ได้ — กฎเดิมก็มองไม่เห็นเช่นกัน
+ *   วันงบไม่ทราบ (stmt=null): แถว PREPATCH (flip) คง PREPATCH + บันทึก `statement-unknown` (ห้ามยก no-worker row เป็น worker) · แถว LIGHT/FULL = FULL
  * เพิ่ม reason ใหม่ที่ไหน = ต้องเพิ่มที่นี่ (queue-test ยิงทุก reason)
  */
 const BUCKET = {
@@ -27,18 +29,17 @@ const ACTION = {
   UNKNOWN: 'reason ไม่รู้จัก — เพิ่มใน tools/queue/triage.js',
 };
 const FRESH_DAYS = 7;    // CLAUDE.md §3.1
-const STALE_DAYS = 90;
+const STALE_DAYS = 90;   // WS6 ข้อ 3: ใบอายุ >1 ไตรมาส ต้องเข้าคิวแม้ราคาไม่ขยับ
 const FULL_DRIFT_PCT = 30;   // เจ้าของ 22 ก.ย. 69: ขยับ >30% = FULL (cron freeze ที่ >25% เป็น suspect-split — triage ตัดสินจากค่า ไม่ใช่ชื่อ reason)
 
-/** อ่านตัวเลือก --light-rule จาก argv/env (queue.js/args.js ยังไม่รู้จัก flag นี้ — ไฟล์นอกขอบเขตงาน W11) → 'new'|'legacy' */
-function lightRuleFromArgv(argv, env) {
-  const a = argv || process.argv, e = env || process.env;
-  const i = a.indexOf('--light-rule');
-  const v = i >= 0 ? a[i + 1] : ((a.find((x) => /^--light-rule=/.test(x)) || '').split('=')[1] || e.LIGHT_RULE);
-  if (v == null || v === '' || v === 'new') return 'new';
-  if (v === 'legacy') return 'legacy';
-  throw new Error(`--light-rule ต้องเป็น new|legacy (ได้ "${v}")`);
-}   // WS6 ข้อ 3: ใบอายุ >1 ไตรมาส ต้องเข้าคิวแม้ราคาไม่ขยับ
+/** ตัวแปลค่า --light-rule ตัวเดียว (queue.js ส่งค่าจาก args.js `--light-rule <v>`/`--light-rule=<v>` มาที่นี่ · ไม่ส่ง = env LIGHT_RULE · ไม่มี = new)
+ *  → 'new'|'legacy' · ค่าอื่น throw */
+function parseLightRule(v, env) {
+  const x = v != null && v !== '' ? v : (env || process.env).LIGHT_RULE;
+  if (x == null || x === '' || x === 'new') return 'new';
+  if (x === 'legacy') return 'legacy';
+  throw new Error(`--light-rule ต้องเป็น new|legacy (ได้ "${x}")`);
+}
 
 function bucketOf(reason) {
   const r = String(reason);
@@ -54,12 +55,16 @@ function ruleNew(f, base, c, footerAge, staleDays) {
   const raw = c.statementAfterOf ? c.statementAfterOf(f.symbol) : null;
   const st = raw && typeof raw === 'object' ? raw : { after: raw == null ? null : !!raw };
   const stmt = st.after, stmtWhy = st.detail || null;
-  const out = (bucket, escalated) => ({ bucket, escalated, stmt, stmtWhy, drift });
+  const out = (bucket, escalated) => ({ bucket, escalated, stmt, stmtWhy, stmtKind: stmt == null ? (st.kind || null) : null, drift });
   if (stmt === true) return out('FULL', 'statement');
-  if (stmt == null) return out('FULL', 'stmt-unknown');
+  // ไม่ทราบวันงบ: flip (PREPATCH · ไม่ส่ง worker) ห้ามถูกยกเป็น worker เพราะไม่รู้ ⇒ คง PREPATCH + บันทึก note · แถวที่เป็นงาน worker อยู่แล้ว (LIGHT/FULL) ⇒ FULL
+  if (stmt == null && base !== 'PREPATCH') return out('FULL', 'stmt-unknown');
   if (drift != null && drift > FULL_DRIFT_PCT) return out('FULL', 'drift30');
   if (f.reason === 'suspect-split-or-data' && drift == null) return out('FULL', 'drift-unknown');
-  if (base === 'PREPATCH') return footerAge != null && footerAge > staleDays ? out('LIGHT', 'age') : out('PREPATCH', null);
+  if (base === 'PREPATCH') {
+    const o2 = footerAge != null && footerAge > staleDays ? out('LIGHT', 'age') : out('PREPATCH', null);
+    return stmt == null ? { ...o2, stmtNote: 'statement-unknown' } : o2;
+  }
   return out('LIGHT', base === 'FULL' ? 'drift-mid' : null);
 }
 function triage(flags, ctx) {
@@ -72,7 +77,7 @@ function triage(flags, ctx) {
     const footerAge = c.footerAgeOf ? c.footerAgeOf(f.symbol) : null;
     if (!legacy) {
       const r = ruleNew(f, bucket, c, footerAge, staleDays);
-      bucket = r.bucket; escalated = r.escalated; ext = { stmt: r.stmt, stmtWhy: r.stmtWhy, drift: r.drift };
+      bucket = r.bucket; escalated = r.escalated; ext = { stmt: r.stmt, stmtWhy: r.stmtWhy, stmtNote: r.stmtNote || null, stmtKind: r.stmtKind || null, drift: r.drift };
     } else if (bucket === 'PREPATCH') {
       const after = c.earningsAfterOf ? c.earningsAfterOf(f.symbol) : null;
       if (after) { bucket = 'LIGHT'; escalated = 'earnings'; }
@@ -90,4 +95,4 @@ const prePatchList = (rows) => rows.filter((r) => r.bucket === 'PREPATCH' || (!r
 /** ตัวที่ต้องส่ง LLM (prep → spawn): LIGHT/FULL ที่ไม่ skip */
 const llmList = (rows) => rows.filter((r) => !r.skip && (r.bucket === 'LIGHT' || r.bucket === 'FULL')).map((r) => r.symbol);
 
-module.exports = { BUCKET, ACTION, FRESH_DAYS, STALE_DAYS, FULL_DRIFT_PCT, lightRuleFromArgv, bucketOf, triage, prePatchList, llmList };
+module.exports = { BUCKET, ACTION, FRESH_DAYS, STALE_DAYS, FULL_DRIFT_PCT, parseLightRule, bucketOf, triage, prePatchList, llmList };

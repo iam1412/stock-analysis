@@ -12,7 +12,7 @@ const path = require('path');
 const { run, ROOT } = require('./sh.js');
 const S = require('./state.js');
 const { todayBangkok } = require('./footer-date.js');
-const { lightRuleFromArgv } = require('./triage.js');
+const { parseLightRule } = require('./triage.js');
 const RM = require('../report-meta.js');   // เจ้าของเดียวของ regex stock-meta/report-data/.px + กรอบ 52 สัปดาห์
 const { usSessionOpen, setSessionOpen } = require('./market.js');
 const DV = require('../derived-values.js');
@@ -289,14 +289,14 @@ async function prep(sym, opts) {
   const th = exists ? (sm && sm.currency === 'THB') : !!o.th;
   const rec = S.load().stocks[sym] || {};
   checkNotPrepatch(sym, rec);   // C2: PREPATCH ไม่ส่ง LLM — ปฏิเสธก่อนยิง network ใด ๆ ข้างล่าง
-  const lightRule = o.lightRule || lightRuleFromArgv();
+  const lightRule = parseLightRule(o.lightRule, process.env);
   // BUG-026: นอกคิว (ไม่มี bucket LIGHT/FULL) ตัดสินจากกฎ "มีงบใหม่หลัง footer ไหม" — ทางเดิม UPDATE เสมอ
   let stmt = null;
   if (exists && !o.mode && lightRule === 'new' && rec.bucket !== 'LIGHT' && rec.bucket !== 'FULL') {
     const P = require('./preflight.js');
     const EC = require('../earnings-calendar.js');
     const read = () => html;
-    const sec = o.sec !== undefined ? o.sec : (() => { const cache = new Map(); return (x) => EC.secLastStatement(x, { cache }); })();
+    const sec = o.sec !== undefined ? o.sec : (() => { const cache = new Map(); return (x) => EC.secLookup(x, { cache }); })();
     stmt = (o.statementAfterOf || P.statementAfterOfWith(EC.load(), read, { sec, isThai: () => !!th }))(sym);
   }
   const dm = o.mode ? { mode: o.mode, why: '--mode' } : decideMode({ exists, rec, lightRule, stmt });

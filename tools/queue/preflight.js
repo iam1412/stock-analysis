@@ -14,7 +14,7 @@ const { run, must, ROOT } = require('./sh.js');
 const S = require('./state.js');
 const { footerDate, ageDays, todayBangkok } = require('./footer-date.js');
 const { usSessionOpen, setSessionOpen } = require('./market.js');
-const { triage, prePatchList, llmList, STALE_DAYS, lightRuleFromArgv } = require('./triage.js');
+const { triage, prePatchList, llmList, STALE_DAYS, parseLightRule } = require('./triage.js');
 const { readStockMeta } = require('../report-meta.js');
 const EC = require('../earnings-calendar.js');
 
@@ -23,7 +23,7 @@ const FLAGS = path.join(ROOT, 'price-flags.json');
 const AGE_LIMIT_DEFAULT = 5;   // WS6 ข้อ 3: ทยอยกี่ใบ/รอบ (ปรับด้วย --age N · 0 = --no-age)
 
 /** SEC fallback ต่อ process: แคช ticker→CIK ไว้ตัวเดียว · ยิง curl -A (sync) เฉพาะเมื่อ triage ถามจริง */
-const secFetcher = () => { const cache = new Map(); return (sym) => EC.secLastStatement(sym, { cache }); };
+const secFetcher = () => { const cache = new Map(); return (sym) => EC.secLookup(sym, { cache }); };
 const readReport = (sym) => { const fp = path.join(REPORTS, sym + '.html'); return fs.existsSync(fp) ? fs.readFileSync(fp, 'utf8') : null; };
 function loadFlags() {
   try { return JSON.parse(fs.readFileSync(FLAGS, 'utf8')); }
@@ -211,7 +211,7 @@ function upsertRow(old, r) {
   const keep = isNewFlag(old, r)
     ? Object.fromEntries(Object.entries(old || {}).filter(([k]) => !S.ROUND_FIELDS.includes(k)))
     : { ...(old || {}) };
-  return { ...keep, reason: r.reason, bucket: r.bucket, oldPrice: r.oldPrice, currency: r.currency, footerAge: r.footerAge, skip: r.skip, flaggedAt: r.flaggedAt || null, stmt: r.stmt === undefined ? null : r.stmt, stmtWhy: r.stmtWhy || null, diffPct: r.diffPct ?? null };
+  return { ...keep, reason: r.reason, bucket: r.bucket, oldPrice: r.oldPrice, currency: r.currency, footerAge: r.footerAge, skip: r.skip, flaggedAt: r.flaggedAt || null, stmtKind: r.stmtKind || null, stmt: r.stmt === undefined ? null : r.stmt, stmtWhy: r.stmtWhy || null, diffPct: r.diffPct ?? null };
 }
 
 /** ผล gate หลัง pre-patch → ประทับลงแถว state (ส่วนบริสุทธิ์ — เทสยิงได้โดยไม่ต้องรัน update-prices/check-reports)
@@ -226,6 +226,17 @@ function applyGateResult(stocks, targets, failed, today) {
     delete rec.prePatchRejected;
   }
   return stocks;
+}
+
+/** สรุปแถวที่ "ไม่ทราบวันงบ" (stmt === null) — พิมพ์บรรทัดเดียวทุกครั้งที่ N>0 กันวันที่ยกเป็น FULL เป็นกลุ่มโดยเงียบ (ส่วนบริสุทธิ์)
+ *  → null เมื่อ N=0 · `⚠ statement unknown: N (fetch-failed M)` + แจกแจง kind อื่นต่อท้ายเมื่อมี */
+function unknownSummary(rows) {
+  const u = rows.filter((r) => r.stmt === null);
+  if (!u.length) return null;
+  const kinds = {};
+  for (const r of u) { const k = r.stmtKind || 'unknown'; kinds[k] = (kinds[k] || 0) + 1; }
+  const other = Object.entries(kinds).filter(([k]) => k !== 'fetch-failed').map(([k, n]) => `${k} ${n}`).join(' · ');
+  return `⚠ statement unknown: ${u.length} (fetch-failed ${kinds['fetch-failed'] || 0})${other ? ` · ${other}` : ''}`;
 }
 
 /** ★ รายการขั้นที่ script ทำแทนไม่ได้ — พิมพ์ทุกครั้ง นี่คือตัววัด "ขั้นที่ต้องจำ ≤5" (KPI ระยะ 0) */
@@ -254,7 +265,7 @@ function preflight(opts) {
   const cal = EC.load();
   const withLast = Object.values(cal.symbols || {}).filter((e) => e && e.last).length;
   const s = S.load();   // ★ (open-item #26) ต้องอ่านก่อน plan() — synthAge() ใน plan ต้องใช้ state เดิมตัดสิน flaggedAt ต่อเนื่องของแถวอายุ
-  const lightRule = o.lightRule || lightRuleFromArgv();   // queue.js/args.js ยังไม่รู้จัก flag นี้ — อ่านจาก argv/env LIGHT_RULE เอง
+  const lightRule = parseLightRule(o.lightRule, process.env);   // queue.js ส่งค่า --light-rule มา · ไม่ส่ง = env LIGHT_RULE · ไม่มี = new
   const secOn = !o.noSec && lightRule !== 'legacy';   // SEC fallback เฉพาะกฎใหม่ · ยิงเฉพาะแถวในคิวที่ปฏิทินไม่มี last (lazy ใน triage) — --no-sec ปิด
   const rows = plan(flags, today, { ...o, ageLimit, lightRule, earningsAfterOf: o.earningsAfterOf || earningsAfterOfWith(cal, readReport), priorStocks: s.stocks,
     statementAfterOf: o.statementAfterOf || statementAfterOfWith(cal, readReport, { today, sec: secOn ? secFetcher() : null }) });
@@ -264,6 +275,8 @@ function preflight(opts) {
   console.log(nCal
     ? `ปฏิทินงบ: ${nCal} symbol · รู้วันประกาศครั้งล่าสุดแล้ว ${withLast} ใบ (flip ของใบที่งบออกหลังวิเคราะห์ถูกยกเป็น LIGHT)`
     : 'ปฏิทินงบ: ไม่มี earnings-calendar.json — flip ยกเป็น LIGHT ด้วยอายุ footer อย่างเดียว (docs/price-refresh.md)');
+  const us = unknownSummary(rows);
+  if (us) console.log(us);
   const aq = ageQueue(today);
   if (aq.length) {
     console.log(`อายุเกิน ${STALE_DAYS} วัน ${aq.length} ใบ (รอบนี้เอา ${rows.filter((r) => r.synthetic).length} แก่สุด · --age N ปรับได้): ${aq.slice(0, 10).map((r) => `${r.symbol}(${r.footerAge}d)`).join(' ')}${aq.length > 10 ? ' …' : ''}`);
@@ -304,4 +317,4 @@ function preflight(opts) {
   return rows;
 }
 
-module.exports = { preflight, plan, ageQueue, earningsAfterOfWith, statementAfterOfWith, patchTargets, renderTable, manualSteps, loadFlags, parseGateFailures, roundStart, isNewFlag, upsertRow, applyGateResult, synthAge };
+module.exports = { preflight, plan, ageQueue, earningsAfterOfWith, statementAfterOfWith, unknownSummary, patchTargets, renderTable, manualSteps, loadFlags, parseGateFailures, roundStart, isNewFlag, upsertRow, applyGateResult, synthAge };

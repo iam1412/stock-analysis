@@ -153,9 +153,11 @@ const SEC_STATEMENT_FORMS = /^(10-K|10-KT|10-Q|20-F|40-F)$/;   // ฉบับ�
 function curlText(url) {
   return require('child_process').execFileSync('curl', ['-sSL', '--max-time', '20', '-A', SEC_UA, url], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
 }
-/** วันยื่นงบล่าสุด (10-K/10-Q/20-F/40-F) จาก SEC submissions → 'YYYY-MM-DD' | null (หา ticker/CIK ไม่เจอ/ดึงไม่ได้ = null ไม่ throw)
+/** วันยื่นงบล่าสุด (10-K/10-Q/20-F/40-F) จาก SEC submissions → { date: 'YYYY-MM-DD'|null, kind } (ไม่ throw)
+ *  kind (เมื่อ date=null — ชนิดของ "ไม่ทราบ"): 'fetch-failed' (curl/SEC ล้ม/JSON พัง — ต่างจากไม่มีข้อมูล) · 'no-cik' (ไม่มี ticker ใน company_tickers)
+ *  · '6k-only' (มี 6-K แต่ไม่พบฟอร์มงบ = FPI ที่ยื่นงวดเป็น 6-K) · 'no-statement-forms' (มี filing แต่ไม่มีฟอร์มงบเลย)
  *  opts.fetchText(url) → string (sync) · opts.cache = Map (ticker→CIK map เก็บใต้ key '__tickers' ต่อ process) */
-function secLastStatement(sym, opts) {
+function secLookup(sym, opts) {
   const o = opts || {};
   const fetchText = o.fetchText || curlText;
   const cache = o.cache || new Map();
@@ -167,15 +169,21 @@ function secLastStatement(sym, opts) {
       cache.set('__tickers', m);
     }
     const cik = cache.get('__tickers')[String(sym).toUpperCase().replace(/\./g, '-')];
-    if (!cik) return null;
+    if (!cik) return { date: null, kind: 'no-cik' };
     const sub = JSON.parse(fetchText(`https://data.sec.gov/submissions/CIK${String(cik).padStart(10, '0')}.json`));
     const r = sub && sub.filings && sub.filings.recent;
-    if (!r || !Array.isArray(r.form) || !Array.isArray(r.filingDate)) return null;
-    let best = null;
-    r.form.forEach((f, i) => { const d = r.filingDate[i]; if (SEC_STATEMENT_FORMS.test(f) && /^\d{4}-\d{2}-\d{2}$/.test(d) && (!best || d > best)) best = d; });
-    return best;
-  } catch (_) { return null; }
+    if (!r || !Array.isArray(r.form) || !Array.isArray(r.filingDate)) return { date: null, kind: 'fetch-failed' };
+    let best = null, has6k = false;
+    r.form.forEach((f, i) => {
+      if (f === '6-K') has6k = true;
+      const d = r.filingDate[i];
+      if (SEC_STATEMENT_FORMS.test(f) && /^\d{4}-\d{2}-\d{2}$/.test(d) && (!best || d > best)) best = d;
+    });
+    return best ? { date: best, kind: null } : { date: null, kind: has6k ? '6k-only' : 'no-statement-forms' };
+  } catch (_) { return { date: null, kind: 'fetch-failed' }; }
 }
+/** เหมือน secLookup แต่คืนแค่วัน (เข้ากันได้กับผู้เรียกเดิม) */
+const secLastStatement = (sym, opts) => secLookup(sym, opts).date;
 
 /**
  * มีงบไตรมาส/ปีใหม่หลังวันที่ footer ไหม (ส่วนบริสุทธิ์ — ไม่แตะดิสก์/network เอง)
@@ -186,7 +194,7 @@ function secLastStatement(sym, opts) {
  */
 function statementAfter(sym, opts) {
   const o = opts || {};
-  if (!o.footerIso) return { after: null, source: null, last: null, detail: 'อ่านวันที่ footer ไม่ได้' };
+  if (!o.footerIso) return { after: null, source: null, last: null, kind: 'footer-unreadable', detail: 'footer-unreadable — อ่านวันที่ footer ไม่ได้' };
   const e = ((o.cal && o.cal.symbols) || {})[sym];
   const calLast = e && e.last ? e.last : null;
   const calAfter = calLast ? o.footerIso < calLast : null;
@@ -197,9 +205,11 @@ function statementAfter(sym, opts) {
     return { after: false, source: calLast ? 'calendar+set-deadline' : 'set-deadline', last: calLast, detail: `ไม่มีเส้นตายส่งงบ SET ระหว่าง ${o.footerIso}..${o.today}${calLast ? ` · ปฏิทิน last ${calLast}` : ''}` };
   }
   if (calLast) return { after: calAfter, source: 'calendar', last: calLast, detail: `ปฏิทิน: ประกาศงบ ${calLast} ${calAfter ? 'หลัง' : 'ก่อน/ตรงกับ'} footer ${o.footerIso}` };
-  const s = o.sec ? o.sec(sym) : null;
+  const raw = o.sec ? o.sec(sym) : null;   // string (วัน) | { date, kind } | null
+  const s = raw && typeof raw === 'object' ? raw.date : raw;
   if (s) return { after: o.footerIso < s, source: 'sec', last: s, detail: `SEC: 10-K/10-Q ล่าสุดยื่น ${s} ${o.footerIso < s ? 'หลัง' : 'ก่อน/ตรงกับ'} footer ${o.footerIso}` };
-  return { after: null, source: null, last: null, detail: 'ไม่รู้วันงบล่าสุด (ไม่มีวันที่ในปฏิทิน · SEC ไม่ได้/ไม่ใช้)' };
+  const kind = !o.sec ? 'no-source' : (raw && typeof raw === 'object' && raw.kind) || 'no-cik';
+  return { after: null, source: null, last: null, kind, detail: `${kind} — ไม่รู้วันงบล่าสุด (ไม่มีวันที่ในปฏิทิน${o.sec ? ' · SEC ไม่มีข้อมูล' : ' · ไม่ได้ใช้ SEC'})` };
 }
 
 const argVal = (flag, dflt) => { const i = process.argv.indexOf(flag); return i > 0 && process.argv[i + 1] != null ? process.argv[i + 1] : dflt; };
@@ -235,5 +245,5 @@ async function main() {
   }
 }
 
-module.exports = { fetchNextEarnings, roll, build, nodateRatio, load, reportSymbols, FILE, ABORT_AFTER, RETRY_DELAYS, TH_FILING, thDeadlinesBetween, secLastStatement, statementAfter };
+module.exports = { fetchNextEarnings, roll, build, nodateRatio, load, reportSymbols, FILE, ABORT_AFTER, RETRY_DELAYS, TH_FILING, thDeadlinesBetween, secLookup, secLastStatement, statementAfter };
 if (require.main === module) main().catch((e) => { console.error('✗', e.message); process.exit(1); });
