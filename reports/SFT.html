@@ -4,36 +4,36 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น ชริ้งค์เฟล็กซ์ (ประเทศไทย) (SFT) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Opus 5">
+<meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"SFT","currency":"THB","price":1.46,"fairValue":1.58,"mos":7.6,"upside":8.2,"pe":10.4,"dividendYield":4.96,"roe":8.3}
+{"symbol":"SFT","currency":"THB","price":1.5,"fairValue":1.66,"mos":9.6,"upside":10.7,"pe":10,"dividendYield":4.67,"roe":8.3}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 1.58,
+  "fv": 1.66,
   "values": {
-    "px": 1.46,
-    "priceDate": "2026-09-18",
+    "px": 1.5,
+    "priceDate": "2026-09-21",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
     "fvLow": 1.03,
-    "fvHigh": 1.96,
-    "eps": 0.14,
+    "fvHigh": 2.1,
+    "eps": 0.15,
     "shares": 440000000,
     "bvps": 1.84,
-    "baseEps": 0.14,
+    "baseEps": 0.15,
     "scenarios": [
       {
-        "tgt": 1.14,
+        "tgt": 1.03,
         "div": 0.18
       },
       {
-        "tgt": 2.01,
+        "tgt": 1.89,
         "div": 0.21
       },
       {
-        "tgt": 2.79,
+        "tgt": 2.74,
         "div": 0.27
       }
     ],
@@ -69,7 +69,7 @@
       ["มิ.ย.26", 1.42],
       ["ก.ค.26", 1.39],
       ["ส.ค.26", 1.37],
-      ["ก.ย.26", 1.46]
+      ["ก.ย.26", 1.5]
     ],
     "min": 1.25,
     "max": 2.25,
@@ -108,7 +108,7 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ ฿1.38 – ฿2.32<br>
+        กรอบ 52 สัปดาห์ ฿1.33 – ฿2.30<br>
         ที่มา: Yahoo Finance, SET, StockAnalysis.com
       </div>
     </div>
@@ -116,28 +116,28 @@
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 / FY2025 (ไตรมาส 1/2026 ล่าสุด)</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ย. 2569 / FY2568 และ TTM (StockAnalysis, Yahoo)</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">440 ล้านหุ้น @ ฿1.41</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~10.43x</div><div class="d">EPS TTM ฿0.14/หุ้น</div></div>
-      <div class="metric"><div class="k">P/E เฉลี่ย ~3 ปี</div><div class="v">~12–15x</div><div class="d">ช่วง 10x – 30x (IPO สูง)</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">440 ล้านหุ้น @ {{rd:px}}</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~10.0x</div><div class="d">EPS TTM ฿0.15/หุ้น</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~36.8x (มัธยฐาน)</div><div class="d">ช่วง 14.7x – 64.6x (ปี FY66–67 EPS ต่ำทำให้พอง)</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS FY68 ฿1.84/หุ้น</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY68</div><div class="v">฿67.0 ล้าน</div><div class="d">+177.6% YoY (FY67: ฿24.1 ล้าน)</div></div>
-      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.14</div><div class="d">FY68: ฿0.15/หุ้น</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.15</div><div class="d">FY68: ฿0.15/หุ้น</div></div>
       <div class="metric"><div class="k">BVPS</div><div class="v">~฿1.84</div><div class="d">ส่วนผู้ถือหุ้น FY68: ฿809 ล้าน</div></div>
       <div class="metric"><div class="k">ROE / ROA</div><div class="v neu">~8.3% / 6.0%</div><div class="d">FY68 ปรับดีขึ้นจาก FY67 (3.2%/2.1%)</div></div>
 
       <div class="metric"><div class="k">รายได้ FY68</div><div class="v neu">฿1,057 ล้าน</div><div class="d">+7.6% YoY (FY67: ฿982 ล้าน)</div></div>
-      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~21.4%</div><div class="d">TTM 20.7% (ปรับดีขึ้นจาก 17.1% FY67)</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~4.96%</div><div class="d">฿0.07/หุ้น (XD มี.ค. 2569)</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~21.4%</div><div class="d">TTM 20.9% (ปรับดีขึ้นจาก 17.1% FY67)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~4.67%</div><div class="d">฿0.07/หุ้น (XD มี.ค. 2569)</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">0.10</div><div class="d">ผันผวนต่ำมาก vs SET</div></div>
     </div>
   </section>
 
   <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ม.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ต.ค. 2568 – ก.ย. 2569</div></div>
     <div class="card">
       <div class="chart-wrap">
         <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
@@ -148,7 +148,7 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ราคาหุ้น SFT ปรับตัวลงอย่างต่อเนื่องตลอดปี 2568 จากจุดสูง ฿2.26 ในเดือน ก.พ. ลงมาแตะ ฿1.38 ในช่วงปลายปีก่อนทรงตัวที่ ฿1.41 ในช่วง ก.ค. 2569 คิดเป็นผลตอบแทนรอบปี −35.9% แม้กำไรสุทธิ FY68 จะฟื้นตัวแข็งแกร่งกว่า 177% แต่ตลาดยังกังวลเรื่องมาร์จิ้นและแนวโน้มกำไรหดในช่วง Q4/68 – Q1/69 ราคาปัจจุบันซื้อขายต่ำกว่า BVPS ที่ P/BV 0.77x
+        ราคาหุ้น SFT ปรับตัวลงต่อเนื่องจากจุดสูงราว ฿2.20 ในเดือน พ.ย. 2568 มาแตะ ฿1.37 ในเดือน ส.ค. 2569 ก่อนเด้งกลับมาที่ระดับปัจจุบัน {{rd:px}} (ผลตอบแทนรอบปี {{rd:chg}}) แม้กำไรสุทธิ FY68 จะฟื้นตัวแข็งแกร่งกว่า 177% แต่ตลาดยังกังวลเรื่องมาร์จิ้นและแนวโน้มกำไร (TTM ฿65.7 ล้าน ต่ำกว่า FY68 เล็กน้อย) ราคาปัจจุบันซื้อขายต่ำกว่า BVPS ที่ P/BV {{rd:pbv}}x
       </p>
     </div>
   </section>
@@ -158,8 +158,8 @@
     <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿0.14 × P/E เป้าหมาย ~14x — P/E เฉลี่ยกลุ่มบรรจุภัณฑ์ไทย 12–16x; ใช้ 14x สมเหตุสมผลสำหรับบริษัทกำไรฟื้นตัว</div></div>
-        <div class="mval">฿1.96</div>
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿0.15 × P/E เป้าหมาย ~14x — 14x ปัดจาก P/E ที่วัดจริงของ FY2568 (ราคาเฉลี่ยปี ฿2.23 ÷ EPS ฿0.15 = 14.7x) ซึ่งเป็นปีล่าสุดที่กำไรฟื้นแล้ว; ไม่ใช้มัธยฐาน 5 ปี 36.8x เพราะ FY66–67 EPS ฿0.05–0.07 ทำให้ P/E พองเป็น 64x บนราคาช่วงหลัง IPO ฿4–6 ซึ่งไม่ใช่สเกลธุรกิจปัจจุบัน; ที่มาคือประวัติปีล่าสุด ไม่ใช่ P/E ปัจจุบัน</div></div>
+        <div class="mval">฿2.10</div>
       </div>
       <div class="vmethod">
         <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.07 × (1+g); g 3%, r 10% → ฿0.0721 ÷ (10%−3%) — อิง payout ratio ปัจจุบัน + การเติบโตระยะยาวอนุรักษ์</div></div>
@@ -174,7 +174,7 @@
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        วิธี P/E ให้ค่าสูงสุดที่ ฿1.96 อิง EPS TTM ที่ได้รับแรงหนุนจาก Q3/68 ที่กำไรดี วิธี DDM ให้ค่าต่ำสุดที่ ฿1.03 เพราะปันผลต่อหุ้นยังน้อยหลังช่วงกำไรอ่อนใน FY66–67 วิธี Justified P/BV ที่ ฿1.39 ใกล้เคียงราคาปัจจุบัน สะท้อนว่า ROE ยังต่ำกว่า cost of equity — <b>วิธีถ่วงน้ำหนัก:</b> DDM กับ Justified P/BV ใช้สมมติฐาน (r 10%, g 3%) ชุดเดียวกัน จึงนับเป็น "เสียงเดียว" (เฉลี่ยกันได้ ฿1.21) แล้วจึงเฉลี่ยกับขา P/E ที่ยึดตลาด → FV = (฿1.96 + ฿1.21)/2 = ฿1.58 ไม่ใช่ค่าเฉลี่ยตรงของทั้งสามวิธี (฿1.46) ซึ่งจะทำให้สมมติฐาน r/g ชุดเดียวถ่วงน้ำหนัก 2 ต่อ 1 เหนือขาที่ยึดตลาด (กฎถ่วงตามตระกูลสมมติฐาน)
+        วิธี P/E ให้ค่าสูงสุดที่ ฿2.10 อิง EPS TTM ฿0.15 × 14x วิธี DDM ให้ค่าต่ำสุดที่ ฿1.03 เพราะปันผลต่อหุ้นยังน้อยหลังช่วงกำไรอ่อนใน FY66–67 วิธี Justified P/BV ที่ ฿1.39 สะท้อนว่า ROE ยังต่ำกว่า cost of equity — <b>วิธีถ่วงน้ำหนัก:</b> DDM กับ Justified P/BV ใช้สมมติฐาน (r 10%, g 3%) ชุดเดียวกัน จึงนับเป็น "เสียงเดียว" (เฉลี่ยกันได้ ฿1.21) แล้วจึงเฉลี่ยกับขา P/E ที่ยึดประวัติ → FV = (฿2.10 + ฿1.21)/2 = ฿1.66 ไม่ใช่ค่าเฉลี่ยตรงของทั้งสามวิธี (฿1.51) ซึ่งจะทำให้สมมติฐาน r/g ชุดเดียวถ่วงน้ำหนัก 2 ต่อ 1 (กฎถ่วงตามตระกูลสมมติฐาน) · ความอ่อนไหว: ลด P/E เป้าหมายลง 2x FV ลด ~฿0.15 และ MOS แทบหมด — ไม่มีเป้านักวิเคราะห์ในการคำนวณ
       </p>
     </div>
   </section>
@@ -192,12 +192,12 @@
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿1.58<br><small>เป้าเฉลี่ย Analyst</small></span>
+
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน ฿1.39 ต่ำกว่ามูลค่าเหมาะสม ฿1.58 คิดเป็น MOS ~12% เข้าโซนน่าสนใจระดับต้น แต่ยังไม่ถึงโซน deep value จุดซื้อที่น่าสนใจ MOS 20% อยู่ที่ ฿1.26 และ MOS 30% ที่ ฿1.11 ผู้ที่มองระยะยาวอาจทยอยสะสมได้ ราคาปัจจุบัน P/BV 0.77x ต่ำกว่า 1x สร้าง downside protection บางส่วน
+        ราคาปัจจุบัน {{rd:px}} ต่ำกว่ามูลค่าเหมาะสม {{rd:fv}} เล็กน้อย คิดเป็น MOS {{rd:mos}} ยังไม่ถึงโซนน่าสนใจ จุดซื้อที่น่าสนใจ MOS 20% อยู่ที่ {{rd:mos20}} และ MOS 30% ที่ {{rd:mos30}} P/BV {{rd:pbv}}x ต่ำกว่า 1x สร้าง downside protection บางส่วน
       </p>
     </div>
   </section>
@@ -208,7 +208,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">MOS ปานกลาง — ราคาต่ำกว่า Fair Value พอสมควร เริ่มมี margin of safety แต่ยังไม่ถึงโซน deep value</div>
+        <div class="txt">MOS ต่ำ — ราคาใกล้ Fair Value ส่วนเผื่อความปลอดภัยยังบาง ควรรอราคาย่อลงก่อน</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -235,7 +235,7 @@
           <div class="tgt">{{rd:sc1tgt}}</div>
           <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿0.12</span></li>
+            <li><span>EPS ปี 3</span><span>~฿0.13</span></li>
             <li><span>P/E ออก</span><span>8x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>ต้นทุนวัตถุดิบสูง มาร์จิ้นหด</span></li>
@@ -248,7 +248,7 @@
           <div class="tgt">{{rd:sc2tgt}}</div>
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿0.18</span></li>
+            <li><span>EPS ปี 3</span><span>~฿0.19</span></li>
             <li><span>P/E ออก</span><span>10x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>รายได้ฟื้นต่อเนื่อง มาร์จิ้นดีขึ้น</span></li>
@@ -261,7 +261,7 @@
           <div class="tgt">{{rd:sc3tgt}}</div>
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿0.21</span></li>
+            <li><span>EPS ปี 3</span><span>~฿0.23</span></li>
             <li><span>P/E ออก</span><span>12x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>ขยายกำลังผลิต ลูกค้าใหม่ต่างประเทศ</span></li>
@@ -283,9 +283,9 @@
         <ul>
           <li><b>กำไรฟื้นตัวชัดเจน:</b> กำไรสุทธิ FY68 +177% YoY สะท้อนการฟื้นตัวจาก FY67 ที่อ่อนแอ มาร์จิ้นขั้นต้นปรับดีขึ้นจาก 17% สู่ 21%</li>
           <li><b>ความต้องการบรรจุภัณฑ์เพิ่ม:</b> ตลาด Shrink Sleeve Label ไทยและอาเซียนเติบโตตาม FMCG เครื่องดื่ม อาหาร และผลิตภัณฑ์ยา</li>
-          <li><b>P/BV ต่ำกว่า 1x:</b> ราคาปัจจุบัน P/BV 0.77x ต่ำกว่า book value สร้าง downside cushion และโอกาส mean reversion</li>
-          <li><b>เงินปันผลสม่ำเสมอ:</b> ปันผล Yield ~5% สูงกว่าดอกเบี้ยเงินฝากและกองทุนตลาดเงิน จูงใจนักลงทุนระยะยาว</li>
-          <li><b>งบดุลแข็งแกร่ง:</b> D/E ratio ลดจาก 0.32x ในปี FY67 เหลือ 0.18x ในปี FY68 Current ratio 2.4x แสดงสภาพคล่องดี</li>
+          <li><b>P/BV ต่ำกว่า 1x:</b> ราคาปัจจุบัน P/BV {{rd:pbv}}x ต่ำกว่า book value สร้าง downside cushion และโอกาส mean reversion</li>
+          <li><b>เงินปันผลสม่ำเสมอ:</b> ปันผล Yield ~4.7% สูงกว่าดอกเบี้ยเงินฝากและกองทุนตลาดเงิน จูงใจนักลงทุนระยะยาว</li>
+          <li><b>งบดุลรับได้:</b> D/E ratio ลดจาก 0.32x ในปี FY67 เหลือ 0.18x ในปี FY68 แม้ TTM ขยับขึ้นเป็น 0.31x (หนี้ ฿249 ล้าน เงินสด ฿21.6 ล้าน) ควรติดตามภาระหนี้</li>
           <li><b>Beta ต่ำมาก (0.10):</b> ผันผวนน้อยกว่าตลาด SET ช่วยกระจายความเสี่ยงพอร์ตโฟลิโอ</li>
         </ul>
       </div>
@@ -307,15 +307,15 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>ทยอยสะสม — P/BV ต่ำกว่า 1x และ MOS ~12% เริ่มเข้าโซนน่าสนใจ</h2>
-      <p>ชริ้งค์เฟล็กซ์ (SFT) เป็นผู้ผลิตฉลาก Shrink Sleeve รายแรกๆ ที่จดทะเบียนในตลาดหลักทรัพย์ไทย กำไรฟื้นตัวดีใน FY68 (+177%) และงบดุลแข็งแกร่งขึ้น ราคาปัจจุบัน ฿1.39 ต่ำกว่า Fair Value ฿1.58 คิดเป็น MOS ~12% เริ่มมี margin of safety แม้ยังไม่ถึงโซน deep value สถานะทยอยสะสมสำหรับผู้ถือหุ้น รับปันผล ~5% และเพิ่มน้ำหนักเมื่อราคาลงโซน ฿1.26 (MOS 20%)</p>
+      <h2>ถือ/รอราคาย่อ — P/BV ต่ำกว่า 1x แต่ MOS ยังบาง</h2>
+      <p>ชริ้งค์เฟล็กซ์ (SFT) เป็นผู้ผลิตฉลาก Shrink Sleeve รายแรกๆ ที่จดทะเบียนในตลาดหลักทรัพย์ไทย กำไรฟื้นตัวดีใน FY68 (+177%) และงบดุลแข็งแกร่งขึ้น ราคาปัจจุบัน {{rd:px}} ต่ำกว่า Fair Value {{rd:fv}} คิดเป็น MOS {{rd:mos}} ซึ่งยังบาง สถานะถือสำหรับผู้ถือหุ้น รับปันผล ~4.7% และเพิ่มน้ำหนักเมื่อราคาลงโซน {{rd:mos20}} (MOS 20%)</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿1.58 (ไม่มีข้อมูล consensus)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">ไม่มีข้อมูล consensus</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ผู้ถือหุ้นรับปันผล ~5% ต่อปี และทยอยสะสมได้ที่ระดับปัจจุบัน (MOS ~12%) ผู้ที่ต้องการส่วนเผื่อมากขึ้น รอโซน ฿1.26 (MOS 20%) ซึ่งเป็นโซนน่าสนใจสำหรับ value เพราะ P/BV จะลดเหลือ ~0.68x ต่ำกว่ามาตรฐานอุตสาหกรรม
+        💡 <b>กลยุทธ์:</b> ผู้ถือหุ้นรับปันผล ~4.7% ต่อปี และถือต่อได้ที่ระดับปัจจุบัน ผู้ที่ต้องการส่วนเผื่อมากขึ้น รอโซน {{rd:mos20}} (MOS 20%) ซึ่งเป็นโซนน่าสนใจสำหรับ value และ P/BV ต่ำลงอีก
       </div>
     </div>
   </section>
@@ -326,7 +326,7 @@
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มา: Yahoo Finance (SFT.BK), SET Factsheet, StockAnalysis.com (งบ FY2568 / Q1 2569), Finnomena — ราคา ณ {{rd:priceDate}}
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 17 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 22 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
