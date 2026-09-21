@@ -1533,6 +1533,66 @@ ok(U.commitBody([], []) === '', 'commitBody: ว่างเมื่อไม�
   } finally { process.env.STALE_TODAY = saved; }
 }
 
+// ---------- W1: patchDerived ไม่แตะ P/E "วัดได้" ของปีงบ + Market Cap ของ v2 ใช้ values.shares (GAP-013) ----------
+{
+  const DV = require('../tools/derived-values.js');
+  const card = (k, v, d) => `<div class="metric"><div class="k">${k}</div><div class="v">${v}</div><div class="d">${d}</div></div>`;
+  const wrap = (cards) => `<html><body>${cards}<script type="application/json" id="stock-meta">{"symbol":"T","currency":"USD","price":100,"pe":10}</script></body></html>`;
+  const peOf = (h, label) => (h.match(new RegExp(`<div class="k">${label.replace(/[()+.]/g, '\\$&')}</div><div class="v">~?([0-9.]+)x`)) || [])[1];
+
+  // (a) วัดได้/ปีงบ ไม่ถูกแตะ ที่หลายราคา · (b) เฉลี่ย เดิม · (c) Forward FY2026E + TTM ยังตามราคา
+  for (const px of [50, 87.3, 100, 133.7, 250]) {
+    const h = wrap(card('P/E FY2025 (วัดได้)', '~10.8x', 'EPS FY2025 $10.00') + card('P/E เฉลี่ย 5 ปี', '~15x', 'EPS $10.00')
+      + card('Forward P/E (FY2026E)', '~9.0x', 'EPS FY2026E $11.10') + card('P/E (TTM)', '~10.0x', 'EPS TTM $10.00'));
+    const r = DV.patchDerived(h, px);
+    ok(peOf(r.html, 'P/E FY2025 (วัดได้)') === '10.8', `W1(a) P/E FY2025 (วัดได้) ไม่ถูกแตะที่ราคา ${px}`, peOf(r.html, 'P/E FY2025 (วัดได้)'));
+    ok(peOf(r.html, 'P/E เฉลี่ย 5 ปี') === '15', `W1(b) P/E เฉลี่ย 5 ปี ไม่ถูกแตะที่ราคา ${px}`);
+    ok(peOf(r.html, 'Forward P/E (FY2026E)') === (px / 11.10).toFixed(1), `W1(c) Forward P/E (FY2026E) ตามราคา ${px}`, peOf(r.html, 'Forward P/E (FY2026E)'));
+    ok(peOf(r.html, 'P/E (TTM)') === (px / 10).toFixed(1), `W1(c) P/E (TTM) ตามราคา ${px}`, peOf(r.html, 'P/E (TTM)'));
+    ok(DV.peCards(h).every((c) => !/วัดได้|เฉลี่ย/.test(c.label)), 'W1: peCards (ตัวตรวจ E41) ข้ามป้ายเดียวกับตัวซ่อม');
+  }
+
+  // (f) label matrix: true = ข้าม (ไม่ใช่ spot ÷ EPS) · false = ตามราคาต่อ
+  const matrix = [
+    ['P/E FY2025 (วัดได้)', true], ['P/E (วัดได้ FY25)', true], ['P/E measured FY2024', true], ['P/E ราคาเฉลี่ย ÷ EPS FY2025', true],
+    // กำกวม = ไม่ข้าม (ตัวหลักของ ZM/WAT/MRK/WDC ยืนบนป้ายแบบนี้ · spot ÷ EPS ของปีนั้น)
+    ['P/E GAAP (FY2026)', false], ['P/E (FY2025 organic)', false], ['P/E (EPS FY2025 ปีงบเต็ม)', false], ['P/E (Adj FY2026)', false], ['P/E FY25', false],
+    // มีคำ forward ปนกับ วัดได้ = ซ่อมต่อ
+    ['Forward P/E (วัดได้ vendor)', false],
+    ['P/E เฉลี่ย 5 ปี', true], ['P/E Mid-Cycle', true],
+    ['Forward P/E', false], ['P/E (Forward FY27e)', false], ['Forward P/E (FY2026E)', false], ['P/E ล่วงหน้า (FY2027F)', false],
+    ['P/E (TTM)', false], ['P/E (Non-GAAP, fwd)', false], ['P/E NTM', false], ['P/E FY2026E', false], ['P/E FY26 (E)', false], ['P/E ล่วงหน้า FY2026', false], ['P/E', false],
+  ];
+  for (const [label, skip] of matrix) ok(DV.isPeSkipped(label) === skip, `W1(f) matrix "${label}" → ${skip ? 'ข้าม' : 'ซ่อมตามราคา'}`);
+
+  // (d) v2: การ์ดพิมพ์หุ้นปัดเศษ (~14.5 พันล้าน) ≠ values.shares (14.81B) ⇒ Market Cap = ราคา × values.shares
+  // (e) v1 (ไม่มี values) ⇒ ใช้เลขที่การ์ดพิมพ์เหมือนเดิม
+  {
+    const v2 = FX.AAPL_V2().replace('~14.81 พันล้านหุ้น', '~14.5 พันล้านหุ้น');
+    const px = 300;
+    const r2 = DV.patchDerived(v2, px);
+    const mc = r2.changes.find((c) => c.startsWith('Market Cap'));
+    ok(mc && /4\.44/.test(mc) && mc.includes('14,810,000,000'), 'W1(d) v2: Market Cap = 300 × values.shares (14.81B) = 4.44 ล้านล้าน', mc);
+    // ผลซ่อมต้องไม่ทำให้ E43 ฟ้อง (ตัวตรวจอ่านเลขที่พิมพ์ ~14.5B · 4.44 vs 300×14.5=4.35 → ห่าง 2% ≤ 3%)
+    const fixed2 = r2.html;
+    ok(DV.mcapCards(fixed2, px).every((c) => DV.nearMcap(px * c.shares, c.shown, c.num, c.scale)), 'W1(d) v2: ผลซ่อมผ่านเกณฑ์ E43 (ตัวตรวจไม่ฟ้องผลของตัวซ่อม)');
+    // การ์ดที่สดตาม ราคา × เลขที่พิมพ์ อยู่แล้ว ⇒ ไม่ churn ด้วยเศษปัดของ values.shares
+    const freshCard = v2.replace('~$4.84 ล้านล้าน', '~$4.35 ล้านล้าน');
+    ok(!DV.patchDerived(freshCard, px).changes.some((c) => c.startsWith('Market Cap')), 'W1(d) v2: การ์ดสดตามเลขที่พิมพ์แล้ว ⇒ ไม่แตะ');
+    // values.shares ห่างจากเลขที่พิมพ์เกิน 2.5% (คนละฐาน) ⇒ ไม่เชื่อ ใช้เลขที่พิมพ์เหมือนเดิม
+    const far = v2.replace('~14.5 พันล้านหุ้น', '~13 พันล้านหุ้น');
+    const mf = DV.patchDerived(far, px).changes.find((c) => c.startsWith('Market Cap'));
+    ok(mf && mf.includes('13,000,000,000'), 'W1(d) v2: values.shares ห่างเกิน band ⇒ ใช้เลขที่พิมพ์', mf);
+    const v1 = FX.AAPL().replace('~14.81 พันล้านหุ้น', '~14.5 พันล้านหุ้น');
+    ok(DV.v2Shares(v1) === null, 'W1(e) v1: v2Shares = null');
+    const m1 = DV.patchDerived(v1, px).changes.find((c) => c.startsWith('Market Cap'));
+    ok(m1 && /4\.35/.test(m1) && m1.includes('14,500,000,000'), 'W1(e) v1: Market Cap = 300 × 14.5B (เลขที่การ์ดพิมพ์) = 4.35 ล้านล้าน — เดิมทุก byte', m1);
+    // ADR/อ่านหุ้นไม่ได้ ⇒ v2 ก็ยังเงียบ (values.shares ไม่ทำให้เดา)
+    const adr = v2.replace('~14.5 พันล้านหุ้น', '~14.5 พันล้าน ADR');
+    ok(!DV.patchDerived(adr, px).changes.some((c) => c.startsWith('Market Cap')), 'W1(d) v2: การ์ดอ่านหุ้นไม่ได้ (ADR) ⇒ ไม่แตะ แม้มี values.shares');
+  }
+}
+
 Promise.resolve(pending).then(() => {
   console.log(nFail ? `\n✗ update-prices-test: ${nFail} failed / ${nOK} passed` : `\n✓ update-prices-test: ${nOK} passed`);
   process.exit(nFail ? 1 : 0);
