@@ -4,38 +4,38 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น Goldman Sachs (GS) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"GS","currency":"USD","price":942,"fairValue":750,"mos":-25.6,"upside":-20.4,"pe":17.2,"dividendYield":1.91,"roe":14.63}
+{"symbol":"GS","currency":"USD","price":942,"fairValue":812,"mos":-16,"upside":-13.8,"pe":14.58,"dividendYield":2.12,"roe":16.9}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 750,
+  "fv": 812,
   "values": {
     "px": 942,
     "priceDate": "2026-09-18",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
-    "fvLow": 705,
-    "fvHigh": 765,
-    "eps": 54.72,
-    "shares": 307000000,
-    "dps": 18,
-    "bvps": 391.59,
-    "baseEps": 54.72,
+    "fvLow": 763,
+    "fvHigh": 862,
+    "eps": 64.63,
+    "shares": 302765312,
+    "dps": 20,
+    "bvps": 362.05,
+    "baseEps": 64.63,
     "scenarios": [
       {
-        "tgt": 469,
-        "div": 54
-      },
-      {
-        "tgt": 924,
-        "div": 57
-      },
-      {
-        "tgt": 1251,
+        "tgt": 443,
         "div": 60
+      },
+      {
+        "tgt": 961,
+        "div": 63
+      },
+      {
+        "tgt": 1376,
+        "div": 66
       }
     ],
     "scnBasis": {
@@ -109,8 +109,8 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ $685.39 – $1,125.00<br>
-        ที่มา: Yahoo Finance, Finviz, StockAnalysis.com
+        กรอบ 52 สัปดาห์ $740.01 – $1,153.99<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, งบการเงินตาม StockAnalysis/SEC
       </div>
     </div>
   </header>
@@ -119,20 +119,20 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ธนาคารเพื่อการลงทุนชั้นนำ — อิง P/BV + ROTE</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~307 ล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~17.21x</div><div class="d">EPS TTM $54.72 (diluted)</div></div>
-      <div class="metric"><div class="k">P/BV (TTM)</div><div class="v neu">~{{rd:pbv}}x</div><div class="d">BVPS ~$391.59</div></div>
-      <div class="metric"><div class="k">ROE</div><div class="v pos">~14.63%</div><div class="d">ROA 0.94%</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~302.8 ล้านหุ้น (คงเหลือ)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~14.58x</div><div class="d">EPS TTM $64.63 (diluted)</div></div>
+      <div class="metric"><div class="k">P/BV (TTM)</div><div class="v neu">~{{rd:pbv}}x</div><div class="d">BVPS ~$362.05</div></div>
+      <div class="metric"><div class="k">ROE</div><div class="v pos">~16.9%</div><div class="d">ROE TTM (StockAnalysis)</div></div>
 
-      <div class="metric"><div class="k">รายได้ TTM</div><div class="v">~$60.4B</div><div class="d">+11.2% YoY</div></div>
-      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v pos">~$18.1B</div><div class="d">Margin ~29.9%</div></div>
-      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$54.72</div><div class="d">FY25 $51.32 · FY24 $40.54</div></div>
-      <div class="metric"><div class="k">BVPS (Q1/69)</div><div class="v">~$398.64</div><div class="d">Equity $122.8B</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v">~$67.6B</div><div class="d">+23.3% YoY</div></div>
+      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v pos">~$20.0B</div><div class="d">Margin ~29.6%</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$64.63</div><div class="d">FY25 $51.32 · FY24 $40.54</div></div>
+      <div class="metric"><div class="k">Equity (ล่าสุด)</div><div class="v">~$123.7B</div><div class="d">BVPS หุ้นสามัญ ~$362.05</div></div>
 
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.91%</div><div class="d">$18.00/yr forward</div></div>
-      <div class="metric"><div class="k">Forward P/E</div><div class="v neu">~15.8x</div><div class="d">EPS FY69E ~$59.51</div></div>
-      <div class="metric"><div class="k">CET1 Ratio</div><div class="v pos">~13-14%</div><div class="d">เกินเกณฑ์ Basel III</div></div>
-      <div class="metric"><div class="k">AUS (สินทรัพย์บริหาร)</div><div class="v">~$3T+</div><div class="d">Asset &amp; Wealth Mgmt</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.12%</div><div class="d">$20.00/yr</div></div>
+      <div class="metric"><div class="k">Forward P/E (FY26E)</div><div class="v neu">~13.3x</div><div class="d">EPS FY26E ~$70.72</div></div>
+      <div class="metric"><div class="k">Payout ratio</div><div class="v neu">~27.9%</div><div class="d">ปันผลต่อกำไร (SA)</div></div>
+      <div class="metric"><div class="k">D/E (TTM)</div><div class="v neu">~7.25x</div><div class="d">ธนาคาร — leverage สูงตามโครงสร้าง</div></div>
     </div>
   </section>
 
@@ -149,33 +149,30 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ราคา GS ปรับตัวขึ้นแรง +41% ในรอบปี (ก.ค. 2568 – มิ.ย. 2569) นำโดยรายได้ IB fees ที่ฟื้นตัวแข็งแกร่ง กำไร FY25 ที่ $51.32/หุ้น และการ re-rating จาก Marcus pivot สู่ core IB/AWM กดดันชั่วคราวในก.พ.–มี.ค. 2569 จากความผันผวนตลาดและ tariff fears ก่อน rebound แรงสู่ระดับสูงสุดใหม่บริเวณ $1,025 ในเดือนพ.ค. 2569
+        ราคา GS ปรับตัวขึ้นราว 19% ในรอบปี (ต.ค. 2568 – ก.ย. 2569) ตามกำไรที่โตต่อเนื่อง — EPS FY25 $51.32/หุ้น และ TTM $64.63 (diluted) — ราคาย่อในช่วง ก.พ.–มี.ค. 2569 (ปิดรายเดือนราว $846–$860) ก่อนฟื้นขึ้นสู่ระดับปิดรายเดือนสูงสุดราว $1,026 ในเดือน ส.ค. 2569 (กรอบ 52 สัปดาห์ระหว่างวันสูงสุด $1,153.99) แล้วปรับลงมาที่ราคาล่าสุดตามกราฟ
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">3 วิธีเหมาะธนาคารเพื่อการลงทุน</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">2 วิธี (2 ตระกูลสมมติฐาน) เหมาะธนาคารเพื่อการลงทุน</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $54.72 × P/E เป้าหมาย 14x — Fair P/E ประวัติศาสตร์ IB ชั้นนำ 12–15x; ใช้ 14x สะท้อนคุณภาพธุรกิจสูง</div></div>
-        <div class="mval">$765</div>
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS $64.63 (TTM, diluted) × P/E เป้าหมาย 11.8x — มัธยฐาน 5 ปีที่วัดจริง (ราคาเฉลี่ยรายปี ÷ EPS diluted FY2021–FY2025, ช่วง 6.1–14.8x) ที่มาคือประวัติของ GS เอง ไม่ได้ตั้งจาก P/E ปัจจุบัน</div></div>
+        <div class="mval">$763</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 14.63% − g 5%)/(r 10% − g 5%) ≈ 1.93x × BVPS $391.59</div></div>
-        <div class="mval">$755</div>
+        <div><div class="mname">2. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 16.9% − g 5%)/(r 10% − g 5%) ≈ 2.38x × BVPS $362.05 (r, g เป็นสมมติฐานของเรา; ROE TTM อาจอยู่ใกล้จุดสูงของวัฏจักร)</div></div>
+        <div class="mval">$862</div>
       </div>
-      <div class="vmethod">
-        <div><div class="mname">3. Historical P/BV</div><div class="mdesc">P/BV เฉลี่ย 5 ปี ~1.8x × BVPS $391.59 — สะท้อน long-run average ก่อนการ re-rating ปี 2568-69</div></div>
-        <div class="mval">$705</div>
-      </div>
+
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ทั้ง 3 วิธีให้ค่าใกล้เคียงกันในช่วง $705–$765 — สะท้อนว่า GS มี intrinsic value ชัดเจน วิธี P/E ให้ค่าสูงสุดเพราะ EPS TTM แข็งแกร่งในปีที่ตลาดทุนเปิดกว้าง วิธี Historical P/BV ให้ค่าต่ำสุดเนื่องจากใช้ multiple เฉลี่ยย้อนหลังก่อน re-rating ราคาปัจจุบัน $1,020 สูงกว่า FV เฉลี่ย ~36% แสดงว่าตลาดกำลัง price in สถานการณ์แบบ bull ในระยะยาว DDM ถูกตัดออกเนื่องจาก GS มี payout ratio ต่ำ (~33%) ทำให้ DDM ประเมินค่าต่ำเกินจริงอย่างมีนัยสำคัญ
+        สองวิธีให้ช่วง {{rd:fvLow}}–{{rd:fvHigh}} มาจาก 2 ตระกูลที่ต่างกัน: P/E ที่ยึดตัวคูณมัธยฐานย้อนหลังที่วัดจริง (ขาต่ำ) และ Justified P/BV ที่อิง ROE กับ (r, g) ที่เราสมมติ (ขาสูง) — ความไวของ MOS: ถ้าใช้ขา P/E ขาเดียว ราคาปัจจุบันสูงกว่ามูลค่าราว 23% ถ้าใช้ขา P/BV ขาเดียวสูงกว่าราว 9% จึงสรุปได้ว่าราคาสูงกว่ามูลค่าทั้งสองทาง แต่ระดับความสูงขึ้นกับสมมติฐาน ROE ที่คงอยู่ระดับ TTM ต้องระวัง EPS TTM ที่โตเร็ว (+23% ต่อปีของรายได้) อาจเป็นช่วงบนของวัฏจักรตลาดทุน · เป้านักวิเคราะห์ (Hold) ใช้เป็นบริบทเปรียบเทียบเท่านั้น ไม่ได้เป็นขาของ FV · ตัด Historical P/BV เดิมออกเพราะตัวคูณ 1.8x ไม่มีการวัดรองรับ และตัด DDM เพราะ payout ต่ำ (~28%) ทำให้ประเมินต่ำเกินจริง
       </p>
     </div>
   </section>
@@ -194,11 +191,11 @@
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
-          <span style="text-align:right">$990<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$1,142<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน $1,020 อยู่สูงกว่า Fair Value $750 ประมาณ 36% และสูงกว่า เป้า Analyst consensus $990 เล็กน้อย โซนซื้อสะสม (MOS 20%) อยู่ที่ $600 ซึ่งต้องการ drawdown ~41% จากระดับปัจจุบัน ผู้ที่ถือครองอยู่แล้วอาจพิจารณา take profit บางส่วนหรือรอจังหวะดีกว่า
+        ราคาปัจจุบัน {{rd:px}} อยู่สูงกว่ามูลค่าเหมาะสม {{rd:fv}} โดย MOS อยู่ที่ {{rd:mos}} และต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ (ตามสเกล) โซนซื้อสะสม MOS 20% อยู่ที่ {{rd:mos20}} ซึ่งต้องการราคาย่อลงมาพอสมควร ผู้ที่ถือครองอยู่แล้วอาจพิจารณา take profit บางส่วนหรือรอจังหวะดีกว่า
       </p>
     </div>
   </section>
@@ -236,8 +233,8 @@
           <div class="tgt">{{rd:sc1tgt}}</div>
           <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$46.90</span></li>
-            <li><span>P/E ออก</span><span>10x</span></li>
+            <li><span>EPS ปี 3</span><span>~$55.41</span></li>
+            <li><span>P/E ออก</span><span>8x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>IB fees ทรุด/วิกฤตสินเชื่อ</span></li>
           </ul>
@@ -249,8 +246,8 @@
           <div class="tgt">{{rd:sc2tgt}}</div>
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$68.90</span></li>
-            <li><span>P/E ออก</span><span>13x</span></li>
+            <li><span>EPS ปี 3</span><span>~$81.42</span></li>
+            <li><span>P/E ออก</span><span>11.8x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>IB recovery สม่ำเสมอ</span></li>
           </ul>
@@ -262,8 +259,8 @@
           <div class="tgt">{{rd:sc3tgt}}</div>
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$83.30</span></li>
-            <li><span>P/E ออก</span><span>15x</span></li>
+            <li><span>EPS ปี 3</span><span>~$98.29</span></li>
+            <li><span>P/E ออก</span><span>14x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>M&amp;A boom + AWM growth แรง</span></li>
           </ul>
@@ -271,7 +268,7 @@
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      จากราคาปัจจุบัน $1,020 แม้ใน Base case (EPS +8%/ปี × P/E 13x = $895 + ปันผล $57 = ~$952) ผลตอบแทนรวม 3 ปียังเป็นลบเล็กน้อย (~−7%) สะท้อนว่าตลาดกำหนดราคา bull scenario ไว้แล้ว ผลตอบแทนดีต้องอาศัย EPS เติบโต +15%+/ปี (Bull) จากการฟื้นตัวของ M&amp;A/IPO + AWM assets ขยายแรง ความเสี่ยงด้านลบสูงกว่าด้านบวกที่ระดับราคาปัจจุบัน
+      จากราคาปัจจุบัน {{rd:px}} ใน Base case (EPS +8%/ปี × P/E 11.8x ซึ่งเป็นมัธยฐานย้อนหลังของ GS) ผลตอบแทนจากราคา 3 ปีอยู่ที่ {{rd:sc2ret}} (ยังไม่รวมปันผลราว 3 ปี) ส่วน Bear คือ {{rd:sc1ret}} และ Bull คือ {{rd:sc3ret}} — ตัวคูณออกของ Bear/Base/Bull (8x/11.8x/14x) อิงช่วงประวัติ 6.1–14.8x ไม่ใช่ P/E ปัจจุบัน ผลตอบแทนดีต้องอาศัย EPS เติบโต +15%/ปี (Bull) และตัวคูณไม่ลดลงจากระดับปัจจุบัน ความเสี่ยงด้านลบจึงสูงกว่าด้านบวกที่ระดับราคาปัจจุบัน
     </p>
   </section>
 
@@ -282,19 +279,19 @@
       <div class="box cat">
         <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
         <ul>
-          <li><b>M&amp;A / IPO renaissance:</b> ตลาดทุนฟื้นตัว ธุรกิจ advisory fees และ underwriting กลับมาแข็งแกร่งหลังซบเซาปี 2565-66</li>
-          <li><b>AWM growth:</b> Asset &amp; Wealth Management เติบโตต่อเนื่อง AUS เกิน $3 ล้านล้าน สร้าง recurring revenue ลดความผันผวน</li>
+          <li><b>ตลาดทุนฟื้นตัว:</b> รายได้ TTM +23.3% YoY และ EPS จาก FY23 $22.87 เป็น TTM $64.63 สะท้อนธุรกิจ advisory/underwriting ที่กลับมาแข็งแกร่งหลังซบเซาปี 2565-66</li>
+          <li><b>AWM growth:</b> Asset &amp; Wealth Management สร้าง recurring revenue ช่วยลดความผันผวนของรายได้</li>
           <li><b>FICC + Equities trading:</b> ผลประกอบการ trading desk แข็งแกร่งในสภาวะ volatility สูง; rate environment ช่วย FICC</li>
-          <li><b>Marcus pivot สำเร็จ:</b> ถอนตัวจาก consumer banking ขาดทุน กลับสู่ core strength ลดภาระ credit loss</li>
-          <li><b>Capital return:</b> Buyback แรง (ลด shares 4.9% YoY) + ปันผลขาขึ้น เสริม EPS per share</li>
+          <li><b>Margin ขยาย:</b> Op margin TTM 39.4% เทียบ 28.7% ใน FY23 (ตารางงบ 5 ปี)</li>
+          <li><b>Capital return:</b> Buyback ต่อเนื่อง (หุ้นถัวเฉลี่ยปรับลดจาก 318M ใน FY25 เหลือ 310M ใน TTM) + ปันผล $20.00/หุ้น เสริม EPS per share</li>
           <li><b>Interest rate normalization:</b> Fed ลดดอกเบี้ยช้า เอื้อ spread ของ GS Bank และ lending book</li>
         </ul>
       </div>
       <div class="box risk">
         <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
         <ul>
-          <li><b>Valuation premium สูง:</b> P/BV 2.76x สูงกว่าค่าเฉลี่ยประวัติศาสตร์ ~1.4-1.8x มาก; re-rating ลงแรงหาก EPS miss</li>
-          <li><b>Revenue lumpiness:</b> IB fees ผันผวนสูงตาม deal flow — ปีที่ M&amp;A/IPO ซบ รายได้ลดหนัก (ปี 2565: EPS $30.06)</li>
+          <li><b>Valuation premium สูง:</b> P/BV {{rd:pbv}}x และ P/E ปัจจุบันสูงกว่ามัธยฐาน 5 ปี (11.8x) — de-rating แรงหาก EPS miss</li>
+          <li><b>Revenue lumpiness:</b> IB fees ผันผวนสูงตาม deal flow — ปีที่ M&amp;A/IPO ซบ รายได้ลดหนัก (FY2022: EPS $30.06, รายได้ −24.3% YoY)</li>
           <li><b>Regulatory capital:</b> Basel III endgame อาจบังคับ CET1 สูงขึ้น จำกัดการ return capital ให้ผู้ถือหุ้น</li>
           <li><b>Market downturn:</b> หุ้นและ fixed income ตกแรงกระทบ trading revenues และ investment portfolio losses</li>
           <li><b>Competition:</b> แข่งกับ MS, JPM (IB), BlackRock/Vanguard (AWM) และ fintech ใน private credit</li>
@@ -308,15 +305,15 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>GS ธุรกิจเยี่ยม แต่ราคาสะท้อน bull case แล้ว — รอจังหวะ</h2>
-      <p>Goldman Sachs คือธนาคารเพื่อการลงทุนชั้นนำของโลก มีความได้เปรียบเชิงแข่งขันที่แข็งแกร่งใน IB advisory, FICC trading และ Asset &amp; Wealth Management ผลประกอบการ FY25 แข็งแกร่ง EPS $51.32 (+124% จาก FY23) และ TTM EPS $54.72 อย่างไรก็ดี ราคาปัจจุบัน $1,020 สูงกว่ามูลค่าเหมาะสมของเราที่ $750 ถึง ~36% และ P/BV 2.76x สูงกว่า historical average 1.4–1.8x อย่างมาก แม้จะมีเหตุผล (AWM เติบโต + IB recovery) แต่ upside จากระดับนี้ค่อนข้างจำกัด</p>
+      <h2>GS ธุรกิจเยี่ยม แต่ราคาสูงกว่ามูลค่าเหมาะสม — รอจังหวะ</h2>
+      <p>Goldman Sachs คือธนาคารเพื่อการลงทุนชั้นนำของโลก มีความได้เปรียบเชิงแข่งขันที่แข็งแกร่งใน IB advisory, FICC trading และ Asset &amp; Wealth Management ผลประกอบการ FY25 แข็งแกร่ง EPS $51.32 (+124% จาก FY23) และ TTM EPS $64.63 อย่างไรก็ดี ราคาปัจจุบัน {{rd:px}} สูงกว่ามูลค่าเหมาะสมของเราที่ {{rd:fv}} (MOS {{rd:mos}}) และ P/BV {{rd:pbv}}x ค่อนข้างสูงเมื่อเทียบกับผลตอบแทนที่ต้องการ แม้จะมีเหตุผล (กำไรโตเร็ว + IB recovery) แต่ upside จากระดับนี้ค่อนข้างจำกัด — เป้าเฉลี่ยนักวิเคราะห์อยู่สูงกว่าราคา แต่ฉันทามติเป็น Hold</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ef9a9a">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$990 (Hold — 25 คน)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$1,142 (Hold — 20 คน)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ไม่แนะนำซื้อเพิ่มที่ระดับปัจจุบัน $1,020 เนื่องจากขาด MOS และ risk/reward ไม่ดี โซนสะสมที่น่าสนใจ = $750–$820 (ใกล้ FV); deep value = $600 (MOS 20%) ผู้ถือหุ้นอยู่แล้วพิจารณา take profit บางส่วนหรือ trailing stop ที่ ~$900 ธุรกิจระยะยาวยังแข็งแกร่ง แต่ต้องการ valuation ที่สมเหตุสมผลกว่านี้ก่อนเพิ่มสถานะ
+        💡 <b>กลยุทธ์:</b> ไม่แนะนำซื้อเพิ่มที่ระดับปัจจุบัน {{rd:px}} เนื่องจากขาด MOS โซนสะสมที่น่าสนใจ = ต่ำกว่าหรือใกล้ {{rd:fv}}; MOS 20% ที่ {{rd:mos20}} และ MOS 30% ที่ {{rd:mos30}} ผู้ถือหุ้นอยู่แล้วพิจารณา take profit บางส่วน ธุรกิจระยะยาวยังแข็งแกร่ง แต่ต้องการ valuation ที่สมเหตุสมผลกว่านี้ก่อนเพิ่มสถานะ
       </div>
     </div>
   </section>
@@ -326,9 +323,9 @@
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
-    ราคา ณ {{rd:priceDate}} อ้างอิง: Yahoo Finance, Finviz, StockAnalysis.com (ราคาตรงกัน ±0.1%) • งบการเงิน Q1/2569 (FY25 Annual Report) และ TTM ณ มี.ค. 2569
+    ราคา ณ {{rd:priceDate}} อ้างอิง: Yahoo Finance, StockAnalysis.com (ราคาตรงกัน 0%) • งบการเงิน FY2025 และ TTM ล่าสุดตาม StockAnalysis · งบไตรมาสถัดไปคาดออก 13 ต.ค. 2569
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 30 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
