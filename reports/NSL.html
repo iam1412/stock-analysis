@@ -4,36 +4,36 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น NSL Foods PCL (NSL) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"NSL","currency":"THB","price":22.1,"fairValue":33.8,"mos":34.6,"upside":52.9,"pe":11.47,"dividendYield":4.75,"roe":26.54}
+{"symbol":"NSL","currency":"THB","price":21.8,"fairValue":35.6,"mos":38.8,"upside":63.3,"pe":11.24,"dividendYield":4.82,"roe":25.9}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 33.8,
+  "fv": 35.6,
   "values": {
-    "px": 22.1,
-    "priceDate": "2026-09-18",
+    "px": 21.8,
+    "priceDate": "2026-09-21",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
     "fvLow": 27.56,
-    "fvHigh": 42.04,
+    "fvHigh": 40.76,
     "shares": 300000000,
     "dps": 1.05,
     "bvps": 7.8,
-    "baseEps": 1.99,
+    "baseEps": 1.94,
     "scenarios": [
       {
-        "tgt": 23.21,
+        "tgt": 22.65,
         "div": 3.15
       },
       {
-        "tgt": 35.14,
+        "tgt": 34.21,
         "div": 3.46
       },
       {
-        "tgt": 47.43,
+        "tgt": 46.33,
         "div": 3.78
       }
     ],
@@ -41,7 +41,8 @@
       "years": 3,
       "divIncluded": true,
       "perYear": "cagr"
-    }
+    },
+    "analystTgt": 28.63
   },
   "theme": {
     "accent": "#d67800",
@@ -69,11 +70,11 @@
       ["มิ.ย.26", 22.4],
       ["ก.ค.26", 23],
       ["ส.ค.26", 22.6],
-      ["ก.ย.26", 22.1]
+      ["ก.ย.26", 21.8]
     ],
     "min": 20,
-    "max": 35,
-    "grid": [25, 30],
+    "max": 40,
+    "grid": [25, 30, 35],
     "currency": "฿",
     "highlight": [0, 7]
   },
@@ -106,7 +107,7 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ ฿20.70 – ฿34.25<br>
+        กรอบ 52 สัปดาห์ ฿20.70 – ฿30.50<br>
         ที่มา: Yahoo Finance, Investing.com, NSL IR
       </div>
     </div>
@@ -114,28 +115,28 @@
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ Q1/2569 (ล่าสุด)</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM ล่าสุด (StockAnalysis)</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">300 ล้านหุ้น (SET: Agro)</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~11.47x</div><div class="d">ต่ำกว่าค่าเฉลี่ย 5 ปี ~17x</div></div>
-      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~17.1x</div><div class="d">ช่วง 11x–23x (2565–2569)</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ฿7.80 (TTM Q1/69)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~11.24x</div><div class="d">ต่ำกว่ามัธยฐาน 5 ปี ~19.1x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~19.1x</div><div class="d">มัธยฐาน · ช่วง 14.0x–26.4x (FY2564–2568)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ฿7.80 (TTM ล่าสุด)</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿604 ล้าน</div><div class="d">+11.7% YoY (FY67: ฿541 ล.)</div></div>
-      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿1.99</div><div class="d">FY2568: ฿2.01/หุ้น</div></div>
-      <div class="metric"><div class="k">BVPS</div><div class="v">~฿7.80</div><div class="d">TTM Q1/69 · FY68: ฿7.26</div></div>
-      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~26.5% / 12.7%</div><div class="d">FY68: ROE 29.2%, ROA 14.1%</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿1.94</div><div class="d">FY2568: ฿2.01/หุ้น</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿7.80</div><div class="d">TTM ล่าสุด · FY68: ฿7.26</div></div>
+      <div class="metric"><div class="k">ROE (TTM)</div><div class="v pos">~25.9%</div><div class="d">FY68: 29.2% · FY67: 30.8%</div></div>
 
-      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿7,115 ล้าน</div><div class="d">+14.2% YoY · FY68: ฿6,952 ล.</div></div>
-      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~19.6%</div><div class="d">กำไรขั้นต้น TTM ฿1,394 ล.</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~4.75%</div><div class="d">฿1.05/หุ้น · Payout ~53%</div></div>
-      <div class="metric"><div class="k">D/E Ratio</div><div class="v">0.27x</div><div class="d">งบฐานะการเงินแข็งแกร่ง</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿7,159 ล้าน</div><div class="d">+8.6% YoY (TTM) · FY68: ฿6,952 ล.</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~19.4%</div><div class="d">กำไรขั้นต้น TTM ~฿1,389 ล.</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~4.82%</div><div class="d">฿1.05/หุ้น · Payout ~54%</div></div>
+      <div class="metric"><div class="k">D/E Ratio</div><div class="v">0.33x</div><div class="d">หนี้ ฿775 ล. เทียบเงินสด ฿370 ล. (FY68 D/E 0.19x)</div></div>
     </div>
   </section>
 
   <!-- ===== 2. PRICE CHART ===== -->
   <section>
-    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ม.ค. 2568 – ม.ค. 2569</div></div>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ต.ค. 2568 – ก.ย. 2569</div></div>
     <div class="card">
       <div class="chart-wrap">
         <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
@@ -146,33 +147,33 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        NSL เปิดปี 2568 ที่฿29.75 ก่อนร่วงต่อเนื่องตลอดไตรมาสแรก หลังจากกำไร Q4/67 ต่ำกว่าคาดและแรงกดดันต้นทุนวัตถุดิบ ราคาแตะจุดต่ำสุดที่ ฿20.70 ในเดือน ต.ค. 2568 ก่อนฟื้นตัวเล็กน้อยในช่วงปลายปี ณ มกราคม 2569 ราคาอยู่ที่ ฿23.00 เปลี่ยนแปลง −22.7% ในรอบปี ทั้งที่พื้นฐานธุรกิจยังเติบโตได้ ทำให้ valuaton ปรับลงมาที่ระดับ P/E ~11x ซึ่งน่าสนใจอย่างยิ่ง
+        กราฟรายเดือนเริ่มที่ ฿26.00 (ต.ค. 2568) ไหลลงเป็นช่วง ๆ ผ่าน ฿21.20 ณ สิ้น พ.ค. 2569 และเด้งขึ้นเล็กน้อยก่อนย่อลงอีกในเดือนล่าสุด กรอบ 52 สัปดาห์ของ vendor คือ ฿20.70–฿30.50 ราคาปัจจุบันจึงอยู่ใกล้ขอบล่างของกรอบ ขณะที่กำไรสุทธิ TTM ยังโต แต่รายได้ชะลอเหลือ +8.6% YoY และ FCF TTM ติดลบ ตัวคูณ P/E จึงหดลงมาที่ ~11x
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">3 วิธี · 2 ตระกูลสมมติฐาน</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿1.99 × P/E เป้าหมาย ~16x — ค่าเฉลี่ย P/E ย้อนหลัง 5 ปี ~17x ใช้ 16x เพื่อความอนุรักษ์นิยม</div></div>
-        <div class="mval">฿31.84</div>
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS ฿1.94 (TTM) × P/E เป้าหมาย 19.1x — มัธยฐาน P/E ย้อนหลัง 5 ปีที่วัดจากราคาเฉลี่ยรายปี ÷ EPS (ช่วง 14.0x–26.4x) มาจากประวัติ ไม่ได้มาจาก P/E ปัจจุบัน</div></div>
+        <div class="mval">฿37.05</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿1.05 × (1+g); g 5%, r 9% → เหมาะกับหุ้นปันผลสม่ำเสมอ ขึ้นต่อเนื่อง 5 ปี</div></div>
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿1.05 × (1+g) = ฿1.1025; g 5%, r 9% → D₁/(r−g) · ตระกูล (r,g) เดียวกับข้อ 3 นับเป็น 1 เสียง</div></div>
         <div class="mval">฿27.56</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 26.54% − g 5%)/(r 9% − g 5%) ≈ 5.39x × BVPS ฿7.80</div></div>
-        <div class="mval">฿42.04</div>
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 25.9% − g 5%)/(r 9% − g 5%) ≈ 5.23x × BVPS ฿7.80 · ตระกูล (r,g) เดียวกับ DDM</div></div>
+        <div class="mval">฿40.76</div>
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        วิธี P/E ให้ค่ากลางที่สมเหตุสมผล DDM ให้ค่าต่ำสุด (อนุรักษ์นิยม สมมติ r=9%) เนื่องจาก payout ratio ~53% ยังไม่สูงพอที่ DDM จะให้ค่าเต็ม Justified P/BV ให้ค่าสูงสุดเพราะ ROE ที่แข็งแกร่งต่อเนื่อง (26–31%) สะท้อน moat ในฐานะ OEM หลักของ 7-Eleven และ brand portfolio ที่ขยาย Fair Value เฉลี่ย ฿33.80 ชี้ว่าราคาปัจจุบัน ฿23.00 มี upside ราว 47% ก่อนถึงมูลค่าเหมาะสม
+        FV = เฉลี่ยของ 2 ตระกูล: (P/E ฿37.05 + เฉลี่ย DDM/Justified P/BV ฿34.16) ÷ 2 เพราะ DDM กับ Justified P/BV ใช้ (r=9%, g=5%) ชุดเดียวกัน จึงนับเป็นเสียงเดียว ขา P/E ไวต่อสมมติฐานที่สุด: มัธยฐาน 19.1x สูงกว่า P/E ของ FY2568 (14.0x) และตัวคูณหดลงต่อเนื่อง หากใช้ 14.0x แทน FV จะเหลือ ~฿30.7 ซึ่งยังสูงกว่าราคาปัจจุบัน ส่วน Justified P/BV อิง ROE 25.9% ซึ่งกำลังลดจาก 29–31% เป้านักวิเคราะห์ไม่ใช่ขาของ FV (ใช้เป็นบริบทเท่านั้น) Fair Value เฉลี่ย {{rd:fv}} ชี้ว่าราคาปัจจุบัน {{rd:px}} มี upside ราว {{rd:upside}} ก่อนถึงมูลค่าเหมาะสม
       </p>
     </div>
   </section>
@@ -195,7 +196,7 @@
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน ฿23.00 อยู่ต่ำกว่า MOS 30% (฿23.66) เพียงเล็กน้อย ถือเป็นโซน Deep Value ที่น่าสนใจมาก นักวิเคราะห์ 4 ราย Strong Buy ทั้งหมด ตั้งเป้าเฉลี่ย ฿28.63 (+26.7%) ส่วน Fair Value ของเรา ฿33.80 ให้ upside 47% ซึ่งสูงกว่าเป้า consensus เพราะรวม Justified P/BV ที่สะท้อน ROE ระดับโลก
+        ราคาปัจจุบัน {{rd:px}} อยู่ต่ำกว่าจุดซื้อ MOS 30% ({{rd:mos30}}) ถือเป็นโซน Deep Value ตามสมมติฐานของเรา นักวิเคราะห์ 4 ราย Strong Buy ทั้งหมด ตั้งเป้าเฉลี่ย {{rd:analystTgt}} ({{rd:analystPct}} จากราคาปัจจุบัน ตาม StockAnalysis) ส่วน Fair Value ของเรา {{rd:fv}} สูงกว่าเป้า consensus เพราะขา P/E ใช้มัธยฐานประวัติ 5 ปี (19.1x) และ Justified P/BV สะท้อน ROE ที่สูง — ตัวเลขเหล่านี้อ่อนไหวต่อสมมติฐานตามที่ระบุในหมวด 3
       </p>
     </div>
   </section>
@@ -233,7 +234,7 @@
           <div class="tgt">{{rd:sc1tgt}}</div>
           <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿2.11</span></li>
+            <li><span>EPS ปี 3</span><span>~฿2.06</span></li>
             <li><span>P/E ออก</span><span>11x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>เศรษฐกิจชะลอ ค่าจ้างขึ้น</span></li>
@@ -246,7 +247,7 @@
           <div class="tgt">{{rd:sc2tgt}}</div>
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿2.51</span></li>
+            <li><span>EPS ปี 3</span><span>~฿2.44</span></li>
             <li><span>P/E ออก</span><span>14x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>ขยาย SKU ส่งออก สาขา BAW</span></li>
@@ -259,7 +260,7 @@
           <div class="tgt">{{rd:sc3tgt}}</div>
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿2.79</span></li>
+            <li><span>EPS ปี 3</span><span>~฿2.73</span></li>
             <li><span>P/E ออก</span><span>17x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>ชนะ tender ใหม่ ส่งออก ASEAN</span></li>
@@ -268,7 +269,7 @@
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      Base case ประเมิน EPS โต 8%/ปี ใกล้เคียงกับ CAGR ย้อนหลัง 5 ปีของ NSL (รายได้โต ~18%/ปี กำไรโต ~26%/ปี) ที่ P/E exit 14x (ต่ำกว่าเฉลี่ยประวัติศาสตร์) ยังได้ผลตอบแทนสะสมสูงถึง 67.8% หรือ 18.8%/ปี รวมปันผล แม้แต่ Bear case ที่กำไรโตแค่ 2%/ปี ยังให้ผลตอบแทน +14.6% จากปันผลเป็นหลัก แสดงถึง downside ที่จำกัด
+      Base case ประเมิน EPS โต 8%/ปี ใกล้เคียงกับรายได้ TTM (+8.6% YoY) และต่ำกว่า CAGR ย้อนหลัง FY2564–2568 (รายได้ ~23%/ปี กำไร ~33%/ปี) ซึ่งกำลังชะลอ ที่ P/E exit 14x (ต่ำกว่ามัธยฐาน 19.1x และเท่า FY2568) ได้ผลตอบแทนสะสม {{rd:sc2ret}} รวมปันผล แม้ Bear case ที่กำไรโตแค่ 2%/ปีและ P/E 11x ยังให้ {{rd:sc1ret}} จากปันผลเป็นหลัก — ทั้งหมดขึ้นกับสมมติฐาน EPS และ P/E exit
     </p>
   </section>
 
@@ -279,11 +280,11 @@
       <div class="box cat">
         <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
         <ul>
-          <li><b>OEM หลักของ 7-Eleven:</b> เป็น supplier ผลิตสินค้า exclusive ให้ร้านสะดวกซื้อที่ใหญ่ที่สุดในไทย (13,000+ สาขา) ทำให้รายได้มีความสม่ำเสมอและ predictable สูง</li>
+          <li><b>OEM หลักของ 7-Eleven:</b> เป็น supplier ผลิตสินค้าให้ร้านสะดวกซื้อที่ใหญ่ที่สุดในไทย ทำให้รายได้มีความสม่ำเสมอและ predictable สูง</li>
           <li><b>ขยาย SKU &amp; แบรนด์ตัวเอง:</b> Bake a Wish franchise, Kao Tang by NSL, NSL Selection เพิ่มมาร์จิ้นสูงกว่า OEM หากแบรนด์เจาะตลาด premium ได้</li>
-          <li><b>การเติบโตของรายได้ต่อเนื่อง:</b> รายได้เติบโตจาก ฿3,043 ล. (2564) → ฿6,952 ล. (2568) CAGR ~18% สะท้อน execution ที่แข็งแกร่ง</li>
-          <li><b>ROE ระดับโลก &gt;26%:</b> ใช้ทุนอย่างมีประสิทธิภาพ (asset-light model ผลิตให้ retailer) ROIC 24–37% ต่อเนื่อง</li>
-          <li><b>ปันผลเพิ่มขึ้น 5 ปีติด:</b> อัตราปันผล ~4.6% ที่ราคาปัจจุบัน และ payout ratio ~53% ยังมีช่องเพิ่มได้</li>
+          <li><b>การเติบโตของรายได้ระยะยาว:</b> รายได้เติบโตจาก ฿3,043 ล. (2564) → ฿6,952 ล. (2568) CAGR ~23% สะท้อน execution ที่แข็งแกร่ง แม้อัตราเติบโตปีล่าสุดชะลอลง (ดูความเสี่ยง)</li>
+          <li><b>ROE สูงต่อเนื่อง:</b> ROE 22–31% ทุกปีใน FY2564–2568 (TTM ~25.9%) สะท้อนการใช้ทุนที่มีประสิทธิภาพในโมเดลรับจ้างผลิต</li>
+          <li><b>ปันผลสม่ำเสมอ:</b> DPS ฿1.05 payout ratio ~54% ของ EPS TTM ยังมีช่องเพิ่มได้หากกำไรกลับมาโต</li>
           <li><b>ตลาดอาหารแช่แข็ง &amp; ส่งออก:</b> NSL Intertrade ส่งออก ASEAN + NSL Inno Foods (ชีส) เป็น segment โตใหม่</li>
         </ul>
       </div>
@@ -294,7 +295,8 @@
           <li><b>ต้นทุนวัตถุดิบผันผวน:</b> ราคาแป้ง น้ำมัน นม เนื้อสัตว์ผันผวนตามสินค้าโภคภัณฑ์โลก กดดัน gross margin</li>
           <li><b>ค่าแรงขั้นต่ำขึ้น:</b> ธุรกิจ food manufacturing ใช้แรงงานเข้มข้น ค่าแรงขั้นต่ำที่ปรับขึ้นกระทบต้นทุนการผลิตโดยตรง</li>
           <li><b>การแข่งขันจาก OEM รายอื่น:</b> ตลาด OEM อาหารสำหรับ convenience store มีคู่แข่งเพิ่มขึ้น ความสามารถในการขึ้นราคามีจำกัด</li>
-          <li><b>ขนาดตลาดหุ้น (Liquidity):</b> Market cap ~฿6.8 พันล้าน สภาพคล่องต่ำกว่าหุ้นขนาดใหญ่ bid-ask spread กว้างกว่าในช่วง sell-off</li>
+          <li><b>กระแสเงินสดอิสระติดลบและหนี้เพิ่ม:</b> FCF TTM −฿113 ล. (FY68 +฿155 ล.) ขณะที่หนี้เพิ่มจาก ฿415 ล. เป็น ฿775 ล. (D/E 0.33x) หากการลงทุนขยายกำลังผลิตไม่ให้ผลตอบแทน ROE จะถูกกดดัน</li>
+          <li><b>ขนาดตลาดหุ้น (Liquidity):</b> Market cap {{rd:mcap}} สภาพคล่องต่ำกว่าหุ้นขนาดใหญ่ bid-ask spread กว้างกว่าในช่วง sell-off</li>
         </ul>
       </div>
     </div>
@@ -305,14 +307,14 @@
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
       <h2>Deep Value พื้นฐานแกร่ง — ราคาปัจจุบันต่ำกว่า MOS 30%</h2>
-      <p>NSL Foods เป็นบริษัทอาหารไทยที่มีโมเดลธุรกิจโดดเด่น: เป็น OEM หลักของ 7-Eleven ทั่วประเทศพร้อมแบรนด์ตัวเองที่โตได้ ROE สูงกว่า 26% ต่อเนื่อง 4 ปี รายได้เติบโต CAGR ~18% แต่ราคาหุ้นย่อตัวลง 22.7% ในรอบปีจากแรงขาย sector rotation และกังวลต้นทุน ทำให้ P/E ลงมาที่ ~11x ต่ำกว่าค่าเฉลี่ย 5 ปีที่ ~17x อย่างมีนัยสำคัญ มูลค่าเหมาะสมเฉลี่ย 3 วิธีที่ ฿33.80 ให้ MOS 32% และ upside 47% จากราคาปัจจุบัน นักวิเคราะห์ 4 ราย Strong Buy เป้าเฉลี่ย ฿28.63</p>
+      <p>NSL Foods เป็นบริษัทอาหารไทยที่เป็น OEM หลักของ 7-Eleven พร้อมแบรนด์ตัวเอง ROE 22–31% ทุกปีใน 5 ปี รายได้เติบโต CAGR ~23% (FY64–68) แต่การเติบโตชะลอเหลือ +8.6% YoY (TTM) FCF TTM ติดลบ และหนี้เพิ่ม ราคาหุ้นย่อตัวลงในรอบปี ทำให้ P/E ลงมาที่ ~11x ต่ำกว่ามัธยฐาน 5 ปีที่ ~19.1x มูลค่าเหมาะสมเฉลี่ย 2 ตระกูล (P/E มัธยฐาน กับ DDM/Justified P/BV) ที่ {{rd:fv}} ให้ MOS {{rd:mos}} และ upside {{rd:upside}} จากราคาปัจจุบัน แต่ผลอ่อนไหวต่อ P/E เป้าหมาย (ที่ 14x FV ~฿30.7) นักวิเคราะห์ 4 ราย Strong Buy เป้าเฉลี่ย {{rd:analystTgt}}</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿28.63 (Strong Buy 4/4)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน ฿23.00 อยู่ใน Deep Value Zone (ต่ำกว่า MOS 30%) — เหมาะสะสมระยะยาว 2–3 ปี ทยอยซื้อในช่วง ฿20–24 ตั้ง stop คิดเป็น fundamental (หาก ROE ต่ำกว่า 20% ต่อเนื่อง 2 ปี) Base case ให้ผลตอบแทนสะสม ~68% หรือ ~19%/ปี รวมปันผล ~4.6%
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน {{rd:px}} อยู่ใน Deep Value Zone (ต่ำกว่า MOS 30%) ตามสมมติฐานของเรา — เหมาะสะสมระยะยาว 2–3 ปี โดยทยอยซื้อและติดตามงบไตรมาสถัดไป (ประกาศ 24 พ.ย. 2569 ตาม StockAnalysis) ตั้งเงื่อนไขทบทวนเชิง fundamental (หาก ROE ต่ำกว่า 20% ต่อเนื่อง 2 ปี หรือ FCF ยังติดลบต่อเนื่อง) Base case ให้ผลตอบแทนสะสม {{rd:sc2ret}} รวมปันผล
       </div>
     </div>
   </section>
@@ -323,7 +325,7 @@
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มา: Yahoo Finance (NSL.BK), StockAnalysis.com (BKK:NSL), Investing.com, NSL Foods IR (nslfoods.com), Alpha Spread
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
