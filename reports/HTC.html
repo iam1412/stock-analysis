@@ -5,35 +5,35 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น หาดทิพย์ (HTC) — Stock Analysis Dashboard</title>
 <!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง (Opus→"Claude Opus 4.8", Sonnet→"Claude Sonnet 4.6") — gate E28 บังคับ -->
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"HTC","currency":"THB","price":15.6,"fairValue":15.41,"mos":-1.2,"upside":-1.2,"pe":10.9,"dividendYield":6.23,"roe":13.42}
+{"symbol":"HTC","currency":"THB","price":15.7,"fairValue":14.5,"mos":-8.3,"upside":-7.6,"pe":11.6,"dividendYield":6.31,"roe":12.74}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 15.41,
+  "fv": 14.5,
   "values": {
-    "px": 15.6,
-    "priceDate": "2026-09-18",
+    "px": 15.7,
+    "priceDate": "2026-09-21",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
     "fvLow": 13.46,
-    "fvHigh": 16.81,
+    "fvHigh": 15.53,
     "shares": 401900000,
-    "baseEps": 1.45,
+    "baseEps": 1.35,
     "scenarios": [
       {
-        "tgt": 12.57,
+        "tgt": 11.7,
         "div": 2.93
       },
       {
-        "tgt": 16.93,
+        "tgt": 16.45,
         "div": 3
       },
       {
-        "tgt": 21.59,
+        "tgt": 20.1,
         "div": 3.06
       }
     ],
@@ -69,19 +69,19 @@
       ["มิ.ย.26", 15.7],
       ["ก.ค.26", 16],
       ["ส.ค.26", 16],
-      ["ก.ย.26", 15.6]
+      ["ก.ย.26", 15.7]
     ],
-    "min": 14.5,
+    "min": 14,
     "max": 16.5,
-    "grid": [15, 15.5, 16],
+    "grid": [14.5, 15, 15.5, 16],
     "currency": "฿",
     "highlight": [1, 4],
     "gridFmt": "v.toFixed(2)",
     "dataFmt": "d[1].toFixed(2)"
   },
   "gauge": {
-    "min": 10.5,
-    "max": 18.5,
+    "min": 9.5,
+    "max": 17.5,
     "fairLabelTop": true
   }
 }
@@ -112,7 +112,7 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}} (ปิดตลาด SET)<br>
-        กรอบ 52 สัปดาห์ ฿14.60 – ฿16.40<br>
+        กรอบ 52 สัปดาห์ ฿14.60 – ฿16.90<br>
         ที่มา: stockanalysis.com/quote/bkk/HTC, Yahoo Finance (HTC.BK), set.or.th
       </div>
     </div>
@@ -123,19 +123,19 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">Consumer staple / Bottler ปันผลสูง</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">~401.9 ล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~10.9x</div><div class="d">ต่ำกว่าค่าเฉลี่ยตลาด consumer staple</div></div>
-      <div class="metric"><div class="k">P/E เฉลี่ย ~3 ปี</div><div class="v">~10.5x</div><div class="d">ช่วง 9.8x – 11.5x</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.44x</div><div class="d">ทรงตัวจาก 1.41x (Dec'25)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~11.6x</div><div class="d">ใกล้มัธยฐานย้อนหลัง 5 ปีของหุ้นเอง (11.5x)</div></div>
+      <div class="metric"><div class="k">P/E มัธยฐาน ~5 ปี</div><div class="v">~11.5x</div><div class="d">ช่วง 11.0x – 14.3x (FY2021–FY2025)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.46x</div><div class="d">ประมาณการจาก BVPS ~฿10.76 (ไม่ได้ตรวจกับงบดุลโดยตรง)</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">฿568.2 ล้าน</div><div class="d">▼ -5.6% YoY</div></div>
-      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿1.45</div><div class="d">FY2025 ฿1.41 · FY2024 ฿1.50</div></div>
-      <div class="metric"><div class="k">BVPS</div><div class="v">~฿11.04</div><div class="d">จาก P/BV 1.44x ที่ราคา ฿15.90</div></div>
-      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~13.4% / 6.1%</div><div class="d">ลดลงจาก 15.0%/6.9% (FY2024)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿1.35</div><div class="d">FY2025 ฿1.41 · FY2024 ฿1.50 · กำไร TTM ฿544 ล้าน</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿10.76</div><div class="d">ประมาณจากหนี้ ฿1,341 ล้าน ÷ D/E 0.31 ÷ 401.9 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">ROE (TTM)</div><div class="v pos">~12.7%</div><div class="d">ลดลงจาก 15.0% (FY2024)</div></div>
 
-      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿6.87 พันล้าน</div><div class="d">FY2025 ฿6.63 พันล้าน (-0.25% YoY)</div></div>
-      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~53.6%</div><div class="d">ฟื้นจาก 42.6% (FY2023)</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~6.23%</div><div class="d">จ่าย 2 ครั้ง/ปี · Payout ~70%</div></div>
-      <div class="metric"><div class="k">Current Ratio</div><div class="v">1.12</div><div class="d">D/E 0.29 (อนุรักษ์นิยม)</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿7.05 พันล้าน</div><div class="d">FY2025 ฿6.63 พันล้าน (-0.3% YoY) · TTM +10.8% YoY</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~53.2%</div><div class="d">ฟื้นจาก 42.6% (FY2023) · Op margin TTM 10.1%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~6.31%</div><div class="d">DPS ฿0.99 · Payout ~73% ของ EPS TTM</div></div>
+      <div class="metric"><div class="k">D/E</div><div class="v">0.31</div><div class="d">หนี้ ฿1,341 ล้าน · เงินสด ฿99.6 ล้าน</div></div>
     </div>
   </section>
 
@@ -154,40 +154,37 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ราคาแกว่งอยู่ในกรอบแคบ ฿14.60–16.40 ตลอด ~1 ปีที่ผ่านมา สะท้อนลักษณะหุ้น defensive consumer staple ผันผวนต่ำ
-        จุดต่ำสุดช่วง ต.ค. 2568 (฿14.70) หลังรายได้ปี 2567 หดตัวจากการปรับโครงสร้างต้นทุน จากนั้นฟื้นตัวขึ้นแตะจุดสูงสุด ฿16.10 ช่วง ม.ค. 2569
-        ตามอัตรากำไรขั้นต้นที่ฟื้นตัวเป็น ~54% ก่อนย่อลงมาซื้อขายแถว ฿15.70–15.90 ในช่วง 2 เดือนล่าสุด
-        รวมทั้งปีราคาขึ้น ~+5.3% ไม่รวมปันผล ~6.2% ต่อปี
+        ราคาแกว่งอยู่ในกรอบแคบ ฿14.60–16.90 ตลอด 52 สัปดาห์ สะท้อนลักษณะหุ้น defensive consumer staple ผันผวนต่ำ
+        จุดต่ำสุดรายเดือนในกราฟคือ พ.ย. 2568 (฿14.70) และจุดสูงสุดรายเดือนคือ ก.พ. 2569 (฿16.10)
+        ก่อนซื้อขายแถว ฿15.70–16.00 ในช่วง 4 เดือนล่าสุด
+        รวมทั้งปีราคาขึ้น ~+4.0% ไม่รวมปันผล ~6.3% ต่อปี
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี</div></div>
     <div class="card">
       <!-- ✏️ เลือก ≥2 วิธีให้เหมาะกับหุ้น — gate เช็คคณิตเฉพาะวิธีชื่อ "P/E" (E21) และ "Justified P/BV" (E22) เมื่อมีวิธีนั้น
            ธนาคาร → เน้น P/BV / Residual income   • REIT → DDM / NAV   • หุ้นไม่ปันผล → ตัด DDM ออก ใช้ P/E + DCF/Justified P/BV -->
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿1.45 × P/E 11.0x — สอดคล้องค่าเฉลี่ย 3 ปีของหุ้น bottler ปันผลสูง</div></div>
-        <div class="mval">฿15.95</div>
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS ฿1.35 (TTM) × P/E 11.5x — 11.5x คือมัธยฐานย้อนหลัง 5 ปีของ HTC เอง (FY2021–FY2025 ช่วง 11.0–14.3x) ที่วัดจากราคาเฉลี่ยรายปี ไม่ได้มาจาก P/E ปัจจุบัน</div></div>
+        <div class="mval">฿15.53</div>
       </div>
       <div class="vmethod">
         <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.99 × (1+g); g 2%, r 9.5% → สะท้อนความเสี่ยง defensive แต่รายได้โตช้า</div></div>
         <div class="mval">฿13.46</div>
-      </div>
-      <div class="vmethod">
-        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 13.42% − g 2%)/(r 9.5% − g 2%) ≈ 1.52 × BVPS ฿11.04</div></div>
-        <div class="mval">฿16.81</div>
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        DDM ให้ค่าต่ำสุด (฿13.46) เพราะ payout ratio สูง (~70%) ทำให้เงินปันผลไม่โตเร็ว ขณะที่ Justified P/BV ให้ค่าสูงสุด (฿16.81)
-        สะท้อน ROE ที่ยังสูงกว่าต้นทุนเงินทุน · P/E Valuation อยู่กึ่งกลางและใกล้เคียงราคาตลาดปัจจุบันที่สุด
-        FV เฉลี่ย ฿15.41 ใกล้เคียงราคาปัจจุบัน ฿15.90 (ตึงตัวเล็กน้อย) สอดคล้องกับสถานะหุ้น mature consumer staple ที่ตลาดให้มูลค่าค่อนข้างเต็มแล้ว
+        FV = เฉลี่ยของ 2 ตระกูลอิสระ: P/E ที่ยึดมัธยฐานย้อนหลัง (฿15.53) และ DDM (฿13.46; r 9.5%, g 2% เป็นสมมติฐานของเรา) ห่างกันไม่ถึง 2 เท่า จึงเฉลี่ยได้
+        ตัด Justified P/BV ออกจากรอบนี้ เพราะ BVPS ล่าสุดไม่ได้ตรวจกับงบดุลโดยตรง (และใช้ r,g ชุดเดียวกับ DDM จึงนับเป็นเสียงเดียวอยู่แล้ว)
+        FV เฉลี่ย {{rd:fv}} ต่ำกว่าราคาปัจจุบัน {{rd:px}} เล็กน้อย สอดคล้องกับสถานะหุ้น mature consumer staple ที่ตลาดให้มูลค่าค่อนข้างเต็มแล้ว
+        · ความอ่อนไหว: ถ้าใช้ P/E ขาเดียว (฿15.53) ราคาจะสูงกว่าเพียงเล็กน้อย แต่ถ้าใช้ DDM ขาเดียว (฿13.46) ราคาสูงกว่ามูลค่าประมาณ 14% — ผลไม่พลิกเป็นมี MOS ในทั้งสองกรณี
       </p>
     </div>
   </section>
@@ -205,13 +202,13 @@
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿16.11<br><small>ประมาณการ (ไม่มี consensus)</small></span>
+
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน ฿15.90 อยู่ "เหนือ" มูลค่าเหมาะสมเฉลี่ยเล็กน้อย (~3%) — ไม่มี Margin of Safety ในขณะนี้ หมายเหตุ: HTC ไม่มี analyst coverage/consensus target
-        จากแหล่งข้อมูลที่ตรวจสอบ (stockanalysis.com ระบุ n/a) ตัวเลข ฿16.11 ในกราฟนี้เป็นเพียงจุดกึ่งกลางระหว่าง FV และกรอบบนของ valuation ไม่ใช่เป้าจากนักวิเคราะห์จริง
+        ราคาปัจจุบัน {{rd:px}} อยู่ "เหนือ" มูลค่าเหมาะสมเฉลี่ย {{rd:fv}} — ไม่มี Margin of Safety ในขณะนี้ หมายเหตุ: HTC ไม่มี analyst coverage/consensus target
+        จากแหล่งข้อมูลที่ตรวจสอบ (stockanalysis.com และ Yahoo ระบุ n/a) จึงไม่มีเป้านักวิเคราะห์บนสเกลนี้และไม่ได้ใช้เป็นขาของ FV
       </p>
     </div>
   </section>
@@ -223,7 +220,7 @@
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">ราคาเหมาะสม–ตึงเล็กน้อย (ราคาเหนือ FV ~3%) · ยังไม่มี MOS · รอย่อสู่ใกล้ ฿12.33–13.85 ก่อนเริ่มสะสม</div>
+        <div class="txt">ราคาสูงกว่า FV ({{rd:mos}}) · ยังไม่มี MOS · รอย่อสู่โซน {{rd:mos30}}–{{rd:mos20}} ก่อนเริ่มสะสม</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -250,7 +247,7 @@
           <div class="tgt">{{rd:sc1tgt}}</div>
           <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿1.32</span></li>
+            <li><span>EPS ปี 3</span><span>~฿1.23</span></li>
             <li><span>P/E ออก</span><span>9.5x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>ต้นทุนน้ำตาล/บรรจุภัณฑ์สูงขึ้น ดีมานด์เครื่องดื่มอัดลมลดลงตามกระแสสุขภาพ</span></li>
@@ -263,8 +260,8 @@
           <div class="tgt">{{rd:sc2tgt}}</div>
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿1.54</span></li>
-            <li><span>P/E ออก</span><span>11.0x</span></li>
+            <li><span>EPS ปี 3</span><span>~฿1.43</span></li>
+            <li><span>P/E ออก</span><span>11.5x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>ธุรกิจทรงตัว รักษาส่วนแบ่งตลาดภาคใต้ ต้นทุนคงที่ตามคาด</span></li>
           </ul>
@@ -276,7 +273,7 @@
           <div class="tgt">{{rd:sc3tgt}}</div>
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿1.73</span></li>
+            <li><span>EPS ปี 3</span><span>~฿1.61</span></li>
             <li><span>P/E ออก</span><span>12.5x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>ท่องเที่ยวภาคใต้ฟื้นตัวแรง ดันปริมาณขาย + อัตรากำไรขั้นต้นขยายต่อเนื่อง</span></li>
@@ -299,15 +296,15 @@
         <ul>
           <li><b>สิทธิ์ผูกขาดระยะยาว:</b> เป็นผู้บรรจุ/จัดจำหน่าย Coca-Cola แต่เพียงผู้เดียวใน 14 จังหวัดภาคใต้ ป้องกันคู่แข่งเข้าตลาดได้ดี</li>
           <li><b>ท่องเที่ยวภาคใต้ฟื้นตัว:</b> ภูเก็ต/กระบี่/สงขลาเป็นจุดหมายท่องเที่ยวหลัก นักท่องเที่ยวต่างชาติกลับมาหนุนปริมาณขายเครื่องดื่ม</li>
-          <li><b>อัตรากำไรขั้นต้นฟื้นตัวแรง:</b> จาก 42.6% (FY2023) เป็น ~54% (TTM) จากการบริหารต้นทุนวัตถุดิบและบรรจุภัณฑ์ที่ดีขึ้น</li>
-          <li><b>ปันผลสูงสม่ำเสมอ:</b> yield ~6.2% จ่าย 2 ครั้ง/ปีต่อเนื่องหลายปี เหมาะกับนักลงทุนเน้นกระแสเงินสด</li>
-          <li><b>งบดุลแข็งแรง:</b> D/E เพียง 0.29 มีกันชนพอรับมือความผันผวนต้นทุนวัตถุดิบ</li>
+          <li><b>อัตรากำไรขั้นต้นฟื้นตัวแรง:</b> จาก 42.6% (FY2023) เป็น ~53% (TTM) และรายได้ TTM ฟื้นขึ้น ~10.8% YoY</li>
+          <li><b>ปันผลสูง:</b> DPS ฿0.99 คิดเป็น yield ~6.3% เหมาะกับนักลงทุนเน้นกระแสเงินสด</li>
+          <li><b>งบดุลอนุรักษ์นิยม:</b> D/E เพียง 0.31 มีกันชนพอรับมือความผันผวนต้นทุนวัตถุดิบ</li>
         </ul>
       </div>
       <div class="box risk">
         <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
         <ul>
-          <li><b>รายได้เติบโตช้า/ทรงตัว:</b> รายได้ FY2025 หดตัวเล็กน้อย (-0.25%) ต่อจาก FY2024 ที่ลดลงแรง (-15.5%) สะท้อนตลาดอิ่มตัว</li>
+          <li><b>รายได้เติบโตไม่สม่ำเสมอ:</b> รายได้ FY2025 หดตัวเล็กน้อย (-0.3%) ต่อจาก FY2024 ที่ลดลงแรง (-15.5%) แม้ TTM ล่าสุดฟื้น และ Op margin ลดลงเหลือ 10.1% จาก 11.4% (FY2024)</li>
           <li><b>กระแสสุขภาพกดดันดีมานด์:</b> ผู้บริโภคหันไปดื่มเครื่องดื่มน้ำตาลต่ำ/ทางเลือกสุขภาพมากขึ้น กระทบปริมาณขายน้ำอัดลมระยะยาว</li>
           <li><b>ต้นทุนวัตถุดิบผันผวน:</b> ราคาน้ำตาลและบรรจุภัณฑ์ (PET/อลูมิเนียม) ผันผวนตามตลาดโลก กระทบอัตรากำไรได้ทันที</li>
           <li><b>ไม่มี analyst coverage:</b> ไม่มี consensus target ราคาจากนักวิเคราะห์ ทำให้ประเมินความคาดหวังตลาดยากกว่าหุ้นใหญ่</li>
@@ -323,17 +320,17 @@
     <div class="verdict">
       <h2>หาดทิพย์ — Consumer staple ปันผลสูง ราคาใกล้มูลค่าเหมาะสม รอจังหวะย่อ</h2>
       <p>
-        HTC เป็นผู้บรรจุ/จัดจำหน่าย Coca-Cola แต่เพียงผู้เดียวใน 14 จังหวัดภาคใต้ ธุรกิจมีลักษณะ defensive ผันผวนต่ำ ปันผลสม่ำเสมอ ~6.2% ต่อปี
-        และงบดุลแข็งแรง (D/E 0.29) แต่รายได้เติบโตช้า/ทรงตัวในช่วง 2 ปีที่ผ่านมา ราคาปัจจุบัน ฿15.90 ใกล้เคียงมูลค่าเหมาะสมเฉลี่ย ฿15.41 (ตึงตัวเล็กน้อย ~3%)
+        HTC เป็นผู้บรรจุ/จัดจำหน่าย Coca-Cola แต่เพียงผู้เดียวใน 14 จังหวัดภาคใต้ ธุรกิจมีลักษณะ defensive ผันผวนต่ำ ปันผลสม่ำเสมอ ~6.3% ต่อปี
+        และงบดุลอนุรักษ์นิยม (D/E 0.31) แต่กำไรต่อหุ้นถอยจาก ฿1.50 (FY2024) เหลือ ฿1.35 (TTM) ราคาปัจจุบัน {{rd:px}} สูงกว่ามูลค่าเหมาะสมเฉลี่ย {{rd:fv}}
         เหมาะกับนักลงทุนที่มองหากระแสเงินสด/ปันผลระยะยาวมากกว่านักลงทุนที่มองหา capital gain ระยะสั้น
       </p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้าประมาณการ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿16.11 (ไม่มี analyst consensus)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์</div><div class="v" style="color:#a5d6a7">ไม่มี consensus (n/a)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ยังไม่มี Margin of Safety ณ ราคาปัจจุบัน — เหมาะทยอยสะสมเมื่อราคาย่อลงมาโซน ฿12.33–13.85 (MOS 20–30%)
+        💡 <b>กลยุทธ์:</b> ยังไม่มี Margin of Safety ณ ราคาปัจจุบัน — เหมาะทยอยสะสมเมื่อราคาย่อลงมาโซน {{rd:mos30}}–{{rd:mos20}} (MOS 20–30%)
         มากกว่าซื้อไล่ราคา ผู้ที่ถือเพื่อปันผลระยะยาวสามารถถือต่อได้เพราะ yield ยังสูงกว่าดอกเบี้ยเงินฝาก แต่ผู้ที่มองหา upside ควรรอจังหวะราคาต่ำกว่านี้
       </div>
     </div>
@@ -343,9 +340,9 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • แหล่งข้อมูล: stockanalysis.com/quote/bkk/HTC, Yahoo Finance (HTC.BK), set.or.th (ณ 3-4 ก.ค. 2569)
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • แหล่งข้อมูล: stockanalysis.com/quote/bkk/HTC, Yahoo Finance (HTC.BK), set.or.th (ณ 21 ก.ย. 2569)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 5 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
