@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น PayPal Holdings Inc. (PYPL) — Stock Analysis Dashboard</title>
 <!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง (Opus→"Claude Opus 4.8", Sonnet→"Claude Sonnet 4.6") — gate E28 บังคับ -->
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
 {"symbol":"PYPL","currency":"USD","price":52.41,"fairValue":75,"mos":30.1,"upside":43.1,"pe":9.8,"dividendYield":1.23,"roe":25.1}
@@ -197,7 +197,7 @@
         <!-- ✏️ หมายเหตุ -->
         วิธี P/E (non-GAAP) ให้ค่าสูงสุด ($80.4) เพราะสมมติ re-rate P/E กลับสู่ระดับปานกลาง (15x) ซึ่งยังต่ำกว่าค่าเฉลี่ยระยะยาวมาก —
         วิธี P/FCF ($74.9) สะท้อนความจริงที่ว่า PYPL สร้าง FCF ได้แข็งแกร่งกว่ากำไรทางบัญชี (buyback $6B/ปี พิสูจน์ conviction ของบริษัทเอง) —
-        วิธี Conservative GAAP P/E ($69.3) เป็นฐานล่างกรณี moat เสื่อมต่อ ทั้ง 3 วิธีคอนเวิร์จอยู่ในกรอบ $69-80 จึงใช้ค่าเฉลี่ย $75 เป็น Fair Value
+        วิธี Conservative GAAP P/E ($69.3) เป็นฐานล่างกรณี moat เสื่อมต่อ ทั้ง 3 วิธีคอนเวิร์จอยู่ในกรอบ $69-80 จึงใช้ค่าเฉลี่ยเป็น Fair Value ({{rd:fv}})
         (ต่ำกว่าเป้านักวิเคราะห์ consensus บางส่วน แต่สูงกว่าเป้าเฉลี่ยตลาดปัจจุบัน ~$51 สะท้อนมุมมองว่าตลาดตีราคาลบเกินพื้นฐาน FCF จริง)
       </p>
     </div>
@@ -220,8 +220,8 @@
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน $55.52 (หลังพุ่งขึ้นจากข่าวเสนอซื้อกิจการ Stripe/Advent ที่ $60.50/หุ้น) ยังต่ำกว่า Fair Value ($75) และโซน MOS 20% ($60.0) — สะท้อนว่าแม้มีข่าว M&A ตลาดยังไม่มั่นใจว่าดีลจะปิดที่ราคาสูงกว่านี้หรือปิดสำเร็จเลยหรือไม่
-        เป้าเฉลี่ยนักวิเคราะห์ Street ($51.5, Hold) ยังต่ำกว่าทั้งราคาปัจจุบันและ FV ของเรา — สะท้อนความไม่แน่นอนของดีลและมุมมอง "value trap" หากดีลล่ม/moat ยังเสื่อมต่อ
+        ราคาปัจจุบัน {{rd:px}} (หลังพุ่งขึ้นจากข่าวเสนอซื้อกิจการ Stripe/Advent ที่ $60.50/หุ้น) ยังต่ำกว่า Fair Value ({{rd:fv}}) และโซน MOS 20% ({{rd:mos20}}) — สะท้อนว่าแม้มีข่าว M&A ตลาดยังไม่มั่นใจว่าดีลจะปิดที่ราคาสูงกว่านี้หรือปิดสำเร็จเลยหรือไม่
+        เป้าเฉลี่ยนักวิเคราะห์ Street ($57.07, Hold) ยังต่ำกว่าทั้งราคาปัจจุบันและ FV ของเรา — สะท้อนความไม่แน่นอนของดีลและมุมมอง "value trap" หากดีลล่ม/moat ยังเสื่อมต่อ
       </p>
     </div>
   </section>
@@ -308,7 +308,7 @@
       <div class="box cat">
         <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
         <ul>
-          <li><b>ข้อเสนอซื้อกิจการ Stripe/Advent International:</b> เสนอราคา $60.50/หุ้น มูลค่ารวม ~$53.4B (15 ก.ค. 2569, รายงานโดย WSJ/Reuters) — สูงกว่าราคาตลาดปัจจุบัน $55.52 ~9% หาก deal ผ่านจะเป็น "lifeline" ให้ผู้ถือหุ้นทันที แต่ยังไม่มีข้อสรุปว่าบอร์ด PayPal จะรับข้อเสนอหรือหน่วยงานกำกับดูแลจะอนุมัติหรือไม่</li>
+          <li><b>ข้อเสนอซื้อกิจการ Stripe/Advent International:</b> เสนอราคา $60.50/หุ้น มูลค่ารวม ~$53.4B (15 ก.ค. 2569, รายงานโดย WSJ/Reuters) — สูงกว่าราคาตลาดปัจจุบัน ({{rd:px}}) หาก deal ผ่านจะเป็น "lifeline" ให้ผู้ถือหุ้นทันที แต่ยังไม่มีข้อสรุปว่าบอร์ด PayPal จะรับข้อเสนอหรือหน่วยงานกำกับดูแลจะอนุมัติหรือไม่</li>
           <li><b>PayPal Ads (Curated Ads):</b> เปิดตัว 22 เม.ย. 2569 ใช้ purchase data จริงจาก 25 พันล้าน transaction บน 400M+ บัญชี PayPal/Venmo — สร้าง revenue margin สูงกว่า core payments มาก และ Google/Meta ทำไม่ได้เพราะไม่มี checkout data</li>
           <li><b>Venmo กลายเป็น standalone segment:</b> reorganize เม.ย. 2569 แยก Consumer Financial Services & Venmo — Venmo TPV โต 14% YoY ต่อเนื่อง 6 ไตรมาสติด, revenue Venmo ~$1.7B (+20% YoY) สะท้อน monetization เริ่มติดเครื่อง</li>
           <li><b>Buyback อย่างจริงจัง:</b> คืนทุน $6B/ปี (ลดหุ้นถ่วงน้ำหนัก 8% YoY) — ที่ราคานี้ (P/FCF ~7x) การซื้อหุ้นคืนเป็น capital allocation ที่ทรงพลังมาก และหนุน EPS แม้กำไรรวมไม่โตเร็ว</li>
@@ -322,7 +322,7 @@
           <li><b>Moat กำลังถูกท้าทายจริง:</b> Apple Pay ครองพื้นที่ iOS ธรรมชาติ, Stripe (valuation $159B ใน funding รอบล่าสุด vs PYPL market cap $40B) และ Shopify Payments แย่ง unbranded/checkout share ต่อเนื่อง — "brand premium" ของ PayPal checkout ที่เคยมี conversion สูงกว่าคู่แข่งกำลังเจือจางลง</li>
           <li><b>Take rate compression:</b> Braintree/PSP โตเร็วกว่า branded checkout ทำให้ revenue mix เอียงไปทาง margin ต่ำ — transaction margin dollars โตช้ากว่า TPV มาโดยตลอด</li>
           <li><b>Active account เกือบทรงตัว:</b> +1% YoY เท่านั้น, transactions per user ลดลง ~5% YoY — สัญญาณว่า engagement ต่อบัญชีถดถอย ไม่ใช่แค่ growth ชะลอ</li>
-          <li><b>Analyst sentiment ยังลบ:</b> เป้าเฉลี่ย Street เพียง ~$51.5 (Hold) — ต่ำกว่า FV เราที่ $75 มาก มีความเป็นไปได้ที่ตลาดมองเห็นความเสี่ยงเชิงโครงสร้างที่ valuation model เชิงตัวเลขจับไม่ได้ทั้งหมด</li>
+          <li><b>Analyst sentiment ยังลบ:</b> เป้าเฉลี่ย Street เพียง ~$57.07 (Hold) — ต่ำกว่า FV เรา ({{rd:fv}}) มาก มีความเป็นไปได้ที่ตลาดมองเห็นความเสี่ยงเชิงโครงสร้างที่ valuation model เชิงตัวเลขจับไม่ได้ทั้งหมด</li>
           <li><b>CEO ใหม่ (Alex Chriss) ยังพิสูจน์ผลลัพธ์ไม่ครบ:</b> reorganize เม.ย. 2569 เป็นการเดิมพันเชิงกลยุทธ์ครั้งใหญ่ — หากล้มเหลวในการเร่ง Venmo/Ads monetization อาจกระทบความเชื่อมั่นซ้ำ</li>
           <li><b>2026 EPS guidance กว้างและเสี่ยงขาลง:</b> non-GAAP EPS guided "declined low-single digits ถึง slightly positive" — เป็นปีแรกในรอบหลายปีที่ EPS อาจหดตัว</li>
           <li><b>ความไม่แน่นอนของดีล M&A:</b> ข้อเสนอ Stripe/Advent เป็นเพียงข้อเสนอเบื้องต้น ยังไม่มีข้อตกลงผูกพัน — เสี่ยงถูกบอร์ดปฏิเสธ/หน่วยงานกำกับดูแล (antitrust) ไม่อนุมัติ/เจรจาราคาใหม่ ราคาหุ้นอาจย่อกลับหากดีลล่ม</li>
@@ -353,7 +353,7 @@
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$51.5 (Hold)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$57.07 (Hold)</div></div>
       </div>
       <div class="zone">
         💡 <b>กลยุทธ์:</b> PYPL เทรดที่ P/E ~8.5x และ P/FCF ~7.3x ซึ่งถูกมากเทียบกับ ROE ~25% และ FCF ที่ยังแข็งแกร่ง ($5.5B/ปี) — เหมาะกับนักลงทุนสาย
@@ -370,7 +370,7 @@
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลจาก Yahoo Finance, StockAnalysis.com, PayPal Investor Relations (Q1 2026 Earnings Release), และรายงานข่าว/บทวิเคราะห์นักวิเคราะห์ ณ ก.ค. 2569
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 16 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
