@@ -14,7 +14,8 @@
 | **US** คอลัมน์ "TTM (\<เดือน\>)" ของ SA ค้าง >1 ไตรมาส | §1 XBRL + §2 (รวม 4 ไตรมาสเอง) | ตาราง quarterly ของ SA (`?p=quarterly`) รวมเอง | ไตรมาสที่ขาดคำนวณ Q4 ไม่ได้ (ไม่มี FY หรือ 9 เดือน) |
 | **ไทย (SET)** Yahoo ≠ SA ≠ รายงานเดิม (เคส M) | §3 เว็บ IR ของบริษัท → หน้า "Financial Highlights" (EPS รายปี) + ไฟล์งบ/MD&A (PDF) | SA ตาราง quarterly (`stockanalysis.com/quote/bkk/<SYM>/financials/?p=quarterly`) รวม §2 | เปิดไฟล์งบต้นฉบับไม่ได้ (PDF อ่านเป็นข้อความไม่ได้) และไตรมาสที่ขาดคำนวณจาก FY − 9 เดือนไม่ได้ — ส่งกลับให้ controller ทำมือ พร้อม URL ไฟล์งบที่หาเจอ |
 | ADR / หุ้นสองกระดาน มัธยฐานดูเพี้ยน (P/E ต่ำ/สูงผิดปกติ) | §5 `--median-spec <SYM>:<ticker กระดานท้องถิ่น>` | ตรวจ FX + อัตรา ADS เอง (เครื่องมือไม่แก้ให้) | หาอัตรา ADS/FX จากแหล่งปฐมภูมิ (20-F/แบบ 56-1) ไม่ได้ |
-| Yahoo/SA/Google Finance ล่ม (503, 403, "device not supported") | ลองใหม่ทีหลังหนึ่งครั้ง (แหล่งชั่วคราวเคยกลับมาเอง) | แหล่งปฐมภูมิ (§1 / §3) | ทุกแหล่งปฐมภูมิล่มซ้ำ 2 รอบ — แนบ URL + HTTP status + เวลา |
+| แหล่งสำรองตอบ **403** (โดยเฉพาะ sec.gov) | **ตรวจ User-Agent ก่อนสรุปว่าล่ม** (§1: `www.sec.gov` ต้อง UA แบบ ชื่อ+อีเมลติดต่อ · `data.sec.gov` รับ "Mozilla/5.0") | ลองใหม่ด้วย UA ที่ถูกต้อง | ยังได้ 403 ทั้งที่ UA ถูกต้อง 2 รอบ — แนบ URL + UA ที่ใช้ (ไม่ต้องแนบอีเมล) + เวลา |
+| Yahoo/SA/Google Finance ล่ม (503, "device not supported") | ลองใหม่ทีหลังหนึ่งครั้ง (แหล่งชั่วคราวเคยกลับมาเอง) | แหล่งปฐมภูมิ (§1 / §3) | ทุกแหล่งปฐมภูมิล่มซ้ำ 2 รอบ — แนบ URL + HTTP status + เวลา |
 | Ticker ถูกเพิกถอน/ควบรวม (Yahoo ไม่ 404 แต่ quote ค้าง) | §4 ข้อ 5 | SEC Form 25 / ประกาศตลาด | ยืนยันแหล่งปฐมภูมิไม่ได้ — ห้ามลบรายงานเอง ส่งกลับ controller |
 
 **หลักการ:** แหล่งสำรอง "ชี้ขาด" ได้ก็ต่อเมื่อเป็นงบต้นฉบับ (SEC XBRL, exhibit 99.1, ไฟล์งบ SET/IR) — เลขจาก vendor ตัวที่สามไม่ใช่ตัวตัดสิน · BLOCKED ต้องมีตาราง "แหล่ง · ค่า · งวด · ฐาน (GAAP/adj)" ของทุกแหล่งที่ลองแล้ว ไม่ใช่แค่ "ข้อมูลขัดกัน"
@@ -24,14 +25,17 @@
 ## 1. SEC EDGAR สำหรับหุ้น US
 
 **กฎ User-Agent (ทดสอบ 22 ก.ย. 69):**
-- `curl` เปล่า (ไม่มี `-A`) → **HTTP 403** ทั้ง `www.sec.gov` และ `data.sec.gov` · WebFetch ก็ถูกปฏิเสธ (บันทึกใน memory)
-- `-A "Mozilla/5.0"` → `data.sec.gov` **200** แต่ `www.sec.gov/files/company_tickers.json` ยัง **403** (หน้า HTML ขนาด 1.9 KB)
-- `-A "<ชื่อ> <อีเมลติดต่อ>"` (รูปแบบที่ SEC ขอ เช่น `"StockResearch research@example.com"`) → `www.sec.gov/files/company_tickers.json` **200** (800 KB, 10,459 รายการ)
+- `curl` เปล่า (ไม่มี `-A`) → **HTTP 403** ทั้ง `www.sec.gov/files/company_tickers.json` และ `data.sec.gov` companyconcept · WebFetch ก็ถูกปฏิเสธ (บันทึกใน memory)
+- `www.sec.gov/files/company_tickers.json` → **403** เมื่อ UA = `"Mozilla/5.0"` **และ** เมื่อ UA = ชื่อโปรเจกต์เปล่า ๆ (`"StockResearch"`) (หน้า HTML ขนาด 1.9 KB) · ได้ **200** (800 KB, 10,459 รายการ) เฉพาะเมื่อ UA มี **ชื่อ + ที่อยู่ติดต่อ** ตามนโยบาย fair-access ของ SEC
+- `data.sec.gov` (`submissions`, `companyconcept`) → รับ `-A "Mozilla/5.0"` ได้ (**200**)
+- รูปแบบ UA ที่ใช้กับ `www.sec.gov`: `"<ชื่อโปรเจกต์> <อีเมลติดต่อ>"` — **เจ้าของรีโปเป็นผู้เลือกสตริงติดต่อ** (ห้ามใส่อีเมลส่วนตัวลงในเอกสาร/ไฟล์ที่ commit) · ตัวแปรสภาพแวดล้อม `SEC_USER_AGENT` (งานพี่น้อง PR #56 / W11 ที่ยังไม่ merge จะอ่านค่านี้) — ระหว่างนี้ส่งด้วย `-A` เอง
+- แผน: จะมีแผนที่ ticker→CIK ที่ commit ในรีโป (งานพี่น้อง ยังไม่ merge) เพื่อไม่ต้องดึง `company_tickers.json` ทุกครั้ง
+- **403 จาก fallback ให้ตรวจ User-Agent ก่อนสรุปว่าแหล่งล่ม** (ดูตารางข้อ 0)
 - ใช้ `rtk proxy curl` เสมอ — hook rtk ตัด/ย่อ output ได้ (§6)
 
 **ขั้น 1 — ticker → CIK** (`cik_str` เติมศูนย์ให้ครบ 10 หลัก):
 ```bash
-rtk proxy curl -sA "StockResearch research@example.com" https://www.sec.gov/files/company_tickers.json > tickers.json
+rtk proxy curl -sA "<ชื่อโปรเจกต์> <อีเมลติดต่อ>" https://www.sec.gov/files/company_tickers.json > tickers.json   # UA ต้องมีชื่อ+ที่อยู่ติดต่อจริง
 python3 -c "import json;d=json.load(open('tickers.json'));print([v for v in d.values() if v['ticker']=='AAPL'])"
 # → [{'cik_str': 320193, 'ticker': 'AAPL', 'title': 'Apple Inc.'}]   ⇒ CIK0000320193
 ```
@@ -142,7 +146,7 @@ node tools/median-multiples.js UMC:2303.TW                       # รันต�
 - **python3 = 3.9** — สคริปต์ที่มีภาษาไทยต้องขึ้นต้น `# -*- coding: utf-8 -*-` (หรือ `PYTHONUTF8=1`) ไม่งั้น "Non-UTF-8 code" (EXT-002)
 - **auto-mode classifier บางครั้ง rate-limit/ปฏิเสธคำสั่ง** (EXT-005: `--heal-derived --write` denied; ลองใหม่แล้วผ่าน) — **ลองใหม่ 1 ครั้ง** ก่อนถือว่าคำสั่งใช้ไม่ได้
 - **คำสั่งที่ประกอบด้วยตัวแปร shell ภายใน `rtk proxy ...`** อาจถูก sandbox ของ worktree ปฏิเสธ — ใช้ path/URL ตรง ๆ แยกคำสั่ง
-- เครื่องไม่มี `pdftotext`/`pdftoppm` (ทดสอบ 22 ก.ย. 69) — อ่าน PDF งบไม่ได้จนกว่าจะติดตั้ง poppler
+- เครื่องไม่มี `pdftotext`/`pdftoppm` (ทดสอบ 22 ก.ย. 69) ⇒ **`brew install poppler`** — งบที่มีแต่ PDF (เช่น งบ Q2/2026 และ MD&A FY2025 ของ M) อ่านเป็นข้อความไม่ได้ถ้าไม่ติดตั้ง · หมายเหตุตามจริง: ผู้เขียนไม่ได้ยืนยัน Q4/25 ของ M จากไฟล์เหล่านั้น
 - tradingview MCP อาจต่อไม่ติด (CONNECTION_CLOSED) — ไม่พึ่งเป็นแหล่งเดียว (Yahoo chart + SEC พอ)
 
 ---
@@ -154,10 +158,10 @@ cron/`patchDerived` คำนวณการ์ด P/E ใหม่ด้วย�
 - การ์ดที่แสดง **ตัวคูณที่วัดแล้ว** (ราคาเฉลี่ยของปีงบที่ผ่านมา ÷ EPS ปีนั้น) ต้องมี **`วัดได้`**, **`measured`** หรือ **`ราคาเฉลี่ย ÷`** อยู่ในป้าย เพื่อให้ healer ข้าม
 - การ์ด **Forward / NTM / FY…E** = ราคา spot ÷ EPS คาดการณ์ — **อัปเดตตามราคาโดยตั้งใจ** ห้ามใส่คำข้างต้น
 - ป้ายเชิงประวัติที่ healer ข้ามอยู่แล้ว (`PE_LABEL_SKIP` ใน `tools/derived-values.js`): เฉลี่ย · มัธยฐาน · median · average · avg · peer · mid-cycle · ย้อนหลัง · historic · ประวัติ · เป้า · target · กรอบ · ช่วง
-- (คำ `วัดได้`/`measured`/`ราคาเฉลี่ย ÷` เพิ่มโดยงานพี่น้อง — ถ้าใช้ไฟล์นี้ก่อนงานนั้น merge ให้ตรวจ `PE_LABEL_SKIP` ในโค้ดปัจจุบันเป็นหลัก)
+- คำ `วัดได้` / `measured` / `ราคาเฉลี่ย ÷` เข้า `PE_LABEL_SKIP` **ตั้งแต่ PR #56 / W11** (งานพี่น้อง ยังไม่ merge ณ 22 ก.ย. 69) — ก่อนหน้านั้นโค้ดข้ามเฉพาะคำในรายการข้างบน จึงควรตั้งป้ายด้วยคำที่อยู่ในรายการนั้นด้วย
 
 ---
 
 ## 8. หมายเหตุคิว
 
-ถ้า `npm run queue -- preflight` พิมพ์บรรทัด `⚠ statement unknown: N (fetch-failed M)` (บรรทัดที่งานพี่น้องกำลังเพิ่ม — ยังไม่มีในโค้ดที่ทดสอบ 22 ก.ย. 69) ⇒ **รัน preflight ซ้ำก่อนเริ่มคิว** — การดึงล้ม (`fetch-failed`) ไม่ได้แปลว่างบเปลี่ยน แต่ถ้าไม่ลองใหม่ แถวเหล่านั้นจะถูก escalate เงียบ ๆ (fetch-failed เป็น bucket PLUMBING ใน `tools/queue/triage.js` — ไม่ควรกลายเป็นงานวิเคราะห์เพราะเน็ตสะดุด) · ยังล้มซ้ำ = แจ้ง controller พร้อมรายชื่อ symbol
+ถ้า `npm run queue -- preflight` พิมพ์บรรทัด `⚠ statement unknown: N (fetch-failed M)` (บรรทัดนี้มี **ตั้งแต่ PR #56 / W11** — งานพี่น้อง ยังไม่ merge และยังไม่มีในโค้ดที่ทดสอบ 22 ก.ย. 69) ⇒ **รัน preflight ซ้ำก่อนเริ่มคิว** — การดึงล้ม (`fetch-failed`) ไม่ได้แปลว่างบเปลี่ยน แต่ถ้าไม่ลองใหม่ แถวเหล่านั้นจะถูก escalate เงียบ ๆ (fetch-failed เป็น bucket PLUMBING ใน `tools/queue/triage.js` — ไม่ควรกลายเป็นงานวิเคราะห์เพราะเน็ตสะดุด) · ยังล้มซ้ำ = แจ้ง controller พร้อมรายชื่อ symbol
