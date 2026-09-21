@@ -4,36 +4,36 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น KeyCorp (KEY) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"KEY","currency":"USD","price":20.81,"fairValue":22,"mos":5.4,"upside":5.7,"pe":12.8,"dividendYield":3.94,"roe":11}
+{"symbol":"KEY","currency":"USD","price":20.81,"fairValue":20.46,"mos":-1.7,"upside":-1.7,"pe":12.2,"dividendYield":3.94,"roe":10.3}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 22,
+  "fv": 20.46,
   "values": {
     "px": 20.81,
     "priceDate": "2026-09-18",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
-    "fvLow": 19,
-    "fvHigh": 27,
-    "eps": 1.63,
-    "shares": 1080000000,
+    "fvLow": 17.06,
+    "fvHigh": 27.52,
+    "eps": 1.71,
+    "shares": 1067128554,
     "dps": 0.82,
-    "baseEps": 1.82,
+    "baseEps": 1.83,
     "scenarios": [
       {
-        "tgt": 18.2,
+        "tgt": 18.3,
         "div": 2.46
       },
       {
-        "tgt": 30.72,
+        "tgt": 28.3,
         "div": 2.7
       },
       {
-        "tgt": 42,
+        "tgt": 39.1,
         "div": 2.8
       }
     ],
@@ -41,7 +41,8 @@
       "years": 3,
       "divIncluded": true,
       "perYear": null
-    }
+    },
+    "analystTgt": 26.02
   },
   "theme": {
     "accent": "#008542",
@@ -100,7 +101,7 @@
       <span class="tag">Regional Bank</span>
     </div>
     <h1>KeyCorp (KEY)</h1>
-    <div class="sub">KeyCorp: Top-15 US bank (~$188B assets, 15 states, ~1,000 branches) • Ohio + Pacific Northwest + Colorado + Alaska footprint • Scotiabank ~14.9% stake ($2.8B, 2024) → balance sheet recapitalized, HTM losses addressed • Commercial (middle-market C&I, CRE) + Investment Banking (KeyBanc Capital Markets — TMT, healthcare) + Consumer • NIM recovery 2.87% → ~3.05% target 2026 • ROTCE 13%+ → 15%+ target 2027 • ~3.5% dividend yield</div>
+    <div class="sub">KeyCorp: Top-15 US bank (~$188B assets, 15 states, ~1,000 branches) • Ohio + Pacific Northwest + Colorado + Alaska footprint • Scotiabank ~14.9% stake ($2.8B, 2024) → balance sheet recapitalized, HTM losses addressed • Commercial (middle-market C&I, CRE) + Investment Banking (KeyBanc Capital Markets — TMT, healthcare) + Consumer • NIM 2.89% (Q2 2026) • ROTCE ~12.9% (Q2 2026) • ~3.9% dividend yield</div>
     <div class="price-row">
       <div>
         <div class="px">{{rd:px}}<small>(KEY)</small></div>
@@ -108,7 +109,7 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ $16.47 – $23.72<br>
+        กรอบ 52 สัปดาห์ $16.47 – $24.07<br>
         ที่มา: StockAnalysis, Yahoo Finance, PR Newswire (KeyCorp IR)
       </div>
     </div>
@@ -116,21 +117,21 @@
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">Q1 2026 / TTM ณ มิ.ย. 2569</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">Q2 2026 / TTM ล่าสุด</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~1.08B shares outstanding</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM $1.63 · ฟื้นตัวจากขาดทุน FY2024</div></div>
-      <div class="metric"><div class="k">P/BV / P/TBV</div><div class="v neu">1.29x / 1.53x</div><div class="d">BVPS $16.13 · TBVPS $13.60 (Q1 2026)</div></div>
-      <div class="metric"><div class="k">NIM</div><div class="v pos">2.87%</div><div class="d">Q1 2026 · เป้าหมาย ~3.05% ปลายปี 2569</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~1.07B shares outstanding</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM $1.71 (diluted) · ฟื้นตัวจากขาดทุน FY2024</div></div>
+      <div class="metric"><div class="k">P/BV / P/TBV</div><div class="v neu">1.29x / 1.53x</div><div class="d">BVPS $16.19 · TBVPS $13.62 (Q2 2026)</div></div>
+      <div class="metric"><div class="k">NIM</div><div class="v pos">2.89%</div><div class="d">Q2 2026 · +23 bps YoY</div></div>
 
-      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$1.63</div><div class="d">Q1 2026 EPS $0.44 (+33% YoY) · FY2026E $1.82</div></div>
-      <div class="metric"><div class="k">ROE / ROTCE</div><div class="v pos">~11.0% / 13.0%</div><div class="d">Q1 2026 · เป้า ROTCE 15%+ ปี 2027</div></div>
-      <div class="metric"><div class="k">CET1 Ratio</div><div class="v pos">11.4%</div><div class="d">Q1 2026 (est.) · บัฟเฟอร์สูง · TCE/TA 8.0%</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~3.94%</div><div class="d">$0.82/share/ปี · Ex-div. มิ.ย. 2569 · จ่ายต่อเนื่อง</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$1.71</div><div class="d">Q2 2026 EPS $0.44 (+26% YoY) · FY2026E $1.83 (vendor)</div></div>
+      <div class="metric"><div class="k">ROE / ROTCE</div><div class="v pos">~10.3% / 12.9%</div><div class="d">ROE TTM (vendor) · ROTCE Q2 2026</div></div>
+      <div class="metric"><div class="k">CET1 Ratio</div><div class="v pos">11.2%</div><div class="d">Q2 2026 (est.) · บัฟเฟอร์สูง</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~3.94%</div><div class="d">$0.82/share/ปี ($0.205/ไตรมาส) · จ่ายต่อเนื่อง</div></div>
 
-      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$7.20B</div><div class="d">NII $4.76B · กำไรสุทธิ TTM $1.94B</div></div>
-      <div class="metric"><div class="k">สินเชื่อ / เงินฝาก</div><div class="v">$109.2B / $147.8B</div><div class="d">Loan growth +2.3% QoQ · LDR ~74%</div></div>
-      <div class="metric"><div class="k">NPA / NCO</div><div class="v neu">0.63% / 0.38%</div><div class="d">สินทรัพย์ด้อยคุณภาพ/หนี้สูญ — อยู่ในเกณฑ์ดี</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$7.37B</div><div class="d">NII Q2 $1.26B · กำไรสุทธิ TTM $1.89B</div></div>
+      <div class="metric"><div class="k">สินเชื่อ / เงินฝาก</div><div class="v">$110.1B / $147.6B</div><div class="d">ค่าเฉลี่ย Q2 2026 · C&amp;I +$2.1B QoQ · LDR ~75%</div></div>
+      <div class="metric"><div class="k">NPA / NCO</div><div class="v neu">0.74% / 0.42%</div><div class="d">Q2 2026 · สินทรัพย์ด้อยคุณภาพ/หนี้สูญ — ขยับขึ้นเล็กน้อย</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">1.04</div><div class="d">ผันผวนใกล้เคียงตลาด · 5Y monthly</div></div>
     </div>
   </section>
@@ -148,40 +149,38 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        หุ้น KEY ปรับตัวขึ้นแรง ~29% ในรอบปีที่ผ่านมา จาก $17.92 (ก.ค. 2568) มาอยู่ที่ $23.06 (ก.ค. 2569)
-        แรงขับเคลื่อนหลักคือการปิดดีล Scotiabank ($2.8B, ธ.ค. 2567) ที่เพิ่มทุนและแก้ปัญหา HTM bond losses
-        ตามด้วยการขยาย NIM ต่อเนื่องจาก ~2.60% ต้นปี 2568 สู่ 2.87% ใน Q1 2569
-        ราคาทดสอบจุดสูงสุด 52 สัปดาห์ $23.72 ในเดือน มิ.ย. 2569 หลัง Q1 2569 รายงาน EPS +33% YoY
-        และผู้บริหารยกระดับ guidance NII 9-10% ทั้งปี พร้อมประกาศ buyback $1.3B
+        หุ้น KEY ปรับตัวขึ้นในรอบปี จากจุดต่ำสุดรายเดือนที่ $17.59 (ต.ค. 2568) ขึ้นไปสูงสุด $23.05 (มิ.ย. 2569)
+        ก่อนย่อลงมาอยู่ที่ {{rd:px}} ณ {{rd:priceDate}} โดยกรอบ 52 สัปดาห์สูงสุดอยู่ที่ $24.07
+        แรงหนุนหลักคือ NIM ที่ขยายต่อเนื่อง (Q2 2569 = 2.89%, +23 bps YoY) และ EPS Q2 2569 ที่ $0.44 (+26% YoY)
+        โดย KeyCorp ซื้อหุ้นคืน $341M ใน Q2 2569 — ส่วนการเพิ่มทุนจาก Scotiabank ($2.8B, ปลายปี 2567) เป็นปัจจัยแก้ปัญหา HTM bond losses ที่ผ่านมาแล้ว
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">2 ตระกูลสมมติฐาน</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $1.63 (TTM) × P/E เป้าหมาย ~13x — peer ภูมิภาค PNC/WFC ~11-12x · KEY ระยะฟื้นตัว ประมาณ 13x สมเหตุสมผล</div></div>
-        <div class="mval">$21.19</div>
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS $1.71 (TTM) × P/E 10.9x — 10.9x คือมัธยฐาน P/E ย้อนหลัง 4 ปีงบของ KEY เอง (ช่วง 8.0–14.3x · ราคาเฉลี่ยงวด ÷ EPS diluted) ที่มาจากประวัติ ไม่ได้ถอดจาก P/E ปัจจุบัน</div></div>
+        <div class="mval">$18.64</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = $0.82 × 1.04 = $0.853; r = 8.5%, g = 3.5% → $0.853 / (8.5% − 3.5%) — สมมติจ่ายปันผลคงที่ระยะกลาง</div></div>
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = $0.82 × 1.04 = $0.853; r = 8.5%, g = 3.5% → $0.853 / (8.5% − 3.5%) — r, g เป็นสมมติฐานของเราเอง · ตระกูล (r,g) เดียวกับ Justified P/BV นับเป็น 1 เสียง</div></div>
         <div class="mval">$17.06</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">ratio=(ROE 12.5% - g 4%)/(r 9% - g 4%) = 1.70x; BVPS $16.13 × 1.70x = $27.42 — ใช้ ROE ฟื้นตัวสู่ ~12.5% ปี 2569-70</div></div>
-        <div class="mval">$27.42</div>
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">ratio=(ROE 12.5% - g 4%)/(r 9% - g 4%) = 1.70x; BVPS $16.19 (Q2 2026) × 1.70x = $27.52 — ROE 12.5% เป็นสมมติฐานของเรา (ROTCE Q2 = 12.9%) · ตระกูล (r,g) เดียวกับ DDM</div></div>
+        <div class="mval">$27.52</div>
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        DDM ให้ค่าต่ำสุด ($17.06) สะท้อนข้อจำกัดของวิธีนี้กับธนาคารที่กำลังฟื้นตัว — payout ratio ยังต่ำ เพราะธนาคารกันทุนไว้เสริม BVPS
-        P/E กลางช่วง ($21.19) สมเหตุสมผลสำหรับ TTM EPS แต่ยังไม่สะท้อน forward EPS FY2026E $1.82
-        Justified P/BV ($27.42) อิงสมมติ ROE ฟื้น 12.5% ซึ่งอยู่ระหว่าง Q1 2026 (11%) กับเป้า ROTCE 15% — เป็น bull case
-        เฉลี่ย 3 วิธี = $22.00 ชี้ว่าหุ้นซื้อขายใกล้ fair value ณ ปัจจุบัน และมี upside หากบรรลุเป้า ROTCE 15%
+        FV = เฉลี่ยของ 2 ตระกูล: (1) P/E มัธยฐานย้อนหลัง $18.64 และ (2) ค่าเฉลี่ยของ DDM $17.06 กับ Justified P/BV $27.52 = $22.29 (DDM กับ JPBV ใช้ r,g ชุดเดียวกัน จึงนับเสียงเดียว · สองตระกูลห่างกันไม่ถึง 2 เท่า จึงเฉลี่ยได้) → $20.46
+        ขาอิงตลาดล้วน (P/E) ให้ค่าต่ำกว่าราคาราว 10% ส่วนขา DDM/JPBV ให้ค่าสูงกว่าราคาราว 7% — ผลรวมจึงอยู่ใกล้ราคา · ความไวสูงต่อสมมติฐาน ROE 12.5% ของ JPBV
+        ไม่ได้ใช้เป้านักวิเคราะห์เป็นขาของ FV (เป็นเพียงบริบท) · ตัวคูณ P/E 10.9x ต่ำกว่า P/E ปัจจุบันของ KEY จึงไม่ใช่สมอตายที่วนกลับมาที่ราคา
       </p>
     </div>
   </section>
@@ -199,15 +198,15 @@
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
-          <span style="text-align:right">$25.27<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">{{rd:analystTgt}}<br><small>เป้าเฉลี่ย Analyst</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคา $23.15 อยู่เหนือ FV เฉลี่ย $22.00 เล็กน้อย (~5%) สะท้อนว่าตลาดกำลัง "price in" การฟื้นตัวของ NIM และ ROTCE
-        Analyst consensus ที่ $25.27 (Buy · 19 คน) มี upside ~9% จากราคาปัจจุบัน
-        โซน MOS 20% ($17.60) จะเป็นจุดเข้าสะสมที่มีส่วนเผื่อความปลอดภัยสูงขึ้น
-        โซน MOS 30% ($15.40) คาดยากจะถึง เว้นแต่เกิดวิกฤต credit หรือเศรษฐกิจถดถอยรุนแรง
+        ราคาปัจจุบัน {{rd:px}} อยู่เหนือมูลค่าเหมาะสม {{rd:fv}} เพียงเล็กน้อย สะท้อนว่าตลาดให้ราคาการฟื้นตัวของ NIM และ ROTCE ไปมากแล้ว
+        เป้านักวิเคราะห์ {{rd:analystTgt}} ({{rd:analystPct}}, Buy · 19 คน) ใช้เป็นบริบทเท่านั้น ไม่ได้เป็นขาของ FV
+        โซน MOS 20% ({{rd:mos20}}) จะเป็นจุดเข้าสะสมที่มีส่วนเผื่อความปลอดภัยสูงขึ้น
+        โซน MOS 30% ({{rd:mos30}}) คาดยากจะถึง เว้นแต่เกิดวิกฤต credit หรือเศรษฐกิจถดถอยรุนแรง
       </p>
     </div>
   </section>
@@ -218,7 +217,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">ราคาเกิน Fair Value เล็กน้อย — ซื้อขายที่ Premium ~5% เหนือ FV เฉลี่ย • ยังไม่ถึงโซน MOS ที่ชัดเจน</div>
+        <div class="txt">ราคาเกิน Fair Value เล็กน้อย — ซื้อขายเหนือ FV เฉลี่ยนิดเดียว • ยังไม่ถึงโซน MOS ที่ชัดเจน</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -245,7 +244,7 @@
           <div class="tgt">{{rd:sc1tgt}}</div>
           <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$1.82</span></li>
+            <li><span>EPS ปี 3</span><span>~$1.83</span></li>
             <li><span>P/E ออก</span><span>10x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>NIM ชะงัก · credit ตึง</span></li>
@@ -258,8 +257,8 @@
           <div class="tgt">{{rd:sc2tgt}}</div>
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$2.56</span></li>
-            <li><span>P/E ออก</span><span>12x</span></li>
+            <li><span>EPS ปี 3</span><span>~$2.57</span></li>
+            <li><span>P/E ออก</span><span>11x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>NIM 3.1% · ROTCE 15%</span></li>
           </ul>
@@ -271,8 +270,8 @@
           <div class="tgt">{{rd:sc3tgt}}</div>
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$3.00</span></li>
-            <li><span>P/E ออก</span><span>14x</span></li>
+            <li><span>EPS ปี 3</span><span>~$3.01</span></li>
+            <li><span>P/E ออก</span><span>13x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>NIM 3.3% · buyback หนุน EPS</span></li>
           </ul>
@@ -280,10 +279,10 @@
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      Base case อิง NIM ขยายสู่ 3.1% ปลายปี 2569 ตามแผน + ROTCE บรรลุ 15% ภายใน 2570 ตามเป้าผู้บริหาร + buyback $1.3B ที่ประกาศแล้ว หนุน EPS growth ~12%/ปี
+      Base case อิง NIM ขยายสู่ 3.1% ปลายปี 2569 ตามแผน + ROTCE บรรลุ 15% ภายใน 2570 ตามเป้าผู้บริหาร + buyback ต่อเนื่อง ($341M ใน Q2 2569) หนุน EPS growth ~12%/ปี (ตัวคูณขาออก 10x/11x/13x เทียบมัธยฐานย้อนหลัง 10.9x)
       Bull case สะท้อน scenario ที่ rate environment เอื้อ, KeyBanc Capital Markets ฟื้นแรง, และ multiple re-rate เมื่อ ROTCE ชัดเจน
       Bear case คือสภาพแวดล้อม credit แย่กว่าคาด — NCO เพิ่ม, provisions กด net income, NIM ชะงัก
-      ปันผล $0.82/share/ปี ให้ yield buffer ~3.5% ขณะรอ capital gains — คุ้มค่าสำหรับนักลงทุนเน้นรายได้
+      ปันผล $0.82/share/ปี ให้ yield buffer ~3.9% ขณะรอ capital gains — คุ้มค่าสำหรับนักลงทุนเน้นรายได้
     </p>
   </section>
 
@@ -294,12 +293,12 @@
       <div class="box cat">
         <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
         <ul>
-          <li><b>NIM Expansion ต่อเนื่อง:</b> จาก 2.87% Q1 2569 สู่เป้า ~3.05% ปลายปี — ทุก 10bps NIM ≈ +$150M NII ต่อปี เพิ่ม EPS ~$0.14</li>
-          <li><b>Scotiabank Recapitalization:</b> เงิน $2.8B ช่วยแก้ปัญหา HTM unrealized losses, เสริม CET1 สูง 11.4% — เป็น strategic validator และเปิดโอกาสกลยุทธ์ร่วมกัน</li>
-          <li><b>Share Buyback $1.3B:</b> ประกาศ Q1 2569 — buyback ขนาดนี้คิดเป็น ~5% ของ market cap หนุน EPS growth แม้กำไรโต modest</li>
-          <li><b>KeyBanc Capital Markets:</b> Investment banking fees record Q1 2569 — ธุรกิจ fee-based ลดการพึ่งพา NIM และ diversify รายได้</li>
-          <li><b>Credit Quality แข็งแกร่ง:</b> NCO 0.38% NPA 0.63% — ต่ำกว่าหลายคู่แข่ง สะท้อนคุณภาพ portfolio สินเชื่อ middle-market</li>
-          <li><b>ROTCE Target 15%+:</b> หากบรรลุเป้าปี 2570 multiple อาจ re-rate จาก ~1.4x P/BV สู่ ~1.8-2.0x เทียบ well-run regional banks</li>
+          <li><b>NIM Expansion ต่อเนื่อง:</b> NIM Q2 2569 = 2.89% (+23 bps YoY, +2 bps QoQ) — NII Q2 $1.26B (+9% YoY) หาก NIM ขยายต่อ กำไรและ EPS มีแรงหนุนเพิ่ม</li>
+          <li><b>Scotiabank Recapitalization:</b> เงิน $2.8B ช่วยแก้ปัญหา HTM unrealized losses, เสริม CET1 11.2% (Q2 2569) — เป็น strategic validator และเปิดโอกาสกลยุทธ์ร่วมกัน</li>
+          <li><b>Share Buyback:</b> ซื้อหุ้นคืน $341M ใน Q2 2569 ลดจำนวนหุ้นคงเหลือเหลือ ~1.07B — หนุน EPS growth แม้กำไรโต modest</li>
+          <li><b>KeyBanc Capital Markets:</b> ธุรกิจ investment banking — fee-based ลดการพึ่งพา NIM และ diversify รายได้</li>
+          <li><b>Credit Quality แข็งแกร่ง:</b> NCO 0.42% NPA 0.74% (Q2 2569) — ขยับขึ้นเล็กน้อยแต่ยังอยู่ระดับต่ำ ต้องติดตามต่อ</li>
+          <li><b>ROTCE:</b> Q2 2569 = 12.9% — หากขยับสู่ระดับ 15%+ multiple อาจ re-rate จาก ~1.3x P/BV ขึ้นไป (สมมติฐานของเรา)</li>
         </ul>
       </div>
       <div class="box risk">
@@ -309,8 +308,8 @@
           <li><b>CRE Exposure:</b> สินเชื่ออสังหาเชิงพาณิชย์ (office/multifamily) ยังมีความเสี่ยง valuations กดดัน — อาจต้องเพิ่ม provisions ถ้าตลาดออฟฟิศอ่อนแอต่อ</li>
           <li><b>Regional Bank Competition:</b> แข่งกับ JPM, WFC, และ fintech ในตลาด Ohio/Pacific NW — ความสามารถรักษาลูกค้าเงินฝากและ fee income เป็น key watch</li>
           <li><b>Scotiabank Overhang:</b> ~14.9% shareholder ขนาดใหญ่อาจสร้าง dilution uncertainty หรือ governance complexity ในอนาคต</li>
-          <li><b>Basel III Endgame / Capital Requirements:</b> regulation เพิ่มเติมอาจกระทบ capital return plans — แม้ CET1 11.4% ให้ buffer สูง</li>
-          <li><b>Macro Slowdown:</b> GDP ชะลอ + unemployment เพิ่ม → NCO เพิ่มจาก 0.38% ได้ โดยเฉพาะ middle-market C&amp;I ที่ cyclical กว่า</li>
+          <li><b>Basel III Endgame / Capital Requirements:</b> regulation เพิ่มเติมอาจกระทบ capital return plans — แม้ CET1 11.2% ให้ buffer สูง</li>
+          <li><b>Macro Slowdown:</b> GDP ชะลอ + unemployment เพิ่ม → NCO เพิ่มจาก 0.42% ได้ โดยเฉพาะ middle-market C&amp;I ที่ cyclical กว่า</li>
         </ul>
       </div>
     </div>
@@ -321,14 +320,14 @@
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
       <h2>Fairly Valued — Recovery Story ยังไม่เสร็จ หากบรรลุ ROTCE 15% มี Upside ชัดเจน</h2>
-      <p>KeyCorp ผ่านจุดต่ำสุดมาแล้วด้วยการระดมทุนจาก Scotiabank ($2.8B) ซึ่งแก้ปัญหา HTM bond losses และเสริมความแข็งแกร่งของงบดุล NIM กำลังขยายตัวสู่เป้าหมาย ROTCE 13% Q1 2569 มุ่งสู่ 15%+ ปี 2570 ราคา $23.15 ซื้อขายที่ ~5% เหนือ FV เฉลี่ย $22.00 ของเรา สะท้อนว่าตลาดเริ่ม "price in" recovery แล้วบางส่วน อย่างไรก็ดี upside ยังมีหาก NIM บรรลุ 3.05%+ และ earnings momentum ต่อเนื่อง — analyst 19 คน consensus Buy $25.27 สอดรับ</p>
+      <p>KeyCorp ผ่านจุดต่ำสุดมาแล้วด้วยการระดมทุนจาก Scotiabank ($2.8B) ซึ่งแก้ปัญหา HTM bond losses และเสริมความแข็งแกร่งของงบดุล NIM ขยายต่อเนื่องเป็น 2.89% ใน Q2 2569 และ ROTCE 12.9% ราคาปัจจุบัน {{rd:px}} ซื้อขายเหนือมูลค่าเหมาะสม {{rd:fv}} ของเราเพียงเล็กน้อย สะท้อนว่าตลาดให้ราคา recovery ไปมากแล้ว อย่างไรก็ดี upside ยังมีหาก NIM และ earnings momentum ต่อเนื่อง — analyst 19 คน เป้าเฉลี่ย {{rd:analystTgt}} (Buy) เป็นเพียงบริบท ไม่ใช่ขาของ FV · FV มาจาก 2 ตระกูลที่ต่างกัน (P/E มัธยฐานย้อนหลังกับ DDM/JPBV) และไวต่อสมมติฐาน ROE ของ JPBV</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$25.27 (Buy · 19 คน)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~{{rd:analystTgt}} (Buy · 19 คน)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ซื้อขายใกล้ Fair Value — เหมาะสำหรับ Dividend Investor ที่รับ yield 3.5%+ ขณะรอ recovery ครบ เป้าสะสมในโซน $20-21 (ใกล้ FV) และโซน MOS 20% ที่ $17.60 เป็น deep value entry หากมีการ pullback จาก macro headwinds หรือ rate concerns
+        💡 <b>กลยุทธ์:</b> ซื้อขายใกล้ Fair Value — เหมาะสำหรับ Dividend Investor ที่รับ yield 3.5%+ ขณะรอ recovery ครบ เป้าสะสมใกล้ FV ({{rd:fv}}) และโซน MOS 20% ที่ {{rd:mos20}} เป็น deep value entry หากมีการ pullback จาก macro headwinds หรือ rate concerns
       </div>
     </div>
   </section>
@@ -337,9 +336,9 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • แหล่งข้อมูล: StockAnalysis.com, Yahoo Finance, KeyCorp Q1 2026 Press Release (PR Newswire, เม.ย. 2569), Scotiabank Press Release (ธ.ค. 2567)
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • แหล่งข้อมูล: StockAnalysis.com, Yahoo Finance, KeyCorp Q2 2026 Press Release (PR Newswire, ก.ค. 2569), Scotiabank Press Release (ธ.ค. 2567)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 1 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
