@@ -6,42 +6,43 @@
 <title>วิเคราะห์หุ้น The Hartford Financial Services Group (HIG) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"HIG","currency":"USD","price":131.89,"fairValue":135.62,"mos":2.8,"upside":2.8,"pe":11.09,"dividendYield":1.82,"roe":18.7}
+{"symbol":"HIG","currency":"USD","price":131.89,"fairValue":138.19,"mos":4.6,"upside":4.8,"pe":8.53,"dividendYield":1.82,"roe":22.1}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 135.62,
+  "fv": 138.19,
   "values": {
     "px": 131.89,
     "priceDate": "2026-09-18",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
-    "fvLow": 123.84,
-    "fvHigh": 148.85,
-    "shares": 268000000,
+    "fvLow": 127.87,
+    "fvHigh": 148.51,
+    "shares": 270872002,
     "dps": 2.4,
-    "bvps": 70,
-    "baseEps": 12.9,
+    "bvps": 72.48,
+    "baseEps": 15.47,
     "scenarios": [
       {
-        "tgt": 94.19,
-        "div": 7.35
+        "tgt": 90.35,
+        "div": 7.2
       },
       {
-        "tgt": 169.01,
-        "div": 7.5
+        "tgt": 162.28,
+        "div": 7.79
       },
       {
-        "tgt": 206.04,
-        "div": 7.6
+        "tgt": 208.46,
+        "div": 8.41
       }
     ],
     "scnBasis": {
       "years": 3,
       "divIncluded": true,
       "perYear": null
-    }
+    },
+    "analystTgt": 149.85
   },
   "theme": {
     "accent": "#7A1F2B",
@@ -100,7 +101,7 @@
       <span class="tag">S&P 500 Component</span>
     </div>
     <h1>The Hartford Financial Services Group (HIG)</h1>
-    <div class="sub">ประกันวินาศภัยธุรกิจ (Business Insurance) • ประกันภัยส่วนบุคคล รถยนต์/บ้าน (Personal Insurance) • Group Benefits ประกันชีวิต/ทุพพลภาพกลุ่มพนักงาน (Employee Benefits) • กองทุนรวม Hartford Funds</div>
+    <div class="sub">ประกันวินาศภัยธุรกิจ (Business Insurance) • ประกันภัยส่วนบุคคล รถยนต์/บ้าน (Personal Insurance) • Group Benefits ประกันชีวิต/ทุพพลภาพกลุ่มพนักงาน (Employee Benefits)</div>
     <div class="price-row">
       <div>
         <div class="px">{{rd:px}}<small>(HIG)</small></div>
@@ -109,7 +110,7 @@
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}} (18 ก.ย. 2569 เวลาไทย)<br>
         กรอบ 52 สัปดาห์ $120.33 – $146.07<br>
-        ที่มา: Yahoo Finance, StockAnalysis.com, Digrin.com, The Hartford Newsroom Q2 2026
+        ที่มา: Yahoo Finance, StockAnalysis.com, SEC EDGAR (XBRL 10-K/10-Q ถึงไตรมาส 2 ปี 2569)
       </div>
     </div>
   </header>
@@ -118,20 +119,20 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ตัวเลขประกันภัย P&C — เน้น Combined Ratio + ROE</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">$35.35B</div><div class="d">~268M หุ้น (diluted, หลัง buyback)</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~11.09x</div><div class="d">ใกล้เคียงค่าเฉลี่ยกลุ่ม P&C ~10–12x</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$35.73B</div><div class="d">270.87M หุ้นคงเหลือ (10-Q ณ 22 ก.ค. 2569)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~8.53x</div><div class="d">EPS GAAP diluted TTM $15.47 • ต่ำกว่ามัธยฐานย้อนหลังของ HIG เอง</div></div>
       <div class="metric"><div class="k">P/E มัธยฐาน 5 ปี</div><div class="v">9.6x</div><div class="d">ค่าเฉลี่ย 10.3x • ช่วง 9.2x–12.8x (EPS diluted รายปี × ราคาเฉลี่ยของงวด)</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ~$70.00 ประมาณการ (Q2 2569)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ~$72.48 (ส่วนของผู้ถือหุ้น $19.63B ÷ 270.87M หุ้น • 10-Q Q2 2569)</div></div>
 
-      <div class="metric"><div class="k">Combined Ratio (P&C รวม)</div><div class="v neu">~94%</div><div class="d">Q2 2569 — รวมผลกระทบเสริม reserve casualty lines</div></div>
-      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$12.90</div><div class="d">Core EPS Q2 2569 $3.42 (บีตคาด $3.21) • FY2026E +3.9% YoY</div></div>
-      <div class="metric"><div class="k">BVPS</div><div class="v">~$70.00</div><div class="d">ประมาณการหลังผลตอบแทนผู้ถือหุ้น Q2 2569</div></div>
-      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~18.7% / 3.5%</div><div class="d">Core earnings ROE TTM Q2 2569 (ยังแข็งแกร่งแม้ชะลอจาก Q1)</div></div>
+      <div class="metric"><div class="k">Net margin (TTM)</div><div class="v pos">14.8%</div><div class="d">FY2025 13.4% • FY2024 11.6% • FY2023 10.1%</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$15.47</div><div class="d">GAAP diluted 4 ไตรมาส Q3'25–Q2'26 (SEC XBRL) • FY2025 $13.32 • ตาราง StockAnalysis $15.48</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$72.48</div><div class="d">Q2 2569 • ส่วนของผู้ถือหุ้นรวม ÷ หุ้นคงเหลือ</div></div>
+      <div class="metric"><div class="k">ROE (TTM)</div><div class="v pos">~22.1%</div><div class="d">FY2025 21.7% • FY2024 19.6% (StockAnalysis)</div></div>
 
-      <div class="metric"><div class="k">รายได้เบี้ยประกัน (TTM)</div><div class="v neu">~$26.2B</div><div class="d">Business Insurance +5% / Small Business +7%</div></div>
-      <div class="metric"><div class="k">Underlying Combined Ratio</div><div class="v pos">86.5–89.3%</div><div class="d">Business Ins. 89.3% / Small Business 86.5%</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.82%</div><div class="d">$2.40/ปี • Payout ~19% • เพิ่มต่อเนื่อง 31 ปี</div></div>
-      <div class="metric"><div class="k">Beta</div><div class="v">~0.85</div><div class="d">ผันผวนต่ำกว่าตลาดเล็กน้อย</div></div>
+      <div class="metric"><div class="k">Operating margin (TTM)</div><div class="v pos">18.0%</div><div class="d">สูงสุดในรอบ 5 ปี (FY2025 17.5% • FY2022 11.1%)</div></div>
+      <div class="metric"><div class="k">หุ้นถัวเฉลี่ย diluted</div><div class="v neu">281M</div><div class="d">FY2021 354M → TTM 281M (หุ้นลดลงต่อเนื่อง)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.82%</div><div class="d">$2.40/ปี • Payout ~16% ของ EPS GAAP TTM</div></div>
+      <div class="metric"><div class="k">FCF (TTM) / D/E</div><div class="v neu">$5.79B / 0.22</div><div class="d">FCF สูงกว่ากำไรสุทธิ $4.34B (ผล float ของธุรกิจประกัน — ไม่ใช่เงินที่แจกได้ทั้งหมด)</div></div>
     </div>
   </section>
 
@@ -148,38 +149,33 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ราคาหุ้น HIG เคลื่อนไหวในกรอบ 52 สัปดาห์ $120.33–$146.07 จุดต่ำสุดในกราฟรายเดือนเกิด ต.ค. 2568 ($124.18) จากความกังวลเรื่อง catastrophe losses ฤดูพายุ
-        ก่อนฟื้นตัวแรงช่วงต้นปี 2569 หลังผลประกอบการ Q4/2568 และ Q1/2569 ออกมาแข็งแกร่งกว่าคาด (core EPS โต 36% YoY, combined ratio ดีขึ้นชัดเจนในกลุ่ม Personal Insurance)
-        จากนั้นย่อตัวลงมาช่วง พ.ค. 2569 ($127.13) ตามแรงขายกลุ่มประกันโดยรวม ก่อนฟื้นตัวขึ้นแรงมาปิดที่ $143.05 ปัจจุบัน (สูงสุดในรอบ 12 เดือน) รวมผลตอบแทนรอบปี +8.1%
-        — แม้ผลประกอบการ Q2 2569 (ประกาศ 23-24 ก.ค. 2569) จะออกมาดีกว่าคาดชัดเจน (core EPS $3.42 บีตคาด $3.21) แต่หุ้นร่วง −2.89% ในวันประกาศงบ จากความกังวลเรื่อง reserve development ใน casualty lines ที่ตลาดจับตา
+        ราคาหุ้น HIG เคลื่อนไหวในกรอบ 52 สัปดาห์ $120.33–$146.07 ปิดสิ้นเดือนต่ำสุดในกราฟรายเดือนคือ พ.ค. 2569 ($127.13) และสูงสุดคือ ก.ค. 2569 ($141.91)
+        จุดเริ่มกราฟ ต.ค. 2568 อยู่ที่ $124.18 และราคาปัจจุบัน {{rd:px}} — ตลอดรอบปีราคาแกว่งในกรอบแคบ ๆ ราว $127–$142 (ผลตอบแทนรอบปีตามป้ายด้านบน)
+        ขณะที่ EPS GAAP เพิ่มจาก $13.32 (FY2025) เป็น $15.47 (TTM) ทำให้ P/E ลดลงต่ำกว่ามัธยฐานย้อนหลังของหุ้นเอง — รายงานนี้ไม่ระบุสาเหตุรายวันของการขึ้นลงเพราะไม่ได้เปิดแหล่งข่าวปฐมภูมิยืนยัน
       </p>
     </div>
   </section>
 
-  <!-- ===== 3. VALUATION (เฉลี่ย 2 วิธี) ===== -->
+  <!-- ===== 3. VALUATION (2 ขา ตระกูล P/E เดียว) ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี + Total Payout Yield เป็นตัวเช็คทาน</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">2 ขาในตระกูล P/E เดียวกัน (นับเป็น 1 เสียง) — ตัวคูณจากมัธยฐานที่วัดจริง</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS Core $12.90 (FY2026E) × P/E เป้าหมาย 9.6x — มัธยฐาน P/E ย้อนหลัง 5 ปีของ HIG เอง (2564–2568, ช่วง 9.2x–12.8x) ไม่ใช่ P/E ปัจจุบัน 11.09x ซึ่งสูงกว่ามัธยฐานอยู่แล้ว สะท้อนมุมมอง conservative ว่า reserve development risk จะกดไม่ให้ multiple รีเรตขึ้นเกินค่าเฉลี่ยประวัติศาสตร์</div></div>
-        <div class="mval">$123.84</div>
+        <div><div class="mname">1. P/E Valuation (EPS TTM)</div><div class="mdesc">EPS $15.47 (GAAP diluted TTM) × P/E เป้าหมาย 9.6x — มัธยฐาน P/E ย้อนหลัง 5 ปีของ HIG เอง (FY2021–2025, ช่วง 9.2x–12.8x; ราคาเฉลี่ยของปี ÷ EPS diluted ของปีนั้น) ที่มาคือประวัติของหุ้นเอง ไม่ได้ลอกจาก P/E ปัจจุบัน (ซึ่งต่ำกว่ามัธยฐานอยู่แล้ว)</div></div>
+        <div class="mval">$148.51</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. Total Payout Yield (แทน DDM)</div><div class="mdesc">EPS $12.90 × Payout รวม (ปันผล+buyback) ~75% ÷ Yield เป้าหมาย 6.5% — payout เพิ่มขึ้นหลังอนุมัติ buyback ใหม่ $4.2B (~$475M/ไตรมาส) จากเงินขาย Hartford Funds</div></div>
-        <div class="mval">$148.85</div>
-      </div>
-      <div class="vmethod">
-        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 16.5% − g 5%)/(r 11% − g 5%) ≈ 1.92 × BVPS $70.00</div></div>
-        <div class="mval">$134.17</div>
+        <div><div class="mname">2. P/E Valuation (EPS ปีงบ FY2025)</div><div class="mdesc">EPS $13.32 (FY2025 ปีงบล่าสุดที่ปิดแล้ว) × P/E เป้าหมาย 9.6x — ตัวคูณมัธยฐานเดียวกับขา 1 แต่ใช้กำไรปีปิดแทน TTM เพื่อกันกรณีไตรมาสล่าสุดมีกำไรชั่วคราวปนอยู่ • ตระกูล P/E เดียวกัน นับเป็นเสียงเดียว ไม่ใช่การยืนยันอิสระ</div></div>
+        <div class="mval">$127.87</div>
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        วิธี P/E Valuation ให้ค่าต่ำสุด ($123.84) เพราะยึด P/E เป้าหมายที่มัธยฐานย้อนหลัง 5 ปีของหุ้นเอง (9.6x) แทนตัวคูณปัจจุบัน 11.09x สะท้อนมุมมอง conservative ว่าตลาดจะไม่ให้ premium เกินค่าเฉลี่ยประวัติศาสตร์ตราบใดที่ reserve development ยังเป็นความเสี่ยง
-        วิธี Total Payout Yield ให้ค่าสูงสุด ($148.85) สะท้อน payout ที่เพิ่มขึ้นจาก buyback ใหม่ $4.2B ใกล้เคียงเป้าหมายนักวิเคราะห์เฉลี่ย ~$149.85
-        Justified P/BV ($134.17) อยู่กึ่งกลาง — FV เฉลี่ย $135.62 ใกล้เคียงราคาปัจจุบันมาก (MOS แทบเป็นศูนย์) จึงสมเหตุสมผลเป็นกรอบกลางระหว่างมุมมอง conservative (P/E ยึดมัธยฐานย้อนหลัง) และมุมมอง capital-return upside (Payout Yield)
+        <b>การประเมินนี้เป็นตระกูลเดียว (single-family):</b> ทั้งสองขาใช้ P/E มัธยฐาน 9.6x ตัวเดียวกัน ต่างกันแค่ฐาน EPS (TTM เทียบ FY2025) จึงไม่ใช่การยืนยันข้ามวิธี — ตัดขา Total Payout Yield (payout 75% / yield 6.5% เป็นค่าที่ตั้งเอง ไม่มีค่าที่วัดได้) และตัดขา Justified P/BV (ใช้ (r,g) ที่ตั้งเอง) ออกจาก FV ของรอบนี้ และไม่ใช้เป้านักวิเคราะห์เป็นขา
+        ความไว: ทุก ±1x ของ P/E เป้าหมายขยับ FV ราว $14.4 (~10%) — ที่ 9.2x (ต่ำสุดของช่วง) FV ≈ $132.4 ทำให้ MOS ≈ 0% ที่ 10.3x (ค่าเฉลี่ย) FV ≈ $148.3 ทำให้ MOS ≈ 11% ที่ 12.8x (สูงสุดของช่วง) FV ≈ $184.3
+        ข้อควรระวังเรื่องฐานกำไร: ฉันทามติ FY2026e EPS ตาม StockAnalysis คือ $12.76 ต่ำกว่า EPS GAAP TTM ราว 17% (ฐาน core/GAAP ของฉันทามติยืนยันไม่ได้) — ถ้าคูณ 9.6x กับ $12.76 จะได้ราว $122 ต่ำกว่าราคาปัจจุบัน จึงไม่ควรอ่านว่า FV นี้มี margin of safety มาก
       </p>
     </div>
   </section>
@@ -202,8 +198,8 @@
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบันใกล้เคียงมูลค่าเหมาะสม ($135.62) มาก — อยู่ในโซนแฟร์ ไม่มี margin of safety เหลือให้ซื้อ (MOS ~0%)
-        และยังต่ำกว่าเป้าหมายเฉลี่ยนักวิเคราะห์ 20 สำนัก ($149.85, Buy) ที่ระบุ upside ~10.5% จากราคาปัจจุบัน
+        ราคาปัจจุบัน {{rd:px}} ต่ำกว่ามูลค่าเหมาะสม {{rd:fv}} เพียงเล็กน้อย (MOS {{rd:mos}}) — ยังไม่ถึงโซน MOS 20% ที่ {{rd:mos20}}
+        และต่ำกว่าเป้าหมายเฉลี่ยนักวิเคราะห์ 20 สำนัก ({{rd:analystTgt}}, Buy) ที่ระบุ upside {{rd:analystPct}} จากราคาปัจจุบัน — เป้านี้เป็นตัวเช็คบริบทเท่านั้น ไม่ได้เป็นส่วนหนึ่งของ FV
       </p>
     </div>
   </section>
@@ -236,48 +232,48 @@
     <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
-        <div class="top"><span>🐻 Bear</span><span>EPS −3%/ปี</span></div>
+        <div class="top"><span>🐻 Bear</span><span>EPS −8%/ปี</span></div>
         <div class="body">
           <div class="tgt">{{rd:sc1tgt}}</div>
           <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$11.77</span></li>
-            <li><span>P/E ออก</span><span>8.0x</span></li>
+            <li><span>EPS ปี 3</span><span>~$12.05</span></li>
+            <li><span>P/E ออก</span><span>7.5x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
-            <li><span>สถานการณ์</span><span>Reserve development ใน casualty ลุกลาม + cat losses พุ่ง ราคาพรีเมียม commercial อ่อนตัว combined ratio ขยับสู่ 98–100%</span></li>
+            <li><span>สถานการณ์</span><span>กำไรถอยจากจุดสูงสุด TTM ตามที่ฉันทามติ FY2026e ชี้ (ค่าความเสียหายจากภัยพิบัติ/reserve สูงขึ้น ราคาพรีเมียมอ่อนตัว) และ P/E de-rate ต่ำกว่าช่วงประวัติศาสตร์ 9.2x–12.8x</span></li>
           </ul>
         </div>
       </div>
       <div class="col base">
-        <div class="top"><span>⚖️ Base</span><span>EPS +6%/ปี</span></div>
+        <div class="top"><span>⚖️ Base</span><span>EPS +3%/ปี</span></div>
         <div class="body">
           <div class="tgt">{{rd:sc2tgt}}</div>
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$15.36</span></li>
-            <li><span>P/E ออก</span><span>11.0x</span></li>
+            <li><span>EPS ปี 3</span><span>~$16.90</span></li>
+            <li><span>P/E ออก</span><span>9.6x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
-            <li><span>สถานการณ์</span><span>Reserve concern คลี่คลาย วินัยการรับประกันต่อเนื่อง combined ratio ~91–93% เบี้ยโต mid-single-digit ซื้อหุ้นคืนสม่ำเสมอตาม buyback $4.2B</span></li>
+            <li><span>สถานการณ์</span><span>กำไรทรงตัวใกล้ระดับ TTM โตเบา ๆ จากการซื้อหุ้นคืนต่อเนื่อง (หุ้นถัวเฉลี่ยลดจาก 354M เหลือ 281M ใน 5 ปี) และ P/E กลับมาที่มัธยฐานย้อนหลัง</span></li>
           </ul>
         </div>
       </div>
       <div class="col bull">
-        <div class="top"><span>🚀 Bull</span><span>EPS +10%/ปี</span></div>
+        <div class="top"><span>🚀 Bull</span><span>EPS +7%/ปี</span></div>
         <div class="body">
           <div class="tgt">{{rd:sc3tgt}}</div>
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$17.17</span></li>
-            <li><span>P/E ออก</span><span>12.0x</span></li>
+            <li><span>EPS ปี 3</span><span>~$18.95</span></li>
+            <li><span>P/E ออก</span><span>11.0x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
-            <li><span>สถานการณ์</span><span>ปีภัยธรรมชาติเอื้ออำนวย reserve development ไม่ลุกลามเพิ่ม Business Insurance รักษาอำนาจตั้งราคา เร่งซื้อหุ้นคืนเต็มวงเงิน $4.2B</span></li>
+            <li><span>สถานการณ์</span><span>ปีภัยธรรมชาติเอื้ออำนวย margin ยังสูงระดับ TTM (operating margin 18.0%) และตลาดให้ multiple ในกรอบบนของช่วงประวัติศาสตร์</span></li>
           </ul>
         </div>
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      สมมติฐานอิงผลประกอบการ Q2 2569 (core EPS $3.42 บีตคาด, core ROE TTM 18.7%) เป็นจุดตั้งต้น แต่ normalize การเติบโตลงเพื่อกันความเสี่ยง reserve development ใน casualty lines และ cat losses ในปีถัด ๆ ไป —
-      P/E ออก Base (11.0x) ใกล้เคียงค่าเฉลี่ยย้อนหลัง 5 ปี (10.3x) ส่วน Bull (12.0x) อยู่ในกรอบบนของช่วงประวัติศาสตร์ (9.2x–12.8x) ไม่ใช่การ re-rate เกินกรอบเดิม
+      ทุกฉากเริ่มจาก EPS GAAP TTM $15.47 และคูณ P/E ออกที่อิงช่วงประวัติศาสตร์ของหุ้นเอง — Base ใช้ 9.6x (มัธยฐาน) Bull ใช้ 11.0x (ภายในช่วง 9.2x–12.8x) Bear ใช้ 7.5x ซึ่งต่ำกว่าช่วงประวัติศาสตร์ทั้งช่วง
+      อัตราเติบโตของ EPS เป็นสมมติฐานของรายงานนี้เอง (ไม่ใช่ประมาณการของบริษัท) โดย Bear ตั้งไว้ −8%/ปีเพราะกำไร TTM สูงกว่าฉันทามติ FY2026e ($12.76) ราว 17% ปันผลรวม 3 ปีสมมติปันผลต่อหุ้น $2.40 คงที่ (Bear) โต 4%/ปี (Base) และ 8%/ปี (Bull)
     </p>
   </section>
 
@@ -288,22 +284,22 @@
       <div class="box cat">
         <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
         <ul>
-          <li><b>Q2 2569 บีตคาดชัดเจน:</b> Core earnings $945M หรือ $3.42/diluted share (บีตคาด $3.21) Business Insurance premium +5% (underlying combined ratio 89.3%) Small Business +7% (86.5%)</li>
-          <li><b>ROE ยังสูงกว่าคู่แข่งกลุ่ม P&C:</b> Core ROE TTM 18.7% เทียบ peer เฉลี่ย 12–15% — แม้ชะลอจาก Q1 แต่ยังสะท้อนความสามารถแปลงเบี้ยประกันเป็นกำไรที่เหนือกว่า</li>
-          <li><b>คืนทุนผู้ถือหุ้นเร่งตัว:</b> ประกาศ buyback ใหม่ $4.2B (จากเงินขาย Hartford Funds) เพิ่มอัตราซื้อหุ้นคืนเป็น $475M/ไตรมาส เพิ่มเงินปันผลต่อเนื่อง 31 ปีติด</li>
-          <li><b>Group Benefits เติบโตมั่นคง:</b> Employee Benefits ขยายตัวหนุนกระแสรายได้ที่ไม่ผันผวนตาม cat losses/reserve เท่า P&C</li>
+          <li><b>กำไรโตต่อเนื่อง:</b> EPS GAAP diluted จาก $5.46 (FY2022) → $7.97 → $10.35 → $13.32 (FY2025) → $15.47 (TTM) และ Net margin ขยับจาก 8.0% เป็น 14.8%</li>
+          <li><b>ROE สูง:</b> ROE TTM ~22.1% (FY2025 21.7%) สะท้อนความสามารถทำกำไรจากส่วนของผู้ถือหุ้น</li>
+          <li><b>ซื้อหุ้นคืนลดจำนวนหุ้น:</b> หุ้นถัวเฉลี่ย diluted ลดจาก 354M (FY2021) เหลือ 281M (TTM) และหุ้นคงเหลือ 270.87M ณ 22 ก.ค. 2569 ช่วยหนุน EPS ต่อหุ้น</li>
+          <li><b>งบดุลไม่ตึง:</b> D/E ~0.22 และปันผล $2.40/ปี คิดเป็นราว 16% ของ EPS GAAP TTM ทิ้งช่องให้ทั้งปันผลและ buyback</li>
         </ul>
       </div>
       <div class="box risk">
         <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
         <ul>
-          <li><b>Reserve development ใน casualty lines:</b> ตลาดกังวลเรื่องการเสริม reserve ในกลุ่ม casualty หลังงบ Q2 2569 — เป็นสาเหตุหลักที่หุ้นร่วง −2.89% ในวันประกาศงบ แม้ผลประกอบการโดยรวมจะบีตคาด</li>
-          <li><b>Catastrophe losses:</b> ธุรกิจ P&C เผชิญความเสี่ยงพายุเฮอริเคน, พายุทอร์นาโด/ลูกเห็บ และไฟป่าที่ทวีความรุนแรงขึ้นจากการเปลี่ยนแปลงสภาพภูมิอากาศ กระทบ combined ratio ได้ฉับพลัน</li>
-          <li><b>วงจรราคาพรีเมียม (pricing cycle):</b> ตลาด Business Insurance อาจเข้าสู่ช่วง soft market กดดันอัตรากำไรหากคู่แข่งแข่งราคาดุเดือดขึ้น</li>
-          <li><b>ความเสี่ยงด้านการลงทุน:</b> ผลตอบแทนพอร์ตลงทุน (fixed income หลัก) อ่อนไหวต่อทิศทางดอกเบี้ย — ดอกเบี้ยลดเร็วกดดัน investment income</li>
-          <li><b>เงินเฟ้อต้นทุนค่าซ่อม/ค่ารักษา:</b> Social inflation และต้นทุนซ่อมรถ/วัสดุก่อสร้างที่สูงขึ้นกดดัน loss cost trend โดยเฉพาะ Personal Insurance</li>
-          <li><b>การแข่งขันจาก insurtech และผู้เล่นรายใหญ่:</b> Progressive, Travelers, Chubb, AIG แข่งขันรุนแรงทั้งด้านราคาและเทคโนโลยี underwriting</li>
-          <li><b>Valuation สูงกว่าค่ากลางประวัติศาสตร์ของตัวเอง:</b> P/E TTM 11.09x สูงกว่ามัธยฐาน P/E ย้อนหลัง 5 ปีของหุ้นเอง (9.6x) ~15% และสูงกว่าค่าเฉลี่ย (10.3x) ~8% — หากตลาดกังวล reserve development ต่อเนื่อง multiple มีโอกาส de-rate กลับสู่ค่ากลางประวัติศาสตร์</li>
+          <li><b>กำไรอยู่ใกล้จุดสูงสุดของรอบ:</b> operating margin TTM 18.0% สูงสุดในรอบ 5 ปี และฉันทามติ FY2026e EPS $12.76 ต่ำกว่า EPS GAAP TTM ราว 17% — ถ้ากำไรกลับสู่ค่าเฉลี่ย P/E บนกำไรใหม่จะสูงกว่าที่เห็นวันนี้</li>
+          <li><b>Catastrophe losses:</b> ธุรกิจ P&C เผชิญความเสี่ยงพายุเฮอริเคน พายุทอร์นาโด/ลูกเห็บ และไฟป่า ซึ่งกระทบ combined ratio ได้ฉับพลัน</li>
+          <li><b>Reserve development:</b> การเสริมสำรองในสายธุรกิจ casualty (ความเสี่ยงเชิงอุตสาหกรรม — รายงานนี้ไม่ได้เปิดเอกสารงบล่าสุดของบริษัทเพื่อยืนยันขนาดผลกระทบ)</li>
+          <li><b>วงจรราคาพรีเมียม (pricing cycle):</b> หากตลาดประกันธุรกิจเข้าสู่ช่วง soft market อัตรากำไรอาจถูกกดดัน</li>
+          <li><b>ผลตอบแทนการลงทุน:</b> พอร์ตลงทุนหลักเป็นตราสารหนี้ อ่อนไหวต่อทิศทางดอกเบี้ย</li>
+          <li><b>เงินเฟ้อต้นทุนความเสียหาย:</b> ค่าซ่อม/ค่ารักษา/social inflation กดดัน loss cost trend</li>
+          <li><b>ข้อมูลกำไรขัดกันระหว่างแหล่ง:</b> Yahoo แสดง EPS TTM $14.48 ต่ำกว่า SEC XBRL ($15.47) และ StockAnalysis ($15.48) ราว 6.5% — รายงานนี้ใช้ค่า SEC/StockAnalysis ที่ตรงกัน หากอ่านเลขจากแหล่งอื่นอาจได้ P/E ต่างออกไป</li>
         </ul>
       </div>
     </div>
@@ -313,12 +309,11 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>HIG: ประกันภัย P&C คุณภาพสูง Q2 บีตคาด แต่ตลาดกังวล reserve casualty — ราคาใกล้เคียงมูลค่าเหมาะสม (แฟร์)</h2>
+      <h2>HIG: ประกันภัย P&C กำไรและ ROE สูงสุดรอบ 5 ปี — ราคาต่ำกว่า FV เล็กน้อย (แฟร์) แต่ฉันทามติคาดกำไรต่ำกว่า TTM</h2>
       <p>
-        The Hartford รายงานผลประกอบการ Q2 2569 แข็งแกร่งกว่าคาด (core earnings $945M หรือ $3.42/หุ้น บีตคาด $3.21, core ROE TTM 18.7%, Business Insurance +5% underlying combined ratio 89.3%, Small Business +7% combined ratio 86.5%)
-        พร้อมประกาศ buyback ใหม่ $4.2B เพิ่มอัตราซื้อหุ้นคืนเป็น $475M/ไตรมาส แต่หุ้นกลับร่วง −2.89% ในวันประกาศงบ เพราะตลาดกังวลเรื่อง reserve development ในกลุ่ม casualty lines
-        ราคาปัจจุบันใกล้เคียงมูลค่าเหมาะสมที่ประเมินได้ $135.62 มาก (MOS ~0%) แม้ P/E TTM 11.09x จะสูงกว่ามัธยฐาน P/E ย้อนหลัง 5 ปีของหุ้นเองอยู่บ้าง (9.6x)
-        ภาพรวมยังเป็นหุ้นประกันคุณภาพสูง ROE เด่น ผันผวนต่ำกว่าตลาด (beta ~0.85) และมีเงินปันผลเติบโตต่อเนื่อง แต่ต้องติดตาม reserve development ใกล้ชิดก่อนเพิ่มน้ำหนักที่ราคาปัจจุบัน
+        The Hartford มี EPS GAAP diluted TTM $15.47 (เพิ่มจาก $13.32 ใน FY2025) ROE ~22.1% และ operating margin 18.0% สูงสุดในรอบ 5 ปี พร้อมจำนวนหุ้นที่ลดลงต่อเนื่องจากการซื้อหุ้นคืน
+        ราคาปัจจุบัน {{rd:px}} ซื้อขายที่ P/E ~8.5x ต่ำกว่ามัธยฐานย้อนหลัง 5 ปีของหุ้นเอง (9.6x) มูลค่าเหมาะสมที่ประเมินได้ {{rd:fv}} (MOS {{rd:mos}}) มาจากตระกูล P/E ตระกูลเดียว จึงควรอ่านเป็นกรอบประมาณมากกว่าตัวเลขแม่นยำ
+        ข้อควรระวังหลักคือกำไร TTM อยู่ใกล้จุดสูงสุด และฉันทามติ FY2026e EPS ($12.76) ต่ำกว่า TTM ราว 17% ถ้ากำไรถอยตามฉันทามติ ราคาปัจจุบันก็ไม่ถูกอย่างที่ P/E TTM สื่อ
       </p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
@@ -326,8 +321,8 @@
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$149.85 (Buy)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ราคาปัจจุบันแทบไม่เหลือ margin of safety (MOS ~0%) — นักลงทุนที่เน้น margin of safety สูงควรรอจังหวะย่อตัวสู่โซน ≤$108.50 (MOS 20%+) หรือลึกกว่านั้นที่ ≤$94.93 (MOS 30%+) ซึ่งมักเกิดช่วงข่าว catastrophe losses/reserve หรือตลาดประกันภัยปรับฐานทั้งกลุ่ม
-        ส่วนนักลงทุนที่ถืออยู่แล้วและเน้นคุณภาพ + ROE สูง + ปันผลเติบโต + buyback ต่อเนื่อง สามารถถือต่อได้ แต่ควรติดตามพัฒนาการ reserve casualty ในไตรมาสถัดไปก่อนเพิ่มน้ำหนัก
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบันเหลือ margin of safety น้อย — นักลงทุนที่เน้น margin of safety สูงควรรอโซน ≤{{rd:mos20}} (MOS 20%+) หรือลึกกว่านั้นที่ ≤{{rd:mos30}} (MOS 30%+) ซึ่งมักเกิดช่วงข่าวความเสียหายจากภัยพิบัติหรือตลาดประกันภัยปรับฐานทั้งกลุ่ม
+        ส่วนผู้ที่ถืออยู่แล้วและเน้นคุณภาพ + ROE สูง + ซื้อหุ้นคืน สามารถถือต่อได้ แต่ควรติดตามผลประกอบการไตรมาสถัดไป (ประกาศ ~26 ต.ค. 2569 ตาม StockAnalysis) ว่า EPS ยืนระดับ TTM หรือถอยตามฉันทามติ
       </div>
     </div>
   </section>
@@ -336,9 +331,9 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลจาก Yahoo Finance (finance.yahoo.com/quote/HIG), StockAnalysis.com (stockanalysis.com/stocks/HIG), Digrin.com (digrin.com/stocks/detail/HIG), The Hartford Newsroom Q2 2026 Results (newsroom.thehartford.com)
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลจาก Yahoo Finance (finance.yahoo.com/quote/HIG), StockAnalysis.com (stockanalysis.com/stocks/HIG), SEC EDGAR XBRL (data.sec.gov, CIK 874766 — EPS diluted และส่วนของผู้ถือหุ้นจาก 10-K/10-Q)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 9 กันยายน 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
