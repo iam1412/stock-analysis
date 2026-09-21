@@ -6,33 +6,33 @@
 <title>วิเคราะห์หุ้น ปตท. (PTT) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"PTT","currency":"THB","price":42.25,"fairValue":37,"mos":-14.2,"upside":-12.4,"pe":11.7,"dividendYield":5,"roe":7}
+{"symbol":"PTT","currency":"THB","price":42,"fairValue":34,"mos":-23.5,"upside":-19,"pe":9.7,"dividendYield":5,"roe":10.3}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 37,
+  "fv": 34,
   "values": {
-    "px": 42.25,
-    "priceDate": "2026-09-18",
+    "px": 42,
+    "priceDate": "2026-09-21",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
     "fvLow": 33,
-    "fvHigh": 41,
-    "shares": 28500000000,
+    "fvHigh": 35,
+    "shares": 28324336250,
     "dps": 2.1,
-    "baseEps": 3.2,
+    "baseEps": 3.44,
     "scenarios": [
       {
-        "tgt": 26.28,
+        "tgt": 26.69,
         "div": 5.5
       },
       {
-        "tgt": 43.2,
+        "tgt": 38.7,
         "div": 6.3
       },
       {
-        "tgt": 52.39,
+        "tgt": 47.67,
         "div": 7
       }
     ],
@@ -68,7 +68,7 @@
       ["มิ.ย.26", 35.5],
       ["ก.ค.26", 38.5],
       ["ส.ค.26", 40.75],
-      ["ก.ย.26", 42.25]
+      ["ก.ย.26", 42]
     ],
     "min": 30,
     "max": 45,
@@ -79,8 +79,8 @@
     "dataFmt": "d[1].toFixed(2)"
   },
   "gauge": {
-    "min": 25,
-    "max": 44,
+    "min": 22,
+    "max": 45,
     "fairLabelTop": true
   }
 }
@@ -107,7 +107,7 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}} (2026)<br>
-        กรอบ 52 สัปดาห์ ฿29.75 – ฿38.00<br>
+        กรอบ 52 สัปดาห์ ฿30.00 – ฿42.75<br>
         ที่มา: SET, StockAnalysis.com, Yahoo Finance, Investing.com
       </div>
     </div>
@@ -115,21 +115,21 @@
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM ถึง Q1/2569</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM ล่าสุด (StockAnalysis)</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">หุ้น ~28.5 พันล้าน</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~11.7x</div><div class="d">ต่ำกว่าค่าเฉลี่ยอุตสาหกรรมโลก</div></div>
-      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~11–12x</div><div class="d">กรอบ 9–14x</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.63x</div><div class="d">ต่ำกว่า 1 เท่า มาหลายปี</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">หุ้น ~28.3 พันล้าน</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~9.7x</div><div class="d">EPS TTM สูงกว่า FY2025 ราว 38%</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~10.1x</div><div class="d">มัธยฐาน กรอบ 8.5–11.3x</div></div>
+      <div class="metric"><div class="k">อัตรากำไรสุทธิ</div><div class="v neu">~4.3%</div><div class="d">TTM · FY2025 ~3.4%</div></div>
 
-      <div class="metric"><div class="k">กำไรสุทธิ FY68</div><div class="v">~฿90,000 ล้าน</div><div class="d">ฟื้นจากปีก่อน</div></div>
-      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿3.20</div><div class="d">งวด TTM ถึง Q1/2569</div></div>
-      <div class="metric"><div class="k">BVPS</div><div class="v">~฿60</div><div class="d">ส่วนของผู้ถือหุ้นแข็งแกร่ง</div></div>
-      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~7.0% / 2.8%</div><div class="d">โครงสร้างทุนหนัก กด ROE</div></div>
+      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">~฿123,000 ล้าน</div><div class="d">FY2025 ~฿89,400 ล้าน</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿4.34</div><div class="d">FY2025 ฿3.15 · TTM สูงกว่าปีงบ</div></div>
+      <div class="metric"><div class="k">FCF (TTM)</div><div class="v">~฿91,000 ล้าน</div><div class="d">FY2025 ~฿133,900 ล้าน</div></div>
+      <div class="metric"><div class="k">ROE</div><div class="v pos">~10.3%</div><div class="d">FY2025 7.1% · D/E 0.59x</div></div>
 
-      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿3.0 ล้านล้าน</div><div class="d">อิงราคาน้ำมัน-ก๊าซ</div></div>
-      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~10%</div><div class="d">ธุรกิจ commodity มาร์จิ้นบาง</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">DPS ฿2.10 · payout ~90%</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿2.83 ล้านล้าน</div><div class="d">อิงราคาน้ำมัน-ก๊าซ</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~15%</div><div class="d">TTM · FY2025 ~9.8% (commodity มาร์จิ้นบาง)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">DPS ฿2.10 · payout ~48% ของ EPS TTM</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">~0.9</div><div class="d">ผันผวนใกล้ตลาด</div></div>
     </div>
   </section>
@@ -147,34 +147,29 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ราคา PTT แกว่งในกรอบ ฿30–฿37.5 ตลอดรอบปี จุดต่ำสุดราว ฿30 (มิ.ย. 2568) ช่วงราคาน้ำมันอ่อน จากนั้นไต่ขึ้นต้นปี 2569 แตะจุดสูงสุดรอบ ~฿37 (ก.พ. 2569) ตามราคาพลังงานฟื้นและความหวังปันผลสูง ย่อลงกลางปีแล้วไต่กลับขึ้นมาปิดที่ ~฿37.5 บวก ~+21.0% ในรอบปี หุ้นเคลื่อนตามราคาน้ำมัน-ก๊าซ + sentiment ตลาด SET เป็นหลัก ปัจจุบันแตะใกล้มูลค่าเหมาะสมแล้ว
+        ราคา PTT ไต่ขึ้นต่อเนื่องจากกรอบต่ำ ~฿30.75 (ต.ค. 2568) ผ่านต้นปี 2569 ที่ราว ฿34–37 (ม.ค.–ก.พ.) พักตัวช่วง มี.ค.–มิ.ย. ในกรอบ ~฿35–36 แล้วเร่งขึ้นช่วง ก.ค.–ก.ย. 2569 จนปิดปลายกราฟใกล้กรอบสูงสุด 52 สัปดาห์ (฿42.75) หุ้นเคลื่อนตามราคาน้ำมัน-ก๊าซ + sentiment ตลาด SET เป็นหลัก ปัจจุบันราคาสูงกว่ามูลค่าเหมาะสมที่ประเมินจากกำไรเฉลี่ยรอบวัฏจักรพอสมควร
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿3.20 × P/E เป้าหมาย ~12x — ใกล้ค่าเฉลี่ย 5 ปี สะท้อนวงจรพลังงานปกติ</div></div>
-        <div class="mval">฿38.40</div>
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS ฿3.44 (เฉลี่ย FY2021–25 ปรับวัฏจักร) × P/E 10.1x — 10.1x คือมัธยฐานย้อนหลัง 5 ปีที่วัดจากราคาเฉลี่ยงวด ÷ EPS ของงวดนั้น (กรอบ 8.5–11.3x) มาจากประวัติ ไม่ได้มาจาก P/E ปัจจุบัน · ไม่ใช้ EPS TTM ฿4.34 เพราะสูงกว่าปีงบทุกปี (หุ้น commodity)</div></div>
+        <div class="mval">฿34.74</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿2.10 × (1+g); g 2.5%, r 9.0% → ปันผลสูงแต่โตช้า ให้ค่าระมัดระวัง</div></div>
-        <div class="mval">฿33.10</div>
-      </div>
-      <div class="vmethod">
-        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 7.0% − g 2.5%)/(r 9.0% − g 2.5%) ≈ 0.69 × BVPS ฿60</div></div>
-        <div class="mval">฿41.40</div>
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿2.10 × (1+g) = ฿2.15; g 2.5%, r 9.0% (สมมติฐานของผู้วิเคราะห์) → ฿2.15 ÷ 6.5% ปันผลสูงแต่โตช้า ให้ค่าระมัดระวัง</div></div>
+        <div class="mval">฿33.12</div>
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        วิธี DDM ให้ค่าต่ำสุด (฿33) เพราะ PTT เป็นหุ้นปันผลสูง-โตช้า ตัวคูณ g จึงจำกัด • Justified P/BV ให้ค่าสูงสุด (฿40)
-        จากส่วนต่าง ROE−g ที่ยังเป็นบวกบนฐานทุนใหญ่ (P/BV ปัจจุบัน 0.63x ต่ำกว่าค่าเหมาะสม 0.69x) • ค่ากลาง ฿37 สอดคล้องเป้านักวิเคราะห์เฉลี่ย ~฿39.5 และสะท้อนว่าราคาปัจจุบันใกล้มูลค่าเหมาะสม
+        FV ประกอบจาก 2 ตระกูลอิสระ: P/E ที่ยึดมัธยฐานย้อนหลัง (กำไรเฉลี่ยรอบวัฏจักร) และ DDM (r/g เป็นสมมติฐานของผู้วิเคราะห์) — ขา Justified P/BV ถูกถอดออกเพราะ BVPS ตรวจซ้ำจากแหล่งที่เปิดอ่านไม่ได้ และ DDM/Justified P/BV ใช้ (r,g) ชุดเดียวกันจึงนับเป็นเสียงเดียวอยู่แล้ว • เป้านักวิเคราะห์เฉลี่ย ~฿42.07 (19 ราย) เป็นเพียงบริบทเทียบเคียง ไม่ใช่ขาของ FV • ความอ่อนไหว: ถ้าใช้ EPS TTM ฿4.34 × 10.1x (≈฿43.8) คู่กับ DDM ฿33.12 FV เฉลี่ยจะราว ฿38.5 และราคาปัจจุบันจะสูงกว่าเพียงเล็กน้อย — ผลสรุป "แพงกว่าเหมาะสม" จึงขึ้นกับว่ากำไร TTM ที่สูงกว่าปีงบยั่งยืนหรือไม่
       </p>
     </div>
   </section>
@@ -192,13 +187,13 @@
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿39.50<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
+          <span style="text-align:center">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">฿42.07<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน ฿37.50 อยู่สูงกว่ามูลค่าเหมาะสม ฿37.00 เล็กน้อย (MOS -1.4%) — ถือว่า "แพงกว่าเหมาะสมเล็กน้อย"
-        โซนน่าสะสมเพิ่มอยู่ที่ ≤ ฿29.60 (MOS 20%) ซึ่งเคยแตะช่วงพลังงานอ่อนตัว นักลงทุนเน้นปันผลอาจรับได้ที่ราคานี้เพราะ yield ~5.6%
+        ราคาปัจจุบัน {{rd:px}} อยู่สูงกว่ามูลค่าเหมาะสม {{rd:fv}} ({{rd:mos}}) — ถือว่า "แพงกว่าเหมาะสม" ราคาอยู่ใกล้ระดับที่นักวิเคราะห์ประเมินและกรอบสูงสุด 52 สัปดาห์
+        โซนน่าสะสมเพิ่มอยู่ที่ ≤ {{rd:mos20}} (MOS 20%) ซึ่งต่ำกว่าราคาปัจจุบันมาก นักลงทุนเน้นปันผลอาจรับได้ที่ราคานี้เพราะ yield ~5% แต่ไม่มีส่วนเผื่อ
       </p>
     </div>
   </section>
@@ -209,7 +204,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">ส่วนเผื่อบาง — ราคาปัจจุบันใกล้มูลค่าเหมาะสม เหมาะ "ถือกินปันผล" มากกว่าหวัง capital gain เร็ว รอย่อเพื่อ MOS ที่ดีกว่า</div>
+        <div class="txt">ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสม ไม่มีส่วนเผื่อความปลอดภัย — เหมาะ "ถือกินปันผล" มากกว่าหวัง capital gain รอย่อเพื่อ MOS ที่ดีกว่า</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -236,8 +231,8 @@
           <div class="tgt">{{rd:sc1tgt}}</div>
           <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿2.92</span></li>
-            <li><span>P/E ออก</span><span>9x</span></li>
+            <li><span>EPS ปี 3</span><span>~฿3.14</span></li>
+            <li><span>P/E ออก</span><span>8.5x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>ราคาน้ำมันต่ำยาว มาร์จิ้นหด</span></li>
           </ul>
@@ -249,8 +244,8 @@
           <div class="tgt">{{rd:sc2tgt}}</div>
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿3.60</span></li>
-            <li><span>P/E ออก</span><span>12x</span></li>
+            <li><span>EPS ปี 3</span><span>~฿3.87</span></li>
+            <li><span>P/E ออก</span><span>10x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>พลังงานทรงตัว ปันผลสม่ำเสมอ</span></li>
           </ul>
@@ -262,17 +257,17 @@
           <div class="tgt">{{rd:sc3tgt}}</div>
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿4.03</span></li>
-            <li><span>P/E ออก</span><span>13x</span></li>
+            <li><span>EPS ปี 3</span><span>~฿4.33</span></li>
+            <li><span>P/E ออก</span><span>11x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
-            <li><span>สถานการณ์</span><span>ราคาน้ำมันสูง + re-rating P/BV</span></li>
+            <li><span>สถานการณ์</span><span>ราคาน้ำมันสูง + re-rating P/E</span></li>
           </ul>
         </div>
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      ผลตอบแทนหลักของ PTT มาจาก "ปันผล ~6%/ปี" เป็นเบาะรองรับ ส่วน capital gain ขึ้นกับวงจรราคาน้ำมัน-ก๊าซและการ re-rate P/BV ที่ปัจจุบันต่ำกว่า 1 เท่า
-      กรณีฐานให้ผลตอบแทนรวม ~10%/ปี โดยมีปันผลเป็นแกน — เหมาะนักลงทุนระยะยาวรับความผันผวน commodity ได้
+      ผลตอบแทนหลักของ PTT มาจาก "ปันผล ~5%/ปี" เป็นเบาะรองรับ ส่วน capital gain ขึ้นกับวงจรราคาน้ำมัน-ก๊าซและกำไรที่ต้องคงระดับสูงกว่าเฉลี่ยรอบวัฏจักร
+      กรณีฐานให้ผลตอบแทนรวมต่ำเพราะจุดเข้าอยู่เหนือมูลค่าเหมาะสม โดยมีปันผลเป็นแกน — เหมาะนักลงทุนระยะยาวรับความผันผวน commodity ได้ (ฐาน EPS คือค่าเฉลี่ย FY2021–25 ไม่ใช่ TTM)
     </p>
   </section>
 
@@ -283,8 +278,8 @@
       <div class="box cat">
         <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
         <ul>
-          <li><b>ปันผลสูงสม่ำเสมอ:</b> yield ~6% บน payout ~90% เป็นเบาะรองรับราคาและดึงดูดเงินลงทุนระยะยาว</li>
-          <li><b>P/BV ต่ำกว่า 1 เท่า:</b> ซื้อขายที่ ~0.63x BVPS เปิด upside หากตลาด re-rate ฐานทุนที่แข็งแกร่ง</li>
+          <li><b>ปันผลสูงสม่ำเสมอ:</b> yield ~5% (DPS ฿2.10) เป็นเบาะรองรับราคาและดึงดูดเงินลงทุนระยะยาว</li>
+          <li><b>งบแข็งแรงขึ้น:</b> D/E 0.59x ลดจาก 0.78x ใน FY2022 และ FCF TTM ~฿91,000 ล้านเกินกำไรพอสมควร</li>
           <li><b>โครงสร้างครบวงจร:</b> รายได้กระจายตั้งแต่ต้นน้ำ (PTTEP) ถึงปลายน้ำ (OR) ช่วยลดความผันผวนรายไตรมาส</li>
           <li><b>ปรับโครงสร้างพอร์ต:</b> แผนลดสินทรัพย์ที่ผลตอบแทนต่ำ + ลงทุนพลังงานสะอาด/LNG หนุน ROE ระยะยาว</li>
           <li><b>ก๊าซในประเทศฟื้น:</b> ปริมาณก๊าซอ่าวไทยและความต้องการไฟฟ้าที่เพิ่ม หนุนธุรกิจ Gas ที่มาร์จิ้นมั่นคง</li>
@@ -295,7 +290,7 @@
         <ul>
           <li><b>ราคาน้ำมัน-ก๊าซผันผวน:</b> กำไรอิง commodity โดยตรง ราคาน้ำมันต่ำกดทั้ง PTTEP และมาร์จิ้นการกลั่น</li>
           <li><b>นโยบายรัฐ/ราคาพลังงาน:</b> รัฐถือหุ้นใหญ่ อาจถูกขอตรึงราคาก๊าซ/ค่าไฟ กดมาร์จิ้นเพื่อภาระสังคม</li>
-          <li><b>ROE ต่ำ:</b> ฐานทุนใหญ่ + ธุรกิจ commodity ทำให้ ROE ~7% จำกัด upside ของ re-rating</li>
+          <li><b>ROE ผันผวน:</b> ฐานทุนใหญ่ + ธุรกิจ commodity ทำให้ ROE แกว่งระหว่าง ~7% (FY2025) ถึง ~10% (TTM) จำกัด upside ของ re-rating</li>
           <li><b>ความเสี่ยงเปลี่ยนผ่านพลังงาน:</b> แนวโน้มลดคาร์บอนระยะยาวกดดันธุรกิจฟอสซิลเป็นต้นทุน transition</li>
           <li><b>บริษัทลูกแกว่ง:</b> ผลงาน PTTGC/ปิโตรเคมีและ GPSC ส่งผ่านมาที่กำไรรวมในบางรอบ</li>
         </ul>
@@ -308,16 +303,16 @@
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
       <h2>หุ้นปันผลพื้นฐานแข็ง — ราคาปัจจุบันใกล้มูลค่าเหมาะสม</h2>
-      <p>PTT เป็นบริษัทพลังงานครบวงจรขนาดใหญ่ที่สุดของไทย จุดเด่นคือปันผล ~6% สม่ำเสมอและ P/BV ต่ำกว่า 1 เท่า
-      ที่ราคา ฿37.50 หุ้นซื้อขายสูงกว่ามูลค่าเหมาะสม ฿37.00 เพียงเล็กน้อย (MOS -1.4%) จึงเหมาะเป็นหุ้น "ถือกินปันผลระยะยาว"
-      มากกว่าซื้อเพิ่มตอนนี้ ผู้เน้น value ควรรอย่อสู่โซน ฿29–30 เพื่อ MOS ที่ปลอดภัยกว่า</p>
+      <p>PTT เป็นบริษัทพลังงานครบวงจรขนาดใหญ่ที่สุดของไทย จุดเด่นคือปันผล ~5% สม่ำเสมอและงบดุลที่แข็งแรงขึ้น
+      ที่ราคา {{rd:px}} หุ้นซื้อขายสูงกว่ามูลค่าเหมาะสม {{rd:fv}} ({{rd:mos}}) จึงเหมาะเป็นหุ้น "ถือกินปันผลระยะยาว"
+      มากกว่าซื้อเพิ่มตอนนี้ ผู้เน้น value ควรรอย่อสู่โซน {{rd:mos20}} เพื่อ MOS ที่ปลอดภัยกว่า</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ff8a65">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿39.50 (Outperform)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿42.07 (Strong Buy)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ทยอยสะสมเพื่อรับปันผลเมื่อราคา ≤ ฿37.00 และเพิ่มน้ำหนักจริงจังที่โซน MOS 20% (≤ ฿29.60) — มองเป็นหุ้น income core ของพอร์ต ไม่ใช่หุ้นเก็งกำไรระยะสั้น
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมเพื่อรับปันผลเมื่อราคา ≤ {{rd:fv}} และเพิ่มน้ำหนักจริงจังที่โซน MOS 20% (≤ {{rd:mos20}}) — มองเป็นหุ้น income core ของพอร์ต ไม่ใช่หุ้นเก็งกำไรระยะสั้น
       </div>
     </div>
   </section>
@@ -326,9 +321,9 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มาข้อมูล: SET, StockAnalysis.com, Yahoo Finance, Investing.com (ดึงข้อมูล ก.ค. 2569)
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มาข้อมูล: SET, StockAnalysis.com, Yahoo Finance, Investing.com (ดึงข้อมูล ก.ย. 2569)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 13 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
