@@ -4,22 +4,22 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น Infraset (INSET) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"INSET","currency":"THB","price":4.66,"fairValue":5.2,"mos":10.4,"upside":11.6,"pe":51.5,"dividendYield":1.04,"roe":4.64}
+{"symbol":"INSET","currency":"THB","price":4.62,"fairValue":3.42,"mos":-35.1,"upside":-26,"pe":30.8,"dividendYield":0.87,"roe":8.6}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 5.2,
+  "fv": 3.42,
   "values": {
-    "px": 4.66,
-    "priceDate": "2026-09-18",
+    "px": 4.62,
+    "priceDate": "2026-09-21",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
-    "fvLow": 4.67,
-    "fvHigh": 5.76,
-    "shares": 804530000,
+    "fvLow": 3.12,
+    "fvHigh": 3.72,
+    "shares": 802530000,
     "bvps": 1.77
   },
   "theme": {
@@ -48,11 +48,11 @@
       ["มิ.ย.26", 3.72],
       ["ก.ค.26", 4.62],
       ["ส.ค.26", 4.78],
-      ["ก.ย.26", 4.66]
+      ["ก.ย.26", 4.62]
     ],
     "min": 1,
-    "max": 6,
-    "grid": [2, 3, 4, 5],
+    "max": 5,
+    "grid": [2, 3, 4],
     "currency": "฿",
     "highlight": [0, 10],
     "gridFmt": "v.toFixed(2)",
@@ -87,7 +87,7 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ ฿1.50 – ฿4.28<br>
+        กรอบ 52 สัปดาห์ ฿1.50 – ฿5.20<br>
         ที่มา: SET, Yahoo Finance, Investing.com
       </div>
     </div>
@@ -95,22 +95,22 @@
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ 21 ก.ย. 2569</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">฿3.75 พัน ล.</div><div class="d">804.53 ล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~51.5x</div><div class="d">Forward P/E ~18x (ปี 2026)</div></div>
-      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~20–22x</div><div class="d">ปัจจุบัน TTM สูง (กำไรฟื้นตัว)</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿3.71 พัน ล.</div><div class="d">802.53 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~30.8x</div><div class="d">Forward P/E ~16–17x (vendor ไม่ระบุปีงบ)</div></div>
+      <div class="metric"><div class="k">P/E มัธยฐาน ~5 ปี</div><div class="v">~24.8x</div><div class="d">ช่วง 17.4–42.6x (FY2021–FY2025)</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ฿1.77</div></div>
 
-      <div class="metric"><div class="k">กำไรสุทธิ FY2024</div><div class="v">฿88.9 ล.</div><div class="d">EPS ฿0.11 (FY2024)</div></div>
-      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.08</div><div class="d">TTM มี.ค. 69; Forward EPS ~฿0.235</div></div>
-      <div class="metric"><div class="k">BVPS</div><div class="v">~฿1.77</div><div class="d">D/E = 0.16 (balance sheet แข็งแกร่ง)</div></div>
-      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~4.64% / 2.48%</div><div class="d">ต่ำกว่าอุตสาหกรรม ICT ในช่วงฟื้นตัว</div></div>
+      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">฿122 ล.</div><div class="d">FY2025 ฿35.3 ล. (EPS ฿0.04) · FY2024 ฿88.9 ล.</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.15</div><div class="d">Forward EPS vendor ~฿0.29 (ไม่ระบุปีงบ)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿1.77</div><div class="d">D/E = 0.39 (เงินสด ฿284 ล. · หนี้ ฿563 ล.)</div></div>
+      <div class="metric"><div class="k">ROE (TTM)</div><div class="v neu">~8.6%</div><div class="d">FY2025 2.5% · FY2021 18.9% — ฟื้นจากฐานต่ำ</div></div>
 
-      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿1.52 พัน ล.</div><div class="d">ลดลง −23.5% YoY (Q1-Q2 2568 ต่ำ)</div></div>
-      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~7.5–13%</div><div class="d">Gross Margin FY2024 = 10.2%</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.04%</div><div class="d">฿0.04/หุ้น (XD มี.ค. 69) payout ~98%</div></div>
-      <div class="metric"><div class="k">Beta</div><div class="v">สูง</div><div class="d">ราคาวิ่ง +134% รอบปี — ความผันผวนสูง</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿2.02 พัน ล.</div><div class="d">+6.2% YoY (FY2025 ฿1.17 พัน ล. −40.9%)</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~11.9%</div><div class="d">TTM · FY2025 10.3% · FY2024 10.2%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~0.87%</div><div class="d">฿0.04/หุ้น · payout ~26% ของ EPS TTM</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">สูง</div><div class="d">ราคาวิ่ง +190% รอบปี — ความผันผวนสูง</div></div>
     </div>
   </section>
 
@@ -127,33 +127,29 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        INSET เริ่มต้นปี 2568 ที่ ฿1.80 ทรงตัวต่ำช่วง ม.ค.–มิ.ย. 68 (฿1.59–1.99) ก่อนพุ่งแรงตั้งแต่ ก.ค. 68 สู่ ฿2.82 จากกระแส data center ในไทยที่ร้อนแรง โดยเฉพาะโครงการลงทุนของ hyperscaler ต่างชาติ ราคาไต่ขึ้นต่อเนื่องผ่าน ฿3.02 (ก.ย. 68), ฿3.72 (พ.ย. 68) และ ฿3.86 (ธ.ค. 68) ก่อนแตะ ฿4.22 ใน ก.ค. 69 รวมผลตอบแทนรอบปี +134.4% มูลค่าเหมาะสมที่ ฿5.20 ยังอยู่เหนือราคาตลาด
+        INSET เริ่มช่วงกราฟที่ ฿1.59 (ต.ค. 68) ทรงตัวต่ำถึง ธ.ค. 68 (฿1.72) ก่อนพุ่งตั้งแต่ ม.ค. 69 (฿1.99) และ ก.พ. 69 (฿2.82) สอดคล้องกับกระแส data center ในไทย ไต่ต่อผ่าน ฿3.36 (พ.ค. 69) และ ฿3.72 (มิ.ย. 69) ปิดเดือน ส.ค. 69 ที่ ฿4.78 ก่อนย่อลง ผลตอบแทนรอบปีรวมราว +190% (ดูป้ายส่วนหัว) ทั้งที่ EPS TTM ฿0.15 ยังต่ำกว่า EPS FY2021 (฿0.21) ราคาจึงอยู่เหนือมูลค่าเหมาะสม {{rd:fv}}
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี (ตระกูล P/E เดียวกัน)</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation (Forward)</div><div class="mdesc">EPS adj. ฿0.235 (Forward 2026) × P/E เป้าหมาย ~22x — อิง P/E เฉลี่ยกลุ่ม ICT ไทยช่วงปกติ</div></div>
-        <div class="mval">฿5.17</div>
+        <div><div class="mname">1. P/E Valuation (EPS TTM × มัธยฐานย้อนหลัง)</div><div class="mdesc">EPS ฿0.15 (TTM) × P/E 24.8x — มัธยฐาน P/E 5 ปี (ราคาเฉลี่ยรายปี ÷ EPS; ช่วง 17.4–42.6x) ตัวคูณมาจากประวัติ ไม่ได้มาจาก P/E ปัจจุบัน</div></div>
+        <div class="mval">฿3.72</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. DCF (Free Cash Flow)</div><div class="mdesc">FCF/หุ้น ปี 2026E ฿0.28 / (WACC 9% − g 3%) — อิงการฟื้นตัวของกำไรสุทธิและ backlog งาน data center</div></div>
-        <div class="mval">฿4.67</div>
-      </div>
-      <div class="vmethod">
-        <div><div class="mname">3. EV/EBITDA Multiple</div><div class="mdesc">EBITDA/หุ้น ฿0.72 × multiple 8x — อิง peer ICT infrastructure ไทย (ช่วง 7–9x)</div></div>
-        <div class="mval">฿5.76</div>
+        <div><div class="mname">2. P/E Valuation (EPS เฉลี่ย 5 ปี — ตระกูลเดียวกับวิธี 1)</div><div class="mdesc">EPS ฿0.126 (เฉลี่ย FY2021–FY2025) × P/E 24.8x — ใช้ตัวคูณมัธยฐานเดียวกัน นับเป็นหนึ่งเสียง (ตระกูลเดียวกัน) เพื่อ normalize กำไรงานโปรเจกต์</div></div>
+        <div class="mval">฿3.12</div>
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        วิธี P/E Forward ให้ค่า ฿5.17 โดยอิง EPS ปี 2026 ที่ตลาดคาดฟื้นแรง (Forward P/E ~18x) คูณกับ P/E เป้า 22x ของกลุ่ม ICT ไทย วิธี DCF ได้ ฿4.67 อนุรักษ์นิยมกว่าเพราะใช้ FCF ที่ยังต่ำ วิธี EV/EBITDA ให้ ฿5.76 เนื่องจาก EBITDA margin ดีกว่า Net Margin ค่าเฉลี่ยสามวิธีที่ ฿5.20 สมเหตุสมผลและรวม upside จากการฟื้นตัวของรายได้และกำไรไว้แล้ว
+        ทั้งสองวิธีอยู่ในตระกูล P/E เดียวกัน (ตัวคูณมัธยฐานย้อนหลัง 24.8x เท่ากัน ต่างที่ EPS: TTM ฿0.15 กับเฉลี่ย 5 ปี ฿0.126) จึงนับเป็นหนึ่งเสียง — การประเมินตระกูลเดียว ความไวต่อสมมติฐาน: P/E 30x กับ EPS TTM ให้ ฿4.50 (ใกล้ {{rd:px}}) และต้องมี EPS ~฿0.186 ที่ 24.8x จึงจะเท่ากับ {{rd:px}} ขา DCF และ EV/EBITDA เดิมถูกตัดออก เพราะ FCF สลับบวก/ลบ (TTM −฿425 ล.) ตรวจซ้ำไม่ได้ และรอบนี้ไม่มี EV/EBITDA มัธยฐานที่วัดได้ EPS forward ~฿0.29 ของ vendor ไม่ระบุปีงบ จึงไม่ใช้เป็นขา ตัวคูณ 24.8x ห่างจาก P/E ปัจจุบัน ~30.8x แต่ประวัติกว้าง 17.4–42.6x จึงมีความไม่แน่นอนสูง
       </p>
     </div>
   </section>
@@ -171,12 +167,12 @@
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿5.27<br><small>เป้าเฉลี่ย Analyst</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">฿5.44<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน ฿4.22 อยู่ต่ำกว่ามูลค่าเหมาะสม ฿5.20 ประมาณ 19% (MOS ~19%) อยู่ในโซน "น่าสนใจ — ทยอยสะสมได้" ราคาอยู่เหนือจุด MOS 20% (฿4.16) เล็กน้อย บ่งชี้ว่ายังมีส่วนต่างความปลอดภัยพอสมควร เป้าราคา analyst ที่ ฿5.27 ใกล้เคียงกับ Fair Value ของเรา ยืนยันทิศทางบวก
+        ราคาปัจจุบัน {{rd:px}} อยู่สูงกว่ามูลค่าเหมาะสม {{rd:fv}} ({{rd:mos}}) และเหนือกรอบบน FV {{rd:fvHigh}} จุด MOS 20% อยู่ที่ {{rd:mos20}} และ MOS 30% ที่ {{rd:mos30}} เป้าราคา analyst เฉลี่ย ฿5.44 (2 ราย ตาม Yahoo) สูงกว่า FV มาก แต่ไม่ถูกใช้เป็นขาของ FV เป็นเพียงบริบทเทียบ
       </p>
     </div>
   </section>
@@ -187,7 +183,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">MOS อยู่ในโซน "น่าสนใจ — ทยอยสะสม" ราคาต่ำกว่า Fair Value แต่ MOS ยังไม่ถึง 20% เต็ม ๆ ควรรอจังหวะดีหรือทยอยเข้า</div>
+        <div class="txt">MOS ติดลบ — ราคาสูงกว่า Fair Value ตามสมมติฐานย้อนหลัง (P/E มัธยฐาน 24.8x × EPS TTM/เฉลี่ย 5 ปี) ตลาดจ่ายล่วงหน้าให้กำไรที่ยังไม่เกิด ไม่มีส่วนเผื่อความปลอดภัย</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -206,50 +202,50 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿4.22 • EPS ฐาน ~฿0.235 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~฿0.15 • ไม่รวมปันผล</div></div>
     <div class="scn">
       <div class="col bear">
-        <div class="top"><span>🐻 Bear</span><span>EPS +2%/ปี</span></div>
+        <div class="top"><span>🐻 Bear</span><span>EPS +0%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿3.60</div>
-          <div class="ret neg">−7.3% ต่อปี</div>
+          <div class="tgt">฿2.55</div>
+          <div class="ret neg">−18.0% ต่อปี</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿0.249</span></li>
-            <li><span>P/E ออก</span><span>14x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.12</span></li>
-            <li><span>สถานการณ์</span><span>การลงทุน data center ชะลอ งบหน่วยงานรัฐตึง</span></li>
+            <li><span>EPS ปี 3</span><span>~฿0.150</span></li>
+            <li><span>P/E ออก</span><span>17x</span></li>
+            <li><span>ปันผลรวม 3 ปี (ไม่รวมในเป้า)</span><span>~฿0.12</span></li>
+            <li><span>สถานการณ์</span><span>กำไรทรงตัวระดับ TTM โปรเจกต์ชะลอ P/E ลดสู่ ~17x (ต่ำสุดของ 5 ปี)</span></li>
           </ul>
         </div>
       </div>
       <div class="col base">
-        <div class="top"><span>⚖️ Base</span><span>EPS +20%/ปี</span></div>
+        <div class="top"><span>⚖️ Base</span><span>EPS +15%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿6.80</div>
-          <div class="ret pos">+17.4% ต่อปี</div>
+          <div class="tgt">฿5.66</div>
+          <div class="ret pos">+7.0% ต่อปี</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿0.406</span></li>
-            <li><span>P/E ออก</span><span>17x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.15</span></li>
-            <li><span>สถานการณ์</span><span>Data center boom ต่อเนื่อง hyperscaler ลงทุนไทย</span></li>
+            <li><span>EPS ปี 3</span><span>~฿0.228</span></li>
+            <li><span>P/E ออก</span><span>24.8x</span></li>
+            <li><span>ปันผลรวม 3 ปี (ไม่รวมในเป้า)</span><span>~฿0.12</span></li>
+            <li><span>สถานการณ์</span><span>กำไรฟื้นต่อเนื่องตามงาน data center P/E กลับมามัธยฐานย้อนหลัง</span></li>
           </ul>
         </div>
       </div>
       <div class="col bull">
-        <div class="top"><span>🚀 Bull</span><span>EPS +35%/ปี</span></div>
+        <div class="top"><span>🚀 Bull</span><span>EPS +30%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿11.40</div>
-          <div class="ret pos">+39.1% ต่อปี</div>
+          <div class="tgt">฿9.23</div>
+          <div class="ret pos">+25.9% ต่อปี</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿0.584</span></li>
-            <li><span>P/E ออก</span><span>20x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.20</span></li>
-            <li><span>สถานการณ์</span><span>ได้สัญญา mega data center + cloud migration เต็มที่</span></li>
+            <li><span>EPS ปี 3</span><span>~฿0.330</span></li>
+            <li><span>P/E ออก</span><span>28x</span></li>
+            <li><span>ปันผลรวม 3 ปี (ไม่รวมในเป้า)</span><span>~฿0.12</span></li>
+            <li><span>สถานการณ์</span><span>ได้สัญญาใหญ่ EPS โตเร็ว P/E อยู่ในช่วงกลาง-บนของประวัติ (17.4–42.6x)</span></li>
           </ul>
         </div>
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      การประมาณการ Base Case อิงการฟื้นตัวของรายได้และกำไรจากกระแส data center ในไทยที่เร่งตัวจากการลงทุนของ Google, Microsoft, AWS และ hyperscaler อื่น ๆ Forward P/E ~18x สะท้อนว่าตลาดคาด EPS ปี 2026 ฟื้นแรง EPS ฐาน ฿0.235 ถ้าเป็นไปตามคาดและ P/E กลับมา 17x ในปีที่ 3 จะให้ราคาเป้าระดับ ฿6.80 ทั้งนี้ความเสี่ยงหลักคือการชะลอ capex ลูกค้ารายใหญ่ หรือ margin กดดันจากการแข่งขัน
+      ทุกฉากคิดจาก EPS TTM ฿0.15 (ไม่ใช่ EPS forward ของ vendor ที่ไม่ระบุปีงบ) Base สมมติ EPS โต 15%/ปี เป็น ~฿0.228 ในปีที่ 3 และ P/E กลับมามัธยฐานย้อนหลัง 24.8x ได้เป้า ฿5.66 (ไม่รวมปันผล) ฉาก Bear ให้ P/E ลดสู่ 17x และ EPS ไม่โต Bull ให้ EPS โต 30%/ปีและ P/E 28x เป้าราคาเป็นสมมติฐาน ความเสี่ยงหลักคือรายได้ผันผวนตามโปรเจกต์และ margin ต่ำ
     </p>
   </section>
 
@@ -263,8 +259,8 @@
           <li><b>Data Center Boom ในไทย:</b> การลงทุนของ hyperscaler ระดับโลก (Google, Microsoft, AWS) ในไทยสร้างความต้องการก่อสร้าง data center และ IT infrastructure สูงขึ้นมาก</li>
           <li><b>Backlog งานรัฐและเอกชน:</b> โครงการโครงสร้างพื้นฐานโทรคมนาคมจากภาครัฐ (TOT, CAT, NBTC) และเอกชนใหญ่ให้รายได้ recurring ที่มั่นคง</li>
           <li><b>Cyber Security Growth:</b> ความต้องการ cyber security solution เติบโตตามการขยายตัวของระบบดิจิทัลและ cloud ในองค์กรไทย</li>
-          <li><b>Forward P/E ต่ำ ~18x:</b> ถ้า EPS ปี 2026 ฟื้นสู่ ฿0.235 ตามที่ตลาดคาด valuation จะดูถูกขึ้นมากเมื่อเทียบกับ TTM P/E ปัจจุบัน</li>
-          <li><b>Balance Sheet แข็งแกร่ง:</b> D/E เพียง 0.16 มีความสามารถรับงานใหญ่โดยไม่เสี่ยงทางการเงิน</li>
+          <li><b>Forward EPS ตามตลาด:</b> vendor คาด EPS forward ~฿0.29 (Forward P/E ~16–17x แต่ไม่ระบุปีงบ ตรวจไม่ได้) ถ้าเป็นจริง valuation จะดูถูกลงเมื่อเทียบ TTM P/E ~30.8x แต่ยังไม่นับเป็นขาใน Fair Value</li>
+          <li><b>งบดุลรับความเสี่ยงได้:</b> D/E 0.39 (TTM) เงินสด ฿284 ล. หนี้ ฿563 ล. (หนี้เพิ่มจาก ฿67 ล. ณ FY2025)</li>
           <li><b>ESG Rating "A":</b> ได้รับ SET ESG Rating "A" ปี 2568 และ Corporate Governance "Excellent" ดึงดูดนักลงทุนสถาบัน</li>
         </ul>
       </div>
@@ -272,11 +268,11 @@
         <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
         <ul>
           <li><b>Gross Margin ต่ำและผันผวน:</b> Gross Margin อยู่ที่ 7–13% ซึ่งต่ำมากสำหรับหุ้นเทคฯ สะท้อนธุรกิจรับเหมา (project-based) ที่ margin ถูกกดดันจากการแข่งขันราคา</li>
-          <li><b>รายได้ผันผวนตาม Project Cycle:</b> Q3 2567 (฿766M) vs Q3 2568 (฿214M) ต่างกัน 3.6 เท่า สะท้อนความไม่สม่ำเสมอของรายได้ตามโปรเจ็กต์</li>
+          <li><b>รายได้ผันผวนตาม Project Cycle:</b> รายได้ FY2024 ฿1,974 ล. → FY2025 ฿1,167 ล. (−40.9%) → TTM ฿2,019 ล. และ FCF สลับบวก/ลบทุกปี (FY2025 +฿267 ล. · TTM −฿425 ล.) ทำให้ประเมิน "กำไรปกติ" ยาก</li>
           <li><b>การชะลอของ Hyperscaler Capex:</b> ถ้าแผน data center ของ hyperscaler ถูก delay หรือลดลง รายได้ INSET จะกระทบโดยตรง</li>
-          <li><b>Valuation แพงในมุม TTM:</b> P/E TTM 51.5x และ P/BV 2.38x สูงกว่าค่าเฉลี่ยกลุ่ม ICT ไทย ราคาสะท้อน "future growth" ไปมากแล้ว</li>
+          <li><b>Valuation แพงในมุม TTM:</b> P/E TTM ~30.8x และ P/BV ~{{rd:pbv}}x สูงกว่า P/E มัธยฐานย้อนหลัง 24.8x ราคาสะท้อน "future growth" ไปมากแล้ว</li>
           <li><b>การแข่งขันสูง:</b> บริษัทมีคู่แข่งทั้งไทยและต่างชาติในธุรกิจ data center/ICT infrastructure รวมถึง FORTH, SAMART, และบริษัทจีน</li>
-          <li><b>Payout Ratio ~98%:</b> จ่ายปันผลเกือบเต็มกำไร เหลือเงินลงทุนน้อย ถ้ากำไรลด ปันผลมีโอกาสลดตาม</li>
+          <li><b>ปันผลน้อย:</b> DPS ฿0.04 (yield ~0.87% · payout ~26%) ผลตอบแทนเกือบทั้งหมดต้องมาจากราคา</li>
         </ul>
       </div>
     </div>
@@ -286,15 +282,15 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>INSET — หุ้น Data Center Play ราคาวิ่งแรง ยังมี Upside แต่ Margin of Safety บาง</h2>
-      <p>Infraset PCL เป็น "pure play" data center และ ICT infrastructure ที่ได้ประโยชน์โดยตรงจากการลงทุนของ hyperscaler ในไทย ราคาหุ้นวิ่ง +134% ในรอบปีสะท้อนกระแสนี้ไปมากแล้ว มูลค่าเหมาะสมที่ ฿5.20 (เฉลี่ย 3 วิธี: P/E Forward, DCF, EV/EBITDA) ยังชี้ว่ามี upside ~23% แต่ต้อง depend ว่า EPS จะฟื้นตามที่ตลาดคาด (Forward P/E ~18x) จริงหรือไม่ จุดเสี่ยงหลักคือ gross margin ต่ำ (7–13%) และรายได้ผันผวนตาม project cycle ซึ่งทำให้การประเมิน "กำไรปกติ" ยาก สำหรับนักลงทุนที่รับความผันผวนได้ MOS ~19% ณ ราคา ฿4.22 เพียงพอสำหรับทยอยสะสม แต่ควรรอให้กำไรฟื้นจริงก่อนเพิ่มน้ำหนัก</p>
+      <h2>INSET — Data Center Play ที่ราคาวิ่งเกินกำไรปัจจุบัน ยังไม่มีส่วนเผื่อความปลอดภัย</h2>
+      <p>Infraset PCL เป็น "pure play" data center และ ICT infrastructure ที่ราคาวิ่งราว +190% ในรอบปี มูลค่าเหมาะสม {{rd:fv}} (เฉลี่ย 2 วิธีในตระกูล P/E เดียวกัน: EPS TTM ฿0.15 และเฉลี่ย 5 ปี ฿0.126 คูณมัธยฐาน 24.8x) ตามด้วย MOS {{rd:mos}} ตลาดจึงราคาการเติบโตของกำไรไว้ล่วงหน้า EPS forward ~฿0.29 ของ vendor ไม่ระบุปีงบ จึงไม่ใช้เป็นขา จุดเสี่ยงหลักคือ gross margin ต่ำ (~10–12%) รายได้และ FCF ผันผวนตามโปรเจกต์ ควรรอกำไรฟื้นจริงหรือราคาย่อสู่โซน MOS ก่อนสะสม ประเมินตระกูลเดียว มีความไม่แน่นอนสูง</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿5.27 (Strong Buy)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿5.44 (2 ราย)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ทยอยสะสมบริเวณ ฿3.90–4.22 (MOS ~19–24%) เป้าหลัก ฿5.20 ใน 12–18 เดือน ถ้าราคาดึงลงสู่ ฿3.64 (MOS 30%) ถือเป็นโอกาสซื้อเพิ่ม ตั้ง stop loss ที่ ฿3.20 ระวังความผันผวนสูงจากราคาที่วิ่งแรงมาแล้ว
+        💡 <b>กลยุทธ์:</b> ยังไม่ไล่ราคา รอโซน MOS 20% ที่ {{rd:mos20}} (MOS 30% ที่ {{rd:mos30}}) หรือรอให้ EPS TTM ฟื้นสูงกว่า ฿0.186 ที่ตัวคูณ 24.8x เพื่อให้ FV ขยับขึ้น ระวังความผันผวนสูงจากราคาที่วิ่งแรงมาแล้ว
       </div>
     </div>
   </section>
@@ -305,7 +301,7 @@
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • แหล่งข้อมูล: SET (set.or.th), Yahoo Finance (INSET.BK), Investing.com, StockAnalysis.com
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
