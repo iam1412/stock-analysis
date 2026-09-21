@@ -147,7 +147,8 @@ function thDeadlinesBetween(fromIso, toIso, table) {
   return out.filter((d) => d > fromIso && d <= toIso).sort();
 }
 
-const SEC_STATEMENT_FORMS = /^(10-K|10-KT|10-Q|20-F|40-F)$/;   // ฉบับแก้ไข (/A) และ 6-K/8-K ไม่นับ
+const SEC_STATEMENT_FORMS = /^(10-K|10-KT|10-Q)$/;   // งบรายไตรมาส/ปีของผู้ยื่นในประเทศ · ฉบับแก้ไข (/A) และ 6-K/8-K ไม่นับ
+const SEC_FPI_ANNUAL_FORMS = /^(20-F|40-F)$/;         // FPI ยื่นงบปีเป็น 20-F/40-F ปีละครั้ง ส่วนรายไตรมาสมาทาง 6-K (เรายังไม่นับ 6-K) ⇒ วันงบล่าสุดจากฟอร์มเหล่านี้ตัดสินไม่ได้
 // ★ SEC fair-access policy: `www.sec.gov` (company_tickers.json) ตอบ 403 ถ้า User-Agent ไม่ประกาศ "ชื่อ + ช่องทางติดต่อ" (Mozilla/5.0 เปล่า ๆ ก็ 403)
 //   ส่วน `data.sec.gov` (submissions) รับ UA อะไรก็ได้ ⇒ UA มาจาก env `SEC_USER_AGENT` เท่านั้น (เจ้าของเป็นคนกำหนด — ห้ามฝังค่าใน repo)
 //   ไม่ตั้ง env = ห้ามดึงแผนที่ ticker→CIK จาก www.sec.gov (kind 'no-ua') · ดึง submissions ด้วย CIK ที่รู้อยู่แล้วจาก tools/sec-ciks.json ได้ด้วย UA เปล่า ๆ
@@ -166,7 +167,8 @@ function loadCiks(file) {
 const pad10 = (n) => String(n).padStart(10, '0');
 /** วันยื่นงบล่าสุด (10-K/10-Q/20-F/40-F) จาก SEC submissions → { date: 'YYYY-MM-DD'|null, kind, cik } (ไม่ throw)
  *  kind: null (เจอวัน) · 'no-ua' (ไม่มี env SEC_USER_AGENT และไม่มีแผนที่ CIK ที่ commit ⇒ **ไม่ยิง network เลย**) · 'fetch-failed' (curl/SEC ล้ม/JSON พัง)
- *  · 'no-cik' (ไม่มี ticker ในแผนที่) · '6k-only' (มี 6-K แต่ไม่พบฟอร์มงบ = FPI) · 'no-statement-forms' (มี filing แต่ไม่มีฟอร์มงบเลย)
+ *  · 'fpi' (พบแต่ 20-F/40-F ไม่มี 10-K/10-Q = ผู้ยื่นต่างประเทศ: งบไตรมาสอยู่ใน 6-K ที่เราไม่นับ ⇒ วันงบล่าสุดไม่ทราบ ⇒ FULL — ข้อจำกัดที่ยอมรับ แพงกว่าแต่ปลอดภัย)
+ *  · '6k-only' (มี 6-K แต่ไม่พบฟอร์มงบ = FPI) · '6k-only' (มี 6-K แต่ไม่พบฟอร์มงบ = FPI) · 'no-statement-forms' (มี filing แต่ไม่มีฟอร์มงบเลย)
  *  opts: fetchText(url, ua) → string (sync) · cache = Map · ua (override env — เทส) · ciks (override ไฟล์: object | null = ไม่มีแผนที่) */
 function secLookup(sym, opts) {
   const o = opts || {};
@@ -194,12 +196,17 @@ function secLookup(sym, opts) {
     const sub = JSON.parse(fetchText(`https://data.sec.gov/submissions/CIK${pad10(cik)}.json`, ua || SEC_FALLBACK_UA));
     const r = sub && sub.filings && sub.filings.recent;
     if (!r || !Array.isArray(r.form) || !Array.isArray(r.filingDate)) return { date: null, kind: 'fetch-failed', cik: pad10(cik) };
-    let best = null, has6k = false;
+    let best = null, bestFpi = null, has6k = false;
     r.form.forEach((f, i) => {
       if (f === '6-K') has6k = true;
       const d = r.filingDate[i];
-      if (SEC_STATEMENT_FORMS.test(f) && /^\d{4}-\d{2}-\d{2}$/.test(d) && (!best || d > best)) best = d;
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(d)) return;
+      if (SEC_STATEMENT_FORMS.test(f) && (!best || d > best)) best = d;
+      else if (SEC_FPI_ANNUAL_FORMS.test(f) && (!bestFpi || d > bestFpi)) bestFpi = d;
     });
+    // มี 10-K/10-Q = ผู้ยื่นในประเทศ (รวมที่ย้ายจาก 20-F มา 10-Q) → ใช้วันล่าสุดของทุกฟอร์มงบ · มีแต่ 20-F/40-F → fpi (ไม่ทราบ)
+    if (best && bestFpi && bestFpi > best) best = bestFpi;
+    if (!best && bestFpi) return { date: null, kind: 'fpi', cik: pad10(cik) };
     return best ? { date: best, kind: null, cik: pad10(cik) } : { date: null, kind: has6k ? '6k-only' : 'no-statement-forms', cik: pad10(cik) };
   } catch (_) { return { date: null, kind: 'fetch-failed', cik: null }; }
 }

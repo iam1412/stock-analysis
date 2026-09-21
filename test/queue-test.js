@@ -1467,6 +1467,26 @@ const applyEditsRacePromise = testApplyEditsStdin(ok);
     const rNone = EC.secRefreshCiks({ ua: 'ua-x', fetchText: () => JSON.stringify({ 0: { cik_str: 1, ticker: 'ZZZ' } }), file: target, symbols });
     ok(rNone.ok === false && /ไม่มี ticker ของเราตรง/.test(rNone.why) && JSON.stringify(JSON.parse(fs.readFileSync(target, 'utf8'))) === JSON.stringify(written) && !fs.existsSync(target + '.tmp'), 'W11/SEC: refresh — SEC map ไม่ว่างแต่ไม่ตรงสักตัว → ไม่เขียน · ok=false (ทาง exit 1) · ไฟล์เดิมคงอยู่', rNone.why);
     ok(fs.readdirSync(tmp).filter((f) => /\.tmp$/.test(f)).length === 0, 'W11/SEC: refresh เขียนแบบ atomic — สำเร็จแล้วไม่เหลือ .tmp');
+    // FPI: 20-F/40-F อย่างเดียว = ไม่ทราบ (kind fpi) — งบไตรมาสอยู่ใน 6-K ที่ไม่นับ · ผู้ยื่นในประเทศ/ที่ย้ายมา 10-Q = ok
+    const fx = (forms, dates) => (u) => (/company_tickers/.test(u) ? JSON.stringify({}) : JSON.stringify({ filings: { recent: { form: forms, filingDate: dates } } }));
+    const lk = (forms, dates) => EC.secLookup('X', { ua: null, ciks: { X: '7' }, fetchText: fx(forms, dates), cache: new Map() });
+    const sixk = Array.from({ length: 30 }, () => '6-K'), sixkD = Array.from({ length: 30 }, (_, i) => `2026-09-${String(1 + (i % 28)).padStart(2, '0')}`);
+    const tsm = lk(['20-F', ...sixk], ['2026-04-16', ...sixkD]);
+    ok(tsm.kind === 'fpi' && tsm.date === null && tsm.cik === '0000000007', 'W11/SEC: รูปแบบ TSM (20-F ปีละครั้ง + 6-K เยอะ ไม่มี 10-Q) → kind fpi · date null', JSON.stringify(tsm));
+    const dom = lk(['10-Q', '10-K', '8-K'], ['2026-08-01', '2026-02-01', '2026-09-01']);
+    ok(dom.kind === null && dom.date === '2026-08-01', 'W11/SEC: ผู้ยื่นในประเทศ (10-Q + 10-K) → ok (kind null) วัน 10-Q ล่าสุด', JSON.stringify(dom));
+    const f40 = lk(['40-F', '6-K'], ['2026-03-01', '2026-08-01']);
+    ok(f40.kind === 'fpi' && f40.date === null, 'W11/SEC: 40-F อย่างเดียว → fpi', JSON.stringify(f40));
+    const sw = lk(['10-Q', '20-F'], ['2026-08-01', '2025-04-01']);
+    ok(sw.kind === null && sw.date === '2026-08-01', 'W11/SEC: 20-F เก่า + 10-Q ใหม่ (ย้ายมาเป็นผู้ยื่นในประเทศ) → ok', JSON.stringify(sw));
+    const sw2 = lk(['20-F', '10-K'], ['2026-04-01', '2025-04-01']);
+    ok(sw2.kind === null && sw2.date === '2026-04-01', 'W11/SEC: มี 10-K อยู่ด้วย → ok และใช้วันล่าสุดของทุกฟอร์มงบ', JSON.stringify(sw2));
+    const stFpi = P.statementAfterOfWith({ symbols: {} }, () => '<footer>ข้อมูล ณ 1 ก.ค. 2569</footer>', { today: '2026-09-22', isThai: () => false, sec: () => tsm });
+    ok(stFpi('X').after === null && stFpi('X').kind === 'fpi', 'W11/SEC: statementAfterOfWith ส่ง kind fpi ต่อ');
+    const rowsFpi = P.plan([{ symbol: 'X', reason: 'mos-sign-flip' }, { symbol: 'Y', reason: 'drift-gt-15pct', diffPct: 20 }], '2026-09-22', { ageLimit: 0, footerAgeOf: () => 30, statementAfterOf: () => stFpi('X') });
+    ok(rowsFpi[0].bucket === 'PREPATCH' && rowsFpi[0].stmtKind === 'fpi' && rowsFpi[1].bucket === 'FULL', 'W11/SEC: fpi ปฏิบัติเหมือน unknown อื่น — flip คง PREPATCH · แถว worker = FULL', JSON.stringify(rowsFpi.map((r) => [r.symbol, r.bucket, r.stmtKind])));
+    ok(P.unknownSummary(rowsFpi) === '⚠ statement unknown: 2 (fetch-failed 0) · fpi 2', 'W11/SEC: สรุป preflight มี · fpi N', P.unknownSummary(rowsFpi));
+    ok(/kind=fpi$/.test(EC.secProbe(['X'], { ua: null, ciks: { X: '7' }, fetchText: fx(['20-F', '6-K'], ['2026-04-16', '2026-09-10']) })[0]), 'W11/SEC: --sec-probe แสดง kind=fpi');
     // --sec-probe
     const probeFetch = (u) => (u.includes('company_tickers') ? JSON.stringify({ 0: { cik_str: 320193, ticker: 'AAPL' }, 1: { cik_str: 1046179, ticker: 'TSM' }, 2: { cik_str: 9, ticker: 'BOOM' } })
       : /CIK0000320193/.test(u) ? JSON.stringify({ filings: { recent: { form: ['10-Q', '8-K'], filingDate: ['2026-08-01', '2026-09-01'] } } })
