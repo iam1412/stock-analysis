@@ -1463,6 +1463,10 @@ const applyEditsRacePromise = testApplyEditsStdin(ok);
     const r3x = EC.secRefreshCiks({ ua: 'ua-x', fetchText: tk, file: target, symbols });
     const written = JSON.parse(fs.readFileSync(target, 'utf8'));
     ok(r3x.ok && JSON.stringify(written) === JSON.stringify({ AAPL: '0000320193', 'BRK.B': '0001067983' }) && r3x.missing.join() === 'GHOST' && !('BBL' in written) && !('TSM' in written), 'W11/SEC: refresh เขียนเฉพาะ ticker US ที่มีรายงาน (ตัด TH/ที่ไม่มีรายงาน) · เติม 10 หลัก · รายงาน missing', JSON.stringify(written));
+    // map ของ SEC ไม่ว่างแต่ไม่ตรงสักตัว → ไม่เขียน (ไม่ทิ้ง `{}`) · เขียนสำเร็จ → ไม่เหลือ .tmp
+    const rNone = EC.secRefreshCiks({ ua: 'ua-x', fetchText: () => JSON.stringify({ 0: { cik_str: 1, ticker: 'ZZZ' } }), file: target, symbols });
+    ok(rNone.ok === false && /ไม่มี ticker ของเราตรง/.test(rNone.why) && JSON.stringify(JSON.parse(fs.readFileSync(target, 'utf8'))) === JSON.stringify(written) && !fs.existsSync(target + '.tmp'), 'W11/SEC: refresh — SEC map ไม่ว่างแต่ไม่ตรงสักตัว → ไม่เขียน · ok=false (ทาง exit 1) · ไฟล์เดิมคงอยู่', rNone.why);
+    ok(fs.readdirSync(tmp).filter((f) => /\.tmp$/.test(f)).length === 0, 'W11/SEC: refresh เขียนแบบ atomic — สำเร็จแล้วไม่เหลือ .tmp');
     // --sec-probe
     const probeFetch = (u) => (u.includes('company_tickers') ? JSON.stringify({ 0: { cik_str: 320193, ticker: 'AAPL' }, 1: { cik_str: 1046179, ticker: 'TSM' }, 2: { cik_str: 9, ticker: 'BOOM' } })
       : /CIK0000320193/.test(u) ? JSON.stringify({ filings: { recent: { form: ['10-Q', '8-K'], filingDate: ['2026-08-01', '2026-09-01'] } } })

@@ -226,7 +226,11 @@ function secRefreshCiks(opts) {
     const c = tickers[s.toUpperCase()] || tickers[s.toUpperCase().replace(/\./g, '-')];
     if (c) out[s] = pad10(c); else missing.push(s);
   }
-  fs.writeFileSync(file, JSON.stringify(out, null, 1) + '\n');
+  // ผลตัดแล้วว่าง (map ของ SEC ไม่ว่างแต่ไม่ตรงสักตัว เช่นรูปแบบ JSON เปลี่ยน) = เหมือน map ว่าง: ไม่เขียน — เขียน `{}` จะทำให้ loadCiks ถือว่าทุก ticker US เป็น no-cik ตลอดไปโดยไม่มีอะไรฟ้อง
+  if (!Object.keys(out).length) return { ok: false, why: `ไม่มี ticker ของเราตรงกับ company_tickers.json สักตัว (${syms.length} ticker US ที่มีรายงาน · SEC ${Object.keys(tickers).length}) — รูปแบบข้อมูลเปลี่ยน? · ไฟล์เดิมไม่ถูกแตะ` };
+  const tmp = file + '.tmp';   // เขียนแล้ว rename ทับ (atomic) — ล้มกลางคันไม่ทิ้งไฟล์ครึ่งเดียว
+  try { fs.writeFileSync(tmp, JSON.stringify(out, null, 1) + '\n'); fs.renameSync(tmp, file); }
+  catch (e) { try { fs.unlinkSync(tmp); } catch (_) { /* ไม่มี tmp */ } return { ok: false, why: `เขียนไฟล์ไม่สำเร็จ — ${e.message} · ไฟล์เดิมไม่ถูกแตะ` }; }
   return { ok: true, n: Object.keys(out).length, missing, file };
 }
 
