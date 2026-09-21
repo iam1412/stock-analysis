@@ -6,35 +6,35 @@
 <title>วิเคราะห์หุ้น Becton Dickinson (BDX) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"BDX","currency":"USD","price":180.94,"fairValue":197,"mos":8.2,"upside":8.9,"pe":14.3,"dividendYield":2.32,"roe":14.4}
+{"symbol":"BDX","currency":"USD","price":180.94,"fairValue":168,"mos":-7.7,"upside":-7.2,"pe":31.1,"dividendYield":2.32,"roe":6.6}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 197,
+  "fv": 168,
   "values": {
     "px": 180.94,
     "priceDate": "2026-09-18",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
     "fvLow": 148,
-    "fvHigh": 237,
-    "eps": 12.62,
+    "fvHigh": 187,
+    "eps": 5.82,
     "shares": 272386800,
     "dps": 4.2,
     "bvps": 84.61,
-    "baseEps": 12.62,
+    "baseEps": 5.82,
     "scenarios": [
       {
-        "tgt": 165,
+        "tgt": 160,
         "div": 13
       },
       {
-        "tgt": 240,
+        "tgt": 223,
         "div": 13
       },
       {
-        "tgt": 336,
+        "tgt": 255,
         "div": 13
       }
     ],
@@ -73,14 +73,14 @@
       ["ก.ย.26", 180.94]
     ],
     "min": 120,
-    "max": 220,
-    "grid": [140, 160, 180, 200],
+    "max": 200,
+    "grid": [140, 160, 180],
     "currency": "$",
     "highlight": [0, 10]
   },
   "gauge": {
-    "min": 120,
-    "max": 250
+    "min": 100,
+    "max": 220
   }
 }
 </script>
@@ -117,14 +117,14 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">New BD — หลังแยก Biosciences &amp; Diagnostics (ตามรายงานเดิม)</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~272.4M shares คงเหลือ (StockAnalysis)</div></div>
-      <div class="metric"><div class="k">P/E (forward FY2026)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS adj. guide $12.62 mid</div></div>
-      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~32x</div><div class="d">มัธยฐาน GAAP dil. (27.5–40.6x) — คนละฐานกับ EPS adj.</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ~$84.61 (มีหนี้สูงจาก C.R. Bard)</div></div>
+      <div class="metric"><div class="k">P/E (GAAP FY2025)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS GAAP dil. $5.82 • fwd adj. FY2026e ~14x เป็นบริบท (คนละฐาน)</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~32x</div><div class="d">มัธยฐาน GAAP dil. (27.5–40.6x) — ฐานเดียวกับ EPS FY2025 GAAP ที่ใช้เป็นขา P/E</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ~$84.61 ประมาณการเดิม ตรวจซ้ำไม่ได้ (implied จาก D/E ของ vendor ≈ $89) — ไม่ใช้เป็นขาของ FV</div></div>
 
       <div class="metric"><div class="k">รายได้ FY2026e (New BD)</div><div class="v">~$19.3B</div><div class="d">consensus SA; TTM ตามงบ $22.5B (คนละฐาน)</div></div>
       <div class="metric"><div class="k">EPS adj. FY2026e</div><div class="v">~$12.62</div><div class="d">consensus (StockAnalysis) • GAAP TTM $3.33</div></div>
       <div class="metric"><div class="k">BVPS</div><div class="v">~$84.61</div><div class="d">ประมาณการเดิม — vendor ไม่ส่ง BVPS ตรวจซ้ำไม่ได้</div></div>
-      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~14.4% adj.</div><div class="d">GAAP ROE 6.6% (vendor) — ต่ำกว่าเพราะ amortization</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v neu">~6.6%</div><div class="d">GAAP ROE (vendor) • adj. ~14.4% เป็นบริบท ไม่ใช้ในขา FV</div></div>
 
       <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~46.8%</div><div class="d">Adj. op. margin ~25% (FY2025)</div></div>
       <div class="metric"><div class="k">FCF (New BD est.)</div><div class="v">~$2.5B/ปี</div><div class="d">หลังแยก Biosciences ออก</div></div>
@@ -156,18 +156,14 @@
 
   <!-- ===== 3. VALUATION ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 ตระกูลสมมติฐาน</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 ตระกูลสมมติฐาน (วัดจริง + DDM)</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $12.62 × P/E 16x = $202 — สมมติฐานเชิงอนุรักษ์ (fwd P/E ปัจจุบันต่ำกว่า 16x); มัธยฐาน GAAP 32.2x ใช้กับ EPS adj. ไม่ได้ (ดูคำอธิบายด้านล่าง)</div></div>
-        <div class="mval">$202</div>
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS $5.82 (FY2025 GAAP dil.) × P/E 32.2x = $187 — 32.2x = มัธยฐาน 5 ปี (27.5–40.6x) วัดจริงบน GAAP diluted EPS ฐานเดียวกัน</div></div>
+        <div class="mval">$187</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 14.4% − g 6%)/(r 9% − g 6%) ≈ 2.80x × BVPS $84.61</div></div>
-        <div class="mval">$237</div>
-      </div>
-      <div class="vmethod">
-        <div><div class="mname">3. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล $4.20 × (1+6%); g 6%, r 9% → $4.45 / (9%−6%) — Dividend Aristocrat 53 ปี; g อิง EPS growth guide</div></div>
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล $4.20 × (1+6%) = $4.45; g 6%, r 9% → $4.45 / (9%−6%) — Dividend Aristocrat 53 ปี; g/r เป็นสมมติฐาน</div></div>
         <div class="mval">$148</div>
       </div>
       <div class="fv-box">
@@ -175,9 +171,9 @@
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        FV = เฉลี่ย 2 ตระกูลสมมติฐาน: (P/E $202 + ค่าเฉลี่ย Justified P/BV กับ DDM $192.5) ÷ 2 ≈ $197 — Justified P/BV ($237) กับ DDM ($148) ใช้ (r 9%, g 6%) ชุดเดียวกัน จึงนับเป็นเสียงเดียว (กฎ 0.4c-bis; เดิมเฉลี่ยสามวิธีตรง ๆ = $195)
-        P/E ใช้ EPS adj. FY2026e $12.62 × 16x เป็นสมมติฐาน: มัธยฐานย้อนหลัง 32.2x (27.5–40.6x, 5 ปี) วัดบน GAAP diluted EPS (~$5–6) ที่ถูกกดด้วย amortization จึงเทียบตรงกับ EPS adj. ไม่ได้ (12.62 × 32.2 = $406 ไม่สมเหตุผล) — ตัวคูณ 16x ยังไม่มีสมอวัดจริงบนฐาน adj.
-        Justified P/BV ใช้ ROE adj. 14.4% ขณะที่ ROE ตามงบ (vendor) 6.6% — ขานี้จึงอ่อนไหวมาก; เป้า analyst เฉลี่ย $195.67 เป็นเพียงข้อตรวจสอบ ไม่ได้เป็นขา
+        FV = เฉลี่ย 2 ตระกูลสมมติฐาน: (P/E $187 + DDM $148) ÷ 2 ≈ {{rd:fv}} — ห่างกัน 1.26 เท่า (&lt; 2.0 เฉลี่ยได้) · แก้รอบนี้: ตัดขา Justified P/BV ($237) ออก เพราะ BVPS $84.61 ตรวจซ้ำไม่ได้ (vendor ไม่ส่ง BVPS) และ ROE adj. 14.4% คนละฐานกับ BVPS ตามงบ — ถ้าใช้ ROE GAAP 6.6% จะได้ (6.6%−6%)/(9%−6%) ≈ 0.2x ซึ่งไม่สมเหตุผล จึงไม่มีตารางที่ทำซ้ำได้ (เดิม FV = $197)
+        P/E ใช้ EPS GAAP diluted FY2025 (งวดปิดล่าสุด) เพราะมัธยฐานย้อนหลัง 32.2x วัดบน EPS ฐานเดียวกัน (ราคาเฉลี่ยงวด ÷ EPS dil.) — EPS TTM $3.33 (NI $942M) ต่ำกว่า FY2025 ($1,678M) จึงไม่ใช้เป็นฐาน; หมายเหตุ: FY2025 เป็นขอบเขตธุรกิจก่อนแยก (รายได้ $21.8B) ขณะที่ TTM รายได้ $22.5B
+        ที่เคยใช้ EPS adj. FY2026e $12.62 × 16x = $202 ย้ายเป็นบริบทเท่านั้น: 16x ไม่มีสมอวัดจริงบนฐาน adj. (fwd P/E ปัจจุบันของตลาด ~14x จึงไม่ใช่ที่มา) และมัธยฐาน 32.2x ใช้กับ EPS adj. ไม่ได้ · เป้า analyst เฉลี่ย $195.67 เป็นเพียงข้อตรวจสอบ ไม่ได้เป็นขา
         <b>ที่มาข้อมูล:</b> Yahoo Finance, StockAnalysis.com (forecast/statistics/financials), BD Investor Relations (รายงานเดิม)
       </p>
     </div>
@@ -195,13 +191,13 @@
         <div class="scale">
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$195.67<br><small>เป้า Analyst</small></span>
-          <span style="text-align:right">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$195.67<br><small>เป้า Analyst</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคา {{rd:px}} ยังอยู่เหนือ <b>โซน MOS 20%</b> ({{rd:mos20}}) — ส่วนเผื่อปัจจุบัน {{rd:mos}} ต่ำกว่ามูลค่าเหมาะสม {{rd:fv}}
+        ราคา {{rd:px}} อยู่เหนือ <b>โซน MOS 20%</b> ({{rd:mos20}}) และสูงกว่ามูลค่าเหมาะสม {{rd:fv}} (MOS {{rd:mos}} — ไม่มีส่วนเผื่อ)
         เป้า analyst เฉลี่ย $195.67 (14 ราย) ใช้เป็นข้อตรวจสอบเท่านั้น ไม่ใช่ขาของ FV
         ความเสี่ยงหลักคือ transition หลังแยกธุรกิจ + หนี้สูง $15-17B แต่ปันผลต่อเนื่องและ Beta 0.28
         ช่วยลดความเสี่ยงด้านราคาในระยะสั้น โซน deep value = MOS 30% ที่ {{rd:mos30}} · กรอบ 52 สัปดาห์ $140.11 – $213.08
@@ -215,7 +211,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">MOS บาง — ราคาใกล้มูลค่าเหมาะสม ส่วนเผื่อความปลอดภัยน้อย รอโซน MOS 20% เพื่อสะสม</div>
+        <div class="txt">ราคาสูงกว่ามูลค่าเหมาะสมเล็กน้อย — ไม่มีส่วนเผื่อความปลอดภัย รอโซน MOS 20% เพื่อสะสม</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -237,15 +233,15 @@
     <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
-        <div class="top"><span>🐻 Bear</span><span>EPS +3%/ปี</span></div>
+        <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
         <div class="body">
           <div class="tgt">{{rd:sc1tgt}}</div>
           <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$13.79</span></li>
-            <li><span>P/E ออก</span><span>12x</span></li>
+            <li><span>EPS ปี 3</span><span>~$5.82</span></li>
+            <li><span>P/E ออก</span><span>27.5x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
-            <li><span>สถานการณ์</span><span>เติบโตช้า + compression</span></li>
+            <li><span>สถานการณ์</span><span>EPS GAAP ไม่โต + P/E ลงต่ำสุดของช่วง 5 ปี</span></li>
           </ul>
         </div>
       </div>
@@ -255,8 +251,8 @@
           <div class="tgt">{{rd:sc2tgt}}</div>
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$15.03</span></li>
-            <li><span>P/E ออก</span><span>16x</span></li>
+            <li><span>EPS ปี 3</span><span>~$6.93</span></li>
+            <li><span>P/E ออก</span><span>32.2x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>New BD execute ได้ตามแผน</span></li>
           </ul>
@@ -268,17 +264,17 @@
           <div class="tgt">{{rd:sc3tgt}}</div>
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$16.80</span></li>
-            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>EPS ปี 3</span><span>~$7.75</span></li>
+            <li><span>P/E ออก</span><span>32.9x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
-            <li><span>สถานการณ์</span><span>margin expansion + re-rating</span></li>
+            <li><span>สถานการณ์</span><span>margin expansion + P/E เท่าปี FY2022</span></li>
           </ul>
         </div>
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      กรณีฐาน (Base): EPS โต 6%/ปี อิงฐาน EPS adj. FY2026e (consensus) P/E ออก 16x เป็นสมมติฐานเชิงอนุรักษ์เทียบตัวคูณ GAAP ย้อนหลัง 32x
-      (คนละฐาน EPS จึงเทียบตรงไม่ได้) — สะท้อนว่า New BD ยังพิสูจน์ตัวหลังแยกธุรกิจ
+      กรณีฐาน (Base): EPS GAAP diluted FY2025 ($5.82) โต 6%/ปี → ปี 3 ~$6.93 × P/E ออก 32.2x (มัธยฐาน 5 ปี ฐานเดียวกัน) — Bear ใช้ต่ำสุดของช่วง 27.5x, Bull ใช้ 32.9x (FY2022)
+      ฐาน EPS เดียวกับขา P/E ใน FV จึงสอดคล้องกัน — สะท้อนว่า New BD ยังพิสูจน์ตัวหลังแยกธุรกิจ
       ผลตอบแทน Base 3 ปีคือ {{rd:sc2ret}} รวมปันผลสม่ำเสมอ ~2.3%/ปี
       <b>ความเสี่ยงสำคัญ Bear:</b> integration ล่าช้า + หนี้กด P/E = {{rd:sc1ret}} ใน 3 ปี
     </p>
@@ -320,8 +316,8 @@
       <h2>BDX: Value กับ Dividend Aristocrat ในช่วง Transition — โอกาสสะสมที่ MOS 20%</h2>
       <p>
         Becton, Dickinson เป็น medical devices &amp; diagnostics ที่ผ่านการแยกธุรกิจ Biosciences &amp; Diagnostics (ตามรายงานเดิม — วันที่/ยอดเงินยังไม่ยืนยันกับแหล่งปฐมภูมิรอบนี้)
-        รายได้ FY2026e ~$19.3B (StockAnalysis) ราคาปัจจุบัน {{rd:px}} เทียบ Fair Value {{rd:fv}} ส่วนเผื่อ {{rd:mos}} — บางกว่าเกณฑ์ MOS 20%
-        ตัวเลข EPS adj. $12.62 เป็นฐานของ FY2026e ขณะที่ GAAP TTM $3.33 ต่ำกว่ามาก (amortization + ต้นทุนแยกธุรกิจ) จึงต้องอ่านคู่กัน
+        รายได้ FY2026e ~$19.3B (StockAnalysis) ราคาปัจจุบัน {{rd:px}} เทียบ Fair Value {{rd:fv}} (MOS {{rd:mos}}) — ยังไม่ถึงเกณฑ์ MOS 20%
+        FV รอบนี้ใช้ EPS GAAP FY2025 $5.82 × มัธยฐาน P/E 32.2x คู่กับ DDM (ตัดขา Justified P/BV และขา P/E 16x บน EPS adj. $12.62 ที่ไม่มีสมอวัดจริงออก) ขณะที่ GAAP TTM $3.33 ต่ำกว่า FY2025 จึงต้องอ่านคู่กัน
         สำหรับนักลงทุนระยะยาวที่ต้องการ <b>stability + income</b>: ปันผล 2.32% + Beta 0.28 ป้องกันความเสี่ยงได้ดี ความเสี่ยงหลักคือหนี้สูงและ execution หลังแยกธุรกิจ
       </p>
       <div class="vgrid">
