@@ -4,25 +4,26 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น 3M Company (MMM) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"MMM","currency":"USD","price":165.89,"fairValue":151,"mos":-9.9,"upside":-9,"pe":19.3,"dividendYield":1.88,"roe":65.6}
+{"symbol":"MMM","currency":"USD","price":165.89,"fairValue":128,"mos":-29.6,"upside":-22.8,"pe":29.5,"dividendYield":1.88,"roe":81.9}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 151,
+  "fv": 128,
   "values": {
     "px": 165.89,
     "priceDate": "2026-09-18",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
-    "fvLow": 140,
-    "fvHigh": 175,
-    "eps": 8.32,
-    "shares": 536000000,
+    "fvLow": 120,
+    "fvHigh": 135,
+    "eps": 5.62,
+    "shares": 515722417,
     "dps": 3.12,
-    "bvps": 8.87
+    "bvps": 7.1,
+    "analystTgt": 185.57
   },
   "theme": {
     "accent": "#E31E24",
@@ -52,15 +53,15 @@
       ["ส.ค.26", 171.83],
       ["ก.ย.26", 165.89]
     ],
-    "min": 140,
+    "min": 120,
     "max": 180,
-    "grid": [150, 160, 170],
+    "grid": [140, 160],
     "currency": "$",
     "highlight": [5, 9]
   },
   "gauge": {
-    "min": 100,
-    "max": 185,
+    "min": 80,
+    "max": 195,
     "fairLabelTop": false
   }
 }
@@ -79,7 +80,7 @@
       <span class="tag">Post-Solventum Spinoff</span>
     </div>
     <h1>3M Company (MMM)</h1>
-    <div class="sub">Pure-play industrial post-Solventum spinoff (เม.ย. 2567) • Safety &amp; Industrial + Transportation &amp; Electronics • ~50,000 สิทธิบัตร • PFAS settlement $10.3B (13 ปี) + earplug $6B ชำระแล้ว • Post-settlement recovery play • ปันผล ~$3.12/ปี (เพิ่มจาก $2.80 หลังตัด)</div>
+    <div class="sub">Pure-play industrial post-Solventum spinoff (เม.ย. 2567) • Safety &amp; Industrial + Transportation &amp; Electronics • สิทธิบัตรจำนวนมาก • PFAS settlement $10.3B + earplug settlement $6B (ตกลงปี 2023) • Post-settlement recovery play • ปันผล ~$3.12/ปี </div>
     <div class="price-row">
       <div>
         <div class="px">{{rd:px}}<small>(MMM)</small></div>
@@ -87,7 +88,7 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ $139.34 – $177.41<br>
+        กรอบ 52 สัปดาห์ $139.34 – $184.90<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, 3M Investor Relations
       </div>
     </div>
@@ -95,22 +96,22 @@
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569 — ต่อเนื่องจาก continuing operations หลัง Solventum spinoff</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งวดงบ TTM ถึง Q2 2026 (GAAP) — ตัวเลขต่อหุ้นใช้ EPS GAAP diluted เป็นหลัก</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$89B</div><div class="d">~536 ล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">บน adj. EPS cont. ops $8.32</div></div>
-      <div class="metric"><div class="k">Forward P/E (FY2569E)</div><div class="v">~19.3x</div><div class="d">EPS guide $8.50–$8.70 mid $8.60</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">~18.7x</div><div class="d">BVPS $8.87 (equity ต่ำจาก settlement)</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$85.5B</div><div class="d">~515.7 ล้านหุ้นคงเหลือ (SA)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">บน EPS GAAP diluted TTM $5.62</div></div>
+      <div class="metric"><div class="k">Forward P/E (FY2026E)</div><div class="v">~18.6x</div><div class="d">EPS consensus non-GAAP $8.94 (SA)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~23.4x</div><div class="d">BVPS ~$7.10 (ประมาณจาก NI ÷ ROE ของ vendor; equity ต่ำ)</div></div>
 
-      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">$3,210M</div><div class="d">GAAP; adj. EPS $8.06 (+10% YoY)</div></div>
-      <div class="metric"><div class="k">EPS adj. (TTM)</div><div class="v">~$8.32</div><div class="d">Q2'68 $2.16+Q3'68 $2.19+Q4'68 $1.83+Q1'69 $2.14</div></div>
-      <div class="metric"><div class="k">BVPS</div><div class="v">~$8.87</div><div class="d">Book value ต่ำ — settlement liabilities</div></div>
-      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~65.6% / ~7.4%</div><div class="d">ROE สูงเพราะ equity ต่ำจาก PFAS/buyback</div></div>
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$3,250M</div><div class="d">GAAP; EPS diluted $6.00 (−21% YoY)</div></div>
+      <div class="metric"><div class="k">EPS GAAP diluted (TTM)</div><div class="v">~$5.62</div><div class="d">Q3'25 $1.55+Q4'25 $1.07+Q1'26 $1.23+Q2'26 $1.78 ≈ $5.63</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$7.10</div><div class="d">Book value ต่ำ — settlement liabilities (ประมาณการ)</div></div>
+      <div class="metric"><div class="k">ROE</div><div class="v pos">~81.9%</div><div class="d">ROE สูงเพราะ equity ต่ำจาก PFAS/buyback</div></div>
 
-      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$25.0B</div><div class="d">cont. ops; FY2568 $24.9B (+1.5% YoY)</div></div>
-      <div class="metric"><div class="k">Op. Margin (adj.)</div><div class="v">~23.8%</div><div class="d">Q1'69 +30 bps YoY; ขยายตัวต่อเนื่อง</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.88%</div><div class="d">$0.78/qtr = $3.12/ปี; ปรับขึ้นจาก $0.70</div></div>
-      <div class="metric"><div class="k">Net Debt</div><div class="v">$6.7B</div><div class="d">หนี้ $12.6B หัก cash $5.2B</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$25.2B</div><div class="d">FY2025 $24.9B (+1.5% YoY)</div></div>
+      <div class="metric"><div class="k">Op. Margin (GAAP TTM)</div><div class="v">~20.3%</div><div class="d">FY2025 18.9%; gross margin TTM 39.4%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.88%</div><div class="d">$0.78/qtr = $3.12/ปี</div></div>
+      <div class="metric"><div class="k">Net Debt</div><div class="v">$7.9B</div><div class="d">หนี้ $13.2B หัก cash $5.3B</div></div>
     </div>
   </section>
 
@@ -127,33 +128,29 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ราคา MMM ขึ้นจาก ~$144.92 (มิ.ย. 2568) ทะยานสูงสุด ~$169.67 ในเดือน ธ.ค. 2568 ขับเคลื่อนโดยผลประกอบการแข็งแกร่ง margin ขยายตัว และความชัดเจนจากการชำระ settlement PFAS/earplug — แตะ intraday high $177.41 (ก.พ. 2569) แล้วอ่อนตัวลงทดสอบ $139.34 (ต่ำสุด 52 สัปดาห์ มี.ค. 2569) ก่อนฟื้นตัวแข็งแกร่งกลับมาที่ $163 ณ สิ้นมิ.ย. 2569 รวมผลตอบแทนรอบปี <b>+12.5%</b> ไม่รวมปันผล ที่มา: Yahoo Finance (ราคารายเดือน 13 จุด)
+        ราคารายเดือนอยู่ในกรอบ $145–$176 ตลอด 12 เดือน: ขึ้นสูงสุด $172.05 ณ สิ้น พ.ย. 2568 ย่อลงเหลือ $145.23 ณ สิ้น มี.ค. 2569 (ต่ำสุด 52 สัปดาห์ intraday $139.34) แล้วฟื้นขึ้น $176.28 ณ สิ้น ก.ค. 2569 (สูงสุด 52 สัปดาห์ intraday $184.90) ปิดปลายกราฟที่ {{rd:px}} ทรงตัวเมื่อเทียบจุดแรก (ต.ค. 2568) ไม่รวมปันผล ที่มา: Yahoo Finance (ราคารายเดือน 12 จุด)
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี · บน continuing operations</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี · ตัวคูณมัธยฐานย้อนหลังของ MMM เอง</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation (adj, continuing ops)</div><div class="mdesc">EPS adj. (cont. ops) $8.32 × P/E 18x = $150 — industrial conglomerate มี litigation discount; 18x เหมาะสมสำหรับหุ้นที่ settlement ส่วนใหญ่ชำระแล้ว margin ขยายตัว</div></div>
-        <div class="mval">$150</div>
+        <div><div class="mname">1. P/E Valuation (forward, มัธยฐานย้อนหลัง)</div><div class="mdesc">EPS $8.94 (FY2026E non-GAAP consensus, StockAnalysis) × P/E 15.1x = $135 — 15.1x คือมัธยฐาน P/E ย้อนหลัง 4 ปีงบที่ EPS&gt;0 (FY2021/22/24/25; ช่วง 11.2–25.7x) = ราคาเฉลี่ยปี ÷ EPS GAAP diluted; มาจากประวัติ ไม่ใช่ P/E ปัจจุบัน · ข้อควรระวัง: ตัวคูณวัดบน GAAP แต่ EPS ที่คูณเป็น non-GAAP จึงเป็นการประมาณ</div></div>
+        <div class="mval">$135</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. EV/EBITDA Valuation</div><div class="mdesc">EBITDA TTM $6,124M × 14x = $85,736M EV; หักหนี้สุทธิ $6,669M = $79,067M ÷ 536M หุ้น ≈ $147 — peers (Honeywell, Emerson) ~13–16x; ใช้ 14x สะท้อน PFAS liability ongoing payments</div></div>
-        <div class="mval">$147</div>
-      </div>
-      <div class="vmethod">
-        <div><div class="mname">3. Forward P/E (FY2569E)</div><div class="mdesc">EPS adj. (cont. ops) $8.60 (guidance midpoint) × P/E 18x = $155 — บน FY2026E ที่ +7.9% YoY; 18x ให้ benefit of doubt จากการฟื้นตัวหลัง settlement และ margin expansion</div></div>
-        <div class="mval">$155</div>
+        <div><div class="mname">2. P/S Valuation (มัธยฐานย้อนหลัง)</div><div class="mdesc">รายได้ TTM $25,180M ÷ 533M หุ้น (ถัวเฉลี่ยปรับลด) = $47.2/หุ้น × P/S 2.54x = $120 — 2.54x คือมัธยฐาน P/S 4 ปีงบ (2.48–3.35x) คำนวณจากราคาเฉลี่ยปี ÷ รายได้ต่อหุ้นของปีนั้น · ตระกูลเดียวกับข้อ 1 (ตัวคูณย้อนหลังของหุ้นเอง) นับเป็น 1 เสียง · ปี 2021–22 มีรายได้รวม Solventum จึงสเกลต่างจากปัจจุบัน</div></div>
+        <div class="mval">$120</div>
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        วิธี P/E TTM ($150) และ Forward P/E ($155) ให้ค่าใกล้เคียงกัน สะท้อน EPS ที่เติบโตสม่ำเสมอ ~8–10% ต่อปี ส่วนวิธี EV/EBITDA ($147) ต่ำสุดเพราะนำ net debt สูง ($6.7B) และ settlement liability ที่ยังค้างอยู่มาหักออก ค่าเฉลี่ย $151 สมเหตุสมผลในฐานะ "fair value with litigation discount" สำหรับ pure-play industrial ที่ margins กำลังฟื้นตัว — ราคาตลาด $163 อยู่สูงกว่า FV ประมาณ 8% สะท้อนว่านักลงทุนกำลังตั้งราคา "settlement relief premium" ล่วงหน้าแล้ว ยืนยันราคาจาก Yahoo Finance ($163.00) และ StockAnalysis.com ($162.98) ณ 30 มิ.ย. 2569 ต่างกัน 0.01% ≤ 2% threshold ✓
+        <b>Single-family valuation:</b> ทั้งสองวิธีอิงตัวคูณย้อนหลังของ MMM เอง จึงนับเป็นตระกูลเดียว (ตัดขา EV/EBITDA ที่ใช้ตัวคูณ peer 14x ซึ่งไม่มีค่ามัธยฐานที่วัดได้ และขา forward P/E 18x ที่ไม่มีที่มาจากการวัดออก · เป้านักวิเคราะห์ไม่ถูกใช้เป็นขา FV) ทั้งสองขาห่างกันไม่ถึง 2 เท่า จึงเฉลี่ยได้ = {{rd:fv}} · ความไวต่อสมมติฐาน: ถ้าใช้ P/E ของ FY2025 (25.7x) กับ EPS เดียวกัน ได้ ~$230 ส่วนถ้าใช้ EPS GAAP TTM $5.62 × 15.1x ได้ ~$85 (ส่วนต่างจากราคาแกว่งตั้งแต่ราว +39% ถึง −95%) ⇒ FV นี้ไวต่อการเลือกฐาน EPS/ตัวคูณมาก ควรอ่านเป็นกรอบ ไม่ใช่จุดเดียว · ตัวคูณ 15.1x ต่ำกว่า P/E ปัจจุบัน (GAAP) มาก เพราะ EPS GAAP ปัจจุบันยังถูกกดด้วยค่าใช้จ่ายที่เกี่ยวข้อง settlement ตลาดจึงให้ราคาตาม EPS ที่ปรับปรุงแล้ว · ราคา 2 แหล่ง (Yahoo Finance, StockAnalysis.com) ณ 18 ก.ย. 2569 ตรงกันที่ {{rd:px}} (ต่าง 0%) ✓
       </p>
     </div>
   </section>
@@ -171,12 +168,12 @@
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
-          <span style="text-align:right">$171<br><small>เป้าเฉลี่ย Analyst</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:analystTgt}}<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน $163 อยู่เหนือ Fair Value $151 ราว 8% — ตลาดกำลัง "price in" การฟื้นตัวหลัง settlement ล่วงหน้า เป้าเฉลี่ยนักวิเคราะห์ $171 (20 คน; StockAnalysis.com) ยังมี upside จากราคาปัจจุบัน ~5% สะท้อนความเชื่อมั่นต่อ margin expansion และ EPS growth ที่ guidance $8.50–$8.70 ในปี 2569 โซนสะสมที่น่าสนใจ = ใกล้หรือต่ำกว่า $151; deep value entry ที่ $121 (MOS 20%) ซึ่งต้องรอ pullback ~26% จากราคาปัจจุบัน
+        ราคาปัจจุบัน {{rd:px}} อยู่เหนือ Fair Value {{rd:fv}} — ตลาดให้ราคาสูงกว่าตัวคูณมัธยฐานย้อนหลังของ MMM เอง เป้าเฉลี่ยนักวิเคราะห์ {{rd:analystTgt}} (17 คน; Yahoo Finance / StockAnalysis.com) อยู่ที่ {{rd:analystPct}} จากราคาปัจจุบัน ซึ่งอิง EPS non-GAAP ต่อไปข้างหน้า · โซนสะสมที่น่าสนใจ = ใกล้หรือต่ำกว่า {{rd:fv}}; โซน MOS 20% ที่ {{rd:mos20}} ต้องรอ pullback ราว 38% จากราคาปัจจุบัน
       </p>
     </div>
   </section>
@@ -187,7 +184,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">ราคาตลาดสูงกว่า Fair Value ~8% — ยังไม่มี MOS; รอ pullback สู่โซน $151 หรือต่ำกว่า</div>
+        <div class="txt">ราคาตลาดสูงกว่า Fair Value ~30% — ยังไม่มี MOS; รอ pullback สู่โซน {{rd:fv}} หรือต่ำกว่า</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -206,42 +203,42 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $163 • EPS ฐาน ~$8.32 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~$8.94 (FY2026E) • รวมปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS -2%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$117</div>
-          <div class="ret neg">-22.5%</div>
+          <div class="tgt">$94</div>
+          <div class="ret neg">-37.7%</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$7.83</span></li>
-            <li><span>P/E ออก</span><span>15x</span></li>
+            <li><span>EPS ปี 3</span><span>~$8.41</span></li>
+            <li><span>P/E ออก</span><span>11.2x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~$9.36</span></li>
-            <li><span>สถานการณ์</span><span>PFAS ผลักภาระเพิ่ม / เศรษฐกิจถดถอย</span></li>
+            <li><span>สถานการณ์</span><span>PFAS ผลักภาระเพิ่ม / P/E ลงต่ำสุดย้อนหลัง</span></li>
           </ul>
         </div>
       </div>
       <div class="col base">
-        <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
+        <div class="top"><span>⚖️ Base</span><span>EPS +6%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$199</div>
-          <div class="ret pos">+22.1%</div>
+          <div class="tgt">$161</div>
+          <div class="ret pos">+2.7%</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$10.48</span></li>
-            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>EPS ปี 3</span><span>~$10.65</span></li>
+            <li><span>P/E ออก</span><span>15.1x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~$9.36</span></li>
-            <li><span>สถานการณ์</span><span>margin ขยายตัว + EPS growth ตาม guidance</span></li>
+            <li><span>สถานการณ์</span><span>EPS โตตามแนว consensus + P/E กลับสู่มัธยฐานย้อนหลัง</span></li>
           </ul>
         </div>
       </div>
       <div class="col bull">
-        <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
+        <div class="top"><span>🚀 Bull</span><span>EPS +10%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$255</div>
-          <div class="ret pos">+56.4%</div>
+          <div class="tgt">$238</div>
+          <div class="ret pos">+49.1%</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$11.69</span></li>
-            <li><span>P/E ออก</span><span>21x</span></li>
+            <li><span>EPS ปี 3</span><span>~$11.90</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~$9.36</span></li>
             <li><span>สถานการณ์</span><span>re-rating หลัง settlement หมด + ตลาด industrial บูม</span></li>
           </ul>
@@ -249,7 +246,7 @@
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      Base case: EPS growth ~8% ต่อปีตาม trajectory ปัจจุบัน (FY2568 +10% YoY, FY2569E +7.9%) ที่ P/E ออก 18x ให้ราคาเป้า $199 รวมปันผล $9.36 = total return +22.1% ใน 3 ปี (~6.9% ต่อปี) Bear case: PFAS มีความซับซ้อนเพิ่มหรือ industrial demand ชะลอ EPS ย่อลง P/E กด → ราคาเป้า $117 รวมปันผล total return -22.5%; Bull case: re-rating premium หลัง settlement payments ชัดเจน + margin ขยาย operating leverage สูง P/E ขยับ 21x → ราคาเป้า $255 รวมปันผล +56.4% ปันผล $3.12/ปี ($0.78/qtr) ช่วยสนับสนุน total return แม้ราคาทรงตัว
+      Base case: EPS growth ~6% ต่อปีจากฐาน FY2026E $8.94 ที่ P/E ออก 15.1x (มัธยฐานย้อนหลัง) ให้ราคาเป้า $161 รวมปันผล $9.36 = total return +2.7% ใน 3 ปี (~0.9% ต่อปี) — สอดคล้องกับ FV ที่ต่ำกว่าราคาปัจจุบัน; Bear case: EPS ย่อลง 2%/ปี P/E ลงต่ำสุดย้อนหลัง 11.2x → ราคาเป้า $94 รวมปันผล total return -37.7%; Bull case: EPS +10%/ปี P/E 20x (ต่ำกว่า FY2025 ที่ 25.7x) → ราคาเป้า $238 รวมปันผล +49.1% (~14.2% ต่อปี) · ราคาเป้าทุกฉากเป็นสมมติฐาน ปันผล $3.12/ปี ($0.78/qtr) ช่วยพยุง total return
     </p>
   </section>
 
@@ -260,22 +257,22 @@
       <div class="box cat">
         <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
         <ul>
-          <li><b>Settlement ชัดเจน:</b> PFAS ($10.3B/13 ปี) และ earplug ($6B) ได้รับการอนุมัติและจ่ายตามกำหนด — ความไม่แน่นอนทางกฎหมายหายไปมาก ตลาดเริ่มมองไปที่ fundamentals</li>
-          <li><b>Margin Expansion:</b> Adjusted op. margin FY2568 23.4% (+200 bps YoY), Q1'69 23.8% (+30 bps) — simplification program ลด headcount + portfolio reshaping ยังมี runway</li>
-          <li><b>EPS Growth Visibility:</b> Guidance FY2569E $8.50–$8.70 (+7.9% YoY); FCF guide $5.6–$5.8B (>100% conversion) — ให้ visibility สูงและ buyback/dividend รองรับ</li>
-          <li><b>Portfolio โฟกัส:</b> หลัง Solventum spinoff 3M เป็น pure-play industrial — Safety &amp; Industrial (~55%) + Transportation &amp; Electronics (~45%) ลด complexity ช่วย multiple re-rating</li>
-          <li><b>IP Moat ~50,000 Patents:</b> R&amp;D spend ต่อเนื่อง innovation ใน abrasives, adhesives, filtration, auto &amp; aerospace; ความแข็งแกร่งในตลาด niche ยากถูก disrupt</li>
-          <li><b>ปันผลฟื้นตัว:</b> ปรับขึ้นจาก $0.70/qtr → $0.78/qtr หลัง Solventum — yield ~1.9% และ FCF coverage แข็งแกร่ง บ่งชี้ว่าบอร์ดมั่นใจใน cash flow</li>
+          <li><b>Settlement ชัดเจน:</b> PFAS ($10.3B) และ earplug ($6B) ตกลง settlement ไว้แล้วตั้งแต่ปี 2023 — ความไม่แน่นอนทางกฎหมายลดลงมาก ตลาดหันมามอง fundamentals</li>
+          <li><b>Margin Expansion:</b> GAAP op. margin 13.2% (FY2022) → 17.0% (FY2024) → 18.9% (FY2025) → 20.3% (TTM) ขยายต่อเนื่อง; gross margin TTM 39.4%</li>
+          <li><b>EPS Growth Visibility:</b> Consensus FY2026E EPS $8.94 (non-GAAP, StockAnalysis); FCF TTM $3,985M (สูงกว่า NI GAAP $2,997M) รองรับ buyback/ปันผล — หุ้นถัวเฉลี่ยลดจาก 585M (FY2021) เหลือ 533M (TTM)</li>
+          <li><b>Portfolio โฟกัส:</b> หลัง Solventum spinoff (1 เม.ย. 2024) 3M โฟกัสธุรกิจอุตสาหกรรม/safety/transportation &amp; electronics — ลด complexity ช่วย multiple re-rating</li>
+          <li><b>IP Moat:</b> พอร์ตสิทธิบัตรใหญ่และ R&amp;D ต่อเนื่องใน abrasives, adhesives, filtration, auto &amp; aerospace; ตลาด niche ยากถูก disrupt</li>
+          <li><b>ปันผลฟื้นตัว:</b> $0.78/qtr ($3.12/ปี) — yield ~1.9% และ FCF TTM ครอบคลุมปันผล (~$1.6B/ปี บนหุ้น ~516M)</li>
         </ul>
       </div>
       <div class="box risk">
         <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
         <ul>
-          <li><b>PFAS Liability Tail Risk:</b> แม้ settlement หลักชำระแล้ว แต่รัฐ (New Jersey +$285M) และการฟ้องใหม่ยังเป็นไปได้ — Other Long-Term Liabilities $12.5B (FY2568) บน balance sheet ยังสูง</li>
-          <li><b>Leverage สูง:</b> Net Debt $6.7B + settlement obligations รวมกันกด equity ต่ำ P/BV ~18x สูงมาก; ถ้า FCF หยุดชะงักจะกระทบมาก</li>
+          <li><b>PFAS Liability Tail Risk:</b> แม้ settlement หลักตกลงแล้ว การฟ้องใหม่/ข้อเรียกร้องเพิ่มเติมยังเป็นไปได้ และภาระ settlement บน balance sheet ยังกด equity ให้ต่ำ</li>
+          <li><b>Leverage สูง:</b> Net Debt ~$7.9B + settlement obligations รวมกันกด equity ต่ำ P/BV ~23x สูงมาก; ถ้า FCF หยุดชะงักจะกระทบมาก</li>
           <li><b>Industrial Demand Cyclicality:</b> รายได้ผูกกับ auto, aerospace, construction, electronics — ถ้า macro ชะลอ (tariff/recession) รายได้ fragile เพราะ cost base fixed</li>
-          <li><b>Solventum Stake Dilution Risk:</b> 3M ยังถือ ~19.9% ของ Solventum และขายทอดตลาด — การ unwind อาจสร้าง headline risk และ balance sheet drag</li>
-          <li><b>Valuation Premium:</b> ราคาปัจจุบัน $163 เหนือ FV $151 (~8%) — "settlement relief" ถูก price in บางส่วนแล้ว upside จำกัดในระยะสั้น; ผิดหวัง EPS ใด ๆ อาจกดราคาได้</li>
+          <li><b>Solventum Stake Dilution Risk:</b> 3M รับหุ้น Solventum 19.9% ณ วัน spinoff (สถานะถือครองปัจจุบันยังไม่ได้ตรวจซ้ำ) — การ unwind อาจสร้าง headline risk</li>
+          <li><b>Valuation Premium:</b> ราคาปัจจุบัน {{rd:px}} เหนือ FV {{rd:fv}} — ตลาดให้ราคาสูงกว่าตัวคูณมัธยฐานของ MMM เอง upside จำกัดในระยะสั้น; ผิดหวัง EPS ใด ๆ อาจกดราคาได้</li>
           <li><b>เงินเฟ้อ Input Cost:</b> ต้นทุนวัตถุดิบ (พลาสติก, โลหะ, เคมี) ผันผวนกับ commodity cycle — margin ที่ขยายตัวมาอาจถูกกัดกร่อนถ้า pricing power ไม่เพียงพอ</li>
         </ul>
       </div>
@@ -286,15 +283,15 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>MMM: Quality Industrial ที่ราคา "Fair" — รอโอกาสดีกว่า</h2>
-      <p>3M เป็น industrial conglomerate คุณภาพสูงที่ผ่านช่วงเลวร้ายที่สุด (settlement PFAS $10.3B + earplug $6B) และกำลังเปลี่ยนผ่านเป็น pure-play industrial หลัง Solventum spinoff (เม.ย. 2567) ธุรกิจหลัก Safety &amp; Industrial และ Transportation &amp; Electronics มี moat จาก 50,000 สิทธิบัตร + brand ที่แข็งแกร่ง Adjusted EPS FY2568 $8.06 (+10% YoY) และ guidance FY2569E $8.50–$8.70 แสดงให้เห็น earnings power ที่ดี margin ขยายตัวต่อเนื่อง อย่างไรก็ตาม ราคาปัจจุบัน $163 เหนือ Fair Value $151 ราว 8% สะท้อนว่า "settlement relief premium" ถูก price in ไปพอสมควรแล้ว — ณ ราคานี้ total return 3 ปี base case อยู่ที่ +22% หรือ ~7% ต่อปี ซึ่งดีพอรับได้แต่ไม่ใช่ bargain โดด เด่น ยืนยันราคา 2 แหล่ง: Yahoo Finance $163.00 และ StockAnalysis.com $162.98 (ต่างกัน 0.01%) ณ 30 มิ.ย. 2569</p>
+      <h2>MMM: Quality Industrial ที่ราคาสูงกว่า FV ตามตัวคูณย้อนหลัง — รอโอกาสดีกว่า</h2>
+      <p>3M เป็น industrial conglomerate คุณภาพสูงที่ผ่านช่วงหนักที่สุดของ settlement (PFAS $10.3B + earplug $6B) และเปลี่ยนเป็นธุรกิจอุตสาหกรรมที่โฟกัสขึ้นหลัง Solventum spinoff (เม.ย. 2024) margin GAAP ขยายจาก 17.0% (FY2024) เป็น 20.3% (TTM) แต่ EPS GAAP diluted TTM $5.62 ยังต่ำกว่า FY2024 ($7.56) และ consensus FY2026E (non-GAAP) $8.94 — ช่องว่างระหว่าง GAAP กับ non-GAAP คือความไม่แน่นอนหลักของ valuation · FV {{rd:fv}} ตามตัวคูณมัธยฐานย้อนหลัง (P/E 15.1x, P/S 2.54x) ต่ำกว่าราคา {{rd:px}} — ณ ราคานี้ total return 3 ปี base case ราว +3% เท่านั้น ไม่ใช่ bargain (ตัวเลขทั้งหมดไวต่อสมมติฐานตัวคูณ ดูหมวด 3) ราคายืนยัน 2 แหล่ง: Yahoo Finance และ StockAnalysis.com ตรงกัน ณ 18 ก.ย. 2569</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$171 (Hold/Moderate Buy)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">{{rd:analystTgt}} (Buy)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ณ ราคา $163 MMM เหมาะสำหรับ "ถือระยะยาว" มากกว่า "ซื้อเพิ่ม" — ราคาน่าสนใจขึ้นที่ &lt;$151 (FV) และน่าสะสมจริงที่ &lt;$121 (MOS 20%) ซึ่งอาจเกิดขึ้นหากมี PFAS tail risk ใหม่หรือ macro อ่อนตัว ผู้ถือหุ้นเดิมรับปันผล $3.12/ปี และ FCF >100% conversion รองรับ buyback — ไม่เร่งขาย แต่ไม่จำเป็นต้องเพิ่มน้ำหนักที่ราคานี้
+        💡 <b>กลยุทธ์:</b> ณ ราคาปัจจุบัน {{rd:px}} MMM เหมาะสำหรับ "ถือระยะยาว" มากกว่า "ซื้อเพิ่ม" — น่าสนใจขึ้นเมื่อต่ำกว่า {{rd:fv}} (FV) และน่าสะสมจริงที่ {{rd:mos20}} (MOS 20%) ผู้ถือเดิมรับปันผล $3.12/ปี — ไม่เร่งขาย แต่ไม่จำเป็นต้องเพิ่มน้ำหนักที่ราคานี้
       </div>
     </div>
   </section>
@@ -304,9 +301,9 @@
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ EPS ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
-    แหล่งข้อมูล: Yahoo Finance (ราคา $163.00, 30 มิ.ย. 2569) · StockAnalysis.com (ราคา $162.98, financials, analyst forecast) · 3M Investor Relations Q1 2569 / FY2568 press release (EPS adj., guidance) · MarketBeat (analyst targets) · Google Finance (market cap cross-check)
+    แหล่งข้อมูล: Yahoo Finance (ราคาปิด 18 ก.ย. 2569) · StockAnalysis.com (ราคา, financials รายปี/ไตรมาส, analyst forecast) · Wikipedia (เหตุการณ์ spinoff/settlement)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 30 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
