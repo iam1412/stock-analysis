@@ -5,35 +5,35 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น Ralph Lauren Corporation (RL) — Stock Analysis Dashboard</title>
 <!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง (Opus→"Claude Opus 4.8", Sonnet→"Claude Sonnet 4.6") — gate E28 บังคับ -->
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"RL","currency":"USD","price":335.1,"fairValue":407.01,"mos":17.7,"upside":21.5,"pe":26.4,"dividendYield":1,"roe":34.7}
+{"symbol":"RL","currency":"USD","price":335.1,"fairValue":250.68,"mos":-33.7,"upside":-25.2,"pe":21.1,"dividendYield":1.19,"roe":37.5}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 407.01,
+  "fv": 250.68,
   "values": {
     "px": 335.1,
     "priceDate": "2026-09-18",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
-    "fvLow": 377.14,
-    "fvHigh": 435.92,
-    "shares": 59500000,
-    "baseEps": 15.11,
+    "fvLow": 230.12,
+    "fvHigh": 271.23,
+    "shares": 59582239,
+    "baseEps": 15.87,
     "scenarios": [
       {
-        "tgt": 295.83,
+        "tgt": 228.9,
         "div": 12
       },
       {
-        "tgt": 528.39,
+        "tgt": 349.4,
         "div": 12.96
       },
       {
-        "tgt": 712.38,
+        "tgt": 506.9,
         "div": 13.8
       }
     ],
@@ -71,16 +71,16 @@
       ["ส.ค.26", 346.9],
       ["ก.ย.26", 335.1]
     ],
-    "min": 300,
+    "min": 225,
     "max": 425,
-    "grid": [325, 350, 375, 400],
+    "grid": [250, 300, 350, 400],
     "currency": "$",
     "highlight": [0, 8],
     "gridFmt": "v.toFixed(0)",
     "dataFmt": "d[1].toFixed(2)"
   },
   "gauge": {
-    "min": 250,
+    "min": 150,
     "max": 450,
     "fairLabelTop": "-58px"
   }
@@ -112,8 +112,8 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ $273.04–$421.60<br>
-        ที่มา: stockanalysis.com, Yahoo Finance, Barchart.com
+        กรอบ 52 สัปดาห์ $299.98–$421.60<br>
+        ที่มา: stockanalysis.com, Yahoo Finance, SEC filings
       </div>
     </div>
   </header>
@@ -126,19 +126,19 @@
          • ธนาคาร → NIM / NPL / CASA / Loan growth / Cost-to-income   • REIT/กองอสังหา → Occupancy / DPU / NAV / Gearing   • ประกัน → Combined ratio / EV
          • หุ้นเติบโต-ขาดทุน → Revenue growth / Gross margin / FCF / Cash runway (ตัด P/E ออก) -->
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$19.9 พันล้าน</div><div class="d">~59.5 ล้านหุ้น (buyback ต่อเนื่อง)</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~26.4x</div><div class="d">อิง adjusted EPS TTM</div></div>
-      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~22x</div><div class="d">กรอบ 15x–28x (re-rate ขึ้นจาก DTC/margin)</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">~8.4x</div><div class="d">สูงตาม ROE ~35% + asset-light</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$20.0 พันล้าน</div><div class="d">~59.6 ล้านหุ้นคงเหลือ (buyback ต่อเนื่อง)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~21.1x</div><div class="d">อิง GAAP diluted EPS TTM $15.87</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~14.5x</div><div class="d">มัธยฐาน 5 ปีงบ กรอบ 13.6x–20.9x (re-rate ขึ้นต่อเนื่อง)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~7.1x</div><div class="d">สูงตาม ROE ~37% + asset-light</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2026</div><div class="v">$941.1 ล้าน</div><div class="d">▲ +26.7% YoY</div></div>
-      <div class="metric"><div class="k">EPS (TTM, adjusted)</div><div class="v">~$15.11</div><div class="d">Q4 FY26 adj. EPS $2.80 (GAAP $2.45)</div></div>
+      <div class="metric"><div class="k">EPS (TTM, diluted)</div><div class="v">~$15.87</div><div class="d">GAAP diluted TTM (FY2026 $15.11)</div></div>
       <div class="metric"><div class="k">BVPS</div><div class="v">~$47.28</div><div class="d">มี.ค. 2569</div></div>
-      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~34.7% / 10.9%</div><div class="d">สูงเด่นในกลุ่ม apparel/luxury</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~37.5% / 10.9%</div><div class="d">ROE TTM (FY2026 34.7%) สูงเด่นในกลุ่ม apparel/luxury</div></div>
 
-      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$8.11 พันล้าน</div><div class="d">FY2026 +14.6% YoY (Q4 +17% รายงาน)</div></div>
-      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~69.9%</div><div class="d">Q4 69.7% (+110bp YoY) — DTC mix หนุน</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.0%</div><div class="d">$1.00/ไตรมาส (ขึ้น +10% พ.ค. 2569) payout ~25%</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$8.36 พันล้าน</div><div class="d">TTM +14.7% YoY (FY2026 $8.12 พันล้าน +14.6%)</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~70.3%</div><div class="d">TTM (FY2026 69.9%) — DTC mix หนุน</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.2%</div><div class="d">$4.00/ปี ($1.00/ไตรมาส) payout ~25%</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">~1.35</div><div class="d">ผันผวนสูงกว่าตลาด (cyclical luxury)</div></div>
     </div>
   </section>
@@ -159,28 +159,24 @@
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
         <!-- ✏️ บรรยายการเคลื่อนไหวราคา ~1 ปี: จุดสูง/ต่ำ, เปลี่ยนแปลง %, สาเหตุหลัก -->
-        ราคาร่วงแตะจุดต่ำสุดรอบปี ~$273.90 ช่วง ส.ค. 2568 จากความกังวลภาษีนำเข้า (tariff) กดดัน margin ก่อนฟื้นตัวแรงหลังผลประกอบการ Q2–Q3 FY26 ดีเกินคาด พุ่งขึ้นแตะ ~$421.60 (สูงสุด 52 สัปดาห์) กลาง มิ.ย. 2569 จากกำไร Q4 FY26 ที่ทำสถิติและ DTC comp +17% ก่อนย่อลงมาปิดที่ $398.22 — รวมทั้งปี ~+42% (รอบปี)
+        ราคาเคลื่อนไหวในกรอบ ~$300–$422 ตลอดรอบปี: ขึ้นแตะ ~$421.60 (สูงสุด 52 สัปดาห์) ช่วงกลางปี 2569 หลังผลประกอบการ FY2026 ก่อนย่อลงต่อเนื่องเหลือ {{rd:px}} — เมื่อเทียบกับต้นกราฟ ราคาเพิ่มขึ้นเพียงเล็กน้อย (~+4.8% รอบปี) ขณะที่กำไรต่อหุ้นโตเร็วกว่ามาก ทำให้ P/E หดลงจากช่วงพีค
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 ตระกูล</div></div>
     <div class="card">
       <!-- ✏️ เลือก ≥2 วิธีให้เหมาะกับหุ้น — gate เช็คคณิตเฉพาะวิธีชื่อ "P/E" (E21) และ "Justified P/BV" (E22) เมื่อมีวิธีนั้น
            ธนาคาร → เน้น P/BV / Residual income   • REIT → DDM / NAV   • หุ้นไม่ปันผล → ตัด DDM ออก ใช้ P/E + DCF/Justified P/BV -->
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $15.11 × P/E เป้าหมาย ~27x — สูงกว่าค่าเฉลี่ย 5 ปี (~22x) สะท้อน re-rating จาก DTC mix/gross margin ที่ขยายต่อเนื่อง แต่ยังต่ำกว่า luxury house แท้ (LVMH/Hermès ~30–40x)</div></div>
-        <div class="mval">$407.97</div>
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS $15.87 (TTM diluted) × P/E เป้าหมาย 14.5x — มัธยฐาน 5 ปีงบย้อนหลังของ RL เอง (ราคาเฉลี่ยของงวด ÷ EPS ของงวดนั้น, 5 จุด ช่วง 13.6x–20.9x) ที่มาจากประวัติ ไม่ใช่จากตัวคูณปัจจุบัน (~21x) — ตัวคูณปัจจุบันสูงกว่ามัธยฐาน เพราะตลาด re-rate หลัง DTC/margin ขยาย</div></div>
+        <div class="mval">$230.12</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. Free Cash Flow Yield</div><div class="mdesc">FCF/หุ้น ~$13.20 (FCF TTM ~$785 ล้าน ÷ ~59.5 ล้านหุ้น) ÷ FCF yield เป้าหมาย 3.5% (เหมาะกับแบรนด์ premium asset-light + buyback capacity สูง) — <b>หมายเหตุ:</b> ข้าม DDM แบบ Gordon Growth เพราะ payout ratio ต่ำมาก (~25%) ทำให้ปันผลปัจจุบันสะท้อน "อำนาจกำไร" ของบริษัทได้ไม่เต็มที่ FCF yield จึงเหมาะกว่า</div></div>
-        <div class="mval">$377.14</div>
-      </div>
-      <div class="vmethod">
-        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 34.66% − g 7%)/(r 10% − g 7%) ≈ 9.22 × BVPS $47.28</div></div>
-        <div class="mval">$435.92</div>
+        <div><div class="mname">2. DCF (Free Cash Flow)</div><div class="mdesc">สมมติฐานของผู้วิเคราะห์เอง: FCF ฐาน $890 ล้าน (เฉลี่ย FY2024–FY2026: 905/1,019/746) โต 8%/ปี 5 ปี → 962 / 1,039 / 1,121 / 1,211 / 1,308 ล้าน · r 10% · g ปลาย 3% · TV = 1,308×1.03/(0.10−0.03) ≈ 19,242 ล้าน · PV FCF 5 ปี ≈ 4,213 + PV TV ≈ 11,948 = 16,161 ล้าน (TV ~74% ของมูลค่ารวม) ÷ 59.58 ล้านหุ้น (ไม่หักหนี้สุทธิ เพราะ FCF เป็นกระแสหลังดอกเบี้ย/สัญญาเช่า) ≈ $271.23</div></div>
+        <div class="mval">$271.23</div>
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
@@ -188,7 +184,7 @@
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <!-- ✏️ หมายเหตุ: วิธีไหนให้ค่าสูง/ต่ำเพราะอะไร, ทำไม FV กลางจึงสมเหตุสมผล -->
-        Justified P/BV ให้ค่าสูงสุด เพราะ ROE ~35% ของ RL สูงกว่าค่าเฉลี่ยอุตสาหกรรมมาก (โมเดล asset-light + margin ขยายตัว) ส่วน FCF yield ให้ค่าต่ำสุดเพราะเป็นมุมมองอนุรักษ์นิยม (ไม่รวม re-rating ของ multiple) — P/E อยู่ตรงกลางและใกล้เคียงราคาตลาดที่สุด FV เฉลี่ย $407.01 ใกล้เคียงราคาปัจจุบัน ($398.22) สะท้อนว่าหุ้นเทรดใกล้มูลค่าเหมาะสมแล้วหลัง rally แรงในรอบปี
+        เป็นการประเมินสองตระกูลอิสระ: P/E ที่ยึดมัธยฐานย้อนหลัง (ให้ค่าต่ำกว่า เพราะไม่รวม re-rating ที่เกิดขึ้นแล้ว) กับ DCF ตามสมมติฐานที่ระบุ (ให้ค่าสูงกว่า) ทั้งสองต่ำกว่าราคา {{rd:px}} จึงได้ FV เฉลี่ย {{rd:fv}} และ MOS ติดลบ {{rd:mos}} — ตัวเลขนี้ไวต่อสมมติฐาน: ถ้าใช้ P/E 20.9x (ค่าสูงสุดในอดีต) ขา P/E จะเป็น ~$332 และ FV ~$302 · เป้าเฉลี่ยนักวิเคราะห์ $446.71 ไม่ถูกนำมาเป็นขาของ FV (ใช้เป็นบริบทเท่านั้น) · คำเตือน: ประเมินเข้ม เพราะมัธยฐานย้อนหลังต่ำกว่าระดับที่ตลาดจ่ายจริงในรอบล่าสุด
       </p>
     </div>
   </section>
@@ -206,12 +202,12 @@
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
-          <span style="text-align:right">$429.56<br><small>เป้าเฉลี่ย Analyst</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$446.71<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน $398.22 อยู่ใกล้มูลค่าเหมาะสม ($407.01) มาก — ต่ำกว่าเพียง ~2% และยังต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ ($429.56) ~7.9% สะท้อนว่าหุ้นเทรดใน "โซนสมเหตุสมผล" ไม่ถูกไม่แพงเกินไป หลังจาก re-rate ขึ้นมาแรงในรอบปี ผู้ที่ต้องการ margin of safety มากขึ้นควรรอจังหวะย่อลงมาแถว $325–285
+        ราคาปัจจุบัน {{rd:px}} อยู่เหนือมูลค่าเหมาะสม ({{rd:fv}}) และเหนือกรอบบนของ FV ({{rd:fvHigh}}) แต่ยังต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ ($446.71) ราว 25% — ตลาดตีราคาสูงกว่าที่ประวัติ P/E และ DCF ของเราอธิบายได้ ผู้ที่ต้องการ margin of safety ควรรอจังหวะย่อลงมาแถว {{rd:mos20}}–{{rd:mos30}}
       </p>
     </div>
   </section>
@@ -223,7 +219,7 @@
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt"><b>แทบไม่มีส่วนเผื่อความปลอดภัย</b><br>ราคา $398.22 ใกล้เคียงมูลค่าเหมาะสม $407.01 มาก (MOS เพียง ~2.2%) หลังหุ้นวิ่งขึ้น ~42% ในรอบปี — ไม่ใช่จุดเข้าที่ถูกอย่างมีนัยสำคัญ เหมาะรอจังหวะย่อมากกว่าไล่ซื้อ</div>
+        <div class="txt"><b>ราคาสูงกว่ามูลค่าเหมาะสม — ไม่มีส่วนเผื่อความปลอดภัย</b><br>ราคา {{rd:px}} สูงกว่ามูลค่าเหมาะสม {{rd:fv}} (MOS {{rd:mos}}) ตามการประเมินที่ยึดมัธยฐาน P/E ย้อนหลังและ DCF — ไม่ใช่จุดเข้าที่ถูก เหมาะรอจังหวะย่อมากกว่าไล่ซื้อ</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -250,10 +246,10 @@
           <div class="tgt">{{rd:sc1tgt}}</div>
           <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$15.57</span></li>
-            <li><span>P/E ออก</span><span>19x</span></li>
+            <li><span>EPS ปี 3</span><span>~$16.35</span></li>
+            <li><span>P/E ออก</span><span>14x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
-            <li><span>สถานการณ์</span><span>DTC/China ชะลอ • tariff กด margin • P/E de-rate</span></li>
+            <li><span>สถานการณ์</span><span>DTC/China ชะลอ • tariff กด margin • P/E ลดเหลือใกล้มัธยฐานย้อนหลัง</span></li>
           </ul>
         </div>
       </div>
@@ -263,8 +259,8 @@
           <div class="tgt">{{rd:sc2tgt}}</div>
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$19.57</span></li>
-            <li><span>P/E ออก</span><span>27x</span></li>
+            <li><span>EPS ปี 3</span><span>~$20.55</span></li>
+            <li><span>P/E ออก</span><span>17x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>gross margin ขยายต่อเนื่อง • Asia โตดี • guidance FY27 เป็นจริง</span></li>
           </ul>
@@ -276,16 +272,16 @@
           <div class="tgt">{{rd:sc3tgt}}</div>
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$22.98</span></li>
-            <li><span>P/E ออก</span><span>31x</span></li>
+            <li><span>EPS ปี 3</span><span>~$24.14</span></li>
+            <li><span>P/E ออก</span><span>21x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
-            <li><span>สถานการณ์</span><span>China/Asia เร่งตัวแรง • gross margin แตะ 70%+ • re-rate สู่ luxury multiple</span></li>
+            <li><span>สถานการณ์</span><span>China/Asia เร่งตัวแรง • gross margin แตะ 70%+ • P/E คงระดับสูงสุดในอดีต (~21x)</span></li>
           </ul>
         </div>
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      Base case สะท้อนการเติบโต EPS แบบ high-single-digit ต่อเนื่องจาก premiumization + DTC mix ที่สูงขึ้น และ gross margin ที่ขยายตัวสู่เป้าหมายระยะยาว 70%+; Bull case ต้องอาศัย China/Asia เติบโตแรงต่อเนื่องและตลาดให้ multiple แบบ luxury house เต็มรูปแบบ; Bear case คือความเสี่ยง tariff/ต้นทุนกดกำไรและตลาดคืน multiple กลับสู่ค่าเฉลี่ยในอดีต
+      EPS ฐาน $15.87 (TTM). Base: EPS โต ~9%/ปี ผ่าน premiumization + DTC mix และ P/E ออก 17x (ระหว่างมัธยฐาน 14.5x กับระดับปัจจุบัน — สมมติฐานของผู้วิเคราะห์); Bull ต้องอาศัย China/Asia โตแรงและตลาดรักษา P/E ที่ระดับสูงสุดในอดีต (~21x); Bear คือ tariff/ต้นทุนกดกำไรและ P/E กลับสู่ใกล้มัธยฐานย้อนหลัง ราคาเป้าเป็นสมมติฐาน ไม่ใช่คำพยากรณ์
     </p>
   </section>
 
@@ -297,7 +293,7 @@
         <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
         <ul>
           <!-- ✏️ 4–6 ข้อ: เขียน <b>หัวข้อ:</b> รายละเอียด -->
-          <li><div><b>Gross margin ขยายตัวต่อเนื่อง:</b> 69.9% TTM (+110bp YoY ใน Q4) จาก mix DTC ที่สูงขึ้น + ปรับราคาสินค้า มุ่งเป้าระยะยาว 70%+</div></li>
+          <li><div><b>Gross margin ขยายตัวต่อเนื่อง:</b> 70.3% TTM (FY2026 69.9%, FY2025 68.6%) จาก mix DTC ที่สูงขึ้น + ปรับราคาสินค้า มุ่งเป้าระยะยาว 70%+</div></li>
           <li><div><b>DTC เป็นเครื่องยนต์หลัก:</b> DTC comparable store sales โต 17% ใน Q4 FY26 กินสัดส่วนรายได้รวม ~2 ใน 3 — margin สูงกว่า wholesale ชัดเจน</div></li>
           <li><div><b>Asia-Pacific โตแรง:</b> รายได้เอเชียโต 28% (cc) ใน Q4 จีนโต ~51% comp เอเชียโต 25% — ช่องว่างเติบโตยังมากเทียบสัดส่วนรายได้ปัจจุบัน</div></li>
           <li><div><b>Premiumization + ปรับฐานราคา:</b> กลยุทธ์ "Next Great Chapter: Accelerate" ดึงแบรนด์ขึ้นสู่ระดับ accessible-luxury ลดพึ่งพาห้างลดราคา</div></li>
@@ -308,7 +304,7 @@
         <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
         <ul>
           <!-- ✏️ 4–6 ข้อ: เขียน <b>หัวข้อ:</b> รายละเอียด -->
-          <li><div><b>Valuation ตึงหลัง rally แรง:</b> ราคาวิ่งขึ้น ~42% ในรอบปี ใกล้มูลค่าเหมาะสมแล้ว MOS เหลือน้อย (~2%)</div></li>
+          <li><div><b>Valuation ตึง:</b> P/E ปัจจุบัน ~21x สูงกว่ามัธยฐาน 5 ปีงบ (14.5x) มาก ราคาอยู่เหนือ FV ไม่มี margin of safety</div></li>
           <li><div><b>ความเสี่ยงภาษีนำเข้า (tariff):</b> ต้นทุนนำเข้าที่สูงขึ้นกดดัน gross margin ในช่วงครึ่งปีแรก FY27 ตามที่ผู้บริหารเตือน</div></li>
           <li><div><b>North America wholesale หดตัวต่อเนื่อง:</b> กลยุทธ์ถอนตัวจากห้างลดราคาโดยตั้งใจ อาจกดรายได้รวมระยะสั้นแม้ margin ดีขึ้น</div></li>
           <li><div><b>พึ่งพาจีน/เอเชียมากขึ้น:</b> ความเสี่ยงด้านภูมิรัฐศาสตร์ ค่าเงิน หรือกำลังซื้อจีนชะลอกระทบสัดส่วนการเติบโตหลัก</div></li>
@@ -323,14 +319,14 @@
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
       <h2>แบรนด์ American accessible-luxury คุณภาพสูง — ราคาใกล้มูลค่าเหมาะสมหลัง rally แรง</h2>
-      <p>Ralph Lauren เป็นหนึ่งในเรื่องราวเปลี่ยนผ่านธุรกิจ (transformation) ที่ชัดเจนที่สุดในกลุ่ม apparel — เปลี่ยนจากขายผ่านห้างลดราคาเป็นแบรนด์ premium ที่ขายตรงถึงผู้บริโภค (DTC) มากขึ้น ผลักดัน gross margin แตะ ~70% และ ROE ~35% ซึ่งสูงกว่าคู่แข่งส่วนใหญ่ในกลุ่มเดียวกัน อย่างไรก็ตาม ราคาหุ้นได้ปรับตัวขึ้นมาแล้ว ~42% ในรอบปีที่ผ่านมา สะท้อนความสำเร็จนี้ไปมากพอสมควร ทำให้ margin of safety ในปัจจุบันเหลือค่อนข้างน้อย (~2%) เหมาะกับนักลงทุนที่มองระยะยาวและเชื่อในสตอรี่ premiumization + Asia growth มากกว่าการเข้าซื้อเพื่อเก็งกำไรระยะสั้น</p>
+      <p>Ralph Lauren เป็นหนึ่งในเรื่องราวเปลี่ยนผ่านธุรกิจ (transformation) ที่ชัดเจนที่สุดในกลุ่ม apparel — เปลี่ยนจากขายผ่านห้างลดราคาเป็นแบรนด์ premium ที่ขายตรงถึงผู้บริโภค (DTC) มากขึ้น ผลักดัน gross margin แตะ ~70% และ ROE ~35–37% ซึ่งสูงกว่าคู่แข่งส่วนใหญ่ในกลุ่มเดียวกัน อย่างไรก็ตาม ตัวคูณที่ตลาดจ่ายในปัจจุบันสูงกว่ามัธยฐานย้อนหลังมาก ทำให้ราคาอยู่เหนือมูลค่าเหมาะสม ({{rd:mos}}) เหมาะกับนักลงทุนที่มองระยะยาวและเชื่อในสตอรี่ premiumization + Asia growth มากกว่าการเข้าซื้อเพื่อเก็งกำไรระยะสั้น</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$429.56 (Buy)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$446.71 (Buy)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> หุ้นเทรดใกล้มูลค่าเหมาะสมแล้ว ไม่ใช่จุดที่มี margin of safety สูง — สาย value ควรรอสะสมเมื่อราคาย่อลงมาแถว <b>$325–285</b> (MOS 20–30%) ส่วนสาย growth/คุณภาพที่เชื่อในสตอรี่ DTC + Asia ระยะยาวสามารถทยอยสะสมได้ที่ราคาปัจจุบัน แต่ควรติดตามความเสี่ยง tariff และอัตราการเติบโตของจีนอย่างใกล้ชิด
+        💡 <b>กลยุทธ์:</b> หุ้นเทรดเหนือมูลค่าเหมาะสม ไม่มี margin of safety — สาย value ควรรอสะสมเมื่อราคาย่อลงมาแถว <b>{{rd:mos20}}–{{rd:mos30}}</b> (MOS 20–30%) ส่วนสาย growth/คุณภาพที่เชื่อในสตอรี่ DTC + Asia ระยะยาวควรทยอยสะสมอย่างระมัดระวัง และติดตามความเสี่ยง tariff และอัตราการเติบโตของจีนอย่างใกล้ชิด
       </div>
     </div>
   </section>
@@ -341,7 +337,7 @@
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • อ้างอิงงบ Q4/FY2026 (สิ้นสุด 28 มี.ค. 2569) จาก SEC 8-K/press release ของ Ralph Lauren Corporation, stockanalysis.com, Yahoo Finance, Barchart.com, MarketBeat.com • ราคา ณ {{rd:priceDate}}
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 2 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
