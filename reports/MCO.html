@@ -6,34 +6,34 @@
 <title>วิเคราะห์หุ้น Moody's (MCO) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"MCO","currency":"USD","price":468.59,"fairValue":551,"mos":15,"upside":17.6,"pe":29.8,"dividendYield":0.88,"roe":null}
+{"symbol":"MCO","currency":"USD","price":468.59,"fairValue":585,"mos":19.9,"upside":24.8,"pe":29.8,"dividendYield":0.88,"roe":null}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 551,
+  "fv": 585,
   "values": {
     "px": 468.59,
     "priceDate": "2026-09-18",
     "dateEra": "CE",
     "chgSuffix": "รอบปี",
-    "fvLow": 530,
-    "fvHigh": 575,
+    "fvLow": 572,
+    "fvHigh": 597,
     "eps": 15.74,
     "shares": 174700000,
     "dps": 4.12,
-    "baseEps": 16.75,
+    "baseEps": 16.97,
     "scenarios": [
       {
-        "tgt": 471,
+        "tgt": 477,
         "div": 13.5
       },
       {
-        "tgt": 711,
+        "tgt": 720,
         "div": 14
       },
       {
-        "tgt": 866,
+        "tgt": 877,
         "div": 15
       }
     ],
@@ -79,7 +79,7 @@
   },
   "gauge": {
     "min": 350,
-    "max": 590,
+    "max": 640,
     "fairLabelTop": "-58px"
   }
 }
@@ -114,19 +114,19 @@
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ราคา ณ 24 ก.ค. 2026</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ราคา ณ {{rd:priceDate}}</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">หุ้น 174.7M · Beta 1.34</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~29.77x</div><div class="d">EPS TTM $15.74</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~31x</div><div class="d">กรอบ ~25–40x (premium duopoly)</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~22.7x</div><div class="d">BVPS ต่ำจาก buyback ต่อเนื่อง</div></div>
 
-      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$2.50B</div><div class="d">YoY +18.5%</div></div>
-      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$15.74</div><div class="d">2025 $13.67 · 2026E guidance $16.50–17.00</div></div>
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$2.46B</div><div class="d">YoY +19.5%</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$15.74</div><div class="d">2025 $13.67 · 2026E consensus $16.97</div></div>
       <div class="metric"><div class="k">BVPS</div><div class="v">~$20.74</div><div class="d">ทุนต่ำเพราะซื้อหุ้นคืน</div></div>
-      <div class="metric"><div class="k">อัตรากำไรจากการดำเนินงาน</div><div class="v pos">~40%</div><div class="d">โมเดล asset-light มาร์จิ้นสูง</div></div>
+      <div class="metric"><div class="k">อัตรากำไรจากการดำเนินงาน</div><div class="v pos">~46%</div><div class="d">โมเดล asset-light มาร์จิ้นสูง</div></div>
 
-      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$7.87B</div><div class="d">Q2'26 +15% YoY (MIS +25%)</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$8.16B</div><div class="d">TTM +11.7% YoY</div></div>
       <div class="metric"><div class="k">ROE</div><div class="v">N/A*</div><div class="d">*76% (TTM) บิดเบือนจาก buyback ลดทุน</div></div>
       <div class="metric"><div class="k">เงินปันผล</div><div class="v">~0.88%</div><div class="d">$4.12/หุ้น · จ่ายขึ้นต่อเนื่อง</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">1.34</div><div class="d">อ่อนไหวต่อรอบดอกเบี้ย/ออกตราสารหนี้</div></div>
@@ -146,33 +146,30 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ราคาทำจุดสูงต้นรอบที่ ~$510 (ส.ค. 25) ก่อนถูกเทขายลงไปต่ำสุดราว $436 (มี.ค. 26) ตามความกังวลรอบดอกเบี้ย/ตราสารหนี้ ฟื้นตัวกลับขึ้นมาแตะโซนพีคเดิม ~$510 อีกครั้งกลาง ก.ค. 26 ก่อนปรับฐานแรงหลังประกาศงบ Q2'26 (22 ก.ค. 69) — แม้กำไรเกินคาด (EPS $4.68 vs คาด $4.28) แต่ไกด์ไลน์ FY2026 EPS $16.50–17.00 ต่ำกว่า consensus ~$16.78 เล็กน้อย บวกแรงขายทำกำไรก่อนงบ+ตลาดกว้างระมัดระวัง ฉุดราคาลงมาปิดที่ $471.50 คิดเป็นผลตอบแทนรอบปี <b>▼ −7.5%</b> แม้ EPS/guidance จริงจะดีกว่าที่เคยประเมินไว้มาก
+        ราคาทำจุดสูงของช่วงที่ ~$516 (ม.ค. 26) ก่อนย่อลงต่ำสุดราว $436 (มี.ค. 26) ฟื้นขึ้นมาแตะ ~$505 (ส.ค. 26) แล้วปรับฐานลงมาอยู่โซนกลางกรอบ 52 สัปดาห์ ($402–$547) ขณะที่ EPS TTM ขยับขึ้นต่อเนื่อง ทำให้ตัวคูณ P/E ปัจจุบันต่ำกว่ามัธยฐานย้อนหลัง 5 ปีอย่างชัดเจน
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">2 วิธี (ตระกูลเดียวกัน)</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS ล่วงหน้า (ไกด์ไลน์บริษัทปีนี้) ~$16.75 (กรอบ $16.50–17.00) × P/E เป้าหมาย ~33x — premium duopoly ที่มี moat กว้าง สมเหตุสมผลในกรอบ 31–34x</div></div>
-        <div class="mval">$553</div>
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS $15.74 (TTM, diluted) × P/E 37.9x — มัธยฐาน 5 ปีที่วัดจากราคาเฉลี่ยรายปี ÷ EPS (กรอบ 29.4–40.0x) ที่มาจากประวัติของ MCO เอง ไม่ได้อิง P/E ปัจจุบัน</div></div>
+        <div class="mval">$597</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. DCF (Discounted Cash Flow)</div><div class="mdesc">FCF เติบโต ~11–12%/ปี (5 ปี) หนุนวงจรออกตราสารหนี้ฟื้น (MIS +25% YoY ใน Q2'26) แล้ว terminal 4%; WACC ~8.5%</div></div>
-        <div class="mval">$565</div>
+        <div><div class="mname">2. P/FCF (ตระกูลเดียวกับ P/E นับเป็น 1 เสียง)</div><div class="mdesc">FCF/หุ้น TTM $16.67 (FCF $2,967M ÷ 178M หุ้นปรับลดถัวเฉลี่ย) × P/FCF 34.3x — มัธยฐาน 5 ปี (ราคาเฉลี่ยรายปี ÷ FCF/หุ้น: 34.3/31.4/32.3/46.2/34.9x) คำนวณจากตารางงบ [3]</div></div>
+        <div class="mval">$572</div>
       </div>
-      <div class="vmethod">
-        <div><div class="mname">3. EV/EBITDA</div><div class="mdesc">EBITDA ล่วงหน้า ~$3.9B (รายได้โตเลขหลักเดียวสูง + มาร์จิ้น ~39–40%) × multiple ~21x (กลางกรอบ peer S&amp;P/SPGI) − net debt → ต่อหุ้น</div></div>
-        <div class="mval">$535</div>
-      </div>
+
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ไม่ใช้วิธี Justified P/BV เพราะ buyback ต่อเนื่องกัดทุนจนส่วนผู้ถือหุ้น/ROE บิดเบือน (ROE 76% TTM, P/BV ~23x) ทำให้สูตรไม่มีนัย จึงเน้น P/E + DCF (ตามกระแสเงินสดจริง) และ EV/EBITDA แทน ค่ากลาง $551 เป็นค่าเฉลี่ยทั้งสามวิธี — ปรับขึ้นจากรอบก่อน ($510) ตามไกด์ไลน์ FY2026 EPS ที่บริษัทยกระดับเป็น $16.50–17.00 (จากประเมินเดิม $15.0–15.6) สอดคล้องกับเป้านักวิเคราะห์เฉลี่ย ~$556.19 (Buy) ที่ StockAnalysis.com
+        ไม่ใช้ Justified P/BV เพราะ buyback ต่อเนื่องกัดทุนจน ROE/BVPS บิดเบือน (ROE 76% TTM) · รอบนี้ถอด DCF และ EV/EBITDA เดิมออกเพราะตรวจซ้ำไม่ได้/ไม่มีมัธยฐานที่วัดจริง และถอดเป้านักวิเคราะห์ออกจากขา FV (ใช้เป็นบริบทเท่านั้น ~$561.90 Buy n=21 ที่ StockAnalysis) · P/E และ P/FCF เป็นตระกูลเดียวกัน (กำไร/เงินสดของ MCO เอง) จึงเป็นการประเมินตระกูลเดียว ความไวต่อสมมติฐาน: หากตลาดให้ตัวคูณเพียง 29.4x (ต่ำสุดของกรอบ 5 ปี) ขา P/E จะเหลือราว $463 ต่ำกว่าราคาตลาด ดังนั้นส่วนเผื่อทั้งหมดพึ่งพาการกลับสู่มัธยฐานของตัวคูณ
       </p>
     </div>
   </section>
@@ -189,13 +186,13 @@
         <div class="scale">
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:right">$561.90<br><small>เป้าเฉลี่ย Analyst</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
-          <span style="text-align:right">$556.19<br><small>เป้าเฉลี่ย Analyst</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน $471.50 ต่ำกว่ามูลค่าเหมาะสมใหม่ $551 ราว 14.4% (MOS) — ขยับขึ้นจากรอบก่อนที่แทบไม่มีส่วนเผื่อ เพราะ EPS/guidance ดีขึ้นเร็วกว่าราคาที่ย่อลงหลังงบ Q2'26 และต่ำกว่าเป้านักวิเคราะห์เฉลี่ย $556.19 เช่นกัน โซน MOS 20% ($441) และ MOS 30% ($386) เป็นจุดทยอยสะสมเพิ่มหากราคาย่อแรงกว่านี้
+        ราคาปัจจุบัน {{rd:px}} ต่ำกว่ามูลค่าเหมาะสม {{rd:fv}} (MOS {{rd:mos}}) และต่ำกว่าเป้านักวิเคราะห์เฉลี่ย $561.90 (บริบท ไม่ใช่ขา FV) โซน MOS 20% ({{rd:mos20}}) และ MOS 30% ({{rd:mos30}}) เป็นจุดทยอยสะสมเพิ่มหากราคาย่อแรงกว่านี้
       </p>
     </div>
   </section>
@@ -206,7 +203,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">MOS ขยับขึ้นเป็นโซนกลาง หลัง EPS/guidance FY2026 แข็งแกร่งกว่าประเมินเดิม สวนทางราคาที่ย่อลงหลังงบ Q2'26 — เริ่มน่าสนใจสะสม รอจังหวะย่อเข้าใกล้โซน MOS 20% ($441) จะยิ่งปลอดภัยขึ้น</div>
+        <div class="txt">MOS อยู่ใกล้ขอบโซนกลาง-ดี เพราะราคาย่อลงขณะ EPS โตขึ้น แต่ส่วนเผื่อทั้งหมดมาจากการกลับสู่ตัวคูณมัธยฐานของตัวเอง (ประเมินตระกูลเดียว) — สะสมทีละส่วน รอโซน MOS 20% ({{rd:mos20}}) จะปลอดภัยขึ้น</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -225,7 +222,7 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} (guidance FY26){{rd:scnNote}}</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} (consensus FY26){{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +4%/ปี</span></div>
@@ -233,7 +230,7 @@
           <div class="tgt">{{rd:sc1tgt}}</div>
           <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$18.84</span></li>
+            <li><span>EPS ปี 3</span><span>~$19.09</span></li>
             <li><span>P/E ออก</span><span>25x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>ออกตราสารหนี้ซบ + de-rating</span></li>
@@ -246,7 +243,7 @@
           <div class="tgt">{{rd:sc2tgt}}</div>
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$22.92</span></li>
+            <li><span>EPS ปี 3</span><span>~$23.21</span></li>
             <li><span>P/E ออก</span><span>31x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>วงจรออกหนี้ฟื้น + MA โต</span></li>
@@ -259,7 +256,7 @@
           <div class="tgt">{{rd:sc3tgt}}</div>
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$25.47</span></li>
+            <li><span>EPS ปี 3</span><span>~$25.81</span></li>
             <li><span>P/E ออก</span><span>34x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>ออกหนี้บูม + AI หนุน Analytics</span></li>
@@ -268,7 +265,7 @@
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      ผลตอบแทนขึ้นกับ "วงจรการออกตราสารหนี้" (ขับเคลื่อนฝั่ง Ratings ~55% ของรายได้ — Q2'26 โต +25% YoY ยืนยันวงจรฟื้นจริง) และการเติบโตของ Analytics ที่เป็นรายได้ recurring กรณีฐาน EPS โต ~11%/ปี จากฐาน guidance ใหม่ $16.75 ให้ผลตอบแทนรวม ~+54% ใน 3 ปี (~+15.4%/ปี) กรณี Bear สะท้อนภาวะออกหนี้ซบเซาพร้อม de-rating ตัวเลขเป็นสมมติฐานเชิงประมาณ ไม่ใช่การพยากรณ์ที่แม่นยำ
+      ผลตอบแทนขึ้นกับ "วงจรการออกตราสารหนี้" (ขับเคลื่อนฝั่ง Ratings ~55% ของรายได้) และการเติบโตของ Analytics ที่เป็นรายได้ recurring กรณีฐาน EPS โต ~11%/ปี จากฐาน consensus FY2026 $16.97 (StockAnalysis) ให้ผลตอบแทนตามที่แสดงข้างต้น กรณี Bear สะท้อนภาวะออกหนี้ซบเซาพร้อม de-rating ตัวเลขเป็นสมมติฐานเชิงประมาณ ไม่ใช่การพยากรณ์ที่แม่นยำ
     </p>
   </section>
 
@@ -281,7 +278,7 @@
         <ul>
           <li><b>ดูโอโพลี moat กว้าง:</b> ตลาด credit rating โลกแทบผูกขาดร่วมกับ S&amp;P pricing power สูง รายได้ต่อดีลเพิ่มได้</li>
           <li><b>Moody's Analytics โตแบบ recurring:</b> ~45% ของรายได้เป็น subscription ข้อมูล/ซอฟต์แวร์ความเสี่ยง ลดความผันผวนจากวงจรออกหนี้</li>
-          <li><b>วงจรออกตราสารหนี้ฟื้นแล้วจริง:</b> Q2'26 ฝั่ง Ratings (MIS) โต +25% YoY จาก corporate finance activity ยืนยันวงจร refinance/ออกหนี้ใหม่กลับมาแรง</li>
+          <li><b>รายได้โตต่อเนื่อง:</b> รายได้ TTM $8.16B โต +11.7% YoY และ EPS TTM โตจาก $13.67 (FY2025) เป็น $15.74 ตามวงจรออกหนี้/ข้อมูลที่แข็งแรง</li>
           <li><b>มาร์จิ้นสูง + asset-light:</b> operating margin ~40% สร้าง FCF แข็งแกร่ง ใช้ซื้อหุ้นคืน + จ่ายปันผลต่อเนื่อง</li>
           <li><b>AI หนุน Analytics:</b> เครื่องมือวิเคราะห์ความเสี่ยง/ข้อมูลที่เสริม AI เพิ่ม ARPU และโอกาสขายต่อยอด</li>
         </ul>
@@ -290,7 +287,7 @@
         <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
         <ul>
           <li><b>ความอ่อนไหวต่อวงจรหนี้:</b> ฝั่ง Ratings ผันผวนตามปริมาณออกตราสารหนี้ ดอกเบี้ยสูง/ตลาดตึงทำรายได้สะดุด (เห็นชัดปี 2022)</li>
-          <li><b>Valuation ยังตึง + guidance ต่ำกว่าคาดเล็กน้อย:</b> P/E TTM ~30x และ P/BV ~23x แม้ถูกลงกว่ารอบก่อน แต่ guidance FY2026 ($16.50–17.00) ต่ำกว่า consensus ~$16.78 เล็กน้อย อาจกดดันราคาต่อระยะสั้น</li>
+          <li><b>Valuation ยังตึง:</b> P/E TTM ~30x และ P/BV ~23x แม้ต่ำกว่ามัธยฐาน 5 ปี (37.9x) หากตัวคูณไม่กลับสู่มัธยฐาน ส่วนเผื่อจะหายไป</li>
           <li><b>ความเสี่ยงกำกับ/กฎหมาย:</b> บริษัทจัดอันดับเครดิตถูกจับตา/ฟ้องร้องเป็นระยะ (มรดกวิกฤตปี 2008)</li>
           <li><b>ROE/ทุนบิดเบือน:</b> buyback หนักกัดส่วนทุนจน metric เชิงทุนตีความยาก เสี่ยงเชิงโครงสร้างงบดุล</li>
           <li><b>Beta 1.34:</b> ผันผวนกว่าตลาด ช่วงตลาดผันผวนราคาแกว่งแรง</li>
@@ -303,15 +300,15 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>หุ้น moat กว้างคุณภาพสูง ราคาย่อรับข่าวไกด์ไลน์เล็กน้อย ทั้งที่งบจริงแข็งแกร่ง — MOS ขยับขึ้นน่าสะสม</h2>
-      <p>Moody's เป็นธุรกิจ "ดูโอโพลี" จัดอันดับเครดิตระดับโลกที่มี moat กว้าง มาร์จิ้นสูง และรายได้ recurring จากฝั่ง Analytics เพิ่มขึ้นเรื่อย ๆ งบ Q2'26 (22 ก.ค. 69) ออกมาดีเกินคาด EPS $4.68 (คาด $4.28) EPS TTM ขยับขึ้นเป็น $15.74 (+12.8%) และบริษัทยกไกด์ไลน์ FY2026 EPS เป็น $16.50–17.00 (จากประเมินเดิม $15.0–15.6) แต่ตัวเลขนี้ต่ำกว่า consensus ~$16.78 เพียงเล็กน้อย บวกแรงขายทำกำไรก่อนงบ+ตลาดกว้างระมัดระวัง ทำให้ราคากลับร่วง −7.7% ในรอบสัปดาห์มาอยู่ที่ $471.50 ผลคือ MOS เทียบมูลค่าเหมาะสมใหม่ $551 ขยับขึ้นมาที่ ~14.4% (จากแทบไม่มีส่วนเผื่อ) พร้อม upside ~+17.96% จากเป้านักวิเคราะห์เฉลี่ย $556.19 (Buy) เหมาะกับนักลงทุนระยะยาวที่มองข้ามความผันผวนช่วงสั้นจากปฏิกิริยาต่อ guidance</p>
+      <h2>หุ้น moat กว้างคุณภาพสูง ตัวคูณต่ำกว่ามัธยฐานประวัติ — น่าทยอยสะสม แต่ต้องเข้าใจว่าส่วนเผื่อพึ่งการกลับสู่ตัวคูณ</h2>
+      <p>Moody's เป็นธุรกิจ "ดูโอโพลี" จัดอันดับเครดิตระดับโลกที่มี moat กว้าง มาร์จิ้นสูง และรายได้ recurring จากฝั่ง Analytics EPS TTM อยู่ที่ $15.74 (FY2025 $13.67) รายได้ TTM $8.16B และ FCF TTM $2.97B ประเมินด้วย P/E และ P/FCF ที่ใช้มัธยฐาน 5 ปีของตัวเอง (37.9x และ 34.3x) ได้มูลค่าเหมาะสม {{rd:fv}} เทียบราคาปัจจุบัน {{rd:px}} (MOS {{rd:mos}}) เป็นการประเมินตระกูลเดียว จึงไวต่อตัวคูณ — หากตัวคูณค้างที่ระดับปัจจุบัน ส่วนเผื่อจะบางมาก เหมาะกับนักลงทุนระยะยาวที่ทยอยสะสมและยอมรับความเสี่ยงเรื่องตัวคูณ เป้านักวิเคราะห์เฉลี่ย ~$561.90 (Buy) ใช้เป็นบริบทเท่านั้น</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$556.19 (Buy)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$561.90 (Buy)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ทยอยสะสมในกรอบราคาปัจจุบัน $471 และเพิ่มน้ำหนักเด่นชัดเมื่อต่ำกว่า $441 (MOS 20%) เน้นถือยาวรับ moat + การเติบโตของ Analytics ระวังความผันผวนช่วงสั้นจากปฏิกิริยาตลาดต่อ guidance
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมที่ราคาปัจจุบัน {{rd:px}} และเพิ่มน้ำหนักเมื่อต่ำกว่าโซน MOS 20% ({{rd:mos20}}) เน้นถือยาวรับ moat + การเติบโตของ Analytics ระวังกรณีตัวคูณไม่กลับสู่มัธยฐาน
       </div>
     </div>
   </section>
@@ -322,7 +319,7 @@
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มา: StockAnalysis.com, Google Finance, Moody's IR/10-K, digrin.com
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 25 ก.ค. 2026 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2026 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
