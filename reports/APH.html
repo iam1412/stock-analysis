@@ -4,22 +4,22 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น Amphenol (APH) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Opus 5">
+<meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"APH","currency":"USD","price":77.55,"fairValue":94.5,"mos":17.9,"upside":21.9,"pe":38.8,"dividendYield":0.6,"roe":38}
+{"symbol":"APH","currency":"USD","price":77.55,"fairValue":80,"mos":3.1,"upside":3.2,"pe":38.8,"dividendYield":0.6,"roe":38}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 94.5,
+  "fv": 80,
   "values": {
     "px": 77.55,
     "priceDate": "2026-09-18",
     "dateEra": "CE",
     "chgSuffix": "รอบปี",
-    "fvLow": 85,
-    "fvHigh": 103,
-    "analystTgt": 99,
+    "fvLow": 75,
+    "fvHigh": 85,
+    "analystTgt": 99.26,
     "eps": 2,
     "shares": 2470000000,
     "dps": 0.5,
@@ -72,8 +72,8 @@
       ["ก.ย.26", 77.55]
     ],
     "min": 60,
-    "max": 100,
-    "grid": [70, 80, 90],
+    "max": 90,
+    "grid": [70, 80],
     "currency": "$",
     "highlight": [5, 8]
   },
@@ -105,9 +105,9 @@
       </div>
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ {{rd:priceDate}} (ปิดตลาด) · ปรับฐานหลังแตกพาร์ 2:1 (มีผล 2 ก.ย. 2569)<br>
-        ห่างจากจุดสูงสุด 52 สัปดาห์ ~8% (52 สัปดาห์ $55.19 – $89.26)<br>
-        ที่มา: Yahoo Finance • StockAnalysis.com • SEC 8-K (4 ก.ย. 2026 — แตกพาร์ 2:1) • SEC 10-Q (Q2/2026)
+        ราคา ณ {{rd:priceDate}} (ปิดตลาด) · ปรับฐานหลังแตกพาร์ 2:1 (บอร์ดอนุมัติ ส.ค. 2569)<br>
+        ห่างจากจุดสูงสุด 52 สัปดาห์ ~13% (52 สัปดาห์ $59.01 – $89.26)<br>
+        ที่มา: Yahoo Finance • StockAnalysis.com • SEC 10-Q (Q2/2026)
       </div>
     </div>
   </header>
@@ -118,7 +118,7 @@
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">$191.5B</div><div class="d">~2.47 พันล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~39x</div><div class="d">EPS TTM $2.00 <span class="pill r">พรีเมียมสูง</span></div></div>
-      <div class="metric"><div class="k">P/E (Forward)</div><div class="v">~24x</div><div class="d">EPS เดินหน้า ~$3.22 (Yahoo)</div></div>
+      <div class="metric"><div class="k">P/E (Forward)</div><div class="v">~29x</div><div class="d">EPS FY2026e ~$2.67 (SA) • FY2027e $3.27</div></div>
       <div class="metric"><div class="k">EPS (TTM, GAAP)</div><div class="v">$2.00</div><div class="d pos">▲ +14.9% YoY (งบ Q2/2026)</div></div>
 
       <div class="metric"><div class="k">รายได้ FY2025</div><div class="v">$23.1B</div><div class="d pos">▲ +51.7% YoY</div></div>
@@ -129,7 +129,7 @@
       <div class="metric"><div class="k">รายได้ TTM</div><div class="v">$29.0B</div><div class="d pos">▲ +54.2% YoY</div></div>
       <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">$5.14B</div><div class="d pos">EPS GAAP $2.00 (TTM)</div></div>
       <div class="metric"><div class="k">เงินปันผล</div><div class="v">{{rd:yield}}</div><div class="d">$0.50/ปี • payout ~25%</div></div>
-      <div class="metric"><div class="k">ช่วง 52 สัปดาห์</div><div class="v" style="font-size:18px">$55.19 – $89.26</div><div class="d">เงินสด ~$5.4B • หนี้ ~$18.8B</div></div>
+      <div class="metric"><div class="k">ช่วง 52 สัปดาห์</div><div class="v" style="font-size:18px">$59.01 – $89.26</div><div class="d">เงินสด ~$5.4B • หนี้ ~$18.8B</div></div>
     </div>
   </section>
 
@@ -146,36 +146,33 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        หุ้นบวก <b>~17% ในรอบปี</b> (จุดกราฟทั้งเส้นเป็นฐานหลังแตกพาร์ 2:1) จากจุดต่ำ 52 สัปดาห์ ~$55 สู่จุดสูงสุด 52 สัปดาห์ ~$89 (มิ.ย. 2026)
+        หุ้นบวก <b>~11% ในรอบปี</b> (จุดกราฟทั้งเส้นเป็นฐานหลังแตกพาร์ 2:1) จากจุดต่ำ 52 สัปดาห์ ~$59 สู่จุดสูงสุด 52 สัปดาห์ ~$89 (มิ.ย. 2026)
         แรงหนุนจากความต้องการ <b>interconnect สำหรับ AI data center</b> (AEC/backplane/optical 800G–1.6T) และดีล M&A (CommScope) ที่ดัน IT datacom พุ่ง และ EPS TTM ที่กระโดดขึ้นเป็น $2.00 หลังงบ Q2/2026
-        — ราคาล่าสุดย่อลงมาราว 8% จากจุดสูงสุด สอดคล้องกับแรงขายทั้งกลุ่มชิป/ฮาร์ดแวร์ AI ที่ de-rating พร้อมกัน (18 ส.ค. 2569) มากกว่าเป็นปัจจัยเฉพาะตัว
+        — ราคาล่าสุดย่อลงมาราว 13% จากจุดสูงสุด 52 สัปดาห์
       </p>
     </div>
   </section>
 
   <!-- ===== VALUATION ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">3 วิธี เฉลี่ยถ่วงน้ำหนัก</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">2 วิธี เฉลี่ยตามตระกูลสมมติฐาน</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation <span class="pill r">ระมัดระวัง</span></div><div class="mdesc">EPS เดินหน้า $3.22 (Yahoo consensus) × P/E 32x (คงตัวคูณเดิมของรายงาน — อนุรักษ์นิยมกว่า P/E ปัจจุบัน ~41x TTM; SA ให้ fwd P/E ~28x นัย EPS ~$2.94)</div></div>
-        <div class="mval">$103</div>
+        <div><div class="mname">1. P/E Valuation <span class="pill r">ระมัดระวัง</span></div><div class="mdesc">EPS $2.67 (FY2026e, StockAnalysis) × P/E 28.2x (มัธยฐานย้อนหลัง 5 ปีของ APH ที่วัดจริง ช่วง 24.2–33.1x — ไม่ใช่ตัวคูณปัจจุบัน ~39x)</div></div>
+        <div class="mval">$75</div>
       </div>
       <div class="vmethod">
         <div><div class="mname">2. DCF (2-stage)</div><div class="mdesc">FCF โต ~20% 5 ปีแรกแล้วชะลอ, WACC ~8.5%, Terminal 3% — สะท้อนวงจร capex AI ที่ยังขยายและ M&A roll-up ต่อเนื่อง</div></div>
         <div class="mval">$85</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">3. Analyst Intrinsic</div><div class="mdesc">ค่าเฉลี่ยจากโมเดล intrinsic ของนักวิเคราะห์ (กรอบ ~$87.50–$105, ลดด้วยส่วนเผื่อความปลอดภัย) — อิงเป้าเฉลี่ยนักวิเคราะห์ที่ปรับขึ้นเป็น ~$99 (Yahoo $99.12, n=17 • StockAnalysis $99.15, Strong Buy)</div></div>
-        <div class="mval">$96</div>
-      </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        <b>หมายเหตุ:</b> <b>ตัวเลข "ต่อหุ้น" ทั้งใบเป็นฐานหลังแตกพาร์ 2:1</b> (stock dividend จ่าย 2 ก.ย. 2569 · เริ่มเทรดฐานใหม่ 3 ก.ย. 2569 · SEC 8-K ยื่น 4 ก.ย. 2569) — มูลค่าเหมาะสม/ราคาเป้า/EPS ถูกหารสองทั้งหมด ส่วนอัตราส่วน (P/E, MOS, yield, ROE) ไม่เปลี่ยนจากการแตกพาร์ • ใช้ P/E + DCF + Analyst Intrinsic (ข้าม DDM/P/BV — APH จ่ายปันผลน้อยมาก yield ~0.6% ไม่ใช่หุ้นปันผล) • หลังงบ Q2/2026 (29 ก.ค. 2569) EPS TTM ปรับขึ้นเป็น $2.00 (+14.9%) ดัน FV เฉลี่ยขึ้นจาก $84 เป็น $94.50 — P/E ปัจจุบัน ~41x (TTM) ยังสะท้อนความคาดหวัง AI เต็มที่
-        จึงใช้กรอบ <b>Value Investor / Margin of Safety</b> ที่อนุรักษ์นิยมกว่าเป้านักวิเคราะห์ฝั่ง momentum (เฉลี่ย ~$99)
+        <b>หมายเหตุ:</b> <b>ตัวเลข "ต่อหุ้น" ทั้งใบเป็นฐานหลังแตกพาร์ 2:1</b> (บอร์ดอนุมัติ ส.ค. 2569) — มูลค่าเหมาะสม/ราคาเป้า/EPS ถูกหารสองทั้งหมด ส่วนอัตราส่วน (P/E, MOS, yield, ROE) ไม่เปลี่ยนจากการแตกพาร์ • ใช้ P/E + DCF (ข้าม DDM/P/BV — APH จ่ายปันผลน้อยมาก yield ~0.6%) • ปรับโครง FV รอบนี้: เป้านักวิเคราะห์/ค่า intrinsic ของนักวิเคราะห์ถูกตัดออกจากขา FV (เหลือเป็นบริบทเทียบเท่านั้น) และตัวคูณ P/E เปลี่ยนจาก 32x ที่ตั้งเองเป็นมัธยฐานที่วัดได้ 28.2x บน EPS FY2026e — P/E ปัจจุบัน ~39x (TTM) ยังสะท้อนความคาดหวัง AI เต็มที่
+        จึงใช้กรอบ <b>Value Investor / Margin of Safety</b> ที่อนุรักษ์นิยมกว่าเป้านักวิเคราะห์ฝั่ง momentum (เฉลี่ย {{rd:analystTgt}})
       </p>
     </div>
   </section>
@@ -193,13 +190,13 @@
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
-          <span style="text-align:right">{{rd:analystTgt}}<br><small>เป้า Analyst</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:analystTgt}}<br><small>เป้า Analyst</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคา $81.76 อยู่ <b>ต่ำกว่ามูลค่าเหมาะสม</b> ในเชิงพื้นฐานราว 13% — และยัง <b>ต่ำกว่าเป้าหมาย 12 เดือน</b> ของนักวิเคราะห์ (เฉลี่ย $99; Yahoo $99.12 จาก 17 ราย, StockAnalysis $99.15 Strong Buy)
-        สะท้อน 2 มุมมอง: สาย value เริ่มเห็นส่วนเผื่อความปลอดภัยกลับมาบ้าง, สาย growth มองว่าวงจร capex AI ยังให้ upside เพิ่ม
+        ราคา {{rd:px}} อยู่ <b>ใกล้มูลค่าเหมาะสม</b> {{rd:fv}} (MOS {{rd:mos}}) — แต่ยัง <b>ต่ำกว่าเป้าหมาย 12 เดือน</b> ของนักวิเคราะห์ (เฉลี่ย {{rd:analystTgt}}; Yahoo n=17, StockAnalysis Strong Buy)
+        สะท้อน 2 มุมมอง: สาย value เห็นส่วนเผื่อความปลอดภัยบางมาก, สาย growth มองว่าวงจร capex AI ยังให้ upside เพิ่ม
       </p>
     </div>
   </section>
@@ -210,12 +207,12 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt"><b>เริ่มมี Margin of Safety ระดับกลาง</b><br>ราคาปัจจุบัน $81.76 ต่ำกว่ามูลค่าเหมาะสม $94.50 ประมาณ 13% → ตามเกณฑ์ value investor เข้าเขต <b>เริ่มน่าสนใจ</b> แต่ยังไม่ถึงโซนถูกมาก ส่วนเผื่อความปลอดภัยอยู่ระดับกลาง</div>
+        <div class="txt"><b>Margin of Safety บางมาก</b><br>ราคาปัจจุบัน {{rd:px}} ใกล้มูลค่าเหมาะสม {{rd:fv}} → ตามเกณฑ์ value investor ยังไม่เข้าโซนน่าสนใจ ต้องรอราคาย่อลงสู่โซน MOS 20% ที่ {{rd:mos20}}</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
         <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $85</div><div class="d">ใกล้ขอบล่างของ fair value</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fvLow}}</div><div class="d">ใกล้ขอบล่างของ fair value</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
@@ -308,14 +305,14 @@
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
       <h2>ผู้ชนะฝั่งฟิสิคัล-เลเยอร์ของ AI — EPS กระโดดหลังงบ Q2/2026 เปิดพื้นที่ safety margin กลับมา</h2>
-      <p>Amphenol เป็นผู้นำคอนเนกเตอร์/สายสัญญาณความเร็วสูง (AEC, backplane/IO, optical) สำหรับ data center AI เติบโตเร็วเป็นประวัติการณ์ (รายได้ TTM +54.2% YoY) กำไรสูง M&A roll-up ต่อเนื่อง และกระจายปลายทางกว้าง — บริษัทแตกพาร์ 2:1 (มีผล 2 ก.ย. 2569) ตัวเลขต่อหุ้นทั้งใบจึงเป็นฐานใหม่ • งบ Q2/2026 (29 ก.ค. 2569) ดัน EPS TTM ขึ้นเป็น $2.00 (+14.9%) ที่ราคา ~$81.76 ตลาดยังให้ P/E TTM ~41x สะท้อนความคาดหวัง AI สูง แต่ FV ที่ปรับขึ้นตาม EPS ทำให้สาย value เริ่มเห็นส่วนเผื่อความปลอดภัยระดับกลางกลับมา ส่วนสาย growth ที่เชื่อวงจร capex AI และทรานซิชัน copper↔optics ยังเห็น upside ตามเป้านักวิเคราะห์ แต่ความเสี่ยง valuation และการ integrate M&A ยังสูง</p>
+      <p>Amphenol เป็นผู้นำคอนเนกเตอร์/สายสัญญาณความเร็วสูง (AEC, backplane/IO, optical) สำหรับ data center AI เติบโตเร็วเป็นประวัติการณ์ (รายได้ TTM +54.2% YoY) กำไรสูง M&A roll-up ต่อเนื่อง และกระจายปลายทางกว้าง — บริษัทแตกพาร์ 2:1 (มีผล 2 ก.ย. 2569) ตัวเลขต่อหุ้นทั้งใบจึงเป็นฐานใหม่ • งบ Q2/2026 ดัน EPS TTM ขึ้นเป็น $2.00 (+14.9%) ที่ราคา {{rd:px}} ตลาดยังให้ P/E TTM ~39x สะท้อนความคาดหวัง AI สูง เมื่อคิดตัวคูณมัธยฐานย้อนหลัง FV จึงอยู่ใกล้ราคา ส่วนเผื่อความปลอดภัยบางมาก ส่วนสาย growth ที่เชื่อวงจร capex AI และทรานซิชัน copper↔optics ยังเห็น upside ตามเป้านักวิเคราะห์ แต่ความเสี่ยง valuation และการ integrate M&A ยังสูง</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#a8b6cc">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">{{rd:analystTgt}} (+28%)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">{{rd:analystTgt}} ({{rd:analystPct}})</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> สาย value — รอย่อ/ทยอยสะสมเมื่อราคา <b>ต่ำกว่า ~$85</b> (น่าสนใจที่ &lt;$76) • สาย growth — เข้าได้แบบ DCA และยอมรับความผันผวน โดยติดตาม <b>capex AI ของ hyperscaler</b>, <b>การ integrate ดีล M&A (CommScope)</b> และ <b>operating margin</b> เป็นตัวชี้วัดหลัก
+        💡 <b>กลยุทธ์:</b> สาย value — รอย่อ/ทยอยสะสมเมื่อราคา <b>ต่ำกว่า {{rd:fvLow}}</b> (น่าสนใจที่ &lt;{{rd:mos20}}) • สาย growth — เข้าได้แบบ DCA และยอมรับความผันผวน โดยติดตาม <b>capex AI ของ hyperscaler</b>, <b>การ integrate ดีล M&A (CommScope)</b> และ <b>operating margin</b> เป็นตัวชี้วัดหลัก
       </div>
     </div>
   </section>
@@ -324,9 +321,9 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะอัตราการเติบโตของ capex AI, ผลของ M&A (CommScope) และ P/E ออกในอนาคต ซึ่งเป็นจุดถกเถียงหลัก
-    ราคาหุ้นเทคโนโลยี AI ผันผวนสูง (18 ส.ค. 2569 กลุ่มชิป/ฮาร์ดแวร์ AI ร่วงพร้อมกันทั้งกลุ่มจาก de-rating วงกว้าง ไม่ใช่ข่าวเฉพาะตัว APH) ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • อ้างอิงงบจริงจาก SEC (10-K FY2025, 10-Q Q2 2026) และ Yahoo Finance/StockAnalysis.com (ราคา ณ {{rd:priceDate}}) • EPS TTM ปรับขึ้นเป็น $2.00 (สิ้น Q2 2026, 29 ก.ค. 2569) จากเดิม $1.74 (+14.9%) • ตัวเลข "ต่อหุ้น" ทุกจุดในรายงานนี้เป็นฐาน<b>หลังแตกพาร์ 2:1</b> (stock dividend จ่าย 2 ก.ย. 2569 · SEC 8-K ยื่น 4 ก.ย. 2569) — เทียบกับรายงานฉบับก่อนหน้าต้องหารสอง
+    ราคาหุ้นเทคโนโลยี AI ผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • อ้างอิงงบจริงจาก SEC (10-K FY2025, 10-Q Q2 2026) และ Yahoo Finance/StockAnalysis.com (ราคา ณ {{rd:priceDate}}) • EPS TTM ปรับขึ้นเป็น $2.00 (สิ้น Q2 2026) จากเดิม $1.74 (+14.9%) • ตัวเลข "ต่อหุ้น" ทุกจุดในรายงานนี้เป็นฐาน<b>หลังแตกพาร์ 2:1</b> (บอร์ดอนุมัติ ส.ค. 2569) — เทียบกับรายงานฉบับก่อนหน้าต้องหารสอง
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 9 ก.ย. 2026 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2026 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
