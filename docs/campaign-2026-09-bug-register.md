@@ -83,4 +83,4 @@ W1 patchDerived การ์ด/shares · W2 postcheck↔gate (CE, --as-of) · W
 | RULE-TENSION-001 | รอเจ้าของ/นโยบาย | E17 (≥2 วิธี) ขัดกับกรณีวัดได้ตระกูลเดียว — ตัวเลือก: อนุญาต single-family พร้อมเปิดเผยความไว | GULF COCOCO PDYN VLTO | รอเจ้าของ | - |
 
 ## รายการที่ต้องให้คนตัดสิน/ดู (จากแคมเปญ)
-GULF = parked (กักกัน 2 ครั้ง) · RULE-TENSION-001 · ship ที่ auditor ตัดสิน "broken" 6 ใบ: AMATAV, BRK-B, GULF, JNJ, KR, MDLN · `shipped-with-inherited` 200 ใบ · verdict "flipped" 108 ใบ · FV เปลี่ยน >25% ≈95 ใบ · LIGHT 67 ใบที่ไม่ได้ตรวจโครงสร้าง FV ซ้ำ · noAudit 243 ใบ (ผ่านเฉพาะ postcheck+gate) — รายชื่อเต็มอยู่ในไฟล์แคมเปญ `needs-human.json`
+GULF = parked (กักกัน 2 ครั้ง) · RULE-TENSION-001 · ship ที่ auditor ตัดสิน "broken" 6 ใบ: AMATAV, BRK-B, GULF, JNJ, KR, MDLN · `shipped-with-inherited` 200 ใบ · verdict "flipped" 108 ใบ · FV เปลี่ยน >25% ≈95 ใบ · LIGHT 67 ใบที่ไม่ได้ตรวจโครงสร้าง FV ซ้ำ · noAudit 243 ใบ (ผ่านเฉพาะ postcheck+gate) — รายชื่อเต็ม (รายตัว) อยู่ที่ `docs/campaign-2026-09-needs-human.json` (parked / broken / inherited / FV เปลี่ยนมาก / LIGHT / noAudit) และ `docs/campaign-2026-09-lean-light.json` (ใบที่ทำเป็น UPDATE-LIGHT และ noAudit)
