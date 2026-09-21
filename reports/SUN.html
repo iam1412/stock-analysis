@@ -4,35 +4,35 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น ซันสวีท (SUN) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Opus 5">
+<meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"SUN","currency":"THB","price":2.22,"fairValue":2.5,"mos":11.2,"upside":12.6,"pe":13.1,"dividendYield":6.76,"roe":10}
+{"symbol":"SUN","currency":"THB","price":2.22,"fairValue":2.35,"mos":5.5,"upside":5.9,"pe":35.8,"dividendYield":6.76,"roe":4.3}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 2.5,
+  "fv": 2.35,
   "values": {
     "px": 2.22,
-    "priceDate": "2026-09-18",
+    "priceDate": "2026-09-21",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
-    "fvLow": 2.25,
-    "fvHigh": 2.75,
+    "fvLow": 1.96,
+    "fvHigh": 2.73,
     "shares": 774000000,
     "dps": 0.15,
     "bvps": 1.82,
     "scenarios": [
       {
-        "tgt": 1.31,
-        "div": 0.21
+        "tgt": 1.03,
+        "div": 0.15
       },
       {
-        "tgt": 2.75,
+        "tgt": 2.73,
         "div": 0.39
       },
       {
-        "tgt": 3.96,
+        "tgt": 3.81,
         "div": 0.48
       }
     ],
@@ -107,7 +107,7 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ ฿2.20 – ฿3.54<br>
+        กรอบ 52 สัปดาห์ ฿2.16 – ฿3.54<br>
         ที่มา: SET, StockAnalysis.com, TradingView
       </div>
     </div>
@@ -115,28 +115,28 @@
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ส.ค. 2569 · งบ TTM ถึง Q1/2569</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ 22 ก.ย. 2569 · งบ TTM ล่าสุดตาม StockAnalysis</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">฿1,718M</div><div class="d">774M หุ้นจดทะเบียน · fully diluted 858M · เกษตร-อาหาร</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~13.1x</div><div class="d">฿2.40 ÷ EPS(TTM) ฿0.17 · ราคาต่ำสุดรอบ 3 ปี</div></div>
-      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~14x</div><div class="d">ช่วง 10–20x ตามวัฏจักรข้าวโพด</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿1,718M</div><div class="d">774M หุ้นจดทะเบียน · dil. ถัวเฉลี่ย TTM 982M · เกษตร-อาหาร</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~35.8x</div><div class="d">฿2.22 ÷ EPS(TTM) ฿0.062 · กำไร TTM ต่ำผิดปกติ ไม่ใช่ตัวคูณที่ใช้ตั้งเป้า</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~13.7x</div><div class="d">มัธยฐาน 5 ปี · ช่วง 9.5–27.0x ตามวัฏจักรข้าวโพด</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ฿1.82 (FY2025) · ใช้เป็นบริบท ไม่ใช่ขาของ FV</div></div>
 
-      <div class="metric"><div class="k">กำไรสุทธิ (TTM)</div><div class="v">฿142M</div><div class="d">FY2025 ฿179M (−39% YoY จาก ฿294M) · ยังหดต่อ</div></div>
-      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">฿0.17</div><div class="d">dil. = ฿142M ÷ 858M หุ้น · basic ฿0.18 · FY2025 ฿0.23</div></div>
+      <div class="metric"><div class="k">กำไรสุทธิ (TTM)</div><div class="v">฿60.8M</div><div class="d">FY2025 ฿179M (−39% YoY จาก ฿294M) · TTM หดต่ออีกราว 2 ใน 3</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">฿0.06</div><div class="d">dil. = ฿60.8M ÷ 982M หุ้น · basic ~฿0.08 (÷774M) · FY2025 ฿0.23</div></div>
       <div class="metric"><div class="k">BVPS</div><div class="v">~฿1.82</div><div class="d">ทุนผู้ถือหุ้น ฿1,410M (FY2025)</div></div>
-      <div class="metric"><div class="k">ROE (TTM)</div><div class="v neu">~10.0%</div><div class="d">FY2025 12.8% · FY2024 21.4% · ลดต่อเนื่อง 3 ปี</div></div>
+      <div class="metric"><div class="k">ROE (TTM)</div><div class="v neu">~4.3%</div><div class="d">FY2025 12.8% · FY2024 21.4% · ลดต่อเนื่อง 3 ปี</div></div>
 
-      <div class="metric"><div class="k">รายได้ (TTM)</div><div class="v neu">฿3,665M</div><div class="d">+2.5% YoY · FY2025 ฿3,592M · ยอดขายทรงตัว กำไรหด</div></div>
-      <div class="metric"><div class="k">อัตรากำไรขั้นต้น (TTM)</div><div class="v">14.7%</div><div class="d">FY2025 15.6% · FY2024 20.0% · ต้นทุนข้าวโพดสูง</div></div>
-      <div class="metric"><div class="k">เงินปันผล (TTM)</div><div class="v">~6.76%</div><div class="d">฿0.15 ย้อนหลัง 12 ด. · งวด เม.ย. 69 ลดเหลือ ฿0.05 → run-rate ~4.2%</div></div>
+      <div class="metric"><div class="k">รายได้ (TTM)</div><div class="v neu">฿3,551M</div><div class="d">−4.3% YoY · FY2025 ฿3,592M · ยอดขายลดลง กำไรหดแรงกว่า</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น (TTM)</div><div class="v">13.8%</div><div class="d">FY2025 15.6% · FY2024 20.0% · ต้นทุนข้าวโพดสูง</div></div>
+      <div class="metric"><div class="k">เงินปันผล (TTM)</div><div class="v">~6.76%</div><div class="d">฿0.15 ย้อนหลัง 12 ด. (฿0.10 ก.ย. 68 + ฿0.05 พ.ค. 69) · ยังไม่มีงวดปลาย ส.ค. 69 ในประวัติ → run-rate ~4.5%</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">0.45</div><div class="d">ความผันผวนต่ำ · defensive export stock</div></div>
     </div>
   </section>
 
   <!-- ===== 2. PRICE CHART ===== -->
   <section>
-    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">รายเดือน · ก.ย. 2568 – ส.ค. 2569</div></div>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">รายเดือน · ต.ค. 2568 – ก.ย. 2569</div></div>
     <div class="card">
       <div class="chart-wrap">
         <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
@@ -147,7 +147,7 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        หุ้น SUN ปรับตัวลดลงต่อเนื่องตลอดรอบปี จาก ฿3.32 (ก.ย. 68) มาที่ ฿2.40 (11 ส.ค. 69) คิดเป็น −27.7% ในรอบปี ทำจุดต่ำสุดของช่วง ฿2.34 ในเดือน มิ.ย. 69 ก่อนเด้งสั้นไป ฿2.56 ใน ก.ค. 69 แล้วย่อกลับ แรงกดดันหลักคือกำไรที่หดต่อเนื่อง (FY2025 −39% YoY และ TTM ลดต่อเหลือ ฿142M) gross margin ที่แคบลงจาก 20.0% เหลือ 14.7% หนี้ที่เพิ่มขึ้น และปันผลงวด เม.ย. 69 ที่ถูกลดครึ่งหนึ่ง ทั้งหมดเกิดในรอบวัฏจักรต้นทุนข้าวโพดสูงและค่าเงินที่ไม่เอื้อต่อผู้ส่งออก
+        หุ้น SUN ปรับตัวลดลงต่อเนื่องตลอดรอบปี จาก ฿3.30 (ต.ค. 68) มาที่ {{rd:px}} ในเดือน ก.ย. 69 ({{rd:chg}}) โดยจุดล่างสุดของกราฟรายเดือนคือจุดล่าสุดนี้เอง หลังเด้งสั้นไป ฿2.56 ใน ก.ค. 69 แล้วย่อกลับ แรงกดดันหลักคือกำไรที่หดต่อเนื่อง (FY2025 −39% YoY และ TTM ลดต่อเหลือ ฿60.8M) gross margin ที่แคบลงจาก 20.0% เหลือ 13.8% หนี้ที่เพิ่มขึ้นเป็น ฿475M และปันผลงวด เม.ย. 69 ที่ถูกลดครึ่งหนึ่ง ทั้งหมดเกิดในรอบวัฏจักรต้นทุนข้าวโพดและค่าเงินที่ไม่เอื้อต่อผู้ส่งออก
       </p>
     </div>
   </section>
@@ -157,19 +157,19 @@
     <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี · EPS normalize รอบวัฏจักร</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS normalized ฿0.25 × P/E เป้าหมาย 11x — EPS ฉากกลางวัฏจักร = net margin 6.0% × รายได้ ฿3,600M ÷ 858M หุ้น (dil.)</div></div>
-        <div class="mval">฿2.75</div>
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS normalized ฿0.22 × P/E เป้าหมาย 12.4x — EPS ฉากกลางวัฏจักร = net margin 6.0% (ต่ำกว่ามัธยฐาน 5 ปี 7.0%) × รายได้ TTM ฿3,551M ÷ 982M หุ้น (dil. TTM) = ฿0.217 · ตัวคูณ 12.4x = มัธยฐานของ P/E ประวัติ 4 ปี (9.5/11.0/13.7/19.7x) ตัดปี 2022 ที่ 27.0x ออก เพราะ EPS ปีนั้นตกต่ำจนตัวคูณบวม (ทั้ง 5 ปี มัธยฐาน 13.7x) — มาจากประวัติ ไม่ใช่จาก P/E ปัจจุบัน</div></div>
+        <div class="mval">฿2.73</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">ปันผลฉากกลาง = payout 66% × EPS ฉากกลาง ฿0.25 = ฿0.165 → D₁ ฿0.169 · r 10.0% (rf บาท 10 ปี ~2.5% + ส่วนชดเชยความเสี่ยง small-cap สภาพคล่องต่ำ 7.5%), g 2.5% → ฿0.169 ÷ (10.0%−2.5%)</div></div>
-        <div class="mval">฿2.25</div>
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">ปันผลฉากกลาง = payout 66% (FY2025 ฿0.15 ÷ EPS ฿0.23) × EPS ฉากกลาง ฿0.217 = ฿0.143 → D₁ ฿0.147 · r 10.0% (สมมติฐานของรายงาน: rf บาท 10 ปี ~2.5% + ส่วนชดเชยความเสี่ยง small-cap สภาพคล่องต่ำ 7.5%), g 2.5% → ฿0.147 ÷ (10.0%−2.5%) · คนละตระกูลกับขา P/E (ใช้ (r,g) ไม่ใช้ตัวคูณตลาด)</div></div>
+        <div class="mval">฿1.96</div>
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        <b>EPS ที่ใช้และเหตุผลที่ตัดแหล่งขัดแย้งทิ้ง:</b> รายงานนี้ freeze EPS(TTM) = ฿0.17 นิยาม <b>diluted</b> — งบกำไรขาดทุน TTM ของ StockAnalysis ระบุกำไรสุทธิ ฿142M ÷ 858M หุ้น (dil.) = ฿0.17 และ Yahoo ให้ ฿0.18 ซึ่งคือกำไรก้อนเดียวกันหารด้วยหุ้นจดทะเบียน 774M (basic) สองแหล่งจึงชี้กำไรก้อนเดียวกัน และ ROE ที่ทั้งสองแหล่งรายงาน (~10.0%) สอดคล้องกับกำไร ฿142M · ส่วนตัวเลข EPS ฿0.08 (P/E 31.1x) บนหน้า quote ของ StockAnalysis มาจากกำไร ฿60.78M ซึ่งไม่ปรากฏในงบของเว็บเดียวกัน และบล็อกอัตราส่วนหน้านั้นยังคำนวณบนราคาเก่า ฿2.58 (yield 5.81% = ฿0.15 ÷ ฿2.58) จึงถือเป็นค่าที่เพี้ยนและไม่นำมาใช้
+        <b>EPS ที่ใช้และสาเหตุที่สองแหล่งต่างกัน:</b> รายงานนี้ใช้ EPS(TTM) = ฿0.06 นิยาม <b>diluted</b> — กำไรสุทธิ TTM ฿60.8M ÷ 982M หุ้น (dil. ถัวเฉลี่ย) = ฿0.062 ตรงกับ StockAnalysis (฿0.06) ส่วน Yahoo ให้ ฿0.08 ซึ่งคือกำไรก้อนเดียวกันหารด้วยหุ้นจดทะเบียน 774M (basic) — ต่างกันที่ฐานหุ้น ไม่ใช่กำไร (ส่วนต่างสัมบูรณ์ ฿0.02) · EPS ล่วงหน้า ฿0.17 ของ Yahoo ไม่ทราบปีงบที่อ้าง และหน้า forecast ดึงไม่ได้ จึงไม่นำมาใช้ · FV ตั้งบน EPS ฉากกลางวัฏจักร ฿0.217 (net margin 6.0%) ไม่ใช่กำไร TTM ที่ตกต่ำ ซึ่งหมายความว่า FV ไวต่อสมมติฐาน margin มาก: margin 4.0% ให้ P/E leg ราว ฿1.79 และ DDM ราว ฿1.30 · ไม่มีเป้านักวิเคราะห์ให้ใช้เป็นขา FV (Yahoo n=1 ฿2.4 เป็นบริบทเท่านั้น)
       </p>
     </div>
   </section>
@@ -186,13 +186,13 @@
         <div class="scale">
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿2.25<br><small>กรอบล่าง FV</small></span>
+          <span style="text-align:center">{{rd:fvLow}}<br><small>กรอบล่าง FV</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคา ฿2.40 อยู่ต่ำกว่ามูลค่าเหมาะสม ฿2.50 เพียง 4.0% และยังห่างจากโซน MOS 20% (฿2.00) พอสมควร ส่วนเผื่อความปลอดภัยที่ระดับนี้จึงบางมาก · เดิมจุดขายของหุ้นคือ yield สูง แต่ปันผลงวด เม.ย. 69 ถูกลดจาก ฿0.10 เหลือ ฿0.05 ทำให้ run-rate เหลือราว ฿0.10/ปี หรือ ~4.2% (ตัวเลขย้อนหลัง 12 เดือน 6.25% ยังรวมงวดเก่าที่จ่ายเต็ม) cushion ด้านปันผลจึงบางลงตามไปด้วย · โซนที่ให้ส่วนเผื่อจริงคือ ฿2.00–2.25 ซึ่งเป็นกรอบล่างของ FV ลงไปถึง MOS 20%
+        ราคา {{rd:px}} อยู่ต่ำกว่ามูลค่าเหมาะสม {{rd:fv}} เพียง {{rd:mos}} และยังห่างจากโซน MOS 20% ({{rd:mos20}}) พอสมควร ส่วนเผื่อความปลอดภัยที่ระดับนี้จึงบางมาก · เดิมจุดขายของหุ้นคือ yield สูง แต่ปันผลงวด พ.ค. 69 ถูกลดจาก ฿0.10 เหลือ ฿0.05 (ตามประวัติ StockAnalysis) และยังไม่พบงวดปลาย ส.ค. 69 ทำให้ run-rate เหลือราว ฿0.10/ปี หรือ ~4.5% (ตัวเลขย้อนหลัง 12 เดือน 6.76% ยังรวมงวดเก่าที่จ่ายเต็ม) cushion ด้านปันผลจึงบางลงตามไปด้วย · โซนที่ให้ส่วนเผื่อจริงคือระหว่างโซน MOS 30% ถึง MOS 20% ซึ่งอยู่ต่ำกว่าราคาปัจจุบัน
       </p>
     </div>
   </section>
@@ -203,7 +203,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">MOS ต่ำ — ราคา ฿2.40 ต่ำกว่า FV ฿2.50 เพียง 4% · กำไรยังหดและปันผลเพิ่งถูกลดครึ่ง · ควรรอโซนที่ดีกว่า</div>
+        <div class="txt">MOS ต่ำ — ราคา {{rd:px}} ต่ำกว่า FV {{rd:fv}} เพียง {{rd:mos}} · กำไรยังหดและปันผลเพิ่งถูกลดครึ่ง · ควรรอโซนที่ดีกว่า</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -222,50 +222,50 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน (TTM) ฿0.17{{rd:scnNote}}</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน (TTM) ฿0.062{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
-        <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
+        <div class="top"><span>🐻 Bear</span><span>EPS +20%/ปี</span></div>
         <div class="body">
           <div class="tgt">{{rd:sc1tgt}}</div>
           <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿0.146</span></li>
-            <li><span>P/E ออก</span><span>9x</span></li>
+            <li><span>EPS ปี 3</span><span>~฿0.108</span></li>
+            <li><span>P/E ออก</span><span>9.5x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
-            <li><span>สถานการณ์</span><span>margin ค้าง 3.6% · ปันผลลดต่อ</span></li>
+            <li><span>สถานการณ์</span><span>margin ค้าง 3.0% · ปันผลลดต่อ</span></li>
           </ul>
         </div>
       </div>
       <div class="col base">
-        <div class="top"><span>⚖️ Base</span><span>EPS +14%/ปี</span></div>
+        <div class="top"><span>⚖️ Base</span><span>EPS +52%/ปี</span></div>
         <div class="body">
           <div class="tgt">{{rd:sc2tgt}}</div>
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿0.25</span></li>
-            <li><span>P/E ออก</span><span>11x</span></li>
+            <li><span>EPS ปี 3</span><span>~฿0.22</span></li>
+            <li><span>P/E ออก</span><span>12.4x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>margin กลับสู่ฉากกลาง 6.0%</span></li>
           </ul>
         </div>
       </div>
       <div class="col bull">
-        <div class="top"><span>🚀 Bull</span><span>EPS +28%/ปี</span></div>
+        <div class="top"><span>🚀 Bull</span><span>EPS +65%/ปี</span></div>
         <div class="body">
           <div class="tgt">{{rd:sc3tgt}}</div>
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿0.36</span></li>
-            <li><span>P/E ออก</span><span>11x</span></li>
+            <li><span>EPS ปี 3</span><span>~฿0.28</span></li>
+            <li><span>P/E ออก</span><span>13.7x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
-            <li><span>สถานการณ์</span><span>margin ฟื้น 7.9% · รายได้ ฿3,900M</span></li>
+            <li><span>สถานการณ์</span><span>margin ฟื้น 7.0% (มัธยฐาน 5 ปี) · รายได้ ฿3,900M</span></li>
           </ul>
         </div>
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      ทั้งสามฉากเดินจากตัวแปรชุดเดียวกันคือ net margin × รายได้ ÷ 858M หุ้น (dil.) ไม่ใช่การเดา EPS ลอย ๆ · Base สมมติ margin กลับสู่ฉากกลาง 6.0% บนรายได้ ฿3,600M ได้ EPS ปี 3 ฿0.25 × P/E ออก 11x = ฿2.75 บวกปันผลสะสม ฿0.39 (ทยอยกลับจาก ฿0.10 เป็น ฿0.16) รวม ฿3.14 = +30.8% หรือ ~+9.4%/ปี · Bull สมมติ margin ฟื้นถึง 7.9% (ยังต่ำกว่า FY2023 ที่ 9.7%) บนรายได้ ฿3,900M · Bear สมมติ margin ค้างที่ 3.6% ใกล้ระดับ TTM พร้อม de-rating P/E เหลือ 9x และปันผลลดต่อ ให้ผลตอบแทน −36.7% · ตัวแปรที่ต้องติดตามคือราคาข้าวโพดหวานหน้าโรงงาน ค่าเงินบาทเทียบ JPY/EUR/USD และภาระดอกเบี้ยจากหนี้ ฿439M
+      ทั้งสามฉากเดินจากตัวแปรชุดเดียวกันคือ net margin × รายได้ ÷ 982M หุ้น (dil.) ไม่ใช่การเดา EPS ลอย ๆ · อัตรา EPS %/ปี สูงเพราะฐาน TTM (฿0.062) ต่ำผิดปกติ ไม่ใช่เพราะมองการเติบโตเกินจริง · Base สมมติ margin กลับสู่ฉากกลาง 6.0% บนรายได้ ฿3,551M ได้ EPS ปี 3 ฿0.22 × P/E ออก 12.4x = {{rd:sc2tgt}} บวกปันผลสะสม {{rd:sc2div}} (ทยอยกลับจาก ฿0.10 เป็น ฿0.16) ผลตอบแทนรวม {{rd:sc2ret}} · Bull สมมติ margin ฟื้นถึง 7.0% (มัธยฐาน 5 ปี ยังต่ำกว่า FY2023 ที่ 9.7%) บนรายได้ ฿3,900M ตัวคูณ 13.7x = มัธยฐาน 5 ปี ให้ {{rd:sc3ret}} · Bear สมมติ margin ค้างที่ 3.0% (สูงกว่า TTM 1.7% เล็กน้อย) พร้อม de-rating P/E เหลือ 9.5x (ต่ำสุดของประวัติ) และปันผลลดต่อ ให้ {{rd:sc1ret}} · ตัวแปรที่ต้องติดตามคือราคาข้าวโพดหวานหน้าโรงงาน ค่าเงินบาทเทียบ JPY/EUR/USD และภาระดอกเบี้ยจากหนี้ ฿475M
     </p>
   </section>
 
@@ -280,20 +280,20 @@
           <li><b>ต้นทุนวัตถุดิบอาจผ่อนคลาย:</b> ราคาข้าวโพดที่เคยพุ่งสูงกดดัน FY2025 — หากราคาข้าวโพดปรับตัวลง gross margin จะฟื้นตัวได้เร็ว (FY2022→2023 margin เด้ง 4 ppt)</li>
           <li><b>ค่าเงิน JPY/EUR ฟื้นตัว:</b> รายได้ส่งออกส่วนใหญ่เป็น USD/JPY/EUR การอ่อนค่าของบาทหรือ JPY ที่แข็งขึ้นจะช่วยขยาย margin โดยตรง</li>
           <li><b>ขยายผลิตภัณฑ์มูลค่าสูง:</b> น้ำข้าวโพด (corn milk) และผลิตภัณฑ์แปรรูปเพิ่มเติมช่วยกระจายรายได้และยกระดับ margin จากสินค้าโภคภัณฑ์</li>
-          <li><b>ยังจ่ายปันผลต่อเนื่อง (แต่ลดลง):</b> ย้อนหลัง 12 เดือนจ่าย ฿0.15 (yield 6.25% ที่ ฿2.40) แต่งวด เม.ย. 69 ลดจาก ฿0.10 เหลือ ฿0.05 ทำให้ run-rate ปัจจุบันเหลือ ~฿0.10/ปี (yield ~4.2%) — cushion ยังมีแต่บางลงมาก และมีโอกาสกลับขึ้นถ้ากำไรฟื้น</li>
+          <li><b>ยังจ่ายปันผลต่อเนื่อง (แต่ลดลง):</b> ย้อนหลัง 12 เดือนจ่าย ฿0.15 (yield 6.76%) แต่งวด พ.ค. 69 ลดจาก ฿0.10 เหลือ ฿0.05 ทำให้ run-rate ปัจจุบันเหลือ ~฿0.10/ปี (yield ~4.5%) — cushion ยังมีแต่บางลงมาก และมีโอกาสกลับขึ้นถ้ากำไรฟื้น</li>
           <li><b>Beta ต่ำ (0.45):</b> หุ้นมีความผันผวนต่ำกว่าตลาดมาก เหมาะสำหรับนักลงทุนที่ต้องการรายได้สม่ำเสมอและความเสี่ยงต่ำ</li>
         </ul>
       </div>
       <div class="box risk">
         <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
         <ul>
-          <li><b>กำไรผันผวนสูงตามวัฏจักร:</b> EPS ผันผวนแรงมาก (FY2022 ฿0.16 · FY2023 ฿0.46 · FY2025 ฿0.23 · TTM ฿0.17) สะท้อนธรรมชาติของธุรกิจที่ขึ้นกับราคาข้าวโพดและอัตราแลกเปลี่ยน — FV ในรายงานนี้จึงตั้งบน EPS ฉากกลางวัฏจักร ไม่ใช่กำไรปีเดียว</li>
+          <li><b>กำไรผันผวนสูงตามวัฏจักร:</b> EPS ผันผวนแรงมาก (FY2022 ฿0.16 · FY2023 ฿0.46 · FY2025 ฿0.23 · TTM ฿0.06) สะท้อนธรรมชาติของธุรกิจที่ขึ้นกับราคาข้าวโพดและอัตราแลกเปลี่ยน — FV ในรายงานนี้จึงตั้งบน EPS ฉากกลางวัฏจักร ไม่ใช่กำไรปีเดียว</li>
           <li><b>ความเสี่ยงอัตราแลกเปลี่ยน (FX):</b> รายได้ส่งออกและต้นทุนบางส่วนเป็นสกุลเงินต่างประเทศ ความผันผวนค่าเงินบาทกระทบ margin โดยตรง</li>
           <li><b>ต้นทุนข้าวโพดและพลังงาน:</b> วัตถุดิบหลักคือข้าวโพดหวานที่ราคาขึ้นกับสภาพภูมิอากาศ ความแห้งแล้งในภาคเหนือกระทบทั้งปริมาณและต้นทุน</li>
-          <li><b>หนี้สินเพิ่มขึ้นต่อเนื่อง:</b> Total debt เพิ่มจาก ฿51M (FY2021) เป็น ฿435M (FY2025) เพิ่ม 8.5 เท่า กดดัน FCF ซึ่งแทบเป็น 0 ใน FY2025</li>
+          <li><b>หนี้สินเพิ่มขึ้นต่อเนื่อง:</b> Total debt เพิ่มจาก ฿51M (FY2021) เป็น ฿435M (FY2025) และ ฿475M ใน TTM ล่าสุด เพิ่มเกิน 8 เท่า กดดัน FCF ซึ่งแทบเป็น 0 ใน FY2025</li>
           <li><b>ตลาดส่งออกกระจุกตัว:</b> ลูกค้าหลักในญี่ปุ่น เกาหลี ยุโรป — การเปลี่ยนแปลงนโยบายนำเข้าหรือมาตรฐานสินค้าของประเทศเหล่านี้กระทบรายได้ทั้งหมด</li>
-          <li><b>ตลาดขนาดเล็ก ไม่มี coverage:</b> Market cap ฿1.86B ปริมาณซื้อขายเฉลี่ย ~฿1.4M/วัน ทำให้ผู้ลงทุนสถาบันหลีกเลี่ยง · ไม่มีนักวิเคราะห์ทำ coverage จึงไม่มีราคาเป้าจากสถาบันให้อ้างอิง (target n/a ทั้ง Yahoo และ StockAnalysis)</li>
-          <li><b>งบไตรมาสใหม่ 18 ส.ค. 2569:</b> เป็นจุดชี้ขาดว่า gross margin ที่หดเหลือ 14.7% เริ่มทรงตัวหรือยัง หากยังหดต่อ EPS ฉากกลาง ฿0.25 ที่ใช้ตั้ง FV จะต้องถูกปรับลง และ FV ฿2.50 จะไม่ยืน</li>
+          <li><b>ตลาดขนาดเล็ก ไม่มี coverage:</b> Market cap ฿1.72B ปริมาณซื้อขายต่ำ ทำให้ผู้ลงทุนสถาบันหลีกเลี่ยง · นักวิเคราะห์ coverage แทบไม่มี (Yahoo n=1 ฿2.4 · StockAnalysis n/a) จึงไม่มีราคาเป้าจากสถาบันให้ยึด</li>
+          <li><b>งบไตรมาสถัดไป (คาด 10 พ.ย. 2569):</b> เป็นจุดชี้ขาดว่า gross margin ที่หดเหลือ 13.8% เริ่มทรงตัวหรือยัง หากยังหดต่อ EPS ฉากกลาง ฿0.22 ที่ใช้ตั้ง FV จะต้องถูกปรับลง และ FV จะไม่ยืน</li>
         </ul>
       </div>
     </div>
@@ -304,14 +304,14 @@
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
       <h2>ราคายุติธรรม — รอโซน MOS ดีกว่านี้</h2>
-      <p>SUN (ซันสวีท) เป็นผู้นำส่งออกข้าวโพดหวานแปรรูปของไทย ธุรกิจหลักยังแข็ง แต่วัฏจักรกำลังอยู่ฝั่งลบ: กำไร FY2025 ลดลง −39% YoY และ TTM หดต่อเหลือ ฿142M (EPS ฿0.17) gross margin ลงจาก 20.0% เหลือ 14.7% หนี้เพิ่มจาก ฿51M (FY2021) เป็น ฿439M และปันผลงวด เม.ย. 69 ถูกลดครึ่งเหลือ ฿0.05 ราคาหุ้นจึงลดลง −27.7% ในรอบปีมาที่ ฿2.40 มูลค่าเหมาะสมที่ตั้งบน EPS ฉากกลางวัฏจักร ฿0.25 อยู่ที่ ฿2.50 (กรอบ ฿2.25–฿2.75) เท่ากับ MOS เพียง 4% — ราคาสะท้อนความอ่อนแอไปพอสมควรแล้วแต่ยังไม่ถึงขั้นถูก หากกำไรกลับสู่ฉากกลางใน 3 ปี ผลตอบแทนรวมราว +31% (Bull +85%) ขณะที่ Bear ให้ −37% ความเสี่ยงขาลงจึงยังใหญ่กว่าส่วนเผื่อความปลอดภัยที่มีอยู่ · หุ้นตัวนี้ไม่มีนักวิเคราะห์ทำ coverage จึงไม่มีราคาเป้าจากสถาบันให้ยึด ต้องอาศัยงบรายไตรมาสเป็นตัวชี้</p>
+      <p>SUN (ซันสวีท) เป็นผู้นำส่งออกข้าวโพดหวานแปรรูปของไทย ธุรกิจหลักยังแข็ง แต่วัฏจักรกำลังอยู่ฝั่งลบ: กำไร FY2025 ลดลง −39% YoY และ TTM หดต่อเหลือ ฿60.8M (EPS ฿0.06) gross margin ลงจาก 20.0% เหลือ 13.8% หนี้เพิ่มจาก ฿51M (FY2021) เป็น ฿475M และปันผลงวด พ.ค. 69 ถูกลดครึ่งเหลือ ฿0.05 ราคาหุ้นลดลงต่อเนื่องในรอบปีมาที่ {{rd:px}} มูลค่าเหมาะสมที่ตั้งบน EPS ฉากกลางวัฏจักร ฿0.22 อยู่ที่ {{rd:fv}} (กรอบ {{rd:fvLow}}–{{rd:fvHigh}}) เท่ากับ MOS เพียง {{rd:mos}} และไวต่อสมมติฐาน margin มาก — ราคาสะท้อนความอ่อนแอไปพอสมควรแล้วแต่ยังไม่ถึงขั้นถูก หากกำไรกลับสู่ฉากกลางใน 3 ปี ผลตอบแทนรวม {{rd:sc2ret}} (Bull {{rd:sc3ret}}) ขณะที่ Bear ให้ {{rd:sc1ret}} ความเสี่ยงขาลงจึงยังใหญ่กว่าส่วนเผื่อความปลอดภัยที่มีอยู่ · หุ้นตัวนี้แทบไม่มีนักวิเคราะห์ทำ coverage จึงไม่มีราคาเป้าจากสถาบันให้ยึด ต้องอาศัยงบรายไตรมาสเป็นตัวชี้</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#cab9a8">ไม่มี coverage (n/a)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#cab9a8">แทบไม่มี coverage (n=1)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> รอเพิ่มน้ำหนักที่ ฿2.00–2.25 (MOS 10–20%) หรือเมื่อเห็นสัญญาณ gross margin ฟื้นกลับ ≥18% ในงบรายไตรมาส • ที่ ฿2.40 MOS เหลือ 4% และ yield ตาม run-rate ใหม่ ~4.2% (ไม่ใช่ 6.25% ซึ่งเป็นตัวเลขย้อนหลัง) จึงยังไม่ใช่จุดที่ส่วนเผื่อความปลอดภัยเพียงพอ • งบ 18 ส.ค. 2569 คือตัวชี้ขาดถัดไป
+        💡 <b>กลยุทธ์:</b> รอเพิ่มน้ำหนักที่โซน MOS 20% ({{rd:mos20}}) หรือเมื่อเห็นสัญญาณ gross margin ฟื้นกลับ ≥18% ในงบรายไตรมาส • ที่ระดับ {{rd:px}} MOS เหลือ {{rd:mos}} และ yield ตาม run-rate ใหม่ ~4.5% (ไม่ใช่ 6.76% ซึ่งเป็นตัวเลขย้อนหลัง) จึงยังไม่ใช่จุดที่ส่วนเผื่อความปลอดภัยเพียงพอ • งบไตรมาสถัดไป (คาด 10 พ.ย. 2569) คือตัวชี้ขาด
       </div>
     </div>
   </section>
@@ -323,7 +323,7 @@
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
     แหล่งข้อมูล: SET (set.or.th) · TradingView (th.tradingview.com) · StockAnalysis.com (BKK:SUN) · Yahoo Finance (SUN.BK) · ราคา ณ {{rd:priceDate}}
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 12 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 22 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
