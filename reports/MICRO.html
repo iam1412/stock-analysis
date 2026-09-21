@@ -6,35 +6,35 @@
 <title>วิเคราะห์หุ้น ไมโคร ลีสซิ่ง (MICRO) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"MICRO","currency":"THB","price":1.34,"fairValue":0.62,"mos":-116.1,"upside":-53.7,"pe":19.1,"dividendYield":2.01,"roe":4}
+{"symbol":"MICRO","currency":"THB","price":1.34,"fairValue":1.7,"mos":21.2,"upside":26.9,"pe":14.1,"dividendYield":2.01,"roe":5.1}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 0.62,
+  "fv": 1.7,
   "values": {
     "px": 1.34,
-    "priceDate": "2026-09-18",
+    "priceDate": "2026-09-21",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
     "fvLow": 0.46,
-    "fvHigh": 0.84,
-    "eps": 0.07,
+    "fvHigh": 1.7,
+    "eps": 0.095,
     "shares": 935000000,
     "dps": 0.027,
     "bvps": 1.94,
-    "baseEps": 0.07,
+    "baseEps": 0.095,
     "scenarios": [
       {
-        "tgt": 0.52,
+        "tgt": 0.73,
         "div": 0.06
       },
       {
-        "tgt": 0.97,
+        "tgt": 1.39,
         "div": 0.09
       },
       {
-        "tgt": 1.47,
+        "tgt": 1.97,
         "div": 0.12
       }
     ],
@@ -73,8 +73,8 @@
       ["ก.ย.26", 1.34]
     ],
     "min": 0.5,
-    "max": 1.75,
-    "grid": [0.75, 1, 1.25, 1.5],
+    "max": 2,
+    "grid": [0.75, 1, 1.25, 1.5, 1.75],
     "currency": "฿",
     "highlight": [3, 9],
     "gridFmt": "v.toFixed(2)",
@@ -82,7 +82,7 @@
   },
   "gauge": {
     "min": 0.4,
-    "max": 1.8,
+    "max": 2.3,
     "fairLabelTop": true
   }
 }
@@ -109,7 +109,7 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ ฿0.76 – ฿1.66<br>
+        กรอบ 52 สัปดาห์ ฿0.76 – ฿1.73<br>
         ที่มา: SET Thailand, Investing.com, microleasingplc.com
       </div>
     </div>
@@ -119,18 +119,18 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ Q1/2569 • แหล่ง: Investing.com, microleasingplc.com</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿1,253 ล้าน</div><div class="d">~935 ล้านหุ้น × ฿1.53</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~19.14x</div><div class="d">EPS TTM ฿0.07 · ราคาพุ่งขึ้นเร็วกว่ากำไร</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">~{{rd:pbv}}x</div><div class="d">BVPS ฿1.94 · ซื้อขายต่ำกว่าบัญชี</div></div>
-      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.07</div><div class="d">FY2025 ฿0.05 · Q1/2569 ฿0.03/ไตรมาส</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿1,253 ล้าน</div><div class="d">~935 ล้านหุ้น × {{rd:px}}</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~14.1x</div><div class="d">EPS TTM ฿0.095 · กำไร TTM ยกจาก Q1/2569 ที่แรงผิดปกติ</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~{{rd:pbv}}x</div><div class="d">BVPS ฿1.94 · ซื้อขายต่ำกว่ามูลค่าทางบัญชี</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.095</div><div class="d">FY2025 ฿0.05 · NI TTM ฿91.5 ล้าน ÷ 962 ล้านหุ้นถัวเฉลี่ย</div></div>
 
       <div class="metric"><div class="k">BVPS</div><div class="v">~฿1.94</div><div class="d">ส่วนของผู้ถือหุ้น ฿1,815 ล้าน</div></div>
-      <div class="metric"><div class="k">ROE</div><div class="v pos">~4.0%</div><div class="d">ฟื้นตัวจาก -8.5% ปี 2567 · ยังต่ำอุตสาหกรรม</div></div>
+      <div class="metric"><div class="k">ROE</div><div class="v pos">~5.1%</div><div class="d">ฟื้นตัวจาก -7.0% ปี 2567 · ยังต่ำกว่าต้นทุนทุน</div></div>
       <div class="metric"><div class="k">ROA</div><div class="v">~0.8%</div><div class="d">สินทรัพย์รวม ฿3,364 ล้าน (Q1/2569)</div></div>
       <div class="metric"><div class="k">รายได้รวม FY2568</div><div class="v neu">฿600 ล้าน</div><div class="d">ลดลงจาก ฿761 ล้าน ปี 2567 (ลด NPL)</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v pos">฿46 ล้าน</div><div class="d">พลิกบวก จากขาดทุน ฿153 ล้าน ปี 2567</div></div>
-      <div class="metric"><div class="k">อัตรากำไรสุทธิ</div><div class="v">~10.2%</div><div class="d">Q1/2569 สูงถึง 25% (ปรับพอร์ต)</div></div>
+      <div class="metric"><div class="k">อัตรากำไรสุทธิ</div><div class="v">~20.4%</div><div class="d">TTM · FY2568 อยู่ที่ 10.4% · Q1/2569 สูงถึง 25%</div></div>
       <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.01%</div><div class="d">฿0.027/หุ้น · จ่าย พ.ค. 2569 · payout 54%</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">~0.6</div><div class="d">ความผันผวนต่ำกว่าตลาด · หุ้นเล็ก low-float</div></div>
     </div>
@@ -138,7 +138,7 @@
 
   <!-- ===== 2. PRICE CHART ===== -->
   <section>
-    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ส.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ต.ค. 2568 – ก.ย. 2569</div></div>
     <div class="card">
       <div class="chart-wrap">
         <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
@@ -149,33 +149,33 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ราคา MICRO เคลื่อนไหวในกรอบ ฿0.80–฿1.53 ในช่วง 12 เดือนที่ผ่านมา (ส.ค. 2568 – ก.ค. 2569) โดยแตะจุดต่ำสุดที่ ฿0.80 ใน ม.ค. 2569 ก่อนไต่ขึ้นต่อเนื่องและเร่งตัวแรงในเดือน ก.ค. 2569 ทำจุดสูงสุดใหม่ที่ ฿1.53 (แรงเก็งกำไรของหุ้น float ต่ำ ไม่พบข่าว/catalyst เฉพาะเจาะจง) ราคาปัจจุบัน ฿1.53 ซื้อขายสูงกว่า Fair Value ฿0.62 ประมาณ 147%
+        ราคา MICRO เคลื่อนไหวในกรอบ ฿0.76–฿1.73 ในรอบ 52 สัปดาห์ (ราคาปิดรายเดือน ต.ค. 2568 – ก.ย. 2569) โดยปิดรายเดือนต่ำสุดที่ ฿0.80 ใน ม.ค. 2569 ก่อนไต่ขึ้นและเร่งตัวแรงในเดือน ก.ค. 2569 (ปิดรายเดือน ฿1.60) แล้วย่อลงใน ส.ค.–ก.ย. (แรงเก็งกำไรของหุ้น float ต่ำ ไม่พบข่าว/catalyst เฉพาะเจาะจง) ราคาล่าสุด {{rd:px}} เทียบกับ Fair Value {{rd:fv}} ที่ได้จากขา P/E ขาเดียว ({{rd:mos}})
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">3 วิธี · เหมาะกับสินเชื่อรายย่อย</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">P/E เป็นขาหลัก · DDM และ P/BV เป็นบริบท (ตระกูล r/g เดียวกัน)</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿0.07 × P/E เป้าหมาย ~12x (กลุ่ม Diversified Finance ไทย) — ราคาเหมาะสม P/E ต่ำสะท้อน ROE ยังอยู่ระดับฟื้นตัว</div></div>
-        <div class="mval">฿0.84</div>
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS ฿0.095 (TTM: NI ฿91.5 ล้าน ÷ 962 ล้านหุ้นถัวเฉลี่ย) × 17.9x = ตัวคูณที่วัดจริงของ FY2025 (ราคาเฉลี่ยปี ฿0.89 ÷ EPS ฿0.05) ซึ่งเป็นปีเดียวที่ธุรกิจอยู่ในสเกลปัจจุบัน — มัธยฐาน 5 ปีที่ 39.8x (3 จุด: 17.9x / 39.8x / 81.6x ช่วงกว้าง 4.6 เท่า) ไม่นำมาใช้ เพราะ 39.8x และ 81.6x มาจากปี 2564–2565 ที่ราคาหุ้น ฿5.7–8.0 ก่อนขาดทุน 2 ปีและราคาหดกว่า 80% · มาจากประวัติ ไม่ได้ลอกจาก P/E ปัจจุบัน · EPS TTM ยกจาก Q1/2569 ที่แรง จึงอาจไม่ยั่งยืน</div></div>
+        <div class="mval">฿1.70</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">DPS ฿0.027 × (1+g 3%) / (r 9% − g 3%) = ฿0.0278/0.06 — g 3% อิง GDP ไทยระยะยาว; r 9% ต้นทุนทุนสินเชื่อรายย่อยความเสี่ยงสูง</div></div>
+        <div><div class="mname">2. DDM / Gordon Growth (บริบท — ตระกูล r/g)</div><div class="mdesc">DPS ฿0.027 × (1+g 3%) / (r 9% − g 3%) = ฿0.0278/0.06 — g 3% อิง GDP ไทยระยะยาว; r 9% ต้นทุนทุนสินเชื่อรายย่อยความเสี่ยงสูง</div></div>
         <div class="mval">฿0.46</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 4.0% − g 2%)/(r 9% − g 2%) ≈ 0.286 × BVPS ฿1.94 — ROE ต่ำกว่าต้นทุนทุน (r) ทำให้ P/BV ที่เหมาะสมต่ำกว่า 1x</div></div>
-        <div class="mval">฿0.55</div>
+        <div><div class="mname">3. Justified P/BV (บริบท — ตระกูล r/g เดียวกับ DDM)</div><div class="mdesc">P/BV เหมาะสม = (ROE 5.1% − g 2%)/(r 9% − g 2%) ≈ 0.443 × BVPS ฿1.94 — ROE ต่ำกว่าต้นทุนทุน (r) ทำให้ P/BV ที่เหมาะสมต่ำกว่า 1x</div></div>
+        <div class="mval">฿0.86</div>
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        P/E ให้ค่าสูงสุด (฿0.84) เพราะ EPS ฟื้นตัวใน TTM; DDM และ Justified P/BV ให้ค่าต่ำกว่า (฿0.46–฿0.55) เพราะ ROE 4.0% ยังต่ำกว่าต้นทุนทุน (r=9%) ทำให้ธุรกิจยังไม่ "สร้างมูลค่า" เต็มที่ มูลค่าเฉลี่ย ฿0.62 สะท้อนว่าราคาปัจจุบัน ฿1.53 ซื้อขาย "แพง" เชิง fundamentals หากเชื่อ consensus analyst TP ฿0.83 แสดงว่าตลาดประเมินสูงเกินไปราว 84%
+        ★ มูลค่าเหมาะสมนี้มาจากตระกูลเดียว (P/E) — ขา DDM (฿0.46) และ Justified P/BV (฿0.86) ใช้ (r,g) ชุดเดียวกัน นับเป็นเสียงเดียว ค่าเฉลี่ยตระกูลนี้ ฿0.66 ห่างจากขา P/E (฿1.70) 2.6 เท่า เกินเกณฑ์ 2 เท่า จึงไม่เฉลี่ยรวมตามกฎ 0.4c และนำเสนอเป็นบริบท · ความไวของ MOS: ถ้า FV = ฿0.66 (ขา r/g) หรือ ฿1.18 (เฉลี่ยรวมสองตระกูล ซึ่งกฎห้าม) ราคาปัจจุบันจะอยู่เหนือ FV ทั้งสองกรณี — ข้อสรุป "ถูก" ขึ้นกับตัวคูณ 17.9x และความยั่งยืนของ EPS TTM ฿0.095 ทั้งหมด ประมาณการนี้ตรวจยืนยันยากและเป็นค่าประมาณ · เป้านักวิเคราะห์ (Yahoo 1 ราย ฿2.10) เป็นเพียงข้อมูลอ้างอิง ไม่ใช่ขาของ FV
       </p>
     </div>
   </section>
@@ -193,12 +193,11 @@
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿0.83<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">฿2.10<br><small>เป้า Yahoo (1 ราย)</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน ฿1.53 สูงกว่า Fair Value ฿0.62 ถึง ~147% และสูงกว่าเป้า Analyst เฉลี่ย ฿0.83 ราว 84% โซนน่าสนใจสะสมคือต่ำกว่า ฿0.62 (= Fair Value) โดย MOS 20% อยู่ที่ ฿0.50 และ MOS 30% อยู่ที่ ฿0.43 ซึ่งต้องลดลงจากระดับปัจจุบันกว่า 60% จึงจะถือว่า "ถูก" ตามหลัก value investing
+        ราคาล่าสุด {{rd:px}} ต่ำกว่า Fair Value {{rd:fv}} ที่ได้จากขา P/E ขาเดียว โซน MOS 20% อยู่ที่ {{rd:mos20}} และ MOS 30% อยู่ที่ {{rd:mos30}} · เป้านักวิเคราะห์ฝั่ง Yahoo มีเพียง 1 ราย จึงใช้เป็นข้อมูลอ้างอิงเท่านั้น · ขา DDM/P-BV (฿0.46–฿0.86) ยังต่ำกว่าราคา จึงควรมอง MOS นี้อย่างระมัดระวัง
       </p>
     </div>
   </section>
@@ -209,12 +208,12 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">ราคาสูงกว่า Fair Value ~147% — ไม่มี Margin of Safety ณ ราคานี้</div>
+        <div class="txt">ราคาต่ำกว่า Fair Value ตามขา P/E — มี Margin of Safety แต่มาจากตระกูลเดียว และขา r/g ชี้ว่าราคาสูงกว่ามูลค่า</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
         <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มพิจารณา</div><div class="v neu">&lt; ฿0.62</div><div class="d">ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">โซนเริ่มพิจารณา</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
@@ -236,7 +235,7 @@
           <div class="tgt">{{rd:sc1tgt}}</div>
           <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿0.06</span></li>
+            <li><span>EPS ปี 3</span><span>~฿0.081</span></li>
             <li><span>P/E ออก</span><span>9x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>NPL พุ่ง เศรษฐกิจชะลอ</span></li>
@@ -249,7 +248,7 @@
           <div class="tgt">{{rd:sc2tgt}}</div>
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿0.09</span></li>
+            <li><span>EPS ปี 3</span><span>~฿0.126</span></li>
             <li><span>P/E ออก</span><span>11x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>ฟื้นตัวต่อเนื่อง ลด NPL</span></li>
@@ -262,7 +261,7 @@
           <div class="tgt">{{rd:sc3tgt}}</div>
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿0.12</span></li>
+            <li><span>EPS ปี 3</span><span>~฿0.164</span></li>
             <li><span>P/E ออก</span><span>12x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>ROE ฟื้น พอร์ตขยาย นโยบายรัฐหนุน</span></li>
@@ -271,7 +270,7 @@
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      ผลตอบแทนคาดการณ์อิง EPS ฐาน ฿0.07 (TTM) สถานการณ์ Base ให้ผลตอบแทนรวมติดลบ ~-30.7% ใน 3 ปี (รวมปันผล) สะท้อนว่า ณ ราคา ฿1.53 ราคาหุ้นแพงเกินพื้นฐานปัจจุบันมากขึ้น Bull Case ต้องอาศัย ROE ฟื้นตัวแรงและการขยายพอร์ตสินเชื่อในตลาดรากหญ้าต่างจังหวัด
+      ผลตอบแทนคาดการณ์อิง EPS ฐาน ฿0.095 (TTM) สถานการณ์ Base ให้ผลตอบแทนรวม {{rd:sc2ret}} ใน 3 ปี (รวมปันผล) จากจุดเข้า {{rd:px}} ตัวคูณออก 9x/11x/12x เป็นสมมติฐานของฉาก (ไม่ใช่ขา FV) · Bear สะท้อนกำไร TTM ที่ยกจาก Q1 ไม่ยั่งยืน · Bull Case ต้องอาศัย ROE ฟื้นตัวแรงและการขยายพอร์ตสินเชื่อในตลาดรากหญ้าต่างจังหวัด
     </p>
   </section>
 
@@ -284,7 +283,7 @@
         <ul>
           <li><b>กำไรพลิกบวก:</b> FY2568 พลิกกำไร ฿46 ล้าน หลังขาดทุน 2 ปีติด (2566–2567) สัญญาณฟื้นตัวของคุณภาพพอร์ต</li>
           <li><b>Q1/2569 แข็งแกร่ง:</b> อัตรากำไรสุทธิ Q1/2569 พุ่งสู่ 25% สะท้อน NPL ที่ลดลงและต้นทุนสินเชื่อที่เริ่มปรับตัว</li>
-          <li><b>P/BV ต่ำ 0.5x:</b> ซื้อขายต่ำกว่ามูลค่าสินทรัพย์สุทธิ ดึงดูดนักลงทุนแนว asset-play หากธุรกิจฟื้นตัวต่อเนื่อง</li>
+          <li><b>P/BV ต่ำกว่า 1x:</b> ซื้อขายต่ำกว่ามูลค่าสินทรัพย์สุทธิ ดึงดูดนักลงทุนแนว asset-play หากธุรกิจฟื้นตัวต่อเนื่อง</li>
           <li><b>Niche Market รากหญ้า:</b> ตลาดสินเชื่อรถบรรทุกมือสองต่างจังหวัด แข่งขันน้อย ลูกค้าเข้าไม่ถึงธนาคาร โอกาสขยาย margin</li>
           <li><b>นโยบายรัฐกระตุ้นขนส่ง:</b> โครงการโครงสร้างพื้นฐาน EEC / ระเบียงเศรษฐกิจภาค อาจหนุนความต้องการรถบรรทุกมือสอง</li>
         </ul>
@@ -293,10 +292,10 @@
         <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
         <ul>
           <li><b>NPL ระดับสูง:</b> บริษัทเพิ่งผ่านวิกฤต NPL ในกลุ่มลูกค้ารากหญ้า ซึ่งมีความเสี่ยงสูงกว่าลูกค้าองค์กร หากเศรษฐกิจชะลอตัวอาจกลับมาแย่ลง</li>
-          <li><b>ROE ต่ำกว่าต้นทุนทุน:</b> ROE 4.0% ต่ำกว่าต้นทุนทุน ~9% หมายความว่าบริษัทยังไม่ได้ "สร้างมูลค่า" ให้ผู้ถือหุ้นอย่างแท้จริง</li>
+          <li><b>ROE ต่ำกว่าต้นทุนทุน:</b> ROE 5.1% ต่ำกว่าต้นทุนทุน ~9% หมายความว่าบริษัทยังไม่ได้ "สร้างมูลค่า" ให้ผู้ถือหุ้นอย่างแท้จริง</li>
           <li><b>พอร์ตหดตัวต่อเนื่อง:</b> สินทรัพย์รวมลดจาก ฿5,374M (2566) → ฿3,364M (Q1/2569) บ่งชี้การหดตัวพอร์ตสินเชื่อ อาจจำกัดการเติบโต</li>
-          <li><b>Analyst Consensus ขาย:</b> Consensus Rating "Strong Sell" เป้าเฉลี่ย ฿0.83 (−43% จากราคาปัจจุบัน) สะท้อนมุมมองลบจากนักวิเคราะห์ส่วนใหญ่</li>
-          <li><b>ขนาดเล็ก / สภาพคล่องต่ำ:</b> Market cap ~฿1,431 ล้าน ปริมาณซื้อขายต่อวันต่ำ ราคาผันผวนง่าย และอาจมีปัญหาในการซื้อขายปริมาณมาก</li>
+          <li><b>เป้านักวิเคราะห์บาง:</b> Yahoo มีนักวิเคราะห์เพียง 1 ราย เป้า ฿2.10 (StockAnalysis ไม่มีข้อมูล) — ความครอบคลุมน้อย ใช้เป็นข้อมูลอ้างอิงเท่านั้น</li>
+          <li><b>ขนาดเล็ก / สภาพคล่องต่ำ:</b> Market cap ~฿1,253 ล้าน ปริมาณซื้อขายต่อวันต่ำ ราคาผันผวนง่าย และอาจมีปัญหาในการซื้อขายปริมาณมาก</li>
         </ul>
       </div>
     </div>
@@ -306,15 +305,15 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>ราคาแพงเกิน Fundamental — รอจังหวะราคาลงหรือ ROE ฟื้นตัวชัดเจน</h2>
-      <p>MICRO เป็นหุ้นสินเชื่อเช่าซื้อรถบรรทุกมือสอง Niche market รากหญ้าต่างจังหวัด ที่เพิ่งพลิกกลับมามีกำไรใน FY2568 หลังขาดทุน 2 ปีติด P/BV 0.5x ดูน่าสนใจเชิง asset-play แต่ราคาปัจจุบัน ฿1.53 สูงกว่า Fair Value ฿0.62 ราว 147% และสูงกว่าเป้า Analyst เฉลี่ย ฿0.83 ราว 84% ROE เพียง 4.0% ยังต่ำกว่าต้นทุนทุน ทำให้ Justified P/BV ที่แท้จริงต่ำกว่า 1x ไม่เหมาะซื้อในระดับราคาปัจจุบัน ควรรอให้ราคาลงสู่โซน ฿0.62–฿0.75 หรือรอหลักฐาน ROE ฟื้นตัวชัดเจน (>8%) ก่อนพิจารณา</p>
+      <h2>ขา P/E ชี้ว่าถูกเล็กน้อย แต่ขา r/g ชี้ว่าแพง — ต้องรอพิสูจน์ความยั่งยืนของกำไร</h2>
+      <p>MICRO เป็นหุ้นสินเชื่อเช่าซื้อรถบรรทุกมือสอง Niche market รากหญ้าต่างจังหวัด ที่พลิกกลับมามีกำไรใน FY2568 หลังขาดทุน 2 ปีติด และกำไร TTM ฿91.5 ล้านสูงขึ้นอีกจาก Q1/2569 ขา P/E (ตัวคูณ 17.9x ที่วัดจากปี 2568) ให้ Fair Value {{rd:fv}} สูงกว่าราคาล่าสุด {{rd:px}} แต่ขา DDM และ Justified P/BV (ROE 5.1% ต่ำกว่าต้นทุนทุน 9%) ชี้ว่าเหมาะสมเพียง ฿0.46–฿0.86 ผลสรุปจึงไวต่อสมมติฐานมาก และเป็นการประเมินตระกูลเดียวที่ตรวจยืนยันยาก ควรรอหลักฐานว่ากำไรระดับ TTM ยั่งยืนอย่างน้อยอีก 2 ไตรมาส และ ROE เข้าใกล้ต้นทุนทุน (>8%) ก่อนเพิ่มน้ำหนัก</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿0.83 (Strong Sell)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿2.10 (Yahoo · 1 ราย)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ยังไม่เหมาะซื้อ ณ ราคา ฿1.53 — โซนน่าสนใจคือ ฿0.62–฿0.75 (ต่ำกว่า Fair Value) หรือรอหลักฐาน ROE ฟื้นตัวชัดเจนก่อน สำหรับผู้ที่ถืออยู่แล้ว พิจารณา take profit เนื่องจากราคาเกิน FV
+        💡 <b>กลยุทธ์:</b> ณ ราคา {{rd:px}} MOS ตามขา P/E คือ {{rd:mos}} แต่เป็นหลักฐานตระกูลเดียว — โซนสะสมที่มีส่วนเผื่อ 20% อยู่ที่ {{rd:mos20}} และ 30% ที่ {{rd:mos30}} รอผลไตรมาสถัดไป (คาดประกาศ 13 พ.ย. 2569) เพื่อยืนยันว่า EPS ระดับ TTM ยั่งยืนก่อนตัดสินใจ
       </div>
     </div>
   </section>
@@ -326,7 +325,7 @@
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
     แหล่งข้อมูล: SET Thailand (set.or.th) · Investing.com · Micro Leasing PCL (microleasingplc.com) · Yahoo Finance (MICRO.BK); ราคา ณ {{rd:priceDate}}
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 30 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
