@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น Rollins Inc (ROL) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
 {"symbol":"ROL","currency":"USD","price":32.43,"fairValue":49,"mos":33.8,"upside":51.1,"pe":29.8,"dividendYield":2.25,"roe":38.3}
 </script>
@@ -107,7 +107,7 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ $41.50 – $66.14<br>
+        กรอบ 52 สัปดาห์ $31.88 – $66.14<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, MarketBeat
       </div>
     </div>
@@ -147,7 +147,7 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ROL ขึ้นสู่จุดสูงสุดรอบปีที่ $63.34 ในเดือน ก.ค. 2568 (+10.6% จากต้นปี) ก่อนร่วงลงต่อเนื่องท่ามกลางแรงขายหุ้น defensive quality compounder และกังวลเรื่อง valuation ที่แพง รวมถึงข่าว CFO ลาออกในช่วงปลายปี ราคาลดลงมา $42-43 ในปลาย ธ.ค. 2568 – ม.ค. 2569 ซึ่งต่ำกว่ามูลค่าเหมาะสมที่คำนวณได้ ($49) เล็กน้อย ผลตอบแทนรอบปี −25.0% แม้พื้นฐานธุรกิจยังแข็งแกร่ง (รายได้ +11%, กำไร +13%)
+        ROL ขึ้นสู่จุดสูงสุดรอบปีที่ $63.34 ในเดือน ก.ค. 2568 (+10.6% จากต้นปี) ก่อนร่วงลงต่อเนื่องท่ามกลางแรงขายหุ้น defensive quality compounder และกังวลเรื่อง valuation ที่แพง รวมถึงข่าว CFO ลาออกในช่วงปลายปี ราคาลดลงมา $42-43 ในปลาย ธ.ค. 2568 – ม.ค. 2569 ซึ่งต่ำกว่ามูลค่าเหมาะสมที่คำนวณได้ ({{rd:fv}}) ชัดเจน ผลตอบแทนรอบปี −25.0% แม้พื้นฐานธุรกิจยังแข็งแกร่ง (รายได้ +11%, กำไร +13%)
       </p>
     </div>
   </section>
@@ -173,7 +173,7 @@
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        P/E (44x) และ EV/EBITDA (28x) ให้ค่าใกล้เคียงกันที่ $47–48 สะท้อนระดับ multiple ที่สมเหตุสมผลสำหรับ quality compounder; DDM ให้ค่าสูงกว่าเล็กน้อย ($52) จากอัตราการเพิ่มปันผล 7%/ปีที่ ROL ทำต่อเนื่อง เฉลี่ย 3 วิธีได้ $49.00 ซึ่งสะท้อน P/E ราว 45x สมเหตุสมผลกว่า P/E ตลาดปัจจุบัน ~39x หมายเหตุ: ราคาปัจจุบัน $43 ต่ำกว่า FV เล็กน้อย MOS เพิ่งเริ่มเปิด ไม่ใช่ deep value
+        P/E (44x) และ EV/EBITDA (28x) ให้ค่าใกล้เคียงกันที่ $47–48 สะท้อนระดับ multiple ที่สมเหตุสมผลสำหรับ quality compounder; DDM ให้ค่าสูงกว่าเล็กน้อย ($52) จากอัตราการเพิ่มปันผล 7%/ปีที่ ROL ทำต่อเนื่อง เฉลี่ย 3 วิธีได้ {{rd:fv}} ซึ่งสะท้อน P/E ราว 45x เทียบ P/E ปัจจุบัน ~29.6x หมายเหตุ: ราคาปัจจุบัน {{rd:px}} ต่ำกว่า FV ชัดเจน แต่ต้องระวังว่าราคาร่วงแรงจาก 52 สัปดาห์สูงสุดสะท้อนแรงกดดันต่อ multiple
       </p>
     </div>
   </section>
@@ -196,7 +196,7 @@
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคา $43.00 อยู่ระหว่าง MOS 20% ($39.20) กับ Fair Value ($49.00) — เป็นโซน "ราคาสมเหตุสมผล" สำหรับ quality compounder แต่ยังไม่ถึง deep value zone MOS 30% ที่ $34.30 เป้านักวิเคราะห์ consensus ~$57 สูงกว่าราคาปัจจุบัน ~33% สะท้อนว่าตลาดอาจ price in แผนซื้อกิจการและการเติบโตแบบ compounding อย่างเต็มที่ในระยะยาว
+        ราคา {{rd:px}} ต่ำกว่าโซน MOS 30% ({{rd:mos30}}) และ MOS 20% ({{rd:mos20}}) เทียบ Fair Value {{rd:fv}} เป้านักวิเคราะห์ consensus ~$45.59 (Hold, 17 ราย) สูงกว่าราคาปัจจุบันราว 40% สะท้อนว่าตลาดอาจ price in แผนซื้อกิจการและการเติบโตแบบ compounding อย่างเต็มที่ในระยะยาว
       </p>
     </div>
   </section>
@@ -307,14 +307,14 @@
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
       <h2>Quality Compounder ราคาเริ่มสมเหตุสมผล — ทยอยสะสมได้ในโซนต่ำกว่า Fair Value</h2>
-      <p>Rollins เป็นธุรกิจ pest control subscription ที่ recession-resistant ที่สุดแห่งหนึ่งในโลก — รายได้เติบโตต่อเนื่องผ่านทุกวัฏจักร ทั้งจาก organic growth 6-9%/ปีและการซื้อกิจการ 30-50 รายต่อปี (roll-up strategy) อัตราส่วน ROE ~38% gross margin ~53% และ FCF conversion สูงสะท้อนคุณภาพธุรกิจชั้นหนึ่ง หลังราคาร่วงลงมา 25% จากจุดสูงสุดรอบปี ปัจจุบัน P/E ~39x เริ่มเข้าใกล้ระดับที่สมเหตุสมผลมากขึ้น แม้ยังไม่ถูก แต่ MOS เริ่มเปิดที่ ~12% จาก Fair Value $49 สำหรับนักลงทุนระยะยาวที่เชื่อมั่นใน compounding model ราคาปัจจุบันน่าสนใจกว่าช่วง $60+</p>
+      <p>Rollins เป็นธุรกิจ pest control subscription ที่ recession-resistant ที่สุดแห่งหนึ่งในโลก — รายได้เติบโตต่อเนื่องผ่านทุกวัฏจักร ทั้งจาก organic growth 6-9%/ปีและการซื้อกิจการ 30-50 รายต่อปี (roll-up strategy) อัตราส่วน ROE ~38% gross margin ~53% และ FCF conversion สูงสะท้อนคุณภาพธุรกิจชั้นหนึ่ง หลังราคาร่วงลงมา 25% จากจุดสูงสุดรอบปี ปัจจุบัน P/E ~39x เริ่มเข้าใกล้ระดับที่สมเหตุสมผลมากขึ้น แม้ยังไม่ถูก แต่ MOS อยู่ที่ {{rd:mos}} จาก Fair Value {{rd:fv}} สำหรับนักลงทุนระยะยาวที่เชื่อมั่นใน compounding model ราคาปัจจุบันน่าสนใจกว่าช่วง $60+</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$57.00 (Buy / 18 นักวิเคราะห์)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ทยอยสะสมใต้ $49 (Fair Value) โดยเฉพาะหาก pullback มาถึงโซน MOS 20% ที่ $39 สำหรับ position ขนาดใหญ่ขึ้น — ROL เป็น "ซื้อแล้วถือยาว" ไม่ใช่ deep value play; ผลตอบแทนหลักมาจาก EPS compounding 10-13%/ปี + ปันผลที่เพิ่มขึ้น ไม่ใช่ multiple re-rating
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมใต้ {{rd:fv}} (Fair Value) โดยราคาอยู่ในโซน MOS 20% ({{rd:mos20}}) แล้ว สำหรับ position ขนาดใหญ่ขึ้น — ROL เป็น "ซื้อแล้วถือยาว" ไม่ใช่ deep value play; ผลตอบแทนหลักมาจาก EPS compounding 10-13%/ปี + ปันผลที่เพิ่มขึ้น ไม่ใช่ multiple re-rating
       </div>
     </div>
   </section>
@@ -325,7 +325,7 @@
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มา: StockAnalysis.com, Yahoo Finance (ราคา + กราฟ), Macrotrends (financial ratios) — ราคา ณ {{rd:priceDate}} cross-verified ≥2 แหล่ง
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 1 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 22 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
