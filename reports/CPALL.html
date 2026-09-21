@@ -5,36 +5,36 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น CP All (CPALL) — Stock Analysis Dashboard</title>
 <!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง (Opus→"Claude Opus 4.8", Sonnet→"Claude Sonnet 4.6") — gate E28 บังคับ -->
-<meta name="ai-model" content="Claude Opus 4.8">
+<meta name="ai-model" content="Claude Sonnet 5">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"CPALL","currency":"THB","price":45,"fairValue":52,"mos":13.5,"upside":15.6,"pe":14,"dividendYield":3.7,"roe":10}
+{"symbol":"CPALL","currency":"THB","price":44.75,"fairValue":51,"mos":12.3,"upside":14,"pe":13.3,"dividendYield":3.7,"roe":10.4}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 52,
+  "fv": 51,
   "values": {
-    "px": 45,
-    "priceDate": "2026-09-18",
+    "px": 44.75,
+    "priceDate": "2026-09-21",
     "dateEra": "CE",
     "chgSuffix": "รอบปี",
-    "fvLow": 49,
-    "fvHigh": 55,
+    "fvLow": 50,
+    "fvHigh": 52,
     "shares": 8910000000,
     "dps": 1.65,
-    "baseEps": 3.28,
+    "baseEps": 3.37,
     "scenarios": [
       {
-        "tgt": 43,
+        "tgt": 44,
         "div": 4.8
       },
       {
-        "tgt": 64,
+        "tgt": 62,
         "div": 5.4
       },
       {
-        "tgt": 81,
+        "tgt": 83,
         "div": 5.8
       }
     ],
@@ -70,18 +70,18 @@
       ["มิ.ย.26", 46.75],
       ["ก.ค.26", 48],
       ["ส.ค.26", 46.25],
-      ["ก.ย.26", 45]
+      ["ก.ย.26", 44.75]
     ],
     "min": 42.5,
-    "max": 55,
-    "grid": [45, 47.5, 50, 52.5],
+    "max": 52.5,
+    "grid": [45, 47.5, 50],
     "currency": "฿",
     "highlight": [1, 4],
     "gridFmt": "v.toFixed(0)",
     "dataFmt": "d[1].toFixed(2)"
   },
   "gauge": {
-    "min": 36,
+    "min": 34,
     "max": 56,
     "fairLabelTop": "-58px"
   }
@@ -118,25 +118,25 @@
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">อิงงบ FY2025 + TTM (Q1/2026)</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">อิงงบ FY2025 + TTM ล่าสุด</div></div>
     <!-- ✏️ ปรับการ์ด metric ให้เหมาะกับหุ้น/เซกเตอร์ได้อิสระ — gate ไม่บังคับชุด metric (เปลี่ยน label / สลับ / เพิ่ม-ลดการ์ดได้)
          • คงป้าย "P/E (TTM)", "P/BV", "เงินปันผล", "ROE" ไว้ถ้าหุ้นมีจริง → W10 cross-check กับ stock-meta · ไม่มี (ขาดทุน/ไม่ปันผล) = ตัดการ์ดออก + ตั้ง stock-meta เป็น null
          • ธนาคาร → NIM / NPL / CASA / Loan growth / Cost-to-income   • REIT/กองอสังหา → Occupancy / DPU / NAV / Gearing   • ประกัน → Combined ratio / EV
          • หุ้นเติบโต-ขาดทุน → Revenue growth / Gross margin / FCF / Cash runway (ตัด P/E ออก) -->
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">฿401 พันล้าน</div><div class="d">~8.91 พันล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~14.0x</div><div class="d">ต่ำกว่าค่าเฉลี่ยในอดีตชัดเจน</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿399 พันล้าน</div><div class="d">~8.91 พันล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~13.3x</div><div class="d">ต่ำกว่าค่าเฉลี่ยในอดีตชัดเจน</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~31x (บิดเบือน)</div><div class="d">สูงจากกำไรช่วงโควิด '21–'22 ตกต่ำ</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~1.18x</div><div class="d">ใกล้ระดับต่ำในรอบหลายปี</div></div>
 
-      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">฿28.2 พันล้าน</div><div class="d pos">+11.5% YoY</div></div>
-      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿3.28</div><div class="d">กำไรสุทธิ TTM ~฿29.3 พันล้าน</div></div>
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">฿27.7 พันล้าน</div><div class="d pos">+11.5% YoY</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿3.37</div><div class="d">กำไรสุทธิ TTM ~฿30.0 พันล้าน</div></div>
       <div class="metric"><div class="k">BVPS</div><div class="v">~฿15.52</div><div class="d">ส่วนของผู้ถือหุ้น ~฿343 พันล้าน</div></div>
-      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~10.0% / 3.6%</div><div class="d">ROA ต่ำจากหนี้ Makro/Lotus's</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~10.4% / 3.6%</div><div class="d">ROA ต่ำจากหนี้ Makro/Lotus's</div></div>
 
       <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿1.04 ล้านล้าน</div><div class="d">FY2025 ~฿1.02 ล้านล้าน +3.5%</div></div>
       <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~25.1%</div><div class="d">Net margin บาง ~2.9%</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">DPS ฿1.65 • payout ~41%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">DPS ฿1.65 • payout ~49%</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">~0.45</div><div class="d">หุ้น defensive ผันผวนต่ำ</div></div>
     </div>
   </section>
@@ -154,25 +154,21 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ตลอดรอบ ~1 ปี CPALL แกว่งในกรอบ ฿43–฿52 เริ่มราว ฿44 (มิ.ย. 2568) อ่อนตัวลงแตะโซน ฿43 ปลายปี 2568 ตามแรงกดดันภาพรวมตลาดหุ้นไทย กำลังซื้อในประเทศที่ฟื้นช้า และความกังวลภาระหนี้จากดีล Makro/Lotus's ก่อนมีจังหวะพุ่งแตะจุดสูงรอบ ฿51.75 (ก.พ. 2569) ตามกำไรที่เติบโตและโครงการซื้อหุ้นคืน แล้วย่อกลับมาทรงตัวราว ฿46 ปัจจุบัน คิดเป็น ~+4.5% ในรอบปี (฿44 → ฿46) — แกว่งในกรอบตาม de-rating ของ valuation มากกว่าการเปลี่ยนแปลงพื้นฐาน
+        ตลอดรอบ ~1 ปี CPALL แกว่งในกรอบ ฿43–฿52 เริ่มราว ฿46 (ต.ค. 2568) อ่อนตัวลงแตะโซน ฿43 ช่วง พ.ย. 2568–ม.ค. 2569 ตามแรงกดดันภาพรวมตลาดหุ้นไทย กำลังซื้อในประเทศที่ฟื้นช้า และความกังวลภาระหนี้จากดีล Makro/Lotus's ก่อนมีจังหวะพุ่งแตะจุดสูงรอบ ฿51.75 (ก.พ. 2569) แล้วย่อกลับมาทรงตัวราว ฿45 ปัจจุบัน คิดเป็น ~-2.7% ในรอบปี (฿46 → ฿44.75) — แกว่งในกรอบตาม de-rating ของ valuation มากกว่าการเปลี่ยนแปลงพื้นฐาน
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี (คนละตระกูลสมมติฐาน)</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿3.28 × P/E เป้าหมาย ~16.0x — re-rating กลับสู่ระดับสมเหตุสมผลของผู้นำค้าปลีกคุณภาพ (ยังต่ำกว่าค่าเฉลี่ยอดีต)</div></div>
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿3.37 × P/E เป้าหมาย 15.3x — ตัวคูณนี้คือ P/E จริงของ FY2025 ที่วัดจากประวัติ (ราคาเฉลี่ยปี ฿47.44 ÷ EPS ฿3.10) ไม่ได้มาจาก P/E ปัจจุบัน · มัธยฐาน 5 ปี 30.5x ไม่นำมาใช้ เพราะ EPS ปี 2021–2023 ต่ำ (฿1.33–2.01) ทำให้ตัวคูณพองเกินจริง (ช่วง 15.3–46.1x)</div></div>
         <div class="mval">฿52</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. EV/EBITDA</div><div class="mdesc">EBITDA TTM ฿75.9 พันล้าน × 11.5x = EV ฿873 พันล้าน − หนี้สุทธิ ฿389 พันล้าน ÷ 8.91 พันล้านหุ้น</div></div>
-        <div class="mval">฿54</div>
-      </div>
-      <div class="vmethod">
-        <div><div class="mname">3. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿1.65 × (1+g); g 5.5%, r 9.0% → ฿1.74 / (0.090 − 0.055) (anchor อนุรักษนิยม — payout เพียง ~41%)</div></div>
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿1.65 × (1+g); g 5.5%, r 9.0% (สมมติฐานของผู้วิเคราะห์เอง) → ฿1.74 / (0.090 − 0.055) (payout ~49% ของกำไร)</div></div>
         <div class="mval">฿50</div>
       </div>
       <div class="fv-box">
@@ -181,9 +177,9 @@
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <!-- ✏️ หมายเหตุ: วิธีไหนให้ค่าสูง/ต่ำเพราะอะไร, ทำไม FV กลางจึงสมเหตุสมผล -->
-        วิธี EV/EBITDA ให้ค่าสูงสุด (฿54) เพราะสะท้อนกระแสเงินสดทั้งกลุ่ม (รวม CPAXT) ก่อนภาระดอกเบี้ย ส่วน DDM ให้ค่าต่ำสุด (฿50)
-        เพราะ CPALL จ่ายปันผลเพียง ~41% ของกำไร (เก็บส่วนใหญ่ไว้ขยายสาขา/ลดหนี้) วิธี DDM จึงประเมินต่ำกว่ามูลค่าที่แท้จริงของหุ้นเติบโต
-        FV กลาง ฿52 จึงถ่วงน้ำหนักวิธีอิงกำไร/กระแสเงินสดเป็นหลัก และยัง <b>อนุรักษนิยมกว่าเป้าเฉลี่ยนักวิเคราะห์ ~฿62</b> อย่างมีนัยสำคัญ
+        ปรับโครงสร้างรอบนี้: ตัดขา EV/EBITDA เดิมออก (ตัวคูณ 11.5x เป็นค่าที่ตั้งเอง ไม่มีมัธยฐานที่วัดได้รองรับ) และไม่ใช้เป้านักวิเคราะห์เป็นขา FV เหลือ 2 วิธีคนละตระกูล
+        คือ P/E (฿52) ที่ยึดตัวคูณ FY2025 ที่วัดจริง และ DDM (฿50) ที่ใช้ r/g สมมติฐานของผู้วิเคราะห์ — ทั้งสองขาห่างกันไม่ถึง 2 เท่า จึงเฉลี่ยตรงได้
+        MOS อ่อนไหวต่อ P/E เป้าหมาย: ทุก ±1x ของ P/E ขยับขา P/E ราว ±฿3.4 และ FV ราว ±฿1.7 · เป้าเฉลี่ยนักวิเคราะห์ ~฿62 ใช้เป็นบริบทตรวจความสอดคล้องเท่านั้น
       </p>
     </div>
   </section>
@@ -206,8 +202,8 @@
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน ฿46 อยู่ <b>ต่ำกว่ามูลค่าเหมาะสม ฿52</b> เล็กน้อย (MOS ~11.5%) แต่ยังไม่ถึงโซน deep value (฿36–฿42)
-        จุดเด่นคือ downside จำกัดด้วยพื้นฐาน defensive + ปันผล ~3.6% ขณะที่เป้าเฉลี่ยนักวิเคราะห์ ~฿62 (เรตติ้ง Strong Buy)
+        ราคาปัจจุบัน {{rd:px}} อยู่ <b>ต่ำกว่ามูลค่าเหมาะสม {{rd:fv}}</b> เล็กน้อย (MOS ~{{rd:mos}}) แต่ยังไม่ถึงโซน MOS 20% ({{rd:mos20}})
+        จุดเด่นคือ downside จำกัดด้วยพื้นฐาน defensive + ปันผล ~3.7% ขณะที่เป้าเฉลี่ยนักวิเคราะห์ ~฿62 (เรตติ้ง Strong Buy)
         บ่งชี้ upside ที่มากกว่าหากบริษัทลดหนี้ได้ตามแผนและ valuation re-rate
       </p>
     </div>
@@ -247,7 +243,7 @@
           <div class="tgt">{{rd:sc1tgt}}</div>
           <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿3.58</span></li>
+            <li><span>EPS ปี 3</span><span>~฿3.68</span></li>
             <li><span>P/E ออก</span><span>12x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>กำลังซื้อซบเซา หนี้กดดัน</span></li>
@@ -260,8 +256,8 @@
           <div class="tgt">{{rd:sc2tgt}}</div>
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿4.02</span></li>
-            <li><span>P/E ออก</span><span>16x</span></li>
+            <li><span>EPS ปี 3</span><span>~฿4.13</span></li>
+            <li><span>P/E ออก</span><span>15x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>ขยายสาขาต่อเนื่อง ลดหนี้ตามแผน</span></li>
           </ul>
@@ -273,7 +269,7 @@
           <div class="tgt">{{rd:sc3tgt}}</div>
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿4.49</span></li>
+            <li><span>EPS ปี 3</span><span>~฿4.61</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>SSSG ฟื้น + CPAXT synergy + re-rating</span></li>
@@ -295,17 +291,17 @@
         <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
         <ul>
           <li><b>เครือข่ายสาขาที่แข็งแกร่ง:</b> 7-Eleven ~15,900 สาขาในไทย ขยายต่อ ~700 สาขา/ปี + เริ่มขยายในกัมพูชา/ลาว เป็น growth runway ระยะยาว</li>
-          <li><b>การลดหนี้ (deleveraging):</b> หนี้สุทธิ ~฿389 พันล้านจากดีล Makro/Lotus's ทยอยลดลง → ดอกเบี้ยจ่ายลด หนุนกำไรสุทธิเร่งตัวเกินยอดขาย</li>
+          <li><b>การลดหนี้ (deleveraging):</b> หนี้สุทธิ ~฿406 พันล้าน (หนี้ ฿439 − เงินสด ฿33 พันล้าน) จากดีล Makro/Lotus's ทยอยลดลง → ดอกเบี้ยจ่ายลด หนุนกำไรสุทธิเร่งตัวเกินยอดขาย</li>
           <li><b>Synergy กับ CPAXT:</b> รวมอำนาจต่อรองจัดซื้อ-โลจิสติกส์ของ Makro (ค้าส่ง) + Lotus's (ค้าปลีก) ดันมาร์จิ้นและ private label</li>
           <li><b>โครงการซื้อหุ้นคืน:</b> บริษัทประกาศ buyback หนุน EPS และส่งสัญญาณความเชื่อมั่นของผู้บริหาร</li>
-          <li><b>Valuation ถูกในเชิงประวัติศาสตร์:</b> P/E ~14x และ P/BV ~1.18x ต่ำกว่าค่าเฉลี่ยหลายปีมาก เปิด upside จากการ re-rate</li>
-          <li><b>กระแสเงินสด + ปันผลโต:</b> DPS เพิ่มจาก ฿1.00 (2024) เป็น ฿1.65 (2026) yield ~3.6% ฐานกระแสเงินสดจาก traffic ร้านสะดวกซื้อสม่ำเสมอ</li>
+          <li><b>Valuation ถูกในเชิงประวัติศาสตร์:</b> P/E ~13x และ P/BV ~1.18x ต่ำกว่าค่าเฉลี่ยหลายปีมาก เปิด upside จากการ re-rate</li>
+          <li><b>กระแสเงินสด + ปันผลโต:</b> DPS เพิ่มจาก ฿1.00 (2024) เป็น ฿1.65 (2026) yield ~3.7% ฐานกระแสเงินสดจาก traffic ร้านสะดวกซื้อสม่ำเสมอ</li>
         </ul>
       </div>
       <div class="box risk">
         <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
         <ul>
-          <li><b>ภาระหนี้สูง:</b> หนี้สุทธิ ~฿389 พันล้าน (รวมหนี้สัญญาเช่า IFRS-16) สูงกว่าส่วนของผู้ถือหุ้น — อ่อนไหวต่อดอกเบี้ยและภาวะเศรษฐกิจชะลอ</li>
+          <li><b>ภาระหนี้สูง:</b> หนี้สุทธิ ~฿406 พันล้าน (รวมหนี้สัญญาเช่า IFRS-16) สูงกว่าส่วนของผู้ถือหุ้น — อ่อนไหวต่อดอกเบี้ยและภาวะเศรษฐกิจชะลอ</li>
           <li><b>กำลังซื้อในประเทศฟื้นช้า:</b> SSSG บางไตรมาสติดลบ หนี้ครัวเรือนไทยสูงกดการบริโภค กระทบยอดขายต่อสาขา</li>
           <li><b>มาร์จิ้นบาง:</b> Net margin เพียง ~2.9% — ต้นทุนค่าแรง/ค่าไฟ/ค่าเช่าที่สูงขึ้นกระทบกำไรได้ง่าย</li>
           <li><b>ความเสี่ยงด้านกำกับดูแล/ภาพลักษณ์:</b> ขนาดใหญ่ในเครือ CP ทำให้ถูกจับตาเรื่องการแข่งขัน/ผูกขาด และประเด็นธรรมาภิบาลเป็นครั้งคราว</li>
@@ -322,8 +318,8 @@
     <div class="verdict">
       <h2>หุ้น Compounder ค้าปลีกคุณภาพ ราคาน่าทยอยสะสม</h2>
       <p>CPALL เป็นผู้นำค้าปลีกสะดวกซื้อของไทยที่มี moat ชัดเจนจากเครือข่าย 7-Eleven ~15,900 สาขา และการคุม CPAXT (Makro + Lotus's)
-      กำไรเติบโต +11.5% ใน FY2025 ขณะที่ valuation (P/E ~14x, P/BV ~1.18x) ลงมาอยู่ระดับต่ำสุดในรอบหลายปี ราคา ฿46 ต่ำกว่ามูลค่าเหมาะสม ฿52
-      ให้ MOS ~11.5% ความเสี่ยงหลักคือภาระหนี้สูงและกำลังซื้อในประเทศที่ฟื้นช้า แต่พื้นฐาน defensive + ปันผล ~3.6% + การลดหนี้
+      กำไรเติบโต +11.5% ใน FY2025 ขณะที่ valuation (P/E ~13x, P/BV ~1.18x) ลงมาอยู่ระดับต่ำสุดในรอบหลายปี ราคา {{rd:px}} ต่ำกว่ามูลค่าเหมาะสม {{rd:fv}}
+      ให้ MOS ~{{rd:mos}} ความเสี่ยงหลักคือภาระหนี้สูงและกำลังซื้อในประเทศที่ฟื้นช้า แต่พื้นฐาน defensive + ปันผล ~3.7% + การลดหนี้
       ทำให้ความเสี่ยงขาลงจำกัด เป็นหุ้นถือยาวสำหรับพอร์ตคุณภาพมากกว่าการเก็งกำไรระยะสั้น</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
@@ -331,7 +327,7 @@
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿62 (Strong Buy)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ทยอยสะสมในโซน ฿42–฿46 (MOS ≥ 11%) เพิ่มน้ำหนักหากย่อสู่ ฿41 หรือต่ำกว่า (MOS 20%+) ถือยาวรับการเติบโตของกำไร + ปันผล ~3.6% และรอ valuation re-rate ตามแผนลดหนี้
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมเมื่อราคาต่ำกว่ามูลค่าเหมาะสม {{rd:fv}} เพิ่มน้ำหนักหากย่อสู่ {{rd:mos20}} หรือต่ำกว่า (MOS 20%+) ถือยาวรับการเติบโตของกำไร + ปันผล ~3.7% และรอ valuation re-rate ตามแผนลดหนี้
       </div>
     </div>
   </section>
@@ -342,7 +338,7 @@
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มาข้อมูล: StockAnalysis.com • Investing.com • SET/Yahoo Finance (ราคา ณ {{rd:priceDate}})
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 24 มิ.ย. 2026 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2026 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
