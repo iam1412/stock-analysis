@@ -6,19 +6,19 @@
 <title>วิเคราะห์หุ้น Arm Holdings (ARM) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"ARM","currency":"USD","price":275.61,"fairValue":267,"mos":-3.2,"upside":-3.1,"pe":281.2,"dividendYield":0,"roe":13}
+{"symbol":"ARM","currency":"USD","price":275.61,"fairValue":141,"mos":-95.5,"upside":-48.8,"pe":281.2,"dividendYield":0,"roe":13}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 267,
+  "fv": 141,
   "values": {
     "px": 275.61,
     "priceDate": "2026-09-18",
     "dateEra": "CE",
     "chgSuffix": "รอบปี",
-    "fvLow": 258,
-    "fvHigh": 275,
+    "fvLow": 51,
+    "fvHigh": 171,
     "analystTgt": 288.71,
     "eps": 0.98,
     "baseEps": 1.77,
@@ -77,7 +77,7 @@
     "highlight": [3, 8]
   },
   "gauge": {
-    "min": 160,
+    "min": 60,
     "max": 530,
     "fairLabelTop": "-58px"
   }
@@ -155,15 +155,15 @@
 
   <!-- ===== VALUATION ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">2 วิธี (2 ตระกูลสมมติฐาน) เฉลี่ยเท่ากัน</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">FV = P/S มัธยฐานของตัวเอง • DCF เป็นบริบท (ห่าง &gt;2 เท่า จึงไม่เฉลี่ย)</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation <span class="pill r">ระมัดระวัง</span></div><div class="mdesc">EPS $3.05 (non-GAAP ประมาณการ FY2028 — ปีงบที่ vendor เรียก "forward" ไม่ใช่ FY2027 ที่ ~$2.22) × P/E 90x (สมมติฐานพรีเมียม ไม่มีมัธยฐานย้อนหลังที่วัดได้ — ประวัติ P/E ทุกปีเกิน 100x จึงตัดออก; ตัวเลขใกล้ P/E forward ปัจจุบัน จึงใช้เป็นขาเบาและยังมี DCF คู่กัน)</div></div>
-        <div class="mval">$275</div>
+        <div><div class="mname">1. P/S Valuation (มัธยฐานของตัวเอง) <span class="pill r">ระมัดระวัง</span></div><div class="mdesc">P/S 29.3x × รายได้ TTM $5.16B = มูลค่าตลาดเป้าหมาย $151B ÷ 1.068 พันล้านหุ้น = $141 — P/S 29.3x คือมัธยฐานของตัวเอง 3 จุด (ราคาเฉลี่ยของงวดจาก median-multiples.js × หุ้นถัวเฉลี่ย ÷ รายได้: FY2026 29.3x · FY2025 35.4x · FY2024 28.1x โดยจุดหลังเป็นหน้าต่าง 6 เดือนหลัง IPO ก.ย. 2023) ใช้ P/S แทน P/E เพราะ P/E GAAP ทุกปีเกิน 100x (0 จุดที่ใช้ได้) · ตัวคูณปัจจุบันเป็นบริบทเท่านั้น (~57x = $294B ÷ $5.16B) ไม่ใช่ที่มาของเป้า · ไวต่อตัวคูณมาก (ช่วง 28–35x ⇒ $135–$171)</div></div>
+        <div class="mval">$141</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. DCF (2-stage)</div><div class="mdesc">Royalty โต ~20%/ปี ช่วงแรก, WACC ~11%, Terminal 4% — ปรับฐาน FCF ตาม TTM ที่แข็งแกร่งขึ้น</div></div>
-        <div class="mval">$258</div>
+        <div><div class="mname">2. DCF 10 ปี (บริบท — ไม่รวมใน FV)</div><div class="mdesc">รายได้ TTM $5.16B โต 22/20/18/16/14/12/10/8/7/6% ต่อปี (ปีที่ 10 = $17.8B) × FCF margin 27% (TTM 29% · FY2026 20% · เฉลี่ย 5 ปี ~19%) → FCF ปี 1 $1.70B … ปี 5 $3.18B … ปี 10 $4.80B · WACC 10% · terminal g 4% ⇒ PV FCF 10 ปี $18.7B + PV TV $32.1B (TV $83.2B) + เงินสดสุทธิ $3.4B ($3.89B − หนี้ $0.49B) = $54.2B ÷ 1.068 พันล้านหุ้น = $51 · สมมติฐานเป็นของผู้วิเคราะห์ (ไม่ใช่ตัววัด) และห่างจากขา P/S 2.8 เท่า จึงใช้เป็นบริบทว่าตัวคูณตลาดยืนบนการเติบโตสูงกว่านี้มาก</div></div>
+        <div class="mval">$51</div>
       </div>
 
       <div class="fv-box">
@@ -171,8 +171,8 @@
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        <b>หมายเหตุ:</b> ข้าม DDM เพราะ ARM <b>ไม่จ่ายปันผล</b> • ราคา {{rd:px}} ({{rd:priceDate}}) สูงกว่า
-        มูลค่าเหมาะสม {{rd:fv}} เล็กน้อย ({{rd:mos}}) — เป้าเฉลี่ยนักวิเคราะห์ ({{rd:analystTgt}}, n=40, {{rd:analystPct}}) แสดงเป็นบริบทตรวจความสอดคล้องเท่านั้น <b>ไม่ใช่ขาของ FV</b>
+        <b>หมายเหตุ:</b> ข้าม DDM เพราะ ARM <b>ไม่จ่ายปันผล</b> • FV ใช้ขา P/S ขาเดียว เพราะ DCF ห่างเกิน 2 เท่า (กฎ 0.4c) และ P/E ไม่มีมัธยฐานที่วัดได้ • ราคา {{rd:px}} ({{rd:priceDate}}) สูงกว่า
+        มูลค่าเหมาะสม {{rd:fv}} มาก ({{rd:mos}}) — ประมาณการนี้ยังไม่ได้ยืนยันด้วยวิธีอิสระที่ใกล้ราคาตลาด (DCF ให้ค่าต่ำกว่านี้อีก) เป้าเฉลี่ยนักวิเคราะห์ ({{rd:analystTgt}}, n=40, {{rd:analystPct}}) แสดงเป็นบริบทตรวจความสอดคล้องเท่านั้น <b>ไม่ใช่ขาของ FV</b>
         ทั้งนี้ค่าจริงไวต่อสมมติฐานการเติบโตและตัวคูณ P/E อย่างยิ่ง
       </p>
     </div>
@@ -196,7 +196,7 @@
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ณ {{rd:priceDate}} ราคา {{rd:px}} อยู่ <b>สูงกว่ามูลค่าเหมาะสม {{rd:fv}} เล็กน้อย</b> ({{rd:mos}}) — MOS ติดลบ ยังไม่มีส่วนเผื่อความปลอดภัย
+        ณ {{rd:priceDate}} ราคา {{rd:px}} อยู่ <b>สูงกว่ามูลค่าเหมาะสม {{rd:fv}} มาก</b> ({{rd:mos}}) — MOS ติดลบหนัก ยังไม่มีส่วนเผื่อความปลอดภัย
         เป้าหมาย 12 เดือนเฉลี่ยของนักวิเคราะห์ (~{{rd:analystTgt}}, n=40, {{rd:analystPct}}) อยู่เหนือราคาเพียงเล็กน้อย
         เป้าสูงสุดในกลุ่มนักวิเคราะห์อยู่ราว $500 เท่านั้นที่ยังเห็น upside มาก
       </p>
@@ -209,7 +209,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt"><b>MOS ติดลบ</b><br>ราคาปัจจุบัน {{rd:px}} สูงกว่ามูลค่าเหมาะสม {{rd:fv}} เล็กน้อย ({{rd:mos}}) → ยังไม่ถึงเกณฑ์ value investor ที่ต้องการส่วนเผื่อ <b>≥20-30%</b></div>
+        <div class="txt"><b>MOS ติดลบ</b><br>ราคาปัจจุบัน {{rd:px}} สูงกว่ามูลค่าเหมาะสม {{rd:fv}} มาก ({{rd:mos}}) → ยังไม่ถึงเกณฑ์ value investor ที่ต้องการส่วนเผื่อ <b>≥20-30%</b></div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -270,7 +270,7 @@
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
       ที่จุดเข้า {{rd:px}} นี้ base case (EPS โต ~22%/ปี) ยังต้องพึ่งการคง P/E ออกระดับ 120x ซึ่งเป็นสมมติฐาน —
       bear case มี downside ชัดเจนเพราะ P/E ปัจจุบันสูงมาก (~281x TTM) หากเติบโตช้าลงหรือตัวคูณหดตัวแรง และราคาปัจจุบัน
-      อยู่เหนือ fair value ({{rd:fv}}) เล็กน้อย
+      อยู่เหนือ fair value ({{rd:fv}}) มาก
     </p>
   </section>
 
@@ -307,15 +307,15 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>ธุรกิจ IP ชั้นยอด แต่ราคาอยู่เหนือมูลค่าเหมาะสมเล็กน้อย</h2>
-      <p>Arm คือเจ้าของสถาปัตยกรรมที่อยู่ใจกลางชิปเกือบทุกตัวบนโลก โตเร็ว มาร์จิ้นสูง และกำลังรุก AI/data center — รายได้ TTM $5.16B (+25% YoY) ราคา {{rd:px}} ({{rd:priceDate}}) ยังต่ำกว่าจุดสูงสุด $452.70 ราว −39% แต่อยู่เหนือมูลค่าเหมาะสม {{rd:fv}} เล็กน้อย ({{rd:mos}}) และ P/E ระดับ 281x (TTM GAAP) ทำให้ไม่มีส่วนเผื่อความปลอดภัยเลย FV มาจาก 2 ตระกูล (P/E สมมติฐาน + DCF) ที่ไวต่อสมมติฐานมาก downside จาก P/E ที่หดตัวมีนัยสำคัญ</p>
+      <h2>ธุรกิจ IP ชั้นยอด แต่ราคาอยู่เหนือมูลค่าเหมาะสมมาก</h2>
+      <p>Arm คือเจ้าของสถาปัตยกรรมที่อยู่ใจกลางชิปเกือบทุกตัวบนโลก โตเร็ว มาร์จิ้นสูง และกำลังรุก AI/data center — รายได้ TTM $5.16B (+25% YoY) ราคา {{rd:px}} ({{rd:priceDate}}) ยังต่ำกว่าจุดสูงสุด $452.70 ราว −39% แต่อยู่เหนือมูลค่าเหมาะสม {{rd:fv}} มาก ({{rd:mos}}) และ P/E ระดับ 281x (TTM GAAP) ทำให้ไม่มีส่วนเผื่อความปลอดภัยเลย FV มาจากขา P/S ขาเดียว (มัธยฐานของตัวเอง 29.3x × รายได้ TTM) เพราะ DCF ห่างเกิน 2 เท่าจึงเป็นบริบท — ตัวเลขนี้ไวต่อตัวคูณมากและยังไม่ได้ยืนยันด้วยวิธีอิสระ downside จากตัวคูณที่หดตัวมีนัยสำคัญ</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#a8b6cc">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#81c995">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#ffcc80">เฉลี่ย ~{{rd:analystTgt}} ({{rd:analystPct}})</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> สาย value — ราคาอยู่เหนือ fair value เล็กน้อย ยังไม่มี MOS รอทยอยสะสมเมื่อราคา <b>ต่ำกว่า {{rd:fv}}</b> (น่าสนใจที่ &lt;{{rd:mos20}}) • สาย growth — หากเชื่อเรื่อง AI ให้ใช้ DCA ขนาดเล็กและยอมรับความผันผวนสูงมาก โดยติดตาม <b>อัตราการเติบโต royalty/data center</b>, <b>งบไตรมาสถัดไป</b> และ <b>การขยายตัวของ EPS จริง</b> เป็นตัวชี้วัดหลัก
+        💡 <b>กลยุทธ์:</b> สาย value — ราคาอยู่เหนือ fair value มาก ยังไม่มี MOS รอทยอยสะสมเมื่อราคา <b>ต่ำกว่า {{rd:fv}}</b> (น่าสนใจที่ &lt;{{rd:mos20}}) • สาย growth — หากเชื่อเรื่อง AI ให้ใช้ DCA ขนาดเล็กและยอมรับความผันผวนสูงมาก โดยติดตาม <b>อัตราการเติบโต royalty/data center</b>, <b>งบไตรมาสถัดไป</b> และ <b>การขยายตัวของ EPS จริง</b> เป็นตัวชี้วัดหลัก
       </div>
     </div>
   </section>
