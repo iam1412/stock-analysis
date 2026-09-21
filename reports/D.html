@@ -6,35 +6,35 @@
 <title>วิเคราะห์หุ้น Dominion Energy (D) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"D","currency":"USD","price":63.58,"fairValue":64,"mos":0.7,"upside":0.7,"pe":18.8,"dividendYield":4.2,"roe":10.5}
+{"symbol":"D","currency":"USD","price":63.58,"fairValue":63,"mos":-0.9,"upside":-0.9,"pe":22.2,"dividendYield":4.2,"roe":8.3}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 64,
+  "fv": 63,
   "values": {
     "px": 63.58,
     "priceDate": "2026-09-18",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
-    "fvLow": 53.5,
-    "fvHigh": 72,
-    "eps": 3.38,
+    "fvLow": 61.1,
+    "fvHigh": 64.9,
+    "eps": 2.86,
     "shares": 879000000,
     "dps": 2.67,
     "bvps": 32.03,
-    "baseEps": 3.38,
+    "baseEps": 2.86,
     "scenarios": [
       {
-        "tgt": 57,
+        "tgt": 48,
         "div": 8.01
       },
       {
-        "tgt": 74,
+        "tgt": 68,
         "div": 8.01
       },
       {
-        "tgt": 89,
+        "tgt": 84,
         "div": 8.01
       }
     ],
@@ -42,7 +42,8 @@
       "years": 3,
       "divIncluded": true,
       "perYear": null
-    }
+    },
+    "analystTgt": 71.7
   },
   "theme": {
     "accent": "#004B87",
@@ -99,7 +100,7 @@
       <span class="tag">Data Center Power</span>
     </div>
     <h1>Dominion Energy, Inc.</h1>
-    <div class="sub">ยูทิลิตี้ไฟฟ้า-ก๊าซธรรมชาติที่กำกับดูแล (VA/NC/SC/UT/ID/WY) • ให้บริการ Northern Virginia — ศูนย์กลาง Data Center ใหญ่สุดในโลก (Amazon/Meta/Google/Microsoft) • Data Center ~25% ของโหลดกริด กำลังเพิ่มขึ้นต่อเนื่อง • แผน Capex ~$43B ปี 2025–2029 ขยาย Rate Base</div>
+    <div class="sub">ยูทิลิตี้ไฟฟ้า-ก๊าซธรรมชาติที่กำกับดูแล (VA/NC/SC/UT/ID/WY) • ให้บริการ Northern Virginia — ศูนย์กลาง Data Center ใหญ่สุดในโลก • โหลด Data Center เพิ่มขึ้นต่อเนื่อง • แผนลงทุนขนาดใหญ่ขยาย Rate Base รวมโครงการ Offshore Wind (CVOW)</div>
     <div class="price-row">
       <div>
         <div class="px">{{rd:px}}<small>(D)</small></div>
@@ -107,7 +108,7 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ $55.85 – $70.59<br>
+        กรอบ 52 สัปดาห์ $55.85 – $72.99<br>
         ที่มา: Yahoo Finance, Finviz, StockAnalysis
       </div>
     </div>
@@ -115,21 +116,21 @@
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 — อ้างอิง Yahoo Finance · Finviz · StockAnalysis</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ย. 2569 — อ้างอิง Yahoo Finance · Finviz · StockAnalysis</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">879M shares outstanding</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM $3.38 · Forward P/E 19.1x</div></div>
-      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~20–22x</div><div class="d">ช่วงปกติของ regulated utility</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS $32.03 · Justified P/BV ~1.44x</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM $2.86 (GAAP diluted) · Forward P/E ~17.8x (FY2026e EPS $3.58)</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~22.7x</div><div class="d">มัธยฐาน FY2021–25 (ช่วง 16.8–57.3x)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS $32.03 (ค่าเดิมของรายงาน)</div></div>
 
-      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$3,079M</div><div class="d">EPS diluted $3.45 (+48% YoY)</div></div>
-      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$3.38</div><div class="d">Q2+Q3+Q4 2025 + Q1 2026</div></div>
-      <div class="metric"><div class="k">BVPS</div><div class="v">~$32.03</div><div class="d">Shareholders equity $33.4B (FY2025)</div></div>
-      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~10.5% / 2.7%</div><div class="d">Debt/Equity 1.78x · Total debt $48.9B</div></div>
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$2,954M</div><div class="d">EPS diluted $3.45 (+49% YoY)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$2.86</div><div class="d">GAAP diluted (Yahoo $2.89) · operating FY2026 guidance $3.45–3.69</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$32.03</div><div class="d">มูลค่าทางบัญชีต่อหุ้นสามัญ (ค่าเดิมของรายงาน)</div></div>
+      <div class="metric"><div class="k">ROE (TTM)</div><div class="v neu">~8.3%</div><div class="d">Debt/Equity 1.60x · Total debt $53.9B</div></div>
 
-      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~$17.5B</div><div class="d">FY2025 $16.5B (+14.2% YoY)</div></div>
-      <div class="metric"><div class="k">Operating Margin</div><div class="v">~26.7%</div><div class="d">Net margin 18.7% · EV/EBITDA 15.7x</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~4.20%</div><div class="d">$2.67/ปี · Payout ratio ~79% · คงเส้นคงวา</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~$18.1B</div><div class="d">FY2025 $16.5B (+14.2% YoY)</div></div>
+      <div class="metric"><div class="k">Net Margin (TTM)</div><div class="v">~13.7%</div><div class="d">FY2025 17.9% · FCF TTM −$6.8B (capex สูง)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~4.20%</div><div class="d">$2.67/ปี · Payout ~93% ของ GAAP EPS TTM · คงเส้นคงวา</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">0.63</div><div class="d">ความผันผวนต่ำ — ลักษณะ defensive</div></div>
     </div>
   </section>
@@ -147,33 +148,29 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        D เริ่มเดือนสิงหาคม 2568 ที่ $59.90 แกว่งตัวผันผวนในกรอบ $58–63 จนถึงเดือนธันวาคม 2568 ซึ่งเป็นจุดต่ำสุดรอบปีที่ $58.59 ท่ามกลางความกังวลอัตราดอกเบี้ยสูง ก่อนพลิกฟื้นแข็งแกร่งตลอดครึ่งแรกของปี 2569 ไต่ระดับต่อเนื่องจาก $60.17 (ม.ค.) ผ่าน $64.50 (เม.ย.) $66.94 (พ.ค.) $68.29 (มิ.ย.) จนถึง $70.08 ปัจจุบัน (ก.ค. 2569) ซึ่งเป็นระดับสูงสุดในรอบปี ผลตอบแทนรอบปี +17.0% สะท้อนกระแส Data Center power demand ที่เป็น re-rating story สำหรับหุ้น Northern Virginia utility
+        กราฟเริ่มเดือนตุลาคม 2568 ที่ $58.69 ผ่านจุดต่ำสุดรายเดือน $58.59 ในเดือนธันวาคม 2568 ก่อนไต่ขึ้นตลอดครึ่งแรกของปี 2569 จาก $60.17 (ม.ค.) ผ่าน $64.50 (เม.ย.) $66.94 (พ.ค.) $68.29 (มิ.ย.) ถึงจุดสูงสุดรายเดือน $69.17 (ก.ค.) แล้วย่อลงเป็น $66.01 (ส.ค.) และ $63.58 (ก.ย. 2569) — ราคาถอยจากจุดสูงสุดแต่ยังสูงกว่าจุดเริ่มต้นกราฟ สะท้อนว่าแรงหนุนจากเรื่อง Data Center power demand ถูกตลาดลดทอนลงบางส่วนช่วงไตรมาสล่าสุด
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">3 วิธี — ถ่วงตามตระกูล (P/E ยึดตลาด + เฉลี่ย DDM/JPBV ตระกูล r/g)</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">2 วิธี — P/E (ตัวคูณมัธยฐานย้อนหลังที่วัดจริง) + DDM (ตระกูล r/g)</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS oper. $3.59 (FY2026 consensus) × P/E 20x — utility ที่มี data center tailwind + regulated earnings growth ~5%/ปี</div></div>
-        <div class="mval">$71.80</div>
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS $2.86 (GAAP diluted TTM) × P/E 22.7x — มัธยฐาน P/E 5 ปี (FY2021–25 ราคาเฉลี่ยงวด ÷ EPS diluted; ช่วง 16.8–57.3x) ตัวคูณนี้วัดจากประวัติ ไม่ได้ถอดจาก P/E ปัจจุบัน (22.1x) แม้ค่าใกล้กัน</div></div>
+        <div class="mval">$64.92</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล $2.67 × (1+g); g 3.0%, r 7.5% → regulated utility ปันผลคงที่ 3 ปี (2023–2025), คาดเติบโตตาม EPS</div></div>
-        <div class="mval">$59.33</div>
-      </div>
-      <div class="vmethod">
-        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 10.5% − g 3.0%)/(r 7.5% − g 3.0%) ≈ 1.67 × BVPS $32.03</div></div>
-        <div class="mval">$53.49</div>
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล $2.67 × (1+g); g 3.0%, r 7.5% → regulated utility ปันผลคงที่ $2.67, คาดเติบโตช้าตาม EPS</div></div>
+        <div class="mval">$61.11</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}} · ถ่วงตามตระกูล: P/E (ยึดตลาด) + เฉลี่ย DDM/JPBV (ตระกูล r/g)</span></div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}} · เฉลี่ย 2 ตระกูล: P/E (มัธยฐานย้อนหลัง) + DDM (r/g)</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        dispersion gate 0.4c/0.4c-bis: ขายึดตลาดมีตัวเดียว (P/E $71.80) เป็นสมอ · DDM ($59.33) กับ Justified P/BV ($53.49) ใช้ r 7.5%/g 3.0% ชุดเดียวกัน นับเป็นตระกูล r/g เดียว เฉลี่ยได้ $56.41 — ทั้งสองขาห่างจากสมอไม่เกิน 2 เท่า จึงรวมได้ทั้งคู่ FV = (สมอ $71.80 + ตระกูล r/g $56.41)/2 = $64.00 · กรอบ FV = $53.49–$71.80 (min–max ของขาที่รวมได้)
+        FV = (P/E $64.92 + DDM $61.11)/2 = $63.02 ≈ $63.0 · กรอบ FV = $61.11–$64.92 · ปรับโครงสร้างรอบนี้: ตัดเป้านักวิเคราะห์ออกจากขา FV (เหลือเป็นบริบทเทียบเท่านั้น) · ตัด Justified P/BV ออก เพราะใช้ (r,g) ชุดเดียวกับ DDM (นับเสียงเดียว) และ ROE TTM 8.3% ต่ำกว่าเดิมมาก ทำให้ขานี้ไวต่อ ROE จนไม่เสถียร · P/E ใช้ EPS GAAP เพราะมัธยฐานย้อนหลังคำนวณจาก EPS diluted GAAP ฐานเดียวกัน (EPS operating ~$3.45–3.69 ต่างฐาน จึงไม่ใช้คูณตัวคูณนี้) · หมายเหตุ: P/E ผูกกับกำไร GAAP ที่ต่ำกว่า operating (Q2 2569 GAAP $0.37 vs operating $0.79) ถ้ามองเป็น operating FV จะสูงกว่านี้
       </p>
     </div>
   </section>
@@ -191,12 +188,12 @@
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
-          <span style="text-align:right">$69.33<br><small>เป้าเฉลี่ย Analyst</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:analystTgt}}<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        D ซื้อขายที่ $68.77 สูงกว่า Fair Value $64.00 ค่อนข้างมาก — MOS ติดลบ ~-7.5% ไม่มีส่วนเผื่อความปลอดภัยแล้ว สะท้อนว่าตลาด price-in Data Center story และ rate base growth ไปมากกว่ากรอบ Fair Value ที่ประเมินจากตระกูลยึดตลาด+r/g Analyst consensus ~$69.33–69.83 สูงกว่ากรอบนี้ สะท้อนมุมมองต่างด้าน methodology จาก sell-side โซนน่าสนใจ = $51.20 (MOS 20%) ต่ำกว่า 52wk low ของปีนี้ ($55.85)
+        D ซื้อขายที่ {{rd:px}} ใกล้เคียง Fair Value {{rd:fv}} (MOS {{rd:mos}}) — ไม่มีส่วนเผื่อความปลอดภัย ตลาดให้ราคาสอดคล้องกับ P/E มัธยฐานย้อนหลังและ DDM พอดี Analyst consensus ~{{rd:analystTgt}} ({{rd:analystPct}}) สูงกว่ากรอบ FV นี้ สะท้อนมุมมองต่างฐาน (operating EPS) จาก sell-side โซนน่าสนใจ = {{rd:mos20}} (MOS 20%) ต่ำกว่า 52 สัปดาห์ต่ำสุด ($55.85)
       </p>
     </div>
   </section>
@@ -207,7 +204,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">MOS ติดลบ — ราคาซื้อขายสูงกว่า Fair Value พอสมควรแล้ว ไม่มี upside เหลือในระยะสั้น รอโอกาสซื้อที่ดีกว่านี้</div>
+        <div class="txt">ราคาใกล้เคียง Fair Value (สูงกว่าเล็กน้อย) — ไม่มีส่วนเผื่อความปลอดภัย รอโอกาสซื้อที่ดีกว่านี้</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -234,34 +231,34 @@
           <div class="tgt">{{rd:sc1tgt}}</div>
           <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$3.38</span></li>
-            <li><span>P/E ออก</span><span>17x</span></li>
+            <li><span>EPS ปี 3</span><span>~$2.86</span></li>
+            <li><span>P/E ออก</span><span>16.8x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>rate freeze / ดอกเบี้ยพุ่ง</span></li>
           </ul>
         </div>
       </div>
       <div class="col base">
-        <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
+        <div class="top"><span>⚖️ Base</span><span>EPS +6%/ปี</span></div>
         <div class="body">
           <div class="tgt">{{rd:sc2tgt}}</div>
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$3.91</span></li>
-            <li><span>P/E ออก</span><span>19x</span></li>
+            <li><span>EPS ปี 3</span><span>~$3.41</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>rate base growth + data center</span></li>
           </ul>
         </div>
       </div>
       <div class="col bull">
-        <div class="top"><span>🚀 Bull</span><span>EPS +8%/ปี</span></div>
+        <div class="top"><span>🚀 Bull</span><span>EPS +9%/ปี</span></div>
         <div class="body">
           <div class="tgt">{{rd:sc3tgt}}</div>
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$4.26</span></li>
-            <li><span>P/E ออก</span><span>21x</span></li>
+            <li><span>EPS ปี 3</span><span>~$3.70</span></li>
+            <li><span>P/E ออก</span><span>22.7x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>data center boom + dividend hike</span></li>
           </ul>
@@ -269,7 +266,7 @@
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      Base case อิงการเติบโต EPS ที่ 5%/ปี ซึ่งสอดคล้องกับ management guidance และ analyst consensus (~$3.59 FY2026, $3.81 FY2027) ผลตอบแทน 3 ปีรวมปันผล ~17% หรือ ~5.4%/ปี — ใกล้เคียงผลตอบแทนที่คาดหวังของ defensive utility Bull case อิงกรณีที่ Data Center demand เร่งตัวและ Dominion ได้รับอนุมัติ rate hike เร็วกว่าคาด ทำให้ EPS โต 8%/ปี Bear case เกิดเมื่ออัตราดอกเบี้ยสูงค้างนาน กดดัน utility valuation และ rate case ติดขัด ผลตอบแทนรวมติดลบแม้มีปันผล $8/3 ปี เนื่องจากจุดเข้าปัจจุบันสูงกว่า Fair Value เล็กน้อยแล้ว
+      ฐาน EPS = GAAP diluted TTM $2.86 (ไม่ใช่ operating) Base โต 6%/ปี ใกล้อัตราเติบโต consensus FY2026e→FY2027e ($3.58→$3.82) ตัวคูณออก: Bear 16.8x = P/E ต่ำสุดที่วัดได้ (FY2025) · Base 20x = กึ่งกลางระหว่าง 18.2x (FY2021) กับมัธยฐาน 22.7x · Bull 22.7x = มัธยฐาน 5 ปี ผลตอบแทน 3 ปีรวมปันผลของ Base ~19.5% หรือ ~6.2%/ปี Bull อิงกรณี Data Center demand เร่งตัวและ rate case ผ่านเร็วกว่าคาด (EPS โต 9%/ปี) Bear เกิดเมื่อดอกเบี้ยสูงค้างนานและ rate case ติดขัด ผลตอบแทนรวมติดลบแม้มีปันผล $8/3 ปี เพราะจุดเข้าอยู่ใกล้ Fair Value อยู่แล้ว
     </p>
   </section>
 
@@ -280,22 +277,22 @@
       <div class="box cat">
         <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
         <ul>
-          <li><b>Data Center Power Boom:</b> Northern Virginia เป็น Data Center hub ใหญ่สุดในโลก Amazon, Meta, Google, Microsoft ขยาย hyperscale ต่อเนื่อง — Data Centers คิดเป็น ~25% ของโหลดกริด Dominion และคาดเพิ่มขึ้นอีก เป็น structural tailwind ระยะยาวที่หาได้ยากในธุรกิจ utility</li>
-          <li><b>Regulated Rate Base Growth:</b> แผน Capex ~$43B ปี 2025–2029 ขยาย transmission, distribution, และ solar ใน regulated territory ทุก dollar ที่ลงทุนใน rate base → approved returns ที่แน่นอน → earnings growth ที่คาดเดาได้</li>
+          <li><b>Data Center Power Boom:</b> Northern Virginia เป็น Data Center hub ใหญ่ที่สุดแห่งหนึ่งของโลก โหลดจาก hyperscale เพิ่มขึ้นต่อเนื่อง เป็น structural tailwind ระยะยาวที่หาได้ยากในธุรกิจ utility</li>
+          <li><b>Regulated Rate Base Growth:</b> บริษัทยืนยันแผนลงทุนและอัตราเติบโต EPS ระยะยาวเดิมในผลไตรมาส 2/2569 (ไม่เปลี่ยนแปลง) ทุก dollar ที่ลงทุนใน rate base → approved returns ที่แน่นอน → earnings growth ที่คาดเดาได้ · guidance operating EPS FY2026 $3.45–3.69</li>
           <li><b>Virginia Clean Economy Act:</b> กฎหมายของ Virginia บังคับ 100% clean energy ภายในปี 2045 Dominion ได้ประโยชน์โดยตรงจาก mandated investment ใน offshore wind, solar, battery — ตัวเร่ง rate base โดยอัตโนมัติ</li>
           <li><b>อัตราดอกเบี้ยขาลง:</b> Utility เป็น interest-rate sensitive — ถ้า Fed ลดดอกเบี้ย utility stocks จะ re-rate ขึ้น (yield-equivalents กลายเป็น attractive กว่า) D ที่ beta 0.63 จะได้ประโยชน์จากสภาพแวดล้อม risk-on + rate cuts</li>
-          <li><b>Dividend Safety + ศักยภาพ Growth:</b> Dominion ตรึง dividend $2.67/ปีมา 3 ปี หลัง 2020 restructuring ถ้า EPS โตตาม guidance 5-7% ศักยภาพปรับปันผลขึ้นในอีก 1-2 ปีข้างหน้า — บวกต่อ yield หุ้น</li>
-          <li><b>Offshore Wind (CVOW Phase 2):</b> โครงการ Coastal Virginia Offshore Wind 2.6GW เดินหน้า Phase 1 เสร็จแล้ว Phase 2 อยู่ระหว่างก่อสร้าง เป็น rate base scale ขนาดใหญ่ที่ได้ approved regulated return</li>
+          <li><b>Dividend Safety + ศักยภาพ Growth:</b> ปันผล $2.67/ปี คงที่ (payout ~93% ของ GAAP EPS TTM แต่ต่ำกว่านั้นเมื่อเทียบ operating EPS) ถ้า EPS โตตาม guidance อาจมีพื้นที่ปรับปันผลในอนาคต — บวกต่อ yield หุ้น</li>
+          <li><b>Offshore Wind (CVOW):</b> ตามรายงานผลไตรมาส 2/2569 โครงการคืบหน้า ~81% แต่กำหนดติดตั้งกังหันตัวสุดท้ายเลื่อนเป็นปลายปี 2570 และประมาณการต้นทุนเพิ่มเป็น $11.65B — เป็น rate base ขนาดใหญ่ที่ได้ regulated return แต่มีความเสี่ยงต้นทุน/เวลา (ดูฝั่ง Risks)</li>
         </ul>
       </div>
       <div class="box risk">
         <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
         <ul>
-          <li><b>อัตราดอกเบี้ยสูงระยะยาว:</b> Utility มี debt หนัก (D/E 1.78x, total debt $48.9B) ถ้าดอกเบี้ยสูงค้าง cost of capital สูงขึ้น กดดัน utility valuation ทั่วกลุ่ม — D ไม่ใช่ข้อยกเว้น</li>
+          <li><b>อัตราดอกเบี้ยสูงระยะยาว:</b> Utility มี debt หนัก (D/E 1.60x, total debt $53.9B, FCF TTM ติดลบ ~$6.8B) ถ้าดอกเบี้ยสูงค้าง cost of capital สูงขึ้น กดดัน utility valuation ทั่วกลุ่ม — D ไม่ใช่ข้อยกเว้น</li>
           <li><b>Rate Case ความเสี่ยง:</b> การขึ้น rate ต้องผ่านการอนุมัติ Virginia State Corporation Commission หาก regulators ไม่อนุมัติเต็มจำนวน return on equity ที่ได้จริงอาจต่ำกว่า เสี่ยงต่อ earnings growth ที่ช้ากว่า guidance</li>
-          <li><b>Project Execution Risk (CVOW):</b> ต้นทุนก่อสร้าง Offshore Wind ผันผวนสูง inflation + supply chain ล่าช้า → overrun ที่ไม่ได้รับอนุมัติทั้งหมดจาก regulator อาจกดดัน ROE</li>
-          <li><b>Capital Intensity สูง:</b> Capex $43B ใน 5 ปีต้องการเงินทุนจำนวนมาก อาจออก equity dilution หรือ bond ต้นทุนสูง — ทั้งสองทางกระทบ EPS per share</li>
-          <li><b>Valuation Premium แล้ว:</b> ตลาดได้ pricing ใน Data Center story ไปแล้ว — P/E TTM 20.2x สูงกว่า utility sector median (~18x) ถ้า growth narrative เปลี่ยน multiple จะ compress รวดเร็ว</li>
+          <li><b>Project Execution Risk (CVOW):</b> ประมาณการต้นทุนถูกปรับขึ้นเป็น $11.65B และกังหันตัวสุดท้ายเลื่อนเป็นปลายปี 2570 (ผลไตรมาส 2/2569) — overrun ที่ regulator ไม่อนุมัติเต็มจำนวนอาจกดดัน ROE</li>
+          <li><b>Capital Intensity สูง:</b> Capex ขนาดใหญ่ (FCF ติดลบต่อเนื่อง 6 ปี) ต้องการเงินทุนจำนวนมาก อาจออก equity dilution หรือ bond ต้นทุนสูง — ทั้งสองทางกระทบ EPS per share</li>
+          <li><b>Valuation ไม่ถูกแล้ว:</b> P/E TTM ~22x ใกล้มัธยฐานย้อนหลัง 5 ปีของตัวเอง (22.7x) จึงไม่มีส่วนลด ถ้า growth narrative เปลี่ยน multiple อาจยุบเข้าหาระดับต่ำสุดที่วัดได้ (16.8x)</li>
         </ul>
       </div>
     </div>
@@ -305,15 +302,15 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>D — Defensive Utility พรีเมียมจาก Data Center Tailwind | ราคาสูงกว่า Fair Value, รอโอกาสเข้า</h2>
-      <p>Dominion Energy เป็น regulated utility ที่มี structural advantage เฉพาะตัว: ให้บริการ Northern Virginia — Data Center capital of the world ที่มีโหลดเติบโตต่อเนื่องจาก Amazon, Meta, Google, Microsoft หนุนการขยาย rate base ระยะยาว แผน Capex $43B ปี 2025–2029 แปลง capex ทุกบาทเป็น regulated returns ที่แน่นอน EPS consensus โต ~5-6%/ปี dividend yield ~3.9% ที่มั่นคง (beta 0.63) เหมาะกับ defensive portfolio อย่างยิ่ง ทว่าในราคาปัจจุบัน $68.77 หุ้นซื้อขายสูงกว่า Fair Value $64.00 ค่อนข้างมาก โดยไม่มี margin of safety เหลือ (MOS ~-7.5%) สะท้อนว่า narrative ดีถูก priced in ไปเกินกรอบ Fair Value ที่ประเมินจากตระกูลยึดตลาด+r/g Analyst ส่วนใหญ่ Hold target เฉลี่ย ~$69.33–69.83 ซึ่งสูงกว่ากรอบนี้ สะท้อนมุมมองต่างด้าน methodology</p>
+      <h2>D — Defensive Utility จาก Data Center Tailwind | ราคาใกล้ Fair Value, รอโอกาสเข้า</h2>
+      <p>Dominion Energy เป็น regulated utility ที่มี structural advantage เฉพาะตัว: ให้บริการ Northern Virginia — Data Center hub ที่โหลดเติบโตต่อเนื่อง หนุนการขยาย rate base ระยะยาว แผนลงทุนขนาดใหญ่แปลงเป็น regulated returns EPS consensus โต ~6%/ปี dividend yield ~4.2% ที่มั่นคง (beta 0.63) เหมาะกับ defensive portfolio ทว่าที่ราคา {{rd:px}} หุ้นซื้อขายใกล้ Fair Value {{rd:fv}} โดยไม่มี margin of safety ({{rd:mos}}) FV ประเมินจาก P/E มัธยฐานย้อนหลัง + DDM บน EPS GAAP ส่วน Analyst Hold เป้าเฉลี่ย ~{{rd:analystTgt}} ({{rd:analystPct}}) สูงกว่ากรอบนี้เพราะมองต่างฐาน operating EPS</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$69.5 (Hold)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~{{rd:analystTgt}} (Hold)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน $68.77 สูงกว่า Fair Value $64.00 ไปแล้วค่อนข้างมาก (MOS ติดลบ) — ไม่แนะนำซื้อเพิ่มในราคานี้ โซนน่าสนใจ = $51–$54 (MOS 15–20%) ต่ำกว่าระดับ 52wk low ในรอบปี ($55.85) ผู้ที่ถืออยู่แล้วอาจถือต่อรับปันผล ~3.8%/ปี บน Data Center tailwind ระยะยาว แต่ไม่ใช่จุดซื้อใหม่ที่ดี — รอ pullback ก่อน
+        💡 <b>กลยุทธ์:</b> ราคา {{rd:px}} ใกล้ Fair Value {{rd:fv}} ({{rd:mos}}) — ไม่มี margin of safety ไม่แนะนำซื้อเพิ่มในราคานี้ โซนน่าสนใจ = {{rd:mos20}} (MOS 20%) ต่ำกว่าระดับ 52 สัปดาห์ต่ำสุด ($55.85) ผู้ที่ถืออยู่แล้วอาจถือต่อรับปันผล ~4.2%/ปี บน Data Center tailwind ระยะยาว แต่ไม่ใช่จุดซื้อใหม่ที่ดี — รอ pullback ก่อน
       </div>
     </div>
   </section>
@@ -322,9 +319,9 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มา: Yahoo Finance/Finviz (ราคา $68.77, EPS TTM $3.37–3.38), Finviz (P/E 20.2x, ROE 10.5%, BVPS $32.03), StockAnalysis (งบการเงิน, analyst target ~$69.83), Finviz (analyst target ~$69.42), ข้อมูล ณ 18 ส.ค. 2569
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มา: Yahoo Finance (EPS TTM $2.89, เป้า analyst $71.64), StockAnalysis (งบการเงิน, EPS TTM $2.86, เป้า analyst $71.82, 52 สัปดาห์ $55.85–$72.99), Dominion Energy Q2 2026 results (guidance/CVOW), ข้อมูล ณ 21 ก.ย. 2569
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 18 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
