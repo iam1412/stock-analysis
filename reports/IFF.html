@@ -4,36 +4,36 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น International Flavors &amp; Fragrances (IFF) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"IFF","currency":"USD","price":82.96,"fairValue":90,"mos":7.8,"upside":8.5,"pe":17.7,"dividendYield":1.9,"roe":6}
+{"symbol":"IFF","currency":"USD","price":82.96,"fairValue":85.99,"mos":3.5,"upside":3.7,"pe":77.5,"dividendYield":1.9,"roe":2}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 90,
+  "fv": 85.99,
   "values": {
     "px": 82.96,
     "priceDate": "2026-09-18",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
-    "fvLow": 88,
-    "fvHigh": 91,
-    "shares": 255300000,
+    "fvLow": 79.4,
+    "fvHigh": 92.6,
+    "shares": 255150000,
     "dps": 1.6,
     "bvps": 54.94,
-    "baseEps": 4.5,
+    "baseEps": 3.28,
     "scenarios": [
       {
-        "tgt": 61.65,
+        "tgt": 68.47,
         "div": 4.8
       },
       {
-        "tgt": 93.78,
+        "tgt": 103.21,
         "div": 4.8
       },
       {
-        "tgt": 116.6,
+        "tgt": 123.72,
         "div": 4.8
       }
     ],
@@ -72,8 +72,8 @@
       ["ก.ย.26", 82.96]
     ],
     "min": 60,
-    "max": 100,
-    "grid": [70, 80, 90],
+    "max": 90,
+    "grid": [70, 80],
     "currency": "$",
     "highlight": [0, 10]
   },
@@ -95,10 +95,10 @@
     <div>
       <span class="tag">NYSE: IFF</span>
       <span class="tag">Specialty Ingredients (Flavors &amp; Fragrances)</span>
-      <span class="tag">Global F&amp;F Oligopoly — Post-Divestiture Pure-Play</span>
+      <span class="tag">Portfolio Transformation — Food Ingredients Divestiture Pending</span>
     </div>
     <h1>International Flavors &amp; Fragrances Inc.</h1>
-    <div class="sub">Flavors • Fragrances • Health &amp; Biosciences • Food Ingredients (Nourish)</div>
+    <div class="sub">Taste • Scent • Health &amp; Biosciences • Food Ingredients (อยู่ระหว่างขาย — discontinued ops)</div>
     <div class="price-row">
       <div>
         <div class="px">{{rd:px}}<small>(IFF)</small></div>
@@ -106,7 +106,7 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ $59.14 – $84.45<br>
+        กรอบ 52 สัปดาห์ $59.14 – $89.31<br>
         ที่มา: StockAnalysis.com • Yahoo Finance • IFF Investor Relations
       </div>
     </div>
@@ -114,20 +114,20 @@
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 · ตัวเลข TTM / Q1 2026</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ 21 ก.ย. 2569 · TTM (ฐานรวมก่อนแยกธุรกิจ) / Q2 2026 (ฐานธุรกิจต่อเนื่อง)</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$21.18B</div><div class="d">~255.3M shares outstanding</div></div>
-      <div class="metric"><div class="k">P/E (TTM, GAAP)</div><div class="v neu">~24.3x</div><div class="d">Forward P/E (adj. FY2026E) ~17.7x</div></div>
-      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~20–22x</div><div class="d">ผันผวนหลังควบรวม DuPont N&amp;B (2021) + หลายดีล divest</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$21.17B</div><div class="d">~255.15M shares outstanding</div></div>
+      <div class="metric"><div class="k">P/E (TTM, GAAP)</div><div class="v neu">~77.5x</div><div class="d">EPS GAAP TTM $1.07 (ตัวหารต่ำจากรายการ divest) · Forward P/E adj. FY2026E ~25.3x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">ใช้ไม่ได้</div><div class="d">5 ปีมี 3 ปีขาดทุน/กำไรใกล้ศูนย์ — ใช้ EV/Sales และ P/S แทน</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~{{rd:pbv}}x</div><div class="d">BVPS $54.94 · D/E 0.45x</div></div>
 
-      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">−$360M (loss)</div><div class="d">พลิกขาดทุนจาก loss on divestiture (Pharma Solutions, ปิดดีล 2025)</div></div>
-      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$3.23</div><div class="d">GAAP; Adj. EPS Q1 2026 $1.25 (+4.2% YoY)</div></div>
-      <div class="metric"><div class="k">BVPS</div><div class="v">~$54.94</div><div class="d">Equity ~$14.0B (รวม goodwill/intangibles จากดีล DuPont N&amp;B มาก)</div></div>
-      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~6.0% / ~3.3%</div><div class="d">ROIC ~4.1% — ถูกกดจาก intangible-heavy balance sheet</div></div>
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">−$361M (loss)</div><div class="d">ขาดทุนจากรายการ divest/impairment (EPS GAAP −$1.41)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$1.07</div><div class="d">GAAP diluted; ต่อเนื่อง H1'26 $0.73 · Adj. EPS ex-amort ต่อเนื่อง Q2'26 $0.82 / H1'26 $1.74</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$54.94</div><div class="d">Equity ~$14.0B ณ 30 มิ.ย. 2569 (goodwill/intangibles ~$11.9B)</div></div>
+      <div class="metric"><div class="k">ROE (TTM)</div><div class="v neu">~2.0%</div><div class="d">NI TTM ~$277M ÷ equity ~$14.0B · ROE vendor −5.5% ค้างฐานเก่า ไม่ใช้</div></div>
 
-      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$10.79B</div><div class="d">FY2026 guide $10.5–10.8B (organic +1–4%)</div></div>
-      <div class="metric"><div class="k">EBITDA Margin (adj.)</div><div class="v">~16.4%</div><div class="d">EBITDA TTM $1.766B · FY2026 guide $2.05–2.15B</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$10.78B</div><div class="d">ฐานรวมก่อนแยกธุรกิจ · FY2026 guide ต่อเนื่อง $7.4–7.6B (ไม่รวม disc. ~$3.2B)</div></div>
+      <div class="metric"><div class="k">EBITDA Margin (adj., ต่อเนื่อง)</div><div class="v">~21.8%</div><div class="d">H1'26 $841M · FY2026 guide $1.53–1.60B (ไม่รวม disc. ~$520M)</div></div>
       <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">$1.60/share ต่อปี</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">0.94</div><div class="d">ใกล้เคียงตลาดโดยรวม</div></div>
     </div>
@@ -146,40 +146,40 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        IFF ปรับตัวขึ้น +16.3% ในช่วง ~11 เดือนที่ผ่านมา (ส.ค. 2568 – ก.ค. 2569) หลังร่วงลงแตะจุดต่ำสุด $61.54 ในเดือน ก.ย. 2568
-        ท่ามกลางความกังวลเรื่องภาระหนี้หลังควบรวม DuPont N&amp;B และความไม่แน่นอนของดีลขาย Pharma Solutions ก่อนจะฟื้นตัวแรง
-        แตะจุดสูงสุด $82.23 ในเดือน ก.พ. 2569 หลังปิดดีลขาย Pharma Solutions สำเร็จและประกาศงบ Q4 2025 ที่ดีกว่าคาด จากนั้นย่อตัวลง
-        มาซื้อขายที่ $78.53 ในปัจจุบัน — ราคายังต่ำกว่า Fair Value ประมาณการ $90 อยู่พอสมควร สะท้อนว่าตลาดยังไม่เชื่อมั่นเต็มที่
-        ในสตอรี่ deleveraging + pure-play focus ที่กำลังดำเนินอยู่
+        ราคาปิดรายเดือนย้อนหลัง 12 เดือน: ต่ำสุดที่ $62.97 ในเดือน ต.ค. 2568 (ความกังวลเรื่องภาระหนี้และดีลขายธุรกิจ) ก่อนฟื้นตัวแตะ $82.23 ในเดือน ก.พ. 2569
+        ย่อลงช่วง มี.ค.–เม.ย. แล้วไต่ขึ้นทำจุดสูงสุดของช่วงที่ $86.33 ในเดือน ส.ค. 2569 หลังประกาศขาย Food Ingredients ให้ CVC (29 พ.ค. 2569)
+        และงบ Q2 2026 ที่แข็งแรง จากนั้นย่อลงมาอยู่ที่ {{rd:px}} — ใกล้มูลค่าเหมาะสมประมาณการ {{rd:fv}} ตลาดจึงราคาเต็มมูลค่าตามฐานยอดขายไปแล้วเป็นส่วนใหญ่
+        กรอบ 52 สัปดาห์ (ระหว่างวัน) อยู่ที่ $59.14–$89.31
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">3 วิธี — ใช้ EPS ปรับปรุง (adj.) forward FY2026E เพราะ GAAP TTM ยังมี noise จากดีล divest</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">2 วิธีในตระกูลเดียว (EV/Sales + P/S) — ใช้มัธยฐาน 5 ปีที่วัดจริง เพราะ P/E มัธยฐานใช้ไม่ได้และงบกำลังเปลี่ยนฐานจาก discontinued ops</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $4.50 (FY2026E consensus 20 นักวิเคราะห์) × P/E เป้าหมาย 20x = $90.00 — ต่ำกว่า P/E เฉลี่ยกลุ่ม flavors/fragrances (Givaudan/Symrise ~25–30x) สะท้อนส่วนลดจาก leverage ที่ยังสูงกว่าคู่แข่ง</div></div>
-        <div class="mval">$90.00</div>
+        <div><div class="mname">1. EV/Sales (มัธยฐาน 5 ปี)</div><div class="mdesc">Sales TTM $10.78B (ฐานรวมก่อนแยกธุรกิจ) × EV/Sales 2.72x (มัธยฐาน FY2021–FY2025 ของ IFF: 4.30/3.03/2.72/2.69/2.15 จาก StockAnalysis ratios — ค่าประวัติ ไม่ใช่ตัวคูณปัจจุบัน) = EV $29.32B − Net Debt $5.71B (EV − Market Cap ฐานเดียวกับ vendor รวมสัญญาเช่า) = Equity $23.61B ÷ 255.15M shares ≈ $92.55</div></div>
+        <div class="mval">$92.55</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. EV/EBITDA (FY2026E Guidance)</div><div class="mdesc">Adj. EBITDA guide กลาง $2.10B × 13.8x (multiple ปัจจุบัน ไม่ re-rate) = EV $28.98B − Net Debt $5.8B = Equity $23.18B ÷ 255.3M shares ≈ $90.80</div></div>
-        <div class="mval">$90.80</div>
+        <div><div class="mname">2. P/S (มัธยฐาน 5 ปี — ตระกูลเดียวกับข้อ 1)</div><div class="mdesc">Sales/หุ้น $42.25 ($10.78B ÷ 255.15M) × P/S 1.88x (มัธยฐาน FY2021–FY2025: 3.29/2.15/1.80/1.88/1.59) ≈ $79.44 — นับเป็นเสียงเดียวกับข้อ 1 (ทั้งคู่คือตัวคูณยอดขายฐานเดียวกัน) ทั้งสองห่างกัน 1.17x (&lt;2x)</div></div>
+        <div class="mval">$79.44</div>
       </div>
-      <div class="vmethod">
-        <div><div class="mname">3. DCF Perpetuity Growth (EPS-based proxy)</div><div class="mdesc">EPS₁ = $4.50 × (1+g); g 3.5%, r 8.75% → $4.6575 ÷ (0.0875−0.035) = $4.6575 ÷ 0.0525 ≈ $88.71</div></div>
-        <div class="mval">$88.71</div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ทั้ง 3 วิธีให้ค่าใกล้เคียงกันมาก ($88.71–$90.80) เพราะทุกวิธีอิงจาก EPS/EBITDA ปีปฏิทิน FY2026 ที่ผ่านการยืนยันจาก
-        guidance ของบริษัทและ consensus นักวิเคราะห์ 20 คน ไม่ใช้ P/E เป้าหมายที่สูงเกินจริง (20x ต่ำกว่าคู่แข่งตรง Givaudan/Symrise
-        ที่เทรด 25–30x) เพื่อสะท้อนความเสี่ยงด้าน leverage (Net Debt/EBITDA ~3.1x) ที่ยังสูงกว่าคู่แข่งในกลุ่มเดียวกัน Fair Value
-        เฉลี่ย $90 ใกล้เคียงกับเป้าเฉลี่ยนักวิเคราะห์ $91.21 มาก ซึ่งเป็นสัญญาณบวกว่าประมาณการนี้ค่อนข้างอนุรักษ์นิยม
+        <b>Single-family valuation:</b> ทั้งสองวิธีเป็นตัวคูณยอดขายจากประวัติของ IFF เอง จึงนับเป็นตระกูลเดียว ไม่ใช่การยืนยันอิสระ — ความไวของผล: EV/Sales ±0.25x
+        = ±$10.6 ต่อหุ้น และหาก P/S อยู่ที่ต่ำสุดในช่วง (1.59x) ขานั้นเหลือ ~$67 ทำให้ MOS ติดลบได้ · ไม่ใช้ P/E เพราะมัธยฐานย้อนหลังเหลือจุดที่เชื่อได้เพียง 1 จุด
+        (ปีขาดทุน 3 ปี) และ EPS GAAP TTM ($1.07) ถูกกดจากรายการ divest · ไม่ใช้เป้านักวิเคราะห์เป็นขา (ใช้เทียบเท่านั้น: เป้าเฉลี่ย $95.66 จาก 18 คน)
+        · ข้อควรระวังฐานข้อมูล: ยอดขาย/EV ที่ใช้เป็นฐาน<b>รวม</b>ธุรกิจ Food Ingredients ที่กำลังขาย (~$3.2B ยอดขายปี 2026 · net proceeds ~$3.8B ปิดดีลคาดภายในสิ้น Q2 2027)
+        จึงสอดคล้องกับ Net Debt ที่ยังรวมธุรกิจนี้อยู่ · การจัดฐานยอดขายต่อเนื่องหลังปิดดีลต้องคำนวณใหม่เมื่อ IFF เปิดเผยงบ TTM ต่อเนื่องครบ 4 ไตรมาส
       </p>
     </div>
   </section>
@@ -198,13 +198,13 @@
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
-          <span style="text-align:right">$91.21<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$95.66<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน $78.53 ต่ำกว่า Fair Value เฉลี่ย $90 ราว 12.7% (MOS +12.7%) และต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ $91.21
-        (Buy consensus จาก 20 คน, กรอบ $71–$105) ราว 16% สะท้อนว่าตลาดยังรอความชัดเจนเรื่องการลดหนี้และผลของการ divest
-        Pharma Solutions ก่อนจะให้ premium เต็มที่ โซนสะสมที่น่าสนใจสำหรับ value investor คือ $63–72 (MOS 20–30%)
+        ราคาปัจจุบัน {{rd:px}} เทียบ Fair Value {{rd:fv}} (MOS {{rd:mos}}) และต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ $95.66
+        (Buy consensus จาก 18 คน) ราว 13% — ตลาดให้น้ำหนักกับการขาย Food Ingredients ($3.8B) การลดหนี้ และโครงการซื้อหุ้นคืน $2.5B ไปพอสมควรแล้ว
+        โซนสะสมสำหรับ value investor คือ {{rd:mos30}}–{{rd:mos20}} (MOS 30–20%) ซึ่งอยู่ต่ำกว่าราคาปัจจุบันพอสมควร
       </p>
     </div>
   </section>
@@ -215,7 +215,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">ราคาปัจจุบันต่ำกว่า Fair Value พอสมควร — มี margin of safety ระดับปานกลาง เหมาะทยอยสะสม</div>
+        <div class="txt">ราคาปัจจุบันใกล้มูลค่าเหมาะสม — margin of safety บาง (&lt;10%) ควรรอโซนสะสมที่ต่ำกว่า</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -234,54 +234,53 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} (adj. FY2026E){{rd:scnNote}}</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • ฐาน Sales TTM $10.78B · EPS อ้างอิง ~{{rd:baseEps}} (consensus adj. FY2026E){{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
-        <div class="top"><span>🐻 Bear</span><span>EPS −3%/ปี</span></div>
+        <div class="top"><span>🐻 Bear</span><span>Sales 0%/ปี</span></div>
         <div class="body">
           <div class="tgt">{{rd:sc1tgt}}</div>
           <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$4.11</span></li>
-            <li><span>P/E ออก</span><span>15x</span></li>
+            <li><span>Sales ปี 3</span><span>~$10.78B</span></li>
+            <li><span>EV/Sales ออก</span><span>2.15x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
-            <li><span>สถานการณ์</span><span>Organic growth ชะลอ · leverage สูงกดดัน re-rating · แข่งขันราคารุนแรง</span></li>
+            <li><span>สถานการณ์</span><span>ยอดขายไม่โต · de-rating ลงต่ำสุดของ 5 ปี (2.15x) · ดีลขาย Food Ingredients ล่าช้า/ไม่ปิด</span></li>
           </ul>
         </div>
       </div>
       <div class="col base">
-        <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
+        <div class="top"><span>⚖️ Base</span><span>Sales +3%/ปี</span></div>
         <div class="body">
           <div class="tgt">{{rd:sc2tgt}}</div>
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$5.21</span></li>
-            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>Sales ปี 3</span><span>~$11.78B</span></li>
+            <li><span>EV/Sales ออก</span><span>2.72x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
-            <li><span>สถานการณ์</span><span>Deleveraging ตามแผน + EBITDA growth ในกรอบ guide 3–8% + pure-play focus สำเร็จ</span></li>
+            <li><span>สถานการณ์</span><span>เติบโตตามกรอบ guide comparable +2–4% · กลับสู่มัธยฐาน 5 ปี · Net Debt คงที่</span></li>
           </ul>
         </div>
       </div>
       <div class="col bull">
-        <div class="top"><span>🚀 Bull</span><span>EPS +9%/ปี</span></div>
+        <div class="top"><span>🚀 Bull</span><span>Sales +4.5%/ปี</span></div>
         <div class="body">
           <div class="tgt">{{rd:sc3tgt}}</div>
           <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$5.83</span></li>
-            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>Sales ปี 3</span><span>~$12.30B</span></li>
+            <li><span>EV/Sales ออก</span><span>3.03x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
-            <li><span>สถานการณ์</span><span>Margin expansion เกินคาด + net debt ลดเร็ว + re-rating ใกล้เคียงคู่แข่ง Givaudan/Symrise</span></li>
+            <li><span>สถานการณ์</span><span>โตเหนือ guide + margin ต่อเนื่องสูงกว่า ~21% และ re-rating ไปที่ระดับ FY2022 (3.03x)</span></li>
           </ul>
         </div>
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      การประมาณการใช้ EPS ฐาน adj. FY2026E ~$4.50 (consensus 20 นักวิเคราะห์ จาก StockAnalysis.com) Base case (+5%/yr)
-      สอดคล้องกับกรอบ guidance adj. EBITDA growth 3–8% (ex-divestiture headwind 5%) ที่ผู้บริหารยืนยันซ้ำใน Q1 2026
-      Bear case สะท้อนความเสี่ยง leverage สูง (Net Debt/EBITDA ~3.1x) กดดันไม่ให้ตลาดให้ premium P/E ปันผล $1.60/yr
-      คำนวณแบบ flat ไม่รวม growth (yield ~2.0%) เป็น cushion เพิ่มเติม ควรทบทวนทุก 2 ไตรมาสตามความคืบหน้าการลดหนี้และ Q2 2026
-      earnings (4 ส.ค. 2569)
+      ฉากทั้งสามใช้ฐานยอดขายรวม TTM $10.78B × EV/Sales ที่วัดจริงจากประวัติ 5 ปีของ IFF (ต่ำสุด 2.15x · มัธยฐาน 2.72x · 3.03x)
+      หัก Net Debt คงที่ $5.71B หารด้วย 255.15M หุ้น (สมมติว่ากระแสเงินสดอิสระใกล้เคียงปันผลที่จ่าย ไม่รวมผลของ ASR $500M) ปันผล $1.60/หุ้น × 3 ปี
+      ราคาเป้าเป็นสมมติฐาน ไม่ใช่คำพยากรณ์ · Base สูงกว่า FV ปัจจุบันเพราะรวมการเติบโตของยอดขาย 3 ปี · ควรทบทวนเมื่อ IFF ประกาศงบ Q3 2026 (3 พ.ย. 2569)
+      และเมื่อดีล Food Ingredients ปิด
     </p>
   </section>
 
@@ -292,16 +291,14 @@
       <div class="box cat">
         <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
         <ul>
-          <li><b>Pure-play focus:</b> ปิดดีลขาย Pharma Solutions (~$2.85B ให้ Roquette) สำเร็จในปี 2025 ทำให้ IFF เหลือ 3 กลุ่มธุรกิจหลัก
-            Nourish/Scent/Health &amp; Biosciences ช่วยให้จัดสรรเงินทุนและบริหารจัดการได้โฟกัสมากขึ้น</li>
-          <li><b>Deleveraging ต่อเนื่อง:</b> ใช้เงินจากการขายสินทรัพย์ลดหนี้ Net Debt เหลือ ~$5.8B (D/E 0.45x) จากจุดสูงสุดหลังควบรวม
-            DuPont N&amp;B ปี 2021 คาดว่าจะช่วยลดต้นทุนดอกเบี้ยและเปิดทางสู่การ re-rating</li>
-          <li><b>EBITDA growth guidance ชัดเจน:</b> FY2026 guide adj. EBITDA growth 3–8% แม้เจอ divestiture headwind 5%
-            สะท้อนความเชื่อมั่นของผู้บริหารต่อ underlying margin expansion</li>
-          <li><b>Volume recovery:</b> Q1 2026 comparable currency-neutral sales +3% จาก volume growth ในทั้ง 4 กลุ่มธุรกิจ
-            (ก่อนแบ่งกลุ่มใหม่หลัง divest) สะท้อนดีมานด์ flavors/fragrances/functional ingredients ฟื้นตัว</li>
-          <li><b>Earnings beat + analyst upgrade:</b> Q1 2026 adj. EPS $1.25 เหนือ consensus $1.08 ถึง 15.7% ผลักดันราคาหุ้นปรับขึ้น
-            แรงหลังประกาศงบ นักวิเคราะห์ 20 คนให้เรตติ้ง Buy เฉลี่ย เป้า $91.21</li>
+          <li><b>ขาย Food Ingredients:</b> ข้อตกลง 29 พ.ค. 2569 ขายให้ CVC Capital Partners net cash proceeds ~$3.8B (คาดปิดภายในสิ้น Q2 2027)
+            IFF ถือหุ้นส่วนน้อย ~10% ต่อ ทำให้โฟกัส Taste / Scent / Health &amp; Biosciences</li>
+          <li><b>ใช้เงินลดหนี้ + ซื้อหุ้นคืน:</b> ตั้งใจลดหนี้กว่า $1B และ Board อนุมัติ buyback $2.5B (ASR $500M ใน H2 2026 ส่วนที่เหลือ $2.0B หลังปิดดีล
+            คาดครบสิ้นปี 2027) เป้า leverage 2.0–2.5x net debt/EBITDA</li>
+          <li><b>Guidance ต่อเนื่อง:</b> FY2026 sales $7.4–7.6B, adj. operating EBITDA $1.53–1.60B, comparable sales +2–4% และ EBITDA +4–8%</li>
+          <li><b>Q2 2026 แข็งแรง:</b> comparable currency-neutral sales +6% (Scent +8%, Taste +4%, H&amp;B +5%) EBITDA margin ต่อเนื่อง 20.9%
+            free cash flow H1 $378M เพิ่ม $284M YoY (รวม disc. ops)</li>
+          <li><b>ตัดต้นทุนตกค้าง:</b> stranded costs ~$100M คาดกำจัด ~2/3 ภายใน 1 ปีหลังปิดดีล และเกือบทั้งหมดภายใน 2 ปี</li>
           <li><b>โครงสร้างตลาด oligopoly:</b> ร่วมกับ Givaudan, Symrise, dsm-firmenich เป็นผู้เล่นระดับโลกไม่กี่รายในธุรกิจ
             flavors/fragrances มี switching cost สูงและสัญญาระยะยาวกับลูกค้า CPG/F&amp;B รายใหญ่</li>
         </ul>
@@ -309,18 +306,14 @@
       <div class="box risk">
         <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
         <ul>
-          <li><b>Leverage ยังสูง:</b> Net Debt/EBITDA ~3.1x (คำนวณจาก TTM EBITDA) ยังสูงกว่าคู่แข่งตรงอย่าง Givaudan/Symrise
-            จำกัดความยืดหยุ่นด้าน capital return และ M&amp;A เพิ่มเติม</li>
-          <li><b>GAAP earnings ผันผวน:</b> FY2025 ขาดทุนสุทธิ GAAP (EPS −$1.41) จาก loss on divestiture/impairment
-            สะท้อนว่า integration ของดีล DuPont N&amp;B ปี 2021 ยังไม่นิ่งสนิท ช่องว่างระหว่าง GAAP กับ adjusted EPS ยังกว้าง</li>
-          <li><b>การแข่งขันรุนแรง:</b> Givaudan, Symrise, dsm-firmenich แข่งขันแย่งส่วนแบ่งตลาดในธุรกิจ flavors/fragrances
-            ลูกค้า CPG/F&amp;B รายใหญ่มีอำนาจต่อรองราคาสูงในสภาวะ growth ต่ำ/เงินเฟ้อต่ำ</li>
-          <li><b>ความเสี่ยงค่าเงินและต้นทุนวัตถุดิบ:</b> ฐานการผลิตทั่วโลกทำให้เผชิญความเสี่ยง FX translation และต้นทุนวัตถุดิบ
-            (aroma chemicals จากธรรมชาติ/สังเคราะห์ วัตถุดิบเกษตร) ที่ผันผวน</li>
-          <li><b>ความเสี่ยงด้าน execution:</b> ต้องพิสูจน์ต่อว่าจะ realize synergies จากดีล DuPont N&amp;B ได้ครบ พร้อมบริหาร
-            portfolio หลัง divest หลายดีล (Pharma Solutions 2025 และดีลย่อยก่อนหน้า) ให้ราบรื่น</li>
-          <li><b>Valuation พึ่งพา re-rating:</b> Fair Value ตั้งอยู่บนสมมติฐาน P/E ขยับจาก ~17.7x (forward ปัจจุบัน) เป็น 18–20x
-            หาก organic growth หรือ margin expansion ผิดหวัง การ re-rating อาจไม่เกิดขึ้นและราคาจะทรงตัวในกรอบ</li>
+          <li><b>ดีลขายยังไม่ปิด:</b> ต้องผ่านการอนุมัติตามกฎหมายและเงื่อนไขปิดดี คาดสิ้น Q2 2027 · ปิดช้า/ไม่ปิดกระทบแผนลดหนี้และ buyback ส่วน $2.0B</li>
+          <li><b>Leverage:</b> Net debt/credit-adj. EBITDA 2.5x ณ Q2 2026 (รวม disc. ops) · net debt $5.17B (ไม่รวมสัญญาเช่า) — ยังอยู่ปลายบนของเป้า 2.0–2.5x</li>
+          <li><b>กำไร GAAP ผันผวน:</b> FY2025 ขาดทุน (EPS −$1.41) จากรายการ divest/impairment · Q2 2026 ต่อเนื่อง EPS GAAP เพียง $0.13
+            (รวมขาดทุนจากสินทรัพย์ held-for-sale $27M) ช่องว่างกับ adj. EPS ex-amort ($0.82) กว้าง</li>
+          <li><b>Stranded costs / dis-synergies:</b> ~$100M ของต้นทุนที่เคยปันให้ Food Ingredients ยังค้างที่ IFF จนกว่าจะลดสำเร็จ</li>
+          <li><b>การแข่งขันและกำลังต่อรองลูกค้า:</b> Givaudan, Symrise, dsm-firmenich แข่งขันแย่งส่วนแบ่ง · Fine Fragrance ถูกกระทบจากความขัดแย้งในตะวันออกกลาง</li>
+          <li><b>ตัวคูณยอดขายเป็นตระกูลเดียว:</b> Fair Value อิงมัธยฐาน EV/Sales และ P/S ที่ถูกดันด้วยปี 2021–22 · หากตลาดไม่ให้ตัวคูณระดับนั้น
+            ขา P/S ต่ำสุด (1.59x) สื่อ FV ต่ำกว่าราคาปัจจุบันได้</li>
         </ul>
       </div>
     </div>
@@ -330,23 +323,20 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>IFF: เรื่องราวฟื้นตัวหลัง Divest Pharma Solutions — Undervalue ปานกลาง รอ Re-Rating จากการลดหนี้</h2>
-      <p>International Flavors &amp; Fragrances กำลังอยู่ในช่วงเปลี่ยนผ่านสำคัญ หลังปิดดีลขายธุรกิจ Pharma Solutions มูลค่า
-        ~$2.85B ในปี 2025 ทำให้เหลือ 3 กลุ่มธุรกิจหลักที่โฟกัสชัดเจนขึ้น (Nourish, Scent, Health &amp; Biosciences) พร้อมใช้เงิน
-        จากการขายสินทรัพย์ลดหนี้ต่อเนื่อง Net Debt เหลือ ~$5.8B (D/E 0.45x) ผลประกอบการ Q1 2026 ออกมาดีกว่าคาด adj. EPS $1.25
-        เหนือ consensus 15.7% พร้อมยืนยัน guidance FY2026 adj. EBITDA growth 3–8% แม้เจอ divestiture headwind ราคาหุ้นปัจจุบัน
-        $78.53 ยังต่ำกว่า Fair Value ประมาณการ $90 (กรอบ $88–$91) ราว 12.7% และต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ $91.21 (Buy consensus
-        20 คน) ราว 16% สะท้อนว่าตลาดยังรอความชัดเจนเรื่องการลดหนี้และผลลัพธ์ของการเป็น pure-play ก่อนให้ premium เต็มที่
-        ความเสี่ยงหลักที่ต้องติดตามคือ leverage ที่ยังสูงกว่าคู่แข่งและความสามารถในการ execute synergies จากดีลควบรวมเดิม</p>
+      <h2>IFF: ราคาใกล้มูลค่าเหมาะสม — รอ Food Ingredients ปิดดีลและ Net Debt ลด</h2>
+      <p>International Flavors &amp; Fragrances กำลังเปลี่ยนโครงสร้างธุรกิจ: ข้อตกลงขาย Food Ingredients ให้ CVC (net cash ~$3.8B คาดปิดภายใน Q2 2027 และ IFF ถือ ~10% ต่อ)
+        ทำให้ Taste / Scent / Health &amp; Biosciences เป็นธุรกิจต่อเนื่อง Q2 2026 EPS GAAP ต่อเนื่อง $0.13 (adj. ex-amort $0.82) ยอดขาย comparable +6% margin EBITDA 20.9%
+        guidance FY2026 ต่อเนื่อง sales $7.4–7.6B EBITDA $1.53–1.60B ด้วยฐานยอดขายรวม (ตัวคูณ EV/Sales และ P/S มัธยฐาน 5 ปี) Fair Value ประมาณ {{rd:fv}}
+        (กรอบ {{rd:fvLow}}–{{rd:fvHigh}}) ราคาปัจจุบัน {{rd:px}} จึงมี MOS บางเพียง {{rd:mos}} และต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ $95.66 (Buy, 18 คน) ราว 13%
+        ประเด็นสำคัญคือ Fair Value มาจากตระกูลเดียว (ตัวคูณยอดขาย) จึงอ่อนไหวต่อตัวคูณ · ความเสี่ยงหลักคือดีลไม่ปิด/ปิดช้าและ execution ของแผน stranded cost</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$91.21 (Buy · 20 คน)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$95.66 (Buy · 18 คน)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน $78.53 มี MOS ~+12.7% เทียบ FV $90 — โซนน่าสนใจสำหรับ value investor ระยะยาวที่เชื่อ
-        ในสตอรี่ deleveraging + pure-play focus รอทยอยสะสมเพิ่มในโซน $63–72 (MOS 20–30%) หากราคาย่อลงมา · ติดตาม: Q2 2026
-        earnings (4 ส.ค. 2569), ความคืบหน้าลดหนี้ Net Debt/EBITDA, ทิศทาง organic growth ของกลุ่ม Nourish
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน {{rd:px}} ใกล้ FV {{rd:fv}} (MOS {{rd:mos}}) — ยังไม่มีส่วนเผื่อพอ · รอทยอยสะสมในโซน {{rd:mos30}}–{{rd:mos20}} (MOS 30–20%)
+        หากราคาย่อลง · ติดตาม: งบ Q3 2026 (3 พ.ย. 2569), ความคืบหน้าอนุมัติดีล Food Ingredients, ASR $500M และผลการลด stranded costs
       </div>
     </div>
   </section>
@@ -354,17 +344,15 @@
   <!-- ===== DISCLAIMER ===== -->
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
-    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, EBITDA multiple, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r)
-    และความสำเร็จของการลดหนี้/deleveraging ในอนาคต หุ้น specialty ingredients มีความผันผวนตามวัฏจักร CPG/F&amp;B และอัตราแลกเปลี่ยน
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะตัวคูณ EV/Sales และ P/S จากประวัติ, Net Debt และการเปลี่ยนฐานงบจาก discontinued operations
+    หุ้น specialty ingredients มีความผันผวนตามวัฏจักร CPG/F&amp;B และอัตราแลกเปลี่ยน
     ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
-    แหล่งข้อมูล: StockAnalysis.com (ราคา $78.53 · EPS TTM GAAP $3.23 · Forward P/E adj. 17.72x · dividend yield 2.04% ·
-    52wk $59.14–$84.45 · analyst target เฉลี่ย $91.21 กรอบ $71–$105 จาก 20 นักวิเคราะห์ · FY2026E adj. EPS consensus $4.50,
-    FY2027E $4.82 · ROE 6.03% / ROA 3.26% / ROIC 4.12% / D/E 0.45x · Net Debt $5.779B), Yahoo Finance (ราคาปิดเดือน ก.ค. 2569
-    $78.53 ตรงกัน · EPS TTM $3.23 ยืนยันตรงกัน · dividend yield 2.10% · 52wk ตรงกัน · กราฟราคารายเดือนย้อนหลัง 12 เดือนจาก
-    Yahoo Finance chart API), IFF Investor Relations / บทวิเคราะห์ Q1 2026 earnings (adj. EPS $1.25 +4.2% YoY เหนือ consensus
-    15.7%, FY2026 guidance revenue $10.5–10.8B และ adj. EBITDA $2.05–2.15B, การปิดดีลขาย Pharma Solutions) — ข้อมูล ณ 10 ก.ค. 2569
+    แหล่งข้อมูล: StockAnalysis.com (ราคา {{rd:px}} · EPS TTM GAAP $1.08 · Forward P/E 24.2x · dividend yield 1.93% ·
+    52wk $59.14–$89.31 · analyst target เฉลี่ย $95.66 จาก 18 นักวิเคราะห์ · FY2026E EPS $3.28, FY2027E $3.96 ·
+    ratios รายปี FY2021–FY2025 · Shares 255.15M), Yahoo Finance (ราคาตรงกัน · target ตรงกัน · กราฟราคารายเดือน 12 เดือนจาก chart API · EPS TTM −$3.09 ฐานเก่า ไม่ใช้),
+    SEC EDGAR (8-K/Ex-99.1 งบ Q2 2026 ลงวันที่ 4 ส.ค. 2569: EPS ต่อเนื่อง $0.13, adj. EPS ex-amort $0.82, guidance FY2026 ต่อเนื่อง, net debt $5,166M, ข้อตกลงขาย Food Ingredients ให้ CVC ~$3.8B, buyback $2.5B) — ข้อมูล ณ 21 ก.ย. 2569
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 10 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
