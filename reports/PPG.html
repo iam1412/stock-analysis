@@ -8,19 +8,19 @@
 <meta name="ai-model" content="Claude Sonnet 5">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"PPG","currency":"USD","price":104.52,"fairValue":131,"mos":20.2,"upside":25.3,"pe":13.2,"dividendYield":2.83,"roe":19.3}
+{"symbol":"PPG","currency":"USD","price":104.52,"fairValue":115,"mos":9.1,"upside":10,"pe":13.2,"dividendYield":2.83,"roe":19.3}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 131,
+  "fv": 115,
   "values": {
     "px": 104.52,
     "priceDate": "2026-09-18",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
-    "fvLow": 118,
-    "fvHigh": 144,
+    "fvLow": 111,
+    "fvHigh": 119,
     "eps": 7.9,
     "shares": 222300000,
     "dps": 2.96,
@@ -82,8 +82,8 @@
     "highlight": [0, 4]
   },
   "gauge": {
-    "min": 85,
-    "max": 160,
+    "min": 70,
+    "max": 140,
     "fairLabelTop": false
   }
 }
@@ -118,7 +118,7 @@
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ย. 2569 / FY2025 + Q2 2026</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ 21 ก.ย. 2569 / FY2025 + Q2 2026</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">222.3M หุ้น (shares outstanding)</div></div>
       <div class="metric"><div class="k">P/E (fwd adj. 2026E)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">GAAP TTM P/E ~15.0x · adj EPS 2026E $7.90 (reaffirmed 28 ก.ค. 2569)</div></div>
@@ -159,27 +159,22 @@
 
   <!-- ===== 3. VALUATION ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี (P/E · DCF)</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation (Adjusted EPS)</div><div class="mdesc">EPS adj. $7.90 × P/E 15x = $118.50 — อ้างอิง FY2026E guidance midpoint $7.70–$8.10 (reaffirmed ในงบ Q2 2026 28 ก.ค. 2569) · P/E เป้า 15x = มัธยฐานตัวคูณ adjusted ย้อนหลังของ PPG เอง (FY2025 14.2x · FY2024 16.6x — ก่อนหน้านั้นฐานไม่เทียบกันได้จากการขายธุรกิจ architectural US/Canada + silicas) · ราคาปัจจุบันเทรดที่ P/E adj. (fwd) ~13.2x ต่ำกว่าเป้าเล็กน้อย</div></div>
+        <div><div class="mname">1. P/E Valuation (Adjusted EPS)</div><div class="mdesc">EPS adj. $7.90 × P/E 15x = $118.50 — อ้างอิง FY2026E guidance midpoint $7.70–$8.10 (reaffirmed ในงบ Q2 2026 28 ก.ค. 2569) · P/E เป้า 15x = มัธยฐานตัวคูณ adjusted ย้อนหลังของ PPG เอง (FY2025 14.2x · FY2024 16.6x — ก่อนหน้านั้นฐานไม่เทียบกันได้จากการขายธุรกิจ architectural US/Canada + silicas) · ราคาปัจจุบันเทรดที่ P/E adj. (fwd) ~13.2x ต่ำกว่าเป้าเล็กน้อย · หมายเหตุ: ตัวคูณ GAAP ย้อนหลัง 5 ปีมัธยฐาน 26.3x ไม่ใช้ เพราะ GAAP EPS ถูกบิดจากรายการพิเศษ/ขายธุรกิจ</div></div>
         <div class="mval">$119</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. EV/EBITDA</div><div class="mdesc">EBITDA 2026E $2.80B × 13.5x = EV $37.80B − Net Debt $5.86B = Equity $31.94B ÷ 222.3M หุ้น = $143.68 — EV/EBITDA เป้า 13.5x อ้างอิง peer group (SHW 24x · RPM 15x · Akzo 10x) · PPG ควรซื้อขายที่ 13–15x เพราะ balance sheet leverage สูงกว่า SHW</div></div>
-        <div class="mval">$144</div>
-      </div>
-      <div class="vmethod">
-        <div><div class="mname">3. FCF Yield</div><div class="mdesc">FCF/sh (TTM $1.41B ÷ 222.3M หุ้น) = $6.30 ÷ fair FCF yield 4.8% = $131.25 — FCF ฟื้นตัวต่อเนื่องจาก FY2025 $1.16B → TTM $1.41B · 4.8% fair FCF yield สำหรับ industrial compounder ที่มี leverage กลาง</div></div>
-        <div class="mval">$131</div>
+        <div><div class="mname">2. DCF (FCF to equity — สมมติฐานของผู้วิเคราะห์เอง)</div><div class="mdesc">FCF TTM $1,407M (ที่มา StockAnalysis) โต 5%/ปี 5 ปี → ปี1 $1,477M · ปี2 $1,551M · ปี3 $1,629M · ปี4 $1,710M · ปี5 $1,796M · r = 9% (สมมติฐานเอง) → PV ปี1–5 = $1,355 + $1,306 + $1,258 + $1,212 + $1,167 = $6,297M · TV = $1,796M × 1.025 ÷ (9% − 2.5%) = $28,317M (g ปลายทาง 2.5% สมมติฐานเอง) → PV TV = $18,404M (74.5% ของมูลค่ารวม) · Equity = $24,701M ÷ 222.3M หุ้น = $111.1 — ตระกูล DCF/FCF อิสระจาก P/E · ไม่ใช้ EV/EBITDA และ FCF-yield แบบเดิมเพราะตัวคูณ peer/yield เป็นค่าที่ยกมาโดยไม่มีมัธยฐานวัดจริงรองรับ</div></div>
+        <div class="mval">$111</div>
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        P/E method ให้ค่าต่ำสุด ($119) เพราะยึดตัวคูณ adjusted ที่วัดจริงของ PPG เอง (14.2–16.6x) แทนตัวคูณ mid-cycle เดิมที่ไม่มีสมอวัดได้ (19x) · EV/EBITDA ($144) ให้ค่าสูงสุด อิง peer group · FCF yield ($131) อยู่กึ่งกลาง สะท้อน FCF ที่ฟื้นตัวต่อเนื่อง (TTM $1.41B)
-        ค่าเฉลี่ย 3 วิธี $131.14 ปัดเป็น <b>{{rd:fv}}</b> เป็น Fair Value หลัก · ราคาเป้าเฉลี่ย analyst 21 คน อยู่ที่ {{rd:analystTgt}} ({{rd:analystPct}} จากราคาปัจจุบัน) — ต่ำกว่า FV เล็กน้อย สะท้อนมุมมองระมัดระวังของนักวิเคราะห์ที่ยังรอ volume recovery ชัดเจนกว่านี้
+        P/E method ($119) ยึดตัวคูณ adjusted ที่วัดจริงของ PPG เอง (14.2–16.6x) · DCF ($111) เป็นสมมติฐานของผู้วิเคราะห์ (FCF โต 5% · r 9% · g 2.5%) ที่แสดงตารางครบ — ทั้งสองอยู่ห่างกันไม่ถึง 2 เท่า · ปรับโครง FV ตามรอบนี้: ตัด EV/EBITDA (ตัวคูณ peer ยกมาเอง ไม่มีมัธยฐานวัด) และ FCF yield (4.8% ไม่มีที่มาวัดได้) ออกจากขา FV · ค่าเฉลี่ย 2 วิธี $115.1 ปัดเป็น <b>{{rd:fv}}</b> เป็น Fair Value หลัก · single-family sensitivity: ถ้า P/E 14.2x → $112 ค่าเฉลี่ยราว $111.6 (MOS ต่ำลง) · ถ้า P/E 16.6x → $131 ค่าเฉลี่ยราว $121 · เป้า analyst 21 คน {{rd:analystTgt}} ({{rd:analystPct}} จากราคาปัจจุบัน) ใช้เป็นบริบทตรวจความสอดคล้องเท่านั้น ไม่ใช่ขาของ FV
         แหล่งอ้างอิงที่ 1: Yahoo Finance ({{rd:px}}, 52W range $93.39–$133.43, P/E TTM adj ~13.2x) · แหล่งอ้างอิงที่ 2: StockAnalysis.com/PPG (EPS, EBITDA, FCF, balance sheet) · แหล่งอ้างอิงที่ 3: PPG Investor Relations Q2 2026 press release (28 ก.ค. 2569 — adj EPS $2.23, guidance reaffirmed $7.70–$8.10)
       </p>
     </div>
@@ -197,13 +192,13 @@
         <div class="scale">
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
-          <span style="text-align:center">{{rd:analystTgt}}<br><small>เป้า Analyst</small></span>
-          <span style="text-align:right">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:analystTgt}}<br><small>เป้า Analyst</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคา {{rd:px}} อยู่ <b>ต่ำกว่าโซน MOS 20% ({{rd:mos20}}) เล็กน้อยแล้ว</b> และ<b>ต่ำกว่า Fair Value ({{rd:fv}}) ราว {{rd:mos}}</b> · เป้าเฉลี่ย Analyst {{rd:analystTgt}} ใกล้กับราคาปัจจุบันมากกว่า FV สะท้อนมุมมองระมัดระวังของนักวิเคราะห์
+        ราคา {{rd:px}} ยัง<b>อยู่เหนือโซน MOS 20% ({{rd:mos20}})</b> และ<b>ต่ำกว่า Fair Value ({{rd:fv}}) ราว {{rd:mos}}</b> · เป้าเฉลี่ย Analyst {{rd:analystTgt}} สูงกว่า FV ที่คำนวณเอง สะท้อนว่านักวิเคราะห์มองฟื้นตัวเร็วกว่าสมมติฐานฐานของเรา
         โซนสะสมที่น่าสนใจสำหรับ value investor คือรอบ {{rd:mos20}} ลงไป · ถ้าตลาดขาย panic จาก auto OEM slowdown อีกรอบ → โซน Deep Value {{rd:mos30}} (MOS 30%) จะเป็น entry ที่ดีมาก
       </p>
     </div>
@@ -215,7 +210,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">MOS เพิ่งข้ามเข้าเขตน่าสนใจ (≥20%) หลังทบทวนตัวคูณ P/E เป้าใหม่ให้สอดคล้องฐานที่วัดจริง · เริ่มทยอยสะสมได้ แต่ยังไม่ใช่โซนถูกมากสุด (MOS 30%)</div>
+        <div class="txt">MOS บางหลังปรับโครง FV ให้เหลือเฉพาะขาที่วัด/แสดงที่มาได้ (P/E ที่วัดจริง + DCF ตารางเต็ม) · ราคาใกล้มูลค่าเหมาะสม ยังไม่ถึงโซน MOS 20% — รอจังหวะย่อ</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -315,7 +310,7 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>PPG — Recovery Play ที่น่าสนใจ · MOS ~20% · ปันผล 55 ปีต่อเนื่อง</h2>
+      <h2>PPG — Recovery Play ราคาใกล้มูลค่าเหมาะสม · ปันผล 55 ปีต่อเนื่อง</h2>
       <p>PPG Industries เป็น global coatings leader ที่มี moat แข็งแกร่ง (แบรนด์ Glidden/Olympic/Sikkens · aerospace coatings · distribution network ลึก) แต่ปี 2024–2025 กดดันจาก auto OEM slowdown, housing weakness และ industrial destocking ทำให้ adj EPS ลดจาก $7.87 (FY2024) → $7.58 (FY2025) · Q1–Q2 2026 เริ่มฟื้นชัดเจนขึ้น (adj EPS $1.83 + $2.23 = H1 $4.06 · organic +4% ใน Q2 เป็นไตรมาสที่ 6 ติดต่อกันที่โต) และ guidance FY2026 $7.70–$8.10 ถูก reaffirm ในงบ Q2 2026 (28 ก.ค. 2569) · ราคาปัจจุบัน {{rd:px}} ต่ำกว่า Fair Value {{rd:fv}} ({{rd:mos}}) สะท้อนว่าตลาดยังรอความชัดเจนของ volume recovery · ถ้า base case เป็นจริง (EPS +5%/ปี + P/E ออก 15x — อิงมัธยฐาน adjusted ย้อนหลังของ PPG เอง) ผลตอบแทน 3 ปี {{rd:sc2ret}} (ไม่รวมปันผลเพิ่มอีก {{rd:sc2div}}) · ปันผล $2.96/ปี ต่อเนื่อง 55 ปีเป็น safety net ระหว่างรอ</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
@@ -335,7 +330,7 @@
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
     แหล่งข้อมูล: Yahoo Finance (ราคา, chart, 52W range) · StockAnalysis.com (EPS, EBITDA, FCF, balance sheet) · PPG Investor Relations / BusinessWire (Q2 2026 earnings release 28 ก.ค. 2569, FY2025 earnings — guidance $7.70–$8.10 reaffirmed) · StockAnalysis forecast (analyst consensus $126.29, 21 analysts)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 20 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
