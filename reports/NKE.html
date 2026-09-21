@@ -2,7 +2,7 @@
 <html lang="th">
 <!--
   ════════════════════════════════════════════════════════════════════════════
-  NKE — NIKE, Inc. (NYSE)  วิเคราะห์ ณ 26 มิ.ย. 2569
+  NKE — NIKE, Inc. (NYSE)  วิเคราะห์ ณ 21 ก.ย. 2569
   ════════════════════════════════════════════════════════════════════════════
 -->
 <head>
@@ -10,26 +10,26 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น NIKE, Inc. (NKE) — Stock Analysis Dashboard</title>
 <!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง (Opus→"Claude Opus 4.8", Sonnet→"Claude Sonnet 4.6") — gate E28 บังคับ -->
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"NKE","currency":"USD","price":35.51,"fairValue":49,"mos":27.5,"upside":38,"pe":23.4,"dividendYield":4.62,"roe":24.36}
+{"symbol":"NKE","currency":"USD","price":35.51,"fairValue":56,"mos":36.6,"upside":57.7,"pe":16.9,"dividendYield":4.62,"roe":22.14}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 49,
+  "fv": 56,
   "values": {
     "px": 35.51,
     "priceDate": "2026-09-18",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
-    "fvLow": 42,
-    "fvHigh": 53,
-    "eps": 1.52,
-    "shares": 1520000000,
+    "fvLow": 40,
+    "fvHigh": 72,
+    "eps": 2.1,
+    "shares": 1483498703,
     "dps": 1.64,
-    "bvps": 6.58
+    "bvps": 10.02
   },
   "theme": {
     "accent": "#EE6730",
@@ -67,7 +67,7 @@
   },
   "gauge": {
     "min": 33,
-    "max": 72,
+    "max": 78,
     "fairLabelTop": false
   }
 }
@@ -96,7 +96,7 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ $40.00 / $80.17<br>
+        กรอบ 52 สัปดาห์ $35.50 / $76.97<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / NIKE Investor Relations
       </div>
     </div>
@@ -104,28 +104,28 @@
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569 — Turnaround Phase (TTM EPS = trough)</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ 18 ก.ย. 2569 — งบ FY2026 (ปิด พ.ค. 2569) · ฐานกำไรต่ำกว่า peak FY24</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$54B</div><div class="d">~1.52B shares outstanding</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">บน trough EPS $1.52 — ค่าสูงเพราะกำไรลด</div></div>
-      <div class="metric"><div class="k">P/E บน Normalized EPS</div><div class="v">~14.2x</div><div class="d">Normalized EPS ~$2.50 → P/E จริงถูกกว่า</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">~5.4x</div><div class="d">BVPS ~$6.58 · buyback ลด book value</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$52.6B</div><div class="d">~1.48B หุ้น (รวมทุกคลาส)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">บน EPS TTM $2.10 (FY2026) — ยังต่ำกว่า peak FY24 $3.73</div></div>
+      <div class="metric"><div class="k">Forward P/E (FY2027e)</div><div class="v">~20.8x</div><div class="d">EPS FY2027e $1.71 (StockAnalysis forecast) · คาดกำไรลดอีกก่อนฟื้น</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~3.5x</div><div class="d">BVPS ~$10.02 (StockAnalysis)</div></div>
 
-      <div class="metric"><div class="k">กำไรสุทธิ FY25</div><div class="v">$3.28B</div><div class="d">ลด −42% YoY (FY25 ending พ.ค. 2568)</div></div>
-      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$1.52</div><div class="d">Trough; normalized ~$2.50 ก่อน FY24</div></div>
-      <div class="metric"><div class="k">BVPS</div><div class="v">~$6.58</div><div class="d">buyback ทำ book value ต่ำ</div></div>
-      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~24.4% / 9.5%</div><div class="div">Moat แข็งแม้กำไรลด</div></div>
+      <div class="metric"><div class="k">กำไรสุทธิ FY26</div><div class="v">$3.11B</div><div class="d">ลด −3% YoY (FY26 ปิด พ.ค. 2569 · FY25 $3.22B)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$2.10</div><div class="d">FY25 $2.16 · FY24 peak $3.73</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$10.02</div><div class="d">ตาม StockAnalysis</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~22.1% / 7.0%</div><div class="div">Moat แข็งแม้กำไรลด</div></div>
 
-      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~$44.8B</div><div class="d">ลด ~10% จาก peak FY24 $51.4B</div></div>
-      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">42.7%</div><div class="d">ลดจาก 46% · markdown + discount</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~4.62%</div><div class="div">$1.64/ปี · Dividend Aristocrat 25 ปีติด</div></div>
-      <div class="metric"><div class="k">Beta</div><div class="v">0.82</div><div class="div">ต่ำกว่าตลาด · defensive ปันผล</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~$46.4B</div><div class="d">ทรงตัว +0.2% YoY · ต่ำกว่า peak FY24 $51.4B ~10%</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">43.2%</div><div class="d">ฟื้นจาก 42.7% (FY25) · ยังต่ำกว่า 46% (FY22)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~4.62%</div><div class="div">$1.64/ปี · payout ~78% ของ EPS</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">1.11</div><div class="div">สูงกว่าตลาดเล็กน้อย (5Y)</div></div>
     </div>
   </section>
 
   <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – มิ.ย. 2569</div></div>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ต.ค. 2568 – ก.ย. 2569</div></div>
     <div class="card">
       <div class="chart-wrap">
         <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
@@ -136,33 +136,29 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        NKE ร่วงลงต่อเนื่องตลอดปี ลดลง −45.4% จาก $74.69 (ก.ค. 68) สู่ $40.75 (มิ.ย. 69) · ราคาแตะ 52w high $80.17 ต้นปี แล้วดิ่งลง · แรงกดดันหลัก: รายได้ FY25 ร่วง −10%, gross margin ลดลง, จีนอ่อน −13%, inventory markdown · CEO ใหม่ Elliott Hill เข้ารับตำแหน่ง ต.ค. 2567 ประกาศ turnaround plan ดึง wholesale กลับ — ตลาดยังรอผลฟื้นตัวที่ชัดเจน · จุดปัจจุบัน $40.75 ใกล้ 52w low $40.00
+        NKE ร่วงลงต่อเนื่องตลอดปี ลดลง −45.0% จาก $64.59 (สิ้น ต.ค. 68) สู่ $35.51 (ก.ย. 69) · กรอบ 52 สัปดาห์ $35.50–$76.97 จึงอยู่ที่ขอบล่างของกรอบ · แรงกดดันหลัก: รายได้ FY25 ร่วง −9.8% แล้วทรงตัว +0.2% ใน FY26, margin จาก operating 13.2% (FY24) เหลือ 9.0% (FY26) · CEO ใหม่ Elliott Hill เข้ารับตำแหน่ง ต.ค. 2567 ประกาศ turnaround plan ดึง wholesale กลับ — ตลาดยังรอผลฟื้นตัวที่ชัดเจน · งบไตรมาสถัดไปคาดออก 1 ต.ค. 2569
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี — อิง Normalized EPS เพื่อสะท้อน cycle ที่แท้จริง</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 ตระกูลอิสระ — P/E มัธยฐานย้อนหลัง + DCF (สมมติฐานของเราเอง)</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation (Normalized)</div><div class="mdesc">EPS normalized ~$2.50 × P/E เป้าหมาย ~21x — ค่าเฉลี่ยอุตสาหกรรมสินค้ากีฬา premium brand ใน recovery phase</div></div>
-        <div class="mval">$52.50</div>
+        <div><div class="mname">1. P/E Valuation (มัธยฐาน 5 ปี)</div><div class="mdesc">EPS $2.10 (FY2026) × P/E 34.2x — มัธยฐานย้อนหลัง 5 ปีงบ (ราคาเฉลี่ยรอบปี ÷ EPS ปีนั้น: 29.9/34.3/27.4/34.2/40.0x) มาจากประวัติ ไม่ใช่ P/E ปัจจุบัน · ⚠ มัธยฐานนี้คิดบน EPS ช่วงกำไรลด จึงค่อนข้างสูง</div></div>
+        <div class="mval">$71.82</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. P/E Valuation (Trough TTM)</div><div class="mdesc">EPS TTM $1.52 × P/E ~28x — ตลาด price-in ฟื้นตัว จึงให้ premium P/E บน trough earnings · อ้างอิงรองสำหรับ downside scenario</div></div>
-        <div class="mval">$42.56</div>
-      </div>
-      <div class="vmethod">
-        <div><div class="mname">3. DCF (Recovery Scenario)</div><div class="mdesc">FCF/Share ~$2.20 ปัจจุบัน → ฟื้นสู่ ~$3.50 ใน 3 ปี · WACC 9%, terminal g 3% · มอง normalized FCF กลับสู่ระดับก่อน FY25</div></div>
-        <div class="mval">$52.00</div>
+        <div><div class="mname">2. DCF (FCF ทั้งบริษัท 5 ปี)</div><div class="mdesc">FCF FY2026 $2,184M (FY24 $6,617M) · สมมติฐานของเรา: FCF ปี 1–5 = $2,800/3,500/4,200/4,800/5,300M (ฟื้นแต่ยังต่ำกว่า peak FY24) · r 9.5% · g 2.0% · PV ของ FCF = $15,381M · TV = 5,300×1.02/(0.095−0.02) = $72,080M → PV $45,787M (75% ของทั้งหมด) · EV $61,168M − หนี้สุทธิ $2,016M ÷ หุ้น 1,483.5M = $39.87/หุ้น</div></div>
+        <div class="mval">$39.87</div>
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        วิธีที่ 1 (Normalized P/E) ให้ค่าสูงสุด $52.50 สะท้อน Nike ในภาวะปกติ · วิธีที่ 2 (Trough P/E) ให้ค่าต่ำสุด $42.56 เป็น downside floor · วิธีที่ 3 (DCF recovery) ให้ $52.00 · เฉลี่ย 3 วิธี = $49.02 → ปัดเป็น <b>$49</b> · MOS ณ ราคาปัจจุบัน $40.75 = <b>+16.8%</b> · นักวิเคราะห์ 38 รายเป้าเฉลี่ย $55 (+37%) สูงกว่า FV ของเรา สะท้อน upside scenario ถ้า turnaround สำเร็จเต็มรูปแบบ
+        ขา P/E มัธยฐาน $71.82 กับ DCF $39.87 ห่างกัน 1.8 เท่า (ไม่เกิน 2.0) · เฉลี่ย 2 ขา = $55.85 → ปัดเป็น <b>{{rd:fv}}</b> ({{rd:mos}}) · ความอ่อนไหว: ขา P/E เดี่ยวให้ค่าสูงกว่าราคาราว 2 เท่า ขา DCF เดี่ยวสูงกว่าราคาราว 12% — FV อิงขา P/E ที่คำนวณบนฐาน EPS ช่วงกำไรลด จึงควรอ่านเป็นกรอบบน · เป้านักวิเคราะห์ ~$48 (Yahoo $48.21 n=36 · StockAnalysis $48.38 Hold) เป็นเพียงบริบทตรวจความสอดคล้อง ไม่ใช่ขาของ FV
       </p>
     </div>
   </section>
@@ -179,13 +175,13 @@
         <div class="scale">
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$48<br><small>เป้าเฉลี่ย Analyst</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
-          <span style="text-align:right">$55<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน $40.75 อยู่ใน <b>โซน MOS 20%</b> (ต่ำกว่า MOS20 เล็กน้อย ณ $39.20) · ห่างจาก Fair Value $49 ประมาณ 20% · ราคาใกล้ 52w low $40.00 มาก ซึ่งเป็นระดับ support ทางเทคนิค · เป้านักวิเคราะห์ $55 สูงกว่า FV ของเรา แสดงว่าตลาดเห็น upside มากกว่าถ้า turnaround สำเร็จ · Dividend Aristocrat 4% เป็น "รับค่าน้ำร้อน" ระหว่างรอฟื้นตัว
+        ราคาปัจจุบัน {{rd:px}} ต่ำกว่าจุดซื้อ MOS 30% ({{rd:mos30}}) อยู่ในโซน <b>deep value</b> ตามสมมติฐานของเรา · ส่วนต่างจาก Fair Value {{rd:fv}} คือ {{rd:mos}} · ราคาอยู่ที่ 52w low $35.50 พอดี (ทะลุแนวรับเดิม $40) · เป้านักวิเคราะห์ ~$48 ยังสูงกว่าราคา แต่ต่ำกว่า FV ของเรา (ขา P/E มัธยฐานสูง) · ปันผล ~4.6% เป็น "ค่าน้ำร้อน" ระหว่างรอฟื้นตัว แต่ payout ~78% ไม่เหลือส่วนเผื่อมาก
       </p>
     </div>
   </section>
@@ -194,10 +190,10 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <!-- MOS 16.8% → class "ok" (10–20%) -->
+      <!-- MOS ≥20% → class "good" (render จาก token) -->
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">MOS ปานกลาง · ราคาต่ำกว่ามูลค่าเหมาะสม ~$8.25 · เหมาะสะสมทยอย · ยังไม่ถึงโซน deep value MOS 30%</div>
+        <div class="txt">MOS สูง · ราคาต่ำกว่ามูลค่าเหมาะสม อยู่ในโซน MOS 30% · แต่ FV พึ่งขา P/E มัธยฐานที่สูง จึงควรทยอยสะสมและระวัง execution risk</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -216,41 +212,41 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $40.75 • EPS ฐาน TTM ~$1.52 (trough) • รวมปันผล ~$4.92 (3 ปี)</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน TTM $2.10 • รวมปันผล ~$4.92 (3 ปี)</div></div>
     <div class="scn">
       <div class="col bear">
-        <div class="top"><span>🐻 Bear</span><span>EPS +10%/ปี</span></div>
+        <div class="top"><span>🐻 Bear</span><span>EPS +3%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$40.40</div>
-          <div class="ret neg">−0.9% (+4.92 ปันผล = ~+11%)</div>
+          <div class="tgt">$32.13</div>
+          <div class="ret neg">−9.5% (+4.92 ปันผล = ~+4%)</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$2.02</span></li>
-            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>EPS ปี 3</span><span>~$2.29</span></li>
+            <li><span>P/E ออก</span><span>14x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~$4.92</span></li>
             <li><span>สถานการณ์</span><span>ฟื้นช้า margin ยังต่ำ</span></li>
           </ul>
         </div>
       </div>
       <div class="col base">
-        <div class="top"><span>⚖️ Base</span><span>EPS +20%/ปี</span></div>
+        <div class="top"><span>⚖️ Base</span><span>EPS +10%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$57.86</div>
-          <div class="ret pos">+42% (+4.92 ปันผล = ~+54%)</div>
+          <div class="tgt">$55.90</div>
+          <div class="ret pos">+57.4% (+4.92 ปันผล = ~+71%)</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$2.63</span></li>
-            <li><span>P/E ออก</span><span>22x</span></li>
+            <li><span>EPS ปี 3</span><span>~$2.80</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~$4.92</span></li>
             <li><span>สถานการณ์</span><span>Turnaround สำเร็จบางส่วน</span></li>
           </ul>
         </div>
       </div>
       <div class="col bull">
-        <div class="top"><span>🚀 Bull</span><span>EPS +28%/ปี</span></div>
+        <div class="top"><span>🚀 Bull</span><span>EPS +18%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$76.56</div>
-          <div class="ret pos">+88% (+4.92 ปันผล = ~+100%)</div>
+          <div class="tgt">$82.81</div>
+          <div class="ret pos">+133.2% (+4.92 ปันผล = ~+147%)</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$3.19</span></li>
+            <li><span>EPS ปี 3</span><span>~$3.45</span></li>
             <li><span>P/E ออก</span><span>24x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~$4.92</span></li>
             <li><span>สถานการณ์</span><span>Turnaround เต็มรูปแบบ + จีนฟื้น</span></li>
@@ -259,7 +255,7 @@
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      การคาดการณ์ใช้ EPS ฐาน TTM $1.52 (trough) เป็นจุดตั้งต้น · Base case EPS ปี 3 = $1.52 × 1.20³ = $2.63 × P/E 22x = $57.86 · Bear case ฟื้นช้า EPS $2.02 × 20x = $40.40 (ราคาเกือบทรงตัว แต่ยังได้ปันผล ~$4.92) · Bull case EPS $3.19 × 24x = $76.56 กลับไปใกล้ราคา 52w high · ปันผล $1.64/ปี ≈ 4.02% เป็น "ค่าน้ำร้อน" ระหว่างรอ — แม้ Bear scenario ผลตอบแทนรวมยัง +11% ใน 3 ปี
+      การคาดการณ์ใช้ EPS ฐาน TTM $2.10 เป็นจุดตั้งต้น (อัตราเติบโตและ P/E ออกเป็นสมมติฐานของเรา) · Base case EPS ปี 3 = $2.10 × 1.10³ = $2.80 × P/E 20x = $55.90 (ใกล้ FV) · Bear case EPS +3%/ปี = $2.29 × 14x (de-rating ต่ำกว่า P/E ปัจจุบัน) = $32.13 ปันผลช่วยให้ผลตอบแทนรวม ~+4% · Bull case EPS +18%/ปี = $3.45 × 24x = $82.81 สูงกว่า 52w high · ปันผล $1.64/ปี (~4.6%) สมมติคงที่ 3 ปี = ~$4.92
     </p>
   </section>
 
@@ -272,10 +268,10 @@
         <ul>
           <li><b>CEO ใหม่ Elliott Hill (ต.ค. 2024):</b> อดีตผู้บริหาร Nike 32 ปี รู้จัก DNA บริษัทดี · ดึง wholesale กลับ, ลดการพึ่ง DTC มากเกินไป, เน้นนวัตกรรม performance sport</li>
           <li><b>Brand Moat อันดับ 1 โลก:</b> Nike + Jordan + Converse · Swoosh เป็น icon pop culture ทั่วโลก · pricing power สูง · athlete endorsement ที่แข็งแกร่ง (LeBron, Cristiano, Serena)</li>
-          <li><b>Dividend Aristocrat 25 ปีติด:</b> ปันผล $1.64/ปี (4.02%) ขึ้นทุกปี · "รับค่าน้ำร้อน" ระหว่างรอฟื้นตัว · ปลอดภัยสูง (payout ratio ~50% บน normalized EPS)</li>
-          <li><b>Valuation ต่ำผิดปกติ:</b> ราคาร่วง −45% ใกล้ 52w low · P/E บน normalized EPS ~16x ต่ำกว่าค่าเฉลี่ย 5 ปี (25–30x) มาก · ตลาด "price in" ปัญหาไว้มากแล้ว</li>
+          <li><b>ปันผลสูง ~4.6%:</b> $1.64/ปี · "รับค่าน้ำร้อน" ระหว่างรอฟื้นตัว · แต่ payout ~78% ของ EPS TTM ค่อนข้างสูง ความปลอดภัยขึ้นกับการฟื้นของ EPS</li>
+          <li><b>Valuation ต่ำกว่าประวัติ:</b> ราคาร่วง −45% อยู่ที่ 52w low · P/E TTM ~16.9x ต่ำกว่ามัธยฐาน 5 ปี 34.2x มาก (แม้มัธยฐานคิดบน EPS ช่วงกำไรลด) · ตลาด "price in" ปัญหาไว้มากแล้ว</li>
           <li><b>การฟื้นตัวของตลาดจีน:</b> จีน 14% ของรายได้ · ถ้าจีนฟื้น + Nike สร้างแบรนด์ใหม่กับ gen Z จีนได้ = upside สำคัญ</li>
-          <li><b>นักวิเคราะห์ Consensus เป้า $55:</b> 38 รายเป้าเฉลี่ย $55 (+37%) · ส่วนใหญ่ยัง Buy/Outperform · เห็น recovery ชัดเจน</li>
+          <li><b>นักวิเคราะห์ Consensus เป้า ~$48:</b> 36 รายเป้าเฉลี่ย $48.21 (Yahoo) · $48.38 Hold (StockAnalysis) · สูงกว่าราคาปัจจุบัน ~36%</li>
         </ul>
       </div>
       <div class="box risk">
@@ -283,7 +279,7 @@
         <ul>
           <li><b>Turnaround Execution Risk (สูงสุด):</b> ไม่มีการันตีว่า Elliott Hill จะฟื้น brand position ได้ · อาจใช้เวลา 3–5 ปี ไม่ใช่ 1–2 ปี · ตลาดอาจหมดใจก่อนเห็นผล</li>
           <li><b>การแข่งขันแรงขึ้น:</b> On Running, Hoka (ฟื้นตัวแข็ง), Adidas กลับมาแข็ง · เสีย market share ใน running/trail · Nike ยังไม่มีรุ่น "hero product" ใหม่ที่ดังเทียบ Ultraboost/Gel</li>
-          <li><b>Gross Margin ฟื้นช้า:</b> ลดจาก 46% (FY22) → 42.7% (ปัจจุบัน) · ต้องลด discount + ปรับ product mix → อาจกดดัน EPS อีก 1–2 ปี</li>
+          <li><b>Gross Margin ฟื้นช้า:</b> ลดจาก 46% (FY22) → 43.2% (FY26) · ต้องลด discount + ปรับ product mix → อาจกดดัน EPS อีก 1–2 ปี</li>
           <li><b>จีนอ่อนต่อเนื่อง:</b> จีน −13% ใน FY25 · กระแสชาตินิยมในจีน (ชอบแบรนด์จีน Li-Ning, Anta) · tariff/trade war อาจกระทบซัพพลายเชน</li>
           <li><b>Inventory &amp; Markdown Risk:</b> สต็อก lifestyle ยังสูง · ต้องลดราคาต่อเนื่อง → กดดัน margin อีกหลายไตรมาส</li>
           <li><b>Macro &amp; Consumer Spending:</b> ถ้า recession ลึก → consumer ลด discretionary spend → Nike ได้รับผลกระทบ แม้เป็น premium brand ที่มี brand loyalty สูง</li>
@@ -297,14 +293,14 @@
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
       <h2>NIKE — Turnaround Bet · Brand Moat แกร่ง · ราคาใกล้ 52w Low</h2>
-      <p>Nike แบรนด์กีฬาอันดับ 1 โลก (moat แกร่งมาก) กำลังอยู่ใน turnaround ลึก — ราคาร่วง −45% ใกล้ 52w low บน trough EPS ที่ต่ำผิดปกติ · CEO ใหม่ Elliott Hill เข้ารับตำแหน่ง ต.ค. 2567 ดึง wholesale กลับ ลดสต็อก lifestyle เน้นนวัตกรรม performance · ถ้าฟื้นตัวได้ normalized EPS ~$2.50 → Fair Value $49 (MOS +17%) · ปันผล 4.02% Dividend Aristocrat 25 ปีเป็น "รับค่าน้ำร้อน" ระหว่างรอ · Execution risk สูง แต่ Brand Moat + ราคาที่ถูกมากทำให้ risk/reward น่าสนใจสำหรับนักลงทุนระยะยาว</p>
+      <p>Nike แบรนด์กีฬาอันดับ 1 โลก (moat แกร่งมาก) กำลังอยู่ใน turnaround ลึก — ราคาร่วง −45% อยู่ที่ 52w low บน EPS TTM $2.10 ที่ต่ำกว่า peak FY24 · CEO ใหม่ Elliott Hill เข้ารับตำแหน่ง ต.ค. 2567 ดึง wholesale กลับ · Fair Value {{rd:fv}} ({{rd:mos}}) เฉลี่ยจาก P/E มัธยฐาน 5 ปีกับ DCF ที่สมมติ FCF ฟื้น — ขา P/E สูงจากฐานกำไรช่วงลด จึงควรอ่านเป็นกรอบบน · ปันผล ~4.6% เป็น "รับค่าน้ำร้อน" ระหว่างรอ แต่ payout ~78% · Execution risk สูง แต่ Brand Moat + ราคาที่ต่ำกว่าประวัติทำให้ risk/reward น่าสนใจสำหรับนักลงทุนระยะยาว</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$55 (Moderate Buy)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$48 (Hold)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ทยอยสะสมที่ราคาปัจจุบัน $40.75 (MOS +16.8%) · เพิ่ม position ถ้าลงถึง $39.20 (MOS 20%) หรือ $34.30 (MOS 30%) · รับปันผล 4.02% ระหว่างรอ turnaround · ตั้ง horizon 3 ปีขึ้นไป · ระวัง execution risk — ติดตามผล FY26 Q1-Q2 ว่า gross margin เริ่มฟื้นหรือไม่
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมที่ราคาปัจจุบัน {{rd:px}} ({{rd:mos}}) · โซน MOS 20% อยู่ที่ {{rd:mos20}} และ MOS 30% ที่ {{rd:mos30}} · รับปันผล ~4.6% ระหว่างรอ turnaround · ตั้ง horizon 3 ปีขึ้นไป · ระวัง execution risk — ติดตามงบไตรมาสถัดไป (1 ต.ค. 2569) ว่า gross margin และ FCF เริ่มฟื้นหรือไม่
       </div>
     </div>
   </section>
@@ -315,7 +311,7 @@
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ Normalized EPS, P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และระยะเวลา turnaround
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มาข้อมูล: StockAnalysis.com / Yahoo Finance / NIKE Investor Relations (ir.nikeinc.com) / Macrotrends
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 26 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
