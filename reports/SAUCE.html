@@ -4,17 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น ไทยเทพรส (SAUCE) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Opus 5">
+<meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"SAUCE","currency":"THB","price":42,"fairValue":45.79,"mos":8.3,"upside":9,"pe":18.71,"dividendYield":4.31,"roe":23}
+{"symbol":"SAUCE","currency":"THB","price":41.25,"fairValue":45.79,"mos":9.9,"upside":11,"pe":18.71,"dividendYield":4.39,"roe":23}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
   "fv": 45.79,
   "values": {
-    "px": 42,
-    "priceDate": "2026-09-18",
+    "px": 41.25,
+    "priceDate": "2026-09-21",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
     "fvLow": 39.42,
@@ -49,13 +49,13 @@
       ["มิ.ย.26", 40.75],
       ["ก.ค.26", 41.5],
       ["ส.ค.26", 41.5],
-      ["ก.ย.26", 42]
+      ["ก.ย.26", 41.25]
     ],
     "min": 36,
     "max": 48,
     "grid": [38, 40, 42, 44, 46],
     "currency": "฿",
-    "highlight": [0, 11],
+    "highlight": [0, 4],
     "gridFmt": "v.toFixed(0)",
     "dataFmt": "d[1].toFixed(2)"
   },
@@ -98,7 +98,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 | FY 2025 (สิ้นสุด ธ.ค. 2568)</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">฿15.12B</div><div class="d">360 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿14.85B</div><div class="d">360 ล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~18.71x</div><div class="d">เหนือค่าเฉลี่ยกลุ่ม ~12x</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~18.0x</div><div class="d">ช่วง 16x–21x</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ~฿9.73</div></div>
@@ -110,7 +110,7 @@
 
       <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿3.56B</div><div class="d">ทรงตัว YoY</div></div>
       <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~41.7%</div><div class="d">Net Margin ~22.2%</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~4.31%</div><div class="d">฿1.81/หุ้น (XD เม.ย. 69)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~4.39%</div><div class="d">฿1.81/หุ้น (XD เม.ย. 69)</div></div>
       <div class="metric"><div class="k">Dividend Growth</div><div class="v pos">+9.3%/ปี</div><div class="d">5 ปีย้อนหลัง (2564–2569)</div></div>
     </div>
   </section>
@@ -131,7 +131,7 @@
         ราคา SAUCE ปรับตัวขึ้นจาก ~฿37.75 ในเดือน ก.ค. 2568 สู่ ~฿41.00 ใน ก.ค. 2569 ให้ผลตอบแทนรอบปี +8.6%
         แตะจุดสูงสุด 52 สัปดาห์ที่ ฿42.00 ในช่วง พ.ย.–ธ.ค. 2568 โดยได้แรงหนุนจากผลประกอบการ Q4/2568 ที่แข็งแกร่ง
         (กำไรสุทธิ Q4 สูงสุดในปีที่ ฿220M) และการจ่ายเงินปันผล ฿1.81/หุ้น (XD เม.ย. 69)
-        ราคายังต่ำกว่า Fair Value ฿45.79 ประมาณ 10.3% สะท้อน Margin of Safety ที่แคบลง
+        ราคายังต่ำกว่า Fair Value {{rd:fv}} ประมาณ 10.3% สะท้อน Margin of Safety ที่แคบลง
       </p>
     </div>
   </section>
@@ -183,8 +183,8 @@
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน ฿41.50 ต่ำกว่า Fair Value ฿45.79 ประมาณ 10.3% (MOS ~9.4%)
-        ยังไม่ถึงโซน MOS 20% ที่ ฿36.63 และส่วนเผื่อความปลอดภัยลดลงมาต่ำกว่า 10% แล้ว
+        ราคาปัจจุบัน {{rd:px}} ต่ำกว่า Fair Value {{rd:fv}} ประมาณ 10.3% (MOS ~{{rd:mos}})
+        ยังไม่ถึงโซน MOS 20% ที่ {{rd:mos20}} และส่วนเผื่อความปลอดภัยลดลงมาต่ำกว่า 10% แล้ว
         นักวิเคราะห์ประเมินเป้าหมายเฉลี่ย ~฿44.00 (Upside ~7% จากราคาปัจจุบัน)
         หาก SAUCE ซื้อขายที่ระดับ P/E สูงขึ้นตามคุณภาพธุรกิจ ราคาอาจเข้าสู่กรอบ ฿46–54 ได้
       </p>
@@ -197,7 +197,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">MOS แคบ — ส่วนเผื่อความปลอดภัยต่ำกว่า 10% ควรรอโซน MOS 20% ที่ ฿36.63</div>
+        <div class="txt">MOS แคบ — ส่วนเผื่อความปลอดภัยต่ำกว่า 10% ควรรอโซน MOS 20% ที่ {{rd:mos20}}</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -216,13 +216,13 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿42.00 • EPS ฐาน ~฿2.19 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~฿2.19 • รวมปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
         <div class="body">
           <div class="tgt">฿35.04</div>
-          <div class="ret neg">−3.6% (รวมปันผล)</div>
+          <div class="ret neg">−1.9% (รวมปันผล)</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿2.19</span></li>
             <li><span>P/E ออก</span><span>16x</span></li>
@@ -235,7 +235,7 @@
         <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
         <div class="body">
           <div class="tgt">฿45.58</div>
-          <div class="ret pos">+22.1% (~6.9%/ปี)</div>
+          <div class="ret pos">+24.3% (~7.5%/ปี)</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿2.53</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
@@ -248,7 +248,7 @@
         <div class="top"><span>🚀 Bull</span><span>EPS +8%/ปี</span></div>
         <div class="body">
           <div class="tgt">฿55.20</div>
-          <div class="ret pos">+45.7% (~13.4%/ปี)</div>
+          <div class="ret pos">+48.4% (~14.1%/ปี)</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿2.76</span></li>
             <li><span>P/E ออก</span><span>20x</span></li>
@@ -300,13 +300,13 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>แบรนด์ "ภูเขาทอง" ที่แข็งแกร่ง — แต่ MOS แคบลงเหลือ ~9% ควรรอโซน ≤฿36.63</h2>
+      <h2>แบรนด์ "ภูเขาทอง" ที่แข็งแกร่ง — แต่ MOS แคบลงเหลือ ~{{rd:mos}} ควรรอโซน ≤{{rd:mos20}}</h2>
       <p>
         SAUCE (ไทยเทพรส) เป็น "Moat Business" ในกลุ่ม Consumer Staples ด้วยแบรนด์ภูเขาทองที่ครองตลาดมายาวนาน
         ROE สูงถึง 23% D/E ต่ำเพียง 0.11 และนโยบายปันผลสม่ำเสมอที่เติบโต 9.3%/ปี ทำให้เหมาะกับนักลงทุนระยะยาวที่เน้น
-        "คุณภาพ + ปันผล" อย่างไรก็ตาม ราคาปัจจุบัน ฿41.50 ซื้อขายที่ P/E ~18.7x ซึ่งสูงกว่าค่าเฉลี่ยกลุ่มอย่างมีนัยสำคัญ
-        และรายได้เติบโตช้า — MOS เพียง ~9.4% ยังไม่สะดวกใจสำหรับ Value Investor เคร่งครัด
-        โซนที่น่าสนใจมากขึ้นคือ ฿36.63 (MOS 20%) หรือต่ำกว่า ซึ่งมักเกิดในช่วงก่อน XD เงินปันผล
+        "คุณภาพ + ปันผล" อย่างไรก็ตาม ราคาปัจจุบัน {{rd:px}} ซื้อขายที่ P/E ~18.8x ซึ่งสูงกว่าค่าเฉลี่ยกลุ่มอย่างมีนัยสำคัญ
+        และรายได้เติบโตช้า — MOS เพียง ~{{rd:mos}} ยังไม่สะดวกใจสำหรับ Value Investor เคร่งครัด
+        โซนที่น่าสนใจมากขึ้นคือ {{rd:mos20}} (MOS 20%) หรือต่ำกว่า ซึ่งมักเกิดในช่วงก่อน XD เงินปันผล
       </p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
@@ -314,7 +314,7 @@
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿44.00 (Neutral/Hold)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ทยอยสะสมเมื่อราคาอยู่ใน ฿36.63–฿41.20 (MOS 10–20%) เพิ่มน้ำหนักอย่างจริงจังที่ &lt; ฿36.63 (MOS 20%) รับ Dividend Yield 4.4%+ ต่อปี ระหว่างรอ re-rating ด้าน P/E หลีกเลี่ยงซื้อสูงกว่า ฿45.79 (FV) เพราะ Upside จำกัด
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมเมื่อราคาอยู่ใน {{rd:mos20}}–฿41.20 (MOS 10–20%) เพิ่มน้ำหนักอย่างจริงจังที่ &lt; {{rd:mos20}} (MOS 20%) รับ Dividend Yield 4.4%+ ต่อปี ระหว่างรอ re-rating ด้าน P/E หลีกเลี่ยงซื้อสูงกว่า ฿45.79 (FV) เพราะ Upside จำกัด
       </div>
     </div>
   </section>
@@ -326,7 +326,7 @@
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
     แหล่งข้อมูล: SET (ตลาดหลักทรัพย์แห่งประเทศไทย), Investing.com, StockAnalysis.com, HoonStation, Yahoo Finance — ราคา ณ {{rd:priceDate}}
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 17 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
