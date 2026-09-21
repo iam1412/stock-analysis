@@ -4,21 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น กรุงเทพดุสิตเวชการ (BDMS) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Opus 4.8">
+<meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"BDMS","currency":"THB","price":19.9,"fairValue":21,"mos":5.2,"upside":5.5,"pe":18.6,"dividendYield":5.03,"roe":15.9}
+{"symbol":"BDMS","currency":"THB","price":19.9,"fairValue":19.68,"mos":-1.1,"upside":-1.1,"pe":20.7,"dividendYield":5.03,"roe":14.9}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 21,
+  "fv": 19.68,
   "values": {
     "px": 19.9,
-    "priceDate": "2026-09-18",
+    "priceDate": "2026-09-21",
     "dateEra": "CE",
     "chgSuffix": "รอบปี",
-    "fvLow": 17.74,
-    "fvHigh": 23.22,
+    "fvLow": 18.82,
+    "fvHigh": 20.54,
     "shares": 15890000000,
     "dps": 1
   },
@@ -59,7 +59,7 @@
     "dataFmt": "d[1].toFixed(2)"
   },
   "gauge": {
-    "min": 14,
+    "min": 13,
     "max": 26,
     "fairLabelTop": true
   }
@@ -87,7 +87,7 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ ฿17.40 – ฿22.90<br>
+        กรอบ 52 สัปดาห์ ฿17.40 – ฿22.40<br>
         ที่มา: StockAnalysis.com • Investing.com • Yahoo Finance
       </div>
     </div>
@@ -95,22 +95,22 @@
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">TTM ถึง Q1/2026</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">TTM ล่าสุด</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~฿316,211 ลบ.</div><div class="d">15.89 พันล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~18.6x</div><div class="d">Forward P/E ~18.1x</div></div>
-      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~25–28x</div><div class="d">ปัจจุบันต่ำกว่าค่าเฉลี่ยมาก</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">~2.6x</div><div class="d">พรีเมียมตามคุณภาพเครือ รพ.</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~20.7x</div><div class="d">Forward P/E ~19.5x (FY2026e)</div></div>
+      <div class="metric"><div class="k">P/E มัธยฐาน 5 ปี (FY2021–25)</div><div class="v">~31x</div><div class="d">ช่วง 21.4–44.4x • ลดลงทุกปี</div></div>
+      <div class="metric"><div class="k">P/S (TTM)</div><div class="v neu">~2.8x</div><div class="d">มูลค่าตลาด ÷ รายได้ TTM</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">~฿15,850 ลบ.</div><div class="d">-0.9% YoY</div></div>
-      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.98</div><div class="d">FY2025 ฿1.00 • Q1/2026 ชะลอเล็กน้อย</div></div>
-      <div class="metric"><div class="k">BVPS</div><div class="v">~฿7.02</div><div class="d">จาก P/BV 2.62x</div></div>
-      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~15.9% / ~10%</div><div class="d">ผลตอบแทนผู้ถือหุ้นสม่ำเสมอ</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.96</div><div class="d">FY2025 ฿1.00 • TTM ต่ำกว่าเล็กน้อย</div></div>
+      <div class="metric"><div class="k">FCF (TTM)</div><div class="v">~฿12,985 ลบ.</div><div class="d">≈ ฿0.82/หุ้น • FY2025 ฿12,939 ลบ.</div></div>
+      <div class="metric"><div class="k">ROE (TTM)</div><div class="v pos">~14.9%</div><div class="d">ลดลงจาก 16.3% ใน FY2024</div></div>
 
-      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿113,200 ลบ.</div><div class="d">FY2025 +3.5% YoY</div></div>
-      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~37%</div><div class="d">Net margin ~14%</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~5.03%</div><div class="d">DPS ฿1.00 (FY2025) • จ่ายปีละ 2 ครั้ง</div></div>
-      <div class="metric"><div class="k">Beta</div><div class="v">~0.28</div><div class="d">หุ้น defensive ผันผวนต่ำ</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿113,688 ลบ.</div><div class="d">FY2025 +3.5% YoY</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~37%</div><div class="d">Net margin ~13.5%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~5.03%</div><div class="d">DPS ฿1.00 (ย้อนหลัง) • payout ~104% ของ EPS TTM</div></div>
+      <div class="metric"><div class="k">เป้านักวิเคราะห์ (เฉลี่ย)</div><div class="v">~฿24.78</div><div class="d">n=23 • Strong Buy (StockAnalysis)</div></div>
     </div>
   </section>
 
@@ -127,34 +127,30 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ราคา BDMS เริ่มรอบปีราว ฿20.8 (มิ.ย. 2568) แกว่งในกรอบ ฿18–22 ตามแรงกดดันการเติบโตกำไรที่ชะลอ มีจังหวะเด้งแตะจุดสูงรอบ ฿21.7 (ก.พ. 2569) ก่อนย่อต่อเนื่องมาทำจุดต่ำ ฿18.2 ในไตรมาส 2/2569 เหลือ ฿18.4 ปัจจุบัน รวมรอบปีติดลบราว 11.5% สะท้อนทั้งการ de-rating ของ valuation (P/E ลดจาก ~25x มาเหลือ ~18.6x) และความกังวลกำลังซื้อในประเทศ/ผู้ป่วยต่างชาติ — แต่พื้นฐานเครือ รพ. ยังแกร่ง ปันผลขยับขึ้นเป็น ~5.4%
+        ราคา BDMS เริ่มรอบปีราว ฿18.9 (ต.ค. 2568) ขยับขึ้นแตะจุดสูงรอบ ฿21.7 (ก.พ. 2569) ก่อนย่อมาทำจุดต่ำ ฿18.2 (พ.ค. 2569) แล้วฟื้นกลับมาที่ {{rd:px}} — ราคาอยู่ในกรอบ ฿18–22 ตลอดปี สะท้อนการ de-rating ของ valuation (P/E เฉลี่ยรายปีลดจาก ~44x ใน FY2021 เหลือ ~21x ใน FY2025) ขณะที่กำไรโตช้าลง — แต่พื้นฐานเครือ รพ. ยังแกร่ง DPS ฿1.00 ให้ยีลด์ ~5.0%
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 ตระกูล</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿0.98 × P/E เป้าหมาย ~22x — ต่ำกว่าค่าเฉลี่ยในอดีต (~25x) สะท้อนการเติบโตที่ชะลอลง</div></div>
-        <div class="mval">฿21.56</div>
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿0.96 × P/E เป้าหมาย 21.4x — 21.4x คือ P/E ที่วัดจริงของ FY2025 (ราคาเฉลี่ยปี ฿21.31 ÷ EPS ฿1.00) ไม่ได้มาจาก P/E ปัจจุบัน; ไม่ใช้มัธยฐาน 5 ปี 31.0x เพราะ P/E ลดลงทุกปี (44.4→33.8→31.0→27.3→21.4x) ตามการโตช้าลง มัธยฐานถูกลากด้วยปี FY2021–23</div></div>
+        <div class="mval">฿20.54</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿1.00 × (1+g); g 4.5%, r 9.0% → 1.045 / (0.09−0.045)</div></div>
-        <div class="mval">฿23.22</div>
-      </div>
-      <div class="vmethod">
-        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 15.9% − g 4.5%)/(r 9.0% − g 4.5%) ≈ 2.53 × BVPS ฿7.02</div></div>
-        <div class="mval">฿17.74</div>
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = DPS ฿1.00 × (1+g) = ฿1.035; g 3.5%, r 9.0% (สมมติฐานของเราเอง) → 1.035 / (0.09−0.035) = ฿18.82 — DPS ฿1.00 สูงกว่า EPS TTM ฿0.96 (payout ~104%) จึงตั้ง g ต่ำกว่ารอบก่อน</div></div>
+        <div class="mval">฿18.82</div>
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        วิธี DDM ให้ค่าสูงสุด (฿23.2) เพราะหุ้น defensive ปันผลสูง r ต่ำ ส่วน Justified P/BV ให้ค่าต่ำสุด (฿17.7) เพราะ ROE ปัจจุบัน ~16% หนุน P/BV เหมาะสมแค่ ~2.5x
-        ค่ากลาง ฿21 อยู่ระหว่างราคาตลาด ฿18.4 กับเป้านักวิเคราะห์ ฿25 — สมดุลระหว่าง valuation พรีเมียมในอดีตกับโมเมนตัมกำไรที่ชะลอลงในปัจจุบัน
+        FV = เฉลี่ย 2 ตระกูล: P/E ที่วัดจากประวัติจริง (฿20.54) กับ DDM ที่ใช้ r/g สมมติฐานของเราเอง (฿18.82) ห่างกันไม่ถึง 2 เท่า; ตัด Justified P/BV ออกเพราะ BVPS เดิมตรวจซ้ำจากแหล่งที่เปิดรอบนี้ไม่ได้ และเป้านักวิเคราะห์ ฿24.78 ไม่ใช่ขาของ FV ใช้เป็นบริบทเทียบเท่านั้น
+        ความไวต่อ P/E เป้าหมาย: ถ้าใช้ 22x ค่ากลางเป็น ~฿19.97 (ส่วนต่าง ~+0.4%) ถ้าใช้ 20x เป็น ~฿19.01 (ส่วนต่าง ~−4.7%) — อ่านเป็นราคาใกล้ FV ไม่ใช่ส่วนลดที่ชัดเจน
       </p>
     </div>
   </section>
@@ -173,12 +169,12 @@
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
-          <span style="text-align:right">฿25.02<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿24.78<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน ฿18.40 ต่ำกว่ามูลค่าเหมาะสม ฿21 อยู่ ~12% — อยู่ในโซนน่าสนใจสำหรับนักลงทุนคุณภาพระยะยาว
-        แต่ยังไม่ถึงโซน deep value (MOS 30% = ฿14.70) ซึ่งใกล้กรอบล่าง 52 สัปดาห์ ฿17.40 อยู่ไม่ไกล
+        ราคาปัจจุบัน {{rd:px}} ใกล้เคียงมูลค่าเหมาะสม {{rd:fv}} ({{rd:mos}}) — ยังไม่มีส่วนเผื่อความปลอดภัย
+        โซน MOS 20% ({{rd:mos20}}) และ MOS 30% ({{rd:mos30}}) อยู่ต่ำกว่ากรอบล่าง 52 สัปดาห์ ฿17.40 — ต้องรอราคาย่อลงแรงกว่ากรอบปีที่ผ่านมา
       </p>
     </div>
   </section>
@@ -189,7 +185,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">ราคาต่ำกว่ามูลค่าเหมาะสมพอประมาณ — โซนทยอยสะสมสำหรับหุ้นคุณภาพ defensive แต่ MOS ยังไม่กว้างมาก</div>
+        <div class="txt">ราคาใกล้เคียงมูลค่าเหมาะสม — ไม่มีส่วนเผื่อความปลอดภัย รอย่อเข้าโซน MOS 20% ก่อนสะสมเพิ่ม</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -208,16 +204,16 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿18.40 • EPS ฐาน ~฿0.98 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~฿0.96 • รวมปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +2%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿18.72</div>
-          <div class="ret pos">+18%</div>
+          <div class="tgt">฿16.30</div>
+          <div class="ret neg">−3%</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿1.04</span></li>
-            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>EPS ปี 3</span><span>~฿1.02</span></li>
+            <li><span>P/E ออก</span><span>16x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~฿3.00</span></li>
             <li><span>สถานการณ์</span><span>กำลังซื้ออ่อน ผู้ป่วยต่างชาติทรง</span></li>
           </ul>
@@ -226,11 +222,11 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +6%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿24.57</div>
-          <div class="ret pos">+50%</div>
+          <div class="tgt">฿22.87</div>
+          <div class="ret pos">+30%</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿1.17</span></li>
-            <li><span>P/E ออก</span><span>21x</span></li>
+            <li><span>EPS ปี 3</span><span>~฿1.14</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~฿3.00</span></li>
             <li><span>สถานการณ์</span><span>โตตามฐาน รพ. + medical tourism ฟื้น</span></li>
           </ul>
@@ -239,10 +235,10 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +10%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿31.20</div>
-          <div class="ret pos">+90%</div>
+          <div class="tgt">฿30.67</div>
+          <div class="ret pos">+69%</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿1.30</span></li>
+            <li><span>EPS ปี 3</span><span>~฿1.28</span></li>
             <li><span>P/E ออก</span><span>24x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~฿3.00</span></li>
             <li><span>สถานการณ์</span><span>ผู้ป่วยต่างชาติพุ่ง + re-rating P/E กลับ</span></li>
@@ -251,8 +247,8 @@
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      สมมติฐาน: EPS ฐาน ฿0.98 เติบโตตามอัตราในแต่ละฉาก, ปันผลรวม ~฿3.00 ใน 3 ปี (ราว ฿1.00/ปี), P/E ออกสะท้อนการ re-rating กลับสู่พรีเมียมในอดีต
-      Base case ให้ผลตอบแทนรวม ~50% (CAGR ~14%) ซึ่งน่าสนใจสำหรับหุ้น defensive ผันผวนต่ำ — ความเสี่ยงหลักคือกำไรเติบโตช้ากว่าคาด ทำให้ P/E ไม่ re-rate
+      สมมติฐาน: EPS ฐาน ฿0.96 (TTM) เติบโตตามอัตราในแต่ละฉาก, ปันผลรวม ~฿3.00 ใน 3 ปี (ราว ฿1.00/ปี), P/E ออก 16x / 20x / 24x — ต่ำกว่า P/E ที่วัดจริงของ FY2024 (27.3x) ทุกฉาก และ Base ใกล้ระดับปัจจุบัน ไม่ได้อาศัย re-rating
+      Base case ให้ผลตอบแทนรวม ~30% (CAGR ~9%) รวมปันผล — ความเสี่ยงหลักคือกำไรเติบโตช้ากว่าคาด ทำให้ P/E ถูก de-rate ต่อ (ฉาก Bear ผลรวมติดลบเล็กน้อย)
     </p>
   </section>
 
@@ -263,21 +259,21 @@
       <div class="box cat">
         <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
         <ul>
-          <li><b>เครือ รพ. ใหญ่ที่สุดในไทย:</b> เครือข่ายกว่า 50 โรงพยาบาล (Bangkok Hospital, Samitivej, BNH, Phyathai, Paolo) มีอำนาจต่อรองและ economies of scale</li>
+          <li><b>เครือ รพ. ใหญ่ที่สุดในไทย:</b> เครือข่ายหลายแบรนด์ (Bangkok Hospital, Samitivej, BNH, Phyathai, Paolo) มีอำนาจต่อรองและ economies of scale</li>
           <li><b>Medical Tourism ฟื้นตัว:</b> ผู้ป่วยต่างชาติ (ตะวันออกกลาง, CLMV) เป็นกลุ่มมาร์จิ้นสูง หนุนรายได้เมื่อท่องเที่ยวเชิงสุขภาพกลับมา</li>
-          <li><b>Valuation ลงมาถูกกว่าอดีตมาก:</b> P/E ~18.6x ต่ำกว่าค่าเฉลี่ย 5 ปี (~25x) มี room ให้ re-rate กลับ</li>
-          <li><b>ปันผลขยับขึ้น ~5.4%:</b> หุ้น defensive ปันผลสูง น่าสนใจในภาวะดอกเบี้ยขาลง + มี special dividend ฿0.25/หุ้น</li>
+          <li><b>Valuation ต่ำกว่าอดีต:</b> P/E ~20.7x ต่ำกว่ามัธยฐาน 5 ปี (~31x) แต่ลดลงทุกปีตามการโตช้าลง — ไม่ใช่สัญญาณ re-rate อัตโนมัติ</li>
+          <li><b>ปันผลยีลด์ ~5.0%:</b> DPS ฿1.00 ต่อหุ้น หุ้น defensive ปันผลสูง น่าสนใจสำหรับสายรายได้ (payout สูงกว่า EPS TTM จึงต้องจับตาความยั่งยืน)</li>
           <li><b>สังคมสูงวัย:</b> โครงสร้างประชากรไทยหนุน demand บริการสุขภาพระยะยาว</li>
         </ul>
       </div>
       <div class="box risk">
         <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
         <ul>
-          <li><b>การเติบโตกำไรชะลอ:</b> FY2025 กำไรลดลง -0.9% YoY, Q1/2026 ยังทรงตัว — โมเมนตัมที่หายไปกดดัน P/E พรีเมียม</li>
+          <li><b>การเติบโตกำไรชะลอ:</b> FY2025 กำไรลดลง -0.9% YoY และ EPS TTM ฿0.96 ต่ำกว่า FY2025 ฿1.00 — โมเมนตัมที่หายไปกดดัน P/E พรีเมียม</li>
           <li><b>กำลังซื้อในประเทศอ่อน:</b> เศรษฐกิจไทยโตช้า ครัวเรือนหนี้สูง กระทบผู้ป่วยจ่ายเงินเอง (cash patient)</li>
           <li><b>การแข่งขัน รพ. เอกชน:</b> คู่แข่ง (BH, RAM, CHG) ขยายกำลังการรักษาและดึงผู้ป่วยต่างชาติ</li>
           <li><b>ต้นทุนบุคลากร/อุปกรณ์การแพทย์สูงขึ้น:</b> แรงกดดันด้าน margin จากค่าแรงแพทย์-พยาบาลและ inflation</li>
-          <li><b>Valuation ยังไม่ถูกแบบ deep value:</b> P/BV 2.6x และ P/E 18.6x ยังพรีเมียมเทียบตลาด หากกำไรไม่ฟื้นอาจ de-rate ต่อ</li>
+          <li><b>Valuation ยังไม่ถูกแบบ deep value:</b> P/E ~20.7x ยังไม่ถูกแบบ deep value และ P/E ที่วัดได้ลดลงทุกปี หากกำไรไม่ฟื้นอาจ de-rate ต่อ</li>
         </ul>
       </div>
     </div>
@@ -287,17 +283,17 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>หุ้นคุณภาพ defensive ราคาลงมาน่าสนใจ — ทยอยสะสมรอกำไรฟื้น</h2>
-      <p>BDMS เป็นเครือโรงพยาบาลเอกชนใหญ่ที่สุดในไทย พื้นฐานแกร่ง ROE ~16% ปันผลสม่ำเสมอ และ Beta ต่ำเพียง 0.28 (defensive)
-      ราคาปรับฐานลงรอบปี ~22% จากการ de-rating ของ valuation และกำไรที่ชะลอ ทำให้ P/E ลงมาเหลือ ~18.6x ต่ำกว่าค่าเฉลี่ยในอดีตมาก
-      มูลค่าเหมาะสมเฉลี่ย ฿21 ให้ MOS ~12% — น่าสนใจสำหรับการทยอยสะสม แต่ยังไม่ถึงโซน deep value ควรรอจังหวะย่อเพิ่ม MOS ให้กว้างขึ้น</p>
+      <h2>หุ้นคุณภาพ defensive ราคาใกล้มูลค่าเหมาะสม — ถือ/รอย่อก่อนสะสมเพิ่ม</h2>
+      <p>BDMS เป็นเครือโรงพยาบาลเอกชนใหญ่ที่สุดในไทย พื้นฐานแกร่ง ROE ~14.9% ปันผลสม่ำเสมอ
+      ราคาแกว่งในกรอบ ฿18–22 ตลอดรอบปี จากการ de-rating ของ valuation และกำไรที่ชะลอ ทำให้ P/E เหลือ ~20.7x ต่ำกว่ามัธยฐาน 5 ปี (~31x) แต่เป็นการลดลงต่อเนื่องทุกปี
+      มูลค่าเหมาะสมเฉลี่ย {{rd:fv}} ({{rd:mos}}) — ราคาอยู่ใกล้ FV ยังไม่มีส่วนเผื่อความปลอดภัย ผู้ถือเดิมรับปันผลต่อได้ ผู้สนใจรอจังหวะย่อให้ MOS กว้างขึ้น</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿25.02 (Strong Buy)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿24.78 (Strong Buy)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ทยอยสะสมในโซน ฿18 ลงมา (MOS เริ่มน่าสนใจ), เพิ่มน้ำหนักหากย่อแตะ ฿16.80 (MOS 20%) หรือใกล้กรอบล่าง 52 สัปดาห์ ฿17.40 — เหมาะถือยาวกินปันผล + รอ re-rating เมื่อกำไรกลับมาเติบโต
+        💡 <b>กลยุทธ์:</b> รอทยอยสะสมเมื่อย่อเข้าใกล้กรอบล่าง 52 สัปดาห์ ฿17.40 (ต่ำกว่า FV ราว 12%) และเพิ่มน้ำหนักที่โซน MOS 20% {{rd:mos20}} — เหมาะถือยาวกินปันผล + รอกำไรกลับมาเติบโต
       </div>
     </div>
   </section>
@@ -306,9 +302,9 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูล: StockAnalysis.com • Investing.com • Yahoo Finance (24 มิ.ย. 2026)
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูล: StockAnalysis.com • Investing.com • Yahoo Finance (21 ก.ย. 2026)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 24 มิ.ย. 2026 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2026 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
