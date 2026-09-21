@@ -6,19 +6,19 @@
 <title>วิเคราะห์หุ้น American Water Works (AWK) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"AWK","currency":"USD","price":135.9,"fairValue":143,"mos":5,"upside":5.2,"pe":23.6,"dividendYield":2.63,"roe":10.1}
+{"symbol":"AWK","currency":"USD","price":135.9,"fairValue":133,"mos":-2.2,"upside":-2.1,"pe":23.6,"dividendYield":2.63,"roe":10.1}
 </script>
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 143,
+  "fv": 133,
   "values": {
     "px": 135.9,
     "priceDate": "2026-09-18",
     "dateEra": "BE",
     "chgSuffix": "รอบปี",
     "fvLow": 126,
-    "fvHigh": 152,
+    "fvHigh": 141,
     "shares": 198700000,
     "dps": 3.58,
     "bvps": 56.6,
@@ -29,7 +29,7 @@
         "div": 11.17
       },
       {
-        "tgt": 195,
+        "tgt": 181,
         "div": 11.6
       },
       {
@@ -72,14 +72,14 @@
       ["ก.ย.26", 135.9]
     ],
     "min": 120,
-    "max": 145,
-    "grid": [125, 130, 135, 140],
+    "max": 140,
+    "grid": [125, 130, 135],
     "currency": "$",
     "highlight": [7, 10]
   },
   "gauge": {
-    "min": 105,
-    "max": 165,
+    "min": 90,
+    "max": 160,
     "fairLabelTop": true
   }
 }
@@ -106,7 +106,7 @@
       <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
         ราคา ณ {{rd:priceDate}}<br>
-        กรอบ 52 สัปดาห์ $120.57 – $147.87<br>
+        กรอบ 52 สัปดาห์ $120.57 – $145.64<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, Google Finance
       </div>
     </div>
@@ -114,11 +114,11 @@
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ สิงหาคม 2569 — TTM / FY2025</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ 21 กันยายน 2569 — TTM / FY2025</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~198.7 ล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~23.6x</div><div class="d">ต่ำกว่าค่าเฉลี่ย 5 ปี ~30x</div></div>
-      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~30x</div><div class="d">ช่วง 20–35x (ต่ำลงหลังดอกเบี้ยขึ้น)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~23.6x</div><div class="d">ใกล้มัธยฐาน 5 ปีงบ 24.4x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~27x</div><div class="d">มัธยฐาน 24.4x · ช่วง 23.6–33.6x (5 ปีงบ)</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ~$56.60 (TTM)</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">$1,128M</div><div class="d">Net margin ~21.3%</div></div>
@@ -146,40 +146,36 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ราคา AWK ในรอบ 12 เดือน (ก.ค. 2568 – มิ.ย. 2569) เคลื่อนไหวในกรอบ $123–$144 ทำจุดสูงสุดที่ ~$143.5
-        ในเดือนสิงหาคม 2568 ก่อนปรับลงตาม sector utilities ที่ได้รับแรงกดดันจากความกังวลดอกเบี้ยสูง ในเดือนพฤษภาคม 2569
-        แตะระดับต่ำสุด ~$123 ในเดือนพฤษภาคม ก่อนฟื้นตัวขึ้นมาที่ $136.20 ณ กลางเดือนสิงหาคม ผลตอบแทนรอบปีอยู่ที่ −2.1%
-        สะท้อน sector rotation ออกจาก utilities เมื่ออัตราดอกเบี้ยทรงตัวสูง
+        ราคาปิดรายเดือนของ AWK ในรอบ 12 เดือน (ต.ค. 2568 – ก.ย. 2569) เคลื่อนไหวในกรอบ ~$123–$138 โดยกรอบ 52 สัปดาห์ (ราคาระหว่างวัน)
+        อยู่ที่ $120.57–$145.64 ราคาปิดรายเดือนต่ำสุด ~$123 ในเดือนพฤษภาคม 2569 ก่อนฟื้นตัวและทำจุดสูงสุดของช่วง ~$138 ในเดือนสิงหาคม 2569
+        ปัจจุบันราคายืนใกล้กึ่งกลางกรอบ สะท้อนหุ้น utilities ที่ผันผวนตามความคาดหวังอัตราดอกเบี้ย (ป้ายผลตอบแทนรอบปีด้านบนคำนวณจากปลายกราฟ)
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 ตระกูลสมมติฐาน</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $5.64 × P/E เป้าหมาย ~27x — ค่าเฉลี่ยระหว่าง P/E ประวัติศาสตร์ ~30x กับ P/E ปัจจุบัน 23x (กดดันจากดอกเบี้ยสูง) · AWK ควรได้ premium เหนือ utility ทั่วไปในฐานะ pure-play water utility ขนาดใหญ่ที่สุดใน US</div></div>
-        <div class="mval">$152</div>
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS $5.77 (TTM) × P/E เป้าหมาย 24.4x — มัธยฐาน P/E ย้อนหลัง 5 ปีงบ (ราคาเฉลี่ยรายปี ÷ EPS diluted ของปีนั้น; ช่วง 23.6–33.6x) ซึ่งวัดจากข้อมูลจริง ไม่ได้ตั้งจากตัวคูณ ณ ราคาวันนี้ · ประมาณการ EPS ปี 2026 ($6.08) ใช้เป็นบริบทเท่านั้น</div></div>
+        <div class="mval">$141</div>
       </div>
       <div class="vmethod">
         <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล $3.58 × (1+5.5%) = $3.78; g = 5.5% (long-run sustainable), r = 8.5% (risk-free 4.3% + beta 0.61 × ERP 5.5%) → spread 3.0% — สะท้อนสภาพแวดล้อมดอกเบี้ยสูงในปัจจุบัน</div></div>
         <div class="mval">$126</div>
       </div>
-      <div class="vmethod">
-        <div><div class="mname">3. Forward P/E (Consensus)</div><div class="mdesc">EPS fwd $6.08 (consensus FY2026, +7.8% YoY) × forward P/E 25x — ลดจาก historical avg เนื่องจากสภาพแวดล้อมอัตราดอกเบี้ยปัจจุบัน · consensus เป้า $140.36 จาก 11 analyst สนับสนุนระดับ fair value นี้</div></div>
-        <div class="mval">$152</div>
-      </div>
+
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        วิธี P/E และ Forward P/E ให้ค่าสูงสุด (~$152) สะท้อน quality premium ของ AWK ในฐานะ water utility ที่มีความแน่นอนสูงสุด
-        ส่วน DDM ให้ค่าต่ำกว่า ($126) เนื่องจาก required return สูงในช่วงดอกเบี้ยสูงปัจจุบัน
-        FV เฉลี่ย $143 อยู่เหนือราคาตลาด $136.20 เล็กน้อย และใกล้เคียง analyst consensus $140.36
-        ซึ่งยืนยันว่าราคาปัจจุบันยังค่อนข้าง undervalue เล็กน้อยแต่ไม่ถึงระดับ deep value
-        AWK สมควรได้ premium จากการเป็น Dividend Aristocrat และ pure-play water monopoly ที่ไม่มีคู่แข่งแท้จริง
+        FV = เฉลี่ยของสองตระกูลสมมติฐานอิสระ: P/E ที่ยึดมัธยฐานตลาดย้อนหลัง ($141) กับ DDM ที่ยึด required return/growth ($126)
+        (Justified P/BV ไม่ใช้เป็นขาแยกเพราะใช้ r,g ชุดเดียวกับ DDM) · ขา Forward P/E แบบ consensus และเป้านักวิเคราะห์ถูกตัดออกจากการเฉลี่ย
+        เพราะอิงความเห็นตลาด/ตัวคูณ ณ ราคาปัจจุบัน — เป้านักวิเคราะห์ $141.45 (Hold, 11 คน) เก็บไว้เป็นบริบทตรวจความสอดคล้องเท่านั้น
+        FV เฉลี่ย {{rd:fv}} จึงอยู่ใกล้ราคาตลาด {{rd:px}} — ราคาเทรดใกล้มูลค่าเหมาะสม ยังไม่มีส่วนเผื่อความปลอดภัย
+        ส่วนต่างของสองขา ($126–$141) สะท้อนความอ่อนไหวต่ออัตราดอกเบี้ยที่ใช้ใน DDM
       </p>
     </div>
   </section>
@@ -196,16 +192,16 @@
         <div class="scale">
           <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
           <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$140.36<br><small>เป้า Analyst</small></span>
           <span style="text-align:right">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$141.45<br><small>เป้า Analyst</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน $136.20 อยู่ต่ำกว่า Fair Value $143 ประมาณ $6.8 คิดเป็น MOS ~4.8% ซึ่งถือว่า
-        "น่าสนใจเล็กน้อย แต่ยังไม่ถึงโซน deep value" ราคาอยู่เหนือโซน MOS 20% ($114.40) และ MOS 30% ($100.10)
-        ค่อนข้างมาก สำหรับนักลงทุนที่มองหาหุ้น quality utility ระยะยาว ราคาปัจจุบันถือเป็นจุดสะสมที่สมเหตุสมผล
-        Analyst consensus เป้า $140.36 (11 คน, Hold) บ่งชี้ว่าตลาดมองว่าราคาปัจจุบันใกล้ fair value
+        ราคาปัจจุบัน {{rd:px}} อยู่ใกล้ Fair Value {{rd:fv}} (MOS {{rd:mos}}) จึงยังไม่มีส่วนเผื่อความปลอดภัย
+        ราคาอยู่เหนือโซน MOS 20% ({{rd:mos20}}) และ MOS 30% ({{rd:mos30}}) ค่อนข้างมาก
+        สำหรับนักลงทุนที่มองหาหุ้น quality utility ระยะยาว ควรรอจังหวะราคาย่อหรือทยอยสะสมเล็กน้อยโดยรู้ว่าจ่ายราคาเต็ม
+        Analyst consensus เป้า $141.45 (11 คน, Hold) สอดคล้องกับภาพว่าราคาใกล้ fair value
       </p>
     </div>
   </section>
@@ -216,7 +212,7 @@
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
-        <div class="txt">MOS พอใช้ — ราคาต่ำกว่า Fair Value เล็กน้อย · น่าสะสมระยะยาวในฐานะ quality utility · ยังไม่ถึงโซน deep value</div>
+        <div class="txt">ยังไม่มีส่วนเผื่อ — ราคาใกล้/สูงกว่า Fair Value เล็กน้อย · คุณภาพธุรกิจดีแต่ราคาเต็ม · รอโซน MOS 20% ก่อนเพิ่มน้ำหนัก</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -257,7 +253,7 @@
           <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$7.07</span></li>
-            <li><span>P/E ออก</span><span>26x</span></li>
+            <li><span>P/E ออก</span><span>24x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>rate base growth 7-8% · rate case สำเร็จตามแผน · ดอกเบี้ยปรับลงเล็กน้อย</span></li>
           </ul>
@@ -281,7 +277,7 @@
       ตัวเลข EPS ฐาน $5.77 (TTM) ใช้เป็น base สำหรับ 3 scenario โดย EPS ปี 3 คำนวณจาก EPS × (1+g)³
       ราคาเป้า = EPS ปี 3 × P/E ออก บวกปันผลสะสม 3 ปี — ผลตอบแทน Bear/Base/Bull ไม่รวม reinvestment ของปันผล
       AWK เป็น regulated utility จึงเติบโตช้ากว่า growth stock แต่มีความแน่นอนสูงและให้ปันผลสม่ำเสมอ
-      ดอกเบี้ยเป็นตัวแปรสำคัญ: ถ้าลดลงชัดเจนใน 1-2 ปี P/E re-rating กลับสู่ ~30x เป็นไปได้
+      ดอกเบี้ยเป็นตัวแปรสำคัญ: Base ใช้ P/E ออก 24x (ใกล้มัธยฐานย้อนหลัง 24.4x) ส่วน Bull 30x คือระดับช่วงบนของประวัติ (สูงสุด 33.6x ปี 2022)
     </p>
   </section>
 
@@ -294,7 +290,7 @@
         <ul>
           <li><b>Rate Base Growth สม่ำเสมอ:</b> AWK ลงทุนโครงสร้างพื้นฐานน้ำ ~$3.2B/ปี ขยาย rate base 7-8%/ปี ซึ่งเป็นกลไกขับเคลื่อนรายได้และ EPS โดยตรงผ่านการขอ rate case กับ regulator</li>
           <li><b>Dividend Aristocrat ยาวนาน:</b> เพิ่มเงินปันผลต่อเนื่องกว่า 20 ปี ด้วยอัตราเฉลี่ย 8%+/ปี (3yr CAGR 8.24%) สร้าง income stream ที่เชื่อถือได้สำหรับนักลงทุนระยะยาว</li>
-          <li><b>ดอกเบี้ยขาลง (Rate Cut Tailwind):</b> Utility มักถูก re-rate เมื่อดอกเบี้ยลดลง — ถ้า Fed ลดอัตราดอกเบี้ยในปี 2026-2027 P/E ของ AWK อาจขยับกลับสู่ระดับ historical avg 28-30x ได้</li>
+          <li><b>ดอกเบี้ยขาลง (Rate Cut Tailwind):</b> Utility มักถูก re-rate เมื่อดอกเบี้ยลดลง — ถ้า Fed ลดอัตราดอกเบี้ยในปี 2026-2027 P/E ของ AWK อาจขยับขึ้นสู่ช่วงบนของประวัติ (28-30x) ได้</li>
           <li><b>ความต้องการน้ำสะอาดเพิ่ม:</b> กฎหมาย EPA เกี่ยวกับมาตรฐานน้ำดื่มเข้มงวดขึ้น (PFAS, lead pipe replacement) เพิ่มการลงทุน → rate base growth ยิ่งขึ้น</li>
           <li><b>M&amp;A โอกาสขยายพื้นที่บริการ:</b> AWK เติบโตผ่านการซื้อกิจการ utility ขนาดเล็กอย่างต่อเนื่อง โครงสร้างตลาดน้ำ US ยังแตกตัวมาก เปิดโอกาสขยายต่อ</li>
           <li><b>ธุรกิจ Defensive สูง:</b> รายได้ regulated 100% ลูกค้าต้องใช้น้ำไม่ว่าเศรษฐกิจจะเป็นอย่างไร — Beta 0.61 ต่ำ เหมาะกับช่วงตลาดผันผวน</li>
@@ -303,11 +299,11 @@
       <div class="box risk">
         <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
         <ul>
-          <li><b>ความเสี่ยงอัตราดอกเบี้ย:</b> AWK มีหนี้ $15.7B (D/E 1.24x) ต้นทุนการเงินสูงขึ้นกดดัน earnings · ถ้าดอกเบี้ยทรงระดับหรือสูงขึ้น P/E re-rating ไม่เกิด</li>
+          <li><b>ความเสี่ยงอัตราดอกเบี้ย:</b> AWK มีหนี้ ~$16.1B (D/E 1.38x) ต้นทุนการเงินสูงขึ้นกดดัน earnings · ถ้าดอกเบี้ยทรงระดับหรือสูงขึ้น P/E re-rating ไม่เกิด</li>
           <li><b>Regulatory Risk:</b> ถ้า regulator ไม่อนุมัติ rate increase ตามที่ขอ หรือล่าช้า ROE ที่ได้รับจริงต่ำกว่า allowed ROE กดดัน earnings</li>
           <li><b>ต้นทุน CapEx สูงต่อเนื่อง:</b> การลงทุน $3.2B+/ปีต้องการ financing อย่างต่อเนื่อง — dilution จากการออกหุ้นใหม่หรือต้นทุนหนี้สูงเป็นความเสี่ยง</li>
           <li><b>Climate/Weather Risk:</b> ภัยแล้งหรือน้ำท่วมกระทบโครงสร้างพื้นฐาน เพิ่มต้นทุนซ่อมแซม บางครั้ง regulator ไม่อนุมัติให้ผ่านต้นทุนสู่ลูกค้าเต็มจำนวน</li>
-          <li><b>Valuation Premium:</b> แม้ถูกกว่า historical avg แต่ P/E 23x ยังสูงกว่า utility เฉลี่ย (~18x) หากเกิด sector rotation หรือตลาด risk-off รุนแรง ราคาอาจกดดันต่อ</li>
+          <li><b>Valuation Premium:</b> แม้ถูกกว่า historical avg แต่ P/E ~23.6x ยังสูงกว่า utility เฉลี่ย (~18x) หากเกิด sector rotation หรือตลาด risk-off รุนแรง ราคาอาจกดดันต่อ</li>
           <li><b>Remunicipalization Risk:</b> หลายรัฐมีกระแสต้องการ "remunicipalize" บริการน้ำกลับไปเป็นของรัฐ แม้โอกาสเกิดจริงต่ำแต่เป็น long-tail risk ที่กดดัน premium</li>
         </ul>
       </div>
@@ -318,22 +314,21 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>Quality Water Utility ที่สมเหตุสมผล — สะสมระยะยาวในโซน MOS 10-20%</h2>
+      <h2>Quality Water Utility ที่ราคาเต็ม — รอสะสมในโซน MOS 10-20%</h2>
       <p>AWK เป็น pure-play water utility ที่ดีที่สุดใน US มีความได้เปรียบเชิงโครงสร้างชัดเจน: monopoly
       ในพื้นที่ที่ให้บริการ, รายได้ regulated 100% แน่นอน, rate base growth 7-8%/ปีเป็น "เครื่องยนต์" EPS
-      ที่เชื่อถือได้, และ Dividend Aristocrat ที่เพิ่มปันผลต่อเนื่องกว่า 20 ปี ราคาปัจจุบัน $136.20 อยู่ต่ำกว่า
-      FV $143 ประมาณ 4.8% ซึ่งยังไม่ใช่ "ถูกมาก" แต่ถือเป็นราคาที่สมเหตุสมผลสำหรับหุ้น quality ระดับนี้
+      ที่เชื่อถือได้, และ Dividend Aristocrat ที่เพิ่มปันผลต่อเนื่องกว่า 20 ปี ราคาปัจจุบัน {{rd:px}} อยู่ใกล้
+      FV {{rd:fv}} (MOS {{rd:mos}}) จึงยังไม่มีส่วนเผื่อความปลอดภัยสำหรับหุ้น quality ระดับนี้
       ปัจจัยเสี่ยงหลักคืออัตราดอกเบี้ยสูงที่กดดันทั้ง valuation multiple และต้นทุนหนี้ของบริษัท
-      หากดอกเบี้ยลดลงชัดเจน AWK มีโอกาส re-rate กลับสู่ P/E 28-30x ได้ดี</p>
+      หากดอกเบี้ยลดลงชัดเจน AWK มีโอกาส re-rate ขึ้นสู่ช่วงบนของประวัติ (P/E 28-30x)</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$140.36 (Hold · 11 คน)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$141.45 (Hold · 11 คน)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ทยอยสะสมที่ราคาปัจจุบัน $130-140 (MOS ~2-9%) · เพิ่ม position หากราคาลงสู่โซน $114-120 (MOS 20%+)
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน {{rd:px}} ใกล้ FV — ทยอยสะสมเล็กน้อยได้สำหรับผู้ถือระยะยาว · เพิ่ม position หากราคาลงสู่โซน MOS 20% ({{rd:mos20}}) ลงไป
         เหมาะสำหรับ dividend investor และ conservative long-term investor ที่ต้องการ income growth + capital preservation
-        ราคาเป้า 12 เดือน ~$140-145 หาก multiple re-rates ตามดอกเบี้ยที่คาดว่าจะลดลง
       </div>
     </div>
   </section>
@@ -345,7 +340,7 @@
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
     แหล่งข้อมูล: Yahoo Finance (finance.yahoo.com/quote/AWK), StockAnalysis.com (stockanalysis.com/stocks/awk), Digrin.com (digrin.com/stocks/detail/AWK) — ราคา ณ {{rd:priceDate}}
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 17 สิงหาคม 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 กันยายน 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
