@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น AXT Inc. (AXTI) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Opus 5">
+<script type="application/json" id="stock-meta">
+{"symbol":"AXTI","currency":"USD","price":75.82,"fairValue":14.2,"mos":-433.9,"upside":-81.3,"pe":null,"dividendYield":0,"roe":1.0}
+</script>
+<script type="application/json" id="report-data">
+{
+  "v": 2,
+  "fv": 14.2,
+  "values": {
+    "px": 75.82, "priceDate": "2026-09-22", "dateEra": "BE", "chgSuffix": "รอบปี",
+    "fvLow": 11.35, "fvHigh": 17.02, "analystTgt": 91.6,
+    "eps": null, "shares": 64196212, "revenue": 126000000, "dps": null, "bvps": null,
+    "baseEps": 0.28,
+    "scenarios": [ { "tgt": 5.59, "div": null }, { "tgt": 20.79, "div": null }, { "tgt": 72.37, "div": null } ],
+    "scnBasis": { "years": 3, "divIncluded": false, "perYear": "cagr" }
+  },
+  "theme": {
+    "accent": "#a329e0",
+    "accentDark": "#7919a9",
+    "darkGrad": "linear-gradient(135deg,#2a063c 0%,#4e0c6f 58%,#7b13af 140%)",
+    "glow": "rgba(159,32,223,.35)",
+    "subColor": "#ddc2eb",
+    "headerMuted": "#c4a5d4",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#137333",
+    "badge": "var(--blue)",
+    "verdictText": "#e6d0f1",
+    "vcellLabel": "#d4b5e3"
+  },
+  "chart": {
+    "data": [
+      ["ต.ค.25", 7.95],
+      ["พ.ย.25", 10.7],
+      ["ธ.ค.25", 16.35],
+      ["ม.ค.26", 18.54],
+      ["ก.พ.26", 37.9],
+      ["มี.ค.26", 56.98],
+      ["เม.ย.26", 79.22],
+      ["พ.ค.26", 103.16],
+      ["มิ.ย.26", 72.08],
+      ["ก.ค.26", 60.43],
+      ["ส.ค.26", 60.61],
+      ["ก.ย.26", 75.82]
+    ],
+    "min": 0,
+    "max": 125,
+    "grid": [25, 50, 75, 100],
+    "currency": "$",
+    "highlight": [0, 7]
+  },
+  "gauge": { "min": 5, "max": 100 }
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><div style="width:8px;height:8px;border-radius:50%;background:#a329e0;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#7919a9;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#4e0c6f;display:inline-block;margin:0 3px"></div></div>
+    <div>
+      <span class="tag">NASDAQ: AXTI</span>
+    </div>
+    <h1>AXT Inc.</h1>
+    <div class="sub">แผ่นฐานเซมิคอนดักเตอร์ผสม InP • GaAs • Germanium • วัตถุดิบต้นน้ำของเลเซอร์ออปติกและชิป RF</div>
+    <div class="price-row">
+      <div>
+        <div class="px">{{rd:px}}<small>(AXTI)</small></div>
+      </div>
+      <div class="chg">{{rd:chg}}</div>
+      <div class="px-meta">
+        ราคา ณ {{rd:priceDate}}<br>
+        กรอบ 52 สัปดาห์ $4.00 – $143.16<br>
+        ที่มา: StockAnalysis.com, Yahoo Finance, SEC EDGAR (10-Q ไตรมาส 2/2569)
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบล่าสุด ไตรมาส 2 ปี 2569 (สิ้นสุด 30 มิ.ย.) · หน่วย USD</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">หุ้นคงเหลือ 64.20 ล้านหุ้น (หลังเพิ่มทุนกลางปี 2569)</div></div>
+      <div class="metric"><div class="k">P/S (TTM)</div><div class="v neu">{{rd:ps}}x</div><div class="d">รายได้ TTM $126 ล้าน (ก.ค. 2568–มิ.ย. 2569)</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v pos">$126 ล้าน</div><div class="d">+45.8% YoY · FY2025 $88.3 ล้าน</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v pos">32.2%</div><div class="d">TTM · FY2025 12.7% · จุดสูงเดิม FY2022 36.9%</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">$3.9 ล้าน</div><div class="d">พลิกบวกจากขาดทุน $21.4 ล้านใน FY2025</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">$0.02–0.07</div><div class="d">สองนิยาม TTM ต่างกันเพราะฐานหุ้นเปลี่ยนกลางปี (10-Q)</div></div>
+      <div class="metric"><div class="k">เงินสดสุทธิ</div><div class="v pos">$315 ล้าน</div><div class="d">เงินสด $417 ล้าน − หนี้ $102 ล้าน (สิ้นไตรมาส 2/2569)</div></div>
+      <div class="metric"><div class="k">ROE (TTM)</div><div class="v">~1.0%</div><div class="d">เพิ่งพลิกบวก · FY2025 −7.9% · FY2022 6.6%</div></div>
+
+      <div class="metric"><div class="k">กระแสเงินสดอิสระ TTM</div><div class="v neg">−$19.6 ล้าน</div><div class="d">ติดลบต่อเนื่อง 5 ปีจากการลงทุนขยายกำลังผลิต</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">0%</div><div class="d">ไม่จ่ายปันผล — เก็บเงินสดไว้ลงทุน</div></div>
+      <div class="metric"><div class="k">ฐานหุ้น</div><div class="v neu">64.2M / 51.9M</div><div class="d">คงเหลือ vs ถัวเฉลี่ยปรับลด TTM — ต่างกัน 23.6%</div></div>
+      <div class="metric"><div class="k">ประมาณการ consensus</div><div class="v">FY2026E $0.87</div><div class="d">FY2027E $2.25 (n=5 · StockAnalysis)</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:var(--blue)"></i>ราคา AXTI</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        กราฟเป็นภาพของการรีเรตติ้งครั้งใหญ่ ไม่ใช่การเติบโตของกำไรที่เกิดขึ้นแล้ว — จากโซน $8 เมื่อ ต.ค. 2568 หุ้นไต่ขึ้นต่อเนื่องตามกระแสความต้องการแผ่นฐาน InP สำหรับเลเซอร์ในทรานซีฟเวอร์ศูนย์ข้อมูล AI ไปแตะจุดสูงสุดของกราฟแถว $103 ในเดือน พ.ค. 2569 แล้วย่อแรงกลับมาโซน $60 ช่วง ก.ค.–ส.ค. 2569 ก่อนดีดกลับขึ้นมาที่ {{rd:px}} ขณะที่รายได้ทั้งปียังอยู่ระดับร้อยล้านต้น ๆ และกำไรสุทธิ TTM เพิ่งพลิกเป็นบวกหลักหน่วยล้านดอลลาร์ · ช่วงแกว่งของปีนี้ (กรอบ 52 สัปดาห์ $4.00 – $143.16) กว้างกว่า 30 เท่า สะท้อนว่าราคายังถูกกำหนดด้วยเรื่องเล่ามากกว่าตัวเลขงบ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">ตัวคูณรายได้ 2 ขา — ตระกูลเดียว</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. EV/Sales (สมอจาก peer ที่วัดจริง)</div><div class="mdesc">รายได้ฉากฐาน FY2027E $235 ล้าน × EV/Sales เป้าหมาย 3.31x (สมอ = ตัวคูณของ peer ที่วัดจริง คือ Wolfspeed ผู้ผลิตแผ่นฐาน SiC ซึ่ง EV ถูกดันด้วยหนี้ก้อนใหญ่ ⇒ ถือเป็นขอบล่างที่ใจกว้างพอ) → EV $778 ล้าน + เงินสดสุทธิ $315 ล้าน ÷ 64.20 ล้านหุ้น — ต่ำกว่า EV/Sales ของ AXTI เองที่ราว 36 เท่าอยู่สิบเท่าตัว ซึ่งคือส่วนที่ตลาดจ่ายล่วงหน้าไปแล้ว · ตระกูลตัวคูณรายได้เดียวกับข้อ 2 นับเป็นหนึ่งเสียง</div></div>
+        <div class="mval">$17.02</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. P/S (สมอจากประวัติของ AXTI เอง)</div><div class="mdesc">รายได้ฉากฐาน FY2027E ต่อหุ้น $3.66 ($235 ล้าน ÷ 64.20 ล้านหุ้น) × P/S เป้าหมาย 3.1x — สมอคือ P/S ที่วัดย้อนหลังจากราคาเฉลี่ยรายปีของ AXTI เอง ปี FY2021 3.1x และ FY2022 2.0x จึงใช้ขอบบนของช่วงที่วัดได้เพราะรอบนี้โตเร็วกว่าสองปีนั้นมาก · ตระกูลตัวคูณรายได้เดียวกับข้อ 1 นับเป็นหนึ่งเสียง</div></div>
+        <div class="mval">$11.35</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <b>เปิดเผยข้อจำกัดของวิธี (full disclosure):</b> ทั้งสองขาอยู่ใน <b>ตระกูลตัวคูณรายได้ตระกูลเดียวกัน จึงนับเป็นหนึ่งเสียง</b> ไม่ใช่สองพยานอิสระ — เหตุผลที่ไม่มีขาตระกูลอื่น: (1) P/E ใช้ไม่ได้ เพราะกำไร TTM แทบเป็นศูนย์และบริษัทขาดทุน 3 ปีติด (FY2023–FY2025) ตัวคูณ P/E ย้อนหลังเหลือจุดที่วัดได้เพียง 2 ปี (FY2021 29.2x · FY2022 17.5x) ไม่พอตั้งเป็นสมอ (2) ไม่จ่ายปันผลจึงไม่มี DDM (3) กระแสเงินสดอิสระติดลบต่อเนื่อง 5 ปี ทำให้ DCF กลายเป็นการเขียนสมมติฐานของผู้วิเคราะห์ซ้ำ ไม่ใช่หลักฐานอิสระ · ค่ากลาง {{rd:fv}} คือค่าเฉลี่ยของสองขาที่ห่างกัน 1.5 เท่า (กรอบ {{rd:fvLow}} – {{rd:fvHigh}}) — <b>บรรทัดความไว:</b> ถ้าตัวคูณลงไปที่ขอบล่างของช่วงที่วัดจริง 2.0x ทั้งสองขา ค่ากลางเหลือ ~$9.78 และถ้าขึ้นไปที่ขอบบน 3.5x ทั้งสองขา ค่ากลางขึ้นเป็น ~$15.28 ⇒ ทั้งช่วงยังต่ำกว่าราคาซื้อขายวันนี้หลายเท่า ข้อสรุปจึงไม่ได้ขึ้นกับการเลือกตัวคูณจุดใดจุดหนึ่ง · <b>บริบทที่ไม่ได้ใช้เป็นขา:</b> หุ้นออปติกปลายน้ำเทรดกันที่ EV/Sales 8.7–28 เท่า (Coherent 8.71x · AAOI 15.02x · MACOM 17.95x · Lumentum 27.95x) ถ้าเชื่อว่า AXTI ควรได้ตัวคูณแบบผู้ผลิตโมดูลปลายน้ำแทนผู้ผลิตวัตถุดิบต้นน้ำ ภาพจะต่างออกไปทั้งหมด — แต่โครงสร้างธุรกิจ อัตรากำไร และความผันผวนของรายได้ของ AXTI เป็นของผู้ขายวัตถุดิบ ไม่ใช่ผู้ขายโมดูล · <b>สิ่งที่ราคาวันนี้ฝังอยู่:</b> ที่ตัวคูณ peer 3.31x ราคาตลาดเท่ากับกำลังบอกว่ารายได้จะไปถึงราว $1.38 พันล้าน หรือ ~11 เท่าของรายได้ TTM
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#067647">เหมาะสม {{rd:fv}}</div></div>
+        </div>
+        <div class="scale">
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:analystTgt}}<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        เข็มราคาอยู่นอกกลุ่มโซนมูลค่าไปไกลมาก — ระยะห่างระหว่าง {{rd:px}} กับ {{rd:fv}} ไม่ใช่ช่องว่างที่ปิดได้ด้วยการรอไตรมาสเดียว แต่ต้องอาศัยการที่รายได้ขยับขึ้นอีกหลายเท่าและรักษาอัตรากำไรไว้ได้จริง · เป้าเฉลี่ยนักวิเคราะห์ {{rd:analystTgt}} ({{rd:analystPct}}) ก็ยังอยู่คนละโลกกับขาที่อิงตัวคูณย้อนหลัง จุดนี้เป็นความไม่ลงรอยที่ผู้อ่านควรรู้ ไม่ใช่ตัวเลขที่ควรถูกเกลี่ยให้เข้าหากัน — นักวิเคราะห์กำลังให้ตัวคูณแบบผู้ชนะในวัฏจักร AI ส่วนวิธีในรายงานนี้ให้ตัวคูณแบบที่ธุรกิจแผ่นฐานเคยได้รับจริง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
+        <div class="txt"><b>ไม่มีส่วนเผื่อความปลอดภัยเลย — ราคาสูงกว่ามูลค่าที่วิธีตัวคูณรายได้ให้หลายเท่า</b><br>ราคาปัจจุบัน {{rd:px}} เทียบมูลค่าเหมาะสม {{rd:fv}} คิดเป็น {{rd:mos}} ({{rd:upside}} เมื่อคิดจากราคา) · โซนที่เริ่มมีส่วนเผื่อ 20% อยู่ที่ {{rd:mos20}} และโซน 30% ที่ {{rd:mos30}} ซึ่งเป็นระดับที่หุ้นเคยอยู่เมื่อปลายปี 2568 ⇒ สำหรับนักลงทุนแนวมูลค่า นี่คือหุ้นที่ต้องรอให้เรื่องเล่าพิสูจน์ตัวเองด้วยงบจริงก่อน ไม่ใช่หุ้นที่ซื้อเพราะราคา
+      </div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>Bear</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$0.37</span></li>
+            <li><span>P/E ออก</span><span>15x</span></li>
+            <li><span>สถานการณ์</span><span>คำสั่งซื้อ InP เป็นการเติมสต็อก รายได้ทรงตัว ตัวคูณกลับสู่ช่วงประวัติของตัวเอง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>Base</span><span>EPS +50%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$0.95</span></li>
+            <li><span>P/E ออก</span><span>22x</span></li>
+            <li><span>สถานการณ์</span><span>รายได้ไต่จาก $235 ล้าน (FY2027E) สู่ราว $400 ล้าน อัตรากำไรสุทธิขึ้นแตะ ~15% จากขนาดที่ใหญ่ขึ้น</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>Bull</span><span>EPS +105%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$2.41</span></li>
+            <li><span>P/E ออก</span><span>30x</span></li>
+            <li><span>สถานการณ์</span><span>ฉากที่ตลาดกำลังคิดอยู่ — InP กลายเป็นคอขวดของออปติก AI รายได้แตะ ~$850–900 ล้าน อัตรากำไรสุทธิ ~18%</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      EPS ฐาน {{rd:baseEps}} ไม่ได้ลอกมาจาก consensus แต่คำนวณเองเพื่อให้สอดคล้องกับงบ: รายได้ฉากฐาน FY2026E $165 ล้าน × อัตรากำไรสุทธิ 11.1% ซึ่งเป็น<b>จุดสูงสุดที่ AXT เคยทำได้จริง</b> (FY2022) ÷ 64.20 ล้านหุ้น ≈ $0.28 · เทียบกับ consensus FY2026E $0.87 ที่ต้องอาศัยอัตรากำไรสุทธิเกิน 25% — สูงกว่าสถิติที่ดีที่สุดของบริษัทเองกว่าสองเท่า จึงถูกจัดเป็นฉาก Bull ไม่ใช่ฉากฐาน · ตัวคูณ P/E ขาออกของทั้งสามฉากอ้างอิงช่วงที่วัดได้จริงของหุ้นตัวเอง (FY2022 17.5x · FY2021 29.2x) ไม่ได้อ้างอิงตัวคูณที่ตลาดให้อยู่ตอนนี้ · <b>ข้อสังเกตที่สำคัญที่สุดของตารางนี้:</b> แม้ในฉาก Bull ที่ทุกอย่างเป็นไปตามที่ตลาดคาด ผลตอบแทน 3 ปีก็ยังราวศูนย์ เพราะการรีเรตติ้งถูกจ่ายไปล่วงหน้าหมดแล้ว
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>InP คือคอขวดจริงของออปติก AI:</b> เลเซอร์ EML/DFB ในทรานซีฟเวอร์ 800G–1.6T ต้องใช้แผ่นฐาน InP ซึ่งมีผู้ผลิตคุณภาพระดับ production ไม่กี่รายในโลก — รายได้ TTM ที่ +45.8% YoY หลังหดตัวสองปีคือหลักฐานแรกว่าความต้องการรอบนี้มาจริง</li>
+          <li><b>อัตรากำไรขั้นต้นฟื้นเร็วกว่ารายได้:</b> จาก 12.7% ใน FY2025 เป็น 32.2% ใน TTM — ธุรกิจแผ่นฐานมีต้นทุนคงที่สูง เมื่อกำลังผลิตถูกใช้เต็มขึ้น กำไรจะไต่เร็วกว่ายอดขาย (operating leverage)</li>
+          <li><b>งบดุลแข็งแรงผิดจากอดีต:</b> เงินสดสุทธิ $315 ล้าน หลังเพิ่มทุนกลางปี 2569 เพียงพอสำหรับขยายกำลังผลิตหลายปีโดยไม่ต้องกู้ และยังสร้างดอกเบี้ยรับเป็นกอบเป็นกำในภาวะดอกเบี้ยสูง</li>
+          <li><b>ฐานลูกค้ากระจายเกินออปติก:</b> GaAs สำหรับ RF/VCSEL/LED และเจอร์เมเนียมสำหรับเซลล์แสงอาทิตย์ในอวกาศ ทำให้ยังมีขาที่ไม่ผูกกับรอบ AI ล้วน ๆ</li>
+          <li><b>มูลค่าแฝงในบริษัทลูก:</b> Tongmei ซึ่งเป็นฐานการผลิตหลักในจีนมีการถือหุ้นโดยนักลงทุนภายนอกอยู่แล้ว การเปิดมูลค่าส่วนนี้เป็นตัวเร่งที่เกิดขึ้นได้โดยไม่ต้องรอผลประกอบการ</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ราคาฝังความคาดหวังไว้ล่วงหน้ามาก:</b> ที่ตัวคูณของ peer ที่วัดจริง ราคาวันนี้ต้องการรายได้ราว 11 เท่าของ TTM จึงจะสมเหตุผล — พลาดเป้าเพียงไตรมาสเดียวส่วนต่างนี้หดได้เร็วมาก (หุ้นเคยย่อจากยอดกราฟลงโซน $60 ภายในสองเดือนมาแล้วในปีนี้)</li>
+          <li><b>การควบคุมการส่งออกแกลเลียม/เจอร์เมเนียมของจีน:</b> การผลิตหลักอยู่ในจีนและวัตถุดิบอยู่ในบัญชีควบคุม — รอบปี FY2023 รายได้เคยหายไป 46.3% จากเหตุแบบนี้ ความเสี่ยงเชิงภูมิรัฐศาสตร์นี้ยังไม่หายไปไหน</li>
+          <li><b>กำไรยังบาง ไม่ใช่ฐานที่มั่นคง:</b> กำไรสุทธิ TTM $3.9 ล้านบนรายได้ $126 ล้าน (อัตรากำไรสุทธิ 3.1%) และกระแสเงินสดอิสระยังติดลบ $19.6 ล้าน — ตัวเลขระดับนี้พลิกกลับเป็นขาดทุนได้จากคำสั่งซื้อที่ชะลอเพียงเล็กน้อย</li>
+          <li><b>การเพิ่มทุนทำให้ผู้ถือหุ้นเดิมถูกลดสัดส่วน:</b> หุ้นคงเหลือเพิ่มจากราว 44 ล้านหุ้นเป็น 64.2 ล้านหุ้น (+48%) ระหว่างปี — กำไรในอนาคตถูกหารด้วยฐานที่ใหญ่ขึ้น และถ้าราคายังสูงต่อไป โอกาสเพิ่มทุนซ้ำก็มีอยู่</li>
+          <li><b>วัฏจักรเติมสต็อก:</b> ธุรกิจวัตถุดิบต้นน้ำเห็นคำสั่งซื้อก่อนและแรงกว่าความต้องการปลายทางเสมอ การสั่งเผื่อของลูกค้าทำให้รอบขาขึ้นดูแรงเกินจริง และรอบขาลงก็รุนแรงเช่นกัน</li>
+          <li><b>ตัวเลขฐานยังขัดกันระหว่างแหล่ง:</b> EPS(TTM) สองแหล่งต่างกันเพราะวิธีรวมงวดหลังเพิ่มทุนไม่เหมือนกัน และ "forward EPS" ของบาง vendor เป็นของปีงบ FY2027 ไม่ใช่ปีถัดไป — ผู้ที่ใช้ตัวเลขสำเร็จรูปโดยไม่ตรวจจะประเมินผิดทั้งกระดาน</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ธุรกิจกำลังฟื้นจริง แต่ราคาจ่ายค่าฉากที่ดีที่สุดไปแล้วทั้งหมด</h2>
+      <p>AXT เป็นผู้ผลิตแผ่นฐานเซมิคอนดักเตอร์ผสม (InP, GaAs, เจอร์เมเนียม) ซึ่งเป็นวัตถุดิบต้นน้ำของเลเซอร์ในทรานซีฟเวอร์ศูนย์ข้อมูล AI ชิป RF และเซลล์แสงอาทิตย์ในอวกาศ · ฝั่งธุรกิจดีขึ้นจริงและวัดได้: รายได้ TTM +45.8% YoY อัตรากำไรขั้นต้นจาก 12.7% เป็น 32.2% และกำไรสุทธิพลิกบวกครั้งแรกหลังขาดทุนสามปีติด พร้อมงบดุลที่มีเงินสดสุทธิ $315 ล้าน · แต่ฝั่งราคาเดินไปไกลกว่านั้นมาก — ราคาปัจจุบัน {{rd:px}} เทียบมูลค่าเหมาะสม {{rd:fv}} คิดเป็น {{rd:mos}} และแม้จะใช้ตัวคูณขอบบนของช่วงที่วัดได้จริงทุกจุด ค่ากลางก็ยังไม่ขึ้นถึงหนึ่งในสี่ของราคาซื้อขาย · ข้อสรุปนี้ไม่ได้บอกว่าเรื่องเล่า AI ของ InP ไม่จริง แต่บอกว่ามันถูกจ่ายล่วงหน้าไปครบแล้ว: แม้ในฉาก Bull ที่รายได้แตะระดับ $850–900 ล้านใน 3 ปี ผลตอบแทนก็ยังราวศูนย์ · ความไม่ลงรอยกับเป้านักวิเคราะห์ {{rd:analystTgt}} ({{rd:analystPct}}) เป็นเรื่องของการเลือกตัวคูณล้วน ๆ — รายงานนี้เลือกตัวคูณที่ธุรกิจแผ่นฐานเคยได้รับจริง ไม่ใช่ตัวคูณของผู้ผลิตโมดูลปลายน้ำในช่วงที่ตลาดตื่นเต้นที่สุด</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~{{rd:analystTgt}} (Buy · n=5)</div></div>
+      </div>
+      <div class="zone">
+        <b>กลยุทธ์:</b> สำหรับนักลงทุนแนวมูลค่า — ยังไม่ใช่จังหวะ ราคายังอยู่เหนือทุกโซนที่มีส่วนเผื่อความปลอดภัย และโซน {{rd:mos20}} คือระดับที่ต้องเห็นก่อนจะเริ่มคุยกัน · สำหรับผู้ที่ถืออยู่แล้วจากต้นทุนต่ำ — ประเด็นคือการบริหารขนาดสถานะ ไม่ใช่การหาเหตุผลเพิ่มถือ เพราะฉากที่ดีที่สุดถูกสะท้อนในราคาหมดแล้ว · จุดที่ควรติดตามก่อนเปลี่ยนมุมมอง: รายได้รายไตรมาสยืนเหนือ $50 ล้านต่อเนื่อง อัตรากำไรขั้นต้นยืนเหนือ 35% และกระแสเงินสดอิสระพลิกเป็นบวก — สามอย่างนี้เกิดพร้อมกันเมื่อไร ขาตัวคูณรายได้จะให้ค่าที่ต่างจากวันนี้อย่างมีนัย
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะตัวคูณรายได้เป้าหมาย, เส้นทางรายได้ในแต่ละฉาก และอัตรากำไรสุทธิระยะยาว
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ {{rd:priceDate}} จาก Yahoo Finance (cross-check กับ StockAnalysis.com ต่างกัน 0.1%) • งบการเงินย้อนหลัง 5 ปีและ TTM จาก StockAnalysis.com • EPS รายไตรมาสและฐานหุ้นตรวจกับแบบ 10-Q/10-K ใน SEC EDGAR (CIK 0001051627) • ตัวคูณ peer (Wolfspeed, Coherent, Lumentum, AAOI, MACOM) และประมาณการ consensus จาก StockAnalysis.com
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 22 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
