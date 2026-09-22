@@ -31,6 +31,12 @@
 
 const RM = require('./report-meta.js');   // เจ้าของเดียวของ regex stock-meta/report-data/.px
 
+// โซน MOS (bad/ok/good) — **เจ้าของเดียว** (ย้ายมาจาก report-values.js 23 ก.ย. 69 · open-items #43):
+// report-values.js (RV) `require('./derived-values.js')` อยู่แล้ว (RV → DV) ⇒ ถ้านิยามอยู่ฝั่ง RV ตัวเขียนช่องสรุป
+// "ส่วนต่างจากราคา" ในไฟล์นี้ (patchDerived#11) จะ require กลับ RV ไม่ได้ (cycle) ย้ายมาที่นี่แล้วให้ RV
+// อ้างกลับแทน (ดู report-values.js:18) — ใช้กติกาเดียวกับ `.mos-verdict` (W04) และช่องนี้ (W26)
+const mosBand = (mos) => (mos < 10 ? 'bad' : mos < 20 ? 'ok' : 'good');
+
 // ── เกณฑ์ความคลาด (ตัวตรวจใช้) ──
 const TOL_PE_REL = 0.02;   // P/E: ต่างได้ ≤2%
 const TOL_PE_ABS = 1.5;    //      หรือ ≤1.5 เท่า แล้วแต่ค่าไหนมากกว่า (การ์ดปัดเป็นจำนวนเต็มบ่อย — "~80x")
@@ -233,6 +239,17 @@ function readMosBig(html) {
 }
 /** คลังคำคงที่ของช่องสรุป — เทียบหลัง `norm` (− ถูกแปลงเป็น - แล้ว) · ช่องว่างก่อน % = นอกคลังคำ */
 const SUMMARY_CANON_RE = /^MOS ~ ([+\-])(\d+(?:\.\d+)?)%$/;
+// ★ ระยะ 3 (open-items #43): span ของ "<div class=\"v …\">" (แท็กเปิดของช่อง) — ใช้ทั้งตัวอ่าน (band/colorOk
+//   ใน summaryPlan) และตัวเขียน (patchDerived#11 splice attribute) ★ ห้ามแก้ SUMMARY_RE เอง — field-manifest
+//   f17/f18 ห่อ readSummaryCell อยู่ (คอมเมนต์บนสุดของ section นี้) เอา m[1] (prefix ของ SUMMARY_RE) มา
+//   หา "<div class=\"v…\">" ที่ท้ายสตริงนั้นแทน — ไม่ใช่ pattern คู่ขนานที่จะเพี้ยนจาก SUMMARY_RE ได้
+function summaryOpenTag(html) {
+  const m = String(html).match(SUMMARY_RE);
+  if (!m) return null;
+  const vm = m[1].match(/<div class="v[^"]*"[^>]*>$/);
+  if (!vm) return null;
+  return { at: m.index + vm.index, len: vm[0].length, open: vm[0] };
+}
 /**
  * ช่องสรุป "ส่วนต่างจากราคา" — ระยะ 1 ข้อ D: cron เป็นเจ้าของทั้งช่อง
  * เดิม cron patch เฉพาะ "ตัวเลข" แบบมีเงื่อนไข แล้วเว้นเมื่อคำบอกทิศขัดกับ MOS ใหม่ ⇒ ช่องค้างถาวรในใบพวกนั้น
@@ -242,6 +259,12 @@ const SUMMARY_CANON_RE = /^MOS ~ ([+\-])(\d+(?:\.\d+)?)%$/;
  *   จำนวนเต็มกับ .big ("+12%" กับ "MOS ~ +13%") ทั้งที่ทั้งตัวตรวจและตัวซ่อมต่างพอใจ ⇒ อ่านจาก .big =
  *   ช่อง == .big โดยโครงสร้าง ส่วนความถูกของ .big เทียบ FV เป็นงานของ E16
  * ★ คำเชิงคุณภาพ (ถูก/แพง/เต็มมูลค่า) ย้ายไปอยู่ใน .txt ของกล่อง verdict ซึ่งเป็น prose ของคน — cron ไม่แตะ
+ * ★ ระยะ 3 (open-items #43): สีของช่อง (class="v bad|ok|good") ต้องตรง `mosBand(mos)` เสมอ — เดิม worker
+ *   hardcode `style="color:#…"` ครั้งเดียวตอนวิเคราะห์ (หรือปล่อยเป็น placeholder ของ skeleton) แล้วไม่มีใครซิงก์
+ *   ต่อเมื่อ MOS ขยับผ่าน cron (เคส DELL/SAP: เขียวค้างทั้งที่ MOS ติดลบ) — รูปที่ถูกต้อง = `<div class="v <band>">`
+ *   **ไม่มี** `style` เลย (inline style ชนะ class เสมอด้วย specificity ⇒ ต้องลบทิ้งจริง ไม่ใช่แค่เพิ่ม class ใหม่)
+ *   `band`/`colorOk`/`tagOpen`/`wantOpen`/`tagAt`/`tagLen` ให้ทั้ง W26 (ตัวตรวจ) และ patchDerived#11 (ตัวเขียน)
+ *   ถามจากที่เดียวกัน — ใช้ mosBand() เดียวกับกล่อง `.mos-verdict` (W04)
  * คืน null = ไม่มีช่อง หรือไม่มี .big → เงียบทั้งตัวตรวจและตัวเขียน
  */
 function summaryPlan(html) {
@@ -253,7 +276,14 @@ function summaryPlan(html) {
   const m = norm(cell.text).match(SUMMARY_CANON_RE);
   const canonical = !!m;
   const ok = canonical && (m[1] === '-' ? '−' : '+') === big.sign && m[2] === big.num;   // เทียบ "ข้อความ" ไม่ใช่ "ค่า" — "+1%" ≠ .big "+0.8%"
-  return { at: cell.at, len: cell.len, text: cell.text, want, mos: big.value, canonical, ok };
+  const band = mosBand(big.value);
+  const tag = summaryOpenTag(html);
+  const wantOpen = `<div class="v ${band}">`;
+  const colorOk = !!tag && tag.open === wantOpen;
+  return {
+    at: cell.at, len: cell.len, text: cell.text, want, mos: big.value, canonical, ok,
+    band, tagAt: tag ? tag.at : null, tagLen: tag ? tag.len : null, tagOpen: tag ? tag.open : null, wantOpen, colorOk,
+  };
 }
 
 /** การ์ด P/E ที่ "ตรวจได้" → { label, shown, eps[] } (ข้ามป้ายเชิงประวัติ / ค่าที่ไม่ใช่ตัวคูณ / ไม่ประกาศ EPS) */
@@ -1019,12 +1049,22 @@ function patchDerived(html, price, opts) {
   }
 
   // 11) ช่องสรุป "ส่วนต่างจากราคา" — cron เขียนทั้งช่องเป็นคลังคำคงที่ "MOS ~ ±X%" (ระยะ 1 ข้อ D)
+  //     + สีของช่อง (class="v bad|ok|good") ต้องตรง mosBand(mos) เสมอ (ระยะ 3 · open-items #43)
   //     ★ อ่าน .big จาก `out` ตัวเดียวกับที่จะ splice — patchReport เขียน .big เสร็จก่อนเรียก patchDerived
   //       ⇒ พาสนี้เห็น .big ใหม่เสมอ · ไม่ใช้ `price` เลย (ช่องนี้ผูกกับ .big ไม่ใช่ราคา)
-  //     ★ แทนเฉพาะเนื้อใน (กลุ่ม 2 ของ SUMMARY_RE) ⇒ attribute ของ <div class="v" style=…> คงอยู่
+  //     ★ สองจุดแก้คนละตำแหน่ง (tagAt < at เสมอ — tagAt+tagLen === at) ⇒ เก็บเป็นรายการแล้วเรียงท้ายไปหน้า
+  //       ก่อน splice (pattern เดียวกับหมวด 6 ด้านบน) กัน offset ของจุดหลังเลื่อนหนีตอนจุดหน้าโดนแก้ก่อน
+  //     ★ ลบ `style="color:#…"` ทิ้งทั้ง attribute แทนที่ด้วย class ล้วน — inline style ชนะ class เสมอด้วย
+  //       specificity ⇒ เพิ่ม class เฉย ๆ โดยไม่ลบ style เดิมจะไม่มีผลอะไรกับสีที่เห็นจริง
   {
     const p = summaryPlan(out);
-    if (p && !p.ok) { out = out.slice(0, p.at) + p.want + out.slice(p.at + p.len); changes.push(`ช่องสรุป: "${p.text}" → "${p.want}"`); }
+    if (p) {
+      const edits = [];
+      if (!p.ok) edits.push({ at: p.at, len: p.len, text: p.want, msg: `ช่องสรุป: "${p.text}" → "${p.want}"` });
+      if (!p.colorOk && p.tagAt != null) edits.push({ at: p.tagAt, len: p.tagLen, text: p.wantOpen, msg: `ช่องสรุป สี: "${p.tagOpen}" → "${p.wantOpen}"` });
+      edits.sort((a, b) => b.at - a.at);
+      for (const e of edits) { out = out.slice(0, e.at) + e.text + out.slice(e.at + e.len); changes.push(e.msg); }
+    }
   }
   return { html: out, changes };
 }
@@ -1148,12 +1188,13 @@ function fwdDeadAnchor(desc, mval, baseEps, anchored) {
 }
 
 module.exports = {
+  mosBand,
   TOL_PE_REL, TOL_PE_ABS, TOL_TGT_PP, TOL_MCAP_REL, MCAP_ULP, MCAP_BAND,
   PE_LABEL_SKIP, isPeSkipped, v2Shares, TGT_LABEL_STRICT, PCT_NOT_VS_PRICE, QUOTE_CONTEXT, MONEY_PCT_SRC, CARD_SRC,
   MCAP_LABEL, PS_LABEL, SCALES, scaleOf, parseAmount, parseShares, mcapCards, psCards, nearMcap,
   fmtLikeNum, cardRe, epsBasesOf, peCards, targetCells, basisFor, nearPE, patchDerived,
-  // ช่องสรุป "ส่วนต่างจากราคา" — f17/f18 ของ field-manifest · W06 + ตัวเขียน patchDerived#11 (ระยะ 1 ข้อ D)
-  SUMMARY_RE, readSummaryCell, fmtMos, MOS_BIG_RE, readMosBig, SUMMARY_CANON_RE, summaryPlan,
+  // ช่องสรุป "ส่วนต่างจากราคา" — f17/f18 ของ field-manifest · W06/W26 + ตัวเขียน patchDerived#11 (ระยะ 1 ข้อ D/3)
+  SUMMARY_RE, readSummaryCell, fmtMos, MOS_BIG_RE, readMosBig, SUMMARY_CANON_RE, summaryOpenTag, summaryPlan,
   // หมวด 6 (ผลตอบแทนฉาก 3 ปี) — W17 + ตัวซ่อม
   TOL_RET_PP, TOL_RET_REL, TOL_PY_PP, SCN_TIGHT, SCN_VOTE_RATIO, CONV_PP,
   SCN_COL_OPEN, SCN_PERYEAR_AFTER, scenarioColumns, scenarioBlock, scenarioPlan, retTokens, retOff, pyOff, retWrite, retShown,

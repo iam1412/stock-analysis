@@ -8,6 +8,7 @@
   --line:__RD_LINE__; --line-2:__RD_LINE2__;
   --blue:__RD_ACCENT__; --blue-d:__RD_ACCENTD__; --red:#d92d20; --yellow:#b45309; --orange:#c2410c; --green:#067647;
   --green-soft:#e7f6ee; --red-soft:#fdeceb; --amber-soft:#fdf3e2; --blue-soft:__RD_SOFT__;
+  --green-onDark:#a5d6a7; --red-onDark:#ef9a9a; --yellow-onDark:#ffe082;
   --dark-grad:__RD_DARKGRAD__; --glow:__RD_GLOW__; --sub-col:__RD_SUBCOL__; --header-muted:__RD_HMUTED__;
   --chg-bg:__RD_CHGBG__; --chg-fg:__RD_CHGFG__; --badge:__RD_BADGE__;
   --verdict-text:__RD_VTEXT__; --vcell-k:__RD_VCELLK__;
@@ -166,6 +167,10 @@ section{margin-top:36px}
 .vcell{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:15px;padding:14px 16px}
 .vcell .k{font-size:12px;color:var(--vcell-k);font-weight:400;opacity:.85}
 .vcell .v{font-family:var(--display);font-size:18px;font-weight:700;margin-top:4px;font-variant-numeric:tabular-nums}
+/* ช่องสรุป "ส่วนต่างจากราคา" — สีตรงเครื่องหมาย MOS เสมอ (open-items #43) — mosBand() bad|ok|good
+   ★ ไม่ใช้ var(--red)/--yellow/--green ตรงนี้: โทนนั้นออกแบบไว้เป็นตัวหนังสือบนพื้นสว่าง (มอส-verdict/pill)
+   .vcell อยู่บน .verdict ที่เป็นพื้นมืด (--dark-grad) ⇒ ต้องใช้โทนอ่อนแบบเดียวกับ --verdict-text/--vcell-k */
+.vcell .v.bad{color:var(--red-onDark)} .vcell .v.ok{color:var(--yellow-onDark)} .vcell .v.good{color:var(--green-onDark)}
 .zone{margin-top:18px;font-size:13.5px;color:var(--verdict-text);background:rgba(255,255,255,.08);border-left:4px solid #ffd180;border-radius:0 13px 13px 0;padding:13px 17px;line-height:1.7;font-weight:300;position:relative;z-index:2}
 .zone b{color:#fff;font-family:var(--display);font-weight:600}
 
