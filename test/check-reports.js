@@ -817,6 +817,21 @@ const CHECKS = [
     return bad.length ? bad.join(' ; ') : null;
   } },
 
+  // ── W26 (ระยะ 3 · open-items #43): สีของช่อง "ส่วนต่างจากราคา" ต้องตรง mosBand(mos) เสมอ ──
+  // เดิม worker hardcode style="color:#…" ครั้งเดียวตอนวิเคราะห์ (หรือปล่อยไว้เป็น placeholder #ffd180 ของ skeleton)
+  // แล้วไม่มีใครซิงก์ต่อเมื่อ MOS ขยับผ่าน cron ทีหลัง (เคส DELL/SAP: เขียวค้างทั้งที่ MOS ติดลบ) — ตัวตรวจ (W26)
+  // กับตัวเขียน (patchDerived#11) ถาม DV.summaryPlan ตัวเดียวกัน (.colorOk/.tagOpen/.wantOpen)
+  // รูปที่ถูกต้อง = <div class="v bad|ok|good"> **ไม่มี** style เลย — เทียบทั้งแท็กเปิด ไม่ใช่แค่ hex เพราะ
+  // inline style ชนะ class เสมอด้วย specificity (มี class ถูกแล้วแต่ style ค้าง = สีที่เห็นจริงยังผิดอยู่)
+  // ★ warn ไม่ใช่ error (บรรทัดฐานเดียวกับ W06/CLAUDE.md §9): ใบที่ worker เพิ่ง Write/re-analyze จะยังไม่มี
+  //   class จนกว่า cron/`--heal-derived` รอบแรกจะ patch ให้ — ตั้งเป็น error จะบล็อก push ของทุกใบใหม่โดยไม่มีเหตุผล
+  { id: 'W26', level: 'warn', healer: 'patchDerived#11', label: 'สีช่อง "ส่วนต่างจากราคา" ตรงเครื่องหมาย MOS (class bad/ok/good ไม่มี style)', fn: (c) => {
+    const p = DV.summaryPlan(c.html);
+    if (!p) return null;               // ไม่มีช่อง/ไม่มี .big → เงียบ (ตัวเขียนก็ไม่แตะ — E16/E30 ดูแล .big หาย)
+    if (p.colorOk) return null;
+    return `แท็ก "${p.tagOpen}" ควรเป็น "${p.wantOpen}" (MOS ${p.mos}% → โซน "${p.band}")`;
+  } },
+
   // ── W19: ปันผล % = DPS ที่การ์ดพิมพ์ ÷ ราคา (+ stock-meta.dividendYield) ──
   // คลาสเดียวกับ E41/E43 — DPS เป็นข้อเท็จจริงที่บรรทัด .d พิมพ์เอง ราคาคือตัวที่ cron ขยับทุกวัน
   // (เจอ 11 ก.ย. 69 ตอนเคลียร์คิว FDS/KLAC/LRCX: cron ไม่มีโค้ดส่วนนี้เลย ⇒ ปันผลลอยตามราคาทั้งคลัง —

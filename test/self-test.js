@@ -256,12 +256,15 @@ expect('E26', 'error', mut3(/([฿$])([0-9.,]+)(<br>\s*<small>MOS 20%)/, numStr(
   const bigAscii = base.replace(/<div class="big">[^<]*<\/div>/, '<div class="big"> - 12 %</div>');
   const pA = DVc.summaryPlan(bigAscii);
   ok(pA && pA.want === 'MOS ~ −12%' && pA.mos === -12, '.big แบบ " - 12 %" → want "MOS ~ −12%" (normalize เครื่องหมาย ไม่ปัดตัวเลขใหม่)', JSON.stringify(pA));
-  // convergence: ทุกเคสข้างบน healer ต้องเขียนกลับเป็น want แล้วเงียบ + idempotent · attribute ของ <div class="v"> ต้องคงอยู่
-  const vOpen = base.match(DVc.SUMMARY_RE)[1];       // ไม่ hardcode style — อ่านแท็กเปิดจริงของฐาน
+  // convergence: ทุกเคสข้างบน healer ต้องเขียนกลับเป็น want แล้วเงียบ + idempotent
+  // ★ ระยะ 3 (open-items #43 — แก้เจตนาจากเดิม): healer #11 ตอนนี้ "เขียนสีตาม mosBand ทับเสมอ" ไม่ใช่
+  //   "คง attribute เดิมไว้ห้ามแตะ" อีกต่อไป (สมมติฐานเดิมก่อนแก้ #43) — ฐาน BBL ยังมี style="color:#ffd180"
+  //   (placeholder เดิมของ skeleton) ติดมากับ <div class="v">: healer ต้องลบทิ้งแล้วแทนด้วย class="v bad"
+  //   (p0.band มาจาก mosBand(+0.8%) — ดูบล็อกด้านบน) เพราะ inline style ชนะ class เสมอด้วย specificity
   for (const [h, why] of [[setDiffCell('ถูกกว่ามูลค่า ~8%')(base), 'คำ'], [setDiffCell(`MOS ~ ${DVc.fmtMos(p0.mos + 6)}`)(base), 'ตัวเลข'], [setDiffCell('MOS ~ +0.8 %')(base), 'ช่องว่าง']]) {
     const once = healed(h);
     ok(!allIds(checkHtml(once, 'BBL.html')).has('W06') && healed(once) === once, `W06 convergence (${why}): healer #11 → เงียบ + idempotent`);
-    ok(once.includes(vOpen + pRaw.want + '</div>'), `healer #11 คง attribute ของ <div class="v"> และเขียนเท่ากับ .big (${why})`, JSON.stringify(DVc.readSummaryCell(once)));
+    ok(once.includes(p0.wantOpen + pRaw.want + '</div>'), `healer #11 เขียน "${p0.wantOpen}" ทับ style เดิม + เนื้อความเท่ากับ .big (${why})`, JSON.stringify(DVc.readSummaryCell(once)));
   }
   CONVERGED.add('W06');
   // ไม่มี .big → เงียบทั้งคู่ (cron freeze ใบนี้ก่อนถึง patchDerived อยู่แล้วเพราะ need('MOS .big') throw
@@ -274,6 +277,53 @@ expect('E26', 'error', mut3(/([฿$])([0-9.,]+)(<br>\s*<small>MOS 20%)/, numStr(
   const dotBig = base.replace(/<div class="big">[^<]*<\/div>/, '<div class="big">+.8%</div>');
   ok(DVc.readMosBig(dotBig) === null, '★ C1: readMosBig(".big"="+.8%" จุดนำหน้า) → null (เดิมอ่านผิดเป็น 8 แทน 0.8 — ผิดสิบเท่า)', JSON.stringify(DVc.readMosBig(dotBig)));
   ok(DVc.summaryPlan(dotBig) === null, '★ C1: summaryPlan(".big" ผิดรูปจุดนำหน้า) → null (healer no-op ไม่ throw)', JSON.stringify(DVc.summaryPlan(dotBig)));
+}
+// ── W26 (ระยะ 3 · open-items #43): สีของช่อง "ส่วนต่างจากราคา" ต้องตรง mosBand(mos) เสมอ ──
+// เดิม worker hardcode style="color:#…" ครั้งเดียวตอนวิเคราะห์ (หรือปล่อยเป็น placeholder #ffd180 ของ skeleton)
+// แล้วไม่มีใครซิงก์ต่อเมื่อ MOS ขยับผ่าน cron (เคส DELL/SAP: เขียวค้างทั้งที่ MOS ติดลบ) — ตอนนี้ตัวตรวจ (W26)
+// กับตัวเขียน (patchDerived#11) ถาม DV.summaryPlan ตัวเดียวกัน (.band/.colorOk/.tagOpen/.wantOpen)
+// รูปที่ถูกต้อง: <div class="v bad|ok|good"> ไม่มี style เลย — เทียบ "ทั้งแท็กเปิด" ไม่ใช่แค่ hex เพราะ
+// inline style ชนะ class เสมอด้วย specificity ⇒ ต้องลบ style ทิ้งจริง ไม่ใช่แค่เพิ่ม class
+const setVcellTag = (openTag) => (h) => h.replace(/(ส่วนต่างจากราคา<\/div>\s*)<div class="v[^"]*"[^>]*>/, (m, a) => a + openTag);
+{
+  // ตัดปัจจัยข้อความออกก่อน (canonical แล้ว) — เหมือน w06Base ในบล็อก W06 ด้านบน แต่ derive ใหม่ (scope แยกกัน)
+  const big0 = DVc.readMosBig(base);
+  const w26Base = setDiffCell('MOS ~ ' + big0.sign + big0.num + '%')(base);
+  const pB = DVc.summaryPlan(w26Base);
+  ok(pB && pB.band === 'bad', 'ฐาน BBL MOS +0.8% → mosBand("bad")', JSON.stringify(pB));
+  ok(pB && !pB.colorOk && /style=/.test(pB.tagOpen || ''), 'ฐานยังมี style="color:#ffd180" (placeholder เดิมของ skeleton) ค้าง → colorOk=false', JSON.stringify(pB));
+  ok(allIds(checkHtml(w26Base, 'BBL.html')).has('W26'), 'ยังไม่ migrate (มี style ค้าง) → W26 ยิง (เสียงรบกวนที่ยอมรับได้ระหว่างช่วง sweep — บรรทัดฐานเดียวกับ W06)');
+
+  const goodOpen = pB.wantOpen;   // '<div class="v bad">'
+  const migrated = setVcellTag(goodOpen)(w26Base);
+  const pM = DVc.summaryPlan(migrated);
+  ok(pM && pM.colorOk && pM.tagOpen === goodOpen, 'class="v bad" ไม่มี style เหลือ → colorOk=true', JSON.stringify(pM));
+  ok(!allIds(checkHtml(migrated, 'BBL.html')).has('W26'), 'migrate ถูกต้องแล้ว (ตรงโซน ไม่มี style) → W26 เงียบ');
+
+  expect('W26', 'warn', setVcellTag('<div class="v" style="color:#a5d6a7">'), 'hardcode สีเขียวทั้งที่ MOS อยู่โซน "bad" (เคส DELL/SAP) → W26', w26Base);
+  expect('W26', 'warn', setVcellTag('<div class="v pos">'), 'คลาสเก่า "pos" (ระบบ 2 สีของ .pos/.neg — เคส MXL) ไม่ใช่ mosBand 3 ระดับ → W26', w26Base);
+  expect('W26', 'warn', setVcellTag('<div class="v good">'), 'class ผิดโซน (good ทั้งที่ MOS อยู่โซน bad) → W26', w26Base);
+  expect('W26', 'warn', setVcellTag('<div class="v">'), 'ไม่มีทั้ง style และ class สี (skeleton placeholder หลังแก้ #43 — ยังไม่ผ่าน cron รอบแรก) → W26', w26Base);
+
+  // convergence: healer ต้องลบ style/class เดิมทิ้งแล้วแทนด้วย class ที่ถูกต้องเสมอ + idempotent
+  for (const [openTag, why] of [
+    ['<div class="v" style="color:#a5d6a7">', 'style เขียวผิดโซน'],
+    ['<div class="v pos">', 'คลาสเก่า pos'],
+    ['<div class="v good">', 'class ผิดโซน'],
+    ['<div class="v">', 'ไม่มีคลาส'],
+  ]) {
+    const h = setVcellTag(openTag)(w26Base);
+    const once = healed(h);
+    const p1 = DVc.summaryPlan(once);
+    ok(p1 && p1.colorOk && p1.tagOpen === goodOpen, `healer #11 เขียน "${goodOpen}" แทนแท็กเดิม (${why})`, JSON.stringify(p1));
+    ok(!allIds(checkHtml(once, 'BBL.html')).has('W26') && healed(once) === once, `W26 convergence (${why}): healer #11 → เงียบ + idempotent`);
+  }
+  CONVERGED.add('W26');
+
+  // ไม่มี .big → เงียบทั้งคู่ (เหตุผลเดียวกับ W06 — .big หายเป็นงานของ E16/E30) — derive noBig ใหม่ในสโคปนี้
+  const noBig = base.replace(/<div class="big">[^<]*<\/div>/, '');
+  ok(DVc.summaryPlan(noBig) == null, 'ไม่มี .big → summaryPlan null (W26 เงียบตามกัน)');
+  ok(!allIds(checkHtml(noBig, 'BBL.html')).has('W26'), 'ไม่มี .big → W26 เงียบ (ปล่อยให้ E16/E30 ฟ้อง .big ที่หายไป)');
 }
 expect('W07', 'warn', mut3(/(P\/E \(TTM\)<\/div>\s*<div class="v[^"]*">\s*~?)([0-9.,]+)(x)/, '750'), 'P/E ผิดวิสัย (750x)');
 reject('W07', mut3(/(P\/E \(TTM\)<\/div>\s*<div class="v[^"]*">\s*~?)([0-9.,]+)(x)/, '480'), 'P/E ~480x (มัลติเพิลสูงจริงในตลาด AI เช่น ARM) → ไม่ใช่ค่าผิดวิสัย');

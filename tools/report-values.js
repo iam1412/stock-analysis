@@ -15,7 +15,7 @@ const RM = require('./report-meta.js');   // ไม่ require อะไรใ�
 const CUR_SYMBOL = { USD: '$', THB: '฿' };
 const FLAT_PP = 0.75;        // |% รอบปี| < 0.75 → "ทรงตัว" (ย้ายจาก update-prices.js — ค่าเดิม ห้ามเปลี่ยน)
 const round = (v, d) => Math.round(v * Math.pow(10, d)) / Math.pow(10, d);
-const mosBand = (mos) => (mos < 10 ? 'bad' : mos < 20 ? 'ok' : 'good');   // ย้ายจาก update-prices.js (W04/agent-prompt ใช้กติกาเดียวกัน)
+const mosBand = DV.mosBand;   // เจ้าของเดียวอยู่ที่ derived-values.js แล้ว (23 ก.ย. 69 · open-items #43 — กัน cycle RV↔DV ตอนตัวเขียนช่องสรุปต้องใช้ด้วย)
 // format ราคาสำหรับโชว์: 2 ตำแหน่งเสมอ + comma เมื่อ ≥1000 (ย้ายจาก update-prices.js)
 function fmtPrice(p) {
   const s = round(p, 2).toFixed(2);

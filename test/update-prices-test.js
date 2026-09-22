@@ -418,10 +418,15 @@ ok(out.match(/id="mCur"><div class="lab">ปัจจุบัน \$([\d,.]+)/)[
 // ไม่เคยถูกแตะเลย (BBL "+2.1% (เกือบเต็มมูลค่า)" — open-items #13) และ W06 ต้องผ่อนเกณฑ์ตามไปด้วย
 // ตอนนี้คำเชิงคุณภาพอยู่ใน .txt ของกล่อง verdict ล้วน ๆ ⇒ ช่องนี้ไม่มีอะไรให้ cron เดา เขียนทับได้ทุกรูป
 // ★ ตัวเขียน = patchDerived#11 (ไม่ใช่โค้ดในไฟล์นี้แล้ว) · ค่าที่คาดหวังอ่านจาก .big ที่เพิ่งเขียน ไม่ hardcode
+// ★ ระยะ 3 (open-items #43): ใช้ DVcell.readSummaryCell/SUMMARY_RE โดยตรงแทนสำเนา regex ของไฟล์นี้เอง —
+//   สำเนาเดิม (`class="v"[^>]*` เป๊ะ) เขียนก่อน SUMMARY_RE จะรองรับ `class="v[^"]*"` (เคส MXL) และก่อนตัวเขียน
+//   จะเริ่มแก้ attribute เอง (patchDerived#11 ตอนนี้เขียน class="v bad|ok|good" ทับ — เจ้าของเดียวกันต้องอ่านตรงกัน)
 const DVcell = require('../tools/derived-values.js');
-const CELL_RE = /(ส่วนต่างจากราคา<\/div>\s*<div class="v"[^>]*>)([\s\S]*?)(<\/div>)/;
-const cellOf = (h) => (h.match(CELL_RE) || [, , ''])[2].replace(/<[^>]*>/g, '').trim();
-const setCell = (h, txt) => h.replace(CELL_RE, (m, a, c, z) => a + txt + z);
+// ★ ใช้ at/len ของ readSummaryCell มา slice จาก html ดิบเอง — c.text ผ่าน clean()/norm() ที่แปลง − → - แล้ว
+//   (ใช้เทียบ "ข้อความในคลังคำ" ภายในเป็นปกติของ production code) แต่เทสนี้ต้องเทียบ "ตัวอักษรที่เขียนจริง"
+//   (เครื่องหมายลบ Unicode − ที่ big.sign คืนมา) ⇒ slice ดิบแทน ไม่งั้นเทสจะเปรียบเทียบผิดชนิดเสมอ
+const cellOf = (h) => { const c = DVcell.readSummaryCell(h); return c ? h.slice(c.at, c.at + c.len).replace(/<[^>]*>/g, '').trim() : ''; };
+const setCell = (h, txt) => { const c = DVcell.readSummaryCell(h); return c ? h.slice(0, c.at) + txt + h.slice(c.at + c.len) : h; };
 const pxCellTest = Math.round(FV * 1.2 * 100) / 100;   // ราคาสูงกว่า FV 20% → MOS = −20%
 const dp = { day: 11, monIdx: 6, yearCE: 2026 };
 const cellRun = (txt, price) => U.patchReport(setCell(aapl, txt), { newPrice: price, dateParts: dp, chartData: null }).html;
@@ -440,9 +445,13 @@ const cellRun = (txt, price) => U.patchReport(setCell(aapl, txt), { newPrice: pr
   ok(rCell.derived.some((c) => /^ช่องสรุป:/.test(c)), 'ช่องสรุป: การเขียนถูกรายงานใน derived[]', JSON.stringify(rCell.derived.filter((c) => /ช่องสรุป/.test(c))));
   const rAgain = U.patchReport(rCell.html, { newPrice: pxCellTest, dateParts: dp, chartData: null });
   ok(!rAgain.derived.some((c) => /^ช่องสรุป:/.test(c)), 'ช่องสรุป: ช่องที่ตรงอยู่แล้ว → ไม่มีรายการใน derived[]');
-  // attribute ของ <div class="v" style=…> ต้องคงอยู่ (ตัวเขียนแทนเฉพาะกลุ่ม 2 ของ SUMMARY_RE)
-  const vOpenA = aapl.match(DVcell.SUMMARY_RE)[1];
-  ok(rCell.html.includes(vOpenA), 'ช่องสรุป: คง attribute ของแท็กเปิด <div class="v"> ไว้ครบ');
+  // ★ ระยะ 3 (open-items #43 — แก้เจตนาจากเดิม): healer #11 ตอนนี้ "เขียนสีตาม mosBand ทับเสมอ" ไม่ใช่
+  //   "คง attribute เดิมไว้ห้ามแตะ" อีกต่อไป — fixture AAPL มี style="color:#ff8a80" (สีที่ worker เลือกเอง)
+  //   ติดมา ต้องถูกลบทิ้งแล้วแทนด้วย class="v bad|ok|good" ตาม mosBand(MOS ใหม่) เสมอ (inline style ชนะ class
+  //   เสมอด้วย specificity ⇒ ปล่อยไว้ = สีที่เห็นจริงยังผิดแม้เพิ่ม class แล้ว)
+  const pAfter = DVcell.summaryPlan(rCell.html);
+  ok(pAfter && pAfter.colorOk, 'ช่องสรุป: สีถูกซิงก์ตาม mosBand แล้ว (colorOk=true)', JSON.stringify(pAfter));
+  ok(pAfter && rCell.html.includes(pAfter.tagOpen) && !/style=/.test(pAfter.tagOpen), 'ช่องสรุป: แท็กเปิดใหม่เป็น class ล้วน ไม่มี style เหลือ (ลบทิ้งจริง ไม่ใช่แค่เพิ่ม class)', pAfter && pAfter.tagOpen);
 }
 
 // ---------- สีกล่อง verdict `mos-verdict bad|ok|good` — sync ให้ตรงโซน MOS ใหม่ (แก้ต้นเหตุ W04) ----------
@@ -1074,9 +1083,16 @@ ok(U.commitBody([], []) === '', 'commitBody: ว่างเมื่อไม�
   const rn = U.patchReport(noteTok, { newPrice: rd0.values.px * 1.1, dateParts, chartData: null });
   ok(sameToks(noteTok, rn.html) && rn.html.includes('{{rd:baseEps}}{{rd:scnNote}}'), 'v2: token render ว่างคงตำแหน่ง + ลำดับ');
   ok(U.gateAfterPatch(rn.html, 'AAPL.html').ok, 'v2: token render ว่าง → gate ผ่าน');
-  // ไม่มีอะไรให้แก้ = คืนต้นฉบับทุก byte
+  // ★ ระยะ 3 (open-items #43): AAPL_V2 fixture ยังมี style="color:#ff8a80" ค้างที่ vcell (เหมือนใบจริงส่วนใหญ่
+  //   ก่อน sweep — ดู test/fixtures/README.md ห้ามแก้ fixture ด้วยมือ) ⇒ ราคาเดิมไม่ใช่ "ไม่มีอะไรให้แก้" อีก
+  //   ต่อไป แต่ต้องเป็น "แก้สีช่องสรุปเท่านั้น" — ไม่มี token span ไหนถูกแก้ (overridden ยังต้อง 0) และไม่มี
+  //   การเปลี่ยนแปลงอื่นนอกจากแท็กเปิดของช่องนั้น (พิสูจน์ด้วยการสลับแท็กกลับแล้วเทียบ byte กับต้นฉบับ)
   const same = U.derivedPassV2(src, rd0.values.px);
-  ok(same.overridden === 0 && same.html === src, 'derivedPassV2: ราคาเดิม → คืนต้นฉบับทุก byte ไม่ override');
+  ok(same.overridden === 0, 'derivedPassV2: ราคาเดิม → ไม่มี token span ไหนถูกแก้ (overridden=0)');
+  ok(same.changes.length === 1 && /^ช่องสรุป สี:/.test(same.changes[0]), 'derivedPassV2: ราคาเดิม → มีแค่การ migrate สีช่องสรุป (debt เดิมของ fixture) ไม่มีอะไรอื่นให้แก้', JSON.stringify(same.changes));
+  const tagSame = DVcell.summaryOpenTag(same.html), tagSrc = DVcell.summaryOpenTag(src);
+  ok(tagSame && tagSrc && tagSame.open === '<div class="v bad">' && same.html.slice(0, tagSame.at) + tagSrc.open + same.html.slice(tagSame.at + tagSame.len) === src,
+    'derivedPassV2: ราคาเดิม → ต่างจากต้นฉบับเฉพาะแท็กเปิดของช่องสรุปเท่านั้น (byte อื่นเหมือนเดิมทุกตัว)');
   ok(/ไม่ใช่ v2/.test((() => { try { U.derivedPassV2(FX.AAPL(), 300); return ''; } catch (e) { return e.message; } })()), 'derivedPassV2: v1 → throw');
 }
 
@@ -1331,7 +1347,13 @@ ok(U.commitBody([], []) === '', 'commitBody: ว่างเมื่อไม�
         ok(h.touched === 1 && after !== broken, 'M7: healDerived v2 ซ่อมกระจกล้วน → touched 1 + เขียนไฟล์', JSON.stringify(h));
         ok(/stock-meta กระจก .*fairValue/.test(logs.join('\n')), 'M7: มีบรรทัด change "stock-meta กระจก … fairValue …"', logs.join(' | ').slice(0, 300));
         const errsAfter = CR.checkHtml(expandReport(after), 'BBL.html', { source: after }).errors.map((e) => e.id);
-        ok(!errsAfter.includes('E30') && !errsAfter.includes('E31') && after === bbl, 'M7: หลังซ่อม E30/E31 เงียบ + ไฟล์กลับเท่า fixture เดิมทุก byte', errsAfter.join(','));
+        // ★ ระยะ 3 (open-items #43): BBL_V2 fixture ยังมี style="color:#ffd180" ค้างที่ vcell (debt เดิม —
+        //   ห้ามแก้ fixture ด้วยมือ ดู test/fixtures/README.md) ⇒ heal รอบนี้ migrate สีไปด้วยนอกเหนือจากกระจก
+        //   ที่ตั้งใจทดสอบ — เทียบกับ bbl ที่แทนแท็กเปิดของช่องสรุปเป็นค่าที่ถูกต้องแล้ว (derive สด ไม่ hardcode)
+        const tagBbl = DVcell.summaryOpenTag(bbl);
+        const pBbl = DVcell.summaryPlan(expandReport(bbl));
+        const bblColorFixed = tagBbl && pBbl ? bbl.slice(0, tagBbl.at) + pBbl.wantOpen + bbl.slice(tagBbl.at + tagBbl.len) : bbl;
+        ok(!errsAfter.includes('E30') && !errsAfter.includes('E31') && after === bblColorFixed, 'M7: หลังซ่อม E30/E31 เงียบ + ไฟล์กลับเท่า fixture เดิมทุก byte ยกเว้นสีช่องสรุปที่ migrate ไปด้วย (debt เดิมของ fixture)', errsAfter.join(','));
         // ไฟล์ที่ไม่มีอะไรค้าง → ไม่นับ
         const logs2 = []; console.log = (...x) => logs2.push(x.join(' '));
         let h2; try { h2 = U.healDerived({ dir, only: new Set(), write: false, prose: false }); } finally { console.log = orig; }
@@ -1364,16 +1386,27 @@ ok(U.commitBody([], []) === '', 'commitBody: ว่างเมื่อไม�
       const idsOf = (h, n) => { const r = CR.checkHtml(expandReport(h), n, { source: h }); return r.errors.map((e) => e.id).concat(r.warnings.map((w) => w.id)); };
       const savedN1 = process.env.STALE_TODAY;
       try {
-        // (ก) ทุก fixture v2 สะอาด: heal = no-op
+        // (ก) ทุก fixture v2 "สะอาด" ฝั่ง pe/dividendYield (ไม่มีอะไรให้กระจกทับ) — แต่ทุกใบยังมี
+        //     style="color:#…" ค้างที่ vcell (debt เดิมของ fixture ก่อน sweep #43 — ห้ามแก้ fixture ด้วยมือ
+        //     ดู test/fixtures/README.md) ⇒ heal รอบแรก touched=1 (migrate สีช่องสรุปอย่างเดียว ไม่แตะ
+        //     pe/dividendYield) แล้วรอบสองต้อง touched=0 จริง (converged — พิสูจน์ว่ากระจกไม่ทับ pass derived)
         for (const s of FX.SYMS) {
           process.env.STALE_TODAY = FX.TODAY_OF[s];
           const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'healv2-'));
           try {
             const src9 = FX[`${s}_V2`]();
+            const smBefore = RM.readStockMeta(src9);
             fs.writeFileSync(path.join(dir, `${s}.html`), src9);
             const h = healOf(dir);
-            ok(h.touched === 0 && h.failed.length === 0 && fs.readFileSync(path.join(dir, `${s}.html`), 'utf8') === src9,
-              `N1(ก) ${s}: --heal-derived บน fixture v2 สะอาด = no-op (กระจกไม่ทับ pe/dividendYield ของ pass derived)`, JSON.stringify(h));
+            const once = fs.readFileSync(path.join(dir, `${s}.html`), 'utf8');
+            ok(h.touched === 1 && h.failed.length === 0 && once !== src9,
+              `N1(ก) ${s}: heal รอบแรก migrate สีช่องสรุปเท่านั้น (debt เดิมของ fixture)`, JSON.stringify(h));
+            const smAfter = RM.readStockMeta(once);
+            ok(smAfter.pe === smBefore.pe && smAfter.dividendYield === smBefore.dividendYield,
+              `N1(ก) ${s}: กระจกไม่ทับ pe/dividendYield ของ pass derived`, `${smBefore.pe}/${smBefore.dividendYield} → ${smAfter.pe}/${smAfter.dividendYield}`);
+            const h2 = healOf(dir);
+            ok(h2.touched === 0 && fs.readFileSync(path.join(dir, `${s}.html`), 'utf8') === once,
+              `N1(ก) ${s}: heal รอบสอง = no-op จริง (converged หลัง migrate สี)`, JSON.stringify(h2));
           } finally { fs.rmSync(dir, { recursive: true, force: true }); }
         }
         // (ข) SRE: pe/dividendYield เสีย **ในย่านที่ตัวตรวจยอมตัดสิน** (ต่างเกิน tolerance แต่ยังไม่หลุดย่านฐานต่างกัน)
