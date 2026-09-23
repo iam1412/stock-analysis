@@ -187,6 +187,8 @@ function validate(doc) {
       if (inp.multiple != null) E(`${p}.inputs.multiple`, "multipleSource 'current' = ตัวคูณสด (ราคา ÷ ตัวตั้ง) ที่ compute คิดทุกวัน — ห้ามพิมพ์ตัวเลข");
     }
     for (const k of ['multiple', 'g', 'r', 'g1', 'tg', 'yield', 'value', 'payout', 'd1', 'g2']) if (inp[k] != null) num(inp[k], `${p}.inputs.${k}`);
+    // r ≤ 0 (โดยเฉพาะ ≤ −100) พลิกเครื่องหมายตัวคิดลด → FV ขยะ — กฎร่วมทุกขาที่มี r
+    if (isNum(inp.r) && !(inp.r > 0)) E(`${p}.inputs.r`, 'ต้อง > 0 (อัตราคิดลด หน่วยเปอร์เซ็นต์)');
     for (const k of ['years1', 'years']) if (inp[k] != null) num(inp[k], `${p}.inputs.${k}`, { int: true, min: 1 });
     if (inp.multiple != null && !(inp.multiple > 0)) E(`${p}.inputs.multiple`, 'ต้อง > 0');
     if (leg.method === 'pbv') {
@@ -206,6 +208,7 @@ function validate(doc) {
       if (!('horizon' in inp)) E(`${p}.inputs.horizon`, 'ต้องมี — จำนวนงวด (จำนวนเต็ม ≥1) หรือ null = มูลค่าปลายงวดแบบ Gordon');
       else if (inp.horizon !== null) num(inp.horizon, `${p}.inputs.horizon`, { int: true, min: 1 });
       if (isNum(inp.d1) && !(inp.d1 > 0)) E(`${p}.inputs.d1`, 'ต้อง > 0');
+      if (inp.horizon === null && isNum(inp.r) && isNum(inp.g2) && !(inp.r > inp.g2)) E(`${p}.inputs.g2`, `r (${inp.r}%) ต้อง > g2 (${inp.g2}%) — horizon null ใช้ Gordon ปลายงวดที่หารด้วย (r − g2)`);
     }
     if (inp.medianWindow != null) {
       const mp = `${p}.inputs.medianWindow`;

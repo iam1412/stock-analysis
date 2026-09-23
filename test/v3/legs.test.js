@@ -33,4 +33,5 @@ t(Math.abs(v('ddm2', { ...FER2, horizon: 40 }) - 57.67) > 2, 'the t ≤ years1 c
 t.near(v('ddm2', { ...FER2, horizon: null }), 64.09901699407415, 1e-9, 'ddm2 horizon null = Gordon terminal after stage 1');
 t.throws(() => v('ddm2', { ...FER2, g2: 9, horizon: null }), /^legs\[0\].*g2/, 'Review Focus #3: horizon null with r ≤ g2 → path-named throw');
 t(v('ddm2', { ...FER2, g2: 9, horizon: 40 }) > 0, 'finite horizon needs no r > g2');
+t.near(v('ddm2', { ...FER2, horizon: 5 }), 9.84424146436744, 1e-9, 'ddm2 horizon < years1 → stage 1 only, finite (Σ 2.04·1.11^(t−1)/1.085^t, t=1..5)');
 t.done();

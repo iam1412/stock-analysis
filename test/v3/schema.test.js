@@ -123,4 +123,12 @@ const ddm2 = (inp) => ({ method: 'ddm2', label: 'DDM 2 ระยะ', inputs: in
 { const d = base(); d.legs[0].inputs.multipleSource = 'peer'; d.legs[0].inputs.medianWindow = 'FY21–25'; t(paths(S.validate(d)).includes('legs[0].inputs.medianWindow'), 'medianWindow needs a median source'); }
 { const d = base(); d.legs[0].inputs.medianWindow = 'x'.repeat(41); t(paths(S.validate(d)).includes('legs[0].inputs.medianWindow'), 'medianWindow ≤ 40 chars'); }
 { const d = base(); d.fundamentals.epsBasis = 'ifrs'; t.eq(S.validate(d), [], 'epsBasis ifrs'); }
+// Task 6 fix round 1 — r > 0 ทุกขา · ddm2 horizon null ต้อง r > g2 ที่ validate
+const dcfLeg = (r) => ({ method: 'dcf', label: 'DCF', inputs: { g1: 8, years1: 5, tg: 2.5, r, rfCurrency: 'USD' } });
+for (const r of [0, -150]) {
+  { const d = base(); d.legs.push(ddm2({ d1: 2, g1: 10, years1: 5, g2: 3, r, horizon: 30 })); t(paths(S.validate(d)).includes('legs[2].inputs.r'), `ddm2 r=${r} → error at inputs.r`); }
+  { const d = base(); d.legs.push(dcfLeg(r)); t(paths(S.validate(d)).includes('legs[2].inputs.r'), `dcf r=${r} → error at inputs.r`); }
+}
+{ const d = base(); d.legs.push(ddm2({ d1: 2, g1: 10, years1: 5, g2: 9, r: 9, horizon: null })); t(paths(S.validate(d)).includes('legs[2].inputs.g2'), 'ddm2 horizon null r = g2 → error at inputs.g2'); }
+{ const d = base(); d.legs.push(ddm2({ d1: 2, g1: 10, years1: 5, g2: 9, r: 9, horizon: 30 })); t.eq(S.validate(d), [], 'ddm2 finite horizon r = g2 is fine'); }
 t.done();
