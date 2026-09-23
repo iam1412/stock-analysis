@@ -40,6 +40,7 @@ const LEG_INPUTS = {
 };
 const OVERRIDE_KEYS = ['eps', 'bvps', 'roe', 'dps', 'revenue', 'ebitda', 'fcf', 'netDebt', 'ffoPerShare', 'shares', 'why'];
 const THEME_KEYS = ['accent', 'accentDark', 'darkGrad', 'glow', 'subColor', 'headerMuted', 'verdictText', 'vcellLabel'];
+const TEXT_KEYS = ['valHint', 'valIntro', 'metricsNote', 'disclaimerAssump'];   // §3.6 A — แทนข้อความตายตัวของ template
 const ISO = /^\d{4}-\d{2}-\d{2}$/;
 const AI = /^Claude\s+[A-Za-z]+\s+\d+(?:\.\d+)?$/;   // รูปเดียวกับ E28 / RM.parseAiModel
 
@@ -70,7 +71,7 @@ function validate(doc) {
 
   if (!isObj(doc)) return [{ path: '', msg: 'เอกสารต้องเป็น JSON object' }];
   closed(doc, '', ['v', 'symbol', 'currency', 'region', 'dateEra', 'meta', 'market', 'fundamentals', 'legs', 'fvWeights',
-    'metrics', 'scenarios', 'analyst', 'prose', 'catalysts', 'risks', 'extras', '_sig']);
+    'metrics', 'scenarios', 'analyst', 'prose', 'text', 'catalysts', 'risks', 'extras', '_sig']);
   if (doc.v !== 3) E('v', 'ต้องเป็น 3');
   if (!/^[A-Z0-9][A-Z0-9.\-]*$/.test(doc.symbol || '')) E('symbol', 'ต้องเป็นตัวพิมพ์ใหญ่/ตัวเลข/จุด/ขีด');
   en(doc.currency, 'currency', ENUM.currency);
@@ -245,6 +246,14 @@ function validate(doc) {
   const PROSE_REQ = ['chart', 'valuation', 'gauge', 'mos', 'verdictHeadline', 'verdictBody', 'strategy', 'disclaimerSources'];
   if (!isObj(doc.prose)) E('prose', 'ต้องมี (object)');
   else { closed(doc.prose, 'prose', PROSE_REQ); for (const k of PROSE_REQ) str(doc.prose[k], `prose.${k}`); }
+  if (doc.text != null) {
+    if (!isObj(doc.text)) E('text', 'ต้องเป็น object');
+    else {
+      closed(doc.text, 'text', TEXT_KEYS);
+      for (const k of TEXT_KEYS) str(doc.text[k], `text.${k}`, { req: false });
+      if (typeof doc.text.valHint === 'string' && doc.text.valHint.length > 80) E('text.valHint', 'ยาวเกิน 80 ตัวอักษร (เป็นป้ายหัว section)');
+    }
+  }
   strList(doc.catalysts, 'catalysts', 3, 8);
   strList(doc.risks, 'risks', 3, 8);
   if (!Array.isArray(doc.extras) || doc.extras.length > 2) E('extras', 'ต้องเป็น array ≤2 ตาราง');
@@ -280,4 +289,4 @@ function OWNER(path) {
   return 'worker';
 }
 
-module.exports = { ENUM, CARD_KEYS, FUND_KEYS, LEG_INPUTS, OVERRIDE_KEYS, THEME_KEYS, validate, OWNER };
+module.exports = { ENUM, CARD_KEYS, FUND_KEYS, LEG_INPUTS, OVERRIDE_KEYS, THEME_KEYS, TEXT_KEYS, validate, OWNER };

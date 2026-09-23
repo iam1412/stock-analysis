@@ -91,4 +91,16 @@ t.eq(JSON.parse(R.jsonScript('{"a":"</script>"}')).a, '</script>', 'jsonScript o
   const bodies = blocks.map((b) => b.slice(b.indexOf('>') + 1, b.lastIndexOf('</script>')));
   t(bodies.length === 2 && bodies.every((x) => !x.includes('<') && x.includes('\\u003c')), 'both JSON script bodies are <-free (injected < became \\u003c)');
   t.eq(bodies.map((x) => JSON.parse(x).probe), ['a</script><b>', 'b</script><b>'], 'escaped JSON bodies parse back to the injected strings'); }
+// Plan 2a Task 3 — text.* render where the fixed template text used to be
+{ const doc = load('ZTS'); const view = C.compute(doc, { seeds }); const src = R.toV2Source(doc, view);
+  t(src.includes('<div class="hint">เฉลี่ย 2 วิธี</div>') && src.includes('มูลค่าเหมาะสมเฉลี่ย (Fair Value)'), 'no text → legacy hint + box unchanged');
+  t(src.includes('โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต'), 'no text → legacy disclaimer clause'); }
+{ const doc = load('ZTS'); doc.text = { valHint: 'SOTP + DDM — ห้ามใช้ P/E', valIntro: 'ทำไม <b>ไม่</b> ใช้ P/E ที่ {{px}}', metricsNote: 'งบสกุล EUR', disclaimerAssump: 'อัตราคิดลด (r) และอายุสัมปทาน' };
+  const view = C.compute(doc, { seeds }); const src = R.toV2Source(doc, view);
+  t(src.includes('<div class="hint">SOTP + DDM — ห้ามใช้ P/E</div>'), 'valHint replaces the generated §3 hint');
+  t(src.includes('<div class="l">มูลค่าเหมาะสม (Fair Value)<br>'), 'ruling R6: FV box label turns neutral');
+  t(/<div class="card">\s*<p[^>]*>ทำไม <b>ไม่<\/b> ใช้ P\/E ที่ \{\{rd:px\}\}<\/p>\s*<div class="vmethod">/.test(src), 'valIntro sits before the first leg, tokens rendered');
+  t(/<\/div>\s*<p[^>]*>งบสกุล EUR<\/p>\s*<\/section>/.test(src), 'metricsNote sits under the §1 grid');
+  t(src.includes('โดยเฉพาะ อัตราคิดลด (r) และอายุสัมปทาน'), 'disclaimerAssump replaces the clause after โดยเฉพาะ');
+  t.eq(CR.checkHtml(expandReport(src), 'ZTS.html', { source: src }).errors.map((e) => e.id), [], 'text slots: v2 gate 0 errors'); }
 t.done();

@@ -63,4 +63,9 @@ t.eq(S.OWNER('legs[0].inputs.multiple'), 'worker', 'rest is worker-owned');
 { const d = base(); d.market.chart.gridFmt = 'v.toFixed(0)'; d.market.chart.dataFmt = 'Math.round(d[1])'; t.eq(S.validate(d), [], 'legal formats pass'); }
 for (const f of ['BBL-real', 'EQIX-real', 'FER-real', 'ZTS-real'])
   t.eq(S.validate(JSON.parse(JSON.stringify(require(`../fixtures/v3/${f}.json`)))), [], `${f} themeLegacy passes the allowlist`);
+// Plan 2a Task 3 — text.* (§3.6 A)
+{ const d = base(); d.text = { valHint: 'SOTP + DDM', valIntro: 'ย่อหน้า', metricsNote: 'หมายเหตุ', disclaimerAssump: 'อัตราคิดลด (r)' }; t.eq(S.validate(d), [], 'text.* all optional prose'); }
+{ const d = base(); d.text = { valHnt: 'x' }; t(paths(S.validate(d)).includes('text.valHnt'), 'text is closed'); }
+{ const d = base(); d.text = { valHint: 'x'.repeat(81) }; t(paths(S.validate(d)).includes('text.valHint'), 'valHint ≤ 80 chars'); }
+{ const d = base(); d.text = { valIntro: 'IPO {{lit:$1.00}}' }; t(paths(S.validate(d)).includes('text.valIntro'), 'text.* is a prose field (lit reason check reaches it)'); }
 t.done();

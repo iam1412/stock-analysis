@@ -55,6 +55,7 @@ function proseFields(doc) {
   const arr = (x) => (Array.isArray(x) ? x : []);
   const obj = (x) => (x && typeof x === 'object' && !Array.isArray(x) ? x : {});
   for (const [k, v] of Object.entries(obj(doc.prose))) add(`prose.${k}`, v);
+  for (const [k, v] of Object.entries(obj(doc.text))) add(`text.${k}`, v);
   add('meta.sub', obj(doc.meta).sub); add('meta.priceNote', obj(doc.meta).priceNote);
   add('metrics.hint', obj(doc.metrics).hint);
   for (const [k, v] of Object.entries(obj(obj(doc.metrics).notes))) add(`metrics.notes.${k}`, v);

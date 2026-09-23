@@ -59,8 +59,16 @@ function extrasHtml(doc, view, after) {
   }).join('');
 }
 
+// หัว §3 + ป้ายกล่อง FV (ruling R6: มี text.valHint → ป้ายกล่องเป็นกลาง ไม่ให้คำที่ generate ขัดกับ hint ของผู้เขียน)
+function valHintParts(doc, view) {
+  if (doc.text && doc.text.valHint) return { hint: P.renderProse(doc.text.valHint, view, { mode: 'v2src' }), box: 'มูลค่าเหมาะสม (Fair Value)' };
+  const word = doc.fvWeights ? 'ถ่วงน้ำหนัก' : 'เฉลี่ย';
+  return { hint: `${word} ${view.legs.length} วิธี`, box: `มูลค่าเหมาะสม${word} (Fair Value)` };
+}
+
 function toV2Source(doc, view) {
   const pr = (s) => P.renderProse(s, view, { mode: 'v2src' });
+  const T = doc.text || {}; const vh = valHintParts(doc, view);
   const m = doc.meta, d = view.d, s = doc.scenarios, TH = doc.currency === 'THB';
   // (O) โน้ตใต้การ์ดเป็น prose (token + <b>) — renderCard คืนบรรทัดฐานของ template ล้วน แล้วต่อโน้ตที่ render แล้ว
   const noteOf = (k) => doc.metrics.notes && doc.metrics.notes[k];
@@ -151,7 +159,7 @@ ${jsonScript(RV.styledRD(view.rd))}
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2>${doc.metrics.hint ? `<div class="hint">${pr(doc.metrics.hint)}</div>` : ''}</div>
     <div class="grid g4">
       ${cardHtml}
-    </div>
+    </div>${T.metricsNote ? `\n    <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">${pr(T.metricsNote)}</p>` : ''}
   </section>${extrasHtml(doc, view, 'metrics')}
 
   <section>
@@ -172,11 +180,11 @@ ${jsonScript(RV.styledRD(view.rd))}
   </section>
 
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">${doc.fvWeights ? 'ถ่วงน้ำหนัก' : 'เฉลี่ย'} ${view.legs.length} วิธี</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">${vh.hint}</div></div>
     <div class="card">
-      ${legsHtml}
+      ${T.valIntro ? `<p style="font-size:12px;color:var(--muted);margin:0 0 12px;line-height:1.6">${pr(T.valIntro)}</p>\n      ` : ''}${legsHtml}
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสม${doc.fvWeights ? 'ถ่วงน้ำหนัก' : 'เฉลี่ย'} (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="l">${vh.box}<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -273,7 +281,7 @@ ${jsonScript(RV.styledRD(view.rd))}
 
   <div class="disc">
     <b>คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
-    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ ${T.disclaimerAssump ? pr(T.disclaimerAssump) : 'P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต'}
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ${pr(doc.prose.disclaimerSources)}
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ ${esc(view.analysisDateText)} • สร้างด้วย stock-analyzer workflow</footer>
