@@ -281,7 +281,11 @@ function buildCtx(html, name, opts) {
   let dv = null, v2Err = null;
   if (rdS.ok && RV.isV2(rdS.data)) {
     try { RV.validateValues(rdS.data, smS.ok ? smS.data : null); dv = RV.derive(rdS.data, smS.data); }
-    catch (e) { dv = null; v2Err = e.message; }
+    catch (e) { dv = null; v2Err = 'ไฟล์ประกาศ v:2 แต่สคีมาใช้ไม่ได้: ' + e.message; }
+  } else if (!rdS.ok) {
+    v2Err = 'report-data อ่านไม่ได้ (' + (rdS.present ? 'JSON เสีย: ' + rdS.err : 'ไม่พบบล็อก') + ') — v1/legacy format ไม่รองรับแล้ว (คลังทั้งหมดเป็น v2 ตั้งแต่ 23 ก.ย. 69)';
+  } else {
+    v2Err = 'ไม่ประกาศ v:2 (v1/legacy format ไม่รองรับแล้ว — คลังทั้งหมดเป็น v2 ตั้งแต่ 23 ก.ย. 69)';
   }
   const V2 = !!dv;
   // fix round 1 finding 2/R2: สกุลเงินทาง v2 มาจาก stock-meta.currency (JSON, ผ่าน RV.CUR_SYMBOL) ตรง ๆ —
@@ -969,7 +973,7 @@ function checkHtml(html, name, opts) {
     try { res = chk.fn(ctx); } catch (e) { res = 'ตรวจไม่สำเร็จ: ' + e.message; }
     if (res) (chk.level === 'error' ? errors : warnings).push({ id: chk.id, label: chk.label, msg: res });
   }
-  if (ctx.v2Err) errors.unshift({ id: 'V2SCHEMA', label: 'report-data v2 (validateValues/derive)', msg: `ไฟล์ประกาศ v:2 แต่สคีมาใช้ไม่ได้: ${ctx.v2Err}` });
+  if (ctx.v2Err) errors.unshift({ id: 'V2SCHEMA', label: 'report-data v2 (validateValues/derive)', msg: ctx.v2Err });
   // ★ V2TOKENS (ระยะ 2 ส่วน F · carry จาก final review ส่วน D): ใบ v2 ที่ site บังคับกลับเป็น literal
   //   = ค่าที่คนเห็นหลุดออกจาก JSON โดยไม่มีตัวซ่อมไหนเอื้อมถึง (cron ทาง v2 เขียนแต่ values) และ **gate เดิมเงียบสนิท**
   //   เพราะ check อื่นอ่านค่าจาก ctx.dv (JSON) ไม่ได้อ่าน HTML แล้ว ⇒ นี่คือกลไกบังคับของเกณฑ์จบ "สำเนาต่อค่า = 1"

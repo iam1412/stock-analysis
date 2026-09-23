@@ -969,7 +969,9 @@ ok(U.commitBody([], []) === '', 'commitBody: ว่างเมื่อไม�
 
 // ---------- quarantine: patch แล้ว gate ตก = ไม่เขียนไฟล์ + flag patch-rejected (WS2 ข้อ 1 · code-audit §6.A) ----------
 {
-  const good = U.gateAfterPatch(aapl, 'AAPL.html');
+  // ★ 23 ก.ย. 69 (v1 codepath gap-close): check-reports.js ปฏิเสธไฟล์ที่ไม่ประกาศ v:2 แล้ว (V2SCHEMA) —
+  //   `aapl` (v1) จึงไม่ "ok" อีกต่อไปโดยนิยาม (ถูกต้องแล้ว ไม่ใช่บั๊ก) ⇒ เคส "fixture ดี → ok" ต้องยืนบน v2
+  const good = U.gateAfterPatch(FX.AAPL_V2(), 'AAPL.html');
   ok(good.ok && good.codes.length === 0, 'gateAfterPatch: fixture ดี → ok', good.detail);
   // ทำ .fv-box ไม่ตรง report-data.fv → E15 (ไม่ขึ้นกับราคา) — patchReport ยังทำงานได้ (ไม่แตะ fv-box)
   const bad = aapl.replace(/(class="fv-box"[\s\S]*?class="r">\s*\$?)([0-9][0-9.,]*)/, (m, a, v) => a + (parseFloat(v.replace(/,/g, '')) * 2).toFixed(0));
@@ -980,6 +982,13 @@ ok(U.commitBody([], []) === '', 'commitBody: ว่างเมื่อไม�
   ok(/E15/.test(g.detail) && g.detail.length <= 400, 'gateAfterPatch: detail มีรหัส + สั้นพอลง price-flags.json');
   const broken = U.gateAfterPatch('<!DOCTYPE html><html><head><!--TEMPLATE:STYLE--></head><body></body></html>', 'X.html');
   ok(!broken.ok && broken.codes[0] === 'EXPAND', 'gateAfterPatch: expandReport ระเบิด → EXPAND ไม่ throw');
+  // ★ 23 ก.ย. 69: v1 codepath gap-close ทาง cron ปิดผ่านกลไก quarantine เดิมนี้เอง ไม่ต้องเพิ่ม routing ใหม่
+  //   (ดู open-items.md #36) — ปักหมุดไว้เป็นเทสกันถอย: `gateAfterPatch` (ต่างจาก `cronGate` ใน migrate-v2.js
+  //   ที่ตั้งใจกรอง V2SCHEMA ออกเพราะรับ v1 เป็น input โดยนิยาม) **ห้ามกรอง V2SCHEMA ออกเด็ดขาด** — ถ้ากรอง
+  //   ออกจากที่นี่ ไฟล์ v1 ที่ worker เขียนทับใบเดิมระหว่าง UPDATE จะไหลผ่าน cron ไปโดยไม่ถูก quarantine อีก
+  const v1Patched = U.patchReport(aapl, { newPrice: 301.5, dateParts: { day: 11, monIdx: 6, yearCE: 2026 }, chartData: null });
+  const gV1 = U.gateAfterPatch(v1Patched.html, 'AAPL.html');
+  ok(!gV1.ok && gV1.codes.includes('V2SCHEMA'), 'gateAfterPatch: ไฟล์ v1 (แม้ patch ผ่าน path เดิมสำเร็จ) → V2SCHEMA ต้องยังอยู่ใน codes เสมอ (quarantine ต้องจับ)', gV1.codes.join(','));
 
   // W17 ยกเป็น error (audit phase 1 ข้อ C(ค) — 12 ก.ย. 69): ต้องเข้า quarantine เป็น patch-rejected เหมือน error ตัวอื่น ไม่ใช่ throw
   // ★ ห้ามยืนบนราคาที่ patchReport แก้ (301.5 ใช้ทั่วไฟล์นี้) — อ่านราคาจากฐานฉบับสดเอง แล้วซ่อมหมวด 6 ไปที่จุดเข้าคนละราคา (0.7×px)

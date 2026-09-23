@@ -967,7 +967,11 @@ function runOnce(src, name, noScn, st) {
     let exp0;
     try { exp0 = expandReport(src); } catch (e) { return fail('expand v1 ไม่ได้: ' + e.message); }
     const gate0 = checkHtml(exp0, name, { source: src });
-    if (gate0.errors.length) return fail('gate ตกก่อนย้าย: ' + gate0.errors.map((e) => e.id + ' ' + e.msg).join(' | '));
+    // ★ 23 ก.ย. 69 (v1 codepath gap-close): check-reports.js ปฏิเสธไฟล์ที่ไม่ประกาศ v:2 แล้ว (V2SCHEMA) —
+    //   ตัวย้ายนี้ "รับ input เป็น v1 อยู่แล้วโดยนิยาม" ⇒ สัญญาณ "นี่คือ v1" ไม่ใช่ปัญหาที่ gate นี้ควรบล็อก
+    //   กรอง V2SCHEMA ออกจาก precondition (ยังจับ error อื่นของ v1 source เดิม เช่น E01 ตามปกติ)
+    const gate0Errs = gate0.errors.filter((e) => e.id !== 'V2SCHEMA');
+    if (gate0Errs.length) return fail('gate ตกก่อนย้าย: ' + gate0Errs.map((e) => e.id + ' ' + e.msg).join(' | '));
     const ctx0 = gate0.ctx;
 
     const ex = extractValues(src, ctx0, notes, noScn);
@@ -1257,7 +1261,11 @@ function visibleCronDiff(e1, e2, values, opt) {
 function cronGate(html, name) {
   const UP = require('./update-prices.js');     // lazy: update-prices → check-reports → update-prices (cycle ตอนโหลด)
   const g = UP.gateCheck(html, name);
-  return { exp: g.expanded, codes: g.codes.slice().sort(), warns: g.warnings.map((w) => w.id).sort(), detail: g.detail,
+  // ★ 23 ก.ย. 69 (v1 codepath gap-close): เปรียบเทียบนี้จงใจ patch ฝั่ง v1 กับ v1Src เพื่อทดสอบความเท่ากันของ
+  //   cron-diff ระหว่างรูปแบบ — V2SCHEMA ยิงฝั่ง v1 เสมอโดยธรรมชาติ (ไม่ใช่ความต่างที่มีความหมายสำหรับเทสนี้)
+  //   กรองออกจากการเทียบ ไม่งั้นทุกคู่ v1↔v2 จะโดนนับเป็น gate-error ปลอม
+  const codes = g.codes.filter((id) => id !== 'V2SCHEMA').sort();
+  return { exp: g.expanded, codes, warns: g.warnings.map((w) => w.id).sort(), detail: g.detail,
     warnMsg: Object.fromEntries(g.warnings.map((w) => [w.id, w.msg])) };
 }
 
