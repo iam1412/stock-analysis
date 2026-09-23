@@ -1,6 +1,6 @@
 # Report v3 — JSON เป็นต้นฉบับ · template เดียว render ทุกใบ · script เป็นผู้เขียนคนเดียว
 
-- วันที่: 24 ก.ย. 69 (2026-09-24) · สถานะ: **DRAFT รอ advisor อนุมัติ**
+- วันที่: 24 ก.ย. 69 (2026-09-24) · สถานะ: **advisor อนุมัติทิศทาง (แก้ 3 จุดแล้ว) · รอเจ้าของรีวิว**
 - เจ้าของตัดสินแล้ว (session 24 ก.ย. 69): (1) ต้นฉบับ = `reports/<SYM>.json` · (2) migrate = script sweep + text-diff กับ HTML เดิม + รายชื่อให้คนตัดสิน · (3) กติกาตัวเลขใน prose = **B** (ตัวเลขผูกราคาห้ามพิมพ์เอง ต้องเป็น token · ตัวเลขจากงบพิมพ์ได้) · (4) มีช่อง `extras[]` ตารางข้อมูลล้วน ≤2 ตาราง · (5) template ดึงข้อมูลจาก JSON — JSON เก็บ **เฉพาะค่าที่ตัดสินใจ** ค่าคำนวณทั้งหมดคิดตอน build
 - หลักฐานที่ใช้ออกแบบ: วิจัย 3 สาย (ประวัติบัค 3,013 commit / 272 fix · write path ปัจจุบัน · สำรวจ 909 ใบ) — สรุปอยู่ใน §1
 
@@ -20,6 +20,7 @@
 - ❌ ไม่แก้ **ความผิดเชิงดุลพินิจ** (class D): สมอตาย W18/W25 · ถ่วงน้ำหนัก FV ผิด · สมมติฐาน (r,g) พัง · prose อ้างข้อเท็จจริงผิด (ABBNY spin-off) — v3 ทำให้ **ตรวจด้วยการคำนวณ** ได้แทน regex (ตรวจแม่นขึ้น เร็วขึ้น) แต่ไม่ป้องกัน
 - ❌ ไม่แก้ **ข้อมูลจาก vendor ผิด/ขัดกัน** (class E): EPS คนละฐาน · ADR ratio · SA เปลี่ยนโครงหน้า — cross-source verify ของ `prep` ยังเป็นด่านเดียว
 - จาก 10 โค้ด must-fix ของแคมเปญ ก.ย. 69 มีแค่ W1 (BUG-016/GAP-012/013) ที่หายโดยโครงสร้าง — ที่เหลือเป็น D/E
+- ❌ ไม่จำลองกติกาหุ้นวัฏจักร 0.4b ("ทุกขาของ FV เป็นฟังก์ชันของตัวแปรฉาก" เช่นราคาทอง/WTI) — B/IMO/KGC ใช้ขา `declared` + `extras[]` (ตารางความไวต่อราคาโภคภัณฑ์) ⇒ ค่าขาเป็นค่าประกาศ ไม่ใช่คำนวณ · ตรวจด้วยคน (spotcheck) เหมือนเดิม
 - ❌ ไม่เปลี่ยนหน้าตาเว็บ (DOM/class เดิม → `dashboard.css` + `engine.js` ใช้ต่อได้ · font/สี/DESIGN.md คงเดิม)
 - ❌ ไม่เปลี่ยน URL (`gaohoon.com/<SYM>.html`) · ไม่แตะระบบ tag / counters / TA chart
 
@@ -29,7 +30,7 @@
 |---|---|---|---|
 | ค่าผูกราคาค้าง (P/E, mcap, yield, P/BV, % ฉาก) | E41–43, W16/17/19/20 · heal 547/831/782/735 ไฟล์ | ~3,000 file-touch | ✅ คิดตอน build |
 | คำตัดสิน/สี verdict ขัด MOS | W04/W06/W26 · `12af7aeeb` 26 ไฟล์ | ~60 | ✅ class คิดจาก MOS |
-| ตัวเลขราคาใน prose | E44 5,293 จุด · W15 92 ไฟล์ · EXPE ×5 | ทุกไฟล์ | ✅ กติกา B ตอน save |
+| ตัวเลขราคาใน prose | E44 5,293 จุด · W15 92 ไฟล์ · EXPE ×5 | ทุกไฟล์ | ✅ ใบใหม่/UPDATE (กติกา B ตอน save) · 🟡 ใบ migrate ที่ prose เก่า — `W31` ชี้ให้แก้ตอนแตะ |
 | สูตรใน `.mdesc` ไม่ตรง `.mval` | E21/E22/W14 · DDM 7 fix · EV/EBITDA 3 fix | ~20 | ✅ `legs[]` คิดค่าเอง |
 | healer ≠ checker | W1 `PE_LABEL_SKIP` · BBL cron ล้ม 3 วัน · `34b208029` | ~10 เหตุ | ✅ ไม่มี healer |
 | checker false positive บน free text | 13 `fix(test)` | ~20 | ✅ ส่วนใหญ่ (อ่าน JSON) |
@@ -89,8 +90,8 @@
     "analysisDate": "2026-09-20",                             // = footer "ข้อมูล ณ" · cron ไม่แตะ · ฐานของ updated/dedup/staleness
     "aiModel": "Claude Sonnet 5",
     "sources": ["Yahoo Finance", "SEC 10-Q", "stockanalysis.com"], // ≥3 (W08)
-    "gdots": 2,
-    "theme": { "accent": "#…", "...": "…" }                  // pick-brand เขียนผ่าน save เท่านั้น · build derive ที่เหลือ
+    "gdots": 2
+    // ไม่มี theme — สีแบรนด์อยู่ที่ tools/seeds.json ที่เดียว (pick-brand ใต้ lock) · build: seeds → deriveTheme()
   },
 
   "market": {                                                 // cron เท่านั้น (worker ส่งมาใน draft = error)
@@ -110,7 +111,8 @@
 
   "legs": [                                                   // วิธีประเมิน 2–4 ขา — ค่าของขาคิดเอง
     { "method": "pe", "label": "P/E มัธยฐาน 5 ปี",
-      "inputs": { "eps": "fundamentals.eps", "multiple": 28, "multipleSource": "median5y" },
+      "inputs": { "multiple": 28, "multipleSource": "median5y" },   // eps มาจาก fundamentals.eps โดย default
+      // ขาที่ใช้ฐานต่าง: "override": { "eps": 6.8, "why": "EPS ปกติไม่รวมรายการพิเศษ Q2" } — ความต่างมองเห็นได้/ตรวจได้
       "note": "prose อธิบายเหตุผล (กติกา B)" },
     { "method": "dcf", "label": "DCF 2 ช่วง",
       "inputs": { "fcf0": 2.3e9, "g1": 8, "years1": 5, "tg": 3, "r": 8.5, "rfCurrency": "USD", "netDebt": 5.1e9 },
@@ -128,7 +130,7 @@
     "years": 3, "divIncluded": true, "perYear": "cagr",       // perYear: cagr | linear | null
     "driver": "eps",                                          // eps | ffo | revenuePerShare | bvps | fcfPerShare
     "exitMetric": "pe",                                       // pe | ps | pbv | pffo | pfcf
-    "base": "fundamentals.eps",                               // หรือเลขตรง (เช่น FFO ฐาน)
+    // ฐาน = fundamentals ตาม driver โดย default (eps → fundamentals.eps) · ต่างจากนั้น: "baseOverride": { "value": 3.1, "why": "…" }
     "cases": [
       { "growth": 2,  "exitMultiple": 20, "divCum": 6.6, "desc": "prose" },
       { "growth": 8,  "exitMultiple": 26, "divCum": 6.9, "desc": "…" },
@@ -148,7 +150,8 @@
   "risks": ["…", "…"],                                        // 3–8 ข้อ
   "extras": [                                                 // ≤2 · ข้อมูลล้วน ไม่มี HTML
     { "after": "valuation", "title": "SOTP แยกสินทรัพย์",
-      "headers": ["สินทรัพย์", "มูลค่า/หุ้น"], "rows": [["407 ETR", "€8.1"]], "note": "…" }
+      "headers": ["สินทรัพย์", "มูลค่า/หุ้น"], "rows": [["407 ETR", 8.1]], "sumCol": 1, "note": "…" }
+      // cell = string | number · ถ้าขา declared อ้างตารางนี้ (extrasRef) ต้องมี sumCol ที่เป็นตัวเลขล้วน → E52 ตรวจผลรวม = ค่าขา
   ],
 
   "_sig": "sha256:…"                                          // เขียนโดย io.js เท่านั้น
@@ -198,8 +201,10 @@
 - ไวยากรณ์ token: `{{px}}` `{{fv}}` `{{mos}}` `{{leg1}}` `{{leg1.multiple}}` `{{scn.base.tgt}}` `{{scn.bull.ret}}` `{{analyst.target}}` `{{card.pe}}` … — ชุด token = **ทุกค่าใน view ที่ compute สร้าง** (ตารางเดียวใน `compute.js` ไม่มีรายการเขียนมือแยก)
 - token ที่ค่าเป็น null → save error (ไม่ใช่ render เป็นว่าง)
 - **HTML ใน prose**: อนุญาตแค่ `<b> <i> <br>` + `**bold**` — tag อื่น/attribute/style = error (ปิด inline style 144 จุดของ FER)
-- **กติกา B (ตอน `save` เท่านั้น)**: สกัดตัวเลขที่มี `$ ฿ บาท % x เท่า` ใน prose/notes/custom/extras → เทียบกับ **ทุกค่าผูกราคาใน view** (tolerance: เงิน ±1.5% · % ±0.6 จุด · multiple ±3%) → ตรง = error "ใช้ `{{token}}`" · ตัวเลขจากงบ (ไม่ตรงค่าผูกราคาใด) ผ่าน
-  - เหตุที่รันตอน save เท่านั้น ไม่รันใน cron/gate รายวัน: ราคาขยับแล้ว literal จากงบอาจบังเอิญชนค่าผูกราคาใหม่ = false positive · ตอน save มีราคา ณ เวลาเขียนซึ่งเป็นเวลาที่ AI อาจลอกเลขมา
+- **กติกา B — 2 ระดับ**: สกัดตัวเลขที่มี `$ ฿ บาท % x เท่า` ใน prose/notes/custom/extras → เทียบกับ **ทุกค่าผูกราคาใน view**
+  - **error (ตอน `save`)** = ตรงกับ **รูปที่ render แล้วแบบเป๊ะ** (`$70.12` · `27.6%` · `28.0x`) — AI ลอกเลขจาก `report.js show` จึงได้รูปเป๊ะเสมอ ⇒ จับการก๊อปจริงครบ แต่ false positive ~0 (ตัวเลขจากงบที่ค่าใกล้เคียงบังเอิญ เช่น netMargin 27.4% vs MOS 27.6% ไม่ถูกบล็อก)
+  - **warn** = อยู่ในช่วง tolerance (เงิน ±1.5% · % ±0.6 จุด · multiple ±3%) แต่ไม่เป๊ะ → พิมพ์ให้ worker ดู ไม่บล็อก
+  - **`W31 prose-lit` (gate รายวัน · warn)** = ตัวเลขรูปเงิน (`$ ฿ บาท`) ใน prose ที่ไม่ใช่ token และไม่อยู่ใน `{{lit:}}` — ไม่เทียบกับราคาปัจจุบัน (กัน false positive เมื่อราคาขยับ) แค่ **นับ** ให้เห็นกากที่ค้าง · ใช้กับใบ migrate ที่ prose เก่าลอกราคา ณ วันวิเคราะห์ (ซึ่งกติกา B เทียบราคาวันนี้แล้วจับไม่ได้ — ตรงกับที่ healer E44 แปลงได้แค่ ~30%) · แก้ตอนแตะใบ (UPDATE/LIGHT) · `save` ของใบที่แตะแล้วยกระดับเป็น error ได้ (ตัดสินใน plan)
   - escape hatch: `{{lit:…}}` สำหรับกรณีจำเป็น (เช่นอ้างราคา IPO ในอดีต) — นับจำนวน + ต้องมีเหตุผลใน `meta.litReasons` · gate warn ถ้าเกิน 2 ต่อใบ
 - `%/ปี` (open-item #1 เดิม) เป็นแค่ token — หน้าเว็บขยับตามราคาคือพฤติกรรมที่ถูก ไม่ใช่ flicker (เดิมตัดทิ้งเพราะ healer all-or-nothing)
 
@@ -257,10 +262,10 @@
 | สำเนาเดียวกันต้องตรงกัน (FV JS=กล่อง, MOS, MOS20/30, gauge, verdict FV, stock-meta, E23) | E15 E16 E18 E19 E20 E23 E25 E26 E29–E31 W10 W22 | 💀 ตาย — ค่ามีสำเนาเดียว |
 | ค่าผูกราคาค้าง | E41–E43 W15–W17 W19 W20 W06 W26 W04 | 💀 ตาย — compute ตอน build |
 | สูตรขา/ฉาก | E17 E21 E22 E24 W01 W05 W14 | ➡️ ย้ายเป็น schema (≥2 ขา, inputs ครบ) + compute — ไม่มีทางผิด ยกเว้น `declared` |
-| prose ผูกราคา | E44 | ➡️ กติกา B ตอน save (`V3-B`) |
+| prose ผูกราคา | E44 | ➡️ กติกา B: ตอน save = error (รูปเป๊ะ) · gate รายวัน = `W31` warn (นับ literal รูปเงินที่ค้าง) |
 | ข้อมูล/ความสด/ความสมเหตุผล | E27 E28 E32 E34–E40 W07–W09 W12 W13 W21 W23 W24 | ➡️ คงไว้ อ่านจาก JSON (W21/W24 ตายเพราะอ่านไม่ได้ไม่มีอีก) |
 | ดุลพินิจ valuation | W18 W25 + ชั้น 0 (rf สกุล · (r,g) ซ้ำ · \|MOS\|>40%) | ➡️ คงไว้ **แม่นขึ้น** — คำนวณจาก `legs[].inputs` ไม่ใช่ regex `.mdesc` |
-| ใหม่ | `E50 sig` · `E51 schema` · `E52 declared-leg ไม่มีหลักฐาน` · `W30 lit` เกิน | ใหม่ |
+| ใหม่ | `E50 sig` · `E51 schema` · `E52 declared-leg ไม่มีหลักฐาน / sumCol ≠ ค่าขา` · `W30 lit` เกิน · `W31 prose-lit` ค้าง | ใหม่ |
 
 - self-test (meta-test) ของ v3 = **mutate JSON** (ไม่ใช่ HTML) แล้วดูว่า check ยิง · ต้องมีเคสต่อทุก code ใหม่/ที่ย้าย
 - `verify` 18 ขั้น: เพิ่ม `v3-test` (schema/compute/prose/render unit) + `check-v3` · ระหว่าง transition รันทั้งสองสาย
@@ -270,21 +275,21 @@
 1. **Parse** v2/v1 HTML ด้วย parser/locator เดิม (`report-values`, `derived-values` CARD_SRC, `.vmethod`) → สร้าง v3 doc
    - legs: จำแนก method จาก `.mname`/`.mdesc` (P/E 850 · DCF-family 393 · DDM 324 · P/BV 243 …) → ดึง inputs · จำแนกไม่ได้/inputs ไม่ครบ → `declared` + ค่า `.mval` เดิม
    - fvWeights: ถ้า FV เดิม ≠ ค่าเฉลี่ยขา → แก้ weights ให้ได้ FV เดิม (≤2 ขา แก้ได้เสมอ · 3–4 ขาเลือกที่ใกล้เท่ากันสุด) · ทำไม่ได้ → รายชื่อคน
-   - prose: แทน literal ที่ตรงค่าผูกราคาด้วย token (ใช้ตัวตรวจกติกา B เดียวกัน) · `{{rd:x}}` → token v3
+   - prose: แทน literal ที่ตรงค่าผูกราคาด้วย token (ใช้ตัวตรวจกติกา B เดียวกัน) · `{{rd:x}}` → token v3 · นับ `PROSE-LIT` (literal รูปเงินที่เหลือ) ต่อใบ — **>0 ⇒ ถัง VALUE-DRIFT ไม่ใช่ CLEAN** (literal ลอกราคาวันวิเคราะห์ที่ราคาขยับไปแล้ว จับด้วยการเทียบราคาวันนี้ไม่ได้)
    - cards: map label → แคตตาล็อก · ไม่ลง → `custom[]` (ถ้าไม่ผูกราคา) หรือรายชื่อคน
 2. **Equivalence diff**: render v3 → เทียบกับ `dist/` v2 ปัจจุบันแบบ **text ที่มองเห็น** (normalize ช่องว่าง) ต่อ section · อนุญาตต่างเฉพาะตัวเลขที่ compute ต่างจาก literal เดิมเกิน rounding → รายงานว่า "ค่าเดิมค้าง, v3 ถูก" (คาดว่าเจอเยอะ = บัคเงียบที่ v2 ซ่อนอยู่) · ห้ามมี **ข้อความหาย** (บทเรียน `.ret` 23 ไฟล์) — word-level diff ของ prose ต้องว่าง
 3. **ผลลัพธ์ 3 ถัง**: `CLEAN` (เขียน .json ลบ .html ใน commit เดียวกัน) · `VALUE-DRIFT` (ต่างเฉพาะตัวเลขที่ v2 ค้าง — controller รีวิวตาราง แล้วอนุมัติเป็นชุด) · `HUMAN` (ขาจำแนกไม่ได้ · weights ไม่ลง · ข้อความหาย · v1 ที่ 21 ใบตัดสินไม่ได้) — คาด ~20–60 ใบ
 4. **Transition**: build อ่านทั้ง `reports/*.html` (v2 path เดิม) และ `reports/*.json` (v3) · ห้ามมีทั้งสองไฟล์ของหุ้นเดียว (build error) · cron เดินสองสาย · NEW ทุกใบเป็น v3 ตั้งแต่วันเปิด
-5. **Cutover** เมื่อถัง HUMAN = 0: ลบ v2 path (`derivedPassV2`, `keepMap`, `patchDerived` สาย HTML, `migrate*.js`, `apply-edits` `@@`, `field-manifest`, `preserve-dates`, V2TOKENS, check-reports ส่วน HTML) — **ลบโค้ดจำนวนมาก** เป็นตัวชี้วัดความสำเร็จ
+5. **Cutover** เมื่อถัง HUMAN = 0: ลบ v2 path (`derivedPassV2`, `keepMap`, `patchDerived` สาย HTML, `migrate*.js`, `apply-edits` `@@`, `field-manifest`, `preserve-dates`, V2TOKENS, check-reports ส่วน HTML, `brandtheme.js --write` + `fix-contrast.js` ที่ regex theme ใน report-data — สีอยู่ที่ seeds.json ที่เดียว) — **ลบโค้ดจำนวนมาก** เป็นตัวชี้วัดความสำเร็จ
 
 ## 11. ลำดับการทำ (phase — แต่ละ phase merge ได้เอง ไม่พังของเดิม)
 
 | Phase | ส่งมอบ | เกณฑ์จบ |
 |---|---|---|
 | P1 แกน | `schema.js` `compute.js` `prose.js` `io.js` + unit test (สูตร/ปัดตรง v2 `derive()` ทุก token) | test ผ่าน · compute ของ 10 ใบตัวอย่าง = ค่าที่ v2 render ได้ |
-| P2 render | `_template/v3/render.js` + build dual-path + freshHash v3 | render ใบตัวอย่าง DOM เทียบ skeleton ผ่าน · หน้าตาเหมือนเดิม (screenshot 3 ใบ) |
+| P2 render | `_template/v3/render.js` + build dual-path + freshHash v3 · `reports.json.file` ของใบ v3 ยังเป็น `<SYM>.html` (ชื่อใน dist — ไม่งั้น url พัง) · theme จาก seeds.json | render ใบตัวอย่าง DOM เทียบ skeleton ผ่าน · หน้าตาเหมือนเดิม (screenshot 3 ใบ) |
 | P3 gate | `check-v3.js` + self-test JSON + hook + `E50` | ทุก code ในตาราง §9 มีบ้าน · self-test ครบ |
-| P4 CLI + worker | `report.js` + แก้ stock-analyzer SKILL / agent-prompt / stock-controller / CLAUDE.md §2/§10 | NEW 2 ใบ (TH+US) จริงผ่าน v3 end-to-end ด้วย Sonnet |
+| P4 CLI + worker | `report.js` (+ `.work/` ใน .gitignore) + แก้ stock-analyzer SKILL / agent-prompt / stock-controller / CLAUDE.md §2/§10 | NEW 2 ใบ (TH+US) จริงผ่าน v3 end-to-end ด้วย Sonnet |
 | P5 cron | สาย v3 ใน update-prices + `range52w` | dry-run บนใบ v3 ทั้งหมด = ไม่มี diff นอก market · รอบจริง 3 วันไม่มี patch-rejected ผิดปกติ |
 | P6 migrate | `migrate-v3.js` + รายงาน 3 ถัง · migrate CLEAN เป็นแบตช์ (เสนอยกเว้นกฎ §5 "1 commit = 1 หุ้น" เป็น commit ละ 50 ใบ เพราะเป็นงาน mechanical — รอเจ้าของอนุมัติ §13 ข้อ 1) | CLEAN+VALUE-DRIFT ย้ายหมด · รายชื่อ HUMAN ส่งเจ้าของ |
 | P7 cutover | ลบ v2 path + เอกสาร | HUMAN = 0 · verify ผ่าน · cron 7 วันเขียว |
