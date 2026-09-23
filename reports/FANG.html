@@ -10,12 +10,20 @@
 </script>
 <script type="application/json" id="report-data">
 {
-  "symbol": "FANG",
-  "currency": "USD",
+  "v": 2,
   "fv": 169,
+  "values": {
+    "px": 184.5,
+    "priceDate": "2026-09-22",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 127,
+    "fvHigh": 190,
+    "shares": 285000000,
+    "dps": 4.4
+  },
   "theme": {
     "accent": "#92400e",
-    "accentLight": "#fcd34d",
     "chgBg": "var(--green-soft)",
     "chgColor": "#137333"
   },
@@ -37,7 +45,6 @@
     "min": 120,
     "max": 220,
     "grid": [140, 160, 180, 200],
-    "fairLine": 169,
     "currency": "$",
     "highlight": [0, 6],
     "dataFmt": "d[1].toFixed(2)",
@@ -45,9 +52,7 @@
   },
   "gauge": {
     "min": 110,
-    "max": 250,
-    "cur": 184.5,
-    "fair": 169
+    "max": 250
   }
 }
 </script>
@@ -68,11 +73,11 @@
     <div class="sub">Permian Basin E&amp;P • 520K BOE/d Oil • Double Premium Returns • Post-Endeavor Scale</div>
     <div class="price-row">
       <div>
-        <div class="px">$184.50<small>(FANG)</small></div>
+        <div class="px">{{rd:px}}<small>(FANG)</small></div>
       </div>
-      <div class="chg">▲ +28.8% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 22 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $136.13 – $216.90<br>
         ที่มา: Yahoo Finance • StockAnalysis • GlobeNewswire • Investing.com
       </div>
@@ -83,10 +88,10 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ 21 ก.ย. 2569 · mid-cycle WTI $65/bbl (งบ Q1 2026)</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$52.6B</div><div class="d">~285M shares (post-Endeavor)</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~285M shares (post-Endeavor)</div></div>
       <div class="metric"><div class="k">Q1 2026 Adj EPS</div><div class="v pos">$4.23</div><div class="d">beat est. $3.55 · annualized ~$16.9</div></div>
       <div class="metric"><div class="k">Q1 2026 FCF</div><div class="v pos">$1.71B</div><div class="d">FY2026 target $8.3B · $29/share</div></div>
-      <div class="metric"><div class="k">เงินปันผลฐาน</div><div class="v">~2.4%</div><div class="d">$4.40/ปี · เพิ่ม +10% YoY</div></div>
+      <div class="metric"><div class="k">เงินปันผลฐาน</div><div class="v">~{{rd:yield}}</div><div class="d">$4.40/ปี · เพิ่ม +10% YoY</div></div>
 
       <div class="metric"><div class="k">Oil Production</div><div class="v pos">520K+ BOE/d</div><div class="d">2026 guidance (raised) · +5% YoY</div></div>
       <div class="metric"><div class="k">Total Production</div><div class="v pos">972K+ BOE/d</div><div class="d">หลัง Endeavor merger ก.พ. 2567</div></div>
@@ -109,7 +114,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#92400e"></i>ราคา FANG</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม mid-cycle $169</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม mid-cycle {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -135,11 +140,11 @@
         <div class="mval">$163.50</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย mid-cycle (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $127 – $190 · อิง WTI $65/bbl</span></div>
-        <div class="r">$169</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย mid-cycle (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}} · อิง WTI $65/bbl</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        <b>Mid-cycle EPS $15.20</b> = ประมาณการที่ WTI $65/bbl (ลด Q1 2026 adj EPS $4.23 ราว 10% จาก WTI ที่สูงกว่า $68-70 ในไตรมาสนั้น) · EV/EBITDA 5.5x สะท้อน premium Permian vs E&P ทั่วไป (~4-5x) เพราะ FANG มีต้นทุนต่ำสุดในอุตสาหกรรม ($37/BOE cash cost) · ราคาปัจจุบัน $192.42 อยู่เหนือ FV mid-cycle (~14%) · EPS GAAP TTM $5.12 ต่ำเพราะขาดทุน derivative/impairment Q4 2568 จึงไม่ใช้เป็นฐาน สะท้อนตลาดรวม premium growth โดยอิง WTI ที่สูงกว่า $65
+        <b>Mid-cycle EPS $15.20</b> = ประมาณการที่ WTI $65/bbl (ลด Q1 2026 adj EPS $4.23 ราว 10% จาก WTI ที่สูงกว่า $68-70 ในไตรมาสนั้น) · EV/EBITDA 5.5x สะท้อน premium Permian vs E&P ทั่วไป (~4-5x) เพราะ FANG มีต้นทุนต่ำสุดในอุตสาหกรรม ($37/BOE cash cost) · ราคาปัจจุบัน {{rd:px}} อยู่เหนือ FV mid-cycle (~9%) · EPS GAAP TTM $5.12 ต่ำเพราะขาดทุน derivative/impairment Q4 2568 จึงไม่ใช้เป็นฐาน สะท้อนตลาดรวม premium growth โดยอิง WTI ที่สูงกว่า $65
       </p>
     </div>
   </section>
@@ -150,19 +155,19 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $185</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">mid-cycle FV $169</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม mid-cycle {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$118.30<br><small>MOS 30%</small></span>
-          <span>$135.20<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$169<br><small>Fair Value</small></span>
-          <span style="text-align:right">$190<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$234<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคา $192.42 อยู่เหนือ mid-cycle Fair Value $169 ประมาณ 13.9% — MOS เป็นลบ แสดงว่าตลาดกำลัง price in ราคาน้ำมันสูงกว่า $65/bbl หรือ premium growth จาก Endeavor synergy · โซน MOS 20% ($135.20) เป็น entry ที่น่าสนใจ ใกล้กับจุดต่ำสุด 52 สัปดาห์ $136.13 · Analyst consensus $234 สะท้อน bullish scenario ที่ WTI ยืน $70+
+        ราคา $192.42 อยู่เหนือ mid-cycle Fair Value {{rd:fv}} ประมาณ 13.9% — MOS เป็นลบ แสดงว่าตลาดกำลัง price in ราคาน้ำมันสูงกว่า $65/bbl หรือ premium growth จาก Endeavor synergy · โซน MOS 20% ({{rd:mos20}}) เป็น entry ที่น่าสนใจ ใกล้กับจุดต่ำสุด 52 สัปดาห์ $136.13 · Analyst consensus $234 สะท้อน bullish scenario ที่ WTI ยืน $70+
       </p>
     </div>
   </section>
@@ -171,19 +176,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−9%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS ลบ (mid-cycle $65 WTI) — รอ pullback หรือ WTI ยืน $70+ เพื่อ justify ราคา</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$135.20</div><div class="d">ใกล้ 52-week low $136 · โซนน่าสนใจ</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$118.30</div><div class="d">Deep value · WTI ร่วงแรง scenario</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $169</div><div class="d">ใกล้/ต่ำกว่า mid-cycle Fair Value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">ใกล้ 52-week low $136 · โซนน่าสนใจ</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">Deep value · WTI ร่วงแรง scenario</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่า mid-cycle Fair Value</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="184.5" step="1">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -192,7 +197,7 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $184.50 • EPS ฐาน mid-cycle ~$15.2 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน mid-cycle ~$15.2 • รวมปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>WTI $50/bbl</span></div>
@@ -262,7 +267,7 @@
           <li><b>Integration risk post-Endeavor:</b> หนี้สูง $13.9B อาจกดดันถ้า WTI อ่อนและ refinancing ราคาสูง</li>
           <li><b>Geopolitical supply surge:</b> OPEC กลับมา pump เต็มโควตา ทำให้ WTI ร่วง</li>
           <li><b>Energy transition:</b> ระยะยาว demand น้ำมันอาจถึง peak ภายใน 10 ปี</li>
-          <li><b>Mid-cycle MOS ลบ:</b> ราคาปัจจุบัน $192.42 > mid-cycle FV $169 → ไม่มี cushion ถ้า WTI ย่อตัว</li>
+          <li><b>Mid-cycle MOS ลบ:</b> ราคาปัจจุบัน {{rd:px}} > mid-cycle FV {{rd:fv}} → ไม่มี cushion ถ้า WTI ย่อตัว</li>
         </ul>
       </div>
     </div>
@@ -273,10 +278,10 @@
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
       <h2>E&amp;P ต้นทุนต่ำสุด Permian — ดีที่สุดในหมวด แต่รอราคาดีกว่านี้</h2>
-      <p>Diamondback Energy คือ E&P คุณภาพสูงสุดใน Permian Basin หลัง Endeavor merger ปี 2567 scale ใหญ่ขึ้นมากและ FCF ดีกว่าเพื่อน breakeven ต่ำ $35-40/bbl ทำให้ FCF สม่ำเสมอแม้ WTI ผันผวน อย่างไรก็ตาม ราคา $192.42 อยู่เหนือ mid-cycle Fair Value $169 (WTI $65/bbl) ประมาณ 13.9% ทำให้ไม่มี margin of safety สำหรับ value investor ที่ใช้ mid-cycle pricing · โซนที่น่าสนใจคือ $135-152 (MOS 10-20%) ซึ่งเห็นได้ในช่วง Q3/Q4 2568</p>
+      <p>Diamondback Energy คือ E&P คุณภาพสูงสุดใน Permian Basin หลัง Endeavor merger ปี 2567 scale ใหญ่ขึ้นมากและ FCF ดีกว่าเพื่อน breakeven ต่ำ $35-40/bbl ทำให้ FCF สม่ำเสมอแม้ WTI ผันผวน อย่างไรก็ตาม ราคา $192.42 อยู่เหนือ mid-cycle Fair Value {{rd:fv}} (WTI $65/bbl) ประมาณ 13.9% ทำให้ไม่มี margin of safety สำหรับ value investor ที่ใช้ mid-cycle pricing · โซนที่น่าสนใจคือ $135-152 (MOS 10-20%) ซึ่งเห็นได้ในช่วง Q3/Q4 2568</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$169 <span style="font-size:12px;color:#cab9a8">($127–$190)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v bad">MOS ~ −9%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v bad">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v">~$234 (Strong Buy)</div></div>
       </div>
       <div class="zone">
