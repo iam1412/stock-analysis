@@ -50,7 +50,8 @@ const CATALOGUE = {
   grossMargin: { label: () => 'อัตรากำไรขั้นต้น', value: (v) => pct1(need(v, 'grossMargin')), d: () => 'Gross margin', cls: '' },
   netMargin: { label: () => 'อัตรากำไรสุทธิ', value: (v) => pct1(need(v, 'netMargin')), d: () => 'Net margin', cls: '' },
   opMargin: { label: () => 'อัตรากำไรจากดำเนินงาน', value: (v) => pct1(need(v, 'opMargin')), d: () => 'Operating margin', cls: '' },
-  yield: { label: () => 'เงินปันผล', value: (v) => priceBoundOrThrow('yield', v.d.yield).toFixed(1) + '%', d: (v) => `${money(v, need(v, 'dps'))}/ปี`, cls: '' },
+  // ค่า yield ใช้ RV.TOKENS.yield ตรง ๆ (ไม่ hand-format ซ้ำ) — 2 ทศนิยม site-wide (คำตัดสินเจ้าของ 24 ก.ย. 69)
+  yield: { label: () => 'เงินปันผล', value: (v) => { priceBoundOrThrow('yield', v.d.yield); return RV.TOKENS.yield(v.d); }, d: (v) => `${money(v, need(v, 'dps'))}/ปี`, cls: '' },
   beta: { label: () => 'Beta', value: (v) => need(v, 'beta').toFixed(2), d: () => 'ความผันผวนเทียบตลาด', cls: '' },
   range52w: { label: () => 'กรอบ 52 สัปดาห์', cls: '',
     value: (v) => { const r = v.doc.market.range52w; if (!r) throw new Error('metrics.cards: range52w — ไม่มี market.range52w (cron เติม)'); return `${money(v, r.lo)} – ${money(v, r.hi)}`; },

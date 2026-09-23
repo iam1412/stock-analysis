@@ -18,6 +18,9 @@ const mc = K.renderCard('mcap', view);
 t.near(DV.parseShares(mc.d), 443e6, 1e6, 'mcap base line parses back to shares (E43)');
 const y = K.renderCard('yield', view);
 t(/\$2\.00\/ปี/.test(y.d), 'yield base line = DPS per year (W19)');
+// postreview Fix1 — yield card value = 2dp site-wide (reuses RV.TOKENS.yield, not a hand-rolled toFixed(1))
+t.eq(y.v, RV.TOKENS.yield(view.d), 'yield card value = RV.TOKENS.yield(view.d) exactly (same formatter, no separate hand-format)');
+t(/^-?\d+\.\d{2}%$/.test(y.v), `yield card value has exactly 2 decimals: ${y.v}`);
 t(/BVPS \$11\.40/.test(K.renderCard('pbv', view).d), 'pbv base line = BVPS (W20)');
 // Review Focus #4 — loss-making company
 // legs[0] (method 'pe') needs a positive EPS to compute a fair-value leg at all (legs.js:67 final-guard,

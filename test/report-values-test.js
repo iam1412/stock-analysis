@@ -94,7 +94,8 @@ const rd = () => ({
   assert(out.includes('value="188"') && out.includes('ราคา ณ 11 ก.ย. 2569'), 'pxNum/priceDate');
   assert(out.includes('▲ +25.3% (รอบปี)'), 'chg');
   assert(out.includes('฿195.00 ฿180.00–฿210.00 ฿156.00 ฿136.50 ฿205.00 (+9%)'), 'fv/กรอบ/mos20/30/analyst: ' + out);
-  assert(out.includes(' 8.7x ') && out.includes('฿3.59 แสนล้าน') && out.includes(' 2.6x ') && out.includes(' 6.4% ') && out.includes(' 0.72x '), 'การ์ด derive: ' + out);
+  // yield = 12/188*100 = 6.38297...% → 2dp site-wide (owner decision 24 ก.ย. 69) — was toFixed(1) "6.4%"
+  assert(out.includes(' 8.7x ') && out.includes('฿3.59 แสนล้าน') && out.includes(' 2.6x ') && out.includes(' 6.38% ') && out.includes(' 0.72x '), 'การ์ด derive: ' + out);
   assert(out.includes('~฿21.70 • รวมปันผล ฿160.00'), 'baseEps + scnNote + sc1tgt');
   // ★ Task 9 fix1: +1.3%/ปี = CAGR(total ที่ปัดผ่าน fmtMos = +4%) — เดิม (บั๊ก) ได้ +1.4%/ปี จาก CAGR(total ดิบ 4.2553%)
   assert(/class="ret pos">\+4% \(\+1\.3%\/ปี\)<\/div> ~฿36\.00/.test(out), 'sc1ret/class/div: ' + out);

@@ -174,7 +174,7 @@ const TOKENS = {
     if (d.values.shares != null && d.values.revenue != null && !(d.ps > 0)) throw new Error('report-data.values.revenue ≤ 0 — ไม่มี P/S ห้ามใช้ token {{rd:ps}}');
     return need(d.ps, 'shares/revenue').toFixed(1);
   },
-  yield: (d) => need(d.yield, 'dps').toFixed(1) + '%', pbv: (d) => need(d.pbv, 'bvps').toFixed(2),
+  yield: (d) => need(d.yield, 'dps').toFixed(2) + '%', pbv: (d) => need(d.pbv, 'bvps').toFixed(2),
   baseEps: (d) => money(d, d.values.baseEps, 'baseEps'), scnNote: (d) => (d.scnBasis && d.scnBasis.divIncluded ? ' • รวมปันผล' : ''),
 };
 for (const i of [0, 1, 2]) {

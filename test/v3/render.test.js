@@ -10,19 +10,23 @@ const today = new Date(Date.now() + 7 * 3600e3).toISOString().slice(0, 10);
 const load = (s) => { const d = JSON.parse(JSON.stringify(require(`../fixtures/v3/${s}.json`))); d.market.priceDate = today; d.meta.analysisDate = today; return d; };
 const seeds = { ZTS: '#e8731a' };
 
-for (const sym of ['ZTS', 'BBL']) {
+// ZTS-real = fixture ของจริง (postreview Finding 5) — fixture file name มี "-real" แต่ doc.symbol ข้างในคือ "ZTS"
+// เหมือน BBL/ZTS ⇒ ต้องส่ง checkHtml ด้วย `${doc.symbol}.html` (ไม่ใช่ `${sym}.html`) กัน E04 ตรวจ title ผิด
+for (const sym of ['ZTS', 'BBL', 'ZTS-real']) {
   const doc = load(sym);
   const view = C.compute(doc, { seeds });
   const src = R.toV2Source(doc, view);
   t(src.startsWith('<!DOCTYPE html>') && src.includes('<!--TEMPLATE:STYLE-->') && src.includes('<!--TEMPLATE:ENGINE-->'), `${sym}: markers present`);
   t(!/\{\{(?!rd:)[^}]*\}\}/.test(src), `${sym}: no v3 tokens left in source`);
   const html = expandReport(src);
-  const res = CR.checkHtml(html, `${sym}.html`, { source: src });
+  const res = CR.checkHtml(html, `${doc.symbol}.html`, { source: src });
   t.eq(res.errors.map((e) => `${e.id} ${e.msg}`), [], `${sym}: full v2 gate — zero errors`);
   t((html.match(/<section>/g) || []).length === 8, `${sym}: 8 sections`);
   // Finding 1 — verdict vcell "ส่วนต่างจากราคา" now carries {{rd:mosClass}} (v3 pages are never cron-patched,
   // so patchDerived#11/summaryPlan never gets to add it after the fact) — W26 must be green from render itself
   t(!res.warnings.some((w) => w.id === 'W26'), `${sym}: W26 (verdict MOS color class) not among warnings`);
+  // postreview Finding 2 — <h1> ต้องมีชื่อย่อหุ้นต่อท้าย (ธรรมเนียม v2 "Company (SYM)")
+  t(src.includes(`<h1>${doc.meta.company} (${doc.symbol})</h1>`), `${sym}: h1 includes ticker "(${doc.symbol})"`);
 }
 // Review Focus #2 — gauge scale ascending even when analyst target > fvHigh, or absent
 { const doc = load('ZTS'); doc.analyst.target = 400; const view = C.compute(doc, { seeds });
@@ -43,4 +47,22 @@ for (const sym of ['ZTS', 'BBL']) {
   const html = expandReport(src);
   const res = CR.checkHtml(html, 'ZTS.html', { source: src });
   t.eq(res.errors.map((e) => `${e.id} ${e.msg}`), [], 'divCum-per-case fixture: full v2 gate — zero errors'); }
+// postreview Finding 3 — mdesc EPS label ต้องระบุฐานให้ตรง: override.eps → "EPS ปรับ" (ไม่ใช่ TTM ของจริง)
+{ const doc = load('ZTS'); const view = C.compute(doc, { seeds });
+  const src = R.toV2Source(doc, view);
+  t(src.includes('EPS (TTM) $6.13 × P/E เป้าหมาย ~28x'), 'mdesc pe: no override → epsBasis gaap-ttm label "EPS (TTM)"'); }
+{ const doc = load('ZTS-real'); const view = C.compute(doc, { seeds });
+  const src = R.toV2Source(doc, view);
+  t(src.includes('EPS ปรับ $6.20 × P/E เป้าหมาย ~14x'), 'mdesc pe: leg.override.eps set → "EPS ปรับ" (not "EPS (TTM)")'); }
+{ const doc = load('ZTS'); doc.fundamentals.epsBasis = 'adj-ttm'; const view = C.compute(doc, { seeds });
+  const src = R.toV2Source(doc, view);
+  t(src.includes('EPS adj. (TTM) $6.13'), 'mdesc pe: epsBasis adj-ttm (no override) → "EPS adj. (TTM)"'); }
+{ const doc = load('ZTS'); doc.fundamentals.epsBasis = 'fy'; const view = C.compute(doc, { seeds });
+  const src = R.toV2Source(doc, view);
+  t(src.includes('EPS (FY) $6.13'), 'mdesc pe: epsBasis fy (no override) → "EPS (FY)"'); }
+// postreview Finding 4 — เลขลบในหัวคอลัมน์ฉากใช้ minus glyph U+2212 ไม่ใช่ ASCII hyphen
+{ const doc = load('ZTS-real'); const view = C.compute(doc, { seeds });
+  const src = R.toV2Source(doc, view);
+  t(src.includes('EPS −3%/ปี'), 'scenario col header: negative growth uses U+2212 minus ("EPS −3%/ปี")');
+  t(!/EPS -3%\/ปี/.test(src), 'scenario col header: no ASCII-hyphen "-3%/ปี" left in source'); }
 t.done();

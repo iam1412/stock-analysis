@@ -20,12 +20,19 @@ const METHOD_NAME = { pe: 'P/E', pbv: 'P/BV', ps: 'P/S', evsales: 'EV/Sales', ev
 const SRC_NAME = { median5y: 'มัธยฐาน 5 ปี', median10y: 'มัธยฐาน 10 ปี', peer: 'ค่ากลางกลุ่มเทียบ', justified: 'justified', sector: 'ค่ากลางเซกเตอร์' };
 const dot = (c) => `<div style="width:8px;height:8px;border-radius:50%;background:${c};display:inline-block;margin:0 3px"></div>`;
 
+// Finding 3 (postreview) — mdesc EPS ต้องระบุฐานให้ตรง: override.eps = "EPS ปรับ" (ไม่ใช่ TTM ของจริง)
+// ไม่งั้นตาม fundamentals.epsBasis (gaap-ttm/adj-ttm/fy) — เดิม mdesc พิมพ์ "EPS (TTM)" ตายตัวแม้ eps มาจาก override
+const EPS_BASIS_LABEL = { 'gaap-ttm': 'EPS (TTM)', 'adj-ttm': 'EPS adj. (TTM)', fy: 'EPS (FY)' };
+function epsLabel(leg, view) {
+  if (leg.override && leg.override.eps != null) return 'EPS ปรับ';
+  return EPS_BASIS_LABEL[view.doc.fundamentals.epsBasis] || 'EPS (TTM)';
+}
 function mdesc(leg, view) {
   const m = (v) => view.cur + RV.fmtPrice(v);
   const i = leg.inputs, b = { ...view.doc.fundamentals, ...(leg.override || {}) };
   const src = i.multipleSource ? ` (${SRC_NAME[i.multipleSource]})` : '';
   switch (leg.method) {
-    case 'pe': return `EPS (TTM) ${m(b.eps)} × P/E เป้าหมาย ~${i.multiple}x${src}`;
+    case 'pe': return `${epsLabel(leg, view)} ${m(b.eps)} × P/E เป้าหมาย ~${i.multiple}x${src}`;
     case 'pbv': return i.multiple != null ? `BVPS ${m(b.bvps)} × P/BV ${i.multiple}x${src}`
       : `P/BV เหมาะสม = (ROE ${b.roe}% − g ${i.g}%)/(r ${i.r}% − g ${i.g}%) ≈ ${((b.roe - i.g) / (i.r - i.g)).toFixed(2)} × BVPS ${m(b.bvps)}`;
     case 'ddm': return `D₁ = ปันผล ${m(b.dps)} × (1+g); g ${i.g}%, r ${i.r}%`;
@@ -68,7 +75,8 @@ function toV2Source(doc, view) {
   const ex = { pe: 'P/E', ps: 'P/S', pbv: 'P/BV', pffo: 'P/FFO', pfcf: 'P/FCF' }[s.exitMetric];
   const col = (i, cls, name) => {
     const sc = view.scn[i];
-    const g = sc.growth >= 0 ? `+${sc.growth}` : `${sc.growth}`;
+    // Finding 4 (postreview) — เลขลบใช้ minus glyph U+2212 (ตามธรรมเนียม v2) ไม่ใช่ ASCII hyphen
+    const g = sc.growth >= 0 ? `+${sc.growth}` : `−${Math.abs(sc.growth)}`;
     return `<div class="col ${cls}">
         <div class="top"><span>${name}</span><span>${drv} ${g}%/ปี</span></div>
         <div class="body">
@@ -113,7 +121,7 @@ ${RV.styledRD(view.rd)}
     <div>
       ${tags}
     </div>
-    <h1>${esc(m.company)}</h1>
+    <h1>${esc(m.company)} (${esc(doc.symbol)})</h1>
     <div class="sub">${pr(m.sub)}</div>
     <div class="price-row">
       <div>

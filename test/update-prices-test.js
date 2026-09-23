@@ -1533,7 +1533,13 @@ ok(U.commitBody([], []) === '', 'commitBody: ว่างเมื่อไม�
           const mirrorPe = dA.pe == null ? null : r1(dA.pe);
           const mirrorYld = dA.yield == null ? null : r2(dA.yield);
           ok(smA.pe !== mirrorPe, `N3 ${S} (c) stock-meta.pe = ฐานการ์ด ${smA.pe} ≠ ค่าที่กระจกจาก values จะเขียน ${mirrorPe}`);
-          ok(smA.dividendYield !== mirrorYld, `N3 ${S} (c) stock-meta.dividendYield = ฐานการ์ด ${smA.dividendYield} ≠ ค่าจาก values ${mirrorYld}`);
+          // postreview Fix1 (24 ก.ย. 69, yield → 2dp site-wide): ตัวเลขบังเอิญเท่ากับ mirror ได้แล้ว เพราะการ์ด
+          // ปันผลก็ round 2dp เท่า mirror ตอนนี้ (สูตรเดียวกัน DPS การ์ด ÷ ราคา — ไม่ใช่ "กระจกทับ" แต่บังเอิญตรงกัน)
+          // ⇒ ตัวชี้ที่แม่นกว่าความไม่เท่ากันเชิงตัวเลข คือ **แหล่งที่มา**: ต้องมี log ของ patchDerived เอง
+          // (#9 "stock-meta.dividendYield … (DPS … ÷ ราคา …)") ไม่ใช่ RV.mirrorStockMeta เขียนทับ
+          const dyFromPass = cardCh.some((c) => /^stock-meta\.dividendYield /.test(c));
+          ok(mirrorYld == null || smA.dividendYield !== mirrorYld || dyFromPass,
+            `N3 ${S} (c) stock-meta.dividendYield = ฐานการ์ด ${smA.dividendYield} (mirror จาก values จะได้ ${mirrorYld}) — เท่ากันได้โดยบังเอิญ (สูตรเดียวกัน 2dp) แต่ log ต้องยืนยันว่ามาจาก pass derived เอง`, cardCh.join(' | '));
           ok(smA.price === newPx && smA.fairValue === rdA.fv && smA.mos === r1(dA.mos),
             `N3 ${S} (c) กระจกเขียน 4 คีย์ของตัวเองถูกต้อง (price/fairValue/mos)`, `${smA.price}/${smA.fairValue}/${smA.mos}`);
 
