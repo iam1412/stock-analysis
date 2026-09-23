@@ -246,7 +246,7 @@ function validate(doc) {
   const PROSE_REQ = ['chart', 'valuation', 'gauge', 'mos', 'verdictHeadline', 'verdictBody', 'strategy', 'disclaimerSources'];
   if (!isObj(doc.prose)) E('prose', 'ต้องมี (object)');
   else { closed(doc.prose, 'prose', PROSE_REQ); for (const k of PROSE_REQ) str(doc.prose[k], `prose.${k}`); }
-  if (doc.text != null) {
+  if (doc.text !== undefined) {   // null ≠ ไม่มี — ต้องเป็น object (ต่างจากบล็อกอื่นที่ใช้ != null · ตามรีวิว Task 3)
     if (!isObj(doc.text)) E('text', 'ต้องเป็น object');
     else {
       closed(doc.text, 'text', TEXT_KEYS);

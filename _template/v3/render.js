@@ -281,7 +281,7 @@ ${jsonScript(RV.styledRD(view.rd))}
 
   <div class="disc">
     <b>คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
-    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ ${T.disclaimerAssump ? pr(T.disclaimerAssump) : 'P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต'}
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ${T.disclaimerAssump ? pr(T.disclaimerAssump) : ' P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต'}
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ${pr(doc.prose.disclaimerSources)}
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ ${esc(view.analysisDateText)} • สร้างด้วย stock-analyzer workflow</footer>
