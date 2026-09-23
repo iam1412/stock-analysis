@@ -90,8 +90,10 @@
     "analysisDate": "2026-09-20",                             // = footer "ข้อมูล ณ" · cron ไม่แตะ · ฐานของ updated/dedup/staleness
     "aiModel": "Claude Sonnet 5",
     "sources": ["Yahoo Finance", "SEC 10-Q", "stockanalysis.com"], // ≥3 (W08)
-    "gdots": 2
-    // ไม่มี theme — สีแบรนด์อยู่ที่ tools/seeds.json ที่เดียว (pick-brand ใต้ lock) · build: seeds → deriveTheme()
+    "gdots": 2,
+    "themeLegacy": null   // เฉพาะใบ migrate: 8 คีย์ palette เดิม (accent accentDark darkGrad glow subColor headerMuted verdictText vcellLabel)
+    // ใบใหม่: ไม่มี theme — seed hex อยู่ที่ tools/seeds.json ที่เดียว (pick-brand ใต้ lock) · build: makeTheme(seed) → deriveTheme()
+    // chgBg/chgColor = คิดจากทิศกราฟ (E34) · badge = default — ไม่อยู่ใน JSON ทั้งสองแบบ
   },
 
   "market": {                                                 // cron เท่านั้น (worker ส่งมาใน draft = error)
@@ -196,6 +198,13 @@
 
 ---
 
+### 3.5 สีแบรนด์ — ทำไมมี `themeLegacy` (วัดจริง 24 ก.ย. 69 · แก้ fix #3 ของ advisor ที่ไม่ครบ)
+
+- advisor เสนอ "ตัด theme ออก ใช้ seeds.json ที่เดียว" — วัดแล้ว **ไม่ครบ**: seeds.json มีแค่ 227/909 ใบ · 53/227 ไม่ตรง `makeTheme(seed)` แล้ว (สูตรถูก retune ทีหลัง: darkGrad/subColor/verdictText ต่าง) · 682 ใบที่ไม่มี seed ลองหา seed ย้อน (grid-search hue±6/s/l) ได้ accent ตรง ≤12 แค่ 210 ใบ และตรงครบ 8 คีย์แค่ **17 ใบ**
+- ⇒ palette ของใบเก่า **เป็นข้อมูล ไม่ใช่ค่าที่ derive ได้** — เก็บไว้ไม่ผิดหลัก "ค่าละ 1 สำเนา" (ไม่มีสำเนาอื่นและคำนวณไม่ได้) · re-derive = เปลี่ยนสี ~700 หน้า (accent เปลี่ยน ~470) = งานดีไซน์ ไม่ใช่ migration
+- กติกา: migrate → ใบที่ `makeTheme(seed)` ตรงทุกคีย์ ≤12 ไม่เก็บ themeLegacy (ใช้ seed) · ที่เหลือเก็บ `themeLegacy` · `save` ปฏิเสธ themeLegacy ในใบ NEW · ถ้าวันหนึ่งเจ้าของอยากให้ทุกใบใช้สูตรปัจจุบัน = ลบ themeLegacy ทีละชุด (งานแยก ต้องเห็นภาพก่อน)
+- seeds.json ได้ entry ครบทุกใบตอน migrate (seed เดิม หรือ seed ย้อนที่ใกล้สุด) เพื่อให้ pick-brand ตรวจสีชนได้ทั้งคลัง · ลบรายงาน → `pick-brand --prune`
+
 ## 4. Prose + กติกา B (`tools/v3/prose.js`)
 
 - ไวยากรณ์ token: `{{px}}` `{{fv}}` `{{mos}}` `{{leg1}}` `{{leg1.multiple}}` `{{scn.base.tgt}}` `{{scn.bull.ret}}` `{{analyst.target}}` `{{card.pe}}` … — ชุด token = **ทุกค่าใน view ที่ compute สร้าง** (ตารางเดียวใน `compute.js` ไม่มีรายการเขียนมือแยก)
@@ -278,9 +287,10 @@
    - prose: แทน literal ที่ตรงค่าผูกราคาด้วย token (ใช้ตัวตรวจกติกา B เดียวกัน) · `{{rd:x}}` → token v3 · นับ `PROSE-LIT` (literal รูปเงินที่เหลือ) ต่อใบ — **>0 ⇒ ถัง VALUE-DRIFT ไม่ใช่ CLEAN** (literal ลอกราคาวันวิเคราะห์ที่ราคาขยับไปแล้ว จับด้วยการเทียบราคาวันนี้ไม่ได้)
    - cards: map label → แคตตาล็อก · ไม่ลง → `custom[]` (ถ้าไม่ผูกราคา) หรือรายชื่อคน
 2. **Equivalence diff**: render v3 → เทียบกับ `dist/` v2 ปัจจุบันแบบ **text ที่มองเห็น** (normalize ช่องว่าง) ต่อ section · อนุญาตต่างเฉพาะตัวเลขที่ compute ต่างจาก literal เดิมเกิน rounding → รายงานว่า "ค่าเดิมค้าง, v3 ถูก" (คาดว่าเจอเยอะ = บัคเงียบที่ v2 ซ่อนอยู่) · ห้ามมี **ข้อความหาย** (บทเรียน `.ret` 23 ไฟล์) — word-level diff ของ prose ต้องว่าง
-3. **ผลลัพธ์ 3 ถัง**: `CLEAN` (เขียน .json ลบ .html ใน commit เดียวกัน) · `VALUE-DRIFT` (ต่างเฉพาะตัวเลขที่ v2 ค้าง — controller รีวิวตาราง แล้วอนุมัติเป็นชุด) · `HUMAN` (ขาจำแนกไม่ได้ · weights ไม่ลง · ข้อความหาย · v1 ที่ 21 ใบตัดสินไม่ได้) — คาด ~20–60 ใบ
-4. **Transition**: build อ่านทั้ง `reports/*.html` (v2 path เดิม) และ `reports/*.json` (v3) · ห้ามมีทั้งสองไฟล์ของหุ้นเดียว (build error) · cron เดินสองสาย · NEW ทุกใบเป็น v3 ตั้งแต่วันเปิด
-5. **Cutover** เมื่อถัง HUMAN = 0: ลบ v2 path (`derivedPassV2`, `keepMap`, `patchDerived` สาย HTML, `migrate*.js`, `apply-edits` `@@`, `field-manifest`, `preserve-dates`, V2TOKENS, check-reports ส่วน HTML, `brandtheme.js --write` + `fix-contrast.js` ที่ regex theme ใน report-data — สีอยู่ที่ seeds.json ที่เดียว) — **ลบโค้ดจำนวนมาก** เป็นตัวชี้วัดความสำเร็จ
+3. **สี**: equivalence diff มีช่อง colour ด้วย — theme ที่ render เทียบ theme เดิมทุกคีย์ rgbDist ≤12 ไม่งั้นเข้าถัง HUMAN (ไม่ควรเกิดเพราะ §3.5 เก็บ themeLegacy)
+4. **ผลลัพธ์ 3 ถัง**: `CLEAN` (เขียน .json ลบ .html ใน commit เดียวกัน) · `VALUE-DRIFT` (ต่างเฉพาะตัวเลขที่ v2 ค้าง — controller รีวิวตาราง แล้วอนุมัติเป็นชุด) · `HUMAN` (ขาจำแนกไม่ได้ · weights ไม่ลง · ข้อความหาย · v1 ที่ 21 ใบตัดสินไม่ได้) — คาด ~20–60 ใบ
+5. **Transition**: build อ่านทั้ง `reports/*.html` (v2 path เดิม) และ `reports/*.json` (v3) · ห้ามมีทั้งสองไฟล์ของหุ้นเดียว (build error) · cron เดินสองสาย · NEW ทุกใบเป็น v3 ตั้งแต่วันเปิด
+6. **Cutover** เมื่อถัง HUMAN = 0: ลบ v2 path (`derivedPassV2`, `keepMap`, `patchDerived` สาย HTML, `migrate*.js`, `apply-edits` `@@`, `field-manifest`, `preserve-dates`, V2TOKENS, check-reports ส่วน HTML, `brandtheme.js --write` + `fix-contrast.js` ที่ regex theme ใน report-data — สีอยู่ที่ seeds.json ที่เดียว) — **ลบโค้ดจำนวนมาก** เป็นตัวชี้วัดความสำเร็จ
 
 ## 11. ลำดับการทำ (phase — แต่ละ phase merge ได้เอง ไม่พังของเดิม)
 
