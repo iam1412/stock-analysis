@@ -1,0 +1,58 @@
+{
+  "v": 3,
+  "symbol": "BBL", "currency": "THB", "region": "TH", "dateEra": "BE",
+  "meta": {
+    "company": "ธนาคารกรุงเทพ", "exchange": "SET",
+    "sub": "ธนาคารพาณิชย์ใหญ่สุดด้านสินทรัพย์ • ลูกค้าธุรกิจ • ต่างประเทศ",
+    "headerTags": ["Financials • Banking"],
+    "analysisDate": "2026-09-20", "aiModel": "Claude Sonnet 5",
+    "sources": ["SET", "Yahoo Finance", "งบการเงิน Q2/2569"],
+    "themeLegacy": {
+      "accent": "#0071e3", "accentDark": "#0058b9",
+      "darkGrad": "linear-gradient(135deg,#0a2540 0%,#123a63 55%,#1a4f86 140%)",
+      "glow": "rgba(110,160,220,.35)", "subColor": "#c7cbd4", "headerMuted": "#b3b8c2",
+      "verdictText": "#d4d6dd", "vcellLabel": "#c4c7cf"
+    }
+  },
+  "market": {
+    "px": 188, "priceDate": "2026-09-23", "chgSuffix": "รอบปี",
+    "chart": { "data": [["ก.ย. 68", 150], ["ธ.ค. 68", 160], ["มี.ค. 69", 170], ["มิ.ย. 69", 176], ["ก.ย. 69", 188]] }
+  },
+  "fundamentals": {
+    "eps": 21.7, "epsBasis": "gaap-ttm", "dps": 12, "bvps": 260, "shares": 1909000000, "revenue": 140000000000,
+    "netIncome": 41400000000, "roe": 8.4, "roa": 0.9, "beta": 0.8, "peAvg5y": 8.5
+  },
+  "legs": [
+    { "method": "pe", "label": "P/E มัธยฐาน 5 ปี", "inputs": { "multiple": 8.5, "multipleSource": "median5y" }, "note": "มัธยฐาน 5 ปี" },
+    { "method": "ddm", "label": "DDM", "inputs": { "g": 3, "r": 9.5 }, "note": "ปันผลโตตามกำไร" },
+    { "method": "pbv", "label": "Justified P/BV", "inputs": { "g": 3, "r": 9.5 }, "note": "ROE ปัจจุบัน" }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": ["mcap", "pe", "peAvg5y", "pbv", "netIncome", "eps", "bvps", "roe", "revenue", "yield", "beta"],
+    "notes": {}, "custom": [{ "label": "NIM", "value": "3.1%", "note": "ทรงตัว" }]
+  },
+  "scenarios": {
+    "years": 3, "divIncluded": true, "perYear": "cagr", "driver": "eps", "exitMetric": "pe",
+    "cases": [
+      { "growth": 0, "exitMultiple": 7, "divCum": 36, "desc": "สินเชื่อไม่โต" },
+      { "growth": 4, "exitMultiple": 8.5, "divCum": 38, "desc": "ฐาน" },
+      { "growth": 7, "exitMultiple": 10, "divCum": 40, "desc": "ดอกเบี้ยขาขึ้น" }
+    ],
+    "note": "รวมปันผล 3 ปี"
+  },
+  "analyst": null,
+  "prose": {
+    "chart": "ราคาขึ้นต่อเนื่องทั้งปี ปัจจุบัน {{px}}",
+    "valuation": "สามวิธีเฉลี่ยได้ {{fv}}",
+    "gauge": "ราคาใกล้มูลค่าเหมาะสม",
+    "mos": "ส่วนเผื่อ {{mos}} ยังไม่พอ",
+    "verdictHeadline": "ราคาเหมาะสม — รอจังหวะ",
+    "verdictBody": "ปันผลดี แต่ส่วนลดน้อย",
+    "strategy": "รอราคาใกล้ {{mos20}}",
+    "disclaimerSources": "ที่มางบ: SET · ราคา: Yahoo Finance"
+  },
+  "catalysts": ["<b>ดอกเบี้ย:</b> NIM ทรงตัว", "<b>ต่างประเทศ:</b> Permata โต", "<b>ปันผล:</b> สูง"],
+  "risks": ["<b>NPL:</b> SME อ่อนแอ", "<b>ดอกเบี้ยลง:</b> NIM หด", "<b>เศรษฐกิจ:</b> ชะลอ"],
+  "extras": []
+}

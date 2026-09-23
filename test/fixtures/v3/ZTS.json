@@ -1,0 +1,59 @@
+{
+  "v": 3,
+  "symbol": "ZTS", "currency": "USD", "region": "US", "dateEra": "BE",
+  "meta": {
+    "company": "Zoetis Inc.", "exchange": "NYSE",
+    "sub": "ผู้นำยาและวัคซีนสัตว์อันดับ 1 ของโลก • สัตว์เลี้ยง • ปศุสัตว์",
+    "headerTags": ["Animal Health", "Pet Care & Livestock"],
+    "analysisDate": "2026-09-20", "aiModel": "Claude Sonnet 5",
+    "sources": ["StockAnalysis.com", "Yahoo Finance", "SEC 10-Q"],
+    "priceNote": "StockAnalysis.com ตรงกับ Yahoo Finance",
+    "themeLegacy": {"accent":"#31a60d","accentDark":"#23760a","darkGrad":"linear-gradient(135deg,#0a2202 0%,#195606 58%,#2c990a 140%)","glow":"rgba(70,236,19,.35)","subColor":"#dff3d9","headerMuted":"#e7f2e3","verdictText":"#dff3d8","vcellLabel":"#fbfdfb"}
+  },
+  "market": {
+    "px": 120, "priceDate": "2026-09-23", "chgSuffix": "รอบปี",
+    "chart": { "data": [["ก.ย. 68", 172.1], ["พ.ย. 68", 160.4], ["ม.ค. 69", 158.8], ["มี.ค. 69", 149.0], ["พ.ค. 69", 141.2], ["ก.ค. 69", 130.9], ["ก.ย. 69", 120.0]] },
+    "range52w": { "lo": 118.5, "hi": 175.8 }
+  },
+  "fundamentals": {
+    "eps": 6.13, "epsBasis": "gaap-ttm", "dps": 2.0, "bvps": 11.4, "shares": 443000000, "revenue": 9400000000,
+    "netIncome": 2720000000, "roe": 52, "roa": 17, "netMargin": 27.6, "opMargin": 36, "beta": 0.9,
+    "fcf": 2300000000, "netDebt": 5100000000, "peAvg5y": 34
+  },
+  "legs": [
+    { "method": "pe", "label": "P/E มัธยฐาน 5 ปี (ส่วนลด)", "inputs": { "multiple": 28, "multipleSource": "median5y" },
+      "note": "ใช้ P/E 28 เท่า ต่ำกว่ามัธยฐาน 5 ปี เพราะการเติบโตชะลอ" },
+    { "method": "dcf", "label": "DCF 2 ช่วง", "inputs": { "g1": 7, "years1": 5, "tg": 3, "r": 8.5, "rfCurrency": "USD" },
+      "note": "FCF ฐาน TTM โต 7% 5 ปี แล้วโตถาวร 3%" }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": ["mcap", "pe", "peAvg5y", "pbv", "netIncome", "eps", "bvps", "roe", "revenue", "netMargin", "yield", "beta"],
+    "notes": { "pe": "ต่ำกว่ามัธยฐานย้อนหลังชัดเจน" },
+    "custom": [],
+    "hint": "อัปเดตตามงบ Q2/2026"
+  },
+  "scenarios": {
+    "years": 3, "divIncluded": true, "perYear": "cagr", "driver": "eps", "exitMetric": "pe",
+    "cases": [
+      { "growth": 2, "exitMultiple": 20, "divCum": 6.3, "desc": "ยอดสัตว์เลี้ยงชะลอ คู่แข่งยาใหม่" },
+      { "growth": 8, "exitMultiple": 26, "divCum": 6.6, "desc": "โตตามอุตสาหกรรม" },
+      { "growth": 12, "exitMultiple": 30, "divCum": 6.9, "desc": "ยาใหม่กลุ่ม dermatology โตแรง" }
+    ],
+    "note": "ราคาเป้าคิดจาก EPS ปีที่ 3 คูณ P/E ออก"
+  },
+  "analyst": { "target": 190, "n": 14, "rating": "Buy", "asOf": "2026-09-20" },
+  "prose": {
+    "chart": "ราคาปรับลงจากต้นปีก่อนฟื้นช่วงไตรมาสล่าสุด ปัจจุบัน {{px}}",
+    "valuation": "สองวิธีให้ค่าใกล้กัน มูลค่าเหมาะสม {{fv}}",
+    "gauge": "ราคา {{px}} ต่ำกว่ามูลค่าเหมาะสม {{fv}} อยู่ {{mos}}",
+    "mos": "ส่วนเผื่อความปลอดภัย {{mos}} — น่าสนใจ",
+    "verdictHeadline": "ถูกกว่ามูลค่า — ธุรกิจคุณภาพสูง",
+    "verdictBody": "ราคา {{px}} เทียบมูลค่าเหมาะสม {{fv}}",
+    "strategy": "ทยอยสะสมใต้ {{mos20}}",
+    "disclaimerSources": "ที่มางบ: SEC 10-Q · ราคา: Yahoo Finance"
+  },
+  "catalysts": ["<b>ยาใหม่:</b> Librela ขยายตลาด", "<b>ราคาขาย:</b> ปรับขึ้นได้ต่อเนื่อง", "<b>กระแสเงินสด:</b> แข็งแรง ซื้อหุ้นคืน"],
+  "risks": ["<b>ความปลอดภัยยา:</b> ข่าวผลข้างเคียง", "<b>คู่แข่ง:</b> ยา generic", "<b>เศรษฐกิจ:</b> ค่าใช้จ่ายสัตว์เลี้ยงลดลง"],
+  "extras": []
+}
