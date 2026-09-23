@@ -322,8 +322,13 @@ function validate(doc) {
   if (doc.analyst != null) {
     const a = doc.analyst;
     if (!isObj(a)) E('analyst', 'ต้องเป็น object หรือ null');
-    else { closed(a, 'analyst', ['target', 'n', 'rating', 'asOf']); num(a.target, 'analyst.target', { gt: 0 }); num(a.n, 'analyst.n', { int: true, min: 1 });
-      str(a.rating, 'analyst.rating'); if (!ISO.test(a.asOf || '')) E('analyst.asOf', 'ต้องเป็น ISO YYYY-MM-DD'); }
+    else {
+      closed(a, 'analyst', ['target', 'n', 'rating', 'asOf']);
+      num(a.target, 'analyst.target', { gt: 0 });
+      if (a.n != null) num(a.n, 'analyst.n', { int: true, min: 1 });
+      str(a.rating, 'analyst.rating');
+      if (a.asOf != null && !ISO.test(a.asOf)) E('analyst.asOf', 'ต้องเป็น ISO YYYY-MM-DD หรือ null');
+    }
   }
 
   // ── prose / lists / extras ──

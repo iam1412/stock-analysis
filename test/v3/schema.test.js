@@ -131,4 +131,9 @@ for (const r of [0, -150]) {
 }
 { const d = base(); d.legs.push(ddm2({ d1: 2, g1: 10, years1: 5, g2: 9, r: 9, horizon: null })); t(paths(S.validate(d)).includes('legs[2].inputs.g2'), 'ddm2 horizon null r = g2 → error at inputs.g2'); }
 { const d = base(); d.legs.push(ddm2({ d1: 2, g1: 10, years1: 5, g2: 9, r: 9, horizon: 30 })); t.eq(S.validate(d), [], 'ddm2 finite horizon r = g2 is fine'); }
+// Plan 2a Task 7 — analyst.n / asOf ไม่บังคับ (§3.6 D)
+{ const d = base(); d.analyst = { target: 190, rating: 'Buy' }; t.eq(S.validate(d), [], 'analyst without n/asOf is valid'); }
+{ const d = base(); d.analyst = { target: 190, rating: 'Buy', n: null, asOf: null }; t.eq(S.validate(d), [], 'explicit nulls are valid'); }
+{ const d = base(); d.analyst.n = 0; t(paths(S.validate(d)).includes('analyst.n'), 'n, when present, is an int ≥ 1'); }
+{ const d = base(); d.analyst.asOf = '20/09/2026'; t(paths(S.validate(d)).includes('analyst.asOf'), 'asOf, when present, is ISO'); }
 t.done();

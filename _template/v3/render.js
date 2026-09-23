@@ -125,8 +125,9 @@ function toV2Source(doc, view) {
       </div>`;
   };
   const li = (xs) => xs.map((x) => `<li>${pr(x)}</li>`).join('\n          ');
-  const analystCell = doc.analyst
-    ? `<div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~{{rd:analystTgt}} (${esc(doc.analyst.rating)} · ${doc.analyst.n} ราย)</div></div>`
+  const an = doc.analyst;
+  const analystCell = an
+    ? `<div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~{{rd:analystTgt}} (${esc(an.rating)} · ${an.n != null ? an.n + ' ราย' : 'n/a'})</div></div>`
     : `<div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v">ไม่มีข้อมูล</div></div>`;
   const tags = [`${esc(m.exchange)}: ${esc(doc.symbol)}`].concat((m.headerTags || []).map(esc)).map((x) => `<span class="tag">${x}</span>`).join('\n      ');
   const r52 = doc.market.range52w;

@@ -142,4 +142,9 @@ t.eq(JSON.parse(R.jsonScript('{"a":"</script>"}')).a, '</script>', 'jsonScript o
   const view = C.compute(doc, { seeds }); const src = R.toV2Source(doc, view);
   t(src.includes('EPS IFRS (TTM) $6.13 × P/E เป้าหมาย ~28x (มัธยฐาน FY2022–FY2025)'), 'medianWindow replaces the source name · ifrs label');
   t.eq(require('../../tools/v3/cards.js').renderCard('eps', view).d, 'IFRS', 'eps card base line says IFRS'); }
+// Plan 2a Task 7 — ไม่มีจำนวนราย → "n/a" แต่เป้า + ป้าย gauge ยังอยู่ (เดิมต้องตั้ง analyst:null = "ไม่มีข้อมูล" ซึ่งเป็นเท็จ)
+{ const doc = load('ZTS'); doc.analyst = { target: 190, rating: 'Buy' }; const src = R.toV2Source(doc, C.compute(doc, { seeds }));
+  t(src.includes('~{{rd:analystTgt}} (Buy · n/a)'), 'verdict cell shows n/a for the count');
+  t(src.includes('{{rd:analystTgt}}<br><small>เป้าเฉลี่ย Analyst</small>'), 'gauge marker kept');
+  t.eq(CR.checkHtml(expandReport(src), 'ZTS.html', { source: src }).errors.map((e) => e.id), [], 'analyst without n: v2 gate 0 errors'); }
 t.done();
