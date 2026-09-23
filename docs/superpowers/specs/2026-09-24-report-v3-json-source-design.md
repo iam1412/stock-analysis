@@ -127,7 +127,8 @@
   "metrics": {                                                // section 1
     "cards": ["mcap", "pe", "pbv", "yield", "eps", "roe", "netMargin", "revenue", "range52w", "beta", "peAvg5y", "fcf"],
     "notes": { "pe": "prose สั้นใต้การ์ด (กติกา B)" },
-    "custom": [ { "label": "สาขาทั่วโลก", "value": "45 ประเทศ", "note": "…" } ]   // ≤4 · value ห้ามผูกราคา
+    "custom": [ { "label": "สาขาทั่วโลก", "value": "45 ประเทศ", "note": "…" } ],  // ≤4 · value ห้ามผูกราคา
+    "hint": "ข้อความสั้นหัว section 1 (ไม่บังคับ)"
   },
 
   "scenarios": {                                              // section 6 — Bear/Base/Bull ครบ 3
@@ -147,7 +148,7 @@
 
   "prose": {                                                  // ทุกช่องผ่านกติกา B + render token
     "chart": "…", "valuation": "…", "gauge": "…", "mos": "…",
-    "verdictHeadline": "…", "verdictBody": "…", "strategy": "…", "analystRating": "…",
+    "verdictHeadline": "…", "verdictBody": "…", "strategy": "…",          // เรตติ้ง analyst อยู่ที่ analyst.rating
     "disclaimerSources": "…"
   },
   "catalysts": ["…", "…"],                                    // 3–8 ข้อ

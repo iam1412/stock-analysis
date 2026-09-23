@@ -15,6 +15,12 @@
 - Plan 3 = spec P5 + P6 — cron v3 path + `range52w`, then `migrate-v3.js` with its 3 buckets and the colour channel.
 - Plan 4 = spec P7 — cutover and deletion of the v2 path.
 
+## Execution Notes (subagent-driven)
+
+- Work in a **git worktree** branched from `design/report-v3-json-source` (Task 10/11 run `npm run build` and `gen-docs`, which touch `dist/` and CLAUDE.md).
+- Every implementer is pinned to **`model: sonnet`** (CLAUDE.md §3.2). Every implementer prompt carries these standing prohibitions: **no push** · **no direct `advisor` call** · **never edit `test/check-reports.js` or any gate/`RV.*`/`DV.*` formatter to make a v3 test pass** · **never write under `reports/`**.
+- The reviewer for each task can be Opus. Reviewers of **Task 5** (corpus) and **Task 9** (full gate) must show the test *can* fail: mutate one value, watch it go red, then revert.
+
 ## Global Constraints
 
 - No npm dependencies. Node ≥20.19. CommonJS (`'use strict'; require`) like every file in `tools/`.
@@ -224,12 +230,12 @@ t.done();
     "analysisDate": "2026-09-20", "aiModel": "Claude Sonnet 5",
     "sources": ["StockAnalysis.com", "Yahoo Finance", "SEC 10-Q"],
     "priceNote": "StockAnalysis.com ตรงกับ Yahoo Finance",
-    "themeLegacy": null
+    "themeLegacy": {"accent":"#31a60d","accentDark":"#23760a","darkGrad":"linear-gradient(135deg,#0a2202 0%,#195606 58%,#2c990a 140%)","glow":"rgba(70,236,19,.35)","subColor":"#dff3d9","headerMuted":"#e7f2e3","verdictText":"#dff3d8","vcellLabel":"#fbfdfb"}
   },
   "market": {
-    "px": 150.2, "priceDate": "2026-09-23", "chgSuffix": "รอบปี",
-    "chart": { "data": [["ก.ย. 68", 172.1], ["พ.ย. 68", 160.4], ["ม.ค. 69", 158.8], ["มี.ค. 69", 149.0], ["พ.ค. 69", 141.2], ["ก.ค. 69", 146.9], ["ก.ย. 69", 150.2]] },
-    "range52w": { "lo": 139.5, "hi": 175.8 }
+    "px": 120, "priceDate": "2026-09-23", "chgSuffix": "รอบปี",
+    "chart": { "data": [["ก.ย. 68", 172.1], ["พ.ย. 68", 160.4], ["ม.ค. 69", 158.8], ["มี.ค. 69", 149.0], ["พ.ค. 69", 141.2], ["ก.ค. 69", 130.9], ["ก.ย. 69", 120.0]] },
+    "range52w": { "lo": 118.5, "hi": 175.8 }
   },
   "fundamentals": {
     "eps": 6.13, "epsBasis": "gaap-ttm", "dps": 2.0, "bvps": 11.4, "shares": 443000000, "revenue": 9400000000,
@@ -287,10 +293,10 @@ t.done();
     "analysisDate": "2026-09-20", "aiModel": "Claude Sonnet 5",
     "sources": ["SET", "Yahoo Finance", "งบการเงิน Q2/2569"],
     "themeLegacy": {
-      "accent": "#1e4fa3", "accentDark": "#163b7a",
-      "darkGrad": "linear-gradient(135deg,#0e1a33 0%,#16284f 58%,#1f3a70 140%)",
-      "glow": "rgba(30,79,163,.35)", "subColor": "#c4d0e6", "headerMuted": "#aab8d2",
-      "verdictText": "#d3dcee", "vcellLabel": "#c2cde3"
+      "accent": "#0071e3", "accentDark": "#0058b9",
+      "darkGrad": "linear-gradient(135deg,#0a2540 0%,#123a63 55%,#1a4f86 140%)",
+      "glow": "rgba(110,160,220,.35)", "subColor": "#c7cbd4", "headerMuted": "#b3b8c2",
+      "verdictText": "#d4d6dd", "vcellLabel": "#c4c7cf"
     }
   },
   "market": {
@@ -801,21 +807,23 @@ t.eq(v.d.mosText, RV.derive(v.rd, v.sm).mosText, 'view.d is RV.derive of the bri
 t.eq(v.rd.v, 2, 'bridge emits report-data v2');
 t.eq(Object.keys(v.rd.values).includes('scenarios'), true, 'bridge carries scenarios');
 t(v.chart.min < Math.min(...v.chart.data.map((p) => p[1])) && v.chart.max > v.fv, 'chart bounds include data and fv');
-t.eq(v.chart.highlight, [4, 0], 'highlight = [index of min, index of max]');
+t.eq(v.chart.highlight, [6, 0], 'highlight = [index of min, index of max]');
 t(v.gauge.min < v.fv * 0.7 && v.gauge.max > 190, 'gauge spans mos30 … analyst target');
 t.eq(v.theme.chgColor, '#c5221f', 'chart down → red chg colour (E34)');
-t(/^#/.test(v.theme.accent) && v.gdots.length === 3, 'seeded theme + 3 gdots');
+t(v.theme.accent === '#31a60d' && v.gdots.length === 3, 'themeLegacy palette + 3 gdots');
+{ const d = load('ZTS'); d.meta.themeLegacy = null; const w = C.compute(d, { seeds });
+  t.eq(w.theme.accent, require('../../tools/brandtheme.js').makeTheme('#e8731a').accent, 'no themeLegacy → makeTheme(seed)'); }
 t.eq(v.analysisDateText, '20 ก.ย. 2569', 'analysis date in BE');
 
 const b = C.compute(load('BBL'), { seeds: {} });
-t.eq(b.theme.accent, '#1e4fa3', 'themeLegacy wins over seeds');
+t.eq(b.theme.accent, '#0071e3', 'themeLegacy wins over seeds');
 t.eq(b.theme.chgColor, '#137333', 'chart up → green');
 t.eq(b.rd.values.analystTgt, undefined, 'no analyst → no analystTgt in bridge');
 
 { const d = load('ZTS'); d.fvWeights = [0.75, 0.25]; const w = C.compute(d, { seeds });
   t.near(w.fv, 0.75 * w.legs[0].value + 0.25 * w.legs[1].value, 1e-9, 'explicit weights'); }
 { const d = load('ZTS'); d.market.px = -3; t.throws(() => C.compute(d, { seeds }), /market\.px/, 'schema errors surface with path'); }
-{ const d = load('ZTS'); t.throws(() => C.compute(d, { seeds: {} }), /seeds\.json.*ZTS/, 'no theme source → clear error'); }
+{ const d = load('ZTS'); d.meta.themeLegacy = null; t.throws(() => C.compute(d, { seeds: {} }), /seeds\.json.*ZTS/, 'no theme source → clear error'); }
 { const d = load('ZTS'); d.legs[1] = { method: 'declared', label: 'SOTP', inputs: { value: 150, basis: 'sotp', extrasRef: 0 } };
   t.throws(() => C.compute(d, { seeds }), /legs\[1\]\.inputs\.extrasRef/, 'extrasRef must point at an extras table'); }
 t.done();
@@ -938,7 +946,7 @@ Before running it, note `RV.parseIso('2026-09-20')` returns `{yearCE:2026, monId
 - [ ] **Step 4: Run the tests**
 
 Run: `node test/v3-test.js`
-Expected: `✓ compute: 20/20`. If `highlight` fails, print `v.chart.data`: ZTS min is index 4 (141.2), max index 0 (172.1).
+Expected: `✓ compute: 20/20`. If `highlight` fails, print `v.chart.data`: ZTS min is index 6 (120.0), max index 0 (172.1).
 
 - [ ] **Step 5: Commit**
 
@@ -949,16 +957,16 @@ git commit -m "feat(v3): compute() — legs→fv, scenarios, chart/gauge bounds,
 
 ---
 
-### Task 5: Corpus parity — v3 token table ≡ v2 tokens on all 885 v2 reports (acceptance gate)
+### Task 5: Corpus parity — every v2 report round-trips through `compute()` with identical token output (acceptance gate)
 
-This is the test that makes every later plan safe. Every v3 token that has a v2 twin must render **the same string** as the v2 token on every real v2 report.
+This is the test that makes every later plan safe. It pushes **all ~885 real v2 value sets** through the v3 schema, `compute()` and the bridge, and requires that every v3 token with a v2 twin renders **the same string** as the v2 token rendered from the original file. (An earlier draft compared `RV.TOKENS` with itself, which can never fail. Don't reintroduce that.)
 
 **Files:**
 - Create: `tools/v3/tokens.js`, `test/v3/tokens-corpus.test.js`
 
 **Interfaces:**
-- Consumes: `RV.TOKENS`, `RV.derive`, `RV.validateValues`, `RM.readReportData`, `RM.readStockMeta`.
-- Produces: `TOKENS_V3` (name → `(view) → string`), `V2_TWIN` (v3 name → v2 token key), and `viewFromV2(rd, sm) → {d, cur}`, a minimal view built from v2 data and used by the corpus test.
+- Consumes: `RV.TOKENS`, `RV.derive`, `RV.isV2`, `RM.readReportData`, `RM.readStockMeta`, `C.compute`, `S.THEME_KEYS`, `build.js` `THEME_DEFAULTS`.
+- Produces: `TOKENS_V3` (name → `(view) → string`) and `V2_TWIN` (v3 name → v2 token key).
 
 - [ ] **Step 1: Write the failing test**
 
@@ -970,27 +978,67 @@ const fs = require('fs');
 const path = require('path');
 const RV = require('../../tools/report-values.js');
 const RM = require('../../tools/report-meta.js');
+const S = require('../../tools/v3/schema.js');
+const C = require('../../tools/v3/compute.js');
 const TK = require('../../tools/v3/tokens.js');
+const { THEME_DEFAULTS } = require('../../build.js');
+
+// v2 values → v3 doc ขั้นต่ำ: ขา declared 2 ขาที่ fvLow/fvHigh + weights ให้ได้ fv เดิม · ฉากใช้ baseOverride + exit = tgt/base
+function v3FromV2(rd, sm, symbol) {
+  const v = rd.values, f = {};
+  for (const k of ['eps', 'shares', 'revenue', 'dps', 'bvps']) if (v[k] != null) f[k] = v[k];
+  if (f.eps != null) f.epsBasis = 'gaap-ttm';
+  const lo = v.fvLow != null ? v.fvLow : rd.fv, hi = v.fvHigh != null ? v.fvHigh : rd.fv;
+  const decl = (x) => ({ method: 'declared', label: 'x', inputs: { value: x, basis: 'other' } });
+  const b = v.scnBasis || { years: 3, divIncluded: false, perYear: null };
+  const base = v.baseEps != null && v.baseEps > 0 ? v.baseEps : 1;
+  const theme = {}; for (const k of S.THEME_KEYS) theme[k] = (rd.theme && rd.theme[k]) || THEME_DEFAULTS[k];
+  return {
+    v: 3, symbol, currency: sm.currency, region: sm.currency === 'THB' ? 'TH' : 'US', dateEra: v.dateEra,
+    meta: { company: 'x', exchange: 'x', sub: 'parity fixture xx', analysisDate: v.priceDate, aiModel: 'Claude Sonnet 5', sources: ['a', 'b', 'c'], themeLegacy: theme },
+    market: { px: v.px, priceDate: v.priceDate, chgSuffix: v.chgSuffix,
+      chart: { data: rd.chart.data, ...(rd.chart.gridFmt && { gridFmt: rd.chart.gridFmt }), ...(rd.chart.dataFmt && { dataFmt: rd.chart.dataFmt }) } },
+    fundamentals: f,
+    legs: [decl(lo), decl(hi)],
+    fvWeights: hi === lo ? null : [(hi - rd.fv) / (hi - lo), (rd.fv - lo) / (hi - lo)],
+    metrics: { cards: ['mcap', 'pe', 'pbv', 'yield'], notes: {}, custom: [] },
+    scenarios: { years: b.years, divIncluded: b.divIncluded, perYear: b.perYear == null ? null : b.perYear, driver: 'eps', exitMetric: 'pe',
+      baseOverride: { value: base, why: 'parity' },
+      cases: (v.scenarios || [{ tgt: 1 }, { tgt: 1 }, { tgt: 1 }]).map((x) => ({ growth: 0, exitMultiple: x.tgt / base, ...(b.divIncluded && { divCum: x.div }), desc: 'x' })),
+      note: 'x' },
+    analyst: v.analystTgt != null ? { target: v.analystTgt, n: 1, rating: 'x', asOf: v.priceDate } : null,
+    prose: Object.fromEntries(['chart', 'valuation', 'gauge', 'mos', 'verdictHeadline', 'verdictBody', 'strategy', 'disclaimerSources'].map((k) => [k, 'x'])),
+    catalysts: ['a', 'b', 'c'], risks: ['a', 'b', 'c'], extras: [],
+  };
+}
 
 const dir = path.join(__dirname, '..', '..', 'reports');
-let files = 0, checked = 0;
+let files = 0, ok = 0, checked = 0;
+const findings = [];
 for (const f of fs.readdirSync(dir).filter((x) => x.endsWith('.html'))) {
   const html = fs.readFileSync(path.join(dir, f), 'utf8');
   const rd = RM.readReportData(html).data;
   if (!RV.isV2(rd)) continue;
   const sm = RM.readStockMeta(html);
+  const sym = f.replace(/\.html$/, '');
   files++;
-  const view = TK.viewFromV2(rd, sm);
+  let out;
+  try { out = C.compute(v3FromV2(rd, sm, sym), {}); } catch (e) { findings.push(`${sym}: ${e.message.split('\n')[0]}`); continue; }
+  ok++;
+  const dA = RV.derive(rd, sm);
   for (const [v3, v2] of Object.entries(TK.V2_TWIN)) {
-    let want, got;
-    try { want = String(RV.TOKENS[v2](view.d)); } catch (_) { continue; }   // value null in this report → token not usable in v2 either
-    got = TK.TOKENS_V3[v3](view);
+    let want;
+    try { want = String(RV.TOKENS[v2](dA)); } catch (_) { continue; }   // ค่าไม่มีในใบนี้ → v2 ก็ใช้ token นี้ไม่ได้
+    let got;
+    try { got = TK.TOKENS_V3[v3](out); } catch (e) { got = 'THROW ' + e.message; }
     checked++;
-    if (got !== want) t(false, `${f} {{${v3}}} = "${got}" but {{rd:${v2}}} = "${want}"`);
+    if (got !== want) t(false, `${sym} {{${v3}}} = "${got}" but v2 {{rd:${v2}}} = "${want}"`);
   }
 }
+if (findings.length) console.log(`  ℹ compute() refused ${findings.length} v2 value sets (schema findings — review, don't loosen blindly):\n    ` + findings.slice(0, 30).join('\n    '));
 t(files >= 880, `scanned the v2 corpus (${files} files)`);
-t(checked > 20000, `compared ${checked} token renders`);
+t(ok >= files * 0.97, `compute() accepted ≥97% of real v2 value sets (${ok}/${files})`);
+t(checked > 0, `compared ${checked} token renders`);
 t.done();
 ```
 
@@ -1005,8 +1053,9 @@ Expected: FAIL — `Cannot find module '../../tools/v3/tokens.js'`.
 'use strict';
 /**
  * tokens.js — ตาราง token ของ prose v3 ({{px}} {{fv}} {{scn.base.ret}} {{leg1}} …)
- * ★ token ที่มีคู่ใน v2 เรียกฟังก์ชันของ RV.TOKENS ตรง ๆ (ไม่เขียนสูตร format ซ้ำ) — corpus test ยืนยันทั้ง 885 ใบ
- * token ใหม่ของ v3 (ขา · ฉาก input · การ์ด) format ด้วย RV.fmtPrice/fmtBig เหมือนกัน
+ * ★ token ที่มีคู่ใน v2 เรียกฟังก์ชันของ RV.TOKENS ตรง ๆ บน view.d (= RV.derive ของ bridge) — ไม่เขียนสูตร format ซ้ำ
+ *   corpus test (test/v3/tokens-corpus.test.js) ยืนยันว่า bridge ของ compute() ให้ผลเท่า v2 ทั้งคลัง
+ * token ใหม่ของ v3 (ขา · ฉาก input · 52 สัปดาห์) format ด้วย RV.fmtPrice เหมือนกัน
  */
 const RV = require('../report-values.js');
 
@@ -1020,16 +1069,13 @@ const V2_TWIN = {
   'scn.bull.tgt': 'sc3tgt', 'scn.bull.ret': 'sc3ret', 'scn.bull.div': 'sc3div',
 };
 
+function need(v, name) { if (v == null) throw new Error(`token {{${name}}} ชี้ค่าที่ไม่มีในรายงานนี้`); return v; }
 const money = (view, v) => view.d.cur + RV.fmtPrice(v);
 const TOKENS_V3 = {};
 for (const [v3, v2] of Object.entries(V2_TWIN)) TOKENS_V3[v3] = (view) => String(RV.TOKENS[v2](view.d));
-// v3-only — ต้องมี view เต็มจาก compute()
 for (let i = 1; i <= 4; i++) {
   TOKENS_V3[`leg${i}`] = (view) => money(view, need(view.legs && view.legs[i - 1], `leg${i}`).value);
-  TOKENS_V3[`leg${i}.multiple`] = (view) => {
-    const l = need(view.legs && view.legs[i - 1], `leg${i}`);
-    return need(l.inputs.multiple, `leg${i}.multiple`).toFixed(1) + 'x';
-  };
+  TOKENS_V3[`leg${i}.multiple`] = (view) => need(need(view.legs && view.legs[i - 1], `leg${i}`).inputs.multiple, `leg${i}.multiple`).toFixed(1) + 'x';
 }
 ['bear', 'base', 'bull'].forEach((n, i) => {
   TOKENS_V3[`scn.${n}.end`] = (view) => money(view, need(view.scn && view.scn[i], `scn.${n}`).driverEnd);
@@ -1039,24 +1085,22 @@ TOKENS_V3.analysisDate = (view) => need(view.analysisDateText, 'analysisDate');
 TOKENS_V3['range52w.lo'] = (view) => money(view, need(view.doc && view.doc.market.range52w, 'range52w').lo);
 TOKENS_V3['range52w.hi'] = (view) => money(view, need(view.doc && view.doc.market.range52w, 'range52w').hi);
 
-function need(v, name) { if (v == null) throw new Error(`token {{${name}}} ชี้ค่าที่ไม่มีในรายงานนี้`); return v; }
-
-// view ขั้นต่ำจากข้อมูล v2 — ใช้เฉพาะ corpus test (และ migrator ใน Plan 3)
-function viewFromV2(rd, sm) { return { d: RV.derive(rd, sm) }; }
-
-module.exports = { TOKENS_V3, V2_TWIN, viewFromV2 };
+module.exports = { TOKENS_V3, V2_TWIN };
 ```
 
-- [ ] **Step 4: Run the tests**
+- [ ] **Step 4: Run the tests — mismatches are bridge bugs, refusals are findings**
 
 Run: `rtk proxy node test/v3-test.js`
-Expected: `✓ tokens-corpus: 2/2` (≥880 files, >20,000 renders). Any mismatch line means the twin mapping is wrong: fix `V2_TWIN`, not the v2 code.
+Expected: `✓ tokens-corpus: 3/3`.
+- **A mismatch line** (`{{x}} = "…" but v2 … = "…"`) is a bug in `compute()`'s bridge (rounding, `round2(fv)`, `baseEps`, scenario rebuild). Fix `compute.js`. Never change `RV.*` or the test's expectation.
+- **A refusal** (`ℹ compute() refused …`) means the v3 schema rejected a real v2 value set. Common causes: a chart point ≤ 0, `fv` outside `[fvLow, fvHigh]` (weights < 0), `perYear` shape. Loosen the schema **only** if the v2 shape is legitimate (e.g. real chart data). If the v2 data is itself broken, leave it refused and list the symbols in the commit message (Plan 3's migrator sends them to the HUMAN bucket).
+- **Reviewer check (required):** temporarily change `round2` in compute.js to `Math.round(x)` and confirm the test goes red, then revert. This test must be able to fail.
 
 - [ ] **Step 5: Commit**
 
 ```bash
-git add tools/v3/tokens.js test/v3/tokens-corpus.test.js
-git commit -m "feat(v3): token table with v2 twins + corpus parity test over all v2 reports"
+git add tools/v3/tokens.js tools/v3/compute.js tools/v3/schema.js test/v3/tokens-corpus.test.js
+git commit -m "feat(v3): token table + corpus round-trip — all v2 value sets through compute() render identical tokens"
 ```
 
 ---
@@ -1086,7 +1130,7 @@ const C = require('../../tools/v3/compute.js');
 const load = () => JSON.parse(JSON.stringify(require('../fixtures/v3/ZTS.json')));
 const view = C.compute(load(), { seeds: { ZTS: '#e8731a' } });
 
-t.eq(P.renderProse('ราคา {{px}}', view, { mode: 'text' }), 'ราคา $150.20', 'token → literal');
+t.eq(P.renderProse('ราคา {{px}}', view, { mode: 'text' }), 'ราคา $120.00', 'token → literal');
 t.eq(P.renderProse('ราคา {{px}}', view, { mode: 'v2src' }), 'ราคา {{rd:px}}', 'v2src keeps v2 twin as rd token');
 t.eq(P.renderProse('ขา {{leg1}}', view, { mode: 'v2src' }), 'ขา $171.64', 'v3-only token rendered literal in v2src');
 t.eq(P.renderProse('**เด่น** a<b>b</b>', view, { mode: 'text' }), '<b>เด่น</b> a<b>b</b>', 'markdown bold + allowed tag');
@@ -1098,9 +1142,9 @@ t(P.sanitizeErrors('<span style="x">y</span>').length === 1, 'reports disallowed
 t.throws(() => P.renderProse('{{nope}}', view, { mode: 'text' }), /\{\{nope\}\}/, 'unknown token names itself');
 
 // rule B
-{ const d = load(); d.prose.chart = 'ราคาตอนนี้ $150.20 แล้ว'; const r = P.checkRuleB(d, view);
+{ const d = load(); d.prose.chart = 'ราคาตอนนี้ $120.00 แล้ว'; const r = P.checkRuleB(d, view);
   t(r.errors.some((e) => e.path === 'prose.chart' && e.token === 'px'), 'exact copy of px is an error'); }
-{ const d = load(); d.prose.chart = 'ราคาตอนนี้ราว $150 แล้ว'; const r = P.checkRuleB(d, view);
+{ const d = load(); d.prose.chart = 'ราคาตอนนี้ราว $120.5 แล้ว'; const r = P.checkRuleB(d, view);
   t(r.errors.length === 0 && r.warnings.some((e) => e.token === 'px'), 'near copy is a warning only'); }
 { const d = load(); d.prose.valuation = 'อัตรากำไรสุทธิ 27.6%'; const r = P.checkRuleB(d, view);
   t(r.errors.length === 0, 'statement number that is not a rendered price-bound value passes'); }
@@ -1240,7 +1284,7 @@ module.exports = { renderProse, sanitizeErrors, proseFields, checkRuleB, countMo
 - [ ] **Step 4: Run the tests**
 
 Run: `node test/v3-test.js`
-Expected: `✓ prose: 16/16`. Worked numbers for the ZTS fixture (so failures are easy to read): fv ≈ (171.64 + 104.08)/2 = 137.86 · px 150.20 → mos ≈ −8.95% ("−9%") · analyst.pct ≈ +26.5% · base scenario total ≈ +38%. `27.6%` is >0.6pp from every price-bound percent, so it must pass.
+Expected: `✓ prose: 16/16`. Worked numbers for the ZTS fixture (so failures are easy to read): fv ≈ (171.64 + 104.08)/2 = 137.86 · px 120.00 → mos ≈ +12.95% ("+13%", class ok) · upside ≈ +14.9% · analyst.pct ≈ +58.3% · yield ≈ 1.7% · scenario totals ≈ bear +13.7% / base +72.8% / bull +121%. `27.6%` is >0.6pp from every price-bound percent, so it must pass.
 
 - [ ] **Step 5: Commit**
 
@@ -1649,7 +1693,7 @@ function toV2Source(doc, view) {
 ${JSON.stringify(view.sm)}
 </script>
 <script type="application/json" id="report-data">
-${RV.styledRD ? RV.styledRD(view.rd) : JSON.stringify(view.rd, null, 2)}
+${RV.styledRD(view.rd)}
 </script>
 <!--TEMPLATE:STYLE-->
 </head>
@@ -1833,6 +1877,8 @@ If the v2 gate reports errors, each error names a check id. Fix **render.js** (n
 | E41/E43/W19/W20 | base line not parsed | adjust `cards.js` d-line form (Task 7 step 4) |
 | E26 | scale ordering | the sort above; check `d.values.fvHigh` is set by the bridge |
 | E44 | literal price in prose | the fixture prose should use tokens; `mode:'v2src'` must be used everywhere |
+| V2TOKENS | a required token site not found by `RV.missingTokenSites` (regex-located) | copy the site's markup/whitespace from `_template/skeleton-th.html` exactly |
+| E38 | theme contrast | fixtures carry the real palettes from `reports/ZTS.html`/`BBL.html` — don't edit them |
 | E21/E22 | gate parses `.mdesc` of a leg named "P/E"/"Justified P/BV" | make `mdesc()` output match the skeleton sentence (`EPS (TTM) $x × P/E เป้าหมาย ~Nx`) for `pe`, and `P/BV เหมาะสม = (ROE…` for justified pbv |
 
 Add CSS for `.xtab` to `_template/dashboard.css` only if the extras test passes but the table looks unstyled in Task 11's visual check. Keep it minimal: `width:100%;border-collapse:collapse;font-size:13px` plus `td,th{padding:6px 8px;border-bottom:1px solid var(--line)}`.
