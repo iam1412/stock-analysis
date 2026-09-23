@@ -24,6 +24,9 @@ const bt = require('./tools/brandtheme.js');
 const tagLib = require('./tools/tag-lib.js');
 const RM = require('./tools/report-meta.js');   // เจ้าของเดียวของ regex stock-meta/report-data/.px
 const RV = require('./tools/report-values.js');  // ระยะ 2: schema/validator/derive/render ของ report-data.values (v2)
+const V3C = require('./tools/v3/compute.js');
+const V3R = require('./_template/v3/render.js');
+const V3IO = require('./tools/v3/io.js');
 // โหลดครั้งเดียวต่อ process — ไฟล์หายจริง (ยังไม่ติดตั้งระบบ tag) เท่านั้นที่ fallback เงียบ ๆ
 // ได้ · error อื่น (เช่น tags.json เขียนไม่ครบ/JSON พัง) ต้อง throw ต่อ ไม่งั้น build จะเขียน
 // reports.json ทับด้วย tags ว่างทั้ง 908 ตัวแบบไม่มี error ให้เห็น (เคยเกิดจริงตอน dev)
@@ -631,8 +634,31 @@ function computeLeaders(reps) {
   return out;
 }
 
+// ── v3 (spec 2026-09-24): reports/<SYM>.json = ต้นฉบับ → compute → toV2Source → ทางเดิมทุกขั้น ──
+// หุ้นเดียวห้ามมีทั้ง .html (v2) และ .json (v3) — ไม่งั้นไม่รู้ว่าอันไหนจริง
+function reportEntries(dir) {
+  const names = fs.readdirSync(dir, { withFileTypes: true }).filter((e) => e.isFile() && /\.(html|json)$/i.test(e.name)).map((e) => e.name);
+  const sym = (n) => n.replace(/\.(html|json)$/i, '');
+  const html = new Set(names.filter((n) => /\.html$/i.test(n)).map(sym));
+  const both = names.filter((n) => /\.json$/i.test(n)).map(sym).filter((s) => html.has(s));
+  if (both.length) throw new Error(`reports/: ${both.join(', ')} มีทั้ง .html และ .json (ลบไฟล์ v2 ออกเมื่อย้ายเป็น v3)`);
+  return names;
+}
+function loadReportSource(dir, name, seeds) {
+  const symbol = name.replace(/\.(html|json)$/i, '');
+  const raw = fs.readFileSync(path.join(dir, name), 'utf8');
+  if (/\.json$/i.test(name)) {
+    const doc = JSON.parse(raw);
+    if (doc.symbol !== symbol) throw new Error(`${name}: symbol "${doc.symbol}" ไม่ตรงชื่อไฟล์`);
+    const view = V3C.compute(doc, { seeds });
+    return { symbol, file: symbol + '.html', content: V3R.toV2Source(doc, view), hash: V3IO.freshHash(doc), v3: true };
+  }
+  return { symbol, file: name, content: raw, hash: freshHash(raw), v3: false };
+}
+const SEEDS = JSON.parse(fs.readFileSync(path.join(ROOT, 'tools', 'seeds.json'), 'utf8'));
+
 // export ฟังก์ชันให้ unit-test (test/build-test.js) — ต้องอยู่ก่อนโค้ดที่รัน build จริง
-module.exports = { extractMeta, extractMetrics, freshHash, injectModelCredit, injectContactFooter, injectFooterCopyright, COPYRIGHT, injectTA, parseJsonScript, decorateReport, renderTagRow, pickHighlight, computeLeaders, HL_DEFS, AI_MODEL, AI_MAKER, expandReport, renderHead, renderEngine, validateReportData, THEME_DEFAULTS, deriveTheme, stripDecorEmoji, injectSectionNav };
+module.exports = { extractMeta, extractMetrics, freshHash, injectModelCredit, injectContactFooter, injectFooterCopyright, COPYRIGHT, injectTA, parseJsonScript, decorateReport, renderTagRow, pickHighlight, computeLeaders, HL_DEFS, AI_MODEL, AI_MAKER, expandReport, renderHead, renderEngine, validateReportData, THEME_DEFAULTS, deriveTheme, stripDecorEmoji, injectSectionNav, reportEntries, loadReportSource };
 // ถูก require เข้ามาเพื่อเทส → ส่งออกฟังก์ชันแล้วหยุด ไม่รัน build (top-level return ใช้ได้ใน CommonJS module)
 if (require.main !== module) return;
 
@@ -669,17 +695,12 @@ log('assets:', TA_ASSET);
 // ---- 3) อ่านรายงานจาก reports/ → flatten ลง dist/ ----
 const reports = [];
 if (fs.existsSync(REPORTS_DIR)) {
-  for (const entry of fs.readdirSync(REPORTS_DIR, { withFileTypes: true })) {
-    if (!entry.isFile() || !/\.html$/i.test(entry.name)) continue;
-
-    const src = path.join(REPORTS_DIR, entry.name);
-    const content = fs.readFileSync(src, 'utf8');
-    const symbol = entry.name.replace(/\.html$/i, '');
-    const h = freshHash(content); // ตัด meta ai-model ออกจาก hash → ประทับโมเดลไม่นับเป็น "อัปเดต"
+  for (const name of reportEntries(REPORTS_DIR)) {
+    const { symbol, file, content, hash: h } = loadReportSource(REPORTS_DIR, name, SEEDS);   // v2: hash = freshHash(content) เดิม
     const old = prev[symbol];
     const updated = old && old.hash === h && old.updated ? old.updated : nowISO; // เปลี่ยน → ประทับเวลาใหม่
 
-    const rec = { symbol, file: entry.name, ...extractMeta(content, symbol), metrics: extractMetrics(content), updated, hash: h };
+    const rec = { symbol, file, ...extractMeta(content, symbol), metrics: extractMetrics(content), updated, hash: h };
     rec.tags = tagLib.tagsOf(symbol, TAG_DATA);
     reports.push(rec);
     // report-data/stock-meta ดิบ (จาก source ต้นฉบับ) → ให้ injectTA ประกอบ __TA_CFG__ ; รายงาน legacy (ไม่มี report-data) → rd=null → injectTA ข้าม
@@ -691,8 +712,8 @@ if (fs.existsSync(REPORTS_DIR)) {
     rec.accentDark = bt.effectiveHex(_th.accentDark, '#ffffff');
     // expandReport: source แบบ template (content-only) → inject โครงที่ใช้ร่วม ; source เก่า → identity (ไม่เปลี่ยน)
     // injectTA ครอบผลลัพธ์สุดท้าย เพิ่ม __TA_CFG__ + <script src="/assets/ta-*.js"> เฉพาะใน dist (เหมือน decorateReport)
-    fs.writeFileSync(path.join(OUT, entry.name), injectTA(decorateReport(expandReport(content), rec), symbol, rd, meta, TA_ASSET)); // hash อิงต้นฉบับ, share meta+footer+ตัวนับ+TA ใส่เฉพาะใน dist
-    log('report:', entry.name, updated === nowISO ? '(updated)' : '');
+    fs.writeFileSync(path.join(OUT, file), injectTA(decorateReport(expandReport(content), rec), symbol, rd, meta, TA_ASSET)); // hash อิงต้นฉบับ, share meta+footer+ตัวนับ+TA ใส่เฉพาะใน dist
+    log('report:', file, updated === nowISO ? '(updated)' : '');
   }
 } else {
   log('⚠️  ไม่พบโฟลเดอร์ reports/ — สร้างแล้ววางไฟล์ <SYMBOL>.html ไว้ในนั้น');
