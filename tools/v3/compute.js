@@ -56,7 +56,8 @@ function compute(doc, opts) {
   const start = driverStart(doc);
   const scn = s.cases.map((c, i) => {
     const end = start * Math.pow(1 + c.growth / 100, s.years);
-    return { name: SCN_NAMES[i], growth: c.growth, exitMultiple: c.exitMultiple, driverStart: start, driverEnd: end, tgt: end * c.exitMultiple, divCum: s.divIncluded ? c.divCum : null, desc: c.desc };
+    // divCum: เก็บผ่านเสมอเมื่อ author ให้มา (informational แม้ divIncluded=false — schema อนุญาต) · total% ตัดสินด้วย scnBasis.divIncluded ใน derive() v2 อยู่แล้ว ไม่ใช่ตรงนี้
+    return { name: SCN_NAMES[i], growth: c.growth, exitMultiple: c.exitMultiple, driverStart: start, driverEnd: end, tgt: end * c.exitMultiple, divCum: c.divCum == null ? null : c.divCum, desc: c.desc };
   });
 
   // ── bridge → v2 report-data + stock-meta (ใช้ RV.derive ตัวจริง) ──
@@ -68,7 +69,7 @@ function compute(doc, opts) {
   if (f.dps != null && f.dps >= 0) values.dps = f.dps;
   if (f.bvps != null && f.bvps > 0) values.bvps = f.bvps;
   if (s.driver === 'eps') values.baseEps = start;
-  values.scenarios = scn.map((x) => (s.divIncluded ? { tgt: round2(x.tgt), div: x.divCum } : { tgt: round2(x.tgt) }));
+  values.scenarios = scn.map((x) => (x.divCum == null ? { tgt: round2(x.tgt) } : { tgt: round2(x.tgt), div: round2(x.divCum) }));
   values.scnBasis = { years: s.years, divIncluded: s.divIncluded, perYear: s.perYear };
 
   const cur = RV.CUR_SYMBOL[doc.currency];

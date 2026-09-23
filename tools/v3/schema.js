@@ -206,8 +206,11 @@ function validate(doc) {
       if (!isObj(c)) return E(p, 'ต้องเป็น object');
       closed(c, p, ['growth', 'exitMultiple', 'divCum', 'desc']);
       num(c.growth, `${p}.growth`); num(c.exitMultiple, `${p}.exitMultiple`, { gt: 0 }); str(c.desc, `${p}.desc`);
+      // divCum = ปันผลสะสมต่อหุ้นถึงจุดออก — บังคับเมื่อ divIncluded=true (นับรวมใน total%)
+      // ยอมให้มี (optional, informational) เมื่อ divIncluded=false ด้วย — คลัง v2 จริง 423/1097 ใบเก็บเลขนี้ไว้
+      // แสดงแม้ไม่รวมในผลตอบแทน (parity gate: test/v3/tokens-corpus.test.js) — ไม่รวมใน total% เพราะ derive() v2 อ่าน scnBasis.divIncluded เป็นตัวตัดสินอยู่แล้ว
       if (s.divIncluded) num(c.divCum, `${p}.divCum`, { min: 0 });
-      else if (c.divCum != null) E(`${p}.divCum`, 'divIncluded=false ห้ามมี divCum');
+      else if (c.divCum != null) num(c.divCum, `${p}.divCum`, { min: 0 });
     });
     str(s.note, 'scenarios.note');
   }
