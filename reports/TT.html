@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 447,
+  "values": {
+    "px": 437.82,
+    "priceDate": "2026-09-22",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 430,
+    "fvHigh": 472,
+    "eps": 13.31,
+    "shares": 221000000,
+    "dps": 4.2,
+    "baseEps": 13.31,
+    "scenarios": [
+      {
+        "tgt": 424.06,
+        "div": 13.26
+      },
+      {
+        "tgt": 546,
+        "div": 13.86
+      },
+      {
+        "tgt": 650.76,
+        "div": 14.58
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#0E7C7B",
     "accentDark": "#0A5A59",
@@ -41,18 +74,14 @@
     "min": 350,
     "max": 500,
     "grid": [400, 450],
-    "fairLine": 447,
     "currency": "$",
     "highlight": [2, 6]
   },
   "gauge": {
     "min": 300,
     "max": 530,
-    "cur": 437.82,
-    "fair": 447,
     "fairLabelTop": false
-  },
-  "fv": 447
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +101,11 @@
     <div class="sub">ระบบ HVAC เชิงพาณิชย์/ที่อยู่อาศัย (Trane, American Standard) • ระบบทำความเย็นขนส่ง Thermo King • โซลูชันลดคาร์บอน/cooling สำหรับ Data Center</div>
     <div class="price-row">
       <div>
-        <div class="px">$437.82<small>(TT)</small></div>
+        <div class="px">{{rd:px}}<small>(TT)</small></div>
       </div>
-      <div class="chg">▼ −2.4% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 22 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $348.06 / $505.87<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / Trane Technologies Investor Relations / Macrotrends
       </div>
@@ -87,8 +116,8 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM / FY2025</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$96.8B</div><div class="d">221M shares outstanding</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~32.9x</div><div class="d">EPS TTM $13.31</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">221M shares outstanding</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM $13.31</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$13.31</div><div class="d">FY26E $14.65–14.85 (+12%)</div></div>
       <div class="metric"><div class="k">ROE</div><div class="v pos">~36.6%</div><div class="d">ROIC 25.7%</div></div>
 
@@ -113,11 +142,11 @@
       </div>
       <div class="legend">
         <span><i style="background:#0E7C7B"></i>ราคา TT</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $447</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ราคา TT แกว่งขึ้นจาก $415.60 (ส.ค. 68) สู่ $454.47 (ก.ค. 69) คิดเป็น +9.4% รอบปี จุดต่ำสุดที่ $389.20 ในเดือน ธ.ค. 68 ก่อนพุ่งขึ้นแตะจุดสูงสุด $492.54 ในเดือน เม.ย. 69 (ไฮไลต์สีแดง) หนุนโดย bookings Data Center และ backlog สูงเป็นประวัติการณ์ $7.8B ก่อนย่อลงมาซื้อขายใกล้ระดับปัจจุบัน ราคาปัจจุบัน $454.47 อยู่เหนือ Fair Value $447 ประมาณ 1.7%
+        ราคา TT แกว่งขึ้นจาก $415.60 (ส.ค. 68) สู่ $454.47 (ก.ค. 69) คิดเป็น +9.4% รอบปี จุดต่ำสุดที่ $389.20 ในเดือน ธ.ค. 68 ก่อนพุ่งขึ้นแตะจุดสูงสุด $492.54 ในเดือน เม.ย. 69 (ไฮไลต์สีแดง) หนุนโดย bookings Data Center และ backlog สูงเป็นประวัติการณ์ $7.8B ก่อนย่อลงมาซื้อขายใกล้ระดับปัจจุบัน ราคาปัจจุบัน {{rd:px}} อยู่เหนือ Fair Value {{rd:fv}} ประมาณ 1.7%
       </p>
     </div>
   </section>
@@ -139,8 +168,8 @@
         <div class="mval">$430.30</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $430 – $472</span></div>
-        <div class="r">$447</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/E (TTM) ให้ค่าต่ำสุด $439.23 สะท้อนการใช้ P/E 33x บน EPS TTM ล่าสุด $13.31 · Forward P/E ให้ $472 สูงกว่า เพราะ EPS FY26E เติบโต +12% · EV/EBITDA ให้ $430.30 กลาง ๆ สอดคล้อง peer Carrier/Lennox · เฉลี่ย 3 วิธี = (439.23+472.00+430.30)/3 = $447.18 ≈ $447 · DDM ให้ yield 0.93% ต่ำกว่า 1.5% จึงใช้เป็น floor เท่านั้น ไม่นำมา weight ใน FV
@@ -154,19 +183,19 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $437.82</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $447</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$312.90<br><small>MOS 30%</small></span>
-          <span>$357.60<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$447<br><small>Fair Value</small></span>
-          <span style="text-align:right">$472<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$525<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน $454.47 อยู่สูงกว่า Fair Value $447 ประมาณ 1.7% (MOS ติดลบเล็กน้อย) แสดงว่าตลาดให้ premium เล็กน้อยกับ growth visibility และ backlog $7.8B · โซน MOS 20% อยู่ที่ $357.60 และ MOS 30% ที่ $312.90 เป็นจุดน่าสะสมระยะยาวหากย่อลงมา · นักวิเคราะห์ 21 ราย มีเป้าเฉลี่ย $525 (+13% จากราคาปัจจุบัน)
+        ราคาปัจจุบัน {{rd:px}} อยู่สูงกว่า Fair Value {{rd:fv}} ประมาณ 1.7% (MOS ติดลบเล็กน้อย) แสดงว่าตลาดให้ premium เล็กน้อยกับ growth visibility และ backlog $7.8B · โซน MOS 20% อยู่ที่ {{rd:mos20}} และ MOS 30% ที่ {{rd:mos30}} เป็นจุดน่าสะสมระยะยาวหากย่อลงมา · นักวิเคราะห์ 21 ราย มีเป้าเฉลี่ย $525 (+13% จากราคาปัจจุบัน)
       </p>
     </div>
   </section>
@@ -175,19 +204,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+2%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาสูงกว่ามูลค่าเหมาะสม — ยังไม่มี Margin of Safety · ธุรกิจดีแต่ราคาตึงเล็กน้อย</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$357.60</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$312.90</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $447</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="437.82" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -196,17 +225,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $437.82 • EPS ฐาน ~$13.31 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +7%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$424.06</div>
-          <div class="ret neg">−0%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$16.31</span></li>
             <li><span>P/E ออก</span><span>26x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$13.26</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>เศรษฐกิจชะลอ/ก่อสร้างหดตัว</span></li>
           </ul>
         </div>
@@ -214,12 +243,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +11%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$546.00</div>
-          <div class="ret pos">+28%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$18.20</span></li>
             <li><span>P/E ออก</span><span>30x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$13.86</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>backlog แปลงรายได้ตามแผน</span></li>
           </ul>
         </div>
@@ -227,12 +256,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +14%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$650.76</div>
-          <div class="ret pos">+52%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$19.72</span></li>
             <li><span>P/E ออก</span><span>33x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$14.58</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Data Center boom + retrofit ต่อเนื่อง</span></li>
           </ul>
         </div>
@@ -277,10 +306,10 @@
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
       <h2>ธุรกิจดีมาก · ราคาตึงเล็กน้อย · รอจังหวะสะสม</h2>
-      <p>Trane Technologies เป็นผู้นำ HVAC โลกที่ได้ secular tailwind แรง 3 ด้าน: decarbonization, AI Data Center cooling demand, และ retrofit อาคารเก่า · backlog $7.8B สูงสุดเป็นประวัติการณ์ให้ revenue visibility ชัดเจน · ROIC 25.7% และ EPS CAGR ~21% (FY21–25) สะท้อนคุณภาพธุรกิจชั้นนำ · อย่างไรก็ตาม ราคาปัจจุบัน $454.47 (P/E ~34.2x) สูงกว่า Fair Value $447 ประมาณ 1.7% ธุรกิจดีแต่ราคาตึงเล็กน้อย · นักวิเคราะห์ 21 ราย ยังมีเป้าเฉลี่ย $525 บ่งชี้ upside อีก ~15%</p>
+      <p>Trane Technologies เป็นผู้นำ HVAC โลกที่ได้ secular tailwind แรง 3 ด้าน: decarbonization, AI Data Center cooling demand, และ retrofit อาคารเก่า · backlog $7.8B สูงสุดเป็นประวัติการณ์ให้ revenue visibility ชัดเจน · ROIC 25.7% และ EPS CAGR ~21% (FY21–25) สะท้อนคุณภาพธุรกิจชั้นนำ · อย่างไรก็ตาม ราคาปัจจุบัน {{rd:px}} (P/E ~34.2x) สูงกว่า Fair Value {{rd:fv}} ประมาณ 1.7% ธุรกิจดีแต่ราคาตึงเล็กน้อย · นักวิเคราะห์ 21 ราย ยังมีเป้าเฉลี่ย $525 บ่งชี้ upside อีก ~15%</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$447 <span style="font-size:12px;color:#cab9a8">($430–$472)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v bad">MOS ~ +2%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v bad">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v">~$525 (Buy/Outperform)</div></div>
       </div>
       <div class="zone">

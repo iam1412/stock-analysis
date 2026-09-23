@@ -12,6 +12,40 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 34.2,
+  "values": {
+    "px": 32.25,
+    "priceDate": "2026-09-22",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 32.7,
+    "fvHigh": 35.7,
+    "eps": 2.22,
+    "shares": 302900000,
+    "dps": 1.75,
+    "bvps": 14.68,
+    "baseEps": 2.22,
+    "scenarios": [
+      {
+        "tgt": 26.65,
+        "div": 4.2
+      },
+      {
+        "tgt": 39.6,
+        "div": 5.25
+      },
+      {
+        "tgt": 56.15,
+        "div": 6
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#00897b",
     "accentDark": "#00695c",
@@ -43,7 +77,6 @@
     "min": 28,
     "max": 38,
     "grid": [30, 32, 34, 36],
-    "fairLine": 34.2,
     "currency": "฿",
     "highlight": [0, 6],
     "gridFmt": "v.toFixed(0)",
@@ -51,11 +84,8 @@
   },
   "gauge": {
     "min": 0,
-    "max": 100,
-    "cur": 32.25,
-    "fair": 34.2
-  },
-  "fv": 34.2
+    "max": 100
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -75,11 +105,11 @@
     <div class="sub">Sappe Beauti Drink · เครื่องดื่มฟังก์ชันส่งออก 60+ ประเทศ · ชาเขียว · บิวตี้ดริงก์ · อาเซียน+ยุโรป · Gross Margin ~45%</div>
     <div class="price-row">
       <div>
-        <div class="px">฿32.25<small>(SAPPE)</small></div>
+        <div class="px">{{rd:px}}<small>(SAPPE)</small></div>
       </div>
-      <div class="chg">▼ −11.0% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 22 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿28.50 – ฿39.50<br>
         ที่มา: StockAnalysis.com, Investing.com, Yahoo Finance (SAPPE.BK)
       </div>
@@ -91,9 +121,9 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ TTM (ถึงไตรมาส 1/2569) · ราคา ณ 21 ก.ย. 2569</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~฿9.77B</div><div class="d">302.9 ล้านหุ้น (หุ้นคงเหลือ)</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~14.5x</div><div class="d">EPS TTM ฿2.22 · สูงขึ้นเพราะกำไรหด ไม่ใช่ราคาขึ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM ฿2.22 · สูงขึ้นเพราะกำไรหด ไม่ใช่ราคาขึ้น</div></div>
       <div class="metric"><div class="k">P/E ที่ตลาดจ่ายจริง (12 ด.)</div><div class="v">~12–17x</div><div class="d">จากกรอบราคา 52 สัปดาห์ ÷ กำไรปกติต่อหุ้น</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">2.20x</div><div class="d">BVPS ฿14.68 · เงินสดสุทธิ ฿1,005M</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ฿14.68 · เงินสดสุทธิ ฿1,005M</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">฿676 ล้าน</div><div class="d">FY2025 ฿776M · ยังหดต่อ −13%</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿2.22</div><div class="d">FY2025: ฿2.53 · FY2024: ฿4.07</div></div>
@@ -116,7 +146,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#00897b"></i>ราคา SAPPE</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿34.20</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -146,8 +176,8 @@
         <div class="mval">฿36.00</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿32.70 – ฿35.70</span></div>
-        <div class="r">฿34.20</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>วิธีคิดค่าเฉลี่ย:</b> ใช้ 2 ตระกูลสมมติฐาน — ขายึดตลาด (P/E ฿35.70) หนึ่งเสียง กับขาที่ขับด้วย (r, g) หนึ่งเสียง
@@ -166,20 +196,20 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿32.25</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿34.20</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿23.94<br><small>MOS 30%</small></span>
-          <span>฿27.36<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿34.20<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">฿35.44<br><small>เป้า Analyst</small></span>
-          <span style="text-align:right">฿35.70<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคา ฿35.25 อยู่ <b>สูงกว่า</b> Fair Value ฿34.20 เล็กน้อย สะท้อนว่าตลาดให้มูลค่าเต็มแล้วหลังราคาฟื้น 20% จากจุดต่ำเดือน เม.ย. 2569
-        โซนน่าสนใจสำหรับ value investor คือต่ำกว่า ฿27.36 (MOS 20%) ซึ่งยังไม่เคยแตะในรอบปีนี้ — จุดต่ำสุดที่เคยเห็นคือ ฿28.50
+        ราคา ฿35.25 อยู่ <b>สูงกว่า</b> Fair Value {{rd:fv}} เล็กน้อย สะท้อนว่าตลาดให้มูลค่าเต็มแล้วหลังราคาฟื้น 20% จากจุดต่ำเดือน เม.ย. 2569
+        โซนน่าสนใจสำหรับ value investor คือต่ำกว่า {{rd:mos20}} (MOS 20%) ซึ่งยังไม่เคยแตะในรอบปีนี้ — จุดต่ำสุดที่เคยเห็นคือ ฿28.50
         เป้านักวิเคราะห์เฉลี่ย ฿35.44 จาก 8 ราย (คำแนะนำรวม Buy) แทบเท่ากับราคาปัจจุบัน แปลว่าฝั่งนักวิเคราะห์ก็ไม่ได้เห็น upside เหลือในกรอบ 12 เดือน
         กรอบ 52 สัปดาห์ ฿28.50–39.50 บอกว่าความผันผวนปีนี้ยังกว้างพอที่จะรอจังหวะสะสมได้
       </p>
@@ -190,19 +220,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+6%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาสูงกว่า Fair Value เล็กน้อย — ไม่มีส่วนเผื่อความปลอดภัยเหลืออยู่ ยังไม่ใช่โซนซื้อสำหรับแนว value</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿27.36</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿23.94</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿34.20</div><div class="d">ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="32.25" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -211,17 +241,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿32.25 • EPS ฐาน ฿2.22 • ไม่รวมปันผล (แสดงแยกในตาราง)</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} • ไม่รวมปันผล (แสดงแยกในตาราง)</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿26.65</div>
-          <div class="ret neg">−17.4% / ~−6.2%/ปี</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿2.22</span></li>
             <li><span>P/E ออก</span><span>12x</span></li>
-            <li><span>ปันผลสะสม 3 ปี</span><span>~฿4.20</span></li>
+            <li><span>ปันผลสะสม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>กำไรไม่ฟื้น ตลาด de-rate</span></li>
           </ul>
         </div>
@@ -229,12 +259,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +6%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿39.60</div>
-          <div class="ret pos">+22.8% / ~7.1%/ปี</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿2.64</span></li>
             <li><span>P/E ออก</span><span>15x</span></li>
-            <li><span>ปันผลสะสม 3 ปี</span><span>~฿5.25</span></li>
+            <li><span>ปันผลสะสม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>ส่งออกฟื้นช้า ๆ margin ทรงตัว</span></li>
           </ul>
         </div>
@@ -242,19 +272,19 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿56.15</div>
-          <div class="ret pos">+74.1% / ~20.3%/ปี</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿3.12</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
-            <li><span>ปันผลสะสม 3 ปี</span><span>~฿6.00</span></li>
+            <li><span>ปันผลสะสม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>ยุโรป/มะพร้าวโตแรง กลับสู่ขาขึ้น</span></li>
           </ul>
         </div>
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      ตัวเลขผลตอบแทนทั้งสามฉากเป็น <b>ส่วนต่างราคาล้วน</b> จากจุดเข้า ฿35.25 ยังไม่รวมปันผล — ถ้ารวมปันผลสะสมที่แสดงในตาราง ให้บวกเพิ่มอีกราว 4–6% ต่อปี
+      ตัวเลขผลตอบแทนทั้งสามฉากเป็น <b>ส่วนต่างราคาล้วน</b> จากจุดเข้า {{rd:px}} ยังไม่รวมปันผล — ถ้ารวมปันผลสะสมที่แสดงในตาราง ให้บวกเพิ่มอีกราว 4–6% ต่อปี
       Base case: EPS โต 6%/ปี จากฐาน TTM ฿2.22 ไปที่ ~฿2.64 ในปี 3 ซึ่งยังต่ำกว่า FY2024 ที่ ฿4.07 มาก และคง P/E ออกที่ 15 เท่าเท่ากับตัวคูณที่ใช้ใน Fair Value
       Bear case: กำไรไม่ฟื้นเลยและตลาดลดตัวคูณลงเหลือ 12 เท่าตามระดับที่เคยเห็นตอนราคา ฿28–29 — ราคาลงแรงกว่าที่หลายคนคาดเพราะตอนนี้ไม่มีส่วนเผื่อรองรับ
       Bull case: ยุโรปและกลุ่มมะพร้าวกลับมาโต margin ฟื้นเข้าใกล้ระดับ FY2024 ตลาดให้ตัวคูณ 18 เท่ากลับคืน
@@ -297,10 +327,10 @@
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
       <h2>แบรนด์ส่งออกที่มีคุณภาพ — รอจังหวะราคาที่ดีกว่า</h2>
-      <p>SAPPE คือหุ้น Consumer Staples ไทยที่มีจุดแข็งชัดเจน: แบรนด์ Beauti Drink เป็นที่รู้จักใน 60+ ประเทศ, Gross Margin คงที่ 45%+, งบดุลเงินสดสุทธิ ฿1,005M แทบไม่มีหนี้ และปันผล ~4.96% แต่รอบการวิเคราะห์นี้เปลี่ยนข้อสรุปจากรอบก่อน เพราะฝั่งกำไรแย่ลงขณะที่ราคาขึ้น — EPS (TTM) ลดจาก ฿2.40 มาที่ ฿2.22 กำไรสุทธิ TTM ฿676M ยังต่ำกว่า FY2025 ที่ ฿776M ส่วนราคาฟื้นจาก ฿29.50 ในเดือน เม.ย. มาที่ ฿35.25 ผลคือ Fair Value ปรับลงเหลือ ฿34.20 และราคาปัจจุบัน <b>สูงกว่า</b> มูลค่าเหมาะสมเล็กน้อย (MOS −3.1%) จุดชี้ขาดระยะสั้นคืองบไตรมาส 2/2569 ที่จะประกาศ 25 ส.ค. 2569 — ถ้ายืนยันว่ารายได้และ margin เริ่มกลับทิศ สมมติฐาน EPS ปกติ ฿2.38 จะกลายเป็นค่าที่อนุรักษนิยมเกินไป แต่ถ้ากำไรยังหดต่อ ตัวคูณ 15 เท่าที่ใช้อยู่ก็จะสูงเกินไปเช่นกัน</p>
+      <p>SAPPE คือหุ้น Consumer Staples ไทยที่มีจุดแข็งชัดเจน: แบรนด์ Beauti Drink เป็นที่รู้จักใน 60+ ประเทศ, Gross Margin คงที่ 45%+, งบดุลเงินสดสุทธิ ฿1,005M แทบไม่มีหนี้ และปันผล ~4.96% แต่รอบการวิเคราะห์นี้เปลี่ยนข้อสรุปจากรอบก่อน เพราะฝั่งกำไรแย่ลงขณะที่ราคาขึ้น — EPS (TTM) ลดจาก ฿2.40 มาที่ ฿2.22 กำไรสุทธิ TTM ฿676M ยังต่ำกว่า FY2025 ที่ ฿776M ส่วนราคาฟื้นจาก ฿29.50 ในเดือน เม.ย. มาที่ ฿35.25 ผลคือ Fair Value ปรับลงเหลือ {{rd:fv}} และราคาปัจจุบัน <b>สูงกว่า</b> มูลค่าเหมาะสมเล็กน้อย (MOS {{rd:mos}}) จุดชี้ขาดระยะสั้นคืองบไตรมาส 2/2569 ที่จะประกาศ 25 ส.ค. 2569 — ถ้ายืนยันว่ารายได้และ margin เริ่มกลับทิศ สมมติฐาน EPS ปกติ ฿2.38 จะกลายเป็นค่าที่อนุรักษนิยมเกินไป แต่ถ้ากำไรยังหดต่อ ตัวคูณ 15 เท่าที่ใช้อยู่ก็จะสูงเกินไปเช่นกัน</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿34.20 <span style="font-size:12px;color:#cab9a8">(฿32.70–฿35.70)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v bad">MOS ~ +6%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v bad">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v">~฿35.44 (Buy)</div></div>
       </div>
       <div class="zone">
