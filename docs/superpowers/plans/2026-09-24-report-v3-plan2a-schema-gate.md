@@ -857,7 +857,7 @@ In the `metrics.custom` per-item validation, change `closed(c, …, ['label', 'v
 
 - [ ] **Step 4: Implement the render**
 
-Replace the `cards`/`cardHtml` lines written in Task 2 with:
+Replace the **whole** card block written in Task 2 — from the comment line `// (O) โน้ตใต้การ์ดเป็น prose …` through `const cardHtml = …;` (this includes `noteOf` and `catalogueCard`) — with the block below. Replacing only `cards`/`cardHtml` would leave a second `const noteOf` (a SyntaxError) and a dead `catalogueCard`:
 
 ```js
   // ลำดับ = S.cardEntries (custom แทรกได้ด้วย "custom:<i>") · tone → class สีเดิม (.v pos|neg|neu) — ไม่มี markup ใน JSON (§3.6 H)
@@ -1692,7 +1692,7 @@ Claude-Session: https://claude.ai/code/session_01LVyM2HVJV2UGfXJc58MhzP"
 - `fundamentals.ffoBasis?: 'ffo'|'affo'` (default label `FFO`).
 - `fundamentals.ffoForward?: { value > 0, period ≤20, low?, high? }` (low ≤ value ≤ high).
 - `fundamentals.pffoAvg5y?: number`.
-- Cards: `pffo` (price-bound, `P/<L> (TTM)`), `pffoForward` (`Forward P/<L>`), `ffoPerShare`, `pffoAvg5y` (`P/<L> มัธยฐาน ~5 ปี`), `ffoMargin`, `ffoPayout`. `<L>` is `FFO` or `AFFO`.
+- Cards: `pffo` (price-bound, `P/<L> (TTM)`), `pffoForward` (`Forward P/<L>`), `ffoPerShare`, `pffoAvg5y` (`P/<L> เฉลี่ย ~5 ปี` — pre-flight ruling: the value is author-typed, EQIX's source says เฉลี่ย, and its context-leg note says no measured P/AFFO median exists), `ffoMargin`, `ffoPayout`. `<L>` is `FFO` or `AFFO`.
 - Produces: `K.pffoCalc(view)` / `K.pffoForwardCalc(view) → { raw, text }` (the single owner of the number and its text, as `peForwardCalc` is).
 - Tokens: `{{pffo}}` and `{{pffoForward}}` render like `{{pe}}`/`{{pbv}}`, without the `x`: `"27.6"`. They have no v2 twin, so they render as literals in the v2-shaped source. That is fine because v3 pages are rebuilt from JSON on every build.
 - `stock-meta.pe` stays price ÷ EPS (§13 item 5 — final ruling). A REIT shows P/FFO through the card/token only.
@@ -1720,7 +1720,7 @@ Claude-Session: https://claude.ai/code/session_01LVyM2HVJV2UGfXJc58MhzP"
   t.eq([c('pffo').k, c('pffo').v, c('pffo').d], ['P/AFFO (TTM)', (120 / 3.1).toFixed(1) + 'x', 'AFFO/หุ้น $3.10'], 'pffo card');
   t.eq([c('pffoForward').k, c('pffoForward').v, c('pffoForward').d], ['Forward P/AFFO', (120 / 3.4).toFixed(1) + 'x', 'AFFO FY2026E $3.30–$3.50'], 'pffoForward card shows the guidance range');
   t.eq([c('ffoPerShare').k, c('ffoPerShare').v], ['AFFO/หุ้น (TTM)', '$3.10'], 'ffoPerShare card');
-  t.eq([c('pffoAvg5y').k, c('pffoAvg5y').v], ['P/AFFO มัธยฐาน ~5 ปี', '30.0x'], 'pffoAvg5y card');
+  t.eq([c('pffoAvg5y').k, c('pffoAvg5y').v], ['P/AFFO เฉลี่ย ~5 ปี', '30.0x'], 'pffoAvg5y card (author-typed average — not a median-multiples value)');
   t.eq(c('ffoMargin').v, (3.1 * 443e6 / 9.4e9 * 100).toFixed(1) + '%', 'ffoMargin = FFO×shares / revenue');
   t.eq(c('ffoPayout').v, (2 / 3.1 * 100).toFixed(1) + '%', 'ffoPayout = dps / FFO per share');
   t.eq(v2.sm.pe, +(120 / 6.13).toFixed(6), '§13.5: stock-meta.pe stays price / EPS for a REIT'); }
@@ -1802,7 +1802,8 @@ Add to `CATALOGUE`:
   pffoForward: { label: (v) => `Forward P/${ffoL(v)}`, cls: 'neu', value: (v) => pffoForwardCalc(v).text,
     d: (v) => { const x = ffoFwd(v); return `${ffoL(v)} ${x.period} ` + (isNum(x.low) && isNum(x.high) ? `${money(v, x.low)}–${money(v, x.high)}` : money(v, x.value)); } },
   ffoPerShare: { label: (v) => `${ffoL(v)}/หุ้น (TTM)`, value: (v) => money(v, need(v, 'ffoPerShare')), d: () => 'ต่อหุ้น รอบ 12 เดือนล่าสุด', cls: '' },
-  pffoAvg5y: { label: (v) => `P/${ffoL(v)} มัธยฐาน ~5 ปี`, value: (v) => need(v, 'pffoAvg5y').toFixed(1) + 'x', d: () => 'มัธยฐานย้อนหลัง', cls: '' },
+  // ป้าย "เฉลี่ย" ไม่ใช่ "มัธยฐาน": ค่านี้ผู้เขียนพิมพ์เอง (ไม่มี median-multiples ของ P/FFO) — ต่างจาก peAvg5y (Task 2) · EQIX ต้นทาง "เฉลี่ย ~5 ปี"
+  pffoAvg5y: { label: (v) => `P/${ffoL(v)} เฉลี่ย ~5 ปี`, value: (v) => need(v, 'pffoAvg5y').toFixed(1) + 'x', d: () => 'ค่าเฉลี่ยย้อนหลัง', cls: '' },
   ffoMargin: { label: (v) => `${ffoL(v)} Margin`, cls: '',
     value: (v) => { const rev = fq(v).revenue; if (!(isNum(rev) && rev > 0)) throw new Error('metrics.cards: ffoMargin — ต้องมี fundamentals.revenue > 0'); return pct1(need(v, 'ffoPerShare') * need(v, 'shares') / rev * 100); },
     d: (v) => `${ffoL(v)} รวม ÷ รายได้ TTM` },
@@ -2072,7 +2073,7 @@ Claude-Session: https://claude.ai/code/session_01LVyM2HVJV2UGfXJc58MhzP"
 - Modify: `tools/v3/schema.js` (`ENUM.colUnit`, the extras block)
 - Modify: `tools/v3/prose.js` (`proseFields` reads total cells / note rows)
 - Modify: `_template/v3/render.js` (`extrasHtml`)
-- Modify: `test/v3/schema.test.js`, `test/v3/render.test.js`, `test/v3/real-fixtures.test.js`
+- Modify: `test/v3/schema.test.js`, `test/v3/render.test.js` (E52 on the real FER table is pinned in `test/v3/extras.test.js`; `real-fixtures.test.js` is not touched in this task)
 - Modify: `test/fixtures/v3/FER-real.json` (SOTP table: numeric columns, total row, FX row; note and leg 1 stop repeating them)
 
 **Interfaces:**
