@@ -9,8 +9,8 @@ const P = require('./prose.js');   // litsOf/malformedLitPaths — prose.js ไ�
 const SV = require('../safe-values.js');
 const ENUM = {
   currency: ['USD', 'THB'], region: ['US', 'TH'], dateEra: ['BE', 'CE'], chgSuffix: ['รอบปี', 'ตั้งแต่ IPO'],
-  epsBasis: ['gaap-ttm', 'adj-ttm', 'fy'],
-  method: ['pe', 'pbv', 'ps', 'evsales', 'evebitda', 'pfcf', 'fcfyield', 'pffo', 'ddm', 'dcf', 'ri', 'declared'],
+  epsBasis: ['gaap-ttm', 'adj-ttm', 'fy', 'ifrs'],
+  method: ['pe', 'pbv', 'ps', 'evsales', 'evebitda', 'pfcf', 'fcfyield', 'pffo', 'ddm', 'ddm2', 'dcf', 'ri', 'declared'],
   multipleSource: ['median5y', 'median10y', 'peer', 'justified', 'sector', 'current'],   // 'current' = เฉพาะขา role:"context" (ตัวคูณสด คิดทุกวัน) · บนขา fv ห้าม = สมอตาย W18 (§13 ข้อ 6)
   declaredBasis: ['sotp', 'nav', 'rnpv', 'other'],
   driver: ['eps', 'ffo', 'revenuePerShare', 'bvps', 'fcfPerShare'],
@@ -29,7 +29,7 @@ const CARD_KEYS = ['mcap', 'pe', 'peAvg5y', 'pbv', 'ps', 'netIncome', 'eps', 'bv
 const FUND_KEYS = ['eps', 'epsBasis', 'dps', 'bvps', 'shares', 'revenue', 'netIncome', 'roe', 'roa', 'grossMargin', 'netMargin',
   'opMargin', 'beta', 'debtToEquity', 'fcf', 'ebitda', 'netDebt', 'peAvg5y', 'ffoPerShare', 'roic', 'epsForward'];
 const MULT = ['multiple', 'multipleSource'];
-const RANGE = ['multipleRange'];   // §3.6 F — กรอบความไวของตัวคูณ [lo, hi] → กรอบ FV
+const RANGE = ['multipleRange', 'medianWindow'];   // §3.6 F — กรอบความไวของตัวคูณ [lo, hi] → กรอบ FV · §3.6 G — ช่วงปีของมัธยฐาน (ขาตัวคูณเดียวกัน)
 const LEG_INPUTS = {
   pe: { req: MULT, opt: RANGE },
   pbv: { req: [], opt: ['multiple', 'multipleSource', 'g', 'r'].concat(RANGE) },   // multiple+source หรือ g+r (justified) — ตรวจคู่ด้านล่าง
@@ -37,6 +37,7 @@ const LEG_INPUTS = {
   pfcf: { req: MULT, opt: RANGE }, pffo: { req: MULT, opt: RANGE },
   fcfyield: { req: ['yield'], opt: [] },
   ddm: { req: ['g', 'r'], opt: [] },
+  ddm2: { req: ['d1', 'g1', 'years1', 'g2', 'r'], opt: ['horizon'] },   // §3.6 N — horizon: int ≥1 | null (null = Gordon ปลายช่วง 1) ต้องมีคีย์เสมอ
   dcf: { req: ['g1', 'years1', 'tg', 'r', 'rfCurrency'], opt: [] },
   ri: { req: ['r', 'years', 'payout'], opt: [] },
   declared: { req: ['value', 'basis'], opt: ['extrasRef'] },
@@ -185,7 +186,7 @@ function validate(doc) {
       if (leg.role !== 'context') E(sp, "'current' ใช้ได้เฉพาะขา role:\"context\" — บนขา fv คือสมอตาย (W18) ห้ามโดยโครงสร้าง");
       if (inp.multiple != null) E(`${p}.inputs.multiple`, "multipleSource 'current' = ตัวคูณสด (ราคา ÷ ตัวตั้ง) ที่ compute คิดทุกวัน — ห้ามพิมพ์ตัวเลข");
     }
-    for (const k of ['multiple', 'g', 'r', 'g1', 'tg', 'yield', 'value', 'payout']) if (inp[k] != null) num(inp[k], `${p}.inputs.${k}`);
+    for (const k of ['multiple', 'g', 'r', 'g1', 'tg', 'yield', 'value', 'payout', 'd1', 'g2']) if (inp[k] != null) num(inp[k], `${p}.inputs.${k}`);
     for (const k of ['years1', 'years']) if (inp[k] != null) num(inp[k], `${p}.inputs.${k}`, { int: true, min: 1 });
     if (inp.multiple != null && !(inp.multiple > 0)) E(`${p}.inputs.multiple`, 'ต้อง > 0');
     if (leg.method === 'pbv') {
@@ -200,6 +201,16 @@ function validate(doc) {
       else if (!isNum(inp.multiple)) E(rp, 'ใช้ได้เฉพาะขาที่มี inputs.multiple');
       else if (!(r[0] <= inp.multiple && inp.multiple <= r[1])) E(rp, `multiple ${inp.multiple} ต้องอยู่ในกรอบ [${r[0]}, ${r[1]}]`);
       if (leg.role === 'context') E(rp, 'ขา context ไม่นับในกรอบ FV — ถอด multipleRange');
+    }
+    if (leg.method === 'ddm2') {
+      if (!('horizon' in inp)) E(`${p}.inputs.horizon`, 'ต้องมี — จำนวนงวด (จำนวนเต็ม ≥1) หรือ null = มูลค่าปลายงวดแบบ Gordon');
+      else if (inp.horizon !== null) num(inp.horizon, `${p}.inputs.horizon`, { int: true, min: 1 });
+      if (isNum(inp.d1) && !(inp.d1 > 0)) E(`${p}.inputs.d1`, 'ต้อง > 0');
+    }
+    if (inp.medianWindow != null) {
+      const mp = `${p}.inputs.medianWindow`;
+      if (typeof inp.medianWindow !== 'string' || !inp.medianWindow.trim() || inp.medianWindow.length > 40) E(mp, 'ต้องเป็นข้อความสั้น ≤40 ตัวอักษร (เช่น "FY2022–FY2025")');
+      if (!['median5y', 'median10y'].includes(inp.multipleSource)) E(mp, 'ใช้คู่กับ multipleSource median5y/median10y เท่านั้น');
     }
     if (leg.method === 'dcf' && inp.rfCurrency != null && inp.rfCurrency !== doc.currency) E(`${p}.inputs.rfCurrency`, `rf ต้องสกุลเดียวกับกระแสเงินสด (${doc.currency}) — ชั้น 0`);
     if (leg.method === 'ri' && inp.payout != null && !(inp.payout >= 0 && inp.payout <= 100)) E(`${p}.inputs.payout`, 'ต้อง 0–100 (หน่วยเปอร์เซ็นต์)');

@@ -132,4 +132,14 @@ t.eq(JSON.parse(R.jsonScript('{"a":"</script>"}')).a, '</script>', 'jsonScript o
   t(src.includes(`× P/E ปัจจุบัน ${(doc.market.px / doc.fundamentals.eps).toFixed(1)}x`), "R7: 'current' mdesc prints the live multiple");
   t(!src.includes('P/E เป้าหมาย ~undefinedx'), "R7: no 'undefined' multiple leaks into mdesc");
   t.eq(CR.checkHtml(expandReport(src), 'ZTS.html', { source: src }).errors.map((e) => e.id), [], "'current' context leg: v2 gate 0 errors"); }
+// Plan 2a Task 6 — mdesc ของ ddm2 / medianWindow / ifrs
+{ const doc = load('ZTS'); doc.legs[1] = { method: 'ddm2', label: 'DDM 2 ระยะ', inputs: { d1: 2.04, g1: 11, years1: 10, g2: 3, r: 8.5, horizon: 40 } };
+  const src = R.toV2Source(doc, C.compute(doc, { seeds }));
+  t(src.includes('D₁ $2.04 โต 11%/ปี 10 ปี แล้ว 3%/ปี · r 8.5% · 40 งวด ไม่มีมูลค่าปลายงวด'), 'ddm2 mdesc (finite)');
+  t(src.includes('$55.02</div>'), 'ddm2 mval computed');
+  t.eq(CR.checkHtml(expandReport(src), 'ZTS.html', { source: src }).errors.map((e) => e.id), [], 'ddm2: v2 gate 0 errors'); }
+{ const doc = load('ZTS'); doc.legs[0].inputs.medianWindow = 'FY2022–FY2025'; doc.fundamentals.epsBasis = 'ifrs';
+  const view = C.compute(doc, { seeds }); const src = R.toV2Source(doc, view);
+  t(src.includes('EPS IFRS (TTM) $6.13 × P/E เป้าหมาย ~28x (มัธยฐาน FY2022–FY2025)'), 'medianWindow replaces the source name · ifrs label');
+  t.eq(require('../../tools/v3/cards.js').renderCard('eps', view).d, 'IFRS', 'eps card base line says IFRS'); }
 t.done();

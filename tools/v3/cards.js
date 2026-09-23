@@ -43,7 +43,7 @@ const CATALOGUE = {
   pbv: { label: () => 'P/BV', cls: 'neu', value: (v) => priceBoundOrThrow('pbv', v.d.pbv).toFixed(2) + 'x', d: (v) => `BVPS ${money(v, need(v, 'bvps'))}` },
   ps: { label: () => 'P/S', cls: 'neu', value: (v) => priceBoundOrThrow('ps', v.d.ps).toFixed(1) + 'x', d: (v) => `รายได้ TTM ${big(v, need(v, 'revenue'))}` },
   netIncome: { label: () => 'กำไรสุทธิ TTM', value: (v) => big(v, need(v, 'netIncome')), d: () => 'รอบ 12 เดือนล่าสุด', cls: '' },
-  eps: { label: () => 'EPS (TTM)', value: (v) => '~' + money(v, need(v, 'eps')), d: (v) => ({ 'gaap-ttm': 'GAAP', 'adj-ttm': 'Adjusted', fy: 'ปีบัญชีล่าสุด' }[f(v).epsBasis] || ''), cls: '' },
+  eps: { label: () => 'EPS (TTM)', value: (v) => '~' + money(v, need(v, 'eps')), d: (v) => ({ 'gaap-ttm': 'GAAP', 'adj-ttm': 'Adjusted', fy: 'ปีบัญชีล่าสุด', ifrs: 'IFRS' }[f(v).epsBasis] || ''), cls: '' },
   bvps: { label: () => 'BVPS', value: (v) => '~' + money(v, need(v, 'bvps')), d: () => 'มูลค่าทางบัญชีต่อหุ้น', cls: '' },
   roe: { label: () => 'ROE / ROA', cls: 'pos', value: (v) => `~${need(v, 'roe').toFixed(1)}%` + (f(v).roa != null ? ` / ${f(v).roa.toFixed(1)}%` : ''), d: () => 'ผลตอบแทนต่อทุน / สินทรัพย์' },
   revenue: { label: () => 'รายได้ TTM', cls: 'neu', value: (v) => big(v, need(v, 'revenue')), d: () => 'รอบ 12 เดือนล่าสุด' },

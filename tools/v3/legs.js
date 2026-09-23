@@ -46,6 +46,16 @@ function legValue(leg, fundamentals, path) {
     case 'fcfyield': v = perShare(need('fcf')) / pct(i.yield); break;
     case 'pffo': v = need('ffoPerShare') * i.multiple; break;
     case 'ddm': v = need('dps') * (1 + pct(i.g)) / spread(i.r, i.g, 'g'); break;
+    case 'ddm2': {
+      // §3.6 N — D₁ = d1 · D_{t+1} = D_t·(1+g1) ขณะ t < years1 ไม่งั้น (1+g2) · horizon null = Gordon ปลายช่วง 1
+      const r = pct(i.r), H = i.horizon == null ? i.years1 : i.horizon;
+      if (i.horizon == null) spread(i.r, i.g2, 'g2');
+      let D = i.d1, pv = 0;
+      for (let t = 1; t <= H; t++) { pv += D / Math.pow(1 + r, t); D *= 1 + pct(t < i.years1 ? i.g1 : i.g2); }
+      if (i.horizon == null) pv += D / (r - pct(i.g2)) / Math.pow(1 + r, i.years1);
+      v = pv;
+      break;
+    }
     case 'dcf': {
       const r = pct(i.r);
       spread(i.r, i.tg, 'tg');

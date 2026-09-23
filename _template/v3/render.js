@@ -15,7 +15,7 @@ const S = require('../../tools/v3/schema.js');
 
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const METHOD_NAME = { pe: 'P/E', pbv: 'P/BV', ps: 'P/S', evsales: 'EV/Sales', evebitda: 'EV/EBITDA', pfcf: 'P/FCF', fcfyield: 'FCF Yield',
-  pffo: 'P/FFO', ddm: 'DDM / Gordon Growth', dcf: 'DCF', ri: 'Residual Income', declared: 'มูลค่าประกาศ' };
+  pffo: 'P/FFO', ddm: 'DDM / Gordon Growth', ddm2: 'DDM 2 ระยะ', dcf: 'DCF', ri: 'Residual Income', declared: 'มูลค่าประกาศ' };
 const SRC_NAME = { median5y: 'มัธยฐาน 5 ปี', median10y: 'มัธยฐาน 10 ปี', peer: 'ค่ากลางกลุ่มเทียบ', justified: 'justified', sector: 'ค่ากลางเซกเตอร์', current: 'ตัวคูณปัจจุบัน' };
 const dot = (c) => `<div style="width:8px;height:8px;border-radius:50%;background:${c};display:inline-block;margin:0 3px"></div>`;
 // JSON ใน <script> ห้ามมี '<' ดิบ (กัน </script> ปิดแท็กก่อนเวลา) — '<' โผล่ได้เฉพาะในสตริง JSON ⇒ \u003c ยัง parse เป็นค่าเดิม
@@ -23,7 +23,7 @@ const jsonScript = (s) => String(s).replace(/</g, '\\u003c');
 
 // Finding 3 (postreview) — mdesc EPS ต้องระบุฐานให้ตรง: override.eps = "EPS ปรับ" (ไม่ใช่ TTM ของจริง)
 // ไม่งั้นตาม fundamentals.epsBasis (gaap-ttm/adj-ttm/fy) — เดิม mdesc พิมพ์ "EPS (TTM)" ตายตัวแม้ eps มาจาก override
-const EPS_BASIS_LABEL = { 'gaap-ttm': 'EPS (TTM)', 'adj-ttm': 'EPS adj. (TTM)', fy: 'EPS (FY)' };
+const EPS_BASIS_LABEL = { 'gaap-ttm': 'EPS (TTM)', 'adj-ttm': 'EPS adj. (TTM)', fy: 'EPS (FY)', ifrs: 'EPS IFRS (TTM)' };
 function epsLabel(leg, view) {
   if (leg.override && leg.override.eps != null) return 'EPS ปรับ';
   const basis = view.doc.fundamentals.epsBasis;
@@ -36,7 +36,7 @@ function epsLabel(leg, view) {
 function mdesc(leg, view) {
   const m = (v) => view.cur + RV.fmtPrice(v);
   const i = leg.inputs, b = { ...view.doc.fundamentals, ...(leg.override || {}) };
-  const src = i.multipleSource ? ` (${SRC_NAME[i.multipleSource]})` : '';
+  const src = i.medianWindow ? ` (มัธยฐาน ${i.medianWindow})` : i.multipleSource ? ` (${SRC_NAME[i.multipleSource]})` : '';
   const rng = i.multipleRange ? ` · กรอบ ${i.multipleRange[0]}–${i.multipleRange[1]}x` : '';
   // R7 — 'current': ตัวคูณสดจากราคาวันนี้ (หน้า v3 build ใหม่จาก JSON ทุกครั้ง จึงไม่ค้าง) · ตัวตั้งเดียวกับ compute (S.CURRENT_BASE + override)
   const live = i.multipleSource === 'current';
@@ -47,6 +47,8 @@ function mdesc(leg, view) {
     case 'pbv': return i.multipleSource != null ? `BVPS ${m(b.bvps)} × P/BV ${live ? 'ปัจจุบัน ' : ''}${mult}x${live ? '' : src}${rng}`
       : `P/BV เหมาะสม = (ROE ${b.roe}% − g ${i.g}%)/(r ${i.r}% − g ${i.g}%) ≈ ${((b.roe - i.g) / (i.r - i.g)).toFixed(2)} × BVPS ${m(b.bvps)}`;
     case 'ddm': return `D₁ = ปันผล ${m(b.dps)} × (1+g); g ${i.g}%, r ${i.r}%`;
+    case 'ddm2': return `D₁ ${m(i.d1)} โต ${i.g1}%/ปี ${i.years1} ปี แล้ว ${i.g2}%/ปี · r ${i.r}% · `
+      + (i.horizon == null ? 'มูลค่าปลายงวดแบบ Gordon' : `${i.horizon} งวด ไม่มีมูลค่าปลายงวด`);
     case 'dcf': return `FCF ${RV.fmtBig(b.fcf, view.cur)} โต ${i.g1}%/ปี ${i.years1} ปี · โตถาวร ${i.tg}% · r ${i.r}%`;
     case 'ri': return `BVPS ${m(b.bvps)} · ROE ${b.roe}% vs r ${i.r}% · ${i.years} ปี · payout ${i.payout}%`;
     case 'fcfyield': return `FCF/หุ้น ÷ yield เป้าหมาย ${i.yield}%`;

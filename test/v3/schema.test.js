@@ -112,4 +112,15 @@ const curLeg = (extra) => ({ method: 'pe', label: 'P/E ปัจจุบัน'
 { const d = base(); d.legs.push({ method: 'ps', label: 'P/S ปัจจุบัน', role: 'context', inputs: { multipleSource: 'current' } }); d.fvWeights = null;
   t(paths(S.validate(d)).includes('legs[2].inputs.multipleSource'), "'current' only on pe/pbv/pffo (per-share base)"); }
 t.eq(S.CURRENT_BASE, { pe: 'eps', pbv: 'bvps', pffo: 'ffoPerShare' }, 'CURRENT_BASE exported');
+// Plan 2a Task 6 — ddm2 / medianWindow / ifrs
+const ddm2 = (inp) => ({ method: 'ddm2', label: 'DDM 2 ระยะ', inputs: inp });
+{ const d = base(); d.legs.push(ddm2({ d1: 2, g1: 10, years1: 5, g2: 3, r: 9, horizon: 30 })); t.eq(S.validate(d), [], 'ddm2 finite valid'); }
+{ const d = base(); d.legs.push(ddm2({ d1: 2, g1: 10, years1: 5, g2: 3, r: 9, horizon: null })); t.eq(S.validate(d), [], 'ddm2 horizon null valid'); }
+{ const d = base(); d.legs.push(ddm2({ d1: 2, g1: 10, years1: 5, g2: 3, r: 9 })); t(paths(S.validate(d)).includes('legs[2].inputs.horizon'), 'Review Focus #3: horizon key must be present'); }
+{ const d = base(); d.legs.push(ddm2({ d1: 2, g1: 10, years1: 5, g2: 3, r: 9, horizon: 0 })); t(paths(S.validate(d)).includes('legs[2].inputs.horizon'), 'Review Focus #3: horizon 0 → error'); }
+{ const d = base(); d.legs.push(ddm2({ d1: 0, g1: 10, years1: 5, g2: 3, r: 9, horizon: 30 })); t(paths(S.validate(d)).includes('legs[2].inputs.d1'), 'd1 > 0'); }
+{ const d = base(); d.legs[0].inputs.medianWindow = 'FY2021–FY2025'; t.eq(S.validate(d), [], 'medianWindow with median5y'); }
+{ const d = base(); d.legs[0].inputs.multipleSource = 'peer'; d.legs[0].inputs.medianWindow = 'FY21–25'; t(paths(S.validate(d)).includes('legs[0].inputs.medianWindow'), 'medianWindow needs a median source'); }
+{ const d = base(); d.legs[0].inputs.medianWindow = 'x'.repeat(41); t(paths(S.validate(d)).includes('legs[0].inputs.medianWindow'), 'medianWindow ≤ 40 chars'); }
+{ const d = base(); d.fundamentals.epsBasis = 'ifrs'; t.eq(S.validate(d), [], 'epsBasis ifrs'); }
 t.done();
