@@ -82,7 +82,7 @@
 ```jsonc
 {
   "v": 3,
-  "symbol": "ZTS", "currency": "USD", "market": "US",        // market: US|TH → สัญลักษณ์เงิน, ศักราช default
+  "symbol": "ZTS", "currency": "USD", "region": "US",        // region: US|TH (ไม่ใช้ชื่อ market — ชื่อนั้นคือบล็อกราคาของ cron)
   "dateEra": "BE",                                            // การแสดงผลวันที่ (คงตามใบเดิม — migration ไม่พลิกหน้าตา)
 
   "meta": {                                                   // worker
@@ -90,7 +90,9 @@
     "analysisDate": "2026-09-20",                             // = footer "ข้อมูล ณ" · cron ไม่แตะ · ฐานของ updated/dedup/staleness
     "aiModel": "Claude Sonnet 5",
     "sources": ["Yahoo Finance", "SEC 10-Q", "stockanalysis.com"], // ≥3 (W08)
-    "gdots": 2,
+    "exchange": "NYSE", "headerTags": ["Animal Health"],     // ป้ายหัวรายงาน (≤2) — ไม่ใช่ tags.json
+    "priceNote": "StockAnalysis.com ตรงกับ Yahoo Finance",     // วงเล็บหลัง "ราคา ณ" (ไม่บังคับ)
+    // gdots = 3 จุดสีที่ derive จาก theme (pick-brand.js:119) — ไม่เก็บ
     "themeLegacy": null   // เฉพาะใบ migrate: 8 คีย์ palette เดิม (accent accentDark darkGrad glow subColor headerMuted verdictText vcellLabel)
     // ใบใหม่: ไม่มี theme — seed hex อยู่ที่ tools/seeds.json ที่เดียว (pick-brand ใต้ lock) · build: makeTheme(seed) → deriveTheme()
     // chgBg/chgColor = คิดจากทิศกราฟ (E34) · badge = default — ไม่อยู่ใน JSON ทั้งสองแบบ
