@@ -185,7 +185,7 @@ function validate(doc) {
     }
     if (mt.custom != null) {
       if (!Array.isArray(mt.custom) || mt.custom.length > 4) E('metrics.custom', 'ต้องเป็น array ≤4');
-      else mt.custom.forEach((c, i) => { closed(c, `metrics.custom[${i}]`, ['label', 'value', 'note']); str(c.label, `metrics.custom[${i}].label`); str(c.value, `metrics.custom[${i}].value`); str(c.note, `metrics.custom[${i}].note`, { req: false }); });
+      else mt.custom.forEach((c, i) => { if (!isObj(c)) return E(`metrics.custom[${i}]`, 'ต้องเป็น object'); closed(c, `metrics.custom[${i}]`, ['label', 'value', 'note']); str(c.label, `metrics.custom[${i}].label`); str(c.value, `metrics.custom[${i}].value`); str(c.note, `metrics.custom[${i}].note`, { req: false }); });
     }
     str(mt.hint, 'metrics.hint', { req: false });
   }
@@ -203,6 +203,7 @@ function validate(doc) {
     if (!Array.isArray(s.cases) || s.cases.length !== 3) E('scenarios.cases', 'ต้องมี 3 ฉากพอดี (Bear/Base/Bull)');
     else s.cases.forEach((c, i) => {
       const p = `scenarios.cases[${i}]`;
+      if (!isObj(c)) return E(p, 'ต้องเป็น object');
       closed(c, p, ['growth', 'exitMultiple', 'divCum', 'desc']);
       num(c.growth, `${p}.growth`); num(c.exitMultiple, `${p}.exitMultiple`, { gt: 0 }); str(c.desc, `${p}.desc`);
       if (s.divIncluded) num(c.divCum, `${p}.divCum`, { min: 0 });
@@ -235,7 +236,7 @@ function validate(doc) {
     if (!Array.isArray(x.rows) || !x.rows.every((r) => Array.isArray(r) && r.every((c) => typeof c === 'string' || isNum(c)))) E(`${p}.rows`, 'ต้องเป็น array ของแถว (cell = ข้อความหรือตัวเลข)');
     if (x.sumCol != null) {
       num(x.sumCol, `${p}.sumCol`, { int: true, min: 0 });
-      if (Array.isArray(x.rows) && !x.rows.every((r) => isNum(r[x.sumCol]))) E(`${p}.sumCol`, 'คอลัมน์ผลรวมต้องเป็นตัวเลขทุกแถว');
+      if (Array.isArray(x.rows) && !x.rows.every((r) => Array.isArray(r) && isNum(r[x.sumCol]))) E(`${p}.sumCol`, 'คอลัมน์ผลรวมต้องเป็นตัวเลขทุกแถว');
     }
     str(x.note, `${p}.note`, { req: false });
   });

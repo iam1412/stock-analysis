@@ -175,7 +175,7 @@
 | `pffo` | ffoPerShare, multiple, multipleSource | |
 | `ddm` | dps, g, r | dps×(1+g)/(r−g) |
 | `dcf` | fcf0, g1, years1, tg, r, rfCurrency, netDebt, shares | 2-stage มาตรฐาน |
-| `ri` | bvps, roe, r, years, fade | residual income มาตรฐาน |
+| `ri` | r, years, payout (bvps/roe จาก fundamentals หรือ override) | residual income มาตรฐาน |
 | `declared` | `value` + `basis` (enum: sotp \| nav \| rnpv \| other) + `extrasRef?` | ค่าที่ประกาศ — **ต้อง** ผูก `extras[]` ที่รวมยอดได้ (sotp/nav) หรือมีเหตุผลใน note |
 
 - `multipleSource` enum: `median5y` · `median10y` · `peer` · `justified` · `sector` — **ไม่มี `current`** ⇒ สมอตายแบบประกาศตรง = error ตอน save · สมอตายแฝง (multiple ห่าง px/eps หรือ forward ≤7%) = W18/W25 เป็น **การคำนวณ** ไม่ใช่ regex

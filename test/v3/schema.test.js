@@ -24,4 +24,25 @@ t.eq(S.validate(JSON.parse(JSON.stringify(require('../fixtures/v3/BBL.json')))),
 t.eq(S.OWNER('market.px'), 'cron', 'market is cron-owned');
 t.eq(S.OWNER('_sig'), 'io', '_sig is io-owned');
 t.eq(S.OWNER('legs[0].inputs.multiple'), 'worker', 'rest is worker-owned');
+
+// fix round 1 — malformed nested entries must return path-named errors, never throw
+{
+  const d = base(); d.metrics.custom = [null];
+  let errs;
+  try { errs = S.validate(d); } catch (e) { t(false, `metrics.custom[i]=null must not throw — threw ${e.message}`); }
+  t(errs && paths(errs).includes('metrics.custom[0]'), 'metrics.custom[0]=null returns path-named error');
+}
+{
+  const d = base(); d.scenarios.cases = [null, d.scenarios.cases[1], d.scenarios.cases[2]];
+  let errs;
+  try { errs = S.validate(d); } catch (e) { t(false, `scenarios.cases[i]=null must not throw — threw ${e.message}`); }
+  t(errs && paths(errs).includes('scenarios.cases[0]'), 'scenarios.cases[0]=null returns path-named error');
+}
+{
+  const d = base();
+  d.extras = [{ after: 'valuation', title: 'x', headers: ['a', 'b'], rows: [null, ['b', 1]], sumCol: 1 }];
+  let errs;
+  try { errs = S.validate(d); } catch (e) { t(false, `extras rows with null row must not throw — threw ${e.message}`); }
+  t(errs && paths(errs).includes('extras[0].sumCol'), 'extras[0] with null row returns path-named sumCol error');
+}
 t.done();
