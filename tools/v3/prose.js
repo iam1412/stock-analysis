@@ -5,6 +5,7 @@
  * countMoneyLiterals = W31: นับ literal รูปเงินที่ค้าง (ไม่เทียบราคาวันนี้ — กัน false positive เมื่อราคาขยับ)
  */
 const TK = require('./tokens.js');
+const K = require('./cards.js');
 
 const TOKEN_RE = /\{\{([A-Za-z0-9.]+)\}\}/g;
 const ALLOWED = /<\/?b>|<\/?i>|<br\s*\/?>/gi;
@@ -63,7 +64,7 @@ function proseFields(doc) {
 // ค่าผูกราคาที่ห้ามพิมพ์เอง: [token, kind, ค่าดิบ] — kind: money | pct | mult
 function priceBound(view) {
   const d = view.d, out = [];
-  const add = (token, kind, raw) => { if (raw != null && Number.isFinite(raw)) out.push({ token, kind, raw, shown: TK.TOKENS_V3[token](view) }); };
+  const add = (token, kind, raw, shownOverride) => { if (raw != null && Number.isFinite(raw)) out.push({ token, kind, raw, shown: shownOverride != null ? shownOverride : TK.TOKENS_V3[token](view) }); };
   add('px', 'money', d.px); add('fv', 'money', d.fv); add('mos20', 'money', d.mos20); add('mos30', 'money', d.mos30);
   add('fvLow', 'money', d.values.fvLow); add('fvHigh', 'money', d.values.fvHigh);
   if (d.values.analystTgt != null) { add('analyst.target', 'money', d.values.analystTgt); add('analyst.pct', 'pct', d.analystPct); }
@@ -72,6 +73,11 @@ function priceBound(view) {
   if (d.pe != null && d.pe > 0) add('pe', 'mult', d.pe);
   if (d.pbv != null) add('pbv', 'mult', d.pbv);
   if (d.ps != null) add('ps', 'mult', d.ps);
+  // peForward/evEbitda — ไม่มี token ในตาราง v2 (twin) แต่การ์ด section 1 พิมพ์ค่านี้แล้ว ⇒ กติกา B ต้องจับ
+  // literal ที่ก๊อปมาด้วยเหมือนกัน — ใช้ K.peForwardCalc/K.evEbitdaCalc ตัวเดียวกับการ์ด (ไม่คิด/ฟอร์แมตซ้ำ)
+  // ไม่มีการ์ด/ข้อมูลไม่พอ → calc throw → ข้ามเงียบ (ไม่มีขอบเขตให้ตรวจ เหมือนการ์ดที่ถอดออกจริง)
+  try { const c = K.peForwardCalc(view); add('peForward', 'mult', c.raw, c.text); } catch (e) { /* no epsForward → no bound */ }
+  try { const c = K.evEbitdaCalc(view); add('evEbitda', 'mult', c.raw, c.text); } catch (e) { /* no ebitda/netDebt → no bound */ }
   ['bear', 'base', 'bull'].forEach((n, i) => { const s = d.scenarios[i]; if (s) { add(`scn.${n}.tgt`, 'money', s.tgt); add(`scn.${n}.ret`, 'pct', s.total); } });
   return out;
 }

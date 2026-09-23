@@ -58,7 +58,7 @@ function legValue(leg, fundamentals, path) {
     case 'ri': {
       const r = pct(i.r), roe = pct(need('roe'));
       let book = need('bvps'); v = book;
-      for (let t = 1; t <= i.years; t++) { v += (roe - r) * book / Math.pow(1 + r, t); book *= 1 + roe * (1 - i.payout); }
+      for (let t = 1; t <= i.years; t++) { v += (roe - r) * book / Math.pow(1 + r, t); book *= 1 + roe * (1 - pct(i.payout)); }
       break;
     }
     case 'declared': v = i.value; break;

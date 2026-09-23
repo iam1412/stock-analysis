@@ -4,7 +4,11 @@
  * (stock-meta + report-data v2 + token {{rd:…}} + marker) แล้วให้ build.js เดินทางเดิมทุกขั้น
  * ⇒ dashboard.css / engine.js / decorateReport / injectTA / gate v2 ใช้ต่อได้โดยไม่แก้
  * DOM/class คัดจาก _template/skeleton-th.html (ห้ามคิด class ใหม่ ยกเว้น .xtab ของ extras)
- * ทุก string จาก JSON ผ่าน esc() หรือ renderProse() — ไม่มีทางอื่นเข้า HTML
+ * ทุก string จาก JSON ที่ไปลง HTML แบบ prose ผ่าน esc() หรือ renderProse() เสมอ — ★ ยกเว้น gdots/theme
+ * (สี hex จาก meta.themeLegacy/seeds — ไม่ผ่าน esc()) และเนื้อหาใน <script type="application/json"> (stock-meta/
+ * report-data — ผ่าน JSON.stringify()/RV.styledRD() ไม่ใช่ esc()) ความปลอดภัยของสองจุดนี้พึ่ง allowlist สี/ตัวเลข +
+ * JSON.parse ที่ fail-closed ใน build.js validateReportData (ไม่ใช่ escaping) — hardening เป็นชั้นที่สอง (เช่น
+ * escape ตรงนี้ด้วย) วางแผนไว้ที่ Plan 2
  */
 const RV = require('../../tools/report-values.js');
 const P = require('../../tools/v3/prose.js');
@@ -26,7 +30,7 @@ function mdesc(leg, view) {
       : `P/BV เหมาะสม = (ROE ${b.roe}% − g ${i.g}%)/(r ${i.r}% − g ${i.g}%) ≈ ${((b.roe - i.g) / (i.r - i.g)).toFixed(2)} × BVPS ${m(b.bvps)}`;
     case 'ddm': return `D₁ = ปันผล ${m(b.dps)} × (1+g); g ${i.g}%, r ${i.r}%`;
     case 'dcf': return `FCF ${RV.fmtBig(b.fcf, view.cur)} โต ${i.g1}%/ปี ${i.years1} ปี · โตถาวร ${i.tg}% · r ${i.r}%`;
-    case 'ri': return `BVPS ${m(b.bvps)} · ROE ${b.roe}% vs r ${i.r}% · ${i.years} ปี · payout ${Math.round(i.payout * 100)}%`;
+    case 'ri': return `BVPS ${m(b.bvps)} · ROE ${b.roe}% vs r ${i.r}% · ${i.years} ปี · payout ${i.payout}%`;
     case 'fcfyield': return `FCF/หุ้น ÷ yield เป้าหมาย ${i.yield}%`;
     case 'declared': return `ค่าประกาศ (${i.basis})` + (i.extrasRef != null ? ' — ดูตารางประกอบ' : '');
     default: return `${METHOD_NAME[leg.method]} ${i.multiple}x${src}`;
@@ -239,7 +243,7 @@ ${RV.styledRD(view.rd)}
       <p>${pr(doc.prose.verdictBody)}</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v">MOS ~ {{rd:mos}}</div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v {{rd:mosClass}}">MOS ~ {{rd:mos}}</div></div>
         ${analystCell}
       </div>
       <div class="zone">

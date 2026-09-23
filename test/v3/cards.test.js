@@ -5,6 +5,7 @@ const S = require('../../tools/v3/schema.js');
 const C = require('../../tools/v3/compute.js');
 const DV = require('../../tools/derived-values.js');
 const RV = require('../../tools/report-values.js');
+const TK = require('../../tools/v3/tokens.js');
 const load = () => JSON.parse(JSON.stringify(require('../fixtures/v3/ZTS.json')));
 const view = C.compute(load(), { seeds: { ZTS: '#e8731a' } });
 
@@ -34,7 +35,7 @@ t(/BVPS \$11\.40/.test(K.renderCard('pbv', view).d), 'pbv base line = BVPS (W20)
 const nd = K.renderCard('netDebt', view);
 t.eq(nd.v, RV.fmtBig(5.1e9, '$'), 'netDebt value = fundamentals.netDebt formatted');
 const at = K.renderCard('analystTarget', view);
-t.eq(at.v, '$190.00 (+58.3%)', 'analystTarget = doc.analyst.target + % vs current price (E42 form)');
+t.eq(at.v, `$190.00 (${TK.TOKENS_V3['analyst.pct'](view)})`, 'analystTarget % text equals the v2 token TOKENS_V3[\'analyst.pct\'] (matches {{rd:analystPct}} exactly)');
 { const d = load(); delete d.analyst; const v2 = C.compute(d, { seeds: { ZTS: '#e8731a' } });
   t.throws(() => K.renderCard('analystTarget', v2), /metrics\.cards: analystTarget/, 'no doc.analyst → rejected'); }
 { const d = load(); d.fundamentals.ebitda = 3000000000; const v2 = C.compute(d, { seeds: { ZTS: '#e8731a' } });
@@ -50,4 +51,7 @@ t.eq(at.v, '$190.00 (+58.3%)', 'analystTarget = doc.analyst.target + % vs curren
   t(DV.epsBasesOf(K.renderCard('peForward', v2).d).includes(6.8), 'peForward base line declares forward EPS so E41 reads it'); }
 { const d = load(); d.fundamentals.ebitda = 0; const v2 = C.compute(d, { seeds: { ZTS: '#e8731a' } });
   t.throws(() => K.renderCard('evEbitda', v2), /EBITDA ≤ 0/, 'evEbitda rejects EBITDA ≤ 0'); }
+// Finding 6 — revenue ≤ 0 must throw a field-named error, never render Infinity%
+{ const d = load(); d.fundamentals.ebitda = 3000000000; d.fundamentals.revenue = 0; const v2 = C.compute(d, { seeds: { ZTS: '#e8731a' } });
+  t.throws(() => K.renderCard('ebitdaMargin', v2), /fundamentals\.revenue/, 'ebitdaMargin rejects revenue ≤ 0 instead of rendering Infinity%'); }
 t.done();

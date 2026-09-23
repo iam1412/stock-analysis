@@ -18,6 +18,22 @@ function sharesText(view, n) {
 }
 const priceBoundOrThrow = (key, v) => { if (v == null) throw new Error(`metrics.cards: ${key} คำนวณไม่ได้จากข้อมูลที่มี`); return v; };
 
+// peForwardCalc/evEbitdaCalc — เจ้าของเดียวของเลข+ข้อความ 2 ตัวนี้ (การ์ด section 1 + prose.js priceBound()
+// กติกา B ใช้ตัวเดียวกัน ไม่ก๊อปสูตร format ซ้ำ — เห็น .text ตรงกับที่การ์ดพิมพ์เป๊ะ)
+function peForwardCalc(view) {
+  const e = need(view, 'epsForward');
+  if (!(e > 0)) throw new Error('metrics.cards: peForward — EPS ประมาณการ ≤ 0 ถอดการ์ดออก');
+  const raw = view.d.px / e;
+  return { raw, text: raw.toFixed(1) + 'x' };
+}
+function evEbitdaCalc(view) {
+  const ev = priceBoundOrThrow('mcap', view.d.mcap) + need(view, 'netDebt');
+  const eb = need(view, 'ebitda');
+  if (!(eb > 0)) throw new Error('metrics.cards: evEbitda — EBITDA ≤ 0 ถอดการ์ดออก');
+  const raw = ev / eb;
+  return { raw, text: raw.toFixed(1) + 'x' };
+}
+
 const CATALOGUE = {
   mcap: { label: () => 'Market Cap', value: (v) => big(v, priceBoundOrThrow('mcap', v.d.mcap)), d: (v) => sharesText(v, need(v, 'shares')), cls: '' },
   pe: { label: () => 'P/E (TTM)', cls: 'neu',
@@ -48,16 +64,19 @@ const CATALOGUE = {
   // (เข้า E41/E42 ของ check-reports.js โดยธรรมชาติ — ตัว checker คำนวณ px/eps และ (tgt−px)/px จาก .d/.v เอง
   // ซึ่งตรงกับสูตรที่การ์ดนี้ใช้คำนวณอยู่แล้ว ⇒ ผ่านโดยไม่ต้องแก้ checker)
   netDebt: { label: () => 'หนี้สินสุทธิ (Net Debt)', value: (v) => big(v, need(v, 'netDebt')), d: () => 'หนี้สินรวม − เงินสดและรายการเทียบเท่า (ติดลบ = ฐานะเงินสดสุทธิ)', cls: '' },
-  ebitdaMargin: { label: () => 'EBITDA Margin', value: (v) => pct1(need(v, 'ebitda') / need(v, 'revenue') * 100), d: () => 'EBITDA ÷ รายได้ TTM', cls: '' },
+  ebitdaMargin: { label: () => 'EBITDA Margin',
+    value: (v) => { const rev = need(v, 'revenue'); if (!(rev > 0)) throw new Error('metrics.cards: ebitdaMargin — fundamentals.revenue ≤ 0 ถอดการ์ดออก'); return pct1(need(v, 'ebitda') / rev * 100); },
+    d: () => 'EBITDA ÷ รายได้ TTM', cls: '' },
   roic: { label: () => 'ROIC', cls: 'pos', value: (v) => `~${need(v, 'roic').toFixed(1)}%`, d: () => 'ผลตอบแทนต่อเงินลงทุน' },
   evEbitda: { label: () => 'EV/EBITDA', cls: 'neu',
-    value: (v) => { const ev = priceBoundOrThrow('mcap', v.d.mcap) + need(v, 'netDebt'); const eb = need(v, 'ebitda'); if (!(eb > 0)) throw new Error('metrics.cards: evEbitda — EBITDA ≤ 0 ถอดการ์ดออก'); return (ev / eb).toFixed(1) + 'x'; },
+    value: (v) => evEbitdaCalc(v).text,
     d: (v) => `EV ${big(v, priceBoundOrThrow('mcap', v.d.mcap) + need(v, 'netDebt'))} ÷ EBITDA ${big(v, need(v, 'ebitda'))}` },
   peForward: { label: () => 'Forward P/E', cls: 'neu',
-    value: (v) => { const e = need(v, 'epsForward'); if (!(e > 0)) throw new Error('metrics.cards: peForward — EPS ประมาณการ ≤ 0 ถอดการ์ดออก'); return (v.d.px / e).toFixed(1) + 'x'; },
+    value: (v) => peForwardCalc(v).text,
     d: (v) => `EPS ประมาณการ (Forward) ${money(v, need(v, 'epsForward'))}` },
+  // % ใช้ RV.TOKENS.analystPct(v.d) ตัวเดียวกับ token {{rd:analystPct}}/{{analyst.pct}} — ไม่คิดสูตร/ปัดเลขซ้ำเอง
   analystTarget: { label: () => 'เป้านักวิเคราะห์ (Consensus)', cls: '',
-    value: (v) => { const t = v.doc.analyst && v.doc.analyst.target; if (typeof t !== 'number' || !Number.isFinite(t)) throw new Error('metrics.cards: analystTarget — ไม่มี doc.analyst.target'); const pct = (t - v.d.px) / v.d.px * 100; return `${money(v, t)} (${pct >= 0 ? '+' : ''}${pct.toFixed(1)}%)`; },
+    value: (v) => { const t = v.doc.analyst && v.doc.analyst.target; if (typeof t !== 'number' || !Number.isFinite(t)) throw new Error('metrics.cards: analystTarget — ไม่มี doc.analyst.target'); return `${money(v, t)} (${RV.TOKENS.analystPct(v.d)})`; },
     d: () => 'เป้าเฉลี่ยนักวิเคราะห์ 12 เดือน' },
 };
 
@@ -68,4 +87,4 @@ function renderCard(key, view, note) {
   return { k: c.label(view), v: c.value(view), d: note ? (d ? `${d} · ${note}` : note) : d, cls: c.cls };
 }
 
-module.exports = { CATALOGUE, renderCard };
+module.exports = { CATALOGUE, renderCard, peForwardCalc, evEbitdaCalc };

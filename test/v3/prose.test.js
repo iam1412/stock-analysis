@@ -2,6 +2,7 @@
 const t = require('./_t.js')('prose');
 const P = require('../../tools/v3/prose.js');
 const C = require('../../tools/v3/compute.js');
+const K = require('../../tools/v3/cards.js');
 const load = () => JSON.parse(JSON.stringify(require('../fixtures/v3/ZTS.json')));
 const view = C.compute(load(), { seeds: { ZTS: '#e8731a' } });
 
@@ -25,6 +26,12 @@ t.throws(() => P.renderProse('{{nope}}', view, { mode: 'text' }), /\{\{nope\}\}/
   t(r.errors.length === 0, 'statement number that is not a rendered price-bound value passes'); }
 { const d = load(); d.risks[0] = 'MOS อยู่ที่ ' + view.d.mosText; const r = P.checkRuleB(d, view);
   t(r.errors.some((e) => e.path === 'risks[0]' && e.token === 'mos'), 'lists are scanned too'); }
+// rule B — peForward/evEbitda: no v2 token twin, but the card prints them — priceBound() must still catch copies
+{ const d = load(); d.fundamentals.epsForward = 6.8; const v2 = C.compute(d, { seeds: { ZTS: '#e8731a' } });
+  const text = K.peForwardCalc(v2).text;   // exact string the card renders, e.g. "17.6x"
+  d.prose.chart = `Forward P/E ราว ${text} ตอนนี้`;
+  const r = P.checkRuleB(d, v2);
+  t(r.errors.some((e) => e.path === 'prose.chart' && e.token === 'peForward'), 'exact copy of peForward is a rule-B error'); }
 t.eq(P.countMoneyLiterals(load()), 0, 'fixture has no money literals');
 { const d = load(); d.prose.gauge = 'เคยแตะ $120.50 และ ฿33'; t.eq(P.countMoneyLiterals(d), 2, 'counts $ and ฿ literals (W31)'); }
 t.done();

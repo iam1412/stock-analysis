@@ -11,7 +11,7 @@ t.near(v('pbv', { g: 5, r: 9 }), 133.95, 1e-6, 'justified pbv = (roe−g)/(r−g
 t.near(v('pbv', { multiple: 2, ...MS }), 22.8, 1e-9, 'pbv multiple');
 t.near(v('evebitda', { multiple: 18, ...MS }), 151.01580135440182, 1e-6, 'ev/ebitda');
 t.near(v('dcf', { g1: 7, years1: 5, tg: 3, r: 8.5, rfCurrency: 'USD' }), 104.0819097529678, 1e-6, 'dcf 2-stage');
-t.near(v('ri', { r: 9, years: 5, payout: 0.4 }, { override: { roe: 20, why: 'normalised' } }), 17.477769043669788, 1e-6, 'residual income with override');
+t.near(v('ri', { r: 9, years: 5, payout: 40 }, { override: { roe: 20, why: 'normalised' } }), 17.477769043669788, 1e-6, 'residual income with override (payout in percent units)');
 t.near(v('fcfyield', { yield: 4 }), 129.79683972911963, 1e-6, 'fcf yield');
 t.near(v('pfcf', { multiple: 25, ...MS }), 129.79683972911965, 1e-6, 'p/fcf');
 t.near(v('ps', { multiple: 6, ...MS }), 127.313769751693, 1e-6, 'p/s');

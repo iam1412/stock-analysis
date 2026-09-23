@@ -152,6 +152,7 @@ function validate(doc) {
       if (just && (inp.g == null || inp.r == null)) E(`${p}.inputs`, 'pbv แบบ justified ต้องมีทั้ง g และ r');
     }
     if (leg.method === 'dcf' && inp.rfCurrency != null && inp.rfCurrency !== doc.currency) E(`${p}.inputs.rfCurrency`, `rf ต้องสกุลเดียวกับกระแสเงินสด (${doc.currency}) — ชั้น 0`);
+    if (leg.method === 'ri' && inp.payout != null && !(inp.payout >= 0 && inp.payout <= 100)) E(`${p}.inputs.payout`, 'ต้อง 0–100 (หน่วยเปอร์เซ็นต์)');
     if (leg.method === 'declared') {
       en(inp.basis, `${p}.inputs.basis`, ENUM.declaredBasis);
       if (inp.value != null && !(inp.value > 0)) E(`${p}.inputs.value`, 'ต้อง > 0');

@@ -21,6 +21,7 @@ t.eq(S.validate(JSON.parse(JSON.stringify(require('../fixtures/v3/BBL.json')))),
 { const d = base(); d.meta.aiModel = 'GPT 5'; t(paths(S.validate(d)).includes('meta.aiModel'), 'ai model format'); }
 { const d = base(); d.market.px = -1; t(paths(S.validate(d)).includes('market.px'), 'px > 0'); }
 { const d = base(); d.metrics.cards.push('nope'); t(paths(S.validate(d)).includes('metrics.cards[12]'), 'card key must be in catalogue list'); }
+{ const d = base(); d.legs.push({ method: 'ri', label: 'RI', inputs: { r: 9, years: 5, payout: 150 } }); t(paths(S.validate(d)).includes('legs[2].inputs.payout'), 'ri payout must be 0–100 (percent units)'); }
 t.eq(S.OWNER('market.px'), 'cron', 'market is cron-owned');
 t.eq(S.OWNER('_sig'), 'io', '_sig is io-owned');
 t.eq(S.OWNER('legs[0].inputs.multiple'), 'worker', 'rest is worker-owned');
