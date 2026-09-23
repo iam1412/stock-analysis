@@ -174,12 +174,13 @@
 | `pfcf` / `fcfyield` | fcfPerShare หรือ fcf+shares, multiple\|yield | |
 | `pffo` | ffoPerShare, multiple, multipleSource | |
 | `ddm` | dps, g, r | dps×(1+g)/(r−g) |
+| `ddm2` (ใหม่ Task 0 — §3.6 N) | d1, g1, years1, g2, r, horizon (int \| null) | Σ_{t=1..horizon} D_t/(1+r)^t · D_1 = d1 · D_{t+1} = D_t·(1+g1) เมื่อ **t < years1** ไม่งั้น (1+g2) · horizon null = Gordon ปลายช่วง 2 |
 | `dcf` | g1, years1, tg, r, rfCurrency (fcf/netDebt/shares มาจาก fundamentals หรือ override — สำเนาเดียว) | 2-stage มาตรฐาน |
 | `ri` | r, years, payout (bvps/roe จาก fundamentals หรือ override) | residual income มาตรฐาน |
 | `declared` | `value` + `basis` (enum: sotp \| nav \| rnpv \| other) + `extrasRef?` | ค่าที่ประกาศ — **ต้อง** ผูก `extras[]` ที่รวมยอดได้ (sotp/nav) หรือมีเหตุผลใน note |
 
 - `multipleSource` enum: `median5y` · `median10y` · `peer` · `justified` · `sector` — **ไม่มี `current`** ⇒ สมอตายแบบประกาศตรง = error ตอน save · สมอตายแฝง (multiple ห่าง px/eps หรือ forward ≤7%) = W18/W25 เป็น **การคำนวณ** ไม่ใช่ regex
-- `fv` = Σ wᵢ·legᵢ (default เท่ากัน) · `fvLow/fvHigh` = min/max ของขา — **คิดเอง** ไม่เก็บ
+- `fv` = Σ wᵢ·legᵢ (default เท่ากัน) · `fvLow/fvHigh` = min/max ของขา — **คิดเอง** ไม่เก็บ · ส่วนขยาย Task 0 (ไม่บังคับ): ถ่วงตาม `family` (§3.6 C) · ขา `role:'context'` ไม่นับ (§3.6 I) · `multipleRange` กำหนดกรอบ (§3.6 F)
 - เป้า analyst ห้ามเป็นขา (ไม่มี method ให้) — ปิด GAP-001 โดยโครงสร้าง
 - DCF/RI ใช้สูตรมาตรฐานเดียวทั้งระบบ — โมเดลที่ไม่ใช่มาตรฐาน → `declared` (โปร่งใสว่าเป็นค่าประกาศ) · ชั้น 0 (rf ตรงสกุล · 2 วิธีใช้ (r,g) เดียว = วิธีเดียว) กลายเป็น check บน inputs
 
@@ -189,6 +190,7 @@
 - label/บรรทัด `.d` (ฐานการคำนวณ เช่น "EPS TTM $6.13") **template เขียนเอง** จาก fundamentals — ไม่ใช่ AI
 - `custom[]` ≤4 สำหรับข้อมูลเฉพาะธุรกิจ — `value` ผ่านกติกา B (ห้ามเป็นตัวเลขผูกราคา)
 - แคตตาล็อกได้มาจาก label 1,526 แบบของคลังปัจจุบัน (จัดกลุ่มตอนทำ plan) — label ที่ไม่ลงแคตตาล็อก → migrator ใส่ `custom[]` หรือรายชื่อคน
+- ส่วนขยาย Task 0 (§3.6 B/H/J/K): `cards[]` เป็นลำดับที่แทรก custom ได้ + `tone` ต่อการ์ด + การ์ด FY/REIT/ธนาคาร · label ของ `peAvg5y` ต้องเป็น **"มัธยฐาน"** ไม่ใช่ "เฉลี่ย" (บัค label — ค่าเป็นมัธยฐานจาก median-multiples อยู่แล้ว)
 
 ### 3.3 Scenarios
 
@@ -209,16 +211,50 @@
 - กติกา: migrate → ใบที่ `makeTheme(seed)` ตรงทุกคีย์ ≤12 ไม่เก็บ themeLegacy (ใช้ seed) · ที่เหลือเก็บ `themeLegacy` · `save` ปฏิเสธ themeLegacy ในใบ NEW · ถ้าวันหนึ่งเจ้าของอยากให้ทุกใบใช้สูตรปัจจุบัน = ลบ themeLegacy ทีละชุด (งานแยก ต้องเห็นภาพก่อน)
 - seeds.json ได้ entry ครบทุกใบตอน migrate (seed เดิม หรือ seed ย้อนที่ใกล้สุด) เพื่อให้ pick-brand ตรวจสีชนได้ทั้งคลัง · ลบรายงาน → `pick-brand --prune`
 
+### 3.6 ส่วนขยาย schema จาก Task 0 (แปลงใบจริง 3 ใบด้วยมือ 24 ก.ย. 69 — Plan 2a)
+
+ที่มา: Plan 2 Task 0 แปลงใบจริง 3 รูปร่างเป็น fixture — `test/fixtures/v3/BBL-real.json` (ธนาคาร TH) · `EQIX-real.json` (REIT) · `FER-real.json` (SOTP + งบ EUR) — ผลเทียบอยู่ใน `docs/superpowers/specs/2026-09-24-{BBL,EQIX,FER}-v3-compare.md` · ตารางรวมช่องว่าง A–R = `.superpowers/sdd/v3-plan2-task0/gaps-consolidated.md` · ตัวเลข "ใบ/909" = ประมาณจากการสแกน `reports/*.html` ของแต่ละ compare doc
+
+**หลักของทุกช่องในหัวข้อนี้**: **ไม่บังคับทั้งหมด** · ไม่มีช่อง = พฤติกรรมเดิมทุก byte ⇒ corpus parity ต้องคง **909/909** · ช่องข้อความทุกช่องเป็น prose (whitelist `<b> <i> <br>` + กติกา B + render token) · object ยังปิด (คีย์ไม่รู้จัก = error)
+
+**ไม่ใช่ช่องว่าง (เจ้าของเลือกทาง B = มาตรฐานเดียวทั้งเว็บแล้ว — ห้ามเพิ่มช่อง)**: h1 ต่อท้าย "(TICKER)" · exit multiple ทศนิยม 1 ตำแหน่ง · ทศนิยมของ 52 สัปดาห์ · ทศนิยมของ ROA — เหลือแก้แค่ **label การ์ด `peAvg5y` ต้องเขียน "มัธยฐาน" ไม่ใช่ "เฉลี่ย"** (บัค label · BBL G9)
+
+| # | ช่อง / พฤติกรรม | เหตุผล (1 บรรทัด) | fixture | ใบ/909 |
+|---|---|---|---|---|
+| A | object ระดับบนสุดใหม่ `text` (ไม่บังคับ · ปิด): `text.valHint` (hint หัว §3 + ถ้อยคำกล่อง FV) · `text.valIntro` (ย่อหน้าก่อนขา) · `text.metricsNote` (ย่อหน้าใต้การ์ด §1) · `text.disclaimerAssump` (ประโยค "โดยเฉพาะ …" ของ disclaimer) | ข้อความตายตัวของ template ผิดกับใบจริง (FER "โดยเฉพาะ P/E เป้าหมาย" ขัดกับรายงานที่ห้ามใช้ P/E) · ไม่มีช่อง = ต้องยัดเข้า `prose.valuation`/`disclaimerSources` จนประโยคซ้ำ/สลับลำดับ | ทั้ง 3 (FER 1/2/5 · BBL G1/G7 · EQIX 6/7) | hint 743 · disclaimer 350 · ย่อหน้าเพิ่ม 62 (intro 8) |
+| B | `fundamentals.fy: { period, netIncome?, eps?, revenue? }` + การ์ด `netIncomeFy` `epsFy` `revenueFy` (label ต่อท้าย `period`) · `metrics.cards` = **ลำดับ** ที่ผสมคีย์แคตตาล็อกกับ `"custom:<i>"` ได้ (render ตามลำดับที่เขียน · custom ที่ไม่ถูกอ้างต่อท้ายตามเดิม) | ตัวเลข FY คู่ TTM เป็นรูปปกติของคลัง แต่ `fundamentals` มี eps/netIncome ชุดเดียวที่ผูก P/E ⇒ ต้องเปลือง custom · custom ถูกดันไปท้ายเสมอ ทำลำดับการ์ดเดิมพัง | BBL G2 · FER 4 · EQIX 11 | FY 536 · ลำดับ 508 |
+| C | `legs[i].family` enum `market` (ตัวคูณยึดตลาด) \| `rg` (สมมติฐาน r,g: ddm/ddm2/dcf/ri/pbv-justified) \| `asset` (sotp/nav/rnpv) — เมื่อ **ไม่มี** `fvWeights` แต่มี family: wᵢ = 1/(จำนวนตระกูล × จำนวนขาในตระกูลของ i) (1 ตระกูล 1 เสียง แบ่งเท่ากันในตระกูล) · gate: 2 ขาที่ (r,g) เหมือนกันทุกตัว = ตระกูลเดียวกันเสมอ (family ต่างกัน = error ชั้น 0) | กฎ 0.4c-bis ปัจจุบันเขียนเป็นตัวเลข `fvWeights` ล้วน เหตุผลหาย และไม่มีอะไรตรวจว่าน้ำหนักตรงกฎ · BBL `[0.5,0.25,0.25]` ได้เองจาก family | BBL G1 | ~743 (514 มีคำว่า "ตระกูล" ใน hint) |
+| D | `analyst.n` และ `analyst.asOf` ไม่บังคับ · n = null → ช่องจำนวนแสดง "n/a" แต่ **คงเป้า + ป้าย gauge** | v2 แทบไม่มีจำนวนราย/วันที่ ⇒ ต้องตั้ง `analyst:null` → เซลล์ verdict ขึ้น "ไม่มีข้อมูล" ซึ่ง **เป็นเท็จ** และป้ายเป้าบน gauge หาย (FER $76.96) | FER 3 · BBL G10 | n 499 (762/880 เซลล์ไม่มีจำนวน) · asOf ทุกใบ migrate |
+| F | `legs[i].inputs.multipleRange: [lo, hi]` (lo ≤ multiple ≤ hi · ขาประเภทตัวคูณ) → ถ้ามีขาใดมี range: `fvLow = Σ wᵢ·loᵢ` · `fvHigh = Σ wᵢ·hiᵢ` (ขาที่ไม่มี range ใช้ค่าขาทั้งสองฝั่ง) · ไม่มี = min/max เดิม | กรอบ FV ของผู้เขียนมาจาก sensitivity ไม่ใช่ min/max ของขา — v3 แสดงกรอบผิดโดยไม่มีทางออก · EQIX `[59.9, 99.2]` × AFFO 15.55 = **$931.45 / $1,542.56** ตรงเป๊ะ | EQIX 1 | 121 |
+| G | `legs[i].note` (มีอยู่แล้ว) = qualifier **สั้น** ต่อท้าย mdesc (เช่น "Normalized EPS", "ปันผล FY25") ผ่านกติกา prose · `inputs.medianWindow` string (เช่น `"FY2022–FY2025"`) แทนคำ "มัธยฐาน 5/10 ปี" ใน mdesc · `epsBasis` เพิ่ม `ifrs` (การ์ด eps `.d` = "IFRS") | qualifier ของขาหายเมื่อ label ถูกสร้างจาก method · หน้าต่างมัธยฐานจริงไม่ใช่ 5/10 ปีพอดี · ผู้ยื่นงบ IFRS ถูกพิมพ์ว่า "GAAP" | BBL G8 · EQIX 12 · FER 12 | แทบทุกใบ · IFRS ~14 |
+| H | **ไม่มี markup token** · ใช้ `tone: 'pos'\|'neg'\|'neu'` ต่อการ์ดแทน (`metrics.cards[i]` เขียนเป็น `{ "key": "pbv", "tone": "pos" }` ได้ · `metrics.custom[i].tone`) → render เป็น class สีเดิม (`.v pos` ฯลฯ) | ต้องการสีค่าบวก/ลบบนการ์ดแบบใบเดิม แต่ไม่ขยาย whitelist/pill (กัน markup creep ที่ template เดียวตั้งใจปิด) — ป้าย pill ในข้อความตกเป็นข้อความธรรมดา | BBL G4 | pill ใน `.d` 124 · ใน `.mname` 93 |
+| I | `legs[i].role: 'fv' \| 'context'` (default `fv`) · ขา context: **แสดง** (ต่อท้ายชื่อ "(บริบท — ไม่นับใน FV)") แต่ไม่เข้า FV / กรอบ / น้ำหนัก (`fvWeights` ยาวเท่า legs แต่ขา context ต้องเป็น 0) · ดูคำตัดสินชั่วคราว E17 ใน §13 ข้อ 4 | ใบจริงมีขา "บริบท" ที่แสดงแต่ไม่นับ — `fvWeights:[1,0]` ได้ FV ถูกแต่กรอบ FV/hint/จำนวนขายังนับมัน | EQIX 2 | 38 ใบ / 43 ขา (15 ใบเหลือขา fv <2) |
+| J | REIT: `fundamentals.ffoBasis: 'ffo'\|'affo'` (label FFO/AFFO ตาม basis ทุกที่) · `fundamentals.ffoForward: { value, period, low?, high? }` · การ์ด `pffo` (ผูกราคา · token `{{pffo}}` · เข้า `priceBound`) `pffoForward` `ffoPerShare` `pffoAvg5y` (+`fundamentals.pffoAvg5y`) `ffoMargin` `ffoPayout` · hint §6 แสดงฐานของ driver ทุกชนิด (ไม่ใช่เฉพาะ eps) · ดูคำตัดสินชั่วคราว `stock-meta.pe` ใน §13 ข้อ 5 | AFFO ของ EQIX ถูกพิมพ์เป็น "FFO" ทุกที่ · P/FFO เป็นตัวเลขผูกราคาที่ไม่มี token จึงค้าง ("~26.6x" vs จริง 27.6x) · การ์ด REIT กิน custom จนเต็ม 4 | EQIX 3–5/8 | กล่าวถึง FFO 31 · มีการ์ด 27 · hint §6 17 |
+| K | ธนาคาร: `fundamentals.bank: { nim, npl, coverage, cet1, car }` (% ทั้งหมด) + การ์ด `nim` · `npl` (NPL / Coverage) · `capital` (CET1 / CAR) — การ์ดที่ข้อมูลไม่มี = save error เหมือนการ์ดอื่น | KPI ธนาคารเป็น free text ใน custom (ตรวจไม่ได้ · gate/index ใช้ไม่ได้) และกิน custom จนชนเพดาน | BBL G5 | 41 (23 มี ≥2 การ์ด) |
+| L | `fundamentals.reportCurrency` (ISO) + `fundamentals.fx` (ราคา 1 หน่วยสกุลงบ เป็นสกุลราคา) · การ์ดจากงบ (revenue/netIncome/fcf/netDebt) แสดง**สกุลงบ** · อัตราส่วนผูกราคาแปลงด้วย `fx` (ค่าเก็บที่เดียว) | FER งบ EUR แต่ `big()` ใส่ `$` เสมอ ⇒ ต้องย้ายตัวเลขงบไป custom 4 ใบเต็มเพดาน | FER 7 | ~14 |
+| M | `extras[i].rows[]` แถวเป็น array (เดิม) หรือ `{ "kind": "total", "cells": [...] }` / `{ "kind": "note", "text": "…" }` (แถว note colspan เต็มตาราง) · `extras[i].columns[]` (ยาวเท่า headers) `{ dp, unit: 'none'\|'pct'\|'x'\|'ccy', signed? }` — ลบใช้ U+2212 เสมอ · `extras[i].fx: true` = แถวขั้นแปลงสกุลด้วย `fundamentals.fx` · **E52 SOTP tie-out**: ยอดรวม (แถว total ถ้ามี — ต้อง = Σ แถวข้อมูลใน sumCol ภายใต้การปัด — ไม่งั้น Σ แถวข้อมูล) × fx ≈ ค่าขา declared ที่อ้าง `extrasRef` (tolerance **1%**) | E52 ยังไม่มีจริง · แถวรวมเขียนเองไม่ได้ (จะนับซ้ำ) · SOTP สกุลต่าง (Σ €44.84 × 1.15566 = $51.81) ทำให้ E52 แบบง่ายตก · format ตัวเลขตายตัว 2dp | FER 8/10/11 | ตาราง 5 ใบ + ขา SOTP/NAV 15 |
+| N | method `ddm2` (DDM 2 ช่วง/อายุจำกัด) — สูตรใน §3.1 · **ธรรมเนียมรอยต่อช่วง**: D_1 = d1 และโตด้วย g1 **ขณะ t < years1** (D_2…D_years1) จากนั้น g2 · FER: d1 2.04, g1 11, years1 10, g2 3, r 8.5, horizon 40 → **$55.02 เป๊ะ** (ธรรมเนียม t ≤ years1 ได้ $57.67 = ค่าผิดเดิมของผู้เขียน "$57.66") | ขา DDM อายุจำกัดต้องตกเป็น `declared` ทั้งที่คำนวณได้ — ขาที่คำนวณจะกันเลขผิดแบบ $57.66 ได้โดยโครงสร้าง | FER 9 | ≥4 (กลุ่มสัมปทาน/สาธารณูปโภคมากกว่านี้) |
+| O | **บัค** (ไม่ใช่ช่องใหม่): token ใน `metrics.notes` ต้องถูก render (เดิม `renderCard` แค่ `esc()` ⇒ `{{pe}}` รั่วเป็นตัวอักษร + ยิง E13) — ใช้ `renderProse` แบบเดียวกับ custom | ผู้เขียนถูกบังคับให้คง literal ค้าง ("P/E ~65.7x") เพราะ token ใช้ไม่ได้ | EQIX 9 | ทุกใบที่มี note ผูกราคา |
+
+- ช่องว่าง E (กติกา B false positive) → แก้ที่ §4 · Q/R (ความหมาย eps/epsForward ของ v2 · literal ค้างในใบจริง) เป็นเรื่อง migration ไม่ใช่ schema → §10
+- ห้าม "ขยายเพดาน custom" แทนช่องข้างบน — Task 0 วัดแล้วว่าใบจริงทั้ง 3 ชนเพดาน custom 4 เพราะขาดช่องเหล่านี้ (ดู §12)
+
 ## 4. Prose + กติกา B (`tools/v3/prose.js`)
 
 - ไวยากรณ์ token: `{{px}}` `{{fv}}` `{{mos}}` `{{leg1}}` `{{leg1.multiple}}` `{{scn.base.tgt}}` `{{scn.bull.ret}}` `{{analyst.target}}` `{{card.pe}}` … — ชุด token = **ทุกค่าใน view ที่ compute สร้าง** (ตารางเดียวใน `compute.js` ไม่มีรายการเขียนมือแยก)
 - token ที่ค่าเป็น null → save error (ไม่ใช่ render เป็นว่าง)
 - **HTML ใน prose**: อนุญาตแค่ `<b> <i> <br>` + `**bold**` — tag อื่น/attribute/style = error (ปิด inline style 144 จุดของ FER)
 - **กติกา B — 2 ระดับ**: สกัดตัวเลขที่มี `$ ฿ บาท % x เท่า` ใน prose/notes/custom/extras → เทียบกับ **ทุกค่าผูกราคาใน view**
-  - **error (ตอน `save`)** = ตรงกับ **รูปที่ render แล้วแบบเป๊ะ** (`$70.12` · `27.6%` · `28.0x`) — AI ลอกเลขจาก `report.js show` จึงได้รูปเป๊ะเสมอ ⇒ จับการก๊อปจริงครบ แต่ false positive ~0 (ตัวเลขจากงบที่ค่าใกล้เคียงบังเอิญ เช่น netMargin 27.4% vs MOS 27.6% ไม่ถูกบล็อก)
+  - **error (ตอน `save`)** = ตรงกับ **รูปที่ render แล้วแบบเป๊ะ** (`$70.12` · `27.6%` · `28.0x`) — AI ลอกเลขจาก `report.js show` จึงได้รูปเป๊ะเสมอ ⇒ จับการก๊อปจริงครบ
+  - ⚠️ **ข้อกล่าวอ้างเดิม "false positive ~0" วัดแล้วผิด (Task 0 · 24 ก.ย. 69)**: fixture ใบจริงยิง error บน prose ที่ถูกต้อง **BBL 3 · EQIX 2 · FER 11** — P/E ย้อนหลัง "9.0x" = P/E ปัจจุบันพอดี (BBL) · รายได้ "+16% YoY" = analyst "+16%" (EQIX) · "$80M" เทียบเป้าฉาก $80.39 และ % จำนวนเต็มบังเอิญ (FER) ⇒ **กติกาใหม่ของระดับ error** (แทนข้อบน):
+    1. error เฉพาะเมื่อ literal ตรงกับรูปที่ render **รวมทศนิยมครบ** (`$70.12` · `27.6%` · `28.0x`)
+    2. **จำนวนเต็มล้วนไม่เคยเป็น error** (`16%` · `6x` · `$80`) — อย่างมากเป็น warn
+    3. ตัวเลขเงินที่มี **หน่วยต่อท้าย** `M B K ล้าน พันล้าน bn mn` = ข้าม (เป็นยอดงบ ไม่ใช่ราคาต่อหุ้น)
+    4. ตัวคูณในอดีต/exit ที่ **เท่ากับตัวคูณปัจจุบันพอดี** ต้องห่อ `{{lit:…}}` พร้อมเหตุผลใน `meta.litReasons` (ไม่ใช่ข้ามเงียบ)
+    - เป้า: **0 error บน `BBL-real` / `EQIX-real` / `FER-real` โดยไม่แก้ prose ของ fixture** (ยกเว้นห่อ `{{lit:}}` ตามข้อ 4) · ตัวเลขจากงบที่ค่าใกล้เคียงบังเอิญ (netMargin 27.4% vs MOS 27.6%) ยังไม่ถูกบล็อกเหมือนเดิม
   - **warn** = อยู่ในช่วง tolerance (เงิน ±1.5% · % ±0.6 จุด · multiple ±3%) แต่ไม่เป๊ะ → พิมพ์ให้ worker ดู ไม่บล็อก
   - **`W31 prose-lit` (gate รายวัน · warn)** = ตัวเลขรูปเงิน (`$ ฿ บาท`) ใน prose ที่ไม่ใช่ token และไม่อยู่ใน `{{lit:}}` — ไม่เทียบกับราคาปัจจุบัน (กัน false positive เมื่อราคาขยับ) แค่ **นับ** ให้เห็นกากที่ค้าง · ใช้กับใบ migrate ที่ prose เก่าลอกราคา ณ วันวิเคราะห์ (ซึ่งกติกา B เทียบราคาวันนี้แล้วจับไม่ได้ — ตรงกับที่ healer E44 แปลงได้แค่ ~30%) · แก้ตอนแตะใบ (UPDATE/LIGHT) · `save` ของใบที่แตะแล้วยกระดับเป็น error ได้ (ตัดสินใน plan)
-  - escape hatch: `{{lit:…}}` สำหรับกรณีจำเป็น (เช่นอ้างราคา IPO ในอดีต) — นับจำนวน + ต้องมีเหตุผลใน `meta.litReasons` · gate warn ถ้าเกิน 2 ต่อใบ
+  - escape hatch: `{{lit:…}}` สำหรับกรณีจำเป็น (เช่นอ้างราคา IPO ในอดีต) — นับจำนวน + ต้องมีเหตุผลใน `meta.litReasons` · gate warn ถ้าเกิน 2 ต่อใบ · **ยังไม่ได้ implement ณ Plan 1** (`TOKEN_RE` ไม่รับ `lit:` · schema ไม่มี `meta.litReasons` — BBL G3) ⇒ ทำใน Plan 2a
 - `%/ปี` (open-item #1 เดิม) เป็นแค่ token — หน้าเว็บขยับตามราคาคือพฤติกรรมที่ถูก ไม่ใช่ flicker (เดิมตัดทิ้งเพราะ healer all-or-nothing)
 
 ## 5. Template (`_template/v3/render.js`)
@@ -278,7 +314,7 @@
 | prose ผูกราคา | E44 | ➡️ กติกา B: ตอน save = error (รูปเป๊ะ) · gate รายวัน = `W31` warn (นับ literal รูปเงินที่ค้าง) |
 | ข้อมูล/ความสด/ความสมเหตุผล | E27 E28 E32 E34–E40 W07–W09 W12 W13 W21 W23 W24 | ➡️ คงไว้ อ่านจาก JSON (W21/W24 ตายเพราะอ่านไม่ได้ไม่มีอีก) |
 | ดุลพินิจ valuation | W18 W25 + ชั้น 0 (rf สกุล · (r,g) ซ้ำ · \|MOS\|>40%) | ➡️ คงไว้ **แม่นขึ้น** — คำนวณจาก `legs[].inputs` ไม่ใช่ regex `.mdesc` |
-| ใหม่ | `E50 sig` · `E51 schema` · `E52 declared-leg ไม่มีหลักฐาน / sumCol ≠ ค่าขา` · `W30 lit` เกิน · `W31 prose-lit` ค้าง | ใหม่ |
+| ใหม่ | `E50 sig` · `E51 schema` · `E52 declared-leg ไม่มีหลักฐาน / ยอดรวม × fx ≠ ค่าขา ±1% (§3.6 M)` · `W30 lit` เกิน · `W31 prose-lit` ค้าง | ใหม่ |
 
 - self-test (meta-test) ของ v3 = **mutate JSON** (ไม่ใช่ HTML) แล้วดูว่า check ยิง · ต้องมีเคสต่อทุก code ใหม่/ที่ย้าย
 - `verify` 18 ขั้น: เพิ่ม `v3-test` (schema/compute/prose/render unit) + `check-v3` · ระหว่าง transition รันทั้งสองสาย
@@ -294,6 +330,7 @@
 3. **สี**: equivalence diff มีช่อง colour ด้วย — theme ที่ render เทียบ theme เดิมทุกคีย์ rgbDist ≤12 ไม่งั้นเข้าถัง HUMAN (ไม่ควรเกิดเพราะ §3.5 เก็บ themeLegacy)
 4. **ผลลัพธ์ 3 ถัง**: `CLEAN` (เขียน .json ลบ .html ใน commit เดียวกัน) · `VALUE-DRIFT` (ต่างเฉพาะตัวเลขที่ v2 ค้าง — controller รีวิวตาราง แล้วอนุมัติเป็นชุด) · `HUMAN` (ขาจำแนกไม่ได้ · weights ไม่ลง · ข้อความหาย · v1 ที่ 21 ใบตัดสินไม่ได้) — คาด ~20–60 ใบ
 5. **Transition**: build อ่านทั้ง `reports/*.html` (v2 path เดิม) และ `reports/*.json` (v3) · ห้ามมีทั้งสองไฟล์ของหุ้นเดียว (build error) · cron เดินสองสาย · NEW ทุกใบเป็น v3 ตั้งแต่วันเปิด
+- ข้อค้นพบ Task 0 ด้าน migration (ไม่ใช่การแก้ spec): Q = v2 เก็บ forward EPS ไว้ใน `eps` (~19 ใบ · P/E บน index ขยับ) · R = literal ค้างในใบจริง (EQIX) → ถัง VALUE-DRIFT/`W31` — ติดตามที่ `docs/open-items.md` **#55 / #56**
 6. **Cutover** เมื่อถัง HUMAN = 0: ลบ v2 path (`derivedPassV2`, `keepMap`, `patchDerived` สาย HTML, `migrate*.js`, `apply-edits` `@@`, `field-manifest`, `preserve-dates`, V2TOKENS, check-reports ส่วน HTML, `brandtheme.js --write` + `fix-contrast.js` ที่ regex theme ใน report-data — สีอยู่ที่ seeds.json ที่เดียว) — **ลบโค้ดจำนวนมาก** เป็นตัวชี้วัดความสำเร็จ
 
 ## 11. ลำดับการทำ (phase — แต่ละ phase merge ได้เอง ไม่พังของเดิม)
@@ -302,8 +339,8 @@
 |---|---|---|
 | P1 แกน | `schema.js` `compute.js` `prose.js` `io.js` + unit test (สูตร/ปัดตรง v2 `derive()` ทุก token) | test ผ่าน · compute ของ 10 ใบตัวอย่าง = ค่าที่ v2 render ได้ |
 | P2 render | `_template/v3/render.js` + build dual-path + freshHash v3 · `reports.json.file` ของใบ v3 ยังเป็น `<SYM>.html` (ชื่อใน dist — ไม่งั้น url พัง) · theme จาก seeds.json | render ใบตัวอย่าง DOM เทียบ skeleton ผ่าน · หน้าตาเหมือนเดิม (screenshot 3 ใบ) |
-| P3 gate | `check-v3.js` + self-test JSON + hook + `E50` | ทุก code ในตาราง §9 มีบ้าน · self-test ครบ |
-| P4 CLI + worker | `report.js` (+ `.work/` ใน .gitignore) + แก้ stock-analyzer SKILL / agent-prompt / stock-controller / CLAUDE.md §2/§10 | NEW 2 ใบ (TH+US) จริงผ่าน v3 end-to-end ด้วย Sonnet |
+| P3 gate = **Plan 2a** | **ส่วนขยาย schema §3.6 (A–O) + กติกา B ใหม่ §4** + P3 gate: `check-v3.js` (E50/E51/E52/W30/W31) + self-test แบบ mutate JSON · **ไม่มีผลกับ production** (tripwire คงอยู่) | ทุก code ในตาราง §9 มีบ้าน · self-test ครบ · corpus parity 909/909 · เกณฑ์ fixture ใบจริงใน §12 |
+| P4 CLI + worker = **Plan 2b** | `report.js` (+ `.work/` ใน .gitignore) + hook + scanners อ่าน `.json` + แก้ stock-analyzer SKILL / agent-prompt / stock-controller / CLAUDE.md §2/§10 · **ถอด tripwire เป็นขั้นสุดท้ายใน PR เดียวกัน** | NEW 2 ใบ (TH+US) จริง publish ผ่าน `report.js save` end-to-end โดย worker **Opus** (เดิมเขียน Sonnet — เจ้าของสั่งให้ subagent ของโปรเจกต์นี้เป็น Opus ทั้งหมดแล้ว) |
 | P5 cron | สาย v3 ใน update-prices + `range52w` | dry-run บนใบ v3 ทั้งหมด = ไม่มี diff นอก market · รอบจริง 3 วันไม่มี patch-rejected ผิดปกติ |
 | P6 migrate | `migrate-v3.js` + รายงาน 3 ถัง · migrate CLEAN เป็นแบตช์ (เสนอยกเว้นกฎ §5 "1 commit = 1 หุ้น" เป็น commit ละ 50 ใบ เพราะเป็นงาน mechanical — รอเจ้าของอนุมัติ §13 ข้อ 1) | CLEAN+VALUE-DRIFT ย้ายหมด · รายชื่อ HUMAN ส่งเจ้าของ |
 | P7 cutover | ลบ v2 path + เอกสาร | HUMAN = 0 · verify ผ่าน · cron 7 วันเขียว |
@@ -319,9 +356,12 @@
 | hook ถูกเลี่ยงผ่าน Bash | `_sig` + E50 ใน pre-push จับได้เสมอ |
 | cron สองสายระหว่าง transition | สาย v3 ง่ายกว่า (ไม่มี regex) · ทดสอบ dry-run ก่อน · ช่วง transition จำกัดด้วยเกณฑ์ P7 |
 | ใบที่ "ถูกซ่อมเงียบ" ตอน migrate (VALUE-DRIFT) ทำตัวเลขบนเว็บเปลี่ยน | เป็นการแก้บัคจริง แต่ต้องให้เจ้าของเห็นตารางก่อนอนุมัติแบตช์ |
+| schema แข็งเกิน — **วัดแล้ว** (Task 0): fixture ใบจริงทั้ง 3 ชนเพดาน custom 4 การ์ด | ส่วนขยาย §3.6 · **เกณฑ์จบ Plan 2a** = fixture `-real` แต่ละใบ: custom ≤2 การ์ด · ไม่มีขา `declared` ในที่ที่มี method คำนวณได้ · ไม่มีข้อความซ้ำ (ประโยคที่ต้องยัดซ้ำเพราะไม่มีช่อง) · gate 0/0 · FV ไม่เปลี่ยน |
 
 ## 13. คำตัดสินที่เปิดไว้ (เจ้าของมอบให้ controller ตัดสิน 24 ก.ย. 69)
 
 1. **commit ของ migration**: ถัง `CLEAN` = commit ละ 50 ใบ (mechanical ไม่เปลี่ยนตัวเลขที่เห็น) · ถัง `VALUE-DRIFT` และ `HUMAN` = **1 commit = 1 หุ้น** ตาม §5 เดิม (ตัวเลขบนเว็บเปลี่ยน → ต้องย้อน/ไล่ได้รายตัว) · message `migrate: v3 <SYM…>`
 2. **แคตตาล็อกการ์ด section 1**: controller ร่างใน P1 จากการจัดกลุ่ม label 1,526 แบบ (เป้า ~25 คีย์ครอบ ≥90% ของการ์ดในคลัง) → แนบตารางใน PR ของ P1 ให้เจ้าของดู · ไม่ block phase อื่น
 3. **DCF**: สูตรมาตรฐาน 2-stage · ไม่ลง → `declared` · P6 วัดสัดส่วน DCF ที่ตกเป็น declared — **>10% ⇒ เพิ่ม 3-stage** ก่อน migrate ต่อ
+4. **E17 นับเฉพาะขา `role:'fv'`** (§3.6 I) — ขา context ไม่ช่วยให้ครบ ≥2 ขา · ใบที่เหลือขา fv 1 ขา = ละเมิดชั้น 0 → เข้าถัง **HUMAN** ตอน migrate (15 ใบ: EQIX APURE ARM CCJ CLS COHR CRWV DELTA ENTG EVR LEO MICRO MRNA POET RCAT) — *ผู้ควบคุมตัดสินชั่วคราว 24 ก.ย. 69 — เจ้าของกลับได้*
+5. **`stock-meta.pe` = ราคา / EPS เสมอ** (1 ช่อง 1 ความหมาย) · REIT แสดง P/FFO ผ่านการ์ด/token `pffo` แทน (§3.6 J) · ผล: 5 ใบ (AMT DLR EQIX FRT O) ที่ v2 เก็บ P/FFO ไว้ใน `pe` จะเปลี่ยนตำแหน่งเรียงบน index — *ผู้ควบคุมตัดสินชั่วคราว 24 ก.ย. 69 — เจ้าของกลับได้*
