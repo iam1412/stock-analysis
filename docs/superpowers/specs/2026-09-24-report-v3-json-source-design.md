@@ -174,7 +174,7 @@
 | `pfcf` / `fcfyield` | fcfPerShare หรือ fcf+shares, multiple\|yield | |
 | `pffo` | ffoPerShare, multiple, multipleSource | |
 | `ddm` | dps, g, r | dps×(1+g)/(r−g) |
-| `dcf` | fcf0, g1, years1, tg, r, rfCurrency, netDebt, shares | 2-stage มาตรฐาน |
+| `dcf` | g1, years1, tg, r, rfCurrency (fcf/netDebt/shares มาจาก fundamentals หรือ override — สำเนาเดียว) | 2-stage มาตรฐาน |
 | `ri` | r, years, payout (bvps/roe จาก fundamentals หรือ override) | residual income มาตรฐาน |
 | `declared` | `value` + `basis` (enum: sotp \| nav \| rnpv \| other) + `extrasRef?` | ค่าที่ประกาศ — **ต้อง** ผูก `extras[]` ที่รวมยอดได้ (sotp/nav) หรือมีเหตุผลใน note |
 
@@ -194,6 +194,7 @@
 
 - `tgt = base × (1+g)^years × exitMultiple` (driver ต่อหุ้น) · `total% = (tgt + divCum·[divIncluded] − px)/px` · `%/ปี` ตาม `perYear` — **ใช้สูตร/การปัดเดียวกับ `derive()` v2 เป๊ะ** (round-trip fmtMos · บทเรียน 20 ส.ค. 69)
 - ปิด E24/W01/W17 โดยโครงสร้าง · 3/3/3 แถว (ไม่มีปันผล) = `divIncluded:false` → template ถอดแถวเอง
+- divCum เป็นข้อมูลประกอบได้แม้ divIncluded=false — แสดงแถวปันผลต่อฉากเมื่อมี divCum แต่ไม่รวมใน total% (คลัง v2 มี 141 ใบแบบนี้)
 
 ### 3.4 ค่าที่ compute ให้ (ไม่เก็บใน JSON)
 

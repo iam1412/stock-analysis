@@ -41,6 +41,24 @@ const CATALOGUE = {
     d: () => 'ต่ำสุด – สูงสุด' },
   fcf: { label: () => 'FCF TTM', value: (v) => big(v, need(v, 'fcf')), d: () => 'กระแสเงินสดอิสระ', cls: '' },
   debtToEquity: { label: () => 'D/E', value: (v) => need(v, 'debtToEquity').toFixed(2) + 'x', d: () => 'หนี้สินต่อทุน', cls: '' },
+  // 6 คีย์เพิ่ม 24 ก.ย. 69 (Task 11 card census) — label ที่พบบ่อยสุดในคลัง v2 ที่ตกเป็น custom (ดู
+  // docs/superpowers/specs/2026-09-24-card-census.md): netDebt/ebitdaMargin/roic ใช้ fundamentals ตรง ๆ
+  // (ไม่ผูกราคา) · evEbitda/peForward/analystTarget ผูกราคา — คำนวณจาก v.d.px/v.d.mcap (RV.derive ตัวเดิม)
+  // ล้วน ๆ ไม่แตะ/ไม่เพิ่มฟิลด์ใน report-values.js · peForward/analystTarget ตั้งใจให้ label มี "P/E"/"เป้า"
+  // (เข้า E41/E42 ของ check-reports.js โดยธรรมชาติ — ตัว checker คำนวณ px/eps และ (tgt−px)/px จาก .d/.v เอง
+  // ซึ่งตรงกับสูตรที่การ์ดนี้ใช้คำนวณอยู่แล้ว ⇒ ผ่านโดยไม่ต้องแก้ checker)
+  netDebt: { label: () => 'หนี้สินสุทธิ (Net Debt)', value: (v) => big(v, need(v, 'netDebt')), d: () => 'หนี้สินรวม − เงินสดและรายการเทียบเท่า (ติดลบ = ฐานะเงินสดสุทธิ)', cls: '' },
+  ebitdaMargin: { label: () => 'EBITDA Margin', value: (v) => pct1(need(v, 'ebitda') / need(v, 'revenue') * 100), d: () => 'EBITDA ÷ รายได้ TTM', cls: '' },
+  roic: { label: () => 'ROIC', cls: 'pos', value: (v) => `~${need(v, 'roic').toFixed(1)}%`, d: () => 'ผลตอบแทนต่อเงินลงทุน' },
+  evEbitda: { label: () => 'EV/EBITDA', cls: 'neu',
+    value: (v) => { const ev = priceBoundOrThrow('mcap', v.d.mcap) + need(v, 'netDebt'); const eb = need(v, 'ebitda'); if (!(eb > 0)) throw new Error('metrics.cards: evEbitda — EBITDA ≤ 0 ถอดการ์ดออก'); return (ev / eb).toFixed(1) + 'x'; },
+    d: (v) => `EV ${big(v, priceBoundOrThrow('mcap', v.d.mcap) + need(v, 'netDebt'))} ÷ EBITDA ${big(v, need(v, 'ebitda'))}` },
+  peForward: { label: () => 'Forward P/E', cls: 'neu',
+    value: (v) => { const e = need(v, 'epsForward'); if (!(e > 0)) throw new Error('metrics.cards: peForward — EPS ประมาณการ ≤ 0 ถอดการ์ดออก'); return (v.d.px / e).toFixed(1) + 'x'; },
+    d: (v) => `EPS ประมาณการ (Forward) ${money(v, need(v, 'epsForward'))}` },
+  analystTarget: { label: () => 'เป้านักวิเคราะห์ (Consensus)', cls: '',
+    value: (v) => { const t = v.doc.analyst && v.doc.analyst.target; if (typeof t !== 'number' || !Number.isFinite(t)) throw new Error('metrics.cards: analystTarget — ไม่มี doc.analyst.target'); const pct = (t - v.d.px) / v.d.px * 100; return `${money(v, t)} (${pct >= 0 ? '+' : ''}${pct.toFixed(1)}%)`; },
+    d: () => 'เป้าเฉลี่ยนักวิเคราะห์ 12 เดือน' },
 };
 
 function renderCard(key, view, note) {

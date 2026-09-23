@@ -17,10 +17,13 @@ const ENUM = {
   extrasAfter: ['metrics', 'valuation', 'scenarios', 'catalysts'],
 };
 // ต้องตรงกับคีย์ของ CATALOGUE ใน tools/v3/cards.js (test/v3/cards.test.js ตรวจว่าตรงกัน)
+// เพิ่ม 6 คีย์ 24 ก.ย. 69 (Task 11 card census — coverage 88.8%→ก่อนเพิ่ม): netDebt/ebitdaMargin/roic/evEbitda/
+// peForward/analystTarget — คัดจาก label ที่ตกเป็น custom บ่อยสุดในคลัง 909 ใบ (docs/superpowers/specs/2026-09-24-card-census.md)
 const CARD_KEYS = ['mcap', 'pe', 'peAvg5y', 'pbv', 'ps', 'netIncome', 'eps', 'bvps', 'roe', 'revenue', 'grossMargin',
-  'netMargin', 'opMargin', 'yield', 'beta', 'range52w', 'fcf', 'debtToEquity'];
+  'netMargin', 'opMargin', 'yield', 'beta', 'range52w', 'fcf', 'debtToEquity',
+  'netDebt', 'ebitdaMargin', 'roic', 'evEbitda', 'peForward', 'analystTarget'];
 const FUND_KEYS = ['eps', 'epsBasis', 'dps', 'bvps', 'shares', 'revenue', 'netIncome', 'roe', 'roa', 'grossMargin', 'netMargin',
-  'opMargin', 'beta', 'debtToEquity', 'fcf', 'ebitda', 'netDebt', 'peAvg5y', 'ffoPerShare'];
+  'opMargin', 'beta', 'debtToEquity', 'fcf', 'ebitda', 'netDebt', 'peAvg5y', 'ffoPerShare', 'roic', 'epsForward'];
 const MULT = ['multiple', 'multipleSource'];
 const LEG_INPUTS = {
   pe: { req: MULT, opt: [] },

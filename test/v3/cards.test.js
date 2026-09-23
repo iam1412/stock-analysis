@@ -4,6 +4,7 @@ const K = require('../../tools/v3/cards.js');
 const S = require('../../tools/v3/schema.js');
 const C = require('../../tools/v3/compute.js');
 const DV = require('../../tools/derived-values.js');
+const RV = require('../../tools/report-values.js');
 const load = () => JSON.parse(JSON.stringify(require('../fixtures/v3/ZTS.json')));
 const view = C.compute(load(), { seeds: { ZTS: '#e8731a' } });
 
@@ -28,4 +29,25 @@ t(/BVPS \$11\.40/.test(K.renderCard('pbv', view).d), 'pbv base line = BVPS (W20)
   t.throws(() => K.renderCard('pe', v2), /metrics\.cards: pe/, 'eps ≤ 0 → pe card rejected'); }
 { const d = load(); delete d.fundamentals.beta; const v2 = C.compute(d, { seeds: { ZTS: '#e8731a' } });
   t.throws(() => K.renderCard('beta', v2), /fundamentals\.beta/, 'missing data names the field'); }
+
+// 6 คีย์เพิ่ม 24 ก.ย. 69 (Task 11 card census — docs/superpowers/specs/2026-09-24-card-census.md)
+const nd = K.renderCard('netDebt', view);
+t.eq(nd.v, RV.fmtBig(5.1e9, '$'), 'netDebt value = fundamentals.netDebt formatted');
+const at = K.renderCard('analystTarget', view);
+t.eq(at.v, '$190.00 (+58.3%)', 'analystTarget = doc.analyst.target + % vs current price (E42 form)');
+{ const d = load(); delete d.analyst; const v2 = C.compute(d, { seeds: { ZTS: '#e8731a' } });
+  t.throws(() => K.renderCard('analystTarget', v2), /metrics\.cards: analystTarget/, 'no doc.analyst → rejected'); }
+{ const d = load(); d.fundamentals.ebitda = 3000000000; const v2 = C.compute(d, { seeds: { ZTS: '#e8731a' } });
+  const em = K.renderCard('ebitdaMargin', v2);
+  t.eq(em.v, (3000000000 / 9400000000 * 100).toFixed(1) + '%', 'ebitdaMargin = ebitda / revenue');
+  const ee = K.renderCard('evEbitda', v2);
+  const ev = view.d.mcap + 5.1e9;   // mcap unaffected by ebitda addition
+  t.eq(ee.v, (ev / 3000000000).toFixed(1) + 'x', 'evEbitda = (mcap+netDebt)/ebitda'); }
+{ const d = load(); d.fundamentals.roic = 22.4; const v2 = C.compute(d, { seeds: { ZTS: '#e8731a' } });
+  t.eq(K.renderCard('roic', v2).v, '~22.4%', 'roic from fundamentals.roic'); }
+{ const d = load(); d.fundamentals.epsForward = 6.8; const v2 = C.compute(d, { seeds: { ZTS: '#e8731a' } });
+  t.eq(K.renderCard('peForward', v2).v, (v2.d.px / 6.8).toFixed(1) + 'x', 'peForward = px / epsForward');
+  t(DV.epsBasesOf(K.renderCard('peForward', v2).d).includes(6.8), 'peForward base line declares forward EPS so E41 reads it'); }
+{ const d = load(); d.fundamentals.ebitda = 0; const v2 = C.compute(d, { seeds: { ZTS: '#e8731a' } });
+  t.throws(() => K.renderCard('evEbitda', v2), /EBITDA ≤ 0/, 'evEbitda rejects EBITDA ≤ 0'); }
 t.done();
