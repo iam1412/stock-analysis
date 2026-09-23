@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 55,
+  "values": {
+    "px": 64.54,
+    "priceDate": "2026-09-22",
+    "dateEra": "CE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 48,
+    "fvHigh": 62,
+    "analystTgt": 71,
+    "eps": 2.2,
+    "shares": 47300000,
+    "baseEps": 2.2,
+    "scenarios": [
+      {
+        "tgt": 41,
+        "div": null
+      },
+      {
+        "tgt": 76,
+        "div": null
+      },
+      {
+        "tgt": 119,
+        "div": null
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#c38237",
     "accentDark": "#8b5d27",
@@ -41,18 +74,14 @@
     "min": 20,
     "max": 80,
     "grid": [40, 60],
-    "fairLine": 55,
     "currency": "$",
     "highlight": [2, 8]
   },
   "gauge": {
     "min": 33,
     "max": 85,
-    "cur": 64.54,
-    "fair": 55,
     "fairLabelTop": "-58px"
-  },
-  "fv": 55
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +101,11 @@
     <div class="sub">ผู้ผลิต test handler, contactor และเครื่อง inspection/metrology สำหรับการทดสอบชิป (back-end test) — เกาะคลื่น HPC/AI, advanced packaging และ optical/CPO test ขณะวัฏจักรเซมิฯ ฟื้นตัว</div>
     <div class="price-row">
       <div>
-        <div class="px">$64.54<small>(COHU)</small></div>
+        <div class="px">{{rd:px}}<small>(COHU)</small></div>
       </div>
-      <div class="chg">▲ +171.3% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคาปิด ณ 22 ก.ย. 2026 ~$57.75 • ฟื้นตัวต่อจากจุดต่ำกลาง ก.ค. ~$48 ยังต่ำกว่าจุดพีค ~$74.60 (มิ.ย.)<br>
+        ราคาปิด ณ {{rd:priceDate}} ~$57.75 • ฟื้นตัวต่อจากจุดต่ำกลาง ก.ค. ~$48 ยังต่ำกว่าจุดพีค ~$74.60 (มิ.ย.)<br>
         52 สัปดาห์ $18.67 – $74.60 • เด้งจากจุดต่ำ 52 สัปดาห์ ~3.1 เท่า<br>
         ที่มา: Yahoo Finance / StockAnalysis.com / SEC 8-K
       </div>
@@ -113,7 +142,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1a73e8"></i>ราคา COHU</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $55</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -138,8 +167,8 @@
       </div>
       <!-- ขา Analyst ถอดออกจาก FV (บริบทเท่านั้น) -->
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $48 – $62 (ความไม่แน่นอนสูงตามวัฏจักร)</span></div>
-        <div class="r">$55</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}} (ความไม่แน่นอนสูงตามวัฏจักร)</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>หมายเหตุ:</b> เป้านักวิเคราะห์เฉลี่ย 12 เดือน (~$71, 8 ราย, Strong Buy) ไม่ใช้เป็นขาของ FV — แสดงเป็นบริบทเทียบเท่านั้น • ข้าม <b>DDM</b> (ไม่จ่ายปันผล) และ <b>P/BV</b> (มูลค่าทางบัญชีบิดเบือนจากขาดทุนสะสมชั่วคราว) — วิธีหลักอิง <b>กำไรปกติ (normalized) ไม่ใช่ EPS TTM ที่ติดลบ</b>
@@ -155,19 +184,19 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $65</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $55</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
           <span>$39<br><small>MOS 30%</small></span>
-          <span>$44<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$55<br><small>Fair Value</small></span>
-          <span style="text-align:right">$71<br><small>เป้า Analyst (เฉลี่ย)</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:analystTgt}}<br><small>เป้า Analyst (เฉลี่ย)</small></span>
           <span style="text-align:right">$75<br><small>สูงสุด 52 สัปดาห์</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคา $57.75 <b>สูงกว่ามูลค่าเหมาะสมเล็กน้อย $55</b> (margin of safety −5.0%) แต่ยังต่ำกว่า <b>เป้านักวิเคราะห์เฉลี่ย ~$71</b> (ซึ่งเป็นบริบท ไม่ได้อยู่ใน FV) —
+        ราคา $57.75 <b>สูงกว่ามูลค่าเหมาะสมเล็กน้อย {{rd:fv}}</b> (margin of safety {{rd:mos}}) แต่ยังต่ำกว่า <b>เป้านักวิเคราะห์เฉลี่ย ~$71</b> (ซึ่งเป็นบริบท ไม่ได้อยู่ใน FV) —
         หลัง Q2 2026 เกิน guidance ตลาด re-rate ราคาขึ้นมาจนแทบไม่เหลือ margin of safety แล้ว <b>กำไร GAAP เต็มปียังไม่ชัด</b> (Q2 เพิ่งเกือบคุ้มทุน) ผู้ที่ยังไม่ถือควรรอย่อกลับสู่โซน MOS20–30
       </p>
     </div>
@@ -177,19 +206,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−17%</div>
-        <div class="txt"><b>ไม่มี Margin of Safety (ราคาสูงกว่ามูลค่าเหมาะสมเล็กน้อย)</b><br>ราคาปัจจุบัน $57.75 สูงกว่ามูลค่าเหมาะสม $55 (MOS −5.0%) หลัง Q2 2026 เกิน guidance ทั้งรายได้และกำไร ตลาด re-rate ราคาขึ้นมาเต็มที่แล้ว → ผู้ที่ยังไม่ถือควรรอย่อกลับสู่โซนน่าสนใจ (MOS20 ที่ ~$44) บริษัทยังไม่มีกำไร GAAP เต็มปี — valuation อิงกำไรปกติในอนาคต ยังต้องรอความชัดเจนเพิ่ม</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
+        <div class="txt"><b>ไม่มี Margin of Safety (ราคาสูงกว่ามูลค่าเหมาะสมเล็กน้อย)</b><br>ราคาปัจจุบัน {{rd:px}} สูงกว่ามูลค่าเหมาะสม {{rd:fv}} (MOS {{rd:mos}}) หลัง Q2 2026 เกิน guidance ทั้งรายได้และกำไร ตลาด re-rate ราคาขึ้นมาเต็มที่แล้ว → ผู้ที่ยังไม่ถือควรรอย่อกลับสู่โซนน่าสนใจ (MOS20 ที่ ~{{rd:mos20}}) บริษัทยังไม่มีกำไร GAAP เต็มปี — valuation อิงกำไรปกติในอนาคต ยังต้องรอความชัดเจนเพิ่ม</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$44</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$39</div><div class="d">โซนถูก (เผื่อความเสี่ยงวัฏจักร)</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูก (เผื่อความเสี่ยงวัฏจักร)</div></div>
         <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $50</div><div class="d">ใกล้ขอบล่างของ fair value</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="64.54" step="1">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -198,13 +227,13 @@
 
   <!-- ===== RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $64.54 • EPS ฐาน ~$2.2 (กำไรปกติ)</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} (กำไรปกติ)</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$41</div>
-          <div class="ret neg">รวม ~ −36% (≈ −13.8%/ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$2.5</span></li>
             <li><span>P/E ออก</span><span>16x</span></li>
@@ -215,8 +244,8 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +20%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$76</div>
-          <div class="ret pos">รวม ~ +18% (≈ +5.7%/ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$3.8</span></li>
             <li><span>P/E ออก</span><span>20x</span></li>
@@ -227,8 +256,8 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +35%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$119</div>
-          <div class="ret pos">รวม ~ +84% (≈ +22.5%/ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$5.4</span></li>
             <li><span>P/E ออก</span><span>22x</span></li>
@@ -278,11 +307,11 @@
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
       <h2>ผู้เล่น back-end test ที่กำลังพลิกวัฏจักร — แต่ราคา ณ ตอนนี้ "วิ่งนำกำไรจริง"</h2>
-      <p>Cohu เป็นผู้ผลิต test handler/contactor และเครื่อง inspection สำหรับการทดสอบชิป (back-end test) ที่ได้อานิสงส์จากคลื่น HPC/AI และ advanced packaging — Q2 2026 รายได้ <b>+38% YoY ($149.0M)</b> เกิน guidance, ไปป์ไลน์ HPC ยกขึ้นเป็น ~$850M, รายได้ recurring สูง และงบดุลมีเงินสดหนา ($498M เทียบหนี้ $331M) เป็นจุดแข็งระยะยาว แต่บริษัทยัง <b>ขาดทุน GAAP สะสม</b> (EPS TTM −$0.83) แม้ Q2 จะเกือบคุ้มทุนแล้ว หลังราคาย่อแรงจากจุดพีค ~$74 มาที่ ~$48 แล้วฟื้นตัวต่อเนื่องมาที่ ~$57.75 ตอนนี้สูงกว่า fair value $55 เล็กน้อย (MOS −5.0%) ไม่เหลือส่วนเผื่อความปลอดภัยแล้ว แม้ยังต่ำกว่าเป้านักวิเคราะห์เฉลี่ย ~$71 เหมาะกับสายที่เชื่อรอบฟื้นวัฏจักรและรับความผันผวนได้ ผู้ที่ยังไม่ถือควรรอย่อ</p>
+      <p>Cohu เป็นผู้ผลิต test handler/contactor และเครื่อง inspection สำหรับการทดสอบชิป (back-end test) ที่ได้อานิสงส์จากคลื่น HPC/AI และ advanced packaging — Q2 2026 รายได้ <b>+38% YoY ($149.0M)</b> เกิน guidance, ไปป์ไลน์ HPC ยกขึ้นเป็น ~$850M, รายได้ recurring สูง และงบดุลมีเงินสดหนา ($498M เทียบหนี้ $331M) เป็นจุดแข็งระยะยาว แต่บริษัทยัง <b>ขาดทุน GAAP สะสม</b> (EPS TTM −$0.83) แม้ Q2 จะเกือบคุ้มทุนแล้ว หลังราคาย่อแรงจากจุดพีค ~$74 มาที่ ~$48 แล้วฟื้นตัวต่อเนื่องมาที่ ~$57.75 ตอนนี้สูงกว่า fair value $55 เล็กน้อย (MOS {{rd:mos}}) ไม่เหลือส่วนเผื่อความปลอดภัยแล้ว แม้ยังต่ำกว่าเป้านักวิเคราะห์เฉลี่ย ~$71 เหมาะกับสายที่เชื่อรอบฟื้นวัฏจักรและรับความผันผวนได้ ผู้ที่ยังไม่ถือควรรอย่อ</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$55 <span style="font-size:12px;color:#a8b6cc">($48–$62)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v bad">MOS ~ −17%</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v">$71 (+10%)</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#a8b6cc">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v bad">MOS ~ {{rd:mos}}</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v">{{rd:analystTgt}} (+10%)</div></div>
       </div>
       <div class="zone">
         💡 <b>กลยุทธ์:</b> สาย value — รอย่อ/ทยอยสะสมเมื่อราคา <b>ต่ำกว่า ~$50</b> (น่าสนใจที่ &lt;$44) และจำกัดขนาดสถานะตามความเสี่ยงวัฏจักร • สาย growth/รอบฟื้น — เข้าได้แบบ DCA โดยติดตาม <b>การพลิกกำไร (gross margin/EPS)</b>, <b>การแปลงไปป์ไลน์ HPC เป็นออเดอร์จริง</b>, <b>รอบฟื้นของ auto/industrial</b> และ <b>กระแสเงินสด</b> เป็นตัวชี้วัดหลัก
@@ -294,7 +323,7 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     COHU เป็นหุ้น <b>วัฏจักรเซมิฯ ที่ยังขาดทุน GAAP สะสมและอยู่ช่วงพลิกกำไร</b> — การประเมินมูลค่าใช้ <b>กำไรปกติ (normalized EPS) และ EV/Sales</b> แทน P/E TTM ที่ติดลบ จึงอ่อนไหวต่อสมมติฐานอย่างมาก กรอบมูลค่าจึงกว้างตามวัฏจักร ($48–$62)
-    ราคาหุ้นกลุ่มเซมิฯ back-end แกว่งรุนแรงตามรอบ (52 สัปดาห์ $18.67–$74.60) ผู้ลงทุนควรศึกษาเพิ่มเติมและพิจารณาความเสี่ยง/ขนาดสถานะของตนเองก่อนตัดสินใจ • อ้างอิงงบจริง SEC (8-K Q2 2026, 30 ก.ค. 2026) — ราคา ณ 22 ก.ย. 2026 ~$57.75 ยืนยันตรงกันจาก Yahoo Finance และ StockAnalysis.com (หลังย่อแรงจากจุดพีค ~$74.60 ฟื้นตัวกลับมา)
+    ราคาหุ้นกลุ่มเซมิฯ back-end แกว่งรุนแรงตามรอบ (52 สัปดาห์ $18.67–$74.60) ผู้ลงทุนควรศึกษาเพิ่มเติมและพิจารณาความเสี่ยง/ขนาดสถานะของตนเองก่อนตัดสินใจ • อ้างอิงงบจริง SEC (8-K Q2 2026, 30 ก.ค. 2026) — ราคา ณ {{rd:priceDate}} ~$57.75 ยืนยันตรงกันจาก Yahoo Finance และ StockAnalysis.com (หลังย่อแรงจากจุดพีค ~$74.60 ฟื้นตัวกลับมา)
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

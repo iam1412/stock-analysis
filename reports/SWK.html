@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 96,
+  "values": {
+    "px": 92.13,
+    "priceDate": "2026-09-22",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 90,
+    "fvHigh": 102,
+    "shares": 151000000,
+    "dps": 3.36,
+    "bvps": 59.6,
+    "baseEps": 4.09,
+    "scenarios": [
+      {
+        "tgt": 49,
+        "div": 10.08
+      },
+      {
+        "tgt": 103,
+        "div": 10.08
+      },
+      {
+        "tgt": 171,
+        "div": 10.08
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#bf8500",
     "accentDark": "#895e00",
@@ -41,18 +74,14 @@
     "min": 60,
     "max": 100,
     "grid": [70, 80, 90],
-    "fairLine": 96,
     "currency": "$",
     "highlight": [0, 10]
   },
   "gauge": {
     "min": 60,
     "max": 130,
-    "cur": 92.13,
-    "fair": 96,
     "fairLabelTop": false
-  },
-  "fv": 96
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +101,11 @@
     <div class="sub">Stanley Black &amp; Decker: บริษัทเครื่องมือช่างรายใหญ่ (DEWALT, STANLEY, CRAFTSMAN, BLACK+DECKER, Irwin, Lenox) • Turnaround: กำไรสุทธิ TTM ฟื้นเป็น $621M (FY2023 ขาดทุน $310M) และหนี้ลดต่อเนื่อง • Pro Tools + ตลาดก่อสร้าง-รีโนเวทที่อ่อนไหวต่ออัตราดอกเบี้ย • เงินปันผล ~3.8% yield</div>
     <div class="price-row">
       <div>
-        <div class="px">$92.13<small>(SWK)</small></div>
+        <div class="px">{{rd:px}}<small>(SWK)</small></div>
       </div>
-      <div class="chg">▲ +36.0% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 22 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $61.90 – $104.68<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, StockAnalysis Financials (งบย้อนหลัง)
       </div>
@@ -90,7 +119,7 @@
       <div class="metric"><div class="k">Market Cap</div><div class="v">$13.91B</div><div class="d">151.0M หุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM GAAP)</div><div class="v neu">~22.5x</div><div class="d">GAAP EPS TTM $4.09 (FY2025: $2.65) — กำไรฟื้นตัวชัดเจน</div></div>
       <div class="metric"><div class="k">P/E (Fwd Consensus)</div><div class="v">~14.4x</div><div class="d">EPS $6.38 คือ FY2027e (ปีงบถัดไป FY2026e = $5.60 ⇒ ~16x) — ยังเป็น estimate</div></div>
-      <div class="metric"><div class="k">P/BV (est.)</div><div class="v neu">~1.55x</div><div class="d">BVPS ~$59.6 (ประมาณจาก NI÷ROE) — มี goodwill/intangibles สูง</div></div>
+      <div class="metric"><div class="k">P/BV (est.)</div><div class="v neu">~{{rd:pbv}}x</div><div class="d">BVPS ~$59.6 (ประมาณจาก NI÷ROE) — มี goodwill/intangibles สูง</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">$621M</div><div class="d">EPS(dil) TTM $4.09 — FY2025: $402M ($2.65/หุ้น)</div></div>
       <div class="metric"><div class="k">EPS(TTM) GAAP</div><div class="v">~$4.09</div><div class="d">Fwd FY2027e: ~$6.38 (+56%) — ระวัง estimate อาจ optimistic</div></div>
@@ -99,7 +128,7 @@
 
       <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$15.25B</div><div class="d">ทรงตัว YoY +0.6% — FY2025: $15.13B, ยังต่ำกว่าจุดสูง $16.95B (FY2022)</div></div>
       <div class="metric"><div class="k">Gross Margin (TTM)</div><div class="v">32.2%</div><div class="d">ดีขึ้นต่อเนื่อง — FY2025: 30.6% vs FY2024: 29.9%</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~3.6%</div><div class="d">$3.36/share ต่อปี — payout ~82% ของ EPS TTM $4.09</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">$3.36/share ต่อปี — payout ~82% ของ EPS TTM $4.09</div></div>
       <div class="metric"><div class="k">Net Debt</div><div class="v neg">$4.62B</div><div class="d">ลดจาก $6.06B (FY2025) → $4.62B (TTM: Debt $5.21B − Cash $0.59B) — ลดหนี้ชัดเจน</div></div>
     </div>
   </section>
@@ -113,7 +142,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#F2A900"></i>ราคา SWK</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $96.00</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -121,7 +150,7 @@
         ขึ้นไปปิดรายเดือนสูงสุดที่ $96.37 ในเดือน ส.ค. 2569 (กรอบ 52 สัปดาห์ $61.90 – $104.68) ก่อนย่อลงในเดือน ก.ย.
         พื้นฐานที่หนุน: EPS TTM $4.09 (FY2025: $2.65), gross margin TTM 32.2%, net debt ลดเหลือ $4.62B, FCF TTM $1,289M
         จุดสูงในเดือน ก.พ. 2569 ($86.49) ตามมาด้วยการปรับฐานในเดือน มี.ค. ($71.06) ก่อนฟื้นแรงต่อเนื่องจนถึง มิ.ย.–ส.ค.
-        ราคาปัจจุบัน $89.58 ต่ำกว่ามูลค่าที่ประเมิน ($96) เล็กน้อย — ราคาย่อจากยอดรายเดือนเดือน ส.ค. ราว 7%
+        ราคาปัจจุบัน {{rd:px}} ต่ำกว่ามูลค่าที่ประเมิน ($96) เล็กน้อย — ราคาย่อจากยอดรายเดือนเดือน ส.ค. ราว 7%
       </p>
     </div>
   </section>
@@ -139,11 +168,11 @@
         <div class="mval">$97</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $90 – $102</span></div>
-        <div class="r">$96</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ทั้ง 2 วิธี (คนละตระกูล: P/E ที่ยึดตัวคูณประวัติจริง กับ DCF ที่ยึดกระแสเงินสด) ให้ค่าใกล้กัน ($94–$97) — FV เฉลี่ย $96
+        ทั้ง 2 วิธี (คนละตระกูล: P/E ที่ยึดตัวคูณประวัติจริง กับ DCF ที่ยึดกระแสเงินสด) ให้ค่าใกล้กัน ($94–$97) — FV เฉลี่ย {{rd:fv}}
         วิธี P/E ใช้ GAAP EPS TTM $4.09 (ตัวเลขจริง) ไม่ผสม consensus เพราะ vendor forward $6.38 เป็น FY2027e ไม่ใช่ปีงบถัดไป
         วิธี DCF ใช้ FCF เฉลี่ย 3 ช่วงเพราะ FCF ผันผวนมาก (FY2022 −$1,990M) · r และ g เป็นสมมติฐานของผู้วิเคราะห์ ไม่ใช่ข้อมูลตลาด
         เป้าเฉลี่ยนักวิเคราะห์ $100.73 (11 ราย, Buy) ไม่ถูกนำมาเป็นขาของ FV — ใช้เป็นการตรวจความสอดคล้องเท่านั้น: อยู่เหนือ FV ราว 5%
@@ -157,22 +186,22 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $92.13</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $96.00</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$67<br><small>MOS 30%</small></span>
-          <span>$77<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$96<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$100.73<br><small>เป้าเฉลี่ย Analyst</small></span>
           <span style="text-align:right">$105<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน $89.58 อยู่ต่ำกว่า fair value ที่ประเมินไว้ที่ $96 — MOS +6.7% บ่งชี้ว่า SWK
+        ราคาปัจจุบัน {{rd:px}} อยู่ต่ำกว่า fair value ที่ประเมินไว้ที่ $96 — MOS {{rd:mos}} บ่งชี้ว่า SWK
         ซื้อขาย<b>ต่ำกว่ามูลค่าเหมาะสมเล็กน้อย</b> แต่ยังไม่ถึงเกณฑ์ margin of safety 20%
-        โซนน่าสนใจสำหรับ value investor อยู่ที่ <b>ต่ำกว่า $77 (MOS 20%)</b>
-        สำหรับ deep value อยู่ที่ <b>ต่ำกว่า $67 (MOS 30%)</b> — ซึ่งเกิดขึ้นได้ถ้าตลาดผิดหวังกับ margin ในไตรมาสถัดไป (งบถัดไปคาด 3 พ.ย. 2569)
+        โซนน่าสนใจสำหรับ value investor อยู่ที่ <b>ต่ำกว่า {{rd:mos20}} (MOS 20%)</b>
+        สำหรับ deep value อยู่ที่ <b>ต่ำกว่า {{rd:mos30}} (MOS 30%)</b> — ซึ่งเกิดขึ้นได้ถ้าตลาดผิดหวังกับ margin ในไตรมาสถัดไป (งบถัดไปคาด 3 พ.ย. 2569)
         เป้าเฉลี่ยนักวิเคราะห์ $100.73 (11 นักวิเคราะห์, consensus: Buy) อยู่เหนือราคาปัจจุบันราว 12%
         และเหนือ FV ของเราเล็กน้อย — เราให้น้ำหนักกับตัวเลขที่ตรวจซ้ำได้ (P/E ประวัติ + DCF) มากกว่าเป้านักวิเคราะห์
       </p>
@@ -183,19 +212,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+4%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาต่ำกว่า Fair Value เล็กน้อย — margin of safety ยังบางกว่าเกณฑ์ 20%</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$77</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$67</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
         <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $86</div><div class="d">MOS ~10% ของ FV</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="92.13" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -204,17 +233,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $92.13 • EPS ฐาน $4.09 (GAAP TTM) • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} (GAAP TTM){{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$49</div>
-          <div class="ret neg">−36% (รวมปันผล)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$3.51</span></li>
             <li><span>P/E ออก</span><span>14x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$10.08</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>margin ย่อกลับ ดอกเบี้ยสูงกดอสังหา ตลาดให้ P/E ต่ำกว่าช่วงต่ำสุดในประวัติ (16.2x)</span></li>
           </ul>
         </div>
@@ -222,12 +251,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +12%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$103</div>
-          <div class="ret pos">+23% (รวมปันผล)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$5.75</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$10.08</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>margin ที่ฟื้นยืนได้ต่อเนื่อง EPS เข้าใกล้ FY2026e $5.60 ตัวคูณอยู่แถวปีปกติ (16–19x)</span></li>
           </ul>
         </div>
@@ -235,12 +264,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +22%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$171</div>
-          <div class="ret pos">+97% (รวมปันผล)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$7.43</span></li>
             <li><span>P/E ออก</span><span>23x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$10.08</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>EPS ขึ้นสู่ระดับใกล้ consensus FY2027e ($6.38) และเกินไป ตลาดให้ P/E มัธยฐานประวัติ 23x</span></li>
           </ul>
         </div>
@@ -251,7 +280,7 @@
       Base case ให้ผลตอบแทนรวม ~26% ใน 3 ปี (ราว +8%/ปี รวมปันผล) — พอใช้ ไม่หวือหวา ปันผลคิดคงที่ $3.36 ต่อปี
       ความเสี่ยงสำคัญ: หนี้ยังมี $5.2B (net $4.6B) แม้ลดลงแล้ว / margin ที่ฟื้นต้องพิสูจน์ความยั่งยืนต่อ / ตลาดอสังหาและ home improvement ยังอ่อนแอ
       ปันผล $3.36 ต่อปีมี FCF TTM ครอบคลุมสบาย (~$507M ต่อปีเทียบ FCF $1,289M) แต่ FCF ผันผวนสูงในอดีต
-      นักลงทุน value ที่มีระยะยาว 3–5 ปีอาจรอซื้อที่ต่ำกว่า $77 (MOS 20%) หรือทยอยสะสมที่ ~$86 แทนไล่ราคา
+      นักลงทุน value ที่มีระยะยาว 3–5 ปีอาจรอซื้อที่ต่ำกว่า {{rd:mos20}} (MOS 20%) หรือทยอยสะสมที่ ~$86 แทนไล่ราคา
     </p>
   </section>
 
@@ -294,10 +323,10 @@
         gross margin TTM 32.2%, net debt ลดเหลือ $4.62B, FCF TTM $1,289M
         ราคา $89.58 ต่ำกว่า fair value ที่ประเมิน ($96 จาก P/E ตัวคูณประวัติ 23x และ DCF) เล็กน้อย และต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ ($100.73)
         ความเสี่ยงหลักคือหนี้ที่ยังมีนัยสำคัญ (debt $5.2B) และการพิสูจน์ว่า margin ที่ฟื้นยั่งยืน ขณะที่รายได้ยังไม่โต
-        สำหรับนักลงทุนระยะยาว 3–5 ปีที่เชื่อใน turnaround: การทยอยสะสมที่ ~$86 หรือรอ MOS 20% ที่ $77 ให้ risk/reward ดีกว่าการซื้อที่ราคาปัจจุบัน</p>
+        สำหรับนักลงทุนระยะยาว 3–5 ปีที่เชื่อใน turnaround: การทยอยสะสมที่ ~$86 หรือรอ MOS 20% ที่ {{rd:mos20}} ให้ risk/reward ดีกว่าการซื้อที่ราคาปัจจุบัน</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$96 <span style="font-size:12px;color:#cab9a8">($90–$102)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v bad">MOS ~ +4%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v bad">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 11 ด.</div><div class="v">~$100.73 (Buy)</div></div>
       </div>
       <div class="zone">
