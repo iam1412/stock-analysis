@@ -11,6 +11,7 @@
 const RV = require('../../tools/report-values.js');
 const P = require('../../tools/v3/prose.js');
 const K = require('../../tools/v3/cards.js');
+const S = require('../../tools/v3/schema.js');
 
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const METHOD_NAME = { pe: 'P/E', pbv: 'P/BV', ps: 'P/S', evsales: 'EV/Sales', evebitda: 'EV/EBITDA', pfcf: 'P/FCF', fcfyield: 'FCF Yield',
@@ -70,14 +71,16 @@ function toV2Source(doc, view) {
   const pr = (s) => P.renderProse(s, view, { mode: 'v2src' });
   const T = doc.text || {}; const vh = valHintParts(doc, view);
   const m = doc.meta, d = view.d, s = doc.scenarios, TH = doc.currency === 'THB';
-  // (O) โน้ตใต้การ์ดเป็น prose (token + <b>) — renderCard คืนบรรทัดฐานของ template ล้วน แล้วต่อโน้ตที่ render แล้ว
+  // ลำดับ = S.cardEntries (custom แทรกได้ด้วย "custom:<i>") · tone → class สีเดิม (.v pos|neg|neu) — ไม่มี markup ใน JSON (§3.6 H)
   const noteOf = (k) => doc.metrics.notes && doc.metrics.notes[k];
-  const catalogueCard = (k) => {
-    const c = K.renderCard(k, view), note = noteOf(k);
-    return { k: esc(c.k), v: esc(c.v), d: esc(c.d) + (note ? (c.d ? ' · ' : '') + pr(note) : ''), cls: c.cls };
-  };
-  const cards = doc.metrics.cards.map(catalogueCard)
-    .concat((doc.metrics.custom || []).map((c) => ({ k: esc(c.label), v: pr(c.value), d: c.note ? pr(c.note) : '', cls: '' })));
+  const cards = S.cardEntries(doc.metrics).map((e) => {
+    if (e.custom != null) {
+      const c = doc.metrics.custom[e.custom];
+      return { k: esc(c.label), v: pr(c.value), d: c.note ? pr(c.note) : '', cls: e.tone || '' };
+    }
+    const c = K.renderCard(e.key, view), note = noteOf(e.key);
+    return { k: esc(c.k), v: esc(c.v), d: esc(c.d) + (note ? (c.d ? ' · ' : '') + pr(note) : ''), cls: e.tone || c.cls };
+  });
   const cardHtml = cards.map((c) => `<div class="metric"><div class="k">${c.k}</div><div class="v${c.cls ? ' ' + c.cls : ''}">${c.v}</div><div class="d">${c.d}</div></div>`).join('\n      ');
   const legsHtml = view.legs.map((l, i) => `<div class="vmethod">
         <div><div class="mname">${i + 1}. ${esc(l.label)}</div><div class="mdesc">${esc(mdesc(doc.legs[i], view))}${l.note ? ' — ' + pr(l.note) : ''}</div></div>

@@ -110,4 +110,11 @@ t.eq(JSON.parse(R.jsonScript('{"a":"</script>"}')).a, '</script>', 'jsonScript o
   t(src.includes('&lt;script&gt;alert(2)&lt;/script&gt; &lt;a href=&quot;x&quot;&gt;z&lt;/a&gt;</p>'), 'valIntro markup is escaped'); }
 { const doc = load('ZTS'); const legacy = R.toV2Source(doc, C.compute(doc, { seeds })); doc.text = null;
   t.eq(R.toV2Source(doc, C.compute(doc, { seeds })), legacy, 'text: null renders byte-identical to no text (legacy)'); }
+// Plan 2a Task 4 — ลำดับการ์ด + tone
+{ const doc = load('ZTS'); doc.metrics.custom = [{ label: 'สาขาทั่วโลก', value: '45 ประเทศ', tone: 'pos' }];
+  doc.metrics.cards = ['mcap', 'custom:0', { key: 'pe', tone: 'neg' }].concat(doc.metrics.cards.filter((k) => k !== 'mcap' && k !== 'pe'));
+  const view = C.compute(doc, { seeds }); const src = R.toV2Source(doc, view);
+  const ks = [...src.matchAll(/<div class="metric"><div class="k">([^<]*)<\/div><div class="v([^"]*)">/g)].map((m) => [m[1], m[2]]);
+  t.eq(ks.slice(0, 3), [['Market Cap', ''], ['สาขาทั่วโลก', ' pos'], ['P/E (TTM)', ' neg']], 'custom placed at its slot · tone overrides class');
+  t.eq(CR.checkHtml(expandReport(src), 'ZTS.html', { source: src }).errors.map((e) => e.id), [], 'ordered cards: v2 gate 0 errors'); }
 t.done();

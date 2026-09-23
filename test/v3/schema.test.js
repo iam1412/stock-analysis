@@ -74,4 +74,16 @@ for (const f of ['BBL-real', 'EQIX-real', 'FER-real', 'ZTS-real'])
   t(e.length === 1 && e[0].msg === 'ต้องเป็น object', 'text: "x" → "ต้องเป็น object" at text'); }
 for (const k of ['valHint', 'valIntro', 'metricsNote', 'disclaimerAssump']) for (const v of ['', '   ']) {
   const d = base(); d.text = { [k]: v }; t(paths(S.validate(d)).includes(`text.${k}`), `text.${k}=${JSON.stringify(v)} → error at text.${k}`); }
+// Plan 2a Task 4 — ordered cards + tone (§3.6 B-order, H)
+{ const d = base(); d.metrics.custom = [{ label: 'สาขา', value: '45 ประเทศ' }, { label: 'พนักงาน', value: '13,800 คน', tone: 'neu' }];
+  d.metrics.cards = ['mcap', 'custom:1', { key: 'pe', tone: 'pos' }, 'pbv', 'yield'];
+  t.eq(S.validate(d), [], 'mixed catalogue / custom ref / {key,tone} is valid');
+  t.eq(S.cardEntries(d.metrics), [
+    { key: 'mcap', custom: null, tone: null }, { key: null, custom: 1, tone: 'neu' }, { key: 'pe', custom: null, tone: 'pos' },
+    { key: 'pbv', custom: null, tone: null }, { key: 'yield', custom: null, tone: null }, { key: null, custom: 0, tone: null }], 'cardEntries order + unreferenced custom appended'); }
+{ const d = base(); d.metrics.cards = d.metrics.cards.concat(['custom:0']); t(paths(S.validate(d)).includes(`metrics.cards[${d.metrics.cards.length - 1}]`), 'custom:<i> must point at an existing custom'); }
+{ const d = base(); d.metrics.custom = [{ label: 'a', value: 'b' }]; d.metrics.cards = d.metrics.cards.slice(0, 5).concat(['custom:0', 'custom:0']); t(paths(S.validate(d)).includes('metrics.cards'), 'custom referenced twice → duplicate error'); }
+{ const d = base(); d.metrics.cards[0] = { key: 'mcap', tone: 'green' }; t(paths(S.validate(d)).includes('metrics.cards[0].tone'), 'tone enum'); }
+{ const d = base(); d.metrics.cards[0] = { key: 'mcap', cls: 'pos' }; t(paths(S.validate(d)).includes('metrics.cards[0].cls'), 'card object is closed'); }
+{ const d = base(); d.metrics.custom = [{ label: 'a', value: 'b', tone: 'bad' }]; t(paths(S.validate(d)).includes('metrics.custom[0].tone'), 'custom tone enum'); }
 t.done();

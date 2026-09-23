@@ -17,6 +17,7 @@ const ENUM = {
   exitMetric: ['pe', 'ps', 'pbv', 'pffo', 'pfcf'],
   perYear: ['cagr', 'linear', null],
   extrasAfter: ['metrics', 'valuation', 'scenarios', 'catalysts'],
+  tone: ['pos', 'neg', 'neu'],
 };
 // ต้องตรงกับคีย์ของ CATALOGUE ใน tools/v3/cards.js (test/v3/cards.test.js ตรวจว่าตรงกัน)
 // เพิ่ม 6 คีย์ 24 ก.ย. 69 (Task 11 card census — coverage 88.8%→ก่อนเพิ่ม): netDebt/ebitdaMargin/roic/evEbitda/
@@ -47,6 +48,20 @@ const AI = /^Claude\s+[A-Za-z]+\s+\d+(?:\.\d+)?$/;   // รูปเดียว
 const isNum = (v) => typeof v === 'number' && Number.isFinite(v);
 const isStr = (v) => typeof v === 'string' && v.trim().length > 0;
 const isObj = (v) => v != null && typeof v === 'object' && !Array.isArray(v);
+
+// metrics.cards[i]: "key" | "custom:<i>" | {key, tone} → ลำดับที่ render · custom ที่ไม่ถูกอ้างต่อท้าย (พฤติกรรม Plan 1)
+const CUSTOM_REF = /^custom:(\d)$/;
+function cardEntries(mt) {
+  const out = [], used = new Set(), custom = Array.isArray(mt.custom) ? mt.custom : [];
+  const toneOf = (c) => (c && c.tone) || null;
+  for (const c of mt.cards || []) {
+    if (typeof c === 'string' && CUSTOM_REF.test(c)) { const i = +c.match(CUSTOM_REF)[1]; used.add(i); out.push({ key: null, custom: i, tone: toneOf(custom[i]) }); }
+    else if (typeof c === 'string') out.push({ key: c, custom: null, tone: null });
+    else out.push({ key: c && c.key, custom: null, tone: (c && c.tone) || null });
+  }
+  custom.forEach((c, i) => { if (!used.has(i)) out.push({ key: null, custom: i, tone: toneOf(c) }); });
+  return out;
+}
 
 function validate(doc) {
   const errs = [];
@@ -195,8 +210,25 @@ function validate(doc) {
     closed(mt, 'metrics', ['cards', 'notes', 'custom', 'hint']);
     if (!Array.isArray(mt.cards) || mt.cards.length < 4 || mt.cards.length > 16) E('metrics.cards', 'ต้องมี 4–16 การ์ด');
     else {
-      mt.cards.forEach((k, i) => { if (!CARD_KEYS.includes(k)) E(`metrics.cards[${i}]`, `ไม่อยู่ในแคตตาล็อก (${CARD_KEYS.join(', ')}) — ข้อมูลเฉพาะธุรกิจใช้ metrics.custom`); });
-      if (new Set(mt.cards).size !== mt.cards.length) E('metrics.cards', 'การ์ดซ้ำ');
+      const ids = [];
+      const nCustom = Array.isArray(mt.custom) ? mt.custom.length : 0;
+      mt.cards.forEach((c, i) => {
+        const p = `metrics.cards[${i}]`;
+        if (typeof c === 'string' && CUSTOM_REF.test(c)) {
+          const n = +c.match(CUSTOM_REF)[1];
+          if (n >= nCustom) E(p, `อ้าง ${c} แต่ metrics.custom มี ${nCustom} ช่อง`);
+          ids.push(c);
+        } else if (typeof c === 'string') {
+          if (!CARD_KEYS.includes(c)) E(p, `ไม่อยู่ในแคตตาล็อก (${CARD_KEYS.join(', ')}) — ข้อมูลเฉพาะธุรกิจใช้ metrics.custom`);
+          ids.push(c);
+        } else if (isObj(c)) {
+          closed(c, p, ['key', 'tone']);
+          if (!CARD_KEYS.includes(c.key)) E(`${p}.key`, 'ไม่อยู่ในแคตตาล็อก');
+          if (c.tone != null) en(c.tone, `${p}.tone`, ENUM.tone);
+          ids.push(c.key);
+        } else E(p, 'ต้องเป็นคีย์แคตตาล็อก / "custom:<i>" / {key, tone}');
+      });
+      if (new Set(ids).size !== ids.length) E('metrics.cards', 'การ์ดซ้ำ');
     }
     if (mt.notes != null) {
       if (!isObj(mt.notes)) E('metrics.notes', 'ต้องเป็น object');
@@ -204,7 +236,7 @@ function validate(doc) {
     }
     if (mt.custom != null) {
       if (!Array.isArray(mt.custom) || mt.custom.length > 4) E('metrics.custom', 'ต้องเป็น array ≤4');
-      else mt.custom.forEach((c, i) => { if (!isObj(c)) return E(`metrics.custom[${i}]`, 'ต้องเป็น object'); closed(c, `metrics.custom[${i}]`, ['label', 'value', 'note']); str(c.label, `metrics.custom[${i}].label`); str(c.value, `metrics.custom[${i}].value`); str(c.note, `metrics.custom[${i}].note`, { req: false }); });
+      else mt.custom.forEach((c, i) => { if (!isObj(c)) return E(`metrics.custom[${i}]`, 'ต้องเป็น object'); closed(c, `metrics.custom[${i}]`, ['label', 'value', 'note', 'tone']); if (c.tone != null) en(c.tone, `metrics.custom[${i}].tone`, ENUM.tone); str(c.label, `metrics.custom[${i}].label`); str(c.value, `metrics.custom[${i}].value`); str(c.note, `metrics.custom[${i}].note`, { req: false }); });
     }
     str(mt.hint, 'metrics.hint', { req: false });
   }
@@ -289,4 +321,4 @@ function OWNER(path) {
   return 'worker';
 }
 
-module.exports = { ENUM, CARD_KEYS, FUND_KEYS, LEG_INPUTS, OVERRIDE_KEYS, THEME_KEYS, TEXT_KEYS, validate, OWNER };
+module.exports = { ENUM, CARD_KEYS, FUND_KEYS, LEG_INPUTS, OVERRIDE_KEYS, THEME_KEYS, TEXT_KEYS, cardEntries, validate, OWNER };
