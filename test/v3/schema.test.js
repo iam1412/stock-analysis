@@ -26,6 +26,13 @@ t.eq(S.OWNER('market.px'), 'cron', 'market is cron-owned');
 t.eq(S.OWNER('_sig'), 'io', '_sig is io-owned');
 t.eq(S.OWNER('legs[0].inputs.multiple'), 'worker', 'rest is worker-owned');
 
+// Plan 2a Task 1 — {{lit:}} ↔ meta.litReasons (ruling R1: object map literal → reason)
+{ const d = base(); d.prose.chart = 'IPO {{lit:$17.00}}'; t(paths(S.validate(d)).includes('prose.chart'), 'lit without a reason → error at the prose path'); }
+{ const d = base(); d.prose.chart = 'IPO {{lit:$17.00}}'; d.meta.litReasons = { '$17.00': 'ราคา IPO ปี 2556 (ข้อมูลประวัติ)' }; t.eq(S.validate(d), [], 'lit + reason → valid'); }
+{ const d = base(); d.meta.litReasons = { '$17.00': 'ราคา IPO ปี 2556' }; t(paths(S.validate(d)).includes('meta.litReasons["$17.00"]'), 'reason no lit uses → error'); }
+{ const d = base(); d.prose.chart = 'IPO {{lit:$17.00}}'; d.meta.litReasons = { '$17.00': 'x' }; t(paths(S.validate(d)).includes('meta.litReasons["$17.00"]'), 'reason shorter than 5 chars → error'); }
+{ const d = base(); d.prose.chart = 'bad {{lit:{{px}}}}'; t(paths(S.validate(d)).includes('prose.chart'), 'Review Focus #1: nested lit → path-named schema error'); }
+{ const d = base(); d.meta.litReasons = ['x']; t(paths(S.validate(d)).includes('meta.litReasons'), 'litReasons must be an object'); }
 // fix round 1 — malformed nested entries must return path-named errors, never throw
 {
   const d = base(); d.metrics.custom = [null];

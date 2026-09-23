@@ -5,6 +5,7 @@
  * ★ ไม่เก็บค่าที่คำนวณได้ — fv/mos/pe/yield/mcap/ราคาเป้าฉาก/สี gdots ฯลฯ มาจาก compute.js ตอน build
  * spec: docs/superpowers/specs/2026-09-24-report-v3-json-source-design.md §3
  */
+const P = require('./prose.js');   // litsOf/malformedLitPaths — prose.js ไม่ require schema.js (ไม่มี cycle)
 const ENUM = {
   currency: ['USD', 'THB'], region: ['US', 'TH'], dateEra: ['BE', 'CE'], chgSuffix: ['รอบปี', 'ตั้งแต่ IPO'],
   epsBasis: ['gaap-ttm', 'adj-ttm', 'fy'],
@@ -79,7 +80,7 @@ function validate(doc) {
   const m = doc.meta;
   if (!isObj(m)) E('meta', 'ต้องมี (object)');
   else {
-    closed(m, 'meta', ['company', 'exchange', 'sub', 'headerTags', 'analysisDate', 'aiModel', 'sources', 'priceNote', 'themeLegacy']);
+    closed(m, 'meta', ['company', 'exchange', 'sub', 'headerTags', 'analysisDate', 'aiModel', 'sources', 'priceNote', 'themeLegacy', 'litReasons']);
     str(m.company, 'meta.company'); str(m.exchange, 'meta.exchange'); str(m.sub, 'meta.sub', { minLen: 10 });
     if (m.headerTags != null) strList(m.headerTags, 'meta.headerTags', 0, 2);
     if (!ISO.test(m.analysisDate || '')) E('meta.analysisDate', 'ต้องเป็น ISO YYYY-MM-DD (ค.ศ.)');
@@ -89,6 +90,10 @@ function validate(doc) {
     if (m.themeLegacy != null) {
       if (!isObj(m.themeLegacy)) E('meta.themeLegacy', 'ต้องเป็น object หรือ null');
       else { closed(m.themeLegacy, 'meta.themeLegacy', THEME_KEYS); for (const k of THEME_KEYS) str(m.themeLegacy[k], `meta.themeLegacy.${k}`); }
+    }
+    if (m.litReasons != null) {
+      if (!isObj(m.litReasons)) E('meta.litReasons', 'ต้องเป็น object { "<ข้อความใน {{lit:…}}>": "เหตุผล" }');
+      else for (const [k, v] of Object.entries(m.litReasons)) str(v, `meta.litReasons[${JSON.stringify(k)}]`, { minLen: 5 });
     }
   }
 
@@ -247,6 +252,13 @@ function validate(doc) {
     }
     str(x.note, `${p}.note`, { req: false });
   });
+  // {{lit:…}} ↔ meta.litReasons (spec §4 ข้อ 4 · #51 · ruling R1) — 1 คีย์ต่อ 1 ข้อความ ใช้ได้หลายจุด
+  for (const p of P.malformedLitPaths(doc)) E(p, '{{lit:…}} ไม่ครบรูป — ห้ามซ้อน token/วงเล็บปีกกา และต้องปิดด้วย }}');
+  const reasons = isObj(doc.meta) && isObj(doc.meta.litReasons) ? doc.meta.litReasons : {};
+  const lits = P.litsOf(doc);
+  for (const l of lits) if (!Object.prototype.hasOwnProperty.call(reasons, l.text)) E(l.path, `{{lit:${l.text}}} ต้องมีเหตุผลใน meta.litReasons[${JSON.stringify(l.text)}]`);
+  const used = new Set(lits.map((l) => l.text));
+  for (const k of Object.keys(reasons)) if (!used.has(k)) E(`meta.litReasons[${JSON.stringify(k)}]`, 'ไม่มี {{lit:…}} ที่ใช้เหตุผลนี้ — ลบออก');
   if (doc._sig != null && !/^sha256:[0-9a-f]{64}$/.test(doc._sig)) E('_sig', 'รูปลายเซ็นไม่ถูกต้อง');
 
   return errs;
