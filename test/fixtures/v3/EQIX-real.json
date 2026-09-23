@@ -1,0 +1,131 @@
+{
+  "v": 3,
+  "symbol": "EQIX",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Equinix, Inc.",
+    "exchange": "NASDAQ",
+    "sub": "ดาต้าเซ็นเตอร์ระดับโลก (REIT) • colocation & interconnection 260+ IBX ใน 70+ เมือง • xScale hyperscale JV (AWS/Google/Azure) • AI/cloud on-ramps • เชื่อม 10,000+ เครือข่าย",
+    "headerTags": ["Data Center REIT", "Interconnection"],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": ["StockAnalysis.com", "Yahoo Finance", "Equinix Investor Relations", "SEC Filings"],
+    "themeLegacy": {
+      "accent": "#D6202A",
+      "accentDark": "#9E161E",
+      "darkGrad": "linear-gradient(135deg, #120304 0%, #240709 100%)",
+      "glow": "rgba(214,32,42,0.35)",
+      "subColor": "#E85A62",
+      "headerMuted": "#e04e57",
+      "verdictText": "#F5D2D5",
+      "vcellLabel": "rgba(245,210,213,0.6)"
+    }
+  },
+  "market": {
+    "px": 1059.26,
+    "priceDate": "2026-09-22",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        ["ต.ค.25", 846.01], ["พ.ย.25", 753.31], ["ธ.ค.25", 766.16], ["ม.ค.26", 820.93],
+        ["ก.พ.26", 974.26], ["มี.ค.26", 980.24], ["เม.ย.26", 1082.83], ["พ.ค.26", 1068.04],
+        ["มิ.ย.26", 1042.39], ["ก.ค.26", 1019.28], ["ส.ค.26", 1046.72], ["ก.ย.26", 1059.26]
+      ]
+    },
+    "range52w": { "lo": 720.62, "hi": 1128.68 }
+  },
+  "fundamentals": {
+    "eps": 15.55,
+    "epsBasis": "gaap-ttm",
+    "dps": 20.64,
+    "bvps": 352,
+    "shares": 98671686,
+    "revenue": 9220000000,
+    "roe": 10.7,
+    "roa": 2.1,
+    "beta": 0.95,
+    "debtToEquity": 1.52,
+    "ffoPerShare": 38.33
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation (มัธยฐานย้อนหลัง)",
+      "inputs": { "multiple": 80.6, "multipleSource": "median5y" },
+      "note": "มัธยฐาน P/E FY2022–FY2025 (ราคาเฉลี่ยรายปี ÷ EPS diluted ช่วง 59.9–99.2x) ตัด FY2021 ที่ 140x ออกเพราะกำไรเกือบศูนย์ · เป็นตัวคูณจากประวัติ ไม่ได้มาจาก P/E ปัจจุบัน 65.7x"
+    },
+    {
+      "method": "declared",
+      "label": "P/AFFO ปัจจุบัน (บริบท — ไม่นับใน FV)",
+      "inputs": { "value": 1021, "basis": "other" },
+      "note": "AFFO/Share (TTM) $38.33 × P/AFFO 26.6x (ตัวคูณปัจจุบัน = คืนราคาตลาดโดยโครงสร้าง ไม่ใช่สมอ) — แสดงเพื่อเทียบเท่านั้น ไม่มีมัธยฐาน P/AFFO ที่วัดได้"
+    }
+  ],
+  "fvWeights": [1, 0],
+  "metrics": {
+    "cards": ["mcap", "pbv", "eps", "bvps", "roe", "revenue", "yield", "beta"],
+    "notes": {
+      "pbv": "โครงสร้าง REIT leverage สูง",
+      "eps": "P/E ~65.7x — ไม่ใช้ประเมินค่า REIT (ค่าเสื่อมสูง)",
+      "bvps": "REIT ถือสินทรัพย์จริง",
+      "roe": "ROE ปกติสำหรับ REIT leverage สูง",
+      "revenue": "FY2025 · Q2 2026 +16% YoY, guidance FY2026 $10.2–10.3B — 22 ปีติดรายได้โต",
+      "yield": "+10% ก.พ. 2026 — ปันผลโต 10 ปีติด",
+      "beta": "ใกล้ตลาด — defensive REIT แต่มี tech sensitivity"
+    },
+    "custom": [
+      { "label": "P/AFFO (TTM)", "value": "~26.6x", "note": "AFFO/share $38.33 (2025) — มาตรวัดหลัก REIT" },
+      { "label": "P/AFFO เฉลี่ย ~5 ปี", "value": "~27x", "note": "ช่วง 22–35x ขึ้นกับ sentiment" },
+      { "label": "AFFO/Share FY2026E", "value": "$42.69–43.29", "note": "+11–13% YoY (ปรับเพิ่มหลัง Q2 2026) — ตัวชี้วัดกำไรจริงของ REIT" },
+      { "label": "AFFO Margin", "value": "~40%", "note": "AFFO/Revenue ขยับขึ้นตาม Adjusted EBITDA margin สถิติ 53% (Q2 2026)" }
+    ],
+    "hint": "Data Center REIT — ใช้ AFFO เป็นตัวชี้วัดหลัก"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "ffo",
+    "exitMetric": "pffo",
+    "baseOverride": {
+      "value": 42.99,
+      "why": "ฐาน AFFO/Share FY2026E $42.99 = กลางช่วง guidance $42.69–43.29 ที่บริษัทปรับเพิ่มหลัง Q2 2026 (ไม่ใช่ AFFO TTM $38.33)"
+    },
+    "cases": [
+      { "growth": 5, "exitMultiple": 20, "divCum": 66, "desc": "ดอกเบี้ยสูงนาน กด multiple จาก ~24x เหลือ 20x" },
+      { "growth": 9, "exitMultiple": 24, "divCum": 69, "desc": "AI demand ต่อเนื่อง ตาม guidance ใหม่ AFFO โต 9%" },
+      { "growth": 11, "exitMultiple": 26, "divCum": 72, "desc": "xScale/AI boom หนุน premium rerating ต่อเนื่องจาก guidance ที่ปรับเพิ่ม" }
+    ],
+    "note": "การคาดการณ์อิง AFFO/Share ฐาน FY2026E $42.99 (guidance กลางช่วงที่บริษัทปรับเพิ่มหลัง Q2 2026) เติบโตตาม 3 สถานการณ์ แล้วคูณด้วย P/AFFO exit multiple ที่ตั้งเป็นสมมติฐาน (ไม่ใช่ FV leg) Base case (+9%/ปี) ได้ผลตอบแทน ~+38% ใน 3 ปีรวมปันผล ราคาเป้า $1,336 สูงกว่า FV เล็กน้อย Bear case เกิดจากอัตราดอกเบี้ยสูงนานกดค่า multiple ลงสู่ 20x (จาก P/AFFO ปัจจุบัน ~24x บนฐาน FY2026E) แม้ AFFO ยังโตช้า — ผลตอบแทนแทบทรงตัว ~+4% Bull case เกิดจาก AI demand เกินคาดต่อเนื่องหนุน rerating สู่ 26x+ — ผลตอบแทน ~+57% <b>หมายเหตุ:</b> ตัวเลขเป็นประมาณการเพื่อศึกษา ไม่ใช่การรับประกันผลตอบแทน"
+  },
+  "analyst": { "target": 1233.23, "n": 30, "rating": "Buy", "asOf": "2026-09-22" },
+  "prose": {
+    "chart": "ราคา EQIX {{chg}} ในรอบปี จากดีมานด์ data center ที่ถูกหนุนโดย AI workload และ hyperscaler expansion ช่วง ต.ค. 68 อยู่ที่ราว $846 ก่อนย่อลงมาที่ $753 (พ.ย. 68) จากความกังวลอัตราดอกเบี้ย จากนั้นฟื้นแรงช่วง ก.พ.–มี.ค. 69 ($974–$980) หลัง management ยืนยัน AFFO growth guidance <b>จุดสูงสุด เม.ย. 69 ที่ $1,082.83</b> (ปิดสิ้นเดือน) แล้วแกว่งในกรอบ $1,019–$1,047 ช่วง มิ.ย.–ก.ย. 69 ก่อนงบ Q3 2026 (นัดประกาศ 28 ต.ค. 2569 ตามข้อมูล StockAnalysis)",
+    "valuation": "<b>ข้อจำกัด: FV รอบนี้ตั้งบนตระกูลเดียว (P/E มัธยฐานย้อนหลัง)</b> — กรอบใช้ P/E ต่ำสุด–สูงสุดที่วัดได้ 59.9x–99.2x ได้ $931–$1,543 (MOS ที่ขา 59.9x ≈ +9.7% · ที่ขา 99.2x ≈ +34%) ⇒ ผลไวต่อตัวคูณมาก P/E แบบ GAAP ไม่เหมาะกับ REIT เต็มตัวเพราะค่าเสื่อมสูง และมัธยฐาน 80.6x สูงกว่า P/E ปัจจุบัน 65.7x เพราะ EPS ในอดีตต่ำ (FY2024 ต่ำสุด $8.50) จึงควรอ่านเป็นขอบบนที่ยังไม่ยืนยันด้วยตระกูลอื่น <b>บริบท P/AFFO (ไม่นับเป็นขา):</b> AFFO/share TTM $38.33 (FY2025) ⇒ P/AFFO ปัจจุบัน ~26.6x และเทียบ AFFO FY2026E $42.99 ≈ 23.8x · ไม่มีมัธยฐาน P/AFFO ที่วัดได้จาก controller รอบนี้ จึงไม่ตั้งตัวคูณ P/AFFO เป็นขา (ตัวคูณ 26x เดิมห่างจากค่าปัจจุบันเพียง ~2% = สมอตาย) · NAV เดิม ~$1,020 (implied cap rate ~5%) ถูกถอดเพราะไม่มีตารางคำนวณที่ตรวจซ้ำได้ · เป้านักวิเคราะห์ ({{analyst.target}}) ใช้เป็นบริบทความสอดคล้องเท่านั้น ไม่ใช่ขา FV ที่มา: StockAnalysis.com, Yahoo Finance, Equinix IR, SEC Filings (ตัวเลข AFFO/guidance คงจากรอบวิเคราะห์ก่อน ไม่ได้เปิดตรวจแหล่งปฐมภูมิซ้ำรอบนี้)",
+    "gauge": "ราคาปัจจุบัน <b>{{px}}</b> อยู่ต่ำกว่า Fair Value {{fv}} อยู่ <b>{{mos}}</b> — MOS ยังไม่ถึงโซน 20% แต่ FV ตั้งบนตระกูลเดียว (ดูหมวด 3) จึงควรอ่านอย่างระวัง นักวิเคราะห์ 30 รายเป้าเฉลี่ย <b>{{analyst.target}}</b> ({{analyst.pct}} จากปัจจุบัน) ใกล้เคียง FV ของเรา โซน MOS 20% ที่ <b>{{mos20}}</b> คือจุดน่าสนใจสำหรับ value investor — รอย่ออีกราว 2% โซน MOS 30% ที่ <b>{{mos30}}</b> เป็น deep value zone — เกิดได้ในช่วงวิกฤตอัตราดอกเบี้ยสูง",
+    "mos": "ราคาต่ำกว่า Fair Value ระดับปานกลาง — แต่ FV ตั้งบนตระกูลเดียว (P/E มัธยฐาน) จึงมีความไม่แน่นอนสูง · รอโอกาสซื้อในโซน MOS 20% ({{mos20}})",
+    "verdictHeadline": "คุณภาพสูง — ราคาต่ำกว่า FV ระดับปานกลาง แต่ FV พึ่งตระกูลเดียว",
+    "verdictBody": "Equinix คือผู้นำ data center REIT ระดับโลกที่มี interconnection moat ไม่มีใครทัดเทียม เครือข่าย 10,000+ บริษัทในระบบเดียวสร้าง network effect ทรงพลัง งบ Q2 2026 (29 ก.ค. 2569) ยืนยันคุณภาพธุรกิจ: revenue +16% YoY, Adjusted EBITDA margin สถิติ 53%, AFFO/share +19% YoY เป็น $11.78 ต่อไตรมาส พร้อมปรับเพิ่ม guidance ทั้งปี AFFO/share เป็น $42.69–43.29 (+11–13% YoY) ราคาปัจจุบัน {{px}} ต่ำกว่า Fair Value {{fv}} ({{mos}}) — FV รอบนี้ตั้งจาก P/E มัธยฐานย้อนหลังเพียงตระกูลเดียว จึงอ่านเป็นกรอบบนที่ยังไม่ยืนยันด้วยวิธีอื่น (ที่ตัวคูณต่ำสุด 59.9x FV ≈ $931 ≈ ใกล้ราคาตลาด) นักวิเคราะห์เป้า {{analyst.target}} บ่งชี้ upside {{analyst.pct}} ใกล้เคียง FV — base case ~38% ใน 3 ปีรวมปันผล กลยุทธ์ที่เหมาะ: <b>ทยอยสะสมอย่างระมัดระวัง</b> หรือรอย่อสู่โซน MOS 20% ({{mos20}}) เพื่อ margin of safety ที่ดีขึ้น",
+    "strategy": "ธุรกิจยอดเยี่ยม ราคาอยู่ต่ำกว่ามูลค่าเหมาะสมระดับปานกลาง ({{mos}}) แต่ FV มาจากตระกูลเดียว — ทยอยสะสมได้ระมัดระวัง รอย่อสู่โซน MOS 20% ({{mos20}}) หรือ MOS 30% ({{mos30}}) จะได้ margin of safety ดีขึ้น หากถืออยู่แล้ว hold ต่อ ปันผล ~2%/ปีช่วยเสริม",
+    "disclaimerSources": "ที่มา: StockAnalysis.com / Yahoo Finance / Equinix Investor Relations / SEC Filings"
+  },
+  "catalysts": [
+    "<b>AI & Cloud Demand:</b> ความต้องการ compute/storage พุ่งจาก AI workloads — Q2 2026 interconnection net adds ทำสถิติใหม่ 9,700 ราย",
+    "<b>Interconnection Moat:</b> เครือข่าย 10,000+ บริษัท/ISP บน platform เดียว — network effect ทำให้ลูกค้าออกยาก (switching cost สูง)",
+    "<b>xScale JV กับ Hyperscalers:</b> JV กับ AWS, Google, Azure สร้างรายได้ระยะยาวจาก hyperscale colocation ที่ scale ได้ไว",
+    "<b>Geographic Diversification:</b> 260+ IBX ใน 70+ เมือง 33 ประเทศ — Americas 45% / EMEA 34% / APAC 21% กระจายความเสี่ยงดี",
+    "<b>Dividend Growth:</b> ปันผลโต 10 ปีติดต่อกัน ขึ้น +10% ก.พ. 2026 — AFFO payout ratio ยั่งยืน ~48% (ลดลงจาก AFFO เร่งตัวเร็วกว่าปันผล)",
+    "<b>Analyst Consensus:</b> 30 รายเป้าเฉลี่ย {{analyst.target}} (Buy) — upside {{analyst.pct}} บวกปันผล ~2%"
+  ],
+  "risks": [
+    "<b>Valuation Premium:</b> P/AFFO ~26.6x (TTM) และ GAAP P/E ~65.7x — downside risk หาก growth ต่ำกว่าคาดหรือ sentiment เปลี่ยน · FV ของเราพึ่งตระกูลเดียว",
+    "<b>อัตราดอกเบี้ยสูง:</b> REIT ไวต่อ rate — หนี้ D/E 1.52x ต้อง refinance ในอนาคต (capex FY2026 guide $5.0–6.0B เพิ่มภาระ) ต้นทุนทุนสูงขึ้นกระทบ NAV และ multiple",
+    "<b>Capex เข้มข้น:</b> สร้าง data center ต้องลงทุนสูงต่อเนื่อง — FCF หลัง capex ต่ำ ต้องอาศัย debt/equity เป็นระยะ",
+    "<b>Hyperscaler Self-Build:</b> AWS/Google/Microsoft สร้าง data center เอง — อาจลด colocation demand บางส่วนในระยะยาว",
+    "<b>Power/Energy Constraints:</b> ข้อจำกัดไฟฟ้า (power availability) ในตลาดหลักเช่น Northern Virginia, Singapore กดความสามารถ expand",
+    "<b>Digital Realty Competition:</b> DLR และผู้เล่นในภูมิภาคแข่งขันด้านราคาและ capacity ในตลาดเดียวกัน"
+  ],
+  "extras": []
+}
