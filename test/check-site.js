@@ -318,7 +318,9 @@ function checkTagPages(DIST) {
   // coverage check จะฟ้อง "อยู่ใน dist/ แต่ไม่มีต้นฉบับใน reports/ (ไฟล์ค้าง)" ซึ่งอ่านไม่ออกว่าต้นเหตุคือหน้า tag
   // หลุด — เทียบจำนวนตรงนี้ให้ชี้ต้นเหตุตรงจุดแทน
   const rootHtml = fs.readdirSync(DIST).filter((f) => /\.html$/i.test(f) && f.toLowerCase() !== 'index.html').length;
-  const srcCount = fs.readdirSync(path.join(ROOT, 'reports')).filter((f) => /\.html$/i.test(f)).length;
+  // v3: reports/<SYM>.json ก็เป็น source เดียวกับ .html (build.js compute แล้ว render ออกมาเป็น dist/<SYM>.html
+  // เหมือนกัน) — นับรวม .json ด้วย ไม่งั้นใบ v3 ทำให้ rootHtml > srcCount เพี้ยนไปฟ้องผิดจุด
+  const srcCount = fs.readdirSync(path.join(ROOT, 'reports')).filter((f) => /\.(html|json)$/i.test(f)).length;
   if (rootHtml !== srcCount) r.errors.push(`ไฟล์ .html ในราก dist มี ${rootHtml} ไม่เท่ากับรายงาน ${srcCount} — มีไฟล์หลุดมาที่ราก?`);
 
   return r;
@@ -418,14 +420,20 @@ function main() {
   const add = (name, r) => { totErr += r.errors.length; totWarn += r.warnings.length; if (r.errors.length || r.warnings.length) out.push({ name, ...r }); };
 
   // 1) coverage: source ↔ dist ↔ manifest ↔ index
+  // v3: หุ้นหนึ่งตัว = หนึ่ง source ไม่ว่าจะเป็น reports/<SYM>.html (v2) หรือ reports/<SYM>.json (v3, build.js
+  // compute แล้ว render เป็น dist/<SYM>.html เหมือนกัน) — นับรวมทั้งคู่ ไม่งั้นใบ v3 จะโดนฟ้องเป็น "ไฟล์ค้าง"
   const cov = { errors: [], warnings: [] };
-  const srcSyms = fs.readdirSync(REPORTS_DIR).filter((f) => /\.html$/i.test(f)).map(sym);
+  const reportFiles = fs.readdirSync(REPORTS_DIR).filter((f) => /\.(html|json)$/i.test(f));
+  const srcExt = (f) => f.match(/\.(html|json)$/i)[1];
+  const srcSym = (f) => f.replace(/\.(html|json)$/i, '');
+  const srcSyms = reportFiles.map(srcSym);
+  const srcExtOf = new Map(reportFiles.map((f) => [srcSym(f), srcExt(f)]));
   const distSyms = fs.readdirSync(DIST).filter((f) => /\.html$/i.test(f) && f.toLowerCase() !== 'index.html').map(sym);
 
   // ชื่อไฟล์ต้องพิมพ์ใหญ่ + ไม่ซ้ำ (case-insensitive)
   const seen = new Map();
   for (const s of srcSyms) {
-    if (s !== s.toUpperCase()) cov.errors.push(`ชื่อไฟล์ต้องพิมพ์ใหญ่: reports/${s}.html`);
+    if (s !== s.toUpperCase()) cov.errors.push(`ชื่อไฟล์ต้องพิมพ์ใหญ่: reports/${s}.${srcExtOf.get(s)}`);
     const k = s.toUpperCase();
     if (seen.has(k)) cov.errors.push(`symbol ซ้ำ (ไม่สนตัวพิมพ์): ${seen.get(k)} / ${s}`);
     else seen.set(k, s);
