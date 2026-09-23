@@ -25,7 +25,12 @@ const dot = (c) => `<div style="width:8px;height:8px;border-radius:50%;backgroun
 const EPS_BASIS_LABEL = { 'gaap-ttm': 'EPS (TTM)', 'adj-ttm': 'EPS adj. (TTM)', fy: 'EPS (FY)' };
 function epsLabel(leg, view) {
   if (leg.override && leg.override.eps != null) return 'EPS ปรับ';
-  return EPS_BASIS_LABEL[view.doc.fundamentals.epsBasis] || 'EPS (TTM)';
+  const basis = view.doc.fundamentals.epsBasis;
+  // ไม่เดา: ฐานที่ไม่รู้จัก = ข้อมูลผิด (schema บังคับ enum เมื่อมี eps) — fallback เงียบเป็น "EPS (TTM)" จะพิมพ์ฐานผิดให้คนอ่าน
+  if (!Object.prototype.hasOwnProperty.call(EPS_BASIS_LABEL, basis)) {
+    throw new Error(`fundamentals.epsBasis: ${JSON.stringify(basis)} ไม่รู้จัก (ต้องเป็น ${Object.keys(EPS_BASIS_LABEL).join('/')})`);
+  }
+  return EPS_BASIS_LABEL[basis];
 }
 function mdesc(leg, view) {
   const m = (v) => view.cur + RV.fmtPrice(v);

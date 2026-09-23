@@ -1507,6 +1507,19 @@ ok(U.commitBody([], []) === '', 'commitBody: ว่างเมื่อไม�
           //   แล้วทั้งเคสจะกลายเป็น no-op ที่ "ผ่าน" โดยไม่ได้ทดสอบอะไร) — ต้องยืนยันว่าเลื่อนวันได้จริงก่อนเสมอ
           const fN3 = footerDate(src);
           ok(!!fN3 && fN3.iso === RV.PROSE_TOKEN_SINCE, `(ตั้งฉาก N3 ${S}) footer = PROSE_TOKEN_SINCE จริง`, fN3 && fN3.iso);
+          // Fix round 1 (Opus): BBL — ให้ "ฐาน DPS ที่การ์ดปันผลพิมพ์ใน .d" (฿13) ≠ values.dps (12) **เฉพาะใน fixture copy นี้**
+          //   ⇒ ผู้เขียน stock-meta.dividendYield สองราย ให้เลขต่างกันจริง: patchDerived#9 = ฐานการ์ด 13 ÷ ราคา ·
+          //     RV.mirrorStockMeta (ถ้ามันเขียนคีย์นี้) = derive().yield = values.dps 12 ÷ ราคา — (c) จึงแยกได้ด้วยตัวเลขล้วน
+          //   การ์ดต้องเป็น literal (ปันผลไม่อยู่ใน V2TOKENS บังคับ): ถ้าคง `{{rd:yield}}` ไว้ token จะ render 12÷ราคา ขัดกับ .d ฿13
+          //   ทุกรอบ ⇒ W19 ฟ้อง + pass ไม่ converge ((b)/(d)/(e) แดง) — literal ที่สอดคล้องกับ ฿13 ณ ราคาเก่า = ใบที่สมจริง
+          const DPS_CARD_N3 = 13;
+          if (S === 'BBL') {
+            const before = src;
+            const yOld = (DPS_CARD_N3 / rd0.values.px * 100).toFixed(2);
+            src = src.replace('<div class="v">~{{rd:yield}}</div><div class="d">฿12/ปี (FY25)',
+              `<div class="v">~${yOld}%</div><div class="d">฿${DPS_CARD_N3}/ปี (FY25)`);
+            ok(src !== before && rd0.values.dps === 12, `(ตั้งฉาก N3 ${S}) ฐาน DPS ของการ์ด ฿${DPS_CARD_N3} ≠ values.dps ${rd0.values.dps}`);
+          }
           const nPre = RV.proseBoundHits(src, dPost).length;
           ok(nPre > 0, `(ตั้งฉาก N3 ${S}) มี prose ผูกราคา ${nPre} จุดให้ healer แทน (ไม่งั้นเคสนี้ว่างเปล่า)`);
 
@@ -1533,13 +1546,24 @@ ok(U.commitBody([], []) === '', 'commitBody: ว่างเมื่อไม�
           const mirrorPe = dA.pe == null ? null : r1(dA.pe);
           const mirrorYld = dA.yield == null ? null : r2(dA.yield);
           ok(smA.pe !== mirrorPe, `N3 ${S} (c) stock-meta.pe = ฐานการ์ด ${smA.pe} ≠ ค่าที่กระจกจาก values จะเขียน ${mirrorPe}`);
-          // postreview Fix1 (24 ก.ย. 69, yield → 2dp site-wide): ตัวเลขบังเอิญเท่ากับ mirror ได้แล้ว เพราะการ์ด
-          // ปันผลก็ round 2dp เท่า mirror ตอนนี้ (สูตรเดียวกัน DPS การ์ด ÷ ราคา — ไม่ใช่ "กระจกทับ" แต่บังเอิญตรงกัน)
-          // ⇒ ตัวชี้ที่แม่นกว่าความไม่เท่ากันเชิงตัวเลข คือ **แหล่งที่มา**: ต้องมี log ของ patchDerived เอง
-          // (#9 "stock-meta.dividendYield … (DPS … ÷ ราคา …)") ไม่ใช่ RV.mirrorStockMeta เขียนทับ
-          const dyFromPass = cardCh.some((c) => /^stock-meta\.dividendYield /.test(c));
-          ok(mirrorYld == null || smA.dividendYield !== mirrorYld || dyFromPass,
-            `N3 ${S} (c) stock-meta.dividendYield = ฐานการ์ด ${smA.dividendYield} (mirror จาก values จะได้ ${mirrorYld}) — เท่ากันได้โดยบังเอิญ (สูตรเดียวกัน 2dp) แต่ log ต้องยืนยันว่ามาจาก pass derived เอง`, cardCh.join(' | '));
+          // dividendYield — end-to-end: ค่าที่ patchDerived#9 เขียน (`→ X` ใน log) ต้องรอดผ่านส่วนที่เหลือของ patchReport
+          //   (โดยเฉพาะ RV.mirrorStockMeta ที่ต้องไม่เขียนคีย์นี้ — ไม่อยู่ใน MIRROR_KEYS โดยเจตนา)
+          //   ที่แยกสองผู้เขียนได้ = **ฐาน DPS ต่างกัน** (BBL: การ์ด ฿13 ที่ตั้งฉากไว้ข้างบน vs values.dps 12) ไม่ใช่ความบังเอิญของการปัด
+          if (S === 'BBL') {
+            const wantCard = r2(DPS_CARD_N3 / newPx * 100);
+            ok(mirrorYld != null && wantCard !== mirrorYld,
+              `(ตั้งฉาก N3 ${S}) yield จากฐานการ์ด ${wantCard} ≠ yield ที่กระจกจาก values จะเขียน ${mirrorYld} (แยกผู้เขียนได้ด้วยตัวเลข)`);
+            const dyLog = cardCh.find((c) => /^stock-meta\.dividendYield /.test(c));
+            const mDy = dyLog && dyLog.match(/→\s*([0-9.]+)/);
+            const X = mDy ? parseFloat(mDy[1]) : NaN;
+            ok(X === wantCard, `N3 ${S} (c) patchDerived#9 เขียน stock-meta.dividendYield → ${X} (= ฐานการ์ด ${wantCard})`, dyLog || '(ไม่มี log)');
+            ok(smA.dividendYield === X,
+              `N3 ${S} (c) stock-meta.dividendYield ที่ออกจาก patchReport = ${smA.dividendYield} = ค่าที่ pass derived เขียน ${X} (กระจกไม่ทับ · mirror จะได้ ${mirrorYld})`);
+          } else {
+            // DDOG ไม่จ่ายปันผล: ไม่มีผู้เขียนรายใดควรแตะคีย์นี้
+            ok(mirrorYld == null && !cardCh.some((c) => /^stock-meta\.dividendYield /.test(c)) && smA.dividendYield === sm0.dividendYield,
+              `N3 ${S} (c) ไม่จ่ายปันผล → stock-meta.dividendYield คงเดิม ${sm0.dividendYield}`, `${smA.dividendYield} · ${cardCh.join(' | ')}`);
+          }
           ok(smA.price === newPx && smA.fairValue === rdA.fv && smA.mos === r1(dA.mos),
             `N3 ${S} (c) กระจกเขียน 4 คีย์ของตัวเองถูกต้อง (price/fairValue/mos)`, `${smA.price}/${smA.fairValue}/${smA.mos}`);
 

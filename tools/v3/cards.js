@@ -51,6 +51,7 @@ const CATALOGUE = {
   netMargin: { label: () => 'อัตรากำไรสุทธิ', value: (v) => pct1(need(v, 'netMargin')), d: () => 'Net margin', cls: '' },
   opMargin: { label: () => 'อัตรากำไรจากดำเนินงาน', value: (v) => pct1(need(v, 'opMargin')), d: () => 'Operating margin', cls: '' },
   // ค่า yield ใช้ RV.TOKENS.yield ตรง ๆ (ไม่ hand-format ซ้ำ) — 2 ทศนิยม site-wide (คำตัดสินเจ้าของ 24 ก.ย. 69)
+  // priceBoundOrThrow เรียกเพื่อ guard อย่างเดียว (ทิ้งค่าที่คืน) — ตัวเลขที่โชว์มาจาก RV.TOKENS.yield (2dp ทั้งเว็บ)
   yield: { label: () => 'เงินปันผล', value: (v) => { priceBoundOrThrow('yield', v.d.yield); return RV.TOKENS.yield(v.d); }, d: (v) => `${money(v, need(v, 'dps'))}/ปี`, cls: '' },
   beta: { label: () => 'Beta', value: (v) => need(v, 'beta').toFixed(2), d: () => 'ความผันผวนเทียบตลาด', cls: '' },
   range52w: { label: () => 'กรอบ 52 สัปดาห์', cls: '',

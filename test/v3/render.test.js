@@ -60,6 +60,14 @@ for (const sym of ['ZTS', 'BBL', 'ZTS-real']) {
 { const doc = load('ZTS'); doc.fundamentals.epsBasis = 'fy'; const view = C.compute(doc, { seeds });
   const src = R.toV2Source(doc, view);
   t(src.includes('EPS (FY) $6.13'), 'mdesc pe: epsBasis fy (no override) → "EPS (FY)"'); }
+// fix round 1 (Opus) — epsBasis ที่ไม่รู้จักต้อง throw ระบุ path ไม่ fallback เงียบเป็น "EPS (TTM)"
+//   (ตั้งหลัง compute — schema ก็กันไว้ แต่ renderer ต้องไม่เดาเองถ้าหลุดมาถึง)
+{ const doc = load('ZTS'); const view = C.compute(doc, { seeds });
+  doc.fundamentals.epsBasis = 'forward';
+  t.throws(() => R.toV2Source(doc, view), /^fundamentals\.epsBasis: "forward"/, 'mdesc pe: unknown epsBasis → path-named throw'); }
+{ const doc = load('ZTS'); const view = C.compute(doc, { seeds });
+  delete doc.fundamentals.epsBasis;
+  t.throws(() => R.toV2Source(doc, view), /^fundamentals\.epsBasis: undefined/, 'mdesc pe: missing epsBasis → path-named throw'); }
 // postreview Finding 4 — เลขลบในหัวคอลัมน์ฉากใช้ minus glyph U+2212 ไม่ใช่ ASCII hyphen
 { const doc = load('ZTS-real'); const view = C.compute(doc, { seeds });
   const src = R.toV2Source(doc, view);
