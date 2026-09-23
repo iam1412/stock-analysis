@@ -111,24 +111,25 @@
       "label": "P/E Valuation (มัธยฐานย้อนหลัง)",
       "inputs": {
         "multiple": 80.6,
-        "multipleSource": "median5y"
+        "multipleSource": "median5y",
+        "multipleRange": [
+          59.9,
+          99.2
+        ]
       },
       "note": "มัธยฐาน P/E FY2022–FY2025 (ราคาเฉลี่ยรายปี ÷ EPS diluted ช่วง 59.9–99.2x) ตัด FY2021 ที่ 140x ออกเพราะกำไรเกือบศูนย์ · เป็นตัวคูณจากประวัติ ไม่ได้มาจาก P/E ปัจจุบัน 65.7x"
     },
     {
-      "method": "declared",
-      "label": "P/AFFO ปัจจุบัน (บริบท — ไม่นับใน FV)",
+      "method": "pffo",
+      "label": "P/AFFO ปัจจุบัน",
+      "role": "context",
       "inputs": {
-        "value": 1021,
-        "basis": "other"
+        "multipleSource": "current"
       },
-      "note": "AFFO/Share (TTM) $38.33 × P/AFFO 26.6x (ตัวคูณปัจจุบัน = คืนราคาตลาดโดยโครงสร้าง ไม่ใช่สมอ) — แสดงเพื่อเทียบเท่านั้น ไม่มีมัธยฐาน P/AFFO ที่วัดได้"
+      "note": "ตัวคูณปัจจุบันคืนราคาตลาดโดยโครงสร้าง ไม่ใช่สมอ — แสดงเพื่อเทียบเท่านั้น ไม่มีมัธยฐาน P/AFFO ที่วัดได้"
     }
   ],
-  "fvWeights": [
-    1,
-    0
-  ],
+  "fvWeights": null,
   "metrics": {
     "cards": [
       "mcap",
@@ -238,5 +239,5 @@
     "<b>Digital Realty Competition:</b> DLR และผู้เล่นในภูมิภาคแข่งขันด้านราคาและ capacity ในตลาดเดียวกัน"
   ],
   "extras": [],
-  "_sig": "sha256:bf1efff8f928bd8cccafe1f82a783e586f2a0c1fec583cb9ada396d5ff693bdc"
+  "_sig": "sha256:27b6eb698dc641d9947c01aaf0f3d5e8687355847b3d1329cb89f69a982366ff"
 }

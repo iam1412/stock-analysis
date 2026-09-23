@@ -86,4 +86,30 @@ for (const k of ['valHint', 'valIntro', 'metricsNote', 'disclaimerAssump']) for 
 { const d = base(); d.metrics.cards[0] = { key: 'mcap', tone: 'green' }; t(paths(S.validate(d)).includes('metrics.cards[0].tone'), 'tone enum'); }
 { const d = base(); d.metrics.cards[0] = { key: 'mcap', cls: 'pos' }; t(paths(S.validate(d)).includes('metrics.cards[0].cls'), 'card object is closed'); }
 { const d = base(); d.metrics.custom = [{ label: 'a', value: 'b', tone: 'bad' }]; t(paths(S.validate(d)).includes('metrics.custom[0].tone'), 'custom tone enum'); }
+// Plan 2a Task 5 — role / family / multipleRange (§3.6 I, C, F)
+const ddmLeg = (fam) => ({ method: 'ddm', label: 'DDM', inputs: { g: 5, r: 9 }, ...(fam && { family: fam }) });
+const pbvLeg = (fam) => ({ method: 'pbv', label: 'Justified P/BV', inputs: { g: 5, r: 9 }, ...(fam && { family: fam }) });
+{ const d = base(); d.legs[1].role = 'ctx'; t(paths(S.validate(d)).includes('legs[1].role'), 'role enum'); }
+{ const d = base(); d.legs[0].family = 'value'; t(paths(S.validate(d)).includes('legs[0].family'), 'family enum'); }
+{ const d = base(); d.legs[1].role = 'context'; d.fvWeights = [0.5, 0.5]; t(paths(S.validate(d)).includes('fvWeights'), 'context leg must weigh 0'); }
+{ const d = base(); d.legs[1].role = 'context'; d.fvWeights = [1, 0]; t.eq(S.validate(d), [], 'context leg with weight 0 is valid'); }
+{ const d = base(); d.legs.forEach((l) => { l.role = 'context'; }); t(paths(S.validate(d)).includes('legs'), 'Review Focus #2: every leg context → error'); }
+{ const d = base(); d.legs = [{ ...d.legs[0], family: 'market' }, ddmLeg(null)]; t(paths(S.validate(d)).includes('legs[1].family'), 'Review Focus #2: family on some fv legs only → error on the leg missing it'); }
+{ const d = base(); d.legs = [{ ...d.legs[0], family: 'market' }, ddmLeg('rg'), pbvLeg('market')];
+  t(paths(S.validate(d)).includes('legs[2].family'), 'layer 0: same (r,g) in different families → error'); }
+{ const d = base(); d.legs = [{ ...d.legs[0], family: 'market' }, ddmLeg('rg'), pbvLeg('rg')]; t.eq(S.validate(d), [], 'same (r,g) same family → valid'); }
+{ const d = base(); d.legs[0].inputs.multipleRange = [20, 34]; t.eq(S.validate(d), [], 'multipleRange around multiple 28 → valid'); }
+{ const d = base(); d.legs[0].inputs.multipleRange = [30, 34]; t(paths(S.validate(d)).includes('legs[0].inputs.multipleRange'), 'multiple outside its range → error'); }
+{ const d = base(); d.legs[0].inputs.multipleRange = [34, 20]; t(paths(S.validate(d)).includes('legs[0].inputs.multipleRange'), 'lo > hi → error'); }
+{ const d = base(); d.legs[1].inputs.multipleRange = [1, 2]; t(paths(S.validate(d)).includes('legs[1].inputs.multipleRange'), 'range on a dcf leg → not in schema'); }
+{ const d = base(); d.legs[0].inputs.multipleRange = [20, 34]; d.legs[0].role = 'context'; d.legs.push(ddmLeg(null)); d.fvWeights = null;
+  t(paths(S.validate(d)).includes('legs[0].inputs.multipleRange'), 'range on a context leg → error'); }
+// R7 / spec §13 ข้อ 6 — ขา context ตัวคูณสด (multipleSource 'current') คำนวณได้ · บนขา fv = สมอตาย (W18) ห้าม
+const curLeg = (extra) => ({ method: 'pe', label: 'P/E ปัจจุบัน', role: 'context', inputs: { multipleSource: 'current' }, ...(extra || {}) });
+{ const d = base(); d.legs.push(curLeg()); d.fvWeights = null; t.eq(S.validate(d), [], "context + 'current' without multiple → valid"); }
+{ const d = base(); d.legs.push(curLeg({ role: 'fv' })); d.fvWeights = null; t(paths(S.validate(d)).includes('legs[2].inputs.multipleSource'), "'current' on an fv leg → error (W18 by construction)"); }
+{ const d = base(); d.legs.push(curLeg()); d.legs[2].inputs.multiple = 20; d.fvWeights = null; t(paths(S.validate(d)).includes('legs[2].inputs.multiple'), "'current' + typed multiple → error (the multiple is live)"); }
+{ const d = base(); d.legs.push({ method: 'ps', label: 'P/S ปัจจุบัน', role: 'context', inputs: { multipleSource: 'current' } }); d.fvWeights = null;
+  t(paths(S.validate(d)).includes('legs[2].inputs.multipleSource'), "'current' only on pe/pbv/pffo (per-share base)"); }
+t.eq(S.CURRENT_BASE, { pe: 'eps', pbv: 'bvps', pffo: 'ffoPerShare' }, 'CURRENT_BASE exported');
 t.done();

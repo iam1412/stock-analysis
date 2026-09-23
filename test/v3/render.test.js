@@ -117,4 +117,19 @@ t.eq(JSON.parse(R.jsonScript('{"a":"</script>"}')).a, '</script>', 'jsonScript o
   const ks = [...src.matchAll(/<div class="metric"><div class="k">([^<]*)<\/div><div class="v([^"]*)">/g)].map((m) => [m[1], m[2]]);
   t.eq(ks.slice(0, 3), [['Market Cap', ''], ['สาขาทั่วโลก', ' pos'], ['P/E (TTM)', ' neg']], 'custom placed at its slot · tone overrides class');
   t.eq(CR.checkHtml(expandReport(src), 'ZTS.html', { source: src }).errors.map((e) => e.id), [], 'ordered cards: v2 gate 0 errors'); }
+// Plan 2a Task 5 — hint/box จาก role + family · ป้ายขา context
+{ const doc = load('ZTS'); doc.legs[1].role = 'context'; const view = C.compute(doc, { seeds }); const src = R.toV2Source(doc, view);
+  t(src.includes('<div class="hint">เฉลี่ย 1 วิธี · +1 บริบท</div>'), 'hint counts fv legs + context');
+  t(src.includes(`2. ${doc.legs[1].label} (บริบท — ไม่นับใน FV)</div>`), 'context leg mname carries the not-counted suffix');
+  t.eq(CR.checkHtml(expandReport(src), 'ZTS.html', { source: src }).errors.map((e) => e.id), [], 'context leg: v2 gate 0 errors'); }
+{ const doc = load('ZTS'); doc.legs = [{ ...doc.legs[0], family: 'market' }, { method: 'ddm', label: 'DDM', family: 'rg', inputs: { g: 5, r: 9 } }, { method: 'pbv', label: 'Justified P/BV', family: 'rg', inputs: { g: 5, r: 9 } }];
+  const src = R.toV2Source(doc, C.compute(doc, { seeds }));
+  t(src.includes('<div class="hint">เฉลี่ย 2 ตระกูล (3 วิธี)</div>') && src.includes('มูลค่าเหมาะสมเฉลี่ยตามตระกูล (Fair Value)'), 'family hint + FV box'); }
+{ const doc = load('ZTS'); doc.legs[0].inputs.multipleRange = [20, 34]; const src = R.toV2Source(doc, C.compute(doc, { seeds }));
+  t(src.includes('P/E เป้าหมาย ~28x (มัธยฐาน 5 ปี) · กรอบ 20–34x'), 'mdesc shows the sensitivity range'); }
+{ const doc = load('ZTS'); doc.legs.push({ method: 'pe', label: 'P/E ปัจจุบัน', role: 'context', inputs: { multipleSource: 'current' } }); doc.fvWeights = null;
+  const view = C.compute(doc, { seeds }); const src = R.toV2Source(doc, view);
+  t(src.includes(`× P/E ปัจจุบัน ${(doc.market.px / doc.fundamentals.eps).toFixed(1)}x`), "R7: 'current' mdesc prints the live multiple");
+  t(!src.includes('P/E เป้าหมาย ~undefinedx'), "R7: no 'undefined' multiple leaks into mdesc");
+  t.eq(CR.checkHtml(expandReport(src), 'ZTS.html', { source: src }).errors.map((e) => e.id), [], "'current' context leg: v2 gate 0 errors"); }
 t.done();

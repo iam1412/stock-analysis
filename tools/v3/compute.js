@@ -36,6 +36,19 @@ function themeOf(doc, seeds, dir) {
   return { theme, gdots: [theme.accent, theme.accentDark, gradMid] };
 }
 
+// น้ำหนัก FV (§3.6 C/I): fvWeights ที่เขียนชัด > family (1 ตระกูล 1 เสียง แบ่งเท่ากันในตระกูล) > เท่ากันทุกขา fv · ขา context = 0 เสมอ
+function weightsOf(doc) {
+  const isFv = (l) => l.role !== 'context';
+  if (doc.fvWeights) return doc.fvWeights.slice();
+  const fv = doc.legs.filter(isFv);
+  if (fv.some((l) => l.family != null)) {
+    const n = {}; for (const l of fv) n[l.family] = (n[l.family] || 0) + 1;
+    const nFam = Object.keys(n).length;
+    return doc.legs.map((l) => (isFv(l) ? 1 / (nFam * n[l.family]) : 0));
+  }
+  return doc.legs.map((l) => (isFv(l) ? 1 / fv.length : 0));
+}
+
 function compute(doc, opts) {
   const errs = S.validate(doc);
   if (errs.length) throw new Error(errs.map((e) => `${e.path}: ${e.msg}`).join('\n'));
@@ -45,12 +58,28 @@ function compute(doc, opts) {
   const legs = doc.legs.map((leg, i) => {
     if (leg.method === 'declared' && leg.inputs.extrasRef != null && !doc.extras[leg.inputs.extrasRef])
       throw new Error(`legs[${i}].inputs.extrasRef: ไม่มี extras[${leg.inputs.extrasRef}]`);
-    return { label: leg.label, method: leg.method, value: L.legValue(leg, f, `legs[${i}]`), inputs: leg.inputs, override: leg.override || null, note: leg.note || '' };
+    // R7 (§13 ข้อ 6): ขา context 'current' — ตัวคูณสด = ราคา ÷ ตัวตั้ง (รวม override) · ค่าขา ≡ ราคา · ไม่มีเลขแช่แข็ง
+    let liveMultiple = null;
+    if (leg.inputs.multipleSource === 'current') {
+      const k = S.CURRENT_BASE[leg.method], base = L.inputsOf(leg, f)[k];
+      if (!(typeof base === 'number' && base > 0)) throw new Error(`legs[${i}].inputs.multipleSource: 'current' ต้องมี fundamentals.${k} > 0`);
+      liveMultiple = mk.px / base;
+    }
+    const legM = liveMultiple == null ? leg : { ...leg, inputs: { ...leg.inputs, multiple: liveMultiple } };
+    const value = L.legValue(legM, f, `legs[${i}]`);
+    const r = leg.inputs.multipleRange;
+    const at = (m) => L.legValue({ ...leg, inputs: { ...leg.inputs, multiple: m } }, f, `legs[${i}].inputs.multipleRange`);
+    return { label: leg.label, method: leg.method, value, inputs: leg.inputs, override: leg.override || null, note: leg.note || '',
+      role: leg.role || 'fv', family: leg.family || null, lo: r ? at(r[0]) : value, hi: r ? at(r[1]) : value, ranged: !!r, liveMultiple };
   });
-  const w = doc.fvWeights || legs.map(() => 1 / legs.length);
+  const w = weightsOf(doc);
   legs.forEach((l, i) => { l.weight = w[i]; });
   const fv = legs.reduce((a, l) => a + l.value * l.weight, 0);
-  const fvLow = Math.min(...legs.map((l) => l.value)), fvHigh = Math.max(...legs.map((l) => l.value));
+  const fvLegs = legs.filter((l) => l.role === 'fv');
+  // กรอบ FV (§3.6 F): มีขาใดประกาศ multipleRange → Σ w·lo / Σ w·hi · ไม่มี = min/max ของขา fv (ขา context ไม่นับ — §3.6 I)
+  const ranged = fvLegs.some((l) => l.ranged);
+  const fvLow = ranged ? fvLegs.reduce((a, l) => a + l.lo * l.weight, 0) : Math.min(...fvLegs.map((l) => l.value));
+  const fvHigh = ranged ? fvLegs.reduce((a, l) => a + l.hi * l.weight, 0) : Math.max(...fvLegs.map((l) => l.value));
 
   // ── scenarios ──
   const start = driverStart(doc);
@@ -100,4 +129,4 @@ function compute(doc, opts) {
   return { doc, d, legs, fv, fvLow, fvHigh, scn, chart, gauge, theme, gdots, analysisDateText, rd, sm, cur };
 }
 
-module.exports = { compute, SCN_NAMES };
+module.exports = { compute, weightsOf, SCN_NAMES };

@@ -11,13 +11,14 @@ const ENUM = {
   currency: ['USD', 'THB'], region: ['US', 'TH'], dateEra: ['BE', 'CE'], chgSuffix: ['รอบปี', 'ตั้งแต่ IPO'],
   epsBasis: ['gaap-ttm', 'adj-ttm', 'fy'],
   method: ['pe', 'pbv', 'ps', 'evsales', 'evebitda', 'pfcf', 'fcfyield', 'pffo', 'ddm', 'dcf', 'ri', 'declared'],
-  multipleSource: ['median5y', 'median10y', 'peer', 'justified', 'sector'],   // ★ ไม่มี 'current' — สมอตาย (W18) ปิดโดยโครงสร้าง
+  multipleSource: ['median5y', 'median10y', 'peer', 'justified', 'sector', 'current'],   // 'current' = เฉพาะขา role:"context" (ตัวคูณสด คิดทุกวัน) · บนขา fv ห้าม = สมอตาย W18 (§13 ข้อ 6)
   declaredBasis: ['sotp', 'nav', 'rnpv', 'other'],
   driver: ['eps', 'ffo', 'revenuePerShare', 'bvps', 'fcfPerShare'],
   exitMetric: ['pe', 'ps', 'pbv', 'pffo', 'pfcf'],
   perYear: ['cagr', 'linear', null],
   extrasAfter: ['metrics', 'valuation', 'scenarios', 'catalysts'],
   tone: ['pos', 'neg', 'neu'],
+  role: ['fv', 'context'], family: ['market', 'rg', 'asset'],
 };
 // ต้องตรงกับคีย์ของ CATALOGUE ใน tools/v3/cards.js (test/v3/cards.test.js ตรวจว่าตรงกัน)
 // เพิ่ม 6 คีย์ 24 ก.ย. 69 (Task 11 card census — coverage 88.8%→ก่อนเพิ่ม): netDebt/ebitdaMargin/roic/evEbitda/
@@ -28,17 +29,20 @@ const CARD_KEYS = ['mcap', 'pe', 'peAvg5y', 'pbv', 'ps', 'netIncome', 'eps', 'bv
 const FUND_KEYS = ['eps', 'epsBasis', 'dps', 'bvps', 'shares', 'revenue', 'netIncome', 'roe', 'roa', 'grossMargin', 'netMargin',
   'opMargin', 'beta', 'debtToEquity', 'fcf', 'ebitda', 'netDebt', 'peAvg5y', 'ffoPerShare', 'roic', 'epsForward'];
 const MULT = ['multiple', 'multipleSource'];
+const RANGE = ['multipleRange'];   // §3.6 F — กรอบความไวของตัวคูณ [lo, hi] → กรอบ FV
 const LEG_INPUTS = {
-  pe: { req: MULT, opt: [] },
-  pbv: { req: [], opt: ['multiple', 'multipleSource', 'g', 'r'] },   // multiple+source หรือ g+r (justified) — ตรวจคู่ด้านล่าง
-  ps: { req: MULT, opt: [] }, evsales: { req: MULT, opt: [] }, evebitda: { req: MULT, opt: [] },
-  pfcf: { req: MULT, opt: [] }, pffo: { req: MULT, opt: [] },
+  pe: { req: MULT, opt: RANGE },
+  pbv: { req: [], opt: ['multiple', 'multipleSource', 'g', 'r'].concat(RANGE) },   // multiple+source หรือ g+r (justified) — ตรวจคู่ด้านล่าง
+  ps: { req: MULT, opt: RANGE }, evsales: { req: MULT, opt: RANGE }, evebitda: { req: MULT, opt: RANGE },
+  pfcf: { req: MULT, opt: RANGE }, pffo: { req: MULT, opt: RANGE },
   fcfyield: { req: ['yield'], opt: [] },
   ddm: { req: ['g', 'r'], opt: [] },
   dcf: { req: ['g1', 'years1', 'tg', 'r', 'rfCurrency'], opt: [] },
   ri: { req: ['r', 'years', 'payout'], opt: [] },
   declared: { req: ['value', 'basis'], opt: ['extrasRef'] },
 };
+// ตัวตั้งต่อหุ้นของขาที่ใช้ตัวคูณสด (multipleSource 'current') — compute ใช้หาตัวคูณสด · check-v3 ใช้เป็นฐาน W18
+const CURRENT_BASE = { pe: 'eps', pbv: 'bvps', pffo: 'ffoPerShare' };
 const OVERRIDE_KEYS = ['eps', 'bvps', 'roe', 'dps', 'revenue', 'ebitda', 'fcf', 'netDebt', 'ffoPerShare', 'shares', 'why'];
 const THEME_KEYS = ['accent', 'accentDark', 'darkGrad', 'glow', 'subColor', 'headerMuted', 'verdictText', 'vcellLabel'];
 const TEXT_KEYS = ['valHint', 'valIntro', 'metricsNote', 'disclaimerAssump'];   // §3.6 A — แทนข้อความตายตัวของ template
@@ -162,24 +166,40 @@ function validate(doc) {
   else doc.legs.forEach((leg, i) => {
     const p = `legs[${i}]`;
     if (!isObj(leg)) return E(p, 'ต้องเป็น object');
-    closed(leg, p, ['method', 'label', 'inputs', 'override', 'note']);
+    closed(leg, p, ['method', 'label', 'inputs', 'override', 'note', 'role', 'family']);
+    if (leg.role != null) en(leg.role, `${p}.role`, ENUM.role);
+    if (leg.family != null) en(leg.family, `${p}.family`, ENUM.family);
     en(leg.method, `${p}.method`, ENUM.method);
     str(leg.label, `${p}.label`); str(leg.note, `${p}.note`, { req: false });
     const spec = LEG_INPUTS[leg.method];
     if (!spec) return;
     if (!isObj(leg.inputs)) return E(`${p}.inputs`, 'ต้องมี (object)');
     closed(leg.inputs, `${p}.inputs`, spec.req.concat(spec.opt));
-    for (const k of spec.req) if (leg.inputs[k] == null) E(`${p}.inputs.${k}`, 'ต้องมี');
+    const live = leg.inputs.multipleSource === 'current';   // ตัวคูณสด — compute คิด ⇒ ไม่มี (และห้ามมี) inputs.multiple
+    for (const k of spec.req) if (leg.inputs[k] == null && !(live && k === 'multiple')) E(`${p}.inputs.${k}`, 'ต้องมี');
     const inp = leg.inputs;
     if (inp.multipleSource != null) en(inp.multipleSource, `${p}.inputs.multipleSource`, ENUM.multipleSource);
+    if (live) {
+      const sp = `${p}.inputs.multipleSource`;
+      if (!Object.prototype.hasOwnProperty.call(CURRENT_BASE, leg.method)) E(sp, `'current' ใช้ได้กับ ${Object.keys(CURRENT_BASE).join('/')} เท่านั้น (ตัวตั้งต่อหุ้น)`);
+      if (leg.role !== 'context') E(sp, "'current' ใช้ได้เฉพาะขา role:\"context\" — บนขา fv คือสมอตาย (W18) ห้ามโดยโครงสร้าง");
+      if (inp.multiple != null) E(`${p}.inputs.multiple`, "multipleSource 'current' = ตัวคูณสด (ราคา ÷ ตัวตั้ง) ที่ compute คิดทุกวัน — ห้ามพิมพ์ตัวเลข");
+    }
     for (const k of ['multiple', 'g', 'r', 'g1', 'tg', 'yield', 'value', 'payout']) if (inp[k] != null) num(inp[k], `${p}.inputs.${k}`);
     for (const k of ['years1', 'years']) if (inp[k] != null) num(inp[k], `${p}.inputs.${k}`, { int: true, min: 1 });
     if (inp.multiple != null && !(inp.multiple > 0)) E(`${p}.inputs.multiple`, 'ต้อง > 0');
     if (leg.method === 'pbv') {
       const mult = inp.multiple != null || inp.multipleSource != null, just = inp.g != null || inp.r != null;
       if (mult === just) E(`${p}.inputs`, 'pbv ใช้ได้ทางเดียว: {multiple, multipleSource} หรือ {g, r} (justified)');
-      if (mult && (inp.multiple == null || inp.multipleSource == null)) E(`${p}.inputs`, 'pbv แบบ multiple ต้องมีทั้ง multiple และ multipleSource');
+      if (mult && ((inp.multiple == null && !live) || inp.multipleSource == null)) E(`${p}.inputs`, 'pbv แบบ multiple ต้องมีทั้ง multiple และ multipleSource');
       if (just && (inp.g == null || inp.r == null)) E(`${p}.inputs`, 'pbv แบบ justified ต้องมีทั้ง g และ r');
+    }
+    if (inp.multipleRange != null) {
+      const r = inp.multipleRange, rp = `${p}.inputs.multipleRange`;
+      if (!Array.isArray(r) || r.length !== 2 || !r.every((x) => isNum(x) && x > 0) || !(r[0] <= r[1])) E(rp, 'ต้องเป็น [lo, hi] ตัวเลข > 0 และ lo ≤ hi');
+      else if (!isNum(inp.multiple)) E(rp, 'ใช้ได้เฉพาะขาที่มี inputs.multiple');
+      else if (!(r[0] <= inp.multiple && inp.multiple <= r[1])) E(rp, `multiple ${inp.multiple} ต้องอยู่ในกรอบ [${r[0]}, ${r[1]}]`);
+      if (leg.role === 'context') E(rp, 'ขา context ไม่นับในกรอบ FV — ถอด multipleRange');
     }
     if (leg.method === 'dcf' && inp.rfCurrency != null && inp.rfCurrency !== doc.currency) E(`${p}.inputs.rfCurrency`, `rf ต้องสกุลเดียวกับกระแสเงินสด (${doc.currency}) — ชั้น 0`);
     if (leg.method === 'ri' && inp.payout != null && !(inp.payout >= 0 && inp.payout <= 100)) E(`${p}.inputs.payout`, 'ต้อง 0–100 (หน่วยเปอร์เซ็นต์)');
@@ -197,10 +217,28 @@ function validate(doc) {
       }
     }
   });
+  if (Array.isArray(doc.legs) && doc.legs.length && doc.legs.every(isObj)) {
+    const fvIdx = doc.legs.map((l, i) => (l.role === 'context' ? -1 : i)).filter((i) => i >= 0);
+    if (!fvIdx.length) E('legs', 'ต้องมีขา role:"fv" อย่างน้อย 1 ขา (FV คิดจากขา fv เท่านั้น) — ≥2 ขาตรวจที่ gate E17');
+    const withFam = fvIdx.filter((i) => doc.legs[i].family != null);
+    if (withFam.length && withFam.length !== fvIdx.length) {
+      for (const i of fvIdx) if (doc.legs[i].family == null) E(`legs[${i}].family`, 'ใช้ family แล้วต้องระบุทุกขา role:"fv" (1 ตระกูล 1 เสียง)');
+    }
+    // ชั้น 0 (§3.6 C): 2 ขาที่ (r,g) เหมือนกัน = ตระกูลเดียวกันเสมอ
+    const sig = (l) => { const i = isObj(l.inputs) ? l.inputs : {}; const g = i.g != null ? i.g : i.tg != null ? i.tg : i.g2; return isNum(i.r) && isNum(g) ? `${i.r}|${g}` : null; };
+    for (let a = 0; a < doc.legs.length; a++) for (let b = a + 1; b < doc.legs.length; b++) {
+      const A = doc.legs[a], B = doc.legs[b];
+      if (sig(A) && sig(A) === sig(B) && A.family && B.family && A.family !== B.family)
+        E(`legs[${b}].family`, `(r,g) ชุดเดียวกับ legs[${a}] ต้องอยู่ตระกูลเดียวกัน — ชั้น 0`);
+    }
+  }
   if (doc.fvWeights != null) {
     const w = doc.fvWeights;
     if (!Array.isArray(w) || !Array.isArray(doc.legs) || w.length !== doc.legs.length || !w.every((x) => isNum(x) && x >= 0)
       || Math.abs(w.reduce((a, b) => a + b, 0) - 1) > 1e-6) E('fvWeights', 'ต้องเป็น null หรือ array ตัวเลข ≥0 ยาวเท่า legs และรวม = 1');
+    if (Array.isArray(w) && Array.isArray(doc.legs)) doc.legs.forEach((l, i) => {
+      if (isObj(l) && l.role === 'context' && w[i] !== 0) E('fvWeights', `legs[${i}] เป็นขา context — น้ำหนักต้องเป็น 0`);
+    });
   }
 
   // ── metrics ──
@@ -321,4 +359,4 @@ function OWNER(path) {
   return 'worker';
 }
 
-module.exports = { ENUM, CARD_KEYS, FUND_KEYS, LEG_INPUTS, OVERRIDE_KEYS, THEME_KEYS, TEXT_KEYS, cardEntries, validate, OWNER };
+module.exports = { ENUM, CARD_KEYS, FUND_KEYS, LEG_INPUTS, CURRENT_BASE, OVERRIDE_KEYS, THEME_KEYS, TEXT_KEYS, cardEntries, validate, OWNER };

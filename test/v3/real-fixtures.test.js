@@ -26,4 +26,11 @@ for (const f of Object.keys(FV)) {
   t.eq(res.errors.map((e) => `${e.id} ${e.msg}`), [], `${f}: v2 gate on render — 0 errors`);
   t.eq(res.warnings.map((e) => `${e.id} ${e.msg}`), [], `${f}: v2 gate on render — 0 warnings`);
 }
+// Task 5 — EQIX: กรอบ FV = ความไวของขา P/E 59.9–99.2x (compare doc gap 1) · BBL: family แทน fvWeights
+{ const v = C.compute(load('EQIX-real'), { seeds: {} });
+  t.eq([round2(v.fvLow), round2(v.fvHigh)], [931.45, 1542.56], 'EQIX-real: fvLow/fvHigh = 15.55 × 59.9 / 99.2');
+  t.eq(v.legs.map((l) => l.role), ['fv', 'context'], 'EQIX-real: P/AFFO leg is context');
+  t.eq([v.legs[1].method, v.legs[1].inputs.multipleSource], ['pffo', 'current'], 'EQIX-real: context leg is computed (R7), not declared');
+  t.eq(v.legs[1].liveMultiple.toFixed(1), (load('EQIX-real').market.px / 38.33).toFixed(1), 'EQIX-real: live P/AFFO = px / AFFO per share'); }
+t.eq(C.weightsOf(load('BBL-real')), [0.5, 0.25, 0.25], 'BBL-real: family weights reproduce the old fvWeights exactly');
 t.done();

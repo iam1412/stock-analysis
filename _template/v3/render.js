@@ -16,7 +16,7 @@ const S = require('../../tools/v3/schema.js');
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const METHOD_NAME = { pe: 'P/E', pbv: 'P/BV', ps: 'P/S', evsales: 'EV/Sales', evebitda: 'EV/EBITDA', pfcf: 'P/FCF', fcfyield: 'FCF Yield',
   pffo: 'P/FFO', ddm: 'DDM / Gordon Growth', dcf: 'DCF', ri: 'Residual Income', declared: 'มูลค่าประกาศ' };
-const SRC_NAME = { median5y: 'มัธยฐาน 5 ปี', median10y: 'มัธยฐาน 10 ปี', peer: 'ค่ากลางกลุ่มเทียบ', justified: 'justified', sector: 'ค่ากลางเซกเตอร์' };
+const SRC_NAME = { median5y: 'มัธยฐาน 5 ปี', median10y: 'มัธยฐาน 10 ปี', peer: 'ค่ากลางกลุ่มเทียบ', justified: 'justified', sector: 'ค่ากลางเซกเตอร์', current: 'ตัวคูณปัจจุบัน' };
 const dot = (c) => `<div style="width:8px;height:8px;border-radius:50%;background:${c};display:inline-block;margin:0 3px"></div>`;
 // JSON ใน <script> ห้ามมี '<' ดิบ (กัน </script> ปิดแท็กก่อนเวลา) — '<' โผล่ได้เฉพาะในสตริง JSON ⇒ \u003c ยัง parse เป็นค่าเดิม
 const jsonScript = (s) => String(s).replace(/</g, '\\u003c');
@@ -37,16 +37,21 @@ function mdesc(leg, view) {
   const m = (v) => view.cur + RV.fmtPrice(v);
   const i = leg.inputs, b = { ...view.doc.fundamentals, ...(leg.override || {}) };
   const src = i.multipleSource ? ` (${SRC_NAME[i.multipleSource]})` : '';
+  const rng = i.multipleRange ? ` · กรอบ ${i.multipleRange[0]}–${i.multipleRange[1]}x` : '';
+  // R7 — 'current': ตัวคูณสดจากราคาวันนี้ (หน้า v3 build ใหม่จาก JSON ทุกครั้ง จึงไม่ค้าง) · ตัวตั้งเดียวกับ compute (S.CURRENT_BASE + override)
+  const live = i.multipleSource === 'current';
+  const mult = live ? (view.d.px / b[S.CURRENT_BASE[leg.method]]).toFixed(1) : i.multiple;
   switch (leg.method) {
-    case 'pe': return `${epsLabel(leg, view)} ${m(b.eps)} × P/E เป้าหมาย ~${i.multiple}x${src}`;
-    case 'pbv': return i.multiple != null ? `BVPS ${m(b.bvps)} × P/BV ${i.multiple}x${src}`
+    case 'pe': return live ? `${epsLabel(leg, view)} ${m(b.eps)} × P/E ปัจจุบัน ${mult}x`
+      : `${epsLabel(leg, view)} ${m(b.eps)} × P/E เป้าหมาย ~${mult}x${src}${rng}`;
+    case 'pbv': return i.multipleSource != null ? `BVPS ${m(b.bvps)} × P/BV ${live ? 'ปัจจุบัน ' : ''}${mult}x${live ? '' : src}${rng}`
       : `P/BV เหมาะสม = (ROE ${b.roe}% − g ${i.g}%)/(r ${i.r}% − g ${i.g}%) ≈ ${((b.roe - i.g) / (i.r - i.g)).toFixed(2)} × BVPS ${m(b.bvps)}`;
     case 'ddm': return `D₁ = ปันผล ${m(b.dps)} × (1+g); g ${i.g}%, r ${i.r}%`;
     case 'dcf': return `FCF ${RV.fmtBig(b.fcf, view.cur)} โต ${i.g1}%/ปี ${i.years1} ปี · โตถาวร ${i.tg}% · r ${i.r}%`;
     case 'ri': return `BVPS ${m(b.bvps)} · ROE ${b.roe}% vs r ${i.r}% · ${i.years} ปี · payout ${i.payout}%`;
     case 'fcfyield': return `FCF/หุ้น ÷ yield เป้าหมาย ${i.yield}%`;
     case 'declared': return `ค่าประกาศ (${i.basis})` + (i.extrasRef != null ? ' — ดูตารางประกอบ' : '');
-    default: return `${METHOD_NAME[leg.method]} ${i.multiple}x${src}`;
+    default: return `${METHOD_NAME[leg.method]} ${live ? 'ปัจจุบัน ' : ''}${mult}x${live ? '' : src}${rng}`;
   }
 }
 
@@ -60,11 +65,15 @@ function extrasHtml(doc, view, after) {
   }).join('');
 }
 
-// หัว §3 + ป้ายกล่อง FV (ruling R6: มี text.valHint → ป้ายกล่องเป็นกลาง ไม่ให้คำที่ generate ขัดกับ hint ของผู้เขียน)
+// หัว §3 + ป้ายกล่อง FV — ruling R6 (valHint: ป้ายกล่องเป็นกลาง ไม่ให้คำที่ generate ขัดกับ hint ของผู้เขียน) · §3.6 C (family) · §3.6 I (ขา context ไม่นับ)
 function valHintParts(doc, view) {
   if (doc.text && doc.text.valHint) return { hint: P.renderProse(doc.text.valHint, view, { mode: 'v2src' }), box: 'มูลค่าเหมาะสม (Fair Value)' };
-  const word = doc.fvWeights ? 'ถ่วงน้ำหนัก' : 'เฉลี่ย';
-  return { hint: `${word} ${view.legs.length} วิธี`, box: `มูลค่าเหมาะสม${word} (Fair Value)` };
+  const fv = view.legs.filter((l) => l.role === 'fv'), nCtx = view.legs.length - fv.length;
+  const fams = new Set(fv.map((l) => l.family).filter(Boolean));
+  const byFamily = !doc.fvWeights && fams.size > 0;
+  const word = byFamily ? 'เฉลี่ยตามตระกูล' : doc.fvWeights ? 'ถ่วงน้ำหนัก' : 'เฉลี่ย';
+  const hint = (byFamily ? `เฉลี่ย ${fams.size} ตระกูล (${fv.length} วิธี)` : `${word} ${fv.length} วิธี`) + (nCtx ? ` · +${nCtx} บริบท` : '');
+  return { hint, box: `มูลค่าเหมาะสม${word} (Fair Value)` };
 }
 
 function toV2Source(doc, view) {
@@ -83,7 +92,7 @@ function toV2Source(doc, view) {
   });
   const cardHtml = cards.map((c) => `<div class="metric"><div class="k">${c.k}</div><div class="v${c.cls ? ' ' + c.cls : ''}">${c.v}</div><div class="d">${c.d}</div></div>`).join('\n      ');
   const legsHtml = view.legs.map((l, i) => `<div class="vmethod">
-        <div><div class="mname">${i + 1}. ${esc(l.label)}</div><div class="mdesc">${esc(mdesc(doc.legs[i], view))}${l.note ? ' — ' + pr(l.note) : ''}</div></div>
+        <div><div class="mname">${i + 1}. ${esc(l.label)}${l.role === 'context' ? ' (บริบท — ไม่นับใน FV)' : ''}</div><div class="mdesc">${esc(mdesc(doc.legs[i], view))}${l.note ? ' — ' + pr(l.note) : ''}</div></div>
         <div class="mval">${esc(view.cur + RV.fmtPrice(l.value))}</div>
       </div>`).join('\n      ');
   // Review Focus #2 — ป้ายเกจเรียงค่าจากน้อยไปมากเสมอ (E26)

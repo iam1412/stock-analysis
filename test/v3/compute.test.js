@@ -33,4 +33,27 @@ t.eq(b.rd.values.analystTgt, undefined, 'no analyst → no analystTgt in bridge'
 { const d = load('ZTS'); d.meta.themeLegacy = null; t.throws(() => C.compute(d, { seeds: {} }), /seeds\.json.*ZTS/, 'no theme source → clear error'); }
 { const d = load('ZTS'); d.legs[1] = { method: 'declared', label: 'SOTP', inputs: { value: 150, basis: 'sotp', extrasRef: 0 } };
   t.throws(() => C.compute(d, { seeds }), /legs\[1\]\.inputs\.extrasRef/, 'extrasRef must point at an extras table'); }
+// Plan 2a Task 5 — weights / context / range
+t.eq(C.weightsOf(load('ZTS')), [0.5, 0.5], 'legacy: equal weights, byte-identical to Plan 1');
+{ const d = load('ZTS'); d.legs = [{ ...d.legs[0], family: 'market' }, { method: 'ddm', label: 'DDM', family: 'rg', inputs: { g: 5, r: 9 } }, { method: 'pbv', label: 'P/BV', family: 'rg', inputs: { g: 5, r: 9 } }];
+  t.eq(C.weightsOf(d), [0.5, 0.25, 0.25], 'family: 1 family 1 vote, split inside the family');
+  d.fvWeights = [0.6, 0.2, 0.2]; t.eq(C.weightsOf(d), [0.6, 0.2, 0.2], 'explicit fvWeights wins over family'); }
+{ const d = load('ZTS'); d.legs[1].role = 'context'; const v = C.compute(d, { seeds });
+  t.eq(C.weightsOf(d), [1, 0], 'context leg weighs 0');
+  t.near(v.fv, v.legs[0].value, 1e-9, 'fv = the single fv leg');
+  t.eq([v.fvLow, v.fvHigh], [v.legs[0].value, v.legs[0].value], 'context leg excluded from fvLow/fvHigh');
+  t.eq(v.legs[1].role, 'context', 'view carries role'); }
+{ const d = load('ZTS'); d.legs[0].inputs.multipleRange = [20, 34]; const v = C.compute(d, { seeds });
+  t.near(v.fvLow, 0.5 * 6.13 * 20 + 0.5 * v.legs[1].value, 1e-9, 'fvLow = Σ w·lo (unranged leg uses its value)');
+  t.near(v.fvHigh, 0.5 * 6.13 * 34 + 0.5 * v.legs[1].value, 1e-9, 'fvHigh = Σ w·hi');
+  t.near(v.fv, (v.legs[0].value + v.legs[1].value) / 2, 1e-9, 'range does not move fv'); }
+// R7 — ขา context 'current': ตัวคูณสด = ราคา ÷ ตัวตั้ง · ค่าขา ≡ ราคา · ไม่ขยับ FV
+{ const d = load('ZTS'); const fv0 = C.compute(d, { seeds }).fv;
+  d.legs.push({ method: 'pe', label: 'P/E ปัจจุบัน', role: 'context', inputs: { multipleSource: 'current' } }); d.fvWeights = null;
+  const v = C.compute(d, { seeds }), L = v.legs[v.legs.length - 1];
+  t.near(L.liveMultiple, d.market.px / d.fundamentals.eps, 1e-9, 'liveMultiple = px / eps');
+  t.near(L.value, d.market.px, 1e-9, 'current leg value ≡ px');
+  t.eq(L.weight, 0, 'current leg weighs 0');
+  t.near(v.fv, fv0, 1e-9, 'current context leg does not move fv');
+  d.market.px *= 1.1; t.near(C.compute(d, { seeds }).legs[v.legs.length - 1].liveMultiple, d.market.px / d.fundamentals.eps, 1e-9, 'liveMultiple follows the price (nothing frozen)'); }
 t.done();
