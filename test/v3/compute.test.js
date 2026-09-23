@@ -56,4 +56,16 @@ t.eq(C.weightsOf(load('ZTS')), [0.5, 0.5], 'legacy: equal weights, byte-identica
   t.eq(L.weight, 0, 'current leg weighs 0');
   t.near(v.fv, fv0, 1e-9, 'current context leg does not move fv');
   d.market.px *= 1.1; t.near(C.compute(d, { seeds }).legs[v.legs.length - 1].liveMultiple, d.market.px / d.fundamentals.eps, 1e-9, 'liveMultiple follows the price (nothing frozen)'); }
+// Plan 2a Task 10 — ยอดงบสกุลอื่นแปลงเป็นสกุลราคาก่อนเข้าสูตรทุกตัว
+{ const base0 = C.compute(load('ZTS'), { seeds });
+  t(base0.fq === base0.doc.fundamentals && base0.fx === 1 && base0.stmtCur === '$', 'no reportCurrency → fq is the same object (legacy path)');
+  const d = load('ZTS'); d.fundamentals.reportCurrency = 'EUR'; d.fundamentals.fx = 1.2; const v = C.compute(d, { seeds });
+  t.eq([v.fq.revenue, v.fq.fcf, v.fq.netDebt], [9.4e9 * 1.2, 2.3e9 * 1.2, 5.1e9 * 1.2], 'totals converted into quote currency');
+  t.eq(v.fq.eps, 6.13, 'per-share values untouched');
+  t.near(v.d.ps, 120 * 443e6 / (9.4e9 * 1.2), 1e-9, 'P/S divides quote money by quote money');
+  t.eq(v.stmtCur, '€', 'statement symbol'); }
+{ const d = load('ZTS'); d.fundamentals.reportCurrency = 'EUR'; d.fundamentals.fx = 1.2;
+  d.legs[1].override = { fcf: 2.0e9, why: 'normalised FCF (EUR)' }; const v = C.compute(d, { seeds });
+  const d1 = load('ZTS'); d1.legs[1].override = { fcf: 2.4e9, netDebt: 6.12e9, why: 'same in USD' }; d1.fundamentals.netDebt = 6.12e9; d1.fundamentals.fcf = 2.76e9; d1.fundamentals.revenue = 11.28e9;
+  t.near(v.legs[1].value, C.compute(d1, { seeds }).legs[1].value, 1e-6, 'override totals are statement currency and get converted too'); }
 t.done();

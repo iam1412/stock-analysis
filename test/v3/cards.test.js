@@ -87,4 +87,15 @@ t.eq(K.CATALOGUE.peAvg5y.label(view), 'P/E มัธยฐาน ~5 ปี', 'pe
   t.eq(v2.sm.pe, +(120 / 6.13).toFixed(6), '§13.5: stock-meta.pe stays price / EPS for a REIT'); }
 { const d = load(); d.fundamentals.ffoPerShare = 3.1; const v2 = C.compute(d, { seeds: { ZTS: '#e8731a' } });
   t.eq(K.renderCard('pffo', v2).k, 'P/FFO (TTM)', 'no ffoBasis → FFO label (Plan 1 wording)'); }
+// Plan 2a Task 10 — การ์ดยอดงบแสดงสกุลงบ · อัตราส่วนผูกราคาใช้สกุลราคา
+{ const d = load(); Object.assign(d.fundamentals, { reportCurrency: 'EUR', fx: 1.2, netDebt: -1.307e9, ebitda: 3e9 });
+  const v2 = C.compute(d, { seeds: { ZTS: '#e8731a' } });
+  t.eq(K.renderCard('revenue', v2).v, '€9.40B', 'revenue card in EUR');
+  t.eq(K.renderCard('netDebt', v2).v, '−€1.31B', 'Review Focus #4: negative total → U+2212, statement symbol');
+  t.eq(K.renderCard('evEbitda', v2).v, ((v2.d.mcap - 1.307e9 * 1.2) / (3e9 * 1.2)).toFixed(1) + 'x', 'EV/EBITDA converts netDebt and EBITDA with fx');
+  // Task 10 (controller ruling, carried from Task 9 review) — ฐานในบรรทัด .d ของอัตราส่วนผูกราคา = สกุลราคาเหมือนตัวอัตราส่วน
+  // (gate v2 W16 อ่านเลขรายได้ใน .d แล้วคิด P/S = mcap ÷ เลขนั้น โดยไม่ดูสัญลักษณ์สกุล — พิมพ์ยอด EUR ใต้ P/S = W16 ยิง)
+  const ps = K.renderCard('ps', v2);
+  t.eq(ps.d, 'รายได้ TTM $11.3B', 'P/S base line = revenue converted to the quote currency');
+  t.eq(K.renderCard('evEbitda', v2).d, `EV ${RV.fmtBig(v2.d.mcap - 1.307e9 * 1.2, '$')} ÷ EBITDA $3.60B`, 'EV/EBITDA base line in the quote currency'); }
 t.done();

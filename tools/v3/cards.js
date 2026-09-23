@@ -13,8 +13,9 @@ const money = (view, v) => view.cur + RV.fmtPrice(v);
 const big = (view, v) => RV.fmtBig(v, view.cur);
 const pct1 = (v) => v.toFixed(1) + '%';
 const isNum = (x) => typeof x === 'number' && Number.isFinite(x);
-// ยอดรวมจากงบ (ทั้งบริษัท) — ลบใช้ U+2212 นำหน้าสัญลักษณ์ (RV.fmtBig รับแค่ค่าบวก) · Task 10 เปลี่ยนเป็นสกุลงบ
-const stmt = (view, v) => (v < 0 ? '−' + RV.fmtBig(-v, view.cur) : RV.fmtBig(v, view.cur));
+// ยอดรวมจากงบ (ทั้งบริษัท) — ลบใช้ U+2212 นำหน้าสัญลักษณ์ (RV.fmtBig รับแค่ค่าบวก) · สกุลงบ (§3.6 L — view.stmtCur)
+const signedBig = (sym, v) => (v < 0 ? '−' + RV.fmtBig(-v, sym) : RV.fmtBig(v, sym));
+const stmt = (view, v) => signedBig(view.stmtCur || view.cur, v);
 function fyOf(view) { const y = f(view).fy; if (!y) throw new Error('metrics.cards: การ์ด FY ต้องมี fundamentals.fy — เติม หรือถอดการ์ดออก'); return y; }
 function needFy(view, k) { const x = fyOf(view)[k]; if (!isNum(x)) throw new Error(`metrics.cards: การ์ดต้องใช้ fundamentals.fy.${k} — เติมค่า หรือถอดการ์ดออก`); return x; }
 function needBank(view, k) { const b = f(view).bank; const x = b && b[k]; if (!isNum(x)) throw new Error(`metrics.cards: การ์ดต้องใช้ fundamentals.bank.${k} — เติมค่า หรือถอดการ์ดออก`); return x; }
@@ -22,10 +23,10 @@ function sharesText(view, n) {
   if (view.cur === '฿') return n >= 1e9 ? `~${(n / 1e9).toFixed(2)} พันล้านหุ้น` : `~${(n / 1e6).toFixed(1)} ล้านหุ้น`;
   return n >= 1e9 ? `~${(n / 1e9).toFixed(2)}B หุ้น` : `~${(n / 1e6).toFixed(1)}M หุ้น`;
 }
-// fundamentals ในสกุลราคา (Task 10 เติม view.fq เมื่อมี reportCurrency) — ใช้กับอัตราส่วนที่หารด้วยราคา
-const fq = (view) => view.fq || view.doc.fundamentals;
 const ffoL = (view) => ({ ffo: 'FFO', affo: 'AFFO' }[f(view).ffoBasis || 'ffo']);
 function ffoFwd(view) { const x = f(view).ffoForward; if (!x) throw new Error('metrics.cards: การ์ดต้องใช้ fundamentals.ffoForward — เติม หรือถอดการ์ดออก'); return x; }
+// fundamentals ในสกุลราคา (compute: view.fq · §3.6 L) — อัตราส่วนผูกราคาและฐานใน .d ของมันใช้ตัวนี้ ไม่ใช่ยอดสกุลงบ
+const fq = (view) => view.fq || view.doc.fundamentals;
 const priceBoundOrThrow = (key, v) => { if (v == null) throw new Error(`metrics.cards: ${key} คำนวณไม่ได้จากข้อมูลที่มี`); return v; };
 
 // peForwardCalc/evEbitdaCalc — เจ้าของเดียวของเลข+ข้อความ 2 ตัวนี้ (การ์ด section 1 + prose.js priceBound()
@@ -37,10 +38,12 @@ function peForwardCalc(view) {
   return { raw, text: raw.toFixed(1) + 'x' };
 }
 function evEbitdaCalc(view) {
-  const ev = priceBoundOrThrow('mcap', view.d.mcap) + need(view, 'netDebt');
-  const eb = need(view, 'ebitda');
-  if (!(eb > 0)) throw new Error('metrics.cards: evEbitda — EBITDA ≤ 0 ถอดการ์ดออก');
-  const raw = ev / eb;
+  const q = fq(view);
+  if (!isNum(q.netDebt)) throw new Error('metrics.cards: การ์ดต้องใช้ fundamentals.netDebt — เติมค่า หรือถอดการ์ดออก');
+  if (!isNum(q.ebitda)) throw new Error('metrics.cards: การ์ดต้องใช้ fundamentals.ebitda — เติมค่า หรือถอดการ์ดออก');
+  const ev = priceBoundOrThrow('mcap', view.d.mcap) + q.netDebt;
+  if (!(q.ebitda > 0)) throw new Error('metrics.cards: evEbitda — EBITDA ≤ 0 ถอดการ์ดออก');
+  const raw = ev / q.ebitda;
   return { raw, text: raw.toFixed(1) + 'x' };
 }
 
@@ -59,7 +62,9 @@ const CATALOGUE = {
     d: (v) => `EPS TTM ${money(v, need(v, 'eps'))}` },
   peAvg5y: { label: () => 'P/E มัธยฐาน ~5 ปี', value: (v) => need(v, 'peAvg5y').toFixed(1) + 'x', d: () => 'มัธยฐานย้อนหลัง', cls: '' },
   pbv: { label: () => 'P/BV', cls: 'neu', value: (v) => priceBoundOrThrow('pbv', v.d.pbv).toFixed(2) + 'x', d: (v) => `BVPS ${money(v, need(v, 'bvps'))}` },
-  ps: { label: () => 'P/S', cls: 'neu', value: (v) => priceBoundOrThrow('ps', v.d.ps).toFixed(1) + 'x', d: (v) => `รายได้ TTM ${stmt(v, need(v, 'revenue'))}` },
+  // ฐานใน .d = รายได้สกุลราคา (fq) เหมือนตัวหารของ P/S — W16 ของ gate v2 อ่านเลขนี้คิด mcap ÷ รายได้ โดยไม่ดูสัญลักษณ์สกุล
+  ps: { label: () => 'P/S', cls: 'neu', value: (v) => priceBoundOrThrow('ps', v.d.ps).toFixed(1) + 'x',
+    d: (v) => { need(v, 'revenue'); return `รายได้ TTM ${signedBig(v.cur, fq(v).revenue)}`; } },
   netIncome: { label: () => 'กำไรสุทธิ TTM', value: (v) => stmt(v, need(v, 'netIncome')), d: () => 'รอบ 12 เดือนล่าสุด', cls: '' },
   eps: { label: () => 'EPS (TTM)', value: (v) => '~' + money(v, need(v, 'eps')), d: (v) => ({ 'gaap-ttm': 'GAAP', 'adj-ttm': 'Adjusted', fy: 'ปีบัญชีล่าสุด', ifrs: 'IFRS' }[f(v).epsBasis] || ''), cls: '' },
   bvps: { label: () => 'BVPS', value: (v) => '~' + money(v, need(v, 'bvps')), d: () => 'มูลค่าทางบัญชีต่อหุ้น', cls: '' },
@@ -90,7 +95,7 @@ const CATALOGUE = {
   roic: { label: () => 'ROIC', cls: 'pos', value: (v) => `~${need(v, 'roic').toFixed(1)}%`, d: () => 'ผลตอบแทนต่อเงินลงทุน' },
   evEbitda: { label: () => 'EV/EBITDA', cls: 'neu',
     value: (v) => evEbitdaCalc(v).text,
-    d: (v) => `EV ${big(v, priceBoundOrThrow('mcap', v.d.mcap) + need(v, 'netDebt'))} ÷ EBITDA ${big(v, need(v, 'ebitda'))}` },
+    d: (v) => `EV ${big(v, priceBoundOrThrow('mcap', v.d.mcap) + fq(v).netDebt)} ÷ EBITDA ${big(v, fq(v).ebitda)}` },
   peForward: { label: () => 'Forward P/E', cls: 'neu',
     value: (v) => peForwardCalc(v).text,
     d: (v) => `EPS ประมาณการ (Forward) ${money(v, need(v, 'epsForward'))}` },

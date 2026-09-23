@@ -149,4 +149,10 @@ for (const r of [0, -150]) {
 { const d = base(); d.fundamentals.ffoBasis = 'core'; t(paths(S.validate(d)).includes('fundamentals.ffoBasis'), 'ffoBasis enum'); }
 { const d = base(); d.fundamentals.ffoForward = { value: 3.4, period: 'FY2026E', low: 3.5, high: 3.6 }; t(paths(S.validate(d)).includes('fundamentals.ffoForward'), 'low ≤ value ≤ high'); }
 { const d = base(); d.fundamentals.ffoForward = { value: 3.4 }; t(paths(S.validate(d)).includes('fundamentals.ffoForward.period'), 'ffoForward needs period'); }
+// Plan 2a Task 10 — reportCurrency / fx (§3.6 L · Review Focus #4)
+{ const d = base(); d.fundamentals.reportCurrency = 'EUR'; d.fundamentals.fx = 1.15566; t.eq(S.validate(d), [], 'EUR statements + fx valid'); }
+{ const d = base(); d.fundamentals.reportCurrency = 'EUR'; t(paths(S.validate(d)).includes('fundamentals.fx'), 'foreign statements need fx'); }
+{ const d = base(); d.fundamentals.fx = 1.2; t(paths(S.validate(d)).includes('fundamentals.fx'), 'fx without reportCurrency → error'); }
+{ const d = base(); d.fundamentals.reportCurrency = 'USD'; d.fundamentals.fx = 1.2; t(paths(S.validate(d)).includes('fundamentals.fx'), 'same currency with fx ≠ 1 → error'); }
+{ const d = base(); d.fundamentals.reportCurrency = 'XYZ'; d.fundamentals.fx = 1.2; t(paths(S.validate(d)).includes('fundamentals.reportCurrency'), 'reportCurrency enum'); }
 t.done();

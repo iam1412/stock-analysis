@@ -4,6 +4,7 @@ const R = require('../../_template/v3/render.js');
 const C = require('../../tools/v3/compute.js');
 const { expandReport } = require('../../build.js');
 const CR = require('../../test/check-reports.js');
+const RV = require('../../tools/report-values.js');
 
 // วันราคาต้องสด ไม่งั้น E27 (>120 วัน) ยิงเมื่อ fixture เก่า — ตั้งเป็นวันนี้ (เวลาไทย) ทุกครั้งที่รัน
 const today = new Date(Date.now() + 7 * 3600e3).toISOString().slice(0, 10);
@@ -156,4 +157,25 @@ t.eq(JSON.parse(R.jsonScript('{"a":"</script>"}')).a, '</script>', 'jsonScript o
   t(src.includes('<li><span>AFFO ปี ') && src.includes('<li><span>P/AFFO ออก</span>'), 'scenario rows say AFFO / P/AFFO');
   t(src.includes(' • AFFO ฐาน ~$3.10'), '§6 hint shows the non-EPS driver base');
   t.eq(CR.checkHtml(expandReport(src), 'ZTS.html', { source: src }).errors.map((e) => e.id), [], 'REIT labels: v2 gate 0 errors'); }
+// Plan 2a Task 10 (controller ruling from Task 9 review) — งบสกุลอื่น: ฐานต่อหุ้นของฉาก (§6 hint · ปี 3) + ฐานการ์ด P/S
+// เป็นสกุลราคา (แปลงด้วย fx ก่อนหารจำนวนหุ้น) · ยอดงบรวมใน mdesc DCF = สกุลงบ (เหมือนการ์ด FCF)
+{ const doc = load('ZTS'); Object.assign(doc.fundamentals, { reportCurrency: 'EUR', fx: 1.2 });
+  doc.metrics.cards.push('ps');
+  Object.assign(doc.scenarios, { driver: 'revenuePerShare', exitMetric: 'ps', note: 'ราคาเป้าคิดจากรายได้/หุ้นปีที่ 3 คูณ P/S ออก' });
+  doc.scenarios.cases.forEach((c, i) => { c.exitMultiple = [4, 5, 6][i]; });
+  const view = C.compute(doc, { seeds }), src = R.toV2Source(doc, view);
+  const rps = 9.4e9 * 1.2 / 443e6;
+  t.near(view.scn[0].driverStart, rps, 1e-9, 'FX: revenuePerShare driver = quote-currency revenue ÷ shares');
+  t(src.includes(`รายได้/หุ้น ฐาน ~$${RV.fmtPrice(rps)}`), 'FX: §6 hint prints the converted per-share base under the quote symbol');
+  t(src.includes(`<li><span>รายได้/หุ้น ปี 3</span><span>~$${RV.fmtPrice(view.scn[1].driverEnd)}</span></li>`), 'FX: year-3 driver in the quote currency');
+  t.near(view.scn[1].tgt, rps * Math.pow(1.08, 3) * 5, 1e-9, 'FX: scenario target = quote per-share × exit (comparable to px)');
+  t(src.includes('FCF €2.30B โต'), 'FX: DCF mdesc prints the statement total in the statement currency');
+  t.eq(require('../../tools/v3/prose.js').renderProse('{{scn.base.end}}', view, { mode: 'v2src' }), '$' + RV.fmtPrice(view.scn[1].driverEnd), 'FX: {{scn.base.end}} token = converted per-share driver, quote symbol');
+  t(src.includes('รายได้ TTM $11.3B'), 'FX: P/S card base line in the quote currency');
+  const res = CR.checkHtml(expandReport(src), 'ZTS.html', { source: src });
+  t.eq(res.errors.map((e) => `${e.id} ${e.msg}`), [], 'FX: full v2 gate — zero errors (W16 reads the P/S base line)');
+  const d2 = JSON.parse(JSON.stringify(doc)); d2.scenarios.driver = 'fcfPerShare'; d2.scenarios.exitMetric = 'pfcf';
+  const v2 = C.compute(d2, { seeds });
+  t.near(v2.scn[0].driverStart, 2.3e9 * 1.2 / 443e6, 1e-9, 'FX: fcfPerShare driver converted too');
+  t(R.toV2Source(d2, v2).includes(`FCF/หุ้น ฐาน ~$${RV.fmtPrice(2.3e9 * 1.2 / 443e6)}`), 'FX: fcfPerShare hint in the quote currency'); }
 t.done();

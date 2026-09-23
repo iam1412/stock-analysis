@@ -11,6 +11,7 @@ const ENUM = {
   currency: ['USD', 'THB'], region: ['US', 'TH'], dateEra: ['BE', 'CE'], chgSuffix: ['รอบปี', 'ตั้งแต่ IPO'],
   epsBasis: ['gaap-ttm', 'adj-ttm', 'fy', 'ifrs'],
   ffoBasis: ['ffo', 'affo'],   // Plan 2a Task 9 (§3.6 J) — ป้าย FFO/AFFO ของการ์ด/ขา/ฉาก REIT
+  reportCurrency: ['USD', 'THB', 'EUR', 'CAD', 'GBP', 'JPY', 'CHF', 'TWD'],   // Plan 2a Task 10 (§3.6 L) — สกุลงบ (ยอดรวมทั้งบริษัท)
   method: ['pe', 'pbv', 'ps', 'evsales', 'evebitda', 'pfcf', 'fcfyield', 'pffo', 'ddm', 'ddm2', 'dcf', 'ri', 'declared'],
   multipleSource: ['median5y', 'median10y', 'peer', 'justified', 'sector', 'current'],   // 'current' = เฉพาะขา role:"context" (ตัวคูณสด คิดทุกวัน) · บนขา fv ห้าม = สมอตาย W18 (§13 ข้อ 6)
   declaredBasis: ['sotp', 'nav', 'rnpv', 'other'],
@@ -30,8 +31,8 @@ const CARD_KEYS = ['mcap', 'pe', 'peAvg5y', 'pbv', 'ps', 'netIncome', 'eps', 'bv
   'netIncomeFy', 'epsFy', 'revenueFy', 'nim', 'npl', 'capital',   // + Plan 2a Task 8 (§3.6 B/K)
   'pffo', 'pffoForward', 'ffoPerShare', 'pffoAvg5y', 'ffoMargin', 'ffoPayout'];   // + Plan 2a Task 9 (§3.6 J)
 const FUND_NUM = ['eps', 'dps', 'bvps', 'shares', 'revenue', 'netIncome', 'roe', 'roa', 'grossMargin', 'netMargin',
-  'opMargin', 'beta', 'debtToEquity', 'fcf', 'ebitda', 'netDebt', 'peAvg5y', 'ffoPerShare', 'roic', 'epsForward', 'pffoAvg5y'];
-const FUND_KEYS = FUND_NUM.concat(['epsBasis', 'fy', 'bank', 'ffoBasis', 'ffoForward']);
+  'opMargin', 'beta', 'debtToEquity', 'fcf', 'ebitda', 'netDebt', 'peAvg5y', 'ffoPerShare', 'roic', 'epsForward', 'pffoAvg5y', 'fx'];
+const FUND_KEYS = FUND_NUM.concat(['epsBasis', 'fy', 'bank', 'ffoBasis', 'ffoForward', 'reportCurrency']);
 const FY_KEYS = ['period', 'netIncome', 'eps', 'revenue'];
 const BANK_KEYS = ['nim', 'npl', 'coverage', 'cet1', 'car'];
 const MULT = ['multiple', 'multipleSource'];
@@ -196,6 +197,12 @@ function validate(doc) {
         if (isNum(x.value) && ((isNum(x.low) && x.low > x.value) || (isNum(x.high) && x.high < x.value))) E(p, 'ต้อง low ≤ value ≤ high');
       }
     }
+    // §3.6 L — สกุลงบ ≠ สกุลราคา: ยอดรวมทั้งบริษัทเป็นสกุลงบ · ต่อหุ้นเป็นสกุลราคา · fx = ราคา 1 หน่วยสกุลงบเป็นสกุลราคา
+    if (f.reportCurrency != null) en(f.reportCurrency, 'fundamentals.reportCurrency', ENUM.reportCurrency);
+    if (f.fx != null && isNum(f.fx) && !(f.fx > 0)) E('fundamentals.fx', 'ต้อง > 0');
+    if (f.reportCurrency == null && f.fx != null) E('fundamentals.fx', 'มี fx ได้เฉพาะเมื่อประกาศ reportCurrency');
+    else if (f.reportCurrency != null && f.reportCurrency !== doc.currency && f.fx == null) E('fundamentals.fx', `งบสกุล ${f.reportCurrency} ≠ สกุลราคา ${doc.currency} — ต้องมี fx (ราคา 1 ${f.reportCurrency} เป็น ${doc.currency})`);
+    else if (f.reportCurrency === doc.currency && f.fx != null && f.fx !== 1) E('fundamentals.fx', 'สกุลงบ = สกุลราคา — fx ต้องไม่มี (หรือ = 1)');
     if (f.eps != null) en(f.epsBasis, 'fundamentals.epsBasis', ENUM.epsBasis);
     if (f.shares != null) num(f.shares, 'fundamentals.shares', { min: 1e5 });
   }

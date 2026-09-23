@@ -49,4 +49,8 @@ t.eq(load('BBL-real').metrics.custom.length, 0, 'Task 8: BBL-real needs no custo
   const all = P.proseFields(d).map((x) => x.text).join('\n');
   t(!/26\.6x|65\.7x|23\.8x/.test(all), 'EQIX-real: no stale price-bound P/AFFO / P/E literals left in prose');
   t(d.risks[0].includes('{{pffo}}x') && d.risks[0].includes('{{pe}}x'), 'EQIX-real: risks[0] uses live {{pffo}} / {{pe}}'); }
+// Task 10 — FER: ตัวเลขงบ EUR อยู่ในการ์ดแคตตาล็อก (สกุล €) · custom เหลือ 1
+{ const d = load('FER-real'), v = C.compute(d, { seeds: {} }), K = require('../../tools/v3/cards.js');
+  t.eq([K.renderCard('revenue', v).v, K.renderCard('fcf', v).v, K.renderCard('netIncomeFy', v).v], ['€9.86B', '€1.88B', '€888M'], 'FER-real: statement cards in EUR');
+  t.eq(d.metrics.custom.length, 1, 'FER-real: one custom card left (parent net cash)'); }
 t.done();

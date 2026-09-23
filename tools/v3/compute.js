@@ -15,9 +15,19 @@ const UP = { chgBg: 'var(--green-soft)', chgColor: '#137333' };     // = fetch-f
 const DOWN = { chgBg: 'var(--red-soft)', chgColor: '#c5221f' };
 const SCN_NAMES = ['bear', 'base', 'bull'];
 const round2 = (x) => Math.round(x * 100) / 100;
+const STMT_SYMBOL = { USD: '$', THB: '฿', EUR: '€', CAD: 'C$', GBP: '£', JPY: '¥', CHF: 'CHF ', TWD: 'NT$' };
+const TOTALS = ['revenue', 'netIncome', 'fcf', 'ebitda', 'netDebt'];
+// ยอดรวมทั้งบริษัท (สกุลงบ) → สกุลราคา · fx = 1 คืน object เดิม (ทางเดิมทุก byte)
+function toQuote(obj, fx) {
+  if (fx === 1 || !obj) return obj;
+  const q = { ...obj };
+  for (const k of TOTALS) if (typeof q[k] === 'number') q[k] = obj[k] * fx;
+  return q;
+}
 
-function driverStart(doc) {
-  const s = doc.scenarios, f = doc.fundamentals;
+// f = fundamentals ในสกุลราคา (fq) — ฐานต่อหุ้นจากยอดรวม (revenuePerShare/fcfPerShare) จึงเป็นสกุลราคาเหมือน eps/bvps (§3.6 L)
+function driverStart(doc, f) {
+  const s = doc.scenarios;
   if (s.baseOverride) return s.baseOverride.value;
   const per = (k) => (f[k] != null && f.shares ? f[k] / f.shares : null);
   const v = { eps: f.eps, ffo: f.ffoPerShare, bvps: f.bvps, revenuePerShare: per('revenue'), fcfPerShare: per('fcf') }[s.driver];
@@ -53,22 +63,26 @@ function compute(doc, opts) {
   const errs = S.validate(doc);
   if (errs.length) throw new Error(errs.map((e) => `${e.path}: ${e.msg}`).join('\n'));
   const f = doc.fundamentals, mk = doc.market, s = doc.scenarios;
+  const fx = f.reportCurrency && f.reportCurrency !== doc.currency ? f.fx : 1;
+  const fq = toQuote(f, fx);
 
   // ── legs → fv ──
   const legs = doc.legs.map((leg, i) => {
     if (leg.method === 'declared' && leg.inputs.extrasRef != null && !doc.extras[leg.inputs.extrasRef])
       throw new Error(`legs[${i}].inputs.extrasRef: ไม่มี extras[${leg.inputs.extrasRef}]`);
     // R7 (§13 ข้อ 6): ขา context 'current' — ตัวคูณสด = ราคา ÷ ตัวตั้ง (รวม override) · ค่าขา ≡ ราคา · ไม่มีเลขแช่แข็ง
+    // override ของขาเป็นสกุลงบเหมือน fundamentals → แปลงชุดเดียวกัน
+    const legQ = fx === 1 ? leg : { ...leg, override: toQuote(leg.override, fx) };
     let liveMultiple = null;
     if (leg.inputs.multipleSource === 'current') {
-      const k = S.CURRENT_BASE[leg.method], base = L.inputsOf(leg, f)[k];
+      const k = S.CURRENT_BASE[leg.method], base = L.inputsOf(legQ, fq)[k];
       if (!(typeof base === 'number' && base > 0)) throw new Error(`legs[${i}].inputs.multipleSource: 'current' ต้องมี fundamentals.${k} > 0`);
       liveMultiple = mk.px / base;
     }
-    const legM = liveMultiple == null ? leg : { ...leg, inputs: { ...leg.inputs, multiple: liveMultiple } };
-    const value = L.legValue(legM, f, `legs[${i}]`);
+    const legM = liveMultiple == null ? legQ : { ...legQ, inputs: { ...leg.inputs, multiple: liveMultiple } };
+    const value = L.legValue(legM, fq, `legs[${i}]`);
     const r = leg.inputs.multipleRange;
-    const at = (m) => L.legValue({ ...leg, inputs: { ...leg.inputs, multiple: m } }, f, `legs[${i}].inputs.multipleRange`);
+    const at = (m) => L.legValue({ ...legQ, inputs: { ...leg.inputs, multiple: m } }, fq, `legs[${i}].inputs.multipleRange`);
     return { label: leg.label, method: leg.method, value, inputs: leg.inputs, override: leg.override || null, note: leg.note || '',
       role: leg.role || 'fv', family: leg.family || null, lo: r ? at(r[0]) : value, hi: r ? at(r[1]) : value, ranged: !!r, liveMultiple };
   });
@@ -82,7 +96,7 @@ function compute(doc, opts) {
   const fvHigh = ranged ? fvLegs.reduce((a, l) => a + l.hi * l.weight, 0) : Math.max(...fvLegs.map((l) => l.value));
 
   // ── scenarios ──
-  const start = driverStart(doc);
+  const start = driverStart(doc, fq);
   const scn = s.cases.map((c, i) => {
     const end = start * Math.pow(1 + c.growth / 100, s.years);
     // divCum: เก็บผ่านเสมอเมื่อ author ให้มา (informational แม้ divIncluded=false — schema อนุญาต) · total% ตัดสินด้วย scnBasis.divIncluded ใน derive() v2 อยู่แล้ว ไม่ใช่ตรงนี้
@@ -94,7 +108,7 @@ function compute(doc, opts) {
   if (doc.analyst) values.analystTgt = doc.analyst.target;
   if (f.eps != null) values.eps = f.eps;
   if (f.shares != null) values.shares = f.shares;
-  if (f.revenue != null && f.revenue > 0) values.revenue = f.revenue;
+  if (fq.revenue != null && fq.revenue > 0) values.revenue = fq.revenue;
   if (f.dps != null && f.dps >= 0) values.dps = f.dps;
   if (f.bvps != null && f.bvps > 0) values.bvps = f.bvps;
   if (s.driver === 'eps') values.baseEps = start;
@@ -126,7 +140,8 @@ function compute(doc, opts) {
   const ad = RV.parseIso(doc.meta.analysisDate);
   const analysisDateText = PD.renderThaiDate(ad.day, ad.monIdx, ad.yearCE, doc.dateEra === 'BE');
 
-  return { doc, d, legs, fv, fvLow, fvHigh, scn, chart, gauge, theme, gdots, analysisDateText, rd, sm, cur };
+  return { doc, d, legs, fv, fvLow, fvHigh, scn, chart, gauge, theme, gdots, analysisDateText, rd, sm, cur,
+    fq, fx, stmtCur: STMT_SYMBOL[f.reportCurrency] || cur };
 }
 
-module.exports = { compute, weightsOf, SCN_NAMES };
+module.exports = { compute, weightsOf, toQuote, SCN_NAMES };
