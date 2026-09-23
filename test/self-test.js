@@ -36,7 +36,12 @@ const { expandReport } = require('../build.js');  // BBL เป็น content-on
 // ฐาน = fixture แช่แข็ง (test/fixtures/BBL.html) — ไม่ใช่ไฟล์จริงที่ cron แก้ทุกวัน (บทเรียน 22–24 ส.ค. 69)
 const FX = require('./fixtures');
 const RM = require('../tools/report-meta.js');   // เจ้าของเดียวของ regex stock-meta/report-data/.px
-const base = expandReport(FX.BBL());
+const base = expandReport(FX.BBL_V2());
+// ★ 23 ก.ย. 69 (v1 codepath gap-close): base ย้ายจาก FX.BBL() (v1) → FX.BBL_V2() หลัง check-reports.js
+//   ปฏิเสธไฟล์ที่ไม่ใช่ v2 แล้ว (v2Err/V2SCHEMA) — v1 ทั้งคลังถูก migrate ครบตั้งแต่ 23 ก.ย. 69 (open-items #14/#36)
+//   เคสที่ตั้งใจทดสอบพฤติกรรม "ไฟล์ v1 จริง ๆ" (ไม่ใช่แค่ mutate JSON ให้ v2 เสีย) ยังต้องใช้ v1Base นี้ตรง ๆ
+//   ไม่ใช่ base — ดู V2SCHEMA/W24/V2TOKENS "ใบ v1" ท้ายไฟล์ที่พลิกจาก "v1 เงียบ" เป็น "v1 ถูกปฏิเสธ" แล้ว
+const v1Base = expandReport(FX.BBL());
 process.env.STALE_TODAY = FX.TODAY;   // E27/W09 วัดจากวันนี้ที่ตรึงไว้ — ทุกเคสที่เปลี่ยนค่านี้ต้องคืนเป็น FX.TODAY
 
 // ── derive ค่าจริงของฐาน (ตัวเลขทั้งหมดใน mutation คำนวณจากตรงนี้ — ไม่มี literal) ──
@@ -144,8 +149,16 @@ const convV2 = (id, mutRawFn, healFn, desc) => {
 
 console.log('\n🧪 self-test: ความถูกต้องของ check-reports.js\n');
 
+// ★ 23 ก.ย. 69 (v1 codepath gap-close): checkHtml/V2TOKENS อ่าน ctx.source เพื่อดูว่า 13 ช่องบังคับเป็น
+//   token จริงไหม — ไม่ส่ง opts.source ⇒ ctx.source = html (มิวเทตแล้ว หลัง expand) ⇒ ทุกช่องดูเป็น literal
+//   ⇒ ยิงทั้งใบ (ตั้งใจ — เอกสารเดิมบอกว่า "ทาง production ทุกเส้นส่ง source ครบแล้ว") แต่ mutation ส่วนใหญ่ใน
+//   ไฟล์นี้ไม่ได้ตั้งใจทดสอบ V2TOKENS เลย ⇒ ส่ง source = ต้นฉบับ v2 ดิบที่ยังไม่ mutate (token ครบ) เป็นค่าเริ่มต้น
+//   เพื่อไม่ให้ V2TOKENS กลบเสียงเช็คที่ตั้งใจทดสอบจริง (ไม่กระทบเคสที่ from=v1Base — ctx.v2=false บนนั้นอยู่แล้ว
+//   จึง V2TOKENS ไม่ทำงานไม่ว่า source จะเป็นอะไร)
+const DEFAULT_SOURCE = FX.BBL_V2();
+
 // 1) ของดีต้องผ่าน (ไม่ false-positive)
-const pristine = checkHtml(base, 'BBL.html');
+const pristine = checkHtml(base, 'BBL.html', { source: DEFAULT_SOURCE });
 const baseAll = allIds(pristine);
 ok(pristine.errors.length === 0, 'รายงานจริง (BBL) ผ่านโดยไม่มี error' + (pristine.errors.length ? ' — got ' + [...errIds(pristine)].join(',') : ''));
 
@@ -156,7 +169,7 @@ const expect = (id, level, mutate, desc, from) => {
   const src = from || base;
   const mutated = mutate(src);
   if (mutated === src) { ok(false, `${desc} → mutation ไม่เปลี่ยนอะไร (anchor ไม่ match — โครง BBL เปลี่ยน? แก้ pattern ใน self-test)`); return; }
-  const r = checkHtml(mutated, 'BBL.html');
+  const r = checkHtml(mutated, 'BBL.html', { source: DEFAULT_SOURCE });
   const set = level === 'warn' ? allIds(r) : errIds(r);
   ok(set.has(id), `${desc} → ต้องเจอ ${id}` + (set.has(id) ? '' : ' (เจอ: ' + [...set].join(',') + ')'));
 };
@@ -164,11 +177,11 @@ const expect = (id, level, mutate, desc, from) => {
 // (from = ฐานอื่นที่ "บังคับโซนเอง" มาแล้ว — ใช้เมื่อ BBL จริงอาจติด id นั้นตามราคาของวันนั้น ดูเคส W06)
 const reject = (id, mutate, desc, from) => {
   const src = from || base;
-  const pre = from ? allIds(checkHtml(from, 'BBL.html')) : baseAll;
+  const pre = from ? allIds(checkHtml(from, 'BBL.html', { source: DEFAULT_SOURCE })) : baseAll;
   if (pre.has(id)) { ok(false, `${desc} → ฐาน BBL ติด ${id} อยู่แล้ว (reject ทดสอบไม่ได้ — แก้รายงานหรือ fixture)`); return; }
   const mutated = mutate(src);
   if (mutated === src) { ok(false, `${desc} → mutation ไม่เปลี่ยนอะไร (anchor ไม่ match — โครง BBL เปลี่ยน? แก้ pattern ใน self-test)`); return; }
-  const r = checkHtml(mutated, 'BBL.html');
+  const r = checkHtml(mutated, 'BBL.html', { source: DEFAULT_SOURCE });
   ok(!allIds(r).has(id), `${desc} → ต้องไม่เจอ ${id}` + (allIds(r).has(id) ? ' (แต่ดันเจอ!)' : ''));
 };
 // ฐานตามสภาพจริง (ไม่ mutate) ต้องไม่ติด id
@@ -183,7 +196,10 @@ expect('E13', 'error', (h) => h.replace('<h1>', '<h1>[SYMBOL] '), 'แทรก 
 expect('E13', 'error', (h) => h.replace('<div class="sub">', '<div class="sub">{{COMPANY}} '), 'เหลือ {{token}} จากโครงต้นแบบ (skeleton) ที่ยังไม่เติม');
 expect('E14', 'error', (h) => h.replace('<div class="sub">', '<div class="sub">undefined '), 'แทรก "undefined" ในเนื้อหา');
 expect('E15', 'error', mut3(/(const\s+FV\s*=\s*)([0-9.]+)()/, numStr(FV * 1.5)), 'FV ใน JS ไม่ตรงกล่อง');
-expect('E16', 'error', mut3(/(<div class="big">)([\s\S]*?)(<\/div>)/, fmtPct(MOS + 40)), 'MOS โชว์เพี้ยน +40 จุด% จาก (FV−ราคา)/FV');
+// ★ 23 ก.ย. 69: ctx.mosBig ของ v2 มาจาก JSON derive (dv.mosShown) ไม่ใช่อ่าน .big ที่ render แล้ว ⇒ มิวเทต
+//   .big ที่ render แล้วไม่มีผลกับ v2 (checker เห็นค่าเดิมจาก JSON เสมอ) — เคสนี้ทดสอบ "อ่าน .big ไม่ตรง JSON"
+//   ซึ่งเป็นเส้นทางของ v1 (อ่าน .big ตรง ๆ) โดยเฉพาะ ⇒ ต้องยืนบน v1Base
+expect('E16', 'error', mut3(/(<div class="big">)([\s\S]*?)(<\/div>)/, fmtPct(MOS + 40)), 'MOS โชว์เพี้ยน +40 จุด% จาก (FV−ราคา)/FV', v1Base);
 expect('E33', 'error', (h) => h.replace('var(--badge)', 'var(--orange-missing)'), 'อ้าง CSS var ที่ไม่ถูกนิยาม (เคส HMPRO badge → var(--orange) ก่อนเพิ่มในพาเลต)');
 reject('E33', (h) => h.replace('var(--badge)', 'var(--ghost, #000)'), 'var(--x, fallback) มี fallback = ตั้งใจ → ต้องไม่ฟ้อง E33');
 expect('W01', 'warn', mut3(/(<div class="tgt">\s*[฿$]?)([0-9.,]+)(<\/div>)/, numStr(C.scenarios[0].tgt * 4)), 'scenario target เพี้ยน (EPS×P/E ไม่ตรง)');
@@ -202,7 +218,8 @@ expect('W02', 'warn', (h) => h.replace('<div class="sub">', `<div class="sub">�
 expect('E18', 'error', mut3(/(จุดซื้อ[^<]*20\s*%<\/div>\s*<div class="v[^"]*">\s*[฿$]?)([0-9.,]+)()/, numStr(FV)), 'จุดซื้อ MOS20 ≠ FV×0.8');
 expect('E19', 'error', mut3(/(getElementById\("mCur"\)\.style\.left\s*=\s*gpos\()([0-9.]+)(\))/, numStr(PX * 1.5)), 'gauge marker ปัจจุบันไม่ตรงราคา');
 expect('E20', 'error', mutSlice('class="fv-box"', /(กรอบ\s*[฿$]?\s*)([0-9.,]+)(\s*[–\-]\s*[฿$]?\s*)([0-9.,]+)/, `$1${numStr(FV * 1.5)}$3${numStr(FV * 1.6)}`), 'Fair Value อยู่นอกกรอบ');
-expect('W04', 'warn', (h) => mut3(/(class="mos-verdict )(bad|ok|good)(")/, 'bad')(mut3(/(<div class="big">)([\s\S]*?)(<\/div>)/, '+50%')(h)), 'สี verdict (bad) ขัดกับ MOS สูง (+50% = โซน good)');
+// ★ 23 ก.ย. 69: เหตุผลเดียวกับ E16 ข้างบน — mosBig ของ v2 ไม่อ่านจาก .big ที่ render แล้ว → v1Base
+expect('W04', 'warn', (h) => mut3(/(class="mos-verdict )(bad|ok|good)(")/, 'bad')(mut3(/(<div class="big">)([\s\S]*?)(<\/div>)/, '+50%')(h)), 'สี verdict (bad) ขัดกับ MOS สูง (+50% = โซน good)', v1Base);
 expect('W05', 'warn', mutMval(iPBV, numStr(FV * 1.5)), 'FV ไม่ใกล้ค่าเฉลี่ยวิธี (ขาห่างกัน ≤2× = ทางเฉลี่ยปกติ)');
 // ── W05 รู้จักกฎ 0.4c (18 ส.ค. 69) — การ์ด "บริบท" ไม่เข้าเฉลี่ย · dispersion >2×/คนละเครื่องหมาย ⇒ FV ต้อง = ขาเดียว หรือค่าเฉลี่ยกลุ่ม ≤2× ──
 {
@@ -222,7 +239,8 @@ expect('W05', 'warn', mutMval(iPBV, numStr(FV * 1.5)), 'FV ไม่ใกล้
 // ── Tier 1/2: valuation-math, consistency, freshness, sourcing ──
 expect('E21', 'error', mutMval(iPE, numStr(C.methods[iPE].val * 1.5)), 'วิธี P/E: ค่าไม่ตรง EPS×P/E');
 expect('E22', 'error', mutMval(iPBV, numStr(C.methods[iPBV].val * 1.4)), 'วิธี P/BV: ค่าไม่ตรง ratio×BVPS');
-expect('E23', 'error', mut3(/(id="pxIn"[^>]*value=")([0-9.]+)(")/, numStr(PX * 3)), 'ราคา header ≠ ค่าตั้งต้นเครื่องคิดเลข');
+// ★ 23 ก.ย. 69: ctx.pxInput ของ v2 = dv.px (JSON) เช่นกัน ไม่อ่าน #pxIn ที่ render แล้ว → v1Base
+expect('E23', 'error', mut3(/(id="pxIn"[^>]*value=")([0-9.]+)(")/, numStr(PX * 3)), 'ราคา header ≠ ค่าตั้งต้นเครื่องคิดเลข', v1Base);
 expect('E24', 'error', mut3(/(EPS ปี 3<\/span>\s*<span>~?\s*[฿$]?)([0-9.,]+)(<\/span>)/, numStr(C.scenarios[0].eps * 2)), 'EPS ปี3 ไม่ตรงการทบต้น (1+g)³');
 expect('E25', 'error', mutSlice('class="vgrid"', /(มูลค่าเหมาะสม<\/div>\s*<div class="v">\s*[฿$]?)([0-9.,]+)/, `$1${numStr(FV * 1.3)}`), 'FV ในสรุป ≠ FV ในกล่อง');
 expect('E26', 'error', mut3(/([฿$])([0-9.,]+)(<br>\s*<small>MOS 20%)/, numStr(FV)), 'gauge scale MOS20 ≠ FV×0.8');
@@ -238,9 +256,11 @@ expect('E26', 'error', mut3(/([฿$])([0-9.,]+)(<br>\s*<small>MOS 20%)/, numStr(
 {
   const big0 = DVc.readMosBig(base);
   ok(big0 && big0.sign === '+' && big0.num === '0.8' && big0.value === 0.8, 'readMosBig: ฐาน BBL .big = +0.8% (num ตามที่พิมพ์ ไม่ปัดใหม่)', JSON.stringify(big0));
+  // ★ 23 ก.ย. 69: ตามที่คอมเมนต์ข้างบนทำนายไว้ — base ย้ายไป BBL_V2 (fixture สะอาดที่ migrate แล้ว) ⇒
+  //   ช่องสรุปเริ่มต้น canonical/ok อยู่แล้ว ไม่ใช่ placeholder เก่าเหมือน v1 BBL อีกต่อไป
   const pRaw = DVc.summaryPlan(base);
-  ok(pRaw && !pRaw.canonical && !pRaw.ok && pRaw.want === 'MOS ~ +0.8%',
-    'summaryPlan: ช่องเก่าของ fixture ไม่ใช่คลังคำ · want มาจาก .big ไม่ใช่คำนวณจาก FV', JSON.stringify(pRaw));
+  ok(pRaw && pRaw.canonical && pRaw.ok && pRaw.want === 'MOS ~ +0.8%',
+    'summaryPlan: ช่อง BBL_V2 (สะอาดแล้ว) = canonical + ok ตั้งแต่ต้น · want มาจาก .big', JSON.stringify(pRaw));
   const w06Base = setDiffCell(pRaw.want)(base);
   const p0 = DVc.summaryPlan(w06Base);
   ok(p0 && p0.canonical && p0.ok && p0.want === pRaw.want && p0.mos === big0.value, 'summaryPlan: ช่องที่จัดรูปแล้ว = canonical + ok', JSON.stringify(p0));
@@ -427,8 +447,11 @@ expect('W10', 'warn', mutJson('stock-meta', (d) => { d.pe = (d.pe || 10) * 6; })
 }
 
 // ── E34/E35/E36/E37/W12: ป้าย change รอบปี + กราฟ ~1 ปี (กฎ CLAUDE.md ข้อ 2 — มิ.ย. 2026) ──
+// ★ 23 ก.ย. 69 (v1 codepath gap-close): ctx.chg ของ v2 = dv.chg.text (คำนวณจาก report-data.chart.data)
+//   ไม่ได้อ่าน .chg ที่ render แล้วเลย ⇒ setChg() มิวเทตแค่ตัวอักษรที่คนเห็น ไม่กระทบ ctx.chg ของ v2 เลย
+//   ทั้งบล็อก E34/E35/E36 นี้ทดสอบเส้นทาง "อ่าน .chg ไม่ตรง" ซึ่งเป็นของ v1 โดยเฉพาะ ⇒ ยืนบน v1Base ทั้งบล็อก
 // E34: บังคับ theme เป็นเขียวใน mutation เอง (ไม่พึ่งว่าฐานปีนี้ขึ้นหรือลง) แล้วใส่ป้ายขาลง → ขัดสี
-expect('E34', 'error', (h) => setChg('▼ −31% ในรอบปี')(mutJson('report-data', (d) => { d.theme = d.theme || {}; d.theme.chgBg = 'var(--green-soft)'; d.theme.chgColor = '#1e8e3e'; })(h)), 'ป้าย change ขาลง (▼ −) แต่ theme เขียว (เคส HMPRO/CPF) → ต้องจับ E34');
+expect('E34', 'error', (h) => setChg('▼ −31% ในรอบปี')(mutJson('report-data', (d) => { d.theme = d.theme || {}; d.theme.chgBg = 'var(--green-soft)'; d.theme.chgColor = '#1e8e3e'; })(h)), 'ป้าย change ขาลง (▼ −) แต่ theme เขียว (เคส HMPRO/CPF) → ต้องจับ E34', v1Base);
 // ★ ฐานบังคับ (คลาสเดียวกับ E36 ข้างล่าง — ดูกฎ fixture หัวไฟล์): literal "≈ ทรงตัว (รอบปี)"
 //   คือสิ่งที่ cron เขียนเองเมื่อ |% รอบปี| < FLAT_PP ⇒ ถ้าราคาพาป้ายฐานไปตรงกับ literal นี้พอดี
 //   setChg จะเป็น no-op แล้ว guard "mutation ไม่เปลี่ยนอะไร" ฟ้องปลอม
@@ -436,20 +459,23 @@ expect('E34', 'error', (h) => setChg('▼ −31% ในรอบปี')(mutJson
 //   (▲ + เขียว) = E34-clean แน่นอน โดยไม่พึ่งว่าปีนี้ BBL ขึ้นหรือลง และไม่พึ่งสีที่เก็บอยู่ในไฟล์
 const e34Base = setChg('▲ +12.3% (รอบปี)')(mutJson('report-data', (d) => {
   d.theme = d.theme || {}; d.theme.chgBg = 'var(--green-soft)'; d.theme.chgColor = '#1e8e3e';
-})(base));
+})(v1Base));
 reject('E34', setChg('≈ ทรงตัว (รอบปี)'), 'ป้าย change "ทรงตัว" (ไม่มีทิศทาง) → ต้องไม่ฟ้อง E34', e34Base);
 // E35: header % ต้องเป็นผลตอบแทน "รอบปี" ไม่ใช่ % รายวัน/ช่วงอื่น (ยกเว้น IPO)
-expect('E35', 'error', setChg('▲ +5.8% (22 มิ.ย.)'), 'ป้าย % รายวัน "(22 มิ.ย.)" (ไม่ใช่ "รอบปี") → ต้องจับ E35');
-expect('E35', 'error', setChg(''), 'header ไม่มีป้าย % (.chg ว่าง) → ต้องจับ E35');
-reject('E35', setChg('▲ +12.3% (ตั้งแต่ IPO)'), 'หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)" → ต้องไม่ฟ้อง E35');
-rejectBase('E35', `ป้ายฐาน "${C.chg}" (รอบปี + ทิศทาง) → ต้องไม่ฟ้อง E35`);
+expect('E35', 'error', setChg('▲ +5.8% (22 มิ.ย.)'), 'ป้าย % รายวัน "(22 มิ.ย.)" (ไม่ใช่ "รอบปี") → ต้องจับ E35', v1Base);
+expect('E35', 'error', setChg(''), 'header ไม่มีป้าย % (.chg ว่าง) → ต้องจับ E35', v1Base);
+reject('E35', setChg('▲ +12.3% (ตั้งแต่ IPO)'), 'หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)" → ต้องไม่ฟ้อง E35', v1Base);
+{
+  const c1 = buildCtx(v1Base, 'BBL.html');
+  ok(!allIds(checkHtml(v1Base, 'BBL.html', { source: DEFAULT_SOURCE })).has('E35'), `ป้ายฐาน (v1) "${c1.chg}" (รอบปี + ทิศทาง) → ต้องไม่ฟ้อง E35`);
+}
 // E36: % รอบปี ต้อง = ผลตอบแทนปลายกราฟ — ใส่ % ห่างจากปลายกราฟจริง +50 จุด (เกิน tol 12)
 {
   const data = C.rd.data.chart.data;
   const chartPct = (data[data.length - 1][1] - data[0][1]) / data[0][1] * 100;
   const far = chartPct + 50;
   const farChg = (far >= 0 ? '▲ +' + far.toFixed(1) : '▼ −' + Math.abs(far).toFixed(1)) + '% ในรอบปี';
-  expect('E36', 'error', setChg(farChg), `headline "${farChg}" ขัดกับปลายกราฟ (~${chartPct.toFixed(1)}%) → ต้องจับ E36`);
+  expect('E36', 'error', setChg(farChg), `headline "${farChg}" ขัดกับปลายกราฟ (~${chartPct.toFixed(1)}%) → ต้องจับ E36`, v1Base);
   // ★ ฐานบังคับ (บทเรียน 2 ก.ย. 69): cron เขียนป้าย `≈ ทรงตัว (รอบปี)` เองเมื่อ |% รอบปี| < FLAT_PP
   //   (update-prices.js: annualChg + suffix ที่ fix เป็น "(รอบปี)") ⇒ พอราคา patch มาใกล้จุดแรกของกราฟ
   //   (เจอจริงที่ ฿150) ป้ายฐานจะ "ตรงกับ literal ที่เคสนี้จะ set พอดี" → setChg เป็น no-op
@@ -457,7 +483,7 @@ rejectBase('E35', `ป้ายฐาน "${C.chg}" (รอบปี + ทิศ
   //   ⇒ บังคับฐานเป็นป้าย % ที่ตรงปลายกราฟก่อนเสมอ: E36-clean แน่ (diff ~0 vs tol 12)
   //     และ "ไม่ใช่ทรงตัว" แน่ (มี ▲/▼ + ตัวเลขเสมอ) → เคสนี้ไม่ขึ้นกับราคาของ BBL อีกต่อไป
   const exactChg = (chartPct >= 0 ? '▲ +' : '▼ −') + Math.abs(chartPct).toFixed(1) + '% (รอบปี)';
-  reject('E36', setChg('≈ ทรงตัว (รอบปี)'), 'ป้าย "ทรงตัว" (ไม่มี %) → ต้องไม่ฟ้อง E36', setChg(exactChg)(base));
+  reject('E36', setChg('≈ ทรงตัว (รอบปี)'), 'ป้าย "ทรงตัว" (ไม่มี %) → ต้องไม่ฟ้อง E36', setChg(exactChg)(v1Base));
 }
 // E37: กราฟต้อง ~1 ปี (ไม่เกิน ~13 จุด) — ขยายเป็น 14 จุดต้องโดนจับ
 expect('E37', 'error', mutJson('report-data', (d) => {
@@ -839,10 +865,18 @@ reject('W14', addCard('4. EV/EBITDA', 'EBITDA $4.0B (mid-point FY2026 $3.6B guid
   }
 
   // ต้องเงียบเมื่อ "ตัดสินไม่ได้" — และตัวซ่อมต้องไม่แตะที่เดียวกันเป๊ะ ๆ
-  const broken = setIn('bear', 'tgt', '฿999')(fresh);            // คอลัมน์เดียวหลุด → ถอดจุดเข้าร่วมของ 3 คอลัมน์ไม่ได้
-  ok(!fires(broken), 'W17: คอลัมน์เดียวไม่สอดคล้องกับอีกสองคอลัมน์ → ตัดสินไม่ได้ ต้องเงียบ (ไม่เดาแทนคน)');
+  // ★ 23 ก.ย. 69 (v1 codepath gap-close): "ตัดสินไม่ได้" เป็นคุณสมบัติของ **เส้นทางอนุมานฐาน** (ไม่มี scnBasis
+  //   ประกาศไว้ ต้อง vote ข้ามคอลัมน์) — v2 (base) ประกาศ scnBasis ไว้ตรง ๆ แล้ว ⇒ ไม่ต้องเดาอีก จึงฟ้อง
+  //   คอลัมน์ที่หลุดตรง ๆ แทนที่จะเงียบ (พฤติกรรมใหม่ถูกต้องกว่าเดิม ไม่ใช่ regression) — เคสนี้ทดสอบเส้นทาง
+  //   อนุมานของ v1 โดยเฉพาะ ต้องใช้ v1Base ไม่ใช่ base
+  const freshV1 = DV.patchDerived(v1Base, PX).html;
+  const broken = setIn('bear', 'tgt', '฿999')(freshV1);          // คอลัมน์เดียวหลุด → ถอดจุดเข้าร่วมของ 3 คอลัมน์ไม่ได้
+  ok(!fires(broken), 'W17: (v1) คอลัมน์เดียวไม่สอดคล้องกับอีกสองคอลัมน์ → ตัดสินไม่ได้ ต้องเงียบ (ไม่เดาแทนคน)');
   ok(!DV.patchDerived(broken, PX).changes.some((c) => /หมวด 6/.test(c)),
-    'W17: ใบที่ตัดสินไม่ได้ → ตัวซ่อมต้องไม่แตะด้วย (ขอบเขตเท่ากันสองฝั่ง)');
+    'W17: (v1) ใบที่ตัดสินไม่ได้ → ตัวซ่อมต้องไม่แตะด้วย (ขอบเขตเท่ากันสองฝั่ง)');
+  // v2: เดียวกันแต่ scnBasis ประกาศแล้ว → ต้องฟ้องตรง ๆ แทนการเงียบ (ไม่มี "ตัดสินไม่ได้" อีกต่อไป)
+  const brokenV2 = setIn('bear', 'tgt', '฿999')(fresh);
+  ok(fires(brokenV2), 'W17: (v2) คอลัมน์เดียวไม่สอดคล้อง แต่ scnBasis ประกาศแล้ว → ต้องฟ้อง ไม่ใช่เงียบเหมือน v1');
 
   // ★★ สูตร %/ปี เป็นของ "ผู้เขียนใบนั้น" ไม่ใช่ของราคาวันนั้น (2 ก.ย. 69 — ทำ cron ล้มจริง)
   //   ช่องที่ผลตอบแทนน้อยพอจน CAGR กับ total/N **ปัดแล้วได้เลขเดียวกัน** แยกไม่ออกจากสิ่งที่พิมพ์ไว้
@@ -1093,7 +1127,12 @@ reject('W14', addCard('4. EV/EBITDA', 'EBITDA $4.0B (mid-point FY2026 $3.6B guid
   let r = null, threw = false;
   try { r = checkFile(tmp); } catch (_) { threw = true; }
   ok(!threw && r && r.errors.length === 1 && r.errors[0].id === 'EXPAND', 'checkFile: expandReport throw → error EXPAND ของไฟล์นั้น ไม่ throw ออกมา' + (r ? ` (ได้ ${r.errors.map((e) => e.id).join(',')})` : ' (throw)'));
-  ok(checkFile(FX.PATH.BBL).errors.length === 0, 'checkFile: fixture ดีผ่าน (เส้นทางปกติ = checkHtml)');
+  // ★ 23 ก.ย. 69: FX.PATH.BBL ตอนนี้ชี้ไฟล์ v1 (ถูกปฏิเสธแล้วโดยตั้งใจ) — คัดลอก BBL_V2 ไปเป็นไฟล์ชื่อ
+  //   BBL.html ก่อน เพื่อให้ checkFile derive symbol ตรงกับ stock-meta.symbol (เลี่ยง E04/E29/E40 ปลอมจากชื่อไฟล์
+  //   "BBL-v2.html" ที่ไม่ตรงชื่อหุ้นในเนื้อไฟล์ — ไม่เกี่ยวกับสิ่งที่เคสนี้ตั้งใจพิสูจน์)
+  const tmpGood = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'cr-good-')), 'BBL.html');
+  fs.writeFileSync(tmpGood, FX.BBL_V2());
+  ok(checkFile(tmpGood).errors.length === 0, 'checkFile: fixture ดีผ่าน (เส้นทางปกติ = checkHtml)', checkFile(tmpGood).errors.map((e) => e.id).join(','));
 }
 
 // ── fixture-lint: เทสใน verify ห้ามอ่าน reports/*.html เป็น fixture (บทเรียน 22–24 ส.ค. · 2 ก.ย. 69) ──
@@ -1106,6 +1145,10 @@ require('./parser-lint.js')(ok);
 // ★ จำนวนช่อง = **71** (70 แถวของ code-audit §1.1 + f69 stock-meta.fairValue ระยะ 2 ส่วน D) ไม่ใช่ 68: §1.1 เดินเลขแถว #1–#68 แล้วแทรก #25b/#63b
 //   (นับแถวในตารางจริง 12 ก.ย. 69 = 70) ⇒ "68 ช่อง" ในสเปคคือเลขแถวสูงสุด ห้ามตัดช่องทิ้งให้ครบ 68
 {
+  // ★ 23 ก.ย. 69 (v1 codepath gap-close): f45/f46/f47/f49 (gauge.fair/chart.fairLine — "สำเนาใน HTML")
+  //   เป็นช่อง v2:null โดยตั้งใจ (v2 ไม่มีสำเนา อ่านจาก JSON ตรง ๆ) — บล็อกนี้ทดสอบว่า manifest อ่าน
+  //   "สำเนาใน HTML" ของ v1 ได้ครบ ต้องยืนบน v1Base ไม่ใช่ base (v2) ถึงจะมีช่องเหล่านี้ให้ตรวจ
+  const base = v1Base, C = buildCtx(base, 'BBL.html');
   const MF = require('../tools/field-manifest.js');
   ok(MF.FIELDS.length === 71 && new Set(MF.FIELDS.map((f) => f.id)).size === 71, `manifest: 71 ช่อง id ไม่ซ้ำ (ได้ ${MF.FIELDS.length})`);
   ok(MF.FIELDS.every((f) => typeof f.extract === 'function' && ['cron', 'gate', 'pair', 'presence', 'tool', 'deferred'].includes(f.binding)), 'manifest: ทุกช่องมี extract + binding ที่รู้จัก');
@@ -1142,7 +1185,10 @@ require('./parser-lint.js')(ok);
   const PDt = require('../tools/price-date.js');
   const cur = C.isTHB ? '฿' : '$';
 
-  const r0 = checkHtml(base, 'BBL.html');
+  // ★ 23 ก.ย. 69 (v1 codepath gap-close): coverage.found ของ v2 ต่ำกว่า v1 โดยโครงสร้าง (f45/f46/f47/f49
+  //   เป็น v2:null — omitted ไม่ใช่ missing) ⇒ ยืนบน v1Base เพื่อรักษาความหมายเดิมของเคสนี้ (ทดสอบว่า
+  //   coverage() นับเลขครบ ไม่มีช่องตกสำรวจ — ไม่ใช่เคสเฉพาะ v1/v2)
+  const r0 = checkHtml(v1Base, 'BBL.html');
   ok(r0.coverage && r0.coverage.n === MF.FIELDS.length && r0.coverage.found >= 50 && r0.coverage.missingRequired.length === 0,
     `coverage: checkHtml คืน coverage — BBL fixture พบ ${r0.coverage && r0.coverage.found}/${MF.FIELDS.length} · required ครบ (หาย: ${r0.coverage ? JSON.stringify(r0.coverage.missingRequired) : '—'})`);
   ok(r0.coverage && r0.coverage.found + r0.coverage.missingRequired.length + r0.coverage.skippedOptional.length === MF.FIELDS.length,
@@ -1308,8 +1354,10 @@ require('./parser-lint.js')(ok);
       ok(set.has('W24') && !set.has('E44'), `W24: ${why} → W24 ยิงแทน E44 (ไม่เงียบทั้งคู่)`, [...set].join(','));
     }
     ok(!ids(oldSrc).has('W24') && !ids(newSrc).has('W24'), 'W24: footer อ่านได้ → เงียบ (ทั้งใบเก่า/ใบใหม่)');
-    const v1Bad = setRaw(base, 'ไตรมาส 2 ปี 2569');
-    ok(v1Bad !== base && !ids(v1Bad).has('W24'), 'W24: ใบ v1 ไม่แตะ (ไม่มี token ให้ใช้ ⇒ E44 ไม่เกี่ยว)');
+    // ★ 23 ก.ย. 69: W24 ยิงเฉพาะไฟล์ v2 (`if (!c.v2 || footerDate(...)) return null`) — ทดสอบว่า v1 จริง ๆ
+    //   (ctx.v2=false) ข้ามเงื่อนไขนี้เสมอไม่ว่า footer จะอ่านได้ไหม ⇒ ต้องยืนบน v1Base ไม่ใช่ base (v2)
+    const v1Bad = setRaw(v1Base, 'ไตรมาส 2 ปี 2569');
+    ok(v1Bad !== v1Base && !allIds(checkHtml(v1Bad, 'BBL.html')).has('W24'), 'W24: ใบ v1 จริง (ctx.v2=false) ไม่แตะ (ไม่มี token ให้ใช้ ⇒ E44 ไม่เกี่ยว)');
 
     // ── #38 regression lock: รูปที่เคยทำให้ประตูวันที่ fail-open ต้อง "ตัดสินได้" แล้ว ──────────────
     // เดือนล้วน → วันที่ 1 ของเดือน (ระมัดระวัง: เก่ากว่าจริง ไม่ใช่ใหม่กว่า) · ช่วงข้ามเดือน → วันแรก
@@ -1404,8 +1452,8 @@ require('./parser-lint.js')(ok);
   ok(nullRows.length > 0 && nullRows.every((id) => !r.ctx.mf.missing.includes(id) && !r.ctx.mf.skipped.includes(id) && !r.ctx.mf.found.has(id)) && !allIds(r).has('W21'),
     `v2: แถว v2:null (${nullRows.join(' ')}) ไม่อยู่ใน found/missing/skipped + W21 เงียบ`, r.warnings.map((w) => w.id + ' ' + w.msg).join(' | '));
   ok(r.ctx.mf.omitted === nullRows.length, `v2: extractAll นับแถวที่ข้ามใน omitted (${r.ctx.mf.omitted})`);
-  // v1 ต้องไม่แตะทาง v2 เลย
-  const c1 = buildCtx(base, 'BBL.html');
+  // v1 ต้องไม่แตะทาง v2 เลย — ★ 23 ก.ย. 69: ต้องเป็น v1Base จริง ๆ (base ย้ายไป v2 แล้ว)
+  const c1 = buildCtx(v1Base, 'BBL.html');
   ok(c1.v2 === false && c1.dv === null && c1.mf.omitted === 0, 'v1: ctx.v2=false · dv=null · ไม่ข้ามแถวใด');
   // ★ ไฟล์ประกาศ v:2 แต่สคีมาเสีย → error V2SCHEMA (review Task 10 ข้อ 1) — ห้ามถอยเป็น v1 เงียบ ๆ
   //   ไฟล์ที่ไม่มี template marker: expandReport คืนเดิมโดยไม่ validate ⇒ gate ต้องตรวจเอง
@@ -1425,7 +1473,12 @@ require('./parser-lint.js')(ok);
     RV.derive = () => { throw new Error('derive ระเบิดจำลอง'); };
     let rd3; try { rd3 = checkHtml(base2, 'BBL.html', { source: srcV2 }); } finally { RV.derive = realDerive; }
     ok(errIds(rd3).has('V2SCHEMA') && rd3.ctx.v2 === false, 'V2SCHEMA: validateValues ผ่านแต่ derive throw → error (ไม่ถอยเป็น v1 เงียบ)', rd3.errors.map((e) => e.id).join(','));
-    ok(checkHtml(base2, 'BBL.html', { source: srcV2 }).errors.length === 0 && !buildCtx(base, 'BBL.html').v2Err, 'V2SCHEMA: คืน derive แล้ว v2 ดีผ่าน · v1 ไม่มี v2Err');
+    ok(checkHtml(base2, 'BBL.html', { source: srcV2 }).errors.length === 0 && !buildCtx(base2, 'BBL.html').v2Err, 'V2SCHEMA: คืน derive แล้ว v2 ดีผ่าน · ไม่มี v2Err');
+    // ★ 23 ก.ย. 69 (v1 codepath gap-close — เป้าหมายหลักของงานนี้): ไฟล์ v1 จริง (ไม่ประกาศ v:2 เลย)
+    //   ต้องถูกปฏิเสธแล้ว ไม่ใช่ "เงียบแล้วถอยไปอ่านแบบ v1" เหมือนเดิม — ปิด gap ที่ SKILL 5B เคยมี
+    //   (worker เขียนทับใบเดิมเป็น v1 ระหว่าง UPDATE แล้ว gate ไม่รู้ตัว)
+    ok(!!buildCtx(v1Base, 'BBL.html').v2Err, 'V2SCHEMA: ใบ v1 จริง (ไม่ประกาศ v:2) → มี v2Err แล้ว (เดิมเงียบ ไม่มี v2Err)');
+    ok(errIds(checkHtml(v1Base, 'BBL.html')).has('V2SCHEMA'), 'V2SCHEMA: ใบ v1 จริง → checkHtml ยก error V2SCHEMA (gate ปฏิเสธ ไม่ผ่านเงียบ ๆ อีกต่อไป)');
   }
   // ★ V2TOKENS (ระยะ 2 ส่วน F · carry จาก final review ส่วน D): site บังคับของใบ v2 กลับเป็น literal = ต้องยิง
   //   เดิม check ทุกตัวอ่านค่าจาก ctx.dv (JSON) ⇒ หัวรายงานที่เป็น literal ผ่านเงียบสนิท แล้วค้างถาวร
@@ -1433,7 +1486,9 @@ require('./parser-lint.js')(ok);
   {
     const idsOf = (src) => errIds(checkHtml(expandReport(src), 'BBL.html', { source: src }));
     ok(!idsOf(srcV2).has('V2TOKENS'), 'V2TOKENS: fixture v2 ที่ token ครบ → เงียบ');
-    ok(!errIds(checkHtml(base, 'BBL.html')).has('V2TOKENS'), 'V2TOKENS: ใบ v1 ไม่แตะ (ไม่มี token ให้ใช้)');
+    // ★ 23 ก.ย. 69: base ย้ายไป v2 แล้ว — เคสนี้ทดสอบว่า V2TOKENS ไม่แตะไฟล์ v1 จริง (ctx.v2=false ข้าม
+    //   branch `if (ctx.v2)` ทั้งก้อน) ต้องยืนบน v1Base ไม่ใช่ base
+    ok(!errIds(checkHtml(v1Base, 'BBL.html')).has('V2TOKENS'), 'V2TOKENS: ใบ v1 ไม่แตะ (ไม่มี token ให้ใช้)');
     // ★ ระยะ 3 Task 12 — ขยายจาก 7 (ผูกราคา) เป็น 13 ช่อง: + 6 ช่องผูก FV ที่ migrator บังคับตอนย้ายอยู่แล้ว
     //   (`REQUIRED_SITES` 14 ช่อง) และ **ไม่มีตัวเขียน HTML ทาง v2** เหมือนกัน ⇒ กลับเป็น literal เมื่อไรค้างถาวร
     //   `summary` เป็นช่องที่ 14 ของ migrator ที่ **ยังไม่เข้า** — มี `summaryPlan` (patchDerived #11) เป็นตัวเขียน
