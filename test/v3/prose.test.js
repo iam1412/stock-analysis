@@ -59,6 +59,8 @@ for (const lit of ['$120M', '$120 M', '$1,20B', '฿120 ล้าน', '฿120 �
 t.eq(P.renderProse('a {{lit:x < y}} b', view, { mode: 'text' }), 'a x &lt; y b', 'lit inner text is escaped');
 { const d = load(); d.prose.chart = 'bad {{lit:{{px}}}}'; t.eq(P.malformedLitPaths(d), ['prose.chart'], 'nested token inside lit is malformed'); }
 { const d = load(); d.prose.chart = 'open {{lit:9.0x'; t.eq(P.malformedLitPaths(d), ['prose.chart'], 'unclosed lit is malformed'); }
+{ const d = load(); d.prose.chart = 'x {{{{lit:px}}}} y'; t.eq(P.malformedLitPaths(d), ['prose.chart'], 'lit that builds a live token is malformed'); }
+{ const d = load(); d.prose.chart = 'x {{lit:a}}} y'; t.eq(P.malformedLitPaths(d), ['prose.chart'], 'lit followed by a stray brace is malformed'); }
 // proseFields must never throw on malformed nested entries (schema calls it on arbitrary input)
 { const d = load(); d.legs = [null, d.legs[1]]; d.metrics.custom = [null]; d.scenarios.cases = [null, d.scenarios.cases[1], d.scenarios.cases[2]];
   d.extras = [{ after: 'valuation', title: 'x', headers: ['a'], rows: [null, ['b']] }, null];

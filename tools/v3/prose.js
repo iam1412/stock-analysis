@@ -79,8 +79,10 @@ const countLits = (doc) => litsOf(doc).length;
 function malformedLitPaths(doc) {
   const out = [];
   for (const { path, text } of proseFields(doc)) {
-    const opens = text.split('{{lit:').length - 1, ok = [...text.matchAll(LIT_RE)].length;
-    if (opens !== ok) out.push(path);
+    const lits = [...text.matchAll(LIT_RE)], opens = text.split('{{lit:').length - 1;
+    // lit ติดวงเล็บปีกกา = ประกอบเป็น token สด ("{{{{lit:px}}}}" → "{{px}}") หรือรั่ววงเล็บดิบ ("{{lit:a}}}")
+    const glued = lits.some((m) => text[m.index - 1] === '{' || text[m.index + m[0].length] === '}');
+    if (opens !== lits.length || glued) out.push(path);
   }
   return out;
 }
