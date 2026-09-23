@@ -83,7 +83,12 @@ for (const sym of ['ZTS', 'BBL', 'ZTS-real']) {
 // #50 — JSON ใน <script type="application/json"> ต้องไม่มี "<" ดิบ (ชั้นที่สองหลัง allowlist)
 t(!R.jsonScript('{"a":"</script><b>"}').includes('<'), 'jsonScript escapes every <');
 t.eq(JSON.parse(R.jsonScript('{"a":"</script>"}')).a, '</script>', 'jsonScript output still parses to the same value');
-{ const doc = load('ZTS'); const src = R.toV2Source(doc, C.compute(doc, { seeds }));
-  const blocks = src.match(/<script type="application\/json" id="(?:stock-meta|report-data)">[\s\S]*?<\/script>/g);
-  t(blocks.length === 2 && blocks.every((b) => !b.slice(b.indexOf('>') + 1, b.lastIndexOf('</script>')).includes('<')), 'both JSON script bodies are <-free'); }
+// ต้องฉีด '<' เข้า sm/rd เอง — ZTS จริงไม่มี '<' ใน JSON (schema กัน label กราฟ · sm เป็นตัวเลขล้วน) ⇒ ไม่ฉีด = test ผ่านแม้ถอด jsonScript()
+{ const doc = load('ZTS'); const view = C.compute(doc, { seeds });
+  view.sm.probe = 'a</script><b>'; view.rd.probe = 'b</script><b>';
+  const src = R.toV2Source(doc, view);
+  const blocks = src.match(/<script type="application\/json" id="(?:stock-meta|report-data)">[\s\S]*?<\/script>/g) || [];
+  const bodies = blocks.map((b) => b.slice(b.indexOf('>') + 1, b.lastIndexOf('</script>')));
+  t(bodies.length === 2 && bodies.every((x) => !x.includes('<') && x.includes('\\u003c')), 'both JSON script bodies are <-free (injected < became \\u003c)');
+  t.eq(bodies.map((x) => JSON.parse(x).probe), ['a</script><b>', 'b</script><b>'], 'escaped JSON bodies parse back to the injected strings'); }
 t.done();
