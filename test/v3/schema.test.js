@@ -136,4 +136,11 @@ for (const r of [0, -150]) {
 { const d = base(); d.analyst = { target: 190, rating: 'Buy', n: null, asOf: null }; t.eq(S.validate(d), [], 'explicit nulls are valid'); }
 { const d = base(); d.analyst.n = 0; t(paths(S.validate(d)).includes('analyst.n'), 'n, when present, is an int ≥ 1'); }
 { const d = base(); d.analyst.asOf = '20/09/2026'; t(paths(S.validate(d)).includes('analyst.asOf'), 'asOf, when present, is ISO'); }
+// Plan 2a Task 8 — fy + bank (§3.6 B, K)
+{ const d = base(); d.fundamentals.fy = { period: 'FY2025', netIncome: 2.67e9, eps: 6.02 }; d.metrics.cards.push('netIncomeFy', 'epsFy'); t.eq(S.validate(d), [], 'fy + FY cards valid'); }
+{ const d = base(); d.fundamentals.fy = { period: 'FY2025' }; t(paths(S.validate(d)).includes('fundamentals.fy'), 'fy needs ≥1 number'); }
+{ const d = base(); d.fundamentals.fy = { period: 'FY2025', ebit: 1 }; t(paths(S.validate(d)).includes('fundamentals.fy.ebit'), 'fy is closed'); }
+{ const d = base(); d.fundamentals.bank = { nim: 2.49, npl: 3, coverage: 324, cet1: 16.4, car: 20.9 }; d.metrics.cards.push('nim', 'npl', 'capital'); t.eq(S.validate(d), [], 'bank + bank cards valid'); }
+{ const d = base(); d.fundamentals.bank = { nim: 249 }; t(paths(S.validate(d)).includes('fundamentals.bank.nim'), 'bank % ≤ 100'); }
+{ const d = base(); d.fundamentals.bank = { roa: 1 }; t(paths(S.validate(d)).includes('fundamentals.bank.roa'), 'bank is closed'); }
 t.done();

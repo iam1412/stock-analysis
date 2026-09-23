@@ -37,4 +37,5 @@ t.eq(C.weightsOf(load('BBL-real')), [0.5, 0.25, 0.25], 'BBL-real: family weights
 { const v = C.compute(load('FER-real'), { seeds: {} });
   t.eq(v.legs[1].method, 'ddm2', 'FER-real: finite DDM is a computed leg');
   t.eq(round2(v.legs[1].value), 55.02, 'FER-real: ddm2 = $55.02'); }
+t.eq(load('BBL-real').metrics.custom.length, 0, 'Task 8: BBL-real needs no custom card (FY + bank are catalogue keys)');
 t.done();

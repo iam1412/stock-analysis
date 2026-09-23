@@ -59,4 +59,20 @@ t.eq(at.v, `$190.00 (${TK.TOKENS_V3['analyst.pct'](view)})`, 'analystTarget % te
   t.throws(() => K.renderCard('ebitdaMargin', v2), /fundamentals\.revenue/, 'ebitdaMargin rejects revenue ≤ 0 instead of rendering Infinity%'); }
 // Plan 2a Task 2 — ค่าเป็นมัธยฐานจาก median-multiples ⇒ label ต้องไม่เขียน "เฉลี่ย" (spec §3.2 · BBL G9)
 t.eq(K.CATALOGUE.peAvg5y.label(view), 'P/E มัธยฐาน ~5 ปี', 'peAvg5y label says มัธยฐาน');
+// Plan 2a Task 8 — การ์ด FY + ธนาคาร
+{ const d = load(); d.fundamentals.fy = { period: 'FY2025', netIncome: 2.673e9, eps: 6.02, revenue: 9.26e9 };
+  d.fundamentals.bank = { nim: 2.49, npl: 3, coverage: 324, cet1: 16.4, car: 20.9 };
+  const v2 = C.compute(d, { seeds: { ZTS: '#e8731a' } });
+  const c = (k) => K.renderCard(k, v2);
+  t.eq([c('netIncomeFy').k, c('netIncomeFy').v], ['กำไรสุทธิ FY2025', RV.fmtBig(2.673e9, '$')], 'netIncomeFy label/value');
+  t.eq([c('epsFy').k, c('epsFy').v], ['EPS FY2025', '~$6.02'], 'epsFy');
+  t.eq(c('revenueFy').k, 'รายได้ FY2025', 'revenueFy label');
+  t.eq(c('nim').v, '2.49%', 'nim 2 dp');
+  t.eq(c('npl').v, '3.0% / 324%', 'npl / coverage');
+  t.eq([c('capital').v, c('capital').cls], ['~16.4% / 20.9%', 'pos'], 'capital'); }
+{ const d = load(); d.fundamentals.fy = { period: 'FY2025', netIncome: -3.1e8 }; const v2 = C.compute(d, { seeds: { ZTS: '#e8731a' } });
+  t.eq(K.renderCard('netIncomeFy', v2).v, '−' + RV.fmtBig(3.1e8, '$'), 'negative statement total uses U+2212, never "$-310M"'); }
+{ const v2 = C.compute(load(), { seeds: { ZTS: '#e8731a' } });
+  t.throws(() => K.renderCard('epsFy', v2), /fundamentals\.fy/, 'FY card without fy names the field');
+  t.throws(() => K.renderCard('nim', v2), /fundamentals\.bank\.nim/, 'bank card without data names the field'); }
 t.done();

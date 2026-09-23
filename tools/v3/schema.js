@@ -25,9 +25,13 @@ const ENUM = {
 // peForward/analystTarget — คัดจาก label ที่ตกเป็น custom บ่อยสุดในคลัง 909 ใบ (docs/superpowers/specs/2026-09-24-card-census.md)
 const CARD_KEYS = ['mcap', 'pe', 'peAvg5y', 'pbv', 'ps', 'netIncome', 'eps', 'bvps', 'roe', 'revenue', 'grossMargin',
   'netMargin', 'opMargin', 'yield', 'beta', 'range52w', 'fcf', 'debtToEquity',
-  'netDebt', 'ebitdaMargin', 'roic', 'evEbitda', 'peForward', 'analystTarget'];
-const FUND_KEYS = ['eps', 'epsBasis', 'dps', 'bvps', 'shares', 'revenue', 'netIncome', 'roe', 'roa', 'grossMargin', 'netMargin',
+  'netDebt', 'ebitdaMargin', 'roic', 'evEbitda', 'peForward', 'analystTarget',
+  'netIncomeFy', 'epsFy', 'revenueFy', 'nim', 'npl', 'capital'];   // + Plan 2a Task 8 (§3.6 B/K)
+const FUND_NUM = ['eps', 'dps', 'bvps', 'shares', 'revenue', 'netIncome', 'roe', 'roa', 'grossMargin', 'netMargin',
   'opMargin', 'beta', 'debtToEquity', 'fcf', 'ebitda', 'netDebt', 'peAvg5y', 'ffoPerShare', 'roic', 'epsForward'];
+const FUND_KEYS = FUND_NUM.concat(['epsBasis', 'fy', 'bank']);
+const FY_KEYS = ['period', 'netIncome', 'eps', 'revenue'];
+const BANK_KEYS = ['nim', 'npl', 'coverage', 'cet1', 'car'];
 const MULT = ['multiple', 'multipleSource'];
 const RANGE = ['multipleRange', 'medianWindow'];   // §3.6 F — กรอบความไวของตัวคูณ [lo, hi] → กรอบ FV · §3.6 G — ช่วงปีของมัธยฐาน (ขาตัวคูณเดียวกัน)
 const LEG_INPUTS = {
@@ -157,7 +161,27 @@ function validate(doc) {
   if (!isObj(f)) E('fundamentals', 'ต้องมี (object)');
   else {
     closed(f, 'fundamentals', FUND_KEYS);
-    for (const k of FUND_KEYS) if (k !== 'epsBasis' && f[k] != null) num(f[k], `fundamentals.${k}`);
+    for (const k of FUND_NUM) if (f[k] != null) num(f[k], `fundamentals.${k}`);
+    if (f.fy != null) {
+      if (!isObj(f.fy)) E('fundamentals.fy', 'ต้องเป็น object {period, netIncome?, eps?, revenue?}');
+      else {
+        closed(f.fy, 'fundamentals.fy', FY_KEYS);
+        str(f.fy.period, 'fundamentals.fy.period');
+        if (typeof f.fy.period === 'string' && f.fy.period.length > 20) E('fundamentals.fy.period', 'ยาวเกิน 20 ตัวอักษร (เช่น "FY2025")');
+        for (const k of ['netIncome', 'eps', 'revenue']) if (f.fy[k] != null) num(f.fy[k], `fundamentals.fy.${k}`);
+        if (!['netIncome', 'eps', 'revenue'].some((k) => f.fy[k] != null)) E('fundamentals.fy', 'ต้องมีตัวเลขอย่างน้อย 1 ช่อง (netIncome/eps/revenue)');
+      }
+    }
+    if (f.bank != null) {
+      if (!isObj(f.bank)) E('fundamentals.bank', 'ต้องเป็น object ของ % (nim npl coverage cet1 car)');
+      else {
+        closed(f.bank, 'fundamentals.bank', BANK_KEYS);
+        for (const k of BANK_KEYS) if (f.bank[k] != null) {
+          num(f.bank[k], `fundamentals.bank.${k}`, { min: 0 });
+          if (isNum(f.bank[k]) && f.bank[k] > (k === 'coverage' ? 1000 : 100)) E(`fundamentals.bank.${k}`, `เป็นหน่วย % — เกิน ${k === 'coverage' ? 1000 : 100} ผิดวิสัย`);
+        }
+      }
+    }
     if (f.eps != null) en(f.epsBasis, 'fundamentals.epsBasis', ENUM.epsBasis);
     if (f.shares != null) num(f.shares, 'fundamentals.shares', { min: 1e5 });
   }
@@ -378,4 +402,4 @@ function OWNER(path) {
   return 'worker';
 }
 
-module.exports = { ENUM, CARD_KEYS, FUND_KEYS, LEG_INPUTS, CURRENT_BASE, OVERRIDE_KEYS, THEME_KEYS, TEXT_KEYS, cardEntries, validate, OWNER };
+module.exports = { ENUM, CARD_KEYS, FUND_KEYS, FY_KEYS, BANK_KEYS, LEG_INPUTS, CURRENT_BASE, OVERRIDE_KEYS, THEME_KEYS, TEXT_KEYS, cardEntries, validate, OWNER };
