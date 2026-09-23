@@ -184,3 +184,15 @@ E17 บังคับ ≥2 การ์ด `.vmethod` แต่บางหุ�
 ### ขนาดคลังตอนเขียนกฎ "ห้ามเขียน tag ลงไฟล์รายงาน" (CLAUDE.md เปลี่ยนเป็น "ทุกไฟล์" กันเลขล้าสมัย)
 
 > (freshHash จะทำให้ `updated` ของทั้ง 908 ไฟล์เด้งพร้อมกัน → พังการเรียงหน้าแรก + dedup 7 วัน + staleness)
+
+### Report v3 (JSON-source) Plan 1 — คำตัดสินระหว่างทำ (24 ก.ย. 69)
+
+> spec `docs/superpowers/specs/2026-09-24-report-v3-json-source-design.md` · plan `docs/superpowers/plans/2026-09-24-report-v3-plan1-core-render.md` · branch `feat/report-v3-plan1` · ของค้างที่ Plan 2 ต้องทำ → `docs/open-items.md` #49–#54
+
+- **ปันผล % = ทศนิยม 2 ตำแหน่งทั้งเว็บ (เจ้าของตัดสิน 24 ก.ย. 69)** — `tools/report-values.js` `TOKENS.yield` เปลี่ยน `toFixed(1)` → `toFixed(2)` · หลักฐาน: การ์ดปันผลที่พิมพ์มือในคลัง 572 ใบเป็น 2 ตำแหน่งอยู่แล้ว vs 1 ตำแหน่งแค่ 35 ใบ ⇒ ทำให้ token ตรงเสียงข้างมาก · ผลกระทบ: 113 หน้าที่ใช้ `{{rd:yield}}` ได้ทศนิยมเพิ่ม (เช่น 3.0% → 2.97%) · cron รอบถัดไปจะเขียน `stock-meta.dividendYield` ใหม่ ~81 ไฟล์ **ครั้งเดียว** (อยู่นอก freshHash ⇒ `updated`/การเรียงหน้าแรก/dedup 7 วันไม่เด้ง) · 35 ใบ 1 ตำแหน่งที่พิมพ์มือไม่แตะ — ทำให้เป็นมาตรฐานตอน migrate v3 (open-items #54) · เทสที่ปรับตาม: `test/report-values-test.js` (6.4% → 6.38%) + `test/update-prices-test.js` N3(c) เปลี่ยนเป็นเช็ค end-to-end ด้วยฐาน DPS ที่ต่างกันจริง (BBL การ์ด ฿13 vs `values.dps` 12) แทนการพึ่งความต่างของการปัด
+- **รูปแบบการ์ด = ตัวเลือก B: มาตรฐานเดียวทั้งเว็บ (เจ้าของตัดสิน 24 ก.ย. 69 หลังดู ZTS ของจริงที่ render จาก v3)** — การ์ดตัวชี้วัดใช้ formatter กลางชุดเดียว (`tools/v3/cards.js`) ไม่เลียนรูปแบบพิมพ์มือรายใบ · หลักฐาน = การเทียบ v2↔v3 ของ ZTS จริง (`docs/superpowers/specs/2026-09-24-zts-v3-compare.md`) · ยกเว้น 5 ข้อที่เจ้าของสั่งแก้ template (yield 2 ตำแหน่ง · ชื่อย่อหุ้นใน `<h1>` · ฐาน EPS ใน mdesc · เครื่องหมายลบ `−` · ZTS-real เข้า gate loop)
+- **`meta.themeLegacy` เก็บ palette เดิมของใบที่มีอยู่** — palette ของใบเก่าเป็น**ข้อมูล ไม่ใช่ค่าที่ derive ได้**: 682 ใบที่ไม่มี seed ใน `tools/seeds.json` หา seed ย้อน (grid-search) ได้ accent ตรง ≤12 แค่ 210 ใบ และตรงครบ 8 คีย์แค่ **17/682** · re-derive = เปลี่ยนสี ~700 หน้า = งานดีไซน์ ไม่ใช่ migration ⇒ ใบ migrate เก็บ `themeLegacy` · ใบ NEW ใช้ seed (spec §3.5)
+- **`divCum` เป็นข้อมูลประกอบได้แม้ `divIncluded=false`** — v2 141 ใบ render `{{rd:scNdiv}}` ทั้งที่ `scnBasis.divIncluded=false` ⇒ schema v3 รับ `divCum` ต่อฉากเสมอ (แสดง/ใช้เป็น token ได้) แต่**ไม่รวมใน total%** เมื่อ `divIncluded=false`
+- **ชื่อฟิลด์ `region` (US/TH) ไม่ใช่ `market`** — `market` คือบล็อกราคาที่ cron เป็นเจ้าของ (`market.px`/`priceDate`/`chart`) ⇒ ตลาดของหุ้นใช้ชื่อ `region` กันชนความหมาย
+- **RI `payout` ใช้หน่วยเปอร์เซ็นต์ (0–100)** — ตามกติการ่วม "input ที่เป็น % ใส่หน่วย %" (`tools/v3/legs.js` ผ่าน `pct()` · `tools/v3/schema.js` ช่วง 0–100) · ยังไม่มีใบ RI จริงใน v3 ⇒ ไม่มีต้นทุนย้อนหลัง · และ RI ใช้ `r, years, payout` ตาม plan (spec §3.1 เดิมเขียน "fade" ที่ไม่เคยนิยาม)
+- **implementer/reviewer subagent ของงาน v3 = Opus (เจ้าของสั่ง 24 ก.ย. 69)** — ทับ ruling เดิมที่ให้ reviewer ส่วนใหญ่เป็น Sonnet · ขอบเขต = งานพัฒนาระบบ v3 เท่านั้น ไม่เปลี่ยนกติกาโมเดลของ worker วิเคราะห์หุ้น (CLAUDE.md §3.2)
