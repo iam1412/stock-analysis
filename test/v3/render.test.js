@@ -147,4 +147,13 @@ t.eq(JSON.parse(R.jsonScript('{"a":"</script>"}')).a, '</script>', 'jsonScript o
   t(src.includes('~{{rd:analystTgt}} (Buy · n/a)'), 'verdict cell shows n/a for the count');
   t(src.includes('{{rd:analystTgt}}<br><small>เป้าเฉลี่ย Analyst</small>'), 'gauge marker kept');
   t.eq(CR.checkHtml(expandReport(src), 'ZTS.html', { source: src }).errors.map((e) => e.id), [], 'analyst without n: v2 gate 0 errors'); }
+// Plan 2a Task 9 — ป้าย AFFO ทุกที่ + hint §6 ของ driver ทุกชนิด
+{ const doc = load('ZTS'); Object.assign(doc.fundamentals, { ffoPerShare: 3.1, ffoBasis: 'affo' });
+  doc.legs[1] = { method: 'pffo', label: 'P/AFFO', inputs: { multiple: 17, multipleSource: 'median5y' } };
+  doc.scenarios.driver = 'ffo'; doc.scenarios.exitMetric = 'pffo';
+  const src = R.toV2Source(doc, C.compute(doc, { seeds }));
+  t(src.includes('P/AFFO 17x (มัธยฐาน 5 ปี)'), 'pffo mdesc says P/AFFO');
+  t(src.includes('<li><span>AFFO ปี ') && src.includes('<li><span>P/AFFO ออก</span>'), 'scenario rows say AFFO / P/AFFO');
+  t(src.includes(' • AFFO ฐาน ~$3.10'), '§6 hint shows the non-EPS driver base');
+  t.eq(CR.checkHtml(expandReport(src), 'ZTS.html', { source: src }).errors.map((e) => e.id), [], 'REIT labels: v2 gate 0 errors'); }
 t.done();

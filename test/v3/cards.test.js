@@ -75,4 +75,16 @@ t.eq(K.CATALOGUE.peAvg5y.label(view), 'P/E มัธยฐาน ~5 ปี', 'pe
 { const v2 = C.compute(load(), { seeds: { ZTS: '#e8731a' } });
   t.throws(() => K.renderCard('epsFy', v2), /fundamentals\.fy/, 'FY card without fy names the field');
   t.throws(() => K.renderCard('nim', v2), /fundamentals\.bank\.nim/, 'bank card without data names the field'); }
+// Plan 2a Task 9 — การ์ด REIT
+{ const d = load(); Object.assign(d.fundamentals, { ffoPerShare: 3.1, ffoBasis: 'affo', ffoForward: { value: 3.4, period: 'FY2026E', low: 3.3, high: 3.5 }, pffoAvg5y: 30 });
+  const v2 = C.compute(d, { seeds: { ZTS: '#e8731a' } }); const c = (k) => K.renderCard(k, v2);
+  t.eq([c('pffo').k, c('pffo').v, c('pffo').d], ['P/AFFO (TTM)', (120 / 3.1).toFixed(1) + 'x', 'AFFO/หุ้น $3.10'], 'pffo card');
+  t.eq([c('pffoForward').k, c('pffoForward').v, c('pffoForward').d], ['Forward P/AFFO', (120 / 3.4).toFixed(1) + 'x', 'AFFO FY2026E $3.30–$3.50'], 'pffoForward card shows the guidance range');
+  t.eq([c('ffoPerShare').k, c('ffoPerShare').v], ['AFFO/หุ้น (TTM)', '$3.10'], 'ffoPerShare card');
+  t.eq([c('pffoAvg5y').k, c('pffoAvg5y').v], ['P/AFFO เฉลี่ย ~5 ปี', '30.0x'], 'pffoAvg5y card (author-typed average — not a median-multiples value)');
+  t.eq(c('ffoMargin').v, (3.1 * 443e6 / 9.4e9 * 100).toFixed(1) + '%', 'ffoMargin = FFO×shares / revenue');
+  t.eq(c('ffoPayout').v, (2 / 3.1 * 100).toFixed(1) + '%', 'ffoPayout = dps / FFO per share');
+  t.eq(v2.sm.pe, +(120 / 6.13).toFixed(6), '§13.5: stock-meta.pe stays price / EPS for a REIT'); }
+{ const d = load(); d.fundamentals.ffoPerShare = 3.1; const v2 = C.compute(d, { seeds: { ZTS: '#e8731a' } });
+  t.eq(K.renderCard('pffo', v2).k, 'P/FFO (TTM)', 'no ffoBasis → FFO label (Plan 1 wording)'); }
 t.done();

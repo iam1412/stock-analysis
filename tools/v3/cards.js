@@ -22,6 +22,10 @@ function sharesText(view, n) {
   if (view.cur === '฿') return n >= 1e9 ? `~${(n / 1e9).toFixed(2)} พันล้านหุ้น` : `~${(n / 1e6).toFixed(1)} ล้านหุ้น`;
   return n >= 1e9 ? `~${(n / 1e9).toFixed(2)}B หุ้น` : `~${(n / 1e6).toFixed(1)}M หุ้น`;
 }
+// fundamentals ในสกุลราคา (Task 10 เติม view.fq เมื่อมี reportCurrency) — ใช้กับอัตราส่วนที่หารด้วยราคา
+const fq = (view) => view.fq || view.doc.fundamentals;
+const ffoL = (view) => ({ ffo: 'FFO', affo: 'AFFO' }[f(view).ffoBasis || 'ffo']);
+function ffoFwd(view) { const x = f(view).ffoForward; if (!x) throw new Error('metrics.cards: การ์ดต้องใช้ fundamentals.ffoForward — เติม หรือถอดการ์ดออก'); return x; }
 const priceBoundOrThrow = (key, v) => { if (v == null) throw new Error(`metrics.cards: ${key} คำนวณไม่ได้จากข้อมูลที่มี`); return v; };
 
 // peForwardCalc/evEbitdaCalc — เจ้าของเดียวของเลข+ข้อความ 2 ตัวนี้ (การ์ด section 1 + prose.js priceBound()
@@ -39,6 +43,14 @@ function evEbitdaCalc(view) {
   const raw = ev / eb;
   return { raw, text: raw.toFixed(1) + 'x' };
 }
+
+// เจ้าของเดียวของเลข+ข้อความ P/FFO (การ์ด + token + prose.priceBound — เหมือน peForwardCalc)
+function pffoCalc(view) {
+  const b = need(view, 'ffoPerShare');
+  if (!(b > 0)) throw new Error('metrics.cards: pffo — FFO/หุ้น ≤ 0 ถอดการ์ดออก');
+  const raw = view.d.px / b; return { raw, text: raw.toFixed(1) + 'x' };
+}
+function pffoForwardCalc(view) { const raw = view.d.px / ffoFwd(view).value; return { raw, text: raw.toFixed(1) + 'x' }; }
 
 const CATALOGUE = {
   mcap: { label: () => 'Market Cap', value: (v) => big(v, priceBoundOrThrow('mcap', v.d.mcap)), d: (v) => sharesText(v, need(v, 'shares')), cls: '' },
@@ -94,6 +106,17 @@ const CATALOGUE = {
   nim: { label: () => 'NIM', value: (v) => needBank(v, 'nim').toFixed(2) + '%', d: () => 'ส่วนต่างอัตราดอกเบี้ยสุทธิ', cls: '' },
   npl: { label: () => 'NPL / Coverage', value: (v) => `${needBank(v, 'npl').toFixed(1)}% / ${needBank(v, 'coverage').toFixed(0)}%`, d: () => 'หนี้เสีย / สำรองต่อหนี้เสีย', cls: '' },
   capital: { label: () => 'CET1 / CAR', cls: 'pos', value: (v) => `~${needBank(v, 'cet1').toFixed(1)}% / ${needBank(v, 'car').toFixed(1)}%`, d: () => 'เงินกองทุนชั้นที่ 1 / เงินกองทุนรวม' },
+  // Plan 2a Task 9 — REIT (§3.6 J) · ป้าย FFO/AFFO ตาม fundamentals.ffoBasis
+  pffo: { label: (v) => `P/${ffoL(v)} (TTM)`, cls: 'neu', value: (v) => pffoCalc(v).text, d: (v) => `${ffoL(v)}/หุ้น ${money(v, need(v, 'ffoPerShare'))}` },
+  pffoForward: { label: (v) => `Forward P/${ffoL(v)}`, cls: 'neu', value: (v) => pffoForwardCalc(v).text,
+    d: (v) => { const x = ffoFwd(v); return `${ffoL(v)} ${x.period} ` + (isNum(x.low) && isNum(x.high) ? `${money(v, x.low)}–${money(v, x.high)}` : money(v, x.value)); } },
+  ffoPerShare: { label: (v) => `${ffoL(v)}/หุ้น (TTM)`, value: (v) => money(v, need(v, 'ffoPerShare')), d: () => 'ต่อหุ้น รอบ 12 เดือนล่าสุด', cls: '' },
+  // ป้าย "เฉลี่ย" ไม่ใช่ "มัธยฐาน": ค่านี้ผู้เขียนพิมพ์เอง (ไม่มี median-multiples ของ P/FFO) — ต่างจาก peAvg5y (Task 2) · EQIX ต้นทาง "เฉลี่ย ~5 ปี"
+  pffoAvg5y: { label: (v) => `P/${ffoL(v)} เฉลี่ย ~5 ปี`, value: (v) => need(v, 'pffoAvg5y').toFixed(1) + 'x', d: () => 'ค่าเฉลี่ยย้อนหลัง', cls: '' },
+  ffoMargin: { label: (v) => `${ffoL(v)} Margin`, cls: '',
+    value: (v) => { const rev = fq(v).revenue; if (!(isNum(rev) && rev > 0)) throw new Error('metrics.cards: ffoMargin — ต้องมี fundamentals.revenue > 0'); return pct1(need(v, 'ffoPerShare') * need(v, 'shares') / rev * 100); },
+    d: (v) => `${ffoL(v)} รวม ÷ รายได้ TTM` },
+  ffoPayout: { label: (v) => `${ffoL(v)} Payout`, cls: '', value: (v) => pct1(need(v, 'dps') / need(v, 'ffoPerShare') * 100), d: (v) => `ปันผล ÷ ${ffoL(v)}/หุ้น` },
 };
 
 function renderCard(key, view, note) {
@@ -103,4 +126,4 @@ function renderCard(key, view, note) {
   return { k: c.label(view), v: c.value(view), d: note ? (d ? `${d} · ${note}` : note) : d, cls: c.cls };
 }
 
-module.exports = { CATALOGUE, renderCard, peForwardCalc, evEbitdaCalc };
+module.exports = { CATALOGUE, renderCard, peForwardCalc, evEbitdaCalc, pffoCalc, pffoForwardCalc };

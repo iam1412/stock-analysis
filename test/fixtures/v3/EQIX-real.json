@@ -103,7 +103,15 @@
     "roa": 2.1,
     "beta": 0.95,
     "debtToEquity": 1.52,
-    "ffoPerShare": 38.33
+    "ffoPerShare": 38.33,
+    "ffoBasis": "affo",
+    "ffoForward": {
+      "value": 42.99,
+      "period": "FY2026E",
+      "low": 42.69,
+      "high": 43.29
+    },
+    "pffoAvg5y": 27
   },
   "legs": [
     {
@@ -134,11 +142,15 @@
   "metrics": {
     "cards": [
       "mcap",
+      "pffo",
+      "pffoAvg5y",
       "pbv",
+      "pffoForward",
       "eps",
       "bvps",
       "roe",
       "revenue",
+      "ffoMargin",
       "yield",
       "beta"
     ],
@@ -149,30 +161,13 @@
       "roe": "ROE ปกติสำหรับ REIT leverage สูง",
       "revenue": "FY2025 · Q2 2026 +16% YoY, guidance FY2026 $10.2–10.3B — 22 ปีติดรายได้โต",
       "yield": "+10% ก.พ. 2026 — ปันผลโต 10 ปีติด",
-      "beta": "ใกล้ตลาด — defensive REIT แต่มี tech sensitivity"
+      "beta": "ใกล้ตลาด — defensive REIT แต่มี tech sensitivity",
+      "pffo": "งวด 2025 — มาตรวัดหลัก REIT",
+      "pffoAvg5y": "ช่วง 22–35x ขึ้นกับ sentiment",
+      "pffoForward": "+11–13% YoY (ปรับเพิ่มหลัง Q2 2026) — ตัวชี้วัดกำไรจริงของ REIT",
+      "ffoMargin": "ขยับขึ้นตาม Adjusted EBITDA margin สถิติ 53% (Q2 2026)"
     },
-    "custom": [
-      {
-        "label": "P/AFFO (TTM)",
-        "value": "~26.6x",
-        "note": "AFFO/share $38.33 (2025) — มาตรวัดหลัก REIT"
-      },
-      {
-        "label": "P/AFFO เฉลี่ย ~5 ปี",
-        "value": "~27x",
-        "note": "ช่วง 22–35x ขึ้นกับ sentiment"
-      },
-      {
-        "label": "AFFO/Share FY2026E",
-        "value": "$42.69–43.29",
-        "note": "+11–13% YoY (ปรับเพิ่มหลัง Q2 2026) — ตัวชี้วัดกำไรจริงของ REIT"
-      },
-      {
-        "label": "AFFO Margin",
-        "value": "~40%",
-        "note": "AFFO/Revenue ขยับขึ้นตาม Adjusted EBITDA margin สถิติ 53% (Q2 2026)"
-      }
-    ],
+    "custom": [],
     "hint": "Data Center REIT — ใช้ AFFO เป็นตัวชี้วัดหลัก"
   },
   "scenarios": {
@@ -190,7 +185,7 @@
         "growth": 5,
         "exitMultiple": 20,
         "divCum": 66,
-        "desc": "ดอกเบี้ยสูงนาน กด multiple จาก ~24x เหลือ 20x"
+        "desc": "ดอกเบี้ยสูงนาน กด multiple จาก {{pffoForward}}x เหลือ 20x"
       },
       {
         "growth": 9,
@@ -205,7 +200,7 @@
         "desc": "xScale/AI boom หนุน premium rerating ต่อเนื่องจาก guidance ที่ปรับเพิ่ม"
       }
     ],
-    "note": "การคาดการณ์อิง AFFO/Share ฐาน FY2026E $42.99 (guidance กลางช่วงที่บริษัทปรับเพิ่มหลัง Q2 2026) เติบโตตาม 3 สถานการณ์ แล้วคูณด้วย P/AFFO exit multiple ที่ตั้งเป็นสมมติฐาน (ไม่ใช่ FV leg) Base case (+9%/ปี) ได้ผลตอบแทน ~+38% ใน 3 ปีรวมปันผล ราคาเป้า $1,336 สูงกว่า FV เล็กน้อย Bear case เกิดจากอัตราดอกเบี้ยสูงนานกดค่า multiple ลงสู่ 20x (จาก P/AFFO ปัจจุบัน ~24x บนฐาน FY2026E) แม้ AFFO ยังโตช้า — ผลตอบแทนแทบทรงตัว ~+4% Bull case เกิดจาก AI demand เกินคาดต่อเนื่องหนุน rerating สู่ 26x+ — ผลตอบแทน ~+57% <b>หมายเหตุ:</b> ตัวเลขเป็นประมาณการเพื่อศึกษา ไม่ใช่การรับประกันผลตอบแทน"
+    "note": "การคาดการณ์อิง AFFO/Share ฐาน FY2026E $42.99 (guidance กลางช่วงที่บริษัทปรับเพิ่มหลัง Q2 2026) เติบโตตาม 3 สถานการณ์ แล้วคูณด้วย P/AFFO exit multiple ที่ตั้งเป็นสมมติฐาน (ไม่ใช่ FV leg) Base case (+9%/ปี) ได้ผลตอบแทน ~+38% ใน 3 ปีรวมปันผล ราคาเป้า $1,336 สูงกว่า FV เล็กน้อย Bear case เกิดจากอัตราดอกเบี้ยสูงนานกดค่า multiple ลงสู่ 20x (จาก P/AFFO ปัจจุบัน {{pffoForward}}x บนฐาน FY2026E) แม้ AFFO ยังโตช้า — ผลตอบแทนแทบทรงตัว ~+4% Bull case เกิดจาก AI demand เกินคาดต่อเนื่องหนุน rerating สู่ 26x+ — ผลตอบแทน ~+57% <b>หมายเหตุ:</b> ตัวเลขเป็นประมาณการเพื่อศึกษา ไม่ใช่การรับประกันผลตอบแทน"
   },
   "analyst": {
     "target": 1233.23,
@@ -214,7 +209,7 @@
   },
   "prose": {
     "chart": "ราคา EQIX {{chg}} ในรอบปี จากดีมานด์ data center ที่ถูกหนุนโดย AI workload และ hyperscaler expansion ช่วง ต.ค. 68 อยู่ที่ราว $846 ก่อนย่อลงมาที่ $753 (พ.ย. 68) จากความกังวลอัตราดอกเบี้ย จากนั้นฟื้นแรงช่วง ก.พ.–มี.ค. 69 ($974–$980) หลัง management ยืนยัน AFFO growth guidance <b>จุดสูงสุด เม.ย. 69 ที่ $1,082.83</b> (ปิดสิ้นเดือน) แล้วแกว่งในกรอบ $1,019–$1,047 ช่วง มิ.ย.–ก.ย. 69 ก่อนงบ Q3 2026 (นัดประกาศ 28 ต.ค. 2569 ตามข้อมูล StockAnalysis)",
-    "valuation": "<b>ข้อจำกัด: FV รอบนี้ตั้งบนตระกูลเดียว (P/E มัธยฐานย้อนหลัง)</b> — กรอบใช้ P/E ต่ำสุด–สูงสุดที่วัดได้ 59.9x–99.2x ได้ $931–$1,543 (MOS ที่ขา 59.9x ≈ +9.7% · ที่ขา 99.2x ≈ +34%) ⇒ ผลไวต่อตัวคูณมาก P/E แบบ GAAP ไม่เหมาะกับ REIT เต็มตัวเพราะค่าเสื่อมสูง และมัธยฐาน 80.6x สูงกว่า P/E ปัจจุบัน 65.7x เพราะ EPS ในอดีตต่ำ (FY2024 ต่ำสุด $8.50) จึงควรอ่านเป็นขอบบนที่ยังไม่ยืนยันด้วยตระกูลอื่น <b>บริบท P/AFFO (ไม่นับเป็นขา):</b> AFFO/share TTM $38.33 (FY2025) ⇒ P/AFFO ปัจจุบัน ~26.6x และเทียบ AFFO FY2026E $42.99 ≈ 23.8x · ไม่มีมัธยฐาน P/AFFO ที่วัดได้จาก controller รอบนี้ จึงไม่ตั้งตัวคูณ P/AFFO เป็นขา (ตัวคูณ 26x เดิมห่างจากค่าปัจจุบันเพียง ~2% = สมอตาย) · NAV เดิม ~$1,020 (implied cap rate ~5%) ถูกถอดเพราะไม่มีตารางคำนวณที่ตรวจซ้ำได้ · เป้านักวิเคราะห์ ({{analyst.target}}) ใช้เป็นบริบทความสอดคล้องเท่านั้น ไม่ใช่ขา FV ที่มา: StockAnalysis.com, Yahoo Finance, Equinix IR, SEC Filings (ตัวเลข AFFO/guidance คงจากรอบวิเคราะห์ก่อน ไม่ได้เปิดตรวจแหล่งปฐมภูมิซ้ำรอบนี้)",
+    "valuation": "<b>ข้อจำกัด: FV รอบนี้ตั้งบนตระกูลเดียว (P/E มัธยฐานย้อนหลัง)</b> — กรอบใช้ P/E ต่ำสุด–สูงสุดที่วัดได้ 59.9x–99.2x ได้ $931–$1,543 (MOS ที่ขา 59.9x ≈ +9.7% · ที่ขา 99.2x ≈ +34%) ⇒ ผลไวต่อตัวคูณมาก P/E แบบ GAAP ไม่เหมาะกับ REIT เต็มตัวเพราะค่าเสื่อมสูง และมัธยฐาน 80.6x สูงกว่า P/E ปัจจุบัน {{pe}}x เพราะ EPS ในอดีตต่ำ (FY2024 ต่ำสุด $8.50) จึงควรอ่านเป็นขอบบนที่ยังไม่ยืนยันด้วยตระกูลอื่น <b>บริบท P/AFFO (ไม่นับเป็นขา):</b> AFFO/share TTM $38.33 (FY2025) ⇒ P/AFFO ปัจจุบัน {{pffo}}x และเทียบ AFFO FY2026E $42.99 ≈ {{pffoForward}}x · ไม่มีมัธยฐาน P/AFFO ที่วัดได้จาก controller รอบนี้ จึงไม่ตั้งตัวคูณ P/AFFO เป็นขา (ตัวคูณ 26x เดิมห่างจากค่าปัจจุบันเพียง ~2% = สมอตาย) · NAV เดิม ~$1,020 (implied cap rate ~5%) ถูกถอดเพราะไม่มีตารางคำนวณที่ตรวจซ้ำได้ · เป้านักวิเคราะห์ ({{analyst.target}}) ใช้เป็นบริบทความสอดคล้องเท่านั้น ไม่ใช่ขา FV ที่มา: StockAnalysis.com, Yahoo Finance, Equinix IR, SEC Filings (ตัวเลข AFFO/guidance คงจากรอบวิเคราะห์ก่อน ไม่ได้เปิดตรวจแหล่งปฐมภูมิซ้ำรอบนี้)",
     "gauge": "ราคาปัจจุบัน <b>{{px}}</b> อยู่ต่ำกว่า Fair Value {{fv}} อยู่ <b>{{mos}}</b> — MOS ยังไม่ถึงโซน 20% แต่ FV ตั้งบนตระกูลเดียว (ดูหมวด 3) จึงควรอ่านอย่างระวัง นักวิเคราะห์ 30 รายเป้าเฉลี่ย <b>{{analyst.target}}</b> ({{analyst.pct}} จากปัจจุบัน) ใกล้เคียง FV ของเรา โซน MOS 20% ที่ <b>{{mos20}}</b> คือจุดน่าสนใจสำหรับ value investor — รอย่ออีกราว 2% โซน MOS 30% ที่ <b>{{mos30}}</b> เป็น deep value zone — เกิดได้ในช่วงวิกฤตอัตราดอกเบี้ยสูง",
     "mos": "ราคาต่ำกว่า Fair Value ระดับปานกลาง — แต่ FV ตั้งบนตระกูลเดียว (P/E มัธยฐาน) จึงมีความไม่แน่นอนสูง · รอโอกาสซื้อในโซน MOS 20% ({{mos20}})",
     "verdictHeadline": "คุณภาพสูง — ราคาต่ำกว่า FV ระดับปานกลาง แต่ FV พึ่งตระกูลเดียว",
@@ -231,7 +226,7 @@
     "<b>Analyst Consensus:</b> 30 รายเป้าเฉลี่ย {{analyst.target}} (Buy) — upside {{analyst.pct}} บวกปันผล ~2%"
   ],
   "risks": [
-    "<b>Valuation Premium:</b> P/AFFO ~26.6x (TTM) และ GAAP P/E ~65.7x — downside risk หาก growth ต่ำกว่าคาดหรือ sentiment เปลี่ยน · FV ของเราพึ่งตระกูลเดียว",
+    "<b>Valuation Premium:</b> P/AFFO {{pffo}}x (TTM) และ GAAP P/E {{pe}}x — downside risk หาก growth ต่ำกว่าคาดหรือ sentiment เปลี่ยน · FV ของเราพึ่งตระกูลเดียว",
     "<b>อัตราดอกเบี้ยสูง:</b> REIT ไวต่อ rate — หนี้ D/E 1.52x ต้อง refinance ในอนาคต (capex FY2026 guide $5.0–6.0B เพิ่มภาระ) ต้นทุนทุนสูงขึ้นกระทบ NAV และ multiple",
     "<b>Capex เข้มข้น:</b> สร้าง data center ต้องลงทุนสูงต่อเนื่อง — FCF หลัง capex ต่ำ ต้องอาศัย debt/equity เป็นระยะ",
     "<b>Hyperscaler Self-Build:</b> AWS/Google/Microsoft สร้าง data center เอง — อาจลด colocation demand บางส่วนในระยะยาว",
@@ -239,5 +234,5 @@
     "<b>Digital Realty Competition:</b> DLR และผู้เล่นในภูมิภาคแข่งขันด้านราคาและ capacity ในตลาดเดียวกัน"
   ],
   "extras": [],
-  "_sig": "sha256:b95b518b50738d452eb5dbd0cf814e9f7bce924a630720b4a0ac362b40fee8c2"
+  "_sig": "sha256:138c285a5938ecc07b1fbb4bd76630b549a2c40216ba2da931070bc277516592"
 }

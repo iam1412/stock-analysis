@@ -10,6 +10,7 @@ const SV = require('../safe-values.js');
 const ENUM = {
   currency: ['USD', 'THB'], region: ['US', 'TH'], dateEra: ['BE', 'CE'], chgSuffix: ['รอบปี', 'ตั้งแต่ IPO'],
   epsBasis: ['gaap-ttm', 'adj-ttm', 'fy', 'ifrs'],
+  ffoBasis: ['ffo', 'affo'],   // Plan 2a Task 9 (§3.6 J) — ป้าย FFO/AFFO ของการ์ด/ขา/ฉาก REIT
   method: ['pe', 'pbv', 'ps', 'evsales', 'evebitda', 'pfcf', 'fcfyield', 'pffo', 'ddm', 'ddm2', 'dcf', 'ri', 'declared'],
   multipleSource: ['median5y', 'median10y', 'peer', 'justified', 'sector', 'current'],   // 'current' = เฉพาะขา role:"context" (ตัวคูณสด คิดทุกวัน) · บนขา fv ห้าม = สมอตาย W18 (§13 ข้อ 6)
   declaredBasis: ['sotp', 'nav', 'rnpv', 'other'],
@@ -26,10 +27,11 @@ const ENUM = {
 const CARD_KEYS = ['mcap', 'pe', 'peAvg5y', 'pbv', 'ps', 'netIncome', 'eps', 'bvps', 'roe', 'revenue', 'grossMargin',
   'netMargin', 'opMargin', 'yield', 'beta', 'range52w', 'fcf', 'debtToEquity',
   'netDebt', 'ebitdaMargin', 'roic', 'evEbitda', 'peForward', 'analystTarget',
-  'netIncomeFy', 'epsFy', 'revenueFy', 'nim', 'npl', 'capital'];   // + Plan 2a Task 8 (§3.6 B/K)
+  'netIncomeFy', 'epsFy', 'revenueFy', 'nim', 'npl', 'capital',   // + Plan 2a Task 8 (§3.6 B/K)
+  'pffo', 'pffoForward', 'ffoPerShare', 'pffoAvg5y', 'ffoMargin', 'ffoPayout'];   // + Plan 2a Task 9 (§3.6 J)
 const FUND_NUM = ['eps', 'dps', 'bvps', 'shares', 'revenue', 'netIncome', 'roe', 'roa', 'grossMargin', 'netMargin',
-  'opMargin', 'beta', 'debtToEquity', 'fcf', 'ebitda', 'netDebt', 'peAvg5y', 'ffoPerShare', 'roic', 'epsForward'];
-const FUND_KEYS = FUND_NUM.concat(['epsBasis', 'fy', 'bank']);
+  'opMargin', 'beta', 'debtToEquity', 'fcf', 'ebitda', 'netDebt', 'peAvg5y', 'ffoPerShare', 'roic', 'epsForward', 'pffoAvg5y'];
+const FUND_KEYS = FUND_NUM.concat(['epsBasis', 'fy', 'bank', 'ffoBasis', 'ffoForward']);
 const FY_KEYS = ['period', 'netIncome', 'eps', 'revenue'];
 const BANK_KEYS = ['nim', 'npl', 'coverage', 'cet1', 'car'];
 const MULT = ['multiple', 'multipleSource'];
@@ -180,6 +182,18 @@ function validate(doc) {
           num(f.bank[k], `fundamentals.bank.${k}`, { min: 0 });
           if (isNum(f.bank[k]) && f.bank[k] > (k === 'coverage' ? 1000 : 100)) E(`fundamentals.bank.${k}`, `เป็นหน่วย % — เกิน ${k === 'coverage' ? 1000 : 100} ผิดวิสัย`);
         }
+      }
+    }
+    if (f.ffoBasis != null) en(f.ffoBasis, 'fundamentals.ffoBasis', ENUM.ffoBasis);
+    if (f.ffoForward != null) {
+      const x = f.ffoForward, p = 'fundamentals.ffoForward';
+      if (!isObj(x)) E(p, 'ต้องเป็น {value, period, low?, high?}');
+      else {
+        closed(x, p, ['value', 'period', 'low', 'high']);
+        num(x.value, `${p}.value`, { gt: 0 }); str(x.period, `${p}.period`);
+        if (typeof x.period === 'string' && x.period.length > 20) E(`${p}.period`, 'ยาวเกิน 20 ตัวอักษร');
+        for (const k of ['low', 'high']) if (x[k] != null) num(x[k], `${p}.${k}`, { gt: 0 });
+        if (isNum(x.value) && ((isNum(x.low) && x.low > x.value) || (isNum(x.high) && x.high < x.value))) E(p, 'ต้อง low ≤ value ≤ high');
       }
     }
     if (f.eps != null) en(f.epsBasis, 'fundamentals.epsBasis', ENUM.epsBasis);

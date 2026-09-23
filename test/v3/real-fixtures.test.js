@@ -38,4 +38,15 @@ t.eq(C.weightsOf(load('BBL-real')), [0.5, 0.25, 0.25], 'BBL-real: family weights
   t.eq(v.legs[1].method, 'ddm2', 'FER-real: finite DDM is a computed leg');
   t.eq(round2(v.legs[1].value), 55.02, 'FER-real: ddm2 = $55.02'); }
 t.eq(load('BBL-real').metrics.custom.length, 0, 'Task 8: BBL-real needs no custom card (FY + bank are catalogue keys)');
+// Task 9 — EQIX: การ์ด REIT จากแคตตาล็อก (P/AFFO สด 27.6x แทน literal ค้าง ~26.6x) · stock-meta.pe = ราคา/EPS (§13.5)
+{ const d = load('EQIX-real'), v = C.compute(d, { seeds: {} });
+  t.eq(d.metrics.custom.length, 0, 'EQIX-real: no custom cards');
+  t.eq(require('../../tools/v3/cards.js').renderCard('pffo', v).v, (d.market.px / 38.33).toFixed(1) + 'x', 'EQIX-real: live P/AFFO card');
+  t.eq(v.sm.pe, +(d.market.px / 15.55).toFixed(6), 'EQIX-real: stock-meta.pe = px / GAAP EPS (§13.5)');
+  // controller ruling A — token ของขา context P/AFFO = ราคา ÷ AFFO/หุ้น · รูปแบบเดียวกับ token ตัวคูณอื่น (1 ทศนิยม + x)
+  t.eq(P.renderProse('{{leg2.multiple}}', v, { mode: 'v2src' }), (d.market.px / 38.33).toFixed(1) + 'x', 'EQIX-real: {{leg2.multiple}} = live P/AFFO');
+  // controller ruling B — prose ไม่พิมพ์ P/AFFO / P/E ปัจจุบันเป็นเลขแช่แข็ง (ค้างแล้ว: ~26.6x / 65.7x)
+  const all = P.proseFields(d).map((x) => x.text).join('\n');
+  t(!/26\.6x|65\.7x|23\.8x/.test(all), 'EQIX-real: no stale price-bound P/AFFO / P/E literals left in prose');
+  t(d.risks[0].includes('{{pffo}}x') && d.risks[0].includes('{{pe}}x'), 'EQIX-real: risks[0] uses live {{pffo}} / {{pe}}'); }
 t.done();

@@ -143,4 +143,10 @@ for (const r of [0, -150]) {
 { const d = base(); d.fundamentals.bank = { nim: 2.49, npl: 3, coverage: 324, cet1: 16.4, car: 20.9 }; d.metrics.cards.push('nim', 'npl', 'capital'); t.eq(S.validate(d), [], 'bank + bank cards valid'); }
 { const d = base(); d.fundamentals.bank = { nim: 249 }; t(paths(S.validate(d)).includes('fundamentals.bank.nim'), 'bank % ≤ 100'); }
 { const d = base(); d.fundamentals.bank = { roa: 1 }; t(paths(S.validate(d)).includes('fundamentals.bank.roa'), 'bank is closed'); }
+// Plan 2a Task 9 — REIT (§3.6 J)
+{ const d = base(); Object.assign(d.fundamentals, { ffoPerShare: 3.1, ffoBasis: 'affo', ffoForward: { value: 3.4, period: 'FY2026E', low: 3.3, high: 3.5 }, pffoAvg5y: 30 });
+  d.metrics.cards.push('pffo', 'pffoForward', 'ffoPerShare', 'pffoAvg5y'); t.eq(S.validate(d), [], 'REIT fields + cards valid'); }
+{ const d = base(); d.fundamentals.ffoBasis = 'core'; t(paths(S.validate(d)).includes('fundamentals.ffoBasis'), 'ffoBasis enum'); }
+{ const d = base(); d.fundamentals.ffoForward = { value: 3.4, period: 'FY2026E', low: 3.5, high: 3.6 }; t(paths(S.validate(d)).includes('fundamentals.ffoForward'), 'low ≤ value ≤ high'); }
+{ const d = base(); d.fundamentals.ffoForward = { value: 3.4 }; t(paths(S.validate(d)).includes('fundamentals.ffoForward.period'), 'ffoForward needs period'); }
 t.done();

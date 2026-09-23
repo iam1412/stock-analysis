@@ -66,4 +66,14 @@ t.eq(P.renderProse('a {{lit:x < y}} b', view, { mode: 'text' }), 'a x &lt; y b',
   d.extras = [{ after: 'valuation', title: 'x', headers: ['a'], rows: [null, ['b']] }, null];
   let ok = true; try { P.proseFields(d); } catch (e) { ok = false; }
   t(ok, 'proseFields tolerates null legs/custom/cases/extras/rows'); }
+// Plan 2a Task 9 — {{pffo}} token + rule B จับ P/FFO ที่ก๊อปมา
+{ const d = load(); d.fundamentals.ffoPerShare = 3.1; const v2 = C.compute(d, { seeds: { ZTS: '#e8731a' } });
+  t.eq(P.renderProse('P/FFO {{pffo}}x', v2, { mode: 'v2src' }), `P/FFO ${(120 / 3.1).toFixed(1)}x`, '{{pffo}} renders like {{pe}} (no x)');
+  d.prose.chart = `P/FFO ${K.pffoCalc(v2).text} ตอนนี้`;
+  t(P.checkRuleB(d, v2).errors.some((e) => e.token === 'pffo'), 'exact copy of P/FFO is a rule-B error'); }
+// Task 9 (controller ruling A) — {{legN.multiple}} ของขา context 'current' = ตัวคูณสด (liveMultiple) ไม่ใช่ inputs.multiple (ไม่มี)
+{ const d = load(); d.legs.push({ method: 'pe', label: 'P/E ปัจจุบัน', role: 'context', inputs: { multipleSource: 'current' } }); d.fvWeights = null;
+  const v2 = C.compute(d, { seeds: { ZTS: '#e8731a' } }), n = d.legs.length;
+  t.eq(P.renderProse(`{{leg${n}.multiple}}`, v2, { mode: 'v2src' }), (120 / 6.13).toFixed(1) + 'x', "leg multiple token of a 'current' context leg = px ÷ base");
+  t.eq(P.renderProse('{{leg1.multiple}}', v2, { mode: 'v2src' }), d.legs[0].inputs.multiple.toFixed(1) + 'x', 'fv leg multiple token still reads inputs.multiple'); }
 t.done();
