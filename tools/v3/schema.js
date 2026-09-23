@@ -6,6 +6,7 @@
  * spec: docs/superpowers/specs/2026-09-24-report-v3-json-source-design.md §3
  */
 const P = require('./prose.js');   // litsOf/malformedLitPaths — prose.js ไม่ require schema.js (ไม่มี cycle)
+const SV = require('../safe-values.js');
 const ENUM = {
   currency: ['USD', 'THB'], region: ['US', 'TH'], dateEra: ['BE', 'CE'], chgSuffix: ['รอบปี', 'ตั้งแต่ IPO'],
   epsBasis: ['gaap-ttm', 'adj-ttm', 'fy'],
@@ -89,7 +90,14 @@ function validate(doc) {
     str(m.priceNote, 'meta.priceNote', { req: false });
     if (m.themeLegacy != null) {
       if (!isObj(m.themeLegacy)) E('meta.themeLegacy', 'ต้องเป็น object หรือ null');
-      else { closed(m.themeLegacy, 'meta.themeLegacy', THEME_KEYS); for (const k of THEME_KEYS) str(m.themeLegacy[k], `meta.themeLegacy.${k}`); }
+      else {
+        closed(m.themeLegacy, 'meta.themeLegacy', THEME_KEYS);
+        for (const k of THEME_KEYS) {
+          const v = m.themeLegacy[k], p = `meta.themeLegacy.${k}`;
+          str(v, p);
+          if (typeof v === 'string' && !SV.colorOK(v, k === 'darkGrad')) E(p, `ไม่ใช่ค่าสีที่ allowlist รับ (hex/rgb/hsl/var/named${k === 'darkGrad' ? '/gradient' : ''}) — #50`);
+        }
+      }
     }
     if (m.litReasons != null) {
       if (!isObj(m.litReasons)) E('meta.litReasons', 'ต้องเป็น object { "<ข้อความใน {{lit:…}}>": "เหตุผล" }');
@@ -113,7 +121,8 @@ function validate(doc) {
       else c.data.forEach((p, i) => {
         if (!Array.isArray(p) || p.length !== 2 || !isStr(p[0]) || /[<>]/.test(p[0]) || !isNum(p[1]) || p[1] <= 0) E(`market.chart.data[${i}]`, 'ต้องเป็น ["label", ราคา>0] และ label ห้ามมี < >');
       });
-      str(c.gridFmt, 'market.chart.gridFmt', { req: false }); str(c.dataFmt, 'market.chart.dataFmt', { req: false });
+      if (c.gridFmt != null && !(typeof c.gridFmt === 'string' && SV.GRID_FMT_OK.test(c.gridFmt))) E('market.chart.gridFmt', 'ต้องเป็น v / v.toFixed(n) / Math.round(v) เท่านั้น — #50');
+      if (c.dataFmt != null && !(typeof c.dataFmt === 'string' && SV.DATA_FMT_OK.test(c.dataFmt))) E('market.chart.dataFmt', 'ต้องเป็น d[1] / d[1].toFixed(n) / Math.round(d[1]) เท่านั้น — #50');
     }
     if (mk.range52w != null) {
       if (!isObj(mk.range52w)) E('market.range52w', 'ต้องเป็น {lo, hi}');

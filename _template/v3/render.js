@@ -4,11 +4,9 @@
  * (stock-meta + report-data v2 + token {{rd:…}} + marker) แล้วให้ build.js เดินทางเดิมทุกขั้น
  * ⇒ dashboard.css / engine.js / decorateReport / injectTA / gate v2 ใช้ต่อได้โดยไม่แก้
  * DOM/class คัดจาก _template/skeleton-th.html (ห้ามคิด class ใหม่ ยกเว้น .xtab ของ extras)
- * ทุก string จาก JSON ที่ไปลง HTML แบบ prose ผ่าน esc() หรือ renderProse() เสมอ — ★ ยกเว้น gdots/theme
- * (สี hex จาก meta.themeLegacy/seeds — ไม่ผ่าน esc()) และเนื้อหาใน <script type="application/json"> (stock-meta/
- * report-data — ผ่าน JSON.stringify()/RV.styledRD() ไม่ใช่ esc()) ความปลอดภัยของสองจุดนี้พึ่ง allowlist สี/ตัวเลข +
- * JSON.parse ที่ fail-closed ใน build.js validateReportData (ไม่ใช่ escaping) — hardening เป็นชั้นที่สอง (เช่น
- * escape ตรงนี้ด้วย) วางแผนไว้ที่ Plan 2
+ * ทุก string จาก JSON ที่ไปลง HTML แบบ prose ผ่าน esc() หรือ renderProse() เสมอ · สี gdots/theme ผ่าน allowlist
+ * tools/safe-values.js ที่ schema (ต้นทาง) และ build.js (ปลายทาง) · JSON ใน <script type="application/json">
+ * ผ่าน jsonScript() ที่แปลง '<' เป็น \u003c (ชั้นที่สอง — open-item #50)
  */
 const RV = require('../../tools/report-values.js');
 const P = require('../../tools/v3/prose.js');
@@ -19,6 +17,8 @@ const METHOD_NAME = { pe: 'P/E', pbv: 'P/BV', ps: 'P/S', evsales: 'EV/Sales', ev
   pffo: 'P/FFO', ddm: 'DDM / Gordon Growth', dcf: 'DCF', ri: 'Residual Income', declared: 'มูลค่าประกาศ' };
 const SRC_NAME = { median5y: 'มัธยฐาน 5 ปี', median10y: 'มัธยฐาน 10 ปี', peer: 'ค่ากลางกลุ่มเทียบ', justified: 'justified', sector: 'ค่ากลางเซกเตอร์' };
 const dot = (c) => `<div style="width:8px;height:8px;border-radius:50%;background:${c};display:inline-block;margin:0 3px"></div>`;
+// JSON ใน <script> ห้ามมี '<' ดิบ (กัน </script> ปิดแท็กก่อนเวลา) — '<' โผล่ได้เฉพาะในสตริง JSON ⇒ \u003c ยัง parse เป็นค่าเดิม
+const jsonScript = (s) => String(s).replace(/</g, '\\u003c');
 
 // Finding 3 (postreview) — mdesc EPS ต้องระบุฐานให้ตรง: override.eps = "EPS ปรับ" (ไม่ใช่ TTM ของจริง)
 // ไม่งั้นตาม fundamentals.epsBasis (gaap-ttm/adj-ttm/fy) — เดิม mdesc พิมพ์ "EPS (TTM)" ตายตัวแม้ eps มาจาก override
@@ -62,9 +62,15 @@ function extrasHtml(doc, view, after) {
 function toV2Source(doc, view) {
   const pr = (s) => P.renderProse(s, view, { mode: 'v2src' });
   const m = doc.meta, d = view.d, s = doc.scenarios, TH = doc.currency === 'THB';
-  const cards = doc.metrics.cards.map((k) => K.renderCard(k, view, doc.metrics.notes && doc.metrics.notes[k]))
-    .concat((doc.metrics.custom || []).map((c) => ({ k: esc(c.label), v: pr(c.value), d: c.note ? pr(c.note) : '', cls: '', raw: true })));
-  const cardHtml = cards.map((c) => `<div class="metric"><div class="k">${c.raw ? c.k : esc(c.k)}</div><div class="v${c.cls ? ' ' + c.cls : ''}">${c.raw ? c.v : esc(c.v)}</div><div class="d">${c.raw ? c.d : esc(c.d)}</div></div>`).join('\n      ');
+  // (O) โน้ตใต้การ์ดเป็น prose (token + <b>) — renderCard คืนบรรทัดฐานของ template ล้วน แล้วต่อโน้ตที่ render แล้ว
+  const noteOf = (k) => doc.metrics.notes && doc.metrics.notes[k];
+  const catalogueCard = (k) => {
+    const c = K.renderCard(k, view), note = noteOf(k);
+    return { k: esc(c.k), v: esc(c.v), d: esc(c.d) + (note ? (c.d ? ' · ' : '') + pr(note) : ''), cls: c.cls };
+  };
+  const cards = doc.metrics.cards.map(catalogueCard)
+    .concat((doc.metrics.custom || []).map((c) => ({ k: esc(c.label), v: pr(c.value), d: c.note ? pr(c.note) : '', cls: '' })));
+  const cardHtml = cards.map((c) => `<div class="metric"><div class="k">${c.k}</div><div class="v${c.cls ? ' ' + c.cls : ''}">${c.v}</div><div class="d">${c.d}</div></div>`).join('\n      ');
   const legsHtml = view.legs.map((l, i) => `<div class="vmethod">
         <div><div class="mname">${i + 1}. ${esc(l.label)}</div><div class="mdesc">${esc(mdesc(doc.legs[i], view))}${l.note ? ' — ' + pr(l.note) : ''}</div></div>
         <div class="mval">${esc(view.cur + RV.fmtPrice(l.value))}</div>
@@ -111,10 +117,10 @@ function toV2Source(doc, view) {
 <title>วิเคราะห์หุ้น ${esc(m.company)} (${esc(doc.symbol)}) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="${esc(m.aiModel)}">
 <script type="application/json" id="stock-meta">
-${JSON.stringify(view.sm)}
+${jsonScript(JSON.stringify(view.sm))}
 </script>
 <script type="application/json" id="report-data">
-${RV.styledRD(view.rd)}
+${jsonScript(RV.styledRD(view.rd))}
 </script>
 <!--TEMPLATE:STYLE-->
 </head>
@@ -280,4 +286,4 @@ ${RV.styledRD(view.rd)}
 `;
 }
 
-module.exports = { toV2Source, mdesc };
+module.exports = { toV2Source, mdesc, jsonScript };

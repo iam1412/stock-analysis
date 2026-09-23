@@ -8,10 +8,18 @@
     "company": "Equinix, Inc.",
     "exchange": "NASDAQ",
     "sub": "ดาต้าเซ็นเตอร์ระดับโลก (REIT) • colocation & interconnection 260+ IBX ใน 70+ เมือง • xScale hyperscale JV (AWS/Google/Azure) • AI/cloud on-ramps • เชื่อม 10,000+ เครือข่าย",
-    "headerTags": ["Data Center REIT", "Interconnection"],
+    "headerTags": [
+      "Data Center REIT",
+      "Interconnection"
+    ],
     "analysisDate": "2026-09-21",
     "aiModel": "Claude Sonnet 5",
-    "sources": ["StockAnalysis.com", "Yahoo Finance", "Equinix Investor Relations", "SEC Filings"],
+    "sources": [
+      "StockAnalysis.com",
+      "Yahoo Finance",
+      "Equinix Investor Relations",
+      "SEC Filings"
+    ],
     "themeLegacy": {
       "accent": "#D6202A",
       "accentDark": "#9E161E",
@@ -29,12 +37,60 @@
     "chgSuffix": "รอบปี",
     "chart": {
       "data": [
-        ["ต.ค.25", 846.01], ["พ.ย.25", 753.31], ["ธ.ค.25", 766.16], ["ม.ค.26", 820.93],
-        ["ก.พ.26", 974.26], ["มี.ค.26", 980.24], ["เม.ย.26", 1082.83], ["พ.ค.26", 1068.04],
-        ["มิ.ย.26", 1042.39], ["ก.ค.26", 1019.28], ["ส.ค.26", 1046.72], ["ก.ย.26", 1059.26]
+        [
+          "ต.ค.25",
+          846.01
+        ],
+        [
+          "พ.ย.25",
+          753.31
+        ],
+        [
+          "ธ.ค.25",
+          766.16
+        ],
+        [
+          "ม.ค.26",
+          820.93
+        ],
+        [
+          "ก.พ.26",
+          974.26
+        ],
+        [
+          "มี.ค.26",
+          980.24
+        ],
+        [
+          "เม.ย.26",
+          1082.83
+        ],
+        [
+          "พ.ค.26",
+          1068.04
+        ],
+        [
+          "มิ.ย.26",
+          1042.39
+        ],
+        [
+          "ก.ค.26",
+          1019.28
+        ],
+        [
+          "ส.ค.26",
+          1046.72
+        ],
+        [
+          "ก.ย.26",
+          1059.26
+        ]
       ]
     },
-    "range52w": { "lo": 720.62, "hi": 1128.68 }
+    "range52w": {
+      "lo": 720.62,
+      "hi": 1128.68
+    }
   },
   "fundamentals": {
     "eps": 15.55,
@@ -53,22 +109,40 @@
     {
       "method": "pe",
       "label": "P/E Valuation (มัธยฐานย้อนหลัง)",
-      "inputs": { "multiple": 80.6, "multipleSource": "median5y" },
+      "inputs": {
+        "multiple": 80.6,
+        "multipleSource": "median5y"
+      },
       "note": "มัธยฐาน P/E FY2022–FY2025 (ราคาเฉลี่ยรายปี ÷ EPS diluted ช่วง 59.9–99.2x) ตัด FY2021 ที่ 140x ออกเพราะกำไรเกือบศูนย์ · เป็นตัวคูณจากประวัติ ไม่ได้มาจาก P/E ปัจจุบัน 65.7x"
     },
     {
       "method": "declared",
       "label": "P/AFFO ปัจจุบัน (บริบท — ไม่นับใน FV)",
-      "inputs": { "value": 1021, "basis": "other" },
+      "inputs": {
+        "value": 1021,
+        "basis": "other"
+      },
       "note": "AFFO/Share (TTM) $38.33 × P/AFFO 26.6x (ตัวคูณปัจจุบัน = คืนราคาตลาดโดยโครงสร้าง ไม่ใช่สมอ) — แสดงเพื่อเทียบเท่านั้น ไม่มีมัธยฐาน P/AFFO ที่วัดได้"
     }
   ],
-  "fvWeights": [1, 0],
+  "fvWeights": [
+    1,
+    0
+  ],
   "metrics": {
-    "cards": ["mcap", "pbv", "eps", "bvps", "roe", "revenue", "yield", "beta"],
+    "cards": [
+      "mcap",
+      "pbv",
+      "eps",
+      "bvps",
+      "roe",
+      "revenue",
+      "yield",
+      "beta"
+    ],
     "notes": {
       "pbv": "โครงสร้าง REIT leverage สูง",
-      "eps": "P/E ~65.7x — ไม่ใช้ประเมินค่า REIT (ค่าเสื่อมสูง)",
+      "eps": "P/E ~{{pe}}x — ไม่ใช้ประเมินค่า REIT (ค่าเสื่อมสูง)",
       "bvps": "REIT ถือสินทรัพย์จริง",
       "roe": "ROE ปกติสำหรับ REIT leverage สูง",
       "revenue": "FY2025 · Q2 2026 +16% YoY, guidance FY2026 $10.2–10.3B — 22 ปีติดรายได้โต",
@@ -76,10 +150,26 @@
       "beta": "ใกล้ตลาด — defensive REIT แต่มี tech sensitivity"
     },
     "custom": [
-      { "label": "P/AFFO (TTM)", "value": "~26.6x", "note": "AFFO/share $38.33 (2025) — มาตรวัดหลัก REIT" },
-      { "label": "P/AFFO เฉลี่ย ~5 ปี", "value": "~27x", "note": "ช่วง 22–35x ขึ้นกับ sentiment" },
-      { "label": "AFFO/Share FY2026E", "value": "$42.69–43.29", "note": "+11–13% YoY (ปรับเพิ่มหลัง Q2 2026) — ตัวชี้วัดกำไรจริงของ REIT" },
-      { "label": "AFFO Margin", "value": "~40%", "note": "AFFO/Revenue ขยับขึ้นตาม Adjusted EBITDA margin สถิติ 53% (Q2 2026)" }
+      {
+        "label": "P/AFFO (TTM)",
+        "value": "~26.6x",
+        "note": "AFFO/share $38.33 (2025) — มาตรวัดหลัก REIT"
+      },
+      {
+        "label": "P/AFFO เฉลี่ย ~5 ปี",
+        "value": "~27x",
+        "note": "ช่วง 22–35x ขึ้นกับ sentiment"
+      },
+      {
+        "label": "AFFO/Share FY2026E",
+        "value": "$42.69–43.29",
+        "note": "+11–13% YoY (ปรับเพิ่มหลัง Q2 2026) — ตัวชี้วัดกำไรจริงของ REIT"
+      },
+      {
+        "label": "AFFO Margin",
+        "value": "~40%",
+        "note": "AFFO/Revenue ขยับขึ้นตาม Adjusted EBITDA margin สถิติ 53% (Q2 2026)"
+      }
     ],
     "hint": "Data Center REIT — ใช้ AFFO เป็นตัวชี้วัดหลัก"
   },
@@ -94,13 +184,33 @@
       "why": "ฐาน AFFO/Share FY2026E $42.99 = กลางช่วง guidance $42.69–43.29 ที่บริษัทปรับเพิ่มหลัง Q2 2026 (ไม่ใช่ AFFO TTM $38.33)"
     },
     "cases": [
-      { "growth": 5, "exitMultiple": 20, "divCum": 66, "desc": "ดอกเบี้ยสูงนาน กด multiple จาก ~24x เหลือ 20x" },
-      { "growth": 9, "exitMultiple": 24, "divCum": 69, "desc": "AI demand ต่อเนื่อง ตาม guidance ใหม่ AFFO โต 9%" },
-      { "growth": 11, "exitMultiple": 26, "divCum": 72, "desc": "xScale/AI boom หนุน premium rerating ต่อเนื่องจาก guidance ที่ปรับเพิ่ม" }
+      {
+        "growth": 5,
+        "exitMultiple": 20,
+        "divCum": 66,
+        "desc": "ดอกเบี้ยสูงนาน กด multiple จาก ~24x เหลือ 20x"
+      },
+      {
+        "growth": 9,
+        "exitMultiple": 24,
+        "divCum": 69,
+        "desc": "AI demand ต่อเนื่อง ตาม guidance ใหม่ AFFO โต 9%"
+      },
+      {
+        "growth": 11,
+        "exitMultiple": 26,
+        "divCum": 72,
+        "desc": "xScale/AI boom หนุน premium rerating ต่อเนื่องจาก guidance ที่ปรับเพิ่ม"
+      }
     ],
     "note": "การคาดการณ์อิง AFFO/Share ฐาน FY2026E $42.99 (guidance กลางช่วงที่บริษัทปรับเพิ่มหลัง Q2 2026) เติบโตตาม 3 สถานการณ์ แล้วคูณด้วย P/AFFO exit multiple ที่ตั้งเป็นสมมติฐาน (ไม่ใช่ FV leg) Base case (+9%/ปี) ได้ผลตอบแทน ~+38% ใน 3 ปีรวมปันผล ราคาเป้า $1,336 สูงกว่า FV เล็กน้อย Bear case เกิดจากอัตราดอกเบี้ยสูงนานกดค่า multiple ลงสู่ 20x (จาก P/AFFO ปัจจุบัน ~24x บนฐาน FY2026E) แม้ AFFO ยังโตช้า — ผลตอบแทนแทบทรงตัว ~+4% Bull case เกิดจาก AI demand เกินคาดต่อเนื่องหนุน rerating สู่ 26x+ — ผลตอบแทน ~+57% <b>หมายเหตุ:</b> ตัวเลขเป็นประมาณการเพื่อศึกษา ไม่ใช่การรับประกันผลตอบแทน"
   },
-  "analyst": { "target": 1233.23, "n": 30, "rating": "Buy", "asOf": "2026-09-22" },
+  "analyst": {
+    "target": 1233.23,
+    "n": 30,
+    "rating": "Buy",
+    "asOf": "2026-09-22"
+  },
   "prose": {
     "chart": "ราคา EQIX {{chg}} ในรอบปี จากดีมานด์ data center ที่ถูกหนุนโดย AI workload และ hyperscaler expansion ช่วง ต.ค. 68 อยู่ที่ราว $846 ก่อนย่อลงมาที่ $753 (พ.ย. 68) จากความกังวลอัตราดอกเบี้ย จากนั้นฟื้นแรงช่วง ก.พ.–มี.ค. 69 ($974–$980) หลัง management ยืนยัน AFFO growth guidance <b>จุดสูงสุด เม.ย. 69 ที่ $1,082.83</b> (ปิดสิ้นเดือน) แล้วแกว่งในกรอบ $1,019–$1,047 ช่วง มิ.ย.–ก.ย. 69 ก่อนงบ Q3 2026 (นัดประกาศ 28 ต.ค. 2569 ตามข้อมูล StockAnalysis)",
     "valuation": "<b>ข้อจำกัด: FV รอบนี้ตั้งบนตระกูลเดียว (P/E มัธยฐานย้อนหลัง)</b> — กรอบใช้ P/E ต่ำสุด–สูงสุดที่วัดได้ 59.9x–99.2x ได้ $931–$1,543 (MOS ที่ขา 59.9x ≈ +9.7% · ที่ขา 99.2x ≈ +34%) ⇒ ผลไวต่อตัวคูณมาก P/E แบบ GAAP ไม่เหมาะกับ REIT เต็มตัวเพราะค่าเสื่อมสูง และมัธยฐาน 80.6x สูงกว่า P/E ปัจจุบัน 65.7x เพราะ EPS ในอดีตต่ำ (FY2024 ต่ำสุด $8.50) จึงควรอ่านเป็นขอบบนที่ยังไม่ยืนยันด้วยตระกูลอื่น <b>บริบท P/AFFO (ไม่นับเป็นขา):</b> AFFO/share TTM $38.33 (FY2025) ⇒ P/AFFO ปัจจุบัน ~26.6x และเทียบ AFFO FY2026E $42.99 ≈ 23.8x · ไม่มีมัธยฐาน P/AFFO ที่วัดได้จาก controller รอบนี้ จึงไม่ตั้งตัวคูณ P/AFFO เป็นขา (ตัวคูณ 26x เดิมห่างจากค่าปัจจุบันเพียง ~2% = สมอตาย) · NAV เดิม ~$1,020 (implied cap rate ~5%) ถูกถอดเพราะไม่มีตารางคำนวณที่ตรวจซ้ำได้ · เป้านักวิเคราะห์ ({{analyst.target}}) ใช้เป็นบริบทความสอดคล้องเท่านั้น ไม่ใช่ขา FV ที่มา: StockAnalysis.com, Yahoo Finance, Equinix IR, SEC Filings (ตัวเลข AFFO/guidance คงจากรอบวิเคราะห์ก่อน ไม่ได้เปิดตรวจแหล่งปฐมภูมิซ้ำรอบนี้)",
@@ -127,5 +237,6 @@
     "<b>Power/Energy Constraints:</b> ข้อจำกัดไฟฟ้า (power availability) ในตลาดหลักเช่น Northern Virginia, Singapore กดความสามารถ expand",
     "<b>Digital Realty Competition:</b> DLR และผู้เล่นในภูมิภาคแข่งขันด้านราคาและ capacity ในตลาดเดียวกัน"
   ],
-  "extras": []
+  "extras": [],
+  "_sig": "sha256:bf1efff8f928bd8cccafe1f82a783e586f2a0c1fec583cb9ada396d5ff693bdc"
 }

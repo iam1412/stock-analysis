@@ -39,7 +39,7 @@ const CATALOGUE = {
   pe: { label: () => 'P/E (TTM)', cls: 'neu',
     value: (v) => { const e = need(v, 'eps'); if (!(e > 0)) throw new Error('metrics.cards: pe — EPS ≤ 0 (ขาดทุน) P/E ไม่มีความหมาย ถอดการ์ดออก'); return v.d.pe.toFixed(1) + 'x'; },
     d: (v) => `EPS TTM ${money(v, need(v, 'eps'))}` },
-  peAvg5y: { label: () => 'P/E เฉลี่ย ~5 ปี', value: (v) => need(v, 'peAvg5y').toFixed(1) + 'x', d: () => 'มัธยฐานย้อนหลัง', cls: '' },
+  peAvg5y: { label: () => 'P/E มัธยฐาน ~5 ปี', value: (v) => need(v, 'peAvg5y').toFixed(1) + 'x', d: () => 'มัธยฐานย้อนหลัง', cls: '' },
   pbv: { label: () => 'P/BV', cls: 'neu', value: (v) => priceBoundOrThrow('pbv', v.d.pbv).toFixed(2) + 'x', d: (v) => `BVPS ${money(v, need(v, 'bvps'))}` },
   ps: { label: () => 'P/S', cls: 'neu', value: (v) => priceBoundOrThrow('ps', v.d.ps).toFixed(1) + 'x', d: (v) => `รายได้ TTM ${big(v, need(v, 'revenue'))}` },
   netIncome: { label: () => 'กำไรสุทธิ TTM', value: (v) => big(v, need(v, 'netIncome')), d: () => 'รอบ 12 เดือนล่าสุด', cls: '' },

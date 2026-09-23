@@ -27,6 +27,7 @@ const RV = require('./tools/report-values.js');  // ระยะ 2: schema/valid
 const V3C = require('./tools/v3/compute.js');
 const V3R = require('./_template/v3/render.js');
 const V3IO = require('./tools/v3/io.js');
+const SV = require('./tools/safe-values.js');   // allowlist สี/format — เจ้าของเดียวกับ tools/v3/schema.js (#50)
 // โหลดครั้งเดียวต่อ process — ไฟล์หายจริง (ยังไม่ติดตั้งระบบ tag) เท่านั้นที่ fallback เงียบ ๆ
 // ได้ · error อื่น (เช่น tags.json เขียนไม่ครบ/JSON พัง) ต้อง throw ต่อ ไม่งั้น build จะเขียน
 // reports.json ทับด้วย tags ว่างทั้ง 908 ตัวแบบไม่มี error ให้เห็น (เคยเกิดจริงตอน dev)
@@ -195,10 +196,8 @@ function validateReportData(d) {
   // whitelist นิพจน์ format (กัน inject) — แยกตามตัวแปรใน scope จริงของ engine:
   //   gridFmt อยู่ใน grid.forEach(v=>…) → ต้องใช้ v เท่านั้น  •  dataFmt อยู่ใน data.forEach((d,i)=>…) → ต้องใช้ d[1] เท่านั้น
   //   (รวมเป็น regex เดียวเหมือนเดิมจะรับ v ให้ dataFmt ได้ → runtime ReferenceError: v is not defined → กราฟ/gauge/calc ดับเงียบ ๆ)
-  const GRID_FMT_OK = /^v(\.toFixed\([0-4]\))?$|^Math\.round\(v\)$/;
-  const DATA_FMT_OK = /^d\[1\](\.toFixed\([0-4]\))?$|^Math\.round\(d\[1\]\)$/;
-  if (c.gridFmt != null && !GRID_FMT_OK.test(c.gridFmt)) throw new Error(`report-data.chart.gridFmt ต้องอ้างตัวแปร v เท่านั้น: v / v.toFixed(n) / Math.round(v) — พบ ${JSON.stringify(c.gridFmt)}`);
-  if (c.dataFmt != null && !DATA_FMT_OK.test(c.dataFmt)) throw new Error(`report-data.chart.dataFmt ต้องอ้างตัวแปร d[1] เท่านั้น: d[1] / d[1].toFixed(n) / Math.round(d[1]) — พบ ${JSON.stringify(c.dataFmt)}`);
+  if (c.gridFmt != null && !SV.GRID_FMT_OK.test(c.gridFmt)) throw new Error(`report-data.chart.gridFmt ต้องอ้างตัวแปร v เท่านั้น: v / v.toFixed(n) / Math.round(v) — พบ ${JSON.stringify(c.gridFmt)}`);
+  if (c.dataFmt != null && !SV.DATA_FMT_OK.test(c.dataFmt)) throw new Error(`report-data.chart.dataFmt ต้องอ้างตัวแปร d[1] เท่านั้น: d[1] / d[1].toFixed(n) / Math.round(d[1]) — พบ ${JSON.stringify(c.dataFmt)}`);
   need(c.min, 'chart.min'); need(c.max, 'chart.max'); if (!V2) need(c.fairLine, 'chart.fairLine');
   if (!g || typeof g !== 'object') throw new Error('report-data.gauge ต้องเป็น object');
   need(g.min, 'gauge.min'); need(g.max, 'gauge.max'); if (!V2) { need(g.cur, 'gauge.cur'); need(g.fair, 'gauge.fair'); }
@@ -218,9 +217,7 @@ function validateReportData(d) {
   // ใหม่ rgb(0 0 0 / 50%) — ในเมื่อ '<' ไม่มีทางผ่าน จึงต่อเป็น '</style' ไม่ได้อยู่ดี)
   // ยังคงกัน CSS declaration breakout (เช่น "x;}") + สีพังเงียบ (เช่น hex 5 หลัก → เส้นกราฟล่องหน) เหมือนเดิม
   const t = { ...THEME_DEFAULTS, ...(d.theme || {}) };
-  const HEX = /^#([0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/i, FN = /^(rgb|rgba|hsl|hsla)\([\d\s.,%/]+\)$/i,
-    VAR = /^var\(--[a-z0-9-]+(,[a-z0-9#%.,()\s-]+)?\)$/i, GRAD = /^(linear|radial)-gradient\([a-z0-9#%.,()\s-]+\)$/i, NAMED = /^[a-z]+$/i;
-  const colorOK = (v, grad) => { v = String(v).trim(); return HEX.test(v) || FN.test(v) || VAR.test(v) || NAMED.test(v) || (grad && GRAD.test(v)); };
+  const colorOK = SV.colorOK;
   for (const k of ['accent', 'accentDark', 'glow', 'subColor', 'headerMuted', 'chgColor', 'verdictText', 'vcellLabel']) if (t[k] != null && !colorOK(t[k], false)) throw new Error(`report-data.theme.${k} ไม่ใช่ค่าสีที่ถูกต้อง (hex/rgb/hsl/var/named): ${JSON.stringify(t[k])}`);
   for (const k of ['darkGrad', 'chgBg', 'badge']) if (t[k] != null && !colorOK(t[k], true)) throw new Error(`report-data.theme.${k} ต้องเป็นสี/gradient/var(): ${JSON.stringify(t[k])}`);
 }

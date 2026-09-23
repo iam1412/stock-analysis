@@ -57,4 +57,6 @@ t.eq(at.v, `$190.00 (${TK.TOKENS_V3['analyst.pct'](view)})`, 'analystTarget % te
 // Finding 6 — revenue ≤ 0 must throw a field-named error, never render Infinity%
 { const d = load(); d.fundamentals.ebitda = 3000000000; d.fundamentals.revenue = 0; const v2 = C.compute(d, { seeds: { ZTS: '#e8731a' } });
   t.throws(() => K.renderCard('ebitdaMargin', v2), /fundamentals\.revenue/, 'ebitdaMargin rejects revenue ≤ 0 instead of rendering Infinity%'); }
+// Plan 2a Task 2 — ค่าเป็นมัธยฐานจาก median-multiples ⇒ label ต้องไม่เขียน "เฉลี่ย" (spec §3.2 · BBL G9)
+t.eq(K.CATALOGUE.peAvg5y.label(view), 'P/E มัธยฐาน ~5 ปี', 'peAvg5y label says มัธยฐาน');
 t.done();

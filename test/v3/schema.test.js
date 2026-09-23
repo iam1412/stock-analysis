@@ -53,4 +53,14 @@ t.eq(S.OWNER('legs[0].inputs.multiple'), 'worker', 'rest is worker-owned');
   try { errs = S.validate(d); } catch (e) { t(false, `extras rows with null row must not throw — threw ${e.message}`); }
   t(errs && paths(errs).includes('extras[0].sumCol'), 'extras[0] with null row returns path-named sumCol error');
 }
+// Plan 2a Task 2 — #50 allowlist ชุดเดียวกับ build.js (tools/safe-values.js)
+{ const d = base(); d.meta.themeLegacy = { accent: 'red;}</style><script>x', accentDark: '#000', darkGrad: 'linear-gradient(135deg,#000 0%,#111 100%)', glow: '#000', subColor: '#000', headerMuted: '#000', verdictText: '#000', vcellLabel: '#000' };
+  t(paths(S.validate(d)).includes('meta.themeLegacy.accent'), 'themeLegacy colour outside allowlist → error'); }
+{ const d = base(); d.meta.themeLegacy = { accent: '#000', accentDark: '#000', darkGrad: 'url(javascript:x)', glow: '#000', subColor: '#000', headerMuted: '#000', verdictText: '#000', vcellLabel: '#000' };
+  t(paths(S.validate(d)).includes('meta.themeLegacy.darkGrad'), 'darkGrad must be colour/gradient'); }
+{ const d = base(); d.market.chart.gridFmt = 'alert(1)'; t(paths(S.validate(d)).includes('market.chart.gridFmt'), 'gridFmt allowlist'); }
+{ const d = base(); d.market.chart.dataFmt = 'v.toFixed(1)'; t(paths(S.validate(d)).includes('market.chart.dataFmt'), 'dataFmt must use d[1]'); }
+{ const d = base(); d.market.chart.gridFmt = 'v.toFixed(0)'; d.market.chart.dataFmt = 'Math.round(d[1])'; t.eq(S.validate(d), [], 'legal formats pass'); }
+for (const f of ['BBL-real', 'EQIX-real', 'FER-real', 'ZTS-real'])
+  t.eq(S.validate(JSON.parse(JSON.stringify(require(`../fixtures/v3/${f}.json`)))), [], `${f} themeLegacy passes the allowlist`);
 t.done();

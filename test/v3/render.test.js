@@ -73,4 +73,17 @@ for (const sym of ['ZTS', 'BBL', 'ZTS-real']) {
   const src = R.toV2Source(doc, view);
   t(src.includes('EPS −3%/ปี'), 'scenario col header: negative growth uses U+2212 minus ("EPS −3%/ปี")');
   t(!/EPS -3%\/ปี/.test(src), 'scenario col header: no ASCII-hyphen "-3%/ปี" left in source'); }
+// Plan 2a Task 2 — (O) token ใน metrics.notes ต้อง render (เดิม esc() เฉย ๆ ⇒ "{{pe}}" รั่ว + E13)
+{ const doc = load('ZTS'); doc.metrics.notes.pe = 'ตอนนี้ {{pe}}x เทียบ **มัธยฐาน**';
+  const view = C.compute(doc, { seeds }); const src = R.toV2Source(doc, view);
+  t(src.includes('ตอนนี้ {{rd:pe}}x เทียบ <b>มัธยฐาน</b>'), 'notes: v2-twin token becomes {{rd:pe}} and **bold** renders');
+  t(!/\{\{pe\}\}/.test(src), 'notes: no raw v3 token left');
+  const res = CR.checkHtml(expandReport(src), 'ZTS.html', { source: src });
+  t.eq(res.errors.map((e) => e.id), [], 'notes with tokens: v2 gate 0 errors (no E13)'); }
+// #50 — JSON ใน <script type="application/json"> ต้องไม่มี "<" ดิบ (ชั้นที่สองหลัง allowlist)
+t(!R.jsonScript('{"a":"</script><b>"}').includes('<'), 'jsonScript escapes every <');
+t.eq(JSON.parse(R.jsonScript('{"a":"</script>"}')).a, '</script>', 'jsonScript output still parses to the same value');
+{ const doc = load('ZTS'); const src = R.toV2Source(doc, C.compute(doc, { seeds }));
+  const blocks = src.match(/<script type="application\/json" id="(?:stock-meta|report-data)">[\s\S]*?<\/script>/g);
+  t(blocks.length === 2 && blocks.every((b) => !b.slice(b.indexOf('>') + 1, b.lastIndexOf('</script>')).includes('<')), 'both JSON script bodies are <-free'); }
 t.done();
