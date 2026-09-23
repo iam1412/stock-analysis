@@ -15,8 +15,9 @@ const TOP_ORDER = ['v', 'symbol', 'currency', 'region', 'dateEra', 'meta', 'mark
   'metrics', 'scenarios', 'analyst', 'prose', 'catalysts', 'risks', 'extras', '_sig'];
 
 function canonical(x) {
-  if (Array.isArray(x)) return '[' + x.map(canonical).join(',') + ']';
-  if (x && typeof x === 'object') return '{' + Object.keys(x).sort().map((k) => JSON.stringify(k) + ':' + canonical(x[k])).join(',') + '}';
+  if (Array.isArray(x)) return '[' + x.map((v) => (v === undefined ? 'null' : canonical(v))).join(',') + ']';
+  if (x && typeof x === 'object')
+    return '{' + Object.keys(x).sort().filter((k) => x[k] !== undefined).map((k) => JSON.stringify(k) + ':' + canonical(x[k])).join(',') + '}';
   return JSON.stringify(x);
 }
 const sha = (s) => crypto.createHash('sha256').update(s).digest('hex');
