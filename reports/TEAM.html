@@ -10,6 +10,37 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 223,
+  "values": {
+    "px": 188.65,
+    "priceDate": "2026-09-22",
+    "dateEra": "CE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 151,
+    "fvHigh": 295,
+    "eps": 6.74,
+    "shares": 253000000,
+    "scenarios": [
+      {
+        "tgt": 87,
+        "div": null
+      },
+      {
+        "tgt": 217,
+        "div": null
+      },
+      {
+        "tgt": 310,
+        "div": null
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#1a73e8",
     "accentDark": "#1557b0",
@@ -41,18 +72,14 @@
     "min": 50,
     "max": 250,
     "grid": [100, 150, 200],
-    "fairLine": 223,
     "currency": "$",
     "highlight": [5, 10]
   },
   "gauge": {
     "min": 70,
     "max": 240,
-    "cur": 188.65,
-    "fair": 223,
     "fairLabelTop": "-58px"
-  },
-  "fv": 223
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +99,11 @@
     <div class="sub">เจ้าของ Jira, Confluence, Trello • แพลตฟอร์มทำงานร่วมกัน + AI agent "Rovo"</div>
     <div class="price-row">
       <div>
-        <div class="px">$188.65<small>(TEAM)</small></div>
+        <div class="px">{{rd:px}}<small>(TEAM)</small></div>
       </div>
-      <div class="chg">▲ +11.4% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ≈ 22 ก.ย. 2026 ($192.02, 16:00 EDT)<br>
+        ราคา ≈ {{rd:priceDate}} ($192.02, 16:00 EDT)<br>
         ฟื้นตัวแรงจากจุดต่ำสุดรอบปี $56.01 (+243%) และอยู่ต่ำกว่าจุดสูงสุด 52 สัปดาห์ $198.60 เพียงราว 3%<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / Google Finance
       </div>
@@ -87,7 +114,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ FY2026 (สิ้นสุด มิ.ย. 2026) ประกาศ 6 ส.ค. 2569 (TTM)</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$47.7B</div><div class="d">~253 ล้านหุ้น (รวมทุกคลาส)</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~253 ล้านหุ้น (รวมทุกคลาส)</div></div>
       <div class="metric"><div class="k">P/E (TTM, GAAP)</div><div class="v neg">N/A</div><div class="d">ขาดทุน GAAP (EPS −$0.21) <span class="pill r">ติดลบ</span></div></div>
       <div class="metric"><div class="k">P/E Forward (non-GAAP, Yahoo)</div><div class="v neu">~28x</div><div class="d">EPS forward ~$6.74 (คือ FY2028e ไม่ใช่ปีงบถัดไป)</div></div>
       <div class="metric"><div class="k">P/E Forward (StockAnalysis)</div><div class="v neu">~35x</div><div class="d">EPS FY2027e ~$5.42 (SA forecast — ปีงบถัดไป) — 2 แหล่งคนละปีงบ</div></div>
@@ -113,7 +140,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1a73e8"></i>ราคา TEAM</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $223</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -136,11 +163,11 @@
         <div class="mval">$151</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $151 – $295</span></div>
-        <div class="r">$223</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        <b>หมายเหตุ:</b> ข้าม DDM เพราะ <b>ไม่จ่ายปันผล</b> และข้ามการ์ด P/E เพราะ GAAP ยังขาดทุน (EPS TTM −$0.21) — ประวัติ P/E ใช้ไม่ได้ (0 จุดที่ EPS &gt; 0) จึงไม่ตั้ง P/E เป้าหมายเอง • <b>FV = เฉลี่ย 2 ขาคนละตระกูล</b> (P/S ประวัติ + DCF) ที่ห่างกัน ~1.95 เท่า (ใกล้เพดาน 2 เท่า) — ความไวต่อสมมติฐาน: DCF ขาเดียว $151 (MOS −27%) · P/S ขาเดียว $295 (MOS +35%) · ที่ P/S ปัจจุบัน ~7.6x ได้ราคาตลาดพอดี • ⚠ SBC ~$1.6B/ปี (~24% ของรายได้) ไม่ถูกหักในทั้งสองขา (FCF หลังหัก SBC ติดลบ) จึงมีโอกาสที่ FV สูงเกินจริง • เป้านักวิเคราะห์เฉลี่ย ($197.52 SA / $199.23 Yahoo) เป็นบริบทเทียบเท่านั้น ไม่ใช่ขาของ FV
+        <b>หมายเหตุ:</b> ข้าม DDM เพราะ <b>ไม่จ่ายปันผล</b> และข้ามการ์ด P/E เพราะ GAAP ยังขาดทุน (EPS TTM −$0.21) — ประวัติ P/E ใช้ไม่ได้ (0 จุดที่ EPS &gt; 0) จึงไม่ตั้ง P/E เป้าหมายเอง • <b>FV = เฉลี่ย 2 ขาคนละตระกูล</b> (P/S ประวัติ + DCF) ที่ห่างกัน ~1.95 เท่า (ใกล้เพดาน 2 เท่า) — ความไวต่อสมมติฐาน: DCF ขาเดียว $151 (MOS {{rd:mos}}) · P/S ขาเดียว $295 (MOS {{rd:mos}}) · ที่ P/S ปัจจุบัน ~7.6x ได้ราคาตลาดพอดี • ⚠ SBC ~$1.6B/ปี (~24% ของรายได้) ไม่ถูกหักในทั้งสองขา (FCF หลังหัก SBC ติดลบ) จึงมีโอกาสที่ FV สูงเกินจริง • เป้านักวิเคราะห์เฉลี่ย ($197.52 SA / $199.23 Yahoo) เป็นบริบทเทียบเท่านั้น ไม่ใช่ขาของ FV
       </p>
     </div>
   </section>
@@ -151,19 +178,19 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $189</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $223</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$156<br><small>MOS 30%</small></span>
-          <span>$178<br><small>MOS 20%</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">$198<br><small>เป้า Analyst</small></span>
           <span style="text-align:right">$199<br><small>จุดสูงสุด 52 สัปดาห์</small></span>
-          <span style="text-align:right">$223<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fv}}<br><small>Fair Value</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคา $192.02 อยู่ <b>ต่ำกว่ามูลค่าเหมาะสมราว 14%</b> ตามสองขาที่ห่างกันเกือบ 2 เท่า ($151–$295) — ส่วนเผื่อนี้ยังไม่ถึงโซน MOS 20% ($178)
+        ราคา $192.02 อยู่ <b>ต่ำกว่ามูลค่าเหมาะสมราว 14%</b> ตามสองขาที่ห่างกันเกือบ 2 เท่า ($151–$295) — ส่วนเผื่อนี้ยังไม่ถึงโซน MOS 20% ({{rd:mos20}})
         Wall Street ให้ <b>Buy</b> เป็นส่วนใหญ่ — Yahoo เป้าเฉลี่ย $199.23 (n=31 นักวิเคราะห์) ส่วน StockAnalysis (Buy) เป้า $197.52 — ราคาอยู่ใกล้เป้าเฉลี่ยทั้งสองแหล่งแล้ว (upside ราว 3–4%) และใกล้จุดสูงสุด 52 สัปดาห์ $198.60
       </p>
     </div>
@@ -173,19 +200,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+15%</div>
-        <div class="txt"><b>มี Margin of Safety บางส่วน (ยังไม่ถึง 20%)</b><br>ราคาปัจจุบัน $192.02 ต่ำกว่ามูลค่าเหมาะสม $223 ราว 14% — แต่ FV มาจากสองขาที่ห่างกันเกือบ 2 เท่า และไม่หัก SBC จึงเชื่อได้จำกัด ควรรอโซน MOS 20% ที่ $178 หรือหลักฐานว่า FCF หลังหัก SBC เป็นบวก</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
+        <div class="txt"><b>มี Margin of Safety บางส่วน (ยังไม่ถึง 20%)</b><br>ราคาปัจจุบัน {{rd:px}} ต่ำกว่ามูลค่าเหมาะสม {{rd:fv}} ราว 14% — แต่ FV มาจากสองขาที่ห่างกันเกือบ 2 เท่า และไม่หัก SBC จึงเชื่อได้จำกัด ควรรอโซน MOS 20% ที่ {{rd:mos20}} หรือหลักฐานว่า FCF หลังหัก SBC เป็นบวก</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$178</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$156</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
         <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $194</div><div class="d">ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="188.65" step="1">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -194,13 +221,13 @@
 
   <!-- ===== RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $188.65 • EPS ฐาน FY2027e ~$5.42 (non-GAAP, SA consensus)</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน FY2027e ~$5.42 (non-GAAP, SA consensus)</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +10%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$87</div>
-          <div class="ret neg">รวม ~ −54% (≈ −23%/ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$7.2</span></li>
             <li><span>P/E ออก</span><span>12x</span></li>
@@ -211,8 +238,8 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +24%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$217</div>
-          <div class="ret pos">รวม ~ +15% (≈ +5%/ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$10.3</span></li>
             <li><span>P/E ออก</span><span>21x</span></li>
@@ -223,8 +250,8 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +30%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$310</div>
-          <div class="ret pos">รวม ~ +64% (≈ +18%/ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$11.9</span></li>
             <li><span>P/E ออก</span><span>26x</span></li>
@@ -273,10 +300,10 @@
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
       <h2>ธุรกิจโตแรง งบ FY2026 พลิกทำ Op Margin เป็นบวก — ราคารีเรทขึ้นมาใกล้เป้านักวิเคราะห์ เหลือส่วนเผื่อบางส่วนเท่านั้น</h2>
-      <p>Atlassian เป็นผู้นำเครื่องมือทำงานร่วมกัน/devops ที่ฝังลึกในองค์กร โตต่อเนื่อง +26% YoY และ operating margin (GAAP) พลิกเป็นบวก (~4.5%) ในงบ FY2026 (8-K ประกาศ 6 ส.ค. 2569) ทำให้ราคาหุ้นรีบาวด์ราว 2.8 เท่าจากจุดต่ำสุด สู่ $192.02 — ต่ำกว่ามูลค่าเหมาะสม ($223) ราว 14% แต่ FV มาจากสองขาที่ห่างกันเกือบ 2 เท่า ($151 DCF · $295 P/S ประวัติ) และไม่หัก SBC ~$1.6B/ปี (FCF หลังหัก SBC ติดลบ) ส่วนเผื่อนี้จึงยังไม่ถึงเกณฑ์ 20% ความเสี่ยงเชิงโครงสร้าง (AI agent vs per-seat) ยังไม่หายไป</p>
+      <p>Atlassian เป็นผู้นำเครื่องมือทำงานร่วมกัน/devops ที่ฝังลึกในองค์กร โตต่อเนื่อง +26% YoY และ operating margin (GAAP) พลิกเป็นบวก (~4.5%) ในงบ FY2026 (8-K ประกาศ 6 ส.ค. 2569) ทำให้ราคาหุ้นรีบาวด์ราว 2.8 เท่าจากจุดต่ำสุด สู่ $192.02 — ต่ำกว่ามูลค่าเหมาะสม ({{rd:fv}}) ราว 14% แต่ FV มาจากสองขาที่ห่างกันเกือบ 2 เท่า ($151 DCF · $295 P/S ประวัติ) และไม่หัก SBC ~$1.6B/ปี (FCF หลังหัก SBC ติดลบ) ส่วนเผื่อนี้จึงยังไม่ถึงเกณฑ์ 20% ความเสี่ยงเชิงโครงสร้าง (AI agent vs per-seat) ยังไม่หายไป</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$223 <span style="font-size:12px;color:#a8b6cc">($151–$295)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v ok">MOS ~ +15%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#a8b6cc">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v ok">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v">$198–$199 (+3–4%)</div></div>
       </div>
       <div class="zone">

@@ -10,6 +10,38 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 85,
+  "values": {
+    "px": 89.53,
+    "priceDate": "2026-09-22",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 71.12,
+    "fvHigh": 98.84,
+    "eps": 2.54,
+    "shares": 377000000,
+    "baseEps": 2.54,
+    "scenarios": [
+      {
+        "tgt": 81.12,
+        "div": 0
+      },
+      {
+        "tgt": 104.22,
+        "div": 0
+      },
+      {
+        "tgt": 120.93,
+        "div": 0
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#56a239",
     "accentDark": "#3F7A28",
@@ -41,18 +73,14 @@
     "min": 50,
     "max": 100,
     "grid": [60, 70, 80, 90],
-    "fairLine": 85,
     "currency": "$",
     "highlight": [0, 10]
   },
   "gauge": {
     "min": 52,
     "max": 100,
-    "cur": 89.53,
-    "fair": 85,
     "fairLabelTop": false
-  },
-  "fv": 85
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +100,11 @@
     <div class="sub">ผู้นำเครื่องวัดน้ำตาลต่อเนื่อง CGM • G7 sensor • Stelo OTC (non-insulin/prediabetes) • รายได้ recurring จาก sensor sticky • แข่ง Abbott FreeStyle Libre</div>
     <div class="price-row">
       <div>
-        <div class="px">$89.53<small>(DXCM)</small></div>
+        <div class="px">{{rd:px}}<small>(DXCM)</small></div>
       </div>
-      <div class="chg">▲ +53.8% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 22 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $54.11 / $92.59<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / DexCom Investor Relations / Macrotrends · งบ TTM ล่าสุด + FY2025
       </div>
@@ -87,8 +115,8 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ 21 ก.ย. 2569</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$33.8B</div><div class="d">หุ้นคงเหลือ ~377M หุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~35.2x</div><div class="d">EPS TTM $2.54</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">หุ้นคงเหลือ ~377M หุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM $2.54</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~3 ปี</div><div class="v">~36–86x</div><div class="d">FY23–25 (ตัดปี >100x) · FY25 ~36x</div></div>
       <div class="metric"><div class="k">Net Cash</div><div class="v pos">~$549M</div><div class="d">เงินสด $1.95B − หนี้ $1.40B</div></div>
 
@@ -113,11 +141,11 @@
       </div>
       <div class="legend">
         <span><i style="background:#5AAA3C"></i>ราคา DXCM</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $85</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        DXCM ปรับตัวขึ้นแรงในรอบปี ($58.22 ต.ค. 68 → $89.35) จุดต่ำสุดที่ $58.22 ใน ต.ค. 68 (highlight) ช่วงที่ตลาดกังวล GLP-1 และการแข่งขันจาก Abbott FreeStyle Libre ราคาฟื้นตัวช่วง ม.ค.–ก.พ. 69 ($73) ก่อนย่อลง มี.ค.–เม.ย. 69 ($60–63) แล้วพุ่งขึ้นต่อเนื่องใน ก.ค.–ส.ค. 69 ถึงจุดสูงสุดรายเดือน $91.06 ใน ส.ค. 69 เหนือ Fair Value $85 ราคาล่าสุดใกล้กรอบบน 52 สัปดาห์ ($92.59)
+        DXCM ปรับตัวขึ้นแรงในรอบปี ($58.22 ต.ค. 68 → $89.35) จุดต่ำสุดที่ $58.22 ใน ต.ค. 68 (highlight) ช่วงที่ตลาดกังวล GLP-1 และการแข่งขันจาก Abbott FreeStyle Libre ราคาฟื้นตัวช่วง ม.ค.–ก.พ. 69 ($73) ก่อนย่อลง มี.ค.–เม.ย. 69 ($60–63) แล้วพุ่งขึ้นต่อเนื่องใน ก.ค.–ส.ค. 69 ถึงจุดสูงสุดรายเดือน $91.06 ใน ส.ค. 69 เหนือ Fair Value {{rd:fv}} ราคาล่าสุดใกล้กรอบบน 52 สัปดาห์ ($92.59)
       </p>
     </div>
   </section>
@@ -135,11 +163,11 @@
         <div class="mval">$98.84</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $71.12 – $98.84</span></div>
-        <div class="r">$85</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        สองขาเป็นตระกูลอิสระ (กำไรบัญชี vs กระแสเงินสด) เฉลี่ย ($71.12 + $98.84)/2 = $84.98 ≈ $85 · ตัวคูณไม่ได้ลอกจาก P/E ปัจจุบัน (~35x): P/FCF 28x ตรงกับค่าจริง FY2025 ส่วน P/E 28x เป็นดุลยพินิจ เพราะมัธยฐานย้อนหลัง 68.2x (FY23–25: 86.3x / 68.2x / 35.9x จาก 3 จุดที่ใช้ได้ ตัด FY21–22 ที่ >100x) ถูกดันด้วยปีที่ EPS ต่ำและราคาสูง ($97–112) และอยู่นอกย่านที่ใช้ได้ (ใช้ตรง ๆ จะได้ ~$173 เกือบ 2 เท่าของราคา) · Forward P/E (EPS FY26E $2.66 × 28x ≈ $74.48) เป็นตระกูล P/E เดียวกัน จึงเป็นบริบทไม่ใช่ขาแยก · FCF TTM สูงกว่ากำไรสุทธิ ~40% — ถ้ากระแสเงินสดลดลงมาเท่ากำไรสุทธิ ($2.51/หุ้น) ขา P/FCF จะเหลือ ~$70 · เป้านักวิเคราะห์ (~$94.12) เป็นเพียงบริบทตรวจสอบ ไม่ใช่ขาของ FV · ราคาปัจจุบัน $89.35 สูงกว่า Fair Value $85 (MOS -5.1%) แทบไม่มีส่วนเผื่อสำหรับ value investor
+        สองขาเป็นตระกูลอิสระ (กำไรบัญชี vs กระแสเงินสด) เฉลี่ย ($71.12 + $98.84)/2 = $84.98 ≈ $85 · ตัวคูณไม่ได้ลอกจาก P/E ปัจจุบัน (~35x): P/FCF 28x ตรงกับค่าจริง FY2025 ส่วน P/E 28x เป็นดุลยพินิจ เพราะมัธยฐานย้อนหลัง 68.2x (FY23–25: 86.3x / 68.2x / 35.9x จาก 3 จุดที่ใช้ได้ ตัด FY21–22 ที่ >100x) ถูกดันด้วยปีที่ EPS ต่ำและราคาสูง ($97–112) และอยู่นอกย่านที่ใช้ได้ (ใช้ตรง ๆ จะได้ ~$173 เกือบ 2 เท่าของราคา) · Forward P/E (EPS FY26E $2.66 × 28x ≈ $74.48) เป็นตระกูล P/E เดียวกัน จึงเป็นบริบทไม่ใช่ขาแยก · FCF TTM สูงกว่ากำไรสุทธิ ~40% — ถ้ากระแสเงินสดลดลงมาเท่ากำไรสุทธิ ($2.51/หุ้น) ขา P/FCF จะเหลือ ~$70 · เป้านักวิเคราะห์ (~$94.12) เป็นเพียงบริบทตรวจสอบ ไม่ใช่ขาของ FV · ราคาปัจจุบัน {{rd:px}} สูงกว่า Fair Value {{rd:fv}} (MOS {{rd:mos}}) แทบไม่มีส่วนเผื่อสำหรับ value investor
       </p>
     </div>
   </section>
@@ -150,19 +178,19 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $89.53</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $85</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$59.50<br><small>MOS 30%</small></span>
-          <span>$68.00<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$85<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$94.12<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$98.84<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคา $89.35 สูงกว่า Fair Value $85 (MOS -5.1%) — อยู่ในโซนใกล้เคียงมูลค่า ยังไม่ถึงโซน MOS 20% ($68.00) หรือ MOS 30% ($59.50) ที่ value investor รอซื้อ นักวิเคราะห์ 25 รายให้เป้าเฉลี่ย $94.12 (+5.3% upside) สะท้อนมุมมองบวกระยะกลาง ผู้ที่ถือในระยะยาวยังถือต่อได้ และผู้ที่ต้องการ margin of safety มากขึ้นสามารถรอโซน $59.50–$68.00
+        ราคา $89.35 สูงกว่า Fair Value {{rd:fv}} (MOS {{rd:mos}}) — อยู่ในโซนใกล้เคียงมูลค่า ยังไม่ถึงโซน MOS 20% ({{rd:mos20}}) หรือ MOS 30% ({{rd:mos30}}) ที่ value investor รอซื้อ นักวิเคราะห์ 25 รายให้เป้าเฉลี่ย $94.12 (+5.3% upside) สะท้อนมุมมองบวกระยะกลาง ผู้ที่ถือในระยะยาวยังถือต่อได้ และผู้ที่ต้องการ margin of safety มากขึ้นสามารถรอโซน $59.50–$68.00
       </p>
     </div>
   </section>
@@ -171,19 +199,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−5%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาใกล้เคียงมูลค่าเหมาะสม — MOS ต่ำ ยังไม่มีส่วนเผื่อมากพอ</div>
       </div>
       <div class="grid g3">
-      <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$68.00</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-      <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$59.50</div><div class="d">โซนถูกมาก (deep value)</div></div>
-      <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $85</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+      <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+      <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="89.53" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -192,17 +220,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $89.53 • EPS ฐาน ~$2.54 • ไม่มีปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} • ไม่มีปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +10%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$81.12</div>
-          <div class="ret neg">−9%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$3.38</span></li>
             <li><span>P/E ออก</span><span>24x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>Margin compression ต่อเนื่อง</span></li>
           </ul>
         </div>
@@ -210,12 +238,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +15%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$104.22</div>
-          <div class="ret pos">+16%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$3.86</span></li>
             <li><span>P/E ออก</span><span>27x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>Stelo ขยาย TAM + G7 โต</span></li>
           </ul>
         </div>
@@ -223,19 +251,19 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +18%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$120.93</div>
-          <div class="ret pos">+35%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$4.17</span></li>
             <li><span>P/E ออก</span><span>29x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Stelo breakthrough + GLP-1 ร่วมมือ</span></li>
           </ul>
         </div>
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      การคาดการณ์อิง EPS TTM $2.54 โดยไม่รวมปันผล (DXCM ไม่จ่ายปันผล) Base case สมมติ EPS growth +15%/ปี ต่ำกว่า revenue CAGR 17% (FY21–25) เพื่อสะท้อนแรงกดดันต่อ margin อย่างระมัดระวัง (consensus FY26E $2.66 → FY27E $3.12 = +17%) Bull case อิงการฟื้นตัว margin + Stelo OTC เร่ง TAM ใหม่ Bear case สมมติ margin ยังถูกกด Abbott และ GLP-1 ยังไม่คลี่คลาย ราคา ณ ปัจจุบัน $89.35 สูงกว่า FV เล็กน้อย (MOS -5.1%) — upside หลักมาจาก earnings growth ไม่ใช่ re-rating
+      การคาดการณ์อิง EPS TTM $2.54 โดยไม่รวมปันผล (DXCM ไม่จ่ายปันผล) Base case สมมติ EPS growth +15%/ปี ต่ำกว่า revenue CAGR 17% (FY21–25) เพื่อสะท้อนแรงกดดันต่อ margin อย่างระมัดระวัง (consensus FY26E $2.66 → FY27E $3.12 = +17%) Bull case อิงการฟื้นตัว margin + Stelo OTC เร่ง TAM ใหม่ Bear case สมมติ margin ยังถูกกด Abbott และ GLP-1 ยังไม่คลี่คลาย ราคา ณ ปัจจุบัน $89.35 สูงกว่า FV เล็กน้อย (MOS {{rd:mos}}) — upside หลักมาจาก earnings growth ไม่ใช่ re-rating
     </p>
   </section>
 
@@ -273,10 +301,10 @@
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
       <h2>CGM Leader ราคาเหมาะสม — Margin เริ่มฟื้น แต่แทบไม่มีส่วนเผื่อ</h2>
-      <p>DexCom คือผู้นำ CGM ที่มีคุณภาพสูง (ROE TTM ~38.5%, revenue CAGR 17% FY21–25) P/E ปัจจุบัน ~35x ต่ำกว่าปีก่อนหน้า (FY23 ~86x) ราคาปัจจุบัน $89.35 สูงกว่า Fair Value $85 (MOS -5.1%) — FV มาจาก P/E 28x และ P/FCF 28x (ตัวคูณ FY2025 ที่วัดจริง) อยู่ในกรอบมูลค่าที่สมเหตุสมผลสำหรับทั้ง value และ growth investor ที่เชื่อว่า margin จะฟื้นต่อ (GM TTM 62.5% จาก 60.1%) นักวิเคราะห์ 25 รายให้เป้าเฉลี่ย $94.12 (+5.3%) งบถัดไปคาด 29 ต.ค. 2569</p>
+      <p>DexCom คือผู้นำ CGM ที่มีคุณภาพสูง (ROE TTM ~38.5%, revenue CAGR 17% FY21–25) P/E ปัจจุบัน ~35x ต่ำกว่าปีก่อนหน้า (FY23 ~86x) ราคาปัจจุบัน {{rd:px}} สูงกว่า Fair Value {{rd:fv}} (MOS {{rd:mos}}) — FV มาจาก P/E 28x และ P/FCF 28x (ตัวคูณ FY2025 ที่วัดจริง) อยู่ในกรอบมูลค่าที่สมเหตุสมผลสำหรับทั้ง value และ growth investor ที่เชื่อว่า margin จะฟื้นต่อ (GM TTM 62.5% จาก 60.1%) นักวิเคราะห์ 25 รายให้เป้าเฉลี่ย $94.12 (+5.3%) งบถัดไปคาด 29 ต.ค. 2569</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$85 <span style="font-size:12px;color:#cab9a8">($71.12–$98.84)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v bad">MOS ~ −5%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v bad">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v">~$94.12 (Strong Buy)</div></div>
       </div>
       <div class="zone">

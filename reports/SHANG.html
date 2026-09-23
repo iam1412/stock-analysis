@@ -10,6 +10,37 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 47.14,
+  "values": {
+    "px": 43.5,
+    "priceDate": "2026-09-22",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "eps": 2.74,
+    "shares": 130000000,
+    "dps": 1,
+    "baseEps": 1.92,
+    "scenarios": [
+      {
+        "tgt": 28.22,
+        "div": 2
+      },
+      {
+        "tgt": 54.83,
+        "div": 3
+      },
+      {
+        "tgt": 66.69,
+        "div": 3.9
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#b51ded",
     "accentDark": "#870fb3",
@@ -40,17 +71,13 @@
     "min": 35,
     "max": 55,
     "grid": [40, 45, 50],
-    "fairLine": 47.14,
     "currency": "฿",
     "highlight": [1, 4]
   },
   "gauge": {
     "min": 25,
-    "max": 55,
-    "cur": 43.5,
-    "fair": 47.14
-  },
-  "fv": 47.14
+    "max": 55
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -70,11 +97,11 @@
     <div class="sub">โรงแรมแชงกรี-ลา กรุงเทพฯ (ริมแม่น้ำเจ้าพระยา) • โรงแรมแชงกรี-ลา เชียงใหม่ • เครือ Shangri-La Asia</div>
     <div class="price-row">
       <div>
-        <div class="px">฿43.50<small>(SHANG)</small></div>
+        <div class="px">{{rd:px}}<small>(SHANG)</small></div>
       </div>
-      <div class="chg">▼ −9.4% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 22 ก.ย. 2569 (Yahoo Finance, StockAnalysis.com — ตรงกัน 0%)<br>
+        ราคา ณ {{rd:priceDate}} (Yahoo Finance, StockAnalysis.com — ตรงกัน 0%)<br>
         กรอบ 52 สัปดาห์ ฿38.00 – ฿61.50<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, SET (ตลาดหลักทรัพย์แห่งประเทศไทย)
       </div>
@@ -86,7 +113,7 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">TTM ล่าสุด ณ 21 ก.ย. 2569 · งวดงบปีล่าสุด FY2568 · SET / StockAnalysis.com</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">฿5,655.00 ล้าน</div><div class="d">130.00 ล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~15.9x</div><div class="d">อิง EPS TTM ฿2.74 (Yahoo, StockAnalysis, ตารางงบ ตรงกัน)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">อิง EPS TTM ฿2.74 (Yahoo, StockAnalysis, ตารางงบ ตรงกัน)</div></div>
       <div class="metric"><div class="k">EV/EBITDA (ปัจจุบัน)</div><div class="v neu">~1.6x</div><div class="d">EBITDA TTM ฿573.72 ล้าน (EBIT+D&A, StockAnalysis ณ 7 ส.ค. 69) — เงินสดสุทธิสูงกดตัวคูณต่ำมาก</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">0.73x</div><div class="d">ต่ำกว่า 1 เท่า — สินทรัพย์บันทึกราคาทุนเดิม</div></div>
 
@@ -97,7 +124,7 @@
 
       <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿2,150 ล้าน</div><div class="d">−5.2% YoY</div></div>
       <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">67.8%</div><div class="d">สูงตามธุรกิจโรงแรมหรู</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.3%</div><div class="d">จ่ายจริง ~฿1.00/หุ้น (StockAnalysis)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">จ่ายจริง ~฿1.00/หุ้น (StockAnalysis)</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">0.13</div><div class="d">ต่ำผิดปกติจากสภาพคล่องต่ำมาก ไม่ใช่ความผันผวนต่ำจริง</div></div>
     </div>
   </section>
@@ -111,7 +138,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#b51ded"></i>ราคา SHANG</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿47.14</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -134,10 +161,10 @@
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสม (Fair Value) — เฉลี่ย 2 ขา P/E<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบเต็ม ฿46.85 – ฿47.42</span></div>
-        <div class="r">฿47.14</div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        <b>การประเมินตระกูลเดียว (single-family):</b> ทั้งสองขาใช้ P/E ย้อนหลังของบริษัทเอง จึงไม่มีตระกูลอิสระมายืนยัน · ความอ่อนไหวของ MOS: ถ้าใช้ขา 1 อย่างเดียว MOS +7.7% · ขา 2 อย่างเดียว +6.6% · ถ้าใช้ EPS FY2568 ล่าสุด ฿1.85 × 24.7x = ฿45.70 MOS +4.3% — ทุกกรณีส่วนเผื่อความปลอดภัยบาง · ไม่นับ EV/EBITDA เป็นขา FV: SHANG ถือเงินสด ~฿4,725 ล้าน (ตารางงบ StockAnalysis) ราว 83% ของมูลค่าตลาด ฿5,687.50 ล้าน ทำให้ EV/EBITDA ปัจจุบันต่ำมาก (~1.6x ณ 7 ส.ค. 69) แต่ไม่มีตัวคูณมัธยฐานที่วัดได้ และผู้ถือหุ้นใหญ่ (73.6%) ไม่มีสัญญาณจ่ายเงินสดพิเศษ จึงเก็บไว้เป็นบริบทเท่านั้น
+        <b>การประเมินตระกูลเดียว (single-family):</b> ทั้งสองขาใช้ P/E ย้อนหลังของบริษัทเอง จึงไม่มีตระกูลอิสระมายืนยัน · ความอ่อนไหวของ MOS: ถ้าใช้ขา 1 อย่างเดียว MOS {{rd:mos}} · ขา 2 อย่างเดียว +6.6% · ถ้าใช้ EPS FY2568 ล่าสุด ฿1.85 × 24.7x = ฿45.70 MOS {{rd:mos}} — ทุกกรณีส่วนเผื่อความปลอดภัยบาง · ไม่นับ EV/EBITDA เป็นขา FV: SHANG ถือเงินสด ~฿4,725 ล้าน (ตารางงบ StockAnalysis) ราว 83% ของมูลค่าตลาด ฿5,687.50 ล้าน ทำให้ EV/EBITDA ปัจจุบันต่ำมาก (~1.6x ณ 7 ส.ค. 69) แต่ไม่มีตัวคูณมัธยฐานที่วัดได้ และผู้ถือหุ้นใหญ่ (73.6%) ไม่มีสัญญาณจ่ายเงินสดพิเศษ จึงเก็บไว้เป็นบริบทเท่านั้น
       </p>
       <p style="font-size:12px;color:var(--muted);margin-top:10px;line-height:1.6;border-top:1px solid var(--line,#3a2a42);padding-top:10px">
         ⚠️ <b>ข้อจำกัดที่ต้องเปิดเผย (Full Disclosure):</b> (1) ที่ดินและอาคารบันทึกด้วยราคาทุนเดิมตามมาตรฐานบัญชี งบสรุปบน StockAnalysis.com ไม่แสดงรายการตีราคาสินทรัพย์ใหม่ — BVPS ~฿59.80 จึงอาจต่ำกว่ามูลค่าตลาดจริงของที่ดินริมแม่น้ำเจ้าพระยา แต่ไม่มีข้อมูลเพียงพอให้ประเมินเอง (2) หุ้นมีสภาพคล่องต่ำมาก ปริมาณซื้อขายเฉลี่ยเพียง ~207 หุ้น/วัน (StockAnalysis.com) และ free float เพียง 19.26% (SET, มี.ค. 2569) โดย Shangri-La Asia Limited ถือหุ้นราว 73.6% (Simplywall.st อ้างอิงข้อมูล SET) MOS ที่คำนวณได้อาจทำกำไรจริงได้ยากเพราะซื้อขายยาก (3) ไม่มีนักวิเคราะห์ติดตามหุ้นนี้อย่างสม่ำเสมอ จึงไม่มีราคาเป้าหมายจากภายนอกมาเทียบ (4) ไม่พบข้อมูล occupancy/ADR/RevPAR เฉพาะของโรงแรมแชงกรี-ลา ตัวเลขอุตสาหกรรมที่อ้างเป็นระดับกรุงเทพฯ/ประเทศ (5) ตัวคูณ P/E มัธยฐาน 24.7x วัดจากเพียง 3 ปีที่มี EPS เป็นบวก (ช่วง 17.1–49.1x) ใช้ราคาเฉลี่ยของงวดของหุ้นสภาพคล่องต่ำ จึงมีความไม่แน่นอนสูง และทั้งสองขา FV เป็นตระกูล P/E เดียวกัน (6) EPS TTM ฿2.74 สูงกว่า FY2568 (฿1.85) มาก จึงไม่ใช้เป็นฐาน EPS ของขาหลัก แต่ใช้เป็นฐานของขาที่สองคู่กับตัวคูณต่ำสุด
@@ -151,18 +178,18 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿43.50</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿47.14</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿33.00<br><small>MOS 30%</small></span>
-          <span>฿37.71<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿47.14<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">฿47.42<br><small>กรอบบน (ขา P/E กำไรปกติ)</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน ฿43.75 ต่ำกว่ามูลค่าเหมาะสม ฿47.14 (เฉลี่ย 2 ขา P/E) ราว 7.2% ส่วนเผื่อความปลอดภัยบาง ยังไม่ถึงโซน MOS 20% (฿37.71) ไม่แสดงป้ายราคาเป้าหมายนักวิเคราะห์เพราะไม่มีนักวิเคราะห์ติดตามหุ้นนี้อย่างสม่ำเสมอ และทั้งสองขาเป็นตระกูล P/E เดียวกัน โปรดพิจารณาความเสี่ยงสภาพคล่องต่ำมากก่อนตัดสินใจซื้อขายที่ระดับราคาใด ๆ
+        ราคาปัจจุบัน {{rd:px}} ต่ำกว่ามูลค่าเหมาะสม {{rd:fv}} (เฉลี่ย 2 ขา P/E) ราว 7.2% ส่วนเผื่อความปลอดภัยบาง ยังไม่ถึงโซน MOS 20% ({{rd:mos20}}) ไม่แสดงป้ายราคาเป้าหมายนักวิเคราะห์เพราะไม่มีนักวิเคราะห์ติดตามหุ้นนี้อย่างสม่ำเสมอ และทั้งสองขาเป็นตระกูล P/E เดียวกัน โปรดพิจารณาความเสี่ยงสภาพคล่องต่ำมากก่อนตัดสินใจซื้อขายที่ระดับราคาใด ๆ
       </p>
     </div>
   </section>
@@ -171,19 +198,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+8%</div>
-        <div class="txt"><b>Margin of Safety บาง ~7% — ราคาต่ำกว่ามูลค่าเหมาะสมเล็กน้อย ยังไม่ถึงโซน MOS 20%</b><br>MOS +7.2% เทียบ Fair Value ฿47.14 (เฉลี่ย 2 ขา P/E ตระกูลเดียว) ความอ่อนไหว: MOS อยู่ราว +4% ถึง +8% ตามฐาน EPS ที่เลือก และด้วยสภาพคล่องต่ำมาก การซื้อ/ขายจริงอาจทำไม่ได้ในราคาที่คำนวณไว้</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
+        <div class="txt"><b>Margin of Safety บาง {{rd:mos}} — ราคาต่ำกว่ามูลค่าเหมาะสมเล็กน้อย ยังไม่ถึงโซน MOS 20%</b><br>MOS {{rd:mos}} เทียบ Fair Value {{rd:fv}} (เฉลี่ย 2 ขา P/E ตระกูลเดียว) ความอ่อนไหว: MOS อยู่ราว {{rd:mos}} ถึง +8% ตามฐาน EPS ที่เลือก และด้วยสภาพคล่องต่ำมาก การซื้อ/ขายจริงอาจทำไม่ได้ในราคาที่คำนวณไว้</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿37.71</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿33.00</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
         <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿37.71</div><div class="d">ต่ำกว่า MOS 20% ของมูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="43.5" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -192,17 +219,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿43.50 • EPS ฐาน ~฿1.92 (เฉลี่ย FY2566–68) • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} (เฉลี่ย FY2566–68){{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿28.22</div>
-          <div class="ret neg">≈ −30.5% (3 ปี, ~−11.4%/ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿1.65</span></li>
             <li><span>P/E ออก</span><span>17.1x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿2.0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>นักท่องเที่ยวจีนฟื้นตัวช้ากว่าคาด ผลประกอบการชะลอต่อเนื่อง ตัวคูณลงมาที่ต่ำสุดที่วัดได้ (FY2567)</span></li>
           </ul>
         </div>
@@ -210,12 +237,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿54.83</div>
-          <div class="ret pos">≈ +32.9% (3 ปี, ~+9.9%/ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿2.22</span></li>
             <li><span>P/E ออก</span><span>24.7x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿3.0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>ท่องเที่ยวฟื้นตัวต่อเนื่องปานกลางตามคาดการณ์อุตสาหกรรม (จีน 6–7 ล้านคนปี 2569) ไม่ได้กลับสู่ระดับก่อนโควิดเต็มที่</span></li>
           </ul>
         </div>
@@ -223,12 +250,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿66.69</div>
-          <div class="ret pos">≈ +62.3% (3 ปี, ~+17.5%/ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿2.70</span></li>
             <li><span>P/E ออก</span><span>24.7x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿3.9</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>นักท่องเที่ยวจีนกลับมาแข็งแกร่งกว่าคาด ADR/RevPAR โรงแรมหรูกรุงเทพเร่งตัว ตัวคูณเท่ามัธยฐานย้อนหลัง ส่วนต่างมาจากกำไรโตเร็วกว่า</span></li>
           </ul>
         </div>
@@ -272,10 +299,10 @@
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
       <h2>ถือ/รอสะสมต่ำกว่า ฿37.71 — ส่วนเผื่อบางราว 7% สภาพคล่องต่ำมากเป็นความเสี่ยงหลัก</h2>
-      <p>SHANG ซื้อขายที่ ฿43.75 ต่ำกว่ามูลค่าเหมาะสม ฿47.14 (เฉลี่ย 2 ขา P/E: กำไรปกติ ฿1.92 × มัธยฐาน 24.7x และ EPS TTM ฿2.74 × 17.1x) ราว 7.2% (MOS +7.2%) ทั้งสองขาเป็นตระกูล P/E เดียวกันและตัวคูณวัดจากเพียง 3 ปี จึงเป็นโหวตเดียวที่ไม่แน่นอนสูง (MOS อยู่ราว +4% ถึง +8% ตามฐาน EPS) งบดุลแข็งแกร่งมาก เงินสด ~฿4,725 ล้านราว 83% ของมูลค่าตลาด แทบไม่มีหนี้ แต่ผู้ถือหุ้นใหญ่ 73.6% ไม่มีสัญญาณจ่ายคืนพิเศษ จึงไม่นับเป็นส่วนของ FV และที่ดิน/อาคารบันทึกราคาทุนเดิมอาจต่ำกว่ามูลค่าตลาดจริง ความเสี่ยงสภาพคล่องต่ำมาก (ปริมาณซื้อขายเฉลี่ย ~207 หุ้น/วัน, free float 19.26%) ทำให้ MOS ที่คำนวณได้อาจทำกำไรจริงได้ยาก เหมาะกับนักลงทุนระยะยาวที่เข้าใจและยอมรับความเสี่ยงนี้เท่านั้น</p>
+      <p>SHANG ซื้อขายที่ ฿43.75 ต่ำกว่ามูลค่าเหมาะสม {{rd:fv}} (เฉลี่ย 2 ขา P/E: กำไรปกติ ฿1.92 × มัธยฐาน 24.7x และ EPS TTM ฿2.74 × 17.1x) ราว 7.2% (MOS {{rd:mos}}) ทั้งสองขาเป็นตระกูล P/E เดียวกันและตัวคูณวัดจากเพียง 3 ปี จึงเป็นโหวตเดียวที่ไม่แน่นอนสูง (MOS อยู่ราว {{rd:mos}} ถึง +8% ตามฐาน EPS) งบดุลแข็งแกร่งมาก เงินสด ~฿4,725 ล้านราว 83% ของมูลค่าตลาด แทบไม่มีหนี้ แต่ผู้ถือหุ้นใหญ่ 73.6% ไม่มีสัญญาณจ่ายคืนพิเศษ จึงไม่นับเป็นส่วนของ FV และที่ดิน/อาคารบันทึกราคาทุนเดิมอาจต่ำกว่ามูลค่าตลาดจริง ความเสี่ยงสภาพคล่องต่ำมาก (ปริมาณซื้อขายเฉลี่ย ~207 หุ้น/วัน, free float 19.26%) ทำให้ MOS ที่คำนวณได้อาจทำกำไรจริงได้ยาก เหมาะกับนักลงทุนระยะยาวที่เข้าใจและยอมรับความเสี่ยงนี้เท่านั้น</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿47.14 <span style="font-size:12px;color:#cab9a8">(กรอบเต็ม ฿46.85–฿47.42)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v bad">MOS ~ +8%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">(กรอบเต็ม ฿46.85–฿47.42)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v bad">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v">ไม่มีข้อมูล (ไม่มีนักวิเคราะห์ติดตาม)</div></div>
       </div>
       <div class="zone">
@@ -288,7 +315,7 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • หุ้นนี้มีสภาพคล่องต่ำมากและ free float ต่ำ ผู้ลงทุนควรพิจารณาความเสี่ยงด้านสภาพคล่องเป็นพิเศษ • ราคา ณ 22 ก.ย. 2569 จาก Yahoo Finance และ StockAnalysis.com (ตรงกัน) • งบการเงิน/อัตราส่วนจาก StockAnalysis.com และ SET Factsheet • ข้อมูลผู้ถือหุ้น/free float จาก SET และ Simplywall.st (อ้างอิงข้อมูล SET) • ข้อมูลนักท่องเที่ยว/RevPAR จาก Krungsri Research, Nation Thailand, Travel And Tour World
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • หุ้นนี้มีสภาพคล่องต่ำมากและ free float ต่ำ ผู้ลงทุนควรพิจารณาความเสี่ยงด้านสภาพคล่องเป็นพิเศษ • ราคา ณ {{rd:priceDate}} จาก Yahoo Finance และ StockAnalysis.com (ตรงกัน) • งบการเงิน/อัตราส่วนจาก StockAnalysis.com และ SET Factsheet • ข้อมูลผู้ถือหุ้น/free float จาก SET และ Simplywall.st (อ้างอิงข้อมูล SET) • ข้อมูลนักท่องเที่ยว/RevPAR จาก Krungsri Research, Nation Thailand, Travel And Tour World
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

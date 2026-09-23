@@ -10,6 +10,40 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 243.28,
+  "values": {
+    "px": 307.5,
+    "priceDate": "2026-09-22",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 239.51,
+    "fvHigh": 247.04,
+    "eps": 12.54,
+    "shares": 78740000,
+    "dps": 1.2,
+    "bvps": 69.3,
+    "baseEps": 12.54,
+    "scenarios": [
+      {
+        "tgt": 243.4,
+        "div": 3.65
+      },
+      {
+        "tgt": 422.88,
+        "div": 3.71
+      },
+      {
+        "tgt": 618,
+        "div": 3.8
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#679e2e",
     "accentDark": "#4b7322",
@@ -40,17 +74,13 @@
     "min": 200,
     "max": 400,
     "grid": [250, 300, 350],
-    "fairLine": 243.28,
     "currency": "$",
     "highlight": [0, 7]
   },
   "gauge": {
     "min": 150,
-    "max": 440,
-    "cur": 307.5,
-    "fair": 243.28
-  },
-  "fv": 243.28
+    "max": 440
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -70,11 +100,11 @@
     <div class="sub">แพลตฟอร์มที่ปรึกษาการเงินอิสระเบอร์ 1 ในสหรัฐฯ • Broker-Dealer & RIA Custody • รายได้หลักจากค่าธรรมเนียม + ดอกเบี้ยเงินสดลูกค้า (Client Cash Sweep)</div>
     <div class="price-row">
       <div>
-        <div class="px">$307.50<small>(LPLA)</small></div>
+        <div class="px">{{rd:px}}<small>(LPLA)</small></div>
       </div>
-      <div class="chg">▼ −18.5% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 22 ก.ย. 2569 (StockAnalysis.com, ตรงกับ Yahoo Finance)<br>
+        ราคา ณ {{rd:priceDate}} (StockAnalysis.com, ตรงกับ Yahoo Finance)<br>
         กรอบ 52 สัปดาห์ $260.15 – $400.16<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, LPL Financial ข่าวผลประกอบการ Q2/2569 (GlobeNewswire/SEC 8-K)
       </div>
@@ -85,8 +115,8 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM ณ Q2/2569 (สิ้นสุด มิ.ย. 2569)</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">$24.2B</div><div class="d">78.74M หุ้นคงเหลือ (StockAnalysis)</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~24.5x</div><div class="d">EPS TTM $12.54</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">78.74M หุ้นคงเหลือ (StockAnalysis)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM $12.54</div></div>
       <div class="metric"><div class="k">P/E มัธยฐาน 5 ปี</div><div class="v">~19.7x</div><div class="d">ช่วง 16.3–33.1x (วัดจริงรายปี 2564–2568)</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~4.4x</div><div class="d">BVPS ประมาณ $69.3 (จาก NI/ROE)</div></div>
 
@@ -111,7 +141,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#679e2e"></i>ราคา LPLA</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $243.28</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -133,11 +163,11 @@
         <div class="mval">$239.51</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $239.51 – $247.04</span></div>
-        <div class="r">$243.28</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        การประเมินนี้เป็นตระกูลเดียว (P/E เทียบมัธยฐานประวัติของหุ้นเอง) สองวิธีจึงใกล้กันโดยธรรมชาติ (ต่างกันเพียง ~3%) และไม่ใช่การยืนยันอิสระ — ความไวสูง: ถ้าใช้ P/E 25x FV จะเป็น ~$313.50 (MOS ~ −5%) ถ้า 33.1x (สูงสุดในประวัติ) FV ~$415.07 (MOS ~ +21%) ผลสรุป "แพงกว่ามูลค่า" จึงขึ้นกับการเชื่อว่าตัวคูณจะกลับสู่ค่ากลางเดิม เป้าเฉลี่ยนักวิเคราะห์ (17 ราย) ใช้เป็นบริบทเท่านั้น ไม่ได้เป็นส่วนของ FV
+        การประเมินนี้เป็นตระกูลเดียว (P/E เทียบมัธยฐานประวัติของหุ้นเอง) สองวิธีจึงใกล้กันโดยธรรมชาติ (ต่างกันเพียง ~3%) และไม่ใช่การยืนยันอิสระ — ความไวสูง: ถ้าใช้ P/E 25x FV จะเป็น ~$313.50 (MOS ~ {{rd:mos}}) ถ้า 33.1x (สูงสุดในประวัติ) FV ~$415.07 (MOS ~ {{rd:mos}}) ผลสรุป "แพงกว่ามูลค่า" จึงขึ้นกับการเชื่อว่าตัวคูณจะกลับสู่ค่ากลางเดิม เป้าเฉลี่ยนักวิเคราะห์ (17 ราย) ใช้เป็นบริบทเท่านั้น ไม่ได้เป็นส่วนของ FV
       </p>
     </div>
   </section>
@@ -148,14 +178,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $307.50</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $243.28</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$170.30<br><small>MOS 30%</small></span>
-          <span>$194.62<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$243.28<br><small>Fair Value</small></span>
-          <span style="text-align:right">$247.04<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$430.00<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -169,19 +199,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−26%</div>
-        <div class="txt"><b>ไม่มี Margin of Safety (ราคาแพงกว่ามูลค่าเหมาะสมมาก)</b><br>ราคาปัจจุบัน $328.09 สูงกว่า FV เฉลี่ย $243.28 ประมาณ 34.9% เพราะตลาดให้พรีเมียมเหนือมัธยฐาน P/E ย้อนหลัง 5 ปีของหุ้นเอง (19.7x) — ประเมินตระกูลเดียว ผลไวต่อตัวคูณ (ดูหมวด 3) นักลงทุนที่เน้น margin of safety ควรรอย่อลงใกล้โซน MOS 20% ($194.62) ก่อนทยอยสะสม</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
+        <div class="txt"><b>ไม่มี Margin of Safety (ราคาแพงกว่ามูลค่าเหมาะสมมาก)</b><br>ราคาปัจจุบัน {{rd:px}} สูงกว่า FV เฉลี่ย {{rd:fv}} ประมาณ 34.9% เพราะตลาดให้พรีเมียมเหนือมัธยฐาน P/E ย้อนหลัง 5 ปีของหุ้นเอง (19.7x) — ประเมินตระกูลเดียว ผลไวต่อตัวคูณ (ดูหมวด 3) นักลงทุนที่เน้น margin of safety ควรรอย่อลงใกล้โซน MOS 20% ({{rd:mos20}}) ก่อนทยอยสะสม</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$194.62</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$170.30</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $243.28</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="307.5" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -190,17 +220,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $307.50 • EPS ฐาน ~$12.54 • รวมปันผล • ผูกกับสมมติฐานดอกเบี้ย/เงินสดลูกค้า</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}} • ผูกกับสมมติฐานดอกเบี้ย/เงินสดลูกค้า</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS -1%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$243.40</div>
-          <div class="ret neg">-19.7% (3 ปี, ~-7.1%/ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$12.17</span></li>
             <li><span>P/E ออก</span><span>20x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$3.65</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>เฟดเร่งลดดอกเบี้ย รายได้ cash sweep หดตัวแรง มาร์จิ้นบีบ + ต้นทุนควบรวม Atria/Commonwealth บานปลาย</span></li>
           </ul>
         </div>
@@ -208,12 +238,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +12%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$422.88</div>
-          <div class="ret pos">+38.7% (3 ปี, ~+11.5%/ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$17.62</span></li>
             <li><span>P/E ออก</span><span>24x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$3.71</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>ดอกเบี้ยลงแบบค่อยเป็นค่อยไป (soft landing) M&A synergy ทยอยรับรู้ ที่ปรึกษา/AUA โตต่อเนื่องตามแนวโน้มปัจจุบัน</span></li>
           </ul>
         </div>
@@ -221,12 +251,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +18%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$618.00</div>
-          <div class="ret pos">+102.2% (3 ปี, ~+26.5%/ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$20.60</span></li>
             <li><span>P/E ออก</span><span>30x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$3.80</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>เศรษฐกิจแข็งแกร่ง ตลาดหุ้นขาขึ้นหนุน AUM recruit ที่ปรึกษาเร่งตัว + synergy M&A เกินคาด นักลงทุนให้พรีเมียมมัลติเปิลสูงขึ้น</span></li>
           </ul>
         </div>
@@ -268,10 +298,10 @@
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
       <h2>ธุรกิจแข็งแกร่ง แต่ราคาซื้อขายสูงกว่ามูลค่าเหมาะสมมากเมื่อเทียบมัธยฐานประวัติ — รอจังหวะย่อ</h2>
-      <p>LPL Financial เป็นแพลตฟอร์มที่ปรึกษาการเงินอิสระเบอร์ 1 ในสหรัฐฯ ด้วยสินทรัพย์ลูกค้า $2.6 ล้านล้านดอลลาร์ โมเดลธุรกิจ asset-light ให้ ROE สูง (~18%) แต่กำไรส่วนสำคัญพึ่งพารายได้ดอกเบี้ยจาก client cash sweep ทำให้อ่อนไหวต่อทิศทางดอกเบี้ยนโยบายอย่างมาก ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสมมาก (MOS -34.9%) เพราะตลาดให้พรีเมียมเหนือมัธยฐาน P/E ย้อนหลัง 5 ปีของหุ้นเอง แม้ยังต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์อยู่มาก</p>
+      <p>LPL Financial เป็นแพลตฟอร์มที่ปรึกษาการเงินอิสระเบอร์ 1 ในสหรัฐฯ ด้วยสินทรัพย์ลูกค้า $2.6 ล้านล้านดอลลาร์ โมเดลธุรกิจ asset-light ให้ ROE สูง (~18%) แต่กำไรส่วนสำคัญพึ่งพารายได้ดอกเบี้ยจาก client cash sweep ทำให้อ่อนไหวต่อทิศทางดอกเบี้ยนโยบายอย่างมาก ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสมมาก (MOS {{rd:mos}}) เพราะตลาดให้พรีเมียมเหนือมัธยฐาน P/E ย้อนหลัง 5 ปีของหุ้นเอง แม้ยังต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์อยู่มาก</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$243.28 <span style="font-size:12px;color:#cab9a8">($239.51–$247.04)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v bad">MOS ~ −26%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v bad">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v">~$430.00 (Buy, 17 ราย)</div></div>
       </div>
       <div class="zone">
@@ -284,7 +314,7 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ 22 ก.ย. 2569 จาก StockAnalysis.com (cross-check กับ Yahoo Finance ตรงกัน) • ข้อมูลงบการเงิน/ประมาณการจาก StockAnalysis.com • ข้อมูลที่ปรึกษา/AUA จากข่าวผลประกอบการ Q2/2569 ของ LPL Financial (GlobeNewswire/SEC 8-K, 30 ก.ค. 2569)
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ {{rd:priceDate}} จาก StockAnalysis.com (cross-check กับ Yahoo Finance ตรงกัน) • ข้อมูลงบการเงิน/ประมาณการจาก StockAnalysis.com • ข้อมูลที่ปรึกษา/AUA จากข่าวผลประกอบการ Q2/2569 ของ LPL Financial (GlobeNewswire/SEC 8-K, 30 ก.ค. 2569)
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 21 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
