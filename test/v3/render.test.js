@@ -108,4 +108,6 @@ t.eq(JSON.parse(R.jsonScript('{"a":"</script>"}')).a, '</script>', 'jsonScript o
   t(!/<script>alert|<a href="x">/.test(src), 'text slots: <script>/<a href> never reach the page raw');
   t(src.includes('<div class="hint">&lt;script&gt;alert(1)&lt;/script&gt; &lt;a href=&quot;x&quot;&gt;y&lt;/a&gt;</div>'), 'valHint markup is escaped');
   t(src.includes('&lt;script&gt;alert(2)&lt;/script&gt; &lt;a href=&quot;x&quot;&gt;z&lt;/a&gt;</p>'), 'valIntro markup is escaped'); }
+{ const doc = load('ZTS'); const legacy = R.toV2Source(doc, C.compute(doc, { seeds })); doc.text = null;
+  t.eq(R.toV2Source(doc, C.compute(doc, { seeds })), legacy, 'text: null renders byte-identical to no text (legacy)'); }
 t.done();

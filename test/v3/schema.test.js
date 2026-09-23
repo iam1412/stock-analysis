@@ -69,8 +69,9 @@ for (const f of ['BBL-real', 'EQIX-real', 'FER-real', 'ZTS-real'])
 { const d = base(); d.text = { valHint: 'x'.repeat(81) }; t(paths(S.validate(d)).includes('text.valHint'), 'valHint ≤ 80 chars'); }
 { const d = base(); d.text = { valIntro: 'IPO {{lit:$1.00}}' }; t(paths(S.validate(d)).includes('text.valIntro'), 'text.* is a prose field (lit reason check reaches it)'); }
 { const d = base(); d.text = {}; t.eq(S.validate(d), [], 'text: {} is valid'); }
-for (const bad of [null, 'x']) { const d = base(); d.text = bad; const e = S.validate(d).filter((x) => x.path === 'text');
-  t(e.length === 1 && e[0].msg === 'ต้องเป็น object', `text: ${JSON.stringify(bad)} → "ต้องเป็น object" at text`); }
+{ const d = base(); d.text = null; t.eq(S.validate(d), [], 'text: null = absent (like every other optional block)'); }
+{ const d = base(); d.text = 'x'; const e = S.validate(d).filter((x) => x.path === 'text');
+  t(e.length === 1 && e[0].msg === 'ต้องเป็น object', 'text: "x" → "ต้องเป็น object" at text'); }
 for (const k of ['valHint', 'valIntro', 'metricsNote', 'disclaimerAssump']) for (const v of ['', '   ']) {
   const d = base(); d.text = { [k]: v }; t(paths(S.validate(d)).includes(`text.${k}`), `text.${k}=${JSON.stringify(v)} → error at text.${k}`); }
 t.done();
