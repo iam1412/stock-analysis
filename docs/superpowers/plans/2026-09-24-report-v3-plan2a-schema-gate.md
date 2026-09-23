@@ -2,13 +2,13 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Every gap Task 0 measured on the three real fixtures (BBL bank · EQIX REIT · FER SOTP/EUR) gets a first-class, optional, closed schema slot. Rule B stops firing on correct prose. A JSON-reading gate `test/check-v3.js` (E50/E51/E52/W30/W31 + the kept codes) runs inside `npm run verify`. Production is untouched: no `reports/*.json`, no page changes, `dist/` byte-identical.
+**Goal:** Every gap Task 0 measured on the three real fixtures (BBL bank · EQIX REIT · FER SOTP/EUR) gets a first-class, optional, closed schema slot. Rule B stops firing on correct prose. A JSON-reading gate `test/check-v3.js` (E50/E51/E52/W30/W31/W32 + the kept codes) runs inside `npm run verify`. Production is untouched: no `reports/*.json`, no page changes, `dist/` byte-identical.
 
 **Architecture:** All new fields are optional. When a field is absent, the code path is the Plan 1 path byte-for-byte, so the corpus parity test (`test/v3/tokens-corpus.test.js`, 909 v2 value sets) stays green after every task. New behaviour lives in the existing single-owner modules: `tools/v3/schema.js` (shape), `tools/v3/legs.js` (formulas), `tools/v3/compute.js` (weights/ranges/currency), `tools/v3/cards.js` (catalogue), `tools/v3/prose.js` (rule B, `{{lit:}}`), `_template/v3/render.js` (DOM). Two small new modules: `tools/safe-values.js` (colour/format allowlist shared by `build.js` and the schema, open-item #50) and `tools/v3/extras.js` (extras cell formatting + the E52 SOTP tie-out). The gate `test/check-v3.js` computes the new codes and the valuation/freshness codes natively from JSON. It passes every other kept code through the v2 gate on the rendered page (the render smoke test of spec §9). Each schema task ends by editing the real fixture it unblocks. The last task proves the spec §12 exit criteria.
 
 **Tech Stack:** Node ≥20.19, CommonJS, no dependencies. Tests are plain Node scripts using `test/v3/_t.js`, run by `test/v3-test.js`.
 
-**Spec:** `docs/superpowers/specs/2026-09-24-report-v3-json-source-design.md`. The binding sections are §3.6 A–O, §4 (rule B precision), §9 (gate codes), §11 (Plan 2a row), §12 (exit criteria) and §13 (items 4 and 5). Evidence: `docs/superpowers/specs/2026-09-24-{BBL,EQIX,FER,zts}-v3-compare.md`, fixtures `test/fixtures/v3/*-real.json`, open-items #50 #51 #53 (`docs/open-items.md`). Style reference: `docs/superpowers/plans/2026-09-24-report-v3-plan1-core-render.md`.
+**Spec:** `docs/superpowers/specs/2026-09-24-report-v3-json-source-design.md`. The binding sections are §3.6 A–O, §4 (rule B precision), §9 (gate codes), §11 (Plan 2a row), §12 (exit criteria) and §13 (items 4–7). Evidence: `docs/superpowers/specs/2026-09-24-{BBL,EQIX,FER,zts}-v3-compare.md`, fixtures `test/fixtures/v3/*-real.json`, open-items #50 #51 #53 (`docs/open-items.md`). Style reference: `docs/superpowers/plans/2026-09-24-report-v3-plan1-core-render.md`.
 
 **Out of scope (Plan 2b):** the `tools/report.js` CLI (`init/export/save/show/diff`), the PreToolUse hook, scanners reading `.json`, worker docs (SKILL/agent-prompt/stock-controller/CLAUDE.md prose), removing the tripwire `test/v3/no-json-reports.test.js`, and save-runs-compute (#52).
 
@@ -18,6 +18,10 @@
 - Implementers and reviewers are **Opus** subagents. Every implementer prompt carries these standing prohibitions: **never push** · **never call `advisor`** · **never spawn subagents** · **never write under `reports/` or `reports.json`** · **never edit `test/check-reports.js`, `tools/report-values.js` or `tools/derived-values.js` to make a v3 test pass**. If a v2-gate check fires on a v3 render, fix the v3 side (wording, fixture, template), or stop and report.
 - Reviewers of Task 1 (rule B), Task 5 (weights) and Task 12 (gate) must show the new test *can* fail: flip one expected value, watch it go red, then revert.
 - Fixture edits are done with the exact `node -e` script given in the step, never by hand. Each script asserts the source text it replaces, so a drifted fixture fails loudly instead of being half-edited.
+- **Fixtures have one writer: `tools/v3/io.js`.** Every script that edits a `test/fixtures/v3/*-real.json` loads it with `const {_sig,...d}=IO.read(p)`, edits `d`, and saves with `IO.write(p,d)`. `io.write(file, doc)` accepts any path (it is not tied to `reports/`, so no `dir` option is needed): it runs `S.validate`, signs `_sig`, and writes atomically under `tools/lockfile.js` (`<file>.lock` is a transient directory next to the fixture). Never `fs.writeFileSync` a fixture. Run the scripts from the worktree root (`IO.write` resolves the relative path from there). Consequences:
+  - A fixture edit that breaks the schema throws in the edit step itself, before any test runs.
+  - Key order is `io.TOP_ORDER` (`serialize()`), so no script reorders keys by hand.
+  - `BBL-real` (Task 1) and `EQIX-real` (Task 2) are signed from their first edit; `FER-real` and `ZTS-real` are signed already. From Task 2 on, all four carry a valid `_sig`, and Task 12 only **asserts** that (it repairs nothing).
 
 ## Global Constraints
 
@@ -57,20 +61,28 @@
 
 ---
 
-## Spec ambiguities ruled in this plan (the controller may overturn any of them)
+## Spec ambiguities ruled in this plan
+
+R3 (E17 counts `fv` legs only) and the `stock-meta.pe` = price ÷ EPS rule (Task 9) are **final**: spec §13 items 4 and 5, approved by the advisor on 24 Sep 2026 under the owner's delegation. R4 (the |MOS| > 40% part) and R7 follow the advisor rulings in spec §13 items 7 and 6. The other rulings are plan-level decisions that the controller may still overturn.
 
 - **R1 `meta.litReasons` shape** = object map `{ "<exact text inside the lit>": "reason ≥5 chars" }`. Every lit needs a key. A key that no lit uses is an error. One key covers every occurrence of that literal (BBL uses `9.0x` twice with one reason).
 - **R2 Rule B applies unit-skipping to W31 too.** `countMoneyLiterals` shares the `CAND` regexes, so `$80M` / `฿46,007 ล้าน` are no longer counted as stale price literals. They are statement totals, which is the same reasoning as §4 item 3.
 - **R3 E17 is a gate code, not a schema rule.** `schema.validate` still requires 2–4 legs in total and ≥1 `fv` leg, which `compute` needs to produce an FV. The "≥2 `fv` legs" rule of §13 item 4 is `E17` in `check-v3`, with the same meaning as the v2 E17, so reusing the number is allowed. Consequence: `EQIX-real` computes and renders (v2 gate on render 0/0, FV unchanged) but `check-v3` reports exactly `E17` for it. That is the HUMAN-bucket verdict §13.4 predicts. The fixture sweep expects it explicitly.
 - **R4 Kept §9 codes.**
-  - Computed natively from JSON in 2a: `E17 E27 W07 W09 W18 W25`, plus the new `E50 E51 E52 W30 W31`.
+  - Computed natively from JSON in 2a: `E17 E27 W07 W09 W18 W25`, plus the new `E50 E51 E52 W30 W31 W32`.
   - Passed through the v2 gate on the rendered page, reported as `v2:<id>`: `E28 E32 E34–E40 W08 W12 W13` and every structural code. This is the "render smoke test" of §9.
   - Why defer the native port of the pass-through codes to P7: during the transition `test/check-reports.js` is their single owner. Porting now would duplicate rules that P7 rewrites when the HTML half of the checker is deleted. Because the page is rendered from the JSON, their verdict is exact.
   - `W21 W24` are dead: no free text is parsed.
-  - `|MOS| > 40%` (layer 0) is deferred. Its pass condition ("a method not using (r,g) confirms it") needs an owner-defined rule. Today it is a manual controller check (`docs/quality-gate.md` ชั้น 0).
+  - `|MOS| > 40%` (layer 0) is **not** deferred (spec §13 item 7, advisor ruling). It is the new warn code **`W32`** in `check-v3` (Task 12). W32 is the next free number after W31: `test/check-reports.js` uses up to W26, and spec §9 uses W30/W31. W32 fires when `|view.d.mos| > 40` and no `role:'fv'` leg has an effective family other than `'rg'`. The effective family is `leg.family` when it is set. Otherwise it is inferred from the method: `ddm ddm2 dcf ri`, justified `pbv` (g+r) and `declared` with basis `other`/`rnpv` → `'rg'`; `declared` `sotp`/`nav` → `'asset'`; every multiple method and `fcfyield` → `'market'`. Without the inference, a leg with no `family` would always count as "not rg", and W32 could never fire on a legacy or migrated doc. It is a warn because layer 0 stays a controller check (`docs/quality-gate.md` ชั้น 0); the gate only points at the page.
 - **R5 Rule B stays save-time only.** `check-v3` does not run `checkRuleB`: a daily price move would make exact matches flicker, as §9 says. The daily gate uses W31.
 - **R6 `text.valHint` set** → the §3 hint shows it, and the FV box label becomes the neutral `มูลค่าเหมาะสม (Fair Value)`. The generated words ถ่วงน้ำหนัก/เฉลี่ย could contradict the author's hint. `text.disclaimerAssump` replaces only the list after the fixed word `โดยเฉพาะ`.
-- **R7 EQIX's context leg stays `declared` (`role: 'context'`).** Its multiple is the *current* P/AFFO, which `multipleSource` bans by design (§3.1). A `pffo` leg would have to lie about its source. This satisfies "no declared leg where a method now exists", because no legal method exists for it. ZTS-real's declared leg (single-stage Gordon on FCF) also has no v3 method, so it stays declared.
+- **R7 A context leg on the current multiple is computed, not `declared`** (spec §13 item 6, advisor ruling; this reverses the first draft of R7).
+  - `multipleSource: 'current'` is legal **only** on a `role: 'context'` leg whose method has a per-share base: `S.CURRENT_BASE = { pe: 'eps', pbv: 'bvps', pffo: 'ffoPerShare' }`.
+  - The leg carries no `inputs.multiple`. `compute` sets the live multiple to `px ÷ base` every day. The leg value is therefore ≡ px, and its only information is the live multiple, which `mdesc` prints.
+  - A `declared` leg would freeze a price-bound number: 43 legs in the migration would go stale every day, which is the bug class this project closed.
+  - `'current'` on a `role: 'fv'` leg is still banned. It is a schema error (E51), and the message names W18 (dead anchor). So `check-v3` never sees such a leg. The native W18 keeps covering the hidden form: a typed multiple within 7% of the current one.
+  - EQIX-real's P/AFFO context leg becomes `{ method: 'pffo', role: 'context', inputs: { multipleSource: 'current' } }`, so EQIX-real ends with **0** declared legs (Task 5).
+  - ZTS-real's declared leg (single-stage Gordon on FCF) has no v3 method. It stays declared: the owner ruled on those 3 pages.
 - **R8 `ffoPerShare` is the TTM driver.** EQIX's scenario base stays in `scenarios.baseOverride` (42.99 = `ffoForward.value`). §3.6 J does not define a "base from forward" switch, and adding one is out of scope.
 - **R9 `unit: 'ccy'` in `extras[].columns`** uses the statement-currency symbol (`reportCurrency` if set, else the quote currency).
 
@@ -95,7 +107,7 @@
 | `test/v3/real-fixtures.test.js` (create) | per real fixture: FV pinned, rule B 0 errors, v2 gate on render 0/0 (+ exit criteria in Task 13) | 1, 13 |
 | `test/v3/check-v3.test.js` (create) | JSON meta-test: mutate JSON → each code fires | 12 |
 | `test/v3/{prose,schema,cards,compute,legs,render}.test.js` (modify) | unit tests per task | 1–11 |
-| `test/fixtures/v3/{BBL,EQIX,FER}-real.json` (modify) | drop escape hatches as slots land | 1–11, 13 |
+| `test/fixtures/v3/{BBL,EQIX,FER}-real.json` (modify) | drop escape hatches as slots land — written only through `io.read`/`io.write` (signed) | 1–11, 13 |
 | `package.json`, `tools/gen-docs.js`, `README.md`, `docs/quality-gate.md` (+ gen-docs outputs) | wire `check-v3` into `verify` | 12 |
 
 ---
@@ -365,13 +377,15 @@ Run:
 
 ```bash
 node -e '
-const fs=require("fs"),p="test/fixtures/v3/BBL-real.json",d=JSON.parse(fs.readFileSync(p,"utf8"));
+const IO=require("./tools/v3/io.js"),p="test/fixtures/v3/BBL-real.json",{_sig,...d}=IO.read(p);
 const rep=(o,k,a,b)=>{if(!o[k].includes(a))throw new Error(k+" missing "+a);o[k]=o[k].replace(a,b);};
 rep(d.prose,"valuation","(7.4x ช่วง 6.0–9.0x)","(7.4x ช่วง 6.0–{{lit:9.0x}})");
 rep(d.metrics.notes,"peAvg5y","กรอบ 6.0–9.0x (FY2021–25)","กรอบ 6.0–{{lit:9.0x}} (FY2021–25)");
 d.meta.litReasons={"9.0x":"P/E สูงสุดย้อนหลัง 5 ปี (FY2021–25) บังเอิญเท่ากับ P/E ปัจจุบันพอดี — เป็นตัวเลขประวัติ ไม่ใช่ตัวคูณปัจจุบัน"};
-fs.writeFileSync(p,JSON.stringify(d,null,2)+"\n");'
+IO.write(p,d);'
 ```
+
+`IO.write` validates against the Task 1 schema (lit ↔ reason included) and signs. `BBL-real` had no `_sig` before; it carries a valid one from here on.
 
 - [ ] **Step 6: Run the tests to verify they pass**
 
@@ -555,18 +569,36 @@ Replace `${JSON.stringify(view.sm)}` with `${jsonScript(JSON.stringify(view.sm))
 
 ```bash
 node -e '
-const fs=require("fs"),p="test/fixtures/v3/EQIX-real.json",d=JSON.parse(fs.readFileSync(p,"utf8"));
+const IO=require("./tools/v3/io.js"),p="test/fixtures/v3/EQIX-real.json",{_sig,...d}=IO.read(p);
 const a="P/E ~65.7x — ไม่ใช้ประเมินค่า REIT (ค่าเสื่อมสูง)"; if(d.metrics.notes.eps!==a)throw new Error("notes.eps drifted");
 d.metrics.notes.eps="P/E ~{{pe}}x — ไม่ใช้ประเมินค่า REIT (ค่าเสื่อมสูง)";
-fs.writeFileSync(p,JSON.stringify(d,null,2)+"\n");'
+IO.write(p,d);'
 ```
+
+(`EQIX-real` is signed from this edit on.)
 
 - [ ] **Step 9: Run the tests to verify they pass**
 
 Run: `rtk proxy node test/v3-test.js 2>&1 | grep -E '✗|✓' && rtk proxy node test/build-test.js | tail -2`
 Expected: all `✓`, including `real-fixtures` (EQIX's eps card now reads the live P/E). `build-test` passes, which shows the allowlist moved with no behaviour change.
 
-- [ ] **Step 10: Commit**
+- [ ] **Step 10: Prove `dist/` is unchanged by the `build.js` refactor (base ↔ head diff = 0)**
+
+`build-test` alone does not prove byte-identity of 900+ pages. Build at the commit before this task and at the working tree, then diff. This runs **before** the commit, so a difference is fixed without amending.
+
+```bash
+BASE=$(git rev-parse HEAD)   # = Task 1 commit (build.js untouched there)
+git worktree add --detach /Users/somchai.s/Downloads/stock-v3-plan2a-base-t2 "$BASE"
+(cd /Users/somchai.s/Downloads/stock-v3-plan2a-base-t2 && node build.js >/dev/null)
+node build.js >/dev/null
+rtk proxy diff -r /Users/somchai.s/Downloads/stock-v3-plan2a-base-t2/dist dist && echo "DIST IDENTICAL"
+rtk proxy git status --short reports/ reports.json
+git worktree remove --force /Users/somchai.s/Downloads/stock-v3-plan2a-base-t2
+```
+
+Expected: `DIST IDENTICAL` with no `diff` output, and an empty `git status` for `reports/` and `reports.json`. If `diff` shows only a build timestamp, stop and report the differing lines. Do not mask them. Build the base twice and diff those two builds to show the difference is build nondeterminism and not this task (same rule as Task 13 Step 3).
+
+- [ ] **Step 11: Commit**
 
 ```bash
 git add tools/safe-values.js build.js tools/v3/schema.js tools/v3/cards.js _template/v3/render.js test/v3/schema.test.js test/v3/cards.test.js test/v3/render.test.js test/fixtures/v3/EQIX-real.json
@@ -691,7 +723,7 @@ The sentences move; they are not copied. After this step each sentence exists on
 
 ```bash
 node -e '
-const fs=require("fs"),p="test/fixtures/v3/FER-real.json",d=JSON.parse(fs.readFileSync(p,"utf8"));
+const IO=require("./tools/v3/io.js"),p="test/fixtures/v3/FER-real.json",{_sig,...d}=IO.read(p);
 const cut=(s,sep)=>{const i=s.indexOf(sep);if(i<0)throw new Error("missing "+sep.slice(0,40));return [s.slice(0,i),s.slice(i+sep.length)];};
 // 1) §3 hint + intro: prose.valuation = "<b>SOTP + DDM — ห้ามใช้ P/E</b><br>" + why-not-P/E paragraph
 const [h,intro]=cut(d.prose.valuation,"<br>"); if(h!=="<b>SOTP + DDM — ห้ามใช้ P/E</b>")throw new Error("hint drifted");
@@ -707,9 +739,7 @@ const pre="สมมติฐานที่อ่อนไหวที่สุ
 if(!ds.startsWith(pre))throw new Error("disclaimer drifted");
 const [clause,rest]=cut(ds.slice(pre.length)," • ");
 d.text.disclaimerAssump=clause; d.prose.disclaimerSources=rest;
-// key order: "text" right after "prose" (= io.TOP_ORDER)
-const out={};for(const k of Object.keys(d)){if(k==="text")continue;out[k]=d[k];if(k==="prose")out.text=d.text;}
-fs.writeFileSync(p,JSON.stringify(out,null,2)+"\n");'
+IO.write(p,d);   // serialize() puts "text" right after "prose" (io.TOP_ORDER, this task)'
 ```
 
 - [ ] **Step 5: Run to verify it passes**
@@ -864,11 +894,11 @@ Claude-Session: https://claude.ai/code/session_01LVyM2HVJV2UGfXJc58MhzP"
 ### Task 5: Leg roles, family weighting, sensitivity range (§3.6 I, C, F)
 
 **Files:**
-- Modify: `tools/v3/schema.js` (`ENUM.role`, `ENUM.family`, the leg closed list, `LEG_INPUTS` opt lists, `multipleRange` rules, the cross-leg block, `fvWeights`)
+- Modify: `tools/v3/schema.js` (`ENUM.role`, `ENUM.family`, `ENUM.multipleSource` + `'current'`, `CURRENT_BASE`, the leg closed list, `LEG_INPUTS` opt lists, required-key loop, `multipleRange` rules, the cross-leg block, `fvWeights`)
 - Modify: `tools/v3/compute.js` (`weightsOf`, the legs → fv block, exports)
-- Modify: `_template/v3/render.js` (`valHintParts`, context suffix in `.mname`, range in `mdesc`)
+- Modify: `_template/v3/render.js` (`valHintParts`, context suffix in `.mname`, range + live `'current'` multiple in `mdesc`, `SRC_NAME.current`)
 - Modify: `test/v3/schema.test.js`, `test/v3/compute.test.js`, `test/v3/render.test.js`
-- Modify: `test/fixtures/v3/BBL-real.json` (family replaces `fvWeights`), `test/fixtures/v3/EQIX-real.json` (context role + range)
+- Modify: `test/fixtures/v3/BBL-real.json` (family replaces `fvWeights`), `test/fixtures/v3/EQIX-real.json` (context leg → computed `pffo` on `'current'` + range)
 
 **Interfaces:**
 - Produces: `legs[i].role?: 'fv'|'context'` (default `'fv'`), `legs[i].family?: 'market'|'rg'|'asset'`, and `legs[i].inputs.multipleRange?: [lo, hi]`. The range is legal on legs that have `inputs.multiple`: pe, pbv-multiple, ps, evsales, evebitda, pfcf, pffo.
@@ -877,8 +907,9 @@ Claude-Session: https://claude.ai/code/session_01LVyM2HVJV2UGfXJc58MhzP"
   2. else, if any `fv` leg has `family`: `1/(nFam × nInFam)`;
   3. else equal weights over `fv` legs.
   Context legs always get 0.
-- Produces: each `view.legs[i]` gains `role`, `family`, `lo`, `hi`, `ranged`. `view.fvLow`/`view.fvHigh` are `Σ wᵢ·loᵢ` / `Σ wᵢ·hiᵢ` over fv legs when any fv leg is ranged. Otherwise they are the min/max of the **fv** legs.
+- Produces: each `view.legs[i]` gains `role`, `family`, `lo`, `hi`, `ranged`, `liveMultiple` (number for a `'current'` leg, else `null`). `view.fvLow`/`view.fvHigh` are `Σ wᵢ·loᵢ` / `Σ wᵢ·hiᵢ` over fv legs when any fv leg is ranged. Otherwise they are the min/max of the **fv** legs.
 - The schema requires ≥1 `fv` leg. "≥2 fv legs" is the gate's E17 (ruling R3, Task 12).
+- Produces (ruling R7, spec §13 item 6): `multipleSource: 'current'` and `S.CURRENT_BASE = { pe: 'eps', pbv: 'bvps', pffo: 'ffoPerShare' }`. `'current'` is legal only on a `role:'context'` leg of a `CURRENT_BASE` method, with no `inputs.multiple`. `compute` sets `liveMultiple = px ÷ base` (base from `L.inputsOf(leg, f)`, so an override counts), and the value is `L.legValue` at that multiple (≡ px). `render.js` `mdesc` prints the live multiple with the word `ปัจจุบัน`. `SRC_NAME.current = 'ตัวคูณปัจจุบัน'`. Task 12 `check-v3` reuses `S.CURRENT_BASE` as its W18 base map.
 
 - [ ] **Step 1: Write the failing tests**
 
@@ -903,6 +934,14 @@ const pbvLeg = (fam) => ({ method: 'pbv', label: 'Justified P/BV', inputs: { g: 
 { const d = base(); d.legs[1].inputs.multipleRange = [1, 2]; t(paths(S.validate(d)).includes('legs[1].inputs.multipleRange'), 'range on a dcf leg → not in schema'); }
 { const d = base(); d.legs[0].inputs.multipleRange = [20, 34]; d.legs[0].role = 'context'; d.legs.push(ddmLeg(null)); d.fvWeights = null;
   t(paths(S.validate(d)).includes('legs[0].inputs.multipleRange'), 'range on a context leg → error'); }
+// R7 / spec §13 ข้อ 6 — ขา context ตัวคูณสด (multipleSource 'current') คำนวณได้ · บนขา fv = สมอตาย (W18) ห้าม
+const curLeg = (extra) => ({ method: 'pe', label: 'P/E ปัจจุบัน', role: 'context', inputs: { multipleSource: 'current' }, ...(extra || {}) });
+{ const d = base(); d.legs.push(curLeg()); d.fvWeights = null; t.eq(S.validate(d), [], "context + 'current' without multiple → valid"); }
+{ const d = base(); d.legs.push(curLeg({ role: 'fv' })); d.fvWeights = null; t(paths(S.validate(d)).includes('legs[2].inputs.multipleSource'), "'current' on an fv leg → error (W18 by construction)"); }
+{ const d = base(); d.legs.push(curLeg()); d.legs[2].inputs.multiple = 20; d.fvWeights = null; t(paths(S.validate(d)).includes('legs[2].inputs.multiple'), "'current' + typed multiple → error (the multiple is live)"); }
+{ const d = base(); d.legs.push({ method: 'ps', label: 'P/S ปัจจุบัน', role: 'context', inputs: { multipleSource: 'current' } }); d.fvWeights = null;
+  t(paths(S.validate(d)).includes('legs[2].inputs.multipleSource'), "'current' only on pe/pbv/pffo (per-share base)"); }
+t.eq(S.CURRENT_BASE, { pe: 'eps', pbv: 'bvps', pffo: 'ffoPerShare' }, 'CURRENT_BASE exported');
 ```
 
 `test/v3/compute.test.js`:
@@ -922,6 +961,15 @@ t.eq(C.weightsOf(load('ZTS')), [0.5, 0.5], 'legacy: equal weights, byte-identica
   t.near(v.fvLow, 0.5 * 6.13 * 20 + 0.5 * v.legs[1].value, 1e-9, 'fvLow = Σ w·lo (unranged leg uses its value)');
   t.near(v.fvHigh, 0.5 * 6.13 * 34 + 0.5 * v.legs[1].value, 1e-9, 'fvHigh = Σ w·hi');
   t.near(v.fv, (v.legs[0].value + v.legs[1].value) / 2, 1e-9, 'range does not move fv'); }
+// R7 — ขา context 'current': ตัวคูณสด = ราคา ÷ ตัวตั้ง · ค่าขา ≡ ราคา · ไม่ขยับ FV
+{ const d = load('ZTS'); const fv0 = C.compute(d, { seeds }).fv;
+  d.legs.push({ method: 'pe', label: 'P/E ปัจจุบัน', role: 'context', inputs: { multipleSource: 'current' } }); d.fvWeights = null;
+  const v = C.compute(d, { seeds }), L = v.legs[v.legs.length - 1];
+  t.near(L.liveMultiple, d.market.px / d.fundamentals.eps, 1e-9, 'liveMultiple = px / eps');
+  t.near(L.value, d.market.px, 1e-9, 'current leg value ≡ px');
+  t.eq(L.weight, 0, 'current leg weighs 0');
+  t.near(v.fv, fv0, 1e-9, 'current context leg does not move fv');
+  d.market.px *= 1.1; t.near(C.compute(d, { seeds }).legs[v.legs.length - 1].liveMultiple, d.market.px / d.fundamentals.eps, 1e-9, 'liveMultiple follows the price (nothing frozen)'); }
 ```
 
 `test/v3/render.test.js`:
@@ -937,6 +985,11 @@ t.eq(C.weightsOf(load('ZTS')), [0.5, 0.5], 'legacy: equal weights, byte-identica
   t(src.includes('<div class="hint">เฉลี่ย 2 ตระกูล (3 วิธี)</div>') && src.includes('มูลค่าเหมาะสมเฉลี่ยตามตระกูล (Fair Value)'), 'family hint + FV box'); }
 { const doc = load('ZTS'); doc.legs[0].inputs.multipleRange = [20, 34]; const src = R.toV2Source(doc, C.compute(doc, { seeds }));
   t(src.includes('P/E เป้าหมาย ~28x (มัธยฐาน 5 ปี) · กรอบ 20–34x'), 'mdesc shows the sensitivity range'); }
+{ const doc = load('ZTS'); doc.legs.push({ method: 'pe', label: 'P/E ปัจจุบัน', role: 'context', inputs: { multipleSource: 'current' } }); doc.fvWeights = null;
+  const view = C.compute(doc, { seeds }); const src = R.toV2Source(doc, view);
+  t(src.includes(`× P/E ปัจจุบัน ${(doc.market.px / doc.fundamentals.eps).toFixed(1)}x`), "R7: 'current' mdesc prints the live multiple");
+  t(!src.includes('P/E เป้าหมาย ~undefinedx'), "R7: no 'undefined' multiple leaks into mdesc");
+  t.eq(CR.checkHtml(expandReport(src), 'ZTS.html', { source: src }).errors.map((e) => e.id), [], "'current' context leg: v2 gate 0 errors"); }
 ```
 
 - [ ] **Step 2: Run to verify it fails**
@@ -972,6 +1025,33 @@ In the per-leg loop: change `closed(leg, p, ['method', 'label', 'inputs', 'overr
     if (leg.role != null) en(leg.role, `${p}.role`, ENUM.role);
     if (leg.family != null) en(leg.family, `${p}.family`, ENUM.family);
 ```
+
+**R7 — `multipleSource: 'current'` (spec §13 item 6).** Append `'current'` to `ENUM.multipleSource`, and replace its comment `★ ไม่มี 'current' — สมอตาย (W18) ปิดโดยโครงสร้าง` with `'current' = เฉพาะขา role:"context" (ตัวคูณสด คิดทุกวัน) · บนขา fv ห้าม = สมอตาย W18 (§13 ข้อ 6)`. Add near `LEG_INPUTS`:
+
+```js
+// ตัวตั้งต่อหุ้นของขาที่ใช้ตัวคูณสด (multipleSource 'current') — compute ใช้หาตัวคูณสด · check-v3 ใช้เป็นฐาน W18
+const CURRENT_BASE = { pe: 'eps', pbv: 'bvps', pffo: 'ffoPerShare' };
+```
+
+In the per-leg loop, replace the required-key line `for (const k of spec.req) if (leg.inputs[k] == null) E(…);` with:
+
+```js
+    const live = leg.inputs.multipleSource === 'current';   // ตัวคูณสด — compute คิด ⇒ ไม่มี (และห้ามมี) inputs.multiple
+    for (const k of spec.req) if (leg.inputs[k] == null && !(live && k === 'multiple')) E(`${p}.inputs.${k}`, 'ต้องมี');
+```
+
+Right after the `multipleSource` enum check, add:
+
+```js
+    if (live) {
+      const sp = `${p}.inputs.multipleSource`;
+      if (!Object.prototype.hasOwnProperty.call(CURRENT_BASE, leg.method)) E(sp, `'current' ใช้ได้กับ ${Object.keys(CURRENT_BASE).join('/')} เท่านั้น (ตัวตั้งต่อหุ้น)`);
+      if (leg.role !== 'context') E(sp, "'current' ใช้ได้เฉพาะขา role:\"context\" — บนขา fv คือสมอตาย (W18) ห้ามโดยโครงสร้าง");
+      if (inp.multiple != null) E(`${p}.inputs.multiple`, "multipleSource 'current' = ตัวคูณสด (ราคา ÷ ตัวตั้ง) ที่ compute คิดทุกวัน — ห้ามพิมพ์ตัวเลข");
+    }
+```
+
+In the `pbv` pairing check, change `if (mult && (inp.multiple == null || inp.multipleSource == null))` to `if (mult && ((inp.multiple == null && !live) || inp.multipleSource == null))`. Export `CURRENT_BASE`.
 
 After the `pbv` pairing checks, add:
 
@@ -1039,11 +1119,19 @@ Replace the `// ── legs → fv ──` block (from `const legs = …` throug
   const legs = doc.legs.map((leg, i) => {
     if (leg.method === 'declared' && leg.inputs.extrasRef != null && !doc.extras[leg.inputs.extrasRef])
       throw new Error(`legs[${i}].inputs.extrasRef: ไม่มี extras[${leg.inputs.extrasRef}]`);
-    const value = L.legValue(leg, f, `legs[${i}]`);
+    // R7 (§13 ข้อ 6): ขา context 'current' — ตัวคูณสด = ราคา ÷ ตัวตั้ง (รวม override) · ค่าขา ≡ ราคา · ไม่มีเลขแช่แข็ง
+    let liveMultiple = null;
+    if (leg.inputs.multipleSource === 'current') {
+      const k = S.CURRENT_BASE[leg.method], base = L.inputsOf(leg, f)[k];
+      if (!(typeof base === 'number' && base > 0)) throw new Error(`legs[${i}].inputs.multipleSource: 'current' ต้องมี fundamentals.${k} > 0`);
+      liveMultiple = mk.px / base;
+    }
+    const legM = liveMultiple == null ? leg : { ...leg, inputs: { ...leg.inputs, multiple: liveMultiple } };
+    const value = L.legValue(legM, f, `legs[${i}]`);
     const r = leg.inputs.multipleRange;
     const at = (m) => L.legValue({ ...leg, inputs: { ...leg.inputs, multiple: m } }, f, `legs[${i}].inputs.multipleRange`);
     return { label: leg.label, method: leg.method, value, inputs: leg.inputs, override: leg.override || null, note: leg.note || '',
-      role: leg.role || 'fv', family: leg.family || null, lo: r ? at(r[0]) : value, hi: r ? at(r[1]) : value, ranged: !!r };
+      role: leg.role || 'fv', family: leg.family || null, lo: r ? at(r[0]) : value, hi: r ? at(r[1]) : value, ranged: !!r, liveMultiple };
   });
   const w = weightsOf(doc);
   legs.forEach((l, i) => { l.weight = w[i]; });
@@ -1076,15 +1164,27 @@ function valHintParts(doc, view) {
 
 In `legsHtml`, change `${i + 1}. ${esc(l.label)}</div>` to `${i + 1}. ${esc(l.label)}${l.role === 'context' ? ' (บริบท — ไม่นับใน FV)' : ''}</div>`.
 
-In `mdesc`, after `const src = …;` add `const rng = i.multipleRange ? \` · กรอบ ${i.multipleRange[0]}–${i.multipleRange[1]}x\` : '';`. Append `${rng}` to the end of the `pe` return, to the multiple branch of `pbv`, and to the `default` return:
+Add `current: 'ตัวคูณปัจจุบัน'` to `SRC_NAME`. In `mdesc`, after `const src = …;` add:
 
 ```js
-    case 'pe': return `${epsLabel(leg, view)} ${m(b.eps)} × P/E เป้าหมาย ~${i.multiple}x${src}${rng}`;
-    case 'pbv': return i.multiple != null ? `BVPS ${m(b.bvps)} × P/BV ${i.multiple}x${src}${rng}`
+  const rng = i.multipleRange ? ` · กรอบ ${i.multipleRange[0]}–${i.multipleRange[1]}x` : '';
+  // R7 — 'current': ตัวคูณสดจากราคาวันนี้ (หน้า v3 build ใหม่จาก JSON ทุกครั้ง จึงไม่ค้าง) · ตัวตั้งเดียวกับ compute (S.CURRENT_BASE + override)
+  const live = i.multipleSource === 'current';
+  const mult = live ? (view.d.px / b[S.CURRENT_BASE[leg.method]]).toFixed(1) : i.multiple;
+```
+
+Append `${rng}` to the end of the `pe` return, to the multiple branch of `pbv`, and to the `default` return, and use `mult` in place of `i.multiple` in those three. A `'current'` leg says `ปัจจุบัน` instead of `เป้าหมาย` and drops `src`, which would repeat the word:
+
+```js
+    case 'pe': return live ? `${epsLabel(leg, view)} ${m(b.eps)} × P/E ปัจจุบัน ${mult}x`
+      : `${epsLabel(leg, view)} ${m(b.eps)} × P/E เป้าหมาย ~${mult}x${src}${rng}`;
+    case 'pbv': return i.multipleSource != null ? `BVPS ${m(b.bvps)} × P/BV ${live ? 'ปัจจุบัน ' : ''}${mult}x${live ? '' : src}${rng}`
       : `P/BV เหมาะสม = (ROE ${b.roe}% − g ${i.g}%)/(r ${i.r}% − g ${i.g}%) ≈ ${((b.roe - i.g) / (i.r - i.g)).toFixed(2)} × BVPS ${m(b.bvps)}`;
     …
-    default: return `${METHOD_NAME[leg.method]} ${i.multiple}x${src}${rng}`;
+    default: return `${METHOD_NAME[leg.method]} ${live ? 'ปัจจุบัน ' : ''}${mult}x${live ? '' : src}${rng}`;
 ```
+
+(The `pbv` branch now tests `multipleSource`, not `multiple`, because a `'current'` pbv leg has no `multiple`. The schema pairs them for every other source, so the legacy output is unchanged.)
 
 - [ ] **Step 6: Fixtures — BBL (C) and EQIX (I, F)**
 
@@ -1092,22 +1192,28 @@ BBL: the families reproduce `[0.5, 0.25, 0.25]` exactly, so the numeric weights 
 
 ```bash
 node -e '
-const fs=require("fs"),p="test/fixtures/v3/BBL-real.json",d=JSON.parse(fs.readFileSync(p,"utf8"));
+const IO=require("./tools/v3/io.js"),p="test/fixtures/v3/BBL-real.json",{_sig,...d}=IO.read(p);
 if(JSON.stringify(d.fvWeights)!=="[0.5,0.25,0.25]"||d.legs.map(l=>l.method).join()!=="pe,ddm,pbv")throw new Error("BBL legs drifted");
 d.legs[0].family="market"; d.legs[1].family="rg"; d.legs[2].family="rg"; d.fvWeights=null;
-fs.writeFileSync(p,JSON.stringify(d,null,2)+"\n");'
+IO.write(p,d);'
 ```
 
-EQIX: the P/AFFO leg is context (ruling R7: it stays `declared`, since its multiple is the current one). The FV range is the P/E sensitivity 59.9–99.2x.
+EQIX: the P/AFFO leg becomes a **computed** context leg (ruling R7, spec §13 item 6): `pffo` on the live multiple (`multipleSource: 'current'`), no typed value. It was `declared` 1021 = $38.33 × a frozen 26.6x. The note keeps only what mdesc does not say, so the stale `$38.33`/`26.6x` literals go. The FV range is the P/E sensitivity 59.9–99.2x.
 
 ```bash
 node -e '
-const fs=require("fs"),p="test/fixtures/v3/EQIX-real.json",d=JSON.parse(fs.readFileSync(p,"utf8"));
-const L1="P/AFFO ปัจจุบัน (บริบท — ไม่นับใน FV)"; if(d.legs[1].label!==L1||JSON.stringify(d.fvWeights)!=="[1,0]")throw new Error("EQIX legs drifted");
-d.legs[1].label="P/AFFO ปัจจุบัน"; d.legs[1].role="context"; d.fvWeights=null;
+const IO=require("./tools/v3/io.js"),p="test/fixtures/v3/EQIX-real.json",{_sig,...d}=IO.read(p);
+const L1="P/AFFO ปัจจุบัน (บริบท — ไม่นับใน FV)"; if(d.legs[1].label!==L1||d.legs[1].method!=="declared"||JSON.stringify(d.fvWeights)!=="[1,0]")throw new Error("EQIX legs drifted");
+const N="(ตัวคูณปัจจุบัน = คืนราคาตลาดโดยโครงสร้าง ไม่ใช่สมอ) — แสดงเพื่อเทียบเท่านั้น ไม่มีมัธยฐาน P/AFFO ที่วัดได้"; if(!d.legs[1].note.endsWith(N))throw new Error("EQIX leg2 note drifted");
+if(d.fundamentals.ffoPerShare!==38.33)throw new Error("EQIX ffoPerShare drifted");
+d.legs[1]={method:"pffo",label:"P/AFFO ปัจจุบัน",role:"context",inputs:{multipleSource:"current"},
+ note:"ตัวคูณปัจจุบันคืนราคาตลาดโดยโครงสร้าง ไม่ใช่สมอ — แสดงเพื่อเทียบเท่านั้น ไม่มีมัธยฐาน P/AFFO ที่วัดได้"};
+d.fvWeights=null;
 d.legs[0].inputs.multipleRange=[59.9,99.2];
-fs.writeFileSync(p,JSON.stringify(d,null,2)+"\n");'
+IO.write(p,d);'
 ```
+
+Until Task 9 adds `ffoBasis`, this leg's mdesc reads `P/FFO ปัจจุบัน 27.6x`. Task 9 turns it into `P/AFFO`.
 
 Add to `test/v3/real-fixtures.test.js`, before `t.done();`:
 
@@ -1115,20 +1221,22 @@ Add to `test/v3/real-fixtures.test.js`, before `t.done();`:
 // Task 5 — EQIX: กรอบ FV = ความไวของขา P/E 59.9–99.2x (compare doc gap 1) · BBL: family แทน fvWeights
 { const v = C.compute(load('EQIX-real'), { seeds: {} });
   t.eq([round2(v.fvLow), round2(v.fvHigh)], [931.45, 1542.56], 'EQIX-real: fvLow/fvHigh = 15.55 × 59.9 / 99.2');
-  t.eq(v.legs.map((l) => l.role), ['fv', 'context'], 'EQIX-real: P/AFFO leg is context'); }
+  t.eq(v.legs.map((l) => l.role), ['fv', 'context'], 'EQIX-real: P/AFFO leg is context');
+  t.eq([v.legs[1].method, v.legs[1].inputs.multipleSource], ['pffo', 'current'], 'EQIX-real: context leg is computed (R7), not declared');
+  t.eq(v.legs[1].liveMultiple.toFixed(1), (load('EQIX-real').market.px / 38.33).toFixed(1), 'EQIX-real: live P/AFFO = px / AFFO per share'); }
 t.eq(C.weightsOf(load('BBL-real')), [0.5, 0.25, 0.25], 'BBL-real: family weights reproduce the old fvWeights exactly');
 ```
 
 - [ ] **Step 7: Run to verify it passes**
 
 Run: `rtk proxy node test/v3-test.js 2>&1 | grep -E '✗|✓'`
-Expected: all `✓`. The FVs are unchanged: BBL 176.77 (same weights) and EQIX 1253.33 (context weighed 0 before too). The EQIX v2 gate on render is 0/0 with the range $931.45–$1,542.56.
+Expected: all `✓`. The FVs are unchanged: BBL 176.77 (same weights) and EQIX 1253.33 (context weighed 0 before too). The EQIX v2 gate on render is 0/0 with the range $931.45–$1,542.56. The context leg's `.mval` now shows the price (value ≡ px) instead of the frozen $1,021.00. If a v2-gate code fires on that leg, the standing rule applies: fix the v3 side, or stop and report. Never edit `test/check-reports.js`.
 
 - [ ] **Step 8: Commit**
 
 ```bash
 git add tools/v3/schema.js tools/v3/compute.js _template/v3/render.js test/v3/schema.test.js test/v3/compute.test.js test/v3/render.test.js test/v3/real-fixtures.test.js test/fixtures/v3/BBL-real.json test/fixtures/v3/EQIX-real.json
-git commit -m "feat(v3): leg role (context), family weighting + layer-0 (r,g) check, multipleRange FV bounds (§3.6 I/C/F)
+git commit -m "feat(v3): leg role (context) + computed current-multiple context legs, family weighting + layer-0 (r,g) check, multipleRange FV bounds (§3.6 I/C/F, §13.6)
 
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
 Claude-Session: https://claude.ai/code/session_01LVyM2HVJV2UGfXJc58MhzP"
@@ -1267,20 +1375,20 @@ FER — the finite-horizon DDM is now computed ($55.02; the author's old $57.66 
 
 ```bash
 node -e '
-const fs=require("fs"),p="test/fixtures/v3/FER-real.json",d=JSON.parse(fs.readFileSync(p,"utf8"));
+const IO=require("./tools/v3/io.js"),p="test/fixtures/v3/FER-real.json",{_sig,...d}=IO.read(p);
 const L=d.legs[1]; if(L.method!=="declared"||L.inputs.value!==55.02)throw new Error("FER leg2 drifted");
 d.legs[1]={method:"ddm2",label:L.label,inputs:{d1:2.04,g1:11,years1:10,g2:3,r:8.5,horizon:40},
  note:"D₁ = เงินสดที่จ่ายคืนผู้ถือหุ้นได้ปี 2570 (เงินปันผลรับจากสัมปทานปี 2569 ~$1.84/หุ้น หักค่าใช้จ่ายสำนักงานใหญ่ แล้วโต 11%) — ตัดจบที่ 0 ตามอายุสัมปทานถัวเฉลี่ย (~ปี 2066) ไม่ใช้ perpetuity · ค่าเดิม $57.66 ย้อนคำนวณไม่ตรงจึงแก้เป็น {{leg2}}"};
 if(d.fundamentals.epsBasis!=="gaap-ttm")throw new Error("FER epsBasis drifted"); d.fundamentals.epsBasis="ifrs";
-fs.writeFileSync(p,JSON.stringify(d,null,2)+"\n");'
+IO.write(p,d);'
 ```
 
 EQIX and BBL — the real median window replaces "มัธยฐาน 5 ปี", and the notes stop repeating it:
 
 ```bash
 node -e '
-const fs=require("fs");
-const edit=(f,fn)=>{const p="test/fixtures/v3/"+f+".json",d=JSON.parse(fs.readFileSync(p,"utf8"));fn(d);fs.writeFileSync(p,JSON.stringify(d,null,2)+"\n");};
+const IO=require("./tools/v3/io.js");
+const edit=(f,fn)=>{const p="test/fixtures/v3/"+f+".json",{_sig,...d}=IO.read(p);fn(d);IO.write(p,d);};
 edit("EQIX-real",(d)=>{const L=d.legs[0]; if(!L.note.startsWith("มัธยฐาน P/E FY2022–FY2025"))throw new Error("EQIX note drifted");
  L.inputs.medianWindow="FY2022–FY2025";
  L.note="ราคาเฉลี่ยรายปี ÷ EPS diluted · ตัด FY2021 ที่ 140x ออกเพราะกำไรเกือบศูนย์ · เป็นตัวคูณจากประวัติ ไม่ได้มาจาก P/E ปัจจุบัน ({{pe}}x)";});
@@ -1381,8 +1489,8 @@ FER lost its $76.96 Buy target (compare doc D2, gap 3), and the page said "ไ�
 
 ```bash
 node -e '
-const fs=require("fs");
-const edit=(f,fn)=>{const p="test/fixtures/v3/"+f+".json",d=JSON.parse(fs.readFileSync(p,"utf8"));fn(d);fs.writeFileSync(p,JSON.stringify(d,null,2)+"\n");};
+const IO=require("./tools/v3/io.js");
+const edit=(f,fn)=>{const p="test/fixtures/v3/"+f+".json",{_sig,...d}=IO.read(p);fn(d);IO.write(p,d);};
 edit("FER-real",(d)=>{ if(d.analyst!==null)throw new Error("FER analyst drifted");
   d.analyst={target:76.96,rating:"Buy"};
   const a="เป้าเฉลี่ยนักวิเคราะห์ $76.96"; if(!d.prose.gauge.includes(a))throw new Error("FER gauge drifted");
@@ -1534,7 +1642,7 @@ Also switch the existing statement-total cards to `stmt` (same output for positi
 
 ```bash
 node -e '
-const fs=require("fs"),p="test/fixtures/v3/BBL-real.json",d=JSON.parse(fs.readFileSync(p,"utf8"));
+const IO=require("./tools/v3/io.js"),p="test/fixtures/v3/BBL-real.json",{_sig,...d}=IO.read(p);
 if(d.metrics.custom.map(c=>c.label).join("|")!=="กำไรสุทธิ FY2025|NIM|NPL / Coverage|CET1 / CAR")throw new Error("BBL custom drifted");
 if(d.metrics.notes.eps!=="EPS FY2025 ~฿24.1")throw new Error("BBL eps note drifted");
 d.fundamentals.fy={period:"FY2025",netIncome:46007e6,eps:24.1};
@@ -1544,7 +1652,7 @@ N.netIncomeFy="▲ +1.8% YoY"; N.epsFy="TTM ~฿22.0";
 N.nim="Q1/26 (FY25 2.72%) บีบจากดอกเบี้ยลง"; N.npl="สำรองหนาแบบอนุรักษ์นิยม"; N.capital="เงินกองทุนแกร่งสุดในกลุ่ม";
 d.metrics.custom=[];
 d.metrics.cards=["mcap","pe","peAvg5y",{key:"pbv",tone:"pos"},"netIncomeFy","epsFy","bvps","roe","nim","npl","capital","yield"];
-fs.writeFileSync(p,JSON.stringify(d,null,2)+"\n");'
+IO.write(p,d);'
 ```
 
 Add to `test/v3/real-fixtures.test.js`:
@@ -1587,7 +1695,7 @@ Claude-Session: https://claude.ai/code/session_01LVyM2HVJV2UGfXJc58MhzP"
 - Cards: `pffo` (price-bound, `P/<L> (TTM)`), `pffoForward` (`Forward P/<L>`), `ffoPerShare`, `pffoAvg5y` (`P/<L> มัธยฐาน ~5 ปี`), `ffoMargin`, `ffoPayout`. `<L>` is `FFO` or `AFFO`.
 - Produces: `K.pffoCalc(view)` / `K.pffoForwardCalc(view) → { raw, text }` (the single owner of the number and its text, as `peForwardCalc` is).
 - Tokens: `{{pffo}}` and `{{pffoForward}}` render like `{{pe}}`/`{{pbv}}`, without the `x`: `"27.6"`. They have no v2 twin, so they render as literals in the v2-shaped source. That is fine because v3 pages are rebuilt from JSON on every build.
-- `stock-meta.pe` stays price ÷ EPS (§13 item 5). A REIT shows P/FFO through the card/token only.
+- `stock-meta.pe` stays price ÷ EPS (§13 item 5 — final ruling). A REIT shows P/FFO through the card/token only.
 - Produces: `cards.js` `fq(view) = view.fq || view.doc.fundamentals` (quote-currency fundamentals; Task 10 fills `view.fq`).
 
 - [ ] **Step 1: Write the failing tests**
@@ -1729,7 +1837,7 @@ const ffoLabel = (doc) => ({ ffo: 'FFO', affo: 'AFFO' }[doc.fundamentals.ffoBasi
 In `mdesc`, change the `default:` return to:
 
 ```js
-    default: return `${leg.method === 'pffo' ? `P/${ffoLabel(view.doc)}` : METHOD_NAME[leg.method]} ${i.multiple}x${src}${rng}`;
+    default: return `${leg.method === 'pffo' ? `P/${ffoLabel(view.doc)}` : METHOD_NAME[leg.method]} ${live ? 'ปัจจุบัน ' : ''}${mult}x${live ? '' : src}${rng}`;
 ```
 
 In `toV2Source`, replace the `drv`/`ex` lines with:
@@ -1750,14 +1858,14 @@ ${s.driver === 'eps' ? ' • EPS ฐาน ~{{rd:baseEps}}' : ` • ${drv} ฐ�
 
 ```bash
 node -e '
-const fs=require("fs"),p="test/fixtures/v3/EQIX-real.json",d=JSON.parse(fs.readFileSync(p,"utf8"));
+const IO=require("./tools/v3/io.js"),p="test/fixtures/v3/EQIX-real.json",{_sig,...d}=IO.read(p);
 if(d.metrics.custom.map(c=>c.label).join("|")!=="P/AFFO (TTM)|P/AFFO เฉลี่ย ~5 ปี|AFFO/Share FY2026E|AFFO Margin")throw new Error("EQIX custom drifted");
 Object.assign(d.fundamentals,{ffoBasis:"affo",ffoForward:{value:42.99,period:"FY2026E",low:42.69,high:43.29},pffoAvg5y:27});
 Object.assign(d.metrics.notes,{pffo:"งวด 2025 — มาตรวัดหลัก REIT",pffoAvg5y:"ช่วง 22–35x ขึ้นกับ sentiment",
  pffoForward:"+11–13% YoY (ปรับเพิ่มหลัง Q2 2026) — ตัวชี้วัดกำไรจริงของ REIT",ffoMargin:"ขยับขึ้นตาม Adjusted EBITDA margin สถิติ 53% (Q2 2026)"});
 d.metrics.custom=[];
 d.metrics.cards=["mcap","pffo","pffoAvg5y","pbv","pffoForward","eps","bvps","roe","revenue","ffoMargin","yield","beta"];
-fs.writeFileSync(p,JSON.stringify(d,null,2)+"\n");'
+IO.write(p,d);'
 ```
 
 Add to `test/v3/real-fixtures.test.js`:
@@ -1889,7 +1997,7 @@ Change `driverStart(doc)` to `driverStart(doc, f)` and delete its first-line `co
 ```
 
 Then:
-- in the legs map: `const legQ = fx === 1 ? leg : { ...leg, override: toQuote(leg.override, fx) };`, and use `legQ` + `fq` in both `L.legValue(...)` calls (`L.legValue(legQ, fq, …)` and `L.legValue({ ...legQ, inputs: { ...leg.inputs, multiple: m } }, fq, …)`);
+- in the legs map: `const legQ = fx === 1 ? leg : { ...leg, override: toQuote(leg.override, fx) };`. Use `legQ` + `fq` in the `'current'` base lookup (`L.inputsOf(legQ, fq)[k]`, Task 5) and in both `L.legValue(...)` calls: `L.legValue(liveMultiple == null ? legQ : { ...legQ, inputs: { ...leg.inputs, multiple: liveMultiple } }, fq, …)` and `L.legValue({ ...legQ, inputs: { ...leg.inputs, multiple: m } }, fq, …)`. (The `'current'` bases are per-share, so `toQuote` leaves them unchanged; the swap keeps one code path.)
 - `const start = driverStart(doc, fq);`;
 - the bridge: `if (fq.revenue != null && fq.revenue > 0) values.revenue = fq.revenue;`;
 - the return object gains `fq, fx, stmtCur: STMT_SYMBOL[f.reportCurrency] || cur`. Move `const cur = RV.CUR_SYMBOL[doc.currency];` above the `return` if needed; it already is.
@@ -1922,13 +2030,13 @@ function evEbitdaCalc(view) {
 
 ```bash
 node -e '
-const fs=require("fs"),p="test/fixtures/v3/FER-real.json",d=JSON.parse(fs.readFileSync(p,"utf8"));
+const IO=require("./tools/v3/io.js"),p="test/fixtures/v3/FER-real.json",{_sig,...d}=IO.read(p);
 if(d.metrics.custom.map(c=>c.label).join("|")!=="กำไรสุทธิ FY2025|FCF (TTM)|รายได้ TTM|เงินสดสุทธิ ex-infra")throw new Error("FER custom drifted");
 Object.assign(d.fundamentals,{reportCurrency:"EUR",fx:1.15566,revenue:9859e6,netIncome:606e6,fcf:1880e6,fy:{period:"FY2025",netIncome:888e6}});
 Object.assign(d.metrics.notes,{netIncomeFy:"−72.6% YoY (FY2024 มีกำไรพิเศษขาย Heathrow)",fcf:"สูงกว่ากำไรสุทธิ €606M ~3 เท่า",revenue:"+2.4% YoY • FY2025 €9,627M (+5.2%)"});
 d.metrics.custom=[d.metrics.custom[3]];
 d.metrics.cards=["mcap","pe","peForward","pbv","netIncomeFy","eps","revenue","roe","fcf","grossMargin","yield","custom:0"];
-fs.writeFileSync(p,JSON.stringify(d,null,2)+"\n");'
+IO.write(p,d);'
 ```
 
 Add to `test/v3/real-fixtures.test.js`:
@@ -2187,7 +2295,7 @@ function extrasHtml(doc, view, after) {
 
 ```bash
 node -e '
-const fs=require("fs"),p="test/fixtures/v3/FER-real.json",d=JSON.parse(fs.readFileSync(p,"utf8"));
+const IO=require("./tools/v3/io.js"),p="test/fixtures/v3/FER-real.json",{_sig,...d}=IO.read(p);
 const x=d.extras[1]; if(x.sumCol!==4||x.rows.length!==8||d.legs[0].inputs.extrasRef!==1)throw new Error("FER SOTP drifted");
 for(const r of x.rows){ r[3]=Number(String(r[3]).replace(/[,+]/g,"").replace("−","-")); if(!Number.isFinite(r[3]))throw new Error("bad €M cell"); }
 x.columns=[{dp:0,unit:"none"},{dp:0,unit:"none"},{dp:0,unit:"none"},{dp:0,unit:"none"},{dp:2,unit:"none"}];
@@ -2197,7 +2305,7 @@ const k=x.note.indexOf("<b>สมมติฐานหลักและที�
 x.note=x.note.slice(k);
 const a=" · รวม €32,280M ÷ 720 ล้านหุ้น = €44.83 × EURUSD 1.15566 (ตารางด้านล่าง)"; if(!d.legs[0].note.endsWith(a))throw new Error("leg1 note drifted");
 d.legs[0].note=d.legs[0].note.slice(0,-a.length)+" (ดูตาราง SOTP ด้านล่าง)";
-fs.writeFileSync(p,JSON.stringify(d,null,2)+"\n");'
+IO.write(p,d);'
 ```
 
 (Σ €M column = 32,280 exactly. Σ €/share = 44.84 vs the stated 44.83 is inside the rounding tolerance 8 × 0.005. The E52 tie-out is 44.83 × 1.15566 = 51.808 vs leg $51.81.)
@@ -2218,11 +2326,11 @@ Claude-Session: https://claude.ai/code/session_01LVyM2HVJV2UGfXJc58MhzP"
 ```
 
 ---
-### Task 12: `test/check-v3.js` — the v3 gate (E50/E51/E52/W30/W31 + kept codes) + JSON meta-test + `verify` wiring
+### Task 12: `test/check-v3.js` — the v3 gate (E50/E51/E52/W30/W31/W32 + kept codes) + JSON meta-test + `verify` wiring
 
 **Files:**
 - Create: `test/check-v3.js`, `test/v3/check-v3.test.js`
-- Modify: `test/fixtures/v3/{BBL,EQIX,FER,ZTS}-real.json` (re-signed through `io.write`; no content change)
+- No fixture change: Tasks 1–11 wrote every `-real` fixture through `io.write`, so all four are already signed (Step 1 asserts it).
 - Modify: `package.json` (`check:v3` script; `verify` gains `node test/check-v3.js` right after `node test/check-reports.js`)
 - Modify: `tools/gen-docs.js` (`STEP_LABELS` entry)
 - Regenerate (via `node tools/gen-docs.js`): `CLAUDE.md`, `README.md`, `docs/quality-gate.md`, `docs/price-refresh.md`, `.githooks/pre-push` (marker blocks only)
@@ -2235,23 +2343,22 @@ Claude-Session: https://claude.ai/code/session_01LVyM2HVJV2UGfXJc58MhzP"
   2. then sweeps `test/fixtures/v3/*-real.json` with the clock frozen at each fixture's `market.priceDate`, where the error ids must equal `EXPECT_FIXTURE[name] || []`.
   Exit 1 on any mismatch.
 - Code inventory (ruling R4):
-  - Native: `E50 E51 E52 E17 E27 W07 W09 W18 W25 W30 W31`.
+  - Native: `E50 E51 E52 E17 E27 W07 W09 W18 W25 W30 W31 W32`. `W32` = |MOS| > 40% with no non-(r,g) `fv` leg (spec §13 item 7; the effective-family rule is in R4).
   - Pass-through `v2:*`: every other v2 code on the rendered page (`E28 E32 E34–E40 W08 W12 W13`, structural codes).
   - v2 ids that native codes replace are dropped from the pass-through: `NATIVE_V2 = {E17, E27, W07, W09, W18, W25}`.
 
-- [ ] **Step 1: Sign the real fixtures (E50 is now live on them)**
+- [ ] **Step 1: Assert the real fixtures are signed (E50 is now live on them). This step repairs nothing.**
 
-Tasks 1–11 edited the fixtures by hand-script, so `FER-real`/`ZTS-real` carry stale signatures and `BBL-real`/`EQIX-real` carry none. Only `io.write` signs:
+Every fixture edit in Tasks 1–11 went through `io.write`, which signs. So E50 must already pass on all four. This step only checks that. If it throws, a task wrote a fixture outside `io.write`. Stop and report which fixture: re-signing here would hide exactly the bypass E50 exists to catch.
 
 ```bash
 node -e '
 const IO=require("./tools/v3/io.js");
-for(const f of ["BBL-real","EQIX-real","FER-real","ZTS-real"]){const p="test/fixtures/v3/"+f+".json";const {_sig,...d}=IO.read(p);IO.write(p,d);}
-for(const f of ["BBL-real","EQIX-real","FER-real","ZTS-real"]) if(!IO.verifySig(IO.read("test/fixtures/v3/"+f+".json")))throw new Error(f);
-console.log("signed");'
+for(const f of ["BBL-real","EQIX-real","FER-real","ZTS-real"]) if(!IO.verifySig(IO.read("test/fixtures/v3/"+f+".json")))throw new Error(f+": _sig missing/stale — written outside io.write");
+console.log("all signed");' && rtk proxy git status --short test/fixtures/v3/
 ```
 
-Expected: `signed`. From here on, **any** edit to a `-real` fixture must be followed by re-running this one-liner. The meta-test below fails with E50 otherwise, which is the point.
+Expected: `all signed`, and `git status` prints nothing for `test/fixtures/v3/`. From here on, any fixture edit goes through `io.write` (Execution Notes). The meta-test below fails with E50 otherwise, which is the point.
 
 - [ ] **Step 2: Write the failing meta-test `test/v3/check-v3.test.js`**
 
@@ -2262,6 +2369,7 @@ const t = require('./_t.js')('check-v3');
 const CV = require('../check-v3.js');
 const IO = require('../../tools/v3/io.js');
 const P = require('../../tools/v3/prose.js');
+const C = require('../../tools/v3/compute.js');
 const load = (f) => JSON.parse(JSON.stringify(require(`../fixtures/v3/${f}.json`)));
 const signed = (d) => ({ ...d, _sig: IO.sign(d) });
 const run = (d, o) => CV.checkDoc(d, { seeds: {}, today: d.market.priceDate, ...(o || {}) });
@@ -2297,6 +2405,14 @@ const today0 = Z().market.priceDate;
 { const d = Z(); delete d._sig; const n0 = P.countMoneyLiterals(d); d.prose.chart += ' เคยแตะ $123.45';
   const w = run(signed(d)).warnings.find((x) => x.id === 'W31');
   t(w && w.msg.startsWith(`${n0 + 1} `), 'W31: counts the added money literal'); }
+// W32 (spec §13 ข้อ 7 · ชั้น 0): |MOS| > 40% ต้องมีขา fv ที่ไม่ใช่ตระกูล (r,g) ยืนยัน — ราคาตั้งที่ครึ่งหนึ่งของ FV ⇒ MOS 50%
+const halfPx = (d) => { d.market.px = +(C.compute(d, { seeds: {} }).fv * 0.5).toFixed(2); return d; };
+{ const d = Z(); delete d._sig; halfPx(d);
+  t(!ids(run(signed(d)), 'warnings').includes('W32'), 'W32 silent: MOS 50% but the P/E leg (inferred family market) confirms'); }
+{ const d = Z(); delete d._sig; d.legs.forEach((l) => { l.family = 'rg'; }); d.fvWeights = null; halfPx(d);
+  t(ids(run(signed(d)), 'warnings').includes('W32'), 'W32: MOS 50% and every fv leg is family rg'); }
+{ const d = Z(); delete d._sig; d.legs = d.legs.filter((l) => l.method !== 'pe'); d.fvWeights = null; halfPx(d);
+  t(ids(run(signed(d)), 'warnings').includes('W32'), 'W32: no family key — ddm + declared(other) are inferred rg'); }
 { const d = Z(); delete d._sig; d.meta.aiModel = 'Claude Foo 5'; t(ids(run(signed(d)), 'errors').includes('v2:E28'), 'pass-through: v2 E28 on the rendered page surfaces as v2:E28'); }
 t(!ids(run(Z()), 'errors').some((x) => CV.NATIVE_V2.has(x.replace(/^v2:/, '')) && x.startsWith('v2:')), 'native codes are not double-reported from the v2 pass-through');
 t.done();
@@ -2313,6 +2429,7 @@ Expected: FAIL with `Cannot find module '../check-v3.js'`.
  * check-v3.js — gate ของรายงาน v3 (reports/<SYM>.json) · spec §9 · ruling R4 ของ Plan 2a
  *   คิดเองจาก JSON: E50 ลายเซ็น · E51 สคีมา/compute/render/แท็ก · E52 ขา declared ↔ ตาราง · E17 ≥2 ขา fv
  *                   E27/W09 ความสดราคา · W07 ตัวเลขผิดวิสัย · W18/W25 สมอตาย (จาก inputs) · W30 lit เกิน · W31 literal เงินค้าง
+ *                   W32 |MOS| > 40% ไม่มีขา fv นอกตระกูล (r,g) (§13 ข้อ 7)
  *   ผ่าน gate v2 บนหน้าที่ render (render smoke test): โค้ดที่เหลือทั้งหมด รายงานเป็น "v2:<id>" — ย้ายเป็น native ใน P7
  *   ไม่รันกติกา B (ruling R5 — กติกา B เป็นของ save · ราคาขยับทุกวันจะทำให้ "เป๊ะ" กระพริบ)
  * CLI: node test/check-v3.js [SYM…] — reports/*.json (นาฬิกาจริง) + fixture ใบจริง (นาฬิกาแช่ที่ market.priceDate ของใบ)
@@ -2334,7 +2451,7 @@ const REPORTS_DIR = path.join(ROOT, 'reports');
 const FIXTURE_DIR = path.join(ROOT, 'test', 'fixtures', 'v3');
 const DEAD_ANCHOR_PCT = 7;   // = เส้นเดียวกับ W18/W25 ของ v2 (test/check-reports.js)
 const NATIVE_V2 = new Set(['E17', 'E27', 'W07', 'W09', 'W18', 'W25']);
-// §13 ข้อ 4 (ผู้ควบคุมตัดสินชั่วคราว): ขา fv 1 ขา = ละเมิดชั้น 0 → ถัง HUMAN · EQIX คือเคสนั้น
+// §13 ข้อ 4 (คำตัดสินถาวร — advisor 24 ก.ย. 69): ขา fv 1 ขา = ละเมิดชั้น 0 → ถัง HUMAN · EQIX คือเคสนั้น (ขา context คำนวณแล้ว แต่ไม่นับ)
 const EXPECT_FIXTURE = { 'EQIX-real': ['E17'] };
 const CODES = [
   { id: 'E50', level: 'error', label: 'ลายเซ็น _sig ตรงเนื้อไฟล์ (เขียนผ่าน tools/v3/io.js เท่านั้น)' },
@@ -2348,12 +2465,17 @@ const CODES = [
   { id: 'W25', level: 'warn', label: 'ตัวคูณเป้า ≈ ตัวคูณ forward (สมอตายฝั่ง forward)' },
   { id: 'W30', level: 'warn', label: '{{lit:…}} เกิน 2 ต่อใบ' },
   { id: 'W31', level: 'warn', label: 'literal รูปเงินค้างใน prose (แก้ตอนแตะใบ)' },
+  { id: 'W32', level: 'warn', label: '|MOS| > 40% ต้องมีขา fv ที่ไม่ใช่ตระกูล (r,g) ยืนยัน (ชั้น 0 · §13 ข้อ 7)' },
 ];
 const CODE = Object.fromEntries(CODES.map((c) => [c.id, c]));
 const isNum = (v) => typeof v === 'number' && Number.isFinite(v);
 const thaiToday = () => new Date(Date.now() + 7 * 3600e3).toISOString().slice(0, 10);
 const days = (a, b) => Math.round((Date.parse(b) - Date.parse(a)) / 86400e3);
-const MULT_BASE = { pe: 'eps', pbv: 'bvps', pffo: 'ffoPerShare' };
+const MULT_BASE = S.CURRENT_BASE;   // ตัวตั้งต่อหุ้นชุดเดียวกับขา 'current' (Task 5 · R7)
+// W32 — ตระกูลจริงของขา: family ที่เขียน > เดาจาก method (ไม่งั้นขาไม่มี family นับเป็น "ไม่ใช่ rg" เสมอ ⇒ W32 ไม่มีวันยิงบนใบเก่า/migrate)
+const RG_METHODS = new Set(['ddm', 'ddm2', 'dcf', 'ri']);
+const famOf = (l) => l.family || (RG_METHODS.has(l.method) || (l.method === 'pbv' && l.inputs.g != null) ? 'rg'
+  : l.method === 'declared' ? (['sotp', 'nav'].includes(l.inputs.basis) ? 'asset' : 'rg') : 'market');
 
 function checkDoc(doc, opts) {
   const o = opts || {};
@@ -2406,6 +2528,9 @@ function checkDoc(doc, opts) {
   if (nLit > 2) add('W30', `${nLit} จุด (เกิน 2) — ถ้าต้องพิมพ์ตรงบ่อยขนาดนี้ แปลว่าสคีมาขาดช่อง`);
   const nMoney = P.countMoneyLiterals(doc);
   if (nMoney) add('W31', `${nMoney} literal รูปเงินที่ไม่ใช่ token — แทนด้วย token ตอนแตะใบ (UPDATE/LIGHT)`);
+  const fvLegs = doc.legs.filter((l) => l.role !== 'context');
+  if (isNum(d.mos) && Math.abs(d.mos) > 40 && !fvLegs.some((l) => famOf(l) !== 'rg'))
+    add('W32', `MOS ${d.mos.toFixed(1)}% แต่ขา fv ทุกขาเป็นตระกูล (r,g) — ต้องมีวิธีที่ไม่ใช้ (r,g) ยืนยัน (ชั้น 0 · docs/quality-gate.md)`);
 
   const res = CR.checkHtml(html, `${doc.symbol}.html`, { source: src });
   for (const e of res.errors) if (!NATIVE_V2.has(e.id)) errors.push({ id: 'v2:' + e.id, label: e.label, msg: e.msg });
@@ -2468,7 +2593,7 @@ Expected: marker blocks change in `CLAUDE.md`, `README.md`, `docs/quality-gate.m
 `README.md`: the regenerated verify-list has a line `12. **\`check-v3\`** _(เติม)_`. Replace ` _(เติม)_` on that line with:
 
 ```
- (gate ของใบ v3 `reports/*.json` + fixture ใบจริง `test/fixtures/v3/*-real.json`): E50 ลายเซ็น • E51 สคีมา/compute/render • E52 ขา declared ↔ ตาราง SOTP • E17/E27/W07/W09/W18/W25 คิดจาก JSON • W30 `{{lit:}}` • W31 literal เงินค้าง • โค้ดที่เหลือผ่าน gate v2 บนหน้าที่ render (`v2:<id>`) → [รายละเอียด](docs/quality-gate.md)
+ (gate ของใบ v3 `reports/*.json` + fixture ใบจริง `test/fixtures/v3/*-real.json`): E50 ลายเซ็น • E51 สคีมา/compute/render • E52 ขา declared ↔ ตาราง SOTP • E17/E27/W07/W09/W18/W25 คิดจาก JSON • W30 `{{lit:}}` • W31 literal เงินค้าง • W32 |MOS| > 40% ไม่มีขานอกตระกูล (r,g) ยืนยัน • โค้ดที่เหลือผ่าน gate v2 บนหน้าที่ render (`v2:<id>`) → [รายละเอียด](docs/quality-gate.md)
 ```
 
 `docs/quality-gate.md` — append a section (hand-written prose; no step numbers, so docs-test (ค) stays green):
@@ -2489,6 +2614,7 @@ Expected: marker blocks change in `CLAUDE.md`, `README.md`, `docs/quality-gate.m
 | W18 / W25 | warn | ตัวคูณเป้าห่างตัวคูณปัจจุบัน / forward ≤7% — คำนวณจาก `legs[].inputs` ไม่ใช่ regex |
 | W30 | warn | `{{lit:…}}` เกิน 2 ต่อใบ |
 | W31 | warn | literal รูปเงินที่ไม่ใช่ token ค้างใน prose (ยอดที่มีหน่วย M/B/ล้าน ไม่นับ) |
+| W32 | warn | \|MOS\| > 40% แต่ขา `fv` ทุกขาเป็นตระกูล (r,g) (family ที่เขียน หรือเดาจาก method: ddm/ddm2/dcf/ri/justified P/BV/declared other) — ชั้น 0 ยังเป็นงานตรวจของ controller |
 | `v2:<id>` | ตาม v2 | โค้ดที่เหลือของ `check-reports` รันบนหน้าที่ render (render smoke test) — ย้ายเป็น native ตอน P7 |
 
 กติกา B (ตัวเลขผูกราคาที่พิมพ์เอง) เป็นของ `save` ไม่ใช่ gate รายวัน — gate รายวันใช้ W31
@@ -2502,8 +2628,8 @@ Expected: gen-docs `✓ เอกสารตรงกับโค้ด (… ve
 - [ ] **Step 7: Commit**
 
 ```bash
-git add test/check-v3.js test/v3/check-v3.test.js test/fixtures/v3/BBL-real.json test/fixtures/v3/EQIX-real.json test/fixtures/v3/FER-real.json test/fixtures/v3/ZTS-real.json package.json tools/gen-docs.js CLAUDE.md README.md docs/quality-gate.md docs/price-refresh.md .githooks/pre-push
-git commit -m "feat(v3): check-v3 gate (E50/E51/E52/W30/W31 + kept codes) + JSON meta-test, wired into verify
+git add test/check-v3.js test/v3/check-v3.test.js package.json tools/gen-docs.js CLAUDE.md README.md docs/quality-gate.md docs/price-refresh.md .githooks/pre-push
+git commit -m "feat(v3): check-v3 gate (E50/E51/E52/W30/W31/W32 + kept codes) + JSON meta-test, wired into verify
 
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
 Claude-Session: https://claude.ai/code/session_01LVyM2HVJV2UGfXJc58MhzP"
@@ -2517,7 +2643,7 @@ Claude-Session: https://claude.ai/code/session_01LVyM2HVJV2UGfXJc58MhzP"
 - Modify: `test/v3/real-fixtures.test.js` (exit criteria)
 - Modify: `test/v3/tokens-corpus.test.js` (print the accepted count; threshold unchanged, per #53)
 - Modify: `test/v3/render.test.js` (all real fixtures in the full-gate loop)
-- Modify (only if a criterion fails): the offending `test/fixtures/v3/*-real.json`, then re-sign (Task 12 Step 1 one-liner)
+- Modify (only if a criterion fails): the offending `test/fixtures/v3/*-real.json`, edited through `io.read`/`io.write` (which signs). Then re-run the Task 12 Step 1 assertion.
 
 **Interfaces:**
 - Consumes everything above. Produces no new API. This task is the proof that Plan 2a meets spec §12 and changes nothing in production.
@@ -2530,10 +2656,10 @@ Append to `test/v3/real-fixtures.test.js` (before `t.done();`):
 // ── Task 13 — เกณฑ์จบ Plan 2a (spec §12) ──
 const REAL = ['BBL-real', 'EQIX-real', 'FER-real', 'ZTS-real'];
 // ขา declared เหลือได้เฉพาะที่ไม่มี method คำนวณ (ruling R7)
+// EQIX-real: 0 ขา — ขา context ตัวคูณปัจจุบันเป็น pffo 'current' ที่คำนวณได้แล้ว (spec §13 ข้อ 6)
 const DECLARED_OK = {
   'FER-real': [0],   // SOTP basis sotp + extrasRef — E52 ผูกยอดตารางกับค่าขา
-  'EQIX-real': [1],  // ขา context ตัวคูณปัจจุบัน — multipleSource ห้าม 'current' โดยตั้งใจ
-  'ZTS-real': [1],   // Gordon ขั้นเดียวบน FCF — v3 ไม่มี method นี้
+  'ZTS-real': [1],   // Gordon ขั้นเดียวบน FCF — v3 ไม่มี method นี้ (เจ้าของตัดสิน)
 };
 for (const f of REAL) {
   const d = load(f);
@@ -2550,6 +2676,7 @@ for (const f of REAL) {
   t(!F.legs[0].note.includes('€44.83'), 'FER-real: leg 1 no longer repeats the table total');
   t(!/g 11%\/ปี 10 ปีแรก/.test(F.legs[1].note), 'FER-real: ddm2 inputs are not repeated in the note'); }
 t(!load('EQIX-real').legs[1].label.includes('บริบท'), 'EQIX-real: the context marker comes from role, not the label');
+t(!/26\.6x|\$38\.33/.test(load('EQIX-real').legs[1].note || ''), 'EQIX-real: the context leg note carries no frozen multiple/base (R7)');
 t(!/มัธยฐาน P\/E FY2022/.test(load('EQIX-real').legs[0].note), 'EQIX-real: the median window lives in inputs.medianWindow');
 t(!('eps' in load('BBL-real').metrics.notes), 'BBL-real: FY EPS lives in fundamentals.fy, not a note');
 t.eq(load('BBL-real').fvWeights, null, 'BBL-real: weights come from family, not typed numbers');
@@ -2572,7 +2699,7 @@ console.log(`  ℹ compute() accepted ${ok}/${files} v2 value sets · ${checked}
 - [ ] **Step 2: Run the whole v3 suite**
 
 Run: `rtk proxy node test/v3-test.js 2>&1`
-Expected: every line `✓`. The corpus line reads `accepted 909/909`. If any exit assertion fails, fix the **fixture** (move text into its slot; never duplicate it), re-sign with the Task 12 Step 1 one-liner, and re-run. Do not loosen an assertion.
+Expected: every line `✓`. The corpus line reads `accepted 909/909`. If any exit assertion fails, fix the **fixture** with an `io.read`/`io.write` script (move text into its slot; never duplicate it), re-run the Task 12 Step 1 assertion, and re-run. Do not loosen an assertion.
 
 - [ ] **Step 3: Prove zero production effect**
 
@@ -2625,7 +2752,9 @@ Claude-Session: https://claude.ai/code/session_01LVyM2HVJV2UGfXJc58MhzP"
 | G short leg notes | 6, 13 (fixture edits) |
 | H `tone` | 4 |
 | I `role` + context rendering | 5 |
-| I E17 counts fv only | 12 (ruling R3) |
+| I E17 counts fv only | 12 (ruling R3, final — §13 item 4) |
+| §13 item 6: `'current'` context legs computed | 5 (ruling R7) |
+| §13 item 7: \|MOS\| > 40% check | 12 (`W32`, ruling R4) |
 | J REIT fields/cards/token, §6 hint for every driver, `stock-meta.pe` = px/EPS | 9 |
 | K bank | 8 |
 | L `reportCurrency`/`fx` | 10 |
@@ -2634,7 +2763,7 @@ Claude-Session: https://claude.ai/code/session_01LVyM2HVJV2UGfXJc58MhzP"
 | O notes render tokens | 2 |
 | `peAvg5y` label | 2 |
 | §4 rule B precision + `{{lit:}}` + `meta.litReasons` | 1 |
-| §9 E50 E51 E52 W30 W31, JSON self-test, kept codes | 12 (ruling R4 lists native vs pass-through vs deferred) |
+| §9 E50 E51 E52 W30 W31, JSON self-test, kept codes | 12 (ruling R4 lists native vs pass-through) |
 | §11 tripwire kept | global constraint; Task 13 Step 4 |
 | §11 no production effect | Task 13 Step 3 |
 | §12 exit criteria | 13 |
@@ -2644,10 +2773,9 @@ Claude-Session: https://claude.ai/code/session_01LVyM2HVJV2UGfXJc58MhzP"
 
 **Not in 2a, by design (Plan 2b):**
 - `report.js`, the hook, scanners, worker docs, tripwire removal, #52.
-- `|MOS| > 40%` (layer 0) is deferred with its reason in R4.
 
 **Type/name consistency** (checked across tasks):
-- `S.cardEntries`, `C.weightsOf`, `C.toQuote`.
+- `S.cardEntries`, `S.CURRENT_BASE` (Task 5; reused by Task 12 as `MULT_BASE`), `C.weightsOf`, `C.toQuote`.
 - `view.fq` / `view.fx` / `view.stmtCur` (Task 10; Tasks 9, 11 and 12 read them through `view.fq || doc.fundamentals`).
 - `K.pffoCalc`/`pffoForwardCalc`.
 - `X.fmtCell`/`tableTotal`/`tieOut`.
