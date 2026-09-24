@@ -59,6 +59,11 @@ t.eq(at.v, `$190.00 (${TK.TOKENS_V3['analyst.pct'](view)})`, 'analystTarget % te
   t.throws(() => K.renderCard('ebitdaMargin', v2), /fundamentals\.revenue/, 'ebitdaMargin rejects revenue ≤ 0 instead of rendering Infinity%'); }
 // Plan 2a Task 2 — ค่าเป็นมัธยฐานจาก median-multiples ⇒ label ต้องไม่เขียน "เฉลี่ย" (spec §3.2 · BBL G9)
 t.eq(K.CATALOGUE.peAvg5y.label(view), 'P/E มัธยฐาน ~5 ปี', 'peAvg5y label says มัธยฐาน');
+// ICC 24 ก.ย. 69: median-multiples ตัด FY2021 → window FY2022–FY2025 (4 จุด) — ป้ายต้องไม่อ้าง 5 ปี (runbook: "~M ปี" ห้ามเกิน FY ที่ใช้จริง)
+{ const w = (win) => { const d = JSON.parse(JSON.stringify(view.doc)); const leg = d.legs.find((l) => (l.role || 'fv') === 'fv'); leg.inputs = leg.inputs || {}; if (win == null) delete leg.inputs.medianWindow; else leg.inputs.medianWindow = win; return { ...view, doc: d }; };
+  t.eq(K.CATALOGUE.peAvg5y.label(w('FY2022–FY2025')), 'P/E มัธยฐาน ~4 ปี', 'peAvg5y label counts the medianWindow years (4-point window → ~4 ปี)');
+  t.eq(K.CATALOGUE.peAvg5y.label(w('FY2021–FY2025')), 'P/E มัธยฐาน ~5 ปี', 'peAvg5y label: 5-point window → ~5 ปี');
+  t.eq(K.CATALOGUE.peAvg5y.label(w(null)), 'P/E มัธยฐาน ~5 ปี', 'peAvg5y label: no medianWindow on the fv leg → default 5'); }
 // Plan 2a Task 8 — การ์ด FY + ธนาคาร
 { const d = load(); d.fundamentals.fy = { period: 'FY2025', netIncome: 2.673e9, eps: 6.02, revenue: 9.26e9 };
   d.fundamentals.bank = { nim: 2.49, npl: 3, coverage: 324, cet1: 16.4, car: 20.9 };

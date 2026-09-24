@@ -31,6 +31,11 @@ const priceBoundOrThrow = (key, v) => { if (v == null) throw new Error(`metrics.
 
 // peForwardCalc/evEbitdaCalc — เจ้าของเดียวของเลข+ข้อความ 2 ตัวนี้ (การ์ด section 1 + prose.js priceBound()
 // กติกา B ใช้ตัวเดียวกัน ไม่ก๊อปสูตร format ซ้ำ — เห็น .text ตรงกับที่การ์ดพิมพ์เป๊ะ)
+function medianYears(view) {
+  const leg = (view.doc.legs || []).find((l) => (l.role || 'fv') === 'fv' && l.inputs && typeof l.inputs.medianWindow === 'string');
+  const m = leg && /FY(\d{4})\D+FY(\d{4})/.exec(leg.inputs.medianWindow);
+  return m ? Math.max(1, +m[2] - +m[1] + 1) : 5;
+}
 function peForwardCalc(view) {
   const e = need(view, 'epsForward');
   if (!(e > 0)) throw new Error('metrics.cards: peForward — EPS ประมาณการ ≤ 0 ถอดการ์ดออก');
@@ -60,7 +65,8 @@ const CATALOGUE = {
   pe: { label: () => 'P/E (TTM)', cls: 'neu',
     value: (v) => { const e = need(v, 'eps'); if (!(e > 0)) throw new Error('metrics.cards: pe — EPS ≤ 0 (ขาดทุน) P/E ไม่มีความหมาย ถอดการ์ดออก'); return v.d.pe.toFixed(1) + 'x'; },
     d: (v) => `EPS TTM ${money(v, need(v, 'eps'))}` },
-  peAvg5y: { label: () => 'P/E มัธยฐาน ~5 ปี', value: (v) => need(v, 'peAvg5y').toFixed(1) + 'x', d: () => 'มัธยฐานย้อนหลัง', cls: '' },
+  // ป้ายจำนวนปี = ช่วง medianWindow ของขา fv ที่ใช้มัธยฐาน (FY2022–FY2025 → 4 ปี · ICC 24 ก.ย. 69 ตัด FY2021 ทิ้ง) · ไม่มีขา/ไม่มี window → 5 ตามชื่อคีย์
+  peAvg5y: { label: (v) => `P/E มัธยฐาน ~${medianYears(v)} ปี`, value: (v) => need(v, 'peAvg5y').toFixed(1) + 'x', d: () => 'มัธยฐานย้อนหลัง', cls: '' },
   pbv: { label: () => 'P/BV', cls: 'neu', value: (v) => priceBoundOrThrow('pbv', v.d.pbv).toFixed(2) + 'x', d: (v) => `BVPS ${money(v, need(v, 'bvps'))}` },
   // ฐานใน .d = รายได้สกุลราคา (fq) เหมือนตัวหารของ P/S — W16 ของ gate v2 อ่านเลขนี้คิด mcap ÷ รายได้ โดยไม่ดูสัญลักษณ์สกุล
   ps: { label: () => 'P/S', cls: 'neu', value: (v) => priceBoundOrThrow('ps', v.d.ps).toFixed(1) + 'x',
