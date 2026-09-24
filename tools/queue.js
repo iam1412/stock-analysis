@@ -21,7 +21,7 @@ const usage = `ใช้: npm run queue -- <คำสั่ง> [ตัวเล
   ship --prepatch
   prep <SYM> [--mode NEW|UPDATE|UPDATE-LIGHT] [--model sonnet|opus] [--brand "#hex"] [--median-spec SYM:TICKER] [--th] [--light-rule new|legacy]
   postcheck <SYM> [--model sonnet|opus]
-  ship <SYM> [--tags "slug slug"] [--message "…"] [--model sonnet|opus] [--force]
+  ship <SYM> [--tags "slug slug"] [--message "…"] [--model sonnet|opus] [--force] [--no-push] (commit เท่านั้น — ไม่ rebase/ไม่ push · flow branch → PR)
   status
   (--light-rule legacy = กฎ LIGHT/FULL เดิม · env LIGHT_RULE=legacy ก็ได้ · ship รับแต่ไม่ใช้)`;
 
@@ -36,7 +36,7 @@ const usage = `ใช้: npm run queue -- <คำสั่ง> [ตัวเล
       const sh = require('./queue/ship.js');
       if (has('--prepatch')) sh.shipPrepatch();
       // --model = ทางออกเมื่อ state ไม่มี record (prep คนละเครื่อง/ถูกล้าง) — ต้องตรงกับโมเดลที่รันจริง (ป้าย Co-Authored-By)
-      else if (sym) sh.shipStock(sym, { tags: has('--tags') ? val('--tags') : null, message: val('--message'), model: val('--model'), force: has('--force') });
+      else if (sym) sh.shipStock(sym, { tags: has('--tags') ? val('--tags') : null, message: val('--message'), model: val('--model'), force: has('--force'), noPush: has('--no-push') });
       else throw new Error(usage);
       break;
     }

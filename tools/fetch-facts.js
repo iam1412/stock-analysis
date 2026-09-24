@@ -83,7 +83,7 @@ async function main() {
     console.log(`⚠ currency จาก Yahoo = ${q.currency} ไม่ตรงที่คาด (${currency}) — เช็ค ticker/--th ให้ถูกก่อนใช้`);
   console.log(`ป้าย .chg: "${chg.text}"${theme ? ` · theme.chgBg "${theme.bg}" · theme.chgColor "${theme.col}"` : ' (ทรงตัว — คงสีกลาง)'}`);
   console.log(`กรอบ 52 สัปดาห์ (จาก monthly close โดยประมาณ): ${sym}${lo} – ${sym}${hi}`);
-  console.log(`\nchart (วางใน report-data — ★ ถ้า fairLine หลุดช่วง min/max ให้คำนวณ bounds ใหม่รวม FV):`);
+  console.log(`\nchart (v2: วางใน report-data · v3: อยู่ใน sidecar/market แล้ว — report.js save ใส่ให้เอง ไม่ต้องวาง) — v2: ★ ถ้า fairLine หลุดช่วง min/max ให้คำนวณ bounds ใหม่รวม FV:`);
   console.log(styledRD({ data: chartData, min: b.min, max: b.max, grid: b.grid }));
 }
 

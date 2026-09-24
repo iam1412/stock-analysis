@@ -170,6 +170,10 @@ function reconcile() {
 function dirtyTracked() {
   return parsePorcelain(run('git', ['status', '--porcelain', '--untracked-files=no']).out).map((e) => e.path);
 }
+/** --no-push (Plan 2c-i · flow branch → PR): ship เหลือแค่ commit — ไม่ pull --rebase · ไม่ push · ไม่ปิด issue
+ *  ส่วนบริสุทธิ์ = ตัดสินจาก options อย่างเดียว ไม่ดู git · default (ไม่ส่ง noPush) = push ตามเดิม (v2 ไม่เปลี่ยน) */
+function shouldPush(o) { return !(o && o.noPush); }
+const NO_PUSH_NOTE = 'ℹ --no-push: commit แล้ว ยังไม่ rebase/push (branch → PR → advisor) — push เองภายหลังด้วย git push origin HEAD:<branch>';
 /** push ถ้า tree สะอาด · ไม่สะอาด = **เลื่อน** ไม่ใช่ error — worker หลายตัวเขียนเสร็จพร้อมกันคือโหมดปกติ (CLAUDE.md §3.3
  *  verify/push รายแบตช์) · commit อยู่ในเครื่องแล้วและ state จำ committedSha ไว้แล้ว ⇒ ใบถัดไปที่ tree สะอาดพาขึ้นไปเอง
  *  คืน true = push แล้ว · false = เลื่อน */
@@ -222,7 +226,7 @@ function shipStock(sym, opts) {
     const healed = reconcile();
     console.log(`✅ ${sym} อยู่บน origin/main แล้ว${rec.committedSha ? ` (${rec.committedSha.slice(0, 9)})` : ' (ยืนยันจาก git log)'} — ไม่มีอะไรต้อง commit`);
     console.log(healed.length ? `   ปรับสถานะให้ตรง git ${healed.length} ใบ: ${healed.join(' ')}` : '   สถานะตรงกับ git อยู่แล้ว');
-    closeIssueIfEmpty();
+    if (shouldPush(o)) closeIssueIfEmpty();   // --no-push = ไม่ปิด issue ทุกทาง
     return;
   }
 
@@ -245,10 +249,11 @@ function shipStock(sym, opts) {
     if (phase === 'pushed') {
       const healed = reconcile();
       console.log(`✅ ${sym} อยู่บน origin/main แล้ว — ไม่มีอะไรต้อง commit${healed.length ? ` · ปรับสถานะ ${healed.length} ใบ: ${healed.join(' ')}` : ''}`);
-      closeIssueIfEmpty();
+      if (shouldPush(o)) closeIssueIfEmpty();
       return;
     }
     if (phase === 'unpushed') {
+      if (!shouldPush(o)) { console.log(`ℹ commit ของ ${sym} มีอยู่แล้ว (ยังไม่ push)`); console.log(NO_PUSH_NOTE); return; }
       console.log(`ℹ commit ของ ${sym} มีอยู่แล้ว (ยังไม่ push) — push ต่อ`);
       if (!pushIfClean(sym)) return;
       S.update(sym, { shippedAt: todayBangkok() });
@@ -267,6 +272,7 @@ function shipStock(sym, opts) {
   // ★ บันทึกทันทีหลัง commit **ก่อน** push — push ล้ม/ถูกเลื่อน แล้วสมุดบัญชีต้องยังรู้ว่า commit นี้มีอยู่จริง
   //   (นี่คือหลักฐานที่ `reconcile()` ใช้ตามหาใบบน origin ภายหลัง แม้ rebase จะเขียน sha ใหม่ก็ยังเหลือ subject)
   S.update(sym, { committedSha: run('git', ['rev-parse', 'HEAD']).out.trim() || null, committedSubject: msg, committedAt: todayBangkok(), model: tr.key });
+  if (!shouldPush(o)) { console.log(`✅ ${sym} commit แล้ว: ${msg}`); console.log(NO_PUSH_NOTE); return; }
   if (!pushIfClean(sym)) return;
   S.update(sym, { shippedAt: todayBangkok() });
   const healed = reconcile();
@@ -471,4 +477,4 @@ function status() {
 }
 
 module.exports = { shipStock, shipPrepatch, status, commitMessage, commitArgs, trailer, resolveModel, resolveTrailer, reportAiModel,
-  landedOnOrigin, shipPhaseOf, rowsToHeal, reconcile, dirtyTracked, pushIfClean, closeIssueIfEmpty, closeIssueIfNoLlmRows, prepatchBlockers, prepatchRefusal, prepatchCandidates, parsePorcelain, parsePorcelainZ, unquotePath, pendingCommitFor, postcheckGuard, STOCK_FILES, TITLE };
+  landedOnOrigin, shipPhaseOf, rowsToHeal, reconcile, dirtyTracked, pushIfClean, shouldPush, closeIssueIfEmpty, closeIssueIfNoLlmRows, prepatchBlockers, prepatchRefusal, prepatchCandidates, parsePorcelain, parsePorcelainZ, unquotePath, pendingCommitFor, postcheckGuard, STOCK_FILES, TITLE };
