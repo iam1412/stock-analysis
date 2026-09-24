@@ -283,7 +283,7 @@ function cmdSave(c) {
   IO.write(reportFile(c), doc);
   const v = r.view;
   c.log(`✓ ${rel(reportFile(c))} — FV ${v.cur}${v.fv.toFixed(2)} · MOS ${signed1(v.sm.mos)}% (ราคา ${v.cur}${doc.market.px} · ${doc.market.priceDate})`);
-  c.log(`ต่อไป: npm test -- ${c.sym}`);
+  c.log('ต่อไป: คืนงาน controller (tag-apply → postcheck) — worker ไม่รัน npm test บนใบใหม่');
   return 0;
 }
 

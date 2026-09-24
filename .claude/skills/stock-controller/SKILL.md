@@ -26,9 +26,10 @@ description: กติกา controller ฉบับเต็ม (§3 หลา�
    - **★ ข้อห้ามจริงคือ "หลายหุ้นใน 1 run" ไม่ใช่ "หลาย run"** — `stocks[]` ต้องมี **1 ตัวเสมอ** · รันหลาย run ขนานกันได้ (1 หุ้น/run)
    - **จำนวนที่ขนานเป็นดุลพินิจ ไม่ใช่ค่าตายตัว** — ขนานมาก = เสี่ยง rate limit ทั้งชุด (เคยพังจริง) → ramp ขึ้นทีละขั้น เจอ rate limit ให้หาร N ครึ่ง
    - **ก่อนขนานต้องทำ 1 อย่าง: verify/push รายแบตช์ ไม่ใช่รายตัว** (verify เป็น gate ทั้งรีโป ไฟล์ worker ที่ยังเขียนไม่เสร็จจะทำ gate ตกและบล็อกตัวที่ดีแล้ว) · สีแบรนด์/price-flags/tags มี lock แล้ว (`tools/lockfile.js`) — worker รัน pick-brand เองได้
-   - **ใบใหม่ = v3 (Plan 2c+)** ลำดับ controller: `npm run queue -- prep <SYM> --model opus` (หลังตลาดปิด — priceDate จะแช่แข็งจน P5) → spawn worker 1 ใบ (Opus · prompt = `.queue/prep/<SYM>.md` · บอกตรง ๆ ว่า §2 ที่ inject มาก่อน v3 · SKILL STEP 5V เป็นกติกา) → worker คืน `save ✓` + `TAGS:` → `node tools/tag-apply.js <SYM> <slug…>` → `npm run queue -- postcheck <SYM> --model opus` → **ตรวจชั้น 0 เองที่ gate ไม่ทำ**: `family` ครบทุกขา fv · `legs[i].inputs` ครบชุด · W32 · dispersion 0.4c >2x · หน้าต่าง/จุดของ `medians` (checkFyYears เงียบบน v3) · `meta.aiModel` ตรงรุ่นที่ spawn · TH กระดาน SET/mai → `npm run queue -- ship <SYM> --no-push` เมื่ออยู่บน branch (flow PR) หรือ `ship <SYM>` บน main
 4. **(โหมดทีละตัว) push รายตัว (§3.4)**: worker เสร็จ 1 ตัว → controller ตรวจ → verify + push ทันที (Bash call เดียว §5) ก่อน spawn ตัวถัดไป · จำนวนหุ้นต่อรอบไม่จำกัด · **ห้าม agent push เอง** · ห้าม push ซ้อน session
 5. **โควตา (§3.5)**: ของดีไม่พอโควตา → ลดจำนวนเองได้ ไม่ต้องถาม แต่แจ้งเหตุผล (คุณภาพ > โควตา)
+
+- **ใบใหม่ = v3 (Plan 2c+)** ลำดับ controller: `npm run queue -- prep <SYM> --model opus` (หลังตลาดปิด — priceDate จะแช่แข็งจน P5) → spawn worker 1 ใบ (Opus · prompt = `.queue/prep/<SYM>.md` · บอกตรง ๆ ว่า §2 ที่ inject มาก่อน v3 · SKILL STEP 5V เป็นกติกา) → worker คืน `save ✓` + `TAGS:` → `node tools/tag-apply.js <SYM> <slug…>` → `npm run queue -- postcheck <SYM> --model opus` → **ตรวจชั้น 0 เองที่ gate ไม่ทำ**: `family` ครบทุกขา fv · `legs[i].inputs` ครบชุด · W32 · dispersion 0.4c >2x · หน้าต่าง/จุดของ `medians` (checkFyYears เงียบบน v3) · `meta.aiModel` ตรงรุ่นที่ spawn · TH กระดาน SET/mai → `npm run queue -- ship <SYM> --no-push` เมื่ออยู่บน branch (flow PR) หรือ `ship <SYM>` บน main
 
 ---
 

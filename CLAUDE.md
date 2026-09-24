@@ -31,7 +31,7 @@ dist/                   # ⚠️ build output (gitignore) — ห้ามแก
 
 invariant ที่ห้ามหลุดไม่ว่ากรณีใด:
 - **cross-source verify ราคา+EPS ≥2 แหล่งก่อนเขียนตัวเลข** — ราคาต่าง >5% / EPS ขัดกัน → หยุด ถามผู้ใช้ อย่าเผยแพร่ (gate ตรวจความจริงไม่ได้)
-- **หุ้นใหม่เริ่มจาก skeleton เท่านั้น · หุ้นเดิมห้าม rewrite** — กราฟ/ราคา/ป้าย % มาจาก script ห้ามแต่งเอง
+- **(ใบ v2) หุ้นใหม่เริ่มจาก skeleton เท่านั้น · หุ้นเดิมห้าม rewrite** — กราฟ/ราคา/ป้าย % มาจาก script ห้ามแต่งเอง
 - ไฟล์ = `reports/<SYMBOL>.html` พิมพ์ใหญ่ · `stock-meta.currency` = ISO (`USD`/`THB`)
 - **ใบใหม่ (NEW) = v3 `reports/<SYMBOL>.json` ผ่าน `node tools/report.js init → save` เท่านั้น** (stock-analyzer SKILL **STEP 5V**) · skeleton/`.html` ข้างบน = ใบ v2 เดิม (UPDATE จน Plan 3) · **ห้ามเขียน `reports/` ตรงทุกกรณี** (hook ชั้น 1 + gate `_sig`/E50) · worker ไม่รัน `npm test` บนใบ v3 ใบใหม่ (`save ✓` = gate · `v2:E40` เป็นของ controller หลัง `tag-apply`)
 

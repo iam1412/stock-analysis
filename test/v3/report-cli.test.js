@@ -123,7 +123,7 @@ try {
     t(r.code === 0 && !('market' in d) && !('_sig' in d) && d.meta.aiModel === 'Claude Sonnet 5', 'export ZTS → draft without market/_sig (aiModel kept)'); }
   t.eq(cli(['export', 'ZTS']).code, 1, 'export over an existing draft → exit 1');
   t.eq(cli(['export', 'ZTS', '--force']).code, 0, 'export --force → exit 0');
-  { const r = cli(['save', 'ZTS'], '2026-09-22'); t(r.code === 0 && bytes(rf('ZTS')) === zts0, `export → save unchanged = byte-identical file (${r.out.slice(0, 200)})`); }
+  { const r = cli(['save', 'ZTS'], '2026-09-22'); t(r.code === 0 && bytes(rf('ZTS')) === zts0 && /ต่อไป: คืนงาน controller/.test(r.out) && !/ต่อไป: npm test/.test(r.out), `export → save unchanged = byte-identical file · next-step line = hand back to controller (${r.out.slice(0, 200)})`); }
   { const d = readW('ZTS'); d.prose.mos += ' (ทบทวนแล้ว)'; writeW('ZTS', d);
     const r = cli(['save', 'ZTS', '--light'], '2026-09-22');
     t(r.code === 0 && IO.read(rf('ZTS')).prose.mos.endsWith('(ทบทวนแล้ว)') && IO.verifySig(IO.read(rf('ZTS'))), '--light: prose change → saved + signed'); }
