@@ -35,11 +35,22 @@ const ROOT = path.join(__dirname, '..', '..');
   t(/--no-push/.test(src) && /noPush/.test(src), 'queue.js parses --no-push into noPush');
   // ★ match the ACTUAL usage token of `ship` in tools/queue.js (read the file first — it may be `ship <SYM>` or `ship <SYMBOL>`); adjust this regex to it
   t(/ship <SYM(?:BOL)?>[^\n]*--no-push/.test(src), 'queue.js usage line documents --no-push'); }
+// (2b) fix round 1: ลำดับใน source — guard --no-push ต้องมาก่อน pushIfClean(sym) ทั้งสองจุด (commit ใหม่ · phase 'unpushed')
+{ const src = fs.readFileSync(path.join(ROOT, 'tools', 'queue', 'ship.js'), 'utf8');
+  const a = src.indexOf('function shipStock(');
+  const body = a < 0 ? '' : src.slice(a, src.indexOf('\n}\n', a) + 2);
+  const idx = (re) => [...body.matchAll(re)].map((m) => m.index);
+  const guards = idx(/if \(!shouldPush\(o\)\) \{[^\n]*return; \}/g), pushes = idx(/pushIfClean\(sym\)/g);
+  t(body.length > 0 && pushes.length === 2 && guards.length === 2, `shipStock: 2 guards + 2 pushIfClean(sym) (guards ${guards.length} · pushes ${pushes.length})`);
+  t(guards.length === 2 && pushes.length === 2 && guards[0] < pushes[0] && pushes[0] < guards[1] && guards[1] < pushes[1],
+    'shipStock: each --no-push guard (return) sits before its pushIfClean(sym) — unpushed path then fresh-commit path'); }
 
+const CHART_LABEL = /chart \(v2: วางใน report-data · v3: อยู่ใน sidecar\/market แล้ว — report\.js save ใส่ให้เอง/;
 // (3) fetch-facts text-mode wording — no longer tells a worker to paste into report-data
 { const src = fs.readFileSync(path.join(ROOT, 'tools', 'fetch-facts.js'), 'utf8');
   t(!/chart \(วางใน report-data/.test(src), 'fetch-facts: "chart (วางใน report-data" wording removed');
-  t(/v3/.test(src) && /report\.js save|sidecar/.test(src), 'fetch-facts: chart line names the v3 path'); }
+  // ★ fix round 1: จับที่ตัว label จริง — คำว่า "sidecar" มีในคอมเมนต์ของไฟล์อยู่แล้ว (regex เดิม vacuous)
+  t(CHART_LABEL.test(src), 'fetch-facts: chart line names the v3 path (label text)'); }
 
 // (4) pick-brand stdout — v3 note present, v2 copy block kept
 { const src = fs.readFileSync(path.join(ROOT, 'tools', 'pick-brand.js'), 'utf8');
