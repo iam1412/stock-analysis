@@ -83,12 +83,12 @@ t.eq(SC.mediansOf({ rows: [], median: null, curErr: 'งบเป็น CAD' }).
 // ── prep NEW (final review re-ruling): sidecar ประกอบไม่ได้ = ⚠ บรรทัดเดียว + ไม่มี .json + .md ยังเขียน · exit เดิม ──
 { const cp = require('child_process');
   const child = path.join(__dirname, '_prep-child.js');
-  const runPrep = (scen, pre) => {
+  const runPrep = (scen, pre, sym = 'ZZZQ') => {
     const q = fs.mkdtempSync(path.join(os.tmpdir(), 'v3-prep-'));
     if (pre) { fs.mkdirSync(path.join(q, 'prep'), { recursive: true }); fs.writeFileSync(path.join(q, 'prep', 'ZZZQ.json'), pre); }
     const r = cp.spawnSync(process.execPath, [child, scen], { encoding: 'utf8', env: { ...process.env, QUEUE_DIR: q } });
     const has = (f) => fs.existsSync(path.join(q, 'prep', f));
-    const out = { code: r.status, out: r.stdout, err: r.stderr, md: has('ZZZQ.md'), json: has('ZZZQ.json'),
+    const out = { code: r.status, out: r.stdout, err: r.stderr, md: has(sym + '.md'), json: has(sym + '.json'),
       sc: has('ZZZQ.json') ? JSON.parse(fs.readFileSync(path.join(q, 'prep', 'ZZZQ.json'), 'utf8')) : null,
       writes: ((r.stdout.match(/^WRITES (.*)$/m) || [])[1] || '').split(',') };
     fs.rmSync(q, { recursive: true, force: true });
@@ -104,7 +104,11 @@ t.eq(SC.mediansOf({ rows: [], median: null, curErr: 'งบเป็น CAD' }).
   { const o = runPrep('ok', '{"v":1,"symbol":"ZZZQ","stale":true}\n');
     t(o.code === 0 && o.md && o.json && o.sc.symbol === 'ZZZQ' && !o.sc.stale && o.sc.market.px === 71.33, 'prep NEW success → fresh sidecar replaces the stale one');
     t.eq(o.writes.filter((w) => w === 'ZZZQ.md' || w === 'ZZZQ.json'), ['ZZZQ.md', 'ZZZQ.json'], 'prep NEW: sidecar written after the .md (m1 order)');
-    t(warnLines(o).length === 0 && /^sidecar → /m.test(o.out), 'prep NEW success: sidecar line, no ⚠'); } }
+    t(warnLines(o).length === 0 && /^sidecar → /m.test(o.out), 'prep NEW success: sidecar line, no ⚠'); }
+  // advisor pre-merge: symbol ที่ assertSym ไม่รับ ต้องไม่ล้ม prep v2 ที่ removeSidecar ต้นใบ (นอก try) — .md ยังเขียน, ⚠ บรรทัดเดียว, ไม่มี .json
+  { const o = runPrep('bad-sym', null, 'ZZ&Q');
+    t(o.code === 0 && o.md && !o.json && !/THROW/.test(o.err), `prep NEW + symbol ผิดรูป (ZZ&Q) → exit 0, .md written, no .json (code ${o.code} md ${o.md} ${o.err.slice(-200)})`);
+    t(warnLines(o).length === 1 && /symbol ไม่ถูกรูป/.test(warnLines(o)[0]), 'prep NEW bad symbol: exactly one ⚠ line naming assertSym'); } }
 
 // N-1 (final re-review): removeSidecar/writeSidecar refuse a path-like symbol — never rm/write outside <dir>
 { const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'v3-sidecar-sym-'));

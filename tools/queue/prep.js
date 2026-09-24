@@ -323,7 +323,9 @@ async function prep(sym, opts) {
   let mode = dm.mode;
   let escalated = false;
   // ใบ NEW: ลบ sidecar เก่าก่อนสร้างใหม่ — สำเร็จ/ล้มก็ไม่เหลือไฟล์ค้างให้ init หยิบผิด
-  if (mode === 'NEW') SC.removeSidecar(S.PREP_DIR, sym);
+  // symbol ผิดรูปสำหรับชื่อไฟล์ sidecar (assertSym) = ข้าม sidecar ทั้งใบ แต่ prep v2 เดินต่อ (re-ruling: ห้ามล้มก่อน .md)
+  let sc = null, sidecar = null, scErr = null;
+  if (mode === 'NEW') { try { SC.removeSidecar(S.PREP_DIR, sym); } catch (e) { scErr = String(e && e.message || e).split('\n')[0].trim(); } }
 
   // 1. prep-stock ครั้งเดียว (มัน spawn fetch-fundamentals + fetch-facts ให้แล้ว — ห้ามดึงซ้ำ)
   const ps = R('node', ['tools/prep-stock.js', sym, ...(th ? ['--th'] : []), ...(mode !== 'NEW' ? ['--update'] : []), ...(o.brand ? ['--brand', o.brand] : [])]);
@@ -340,15 +342,14 @@ async function prep(sym, opts) {
   //     ประกอบตรงนี้ · เขียนไฟล์หลัง .md — assemblePrompt ล้ม = ไม่มี .json กำพร้า
   //     ★ ประกอบไม่ได้ ≠ prep ล้ม (final review re-ruling): NEW ถึง Plan 2c เป็น NEW ของ v2 ที่ไม่รัน init ⇒ เขียน .md ต่อ
   //       + ⚠ บรรทัดเดียว · buildSidecar ยัง throw ตามเดิม — fail-closed อยู่ที่ init (ไม่มี sidecar = ปฏิเสธ)
-  let sc = null, sidecar = null, scErr = null;
-  if (mode === 'NEW') {
+  if (mode === 'NEW' && !scErr) {
     const thArg = th ? ['--th'] : [];
     try {
       sc = SC.buildSidecar({ symbol: sym, th, today: todayBangkok(), vend, medians: SC.mediansOf(med.r), deltas: PS.parseDeltas(ps.out),
         facts: runJson('tools/fetch-facts.js', [sym, ...thArg, '--json'], R), fund: runJson('tools/fetch-fundamentals.js', [sym, ...thArg, '--json'], R) });
     } catch (e) {
       scErr = String(e && e.message || e).split('\n')[0].trim();
-      SC.removeSidecar(S.PREP_DIR, sym);
+      try { SC.removeSidecar(S.PREP_DIR, sym); } catch (_) { /* best-effort — ห้ามหลุดออกจาก catch */ }
     }
   }
 

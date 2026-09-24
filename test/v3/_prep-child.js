@@ -17,6 +17,8 @@ const run = (cmd, args) => {
   if (script === 'tools/fetch-fundamentals.js') return { code: 0, out: JSON.stringify(fund), err: '' };
   throw new Error('unexpected run ' + args.join(' '));
 };
-require('../../tools/queue/prep.js').prep(I.symbol, { run, medianBlock: async () => ({ text: 'MEDIANS (fake)', warn: [], r: null }) })
-  .then(() => { console.log('WRITES ' + writes.filter((w) => /^ZZZQ\./.test(w)).join(',')); })
+// bad-sym: symbol ที่ assertSym ของ sidecar ไม่รับ (`&`) — prep v2 ต้องเขียน .md ต่อ ไม่ล้มที่ removeSidecar ต้นใบ
+const sym = scen === 'bad-sym' ? 'ZZ&Q' : I.symbol;
+require('../../tools/queue/prep.js').prep(sym, { run, medianBlock: async () => ({ text: 'MEDIANS (fake)', warn: [], r: null }) })
+  .then(() => { console.log('WRITES ' + writes.filter((w) => w.startsWith(sym + '.')).join(',')); })
   .catch((e) => { console.error('THROW ' + e.message); process.exit(1); });
