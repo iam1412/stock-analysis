@@ -61,16 +61,24 @@ function buildSidecar({ symbol, th, facts, fund, vend, medians, deltas, today })
   };
 }
 
+/** รูป symbol ที่ยอมให้เป็นชื่อไฟล์ใน <dir> — เหมือน report.js SYM_RE · กัน `../x` พา write/rm ออกนอก .queue/prep */
+const SYM_RE = /^[A-Z0-9][A-Z0-9.\-]*$/;
+function assertSym(sym) {
+  if (typeof sym !== 'string' || !SYM_RE.test(sym)) throw new Error(`sidecar: symbol ไม่ถูกรูป: ${sym}`);
+  return sym;
+}
+
 function writeSidecar(dir, sc) {
+  assertSym(sc.symbol);
   fs.mkdirSync(dir, { recursive: true });
   const file = path.join(dir, sc.symbol + '.json');
   fs.writeFileSync(file, JSON.stringify(sc, null, 2) + '\n');
   return file;
 }
 
-/** ลบ <dir>/<SYM>.json ถ้ามี (ไม่มี = เงียบ) — prep เรียกตอนเริ่มใบ NEW ทุกครั้ง กัน sidecar ค้างให้ init หยิบผิด */
+/** ลบ <dir>/<SYM>.json ถ้ามี (ไม่มี = เงียบ) — prep เรียกตอนเริ่มใบ NEW ทุกครั้ง กัน sidecar ค้างให้ init หยิบผิด · symbol ผิดรูป = throw ไม่ลบ */
 function removeSidecar(dir, sym) {
-  fs.rmSync(path.join(dir, sym + '.json'), { force: true });
+  fs.rmSync(path.join(dir, assertSym(sym) + '.json'), { force: true });
 }
 
 module.exports = { buildSidecar, mediansOf, writeSidecar, removeSidecar, SIDECAR_V };

@@ -105,4 +105,21 @@ t.eq(SC.mediansOf({ rows: [], median: null, curErr: 'งบเป็น CAD' }).
     t(o.code === 0 && o.md && o.json && o.sc.symbol === 'ZZZQ' && !o.sc.stale && o.sc.market.px === 71.33, 'prep NEW success → fresh sidecar replaces the stale one');
     t.eq(o.writes.filter((w) => w === 'ZZZQ.md' || w === 'ZZZQ.json'), ['ZZZQ.md', 'ZZZQ.json'], 'prep NEW: sidecar written after the .md (m1 order)');
     t(warnLines(o).length === 0 && /^sidecar → /m.test(o.out), 'prep NEW success: sidecar line, no ⚠'); } }
+
+// N-1 (final re-review): removeSidecar/writeSidecar refuse a path-like symbol — never rm/write outside <dir>
+{ const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'v3-sidecar-sym-'));
+  const outside = path.join(dir, 'REPORTS'); fs.mkdirSync(outside); const victim = path.join(outside, 'ZTS.json'); fs.writeFileSync(victim, '{}');
+  const prep = path.join(dir, 'q', 'prep'); fs.mkdirSync(prep, { recursive: true });
+  try {
+    for (const bad of ['../../REPORTS/ZTS', '../ZTS', 'ZTS/..', '', 'zts', '.ZTS', 'ZT S']) {
+      let threw = false; try { SC.removeSidecar(prep, bad); } catch (e) { threw = /symbol ไม่ถูกรูป/.test(e.message); }
+      t(threw && fs.existsSync(victim), `removeSidecar(${JSON.stringify(bad)}) throws, deletes nothing`);
+    }
+    let threwW = false; try { SC.writeSidecar(prep, { ...SC.buildSidecar(I), symbol: '../../REPORTS/ZTS' }); } catch (e) { threwW = /symbol ไม่ถูกรูป/.test(e.message); }
+    t(threwW && fs.readFileSync(victim, 'utf8') === '{}' && fs.readdirSync(prep).length === 0, 'writeSidecar with a path-like symbol throws, writes nothing');
+    fs.writeFileSync(path.join(prep, 'ZZZQ.json'), '{}'); SC.removeSidecar(prep, 'ZZZQ');
+    t(!fs.existsSync(path.join(prep, 'ZZZQ.json')) && fs.existsSync(victim), 'removeSidecar with a valid symbol still removes exactly <dir>/<SYM>.json');
+    SC.removeSidecar(prep, 'BRK.B'); SC.removeSidecar(prep, 'AOT-R');
+    t(true, 'removeSidecar accepts dotted/dashed symbols (BRK.B, AOT-R)');
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); } }
 t.done();
