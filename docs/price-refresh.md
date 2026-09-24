@@ -21,7 +21,7 @@ GitHub Actions (`.github/workflows/update-prices.yml`) config ตั้ง **21:
 > **ทำไมไม่ใช้ 20:30 UTC ตามที่ open-items #33 เขียนไว้:** 20:30 UTC = **15:30 ET ในฤดู EST คือกลาง session ของตลาด US** ⇒ ราคาที่ได้เป็น intraday ไม่ใช่ราคาปิด (ฤดู EDT ถึงจะเป็น 16:30 ET ที่ปิดแล้ว) · 21:00 UTC เป็นเวลาที่**เร็วที่สุด**ที่ยังปลอดภัยทั้งสองฤดู จึงให้ margin ฝั่ง SET มากที่สุดเท่าที่ทำได้ ตรงเจตนาของ #33 — **ห้ามดันกลับไป 20:30**
 
 ```
-tools/update-prices.js --write     # ดึงราคา Yahoo → patch reports/*.html + price-flags.json
+tools/update-prices.js --write     # ดึงราคา Yahoo → patch reports/*.html (v2) + market.* ของ reports/*.json (v3) + price-flags.json
 npm run build                      # dist + reports.json (วันที่ขยับเป็นวันนี้)
 node tools/preserve-dates.js       # คืนวันที่ "วิเคราะห์" เดิม (refresh ราคา ≠ re-analysis)
 npm run build                      # build อีกรอบให้ dist ตรงวันที่เดิม
@@ -92,6 +92,27 @@ git commit -F …                    # title: price: refresh N symbols (YYYY-MM-
 
 > `--heal-derived` **ใช้ได้ทั้ง v1 และ v2** (ไม่ใช่ v1 อย่างเดียว): ทาง v2 เดินลำดับเดียวกับ cron — `proseTokensIfNew` → `derivedPassV2` → กระจก `stock-meta` —
 > โดยใช้ `values.px` เดิมเป็นตัวตั้ง (ไม่ fetch ไม่แตะราคา/วันที่/กราฟ/คิว flags) · เป็นทางที่ worker/controller ใช้เคลียร์ **E44** ตอนเขียนใบใหม่
+
+### ใบ v3 (`reports/*.json`) — cron เขียน `market.*` อย่างเดียว (Plan 3 · P5 · ก.ย. 2569)
+
+> spec §7 · คำตัดสิน R1–R12 (`.superpowers/sdd/v3-plan3-task0/rulings.md`) · เทส `test/v3/cron.test.js` + `test/v3/market.test.js` + `test/v3/io.test.js`
+
+- **ลูปเดียวกับ v2** (`RS.list` — ใบ v2 + v3 เรียงตามชื่อไฟล์) · fetch/retry/abort 11 ตัวติด/intraday guard/ข้าม `not-on-exchange`/quote ของ canary เป็นโค้ดเดียวกัน (`preSkip` · `chartFor`)
+- **เขียนเฉพาะ** `market.px` (ปัด 2 ตำแหน่ง) · `market.priceDate` (ISO วันของตลาด) · `market.chart.data` (รายเดือน ≤13 จุด → รายสัปดาห์ → price-only บนกราฟเดิม) · `market.range52w` (Yahoo 52wk — ไม่มี/เสีย = คงค่าเดิม) · **คงเดิม** `chgSuffix` `chart.gridFmt` `chart.dataFmt` · ตัวสร้างตัวเดียว `tools/v3/market.js` `marketFromQuote` (prep ใช้ตัวเดียวกันผ่าน `fetch-facts --json` แล้ว sidecar ทับ `range52w` ด้วย vendor 52wk)
+- **ไม่ patch อะไรนอก `market`** — MOS/verdict/P/E/ปันผล %/หมวด 6/กระจก stock-meta/สี `.chg`/gauge/ขอบกราฟ compute ตอน build จาก JSON ทุกค่า
+- **freeze** เกณฑ์เดียวกับ v2 (`decide()` — FV จาก `compute()` ของใบเดิม ซึ่งไม่ขึ้นกับราคา) + `bad-chart` · reason เดิมทั้งหมด (triage ไม่เปลี่ยน · JSON อ่านไม่ได้ = `no-stock-meta`)
+- **ไม่มี session ใหม่ = "ไม่เปลี่ยน" ไม่เขียน ไม่ flag** — (ก) วันตลาดของ quote **ก่อน** `priceDate` (feed ค้าง/ถอยหลัง) = ไม่เปลี่ยน **ไม่ว่าราคาจะต่างแค่ไหน** · ตรวจก่อน `decide()` ⇒ quote ค้างไม่ยก flag drift/flip/currency · (ข) วันเดียวกัน + ราคาเท่าเดิม = ไม่เปลี่ยน (หุ้นไทยสภาพคล่องต่ำ — ICC เจอบ่อย) · วันเดียวกันแต่ราคาต่าง = เขียน · ⇒ `priceDate` ไม่ถอยหลัง · ลายเซ็น (E50) + gate ใบเดิมยังตรวจก่อนข้อ (ก) เสมอ
+- **gate ก่อนเขียน**: `checkDoc` ของใบใหม่ในหน่วยความจำ → ตก = ไม่เขียน + `patch-rejected` (detail บอก "ค้างก่อน patch"/"patch ทำให้ตก") · เขียนจริงผ่าน `IO.writeMarket` (lock เดียว: อ่าน → ตรวจลายเซ็นไฟล์เดิม → แทน market → `checkDoc` ซ้ำ → เซ็น → เขียน) · warning (W18/W25 ที่พลิกตามราคา) ไม่กัน · `writeMarket` throw ที่ไม่ใช่ผล gate (ไฟล์หาย/parse/lock/compute throw) = `patch-failed` ไม่ใช่ `patch-rejected`
+- **`--force`** (re-analysis/pre-patch มือ): ข้าม drift/suspect/flip + เขียนต่อได้เมื่อ gate ตกด้วย code อื่น — **E50 (ลายเซ็น — ใบถูกแก้มือ) และ E51 (สคีมา) ไม่มีวัน force** · `--heal-derived <v3>` = exit 1 (ไม่มีอะไรให้ซ่อม) · sweep `--heal-derived` ข้ามใบ v3 พร้อมบรรทัดนับ
+- **`updated` ใน reports.json ไม่ขยับ** (`freshHash` ของ v3 ไม่นับ `market`/`_sig`/`meta.aiModel`) · `preserve-dates` ข้ามใบ v3 อยู่แล้ว
+- **log**: บรรทัดต่อใบรูปเดียวกับ v2 (`✓ SYM old → new (+x%) · v3 market @date · MOS y%`) + บรรทัดสรุปต่อรอบ (grep token `v3-lane:` — แทน `v3-skipped: N` ของ P4 ซึ่งไม่มีแล้ว):
+  ```
+  ℹ v3-lane: N ใบ · อัปเดต W · ไม่เปลี่ยน U · freeze F · ล้ม X · ข้ามเพราะตลาดเปิด I · ข้าม not-on-exchange D
+  ```
+  N = W+U+F+X+I+D · **ล้ม** = fetch-failed / JSON ใบ v3 อ่านไม่ได้ / `patch-failed` · **freeze** = `decide()` (drift/split/flip/currency) / `bad-chart` / `patch-rejected` · commit body และชื่อ commit (`price: refresh N symbols`) นับทั้ง `.html` และ `.json`
+- **รอบจริงรอบแรกหลัง merge — ที่คาดไว้แล้ว**: `range52w` ของ OGE/ICC เปลี่ยนจากค่า vendor (StockAnalysis 52wk ที่ prep เขียน) เป็นค่าของ Yahoo ⇒ การ์ด 52 สัปดาห์ขยับ = **ปกติ** ไม่ใช่สัญญาณก่อน `patch-rejected` · ICC ที่ไม่มี session ใหม่ = "ไม่เปลี่ยน"
+- **แถว v3 ในคิว** (`mos-sign-flip`): pre-patch **มือ** `node tools/update-prices.js --write --force <SYM>` แล้ว `npm run queue -- ship <SYM>` — `ship --prepatch` ยังรับเฉพาะ `.html` (pre-patch อัตโนมัติของใบ v3 = P6) · preflight พิมพ์บรรทัด `v3 <SYM>: controller → …` ต่อใบ (ทุกแถว v3 ไม่แยก bucket — P6 ทำให้รู้ bucket)
+- ⚠ **ใบ v3 ที่ save วันเดียวกับ cron → ship ก่อน 04:00** — `_sig` อยู่บรรทัดท้ายไฟล์ ⇒ save ของคนกับ cron ในวันเดียวกัน = conflict ตอน `pull --rebase` ของ workflow (retry 3 รอบแล้วล้มทั้งวัน) · ความเสี่ยงที่ยอมรับ (Plan 3 R2) ทบทวนที่ P6
 
 ### ค่าที่ derive จากราคา — `patchDerived` (19 ส.ค. 2569)
 
