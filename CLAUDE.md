@@ -12,6 +12,7 @@
 
 ```
 reports/<SYMBOL>.html   # ★ ต้นฉบับรายงาน — 1 ไฟล์ = 1 หุ้น (พิมพ์ใหญ่)
+reports/<SYMBOL>.json   # ★ ต้นฉบับใบ v3 (ใบใหม่ตั้งแต่ Plan 2c) — เขียนโดย tools/report.js เท่านั้น
 _template/              # skeleton-{th,us}.html, dashboard.css, engine.js, agent-prompt.md
 build.js                # สแกน reports/ → index.html + reports.json → flatten ลง dist/
 reports.json            # manifest (build เขียนเอง, committed) ห้ามแก้มือ
@@ -30,8 +31,9 @@ dist/                   # ⚠️ build output (gitignore) — ห้ามแก
 
 invariant ที่ห้ามหลุดไม่ว่ากรณีใด:
 - **cross-source verify ราคา+EPS ≥2 แหล่งก่อนเขียนตัวเลข** — ราคาต่าง >5% / EPS ขัดกัน → หยุด ถามผู้ใช้ อย่าเผยแพร่ (gate ตรวจความจริงไม่ได้)
-- **หุ้นใหม่เริ่มจาก skeleton เท่านั้น · หุ้นเดิมห้าม rewrite** — กราฟ/ราคา/ป้าย % มาจาก script ห้ามแต่งเอง
+- **(ใบ v2) หุ้นใหม่เริ่มจาก skeleton เท่านั้น · หุ้นเดิมห้าม rewrite** — กราฟ/ราคา/ป้าย % มาจาก script ห้ามแต่งเอง
 - ไฟล์ = `reports/<SYMBOL>.html` พิมพ์ใหญ่ · `stock-meta.currency` = ISO (`USD`/`THB`)
+- **ใบใหม่ (NEW) = v3 `reports/<SYMBOL>.json` ผ่าน `node tools/report.js init → save` เท่านั้น** (stock-analyzer SKILL **STEP 5V**) · skeleton/`.html` ข้างบน = ใบ v2 เดิม (UPDATE จน Plan 3) · **ห้ามเขียน `reports/` ตรงทุกกรณี** (hook ชั้น 1 + gate `_sig`/E50) · worker ไม่รัน `npm test` บนใบ v3 ใบใหม่ (`save ✓` = gate · `v2:E40` เป็นของ controller หลัง `tag-apply`)
 
 > URL: `https://gaohoon.com/<SYMBOL>.html` (หรือ `/<SYMBOL>`)
 
@@ -98,7 +100,7 @@ Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>
 - ⏰ **Time Zone = Asia/Bangkok (UTC+7)** — ทุกการคิด "วันนี้"/ความสด (header · dedup 7 วัน · staleness 45/120 วัน) ใช้เวลาไทย · วันที่ในรายงานใช้ปี พ.ศ.
 - ❌ โมเดลนอกกติกา §3.2: **Haiku ทุกขั้น** · **ปล่อย default ไม่ pin `model`** (default ไม่แน่นอน) — Sonnet เป็น default, Opus escalate เฉพาะหุ้นยาก
 - ❌ อย่า commit `dist/`, `node_modules/`, `.DS_Store` · อย่าแก้ไฟล์ใน `dist/` ตรง ๆ (แก้ต้นฉบับ)
-- ❌ ชื่อไฟล์รายงาน = `<SYMBOL>.html` พิมพ์ใหญ่ ไม่มีเว้นวรรค
+- ❌ ชื่อไฟล์รายงาน = `<SYMBOL>.html` (v2) / `<SYMBOL>.json` (v3) พิมพ์ใหญ่ ไม่มีเว้นวรรค — ห้ามมีทั้งสองไฟล์ของหุ้นเดียว
 - ✅ ทุกรายงานมี disclaimer "ไม่ใช่คำแนะนำการลงทุน" + "ราคา ณ วันที่ + แหล่งที่มา"
 
 ---
@@ -110,7 +112,7 @@ Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>
 
 > ตัวเลข/ลำดับขั้นในบล็อกนี้ generate ด้วย `node tools/gen-docs.js` จาก `package.json` + `CHECKS` — แก้มือแล้วจะถูกเขียนทับ (`--check` ฟ้องใน gate) · ที่มาของการเอา `self-test`/`docs-test` เข้า gate → `docs/decisions.md` §8
 
-- เร็ว: `npm test -- <SYM>` = check-reports เฉพาะตัวนั้น (ใช้ตอน self-check ก่อนคืนงาน)
+- เร็ว: `npm test -- <SYM>` = check-reports เฉพาะตัวนั้น (ใช้ตอน self-check ก่อนคืนงาน) (ใบ v2 · ใบ v3 NEW: `node tools/report.js save` ✓ แทน — worker ไม่รัน)
 - gate ตรวจ **ความสอดคล้อง/ความสด/การอ้างอิง** เท่านั้น — **ตรวจความจริงของราคา/EPS ไม่ได้** (ต้อง cross-source verify §2) และ **ตรวจไม่ได้ว่าสมมติฐาน valuation สมเหตุผลไหม**
 - ★ **ชั้น 0 — sanity gate ของ valuation (controller ตรวจเอง)**: cluster check (เซกเตอร์เดียวกัน ≥4 ตัว MOS ทางเดียวกัน |เฉลี่ย| >25% แต่ราคาห่าง consensus ≤15% = **พารามิเตอร์ร่วมพัง หยุด**) · |MOS| >40% ต้องมีวิธีที่ไม่ใช้ (r,g) ยืนยัน · **rf ต้องตรงสกุลกระแสเงินสด** · "2 วิธี" ที่ใช้ (r,g) ชุดเดียวกัน = วิธีเดียว → **`docs/quality-gate.md` ชั้น 0**
 - ★ **ผลตอบแทนฉาก 3 ปี (หมวด 6)**: `total% = (เป้า−ราคา)/ราคา` · `%/ปี` = CAGR ของค่านั้น · จุดเข้า = ราคาปัจจุบัน · **ราคาเป้าเป็นสมมติฐาน ห้ามขยับ** · W17 + `patchDerived` ดูแลอัตโนมัติแล้ว แต่ **เงียบเมื่อสามคอลัมน์ไม่สอดคล้องกันเอง** ⇒ ใบพวกนั้นต้องให้คนอ่าน · ฐาน "รวมปันผล" ถอดจากตัวเลขที่โชว์เอง **ห้ามเชื่อคำว่า "รวมปันผล" ใน hint** (skeleton พิมพ์ติดมาทุกใบ)
@@ -143,7 +145,7 @@ Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>
 
 ## 10. Template system + counters (สรุป)
 
-- **รายงาน = content-only template** — CSS/engine อยู่ใน `_template/` build `expandReport()` inject ตอน build · ไฟล์เก็บแค่ `report-data` (กราฟ/gauge/theme) + เนื้อหา 8 section · เริ่มจาก `_template/skeleton-{th,us}.html` · สีแบรนด์ต่อหุ้น (`tools/seeds.json` + `brandtheme.js`) → **`docs/templates.md`** · **รายงาน v2: ตัวเลขผูกราคาอยู่ใน `report-data.values` — แก้ด้วย `apply-edits --set` · prose ใช้ `{{rd:…}}`** · `tools/pick-brand.js` อ่าน→ตรวจชน→เขียน `seeds.json` ใต้ lock (`tools/lockfile.js`) — worker ขนานรันเองได้ตาม stock-analyzer SKILL 5A (ที่มา/เคสก่อนมี lock → `docs/decisions.md` §10)
+- **รายงาน = content-only template** — CSS/engine อยู่ใน `_template/` build `expandReport()` inject ตอน build · ไฟล์เก็บแค่ `report-data` (กราฟ/gauge/theme) + เนื้อหา 8 section · เริ่มจาก `_template/skeleton-{th,us}.html` · สีแบรนด์ต่อหุ้น (`tools/seeds.json` + `brandtheme.js`) → **`docs/templates.md`** · **รายงาน v2: ตัวเลขผูกราคาอยู่ใน `report-data.values` — แก้ด้วย `apply-edits --set` · prose ใช้ `{{rd:…}}`** · `tools/pick-brand.js` อ่าน→ตรวจชน→เขียน `seeds.json` ใต้ lock (`tools/lockfile.js`) — worker ขนานรันเองได้ตาม stock-analyzer SKILL 5A (ที่มา/เคสก่อนมี lock → `docs/decisions.md` §10) · **ใบ v3 (Plan 2c+)**: ต้นฉบับ JSON · render/theme/gate ผ่าน `tools/v3/*` + `_template/v3/render.js` · เขียนด้วย `tools/report.js` เท่านั้น → `docs/superpowers/specs/2026-09-24-report-v3-json-source-design.md` §6
 - **GUI brand-forward** — ระบบดีไซน์ทั้งหมด → **`DESIGN.md`** · สาระที่ห้ามหลุด: **font = Sarabun + IBM Plex Mono เท่านั้น** (เจ้าของสั่งถอด Kanit กลับ — **ห้ามเปลี่ยน typeface โดยไม่ถาม**) · โทเคนสี derive จาก accent ตอน build (`deriveTheme()` ใน build.js — สูตร/คู่ contrast ที่ E38 คุม ดู DESIGN.md) · **ตัวหนังสือขาวห้ามวางบน accent ดิบ ให้ใช้ accentDark/badge เท่านั้น** · การตกแต่งทุกอย่าง inject ตอน build — **ห้ามแก้ไฟล์รายงานเพื่อเรื่องดีไซน์** · สถิติ+โหวตของหน้ารายงานอยู่ในการ์ดบน header (`injectHeaderStats`) ไม่ใช่ footer แล้ว
 - **view/vote counters** = Worker + Durable Object (`src/worker.js`) inject ตอน build เฉพาะ `dist/` → **`docs/counters.md`** + `DEPLOY.md`
 - **กราฟ TA (TradingView-style)** = Worker route `/api/ohlc` proxy Yahoo + client engine (`_template/ta-engine.js`/`ta-chart.js`) + bundle inject ตอน build เฉพาะ `dist/` → **`docs/ta-chart.md`**

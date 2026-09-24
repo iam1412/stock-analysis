@@ -124,4 +124,5 @@ console.log('\n— 8 คีย์วางลง report-data.theme (แล้ว
 console.log(JSON.stringify(t, null, 2));
 console.log('\n— วางแทน {{GDOTS}} (จุด 3 สี: accent → accentDark → โทนเข้มกลาง darkGrad) —');
 console.log(dot(t.accent) + dot(t.accentDark) + dot(gradMid));
+console.log('\nℹ ใบ v3: ไม่ต้อง copy theme/GDOTS — save/build อ่าน tools/seeds.json เอง (ลงแล้ว)');
 });   // withLock — process.exit(1) ข้างในปล่อย lock ผ่าน process.on('exit') ของ lockfile.js

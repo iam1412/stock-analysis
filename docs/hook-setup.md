@@ -7,7 +7,7 @@ script: `.claude/hooks/guard-reports.js` (อยู่ใน repo แล้ว �
 
 **Plan 2b = ผลต่อ production ศูนย์:** script อยู่ใน repo แต่ยัง**ไม่ได้ต่อสาย** — `.claude/settings.json` ไม่ถูกแก้ใน 2b · การจบ 2b **ไม่ต้อง**ให้ hook ทำงานอยู่ (พิสูจน์ด้วย `--settings` ไฟล์ชั่วคราวข้างล่างเท่านั้น) · ไม่มีอะไรเปลี่ยนสำหรับ session ใดจนกว่าเจ้าของ paste
 
-**paste พร้อม cutover ของ Plan 2c (เอกสาร worker โหมด v3 NEW) — ไม่ใช่ตอนจบ Plan 2b.** hook ปฏิเสธ Write/Edit **ทุกไฟล์** ใต้ `reports/` รวม `.html` ⇒ โหมด NEW ของ v2 (stock-analyzer STEP 5A "Write `reports/<SYMBOL>.html` เต็มใบ") จะถูกบล็อกทันทีที่ paste · UPDATE ของ v2 ผ่าน `node tools/apply-edits.js` (child process) ยังทำงานตามปกติ
+paste **หลัง Plan 2c-i merge** (เอกสาร v3 NEW อยู่บน main แล้ว — paste ก่อนหน้านั้น = บล็อก NEW v2 ทุก session โดยยังไม่มีทางเลือก) — **ไม่ใช่ตอนจบ Plan 2b.** hook ปฏิเสธ Write/Edit **ทุกไฟล์** ใต้ `reports/` รวม `.html` ⇒ โหมด NEW ของ v2 (stock-analyzer STEP 5A "Write `reports/<SYMBOL>.html` เต็มใบ") จะถูกบล็อกทันทีที่ paste · UPDATE ของ v2 ผ่าน `node tools/apply-edits.js` (child process) ยังทำงานตามปกติ
 
 ## snippet (เจ้าของ paste เอง — Claude ไม่แก้ `.claude/settings.json`)
 
@@ -37,7 +37,7 @@ script: `.claude/hooks/guard-reports.js` (อยู่ใน repo แล้ว �
 
 settings และ CLAUDE.md โหลดตอนเริ่ม session ⇒ ต้องพิสูจน์ใน process ใหม่เสมอ · ใช้ `--settings` ไฟล์ชั่วคราว (ยังไม่ต้อง paste) · รันใน worktree ที่ไม่มีงานค้าง
 
-**ถ้า controller รัน `claude -p` ใน harness ของตัวเองไม่ได้** (auth/TTY/classifier) หลักฐานตอนจบ 2b = `test/v3/hook.test.js` (stdin JSON → deny/allow) และ **ขั้นนี้เป็นของเจ้าของ**: รันคำสั่งข้างล่างใน terminal ของตัวเอง **ก่อน paste snippet ตอน cutover 2c** — เป็นทางเดียวที่พิสูจน์ว่า deny ชนะ hook `rtk` ระดับผู้ใช้ · ผลไม่ตรง "ผลที่ต้องได้" = อย่า paste แล้วแจ้ง Claude:
+**ถ้า controller รัน `claude -p` ใน harness ของตัวเองไม่ได้** (auth/TTY/classifier) หลักฐานตอนจบ 2b = `test/v3/hook.test.js` (stdin JSON → deny/allow) และ **ขั้นนี้เป็นของเจ้าของ**: รันคำสั่งข้างล่างใน terminal ของตัวเอง **ก่อน paste snippet** (paste **หลัง Plan 2c-i merge** — เอกสาร v3 NEW อยู่บน main แล้ว · paste ก่อนหน้านั้น = บล็อก NEW v2 ทุก session โดยยังไม่มีทางเลือก) — เป็นทางเดียวที่พิสูจน์ว่า deny ชนะ hook `rtk` ระดับผู้ใช้ · ผลไม่ตรง "ผลที่ต้องได้" = อย่า paste แล้วแจ้ง Claude:
 
 ```bash
 cd /Users/somchai.s/Downloads/stock-v3-plan2b

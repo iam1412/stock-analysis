@@ -39,7 +39,7 @@ function themeOf(doc, seeds, dir) {
   let base;
   if (doc.meta.themeLegacy) base = { ...doc.meta.themeLegacy };
   else if (seeds && seeds[doc.symbol]) base = bt.makeTheme(seeds[doc.symbol]);
-  else throw new Error(`meta.themeLegacy: ไม่มีสีแบรนด์ — ต้องมี tools/seeds.json["${doc.symbol}"] (รัน pick-brand) หรือ themeLegacy`);
+  else throw new Error(`meta.themeLegacy: ไม่มีสีแบรนด์ — รัน node tools/pick-brand.js ${doc.symbol} "#rrggbb" --auto (ลง tools/seeds.json) · themeLegacy ใช้ได้เฉพาะใบที่ migrate มา — save ปฏิเสธบนใบ NEW`);
   const chg = dir === 'up' ? UP : dir === 'down' ? DOWN : {};
   const theme = { ...base, ...chg };
   const gradMid = (theme.darkGrad.match(/,(#[0-9a-fA-F]{6}) 58%/) || [])[1] || theme.accentDark;   // = pick-brand.js:119

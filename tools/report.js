@@ -225,7 +225,7 @@ function cmdInit(c) {
   // sourceErrors (นอก market) = แหล่งที่ fetch ล้มตอน prep แต่ไม่ถึงขั้นหยุด — init คือคนอ่านคนเดียว: บอก 1 บรรทัดแล้วทำต่อ
   const se = isObj(sc.sourceErrors) ? Object.entries(sc.sourceErrors).filter(([, m]) => m != null) : [];
   if (se.length) c.log(`⚠ sourceErrors ตอน prep: ${se.map(([k, m]) => `${k}: ${String(m).split('\n')[0]}`).join(' · ')} — ช่องจากแหล่งนั้นอาจว่าง/เป็น TODO ตรวจเองก่อน save`);
-  c.log(`ต่อไป: เติม TODO ใน ${rel(workFile(c))} → สีแบรนด์ node tools/pick-brand.js ${c.sym} "#rrggbb" → node tools/report.js save ${c.sym} (ตัวเลข/token: node tools/report.js show ${c.sym})`);
+  c.log(`ต่อไป: เติม TODO ใน ${rel(workFile(c))} → node tools/pick-brand.js ${c.sym} "#rrggbb" --auto (ข้ามถ้า prompt มีบล็อก "=== BRAND … ลง seeds.json แล้ว") → node tools/report.js save ${c.sym} (show ${c.sym})`);
   return 0;
 }
 
@@ -283,7 +283,7 @@ function cmdSave(c) {
   IO.write(reportFile(c), doc);
   const v = r.view;
   c.log(`✓ ${rel(reportFile(c))} — FV ${v.cur}${v.fv.toFixed(2)} · MOS ${signed1(v.sm.mos)}% (ราคา ${v.cur}${doc.market.px} · ${doc.market.priceDate})`);
-  c.log(`ต่อไป: npm test -- ${c.sym}`);
+  c.log('ต่อไป: คืนงาน controller (tag-apply → postcheck) — worker ไม่รัน npm test บนใบใหม่');
   return 0;
 }
 

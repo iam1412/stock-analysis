@@ -1,6 +1,6 @@
 'use strict';
 // Plan 2b Task 1 — tools/report-source.js = จุดเดียวที่ตอบ "ไฟล์ไหนคือรายงาน" (spec §6.5)
-// ★ โฟลเดอร์ชั่วคราวเท่านั้น — ห้ามสร้างไฟล์ใต้ reports/ จริง (tripwire no-json-reports)
+// ★ โฟลเดอร์ชั่วคราวเท่านั้น — ห้ามสร้างไฟล์ใต้ reports/ จริง (tripwire ถอดแล้วใน Plan 2c-i — กติกา "ห้ามสร้าง reports/*.json ใน test" ยังอยู่)
 const fs = require('fs');
 const os = require('os');
 const path = require('path');

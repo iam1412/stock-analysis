@@ -1,6 +1,6 @@
 'use strict';
 // Plan 2b Task 2 — scanner ชุด verify อ่านใบ v3 ผ่าน tools/report-source.js (spec §6.5 · finding M1)
-// ★ โฟลเดอร์ชั่วคราวเท่านั้น — ห้ามสร้างไฟล์ใต้ reports/ จริง (tripwire no-json-reports)
+// ★ โฟลเดอร์ชั่วคราวเท่านั้น — ห้ามสร้างไฟล์ใต้ reports/ จริง (tripwire ถอดแล้วใน Plan 2c-i — กติกา "ห้ามสร้าง reports/*.json ใน test" ยังอยู่)
 const fs = require('fs');
 const os = require('os');
 const path = require('path');

@@ -239,7 +239,9 @@ function extraBlock(i) {
   // BUG-008: ถ้ารู้ priceDate จริง (priceFresh true/false) ใช้ค่านั้นตัดสิน — ไม่เชื่อ state.prePatched อย่างเดียว (cron ประทับราคาสดให้ใบที่ไม่ได้ผ่าน preflight ได้)
   const fresh = i.priceFresh === true || (i.priceFresh == null && !!i.prePatched);
   const stamp = i.priceFresh != null ? `priceDate ${i.priceDate} ${i.priceFresh ? '≥' : '<'} session ล่าสุด ${i.lastSession}` : `patch แล้ว ${i.prePatched}`;
-  L.push(`- โหมด **${i.mode}**${i.modeWhy ? ` (${i.modeWhy})` : ''} · ${fresh
+  // ใบ NEW (Plan 2c-i): ไม่มีไฟล์ให้ update-prices แตะ และบนใบ v3 update-prices exit ≠0 ⇒ ไม่พิมพ์ประโยคราคา/hint update-prices เลย
+  if (i.mode === 'NEW') L.push(`- โหมด **${i.mode}**${i.modeWhy ? ` (${i.modeWhy})` : ''}`);
+  else L.push(`- โหมด **${i.mode}**${i.modeWhy ? ` (${i.modeWhy})` : ''} · ${fresh
     ? `ราคาในไฟล์สดแล้ว (${stamp}; ${i.oldPrice ?? '?'} → ${i.price ?? '?'}) ⇒ **ห้ามรัน update-prices ซ้ำ** ยกเว้น SKILL 5B ข้อ 3 (แก้ fairValue — ปลอดภัยแล้วเพราะ lock)`
     : `ราคาในไฟล์ยังไม่สด${i.priceFresh === false ? ` (${stamp})` : ' (ยังไม่ได้ pre-patch)'} — โหมด UPDATE รัน \`node tools/update-prices.js --write --force ${i.sym}\` ตาม SKILL STEP 1 ได้ · ตลาด${i.marketOpen ? 'เปิดอยู่ — ราคาจะเป็น intraday รอปิดตลาดก่อนรัน' : 'ปิดแล้ว รันได้'}`}`);
   if (i.lightRule === 'legacy') {
@@ -264,7 +266,11 @@ function extraBlock(i) {
     : '- snapshot vendor (เป้า/52wk/ปันผล) ตรงกับใบแล้ว');
   if (i.medWarn.length) L.push(`- มัธยฐานตัวคูณ: ${i.medWarn.join(' · ')}`);
   if (i.hard) L.push(`- **หุ้นยาก** (${i.hardWhy}) → controller ปรึกษา advisor แล้ววางแนวทางตรงนี้ก่อน spawn:\n    <ยังไม่ได้วาง — ถ้าเห็นบรรทัดนี้ใน prompt แปลว่า controller ข้ามขั้น>`);
-  L.push('- ห้าม push · ห้ามเขียน tags.json · ห้ามเรียก advisor ตรง (ข้อห้ามเชิงนโยบาย — agent-prompt ว่าไว้แล้ว) · pick-brand/update-prices มี lock แล้ว รันตาม SKILL ได้เมื่อจำเป็น');
+  L.push(i.mode === 'NEW'
+    ? '- ห้าม push · ห้ามเขียน tags.json · ห้ามเรียก advisor ตรง (ข้อห้ามเชิงนโยบาย — agent-prompt ว่าไว้แล้ว) · pick-brand มี lock แล้ว รันตาม SKILL ได้เมื่อจำเป็น · update-prices ไม่ใช้กับใบ v3 (cron ข้ามจน Plan 3)'
+    : '- ห้าม push · ห้ามเขียน tags.json · ห้ามเรียก advisor ตรง (ข้อห้ามเชิงนโยบาย — agent-prompt ว่าไว้แล้ว) · pick-brand/update-prices มี lock แล้ว รันตาม SKILL ได้เมื่อจำเป็น');
+  // sidecar ประกอบได้ (sidecarOk) = ทาง v3 เปิด → ชี้ STEP 5V · ประกอบไม่ได้ = ไม่พิมพ์เพิ่ม (init จะปฏิเสธ · ⚠ บรรทัดเดียวใน stdout ของ prep มีอยู่แล้ว)
+  if (i.mode === 'NEW' && i.sidecarOk) L.push(`★ ใบ NEW เขียนเป็น v3 — ทำตาม SKILL STEP 5V: node tools/report.js init ${i.sym} → เติม .work/${i.sym}.json → pick-brand → save (sidecar: .queue/prep/${i.sym}.json) · ห้ามเขียน reports/ ด้วย Write/Edit/Bash · save ✓ = gate ของ worker (ไม่ต้องรัน npm test)`);
   return L.join('\n');
 }
 
@@ -380,7 +386,7 @@ async function prep(sym, opts) {
   const prompt = assemblePrompt(fs.readFileSync(TEMPLATE, 'utf8'),
     { SYMBOL: sym, MARKET: th ? 'TH' : 'US', MODE: mode, WORKTREE: ROOT, CURRENT_TAGS: tags, MEDIANS: med.text, FUNDAMENTALS: ps.out },
     // ยังไม่ pre-patch = worker ต้องรัน update-prices เอง ⇒ ต้องบอกด้วยว่าตลาดเปิดอยู่ไหม (--force ข้าม guard intraday เอง)
-    extraBlock({ sym, mode, modeWhy: dm.why, lightRule, priceFresh, priceDate: priceIso, lastSession, escalated, prePatched: rec.prePatched, marketOpen: th ? setSessionOpen() : usSessionOpen(), oldPrice: rec.oldPrice, price: sm && sm.price, baseEPS: ctx && ctx.baseEPS, epsTTM: vend.epsTTM, epsScreen, snap, medWarn: med.warn, hard: hs.hard, hardWhy: hs.why, fyYears: vend.fyYears, traps: vend.traps }));
+    extraBlock({ sym, mode, modeWhy: dm.why, lightRule, priceFresh, priceDate: priceIso, lastSession, escalated, prePatched: rec.prePatched, marketOpen: th ? setSessionOpen() : usSessionOpen(), oldPrice: rec.oldPrice, price: sm && sm.price, baseEPS: ctx && ctx.baseEPS, epsTTM: vend.epsTTM, epsScreen, snap, medWarn: med.warn, hard: hs.hard, hardWhy: hs.why, fyYears: vend.fyYears, traps: vend.traps, sidecarOk: sc !== null }));
   fs.mkdirSync(S.PREP_DIR, { recursive: true });
   const file = path.join(S.PREP_DIR, sym + '.md');
   fs.writeFileSync(file, prompt);

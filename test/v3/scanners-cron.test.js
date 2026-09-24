@@ -1,6 +1,6 @@
 'use strict';
 // Plan 2b Task 4 — เครื่องมือ cron-adjacent/misc อ่านใบ v3 (reports/<SYM>.json) ผ่าน tools/report-source.js
-// ★ โฟลเดอร์ชั่วคราวเท่านั้น — ห้ามสร้างไฟล์ใต้ reports/ จริง (tripwire no-json-reports)
+// ★ โฟลเดอร์ชั่วคราวเท่านั้น — ห้ามสร้างไฟล์ใต้ reports/ จริง (tripwire ถอดแล้วใน Plan 2c-i — กติกา "ห้ามสร้าง reports/*.json ใน test" ยังอยู่)
 const fs = require('fs');
 const os = require('os');
 const path = require('path');

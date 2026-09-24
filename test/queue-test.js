@@ -410,7 +410,12 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   //   มี `{{…}}` ติดมาโดยชอบธรรม · assemblePrompt จึงตรวจ token กับ template ไม่ใช่ผลลัพธ์ (Step 5 ก็ว่า
   //   "ไม่มี {{ ค้าง *นอก* บล็อก FUNDAMENTALS/BRAND")
   const pOutside = p.split(PREP_OUT).join('');
-  ok(!/\{\{(SYMBOL|MARKET|MODE|WORKTREE|CURRENT_TAGS|MEDIANS|FUNDAMENTALS)\}\}/.test(pOutside) && /\{\{AI_MODEL\}\}/.test(p), 'assemblePrompt: แทนครบ 7 token · คง {{AI_MODEL}} ให้ worker เติม');
+  ok(!/\{\{(SYMBOL|MARKET|MODE|WORKTREE|CURRENT_TAGS|MEDIANS|FUNDAMENTALS)\}\}/.test(pOutside), 'assemblePrompt: แทนครบ 7 token');
+  // VERBATIM ({{AI_MODEL}}) ผ่านไปถึง worker ไม่ถูกแทน/ไม่ throw — ตรวจบน template จำลอง เพราะ agent-prompt.md
+  // ถอดประโยค "NEW = เติม {{AI_MODEL}} ในโครง" ออกแล้วใน Plan 2c-i (ใบใหม่เป็น v3 · ป้ายรุ่น = meta.aiModel)
+  const pVerb = Pp.assemblePrompt('intro\n---\n{{SYMBOL}} {{MARKET}} {{MODE}} {{WORKTREE}} {{CURRENT_TAGS}} {{MEDIANS}} {{FUNDAMENTALS}} {{AI_MODEL}}',
+    { SYMBOL: 'X', MARKET: 'US', MODE: 'UPDATE', WORKTREE: '/w', CURRENT_TAGS: '', MEDIANS: 'm', FUNDAMENTALS: 'f' }, '');
+  ok(/\{\{AI_MODEL\}\}/.test(pVerb), 'assemblePrompt: คง {{AI_MODEL}} (VERBATIM) ให้ worker เติม');
   ok(/บันทึกจาก runbook/.test(p) && /ห้ามรัน update-prices ซ้ำ/.test(p) && /ยกระดับเป็น UPDATE เต็ม/.test(p) && /เป้า ใบ 300/.test(p) && /ห้ามเรียก advisor ตรง/.test(p), 'assemblePrompt: บล็อกท้าย = ราคา patch แล้ว · EPS screen · snapshot · ข้อห้าม');
   // ★ ส่วนเหนือเส้น --- ของ template พูดกับ controller และพิมพ์ token ใน backtick ⇒ ถ้าไม่ตัดก่อนแทน
   //   บล็อกใหญ่สุดสองก้อนจะถูกแปะซ้ำในย่อหน้านั้นด้วย (วัดจริง: FUNDAMENTALS ×2 · MEDIANS ×2 · 144 บรรทัด)
