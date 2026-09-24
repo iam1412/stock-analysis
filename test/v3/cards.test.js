@@ -84,11 +84,13 @@ t.eq(K.CATALOGUE.peAvg5y.label(view), 'P/E มัธยฐาน ~5 ปี', 'pe
   t.eq([c('pffoAvg5y').k, c('pffoAvg5y').v], ['P/AFFO เฉลี่ย ~5 ปี', '30.0x'], 'pffoAvg5y card (author-typed average — not a median-multiples value)');
   t.eq(c('ffoMargin').v, (3.1 * 443e6 / 9.4e9 * 100).toFixed(1) + '%', 'ffoMargin = FFO×shares / revenue');
   t.eq(c('ffoPayout').v, (2 / 3.1 * 100).toFixed(1) + '%', 'ffoPayout = dps / FFO per share');
+  for (const b of [0, -1.5]) { const v3 = C.compute(Object.assign(load(), { fundamentals: { ...d.fundamentals, ffoPerShare: b } }), { seeds: { ZTS: '#e8731a' } });
+    t.throws(() => K.renderCard('ffoPayout', v3), /ffoPayout.*ffoPerShare/, `final review: ffoPayout with ffoPerShare ${b} throws naming the card + field`); }
   t.eq(v2.sm.pe, +(120 / 6.13).toFixed(6), '§13.5: stock-meta.pe stays price / EPS for a REIT'); }
 { const d = load(); d.fundamentals.ffoPerShare = 3.1; const v2 = C.compute(d, { seeds: { ZTS: '#e8731a' } });
   t.eq(K.renderCard('pffo', v2).k, 'P/FFO (TTM)', 'no ffoBasis → FFO label (Plan 1 wording)'); }
 // Plan 2a Task 10 — การ์ดยอดงบแสดงสกุลงบ · อัตราส่วนผูกราคาใช้สกุลราคา
-{ const d = load(); Object.assign(d.fundamentals, { reportCurrency: 'EUR', fx: 1.2, netDebt: -1.307e9, ebitda: 3e9 });
+{ const d = load(); Object.assign(d.fundamentals, { reportCurrency: 'EUR', fx: 1.2, netDebt: -1.307e9, ebitda: 3e9 }); d.legs[1].inputs.rfCurrency = 'EUR';   // dcf rf = สกุลงบ
   const v2 = C.compute(d, { seeds: { ZTS: '#e8731a' } });
   t.eq(K.renderCard('revenue', v2).v, '€9.40B', 'revenue card in EUR');
   t.eq(K.renderCard('netDebt', v2).v, '−€1.31B', 'Review Focus #4: negative total → U+2212, statement symbol');

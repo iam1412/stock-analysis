@@ -156,4 +156,20 @@ tagCase('ZTS-real', (d) => { d.metrics.notes.eps += ' <font>x</font>'; }, 'metri
 }
 // CODES ครบ inventory ของ ruling R4
 t.eq(CV.CODES.map((c) => c.id).sort(), ['E17', 'E27', 'E50', 'E51', 'E52', 'W07', 'W09', 'W18', 'W25', 'W30', 'W31', 'W32'], 'CODES = native inventory (R4)');
+// ── final review (3) — ffoPayout หารด้วย FFO/หุ้น: 0 → "Infinity%" · ลบ → payout ติดลบ ⇒ guard > 0 + backstop E51 ถ้าหน้าหลุด NaN/Infinity/undefined
+{ const d = load('EQIX-real'); delete d._sig; d.fundamentals.ffoPerShare = 0; d.metrics.cards.push('ffoPayout');
+  const r = noThrow(() => run(signed(d)), '(3) EQIX ffoPerShare 0');
+  t(ids(r, 'errors').includes('E51'), '(3) EQIX-derived: ffoPerShare 0 + ffoPayout card → E51'); }
+for (const ffo of [0, -1.5]) {   // ใบที่ไม่มีอะไรอื่นใช้ FFO — แยกให้เห็นว่า guard ของการ์ดเองเป็นคนยิง (ไม่ใช่ backstop)
+  const d = load('ZTS-real'); delete d._sig; d.fundamentals.ffoPerShare = ffo; d.metrics.cards.push('ffoPayout');
+  const e = noThrow(() => run(signed(d)), `(3) ZTS ffoPerShare ${ffo}`).errors.find((x) => x.id === 'E51');
+  t(e && e.msg.includes('ffoPayout'), `(3) ffoPerShare ${ffo} + ffoPayout → E51 naming the card`); }
+{ const R = require('../../_template/v3/render.js'), orig = R.toV2Source;
+  for (const leak of ['NaN', 'Infinity', 'undefined']) {
+    R.toV2Source = (doc, view) => orig(doc, view).replace('</h1>', ` ${leak}%</h1>`);
+    let r; try { r = noThrow(() => run(load('ZTS-real')), `(3) stub ${leak}`); } finally { R.toV2Source = orig; }
+    const e = r.errors.find((x) => x.id === 'E51');
+    t(e && e.msg.includes(leak) && e.msg.includes('render leaked'), `(3) backstop: rendered page containing "${leak}" → E51`); } }
+for (const f of ['ZTS-real', 'BBL-real', 'FER-real', 'EQIX-real']) t(!run(load(f)).errors.some((x) => x.id === 'E51'), `(3) backstop quiet on ${f}`);
+for (const f of ['ZTS', 'BBL']) t(!run(load(f), { skipSig: true }).errors.some((x) => x.id === 'E51'), `(3) backstop quiet on ${f} (synthetic)`);
 t.done();

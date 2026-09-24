@@ -1,7 +1,7 @@
 'use strict';
 /**
  * check-v3.js — gate ของรายงาน v3 (reports/<SYM>.json) · spec §9 · ruling R4 ของ Plan 2a
- *   คิดเองจาก JSON: E50 ลายเซ็น · E51 สคีมา/compute/render/แท็ก · E52 ขา declared ↔ ตาราง · E17 ≥2 ขา fv
+ *   คิดเองจาก JSON: E50 ลายเซ็น · E51 สคีมา/compute/render/แท็ก/NaN หลุด · E52 ขา declared ↔ ตาราง · E17 ≥2 ขา fv
  *                   E27/W09 ความสดราคา · W07 ตัวเลขผิดวิสัย · W18/W25 สมอตาย (จาก inputs) · W30 lit เกิน · W31 literal เงินค้าง
  *                   W32 |MOS| > 40% ไม่มีขา fv นอกตระกูล (r,g) (§13 ข้อ 7)
  *   ผ่าน gate v2 บนหน้าที่ render (render smoke test): โค้ดที่เหลือทั้งหมด รายงานเป็น "v2:<id>" — ย้ายเป็น native ใน P7
@@ -33,7 +33,7 @@ const NATIVE_V2 = new Set(['E17', 'E27', 'W07', 'W09', 'W18', 'W25']);
 const EXPECT_FIXTURE = { 'EQIX-real': ['E17'] };
 const CODES = [
   { id: 'E50', level: 'error', label: 'ลายเซ็น _sig ตรงเนื้อไฟล์ (เขียนผ่าน tools/v3/io.js เท่านั้น)' },
-  { id: 'E51', level: 'error', label: 'สคีมา v3 + compute + render สำเร็จ + prose ไม่มีแท็กต้องห้าม' },
+  { id: 'E51', level: 'error', label: 'สคีมา v3 + compute + render สำเร็จ + prose ไม่มีแท็กต้องห้าม + ไม่หลุด NaN/Infinity/undefined' },
   { id: 'E52', level: 'error', label: 'ขา declared มีหลักฐาน · ยอดตาราง × fx = ค่าขา ±1%' },
   { id: 'E17', level: 'error', label: '≥2 ขา role:"fv" (ขา context ไม่นับ)' },
   { id: 'E27', level: 'error', label: 'ราคาไม่เก่า/ไม่อยู่อนาคต (market.priceDate)' },
@@ -51,11 +51,11 @@ const thaiToday = () => new Date(Date.now() + 7 * 3600e3).toISOString().slice(0,
 const days = (a, b) => Math.round((Date.parse(b) - Date.parse(a)) / 86400e3);
 const MULT_BASE = S.CURRENT_BASE;   // ตัวตั้งต่อหุ้นชุดเดียวกับขา 'current' (Task 5 · R7)
 // W32 — ตระกูลจริงของขา: family ที่เขียน > เดาจาก method (ไม่งั้นขาไม่มี family นับเป็น "ไม่ใช่ rg" เสมอ ⇒ W32 ไม่มีวันยิงบนใบเก่า/migrate)
-const RG_METHODS = new Set(['ddm', 'ddm2', 'dcf', 'ri']);
 // ขา fv = role ไม่เขียน หรือ 'fv' (schema: fv|context) — predicate เดียวของ E17 และ W32 (ขา context ไม่นับทั้งคู่)
+const LEAK_RE = /\b(NaN|Infinity|undefined)\b/;
 const isFvLeg = (l) => (l.role || 'fv') === 'fv';
-const famOf = (l) => l.family || (RG_METHODS.has(l.method) || (l.method === 'pbv' && l.inputs.g != null) ? 'rg'
-  : l.method === 'declared' ? (['sotp', 'nav'].includes(l.inputs.basis) ? 'asset' : 'rg') : 'market');
+// ตระกูลที่ method บังคับมาจาก schema ตัวเดียว (S.requiredFamily) · โซนเทาที่ไม่เขียน family: declared rnpv/other = 'rg' (rNPV = ตระกูลคิดลดกระแสเงินสด) · ที่เหลือ 'market'
+const famOf = (l) => l.family || S.requiredFamily(l) || (l.method === 'declared' ? 'rg' : 'market');
 
 function checkDoc(doc, opts) {
   const o = opts || {};
@@ -125,6 +125,9 @@ function checkDoc(doc, opts) {
   let src, html;
   try { src = R.toV2Source(doc, view); html = expandReport(src); }
   catch (e) { add('E51', 'render: ' + String(e.message).split('\n')[0]); return done(view); }
+  // backstop: ตัวเลขที่หลุดเป็น NaN/Infinity/undefined ต้องไม่ถึงหน้าเว็บเงียบ ๆ (guard ต่อการ์ดกันไว้แล้ว — ตัวนี้กันการ์ด/token ที่ลืม guard)
+  const leak = LEAK_RE.exec(html);
+  if (leak) { add('E51', `render leaked NaN/Infinity/undefined at …${html.slice(Math.max(0, leak.index - 40), leak.index + 20).replace(/\s+/g, ' ')}…`); return done(view); }
   // นาฬิกาของ gate v2 = today เดียวกับ native (check-reports อ่าน STALE_TODAY) — โค้ดวันที่ของ v2 ต้องไม่กลับไปขึ้นกับนาฬิกาจริง
   const prevToday = process.env.STALE_TODAY;
   let res;

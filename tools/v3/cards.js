@@ -121,7 +121,10 @@ const CATALOGUE = {
   ffoMargin: { label: (v) => `${ffoL(v)} Margin`, cls: '',
     value: (v) => { const rev = fq(v).revenue; if (!(isNum(rev) && rev > 0)) throw new Error('metrics.cards: ffoMargin — ต้องมี fundamentals.revenue > 0'); return pct1(need(v, 'ffoPerShare') * need(v, 'shares') / rev * 100); },
     d: (v) => `${ffoL(v)} รวม ÷ รายได้ TTM` },
-  ffoPayout: { label: (v) => `${ffoL(v)} Payout`, cls: '', value: (v) => pct1(need(v, 'dps') / need(v, 'ffoPerShare') * 100), d: (v) => `ปันผล ÷ ${ffoL(v)}/หุ้น` },
+  // หารด้วย FFO/หุ้น — guard > 0 เหมือน pffoCalc (0 → "Infinity%" · ลบ → payout ติดลบไร้ความหมาย)
+  ffoPayout: { label: (v) => `${ffoL(v)} Payout`, cls: '',
+    value: (v) => { const b = need(v, 'ffoPerShare'); if (!(b > 0)) throw new Error('metrics.cards: ffoPayout — fundamentals.ffoPerShare ≤ 0 ถอดการ์ดออก'); return pct1(need(v, 'dps') / b * 100); },
+    d: (v) => `ปันผล ÷ ${ffoL(v)}/หุ้น` },
 };
 
 function renderCard(key, view, note) {

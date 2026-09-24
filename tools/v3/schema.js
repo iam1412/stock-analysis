@@ -50,6 +50,15 @@ const LEG_INPUTS = {
   ri: { req: ['r', 'years', 'payout'], opt: [] },
   declared: { req: ['value', 'basis'], opt: ['extrasRef'] },
 };
+// family ที่ method บังคับโดยโครงสร้าง (§3.6 C · final review 24 ก.ย. 69) — ขาที่รับ (r,g) เป็น input = 'rg' · declared sotp/nav = 'asset'
+// null = โซนเทา ผู้เขียนเลือกเอง (pe justified · declared rnpv/other · ขาตัวคูณ) · check-v3 W32 ใช้ตัวเดียวกันเดาตระกูลเมื่อไม่เขียน family
+const RG_METHODS = ['ddm', 'ddm2', 'dcf', 'ri'];
+function requiredFamily(leg) {
+  const inp = isObj(leg && leg.inputs) ? leg.inputs : {};
+  if (RG_METHODS.includes(leg.method) || (leg.method === 'pbv' && (inp.g != null || inp.r != null))) return 'rg';
+  if (leg.method === 'declared' && ['sotp', 'nav'].includes(inp.basis)) return 'asset';
+  return null;
+}
 // ตัวตั้งต่อหุ้นของขาที่ใช้ตัวคูณสด (multipleSource 'current') — compute ใช้หาตัวคูณสด · check-v3 ใช้เป็นฐาน W18
 const CURRENT_BASE = { pe: 'eps', pbv: 'bvps', pffo: 'ffoPerShare' };
 const OVERRIDE_KEYS = ['eps', 'bvps', 'roe', 'dps', 'revenue', 'ebitda', 'fcf', 'netDebt', 'ffoPerShare', 'shares', 'why'];
@@ -91,6 +100,8 @@ function validate(doc) {
     if (v == null) { if (req) E(path, 'ต้องมี (ข้อความ)'); return; }
     if (typeof v !== 'string' || v.trim().length < minLen) E(path, `ต้องเป็นข้อความยาว ≥${minLen}`);
   };
+  // ช่องข้อความสั้นที่ render ตรง ไม่ผ่าน token/sanitize ของ prose — ห้ามมี { } < > (กัน token ปลอม/แท็กหลุดเข้าหน้า)
+  const plain = (v, path) => { if (typeof v === 'string' && /[{}<>]/.test(v)) E(path, 'ห้ามมี { } < > — ช่องนี้เป็นป้ายสั้น ไม่รับ token/แท็ก'); };
   const en = (v, path, list) => { if (!list.includes(v)) E(path, `ต้องเป็นหนึ่งใน ${JSON.stringify(list)} — พบ ${JSON.stringify(v)}`); };
   const strList = (v, path, lo, hi) => {
     if (!Array.isArray(v) || v.length < lo || v.length > hi) return E(path, `ต้องเป็น array ของข้อความ ${lo}–${hi} ข้อ`);
@@ -170,7 +181,7 @@ function validate(doc) {
       if (!isObj(f.fy)) E('fundamentals.fy', 'ต้องเป็น object {period, netIncome?, eps?, revenue?}');
       else {
         closed(f.fy, 'fundamentals.fy', FY_KEYS);
-        str(f.fy.period, 'fundamentals.fy.period');
+        str(f.fy.period, 'fundamentals.fy.period'); plain(f.fy.period, 'fundamentals.fy.period');
         if (typeof f.fy.period === 'string' && f.fy.period.length > 20) E('fundamentals.fy.period', 'ยาวเกิน 20 ตัวอักษร (เช่น "FY2025")');
         for (const k of ['netIncome', 'eps', 'revenue']) if (f.fy[k] != null) num(f.fy[k], `fundamentals.fy.${k}`);
         if (!['netIncome', 'eps', 'revenue'].some((k) => f.fy[k] != null)) E('fundamentals.fy', 'ต้องมีตัวเลขอย่างน้อย 1 ช่อง (netIncome/eps/revenue)');
@@ -192,7 +203,7 @@ function validate(doc) {
       if (!isObj(x)) E(p, 'ต้องเป็น {value, period, low?, high?}');
       else {
         closed(x, p, ['value', 'period', 'low', 'high']);
-        num(x.value, `${p}.value`, { gt: 0 }); str(x.period, `${p}.period`);
+        num(x.value, `${p}.value`, { gt: 0 }); str(x.period, `${p}.period`); plain(x.period, `${p}.period`);
         if (typeof x.period === 'string' && x.period.length > 20) E(`${p}.period`, 'ยาวเกิน 20 ตัวอักษร');
         for (const k of ['low', 'high']) if (x[k] != null) num(x[k], `${p}.${k}`, { gt: 0 });
         if (isNum(x.value) && ((isNum(x.low) && x.low > x.value) || (isNum(x.high) && x.high < x.value))) E(p, 'ต้อง low ≤ value ≤ high');
@@ -217,7 +228,13 @@ function validate(doc) {
     if (leg.role != null) en(leg.role, `${p}.role`, ENUM.role);
     if (leg.family != null) en(leg.family, `${p}.family`, ENUM.family);
     en(leg.method, `${p}.method`, ENUM.method);
-    str(leg.label, `${p}.label`); str(leg.note, `${p}.note`, { req: false });
+    str(leg.label, `${p}.label`); plain(leg.label, `${p}.label`); str(leg.note, `${p}.note`, { req: false });
+    // family ต้องตรงโครงสร้างของ method — ป้ายผิดตระกูลเปลี่ยนน้ำหนัก FV ได้เงียบ ๆ (probe: BBL ขา rg → 'market' ⇒ FV 176.77 → 181.43)
+    const need = requiredFamily(leg);
+    if (leg.family != null && need && leg.family !== need) {
+      const what = leg.method === 'declared' ? `declared basis ${leg.inputs.basis} (มูลค่าสินทรัพย์)` : leg.method === 'pbv' ? 'pbv แบบ justified {g, r}' : `${leg.method} (รับ r,g เป็น input)`;
+      E(`${p}.family`, `${what} ต้องเป็น family '${need}' — พบ '${leg.family}' (§3.6 C)`);
+    }
     const spec = LEG_INPUTS[leg.method];
     if (!spec) return;
     if (!isObj(leg.inputs)) return E(`${p}.inputs`, 'ต้องมี (object)');
@@ -259,9 +276,12 @@ function validate(doc) {
     if (inp.medianWindow != null) {
       const mp = `${p}.inputs.medianWindow`;
       if (typeof inp.medianWindow !== 'string' || !inp.medianWindow.trim() || inp.medianWindow.length > 40) E(mp, 'ต้องเป็นข้อความสั้น ≤40 ตัวอักษร (เช่น "FY2022–FY2025")');
+      plain(inp.medianWindow, mp);
       if (!['median5y', 'median10y'].includes(inp.multipleSource)) E(mp, 'ใช้คู่กับ multipleSource median5y/median10y เท่านั้น');
     }
-    if (leg.method === 'dcf' && inp.rfCurrency != null && inp.rfCurrency !== doc.currency) E(`${p}.inputs.rfCurrency`, `rf ต้องสกุลเดียวกับกระแสเงินสด (${doc.currency}) — ชั้น 0`);
+    // กระแสเงินสดของ DCF = ตัวเลขงบ (fcf/netDebt) ⇒ สกุลงบ (§3.6 L) · compute แปลงด้วย fx spot คงที่ (เชิงเส้น = คิดลดในสกุลงบแล้วแปลง) ⇒ r/rf ต้องเป็นของสกุลงบ
+    const cashCur = (isObj(doc.fundamentals) && doc.fundamentals.reportCurrency) || doc.currency;
+    if (leg.method === 'dcf' && inp.rfCurrency != null && inp.rfCurrency !== cashCur) E(`${p}.inputs.rfCurrency`, `rf ต้องสกุลเดียวกับกระแสเงินสด (${cashCur}${cashCur !== doc.currency ? ' = fundamentals.reportCurrency' : ''}) — พบ ${JSON.stringify(inp.rfCurrency)} · ชั้น 0`);
     if (leg.method === 'ri' && inp.payout != null && !(inp.payout >= 0 && inp.payout <= 100)) E(`${p}.inputs.payout`, 'ต้อง 0–100 (หน่วยเปอร์เซ็นต์)');
     if (leg.method === 'declared') {
       en(inp.basis, `${p}.inputs.basis`, ENUM.declaredBasis);
@@ -396,8 +416,9 @@ function validate(doc) {
     const p = `extras[${i}]`;
     if (!isObj(x)) return E(p, 'ต้องเป็น object');
     closed(x, p, ['after', 'title', 'headers', 'rows', 'sumCol', 'note', 'columns', 'fx']);
-    en(x.after, `${p}.after`, ENUM.extrasAfter); str(x.title, `${p}.title`);
+    en(x.after, `${p}.after`, ENUM.extrasAfter); str(x.title, `${p}.title`); plain(x.title, `${p}.title`);
     if (!Array.isArray(x.headers) || !x.headers.every((h) => typeof h === 'string')) E(`${p}.headers`, 'ต้องเป็น array ของข้อความ (ว่างได้ = ตาราง note)');
+    else x.headers.forEach((h, k) => plain(h, `${p}.headers[${k}]`));
     const cellOk = (c) => typeof c === 'string' || isNum(c);
     if (!Array.isArray(x.rows)) E(`${p}.rows`, 'ต้องเป็น array ของแถว');
     else {
@@ -454,4 +475,4 @@ function OWNER(path) {
   return 'worker';
 }
 
-module.exports = { ENUM, CARD_KEYS, FUND_KEYS, FY_KEYS, BANK_KEYS, LEG_INPUTS, CURRENT_BASE, OVERRIDE_KEYS, THEME_KEYS, TEXT_KEYS, cardEntries, validate, OWNER };
+module.exports = { ENUM, CARD_KEYS, FUND_KEYS, FY_KEYS, BANK_KEYS, LEG_INPUTS, CURRENT_BASE, requiredFamily, OVERRIDE_KEYS, THEME_KEYS, TEXT_KEYS, cardEntries, validate, OWNER };

@@ -159,7 +159,7 @@ t.eq(JSON.parse(R.jsonScript('{"a":"</script>"}')).a, '</script>', 'jsonScript o
   t.eq(CR.checkHtml(expandReport(src), 'ZTS.html', { source: src }).errors.map((e) => e.id), [], 'REIT labels: v2 gate 0 errors'); }
 // Plan 2a Task 10 (controller ruling from Task 9 review) — งบสกุลอื่น: ฐานต่อหุ้นของฉาก (§6 hint · ปี 3) + ฐานการ์ด P/S
 // เป็นสกุลราคา (แปลงด้วย fx ก่อนหารจำนวนหุ้น) · ยอดงบรวมใน mdesc DCF = สกุลงบ (เหมือนการ์ด FCF)
-{ const doc = load('ZTS'); Object.assign(doc.fundamentals, { reportCurrency: 'EUR', fx: 1.2 });
+{ const doc = load('ZTS'); Object.assign(doc.fundamentals, { reportCurrency: 'EUR', fx: 1.2 }); doc.legs[1].inputs.rfCurrency = 'EUR';
   doc.metrics.cards.push('ps');
   Object.assign(doc.scenarios, { driver: 'revenuePerShare', exitMetric: 'ps', note: 'ราคาเป้าคิดจากรายได้/หุ้นปีที่ 3 คูณ P/S ออก' });
   doc.scenarios.cases.forEach((c, i) => { c.exitMultiple = [4, 5, 6][i]; });

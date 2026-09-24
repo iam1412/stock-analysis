@@ -153,7 +153,7 @@ for (const r of [0, -150]) {
 { const d = base(); d.fundamentals.ffoForward = { value: 3.4, period: 'FY2026E', low: 3.5, high: 3.6 }; t(paths(S.validate(d)).includes('fundamentals.ffoForward'), 'low ≤ value ≤ high'); }
 { const d = base(); d.fundamentals.ffoForward = { value: 3.4 }; t(paths(S.validate(d)).includes('fundamentals.ffoForward.period'), 'ffoForward needs period'); }
 // Plan 2a Task 10 — reportCurrency / fx (§3.6 L · Review Focus #4)
-{ const d = base(); d.fundamentals.reportCurrency = 'EUR'; d.fundamentals.fx = 1.15566; t.eq(S.validate(d), [], 'EUR statements + fx valid'); }
+{ const d = base(); d.fundamentals.reportCurrency = 'EUR'; d.fundamentals.fx = 1.15566; d.legs[1].inputs.rfCurrency = 'EUR'; t.eq(S.validate(d), [], 'EUR statements + fx valid (dcf rf in the statement currency — final review)'); }
 { const d = base(); d.fundamentals.reportCurrency = 'EUR'; t(paths(S.validate(d)).includes('fundamentals.fx'), 'foreign statements need fx'); }
 { const d = base(); d.fundamentals.fx = 1.2; t(paths(S.validate(d)).includes('fundamentals.fx'), 'fx without reportCurrency → error'); }
 { const d = base(); d.fundamentals.reportCurrency = 'USD'; d.fundamentals.fx = 1.2; t(paths(S.validate(d)).includes('fundamentals.fx'), 'same currency with fx ≠ 1 → error'); }
@@ -173,4 +173,37 @@ const xt = () => ({ after: 'valuation', title: 'SOTP', headers: ['ส่วน',
   t(ps.includes('extras[0].columns[0].dp') && ps.includes('extras[0].columns[1].unit'), 'dp ≤ 4 · unit enum'); }
 { const d = base(); d.extras = [{ ...xt(), sumCol: 0 }]; t(paths(S.validate(d)).includes('extras[0].sumCol'), 'Review Focus #5: sumCol on a text column → error'); }
 { const d = base(); d.extras = [{ ...xt(), fx: true }]; t(paths(S.validate(d)).includes('extras[0].fx'), 'Review Focus #5: fx:true without fundamentals.fx → error'); }
+// ── final-review fix round (24 ก.ย. 69) ──
+const realFx = (f) => JSON.parse(JSON.stringify(require(`../fixtures/v3/${f}.json`)));
+const errAt = (errs, path) => errs.filter((e) => e.path === path);
+// (1) family ต้องสอดคล้องกับ method (§3.6 C) — ขาที่รับ (r,g) โดยโครงสร้าง = 'rg' · declared sotp/nav = 'asset'
+{ const d = realFx('BBL-real'); d.legs[1].family = 'market'; const e = errAt(S.validate(d), 'legs[1].family');
+  t(e.length && e.some((x) => x.msg.includes('ddm')), 'family↔method: BBL-real ddm labelled market → error at legs[1].family naming ddm'); }
+{ const d = realFx('BBL-real'); d.legs[2].family = 'market'; d.legs[1].family = 'market';
+  t(errAt(S.validate(d), 'legs[2].family').some((x) => x.msg.includes('pbv')), 'family↔method: justified pbv labelled market → error naming pbv'); }
+{ const d = realFx('FER-real'); d.legs[0].family = 'rg'; d.legs[1].family = 'rg'; const errs = S.validate(d);
+  t(errAt(errs, 'legs[0].family').some((x) => x.msg.includes('sotp')), 'family↔method: declared sotp labelled rg → error naming sotp');
+  t.eq(errAt(errs, 'legs[1].family'), [], 'family↔method: ddm2 labelled rg is fine'); }
+{ const d = realFx('FER-real'); d.legs[0].family = 'asset'; d.legs[1].family = 'rg'; t.eq(S.validate(d), [], 'family↔method: sotp asset + ddm2 rg → valid'); }
+t.eq(S.validate(realFx('BBL-real')), [], 'family↔method: pe market (BBL-real as is) → valid');
+for (const [m, inputs] of [['dcf', { g1: 8, years1: 5, tg: 2.5, r: 10, rfCurrency: 'USD' }], ['ri', { r: 10, years: 5, payout: 40 }], ['ddm2', { d1: 2, g1: 10, years1: 5, g2: 3, r: 10, horizon: 30 }]]) {
+  const d = base(); d.legs = [{ ...d.legs[0], family: 'market' }, { method: m, label: m.toUpperCase(), family: 'asset', inputs }];
+  t(errAt(S.validate(d), 'legs[1].family').some((x) => x.msg.includes(m)), `family↔method: ${m} labelled asset → error naming ${m}`); }
+// gray zones stay the author's choice: pe justified · declared other/rnpv · pbv by multiple
+{ const d = realFx('ZTS-real'); d.legs[0].family = 'rg'; d.legs[1].family = 'market'; d.legs[2].family = 'rg'; t.eq(S.validate(d), [], 'gray zone: pe justified rg + declared other market → valid'); }
+{ const d = realFx('ZTS-real'); d.legs[1].inputs.basis = 'rnpv'; d.legs[0].family = 'market'; d.legs[1].family = 'asset'; d.legs[2].family = 'rg'; t.eq(S.validate(d), [], 'gray zone: declared rnpv asset → valid'); }
+{ const d = base(); d.legs = [{ ...d.legs[0], family: 'market' }, { method: 'pbv', label: 'P/BV', family: 'market', inputs: { multiple: 2, multipleSource: 'peer' } }]; t.eq(S.validate(d), [], 'pbv by multiple labelled market → valid'); }
+// (2) rf ต้องสกุลเดียวกับกระแสเงินสด = สกุลงบ (fundamentals.reportCurrency) ไม่ใช่สกุลราคา
+const ferDcf = (cur) => { const d = realFx('FER-real'); d.legs.push({ method: 'dcf', label: 'DCF', inputs: { g1: 6, years1: 5, tg: 2, r: 8, rfCurrency: cur } }); return d; };
+t.eq(S.validate(ferDcf('EUR')), [], 'rfCurrency: FER-real (EUR statements) + dcf rf EUR → valid');
+t(errAt(S.validate(ferDcf('USD')), 'legs[2].inputs.rfCurrency').some((x) => x.msg.includes('EUR')), 'rfCurrency: FER-real + dcf rf USD → error naming EUR');
+{ const d = base(); d.legs.push(dcfLeg(9)); d.legs[2].inputs.rfCurrency = 'THB'; t(errAt(S.validate(d), 'legs[2].inputs.rfCurrency').some((x) => x.msg.includes('USD')), 'rfCurrency: no reportCurrency → compares with doc.currency'); }
+// (4) ช่องข้อความสั้นที่ไม่ผ่าน token/sanitize — ห้ามมี { } < >
+{ const d = base(); d.legs[0].inputs.medianWindow = '{{rd:fv}}'; t(paths(S.validate(d)).includes('legs[0].inputs.medianWindow'), 'medianWindow with braces → error'); }
+{ const d = base(); d.fundamentals.fy = { period: 'FY{{rd:px}}', eps: 6 }; t(paths(S.validate(d)).includes('fundamentals.fy.period'), 'fy.period with braces → error'); }
+{ const d = base(); d.fundamentals.ffoPerShare = 3.1; d.fundamentals.ffoForward = { value: 3.4, period: 'FY<b>26' }; t(paths(S.validate(d)).includes('fundamentals.ffoForward.period'), 'ffoForward.period with < > → error'); }
+{ const d = base(); d.legs[0].label = 'P/E <script>'; t(paths(S.validate(d)).includes('legs[0].label'), 'leg label with < > → error'); }
+{ const d = base(); d.extras = [{ ...xt(), title: 'SOTP {{fv}}' }]; t(paths(S.validate(d)).includes('extras[0].title'), 'extras title with braces → error'); }
+{ const d = base(); d.extras = [{ ...xt(), headers: ['ส่วน', 'มูลค่า <i>'] }]; t(paths(S.validate(d)).includes('extras[0].headers[1]'), 'extras header with < > → error at the header path'); }
+for (const f of ['BBL-real', 'EQIX-real', 'FER-real', 'ZTS-real', 'BBL', 'ZTS']) t.eq(S.validate(realFx(f)), [], `${f}: still valid under the final-review rules`);
 t.done();
