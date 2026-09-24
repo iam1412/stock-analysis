@@ -173,5 +173,14 @@ for (const ffo of [0, -1.5]) {   // ใบที่ไม่มีอะไร�
     const e = r.errors.find((x) => x.id === 'E51');
     t(e && e.msg.includes(leak) && e.msg.includes('render leaked'), `(3) backstop: rendered page containing "${leak}" → E51`); } }
 for (const f of ['ZTS-real', 'BBL-real', 'FER-real', 'EQIX-real']) t(!run(load(f)).errors.some((x) => x.id === 'E51'), `(3) backstop quiet on ${f}`);
+// re-review: คำที่ผู้เขียนพิมพ์เอง (CHKP "Infinity Platform" ×3 ในคลังจริง) ต้องไม่ยิง — ทั้งใน prose และป้ายที่ render หลายจุด
+{ const d = Z(); delete d._sig; d.prose.chart += ' Check Point Infinity Platform · Infinity Platform'; d.legs[0].label += ' (Infinity)'; d.catalysts[0] += ' — undefined behaviour ของคู่แข่ง';
+  const r = noThrow(() => run(signed(d)), '(3) author-typed leak words');
+  t(!r.errors.some((x) => x.id === 'E51'), '(3) backstop quiet on author-typed "Infinity Platform" / "undefined" (prose + label + list)'); }
+{ const R = require('../../_template/v3/render.js'), orig = R.toV2Source;
+  const d = Z(); delete d._sig; d.prose.chart += ' Infinity Platform';
+  R.toV2Source = (doc, view) => orig(doc, view).replace('</h1>', ' Infinity%</h1>');
+  let r; try { r = noThrow(() => run(signed(d)), '(3) author word + injected leak'); } finally { R.toV2Source = orig; }
+  t(r.errors.some((x) => x.id === 'E51' && x.msg.includes('Infinity')), '(3) author "Infinity" does not mask a render-made "Infinity"'); }
 for (const f of ['ZTS', 'BBL']) t(!run(load(f), { skipSig: true }).errors.some((x) => x.id === 'E51'), `(3) backstop quiet on ${f} (synthetic)`);
 t.done();

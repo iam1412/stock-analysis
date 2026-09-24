@@ -217,5 +217,6 @@ for (const m of ['ps', 'evsales', 'evebitda', 'pfcf']) {
   const d = base(); d.legs = [{ method: m, label: m, family: 'rg', inputs: { multiple: 5, multipleSource: 'peer' } }, ddmLeg('rg')];
   t(errAt(S.validate(d), 'legs[0].family').length > 0, `multiples: ${m} peer labelled rg → error`); }
 t.eq(S.requiredFamily({ method: 'fcfyield', inputs: { yield: 5 } }), null, 'fcfyield stays a gray zone (no multipleSource)');
+t.eq(S.requiredFamily(null), null, 'requiredFamily(null) → null (no throw)');
 for (const f of ['BBL-real', 'EQIX-real', 'FER-real', 'ZTS-real', 'BBL', 'ZTS']) t.eq(S.validate(realFx(f)), [], `${f}: still valid under the final-review rules`);
 t.done();

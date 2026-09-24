@@ -55,6 +55,7 @@ const LEG_INPUTS = {
 // null = โซนเทา ผู้เขียนเลือกเอง (declared rnpv/other · fcfyield) · check-v3 W32 ใช้ตัวเดียวกันเดาตระกูลเมื่อไม่เขียน family
 const RG_METHODS = ['ddm', 'ddm2', 'dcf', 'ri'];
 function requiredFamily(leg) {
+  if (!isObj(leg)) return null;
   const inp = isObj(leg && leg.inputs) ? leg.inputs : {};
   if (RG_METHODS.includes(leg.method) || (leg.method === 'pbv' && (inp.g != null || inp.r != null))) return 'rg';
   if (leg.method === 'declared' && ['sotp', 'nav'].includes(inp.basis)) return 'asset';

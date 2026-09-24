@@ -52,7 +52,21 @@ const days = (a, b) => Math.round((Date.parse(b) - Date.parse(a)) / 86400e3);
 const MULT_BASE = S.CURRENT_BASE;   // ตัวตั้งต่อหุ้นชุดเดียวกับขา 'current' (Task 5 · R7)
 // W32 — ตระกูลจริงของขา: family ที่เขียน > เดาจาก method (ไม่งั้นขาไม่มี family นับเป็น "ไม่ใช่ rg" เสมอ ⇒ W32 ไม่มีวันยิงบนใบเก่า/migrate)
 // ขา fv = role ไม่เขียน หรือ 'fv' (schema: fv|context) — predicate เดียวของ E17 และ W32 (ขา context ไม่นับทั้งคู่)
+// backstop E51: คำที่ตัวเลขพังพิมพ์ออกมา — สแกนเฉพาะเนื้อหน้า (ตัด <script>/<style> ที่ build inline: engine/CSS/report-data JSON)
 const LEAK_RE = /\b(NaN|Infinity|undefined)\b/;
+const bodyOf = (html) => html.replace(/<(script|style)\b[^>]*>[\s\S]*?<\/\1\s*>/gi, ' ');
+// คำเดียวกันที่ผู้เขียนพิมพ์เอง (CHKP "Infinity Platform") ไม่ใช่ leak: แทรก U+2060 ในทุก string ของใบ (ค่า + คีย์ เช่น litReasons)
+// แล้ว render ซ้ำ — ถ้ายังเจอ = compute/render สร้างเอง · render ซ้ำ ไม่ใช่นับจำนวน เพราะป้ายเดียวอาจ render หลายจุด
+const unleak = (x) => (typeof x === 'string' ? x.replace(/\b(NaN|Infinity|undefined)\b/g, (w) => w[0] + '\u2060' + w.slice(1))
+  : Array.isArray(x) ? x.map(unleak)
+    : x && typeof x === 'object' ? Object.fromEntries(Object.entries(x).map(([k, v]) => [unleak(k), unleak(v)])) : x);
+function renderLeak(doc, html, seeds) {
+  if (!LEAK_RE.test(bodyOf(html))) return null;
+  const d2 = unleak(doc);
+  const body = bodyOf(expandReport(R.toV2Source(d2, C.compute(d2, { seeds }))));
+  const m = LEAK_RE.exec(body);
+  return m ? `render leaked ${m[1]} (NaN/Infinity/undefined) at …${body.slice(Math.max(0, m.index - 40), m.index + 20).replace(/\s+/g, ' ')}…` : null;
+}
 const isFvLeg = (l) => (l.role || 'fv') === 'fv';
 // ตระกูลที่ method บังคับมาจาก schema ตัวเดียว (S.requiredFamily) · โซนเทาที่ไม่เขียน family: declared rnpv/other = 'rg' (rNPV = ตระกูลคิดลดกระแสเงินสด) · ที่เหลือ 'market'
 const famOf = (l) => l.family || S.requiredFamily(l) || (l.method === 'declared' ? 'rg' : 'market');
@@ -126,8 +140,9 @@ function checkDoc(doc, opts) {
   try { src = R.toV2Source(doc, view); html = expandReport(src); }
   catch (e) { add('E51', 'render: ' + String(e.message).split('\n')[0]); return done(view); }
   // backstop: ตัวเลขที่หลุดเป็น NaN/Infinity/undefined ต้องไม่ถึงหน้าเว็บเงียบ ๆ (guard ต่อการ์ดกันไว้แล้ว — ตัวนี้กันการ์ด/token ที่ลืม guard)
-  const leak = LEAK_RE.exec(html);
-  if (leak) { add('E51', `render leaked NaN/Infinity/undefined at …${html.slice(Math.max(0, leak.index - 40), leak.index + 20).replace(/\s+/g, ' ')}…`); return done(view); }
+  let leak;
+  try { leak = renderLeak(doc, html, o.seeds); } catch (e) { leak = 'render leaked check failed: ' + String(e.message).split('\n')[0]; }
+  if (leak) { add('E51', leak); return done(view); }
   // นาฬิกาของ gate v2 = today เดียวกับ native (check-reports อ่าน STALE_TODAY) — โค้ดวันที่ของ v2 ต้องไม่กลับไปขึ้นกับนาฬิกาจริง
   const prevToday = process.env.STALE_TODAY;
   let res;
