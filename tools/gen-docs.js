@@ -52,6 +52,7 @@ const STEP_LABELS = {
   'test/v3-test.js': ['🧾', 'unit-test v3 (schema/compute/render/cards/legs/prose/scale/io + corpus round-trip)', 'v3 data-layer gate', { quiet: true }],
   'test/v2-path-test.js': ['🧬', 'ทาง v2 ไม่ใช้ regex สำเนา + migrator unit (v2-path-test)', 'v2 data-layer gate', {}],
   'test/check-reports.js': ['🔍', 'ตรวจคุณภาพรายงาน (check-reports)', 'report quality gate', {}],
+  'test/check-v3.js': ['🧾', 'ตรวจรายงาน v3 + fixture ใบจริง (check-v3)', 'v3 report gate', {}],
   'test/self-test.js': ['🧪', 'meta-test ว่า check-reports ยังจับ defect ได้ (self-test)', 'checker self-test gate', { comment: (idx) => `# ขั้น ${idx('test/self-test.js')} = meta-test ของขั้น ${idx('test/check-reports.js')}: ฉีด defect ลงรายงานจริงแล้วยืนยันว่า check ตัวที่คู่กัน "ยิงจริง" — ถ้า check\n# ตัวไหนเลิกแมตช์เงียบ ๆ ขั้น ${idx('test/check-reports.js')} จะรายงาน "0 error" แล้วทั้ง gate ผ่านหมด · ไม่ >/dev/null เพราะพิมพ์ผลลง stdout` }],
   'test/ohlc-test.js': ['📊', 'แปลง Yahoo OHLC (ohlc-test)', 'ohlc transform gate', { quiet: true }],
   'test/ta-engine-test.js': ['📈', 'นิยาม TA engine + รัน ta-chart ใน mock DOM (ta-engine-test)', 'TA engine gate', { quiet: true }],

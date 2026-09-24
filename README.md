@@ -177,7 +177,7 @@ npm run dev        # = wrangler dev — ต้องใช้ตัวนี้�
 
 ## ✅ Quality gate (ตรวจก่อนเผยแพร่)
 
-`npm run verify` ตรวจ <!-- gen:verify-steps -->19<!-- /gen:verify-steps --> ขั้นตามลำดับนี้ — มี error เมื่อไหร่ push ไม่ได้:
+`npm run verify` ตรวจ <!-- gen:verify-steps -->20<!-- /gen:verify-steps --> ขั้นตามลำดับนี้ — มี error เมื่อไหร่ push ไม่ได้:
 
 <!-- gen:verify-list -->
 1. **`update-prices-test`** (unit-test cron ราคา, offline): `decide` freeze/patch • `detectStaleQuotes`/`capByCohort`/`unverifiedCohorts` (ยืนยันหุ้นตายสองชั้น) • `mergeFlags` • `patchReport` • `commitBody`
@@ -191,14 +191,15 @@ npm run dev        # = wrangler dev — ต้องใช้ตัวนี้�
 9. **`v3-test`** (unit-test v3, offline): `schema.validate`/`CARD_KEYS` • `compute.js` derive จาก fundamentals/override • `render.js` toV2Source byte-identical กับ RV/DV formatter • `cards`/`legs`/`prose`/`scale`/`io` • corpus round-trip ของ fixture จริง → [รายละเอียด](docs/quality-gate.md)
 10. **`v2-path-test`** (ทาง v2 ไม่อ่าน/ไม่เขียนช่องสำเนาด้วย regex, offline): สตับตัวอ่าน v1 ของ gate + ตัวเขียนสำเนาของ cron แล้ว fixture v2 ต้องยังผ่าน • **+ `migrate-v2-test`** (ไม่ใช่การอ้างว่า regex = 0) → [รายละเอียด](docs/quality-gate.md)
 11. **`check-reports`** (source ทีละไฟล์ — <!-- gen:counts -->48 error + 21 warning<!-- /gen:counts -->): โครงสร้างครบ • ตัวเลขสอดคล้องกันเอง (FV/MOS/จุดซื้อ/scenario) • `stock-meta` = เลขที่โชว์จริง • % รอบปี ↔ กราฟ ~1 ปี • WCAG AA • ความสดของราคา → [ตาราง E/W](docs/quality-gate.md)
-12. **`self-test`** (meta-test ของ `check-reports`): ฉีด defect ลงรายงานจริงแล้วยืนยันว่า check ที่คู่กัน "ยิงจริง" — ปิดช่องที่ check เลิกแมตช์เงียบ ๆ แล้ว gate รายงานว่าสะอาด • require `fixture-lint`/`parser-lint`
-13. **`ohlc-test`**: `src/ohlc.js` แปลง Yahoo JSON → payload แท่งเทียนถูกต้อง (ตัดแท่ง null, ปัดทศนิยม)
-14. **`ta-engine-test`**: ตรึงนิยาม TA ด้วย fixture (`ema`/`rsi`/`findPivots`/`labelStructure`/`detectBreaks`/`detectDivergence`/`summarizeSignals`) + รัน `ta-chart.js` จริงใน mock DOM + stub LightweightCharts (เดิม syntax-check เฉย ๆ) → [ชั้น TA](docs/quality-gate.md)
-15. **`build`**: expand ทุก report + `injectTA` + สร้าง index/manifest ลง `dist/` ต้องไม่พัง
-16. **`build-test`** (unit-test build.js): `freshHash` • เครดิตโมเดล AI ต่อ report • `extractMetrics`/`pickHighlight`/`computeLeaders` • `injectTA` • `validateReportData` กัน render พังเงียบ → [ชั้น 1.5](docs/quality-gate.md)
-17. **`engine-exec`** (รัน engine ทุกรายงานใน mock DOM): กราฟ · เข็ม gauge · เครื่องคิดเลข MOS ต้อง render จริง ไม่ throw ไม่มีพิกัด NaN/Infinity → [ชั้น 1.7](docs/quality-gate.md)
-18. **`skeleton-test`**: โครงต้นแบบ TH/US เติมข้อมูลจริง (ไทย = HMPRO) แล้วต้องผ่าน gate + engine รันได้
-19. **`check-site`** (หลัง build, ระดับเว็บไซต์): ทุก report อยู่ใน index/manifest ครบ • `<script>` ไม่พัง + id ครบ • footer = meta `ai-model` • การ์ด index `data-*` = `stock-meta` • external = Google Fonts เท่านั้น → [ชั้น 2](docs/quality-gate.md)
+12. **`check-v3`** (gate ของใบ v3 `reports/*.json` + fixture ใบจริง `test/fixtures/v3/*-real.json`): E50 ลายเซ็น • E51 สคีมา/compute/render • E52 ขา declared ↔ ตาราง SOTP • E17/E27/W07/W09/W18/W25 คิดจาก JSON • W30 `{{lit:}}` • W31 literal เงินค้าง • W32 |MOS| > 40% ไม่มีขานอกตระกูล (r,g) ยืนยัน • โค้ดที่เหลือผ่าน gate v2 บนหน้าที่ render (`v2:<id>`) → [รายละเอียด](docs/quality-gate.md)
+13. **`self-test`** (meta-test ของ `check-reports`): ฉีด defect ลงรายงานจริงแล้วยืนยันว่า check ที่คู่กัน "ยิงจริง" — ปิดช่องที่ check เลิกแมตช์เงียบ ๆ แล้ว gate รายงานว่าสะอาด • require `fixture-lint`/`parser-lint`
+14. **`ohlc-test`**: `src/ohlc.js` แปลง Yahoo JSON → payload แท่งเทียนถูกต้อง (ตัดแท่ง null, ปัดทศนิยม)
+15. **`ta-engine-test`**: ตรึงนิยาม TA ด้วย fixture (`ema`/`rsi`/`findPivots`/`labelStructure`/`detectBreaks`/`detectDivergence`/`summarizeSignals`) + รัน `ta-chart.js` จริงใน mock DOM + stub LightweightCharts (เดิม syntax-check เฉย ๆ) → [ชั้น TA](docs/quality-gate.md)
+16. **`build`**: expand ทุก report + `injectTA` + สร้าง index/manifest ลง `dist/` ต้องไม่พัง
+17. **`build-test`** (unit-test build.js): `freshHash` • เครดิตโมเดล AI ต่อ report • `extractMetrics`/`pickHighlight`/`computeLeaders` • `injectTA` • `validateReportData` กัน render พังเงียบ → [ชั้น 1.5](docs/quality-gate.md)
+18. **`engine-exec`** (รัน engine ทุกรายงานใน mock DOM): กราฟ · เข็ม gauge · เครื่องคิดเลข MOS ต้อง render จริง ไม่ throw ไม่มีพิกัด NaN/Infinity → [ชั้น 1.7](docs/quality-gate.md)
+19. **`skeleton-test`**: โครงต้นแบบ TH/US เติมข้อมูลจริง (ไทย = HMPRO) แล้วต้องผ่าน gate + engine รันได้
+20. **`check-site`** (หลัง build, ระดับเว็บไซต์): ทุก report อยู่ใน index/manifest ครบ • `<script>` ไม่พัง + id ครบ • footer = meta `ai-model` • การ์ด index `data-*` = `stock-meta` • external = Google Fonts เท่านั้น → [ชั้น 2](docs/quality-gate.md)
 <!-- /gen:verify-list -->
 
 ```bash

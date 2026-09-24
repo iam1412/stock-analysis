@@ -373,7 +373,7 @@ function validate(doc) {
       num(a.target, 'analyst.target', { gt: 0 });
       if (a.n != null) num(a.n, 'analyst.n', { int: true, min: 1 });
       str(a.rating, 'analyst.rating');
-      if (a.asOf != null && !ISO.test(a.asOf)) E('analyst.asOf', 'ต้องเป็น ISO YYYY-MM-DD หรือ null');
+      if (a.asOf != null && !(typeof a.asOf === 'string' && ISO.test(a.asOf))) E('analyst.asOf', 'ต้องเป็น ISO YYYY-MM-DD หรือ null');
     }
   }
 

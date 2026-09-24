@@ -136,6 +136,9 @@ for (const r of [0, -150]) {
 { const d = base(); d.analyst = { target: 190, rating: 'Buy', n: null, asOf: null }; t.eq(S.validate(d), [], 'explicit nulls are valid'); }
 { const d = base(); d.analyst.n = 0; t(paths(S.validate(d)).includes('analyst.n'), 'n, when present, is an int ≥ 1'); }
 { const d = base(); d.analyst.asOf = '20/09/2026'; t(paths(S.validate(d)).includes('analyst.asOf'), 'asOf, when present, is ISO'); }
+// Plan 2a Task 12 (ruling e) — asOf ต้องเป็น string: ISO.test() coerce array → "2026-09-21" ผ่านเงียบ
+{ const d = base(); d.analyst.asOf = ['2026-09-21']; t(paths(S.validate(d)).includes('analyst.asOf'), 'asOf: an array that stringifies to ISO is rejected'); }
+{ const d = base(); d.analyst.asOf = 20260921; t(paths(S.validate(d)).includes('analyst.asOf'), 'asOf: a number is rejected'); }
 // Plan 2a Task 8 — fy + bank (§3.6 B, K)
 { const d = base(); d.fundamentals.fy = { period: 'FY2025', netIncome: 2.67e9, eps: 6.02 }; d.metrics.cards.push('netIncomeFy', 'epsFy'); t.eq(S.validate(d), [], 'fy + FY cards valid'); }
 { const d = base(); d.fundamentals.fy = { period: 'FY2025' }; t(paths(S.validate(d)).includes('fundamentals.fy'), 'fy needs ≥1 number'); }

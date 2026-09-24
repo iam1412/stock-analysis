@@ -3,10 +3,10 @@
 > สรุปย่อ + คำสั่งอยู่ใน `CLAUDE.md §8` — ไฟล์นี้คือรายละเอียดไล่ทีละชั้น/ทีละ error
 > **enforcement จริงอยู่ในโค้ด `test/*.js`** เอกสารนี้เป็นคำอธิบายประกอบเท่านั้น
 
-มี gate หลายชั้น ต้องผ่านทั้งหมด **ก่อน push เสมอ** (มี `pre-push` hook บังคับซ้ำ <!-- gen:verify-steps -->19<!-- /gen:verify-steps --> ขั้น):
+มี gate หลายชั้น ต้องผ่านทั้งหมด **ก่อน push เสมอ** (มี `pre-push` hook บังคับซ้ำ <!-- gen:verify-steps -->20<!-- /gen:verify-steps --> ขั้น):
 
 ```bash
-npm run verify           # ★ ครบชุด <!-- gen:verify-steps -->19<!-- /gen:verify-steps --> ขั้น: <!-- gen:verify-chain-plain -->update-prices-test → dead-ticker-test → tag-apply-test → queue-test → docs-test → prep-stock-test → tags-test → report-values-test → v3-test → v2-path-test → check-reports → self-test → ohlc-test → ta-engine-test → build → build-test → engine-exec → skeleton-test → check-site<!-- /gen:verify-chain-plain -->
+npm run verify           # ★ ครบชุด <!-- gen:verify-steps -->20<!-- /gen:verify-steps --> ขั้น: <!-- gen:verify-chain-plain -->update-prices-test → dead-ticker-test → tag-apply-test → queue-test → docs-test → prep-stock-test → tags-test → report-values-test → v3-test → v2-path-test → check-reports → check-v3 → self-test → ohlc-test → ta-engine-test → build → build-test → engine-exec → skeleton-test → check-site<!-- /gen:verify-chain-plain -->
 npm run test:prices      # ชั้น 1 (unit-test cron ราคา — offline: decide/detectStaleQuotes/capByCohort/unverifiedCohorts/mergeFlags/patchReport)
 npm run test:dead        # ชั้น 2 (unit-test canary หุ้นตาย — offline: tvBaseName/tvCandidates/classify/mergeDeadFlags/shouldAbort/retry)
 npm run test:tagapply    # ชั้น tag 1 (unit-test CLI ที่เขียน tags.json — offline: applyTags/renameSymbol/pruneMissing all-or-nothing)
@@ -430,3 +430,25 @@ README ย่อคำอธิบายรายขั้นลงเหลื�
 - **`report-values-test`** (unit-test schema v2 `report-data.values`, offline): `validateValues` (strict unknown-key · required px/priceDate/dateEra/chgSuffix · scenarios↔scnBasis คู่กัน) • `derive`/`TOKENS`/`renderValues` (`{{rd:…}}`) • ศักราชวันที่ (`dateEra` BE→พ.ศ. / CE→ค.ศ.) • `fmtPrice`/`fmtBig`/`annualChg`/`mosBand`
 - **`v2-path-test`** (ทาง v2 cron ไม่เขียนช่องสำเนาด้วย regex · ค่าสำเนาของ gate มาจาก JSON, offline — **ไม่ใช่การอ้างว่า "regex = 0"**): gate — สตับ `CR.V1_READ` (ยกเว้น `scaleNums` ที่อ่าน HTML ทั้งสองทางโดยตั้งใจ) ให้ throw แล้ว `checkHtml` บน fixture v2 ต้องผ่าน + **post-expand mutation** (สับข้อความช่องสำเนา `.px`/`.big`/`.chg`/ป้าย `#mCur`/คลาส verdict ใน HTML ที่ expand แล้ว → ctx ต้องเท่าเดิมเพราะอ่านจาก `values`/`stock-meta` — แทนการสตับ regex ระดับโมดูลที่ closure เอาชนะได้) • cron — สตับตัวเขียนช่องสำเนา 4 ตัว (`RM.PX_PARTS_RE`/`MCUR_LABEL_PARTS_RE`/`VERDICT_CLASS_RE`/`DV.MOS_BIG_RE`) แล้ว `patchReport`→`gateAfterPatch` บน fixture v2 ต้องผ่าน (sanity: ทุกตัวที่สตับกัด v1 จริง) • ช่องสรุป "ส่วนต่างจากราคา" ยังเขียนถูกผ่าน `patchDerived` (ไม่ถูกสตับ — v2 ตั้งใจรันบน view ที่ render แล้ว) • สกุลเงินทาง v2 มาจาก `stock-meta.currency` ไม่ใช่ `.px` ที่ render • **+ `require` `migrate-v2-test.js`** (unit-test `tools/migrate-v2.js`: ชั้น token/compare/mask, เคสขอบ D1–D8/T1–T5/F3–F6/guard · cron differential `--cron-diff` (ระยะ 2 ส่วน E Task 14a): คู่ fixture v1/v2 ทั้ง 7 ใบผ่าน grid 61 จุด + mutation `meta:pe`/`visible`/วันที่ literal ค้าง + การตัดสินไม่เขียน (`planWrite`) + แถว census · **เสถียรภาพฝั่ง v2 เอง `--v2-grid`/`v2Stability` + ยามของ `--v2-baseline`** (ระยะ 3 Task 5): ทิศทาง MOS ↔ ราคา · gate error หลัง patch · อินพุตไม่ใช่ v2 · ผ่อนเกณฑ์ได้เฉพาะ `side === 'v1'` + v2 เสถียร)
 - **`self-test`** (meta-test ของ `check-reports` ก่อนหน้า — เข้า gate 12 ส.ค. 69): จงใจใส่ defect ลงรายงานจริงแล้วยืนยันว่า check ที่เกี่ยวข้อง "จับได้" + รายงานดีต้องไม่ false-positive · ปิดช่องที่ `check-reports` เสียจนเลิกยิงแล้วรายงาน "error 0" ซึ่งแยกไม่ออกจาก "สะอาดจริง"
+
+## ใบ v3 — `test/check-v3.js` (spec §9 · Plan 2a)
+
+ใบ v3 (`reports/<SYM>.json`) ไม่ผ่าน `check-reports` แต่ผ่าน `check-v3` ซึ่งอ่าน JSON + `tools/v3/compute.js` ตัวเดียวกับ build · ระหว่าง transition ยังไม่มีใบ v3 ใน `reports/` ⇒ รันบน fixture ใบจริง `test/fixtures/v3/*-real.json` (นาฬิกาแช่ที่วันราคาของ fixture) เป็น regression
+
+CLI: `node test/check-v3.js [SYM | path.json | dir/*.json …]` (ไม่ใส่ arg = `reports/*.json` + fixture ใบจริง) · ลำดับต่อใบ: สคีมา → (ผ่านเท่านั้น) compute → E52 → render → gate v2 — ใบที่สคีมาไม่ผ่านได้ E51 ตัวเดียว ไม่ถูก render
+
+| code | level | ตรวจอะไร |
+|---|---|---|
+| E50 | error | `_sig` ตรงเนื้อไฟล์ — ไฟล์ต้องเขียนผ่าน `tools/v3/io.js` เท่านั้น |
+| E51 | error | สคีมา v3 + `compute` + render สำเร็จ + prose ไม่มีแท็กนอก `<b> <i> <br>` |
+| E52 | error | ขา `declared` (sotp/nav) อ้างตารางที่รวมยอดได้ · แถว total = Σ ภายใต้การปัด · ยอด × fx = ค่าขา ±1% · ขา declared อื่นต้องมีเหตุผลใน note |
+| E17 | error | ≥2 ขา `role:"fv"` (ขา context ไม่นับ — spec §13 ข้อ 4) |
+| E27 / W09 | error / warn | ความสดของ `market.priceDate` (120 / 45 วัน) |
+| W07 | warn | P/E · P/BV · yield · ROE ผิดวิสัย (เกณฑ์เดียวกับ v2) |
+| W18 / W25 | warn | ตัวคูณเป้าห่างตัวคูณปัจจุบัน / forward ≤7% — คำนวณจาก `legs[].inputs` ไม่ใช่ regex |
+| W30 | warn | `{{lit:…}}` เกิน 2 ต่อใบ |
+| W31 | warn | literal รูปเงินที่ไม่ใช่ token ค้างใน prose (ยอดที่มีหน่วย M/B/ล้าน ไม่นับ) |
+| W32 | warn | \|MOS\| > 40% แต่ขา `fv` ทุกขาเป็นตระกูล (r,g) (family ที่เขียน หรือเดาจาก method: ddm/ddm2/dcf/ri/justified P/BV/declared other) — ชั้น 0 ยังเป็นงานตรวจของ controller |
+| `v2:<id>` | ตาม v2 | โค้ดที่เหลือของ `check-reports` รันบนหน้าที่ render (render smoke test) — ย้ายเป็น native ตอน P7 |
+
+กติกา B (ตัวเลขผูกราคาที่พิมพ์เอง) เป็นของ `save` ไม่ใช่ gate รายวัน — gate รายวันใช้ W31
