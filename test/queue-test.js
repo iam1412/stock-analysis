@@ -1567,7 +1567,7 @@ const applyEditsRacePromise = testApplyEditsStdin(ok);
     ok(byS.ZTS.v3 === true && byS.ZTS.oldPrice === 71.33 && byS.ZTS.currency === 'USD' && byS.AAPL.v3 === false && byS.AAPL.currency === 'USD',
       'v3/preflight: ราคาเดิม/สกุลของใบ v3 มาจาก market.px/currency', JSON.stringify(rows.map((r) => [r.symbol, r.v3, r.oldPrice, r.currency])));
     const pt = P.patchTargets(rows, { usOpen: false, setOpen: false, allowIntraday: false });
-    ok(pt.skippedV3.join(',') === 'ZTS' && !pt.target.includes('ZTS') && pt.target.includes('AAPL'), 'v3/preflight: ใบ v3 ไม่เข้า pre-patch (v3 cron = Plan 3) · ใบ v2 เข้าเหมือนเดิม', JSON.stringify(pt));
+    ok(pt.skippedV3.join(',') === 'ZTS' && !pt.target.includes('ZTS') && pt.target.includes('AAPL'), 'v3/preflight: ใบ v3 ไม่เข้า pre-patch อัตโนมัติ (P6 · pre-patch มือ = update-prices --write --force — Plan 3 R8) · ใบ v2 เข้าเหมือนเดิม', JSON.stringify(pt));
     const cal = { symbols: { ZTS: { last: '2026-09-25' } } };
     const lite = { analysisDate: '2026-09-22', currency: 'THB' };
     const html = '<script type="application/json" id="stock-meta">{"currency":"THB"}</script><footer>ข้อมูล ณ 22 ก.ย. 2569</footer>';
