@@ -440,7 +440,7 @@ CLI: `node test/check-v3.js [SYM | path.json | dir/*.json …]` (ไม่ใส
 | code | level | ตรวจอะไร |
 |---|---|---|
 | E50 | error | `_sig` ตรงเนื้อไฟล์ — ไฟล์ต้องเขียนผ่าน `tools/v3/io.js` เท่านั้น |
-| E51 | error | สคีมา v3 + `compute` + render สำเร็จ + prose ไม่มีแท็กนอก `<b> <i> <br>` + หน้าที่ render ไม่มีคำ `NaN`/`Infinity`/`undefined` หลุด (backstop ของ guard ต่อการ์ด · สแกนเนื้อหน้าไม่รวม `<script>`/`<style>` · คำที่ผู้เขียนพิมพ์เองเช่น CHKP "Infinity Platform" ไม่นับ — ตรวจด้วยการ render ซ้ำหลังทำให้คำในใบเป็นกลาง) |
+| E51 | error | สคีมา v3 + `compute` + render สำเร็จ + prose ไม่มีแท็กนอก `<b> <i> <br>` + หน้าที่ render ไม่มีคำ `NaN`/`Infinity`/`undefined` หลุด (backstop ของ guard ต่อการ์ด · สแกนเนื้อหน้าไม่รวม `<script>`/`<style>` · คำที่ผู้เขียนพิมพ์เองเช่น CHKP "Infinity Platform" ไม่นับ — ตรวจด้วยการ render ซ้ำหลังทำให้คำในใบเป็นกลาง) · **Plan 2b**: ช่องข้อความใดมี `{{rd:…}}` (ไวยากรณ์ v2) · ค่าใดยังเป็น sentinel `TODO…` ที่ `report.js init` วางไว้ (ช่องตัวเลขที่ยังเป็นสตริงด้วย) · error เชิงความหมาย (ฐานฉาก/สีแบรนด์/extrasRef/'current'/ค่าขา) รายงานครบทุกข้อในครั้งเดียวผ่าน `C.semanticErrors()` ก่อน compute |
 | E52 | error | ขา `declared` (sotp/nav) อ้างตารางที่รวมยอดได้ · แถว total = Σ ภายใต้การปัด · ยอด × fx = ค่าขา ±1% · ขา declared อื่นต้องมีเหตุผลใน note |
 | E17 | error | ≥2 ขา `role:"fv"` (ขา context ไม่นับ — spec §13 ข้อ 4) |
 | E27 / W09 | error / warn | ความสดของ `market.priceDate` (120 / 45 วัน) |
@@ -452,3 +452,5 @@ CLI: `node test/check-v3.js [SYM | path.json | dir/*.json …]` (ไม่ใส
 | `v2:<id>` | ตาม v2 | โค้ดที่เหลือของ `check-reports` รันบนหน้าที่ render (render smoke test) — ย้ายเป็น native ตอน P7 |
 
 กติกา B (ตัวเลขผูกราคาที่พิมพ์เอง) เป็นของ `save` ไม่ใช่ gate รายวัน — gate รายวันใช้ W31
+
+`node tools/report.js save <SYM>` ใช้ `checkDoc(doc, {stage:'save'})` — code path เดียวกับ gate ยกเว้น **`v2:E40` ตัวเดียว** (tag ลงตอน `ship` ด้วย `tools/tag-apply.js`) ซึ่งพิมพ์ว่า "ตัด" ทุกครั้ง ไม่หายเงียบ · error ของสคีมา/แท็ก/ความหมายแต่ละชั้นเป็น E51 **รายการเดียว** ที่มี `details` ทีละ path — `save` พิมพ์ครบทุกบรรทัดในครั้งเดียว (Plan 2b · open-item #52)

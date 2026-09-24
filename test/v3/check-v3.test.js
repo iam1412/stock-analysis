@@ -183,4 +183,28 @@ for (const f of ['ZTS-real', 'BBL-real', 'FER-real', 'EQIX-real']) t(!run(load(f
   let r; try { r = noThrow(() => run(signed(d)), '(3) author word + injected leak'); } finally { R.toV2Source = orig; }
   t(r.errors.some((x) => x.id === 'E51' && x.msg.includes('Infinity')), '(3) author "Infinity" does not mask a render-made "Infinity"'); }
 for (const f of ['ZTS', 'BBL']) t(!run(load(f), { skipSig: true }).errors.some((x) => x.id === 'E51'), `(3) backstop quiet on ${f} (synthetic)`);
+// ── Plan 2b Task 5 — E51 ขยาย · semanticErrors ใน checkDoc · stage:'save' (spec §9 · ruling 3/6) ──
+const e51 = (r) => r.errors.find((x) => x.id === 'E51');
+{ const d = Z(); delete d._sig; d.prose.mos = 'ราคาปัจจุบัน {{rd:px}}'; const r = run(signed(d));
+  t(e51(r) && e51(r).details.some((x) => x.path === 'prose.mos'), 'E51: {{rd:…}} in a v3 prose field (details names the path)'); }
+{ const d = Z(); delete d._sig; d.risks[0] = 'TODO: ความเสี่ยงข้อ 1'; const r = run(signed(d));
+  t(e51(r) && e51(r).details.some((x) => x.path === 'risks[0]'), 'E51: TODO sentinel left in a text field'); }
+{ const d = Z(); delete d._sig; d.scenarios.cases[0].growth = 'TODO'; const r = run(signed(d));
+  t(e51(r) && e51(r).details.filter((x) => x.path === 'scenarios.cases[0].growth').length === 2, 'E51: TODO sentinel left in a number field (type + sentinel)'); }
+{ const d = Z(); delete d._sig; d.meta.themeLegacy = null; delete d.scenarios.baseOverride; d.scenarios.driver = 'bvps'; d.legs[1].inputs.extrasRef = 0;
+  const r = run(signed(d));
+  t.eq(ids(r, 'errors'), ['E51'], 'semantic faults: exactly one E51 entry (entry count unchanged — R5)');
+  t.eq(e51(r).details.map((x) => x.path).sort(), ['legs[1].inputs.extrasRef', 'meta.themeLegacy', 'scenarios.driver'], 'semantic faults: all three reported at once (#52)');
+  t(e51(r).msg.startsWith('compute: ') && r.view === null, 'semantic faults: stop before compute/render (no view)'); }
+{ const d = Z(); delete d._sig; d.surprise = 1; d.meta.sub = 'TODO: คำโปรยธุรกิจของบริษัท';
+  t(e51(run(signed(d))).details.length === 2, 'schema E51 also carries details (one per schema error)'); }
+{ const d = Z(); delete d._sig; d.symbol = 'ZZZQ';   // ไม่มีใน tags.json → v2:E40 (tag ลงตอน ship)
+  t.eq(ids(run(signed(d)), 'errors'), ['v2:E40'], 'gate (no stage): untagged symbol → v2:E40');
+  const r = run(signed(d), { stage: 'save' });
+  t.eq(ids(r, 'errors'), [], "stage:'save' drops v2:E40 …");
+  t.eq(r.dropped.map((x) => x.id), ['v2:E40'], '… and reports it in dropped (logged, not silent)'); }
+{ const d = Z(); delete d._sig; d.symbol = 'ZZZQ'; d.meta.aiModel = 'Claude Foo 5';
+  t.eq(ids(run(signed(d), { stage: 'save' }), 'errors'), ['v2:E28'], "stage:'save' drops exactly v2:E40 — v2:E28 still fails"); }
+t.throws(() => CV.checkDoc(Z(), { seeds: {}, stage: 'publish' }), /stage/, 'unknown stage throws');
+t.eq(run(Z()).dropped, [], 'no stage → dropped is empty');
 t.done();
