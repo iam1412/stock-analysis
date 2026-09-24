@@ -1,8 +1,8 @@
-# Report v3 Plan 2c-ii — first two real v3 reports (OGE · M-CHAI) — Implementation Plan
+# Report v3 Plan 2c-ii — first two real v3 reports (OGE · ICC) — Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking. **The "implementer" of Tasks 1–2 is a stock-analysis worker (Opus), not a code implementer: it is spawned with the prep `.md` as its prompt and follows `stock-analyzer/SKILL.md` STEP 5V; the "review" is the controller sequence tag-apply → postcheck → layer-0 checks → advisor.**
 
-**Goal:** Publish the first two v3 reports (`reports/OGE.json`, `reports/M-CHAI.json`) written end-to-end by workers through `node tools/report.js init → save`, with the whole site + cron rehearsed on them before the PR. This is the **first visible production change** of v3.
+**Goal:** Publish the first two v3 reports (`reports/OGE.json`, `reports/ICC.json`) written end-to-end by workers through `node tools/report.js init → save`, with the whole site + cron rehearsed on them before the PR. This is the **first visible production change** of v3.
 
 **Architecture:** Runs only after Plan 2c-i is merged to main (docs + `--no-push` + tripwire removed). Fresh `prep --model opus` per stock after its market closes (the price is frozen until P5); one worker per spawn, sequential; every report goes through the controller checks the gate cannot do, then advisor, then `ship <SYM> --no-push` on the branch; rehearsal of `npm run verify`, `check-site` and the cron sequence in a scratch worktree; PR → advisor → merge → deploy → owner design review.
 
@@ -13,17 +13,17 @@
 ## Global Constraints
 
 - **Precondition:** Plan 2c-i merged (`git log origin/main --oneline | grep "remove tripwire"` non-empty). Worktree `/Users/somchai.s/Downloads/stock-v3-plan2c-ii`, branch `feat/report-v3-plan2c-ii` from `origin/main`. The **25 ก.ย. 04:00 ไทย cron run must have landed on main** before any 2c merge (one variable per run) — check `gh run list --workflow update-prices --limit 1`.
-- **Timing:** `prep OGE` only when US is closed (after ~04:00 ไทย, before 20:30 ไทย); `prep M-CHAI` only after 16:30 ไทย. The `priceDate` each prep writes starts the P5 clock: hard = +120 days (E27), target = +45 (W09). Record both dates in open-items #62.
+- **Timing:** `prep OGE` only when US is closed (after ~04:00 ไทย, before 20:30 ไทย); `prep ICC` only after 16:30 ไทย. The `priceDate` each prep writes starts the P5 clock: hard = +120 days (E27), target = +45 (W09). Record both dates in open-items #62.
 - **Worker:** Opus, effort high, one stock per spawn, sequential (Task 2 starts only after Task 1's report is shipped on the branch). Prompt = `.queue/prep/<SYM>.md` verbatim + the three controller lines in Task 1 Step 3. Worker never pushes, never calls the advisor, never spawns subagents, never writes `reports/`, `tags.json`, `seeds.json` by hand. Record turn count per worker (from the Agent result usage) for spec §12.
 - **Controller must not** hand-edit `reports/*.json` (use `report.js export/save` only if a fix is needed — and then re-run postcheck), nor write `tags.json` except via `tag-apply`.
 - Zero changes to `reports/*.html`, `reports.json` other than the two new entries (build writes it), `.claude/settings*.json`.
-- If any step's advisor verdict is "do not publish" twice, or `prep` exits 2 (price conflict), or the M-CHAI board cannot be confirmed from set.or.th → stop and ask the owner.
+- If any step's advisor verdict is "do not publish" twice, or `prep` exits 2 (price conflict), or the ICC board cannot be confirmed from set.or.th → stop and ask the owner.
 
 ## Review Focus
 
 1. A saved report whose `family` is missing on an fv leg passes the gate with equal weights — the controller check in Step 5 is the only net.
 2. `legs[i].inputs` complete for the chosen method (E51 catches absence; it cannot catch a wrong-unit rate such as 0.085 instead of 8.5 — check `report.js show` values for plausibility: FV within 0.3×–3× price).
-3. M-CHAI `meta.exchange` = SET vs MAI from set.or.th (Yahoo cannot tell); wrong board renders silently.
+3. ICC `meta.exchange` = SET vs MAI from set.or.th (Yahoo cannot tell); wrong board renders silently.
 4. `meta.aiModel` must equal the model actually spawned (Opus) — `postcheck --model opus` and ship's guard both read it; a Sonnet stamp on an Opus run is a lie the gate cannot see.
 5. The cron rehearsal must show `v3-skipped: 2` and no `.json` diff; if `update-prices --write` touches a `.json`, P5 assumptions are wrong — stop.
 
@@ -94,25 +94,28 @@ Expected: one commit `analyze: add OGE — NEW (MOS …)` touching `reports/OGE.
 
 ---
 
-### Task 2: M-CHAI (TH) — same sequence, after SET close
+### Task 2: ICC (TH) — same sequence, after SET close
+
+> **Execution note (24 ก.ย. 69):** the plan was written for **M-CHAI**. After SET close the real prep showed StockAnalysis has no M-CHAI at all (`quote/bkk/M-CHAI` redirects to symbol-lookup, search 404) → `fetch-fundamentals` fin+stats errors → the sidecar is refused (fail-closed by design) → `report.js init` would refuse. The spec's backup list (§13 item 15) names ICC then IDA; IDA is not a valid ticker anywhere (set.or.th 404, Yahoo not found). **ICC** passed every screen (SA covered, no report, no memory exclusion, listed 21 Dec 1978 = SET main board) and is the TH exit ticker; the text below was rewritten from M-CHAI to ICC. Second defect: the original Step 2 omitted `--th` — the first prep ran M-CHAI as a US ticker.
+
 
 - [ ] **Step 1: Board check (primary source) before anything else**
 
-WebFetch `https://www.set.or.th/en/market/product/stock/quote/M-CHAI/price` (or the TH page) and record the listing market (SET vs mai) and sector. If unreachable → try `https://www.set.or.th/en/market/product/stock/quote/M-CHAI/company-profile/information`; still unknown → stop, ask owner.
+WebFetch `https://www.set.or.th/en/market/product/stock/quote/ICC/price` (or the TH page) and record the listing market (SET vs mai) and sector. If unreachable → try `https://www.set.or.th/en/market/product/stock/quote/ICC/company-profile/information`; still unknown → stop, ask owner.
 
 - [ ] **Step 2: Fresh prep (after 16:30 ไทย)**
 
 ```bash
-rtk proxy npm run queue -- prep M-CHAI --model opus 2>&1 | tail -12
-node -e "const s=require('./.queue/prep/M-CHAI.json');console.log(s.exchange,s.currency,s.market.px,s.market.priceDate,'dP',s.crossVerify.dP,'srcErr',JSON.stringify(s.sourceErrors),'med',s.medians.median,s.medians.window,s.medians.points,s.medians.curErr,'dps',s.dps,'epsTTM',s.vendor.epsTTM)"
+rtk proxy npm run queue -- prep ICC --th --model opus --brand "#hex" 2>&1 | tail -12   # --th is mandatory for a NEW Thai ticker (prep infers TH only from an existing report's currency)
+node -e "const s=require('./.queue/prep/ICC.json');console.log(s.exchange,s.currency,s.market.px,s.market.priceDate,'dP',s.crossVerify.dP,'srcErr',JSON.stringify(s.sourceErrors),'med',s.medians.median,s.medians.window,s.medians.points,s.medians.curErr,'dps',s.dps,'epsTTM',s.vendor.epsTTM)"
 ```
 Expected: `SET THB <px> <today> dP ≤2 …`. First real TH pass of `exchangeCode`/`--th` `--json`: if `exchange` is null or `currency` ≠ THB or `sourceErrors` non-null → record it; null exchange is fine (worker fills from Step 1). `medians.points` < 3 or `curErr` set → the worker must not use a pe leg from medians (tell it in the notes). Exit 2 → stop.
 
-- [ ] **Step 3: Brand seed** — `node tools/pick-brand.js M-CHAI "#hex" --auto` (hospital brand; check `tools/brand-colors.md`).
+- [ ] **Step 3: Brand seed** — `node tools/pick-brand.js ICC "#hex" --auto` (folded into Step 2 via `--brand` as in Task 1; hex from the company site/logo — ICC logo blue/crimson both collided, `--auto` settled #940455).
 
 - [ ] **Step 4: Spawn worker (Opus)** — same three controller lines as Task 1 Step 3, replacing note 3 with: `กระดานจริง = <SET|mai จาก set.or.th> ⇒ meta.exchange = "<SET|MAI>" (Yahoo ให้ SET ทั้งสองกระดาน) · medians: <ผลจาก Step 2 — ใช้ได้/ใช้ไม่ได้> · หุ้นไทย: dateEra BE · currency THB · ปีงบตามงบจริง · ใส่ family ทุกขา fv · inputs ครบชุด (หน่วย %)`.
 
-- [ ] **Step 5–8:** identical to Task 1 Steps 4–7 with `M-CHAI` (postcheck, npm test after tag, spotcheck, layer-0 node one-liner, advisor, `ship M-CHAI --no-push`). Additional TH checks: `meta.exchange` matches Step 1 · `currency` THB everywhere in `show` · `fundamentals.fy.period` matches the Thai fiscal year in the statements.
+- [ ] **Step 5–8:** identical to Task 1 Steps 4–7 with `ICC` (postcheck, npm test after tag, spotcheck, layer-0 node one-liner, advisor, `ship ICC --no-push`). Additional TH checks: `meta.exchange` matches Step 1 · `currency` THB everywhere in `show` · `fundamentals.fy.period` matches the Thai fiscal year in the statements.
 
 ---
 
@@ -129,22 +132,22 @@ rtk proxy node test/update-prices-test.js >/dev/null && echo T1
 PRICE_COMMIT_BODY=/tmp/pcb.txt node tools/update-prices.js --write 2>&1 | grep -E "v3-skipped|ข้าม reports/|patch-rejected|✗" | head   # expect "v3-skipped: 2", two ข้าม lines
 node build.js >/dev/null && node tools/preserve-dates.js 2>&1 | grep -E "v3|ข้าม" | head -2 && node build.js >/dev/null   # "ข้าม 2 ใบ v3"
 rtk proxy npm run verify:cron 2>&1 | tail -2                         # exit 0
-git status --short reports/OGE.json reports/M-CHAI.json | wc -l      # 0 — cron did not touch the .json
-node tools/dead-ticker-canary.js 2>&1 | grep -E "OGE|M-CHAI|v3" | head -3   # dry run, no --write
-ls dist/OGE.html dist/M-CHAI.html && grep -c '"symbol":"OGE"\|"symbol": "OGE"' reports.json
+git status --short reports/OGE.json reports/ICC.json | wc -l      # 0 — cron did not touch the .json
+node tools/dead-ticker-canary.js 2>&1 | grep -E "OGE|ICC|v3" | head -3   # dry run, no --write
+ls dist/OGE.html dist/ICC.html && grep -c '"symbol":"OGE"\|"symbol": "OGE"' reports.json
 cd /Users/somchai.s/Downloads/stock-v3-plan2c-ii && git worktree remove --force "$S"
 ```
-Paste every line of output in the report. Any `.json` diff, `patch-rejected` on OGE/M-CHAI, or `verify:cron` ≠ 0 → stop and report (P5 assumption broken).
+Paste every line of output in the report. Any `.json` diff, `patch-rejected` on OGE/ICC, or `verify:cron` ≠ 0 → stop and report (P5 assumption broken).
 
-- [ ] **Step 2: Visual check** — `node build.js` in the branch worktree; open `dist/OGE.html`, `dist/M-CHAI.html` and one v2 page (`dist/ZTS.html`) side by side (header stats card, TA chart, vote, footer credit `meta.aiModel`, index card order). Screenshot or describe differences; anything that is not identical layout → note for the owner (design review is theirs).
+- [ ] **Step 2: Visual check** — `node build.js` in the branch worktree; open `dist/OGE.html`, `dist/ICC.html` and one v2 page (`dist/ZTS.html`) side by side (header stats card, TA chart, vote, footer credit `meta.aiModel`, index card order). Screenshot or describe differences; anything that is not identical layout → note for the owner (design review is theirs).
 
 - [ ] **Step 3: Docs**
 
-`docs/open-items.md` #62: fill the two `priceDate`s and the resulting hard/target dates. `docs/decisions.md` §10: append "Report v3 Plan 2c-ii" block — the two reports (FV/MOS/turn counts), what the layer-0 checks found, the M-CHAI board result, the first-ever TH `--json`/exchangeCode result, the rehearsal numbers (`v3-skipped: 2`), whether the exit workers ran with hook layer 1 active (`grep -c '"hooks"' .claude/settings.json` on this machine at spawn time), and the advisor verdicts. Commit: `docs(v3): Plan 2c-ii — first two v3 reports (OGE, M-CHAI) · rehearsal · #62 dates`.
+`docs/open-items.md` #62: fill the two `priceDate`s and the resulting hard/target dates. `docs/decisions.md` §10: append "Report v3 Plan 2c-ii" block — the two reports (FV/MOS/turn counts), what the layer-0 checks found, the ICC board result, the first-ever TH `--json`/exchangeCode result, the rehearsal numbers (`v3-skipped: 2`), whether the exit workers ran with hook layer 1 active (`grep -c '"hooks"' .claude/settings.json` on this machine at spawn time), and the advisor verdicts. Commit: `docs(v3): Plan 2c-ii — first two v3 reports (OGE, ICC) · rehearsal · #62 dates`.
 
-- [ ] **Step 4: PR** — `git pull --rebase origin main` (only now — `--no-push` skipped rebase). **Expect a `reports.json` conflict, possibly on both `analyze:` commits**: each carries a rebuilt manifest (2 new entries + hashes) while the 25 ก.ย. cron rewrote ~100 hashes in the same file on main. On each conflict: `git checkout --theirs reports.json` is WRONG (that is the branch side during a rebase) — take **main's copy** (`git checkout --ours reports.json`), then `node build.js` (deterministic; regenerates the manifest with both the cron hashes and the new entries), `git add reports.json`, `git rebase --continue`. After the rebase finishes (conflict or not): `node build.js && git status --short` must be **empty**; if `reports.json` shows modified, the rebased manifest is stale → `git add reports.json && git commit --amend --no-edit` on the last commit before pushing. Then `GIT_DIR=$(git rev-parse --absolute-git-dir) node test/v3-test.js`, `rtk proxy npm run verify` once more, push branch, `gh pr create` with: the two `analyze:` commits + docs commit; verify/check-site/cron rehearsal numbers; the layer-0 checklist results; turn counts; "first visible change: 2 new report pages + 2 index cards; every existing page byte-identical" (prove with a DIST-PROOF variant that excludes `dist/OGE.html`, `dist/M-CHAI.html`, `dist/index.html`, `dist/reports.json`, sitemap/og files — list the differing files and confirm they are only those).
+- [ ] **Step 4: PR** — `git pull --rebase origin main` (only now — `--no-push` skipped rebase). **Expect a `reports.json` conflict, possibly on both `analyze:` commits**: each carries a rebuilt manifest (2 new entries + hashes) while the 25 ก.ย. cron rewrote ~100 hashes in the same file on main. On each conflict: `git checkout --theirs reports.json` is WRONG (that is the branch side during a rebase) — take **main's copy** (`git checkout --ours reports.json`), then `node build.js` (deterministic; regenerates the manifest with both the cron hashes and the new entries), `git add reports.json`, `git rebase --continue`. After the rebase finishes (conflict or not): `node build.js && git status --short` must be **empty**; if `reports.json` shows modified, the rebased manifest is stale → `git add reports.json && git commit --amend --no-edit` on the last commit before pushing. Then `GIT_DIR=$(git rev-parse --absolute-git-dir) node test/v3-test.js`, `rtk proxy npm run verify` once more, push branch, `gh pr create` with: the two `analyze:` commits + docs commit; verify/check-site/cron rehearsal numbers; the layer-0 checklist results; turn counts; "first visible change: 2 new report pages + 2 index cards; every existing page byte-identical" (prove with a DIST-PROOF variant that excludes `dist/OGE.html`, `dist/ICC.html`, `dist/index.html`, `dist/reports.json`, sitemap/og files — list the differing files and confirm they are only those).
 
-- [ ] **Step 5: Advisor pre-merge → `gh pr merge N --merge --repo iam1412/stock-analysis` (standalone) → deploy check** (`gh run list --branch main --limit 1` success · `curl -sI https://gaohoon.com/OGE.html | head -1` 200 · same for M-CHAI) → tell the owner to open both pages beside a v2 page for the design review → memory update (Plan 2c MERGED · P5 hard/target dates · hook paste status) → archive ledger → remove worktree.
+- [ ] **Step 5: Advisor pre-merge → `gh pr merge N --merge --repo iam1412/stock-analysis` (standalone) → deploy check** (`gh run list --branch main --limit 1` success · `curl -sI https://gaohoon.com/OGE.html | head -1` 200 · same for ICC) → tell the owner to open both pages beside a v2 page for the design review → memory update (Plan 2c MERGED · P5 hard/target dates · hook paste status) → archive ledger → remove worktree.
 
 ## Self-review
 

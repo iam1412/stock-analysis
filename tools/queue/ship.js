@@ -65,7 +65,9 @@ function reportAiModel(sym, dir) {
 
 function commitMessage(sym, rec, sm) {
   const mode = (rec && rec.mode) || 'UPDATE';
-  const mos = sm && Number.isFinite(sm.mos) ? ` (MOS ${sm.mos < 0 ? '−' : '+'}${Math.abs(sm.mos)}%)` : '';
+  // v2 stock-meta.mos เก็บ ≤1 ตำแหน่ง · v3 compute().sm.mos เต็มความละเอียด → ปัด 1 ตำแหน่งให้หัวข้อ commit เหมือนกันทั้งสองรุ่น
+  const m1 = sm && Number.isFinite(sm.mos) ? Math.round(sm.mos * 10) / 10 : null;
+  const mos = m1 != null ? ` (MOS ${m1 < 0 ? '−' : '+'}${Math.abs(m1)}%)` : '';
   return `analyze: ${mode === 'NEW' ? 'add' : 'update'} ${sym} — ${mode}${mos}`;
 }
 function verify() { console.log('▶ npm run verify'); must('npm', ['run', 'verify'], 'npm run verify'); }

@@ -140,4 +140,10 @@ t.eq(C.weightsOf(load('ZTS')), [0.5, 0.5], 'legacy: equal weights, byte-identica
   t.eq(count(lSrc, /\bthrow\b/g), 5, 'tripwire: legs.js has 5 throw sites — changed? add a SITES row');
   t.eq(count(lSrc, /throw new Error\(`\$\{P\}/g), 5, 'tripwire: every legs.js throw is funnelled through ${P} (path from the caller) — changed? add a SITES row');
 }
+// final review 2c-ii — กระจก stock-meta ของ v3 ต้องปัด mos/upside 1 ตำแหน่งเหมือน v2 (cron เขียน ≤1dp ทั้ง 909 ใบ) — ไม่งั้นการ์ด index โชว์ −27.52% ท่ามกลาง −27.5%
+{ const dp = (x) => (String(x).split('.')[1] || '').length;
+  t(dp(v.sm.mos) <= 1 && dp(v.sm.upside) <= 1, `sm.mos/upside ≤ 1 dp (${v.sm.mos} / ${v.sm.upside})`);
+  t.near(v.sm.mos, Math.round(v.d.mos * 10) / 10, 1e-9, 'sm.mos = round1(derived mos)');
+  t.near(v.sm.upside, Math.round(v.d.upside * 10) / 10, 1e-9, 'sm.upside = round1(derived upside)'); }
+
 t.done();
