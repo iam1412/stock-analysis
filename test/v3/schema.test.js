@@ -189,9 +189,9 @@ t.eq(S.validate(realFx('BBL-real')), [], 'family↔method: pe market (BBL-real a
 for (const [m, inputs] of [['dcf', { g1: 8, years1: 5, tg: 2.5, r: 10, rfCurrency: 'USD' }], ['ri', { r: 10, years: 5, payout: 40 }], ['ddm2', { d1: 2, g1: 10, years1: 5, g2: 3, r: 10, horizon: 30 }]]) {
   const d = base(); d.legs = [{ ...d.legs[0], family: 'market' }, { method: m, label: m.toUpperCase(), family: 'asset', inputs }];
   t(errAt(S.validate(d), 'legs[1].family').some((x) => x.msg.includes(m)), `family↔method: ${m} labelled asset → error naming ${m}`); }
-// gray zones stay the author's choice: pe justified · declared other/rnpv · pbv by multiple
+// gray zones stay the author's choice: declared other/rnpv (pe justified = rg · multiples = market — ruling below)
 { const d = realFx('ZTS-real'); d.legs[0].family = 'rg'; d.legs[1].family = 'market'; d.legs[2].family = 'rg'; t.eq(S.validate(d), [], 'gray zone: pe justified rg + declared other market → valid'); }
-{ const d = realFx('ZTS-real'); d.legs[1].inputs.basis = 'rnpv'; d.legs[0].family = 'market'; d.legs[1].family = 'asset'; d.legs[2].family = 'rg'; t.eq(S.validate(d), [], 'gray zone: declared rnpv asset → valid'); }
+{ const d = realFx('ZTS-real'); d.legs[1].inputs.basis = 'rnpv'; d.legs[0].family = 'rg'; d.legs[1].family = 'asset'; d.legs[2].family = 'rg'; t.eq(S.validate(d), [], 'gray zone: declared rnpv asset → valid'); }
 { const d = base(); d.legs = [{ ...d.legs[0], family: 'market' }, { method: 'pbv', label: 'P/BV', family: 'market', inputs: { multiple: 2, multipleSource: 'peer' } }]; t.eq(S.validate(d), [], 'pbv by multiple labelled market → valid'); }
 // (2) rf ต้องสกุลเดียวกับกระแสเงินสด = สกุลงบ (fundamentals.reportCurrency) ไม่ใช่สกุลราคา
 const ferDcf = (cur) => { const d = realFx('FER-real'); d.legs.push({ method: 'dcf', label: 'DCF', inputs: { g1: 6, years1: 5, tg: 2, r: 8, rfCurrency: cur } }); return d; };
@@ -205,5 +205,17 @@ t(errAt(S.validate(ferDcf('USD')), 'legs[2].inputs.rfCurrency').some((x) => x.ms
 { const d = base(); d.legs[0].label = 'P/E <script>'; t(paths(S.validate(d)).includes('legs[0].label'), 'leg label with < > → error'); }
 { const d = base(); d.extras = [{ ...xt(), title: 'SOTP {{fv}}' }]; t(paths(S.validate(d)).includes('extras[0].title'), 'extras title with braces → error'); }
 { const d = base(); d.extras = [{ ...xt(), headers: ['ส่วน', 'มูลค่า <i>'] }]; t(paths(S.validate(d)).includes('extras[0].headers[1]'), 'extras header with < > → error at the header path'); }
+// ruling (final review follow-up): ขาตัวคูณ — multipleSource ≠ 'justified' = 'market' · 'justified' (สร้างจาก r,g) = 'rg' · 'current' (context) = 'market'
+{ const d = realFx('BBL-real'); d.legs[0].family = 'rg'; t(errAt(S.validate(d), 'legs[0].family').some((x) => x.msg.includes('pe')), 'multiples: BBL pe median5y labelled rg → error at legs[0].family'); }
+{ const d = realFx('BBL-real'); d.legs[0].family = 'asset'; t(errAt(S.validate(d), 'legs[0].family').length > 0, 'multiples: pe median5y labelled asset → error'); }
+{ const d = realFx('ZTS-real'); d.legs[0].family = 'market'; d.legs[1].family = 'rg'; d.legs[2].family = 'rg';
+  t(errAt(S.validate(d), 'legs[0].family').some((x) => x.msg.includes('justified')), 'multiples: pe justified labelled market → error (must be rg)'); }
+{ const d = realFx('EQIX-real'); d.legs[0].family = 'market'; d.legs[1].family = 'market'; t.eq(S.validate(d), [], 'multiples: EQIX pe median + pffo current context labelled market → valid'); }
+{ const d = realFx('EQIX-real'); d.legs[1].family = 'rg'; d.legs[0].family = 'market'; t(errAt(S.validate(d), 'legs[1].family').length > 0, "multiples: 'current' context labelled rg → error"); }
+{ const d = base(); d.legs = [{ method: 'pffo', label: 'P/FFO', family: 'market', inputs: { multiple: 20, multipleSource: 'median5y' } }, ddmLeg('rg')]; t.eq(S.validate(d), [], 'multiples: pffo median labelled market → valid'); }
+for (const m of ['ps', 'evsales', 'evebitda', 'pfcf']) {
+  const d = base(); d.legs = [{ method: m, label: m, family: 'rg', inputs: { multiple: 5, multipleSource: 'peer' } }, ddmLeg('rg')];
+  t(errAt(S.validate(d), 'legs[0].family').length > 0, `multiples: ${m} peer labelled rg → error`); }
+t.eq(S.requiredFamily({ method: 'fcfyield', inputs: { yield: 5 } }), null, 'fcfyield stays a gray zone (no multipleSource)');
 for (const f of ['BBL-real', 'EQIX-real', 'FER-real', 'ZTS-real', 'BBL', 'ZTS']) t.eq(S.validate(realFx(f)), [], `${f}: still valid under the final-review rules`);
 t.done();

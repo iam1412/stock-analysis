@@ -51,12 +51,15 @@ const LEG_INPUTS = {
   declared: { req: ['value', 'basis'], opt: ['extrasRef'] },
 };
 // family ที่ method บังคับโดยโครงสร้าง (§3.6 C · final review 24 ก.ย. 69) — ขาที่รับ (r,g) เป็น input = 'rg' · declared sotp/nav = 'asset'
-// null = โซนเทา ผู้เขียนเลือกเอง (pe justified · declared rnpv/other · ขาตัวคูณ) · check-v3 W32 ใช้ตัวเดียวกันเดาตระกูลเมื่อไม่เขียน family
+// ขาตัวคูณ (มี multipleSource): 'justified' (สร้างจาก r,g) = 'rg' · อื่น ๆ รวม 'current' = 'market' (ruling ปิดโซนเทา)
+// null = โซนเทา ผู้เขียนเลือกเอง (declared rnpv/other · fcfyield) · check-v3 W32 ใช้ตัวเดียวกันเดาตระกูลเมื่อไม่เขียน family
 const RG_METHODS = ['ddm', 'ddm2', 'dcf', 'ri'];
 function requiredFamily(leg) {
   const inp = isObj(leg && leg.inputs) ? leg.inputs : {};
   if (RG_METHODS.includes(leg.method) || (leg.method === 'pbv' && (inp.g != null || inp.r != null))) return 'rg';
   if (leg.method === 'declared' && ['sotp', 'nav'].includes(inp.basis)) return 'asset';
+  if (inp.multipleSource != null && LEG_INPUTS[leg.method] && LEG_INPUTS[leg.method].req.concat(LEG_INPUTS[leg.method].opt).includes('multipleSource'))
+    return inp.multipleSource === 'justified' ? 'rg' : 'market';
   return null;
 }
 // ตัวตั้งต่อหุ้นของขาที่ใช้ตัวคูณสด (multipleSource 'current') — compute ใช้หาตัวคูณสด · check-v3 ใช้เป็นฐาน W18
@@ -232,7 +235,10 @@ function validate(doc) {
     // family ต้องตรงโครงสร้างของ method — ป้ายผิดตระกูลเปลี่ยนน้ำหนัก FV ได้เงียบ ๆ (probe: BBL ขา rg → 'market' ⇒ FV 176.77 → 181.43)
     const need = requiredFamily(leg);
     if (leg.family != null && need && leg.family !== need) {
-      const what = leg.method === 'declared' ? `declared basis ${leg.inputs.basis} (มูลค่าสินทรัพย์)` : leg.method === 'pbv' ? 'pbv แบบ justified {g, r}' : `${leg.method} (รับ r,g เป็น input)`;
+      const ms = isObj(leg.inputs) ? leg.inputs.multipleSource : null;
+      const what = leg.method === 'declared' ? `declared basis ${leg.inputs.basis} (มูลค่าสินทรัพย์)`
+        : ms != null ? `${leg.method} multipleSource '${ms}' (${ms === 'justified' ? 'ตัวคูณสร้างจาก r,g' : 'ตัวคูณยึดตลาด'})`
+          : leg.method === 'pbv' ? 'pbv แบบ justified {g, r}' : `${leg.method} (รับ r,g เป็น input)`;
       E(`${p}.family`, `${what} ต้องเป็น family '${need}' — พบ '${leg.family}' (§3.6 C)`);
     }
     const spec = LEG_INPUTS[leg.method];

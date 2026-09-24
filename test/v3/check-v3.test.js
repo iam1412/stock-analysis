@@ -75,8 +75,10 @@ const today0 = Z().market.priceDate;
   t(w && w.msg.startsWith(`${n0 + 1} `), 'W31: counts the added money literal'); }
 // W32 (spec §13 ข้อ 7 · ชั้น 0): |MOS| > 40% ต้องมีขา fv ที่ไม่ใช่ตระกูล (r,g) ยืนยัน — ราคาตั้งที่ครึ่งหนึ่งของ FV ⇒ MOS 50%
 const halfPx = (d) => { d.market.px = +(C.compute(d, { seeds: {} }).fv * 0.5).toFixed(2); return d; };
-{ const d = Z(); delete d._sig; halfPx(d);
-  t(!ids(run(signed(d)), 'warnings').includes('W32'), 'W32 silent: MOS 50% but the P/E leg (inferred family market) confirms'); }
+{ const d = Z(); delete d._sig; d.legs[0].inputs.multipleSource = 'median5y'; halfPx(d);
+  t(!ids(run(signed(d)), 'warnings').includes('W32'), 'W32 silent: MOS 50% but the P/E median leg (inferred family market) confirms'); }
+{ const d = Z(); delete d._sig; halfPx(d);   // ruling: P/E justified สร้างจาก (r,g) ⇒ เดาเป็น rg — ไม่นับเป็นพยานนอก (r,g)
+  t(ids(run(signed(d)), 'warnings').includes('W32'), 'W32: MOS 50% and the only multiple leg is P/E justified (inferred rg)'); }
 { const d = Z(); delete d._sig; d.legs.forEach((l) => { l.family = 'rg'; }); d.fvWeights = null; halfPx(d);
   t(ids(run(signed(d)), 'warnings').includes('W32'), 'W32: MOS 50% and every fv leg is family rg'); }
 { const d = Z(); delete d._sig; d.legs = d.legs.filter((l) => l.method !== 'pe'); d.fvWeights = null; halfPx(d);

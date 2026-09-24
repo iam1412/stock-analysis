@@ -448,7 +448,7 @@ CLI: `node test/check-v3.js [SYM | path.json | dir/*.json …]` (ไม่ใส
 | W18 / W25 | warn | ตัวคูณเป้าห่างตัวคูณปัจจุบัน / forward ≤7% — คำนวณจาก `legs[].inputs` ไม่ใช่ regex |
 | W30 | warn | `{{lit:…}}` เกิน 2 ต่อใบ |
 | W31 | warn | literal รูปเงินที่ไม่ใช่ token ค้างใน prose (ยอดที่มีหน่วย M/B/ล้าน ไม่นับ) |
-| W32 | warn | \|MOS\| > 40% แต่ขา `fv` ทุกขาเป็นตระกูล (r,g) (family ที่เขียน หรือเดาจาก method: ddm/ddm2/dcf/ri/justified P/BV/declared rnpv/other = rg — rNPV เป็นตระกูลคิดลดกระแสเงินสด · declared sotp/nav = asset · สคีมาบังคับให้ family ที่เขียนตรงกับ method เหล่านี้) — ชั้น 0 ยังเป็นงานตรวจของ controller |
+| W32 | warn | \|MOS\| > 40% แต่ขา `fv` ทุกขาเป็นตระกูล (r,g) (family ที่เขียน หรือเดาจาก method: ddm/ddm2/dcf/ri/justified P/BV/ตัวคูณ `multipleSource:'justified'`/declared rnpv/other = rg — rNPV เป็นตระกูลคิดลดกระแสเงินสด · declared sotp/nav = asset · ตัวคูณ source อื่น = market · สคีมาบังคับให้ family ที่เขียนตรงกับ method เหล่านี้) — ชั้น 0 ยังเป็นงานตรวจของ controller |
 | `v2:<id>` | ตาม v2 | โค้ดที่เหลือของ `check-reports` รันบนหน้าที่ render (render smoke test) — ย้ายเป็น native ตอน P7 |
 
 กติกา B (ตัวเลขผูกราคาที่พิมพ์เอง) เป็นของ `save` ไม่ใช่ gate รายวัน — gate รายวันใช้ W31
