@@ -44,7 +44,13 @@ const strip = (d) => { const { market, _sig, ...x } = d; return x; };
 // ── R5: ไม่มี session ใหม่ ──
 { const T21 = Date.UTC(2026, 8, 21, 20, 0, 0) / 1000;
   t.eq(plan(real(), quote(71.33, { marketTime: T21, regularEnd: T21, regularStart: T21 - 23400 })).kind, 'unchanged', 'R5: same priceDate + same px (ICC case) → unchanged: no write, no flag');
-  t.eq(plan(real(), quote(71.33, { marketTime: T21 - 3 * 86400 })).kind, 'unchanged', 'R5: quote older than priceDate, same px → unchanged (priceDate never moves back)'); }
+  t.eq(plan(real(), quote(71.33, { marketTime: T21 - 3 * 86400 })).kind, 'unchanged', 'R5: quote older than priceDate, same px → unchanged (priceDate never moves back)');
+  { const p = plan(real(), quote(70.5, { marketTime: T21 - 3 * 86400 }));   // 18 ก.ย. — ก่อน priceDate 21 ก.ย. · ราคาต่าง
+    t(p.kind === 'unchanged' && !p.next && !p.reason, 'M1: quote older than priceDate + different px → unchanged: no write, no flag (priceDate never regresses)'); }
+  { const p = plan(real(), quote(71.33 * 1.2, { marketTime: T21 - 3 * 86400 })).kind;
+    t.eq(p, 'unchanged', 'M1: stale quote is not new information — even a 20% gap does not flag'); }
+  { const p = plan(real(), quote(72.1, { marketTime: T21, regularEnd: T21, regularStart: T21 - 23400 }));   // วันเดียวกับ priceDate · ราคาต่าง
+    t(p.kind === 'write' && p.next.market.priceDate === '2026-09-21' && p.next.market.px === 72.1, 'M1: same market day + different px → write (priceDate stays)'); } }
 
 // ── freeze (R4 — decide() บน FV จาก view) ──
 t.eq(plan(real(), quote(73, { currency: 'THB' })).reason, 'currency-mismatch', 'freeze: currency ≠ doc.currency');
@@ -169,7 +175,13 @@ try {
     'SET quote at +7h: same px but the Bangkok market day is new → write with priceDate 2026-09-23 (a UTC date would read "unchanged")', JSON.stringify({ k: p.kind, r: p.reason, d: p.detail })); }
 
 // ── บรรทัดสรุป + #49 residue ──
-t(/(^|\s)v3-lane: 2 ใบ/.test(U.v3LaneLine({ n: 2, write: 1, unchanged: 1, freeze: 0, intraday: 0, dead: 0 })), 'summary token "v3-lane: N" (grep in the Actions log — R11 f)');
+{ const line = U.v3LaneLine({ n: 7, write: 1, unchanged: 1, freeze: 1, fail: 2, intraday: 1, dead: 1 });
+  t(/(^|\s)v3-lane: 7 ใบ/.test(line), 'summary token "v3-lane: N" (grep in the Actions log — R11 f)');
+  t.eq(line, 'ℹ v3-lane: 7 ใบ · อัปเดต 1 · ไม่เปลี่ยน 1 · freeze 1 · ล้ม 2 · ข้ามเพราะตลาดเปิด 1 · ข้าม not-on-exchange 1', 'M3: exact v3-lane line format');
+  const nums = line.split(' · ').slice(1).map((x) => Number(x.split(' ').pop()));
+  t(nums.length === 6 && nums.reduce((a, b) => a + b, 0) === 7, 'M3: the six buckets sum to N'); }
+t.eq([{ kind: 'write' }, { kind: 'unchanged' }, { kind: 'freeze', flag: { reason: 'drift-gt-15pct' } }, { kind: 'freeze', flag: { reason: 'patch-rejected' } }, { kind: 'freeze', flag: { reason: 'patch-failed' } }].map(U.v3BucketOf),
+  ['write', 'unchanged', 'freeze', 'freeze', 'fail'], 'M3: patch-failed counts as "ล้ม" (plumbing), gate/policy freezes as freeze');
 { const src = fs.readFileSync(path.join(ROOT, 'tools', 'update-prices.js'), 'utf8');
   t(!src.includes('/\\.html$/i.test(f)'), '#49 residue closed: no .html-only readdir filter left in update-prices.js');
   t(!/\bv3Guard\b|\bv3SweepNotice\b|\bv3Refusal\b/.test(src), 'v3Guard/v3Refusal/v3SweepNotice removed from update-prices.js'); }

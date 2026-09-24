@@ -913,8 +913,8 @@ async function chartFor(symbol, currency, q) {
 /** สาย v3 ต่อใบ (ส่วนบริสุทธิ์ · spec §7 · Plan 3 R4/R5/R6/R10) — ตัดสินจาก doc เดิม + quote + กราฟของรอบนี้ ไม่แตะดิสก์
  *  chart = ผลของ chartFor ({ data|null, src, bars, gmtoffset }) · opts = { force, seeds, today?, nowSec? }
  *  คืน { kind: 'unchanged'|'freeze'|'write', symbol, priceDate, reportPrice, marketPrice, diffPct, chartSrc, reason?, detail?, next?, view?, warnings?, forced? }
- *  ลำดับ: ลายเซ็นใบเดิม (E50 ห้าม force) → gate ใบเดิม (ต้อง compute ได้จึงรู้ FV) → decide() บน FV จาก view (FV ไม่ขึ้นกับราคา = คำตอบเดียวกับ v2)
- *        → ไม่มี session ใหม่ = unchanged (R5 · ICC) → bad-chart (--force = price-only) → marketFromQuote → gate ใบใหม่ในหน่วยความจำ
+ *  ลำดับ: ลายเซ็นใบเดิม (E50 ห้าม force) → gate ใบเดิม (ต้อง compute ได้จึงรู้ FV) → quote เก่ากว่า priceDate = unchanged (R5 · M1)
+ *        → decide() บน FV จาก view (FV ไม่ขึ้นกับราคา = คำตอบเดียวกับ v2) → วันเดียวกันราคาเท่าเดิม = unchanged (R5 · ICC) → bad-chart (--force = price-only) → marketFromQuote → gate ใบใหม่ในหน่วยความจำ
  *        (ตก = patch-rejected ไม่เขียน · --force ผ่านได้เฉพาะเมื่อไม่มี E50/E51 — R6) */
 function planV3(prev, q, chart, opts) {
   const o = opts || {};
@@ -929,10 +929,15 @@ function planV3(prev, q, chart, opts) {
   const pre = checkDoc(prev, gOpt);
   const preCodes = [...new Set(pre.errors.map((x) => x.id))];
   if (!pre.view) return reject(`${preCodes.join(',')} (ค้างก่อน patch) — ${errText(pre.errors)}`);
+  // R5: ไม่มี session ใหม่ = ไม่เขียน ไม่ flag (fix round 1 · M1)
+  //   (a) วันตลาดของ quote **ก่อน** market.priceDate = feed ค้าง/ถอยหลัง ไม่ใช่ข้อมูลใหม่ → unchanged ไม่ว่าราคาจะต่างแค่ไหน
+  //       (priceDate ห้ามถอยหลัง · เช็คก่อน decide() ⇒ feed ค้างไม่สร้าง flag drift/flip/currency)
+  //   (b) วันเดียวกัน + ราคาเท่าเดิม (หุ้นสภาพคล่องต่ำ — ICC) → unchanged · วันเดียวกันราคาต่าง = เขียน (ตลาดเปิดถูกกันที่ preSkip แล้ว)
+  const qDate = MK.quoteDate(q);
+  if (qDate < prev.market.priceDate) return { ...base, kind: 'unchanged' };
   const d = decide({ oldPrice: reportPrice, newPrice: q.price, fv: pre.view.rd.fv, currencyOk: currencyMatches(q.currency, prev.currency), force: !!o.force });
   if (d.freeze) return { ...base, kind: 'freeze', reason: d.freeze };
-  // R5: ไม่มี session ใหม่ (หุ้นสภาพคล่องต่ำ — marketTime ค้างที่วันซื้อขายล่าสุด) = ไม่เขียน ไม่ flag · priceDate ไม่ถอยหลัง
-  if (MK.quoteDate(q) <= prev.market.priceDate && marketPrice === reportPrice) return { ...base, kind: 'unchanged' };
+  if (qDate === prev.market.priceDate && marketPrice === reportPrice) return { ...base, kind: 'unchanged' };
   let priceOnly = false;
   const basis = detectMixedBasis({ bars: chart ? chart.bars : [], low: q.week52Low, high: q.week52High, gmtoffset: chart ? chart.gmtoffset : q.gmtoffset, nowSec: o.nowSec });
   if (basis.mixed) {
@@ -991,8 +996,11 @@ function applyV3(file, plan, opts) {
       + `${plan.chartSrc !== '1mo' ? ` · chart:${plan.chartSrc}` : ''}${plan.forced ? ` · ⚠ --force เขียนทั้งที่ gate ตก ${plan.forced.slice(0, 120)} — npm run verify จะไม่ผ่านจนกว่าจะแก้` : ''}`,
   };
 }
-/** บรรทัดสรุปสาย v3 ต่อรอบ — token คงที่ `v3-lane: N` ให้ grep ใน log ของ Actions (แทน `v3-skipped: N` ของ P4 · ใช้ตรวจ R11 f) */
-const v3LaneLine = (c) => `ℹ v3-lane: ${c.n} ใบ · อัปเดต ${c.write} · ไม่เปลี่ยน ${c.unchanged} · freeze ${c.freeze} · ข้ามเพราะตลาดเปิด ${c.intraday} · ข้าม not-on-exchange ${c.dead}`;
+/** ผลของ applyV3 → ถังนับของบรรทัด v3-lane: patch-failed (plumbing) = 'fail' ไม่ใช่ 'freeze' (fix round 1 · M3) */
+const v3BucketOf = (r) => (r.kind === 'freeze' && r.flag && r.flag.reason === 'patch-failed' ? 'fail' : r.kind);
+/** บรรทัดสรุปสาย v3 ต่อรอบ — token คงที่ `v3-lane: N` ให้ grep ใน log ของ Actions (แทน `v3-skipped: N` ของ P4 · ใช้ตรวจ R11 f)
+ *  ทุกถังรวมกัน = N เสมอ (M3): อัปเดต + ไม่เปลี่ยน + freeze + ล้ม (fetch-failed / JSON อ่านไม่ได้ / patch-failed) + ข้ามเพราะตลาดเปิด + ข้าม not-on-exchange */
+const v3LaneLine = (c) => `ℹ v3-lane: ${c.n} ใบ · อัปเดต ${c.write} · ไม่เปลี่ยน ${c.unchanged} · freeze ${c.freeze} · ล้ม ${c.fail || 0} · ข้ามเพราะตลาดเปิด ${c.intraday} · ข้าม not-on-exchange ${c.dead}`;
 
 // ---------- main ----------
 // ---------- โหมดซ่อมค่าที่ derive จากราคา (one-off / หลัง migrate) ----------
@@ -1091,7 +1099,7 @@ async function main() {
   // ใบ v2 + v3 (Plan 3 · R7 · ปิด residue #49): เจ้าของเดียวของ "ไฟล์ไหนคือรายงาน" = report-source (throw เมื่อหุ้นเดียวมีทั้งสองไฟล์)
   const entries = RS.list(REPORTS).filter((e) => !ONLY.size || ONLY.has(e.symbol.toUpperCase()));
   const SEEDS = JSON.parse(fs.readFileSync(SEEDS_FILE, 'utf8'));
-  const v3n = { n: 0, write: 0, unchanged: 0, freeze: 0, intraday: 0, dead: 0 };   // บรรทัด v3-lane ท้ายรอบ
+  const v3n = { n: 0, write: 0, unchanged: 0, freeze: 0, fail: 0, intraday: 0, dead: 0 };   // บรรทัด v3-lane ท้ายรอบ (ถังรวม = n — M3)
 
   const updated = [], skipped = [], frozen = [], failed = [], intraday = [];
   const quotes = [];   // ทุกตัวที่ fetch สำเร็จ (รวมตัวที่ freeze) — ป้อน detectStaleQuotes หลังจบลูป
@@ -1115,7 +1123,7 @@ async function main() {
     if (ent.v3) {
       v3n.n++;
       try { doc = IO.read(fp); }
-      catch (err) { failed.push({ symbol, reason: 'no-stock-meta', detail: `v3 JSON อ่านไม่ได้: ${err.message}`.slice(0, 300) }); continue; }
+      catch (err) { v3n.fail++; failed.push({ symbol, reason: 'no-stock-meta', detail: `v3 JSON อ่านไม่ได้: ${err.message}`.slice(0, 300) }); continue; }
     } else {
       html = fs.readFileSync(fp, 'utf8');
       sm = RM.readStockMeta(html);
@@ -1133,6 +1141,7 @@ async function main() {
       await sleep(FETCH_DELAY_MS);
     } catch (e) {
       frozen.push({ symbol, reason: 'fetch-failed', detail: e.message, reportPrice, marketPrice: null, diffPct: null });
+      if (ent.v3) v3n.fail++;   // M3: ถัง "ล้ม" ของบรรทัด v3-lane
       console.log(`⚠ ${symbol.padEnd(10)} fetch fail: ${e.message}`);
       // ยกเลิกทั้งรอบเมื่อพังติดกันครบเกณฑ์ — ยิงต่อได้แต่จะได้ flag fetch-failed ผิด ๆ ทั้งรีโป
       // และ retry backoff ของ fetchChart กินงบ job จนหมดก่อนถึงตัวสุดท้าย (เช็คตรงนี้ = จับ outage
@@ -1174,7 +1183,7 @@ async function main() {
       catch (e) {   // compute/render ที่ throw นอกเหนือ gate = plumbing (เหมือน patch-failed ของ v2) — ไม่ล้มทั้งรอบ
         r = { kind: 'freeze', flag: { symbol, reason: 'patch-failed', detail: e.message, reportPrice, marketPrice: round(q.price, 2), diffPct }, line: `⚠ ${symbol.padEnd(10)} patch fail (v3): ${e.message}` };
       }
-      v3n[r.kind]++;
+      v3n[v3BucketOf(r)]++;
       if (r.kind === 'write') updated.push(r.row);
       else if (r.kind === 'freeze') frozen.push(r.flag);
       else skipped.push(symbol);
@@ -1342,6 +1351,6 @@ function pxOf(html, sm) {
   return r && RV.isV2(r.data) && r.data.values && Number.isFinite(r.data.values.px) ? r.data.values.px : sm.price;
 }
 
-module.exports = { onlyFromArgv, healV3Refusal, preSkip, evaluatedOf, chartFor, planV3, applyV3, v3LaneLine, derivedPassV2, proseTokensIfNew, mirrorStockMetaV2, healDerived, fvOf, pxOf, mosBand, fmtPrice, fmtLike, toYahooSymbol, fetchChart, buildChartData, niceBounds, annualChg, decide, currencyMatches, isIntradayQuote, detectMixedBasis, detectStaleQuotes, missedSessions, probeCap, capByCohort, controlTickers, unverifiedCohorts, classifyStale, patchReport, gateAfterPatch, gateCheck, mergeFlags, commitFlags, styledRD, commitBody, THAI_MONTHS, MOS_FLIP_DEADBAND_PP };
+module.exports = { onlyFromArgv, healV3Refusal, preSkip, evaluatedOf, chartFor, planV3, applyV3, v3BucketOf, v3LaneLine, derivedPassV2, proseTokensIfNew, mirrorStockMetaV2, healDerived, fvOf, pxOf, mosBand, fmtPrice, fmtLike, toYahooSymbol, fetchChart, buildChartData, niceBounds, annualChg, decide, currencyMatches, isIntradayQuote, detectMixedBasis, detectStaleQuotes, missedSessions, probeCap, capByCohort, controlTickers, unverifiedCohorts, classifyStale, patchReport, gateAfterPatch, gateCheck, mergeFlags, commitFlags, styledRD, commitBody, THAI_MONTHS, MOS_FLIP_DEADBAND_PP };
 
 if (require.main === module) main().catch((e) => { console.error(e); process.exit(1); });
