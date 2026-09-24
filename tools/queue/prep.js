@@ -332,12 +332,12 @@ async function prep(sym, opts) {
 
   // 2b. ใบใหม่ = sidecar .queue/prep/<SYM>.json (spec §6.4) — อินพุตเดียวของ node tools/report.js init
   //     ยิง fetch-facts/fetch-fundamentals ซ้ำแบบ --json (NEW เท่านั้น — ruling R2) · ใบเดิมไม่เขียน (v3 UPDATE = P6)
-  let sidecar = null;
+  //     ประกอบ (และล้มดัง ๆ) ตรงนี้ก่อนเขียนอะไร · เขียนไฟล์หลัง .md — assemblePrompt ล้ม = ไม่มี .json กำพร้า
+  let sc = null, sidecar = null;
   if (mode === 'NEW') {
     const thArg = th ? ['--th'] : [];
-    const sc = SC.buildSidecar({ symbol: sym, th, today: todayBangkok(), vend, medians: SC.mediansOf(med.r), deltas: PS.parseDeltas(ps.out),
+    sc = SC.buildSidecar({ symbol: sym, th, today: todayBangkok(), vend, medians: SC.mediansOf(med.r), deltas: PS.parseDeltas(ps.out),
       facts: runJson('tools/fetch-facts.js', [sym, ...thArg, '--json']), fund: runJson('tools/fetch-fundamentals.js', [sym, ...thArg, '--json']) });
-    sidecar = SC.writeSidecar(S.PREP_DIR, sc);
   }
 
   // 3. EPS screen + 4. snapshot diff (เฉพาะใบเดิม)
@@ -371,6 +371,7 @@ async function prep(sym, opts) {
   fs.mkdirSync(S.PREP_DIR, { recursive: true });
   const file = path.join(S.PREP_DIR, sym + '.md');
   fs.writeFileSync(file, prompt);
+  if (sc) sidecar = SC.writeSidecar(S.PREP_DIR, sc);
   S.update(sym, { mode, modeWhy: dm.why, lightRule, escalated, model, effort, prepAt: todayBangkok(), epsScreen, snapDeltas: snap.length, currency: th ? 'THB' : 'USD', fyYears: vend.fyYears });
 
   console.log(`\n=== prep ${sym} เสร็จ → ${path.relative(ROOT, file)} ===`);

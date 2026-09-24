@@ -579,7 +579,7 @@ function forecastLine(y, sa, fc, currentFY) {
 /** ข้อมูลเครื่องอ่านของ sidecar (spec §6.4 · ส่วนบริสุทธิ์) — ตัวเลขเต็มหน่วย (ไม่หารล้าน) · margin/ROE = หน่วย %
  *  งบกำไรขาดทุน: คอลัมน์ TTM เท่านั้น (ไม่มี = null — ห้ามเอา FY มาแทน เหตุผลเดียวกับ tableEpsTTM) · งบดุล/อัตราส่วน: TTM หรือคอลัมน์ล่าสุด
  *  fy = คอลัมน์ FY ปิดงบล่าสุด · sharesOut = หุ้นคงเหลือ [2b] (ไม่ใช่ถัวเฉลี่ยปรับลด) · rating = SA info.analysts เมื่อเป็นข้อความ */
-function snapshotJson({ y, s, stats, pages }) {
+function snapshotJson({ y, s, stats, pages, yErr, sErr, statsErr, finErr }) {
   const [fin, bs, ratio] = pages || [];
   const keysOf = (page) => (page && finRow(page, ['datekey'])) || [];
   const ttmCol = (page) => { const i = keysOf(page).indexOf('TTM'); return i >= 0 ? i : null; };
@@ -604,6 +604,8 @@ function snapshotJson({ y, s, stats, pages }) {
     dps: s && s.info ? asNum(s.info.dps != null ? s.info.dps : s.info.dividend) : null,
     epsForward: y ? asNum(y.epsFwd) : null,
     rating: s && s.info && typeof s.info.analysts === 'string' ? s.info.analysts : null,
+    // แหล่งที่ล้ม (ข้อความ หรือ null) — ห้ามกลืนเงียบ: ค่า null ข้างบนแยกไม่ออกว่า "ไม่มีข้อมูล" หรือ "ดึงไม่ได้" · sidecar ตัดสินต่อ
+    errors: { yahoo: yErr || null, sa: sErr || null, stats: statsErr || null, fin: finErr || null },
   };
 }
 
@@ -612,7 +614,7 @@ async function main() {
   const args = process.argv.slice(2);
   const th = args.includes('--th');
   const symbol = (args.find((a) => !a.startsWith('--')) || '').toUpperCase();
-  if (!symbol) { console.error('ใช้: node tools/fetch-fundamentals.js SYMBOL [--th]'); process.exit(1); }
+  if (!symbol) { console.error('ใช้: node tools/fetch-fundamentals.js SYMBOL [--th] [--json]'); process.exit(1); }
   const ysym = toYahooSymbol(symbol, th ? 'THB' : 'USD');
 
   let y = null, yErr = null, s = null, sErr = null, stats = null, statsErr = null;
@@ -627,7 +629,9 @@ async function main() {
       fetchFinPage(symbol, th, sub).then((v) => { finPages[i] = v; }).catch((e) => { finErr = finErr || e.message; })),
   ]);
   if (args.includes('--json')) {   // sidecar ของ prep (Plan 2b · spec §6.4) — JSON บรรทัดเดียว ไม่พิมพ์ตาราง/บรรทัดเทียบ
-    console.log(JSON.stringify(snapshotJson({ y, s, stats, pages: finPages })));
+    const snap = snapshotJson({ y, s, stats, pages: finPages, yErr, sErr, statsErr, finErr });
+    for (const [k, e] of Object.entries(snap.errors)) if (e) console.error(`✗ ${k}: ${e}`);   // stderr — stdout คง JSON ล้วน
+    console.log(JSON.stringify(snap));
     return;
   }
 

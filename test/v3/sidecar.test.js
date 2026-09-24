@@ -12,7 +12,7 @@ const I = require('../fixtures/v3/sidecar/ZZZQ.inputs.js');
 // ── fetch-facts --json ──
 const mid = (i) => Date.UTC(2025, 9 + i, 15) / 1000;   // กลางเดือน — ไม่ให้ gmtoffset ลากข้ามเดือน
 const q = { price: 71.33, currency: 'USD', marketTime: Date.UTC(2026, 8, 21, 20, 0, 0) / 1000, gmtoffset: -4 * 3600,
-  week52Low: 70.26, week52High: 148.79, longName: 'ZZZQ Animal Health Inc.', exchangeName: 'NYSE',
+  week52Low: 70.26, week52High: 148.79, longName: 'ZZZQ Animal Health Inc.', exchangeName: 'NYQ',
   bars: Array.from({ length: 12 }, (_, i) => ({ ts: mid(i), close: 140 - i * 6 })) };
 { const f = FF.factsJson(q, 'ZZZQ', 'USD');
   t.eq([f.px, f.priceDate, f.chgSuffix, f.company, f.exchange], [71.33, '2026-09-21', 'รอบปี', 'ZZZQ Animal Health Inc.', 'NYSE'], 'factsJson: price, ISO market-local date, suffix, name, exchange');
@@ -21,6 +21,10 @@ const q = { price: 71.33, currency: 'USD', marketTime: Date.UTC(2026, 8, 21, 20,
 t.eq(FF.factsJson({ ...q, bars: q.bars.slice(-5) }, 'ZZZQ', 'USD').chgSuffix, 'ตั้งแต่ IPO', 'factsJson: under ~320 days of bars → ตั้งแต่ IPO');
 { const f = FF.factsJson({ ...q, longName: undefined, exchangeName: undefined, week52Low: undefined }, 'ZZZQ', 'USD');
   t(f.company === null && f.exchange === null && f.range52w === null, 'factsJson: missing meta → null (init leaves a TODO)'); }
+// รหัสตลาด = รหัสของรีโป (NYSE/NASDAQ/SET) จาก meta.exchangeName ของ Yahoo — ไม่ใช่ชื่อแสดงผล (review fix 1)
+t.eq(['NMS', 'NGM', 'NCM', 'NYQ', 'SET'].map(FF.exchangeCode), ['NASDAQ', 'NASDAQ', 'NASDAQ', 'NYSE', 'SET'], 'exchangeCode: Yahoo codes → repo codes');
+t.eq(['NasdaqGS', 'Thailand', 'NYSE', 'PCX', undefined, null, 'toString'].map(FF.exchangeCode), [null, null, null, null, null, null, null], 'exchangeCode: display names / unknown / missing → null (never "NasdaqGS"/"Thailand")');
+t.eq(FF.factsJson({ ...q, exchangeName: 'NMS' }, 'ZZZQ', 'USD').exchange, 'NASDAQ', 'factsJson: exchange goes through exchangeCode');
 
 // ── fetch-fundamentals --json ──
 function makeFinPage(rows) {   // โครง devalue แบบเดียวกับ test/prep-stock-test.js
@@ -42,6 +46,8 @@ const ratio = makeFinPage({ datekey: ['TTM', '2025-12-31'], debtequity: [2.93, 1
 { const s = FU.snapshotJson({ pages: [makeFinPage({ datekey: ['2025-12-31'], revenue: [1e9] }), null, null] });
   t(s.ttm.revenue === null && s.fy.revenue === 1e9 && s.fy.period === 'FY2025', 'snapshotJson: no TTM column → TTM null (never an FY stand-in), FY still read'); }
 t.eq(FU.snapshotJson({ pages: [] }).fy, null, 'snapshotJson: no statements → fy null, no throw');
+t.eq(FU.snapshotJson({ pages: [fin, bs, ratio] }).errors, { yahoo: null, sa: null, stats: null, fin: null }, 'snapshotJson: no failures → errors all null');
+t.eq(FU.snapshotJson({ pages: [null, null, null], finErr: 'HTTP 503', yErr: 'crumb' }).errors, { yahoo: 'crumb', sa: null, stats: null, fin: 'HTTP 503' }, 'snapshotJson: source failures surface in errors (never swallowed)');
 
 // ── sidecar ──
 t.eq(SC.buildSidecar(I), require('../fixtures/v3/sidecar/ZZZQ.json'), 'fixture ZZZQ.json = builder output (regenerate with the Task 6 script, never by hand)');
@@ -49,7 +55,21 @@ t.eq(SC.buildSidecar(I), require('../fixtures/v3/sidecar/ZZZQ.json'), 'fixture Z
   t.eq(Object.keys(sc.market).sort(), ['chart', 'chgSuffix', 'priceDate', 'px', 'range52w'], 'market block = only schema market keys (save merges it verbatim)');
   t.eq([sc.v, sc.currency, sc.region, sc.builtAt], [1, 'USD', 'US', '2026-09-21'], 'header: version, currency/region from th, builtAt');
   t.eq(sc.market.range52w, { lo: 70.26, hi: 148.79 }, 'range52w = vendor 52wk'); }
-t.eq(SC.buildSidecar({ ...I, th: true }).region, 'TH', 'th → region TH / currency THB');
+{ const sc = SC.buildSidecar({ ...I, th: true, facts: { ...I.facts, currency: 'THB', quoteCurrency: 'THB' } });
+  t.eq([sc.region, sc.currency], ['TH', 'THB'], 'th → region TH / currency THB'); }
+t.throws(() => SC.buildSidecar({ ...I, facts: { ...I.facts, quoteCurrency: 'THB' } }), /สกุลจาก Yahoo = THB ไม่ตรงที่คาด \(USD\)/, 'quote currency ≠ expected → throw (ticker collision AIT/ORI)');
+t.throws(() => SC.buildSidecar({ ...I, th: true }), /ไม่ตรงที่คาด \(THB\)/, 'th but Yahoo quotes USD → throw');
+t.eq(SC.buildSidecar({ ...I, facts: { ...I.facts, quoteCurrency: null } }).currency, 'USD', 'quoteCurrency unknown → no currency throw');
+// งบ/สถิติล้ม = ห้ามสร้าง sidecar · แหล่งรองล้ม = บันทึกใน sourceErrors นอก market (review fix 2)
+t.throws(() => SC.buildSidecar({ ...I, fund: { ...I.fund, errors: { ...I.fund.errors, fin: 'HTTP 503' } } }), /ดึงงบไม่ได้ \(fin: HTTP 503\)/, 'errors.fin → throw');
+t.throws(() => SC.buildSidecar({ ...I, fund: { ...I.fund, errors: { ...I.fund.errors, stats: 'ไม่เจอการ์ด' } } }), /stats: ไม่เจอการ์ด/, 'errors.stats → throw');
+{ const base = SC.buildSidecar(I), sc = SC.buildSidecar({ ...I, fund: { ...I.fund, errors: { ...I.fund.errors, yahoo: 'crumb 401' } } });
+  t.eq(sc.sourceErrors, { yahoo: 'crumb 401' }, 'errors.yahoo only → sourceErrors.yahoo (top level)');
+  t.eq(sc.market, base.market, 'errors.yahoo → market untouched');
+  t.eq(base.sourceErrors, null, 'no errors → sourceErrors null'); }
+// range52w: lo ต้อง > 0 (schema gt:0) — vendor 0 ⇒ ถอยไป Yahoo meta · ทั้งคู่ใช้ไม่ได้ ⇒ null (review m5)
+t.eq(SC.buildSidecar({ ...I, vend: { ...I.vend, lo52: 0 }, facts: { ...I.facts, range52w: { lo: 69, hi: 150 } } }).market.range52w, { lo: 69, hi: 150 }, 'range52w: vendor lo 0 → Yahoo meta fallback');
+t.eq(SC.buildSidecar({ ...I, vend: { ...I.vend, lo52: 0 }, facts: { ...I.facts, range52w: { lo: 0, hi: 150 } } }).market.range52w, null, 'range52w: no lo > 0 anywhere → null');
 t.throws(() => SC.buildSidecar({ ...I, facts: { ...I.facts, px: undefined } }), /fetch-facts --json ไม่ครบ/, 'no price → throw (a sidecar without market is useless to save)');
 { const r = { median: 30.04, fyYears: 5, rows: [{ key: '2021-12-31', pe: 28 }, { key: '2022-12-31', pe: 36.4 }, { key: '2023-12-31', pe: 80, outlier: 'x' },
   { key: '2024-12-31', pe: 26.1 }, { key: '2025-12-31', pe: null, skip: 'EPS ≤ 0' }] };

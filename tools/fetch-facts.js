@@ -18,6 +18,13 @@ const { fetchChart, buildChartData, niceBounds, annualChg, toYahooSymbol, styled
 const UP = { bg: 'var(--green-soft)', col: '#137333' };
 const DOWN = { bg: 'var(--red-soft)', col: '#c5221f' };
 
+// รหัสตลาดของ Yahoo (meta.exchangeName) → รหัสที่รายงานใช้ (NYSE/NASDAQ/SET) · ไม่รู้จัก = null (init เว้น TODO ให้ worker ตัดสิน)
+// ★ ห้ามใช้ fullExchangeName (ชื่อแสดงผล "NasdaqGS"/"Thailand") · MAI ไม่เดา — Yahoo ไม่แยกกระดานให้เชื่อได้
+const EXCHANGE_CODES = { NMS: 'NASDAQ', NGM: 'NASDAQ', NCM: 'NASDAQ', NYQ: 'NYSE', SET: 'SET' };
+function exchangeCode(code) {
+  return typeof code === 'string' && Object.prototype.hasOwnProperty.call(EXCHANGE_CODES, code) ? EXCHANGE_CODES[code] : null;
+}
+
 /** ข้อมูลเครื่องอ่านของ sidecar (spec §6.4 · ส่วนบริสุทธิ์ — q = ผลของ fetchChart) · chart = data อย่างเดียว (min/max/grid → compute คิดเอง)
  *  priceDate = วันของ regularMarketTime ตาม tz ตลาด (ISO) · range52w = 52wk ของ Yahoo meta (ไม่ใช่ปิดรายเดือน — M7) */
 function factsJson(q, symbol, currency) {
@@ -29,7 +36,7 @@ function factsJson(q, symbol, currency) {
     symbol, currency, quoteCurrency: q.currency || null, px: q.price, priceDate, chart: { data },
     chgSuffix: spanDays < 320 ? 'ตั้งแต่ IPO' : 'รอบปี',   // เกณฑ์เดียวกับป้าย .chg ของโหมดข้อความ
     range52w: Number.isFinite(lo) && Number.isFinite(hi) && hi >= lo ? { lo, hi } : null,
-    company: q.longName || null, exchange: q.exchangeName || null,
+    company: q.longName || null, exchange: exchangeCode(q.exchangeName),
   };
 }
 
@@ -80,6 +87,6 @@ async function main() {
   console.log(styledRD({ data: chartData, min: b.min, max: b.max, grid: b.grid }));
 }
 
-module.exports = { factsJson };
+module.exports = { factsJson, exchangeCode, EXCHANGE_CODES };
 // ★ guard — test/v3/sidecar.test.js require ไฟล์นี้ (ถ้าไม่ guard จะยิง Yahoo ตอน require)
 if (require.main === module) main().catch((e) => { console.error('✗', e.message); process.exit(1); });

@@ -152,7 +152,7 @@ async function fetchChart(ysym, attempt = 0, interval = '1mo') {
     week52High: meta.fiftyTwoWeekHigh,
     // ชื่อบริษัท/ตลาดจาก meta ชุดเดียวกัน — sidecar ของ prep ใช้เติม meta.company/exchange ของใบใหม่ (Plan 2b) · cron ไม่อ่าน
     longName: meta.longName || meta.shortName || null,
-    exchangeName: meta.fullExchangeName || meta.exchangeName || null,
+    exchangeName: meta.exchangeName || null,   // รหัสตลาดของ Yahoo (NYQ/NMS/SET …) ไม่ใช่ชื่อแสดงผล (NasdaqGS/Thailand) — fetch-facts exchangeCode() แปลงเป็นรหัสของรีโป
     bars,
   };
 }

@@ -13,6 +13,7 @@ module.exports = {
       netMargin: 27.5, cash: 1400000000, debt: 9240000000, debtToEquity: 2.93, roe: 80.8 },
     fy: { period: 'FY2025', revenue: 9260000000, netIncome: 2490000000, eps: 5.6 },
     sharesOut: 430000000, dps: 2.12, epsForward: 6.2, rating: 'Buy',
+    errors: { yahoo: null, sa: null, stats: null, fin: null },
   },
   vend: { epsTTM: 6.13, target: 100.94, analysts: 19, lo52: 70.26, hi52: 148.79, divYieldPct: 2.97, priceStop: false, priceWarn: false, fyYears: 5, traps: [] },
   medians: { median: 30, lo: 26.1, hi: 36.4, window: 'FY2021–FY2025', points: 5, fyYears: 5, curErr: null },
