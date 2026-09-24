@@ -1,6 +1,6 @@
 'use strict';
 // Plan 2b Task 7 — tools/report.js (spec §6.1) · ทุกอย่างในโฟลเดอร์ชั่วคราว + --today คงที่
-// ★ ห้ามแตะ reports/ .work/ .queue/ จริง — ทุกคำสั่งส่ง --reports-dir/--work-dir/--prep-dir/--seeds (tripwire no-json-reports)
+// ★ ห้ามแตะ reports/ .work/ .queue/ จริง — ทุกคำสั่งส่ง --reports-dir/--work-dir/--prep-dir/--seeds (tripwire ถอดแล้วใน Plan 2c-i — กติกา "ห้ามสร้าง reports/*.json ใน test" ยังอยู่)
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
