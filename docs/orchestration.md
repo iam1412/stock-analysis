@@ -12,7 +12,7 @@
 - `git pull --rebase` ล้มทันทีเมื่อ tree ไม่สะอาด ⇒ ใบที่ไม่ใช่ใบสุดท้ายจะ **commit แล้วเลื่อน push** (พิมพ์บอก · exit 0 ไม่ใช่ error) แล้วขึ้น origin พร้อมใบถัดไปที่ tree สะอาด — เป็นพฤติกรรมที่ตั้งใจ ไม่ใช่ของเสีย
 - สถานะ "push แล้ว" (`shippedAt`) **ถามจาก git** ไม่ใช่จำว่า "ship ตัวนี้ push เอง": `ship`/`status` เรียก `reconcile()` ที่เทียบ `committedSha` กับ `origin/main` (เป็น ancestor ไหม) แล้วตกมาเทียบ `committedSubject` ใน `git log origin/main --since=<วันของรอบ>` เมื่อ rebase เขียน sha ใหม่ ⇒ ใบที่ถูกใบสุดท้ายพา push ไปด้วยไม่ค้าง "รอ push" อีก
 - `ship <SYM>` ซ้ำบนใบที่ขึ้น origin แล้ว = **ปรับสถานะให้อย่างเดียว** (ข้าม `npm run verify` และข้ามประตู postcheck — ประตูนั้นเป็นของการเผยแพร่ ไม่ใช่ของการแก้สมุดบัญชี) · stage ว่างแยกสามทางแล้ว: `pushed` / `unpushed` (push ต่อ) / `unknown` (worker ยังไม่ได้เขียนจริง)
-- **trailer `Co-Authored-By` มาจากป้าย `<meta ai-model>` ในใบ** (รุ่นที่ worker รันจริง ประทับเอง) ไม่ใช่ `state.model` ซึ่งเป็นแค่ *แผน* ของ `prep` · `--model` ที่ขัดกับใบ = ล้ม ไม่เดาให้ · `postcheck` บันทึกรุ่นที่รันจริงจากใบทับแผนให้ด้วย
+- **trailer `Co-Authored-By` มาจากป้ายรุ่นในใบ** (ป้ายรุ่น = v2 `<meta name="ai-model">` / v3 `meta.aiModel` — ship อ่านผ่าน `report-source.metaLite` · รุ่นที่ worker รันจริง ประทับเอง) ไม่ใช่ `state.model` ซึ่งเป็นแค่ *แผน* ของ `prep` · `--model` ที่ขัดกับใบ = ล้ม ไม่เดาให้ · `postcheck` บันทึกรุ่นที่รันจริงจากใบทับแผนให้ด้วย
 
 ## 2. กลไก courier (ปรึกษา advisor แทน worker)
 
@@ -28,7 +28,7 @@
 
 - กฎ 1 หุ้น/agent · ขนานได้ · verify รายแบตช์ = skill `stock-controller` §3.3
 - prompt = `_template/agent-prompt.md` — STEP 0 กัน cwd-stray + pre-fetch fundamentals/medians อยู่ในไฟล์นั้นแล้ว
-- agent fail → ทำ inline ใน main session แทน (fetch + write เอง)
+- agent fail → ทำ inline ใน main session แทน (inline = fetch + เขียนเอง (v2) · ใบใหม่ = `report.js init/save` (v3))
 
 ## 4. Push รายตัว
 
