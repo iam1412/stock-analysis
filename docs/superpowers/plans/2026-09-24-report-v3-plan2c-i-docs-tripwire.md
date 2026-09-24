@@ -41,15 +41,15 @@
 
 **Files:**
 - Modify: `tools/queue/ship.js` (`--no-push` in the `ship <SYM>` flow: skip `pushWithRebase`/`pushIfClean` and `closeIssueIfEmpty`; keep commit identical)
-- Modify: `tools/queue/queue.js` (parse `--no-push` → `noPush`, usage line)
-- Modify: `tools/queue/prep.js` (`extraBlock`: NEW mode → no `update-prices --write --force` hint; when the sidecar was written, add one line pointing at STEP 5V)
+- Modify: `tools/queue.js` (the `npm run queue` CLI entry — parse `--no-push` → `noPush`, usage line; **not** `tools/queue/queue.js`, which does not exist)
+- Modify: `tools/queue/prep.js` (`extraBlock`: NEW mode → no `update-prices --write --force` hint; when the sidecar was written, add one line pointing at STEP 5V; the NEW-mode policy line "pick-brand/update-prices มี lock แล้ว รันตาม SKILL ได้เมื่อจำเป็น" → "pick-brand มี lock แล้ว รันตาม SKILL ได้เมื่อจำเป็น · update-prices ไม่ใช้กับใบ v3 (cron ข้ามจน Plan 3)" — the real `.queue/prep/OGE.md:126` carries this line; UPDATE modes keep their text)
 - Modify: `tools/fetch-facts.js` (text-mode stdout line "chart (วางใน report-data — …)" → neutral wording that names both paths)
 - Modify: `tools/pick-brand.js` (stdout after writing the seed: add one line "ใบ v3: ไม่ต้อง copy theme/GDOTS — save/build อ่าน seeds.json เอง"; keep the v2 copy block)
 - Modify: `tools/v3/compute.js` (`themeOf` message: `ไม่มีสีแบรนด์ — รัน node tools/pick-brand.js <SYM> "#rrggbb" --auto (ลง tools/seeds.json) · themeLegacy ใช้ได้เฉพาะใบที่ migrate มา — save ปฏิเสธบนใบ NEW`)
 - Test: `test/v3/plan2c-code.test.js` (new, offline, uses `test/v3/_t.js`)
 
 **Interfaces:**
-- Consumes: `tools/queue/ship.js` `ship(sym, o)` and its `pushIfClean`/`pushWithRebase`/`closeIssueIfEmpty` (read the file: the push happens after the commit, near `if (!pushIfClean(sym)) return;`; the `phase === 'unpushed'` branch must also respect `noPush`); `tools/queue/queue.js` arg parser `has('--flag')`; `tools/queue/prep.js` `extraBlock({ sym, mode, … })` and the `sc`/`sidecar` variables (sidecar is written after the `.md`; `sc !== null` is known before `extraBlock` is built); `test/v3/sidecar.test.js` `runPrep` child harness (`test/v3/_prep-child.js`) for the prep test.
+- Consumes: `tools/queue/ship.js` `ship(sym, o)` and its `pushIfClean`/`pushWithRebase`/`closeIssueIfEmpty` (read the file: the push happens after the commit, near `if (!pushIfClean(sym)) return;`; the `phase === 'unpushed'` branch must also respect `noPush`); `tools/queue.js` (CLI entry) + `tools/queue/args.js` arg parser (`has('--flag')` style — read them first); `tools/queue/prep.js` `extraBlock({ sym, mode, … })` and the `sc`/`sidecar` variables (sidecar is written after the `.md`; `sc !== null` is known before `extraBlock` is built); `test/v3/sidecar.test.js` `runPrep` child harness (`test/v3/_prep-child.js`) for the prep test.
 - Produces: `ship(sym, { noPush: true })` → commit only; `queue ship <SYM> --no-push`; prep NEW `.md` containing the line `★ ใบ NEW เขียนเป็น v3 — ทำตาม SKILL STEP 5V: node tools/report.js init <SYM> → เติม .work/<SYM>.json → pick-brand → save (sidecar: .queue/prep/<SYM>.json)` and **not** containing `update-prices.js --write --force`.
 
 - [ ] **Step 1: Write the failing tests**
@@ -90,9 +90,10 @@ const ROOT = path.join(__dirname, '..', '..');
   t(typeof SH.shouldPush === 'function', 'ship.js exports shouldPush(o)');
   t(SH.shouldPush({}) === true && SH.shouldPush({ noPush: false }) === true, 'shouldPush default = true (v2 behaviour unchanged)');
   t(SH.shouldPush({ noPush: true }) === false, 'shouldPush({noPush:true}) = false'); }
-{ const src = fs.readFileSync(path.join(ROOT, 'tools', 'queue', 'queue.js'), 'utf8');
+{ const src = fs.readFileSync(path.join(ROOT, 'tools', 'queue.js'), 'utf8');
   t(/--no-push/.test(src) && /noPush/.test(src), 'queue.js parses --no-push into noPush');
-  t(/ship <SYM>[^\n]*--no-push/.test(src), 'queue.js usage line documents --no-push'); }
+  // ★ match the ACTUAL usage token of `ship` in tools/queue.js (read the file first — it may be `ship <SYM>` or `ship <SYMBOL>`); adjust this regex to it
+  t(/ship <SYM(?:BOL)?>[^\n]*--no-push/.test(src), 'queue.js usage line documents --no-push'); }
 
 // (3) fetch-facts text-mode wording — no longer tells a worker to paste into report-data
 { const src = fs.readFileSync(path.join(ROOT, 'tools', 'fetch-facts.js'), 'utf8');
@@ -130,7 +131,7 @@ Expected: `✗ plan2c-code: N/M` with failures in every group (5V pointer absent
 - In `ship(sym, o)` after the commit: `if (!shouldPush(o)) { log(`ℹ --no-push: commit แล้ว ยังไม่ rebase/push (branch → PR → advisor) — push เองภายหลังด้วย git push origin HEAD:<branch>`); return; }` **before** `pushIfClean`/`pushWithRebase` and before `closeIssueIfEmpty`. Apply the same guard in the `phase === 'unpushed'` branch (an earlier commit exists and only the push is pending): with `noPush` print the same ℹ line and return without pushing.
 - Do not change the commit message, pathspec, verify call, or the `--prepatch` path.
 
-`tools/queue/queue.js`: parse `--no-push` (`noPush: has('--no-push')`) into the `ship` options; add `[--no-push]` to the `ship <SYM>` usage line with the note `(commit เท่านั้น — flow branch → PR)`.
+`tools/queue.js`: parse `--no-push` (`noPush: has('--no-push')`, via `tools/queue/args.js` conventions) into the `ship` options; add `[--no-push]` to the `ship` usage line (keep its existing token spelling) with the note `(commit เท่านั้น — ไม่ rebase/ไม่ push · flow branch → PR)`.
 
 `tools/queue/prep.js` `extraBlock` (read the current NEW branch first):
 - NEW mode: **remove** the "ราคาในไฟล์ยังไม่สด … รัน node tools/update-prices.js --write --force <SYM>" hint (it is meaningless for NEW and exits ≠0 on a v3 symbol). Keep UPDATE/UPDATE-LIGHT text byte-identical.
@@ -200,7 +201,7 @@ STEP 6 l.181 → replace `ต้อง **0 error** (พลาดบ่อย: �
 ```markdown
 ## STEP 5V — เขียนรายงาน โหมด NEW (v3 · `reports/<SYMBOL>.json` ผ่าน `tools/report.js` — **ห้ามเขียน `reports/` ตรง**)
 
-> ใบใหม่ทุกใบตั้งแต่ Plan 2c (24 ก.ย. 69) เป็น v3: ต้นฉบับ = JSON ที่ `report.js save` เขียนและเซ็น (`_sig`) ให้ · build render เป็น HTML เอง · **Write/Edit/Bash ลง `reports/` = ผิดกติกา** (hook ชั้น 1 ปฏิเสธ · gate E50 ปฏิเสธไฟล์ที่ไม่ได้เซ็น) · ที่เขียนได้มีที่เดียว = `.work/<SYM>.json` (draft) · **CLAUDE.md §2 ที่ inject มาให้ยังพูดถึง skeleton/`.html` = ข้อความก่อน v3 — หัวข้อนี้เป็นกติกาที่ใช้**
+> ใบใหม่ทุกใบตั้งแต่ Plan 2c (24 ก.ย. 69) เป็น v3: ต้นฉบับ = JSON ที่ `report.js save` เขียนและเซ็น (`_sig`) ให้ · build render เป็น HTML เอง · **Write/Edit/Bash ลง `reports/` = ผิดกติกา** (hook ชั้น 1 ปฏิเสธเมื่อเจ้าของเปิดใช้ · gate E50 ปฏิเสธไฟล์ที่ไม่ได้เซ็นเสมอ) · ที่เขียนได้มีที่เดียว = `.work/<SYM>.json` (draft) · **CLAUDE.md §2 ที่ inject มาให้ยังพูดถึง skeleton/`.html` = ข้อความก่อน v3 — หัวข้อนี้เป็นกติกาที่ใช้**
 
 **ข้อมูลเข้า** = prompt จาก `npm run queue -- prep <SYM>` (FUNDAMENTALS + MEDIANS + บรรทัด `★ ใบ NEW เขียนเป็น v3`) และ sidecar `.queue/prep/<SYM>.json` ที่ prep เขียนไว้ (ราคา/กราฟ/52wk/งบ/มัธยฐาน — **worker ไม่อ่าน ไม่แก้ sidecar** · `init` อ่านเอง) · ไม่มีบรรทัด `★ ใบ NEW เขียนเป็น v3` หรือ prompt บอกว่า sidecar ไม่ได้เขียน → **หยุด รายงาน controller** ให้ prep ใหม่ (`init` จะปฏิเสธอยู่ดี)
 
@@ -237,6 +238,10 @@ l.35: replace `\`values.dateEra\` = \`"BE"\`` with `\`dateEra\` = \`"BE"\` (v3 �
 
 l.36: prefix with `(v2) `.
 
+l.38: replace `self-check \`npm test\` **ครั้งเดียวตอนงานเสร็จ** ไม่รันระหว่างทาง` with `(v2) self-check \`npm test\` **ครั้งเดียวตอนงานเสร็จ** ไม่รันระหว่างทาง · **ใบ v3 NEW: \`node tools/report.js save <SYM>\` ✓ แทน — ไม่รัน \`npm test\`** (จะแดง \`[v2:E40]\` เสมอจน controller tag)` — this wrapper line is the first thing the worker reads and must not contradict STEP 5V step 5.
+
+Then `grep -n "npm test" .claude/skills/stock-analyzer/SKILL.md` — every hit must be inside STEP 0 queue triage (l.31 `patch-rejected`, v2 queue), STEP 5A/5B/5C (v2-labelled) or the rewritten STEP 6 line; anything else → fix it.
+
 l.57: replace `เขียน \`reports/{{SYMBOL}}.html\` เสร็จ` with `NEW: \`reports/{{SYMBOL}}.json\` save ✓ (+ \`meta.aiModel\` · hex seed) / UPDATE: \`reports/{{SYMBOL}}.html\` เสร็จ`.
 
 - [ ] **Step 4: `CLAUDE.md` pointer lines (four one-line edits — no restructuring)**
@@ -256,6 +261,10 @@ Then run `node tools/gen-docs.js --check` — the generated verify-steps block i
 `.claude/skills/stock-controller/SKILL.md` §3: add one bullet after the pick-brand/lock bullet: `- **ใบใหม่ = v3 (Plan 2c+)** ลำดับ controller: \`npm run queue -- prep <SYM> --model opus\` (หลังตลาดปิด — priceDate จะแช่แข็งจน P5) → spawn worker 1 ใบ (Opus · prompt = \`.queue/prep/<SYM>.md\` · บอกตรง ๆ ว่า §2 ที่ inject มาก่อน v3 · SKILL STEP 5V เป็นกติกา) → worker คืน \`save ✓\` + \`TAGS:\` → \`node tools/tag-apply.js <SYM> <slug…>\` → \`npm run queue -- postcheck <SYM> --model opus\` → **ตรวจชั้น 0 เองที่ gate ไม่ทำ**: \`family\` ครบทุกขา fv · \`legs[i].inputs\` ครบชุด · W32 · dispersion 0.4c >2x · หน้าต่าง/จุดของ \`medians\` (checkFyYears เงียบบน v3) · \`meta.aiModel\` ตรงรุ่นที่ spawn · TH กระดาน SET/mai → \`npm run queue -- ship <SYM> --no-push\` เมื่ออยู่บน branch (flow PR) หรือ \`ship <SYM>\` บน main`.
 
 §9: add one line: `- **ใบ v3**: cron ข้าม (\`v3-skipped: N\` · \`update-prices --write --force <v3>\` exit ≠0 "v3 cron = Plan 3") จน P5 — เส้นตาย #62 = \`market.priceDate\` + 120 วัน (E27) · เป้า +45 (W09)`.
+
+`docs/hook-setup.md`: every "paste ตอน cutover 2c" / "ก่อน paste snippet ตอน cutover 2c" → "paste **หลัง Plan 2c-i merge** (เอกสาร v3 NEW อยู่บน main แล้ว — paste ก่อนหน้านั้น = บล็อก NEW v2 ทุก session โดยยังไม่มีทางเลือก)"; keep the `claude -p` proof block as is.
+
+**Reviewer instruction for this task (controller copies into the review dispatch):** besides the diff, the reviewer must Read `.claude/skills/stock-analyzer/SKILL.md` STEP 0 → STEP 5V → STEP 6 and `_template/agent-prompt.md` top to bottom **as a v3 NEW worker would**, and list every sentence outside a v2-labelled block that could still be read as "write `reports/<SYM>.html`", "start from skeleton", "apply-edits", "paste theme", or "run `npm test`". Zero such sentences = pass.
 
 `docs/orchestration.md` l.15: replace `<meta ai-model>` source wording with `ป้ายรุ่น = v2 \`<meta name="ai-model">\` / v3 \`meta.aiModel\` (ship อ่านผ่าน \`report-source.metaLite\`)`. l.31: replace `inline = fetch+write เอง` with `inline = fetch + เขียนเอง (v2) · ใบใหม่ = \`report.js init/save\` (v3)`.
 

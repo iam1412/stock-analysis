@@ -37,15 +37,13 @@
 
 ```bash
 cd /Users/somchai.s/Downloads/stock-v3-plan2c-ii && git pull -q --rebase origin main
-rtk proxy npm run queue -- prep OGE --model opus 2>&1 | tail -12
+rtk proxy npm run queue -- prep OGE --model opus --brand "#hex" 2>&1 | tail -14      # hex from tools/brand-colors.md (OGE Energy — utility; brand primary if listed, else a utility shade)
 node -e "const s=require('./.queue/prep/OGE.json');console.log(s.exchange,s.currency,s.market.px,s.market.priceDate,'dP',s.crossVerify.dP,'srcErr',JSON.stringify(s.sourceErrors),'med',s.medians.median,s.medians.window,s.medians.curErr)"
-grep -c "STEP 5V" .queue/prep/OGE.md; grep -c "update-prices.js --write --force" .queue/prep/OGE.md
+grep -c "STEP 5V" .queue/prep/OGE.md; grep -c "update-prices.js --write --force" .queue/prep/OGE.md; grep -c "=== BRAND" .queue/prep/OGE.md; node -e "console.log(!!require('./tools/seeds.json').OGE)"
 ```
-Expected: exit 0 · `NYSE USD <px> <yesterday's date> dP 0 srcErr null med ~17.2 FY2021–FY2025 null` · `1` · `0`. Exit 2 → stop (CLAUDE.md §2). Record `priceDate` → #62.
+Expected: exit 0 · `NYSE USD <px> <yesterday's date> dP 0 srcErr null med ~17.2 FY2021–FY2025 null` · `1` · `0` · `1` (the `=== BRAND … ลง seeds.json แล้ว` block — STEP 5V's own skip-condition for pick-brand) · `true`. Exit 2 → stop (CLAUDE.md §2). Record `priceDate` → #62. (`--brand` runs pick-brand inside prep-stock under the lock; the seed lands in `tools/seeds.json` and ships with the report commit.)
 
-- [ ] **Step 2: Brand seed (controller, once)**
-
-Pick the hex from `tools/brand-colors.md` (OGE Energy — utility; use the brand's primary if listed, else a utility-sector shade) and run `node tools/pick-brand.js OGE "#hex" --auto`. Expected: `seeds.json` gains OGE; stdout ends with the v3 note line. (Doing it here saves the worker a turn; the prompt then shows "=== BRAND … ลง seeds.json แล้ว" only if prep is re-run with `--brand` — otherwise tell the worker in Step 3 that the seed is already set.)
+- [ ] **Step 2: (folded into Step 1 via `--brand` — advisor 24 ก.ย. 69: one fewer thing to tell the worker.)**
 
 - [ ] **Step 3: Spawn the worker (Opus, effort high)**
 
@@ -53,7 +51,7 @@ Agent prompt = the full text of `.queue/prep/OGE.md`, followed by exactly these 
 ```
 — controller notes (2c-ii) —
 1. CLAUDE.md §2 ที่ inject มาให้คุณ (skeleton / reports/<SYM>.html) เป็นข้อความก่อน v3 — กติกาที่ใช้คือ stock-analyzer SKILL **STEP 5V** (อ่านไฟล์ใน worktree นี้) · ห้ามเขียน reports/ ด้วย Write/Edit/Bash ทุกกรณี
-2. สีแบรนด์ลง tools/seeds.json แล้ว (OGE) — ข้ามขั้น pick-brand
+2. (สีแบรนด์: prompt มีบล็อก "=== BRAND … ลง seeds.json แล้ว" — STEP 5V ข้อ 3 บอกให้ข้าม pick-brand เอง ไม่ต้องบอกซ้ำ)
 3. กับดักที่รู้แล้ว: vendor forward EPS 2.60 = FY2027e (FY2026e = 2.43 คือ "ปีถัดไป" จริง) · forward P/E จาก 2.43 = 18.4x ห่างมัธยฐาน 17.2x เพียง 6.6% ⇒ W25 อาจยิงโดยบังเอิญ — ไม่ใช่สมอตาย คงขามัธยฐานและเขียนกำกับใน note · ใส่ `family` ทุกขา fv · เติม `inputs` ครบชุดของ method ที่เลือก (หน่วย %)
 4. คืนงานตามข้อ 6 ของ STEP 5V + จำนวน turn ที่ใช้ (ประมาณจากจำนวนข้อความของคุณเอง)
 ```
@@ -120,7 +118,7 @@ Expected: `SET THB <px> <today> dP ≤2 …`. First real TH pass of `exchangeCod
 
 ### Task 3: Whole-site + cron rehearsal · docs · PR
 
-- [ ] **Step 1: Rehearse in a scratch worktree (never on main)**
+- [ ] **Step 1: Rehearse in a scratch worktree (never on main)** — run while **both markets are closed (04:00–10:00 ไทย)**: `update-prices --write` fetches 909 live quotes and `isIntradayQuote` skips would muddy the output; `v3-skipped: 2` itself is timing-independent.
 
 ```bash
 cd /Users/somchai.s/Downloads/stock-v3-plan2c-ii
@@ -144,7 +142,7 @@ Paste every line of output in the report. Any `.json` diff, `patch-rejected` on 
 
 `docs/open-items.md` #62: fill the two `priceDate`s and the resulting hard/target dates. `docs/decisions.md` §10: append "Report v3 Plan 2c-ii" block — the two reports (FV/MOS/turn counts), what the layer-0 checks found, the M-CHAI board result, the first-ever TH `--json`/exchangeCode result, the rehearsal numbers (`v3-skipped: 2`), whether the exit workers ran with hook layer 1 active (`grep -c '"hooks"' .claude/settings.json` on this machine at spawn time), and the advisor verdicts. Commit: `docs(v3): Plan 2c-ii — first two v3 reports (OGE, M-CHAI) · rehearsal · #62 dates`.
 
-- [ ] **Step 4: PR** — `git pull --rebase origin main` (only now — `--no-push` skipped rebase), `GIT_DIR=$(git rev-parse --absolute-git-dir) node test/v3-test.js`, push branch, `gh pr create` with: the two `analyze:` commits + docs commit; verify/check-site/cron rehearsal numbers; the layer-0 checklist results; turn counts; "first visible change: 2 new report pages + 2 index cards; every existing page byte-identical" (prove with a DIST-PROOF variant that excludes `dist/OGE.html`, `dist/M-CHAI.html`, `dist/index.html`, `dist/reports.json`, sitemap/og files — list the differing files and confirm they are only those).
+- [ ] **Step 4: PR** — `git pull --rebase origin main` (only now — `--no-push` skipped rebase). **Expect a `reports.json` conflict, possibly on both `analyze:` commits**: each carries a rebuilt manifest (2 new entries + hashes) while the 25 ก.ย. cron rewrote ~100 hashes in the same file on main. On each conflict: `git checkout --theirs reports.json` is WRONG (that is the branch side during a rebase) — take **main's copy** (`git checkout --ours reports.json`), then `node build.js` (deterministic; regenerates the manifest with both the cron hashes and the new entries), `git add reports.json`, `git rebase --continue`. After the rebase finishes (conflict or not): `node build.js && git status --short` must be **empty**; if `reports.json` shows modified, the rebased manifest is stale → `git add reports.json && git commit --amend --no-edit` on the last commit before pushing. Then `GIT_DIR=$(git rev-parse --absolute-git-dir) node test/v3-test.js`, `rtk proxy npm run verify` once more, push branch, `gh pr create` with: the two `analyze:` commits + docs commit; verify/check-site/cron rehearsal numbers; the layer-0 checklist results; turn counts; "first visible change: 2 new report pages + 2 index cards; every existing page byte-identical" (prove with a DIST-PROOF variant that excludes `dist/OGE.html`, `dist/M-CHAI.html`, `dist/index.html`, `dist/reports.json`, sitemap/og files — list the differing files and confirm they are only those).
 
 - [ ] **Step 5: Advisor pre-merge → `gh pr merge N --merge --repo iam1412/stock-analysis` (standalone) → deploy check** (`gh run list --branch main --limit 1` success · `curl -sI https://gaohoon.com/OGE.html | head -1` 200 · same for M-CHAI) → tell the owner to open both pages beside a v2 page for the design review → memory update (Plan 2c MERGED · P5 hard/target dates · hook paste status) → archive ledger → remove worktree.
 
