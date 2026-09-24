@@ -9,6 +9,7 @@
  * "ใต้ reports/" (R10) = path ที่มี segment ชื่อ reports ซึ่งโฟลเดอร์แม่มี build.js (checkout/worktree ไหนของ repo นี้ก็ได้)
  *   path ที่ยังมี $VAR ไม่ขยาย + มี reports/ = ปฏิเสธ (มองไม่เห็นปลายทางจริง)
  * ช่องโหว่ที่รู้ (ยอมรับ — _sig/E50 จับ): xargs · find -exec · สคริปต์ไฟล์ที่เขียนเอง · ข้อความใน "$(…)" ในเครื่องหมายคำพูดคู่ · heredoc ซ้อนใน bash -c
+ *   · `cd reports` ภายในคำสั่งเดียว (`cd reports && cat > X.html`) ไม่ถูกติดตาม = ปล่อยผ่าน (cwd ที่ค้างอยู่ใน reports/ จาก call ก่อน ถูกจับแล้ว)
  * ติดตั้ง: docs/hook-setup.md (เจ้าของ paste เอง — ไม่แก้ .claude/settings.json จาก session)
  */
 const fs = require('fs');
@@ -18,7 +19,9 @@ const path = require('path');
 const REASON = 'reports/* เขียนตรงไม่ได้ — แก้ .work/<SYM>.json แล้ว node tools/report.js save <SYM> (ใบ v2: node tools/apply-edits.js)';
 const FILE_TOOLS = new Set(['Write', 'Edit', 'MultiEdit', 'NotebookEdit']);
 const REDIR_FILE = /^(?:&>>?|\d*>>?|\d*>\||>&|\d*<>)$/;          // redirect ที่มีปลายทางเป็นไฟล์ (ไม่ใช่ 2>&1)
-const WRAPPERS = new Set(['sudo', 'env', 'command', 'exec', 'time', 'nice', 'nohup', 'builtin']);
+const WRAPPERS = new Set(['sudo', 'env', 'command', 'exec', 'time', 'nice', 'nohup', 'builtin', 'timeout']);
+const WRAP_OPTARG = { sudo: ['-u', '-g'], env: ['-u'], nice: ['-n'], timeout: ['-s', '-k'] };   // option ที่กินค่าตัวถัดไป (ตารางย่อ ไม่ใช่ parser เต็ม)
+const KEYWORDS = new Set(['do', 'then', 'else', 'elif', '!', 'if', 'while', 'until']);          // keyword นำหน้าคำสั่งจริง
 const WRITE_API = /writeFile|appendFile|createWriteStream|rename|copyFile|cpSync|\bopen\s*\([^)]*['"][wax+]|write_text|write_bytes|shutil\.|File\.write/;
 
 /** path อยู่ใต้โฟลเดอร์ reports/ ของ checkout นี้ (หรือ worktree ใดก็ได้ของ repo) */
@@ -98,7 +101,13 @@ function segment(seg, cwd, depth) {
   skipAssign();
   for (;;) {
     if (words[k] === 'rtk') { k++; if (words[k] === 'proxy') k++; continue; }   // hook rtk-rewrite ของผู้ใช้ห่อคำสั่งด้วย rtk
-    if (WRAPPERS.has(words[k])) { k++; while (k < words.length && words[k].startsWith('-')) k++; skipAssign(); continue; }
+    if (KEYWORDS.has(words[k])) { k++; skipAssign(); continue; }
+    if (WRAPPERS.has(words[k])) {
+      const w = words[k++], optArg = WRAP_OPTARG[w] || [];
+      while (k < words.length && words[k].startsWith('-')) k += optArg.includes(words[k]) ? 2 : 1;
+      if (w === 'timeout' && k < words.length && /^\d/.test(words[k])) k++;   // timeout <DURATION> cmd
+      skipAssign(); continue;
+    }
     break;
   }
   const argv = words.slice(k);
@@ -135,7 +144,8 @@ function segment(seg, cwd, depth) {
 
 /** คำสั่ง Bash ทั้งบรรทัด → เหตุผลที่ปฏิเสธ | null */
 function analyze(cmd, cwd, depth) {
-  if (typeof cmd !== 'string' || !cmd.includes('reports')) return null;   // ทางด่วน: ไม่พูดถึง reports เลย
+  if (typeof cmd !== 'string') return null;
+  if (!cmd.includes('reports') && !inReports('x', cwd)) return null;   // ทางด่วน: ไม่พูดถึง reports และ cwd ไม่ได้อยู่ใน reports/ (cd ค้างข้าม call)
   const segs = [[]];
   for (const t of lex(stripHeredocs(cmd))) { if (t.t === 'sep') segs.push([]); else segs[segs.length - 1].push(t); }
   for (const s of segs) { const r = segment(s, cwd, depth || 0); if (r) return r; }

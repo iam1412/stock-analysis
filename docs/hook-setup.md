@@ -64,4 +64,4 @@ rtk proxy git status --short reports/
 
 ## ช่องโหว่ที่รู้ (ยอมรับ — `_sig`/E50 จับตอน verify/pre-push)
 
-`xargs …` · `find … -exec` · สคริปต์ไฟล์ที่เขียนขึ้นเองแล้วรัน · `"$(…)"` ในเครื่องหมายคำพูดคู่ · child process ทุกตัว (`apply-edits`, `report.js` — ตั้งใจ) · `cd` ไปที่อื่นก่อนเขียนด้วย path สัมพัทธ์ (hook resolve กับ cwd ของ session — ปฏิเสธเกินได้ ไม่ใช่ขาด)
+`xargs …` · `find … -exec` · สคริปต์ไฟล์ที่เขียนขึ้นเองแล้วรัน · `"$(…)"` ในเครื่องหมายคำพูดคู่ · child process ทุกตัว (`apply-edits`, `report.js` — ตั้งใจ) · **`cd` ภายในคำสั่งเดียวไม่ถูกติดตาม** — `cd reports && cat > X.html` หรือ `(cd reports; echo x > X.html)` **ผ่าน hook ได้ (ปฏิเสธขาด)** เพราะ hook resolve path สัมพัทธ์กับ cwd ของ session เท่านั้น → ชั้น 2 `_sig`/E50 จับไฟล์ที่ได้ตอน gate (verify/pre-push) · กลับกัน `cd` ออกไปที่อื่นก่อนเขียน `reports/…` สัมพัทธ์ = ปฏิเสธเกินได้ · cwd ของ session ที่**ค้างอยู่ใน** `reports/` จาก call ก่อน = ถูกจับ (ไม่ใช่ช่องโหว่)

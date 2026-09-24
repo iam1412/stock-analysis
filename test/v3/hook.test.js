@@ -58,6 +58,20 @@ try {
   ];
   for (const c of ALLOW) t(!bash(c), `allow: ${JSON.stringify(c)} (got ${JSON.stringify(bash(c))})`);
 
+  // ── fix round 1: cwd อยู่ใน reports/ แล้ว (cd ค้างข้าม call) · keyword ของ shell · wrapper ที่มี option รับค่า ──
+  t(bash('echo x > X.json', REP), 'fix1: cwd=<repo>/reports + redirect to bare X.json → deny');
+  t(bash('cp a X.json', REP), 'fix1: cwd=<repo>/reports + cp a X.json → deny');
+  for (const c of ['ls', 'cat X.html', 'git status']) t(!bash(c, REP), `fix1: cwd=<repo>/reports + ${JSON.stringify(c)} → allow`);
+  t(!bash('echo x > X.json', OTHER_REP) && !bash('cp a X.json', OTHER_REP), 'fix1: cwd=reports/ without build.js ancestor → allow');
+  t(bash('for f in a; do cp $f reports/; done'), 'fix2: for … do cp $f reports/ → deny');
+  for (const c of ['if true; then cp a reports/; fi', 'if false; then :; else tee reports/X.json; fi', '! cp a reports/X.json', 'while true; do tee reports/X.json; done'])
+    t(bash(c), `fix2: keyword-prefixed write ${JSON.stringify(c)} → deny`);
+  t(bash('sudo -u me tee reports/X.json'), 'fix2: sudo -u me tee reports/X.json → deny');
+  for (const c of ['sudo -g grp cp a reports/X.json', 'env -u HOME tee reports/X.json', 'nice -n 5 tee reports/X.json', 'timeout 5 cp a reports/X.json', 'timeout -s KILL 5 tee reports/X.json'])
+    t(bash(c), `fix2: wrapper option-with-argument ${JSON.stringify(c)} → deny`);
+  t(bash('sudo tee reports/X.json'), 'fix2: sudo tee reports/X.json → still deny');
+  t(!bash('for f in reports/*.html; do echo x; done'), 'fix2: for … do echo x; done (no reports write) → still allow');
+
   // ── lexer / heredoc units ──
   t.eq(H.lex('a "b c" d\\ e>f').map((x) => x.v), ['a', 'b c', 'd e', '>', 'f'], 'lex: quotes, escapes, glued redirect');
   t.eq(H.lex('x 2>&1 y').map((x) => x.v), ['x', '2>&1', 'y'], 'lex: 2>&1 is one op');
