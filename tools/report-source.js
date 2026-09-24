@@ -19,6 +19,8 @@ let seedsCache = null;
 const defaultSeeds = () => seedsCache || (seedsCache = JSON.parse(fs.readFileSync(path.join(ROOT, 'tools', 'seeds.json'), 'utf8')));
 
 const isV3Path = (p) => /\.json$/i.test(String(p));
+/** symbol → ตัวพิมพ์ใหญ่ครั้งเดียวที่นี่ — macOS ไม่สนตัวพิมพ์ แต่ Linux (CI) สน ⇒ ต้องได้ผลเดียวกันทั้งสองเครื่อง */
+const norm = (s) => String(s).trim().toUpperCase();
 
 /** [{ symbol, name, v3 }] เรียงตามชื่อไฟล์ — ผ่าน build.reportEntries (throw เมื่อหุ้นเดียวมีทั้ง .html และ .json) */
 function list(dir) {
@@ -29,6 +31,7 @@ function list(dir) {
 const symbols = (dir) => new Set(list(dir).map((e) => e.symbol.toUpperCase()));
 /** 'v2' | 'v3' | null · มีทั้งสองไฟล์ = throw ข้อความเดียวกับ build */
 function kindOf(sym, dir) {
+  sym = norm(sym);
   const d = dir || REPORTS_DIR;
   const h = fs.existsSync(path.join(d, sym + '.html')), j = fs.existsSync(path.join(d, sym + '.json'));
   if (h && j) throw new Error(`reports/: ${sym} มีทั้ง .html และ .json (ลบไฟล์ v2 ออกเมื่อย้ายเป็น v3)`);
@@ -37,6 +40,7 @@ function kindOf(sym, dir) {
 const exists = (sym, dir) => kindOf(sym, dir) !== null;
 /** null | { symbol, v3:false, name, raw } | { symbol, v3:true, name, doc } — JSON เสีย = throw พร้อมชื่อไฟล์ */
 function load(sym, dir) {
+  sym = norm(sym);
   const d = dir || REPORTS_DIR, k = kindOf(sym, d);
   if (!k) return null;
   const name = sym + (k === 'v3' ? '.json' : '.html');
@@ -44,10 +48,13 @@ function load(sym, dir) {
   if (k === 'v2') return { symbol: sym, v3: false, name, raw };
   let doc;
   try { doc = JSON.parse(raw); } catch (e) { throw new Error(`reports/${name}: JSON เสีย — ${e.message}`); }
+  // ข้อความเดียวกับ build.loadReportSource ⇒ load/metaLite/stockMeta/renderedHtml ตอบตรงกันเสมอ
+  if (doc.symbol !== sym) throw new Error(`${name}: symbol "${doc.symbol}" ไม่ตรงชื่อไฟล์`);
   return { symbol: sym, v3: true, name, doc };
 }
 /** ค่าเบาที่ scanner ใช้ — v2: stock-meta + footer "ข้อมูล ณ" + <meta ai-model> · v3: JSON ตรง (meta.analysisDate/dateEra/market.px) */
 function metaLite(sym, dir) {
+  sym = norm(sym);
   const s = load(sym, dir);
   if (!s) return null;
   if (s.v3) {
@@ -68,6 +75,7 @@ function stockMeta(sym, dir, seeds) {
 }
 /** หน้าที่ expand แล้ว (ก่อน decorate/TA ของ dist) — ทางเดียวกับ build: loadReportSource → expandReport */
 function renderedHtml(sym, dir, seeds) {
+  sym = norm(sym);
   const d = dir || REPORTS_DIR, k = kindOf(sym, d);
   if (!k) throw new Error(`ไม่มี reports/${sym}.html หรือ reports/${sym}.json`);
   const b = B();

@@ -39,6 +39,18 @@ try {
   t(RS.renderedHtml('ZTS', tmp, {}) === expandReport(R.toV2Source(doc, C.compute(doc, { seeds: {} }))), 'renderedHtml v3 = expandReport(toV2Source(compute))');
   t.throws(() => RS.renderedHtml('NOPE', tmp), /ไม่มี reports\/NOPE/, 'renderedHtml: missing symbol throws');
 
+  // fix round 1: symbol ตัวพิมพ์เล็ก → ผลเดียวกันทั้ง macOS/Linux · symbol ที่คืน = ตัวพิมพ์ใหญ่
+  t(RS.kindOf('zts', tmp) === 'v3', 'kindOf: lower-case symbol normalised');
+  t(RS.metaLite('zts', tmp).symbol === 'ZTS', 'metaLite: returned symbol is normalised');
+  t(RS.load(' aapl ', tmp).symbol === 'AAPL', 'load: trimmed + upper-cased');
+  t(RS.stockMeta('zts', tmp, {}).mos === C.compute(doc, { seeds: {} }).sm.mos, 'stockMeta: lower-case symbol');
+
+  fs.writeFileSync(path.join(tmp, 'MIS.json'), JSON.stringify(Object.assign({}, doc, { symbol: 'ZTS' })));
+  t.throws(() => RS.load('MIS', tmp), /MIS\.json: symbol "ZTS" ไม่ตรงชื่อไฟล์/, 'load: v3 symbol≠filename throws naming the file');
+  t.throws(() => RS.metaLite('MIS', tmp), /MIS\.json: symbol "ZTS" ไม่ตรงชื่อไฟล์/, 'metaLite: same check via load');
+  t.throws(() => RS.renderedHtml('MIS', tmp, {}), /MIS\.json: symbol "ZTS" ไม่ตรงชื่อไฟล์/, 'renderedHtml: same message as build');
+  fs.unlinkSync(path.join(tmp, 'MIS.json'));
+
   fs.writeFileSync(path.join(tmp, 'BAD.json'), '{ not json');
   t.throws(() => RS.load('BAD', tmp), /BAD\.json: JSON เสีย/, 'load: broken JSON names the file');
   fs.unlinkSync(path.join(tmp, 'BAD.json'));
