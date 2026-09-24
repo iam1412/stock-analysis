@@ -15,7 +15,6 @@
 const fs = require('fs');
 const path = require('path');
 const S = require('./v3/schema.js');
-const C = require('./v3/compute.js');
 const P = require('./v3/prose.js');
 const IO = require('./v3/io.js');
 const TK = require('./v3/tokens.js');
@@ -113,10 +112,20 @@ function draftFromSidecar(sc, today) {
   };
 }
 
-/** leaf path ที่ต่างกัน (ไม่นับ market/_sig ระดับบนสุด) — ตัวเดียวที่ --light และ diff ใช้ */
+/** leaf path ที่ต่างกัน (ไม่นับ market/_sig ระดับบนสุด) — ตัวเดียวที่ --light และ diff ใช้
+ *  container ที่มีข้างเดียว (อีกข้างไม่มี/null) = เดินเทียบกับ {} / [] → ได้ leaf จริง (ไม่งั้น metrics.notes ใหม่ทั้งก้อนไม่ตรง allowlist ของ prose)
+ *  container ว่างข้างเดียว = path ของมันเอง (ไม่หายเงียบ) · array↔object = leaf เดียว */
 function diffPaths(a, b) {
   const out = [];
+  const isBox = (x) => Array.isArray(x) || isObj(x);
+  const emptyLike = (x) => (Array.isArray(x) ? [] : {});
   const walk = (x, y, p) => {
+    if (isBox(x) !== isBox(y) && (x == null || y == null)) {
+      const n = out.length;
+      if (x == null) walk(emptyLike(y), y, p); else walk(x, emptyLike(x), p);
+      if (out.length === n) out.push(p);
+      return;
+    }
     if (Array.isArray(x) && Array.isArray(y)) { for (let i = 0; i < Math.max(x.length, y.length); i++) walk(x[i], y[i], `${p}[${i}]`); return; }
     if (isObj(x) && isObj(y)) {
       for (const k of new Set([...Object.keys(x), ...Object.keys(y)])) {
@@ -293,17 +302,17 @@ function docForView(c) {
   if (report) return { src: `${c.sym}.json`, doc: report, report };
   throw new Error(`ไม่มีทั้ง draft และรายงานของ ${c.sym} (ใบใหม่: node tools/report.js init ${c.sym})`);
 }
+/** view ของ show/diff = CV.checkDoc ตัวเดียว (ห้ามเขียน validate → semanticErrors → compute ซ้ำ — ruling 3)
+ *  view:null = compute ไม่ได้ หรือขาไม่ผ่าน badLeg → { errors: บรรทัดของ errorLines } · มี view = ใช้ได้ แม้ gate ยังมี error อื่น (draft ที่ทำค้าง) */
 function viewOf(doc, c) {
-  const seeds = seedsOf(c);
-  let errors = S.validate(doc).map((e) => `${e.path}: ${e.msg}`);
-  if (!errors.length) errors = C.semanticErrors(doc, { seeds }).map((e) => `${e.path}: ${e.msg}`);
-  return errors.length ? { errors } : { view: C.compute(doc, { seeds }) };
+  const r = CV.checkDoc(doc, { skipSig: true, seeds: seedsOf(c), stage: 'save', today: c.today });
+  return r.view ? { view: r.view, nErr: r.errors.length } : { errors: errorLines(r.errors) };
 }
 
 function cmdShow(c) {
   const { src, doc } = docForView(c);
-  const { view, errors } = viewOf(doc, c);
-  if (errors) { c.err(`✗ ${src} ยัง compute ไม่ได้ — ${errors.length} ข้อ (save พิมพ์ครบพร้อมรหัส):`); for (const l of errors) c.err('  ' + l); return 1; }
+  const { view, errors, nErr } = viewOf(doc, c);
+  if (errors) { c.err(`✗ ${src} ยัง compute ไม่ได้ — ${errors.length} ข้อ:`); for (const l of errors) c.err('  ' + l); return 1; }
   if (c.arg) {
     const val = getPath(view, c.arg);
     if (val === undefined) { c.err(`✗ ไม่มี path "${c.arg}" ใน view (เช่น fv · fvLow · sm.mos · legs[0].value · scn[1].tgt · d.pe)`); return 1; }
@@ -312,6 +321,7 @@ function cmdShow(c) {
   }
   const cur = view.cur;
   c.log(`${c.sym} — ${src}`);
+  if (nErr) c.log(`⚠ gate ยังมี error ${nErr} ข้อ — ตัวเลขด้านล่าง compute ได้แล้ว แต่ save จะปฏิเสธจนกว่าจะแก้ (save พิมพ์ครบพร้อม path)`);
   c.log(`FV ${cur}${view.fv.toFixed(2)} (กรอบ ${cur}${view.fvLow.toFixed(2)}–${cur}${view.fvHigh.toFixed(2)}) · MOS ${signed1(view.sm.mos)}% · ราคา ${cur}${doc.market.px} (${doc.market.priceDate})`);
   view.legs.forEach((l, i) => c.log(`  legs[${i}] ${l.label}: ${cur}${l.value.toFixed(2)} × น้ำหนัก ${(l.weight * 100).toFixed(1)}%${l.role === 'context' ? ' (context)' : ''}`));
   c.log('token ที่ใช้ได้ใน prose (ค่า ณ ตอนนี้ — ตัวเลขผูกราคาต้องเขียนเป็น token เสมอ · กติกา B):');
@@ -332,7 +342,12 @@ function cmdDiff(c) {
   c.log(`${c.sym}: draft vs ${c.sym}.json — ${paths.length} path เปลี่ยน`);
   for (const p of paths) c.log(`  ${p}: ${short(getPath(report, p))} → ${short(getPath(doc, p))}`);
   const a = viewOf(report, c), b = viewOf(doc, c);
-  if (a.errors || b.errors) { c.log(`ℹ ${b.errors ? 'draft' : 'ใบเดิม'} ยัง compute ไม่ได้ — เทียบ FV ไม่ได้ (ดู save)`); return 0; }
+  if (a.errors || b.errors) {
+    const bad = b.errors ? b : a;
+    c.log(`ℹ ${b.errors ? 'draft' : 'ใบเดิม'} ยัง compute ไม่ได้ — เทียบ FV ไม่ได้ (${bad.errors.length} ข้อ):`);
+    for (const l of bad.errors) c.log('  ' + l);
+    return 0;
+  }
   const va = a.view, vb = b.view, cur = vb.cur;
   c.log(`FV ${cur}${va.fv.toFixed(2)} → ${cur}${vb.fv.toFixed(2)} · MOS ${signed1(va.sm.mos)}% → ${signed1(vb.sm.mos)}%`);
   for (let i = 0; i < Math.max(va.legs.length, vb.legs.length); i++) {

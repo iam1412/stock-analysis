@@ -109,6 +109,11 @@ try {
   { const r = cli(['show', 'ZZZQ', 'fv']); t(r.code === 0 && Math.abs(parseFloat(r.out) - 108.576) < 0.01, `show ZZZQ fv → 108.576 (${r.out})`); }
   { const r = cli(['show', 'ZZZQ']); t(r.code === 0 && r.out.includes('{{fv}} = $108.58') && r.out.includes('{{leg1}} = $153.25') && !r.out.includes('{{leg3}}'), 'show: FV line + token table (only tokens that resolve)'); }
   t.eq(cli(['show', 'ZZZQ', 'nope.path']).code, 1, 'show with an unknown path → exit 1');
+  // fix round 1 (Fix 2) — show/diff เอา view จาก checkDoc ตัวเดียว: ขาที่ค่าไม่ใช่ตัวเลข > 0 = บรรทัด error อ่านได้ ไม่ใช่ throw ที่ toFixed
+  { const Cm = require('../../tools/v3/compute.js'), orig = Cm.compute;
+    Cm.compute = (...a) => { const v = orig(...a); v.legs[0] = { ...v.legs[0], value: undefined }; return v; };
+    let r; try { r = cli(['show', 'ZZZQ']); } finally { Cm.compute = orig; }
+    t(r.code === 1 && /ยัง compute ไม่ได้/.test(r.out) && /✗ \[E51\] .*legs\[0\] ค่าขา/.test(r.out) && !/toFixed|\n\s+at /.test(r.out), `show on a bad-leg view → exit 1, readable E51 line (${r.out.slice(0, 300)})`); }
   t(/อยู่แล้ว/.test(cli(['init', 'ZZZQ']).out), 'init after the report exists → refused (UPDATE uses export)');
 
   // ── UPDATE: export → save round trip · --light · diff ──
@@ -133,6 +138,16 @@ try {
   t.eq(RC.lightViolations({ analyst: { target: 1 }, meta: { sources: ['a'] }, fundamentals: { dps: 1, eps: 2 } },
     { analyst: { target: 2 }, meta: { sources: ['a', 'b'] }, fundamentals: { dps: 2, eps: 3 } }), ['fundamentals.eps'], 'lightViolations: analyst.* / meta.sources[*] / fundamentals.dps allowed');
   t.eq(RC.diffPaths({ market: 1, _sig: 'x', a: [1, 2], b: { c: 1 } }, { market: 2, a: [1], b: { c: 1, d: null } }), ['a[1]', 'b.d'], 'diffPaths: skips market/_sig, reports array tails and added keys');
+  // fix round 1 (Fix 1) — container ที่มีข้างเดียว = เดินเทียบกับ {} / [] → ได้ leaf จริง ไม่ใช่ path แม่ตัวเดียว
+  t.eq(RC.lightViolations({ metrics: { cards: [] } }, { metrics: { cards: [], notes: { pe: 'x' } } }), [], 'lightViolations: new metrics.notes object with a prose leaf → allowed');
+  t.eq(RC.lightViolations({ metrics: { cards: [], notes: {} } }, { metrics: { cards: [], notes: { pe: 'x' } } }), [], 'lightViolations: same edit on a pre-existing notes:{} → allowed (same answer)');
+  { const ex = (rows) => ({ extras: [{ title: 't', rows }] });
+    t.eq(RC.diffPaths(ex([['a', '1']]), ex([['a', '1'], ['b', '2']])), ['extras[0].rows[1][0]', 'extras[0].rows[1][1]'], 'diffPaths: added extras row → its cell leaves');
+    t.eq(RC.lightViolations(ex([['a', '1']]), ex([['a', '1'], ['b', '2']])), [], 'lightViolations: added extras row of prose cells → allowed');
+    t.eq(RC.lightViolations(ex([['a', '1']]), ex([['a', '1'], { kind: 'total', cells: ['รวม', '3'] }])), ['extras[0].rows[1].kind'], 'lightViolations: added total row → non-prose kind leaf refused, cells allowed'); }
+  t.eq(RC.lightViolations({ fundamentals: { eps: 1 } }, { fundamentals: { eps: 1, fy: { period: 'FY2025', eps: 2 } } }), ['fundamentals.fy.period', 'fundamentals.fy.eps'], 'lightViolations: one-sided container of non-allowlisted leaves → each leaf refused');
+  t.eq(RC.lightViolations({ analyst: null }, { analyst: { target: 2, rating: 'Buy' } }), [], 'lightViolations: analyst null → object still allowed (analyst.* prefix)');
+  t.eq(RC.diffPaths({ a: [1], b: { c: 1 }, e: null }, { a: {}, b: { c: 1, d: [] } }), ['a', 'b.d', 'e'], 'diffPaths: array↔object = one leaf · absent → empty container = its own path · null → absent = leaf');
 
   // ── refusals ── Review Focus 1: ใบ v2 อยู่แล้ว ห้ามเขียน .json ข้าง ๆ (build.reportEntries จะ throw ทั้งเว็บ)
   fs.copyFileSync(path.join(FIX, 'AAPL-v2.html'), path.join(R, 'AAPL.html'));
