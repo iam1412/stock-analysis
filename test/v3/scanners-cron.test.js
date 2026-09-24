@@ -62,10 +62,12 @@ try {
     fs.copyFileSync(V3SRC, path.join(gRep, 'ZTS.json'));
     const man = (a, z) => JSON.stringify([{ symbol: 'AAPL', updated: a }, { symbol: 'ZTS', updated: z }], null, 2) + '\n';
     fs.writeFileSync(path.join(gitTmp, 'reports.json'), man('2026-09-01T00:00:00+07:00', '2026-09-02T00:00:00+07:00'));
-    const g = (...a) => cp.execFileSync('git', ['-c', 'user.name=t', '-c', 'user.email=t@t', '-c', 'commit.gpgsign=false', '-c', 'core.hooksPath=/dev/null', ...a], { cwd: gitTmp, stdio: 'pipe' });
+    // ★ ล้าง GIT_* ที่ git hook (pre-push) export มา — ไม่งั้น git ใน repo ชั่วคราวชี้ไป .git ของ worktree ("must be run in a work tree")
+    const cleanEnv = Object.fromEntries(Object.entries(process.env).filter(([k]) => !/^GIT_(DIR|WORK_TREE|INDEX_FILE|COMMON_DIR|PREFIX|OBJECT_DIRECTORY)$/.test(k)));
+    const g = (...a) => cp.execFileSync('git', ['-c', 'user.name=t', '-c', 'user.email=t@t', '-c', 'commit.gpgsign=false', '-c', 'core.hooksPath=/dev/null', ...a], { cwd: gitTmp, stdio: 'pipe', env: cleanEnv });
     g('init', '-q'); g('add', '-A'); g('commit', '-q', '-m', 'base');
     fs.writeFileSync(path.join(gitTmp, 'reports.json'), man('2026-09-24T01:00:00+07:00', '2026-09-24T01:00:00+07:00'));
-    const pr = cp.spawnSync(process.execPath, ['-e', 'require(process.argv[1]).main(process.argv[2])', path.join(ROOT, 'tools', 'preserve-dates.js'), gitTmp], { encoding: 'utf8' });
+    const pr = cp.spawnSync(process.execPath, ['-e', 'require(process.argv[1]).main(process.argv[2])', path.join(ROOT, 'tools', 'preserve-dates.js'), gitTmp], { encoding: 'utf8', env: cleanEnv });
     const after = Object.fromEntries(JSON.parse(fs.readFileSync(path.join(gitTmp, 'reports.json'), 'utf8')).map((r) => [r.symbol, r.updated]));
     t(pr.status === 0 && after.AAPL === '2026-09-01T00:00:00+07:00' && after.ZTS === '2026-09-24T01:00:00+07:00' && /ข้าม 1 ใบ v3[^\n]*ZTS/.test(pr.stdout),
       'preserve-dates main: v3 symbol reaches the skip set (keeps new date) · v2 restored', JSON.stringify({ status: pr.status, after, out: pr.stdout, err: pr.stderr }));
