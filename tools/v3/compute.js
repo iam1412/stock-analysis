@@ -15,6 +15,7 @@ const UP = { chgBg: 'var(--green-soft)', chgColor: '#137333' };     // = fetch-f
 const DOWN = { chgBg: 'var(--red-soft)', chgColor: '#c5221f' };
 const SCN_NAMES = ['bear', 'base', 'bull'];
 const round2 = (x) => Math.round(x * 100) / 100;
+const round1 = (x) => (x == null ? x : Math.round(x * 10) / 10);
 const STMT_SYMBOL = { USD: '$', THB: '฿', EUR: '€', CAD: 'C$', GBP: '£', JPY: '¥', CHF: 'CHF ', TWD: 'NT$' };
 const TOTALS = ['revenue', 'netIncome', 'fcf', 'ebitda', 'netDebt'];
 // ยอดรวมทั้งบริษัท (สกุลงบ) → สกุลราคา · fx = 1 คืน object เดิม (ทางเดิมทุก byte)
@@ -146,7 +147,8 @@ function compute(doc, opts) {
   const smBase = { symbol: doc.symbol, currency: doc.currency };
   const d = RV.derive(rd, smBase);
   const sm = {
-    ...smBase, price: mk.px, fairValue: round2(fv), mos: num4(d.mos), upside: num4(d.upside),
+    // mos/upside ปัด 1 ตำแหน่งเหมือนกระจก stock-meta ของ v2 (cron เขียน ≤1dp ทั้ง 909 ใบ) — ไม่งั้นการ์ด index/manifest ของ v3 โชว์ −27.52% ท่ามกลาง −27.5% (final review 2c-ii)
+    ...smBase, price: mk.px, fairValue: round2(fv), mos: round1(d.mos), upside: round1(d.upside),
     pe: d.pe == null ? null : num4(d.pe), dividendYield: d.yield == null ? null : num4(d.yield), roe: f.roe == null ? null : f.roe,
   };
   const ad = RV.parseIso(doc.meta.analysisDate);
