@@ -370,7 +370,7 @@ function prepatchBlockers(entries) {
 /** ข้อความที่ `ship --prepatch` throw (ส่วนบริสุทธิ์) — null = ไปต่อได้ */
 function prepatchRefusal({ blocked, foreign }) {
   const L = [
-    ...(foreign || []).map((p) => `ship --prepatch: ${p} ไม่ใช่ใบ v2 (.html) — pre-patch ราคาเป็นของใบ v2 เท่านั้น (v3 cron = Plan 3) · ใบ v3 ใช้ npm run queue -- ship <SYM> · ไฟล์อื่นใต้ reports/ ต้องย้ายออกก่อน`),
+    ...(foreign || []).map((p) => `ship --prepatch: ${p} ไม่ใช่ใบ v2 (.html) — pre-patch อัตโนมัติเป็นของใบ v2 เท่านั้น (ใบ v3 = P6 · pre-patch มือ = update-prices --write --force <SYM>) · ใบ v3 ใช้ npm run queue -- ship <SYM> · ไฟล์อื่นใต้ reports/ ต้องย้ายออกก่อน`),
     ...(blocked || []).map((sym) => `ship --prepatch: ${sym} ถูกวิเคราะห์ใหม่แล้ว (footer ขยับ/ไฟล์ใหม่) — ใช้ npm run queue -- ship ${sym} แทน`),
   ];
   return L.length ? L.join('\n') : null;

@@ -136,7 +136,7 @@ function patchTargets(rows, m) {
   const v3 = new Set(rows.filter((r) => r.v3).map((r) => r.symbol));
   const out = { target: [], skippedUS: [], skippedTH: [], skippedNoReport: [], skippedV3: [] };
   for (const sym of prePatchList(rows)) {
-    if (v3.has(sym)) { out.skippedV3.push(sym); continue; }   // ราคาใบ v3 = cron P5 (#62) — update-prices ปฏิเสธใบ v3 อยู่แล้ว
+    if (v3.has(sym)) { out.skippedV3.push(sym); continue; }   // ใบ v3: pre-patch อัตโนมัติ = P6 (Plan 3 R8) — preflight พิมพ์ v3Lines ชี้คำสั่งมือแทน
     const c = cur.get(sym);
     if (c == null) { out.skippedNoReport.push(sym); continue; }
     const th = c === 'THB';
@@ -145,6 +145,12 @@ function patchTargets(rows, m) {
     out.target.push(sym);
   }
   return out;
+}
+
+/** บรรทัดชี้คำสั่งมือต่อแถวใบ v3 (ส่วนบริสุทธิ์ · Plan 3 R8) — pre-patch อัตโนมัติของใบ v3 (patchTargets/parseGateFailures/ทาง revert/
+ *  ship --prepatch) = P6 · P5 แค่ห้ามล้มและห้ามเงียบ: หนึ่งบรรทัดต่อใบ ไม่ว่าแถวนั้นอยู่ bucket ไหน (prep ปฏิเสธใบ v3 อยู่แล้ว) */
+function v3Lines(rows) {
+  return rows.filter((r) => r.v3).map((r) => `v3 ${r.symbol}: controller → \`node tools/update-prices.js --write --force ${r.symbol}\` (flip) หรือ export/save (P6 queue flow)`);
 }
 
 /** อ่านผล `node test/check-reports.js <syms>` → รายชื่อไฟล์ที่ "ตก" (ส่วนบริสุทธิ์ ไม่แตะดิสก์)
@@ -298,7 +304,8 @@ function preflight(opts) {
   if (t.skippedUS.length) console.log(`\n⏳ ตลาด US เปิดอยู่ — ไม่ pre-patch ${t.skippedUS.join(' ')} (ราคา intraday · --force ข้าม guard ของ update-prices เอง — บทเรียน 9 ก.ย. 69) · ต้องการจริงใส่ --allow-intraday`);
   if (t.skippedTH.length) console.log(`\n⏳ SET เปิดอยู่ — ไม่ pre-patch ${t.skippedTH.join(' ')} · --allow-intraday ถ้าจงใจ`);
   if (t.skippedNoReport.length) console.log(`\n⚠ ไม่มีไฟล์รายงาน — ไม่ pre-patch ${t.skippedNoReport.join(' ')} (ลบไปแล้ว? รัน node tools/tag-apply.js --prune แล้วปล่อยให้ cron ตัด flag ทิ้ง)`);
-  if (t.skippedV3.length) console.log(`\nℹ ใบ v3 — ไม่ pre-patch ${t.skippedV3.join(' ')} (ราคาใบ v3 = cron P5 · v3 cron = Plan 3 · open-item #62) · re-analysis ของใบ v3 = P6`);
+  const v3l = v3Lines(rows);   // Plan 3 R8: ใบ v3 ไม่เข้า pre-patch อัตโนมัติ (P6) — บรรทัดชี้คำสั่งมือต่อใบ
+  if (v3l.length) console.log('\n' + v3l.map((l) => 'ℹ ' + l).join('\n'));
   if (t.target.length && !o.noPatch) {
     console.log(`\n▶ pre-patch ราคา ${t.target.length} ตัวใน process เดียว (lock กันคิวเพี้ยนแล้ว — WS4)`);
     const r = run('node', ['tools/update-prices.js', '--write', '--force', ...t.target]);
@@ -327,4 +334,4 @@ function preflight(opts) {
   return rows;
 }
 
-module.exports = { preflight, plan, ageQueue, listReportsFS, earningsAfterOfWith, statementAfterOfWith, unknownSummary, patchTargets, renderTable, manualSteps, loadFlags, parseGateFailures, roundStart, isNewFlag, upsertRow, applyGateResult, synthAge };
+module.exports = { preflight, plan, ageQueue, listReportsFS, v3Lines, earningsAfterOfWith, statementAfterOfWith, unknownSummary, patchTargets, renderTable, manualSteps, loadFlags, parseGateFailures, roundStart, isNewFlag, upsertRow, applyGateResult, synthAge };

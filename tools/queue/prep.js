@@ -267,7 +267,7 @@ function extraBlock(i) {
   if (i.medWarn.length) L.push(`- มัธยฐานตัวคูณ: ${i.medWarn.join(' · ')}`);
   if (i.hard) L.push(`- **หุ้นยาก** (${i.hardWhy}) → controller ปรึกษา advisor แล้ววางแนวทางตรงนี้ก่อน spawn:\n    <ยังไม่ได้วาง — ถ้าเห็นบรรทัดนี้ใน prompt แปลว่า controller ข้ามขั้น>`);
   L.push(i.mode === 'NEW'
-    ? '- ห้าม push · ห้ามเขียน tags.json · ห้ามเรียก advisor ตรง (ข้อห้ามเชิงนโยบาย — agent-prompt ว่าไว้แล้ว) · pick-brand มี lock แล้ว รันตาม SKILL ได้เมื่อจำเป็น · update-prices ไม่ใช้กับใบ v3 (cron ข้ามจน Plan 3)'
+    ? '- ห้าม push · ห้ามเขียน tags.json · ห้ามเรียก advisor ตรง (ข้อห้ามเชิงนโยบาย — agent-prompt ว่าไว้แล้ว) · pick-brand มี lock แล้ว รันตาม SKILL ได้เมื่อจำเป็น · update-prices ไม่ใช้กับใบ v3 ใบใหม่ (ราคาใบ v3 = cron หลัง publish — worker ไม่รัน)'
     : '- ห้าม push · ห้ามเขียน tags.json · ห้ามเรียก advisor ตรง (ข้อห้ามเชิงนโยบาย — agent-prompt ว่าไว้แล้ว) · pick-brand/update-prices มี lock แล้ว รันตาม SKILL ได้เมื่อจำเป็น');
   // sidecar ประกอบได้ (sidecarOk) = ทาง v3 เปิด → ชี้ STEP 5V · ประกอบไม่ได้ = ไม่พิมพ์เพิ่ม (init จะปฏิเสธ · ⚠ บรรทัดเดียวใน stdout ของ prep มีอยู่แล้ว)
   if (i.mode === 'NEW' && i.sidecarOk) L.push(`★ ใบ NEW เขียนเป็น v3 — ทำตาม SKILL STEP 5V: node tools/report.js init ${i.sym} → เติม .work/${i.sym}.json → pick-brand → save (sidecar: .queue/prep/${i.sym}.json) · ห้ามเขียน reports/ ด้วย Write/Edit/Bash · save ✓ = gate ของ worker (ไม่ต้องรัน npm test)`);

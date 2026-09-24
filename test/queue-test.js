@@ -36,11 +36,11 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
   const full = pkg.scripts.verify.split('&&').map((s) => s.trim());
   const cron = String(pkg.scripts['verify:cron'] || '').split('&&').map((s) => s.trim()).filter(Boolean);
-  ok(cron.length === 5, 'verify:cron: 5 ขั้น (check-reports · build · build-test · engine-exec · check-site)', pkg.scripts['verify:cron']);
+  ok(cron.length === 6, 'verify:cron: 6 ขั้น (check-reports · check-v3 · build · build-test · engine-exec · check-site — check-v3 เพิ่มใน Plan 3 · #61)', pkg.scripts['verify:cron']);
   ok(cron.every((s) => full.includes(s)), 'verify:cron: ทุกขั้นอยู่ใน verify เต็ม', cron.filter((s) => !full.includes(s)).join(' '));
   const idx = cron.map((s) => full.indexOf(s));
   ok(idx.every((v, i) => i === 0 || v > idx[i - 1]), 'verify:cron: ลำดับเดียวกับ verify เต็ม');
-  for (const must of ['node test/check-reports.js', 'node build.js', 'node test/build-test.js', 'node test/engine-exec.js', 'node test/check-site.js'])
+  for (const must of ['node test/check-reports.js', 'node test/check-v3.js', 'node build.js', 'node test/build-test.js', 'node test/engine-exec.js', 'node test/check-site.js'])
     ok(cron.includes(must), `verify:cron: มี ${must}`);
   const yml = fs.readFileSync(path.join(ROOT, '.github', 'workflows', 'update-prices.yml'), 'utf8');
   ok(/run:\s*npm run verify:cron\s*$/m.test(yml) && !/run:\s*npm run verify\s*$/m.test(yml), 'update-prices.yml: รัน verify:cron (ไม่ใช่ verify เต็ม)');
@@ -1568,6 +1568,8 @@ const applyEditsRacePromise = testApplyEditsStdin(ok);
       'v3/preflight: ราคาเดิม/สกุลของใบ v3 มาจาก market.px/currency', JSON.stringify(rows.map((r) => [r.symbol, r.v3, r.oldPrice, r.currency])));
     const pt = P.patchTargets(rows, { usOpen: false, setOpen: false, allowIntraday: false });
     ok(pt.skippedV3.join(',') === 'ZTS' && !pt.target.includes('ZTS') && pt.target.includes('AAPL'), 'v3/preflight: ใบ v3 ไม่เข้า pre-patch อัตโนมัติ (P6 · pre-patch มือ = update-prices --write --force — Plan 3 R8) · ใบ v2 เข้าเหมือนเดิม', JSON.stringify(pt));
+    ok(JSON.stringify(P.v3Lines(rows)) === JSON.stringify(['v3 ZTS: controller → `node tools/update-prices.js --write --force ZTS` (flip) หรือ export/save (P6 queue flow)']),
+      'v3/preflight (Plan 3 R8): แถวใบ v3 = 1 บรรทัดชี้คำสั่งมือ · ใบ v2 ไม่มีบรรทัด', JSON.stringify(P.v3Lines(rows)));
     const cal = { symbols: { ZTS: { last: '2026-09-25' } } };
     const lite = { analysisDate: '2026-09-22', currency: 'THB' };
     const html = '<script type="application/json" id="stock-meta">{"currency":"THB"}</script><footer>ข้อมูล ณ 22 ก.ย. 2569</footer>';

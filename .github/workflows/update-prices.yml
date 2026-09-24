@@ -1,4 +1,5 @@
-# Cron อัปเดตราคาหุ้น + วันที่ราคา ลง reports/*.html ทุกวัน (04:00 น. ไทย วันถัดไป — เดิม 07:17 น. ไทย)
+# Cron อัปเดตราคาหุ้น + วันที่ราคา ทุกวัน (04:00 น. ไทย วันถัดไป — เดิม 07:17 น. ไทย)
+#   ใบ v2 = reports/*.html (report-data.values) · ใบ v3 = reports/*.json (market.* อย่างเดียว ผ่าน IO.writeMarket — Plan 3 · spec §7)
 # รายละเอียด: docs/price-refresh.md · ตัวรัน: tools/update-prices.js (deterministic ไม่มี LLM)
 # push เข้า main → Cloudflare Workers Builds deploy เว็บให้เองตามปกติ
 name: price-refresh
@@ -71,7 +72,8 @@ jobs:
           # scope: cron แตะแค่รายงาน + manifest + flags — กันไฟล์แปลกปลอมที่ step ก่อนหน้าเผลอเขียนลง repo root หลุดขึ้น main
           git add reports reports.json price-flags.json
           if git diff --cached --quiet; then echo "ไม่มีอะไรเปลี่ยน — ข้าม commit"; exit 0; fi
-          n=$(git diff --cached --name-only -- 'reports/*.html' | wc -l | tr -d ' ')
+          # นับทั้งใบ v2 (.html) และใบ v3 (.json · Plan 3) — ชื่อ commit ต้องตรงจำนวนหุ้นที่ราคาเปลี่ยนจริง
+          n=$(git diff --cached --name-only -- 'reports/*.html' 'reports/*.json' | wc -l | tr -d ' ')
           # log ต่อหุ้น (เก่า→ใหม่ + freeze) เข้า commit body — ถาวรใน git history
           { echo "price: refresh ${n} symbols ($(TZ=Asia/Bangkok date +%Y-%m-%d))"; echo ""; cat /tmp/price-commit-body.txt 2>/dev/null || true; } > /tmp/price-commit-msg.txt
           git commit -F /tmp/price-commit-msg.txt

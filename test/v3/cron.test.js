@@ -186,4 +186,9 @@ t.eq([{ kind: 'write' }, { kind: 'unchanged' }, { kind: 'freeze', flag: { reason
   t(!src.includes('/\\.html$/i.test(f)'), '#49 residue closed: no .html-only readdir filter left in update-prices.js');
   t(!/\bv3Guard\b|\bv3SweepNotice\b|\bv3Refusal\b/.test(src), 'v3Guard/v3Refusal/v3SweepNotice removed from update-prices.js'); }
 
+// ── Plan 3 Task 4 — update-prices.yml นับใบ v3 ในชื่อ commit (R7) ──
+{ const yml = fs.readFileSync(path.join(ROOT, '.github', 'workflows', 'update-prices.yml'), 'utf8');
+  t(yml.includes("git diff --cached --name-only -- 'reports/*.html' 'reports/*.json'"), 'update-prices.yml: commit count n includes reports/*.json');
+  t(!/ลง reports\/\*\.html ทุกวัน/.test(yml), 'update-prices.yml: header comment no longer says .html only'); }
+
 t.done();

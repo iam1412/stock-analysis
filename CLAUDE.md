@@ -107,7 +107,7 @@ Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>
 
 ## 8. Quality gate — ก่อนเผยแพร่ (`npm run verify`)
 
-<!-- gen:verify-steps -->20<!-- /gen:verify-steps --> ขั้น ต้องผ่านทั้งหมดก่อน push (pre-push hook บังคับซ้ำ) · cron ใช้ชุดย่อย `verify:cron` <!-- gen:verify-cron-steps -->5<!-- /gen:verify-cron-steps --> ขั้น (<!-- gen:verify-cron-chain -->`check-reports` → `build` → `build-test` → `engine-exec` → `check-site`<!-- /gen:verify-cron-chain -->) เพราะ unit test ของเครื่องมือล้ม ≠ ราคาพัง:
+<!-- gen:verify-steps -->20<!-- /gen:verify-steps --> ขั้น ต้องผ่านทั้งหมดก่อน push (pre-push hook บังคับซ้ำ) · cron ใช้ชุดย่อย `verify:cron` <!-- gen:verify-cron-steps -->6<!-- /gen:verify-cron-steps --> ขั้น (<!-- gen:verify-cron-chain -->`check-reports` → `check-v3` → `build` → `build-test` → `engine-exec` → `check-site`<!-- /gen:verify-cron-chain -->) เพราะ unit test ของเครื่องมือล้ม ≠ ราคาพัง:
 <!-- gen:verify-chain -->`update-prices-test` → `dead-ticker-test` → `tag-apply-test` → `queue-test` → `docs-test` → `prep-stock-test` → `tags-test` → `report-values-test` → `v3-test` → `v2-path-test` → `check-reports` → `check-v3` → `self-test` → `ohlc-test` → `ta-engine-test` → `build` → `build-test` → `engine-exec` → `skeleton-test` → `check-site`<!-- /gen:verify-chain --> (check-reports = <!-- gen:counts -->48 error + 21 warning<!-- /gen:counts -->)
 
 > ตัวเลข/ลำดับขั้นในบล็อกนี้ generate ด้วย `node tools/gen-docs.js` จาก `package.json` + `CHECKS` — แก้มือแล้วจะถูกเขียนทับ (`--check` ฟ้องใน gate) · ที่มาของการเอา `self-test`/`docs-test` เข้า gate → `docs/decisions.md` §8
