@@ -1568,6 +1568,45 @@ const applyEditsRacePromise = testApplyEditsStdin(ok);
     ok(P.earningsAfterOfWith(cal, () => lite)('ZTS') === true && P.earningsAfterOfWith(cal, () => html)('ZTS') === true, 'v3/preflight: earningsAfterOf อ่าน metaLite ได้เหมือน html');
     const sa = (read) => P.statementAfterOfWith(cal, read, { today: '2026-09-30', sec: null })('ZTS');
     ok(JSON.stringify(sa(() => lite)) === JSON.stringify(sa(() => html)), 'v3/preflight: statementAfterOf จาก metaLite = จาก html (วันวิเคราะห์ + สกุล TH)', JSON.stringify([sa(() => lite), sa(() => html)]));
+    // ── fix round 1 (review Task 3): prepatch fail closed บน porcelain ที่ประดิษฐ์ขึ้น (ส่วนบริสุทธิ์ ไม่แตะ git) ──
+    const asEntries = (rows) => rows.map((e) => ({ path: e.path, from: e.from, untracked: e.isNew || e.from != null, headFooterISO: '2026-09-01', workFooterISO: '2026-09-01' }));
+    const fz = (rows) => { const r = Sh.prepatchBlockers(asEntries(rows)); return { r, refusal: Sh.prepatchRefusal(r) }; };
+    // (a) path ที่ git quote (มีช่องว่าง) — โหมดข้อความ quote · -z ไม่ quote · และถ้าหลุดมาดิบ ๆ ก็ยังเป็น foreign
+    const qT = Sh.parsePorcelain('?? "reports/ZTS copy.json"');
+    ok(qT[0].path === 'reports/ZTS copy.json' && fz(qT).r.foreign.join() === 'reports/ZTS copy.json' && fz(qT).refusal, 'v3/ship fix1a: "reports/ZTS copy.json" (quoted) → แกะ quote → foreign', JSON.stringify(qT));
+    const qZ = Sh.parsePorcelainZ('?? reports/ZTS copy.json\0 M reports/KLAC.html\0');
+    ok(qZ.length === 2 && fz(qZ).r.foreign.join() === 'reports/ZTS copy.json' && !fz(qZ).r.blocked.length, 'v3/ship fix1a: -z ไม่ quote → foreign · ใบ v2 ที่แก้ไม่โดน', JSON.stringify(qZ));
+    ok(Sh.prepatchBlockers([{ path: '"reports/ZTS copy.json"', untracked: true }]).foreign.join() === '"reports/ZTS copy.json"', 'v3/ship fix1a: path quote ดิบที่ไม่ได้แกะ ยังเป็น foreign (/^"?reports\\//)');
+    ok(Sh.unquotePath('"reports/\\303\\251.json"') === 'reports/é.json' && Sh.unquotePath('reports/A.html') === 'reports/A.html', 'v3/ship fix1a: unquotePath แกะเลขฐานแปด UTF-8 · ไม่มี quote = คืนเดิม');
+    // (b) โฟลเดอร์ย่อย + ตัวพิมพ์ .HTML
+    const nest = Sh.parsePorcelainZ(' M reports/sub/Y.html\0?? reports/sub/Z.html\0 M reports/ZTS.HTML\0');
+    ok(fz(nest).r.foreign.join() === 'reports/sub/Y.html,reports/sub/Z.html,reports/ZTS.HTML' && !fz(nest).r.blocked.length && !fz(nest).r.unreadable.length,
+      'v3/ship fix1b: reports/sub/*.html และ .HTML = foreign (ไม่ใช่ใบ v2 ระดับบนสุด)', JSON.stringify(fz(nest).r));
+    // (c) rename/copy — ต้นทางถูกเก็บ · ปลายทางใบ v2 = blocked (ไม่มีใน HEAD) · ต้นทาง/ปลายทางที่ไม่ใช่ใบ v2 = foreign
+    const rz = Sh.parsePorcelainZ('R  reports/NEW.html\0reports/OLD.json\0R  reports/B.html\0reports/A.html\0R  old/X.html\0reports/X.html\0C  reports/K.json\0reports/K.html\0');
+    ok(rz.length === 4 && rz[0].from === 'reports/OLD.json' && rz[0].path === 'reports/NEW.html', 'v3/ship fix1c: parsePorcelainZ rename = ปลายทาง\\0ต้นทาง', JSON.stringify(rz));
+    const rr = fz(rz).r;
+    ok(rr.foreign.join() === 'reports/OLD.json,old/X.html,reports/K.json' && rr.blocked.join() === 'NEW,B', 'v3/ship fix1c: rename .json→.html / ย้ายออกนอก reports/ / copy → .json = foreign · rename ปลายทาง .html = blocked', JSON.stringify(rr));
+    const rT = Sh.parsePorcelain('R  reports/A.html -> reports/B.html\nR  "reports/a b.json" -> reports/C.html');
+    ok(rT[0].from === 'reports/A.html' && rT[1].from === 'reports/a b.json' && fz(rT).r.blocked.join() === 'B,C' && fz(rT).r.foreign.join() === 'reports/a b.json', 'v3/ship fix1c: parsePorcelain เก็บ from (แกะ quote) · rename .html→.html = blocked', JSON.stringify(fz(rT).r));
+    // ใบที่ลบ (.json) — ไม่เข้า candidates ⇒ ไม่ถูก git add/commit (commit "price: …" จำกัด path ด้วย -- ) · ขึ้นใน delNote แทน
+    const del = Sh.prepatchCandidates(Sh.parsePorcelainZ(' D reports/ZTS.json\0D  reports/OLD.html\0 M reports/KLAC.html\0'));
+    ok(del.deleted.map((e) => e.path).join() === 'reports/ZTS.json,reports/OLD.html' && del.candidates.map((e) => e.path).join() === 'reports/KLAC.html' && Sh.commitArgs('m', ['reports/KLAC.html']).slice(-2).join() === '--,reports/KLAC.html',
+      'v3/ship fix1: ใบ .json ที่ลบ → deleted (ไม่เข้า pre-patch commit ที่จำกัด path)', JSON.stringify(del));
+    // ── fix round 1: คิวตามอายุข้ามใบ v3 (P6 ถอดตัวกรอง) ──
+    ok(P.listReportsFS(V3DIR).join() === 'AAPL', 'v3/preflight fix2: listReportsFS ไม่นับใบ v3', P.listReportsFS(V3DIR).join());
+    const aq = P.ageQueue('2026-09-24', { listReports: () => P.listReportsFS(V3DIR), footerAgeOf: () => 400 });
+    ok(aq.map((r) => r.symbol).join() === 'AAPL', 'v3/preflight fix2: ใบ v3 ที่เก่าเกิน STALE_DAYS ไม่เข้าคิวอายุ (ไม่งั้นสร้างแถว LIGHT ที่ prep ปฏิเสธทุกรอบ)', JSON.stringify(aq));
+    // ── fix round 1: postcheck haystack ครอบป้าย legs/custom/extras headers · จุดที่เจอบอกเป็น path ของ JSON ──
+    const s2 = RS.load('ZTS', V3DIR);
+    s2.doc.legs[0].label += ' @ $55.55';
+    s2.doc.metrics.custom[0].label += ' $55.55';
+    s2.doc.extras = [{ after: 'valuation', title: 't', headers: ['ราคา $55.55', 'x'], rows: [] }];
+    s2.doc.prose.mos += ' เคยซื้อขายที่ $55.55';
+    const h2 = Pc.oldPriceHits(s2, 55.55);
+    ok(h2.map((h) => h.where).sort().join() === 'extras[0].headers[0],legs[0].label,metrics.custom[0].label,prose.mos', 'v3/postcheck fix3: ป้าย legs[].label · metrics.custom[].label · extras[].headers + prose → ขึ้นเป็น path', JSON.stringify(h2));
+    const hv2 = Pc.oldPriceHits({ v3: false, raw: 'a\nราคา $55.55\n' }, 55.55);
+    ok(hv2.length === 1 && hv2[0].where === 'L2', 'v3/postcheck fix3: ใบ v2 ยังบอกเป็น L<บรรทัด>', JSON.stringify(hv2));
   } finally { fs.rmSync(V3DIR, { recursive: true, force: true }); }
 }
 

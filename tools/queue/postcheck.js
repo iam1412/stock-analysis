@@ -56,9 +56,27 @@ function checkMeta(ctx, model, fd, today) {
   return issues;
 }
 
-/** ข้อความที่ grep หาราคาเดิมค้าง (ส่วนบริสุทธิ์): ใบ v2 = html ดิบทั้งไฟล์ (findOldPrice ข้ามบล็อก JSON เอง)
- *  · ใบ v3 = ทุกช่อง prose (P.proseFields) — market/fundamentals เป็นตัวเลขของ cron/งบ ไม่ใช่ข้อความที่ค้างได้ */
-function oldPriceHaystack(src) { return src.v3 ? P3.proseFields(src.doc).map((x) => x.text).join('\n') : src.raw; }
+/** ช่องข้อความของใบ v3 ที่ราคาเดิมค้างได้ (ส่วนบริสุทธิ์) → [{ path, text }]
+ *  = ทุกช่อง prose (P.proseFields) + ป้ายที่ worker พิมพ์เอง: legs[].label · metrics.custom[].label · extras[].headers[]
+ *  — market/fundamentals เป็นตัวเลขของ cron/งบ ไม่ใช่ข้อความที่ค้างได้ */
+function oldPriceFields(doc) {
+  const arr = (x) => (Array.isArray(x) ? x : []);
+  const out = P3.proseFields(doc);
+  const add = (p, t) => { if (typeof t === 'string') out.push({ path: p, text: t }); };
+  arr(doc.legs).forEach((l, i) => add(`legs[${i}].label`, (l || {}).label));
+  arr((doc.metrics || {}).custom).forEach((c, i) => add(`metrics.custom[${i}].label`, (c || {}).label));
+  arr(doc.extras).forEach((x, i) => arr((x || {}).headers).forEach((h, k) => add(`extras[${i}].headers[${k}]`, h)));
+  return out;
+}
+/** ข้อความที่ grep หาราคาเดิมค้าง (ส่วนบริสุทธิ์): ใบ v2 = html ดิบทั้งไฟล์ (findOldPrice ข้ามบล็อก JSON เอง) · ใบ v3 = oldPriceFields */
+function oldPriceHaystack(src) { return src.v3 ? oldPriceFields(src.doc).map((x) => x.text).join('\n') : src.raw; }
+/** จุดที่ราคาเดิมยังโผล่ → [{ where, text }] · where = `L<บรรทัด>` (ใบ v2) · path ของช่องใน JSON (ใบ v3 เช่น prose.mos) */
+function oldPriceHits(src, oldPrice) {
+  if (!src.v3) return findOldPrice(src.raw, oldPrice).map((h) => ({ where: `L${h.line}`, text: h.text }));
+  const out = [];
+  for (const f of oldPriceFields(src.doc)) for (const h of findOldPrice(f.text, oldPrice)) out.push({ where: f.path, text: h.text });
+  return out;
+}
 
 function postcheck(sym, opts) {
   const o = opts || {};
@@ -74,8 +92,8 @@ function postcheck(sym, opts) {
   process.stdout.write(sp.out);
   if (/▸/.test(sp.out)) notes.push('spotcheck มีรายการให้อ่าน (ด้านบน) — ตัดสินเอง ไม่ใช่ gate');
 
-  const hits = findOldPrice(oldPriceHaystack(src), rec.oldPrice);
-  if (hits.length) issues.push(`ราคาเดิม ${rec.oldPrice} ยังโผล่ ${hits.length} จุด:\n` + hits.map((h) => `    L${h.line}: ${h.text}`).join('\n'));
+  const hits = oldPriceHits(src, rec.oldPrice);
+  if (hits.length) issues.push(`ราคาเดิม ${rec.oldPrice} ยังโผล่ ${hits.length} จุด:\n` + hits.map((h) => `    ${h.where}: ${h.text}`).join('\n'));
 
   const { buildCtx } = require('../../test/check-reports.js');
   const ctx = buildCtx(RS.renderedHtml(sym, REPORTS), sym + '.html');   // v2 = expandReport(ต้นฉบับ) เหมือนเดิม · v3 = หน้าที่ build render
@@ -106,4 +124,4 @@ function postcheck(sym, opts) {
   return { issues, notes };
 }
 
-module.exports = { postcheck, findOldPrice, oldPriceHaystack, checkMeta, checkFyYears };
+module.exports = { postcheck, findOldPrice, oldPriceFields, oldPriceHaystack, oldPriceHits, checkMeta, checkFyYears };

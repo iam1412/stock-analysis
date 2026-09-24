@@ -275,17 +275,48 @@ function shipStock(sym, opts) {
   closeIssueIfEmpty();
 }
 
-/** parse `git status --porcelain` (ส่วนบริสุทธิ์ — ไม่แตะ git) → [{ path, isNew, deleted }]
- *  rename (`R  old -> new` / `RM …`) ใช้ path ปลายทาง (หลัง ' -> ') · isNew = untracked (`??`) หรือเพิ่งถูก `git add` (`A`)
- *  → เข้าเงื่อนไข "ไฟล์ใหม่ทั้งใบ" เสมอ ไม่ว่าจะ stage แล้วหรือยัง
+/** ใบ v2 ที่ pre-patch ได้ = reports/<SYM>.html ระดับบนสุดเท่านั้น (ตัวพิมพ์ตรงตัว: .HTML · reports/sub/Y.html = ไม่ใช่)
+ *  UNDER_REPORTS รับรูปที่ git quote มาด้วย (`"reports/…"`) — กันไว้อีกชั้นแม้ shipPrepatch ใช้ -z แล้ว */
+const V2_REPORT_RE = /^reports\/([^/]+)\.html$/;
+const UNDER_REPORTS = /^"?reports\//;
+/** แกะ path ที่ git quote แบบ C string (`"reports/ZTS copy.json"` · `"\\303\\251"` = UTF-8 เป็นเลขฐานแปด) — ไม่มี quote = คืนเดิม */
+function unquotePath(p) {
+  if (!(p.length >= 2 && p[0] === '"' && p[p.length - 1] === '"')) return p;
+  const cs = Array.from(p.slice(1, -1)), bytes = [];
+  const ESC = { a: 7, b: 8, t: 9, n: 10, v: 11, f: 12, r: 13 };
+  for (let i = 0; i < cs.length; i++) {
+    if (cs[i] !== '\\') { bytes.push(...Buffer.from(cs[i], 'utf8')); continue; }
+    const n = cs[++i];
+    if (/[0-7]/.test(n || '')) { bytes.push(parseInt(cs.slice(i, i + 3).join(''), 8)); i += 2; continue; }
+    bytes.push(ESC[n] != null ? ESC[n] : Buffer.from(n || '', 'utf8')[0]);
+  }
+  return Buffer.from(bytes).toString('utf8');
+}
+const porcelainRow = (status, p, from) => ({ path: p, from: from || null, isNew: /[A?]/.test(status), deleted: status.includes('D') });
+/** parse `git status --porcelain` (ส่วนบริสุทธิ์ — ไม่แตะ git) → [{ path, from, isNew, deleted }]
+ *  rename/copy (`R  old -> new` / `RM …` / `C …`) ใช้ path ปลายทาง (หลัง ' -> ') · from = ต้นทาง (ไม่ใช่ rename = null)
+ *  · path ที่ git quote (`"reports/ZTS copy.json"`) ถูกแกะก่อนคืน · isNew = untracked (`??`) หรือเพิ่งถูก `git add` (`A`)
+ *  → เข้าเงื่อนไข "ไฟล์ใหม่ทั้งใบ" เสมอ ไม่ว่าจะ stage แล้วหรือยัง (rename ปลายทางก็ไม่มีใน HEAD — prepatchBlockers กันผ่าน `from`)
  *  deleted = ` D`/`D ` (ลบรายงานหุ้นเพิกถอน) — ไม่มีไฟล์ให้อ่าน footer และไม่ใช่ pre-patch ราคา ⇒ คัดออกทุกทาง */
 function parsePorcelain(text) {
   return String(text).split('\n').filter(Boolean).map((line) => {
     const status = line.slice(0, 2);
-    let p = line.slice(3).trim();
-    if (p.includes(' -> ')) p = p.split(' -> ').pop().trim();
-    return { path: p, isNew: /[A?]/.test(status), deleted: status.includes('D') };
+    let p = line.slice(3).trim(), from = null;
+    if (/[RC]/.test(status) && p.includes(' -> ')) { const parts = p.split(' -> '); p = parts.pop().trim(); from = unquotePath(parts.join(' -> ').trim()); }
+    return porcelainRow(status, unquotePath(p), from);
   });
+}
+/** parse `git status --porcelain -z` (ส่วนบริสุทธิ์) — ไม่มี quote เลย · rename/copy = `XY ปลายทาง\0ต้นทาง\0` → รูปเดียวกับ parsePorcelain
+ *  ★ ship --prepatch ใช้ตัวนี้ (fail closed): path มีช่องว่าง/อักษรพิเศษ git จะ quote ในโหมดข้อความ ⇒ regex ไม่เจอ ⇒ เคยหลุดเงียบ */
+function parsePorcelainZ(text) {
+  const tok = String(text).split('\0'), out = [];
+  for (let i = 0; i < tok.length; i++) {
+    const t = tok[i];
+    if (!t) continue;
+    const status = t.slice(0, 2);
+    out.push(porcelainRow(status, t.slice(3), /[RC]/.test(status) ? tok[++i] || null : null));
+  }
+  return out;
 }
 
 /** แยกไฟล์ที่ลบออกจากตัวเลือกของ `ship --prepatch` (ส่วนบริสุทธิ์)
@@ -299,15 +330,25 @@ function prepatchCandidates(entries) {
 
 /** ปฏิเสธไฟล์ใน reports/ ที่ worker วิเคราะห์ใหม่แล้ว (ไม่ใช่แค่ pre-patch ราคาที่ preflight ทำ) — `ship --prepatch`
  *  ต้องไม่กวาดไปเป็น commit "price: …" ทั้งที่ยังไม่ผ่าน postcheck/รีวิว
- *  entries = [{ path, untracked, headFooterISO, workFooterISO }] → คืน { blocked, unreadable, foreign } (ส่วนบริสุทธิ์ ไม่แตะ git)
+ *  entries = [{ path, from?, untracked, headFooterISO, workFooterISO }] → คืน { blocked, unreadable, foreign } (ส่วนบริสุทธิ์ ไม่แตะ git)
  *  ★ อ่าน footer ได้ข้างเดียว (เช่น HEAD parse ไม่ออก) = สงสัย → กันไว้ก่อน · อ่านไม่ได้ทั้งสองข้าง = ไม่รู้จริง ๆ → ไม่กัน แต่ขึ้น unreadable ให้คนตรวจเอง
  *  ★ fail closed (spec §6.5 · Plan 2b): path ใต้ reports/ ที่ไม่ใช่ reports/<SYM>.html (ใบ v3 .json · rename .html→.json · ไฟล์อื่น)
- *    = foreign ⇒ ship --prepatch ปฏิเสธ — เดิม `continue` ข้ามไป ⇒ reports/X.json ที่ยังไม่รีวิวถูกกวาดเข้า commit "price: …" */
+ *    = foreign ⇒ ship --prepatch ปฏิเสธ — เดิม `continue` ข้ามไป ⇒ reports/X.json ที่ยังไม่รีวิวถูกกวาดเข้า commit "price: …"
+ *    · รวม path ที่ git quote มา · ใต้โฟลเดอร์ย่อย (reports/sub/Y.html) · ตัวพิมพ์ .HTML · rename/copy: ต้นทาง/ปลายทางที่ไม่ใช่ใบ v2
+ *      และ rename ที่ย้ายใบออกนอก reports/ (ปลายทางจะถูก git add เข้า commit "price: …")
+ *  ★ rename/copy ที่ปลายทางเป็นใบ v2 = blocked (ปลายทางไม่มีใน HEAD = ไฟล์ใหม่ทั้งใบ ไม่ใช่ pre-patch ราคา) */
 function prepatchBlockers(entries) {
   const blocked = [], unreadable = [], foreign = [];
+  const under = (p) => typeof p === 'string' && UNDER_REPORTS.test(p);
   for (const e of entries) {
-    const m = /^reports\/(.+)\.html$/.exec(e.path);
-    if (!m) { if (/^reports\//.test(e.path)) foreign.push(e.path); continue; }
+    const m = V2_REPORT_RE.exec(e.path);
+    if (e.from != null) {
+      for (const p of [e.from, e.path]) if (under(p) && !V2_REPORT_RE.test(p)) foreign.push(p);
+      if (m) blocked.push(m[1]);
+      else if (!under(e.path)) foreign.push(e.path);
+      continue;
+    }
+    if (!m) { if (under(e.path)) foreign.push(e.path); continue; }
     const sym = m[1];
     if (e.untracked) { blocked.push(sym); continue; }   // ไฟล์ใหม่ทั้งใบ = worker เขียน ไม่ใช่ pre-patch ราคา
     const h = e.headFooterISO, w = e.workFooterISO;
@@ -328,22 +369,23 @@ function prepatchRefusal({ blocked, foreign }) {
 }
 
 function shipPrepatch() {
-  const porcelain = parsePorcelain(run('git', ['status', '--porcelain', '--', 'reports']).out);
+  // -z = ไม่มี quote (path มีช่องว่าง) · -uall = ไฟล์ในโฟลเดอร์ย่อยที่ยังไม่ track ขึ้นทีละไฟล์ (ไม่ยุบเป็น reports/sub/)
+  const porcelain = parsePorcelainZ(run('git', ['status', '--porcelain', '-z', '--untracked-files=all', '--', 'reports']).out);
   if (!porcelain.length) { console.log('ไม่มีไฟล์ใน reports/ ที่เปลี่ยน — ไม่มีอะไรจะ ship'); return; }
   const { candidates, deleted } = prepatchCandidates(porcelain);
   const delNote = () => {
-    const syms = deleted.map((e) => (/^reports\/(.+)\.html$/.exec(e.path) || [, e.path])[1]).join(' ');
+    const syms = deleted.map((e) => (/^reports\/([^/]+)\.(?:html|json)$/.exec(e.path) || [, e.path])[1]).join(' ');
     console.log(`ℹ ไฟล์ที่ลบ (DELIST) ไม่รวมใน pre-patch commit — commit แยก: git add -- ${deleted.map((e) => e.path).join(' ')} tags.json && git commit -m "chore: ลบ ${syms} (เพิกถอน)"`);
   };
   if (!candidates.length) { delNote(); console.log('ไม่มีไฟล์ pre-patch ที่ต้อง ship (เหลือแต่ไฟล์ที่ลบ)'); return; }
   const changed = candidates.map((e) => e.path);
   const entries = candidates.map((e) => {
-    const untracked = e.isNew;
+    const untracked = e.isNew || e.from != null;   // rename/copy: ปลายทางไม่มีใน HEAD
     const head = untracked ? null : run('git', ['show', `HEAD:${e.path}`]);
     const headFooterISO = head && head.code === 0 ? ((footerDate(head.out) || {}).iso || null) : null;
     const fp = path.join(ROOT, e.path);
     const workFooterISO = fs.existsSync(fp) ? ((footerDate(fs.readFileSync(fp, 'utf8')) || {}).iso || null) : null;
-    return { path: e.path, untracked, headFooterISO, workFooterISO };
+    return { path: e.path, from: e.from, untracked, headFooterISO, workFooterISO };
   });
   const pb = prepatchBlockers(entries);
   const { unreadable } = pb;
@@ -361,7 +403,7 @@ function shipPrepatch() {
   pushWithRebase();
   const today = todayBangkok();
   for (const p of changed) {
-    const m = /^reports\/(.+)\.html$/.exec(p);
+    const m = V2_REPORT_RE.exec(p);
     if (m) S.update(m[1], { prepatchShippedAt: today });
   }
   console.log(`✅ pre-patch ${changed.length} ใบ push แล้ว (วันที่วิเคราะห์คงเดิมผ่าน preserve-dates)`);
@@ -429,4 +471,4 @@ function status() {
 }
 
 module.exports = { shipStock, shipPrepatch, status, commitMessage, commitArgs, trailer, resolveModel, resolveTrailer, reportAiModel,
-  landedOnOrigin, shipPhaseOf, rowsToHeal, reconcile, dirtyTracked, pushIfClean, closeIssueIfEmpty, closeIssueIfNoLlmRows, prepatchBlockers, prepatchRefusal, prepatchCandidates, parsePorcelain, pendingCommitFor, postcheckGuard, STOCK_FILES, TITLE };
+  landedOnOrigin, shipPhaseOf, rowsToHeal, reconcile, dirtyTracked, pushIfClean, closeIssueIfEmpty, closeIssueIfNoLlmRows, prepatchBlockers, prepatchRefusal, prepatchCandidates, parsePorcelain, parsePorcelainZ, unquotePath, pendingCommitFor, postcheckGuard, STOCK_FILES, TITLE };

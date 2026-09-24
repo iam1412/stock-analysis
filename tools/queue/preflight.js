@@ -34,7 +34,9 @@ function loadFlags() {
   catch (e) { if (e.code === 'ENOENT') return []; throw new Error(`อ่าน price-flags.json ไม่ได้ (${e.message})`); }
 }
 
-const listReportsFS = () => RS.list(REPORTS).map((e) => e.symbol).sort();
+// ★ คิวตามอายุข้ามใบ v3 (Plan 2b): ใบ v3 ที่เก่าจะสร้างแถว LIGHT ทุกรอบ → prep ปฏิเสธ ("v3 UPDATE = Plan 3") → issue คิวไม่ปิดเอง
+//   P6 (คิว v3 UPDATE) ต้องถอดตัวกรอง `!e.v3` นี้ออก
+const listReportsFS = (dir) => RS.list(dir || REPORTS).filter((e) => !e.v3).map((e) => e.symbol).sort();
 const footerAgeFS = (today) => (sym) => { const iso = analysisIsoOf(readLite(sym)); return iso ? ageDays(iso, today) : null; };
 
 /** งบออกหลังวันวิเคราะห์ไหม (WS6 ข้อ 2 · ส่วนบริสุทธิ์: รับปฏิทิน + ตัวอ่านรายงานมาเลย ไม่แตะดิสก์เอง)
@@ -53,7 +55,8 @@ function earningsAfterOfWith(cal, read) {
 
 /** มีงบไตรมาส/ปีใหม่หลังวันที่ footer ไหม (กฎ LIGHT/FULL ใหม่ · ส่วนบริสุทธิ์ — ฉีดปฏิทิน/ตัวอ่านรายงาน/SEC/วันนี้)
  *  → (sym) → { after: true|false|null, source, last, detail } (null = ตัดสินไม่ได้ ⇒ triage ถือเป็น FULL) · ตรรกะจริงอยู่ที่ EC.statementAfter
- *  opts.today (default วันนี้ไทย) · opts.sec(sym) → 'YYYY-MM-DD'|null (ไม่ใส่ = ไม่ยิง SEC) · opts.isThai(sym, html) (default: stock-meta.currency === 'THB')
+ *  read(sym) → RS.metaLite (ของจริง · ใบ v2+v3) หรือ html ดิบของใบ v2 (เทสเดิม/prep) หรือ null — วันวิเคราะห์ + สกุลอ่านได้ทั้งสองรูป
+ *  opts.today (default วันนี้ไทย) · opts.sec(sym) → 'YYYY-MM-DD'|null (ไม่ใส่ = ไม่ยิง SEC) · opts.isThai(sym, h) — h = ค่าที่ read คืน (default: currency === 'THB')
  *  ผลต่อ symbol เก็บในหน่วยความจำต่อ process ({lastStatementDate, source, fetchedAt} ไม่เขียน earnings-calendar.json — ไฟล์นั้นไม่ได้ commit) */
 function statementAfterOfWith(cal, read, opts) {
   const o = opts || {};
@@ -324,4 +327,4 @@ function preflight(opts) {
   return rows;
 }
 
-module.exports = { preflight, plan, ageQueue, earningsAfterOfWith, statementAfterOfWith, unknownSummary, patchTargets, renderTable, manualSteps, loadFlags, parseGateFailures, roundStart, isNewFlag, upsertRow, applyGateResult, synthAge };
+module.exports = { preflight, plan, ageQueue, listReportsFS, earningsAfterOfWith, statementAfterOfWith, unknownSummary, patchTargets, renderTable, manualSteps, loadFlags, parseGateFailures, roundStart, isNewFlag, upsertRow, applyGateResult, synthAge };
