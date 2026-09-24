@@ -69,6 +69,7 @@ const { mosBand, fmtPrice, annualChg, styledRD } = RV;
 const { keepMap } = require('./keep-map.js');   // ระยะ 2 ส่วน D: วาง token {{rd:…}} กลับหลัง pass derived บน view ที่ render
 const { footerDate } = require('./queue/footer-date.js');   // ระยะ 2 ส่วน F: "ใบใหม่" (E44) ตัดสินจาก footer "ข้อมูล ณ" ของไฟล์
 const RS = require('./report-source.js');   // ใบ v2 + v3 (Plan 2b) — reportExists/คำสั่งที่ระบุ symbol ต้องเห็นใบ .json
+const MK = require('./v3/market.js');   // Plan 3 (R3): ตัวสร้าง market ของใบ v3 + priceOnlyChart (ทาง v2 เรียกตัวเดียวกัน)
 const MAX_PTS = 13;          // กราฟรายเดือน ~1 ปี (E37)
 const DRIFT_FREEZE = 0.15;   // ราคาใหม่ต่างจากในรายงาน > 15% → freeze (prose จะผิดความหมาย · เดิม 10% — ขยับขึ้นลดภาระ re-analysis)
 const SUSPECT_FREEZE = 0.25; // ต่าง > 25% → สงสัย split/ticker เปลี่ยน/ข้อมูลเพี้ยน
@@ -428,15 +429,8 @@ function patchReport(html, p) {
   const upside = (fv - newPrice) / newPrice * 100;
 
   // price-only fallback: Yahoo ไม่มีประวัติพอ (ล้างประวัติ/IPO ใหม่มาก) → คงกราฟเดิม อัปเดตเฉพาะจุดท้ายเป็นราคาปัจจุบัน
-  // (เดือนท้ายกราฟตรงเดือนราคา → แทนค่า · คนละเดือน → ต่อจุดใหม่แล้วตัดหัวให้ ≤MAX_PTS)
-  if (!chartData) {
-    const old = rd.chart.data;
-    if (!Array.isArray(old) || old.length < 2) throw new Error('กราฟใหม่ไม่พอจุด และกราฟเดิมใช้ไม่ได้');
-    const lab = `${THAI_MONTHS[dateParts.monIdx]}${String(dateParts.yearCE).slice(-2)}`;
-    chartData = old.map((d) => [d[0], d[1]]);
-    if (chartData[chartData.length - 1][0] === lab) chartData[chartData.length - 1][1] = round(newPrice, 2);
-    else chartData = chartData.concat([[lab, round(newPrice, 2)]]).slice(-MAX_PTS);
-  }
+  // (Plan 3 · R3: ย้ายเป็น tools/v3/market.js priceOnlyChart — สาย v3 ของ cron เรียกตัวเดียวกัน)
+  if (!chartData) chartData = MK.priceOnlyChart(rd.chart.data, newPrice, RV.isoOf(dateParts));
 
   // v2: .chg เป็น {{rd:chg}} (อ่านคำ IPO จาก HTML ไม่ได้) — ส่วนท้ายเป็นข้อมูลของไฟล์ที่ values.chgSuffix
   let suffix;

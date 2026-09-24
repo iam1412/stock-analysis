@@ -14,6 +14,7 @@
  * ที่มาไม่ใช่ 2 แหล่ง: นี่คือแหล่ง Yahoo 1 แหล่ง — agent ยัง cross-verify ราคา/EPS กับแหล่งอิสระที่ 2 ตามกติกาเดิม
  */
 const { fetchChart, buildChartData, niceBounds, annualChg, toYahooSymbol, styledRD, detectMixedBasis, THAI_MONTHS } = require('./update-prices.js');
+const MK = require('./v3/market.js');   // Plan 3 (R3): ตัวสร้าง market ตัวเดียว (cron ใช้ตัวเดียวกัน)
 
 const UP = { bg: 'var(--green-soft)', col: '#137333' };
 const DOWN = { bg: 'var(--red-soft)', col: '#c5221f' };
@@ -26,16 +27,13 @@ function exchangeCode(code) {
 }
 
 /** ข้อมูลเครื่องอ่านของ sidecar (spec §6.4 · ส่วนบริสุทธิ์ — q = ผลของ fetchChart) · chart = data อย่างเดียว (min/max/grid → compute คิดเอง)
- *  priceDate = วันของ regularMarketTime ตาม tz ตลาด (ISO) · range52w = 52wk ของ Yahoo meta (ไม่ใช่ปิดรายเดือน — M7) */
+ *  ★ Plan 3 (R3): px/priceDate/chart/chgSuffix/range52w มาจาก tools/v3/market.js marketFromQuote(null, …) — ตัวสร้างเดียวกับ cron
+ *    ⇒ quote เดียวกันให้ market เดียวกันทั้ง prep และ cron · range52w ใช้ไม่ได้ = null (sidecar ทับด้วย vendor 52wk เมื่อมี — M7) */
 function factsJson(q, symbol, currency) {
-  const data = buildChartData(q.bars, q.price, q.gmtoffset);
-  const spanDays = q.bars.length >= 2 ? (q.bars[q.bars.length - 1].ts - q.bars[0].ts) / 86400 : 0;
-  const priceDate = new Date((q.marketTime + q.gmtoffset) * 1000).toISOString().slice(0, 10);
-  const lo = q.week52Low, hi = q.week52High;
+  const m = MK.marketFromQuote(null, q, buildChartData(q.bars, q.price, q.gmtoffset));
   return {
-    symbol, currency, quoteCurrency: q.currency || null, px: q.price, priceDate, chart: { data },
-    chgSuffix: spanDays < 320 ? 'ตั้งแต่ IPO' : 'รอบปี',   // เกณฑ์เดียวกับป้าย .chg ของโหมดข้อความ
-    range52w: Number.isFinite(lo) && Number.isFinite(hi) && hi >= lo ? { lo, hi } : null,
+    symbol, currency, quoteCurrency: q.currency || null, px: m.px, priceDate: m.priceDate, chart: m.chart,
+    chgSuffix: m.chgSuffix, range52w: m.range52w || null,
     company: q.longName || null, exchange: exchangeCode(q.exchangeName),
   };
 }

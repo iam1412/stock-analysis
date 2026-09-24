@@ -11,12 +11,11 @@
  */
 const fs = require('fs');
 const path = require('path');
+const MK = require('../v3/market.js');   // Plan 3 (R3): validRange = กติกา "กรอบใช้ได้" ตัวเดียวกับ cron
 
 const SIDECAR_V = 1;
 const isNum = (x) => typeof x === 'number' && Number.isFinite(x);
 const n = (x) => (isNum(x) ? x : null);
-/** กรอบ 52 สัปดาห์ที่ใช้ได้ — schema บังคับ lo/hi > 0 และ hi ≥ lo · ไม่ผ่าน = null */
-const rng = (lo, hi) => (isNum(lo) && isNum(hi) && lo > 0 && hi >= lo ? { lo, hi } : null);
 
 /** ผลของ MM.oneSymbol → ค่าที่ init ใช้ (ตัดแถวดิบทิ้ง) · null = ดึงไม่ได้ · curErr = ผสมสกุล (ห้ามใช้ median) */
 function mediansOf(r) {
@@ -51,7 +50,8 @@ function buildSidecar({ symbol, th, facts, fund, vend, medians, deltas, today })
     company: facts.company || null, exchange: facts.exchange || null,
     market: {
       px: facts.px, priceDate: facts.priceDate, chart: { data: facts.chart.data }, chgSuffix: facts.chgSuffix,
-      range52w: rng(lo, hi) || (facts.range52w ? rng(facts.range52w.lo, facts.range52w.hi) : null),   // vendor 52wk ก่อน (M7) · ไม่มีค่อยใช้ Yahoo meta · lo ต้อง > 0 (schema)
+      // facts = marketFromQuote(null, q, …) ผ่าน fetch-facts --json (ตัวสร้างเดียวกับ cron — R3) · override เดียวที่ประกาศไว้: vendor 52wk ก่อน (M7)
+      range52w: MK.validRange(lo, hi) || (facts.range52w ? MK.validRange(facts.range52w.lo, facts.range52w.hi) : null),
     },
     vendor: { epsTTM: n(v.epsTTM), target: n(v.target), analysts: n(v.analysts), lo52: lo, hi52: hi, divYieldPct: n(v.divYieldPct), fyYears: n(v.fyYears), traps: v.traps || [] },
     crossVerify: { dP: deltas ? n(deltas.dP) : null, dE: deltas ? n(deltas.dE) : null },
