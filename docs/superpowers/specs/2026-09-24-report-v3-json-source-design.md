@@ -3,7 +3,7 @@
 - วันที่: 24 ก.ย. 69 (2026-09-24) · สถานะ: **อนุมัติแล้ว** (advisor + เจ้าของ 24 ก.ย. 69)
 - เจ้าของตัดสินแล้ว (session 24 ก.ย. 69): (1) ต้นฉบับ = `reports/<SYM>.json` · (2) migrate = script sweep + text-diff กับ HTML เดิม + รายชื่อให้คนตัดสิน · (3) กติกาตัวเลขใน prose = **B** (ตัวเลขผูกราคาห้ามพิมพ์เอง ต้องเป็น token · ตัวเลขจากงบพิมพ์ได้) · (4) มีช่อง `extras[]` ตารางข้อมูลล้วน ≤2 ตาราง · (5) template ดึงข้อมูลจาก JSON — JSON เก็บ **เฉพาะค่าที่ตัดสินใจ** ค่าคำนวณทั้งหมดคิดตอน build
 - หลักฐานที่ใช้ออกแบบ: วิจัย 3 สาย (ประวัติบัค 3,013 commit / 272 fix · write path ปัจจุบัน · สำรวจ 909 ใบ) — สรุปอยู่ใน §1
-- แก้ไข Plan 2b/2c (24 ก.ย. 69 · Task 0 ของ Plan 2b + คำตัดสิน advisor — `.superpowers/sdd/v3-plan2b-task0/rulings.md`): §3 (หมายเหตุ token) · §6.1 · §6.2 · §6.3 · §6.4 ใหม่ (prep sidecar) · §6.5 ใหม่ (`report-source.js`) · §9 · §11 (แยก 2b/2c) · §12 · §13 ข้อ 8–15
+- แก้ไข Plan 2b/2c (24 ก.ย. 69 · Task 0 ของ Plan 2b + คำตัดสิน advisor — `.superpowers/sdd/v3-plan2b-task0/rulings.md`): §3 (หมายเหตุ token) · §6.1 · §6.2 · §6.3 · §6.4 ใหม่ (prep sidecar · ที่มาของข้อมูลปรับตาม plan R1 — advisor 24 ก.ย. 69) · §6.5 ใหม่ (`report-source.js`) · §9 · §11 (แยก 2b/2c) · §12 · §13 ข้อ 8–15
 
 ---
 
@@ -307,14 +307,17 @@
               "chgSuffix": "รอบปี",
               "range52w": { "lo": 64.1, "hi": 172.3 } },      // 52wk ของ vendor (ไม่ใช่ปิดรายเดือน)
   "vendor": { "epsTTM": 6.13, "target": 95.0, "analysts": 14, "lo52": 64.1, "hi52": 172.3, "divYieldPct": 3.0, "fyYears": ["FY2025", "..."] },
-  "ttm": { "...": "..." },                                     // จาก fetch-facts --json
-  "sharesOut": 4.3e8,                                          // [2b] หุ้นคงเหลือ ไม่ใช่ wAvgDil
+  "ttm": { "...": "..." }, "fy": { "...": "..." },            // งบ (revenue/NI/fcf/eps/dps/shares/margins/…) จาก fetch-fundamentals --json
+  "sharesOut": 4.3e8,                                          // [2b] หุ้นคงเหลือ ไม่ใช่ wAvgDil — fetch-fundamentals --json
   "medians": { "...": "..." },                                 // MM.oneSymbol แบบ structured (รวมหน้าต่างมัธยฐาน)
   "company": "Zoetis Inc.", "exchange": "NYSE"
 }
 ```
 
-- ที่มา: `fetch-facts --json` + `parseVendor` (`tools/queue/prep.js`) + `MM.oneSymbol` (`tools/median-multiples.js`) — ไม่ประกอบจาก text ของ `.md`
+- ที่มา (สอดคล้อง plan 2b ruling R1 · advisor 24 ก.ย. 69) — แยกตามชนิดข้อมูล ไม่ประกอบจาก text ของ `.md`:
+  - **`market`** (px · priceDate · chart · chgSuffix · range52w) + `company`/`exchange` ← `fetch-facts --json` (ราคา/กราฟ **เท่านั้น** — `fetch-facts` ไม่มีข้อมูลงบ) · `range52w`: 52wk ของ vendor (`parseVendor`) ก่อนถ้ามี ไม่มีค่อยใช้ Yahoo meta จาก `fetch-facts --json` (M7 — ไม่ใช่ปิดรายเดือน)
+  - **งบ** (`ttm` · `fy` · `sharesOut` · `dps` · `epsForward` · `rating` — revenue/NI/fcf/eps/dps/shares/margins/…) ← `fetch-fundamentals --json` ตัวใหม่ (`snapshotJson()` บริสุทธิ์)
+  - **`vendor`** ← `parseVendor` (`tools/queue/prep.js`) · **`medians`** ← `MM.oneSymbol` (`tools/median-multiples.js`)
 - `market` ใน sidecar ใช้ **ตอน `save` ของใบ NEW เท่านั้น** (merge ก่อน validate) · ไม่เข้า `.work/` · หลัง publish ราคาเป็นของ cron (P5)
 - `prep` **ปฏิเสธ symbol ที่เป็น v3 แล้ว** ("v3 UPDATE = Plan 3") — ไม่ทำเหมือนเป็น NEW
 - ไม่ regenerate prep ทั้ง 909 ไฟล์ (ทั้งหมดเป็น UPDATE ของ v2) — สร้าง NEW prep ใหม่เฉพาะหุ้นที่จะทำ

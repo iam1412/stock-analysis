@@ -14,7 +14,7 @@
 
 ## Execution Notes (subagent-driven)
 
-- Worktree `/Users/somchai.s/Downloads/stock-v3-plan2b`, branch `feat/report-v3-plan2b`. Do not create another worktree except the throwaway base checkout of the DIST-PROOF steps (`/Users/somchai.s/Downloads/stock-v3-plan2b-base`, removed at the end of each proof).
+- Worktree `/Users/somchai.s/Downloads/stock-v3-plan2b`, branch `feat/report-v3-plan2b`. Do not create another worktree except the throwaway base checkout of the DIST-PROOF steps (`/Users/somchai.s/Downloads/stock-v3-plan2b-base`, removed at the end of each proof) and the throwaway end-to-end scratch checkout of Task 9 Step 4 (`/Users/somchai.s/Downloads/stock-v3-plan2b-e2e`, removed at the end of that step).
 - Implementers and reviewers are **Opus** subagents. Every implementer prompt carries these standing prohibitions: **never push** · **never call `advisor`** · **never spawn subagents or `claude -p`** · **never create or edit any file under `reports/`, `reports.json`, `.work/`, `.queue/`** in the worktree (tests use `os.tmpdir()` sandboxes and pass `reportsDir`/`--reports-dir`-style overrides) · **never edit `.claude/settings.json`** · **never loosen an existing assertion to make a new change pass** — if an existing test breaks, fix the new code or stop and report.
 - Reviewers of Task 3 (fail-closed prepatch), Task 5 (gate rules) and Task 8 (hook) must show one new test *can* fail: flip the rule (e.g. make `prepatchBlockers` `continue` on non-`.html` again), watch the test go red, revert.
 - If the harness refuses to create `.claude/hooks/guard-reports.js` (writes under `.claude/` can be classifier-blocked), STOP and report — do not relocate the script.
@@ -66,7 +66,7 @@
 
 Plan-level decisions; the controller may overturn any of them before execution.
 
-- **R1 Sidecar sources.** `ttm`, `fy`, `sharesOut`, `dps`, `epsForward`, `rating` come from a new `fetch-fundamentals --json` (pure `snapshotJson()`); spec §6.4 attributes `ttm` to `fetch-facts --json`, but `fetch-facts` has no statement data. `company`/`exchange` come from `fetch-facts --json` via two additive fields on `update-prices.fetchChart()` (`longName`, `exchangeName` from Yahoo chart `meta`; no existing consumer reads them).
+- **R1 Sidecar sources.** `ttm`, `fy`, `sharesOut`, `dps`, `epsForward`, `rating` come from a new `fetch-fundamentals --json` (pure `snapshotJson()`); `fetch-facts` has no statement data — spec §6.4 aligned to this ruling (advisor 24 ก.ย. 69): market/chart/chgSuffix/range52w + company/exchange ← `fetch-facts --json`, statements ← `fetch-fundamentals --json`, vendor ← `parseVendor`, medians ← `MM.oneSymbol`. `company`/`exchange` come from `fetch-facts --json` via two additive fields on `update-prices.fetchChart()` (`longName`, `exchangeName` from Yahoo chart `meta`; no existing consumer reads them).
 - **R2 Sidecar writer = `npm run queue -- prep` only, NEW mode only**, through a pure `tools/queue/sidecar.js`. `tools/prep-stock.js` keeps its text contract unchanged (spec §6.4 names both; one writer is enough and keeps the `{{FUNDAMENTALS}}` block untouched). NEW prep fetches facts/fundamentals a second time in `--json` mode (a few extra HTTP calls, NEW only).
 - **R3 `TODO` sentinel** = `/^\s*TODO\b/` on any string leaf, enforced in `S.validate` → reaches the gate as `E51`, `io.write` refuses it, `save` prints it with its path. A number field left as `"TODO: …"` gets both the type error and the sentinel error (same path).
 - **R4 `{{rd:`** = substring anywhere in any string leaf → `S.validate` error → `E51`.
@@ -76,9 +76,9 @@ Plan-level decisions; the controller may overturn any of them before execution.
 - **R8 `npm test` sweep (no args) stays v2-only** and prints one line counting v3 files (verify runs `check-v3` next). With args, v3 symbols go to `check-v3.runCli` and the exit code is the max of both.
 - **R9 `postcheck` keeps its single gate call `node test/check-reports.js <SYM>`** (the R8 hand-off reaches `check-v3`); meta checks read `metaLite` + the rendered page, and the old-price grep runs over `P.proseFields` text for v3.
 - **R10 Hook "under reports/"** = a path segment named `reports` whose parent directory contains `build.js` (any checkout/worktree of this repo); an unexpanded `$VAR` path containing `reports/` is denied. Known gaps (documented, `_sig`/E50 is the backstop): `xargs`, `find -exec`, child processes (`apply-edits`, `report.js`) by design.
-- **R11 `update-prices` sweep (no symbols) skips v3 files — visibly, never silently (binding ruling 2)**: the no-arg run (daily cron and `--heal-derived` alike) prints one `ℹ ข้าม reports/<SYM>.json …` line per v3 file and one summary line with the count (`v3SweepNotice`); explicitly named v3 symbols (`--write --force <v3>`, `--heal-derived <v3>`, `<v3>.json`) exit 1 with "v3 cron = Plan 3" before any fetch (`v3Guard`). Both go through one pure `v3Guard(only, isV3, v3Syms)` that `main` calls first, so the tests exercise the exact code path of `main`.
+- **R11 `update-prices` sweep (no symbols) skips v3 files — visibly, never silently (binding ruling 2)**: the no-arg run (daily cron and `--heal-derived` alike) prints one `ℹ ข้าม reports/<SYM>.json …` line per v3 file and one summary line with the count (`v3SweepNotice`) — the summary line carries the fixed greppable token `v3-skipped: N` (`grep -oE 'v3-skipped: [0-9]+'` on the Actions log); explicitly named v3 symbols (`--write --force <v3>`, `--heal-derived <v3>`, `<v3>.json`) exit 1 with "v3 cron = Plan 3" before any fetch (`v3Guard`). Both go through one pure `v3Guard(only, isV3, v3Syms)` that `main` calls first, so the tests exercise the exact code path of `main`.
 - **R12 `metaLite` returns a superset** `{symbol, v3, currency, px, analysisDate, era, aiModel}` (ruling 1 names four fields; `era` feeds postcheck's BE check and analysis-age). The MOS for ship's commit message comes from a separate `stockMeta()` that computes (v3 = `compute().sm`).
-- **R13 The owner pastes the hook snippet at the Plan 2c cutover, not at the end of 2b.** The hook denies Write on every file under `reports/`, so the v2 NEW flow (stock-analyzer STEP 5A "Write `reports/<SYMBOL>.html`") would be blocked the moment it is pasted. Plan 2b proves the hook with `claude -p --settings <temp file>` only (`docs/hook-setup.md`), which keeps the zero-production-effect rule. **Exit of 2b does not require the hook to be active** (nothing is pasted into `.claude/settings.json` in 2b); Task 9 Step 7 proves it with a temp `--settings` file only.
+- **R13 The owner pastes the hook snippet at the Plan 2c cutover, not at the end of 2b.** The hook denies Write on every file under `reports/`, so the v2 NEW flow (stock-analyzer STEP 5A "Write `reports/<SYMBOL>.html`") would be blocked the moment it is pasted. Plan 2b proves the hook with `claude -p --settings <temp file>` only (`docs/hook-setup.md`), which keeps the zero-production-effect rule. **Exit of 2b does not require the hook to be active** (nothing is pasted into `.claude/settings.json` in 2b); Task 9 Step 8 proves it with a temp `--settings` file only (fallback when the harness cannot run `claude -p`: `test/v3/hook.test.js` + an owner-run step in `docs/hook-setup.md` — see Task 9 Step 8).
 - **R14 The `--light` allowlist is exactly spec §6.1**: every `P.proseFields` path of either doc · `meta.analysisDate` `meta.aiModel` `meta.sources[*]` `meta.priceNote` · `analyst` / `analyst.*` · `fundamentals.dps`. `meta.litReasons` is not in it, so a prose edit that needs a new `{{lit:…}}` goes through a full save. `save` keeps `.work/<SYM>.json` after writing, and `init`/`export` refuse to overwrite an existing draft without `--force`.
 
 ## File Structure
@@ -938,7 +938,7 @@ Claude-Session: https://claude.ai/code/session_01LVyM2HVJV2UGfXJc58MhzP"
 
 **Interfaces:**
 - Consumes: `RS.list`, `RS.symbols`, `RS.kindOf`, `RS.exists`, `RS.metaLite`, `RS.renderedHtml`, `RS.isV3Path` (Task 1).
-- Produces: `U.onlyFromArgv(argv: string[]) → Set<string>` (upper-case, strips `.html`/`.json`); `U.v3Refusal(only: Set<string>, isV3: (sym)=>boolean) → string|null`; `U.v3SweepNotice(v3Syms: string[]) → string[]` (one line per file + one summary line; `[]` when none); `U.v3Guard(only, isV3, v3Syms) → { code: 0|1, lines: string[] }` (named v3 symbol → code 1 + refusal · no symbols → code 0 + sweep notice); `PDt.restoreDates(cur, headDate, skip: Set) → number`; `DC.probeList(syms, liteOf, only: Set, cache) → { probes, skipped }`; `EC.reportSymbols(dir)` includes v3 symbols; `AA.ageBuckets(dir, today)` counts v3; `tag-apply` treats either file as "the report exists"; `apply-edits <x>.json` exits 1.
+- Produces: `U.onlyFromArgv(argv: string[]) → Set<string>` (upper-case, strips `.html`/`.json`); `U.v3Refusal(only: Set<string>, isV3: (sym)=>boolean) → string|null`; `U.v3SweepNotice(v3Syms: string[]) → string[]` (one line per file + one summary line containing the fixed token `v3-skipped: N`; `[]` when none); `U.v3Guard(only, isV3, v3Syms) → { code: 0|1, lines: string[] }` (named v3 symbol → code 1 + refusal · no symbols → code 0 + sweep notice); `PDt.restoreDates(cur, headDate, skip: Set) → number`; `DC.probeList(syms, liteOf, only: Set, cache) → { probes, skipped }`; `EC.reportSymbols(dir)` includes v3 symbols; `AA.ageBuckets(dir, today)` counts v3; `tag-apply` treats either file as "the report exists"; `apply-edits <x>.json` exits 1.
 
 - [ ] **Step 1: Write the failing tests**
 
@@ -972,7 +972,7 @@ try {
   // R11 / binding ruling 2 — ห้ามเงียบ: sweep พิมพ์บรรทัดต่อใบ + สรุปจำนวน · สั่ง symbol v3 ตรง ๆ = exit 1 (ทางเดียวกับ main)
   const v3s = RS.list(tmp).filter((e) => e.v3).map((e) => e.symbol);
   const note = U.v3SweepNotice(v3s);
-  t(note.length === v3s.length + 1 && note.slice(0, -1).every((l, i) => l.includes(`reports/${v3s[i]}.json`)) && /ใบ v3 1 ใบ/.test(note[note.length - 1]) && /v3 cron = Plan 3/.test(note[note.length - 1]),
+  t(note.length === v3s.length + 1 && note.slice(0, -1).every((l, i) => l.includes(`reports/${v3s[i]}.json`)) && /(^|\s)v3-skipped: 1(\s|$)/.test(note[note.length - 1]) && /v3 cron = Plan 3/.test(note[note.length - 1]),
     'update-prices sweep: one line per skipped v3 file + one summary count line', JSON.stringify(note));
   t.eq(U.v3SweepNotice([]), [], 'update-prices sweep: no v3 files → no lines');
   t.eq([...U.onlyFromArgv(['--write', '--force', 'zts.json', 'aapl.html', 'KBANK'])], ['ZTS', 'AAPL', 'KBANK'], 'onlyFromArgv: flags dropped, .json/.html stripped, upper-case');
@@ -1068,7 +1068,7 @@ function v3Refusal(only, isV3) {
 function v3SweepNotice(v3Syms) {
   if (!v3Syms.length) return [];
   return [...v3Syms.map((s) => `ℹ ข้าม reports/${s}.json — ใบ v3 ราคาไม่ถูก patch`),
-    `ℹ ใบ v3 ${v3Syms.length} ใบไม่ถูก patch ราคา (v3 cron = Plan 3 · P5 · open-item #62 — เส้นตาย merge 2c + 45 วัน)`];
+    `ℹ v3-skipped: ${v3Syms.length} — ใบ v3 ไม่ถูก patch ราคา (v3 cron = Plan 3 · P5 · open-item #62 — เส้นตาย merge 2c + 45 วัน)`];   // token คงที่ `v3-skipped: N` — grep ใน log ของ Actions ได้ (advisor pre-dispatch)
 }
 /** ด่านแรกของ main (ส่วนบริสุทธิ์ — เทสเรียกตัวเดียวกับ main): ระบุ symbol v3 = code 1 + ข้อความปฏิเสธ · ไม่ระบุ = code 0 + บรรทัด sweep */
 function v3Guard(only, isV3, v3Syms) {
@@ -1374,7 +1374,29 @@ Append to `test/v3/compute.test.js` (before its final `t.done();`):
   const r = Z(); r.legs[0].inputs.multipleRange = [0.0001, 20]; r.legs[0].inputs.multiple = 14;
   t(C.semanticErrors(r, { seeds: {} }).every((x) => x.path !== 'legs[0]'), 'multipleRange that still prices > 0 is not an error');
 }
+// ── parity pin (advisor pre-dispatch 24 ก.ย. 69): จุด throw ทั้ง 5 ของ compute ทีละจุด — ใบละ fault เดียว ──
+// semanticErrors ต้องชี้ path นั้น (ตัวเดียว) **และ** compute() บนใบเดียวกันต้อง throw ที่ path เดียวกัน
+// ⇒ ถ้าวันหน้า compute ได้จุด throw ใหม่ที่ semanticErrors ไม่รู้จัก (หรือกลับกัน) ต้องเพิ่มแถวที่นี่ — ไม่งั้น save ผ่านแต่ gate/build พัง
+{
+  const S = require('../../tools/v3/schema.js');
+  const Z = () => { const d = load('ZTS-real'); delete d._sig; return d; };
+  const SITES = [   // [ชื่อจุด throw, path ที่ต้องได้, การ mutate ที่ทำให้สะดุดจุดนั้นจุดเดียว]
+    ['prepLeg extrasRef', 'legs[1].inputs.extrasRef', (d) => { d.legs[1].inputs.extrasRef = 0; }],
+    ["prepLeg 'current' no base", 'legs[3].inputs.multipleSource', (d) => { d.fvWeights = null; d.legs.push({ method: 'pbv', label: 'P/BV ตลาด', role: 'context', inputs: { multipleSource: 'current' } }); }],
+    ['L.legValue (ddm r ≤ g)', 'legs[2]', (d) => { d.legs[2].inputs.r = 5; }],
+    ['driverStart', 'scenarios.driver', (d) => { delete d.scenarios.baseOverride; d.scenarios.driver = 'bvps'; }],
+    ['themeOf', 'meta.themeLegacy', (d) => { d.meta.themeLegacy = null; }],
+  ];
+  for (const [name, p, mut] of SITES) {
+    const d = Z(); mut(d);
+    t.eq(S.validate(d), [], `parity ${name}: the mutation passes the schema (semantic fault only)`);
+    t.eq(C.semanticErrors(d, { seeds: {} }).map((e) => e.path), [p], `parity ${name}: semanticErrors names ${p} (and nothing else)`);
+    t.throws(() => C.compute(d, { seeds: {} }), new RegExp(p.replace(/[.[\]]/g, '\\$&')), `parity ${name}: compute() on the same doc throws at ${p}`);
+  }
+}
 ```
+
+The `multipleRange` loop of `semanticErrors` goes through the same `L.legValue` guard as site 3; with ZTS-real's legs (`pe`/`declared`/`ddm`) every in-schema range still prices > 0, so it has no separate single-fault row (the case above pins the negative direction).
 
 Append to `test/v3/check-v3.test.js` (before its final `t.done();`):
 
@@ -2850,9 +2872,11 @@ script: `.claude/hooks/guard-reports.js` (อยู่ใน repo แล้ว �
 }
 ```
 
-## พิสูจน์ใน `claude -p` process ใหม่ (controller ทำเอง — ไม่ใช่ implementer/worker)
+## พิสูจน์ใน `claude -p` process ใหม่ (controller ทำเอง — ไม่ใช่ implementer/worker · harness รันไม่ได้ = เจ้าของรันเอง)
 
-settings และ CLAUDE.md โหลดตอนเริ่ม session ⇒ ต้องพิสูจน์ใน process ใหม่เสมอ · ใช้ `--settings` ไฟล์ชั่วคราว (ยังไม่ต้อง paste) · รันใน worktree ที่ไม่มีงานค้าง:
+settings และ CLAUDE.md โหลดตอนเริ่ม session ⇒ ต้องพิสูจน์ใน process ใหม่เสมอ · ใช้ `--settings` ไฟล์ชั่วคราว (ยังไม่ต้อง paste) · รันใน worktree ที่ไม่มีงานค้าง
+
+**ถ้า controller รัน `claude -p` ใน harness ของตัวเองไม่ได้** (auth/TTY/classifier) หลักฐานตอนจบ 2b = `test/v3/hook.test.js` (stdin JSON → deny/allow) และ **ขั้นนี้เป็นของเจ้าของ**: รันคำสั่งข้างล่างใน terminal ของตัวเอง **ก่อน paste snippet ตอน cutover 2c** — เป็นทางเดียวที่พิสูจน์ว่า deny ชนะ hook `rtk` ระดับผู้ใช้ · ผลไม่ตรง "ผลที่ต้องได้" = อย่า paste แล้วแจ้ง Claude:
 
 ```bash
 cd /Users/somchai.s/Downloads/stock-v3-plan2b
@@ -2935,7 +2959,63 @@ Expected: `compute() accepted 909/909 v2 value sets` (the Plan 2a baseline — a
 
 Run the DIST-PROOF block from Global Constraints. Expected: `DIST IDENTICAL`.
 
-- [ ] **Step 4: `docs/open-items.md`**
+- [ ] **Step 4: END-TO-END PROOF in a scratch checkout (advisor pre-dispatch 24 ก.ย. 69 — the real NEW path, sidecar → dist)**
+
+Proves the whole 2b pipeline once for real — `init` from the Task 6 sidecar fixture → fill the draft → `save` → `build` → `check-v3` — without touching this worktree. Everything happens in a throwaway detached worktree **outside the repo dir**; zero production effect is preserved because nothing is committed there and it is removed at the end. Two extra commands are required by the pipeline itself: a brand seed (`save` of a NEW doc rejects `meta.themeLegacy`, so the colour must come from `tools/seeds.json` via `pick-brand`) and a tag (`check-v3` without `stage:'save'` fails `v2:E40` on an untagged symbol — tags land at ship via `tag-apply`, which Task 4 taught to accept a `.json` report). `report.js` has no `--from`; the sidecar fixture is passed with `--prep-dir` (R7).
+
+Run (Steps 1–3 leave nothing uncommitted — the scratch checkout is made from `HEAD`):
+
+```bash
+cd /Users/somchai.s/Downloads/stock-v3-plan2b
+E2E=/Users/somchai.s/Downloads/stock-v3-plan2b-e2e
+git worktree add --detach "$E2E" HEAD >/dev/null
+cd "$E2E"
+node tools/report.js init ZZZQ --prep-dir test/fixtures/v3/sidecar; echo "init exit=$?"
+node - <<'JS'
+// เติม sentinel TODO ทุกช่องจากค่าจริงของ ZTS-real ที่ path เดียวกัน (สคริปต์ ไม่แต่งมือ) + meta.aiModel (worker self-report)
+const fs = require('fs');
+const S = require('./tools/v3/schema.js');
+const f = '.work/ZZZQ.json', d = JSON.parse(fs.readFileSync(f, 'utf8'));
+const z = JSON.parse(fs.readFileSync('test/fixtures/v3/ZTS-real.json', 'utf8'));
+const keys = (p) => p.split(/\.|\[|\]/).filter(Boolean);
+const get = (o, p) => keys(p).reduce((a, k) => (a == null ? undefined : a[k]), o);
+const set = (o, p, v) => { const ks = keys(p), last = ks.pop(); ks.reduce((a, k) => a[k], o)[last] = v; };
+const todo = S.stringLeaves(d, '', []).filter((x) => S.TODO_RE.test(x.text));
+const miss = [];
+for (const { path: p } of todo) {
+  const v = get(z, p);
+  if (v === undefined || (typeof v === 'string' && S.TODO_RE.test(v))) miss.push(p); else set(d, p, v);
+}
+d.meta.aiModel = z.meta.aiModel;
+fs.writeFileSync(f, JSON.stringify(d, null, 2) + '\n');
+console.log(`filled ${todo.length - miss.length}/${todo.length} TODO · unmapped: ${miss.length}${miss.length ? ' → ' + miss.join(' ') : ''}`);
+process.exitCode = miss.length ? 1 : 0;
+JS
+echo "fill exit=$?"
+node tools/pick-brand.js ZZZQ "#3fd411" --auto; echo "pick-brand exit=$?"
+node tools/report.js save ZZZQ --prep-dir test/fixtures/v3/sidecar; echo "save exit=$?"
+node tools/tag-apply.js ZZZQ animal-health; echo "tag exit=$?"
+node build.js >/dev/null; echo "build exit=$?"
+rtk proxy node test/check-v3.js ZZZQ > /tmp/e2e-check-v3.txt; echo "check-v3 exit=$?"; grep -E 'ZZZQ|✗|ผ่าน' /tmp/e2e-check-v3.txt; rm -f /tmp/e2e-check-v3.txt
+test -f dist/ZZZQ.html && echo DIST-ZZZQ-OK
+node -e "const e=require('./reports.json').find((x)=>x.symbol==='ZZZQ');if(!e||e.file!=='ZZZQ.html'){console.log('REPORTS-JSON-FAIL',JSON.stringify(e));process.exit(1)}console.log('REPORTS-JSON-OK',e.file)"
+cd /Users/somchai.s/Downloads/stock-v3-plan2b
+git worktree remove --force "$E2E" && test ! -e "$E2E" && echo SCRATCH-REMOVED
+rtk proxy node test/v3/no-json-reports.test.js
+rtk proxy git status --short reports/ reports.json .work .queue tools/seeds.json tags.json
+```
+
+Expected, in order:
+- `init exit=0` (`.work/ZZZQ.json` written in the scratch checkout only)
+- `filled N/N TODO · unmapped: 0` and `fill exit=0` — **unmapped > 0 = stop and report** (init emitted a sentinel at a path a real doc does not have — a Task 7 finding; do not invent values)
+- `pick-brand exit=0` · `save exit=0` (save logs the dropped `v2:E40` per R6 and writes `reports/ZZZQ.json` **in the scratch checkout**) · `tag exit=0` · `build exit=0`
+- `check-v3 exit=0`, a `✓ …ZZZQ…` line with no `✗ [` line under it, `✅ check-v3 ผ่าน` (= 0 errors; warnings allowed)
+- `DIST-ZZZQ-OK` · `REPORTS-JSON-OK ZZZQ.html` · `SCRATCH-REMOVED`
+- back in the real worktree: `✓ no-json-reports: 1/1` (the tripwire must pass) and the `git status` line prints nothing (the scratch checkout shared only `.git`; nothing leaked into this worktree)
+
+Any other result: stop, keep the scratch checkout for inspection (skip the `git worktree remove` line), and report. If the only `check-v3` errors are staleness errors caused by the fixture's fixed `market.priceDate`, report them as such — do not edit the fixture here. Record the `filled N/N` line and the three `…-OK` lines in the PR body.
+
+- [ ] **Step 5: `docs/open-items.md`**
 
 Run (from the worktree root):
 
@@ -2961,7 +3041,7 @@ rtk proxy git diff --stat docs/open-items.md
 
 Expected: `docs/open-items.md | … +… −…` (one file changed). Then run `node test/docs-test.js | tail -1` → passes.
 
-- [ ] **Step 5: `docs/decisions.md` §10 — Plan 2b block**
+- [ ] **Step 6: `docs/decisions.md` §10 — Plan 2b block**
 
 Append to the end of `docs/decisions.md`:
 
@@ -2973,7 +3053,7 @@ Append to the end of `docs/decisions.md`:
 
 - **จุดเดียวที่ตอบ "ไฟล์ไหนคือรายงาน"** — `tools/report-source.js` (`list symbols kindOf exists load metaLite stockMeta renderedHtml`) · scanner 16 จุดของ #49 ย้ายมาใช้ครบ ยกเว้น `update-prices.yml` (P5) · `require('../build.js')` แบบ lazy เพราะ `update-prices`/`dead-ticker-canary` ถูก build require
 - **fail closed**: `ship --prepatch` path ใต้ `reports/` ที่ไม่ใช่ `reports/<SYM>.html` = blocker (rename `.html→.json` · ไฟล์หลง) · `update-prices` ระบุ symbol v3 ตรง ๆ = exit ≠0 "v3 cron = Plan 3" (#62) · sweep ข้ามใบ v3 แต่ไม่เงียบ — บรรทัดต่อใบ + บรรทัดสรุปจำนวนใน log ของ cron (R11 · binding ruling 2)
-- **R1/R2 sidecar** — `ttm/fy/sharesOut/dps/epsForward/rating` มาจาก `fetch-fundamentals --json` (spec เขียนว่า fetch-facts แต่ fetch-facts ไม่มีงบ) · ผู้เขียน sidecar มีตัวเดียว = `npm run queue -- prep` โหมด NEW (prep-stock คงสัญญาข้อความเดิม)
+- **R1/R2 sidecar** — `ttm/fy/sharesOut/dps/epsForward/rating` มาจาก `fetch-fundamentals --json` (spec §6.4 aligned (advisor 24 ก.ย. 69) — fetch-facts ไม่มีงบ) · ผู้เขียน sidecar มีตัวเดียว = `npm run queue -- prep` โหมด NEW (prep-stock คงสัญญาข้อความเดิม)
 - **R3/R4/R5 gate** — sentinel `TODO` = `/^\s*TODO\b/` บนทุก string leaf (ช่องตัวเลขที่ยังเป็นสตริงได้ทั้ง type error + sentinel ที่ path เดียวกัน) · `{{rd:` ที่ใดก็ได้ = error · error ต่อชั้นยังเป็น E51 **รายการเดียว** (จำนวนรายการคงเดิม) + `details` ทีละ path
 - **R6 `stage:'save'`** ตัด `v2:E40` ตัวเดียว คืนใน `dropped` ให้ save พิมพ์ · stage อื่น = throw
 - **R7 `report.js` ตัวเลือกเทส** (`--reports-dir --work-dir --prep-dir --seeds --today`) — เทสไม่แตะ `reports/` จริงเลย · `--today` ไม่ใช่ทางหนี staleness (verify ใช้นาฬิกาจริง)
@@ -2984,7 +3064,7 @@ Append to the end of `docs/decisions.md`:
 - **R14 `--light` allowlist ตาม spec §6.1 ตรงตัว** — ไม่รวม `meta.litReasons` (prose ที่ต้องเพิ่ม `{{lit:…}}` ใหม่ = save เต็ม)
 ```
 
-- [ ] **Step 6: Commit**
+- [ ] **Step 7: Commit**
 
 ```bash
 git add docs/open-items.md docs/decisions.md
@@ -2994,9 +3074,14 @@ Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>
 Claude-Session: https://claude.ai/code/session_01LVyM2HVJV2UGfXJc58MhzP"
 ```
 
-- [ ] **Step 7 (controller, manual — not the implementer): hook proof in a fresh `claude -p`**
+- [ ] **Step 8 (controller, manual — not the implementer): hook proof in a fresh `claude -p`**
 
 Run the "พิสูจน์ใน `claude -p` process ใหม่" block of `docs/hook-setup.md` exactly, then `rtk proxy node test/v3/no-json-reports.test.js` (the proof deliberately tries to create `reports/ZZHOOK*.json`; the tripwire must still be green after its cleanup). Expected: `grep -c` ≥ 3, `HOOK-OK`, empty `git status --short reports/`, `✓ no-json-reports: 1/1`. **The exit of 2b does not require the hook to be active** — do not paste the snippet into `.claude/settings.json` (R13 · binding ruling 5: owner pastes at the 2c cutover); the temp `--settings` proof is the whole exit criterion. Record the three numbers in the PR body. If `ZZHOOK2.json` appeared (rtk hook won over the deny), stop — the PR does not merge until the owner decides.
+
+**Fallback when `claude -p` cannot run in this harness (advisor pre-dispatch 24 ก.ย. 69 — Task 9 must not stall on it).** If `claude -p --settings <tmp>` fails for a harness reason (not logged in / needs a TTY / the auto-mode classifier or a permission prompt blocks it / nested-session refusal) — as opposed to running and producing a wrong result, which is the "stop" case above — then:
+- the **2b exit proof of the hook is `test/v3/hook.test.js`** (stdin JSON → deny/allow, `✓ hook: 77/77`, already green in Step 2) plus the smoke `echo '{"tool_name":"Bash","tool_input":{"command":"echo x > reports/Q.json"}}' | node .claude/hooks/guard-reports.js` → one deny JSON line;
+- the fresh-session check — the **only** way to prove the deny beats the user-level rtk Bash hook — becomes an **owner-run step**: it is already written in `docs/hook-setup.md` § "พิสูจน์ใน `claude -p` process ใหม่" (exact command · expected `grep -c` ≥ 3, `HOOK-OK`, empty `git status --short reports/`), and that section tells the owner to run it in their own terminal before pasting the snippet at the 2c cutover (R13);
+- write in the PR body: the harness error line verbatim, the `hook.test.js` count, and "fresh-session proof = owner-run (docs/hook-setup.md) before the 2c paste". Then finish Task 9 — the 2b merge does not wait for it (nothing is pasted in 2b, so rtk precedence has no production effect until 2c).
 
 ---
 
@@ -3014,7 +3099,7 @@ Run the "พิสูจน์ใน `claude -p` process ใหม่" block of 
 | §9 `{{rd:` + TODO sentinel = E51 · `semanticErrors()` all-at-once · `stage:'save'` drops only `v2:E40` | 5 |
 | §6.4 sidecar `.queue/prep/<SYM>.json` (`fetch-facts --json`, `market`, vendor, medians, cross-verify) | 6 (R1, R2) |
 | §6.1 `init` (sidecar only · refuses existing report · mechanical prefill · TODO · no market/aiModel) · `export` · `save` pipeline (OWNER → merge market → checkDoc → rule B → print all → IO.write) · `--light` allowlist via `diffPaths` · `show` · `diff` | 7 (R7, R14) |
-| §6.2 hook: file tools on all `reports/*` · Bash write patterns · allow git mv/rm/reads · fail-open · owner-paste snippet · fresh `claude -p` proof incl. rtk precedence | 8 (R10, R13) · 9 Step 7 |
+| §6.2 hook: file tools on all `reports/*` · Bash write patterns · allow git mv/rm/reads · fail-open · owner-paste snippet · fresh `claude -p` proof incl. rtk precedence | 8 (R10, R13) · 9 Step 8 |
 | §11 P4a exit: tests green · dist identical · tripwire stays · docs (#49–#52, quality-gate E51, decisions §10) | 5 Step 6 (quality-gate) · 9 |
 | `.work/` never committed | 4 (`.gitignore`) |
 
