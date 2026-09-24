@@ -49,12 +49,16 @@ const today0 = Z().market.priceDate;
 { const d = Z(); delete d._sig; d.market.priceDate = shift(today0, -60); const r = run(signed(d), { today: today0 });
   t(ids(r, 'warnings').includes('W09'), 'W09: price 60 days old');
   t(!ids(r, 'warnings').includes('v2:W09'), 'W09: no v2:W09 double report'); }
-// นาฬิกาของ gate v2 แช่ที่ today เดียวกับ native: ปลด E27 ออกจาก NATIVE_V2 ชั่วคราว · priceDate จริง (นาฬิกาจริงเห็นว่าสด) แต่ today +200 วัน
-// ⇒ v2:E27 โผล่ได้ก็ต่อเมื่อ gate v2 ใช้ today ที่ส่งมา (ถ้ายังอ่านนาฬิกาจริง จะเงียบ)
-{ const d = Z(); const env0 = process.env.STALE_TODAY; CV.NATIVE_V2.delete('E27');
-  let r; try { r = run(d, { today: shift(today0, 200) }); } finally { CV.NATIVE_V2.add('E27'); }
-  t(ids(r, 'errors').includes('v2:E27'), 'v2 clock frozen at opts.today (v2 E27 sees the +200-day clock)');
-  t(process.env.STALE_TODAY === env0, 'STALE_TODAY restored after the v2 pass'); }
+// นาฬิกาของ gate v2 แช่ที่ today เดียวกับ native: ปลด E27 ออกจาก NATIVE_V2 ชั่วคราว · ตั้ง STALE_TODAY = priceDate (v2 เห็นว่าสด)
+// แต่ today +200 วัน ⇒ v2:E27 โผล่ได้ก็ต่อเมื่อ checkDoc ทับ STALE_TODAY ด้วย today ที่ส่งมา — ไม่ขึ้นกับนาฬิกาจริง
+// (Task 13 carry (e): เดิมพึ่งนาฬิกาจริงว่าสด → หลัง priceDate+120 วัน v2 ยิง E27 เองแม้ checkDoc ไม่แช่ = เคสว่างเปล่า)
+{ const d = Z(); const env0 = process.env.STALE_TODAY; const fresh = d.market.priceDate;
+  process.env.STALE_TODAY = fresh; CV.NATIVE_V2.delete('E27');
+  let r, after;
+  try { r = run(d, { today: shift(today0, 200) }); after = process.env.STALE_TODAY; }
+  finally { CV.NATIVE_V2.add('E27'); if (env0 === undefined) delete process.env.STALE_TODAY; else process.env.STALE_TODAY = env0; }
+  t(ids(r, 'errors').includes('v2:E27'), 'v2 clock frozen at opts.today (overrides a fresh STALE_TODAY; v2 E27 sees the +200-day clock)');
+  t(after === fresh, 'STALE_TODAY restored to its pre-call value after the v2 pass'); }
 // (3) today ผิดรูป → อายุ NaN → E27 ดัง (ไม่ผ่านเงียบเพราะ NaN เทียบอะไรก็ false)
 { const r = run(Z(), { today: 'not-a-date' }); t(ids(r, 'errors').includes('E27'), 'E27: unparseable today → fail loud'); }
 { const d = Z(); delete d._sig; d.fundamentals.roe = 500; t(ids(run(signed(d)), 'warnings').includes('W07'), 'W07: ROE 500% implausible'); }

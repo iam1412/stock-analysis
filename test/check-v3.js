@@ -178,7 +178,7 @@ function defaultJobs(dirs) {
   return { jobs, missing };
 }
 
-// คืน exit code (0/1) — main() เรียก process.exit · meta-test เรียกตรงด้วย dir ชั่วคราว
+// คืน exit code (0/1) — main() ตั้ง process.exitCode · meta-test เรียกตรงด้วย dir ชั่วคราว
 function runCli(args, opts) {
   const o = opts || {};
   const dirs = { reportsDir: o.reportsDir || REPORTS_DIR, fixtureDir: o.fixtureDir || FIXTURE_DIR };
@@ -210,5 +210,6 @@ function runCli(args, opts) {
 
 module.exports = { checkDoc, runCli, CODES, NATIVE_V2, EXPECT_FIXTURE };
 
-function main() { process.exit(runCli(process.argv.slice(2))); }
+// exitCode ไม่ใช่ process.exit — ให้ stdout ที่ pipe อยู่ flush ครบก่อนจบ (exit code เท่าเดิม 0/1)
+function main() { process.exitCode = runCli(process.argv.slice(2)); }
 if (require.main === module) main();

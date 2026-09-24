@@ -158,6 +158,11 @@ for (const r of [0, -150]) {
 { const d = base(); d.fundamentals.fx = 1.2; t(paths(S.validate(d)).includes('fundamentals.fx'), 'fx without reportCurrency → error'); }
 { const d = base(); d.fundamentals.reportCurrency = 'USD'; d.fundamentals.fx = 1.2; t(paths(S.validate(d)).includes('fundamentals.fx'), 'same currency with fx ≠ 1 → error'); }
 { const d = base(); d.fundamentals.reportCurrency = 'XYZ'; d.fundamentals.fx = 1.2; t(paths(S.validate(d)).includes('fundamentals.reportCurrency'), 'reportCurrency enum'); }
+// Task 13 carry (d) — fx must be a positive number · same-currency statements need no fx
+for (const bad of [0, -1.2, '1.2', true]) {
+  const d = base(); d.fundamentals.reportCurrency = 'EUR'; d.fundamentals.fx = bad;
+  t(paths(S.validate(d)).includes('fundamentals.fx'), `fx ${JSON.stringify(bad)} → error at fundamentals.fx`); }
+{ const d = base(); d.fundamentals.reportCurrency = d.currency; delete d.fundamentals.fx; t.eq(S.validate(d), [], 'reportCurrency = currency with fx omitted → valid'); }
 // Plan 2a Task 11 — extras rows/columns/fx (§3.6 M · Review Focus #5)
 const xt = () => ({ after: 'valuation', title: 'SOTP', headers: ['ส่วน', 'มูลค่า'], rows: [['A', 1.5], ['B', 2]], sumCol: 1 });
 { const d = base(); d.extras = [{ ...xt(), rows: [['A', 1.5], { kind: 'note', text: 'หมายเหตุ' }, { kind: 'total', cells: ['รวม', 3.5] }], columns: [{ dp: 0, unit: 'none' }, { dp: 2, unit: 'ccy' }] }]; t.eq(S.validate(d), [], 'total/note rows + columns valid'); }

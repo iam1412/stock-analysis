@@ -53,4 +53,41 @@ t.eq(load('BBL-real').metrics.custom.length, 0, 'Task 8: BBL-real needs no custo
 { const d = load('FER-real'), v = C.compute(d, { seeds: {} }), K = require('../../tools/v3/cards.js');
   t.eq([K.renderCard('revenue', v).v, K.renderCard('fcf', v).v, K.renderCard('netIncomeFy', v).v], ['€9.86B', '€1.88B', '€888M'], 'FER-real: statement cards in EUR');
   t.eq(d.metrics.custom.length, 1, 'FER-real: one custom card left (parent net cash)'); }
+// ── Task 13 — เกณฑ์จบ Plan 2a (spec §12) ──
+const REAL = ['BBL-real', 'EQIX-real', 'FER-real', 'ZTS-real'];
+// ขา declared เหลือได้เฉพาะที่ไม่มี method คำนวณ (ruling R7)
+// EQIX-real: 0 ขา — ขา context ตัวคูณปัจจุบันเป็น pffo 'current' ที่คำนวณได้แล้ว (spec §13 ข้อ 6)
+const DECLARED_OK = {
+  'FER-real': [0],   // SOTP basis sotp + extrasRef — E52 ผูกยอดตารางกับค่าขา
+  'ZTS-real': [1],   // Gordon ขั้นเดียวบน FCF — v3 ไม่มี method นี้ (เจ้าของตัดสิน)
+};
+for (const f of REAL) {
+  const d = load(f);
+  t((d.metrics.custom || []).length <= 2, `${f}: custom cards ≤ 2 (got ${(d.metrics.custom || []).length})`);
+  t.eq(d.legs.map((l, i) => (l.method === 'declared' ? i : -1)).filter((i) => i >= 0), DECLARED_OK[f] || [], `${f}: declared legs only where no method exists`);
+  const texts = P.proseFields(d).map((x) => x.text.trim()).filter((s) => s.length > 20);
+  t.eq(texts.length, new Set(texts).size, `${f}: no prose field repeated verbatim`);
+}
+// ประโยคที่ Task 0 ต้องยัดซ้ำเพราะไม่มีช่อง — ต้องหายหมด (compare docs)
+{ const F = load('FER-real');
+  t(!F.prose.disclaimerSources.includes('สมมติฐานที่อ่อนไหวที่สุด'), 'FER-real: the disclaimer clause lives only in text.disclaimerAssump');
+  t(!F.prose.valuation.includes('ห้ามใช้ P/E</b><br>'), 'FER-real: the §3 hint lives only in text.valHint');
+  t(!F.extras[1].note.includes('รวม SOTP'), 'FER-real: the SOTP total lives only in the total row');
+  t(!F.legs[0].note.includes('€44.83'), 'FER-real: leg 1 no longer repeats the table total');
+  t(!/g 11%\/ปี 10 ปีแรก/.test(F.legs[1].note), 'FER-real: ddm2 inputs are not repeated in the note'); }
+t(!load('EQIX-real').legs[1].label.includes('บริบท'), 'EQIX-real: the context marker comes from role, not the label');
+t(!/26\.6x|\$38\.33/.test(load('EQIX-real').legs[1].note || ''), 'EQIX-real: the context leg note carries no frozen multiple/base (R7)');
+t(!/มัธยฐาน P\/E FY2022/.test(load('EQIX-real').legs[0].note), 'EQIX-real: the median window lives in inputs.medianWindow');
+t(!('eps' in load('BBL-real').metrics.notes), 'BBL-real: FY EPS lives in fundamentals.fy, not a note');
+t.eq(load('BBL-real').fvWeights, null, 'BBL-real: weights come from family, not typed numbers');
+// Task 13 carry (a) — BBL-real NIM card keeps the v2 colour (reports/BBL.html: <div class="v neu">) via tone
+{ const d = load('BBL-real'); const src = R.toV2Source(d, C.compute(d, { seeds: {} }));
+  const nim = [...src.matchAll(/<div class="metric"><div class="k">([^<]*)<\/div><div class="v([^"]*)">/g)].find((m) => m[1] === 'NIM');
+  t.eq(nim && nim[2], ' neu', 'BBL-real: NIM card is .neu like v2'); }
+// Task 13 carry (b) — FER-real FY2025 revenue is a number in fundamentals.fy + the revenueFy card, not a typed note literal
+{ const d = load('FER-real'), v = C.compute(d, { seeds: {} }), K = require('../../tools/v3/cards.js');
+  t.eq(d.fundamentals.fy.revenue, 9627000000, 'FER-real: fundamentals.fy.revenue = €9,627M (FY2025)');
+  t(d.metrics.cards.includes('revenueFy'), 'FER-real: revenueFy card listed');
+  t.eq([K.renderCard('revenueFy', v).k, K.renderCard('revenueFy', v).v], ['รายได้ FY2025', '€9.63B'], 'FER-real: revenueFy card in EUR');
+  t(!/9,627/.test(d.metrics.notes.revenue || ''), 'FER-real: revenue note no longer hand-types the FY2025 total'); }
 t.done();

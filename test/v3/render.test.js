@@ -13,7 +13,7 @@ const seeds = { ZTS: '#e8731a' };
 
 // ZTS-real = fixture ของจริง (postreview Finding 5) — fixture file name มี "-real" แต่ doc.symbol ข้างในคือ "ZTS"
 // เหมือน BBL/ZTS ⇒ ต้องส่ง checkHtml ด้วย `${doc.symbol}.html` (ไม่ใช่ `${sym}.html`) กัน E04 ตรวจ title ผิด
-for (const sym of ['ZTS', 'BBL', 'ZTS-real']) {
+for (const sym of ['ZTS', 'BBL', 'ZTS-real', 'BBL-real', 'EQIX-real', 'FER-real']) {
   const doc = load(sym);
   const view = C.compute(doc, { seeds });
   const src = R.toV2Source(doc, view);
@@ -22,7 +22,7 @@ for (const sym of ['ZTS', 'BBL', 'ZTS-real']) {
   const html = expandReport(src);
   const res = CR.checkHtml(html, `${doc.symbol}.html`, { source: src });
   t.eq(res.errors.map((e) => `${e.id} ${e.msg}`), [], `${sym}: full v2 gate — zero errors`);
-  t((html.match(/<section>/g) || []).length === 8, `${sym}: 8 sections`);
+  t((html.match(/<section>/g) || []).length === 8 + doc.extras.length, `${sym}: 8 sections + one per extras table`);
   // Finding 1 — verdict vcell "ส่วนต่างจากราคา" now carries {{rd:mosClass}} (v3 pages are never cron-patched,
   // so patchDerived#11/summaryPlan never gets to add it after the fact) — W26 must be green from render itself
   t(!res.warnings.some((w) => w.id === 'W26'), `${sym}: W26 (verdict MOS color class) not among warnings`);

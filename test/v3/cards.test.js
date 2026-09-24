@@ -98,4 +98,11 @@ t.eq(K.CATALOGUE.peAvg5y.label(view), 'P/E มัธยฐาน ~5 ปี', 'pe
   const ps = K.renderCard('ps', v2);
   t.eq(ps.d, 'รายได้ TTM $11.3B', 'P/S base line = revenue converted to the quote currency');
   t.eq(K.renderCard('evEbitda', v2).d, `EV ${RV.fmtBig(v2.d.mcap - 1.307e9 * 1.2, '$')} ÷ EBITDA $3.60B`, 'EV/EBITDA base line in the quote currency'); }
+// Task 13 carry (c) — EV/EBITDA .d guards its own inputs (same pattern as the ps .d guard): renderCard evaluates
+// .d BEFORE .value, so an unguarded .d would format NaN instead of naming the missing field
+{ const d = load(); d.fundamentals.ebitda = 3000000000; delete d.fundamentals.netDebt; const v2 = C.compute(d, { seeds: { ZTS: '#e8731a' } });
+  t.throws(() => K.CATALOGUE.evEbitda.d(v2), /fundamentals\.netDebt/, 'evEbitda .d without netDebt names the field');
+  t.throws(() => K.renderCard('evEbitda', v2), /fundamentals\.netDebt/, 'evEbitda card without netDebt names the field'); }
+{ const d = load(); delete d.fundamentals.ebitda; const v2 = C.compute(d, { seeds: { ZTS: '#e8731a' } });
+  t.throws(() => K.CATALOGUE.evEbitda.d(v2), /fundamentals\.ebitda/, 'evEbitda .d without ebitda names the field'); }
 t.done();

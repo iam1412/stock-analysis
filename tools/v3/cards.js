@@ -95,7 +95,7 @@ const CATALOGUE = {
   roic: { label: () => 'ROIC', cls: 'pos', value: (v) => `~${need(v, 'roic').toFixed(1)}%`, d: () => 'ผลตอบแทนต่อเงินลงทุน' },
   evEbitda: { label: () => 'EV/EBITDA', cls: 'neu',
     value: (v) => evEbitdaCalc(v).text,
-    d: (v) => `EV ${big(v, priceBoundOrThrow('mcap', v.d.mcap) + fq(v).netDebt)} ÷ EBITDA ${big(v, fq(v).ebitda)}` },
+    d: (v) => { need(v, 'netDebt'); need(v, 'ebitda'); return `EV ${big(v, priceBoundOrThrow('mcap', v.d.mcap) + fq(v).netDebt)} ÷ EBITDA ${big(v, fq(v).ebitda)}`; } },
   peForward: { label: () => 'Forward P/E', cls: 'neu',
     value: (v) => peForwardCalc(v).text,
     d: (v) => `EPS ประมาณการ (Forward) ${money(v, need(v, 'epsForward'))}` },
