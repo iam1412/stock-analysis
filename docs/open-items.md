@@ -35,6 +35,7 @@
 | 58 | **v3 — ชั้น 0 ที่ยังไม่อยู่ใน check-v3**: "rf ต้องตรงสกุลกระแสเงินสด" และ "ขาที่ใช้ (r,g) ชุดเดียวกันโดยไม่ประกาศ family = วิธีเดียว" (W32 ใน Plan 2a ครอบแค่ |MOS|>40%) ⇒ เพิ่ม W-code ใน Plan 2b หรือ 3 พร้อม self-test | Plan 2a Task 12 review 24 ก.ย. 69 | v3 Plan 2b/3 |
 | 59 | **v3 — คำถามระดับเจ้าของ/advisor: หน่วยเงินบาทใน `RV.fmtBig`** พิมพ์ "หมื่นล้าน/แสนล้าน" บนการ์ด (13/11 หน้าใน dist) ขณะที่ prose ทั้งคลังใช้ "ล้าน" 1,590× / "พันล้าน" 236× ⇒ หน้าเดียวกันผสม "฿4.60 หมื่นล้าน" กับ "฿9,003 ล้าน" · เป็น formatter ทั้งเว็บ (แตะ mcap ทุกหน้า TH) ไม่ใช่บั๊ก v3 → advisor ตัดสินตอน Plan 3 | Plan 2a Task 8 review 24 ก.ย. 69 | v3 Plan 3 |
 | 60 | **v3 Plan 3 migration guidance (สี/tone)**: `tone:'neu'` = คลาส `.neu` เดิม (เหลือง) ไม่ใช่สีเรียบ · การ์ด `capital` (CET1/CAR) ตั้งค่า `pos` ตายตัว — ธนาคารทุนอ่อนต้องใส่ `tone:'neg'` เอง · การ์ด revenue ค่าตั้งต้น `neu` (FER เปลี่ยนสีจาก v2) ⇒ migrate-v3 ต้อง map คลาส v2 → tone ต่อการ์ด | Plan 2a Task 4/8/10 reviews 24 ก.ย. 69 | v3 Plan 3 (P6) |
+| 61 | **v3 cron path (Plan 3) — `verify:cron` ต้องรวม `check-v3`** ไม่งั้น E50/E51/E52 ถูกข้ามใน gate ของ cron จนกว่า `ci-verify` หลัง push จะจับได้ (cron เขียน `market.*` ของ `reports/*.json` แล้ว push เอง) | Plan 2a final review 24 ก.ย. 69 | v3 Plan 3 (P5) |
 
 ## ปิดแล้ว (ระยะ 0)
 
