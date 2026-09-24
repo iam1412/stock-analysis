@@ -12,6 +12,7 @@ const RV = require('../../tools/report-values.js');
 const P = require('../../tools/v3/prose.js');
 const K = require('../../tools/v3/cards.js');
 const S = require('../../tools/v3/schema.js');
+const X = require('../../tools/v3/extras.js');
 
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const METHOD_NAME = { pe: 'P/E', pbv: 'P/BV', ps: 'P/S', evsales: 'EV/Sales', evebitda: 'EV/EBITDA', pfcf: 'P/FCF', fcfyield: 'FCF Yield',
@@ -62,10 +63,19 @@ function mdesc(leg, view) {
 
 function extrasHtml(doc, view, after) {
   return doc.extras.filter((x) => x.after === after).map((x) => {
-    const cell = (c) => (typeof c === 'number' ? esc(RV.fmtPrice(c)) : P.renderProse(c, view, { mode: 'v2src' }));
+    const pr = (s) => P.renderProse(s, view, { mode: 'v2src' });
+    const cell = (c, j) => (typeof c === 'number' ? esc(X.fmtCell(c, x.columns && x.columns[j], view)) : pr(c));
+    const ncol = Math.max(x.headers.length, ...x.rows.map((r) => (Array.isArray(r) ? r.length : r.kind === 'total' ? r.cells.length : 1)));
     const head = x.headers.length ? `<tr>${x.headers.map((h) => `<th>${esc(h)}</th>`).join('')}</tr>` : '';
-    const rows = x.rows.map((r) => `<tr>${r.map((c) => `<td>${cell(c)}</td>`).join('')}</tr>`).join('');
-    const note = x.note ? `<p class="xnote">${P.renderProse(x.note, view, { mode: 'v2src' })}</p>` : '';
+    const row = (r) => (Array.isArray(r) ? `<tr>${r.map((c, j) => `<td>${cell(c, j)}</td>`).join('')}</tr>`
+      : r.kind === 'total' ? `<tr>${r.cells.map((c, j) => `<td><b>${cell(c, j)}</b></td>`).join('')}</tr>`
+        : `<tr><td colspan="${ncol}">${pr(r.text)}</td></tr>`);
+    let rows = x.rows.map(row).join('');
+    if (x.fx) {
+      const f = doc.fundamentals, tot = X.tableTotal(x).total;
+      rows += `<tr><td colspan="${ncol}">แปลงเป็น ${esc(doc.currency)} ที่ ${esc(f.reportCurrency + doc.currency)} ${f.fx}: <b>${esc(view.cur + RV.fmtPrice(tot * f.fx))}</b></td></tr>`;
+    }
+    const note = x.note ? `<p class="xnote">${pr(x.note)}</p>` : '';
     return `\n  <section>\n    <div class="card"><h3>${esc(x.title)}</h3><table class="xtab">${head}${rows}</table>${note}</div>\n  </section>`;
   }).join('');
 }

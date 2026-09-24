@@ -66,7 +66,11 @@ function proseFields(doc) {
   arr(doc.catalysts).forEach((x, i) => add(`catalysts[${i}]`, x));
   arr(doc.risks).forEach((x, i) => add(`risks[${i}]`, x));
   arr(doc.extras).forEach((x, i) => { add(`extras[${i}].title`, obj(x).title); add(`extras[${i}].note`, obj(x).note);
-    arr(obj(x).rows).forEach((r, j) => arr(r).forEach((c, k) => add(`extras[${i}].rows[${j}][${k}]`, c))); });
+    arr(obj(x).rows).forEach((r, j) => {
+      if (Array.isArray(r)) r.forEach((c, k) => add(`extras[${i}].rows[${j}][${k}]`, c));
+      else if (obj(r).kind === 'total') arr(obj(r).cells).forEach((c, k) => add(`extras[${i}].rows[${j}].cells[${k}]`, c));
+      else if (obj(r).kind === 'note') add(`extras[${i}].rows[${j}].text`, obj(r).text);
+    }); });
   return out;
 }
 

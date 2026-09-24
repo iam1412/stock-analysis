@@ -155,4 +155,14 @@ for (const r of [0, -150]) {
 { const d = base(); d.fundamentals.fx = 1.2; t(paths(S.validate(d)).includes('fundamentals.fx'), 'fx without reportCurrency → error'); }
 { const d = base(); d.fundamentals.reportCurrency = 'USD'; d.fundamentals.fx = 1.2; t(paths(S.validate(d)).includes('fundamentals.fx'), 'same currency with fx ≠ 1 → error'); }
 { const d = base(); d.fundamentals.reportCurrency = 'XYZ'; d.fundamentals.fx = 1.2; t(paths(S.validate(d)).includes('fundamentals.reportCurrency'), 'reportCurrency enum'); }
+// Plan 2a Task 11 — extras rows/columns/fx (§3.6 M · Review Focus #5)
+const xt = () => ({ after: 'valuation', title: 'SOTP', headers: ['ส่วน', 'มูลค่า'], rows: [['A', 1.5], ['B', 2]], sumCol: 1 });
+{ const d = base(); d.extras = [{ ...xt(), rows: [['A', 1.5], { kind: 'note', text: 'หมายเหตุ' }, { kind: 'total', cells: ['รวม', 3.5] }], columns: [{ dp: 0, unit: 'none' }, { dp: 2, unit: 'ccy' }] }]; t.eq(S.validate(d), [], 'total/note rows + columns valid'); }
+{ const d = base(); d.extras = [{ ...xt(), rows: [['A', 1], { kind: 'total', cells: ['x', 1] }, { kind: 'total', cells: ['y', 1] }] }]; t(paths(S.validate(d)).includes('extras[0].rows'), '≤1 total row'); }
+{ const d = base(); d.extras = [{ ...xt(), rows: [{ kind: 'sum', cells: [] }] }]; t(paths(S.validate(d)).includes('extras[0].rows[0]'), 'unknown row kind'); }
+{ const d = base(); d.extras = [{ ...xt(), columns: [{ dp: 0, unit: 'none' }] }]; t(paths(S.validate(d)).includes('extras[0].columns'), 'columns length = headers'); }
+{ const d = base(); d.extras = [{ ...xt(), columns: [{ dp: 5, unit: 'none' }, { dp: 2, unit: 'eur' }] }]; const ps = paths(S.validate(d));
+  t(ps.includes('extras[0].columns[0].dp') && ps.includes('extras[0].columns[1].unit'), 'dp ≤ 4 · unit enum'); }
+{ const d = base(); d.extras = [{ ...xt(), sumCol: 0 }]; t(paths(S.validate(d)).includes('extras[0].sumCol'), 'Review Focus #5: sumCol on a text column → error'); }
+{ const d = base(); d.extras = [{ ...xt(), fx: true }]; t(paths(S.validate(d)).includes('extras[0].fx'), 'Review Focus #5: fx:true without fundamentals.fx → error'); }
 t.done();

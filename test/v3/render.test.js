@@ -178,4 +178,9 @@ t.eq(JSON.parse(R.jsonScript('{"a":"</script>"}')).a, '</script>', 'jsonScript o
   const v2 = C.compute(d2, { seeds });
   t.near(v2.scn[0].driverStart, 2.3e9 * 1.2 / 443e6, 1e-9, 'FX: fcfPerShare driver converted too');
   t(R.toV2Source(d2, v2).includes(`FCF/หุ้น ฐาน ~$${RV.fmtPrice(2.3e9 * 1.2 / 443e6)}`), 'FX: fcfPerShare hint in the quote currency'); }
+// Plan 2a Task 11 — ตาราง SOTP ของ FER: แถวรวม + แถวแปลงสกุล + ลบเป็น U+2212
+{ const doc = load('FER-real'); const src = R.toV2Source(doc, C.compute(doc, { seeds }));
+  t(src.includes('<td><b>รวม SOTP</b></td><td><b></b></td><td><b></b></td><td><b>32,280</b></td><td><b>44.83</b></td>'), 'total row rendered bold with column formats');
+  t(src.includes('แปลงเป็น USD ที่ EURUSD 1.15566: <b>$51.81</b>'), 'fx row = total × fundamentals.fx');
+  t(src.includes('<td>−1,300</td><td>−1.81</td>') && !/<td>-1/.test(src), 'negative cells use U+2212'); }
 t.done();

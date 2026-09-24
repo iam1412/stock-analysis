@@ -19,6 +19,7 @@ const ENUM = {
   exitMetric: ['pe', 'ps', 'pbv', 'pffo', 'pfcf'],
   perYear: ['cagr', 'linear', null],
   extrasAfter: ['metrics', 'valuation', 'scenarios', 'catalysts'],
+  colUnit: ['none', 'pct', 'x', 'ccy'],
   tone: ['pos', 'neg', 'neu'],
   role: ['fv', 'context'], family: ['market', 'rg', 'asset'],
 };
@@ -394,13 +395,43 @@ function validate(doc) {
   else doc.extras.forEach((x, i) => {
     const p = `extras[${i}]`;
     if (!isObj(x)) return E(p, 'ต้องเป็น object');
-    closed(x, p, ['after', 'title', 'headers', 'rows', 'sumCol', 'note']);
+    closed(x, p, ['after', 'title', 'headers', 'rows', 'sumCol', 'note', 'columns', 'fx']);
     en(x.after, `${p}.after`, ENUM.extrasAfter); str(x.title, `${p}.title`);
     if (!Array.isArray(x.headers) || !x.headers.every((h) => typeof h === 'string')) E(`${p}.headers`, 'ต้องเป็น array ของข้อความ (ว่างได้ = ตาราง note)');
-    if (!Array.isArray(x.rows) || !x.rows.every((r) => Array.isArray(r) && r.every((c) => typeof c === 'string' || isNum(c)))) E(`${p}.rows`, 'ต้องเป็น array ของแถว (cell = ข้อความหรือตัวเลข)');
+    const cellOk = (c) => typeof c === 'string' || isNum(c);
+    if (!Array.isArray(x.rows)) E(`${p}.rows`, 'ต้องเป็น array ของแถว');
+    else {
+      x.rows.forEach((r, j) => {
+        const rp = `${p}.rows[${j}]`;
+        if (Array.isArray(r)) { if (!r.every(cellOk)) E(rp, 'cell = ข้อความหรือตัวเลข'); }
+        else if (isObj(r) && r.kind === 'total') { closed(r, rp, ['kind', 'cells']); if (!Array.isArray(r.cells) || !r.cells.every(cellOk)) E(`${rp}.cells`, 'ต้องเป็น array ของ cell'); }
+        else if (isObj(r) && r.kind === 'note') { closed(r, rp, ['kind', 'text']); str(r.text, `${rp}.text`); }
+        else E(rp, 'แถวต้องเป็น [cell…] · {kind:"total", cells} · {kind:"note", text}');
+      });
+      if (x.rows.filter((r) => isObj(r) && r.kind === 'total').length > 1) E(`${p}.rows`, 'แถว total ได้ไม่เกิน 1');
+    }
+    if (x.columns != null) {
+      if (!Array.isArray(x.columns) || !Array.isArray(x.headers) || x.columns.length !== x.headers.length) E(`${p}.columns`, 'ต้องเป็น array ยาวเท่า headers');
+      else x.columns.forEach((c, k) => {
+        const cp = `${p}.columns[${k}]`;
+        if (!isObj(c)) return E(cp, 'ต้องเป็น {dp, unit, signed?}');
+        closed(c, cp, ['dp', 'unit', 'signed']);
+        num(c.dp, `${cp}.dp`, { int: true, min: 0 }); if (isNum(c.dp) && c.dp > 4) E(`${cp}.dp`, 'ต้อง ≤ 4');
+        en(c.unit, `${cp}.unit`, ENUM.colUnit);
+        if (c.signed != null && typeof c.signed !== 'boolean') E(`${cp}.signed`, 'ต้องเป็น true/false');
+      });
+    }
     if (x.sumCol != null) {
       num(x.sumCol, `${p}.sumCol`, { int: true, min: 0 });
-      if (Array.isArray(x.rows) && !x.rows.every((r) => Array.isArray(r) && isNum(r[x.sumCol]))) E(`${p}.sumCol`, 'คอลัมน์ผลรวมต้องเป็นตัวเลขทุกแถว');
+      const sumOk = (r) => (Array.isArray(r) ? isNum(r[x.sumCol])
+        : isObj(r) && r.kind === 'note' ? true
+          : isObj(r) && r.kind === 'total' ? Array.isArray(r.cells) && isNum(r.cells[x.sumCol]) : false);
+      if (Array.isArray(x.rows) && !x.rows.every(sumOk)) E(`${p}.sumCol`, 'คอลัมน์ผลรวมต้องเป็นตัวเลขทุกแถวข้อมูล (และแถว total)');
+    }
+    if (x.fx != null) {
+      if (typeof x.fx !== 'boolean') E(`${p}.fx`, 'ต้องเป็น true/false');
+      else if (x.fx && !(isObj(doc.fundamentals) && isNum(doc.fundamentals.fx))) E(`${p}.fx`, 'fx:true ต้องมี fundamentals.fx');
+      else if (x.fx && x.sumCol == null) E(`${p}.fx`, 'แถวแปลงสกุลต้องมี sumCol');
     }
     str(x.note, `${p}.note`, { req: false });
   });
