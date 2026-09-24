@@ -18,6 +18,7 @@ const { usSessionOpen, setSessionOpen } = require('./market.js');
 const DV = require('../derived-values.js');
 const RV = require('../report-values.js');   // ระยะ 2: isV2() + schema values — snapshotDiff อ่านตัวเลขจาก values แทน HTML บนใบ v2
 const T = require('../tag-lib.js');
+const RS = require('../report-source.js');   // ใบ v2 + v3 (Plan 2b)
 
 const REPORTS = path.join(ROOT, 'reports');
 const TEMPLATE = path.join(ROOT, '_template', 'agent-prompt.md');
@@ -280,10 +281,17 @@ async function medianBlock(spec, th) {
   return { text, warn };
 }
 
+/** ใบ v3 แล้ว = ห้าม prep (spec §6.4 · ruling 4): คิวของ v3 UPDATE = P6 — ไม่ทำเหมือนเป็น NEW */
+function checkNotV3(sym, dir) {
+  if (RS.kindOf(sym, dir || REPORTS) === 'v3')
+    throw new Error(`${sym} เป็นใบ v3 แล้ว (reports/${sym}.json) — v3 UPDATE = Plan 3 (คิวของใบ v3 = P6) · แก้ด้วย node tools/report.js export ${sym} → แก้ .work/${sym}.json → node tools/report.js save ${sym}`);
+}
+
 async function prep(sym, opts) {
   const o = opts || {};
+  checkNotV3(sym);   // ก่อนยิง network ใด ๆ
   const fp = path.join(REPORTS, sym + '.html');
-  const exists = fs.existsSync(fp);
+  const exists = RS.kindOf(sym, REPORTS) === 'v2';   // หลัง checkNotV3 "มีใบอยู่แล้ว" เหลือแค่ใบ v2
   const html = exists ? fs.readFileSync(fp, 'utf8') : '';
   const sm = exists ? RM.readStockMeta(html) : null;
   const th = exists ? (sm && sm.currency === 'THB') : !!o.th;
@@ -360,4 +368,4 @@ async function prep(sym, opts) {
   return { file, mode, model, effort, hard: hs.hard };
 }
 
-module.exports = { prep, decideMode, lastSessionISO, parseVendor, snapshotDiff, assemblePrompt, extraBlock, hardStock, checkNotPrepatch, medianBlock, TOKENS, EPS_SCREEN_PCT };
+module.exports = { prep, decideMode, lastSessionISO, parseVendor, snapshotDiff, assemblePrompt, extraBlock, hardStock, checkNotPrepatch, checkNotV3, medianBlock, TOKENS, EPS_SCREEN_PCT };
