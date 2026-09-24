@@ -77,4 +77,67 @@ t.eq(C.weightsOf(load('ZTS')), [0.5, 0.5], 'legacy: equal weights, byte-identica
     const d = load('BBL-real'); d.legs[1].family = f1; d.legs[2].family = f2;
     t.throws(() => C.compute(d, { seeds: {} }), /legs\[[12]\]\.family/, `BBL-real ddm=${f1} pbv=${f2}: mislabel rejected, FV cannot move`);
   } }
+// ── Plan 2b Task 5 — semanticErrors(): จุด throw ของ compute ครบในครั้งเดียว (spec §9 · #52) ──
+{
+  const Z = () => { const d = load('ZTS-real'); delete d._sig; return d; };
+  t.eq(C.semanticErrors(Z(), { seeds: {} }), [], 'ZTS-real: no semantic errors (themeLegacy present)');
+  const d = Z();
+  d.meta.themeLegacy = null;                                      // (1) ไม่มีสีแบรนด์ (seeds ว่าง)
+  delete d.scenarios.baseOverride; d.scenarios.driver = 'bvps';   // (2) ฐาน driver ไม่มี (ZTS-real ไม่มี fundamentals.bvps)
+  d.legs[1].inputs.extrasRef = 0;                                  // (3) declared ชี้ extras[0] ที่ไม่มี
+  d.legs[2].inputs.r = 5;                                          // (4) ddm r (5%) ≤ g (5.5%) → legValue throw
+  t.eq(C.semanticErrors(d, { seeds: {} }).map((e) => e.path).sort(), ['legs[1].inputs.extrasRef', 'legs[2]', 'meta.themeLegacy', 'scenarios.driver'], 'four faults → four paths in one call');
+  t(C.semanticErrors(d, { seeds: {} }).every((e) => e.msg && !e.msg.startsWith(e.path)), 'msg carries no duplicated path prefix');
+  t.throws(() => C.compute(d, { seeds: {} }), /legs\[1\]\.inputs\.extrasRef/, 'compute() itself still throws on the first fault (unchanged)');
+  t.eq(C.semanticErrors(d, { seeds: { ZTS: '#e8731a' } }).map((e) => e.path).includes('meta.themeLegacy'), false, 'a seed clears the brand-colour fault');
+  const e = Z(); e.fvWeights = null; e.legs.push({ method: 'pbv', label: 'P/BV ตลาด', role: 'context', inputs: { multipleSource: 'current' } });
+  t.eq(C.semanticErrors(e, { seeds: {} }).map((x) => x.path), ['legs[3].inputs.multipleSource'], "'current' leg with no bvps → path of multipleSource");
+  const r = Z(); r.legs[0].inputs.multipleRange = [0.0001, 20]; r.legs[0].inputs.multiple = 14;
+  t(C.semanticErrors(r, { seeds: {} }).every((x) => x.path !== 'legs[0]'), 'multipleRange that still prices > 0 is not an error');
+}
+// ── parity pin (advisor pre-dispatch 24 ก.ย. 69): จุด throw ทั้ง 5 ของ compute ทีละจุด — ใบละ fault เดียว ──
+// semanticErrors ต้องชี้ path นั้น (ตัวเดียว) **และ** compute() บนใบเดียวกันต้อง throw ที่ path เดียวกัน
+// ⇒ ถ้าวันหน้า compute ได้จุด throw ใหม่ที่ semanticErrors ไม่รู้จัก (หรือกลับกัน) ต้องเพิ่มแถวที่นี่ — checkDoc ยังรัน compute ต่อ
+//   จึงไม่มีทาง save ผ่านแต่ gate พัง ความเสี่ยงคือ #52 ไม่ครบ (fault ใหม่รายงานทีละข้อผ่าน catch ของ compute ไม่ใช่ครบในครั้งเดียว)
+{
+  const S = require('../../tools/v3/schema.js');
+  const Z = () => { const d = load('ZTS-real'); delete d._sig; return d; };
+  const SITES = [   // [ชื่อจุด throw, path ที่ต้องได้, การ mutate ที่ทำให้สะดุดจุดนั้นจุดเดียว]
+    ['prepLeg extrasRef', 'legs[1].inputs.extrasRef', (d) => { d.legs[1].inputs.extrasRef = 0; }],
+    ["prepLeg 'current' no base", 'legs[3].inputs.multipleSource', (d) => { d.fvWeights = null; d.legs.push({ method: 'pbv', label: 'P/BV ตลาด', role: 'context', inputs: { multipleSource: 'current' } }); }],
+    ['L.legValue (ddm r ≤ g)', 'legs[2]', (d) => { d.legs[2].inputs.r = 5; }],
+    ['driverStart', 'scenarios.driver', (d) => { delete d.scenarios.baseOverride; d.scenarios.driver = 'bvps'; }],
+    ['themeOf', 'meta.themeLegacy', (d) => { d.meta.themeLegacy = null; }],
+  ];
+  for (const [name, p, mut] of SITES) {
+    const d = Z(); mut(d);
+    t.eq(S.validate(d), [], `parity ${name}: the mutation passes the schema (semantic fault only)`);
+    t.eq(C.semanticErrors(d, { seeds: {} }).map((e) => e.path), [p], `parity ${name}: semanticErrors names ${p} (and nothing else)`);
+    t.throws(() => C.compute(d, { seeds: {} }), new RegExp(p.replace(/[.[\]]/g, '\\$&')), `parity ${name}: compute() on the same doc throws at ${p}`);
+  }
+  // ทางกลับ (review รอบ 1): semanticErrors ว่าง ⇒ compute ไม่ throw — ทุก mutation ในชุด + ตัวควบคุมที่ต้องสะอาด
+  const CLEAN = [
+    ['baseline', () => {}],
+    ['seed replaces themeLegacy', (d) => { d.meta.themeLegacy = null; }, { ZTS: '#e8731a' }],
+    ['multipleRange still > 0', (d) => { d.legs[0].inputs.multipleRange = [0.0001, 20]; d.legs[0].inputs.multiple = 14; }],
+  ];
+  for (const [name, mut, sd] of [...SITES.map(([n, , m]) => [n, m]), ...CLEAN]) {
+    const d = Z(); mut(d); const seeds = sd || {};
+    const nSem = C.semanticErrors(d, { seeds }).length;
+    let threw = null; try { C.compute(d, { seeds }); } catch (e) { threw = e; }
+    t.eq(!!threw, nSem > 0, `parity ${name}: semanticErrors empty ⇔ compute() does not throw (${nSem} error, ${threw ? 'threw' : 'ok'})`);
+  }
+  // tripwire (review รอบ 1): จำนวนจุด throw ของ compute.js + legs.js (legs ผ่าน `${P}` = path ที่ผู้เรียกส่งมา ทุกจุด)
+  // วันนี้: compute.js 5 = 4 จุดความหมาย (SITES) + 1 = S.validate (สคีมา — checkDoc หยุดก่อนถึง) · legs.js 5 จุด ทั้งหมดขึ้นต้น `${P}` (= แถว L.legValue)
+  // ตัวเลขขยับ = มีจุด throw ใหม่/หาย → ตรวจว่า semanticErrors ครอบหรือยัง แล้ว add a SITES row ก่อนแก้ตัวเลขนี้
+  const fs = require('fs'), path = require('path');
+  const src = (f) => fs.readFileSync(path.join(__dirname, '../../tools/v3', f), 'utf8');
+  const count = (s, re) => (s.match(re) || []).length;
+  const code = (s) => s.replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|\s)\/\/.*$/gm, '$1');   // ตัดคอมเมนต์ (คำว่า throw ในคอมเมนต์ไม่นับ)
+  const cSrc = code(src('compute.js')), lSrc = code(src('legs.js'));
+  t.eq(count(cSrc, /\bthrow\b/g), 5, 'tripwire: compute.js has 5 throw sites — changed? add a SITES row');
+  t.eq(count(cSrc, /throw new Error\(/g), 5, 'tripwire: compute.js throws are all `throw new Error(` — changed? add a SITES row');
+  t.eq(count(lSrc, /\bthrow\b/g), 5, 'tripwire: legs.js has 5 throw sites — changed? add a SITES row');
+  t.eq(count(lSrc, /throw new Error\(`\$\{P\}/g), 5, 'tripwire: every legs.js throw is funnelled through ${P} (path from the caller) — changed? add a SITES row');
+}
 t.done();

@@ -16,6 +16,7 @@ const { footerDate, ageDays, todayBangkok } = require('./footer-date.js');
 const { usSessionOpen, setSessionOpen } = require('./market.js');
 const { triage, prePatchList, llmList, STALE_DAYS, parseLightRule } = require('./triage.js');
 const { readStockMeta } = require('../report-meta.js');
+const RS = require('../report-source.js');   // ใบ v2 + v3 (Plan 2b)
 const EC = require('../earnings-calendar.js');
 
 const REPORTS = path.join(ROOT, 'reports');
@@ -24,14 +25,19 @@ const AGE_LIMIT_DEFAULT = 5;   // WS6 ข้อ 3: ทยอยกี่ใบ/�
 
 /** SEC fallback ต่อ process: แคช ticker→CIK ไว้ตัวเดียว · ยิง curl -A (sync) เฉพาะเมื่อ triage ถามจริง */
 const secFetcher = () => { const cache = new Map(); return (sym) => EC.secLookup(sym, { cache }); };
-const readReport = (sym) => { const fp = path.join(REPORTS, sym + '.html'); return fs.existsSync(fp) ? fs.readFileSync(fp, 'utf8') : null; };
+// ตัวอ่านของจริง = metaLite (ใบ v2 + v3 ผ่าน tools/report-source.js) · เทสเดิมฉีดตัวอ่านที่คืน html ดิบ — ตัวใช้งานรับได้ทั้งสองรูป
+const readLite = (sym) => RS.metaLite(sym, REPORTS);
+const analysisIsoOf = (h) => (h && typeof h === 'object' ? h.analysisDate || null : ((h && footerDate(h)) || {}).iso || null);
+const currencyOf = (h) => (h && typeof h === 'object' ? h.currency || null : ((h && readStockMeta(h)) || {}).currency || null);
 function loadFlags() {
   try { return JSON.parse(fs.readFileSync(FLAGS, 'utf8')); }
   catch (e) { if (e.code === 'ENOENT') return []; throw new Error(`อ่าน price-flags.json ไม่ได้ (${e.message})`); }
 }
 
-const listReportsFS = () => fs.readdirSync(REPORTS).filter((f) => /\.html$/i.test(f)).map((f) => f.replace(/\.html$/i, '')).sort();
-const footerAgeFS = (today) => (sym) => { const h = readReport(sym); const d = h && footerDate(h); return d ? ageDays(d.iso, today) : null; };
+// ★ คิวตามอายุข้ามใบ v3 (Plan 2b): ใบ v3 ที่เก่าจะสร้างแถว LIGHT ทุกรอบ → prep ปฏิเสธ ("v3 UPDATE = Plan 3") → issue คิวไม่ปิดเอง
+//   P6 (คิว v3 UPDATE) ต้องถอดตัวกรอง `!e.v3` นี้ออก
+const listReportsFS = (dir) => RS.list(dir || REPORTS).filter((e) => !e.v3).map((e) => e.symbol).sort();
+const footerAgeFS = (today) => (sym) => { const iso = analysisIsoOf(readLite(sym)); return iso ? ageDays(iso, today) : null; };
 
 /** งบออกหลังวันวิเคราะห์ไหม (WS6 ข้อ 2 · ส่วนบริสุทธิ์: รับปฏิทิน + ตัวอ่านรายงานมาเลย ไม่แตะดิสก์เอง)
  *  → (sym) → true = footer "ข้อมูล ณ" เก่ากว่าวันประกาศงบครั้งล่าสุด ⇒ triage ยก mos-sign-flip เป็น LIGHT
@@ -42,15 +48,15 @@ function earningsAfterOfWith(cal, read) {
   return (sym) => {
     const e = syms[sym];
     if (!e || !e.last) return null;
-    const h = read(sym);
-    const d = h && footerDate(h);
-    return d ? d.iso < e.last : null;
+    const iso = analysisIsoOf(read(sym));
+    return iso ? iso < e.last : null;
   };
 }
 
 /** มีงบไตรมาส/ปีใหม่หลังวันที่ footer ไหม (กฎ LIGHT/FULL ใหม่ · ส่วนบริสุทธิ์ — ฉีดปฏิทิน/ตัวอ่านรายงาน/SEC/วันนี้)
  *  → (sym) → { after: true|false|null, source, last, detail } (null = ตัดสินไม่ได้ ⇒ triage ถือเป็น FULL) · ตรรกะจริงอยู่ที่ EC.statementAfter
- *  opts.today (default วันนี้ไทย) · opts.sec(sym) → 'YYYY-MM-DD'|null (ไม่ใส่ = ไม่ยิง SEC) · opts.isThai(sym, html) (default: stock-meta.currency === 'THB')
+ *  read(sym) → RS.metaLite (ของจริง · ใบ v2+v3) หรือ html ดิบของใบ v2 (เทสเดิม/prep) หรือ null — วันวิเคราะห์ + สกุลอ่านได้ทั้งสองรูป
+ *  opts.today (default วันนี้ไทย) · opts.sec(sym) → 'YYYY-MM-DD'|null (ไม่ใส่ = ไม่ยิง SEC) · opts.isThai(sym, h) — h = ค่าที่ read คืน (default: currency === 'THB')
  *  ผลต่อ symbol เก็บในหน่วยความจำต่อ process ({lastStatementDate, source, fetchedAt} ไม่เขียน earnings-calendar.json — ไฟล์นั้นไม่ได้ commit) */
 function statementAfterOfWith(cal, read, opts) {
   const o = opts || {};
@@ -59,9 +65,8 @@ function statementAfterOfWith(cal, read, opts) {
   return (sym) => {
     if (memo.has(sym)) return memo.get(sym);
     const h = read(sym);
-    const d = h && footerDate(h);
-    const th = o.isThai ? o.isThai(sym, h) : !!(h && (readStockMeta(h) || {}).currency === 'THB');
-    const r = EC.statementAfter(sym, { footerIso: d && d.iso, today, th, cal, sec: o.sec || null });
+    const th = o.isThai ? o.isThai(sym, h) : currencyOf(h) === 'THB';
+    const r = EC.statementAfter(sym, { footerIso: analysisIsoOf(h), today, th, cal, sec: o.sec || null });
     const rec = { ...r, lastStatementDate: r.last, fetchedAt: today };
     memo.set(sym, rec);
     return rec;
@@ -96,7 +101,8 @@ function synthAge(prior, today) {
  *  opts.ageLimit (default 5) · opts.listReports/opts.footerAgeOf — คิวตามอายุ (WS6 ข้อ 3): เติมแถวสังเคราะห์
  *  reason:'age-gt-90d' synthetic:true ให้ใบที่อายุเกิน STALE_DAYS และยังไม่มี flag อยู่แล้ว แก่สุดก่อน ตัดที่ ageLimit
  *  (0 = --no-age ไม่เติมเลย) — ผ่าน triage() เหมือนแถวจริงทุกอย่าง (ได้ bucket LIGHT/action/skip ตามกติกาเดียวกัน)
- *  opts.priorStocks = state.stocks ของรอบนี้ (open-item #26) — ให้ synthAge() ตัดสิน flaggedAt ต่อเนื่องได้ */
+ *  opts.priorStocks = state.stocks ของรอบนี้ (open-item #26) — ให้ synthAge() ตัดสิน flaggedAt ต่อเนื่องได้
+ *  opts.liteOf(sym) → RS.metaLite | null (Plan 2b) — ตัวอ่านราคาเดิม/สกุล/v3 ต่อแถว (default = reports/ จริง · เทสฉีด sandbox) */
 function plan(flags, today, opts) {
   const o = opts || {};
   const ageOf = o.footerAgeOf || footerAgeFS(today);
@@ -113,11 +119,12 @@ function plan(flags, today, opts) {
     statementAfterOf: o.statementAfterOf || null,
     lightRule: o.lightRule || 'new',
   });
+  const liteOf = o.liteOf || readLite;   // เทสฉีด sandbox ได้ (Plan 2b)
   for (const r of rows) {
-    const h = readReport(r.symbol);
-    const sm = h && readStockMeta(h);
-    r.oldPrice = sm && Number.isFinite(sm.price) ? sm.price : null;
-    r.currency = sm ? sm.currency : null;
+    const m = liteOf(r.symbol);
+    r.oldPrice = m && Number.isFinite(m.px) ? m.px : null;   // v2 = stock-meta.price · v3 = market.px
+    r.currency = m ? m.currency : null;
+    r.v3 = !!(m && m.v3);
   }
   return rows;
 }
@@ -126,8 +133,10 @@ function plan(flags, today, opts) {
  *  currency == null (ไม่มีไฟล์รายงาน/ไม่มี stock-meta) → ข้ามออกจาก batch เสมอ ไม่เดาว่าเป็น US */
 function patchTargets(rows, m) {
   const cur = new Map(rows.map((r) => [r.symbol, r.currency]));
-  const out = { target: [], skippedUS: [], skippedTH: [], skippedNoReport: [] };
+  const v3 = new Set(rows.filter((r) => r.v3).map((r) => r.symbol));
+  const out = { target: [], skippedUS: [], skippedTH: [], skippedNoReport: [], skippedV3: [] };
   for (const sym of prePatchList(rows)) {
+    if (v3.has(sym)) { out.skippedV3.push(sym); continue; }   // ราคาใบ v3 = cron P5 (#62) — update-prices ปฏิเสธใบ v3 อยู่แล้ว
     const c = cur.get(sym);
     if (c == null) { out.skippedNoReport.push(sym); continue; }
     const th = c === 'THB';
@@ -267,8 +276,8 @@ function preflight(opts) {
   const s = S.load();   // ★ (open-item #26) ต้องอ่านก่อน plan() — synthAge() ใน plan ต้องใช้ state เดิมตัดสิน flaggedAt ต่อเนื่องของแถวอายุ
   const lightRule = parseLightRule(o.lightRule, process.env);   // queue.js ส่งค่า --light-rule มา · ไม่ส่ง = env LIGHT_RULE · ไม่มี = new
   const secOn = !o.noSec && lightRule !== 'legacy';   // SEC fallback เฉพาะกฎใหม่ · ยิงเฉพาะแถวในคิวที่ปฏิทินไม่มี last (lazy ใน triage) — --no-sec ปิด
-  const rows = plan(flags, today, { ...o, ageLimit, lightRule, earningsAfterOf: o.earningsAfterOf || earningsAfterOfWith(cal, readReport), priorStocks: s.stocks,
-    statementAfterOf: o.statementAfterOf || statementAfterOfWith(cal, readReport, { today, sec: secOn ? secFetcher() : null }) });
+  const rows = plan(flags, today, { ...o, ageLimit, lightRule, earningsAfterOf: o.earningsAfterOf || earningsAfterOfWith(cal, readLite), priorStocks: s.stocks,
+    statementAfterOf: o.statementAfterOf || statementAfterOfWith(cal, readLite, { today, sec: secOn ? secFetcher() : null }) });
   console.log(`\nกฎ LIGHT/FULL: ${lightRule === 'legacy' ? 'legacy (EPS screen ±2% ยกเป็น UPDATE · งบออกหลังวิเคราะห์ยก flip เป็น LIGHT)' : 'ใหม่ (LIGHT ⇔ ไม่มีงบใหม่หลัง footer · ไม่รู้วันงบ = FULL · ขยับ >30% = FULL)'}`);
   console.log(`\n=== คิว price-flags ${flags.length} รายการ · ${today} ===\n${renderTable(rows)}`);
   const nCal = Object.keys(cal.symbols || {}).length;
@@ -289,6 +298,7 @@ function preflight(opts) {
   if (t.skippedUS.length) console.log(`\n⏳ ตลาด US เปิดอยู่ — ไม่ pre-patch ${t.skippedUS.join(' ')} (ราคา intraday · --force ข้าม guard ของ update-prices เอง — บทเรียน 9 ก.ย. 69) · ต้องการจริงใส่ --allow-intraday`);
   if (t.skippedTH.length) console.log(`\n⏳ SET เปิดอยู่ — ไม่ pre-patch ${t.skippedTH.join(' ')} · --allow-intraday ถ้าจงใจ`);
   if (t.skippedNoReport.length) console.log(`\n⚠ ไม่มีไฟล์รายงาน — ไม่ pre-patch ${t.skippedNoReport.join(' ')} (ลบไปแล้ว? รัน node tools/tag-apply.js --prune แล้วปล่อยให้ cron ตัด flag ทิ้ง)`);
+  if (t.skippedV3.length) console.log(`\nℹ ใบ v3 — ไม่ pre-patch ${t.skippedV3.join(' ')} (ราคาใบ v3 = cron P5 · v3 cron = Plan 3 · open-item #62) · re-analysis ของใบ v3 = P6`);
   if (t.target.length && !o.noPatch) {
     console.log(`\n▶ pre-patch ราคา ${t.target.length} ตัวใน process เดียว (lock กันคิวเพี้ยนแล้ว — WS4)`);
     const r = run('node', ['tools/update-prices.js', '--write', '--force', ...t.target]);
@@ -317,4 +327,4 @@ function preflight(opts) {
   return rows;
 }
 
-module.exports = { preflight, plan, ageQueue, earningsAfterOfWith, statementAfterOfWith, unknownSummary, patchTargets, renderTable, manualSteps, loadFlags, parseGateFailures, roundStart, isNewFlag, upsertRow, applyGateResult, synthAge };
+module.exports = { preflight, plan, ageQueue, listReportsFS, earningsAfterOfWith, statementAfterOfWith, unknownSummary, patchTargets, renderTable, manualSteps, loadFlags, parseGateFailures, roundStart, isNewFlag, upsertRow, applyGateResult, synthAge };

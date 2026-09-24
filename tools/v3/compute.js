@@ -59,27 +59,39 @@ function weightsOf(doc) {
   return doc.legs.map((l) => (isFv(l) ? 1 / fv.length : 0));
 }
 
+// fx + fundamentals สกุลราคา (§3.6 L) — compute() และ semanticErrors() ใช้ตัวเดียวกัน
+function quoteBasis(doc) {
+  const f = doc.fundamentals;
+  const fx = f.reportCurrency && f.reportCurrency !== doc.currency ? f.fx : 1;
+  return { fx, fq: toQuote(f, fx) };
+}
+// ขาหนึ่งขา → { legQ, legM, liveMultiple } — จุดเดียวของ extrasRef/'current' ที่ compute() และ semanticErrors() ใช้ร่วม
+// (throw ขึ้นต้นด้วย JSON path เสมอ ⇒ semanticErrors แยก path ได้)
+function prepLeg(doc, leg, i, fq, fx) {
+  if (leg.method === 'declared' && leg.inputs.extrasRef != null && !doc.extras[leg.inputs.extrasRef])
+    throw new Error(`legs[${i}].inputs.extrasRef: ไม่มี extras[${leg.inputs.extrasRef}]`);
+  // R7 (§13 ข้อ 6): ขา context 'current' — ตัวคูณสด = ราคา ÷ ตัวตั้ง (รวม override) · ค่าขา ≡ ราคา · ไม่มีเลขแช่แข็ง
+  // override ของขาเป็นสกุลงบเหมือน fundamentals → แปลงชุดเดียวกัน
+  const legQ = fx === 1 ? leg : { ...leg, override: toQuote(leg.override, fx) };
+  let liveMultiple = null;
+  if (leg.inputs.multipleSource === 'current') {
+    const k = S.CURRENT_BASE[leg.method], base = L.inputsOf(legQ, fq)[k];
+    if (!(typeof base === 'number' && base > 0)) throw new Error(`legs[${i}].inputs.multipleSource: 'current' ต้องมี fundamentals.${k} > 0`);
+    liveMultiple = doc.market.px / base;
+  }
+  const legM = liveMultiple == null ? legQ : { ...legQ, inputs: { ...leg.inputs, multiple: liveMultiple } };
+  return { legQ, legM, liveMultiple };
+}
+
 function compute(doc, opts) {
   const errs = S.validate(doc);
   if (errs.length) throw new Error(errs.map((e) => `${e.path}: ${e.msg}`).join('\n'));
   const f = doc.fundamentals, mk = doc.market, s = doc.scenarios;
-  const fx = f.reportCurrency && f.reportCurrency !== doc.currency ? f.fx : 1;
-  const fq = toQuote(f, fx);
+  const { fx, fq } = quoteBasis(doc);
 
   // ── legs → fv ──
   const legs = doc.legs.map((leg, i) => {
-    if (leg.method === 'declared' && leg.inputs.extrasRef != null && !doc.extras[leg.inputs.extrasRef])
-      throw new Error(`legs[${i}].inputs.extrasRef: ไม่มี extras[${leg.inputs.extrasRef}]`);
-    // R7 (§13 ข้อ 6): ขา context 'current' — ตัวคูณสด = ราคา ÷ ตัวตั้ง (รวม override) · ค่าขา ≡ ราคา · ไม่มีเลขแช่แข็ง
-    // override ของขาเป็นสกุลงบเหมือน fundamentals → แปลงชุดเดียวกัน
-    const legQ = fx === 1 ? leg : { ...leg, override: toQuote(leg.override, fx) };
-    let liveMultiple = null;
-    if (leg.inputs.multipleSource === 'current') {
-      const k = S.CURRENT_BASE[leg.method], base = L.inputsOf(legQ, fq)[k];
-      if (!(typeof base === 'number' && base > 0)) throw new Error(`legs[${i}].inputs.multipleSource: 'current' ต้องมี fundamentals.${k} > 0`);
-      liveMultiple = mk.px / base;
-    }
-    const legM = liveMultiple == null ? legQ : { ...legQ, inputs: { ...leg.inputs, multiple: liveMultiple } };
+    const { legQ, legM, liveMultiple } = prepLeg(doc, leg, i, fq, fx);
     const value = L.legValue(legM, fq, `legs[${i}]`);
     const r = leg.inputs.multipleRange;
     const at = (m) => L.legValue({ ...legQ, inputs: { ...leg.inputs, multiple: m } }, fq, `legs[${i}].inputs.multipleRange`);
@@ -144,4 +156,29 @@ function compute(doc, opts) {
     fq, fx, stmtCur: STMT_SYMBOL[f.reportCurrency] || cur };
 }
 
-module.exports = { compute, weightsOf, toQuote, SCN_NAMES };
+// "legs[0].inputs.x: ข้อความ" → { path, msg } · ทุกจุด throw ของ compute/legs ขึ้นต้นด้วย JSON path
+const PATH_MSG = /^((?:legs|scenarios|meta|metrics|extras|fundamentals)[\w.[\]]*): ([\s\S]*)$/;
+const splitErr = (e, fallback) => {
+  const m = PATH_MSG.exec(String(e && e.message));
+  return m ? { path: m[1], msg: m[2] } : { path: fallback, msg: String(e && e.message) };
+};
+/** error เชิงความหมายทุกข้อที่ compute() จะ throw — เก็บครบ **ก่อน** เรียก compute (spec §9 · open-item #52)
+ *  สมมติว่าใบผ่าน S.validate แล้ว · ใช้ prepLeg/legValue/driverStart/themeOf ตัวเดียวกับ compute (ไม่ลอกตรรกะ)
+ *  ครอบ: extrasRef ชี้ extras ที่ไม่มี · 'current' ไม่มีตัวตั้ง > 0 · legValue (ฐานไม่ครบ · r ≤ g · ค่าขา ≤ 0) + multipleRange
+ *        · ฐาน driver ของฉากไม่มี/≤ 0 · ไม่มีสีแบรนด์ (seed และ themeLegacy) */
+function semanticErrors(doc, opts) {
+  const out = [];
+  const { fx, fq } = quoteBasis(doc);
+  doc.legs.forEach((leg, i) => {
+    try {
+      const { legQ, legM } = prepLeg(doc, leg, i, fq, fx);
+      L.legValue(legM, fq, `legs[${i}]`);
+      for (const m of leg.inputs.multipleRange || []) L.legValue({ ...legQ, inputs: { ...leg.inputs, multiple: m } }, fq, `legs[${i}].inputs.multipleRange`);
+    } catch (e) { out.push(splitErr(e, `legs[${i}]`)); }
+  });
+  try { driverStart(doc, fq); } catch (e) { out.push(splitErr(e, 'scenarios.driver')); }
+  try { themeOf(doc, opts && opts.seeds, null); } catch (e) { out.push(splitErr(e, 'meta.themeLegacy')); }
+  return out;
+}
+
+module.exports = { compute, semanticErrors, weightsOf, toQuote, SCN_NAMES };

@@ -9,28 +9,27 @@
  *
  * CLI: node tools/analysis-age.js [ISO วันนี้]   (ไม่ใส่ = todayBangkok())
  */
-const fs = require('fs');
 const path = require('path');
-const { footerDate, ageDays, todayBangkok } = require('./queue/footer-date.js');
+const { ageDays, todayBangkok } = require('./queue/footer-date.js');
+const RS = require('./report-source.js');   // ใบ v2 + v3 (Plan 2b)
 
 const BUCKETS = [
   ['≤7d', 7], ['8–30', 30], ['31–60', 60], ['61–90', 90], ['91–120', 120], ['>120', Infinity],
 ];
 const bucketOf = (age) => BUCKETS.find(([, max]) => age <= max)[0];
 
-/** อ่านทุก *.html ใต้ dir → จัดกลุ่มตามอายุจาก footer เทียบกับ today (ISO) — ส่วนบริสุทธิ์
+/** อ่านทุกรายงานใต้ dir (ใบ v2 + v3) → จัดกลุ่มตามอายุการวิเคราะห์เทียบกับ today (ISO) — ส่วนบริสุทธิ์
  *  (dir/today รับมาเป็น param เสมอ ไม่มี default ที่ต้องเดา วันที่ไม่ผูกกับ Date.now()) */
 function ageBuckets(dir, today) {
   const buckets = Object.fromEntries(BUCKETS.map(([k]) => [k, 0]));
   let unparsed = 0, be = 0, ce = 0;
   const rows = [];
-  for (const f of fs.readdirSync(dir).filter((x) => /\.html$/i.test(x))) {
-    const html = fs.readFileSync(path.join(dir, f), 'utf8');
-    const d = footerDate(html);
-    if (!d) { unparsed++; continue; }
-    if (d.era === 'BE') be++; else ce++;
-    const age = ageDays(d.iso, today);
-    rows.push([f.replace(/\.html$/i, ''), age]);
+  for (const e of RS.list(dir)) {
+    const m = RS.metaLite(e.symbol, dir);   // v2 = footer "ข้อมูล ณ" · v3 = meta.analysisDate + dateEra
+    if (!m || !m.analysisDate) { unparsed++; continue; }
+    if (m.era === 'BE') be++; else ce++;
+    const age = ageDays(m.analysisDate, today);
+    rows.push([e.symbol, age]);
     buckets[bucketOf(age)]++;
   }
   rows.sort((a, b) => b[1] - a[1]);   // แก่สุดก่อน

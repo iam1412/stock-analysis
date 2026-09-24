@@ -17,7 +17,8 @@
  * + **[2c] ปีงบของ epsFwd** (/forecast/) — Yahoo forwardEps เป็นปีงบถัดไป *อีกปี* ได้ (vendor เรียก "forward"
  * เหมือนกันแต่คนละงวด) ⇒ เทียบกับ EPS ประมาณการรายปีของ SA แล้วบอกงวด + เตือนเมื่อไม่ใช่ปีงบถัดไป
  *
- * ใช้:  node tools/fetch-fundamentals.js SYMBOL [--th]
+ * ใช้:  node tools/fetch-fundamentals.js SYMBOL [--th] [--json]
+ *   --json = พิมพ์ JSON บรรทัดเดียว (snapshotJson — งบ TTM/FY/หุ้นคงเหลือ/ปันผล) ให้ sidecar ของ prep (spec §6.4) แทนบล็อกข้อความ
  *   --th = หุ้นไทย (Yahoo = SYMBOL.BK · StockAnalysis = quote/bkk/SYMBOL) — ★ ต้องระบุเอง กัน ticker ชนกัน
  *
  * script ล่มแหล่งใดแหล่งหนึ่ง → พิมพ์ ✗ พร้อมเหตุผล — agent ยิง WebFetch targeted แหล่งนั้นแทน (fallback เดิม)
@@ -575,12 +576,45 @@ function forecastLine(y, sa, fc, currentFY) {
   return `${head} — epsFwd ${fmt(v)} ตรง FY${best.fy}e${warn}`;
 }
 
+/** ข้อมูลเครื่องอ่านของ sidecar (spec §6.4 · ส่วนบริสุทธิ์) — ตัวเลขเต็มหน่วย (ไม่หารล้าน) · margin/ROE = หน่วย %
+ *  งบกำไรขาดทุน: คอลัมน์ TTM เท่านั้น (ไม่มี = null — ห้ามเอา FY มาแทน เหตุผลเดียวกับ tableEpsTTM) · งบดุล/อัตราส่วน: TTM หรือคอลัมน์ล่าสุด
+ *  fy = คอลัมน์ FY ปิดงบล่าสุด · sharesOut = หุ้นคงเหลือ [2b] (ไม่ใช่ถัวเฉลี่ยปรับลด) · rating = SA info.analysts เมื่อเป็นข้อความ */
+function snapshotJson({ y, s, stats, pages, yErr, sErr, statsErr, finErr }) {
+  const [fin, bs, ratio] = pages || [];
+  const keysOf = (page) => (page && finRow(page, ['datekey'])) || [];
+  const ttmCol = (page) => { const i = keysOf(page).indexOf('TTM'); return i >= 0 ? i : null; };
+  const latestCol = (page) => { const i = ttmCol(page); return i != null ? i : keysOf(page).length ? 0 : null; };
+  const cell = (page, aliases, i) => { if (!page || i == null) return null; const row = finRow(page, aliases); return row ? asNum(row[i]) : null; };
+  const pct1 = (v) => (v == null ? null : Math.round(v * 1000) / 10);
+  const tI = ttmCol(fin), bI = latestCol(bs), rI = latestCol(ratio);
+  const dk = keysOf(fin), fyI = dk.findIndex((k) => k != null && k !== 'TTM');
+  const fyYear = fyI >= 0 ? ((finRow(fin, ['fiscalYear']) || [])[fyI] ?? String(dk[fyI]).slice(0, 4)) : null;
+  const NI = ['netIncome', 'netinccmn', 'netinc'], EPS = ['epsDiluted', 'epsdil'];
+  const so = stats && stats.sharesOut;
+  return {
+    ttm: {
+      revenue: cell(fin, ['revenue'], tI), netIncome: cell(fin, NI, tI), epsDil: cell(fin, EPS, tI), fcf: cell(fin, ['fcf'], tI),
+      sharesDil: cell(fin, ['sharesDiluted', 'sharesBasic'], tI),
+      grossMargin: pct1(cell(fin, ['grossMargin'], tI)), opMargin: pct1(cell(fin, ['operatingMargin'], tI)), netMargin: pct1(cell(fin, ['profitMargin'], tI)),
+      cash: cell(bs, ['totalcash', 'cashneq'], bI), debt: cell(bs, ['debt'], bI),
+      debtToEquity: cell(ratio, ['debtequity'], rI), roe: pct1(cell(ratio, ['roe'], rI)),
+    },
+    fy: fyI >= 0 ? { period: `FY${fyYear}`, revenue: cell(fin, ['revenue'], fyI), netIncome: cell(fin, NI, fyI), eps: cell(fin, EPS, fyI) } : null,
+    sharesOut: so == null ? null : typeof so === 'number' ? so : asNum(so.num),
+    dps: s && s.info ? asNum(s.info.dps != null ? s.info.dps : s.info.dividend) : null,
+    epsForward: y ? asNum(y.epsFwd) : null,
+    rating: s && s.info && typeof s.info.analysts === 'string' ? s.info.analysts : null,
+    // แหล่งที่ล้ม (ข้อความ หรือ null) — ห้ามกลืนเงียบ: ค่า null ข้างบนแยกไม่ออกว่า "ไม่มีข้อมูล" หรือ "ดึงไม่ได้" · sidecar ตัดสินต่อ
+    errors: { yahoo: yErr || null, sa: sErr || null, stats: statsErr || null, fin: finErr || null },
+  };
+}
+
 // ---------- main ----------
 async function main() {
   const args = process.argv.slice(2);
   const th = args.includes('--th');
   const symbol = (args.find((a) => !a.startsWith('--')) || '').toUpperCase();
-  if (!symbol) { console.error('ใช้: node tools/fetch-fundamentals.js SYMBOL [--th]'); process.exit(1); }
+  if (!symbol) { console.error('ใช้: node tools/fetch-fundamentals.js SYMBOL [--th] [--json]'); process.exit(1); }
   const ysym = toYahooSymbol(symbol, th ? 'THB' : 'USD');
 
   let y = null, yErr = null, s = null, sErr = null, stats = null, statsErr = null;
@@ -594,6 +628,12 @@ async function main() {
     ...FIN_SUBS.map((sub, i) =>
       fetchFinPage(symbol, th, sub).then((v) => { finPages[i] = v; }).catch((e) => { finErr = finErr || e.message; })),
   ]);
+  if (args.includes('--json')) {   // sidecar ของ prep (Plan 2b · spec §6.4) — JSON บรรทัดเดียว ไม่พิมพ์ตาราง/บรรทัดเทียบ
+    const snap = snapshotJson({ y, s, stats, pages: finPages, yErr, sErr, statsErr, finErr });
+    for (const [k, e] of Object.entries(snap.errors)) if (e) console.error(`✗ ${k}: ${e}`);   // stderr — stdout คง JSON ล้วน
+    console.log(JSON.stringify(snap));
+    return;
+  }
 
   console.log(`=== FUNDAMENTALS ${symbol} (${th ? 'TH' : 'US'}) — 2 แหล่งอิสระสำหรับ cross-verify (SKILL STEP 2) ===`);
   if (y) {
@@ -670,6 +710,8 @@ module.exports = {
   amount, entityMismatchLine, capLine, ENTITY_MISMATCH_PCT, CAP_WARN_PCT,
   // WS9(a) — ปีงบของ epsFwd จากหน้า /forecast/ (Task 22)
   fromForecast, forecastFromPayload, forecastLine, closedFYFromTable, FWD_FY_TOL_PCT,
+  // sidecar ของ prep (Plan 2b · spec §6.4) — ส่วนบริสุทธิ์ของ --json
+  snapshotJson,
 };
 // ★ ต้อง guard — test:prep require ไฟล์นี้เพื่อเทียบ format กับ prep-stock (offline) ถ้าไม่ guard จะยิงเน็ตจริง
 if (require.main === module) main().catch((e) => { console.error('✗', e.message); process.exit(1); });

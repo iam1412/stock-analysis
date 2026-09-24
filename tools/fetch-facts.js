@@ -4,8 +4,9 @@
  * fetch-facts.js — ดึงข้อเท็จจริงราคา/กราฟจาก Yahoo แบบ deterministic ให้ agent วิเคราะห์หุ้น
  * (token-lean: agent ไม่ต้อง WebFetch Yahoo เอง ไม่ต้องคำนวณกราฟ/ป้าย %/bounds เอง — copy ไปวางได้เลย)
  *
- * ใช้:  node tools/fetch-facts.js SYMBOL [--th]
+ * ใช้:  node tools/fetch-facts.js SYMBOL [--th] [--json]
  *   --th = หุ้นไทย (ยิง Yahoo เป็น SYMBOL.BK) — ★ ต้องระบุเอง กัน ticker ไทยชนชื่อหุ้น US (เคส AIT/ORI)
+ *   --json = พิมพ์ JSON บรรทัดเดียวให้ sidecar ของ prep (spec §6.4) แทนบล็อกข้อความ
  *
  * พิมพ์: ราคาปัจจุบัน + วันที่ราคา (ไทย พ.ศ./ค.ศ.) + currency + chart.data ≤13 จุด (จุดท้าย=ราคาปัจจุบัน)
  *   + ป้าย .chg % รอบปี + สี chgBg/chgColor + bounds (min/max/grid ยังไม่รวม fairLine) + กรอบ 52 สัปดาห์โดยประมาณ
@@ -16,6 +17,28 @@ const { fetchChart, buildChartData, niceBounds, annualChg, toYahooSymbol, styled
 
 const UP = { bg: 'var(--green-soft)', col: '#137333' };
 const DOWN = { bg: 'var(--red-soft)', col: '#c5221f' };
+
+// รหัสตลาดของ Yahoo (meta.exchangeName) → รหัสที่รายงานใช้ (NYSE/NASDAQ/SET) · ไม่รู้จัก = null (init เว้น TODO ให้ worker ตัดสิน)
+// ★ ห้ามใช้ fullExchangeName (ชื่อแสดงผล "NasdaqGS"/"Thailand") · MAI ไม่เดา — Yahoo ไม่แยกกระดานให้เชื่อได้
+const EXCHANGE_CODES = { NMS: 'NASDAQ', NGM: 'NASDAQ', NCM: 'NASDAQ', NYQ: 'NYSE', SET: 'SET' };
+function exchangeCode(code) {
+  return typeof code === 'string' && Object.prototype.hasOwnProperty.call(EXCHANGE_CODES, code) ? EXCHANGE_CODES[code] : null;
+}
+
+/** ข้อมูลเครื่องอ่านของ sidecar (spec §6.4 · ส่วนบริสุทธิ์ — q = ผลของ fetchChart) · chart = data อย่างเดียว (min/max/grid → compute คิดเอง)
+ *  priceDate = วันของ regularMarketTime ตาม tz ตลาด (ISO) · range52w = 52wk ของ Yahoo meta (ไม่ใช่ปิดรายเดือน — M7) */
+function factsJson(q, symbol, currency) {
+  const data = buildChartData(q.bars, q.price, q.gmtoffset);
+  const spanDays = q.bars.length >= 2 ? (q.bars[q.bars.length - 1].ts - q.bars[0].ts) / 86400 : 0;
+  const priceDate = new Date((q.marketTime + q.gmtoffset) * 1000).toISOString().slice(0, 10);
+  const lo = q.week52Low, hi = q.week52High;
+  return {
+    symbol, currency, quoteCurrency: q.currency || null, px: q.price, priceDate, chart: { data },
+    chgSuffix: spanDays < 320 ? 'ตั้งแต่ IPO' : 'รอบปี',   // เกณฑ์เดียวกับป้าย .chg ของโหมดข้อความ
+    range52w: Number.isFinite(lo) && Number.isFinite(hi) && hi >= lo ? { lo, hi } : null,
+    company: q.longName || null, exchange: exchangeCode(q.exchangeName),
+  };
+}
 
 async function main() {
   const args = process.argv.slice(2);
@@ -37,6 +60,7 @@ async function main() {
     console.error('   ทำก่อน: ยืนยัน split จากแหล่งปฐมภูมิ (IR / SEC 8-K / ประกาศตลาด) แล้วคูณจุดก่อนวัน split เอง · ดู SKILL STEP 0 หัวข้อ bad-chart');
     process.exit(2);
   }
+  if (args.includes('--json')) { console.log(JSON.stringify(factsJson(q, symbol, currency))); return; }   // sidecar (Plan 2b) — ไม่พิมพ์บล็อกข้อความ
 
   const chartData = buildChartData(q.bars, q.price, q.gmtoffset);
   const prices = chartData.map((d) => d[1]);
@@ -63,4 +87,6 @@ async function main() {
   console.log(styledRD({ data: chartData, min: b.min, max: b.max, grid: b.grid }));
 }
 
-main().catch((e) => { console.error('✗', e.message); process.exit(1); });
+module.exports = { factsJson, exchangeCode, EXCHANGE_CODES };
+// ★ guard — test/v3/sidecar.test.js require ไฟล์นี้ (ถ้าไม่ guard จะยิง Yahoo ตอน require)
+if (require.main === module) main().catch((e) => { console.error('✗', e.message); process.exit(1); });

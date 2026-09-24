@@ -5,6 +5,8 @@
  *   · EPS screen ใบ vs vendor (>2% ⇒ UPDATE เต็ม — SKILL 5C ข้อ 2 · prep-stock ไม่เทียบกับใบ) · diff snapshot vendor
  *   (เป้า+n / 52wk / ปันผล — คลาสที่ 4 ของ price-derived-staleness เดิมอยู่ใน memory เท่านั้น) · tags ปัจจุบัน
  *   · ประกอบ prompt จาก _template/agent-prompt.md + บล็อกบันทึก → .queue/prep/<SYM>.md
+ *   · ใบ NEW: + sidecar .queue/prep/<SYM>.json (spec §6.4 · อินพุตของ report.js init) — ประกอบไม่ได้ = ⚠ บรรทัดเดียว
+ *     แล้วเขียน .md ต่อตามเดิม (NEW ของ v2 ไม่ใช้ sidecar — fail-closed อยู่ที่ init ซึ่งปฏิเสธเมื่อไม่มี sidecar)
  * ★ ไม่ทำแทน: spawn worker (controller ทำ พร้อม pin model) · courier/advisor ของหุ้นยาก · เลือกสีแบรนด์ NEW (--brand)
  */
 const fs = require('fs');
@@ -18,6 +20,9 @@ const { usSessionOpen, setSessionOpen } = require('./market.js');
 const DV = require('../derived-values.js');
 const RV = require('../report-values.js');   // ระยะ 2: isV2() + schema values — snapshotDiff อ่านตัวเลขจาก values แทน HTML บนใบ v2
 const T = require('../tag-lib.js');
+const RS = require('../report-source.js');   // ใบ v2 + v3 (Plan 2b)
+const SC = require('./sidecar.js');
+const PS = require('../prep-stock.js');   // parseDeltas — Δ ราคา/EPS ของ CROSS-VERIFY (priceNote ของ init)
 
 const REPORTS = path.join(ROOT, 'reports');
 const TEMPLATE = path.join(ROOT, '_template', 'agent-prompt.md');
@@ -266,9 +271,9 @@ function extraBlock(i) {
 async function medianBlock(spec, th) {
   const MM = require('../median-multiples.js');
   const warn = [];
-  let text;
+  let text, r = null;
   try {
-    const r = await MM.oneSymbol(spec, th);
+    r = await MM.oneSymbol(spec, th);
     text = MM.report(r);
     if (r.curErr) warn.push('ผสมสกุลเงิน — รัน prep ใหม่ด้วย --median-spec SYM:<ticker กระดานท้องถิ่น> (เคส CP/UMC 9 ก.ย. 69)');
     if (r.median != null && (r.median > 60 || r.median < 3)) warn.push(`มัธยฐาน ${r.median.toFixed(1)}x นอกย่าน 3–60x — อ่านรายปีก่อนวาง (เคส 2,074x 10 ก.ย. 69)`);
@@ -277,13 +282,28 @@ async function medianBlock(spec, th) {
     text = `=== ตัวคูณมัธยฐานย้อนหลัง: ${spec} ===\n  ✗ ดึงไม่สำเร็จ: ${e.message}\n  ⇒ **ห้ามเดาตัวคูณจากค่าปัจจุบัน** — ใช้ peer ที่วัดจริง หรือตระกูลอื่นเป็นขาแทน`;
     warn.push('ดึงมัธยฐานไม่ได้ — worker ต้องใช้ตระกูลอื่น/peer ที่วัดจริง');
   }
-  return { text, warn };
+  return { text, warn, r };
+}
+
+/** ใบ v3 แล้ว = ห้าม prep (spec §6.4 · ruling 4): คิวของ v3 UPDATE = P6 — ไม่ทำเหมือนเป็น NEW */
+function checkNotV3(sym, dir) {
+  if (RS.kindOf(sym, dir || REPORTS) === 'v3')
+    throw new Error(`${sym} เป็นใบ v3 แล้ว (reports/${sym}.json) — v3 UPDATE = Plan 3 (คิวของใบ v3 = P6) · แก้ด้วย node tools/report.js export ${sym} → แก้ .work/${sym}.json → node tools/report.js save ${sym}`);
+}
+
+/** node <script> … --json → object (I/O ของ sidecar — ล้ม/JSON เสีย = throw พร้อมท้าย stderr) · runner = ฉีดได้ในเทส */
+function runJson(script, args, runner) {
+  const r = (runner || run)('node', [script, ...args]);
+  if (r.code !== 0) throw new Error(`${script} ${args.join(' ')} ล้ม (exit ${r.code}): ${(r.err || r.out).trim().slice(-400)}`);
+  try { return JSON.parse(r.out); } catch (e) { throw new Error(`${script} --json คืน JSON เสีย: ${e.message}`); }
 }
 
 async function prep(sym, opts) {
   const o = opts || {};
+  const R = o.run || run;   // ฉีดได้ในเทส (offline) — ค่าจริง = sh.run
+  checkNotV3(sym);   // ก่อนยิง network ใด ๆ
   const fp = path.join(REPORTS, sym + '.html');
-  const exists = fs.existsSync(fp);
+  const exists = RS.kindOf(sym, REPORTS) === 'v2';   // หลัง checkNotV3 "มีใบอยู่แล้ว" เหลือแค่ใบ v2
   const html = exists ? fs.readFileSync(fp, 'utf8') : '';
   const sm = exists ? RM.readStockMeta(html) : null;
   const th = exists ? (sm && sm.currency === 'THB') : !!o.th;
@@ -302,16 +322,36 @@ async function prep(sym, opts) {
   const dm = o.mode ? { mode: o.mode, why: '--mode' } : decideMode({ exists, rec, lightRule, stmt });
   let mode = dm.mode;
   let escalated = false;
+  // ใบ NEW: ลบ sidecar เก่าก่อนสร้างใหม่ — สำเร็จ/ล้มก็ไม่เหลือไฟล์ค้างให้ init หยิบผิด
+  // symbol ผิดรูปสำหรับชื่อไฟล์ sidecar (assertSym) = ข้าม sidecar ทั้งใบ แต่ prep v2 เดินต่อ (re-ruling: ห้ามล้มก่อน .md)
+  let sc = null, sidecar = null, scErr = null;
+  if (mode === 'NEW') { try { SC.removeSidecar(S.PREP_DIR, sym); } catch (e) { scErr = String(e && e.message || e).split('\n')[0].trim(); } }
 
   // 1. prep-stock ครั้งเดียว (มัน spawn fetch-fundamentals + fetch-facts ให้แล้ว — ห้ามดึงซ้ำ)
-  const ps = run('node', ['tools/prep-stock.js', sym, ...(th ? ['--th'] : []), ...(mode !== 'NEW' ? ['--update'] : []), ...(o.brand ? ['--brand', o.brand] : [])]);
+  const ps = R('node', ['tools/prep-stock.js', sym, ...(th ? ['--th'] : []), ...(mode !== 'NEW' ? ['--update'] : []), ...(o.brand ? ['--brand', o.brand] : [])]);
   process.stdout.write(ps.out + '\n');
   if (ps.code === 2) throw new Error(`prep-stock exit 2 — ราคาขัดแหล่ง >5% หรือ bad-chart: **หยุด ห้าม spawn** ถามเจ้าของ (CLAUDE.md §2)`);
   if (ps.code !== 0) throw new Error('prep-stock ล้ม: ' + (ps.err || ps.out).slice(-800));
   const vend = parseVendor(ps.out);
 
   // 2. มัธยฐานตัวคูณ (structured) + sanity
-  const med = await medianBlock(o.medianSpec || sym, th);
+  const med = await (o.medianBlock || medianBlock)(o.medianSpec || sym, th);
+
+  // 2b. ใบใหม่ = sidecar .queue/prep/<SYM>.json (spec §6.4) — อินพุตเดียวของ node tools/report.js init
+  //     ยิง fetch-facts/fetch-fundamentals ซ้ำแบบ --json (NEW เท่านั้น — ruling R2) · ใบเดิมไม่เขียน (v3 UPDATE = P6)
+  //     ประกอบตรงนี้ · เขียนไฟล์หลัง .md — assemblePrompt ล้ม = ไม่มี .json กำพร้า
+  //     ★ ประกอบไม่ได้ ≠ prep ล้ม (final review re-ruling): NEW ถึง Plan 2c เป็น NEW ของ v2 ที่ไม่รัน init ⇒ เขียน .md ต่อ
+  //       + ⚠ บรรทัดเดียว · buildSidecar ยัง throw ตามเดิม — fail-closed อยู่ที่ init (ไม่มี sidecar = ปฏิเสธ)
+  if (mode === 'NEW' && !scErr) {
+    const thArg = th ? ['--th'] : [];
+    try {
+      sc = SC.buildSidecar({ symbol: sym, th, today: todayBangkok(), vend, medians: SC.mediansOf(med.r), deltas: PS.parseDeltas(ps.out),
+        facts: runJson('tools/fetch-facts.js', [sym, ...thArg, '--json'], R), fund: runJson('tools/fetch-fundamentals.js', [sym, ...thArg, '--json'], R) });
+    } catch (e) {
+      scErr = String(e && e.message || e).split('\n')[0].trim();
+      try { SC.removeSidecar(S.PREP_DIR, sym); } catch (_) { /* best-effort — ห้ามหลุดออกจาก catch */ }
+    }
+  }
 
   // 3. EPS screen + 4. snapshot diff (เฉพาะใบเดิม)
   let ctx = null, epsScreen = null, snap = [];
@@ -344,9 +384,12 @@ async function prep(sym, opts) {
   fs.mkdirSync(S.PREP_DIR, { recursive: true });
   const file = path.join(S.PREP_DIR, sym + '.md');
   fs.writeFileSync(file, prompt);
+  if (sc) sidecar = SC.writeSidecar(S.PREP_DIR, sc);
   S.update(sym, { mode, modeWhy: dm.why, lightRule, escalated, model, effort, prepAt: todayBangkok(), epsScreen, snapDeltas: snap.length, currency: th ? 'THB' : 'USD', fyYears: vend.fyYears });
 
   console.log(`\n=== prep ${sym} เสร็จ → ${path.relative(ROOT, file)} ===`);
+  if (sidecar) console.log(`sidecar → ${path.relative(ROOT, sidecar)} (อินพุตของ node tools/report.js init ${sym})`);
+  else if (scErr) console.log(`⚠ sidecar ไม่ได้เขียน (${scErr}) — report.js init จะปฏิเสธจนกว่าจะ prep ใหม่`);
   console.log(`โหมด ${mode} (${dm.why})${escalated ? ' (ยกระดับจาก UPDATE-LIGHT เพราะ EPS screen)' : ''} · model **${model}** · effort ${effort}${hs.hard ? ` · หุ้นยาก: ${hs.why}` : ''}`);
   if (epsScreen != null) console.log(`EPS screen: ${epsScreen.toFixed(1)}% ${epsScreen > EPS_SCREEN_PCT ? (lightRule === 'legacy' ? '⇒ UPDATE เต็ม' : '⚠ คำเตือน (กฎใหม่ไม่เปลี่ยนโหมด — ดูสองฐานใน prompt)') : '(ผ่าน)'}`);
   if (snap.length) console.log(`snapshot vendor ค้าง ${snap.length} จุด (อยู่ใน prompt แล้ว)`);
@@ -360,4 +403,4 @@ async function prep(sym, opts) {
   return { file, mode, model, effort, hard: hs.hard };
 }
 
-module.exports = { prep, decideMode, lastSessionISO, parseVendor, snapshotDiff, assemblePrompt, extraBlock, hardStock, checkNotPrepatch, medianBlock, TOKENS, EPS_SCREEN_PCT };
+module.exports = { prep, decideMode, lastSessionISO, parseVendor, snapshotDiff, assemblePrompt, extraBlock, hardStock, checkNotPrepatch, checkNotV3, medianBlock, TOKENS, EPS_SCREEN_PCT };

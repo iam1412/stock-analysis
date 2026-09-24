@@ -219,4 +219,23 @@ for (const m of ['ps', 'evsales', 'evebitda', 'pfcf']) {
 t.eq(S.requiredFamily({ method: 'fcfyield', inputs: { yield: 5 } }), null, 'fcfyield stays a gray zone (no multipleSource)');
 t.eq(S.requiredFamily(null), null, 'requiredFamily(null) → null (no throw)');
 for (const f of ['BBL-real', 'EQIX-real', 'FER-real', 'ZTS-real', 'BBL', 'ZTS']) t.eq(S.validate(realFx(f)), [], `${f}: still valid under the final-review rules`);
+// ── Plan 2b Task 5 — {{rd:…}} + sentinel TODO = E51 ของสคีมา (spec §3 หมายเหตุ token · §9 · rulings R3/R4) ──
+{
+  const real = (f) => JSON.parse(JSON.stringify(require(`../fixtures/v3/${f}.json`)));
+  const at = (d, p) => S.validate(d).filter((e) => e.path === p);
+  t.eq(S.validate(real('ZTS-real')), [], 'ZTS-real baseline: 0 schema errors');
+  { const d = real('ZTS-real'); d.prose.mos = 'ราคาปัจจุบัน {{rd:px}}'; const e = at(d, 'prose.mos');
+    t(e.length === 1 && /ไวยากรณ์ของใบ v2/.test(e[0].msg), '{{rd:px}} in prose → error at prose.mos (finding M3)'); }
+  { const d = real('ZTS-real'); d.metrics.custom[0].note = 'เดิม {{rd:fv}}'; t(at(d, 'metrics.custom[0].note').length === 1, '{{rd:…}} in a custom-card note → error with its path'); }
+  { const d = real('ZTS-real'); d.scenarios.cases[2].desc += ' {{rd:scn.bull.tgt}}'; t(at(d, 'scenarios.cases[2].desc').length === 1, '{{rd:…}} in a scenario description → error'); }
+  { const d = real('ZTS-real'); d.meta.sub = 'TODO: คำโปรยธุรกิจ'; const e = at(d, 'meta.sub');
+    t(e.length === 1 && /sentinel "TODO"/.test(e[0].msg), 'TODO sentinel in a text field → one error naming meta.sub'); }
+  { const d = real('ZTS-real'); d.legs[0].inputs.multiple = 'TODO: ตัวคูณเป้าหมาย'; const e = at(d, 'legs[0].inputs.multiple');
+    t(e.some((x) => /sentinel "TODO"/.test(x.msg)) && e.some((x) => /ต้องเป็นตัวเลข/.test(x.msg)), 'TODO left in a number field → type error + sentinel error at the same path (R3)'); }
+  { const d = real('ZTS-real'); d.catalysts[1] = 'TODO'; t(at(d, 'catalysts[1]').length === 1, 'bare "TODO" → error'); }
+  { const d = real('ZTS-real'); d.prose.mos += ' (สิ่งที่ต้องทำ: TODO list ของบริษัท)'; t(at(d, 'prose.mos').length === 0, 'the word TODO mid-sentence is not the sentinel'); }
+  { const d = real('ZTS-real'); d.risks[0] = 'TODOS ของทีม'; t(at(d, 'risks[0]').length === 0, '"TODOS" (no word boundary) is not the sentinel'); }
+  t(S.TODO_RE.test('  TODO: x') && !S.TODO_RE.test('todo: x'), 'TODO_RE: leading spaces allowed · case-sensitive');
+  t.eq(S.stringLeaves({ a: ['x', { b: 'y' }], c: 1 }, '', []), [{ path: 'a[0]', text: 'x' }, { path: 'a[1].b', text: 'y' }], 'stringLeaves: JSON paths of every string');
+}
 t.done();

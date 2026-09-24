@@ -6,7 +6,7 @@
  *                   W32 |MOS| > 40% ไม่มีขา fv นอกตระกูล (r,g) (§13 ข้อ 7)
  *   ผ่าน gate v2 บนหน้าที่ render (render smoke test): โค้ดที่เหลือทั้งหมด รายงานเป็น "v2:<id>" — ย้ายเป็น native ใน P7
  *   ไม่รันกติกา B (ruling R5 — กติกา B เป็นของ save · ราคาขยับทุกวันจะทำให้ "เป๊ะ" กระพริบ)
- *   ลำดับต่อใบ (ruling Task 12 a): validate → (0 schema error เท่านั้น) compute → tieOut → render → gate v2
+ *   ลำดับต่อใบ (ruling Task 12 a): validate (รวม {{rd:}} + TODO) → (0 schema error เท่านั้น) semanticErrors → compute → tieOut → render → gate v2
  *     — ใบที่สคีมาไม่ผ่านไม่ถูก compute/tieOut/render (render.js/extras.js สมมติว่าใบผ่าน validate แล้ว)
  * CLI: node test/check-v3.js [SYM | path.json | dir/*.json …]
  *   ไม่ใส่ arg = reports/*.json (นาฬิกาจริง) + fixture ใบจริง test/fixtures/v3/*-real.json (นาฬิกาแช่ที่ market.priceDate ของใบ)
@@ -73,18 +73,25 @@ const famOf = (l) => l.family || S.requiredFamily(l) || (l.method === 'declared'
 
 function checkDoc(doc, opts) {
   const o = opts || {};
-  const errors = [], warnings = [];
+  // stage:'save' (spec §9 · ruling 3) = code path เดียวกับ gate ยกเว้น v2:E40 ตัวเดียว (tag ลงตอน ship) — ค่าอื่น = บั๊กของผู้เรียก
+  if (o.stage != null && o.stage !== 'save') throw new Error(`checkDoc: stage ไม่รู้จัก ${JSON.stringify(o.stage)} (มีแค่ 'save')`);
+  const errors = [], warnings = [], dropped = [];
   const add = (id, msg) => (CODE[id].level === 'error' ? errors : warnings).push({ id, label: CODE[id].label, msg });
-  const done = (view) => ({ errors, warnings, view: view || null });
+  // หลายข้อในชั้นเดียว = 1 รายการ (จำนวนรายการคงเดิม) + details [{path,msg}] ให้ report.js save พิมพ์ทีละบรรทัด (R5)
+  const addList = (id, list, prefix) => (CODE[id].level === 'error' ? errors : warnings)
+    .push({ id, label: CODE[id].label, msg: (prefix || '') + list.map((e) => `${e.path}: ${e.msg}`).join(' ; '), details: list });
+  const done = (view) => ({ errors, warnings, view: view || null, dropped });
 
   if (!o.skipSig && !IO.verifySig(doc)) add('E50', doc && doc._sig ? 'ลายเซ็นไม่ตรงเนื้อไฟล์ — ไฟล์ถูกแก้นอก io.js' : 'ไม่มี _sig — ไฟล์ไม่ได้เขียนผ่าน io.js');
-  // (1) สคีมา — ไม่ผ่าน = หยุด (compute/tieOut/render สมมติว่าใบผ่าน validate แล้ว)
+  // (1) สคีมา — ไม่ผ่าน = หยุด (compute/tieOut/render สมมติว่าใบผ่าน validate แล้ว) · รวม {{rd:}} + sentinel TODO (Plan 2b)
   const schemaErrs = S.validate(doc);
-  if (schemaErrs.length) { add('E51', schemaErrs.map((e) => `${e.path}: ${e.msg}`).join(' ; ')); return done(); }
+  if (schemaErrs.length) { addList('E51', schemaErrs); return done(); }
   // แท็กนอก whitelist <b> <i> <br> = error ของ gate ไม่ใช่ escape เงียบตอน render (ทุกช่องใน P.proseFields — text.* · legs[].note · extras · การ์ด)
-  const tagErrs = P.proseFields(doc).flatMap(({ path: p, text }) => P.sanitizeErrors(text).map((m) => `${p}: ${m}`));
-  if (tagErrs.length) add('E51', tagErrs.join(' ; '));
-  // (2) compute
+  const tagErrs = P.proseFields(doc).flatMap(({ path: p, text }) => P.sanitizeErrors(text).map((m) => ({ path: p, msg: m })));
+  if (tagErrs.length) addList('E51', tagErrs);
+  // (2) error เชิงความหมายครบทุกข้อ **ก่อน** compute (spec §9 · #52 — compute throw ที่ข้อแรกเท่านั้น)
+  const sem = C.semanticErrors(doc, { seeds: o.seeds });
+  if (sem.length) { addList('E51', sem, 'compute: '); return done(); }
   let view;
   try { view = C.compute(doc, { seeds: o.seeds }); }
   catch (e) { add('E51', 'compute: ' + String(e.message).split('\n')[0]); return done(); }
@@ -149,7 +156,12 @@ function checkDoc(doc, opts) {
   process.env.STALE_TODAY = today;
   try { res = CR.checkHtml(html, `${doc.symbol}.html`, { source: src }); }
   finally { if (prevToday === undefined) delete process.env.STALE_TODAY; else process.env.STALE_TODAY = prevToday; }
-  for (const e of res.errors) if (!NATIVE_V2.has(e.id)) errors.push({ id: 'v2:' + e.id, label: e.label, msg: e.msg });
+  for (const e of res.errors) {
+    if (NATIVE_V2.has(e.id)) continue;
+    // stage:'save': tag ลงตอน ship (tools/tag-apply.js) ⇒ v2:E40 ตัวเดียวที่ save ยกเว้น — คืนใน dropped ให้ผู้เรียกพิมพ์ (ไม่หายเงียบ)
+    if (o.stage === 'save' && e.id === 'E40') { dropped.push({ id: 'v2:E40', label: e.label, msg: e.msg }); continue; }
+    errors.push({ id: 'v2:' + e.id, label: e.label, msg: e.msg });
+  }
   for (const w of res.warnings) if (!NATIVE_V2.has(w.id)) warnings.push({ id: 'v2:' + w.id, label: w.label, msg: w.msg });
   return done(view);
 }

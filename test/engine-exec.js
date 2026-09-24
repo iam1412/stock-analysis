@@ -23,7 +23,8 @@
 
 const fs = require('fs');
 const path = require('path');
-const { expandReport, renderEngine } = require('../build.js');
+const { renderEngine } = require('../build.js');
+const RS = require('../tools/report-source.js');   // ใบ v2 + v3 (Plan 2b) — ทางเดียวกับ build: loadReportSource → expandReport
 
 const REPORTS_DIR = path.join(__dirname, '..', 'reports');
 
@@ -147,16 +148,17 @@ function main() {
   console.log('  ✓ self-check: harness จับ engine ที่ throw ได้ + engine ปกติ render ครบ');
 
   if (!fs.existsSync(REPORTS_DIR)) { console.error('❌ ไม่พบโฟลเดอร์ reports/'); process.exit(1); }
-  let files = fs.readdirSync(REPORTS_DIR).filter((f) => /\.html$/i.test(f)).sort();
-  if (argv.length) { const want = new Set(argv.map((a) => a.replace(/\.html$/i, '').toUpperCase())); files = files.filter((f) => want.has(f.replace(/\.html$/i, '').toUpperCase())); }
-  if (!files.length) { console.error('❌ ไม่พบไฟล์รายงานให้ตรวจ'); process.exit(1); }
+  let entries = RS.list(REPORTS_DIR);
+  if (argv.length) { const want = new Set(argv.map((a) => a.replace(/\.(html|json)$/i, '').toUpperCase())); entries = entries.filter((e) => want.has(e.symbol.toUpperCase())); }
+  if (!entries.length) { console.error('❌ ไม่พบไฟล์รายงานให้ตรวจ'); process.exit(1); }
 
   let fail = 0;
   const bad = [];
-  for (const f of files) {
+  for (const e of entries) {
+    const f = e.name;
     let html;
-    try { html = expandReport(fs.readFileSync(path.join(REPORTS_DIR, f), 'utf8')); }
-    catch (e) { bad.push({ f, errs: ['expandReport throw: ' + e.message] }); fail++; continue; }
+    try { html = RS.renderedHtml(e.symbol, REPORTS_DIR); }
+    catch (err) { bad.push({ f, errs: ['render throw: ' + err.message] }); fail++; continue; }
     const body = extractEngine(html);
     if (!body) { bad.push({ f, errs: ['ไม่พบสคริปต์ engine (ที่อ้าง priceChart)'] }); fail++; continue; }
     const r = runEngine(body, seedFromHtml(html));
@@ -168,7 +170,7 @@ function main() {
   for (const b of bad) { console.log(`  ✗ ${b.f}`); for (const e of b.errs) console.log(`      ${e}`); }
 
   console.log('\n' + '─'.repeat(50));
-  console.log(`engine-exec: ${files.length - fail}/${files.length} รายงาน render ผ่าน`);
+  console.log(`engine-exec: ${entries.length - fail}/${entries.length} รายงาน render ผ่าน`);
   if (fail) { console.log(`\n❌ มี ${fail} รายงานที่ engine พังตอนรันจริง — ห้าม push\n`); process.exit(1); }
   console.log('\n✅ ทุกรายงาน: กราฟ + gauge + เครื่องคิดเลข MOS รันได้จริง\n'); process.exit(0);
 }

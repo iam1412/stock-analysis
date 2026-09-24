@@ -3,6 +3,7 @@
 - วันที่: 24 ก.ย. 69 (2026-09-24) · สถานะ: **อนุมัติแล้ว** (advisor + เจ้าของ 24 ก.ย. 69)
 - เจ้าของตัดสินแล้ว (session 24 ก.ย. 69): (1) ต้นฉบับ = `reports/<SYM>.json` · (2) migrate = script sweep + text-diff กับ HTML เดิม + รายชื่อให้คนตัดสิน · (3) กติกาตัวเลขใน prose = **B** (ตัวเลขผูกราคาห้ามพิมพ์เอง ต้องเป็น token · ตัวเลขจากงบพิมพ์ได้) · (4) มีช่อง `extras[]` ตารางข้อมูลล้วน ≤2 ตาราง · (5) template ดึงข้อมูลจาก JSON — JSON เก็บ **เฉพาะค่าที่ตัดสินใจ** ค่าคำนวณทั้งหมดคิดตอน build
 - หลักฐานที่ใช้ออกแบบ: วิจัย 3 สาย (ประวัติบัค 3,013 commit / 272 fix · write path ปัจจุบัน · สำรวจ 909 ใบ) — สรุปอยู่ใน §1
+- แก้ไข Plan 2b/2c (24 ก.ย. 69 · Task 0 ของ Plan 2b + คำตัดสิน advisor — `.superpowers/sdd/v3-plan2b-task0/rulings.md`): §3 (หมายเหตุ token) · §6.1 · §6.2 · §6.3 · §6.4 ใหม่ (prep sidecar · ที่มาของข้อมูลปรับตาม plan R1 — advisor 24 ก.ย. 69) · §6.5 ใหม่ (`report-source.js`) · §9 · §11 (แยก 2b/2c) · §12 · §13 ข้อ 8–15
 
 ---
 
@@ -78,6 +79,8 @@
 ## 3. Schema v3 (`reports/<SYM>.json`)
 
 หลักการ: **แบ่งตามเจ้าของ** — `market` = cron เขียนเท่านั้น · ส่วนอื่น = worker (ผ่าน `save`) · เก็บเฉพาะค่าที่ "ตัดสินใจ/สังเกต" ไม่เก็บค่าที่คำนวณได้ · ทุก object ปิด (คีย์ไม่รู้จัก = error)
+
+> **หมายเหตุ token (Plan 2b)**: `{{rd:…}}` เป็นไวยากรณ์ของ **v2 เท่านั้น** (HTML + `report-data.values`) · ใบ v3 ใช้ token ของ view เช่น `{{px}}` `{{fv}}` `{{mos}}` `{{leg1}}` `{{scn.base.tgt}}` `{{card.pe}}` (ชุดเต็ม §4) · `{{rd:…}}` ในช่องใดของใบ v3 = error `E51` (§9) — วัดแล้วว่าวันนี้หลุดผ่าน: render ผ่าน `expandReport` ของ v2 ได้ตัวเลขจริง แต่จะรั่วเป็นวงเล็บดิบเมื่อ P7 ลบ v2 path
 
 ```jsonc
 {
@@ -270,23 +273,67 @@
 
 | คำสั่ง | ทำอะไร |
 |---|---|
-| `init <SYM> --from .queue/prep/<SYM>.md` | สร้าง `.work/<SYM>.json` จาก prep (fundamentals + medians เติมให้แล้ว · legs/prose ว่างพร้อม TODO) |
-| `export <SYM>` | `reports/<SYM>.json` → `.work/<SYM>.json` (ตัด `market` + `_sig` ออก) สำหรับ UPDATE |
-| `save <SYM> [--light]` | อ่าน draft → schema → merge `market` จากใบเดิม/prep → compute → กติกา B → sanity ชั้น 0 → `io.write` + sign · ล้ม = พิมพ์ error พร้อม JSON path ทุกข้อในครั้งเดียว (ไม่ all-or-nothing แบบ BUG-005) · `--light` = อนุญาตเปลี่ยนเฉพาะ `meta.analysisDate/aiModel` + prose (UPDATE-LIGHT) |
-| `show <SYM> [path]` | พิมพ์ view ที่ compute แล้ว (ให้ worker ดูตัวเลขโดยไม่อ่านทั้งไฟล์ — token-lean) |
-| `diff <SYM>` | draft vs ใบปัจจุบัน (เชิงความหมาย: FV/MOS/ขาเปลี่ยนเท่าไร) → controller ใช้ตรวจก่อน ship |
+| `init <SYM>` | สร้าง `.work/<SYM>.json` (ใบ NEW) · **อินพุตเดียว = sidecar `.queue/prep/<SYM>.json`** (§6.4) — **ห้าม regex ไฟล์ `.md`** (เป็น prompt ของ LLM ไม่ใช่ข้อมูล) · **ปฏิเสธ** ถ้ามี `reports/<SYM>.html` หรือ `reports/<SYM>.json` อยู่แล้ว (UPDATE ใช้ `export`) · เติมส่วน mechanical (~43% ของช่อง — วัดจาก ZTS-real 65/152) ให้: **top-level** (`v:3` · symbol · currency/region · `dateEra:"BE"`) · **meta** ส่วนใหญ่ (`analysisDate` = วันนี้ Asia/Bangkok ISO · `sources` ตั้งต้น · `priceNote` จาก CROSS-VERIFY · company · exchange) · **fundamentals** (eps TTM + `epsBasis` · dps · `shares` = [2b] หุ้นคงเหลือ ไม่ใช่ wAvgDil · revenue/netIncome/fcf · margins · roe · D/E · netDebt = หนี้ − เงินสด · `peAvg5y` = มัธยฐาน · `fy{}` คอลัมน์ FY ล่าสุด · `epsForward` เฉพาะเมื่อไม่ติดกับดัก FY [2c]) · **analyst** (target · n · rating · asOf) · **รายการการ์ดตั้งต้น** (เฉพาะการ์ดที่มีข้อมูลรองรับ) · **โครงฉาก** (years 3 · perYear `cagr` · driver/exitMetric · `divIncluded` = dps > 0) · **โครงขา `pe`** (`multipleSource:"median5y"` + `medianWindow` · `multiple` **ว่าง** — worker ตัดสิน · พิมพ์ช่วงมัธยฐานเป็น hint ของ `multipleRange`) · ช่องดุลพินิจ (sub/headerTags · ตัวคูณ/ขาอื่น · กรณีฉาก · prose · catalysts/risks · notes) = **sentinel `TODO`** ที่ gate ปฏิเสธ (E51 §9) · **ไม่เขียน `market` เด็ดขาด** (ไม่เข้า `.work/`) · **ไม่เขียน `meta.aiModel`** (worker รายงานตัวเองตามกติกา self-report — ไม่มีช่อง = schema error ตอน save) |
+| `export <SYM>` | `reports/<SYM>.json` → `.work/<SYM>.json` (ตัด `market` + `_sig` ออก) สำหรับ UPDATE · เป็นคำสั่งที่ส่งใน 2b แต่ flow คิวของ v3 UPDATE = P6 |
+| `save <SYM> [--light]` | ท่อเดียว ตามลำดับ: (1) อ่าน draft → **ปฏิเสธ** `market`/`_sig` ใน draft (OWNER — `S.OWNER(path)`) และ `meta.themeLegacy` ในใบ NEW (§3.5) → (2) **merge `market`**: ใบ NEW จาก sidecar (§6.4) · ใบที่ export จาก `reports/<SYM>.json` เดิม (ก่อน validate เพราะ schema บังคับ `market`) → (3) **`checkDoc(doc, {stage:'save'})`** — code path เดียวกับ gate (`test/check-v3.js`) · `stage:'save'` ตัด **`v2:E40` ตัวเดียวเท่านั้น** (tag ลงตอน ship — `tools/tag-apply.js`) และพิมพ์ log ว่าตัด · error เชิงความหมายรวมครบในครั้งเดียวผ่าน `semanticErrors()` (§9) → (4) `P.checkRuleB(doc, view)` (กติกา B — gate รายวันไม่รัน · R5) → (5) **พิมพ์ error ทุกข้อพร้อม JSON path ในครั้งเดียว** (ไม่ all-or-nothing แบบ BUG-005 · #52) → (6) ผ่านหมด = `IO.write` (validate → sign → lock → เขียน atomic) · `--light` = **allowlist ตาม path**: ช่อง `P.proseFields` ทั้งหมด + `meta.analysisDate` `meta.aiModel` `meta.sources` `meta.priceNote` + `analyst.*` + `fundamentals.dps` (refresh snapshot vendor — ตรงกับ UPDATE-LIGHT ของ v2 ที่รีเฟรชเป้า analyst/ปันผลผ่าน `snapshotDiff`) · บังคับด้วย `diffPaths(draft, ใบปัจจุบัน)` ที่ **ไม่นับ** `market`/`_sig` · path นอก allowlist = error "ใช้ save เต็ม (UPDATE)" |
+| `show <SYM> [path]` | พิมพ์ view ที่ compute แล้ว (`compute().<path>`) — ให้ worker ดูตัวเลข/token ที่ใช้ได้โดยไม่อ่านทั้งไฟล์ (token-lean) |
+| `diff <SYM>` | draft vs ใบปัจจุบัน (เชิงความหมาย: FV/MOS/ขาเปลี่ยนเท่าไร) → controller ใช้ตรวจก่อน ship · ใช้ `diffPaths` ตัวเดียวกับ `--light` |
 
 ### 6.2 การป้องกันการเขียนสด (2 ชั้น)
 
-1. **PreToolUse hook** (`.claude/settings.json`): Write/Edit/MultiEdit/NotebookEdit ที่ path ตรง `reports/*` → block + ข้อความ "แก้ `.work/<SYM>.json` แล้ว `node tools/report.js save <SYM>`" · Bash ที่มี `reports/` + (`>`, `sed -i`, `tee`, `cp`, `mv`) → block เช่นกัน (best-effort)
-2. **ลายเซ็น `_sig`** = sha256(canonical JSON ไม่รวม `_sig`) — เขียนโดย `io.write` เท่านั้น · gate E-code ใหม่ `E50 sig mismatch` ⇒ แก้มือทางไหนก็ตาม (Bash หลุด hook, editor) ถูกจับตอน verify/pre-push · ไม่ใช่ความปลอดภัยเชิง crypto — เป็นเครื่องบอกว่า "ไม่ได้ผ่าน io.js"
+1. **PreToolUse hook** — script `.claude/hooks/guard-reports.js` (node · exit 0 เสมอ · ปฏิเสธผ่าน JSON `permissionDecision:"deny"` พร้อมเหตุผล "แก้ `.work/<SYM>.json` แล้ว `node tools/report.js save <SYM>` (ใบ v2: `node tools/apply-edits.js`)"):
+   - **Write/Edit/MultiEdit/NotebookEdit** ที่ path (resolve จาก cwd) อยู่ใต้ `reports/` → deny **ทุกไฟล์ `reports/*`** (ไม่ใช่แค่ `.json` — ถ้าเปิด `.html` ไว้ worker จะถอยไปเขียน HTML ได้ · ใบ v2 UPDATE ยังเดินผ่าน `apply-edits` ซึ่งเป็น node child process)
+   - **Bash** (ตรวจเฉพาะคำสั่งที่มี `reports/`): deny redirect `>`/`>>` เข้า `reports/` · `sed -i`/`perl -i` บนไฟล์ใน `reports/` · `tee` เข้า `reports/` · `cp`/`mv`/`install`/`rsync`/`ln` ที่ปลายทางอยู่ใต้ `reports/` · ต้อง**ผ่าน**: `git mv` · `rm` · `git add`/`git checkout -- reports/…` · `grep … reports/X.html | head` · `node tools/report.js save X > /tmp/log 2>&1` · `apply-edits … <<'EOF'`
+   - **fail-open**: hook error/อินพุต parse ไม่ได้ = ปล่อยผ่าน (ไม่บล็อกงานทั้ง session เพราะบั๊กของ hook) — ชั้น 2 เป็นตัวบังคับจริง
+   - ติดตั้ง: script อยู่ใน repo · **เจ้าของ paste settings snippet เอง** ลง `.claude/settings.json` (classifier อาจบล็อก Claude แก้ settings ของตัวเอง/สร้าง `.claude/`) · matcher `Write|Edit|MultiEdit|NotebookEdit` และ `Bash` ชี้ `node "$CLAUDE_PROJECT_DIR/.claude/hooks/guard-reports.js"` (คง `env` เดิม)
+   - พิสูจน์ใน **`claude -p` process ใหม่** (settings/CLAUDE.md โหลดตอนเริ่ม session) · ต้องพิสูจน์ด้วยว่า **deny ชนะ** hook Bash ระดับ user (`rtk-rewrite.sh` ที่ allow + `updatedInput`) · unit test `test/v3/hook.test.js`
+2. **ลายเซ็น `_sig`** = sha256(canonical JSON ไม่รวม `_sig`) — เขียนโดย `io.write` เท่านั้น · gate E-code ใหม่ `E50 sig mismatch` ⇒ แก้มือทางไหนก็ตาม (Bash หลุด hook, editor, child process ที่ hook มองไม่เห็นโดยออกแบบ) ถูกจับตอน verify/pre-push · **`_sig`/E50 = ตัวบังคับจริง** hook เป็นแค่ชั้นเตือนเร็ว · ไม่ใช่ความปลอดภัยเชิง crypto — เป็นเครื่องบอกว่า "ไม่ได้ผ่าน io.js"
 
 ### 6.3 งานแต่ละโหมด
 
-- **NEW**: `prep` → `report.js init` → worker เขียน `.work/<SYM>.json` (legs, cards, scenarios, prose, catalysts/risks) → `pick-brand` (เขียนผ่าน save) → `report.js save` วนจนผ่าน → `npm test -- <SYM>` → คืน `TAGS:` ให้ controller
-- **UPDATE**: `update-prices --write --force <SYM>` → `report.js export` → แก้ draft → `save`
-- **UPDATE-LIGHT**: `export` → แก้ analysisDate/aiModel/prose ที่ต้องแก้ → `save --light` (ไม่มี E44 fix-on-touch อีก — ไม่มี literal ให้แก้)
-- `apply-edits.js` `@@` blocks → **เลิกใช้กับใบ v3** (ยังใช้ได้กับใบ v2 ระหว่าง transition)
+- **NEW**: `queue prep` (เขียน `.md` + sidecar `.json` §6.4) → `report.js init` → worker เขียน `.work/<SYM>.json` (legs, cards, scenarios, prose, catalysts/risks, `meta.aiModel`) → `pick-brand` (seed ลง `tools/seeds.json` เท่านั้น — ไม่ใส่ theme ใน draft) → `report.js save` วนจนผ่าน → `npm test -- <SYM>` (ส่งต่อให้ `check-v3` เอง §6.5) → คืน `TAGS:` ให้ controller
+- **UPDATE**: `report.js export` → แก้ draft → `save` · ⚠️ `update-prices --write --force <SYM>` **exit ≠0 บนใบ v3 จนถึง P5** (§6.5 · #62) · flow คิวของ v3 UPDATE (`prep`/`postcheck`/`ship`) = P6 — `prep` ปฏิเสธ symbol v3 ("v3 UPDATE = Plan 3")
+- **UPDATE-LIGHT**: `export` → แก้ช่องใน allowlist ของ `--light` (§6.1) → `save --light` (ไม่มี E44 fix-on-touch อีก — ไม่มี literal ให้แก้)
+- `apply-edits.js` `@@` blocks → **เลิกใช้กับใบ v3** (ปฏิเสธ `.json` ชี้ไป `report.js save` · ยังใช้ได้กับใบ v2 ระหว่าง transition)
+
+### 6.4 prep sidecar `.queue/prep/<SYM>.json` (Plan 2b · ใหม่)
+
+- `npm run queue -- prep <SYM>` (โหมด NEW — ผู้เขียน sidecar ตัวเดียว · R2 · `tools/prep-stock.js` คงสัญญาข้อความเดิม) เขียน sidecar คู่กับ `.md` เดิม — ข้อมูลเครื่องอ่าน (ไม่ใช่ prompt):
+
+```jsonc
+{
+  "market": { "px": 70.12, "priceDate": "2026-09-23",        // ISO (ไม่ใช่วันที่ไทยในบรรทัด FACTS)
+              "chart": { "data": [["ต.ค. 68", 150.2], "..."] }, // ตัด min/max/grid — compute คิดเอง
+              "chgSuffix": "รอบปี",
+              "range52w": { "lo": 64.1, "hi": 172.3 } },      // 52wk ของ vendor (ไม่ใช่ปิดรายเดือน)
+  "vendor": { "epsTTM": 6.13, "target": 95.0, "analysts": 14, "lo52": 64.1, "hi52": 172.3, "divYieldPct": 3.0, "fyYears": ["FY2025", "..."] },
+  "ttm": { "...": "..." }, "fy": { "...": "..." },            // งบ (revenue/NI/fcf/eps/dps/shares/margins/…) จาก fetch-fundamentals --json
+  "sharesOut": 4.3e8,                                          // [2b] หุ้นคงเหลือ ไม่ใช่ wAvgDil — fetch-fundamentals --json
+  "medians": { "...": "..." },                                 // MM.oneSymbol แบบ structured (รวมหน้าต่างมัธยฐาน)
+  "company": "Zoetis Inc.", "exchange": "NYSE"
+}
+```
+
+- ที่มา (สอดคล้อง plan 2b ruling R1 · advisor 24 ก.ย. 69) — แยกตามชนิดข้อมูล ไม่ประกอบจาก text ของ `.md`:
+  - **`market`** (px · priceDate · chart · chgSuffix · range52w) + `company`/`exchange` ← `fetch-facts --json` (ราคา/กราฟ **เท่านั้น** — `fetch-facts` ไม่มีข้อมูลงบ) · `range52w`: 52wk ของ vendor (`parseVendor`) ก่อนถ้ามี ไม่มีค่อยใช้ Yahoo meta จาก `fetch-facts --json` (M7 — ไม่ใช่ปิดรายเดือน)
+  - **งบ** (`ttm` · `fy` · `sharesOut` · `dps` · `epsForward` · `rating` — revenue/NI/fcf/eps/dps/shares/margins/…) ← `fetch-fundamentals --json` ตัวใหม่ (`snapshotJson()` บริสุทธิ์)
+  - **`vendor`** ← `parseVendor` (`tools/queue/prep.js`) · **`medians`** ← `MM.oneSymbol` (`tools/median-multiples.js`)
+- `market` ใน sidecar ใช้ **ตอน `save` ของใบ NEW เท่านั้น** (merge ก่อน validate) · ไม่เข้า `.work/` · หลัง publish ราคาเป็นของ cron (P5)
+- `prep` **ปฏิเสธ symbol ที่เป็น v3 แล้ว** ("v3 UPDATE = Plan 3") — ไม่ทำเหมือนเป็น NEW
+- ไม่ regenerate prep ทั้ง 909 ไฟล์ (ทั้งหมดเป็น UPDATE ของ v2) — สร้าง NEW prep ใหม่เฉพาะหุ้นที่จะทำ
+
+### 6.5 `tools/report-source.js` — "ไฟล์ไหนคือรายงาน" จุดเดียว (Plan 2b · ใหม่)
+
+- API: `list(dir)` (ครอบ `build.reportEntries` รวมการตรวจ "ห้ามมีทั้งสองไฟล์ของหุ้นเดียว") · `metaLite(sym)` → `{ currency, px, analysisDate, aiModel }` (v2 จาก stock-meta/footer · v3 จาก JSON) · `renderedHtml(sym)` (v3 = `loadReportSource` + `expandReport`)
+- **scanner ทุกตัวใน open-item #49** (16 ไฟล์ + `.gitignore` เพิ่ม `.work/`) อ่านผ่าน helper นี้ — ตรรกะ "ไฟล์ไหนคือรายงาน" ที่เคยก๊อปซ้ำ ~20 จุดเหลือที่เดียว · แต่ละแบตช์ของการแปลงจบด้วย dist diff = 0
+- กติกาเฉพาะตัว:
+  - `ship --prepatch` **fail closed**: path ใดใต้ `reports/` ที่ไม่ตรง regex `.html` = blocker (+ test) — วันนี้ `continue` ข้ามไป ⇒ `reports/X.json` ที่ยังไม่รีวิวจะถูกกวาดเข้า commit "price: pre-patch" โดยไม่ผ่าน postcheck
+  - `update-prices` **exit ≠0 บน symbol v3** ("v3 cron = Plan 3") จนถึง P5 (#62 — ห้าม no-op exit 0 เงียบ) · `reportExists` รวม `.json` (ไม่งั้น commitFlags/canary ลบ flag ของใบ v3)
+  - `preserve-dates` **ข้ามใบ v3** (ไม่มี `<footer>` · `freshHash` v3 ไม่รวม market/_sig/aiModel อยู่แล้ว §8)
+  - `npm test -- <SYM>` (check-reports CLI) **ส่ง symbol v3 ต่อให้ `check-v3`** แล้วรวม exit code — วันนี้ขึ้น "ไม่พบไฟล์รายงานให้ตรวจ" exit 1 ซึ่งเป็นตัวกระตุ้นอันดับ 1 ให้ worker ถอยไปเขียน HTML
+  - `apply-edits` **ปฏิเสธ `.json`** (ชี้ไป `report.js save`)
+  - migrator/theme writer ที่ล้าสมัย (#49 กลุ่ม A3: `migrate.js` `migrate-annual-chg.js` `migrate-v2.js` `brandtheme.js --write` `fix-contrast.js` `field-manifest.js` `v3/card-census.js`) **คง `.html` อย่างเดียว** จนลบที่ P7
+  - ที่เลื่อนไป P5: writer ราคาของ v3 ใน `update-prices` · `update-prices.yml` นับ `.json` · `verify:cron` รวม `check-v3` (#61) · pre-patch ของ `preflight` (2b ข้ามแถว v3 พร้อมข้อความ)
 
 ## 7. Cron (`tools/update-prices.js` สาย v3)
 
@@ -314,8 +361,13 @@
 | prose ผูกราคา | E44 | ➡️ กติกา B: ตอน save = error (รูปเป๊ะ) · gate รายวัน = `W31` warn (นับ literal รูปเงินที่ค้าง) |
 | ข้อมูล/ความสด/ความสมเหตุผล | E27 E28 E32 E34–E40 W07–W09 W12 W13 W21 W23 W24 | ➡️ คงไว้ อ่านจาก JSON (W21/W24 ตายเพราะอ่านไม่ได้ไม่มีอีก) |
 | ดุลพินิจ valuation | W18 W25 + ชั้น 0 (rf สกุล · (r,g) ซ้ำ · \|MOS\|>40%) | ➡️ คงไว้ **แม่นขึ้น** — คำนวณจาก `legs[].inputs` ไม่ใช่ regex `.mdesc` |
-| ใหม่ | `E50 sig` · `E51 schema` · `E52 declared-leg ไม่มีหลักฐาน / ยอดรวม × fx ≠ ค่าขา ±1% (§3.6 M)` · `W30 lit` เกิน · `W31 prose-lit` ค้าง | ใหม่ |
+| ใหม่ | `E50 sig` · `E51 schema` (+ `{{rd:` · sentinel `TODO` — Plan 2b) · `E52 declared-leg ไม่มีหลักฐาน / ยอดรวม × fx ≠ ค่าขา ±1% (§3.6 M)` · `W30 lit` เกิน · `W31 prose-lit` ค้าง | ใหม่ |
 
+- **E51 ขยาย (Plan 2b — กติกาของ gate ไม่ใช่เฉพาะ save · มีเคส self-test ใน check-v3)**:
+  - `{{rd:…}}` ใน prose/ช่องข้อความใดของใบ v3 = **error** (ไวยากรณ์ v2 — §3 หมายเหตุ token) · **ก่อนเพิ่มกติกา**: grep `test/fixtures/v3/*.json` หา `{{rd:` — เจอ = บั๊กของ fixture ต้องแก้ผ่าน `IO.write` (ไม่แก้มือ · วัด 24 ก.ย. 69 ที่ `34652b57e`: 0 จุดใน 6 fixture — วัดซ้ำตอนลงมือ)
+  - sentinel `TODO` / placeholder ค้าง (ที่ `init` วางไว้ §6.1 · `schema.str()` วันนี้รับ `"TODO"` และ E13 ของ v2 ไม่จับ) = **error**
+- **`checkDoc` รวม error ครบในครั้งเดียว (#52 อยู่ที่ gate ไม่ใช่ save)**: เพิ่ม `C.semanticErrors(doc)` ที่เก็บจุด throw ของ `compute()` ทุกจุด **ก่อน** เรียก compute — ฐาน driver ของฉากไม่มี/≤0 · ไม่มี seed และไม่มี `themeLegacy` · `extrasRef` ชี้ extras ที่ไม่มี · `multipleSource:'current'` ไม่มีตัวตั้ง > 0 · `legValue` คิดไม่ได้ (`tools/v3/compute.js:34,42,72,79` + legValue) ⇒ error ทุกข้อพร้อม path แทน throw ข้อแรก
+- **`checkDoc(doc, {stage:'save'})`**: ตัด **`v2:E40` ตัวเดียวเท่านั้น** (tag ลงตอน ship) และ log ว่าตัด — ไม่มี code อื่นถูกยกเว้น · `save` กับ gate จึงเป็น code path เดียวกัน (§6.1)
 - self-test (meta-test) ของ v3 = **mutate JSON** (ไม่ใช่ HTML) แล้วดูว่า check ยิง · ต้องมีเคสต่อทุก code ใหม่/ที่ย้าย
 - `verify` 18 ขั้น: เพิ่ม `v3-test` (schema/compute/prose/render unit) + `check-v3` · ระหว่าง transition รันทั้งสองสาย
 
@@ -340,8 +392,9 @@
 | P1 แกน | `schema.js` `compute.js` `prose.js` `io.js` + unit test (สูตร/ปัดตรง v2 `derive()` ทุก token) | test ผ่าน · compute ของ 10 ใบตัวอย่าง = ค่าที่ v2 render ได้ |
 | P2 render | `_template/v3/render.js` + build dual-path + freshHash v3 · `reports.json.file` ของใบ v3 ยังเป็น `<SYM>.html` (ชื่อใน dist — ไม่งั้น url พัง) · theme จาก seeds.json | render ใบตัวอย่าง DOM เทียบ skeleton ผ่าน · หน้าตาเหมือนเดิม (screenshot 3 ใบ) |
 | P3 gate = **Plan 2a** | **ส่วนขยาย schema §3.6 (A–O) + กติกา B ใหม่ §4** + P3 gate: `check-v3.js` (E50/E51/E52/W30/W31) + self-test แบบ mutate JSON · **ไม่มีผลกับ production** (tripwire คงอยู่) | ทุก code ในตาราง §9 มีบ้าน · self-test ครบ · corpus parity 909/909 · เกณฑ์ fixture ใบจริงใน §12 |
-| P4 CLI + worker = **Plan 2b** | `report.js` (+ `.work/` ใน .gitignore) + hook + scanners อ่าน `.json` + แก้ stock-analyzer SKILL / agent-prompt / stock-controller / CLAUDE.md §2/§10 · **ถอด tripwire เป็นขั้นสุดท้ายใน PR เดียวกัน** | NEW 2 ใบ (TH+US) จริง publish ผ่าน `report.js save` end-to-end โดย worker **Opus** (เดิมเขียน Sonnet — เจ้าของสั่งให้ subagent ของโปรเจกต์นี้เป็น Opus ทั้งหมดแล้ว) |
-| P5 cron | สาย v3 ใน update-prices + `range52w` | dry-run บนใบ v3 ทั้งหมด = ไม่มี diff นอก market · รอบจริง 3 วันไม่มี patch-rejected ผิดปกติ |
+| P4a infrastructure = **Plan 2b** | **ไม่มีผลกับ production** (tripwire คงอยู่ · dist byte-identical): `tools/report-source.js` (§6.5) → แปลง scanner 16 ตัวผ่าน helper (แบตช์ตาม runtime: verify-path tests / queue tools / cron-adjacent / misc · แต่ละแบตช์จบด้วย dist diff = 0) → `report.js` CLI (§6.1 · + `.work/` ใน .gitignore) + prep sidecar (§6.4) → กติกา gate (`{{rd:` · sentinel `TODO` · `semanticErrors()` · `stage:'save'` §9) → ไฟล์ hook (script + settings snippet ให้เจ้าของ paste §6.2) | test ผ่านทั้งหมด · dist ไม่เปลี่ยนแม้ byte เดียว · hook พิสูจน์ใน `claude -p` process ใหม่ (deny ชนะ rtk hook) |
+| P4b ใช้จริงครั้งแรก = **Plan 2c** | แก้เอกสาร worker (stock-analyzer SKILL มี **หัวข้อ v3 NEW แยกเฉพาะ** ไม่ใช่ if/else ไล่ 68 จุด · บรรทัดสำคัญที่สุด = `npm test -- SYM` → `node test/check-v3.js SYM` · agent-prompt / stock-controller / CLAUDE.md §2/§10) → **ถอด tripwire เป็น commit สุดท้ายก่อน exit** → NEW 2 ใบจริง (TH+US) ผ่าน `report.js save` แล้ว publish · **commit เอกสารก่อน spawn worker** (CLAUDE.md inject เป็น snapshot ตอนเริ่ม session) · exit worker **pin `model:"opus"`** (`analyze-wave` default = sonnet) · หุ้น exit เลือกโดย: ตรวจ exclusions (memory completed-backlogs + delisted-stocks) ก่อน → `npm run queue -- prep` ผู้สมัคร 2 อันดับแรกต่อตลาด → ผ่าน CROSS-VERIFY + **กับดักข้อมูลน้อยที่สุด** ชนะ (prep ตัดสิน ไม่ใช่การถกเถียง) | NEW 2 ใบ (TH+US) จริง publish ผ่าน `report.js save` end-to-end โดย worker **Opus** (เจ้าของสั่งให้ subagent ของโปรเจกต์นี้เป็น Opus ทั้งหมดแล้ว) · verify ผ่าน |
+| P5 cron | สาย v3 ใน update-prices + `range52w` · **เส้นตายแข็ง = วัน merge Plan 2c + 45 วัน** (open-item #62 — ราคาใบ v3 แช่แข็งจนกว่า P5 · W09 ที่ 45 วัน · E27 ที่ 120 วันล้ม verify ทั้ง repo) · ห้ามรวมเข้า 2b/2c | dry-run บนใบ v3 ทั้งหมด = ไม่มี diff นอก market · รอบจริง 3 วันไม่มี patch-rejected ผิดปกติ |
 | P6 migrate | `migrate-v3.js` + รายงาน 3 ถัง · migrate CLEAN เป็นแบตช์ (เสนอยกเว้นกฎ §5 "1 commit = 1 หุ้น" เป็น commit ละ 50 ใบ เพราะเป็นงาน mechanical — รอเจ้าของอนุมัติ §13 ข้อ 1) | CLEAN+VALUE-DRIFT ย้ายหมด · รายชื่อ HUMAN ส่งเจ้าของ |
 | P7 cutover | ลบ v2 path + เอกสาร | HUMAN = 0 · verify ผ่าน · cron 7 วันเขียว |
 
@@ -352,8 +405,11 @@
 | migration ทำข้อความหายเงียบ (ซ้ำ `.ret`) | word-level prose diff ต้องว่าง ไม่งั้นเข้าถัง HUMAN · ห้าม mask ข้อความ |
 | compute ปัดต่างจาก v2 → ตัวเลขบนเว็บขยับทุกใบวันเดียว | P1 เกณฑ์: ทุก token ของ v2 ต้องได้ string เดียวกันบนใบตัวอย่าง + corpus test ทั้ง 885 ใบ v2 |
 | schema แข็งเกินจน worker เขียนหุ้นแปลกไม่ได้ | `declared` leg + `custom[]` + `extras[]` + `{{lit:}}` = ทางออกที่นับได้ · gate นับการใช้ ถ้าโตผิดปกติ = schema ขาดอะไร |
-| worker (Sonnet) เขียน JSON ยาวผิดบ่อย → turn เพิ่ม/ต้นทุน | `save` คืน error ทุกข้อในครั้งเดียวพร้อม path · `init` เติมโครงให้ · วัด turn ใน P4 เทียบ benchmark (`token-usage-benchmarks`) |
+| worker (Sonnet) เขียน JSON ยาวผิดบ่อย → turn เพิ่ม/ต้นทุน | `save` คืน error ทุกข้อในครั้งเดียวพร้อม path · `init` เติมโครงให้ · วัด turn ใน P4b (Plan 2c) เทียบ benchmark (`token-usage-benchmarks`) |
 | hook ถูกเลี่ยงผ่าน Bash | `_sig` + E50 ใน pre-push จับได้เสมอ |
+| worker ถอยกลับไปเขียน HTML (`reports/<SYM>.html`) | `npm test -- <SYM>` ส่งต่อ `check-v3` เอง (§6.5 — ตัวกระตุ้นอันดับ 1 คือ self-check ที่แดงโดยโครงสร้าง) · hook บล็อก **ทุก** `reports/*` (§6.2) · SKILL มีหัวข้อ v3 NEW แยกเฉพาะ (Plan 2c) · stdout ของ prep/pick-brand/fetch-facts เลิกสั่ง "วางลง report-data" |
+| ราคาใบ v3 แช่แข็งเงียบ (cron ยังอ่านแต่ `.html`) | `update-prices` exit ≠0 บน symbol v3 (ไม่ no-op exit 0) · `reportExists` รวม `.json` · เส้นตาย P5 = merge 2c + 45 วัน (#62) |
+| `ship --prepatch` กวาด `reports/*.json` ที่ยังไม่รีวิวเข้า commit อัตโนมัติ | fail closed: path ใต้ `reports/` ที่ไม่ใช่ `.html` = blocker + test (§6.5) |
 | cron สองสายระหว่าง transition | สาย v3 ง่ายกว่า (ไม่มี regex) · ทดสอบ dry-run ก่อน · ช่วง transition จำกัดด้วยเกณฑ์ P7 |
 | ใบที่ "ถูกซ่อมเงียบ" ตอน migrate (VALUE-DRIFT) ทำตัวเลขบนเว็บเปลี่ยน | เป็นการแก้บัคจริง แต่ต้องให้เจ้าของเห็นตารางก่อนอนุมัติแบตช์ |
 | schema แข็งเกิน — **วัดแล้ว** (Task 0): fixture ใบจริงทั้ง 3 ชนเพดาน custom 4 การ์ด | ส่วนขยาย §3.6 · **เกณฑ์จบ Plan 2a** = fixture `-real` แต่ละใบ: custom ≤2 การ์ด · ไม่มีขา `declared` ในที่ที่มี method คำนวณได้ · ไม่มีข้อความซ้ำ (ประโยคที่ต้องยัดซ้ำเพราะไม่มีช่อง) · gate 0/0 (= v2 gate บนหน้าที่ render 0 error/0 warning · check-v3 **0 error** ยกเว้น EQIX-real = E17 พอดี 1 ตัว เป็นเคสสาธิตถัง HUMAN ตาม §13 ข้อ 4 · **W31 ไม่นับ** — เป็นตัววัด literal ค้างที่ Plan 3 ต้องแทนด้วย token, open-items #57) · FV ไม่เปลี่ยน |
@@ -367,3 +423,11 @@
 5. **`stock-meta.pe` = ราคา / EPS เสมอ** (1 ช่อง 1 ความหมาย) · REIT แสดง P/FFO ผ่านการ์ด/token `pffo` แทน (§3.6 J) · ผล: 5 ใบ (AMT DLR EQIX FRT O) ที่ v2 เก็บ P/FFO ไว้ใน `pe` จะเปลี่ยนตำแหน่งเรียงบน index — *advisor อนุมัติเป็นคำตัดสินถาวร 24 ก.ย. 69 (เจ้าของมอบอำนาจอนุมัติให้ advisor)*
 6. **ขา context ที่ใช้ตัวคูณปัจจุบัน คำนวณได้ ไม่ต้อง `declared`** (advisor 24 ก.ย. 69 · กลับ R7 ของ Plan 2a บางส่วน): `role:'context'` + `multipleSource:'current'` = ถูกกติกา · ค่าขา ≡ ราคา จึงมีข้อมูลเดียวคือตัวคูณสด (ราคา ÷ ตัวตั้ง) ซึ่ง compute ทุกวัน · `declared` จะแช่แข็งตัวเลขผูกราคา (43 ขาตอน migrate ค้างทุกวัน = คลาสบัคที่โปรเจกต์นี้ปิด) · `'current'` ยังห้ามบนขา `role:'fv'` (W18 สมอตาย) · FCF-Gordon ของ ZTS ยัง `declared` (3 ใบ เจ้าของตัดสินแล้ว)
 7. **|MOS| > 40% (ชั้น 0)** = ต้องมีขา `role:'fv'` อย่างน้อย 1 ขาที่ `family !== 'rg'` ยืนยัน · ไม่มี → W-code (warn — ชั้น 0 เป็นงานตรวจของ controller) · อยู่ใน check-v3 ของ Plan 2a
+8. **Scanner ผ่าน helper เดียว** (§6.5): สร้าง `tools/report-source.js` **ก่อน** (`list(dir)` ครอบ `build.reportEntries` + ตรวจสองไฟล์ · `metaLite(sym)` · `renderedHtml(sym)`) แล้วแปลง scanner ทั้ง 16 ตัวผ่านมัน เป็นแบตช์ 3–4 รอบตาม runtime แต่ละแบตช์จบด้วย dist diff = 0 · `ship --prepatch` **fail closed** (path ใต้ `reports/` ที่ไม่ตรง regex `.html` = blocker + test) — *advisor 24 ก.ย. 69 (เจ้าของมอบอำนาจ)*
+9. **ราคาใบ v3 แช่แข็งจน P5 = ยอมรับ แต่ห้ามเงียบ**: `update-prices` exit ≠0 บน symbol v3 ("v3 cron = Plan 3") · `reportExists` รวม `.json` · open-item #62 = เส้นตาย P5 = merge 2c + 45 วัน · ไม่มี P5 ใน 2b/2c — *advisor 24 ก.ย. 69 (เจ้าของมอบอำนาจ)*
+10. **save กับ checkDoc = code path เดียว**: `checkDoc(doc, {stage:'save'})` ตัด `v2:E40` ตัวเดียว (log) ไม่มีอื่น · การรวม error ครบ (#52) อยู่**ใน** checkDoc ผ่าน `semanticErrors()` ก่อน compute · กติกา B ยังเรียกตอน save (R5) · merge `market` ก่อน validate (sidecar สำหรับ NEW · `.json` เดิมสำหรับ export) — *advisor 24 ก.ย. 69 (เจ้าของมอบอำนาจ)*
+11. **อินพุตของ init = sidecar `.queue/prep/<SYM>.json` เท่านั้น** (ไม่ regex `.md`) · `market` ไม่เข้า `.work/` · `init` ปฏิเสธเมื่อมี `.html` หรือ `.json` · `prep` ปฏิเสธ symbol v3 ("v3 UPDATE = Plan 3") · `export` ส่งเป็นคำสั่ง แต่ flow คิวของ v3 UPDATE = P6 — *advisor 24 ก.ย. 69 (เจ้าของมอบอำนาจ)*
+12. **Hook**: บล็อก Write/Edit/MultiEdit/NotebookEdit บน **ทุก** `reports/*` + รูปแบบเขียนของ Bash · fail-open เมื่อ hook error · เจ้าของ paste settings snippet เอง · พิสูจน์ใน `claude -p` ใหม่ · `git mv`/`rm` ผ่าน · test พิสูจน์ว่า deny ชนะ rtk hook ระดับ user · `_sig`/E50 = ตัวบังคับจริง — *advisor 24 ก.ย. 69 (เจ้าของมอบอำนาจ)*
+13. **`{{rd:` และ `TODO`/placeholder = กติกา gate** (E51 ใน schema + เคส self-test ของ check-v3) ไม่ใช่เฉพาะ save · **ก่อนเพิ่มกติกา `{{rd:`**: grep `test/fixtures/v3/*.json` — เจอ = บั๊ก fixture แก้ผ่าน `IO.write` — *advisor 24 ก.ย. 69 (เจ้าของมอบอำนาจ)*
+14. **เอกสาร worker (2c)**: หัวข้อ v3 NEW แยกเฉพาะ ไม่ใช่ if/else ไล่ 68 บรรทัด · บรรทัดสำคัญที่สุด = handoff `npm test -- SYM` → `node test/check-v3.js SYM` (M1) · **ไม่ regenerate prep 909 ไฟล์** (ทั้งหมดเป็น UPDATE) — สร้าง NEW prep ใหม่เฉพาะหุ้น exit — *advisor 24 ก.ย. 69 (เจ้าของมอบอำนาจ)*
+15. **หุ้น exit (2c)**: ตรวจผู้สมัครกับ memory completed-backlogs + delisted-stocks ก่อน → `npm run queue -- prep` 2 อันดับแรกต่อตลาด → ตัวตัดสิน = กับดักแหล่งข้อมูลน้อยที่สุด (M-CHAI > ICC ในเกณฑ์นี้ · OGE ใช้ได้ — กำไรพิเศษ FY2022 เป็นการใช้ `medianWindow` ที่ถูกต้อง) · prep ตัดสิน ไม่ใช่การถกเถียง — *advisor 24 ก.ย. 69 (เจ้าของมอบอำนาจ)*

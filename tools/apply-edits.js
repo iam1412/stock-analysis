@@ -74,6 +74,8 @@ function die(msg) { console.error(msg); process.exit(1); }
 
 const file = process.argv[2];
 if (!file) die('ใช้: node tools/apply-edits.js <file> [--stdin] [--set path=json] [--del path] [--set-meta path=json] <<\'EOF\' ... EOF (อ่านบล็อก @@ จาก stdin ถ้ามี — ใส่ --stdin เสมอเมื่อ compose กับ --set/--del/--set-meta)');
+// ใบ v3 (reports/<SYM>.json · Plan 2b · spec §6.3): แก้ด้วย string ไม่ได้ — ลายเซ็น _sig จะไม่ตรง (E50) และข้ามทุก gate ของ save
+if (require('./report-source.js').isV3Path(file)) die(`✗ ${file} เป็นใบ v3 (JSON) — apply-edits ใช้กับใบ v2 (.html) เท่านั้น · ใบ v3: node tools/report.js export <SYM> → แก้ .work/<SYM>.json → node tools/report.js save <SYM>`);
 if (!fs.existsSync(file)) die(`✗ ไม่พบไฟล์ ${file}`);
 
 // ---- parse --stdin/--set/--del/--set-meta จาก argv (หลังชื่อไฟล์) ----

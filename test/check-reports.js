@@ -1012,30 +1012,68 @@ function checkFile(fp) {
 module.exports = { checkHtml, checkFile, buildCtx, parseScenarios, firstNum, visible, V1_READ, CHECKS, REPORTS_DIR, FISCAL_REF_SRC };
 
 // ---------- CLI ----------
-function main() {
-  const argv = process.argv.slice(2);
-  if (!fs.existsSync(REPORTS_DIR)) { console.error('❌ ไม่พบโฟลเดอร์ reports/'); process.exit(1); }
-  let files = fs.readdirSync(REPORTS_DIR).filter((f) => /\.html$/i.test(f)).sort();
-  if (argv.length) { const want = new Set(argv.map((a) => a.replace(/\.html$/i, '').toUpperCase())); files = files.filter((f) => want.has(f.replace(/\.html$/i, '').toUpperCase())); }
-  if (!files.length) { console.error('❌ ไม่พบไฟล์รายงานให้ตรวจ'); process.exit(1); }
+// ใบ v3 (reports/<SYM>.json · Plan 2b · spec §6.5): ระบุชื่อมา → ส่งต่อ test/check-v3.js แล้วรวม exit code
+//   (เดิมขึ้น "ไม่พบไฟล์รายงานให้ตรวจ" exit 1 = ตัวกระตุ้นอันดับ 1 ให้ worker ถอยไปเขียน HTML — finding M1)
+//   กวาดทั้งคลัง (ไม่ใส่ arg) ยังตรวจแค่ใบ v2 — ใบ v3 เป็นงานของขั้น check-v3 ถัดไปใน verify (พิมพ์บรรทัดบอกจำนวน)
+function runCli(argv, opts) {
+  const o = opts || {};
+  const dir = o.reportsDir || REPORTS_DIR, log = o.log || console.log, err = o.err || console.error;
+  if (!fs.existsSync(dir)) { err('❌ ไม่พบโฟลเดอร์ reports/'); return 1; }
+  let entries;
+  try { entries = require('../tools/report-source.js').list(dir); }
+  catch (e) { err('❌ ' + e.message); return 1; }
+  const want = argv.length ? new Set(argv.map((a) => a.replace(/\.(html|json)$/i, '').toUpperCase())) : null;
+  const pick = (e) => !want || want.has(e.symbol.toUpperCase());
+  const files = entries.filter((e) => !e.v3 && pick(e)).map((e) => e.name);
+  const v3 = want ? entries.filter((e) => e.v3 && pick(e)).map((e) => e.symbol) : [];
+  // symbol ที่ไม่มีทั้ง .html/.json ต้องดัง (เดิม arg ผสมจะถูกทิ้งเงียบ ๆ แล้ว exit 0 ถ้าตัวอื่นผ่าน)
+  const have = new Set(entries.map((e) => e.symbol.toUpperCase()));
+  const missing = want ? [...want].filter((s) => !have.has(s)) : [];
+  for (const s of missing) err(`✗ ${s} ไม่พบ (ไม่มี reports/${s}.html หรือ reports/${s}.json)`);
+  if (!files.length && !v3.length) { err('❌ ไม่พบไฟล์รายงานให้ตรวจ'); return 1; }
+  const nV3 = want ? 0 : entries.filter((e) => e.v3).length;
+  const note = nV3 ? `ℹ ใบ v3 ${nV3} ใบ — ตรวจโดย node test/check-v3.js (ขั้นถัดไปของ verify)` : null;
+  const v2Code = files.length ? runV2(files, dir, log, note) : null;
+  let v3Code = null;
+  if (v3.length) {
+    log(`\n↪ ใบ v3 ${v3.join(' ')} → test/check-v3.js`);
+    v3Code = require('./check-v3.js').runCli(v3, { reportsDir: dir, log });
+  }
+  const code = Math.max(v2Code || 0, v3Code || 0, missing.length ? 1 : 0);
+  // หลายส่วน (v2+v3 หรือมี symbol ไม่พบ) → บรรทัดรวมเป็นบรรทัดสุดท้ายเสมอ — worker มัก pipe ผ่าน tail
+  if ((v2Code !== null && v3Code !== null) || missing.length) {
+    const part = [];
+    if (v2Code !== null) part.push(`v2 ${v2Code ? '✗' : '✓'}`);
+    if (v3Code !== null) part.push(`v3 ${v3Code ? '✗' : '✓'}`);
+    if (missing.length) part.push(`ไม่พบ ${missing.join(' ')} ✗`);
+    log(`รวม: ${part.join(' · ')} → exit ${code}`);
+  }
+  return code;
+}
 
-  console.log(`\n🔍 ตรวจคุณภาพรายงาน ${files.length} ไฟล์ (reports/)\n`);
+function runV2(files, dir, log, note) {
+  log(`\n🔍 ตรวจคุณภาพรายงาน ${files.length} ไฟล์ (reports/)\n`);
   let totErr = 0, totWarn = 0, failFiles = 0, minCov = null;
   for (const f of files) {
-    const r = checkFile(path.join(REPORTS_DIR, f));
+    const r = checkFile(path.join(dir, f));
     totErr += r.errors.length; totWarn += r.warnings.length;
     // ★ coverage ต่อไฟล์ — ไฟล์ที่ expandReport ระเบิด (id EXPAND) ไม่มี ctx จึงไม่มี coverage ⇒ เว้นไว้ ไม่ใช่ 0
     const cov = r.coverage ? ` · ช่อง ${r.coverage.found}/${r.coverage.n}${r.coverage.skippedOptional.length ? ` (ข้าม ${r.coverage.skippedOptional.length})` : ''}` : '';
     if (r.coverage && (!minCov || r.coverage.found < minCov.found)) minCov = { found: r.coverage.found, n: r.coverage.n, name: r.symbol };
-    if (r.errors.length) { failFiles++; console.log(`✗ ${f.padEnd(13)} ${r.errPass}/${r.errTotal} ผ่าน — ${r.errors.length} ปัญหา${cov}`); }
-    else console.log(`✓ ${f.padEnd(13)} ${r.errTotal}/${r.errTotal} ผ่าน${r.warnings.length ? `   (⚠ ${r.warnings.length})` : ''}${cov}`);
-    for (const e of r.errors) console.log(`    ✗ [${e.id}] ${e.label}: ${e.msg}`);
-    for (const w of r.warnings) console.log(`    ⚠ [${w.id}] ${w.label}: ${w.msg}`);
+    if (r.errors.length) { failFiles++; log(`✗ ${f.padEnd(13)} ${r.errPass}/${r.errTotal} ผ่าน — ${r.errors.length} ปัญหา${cov}`); }
+    else log(`✓ ${f.padEnd(13)} ${r.errTotal}/${r.errTotal} ผ่าน${r.warnings.length ? `   (⚠ ${r.warnings.length})` : ''}${cov}`);
+    for (const e of r.errors) log(`    ✗ [${e.id}] ${e.label}: ${e.msg}`);
+    for (const w of r.warnings) log(`    ⚠ [${w.id}] ${w.label}: ${w.msg}`);
   }
-  console.log('\n' + '─'.repeat(50));
-  console.log(`สรุป: ${files.length - failFiles}/${files.length} ไฟล์ผ่าน • error ${totErr} • warning ${totWarn}${minCov ? ` • ช่องต่ำสุด ${minCov.found}/${minCov.n} (${minCov.name})` : ''}`);
-  if (totErr) { console.log('\n❌ มี error — ห้าม push (แก้รายงานให้ผ่านก่อน)\n'); process.exit(1); }
-  console.log(`\n✅ ผ่าน quality gate — พร้อม build & push${totWarn ? ` (มี ${totWarn} warning ที่ควรดู)` : ''}\n`); process.exit(0);
+  log('\n' + '─'.repeat(50));
+  log(`สรุป: ${files.length - failFiles}/${files.length} ไฟล์ผ่าน • error ${totErr} • warning ${totWarn}${minCov ? ` • ช่องต่ำสุด ${minCov.found}/${minCov.n} (${minCov.name})` : ''}`);
+  if (note) log(note);
+  if (totErr) { log('\n❌ มี error — ห้าม push (แก้รายงานให้ผ่านก่อน)\n'); return 1; }
+  log(`\n✅ ผ่าน quality gate — พร้อม build & push${totWarn ? ` (มี ${totWarn} warning ที่ควรดู)` : ''}\n`);
+  return 0;
 }
+module.exports.runCli = runCli;
 
+// exitCode ไม่ใช่ process.exit — ให้ stdout ที่ pipe อยู่ flush ครบก่อนจบ (exit code เท่าเดิม 0/1)
+function main() { process.exitCode = runCli(process.argv.slice(2)); }
 if (require.main === module) main();

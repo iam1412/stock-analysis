@@ -12,6 +12,7 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const T = require('../tools/tag-lib.js');
+const RS = require('../tools/report-source.js');
 
 const ROOT = path.join(__dirname, '..');
 let n = 0, fails = 0;
@@ -163,7 +164,8 @@ ok(m.get('no-such-slug') === undefined, 'membersOf: slug ที่ไม่ม�
 
 // ── C) corpus: reports/ ↔ tags.json ↔ คลัง (ตรวจสองทาง) ──
 const data = T.loadTags();
-const syms = fs.readdirSync(path.join(ROOT, 'reports')).filter((f) => /\.html$/i.test(f)).map((f) => f.replace(/\.html$/i, ''));
+// ใบ v2 (.html) + ใบ v3 (.json) — tag ของใบ v3 ต้องไม่ถูกนับเป็น orphan (Plan 2b · finding M5)
+const syms = RS.list(path.join(ROOT, 'reports')).map((e) => e.symbol);
 const symSet = new Set(syms);
 
 const missing = syms.filter((s) => !data.tags[s]);

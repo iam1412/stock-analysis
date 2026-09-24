@@ -234,6 +234,19 @@ const fresh = () => ({ vocabVersion: 1, tags: { AAA: ['ai-datacenter'] }, reques
   fs.rmSync(cliTmp, { recursive: true, force: true });
 }
 
+// ── ใบ v3 (Plan 2b): reports/<SYM>.json นับเป็นไฟล์รายงานเหมือน .html (ผ่าน tools/report-source.js) ──
+{
+  fs.writeFileSync(path.join(repDir, 'VVV.json'), '{}');   // ชื่อไฟล์พอ — tag-apply ไม่ parse เนื้อ
+  const d = fresh();
+  const r = A.applyTags({ symbol: 'VVV', slugs: ['power-grid'], vocab, data: d, reportsDir: repDir });
+  ok(r.ok && JSON.stringify(r.data.tags.VVV) === '["power-grid"]', 'v3: ติด tag ให้ใบที่มีแต่ .json ได้');
+  const pr = A.pruneMissing({ ...d, tags: { ...d.tags, VVV: ['power-grid'] } }, repDir);
+  ok(!pr.removed.includes('VVV') && !!pr.data.tags.VVV, 'v3: --prune ไม่ลบ tag ของใบ .json');
+  const rn = A.renameSymbol(d, 'AAA', 'VVV', repDir);
+  ok(rn.ok && !!rn.data.tags.VVV && !rn.data.tags.AAA, 'v3: --rename ไปยัง symbol ที่มีแต่ .json ได้');
+  fs.unlinkSync(path.join(repDir, 'VVV.json'));
+}
+
 fs.rmSync(tmp, { recursive: true, force: true });
 console.log('\n' + '─'.repeat(50));
 console.log(`tag-apply-test: ${n - fails}/${n} ผ่าน`);

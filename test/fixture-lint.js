@@ -13,8 +13,10 @@ const ALLOW = new Set(['check-reports.js', 'check-site.js', 'engine-exec.js']);
 // (คอมเมนต์นี้เขียนเลี่ยงไม่ให้ตรง PATTERNS ด้านล่างเอง — ตัวอย่าง literal เดิมชนกับ pattern ของตัวมันเองเพราะ fixture-lint.js ไม่อยู่ใน ALLOW)
 const PATTERNS = [
   /readFileSync\([^)]*['"`]reports['"`]/,
-  /['"`]reports['"`]\s*,\s*['"`][A-Za-z0-9.\-]+\.html['"`]/,
+  /['"`]reports['"`]\s*,\s*['"`][A-Za-z0-9.\-]+\.(?:html|json)['"`]/,   // ใบ v3 = reports/<SYM>.json (Plan 2b)
 ];
+// test/v3/*.test.js ก็อยู่ใน verify (ผ่าน test/v3-test.js) — ต้องถูกสแกนด้วย
+const DIRS = [__dirname, path.join(__dirname, 'v3')];
 
 function scan(dir) {
   const out = [];
@@ -29,8 +31,10 @@ function scan(dir) {
 }
 
 module.exports = function fixtureLint(ok) {
-  for (const { file, hits } of scan(__dirname))
-    ok(hits.length === 0, `fixture-lint: ${file} ไม่อ่าน reports/ เป็น fixture` + (hits.length ? ` (บรรทัด ${hits.join(',')} — ย้ายไป test/fixtures/)` : ''));
+  for (const dir of DIRS)
+    for (const { file, hits } of scan(dir))
+      ok(hits.length === 0, `fixture-lint: ${path.relative(__dirname, path.join(dir, file))} ไม่อ่าน reports/ เป็น fixture` + (hits.length ? ` (บรรทัด ${hits.join(',')} — ย้ายไป test/fixtures/)` : ''));
 };
 module.exports.scan = scan;
 module.exports.PATTERNS = PATTERNS;
+module.exports.DIRS = DIRS;

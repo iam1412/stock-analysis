@@ -5,12 +5,13 @@
  *   · EPS ฐาน ≤ 0 ⇒ stock-meta.pe ต้อง null (roe = เตือน) · footer "ข้อมูล ณ" = วันนี้ + พ.ศ.
  * ★ ไม่ทำแทน: ชั้น 0 valuation (cluster/|MOS|>40%/สมอตาย/ตระกูลเดียว) — คนอ่าน spotcheck + W18/W05 เอง
  */
-const fs = require('fs');
 const path = require('path');
 const { run, ROOT } = require('./sh.js');
 const S = require('./state.js');
-const { footerDate, todayBangkok } = require('./footer-date.js');
+const { todayBangkok } = require('./footer-date.js');
 const { parseAiModel } = require('../report-meta.js');
+const RS = require('../report-source.js');   // ใบ v2 + v3 (Plan 2b)
+const P3 = require('../v3/prose.js');
 
 const REPORTS = path.join(ROOT, 'reports');
 const MODEL_RE = { sonnet: /sonnet/i, opus: /opus/i };
@@ -55,28 +56,49 @@ function checkMeta(ctx, model, fd, today) {
   return issues;
 }
 
+/** ช่องข้อความของใบ v3 ที่ราคาเดิมค้างได้ (ส่วนบริสุทธิ์) → [{ path, text }]
+ *  = ทุกช่อง prose (P.proseFields) + ป้ายที่ worker พิมพ์เอง: legs[].label · metrics.custom[].label · extras[].headers[]
+ *  — market/fundamentals เป็นตัวเลขของ cron/งบ ไม่ใช่ข้อความที่ค้างได้ */
+function oldPriceFields(doc) {
+  const arr = (x) => (Array.isArray(x) ? x : []);
+  const out = P3.proseFields(doc);
+  const add = (p, t) => { if (typeof t === 'string') out.push({ path: p, text: t }); };
+  arr(doc.legs).forEach((l, i) => add(`legs[${i}].label`, (l || {}).label));
+  arr((doc.metrics || {}).custom).forEach((c, i) => add(`metrics.custom[${i}].label`, (c || {}).label));
+  arr(doc.extras).forEach((x, i) => arr((x || {}).headers).forEach((h, k) => add(`extras[${i}].headers[${k}]`, h)));
+  return out;
+}
+/** ข้อความที่ grep หาราคาเดิมค้าง (ส่วนบริสุทธิ์): ใบ v2 = html ดิบทั้งไฟล์ (findOldPrice ข้ามบล็อก JSON เอง) · ใบ v3 = oldPriceFields */
+function oldPriceHaystack(src) { return src.v3 ? oldPriceFields(src.doc).map((x) => x.text).join('\n') : src.raw; }
+/** จุดที่ราคาเดิมยังโผล่ → [{ where, text }] · where = `L<บรรทัด>` (ใบ v2) · path ของช่องใน JSON (ใบ v3 เช่น prose.mos) */
+function oldPriceHits(src, oldPrice) {
+  if (!src.v3) return findOldPrice(src.raw, oldPrice).map((h) => ({ where: `L${h.line}`, text: h.text }));
+  const out = [];
+  for (const f of oldPriceFields(src.doc)) for (const h of findOldPrice(f.text, oldPrice)) out.push({ where: f.path, text: h.text });
+  return out;
+}
+
 function postcheck(sym, opts) {
   const o = opts || {};
-  const fp = path.join(REPORTS, sym + '.html');
-  if (!fs.existsSync(fp)) throw new Error(`ไม่มี reports/${sym}.html — worker ยังไม่ได้เขียน (หรือเขียนผิดที่ — ดู STEP 0 cwd-stray)`);
+  const src = RS.load(sym, REPORTS);
+  if (!src) throw new Error(`ไม่มี reports/${sym}.html หรือ reports/${sym}.json — worker ยังไม่ได้เขียน (หรือเขียนผิดที่ — ดู STEP 0 cwd-stray)`);
   const rec = S.load().stocks[sym] || {};
   const issues = [], notes = [];
 
-  const t = run('node', ['test/check-reports.js', sym]);
+  const t = run('node', ['test/check-reports.js', sym]);   // ใบ v3 → check-reports ส่งต่อ check-v3 เอง (Plan 2b R9)
   process.stdout.write(t.out);
   if (t.code !== 0) issues.push('npm test ตก (มี error) — แก้ก่อน');
   const sp = run('node', ['tools/spotcheck.js', sym]);
   process.stdout.write(sp.out);
   if (/▸/.test(sp.out)) notes.push('spotcheck มีรายการให้อ่าน (ด้านบน) — ตัดสินเอง ไม่ใช่ gate');
 
-  const html = fs.readFileSync(fp, 'utf8');
-  const hits = findOldPrice(html, rec.oldPrice);
-  if (hits.length) issues.push(`ราคาเดิม ${rec.oldPrice} ยังโผล่ ${hits.length} จุด:\n` + hits.map((h) => `    L${h.line}: ${h.text}`).join('\n'));
+  const hits = oldPriceHits(src, rec.oldPrice);
+  if (hits.length) issues.push(`ราคาเดิม ${rec.oldPrice} ยังโผล่ ${hits.length} จุด:\n` + hits.map((h) => `    ${h.where}: ${h.text}`).join('\n'));
 
   const { buildCtx } = require('../../test/check-reports.js');
-  const { expandReport } = require('../../build.js');
-  const ctx = buildCtx(expandReport(html), sym + '.html');
-  issues.push(...checkMeta(ctx, o.model || rec.model, footerDate(html), todayBangkok()));
+  const ctx = buildCtx(RS.renderedHtml(sym, REPORTS), sym + '.html');   // v2 = expandReport(ต้นฉบับ) เหมือนเดิม · v3 = หน้าที่ build render
+  const lite = RS.metaLite(sym, REPORTS);   // วันวิเคราะห์: v2 footer "ข้อมูล ณ" · v3 meta.analysisDate + dateEra
+  issues.push(...checkMeta(ctx, o.model || rec.model, lite && lite.analysisDate ? { iso: lite.analysisDate, era: lite.era } : null, todayBangkok()));
   const fyIssue = checkFyYears(ctx.mf && ctx.mf.values ? ctx.mf.values.f55 : null, rec.fyYears);
   if (fyIssue) issues.push(fyIssue);
   // ช่อง required ที่ manifest อ่านไม่ได้ = โครงที่ worker เขียนไม่ครบ (W21 ใน gate เป็น warn จึงไม่บล็อก push เอง)
@@ -102,4 +124,4 @@ function postcheck(sym, opts) {
   return { issues, notes };
 }
 
-module.exports = { postcheck, findOldPrice, checkMeta, checkFyYears };
+module.exports = { postcheck, findOldPrice, oldPriceFields, oldPriceHaystack, oldPriceHits, checkMeta, checkFyYears };

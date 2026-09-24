@@ -89,6 +89,21 @@ function cardEntries(mt) {
   return out;
 }
 
+// ── ทุกช่องข้อความของใบ (Plan 2b · spec §3 หมายเหตุ token · §9 E51 ขยาย · rulings R3/R4) ──
+// (1) {{rd:…}} = ไวยากรณ์ของใบ v2 — ใบ v3 ใช้ token ของ view ({{px}} {{fv}} {{mos}} {{leg1}} …) · วันนี้ render ได้ผ่าน expandReport
+//     ของ v2 แต่จะรั่วเป็นวงเล็บดิบเมื่อ P7 ลบทาง v2 (วัดแล้ว — finding M3)
+// (2) sentinel "TODO" ที่ report.js init วางในช่องดุลพินิจ — ช่องข้อความ **และ** ช่องตัวเลขที่ยังเป็นสตริง "TODO…" = ยังไม่ได้เติม
+//     (str() รับ "TODO" และ E13 ของ v2 ไม่จับ) · คำว่า TODO กลางประโยคไม่ใช่ sentinel
+const RD_TOKEN = '{{rd:';
+const TODO_RE = /^\s*TODO\b/;
+/** [{path, text}] ของทุก string ในโครง (JSON path แบบเดียวกับ error อื่น: a.b[0].c) */
+function stringLeaves(x, p, out) {
+  if (typeof x === 'string') out.push({ path: p, text: x });
+  else if (Array.isArray(x)) x.forEach((v, i) => stringLeaves(v, `${p}[${i}]`, out));
+  else if (x && typeof x === 'object') for (const [k, v] of Object.entries(x)) stringLeaves(v, p ? `${p}.${k}` : k, out);
+  return out;
+}
+
 function validate(doc) {
   const errs = [];
   const E = (path, msg) => errs.push({ path, msg });
@@ -472,6 +487,11 @@ function validate(doc) {
   for (const k of Object.keys(reasons)) if (!used.has(k)) E(`meta.litReasons[${JSON.stringify(k)}]`, 'ไม่มี {{lit:…}} ที่ใช้เหตุผลนี้ — ลบออก');
   if (doc._sig != null && !/^sha256:[0-9a-f]{64}$/.test(doc._sig)) E('_sig', 'รูปลายเซ็นไม่ถูกต้อง');
 
+  for (const { path: p, text } of stringLeaves(doc, '', [])) {
+    if (p === '_sig') continue;
+    if (text.includes(RD_TOKEN)) E(p, '{{rd:…}} เป็นไวยากรณ์ของใบ v2 — ใบ v3 ใช้ token ของ view เช่น {{px}} {{fv}} {{mos}} {{leg1}} (ดูรายการ: node tools/report.js show <SYM>)');
+    if (TODO_RE.test(text)) E(p, 'ยังเป็น sentinel "TODO" ที่ report.js init วางไว้ — เติมค่าจริง (ช่องตัวเลขใส่ตัวเลข ไม่ใช่สตริง)');
+  }
   return errs;
 }
 
@@ -482,4 +502,4 @@ function OWNER(path) {
   return 'worker';
 }
 
-module.exports = { ENUM, CARD_KEYS, FUND_KEYS, FY_KEYS, BANK_KEYS, LEG_INPUTS, CURRENT_BASE, requiredFamily, OVERRIDE_KEYS, THEME_KEYS, TEXT_KEYS, cardEntries, validate, OWNER };
+module.exports = { ENUM, CARD_KEYS, FUND_KEYS, FY_KEYS, BANK_KEYS, LEG_INPUTS, CURRENT_BASE, requiredFamily, OVERRIDE_KEYS, THEME_KEYS, TEXT_KEYS, cardEntries, validate, OWNER, RD_TOKEN, TODO_RE, stringLeaves };

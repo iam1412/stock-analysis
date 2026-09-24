@@ -37,7 +37,7 @@ const GUARD_MIN_PROBES = 20; // ต่ำกว่านี้ อัตรา�
 const US_EXCHANGES = ['NASDAQ', 'NYSE', 'AMEX', 'OTC', 'CBOE'];
 
 const { entryFor } = require('./symbol-map.js');
-const { readStockMeta } = require('./report-meta.js');
+const RS = require('./report-source.js');   // ใบ v2 + v3 (Plan 2b)
 const { withLock, writeJsonAtomic } = require('./lockfile.js');   // WS4: price-flags.json มีหลาย writer
 
 // ไฟล์ไม่มี = รอบแรก → fallback · **มีไฟล์แต่ parse ไม่ผ่าน ต้องแยกตามว่าไฟล์นั้นสร้างใหม่ได้ไหม**
@@ -133,8 +133,6 @@ function mergeDeadFlags(prev, dead, aliveSymbols, today) {
 }
 
 // ---------- io ----------
-const readMeta = (file) => readStockMeta(fs.readFileSync(path.join(REPORTS, file), 'utf8'));
-
 // scanner สะอึกเป็นช่วง ๆ (~30-90 วิ) แล้วคืน body ว่าง → JSON.parse ระเบิด · ของเดิมยิงครั้งเดียว
 // แล้วโยนทิ้ง = เสีย canary ไปทั้งสัปดาห์เพราะสะดุดชั่วขณะ (รันสัปดาห์ละครั้ง ไม่มีรอบถัดไปให้แก้ตัว)
 // ลองใหม่แบบ backoff ก่อน — ไม่ใส่ jitter เพราะ canary ยิงทีละ chunk ตามลำดับ ไม่มี caller ขนาน
@@ -174,25 +172,28 @@ async function scan(tickers, deps = {}) {
   }, deps);
 }
 
+/** รายการ probe (ส่วนบริสุทธิ์) — syms ตามลำดับไฟล์ · liteOf(sym) → metaLite (สกุล/ราคาในใบ ทั้ง v2 และ v3) · ไม่มีสกุล = ข้าม */
+function probeList(syms, liteOf, only, cache) {
+  const probes = [], skipped = [];
+  for (const symbol of syms) {
+    if (only.size && !only.has(symbol.toUpperCase())) continue;
+    const m = liteOf(symbol);
+    if (!m || !m.currency) { skipped.push(symbol); continue; }
+    probes.push({ symbol, currency: m.currency, reportPrice: m.px != null ? m.px : null,
+      candidates: tvCandidates(symbol, m.currency, { cached: cache[symbol.toUpperCase()] }) });
+  }
+  return { probes, skipped };
+}
+
 // ---------- main ----------
 async function main() {
   const WRITE = process.argv.includes('--write');
-  const ONLY = new Set(process.argv.slice(2).filter((a) => !a.startsWith('--'))
-    .map((s) => s.replace(/\.html$/i, '').toUpperCase()));
+  // ตัวแปลง argv เดียวกับ update-prices (ตัด path + .html/.json) — require ตอนรัน: update-prices require ไฟล์นี้ที่ top-level
+  const ONLY = require('./update-prices.js').onlyFromArgv(process.argv.slice(2));
 
   const cache = loadTickerCache();
-  const files = fs.readdirSync(REPORTS).filter((x) => /\.html$/i.test(x)).sort();
-  const probes = [];
-  for (const f of files) {
-    const symbol = f.replace(/\.html$/i, '');
-    if (ONLY.size && !ONLY.has(symbol.toUpperCase())) continue;
-    const meta = readMeta(f);
-    if (!meta) { console.log(`⚠ ${symbol} — ไม่มี stock-meta ข้าม (gate จับเองอยู่แล้ว)`); continue; }
-    probes.push({
-      symbol, currency: meta.currency, reportPrice: meta.price != null ? meta.price : null,
-      candidates: tvCandidates(symbol, meta.currency, { cached: cache[symbol.toUpperCase()] }),
-    });
-  }
+  const { probes, skipped } = probeList(RS.list(REPORTS).map((e) => e.symbol), (s) => RS.metaLite(s, REPORTS), ONLY, cache);
+  for (const s of skipped) console.log(`⚠ ${s} — ไม่มี currency ในรายงาน (stock-meta / JSON) ข้าม (gate จับเองอยู่แล้ว)`);
   if (!probes.length) { console.log('ไม่มีรายงานให้ตรวจ'); return; }
 
   // รอบ 1: ถาม ticker ที่น่าจะถูกที่สุดตัวเดียวต่อ symbol (cache → ไม่มี cache ใช้ตัวแรกของ candidates)
@@ -230,7 +231,7 @@ async function main() {
   // flag ของรายงานที่ถูกลบไปแล้ว (= ปลายทางของ triage not-on-exchange) ต้องตัดทิ้งเหมือนที่
   // update-prices.js ทำ — mergeDeadFlags พา flag เดิมมาทุกตัวโดยไม่รู้ว่าไฟล์ยังอยู่ไหม ⇒ ถ้ารัน
   // canary หลังลบรายงานแต่ก่อน cron รอบถัดไป flag ที่เคลียร์ไปแล้วจะถูก commit กลับเข้าคิว
-  const reportExists = new Set(files.map((f) => f.replace(/\.html$/i, '').toUpperCase()));
+  const reportExists = RS.symbols(REPORTS);
   const flags = withLock(FLAGS, () => {   // WS4: อ่านล่าสุดใต้ lock — cron รายวัน/รันมืออาจเขียนคั่นระหว่าง scan
     const merged = mergeDeadFlags(loadJson(FLAGS, []), newFlags, [...alive.keys()], today)
       .filter((f) => reportExists.has(String(f.symbol).toUpperCase()));
@@ -256,6 +257,6 @@ async function main() {
   if (!WRITE) console.log('ใส่ --write เพื่อเขียน price-flags.json + cache');
 }
 
-module.exports = { tvBaseName, tvCandidates, parseRows, classify, mergeDeadFlags, shouldAbort, scan, withRetry, loadTickerCache };
+module.exports = { probeList, tvBaseName, tvCandidates, parseRows, classify, mergeDeadFlags, shouldAbort, scan, withRetry, loadTickerCache };
 
 if (require.main === module) main().catch((e) => { console.error(`✗ canary ล้ม: ${e.message}`); process.exit(1); });
