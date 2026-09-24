@@ -80,4 +80,29 @@ t.eq(SC.mediansOf({ rows: [], median: null, curErr: 'งบเป็น CAD' }).
   try { const f = SC.writeSidecar(path.join(dir, 'prep'), SC.buildSidecar(I));
     t(f === path.join(dir, 'prep', 'ZZZQ.json') && JSON.parse(fs.readFileSync(f, 'utf8')).symbol === 'ZZZQ', 'writeSidecar: <dir>/<SYM>.json (creates the dir)'); }
   finally { fs.rmSync(dir, { recursive: true, force: true }); } }
+// ── prep NEW (final review re-ruling): sidecar ประกอบไม่ได้ = ⚠ บรรทัดเดียว + ไม่มี .json + .md ยังเขียน · exit เดิม ──
+{ const cp = require('child_process');
+  const child = path.join(__dirname, '_prep-child.js');
+  const runPrep = (scen, pre) => {
+    const q = fs.mkdtempSync(path.join(os.tmpdir(), 'v3-prep-'));
+    if (pre) { fs.mkdirSync(path.join(q, 'prep'), { recursive: true }); fs.writeFileSync(path.join(q, 'prep', 'ZZZQ.json'), pre); }
+    const r = cp.spawnSync(process.execPath, [child, scen], { encoding: 'utf8', env: { ...process.env, QUEUE_DIR: q } });
+    const has = (f) => fs.existsSync(path.join(q, 'prep', f));
+    const out = { code: r.status, out: r.stdout, err: r.stderr, md: has('ZZZQ.md'), json: has('ZZZQ.json'),
+      sc: has('ZZZQ.json') ? JSON.parse(fs.readFileSync(path.join(q, 'prep', 'ZZZQ.json'), 'utf8')) : null,
+      writes: ((r.stdout.match(/^WRITES (.*)$/m) || [])[1] || '').split(',') };
+    fs.rmSync(q, { recursive: true, force: true });
+    return out;
+  };
+  const warnLines = (o) => o.out.split('\n').filter((l) => l.startsWith('⚠ sidecar ไม่ได้เขียน'));
+  { const o = runPrep('fail-run');
+    t(o.code === 0 && o.md && !o.json, `prep NEW + failing --json child → exit 0, .md written, no .json (code ${o.code} md ${o.md} json ${o.json} ${o.err.slice(-300)})`);
+    t.eq(warnLines(o), ['⚠ sidecar ไม่ได้เขียน (tools/fetch-facts.js ZZZQ --json ล้ม (exit 1): ✗ boom) — report.js init จะปฏิเสธจนกว่าจะ prep ใหม่'], 'prep NEW: exactly one ⚠ line, reason = first line of the error'); }
+  { const o = runPrep('fail-build', '{"v":1,"symbol":"ZZZQ","stale":true}\n');
+    t(o.code === 0 && o.md && !o.json, 'prep NEW + stale sidecar + failing build → stale .json removed, .md written');
+    t(warnLines(o).length === 1 && /fin: HTTP 503/.test(warnLines(o)[0]), 'prep NEW: buildSidecar throw → one ⚠ line naming the reason'); }
+  { const o = runPrep('ok', '{"v":1,"symbol":"ZZZQ","stale":true}\n');
+    t(o.code === 0 && o.md && o.json && o.sc.symbol === 'ZZZQ' && !o.sc.stale && o.sc.market.px === 71.33, 'prep NEW success → fresh sidecar replaces the stale one');
+    t.eq(o.writes.filter((w) => w === 'ZZZQ.md' || w === 'ZZZQ.json'), ['ZZZQ.md', 'ZZZQ.json'], 'prep NEW: sidecar written after the .md (m1 order)');
+    t(warnLines(o).length === 0 && /^sidecar → /m.test(o.out), 'prep NEW success: sidecar line, no ⚠'); } }
 t.done();

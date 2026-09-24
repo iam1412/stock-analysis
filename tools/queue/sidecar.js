@@ -6,6 +6,8 @@
  *   + parseVendor (เป้า/52wk vendor/กับดัก) + MM.oneSymbol (มัธยฐาน P/E) + parseDeltas (Δ ราคา/EPS ของ CROSS-VERIFY)
  *   ส่วนบริสุทธิ์ทั้งหมด (ไม่ยิง network ไม่อ่าน .md) · `market` ใช้ตอน save ของใบใหม่เท่านั้น — ไม่เข้า .work/
  * ★ ห้าม require state.js (อ่าน env/git ตอน require) — ผู้เรียกส่งโฟลเดอร์มาเอง
+ * buildSidecar throw เมื่อข้อมูลไม่พอ (ไม่มีราคา/งบ/สกุลไม่ตรง) — prep จับแล้วพิมพ์ ⚠ + ลบไฟล์เก่า แต่ยังเขียน .md ต่อ
+ *   (NEW ของ v2 ไม่ใช้ sidecar) · fail-closed อยู่ที่ report.js init ซึ่งปฏิเสธเมื่อไม่มี sidecar
  */
 const fs = require('fs');
 const path = require('path');
@@ -39,7 +41,7 @@ function buildSidecar({ symbol, th, facts, fund, vend, medians, deltas, today })
     throw new Error(`${symbol}: สกุลจาก Yahoo = ${facts.quoteCurrency} ไม่ตรงที่คาด (${currency}) — เช็ค ticker/--th ก่อน (ticker ชนกัน เคส AIT/ORI)`);
   const v = vend || {}, f = fund || {};
   const errs = f.errors || {};
-  // ไม่มีงบ = ใบใหม่ไม่มีอะไรให้ init เติม — ล้มดัง ๆ ไม่ใช่ sidecar ที่ null ทั้งแผง
+  // ไม่มีงบ = ใบใหม่ไม่มีอะไรให้ init เติม — throw (prep จับเป็น ⚠ + ไม่เขียน .json) ไม่ใช่ sidecar ที่ null ทั้งแผง
   if (errs.fin || errs.stats)
     throw new Error(`${symbol}: fetch-fundamentals --json ดึงงบไม่ได้ (${[errs.fin && `fin: ${errs.fin}`, errs.stats && `stats: ${errs.stats}`].filter(Boolean).join(' · ')}) — ห้ามสร้าง sidecar`);
   const srcErr = Object.fromEntries(Object.entries(errs).filter(([, e]) => e));
@@ -66,4 +68,9 @@ function writeSidecar(dir, sc) {
   return file;
 }
 
-module.exports = { buildSidecar, mediansOf, writeSidecar, SIDECAR_V };
+/** ลบ <dir>/<SYM>.json ถ้ามี (ไม่มี = เงียบ) — prep เรียกตอนเริ่มใบ NEW ทุกครั้ง กัน sidecar ค้างให้ init หยิบผิด */
+function removeSidecar(dir, sym) {
+  fs.rmSync(path.join(dir, sym + '.json'), { force: true });
+}
+
+module.exports = { buildSidecar, mediansOf, writeSidecar, removeSidecar, SIDECAR_V };

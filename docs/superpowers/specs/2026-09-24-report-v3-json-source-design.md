@@ -298,7 +298,7 @@
 
 ### 6.4 prep sidecar `.queue/prep/<SYM>.json` (Plan 2b · ใหม่)
 
-- `tools/prep-stock.js` / `npm run queue -- prep <SYM>` เขียน sidecar คู่กับ `.md` เดิม — ข้อมูลเครื่องอ่าน (ไม่ใช่ prompt):
+- `npm run queue -- prep <SYM>` (โหมด NEW — ผู้เขียน sidecar ตัวเดียว · R2 · `tools/prep-stock.js` คงสัญญาข้อความเดิม) เขียน sidecar คู่กับ `.md` เดิม — ข้อมูลเครื่องอ่าน (ไม่ใช่ prompt):
 
 ```jsonc
 {

@@ -5,6 +5,8 @@
  *   · EPS screen ใบ vs vendor (>2% ⇒ UPDATE เต็ม — SKILL 5C ข้อ 2 · prep-stock ไม่เทียบกับใบ) · diff snapshot vendor
  *   (เป้า+n / 52wk / ปันผล — คลาสที่ 4 ของ price-derived-staleness เดิมอยู่ใน memory เท่านั้น) · tags ปัจจุบัน
  *   · ประกอบ prompt จาก _template/agent-prompt.md + บล็อกบันทึก → .queue/prep/<SYM>.md
+ *   · ใบ NEW: + sidecar .queue/prep/<SYM>.json (spec §6.4 · อินพุตของ report.js init) — ประกอบไม่ได้ = ⚠ บรรทัดเดียว
+ *     แล้วเขียน .md ต่อตามเดิม (NEW ของ v2 ไม่ใช้ sidecar — fail-closed อยู่ที่ init ซึ่งปฏิเสธเมื่อไม่มี sidecar)
  * ★ ไม่ทำแทน: spawn worker (controller ทำ พร้อม pin model) · courier/advisor ของหุ้นยาก · เลือกสีแบรนด์ NEW (--brand)
  */
 const fs = require('fs');
@@ -289,15 +291,16 @@ function checkNotV3(sym, dir) {
     throw new Error(`${sym} เป็นใบ v3 แล้ว (reports/${sym}.json) — v3 UPDATE = Plan 3 (คิวของใบ v3 = P6) · แก้ด้วย node tools/report.js export ${sym} → แก้ .work/${sym}.json → node tools/report.js save ${sym}`);
 }
 
-/** node <script> … --json → object (I/O ของ sidecar — ล้ม/JSON เสีย = throw พร้อมท้าย stderr) */
-function runJson(script, args) {
-  const r = run('node', [script, ...args]);
+/** node <script> … --json → object (I/O ของ sidecar — ล้ม/JSON เสีย = throw พร้อมท้าย stderr) · runner = ฉีดได้ในเทส */
+function runJson(script, args, runner) {
+  const r = (runner || run)('node', [script, ...args]);
   if (r.code !== 0) throw new Error(`${script} ${args.join(' ')} ล้ม (exit ${r.code}): ${(r.err || r.out).trim().slice(-400)}`);
   try { return JSON.parse(r.out); } catch (e) { throw new Error(`${script} --json คืน JSON เสีย: ${e.message}`); }
 }
 
 async function prep(sym, opts) {
   const o = opts || {};
+  const R = o.run || run;   // ฉีดได้ในเทส (offline) — ค่าจริง = sh.run
   checkNotV3(sym);   // ก่อนยิง network ใด ๆ
   const fp = path.join(REPORTS, sym + '.html');
   const exists = RS.kindOf(sym, REPORTS) === 'v2';   // หลัง checkNotV3 "มีใบอยู่แล้ว" เหลือแค่ใบ v2
@@ -319,25 +322,34 @@ async function prep(sym, opts) {
   const dm = o.mode ? { mode: o.mode, why: '--mode' } : decideMode({ exists, rec, lightRule, stmt });
   let mode = dm.mode;
   let escalated = false;
+  // ใบ NEW: ลบ sidecar เก่าก่อนสร้างใหม่ — สำเร็จ/ล้มก็ไม่เหลือไฟล์ค้างให้ init หยิบผิด
+  if (mode === 'NEW') SC.removeSidecar(S.PREP_DIR, sym);
 
   // 1. prep-stock ครั้งเดียว (มัน spawn fetch-fundamentals + fetch-facts ให้แล้ว — ห้ามดึงซ้ำ)
-  const ps = run('node', ['tools/prep-stock.js', sym, ...(th ? ['--th'] : []), ...(mode !== 'NEW' ? ['--update'] : []), ...(o.brand ? ['--brand', o.brand] : [])]);
+  const ps = R('node', ['tools/prep-stock.js', sym, ...(th ? ['--th'] : []), ...(mode !== 'NEW' ? ['--update'] : []), ...(o.brand ? ['--brand', o.brand] : [])]);
   process.stdout.write(ps.out + '\n');
   if (ps.code === 2) throw new Error(`prep-stock exit 2 — ราคาขัดแหล่ง >5% หรือ bad-chart: **หยุด ห้าม spawn** ถามเจ้าของ (CLAUDE.md §2)`);
   if (ps.code !== 0) throw new Error('prep-stock ล้ม: ' + (ps.err || ps.out).slice(-800));
   const vend = parseVendor(ps.out);
 
   // 2. มัธยฐานตัวคูณ (structured) + sanity
-  const med = await medianBlock(o.medianSpec || sym, th);
+  const med = await (o.medianBlock || medianBlock)(o.medianSpec || sym, th);
 
   // 2b. ใบใหม่ = sidecar .queue/prep/<SYM>.json (spec §6.4) — อินพุตเดียวของ node tools/report.js init
   //     ยิง fetch-facts/fetch-fundamentals ซ้ำแบบ --json (NEW เท่านั้น — ruling R2) · ใบเดิมไม่เขียน (v3 UPDATE = P6)
-  //     ประกอบ (และล้มดัง ๆ) ตรงนี้ก่อนเขียนอะไร · เขียนไฟล์หลัง .md — assemblePrompt ล้ม = ไม่มี .json กำพร้า
-  let sc = null, sidecar = null;
+  //     ประกอบตรงนี้ · เขียนไฟล์หลัง .md — assemblePrompt ล้ม = ไม่มี .json กำพร้า
+  //     ★ ประกอบไม่ได้ ≠ prep ล้ม (final review re-ruling): NEW ถึง Plan 2c เป็น NEW ของ v2 ที่ไม่รัน init ⇒ เขียน .md ต่อ
+  //       + ⚠ บรรทัดเดียว · buildSidecar ยัง throw ตามเดิม — fail-closed อยู่ที่ init (ไม่มี sidecar = ปฏิเสธ)
+  let sc = null, sidecar = null, scErr = null;
   if (mode === 'NEW') {
     const thArg = th ? ['--th'] : [];
-    sc = SC.buildSidecar({ symbol: sym, th, today: todayBangkok(), vend, medians: SC.mediansOf(med.r), deltas: PS.parseDeltas(ps.out),
-      facts: runJson('tools/fetch-facts.js', [sym, ...thArg, '--json']), fund: runJson('tools/fetch-fundamentals.js', [sym, ...thArg, '--json']) });
+    try {
+      sc = SC.buildSidecar({ symbol: sym, th, today: todayBangkok(), vend, medians: SC.mediansOf(med.r), deltas: PS.parseDeltas(ps.out),
+        facts: runJson('tools/fetch-facts.js', [sym, ...thArg, '--json'], R), fund: runJson('tools/fetch-fundamentals.js', [sym, ...thArg, '--json'], R) });
+    } catch (e) {
+      scErr = String(e && e.message || e).split('\n')[0].trim();
+      SC.removeSidecar(S.PREP_DIR, sym);
+    }
   }
 
   // 3. EPS screen + 4. snapshot diff (เฉพาะใบเดิม)
@@ -376,6 +388,7 @@ async function prep(sym, opts) {
 
   console.log(`\n=== prep ${sym} เสร็จ → ${path.relative(ROOT, file)} ===`);
   if (sidecar) console.log(`sidecar → ${path.relative(ROOT, sidecar)} (อินพุตของ node tools/report.js init ${sym})`);
+  else if (scErr) console.log(`⚠ sidecar ไม่ได้เขียน (${scErr}) — report.js init จะปฏิเสธจนกว่าจะ prep ใหม่`);
   console.log(`โหมด ${mode} (${dm.why})${escalated ? ' (ยกระดับจาก UPDATE-LIGHT เพราะ EPS screen)' : ''} · model **${model}** · effort ${effort}${hs.hard ? ` · หุ้นยาก: ${hs.why}` : ''}`);
   if (epsScreen != null) console.log(`EPS screen: ${epsScreen.toFixed(1)}% ${epsScreen > EPS_SCREEN_PCT ? (lightRule === 'legacy' ? '⇒ UPDATE เต็ม' : '⚠ คำเตือน (กฎใหม่ไม่เปลี่ยนโหมด — ดูสองฐานใน prompt)') : '(ผ่าน)'}`);
   if (snap.length) console.log(`snapshot vendor ค้าง ${snap.length} จุด (อยู่ใน prompt แล้ว)`);

@@ -8,8 +8,8 @@
  * ★ exit 0 เสมอ + fail-open: hook พัง/อินพุตเสีย = ปล่อยผ่าน (ไม่บล็อกทั้ง session เพราะบั๊กของ hook) — ตัวบังคับจริงคือ _sig/E50 ที่ gate
  * "ใต้ reports/" (R10) = path ที่มี segment ชื่อ reports ซึ่งโฟลเดอร์แม่มี build.js (checkout/worktree ไหนของ repo นี้ก็ได้)
  *   path ที่ยังมี $VAR ไม่ขยาย + มี reports/ = ปฏิเสธ (มองไม่เห็นปลายทางจริง)
- * ช่องโหว่ที่รู้ (ยอมรับ — _sig/E50 จับ): xargs · find -exec · สคริปต์ไฟล์ที่เขียนเอง · ข้อความใน "$(…)" ในเครื่องหมายคำพูดคู่ · heredoc ซ้อนใน bash -c
- *   · `cd reports` ภายในคำสั่งเดียว (`cd reports && cat > X.html`) ไม่ถูกติดตาม = ปล่อยผ่าน (cwd ที่ค้างอยู่ใน reports/ จาก call ก่อน ถูกจับแล้ว)
+ * ช่องโหว่ที่รู้ (ยอมรับ — gate จับ: .json → _sig/E50 · .html → gate v2 เดิม): xargs · find -exec · สคริปต์ไฟล์ที่เขียนเอง · ข้อความใน "$(…)" ในเครื่องหมายคำพูดคู่ · heredoc ซ้อนใน bash -c
+ *   · `cd reports` ภายในคำสั่งเดียว (`cd reports && cat > X.html`) ไม่ถูกติดตาม = ปล่อยผ่าน (.json → E50 · .html → gate v2 เดิม) (cwd ที่ค้างอยู่ใน reports/ จาก call ก่อน ถูกจับแล้ว)
  * ติดตั้ง: docs/hook-setup.md (เจ้าของ paste เอง — ไม่แก้ .claude/settings.json จาก session)
  */
 const fs = require('fs');
