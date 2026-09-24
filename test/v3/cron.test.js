@@ -157,6 +157,14 @@ try {
   t(sd.kind === 'unchanged' && !sd.stale && /ไม่มี session ใหม่/.test(sd.line), 'T3-N1: same day + same px → unchanged, not stale');
   t(U.evaluatedOf(entries, [], staleOf([sd])).has('ZTS'), 'T3-N1: same-day unchanged v3 symbol is still evaluated');
   t.eq(U.commitFlags({ ...cf, evaluated: U.evaluatedOf(entries, [], staleOf([sd])) }), [], 'T3-N1: same-day unchanged still clears the pending flag (as before)');
+  // R1 (re-review of the fix round): stale v3 + canary ยืนยันตาย → ต้องได้แถวเดียว (not-on-exchange) ไม่ใช่ drift เดิม + not-on-exchange ซ้อนกัน
+  { const dead = { symbol: 'ZTS', reason: 'not-on-exchange', detail: 'canary', reportPrice: 71.33, marketPrice: 71.33, diffPct: 0 };
+    const deadSyms = new Set([dead.symbol]);
+    const stale = staleOf([st]);
+    const dup = U.commitFlags({ ...cf, frozenAll: [dead], evaluated: U.evaluatedOf(entries, [], stale) });
+    t(dup.filter((x) => x.symbol === 'ZTS').length === 2, 'R1 premise: leaving a dead-confirmed stale symbol out of evaluated yields two rows', JSON.stringify(dup));
+    const one = U.commitFlags({ ...cf, frozenAll: [dead], evaluated: U.evaluatedOf(entries, [], stale.filter((s) => !deadSyms.has(s))) });
+    t(one.length === 1 && one[0].symbol === 'ZTS' && one[0].reason === 'not-on-exchange', 'R1: dead-confirmed stale v3 symbol counts as evaluated → single not-on-exchange row', JSON.stringify(one)); }
   // m3 (fix round final): ใบ v3 ที่ parse ได้แต่ไม่มี market/currency = ล้มรายใบ (ถัง "ล้ม") ไม่ throw ออกจากลูป main
   { const bad = path.join(tmp, 'BAD.json');
     IO.write(bad, real());
@@ -223,7 +231,7 @@ t.eq([{ kind: 'write' }, { kind: 'unchanged' }, { kind: 'freeze', flag: { reason
 { const src = fs.readFileSync(path.join(ROOT, 'tools', 'update-prices.js'), 'utf8');
   t(!src.includes('/\\.html$/i.test(f)'), '#49 residue closed: no .html-only readdir filter left in update-prices.js');
   t(!/\bv3Guard\b|\bv3SweepNotice\b|\bv3Refusal\b/.test(src), 'v3Guard/v3Refusal/v3SweepNotice removed from update-prices.js');
-  t(src.includes('evaluatedOf(entries, intraday, staleV3)') && src.includes('if (r.stale) staleV3.push(symbol)'), 'T3-N1: main leaves stale v3 symbols out of evaluated');
+  t(src.includes('evaluatedOf(entries, intraday, staleV3.filter((s) => !deadSyms.has(s)))') && src.includes('if (r.stale) staleV3.push(symbol)'), 'T3-N1/R1: main leaves stale v3 symbols out of evaluated unless the canary confirmed them dead');
   t(src.includes('const rv = readV3Doc(fp, symbol);') && !src.includes('try { doc = IO.read(fp); }'), 'm3: main reads v3 files through readV3Doc (no bare IO.read in the loop)'); }
 
 // ── Plan 3 Task 4 — update-prices.yml นับใบ v3 ในชื่อ commit (R7) ──

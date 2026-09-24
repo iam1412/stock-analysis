@@ -1338,7 +1338,9 @@ async function main() {
   // ★ processed = ตัวที่ "ตัดสินแล้วรอบนี้" ต้อง **หักตัวที่ข้ามเพราะตลาดเปิด** ออก — mergeFlags เคลียร์
   // flag ของทุก symbol ใน processed ที่ไม่มี freeze รอบนี้ ⇒ ถ้าใส่ตัว intraday เข้าไปด้วย การรันมือ
   // กลาง session จะล้าง drift/mos-flip ที่ค้างคิวอยู่ทิ้งทั้งที่ยังไม่ได้ประเมินซ้ำเลย (คิวหายเงียบ)
-  const evaluated = evaluatedOf(entries, intraday, staleV3);   // v2 + v3 (Plan 3 · R7) · ใบ v3 quote เก่า = ยังไม่ได้ประเมิน (T3-N1)
+  // ใบ v3 quote เก่า = ยังไม่ได้ประเมิน (T3-N1) — ยกเว้นตัวที่ canary ยืนยันตาย: ถือว่าตัดสินแล้ว ไม่งั้น mergeFlags
+  // เก็บ flag เดิมไว้ **และ** เพิ่ม not-on-exchange = 2 แถวใน symbol เดียว (re-review R1 — หุ้นเพิกถอนเสิร์ฟ quote ค้าง จึงเข้าทางนี้ได้จริง)
+  const evaluated = evaluatedOf(entries, intraday, staleV3.filter((s) => !deadSyms.has(s)));   // v2 + v3 (Plan 3 · R7)
   const flags = commitFlags({ write: WRITE, evaluated, frozenAll, failed, quietSyms, aliveConfirmed, reportExists });
 
   // log ต่อหุ้นสำหรับ commit body (ถาวรใน git history — Actions log หายใน ~90 วัน)
