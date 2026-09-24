@@ -3,7 +3,7 @@ name: stock-analyzer
 description: วิเคราะห์หุ้นรายตัว (ไทย/US) เป็นรายงาน dashboard (ใบใหม่ = reports/<SYMBOL>.json v3 ผ่าน tools/report.js · ใบเดิม = reports/<SYMBOL>.html v2) — cross-source verify, Fair Value ≥2 วิธี, MOS, Bear/Base/Bull 3 ปี · โหมด NEW (หุ้นใหม่ — v3 STEP 5V) / UPDATE (แก้รายงานเดิมเฉพาะจุด) / UPDATE-LIGHT (refresh เร็วจากคิว price-flags) · ใช้เมื่อสั่ง "วิเคราะห์ <SYM>", "analyze <SYM>", re-analysis, เคลียร์คิว price-flags
 ---
 
-# Stock Analyzer — วิเคราะห์หุ้น 1 ตัว → NEW: `reports/<SYMBOL>.json` (v3) · UPDATE: `reports/<SYMBOL>.html` (v2 จน Plan 3)
+# Stock Analyzer — วิเคราะห์หุ้น 1 ตัว → NEW: `reports/<SYMBOL>.json` (v3) · UPDATE: `reports/<SYMBOL>.html` (v2 จน P6)
 
 **Single source of truth** ของขั้นตอนวิเคราะห์ต่อหุ้น — ใช้ทั้ง session หลักและ worker agent (agent อ่านไฟล์นี้ตรง ๆ ผ่าน `_template/agent-prompt.md`)
 กติกา orchestration (โมเดล / ห้าม Haiku / controller เป็นคน push) อยู่ `CLAUDE.md §3–5` + `docs/orchestration.md` — รอบเคลียร์คิวใช้ runbook `npm run queue` — skill นี้คือ "ทำ 1 หุ้นให้ถูกและประหยัด token"
@@ -12,7 +12,7 @@ description: วิเคราะห์หุ้นรายตัว (ไท�
 
 ## STEP 0 — เลือกโหมด
 
-- มี `reports/<SYMBOL>.html` อยู่แล้ว → **UPDATE** (แก้เฉพาะจุด **ห้าม rewrite/ห้ามเริ่ม skeleton ใหม่**) · มี `reports/<SYMBOL>.json` → **ใบ v3 เดิม = ยังไม่มี flow UPDATE (Plan 3 P6)** — `prep` ปฏิเสธเอง หยุดแล้วรายงาน controller
+- มี `reports/<SYMBOL>.html` อยู่แล้ว → **UPDATE** (แก้เฉพาะจุด **ห้าม rewrite/ห้ามเริ่ม skeleton ใหม่**) · มี `reports/<SYMBOL>.json` → **ใบ v3 เดิม = ยังไม่มี flow UPDATE (จน P6 · Plan 3 = cron ราคาเท่านั้น)** — `prep` ปฏิเสธเอง หยุดแล้วรายงาน controller
 - ยังไม่มีทั้งสอง → **NEW = v3 เท่านั้น (STEP 5V)** — ห้ามเริ่มจาก skeleton `.html` (STEP 5A เป็นทางเดิมของใบ v2 เก็บไว้อ้างอิง) · ห้ามก๊อปรายงานหุ้นอื่น
 - **มาจากคิว price-flags** — triage ตามเหตุผลใน `price-flags.json`:
   - `mos-sign-flip` → **ไม่ส่ง worker** (ระยะ 1 ข้อ D · 12 ก.ย. 2569): runbook pre-patch ราคา + `ship --prepatch` จบ — cron เป็นเจ้าของช่องสรุปแล้ว ไม่มี prose ให้ขัด · preflight ยกเป็น **UPDATE-LIGHT** เองเมื่ออายุ footer >90 วัน และ **ไม่มีงบใหม่** หลังวันที่ footer · ถ้ามีงบใหม่หรือไม่รู้วันงบ → **UPDATE เต็ม** (กฎ LIGHT/FULL ใหม่ 22 ก.ย. 69 — EPS ต่าง vendor เป็นแค่คำเตือนใน prep ไม่เปลี่ยนโหมด)
