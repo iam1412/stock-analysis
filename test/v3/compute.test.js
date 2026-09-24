@@ -97,7 +97,8 @@ t.eq(C.weightsOf(load('ZTS')), [0.5, 0.5], 'legacy: equal weights, byte-identica
 }
 // ── parity pin (advisor pre-dispatch 24 ก.ย. 69): จุด throw ทั้ง 5 ของ compute ทีละจุด — ใบละ fault เดียว ──
 // semanticErrors ต้องชี้ path นั้น (ตัวเดียว) **และ** compute() บนใบเดียวกันต้อง throw ที่ path เดียวกัน
-// ⇒ ถ้าวันหน้า compute ได้จุด throw ใหม่ที่ semanticErrors ไม่รู้จัก (หรือกลับกัน) ต้องเพิ่มแถวที่นี่ — ไม่งั้น save ผ่านแต่ gate/build พัง
+// ⇒ ถ้าวันหน้า compute ได้จุด throw ใหม่ที่ semanticErrors ไม่รู้จัก (หรือกลับกัน) ต้องเพิ่มแถวที่นี่ — checkDoc ยังรัน compute ต่อ
+//   จึงไม่มีทาง save ผ่านแต่ gate พัง ความเสี่ยงคือ #52 ไม่ครบ (fault ใหม่รายงานทีละข้อผ่าน catch ของ compute ไม่ใช่ครบในครั้งเดียว)
 {
   const S = require('../../tools/v3/schema.js');
   const Z = () => { const d = load('ZTS-real'); delete d._sig; return d; };
@@ -114,5 +115,29 @@ t.eq(C.weightsOf(load('ZTS')), [0.5, 0.5], 'legacy: equal weights, byte-identica
     t.eq(C.semanticErrors(d, { seeds: {} }).map((e) => e.path), [p], `parity ${name}: semanticErrors names ${p} (and nothing else)`);
     t.throws(() => C.compute(d, { seeds: {} }), new RegExp(p.replace(/[.[\]]/g, '\\$&')), `parity ${name}: compute() on the same doc throws at ${p}`);
   }
+  // ทางกลับ (review รอบ 1): semanticErrors ว่าง ⇒ compute ไม่ throw — ทุก mutation ในชุด + ตัวควบคุมที่ต้องสะอาด
+  const CLEAN = [
+    ['baseline', () => {}],
+    ['seed replaces themeLegacy', (d) => { d.meta.themeLegacy = null; }, { ZTS: '#e8731a' }],
+    ['multipleRange still > 0', (d) => { d.legs[0].inputs.multipleRange = [0.0001, 20]; d.legs[0].inputs.multiple = 14; }],
+  ];
+  for (const [name, mut, sd] of [...SITES.map(([n, , m]) => [n, m]), ...CLEAN]) {
+    const d = Z(); mut(d); const seeds = sd || {};
+    const nSem = C.semanticErrors(d, { seeds }).length;
+    let threw = null; try { C.compute(d, { seeds }); } catch (e) { threw = e; }
+    t.eq(!!threw, nSem > 0, `parity ${name}: semanticErrors empty ⇔ compute() does not throw (${nSem} error, ${threw ? 'threw' : 'ok'})`);
+  }
+  // tripwire (review รอบ 1): จำนวนจุด throw ของ compute.js + legs.js (legs ผ่าน `${P}` = path ที่ผู้เรียกส่งมา ทุกจุด)
+  // วันนี้: compute.js 5 = 4 จุดความหมาย (SITES) + 1 = S.validate (สคีมา — checkDoc หยุดก่อนถึง) · legs.js 5 จุด ทั้งหมดขึ้นต้น `${P}` (= แถว L.legValue)
+  // ตัวเลขขยับ = มีจุด throw ใหม่/หาย → ตรวจว่า semanticErrors ครอบหรือยัง แล้ว add a SITES row ก่อนแก้ตัวเลขนี้
+  const fs = require('fs'), path = require('path');
+  const src = (f) => fs.readFileSync(path.join(__dirname, '../../tools/v3', f), 'utf8');
+  const count = (s, re) => (s.match(re) || []).length;
+  const code = (s) => s.replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|\s)\/\/.*$/gm, '$1');   // ตัดคอมเมนต์ (คำว่า throw ในคอมเมนต์ไม่นับ)
+  const cSrc = code(src('compute.js')), lSrc = code(src('legs.js'));
+  t.eq(count(cSrc, /\bthrow\b/g), 5, 'tripwire: compute.js has 5 throw sites — changed? add a SITES row');
+  t.eq(count(cSrc, /throw new Error\(/g), 5, 'tripwire: compute.js throws are all `throw new Error(` — changed? add a SITES row');
+  t.eq(count(lSrc, /\bthrow\b/g), 5, 'tripwire: legs.js has 5 throw sites — changed? add a SITES row');
+  t.eq(count(lSrc, /throw new Error\(`\$\{P\}/g), 5, 'tripwire: every legs.js throw is funnelled through ${P} (path from the caller) — changed? add a SITES row');
 }
 t.done();

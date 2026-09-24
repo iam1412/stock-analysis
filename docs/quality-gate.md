@@ -435,7 +435,7 @@ README ย่อคำอธิบายรายขั้นลงเหลื�
 
 ใบ v3 (`reports/<SYM>.json`) ไม่ผ่าน `check-reports` แต่ผ่าน `check-v3` ซึ่งอ่าน JSON + `tools/v3/compute.js` ตัวเดียวกับ build · ระหว่าง transition ยังไม่มีใบ v3 ใน `reports/` ⇒ รันบน fixture ใบจริง `test/fixtures/v3/*-real.json` (นาฬิกาแช่ที่วันราคาของ fixture) เป็น regression
 
-CLI: `node test/check-v3.js [SYM | path.json | dir/*.json …]` (ไม่ใส่ arg = `reports/*.json` + fixture ใบจริง — fixture 0 ใบ หรือ fixture ที่ `EXPECT_FIXTURE` คาดไว้หาย = ไม่ผ่าน · gate v2 ใช้นาฬิกาเดียวกับ native ผ่าน `STALE_TODAY`) · ลำดับต่อใบ: สคีมา → (ผ่านเท่านั้น) compute → E52 → render → gate v2 — ใบที่สคีมาไม่ผ่านได้ E51 ตัวเดียว ไม่ถูก render
+CLI: `node test/check-v3.js [SYM | path.json | dir/*.json …]` (ไม่ใส่ arg = `reports/*.json` + fixture ใบจริง — fixture 0 ใบ หรือ fixture ที่ `EXPECT_FIXTURE` คาดไว้หาย = ไม่ผ่าน · gate v2 ใช้นาฬิกาเดียวกับ native ผ่าน `STALE_TODAY`) · ลำดับต่อใบ: สคีมา (รวม `{{rd:}}` + TODO) → (ผ่านเท่านั้น) semanticErrors → compute → E52 → render → gate v2 — ใบที่สคีมาไม่ผ่านได้ E51 ตัวเดียว ไม่ถูก render · error เชิงความหมายได้ E51 ตัวเดียวที่มี `details` ครบทุกข้อ ไม่ถูก compute
 
 | code | level | ตรวจอะไร |
 |---|---|---|
