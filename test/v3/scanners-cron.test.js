@@ -11,10 +11,11 @@ const RS = require('../../tools/report-source.js');
 const ROOT = path.join(__dirname, '..', '..');
 const FIX = path.join(__dirname, '..', 'fixtures');
 const V3SRC = path.join(FIX, 'v3', 'ZTS-real.json');
-const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'v3-scan-cron-'));
-fs.copyFileSync(path.join(FIX, 'AAPL-v2.html'), path.join(tmp, 'AAPL.html'));
-fs.copyFileSync(V3SRC, path.join(tmp, 'ZTS.json'));
+let tmp, gitTmp;
 try {
+  tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'v3-scan-cron-'));
+  fs.copyFileSync(path.join(FIX, 'AAPL-v2.html'), path.join(tmp, 'AAPL.html'));
+  fs.copyFileSync(V3SRC, path.join(tmp, 'ZTS.json'));
   // update-prices — ราคาใบ v3 แช่แข็งจน P5 แต่ห้ามเงียบ (#62)
   const U = require('../../tools/update-prices.js');
   const isV3 = (s) => RS.kindOf(s, tmp) === 'v3';
@@ -35,6 +36,16 @@ try {
   { const g = U.v3Guard(U.onlyFromArgv(['--write']), isV3, v3s); t(g.code === 0 && g.lines.length === 2, 'no-arg sweep → code 0 + notice lines (visible in the cron log)'); }
   t.eq(U.v3Guard(U.onlyFromArgv(['--write', '--force', 'AAPL']), isV3, v3s), { code: 0, lines: [] }, 'explicit v2 symbol → untouched (no lines)');
   t(RS.symbols(tmp).has('ZTS'), 'reportExists = RS.symbols keeps flags of v3 reports');
+  // fix 1: สั่งเป็น path (reports/zts.json · reports/ZTS.html) ต้องได้ symbol เดียวกัน → เจอ guard ไม่ใช่ no-op เงียบ
+  t.eq([...U.onlyFromArgv(['--write', '--force', 'reports/zts.json', './reports/AAPL.html', path.join(tmp, 'ZTS.html')])], ['ZTS', 'AAPL'], 'onlyFromArgv: path forms → basename symbol');
+  t.eq(U.v3Guard(U.onlyFromArgv(['--write', '--force', 'reports/zts.json']), isV3, v3s).code, 1, '--write --force reports/zts.json → code 1');
+  t.eq(U.v3Guard(U.onlyFromArgv(['--write', '--force', 'reports/ZTS.html']), isV3, v3s).code, 1, '--write --force reports/ZTS.html (ใบเป็น v3) → code 1');
+  // fix 3b: wiring ของ main — reportExists = RS.symbols(REPORTS) → commitFlags ต้องคง flag ของใบ .json (ตัดเฉพาะหุ้นที่ไม่มีไฟล์)
+  { const ff = path.join(tmp, 'price-flags.json');
+    fs.writeFileSync(ff, JSON.stringify([{ symbol: 'ZTS', reason: 'drift', flaggedAt: '2026-09-20' }, { symbol: 'GONE', reason: 'drift', flaggedAt: '2026-09-20' }]));
+    const fl = U.commitFlags({ file: ff, write: false, evaluated: new Set(), frozenAll: [], failed: [], quietSyms: new Set(), aliveConfirmed: new Set(), reportExists: RS.symbols(tmp) });
+    t.eq(fl.map((f) => f.symbol), ['ZTS'], 'commitFlags + RS.symbols: flag ของใบ v3 คงอยู่ · หุ้นที่ไม่มีไฟล์ถูกตัด');
+    fs.unlinkSync(ff); }   // tmp คือโฟลเดอร์ reports ของเทสนี้ — ไฟล์ .json อื่นจะถูกนับเป็นใบ v3
   // preserve-dates — ใบ v3 ไม่มี <footer> ⇒ ต้องข้าม ไม่งั้น UPDATE ของใบ v3 ถูกคืนวันเก่าเสมอ
   const PDt = require('../../tools/preserve-dates.js');
   const cur = [{ symbol: 'AAPL', updated: '2026-09-24T01:00:00+07:00' }, { symbol: 'ZTS', updated: '2026-09-24T01:00:00+07:00' }];
@@ -42,6 +53,23 @@ try {
   const by = Object.fromEntries(cur.map((r) => [r.symbol, r.updated]));
   t(n === 1 && by.AAPL === '2026-09-01T00:00:00+07:00' && by.ZTS === '2026-09-24T01:00:00+07:00', 'preserve-dates: v3 symbol skipped, v2 restored as before');
   t.eq(cur.map((r) => r.symbol), ['ZTS', 'AAPL'], 'preserve-dates: re-sorted like build (newest first)');
+  // fix 3a: wiring ของ main — git repo ชั่วคราว (HEAD = วันเก่า · working tree = วันใหม่ทั้งคู่) → child process รัน main(root)
+  {
+    gitTmp = fs.mkdtempSync(path.join(os.tmpdir(), 'v3-pdates-'));
+    const gRep = path.join(gitTmp, 'reports');   // โฟลเดอร์ reports ของ repo ชั่วคราว (ไม่ใช่ reports/ จริง)
+    fs.mkdirSync(gRep);
+    fs.copyFileSync(path.join(FIX, 'AAPL-v2.html'), path.join(gRep, 'AAPL.html'));
+    fs.copyFileSync(V3SRC, path.join(gRep, 'ZTS.json'));
+    const man = (a, z) => JSON.stringify([{ symbol: 'AAPL', updated: a }, { symbol: 'ZTS', updated: z }], null, 2) + '\n';
+    fs.writeFileSync(path.join(gitTmp, 'reports.json'), man('2026-09-01T00:00:00+07:00', '2026-09-02T00:00:00+07:00'));
+    const g = (...a) => cp.execFileSync('git', ['-c', 'user.name=t', '-c', 'user.email=t@t', '-c', 'commit.gpgsign=false', '-c', 'core.hooksPath=/dev/null', ...a], { cwd: gitTmp, stdio: 'pipe' });
+    g('init', '-q'); g('add', '-A'); g('commit', '-q', '-m', 'base');
+    fs.writeFileSync(path.join(gitTmp, 'reports.json'), man('2026-09-24T01:00:00+07:00', '2026-09-24T01:00:00+07:00'));
+    const pr = cp.spawnSync(process.execPath, ['-e', 'require(process.argv[1]).main(process.argv[2])', path.join(ROOT, 'tools', 'preserve-dates.js'), gitTmp], { encoding: 'utf8' });
+    const after = Object.fromEntries(JSON.parse(fs.readFileSync(path.join(gitTmp, 'reports.json'), 'utf8')).map((r) => [r.symbol, r.updated]));
+    t(pr.status === 0 && after.AAPL === '2026-09-01T00:00:00+07:00' && after.ZTS === '2026-09-24T01:00:00+07:00' && /ข้าม 1 ใบ v3[^\n]*ZTS/.test(pr.stdout),
+      'preserve-dates main: v3 symbol reaches the skip set (keeps new date) · v2 restored', JSON.stringify({ status: pr.status, after, out: pr.stdout, err: pr.stderr }));
+  }
   // dead-ticker canary — ใบ v3 ต้องถูก probe ด้วย
   const DC = require('../../tools/dead-ticker-canary.js');
   const pl = DC.probeList(['AAPL', 'ZTS', 'NOPE'], (s) => RS.metaLite(s, tmp), new Set(), {});
@@ -64,5 +92,5 @@ try {
   t(fs.readFileSync(path.join(tmp, 'ZTS.json'), 'utf8') === fs.readFileSync(V3SRC, 'utf8'), 'apply-edits: the .json is untouched');
   // .gitignore
   t(/^\.work\/$/m.test(fs.readFileSync(path.join(ROOT, '.gitignore'), 'utf8')), '.gitignore ignores .work/ (drafts of report.js)');
-} finally { fs.rmSync(tmp, { recursive: true, force: true }); }
+} finally { for (const d of [tmp, gitTmp]) if (d) fs.rmSync(d, { recursive: true, force: true }); }
 t.done();

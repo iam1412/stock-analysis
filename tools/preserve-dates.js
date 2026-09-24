@@ -20,8 +20,6 @@ const path = require('path');
 const cp = require('child_process');
 
 const ROOT = path.join(__dirname, '..');
-const MANIFEST = path.join(ROOT, 'reports.json');
-const git = (cmd) => cp.execSync(cmd, { cwd: ROOT, maxBuffer: 64 * 1024 * 1024 }).toString();
 
 // "ข้อมูล ณ <วันที่>" ใน <footer> เท่านั้น — ในเนื้อหา/บล็อก disc มีวลีเดียวกันปนอยู่ (เช่น "SET Factsheet
 // ข้อมูล ณ FY2568") และ disc เป็นบล็อกที่ update-prices patch วันที่ราคาลงไป ⇒ ถ้าจับกว้างจะเข้าใจผิดว่า
@@ -44,7 +42,10 @@ function restoreDates(cur, headDate, skip) {
   return n;
 }
 
-function main() {
+/** root = รีโป (ค่าเริ่มต้น = รีโปนี้ · เทสส่ง git repo ชั่วคราว) */
+function main(root = ROOT) {
+  const MANIFEST = path.join(root, 'reports.json');
+  const git = (cmd) => cp.execSync(cmd, { cwd: root, maxBuffer: 64 * 1024 * 1024 }).toString();
   const headDate = {};
   try {
     for (const r of JSON.parse(git('git show HEAD:reports.json'))) headDate[r.symbol] = r.updated;
@@ -58,13 +59,13 @@ function main() {
       // ต่อไฟล์ล้มได้เอง (ไฟล์ใหม่ที่ HEAD ยังไม่มี → git show ไม่ผ่าน) โดยไม่ดับการตรวจของตัวอื่นในรอบเดียวกัน
       try {
         const head = footerDate(git(`git show "HEAD:${f}"`));
-        const wt = fs.existsSync(path.join(ROOT, f)) ? footerDate(fs.readFileSync(path.join(ROOT, f), 'utf8')) : null;
+        const wt = fs.existsSync(path.join(root, f)) ? footerDate(fs.readFileSync(path.join(root, f), 'utf8')) : null;
         if (head && wt && head !== wt) reanalyzed.add(path.basename(f).replace(/\.html$/i, ''));
       } catch (e) { console.error(`อ่าน ${f} ที่ HEAD ไม่ได้ — คืนวันเดิมให้ตัวนี้ตามเดิม:`, e.message); }
     }
   } catch (e) { console.error('เทียบ footer กับ HEAD ไม่ได้ — คืนวันเดิมให้ทุกตัวตามเดิม:', e.message); }
 
-  const v3 = require('./report-source.js').list(path.join(ROOT, 'reports')).filter((e) => e.v3).map((e) => e.symbol);
+  const v3 = require('./report-source.js').list(path.join(root, 'reports')).filter((e) => e.v3).map((e) => e.symbol);
   const cur = JSON.parse(fs.readFileSync(MANIFEST, 'utf8'));
   const n = restoreDates(cur, headDate, new Set([...reanalyzed, ...v3]));
   fs.writeFileSync(MANIFEST, JSON.stringify(cur, null, 2) + '\n');
@@ -73,5 +74,5 @@ function main() {
   if (v3.length) console.log(`ข้าม ${v3.length} ใบ v3 (updated มาจาก freshHash ของ JSON — spec §8): ${v3.join(' ')}`);
 }
 
-module.exports = { restoreDates, footerDate };
+module.exports = { main, restoreDates, footerDate };
 if (require.main === module) main();

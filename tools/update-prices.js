@@ -871,8 +871,9 @@ function commitBody(updated, frozen) {
   return lines.join('\n');
 }
 
-/** symbol ที่สั่งตรง ๆ (argv ที่ไม่ใช่ --flag) → Set ตัวพิมพ์ใหญ่ · ตัด .html/.json (สั่ง `zts.json` ต้องเจอ guard ของใบ v3 ไม่ใช่หลุดเป็น "ZTS.JSON") */
-const onlyFromArgv = (argv) => new Set(argv.filter((a) => !a.startsWith('--')).map((s) => s.replace(/\.(html|json)$/i, '').toUpperCase()));
+/** symbol ที่สั่งตรง ๆ (argv ที่ไม่ใช่ --flag) → Set ตัวพิมพ์ใหญ่ · ตัด path + .html/.json (สั่ง `zts.json` / `reports/zts.json`
+ *  ต้องเจอ guard ของใบ v3 ไม่ใช่หลุดเป็น "ZTS.JSON" / "REPORTS/ZTS" แล้ว no-op เงียบ · canary ใช้ตัวเดียวกัน) */
+const onlyFromArgv = (argv) => new Set(argv.filter((a) => !a.startsWith('--')).map((s) => path.basename(s).replace(/\.(html|json)$/i, '').toUpperCase()));
 /** symbol ที่สั่งตรง ๆ แต่เป็นใบ v3 (reports/<SYM>.json) → ข้อความปฏิเสธ · null = ไม่มี (ส่วนบริสุทธิ์)
  *  ราคาใบ v3 แช่แข็งจน P5 ได้ แต่ **ห้ามเงียบ** (open-item #62): เดิม `--write --force <v3>` ไม่เจอ .html แล้ว exit 0 เฉย ๆ */
 function v3Refusal(only, isV3) {

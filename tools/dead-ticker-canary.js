@@ -188,12 +188,12 @@ function probeList(syms, liteOf, only, cache) {
 // ---------- main ----------
 async function main() {
   const WRITE = process.argv.includes('--write');
-  const ONLY = new Set(process.argv.slice(2).filter((a) => !a.startsWith('--'))
-    .map((s) => s.replace(/\.html$/i, '').toUpperCase()));
+  // ตัวแปลง argv เดียวกับ update-prices (ตัด path + .html/.json) — require ตอนรัน: update-prices require ไฟล์นี้ที่ top-level
+  const ONLY = require('./update-prices.js').onlyFromArgv(process.argv.slice(2));
 
   const cache = loadTickerCache();
   const { probes, skipped } = probeList(RS.list(REPORTS).map((e) => e.symbol), (s) => RS.metaLite(s, REPORTS), ONLY, cache);
-  for (const s of skipped) console.log(`⚠ ${s} — ไม่มี stock-meta ข้าม (gate จับเองอยู่แล้ว)`);
+  for (const s of skipped) console.log(`⚠ ${s} — ไม่มี currency ในรายงาน (stock-meta / JSON) ข้าม (gate จับเองอยู่แล้ว)`);
   if (!probes.length) { console.log('ไม่มีรายงานให้ตรวจ'); return; }
 
   // รอบ 1: ถาม ticker ที่น่าจะถูกที่สุดตัวเดียวต่อ symbol (cache → ไม่มี cache ใช้ตัวแรกของ candidates)
