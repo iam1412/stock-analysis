@@ -26,7 +26,7 @@
 - **One owner of "which files are reports":** every scanner change goes through `tools/report-source.js`. No new `readdirSync(...).filter(/\.html$/)` copies anywhere in the tools/tests touched by this plan.
 - **One acceptance path:** `report.js save` accepts a doc only through `CV.checkDoc(doc, {stage:'save'})` (+ rule B, which stays a save-time call — ruling R5 of Plan 2a). `stage:'save'` drops exactly `v2:E40` and nothing else.
 - **Fail closed on ambiguity** in `ship --prepatch`: any changed path under `reports/` that is not `reports/<SYM>.html` is a blocker.
-- **`update-prices` never no-ops silently on a v3 symbol** — explicit v3 symbols exit ≠0 with "v3 cron = Plan 3" (open-item #62).
+- **`update-prices` never no-ops silently on a v3 symbol** (binding ruling 2 · open-item #62) — explicit v3 symbols (positional `SYMBOL` args — there is no `--only` flag; `--write --force <v3>`, `--heal-derived <v3>`, `zts.json` spelled with the extension) exit ≠0 with "v3 cron = Plan 3" before any fetch; the no-arg daily sweep (cron) prints **one line per skipped v3 file plus one summary count line** to stdout so the Actions log shows every frozen report.
 - **No network in tests.** `fetch-facts --json` / `fetch-fundamentals --json` / sidecar assembly are tested through pure exported functions with fake inputs.
 - **No `reports/*.json` is ever created** by a test or a task (the tripwire proves it). `report.js` takes `--reports-dir --work-dir --prep-dir --seeds --today` so tests run in temp dirs with a fixed clock.
 - Node ≥20.19, CommonJS `'use strict'`, **no new npm dependency**.
@@ -76,9 +76,9 @@ Plan-level decisions; the controller may overturn any of them before execution.
 - **R8 `npm test` sweep (no args) stays v2-only** and prints one line counting v3 files (verify runs `check-v3` next). With args, v3 symbols go to `check-v3.runCli` and the exit code is the max of both.
 - **R9 `postcheck` keeps its single gate call `node test/check-reports.js <SYM>`** (the R8 hand-off reaches `check-v3`); meta checks read `metaLite` + the rendered page, and the old-price grep runs over `P.proseFields` text for v3.
 - **R10 Hook "under reports/"** = a path segment named `reports` whose parent directory contains `build.js` (any checkout/worktree of this repo); an unexpanded `$VAR` path containing `reports/` is denied. Known gaps (documented, `_sig`/E50 is the backstop): `xargs`, `find -exec`, child processes (`apply-edits`, `report.js`) by design.
-- **R11 `update-prices` sweep (no symbols) skips v3 files with one info line**; only explicitly named v3 symbols exit ≠0. `--heal-derived` gets the same explicit-symbol guard.
+- **R11 `update-prices` sweep (no symbols) skips v3 files — visibly, never silently (binding ruling 2)**: the no-arg run (daily cron and `--heal-derived` alike) prints one `ℹ ข้าม reports/<SYM>.json …` line per v3 file and one summary line with the count (`v3SweepNotice`); explicitly named v3 symbols (`--write --force <v3>`, `--heal-derived <v3>`, `<v3>.json`) exit 1 with "v3 cron = Plan 3" before any fetch (`v3Guard`). Both go through one pure `v3Guard(only, isV3, v3Syms)` that `main` calls first, so the tests exercise the exact code path of `main`.
 - **R12 `metaLite` returns a superset** `{symbol, v3, currency, px, analysisDate, era, aiModel}` (ruling 1 names four fields; `era` feeds postcheck's BE check and analysis-age). The MOS for ship's commit message comes from a separate `stockMeta()` that computes (v3 = `compute().sm`).
-- **R13 The owner pastes the hook snippet at the Plan 2c cutover, not at the end of 2b.** The hook denies Write on every file under `reports/`, so the v2 NEW flow (stock-analyzer STEP 5A "Write `reports/<SYMBOL>.html`") would be blocked the moment it is pasted. Plan 2b proves the hook with `claude -p --settings <temp file>` only (`docs/hook-setup.md`), which keeps the zero-production-effect rule.
+- **R13 The owner pastes the hook snippet at the Plan 2c cutover, not at the end of 2b.** The hook denies Write on every file under `reports/`, so the v2 NEW flow (stock-analyzer STEP 5A "Write `reports/<SYMBOL>.html`") would be blocked the moment it is pasted. Plan 2b proves the hook with `claude -p --settings <temp file>` only (`docs/hook-setup.md`), which keeps the zero-production-effect rule. **Exit of 2b does not require the hook to be active** (nothing is pasted into `.claude/settings.json` in 2b); Task 9 Step 7 proves it with a temp `--settings` file only.
 - **R14 The `--light` allowlist is exactly spec §6.1**: every `P.proseFields` path of either doc · `meta.analysisDate` `meta.aiModel` `meta.sources[*]` `meta.priceNote` · `analyst` / `analyst.*` · `fundamentals.dps`. `meta.litReasons` is not in it, so a prose edit that needs a new `{{lit:…}}` goes through a full save. `save` keeps `.work/<SYM>.json` after writing, and `init`/`export` refuse to overwrite an existing draft without `--force`.
 
 ## File Structure
@@ -97,7 +97,7 @@ Plan-level decisions; the controller may overturn any of them before execution.
 | `tools/queue/prep.js` (modify) | `checkNotV3`, exists via `kindOf`; sidecar in Task 6 | 3, 6 |
 | `tools/queue/preflight.js` (modify) | lists/ages/currency via `RS`, `liteOf`, `skippedV3` | 3 |
 | `test/queue-test.js` (modify) | section 23: v3 through the queue tools | 3 |
-| `tools/update-prices.js` (modify) | `v3Refusal`, sweep info line, `reportExists` via `RS.symbols`, `fetchChart` +2 fields | 4, 6 |
+| `tools/update-prices.js` (modify) | `onlyFromArgv`, `v3Refusal`, `v3SweepNotice`, `v3Guard` (first thing `main` does), `reportExists` via `RS.symbols`, `fetchChart` +2 fields | 4, 6 |
 | `tools/preserve-dates.js` (modify) | `main()` guard, pure `restoreDates`, skip v3 | 4 |
 | `tools/dead-ticker-canary.js` (modify) | pure `probeList`, `RS` list/meta/exists | 4 |
 | `tools/earnings-calendar.js` (modify) | `reportSymbols` via `RS` | 4 |
@@ -319,7 +319,7 @@ Claude-Session: https://claude.ai/code/session_01LVyM2HVJV2UGfXJc58MhzP"
 - Create: `test/v3/scanners-verify.test.js`
 
 **Interfaces:**
-- Consumes: `RS.list`, `RS.renderedHtml` (Task 1); `CV.runCli(args, {reportsDir, fixtureDir, log}) → 0|1` (`test/check-v3.js:229`); `E.extractEngine`, `E.runEngine`, `E.assertRendered`, `E.seedFromHtml` (`test/engine-exec.js` exports).
+- Consumes: `RS.list`, `RS.renderedHtml` (Task 1); `CV.runCli(args, {reportsDir, fixtureDir, log}) → 0|1` (`test/check-v3.js:200`); `E.extractEngine`, `E.runEngine`, `E.assertRendered`, `E.seedFromHtml` (`test/engine-exec.js` exports).
 - Produces: `CR.runCli(argv: string[], opts?: {reportsDir?, log?, err?}) → 0|1` (exported from `test/check-reports.js`); `FL.DIRS: string[]` (exported from `test/fixture-lint.js`). `npm test -- <v3 SYM>` now reaches `check-v3` (finding M1).
 
 - [ ] **Step 1: Write the failing test**
@@ -938,7 +938,7 @@ Claude-Session: https://claude.ai/code/session_01LVyM2HVJV2UGfXJc58MhzP"
 
 **Interfaces:**
 - Consumes: `RS.list`, `RS.symbols`, `RS.kindOf`, `RS.exists`, `RS.metaLite`, `RS.renderedHtml`, `RS.isV3Path` (Task 1).
-- Produces: `U.v3Refusal(only: Set<string>, isV3: (sym)=>boolean) → string|null`; `PDt.restoreDates(cur, headDate, skip: Set) → number`; `DC.probeList(syms, liteOf, only: Set, cache) → { probes, skipped }`; `EC.reportSymbols(dir)` includes v3 symbols; `AA.ageBuckets(dir, today)` counts v3; `tag-apply` treats either file as "the report exists"; `apply-edits <x>.json` exits 1.
+- Produces: `U.onlyFromArgv(argv: string[]) → Set<string>` (upper-case, strips `.html`/`.json`); `U.v3Refusal(only: Set<string>, isV3: (sym)=>boolean) → string|null`; `U.v3SweepNotice(v3Syms: string[]) → string[]` (one line per file + one summary line; `[]` when none); `U.v3Guard(only, isV3, v3Syms) → { code: 0|1, lines: string[] }` (named v3 symbol → code 1 + refusal · no symbols → code 0 + sweep notice); `PDt.restoreDates(cur, headDate, skip: Set) → number`; `DC.probeList(syms, liteOf, only: Set, cache) → { probes, skipped }`; `EC.reportSymbols(dir)` includes v3 symbols; `AA.ageBuckets(dir, today)` counts v3; `tag-apply` treats either file as "the report exists"; `apply-edits <x>.json` exits 1.
 
 - [ ] **Step 1: Write the failing tests**
 
@@ -969,6 +969,18 @@ try {
   t(/ZTS/.test(msg) && !/AAPL/.test(msg) && /v3 cron = Plan 3/.test(msg) && /#62/.test(msg), 'update-prices: explicit v3 symbol → refusal naming it (v3 cron = Plan 3 · #62)');
   t.eq(U.v3Refusal(new Set(['AAPL']), isV3), null, 'update-prices: v2 symbol → no refusal');
   t.eq(U.v3Refusal(new Set(), isV3), null, 'update-prices: sweep (no symbols) → no refusal (R11)');
+  // R11 / binding ruling 2 — ห้ามเงียบ: sweep พิมพ์บรรทัดต่อใบ + สรุปจำนวน · สั่ง symbol v3 ตรง ๆ = exit 1 (ทางเดียวกับ main)
+  const v3s = RS.list(tmp).filter((e) => e.v3).map((e) => e.symbol);
+  const note = U.v3SweepNotice(v3s);
+  t(note.length === v3s.length + 1 && note.slice(0, -1).every((l, i) => l.includes(`reports/${v3s[i]}.json`)) && /ใบ v3 1 ใบ/.test(note[note.length - 1]) && /v3 cron = Plan 3/.test(note[note.length - 1]),
+    'update-prices sweep: one line per skipped v3 file + one summary count line', JSON.stringify(note));
+  t.eq(U.v3SweepNotice([]), [], 'update-prices sweep: no v3 files → no lines');
+  t.eq([...U.onlyFromArgv(['--write', '--force', 'zts.json', 'aapl.html', 'KBANK'])], ['ZTS', 'AAPL', 'KBANK'], 'onlyFromArgv: flags dropped, .json/.html stripped, upper-case');
+  { const g = U.v3Guard(U.onlyFromArgv(['--write', '--force', 'ZTS']), isV3, v3s);
+    t(g.code === 1 && g.lines.length === 1 && /ZTS/.test(g.lines[0]) && /v3 cron = Plan 3/.test(g.lines[0]), '--write --force <v3 SYM> → code 1 "v3 cron = Plan 3" (before any fetch)'); }
+  t.eq(U.v3Guard(U.onlyFromArgv(['--heal-derived', 'zts.json']), isV3, v3s).code, 1, '--heal-derived <v3>.json → code 1 (same guard)');
+  { const g = U.v3Guard(U.onlyFromArgv(['--write']), isV3, v3s); t(g.code === 0 && g.lines.length === 2, 'no-arg sweep → code 0 + notice lines (visible in the cron log)'); }
+  t.eq(U.v3Guard(U.onlyFromArgv(['--write', '--force', 'AAPL']), isV3, v3s), { code: 0, lines: [] }, 'explicit v2 symbol → untouched (no lines)');
   t(RS.symbols(tmp).has('ZTS'), 'reportExists = RS.symbols keeps flags of v3 reports');
   // preserve-dates — ใบ v3 ไม่มี <footer> ⇒ ต้องข้าม ไม่งั้น UPDATE ของใบ v3 ถูกคืนวันเก่าเสมอ
   const PDt = require('../../tools/preserve-dates.js');
@@ -1031,6 +1043,8 @@ ok(U.v3Refusal(new Set(['X']), () => true) && U.v3Refusal(new Set(['X']), () => 
 Run: `rtk proxy node test/v3/scanners-cron.test.js; node test/tag-apply-test.js | tail -3; node test/update-prices-test.js | tail -2`
 Expected: FAIL — `U.v3Refusal is not a function`, `✗ v3: ติด tag ให้ใบที่มีแต่ .json ได้`.
 
+Reviewer "can fail" proof (R11): make `v3SweepNotice` return `[]`, run `rtk proxy node test/v3/scanners-cron.test.js` → the sweep-notice cases go `✗`; restore.
+
 - [ ] **Step 3: `tools/update-prices.js`**
 
 Add after `const { footerDate } = require('./queue/footer-date.js');` (line 70):
@@ -1042,29 +1056,38 @@ const RS = require('./report-source.js');   // ใบ v2 + v3 (Plan 2b) — repo
 Add above `// ---------- main ----------`:
 
 ```js
+/** symbol ที่สั่งตรง ๆ (argv ที่ไม่ใช่ --flag) → Set ตัวพิมพ์ใหญ่ · ตัด .html/.json (สั่ง `zts.json` ต้องเจอ guard ของใบ v3 ไม่ใช่หลุดเป็น "ZTS.JSON") */
+const onlyFromArgv = (argv) => new Set(argv.filter((a) => !a.startsWith('--')).map((s) => s.replace(/\.(html|json)$/i, '').toUpperCase()));
 /** symbol ที่สั่งตรง ๆ แต่เป็นใบ v3 (reports/<SYM>.json) → ข้อความปฏิเสธ · null = ไม่มี (ส่วนบริสุทธิ์)
  *  ราคาใบ v3 แช่แข็งจน P5 ได้ แต่ **ห้ามเงียบ** (open-item #62): เดิม `--write --force <v3>` ไม่เจอ .html แล้ว exit 0 เฉย ๆ */
 function v3Refusal(only, isV3) {
   const hit = [...only].filter((s) => isV3(s));
   return hit.length ? `✗ ${hit.join(' ')} เป็นใบ v3 (reports/<SYM>.json) — update-prices ยังเขียนราคาใบ v3 ไม่ได้ (v3 cron = Plan 3 · P5 · open-item #62)` : null;
 }
+/** sweep ทั้งคลัง (cron รายวัน): บรรทัดต่อใบ v3 ที่ข้าม + บรรทัดสรุปจำนวน — ให้ log ของ Actions เห็นทุกใบที่ราคาแช่แข็ง (binding ruling 2 · ห้ามเงียบ) */
+function v3SweepNotice(v3Syms) {
+  if (!v3Syms.length) return [];
+  return [...v3Syms.map((s) => `ℹ ข้าม reports/${s}.json — ใบ v3 ราคาไม่ถูก patch`),
+    `ℹ ใบ v3 ${v3Syms.length} ใบไม่ถูก patch ราคา (v3 cron = Plan 3 · P5 · open-item #62 — เส้นตาย merge 2c + 45 วัน)`];
+}
+/** ด่านแรกของ main (ส่วนบริสุทธิ์ — เทสเรียกตัวเดียวกับ main): ระบุ symbol v3 = code 1 + ข้อความปฏิเสธ · ไม่ระบุ = code 0 + บรรทัด sweep */
+function v3Guard(only, isV3, v3Syms) {
+  if (only.size) { const r = v3Refusal(only, isV3); return r ? { code: 1, lines: [r] } : { code: 0, lines: [] }; }
+  return { code: 0, lines: v3SweepNotice(v3Syms) };
+}
 ```
 
-In `main`, directly after the `const ONLY = …` line (before the `--heal-derived` branch):
+In `main`, replace the `const ONLY = …` line (line 951) with the lines below — they run before the `--heal-derived` branch and before the `--force`/`--alive` checks, so `--write --force <v3>` and `--heal-derived <v3>` are refused before any fetch, and both no-arg sweeps (cron and `--heal-derived`) print the notice:
 
 ```js
-  const refuse = v3Refusal(ONLY, (s) => RS.kindOf(s, REPORTS) === 'v3');
-  if (refuse) { console.error(refuse); process.exitCode = 1; return; }
+  const ONLY = onlyFromArgv(process.argv.slice(2));
+  // ใบ v3 (Plan 2b · binding ruling 2 · #62): ระบุตรง ๆ = exit 1 · sweep = บรรทัดต่อใบ + สรุปจำนวน (ไม่เงียบ)
+  const g = v3Guard(ONLY, (s) => RS.kindOf(s, REPORTS) === 'v3', RS.list(REPORTS).filter((e) => e.v3).map((e) => e.symbol));
+  for (const l of g.lines) (g.code ? console.error : console.log)(l);
+  if (g.code) { process.exitCode = g.code; return; }
 ```
 
-After `const files = fs.readdirSync(REPORTS)…` (the sweep list, line 961-962) add:
-
-```js
-  if (!ONLY.size) {
-    const v3 = RS.list(REPORTS).filter((e) => e.v3).map((e) => e.symbol);
-    if (v3.length) console.log(`ℹ ใบ v3 ${v3.length} ใบไม่ถูก patch ราคา (v3 cron = Plan 3 · P5 · open-item #62): ${v3.join(' ')}`);
-  }
-```
+(`RS.list` throws when one symbol has both `.html` and `.json` — the same condition that already breaks `build.js`; fail closed is intended.)
 
 Replace line 1151:
 
@@ -1078,7 +1101,7 @@ with
   const reportExists = RS.symbols(REPORTS);   // ใบ v2 + v3 — flag ของใบ .json ต้องไม่ถูกตัดทิ้ง (Plan 2b)
 ```
 
-Add `v3Refusal` to `module.exports`.
+Add `onlyFromArgv, v3Refusal, v3SweepNotice, v3Guard` to `module.exports`.
 
 - [ ] **Step 4: `tools/preserve-dates.js`**
 
@@ -1293,7 +1316,7 @@ Claude-Session: https://claude.ai/code/session_01LVyM2HVJV2UGfXJc58MhzP"
 **Files:**
 - Modify: `tools/v3/schema.js` (new helpers above `validate`, one loop at the end of `validate`, exports)
 - Modify: `tools/v3/compute.js` (extract `quoteBasis`/`prepLeg`, add `semanticErrors`, exports)
-- Modify: `test/check-v3.js:267-348` (`checkDoc` only)
+- Modify: `test/check-v3.js:74-~150` (`checkDoc` only — line numbers at merge-base `7770bcf45`; anchor on the quoted text)
 - Modify: `docs/quality-gate.md` (E51 row + one paragraph under the v3 table)
 - Test: `test/v3/schema.test.js`, `test/v3/compute.test.js`, `test/v3/check-v3.test.js` (append before each file's final `t.done();`)
 
@@ -1613,7 +1636,7 @@ Claude-Session: https://claude.ai/code/session_01LVyM2HVJV2UGfXJc58MhzP"
 - Create: `test/v3/sidecar.test.js`
 
 **Interfaces:**
-- Consumes: `buildChartData`, `annualChg`-free logic from `tools/update-prices.js`; `finRow`, `asNum` inside `tools/fetch-fundamentals.js`; `parseVendor` output shape `{epsTTM, target, analysts, lo52, hi52, divYieldPct, fyYears, traps, …}` (`tools/queue/prep.js:84-121`); `MM.oneSymbol` result `{rows:[{key, pe, outlier?, skip?}], median, fyYears, curErr?}` (`tools/median-multiples.js:91-142`); `PS.parseDeltas(text) → {dP, dE, single, …}` (`tools/prep-stock.js`).
+- Consumes: `buildChartData`, `annualChg`-free logic from `tools/update-prices.js`; `finRow`, `asNum` inside `tools/fetch-fundamentals.js`; `parseVendor` output shape `{epsTTM, target, analysts, lo52, hi52, divYieldPct, fyYears, traps, …}` (`tools/queue/prep.js:84-121`); `MM.oneSymbol` result `{rows:[{key, pe, outlier?, skip?}], median, fyYears, curErr?}` (`tools/median-multiples.js:91-142`); `PS.parseDeltas(text) → {dP, dE, single, …}` (`tools/prep-stock.js`). Shared files touched by earlier tasks: `tools/queue/prep.js` — Task 3's `checkNotV3(sym)` runs first and `exists = RS.kindOf(sym, REPORTS) === 'v2'`, so `mode === 'NEW'` ⇔ no report of either kind (the sidecar is never written for a v3 symbol); `tools/update-prices.js` — Task 4 already added `const RS = require('./report-source.js')` near line 70, so `fetchChart` sits ~1 line lower than `:140-153` (anchor on `week52High: meta.fiftyTwoWeekHigh,`).
 - Produces (Task 7 reads exactly this shape):
   - `FF.factsJson(q, symbol, currency) → { symbol, currency, quoteCurrency, px, priceDate: 'YYYY-MM-DD', chart: { data }, chgSuffix: 'รอบปี'|'ตั้งแต่ IPO', range52w: {lo,hi}|null, company|null, exchange|null }`
   - `FU.snapshotJson({ y, s, stats, pages }) → { ttm: {revenue, netIncome, epsDil, fcf, sharesDil, grossMargin, opMargin, netMargin, cash, debt, debtToEquity, roe}, fy: {period, revenue, netIncome, eps}|null, sharesOut, dps, epsForward, rating }` (money in full units, margins/ROE in %).
@@ -1959,7 +1982,7 @@ Claude-Session: https://claude.ai/code/session_01LVyM2HVJV2UGfXJc58MhzP"
 - Create: `test/v3/report-cli.test.js`
 
 **Interfaces:**
-- Consumes: `RS.kindOf(sym, dir)`, `RS.load(sym, dir)`, `RS.REPORTS_DIR` (Task 1); `S.OWNER`, `S.validate`, `S.stringLeaves`, `S.TODO_RE` (Task 5); `C.compute`, `C.semanticErrors` (Task 5); `CV.checkDoc(doc, {skipSig, seeds, stage:'save', today}) → {errors (E51 entries carry details), warnings, view, dropped}` (Task 5); `P.checkRuleB(doc, view) → {errors, warnings: [{path, literal, token}]}`, `P.proseFields(doc) → [{path, text}]`; `IO.serialize`, `IO.write`, `IO.read`, `IO.verifySig`; `TK.TOKENS_V3` (`tools/v3/tokens.js`); `todayBangkok()` (`tools/queue/footer-date.js`); `require('./queue/state.js').PREP_DIR` (lazy — `state.js` runs `git` on require); sidecar v1 shape and fixture `test/fixtures/v3/sidecar/ZZZQ.json` (Task 6).
+- Consumes: `RS.kindOf(sym, dir)`, `RS.load(sym, dir)`, `RS.REPORTS_DIR` (Task 1); `S.OWNER`, `S.validate` (pre-existing, `tools/v3/schema.js:479`) and `S.stringLeaves`, `S.TODO_RE` (Task 5); `C.compute`, `C.semanticErrors` (Task 5); `CV.checkDoc(doc, {skipSig, seeds, stage:'save', today}) → {errors (E51 entries carry details), warnings, view, dropped}` (Task 5); `P.checkRuleB(doc, view) → {errors, warnings: [{path, literal, token}]}`, `P.proseFields(doc) → [{path, text}]`; `IO.serialize`, `IO.write`, `IO.read`, `IO.verifySig`; `TK.TOKENS_V3` (`tools/v3/tokens.js`); `todayBangkok()` (`tools/queue/footer-date.js`); `require('./queue/state.js').PREP_DIR` (lazy — `state.js` runs `git` on require); sidecar v1 shape and fixture `test/fixtures/v3/sidecar/ZZZQ.json` (Task 6).
 - Produces:
   - `run(argv: string[], {log, err}) → 0 | 1 | 2` — 0 ok · 1 refused / gate failed · 2 usage error. Never calls `process.exit`; the CLI entry sets `process.exitCode`.
   - `draftFromSidecar(sc, today) → draft` (pure; no `market`, no `meta.aiModel`, judgment fields = `"TODO: …"`).
@@ -2799,6 +2822,8 @@ script: `.claude/hooks/guard-reports.js` (อยู่ใน repo แล้ว �
 
 ## ⚠ paste เมื่อไร
 
+**Plan 2b = ผลต่อ production ศูนย์:** script อยู่ใน repo แต่ยัง**ไม่ได้ต่อสาย** — `.claude/settings.json` ไม่ถูกแก้ใน 2b · การจบ 2b **ไม่ต้อง**ให้ hook ทำงานอยู่ (พิสูจน์ด้วย `--settings` ไฟล์ชั่วคราวข้างล่างเท่านั้น) · ไม่มีอะไรเปลี่ยนสำหรับ session ใดจนกว่าเจ้าของ paste
+
 **paste พร้อม cutover ของ Plan 2c (เอกสาร worker โหมด v3 NEW) — ไม่ใช่ตอนจบ Plan 2b.** hook ปฏิเสธ Write/Edit **ทุกไฟล์** ใต้ `reports/` รวม `.html` ⇒ โหมด NEW ของ v2 (stock-analyzer STEP 5A "Write `reports/<SYMBOL>.html` เต็มใบ") จะถูกบล็อกทันทีที่ paste · UPDATE ของ v2 ผ่าน `node tools/apply-edits.js` (child process) ยังทำงานตามปกติ
 
 ## snippet (เจ้าของ paste เอง — Claude ไม่แก้ `.claude/settings.json`)
@@ -2947,7 +2972,7 @@ Append to the end of `docs/decisions.md`:
 > spec §6.1–§6.5/§9/§11 (P4a) · plan `docs/superpowers/plans/2026-09-24-report-v3-plan2b-infra.md` · branch `feat/report-v3-plan2b` · ผลต่อ production ศูนย์ (tripwire อยู่ · dist byte-identical พิสูจน์ Task 2/3/4/9)
 
 - **จุดเดียวที่ตอบ "ไฟล์ไหนคือรายงาน"** — `tools/report-source.js` (`list symbols kindOf exists load metaLite stockMeta renderedHtml`) · scanner 16 จุดของ #49 ย้ายมาใช้ครบ ยกเว้น `update-prices.yml` (P5) · `require('../build.js')` แบบ lazy เพราะ `update-prices`/`dead-ticker-canary` ถูก build require
-- **fail closed**: `ship --prepatch` path ใต้ `reports/` ที่ไม่ใช่ `reports/<SYM>.html` = blocker (rename `.html→.json` · ไฟล์หลง) · `update-prices` ระบุ symbol v3 ตรง ๆ = exit ≠0 "v3 cron = Plan 3" (#62) · sweep ข้ามใบ v3 พร้อมบรรทัด info (R11)
+- **fail closed**: `ship --prepatch` path ใต้ `reports/` ที่ไม่ใช่ `reports/<SYM>.html` = blocker (rename `.html→.json` · ไฟล์หลง) · `update-prices` ระบุ symbol v3 ตรง ๆ = exit ≠0 "v3 cron = Plan 3" (#62) · sweep ข้ามใบ v3 แต่ไม่เงียบ — บรรทัดต่อใบ + บรรทัดสรุปจำนวนใน log ของ cron (R11 · binding ruling 2)
 - **R1/R2 sidecar** — `ttm/fy/sharesOut/dps/epsForward/rating` มาจาก `fetch-fundamentals --json` (spec เขียนว่า fetch-facts แต่ fetch-facts ไม่มีงบ) · ผู้เขียน sidecar มีตัวเดียว = `npm run queue -- prep` โหมด NEW (prep-stock คงสัญญาข้อความเดิม)
 - **R3/R4/R5 gate** — sentinel `TODO` = `/^\s*TODO\b/` บนทุก string leaf (ช่องตัวเลขที่ยังเป็นสตริงได้ทั้ง type error + sentinel ที่ path เดียวกัน) · `{{rd:` ที่ใดก็ได้ = error · error ต่อชั้นยังเป็น E51 **รายการเดียว** (จำนวนรายการคงเดิม) + `details` ทีละ path
 - **R6 `stage:'save'`** ตัด `v2:E40` ตัวเดียว คืนใน `dropped` ให้ save พิมพ์ · stage อื่น = throw
@@ -2971,7 +2996,7 @@ Claude-Session: https://claude.ai/code/session_01LVyM2HVJV2UGfXJc58MhzP"
 
 - [ ] **Step 7 (controller, manual — not the implementer): hook proof in a fresh `claude -p`**
 
-Run the "พิสูจน์ใน `claude -p` process ใหม่" block of `docs/hook-setup.md` exactly. Expected: `grep -c` ≥ 3, `HOOK-OK`, empty `git status --short reports/`. Record the three numbers in the PR body. If `ZZHOOK2.json` appeared (rtk hook won over the deny), stop — the PR does not merge until the owner decides.
+Run the "พิสูจน์ใน `claude -p` process ใหม่" block of `docs/hook-setup.md` exactly, then `rtk proxy node test/v3/no-json-reports.test.js` (the proof deliberately tries to create `reports/ZZHOOK*.json`; the tripwire must still be green after its cleanup). Expected: `grep -c` ≥ 3, `HOOK-OK`, empty `git status --short reports/`, `✓ no-json-reports: 1/1`. **The exit of 2b does not require the hook to be active** — do not paste the snippet into `.claude/settings.json` (R13 · binding ruling 5: owner pastes at the 2c cutover); the temp `--settings` proof is the whole exit criterion. Record the three numbers in the PR body. If `ZZHOOK2.json` appeared (rtk hook won over the deny), stop — the PR does not merge until the owner decides.
 
 ---
 
@@ -2984,7 +3009,7 @@ Run the "พิสูจน์ใน `claude -p` process ใหม่" block of 
 | §6.5 one helper owns "which files are reports" · 16 scanners of #49 | 1 (helper) · 2/3/4 (scanners, 3 runtime batches, DIST-PROOF each) |
 | §6.5 `npm test -- <SYM>` hands v3 to `check-v3` | 2 (`runCli` hand-off, R8) |
 | §6.5 queue tools: ship (STOCK_FILES, aiModel, MOS, prepatch fail-closed) · postcheck · prep refuses v3 · preflight skips v3 in pre-patch | 3 |
-| §6.3/#62 `update-prices --write --force <v3>` exits ≠0 | 4 (`v3Refusal`, R11) |
+| §6.3/#62 `update-prices --write --force <v3>` exits ≠0 · sweep not silent | 4 (`v3Guard`/`v3Refusal`/`v3SweepNotice`, R11) |
 | §6.3 `apply-edits` refuses `.json` | 4 |
 | §9 `{{rd:` + TODO sentinel = E51 · `semanticErrors()` all-at-once · `stage:'save'` drops only `v2:E40` | 5 |
 | §6.4 sidecar `.queue/prep/<SYM>.json` (`fetch-facts --json`, `market`, vendor, medians, cross-verify) | 6 (R1, R2) |
