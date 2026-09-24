@@ -42,8 +42,21 @@ const today0 = Z().market.priceDate;
 { const d = load('FER-real'); delete d._sig; d.legs[0].inputs.value = 60; t(ids(run(signed(d)), 'errors').includes('E52'), 'E52: SOTP table does not tie to the leg'); }
 { const d = Z(); delete d._sig; d.legs[1].role = 'context'; d.legs[2].role = 'context'; d.fvWeights = null;
   t(ids(run(signed(d)), 'errors').includes('E17'), 'E17: one fv leg left'); }
-{ const d = Z(); delete d._sig; d.market.priceDate = shift(today0, -200); t(ids(run(signed(d), { today: today0 }), 'errors').includes('E27'), 'E27: price 200 days old'); }
-{ const d = Z(); delete d._sig; d.market.priceDate = shift(today0, -60); t(ids(run(signed(d), { today: today0 }), 'warnings').includes('W09'), 'W09: price 60 days old'); }
+// E27/W09 native + ไม่รายงานซ้ำจาก v2 (gate v2 เห็นหน้าเก่า 200/60 วันบนนาฬิกาแช่เดียวกัน → ยิง E27/W09 ของตัวเอง ซึ่ง NATIVE_V2 ต้องกรองออก)
+{ const d = Z(); delete d._sig; d.market.priceDate = shift(today0, -200); const r = run(signed(d), { today: today0 });
+  t(ids(r, 'errors').includes('E27'), 'E27: price 200 days old');
+  t(!ids(r, 'errors').includes('v2:E27') && !ids(r, 'warnings').includes('v2:W09'), 'E27: 200-day-old doc — no v2:E27/v2:W09 double report'); }
+{ const d = Z(); delete d._sig; d.market.priceDate = shift(today0, -60); const r = run(signed(d), { today: today0 });
+  t(ids(r, 'warnings').includes('W09'), 'W09: price 60 days old');
+  t(!ids(r, 'warnings').includes('v2:W09'), 'W09: no v2:W09 double report'); }
+// นาฬิกาของ gate v2 แช่ที่ today เดียวกับ native: ปลด E27 ออกจาก NATIVE_V2 ชั่วคราว · priceDate จริง (นาฬิกาจริงเห็นว่าสด) แต่ today +200 วัน
+// ⇒ v2:E27 โผล่ได้ก็ต่อเมื่อ gate v2 ใช้ today ที่ส่งมา (ถ้ายังอ่านนาฬิกาจริง จะเงียบ)
+{ const d = Z(); const env0 = process.env.STALE_TODAY; CV.NATIVE_V2.delete('E27');
+  let r; try { r = run(d, { today: shift(today0, 200) }); } finally { CV.NATIVE_V2.add('E27'); }
+  t(ids(r, 'errors').includes('v2:E27'), 'v2 clock frozen at opts.today (v2 E27 sees the +200-day clock)');
+  t(process.env.STALE_TODAY === env0, 'STALE_TODAY restored after the v2 pass'); }
+// (3) today ผิดรูป → อายุ NaN → E27 ดัง (ไม่ผ่านเงียบเพราะ NaN เทียบอะไรก็ false)
+{ const r = run(Z(), { today: 'not-a-date' }); t(ids(r, 'errors').includes('E27'), 'E27: unparseable today → fail loud'); }
 { const d = Z(); delete d._sig; d.fundamentals.roe = 500; t(ids(run(signed(d)), 'warnings').includes('W07'), 'W07: ROE 500% implausible'); }
 { const d = Z(); delete d._sig; const L = d.legs[0], base = (L.override && L.override.eps) || d.fundamentals.eps;
   L.inputs.multiple = +(d.market.px / base).toFixed(1);
@@ -65,7 +78,6 @@ const halfPx = (d) => { d.market.px = +(C.compute(d, { seeds: {} }).fv * 0.5).to
 { const d = Z(); delete d._sig; d.legs = d.legs.filter((l) => l.method !== 'pe'); d.fvWeights = null; halfPx(d);
   t(ids(run(signed(d)), 'warnings').includes('W32'), 'W32: no family key — ddm + declared(other) are inferred rg'); }
 { const d = Z(); d.meta.aiModel = 'Claude Foo 5'; delete d._sig; t(ids(run(signed(d)), 'errors').includes('v2:E28'), 'pass-through: v2 E28 on the rendered page surfaces as v2:E28'); }
-t(!ids(run(Z()), 'errors').some((x) => CV.NATIVE_V2.has(x.replace(/^v2:/, '')) && x.startsWith('v2:')), 'native codes are not double-reported from the v2 pass-through');
 
 // ── controller rulings (Task 12) ──
 // (a) ลำดับ: validate → (0 schema error เท่านั้น) compute → tieOut → render → v2 · ใบที่สคีมาไม่ผ่านต้องไม่ถูก compute/tieOut/render
@@ -119,6 +131,25 @@ tagCase('ZTS-real', (d) => { d.metrics.notes.eps += ' <font>x</font>'; }, 'metri
 // (e) analyst.asOf ต้องเป็น string — array ที่ stringify เป็น ISO ผ่าน ISO.test() เงียบ ๆ ก่อนแก้
 { const d = Z(); delete d._sig; d.analyst.asOf = [d.analyst.asOf];
   const r = run(signed(d)); t(ids(r, 'errors').includes('E51') && r.errors[0].msg.includes('analyst.asOf'), '(e) analyst.asOf non-string → E51'); }
+// (2) sweep ไม่มี arg ต้องดังเมื่อ regression หาย — dir ชั่วคราว
+{ const fs = require('fs'), os = require('os'), path = require('path');
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'check-v3-')), fixDir = path.join(tmp, 'fx'), repDir = path.join(tmp, 'reports');
+  fs.mkdirSync(fixDir); fs.mkdirSync(repDir);
+  const src = path.join(__dirname, '..', 'fixtures', 'v3'), quiet = { reportsDir: repDir, fixtureDir: fixDir, log: () => {} };
+  try {
+    t.eq(CV.runCli([], quiet), 1, 'sweep: 0 fixtures → exit 1');
+    const lines = []; CV.runCli([], { ...quiet, log: (x) => lines.push(x) });
+    t(lines.some((x) => x.includes('0 ใบ') && x.startsWith('✗')), 'sweep: 0 fixtures → loud message');
+    for (const f of ['BBL-real', 'FER-real', 'ZTS-real']) fs.copyFileSync(path.join(src, f + '.json'), path.join(fixDir, f + '.json'));
+    const l2 = []; t.eq(CV.runCli([], { ...quiet, log: (x) => l2.push(x) }), 1, 'sweep: EQIX-real missing → exit 1 (E17 regression not dropped)');
+    t(l2.some((x) => x.startsWith('✗') && x.includes('EQIX-real')), 'sweep: names the missing EXPECT_FIXTURE key');
+    fs.copyFileSync(path.join(src, 'EQIX-real.json'), path.join(fixDir, 'EQIX-real.json'));
+    t.eq(CV.runCli([], quiet), 0, 'sweep: all 4 present → exit 0');
+    // (4) realpath: fixture ที่เข้าทาง symlink ยังเป็น fixture (นาฬิกาแช่ + EXPECT_FIXTURE) ไม่ใช่ใบธรรมดา
+    const link = path.join(tmp, 'fxlink'); fs.symlinkSync(fixDir, link);
+    t.eq(CV.runCli([path.join(link, 'EQIX-real.json')], quiet), 0, 'path arg via symlink → still a fixture (expects E17)');
+  } finally { fs.rmSync(tmp, { recursive: true, force: true }); }
+}
 // CODES ครบ inventory ของ ruling R4
 t.eq(CV.CODES.map((c) => c.id).sort(), ['E17', 'E27', 'E50', 'E51', 'E52', 'W07', 'W09', 'W18', 'W25', 'W30', 'W31', 'W32'], 'CODES = native inventory (R4)');
 t.done();

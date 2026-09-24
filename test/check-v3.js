@@ -52,6 +52,8 @@ const days = (a, b) => Math.round((Date.parse(b) - Date.parse(a)) / 86400e3);
 const MULT_BASE = S.CURRENT_BASE;   // ตัวตั้งต่อหุ้นชุดเดียวกับขา 'current' (Task 5 · R7)
 // W32 — ตระกูลจริงของขา: family ที่เขียน > เดาจาก method (ไม่งั้นขาไม่มี family นับเป็น "ไม่ใช่ rg" เสมอ ⇒ W32 ไม่มีวันยิงบนใบเก่า/migrate)
 const RG_METHODS = new Set(['ddm', 'ddm2', 'dcf', 'ri']);
+// ขา fv = role ไม่เขียน หรือ 'fv' (schema: fv|context) — predicate เดียวของ E17 และ W32 (ขา context ไม่นับทั้งคู่)
+const isFvLeg = (l) => (l.role || 'fv') === 'fv';
 const famOf = (l) => l.family || (RG_METHODS.has(l.method) || (l.method === 'pbv' && l.inputs.g != null) ? 'rg'
   : l.method === 'declared' ? (['sotp', 'nav'].includes(l.inputs.basis) ? 'asset' : 'rg') : 'market');
 
@@ -77,12 +79,13 @@ function checkDoc(doc, opts) {
   if (badLeg >= 0) { add('E51', `compute: legs[${badLeg}] ค่าขา ${view.legs[badLeg].value} (ต้อง > 0)`); return done(); }
   for (const i of X.tieOut(doc, view)) add('E52', `${i.path}: ${i.msg}`);
 
-  const nFv = view.legs.filter((l) => l.role === 'fv').length;
+  const nFv = view.legs.filter(isFvLeg).length;
   if (nFv < 2) add('E17', `ขา role:"fv" มี ${nFv} ขา (ต้อง ≥ 2) — ขา context ไม่นับ (spec §13 ข้อ 4)`);
 
   const today = o.today || thaiToday(), pd = doc.market.priceDate, age = days(pd, today);
   const errDays = parseInt(process.env.STALE_ERROR_DAYS || '120', 10), warnDays = parseInt(process.env.STALE_WARN_DAYS || '45', 10);
-  if (age < -7) add('E27', `วันที่ราคา (${pd}) อยู่ในอนาคต ${-age} วัน`);
+  if (!Number.isFinite(age)) add('E27', `คำนวณอายุราคาไม่ได้ (priceDate ${pd} · today ${today}) — วันที่อ้างอิงผิดรูป`);
+  else if (age < -7) add('E27', `วันที่ราคา (${pd}) อยู่ในอนาคต ${-age} วัน`);
   else if (age > errDays) add('E27', `ราคาเก่าเกินไป: ${pd} (${age} วัน > ${errDays} วัน)`);
   else if (age > warnDays) add('W09', `ราคาเริ่มเก่า: ${pd} (${age} วันที่แล้ว) — ควรอัปเดตก่อนเผยแพร่`);
 
@@ -114,7 +117,7 @@ function checkDoc(doc, opts) {
   if (nLit > 2) add('W30', `${nLit} จุด (เกิน 2) — ถ้าต้องพิมพ์ตรงบ่อยขนาดนี้ แปลว่าสคีมาขาดช่อง`);
   const nMoney = P.countMoneyLiterals(doc);
   if (nMoney) add('W31', `${nMoney} literal รูปเงินที่ไม่ใช่ token — แทนด้วย token ตอนแตะใบ (UPDATE/LIGHT)`);
-  const fvLegs = doc.legs.filter((l) => l.role !== 'context');
+  const fvLegs = doc.legs.filter(isFvLeg);
   if (isNum(d.mos) && Math.abs(d.mos) > 40 && !fvLegs.some((l) => famOf(l) !== 'rg'))
     add('W32', `MOS ${d.mos.toFixed(1)}% แต่ขา fv ทุกขาเป็นตระกูล (r,g) — ต้องมีวิธีที่ไม่ใช้ (r,g) ยืนยัน (ชั้น 0 · docs/quality-gate.md)`);
 
@@ -122,22 +125,27 @@ function checkDoc(doc, opts) {
   let src, html;
   try { src = R.toV2Source(doc, view); html = expandReport(src); }
   catch (e) { add('E51', 'render: ' + String(e.message).split('\n')[0]); return done(view); }
-  const res = CR.checkHtml(html, `${doc.symbol}.html`, { source: src });
+  // นาฬิกาของ gate v2 = today เดียวกับ native (check-reports อ่าน STALE_TODAY) — โค้ดวันที่ของ v2 ต้องไม่กลับไปขึ้นกับนาฬิกาจริง
+  const prevToday = process.env.STALE_TODAY;
+  let res;
+  process.env.STALE_TODAY = today;
+  try { res = CR.checkHtml(html, `${doc.symbol}.html`, { source: src }); }
+  finally { if (prevToday === undefined) delete process.env.STALE_TODAY; else process.env.STALE_TODAY = prevToday; }
   for (const e of res.errors) if (!NATIVE_V2.has(e.id)) errors.push({ id: 'v2:' + e.id, label: e.label, msg: e.msg });
   for (const w of res.warnings) if (!NATIVE_V2.has(w.id)) warnings.push({ id: 'v2:' + w.id, label: w.label, msg: w.msg });
   return done(view);
 }
 
-module.exports = { checkDoc, CODES, NATIVE_V2, EXPECT_FIXTURE };
-
 // arg → งาน: SYM = reports/<SYM>.json · path.json / glob ("dir/*.json" — * ในชื่อไฟล์เท่านั้น) = ไฟล์นั้น
-// fixture ใบจริง (test/fixtures/v3/*-real.json) = นาฬิกาแช่ที่ market.priceDate + ผลต้องตรง EXPECT_FIXTURE
-function jobOf(file) {
-  const abs = path.resolve(file), base = path.basename(abs);
-  const fixture = path.dirname(abs) === FIXTURE_DIR && /-real\.json$/.test(base) ? base.replace(/\.json$/, '') : null;
+// fixture ใบจริง (<fixtureDir>/*-real.json) = นาฬิกาแช่ที่ market.priceDate + ผลต้องตรง EXPECT_FIXTURE
+// realpath ทั้งสองฝั่ง — symlink/"../" ต้องไม่ทำให้ fixture หลุดเป็นใบธรรมดา (นาฬิกาจริง + ไม่เทียบ EXPECT_FIXTURE)
+function jobOf(file, dirs) {
+  const abs = fs.realpathSync(path.resolve(file)), base = path.basename(abs);
+  const fixDir = fs.existsSync(dirs.fixtureDir) ? fs.realpathSync(dirs.fixtureDir) : dirs.fixtureDir;
+  const fixture = path.dirname(abs) === fixDir && /-real\.json$/.test(base) ? base.replace(/\.json$/, '') : null;
   return { name: path.relative(ROOT, abs), file: abs, fixture };
 }
-function jobsFromArgs(args) {
+function jobsFromArgs(args, dirs) {
   const jobs = [], missing = [];
   for (const a of args) {
     if (/[\\/*]|\.json$/i.test(a)) {
@@ -147,31 +155,39 @@ function jobsFromArgs(args) {
         const re = new RegExp('^' + pat.split('*').map((s) => s.replace(/[.+?^${}()|[\]\\]/g, '\\$&')).join('.*') + '$');
         const hit = fs.existsSync(dir) ? fs.readdirSync(dir).filter((f) => re.test(f)).sort() : [];
         if (!hit.length) missing.push(a);
-        for (const f of hit) jobs.push(jobOf(path.join(dir, f)));
-      } else if (fs.existsSync(a)) jobs.push(jobOf(a));
+        for (const f of hit) jobs.push(jobOf(path.join(dir, f), dirs));
+      } else if (fs.existsSync(a)) jobs.push(jobOf(a, dirs));
       else missing.push(a);
     } else {
-      const f = path.join(REPORTS_DIR, a.toUpperCase() + '.json');
-      if (fs.existsSync(f)) jobs.push(jobOf(f)); else missing.push(`${a} (ไม่มี reports/${a.toUpperCase()}.json)`);
+      const f = path.join(dirs.reportsDir, a.toUpperCase() + '.json');
+      if (fs.existsSync(f)) jobs.push(jobOf(f, dirs)); else missing.push(`${a} (ไม่มี reports/${a.toUpperCase()}.json)`);
     }
   }
   const seen = new Set();
   return { jobs: jobs.filter((j) => !seen.has(j.file) && seen.add(j.file)), missing };
 }
-function defaultJobs() {
-  const jobs = [];
-  if (fs.existsSync(REPORTS_DIR)) for (const f of fs.readdirSync(REPORTS_DIR).filter((x) => /\.json$/i.test(x)).sort()) jobs.push(jobOf(path.join(REPORTS_DIR, f)));
-  for (const f of fs.readdirSync(FIXTURE_DIR).filter((x) => /-real\.json$/.test(x)).sort()) jobs.push(jobOf(path.join(FIXTURE_DIR, f)));
-  return jobs;
+// sweep ไม่มี arg ต้องดังเมื่อ regression หาย: fixture 0 ใบ หรือ key ของ EXPECT_FIXTURE ไม่อยู่ในงาน (ลบ EQIX-real ≠ ผ่านเงียบ)
+function defaultJobs(dirs) {
+  const jobs = [], missing = [];
+  if (fs.existsSync(dirs.reportsDir)) for (const f of fs.readdirSync(dirs.reportsDir).filter((x) => /\.json$/i.test(x)).sort()) jobs.push(jobOf(path.join(dirs.reportsDir, f), dirs));
+  const fx = fs.existsSync(dirs.fixtureDir) ? fs.readdirSync(dirs.fixtureDir).filter((x) => /-real\.json$/.test(x)).sort() : [];
+  for (const f of fx) jobs.push(jobOf(path.join(dirs.fixtureDir, f), dirs));
+  if (!fx.length) missing.push(`fixture ใบจริง 0 ใบใน ${path.relative(ROOT, dirs.fixtureDir) || dirs.fixtureDir} — regression ของ gate หายทั้งชุด`);
+  const have = new Set(jobs.map((j) => j.fixture).filter(Boolean));
+  for (const k of Object.keys(EXPECT_FIXTURE)) if (!have.has(k)) missing.push(`${k}.json (EXPECT_FIXTURE คาด ${EXPECT_FIXTURE[k].join(',')}) — fixture หาย = regression หายเงียบ`);
+  return { jobs, missing };
 }
 
-function main() {
-  const args = process.argv.slice(2);
+// คืน exit code (0/1) — main() เรียก process.exit · meta-test เรียกตรงด้วย dir ชั่วคราว
+function runCli(args, opts) {
+  const o = opts || {};
+  const dirs = { reportsDir: o.reportsDir || REPORTS_DIR, fixtureDir: o.fixtureDir || FIXTURE_DIR };
+  const log = o.log || console.log;
   const seeds = JSON.parse(fs.readFileSync(path.join(ROOT, 'tools', 'seeds.json'), 'utf8'));
-  const { jobs, missing } = args.length ? jobsFromArgs(args) : { jobs: defaultJobs(), missing: [] };
+  const { jobs, missing } = args.length ? jobsFromArgs(args, dirs) : defaultJobs(dirs);
   const nFix = jobs.filter((j) => j.fixture).length;
-  console.log(`\n🧾 check-v3 — ใบ v3 ${jobs.length - nFix} ใบ (${args.length ? 'ตาม arg' : 'reports/*.json'}) + fixture ใบจริง ${nFix} ใบ\n`);
-  for (const m of missing) console.log(`✗ ไม่พบ: ${m}`);
+  log(`\n🧾 check-v3 — ใบ v3 ${jobs.length - nFix} ใบ (${args.length ? 'ตาม arg' : 'reports/*.json'}) + fixture ใบจริง ${nFix} ใบ\n`);
+  for (const m of missing) log(`✗ ไม่พบ: ${m}`);
   let fail = missing.length;
   for (const j of jobs) {
     let r;
@@ -181,13 +197,18 @@ function main() {
     const exp = j.fixture ? (EXPECT_FIXTURE[j.fixture] || []).slice().sort() : [];
     const ok = JSON.stringify(got) === JSON.stringify(exp);
     if (!ok) fail++;
-    console.log(`${ok ? '✓' : '✗'} ${j.name}${exp.length ? ` (คาด ${exp.join(',')})` : ''}${r.warnings.length ? `   (⚠ ${r.warnings.length})` : ''}`);
-    for (const e of r.errors) console.log(`    ${exp.includes(e.id) ? '•' : '✗'} [${e.id}] ${e.label}: ${e.msg}`);
-    for (const w of r.warnings) console.log(`    ⚠ [${w.id}] ${w.label}: ${w.msg}`);
+    log(`${ok ? '✓' : '✗'} ${j.name}${exp.length ? ` (คาด ${exp.join(',')})` : ''}${r.warnings.length ? `   (⚠ ${r.warnings.length})` : ''}`);
+    for (const e of r.errors) log(`    ${exp.includes(e.id) ? '•' : '✗'} [${e.id}] ${e.label}: ${e.msg}`);
+    for (const w of r.warnings) log(`    ⚠ [${w.id}] ${w.label}: ${w.msg}`);
   }
   const total = jobs.length + missing.length;
-  console.log(`\nสรุป: ${total - fail}/${total} ตรงตามคาด`);
-  if (fail) { console.log('\n❌ check-v3 ไม่ผ่าน — ห้าม push\n'); process.exit(1); }
-  console.log('\n✅ check-v3 ผ่าน\n');
+  log(`\nสรุป: ${total - fail}/${total} ตรงตามคาด`);
+  if (fail) { log('\n❌ check-v3 ไม่ผ่าน — ห้าม push\n'); return 1; }
+  log('\n✅ check-v3 ผ่าน\n');
+  return 0;
 }
+
+module.exports = { checkDoc, runCli, CODES, NATIVE_V2, EXPECT_FIXTURE };
+
+function main() { process.exit(runCli(process.argv.slice(2))); }
 if (require.main === module) main();
