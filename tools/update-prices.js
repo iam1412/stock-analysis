@@ -874,7 +874,7 @@ function commitBody(updated, frozen) {
 }
 
 /** symbol ที่สั่งตรง ๆ (argv ที่ไม่ใช่ --flag) → Set ตัวพิมพ์ใหญ่ · ตัด path + .html/.json (สั่ง `zts.json` / `reports/zts.json`
- *  ต้องเจอ guard ของใบ v3 ไม่ใช่หลุดเป็น "ZTS.JSON" / "REPORTS/ZTS" แล้ว no-op เงียบ · canary ใช้ตัวเดียวกัน) */
+ *  ต้องเจอใบ v3 ตัวนั้น (เข้าสาย v3 ของ main ตามปกติ) ไม่ใช่หลุดเป็น "ZTS.JSON" / "REPORTS/ZTS" แล้ว no-op เงียบ · canary ใช้ตัวเดียวกัน) */
 const onlyFromArgv = (argv) => new Set(argv.filter((a) => !a.startsWith('--')).map((s) => path.basename(s).replace(/\.(html|json)$/i, '').toUpperCase()));
 /** --heal-derived ที่ระบุ symbol ใบ v3 → ข้อความปฏิเสธ (main exit 1) · null = ไม่มี (ส่วนบริสุทธิ์ · Plan 3 R7)
  *  ใบ v3 ไม่มีค่า derive ค้างให้ซ่อม (ทุกค่าที่ผูกราคา compute ตอน build) — ปฏิเสธดัง ๆ ดีกว่า exit 0 เงียบ (บทเรียน #62) */
@@ -892,9 +892,24 @@ function preSkip(q, symbol, o) {
   if (o.deadAlready.has(symbol) && !o.alive) return 'dead';
   return null;
 }
-/** symbol ที่ "ตัดสินแล้วรอบนี้" = ทุกใบในรอบ (v2 + v3 · R7) ลบตัวที่ข้ามเพราะตลาดเปิด — mergeFlags เคลียร์ flag ของ symbol ใน set นี้ที่ไม่มี freeze รอบนี้
- *  (ใบ v3 ต้องอยู่ในนี้ ไม่งั้น flag เก่าของใบ v3 ไม่มีวันเคลียร์) */
-const evaluatedOf = (entries, intraday) => new Set(entries.map((e) => e.symbol).filter((s) => !intraday.includes(s)));
+/** symbol ที่ "ตัดสินแล้วรอบนี้" = ทุกใบในรอบ (v2 + v3 · R7) ลบตัวที่ข้ามเพราะตลาดเปิด **และ** ใบ v3 ที่ quote เก่ากว่า priceDate
+ *  — mergeFlags เคลียร์ flag ของ symbol ใน set นี้ที่ไม่มี freeze รอบนี้ (ใบ v3 ต้องอยู่ในนี้ ไม่งั้น flag เก่าของใบ v3 ไม่มีวันเคลียร์)
+ *  stale = ใบ v3 ที่ planV3 คืน unchanged เพราะ feed ค้าง/ถอยหลัง (fix round final · T3-N1): ไม่ใช่ข้อมูลใหม่ = ยังไม่ได้ประเมินซ้ำ
+ *  ⇒ flag ที่ค้างคิวอยู่ต้องคงไว้แบบเดียวกับตัว intraday (ไม่งั้น drift/flip ที่รอคนดูหายเงียบ + flaggedAt ถูกรีเซ็ต) */
+const evaluatedOf = (entries, intraday, stale = []) => new Set(entries.map((e) => e.symbol).filter((s) => !intraday.includes(s) && !stale.includes(s)));
+
+/** อ่านใบ v3 หนึ่งใบสำหรับ main (ส่วนแยกให้เทสเรียกตรง · fix round final · m3) → { doc } | { failed: แถว failed `no-stock-meta` }
+ *  JSON เสีย **หรือ** parse ได้แต่ไม่มี market.px / market.priceDate / currency = ล้มรายใบ (ถัง "ล้ม" ของ v3-lane) ไม่ throw ออกจากลูป
+ *  (เดิม `doc.market.px` อยู่นอก try ⇒ ไฟล์เดียวที่ขาด market ทำทั้งรอบ exit 1 — ไม่มีราคา v2/v3 ใบไหนถูกเขียนคืนนั้น) */
+function readV3Doc(fp, symbol) {
+  try {
+    const doc = IO.read(fp);
+    const m = doc && typeof doc === 'object' ? doc.market : null;
+    if (!m || typeof m !== 'object' || !Number.isFinite(m.px) || typeof m.priceDate !== 'string' || !doc.currency)
+      throw new Error('ไฟล์ไม่ครบ — ไม่มี market.px / market.priceDate / currency (แก้ด้วย report.js export → save)');
+    return { doc };
+  } catch (err) { return { failed: { symbol, reason: 'no-stock-meta', detail: `v3 JSON อ่านไม่ได้: ${err.message}`.slice(0, 300) } }; }
+}
 
 /** กราฟของรอบนี้ (v2 + v3 ใช้ร่วม): รายเดือนจาก quote → ไม่พอจุด (ประวัติสั้น/Yahoo ล้างประวัติ — เคส BK) = ยิงรายสัปดาห์
  *  → ยังไม่ได้ = data null (price-only บนกราฟเดิม) · คืน bars/gmtoffset ชุดที่สร้างกราฟด้วย — detectMixedBasis ต้องตรวจ "ซีรีส์ที่ใช้จริง"
@@ -912,7 +927,7 @@ async function chartFor(symbol, currency, q) {
 
 /** สาย v3 ต่อใบ (ส่วนบริสุทธิ์ · spec §7 · Plan 3 R4/R5/R6/R10) — ตัดสินจาก doc เดิม + quote + กราฟของรอบนี้ ไม่แตะดิสก์
  *  chart = ผลของ chartFor ({ data|null, src, bars, gmtoffset }) · opts = { force, seeds, today?, nowSec? }
- *  คืน { kind: 'unchanged'|'freeze'|'write', symbol, priceDate, reportPrice, marketPrice, diffPct, chartSrc, reason?, detail?, next?, view?, warnings?, forced? }
+ *  คืน { kind: 'unchanged'|'freeze'|'write', symbol, priceDate, reportPrice, marketPrice, diffPct, chartSrc, stale?, quoteDate?, reason?, detail?, next?, view?, warnings?, forced? }
  *  ลำดับ: ลายเซ็นใบเดิม (E50 ห้าม force) → gate ใบเดิม (ต้อง compute ได้จึงรู้ FV) → quote เก่ากว่า priceDate = unchanged (R5 · M1)
  *        → decide() บน FV จาก view (FV ไม่ขึ้นกับราคา = คำตอบเดียวกับ v2) → วันเดียวกันราคาเท่าเดิม = unchanged (R5 · ICC) → bad-chart (--force = price-only) → marketFromQuote → gate ใบใหม่ในหน่วยความจำ
  *        (ตก = patch-rejected ไม่เขียน · --force ผ่านได้เฉพาะเมื่อไม่มี E50/E51 — R6) */
@@ -929,12 +944,13 @@ function planV3(prev, q, chart, opts) {
   const pre = checkDoc(prev, gOpt);
   const preCodes = [...new Set(pre.errors.map((x) => x.id))];
   if (!pre.view) return reject(`${preCodes.join(',')} (ค้างก่อน patch) — ${errText(pre.errors)}`);
-  // R5: ไม่มี session ใหม่ = ไม่เขียน ไม่ flag (fix round 1 · M1)
+  // R5: ไม่มี session ใหม่ = ไม่เขียน ไม่ flag (fix round 1 · M1) · (a) ไม่ล้าง flag ที่ค้างด้วย (fix round final · T3-N1)
   //   (a) วันตลาดของ quote **ก่อน** market.priceDate = feed ค้าง/ถอยหลัง ไม่ใช่ข้อมูลใหม่ → unchanged ไม่ว่าราคาจะต่างแค่ไหน
   //       (priceDate ห้ามถอยหลัง · เช็คก่อน decide() ⇒ feed ค้างไม่สร้าง flag drift/flip/currency)
   //   (b) วันเดียวกัน + ราคาเท่าเดิม (หุ้นสภาพคล่องต่ำ — ICC) → unchanged · วันเดียวกันราคาต่าง = เขียน (ตลาดเปิดถูกกันที่ preSkip แล้ว)
+  //   stale: true = บอก main ให้ตัดใบนี้ออกจาก evaluated (flag ที่ค้างคงไว้เหมือนตัว intraday — T3-N1) · (b) ไม่ติด stale = ประเมินแล้วจริง
   const qDate = MK.quoteDate(q);
-  if (qDate < prev.market.priceDate) return { ...base, kind: 'unchanged' };
+  if (qDate < prev.market.priceDate) return { ...base, kind: 'unchanged', stale: true, quoteDate: qDate };
   const d = decide({ oldPrice: reportPrice, newPrice: q.price, fv: pre.view.rd.fv, currencyOk: currencyMatches(q.currency, prev.currency), force: !!o.force });
   if (d.freeze) return { ...base, kind: 'freeze', reason: d.freeze };
   if (qDate === prev.market.priceDate && marketPrice === reportPrice) return { ...base, kind: 'unchanged' };
@@ -971,6 +987,8 @@ function applyV3(file, plan, opts) {
   const S = String(plan.symbol).padEnd(10);
   const pct = (x) => (x == null ? '-' : `${x > 0 ? '+' : ''}${x}%`);
   const flagOf = (p) => ({ symbol: p.symbol, reason: p.reason, ...(p.detail ? { detail: p.detail } : {}), reportPrice: p.reportPrice, marketPrice: p.marketPrice, diffPct: p.diffPct });
+  if (plan.kind === 'unchanged' && plan.stale)
+    return { kind: 'unchanged', stale: true, line: `= ${S} v3 quote เก่ากว่า priceDate (${plan.quoteDate} < ${plan.priceDate}) — feed ค้าง ไม่เขียน · flag ที่ค้างคงไว้` };
   if (plan.kind === 'unchanged') return { kind: 'unchanged', line: `= ${S} v3 ไม่มี session ใหม่ — ${plan.reportPrice} @${plan.priceDate} เท่าเดิม ไม่เขียน` };
   if (plan.kind === 'freeze') {
     const tail = plan.detail ? `${plan.detail.slice(0, 160)} — ไม่เขียนไฟล์` : `${plan.reportPrice} → ${plan.marketPrice} (${pct(plan.diffPct)})`;
@@ -1101,7 +1119,7 @@ async function main() {
   const SEEDS = JSON.parse(fs.readFileSync(SEEDS_FILE, 'utf8'));
   const v3n = { n: 0, write: 0, unchanged: 0, freeze: 0, fail: 0, intraday: 0, dead: 0 };   // บรรทัด v3-lane ท้ายรอบ (ถังรวม = n — M3)
 
-  const updated = [], skipped = [], frozen = [], failed = [], intraday = [];
+  const updated = [], skipped = [], frozen = [], failed = [], intraday = [], staleV3 = [];   // staleV3 = ใบ v3 ที่ quote เก่ากว่า priceDate (ไม่เข้า evaluated — T3-N1)
   const quotes = [];   // ทุกตัวที่ fetch สำเร็จ (รวมตัวที่ freeze) — ป้อน detectStaleQuotes หลังจบลูป
   // อ่าน flags 2 ครั้งโดยตั้งใจ (WS4): snapshot นี้ใช้แค่ตัดสิน deadAlready ระหว่าง loop fetch ~8 นาที —
   // ส่วนที่ merge/เขียนคิวจริงอ่าน "ไฟล์ล่าสุด" ใต้ lock ใน commitFlags ท้ายรอบ ⇒ flag ที่ canary/controller
@@ -1117,13 +1135,14 @@ async function main() {
   for (const ent of entries) {
     const symbol = ent.symbol, f = ent.name;
     const fp = path.join(REPORTS, f);
-    // ใบ v3 (Plan 3 · spec §7): อ่านผ่าน io.js · สกุล/ราคาเดิม = doc.currency / market.px · JSON เสีย = failed `no-stock-meta`
+    // ใบ v3 (Plan 3 · spec §7): อ่านผ่าน io.js · สกุล/ราคาเดิม = doc.currency / market.px · JSON เสีย/ไม่มี market·currency = failed `no-stock-meta`
     //   (bucket PLUMBING เดิม — ไม่เพิ่ม reason ใหม่ให้ triage) · ใบ v2: stock-meta เหมือนเดิม
     let html = null, sm = null, doc = null;
     if (ent.v3) {
       v3n.n++;
-      try { doc = IO.read(fp); }
-      catch (err) { v3n.fail++; failed.push({ symbol, reason: 'no-stock-meta', detail: `v3 JSON อ่านไม่ได้: ${err.message}`.slice(0, 300) }); continue; }
+      const rv = readV3Doc(fp, symbol);   // JSON เสีย / ไม่มี market·currency = ล้มรายใบ ไม่ล้มทั้งรอบ (m3)
+      if (rv.failed) { v3n.fail++; failed.push(rv.failed); continue; }
+      doc = rv.doc;
     } else {
       html = fs.readFileSync(fp, 'utf8');
       sm = RM.readStockMeta(html);
@@ -1186,7 +1205,7 @@ async function main() {
       v3n[v3BucketOf(r)]++;
       if (r.kind === 'write') updated.push(r.row);
       else if (r.kind === 'freeze') frozen.push(r.flag);
-      else skipped.push(symbol);
+      else { skipped.push(symbol); if (r.stale) staleV3.push(symbol); }
       console.log(r.line);
       continue;
     }
@@ -1319,7 +1338,7 @@ async function main() {
   // ★ processed = ตัวที่ "ตัดสินแล้วรอบนี้" ต้อง **หักตัวที่ข้ามเพราะตลาดเปิด** ออก — mergeFlags เคลียร์
   // flag ของทุก symbol ใน processed ที่ไม่มี freeze รอบนี้ ⇒ ถ้าใส่ตัว intraday เข้าไปด้วย การรันมือ
   // กลาง session จะล้าง drift/mos-flip ที่ค้างคิวอยู่ทิ้งทั้งที่ยังไม่ได้ประเมินซ้ำเลย (คิวหายเงียบ)
-  const evaluated = evaluatedOf(entries, intraday);   // v2 + v3 (Plan 3 · R7)
+  const evaluated = evaluatedOf(entries, intraday, staleV3);   // v2 + v3 (Plan 3 · R7) · ใบ v3 quote เก่า = ยังไม่ได้ประเมิน (T3-N1)
   const flags = commitFlags({ write: WRITE, evaluated, frozenAll, failed, quietSyms, aliveConfirmed, reportExists });
 
   // log ต่อหุ้นสำหรับ commit body (ถาวรใน git history — Actions log หายใน ~90 วัน)
@@ -1351,6 +1370,6 @@ function pxOf(html, sm) {
   return r && RV.isV2(r.data) && r.data.values && Number.isFinite(r.data.values.px) ? r.data.values.px : sm.price;
 }
 
-module.exports = { onlyFromArgv, healV3Refusal, preSkip, evaluatedOf, chartFor, planV3, applyV3, v3BucketOf, v3LaneLine, derivedPassV2, proseTokensIfNew, mirrorStockMetaV2, healDerived, fvOf, pxOf, mosBand, fmtPrice, fmtLike, toYahooSymbol, fetchChart, buildChartData, niceBounds, annualChg, decide, currencyMatches, isIntradayQuote, detectMixedBasis, detectStaleQuotes, missedSessions, probeCap, capByCohort, controlTickers, unverifiedCohorts, classifyStale, patchReport, gateAfterPatch, gateCheck, mergeFlags, commitFlags, styledRD, commitBody, THAI_MONTHS, MOS_FLIP_DEADBAND_PP };
+module.exports = { onlyFromArgv, healV3Refusal, preSkip, evaluatedOf, readV3Doc, chartFor, planV3, applyV3, v3BucketOf, v3LaneLine, derivedPassV2, proseTokensIfNew, mirrorStockMetaV2, healDerived, fvOf, pxOf, mosBand, fmtPrice, fmtLike, toYahooSymbol, fetchChart, buildChartData, niceBounds, annualChg, decide, currencyMatches, isIntradayQuote, detectMixedBasis, detectStaleQuotes, missedSessions, probeCap, capByCohort, controlTickers, unverifiedCohorts, classifyStale, patchReport, gateAfterPatch, gateCheck, mergeFlags, commitFlags, styledRD, commitBody, THAI_MONTHS, MOS_FLIP_DEADBAND_PP };
 
 if (require.main === module) main().catch((e) => { console.error(e); process.exit(1); });

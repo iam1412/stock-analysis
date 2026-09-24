@@ -143,6 +143,44 @@ try {
   const cf = { file: ff, write: false, frozenAll: [], failed: [], quietSyms: new Set(), aliveConfirmed: new Set(), reportExists: RS.symbols(tmp) };
   t.eq(U.commitFlags({ ...cf, evaluated: U.evaluatedOf(entries, []) }), [], 'R7: an old v3 flag clears once the v3 report is evaluated clean');
   t.eq(U.commitFlags({ ...cf, evaluated: U.evaluatedOf(entries, ['ZTS']) }).map((f) => f.symbol), ['ZTS'], 'intraday-skipped v3 keeps its flag');
+  // T3-N1 (fix round final): quote เก่ากว่า priceDate = ไม่ใช่ข้อมูลใหม่ → ไม่เข้า evaluated → flag ที่ค้างคงอยู่ (flaggedAt เดิม) เหมือนตัว intraday
+  //   วันเดียวกัน + ราคาเท่าเดิม = ประเมินแล้วจริง → ยังอยู่ใน evaluated → flag เคลียร์ตามเดิม
+  const staleOf = (rs) => rs.filter((r) => r.stale).map(() => 'ZTS');
+  const bs = bytes();
+  const st = U.applyV3(zf, plan(IO.read(zf), quote(70.5, { marketTime: Date.UTC(2026, 8, 18, 20, 0, 0) / 1000 })), { ...opt, write: true });
+  t(st.kind === 'unchanged' && st.stale === true && bytes() === bs && /quote เก่ากว่า priceDate \(2026-09-18 < 2026-09-21\)/.test(st.line) && /flag ที่ค้างคงไว้/.test(st.line),
+    'T3-N1: stale quote → applyV3 unchanged with stale: true + its own log line', st.line);
+  t(!U.evaluatedOf(entries, [], staleOf([st])).has('ZTS') && U.evaluatedOf(entries, [], staleOf([st])).has('AAPL'), 'T3-N1: stale v3 symbol is not evaluated (v2 still is)');
+  { const kept = U.commitFlags({ ...cf, evaluated: U.evaluatedOf(entries, [], staleOf([st])) });
+    t(kept.length === 1 && kept[0].symbol === 'ZTS' && kept[0].reason === 'drift-gt-15pct' && kept[0].flaggedAt === '2026-09-20', 'T3-N1: pending v3 flag survives mergeFlags on a stale-quote night (flaggedAt kept)', JSON.stringify(kept)); }
+  const sd = U.applyV3(zf, plan(IO.read(zf), quote(71.33, { marketTime: Date.UTC(2026, 8, 21, 20, 0, 0) / 1000 })), { ...opt, write: true });
+  t(sd.kind === 'unchanged' && !sd.stale && /ไม่มี session ใหม่/.test(sd.line), 'T3-N1: same day + same px → unchanged, not stale');
+  t(U.evaluatedOf(entries, [], staleOf([sd])).has('ZTS'), 'T3-N1: same-day unchanged v3 symbol is still evaluated');
+  t.eq(U.commitFlags({ ...cf, evaluated: U.evaluatedOf(entries, [], staleOf([sd])) }), [], 'T3-N1: same-day unchanged still clears the pending flag (as before)');
+  // m3 (fix round final): ใบ v3 ที่ parse ได้แต่ไม่มี market/currency = ล้มรายใบ (ถัง "ล้ม") ไม่ throw ออกจากลูป main
+  { const bad = path.join(tmp, 'BAD.json');
+    IO.write(bad, real());
+    const raw = JSON.parse(fs.readFileSync(bad, 'utf8')); delete raw.market; fs.writeFileSync(bad, JSON.stringify(raw, null, 2) + '\n');   // แก้สำเนาใน tmp เท่านั้น
+    const noCur = path.join(tmp, 'NOCUR.json');
+    IO.write(noCur, real());
+    const raw2 = JSON.parse(fs.readFileSync(noCur, 'utf8')); delete raw2.currency; fs.writeFileSync(noCur, JSON.stringify(raw2, null, 2) + '\n');
+    const v3n = { fail: 0 }, failed = [], ok = [];
+    let threw = null;
+    try {
+      for (const e of RS.list(tmp).filter((x) => x.v3)) {   // ลูปเดียวกับ main: readV3Doc ล้ม = v3n.fail++ · failed.push · continue
+        const rv = U.readV3Doc(path.join(tmp, e.name), e.symbol);
+        if (rv.failed) { v3n.fail++; failed.push(rv.failed); continue; }
+        ok.push(e.symbol, rv.doc.market.px);
+      }
+    } catch (e) { threw = e; }
+    t(threw === null, 'm3: a v3 file with no market / no currency never throws out of the loop', threw && threw.message);
+    t.eq(failed.map((f) => [f.symbol, f.reason]), [['BAD', 'no-stock-meta'], ['NOCUR', 'no-stock-meta']], 'm3: both malformed files land in failed no-stock-meta');
+    t(failed.every((f) => /^v3 JSON อ่านไม่ได้: ไฟล์ไม่ครบ — ไม่มี market\.px/.test(f.detail)) && v3n.fail === 2, 'm3: Thai detail + counted in the ล้ม bucket', JSON.stringify(failed));
+    t.eq(ok, ['ZTS', 71.33], 'm3: the run continues — the healthy v3 file after them is still read');
+    fs.writeFileSync(path.join(tmp, 'JUNK.json'), '{ not json');
+    const jr = U.readV3Doc(path.join(tmp, 'JUNK.json'), 'JUNK');
+    t(jr.failed && jr.failed.reason === 'no-stock-meta' && /^v3 JSON อ่านไม่ได้: /.test(jr.failed.detail), 'm3: unparsable JSON keeps the old failed no-stock-meta row');
+    for (const f of [bad, noCur, path.join(tmp, 'JUNK.json')]) fs.rmSync(f); }
   // --heal-derived (R7)
   const isV3 = (s) => RS.kindOf(s, tmp) === 'v3';
   t(/ZTS/.test(U.healV3Refusal(new Set(['ZTS']), isV3) || ''), '--heal-derived <v3> → refusal (main exits 1)');
@@ -184,11 +222,16 @@ t.eq([{ kind: 'write' }, { kind: 'unchanged' }, { kind: 'freeze', flag: { reason
   ['write', 'unchanged', 'freeze', 'freeze', 'fail'], 'M3: patch-failed counts as "ล้ม" (plumbing), gate/policy freezes as freeze');
 { const src = fs.readFileSync(path.join(ROOT, 'tools', 'update-prices.js'), 'utf8');
   t(!src.includes('/\\.html$/i.test(f)'), '#49 residue closed: no .html-only readdir filter left in update-prices.js');
-  t(!/\bv3Guard\b|\bv3SweepNotice\b|\bv3Refusal\b/.test(src), 'v3Guard/v3Refusal/v3SweepNotice removed from update-prices.js'); }
+  t(!/\bv3Guard\b|\bv3SweepNotice\b|\bv3Refusal\b/.test(src), 'v3Guard/v3Refusal/v3SweepNotice removed from update-prices.js');
+  t(src.includes('evaluatedOf(entries, intraday, staleV3)') && src.includes('if (r.stale) staleV3.push(symbol)'), 'T3-N1: main leaves stale v3 symbols out of evaluated');
+  t(src.includes('const rv = readV3Doc(fp, symbol);') && !src.includes('try { doc = IO.read(fp); }'), 'm3: main reads v3 files through readV3Doc (no bare IO.read in the loop)'); }
 
 // ── Plan 3 Task 4 — update-prices.yml นับใบ v3 ในชื่อ commit (R7) ──
 { const yml = fs.readFileSync(path.join(ROOT, '.github', 'workflows', 'update-prices.yml'), 'utf8');
   t(yml.includes("git diff --cached --name-only -- 'reports/*.html' 'reports/*.json'"), 'update-prices.yml: commit count n includes reports/*.json');
-  t(!/ลง reports\/\*\.html ทุกวัน/.test(yml), 'update-prices.yml: header comment no longer says .html only'); }
+  t(!/ลง reports\/\*\.html ทุกวัน/.test(yml), 'update-prices.yml: header comment no longer says .html only');
+  t(yml.startsWith('# Cron อัปเดตราคาหุ้น + วันที่ราคา ทุกวัน (04:00 น. ไทย วันถัดไป — เดิม 07:17 น. ไทย)\n'
+    + '#   ใบ v2 = reports/*.html (report-data.values) · ใบ v3 = reports/*.json (market.* อย่างเดียว ผ่าน IO.writeMarket — Plan 3 · spec §7)\n'),
+    'update-prices.yml: the new header (v2 .html + v3 .json lanes) is present as the first two lines'); }
 
 t.done();
