@@ -20,6 +20,7 @@
 const fs = require('fs');
 const path = require('path');
 const T = require('./tag-lib.js');
+const RS = require('./report-source.js');   // ใบ v2 (.html) + v3 (.json) นับเป็น "มีรายงาน" (Plan 2b)
 
 const ROOT = path.join(__dirname, '..');
 // STOCK_REPORTS_DIR — override สำหรับเทสเท่านั้น (sandbox ใน os.tmpdir()) เหมือน STOCK_TAGS_FILE
@@ -29,8 +30,8 @@ const REPORTS_DIR = process.env.STOCK_REPORTS_DIR || path.join(ROOT, 'reports');
 /** ติด tag — pure: คืน data ใหม่ ไม่แตะดิสก์ · input เสีย = data เดิมไม่ถูกแตะเลย */
 function applyTags({ symbol, slugs, vocab, data, reportsDir }) {
   const errors = T.validateAssignment(symbol, slugs, vocab);
-  if (!fs.existsSync(path.join(reportsDir || REPORTS_DIR, symbol + '.html'))) {
-    errors.push(`${symbol}: ไม่มีไฟล์ reports/${symbol}.html`);
+  if (!RS.exists(symbol, reportsDir || REPORTS_DIR)) {
+    errors.push(`${symbol}: ไม่มีไฟล์ reports/${symbol}.html หรือ reports/${symbol}.json`);
   }
   if (errors.length) return { ok: false, errors, data };
   const next = { ...data, tags: { ...data.tags, [symbol]: slugs.slice() } };
@@ -46,8 +47,8 @@ function renameSymbol(data, oldSym, newSym, reportsDir) {
   if (oldSym === newSym) errors.push(`${oldSym}: OLD กับ NEW เป็นสัญลักษณ์เดียวกัน`);
   if (!data.tags[oldSym]) errors.push(`${oldSym}: ไม่มี entry ใน tags.json ให้ย้าย`);
   if (data.tags[newSym]) errors.push(`${newSym}: มี entry อยู่แล้ว — ย้ายทับจะทำ tag เดิมของ ${newSym} หาย`);
-  if (!fs.existsSync(path.join(reportsDir || REPORTS_DIR, newSym + '.html'))) {
-    errors.push(`${newSym}: ไม่มีไฟล์ reports/${newSym}.html — เปลี่ยนชื่อ ticker จริงต้องมีไฟล์ปลายทางอยู่แล้วเสมอ`);
+  if (!RS.exists(newSym, reportsDir || REPORTS_DIR)) {
+    errors.push(`${newSym}: ไม่มีไฟล์ reports/${newSym}.html หรือ .json — เปลี่ยนชื่อ ticker จริงต้องมีไฟล์ปลายทางอยู่แล้วเสมอ`);
   }
   if (errors.length) return { ok: false, errors, data };
   const tags = { ...data.tags, [newSym]: data.tags[oldSym] };
@@ -59,7 +60,7 @@ function pruneMissing(data, reportsDir) {
   const dir = reportsDir || REPORTS_DIR;
   const tags = {}, removed = [];
   for (const sym of Object.keys(data.tags)) {
-    if (fs.existsSync(path.join(dir, sym + '.html'))) tags[sym] = data.tags[sym];
+    if (RS.exists(sym, dir)) tags[sym] = data.tags[sym];
     else removed.push(sym);
   }
   return { data: { ...data, tags }, removed };

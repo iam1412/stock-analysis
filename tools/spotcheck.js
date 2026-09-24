@@ -14,10 +14,8 @@
  *   วัดจริง 9 ก.ย. 2569 (คิว 27 ตัว): gate ผ่าน 43/43 ทุกใบ แต่ตัวนี้จับของจริงได้ 4 ใบ
  *   (GRAB P/E ค้าง · AEHR ขาเป้านักวิเคราะห์ล้า · ODFL สมอตาย · EXPE ตัวคูณปัจจุบันล้า)
  */
-const fs = require('fs');
-const path = require('path');
 const { buildCtx, REPORTS_DIR } = require('../test/check-reports.js');
-const { expandReport } = require('../build.js');
+const RS = require('./report-source.js');   // ใบ v2 + v3 (Plan 2b)
 const DV = require('./derived-values.js');
 const MF = require('./field-manifest.js');   // ทะเบียนช่องตัวเลข — ใช้ชื่อ/จำนวนช่องชุดเดียวกับ gate (W21)
 
@@ -85,22 +83,22 @@ function spotcheck(html, name, deep) {
 }
 
 function main() {
-  const argv = process.argv.slice(2).map((a) => a.replace(/\.html$/i, '').toUpperCase());
+  const argv = process.argv.slice(2).map((a) => a.replace(/\.(html|json)$/i, '').toUpperCase());
   const deep = argv.length > 0;                 // ระบุหุ้น = โหมดต่อหุ้น (ตรวจครบทุกข้อ)
-  let files = fs.readdirSync(REPORTS_DIR).filter((f) => /\.html$/i.test(f)).sort();
-  if (deep) { const want = new Set(argv); files = files.filter((f) => want.has(f.replace(/\.html$/i, '').toUpperCase())); }
-  if (!files.length) { console.error('❌ ไม่พบไฟล์รายงานให้ตรวจ'); process.exit(1); }
+  let entries = RS.list(REPORTS_DIR);
+  if (deep) { const want = new Set(argv); entries = entries.filter((e) => want.has(e.symbol.toUpperCase())); }
+  if (!entries.length) { console.error('❌ ไม่พบไฟล์รายงานให้ตรวจ'); process.exit(1); }
   let hit = 0, total = 0;
-  for (const f of files) {
+  for (const e of entries) {
     let items;
-    try { items = spotcheck(expandReport(fs.readFileSync(path.join(REPORTS_DIR, f), 'utf8')), f, deep); }
-    catch (e) { console.log(`✗ ${f} — อ่านไม่สำเร็จ: ${e.message}`); continue; }
+    try { items = spotcheck(RS.renderedHtml(e.symbol, REPORTS_DIR), e.symbol + '.html', deep); }
+    catch (err) { console.log(`✗ ${e.name} — อ่านไม่สำเร็จ: ${err.message}`); continue; }
     if (!items.length) continue;
     hit++; total += items.length;
-    console.log(`\n▸ ${f.replace(/\.html$/i, '')}`);
+    console.log(`\n▸ ${e.symbol}`);
     for (const it of items) console.log(`    · ${it}`);
   }
-  console.log(`\n${'─'.repeat(50)}\nspotcheck: ${hit}/${files.length} ใบมีจุดให้อ่าน · ${total} รายการ`);
+  console.log(`\n${'─'.repeat(50)}\nspotcheck: ${hit}/${entries.length} ใบมีจุดให้อ่าน · ${total} รายการ`);
   if (!deep) console.log('(โหมดกวาดทั้งคลัง — ตรวจเฉพาะ "ขา FV ใกล้ราคา" · ระบุชื่อหุ้นเพื่อตรวจครบทุกข้อ)');
   console.log('⚠️  ทุกข้อเป็น "ตัวชี้" ไม่ใช่คำตัดสิน — ต้องอ่านเองก่อนแก้ (ห้ามใช้เป็น gate)\n');
   process.exit(0);   // ★ ไม่เคย fail — ตัวนี้ไม่ใช่ gate · gate คือ `npm run verify`

@@ -20,7 +20,6 @@ const path = require('path');
 const { yahooSession } = require('./fetch-fundamentals.js');
 const { withRetry } = require('./dead-ticker-canary.js');
 const { toYahooSymbol } = require('./update-prices.js');
-const { readStockMeta } = require('./report-meta.js');
 
 const FILE = path.join(__dirname, '..', 'earnings-calendar.json');
 const H = { 'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36', accept: 'application/json' };
@@ -114,14 +113,11 @@ function load(file) {
   } catch (_) { return { symbols: {} }; }
 }
 
-/** [SYM, ysym] ของทุกรายงานใน reports/ (เรียงตามชื่อไฟล์) — currency จาก stock-meta (THB → .BK ผ่าน symbol-map) */
+/** [SYM, ysym] ของทุกรายงานใน reports/ (ใบ v2 + v3 · เรียงตามชื่อไฟล์) — currency จาก stock-meta / JSON (THB → .BK ผ่าน symbol-map) */
 function reportSymbols(dir) {
+  const RS = require('./report-source.js');
   const d = dir || path.join(__dirname, '..', 'reports');
-  return fs.readdirSync(d).filter((f) => /\.html$/i.test(f)).map((f) => f.replace(/\.html$/i, '')).sort()
-    .map((s) => {
-      const sm = readStockMeta(fs.readFileSync(path.join(d, s + '.html'), 'utf8'));
-      return [s, toYahooSymbol(s, sm && sm.currency)];
-    });
+  return RS.list(d).map((e) => [e.symbol, toYahooSymbol(e.symbol, (RS.metaLite(e.symbol, d) || {}).currency)]);
 }
 
 

@@ -27,6 +27,7 @@ ok(U.fmtPrice(1234.5) === '1,234.50', 'fmtPrice comma ≥1000');
 ok(U.fmtPrice(6.1) === '6.10', 'fmtPrice THB เล็ก');
 ok(U.fmtLike(305.678, '297') === '306', 'fmtLike คงสไตล์จำนวนเต็ม');
 ok(U.fmtLike(6.157, '6.15') === '6.16', 'fmtLike คงสไตล์ 2dp');
+ok(U.v3Refusal(new Set(['X']), () => true) && U.v3Refusal(new Set(['X']), () => false) === null, 'v3Refusal: เฉพาะ symbol ที่เป็นใบ v3 (Plan 2b · #62)');
 
 // ---------- toYahooSymbol ----------
 ok(U.toYahooSymbol('ADVANC', 'THB') === 'ADVANC.BK', 'หุ้นไทย → .BK');

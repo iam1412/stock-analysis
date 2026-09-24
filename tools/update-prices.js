@@ -68,6 +68,7 @@ const RV = require('./report-values.js');   // ระยะ 2: format/derive ม
 const { mosBand, fmtPrice, annualChg, styledRD } = RV;
 const { keepMap } = require('./keep-map.js');   // ระยะ 2 ส่วน D: วาง token {{rd:…}} กลับหลัง pass derived บน view ที่ render
 const { footerDate } = require('./queue/footer-date.js');   // ระยะ 2 ส่วน F: "ใบใหม่" (E44) ตัดสินจาก footer "ข้อมูล ณ" ของไฟล์
+const RS = require('./report-source.js');   // ใบ v2 + v3 (Plan 2b) — reportExists/คำสั่งที่ระบุ symbol ต้องเห็นใบ .json
 const MAX_PTS = 13;          // กราฟรายเดือน ~1 ปี (E37)
 const DRIFT_FREEZE = 0.15;   // ราคาใหม่ต่างจากในรายงาน > 15% → freeze (prose จะผิดความหมาย · เดิม 10% — ขยับขึ้นลดภาระ re-analysis)
 const SUSPECT_FREEZE = 0.25; // ต่าง > 25% → สงสัย split/ticker เปลี่ยน/ข้อมูลเพี้ยน
@@ -870,6 +871,26 @@ function commitBody(updated, frozen) {
   return lines.join('\n');
 }
 
+/** symbol ที่สั่งตรง ๆ (argv ที่ไม่ใช่ --flag) → Set ตัวพิมพ์ใหญ่ · ตัด .html/.json (สั่ง `zts.json` ต้องเจอ guard ของใบ v3 ไม่ใช่หลุดเป็น "ZTS.JSON") */
+const onlyFromArgv = (argv) => new Set(argv.filter((a) => !a.startsWith('--')).map((s) => s.replace(/\.(html|json)$/i, '').toUpperCase()));
+/** symbol ที่สั่งตรง ๆ แต่เป็นใบ v3 (reports/<SYM>.json) → ข้อความปฏิเสธ · null = ไม่มี (ส่วนบริสุทธิ์)
+ *  ราคาใบ v3 แช่แข็งจน P5 ได้ แต่ **ห้ามเงียบ** (open-item #62): เดิม `--write --force <v3>` ไม่เจอ .html แล้ว exit 0 เฉย ๆ */
+function v3Refusal(only, isV3) {
+  const hit = [...only].filter((s) => isV3(s));
+  return hit.length ? `✗ ${hit.join(' ')} เป็นใบ v3 (reports/<SYM>.json) — update-prices ยังเขียนราคาใบ v3 ไม่ได้ (v3 cron = Plan 3 · P5 · open-item #62)` : null;
+}
+/** sweep ทั้งคลัง (cron รายวัน): บรรทัดต่อใบ v3 ที่ข้าม + บรรทัดสรุปจำนวน — ให้ log ของ Actions เห็นทุกใบที่ราคาแช่แข็ง (binding ruling 2 · ห้ามเงียบ) */
+function v3SweepNotice(v3Syms) {
+  if (!v3Syms.length) return [];
+  return [...v3Syms.map((s) => `ℹ ข้าม reports/${s}.json — ใบ v3 ราคาไม่ถูก patch`),
+    `ℹ v3-skipped: ${v3Syms.length} — ใบ v3 ไม่ถูก patch ราคา (v3 cron = Plan 3 · P5 · open-item #62 — เส้นตาย merge 2c + 45 วัน)`];   // token คงที่ `v3-skipped: N` — grep ใน log ของ Actions ได้ (advisor pre-dispatch)
+}
+/** ด่านแรกของ main (ส่วนบริสุทธิ์ — เทสเรียกตัวเดียวกับ main): ระบุ symbol v3 = code 1 + ข้อความปฏิเสธ · ไม่ระบุ = code 0 + บรรทัด sweep */
+function v3Guard(only, isV3, v3Syms) {
+  if (only.size) { const r = v3Refusal(only, isV3); return r ? { code: 1, lines: [r] } : { code: 0, lines: [] }; }
+  return { code: 0, lines: v3SweepNotice(v3Syms) };
+}
+
 // ---------- main ----------
 // ---------- โหมดซ่อมค่าที่ derive จากราคา (one-off / หลัง migrate) ----------
 // ใช้ "ราคาที่พิมพ์อยู่ในไฟล์แล้ว" เป็นตัวตั้ง — ไม่ยิง Yahoo เลย ⇒ รันกลาง session ได้ ไม่ชน intraday guard
@@ -948,7 +969,11 @@ async function main() {
   // เจ้าของรีโปทำงานตอนเย็นไทย = กลาง session US ⇒ ถ้า guard คุมทางนั้นด้วย "วิเคราะห์ <US SYM>"
   // ตอนเย็นจะเลิกประทับราคาเงียบ ๆ ทุกครั้ง · ทั้งสอง flag บังคับระบุ SYMBOL + มีคน/agent ยืนยันแล้ว
   const ALLOW_INTRADAY = process.argv.includes('--allow-intraday') || FORCE || ALIVE;
-  const ONLY = new Set(process.argv.slice(2).filter((a) => !a.startsWith('--')).map((s) => s.replace(/\.html$/i, '').toUpperCase()));
+  const ONLY = onlyFromArgv(process.argv.slice(2));
+  // ใบ v3 (Plan 2b · binding ruling 2 · #62): ระบุตรง ๆ = exit 1 · sweep = บรรทัดต่อใบ + สรุปจำนวน (ไม่เงียบ)
+  const g = v3Guard(ONLY, (s) => RS.kindOf(s, REPORTS) === 'v3', RS.list(REPORTS).filter((e) => e.v3).map((e) => e.symbol));
+  for (const l of g.lines) (g.code ? console.error : console.log)(l);
+  if (g.code) { process.exitCode = g.code; return; }
   // โหมดซ่อมค่าที่ derive จากราคา — คนละทางเดินกับ cron (ไม่ fetch ไม่แตะราคา/วันที่/กราฟ/คิว flags)
   if (process.argv.includes('--heal-derived')) {
     const h = healDerived({ write: WRITE, prose: process.argv.includes('--prose'), only: ONLY });
@@ -1148,7 +1173,7 @@ async function main() {
   const frozenAll = frozen.filter((f) => !deadSyms.has(f.symbol)).concat(deadConfirmed);
 
   // เขียน flags (เฉพาะ --write — dry-run ไม่ทิ้งร่องรอย) · flag ของรายงานที่ถูกลบแล้ว (หุ้นเพิกถอน) ตัดทิ้ง — ไม่งั้นค้างในคิวตลอด
-  const reportExists = new Set(fs.readdirSync(REPORTS).filter((f) => /\.html$/i.test(f)).map((f) => f.replace(/\.html$/i, '').toUpperCase()));
+  const reportExists = RS.symbols(REPORTS);   // ใบ v2 + v3 — flag ของใบ .json ต้องไม่ถูกตัดทิ้ง (Plan 2b)
   // ★ processed = ตัวที่ "ตัดสินแล้วรอบนี้" ต้อง **หักตัวที่ข้ามเพราะตลาดเปิด** ออก — mergeFlags เคลียร์
   // flag ของทุก symbol ใน processed ที่ไม่มี freeze รอบนี้ ⇒ ถ้าใส่ตัว intraday เข้าไปด้วย การรันมือ
   // กลาง session จะล้าง drift/mos-flip ที่ค้างคิวอยู่ทิ้งทั้งที่ยังไม่ได้ประเมินซ้ำเลย (คิวหายเงียบ)
@@ -1183,6 +1208,6 @@ function pxOf(html, sm) {
   return r && RV.isV2(r.data) && r.data.values && Number.isFinite(r.data.values.px) ? r.data.values.px : sm.price;
 }
 
-module.exports = { derivedPassV2, proseTokensIfNew, mirrorStockMetaV2, healDerived, fvOf, pxOf, mosBand, fmtPrice, fmtLike, toYahooSymbol, fetchChart, buildChartData, niceBounds, annualChg, decide, currencyMatches, isIntradayQuote, detectMixedBasis, detectStaleQuotes, missedSessions, probeCap, capByCohort, controlTickers, unverifiedCohorts, classifyStale, patchReport, gateAfterPatch, gateCheck, mergeFlags, commitFlags, styledRD, commitBody, THAI_MONTHS, MOS_FLIP_DEADBAND_PP };
+module.exports = { onlyFromArgv, v3Refusal, v3SweepNotice, v3Guard, derivedPassV2, proseTokensIfNew, mirrorStockMetaV2, healDerived, fvOf, pxOf, mosBand, fmtPrice, fmtLike, toYahooSymbol, fetchChart, buildChartData, niceBounds, annualChg, decide, currencyMatches, isIntradayQuote, detectMixedBasis, detectStaleQuotes, missedSessions, probeCap, capByCohort, controlTickers, unverifiedCohorts, classifyStale, patchReport, gateAfterPatch, gateCheck, mergeFlags, commitFlags, styledRD, commitBody, THAI_MONTHS, MOS_FLIP_DEADBAND_PP };
 
 if (require.main === module) main().catch((e) => { console.error(e); process.exit(1); });
