@@ -294,7 +294,7 @@ async function medianBlock(spec, th) {
 /** ใบ v3 แล้ว = ห้าม prep (spec §6.4 · ruling 4): คิวของ v3 UPDATE = P6 — ไม่ทำเหมือนเป็น NEW */
 function checkNotV3(sym, dir) {
   if (RS.kindOf(sym, dir || REPORTS) === 'v3')
-    throw new Error(`${sym} เป็นใบ v3 แล้ว (reports/${sym}.json) — v3 UPDATE = Plan 3 (คิวของใบ v3 = P6) · แก้ด้วย node tools/report.js export ${sym} → แก้ .work/${sym}.json → node tools/report.js save ${sym}`);
+    throw new Error(`${sym} เป็นใบ v3 แล้ว (reports/${sym}.json) — v3 UPDATE = P6 (คิวของใบ v3 · Plan 3/P5 = cron ราคาเท่านั้น) · แก้ด้วย node tools/report.js export ${sym} → แก้ .work/${sym}.json → node tools/report.js save ${sym}`);
 }
 
 /** node <script> … --json → object (I/O ของ sidecar — ล้ม/JSON เสีย = throw พร้อมท้าย stderr) · runner = ฉีดได้ในเทส */

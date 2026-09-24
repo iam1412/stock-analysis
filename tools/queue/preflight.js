@@ -34,7 +34,7 @@ function loadFlags() {
   catch (e) { if (e.code === 'ENOENT') return []; throw new Error(`อ่าน price-flags.json ไม่ได้ (${e.message})`); }
 }
 
-// ★ คิวตามอายุข้ามใบ v3 (Plan 2b): ใบ v3 ที่เก่าจะสร้างแถว LIGHT ทุกรอบ → prep ปฏิเสธ ("v3 UPDATE = Plan 3") → issue คิวไม่ปิดเอง
+// ★ คิวตามอายุข้ามใบ v3 (Plan 2b): ใบ v3 ที่เก่าจะสร้างแถว LIGHT ทุกรอบ → prep ปฏิเสธ ("v3 UPDATE = P6") → issue คิวไม่ปิดเอง
 //   P6 (คิว v3 UPDATE) ต้องถอดตัวกรอง `!e.v3` นี้ออก
 const listReportsFS = (dir) => RS.list(dir || REPORTS).filter((e) => !e.v3).map((e) => e.symbol).sort();
 const footerAgeFS = (today) => (sym) => { const iso = analysisIsoOf(readLite(sym)); return iso ? ageDays(iso, today) : null; };

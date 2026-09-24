@@ -1550,7 +1550,7 @@ const applyEditsRacePromise = testApplyEditsStdin(ok);
     ok(mv.foreign.join(',') === 'reports/X.json', 'v3/ship: git mv .html → .json = blocker (Review Focus 4)', JSON.stringify(mv));
     // prep
     let v3Err = null; try { Pp.checkNotV3('ZTS', V3DIR); } catch (e) { v3Err = e.message; }
-    ok(/v3 UPDATE = Plan 3/.test(v3Err || '') && /report\.js export ZTS/.test(v3Err || ''), 'v3/prep: symbol ที่เป็นใบ v3 แล้ว → ปฏิเสธ ("v3 UPDATE = Plan 3")', v3Err);
+    ok(/v3 UPDATE = P6/.test(v3Err || '') && !/v3 UPDATE = Plan 3/.test(v3Err || '') && /report\.js export ZTS/.test(v3Err || ''), 'v3/prep: symbol ที่เป็นใบ v3 แล้ว → ปฏิเสธ ("v3 UPDATE = P6" · P5 = cron ราคาเท่านั้น)', v3Err);
     let v2Err = 'none'; try { Pp.checkNotV3('AAPL', V3DIR); Pp.checkNotV3('NEWCO', V3DIR); } catch (e) { v2Err = e.message; }
     ok(v2Err === 'none', 'v3/prep: ใบ v2 และหุ้นใหม่ผ่าน checkNotV3', v2Err);
     // postcheck
