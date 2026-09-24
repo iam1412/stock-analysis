@@ -33,4 +33,48 @@ t.eq(b.rd.values.analystTgt, undefined, 'no analyst → no analystTgt in bridge'
 { const d = load('ZTS'); d.meta.themeLegacy = null; t.throws(() => C.compute(d, { seeds: {} }), /seeds\.json.*ZTS/, 'no theme source → clear error'); }
 { const d = load('ZTS'); d.legs[1] = { method: 'declared', label: 'SOTP', inputs: { value: 150, basis: 'sotp', extrasRef: 0 } };
   t.throws(() => C.compute(d, { seeds }), /legs\[1\]\.inputs\.extrasRef/, 'extrasRef must point at an extras table'); }
+// Plan 2a Task 5 — weights / context / range
+t.eq(C.weightsOf(load('ZTS')), [0.5, 0.5], 'legacy: equal weights, byte-identical to Plan 1');
+{ const d = load('ZTS'); d.legs = [{ ...d.legs[0], family: 'market' }, { method: 'ddm', label: 'DDM', family: 'rg', inputs: { g: 5, r: 9 } }, { method: 'pbv', label: 'P/BV', family: 'rg', inputs: { g: 5, r: 9 } }];
+  t.eq(C.weightsOf(d), [0.5, 0.25, 0.25], 'family: 1 family 1 vote, split inside the family');
+  d.fvWeights = [0.6, 0.2, 0.2]; t.eq(C.weightsOf(d), [0.6, 0.2, 0.2], 'explicit fvWeights wins over family'); }
+{ const d = load('ZTS'); d.legs[1].role = 'context'; const v = C.compute(d, { seeds });
+  t.eq(C.weightsOf(d), [1, 0], 'context leg weighs 0');
+  t.near(v.fv, v.legs[0].value, 1e-9, 'fv = the single fv leg');
+  t.eq([v.fvLow, v.fvHigh], [v.legs[0].value, v.legs[0].value], 'context leg excluded from fvLow/fvHigh');
+  t.eq(v.legs[1].role, 'context', 'view carries role'); }
+{ const d = load('ZTS'); d.legs[0].inputs.multipleRange = [20, 34]; const v = C.compute(d, { seeds });
+  t.near(v.fvLow, 0.5 * 6.13 * 20 + 0.5 * v.legs[1].value, 1e-9, 'fvLow = Σ w·lo (unranged leg uses its value)');
+  t.near(v.fvHigh, 0.5 * 6.13 * 34 + 0.5 * v.legs[1].value, 1e-9, 'fvHigh = Σ w·hi');
+  t.near(v.fv, (v.legs[0].value + v.legs[1].value) / 2, 1e-9, 'range does not move fv'); }
+// R7 — ขา context 'current': ตัวคูณสด = ราคา ÷ ตัวตั้ง · ค่าขา ≡ ราคา · ไม่ขยับ FV
+{ const d = load('ZTS'); const fv0 = C.compute(d, { seeds }).fv;
+  d.legs.push({ method: 'pe', label: 'P/E ปัจจุบัน', role: 'context', inputs: { multipleSource: 'current' } }); d.fvWeights = null;
+  const v = C.compute(d, { seeds }), L = v.legs[v.legs.length - 1];
+  t.near(L.liveMultiple, d.market.px / d.fundamentals.eps, 1e-9, 'liveMultiple = px / eps');
+  t.near(L.value, d.market.px, 1e-9, 'current leg value ≡ px');
+  t.eq(L.weight, 0, 'current leg weighs 0');
+  t.near(v.fv, fv0, 1e-9, 'current context leg does not move fv');
+  d.market.px *= 1.1; t.near(C.compute(d, { seeds }).legs[v.legs.length - 1].liveMultiple, d.market.px / d.fundamentals.eps, 1e-9, 'liveMultiple follows the price (nothing frozen)'); }
+// Plan 2a Task 10 — ยอดงบสกุลอื่นแปลงเป็นสกุลราคาก่อนเข้าสูตรทุกตัว
+{ const base0 = C.compute(load('ZTS'), { seeds });
+  t(base0.fq === base0.doc.fundamentals && base0.fx === 1 && base0.stmtCur === '$', 'no reportCurrency → fq is the same object (legacy path)');
+  const d = load('ZTS'); d.fundamentals.reportCurrency = 'EUR'; d.fundamentals.fx = 1.2; d.legs[1].inputs.rfCurrency = 'EUR'; const v = C.compute(d, { seeds });
+  t.eq([v.fq.revenue, v.fq.fcf, v.fq.netDebt], [9.4e9 * 1.2, 2.3e9 * 1.2, 5.1e9 * 1.2], 'totals converted into quote currency');
+  t.eq(v.fq.eps, 6.13, 'per-share values untouched');
+  t.near(v.d.ps, 120 * 443e6 / (9.4e9 * 1.2), 1e-9, 'P/S divides quote money by quote money');
+  t.eq(v.stmtCur, '€', 'statement symbol'); }
+{ const d = load('ZTS'); d.fundamentals.reportCurrency = 'EUR'; d.fundamentals.fx = 1.2; d.legs[1].inputs.rfCurrency = 'EUR';
+  d.legs[1].override = { fcf: 2.0e9, why: 'normalised FCF (EUR)' }; const v = C.compute(d, { seeds });
+  const d1 = load('ZTS'); d1.legs[1].override = { fcf: 2.4e9, netDebt: 6.12e9, why: 'same in USD' }; d1.fundamentals.netDebt = 6.12e9; d1.fundamentals.fcf = 2.76e9; d1.fundamentals.revenue = 11.28e9;
+  t.near(v.legs[1].value, C.compute(d1, { seeds }).legs[1].value, 1e-6, 'override totals are statement currency and get converted too'); }
+// final review (1) — family ต้องตรง method: ป้ายผิดตระกูลเคยย้าย FV เงียบ ๆ (probe: BBL-real ขา ddm/pbv → 'market' ⇒ FV 181.43, 0 error)
+// ตอนนี้ compute() (validate ก่อนคิด) ปฏิเสธทุกป้ายที่ไม่ใช่ 'rg' บนขา (r,g) ⇒ FV ขยับด้วยป้ายไม่ได้อีก
+{ const round2 = (x) => Math.round(x * 100) / 100;
+  t.eq(round2(C.compute(load('BBL-real'), { seeds: {} }).fv), 176.77, 'BBL-real FV 176.77 with honest families');
+  for (const f1 of ['market', 'rg', 'asset']) for (const f2 of ['market', 'rg', 'asset']) {
+    if (f1 === 'rg' && f2 === 'rg') continue;
+    const d = load('BBL-real'); d.legs[1].family = f1; d.legs[2].family = f2;
+    t.throws(() => C.compute(d, { seeds: {} }), /legs\[[12]\]\.family/, `BBL-real ddm=${f1} pbv=${f2}: mislabel rejected, FV cannot move`);
+  } }
 t.done();

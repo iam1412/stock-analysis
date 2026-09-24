@@ -23,7 +23,9 @@ const TOKENS_V3 = {};
 for (const [v3, v2] of Object.entries(V2_TWIN)) TOKENS_V3[v3] = (view) => String(RV.TOKENS[v2](view.d));
 for (let i = 1; i <= 4; i++) {
   TOKENS_V3[`leg${i}`] = (view) => money(view, need(view.legs && view.legs[i - 1], `leg${i}`).value);
-  TOKENS_V3[`leg${i}.multiple`] = (view) => need(need(view.legs && view.legs[i - 1], `leg${i}`).inputs.multiple, `leg${i}.multiple`).toFixed(1) + 'x';
+  // ขา context 'current' (R7) ไม่มี inputs.multiple — ใช้ตัวคูณสดที่ compute คิดไว้ (liveMultiple = ราคา ÷ ตัวตั้ง) ตัวเดียวกับ mdesc/ค่าขา
+  TOKENS_V3[`leg${i}.multiple`] = (view) => { const l = need(view.legs && view.legs[i - 1], `leg${i}`);
+    return need(l.liveMultiple != null ? l.liveMultiple : l.inputs.multiple, `leg${i}.multiple`).toFixed(1) + 'x'; };
 }
 ['bear', 'base', 'bull'].forEach((n, i) => {
   TOKENS_V3[`scn.${n}.end`] = (view) => money(view, need(view.scn && view.scn[i], `scn.${n}`).driverEnd);
@@ -32,5 +34,8 @@ for (let i = 1; i <= 4; i++) {
 TOKENS_V3.analysisDate = (view) => need(view.analysisDateText, 'analysisDate');
 TOKENS_V3['range52w.lo'] = (view) => money(view, need(view.doc && view.doc.market.range52w, 'range52w').lo);
 TOKENS_V3['range52w.hi'] = (view) => money(view, need(view.doc && view.doc.market.range52w, 'range52w').hi);
+// Plan 2a Task 9 — P/FFO (ไม่มีคู่ v2 · รูปแบบเดียวกับ {{pe}}/{{pbv}} = ไม่มี x ต่อท้าย) — เลขมาจาก cards.js ตัวเดียวกับการ์ด
+TOKENS_V3.pffo = (view) => require('./cards.js').pffoCalc(view).raw.toFixed(1);
+TOKENS_V3.pffoForward = (view) => require('./cards.js').pffoForwardCalc(view).raw.toFixed(1);
 
 module.exports = { TOKENS_V3, V2_TWIN };

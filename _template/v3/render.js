@@ -4,25 +4,29 @@
  * (stock-meta + report-data v2 + token {{rd:…}} + marker) แล้วให้ build.js เดินทางเดิมทุกขั้น
  * ⇒ dashboard.css / engine.js / decorateReport / injectTA / gate v2 ใช้ต่อได้โดยไม่แก้
  * DOM/class คัดจาก _template/skeleton-th.html (ห้ามคิด class ใหม่ ยกเว้น .xtab ของ extras)
- * ทุก string จาก JSON ที่ไปลง HTML แบบ prose ผ่าน esc() หรือ renderProse() เสมอ — ★ ยกเว้น gdots/theme
- * (สี hex จาก meta.themeLegacy/seeds — ไม่ผ่าน esc()) และเนื้อหาใน <script type="application/json"> (stock-meta/
- * report-data — ผ่าน JSON.stringify()/RV.styledRD() ไม่ใช่ esc()) ความปลอดภัยของสองจุดนี้พึ่ง allowlist สี/ตัวเลข +
- * JSON.parse ที่ fail-closed ใน build.js validateReportData (ไม่ใช่ escaping) — hardening เป็นชั้นที่สอง (เช่น
- * escape ตรงนี้ด้วย) วางแผนไว้ที่ Plan 2
+ * ทุก string จาก JSON ที่ไปลง HTML แบบ prose ผ่าน esc() หรือ renderProse() เสมอ · สี gdots/theme ผ่าน allowlist
+ * tools/safe-values.js ที่ schema (ต้นทาง) และ build.js (ปลายทาง) · JSON ใน <script type="application/json">
+ * ผ่าน jsonScript() ที่แปลง '<' เป็น \u003c (ชั้นที่สอง — open-item #50)
  */
 const RV = require('../../tools/report-values.js');
 const P = require('../../tools/v3/prose.js');
 const K = require('../../tools/v3/cards.js');
+const S = require('../../tools/v3/schema.js');
+const X = require('../../tools/v3/extras.js');
 
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const METHOD_NAME = { pe: 'P/E', pbv: 'P/BV', ps: 'P/S', evsales: 'EV/Sales', evebitda: 'EV/EBITDA', pfcf: 'P/FCF', fcfyield: 'FCF Yield',
-  pffo: 'P/FFO', ddm: 'DDM / Gordon Growth', dcf: 'DCF', ri: 'Residual Income', declared: 'มูลค่าประกาศ' };
-const SRC_NAME = { median5y: 'มัธยฐาน 5 ปี', median10y: 'มัธยฐาน 10 ปี', peer: 'ค่ากลางกลุ่มเทียบ', justified: 'justified', sector: 'ค่ากลางเซกเตอร์' };
+  pffo: 'P/FFO', ddm: 'DDM / Gordon Growth', ddm2: 'DDM 2 ระยะ', dcf: 'DCF', ri: 'Residual Income', declared: 'มูลค่าประกาศ' };
+const SRC_NAME = { median5y: 'มัธยฐาน 5 ปี', median10y: 'มัธยฐาน 10 ปี', peer: 'ค่ากลางกลุ่มเทียบ', justified: 'justified', sector: 'ค่ากลางเซกเตอร์', current: 'ตัวคูณปัจจุบัน' };
+// Plan 2a Task 9 (§3.6 J) — ป้าย FFO/AFFO ของขา pffo · driver ffo · exit pffo
+const ffoLabel = (doc) => ({ ffo: 'FFO', affo: 'AFFO' }[doc.fundamentals.ffoBasis || 'ffo']);
 const dot = (c) => `<div style="width:8px;height:8px;border-radius:50%;background:${c};display:inline-block;margin:0 3px"></div>`;
+// JSON ใน <script> ห้ามมี '<' ดิบ (กัน </script> ปิดแท็กก่อนเวลา) — '<' โผล่ได้เฉพาะในสตริง JSON ⇒ \u003c ยัง parse เป็นค่าเดิม
+const jsonScript = (s) => String(s).replace(/</g, '\\u003c');
 
 // Finding 3 (postreview) — mdesc EPS ต้องระบุฐานให้ตรง: override.eps = "EPS ปรับ" (ไม่ใช่ TTM ของจริง)
 // ไม่งั้นตาม fundamentals.epsBasis (gaap-ttm/adj-ttm/fy) — เดิม mdesc พิมพ์ "EPS (TTM)" ตายตัวแม้ eps มาจาก override
-const EPS_BASIS_LABEL = { 'gaap-ttm': 'EPS (TTM)', 'adj-ttm': 'EPS adj. (TTM)', fy: 'EPS (FY)' };
+const EPS_BASIS_LABEL = { 'gaap-ttm': 'EPS (TTM)', 'adj-ttm': 'EPS adj. (TTM)', fy: 'EPS (FY)', ifrs: 'EPS IFRS (TTM)' };
 function epsLabel(leg, view) {
   if (leg.override && leg.override.eps != null) return 'EPS ปรับ';
   const basis = view.doc.fundamentals.epsBasis;
@@ -35,38 +39,75 @@ function epsLabel(leg, view) {
 function mdesc(leg, view) {
   const m = (v) => view.cur + RV.fmtPrice(v);
   const i = leg.inputs, b = { ...view.doc.fundamentals, ...(leg.override || {}) };
-  const src = i.multipleSource ? ` (${SRC_NAME[i.multipleSource]})` : '';
+  const src = i.medianWindow ? ` (มัธยฐาน ${i.medianWindow})` : i.multipleSource ? ` (${SRC_NAME[i.multipleSource]})` : '';
+  const rng = i.multipleRange ? ` · กรอบ ${i.multipleRange[0]}–${i.multipleRange[1]}x` : '';
+  // R7 — 'current': ตัวคูณสดจากราคาวันนี้ (หน้า v3 build ใหม่จาก JSON ทุกครั้ง จึงไม่ค้าง) · ตัวตั้งเดียวกับ compute (S.CURRENT_BASE + override)
+  const live = i.multipleSource === 'current';
+  const mult = live ? (view.d.px / b[S.CURRENT_BASE[leg.method]]).toFixed(1) : i.multiple;
   switch (leg.method) {
-    case 'pe': return `${epsLabel(leg, view)} ${m(b.eps)} × P/E เป้าหมาย ~${i.multiple}x${src}`;
-    case 'pbv': return i.multiple != null ? `BVPS ${m(b.bvps)} × P/BV ${i.multiple}x${src}`
+    case 'pe': return live ? `${epsLabel(leg, view)} ${m(b.eps)} × P/E ปัจจุบัน ${mult}x`
+      : `${epsLabel(leg, view)} ${m(b.eps)} × P/E เป้าหมาย ~${mult}x${src}${rng}`;
+    case 'pbv': return i.multipleSource != null ? `BVPS ${m(b.bvps)} × P/BV ${live ? 'ปัจจุบัน ' : ''}${mult}x${live ? '' : src}${rng}`
       : `P/BV เหมาะสม = (ROE ${b.roe}% − g ${i.g}%)/(r ${i.r}% − g ${i.g}%) ≈ ${((b.roe - i.g) / (i.r - i.g)).toFixed(2)} × BVPS ${m(b.bvps)}`;
     case 'ddm': return `D₁ = ปันผล ${m(b.dps)} × (1+g); g ${i.g}%, r ${i.r}%`;
-    case 'dcf': return `FCF ${RV.fmtBig(b.fcf, view.cur)} โต ${i.g1}%/ปี ${i.years1} ปี · โตถาวร ${i.tg}% · r ${i.r}%`;
+    case 'ddm2': return `D₁ ${m(i.d1)} โต ${i.g1}%/ปี ${i.years1} ปี แล้ว ${i.g2}%/ปี · r ${i.r}% · `
+      + (i.horizon == null ? 'มูลค่าปลายงวดแบบ Gordon' : `${i.horizon} งวด ไม่มีมูลค่าปลายงวด`);
+    // FCF = ยอดงบรวม (fundamentals/override) → สกุลงบ (view.stmtCur) เหมือนการ์ด FCF · ค่าขา (.mval) เป็นสกุลราคา (compute แปลงด้วย fx แล้ว)
+    case 'dcf': return `FCF ${RV.fmtBig(b.fcf, view.stmtCur || view.cur)} โต ${i.g1}%/ปี ${i.years1} ปี · โตถาวร ${i.tg}% · r ${i.r}%`;
     case 'ri': return `BVPS ${m(b.bvps)} · ROE ${b.roe}% vs r ${i.r}% · ${i.years} ปี · payout ${i.payout}%`;
     case 'fcfyield': return `FCF/หุ้น ÷ yield เป้าหมาย ${i.yield}%`;
     case 'declared': return `ค่าประกาศ (${i.basis})` + (i.extrasRef != null ? ' — ดูตารางประกอบ' : '');
-    default: return `${METHOD_NAME[leg.method]} ${i.multiple}x${src}`;
+    default: return `${leg.method === 'pffo' ? `P/${ffoLabel(view.doc)}` : METHOD_NAME[leg.method]} ${live ? 'ปัจจุบัน ' : ''}${mult}x${live ? '' : src}${rng}`;
   }
 }
 
 function extrasHtml(doc, view, after) {
   return doc.extras.filter((x) => x.after === after).map((x) => {
-    const cell = (c) => (typeof c === 'number' ? esc(RV.fmtPrice(c)) : P.renderProse(c, view, { mode: 'v2src' }));
+    const pr = (s) => P.renderProse(s, view, { mode: 'v2src' });
+    const cell = (c, j) => (typeof c === 'number' ? esc(X.fmtCell(c, x.columns && x.columns[j], view)) : pr(c));
+    const ncol = Math.max(x.headers.length, ...x.rows.map((r) => (Array.isArray(r) ? r.length : r.kind === 'total' ? r.cells.length : 1)));
     const head = x.headers.length ? `<tr>${x.headers.map((h) => `<th>${esc(h)}</th>`).join('')}</tr>` : '';
-    const rows = x.rows.map((r) => `<tr>${r.map((c) => `<td>${cell(c)}</td>`).join('')}</tr>`).join('');
-    const note = x.note ? `<p class="xnote">${P.renderProse(x.note, view, { mode: 'v2src' })}</p>` : '';
+    const row = (r) => (Array.isArray(r) ? `<tr>${r.map((c, j) => `<td>${cell(c, j)}</td>`).join('')}</tr>`
+      : r.kind === 'total' ? `<tr>${r.cells.map((c, j) => `<td><b>${cell(c, j)}</b></td>`).join('')}</tr>`
+        : `<tr><td colspan="${ncol}">${pr(r.text)}</td></tr>`);
+    let rows = x.rows.map(row).join('');
+    if (x.fx) {
+      const f = doc.fundamentals, tot = X.tableTotal(x).total;
+      rows += `<tr><td colspan="${ncol}">แปลงเป็น ${esc(doc.currency)} ที่ ${esc(f.reportCurrency + doc.currency)} ${f.fx}: <b>${esc(X.fmtMoney(tot * f.fx, view.cur))}</b></td></tr>`;
+    }
+    const note = x.note ? `<p class="xnote">${pr(x.note)}</p>` : '';
     return `\n  <section>\n    <div class="card"><h3>${esc(x.title)}</h3><table class="xtab">${head}${rows}</table>${note}</div>\n  </section>`;
   }).join('');
 }
 
+// หัว §3 + ป้ายกล่อง FV — ruling R6 (valHint: ป้ายกล่องเป็นกลาง ไม่ให้คำที่ generate ขัดกับ hint ของผู้เขียน) · §3.6 C (family) · §3.6 I (ขา context ไม่นับ)
+function valHintParts(doc, view) {
+  if (doc.text && doc.text.valHint) return { hint: P.renderProse(doc.text.valHint, view, { mode: 'v2src' }), box: 'มูลค่าเหมาะสม (Fair Value)' };
+  const fv = view.legs.filter((l) => l.role === 'fv'), nCtx = view.legs.length - fv.length;
+  const fams = new Set(fv.map((l) => l.family).filter(Boolean));
+  const byFamily = !doc.fvWeights && fams.size > 0;
+  const word = byFamily ? 'เฉลี่ยตามตระกูล' : doc.fvWeights ? 'ถ่วงน้ำหนัก' : 'เฉลี่ย';
+  const hint = (byFamily ? `เฉลี่ย ${fams.size} ตระกูล (${fv.length} วิธี)` : `${word} ${fv.length} วิธี`) + (nCtx ? ` · +${nCtx} บริบท` : '');
+  return { hint, box: `มูลค่าเหมาะสม${word} (Fair Value)` };
+}
+
 function toV2Source(doc, view) {
   const pr = (s) => P.renderProse(s, view, { mode: 'v2src' });
+  const T = doc.text || {}; const vh = valHintParts(doc, view);
   const m = doc.meta, d = view.d, s = doc.scenarios, TH = doc.currency === 'THB';
-  const cards = doc.metrics.cards.map((k) => K.renderCard(k, view, doc.metrics.notes && doc.metrics.notes[k]))
-    .concat((doc.metrics.custom || []).map((c) => ({ k: esc(c.label), v: pr(c.value), d: c.note ? pr(c.note) : '', cls: '', raw: true })));
-  const cardHtml = cards.map((c) => `<div class="metric"><div class="k">${c.raw ? c.k : esc(c.k)}</div><div class="v${c.cls ? ' ' + c.cls : ''}">${c.raw ? c.v : esc(c.v)}</div><div class="d">${c.raw ? c.d : esc(c.d)}</div></div>`).join('\n      ');
+  // ลำดับ = S.cardEntries (custom แทรกได้ด้วย "custom:<i>") · tone → class สีเดิม (.v pos|neg|neu) — ไม่มี markup ใน JSON (§3.6 H)
+  const noteOf = (k) => doc.metrics.notes && doc.metrics.notes[k];
+  const cards = S.cardEntries(doc.metrics).map((e) => {
+    if (e.custom != null) {
+      const c = doc.metrics.custom[e.custom];
+      return { k: esc(c.label), v: pr(c.value), d: c.note ? pr(c.note) : '', cls: e.tone || '' };
+    }
+    const c = K.renderCard(e.key, view), note = noteOf(e.key);
+    return { k: esc(c.k), v: esc(c.v), d: esc(c.d) + (note ? (c.d ? ' · ' : '') + pr(note) : ''), cls: e.tone || c.cls };
+  });
+  const cardHtml = cards.map((c) => `<div class="metric"><div class="k">${c.k}</div><div class="v${c.cls ? ' ' + c.cls : ''}">${c.v}</div><div class="d">${c.d}</div></div>`).join('\n      ');
   const legsHtml = view.legs.map((l, i) => `<div class="vmethod">
-        <div><div class="mname">${i + 1}. ${esc(l.label)}</div><div class="mdesc">${esc(mdesc(doc.legs[i], view))}${l.note ? ' — ' + pr(l.note) : ''}</div></div>
+        <div><div class="mname">${i + 1}. ${esc(l.label)}${l.role === 'context' ? ' (บริบท — ไม่นับใน FV)' : ''}</div><div class="mdesc">${esc(mdesc(doc.legs[i], view))}${l.note ? ' — ' + pr(l.note) : ''}</div></div>
         <div class="mval">${esc(view.cur + RV.fmtPrice(l.value))}</div>
       </div>`).join('\n      ');
   // Review Focus #2 — ป้ายเกจเรียงค่าจากน้อยไปมากเสมอ (E26)
@@ -76,8 +117,9 @@ function toV2Source(doc, view) {
   ].concat(doc.analyst ? [{ v: doc.analyst.target, tok: '{{rd:analystTgt}}', lab: 'เป้าเฉลี่ย Analyst' }] : [])
     .sort((a, b) => a.v - b.v)
     .map((x, i, arr) => `<span${i === 0 ? '' : i === arr.length - 1 ? ' style="text-align:right"' : ' style="text-align:center"'}>${x.tok}<br><small>${x.lab}</small></span>`).join('\n          ');
-  const drv = { eps: 'EPS', ffo: 'FFO', revenuePerShare: 'รายได้/หุ้น', bvps: 'BVPS', fcfPerShare: 'FCF/หุ้น' }[s.driver];
-  const ex = { pe: 'P/E', ps: 'P/S', pbv: 'P/BV', pffo: 'P/FFO', pfcf: 'P/FCF' }[s.exitMetric];
+  const FFO = ffoLabel(doc);
+  const drv = { eps: 'EPS', ffo: FFO, revenuePerShare: 'รายได้/หุ้น', bvps: 'BVPS', fcfPerShare: 'FCF/หุ้น' }[s.driver];
+  const ex = { pe: 'P/E', ps: 'P/S', pbv: 'P/BV', pffo: `P/${FFO}`, pfcf: 'P/FCF' }[s.exitMetric];
   const col = (i, cls, name) => {
     const sc = view.scn[i];
     // Finding 4 (postreview) — เลขลบใช้ minus glyph U+2212 (ตามธรรมเนียม v2) ไม่ใช่ ASCII hyphen
@@ -97,8 +139,9 @@ function toV2Source(doc, view) {
       </div>`;
   };
   const li = (xs) => xs.map((x) => `<li>${pr(x)}</li>`).join('\n          ');
-  const analystCell = doc.analyst
-    ? `<div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~{{rd:analystTgt}} (${esc(doc.analyst.rating)} · ${doc.analyst.n} ราย)</div></div>`
+  const an = doc.analyst;
+  const analystCell = an
+    ? `<div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~{{rd:analystTgt}} (${esc(an.rating)} · ${an.n != null ? an.n + ' ราย' : 'n/a'})</div></div>`
     : `<div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v">ไม่มีข้อมูล</div></div>`;
   const tags = [`${esc(m.exchange)}: ${esc(doc.symbol)}`].concat((m.headerTags || []).map(esc)).map((x) => `<span class="tag">${x}</span>`).join('\n      ');
   const r52 = doc.market.range52w;
@@ -111,10 +154,10 @@ function toV2Source(doc, view) {
 <title>วิเคราะห์หุ้น ${esc(m.company)} (${esc(doc.symbol)}) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="${esc(m.aiModel)}">
 <script type="application/json" id="stock-meta">
-${JSON.stringify(view.sm)}
+${jsonScript(JSON.stringify(view.sm))}
 </script>
 <script type="application/json" id="report-data">
-${RV.styledRD(view.rd)}
+${jsonScript(RV.styledRD(view.rd))}
 </script>
 <!--TEMPLATE:STYLE-->
 </head>
@@ -145,7 +188,7 @@ ${RV.styledRD(view.rd)}
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2>${doc.metrics.hint ? `<div class="hint">${pr(doc.metrics.hint)}</div>` : ''}</div>
     <div class="grid g4">
       ${cardHtml}
-    </div>
+    </div>${T.metricsNote ? `\n    <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">${pr(T.metricsNote)}</p>` : ''}
   </section>${extrasHtml(doc, view, 'metrics')}
 
   <section>
@@ -166,11 +209,11 @@ ${RV.styledRD(view.rd)}
   </section>
 
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">${doc.fvWeights ? 'ถ่วงน้ำหนัก' : 'เฉลี่ย'} ${view.legs.length} วิธี</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">${vh.hint}</div></div>
     <div class="card">
-      ${legsHtml}
+      ${T.valIntro ? `<p style="font-size:12px;color:var(--muted);margin:0 0 12px;line-height:1.6">${pr(T.valIntro)}</p>\n      ` : ''}${legsHtml}
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสม${doc.fvWeights ? 'ถ่วงน้ำหนัก' : 'เฉลี่ย'} (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="l">${vh.box}<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
         <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -220,7 +263,7 @@ ${RV.styledRD(view.rd)}
   </section>
 
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน ${s.years} ปี</h2><div class="hint">จากจุดเข้า {{rd:px}}${s.driver === 'eps' ? ' • EPS ฐาน ~{{rd:baseEps}}' : ''}{{rd:scnNote}}</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน ${s.years} ปี</h2><div class="hint">จากจุดเข้า {{rd:px}}${s.driver === 'eps' ? ' • EPS ฐาน ~{{rd:baseEps}}' : ` • ${drv} ฐาน ~${esc(view.cur + RV.fmtPrice(view.scn[0].driverStart))}`}{{rd:scnNote}}</div></div>
     <div class="scn">
       ${col(0, 'bear', 'Bear')}
       ${col(1, 'base', 'Base')}
@@ -267,7 +310,7 @@ ${RV.styledRD(view.rd)}
 
   <div class="disc">
     <b>คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
-    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ${T.disclaimerAssump ? pr(T.disclaimerAssump) : ' P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต'}
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ${pr(doc.prose.disclaimerSources)}
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ ${esc(view.analysisDateText)} • สร้างด้วย stock-analyzer workflow</footer>
@@ -280,4 +323,4 @@ ${RV.styledRD(view.rd)}
 `;
 }
 
-module.exports = { toV2Source, mdesc };
+module.exports = { toV2Source, mdesc, jsonScript };

@@ -12,10 +12,21 @@ const need = (view, k) => { const v = f(view)[k]; if (typeof v !== 'number' || !
 const money = (view, v) => view.cur + RV.fmtPrice(v);
 const big = (view, v) => RV.fmtBig(v, view.cur);
 const pct1 = (v) => v.toFixed(1) + '%';
+const isNum = (x) => typeof x === 'number' && Number.isFinite(x);
+// ยอดรวมจากงบ (ทั้งบริษัท) — ลบใช้ U+2212 นำหน้าสัญลักษณ์ (RV.fmtBig รับแค่ค่าบวก) · สกุลงบ (§3.6 L — view.stmtCur)
+const signedBig = (sym, v) => (v < 0 ? '−' + RV.fmtBig(-v, sym) : RV.fmtBig(v, sym));
+const stmt = (view, v) => signedBig(view.stmtCur || view.cur, v);
+function fyOf(view) { const y = f(view).fy; if (!y) throw new Error('metrics.cards: การ์ด FY ต้องมี fundamentals.fy — เติม หรือถอดการ์ดออก'); return y; }
+function needFy(view, k) { const x = fyOf(view)[k]; if (!isNum(x)) throw new Error(`metrics.cards: การ์ดต้องใช้ fundamentals.fy.${k} — เติมค่า หรือถอดการ์ดออก`); return x; }
+function needBank(view, k) { const b = f(view).bank; const x = b && b[k]; if (!isNum(x)) throw new Error(`metrics.cards: การ์ดต้องใช้ fundamentals.bank.${k} — เติมค่า หรือถอดการ์ดออก`); return x; }
 function sharesText(view, n) {
   if (view.cur === '฿') return n >= 1e9 ? `~${(n / 1e9).toFixed(2)} พันล้านหุ้น` : `~${(n / 1e6).toFixed(1)} ล้านหุ้น`;
   return n >= 1e9 ? `~${(n / 1e9).toFixed(2)}B หุ้น` : `~${(n / 1e6).toFixed(1)}M หุ้น`;
 }
+const ffoL = (view) => ({ ffo: 'FFO', affo: 'AFFO' }[f(view).ffoBasis || 'ffo']);
+function ffoFwd(view) { const x = f(view).ffoForward; if (!x) throw new Error('metrics.cards: การ์ดต้องใช้ fundamentals.ffoForward — เติม หรือถอดการ์ดออก'); return x; }
+// fundamentals ในสกุลราคา (compute: view.fq · §3.6 L) — อัตราส่วนผูกราคาและฐานใน .d ของมันใช้ตัวนี้ ไม่ใช่ยอดสกุลงบ
+const fq = (view) => view.fq || view.doc.fundamentals;
 const priceBoundOrThrow = (key, v) => { if (v == null) throw new Error(`metrics.cards: ${key} คำนวณไม่ได้จากข้อมูลที่มี`); return v; };
 
 // peForwardCalc/evEbitdaCalc — เจ้าของเดียวของเลข+ข้อความ 2 ตัวนี้ (การ์ด section 1 + prose.js priceBound()
@@ -27,26 +38,38 @@ function peForwardCalc(view) {
   return { raw, text: raw.toFixed(1) + 'x' };
 }
 function evEbitdaCalc(view) {
-  const ev = priceBoundOrThrow('mcap', view.d.mcap) + need(view, 'netDebt');
-  const eb = need(view, 'ebitda');
-  if (!(eb > 0)) throw new Error('metrics.cards: evEbitda — EBITDA ≤ 0 ถอดการ์ดออก');
-  const raw = ev / eb;
+  const q = fq(view);
+  if (!isNum(q.netDebt)) throw new Error('metrics.cards: การ์ดต้องใช้ fundamentals.netDebt — เติมค่า หรือถอดการ์ดออก');
+  if (!isNum(q.ebitda)) throw new Error('metrics.cards: การ์ดต้องใช้ fundamentals.ebitda — เติมค่า หรือถอดการ์ดออก');
+  const ev = priceBoundOrThrow('mcap', view.d.mcap) + q.netDebt;
+  if (!(q.ebitda > 0)) throw new Error('metrics.cards: evEbitda — EBITDA ≤ 0 ถอดการ์ดออก');
+  const raw = ev / q.ebitda;
   return { raw, text: raw.toFixed(1) + 'x' };
 }
+
+// เจ้าของเดียวของเลข+ข้อความ P/FFO (การ์ด + token + prose.priceBound — เหมือน peForwardCalc)
+function pffoCalc(view) {
+  const b = need(view, 'ffoPerShare');
+  if (!(b > 0)) throw new Error('metrics.cards: pffo — FFO/หุ้น ≤ 0 ถอดการ์ดออก');
+  const raw = view.d.px / b; return { raw, text: raw.toFixed(1) + 'x' };
+}
+function pffoForwardCalc(view) { const raw = view.d.px / ffoFwd(view).value; return { raw, text: raw.toFixed(1) + 'x' }; }
 
 const CATALOGUE = {
   mcap: { label: () => 'Market Cap', value: (v) => big(v, priceBoundOrThrow('mcap', v.d.mcap)), d: (v) => sharesText(v, need(v, 'shares')), cls: '' },
   pe: { label: () => 'P/E (TTM)', cls: 'neu',
     value: (v) => { const e = need(v, 'eps'); if (!(e > 0)) throw new Error('metrics.cards: pe — EPS ≤ 0 (ขาดทุน) P/E ไม่มีความหมาย ถอดการ์ดออก'); return v.d.pe.toFixed(1) + 'x'; },
     d: (v) => `EPS TTM ${money(v, need(v, 'eps'))}` },
-  peAvg5y: { label: () => 'P/E เฉลี่ย ~5 ปี', value: (v) => need(v, 'peAvg5y').toFixed(1) + 'x', d: () => 'มัธยฐานย้อนหลัง', cls: '' },
+  peAvg5y: { label: () => 'P/E มัธยฐาน ~5 ปี', value: (v) => need(v, 'peAvg5y').toFixed(1) + 'x', d: () => 'มัธยฐานย้อนหลัง', cls: '' },
   pbv: { label: () => 'P/BV', cls: 'neu', value: (v) => priceBoundOrThrow('pbv', v.d.pbv).toFixed(2) + 'x', d: (v) => `BVPS ${money(v, need(v, 'bvps'))}` },
-  ps: { label: () => 'P/S', cls: 'neu', value: (v) => priceBoundOrThrow('ps', v.d.ps).toFixed(1) + 'x', d: (v) => `รายได้ TTM ${big(v, need(v, 'revenue'))}` },
-  netIncome: { label: () => 'กำไรสุทธิ TTM', value: (v) => big(v, need(v, 'netIncome')), d: () => 'รอบ 12 เดือนล่าสุด', cls: '' },
-  eps: { label: () => 'EPS (TTM)', value: (v) => '~' + money(v, need(v, 'eps')), d: (v) => ({ 'gaap-ttm': 'GAAP', 'adj-ttm': 'Adjusted', fy: 'ปีบัญชีล่าสุด' }[f(v).epsBasis] || ''), cls: '' },
+  // ฐานใน .d = รายได้สกุลราคา (fq) เหมือนตัวหารของ P/S — W16 ของ gate v2 อ่านเลขนี้คิด mcap ÷ รายได้ โดยไม่ดูสัญลักษณ์สกุล
+  ps: { label: () => 'P/S', cls: 'neu', value: (v) => priceBoundOrThrow('ps', v.d.ps).toFixed(1) + 'x',
+    d: (v) => { need(v, 'revenue'); return `รายได้ TTM ${signedBig(v.cur, fq(v).revenue)}`; } },
+  netIncome: { label: () => 'กำไรสุทธิ TTM', value: (v) => stmt(v, need(v, 'netIncome')), d: () => 'รอบ 12 เดือนล่าสุด', cls: '' },
+  eps: { label: () => 'EPS (TTM)', value: (v) => '~' + money(v, need(v, 'eps')), d: (v) => ({ 'gaap-ttm': 'GAAP', 'adj-ttm': 'Adjusted', fy: 'ปีบัญชีล่าสุด', ifrs: 'IFRS' }[f(v).epsBasis] || ''), cls: '' },
   bvps: { label: () => 'BVPS', value: (v) => '~' + money(v, need(v, 'bvps')), d: () => 'มูลค่าทางบัญชีต่อหุ้น', cls: '' },
   roe: { label: () => 'ROE / ROA', cls: 'pos', value: (v) => `~${need(v, 'roe').toFixed(1)}%` + (f(v).roa != null ? ` / ${f(v).roa.toFixed(1)}%` : ''), d: () => 'ผลตอบแทนต่อทุน / สินทรัพย์' },
-  revenue: { label: () => 'รายได้ TTM', cls: 'neu', value: (v) => big(v, need(v, 'revenue')), d: () => 'รอบ 12 เดือนล่าสุด' },
+  revenue: { label: () => 'รายได้ TTM', cls: 'neu', value: (v) => stmt(v, need(v, 'revenue')), d: () => 'รอบ 12 เดือนล่าสุด' },
   grossMargin: { label: () => 'อัตรากำไรขั้นต้น', value: (v) => pct1(need(v, 'grossMargin')), d: () => 'Gross margin', cls: '' },
   netMargin: { label: () => 'อัตรากำไรสุทธิ', value: (v) => pct1(need(v, 'netMargin')), d: () => 'Net margin', cls: '' },
   opMargin: { label: () => 'อัตรากำไรจากดำเนินงาน', value: (v) => pct1(need(v, 'opMargin')), d: () => 'Operating margin', cls: '' },
@@ -57,7 +80,7 @@ const CATALOGUE = {
   range52w: { label: () => 'กรอบ 52 สัปดาห์', cls: '',
     value: (v) => { const r = v.doc.market.range52w; if (!r) throw new Error('metrics.cards: range52w — ไม่มี market.range52w (cron เติม)'); return `${money(v, r.lo)} – ${money(v, r.hi)}`; },
     d: () => 'ต่ำสุด – สูงสุด' },
-  fcf: { label: () => 'FCF TTM', value: (v) => big(v, need(v, 'fcf')), d: () => 'กระแสเงินสดอิสระ', cls: '' },
+  fcf: { label: () => 'FCF TTM', value: (v) => stmt(v, need(v, 'fcf')), d: () => 'กระแสเงินสดอิสระ', cls: '' },
   debtToEquity: { label: () => 'D/E', value: (v) => need(v, 'debtToEquity').toFixed(2) + 'x', d: () => 'หนี้สินต่อทุน', cls: '' },
   // 6 คีย์เพิ่ม 24 ก.ย. 69 (Task 11 card census) — label ที่พบบ่อยสุดในคลัง v2 ที่ตกเป็น custom (ดู
   // docs/superpowers/specs/2026-09-24-card-census.md): netDebt/ebitdaMargin/roic ใช้ fundamentals ตรง ๆ
@@ -65,14 +88,14 @@ const CATALOGUE = {
   // ล้วน ๆ ไม่แตะ/ไม่เพิ่มฟิลด์ใน report-values.js · peForward/analystTarget ตั้งใจให้ label มี "P/E"/"เป้า"
   // (เข้า E41/E42 ของ check-reports.js โดยธรรมชาติ — ตัว checker คำนวณ px/eps และ (tgt−px)/px จาก .d/.v เอง
   // ซึ่งตรงกับสูตรที่การ์ดนี้ใช้คำนวณอยู่แล้ว ⇒ ผ่านโดยไม่ต้องแก้ checker)
-  netDebt: { label: () => 'หนี้สินสุทธิ (Net Debt)', value: (v) => big(v, need(v, 'netDebt')), d: () => 'หนี้สินรวม − เงินสดและรายการเทียบเท่า (ติดลบ = ฐานะเงินสดสุทธิ)', cls: '' },
+  netDebt: { label: () => 'หนี้สินสุทธิ (Net Debt)', value: (v) => stmt(v, need(v, 'netDebt')), d: () => 'หนี้สินรวม − เงินสดและรายการเทียบเท่า (ติดลบ = ฐานะเงินสดสุทธิ)', cls: '' },
   ebitdaMargin: { label: () => 'EBITDA Margin',
     value: (v) => { const rev = need(v, 'revenue'); if (!(rev > 0)) throw new Error('metrics.cards: ebitdaMargin — fundamentals.revenue ≤ 0 ถอดการ์ดออก'); return pct1(need(v, 'ebitda') / rev * 100); },
     d: () => 'EBITDA ÷ รายได้ TTM', cls: '' },
   roic: { label: () => 'ROIC', cls: 'pos', value: (v) => `~${need(v, 'roic').toFixed(1)}%`, d: () => 'ผลตอบแทนต่อเงินลงทุน' },
   evEbitda: { label: () => 'EV/EBITDA', cls: 'neu',
     value: (v) => evEbitdaCalc(v).text,
-    d: (v) => `EV ${big(v, priceBoundOrThrow('mcap', v.d.mcap) + need(v, 'netDebt'))} ÷ EBITDA ${big(v, need(v, 'ebitda'))}` },
+    d: (v) => { need(v, 'netDebt'); need(v, 'ebitda'); return `EV ${big(v, priceBoundOrThrow('mcap', v.d.mcap) + fq(v).netDebt)} ÷ EBITDA ${big(v, fq(v).ebitda)}`; } },
   peForward: { label: () => 'Forward P/E', cls: 'neu',
     value: (v) => peForwardCalc(v).text,
     d: (v) => `EPS ประมาณการ (Forward) ${money(v, need(v, 'epsForward'))}` },
@@ -80,6 +103,28 @@ const CATALOGUE = {
   analystTarget: { label: () => 'เป้านักวิเคราะห์ (Consensus)', cls: '',
     value: (v) => { const t = v.doc.analyst && v.doc.analyst.target; if (typeof t !== 'number' || !Number.isFinite(t)) throw new Error('metrics.cards: analystTarget — ไม่มี doc.analyst.target'); return `${money(v, t)} (${RV.TOKENS.analystPct(v.d)})`; },
     d: () => 'เป้าเฉลี่ยนักวิเคราะห์ 12 เดือน' },
+  // Plan 2a Task 8 — ตัวเลขทั้งปีคู่ TTM (§3.6 B) · ป้ายต่อท้ายด้วย period ที่ประกาศ
+  netIncomeFy: { label: (v) => `กำไรสุทธิ ${fyOf(v).period}`, value: (v) => stmt(v, needFy(v, 'netIncome')), d: () => 'ทั้งปีบัญชี', cls: '' },
+  epsFy: { label: (v) => `EPS ${fyOf(v).period}`, value: (v) => '~' + money(v, needFy(v, 'eps')), d: () => 'ทั้งปีบัญชี', cls: '' },
+  revenueFy: { label: (v) => `รายได้ ${fyOf(v).period}`, cls: 'neu', value: (v) => stmt(v, needFy(v, 'revenue')), d: () => 'ทั้งปีบัญชี' },
+  // Plan 2a Task 8 — KPI ธนาคาร (§3.6 K)
+  nim: { label: () => 'NIM', value: (v) => needBank(v, 'nim').toFixed(2) + '%', d: () => 'ส่วนต่างอัตราดอกเบี้ยสุทธิ', cls: '' },
+  npl: { label: () => 'NPL / Coverage', value: (v) => `${needBank(v, 'npl').toFixed(1)}% / ${needBank(v, 'coverage').toFixed(0)}%`, d: () => 'หนี้เสีย / สำรองต่อหนี้เสีย', cls: '' },
+  capital: { label: () => 'CET1 / CAR', cls: 'pos', value: (v) => `~${needBank(v, 'cet1').toFixed(1)}% / ${needBank(v, 'car').toFixed(1)}%`, d: () => 'เงินกองทุนชั้นที่ 1 / เงินกองทุนรวม' },
+  // Plan 2a Task 9 — REIT (§3.6 J) · ป้าย FFO/AFFO ตาม fundamentals.ffoBasis
+  pffo: { label: (v) => `P/${ffoL(v)} (TTM)`, cls: 'neu', value: (v) => pffoCalc(v).text, d: (v) => `${ffoL(v)}/หุ้น ${money(v, need(v, 'ffoPerShare'))}` },
+  pffoForward: { label: (v) => `Forward P/${ffoL(v)}`, cls: 'neu', value: (v) => pffoForwardCalc(v).text,
+    d: (v) => { const x = ffoFwd(v); return `${ffoL(v)} ${x.period} ` + (isNum(x.low) && isNum(x.high) ? `${money(v, x.low)}–${money(v, x.high)}` : money(v, x.value)); } },
+  ffoPerShare: { label: (v) => `${ffoL(v)}/หุ้น (TTM)`, value: (v) => money(v, need(v, 'ffoPerShare')), d: () => 'ต่อหุ้น รอบ 12 เดือนล่าสุด', cls: '' },
+  // ป้าย "เฉลี่ย" ไม่ใช่ "มัธยฐาน": ค่านี้ผู้เขียนพิมพ์เอง (ไม่มี median-multiples ของ P/FFO) — ต่างจาก peAvg5y (Task 2) · EQIX ต้นทาง "เฉลี่ย ~5 ปี"
+  pffoAvg5y: { label: (v) => `P/${ffoL(v)} เฉลี่ย ~5 ปี`, value: (v) => need(v, 'pffoAvg5y').toFixed(1) + 'x', d: () => 'ค่าเฉลี่ยย้อนหลัง', cls: '' },
+  ffoMargin: { label: (v) => `${ffoL(v)} Margin`, cls: '',
+    value: (v) => { const rev = fq(v).revenue; if (!(isNum(rev) && rev > 0)) throw new Error('metrics.cards: ffoMargin — ต้องมี fundamentals.revenue > 0'); return pct1(need(v, 'ffoPerShare') * need(v, 'shares') / rev * 100); },
+    d: (v) => `${ffoL(v)} รวม ÷ รายได้ TTM` },
+  // หารด้วย FFO/หุ้น — guard > 0 เหมือน pffoCalc (0 → "Infinity%" · ลบ → payout ติดลบไร้ความหมาย)
+  ffoPayout: { label: (v) => `${ffoL(v)} Payout`, cls: '',
+    value: (v) => { const b = need(v, 'ffoPerShare'); if (!(b > 0)) throw new Error('metrics.cards: ffoPayout — fundamentals.ffoPerShare ≤ 0 ถอดการ์ดออก'); return pct1(need(v, 'dps') / b * 100); },
+    d: (v) => `ปันผล ÷ ${ffoL(v)}/หุ้น` },
 };
 
 function renderCard(key, view, note) {
@@ -89,4 +134,4 @@ function renderCard(key, view, note) {
   return { k: c.label(view), v: c.value(view), d: note ? (d ? `${d} · ${note}` : note) : d, cls: c.cls };
 }
 
-module.exports = { CATALOGUE, renderCard, peForwardCalc, evEbitdaCalc };
+module.exports = { CATALOGUE, renderCard, peForwardCalc, evEbitdaCalc, pffoCalc, pffoForwardCalc };

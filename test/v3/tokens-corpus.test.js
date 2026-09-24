@@ -63,6 +63,7 @@ for (const f of fs.readdirSync(dir).filter((x) => x.endsWith('.html'))) {
   }
 }
 if (findings.length) console.log(`  ℹ compute() refused ${findings.length} v2 value sets (schema findings — review, don't loosen blindly):\n    ` + findings.slice(0, 30).join('\n    '));
+console.log(`  ℹ compute() accepted ${ok}/${files} v2 value sets · ${checked} token renders compared`);
 t(files >= 880, `scanned the v2 corpus (${files} files)`);
 t(ok >= files * 0.97, `compute() accepted ≥97% of real v2 value sets (${ok}/${files})`);
 t(checked > 0, `compared ${checked} token renders`);

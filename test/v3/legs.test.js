@@ -26,4 +26,12 @@ t.throws(() => v('dcf', { g1: 7, years1: 5, tg: 9, r: 8.5, rfCurrency: 'USD' }),
 t.throws(() => v('pbv', { g: 9.5, r: 9 }), /^legs\[0\]/, 'justified pbv r ≤ g');
 t.throws(() => L.legValue({ method: 'evebitda', inputs: { multiple: 1, ...MS } }, { ...f, ebitda: 1e6 }, 'legs[1]'), /^legs\[1\].*≤ 0/, 'negative equity value');
 t.throws(() => L.legValue({ method: 'pe', inputs: { multiple: 20, ...MS } }, {}, 'legs[2]'), /^legs\[2\].*fundamentals\.eps/, 'missing fundamentals names the field');
+// Plan 2a Task 6 — ddm2 (§3.1 · §3.6 N) · ธรรมเนียมรอยต่อ: โต g1 ขณะ t < years1
+const FER2 = { d1: 2.04, g1: 11, years1: 10, g2: 3, r: 8.5 };
+t.near(v('ddm2', { ...FER2, horizon: 40 }), 55.02209244386823, 1e-9, 'ddm2 finite 40y = FER $55.02 (spec §3.6 N)');
+t(Math.abs(v('ddm2', { ...FER2, horizon: 40 }) - 57.67) > 2, 'the t ≤ years1 convention ($57.67) is NOT what we compute');
+t.near(v('ddm2', { ...FER2, horizon: null }), 64.09901699407415, 1e-9, 'ddm2 horizon null = Gordon terminal after stage 1');
+t.throws(() => v('ddm2', { ...FER2, g2: 9, horizon: null }), /^legs\[0\].*g2/, 'Review Focus #3: horizon null with r ≤ g2 → path-named throw');
+t(v('ddm2', { ...FER2, g2: 9, horizon: 40 }) > 0, 'finite horizon needs no r > g2');
+t.near(v('ddm2', { ...FER2, horizon: 5 }), 9.84424146436744, 1e-9, 'ddm2 horizon < years1 → stage 1 only, finite (Σ 2.04·1.11^(t−1)/1.085^t, t=1..5)');
 t.done();

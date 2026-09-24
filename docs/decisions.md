@@ -196,3 +196,18 @@ E17 บังคับ ≥2 การ์ด `.vmethod` แต่บางหุ�
 - **ชื่อฟิลด์ `region` (US/TH) ไม่ใช่ `market`** — `market` คือบล็อกราคาที่ cron เป็นเจ้าของ (`market.px`/`priceDate`/`chart`) ⇒ ตลาดของหุ้นใช้ชื่อ `region` กันชนความหมาย
 - **RI `payout` ใช้หน่วยเปอร์เซ็นต์ (0–100)** — ตามกติการ่วม "input ที่เป็น % ใส่หน่วย %" (`tools/v3/legs.js` ผ่าน `pct()` · `tools/v3/schema.js` ช่วง 0–100) · ยังไม่มีใบ RI จริงใน v3 ⇒ ไม่มีต้นทุนย้อนหลัง · และ RI ใช้ `r, years, payout` ตาม plan (spec §3.1 เดิมเขียน "fade" ที่ไม่เคยนิยาม)
 - **implementer/reviewer subagent ของงาน v3 = Opus (เจ้าของสั่ง 24 ก.ย. 69)** — ทับ ruling เดิมที่ให้ reviewer ส่วนใหญ่เป็น Sonnet · ขอบเขต = งานพัฒนาระบบ v3 เท่านั้น ไม่เปลี่ยนกติกาโมเดลของ worker วิเคราะห์หุ้น (CLAUDE.md §3.2)
+
+### Report v3 Plan 2a — schema extension + check-v3 (24 ก.ย. 69)
+
+> spec §3.6/§4/§9/§12/§13 · plan `docs/superpowers/plans/2026-09-24-report-v3-plan2a-schema-gate.md` · branch `feat/report-v3-plan2` · ledger 23 rulings (SDD workspace) · เจ้าของมอบอำนาจอนุมัติแผน/merge ให้ advisor (24 ก.ย. 69)
+
+- **Task 0 ก่อนเขียนโค้ด (advisor)** — แปลงมือใบจริง 3 รูปทรงยาก (BBL ธนาคาร · EQIX REIT ขา P/AFFO บริบท · FER SOTP+ตาราง inline-style) ก่อนเขียน Plan 2 → พบ 18 gap ทั้ง 3 ใบชนเพดาน custom 4 การ์ด ⇒ spec §3.6 ฟิลด์ optional A–O · เกณฑ์จบ §12 = -real ทุกใบ custom ≤2 · ไม่มี declared ที่มี method · FV เดิม · v2 gate 0/0 · check-v3 0 error (W31 ไม่นับ = ตัววัด literal ค้าง #57).
+- **กติกา B วัดจริง (Task 0)** — คำกล่าวอ้าง "false positive ~0" ผิด (error บน prose ถูกต้อง BBL 2 · EQIX 2 · FER 0 + warn 11 ที่ base) → กฎใหม่ §4: error เฉพาะรูป render เป๊ะรวมทศนิยม · เลขจำนวนเต็มไม่ error · เงินมีหน่วย M/B/ล้าน ข้าม · `{{lit:}}`+`meta.litReasons` · lit ห้ามประกอบเป็น token/รั่ววงเล็บ.
+- **advisor ถาวร 4 ข้อ** — E17 นับขา `role:'fv'` เท่านั้น (15 ใบ → ถัง HUMAN ตอน migrate) · `stock-meta.pe` = ราคา/EPS เสมอ REIT ใช้ `pffo` (5 ใบเรียง index เปลี่ยน) · ขา context ที่ `multipleSource:'current'` **คำนวณ** ไม่ใช่ declared (43 ขาจะค้างทุกวันถ้า declared) · |MOS|>40% ต้องมีขา fv ที่ไม่ใช่ตระกูล (r,g) ไม่งั้น W32.
+- **Plan 2 แยก 2a/2b (advisor)** — 2a = schema+gate ผลต่อ production ศูนย์ (tripwire อยู่ · dist byte-identical 1067 ไฟล์ พิสูจน์ 3 ครั้ง Task 2/12/13) · 2b = report.js/hook/scanner→.json/ถอด tripwire ท้ายสุดใน PR เดียว · exit 2b = Opus worker เขียน NEW 2 ใบผ่าน `report.js save`.
+- **fixture แก้ผ่าน `io.write` เท่านั้น (advisor)** — สคริปต์แก้ fixture ทุกตัว IO.read→IO.write ⇒ `_sig` ถูกทุกขั้น Task 12 assert แทน re-sign.
+- **spec ชนะ plan text (controller)** — E52 ผูกกับ `extrasRef` ไม่ใช่ basis∈{sotp,nav} · formatter ตาราง extras ใช้สูตรปัดของ RV (ห้าม re-implement rounding) — reviewer พบ 2 ข้อนี้ในโค้ดที่ลอกจาก plan.
+- **`text:null` = ไม่มี (เหมือน optional block อื่น)** · ทุก block ใหม่ null=absent · schema ปิด · `'current'` บนขา fv = schema error อ้าง W18.
+- **ค่าตั้งต้น formatter/สีที่ยอมรับ** — `RV.fmtBig` ฿ พิมพ์ หมื่นล้าน/แสนล้าน อยู่แล้ว 13/11 หน้าใน dist = มาตรฐาน option B (คำถามระดับเจ้าของ #59) · `tone:'neu'` = คลาส `.neu` เดิม (เหลือง) · การ์ด `capital` pos ตายตัว (#60) · ย่อหน้า §3 ของ FER อยู่หน้าตาราง SOTP (v2 อยู่หลัง) = มาตรฐาน v3 ไม่ใช่ข้อความหาย.
+- **gate ห้ามผ่านแบบว่างเปล่า (§8)** — check-v3 sweep 0 fixture หรือ EXPECT_FIXTURE หาย = exit 1 · SYM/path ไม่เจอ = exit 1 · นาฬิกา v2 passthrough แช่แข็งด้วย `STALE_TODAY` (กัน fixture แก่แล้ว verify ล้มทั้ง repo) · test พิสูจน์ด้วย mutation ไม่ใช่ assert ค่าที่เป็นศูนย์อยู่แล้ว.
+- **cron รอบแรกหลัง Plan 1 (#72)** — run 35933592671: 904 ตัว · patch-rejected 1 = APURE E26 ค้างเดิม · dividendYield 1dp→2dp 120 ใบ (ประมาณ 81) → รอบถัดไปต้อง 0.
