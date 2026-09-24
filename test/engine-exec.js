@@ -23,7 +23,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { expandReport, renderEngine } = require('../build.js');
+const { renderEngine } = require('../build.js');
 const RS = require('../tools/report-source.js');   // ใบ v2 + v3 (Plan 2b) — ทางเดียวกับ build: loadReportSource → expandReport
 
 const REPORTS_DIR = path.join(__dirname, '..', 'reports');
@@ -158,7 +158,7 @@ function main() {
     const f = e.name;
     let html;
     try { html = RS.renderedHtml(e.symbol, REPORTS_DIR); }
-    catch (err) { bad.push({ f, errs: ['expandReport throw: ' + err.message] }); fail++; continue; }
+    catch (err) { bad.push({ f, errs: ['render throw: ' + err.message] }); fail++; continue; }
     const body = extractEngine(html);
     if (!body) { bad.push({ f, errs: ['ไม่พบสคริปต์ engine (ที่อ้าง priceChart)'] }); fail++; continue; }
     const r = runEngine(body, seedFromHtml(html));

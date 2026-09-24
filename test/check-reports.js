@@ -1026,17 +1026,32 @@ function runCli(argv, opts) {
   const pick = (e) => !want || want.has(e.symbol.toUpperCase());
   const files = entries.filter((e) => !e.v3 && pick(e)).map((e) => e.name);
   const v3 = want ? entries.filter((e) => e.v3 && pick(e)).map((e) => e.symbol) : [];
+  // symbol ที่ไม่มีทั้ง .html/.json ต้องดัง (เดิม arg ผสมจะถูกทิ้งเงียบ ๆ แล้ว exit 0 ถ้าตัวอื่นผ่าน)
+  const have = new Set(entries.map((e) => e.symbol.toUpperCase()));
+  const missing = want ? [...want].filter((s) => !have.has(s)) : [];
+  for (const s of missing) err(`✗ ${s} ไม่พบ (ไม่มี reports/${s}.html หรือ reports/${s}.json)`);
   if (!files.length && !v3.length) { err('❌ ไม่พบไฟล์รายงานให้ตรวจ'); return 1; }
-  let code = files.length ? runV2(files, dir, log) : 0;
-  if (!want) { const n = entries.filter((e) => e.v3).length; if (n) log(`ℹ ใบ v3 ${n} ใบ — ตรวจโดย node test/check-v3.js (ขั้นถัดไปของ verify)`); }
+  const nV3 = want ? 0 : entries.filter((e) => e.v3).length;
+  const note = nV3 ? `ℹ ใบ v3 ${nV3} ใบ — ตรวจโดย node test/check-v3.js (ขั้นถัดไปของ verify)` : null;
+  const v2Code = files.length ? runV2(files, dir, log, note) : null;
+  let v3Code = null;
   if (v3.length) {
     log(`\n↪ ใบ v3 ${v3.join(' ')} → test/check-v3.js`);
-    code = Math.max(code, require('./check-v3.js').runCli(v3, { reportsDir: dir, log }));
+    v3Code = require('./check-v3.js').runCli(v3, { reportsDir: dir, log });
+  }
+  const code = Math.max(v2Code || 0, v3Code || 0, missing.length ? 1 : 0);
+  // หลายส่วน (v2+v3 หรือมี symbol ไม่พบ) → บรรทัดรวมเป็นบรรทัดสุดท้ายเสมอ — worker มัก pipe ผ่าน tail
+  if ((v2Code !== null && v3Code !== null) || missing.length) {
+    const part = [];
+    if (v2Code !== null) part.push(`v2 ${v2Code ? '✗' : '✓'}`);
+    if (v3Code !== null) part.push(`v3 ${v3Code ? '✗' : '✓'}`);
+    if (missing.length) part.push(`ไม่พบ ${missing.join(' ')} ✗`);
+    log(`รวม: ${part.join(' · ')} → exit ${code}`);
   }
   return code;
 }
 
-function runV2(files, dir, log) {
+function runV2(files, dir, log, note) {
   log(`\n🔍 ตรวจคุณภาพรายงาน ${files.length} ไฟล์ (reports/)\n`);
   let totErr = 0, totWarn = 0, failFiles = 0, minCov = null;
   for (const f of files) {
@@ -1052,6 +1067,7 @@ function runV2(files, dir, log) {
   }
   log('\n' + '─'.repeat(50));
   log(`สรุป: ${files.length - failFiles}/${files.length} ไฟล์ผ่าน • error ${totErr} • warning ${totWarn}${minCov ? ` • ช่องต่ำสุด ${minCov.found}/${minCov.n} (${minCov.name})` : ''}`);
+  if (note) log(note);
   if (totErr) { log('\n❌ มี error — ห้าม push (แก้รายงานให้ผ่านก่อน)\n'); return 1; }
   log(`\n✅ ผ่าน quality gate — พร้อม build & push${totWarn ? ` (มี ${totWarn} warning ที่ควรดู)` : ''}\n`);
   return 0;

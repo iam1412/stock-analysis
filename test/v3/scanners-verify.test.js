@@ -32,7 +32,16 @@ try {
   { const a = cli(['zzb.json']); t(a.code === 1 && /\[E50\]/.test(a.out), 'hand-edited v3 file → E50 through npm test -- SYM (lower-case + .json accepted), exit 1'); }
   { const a = cli(['AAPL', 'ZZB']); t(a.code === 1 && /AAPL\.html/.test(a.out) && /\[E50\]/.test(a.out), 'mixed v2+v3 args: both checked, exit codes combined'); }
   { const a = cli(['NOPE']); t(a.code === 1 && /ไม่พบไฟล์รายงานให้ตรวจ/.test(a.out), 'unknown symbol still exits 1'); }
+  { const a = cli(['ZTS', 'NOPE']), last = a.out.trim().split('\n').pop();
+    t(a.code === 1 && /✗ NOPE ไม่พบ/.test(a.out) && /ZTS\.json/.test(a.out), 'mixed args with an unknown symbol: NOPE named, ZTS still checked, exit 1 (no silent drop)');
+    t(/^รวม: .*ไม่พบ NOPE.*→ exit 1$/.test(last), 'unknown symbol → combined line is the LAST line: ' + last); }
+  { const a = cli(['AAPL', 'ZZB']), last = a.out.trim().split('\n').pop();
+    t(last === 'รวม: v2 ✓ · v3 ✗ → exit 1', 'v2+v3 both ran → last line = combined verdict: ' + last); }
+  { const a = cli(['AAPL', 'ZTS']), last = a.out.trim().split('\n').pop();
+    t(a.code === 0 && last === 'รวม: v2 ✓ · v3 ✓ → exit 0', 'v2+v3 both pass → last line = รวม … exit 0: ' + last); }
   { const a = cli([]); t(/AAPL\.html/.test(a.out) && /ใบ v3 2 ใบ/.test(a.out) && !/\[E50\]/.test(a.out), 'sweep: v2 checked, v3 only counted and pointed at check-v3 (R8)'); }
+  { const a = cli([]), i = a.out.indexOf('ℹ ใบ v3 2 ใบ'), j = a.out.lastIndexOf('✅ ผ่าน quality gate');
+    t(i >= 0 && j > i && !/^รวม:/m.test(a.out), 'sweep: ℹ v3 count printed before the ✅ footer, no combined line (single gate)'); }
   { fs.copyFileSync(path.join(FIX, 'AAPL-v2.html'), path.join(tmp, 'ZTS.html'));
     const a = cli(['ZTS']);
     t(a.code === 1 && /ZTS มีทั้ง \.html และ \.json/.test(a.out), 'both files for one symbol → exit 1 naming it');
