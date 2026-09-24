@@ -340,9 +340,9 @@ Expected: verify exit 0 (20 steps) · GEN-OK · HOOKENV-OK · `compute() accepte
 - [ ] **Step 3: prep dry-run proves the new prompt (offline, temp QUEUE_DIR)**
 
 ```bash
-q=$(mktemp -d); QUEUE_DIR=$q node test/v3/_prep-child.js ok >/dev/null && grep -c "STEP 5V" $q/prep/ZZZQ.md && grep -c "update-prices.js --write --force" $q/prep/ZZZQ.md; rm -rf $q
+q=$(mktemp -d); QUEUE_DIR=$q node test/v3/_prep-child.js ok >/dev/null && grep -c "★ ใบ NEW เขียนเป็น v3 — ทำตาม SKILL STEP 5V" $q/prep/ZZZQ.md && grep -c "update-prices.js --write --force" $q/prep/ZZZQ.md; rm -rf $q
 ```
-Expected: `1` then `0`.
+Expected: `1` (the prep pointer line exactly once — the embedded agent-prompt adds further "STEP 5V" mentions, so do not count the bare phrase) then `0`.
 
 - [ ] **Step 4: Worker-view read-through (the check the gate cannot do)**
 
