@@ -2987,6 +2987,8 @@ for (const { path: p } of todo) {
   if (v === undefined || (typeof v === 'string' && S.TODO_RE.test(v))) miss.push(p); else set(d, p, v);
 }
 d.meta.aiModel = z.meta.aiModel;
+// ขาที่ init เว้น method เป็น TODO มี inputs {} — method ที่เลือกกำหนดช่อง inputs เอง (ไม่ใช่ sentinel) → คัด inputs จริงของขาเดียวกันใน ZTS-real
+d.legs.forEach((l, i) => { if (l.inputs && !Object.keys(l.inputs).length && z.legs[i] && z.legs[i].method === l.method) l.inputs = z.legs[i].inputs; });
 fs.writeFileSync(f, JSON.stringify(d, null, 2) + '\n');
 console.log(`filled ${todo.length - miss.length}/${todo.length} TODO · unmapped: ${miss.length}${miss.length ? ' → ' + miss.join(' ') : ''}`);
 process.exitCode = miss.length ? 1 : 0;
@@ -3004,6 +3006,8 @@ git worktree remove --force "$E2E" && test ! -e "$E2E" && echo SCRATCH-REMOVED
 rtk proxy node test/v3/no-json-reports.test.js
 rtk proxy git status --short reports/ reports.json .work .queue tools/seeds.json tags.json
 ```
+
+Note (Task 9 run 24 ก.ย. 69): the `d.legs.forEach(…)` line was added after the first run. Without it, `save` refuses with 3×E51 on `legs[1].inputs` (`value` and `basis` are missing, and `basis` is not an allowed value) and writes nothing. That refusal is the gate working as intended: fields a chosen method requires are absent rather than sentinels, so the TODO-only fill never reaches them.
 
 Expected, in order:
 - `init exit=0` (`.work/ZZZQ.json` written in the scratch checkout only)
