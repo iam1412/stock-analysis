@@ -887,7 +887,7 @@ function v3Refusal(only, isV3) {
 function v3SweepNotice(v3Syms) {
   if (!v3Syms.length) return [];
   return [...v3Syms.map((s) => `ℹ ข้าม reports/${s}.json — ใบ v3 ราคาไม่ถูก patch`),
-    `ℹ v3-skipped: ${v3Syms.length} — ใบ v3 ไม่ถูก patch ราคา (v3 cron = Plan 3 · P5 · open-item #62 — เส้นตาย merge 2c + 45 วัน)`];   // token คงที่ `v3-skipped: N` — grep ใน log ของ Actions ได้ (advisor pre-dispatch)
+    `ℹ v3-skipped: ${v3Syms.length} — ใบ v3 ไม่ถูก patch ราคา (v3 cron = Plan 3 · เส้นตาย P5 = market.priceDate ของใบ v3 + 120 วัน (E27) · เป้า +45 (W09) — open-items #62)`];   // token คงที่ `v3-skipped: N` — grep ใน log ของ Actions ได้ (advisor pre-dispatch)
 }
 /** ด่านแรกของ main (ส่วนบริสุทธิ์ — เทสเรียกตัวเดียวกับ main): ระบุ symbol v3 = code 1 + ข้อความปฏิเสธ · ไม่ระบุ = code 0 + บรรทัด sweep */
 function v3Guard(only, isV3, v3Syms) {
