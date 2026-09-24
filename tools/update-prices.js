@@ -150,6 +150,9 @@ async function fetchChart(ysym, attempt = 0, interval = '1mo') {
     // endpoint quote แยก (ซึ่งต้องใช้ crumb/cookie และล้มบ่อย)
     week52Low: meta.fiftyTwoWeekLow,
     week52High: meta.fiftyTwoWeekHigh,
+    // ชื่อบริษัท/ตลาดจาก meta ชุดเดียวกัน — sidecar ของ prep ใช้เติม meta.company/exchange ของใบใหม่ (Plan 2b) · cron ไม่อ่าน
+    longName: meta.longName || meta.shortName || null,
+    exchangeName: meta.fullExchangeName || meta.exchangeName || null,
     bars,
   };
 }
