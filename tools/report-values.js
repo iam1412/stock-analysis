@@ -462,7 +462,7 @@ function mirrorStockMeta(html) {
 }
 
 module.exports = { CUR_SYMBOL, FLAT_PP, VALUE_KEYS, CHG_SUFFIX, isV2, validateValues, derive, TOKENS, COPY_TOKENS: Object.keys(TOKENS), renderValues,
-  fmtPrice, fmtBig, annualChg, mosBand, isoOf, parseIso, styledRD, MIRROR_KEYS, mirrorStockMeta,
+  fmtPrice, fmtBig, round, annualChg, mosBand, isoOf, parseIso, styledRD, MIRROR_KEYS, mirrorStockMeta,
   // E44 (ระยะ 2 ส่วน F · spec B(ข)) — prose ผูกราคาในใบใหม่ + healer
   PROSE_TOKEN_SINCE, PROSE_BOUND, proseSpans, proseBoundHits, proseTokens,
   // V2TOKENS (ระยะ 2 ส่วน F) — site บังคับของใบ v2 ต้องเป็น token

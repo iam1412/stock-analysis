@@ -26,4 +26,17 @@ t.eq(X.tableTotal(tbl), { sum: 30.25, total: 30, hasTotalRow: true }, 'tableTota
   t(X.tieOut(d, C.compute(d, { seeds: {} })).some((i) => i.path === 'legs[0].inputs.extrasRef'), 'sotp leg without a table → E52'); }
 { const d = load('ZTS-real'); const i = d.legs.findIndex((l) => l.method === 'declared'); delete d.legs[i].note;
   t(X.tieOut(d, C.compute(d, { seeds: {} })).some((x) => x.path === `legs[${i}].note`), 'declared "other" leg with no table and no reason → E52'); }
+// Task 11 fix round 1 — E52 keyed on extrasRef · RV-consistent rounding · sign after rounding
+t.eq(X.fmtCell(2.675, { dp: 2, unit: 'none' }, view), '2.68', 'round like RV.fmtPrice (2.675 → 2.68, not toFixed 2.67)');
+t.eq(X.fmtCell(2.675, { dp: 2, unit: 'none' }, view), require('../../tools/report-values.js').fmtPrice(2.675), 'dp 2 matches RV.fmtPrice');
+t.eq(X.fmtCell(-0.001, { dp: 2, unit: 'none' }, view), '0.00', 'sign after rounding: −0.001 → 0.00 (no stray −)');
+t.eq(X.fmtCell(-0.4, { dp: 0, unit: 'none' }, view), '0', 'sign after rounding: −0.4 dp 0 → 0');
+t.eq(X.fmtCell(0.001, { dp: 2, unit: 'none', signed: true }, view), '0.00', 'signed: +0.001 → 0.00 (no stray +)');
+t.eq(X.fmtCell(-0.001, undefined, view), '0.00', 'default path: −0.001 → 0.00');
+t.eq(X.fmtMoney(-51.808, '$'), '−$51.81', 'fmtMoney: U+2212 before the symbol');
+t.eq(X.fmtMoney(51.808, '$'), '$51.81', 'fmtMoney positive');
+{ const d = load('FER-real'); d.legs[0].inputs.basis = 'rnpv'; d.legs[0].inputs.value = 60;
+  t(X.tieOut(d, C.compute(d, { seeds: {} })).some((i) => i.path === 'legs[0].inputs.value'), 'E52 runs whenever extrasRef is set, whatever the basis (rnpv)'); }
+{ const d = load('FER-real'); d.legs[0].inputs.basis = 'other';
+  t.eq(X.tieOut(d, C.compute(d, { seeds: {} })), [], 'basis other + extrasRef that ties → no E52 (table stands in for the note)'); }
 t.done();

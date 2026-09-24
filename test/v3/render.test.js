@@ -183,4 +183,11 @@ t.eq(JSON.parse(R.jsonScript('{"a":"</script>"}')).a, '</script>', 'jsonScript o
   t(src.includes('<td><b>รวม SOTP</b></td><td><b></b></td><td><b></b></td><td><b>32,280</b></td><td><b>44.83</b></td>'), 'total row rendered bold with column formats');
   t(src.includes('แปลงเป็น USD ที่ EURUSD 1.15566: <b>$51.81</b>'), 'fx row = total × fundamentals.fx');
   t(src.includes('<td>−1,300</td><td>−1.81</td>') && !/<td>-1/.test(src), 'negative cells use U+2212'); }
+// Task 11 fix round 1 — FER "+1,307" คงเป็นข้อความ (คอลัมน์ 3 ไม่ใช่ sumCol) · แถวแปลงสกุลยอดติดลบใช้ U+2212
+{ const doc = load('FER-real'); const src = R.toV2Source(doc, C.compute(doc, { seeds }));
+  t(src.includes('<td>+1,307</td><td>1.82</td>'), 'FER net cash keeps its explicit + (v2 fidelity)'); }
+{ const doc = load('FER-real'); const x = doc.extras[1];
+  x.rows = [['A', '', '', -100, -2], { kind: 'total', cells: ['รวม', '', '', -100, -2] }];
+  const src = R.toV2Source(doc, C.compute(doc, { seeds }));
+  t(src.includes('แปลงเป็น USD ที่ EURUSD 1.15566: <b>−$2.31</b>') && !src.includes('$-2.31'), 'fx row: negative total prints U+2212 before the symbol'); }
 t.done();

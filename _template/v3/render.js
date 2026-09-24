@@ -73,7 +73,7 @@ function extrasHtml(doc, view, after) {
     let rows = x.rows.map(row).join('');
     if (x.fx) {
       const f = doc.fundamentals, tot = X.tableTotal(x).total;
-      rows += `<tr><td colspan="${ncol}">แปลงเป็น ${esc(doc.currency)} ที่ ${esc(f.reportCurrency + doc.currency)} ${f.fx}: <b>${esc(view.cur + RV.fmtPrice(tot * f.fx))}</b></td></tr>`;
+      rows += `<tr><td colspan="${ncol}">แปลงเป็น ${esc(doc.currency)} ที่ ${esc(f.reportCurrency + doc.currency)} ${f.fx}: <b>${esc(X.fmtMoney(tot * f.fx, view.cur))}</b></td></tr>`;
     }
     const note = x.note ? `<p class="xnote">${pr(x.note)}</p>` : '';
     return `\n  <section>\n    <div class="card"><h3>${esc(x.title)}</h3><table class="xtab">${head}${rows}</table>${note}</div>\n  </section>`;
