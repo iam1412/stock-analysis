@@ -735,4 +735,21 @@ const runH = (sym, html) => { const p = PV.parseV2(sym, html); const r = A.assem
   const plain = leg('จุดสำคัญ</span>', 'จุดสำคัญ</span>\n        <span>เส้นประ = รอบก่อน</span>');
   t.eq((plain.doc.text || {}).legendNote, 'เส้นประ = รอบก่อน', 'I-3: plain author-word residue still carried');
 }
+// ── Plan 4c-prep Task 5 fix round 2 — lead-in basis/money · analyst siblings · template tokens · multiples ──
+{
+  t.eq(A.qualifierOf('EPS forward $5.10 → × P/E 22x'), '', 'round 2: lead-in with an unconsumed "forward" → nothing carried');
+  t.eq(A.qualifierOf('non-GAAP EPS $4.88 ⇒ × 32x'), '', 'round 2: lead-in with "non-GAAP" → nothing carried');
+  t.eq(A.qualifierOf('ปันผล forward D₁ = ปันผล $2.10 × (1+g); g 3%, r 8%'), '', 'round 2: PKG shape (lead-in "ปันผล forward D₁") → nothing carried from it');
+  t.eq(A.qualifierOf('FCF ฐานของบริษัทปีนี้ ~$2.0B → FCF × 20x'), '', 'round 2: HON shape (lead-in with a money literal) → not carried');
+  t.eq(A.qualifierOf('ปรับ combined ratio เป็น 88% → EPS $23 × P/E 14x'), 'ปรับ combined ratio เป็น 88%', 'round 2: CB lead-in (no basis word · % only) still carried whole');
+  const vcell = (k, v) => `<div class="vcell"><div class="k">${k}</div><div class="v">${v}</div></div>`;
+  const withCell = (cell) => raw('CASY').replace(/(<div class="vgrid">[\s\S]*?)(\n\s*<\/div>\s*<div class="zone">)/, `$1\n        ${cell}$2`);
+  const snc = runH('CASY', withCell(vcell('เป้าประเมิน 12 ด.', 'Buy 5 ราย')));
+  t(!snc.doc.verdict && snc.notes.H.some((h) => /"เป้าประเมิน 12 ด\." is an analyst-slot sibling/.test(h)), 'round 2: SNC shape analyst sibling key → H', JSON.stringify(snc.notes.H));
+  const apure = runH('CASY', withCell(vcell('เป้าหมายกรณีฟื้นตัว', '~{{rd:fv}} (Speculative)')));
+  t(!apure.doc.verdict && apure.notes.H.some((h) => /"เป้าหมายกรณีฟื้นตัว" value repeats a template cell token/.test(h)), 'round 2: APURE shape ({{fv}} value) → H', JSON.stringify(apure.notes.H));
+  const vr = runH('CASY', withCell(vcell('EV/EBITDA (บริบท)', '9.5 เท่า — กลุ่ม 11.3–24.6')));
+  t(!vr.doc.verdict && vr.notes.H.some((h) => /verdict\.extraCells "EV\/EBITDA \(บริบท\)" holds a price-bound literal/.test(h)), 'round 2: VRANDA shape (current multiple) → H', JSON.stringify(vr.notes.H));
+  t.eq(runH('CASY', withCell(vcell('จุดทยอยสะสม', 'ใต้มูลค่าเหมาะสม'))).doc.verdict, { extraCells: [{ k: 'จุดทยอยสะสม', v: 'ใต้มูลค่าเหมาะสม' }] }, 'round 2: genuine author cell still carried');
+}
 t.done();

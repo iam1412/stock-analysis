@@ -301,6 +301,16 @@ function headRuns(seg, consumed, leg) {
   flush();
   return runs;
 }
+/** ข้อความมีคำฐาน/งวด (FACT_WORDS · SY.QUALIFIER_BLOCK) ที่ baseOf ไม่ได้กิน (fix round 2 · ruling: ทุกทางที่พก qualifier) */
+function basisTainted(text, consumed) {
+  const c = consumed || new Set();
+  return String(text).replace(/\{\{[^{}]*\}\}/g, ' ').replace(/<[^>]*>/g, ' ').split(/[\s=×÷+−≈(),;:·/"“”]+/).filter(Boolean).some((tk) => {
+    const k = FM.keyOf(tk); if (c.has(k) || c.has(k.toLowerCase())) return false;
+    const bare = tk.replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}.]+$/gu, '');
+    return SY.FACT_WORDS.some((re) => re.test(bare)) || SY.qualifierBlocked(tk);
+  });
+}
+const MONEY_LIT = /(?:US\$|\$|฿)\s*[0-9]|[0-9][0-9,.]*\s*บาท/;
 function qualifierOf(prose, consumed, leg) {
   consumed = consumed || new Set();
   const t = String(prose || '');
@@ -315,7 +325,9 @@ function qualifierOf(prose, consumed, leg) {
   // ท่อนสูตร = ท่อนแรกที่มี "×" · ท่อนก่อนหน้า = ข้อความนำของผู้เขียน ("ปรับ combined ratio เป็น 88% (…) → EPS × P/E" · CB) — พกทั้งท่อนหรือไม่พกเลย (ห้ามแตกเป็นคำ · ruling I-1)
   const fi = Math.max(0, segs.findIndex((x) => /×|&times;/.test(x)));
   segs.forEach((seg, i) => {
-    if (i < fi) { if (headTokens(seg).some((tk) => !/\//.test(tk) && isProseToken(tk, true)) && seg.trim()) out.push(seg.trim()); else for (const p of topParens(seg)) if (p.inner && hasProse(p.inner)) out.push(p.inner); return; }
+    // ข้อความนำ: มีคำฐาน/งวด (basisTainted ใน push) หรือมีตัวเลขเงิน ($/฿/บาท — ตรวจไม่ได้ใน note · fix round 2) = ไม่พกเลย · % ล้วนยังพกได้ ("combined ratio 88%")
+    //  (ตรวจคำฐานนอกวงเล็บของข้อความนำ — CB "(ระดับ "ปกติ" ในระยะยาว)" คือคำอธิบาย combined ratio ไม่ใช่ฐาน EPS · ruling: CB ยังพกทั้งท่อน)
+    if (i < fi) { if (MONEY_LIT.test(seg) || basisTainted(outsideParens(seg), consumed)) return; if (headTokens(seg).some((tk) => !/\//.test(tk) && isProseToken(tk, true)) && seg.trim()) out.push(seg.trim()); else for (const p of topParens(seg)) if (p.inner && hasProse(p.inner)) out.push(p.inner); return; }
     if (i > fi && hasProse(outsideParens(seg))) { if (seg.trim()) out.push(seg.trim()); return; }
     if (i === fi) out.push(...headRuns(seg, consumed, leg));
     for (const p of topParens(seg)) if (p.inner && hasProse(p.inner)) out.push(p.inner);
@@ -606,6 +618,8 @@ function legendResidueBad(t) {
 }
 // คีย์ของช่องที่ v3 หมวด 8 พิมพ์เอง (_template/v3/render.js: มูลค่าเหมาะสม · ส่วนต่างจากราคา · เป้านักวิเคราะห์ 12 ด.) + รูปเป้านักวิเคราะห์ของผู้เขียน (เป้าเฉลี่ย …)
 const V3_S8_KEY = /^(?:มูลค่าเหมาะสม|ส่วนต่างจากราคา|เป้านักวิเคราะห์|เป้าเฉลี่ย)/;
+const ANALYST_SIBLING = /นักวิเคราะห์|consensus|12\s*ด\.|เป้าประเมิน/i;
+const TEMPLATE_CELL_TOK = /\{\{(?:fv|px|fvLow|fvHigh|mos|upside)\}\}/;
 /** vcell ที่ไม่ใช่ template (มูลค่าเหมาะสม · ส่วนต่างจากราคา · เป้านักวิเคราะห์ ตัวแรก) → verdict.extraCells (≤2 ไม่งั้น H) */
 function extraCellsOf(parsed) {
   const H = [], cells = [];
@@ -618,7 +632,12 @@ function extraCellsOf(parsed) {
     // fix round 1 (ruling I-2): คีย์ที่ v3 หมวด 8 พิมพ์อยู่แล้ว + คำขยายของผู้เขียน ("มูลค่าเหมาะสม (normalized)" MPC · "เป้าเฉลี่ย 12 ด." WORK)
     //  = ช่อง template ซ้ำ ไม่ใช่ช่องใหม่ — ไม่มีบ้านให้คำขยาย ⇒ H (fail closed)
     if (V3_S8_KEY.test(kk.replace(/\s*\([^)]*\)/g, ' ').trim())) { H.push(`s8 vcell "${kk}" repeats a template cell with an author qualifier — no home (not carried)`); dup = true; continue; }
-    cells.push({ k: kk.replace(/[{}<>]/g, '').trim(), v: MP.htmlToProse(vHtml) });
+    // fix round 2 (ruling): คีย์ตระกูลช่องนักวิเคราะห์ (OHTL "เป้าหมายนักวิเคราะห์" · SNC/SONIC "เป้าประเมิน 12 ด." · TGH · PRINC "Consensus / Book") = ช่อง template ซ้ำ → H
+    if (ANALYST_SIBLING.test(kk)) { H.push(`s8 vcell "${kk}" is an analyst-slot sibling of the template cell — no home (not carried)`); dup = true; continue; }
+    const v = MP.htmlToProse(vHtml);
+    // ค่าที่เป็น token ของช่อง template (APURE "~{{fv}} …") = พิมพ์ซ้ำช่องมูลค่าเหมาะสม/ราคา → H
+    if (TEMPLATE_CELL_TOK.test(v)) { H.push(`s8 vcell "${kk}" value repeats a template cell token ("${v}") — not carried`); dup = true; continue; }
+    cells.push({ k: kk.replace(/[{}<>]/g, '').trim(), v });
   }
   if (cells.length > 2) H.push(`s8 vcells ${cells.length + 3} > 5 — extra cells not carried`);
   return { cells: !dup && cells.length && cells.length <= 2 ? cells : null, H };
@@ -941,7 +960,8 @@ function assemble(parsed0, ctx) {
     if (out.verdict && out.verdict.extraCells) {
       const keep = out.verdict.extraCells.filter((c) => {
         const lit = String(c.v).replace(/\{\{[^{}]*\}\}/g, ' ');
-        if (/(?:US\$|\$|฿)\s*[0-9]|[0-9]\s*%|52\s*(?:สัปดาห์|week|wk)/i.test(lit + ' ' + c.k)) { H.push(`verdict.extraCells "${c.k}" holds a price-bound literal ("${c.v}") that cannot be tokenised — not carried`); return false; }
+        // + ตัวคูณ "N x" / "N เท่า" (VRANDA "9.5 เท่า" = ตัวคูณปัจจุบัน ผูกราคา · fix round 2)
+        if (/(?:US\$|\$|฿)\s*[0-9]|[0-9]\s*%|[0-9]\s*(?:x(?![A-Za-z])|เท่า)|52\s*(?:สัปดาห์|week|wk)/i.test(lit + ' ' + c.k)) { H.push(`verdict.extraCells "${c.k}" holds a price-bound literal ("${c.v}") that cannot be tokenised — not carried`); return false; }
         return true;
       });
       if (keep.length) out.verdict.extraCells = keep; else delete out.verdict;
