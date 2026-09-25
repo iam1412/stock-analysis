@@ -370,11 +370,11 @@ EOF
 Run: `cd /Users/somchai.s/Downloads/stock-v3-p6 && rtk proxy npm run verify > /tmp/plan4a-verify.log 2>&1; echo "verify exit $?"; tail -3 /tmp/plan4a-verify.log; GIT_DIR=$(git rev-parse --absolute-git-dir) node test/v3-test.js 2>&1 | grep -E "✗|report-cli|cron:" ; echo "v3-test exit ${PIPESTATUS[0]}"`
 Expected: `verify exit 0` · check-site error 0 · v3-test exit 0 with `report-cli` line green.
 
-- [ ] **Step 2: Rehearse the v3 UPDATE flow on a scratch checkout with an isolated queue** (network: prep-stock fetches StockAnalysis/Yahoo — run any time; OGE is US so the "ตลาดเปิดอยู่" note may appear, that is fine)
+- [ ] **Step 2: Rehearse the v3 UPDATE flow on a scratch checkout with an isolated queue** (network: prep-stock fetches StockAnalysis/Yahoo and `preflight` runs SEC lookups — run any time; OGE is US so the "ตลาดเปิดอยู่" note may appear, that is fine). Facts this step relies on (verified 25 ก.ย. 69): `ship`'s `postcheckGuard` passes without a prior `preflight` because `S.inRound(rec, undefined)` is true when no round has started (`state.js` inRound) — so a `postcheck ✅` is enough; `preflight()` runs `git pull --rebase origin main` unconditionally, so the scratch is a **branch** (not detached) and preflight runs only on a clean tree; `--no-sec` is not a dispatcher flag (`tools/queue.js:30`) — do not pass it.
 
 ```bash
 S=/Users/somchai.s/Downloads/stock-v3-plan4a-scratch; Q=/tmp/plan4a-queue; rm -rf "$Q"; mkdir -p "$Q"
-cd /Users/somchai.s/Downloads/stock-v3-p6 && git worktree add --detach "$S" HEAD >/dev/null && cd "$S"
+cd /Users/somchai.s/Downloads/stock-v3-p6 && git worktree add -b scratch-plan4a "$S" HEAD >/dev/null && cd "$S"
 export QUEUE_DIR="$Q"
 # (a) UPDATE เต็ม บน OGE — prep ต้องรับใบ v3 (ไม่มี "v3 UPDATE = P6")
 npm run queue -- prep OGE --mode UPDATE --model opus 2>&1 | tail -12
@@ -391,21 +391,24 @@ node tools/report.js export ICC && node -e 'const f=".work/ICC.json";const d=JSO
 node tools/report.js save ICC --light 2>&1 | tail -2
 # negative: LIGHT ที่แก้ FV input ต้องถูกปฏิเสธพร้อม path
 node -e 'const f=".work/ICC.json";const d=JSON.parse(require("fs").readFileSync(f));d.legs[0].inputs.multiple=99;require("fs").writeFileSync(f,JSON.stringify(d,null,2)+"\n")'; node tools/report.js save ICC --light 2>&1 | grep -c "\[--light\] legs\[0\]\.inputs\.multiple"; echo "(expect 1)"
-node tools/report.js export ICC --force >/dev/null && node -e 'const f=".work/ICC.json";const d=JSON.parse(require("fs").readFileSync(f));d.meta.analysisDate="'"$(TZ=Asia/Bangkok date +%F)"'";d.meta.aiModel="Claude Opus 5.5";d.prose.verdictBody+=" (ทบทวนแล้ว — ซ้อม LIGHT)";require("fs").writeFileSync(f,JSON.stringify(d,null,2)+"\n")' && node tools/report.js save ICC --light 2>&1 | tail -1
+node tools/report.js export ICC --force >/dev/null && node tools/report.js save ICC --light 2>&1 | tail -1   # draft = ใบที่ save แล้ว → byte-identical, exit 0 (ไม่ต่อ suffix ซ้ำ)
 npm run queue -- postcheck ICC --model opus 2>&1 | tail -4
 npm run queue -- ship ICC --no-push --model opus 2>&1 | tail -3
 git log --oneline -3; git show --stat --format= HEAD | cat
-# (c) preflight ต้องไม่ล้มและไม่ซ่อนใบ v3 (offline enough: --no-patch --allow-dirty --no-sec)
-npm run queue -- preflight --no-patch --allow-dirty --no-sec 2>&1 | grep -E "v3 OGE|v3 ICC|อายุเกิน|ข้อผิดพลาด|Error" | head
+# (c) preflight กับใบ v3 จริง — สองชั้น: (1) plan()/v3Lines/patchTargets บน reports/ จริงด้วยแถว flag สังเคราะห์ (ไม่แตะ git · OGE/ICC ไม่มี flag จริงและ analysisDate = วันนี้จึงไม่เข้าคิวอายุ) (2) preflight เต็มบน tree ที่สะอาด (หลัง ship commit) ต้องไม่ล้ม
+node -e 'const P=require("./tools/queue/preflight.js");const today=new Date().toLocaleDateString("en-CA",{timeZone:"Asia/Bangkok"});const rows=P.plan([{symbol:"OGE",reason:"drift-gt-15pct",diffPct:20,flaggedAt:today},{symbol:"ICC",reason:"age-gt-90d",synthetic:true,flaggedAt:today}],today,{ageLimit:0,footerAgeOf:()=>10,lightRule:"legacy"});console.log(rows.map(r=>[r.symbol,r.v3,r.oldPrice,r.currency,r.bucket].join(" ")).join("\n"));console.log(P.v3Lines(rows).join("\n"));const pt=P.patchTargets(rows,{usOpen:false,setOpen:false,allowIntraday:false});console.log("skippedV3",pt.skippedV3.join(","),"target",pt.target.join(","));'
+# expect: "OGE true <px> USD LIGHT|FULL" · "ICC true <px> THB …" · two "v3 …: ราคายังไม่สด → …" lines · skippedV3 OGE,ICC · target (empty)
+git status --short | wc -l   # expect 0 (both ships committed) — preflight pulls; a dirty tree is refused
+npm run queue -- preflight --no-patch 2>&1 | grep -E "คิว price-flags|อายุเกิน|ขั้นที่ต้องทำเอง|Error|ล้ม" | head -6   # smoke: runs to the manual-steps block without error (v3 lines only if a real v3 flag exists)
 unset QUEUE_DIR; cd /Users/somchai.s/Downloads/stock-v3-p6 && git worktree remove --force "$S" && rm -rf "$Q"
 ```
 
 Expected: prep OGE prints `โหมด UPDATE` and the `.md` contains `★ ใบ v3 UPDATE — ทำตาม SKILL STEP 5U`; no `OGE.json` sidecar; `save OGE` ✓ with FV/MOS; postcheck `✅ ผ่าน` or only the expected `ai-model`/date issues; ship commit subject `analyze: update OGE — UPDATE (MOS …)` with stat exactly `reports/OGE.json` + `reports.json`; ICC LIGHT: `save --light` ✓, negative case `1`, ship stat `reports/ICC.json` + `reports.json`; preflight prints the `v3 …` lines without error. Record every deviation.
 
-- [ ] **Step 3: DIST-PROOF vs merge-base**
+- [ ] **Step 3: Rebase onto the current `main`, then DIST-PROOF vs the new merge-base** (main moves nightly with the cron — same lesson as Plan 3: rebase → proof → push, and repeat the proof if a later rebase is needed)
 
 ```bash
-cd /Users/somchai.s/Downloads/stock-v3-p6 && BASE=$(git merge-base HEAD origin/main) && git worktree add -q /Users/somchai.s/Downloads/stock-v3-plan4a-base "$BASE" && (cd /Users/somchai.s/Downloads/stock-v3-plan4a-base && node build.js >/dev/null 2>&1) && node build.js >/dev/null 2>&1 && (rtk proxy diff -rq /Users/somchai.s/Downloads/stock-v3-plan4a-base/dist dist && echo "DIST IDENTICAL ($(git rev-parse --short HEAD) vs $BASE)"); git worktree remove --force /Users/somchai.s/Downloads/stock-v3-plan4a-base; git status --short | wc -l
+cd /Users/somchai.s/Downloads/stock-v3-p6 && git pull --rebase origin main && rtk proxy npm run verify 2>&1 | tail -1 && BASE=$(git merge-base HEAD origin/main) && git worktree add -q /Users/somchai.s/Downloads/stock-v3-plan4a-base "$BASE" && (cd /Users/somchai.s/Downloads/stock-v3-plan4a-base && node build.js >/dev/null 2>&1) && node build.js >/dev/null 2>&1 && (rtk proxy diff -rq /Users/somchai.s/Downloads/stock-v3-plan4a-base/dist dist && echo "DIST IDENTICAL ($(git rev-parse --short HEAD) vs $BASE)"); git worktree remove --force /Users/somchai.s/Downloads/stock-v3-plan4a-base; git status --short | wc -l
 ```
 
 Expected: `DIST IDENTICAL` and `0`.
@@ -415,12 +418,13 @@ Expected: `DIST IDENTICAL` and `0`.
 - [ ] **Step 5: PR** (controller runs this, not the implementer)
 
 ```bash
-cd /Users/somchai.s/Downloads/stock-v3-p6 && git pull --rebase origin main && rtk proxy npm run verify 2>&1 | tail -1 && GIT_DIR=$(git rev-parse --absolute-git-dir) node test/v3-test.js >/dev/null && echo V3OK
+cd /Users/somchai.s/Downloads/stock-v3-p6 && git fetch origin && [ "$(git merge-base HEAD origin/main)" = "$(git rev-parse origin/main)" ] && echo "still on main tip" || echo "main moved — repeat Step 3 before pushing"
+GIT_DIR=$(git rev-parse --absolute-git-dir) node test/v3-test.js >/dev/null && echo V3OK
 git push -u origin feat/report-v3-plan4a
 gh pr create --repo iam1412/stock-analysis --base main --head feat/report-v3-plan4a --title "Report v3 Plan 4a: v3 UPDATE queue flow (prep/preflight accept v3 · STEP 5U)" --body-file <body>
 ```
 
-PR body: the spec amend summary (P6 → 4a/4b/4c, the rulings), the three code facts (reportSource · `!e.v3` removed · allowlist unchanged + pinned), the rehearsal outputs, DIST-PROOF, test counts, and "no production change". Then advisor pre-merge → `gh pr merge <N> --merge --repo iam1412/stock-analysis` standalone.
+PR body: the spec amend summary (P6 → 4a/4b/4c, the rulings), the three code facts (reportSource · `!e.v3` removed · allowlist unchanged + pinned), the rehearsal outputs, DIST-PROOF, test counts, "no production change", and the caveat that the rehearsal proves the flow with controller-scripted edits — the first real v3 UPDATE by an Opus worker reading STEP 5U is the acceptance test for the docs (watch its turn count against the ≤6 target). Then advisor pre-merge → `gh pr merge <N> --merge --repo iam1412/stock-analysis` standalone.
 
 ---
 
