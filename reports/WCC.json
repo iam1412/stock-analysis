@@ -1,0 +1,238 @@
+{
+  "v": 3,
+  "symbol": "WCC",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "WESCO International",
+    "exchange": "NYSE",
+    "sub": "จัดจำหน่ายอุปกรณ์ไฟฟ้า สื่อสาร และโซลูชันอุตสาหกรรม • Electrical & Electronic Solutions (EES) • Communications & Security Solutions (CSS) • Utility & Broadband Solutions (UBS)",
+    "headerTags": [
+      "Industrial Distribution",
+      "Data Center • Grid Modernization"
+    ],
+    "analysisDate": "2026-09-22",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "StockAnalysis.com",
+      "WESCO International (PRNewswire",
+      "ผลประกอบการ Q2",
+      "2569)"
+    ],
+    "priceNote": "Yahoo Finance, ตรงกับ StockAnalysis.com",
+    "migratedFrom": {
+      "updated": "2026-09-22T03:05:24+07:00",
+      "v2Hash": "2a4de8429128"
+    }
+  },
+  "market": {
+    "px": 361.33,
+    "priceDate": "2026-09-24",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          259.53
+        ],
+        [
+          "พ.ย.25",
+          267.41
+        ],
+        [
+          "ธ.ค.25",
+          244.64
+        ],
+        [
+          "ม.ค.26",
+          289.43
+        ],
+        [
+          "ก.พ.26",
+          289.5
+        ],
+        [
+          "มี.ค.26",
+          273.62
+        ],
+        [
+          "เม.ย.26",
+          349.12
+        ],
+        [
+          "พ.ค.26",
+          361.17
+        ],
+        [
+          "มิ.ย.26",
+          345.43
+        ],
+        [
+          "ก.ค.26",
+          343.49
+        ],
+        [
+          "ส.ค.26",
+          340.4
+        ],
+        [
+          "ก.ย.26",
+          361.33
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 201.35,
+      "hi": 385.37
+    }
+  },
+  "fundamentals": {
+    "dps": 2,
+    "bvps": 104,
+    "shares": 49400000,
+    "netIncome": 715000000,
+    "eps": 14.46,
+    "revenue": 25013000000,
+    "grossMargin": 21.4,
+    "beta": 1.3,
+    "epsForward": 16.75,
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation",
+      "inputs": {
+        "multiple": 18,
+        "multipleSource": "author",
+        "base": "epsForward"
+      },
+      "baseLabel": "FY69E",
+      "note": "กลางไกด์ไลน์บริษัท · ต่ำกว่า P/E ตลาดปัจจุบัน (~25x) สะท้อนการ normalize จากระดับที่ตึงตัว",
+      "family": "market"
+    },
+    {
+      "method": "evsales",
+      "label": "EV/Sales Valuation",
+      "inputs": {
+        "multiple": 0.85,
+        "multipleSource": "author"
+      },
+      "override": {
+        "netDebt": 5922072000,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "family": "market"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "custom:0",
+      "pbv",
+      "netIncome",
+      "eps",
+      "bvps",
+      "custom:1",
+      "revenue",
+      "grossMargin",
+      "yield",
+      "beta"
+    ],
+    "custom": [
+      {
+        "label": "Backlog รวม (YoY)",
+        "value": "+~60%",
+        "note": "สถิติสูงสุด, Q2/2569 (PRNewswire)",
+        "tone": "pos"
+      },
+      {
+        "label": "ROE / D-E",
+        "value": "~13.9% / 1.29x",
+        "note": "TTM (StockAnalysis)",
+        "tone": "pos"
+      }
+    ],
+    "notes": {
+      "mcap": "49.4M หุ้น (diluted)",
+      "pe": "Fwd P/E ~21.7x (FY69E guidance)",
+      "pbv": "BVPS ~$104 (ประมาณ)",
+      "netIncome": "+10.7% จาก FY68 $646M",
+      "eps": "diluted, ผู้ถือหุ้นสามัญ — Yahoo $14.15 (ต่าง 2.1%)",
+      "bvps": "ประมาณจาก NI TTM ÷ ROE",
+      "revenue": "+12.5% YoY",
+      "grossMargin": "OpM 5.4% • NetM 2.9%",
+      "yield": "{{dps}}/หุ้น/ปี",
+      "beta": "ประมาณ (หุ้นวัฏจักรอุตสาหกรรม)"
+    },
+    "hint": "TTM = 4 ไตรมาสล่าสุด ณ Q2/2569"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": -3,
+        "exitMultiple": 15,
+        "divCum": 4.8,
+        "desc": "วงจรลงทุนภาคอุตสาหกรรม/ดาต้าเซ็นเตอร์ชะลอตัวแรงกว่าคาด backlog แปลงเป็นรายได้ช้าลง P/E de-rate กลับสู่โซนต่ำ (คล้ายปี 2566-67)"
+      },
+      {
+        "growth": 10.5,
+        "exitMultiple": 18,
+        "divCum": 6.3,
+        "desc": "เติบโตตามไกด์ไลน์บริษัท (Adj. EPS FY69 $16.00-17.50) ต่อเนื่องปานกลาง demand data center/grid ยังแข็งแรง แต่ P/E ปรับลงเล็กน้อยจากระดับปัจจุบันที่ตึงตัว"
+      },
+      {
+        "growth": 16,
+        "exitMultiple": 21,
+        "divCum": 7.2,
+        "desc": "Backlog ที่โต ~60% YoY แปลงเป็นรายได้เร็ว + margin ขยายตัวต่อเนื่องจาก data center/AI infrastructure capex supercycle นักลงทุนให้ premium multiple ต่อเนื่อง"
+      }
+    ],
+    "exitDp": 0,
+    "note": "Base case อิงไกด์ไลน์ Adjusted EPS FY2569 ของบริษัทเอง ($16.00-17.50) ต่อยอดการเติบโต ~10.5%/ปีอีก 2 ปีถัดไป — ผลตอบแทนรวม 3 ปีใกล้ศูนย์เพราะราคาปัจจุบันปรับขึ้นไปล่วงหน้าแล้วมาก Bear สะท้อนความเสี่ยงวัฏจักรอุตสาหกรรมชะลอ (คล้ายปี 2566-67) Bull สะท้อนกรณี backlog แปลงเป็นรายได้เร็วและตลาดให้ premium multiple ต่อเนื่อง"
+  },
+  "analyst": {
+    "target": 397.09,
+    "n": null,
+    "rating": "Strong Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ราคาหุ้น WCC พุ่งขึ้นแรงจากจุดต่ำสุดรอบปีที่ $211.50 (ก.ย. 2568) เป็น ${{px}} ในปัจจุบัน (ส.ค. 2569) หรือ +72.0% ในรอบ 1 ปี — แรงหนุนหลักคือกระแสการลงทุนโครงสร้างพื้นฐาน data center/AI ที่ดัน backlog ของ WESCO ให้โตกว่า 60% YoY ผสมกับผลประกอบการ Q2/2569 ที่ทำสถิติใหม่และบริษัทปรับเป้ากำไรทั้งปีขึ้น ราคาเร่งตัวชัดเจนตั้งแต่เดือนเมษายน 2569 (จาก ~$273 สู่ระดับ $340-360 ต่อเนื่อง) สะท้อนความเชื่อมั่นของตลาดต่อวัฏจักรลงทุนโครงข่ายไฟฟ้า/ดาต้าเซ็นเตอร์รอบใหม่",
+    "valuation": "วิธี P/E (อิง Adjusted diluted EPS FY2569 กลางไกด์ไลน์บริษัทเอง จากช่วง $16.00–$17.50) ให้ {{fvLow}} ต่ำกว่าราคาตลาดชัดเจน เพราะ P/E ปัจจุบันของหุ้น (~25x) มี premium สูงกว่าค่านี้มาก ส่วนวิธี EV/Sales (อิงรายได้ TTM ต่อหุ้น หักหนี้สินสุทธิ) ให้ {{fvHigh}} ใกล้เคียงกัน — สองวิธีที่ไม่ได้ใช้สมมติฐาน (r,g) ร่วมกันชี้ไปทางเดียวกันว่าราคาตลาดปัจจุบันปรับขึ้นไปล่วงหน้ากว่าพื้นฐานที่วัดได้ในปัจจุบันแล้ว (ส่วนต่าง |MOS| ~{{mos}}% ยังต่ำกว่าเกณฑ์ 40% ที่ต้องมีวิธีอิงตลาดยืนยันเพิ่ม)",
+    "gauge": "ราคาปัจจุบัน ${{px}} อยู่เหนือมูลค่าเหมาะสม ${{fv}} และเหนือกรอบบน FV {{fvHigh}} แต่ยังต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ {{analyst.target}} (Strong Buy, 11 ราย) สะท้อนว่าตลาดให้เครดิตกับการเติบโตในอนาคต (backlog +60% YoY) มากกว่าที่โมเดล valuation แบบอนุรักษ์นิยมสะท้อน",
+    "mos": "<b>ไม่มี Margin of Safety (ราคาแพงกว่ามูลค่าเหมาะสม ~{{mos}}%)</b><br>นักลงทุนสายเน้นคุณค่าควรรอจังหวะย่อตัวเข้าใกล้โซน MOS 20-30% ก่อนเข้าซื้อ ส่วนสายเติบโตอาจให้น้ำหนักกับ backlog ที่แข็งแกร่งมากกว่า",
+    "verdictHeadline": "ธุรกิจกำลังโตแรง แต่ราคาสะท้อนความคาดหวังไปมากแล้ว",
+    "verdictBody": "WESCO ได้อานิสงส์จากวัฏจักรลงทุนโครงสร้างพื้นฐาน data center/AI และการปรับปรุงโครงข่ายไฟฟ้า backlog โต ~60% YoY ทำสถิติสูงสุด และบริษัทปรับเป้ากำไร FY2569 ขึ้น แต่ราคาหุ้นที่พุ่ง +72% ในรอบปีทำให้เทรดที่ P/E ~25x สูงกว่ามูลค่าเหมาะสมที่ประเมินได้จากพื้นฐานปัจจุบันราว {{mos}}% (ไม่มี Margin of Safety) เหมาะกับการรอจังหวะย่อตัวมากกว่าไล่ราคา ณ ระดับนี้",
+    "strategy": "รอจังหวะย่อตัวเข้าใกล้โซน Fair Value ~{{fv}} หรือ MOS 20% ~{{mos20}} ก่อนเข้าซื้อเพิ่ม นักลงทุนที่ถือครองอยู่แล้วอาจถือต่อตามพื้นฐาน backlog/ดาต้าเซ็นเตอร์ที่แข็งแกร่ง แต่ไม่ควรไล่ราคาที่ระดับปัจจุบัน",
+    "disclaimerSources": "ราคา ณ {{priceDate}} จาก Yahoo Finance และ StockAnalysis.com (ตรงกัน) • ข้อมูลงบการเงิน/backlog จาก StockAnalysis.com และข่าวประชาสัมพันธ์ผลประกอบการ Q2/2569 ของ WESCO International (PRNewswire, 30 ก.ค. 2569) • เป้าราคานักวิเคราะห์จาก Yahoo Finance/StockAnalysis.com (11 ราย)"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 2 วิธี"
+  },
+  "catalysts": [
+    "<b>Data center capex supercycle:</b> ความต้องการโครงสร้างพื้นฐาน data center/AI ผลักดันรายได้กลุ่ม EES และ backlog รวมพุ่ง ~60% YoY ทำสถิติสูงสุด (WESCO PRNewswire, ผลประกอบการ Q2/2569)",
+    "<b>Grid modernization / broadband:</b> การลงทุนปรับปรุงโครงข่ายไฟฟ้าและขยาย broadband หนุนกลุ่ม Utility & Broadband Solutions (UBS) ต่อเนื่องหลายปี",
+    "<b>ไถ่ถอนหุ้นบุริมสิทธิสำเร็จ:</b> ไถ่ถอนหุ้นบุริมสิทธิ Series A ที่ค้างจากดีล Anixter (2020) หมดภายใน Q2/2569 (ไม่มีเงินปันผลบุริมสิทธิหักแล้ว เทียบ $12.9M ใน Q2/2568) ลดภาระต่อ EPS ผู้ถือหุ้นสามัญ",
+    "<b>Margin ฟื้นตัว:</b> Operating margin ขยับจาก 5.2% (FY2568) เป็น 5.4% (TTM) จาก mix ธุรกิจมาร์จิ้นสูงขึ้น",
+    "<b>ปรับเป้ากำไรขึ้น:</b> บริษัทปรับเป้า Adjusted diluted EPS FY2569 ขึ้นเป็น $16.00-17.50 หลังผลประกอบการ Q2/2569 แข็งแกร่งเกินคาด"
+  ],
+  "risks": [
+    "<b>Valuation ตึงตัว:</b> เทรดที่ P/E TTM ~25x สูงกว่าค่าที่ประเมินจากพื้นฐานปัจจุบัน สะท้อนการคาดการณ์เติบโตล่วงหน้าไว้มากแล้ว หากผลประกอบการไม่เป็นไปตามคาดอาจเห็น de-rate แรง",
+    "<b>วัฏจักรอุตสาหกรรม:</b> ธุรกิจจัดจำหน่ายผูกกับวัฏจักรการลงทุนภาคอุตสาหกรรม เคยเห็นรายได้หดตัว -2.5% ในปี 2567 หากดีมานด์ data center ชะลอกะทันหันจะกระทบเร็ว",
+    "<b>หนี้สินสูง:</b> D/E ~1.29x หนี้รวม $6.7B (ส่วนหนึ่งจากดีล Anixter) ต้นทุนดอกเบี้ยกดกำไรสุทธิหากดอกเบี้ยยังสูงต่อเนื่อง",
+    "<b>Margin บาง:</b> NetM เพียง ~2.9% ตามลักษณะธุรกิจจัดจำหน่าย กำไรอ่อนไหวสูงต่อการแข่งขันด้านราคา/ต้นทุนโลจิสติกส์",
+    "<b>Backlog conversion risk:</b> backlog ที่โต 60% YoY อาจไม่แปลงเป็นรายได้ตามคาดหากลูกค้าเลื่อน/ยกเลิกโครงการ capex ขนาดใหญ่"
+  ],
+  "extras": [],
+  "_sig": "sha256:8f28543b4f85c66a7c0373b52dc15d5e32d245eb0694857cd18a16765cba8d34"
+}
