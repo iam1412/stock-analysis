@@ -203,7 +203,7 @@ t.done();
 {
   const d = JSON.parse(JSON.stringify(doc)); d.scenarios.driver = 'de'; d.fundamentals.dePerShare = 3.3; d.scenarios.exitMetric = 'evsales'; d.fundamentals.netDebt = 1e9; d.fundamentals.shares = d.fundamentals.shares || 4.3e8;
   const html = R.toV2Source(d, C.compute(d, { seeds: SEEDS }));
-  t(/<span>DE\/หุ้น \+[0-9.]+%\/ปี<\/span>/.test(html) && /<span>EV\/Sales ออก<\/span>/.test(html) && /DE\/หุ้น ฐาน ~/.test(html), 'driver de → "DE/หุ้น" labels · exitMetric evsales → "EV/Sales ออก"');
+  t(/<span>DE\/หุ้น [+−][0-9.]+%\/ปี<\/span>/.test(html) && /<span>EV\/Sales ออก<\/span>/.test(html) && /DE\/หุ้น ฐาน ~/.test(html), 'driver de → "DE/หุ้น" labels · exitMetric evsales → "EV/Sales ออก"');
 }
 ```
 
@@ -1108,7 +1108,7 @@ git commit -m "feat(migrate-v3): per-zone equivalence gate (approved transforms 
 - Produces: CLI
   - `node tools/migrate-v3.js sweep [--reports-dir D] [--only SYM…] [--limit N] [--no-stale] [--head-manifest FILE] [--out PATHBASE]` → writes `PATHBASE.md` + `PATHBASE.csv` (default `docs/superpowers/specs/<today>-v3-migration-sweep`), prints `sweep: N ใบ · CLEAN a · VALUE-DRIFT b · HUMAN c · TEXT LOST ใน CLEAN 0`. Read-only.
   - `node tools/migrate-v3.js convert <SYM> [--reports-dir D] [--write] [--accept-drift] [--head-manifest FILE] [--no-stale]` → prints bucket, reasons, eq summary; exit 0 CLEAN · 2 VALUE-DRIFT · 1 HUMAN/error (no `--write`). With `--write`: refuses HUMAN (exit 1) and VALUE-DRIFT without `--accept-drift` (exit 2); otherwise `IO.write(D/<SYM>.json, doc)` → `fs.unlinkSync(D/<SYM>.html)` → `checkDoc(written, {seeds, today})` must have 0 errors else restore the `.html`, delete the `.json`, exit 1. **Safety:** `--write` against the real `reports/` (path equal to `ROOT/reports`) is refused unless env `MIGRATE_V3_ALLOW_REAL=1` (Plan 4c sets it; this PR never does outside the scratch rehearsal).
-  - `AP.analysisPx(sym, footerRaw, { root }) → { px, pe, mos, upside } | null` (git `log -S` on the footer string → `show` → `readStockMeta`), memoised per run; `--no-stale` ⇒ `null` for all.
+  - `AP.analysisPx(sym, footerRaw, { root }) → { px, pe, mos, upside } | null` (git `log -S` on the footer string → `show` → `readStockMeta`), memoised per run; `--no-stale` ⇒ `null` for all. **Runtime pin (advisor):** `git log --reverse --format=%H --diff-filter=AM -S <raw> -- reports/<SYM>.html | head -1` (oldest hit = the analysis commit) — never the full `-S` walk without `--reverse`; `sweep` prints `… N/909` progress every 50 reports; if the first 50 take > 2 min, run the whole sweep once with `--no-stale`, report both timings, and let the controller rule on `proseStale`.
   - `RP.writeSweep(rows, { out, head, date })` — md sections: summary counts · **HUMAN** table (symbol · market · reasons) · **VALUE-DRIFT** table (symbol · market · D rows) · **CLEAN** symbol list per market · F-note histogram · "how to regenerate" line; csv columns `symbol,market,bucket,reasons,legs,fvLegs,textLost,numberValue,rdRows,proseStale,customCards,fNotes`.
 
 - [ ] **Step 1: Write the failing tests** — `test/v3/migrate-cli.test.js`:
@@ -1398,6 +1398,7 @@ Pick symbols from the committed sweep: `TH=$(awk -F, 'NR>1 && $2=="TH" && $3=="C
 ```bash
 S=/Users/somchai.s/Downloads/stock-v3-plan4b-scratch
 cd /Users/somchai.s/Downloads/stock-v3-plan4b && git worktree add -b scratch-plan4b "$S" HEAD >/dev/null && cd "$S"
+git status --short reports.json | wc -l   # (0) expect 0 — headUpdated comes from HEAD:reports.json, build #1 reads the working-tree file; they must be the same file
 OLD_TH=$(node -e 'const m=JSON.parse(require("fs").readFileSync("reports.json"));console.log(m.find(r=>r.symbol===process.argv[1]).updated)' $TH)
 # (1) convert (real write inside the scratch only)
 MIGRATE_V3_ALLOW_REAL=1 node tools/migrate-v3.js convert $TH --write; echo "convert exit $?"
