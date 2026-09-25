@@ -1628,9 +1628,14 @@ let v3PrepatchPromise = null;   // Plan 4a fix1 (Review Focus 3) — prep() เ�
     ok(byS.ZTS.v3 === true && byS.ZTS.oldPrice === 71.33 && byS.ZTS.currency === 'USD' && byS.AAPL.v3 === false && byS.AAPL.currency === 'USD',
       'v3/preflight: ราคาเดิม/สกุลของใบ v3 มาจาก market.px/currency', JSON.stringify(rows.map((r) => [r.symbol, r.v3, r.oldPrice, r.currency])));
     const pt = P.patchTargets(rows, { usOpen: false, setOpen: false, allowIntraday: false });
-    ok(pt.skippedV3.join(',') === 'ZTS' && !pt.target.includes('ZTS') && pt.target.includes('AAPL'), 'v3/preflight: ใบ v3 ไม่เข้า pre-patch อัตโนมัติ (P6 · pre-patch มือ = update-prices --write --force — Plan 3 R8) · ใบ v2 เข้าเหมือนเดิม', JSON.stringify(pt));
-    ok(JSON.stringify(P.v3Lines(rows)) === JSON.stringify(['v3 ZTS: ราคายังไม่สด → controller pre-patch มือ `node tools/update-prices.js --write --force ZTS` (pre-patch อัตโนมัติของใบ v3 = Plan 4b) · แล้ว npm run queue -- prep ZTS ตามปกติ (worker: report.js export/save — SKILL STEP 5U)']),
-      'v3/preflight (4a): แถวใบ v3 = 1 บรรทัด: pre-patch มือ + prep ตามปกติ · ใบ v2 ไม่มีบรรทัด', JSON.stringify(P.v3Lines(rows)));
+    ok(pt.skippedV3.join(',') === 'ZTS' && !pt.target.includes('ZTS') && pt.target.includes('AAPL'), 'v3/preflight: ใบ v3 ไม่เข้า pre-patch อัตโนมัติ (Plan 4b · pre-patch มือ = update-prices --write --force — Plan 3 R8) · ใบ v2 เข้าเหมือนเดิม', JSON.stringify(pt));
+    ok(byS.ZTS.bucket === 'LIGHT' && !byS.ZTS.skip && JSON.stringify(P.v3Lines(rows)) === JSON.stringify(['v3 ZTS: หลัง ship --prepatch — ราคายังไม่สด → controller pre-patch มือ `node tools/update-prices.js --write --force ZTS` (ตลาดปิดแล้วเท่านั้น) แล้ว npm run queue -- prep ZTS ตามปกติ (worker: report.js export/save — SKILL STEP 5U · pre-patch อัตโนมัติของใบ v3 = Plan 4b)']),
+      'v3/preflight (4a fix1): แถวใบ v3 LIGHT/FULL = 1 บรรทัด: หลัง ship --prepatch → pre-patch มือ + prep ตามปกติ · ใบ v2 ไม่มีบรรทัด', JSON.stringify([byS.ZTS.bucket, P.v3Lines(rows)]));
+    const rowsFlip = P.plan([{ symbol: 'ZTS', reason: 'mos-sign-flip', diffPct: 3, flaggedAt: '2026-09-22' }], '2026-09-22', { ageLimit: 0, footerAgeOf: () => 30, lightRule: 'legacy', liteOf });
+    ok(rowsFlip[0].bucket === 'PREPATCH' && JSON.stringify(P.v3Lines(rowsFlip)) === JSON.stringify(['v3 ZTS: flip ในย่าน → controller pre-patch มือ `node tools/update-prices.js --write --force ZTS` (ตลาดปิดแล้วเท่านั้น — --force ข้าม guard intraday) แล้ว npm run queue -- ship ZTS (ship --prepatch ไม่รับ .json · pre-patch อัตโนมัติของใบ v3 = Plan 4b)']),
+      'v3/preflight (4a fix1): แถวใบ v3 PREPATCH (flip) → pre-patch มือ แล้ว ship <SYM> (ไม่ใช่ prep — prep ปฏิเสธ PREPATCH)', JSON.stringify([rowsFlip[0].bucket, P.v3Lines(rowsFlip)]));
+    ok(JSON.stringify(P.v3Lines([{ symbol: 'ZTS', v3: true, bucket: 'DELIST' }, { symbol: 'ZTS', v3: true, bucket: 'LIGHT', skip: 'fresh' }, { symbol: 'ZTS', v3: true, bucket: 'PLUMBING' }, { symbol: 'ZTS', v3: true, bucket: 'REJECTED' }, { symbol: 'ZTS', v3: true, bucket: 'UNKNOWN' }])) === '[]',
+      'v3/preflight (4a fix1): แถวใบ v3 skip/DELIST/PLUMBING/REJECTED/UNKNOWN → ไม่มีบรรทัด', JSON.stringify(P.v3Lines([{ symbol: 'ZTS', v3: true, bucket: 'DELIST' }])));
     const cal = { symbols: { ZTS: { last: '2026-09-25' } } };
     const lite = { analysisDate: '2026-09-22', currency: 'THB' };
     const html = '<script type="application/json" id="stock-meta">{"currency":"THB"}</script><footer>ข้อมูล ณ 22 ก.ย. 2569</footer>';
@@ -1666,6 +1671,8 @@ let v3PrepatchPromise = null;   // Plan 4a fix1 (Review Focus 3) — prep() เ�
     ok(P.listReportsFS(V3DIR).join() === 'AAPL,ZTS', 'v3/preflight (4a): listReportsFS นับใบ v3 ด้วย (เรียงชื่อ)', P.listReportsFS(V3DIR).join());
     const aq = P.ageQueue('2026-09-24', { listReports: () => P.listReportsFS(V3DIR), footerAgeOf: () => 400 });
     ok(aq.map((r) => r.symbol).join() === 'AAPL,ZTS', 'v3/preflight (4a): ใบ v3 ที่เก่าเกิน STALE_DAYS เข้าคิวอายุ (Review Focus 5)', JSON.stringify(aq));
+    const aqReal = P.ageQueue('2030-01-01', { listReports: () => ['ZTS'], footerAgeOf: (s) => require('../tools/queue/footer-date.js').ageDays(RS.metaLite(s, V3DIR).analysisDate, '2030-01-01') });
+    ok(aqReal.length === 1 && aqReal[0].symbol === 'ZTS' && aqReal[0].footerAge > 1000, 'v3/preflight (4a fix1): อายุของใบ v3 มาจาก meta.analysisDate จริง → เข้าคิวอายุ', JSON.stringify(aqReal));
     const ptAge = P.patchTargets(P.plan([], '2026-09-24', { ageLimit: 5, footerAgeOf: () => 400, lightRule: 'legacy', liteOf, listReports: () => P.listReportsFS(V3DIR) }), { usOpen: false, setOpen: false, allowIntraday: false });
     ok(ptAge.skippedV3.join() === 'ZTS' && ptAge.target.join() === 'AAPL', 'v3/preflight (4a): แถวอายุของใบ v3 ยังไม่เข้า pre-patch อัตโนมัติ (= Plan 4b) · ใบ v2 เข้า', JSON.stringify(ptAge));
     // ── fix round 1: postcheck haystack ครอบป้าย legs/custom/extras headers · จุดที่เจอบอกเป็น path ของ JSON ──

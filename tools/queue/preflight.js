@@ -147,9 +147,19 @@ function patchTargets(rows, m) {
 }
 
 /** บรรทัดชี้คำสั่งมือต่อแถวใบ v3 (ส่วนบริสุทธิ์ · Plan 3 R8 → Plan 4a) — pre-patch อัตโนมัติของใบ v3 (patchTargets/parseGateFailures/
- *  ทาง revert/ship --prepatch) = Plan 4b · ตั้งแต่ 4a prep รับใบ v3 ⇒ บรรทัดนี้บอกแค่ "pre-patch มือถ้ายังไม่สด แล้ว prep ตามปกติ" */
+ *  ทาง revert/ship --prepatch) = Plan 4b · บรรทัดตาม bucket (Plan 4a fix round 1):
+ *  PREPATCH (flip) → pre-patch มือ แล้ว ship <SYM> (prep ปฏิเสธ PREPATCH · ship --prepatch ไม่รับ .json)
+ *  LIGHT/FULL ที่ไม่ skip → หลัง ship --prepatch ของใบ v2 (pre-patch มือก่อนนั้น = .json สกปรก → ship --prepatch ปฏิเสธทั้งชุด) แล้ว prep ตามปกติ
+ *  แถวอื่น (skip/DELIST/PLUMBING/REJECTED/UNKNOWN) → ไม่มีบรรทัด */
 function v3Lines(rows) {
-  return rows.filter((r) => r.v3).map((r) => `v3 ${r.symbol}: ราคายังไม่สด → controller pre-patch มือ \`node tools/update-prices.js --write --force ${r.symbol}\` (pre-patch อัตโนมัติของใบ v3 = Plan 4b) · แล้ว npm run queue -- prep ${r.symbol} ตามปกติ (worker: report.js export/save — SKILL STEP 5U)`);
+  const out = [];
+  for (const r of rows) {
+    if (!r.v3) continue;
+    const cmd = `\`node tools/update-prices.js --write --force ${r.symbol}\``;
+    if (r.bucket === 'PREPATCH') out.push(`v3 ${r.symbol}: flip ในย่าน → controller pre-patch มือ ${cmd} (ตลาดปิดแล้วเท่านั้น — --force ข้าม guard intraday) แล้ว npm run queue -- ship ${r.symbol} (ship --prepatch ไม่รับ .json · pre-patch อัตโนมัติของใบ v3 = Plan 4b)`);
+    else if ((r.bucket === 'LIGHT' || r.bucket === 'FULL') && !r.skip) out.push(`v3 ${r.symbol}: หลัง ship --prepatch — ราคายังไม่สด → controller pre-patch มือ ${cmd} (ตลาดปิดแล้วเท่านั้น) แล้ว npm run queue -- prep ${r.symbol} ตามปกติ (worker: report.js export/save — SKILL STEP 5U · pre-patch อัตโนมัติของใบ v3 = Plan 4b)`);
+  }
+  return out;
 }
 
 /** อ่านผล `node test/check-reports.js <syms>` → รายชื่อไฟล์ที่ "ตก" (ส่วนบริสุทธิ์ ไม่แตะดิสก์)
