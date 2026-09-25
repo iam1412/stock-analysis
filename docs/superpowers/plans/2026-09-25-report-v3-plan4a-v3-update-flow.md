@@ -357,12 +357,23 @@ EOF
 Run: `cd /Users/somchai.s/Downloads/stock-v3-p6 && rtk proxy npm run verify > /tmp/plan4a-verify.log 2>&1; echo "verify exit $?"; tail -3 /tmp/plan4a-verify.log; GIT_DIR=$(git rev-parse --absolute-git-dir) node test/v3-test.js 2>&1 | grep -E "✗|report-cli|cron:" ; echo "v3-test exit ${PIPESTATUS[0]}"`
 Expected: `verify exit 0` · check-site error 0 · v3-test exit 0 with `report-cli` line green.
 
-- [ ] **Step 2: Rehearse the v3 UPDATE flow on a scratch checkout with an isolated queue** (network: prep-stock fetches StockAnalysis/Yahoo and `preflight` runs SEC lookups — run any time; OGE is US so the "ตลาดเปิดอยู่" note may appear, that is fine). Facts this step relies on (verified 25 ก.ย. 69): `ship`'s `postcheckGuard` passes without a prior `preflight` because `S.inRound(rec, undefined)` is true when no round has started (`state.js` inRound) — so a `postcheck ✅` is enough; `preflight()` runs `git pull --rebase origin main` unconditionally, so the scratch is a **branch** (not detached) and preflight runs only on a clean tree; `--no-sec` is not a dispatcher flag (`tools/queue.js:30`) — do not pass it.
+- [ ] **Step 2: Rehearse the v3 UPDATE flow on a scratch checkout with an isolated queue** (network: prep-stock fetches StockAnalysis/Yahoo and `preflight` runs SEC lookups — run any time; OGE is US so the "ตลาดเปิดอยู่" note may appear, that is fine). Facts this step relies on (verified 25 ก.ย. 69): `ship`'s `postcheckGuard` passes without a prior `preflight` because `S.inRound(rec, undefined)` is true when no round has started (`state.js` inRound) — so a `postcheck ✅` is enough; `preflight()` runs `git pull --rebase origin main` unconditionally, so the scratch is a **branch** (not detached), preflight runs only on a clean tree, and it runs **first** (sub-step 0 — before any rehearsal commit; final review M-3); `--no-sec` is not a dispatcher flag (`tools/queue.js:30`) — do not pass it.
 
 ```bash
 S=/Users/somchai.s/Downloads/stock-v3-plan4a-scratch; Q=/tmp/plan4a-queue; rm -rf "$Q"; mkdir -p "$Q"
 cd /Users/somchai.s/Downloads/stock-v3-p6 && git worktree add -b scratch-plan4a "$S" HEAD >/dev/null && cd "$S"
 export QUEUE_DIR="$Q"
+# (0) ก่อน (a) — preflight กับใบ v3 จริง (final review M-3: preflight() รัน `git pull --rebase origin main` เสมอ · หลัง commit ซ้อม `ship --no-push` ของ (a)/(b) + cron คืนถัดไปที่เขียน OGE/ICC.json ⇒ rebase conflict กลางทาง ⇒ ต้องรันก่อน commit ซ้อมใด ๆ)
+#   (1) plan()/v3Lines/patchTargets บน reports/ จริงด้วยแถว flag สังเคราะห์ (ไม่แตะ git · OGE/ICC ไม่มี flag จริง)
+node -e 'const P=require("./tools/queue/preflight.js");const today=new Date().toLocaleDateString("en-CA",{timeZone:"Asia/Bangkok"});const rows=P.plan([{symbol:"OGE",reason:"drift-gt-15pct",diffPct:20,flaggedAt:today},{symbol:"ICC",reason:"age-gt-90d",synthetic:true,flaggedAt:today}],today,{ageLimit:0,footerAgeOf:()=>10,lightRule:"legacy"});console.log(rows.map(r=>[r.symbol,r.v3,r.oldPrice,r.currency,r.bucket].join(" ")).join("\n"));console.log(P.v3Lines(rows).join("\n"));const pt=P.patchTargets(rows,{usOpen:false,setOpen:false,allowIntraday:false});console.log("skippedV3",pt.skippedV3.join(","),"target",pt.target.join(","));'
+# expect: "OGE true <px> USD LIGHT|FULL" · "ICC true <px> THB …" · two "v3 …: ราคายังไม่สด → …" lines · skippedV3 OGE,ICC · target (empty)
+#   (2) PREPATCH (flip) — แถว mos-sign-flip สังเคราะห์ผ่าน P.plan/P.v3Lines แล้วพิมพ์บรรทัด flip (ไม่ commit — commit `price:` มือเป็นขั้นจริงของ controller ไม่ซ้อม)
+node -e 'const P=require("./tools/queue/preflight.js");const today=new Date().toLocaleDateString("en-CA",{timeZone:"Asia/Bangkok"});const rows=P.plan([{symbol:"OGE",reason:"mos-sign-flip",diffPct:3,flaggedAt:today}],today,{ageLimit:0,footerAgeOf:()=>10,lightRule:"legacy"});console.log(rows[0].bucket);console.log(P.v3Lines(rows).join("\n"));'
+# expect: "PREPATCH" · one line "v3 OGE: flip ในย่าน → หลัง ship --prepatch: controller pre-patch มือ … → npm test -- OGE → commit เอง \"price: pre-patch OGE (v3 flip)\" + push ตาม CLAUDE.md §5 (ไม่ผ่าน ship …)" — ไม่มี postcheck/ship <SYM>
+#   (3) preflight เต็มบน tree สะอาด (worktree ใหม่ ยังไม่มี commit ซ้อม) ต้องไม่ล้ม · queue dir แยก "$Q-pf" — รอบของ preflight ไม่ปนกับ state ของ (a)/(b)
+git status --short | wc -l   # expect 0 (fresh worktree) — preflight pulls; a dirty tree is refused
+QUEUE_DIR="$Q-pf" npm run queue -- preflight --no-patch 2>&1 | grep -E "คิว price-flags|อายุเกิน|ขั้นที่ต้องทำเอง|Error|ล้ม" | head -6   # smoke: runs to the manual-steps block without error (v3 lines only if a real v3 flag exists)
+rm -rf "$Q-pf"
 # (a) UPDATE เต็ม บน OGE — prep ต้องรับใบ v3 (ไม่มี "v3 UPDATE = P6")
 npm run queue -- prep OGE --mode UPDATE --model opus 2>&1 | tail -12
 grep -n "★ ใบ v3 UPDATE\|โหมด \*\*UPDATE\*\*\|snapshot vendor\|STEP 5U" "$Q/prep/OGE.md" | head; ls "$Q/prep/" | grep -c "OGE.json" ; echo "(expect 0 — no sidecar for UPDATE)"
@@ -382,15 +393,10 @@ node tools/report.js export ICC --force >/dev/null && node tools/report.js save 
 npm run queue -- postcheck ICC --model opus 2>&1 | tail -4
 npm run queue -- ship ICC --no-push --model opus 2>&1 | tail -3
 git log --oneline -3; git show --stat --format= HEAD | cat
-# (c) preflight กับใบ v3 จริง — สองชั้น: (1) plan()/v3Lines/patchTargets บน reports/ จริงด้วยแถว flag สังเคราะห์ (ไม่แตะ git · OGE/ICC ไม่มี flag จริงและ analysisDate = วันนี้จึงไม่เข้าคิวอายุ) (2) preflight เต็มบน tree ที่สะอาด (หลัง ship commit) ต้องไม่ล้ม
-node -e 'const P=require("./tools/queue/preflight.js");const today=new Date().toLocaleDateString("en-CA",{timeZone:"Asia/Bangkok"});const rows=P.plan([{symbol:"OGE",reason:"drift-gt-15pct",diffPct:20,flaggedAt:today},{symbol:"ICC",reason:"age-gt-90d",synthetic:true,flaggedAt:today}],today,{ageLimit:0,footerAgeOf:()=>10,lightRule:"legacy"});console.log(rows.map(r=>[r.symbol,r.v3,r.oldPrice,r.currency,r.bucket].join(" ")).join("\n"));console.log(P.v3Lines(rows).join("\n"));const pt=P.patchTargets(rows,{usOpen:false,setOpen:false,allowIntraday:false});console.log("skippedV3",pt.skippedV3.join(","),"target",pt.target.join(","));'
-# expect: "OGE true <px> USD LIGHT|FULL" · "ICC true <px> THB …" · two "v3 …: ราคายังไม่สด → …" lines · skippedV3 OGE,ICC · target (empty)
-git status --short | wc -l   # expect 0 (both ships committed) — preflight pulls; a dirty tree is refused
-npm run queue -- preflight --no-patch 2>&1 | grep -E "คิว price-flags|อายุเกิน|ขั้นที่ต้องทำเอง|Error|ล้ม" | head -6   # smoke: runs to the manual-steps block without error (v3 lines only if a real v3 flag exists)
 unset QUEUE_DIR; cd /Users/somchai.s/Downloads/stock-v3-p6 && git worktree remove --force "$S" && rm -rf "$Q"
 ```
 
-Expected: prep OGE prints `โหมด UPDATE` and the `.md` contains `★ ใบ v3 UPDATE — ทำตาม SKILL STEP 5U`; no `OGE.json` sidecar; `save OGE` ✓ with FV/MOS; postcheck `✅ ผ่าน` or only the expected `ai-model`/date issues; ship commit subject `analyze: update OGE — UPDATE (MOS …)` with stat exactly `reports/OGE.json` + `reports.json`; ICC LIGHT: `save --light` ✓, negative case `1`, ship stat `reports/ICC.json` + `reports.json`; preflight prints the `v3 …` lines without error. Record every deviation.
+Expected: prep OGE prints `โหมด UPDATE` and the `.md` contains `★ ใบ v3 UPDATE — ทำตาม SKILL STEP 5U`; no `OGE.json` sidecar; `save OGE` ✓ with FV/MOS; postcheck `✅ ผ่าน` or only the expected `ai-model`/date issues; ship commit subject `analyze: update OGE — UPDATE (MOS …)` with stat exactly `reports/OGE.json` + `reports.json`; ICC LIGHT: `save --light` ✓, negative case `1`, ship stat `reports/ICC.json` + `reports.json`; sub-step (0) runs first on the clean scratch: the synthetic plan prints the `v3 …` lines, the synthetic `mos-sign-flip` row prints `PREPATCH` + the flip line (pre-patch มือ → `npm test` → commit `price:` เอง — not postcheck/ship), and the preflight smoke runs without error. Record every deviation.
 
 - [ ] **Step 3: Rebase onto the current `main`, then DIST-PROOF vs the new merge-base** (main moves nightly with the cron — same lesson as Plan 3: rebase → proof → push, and repeat the proof if a later rebase is needed)
 
