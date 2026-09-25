@@ -7,6 +7,7 @@
  *   · ประกอบ prompt จาก _template/agent-prompt.md + บล็อกบันทึก → .queue/prep/<SYM>.md
  *   · ใบ NEW: + sidecar .queue/prep/<SYM>.json (spec §6.4 · อินพุตของ report.js init) — ประกอบไม่ได้ = ⚠ บรรทัดเดียว
  *     แล้วเขียน .md ต่อตามเดิม (NEW ของ v2 ไม่ใช้ sidecar — fail-closed อยู่ที่ init ซึ่งปฏิเสธเมื่อไม่มี sidecar)
+ *   · ใบ v3 เดิม (Plan 4a): prompt จากหน้าที่ render + doc (reportSource) · worker เขียนผ่าน report.js export/save — ไม่มี sidecar
  * ★ ไม่ทำแทน: spawn worker (controller ทำ พร้อม pin model) · courier/advisor ของหุ้นยาก · เลือกสีแบรนด์ NEW (--brand)
  */
 const fs = require('fs');
@@ -242,8 +243,11 @@ function extraBlock(i) {
   // ใบ NEW (Plan 2c-i): ไม่มีไฟล์ให้ update-prices แตะ และบนใบ v3 update-prices exit ≠0 ⇒ ไม่พิมพ์ประโยคราคา/hint update-prices เลย
   if (i.mode === 'NEW') L.push(`- โหมด **${i.mode}**${i.modeWhy ? ` (${i.modeWhy})` : ''}`);
   else L.push(`- โหมด **${i.mode}**${i.modeWhy ? ` (${i.modeWhy})` : ''} · ${fresh
-    ? `ราคาในไฟล์สดแล้ว (${stamp}; ${i.oldPrice ?? '?'} → ${i.price ?? '?'}) ⇒ **ห้ามรัน update-prices ซ้ำ** ยกเว้น SKILL 5B ข้อ 3 (แก้ fairValue — ปลอดภัยแล้วเพราะ lock)`
-    : `ราคาในไฟล์ยังไม่สด${i.priceFresh === false ? ` (${stamp})` : ' (ยังไม่ได้ pre-patch)'} — โหมด UPDATE รัน \`node tools/update-prices.js --write --force ${i.sym}\` ตาม SKILL STEP 1 ได้ · ตลาด${i.marketOpen ? 'เปิดอยู่ — ราคาจะเป็น intraday รอปิดตลาดก่อนรัน' : 'ปิดแล้ว รันได้'}`}`);
+    ? `ราคาในไฟล์สดแล้ว (${stamp}; ${i.oldPrice ?? '?'} → ${i.price ?? '?'}) ⇒ **ห้ามรัน update-prices ซ้ำ**${i.v3 ? '' : ' ยกเว้น SKILL 5B ข้อ 3 (แก้ fairValue — ปลอดภัยแล้วเพราะ lock)'}`
+    : i.v3
+      // Plan 4a fix1: ใบ v3 — update-prices --write บนใบ v3 เขียน reports/<SYM>.json ตรง (นอก report.js) ⇒ เป็นงานของ controller ก่อน spawn ไม่ใช่ของ worker
+      ? `ราคาในไฟล์ยังไม่สด${i.priceFresh === false ? ` (${stamp})` : ' (ยังไม่ได้ pre-patch)'} — ใบ v3: controller pre-patch มือ \`node tools/update-prices.js --write --force ${i.sym}\` ก่อน spawn${i.marketOpen ? ' (ตลาดเปิดอยู่ — รอปิดตลาดก่อน)' : ''} · **worker ห้ามรัน** (market.* เป็นของ cron/controller — ทำงานต่อได้ ราคาใน prose เป็น token)`
+      : `ราคาในไฟล์ยังไม่สด${i.priceFresh === false ? ` (${stamp})` : ' (ยังไม่ได้ pre-patch)'} — โหมด UPDATE รัน \`node tools/update-prices.js --write --force ${i.sym}\` ตาม SKILL STEP 1 ได้ · ตลาด${i.marketOpen ? 'เปิดอยู่ — ราคาจะเป็น intraday รอปิดตลาดก่อนรัน' : 'ปิดแล้ว รันได้'}`}`);
   if (i.lightRule === 'legacy') {
     if (i.epsScreen != null) L.push(`- EPS ในใบ ${i.baseEPS} vs vendor ${i.epsTTM} = ต่าง ${i.epsScreen.toFixed(1)}% → ${i.epsScreen <= EPS_SCREEN_PCT
       ? 'FV เดิมยืนได้ (UPDATE-LIGHT ตาม 5C ข้อ 2)'
@@ -258,6 +262,8 @@ function extraBlock(i) {
       ? `- ⚠ EPS (คำเตือน — ไม่เปลี่ยนโหมด): เทียบไม่ได้ — ${both}`
       : `- ${i.epsScreen > EPS_SCREEN_PCT ? '⚠ ' : ''}EPS (คำเตือน — ไม่เปลี่ยนโหมด): ${both} = ต่าง ${i.epsScreen.toFixed(1)}%${i.epsScreen > EPS_SCREEN_PCT ? ' → ตรวจว่าต่างเพราะฐานคนละแบบ (adj vs GAAP) หรือเพราะงบใหม่/split จริง · ถ้าเจองบใหม่/split ที่กฎ prep มองไม่เห็น ยกเป็น UPDATE เต็มตาม STEP 5C ข้อ 2' : ' (ตรงกัน)'}`);
   }
+  // final review N-1: ใบ v3 ทำตาม STEP 5U ไม่ใช่ 5C — ต่อท้ายบรรทัด EPS screen ที่อ้าง 5C ข้อ 2 (ใบ v2 ไม่เปลี่ยนแม้แต่ byte)
+  if (i.v3 && /5C ข้อ 2/.test(L[L.length - 1])) L[L.length - 1] += ' (ใบ v3: STEP 5U)';
   if (i.fyYears != null) L.push(`- FY ที่มี EPS จริง: ${i.fyYears} ปี — ป้าย "P/E เฉลี่ย ~M ปี" ห้ามเกิน ${i.fyYears}`);
   // ข้อ 1 (plan gap — Task 21 Step 2): กับดักเชิงกลจาก fetch-fundamentals ต้องขึ้นเป็นหัวข้อแยก ไม่จมอยู่กลางบล็อก FUNDAMENTALS
   if (i.traps && i.traps.length) L.push(`- **กับดักที่ prep พบ (ต้องจัดการก่อนเขียนเลข)**:\n${i.traps.map((t) => '    · ' + t).join('\n')}`);
@@ -268,9 +274,15 @@ function extraBlock(i) {
   if (i.hard) L.push(`- **หุ้นยาก** (${i.hardWhy}) → controller ปรึกษา advisor แล้ววางแนวทางตรงนี้ก่อน spawn:\n    <ยังไม่ได้วาง — ถ้าเห็นบรรทัดนี้ใน prompt แปลว่า controller ข้ามขั้น>`);
   L.push(i.mode === 'NEW'
     ? '- ห้าม push · ห้ามเขียน tags.json · ห้ามเรียก advisor ตรง (ข้อห้ามเชิงนโยบาย — agent-prompt ว่าไว้แล้ว) · pick-brand มี lock แล้ว รันตาม SKILL ได้เมื่อจำเป็น · update-prices ไม่ใช้กับใบ v3 ใบใหม่ (ราคาใบ v3 = cron หลัง publish — worker ไม่รัน)'
-    : '- ห้าม push · ห้ามเขียน tags.json · ห้ามเรียก advisor ตรง (ข้อห้ามเชิงนโยบาย — agent-prompt ว่าไว้แล้ว) · pick-brand/update-prices มี lock แล้ว รันตาม SKILL ได้เมื่อจำเป็น');
+    : i.v3
+      ? '- ห้าม push · ห้ามเขียน tags.json · ห้ามเรียก advisor ตรง (ข้อห้ามเชิงนโยบาย — agent-prompt ว่าไว้แล้ว) · ไม่รัน update-prices/pick-brand (ราคาและสีเป็นของ cron/seeds.json แล้ว)'
+      : '- ห้าม push · ห้ามเขียน tags.json · ห้ามเรียก advisor ตรง (ข้อห้ามเชิงนโยบาย — agent-prompt ว่าไว้แล้ว) · pick-brand/update-prices มี lock แล้ว รันตาม SKILL ได้เมื่อจำเป็น');
   // sidecar ประกอบได้ (sidecarOk) = ทาง v3 เปิด → ชี้ STEP 5V · ประกอบไม่ได้ = ไม่พิมพ์เพิ่ม (init จะปฏิเสธ · ⚠ บรรทัดเดียวใน stdout ของ prep มีอยู่แล้ว)
   if (i.mode === 'NEW' && i.sidecarOk) L.push(`★ ใบ NEW เขียนเป็น v3 — ทำตาม SKILL STEP 5V: node tools/report.js init ${i.sym} → เติม .work/${i.sym}.json → pick-brand → save (sidecar: .queue/prep/${i.sym}.json) · ห้ามเขียน reports/ ด้วย Write/Edit/Bash · save ✓ = gate ของ worker (ไม่ต้องรัน npm test)`);
+  // Plan 4a: ใบ v3 เดิม → worker เขียนผ่าน report.js เท่านั้น (SKILL STEP 5U) · LIGHT = save --light (ราคาเป็นของ cron แล้ว — E27/W09 อยู่บน priceDate)
+  if (i.v3 && i.mode !== 'NEW') L.push(i.mode === 'UPDATE-LIGHT'
+    ? `★ ใบ v3 UPDATE-LIGHT — ทำตาม SKILL STEP 5U: node tools/report.js export ${i.sym} → แก้ .work/${i.sym}.json เฉพาะ allowlist ของ save --light (meta.analysisDate · meta.aiModel · meta.sources · meta.priceNote · analyst.* · fundamentals.dps · ทุกช่อง prose/text — save ปฏิเสธพร้อม path ถ้าเกิน) → node tools/report.js save ${i.sym} --light · cron เป็นเจ้าของราคา (market.*) — ห้ามแก้ · ห้าม apply-edits/Write ลง reports/`
+    : `★ ใบ v3 UPDATE — ทำตาม SKILL STEP 5U: node tools/report.js export ${i.sym} → แก้ .work/${i.sym}.json → node tools/report.js save ${i.sym} (save พิมพ์ทุก error รอบเดียว) · cron เป็นเจ้าของราคา (market.*) — ห้ามแก้ · ห้าม apply-edits/Write ลง reports/`);
   return L.join('\n');
 }
 
@@ -291,10 +303,35 @@ async function medianBlock(spec, th) {
   return { text, warn, r };
 }
 
-/** ใบ v3 แล้ว = ห้าม prep (spec §6.4 · ruling 4): คิวของ v3 UPDATE = P6 — ไม่ทำเหมือนเป็น NEW */
-function checkNotV3(sym, dir) {
-  if (RS.kindOf(sym, dir || REPORTS) === 'v3')
-    throw new Error(`${sym} เป็นใบ v3 แล้ว (reports/${sym}.json) — v3 UPDATE = P6 (คิวของใบ v3 · Plan 3/P5 = cron ราคาเท่านั้น) · แก้ด้วย node tools/report.js export ${sym} → แก้ .work/${sym}.json → node tools/report.js save ${sym}`);
+/** แหล่งของใบเดิมสำหรับ prep (อ่านอย่างเดียว · Plan 4a) — รูปเดียวกันทั้ง v2/v3 เพื่อให้ prep() ที่เหลือไม่รู้ชนิดใบ
+ *  v2: html ดิบ (`snapshotDiff`/`buildCtx` regex เดิม) · v3: หน้าที่ build render (`RS.renderedHtml` — `buildCtx` อ่านได้เหมือน postcheck)
+ *  + doc สำหรับ `snapshotDiffV3` · ราคา/สกุลจาก `RS.metaLite` (v2 = stock-meta · v3 = market.px/currency) · ไม่มีใบ = th จาก --th
+ *  .json เสีย/symbol ไม่ตรง = `RS.load` throw พร้อมชื่อไฟล์ — ปล่อยขึ้นไป (prep ล้มพร้อมข้อความ ไม่เดา) */
+function reportSource(sym, dir, thFlag) {
+  const d = dir || REPORTS;
+  const kind = RS.kindOf(sym, d);
+  if (!kind) return { kind: null, html: '', price: null, currency: null, th: !!thFlag, lite: null, doc: null };
+  const lite = RS.metaLite(sym, d);
+  const price = lite && Number.isFinite(lite.px) ? lite.px : null, currency = lite ? lite.currency : null;
+  if (kind === 'v2') return { kind, html: fs.readFileSync(path.join(d, sym + '.html'), 'utf8'), price, currency, th: currency === 'THB', lite, doc: null };
+  return { kind, html: RS.renderedHtml(sym, d), price, currency, th: currency === 'THB', lite, doc: RS.load(sym, d).doc };
+}
+
+/** snapshot vendor ค้างในใบ v3 (ส่วนบริสุทธิ์ · คู่แฝดของ snapshotDiff แต่อ่าน doc ตรง ไม่ regex HTML) — เกณฑ์เดียวกับ v2:
+ *  เป้า analyst ต่าง >2% · กรอบ 52 สัปดาห์ต่าง >3% (ขาใดขาหนึ่ง) · ปันผล % (dps/px) ต่าง >0.3pp · ช่องที่ใบไม่มี = ไม่พิมพ์ (Review Focus 2) */
+function snapshotDiffV3(doc, v) {
+  const out = [];
+  const a = doc && doc.analyst, mk = (doc && doc.market) || {}, f = (doc && doc.fundamentals) || {};
+  if (a && Number.isFinite(a.target) && v.target != null && pctDiff(a.target, v.target) > 2)
+    out.push(`analyst.target ${a.target} → ${v.target}${v.analysts != null ? ` (n=${v.analysts})` : ''}`);
+  const r52 = mk.range52w;
+  if (r52 && Number.isFinite(r52.lo) && Number.isFinite(r52.hi) && v.lo52 != null && v.hi52 != null && (pctDiff(r52.lo, v.lo52) > 3 || pctDiff(r52.hi, v.hi52) > 3))
+    out.push(`กรอบ 52 สัปดาห์ ใบ ${r52.lo}–${r52.hi} · vendor ${v.lo52}–${v.hi52} (market.range52w — cron เขียนทุกคืน ถ้ายังต่างแปลว่า Yahoo ไม่ให้ 52wk)`);
+  if (Number.isFinite(mk.px) && mk.px > 0 && Number.isFinite(f.dps) && v.divYieldPct != null) {
+    const shownYield = f.dps / mk.px * 100;
+    if (Math.abs(shownYield - v.divYieldPct) > 0.3) out.push(`fundamentals.dps ${f.dps} → ปันผล % ใบ ${shownYield.toFixed(2)} · vendor ${v.divYieldPct}`);
+  }
+  return out;
 }
 
 /** node <script> … --json → object (I/O ของ sidecar — ล้ม/JSON เสีย = throw พร้อมท้าย stderr) · runner = ฉีดได้ในเทส */
@@ -307,12 +344,11 @@ function runJson(script, args, runner) {
 async function prep(sym, opts) {
   const o = opts || {};
   const R = o.run || run;   // ฉีดได้ในเทส (offline) — ค่าจริง = sh.run
-  checkNotV3(sym);   // ก่อนยิง network ใด ๆ
-  const fp = path.join(REPORTS, sym + '.html');
-  const exists = RS.kindOf(sym, REPORTS) === 'v2';   // หลัง checkNotV3 "มีใบอยู่แล้ว" เหลือแค่ใบ v2
-  const html = exists ? fs.readFileSync(fp, 'utf8') : '';
-  const sm = exists ? RM.readStockMeta(html) : null;
-  const th = exists ? (sm && sm.currency === 'THB') : !!o.th;
+  const src = reportSource(sym, o.reportsDir || REPORTS, !!o.th);   // Plan 4a: ใบ v2 และ v3 เข้า prep ได้ทั้งคู่ · .json เสีย = throw ตรงนี้ก่อน network
+  //   o.reportsDir = เทสเท่านั้น (Review Focus 3) — ส่งเข้า reportSource อย่างเดียว (อ่านอย่างเดียว) ไม่เปลี่ยนที่ใดที่ prep เขียน
+  const exists = src.kind !== null;
+  const html = src.html;
+  const th = src.th;
   const rec = S.load().stocks[sym] || {};
   checkNotPrepatch(sym, rec);   // C2: PREPATCH ไม่ส่ง LLM — ปฏิเสธก่อนยิง network ใด ๆ ข้างล่าง
   const lightRule = parseLightRule(o.lightRule, process.env);
@@ -321,7 +357,7 @@ async function prep(sym, opts) {
   if (exists && !o.mode && lightRule === 'new' && rec.bucket !== 'LIGHT' && rec.bucket !== 'FULL') {
     const P = require('./preflight.js');
     const EC = require('../earnings-calendar.js');
-    const read = () => html;
+    const read = () => (src.kind === 'v3' ? src.lite : html);
     const sec = o.sec !== undefined ? o.sec : (() => { const cache = new Map(); return (x) => EC.secLookup(x, { cache }); })();
     stmt = (o.statementAfterOf || P.statementAfterOfWith(EC.load(), read, { sec, isThai: () => !!th }))(sym);
   }
@@ -344,7 +380,7 @@ async function prep(sym, opts) {
   const med = await (o.medianBlock || medianBlock)(o.medianSpec || sym, th);
 
   // 2b. ใบใหม่ = sidecar .queue/prep/<SYM>.json (spec §6.4) — อินพุตเดียวของ node tools/report.js init
-  //     ยิง fetch-facts/fetch-fundamentals ซ้ำแบบ --json (NEW เท่านั้น — ruling R2) · ใบเดิมไม่เขียน (v3 UPDATE = P6)
+  //     ยิง fetch-facts/fetch-fundamentals ซ้ำแบบ --json (NEW เท่านั้น — ruling R2) · ใบเดิม (v2/v3) ไม่เขียน sidecar — v3 UPDATE อ่าน market จาก .json เดิม (Plan 4a · #64)
   //     ประกอบตรงนี้ · เขียนไฟล์หลัง .md — assemblePrompt ล้ม = ไม่มี .json กำพร้า
   //     ★ ประกอบไม่ได้ ≠ prep ล้ม (final review re-ruling): NEW ถึง Plan 2c เป็น NEW ของ v2 ที่ไม่รัน init ⇒ เขียน .md ต่อ
   //       + ⚠ บรรทัดเดียว · buildSidecar ยัง throw ตามเดิม — fail-closed อยู่ที่ init (ไม่มี sidecar = ปฏิเสธ)
@@ -364,9 +400,9 @@ async function prep(sym, opts) {
   if (exists) {
     const { buildCtx } = require('../../test/check-reports.js');
     const { expandReport } = require('../../build.js');
-    ctx = buildCtx(expandReport(html), sym + '.html');
+    ctx = buildCtx(src.kind === 'v3' ? html : expandReport(html), sym + '.html');   // RS.renderedHtml expand แล้ว — ห้าม expand ซ้ำ
     epsScreen = pctDiff(ctx.baseEPS, vend.epsTTM);
-    snap = snapshotDiff(html, ctx, vend);
+    snap = src.kind === 'v3' ? snapshotDiffV3(src.doc, vend) : snapshotDiff(html, ctx, vend);
     // EPS ห่างเกินเกณฑ์ = FV เดิมยืนไม่ได้ ⇒ **เปลี่ยนโหมดจริง** ไม่ใช่เขียนเตือนอย่างเดียว
     // (ไม่งั้นหัว prompt บอก UPDATE-LIGHT แต่บล็อกท้ายบอกให้ทำ UPDATE เต็ม = สองสัญญาณขัดกัน
     //  และ state ก็บันทึกโหมดที่ยังไม่ยกระดับ) · prep-stock รันไปแล้วด้วย `--update` ซึ่งเหมือนกัน
@@ -381,12 +417,13 @@ async function prep(sym, opts) {
   const priceFresh = priceIso ? priceIso >= lastSession : null;
   const model = o.model || (hs.hard ? 'opus' : 'sonnet');
   const effort = hs.hard ? 'high' : 'medium';
+  const marketOpen = th ? setSessionOpen() : usSessionOpen();   // ใช้ทั้ง extraBlock (worker) และบรรทัด controller ของใบ v3 (re-review R-1)
 
   // 7. ประกอบ prompt
   const prompt = assemblePrompt(fs.readFileSync(TEMPLATE, 'utf8'),
     { SYMBOL: sym, MARKET: th ? 'TH' : 'US', MODE: mode, WORKTREE: ROOT, CURRENT_TAGS: tags, MEDIANS: med.text, FUNDAMENTALS: ps.out },
     // ยังไม่ pre-patch = worker ต้องรัน update-prices เอง ⇒ ต้องบอกด้วยว่าตลาดเปิดอยู่ไหม (--force ข้าม guard intraday เอง)
-    extraBlock({ sym, mode, modeWhy: dm.why, lightRule, priceFresh, priceDate: priceIso, lastSession, escalated, prePatched: rec.prePatched, marketOpen: th ? setSessionOpen() : usSessionOpen(), oldPrice: rec.oldPrice, price: sm && sm.price, baseEPS: ctx && ctx.baseEPS, epsTTM: vend.epsTTM, epsScreen, snap, medWarn: med.warn, hard: hs.hard, hardWhy: hs.why, fyYears: vend.fyYears, traps: vend.traps, sidecarOk: sc !== null }));
+    extraBlock({ sym, mode, modeWhy: dm.why, lightRule, priceFresh, priceDate: priceIso, lastSession, escalated, prePatched: rec.prePatched, marketOpen, oldPrice: rec.oldPrice, price: src.price, v3: src.kind === 'v3', baseEPS: ctx && ctx.baseEPS, epsTTM: vend.epsTTM, epsScreen, snap, medWarn: med.warn, hard: hs.hard, hardWhy: hs.why, fyYears: vend.fyYears, traps: vend.traps, sidecarOk: sc !== null }));
   fs.mkdirSync(S.PREP_DIR, { recursive: true });
   const file = path.join(S.PREP_DIR, sym + '.md');
   fs.writeFileSync(file, prompt);
@@ -402,6 +439,7 @@ async function prep(sym, opts) {
   if (med.warn.length) console.log(`⚠ มัธยฐาน: ${med.warn.join(' · ')}`);
   console.log('\n── ขั้นที่ต้องทำเอง ──');
   let n = 0;
+  if (src.kind === 'v3' && priceFresh !== true) console.log(`${++n}. ใบ v3 ราคายังไม่สด: node tools/update-prices.js --write --force ${sym} แล้วรัน prep ใหม่ ก่อน spawn (worker ห้ามรันเอง) · ${marketOpen ? 'ตลาดเปิดอยู่ตอนนี้ — รอปิดก่อน' : 'ตลาดปิดแล้ว รันได้'} (--force ข้าม guard intraday — ตลาดเปิดอยู่ = ราคา intraday ลงไฟล์)`);
   if (hs.hard) console.log(`${++n}. หุ้นยาก: ปรึกษา advisor แล้วแทนบรรทัด "<ยังไม่ได้วาง …>" ใน prompt ด้วยแนวทาง`);
   if (mode === 'NEW' && !o.brand) console.log(`${++n}. NEW: เลือกสีแบรนด์จาก tools/brand-colors.md แล้วรัน prep ใหม่ด้วย --brand "#hex" (หรือให้ worker รัน pick-brand เอง — มี lock แล้ว)`);
   console.log(`${++n}. spawn worker 1 ตัว: prompt = ไฟล์ข้างบน · pin model:"${model}" · effort ${effort} (Agent tool หรือ analyze-wave stocks=[1 ตัว])`);
@@ -409,4 +447,4 @@ async function prep(sym, opts) {
   return { file, mode, model, effort, hard: hs.hard };
 }
 
-module.exports = { prep, decideMode, lastSessionISO, parseVendor, snapshotDiff, assemblePrompt, extraBlock, hardStock, checkNotPrepatch, checkNotV3, medianBlock, TOKENS, EPS_SCREEN_PCT };
+module.exports = { prep, decideMode, lastSessionISO, parseVendor, snapshotDiff, assemblePrompt, extraBlock, hardStock, checkNotPrepatch, reportSource, snapshotDiffV3, medianBlock, TOKENS, EPS_SCREEN_PCT };

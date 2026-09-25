@@ -141,6 +141,13 @@ try {
   // fix round 1 (Fix 1) — container ที่มีข้างเดียว = เดินเทียบกับ {} / [] → ได้ leaf จริง ไม่ใช่ path แม่ตัวเดียว
   t.eq(RC.lightViolations({ metrics: { cards: [] } }, { metrics: { cards: [], notes: { pe: 'x' } } }), [], 'lightViolations: new metrics.notes object with a prose leaf → allowed');
   t.eq(RC.lightViolations({ metrics: { cards: [], notes: {} } }, { metrics: { cards: [], notes: { pe: 'x' } } }), [], 'lightViolations: same edit on a pre-existing notes:{} → allowed (same answer)');
+  // Plan 4a — LIGHT ของใบ v3 = ประทับวัน/รุ่น + prose/text (ราคาเป็นของ cron) → allowlist เดิมครอบแล้ว (Review Focus 4)
+  t.eq(RC.lightViolations(
+    { meta: { analysisDate: '2026-09-22', aiModel: 'Claude Sonnet 5', sources: ['a', 'b', 'c'] }, prose: { verdictBody: 'x' }, text: { valHint: 'h1' }, market: { px: 1 } },
+    { meta: { analysisDate: '2026-09-25', aiModel: 'Claude Opus 5.5', sources: ['a', 'b', 'c'] }, prose: { verdictBody: 'y' }, text: { valHint: 'h2' }, market: { px: 2 } }),
+    [], 'lightViolations (4a): analysisDate + aiModel + prose.* + text.* allowed · market ignored');
+  t.eq(RC.lightViolations({ fundamentals: { eps: 1 }, legs: [{ inputs: { multiple: 14 } }] }, { fundamentals: { eps: 2 }, legs: [{ inputs: { multiple: 15 } }] }),
+    ['fundamentals.eps', 'legs[0].inputs.multiple'], 'lightViolations (4a): EPS / leg inputs still refused under --light');
   { const ex = (rows) => ({ extras: [{ title: 't', rows }] });
     t.eq(RC.diffPaths(ex([['a', '1']]), ex([['a', '1'], ['b', '2']])), ['extras[0].rows[1][0]', 'extras[0].rows[1][1]'], 'diffPaths: added extras row → its cell leaves');
     t.eq(RC.lightViolations(ex([['a', '1']]), ex([['a', '1'], ['b', '2']])), [], 'lightViolations: added extras row of prose cells → allowed');

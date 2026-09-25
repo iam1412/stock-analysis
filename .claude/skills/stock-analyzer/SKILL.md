@@ -3,7 +3,7 @@ name: stock-analyzer
 description: วิเคราะห์หุ้นรายตัว (ไทย/US) เป็นรายงาน dashboard (ใบใหม่ = reports/<SYMBOL>.json v3 ผ่าน tools/report.js · ใบเดิม = reports/<SYMBOL>.html v2) — cross-source verify, Fair Value ≥2 วิธี, MOS, Bear/Base/Bull 3 ปี · โหมด NEW (หุ้นใหม่ — v3 STEP 5V) / UPDATE (แก้รายงานเดิมเฉพาะจุด) / UPDATE-LIGHT (refresh เร็วจากคิว price-flags) · ใช้เมื่อสั่ง "วิเคราะห์ <SYM>", "analyze <SYM>", re-analysis, เคลียร์คิว price-flags
 ---
 
-# Stock Analyzer — วิเคราะห์หุ้น 1 ตัว → NEW: `reports/<SYMBOL>.json` (v3) · UPDATE: `reports/<SYMBOL>.html` (v2 จน P6)
+# Stock Analyzer — วิเคราะห์หุ้น 1 ตัว → NEW: `reports/<SYMBOL>.json` (v3) · UPDATE: ใบ v2 = `reports/<SYMBOL>.html` (STEP 5B/5C) · ใบ v3 = `reports/<SYMBOL>.json` ผ่าน `report.js export/save` (STEP 5U)
 
 **Single source of truth** ของขั้นตอนวิเคราะห์ต่อหุ้น — ใช้ทั้ง session หลักและ worker agent (agent อ่านไฟล์นี้ตรง ๆ ผ่าน `_template/agent-prompt.md`)
 กติกา orchestration (โมเดล / ห้าม Haiku / controller เป็นคน push) อยู่ `CLAUDE.md §3–5` + `docs/orchestration.md` — รอบเคลียร์คิวใช้ runbook `npm run queue` — skill นี้คือ "ทำ 1 หุ้นให้ถูกและประหยัด token"
@@ -12,11 +12,11 @@ description: วิเคราะห์หุ้นรายตัว (ไท�
 
 ## STEP 0 — เลือกโหมด
 
-- มี `reports/<SYMBOL>.html` อยู่แล้ว → **UPDATE** (แก้เฉพาะจุด **ห้าม rewrite/ห้ามเริ่ม skeleton ใหม่**) · มี `reports/<SYMBOL>.json` → **ใบ v3 เดิม = ยังไม่มี flow UPDATE (จน P6 · Plan 3 = cron ราคาเท่านั้น)** — `prep` ปฏิเสธเอง หยุดแล้วรายงาน controller
+- มี `reports/<SYMBOL>.html` อยู่แล้ว → **UPDATE** (แก้เฉพาะจุด **ห้าม rewrite/ห้ามเริ่ม skeleton ใหม่**) · มี `reports/<SYMBOL>.json` → **UPDATE/UPDATE-LIGHT ของใบ v3 = STEP 5U** (export → แก้ draft → save [--light] · ห้ามเขียน `reports/` ตรง · ราคาเป็นของ cron)
 - ยังไม่มีทั้งสอง → **NEW = v3 เท่านั้น (STEP 5V)** — ห้ามเริ่มจาก skeleton `.html` (STEP 5A เป็นทางเดิมของใบ v2 เก็บไว้อ้างอิง) · ห้ามก๊อปรายงานหุ้นอื่น
 - **มาจากคิว price-flags** — triage ตามเหตุผลใน `price-flags.json`:
   - `mos-sign-flip` → **ไม่ส่ง worker** (ระยะ 1 ข้อ D · 12 ก.ย. 2569): runbook pre-patch ราคา + `ship --prepatch` จบ — cron เป็นเจ้าของช่องสรุปแล้ว ไม่มี prose ให้ขัด · preflight ยกเป็น **UPDATE-LIGHT** เองเมื่ออายุ footer >90 วัน และ **ไม่มีงบใหม่** หลังวันที่ footer · ถ้ามีงบใหม่หรือไม่รู้วันงบ → **UPDATE เต็ม** (กฎ LIGHT/FULL ใหม่ 22 ก.ย. 69 — EPS ต่าง vendor เป็นแค่คำเตือนใน prep ไม่เปลี่ยนโหมด)
-  - `drift-gt-*` (ตลาดขยับ ไม่ใช่ธุรกิจเปลี่ยน — flip ใน dead-band ±5 จุด กับราคาหลุดขอบ gauge cron patch เองแล้ว ไม่เข้าคิว ตั้งแต่ 2 ส.ค. 2569) → **UPDATE-LIGHT** (STEP 5C) เมื่อไม่มีงบไตรมาส/ปีใหม่หลังวันที่ footer · มีงบใหม่/ไม่รู้วันงบ/ราคาขยับ >30% → **UPDATE เต็ม** (runbook ตัดสินให้ใน triage/prep — `--light-rule legacy` = กฎเดิม)
+  - `drift-gt-*` (ตลาดขยับ ไม่ใช่ธุรกิจเปลี่ยน — flip ใน dead-band ±5 จุด กับราคาหลุดขอบ gauge cron patch เองแล้ว ไม่เข้าคิว ตั้งแต่ 2 ส.ค. 2569) → **UPDATE-LIGHT** (STEP 5C · ใบ v3 → STEP 5U) เมื่อไม่มีงบไตรมาส/ปีใหม่หลังวันที่ footer · มีงบใหม่/ไม่รู้วันงบ/ราคาขยับ >30% → **UPDATE เต็ม** (runbook ตัดสินให้ใน triage/prep — `--light-rule legacy` = กฎเดิม)
   - `suspect-split-or-data` → **UPDATE เต็ม** + ตรวจ split/ticker ก่อนเขียนเลขใด ๆ
   - `fetch-failed` / `patch-failed` → **อ่าน `detail` ของ flag ก่อนเสมอ** (cron patch ใบ v2 ได้แล้วตั้งแต่ระยะ 2 ส่วน D — `patch-failed` บนใบ v2 คือ tripwire ที่ตั้งใจให้ดัง **ห้ามปล่อยรอ**):
     - ใบ v2 (`report-data.v === 2`) + `detail` ขึ้นต้นด้วยข้อความของทาง v2 → **โครงไฟล์ใบนั้นต้องแก้** (ไม่ใช่ plumbing ไม่ใช่ราคา): `derivedPassV2: ลำดับ token…` (token `{{rd:…}}` งอก/หาย/สลับหลังประกอบกลับ) · `keepMap: ต่างกันเกิน…` (pass derived แก้ไฟล์เยอะผิดปกติ) · `derivedPassV2: ไม่มี override แต่ render(ผล) ≠ view…` (token ถูกวางผิดที่) · `derivedPassV2: วันที่ราคาที่โชว์ ≠ values.priceDate…` (วันที่ literal ในหัวรายงาน/วงเล็บทวน/.disc ที่ cron เขียนกลับไม่ได้ — แก้ข้อความรอบวันที่นั้นให้เป็น `{{rd:priceDate}}` หรือรูปที่ตัวอ่านรู้จัก) · `report-data.values.… ` / `ไม่มีบล็อก stock-meta` (สคีมา v2 เสีย) → แจ้ง controller พร้อม `detail` เต็ม · ตรวจซ้ำได้ offline ด้วย `node tools/update-prices.js --heal-derived <SYM>` (ใบที่ throw ขึ้น `⛔ <ไฟล์> <ข้อความ>` และ **exit code 1** — ใช้ยืนยันว่าแก้หายแล้ว)
@@ -26,7 +26,7 @@ description: วิเคราะห์หุ้นรายตัว (ไท�
     1. **ยืนยัน split จากแหล่งปฐมภูมิก่อน** (IR / SEC 8-K / ประกาศตลาด) — เอาอัตราส่วน + วันมีผลมาให้ชัด ห้ามอนุมานจากตัวเลขที่เห็น
     2. เปิด `reports/<SYM>.html` ดู `report-data.chart.data`: **ฐานเดียวอยู่แล้ว** (เคยแก้มือรอบก่อน) → **ไม่ต้องทำอะไร ห้าม re-analyze** — flag หายเองเมื่อ Yahoo ปรับ adjclose ครบ
     3. **กราฟในไฟล์ยังผสมฐาน** → **UPDATE เต็ม** เหมือน `suspect-split-or-data`: คูณจุดก่อนวันมีผลด้วยตัวคูณ split ให้เป็นฐานเดียวกับราคาปัจจุบัน แล้วไล่แก้ EPS/FV/P-E/scenario ที่อิงราคาเก่าให้ครบ (ตัวเลขต่อหุ้นทั้งหมดเปลี่ยนฐาน ไม่ใช่แค่กราฟ)
-    - ★ `node tools/update-prices.js --write --force <SYM>` ยัง**ใช้ได้ตามปกติ** ตอน bad-chart — มันจะประทับราคา/วันที่/MOS ให้ แต่ **คงกราฟเดิมในไฟล์ไว้** (price-only) จึงไม่ลากฐานที่สองกลับเข้ามา · `fetch-facts.js` กับ `prep-stock.js` จะ **exit 2 หยุดให้เอง** ห้าม spawn worker ต่อจนกว่าจะแก้
+    - ★ `node tools/update-prices.js --write --force <SYM>` ยัง**ใช้ได้ตามปกติ** ตอน bad-chart (ใบ v2 · ใบ v3 = controller ทำ ไม่ใช่ worker) — มันจะประทับราคา/วันที่/MOS ให้ แต่ **คงกราฟเดิมในไฟล์ไว้** (price-only) จึงไม่ลากฐานที่สองกลับเข้ามา · `fetch-facts.js` กับ `prep-stock.js` จะ **exit 2 หยุดให้เอง** ห้าม spawn worker ต่อจนกว่าจะแก้
   - `bad-price` / `bad-report-price` → ข้อมูลเสีย ไม่ใช่ตลาดขยับ: `bad-price` = quote ที่ดึงมาไม่ใช่ตัวเลขบวก · `bad-report-price` = `stock-meta.price` ในรายงานเองเสีย (0/ติดลบ/ไม่ใช่ตัวเลข) → **แก้ตัวเลขในรายงานให้ถูกก่อน** แล้วค่อย refresh ราคา — ห้าม re-analyze โดยเชื่อราคาเดิมในไฟล์ (`--force` ข้าม flag คู่นี้ไม่ได้โดยตั้งใจ)
   - `patch-rejected` → cron patch ราคาแล้ว gate ตก (detail บอกรหัส) — **ไม่ใช่งานวิเคราะห์** แก้ไฟล์ให้ `npm test -- <SYM>` ผ่าน (detail บอก "ค้างก่อน patch" = หนี้เก่าของใบนั้น) แล้ว cron รอบถัดไป patch เอง
   - `not-on-exchange` → **สงสัยหุ้นตาย ห้าม re-analyze ห้าม UPDATE-LIGHT** (วิเคราะห์หุ้นที่เลิกเทรดแล้วคือการเผยแพร่ข้อมูลผิด) — งานคือ **ยืนยันสถานะจากแหล่งปฐมภูมิ** (SEC Form 25/8-K · ประกาศตลาด/SET · IR) แล้ว:
@@ -40,7 +40,7 @@ description: วิเคราะห์หุ้นรายตัว (ไท�
 
 - **ราคา + กราฟ ~1 ปี + ป้าย % รอบปี + สี** — ห้ามดึง Yahoo เอง / ห้ามคำนวณกราฟ-bounds เอง / ห้ามแต่งจุด:
   - NEW → **prompt มีบล็อก `=== FACTS ===` แล้ว = ห้ามรันซ้ำ ใช้เลย** (controller pre-fetch ผ่าน `prep-stock.js` มาแล้ว) · ไม่มีจึงรัน `node tools/fetch-facts.js <SYMBOL>` (หุ้นไทยเติม `--th` — ★ บังคับ กัน ticker ไทยชนหุ้น US เคส AIT/ORI) — ได้บล็อก chart+ป้าย+สี พร้อมวาง (= แหล่งราคาที่ 1) · **ใบ v3: บล็อก chart/ราคา/ป้าย % ไม่ต้องวางที่ไหน** — อยู่ใน sidecar `.queue/prep/<SYM>.json` แล้ว `report.js save` รวมเข้าใบให้เอง (บรรทัด "วางใน report-data" ในผลลัพธ์ script = ใบ v2)
-  - UPDATE → ราคา/กราฟ/MOS ถูก patch มาแล้วโดย runbook (บล็อก "บันทึกจาก runbook" ใน prompt บอกไว้) — **รันซ้ำเฉพาะเมื่อบันทึกบอกว่ายังไม่ได้ patch**: `node tools/update-prices.js --write --force <SYMBOL>` (ปลอดภัยแล้ว — price-flags มี lock) · **ไม่มีบล็อก "บันทึกจาก runbook" ใน prompt = ยังไม่ได้ patch ⇒ รัน `node tools/update-prices.js --write --force <SYM>` ตามเดิม** — patch ราคา header/วันที่ราคา/กราฟ/ป้าย %/gauge.cur/MOS/pxIn/stock-meta ลงไฟล์เดิมให้เลย (= แหล่งราคาที่ 1) · ราคาหลุดขอบ gauge script ขยาย `gauge.min/max` ให้เอง — แต่ถ้า **FV เปลี่ยน** ต้องแก้โซน scale (MOS 20/30 = FV×0.8/0.7) เองใน STEP 5B ตามเดิม
+  - UPDATE → ราคา/กราฟ/MOS ถูก patch มาแล้วโดย runbook (บล็อก "บันทึกจาก runbook" ใน prompt บอกไว้) — **รันซ้ำเฉพาะเมื่อบันทึกบอกว่ายังไม่ได้ patch**: `node tools/update-prices.js --write --force <SYMBOL>` (ปลอดภัยแล้ว — price-flags มี lock) · **ไม่มีบล็อก "บันทึกจาก runbook" ใน prompt = ยังไม่ได้ patch ⇒ รัน `node tools/update-prices.js --write --force <SYM>` ตามเดิม** — patch ราคา header/วันที่ราคา/กราฟ/ป้าย %/gauge.cur/MOS/pxIn/stock-meta ลงไฟล์เดิมให้เลย (= แหล่งราคาที่ 1) · ราคาหลุดขอบ gauge script ขยาย `gauge.min/max` ให้เอง — แต่ถ้า **FV เปลี่ยน** ต้องแก้โซน scale (MOS 20/30 = FV×0.8/0.7) เองใน STEP 5B ตามเดิม · **ใบ v3 (มี reports/<SYM>.json): ไม่รัน update-prices ไม่ว่ากรณีใด** — market.* เป็นของ cron/controller (บันทึกจาก runbook บอกว่าสดหรือยัง · ยังไม่สด = controller pre-patch ก่อน spawn) → ไปต่อ STEP 5U
 - **EPS(TTM)/forward / P/E / ปันผล / เป้านักวิเคราะห์ / 52wk + งบย้อนหลัง 5 ปี — แหล่งเดียวจบ**: `fetch-fundamentals`
   - **★ เช็คก่อนรัน: prompt มีบล็อก `FUNDAMENTALS` พร้อมตัวเลขจริงแล้ว → ห้ามรันซ้ำ** ใช้เลขนั้น cross-verify ได้เลย (controller รันมาแล้ว — รันซ้ำ = เสีย turn เปล่า วัดจริง 13 ก.ค. 2569: worker 3/3 รันซ้ำทั้งที่ block ครบ) · บล็อกว่าง/ไม่มีตัวเลขเท่านั้น → รันเอง: `node tools/fetch-fundamentals.js <SYMBOL> [--th]` ใน batch เดียวกับ script ราคาข้างบน
   - output = Yahoo quoteSummary + StockAnalysis พร้อมบรรทัด Δ เทียบสองแหล่ง **+ ตารางงบ 5 ปี + TTM [3]** (รายได้/margin/NI/EPS/FCF/shares/cash/debt/D-E/ROE) — ใช้เขียน section งบ/แนวโน้ม/scenario ได้เลย **ห้าม WebFetch หน้า financials/balance-sheet/ratios/cash-flow/statistics ของ stockanalysis ซ้ำ** (จูนรอบ 5: เดิม leak 3-6 call/หุ้นตรงนี้)
@@ -107,6 +107,22 @@ description: วิเคราะห์หุ้นรายตัว (ไท�
 
 **คำเตือน gate ที่จะเห็นบ่อย**: `E51 … sentinel TODO` (เติมไม่ครบ/ใส่สตริงในช่องตัวเลข) · `E51 legs[i].inputs.<k>` (inputs ไม่ครบชุดของ method) · `E51 legs: family` (ขา fv มี family ไม่ครบ/ไม่ตรง method) · `E17` (ขา fv <2) · `W18` (ตัวคูณเป้า ≈ ตัวคูณปัจจุบัน ≤7% — เปลี่ยนที่มาของตัวคูณ) · `W25` (forward P/E ≈ ตัวคูณเป้า — ถ้าเป็นความบังเอิญของหุ้นตัวนั้น คงขามัธยฐานแล้วเขียนกำกับใน note) · `W32` (|MOS|>40% ต้องมีขา fv ที่ไม่ใช่ rg) · `W31` (มีตัวเลขเงินไม่มีหน่วยที่ไม่ใช่ token แม้ตัวเดียว — แปลงเป็น token หรือ {{lit:}}) · `meta.themeLegacy: ไม่มีสีแบรนด์` (ยังไม่รัน pick-brand)
 
+## STEP 5U — เขียนรายงาน โหมด UPDATE / UPDATE-LIGHT ของใบ v3 (`reports/<SYMBOL>.json` ผ่าน `tools/report.js` — **ห้ามเขียน `reports/` ตรง**)
+
+> ใช้เมื่อ prompt มีบรรทัด `★ ใบ v3 UPDATE …` หรือ `★ ใบ v3 UPDATE-LIGHT …` (Plan 4a · 25 ก.ย. 69) · กติกาเดียวกับ STEP 5V ทุกข้อ (JSON number · token · family · `meta.aiModel` ของรอบนี้) ต่างที่จุดเริ่ม = ใบเดิม ไม่ใช่ sidecar · **ราคา/กราฟ/52wk (`market.*`) เป็นของ cron** — worker ไม่แตะ ไม่รัน `update-prices` (บันทึกจาก runbook บอกว่าสดหรือยัง · ยังไม่สด = controller pre-patch ให้ก่อน spawn) · ไม่รัน `pick-brand` (สีอยู่ใน seeds.json แล้ว) · `apply-edits.js`/`{{rd:…}}`/Write/Edit ลง `reports/` = ผิดกติกา (E50 ปฏิเสธไฟล์ที่ไม่ได้เซ็น)
+
+**ลำดับ (เป้า ≤ 6 turns หลัง STEP 1–4):**
+
+1. **`node tools/report.js export <SYM>`** (1 turn) — ได้ `.work/<SYM>.json` = ใบเดิมตัด `market` + `_sig` · มี draft ค้าง = exit 1 (ใช้ `--force` เฉพาะเมื่อตั้งใจทิ้ง draft เดิม) · อ่าน draft ครั้งเดียวพร้อม `node tools/report.js show <SYM>` (ตาราง token + ค่าที่ render จากราคาสดของ cron)
+2. **แก้ทุกจุดใน Edit ชุดเดียว** (1–2 turns):
+   - **UPDATE เต็ม**: ประเมิน EPS/FV/มุมมองใหม่ตาม STEP 2–4 → แก้ `fundamentals.*` · `legs[].inputs`/`note` · `fvWeights` (เฉพาะ 0.4c) · `scenarios` · `prose` 8 ช่อง · `catalysts`/`risks` · `analyst` · `meta.analysisDate` = วันนี้ (ISO · ปี ค.ศ. ในช่องนี้ — render แปลงเป็น พ.ศ. ตาม `dateEra`) · `meta.aiModel` = รุ่นที่รันจริง · **ทบทวน tag** (คืน `TAGS:` บรรทัดเดียว ค่าตั้งต้นคงเดิม — STEP 5B ข้อ 4)
+   - **UPDATE-LIGHT**: แก้ได้เฉพาะ allowlist ของ `--light`: `meta.analysisDate` · `meta.aiModel` · `meta.sources` · `meta.priceNote` · `analyst.*` · `fundamentals.dps` · ทุกช่องข้อความที่ `proseFields` คืน (`prose.*` · `text.*` · `meta.sub` · `meta.priceNote` · `metrics.hint` · `metrics.notes.*` · `metrics.custom[].value/.note` · `legs[].note` · `scenarios.cases[].desc` · `scenarios.note` · `catalysts[]` · `risks[]` · `extras[].title/.note/rows` — `tools/v3/prose.js`) — **FV/EPS/ตัวคูณห้ามแตะ** (save --light ปฏิเสธพร้อม path) · LIGHT ยัง "ต้องแก้ไฟล์" เสมอ: `meta.analysisDate` = วันนี้ + `meta.aiModel` + ประโยค verdict/กราฟที่อ้างสถานการณ์เก่า · ไม่แตะ tag
+   - เลขผูกราคา/FV/MOS/เป้า/ขา/ฉากใน prose = token เสมอ (`show` บอกชื่อ) · ห้ามพิมพ์ราคาสดเป็น literal (กติกา B/W31)
+3. **`node tools/report.js save <SYM>`** หรือ **`save <SYM> --light`** (1–2 turns) — พิมพ์ทุก error รอบเดียว → แก้ draft แล้ว save ใหม่ · ผ่าน = `✓ reports/<SYM>.json — FV … · MOS …` (เซ็นแล้ว) · **`save ✓` = gate ของ worker** — `npm test -- <SYM>` รันได้ (ใบเดิมมี tag แล้ว ไม่แดง `v2:E40`) แต่ไม่บังคับ
+4. **คืนงาน**: `reports/<SYM>.json` save ✓ · FV/กรอบ/MOS ใหม่ (หรือ "FV เดิมยืน" ใน LIGHT) · แหล่งที่ใช้ · `meta.aiModel` · บรรทัด `TAGS: คงเดิม` / `TAGS: เปลี่ยน — …` (UPDATE) · **ไม่ git** — controller `postcheck` → `ship`
+
+**ที่ต่างจากใบ v2 (STEP 5B/5C) ที่พลาดบ่อย**: ไม่มี footer "ข้อมูล ณ" ให้แก้ (มาจาก `meta.analysisDate`) · ไม่มี `{{rd:…}}`/E44 (token v3 คือ `{{px}}` `{{fv}}` … ตาม `show`) · ไม่มี `update-prices --write --force` ในงานของ worker · ไม่รัน `pick-brand` (สีอยู่ใน seeds.json แล้ว) · ไม่มี apply-edits
+
 ## STEP 5A — (v2 · ใบเดิมเท่านั้น — ใบใหม่ใช้ STEP 5V) เขียนรายงาน โหมด NEW แบบ skeleton (**Write ทั้งไฟล์ครั้งเดียว**)
 
 > ⛔ ตั้งแต่ Plan 2c (24 ก.ย. 69) ใบใหม่ทุกใบเป็น v3 — หัวข้อนี้เก็บไว้เพื่ออ่านกติกา prose/W08/E44 ที่ยังใช้ร่วมกัน ห้ามใช้เขียนไฟล์ · hook ชั้น 1 (เมื่อเจ้าของ paste) ปฏิเสธ · gate ไม่จับ .html ใบใหม่ — controller ตรวจว่าได้ `reports/<SYM>.json` ก่อน ship (ยกเว้นเรื่อง token — v3 ห้าม `{{rd:}}` ใช้ตาราง `report.js show`)
@@ -146,7 +162,7 @@ description: วิเคราะห์หุ้นรายตัว (ไท�
   controller เป็นคนรัน `node tools/tag-apply.js <SYM> <slug…>` ให้ · ไม่มีธีมไหนเข้ากันเลย → **หยุดถาม controller**
   (ปล่อยไปจะทำ E40 ตกและ push ไม่ได้)
 
-## STEP 5B — เขียนรายงาน โหมด UPDATE (แก้เฉพาะจุด)
+## STEP 5B — เขียนรายงาน โหมด UPDATE (แก้เฉพาะจุด) (ใบ v3 → STEP 5U)
 
 1. อ่าน `reports/<SYMBOL>.html` (ราคา/กราฟ/วันที่ราคา สดแล้วจาก STEP 1) → ประเมิน EPS/FV/มุมมอง เปลี่ยนไหม
 2. **แก้เฉพาะจุดที่เปลี่ยนจริง** (หลายจุด → รวมยิงใน Bash เดียวผ่าน `tools/apply-edits.js` แบบ STEP 5C ข้อ 3):
@@ -171,6 +187,8 @@ description: วิเคราะห์หุ้นรายตัว (ไท�
    ต้องการธีมที่ยังไม่มีในคลัง → บอก controller ให้เข้าคิวด้วย `tag-apply.js <SYM> --request "<ธีม>"`
 
 ## STEP 5C — โหมด UPDATE-LIGHT (refresh จากคิว price-flags — เป้า ≤10 turns)
+
+> **ใบ v3 → STEP 5U (LIGHT) ไม่ใช่หัวข้อนี้**
 
 ใช้เมื่อ STEP 0 ชี้ UPDATE-LIGHT (ราคาขยับแรงแต่ไม่มีสัญญาณธุรกิจเปลี่ยน) — ทำแค่นี้ **ห้ามรื้อรายงาน/ห้ามคิด FV ใหม่โดยไม่จำเป็น**:
 
@@ -204,8 +222,8 @@ description: วิเคราะห์หุ้นรายตัว (ไท�
 ## STEP 6 — self-check ก่อนจบ
 
 ```
-npm test -- <SYMBOL>      # ใบ v2 เท่านั้น — ใบ v3 NEW = report.js save ✓ (STEP 5V ข้อ 5)
+npm test -- <SYMBOL>      # ใบ v2 เท่านั้น — ใบ v3 = report.js save ✓ (NEW: STEP 5V ข้อ 5 · UPDATE: STEP 5U ข้อ 3)
 ```
-**ใบ v2 (UPDATE/UPDATE-LIGHT)**: ต้อง **0 error** (พลาดบ่อย: E13 token ค้าง · E28 ai-model · E29 currency ISO · E32 .sub) · **ใบ v3 NEW: ไม่รันคำสั่งนี้** — `node tools/report.js save <SYM>` ผ่านคือ gate ของ worker (คำสั่ง `npm test` บนใบ v3 ใบใหม่จะแดง `[v2:E40]` เสมอจนกว่า controller จะ `tag-apply` — ไม่ใช่งานของ worker) · แดงตรงไหนแก้ให้เขียว · code ไหนไม่เข้าใจ → อ่าน `docs/quality-gate.md` เฉพาะหัวข้อนั้น (**ห้ามขุด `test/check-reports.js`** — วัดจริง: FN เสีย ~12 turns ตรงนี้)
+**ใบ v2 (UPDATE/UPDATE-LIGHT)**: ต้อง **0 error** (พลาดบ่อย: E13 token ค้าง · E28 ai-model · E29 currency ISO · E32 .sub) · **ใบ v3 NEW: ไม่รันคำสั่งนี้** — `node tools/report.js save <SYM>` ผ่านคือ gate ของ worker (คำสั่ง `npm test` บนใบ v3 ใบใหม่จะแดง `[v2:E40]` เสมอจนกว่า controller จะ `tag-apply` — ไม่ใช่งานของ worker) · **ใบ v3 UPDATE/LIGHT (STEP 5U): `save ✓` คือ gate เช่นกัน — รัน `npm test -- <SYM>` ได้ (ใบเดิมมี tag) แต่ไม่บังคับ** · แดงตรงไหนแก้ให้เขียว · code ไหนไม่เข้าใจ → อ่าน `docs/quality-gate.md` เฉพาะหัวข้อนั้น (**ห้ามขุด `test/check-reports.js`** — วัดจริง: FN เสีย ~12 turns ตรงนี้)
 - session หลัก: ต่อด้วย `npm run verify` + auto-push ตาม CLAUDE.md §5
 - worker agent: **ห้าม push** — รายงานกลับ controller สั้น ๆ (ราคา/FV/MOS + แหล่งที่ใช้)

@@ -1522,6 +1522,7 @@ const applyEditsRacePromise = testApplyEditsStdin(ok);
 }
 
 // ── 23) v3 (Plan 2b Task 3) — queue tools อ่าน reports/<SYM>.json ผ่าน tools/report-source.js ──
+let v3PrepatchPromise = null;   // Plan 4a fix1 (Review Focus 3) — prep() เป็น async ⇒ tally ต้องรอ
 //   ★ sandbox ใต้ os.tmpdir() (หัวไฟล์: ห้ามอ่าน reports/) — ใบ v3 = ZTS-real ที่เซ็นแล้ว · ใบ v2 = AAPL-v2 fixture
 {
   const RS = require('../tools/report-source.js');
@@ -1548,11 +1549,92 @@ const applyEditsRacePromise = testApplyEditsStdin(ok);
     ok(/reports\/NEWV3\.json ไม่ใช่ใบ v2/.test(Sh.prepatchRefusal(pb) || '') && Sh.prepatchRefusal({ blocked: [], foreign: [] }) === null, 'v3/ship: prepatchRefusal ปฏิเสธเมื่อมี foreign · ว่าง = null');
     const mv = Sh.prepatchBlockers(Sh.parsePorcelain('R  reports/X.html -> reports/X.json').map((e) => ({ path: e.path, untracked: e.isNew, headFooterISO: '2026-09-01', workFooterISO: '2026-09-01' })));
     ok(mv.foreign.join(',') === 'reports/X.json', 'v3/ship: git mv .html → .json = blocker (Review Focus 4)', JSON.stringify(mv));
-    // prep
-    let v3Err = null; try { Pp.checkNotV3('ZTS', V3DIR); } catch (e) { v3Err = e.message; }
-    ok(/v3 UPDATE = P6/.test(v3Err || '') && !/v3 UPDATE = Plan 3/.test(v3Err || '') && /report\.js export ZTS/.test(v3Err || ''), 'v3/prep: symbol ที่เป็นใบ v3 แล้ว → ปฏิเสธ ("v3 UPDATE = P6" · P5 = cron ราคาเท่านั้น)', v3Err);
-    let v2Err = 'none'; try { Pp.checkNotV3('AAPL', V3DIR); Pp.checkNotV3('NEWCO', V3DIR); } catch (e) { v2Err = e.message; }
-    ok(v2Err === 'none', 'v3/prep: ใบ v2 และหุ้นใหม่ผ่าน checkNotV3', v2Err);
+    // prep — Plan 4a: ใบ v3 เข้า prep ได้ (ตัวปฏิเสธใบ v3 ของ Plan 2b ถูกถอด) · reportSource ให้รูปเดียวกันทั้ง v2/v3
+    ok(!Object.keys(Pp).some((k) => /^checkNot/.test(k) && /V3$/.test(k)) && typeof Pp.reportSource === 'function', 'v3/prep (4a): ตัวปฏิเสธใบ v3 (Plan 2b) ถูกถอดจาก exports — prep รับใบ v3', Object.keys(Pp).join());
+    const srcV3 = Pp.reportSource('ZTS', V3DIR, false);
+    ok(srcV3.kind === 'v3' && srcV3.price === 71.33 && srcV3.currency === 'USD' && srcV3.th === false && srcV3.doc && srcV3.doc.symbol === 'ZTS'
+      && /<html/i.test(srcV3.html) && srcV3.lite && srcV3.lite.analysisDate === '2026-09-22',
+      'v3/prep (4a): reportSource ใบ v3 → kind v3 · price จาก market.px · currency · doc · html ที่ render แล้ว · lite', JSON.stringify({ kind: srcV3.kind, price: srcV3.price, currency: srcV3.currency, th: srcV3.th, html: srcV3.html.slice(0, 20) }));
+    const srcV2 = Pp.reportSource('AAPL', V3DIR, false);
+    ok(srcV2.kind === 'v2' && srcV2.doc === null && srcV2.html === fs.readFileSync(path.join(V3DIR, 'AAPL.html'), 'utf8') && srcV2.currency === 'USD' && Number.isFinite(srcV2.price),
+      'v3/prep (4a): reportSource ใบ v2 → html ดิบเหมือนเดิม · doc null', JSON.stringify({ kind: srcV2.kind, price: srcV2.price }));
+    const srcNew = Pp.reportSource('NEWCO', V3DIR, true);
+    ok(srcNew.kind === null && srcNew.html === '' && srcNew.th === true && srcNew.price === null && srcNew.doc === null, 'v3/prep (4a): ไม่มีใบ → kind null · th จาก --th');
+    // Review Focus 1: .json เสีย → throw ข้อความของ RS.load (ไม่ใช่ stack จาก reportSource)
+    fs.writeFileSync(path.join(V3DIR, 'BROKEN.json'), '{ not json');
+    let brokenErr = null; try { Pp.reportSource('BROKEN', V3DIR, false); } catch (e) { brokenErr = e.message; }
+    ok(/JSON เสีย/.test(brokenErr || ''), 'v3/prep (4a): ใบ v3 ที่ JSON เสีย → throw "JSON เสีย" (Review Focus 1)', brokenErr);
+    fs.unlinkSync(path.join(V3DIR, 'BROKEN.json'));
+    // snapshotDiffV3 — อ่าน doc ตรง (ไม่ใช่ regex บน HTML)
+    const zdoc = RS.load('ZTS', V3DIR).doc;
+    const sdOk = Pp.snapshotDiffV3(zdoc, { target: 101.5, analysts: 19, lo52: 70.5, hi52: 149, divYieldPct: 2.97 });
+    ok(sdOk.length === 0, 'v3/prep (4a): snapshotDiffV3 — เป้า/52wk/ปันผลตรง (≤2% / ≤3% / ≤0.3pp) → ไม่มีบรรทัด', JSON.stringify(sdOk));
+    const sdDiff = Pp.snapshotDiffV3(zdoc, { target: 120, analysts: 20, lo52: 60, hi52: 149, divYieldPct: 4.5 });
+    ok(sdDiff.length === 3 && /analyst\.target 100\.94 → 120 \(n=20\)/.test(sdDiff[0]) && /กรอบ 52 สัปดาห์ ใบ 70\.26–148\.79 · vendor 60–149/.test(sdDiff[1]) && /fundamentals\.dps 2\.12 → ปันผล % ใบ 2\.97 · vendor 4\.5/.test(sdDiff[2]),
+      'v3/prep (4a): snapshotDiffV3 — เป้า/52wk/ปันผลต่าง → 3 บรรทัดชี้ path ของ JSON', JSON.stringify(sdDiff));
+    // Review Focus 2: ใบที่ไม่มี analyst/range52w/dps → ไม่พิมพ์ undefined
+    const bare = { ...zdoc, analyst: undefined, fundamentals: { ...zdoc.fundamentals, dps: undefined }, market: { ...zdoc.market, range52w: undefined } };
+    const sdBare = Pp.snapshotDiffV3(bare, { target: 120, analysts: 20, lo52: 60, hi52: 149, divYieldPct: 4.5 });
+    ok(sdBare.length === 0 && !JSON.stringify(sdBare).includes('undefined'), 'v3/prep (4a): snapshotDiffV3 — ช่องที่ใบไม่มี = เงียบ (Review Focus 2)', JSON.stringify(sdBare));
+    // extraBlock — ใบ v3 UPDATE ชี้ STEP 5U · ไม่มีประโยค v2 "SKILL 5B ข้อ 3" · ไม่ชวนรัน update-prices/pick-brand
+    const ebV3 = Pp.extraBlock({ sym: 'ZTS', mode: 'UPDATE', v3: true, priceFresh: true, priceDate: '2026-09-24', lastSession: '2026-09-24', oldPrice: 71.33, price: 71.33, baseEPS: 5.5, epsTTM: 5.6, epsScreen: 1.8, snap: [], medWarn: [], hard: false, hardWhy: '' });
+    ok(/★ ใบ v3 UPDATE — ทำตาม SKILL STEP 5U: node tools\/report\.js export ZTS → แก้ \.work\/ZTS\.json → node tools\/report\.js save ZTS/.test(ebV3) && !/SKILL 5B ข้อ 3/.test(ebV3)
+      && /ห้าม apply-edits\/Write ลง reports\//.test(ebV3) && !/apply-edits/.test(ebV3.replace('ห้าม apply-edits/Write ลง reports/', ''))   // apply-edits ปรากฏได้เฉพาะในข้อห้าม
+      && !/update-prices มี lock/.test(ebV3) && /ไม่รัน update-prices\/pick-brand/.test(ebV3),
+      'v3/prep (4a): extraBlock ใบ v3 UPDATE → บรรทัด STEP 5U (export → แก้ .work → save) · ไม่มีประโยค v2', ebV3);
+    const ebV3L = Pp.extraBlock({ sym: 'ZTS', mode: 'UPDATE-LIGHT', v3: true, priceFresh: true, priceDate: '2026-09-24', lastSession: '2026-09-24', oldPrice: 71.33, price: 71.33, baseEPS: 5.5, epsTTM: 5.6, epsScreen: 1.8, snap: [], medWarn: [], hard: false, hardWhy: '' });
+    ok(/save ZTS --light/.test(ebV3L) && /cron เป็นเจ้าของราคา/.test(ebV3L)
+      && !/SKILL 5B ข้อ 3/.test(ebV3L) && /ไม่รัน update-prices\/pick-brand/.test(ebV3L) && /ห้าม apply-edits\/Write ลง reports\//.test(ebV3L)
+      && /allowlist ของ save --light \(meta\.analysisDate · meta\.aiModel · meta\.sources · meta\.priceNote · analyst\.\* · fundamentals\.dps · ทุกช่อง prose\/text/.test(ebV3L),
+      'v3/prep (4a): extraBlock ใบ v3 UPDATE-LIGHT → save --light + allowlist ของ save --light (มี meta.priceNote) + บอกว่า cron เป็นเจ้าของราคา · ไม่มีประโยค v2', ebV3L);
+    // fix1 I-1: ราคายังไม่สด — ใบ v3 ห้าม worker รัน update-prices (controller pre-patch ก่อน spawn) · ใบ v2 ข้อความเดิม
+    const ebV3S = Pp.extraBlock({ sym: 'ZTS', mode: 'UPDATE', v3: true, priceFresh: false, priceDate: '2026-09-21', lastSession: '2026-09-24', oldPrice: 71.33, price: 71.33, baseEPS: 5.5, epsTTM: 5.6, epsScreen: 1.8, snap: [], medWarn: [], hard: false, hardWhy: '', marketOpen: false });
+    ok(/worker ห้ามรัน/.test(ebV3S) && /pre-patch มือ/.test(ebV3S) && !/โหมด UPDATE รัน/.test(ebV3S) && /ยังไม่สด \(priceDate 2026-09-21 < session ล่าสุด 2026-09-24\)/.test(ebV3S) && !/ตลาดเปิดอยู่/.test(ebV3S),
+      'v3/prep (4a fix1): extraBlock ใบ v3 ราคายังไม่สด → controller pre-patch มือ · worker ห้ามรัน (ไม่มีคำสั่ง "โหมด UPDATE รัน")', ebV3S.split('\n')[1]);
+    const ebV3SO = Pp.extraBlock({ sym: 'ZTS', mode: 'UPDATE', v3: true, priceFresh: null, snap: [], medWarn: [], hard: false, hardWhy: '', marketOpen: true });
+    ok(/ยังไม่สด \(ยังไม่ได้ pre-patch\) — ใบ v3/.test(ebV3SO) && /\(ตลาดเปิดอยู่ — รอปิดตลาดก่อน\)/.test(ebV3SO) && /worker ห้ามรัน/.test(ebV3SO),
+      'v3/prep (4a fix1): ใบ v3 ยังไม่ pre-patch + ตลาดเปิด → stamp เดียวกับ v2 + รอปิดตลาด', ebV3SO.split('\n')[1]);
+    const ebV2S = Pp.extraBlock({ sym: 'A', mode: 'UPDATE', v3: false, priceFresh: false, priceDate: '2026-09-21', lastSession: '2026-09-24', oldPrice: 1, price: 1, baseEPS: 1, epsTTM: 1, epsScreen: 0, snap: [], medWarn: [], hard: false, hardWhy: '', marketOpen: false });
+    ok(/โหมด UPDATE รัน `node tools\/update-prices\.js --write --force A` ตาม SKILL STEP 1 ได้/.test(ebV2S) && !/worker ห้ามรัน/.test(ebV2S) && !/pre-patch มือ/.test(ebV2S),
+      'v3/prep (4a fix1): extraBlock ใบ v2 ราคายังไม่สด → ข้อความเดิม (worker รัน update-prices ตาม SKILL STEP 1)', ebV2S.split('\n')[1]);
+    const ebV2 = Pp.extraBlock({ sym: 'AAPL', mode: 'UPDATE', v3: false, priceFresh: true, priceDate: '2026-09-24', lastSession: '2026-09-24', oldPrice: 1, price: 1, baseEPS: 1, epsTTM: 1, epsScreen: 0, snap: [], medWarn: [], hard: false, hardWhy: '' });
+    ok(!/STEP 5U/.test(ebV2) && /SKILL 5B ข้อ 3/.test(ebV2) && /pick-brand\/update-prices มี lock แล้ว/.test(ebV2), 'v3/prep (4a): extraBlock ใบ v2 ไม่เปลี่ยน (ยังมีประโยค 5B ข้อ 3 · ไม่มี STEP 5U)');
+    // fix1 M-1 (Review Focus 3): ใบ v3 ที่แถว state เป็น PREPATCH → checkNotPrepatch ปฏิเสธก่อนยิง network ใด ๆ
+    //   state = QUEUE_DIR ชั่วคราวของไฟล์นี้ (บรรทัดบนสุด) · reports = V3DIR ผ่าน o.reportsDir · run ที่ throw = พิสูจน์ว่าไม่ถึง prep-stock
+    //   prep เป็น async แต่ทุกอย่างก่อน checkNotPrepatch เป็น sync ⇒ promise ถูก reject แล้วตอนคืนค่า — คืน state เดิมทันทีได้
+    {
+      const S = require('../tools/queue/state.js');
+      const before = S.load();
+      S.save({ ...before, stocks: { ...before.stocks, ZTS: { bucket: 'PREPATCH' } } });
+      let netCalls = 0;
+      try {
+        v3PrepatchPromise = Pp.prep('ZTS', { reportsDir: V3DIR, run: () => { netCalls++; throw new Error('network must not be called'); },
+          medianBlock: () => { netCalls++; throw new Error('network must not be called'); },
+          statementAfterOf: () => { netCalls++; throw new Error('network must not be called'); },   // re-review R-2: ปฏิเสธก่อนค้นวันงบ (SEC) ด้วย
+          sec: () => { netCalls++; throw new Error('network must not be called'); } })
+          .then(() => ok(false, 'v3/prep (4a fix1): ใบ v3 + PREPATCH → prep ต้องปฏิเสธ (Review Focus 3)', 'resolved'),
+            (e) => ok(/ZTS เป็น PREPATCH/.test(e.message) && netCalls === 0, 'v3/prep (4a fix1): ใบ v3 + bucket PREPATCH → checkNotPrepatch ปฏิเสธก่อน network (Review Focus 3)', `${e.message} · netCalls=${netCalls}`));
+      } finally { S.save(before); }
+    }
+    // final review M-4: prep() ใบ v3 เดินจบ offline (buildCtx บนหน้า render · ★ 5U ใน .md · ไม่มี sidecar · คืน mode/model)
+    //   reportSource อ่าน V3DIR แบบ sync ก่อน await แรก ⇒ finally ข้างล่างลบ V3DIR ได้ · .md ลง QUEUE_DIR ชั่วคราว (บรรทัดบนสุด)
+    {
+      const S = require('../tools/queue/state.js');
+      const ZOUT = `=== PREP ZTS (UPDATE) ===\n✅ ราคา 2 แหล่งต่าง 0.10% (≤2%) — ผ่าน\n[1] Yahoo quoteSummary (ZTS):\n    price=71.33 epsTTM=5.9 epsFwd=6.3 PE=12.1 target=90 (n=20) 52wk=60–120\n[2] StockAnalysis (quote/zts):\n    price=71.3 (ณ Sep 24) epsTTM=5.9 PE=12.1 target=90 (20) 52wk=60–120`;
+      const e2e = Pp.prep('ZTS', { reportsDir: V3DIR, run: () => ({ code: 0, out: ZOUT, err: '' }), sec: null, mode: 'UPDATE', model: 'opus',
+        medianBlock: async () => ({ text: '=== ตัวคูณมัธยฐานย้อนหลัง: ZTS ===', warn: [], r: null }), statementAfterOf: () => null })
+        .then((r) => {
+          const md = fs.readFileSync(path.join(S.PREP_DIR, 'ZTS.md'), 'utf8');
+          ok(md.includes('★ ใบ v3 UPDATE — ทำตาม SKILL STEP 5U') && !fs.existsSync(path.join(S.PREP_DIR, 'ZTS.json')) && r.mode === 'UPDATE' && r.model === 'opus',
+            'v3/prep (4a final M-4): prep() ใบ v3 เดินจบ offline — .md มี ★ 5U · ไม่มี sidecar .json · คืน UPDATE/opus', JSON.stringify({ mode: r.mode, model: r.model, sidecar: fs.existsSync(path.join(S.PREP_DIR, 'ZTS.json')) }));
+        }, (e) => ok(false, 'v3/prep (4a final M-4): prep() ใบ v3 เดินจบ offline', e && e.message))
+        .finally(() => { try { fs.unlinkSync(path.join(S.PREP_DIR, 'ZTS.md')); } catch (_) { /* ไม่มีไฟล์ = assert ข้างบนฟ้องแล้ว */ } const st = S.load(); delete st.stocks.ZTS; S.save(st); });
+      v3PrepatchPromise = Promise.all([v3PrepatchPromise, e2e]);
+      const ebN1 = Pp.extraBlock({ sym: 'ZTS', mode: 'UPDATE', v3: true, lightRule: 'legacy', priceFresh: true, priceDate: '2026-09-24', lastSession: '2026-09-24', oldPrice: 1, price: 1, baseEPS: 1, epsTTM: 1, epsScreen: 0, snap: [], medWarn: [], hard: false, hardWhy: '' });
+      ok(/UPDATE-LIGHT ตาม 5C ข้อ 2\) \(ใบ v3: STEP 5U\)/.test(ebN1), 'v3/prep (4a final N-1): บรรทัด EPS screen ที่อ้าง 5C ข้อ 2 ต่อท้าย (ใบ v3: STEP 5U) เฉพาะใบ v3', ebN1);
+      const ebN1v2 = Pp.extraBlock({ sym: 'AAPL', mode: 'UPDATE', v3: false, lightRule: 'legacy', priceFresh: true, priceDate: '2026-09-24', lastSession: '2026-09-24', oldPrice: 1, price: 1, baseEPS: 1, epsTTM: 1, epsScreen: 0, snap: [], medWarn: [], hard: false, hardWhy: '' });
+      ok(/UPDATE-LIGHT ตาม 5C ข้อ 2\)$/m.test(ebN1v2) && !/STEP 5U/.test(ebN1v2), 'v3/prep (4a final N-1 · re-review nit): ใบ v2 ไม่ได้ suffix (ใบ v3: STEP 5U)', ebN1v2);
+    }
     // postcheck
     const src = RS.load('ZTS', V3DIR);
     src.doc.prose.mos += ' เคยซื้อขายที่ $55.55';
@@ -1567,9 +1649,16 @@ const applyEditsRacePromise = testApplyEditsStdin(ok);
     ok(byS.ZTS.v3 === true && byS.ZTS.oldPrice === 71.33 && byS.ZTS.currency === 'USD' && byS.AAPL.v3 === false && byS.AAPL.currency === 'USD',
       'v3/preflight: ราคาเดิม/สกุลของใบ v3 มาจาก market.px/currency', JSON.stringify(rows.map((r) => [r.symbol, r.v3, r.oldPrice, r.currency])));
     const pt = P.patchTargets(rows, { usOpen: false, setOpen: false, allowIntraday: false });
-    ok(pt.skippedV3.join(',') === 'ZTS' && !pt.target.includes('ZTS') && pt.target.includes('AAPL'), 'v3/preflight: ใบ v3 ไม่เข้า pre-patch อัตโนมัติ (P6 · pre-patch มือ = update-prices --write --force — Plan 3 R8) · ใบ v2 เข้าเหมือนเดิม', JSON.stringify(pt));
-    ok(JSON.stringify(P.v3Lines(rows)) === JSON.stringify(['v3 ZTS: controller → `node tools/update-prices.js --write --force ZTS` (flip) หรือ export/save (P6 queue flow)']),
-      'v3/preflight (Plan 3 R8): แถวใบ v3 = 1 บรรทัดชี้คำสั่งมือ · ใบ v2 ไม่มีบรรทัด', JSON.stringify(P.v3Lines(rows)));
+    ok(pt.skippedV3.join(',') === 'ZTS' && !pt.target.includes('ZTS') && pt.target.includes('AAPL'), 'v3/preflight: ใบ v3 ไม่เข้า pre-patch อัตโนมัติ (Plan 4b · pre-patch มือ = update-prices --write --force — Plan 3 R8) · ใบ v2 เข้าเหมือนเดิม', JSON.stringify(pt));
+    ok(byS.ZTS.bucket === 'LIGHT' && !byS.ZTS.skip && JSON.stringify(P.v3Lines(rows)) === JSON.stringify(['v3 ZTS: หลัง ship --prepatch — ราคายังไม่สด → controller pre-patch มือ `node tools/update-prices.js --write --force ZTS` (ตลาดปิดแล้วเท่านั้น) แล้ว npm run queue -- prep ZTS ตามปกติ (worker: report.js export/save — SKILL STEP 5U · pre-patch อัตโนมัติของใบ v3 = Plan 4b)']),
+      'v3/preflight (4a fix1): แถวใบ v3 LIGHT/FULL = 1 บรรทัด: หลัง ship --prepatch → pre-patch มือ + prep ตามปกติ · ใบ v2 ไม่มีบรรทัด', JSON.stringify([byS.ZTS.bucket, P.v3Lines(rows)]));
+    const rowsFlip = P.plan([{ symbol: 'ZTS', reason: 'mos-sign-flip', diffPct: 3, flaggedAt: '2026-09-22' }], '2026-09-22', { ageLimit: 0, footerAgeOf: () => 30, lightRule: 'legacy', liteOf });
+    ok(rowsFlip[0].bucket === 'PREPATCH' && JSON.stringify(P.v3Lines(rowsFlip)) === JSON.stringify(['v3 ZTS: flip ในย่าน → หลัง ship --prepatch: controller pre-patch มือ `node tools/update-prices.js --write --force ZTS` (ตลาดปิดแล้วเท่านั้น — --force ข้าม guard intraday) → npm test -- ZTS → commit เอง "price: pre-patch ZTS (v3 flip)" + push ตาม CLAUDE.md §5 (ไม่ผ่าน ship — postcheck ต้องการ analysisDate = วันนี้ · ship --prepatch ไม่รับ .json · อัตโนมัติ = Plan 4b)']),
+      'v3/preflight (4a final I-1): แถวใบ v3 PREPATCH (flip) → หลัง ship --prepatch: pre-patch มือ → npm test → commit price: เอง (ไม่ใช่ prep — prep ปฏิเสธ PREPATCH · ไม่ใช่ postcheck → ship — review เพราะ analysisDate ≠ วันนี้)', JSON.stringify([rowsFlip[0].bucket, P.v3Lines(rowsFlip)]));
+    ok(JSON.stringify(P.v3Lines([{ symbol: 'ZTS', v3: true, bucket: 'DELIST' }, { symbol: 'ZTS', v3: true, bucket: 'LIGHT', skip: 'fresh' }, { symbol: 'ZTS', v3: true, bucket: 'PLUMBING' }, { symbol: 'ZTS', v3: true, bucket: 'REJECTED' }, { symbol: 'ZTS', v3: true, bucket: 'UNKNOWN' }])) === '[]',
+      'v3/preflight (4a fix1): แถวใบ v3 skip/DELIST/PLUMBING/REJECTED/UNKNOWN → ไม่มีบรรทัด', JSON.stringify(P.v3Lines([{ symbol: 'ZTS', v3: true, bucket: 'DELIST' }])));
+    ok(JSON.stringify(P.v3Lines([{ symbol: 'ZTS', v3: true, bucket: 'FULL' }])) === JSON.stringify(P.v3Lines([{ symbol: 'ZTS', v3: true, bucket: 'LIGHT' }])) && /หลัง ship --prepatch — ราคายังไม่สด/.test(P.v3Lines([{ symbol: 'ZTS', v3: true, bucket: 'FULL' }])[0] || ''),
+      'v3/preflight (4a fix1+): แถว FULL ได้บรรทัดเดียวกับ LIGHT (re-review residual c)', JSON.stringify(P.v3Lines([{ symbol: 'ZTS', v3: true, bucket: 'FULL' }])));
     const cal = { symbols: { ZTS: { last: '2026-09-25' } } };
     const lite = { analysisDate: '2026-09-22', currency: 'THB' };
     const html = '<script type="application/json" id="stock-meta">{"currency":"THB"}</script><footer>ข้อมูล ณ 22 ก.ย. 2569</footer>';
@@ -1601,10 +1690,14 @@ const applyEditsRacePromise = testApplyEditsStdin(ok);
     const del = Sh.prepatchCandidates(Sh.parsePorcelainZ(' D reports/ZTS.json\0D  reports/OLD.html\0 M reports/KLAC.html\0'));
     ok(del.deleted.map((e) => e.path).join() === 'reports/ZTS.json,reports/OLD.html' && del.candidates.map((e) => e.path).join() === 'reports/KLAC.html' && Sh.commitArgs('m', ['reports/KLAC.html']).slice(-2).join() === '--,reports/KLAC.html',
       'v3/ship fix1: ใบ .json ที่ลบ → deleted (ไม่เข้า pre-patch commit ที่จำกัด path)', JSON.stringify(del));
-    // ── fix round 1: คิวตามอายุข้ามใบ v3 (P6 ถอดตัวกรอง) ──
-    ok(P.listReportsFS(V3DIR).join() === 'AAPL', 'v3/preflight fix2: listReportsFS ไม่นับใบ v3', P.listReportsFS(V3DIR).join());
+    // ── Plan 4a: คิวตามอายุนับใบ v3 (ถอดตัวกรอง !e.v3 — prep รับใบ v3 แล้ว) ──
+    ok(P.listReportsFS(V3DIR).join() === 'AAPL,ZTS', 'v3/preflight (4a): listReportsFS นับใบ v3 ด้วย (เรียงชื่อ)', P.listReportsFS(V3DIR).join());
     const aq = P.ageQueue('2026-09-24', { listReports: () => P.listReportsFS(V3DIR), footerAgeOf: () => 400 });
-    ok(aq.map((r) => r.symbol).join() === 'AAPL', 'v3/preflight fix2: ใบ v3 ที่เก่าเกิน STALE_DAYS ไม่เข้าคิวอายุ (ไม่งั้นสร้างแถว LIGHT ที่ prep ปฏิเสธทุกรอบ)', JSON.stringify(aq));
+    ok(aq.map((r) => r.symbol).join() === 'AAPL,ZTS', 'v3/preflight (4a): ใบ v3 ที่เก่าเกิน STALE_DAYS เข้าคิวอายุ (Review Focus 5)', JSON.stringify(aq));
+    const aqReal = P.ageQueue('2030-01-01', { listReports: () => ['ZTS'], footerAgeOf: (s) => require('../tools/queue/footer-date.js').ageDays(RS.metaLite(s, V3DIR).analysisDate, '2030-01-01') });
+    ok(aqReal.length === 1 && aqReal[0].symbol === 'ZTS' && aqReal[0].footerAge > 1000, 'v3/preflight (4a fix1): อายุของใบ v3 มาจาก meta.analysisDate จริง → เข้าคิวอายุ', JSON.stringify(aqReal));
+    const ptAge = P.patchTargets(P.plan([], '2026-09-24', { ageLimit: 5, footerAgeOf: () => 400, lightRule: 'legacy', liteOf, listReports: () => P.listReportsFS(V3DIR) }), { usOpen: false, setOpen: false, allowIntraday: false });
+    ok(ptAge.skippedV3.join() === 'ZTS' && ptAge.target.join() === 'AAPL', 'v3/preflight (4a): แถวอายุของใบ v3 ยังไม่เข้า pre-patch อัตโนมัติ (= Plan 4b) · ใบ v2 เข้า', JSON.stringify(ptAge));
     // ── fix round 1: postcheck haystack ครอบป้าย legs/custom/extras headers · จุดที่เจอบอกเป็น path ของ JSON ──
     const s2 = RS.load('ZTS', V3DIR);
     s2.doc.legs[0].label += ' @ $55.55';
@@ -1619,7 +1712,7 @@ const applyEditsRacePromise = testApplyEditsStdin(ok);
 }
 
 // ─────────────────────────── (Task 10–14 แทรกเทสเหนือบรรทัดนี้) ───────────────────────────
-Promise.all([Promise.resolve(pending), applyEditsRacePromise])
+Promise.all([Promise.resolve(pending), applyEditsRacePromise, Promise.resolve(v3PrepatchPromise)])
   .catch((e) => { nFail++; console.error('✗ earnings-calendar-test/apply-edits-race ระเบิด (async) — ' + (e && e.message)); })
   .then(() => {
     console.log(`queue-test: ${nOK}/${nOK + nFail} ผ่าน`);
