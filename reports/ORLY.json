@@ -1,0 +1,271 @@
+{
+  "v": 3,
+  "symbol": "ORLY",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "O'Reilly Automotive, Inc.",
+    "exchange": "NASDAQ",
+    "sub": "จำหน่ายอะไหล่รถยนต์ aftermarket • DIY & Professional • buyback-driven compounder (ไม่มีเงินปันผล)",
+    "headerTags": [
+      "Consumer Discretionary",
+      "Auto Parts Retail"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis.com",
+      "Yahoo Finance",
+      "O'Reilly Investor Relations",
+      "Macrotrends"
+    ],
+    "themeLegacy": {
+      "accent": "#CC0000",
+      "accentDark": "#990000",
+      "darkGrad": "linear-gradient(135deg, #0A0000 0%, #1A0000 100%)",
+      "glow": "rgba(204, 0, 0, 0.3)",
+      "subColor": "#FF4444",
+      "headerMuted": "#f80000",
+      "verdictText": "#FFD7D7",
+      "vcellLabel": "rgba(255, 215, 215, 0.6)"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T22:32:04+07:00",
+      "v2Hash": "c641d4a661a8"
+    }
+  },
+  "market": {
+    "px": 86.24,
+    "priceDate": "2026-09-24",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          94.44
+        ],
+        [
+          "พ.ย.25",
+          101.7
+        ],
+        [
+          "ธ.ค.25",
+          91.21
+        ],
+        [
+          "ม.ค.26",
+          98.41
+        ],
+        [
+          "ก.พ.26",
+          93.88
+        ],
+        [
+          "มี.ค.26",
+          92.31
+        ],
+        [
+          "เม.ย.26",
+          99.4
+        ],
+        [
+          "พ.ค.26",
+          86.88
+        ],
+        [
+          "มิ.ย.26",
+          92.09
+        ],
+        [
+          "ก.ค.26",
+          89.35
+        ],
+        [
+          "ส.ค.26",
+          88.8
+        ],
+        [
+          "ก.ย.26",
+          86.24
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 82.59,
+      "hi": 108.72
+    }
+  },
+  "fundamentals": {
+    "eps": 3.15,
+    "netMargin": 14.3,
+    "revenue": 18600000000,
+    "grossMargin": 51.6,
+    "opMargin": 19.6,
+    "fcf": 2200000000,
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation",
+      "inputs": {
+        "multiple": 23.6,
+        "multipleSource": "median5y"
+      },
+      "note": "มัธยฐานย้อนหลัง 5 ปี (FY2021–25 ช่วง 18.2–32.2x วัดจากราคาเฉลี่ยรายปี ÷ EPS) มาจากประวัติ ไม่ได้มาจาก P/E ปัจจุบัน",
+      "family": "market"
+    },
+    {
+      "method": "dcf",
+      "label": "DCF (FCF ถึงผู้ถือหุ้น 10 ปี)",
+      "inputs": {
+        "stages": [
+          {
+            "years": 5,
+            "g": 8
+          },
+          {
+            "years": 5,
+            "g": 5
+          }
+        ],
+        "tg": 3,
+        "r": 9,
+        "rfCurrency": "USD"
+      },
+      "override": {
+        "fcf": 1950000000,
+        "netDebt": 0,
+        "shares": 809000000,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "สมมติฐานของรายงาน · เฉลี่ย TTM/FY23–25 · ล้าน$ · PV 26,517 = 60% ของมูลค่า · ความไว: r 8%",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "custom:0",
+      "pe",
+      "eps",
+      {
+        "key": "netMargin",
+        "tone": "pos"
+      },
+      "revenue",
+      "grossMargin",
+      "opMargin",
+      "custom:1",
+      {
+        "key": "range52w",
+        "tone": "neu"
+      },
+      "fcf",
+      "custom:2",
+      "custom:3"
+    ],
+    "custom": [
+      {
+        "label": "Market Cap",
+        "value": "~$69.8B",
+        "note": "หุ้นคงเหลือ ~809M (StockAnalysis)"
+      },
+      {
+        "label": "รายได้ YoY",
+        "value": "~8.5%",
+        "note": "TTM (FY2025 +6.4%)",
+        "tone": "pos"
+      },
+      {
+        "label": "หนี้รวม",
+        "value": "~$9.6B",
+        "note": "เงินสด ~$0.26B (TTM)"
+      },
+      {
+        "label": "Book Equity",
+        "value": "Negative",
+        "note": "buyback ต่อเนื่อง · หุ้นลด ~4%/ปี",
+        "tone": "neg"
+      }
+    ],
+    "notes": {
+      "pe": "มัธยฐาน 5 ปี (FY21–25) 23.6x",
+      "eps": "diluted TTM · CAGR FY21–25 ~9.4%",
+      "netMargin": "TTM · เสถียรตลอด 5 ปี",
+      "revenue": "CAGR FY21–25 ~7.5%",
+      "grossMargin": "TTM · นิ่งที่ ~51–53% ตลอด 5 ปี",
+      "opMargin": "TTM · FY2021 22.0%",
+      "range52w": "ปัจจุบัน {{px}}",
+      "fcf": "TTM (FY2025 $1.6B) · คืนทุนผ่าน buyback"
+    },
+    "hint": "ข้อมูล ณ 21 ก.ย. 2569"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 5,
+        "exitMultiple": 18,
+        "divCum": 0,
+        "desc": "SSS ชะลอ + margin squeeze"
+      },
+      {
+        "growth": 9,
+        "exitMultiple": 23.6,
+        "divCum": 0,
+        "desc": "SSS 3-4% + buyback ต่อเนื่อง"
+      },
+      {
+        "growth": 12,
+        "exitMultiple": 27,
+        "divCum": 0,
+        "desc": "SSS 5%+ + Mexico expansion"
+      }
+    ],
+    "exitDp": 1,
+    "note": "การคาดการณ์อิงการเติบโต EPS organic + buyback ต่อเนื่อง จาก EPS ฐาน {{eps}} · Bear P/E 18x = ต่ำสุดประวัติ 5 ปี · Base P/E 23.6x = มัธยฐาน · ORLY ไม่จ่ายปันผล คืนทุนผ่าน share repurchase · Base case ให้ผลตอบแทนรวม {{scn.base.ret}} ใน 3 ปี ไม่หวือหวา แต่สะท้อน compounder คุณภาพสูง",
+    "hintNote": "• ไม่มีปันผล"
+  },
+  "analyst": {
+    "target": 107.8,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ORLY ย่อตัวลงต่อเนื่องในรอบปี จุดสูงสุดรายเดือนที่ปิดคือ พ.ย. 2568 ราคาปัจจุบัน {{px}} ใกล้ต่ำสุด 52 สัปดาห์ ($82.59) และสูงกว่ามูลค่าเหมาะสมของโมเดลนี้ {{fv}} (โมเดลอนุรักษ์ ตลาดยังให้พรีเมียมคุณภาพ compounder)",
+    "valuation": "แก้โครงสร้าง FV (รอบ 21 ก.ย. 2569): ตัดขา EV/EBITDA เดิมออก เพราะไม่มีตัวคูณมัธยฐานที่วัดได้และ EBITDA/หนี้สุทธิที่ใช้ตรวจซ้ำไม่ได้ · P/E ({{fvHigh}}) ใช้มัธยฐาน 23.6x ที่วัดจากประวัติ · DCF ($54.81) เป็นสมมติฐานของรายงานเอง (r 9% ตามความไว r 8–10% ให้ $46.6–66.3) · สองวิธีห่างกัน ~1.36 เท่า (<2x) เฉลี่ย (74.34+54.81)/2 ≈ $65 · เป้านักวิเคราะห์ (~$107.8) เป็นแค่บริบท ไม่เป็นขาของ FV · ไม่มี DDM/Justified P/BV (ไม่ปันผล equity ติดลบ) · ★ มูลค่านี้อนุรักษ์กว่าตลาดมาก: ตลาดจ่ายพรีเมียมให้ compounder คุณภาพสูง ควรอ่าน MOS ติดลบเป็น \"ราคาแพงกว่าโมเดลนี้\" ไม่ใช่สัญญาณขายเด็ดขาด",
+    "gauge": "ราคาปัจจุบัน {{px}} สูงกว่า fair value {{fv}} (MOS {{mos}}) ตลาดให้พรีเมียมเหนือโมเดลอนุรักษ์นี้ · โซนที่น่าสนใจสำหรับ value investor คือใกล้ {{mos20}} (MOS 20%) หรือต่ำกว่า",
+    "mos": "MOS ติดลบ — ราคาสูงกว่า fair value ของโมเดลอนุรักษ์ (P/E มัธยฐาน + DCF) ไม่มี buffer",
+    "verdictHeadline": "Compounder คุณภาพสูง — ราคาสูงกว่า Fair Value ของโมเดลอนุรักษ์ รอราคาย่อ",
+    "verdictBody": "ORLY เป็น compounder คุณภาพสูง EPS CAGR ~9% (organic + buyback) margin นิ่ง FCF TTM ~$2.2B Equity ติดลบเป็นผลของ buyback สม่ำเสมอ แต่หนี้รวมเพิ่มขึ้นเป็น ~$9.6B ราคาปัจจุบัน {{px}} สูงกว่า fair value {{fv}} (MOS {{mos}}) ตามโมเดล P/E มัธยฐาน + DCF ที่อนุรักษ์ · เหมาะเป็นหุ้นถือยาวแต่ควรรอราคาย่อใกล้ {{mos20}}",
+    "strategy": "ถือยาว / รอสะสมใกล้ {{mos20}} (MOS 20%) · ณ ราคา {{px}} สูงกว่า fair value ของโมเดล ไม่มี margin of safety ควรรอ pullback ก่อนเพิ่มสัดส่วน",
+    "disclaimerSources": "ที่มา: StockAnalysis.com · Yahoo Finance · O'Reilly Investor Relations (oreillyauto.com) · Macrotrends"
+  },
+  "text": {
+    "valHint": "2 วิธี · คนละตระกูล (P/E · DCF) · ไม่มี DDM (ไม่ปันผล)"
+  },
+  "catalysts": [
+    "<b>Professional segment:</b> ช่อง DIFM (Do-It-For-Me) มีแนวโน้มโตเร็วกว่า DIY รายย่อย",
+    "<b>Fleet age rising:</b> รถในสหรัฐอายุมากขึ้น ต้องการอะไหล่/ซ่อมมากขึ้น",
+    "<b>Expansion:</b> ขยายสาขาต่อเนื่อง รวมตลาดใหม่นอกสหรัฐ — รายได้ TTM โต ~8.5%",
+    "<b>Buyback compounding:</b> shares ลดทุกปี → EPS เติบโตแม้รายได้โตช้า",
+    "<b>Pricing power:</b> gross margin ~51.6% (TTM) สูงและนิ่ง สะท้อนอำนาจกำหนดราคา",
+    "<b>Supply chain leverage:</b> DC network + SKU depth ทำให้ fill rate สูงกว่าคู่แข่ง"
+  ],
+  "risks": [
+    "<b>EV transition:</b> รถไฟฟ้ามีชิ้นส่วนน้อยกว่า ICE ระยะยาวกระทบ TAM",
+    "<b>Amazon/e-commerce:</b> แรงกดดันราคาจากออนไลน์ โดยเฉพาะ DIY segment",
+    "<b>Negative equity sensitivity:</b> หนี้รวม ~$9.6B (TTM) อ่อนไหวต่ออัตราดอกเบี้ยสูง",
+    "<b>SSS slowdown:</b> มาโครอ่อนตัว → ผู้บริโภคชะลอซ่อมรถ",
+    "<b>Margin compression:</b> แรงงาน + logistics costs อาจกดดัน op margin"
+  ],
+  "extras": [],
+  "_sig": "sha256:91a83db7894a79f97bd5c2cdfc1deeb4742eda9ff5ccd40fdd2eb8b9e3a1ed92"
+}
