@@ -1,0 +1,254 @@
+{
+  "v": 3,
+  "symbol": "GILD",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Gilead Sciences, Inc.",
+    "exchange": "NASDAQ",
+    "sub": "HIV antivirals (Biktarvy) • Oncology (Trodelvy, Kite CAR-T) • Inflammation (filgotinib) • Hepatitis C (Sovaldi, Harvoni) • Hepatitis B/D pipeline",
+    "headerTags": [
+      "Healthcare / Biotech",
+      "Large-Cap Pharma"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "StockAnalysis.com",
+      "Gilead IR (SEC 8-K Q2 2026)"
+    ],
+    "themeLegacy": {
+      "accent": "#7B2D8B",
+      "accentDark": "#4A1060",
+      "darkGrad": "linear-gradient(135deg,#1a0a2e 0%,#2d1050 50%,#1a0a2e 100%)",
+      "glow": "rgba(123,45,139,0.35)",
+      "subColor": "#ce93d8",
+      "headerMuted": "#a57fb6",
+      "verdictText": "#f3e5f5",
+      "vcellLabel": "#e1bee7"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T14:53:54+07:00",
+      "v2Hash": "f0430deb5654"
+    }
+  },
+  "market": {
+    "px": 149.69,
+    "priceDate": "2026-09-24",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          119.79
+        ],
+        [
+          "พ.ย.25",
+          125.84
+        ],
+        [
+          "ธ.ค.25",
+          122.74
+        ],
+        [
+          "ม.ค.26",
+          141.95
+        ],
+        [
+          "ก.พ.26",
+          148.95
+        ],
+        [
+          "มี.ค.26",
+          139.37
+        ],
+        [
+          "เม.ย.26",
+          130.84
+        ],
+        [
+          "พ.ค.26",
+          134.43
+        ],
+        [
+          "มิ.ย.26",
+          126.34
+        ],
+        [
+          "ก.ค.26",
+          130.21
+        ],
+        [
+          "ส.ค.26",
+          146.34
+        ],
+        [
+          "ก.ย.26",
+          149.69
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 108.46,
+      "hi": 157.29
+    }
+  },
+  "fundamentals": {
+    "eps": 6.78,
+    "dps": 3.28,
+    "bvps": 9.49,
+    "shares": 1239955155,
+    "peAvg5y": 17.1,
+    "roe": -20.7,
+    "revenue": 30500000000,
+    "grossMargin": 79.6,
+    "beta": 0.33,
+    "fy": {
+      "period": "FY2025",
+      "netIncome": 8510000000
+    },
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation (GAAP FY2025)",
+      "inputs": {
+        "multiple": 17.1,
+        "multipleSource": "median5y"
+      },
+      "note": "17.1x คือมัธยฐานประวัติ FY2021–25 ของ GILD เอง (ตัด FY2024 ที่ 205x) ที่มาจากประวัติ ไม่ใช่จาก P/E ปัจจุบัน · ใช้ FY2025 เพราะ EPS GAAP TTM ติดลบจาก acquired IPR&D",
+      "family": "market"
+    },
+    {
+      "method": "ddm",
+      "label": "DDM / Gordon Growth Model",
+      "inputs": {
+        "g": 4,
+        "r": 7.5
+      },
+      "note": "r/g เป็นสมมติฐานของผู้วิเคราะห์เอง (คนละตระกูลกับ P/E)",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "custom:0",
+      "peAvg5y",
+      "pbv",
+      "netIncomeFy",
+      "custom:1",
+      "bvps",
+      {
+        "key": "roe",
+        "tone": "neu"
+      },
+      "revenue",
+      "grossMargin",
+      "yield",
+      "beta"
+    ],
+    "custom": [
+      {
+        "label": "P/E (บน EPS GAAP FY2025)",
+        "value": "~{{pe}}x",
+        "note": "EPS GAAP TTM −$2.61 (ติดลบจาก acquired IPR&D) จึงใช้ FY2025 {{eps}} เป็นฐาน",
+        "tone": "neu"
+      },
+      {
+        "label": "EPS ex-IPR&D FY2026E",
+        "value": "~$8.6",
+        "note": "guidance non-GAAP −$0.65…−$0.30 (กลาง −$0.475) + IPR&D $9.08/หุ้น"
+      }
+    ],
+    "notes": {
+      "mcap": "หุ้นคงเหลือ ~1,240M ใบ",
+      "peAvg5y": "GAAP FY2021–25 ช่วง 13.6–18.6x (ตัด FY2024 ที่ 205x)",
+      "pbv": "(ประมาณจากหนี้สิน/D-E TTM) — equity ลดหลังขาดทุน IPR&D",
+      "netIncomeFy": "GAAP EPS FY25 {{eps}} (FY24 $0.38)",
+      "bvps": "FY2025 ~$18 · ลดลงหลังขาดทุน Q2 2026",
+      "roe": "ROE TTM (FY2025 40.7%) — ติดลบจาก IPR&D ครั้งเดียว",
+      "revenue": "+5.5% YoY — HIV Q2 2026 $5.7B (+12% YoY)",
+      "grossMargin": "FCF TTM $12.9B (FCF yield ~6.9%)",
+      "yield": "forward · จ่ายต่อเนื่อง 10+ ปี",
+      "beta": "ความผันผวนต่ำมาก เหมาะ defensive"
+    },
+    "hint": "ข้อมูล TTM / ณ ก.ย. 2569"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": -2,
+        "exitMultiple": 12,
+        "divCum": 10.04,
+        "desc": "Biktarvy เจอคู่แข่ง; Trodelvy trial ล้มเหลว"
+      },
+      {
+        "growth": 6,
+        "exitMultiple": 15,
+        "divCum": 10.33,
+        "desc": "Biktarvy โต moderate + Trodelvy ขยาย indication"
+      },
+      {
+        "growth": 12,
+        "exitMultiple": 18,
+        "divCum": 10.63,
+        "desc": "Lenacapavir blockbuster + Pipeline FDA approval หลายตัว"
+      }
+    ],
+    "exitDp": 0,
+    "baseOverride": {
+      "value": 8.6,
+      "why": "EPS ฐานฉากที่ผู้เขียนใช้"
+    },
+    "note": "การคาดการณ์อิงสมมติฐาน EPS ฐาน $8.6 = guidance FY2026 non-GAAP กลาง −$0.475 บวก acquired IPR&D $9.08/หุ้น (ตัดรายการครั้งเดียวออก) — เป็นฐาน non-GAAP ต่างจากขา P/E ของ FV ที่ใช้ EPS GAAP FY2025 {{eps}} ฐาน scenario จึงสูงกว่าและ Base ไม่ได้ผูกกับ FV โดยตรง ปันผลสมมติเติบโต ~2–8%/ปี (ปันผลรายไตรมาส $0.82 ที่ประกาศล่าสุด) · Base สอดคล้องกับ EPS FY2027e ของ vendor $9.89 (ผ่าน EPS ปี 3 ~$10.24) ราคาเป้า Bear {{scn.bear.tgt}} = EPS ~$8.09 × P/E 12x, Base {{scn.base.tgt}} = ~$10.24 × 15x, Bull {{scn.bull.tgt}} = ~$12.08 × 18x (ไม่รวมปันผลในราคาเป้า) · P/E ออก 12–18x ตั้งเป็นกรอบเอง ต่ำ-สูงคร่อมมัธยฐานประวัติ 17.1x บนฐาน GAAP",
+    "hintNote": "(adj.)"
+  },
+  "analyst": {
+    "target": 158,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "กราฟรายเดือนเริ่ม ต.ค. 2568 ที่ $119.79 ขึ้นแตะ $148.95 ในเดือน ก.พ. 2569 จากนั้นแกว่งตัวลงมาต่ำสุดของช่วงที่ $126.34 ในเดือน มิ.ย. 2569 แล้วดีดกลับสู่ {{px}} ณ {{priceDate}} ใกล้ขอบบนของกรอบ 52 สัปดาห์ $108.46–$157.29 แม้กำไร GAAP TTM จะติดลบจาก acquired IPR&D $11.2B ใน Q2 2026 — ตลาดมองข้ามรายการครั้งเดียวนี้ (Beta 0.33 ความผันผวนต่ำ)",
+    "valuation": "<b>ปรับโครงสร้าง FV (21 ก.ย. 2569):</b> ตัดขา FCF Yield เดิม (target yield 5.5% เป็นตัวเลขที่ตั้งเอง ไม่มีค่ามัธยฐานที่วัดได้) และเลิกใช้ EPS adj. ที่ประมาณเอง · เป้านักวิเคราะห์ไม่เป็นขาของ FV (เป็นบริบทเท่านั้น) <b>P/E</b> ($116) = EPS GAAP FY2025 {{eps}} × มัธยฐาน 17.1x (ฐาน GAAP เดียวกับที่วัดมัธยฐาน) · <b>DDM</b> ($97) เป็นตระกูล (r,g) คนละตระกูล → FV = ($116 + $97)/2 = $106.5 ปัดเป็น <b>$107</b> (กรอบ $97–$116) MOS ติดลบมาก (ดูหมวด 5) เป็นค่าประมาณที่ไวต่อฐาน EPS: ขา P/E เป็นพยานที่ไม่ใช้ (r,g) แต่ใช้ EPS GAAP ที่ยังไม่บวก amortization กลับ · หากใช้ EPS ex-IPR&D ปี 2026E ~$8.6 (guidance −0.475 + IPR&D 9.08) × 17.1x = $147 คู่ DDM ได้ FV ~$122 (MOS แคบลงมาก) — ผลจึงยังไม่ยืนยันแน่ชัด ฉันทามตินักวิเคราะห์ ~$158.15 (Buy, 27 คน) อยู่เหนือทั้งสองขา — ใช้ดูความสอดคล้องเท่านั้น · EPS forward FY2027e $9.89 จาก vendor (FY2026e −$0.43 ติดลบเพราะ IPR&D)",
+    "gauge": "ราคา {{px}} สูงกว่ามูลค่าเหมาะสมฐาน GAAP {{fv}} ({{mos}}) — ไม่มีส่วนเผื่อความปลอดภัยเมื่อวัดด้วยกำไรที่รับรู้จริง โซน MOS 20% ({{mos20}}) และ MOS 30% ({{mos30}}) อยู่ห่างจากราคาปัจจุบันมาก ต้องรอราคาย่อตัวหรือ EPS ฟื้นหลังรายการ IPR&D นักวิเคราะห์ 27 คน ฉันทามติ Buy เป้าเฉลี่ย $158.15 — มองข้าม IPR&D ครั้งเดียวไปที่ EPS ปกติ",
+    "mos": "ราคาสูงกว่ามูลค่าเหมาะสมฐาน GAAP — ไม่มี Margin of Safety; ผลไวต่อฐาน EPS (ตัดรายการ IPR&D แล้ว MOS แคบลงมาก) จึงควรรอโซนราคาที่ดีกว่าก่อนสะสม",
+    "verdictHeadline": "GILD ราคาสูงกว่า FV ฐาน GAAP — ปันผล + FCF แข็ง แต่ยังไม่มี MOS",
+    "verdictBody": "Gilead Sciences เป็น Large-Cap Pharma ฐาน HIV แข็งแกร่ง FCF TTM $12.9B และปันผลรายไตรมาส $0.82 · ราคาปัจจุบัน {{px}} เทียบมูลค่าเหมาะสม {{fv}} ({{mos}}) ซึ่งคำนวณจาก EPS GAAP FY2025 × มัธยฐาน P/E 17.1x คู่กับ DDM — ผลไวต่อฐาน EPS เพราะ EPS GAAP TTM ติดลบจาก acquired IPR&D $11.2B (ตัดรายการนี้ออก FV จะสูงขึ้นราว $122) จึงประเมินว่ายังไม่ยืนยันแน่ชัด · Beta 0.33 เหมาะ defensive portfolio; ตลาดกำลังให้ราคาตาม EPS ที่ฟื้นหลังรายการครั้งเดียว ซึ่งนักวิเคราะห์เป้าเฉลี่ยราว $158.15",
+    "strategy": "ที่ราคา {{px}} GILD เหมาะ <b>Dividend & Defensive Growth</b> (yield {{yield}}, FCF แข็งแกร่ง, Beta ต่ำ) — hold สำหรับผู้ถือเดิม; ผู้ที่ยังไม่มีรอโซน <$96 (MOS 10%) ก่อนสะสม; {{mos20}} (MOS 20%) คือโซนน่าซื้อจริง · ตรวจ EPS ex-IPR&D ในงบไตรมาสถัดไป (ประกาศ 29 ต.ค. 2569) ก่อนเพิ่มน้ำหนัก",
+    "disclaimerSources": "แหล่งข้อมูล: Yahoo Finance (ราคา {{priceDate}}, กราฟ monthly 1yr API, 52-week range, analyst target), StockAnalysis.com (งบการเงิน TTM/FY2021-2025, FCF, Balance Sheet, Forecast/Analyst estimates), Gilead Q2 2026 earnings release (SEC 8-K exhibit 99.1)"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 2 วิธี (P/E · DDM)",
+    "chartHint": "Oct 2025 – Sep 2026",
+    "disclaimerAssump": " P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ EPS adj. ที่ประมาณการ"
+  },
+  "catalysts": [
+    "<b>HIV โตต่อเนื่อง:</b> ยอดขาย HIV Q2 2026 $5.7B (+12% YoY) — ฐานรายได้หลักที่ทำให้รายได้ TTM $30.5B (+5.5% YoY) และ margin ขั้นต้น ~79.6%",
+    "<b>Guidance ปรับขึ้น:</b> ยอดขายผลิตภัณฑ์ปี 2026 $30.1–30.4B (เดิม $30.0–30.4B); non-GAAP EPS −$0.65…−$0.30 (เดิม −$1.05…−$0.65) ซึ่งรวมผลกระทบ IPR&D $9.08/หุ้น",
+    "<b>Oncology / Cell therapy:</b> Trodelvy และ Kite CAR-T เป็นธุรกิจเติบโตนอก HIV; ดีลใหม่ใน Q2 2026 (Arcellx, Tubulis, Ouro Medicines) เพิ่ม pipeline ให้ทีม R&D",
+    "<b>FCF แข็งแกร่ง:</b> FCF TTM $12.9B (yield ~6.9%) จ่ายปันผลรายไตรมาส $0.82 และมีเงินทุนสำหรับ M&A ต่อเนื่องโดยไม่กระทบ R&D",
+    "<b>EPS ฟื้นเมื่อรายการครั้งเดียวหมด:</b> vendor คาด EPS FY2027e $9.89 เทียบ FY2026e −$0.43 — ตลาดจึงมองข้ามกำไร GAAP ที่ติดลบ"
+  ],
+  "risks": [
+    "<b>พึ่งพา HIV:</b> HIV เป็นสัดส่วนรายได้ใหญ่ ($5.7B ใน Q2 2026 จากรายได้รวม $7.8B) — หากมีคู่แข่ง/generic หรือ long-acting แทนที่เร็วกว่าคาด กระทบหนัก",
+    "<b>ผลข้างเคียงของ M&A IPR&D:</b> acquired IPR&D $11.2B ใน Q2 2026 ($7.0B Arcellx · $3.1B Tubulis · $1.0B Ouro) ทำ GAAP ขาดทุน $10.5B และ EPS GAAP TTM −$2.61 — ดีลที่ยังไม่พิสูจน์ทางคลินิกอาจต้องตัดจ่ายซ้ำ",
+    "<b>GAAP vs Non-GAAP Gap:</b> P/E GAAP TTM ใช้ไม่ได้ (EPS ติดลบ) ต้องใช้ฐาน FY2025/ex-IPR&D ซึ่งไวต่อสมมติฐาน — เสี่ยง investor misread",
+    "<b>IRA Drug Pricing Pressure:</b> Inflation Reduction Act กดราคา Medicare Part D — GILD กำลังเจรจา; อาจกระทบ HIV/Oncology pricing ระยะ 3–5 ปี",
+    "<b>R&D Execution Risk:</b> ประวัติ M&A ราคาสูงบางตัวไม่ได้ผล (Forty Seven ~$4.9B); pipeline late-stage อาจผิดหวัง; competition ใน ADC space สูงขึ้น",
+    "<b>Leverage จาก M&A:</b> หนี้รวม $26.2B, D/E ~2.23 (FY2025 1.13) เงินสด $4.9B (FY2025 $9.6B) — ความยืดหยุ่นทางการเงินลดลงหลังดีลใหม่; ถ้า rates สูงนานกระทบ refinancing cost"
+  ],
+  "extras": [],
+  "_sig": "sha256:60bf7d3a27f7359e54ce10eb9c40c5a1f75de4ba73a0b484077695f5316c8f6e"
+}
