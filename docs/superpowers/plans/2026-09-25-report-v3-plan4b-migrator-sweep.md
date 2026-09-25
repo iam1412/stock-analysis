@@ -1095,6 +1095,44 @@ git commit -m "feat(migrate-v3): per-zone equivalence gate (approved transforms 
 
 ---
 
+### Task 6b: schema homes for author text the sweep found (`text.chartHint` · `scenarios.hintNote` · `scenarios.cases[i].retNote` · `multipleSource: 'author'`) — schema + render + assemble (plan amendment 25 ก.ย. 69 · advisor-approved design)
+
+> **Why this task exists.** The Task 6 sweep + review showed ~213 non-HUMAN reports carry author words in three template zones that v3 had no field for: the §2 chart hint ("(รายเดือน · ที่มา: Yahoo Finance)", 108 docs), the §6 head qualifier ("(TTM adj.)", "ไม่มีปันผล (buyback แทน)", 74 docs) and annotations inside `.ret` ("(รวมปันผล)"). A normaliser that drops them masks author text (spec §10.2 "ข้อความหาย = HUMAN เสมอ"), so the only non-masking route to TEXT LOST = 0 is a field. The review also found `assemble` stamping `multipleSource: 'median5y'` on 968/1,080 legs from the words เฉลี่ย/average/มัธยฐาน anywhere in the mdesc — a misattribution (AVGO: 38x is a **premium** over a 26.7x median; ADSK "ต่ำกว่าค่าเฉลี่ยในอดีต"; ACE peer P/BV). Below the spec's "not polish" threshold and left HUMAN for 4c: legend annotations (11 docs), words inside `.gdots` (9), a third §8 vcell (14).
+
+**Files:**
+- Modify: `tools/v3/schema.js` (`TEXT_KEYS` + `'chartHint'` · `scenarios` closed list + `'hintNote'` · `cases[i]` closed list + `'retNote'` · `ENUM.multipleSource` + `'author'`)
+- Modify: `_template/v3/render.js` (§2 hint · §6 hint · `.ret` · `SRC_NAME.author`)
+- Modify: `tools/migrate-v3/assemble.js` (`multipleSourceOf`, §2/§6 hint residue), `tools/migrate-v3/scenarios.js` (`retNote`)
+- Test: `test/v3/schema.test.js`, `test/v3/render.test.js`, `test/v3/migrate-assemble.test.js` (extend)
+
+**Interfaces:**
+- Consumes: Task 5 `assemble`/`scenarios` · Task 6 `EQ.compare` (to prove FTV/DPZ-class residue reaches TEXT LOST 0 without a normaliser).
+- Produces: three optional string fields (prose strings — rendered through `pr()`, tokens allowed, `[<>]` rejected like every other prose field) and one enum value. **Absent fields render byte-identically to today** — `npm run build` after this task must leave `dist/OGE.html` and `dist/ICC.html` unchanged (checked in Step 5). Task 6's fix round narrows the s2/s6 hint normalisers to the exact template strings and relies on these fields for the residue.
+
+- [ ] **Step 1: schema tests (failing first)**
+  - `text.chartHint: 'x'` accepted · `text.foo` rejected (closed) · `chartHint` with `<` rejected.
+  - `scenarios.hintNote: '(TTM adj.)'` accepted · `scenarios.cases[1].retNote: '(รวมปันผล)'` accepted · unknown keys still rejected.
+  - `legs[i].inputs.multipleSource: 'author'` accepted for every MULT method; `requiredFamily` = `'market'` for it (same as peer/sector).
+  Run `node test/v3/schema.test.js` → the new assertions FAIL.
+- [ ] **Step 2: schema implementation** — `TEXT_KEYS = ['valHint', 'valIntro', 'metricsNote', 'disclaimerAssump', 'chartHint']`; `closed(s, 'scenarios', [..., 'note', 'hintNote'])` + `str(s.hintNote, 'scenarios.hintNote', { req: false })`; `closed(c, p, ['growth', 'exitMultiple', 'divCum', 'desc', 'retNote'])` + `str(c.retNote, …, { req: false })`; `ENUM.multipleSource` gets `'author'` with the comment `// 'author' = ตัวคูณที่ผู้วิเคราะห์กำหนดเอง (ไม่ใช่มัธยฐาน/peer/sector) — migrator ใช้เมื่อ mdesc ไม่ได้บอกว่าตัวคูณคือมัธยฐาน`. Tests pass.
+- [ ] **Step 3: render tests (failing first)** — with the fields absent the §2 hint is exactly `<div class="hint">โดยประมาณ</div>`, the §6 hint ends exactly as today, `.ret` prints only the token; with `text.chartHint: 'A'` → `<div class="hint">โดยประมาณ A</div>`; with `scenarios.hintNote: 'B'` → the §6 hint ends ` B`; with `cases[1].retNote: 'C'` → `<div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}} C</div>` (note rendered through `pr()`); `SRC_NAME.author === 'ผู้วิเคราะห์กำหนด'` so a pe leg with `multipleSource: 'author'` prints `× P/E 38.0x (ผู้วิเคราะห์กำหนด)`. Run → FAIL.
+- [ ] **Step 4: render implementation** — render.js §2: `` `<div class="hint">โดยประมาณ${doc.text && doc.text.chartHint ? ' ' + pr(doc.text.chartHint) : ''}</div>` ``; §6: append `${s.hintNote ? ' ' + pr(s.hintNote) : ''}` after `{{rd:scnNote}}`; `.ret`: `{{rd:sc${i + 1}ret}}${c.retNote ? ' ' + pr(c.retNote) : ''}`; `SRC_NAME.author`. Tests pass; `node test/v3-test.js` render/schema suites green.
+- [ ] **Step 5: DIST-PROOF pre-check** — `npm run build && git diff --no-index --stat <main dist snapshot> dist/OGE.html dist/ICC.html` (or `git stash`-free: build on `main` in a scratch worktree once, keep the two files, compare) → identical. Record the two sha256 in the report.
+- [ ] **Step 6: assemble tests (failing first)** —
+  - DPZ-shaped fixture (§2 hint `โดยประมาณ (รายเดือน, Yahoo Finance)`) → `doc.text.chartHint === '(รายเดือน, Yahoo Finance)'`; template-only hint → no `chartHint` key.
+  - FTV-shaped §6 hint `จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} (TTM GAAP){{rd:scnNote}}` → `scenarios.hintNote === '(TTM GAAP)'`; a hint that equals the template form exactly (incl. `• รวมปันผล`) → no key.
+  - `.ret` cell `+42.3% (รวมปันผล)` → `cases[i].retNote === '(รวมปันผล)'`, the number itself never copied.
+  - `multipleSourceOf`: `"P/E 38x — premium เหนือมัธยฐาน 5 ปี 26.7x"` → `'author'` (+F `multipleSource author (premium/discount vs median)`); `"P/E มัธยฐาน 5 ปี 15.2x"` → `'median5y'`; `"ต่ำกว่าค่าเฉลี่ยในอดีต"` → `'author'`; `"peer P/BV 1.4x"` → `'peer'`; no wording → `'author'` (+F; **never** `peer`); `median10y` only when the 10-year window is what the multiple is called.
+  - Gate proof: `EQ.compare` on the FTV and DPZ fixtures with the s2/s6 hint normalisers reduced to the exact template strings → `textLost` has no `adj`/`GAAP`/`รายเดือน`/`Yahoo`.
+  Run → FAIL.
+- [ ] **Step 7: assemble implementation** — §2: strip the exact leading `โดยประมาณ` (and surrounding whitespace) from the parsed hint; non-empty residue → `text.chartHint` (+F `chart hint kept`). §6: strip the template prefix by regex `^จากจุดเข้า\s+\S+\s+•\s+.+?ฐาน\s+~\S+` and an optional trailing `• รวมปันผล`; residue → `scenarios.hintNote` (+F). `.ret`: text after the first `%` number → `cases[i].retNote` (+F). `multipleSourceOf(mdesc)`: (a) find the multiple token; (b) `median5y/10y` only when `มัธยฐาน|median` is within 40 chars of that token **and** no `premium|discount|พรีเมียม|ส่วนลด|สูงกว่า|ต่ำกว่า|เหนือ|under|above|below` lies between them; (c) `peer` / `sector` by the existing wording; (d) otherwise `'author'` (+F naming the leg). Tests pass; `node test/v3-test.js` exit 0 apart from the two known DPZ assertions (Task 6 fix round swaps that fixture).
+- [ ] **Step 8: read-only corpus sweep** — report `multipleSource` histogram before/after (`median5y` 968 → ?), how many legs became `author`, `chartHint`/`hintNote`/`retNote` counts, and TEXT LOST docs with the s2/s6 normalisers reduced to template strings (expect ≤ 263 − ~180).
+- [ ] **Step 9: commit**
+```bash
+git add tools/v3/schema.js _template/v3/render.js tools/migrate-v3/assemble.js tools/migrate-v3/scenarios.js test/v3/schema.test.js test/v3/render.test.js test/v3/migrate-assemble.test.js
+git commit -m "feat(v3): schema homes for migrated author text — text.chartHint · scenarios.hintNote · cases[i].retNote · multipleSource 'author' (never misattribute a median) · render prints when present (Plan 4b Task 6b)"
+```
+
 ### Task 7: CLI `tools/migrate-v3.js sweep | convert` + `analysis-px` + sweep docs generator · run the real read-only sweep
 
 **Files:**
