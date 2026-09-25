@@ -1,0 +1,245 @@
+{
+  "v": 3,
+  "symbol": "RTX",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "RTX Corporation",
+    "exchange": "NYSE",
+    "sub": "Collins Aerospace (avionics, cabin systems) • Pratt & Whitney (aircraft engines, GTF, F135) • Raytheon (missiles, Patriot, LTAMDS, air defense, munitions) • Commercial aerospace + defense",
+    "headerTags": [
+      "Aerospace & Defense",
+      "Jet Engines · Missiles · Avionics"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "StockAnalysis.com (ข้อมูลงบ TTM + consensus)",
+      "ข่าว Morgan Stanley conference (backlog)"
+    ],
+    "themeLegacy": {
+      "accent": "#003087",
+      "accentDark": "#001a5e",
+      "darkGrad": "linear-gradient(135deg,#001a5e 0%,#003087 60%,#0050c8 100%)",
+      "glow": "rgba(0,48,135,0.35)",
+      "subColor": "#c8d8f0",
+      "headerMuted": "#c6d7f2",
+      "verdictText": "#e8f0ff",
+      "vcellLabel": "#dee6f4"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-22T00:04:26+07:00",
+      "v2Hash": "4c5703d1230a"
+    }
+  },
+  "market": {
+    "px": 188.61,
+    "priceDate": "2026-09-24",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          178.5
+        ],
+        [
+          "พ.ย.25",
+          174.91
+        ],
+        [
+          "ธ.ค.25",
+          183.4
+        ],
+        [
+          "ม.ค.26",
+          200.93
+        ],
+        [
+          "ก.พ.26",
+          202.62
+        ],
+        [
+          "มี.ค.26",
+          192.9
+        ],
+        [
+          "เม.ย.26",
+          176.07
+        ],
+        [
+          "พ.ค.26",
+          179.66
+        ],
+        [
+          "มิ.ย.26",
+          189.73
+        ],
+        [
+          "ก.ค.26",
+          215.22
+        ],
+        [
+          "ส.ค.26",
+          207.73
+        ],
+        [
+          "ก.ย.26",
+          188.61
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 155.64,
+      "hi": 226.88
+    }
+  },
+  "fundamentals": {
+    "eps": 5.68,
+    "dps": 2.92,
+    "bvps": 49.22,
+    "shares": 1347758144,
+    "epsForward": 7.24,
+    "netIncome": 7740000000,
+    "roe": 12.3,
+    "revenue": 93500000000,
+    "fcf": 11400000000,
+    "backlog": 289000000000,
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation (GAAP EPS TTM)",
+      "inputs": {
+        "multiple": 30.7,
+        "multipleSource": "median5y"
+      },
+      "note": "30.7x คือมัธยฐานย้อนหลัง 5 ปีงบ (FY2564–2568: 27.1–40.3x) ของ RTX เอง วัดจากราคาเฉลี่ยของปี ÷ EPS diluted ของปีนั้น ไม่ได้มาจาก P/E ปัจจุบัน",
+      "family": "market"
+    },
+    {
+      "method": "pe",
+      "label": "P/E Valuation (EPS FY2568 ที่ปิดงบแล้ว)",
+      "inputs": {
+        "multiple": 30.7,
+        "multipleSource": "median5y"
+      },
+      "override": {
+        "eps": 4.96,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "ตัวคูณมัธยฐานเดียวกันกับข้อ 1 บนกำไรปีงบที่ปิดแล้ว (ตระกูล P/E เดียวกัน นับเป็นเสียงเดียว · สองขาต่างกัน <2 เท่า จึงเฉลี่ยได้)",
+      "family": "market"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      {
+        "key": "peForward",
+        "tone": "none"
+      },
+      "pbv",
+      "netIncome",
+      "eps",
+      "bvps",
+      "roe",
+      "revenue",
+      {
+        "key": "fcf",
+        "tone": "pos"
+      },
+      "yield",
+      {
+        "key": "backlog",
+        "tone": "pos"
+      }
+    ],
+    "notes": {
+      "mcap": "~1,348 ล้านหุ้นคงเหลือ (StockAnalysis)",
+      "pe": "อิง GAAP diluted EPS TTM {{eps}} (Yahoo + StockAnalysis ตรงกัน)",
+      "peForward": "FY2026e EPS $7.24 (consensus StockAnalysis; Yahoo fwd P/E 24.8x ใช้ EPS FY2027e $7.85)",
+      "pbv": "goodwill สูงจากควบรวม 2563",
+      "netIncome": "GAAP TTM · FY2568 = $6.73B (EPS $4.96)",
+      "eps": "ใช้ EPS ตามงบ (ไม่ใช้ adjusted ที่ตรวจซ้ำไม่ได้)",
+      "bvps": "กดต่ำโดย goodwill $56B จาก UTC+Raytheon",
+      "roe": "ROE (TTM) ถูกเจือจางจาก goodwill ขนาดใหญ่",
+      "revenue": "+11.8% YoY · FY2568 = $88.6B",
+      "fcf": "FCF/share ~$8.46 · FY2568 = $7.9B",
+      "yield": "{{dps}}/หุ้น/ปี",
+      "backlog": "ตามหัวข้อข่าวงาน Morgan Stanley conference (ผ่าน StockAnalysis) — ไม่ได้ตรวจกับงบ"
+    },
+    "hint": "ข้อมูลงบ TTM (StockAnalysis) · ราคา ณ วันที่ในหัวรายงาน"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 8,
+        "exitMultiple": 20,
+        "divCum": 9.11,
+        "desc": "GTF costs บาน, งบกลาโหมถูกตัด"
+      },
+      {
+        "growth": 14,
+        "exitMultiple": 25,
+        "divCum": 9.2,
+        "desc": "RTX guidance ตามแผน, backlog แปลงเป็น revenue"
+      },
+      {
+        "growth": 20,
+        "exitMultiple": 28,
+        "divCum": 9.29,
+        "desc": "GTF resolved, งบ NATO/defense เพิ่มต่อเนื่อง"
+      }
+    ],
+    "exitDp": 0,
+    "note": "EPS ฐานคือ GAAP diluted TTM {{eps}} และ P/E ออกทุกฉากต่ำกว่ามัธยฐาน 30.7x ของตัวเอง (Base 25x) — ตัวเลขนี้ไม่รวมปันผล ผลตอบแทน Base ตามคอลัมน์ด้านบนสะท้อนว่า ณ ราคาปัจจุบันยังไม่มีส่วนเผื่อชัดเจน ความน่าสนใจขึ้นอยู่กับ (1) การแก้ปัญหา GTF powder metal ที่ยังต้องใช้เวลาและทุน (2) backlog ที่ยังรอ convert เป็น revenue และ (3) ระดับ P/E ที่ตลาดยินดีจ่ายในช่วง 3 ปีข้างหน้า Bear case เกิดเมื่อ multiple re-rate ลงพร้อมกับ GTF costs เกินคาด ส่วน Bull case ต้องการ GTF resolution ชัดเจน + NATO defense spend escalation"
+  },
+  "analyst": {
+    "target": 234.82,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "กราฟรายเดือนเริ่มที่ ~$178.50 ในเดือน ต.ค. 2568 ปรับขึ้นถึง ~$202.62 ในเดือน ก.พ. 2569 ย่อลงต่ำสุดของช่วงที่ ~$176 ในเดือน เม.ย. 2569 แล้วฟื้นขึ้นทำจุดสูงสุดของช่วงที่ ~$215.22 ในเดือน ก.ค. 2569 ก่อนย่อกลับมาในเดือน ส.ค.–ก.ย. (ผลตอบแทนรอบปีดูป้ายที่หัวรายงาน · ไม่ได้ระบุสาเหตุของแต่ละช่วงเพราะไม่ได้ตรวจแหล่งข่าวรายเดือน)",
+    "valuation": "การประเมินนี้เป็น <b>single-family valuation</b> (P/E ตัวคูณมัธยฐานของตัวเองบน GAAP EPS สองงวด) เท่านั้น — ตัดขาเดิมที่ใช้เป้านักวิเคราะห์/ตัวคูณที่ประมาณเอง/FCF yield ที่ไม่มีมัธยฐานวัดจริงออก และไม่ใช้ adjusted EPS ที่ตรวจซ้ำกับแหล่งไม่ได้ ผลคือ FV {{fv}} (กรอบ {{fvLow}}–{{fvHigh}}) เทียบราคาปัจจุบัน {{px}} คือ MOS {{mos}} · ความไว: ถ้าใช้ EPS consensus FY2569e $7.24 กับตัวคูณเดียวกัน FV จะสูงกว่านี้มาก จึงตีความ FV นี้เป็นค่าอนุรักษ์นิยมบนกำไรตามงบ",
+    "gauge": "ราคาปัจจุบัน {{px}} อยู่เหนือ Fair Value {{fv}} (MOS {{mos}}) — ตลาดตีราคาตาม consensus EPS ที่โตเร็วกว่ากำไรตามงบ เป้าเฉลี่ยนักวิเคราะห์ {{analyst.target}} (Buy, 22 คน) ใช้เป็นบริบทเท่านั้น ไม่ได้เป็นขาของ FV · จุดสะสม MOS 20% อยู่ที่ {{mos20}} และ MOS 30% อยู่ที่ {{mos30}}",
+    "mos": "ราคาสูงกว่ามูลค่าเหมาะสม — ยังไม่มี margin of safety ณ ราคาปัจจุบัน",
+    "verdictHeadline": "กิจการยอดเยี่ยม — ราคาเต็มตัว รอจังหวะ",
+    "verdictBody": "RTX Corporation เป็นหนึ่งในผู้นำ aerospace & defense ระดับโลก ครอบคลุมทั้ง commercial aviation (Collins Aerospace + Pratt & Whitney) และ defense systems (Raytheon missiles, Patriot, LTAMDS) backlog ขนาดใหญ่และ FCF TTM ~$11.4B ให้ความมั่นคงสูง อย่างไรก็ตาม ณ ราคา {{px}} ตลาดตีหุ้นที่ ~34x GAAP EPS TTM — สูงกว่า Fair Value ที่ประเมินไว้ที่ {{fv}} (MOS {{mos}}) ผลตอบแทน base case 3 ปีไม่รวมปันผลตามคอลัมน์ฉากด้านบน ไม่น่าสนใจมากสำหรับนักลงทุน value หากต้องการ MOS ที่ดี ควรรอโอกาสซื้อที่ {{mos20}}–{{fv}}",
+    "strategy": "RTX เป็นหุ้นคุณภาพสูงในภาคที่มี structural demand (defense + aviation recovery) แต่ราคาปัจจุบันไม่มี margin of safety — <b>Hold</b> หากถืออยู่ ส่วนการ <b>ซื้อใหม่</b> ให้รอย่อลงใกล้ {{fv}} (Fair Value) หรือ {{mos20}} (MOS 20%) ซึ่งมักเกิดเมื่อมีข่าวลบหรือตลาด risk-off ปัจจัยกระตุ้น: GTF resolution + defense budget clarity + ผลประกอบการไตรมาส 3/2569 (ประกาศ 20 ต.ค. 2569)",
+    "disclaimerSources": "แหล่งข้อมูล: Yahoo Finance (quoteSummary · กรอบ 52w $155.64–$226.88), ข่าว Morgan Stanley conference ผ่าน StockAnalysis (backlog), StockAnalysis.com (financials TTM, consensus FY2569e/FY2570e, เป้านักวิเคราะห์ 22 คน), ราคา ณ 24 ก.ย. 2569 ครอสเช็ค Yahoo กับ StockAnalysis ต่างกัน 0.05% ✓ · EPS TTM ตรงกันทั้งสองแหล่งและตารางงบ"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 2 วิธี (ตระกูล P/E เดียวกัน) · ใช้ GAAP EPS",
+    "chartHint": "ราคาปิดรายเดือน ต.ค. 2568 – ก.ย. 2569"
+  },
+  "catalysts": [
+    "<b>Backlog ขนาดใหญ่ ~$289B:</b> (ตามหัวข้อข่าวที่ผ่าน StockAnalysis ไม่ได้ตรวจกับงบ) ให้ revenue visibility ยาวหลายปี",
+    "<b>EPS Growth:</b> consensus EPS FY2569e $7.24 และ FY2570e $7.85 (StockAnalysis) เทียบ GAAP TTM {{eps}} · รายได้ TTM +11.8% YoY",
+    "<b>Pratt & Whitney Engine Monopoly:</b> เครื่องยนต์ GTF ผูกขาด Airbus A320neo family (5,000+ ลำในระยะหลายปี); F135 engine สำหรับ F-35 เป็นสัญญายาว",
+    "<b>Defense Spending Surge:</b> NATO +2% GDP commitment + ความตึงเครียด Russia-Ukraine-Middle East หนุน Raytheon missile/air defense บน Patriot, LTAMDS, StormBreaker, AIM-120",
+    "<b>FCF แข็งแรง:</b> FCF TTM ~$11.4B (FY2568 $7.9B) รองรับปันผลและการซื้อหุ้นคืน",
+    "<b>GTF Resolution Progress:</b> หากปัญหา powder metal ใกล้ resolution ค่าใช้จ่าย EPS headwind $0.3–0.5/หุ้น/ปี จะเลิกบั่นทอน → margin expansion"
+  ],
+  "risks": [
+    "<b>GTF Powder Metal Ongoing:</b> ปัญหา rare condition ในใบพัดกังหัน Pratt & Whitney ยังต้องถอดเครื่องตรวจสอบ 1,000+ ลำทั่วโลก — ค่าใช้จ่ายยังไม่มี upper bound ชัดเจน กดดัน margin",
+    "<b>Valuation Premium:</b> P/E TTM ~34x สูงกว่ามัธยฐานย้อนหลัง 30.7x ของตัวเอง; ถ้า EPS growth ชะลอหรือตลาดปรับ multiple ลง ราคาอาจย่อได้มาก",
+    "<b>Supply Chain Tight:</b> ห่วงโซ่อุปทาน aerospace ยังฟื้นตัวช้าหลัง COVID; การขาดแคลน castings/forgings บีบ Pratt & Whitney delivery schedule",
+    "<b>Defense Budget Risk:</b> ถ้าสหรัฐฯ ปรับลด defense appropriation (sequester scenario) มีผลกับ Raytheon segment โดยตรง",
+    "<b>Goodwill Risk:</b> goodwill ~$56B (สูงกว่า book value) จากการควบรวม; impairment test ปีละครั้ง — หากสมมติฐานเติบโตผิดพลาดอาจ recognize impairment",
+    "<b>Currency & Export Controls:</b> ยอดขาย international ~40% — ดอลลาร์แข็งและ export license restrictions กระทบรายได้ Patriot/LTAMDS ส่งออก"
+  ],
+  "extras": [],
+  "_sig": "sha256:d0f870d738bc83057568ccbb13c907def0dae8ffd6d2a7d4a1388fc7e2c0be5a"
+}
