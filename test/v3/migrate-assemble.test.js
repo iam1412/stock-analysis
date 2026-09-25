@@ -41,10 +41,10 @@ for (const s of SYMS) {
   t(/ใกล้ค่าเฉลี่ย/.test(doc.metrics.notes.pe || ''), 'BBL: v2 .d text preserved in metrics.notes.pe');
   t.eq(doc.scenarios.driver, 'eps'); t.eq(doc.scenarios.exitMetric, 'pe'); t.eq(doc.scenarios.cases[0].exitMultiple, 7.2, 'BBL: printed exit multiple kept'); t.eq(doc.scenarios.exitDp, 1, 'BBL: exitDp from printed decimals');
   t.eq(doc.scenarios.divIncluded, true, 'BBL: divIncluded from scnBasis');
-  t.eq(doc.analyst, { target: 201, n: null, rating: null, asOf: null }, 'BBL: analyst target from the gauge label (fix round 3 · B-3 ruling — replaces the brief\'s null)');
+  t.eq(doc.analyst, null, 'BBL: no analyst target');
   t(/^แบงก์อนุรักษ์นิยม/.test(doc.prose.verdictHeadline) && /^สาย value/.test(doc.prose.strategy), 'BBL: verdict headline + strategy without the กลยุทธ์ label');
   t(/Normalized EPS/.test(doc.text.disclaimerAssump || ''), 'BBL: disclaimerAssump captured');
-  t(!notes.H.length, 'BBL: no HUMAN reasons', notes.H.join(' ; '));
+  t.eq(notes.H, ['analyst target on the gauge is a max/min, not a consensus'], 'BBL: the only H is the max-labelled gauge target (fix round 4 · R-1)', notes.H.join(' ; '));
   const v = C.compute(doc, { seeds: SEEDS });
   t(Math.abs(v.fv - 195) <= 0.01 * 195, 'BBL: recomputed FV within 1% of the shown 195 (equal weights)', String(v.fv));
   t(doc.fvWeights === null || doc.fvWeights === undefined, 'BBL: no fvWeights (scheme reproduces)');
@@ -258,8 +258,8 @@ const R3 = require('../../_template/v3/render.js');
 }
 // B-3: analyst target printed only on the gauge / vcell → doc.analyst (rating null unless the vcell states it for that target)
 {
-  const bbl = out.BBL.doc, view = C.compute(bbl, { seeds: SEEDS });
-  t(/\{\{rd:analystTgt\}\}<br><small>เป้าเฉลี่ย Analyst/.test(R3.toV2Source(bbl, view)), 'B-3: BBL gauge marker rendered');
+  const casy = out.CASY.doc, view = C.compute(casy, { seeds: SEEDS });
+  t(/\{\{rd:analystTgt\}\}<br><small>เป้าเฉลี่ย Analyst/.test(R3.toV2Source(casy, view)), 'B-3: CASY gauge marker rendered');
   t.eq(out.CASY.doc.analyst, { target: 954, n: 20, rating: 'Buy', asOf: null }, 'B-3: CASY target + n + rating from the matching vcell');
 }
 // B-4: reworded volatility sentence — the whole author middle lands in disclaimerAssump
@@ -348,5 +348,22 @@ const asm = (sym, html) => A.assemble(PV.parseV2(sym, html), { seeds: SEEDS, hea
       t.eq(lost, [], `6b gate: ${name} ${z} hint — with the normaliser narrowed to the template string, every v2 residue word is on the v3 hint`);
     }
   }
+}
+// ── fix round 4 (R-1 · I-4): analyst target must be one consensus figure in the doc currency ──
+{
+  const mk = (currency, vcell, gauge) => ({ rd: { values: {} }, sm: { currency }, byN: { 4: { body: gauge ? `<div class="scale"><span>${gauge[0]}<br><small>${gauge[1]}</small></span></div>` : '' } }, s8: { vcells: [['เป้านักวิเคราะห์ 12 ด.', vcell]] }, s1cards: [] });
+  const run4 = (p) => { const F = [], H = []; return { a: A.analystOf(p, F, H), F, H }; };
+  const ats = run4(mk('USD', '~C$33 – C$46 (ช่วงเป้า)'));
+  t(ats.a === null && ats.H.some((h) => /^analyst target not a single consensus in the doc currency/.test(h)), 'I-4: ATS-shaped foreign-currency range → null + H', JSON.stringify(ats));
+  const amata = run4(mk('THB', '~฿33.60–33.71 (14 ราย · Buy)'));
+  t(amata.a === null && amata.H.some((h) => /range/.test(h)), 'I-4: AMATA-shaped range → null + H', JSON.stringify(amata));
+  const plain = run4(mk('USD', '$62.90 (20 ราย · Buy)'));
+  t.eq([plain.a, plain.H], [{ target: 62.9, n: 20, rating: 'Buy', asOf: null }, []], 'I-4: single "$62.90 (20 ราย · Buy)" still → target 62.9');
+  const hk = run4(mk('USD', '~HK$120 (Buy)'));
+  t(hk.a === null && hk.H.length === 1, 'I-4: HK$ figure in a USD doc → null + H');
+  const mx = run4(mk('USD', 'ไม่มีข้อมูล', ['$80', 'เป้าสูงสุด Analyst']));
+  t(mx.a === null && mx.H[0] === 'analyst target on the gauge is a max/min, not a consensus', 'R-1: max-labelled gauge target → null + H');
+  const g = run4(mk('USD', 'ไม่มีข้อมูล', ['$80', 'เป้าเฉลี่ย Analyst']));
+  t(g.a && g.a.target === 80 && !g.H.length, 'R-1: consensus-labelled gauge target kept');
 }
 t.done();

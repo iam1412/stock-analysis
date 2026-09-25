@@ -286,28 +286,51 @@ const parasOf = (body) => [...String(body || '').matchAll(/<p\b[^>]*>([\s\S]*?)<
 const joinProse = (xs) => xs.map((x) => MP.htmlToProse(x)).filter(Boolean).join('<br>');
 /** เป้านักวิเคราะห์ (fix round 3 · B-3): values.analystTgt → ป้ายเกจหมวด 4 ("฿201 เป้า… Analyst") → vcell "เป้า…" หมวด 8 → การ์ด analystTarget
  *  ตัวเลขที่ผู้เขียนพิมพ์เท่านั้น · rating จาก vcell เมื่อเป้าใน vcell ตรงกับเป้าที่ใช้ (±0.5%) ไม่งั้น null (schema: rating nullable) */
-const MONEY1 = /(?:US\$|\$|฿)\s*~?\s*([0-9][0-9,]*(?:\.[0-9]+)?)(?![0-9.,]*\s*(?:[MBK](?![A-Za-z])|bn|ล้าน|พันล้าน))/;
-function analystOf(parsed, F) {
-  const v = parsed.rd.values;
+// fix round 4 (R-1 · I-4): เป้าที่ใช้ได้ต้องเป็น "ค่าเดียว" สกุลเดียวกับใบ — ช่วง (a–b) · สกุลอื่น (C$ HK$ € …) · ป้ายสูงสุด/ต่ำสุด = ไม่ใช่ consensus → null + H
+const FIG = /(C\$|HK\$|A\$|NT\$|S\$|NZ\$|US\$|RMB|CHF|€|£|¥|\$|฿)\s*~?\s*([0-9][0-9,]*(?:\.[0-9]+)?)(?![0-9.,]*\s*(?:[MBK](?![A-Za-z])|bn|ล้าน|พันล้าน))/g;
+const RANGE_AFTER = /^\s*(?:–|—|-|ถึง|to)\s*~?\s*(?:C\$|HK\$|A\$|NT\$|S\$|NZ\$|US\$|RMB|CHF|€|£|¥|\$|฿)?\s*[0-9]/i;
+const MAXMIN = /สูงสุด|ต่ำสุด|บนสุด|ล่างสุด|\bmax|\bmin\b|\bmin(?:imum)?\b|\bhigh\b|\blow\b/i;
+/** ตัวเลขเป้าเดียวในข้อความ → { v } | { reject } | null (ไม่มีตัวเลข) */
+function singleTarget(s, currency) {
+  const t = String(s || '');
+  const m = FIG.exec(t); FIG.lastIndex = 0;
+  if (!m) return null;
+  const own = currency === 'THB' ? ['฿'] : ['$', 'US$'];
+  if (!own.includes(m[1])) return { reject: `currency ${m[1]}` };
+  if (RANGE_AFTER.test(t.slice(m.index + m[0].length))) return { reject: 'range' };
+  return { v: parseFloat(m[2].replace(/,/g, '')) };
+}
+function analystOf(parsed, F, H) {
+  const v = parsed.rd.values, cur = parsed.sm && parsed.sm.currency;
   const cell = parsed.s8 && parsed.s8.vcells.find(([k]) => /เป้า/.test(k));
   const cellT = cell ? txt(cell[1]) : '';
-  const numOf = (s) => { const m = MONEY1.exec(s || ''); return m ? parseFloat(m[1].replace(/,/g, '')) : null; };
+  const bad = (why) => { if (H) H.push(why); return null; };
   let target = isNum(v.analystTgt) ? v.analystTgt : null, src = 'values.analystTgt', label = '';
   if (target == null) {
     const s4 = parsed.byN && parsed.byN[4];
     for (const m of String(s4 ? s4.body : '').matchAll(/<span[^>]*>([^<]*?)<br>\s*<small>([^<]*)<\/small>/g)) {
       const lab = txt(m[2]);
       if (!/Analyst|นักวิเคราะห์|consensus/i.test(lab) || /\{\{rd:/.test(m[1])) continue;
-      const x = numOf(txt(m[1])); if (x > 0) { target = x; src = `gauge "${lab}"`; label = lab; break; }
+      const x = singleTarget(txt(m[1]), cur);
+      if (!x) continue;
+      if (MAXMIN.test(lab)) return bad('analyst target on the gauge is a max/min, not a consensus');
+      if (x.reject) return bad(`analyst target not a single consensus in the doc currency (gauge: ${x.reject})`);
+      target = x.v; src = `gauge "${lab}"`; label = lab; break;
     }
   }
-  if (target == null && cell && !/\{\{rd:/.test(cell[1])) { const x = numOf(cellT); if (x > 0) { target = x; src = 's8 vcell'; } }
+  if (target == null && cell && !/\{\{rd:/.test(cell[1])) {
+    const x = singleTarget(cellT, cur);
+    if (x && (x.reject || MAXMIN.test(cell[0]))) return bad(x.reject ? `analyst target not a single consensus in the doc currency (s8 vcell: ${x.reject})` : 'analyst target on the gauge is a max/min, not a consensus');
+    if (x) { target = x.v; src = 's8 vcell'; }
+  }
   if (target == null) {
     const c = (parsed.s1cards || []).find((x) => MC.keyOf(x.k, x.v) === 'analystTarget' && !/\{\{rd:/.test(x.vHtml));
-    const x = c ? numOf(c.v) : null; if (x > 0) { target = x; src = `card "${c.k}"`; label = c.k + ' ' + c.d; }
+    const x = c ? singleTarget(c.v, cur) : null;
+    if (x && x.reject) return bad(`analyst target not a single consensus in the doc currency (card: ${x.reject})`);
+    if (x) { target = x.v; src = `card "${c.k}"`; label = c.k + ' ' + c.d; }
   }
-  if (target == null) return null;
-  const cellX = numOf(cellT);
+  if (target == null || !(target > 0)) return null;
+  const cx = singleTarget(cellT, cur), cellX = cx && cx.v != null ? cx.v : null;
   const sameCell = src === 'values.analystTgt' || /\{\{rd:analystTgt\}\}/.test(cell ? cell[1] : '') || (cellX != null && Math.abs(cellX - target) <= 0.005 * target);
   const nm = /(\d+)\s*(?:ราย|analysts?|สำนัก|brokers?)|n\s*=\s*(\d+)/i.exec(sameCell ? cellT : '') || /(\d+)\s*(?:ราย|analysts?|สำนัก|brokers?)|n\s*=\s*(\d+)/i.exec(label);
   const r = sameCell ? /(strong\s+)?(buy|sell|hold|outperform|overweight|neutral|underweight|ซื้อ|ขาย|ถือ)/i.exec(cellT) : null;
@@ -446,7 +469,7 @@ function assemble(parsed0, ctx) {
   doc.legs.forEach((l, i) => { if (l.method === 'declared' && ['sotp', 'nav'].includes(l.inputs.basis)) H.push(`leg ${i + 1} declared ${l.inputs.basis} has no extras table (E52)`); });
 
   // metrics (รอบแรกด้วย view เทียม — render check/notes จริงหลัง compute)
-  doc.analyst = analystOf(parsed, F);
+  doc.analyst = analystOf(parsed, F, H);
   const cardOpts = { currency, market: doc.market, analyst: doc.analyst, legs: doc.legs, force: new Map() };
   const setMetrics = (mc) => {
     let custom = mc.custom, cards = mc.cards;
@@ -614,4 +637,4 @@ function assemble(parsed0, ctx) {
   };
 }
 
-module.exports = { assemble, s6HintNote, guardLegs, extrasOf, legsOf, weightsOf, generatedValHint, pxMetaOf, qualifierOf, labelOf, multipleSourceOf };
+module.exports = { assemble, s6HintNote, guardLegs, extrasOf, analystOf, singleTarget, legsOf, weightsOf, generatedValHint, pxMetaOf, qualifierOf, labelOf, multipleSourceOf };
