@@ -64,7 +64,9 @@ function scenarios(parsed, fund, legs) {
     const y = /(\d+)\s*ปี/.exec(h2);
     if (y && +y[1] >= 1 && +y[1] <= 10) out.years = +y[1];
     const divAll = cols.length === 3 && cols.every((c) => c.lis.some((x) => /ปันผลรวม/.test(x[0]) && numOf(x[1]) != null));
-    if (/รวมปันผล/.test(MP.htmlToProse(parsed.s6hint || '')) && divAll) out.divIncluded = true;
+    // Task 6b fix round 2: /รวมปันผล/ เดิมจับ "ไม่รวมปันผล"/"ยังไม่รวมปันผล" ของผู้เขียนด้วย (divIncluded กลับด้าน) — true เฉพาะคำบวกที่ไม่มีคำปฏิเสธในป้าย
+    const h6 = MP.htmlToProse(parsed.s6hint || '');
+    if (/(?<!ไม่|ยังไม่)รวมปันผล/.test(h6) && !NO_DIV.test(h6) && divAll) out.divIncluded = true;
     F.push(`scenarios: no values.scnBasis — years ${out.years} · divIncluded ${out.divIncluded} · perYear null (from the section head/hint)`);
   }
   const meta = { driverText: null, exitText: null, starts: [], ends: [], base: null };

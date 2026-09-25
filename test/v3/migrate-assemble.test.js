@@ -426,4 +426,28 @@ const asm = (sym, html) => A.assemble(PV.parseV2(sym, html), { seeds: SEEDS, hea
   let ok = true; try { const v = C.compute(r.doc, { seeds: SEEDS }); B.expandReport(R3.toV2Source(r.doc, v)); } catch (e) { ok = false; }
   t(ok, 'I-3: the migrated doc renders (no build failure)');
 }
+
+// ── Task 6b fix round 2: divIncluded inferred from the §6 hint (no scnBasis) must not read "ไม่รวมปันผล" as "รวมปันผล" ──
+{
+  const noBasis = (h) => h.replace(/,\s*"scnBasis":\s*\{[^}]*\}/, '').replace(/"scnBasis":\s*\{[^}]*\}\s*,/, '');
+  const base = noBasis(raw('BBL'));
+  t(!/"scnBasis"/.test(base) && PV.parseV2('BBL', base).rd && !PV.parseV2('BBL', base).rd.values.scnBasis, 'fr2: BBL mutated to have no values.scnBasis (precondition)');
+  const neg = asm('BBL', base.replace('~{{rd:baseEps}}{{rd:scnNote}}</div>', '~{{rd:baseEps}} • ไม่รวมปันผล</div>'));
+  t.eq(neg.doc.scenarios.divIncluded, false, 'fr2: hint "ไม่รวมปันผล" → divIncluded false');
+  t.eq(neg.doc.scenarios.hintNote, '• ไม่รวมปันผล', 'fr2: the agreeing note is carried');
+  t(!neg.notes.H.some((x) => /contradicts divIncluded/.test(x)), 'fr2: no I-5 H', neg.notes.H.join(' ; '));
+  const yet = asm('BBL', base.replace('~{{rd:baseEps}}{{rd:scnNote}}</div>', '~{{rd:baseEps}} • ยังไม่รวมปันผล</div>'));
+  t.eq(yet.doc.scenarios.divIncluded, false, 'fr2: "ยังไม่รวมปันผล" → divIncluded false');
+  const pos = asm('BBL', base.replace('~{{rd:baseEps}}{{rd:scnNote}}</div>', '~{{rd:baseEps}} • รวมปันผล</div>'));
+  t.eq(pos.doc.scenarios.divIncluded, true, 'fr2: hint "รวมปันผล" + ปันผลรวม rows → divIncluded true (unchanged)');
+}
+
+// ── Task 6b fix round 2 (re-review I-6): a median OF A PEER SET is peer, not the stock's own 5-year median ──
+{
+  t.eq(A.multipleSourceOf('Revenue FY2569F ฿2,120M (SA consensus n=1) × P/S 1.25x ÷ 609M หุ้น — 1.25x = มัธยฐาน P/S ปัจจุบันของร้านอาหาร SET 3 ตัวที่วัดจาก StockAnalysis 21 ก.ย. 2569 (ZEN 0.43x · M 1.25x · AU 2.12x)', [], 0, 1.25), 'peer', 'I-6: OKJ "มัธยฐาน … SET 3 ตัว" → peer');
+  t.eq(A.multipleSourceOf('Adjusted EBITDA guidance FY2026 กลาง $2,125M × EV/EBITDA มัธยฐานกลุ่ม IPP ปัจจุบัน (TTM ณ 21 ก.ย. 2569, stockanalysis.com): Vistra 10.12x / NRG 13.83x / Constellation 20.1x', [], 0, 13.83), 'peer', 'I-6: TLN "มัธยฐานกลุ่ม IPP" → peer');
+  t.eq(A.multipleSourceOf('EPS (TTM) $11.26 × P/E เป้าหมาย 26.5x = มัธยฐาน trailing P/E ของกลุ่มเพื่อนที่วัดจาก StockAnalysis.com/statistics เมื่อ 21 ก.ย. 2569 (STRL 37.4x, EME 23.3x, MYRG 26.5x)', [], 0, 26.5), 'peer', 'I-6: IESC "มัธยฐาน … ของกลุ่มเพื่อน" → peer');
+  t.eq(A.multipleSourceOf('EPS $0.80 (TTM GAAP) × P/E 23.34x (มัธยฐาน trailing P/E ของ MCK 23.34x / CAH 31.17x / COR 22.94x — StockAnalysis)', [], 0, 23.34), 'peer', 'I-6: MDLN "มัธยฐาน … ของ MCK / CAH / COR" → peer');
+  t.eq(A.multipleSourceOf('EPS ที่ราคาทอง Base $5.78 × P/E เป้าหมาย ~36.5x — ตัวคูณคือมัธยฐานของ FNV เอง (ไม่ใช่ของกลุ่มเหมือง) วัดจากราคาเฉลี่ยของปี ÷ EPS ปรับลดของปีนั้น', [], 0, 36.5), 'median5y', 'I-6: FNV "มัธยฐานของ FNV เอง (ไม่ใช่ของกลุ่มเหมือง)" stays median5y');
+}
 t.done();

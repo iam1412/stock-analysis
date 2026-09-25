@@ -129,6 +129,9 @@ const REL_WORD = /premium|discount|พรีเมียม|ส่วนลด|�
 // fix round 1 (review I-2): มัธยฐานที่ถูกปฏิเสธ ("ไม่ใช้มัธยฐาน" · "ยังไม่มีมัธยฐาน") หรือตัวคูณที่ประกาศว่าตั้งเอง/สมมติ ≠ มัธยฐาน
 const NEG_BEFORE = /(?:ไม่มี|ไม่ใช้|ยังไม่มี|ไม่ได้ใช้|ไม่ใช่|\bno\b|\bnot\b|without)\s*$/i;
 const OWN_WORD = /สมมติ|ตั้งเอง|assum/i;
+const PEER_SET = /peer|กลุ่ม|คู่เทียบ|คู่แข่ง|เพื่อน|ธนาคารไทย|ของ\s*[A-Z]{2,5}(?:\s*[0-9.]+\s*x)?\s*\/\s*[A-Z]{2,5}|(?<![0-9])[2-9]\s*(?:ตัว(?!คูณ|แปร|เลข|ตั้ง)|ราย|แห่ง|บริษัท)/i;
+const PEER_NEG = /ไม่ใช่(?:ของ)?\s*(?:กลุ่ม|peer|คู่แข่ง|คู่เทียบ|เพื่อน)[^\s()·•—]*/gi;
+const OWN_MEDIAN = /ของ\s*[A-Z0-9.&-]{1,8}\s*เอง/;
 const sameV = (a, b) => b != null && Math.abs(a - b) < 1e-9;
 function multipleSourceOf(mdesc, F, i, multiple, out) {
   const t = String(mdesc == null ? '' : mdesc);
@@ -155,6 +158,10 @@ function multipleSourceOf(mdesc, F, i, multiple, out) {
         const nx = new RegExp(MULT_TOKEN.source, 'i').exec(t.slice(md.end, md.end + 30).split(/[·•—–;,()]/)[0]);
         if (nx && md.end + nx.index !== tok.at && !sameV(parseFloat(nx[1]), multiple)) { why = why || 'premium/discount vs median'; continue; }
       } else if (neg || REL_WORD.test(t) || OWN_WORD.test(t)) { why = why || (neg ? 'negated median' : 'premium/discount vs median'); continue; }
+      // Task 6b fix round 2 (re-review I-6): มัธยฐานของกลุ่มเทียบ (peer set ใน ±40 ตัวอักษร) = peer ไม่ใช่มัธยฐานย้อนหลังของตัวเอง
+      //  (±40 ก่อน / +50 หลัง) ยกเว้น "ไม่ใช่ของกลุ่ม…" และ "ของ <SYM> เอง" ติดคำมัธยฐาน (FNV — มัธยฐานของตัวเอง)
+      const win = t.slice(Math.max(0, md.at - 40), md.end + 50).replace(PEER_NEG, ' ');   // +50: APG "มัธยฐาน P/E ย้อนหลัง 5 ปี (GAAP diluted) ของ peer"
+      if (PEER_SET.test(win) && !OWN_MEDIAN.test(t.slice(md.end, md.end + 25))) return 'peer';
       // ช่วงปีที่ติดคำมัธยฐาน (ก่อน/หลัง ≤15 ตัวอักษร) — 10 ปี เฉพาะเมื่อไม่มี 5 ปี ในช่วงเดียวกัน
       const near = t.slice(Math.max(0, md.at - 15), md.end + 15);
       const is10 = /(?<![0-9])10\s*ปี|10[-\s]*(?:year|yr)/i.test(near), is5 = /(?<![0-9])5\s*ปี|5[-\s]*(?:year|yr)/i.test(near);
