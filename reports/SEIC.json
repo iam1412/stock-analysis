@@ -1,0 +1,254 @@
+{
+  "v": 3,
+  "symbol": "SEIC",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "SEI Investments Company",
+    "exchange": "NASDAQ",
+    "sub": "Investment management & technology platform • ~$607B AUM / $1.36T AUA • Financial advisors & institutions • Private wealth • No debt • Founder-led",
+    "headerTags": [
+      "Financial Services",
+      "Investment Management"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "StockAnalysis.com",
+      "Finviz"
+    ],
+    "themeLegacy": {
+      "accent": "#1B3A6B",
+      "accentDark": "#0f2347",
+      "darkGrad": "linear-gradient(135deg,#0f2347 0%,#1B3A6B 60%,#2a5298 100%)",
+      "glow": "rgba(27,58,107,0.35)",
+      "subColor": "#b9d0ea",
+      "headerMuted": "#bfd1e7",
+      "verdictText": "#e8f0ff",
+      "vcellLabel": "#d4dff2"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T23:32:21+07:00",
+      "v2Hash": "b9efb603ca02"
+    }
+  },
+  "market": {
+    "px": 104.78,
+    "priceDate": "2026-09-24",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          80.61
+        ],
+        [
+          "พ.ย.25",
+          80.86
+        ],
+        [
+          "ธ.ค.25",
+          82.02
+        ],
+        [
+          "ม.ค.26",
+          87.85
+        ],
+        [
+          "ก.พ.26",
+          81.32
+        ],
+        [
+          "มี.ค.26",
+          78.47
+        ],
+        [
+          "เม.ย.26",
+          90.68
+        ],
+        [
+          "พ.ค.26",
+          87.88
+        ],
+        [
+          "มิ.ย.26",
+          87.71
+        ],
+        [
+          "ก.ค.26",
+          102.98
+        ],
+        [
+          "ส.ค.26",
+          110.98
+        ],
+        [
+          "ก.ย.26",
+          104.78
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 75.08,
+      "hi": 112.15
+    }
+  },
+  "fundamentals": {
+    "eps": 5.66,
+    "dps": 1.04,
+    "bvps": 19.47,
+    "shares": 120000000,
+    "peAvg5y": 16,
+    "roe": 28,
+    "revenue": 2450000000,
+    "fcf": 687000000,
+    "fy": {
+      "period": "FY2025",
+      "netIncome": 715000000
+    },
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation",
+      "inputs": {
+        "multiple": 16,
+        "multipleSource": "median5y"
+      },
+      "note": "16x คือมัธยฐาน P/E ย้อนหลัง FY2021–25 ของ SEIC เอง (ราคาเฉลี่ยรายปี ÷ EPS, ช่วง 14.8–17.3x) มาจากประวัติ ไม่ได้ตั้งตาม P/E ปัจจุบัน",
+      "family": "market"
+    },
+    {
+      "method": "dcf",
+      "label": "DCF (FCF)",
+      "inputs": {
+        "g1": 8,
+        "years1": 5,
+        "tg": 3,
+        "r": 10,
+        "rfCurrency": "USD"
+      },
+      "override": {
+        "netDebt": -353000000,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "สมมติฐานของเราเอง",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "peAvg5y",
+      "pbv",
+      "netIncomeFy",
+      "eps",
+      "bvps",
+      "roe",
+      "revenue",
+      {
+        "key": "fcf",
+        "tone": "pos"
+      },
+      "yield",
+      "custom:0"
+    ],
+    "custom": [
+      {
+        "label": "AUM / AUA",
+        "value": "$606.7B / $1.36T",
+        "note": "Q2 2026 · ที่มา SEI IR"
+      }
+    ],
+    "notes": {
+      "mcap": "~120M หุ้น",
+      "pe": "(diluted)",
+      "peAvg5y": "มัธยฐาน FY2021–25 (14.8–17.3x) · ปัจจุบันสูงกว่า",
+      "pbv": "BVPS ~{{bvps}}",
+      "netIncomeFy": "+YoY จาก EPS $4.41→$5.63",
+      "eps": "FY2026E $6.25 / FY2027E $6.94",
+      "bvps": "TTM · D/E เพียง 0.02",
+      "roe": "ROE TTM · ไม่ใช้หนี้",
+      "revenue": "+11.1% YoY · Q2 2026 +15%",
+      "fcf": "FCF margin ~28% · แปลงสูง",
+      "yield": "Payout 18%"
+    },
+    "hint": "ข้อมูล TTM ณ มิ.ย. 2569"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 3,
+        "exitMultiple": 12,
+        "divCum": 3.12,
+        "desc": "ตลาด AUM ตกต่ำ margin squeeze",
+        "retNote": "รวม 3 ปี"
+      },
+      {
+        "growth": 10,
+        "exitMultiple": 16,
+        "divCum": 3.36,
+        "desc": "Platform scale-up, AUM ขยาย steady",
+        "retNote": "รวม 3 ปี"
+      },
+      {
+        "growth": 15,
+        "exitMultiple": 17,
+        "divCum": 3.6,
+        "desc": "Private wealth breakout, international expansion",
+        "retNote": "รวม 3 ปี"
+      }
+    ],
+    "exitDp": 0,
+    "note": "Base case อิง EPS growth 10%/ปี (ใกล้ consensus FY2026E และต่ำกว่า FY2025 ที่ +27.7% YoY) จาก platform momentum, Private Wealth และ share buyback ที่ช่วย EPS/share โดยอัตโนมัติ P/E ออก 16x = มัธยฐานย้อนหลัง 5 ปีของ SEIC · Bear ใช้ 12x (de-rating จริงจัง ต่ำกว่าต่ำสุดในประวัติ 14.8x) · Bull ใช้ 17x (ใกล้ขอบบนของช่วง 17.3x) และถ้า Private Wealth บรรลุศักยภาพ ราคาอาจแตะ $146 ใน 3 ปี",
+    "hintNote": "• ไม่รวมปันผล"
+  },
+  "analyst": {
+    "target": 115.86,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ราคา SEIC ในรอบ 12 เดือนเคลื่อนไหวในกรอบ 52 สัปดาห์ $75–$112 โดยอ่อนตัวช่วง ต.ค. 2568–มี.ค. 2569 ก่อนฟื้นแรงตั้งแต่ เม.ย. และทำจุดสูงสุดราว $111 ปลาย ส.ค. หลังผลไตรมาส 2/2569 (รายได้ +15% YoY, adjusted EPS $1.66 +38% YoY, AUM $606.7B) ราคาปัจจุบัน {{px}} อยู่เหนือมูลค่าเหมาะสม {{fv}} ({{mos}}) และต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ {{analyst.target}} ราว 10%",
+    "valuation": "FV = เฉลี่ย P/E (ยึดประวัติ {{fvLow}}) กับ DCF ($106.9) สองตระกูลอิสระ ห่างกัน 1.2 เท่า (ไม่เกิน 2 เท่า) FV ที่ได้เทียบ forward P/E ~15.8x บน EPS 2026E $6.25 · ขาเรื่องเป้านักวิเคราะห์ ตัวคูณ P/FCF ที่ตั้งเอง และ Justified P/BV ถูกถอดออกจาก FV (ไม่มีมัธยฐานวัดจริง/ใช้ (r,g) ซ้ำ) · ความไว: ถ้าใช้ขา P/E ขาเดียว FV = {{fvLow}} (ต่ำกว่าราคาราวหนึ่งในหกส่วน) ส่วน DCF ไวต่อ r/g มาก (TV เกือบ 74%) จึงถ่วงเท่ากันเท่านั้น",
+    "gauge": "ราคาปัจจุบัน {{px}} สูงกว่า Fair Value {{fv}} ({{mos}}) — เต็มมูลค่าแล้ว ไม่มี MOS บริษัทยังซื้อหุ้นคืนต่อเนื่อง (Q2/2569: 1.3 ล้านหุ้น $112.4M เฉลี่ย $86.92) จุด MOS 20% ที่ {{mos20}} ยังเป็นจุดสะสมที่น่าสนใจกว่าหากราคาย่อกลับมา เป้าเฉลี่ยนักวิเคราะห์ {{analyst.target}} สะท้อน upside ราว 10% จากราคาปัจจุบัน",
+    "mos": "ไม่มี Margin of Safety — ราคาสูงกว่ามูลค่าเหมาะสมเล็กน้อย รอย่อตัวเข้าโซนสะสมก่อน",
+    "verdictHeadline": "SEIC: Platform Fintech คุณภาพสูง ราคายุติธรรม รอจังหวะ",
+    "verdictBody": "SEI Investments คือธุรกิจที่หายาก — กึ่ง asset manager กึ่ง SaaS technology platform ให้บริการ financial advisors, private banks, และ institutional investors ด้วย end-to-end platform (investment processing, management, operations) ที่ client ฝังลึก ROE 30% ไม่ใช้หนี้ FCF TTM ราว $687M และ margin ขยายต่อเนื่อง แสดงให้เห็น competitive moat ที่แข็งแกร่ง ราคา {{px}} สูงกว่า Fair Value {{fv}} ({{mos}}) แต่ยังต่ำกว่าเป้านักวิเคราะห์ราว 10% ไม่มี MOS สำหรับ deep value investor จุด {{mos20}} จะให้ MOS 20% ที่เหมาะสมกว่า",
+    "strategy": "SEIC เป็นหุ้นคุณภาพดี (high-quality compounder) ที่ควรมีติดพอร์ต แต่ราคาปัจจุบัน {{px}} เต็มมูลค่าแล้ว เหมาะกับผู้ถือเดิม ไม่ใช่จุดเข้าใหม่ที่ดี หากต้องการ margin of safety ควรรอซื้อที่ {{mos20}} (MOS 20%) หรือต่ำกว่า ซึ่งอาจเกิดขึ้นเมื่อตลาดโดยรวม pullback หรืออัตราดอกเบี้ยสูงกด AUM-based revenue ชั่วคราว",
+    "disclaimerSources": "ราคา ณ {{priceDate}} จาก Yahoo Finance, StockAnalysis.com — 2 แหล่งต่างกัน ~0.01% · ข้อมูลงบการเงิน: StockAnalysis.com, SEI IR (Q2 2026 Earnings Release, 22 ก.ค. 2569)"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 2 วิธี",
+    "chartHint": "ต.ค. 2568 – ก.ย. 2569"
+  },
+  "catalysts": [
+    "<b>Platform stickiness สูง:</b> ลูกค้าทั้ง financial advisors และ institutional ฝัง SEI platform ลึก การ churn ต่ำ recurring revenue สูง",
+    "<b>Private Wealth segment ขยายตัว:</b> เซกเตอร์ Private Banking และ UHNW กำลังเติบโตแรง SEI มีโซลูชันครบวงจร ทั้ง investment management และ technology operations",
+    "<b>Margin expansion ต่อเนื่อง:</b> Q2 2026 operating margin 31% (GAAP), adjusted margin 32% — scale economics ของ SaaS-like model ยังมีพื้นที่ขยาย",
+    "<b>Net inflows แข็งแกร่ง:</b> Q2 2026 LSV net inflows $2.0B, AUM +9.5% ในไตรมาสเป็น $606.7B และรายได้ +15% YoY สัญญาณ pipeline ดี",
+    "<b>Capital allocation ยอดเยี่ยม:</b> แทบไม่มีหนี้ (D/E 0.02), buyback ต่อเนื่อง (Q2/2569 $112.4M), เพิ่มปันผลสม่ำเสมอ Payout ratio ต่ำ 18% ยังขยายได้",
+    "<b>Founder-led culture:</b> Alfred West (ผู้ก่อตั้ง) ยังบริหาร alignment กับผู้ถือหุ้น ระยะยาวสูง"
+  ],
+  "risks": [
+    "<b>ตลาดทุนผันผวน:</b> รายได้ AUM-based ผูกกับมูลค่าตลาด ตลาดขาลงกดทั้ง AUM และ fee income โดยตรง",
+    "<b>การแข่งขันรุนแรงจาก Fintech:</b> Charles Schwab, SS&C Technologies, และ blackrock Aladdin แข่งขันทั้งด้าน technology platform และ cost ที่ต่ำกว่า",
+    "<b>Fee compression:</b> แนวโน้มอุตสาหกรรม passive investing และ robo-advisors กดค่าธรรมเนียม advisory โดยรวม",
+    "<b>Concentration risk:</b> รายได้หลักมาจากตลาดสหรัฐฯ การกระจายตัว international ยังอยู่ในช่วงต้น",
+    "<b>Regulatory risk:</b> การเปลี่ยนแปลง fiduciary rules, reporting requirements, หรือ fee disclosure อาจกระทบโมเดลธุรกิจ",
+    "<b>Analyst coverage ต่ำ:</b> มีนักวิเคราะห์ cover แค่ 7 คน ความสนใจจาก institutional เพิ่มขึ้นอาจทำให้ราคาผันผวนได้"
+  ],
+  "extras": [],
+  "_sig": "sha256:7d3ce0f43616605816c6707f40a5eab32a1f0a2acaa34cf9ab8d46cdc45a2da0"
+}
