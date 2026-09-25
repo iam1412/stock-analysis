@@ -245,6 +245,33 @@
 - ห้าม "ขยายเพดาน custom" แทนช่องข้างบน — Task 0 วัดแล้วว่าใบจริงทั้ง 3 ชนเพดาน custom 4 เพราะขาดช่องเหล่านี้ (ดู §12)
 - **ส่วนขยายจาก Plan 4b (ไม่บังคับ · ไม่มีช่อง = พฤติกรรมเดิมทุก byte — DIST-PROOF OGE/ICC)**: `text.chartHint` (ต่อท้ายป้ายหมวด 2 — ช่วงเวลากราฟที่ผู้เขียนพิมพ์) · `scenarios.hintNote` / `cases[i].retNote` (§3.3) · `multipleSource: 'author'` (§3.1) · `inputs.stages` (§3.1) · การ์ด `occupancy` `netDebtEbitda` `backlog` `payout` `aum` `ptbv` · tone `none` · `analyst.rating` nullable · `meta.headerTags` ≤3 · `meta.migratedFrom` (§8) · token `eps` `dps` `bvps` `epsFy` `analyst.vsFv` · เพดาน custom **คง 4** (คำถามเจ้าของก่อน 4c — `docs/decisions.md` §10 "Report v3 Plan 4b")
 
+### 3.7 ส่วนขยาย schema สำหรับ Plan 4c-prep (26 ก.ย. 69 — จากการวัด `measure-4c-prep.md` หลัง sweep จริง 472 HUMAN)
+
+หลักการตัดสิน (สืบจาก final review ของ 4b): **หน้า v3 กล่าว "ข้อเท็จจริงคนละอย่าง" หรือ "ข้อเท็จจริงเดียวกันคนละคำ"?** — คนละข้อเท็จจริง = ต้องมีช่อง/enum (ห้าม mask) · คนละคำ = transform ที่อนุมัติแบบปิดและมี guard เชิงโครงสร้าง (§10.2 ข้อ ง) · เหตุผลของผู้เขียน = พาไปไว้ใน note
+
+**ก. ช่อง/enum ที่บอกข้อเท็จจริง (Kind 1 — ความถูกต้อง)**
+- `fundamentals.ffoBasis` เพิ่ม `'coreFfo'` (ป้าย "Core FFO") · assemble ต้องตั้ง `'affo'`/`'coreFfo'` เมื่อถ้อยคำผู้เขียน (การ์ด/ขา/ฉาก) ใช้ AFFO/Core FFO — วัดแล้ว 8 ใบ REIT พิมพ์ FFO ทั้งที่ผู้เขียนคิดบน AFFO
+- `ENUM.driver` เพิ่ม `'ebitdaPerShare'` (ป้าย "EBITDA/หุ้น") · `ENUM.exitMetric` เพิ่ม `'evebitda'` (ป้าย "EV/EBITDA") — compute `exitTarget` ใช้สูตรเดียวกับ `evsales` (EV → equity ด้วย `netDebt` ต่อหุ้น · equity ≤0 = named throw เดิม) · กฎคู่: `evebitda` ⇒ driver `ebitdaPerShare`
+- `legs[i].inputs.basis` (ตัวเลือก · เฉพาะ method ที่มีตัวตั้งกำไร: pe/pfcf/pffo/ps): `{ period: 'ttm'|'fwd'|'fy', label?: string ≤24 }` — render พิมพ์ป้ายฐานตามนี้แทน `fundamentals.epsBasis` (เช่น "EPS FY2026E (forward)") · ไม่มีช่อง = พฤติกรรมเดิม · ปิดคลาส "ขา P/E ฐาน forward พิมพ์ (TTM)" 17 ขา (+95 ขาที่พิมพ์ "EPS ปรับ" โดยไม่บอกว่า forward)
+
+**ข. ช่องรับข้อความผู้เขียนที่ยังไม่มีที่ (Kind 3 — พาไป ไม่ทิ้ง)**
+- `meta.sectorLine` (string ≤100 · prose) — ข้อความที่ผู้เขียนพิมพ์ในจุด gdots ของ header (NYSE · Healthcare · Medical Devices …) · render เป็นบรรทัดเล็กใต้ tags เมื่อมี (ไม่มี = byte-identical) · 65 ใบ
+- `verdict.extraCells: [{k, v}]` (≤2 · prose) — vcell ที่ 3+ ของหมวด 8 · 11 ใบ
+- `text.legendNote` (string ≤80) — คำเพิ่มใน legend หมวด 2 · 20 ใบ
+- `scenarios.cases[i].retNote` รับคำหน้าตัวเลข % ด้วย ("Total"/"รวม") · `scenarios.perYear` อนุมานเป็น `true` จากป้าย `/ปี|ต่อปี` ใน `.ret` (CAGR = แบบแผนผู้เขียน 138/147 ใบที่สอดคล้องตัวเอง) · 77 ใบ
+- `legs[i].label` (string ≤80 · ตัวเลือก · เฉพาะใบ migrate — `meta.migratedFrom` ต้องมี) — ชื่อขาของผู้เขียนแทนชื่อที่ generate · UPDATE ถอดได้ · ปิด mname residue 34 ใบ · ส่วนต่อท้าย "(บริบท — …)" ของผู้เขียน: คำว่า บริบท/ไม่รวมในกรอบ/ไม่นับใน = synonym (ข้อ ค) ส่วนเหตุผลที่เหลือ ("ห่างจากขายึดตลาด >2×") → `legs[i].note`
+- `qualifierOf` รอบ 3: prose ใน mdesc ที่ยังหลุด (75 ใบ) → `legs[i].note` · การ์ด custom ที่ค่าตรง token ผูกราคา (18 ใบ) → tokenise ค่าเป็น `{{token}}` แทนที่จะเป็น literal (กติกา D3 exact match) · tag แรกผิดรูป "(ADR)"/"TSX: CCO" (14 ใบ) → แยกเป็น `headerTags` ที่ถูกต้อง · `fundamentals.fy` หลายงวดขัดกัน (11 ใบ) → เลือกงวดล่าสุด + F note
+
+**ค. transform ที่อนุมัติเพิ่ม (Kind 2 — §10.2 ข้อ ง · ต้องมี guard)**: `SYNONYM_VOCAB` ปิด ผูกโซน + ผูกองค์ประกอบที่ align กัน (ไม่ใช่ทั้งหน้า) — คู่คำที่หมายถึงปริมาณเดียวกับที่ v3 พิมพ์: s6 แถวออก `Exit|ทางออก ≡ ออก` · ตัวตั้งต่อหุ้น `sh|Sh|share|/sh|หุ้น ≡ /หุ้น` · driver `Rev|Revenue|Sales|รายได้ปี ≡ รายได้` (เฉพาะเมื่อ driver = revenuePerShare) · `FFO ≡ ป้าย ffoBasis` (เมื่อ ffoBasis ตรง) · ป้ายรวม `total|Total|รวม ≡ รวม N ปี` · s3 `มัธยฐานย้อนหลัง ≡ มัธยฐาน` · s3 ขา context `บริบท|ไม่รวมในกรอบ|ไม่รวมใน FV|ไม่นับใน ≡ (บริบท — ไม่นับใน FV)` เฉพาะขาที่ v3 role = context · **ห้ามใส่คำที่บอกข้อเท็จจริง** (AFFO/Core/forward/FY#E/Tangible/adj/GAAP) — reviewer ตรวจรายการทีละคำเหมือน `TEMPLATE_VOCAB`/`FORMULA_VOCAB`
+
+**ง. เพดาน custom card**: 4 → **8 เฉพาะใบ migrate** (`meta.migratedFrom` มี) — ครอบ 97/102 ใบ · ใบ NEW ยังคง 4 · PR ต้องมี screenshot หน้า 8 การ์ด 2 ใบ (รวม phone width) · ทางย้อนกลับ: ลดค่าคงที่ ใบที่เกินกลับเป็น HUMAN ใน sweep
+
+**จ. ไม่ทำ (residual → เวฟ re-analysis)**: ช่อง growth ที่เป็น prose ("ฟื้นตัวช้า" · "WTI $50/bbl") และ driver cell แบบข้อความ — ห้าม parse prose เป็นตัวเลข · E52 (sotp/nav ไม่มีตาราง) · ขานักวิเคราะห์เป็น fv · fv < 2 · era mismatch · sources < 3 · ค่าฉากไม่ครบ 3 คอลัมน์
+
+**ฉ. อื่นในแผนเดียวกัน**: #67 (`meta.aiModel` เข้า freshHash) · #68 (BDMS ขา 1 → author · TRMB medianWindow) · `reports.json` แถว v3: ปัด `pe`/`dividendYield` 2 ตำแหน่งเท่า v2 + `name`/`title` ไม่เติม "(SYM)"/ชื่อยาว (reports.json เปลี่ยนได้แล้วหลัง 4b) · **batch runner** `tools/migrate-v3.js batch <table.csv> --class <driftClass…> --n <push every N>`: อ่านตารางที่ advisor อนุมัติ → `convert --write --accept-drift` ใหม่ตอนแบตช์ → **ปฏิเสธใบที่ bucket/driftClass ต่างจากแถวที่อนุมัติ** → `ship --migrate` (CLEAN 50 ใบ/commit · อื่น 1 ใบ/commit) → push ทุก N commit
+
+**เป้าที่วัดได้ (sweep หลัง 4c-prep)**: CLEAN ≥ 11 (ไม่ลด) · HUMAN 472 → **≈ 220–250** (ประมาณการ advisor 26 ก.ย. 69: a–g+x ≈118 + งานถ้อยคำขา/ฉาก ≈100–130) · DIST identical · ตัวเลขจริงและต้นทุนเวฟ re-analysis ของ residual (ใบ × turn จาก `token-usage-benchmarks`) ลง PR body = คำถามเดียวที่เจ้าของต้องตอบ
+
 ## 4. Prose + กติกา B (`tools/v3/prose.js`)
 
 - ไวยากรณ์ token: `{{px}}` `{{fv}}` `{{mos}}` `{{leg1}}` `{{leg1.multiple}}` `{{scn.base.tgt}}` `{{scn.bull.ret}}` `{{analyst.target}}` `{{card.pe}}` … — ชุด token = **ทุกค่าใน view ที่ compute สร้าง** (ตารางเดียวใน `compute.js` ไม่มีรายการเขียนมือแยก)
