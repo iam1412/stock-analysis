@@ -1,0 +1,254 @@
+{
+  "v": 3,
+  "symbol": "AMGN",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Amgen Inc.",
+    "exchange": "NASDAQ",
+    "sub": "Biopharmaceuticals (Repatha · Prolia · Otezla) • Horizon (Tepezza · Krystexxa) • Cardiovascular · Inflammation · Oncology • MariTide (obesity pipeline)",
+    "headerTags": [
+      "Biopharmaceuticals",
+      "Large-Cap Biotech"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis.com",
+      "Yahoo Finance",
+      "Amgen Investor Relations"
+    ],
+    "themeLegacy": {
+      "accent": "#0066CC",
+      "accentDark": "#003d80",
+      "darkGrad": "linear-gradient(135deg,#000d1a 0%,#001833 100%)",
+      "glow": "rgba(0,102,204,0.35)",
+      "subColor": "#66b3ff",
+      "headerMuted": "rgba(255,255,255,0.55)",
+      "verdictText": "#e8f4fd",
+      "vcellLabel": "rgba(255,255,255,0.6)"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T10:24:06+07:00",
+      "v2Hash": "fa72b4330c9a"
+    }
+  },
+  "market": {
+    "px": 406.04,
+    "priceDate": "2026-09-24",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          298.43
+        ],
+        [
+          "พ.ย.25",
+          345.46
+        ],
+        [
+          "ธ.ค.25",
+          327.31
+        ],
+        [
+          "ม.ค.26",
+          341.88
+        ],
+        [
+          "ก.พ.26",
+          388.16
+        ],
+        [
+          "มี.ค.26",
+          351.85
+        ],
+        [
+          "เม.ย.26",
+          346.25
+        ],
+        [
+          "พ.ค.26",
+          336.79
+        ],
+        [
+          "มิ.ย.26",
+          362.12
+        ],
+        [
+          "ก.ค.26",
+          385.16
+        ],
+        [
+          "ส.ค.26",
+          429.88
+        ],
+        [
+          "ก.ย.26",
+          406.04
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 269.77,
+      "hi": 447.03
+    }
+  },
+  "fundamentals": {
+    "eps": 16.09,
+    "dps": 10.08,
+    "bvps": 17.03,
+    "shares": 540632005,
+    "peAvg5y": 21,
+    "revenue": 38100000000,
+    "grossMargin": 71.9,
+    "beta": 0.42,
+    "fy": {
+      "period": "FY2025",
+      "netIncome": 7710000000
+    },
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation (GAAP diluted)",
+      "inputs": {
+        "multiple": 21.1,
+        "multipleSource": "median5y"
+      },
+      "note": "มัธยฐานย้อนหลัง 5 ปีของ AMGN เอง (ราคาเฉลี่ยรายปี ÷ EPS diluted FY2021–25; ช่วง 19.9–39.9x)"
+    },
+    {
+      "method": "ddm",
+      "label": "DDM / Gordon Growth Model",
+      "inputs": {
+        "g": 6,
+        "r": 9
+      },
+      "note": "เพิ่มปันผลต่อเนื่อง แต่ลดจาก 10% เป็น 6% เพราะภาระหนี้ Horizon"
+    },
+    {
+      "method": "evebitda",
+      "label": "EV/EBITDA",
+      "inputs": {
+        "multiple": 15,
+        "multipleSource": "peer"
+      },
+      "override": {
+        "ebitda": 15464000000,
+        "netDebt": 43315000000,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "เทียบกลุ่ม pharma 12–18x (ตัวคูณสมมติ ไม่มีมัธยฐานที่วัดจริง; EBITDA ยกจากรอบก่อน ยังไม่ยืนยันกับงบล่าสุด)"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "peAvg5y",
+      "pbv",
+      "netIncomeFy",
+      "eps",
+      "bvps",
+      "custom:0",
+      "revenue",
+      "grossMargin",
+      "yield",
+      "beta"
+    ],
+    "custom": [
+      {
+        "label": "ROE / Net Margin",
+        "value": "~91% / 23%",
+        "note": "ROE สูงเพราะ equity ต่ำ (ผลจาก buyback)",
+        "tone": "pos"
+      }
+    ],
+    "notes": {
+      "mcap": "~540 ล้านหุ้น",
+      "pe": "GAAP diluted EPS {{eps}} · non-GAAP guidance 2569 $22.30–23.50",
+      "peAvg5y": "มัธยฐาน FY2021–25 21.1x (ช่วง 19.9–39.9x · ปี 2567 EPS ต่ำผิดปกติ)",
+      "pbv": "สูงเพราะ buyback + Horizon goodwill",
+      "netIncomeFy": "+88.5% YoY · GAAP EPS $14.23",
+      "eps": "Q3 2568–Q2 2569 ($5.93+$2.46+$3.34+$4.37) · FY2025 $14.23",
+      "bvps": "Book value ต่ำเพราะ buyback หนักและ goodwill จาก Horizon",
+      "revenue": "FY2025 $36.8B (+10% YoY) · TTM +9.1% · guidance 2026: $38.2–39.4B",
+      "grossMargin": "TTM · FY2025 70.8%",
+      "yield": "{{dps}}/หุ้น/ปี · เพิ่มต่อเนื่องมากกว่า 12 ปี",
+      "beta": "ความผันผวนต่ำกว่าตลาดมาก · defensive pharma"
+    },
+    "hint": "ข้อมูล ณ 21 ก.ย. 2569 · EPS = GAAP diluted (TTM ถึง Q2 2569)"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 0,
+        "exitMultiple": 15,
+        "divCum": 31,
+        "desc": "MariTide ล้มเหลว + LOE เร่ง"
+      },
+      {
+        "growth": 8,
+        "exitMultiple": 20,
+        "divCum": 33,
+        "desc": "MariTide Phase 3 คืบหน้า + รายได้โตต่อเนื่อง"
+      },
+      {
+        "growth": 15,
+        "exitMultiple": 23,
+        "divCum": 34,
+        "desc": "MariTide อนุมัติ FDA + obesity market re-rating"
+      }
+    ],
+    "exitDp": 0,
+    "note": "EPS ฐาน = GAAP diluted EPS TTM {{eps}} (Q3 2568–Q2 2569) · Amgen ตั้งเป้า GAAP EPS ปี 2569 ที่ $15.80–$17.08 (non-GAAP $22.30–$23.50) · P/E ออก Base 20x ต่ำกว่ามัธยฐาน 21.1x เล็กน้อย ตัวแปรที่มีผลกระทบมากที่สุดคือ MariTide Phase 3 MARITIME — สำเร็จ = Bull scenario ที่เป็นไปได้ · ล้มเหลว = ไม่กระทบมากเพราะยังมี base business แข็งแกร่ง ปันผลรวม 3 ปีคาดการณ์จากปันผลปัจจุบัน {{dps}}/ปี พร้อมการเติบโต 2–12%/ปี ตามแต่ละ scenario",
+    "hintNote": "(adj TTM) ~{{dps}}/ปี"
+  },
+  "analyst": {
+    "target": 388,
+    "n": null,
+    "rating": "Hold",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ราคา AMGN ปิดสิ้นเดือน ต.ค. 2568 ที่ $298.43 และปิดสูงสุดรายเดือนที่ $429.88 (ส.ค. 2569) ก่อนย่อลงมาปิดล่าสุดที่ {{px}} — ผลตอบแทนรอบปีดูที่ป้ายหัวรายงาน ราคาปัจจุบัน {{px}} สูงกว่ามูลค่าเหมาะสม {{fv}} ของเรา (MOS {{mos}}) แหล่งข้อมูล: Yahoo Finance (query1.finance.yahoo.com/v8/finance/chart/AMGN?interval=1mo&range=1y) · ราคารายเดือน ต.ค. 2568 – ก.ย. 2569",
+    "valuation": "วิธี P/E ให้ค่าต่ำสุด ({{fvLow}}) · DDM ให้ค่าสูงสุด ({{fvHigh}}) จากสมมติฐาน r 9% / g 6% · EV/EBITDA ให้ค่ากลาง ($348.94) หลังหักหนี้สุทธิ ~$43.3B · เป้าเฉลี่ยนักวิเคราะห์ไม่ใช่ขาของ FV (ใช้เป็นบริบทเท่านั้น) ราคาปัจจุบัน {{px}} สูงกว่ามูลค่าเหมาะสมเฉลี่ย {{fv}} (MOS {{mos}}) แสดงว่าตลาดให้ราคา Amgen สูงกว่ามูลค่าเหมาะสมพอสมควร หมายเหตุ: รอบนี้เปลี่ยนฐาน EPS จาก Non-GAAP adj เป็น GAAP diluted TTM {{eps}} เพื่อให้ตรงฐานเดียวกับมัธยฐาน P/E ที่วัดจากงบ (guidance GAAP EPS ปี 2569 $15.80–17.08 ยืนยันว่า TTM อยู่ในแนวเดียวกัน) · non-GAAP guidance $22.30–23.50 อยู่ในบริบท ไม่ใช่ฐานของ FV",
+    "gauge": "ราคา AMGN ปัจจุบัน {{px}} สูงกว่ามูลค่าเหมาะสม {{fv}} (MOS {{mos}}) แสดงว่าหุ้นซื้อขายอยู่ในโซนแพงกว่ามูลค่าเหมาะสม (Overvalued) เป้าเฉลี่ยนักวิเคราะห์ $388 (Yahoo $387.69 n=29 · StockAnalysis $388.03 Hold) ใกล้ราคาปัจจุบัน สะท้อนมุมมอง Hold ของตลาด — ใช้เป็นบริบท ไม่ใช่ขาของ FV ผู้ที่ต้องการ MOS 20% ควรรอโซน {{mos20}} ขณะที่ MOS 30% อยู่ที่ {{mos30}}",
+    "mos": "ราคาสูงกว่ามูลค่าเหมาะสม (Overvalued) — ไม่มี MOS ณ ราคาปัจจุบัน · รอโอกาสในโซน MOS 20% ({{mos20}})",
+    "verdictHeadline": "AMGN — ราคาสมเหตุสมผล (Fair Value) · รอโอกาสดีกว่า",
+    "verdictBody": "Amgen เป็น Large-Cap Biotech ที่มีธุรกิจฐานแข็งแกร่ง — รายได้ TTM $38.1B, GAAP EPS TTM {{eps}}, ปันผล {{dps}}/ปี (เพิ่มต่อเนื่อง 12+ ปี), FCF แข็งแกร่ง และ beta ต่ำ (0.42) ทำให้เหมาะเป็น defensive holding ราคาปัจจุบัน {{px}} สูงกว่ามูลค่าเหมาะสม {{fv}} (เฉลี่ย 3 วิธี: P/E {{fvLow}} + DDM {{fvHigh}} + EV/EBITDA $348.94) แสดงว่าตลาดให้ราคาสูงกว่ามูลค่าเหมาะสม MOS ติดลบ ({{mos}}) ปัจจัยที่น่าติดตามมากที่สุดคือ MariTide Phase 3 MARITIME — หากประสบความสำเร็จในการแข่งขันกับ Ozempic/Wegovy (ข้อได้เปรียบ: ฉีดรายเดือน vs รายสัปดาห์) จะ re-rate หุ้นอย่างมีนัยสำคัญ",
+    "strategy": "AMGN ซื้อขายสูงกว่า Fair Value ณ ปัจจุบัน · นักลงทุนระยะยาวที่ต้องการ defensive dividend stock สามารถถือต่อได้ · ผู้ที่ต้องการ Margin of Safety 20% ควรรอโซน MOS 20% ({{mos20}}) ก่อนสะสมเพิ่ม · ติดตาม Phase 3 MariTide results เป็น catalyst สำคัญที่อาจเปิด Bull case ({{scn.bull.ret}} รวมปันผล)",
+    "disclaimerSources": "ที่มา: StockAnalysis.com (stockanalysis.com/stocks/amgn/), Yahoo Finance (finance.yahoo.com/quote/AMGN), Amgen Investor Relations Q4 2025 + Q1 2026 earnings (prnewswire.com), Amgen Newsroom (amgen.com/newsroom), StockAnalysis Forecast (stockanalysis.com/stocks/amgn/forecast/) • ราคา ณ {{priceDate}} · ยืนยัน 2 แหล่ง: $385.65 (Yahoo) = $385.65 (StockAnalysis) diff 0% ✓ · GAAP EPS TTM $16.08 (Yahoo) ≈ $16.09 (StockAnalysis) diff 0.1% ✓ · Q2 2026 (Amgen IR/SEC 8-K, StockAnalysis quarterly)"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 3 วิธี · ใช้ GAAP diluted EPS TTM",
+    "chartHint": "ต.ค. 2568 – ก.ย. 2569 · รายเดือน",
+    "disclaimerAssump": " P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ EPS ในอนาคต"
+  },
+  "catalysts": [
+    "<b>MariTide Phase 3 MARITIME:</b> ยาอ้วน GLP-1/GIP bispecific ฉีดรายเดือน (หรือ 4–6 ครั้ง/ปี) vs Ozempic/Wegovy รายสัปดาห์ · Phase 2 ลด ~20% น้ำหนักใน 52 สัปดาห์ · MARITIME-1 และ MARITIME-2 (Phase 3) กำลังดำเนินการ และมีแผนเริ่ม Phase 3 ใน T2D อีก 3 การศึกษาในปี 2569 (Amgen Q2 2026 release) · ผลสำเร็จ = re-rating ครั้งใหญ่",
+    "<b>รายได้เติบโตต่อเนื่อง:</b> รายได้ Q2 2569 $10.05B · TTM $38.1B (+9.1% YoY) · guidance รายได้ 2569 $38.2–39.4B (Amgen Q2 2026 release)",
+    "<b>Horizon Portfolio (Tepezza + Krystexxa):</b> Tepezza สำหรับโรคตาไทรอยด์ · Krystexxa สำหรับโรคเกาต์เรื้อรัง · ทั้งคู่เป็น specialty biologics",
+    "<b>ปันผลที่เพิ่มต่อเนื่อง:</b> เพิ่มปันผลมากกว่า 12 ปีต่อเนื่อง · ปัจจุบัน yield ~2.6% · FCF TTM ~$10.2B ช่วยหนุนการเพิ่มปันผลต่อไป",
+    "<b>Guidance 2569:</b> รายได้ $38.2–39.4B · GAAP EPS $15.80–$17.08 · non-GAAP EPS $22.30–$23.50 (Amgen Q2 2026 release)",
+    "<b>Beta ต่ำ (0.42) — Defensive Profile:</b> ราคาผันผวนน้อยกว่าตลาดมาก · เหมาะสำหรับ defensive portfolio ในช่วง macro ไม่แน่นอน"
+  ],
+  "risks": [
+    "<b>Loss of Exclusivity (LOE) ผลิตภัณฑ์หลัก:</b> Enbrel (biosimilar แข่งขัน) · Prolia (denosumab biosimilar) · Otezla · LOE เร็วกว่าคาด = กดรายได้ฐาน",
+    "<b>หนี้สูงจาก Horizon ($28B):</b> Net debt ~$43.3B (หนี้ $57.3B − เงินสด $14.0B) ทำให้ financial flexibility จำกัด · ดอกเบี้ยกดกำไร GAAP · leverage สูงเสี่ยงหาก revenue shortfall",
+    "<b>MariTide Phase 3 ความเสี่ยง Clinical:</b> แม้ Phase 2 ดี แต่ Phase 3 อาจไม่ได้ผล efficacy/safety หรือ FDA ปฏิเสธ · การแข่งขันจาก Novo Nordisk (Ozempic/Wegovy) และ Eli Lilly (Mounjaro/Zepbound) สูงมาก",
+    "<b>IRA Drug Pricing:</b> กฎหมาย Inflation Reduction Act อนุญาต Medicare เจรจาราคายา · อาจกดราคา Enbrel หรือผลิตภัณฑ์อื่นในอนาคต",
+    "<b>GAAP EPS บิดเบือน:</b> ค่าตัดจำหน่าย/ค่าใช้จ่ายซื้อกิจการทำให้ GAAP EPS TTM ({{eps}}) ต่ำกว่า non-GAAP guidance ปี 2569 ($22.30–$23.50) มาก · รายงานนี้ใช้ฐาน GAAP จึงอนุรักษ์กว่าฐาน adj ที่ตลาดใช้"
+  ],
+  "extras": [],
+  "_sig": "sha256:da530aadb999ab455aa4a158d2757c44dd08087e8bd23fd78c53e20a08bd47b6"
+}
