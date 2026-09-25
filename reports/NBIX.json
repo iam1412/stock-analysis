@@ -1,0 +1,261 @@
+{
+  "v": 3,
+  "symbol": "NBIX",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Neurocrine Biosciences",
+    "exchange": "NASDAQ",
+    "sub": "CNS specialty pharma • INGREZZA (tardive dyskinesia) • CRENESSITY (congenital adrenal hyperplasia) • AbbVie partnership (ORILISSA) • No net debt",
+    "headerTags": [
+      "CNS Biopharma",
+      "Specialty Pharma"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "StockAnalysis",
+      "StockAnalysis Forecast"
+    ],
+    "themeLegacy": {
+      "accent": "#7B2FBE",
+      "accentDark": "#5B1A9A",
+      "darkGrad": "linear-gradient(135deg,#1a0a2e 0%,#2d1060 50%,#1a0a2e 100%)",
+      "glow": "rgba(123,47,190,0.35)",
+      "subColor": "#c49bff",
+      "headerMuted": "#a280d4",
+      "verdictText": "#e8d5ff",
+      "vcellLabel": "#b28fe4"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T17:02:51+07:00",
+      "v2Hash": "8fa113e4a70e"
+    }
+  },
+  "market": {
+    "px": 138.94,
+    "priceDate": "2026-09-24",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          143.21
+        ],
+        [
+          "พ.ย.25",
+          152.16
+        ],
+        [
+          "ธ.ค.25",
+          141.83
+        ],
+        [
+          "ม.ค.26",
+          136.06
+        ],
+        [
+          "ก.พ.26",
+          132.25
+        ],
+        [
+          "มี.ค.26",
+          131.74
+        ],
+        [
+          "เม.ย.26",
+          131.67
+        ],
+        [
+          "พ.ค.26",
+          158.3
+        ],
+        [
+          "มิ.ย.26",
+          168.54
+        ],
+        [
+          "ก.ค.26",
+          166.8
+        ],
+        [
+          "ส.ค.26",
+          154.03
+        ],
+        [
+          "ก.ย.26",
+          138.94
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 122.14,
+      "hi": 186.12
+    }
+  },
+  "fundamentals": {
+    "eps": 6.82,
+    "bvps": 33.87,
+    "shares": 101649181,
+    "epsForward": 10.2,
+    "netIncome": 706000000,
+    "roe": 22.1,
+    "revenue": 3370000000,
+    "fcf": 870000000,
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation (P/E ย้อนหลังที่วัดจริง)",
+      "inputs": {
+        "multiple": 28.2,
+        "multipleSource": "author"
+      },
+      "note": "28.2x คือ P/E ปี FY2025 (ราคาเฉลี่ยปี ÷ EPS) ที่วัดจริง ไม่ได้มาจาก P/E ปัจจุบัน · มัธยฐาน 4 ปี = 41.7x (ช่วง 28.2–64.6x) แต่ตัวคูณลดลงทุกปี (64.6x→43.3x→40.2x→28.2x) ตามการเติบโตที่ชะลอ จึงใช้ปีล่าสุด ไม่ใช้มัธยฐานที่สูงกว่า · ตัด FY2021 (105x) ออก",
+      "family": "market"
+    },
+    {
+      "method": "dcf",
+      "label": "DCF (Free Cash Flow)",
+      "inputs": {
+        "stages": [
+          {
+            "years": 5,
+            "g": 10
+          },
+          {
+            "years": 5,
+            "g": 5
+          }
+        ],
+        "tg": 3,
+        "r": 10,
+        "rfCurrency": "USD"
+      },
+      "override": {
+        "netDebt": 0,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "สมมติฐานของผู้วิเคราะห์เอง · PV $10.1B = 55% ของมูลค่ารวม · ไม่นับ net cash (ตัวเลข Cash ของ vendor อาจไม่รวมเงินลงทุนระยะสั้น ตรวจซ้ำไม่ได้) · FCF ไม่หัก SBC",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      {
+        "key": "peForward",
+        "tone": "none"
+      },
+      "pbv",
+      "netIncome",
+      "eps",
+      "bvps",
+      "roe",
+      "revenue",
+      "custom:0",
+      {
+        "key": "fcf",
+        "tone": "pos"
+      },
+      "custom:1"
+    ],
+    "custom": [
+      {
+        "label": "Gross / Op Margin",
+        "value": "64.5% / 25.7%",
+        "note": "นิยาม vendor · บริษัทยา R&D-heavy"
+      },
+      {
+        "label": "เงินสด / หนี้",
+        "value": "$390M / $462M",
+        "note": "ตามงบ vendor · TTM"
+      }
+    ],
+    "notes": {
+      "mcap": "101.65M shares",
+      "pe": "GAAP EPS {{eps}} TTM",
+      "peForward": "FY2026e adj. EPS ~$10.20 (คนละฐานกับ GAAP)",
+      "netIncome": "Net margin 20.9%",
+      "eps": "FY2025 $4.67 · FY2026e adj. ~$10.20",
+      "bvps": "D/E 0.13 (ค่าตามงบก่อนหน้า)",
+      "roe": "ROE TTM (FY2025 16.4%)",
+      "revenue": "+34.4% YoY (FY2025 +21.4%)",
+      "fcf": "FCF yield ~5.9%"
+    },
+    "hint": "ข้อมูล TTM ล่าสุดจาก StockAnalysis · USD"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 5,
+        "exitMultiple": 15,
+        "divCum": 0,
+        "desc": "แรงกดดันคู่แข่ง/ราคายา ตลาดอิ่มตัว EPS โตช้า"
+      },
+      {
+        "growth": 18,
+        "exitMultiple": 22,
+        "divCum": 0,
+        "desc": "ผลิตภัณฑ์หลักโตต่อ + CRENESSITY ramp ขึ้น"
+      },
+      {
+        "growth": 28,
+        "exitMultiple": 27,
+        "divCum": 0,
+        "desc": "CRENESSITY ramp แรง + ไปป์ไลน์ใหม่สำเร็จ EPS โตเร็วกว่าฐาน"
+      }
+    ],
+    "exitDp": 0,
+    "note": "Base case ใช้ EPS GAAP TTM {{eps}} โต 18%/ปี → EPS ปี 3 ~$11.21 ที่ P/E 22x (ต่ำกว่า 28.2x ของ FY2025 ตามแนวโน้มตัวคูณที่ลดลง) → เป้า $247 · Bear: EPS โต 5% ที่ 15x → $118 · Bull: EPS โต 28% ที่ 27x → $386 · หุ้นไม่จ่ายปันผล — ผลตอบแทนมาจากราคาเท่านั้น · เป้าราคาเป็นสมมติฐานของผู้วิเคราะห์",
+    "hintNote": "• ไม่มีปันผล"
+  },
+  "analyst": {
+    "target": 209.52,
+    "n": null,
+    "rating": "Strong Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ราคารายเดือนใน ต.ค. 2568 อยู่ที่ประมาณ $143 ขึ้นไป $152 ใน พ.ย. 2568 แล้วอ่อนลงเหลือ $131–$132 ในช่วง ก.พ.–เม.ย. 2569 ก่อนกระโดดจาก $131.67 (เม.ย.) เป็น $158.30 (พ.ค.) และ $168.54 (มิ.ย.) จากนั้นย่อลงต่อเนื่องเหลือ $154.03 (ส.ค.) และ $146.23 (ก.ย.) กรอบ 52 สัปดาห์ $122.14–$186.12 (ไม่ได้ตรวจสอบสาเหตุของแต่ละช่วงจากแหล่งปฐมภูมิ จึงไม่ระบุ)",
+    "valuation": "สองวิธีเป็นคนละตระกูล (P/E ย้อนหลัง vs DCF) และห่างกันไม่ถึง 2 เท่า จึงเฉลี่ยตรง ๆ · เป้านักวิเคราะห์ ({{analyst.target}}, 28 คน, Strong Buy) เป็นเพียงบริบทเปรียบเทียบ ไม่ใช่ขาของ FV และสูงกว่า FV ที่ได้ · ความไวต่อสมมติฐาน: ถ้า P/E ที่ใช้เป็น 24x ขา P/E เหลือ $164 และ FV เหลือราว $172 (ส่วนเผื่อเหลือราว 15 จุดเปอร์เซ็นต์) · ตัวเลข EPS ใช้ฐาน GAAP ซึ่งต่ำกว่า adj. EPS ที่ vendor รายงาน (FY2026e $10.20 คนละฐาน) จึงอนุรักษ์กว่า consensus",
+    "gauge": "ราคาปัจจุบัน {{px}} ต่ำกว่า Fair Value {{fv}} (MOS {{mos}}) และอยู่ใกล้/ต่ำกว่าโซน MOS 20% ที่ {{mos20}} · โซน MOS 30% อยู่ที่ {{mos30}} · เป้าเฉลี่ยนักวิเคราะห์ {{analyst.target}} สูงกว่าราคาราว 43% แต่ไม่ใช่ขาของ FV",
+    "mos": "MOS ดี — ราคาอยู่ในโซน MOS 20% แต่ FV ขึ้นกับสมมติฐาน P/E และ DCF · ทยอยสะสมระยะกลาง",
+    "verdictHeadline": "CNS Pharma โตเร็ว กระแสเงินสดแข็ง — ทยอยสะสมใต้ FV {{fv}}",
+    "verdictBody": "Neurocrine Biosciences เติบโตเร็ว: รายได้ TTM $3.37B (+34.4%), EPS GAAP {{eps}} (FY2025 $4.67), FCF $870M และ D/E 0.13 · FV {{fv}} มาจากสองตระกูลอิสระ (P/E ที่วัดจริง 28.2x และ DCF) ให้ MOS {{mos}} ณ ราคา {{px}} · ความเสี่ยงหลักคือการกระจุกตัวของรายได้ ตัวคูณที่ลดลง และความต่างระหว่าง GAAP กับ adj. EPS · โซนสะสมคือใกล้/ต่ำกว่า {{mos20}}",
+    "strategy": "MOS {{mos}} — ทยอยสะสมระยะกลาง 2–3 ปี · ต่ำกว่า {{mos30}} (MOS 30%) เพิ่มสัดส่วนได้ · ตรวจงบไตรมาสถัดไป (คาด 27 ต.ค. 2569) เพื่อยืนยัน EPS และ FCF",
+    "disclaimerSources": "ที่มา: Yahoo Finance (ราคา ณ {{priceDate}}), StockAnalysis.com (งบการเงิน TTM ล่าสุด), StockAnalysis Forecast (analyst target 28 คน · avg $209.52)"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 2 วิธี · CNS Biopharma",
+    "chartHint": "· Yahoo Finance"
+  },
+  "catalysts": [
+    "<b>ผลิตภัณฑ์หลัก INGREZZA:</b> อนุมัติสำหรับ tardive dyskinesia และ chorea ใน Huntington's · รายได้ TTM $3.37B โต 34.4% YoY (ตามงบ vendor)",
+    "<b>CRENESSITY:</b> ผลิตภัณฑ์สำหรับ congenital adrenal hyperplasia ที่อยู่ในพอร์ตอนุมัติแล้ว · เป็นตัวขับ growth รอบใหม่ (ขนาดตลาด/ยอดขายไม่ได้ยืนยันจากแหล่งปฐมภูมิ)",
+    "<b>ไปป์ไลน์:</b> มีผู้สมัครหลายตัวด้านประสาท/จิตเวช (เช่น osavampator, NBI-1117568) · ผลการทดลองยังไม่ได้ประเมินในรายงานนี้",
+    "<b>กระแสเงินสดแข็งแรง:</b> FCF TTM $870M (FY2025 $749M) · D/E 0.13 · margin ดำเนินงาน 25.7%",
+    "<b>พันธมิตร:</b> มีความร่วมมือกับ AbbVie (Orilissa/Oriahnn) และ Takeda, Sanofi, Xenon ฯลฯ ตามข้อมูลบริษัท",
+    "<b>Forward P/E ต่ำ:</b> ~14.3x บน adj. EPS FY2026e ~$10.20 (คนละฐานกับ GAAP; ตัวเลข vendor)"
+  ],
+  "risks": [
+    "<b>การกระจุกตัว:</b> รายได้พึ่งผลิตภัณฑ์หลักไม่กี่ตัว · หาก CRENESSITY ramp ไม่ตามคาด EPS โตช้ากว่า Base",
+    "<b>สิทธิบัตร/generic:</b> ความเสี่ยงคดีสิทธิบัตรและ generic เป็นความเสี่ยงทั่วไปของธุรกิจยา (ไม่ได้ตรวจวันหมดอายุจากแหล่งปฐมภูมิ)",
+    "<b>ความเสี่ยง pipeline:</b> อัตราล้มเหลวของการทดลองยาสูง",
+    "<b>นโยบายราคายา:</b> การเจรจา/ควบคุมราคายาในสหรัฐฯ อาจกดรายได้และ margin",
+    "<b>ตัวเลข GAAP vs adj.:</b> EPS GAAP TTM {{eps}} ต่ำกว่า adj. FY2026e ~$10.20 มาก ค่าใช้จ่าย R&D/SBC ทำให้ P/E GAAP สูงกว่า forward",
+    "<b>ความไวของ FV:</b> P/E ที่ใช้ลดลงตามเวลา (64.6x→28.2x) ถ้าลดต่ออีก FV ลดลง"
+  ],
+  "extras": [],
+  "_sig": "sha256:4db590d648458f9f476b5ff374e1a0cbde577e34fbb53041b3f10a6d37011992"
+}
