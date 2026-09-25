@@ -126,4 +126,13 @@ t.eq(SC.mediansOf({ rows: [], median: null, curErr: 'งบเป็น CAD' }).
     SC.removeSidecar(prep, 'BRK.B'); SC.removeSidecar(prep, 'AOT-R');
     t(true, 'removeSidecar accepts dotted/dashed symbols (BRK.B, AOT-R)');
   } finally { fs.rmSync(dir, { recursive: true, force: true }); } }
+// Plan 3 Task 1 (R3) — ตัวสร้าง market ตัวเดียว: quote เดียวกัน → prep (factsJson → buildSidecar) = cron (marketFromQuote)
+{ const MK = require('../../tools/v3/market.js');
+  const U = require('../../tools/update-prices.js');
+  const built = MK.marketFromQuote(null, q, U.buildChartData(q.bars, q.price, q.gmtoffset));
+  const noVendor = SC.buildSidecar({ ...I, vend: { ...I.vend, lo52: null, hi52: null }, facts: FF.factsJson(q, 'ZZZQ', 'USD') });
+  t.eq(noVendor.market, built, 'R3: prep market (factsJson → sidecar) = cron builder market for the same quote');
+  const withVendor = SC.buildSidecar({ ...I, vend: { ...I.vend, lo52: 69, hi52: 150 }, facts: FF.factsJson(q, 'ZZZQ', 'USD') });
+  t.eq(withVendor.market, { ...built, range52w: { lo: 69, hi: 150 } }, 'R3: the only prep-side difference = vendor 52wk override (M7)');
+  t.eq(FF.factsJson({ ...q, price: 71.334 }, 'ZZZQ', 'USD').px, 71.33, 'factsJson px = round2 (same as cron — was raw before Plan 3)'); }
 t.done();

@@ -145,7 +145,7 @@ npm run verify && git add -A && git commit -m "analyze: add AAPL stock analysis"
 
 GitHub Actions ([`update-prices.yml`](.github/workflows/update-prices.yml)) ตั้ง cron ไว้ **04:00 น. ไทย** (config 21:00 UTC — GitHub รันช้ากว่า config เสมอ · skew ไม่คงที่ ตัวเลขล่าสุด + เหตุผลของเวลานี้ดู [`docs/price-refresh.md`](docs/price-refresh.md)) — ดึงราคาจริงจาก Yahoo
 (ยิงเดียวต่อหุ้น: `?range=1y&interval=1mo`) แล้ว patch **เฉพาะตัวเลขโครงสร้าง** ลงทุกรายงาน
-→ ผ่าน `npm run verify:cron` (ประตู cron <!-- gen:verify-cron-steps -->5<!-- /gen:verify-cron-steps --> ขั้น) แล้วจึง commit + push เอง (Cloudflare deploy ต่อ)
+→ ผ่าน `npm run verify:cron` (ประตู cron <!-- gen:verify-cron-steps -->6<!-- /gen:verify-cron-steps --> ขั้น) แล้วจึง commit + push เอง (Cloudflare deploy ต่อ)
 
 - **แตะอะไรบ้าง:** ราคา header + วันที่ราคา + กราฟ 13 จุด (~1 ปี) + ป้าย % รอบปี + เข็ม gauge + MOS + เครื่องคิดเลข + `stock-meta` · และทุกค่าที่เป็น **ฟังก์ชันของราคา** (P/E · Market Cap · P/S · ปันผล % · P/BV · ฉากหมวด 6 · ช่องสรุป "ส่วนต่างจากราคา" + คลาส verdict) — รายการเต็มใน [`docs/price-refresh.md`](docs/price-refresh.md)
 - **script deterministic ล้วน ไม่มี LLM ในลูป** ([`tools/update-prices.js`](tools/update-prices.js)) · **ไม่แตะ** prose วิเคราะห์ / EPS / Fair Value / วันที่วิเคราะห์ (`preserve-dates.js` คืนลำดับ index ให้) — ยกเว้นช่องสรุป MOS ที่ cron เป็นเจ้าของเอง (`summaryPlan`, 12 ก.ย. 2569)

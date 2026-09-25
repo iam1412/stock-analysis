@@ -1,4 +1,5 @@
-# Cron อัปเดตราคาหุ้น + วันที่ราคา ลง reports/*.html ทุกวัน (04:00 น. ไทย วันถัดไป — เดิม 07:17 น. ไทย)
+# Cron อัปเดตราคาหุ้น + วันที่ราคา ทุกวัน (04:00 น. ไทย วันถัดไป — เดิม 07:17 น. ไทย)
+#   ใบ v2 = reports/*.html (report-data.values) · ใบ v3 = reports/*.json (market.* อย่างเดียว ผ่าน IO.writeMarket — Plan 3 · spec §7)
 # รายละเอียด: docs/price-refresh.md · ตัวรัน: tools/update-prices.js (deterministic ไม่มี LLM)
 # push เข้า main → Cloudflare Workers Builds deploy เว็บให้เองตามปกติ
 name: price-refresh
@@ -11,7 +12,7 @@ on:
     #     `now < regularEnd` แบบ strict ⇒ ที่ 21:00 เป๊ะยังนับเป็นราคาปิด ไม่ต้องเสีย buffer
     #     (open-items #33 เสนอ 20:30 UTC = 15:30 ET ในฤดู EST = กลาง session US ⇒ ได้ราคา intraday — ห้ามใช้)
     #   ขอบบน 02:55 UTC ไม่ใช่ 03:00 — SET เปิดสุ่ม 09:55–10:00 น. ไทย แต่ Yahoo ตั้ง regular.start ไว้ 10:00 เป๊ะ
-    #   หักเวลารันอีก ~8 นาที — readdirSync().sort() กระจายหุ้นไทยตลอด A–Z + FETCH_DELAY_MS 450 ⇒ ตัวท้าย
+    #   หักเวลารันอีก ~8 นาที — ลูป RS.list (.html + .json เรียงตามชื่อไฟล์) กระจายหุ้นไทยตลอด A–Z + FETCH_DELAY_MS 450 ⇒ ตัวท้าย
     #     (T*/U*/V*/W*) ถูก fetch ที่ createdAt + ~8 นาที (วัดจาก log รอบ 13 ก.ย. 69: จบลูป +7 นาที 38 วิ)
     # ⇒ รับ skew ได้สูงสุด 5.78 ชม. · GitHub ไม่รันตรงเวลา config: skew ปัจจุบัน (2–13 ก.ย. 69) = 4.30–4.61 ชม.
     #   ⇒ เริ่มรันจริง ~01:18–01:37 UTC, fetch หุ้นไทยตัวท้ายจบ ~01:26–01:45 UTC ⇒ margin 70–89 นาที
@@ -71,7 +72,8 @@ jobs:
           # scope: cron แตะแค่รายงาน + manifest + flags — กันไฟล์แปลกปลอมที่ step ก่อนหน้าเผลอเขียนลง repo root หลุดขึ้น main
           git add reports reports.json price-flags.json
           if git diff --cached --quiet; then echo "ไม่มีอะไรเปลี่ยน — ข้าม commit"; exit 0; fi
-          n=$(git diff --cached --name-only -- 'reports/*.html' | wc -l | tr -d ' ')
+          # นับทั้งใบ v2 (.html) และใบ v3 (.json · Plan 3) — ชื่อ commit ต้องตรงจำนวนหุ้นที่ราคาเปลี่ยนจริง
+          n=$(git diff --cached --name-only -- 'reports/*.html' 'reports/*.json' | wc -l | tr -d ' ')
           # log ต่อหุ้น (เก่า→ใหม่ + freeze) เข้า commit body — ถาวรใน git history
           { echo "price: refresh ${n} symbols ($(TZ=Asia/Bangkok date +%Y-%m-%d))"; echo ""; cat /tmp/price-commit-body.txt 2>/dev/null || true; } > /tmp/price-commit-msg.txt
           git commit -F /tmp/price-commit-msg.txt

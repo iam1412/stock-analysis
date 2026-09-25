@@ -38,4 +38,46 @@ const fileUndef = path.join(dir, 'ZTS-undef.json');
 IO.write(fileUndef, { ...d, meta: { ...d.meta, headerTags: undefined } });
 t(IO.verifySig(IO.read(fileUndef)), 'write/read round-trip through an undefined-valued nested key still verifies');
 
+// ── Plan 3 Task 2 — IO.writeMarket (ผู้เขียนของ cron · spec §7 · R1/R6) · โฟลเดอร์ชั่วคราว dir ข้างบน (ห้ามแตะ reports/ จริง) ──
+{
+  const seeds = require('../../tools/seeds.json');
+  const real = () => JSON.parse(JSON.stringify(require('../fixtures/v3/ZTS-real.json')));
+  const today = '2026-09-22';
+  const mf = path.join(dir, 'ZTS-market.json');
+  IO.write(mf, real());
+  const before = IO.read(mf);
+  const market = { ...before.market, px: 73.46, priceDate: '2026-09-22', chart: { data: before.market.chart.data.slice(0, 11).concat([['ก.ย.26', 73.46]]) } };
+  const bytes = (f) => fs.readFileSync(f, 'utf8');
+  const strip = (x) => { const { market: _m, _sig: _s, ...rest } = x; return rest; };
+  const r = IO.writeMarket(mf, market, { seeds, today });
+  const after = IO.read(mf);
+  t(IO.verifySig(after) && r.doc._sig === after._sig, 'writeMarket: file re-signed · returns the written doc');
+  t.eq(after.market, market, 'writeMarket: market replaced verbatim');
+  t.eq(strip(after), strip(before), 'writeMarket: every non-market field deep-equal');
+  t.eq(IO.freshHash(after), IO.freshHash(before), 'writeMarket: freshHash unchanged ⇒ reports.json updated does not move (§8)');
+  t.eq(r.errors, [], 'writeMarket: gate clean on the happy path');
+  t(!fs.existsSync(mf + '.lock'), 'writeMarket: lock released');
+  // gate ตก = throw + ไฟล์เดิมทุก byte (ไม่มีอะไรให้ revert)
+  const b0 = bytes(mf);
+  t.throws(() => IO.writeMarket(mf, { ...market, px: 0 }, { seeds, today }), /E51/, 'writeMarket: schema error → throw E51');
+  t.throws(() => IO.writeMarket(mf, { ...market, px: 0 }, { seeds, today, force: true }), /E51/, 'writeMarket: --force never overrides E51');
+  t.throws(() => IO.writeMarket(mf, market, { seeds, today: '2027-06-01' }), /E27/, 'writeMarket: gate error (E27 stale) → throw');
+  t(bytes(mf) === b0 && !fs.existsSync(mf + '.lock'), 'writeMarket: rejected writes leave the bytes unchanged and release the lock');
+  { let codes = null; try { IO.writeMarket(mf, market, { seeds, today: '2027-06-01' }); } catch (e) { codes = e.codes; }
+    t.eq(codes, ['E27'], 'writeMarket: error carries .codes for the cron flag detail'); }
+  const rf = IO.writeMarket(mf, market, { seeds, today: '2027-06-01', force: true });
+  t(rf.errors.some((e) => e.id === 'E27') && IO.verifySig(IO.read(mf)), 'writeMarket: --force writes past a non-E50/E51 error and returns it');
+  // E52 (ขา declared sotp ไม่มีตาราง) — ผ่าน schema จึงเขียนด้วย IO.write ได้ · gate ตก
+  const e52 = real(); e52.legs[1].inputs.basis = 'sotp';
+  const f52 = path.join(dir, 'ZTS-e52.json'); IO.write(f52, e52); const b52 = bytes(f52);
+  t.throws(() => IO.writeMarket(f52, market, { seeds, today }), /E52/, 'writeMarket: E52 → throw');
+  t.eq(bytes(f52), b52, 'writeMarket: E52 → bytes unchanged');
+  // E50 — ไฟล์ถูกแก้มือ (_sig เดิม): ห้ามเซ็นทับแม้ --force
+  const f50 = path.join(dir, 'ZTS-e50.json'); IO.write(f50, real());
+  const hand = IO.read(f50); hand.prose.mos += ' แก้มือ'; fs.writeFileSync(f50, JSON.stringify(hand, null, 2) + '\n');
+  const b50 = bytes(f50);
+  t.throws(() => IO.writeMarket(f50, market, { seeds, today, force: true }), /E50/, 'writeMarket: hand-edited file → E50 even with --force (never re-sign a hand edit)');
+  t.eq(bytes(f50), b50, 'writeMarket: E50 → bytes unchanged');
+}
+
 t.done();

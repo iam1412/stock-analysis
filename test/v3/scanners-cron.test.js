@@ -16,30 +16,20 @@ try {
   tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'v3-scan-cron-'));
   fs.copyFileSync(path.join(FIX, 'AAPL-v2.html'), path.join(tmp, 'AAPL.html'));
   fs.copyFileSync(V3SRC, path.join(tmp, 'ZTS.json'));
-  // update-prices — ราคาใบ v3 แช่แข็งจน P5 แต่ห้ามเงียบ (#62)
+  // update-prices — Plan 3 (P5): ใบ v3 เข้าสาย cron แล้ว (v3Guard/v3Refusal/v3SweepNotice ถูกถอด · test/v3/cron.test.js คุมสาย v3)
+  //   ที่เหลือของ guard เดิม = --heal-derived <v3> exit 1 (R7 · ห้าม exit 0 เงียบ)
   const U = require('../../tools/update-prices.js');
   const isV3 = (s) => RS.kindOf(s, tmp) === 'v3';
-  const msg = U.v3Refusal(new Set(['AAPL', 'ZTS']), isV3) || '';
-  t(/ZTS/.test(msg) && !/AAPL/.test(msg) && /v3 cron = Plan 3/.test(msg) && /#62/.test(msg), 'update-prices: explicit v3 symbol → refusal naming it (v3 cron = Plan 3 · #62)');
-  t.eq(U.v3Refusal(new Set(['AAPL']), isV3), null, 'update-prices: v2 symbol → no refusal');
-  t.eq(U.v3Refusal(new Set(), isV3), null, 'update-prices: sweep (no symbols) → no refusal (R11)');
-  // R11 / binding ruling 2 — ห้ามเงียบ: sweep พิมพ์บรรทัดต่อใบ + สรุปจำนวน · สั่ง symbol v3 ตรง ๆ = exit 1 (ทางเดียวกับ main)
-  const v3s = RS.list(tmp).filter((e) => e.v3).map((e) => e.symbol);
-  const note = U.v3SweepNotice(v3s);
-  t(note.length === v3s.length + 1 && note.slice(0, -1).every((l, i) => l.includes(`reports/${v3s[i]}.json`)) && /(^|\s)v3-skipped: 1(\s|$)/.test(note[note.length - 1]) && /v3 cron = Plan 3/.test(note[note.length - 1]),
-    'update-prices sweep: one line per skipped v3 file + one summary count line', JSON.stringify(note));
-  t.eq(U.v3SweepNotice([]), [], 'update-prices sweep: no v3 files → no lines');
+  t(U.v3Guard === undefined && U.v3Refusal === undefined && U.v3SweepNotice === undefined, 'update-prices: P4 guard removed (v3 lane shipped in Plan 3)');
+  const msg = U.healV3Refusal(new Set(['AAPL', 'ZTS']), isV3) || '';
+  t(/ZTS/.test(msg) && !/AAPL/.test(msg) && /--heal-derived/.test(msg), 'update-prices: --heal-derived <v3> → refusal naming it (exit 1 in main · R7)');
+  t.eq(U.healV3Refusal(new Set(['AAPL']), isV3), null, 'update-prices: --heal-derived <v2> → no refusal');
+  t.eq(U.healV3Refusal(new Set(), isV3), null, 'update-prices: --heal-derived sweep → no refusal (v3 skipped with a count line)');
   t.eq([...U.onlyFromArgv(['--write', '--force', 'zts.json', 'aapl.html', 'KBANK'])], ['ZTS', 'AAPL', 'KBANK'], 'onlyFromArgv: flags dropped, .json/.html stripped, upper-case');
-  { const g = U.v3Guard(U.onlyFromArgv(['--write', '--force', 'ZTS']), isV3, v3s);
-    t(g.code === 1 && g.lines.length === 1 && /ZTS/.test(g.lines[0]) && /v3 cron = Plan 3/.test(g.lines[0]), '--write --force <v3 SYM> → code 1 "v3 cron = Plan 3" (before any fetch)'); }
-  t.eq(U.v3Guard(U.onlyFromArgv(['--heal-derived', 'zts.json']), isV3, v3s).code, 1, '--heal-derived <v3>.json → code 1 (same guard)');
-  { const g = U.v3Guard(U.onlyFromArgv(['--write']), isV3, v3s); t(g.code === 0 && g.lines.length === 2, 'no-arg sweep → code 0 + notice lines (visible in the cron log)'); }
-  t.eq(U.v3Guard(U.onlyFromArgv(['--write', '--force', 'AAPL']), isV3, v3s), { code: 0, lines: [] }, 'explicit v2 symbol → untouched (no lines)');
   t(RS.symbols(tmp).has('ZTS'), 'reportExists = RS.symbols keeps flags of v3 reports');
   // fix 1: สั่งเป็น path (reports/zts.json · reports/ZTS.html) ต้องได้ symbol เดียวกัน → เจอ guard ไม่ใช่ no-op เงียบ
   t.eq([...U.onlyFromArgv(['--write', '--force', 'reports/zts.json', './reports/AAPL.html', path.join(tmp, 'ZTS.html')])], ['ZTS', 'AAPL'], 'onlyFromArgv: path forms → basename symbol');
-  t.eq(U.v3Guard(U.onlyFromArgv(['--write', '--force', 'reports/zts.json']), isV3, v3s).code, 1, '--write --force reports/zts.json → code 1');
-  t.eq(U.v3Guard(U.onlyFromArgv(['--write', '--force', 'reports/ZTS.html']), isV3, v3s).code, 1, '--write --force reports/ZTS.html (ใบเป็น v3) → code 1');
+  t(U.healV3Refusal(U.onlyFromArgv(['--heal-derived', 'reports/zts.json']), isV3) !== null, '--heal-derived reports/zts.json → refusal (path form reaches the guard)');
   // fix 3b: wiring ของ main — reportExists = RS.symbols(REPORTS) → commitFlags ต้องคง flag ของใบ .json (ตัดเฉพาะหุ้นที่ไม่มีไฟล์)
   { const ff = path.join(tmp, 'price-flags.json');
     fs.writeFileSync(ff, JSON.stringify([{ symbol: 'ZTS', reason: 'drift', flaggedAt: '2026-09-20' }, { symbol: 'GONE', reason: 'drift', flaggedAt: '2026-09-20' }]));
