@@ -1,0 +1,261 @@
+{
+  "v": 3,
+  "symbol": "BAC",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Bank of America",
+    "exchange": "NYSE",
+    "sub": "Consumer & Small Business Banking • Wealth Management (Merrill Lynch) • Global Banking & Markets • Global Transaction Services",
+    "headerTags": [
+      "Financials",
+      "Banking"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis.com",
+      "Yahoo Finance",
+      "GuruFocus",
+      "Investing.com"
+    ],
+    "themeLegacy": {
+      "accent": "#E31837",
+      "accentDark": "#a80f27",
+      "darkGrad": "linear-gradient(135deg,#1a0005 0%,#2d000c 100%)",
+      "glow": "rgba(227,24,55,0.35)",
+      "subColor": "#ff8099",
+      "headerMuted": "rgba(255,255,255,0.55)",
+      "verdictText": "#fff",
+      "vcellLabel": "rgba(255,255,255,0.65)"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T11:06:17+07:00",
+      "v2Hash": "09982767a23e"
+    }
+  },
+  "market": {
+    "px": 56.03,
+    "priceDate": "2026-09-24",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          53.45
+        ],
+        [
+          "พ.ย.25",
+          53.65
+        ],
+        [
+          "ธ.ค.25",
+          55
+        ],
+        [
+          "ม.ค.26",
+          53.2
+        ],
+        [
+          "ก.พ.26",
+          49.83
+        ],
+        [
+          "มี.ค.26",
+          48.75
+        ],
+        [
+          "เม.ย.26",
+          53.46
+        ],
+        [
+          "พ.ค.26",
+          51.6
+        ],
+        [
+          "มิ.ย.26",
+          56.98
+        ],
+        [
+          "ก.ค.26",
+          61.95
+        ],
+        [
+          "ส.ค.26",
+          61.94
+        ],
+        [
+          "ก.ย.26",
+          56.03
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 46.12,
+      "hi": 65.22
+    }
+  },
+  "fundamentals": {
+    "eps": 4.33,
+    "dps": 1.28,
+    "bvps": 39.34,
+    "shares": 6992748365,
+    "beta": 1.2,
+    "bank": {
+      "nim": 2.07
+    },
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation",
+      "inputs": {
+        "multiple": 11.5,
+        "multipleSource": "median5y"
+      },
+      "note": "มัธยฐาน P/E ย้อนหลัง 5 ปีของ BAC เอง (ช่วง 9.9–12.6x)",
+      "family": "market"
+    },
+    {
+      "method": "pbv",
+      "label": "Justified P/BV",
+      "inputs": {
+        "g": 4,
+        "r": 9.5
+      },
+      "override": {
+        "roe": 11.2,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "custom:0",
+      "pbv",
+      "eps",
+      "custom:1",
+      {
+        "key": "nim",
+        "tone": "neu"
+      },
+      "custom:2",
+      "yield",
+      "custom:3",
+      "custom:4",
+      "beta"
+    ],
+    "custom": [
+      {
+        "label": "P/TBV",
+        "value": "1.95x",
+        "note": "ตามที่ StockAnalysis แสดง (ล่าสุด)",
+        "tone": "neu"
+      },
+      {
+        "label": "ROE / ROTCE",
+        "value": "~11.2% / 16%",
+        "note": "Q1 2026 ROTCE 16%",
+        "tone": "pos"
+      },
+      {
+        "label": "CET1 Ratio",
+        "value": "11.2%",
+        "note": "Q1 2026 · เงินทุนแข็งแกร่ง",
+        "tone": "pos"
+      },
+      {
+        "label": "Efficiency Ratio",
+        "value": "61%",
+        "note": "Q1 2026 · ต่ำกว่า = ดีกว่า"
+      },
+      {
+        "label": "NII Q1 2026",
+        "value": "$15.9B",
+        "note": "+9% YoY · guidance +6–8% ปี 2026",
+        "tone": "neu"
+      }
+    ],
+    "notes": {
+      "mcap": "คงเหลือ",
+      "pbv": "(ล่าสุด)",
+      "eps": "FY2025 $3.81 · FY2024 $3.19",
+      "nim": "Q1 2026 · ขยับ +8 bps YoY",
+      "yield": "{{dps}}/share/ปี (ล่าสุด)",
+      "beta": "ผันผวนมากกว่าตลาดเล็กน้อย"
+    },
+    "hint": "ธนาคารพาณิชย์ขนาดใหญ่อันดับ 2 ของสหรัฐฯ"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 3,
+        "exitMultiple": 10,
+        "divCum": 3.84,
+        "desc": "ดอกเบี้ยลด NIM หด NPL พุ่ง เศรษฐกิจถดถอย"
+      },
+      {
+        "growth": 12,
+        "exitMultiple": 12,
+        "divCum": 4.2,
+        "desc": "NIM ฟื้น Merrill Lynch เติบโต ต้นทุนลด"
+      },
+      {
+        "growth": 18,
+        "exitMultiple": 14,
+        "divCum": 4.5,
+        "desc": "NIM ขยายตัวแรง ROE ทะลุ 15% re-rating ครั้งใหญ่"
+      }
+    ],
+    "exitDp": 0,
+    "note": "สถานการณ์ Base สมมติ EPS เติบโต 12%/ปีจาก NII ที่ฟื้นตัว ค่าธรรมเนียม Merrill Lynch เพิ่มขึ้น และการลดต้นทุน ซึ่งสอดคล้องกับ guidance ของบริษัทที่คาด NII เติบโต 6–8% ในปี 2026 สถานการณ์ Bear สมมติเศรษฐกิจถดถอยกดดัน NIM และ credit cost พุ่ง P/E หดตัวเหลือ 10x (ใกล้ต่ำสุดย้อนหลัง 9.9x) ส่วน Bull สมมติ re-rating ของ P/E เมื่อ ROE เข้าใกล้ระดับ JPM · ตัวเลขเป็นการประมาณการ ไม่ใช่การรับประกันผลตอบแทน"
+  },
+  "analyst": {
+    "target": 68.86,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "BAC เริ่มกราฟที่ราว $53 ในเดือน ต.ค. 2568 ปรับขึ้นสู่ระดับ $55 ปลายปี 2568 จากนั้นย่อลงสู่ $48–50 ในช่วง ก.พ.–มี.ค. 2569 จากความกังวลเศรษฐกิจ ก่อนดีดกลับหลังผลประกอบการ Q1 2026 แข็งแกร่ง (EPS +25% YoY, ROTCE 16%) แตะราว $62 ในเดือน ก.ค.–ส.ค. 2569 แล้วย่อลงมาปิดเดือน ก.ย. ใกล้ $58",
+    "valuation": "รอบนี้ปรับโครง Fair Value: วิธี P/E ใช้ตัวคูณ 11.5x ซึ่งเป็นมัธยฐานที่วัดจาก 5 ปีงบล่าสุดของ BAC (แทน 15x ที่ตั้งไว้เอง) ให้ค่า {{fvLow}} ส่วน Justified P/BV (ROE 11.2%, g 4%, r 9.5%) ให้ {{fvHigh}} สองวิธีอยู่คนละตระกูล (ตัวคูณกำไรย้อนหลัง กับ ROE/ต้นทุนทุน) ค่าเฉลี่ย = {{fv}} ≈ $50.70 · ตัดวิธี P/TBV 2.0x เดิมออกเพราะเป็นตัวคูณที่ตั้งเอง ไม่มีค่ามัธยฐานที่วัดได้รองรับ และ TBVPS ล่าสุดยังไม่ได้ยืนยันจากงบ · เป้านักวิเคราะห์ใช้เป็นบริบทเทียบเท่านั้น ไม่ได้เป็นส่วนของ FV · ตัวคูณปัจจุบัน ~13.3x สูงกว่ามัธยฐานย้อนหลัง จึงชี้ว่าราคาตอนนี้แพงกว่าค่าเฉลี่ยประวัติศาสตร์",
+    "gauge": "ราคาปัจจุบัน {{px}} สูงกว่า Fair Value {{fv}} MOS ติดลบ ({{mos}}) แสดงว่าหุ้นซื้อขายเกินมูลค่าที่เหมาะสมตามโครง FV รอบนี้ นักวิเคราะห์ 21 คนมีราคาเป้าเฉลี่ย {{analyst.target}} (Buy) ซึ่งสูงกว่า FV ของเรามาก เพราะเป้านักวิเคราะห์ไม่ได้ถูกใช้เป็นส่วนของ FV · โซน MOS 20% ที่ {{mos20}} เป็นจุดสะสมที่น่าสนใจกว่า สำหรับ deep value รอที่ {{mos30}} (MOS 30%)",
+    "mos": "MOS ติดลบ — ราคาสูงกว่า Fair Value · รอโซน MOS 20% ที่ {{mos20}}",
+    "verdictHeadline": "ราคาสูงกว่า Fair Value เล็กน้อย — รอจังหวะ Pullback สู่โซน MOS 20%",
+    "verdictBody": "BAC เป็นธนาคารขนาดใหญ่อันดับ 2 ของสหรัฐฯ ที่กำลังอยู่ในเส้นทางฟื้นตัว NIM หลังจากช่วงที่ถูกกดดันจากพอร์ต HTM/AFS ที่ซื้อช่วง COVID ในอัตราดอกเบี้ยต่ำ EPS TTM ล่าสุด {{eps}} และ guidance NII ปี 2026 ดีกว่าคาด อย่างไรก็ตาม ราคาปัจจุบัน {{px}} สูงกว่า Fair Value {{fv}} (MOS {{mos}}) เมื่อวัดด้วยตัวคูณมัธยฐานย้อนหลังของ BAC เอง จึงไม่ใช่จังหวะ value สำหรับนักลงทุนที่ต้องการ margin of safety สูง กลยุทธ์แนะนำคือรอสะสมหาก pullback สู่โซน MOS 20% ที่ {{mos20}}",
+    "strategy": "BAC เป็นธนาคารดีที่ราคาปัจจุบันตึงตัวเมื่อเทียบตัวคูณย้อนหลัง MOS ติดลบ ({{mos}}) ควรรอสะสมที่โซน MOS 20% ({{mos20}}) สำหรับ long-term value investor · หากถือแล้วไม่จำเป็นต้องขาย เงินปันผล ~2.2% + การเติบโตของ NIM เป็น catalyst ระยะกลาง · ผลตอบแทน 3 ปี Base case ดูหมวด 6",
+    "disclaimerSources": "แหล่งข้อมูล: StockAnalysis.com (stockanalysis.com/stocks/bac/) · Yahoo Finance (finance.yahoo.com/quote/BAC) · GuruFocus (gurufocus.com/term/NetInterestMargin/BAC) · Morningstar BAC earnings analysis · StockAnalysis Forecast (stockanalysis.com/stocks/bac/forecast/) · Investing.com Q1 2026 earnings call transcript"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 2 วิธี"
+  },
+  "catalysts": [
+    "<b>NIM ฟื้นตัวต่อเนื่อง:</b> NIM (FTE) ปรับขึ้น 8 bps YoY เป็น 2.07% ใน Q1 2026 สินทรัพย์คงที่อัตราดอกเบี้ยต่ำ (HTM bonds) ทยอยครบกำหนดและ reprice สูงขึ้น guidance NII +6–8% ปี 2026",
+    "<b>Merrill Lynch & Wealth Management:</b> ธุรกิจ Wealth Management เติบโตแข็งแกร่ง asset-based fee ช่วยลดพึ่งพา NII และให้รายได้สม่ำเสมอมากขึ้น",
+    "<b>ROTCE 16% ใน Q1 2026:</b> ดีกว่าความคาดหมาย สะท้อนการจัดการต้นทุนที่ดีขึ้น EPS Q1 2026 พุ่ง +25% YoY เป็น $1.11",
+    "<b>เงินทุน CET1 แข็งแกร่ง 11.2%:</b> มีพื้นที่สำหรับ buyback และเพิ่มเงินปันผล สนับสนุน EPS per share growth ในระยะกลาง",
+    "<b>ฐานลูกค้า Consumer ขนาดใหญ่:</b> เงินฝาก consumer ราคาถูก (low-cost deposits) รองรับ NIM แม้ดอกเบี้ยอาจปรับลด",
+    "<b>Buy consensus:</b> นักวิเคราะห์ 21 คนให้คะแนนเฉลี่ย Buy เป้าเฉลี่ย {{analyst.target}} (ใช้เป็นบริบท ไม่ใช่ส่วนของ FV)"
+  ],
+  "risks": [
+    "<b>HTM Securities Drag:</b> พอร์ต US Treasury ที่ซื้อช่วง 2020–2021 ที่ yield ต่ำยังค้างอยู่ใน HTM unrealized loss กดดัน TBV และมีความเสี่ยงหาก rates พุ่งอีกรอบ",
+    "<b>Efficiency Ratio 61%:</b> ยังสูงกว่า JPM (~50%) โครงสร้างต้นทุนที่หนักกว่าจำกัด ROE expansion และทำให้ multiple ต่ำกว่า peer",
+    "<b>ความอ่อนไหวต่ออัตราดอกเบี้ย:</b> BAC มีความ rate-sensitive สูงกว่าคู่แข่ง หากดอกเบี้ยลดเร็วกว่าคาด NII อาจกระทบหนักกว่า JPM หรือ WFC",
+    "<b>Credit Quality:</b> หากเศรษฐกิจชะลอ credit loss provisions อาจพุ่ง กดดันกำไรมากกว่าธนาคารที่มี credit standards เข้มงวดกว่า",
+    "<b>Regulatory Risk:</b> ธนาคาร GSIB ยังอยู่ภายใต้กฎ Basel III endgame ที่อาจบังคับให้ถือทุนสูงขึ้น จำกัด buyback และ ROE",
+    "<b>ROE ต่ำกว่า JPM:</b> ROE ~11% เทียบ JPM ~19% ทำให้ multiple ที่ตลาดยินดีจ่ายต่ำกว่าเมื่อเทียบ peer และจำกัด upside"
+  ],
+  "extras": [],
+  "_sig": "sha256:f29606ef20ec7ad5c968dc2da10b555b1dfb795a0571792b2b4f2ee3570565c3"
+}
