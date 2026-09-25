@@ -259,7 +259,21 @@ function qualifierOf(prose) {
   if (tail) out.push(tail);
   return out.join(' · ');
 }
-const labelOf = (mname) => String(mname).replace(/^\s*\d+\s*[.)]\s*/, '').replace(/\s*\(?\s*บริบท[^)]*\)?\s*$/, '').replace(/[{}<>]/g, '').trim();
+/** ชื่อขาของผู้เขียน (Plan 4c-prep D4): ตัดเลขนำ + ป้ายบริบทท้ายชื่อ · reason = คำอื่นในป้ายบริบท (→ legs[i].note ใน Task 5) · gate ใช้ฟังก์ชันเดียวกันทั้งสองฝั่ง */
+const CTX_MARK = /(?:^|[\s(—–-])(?:บริบท|ไม่รวมในกรอบ(?:\s*FV)?|ไม่รวมใน\s*(?:FV|ค่าเฉลี่ย|การเฉลี่ย)|ไม่นับใน\s*(?:FV|ค่าเฉลี่ย|กรอบ)?|ไม่เข้าค่าเฉลี่ย)(?=[\s)/—–-]|$)/g;
+function labelParts(mname) {
+  // [{}<>] ตัดเฉพาะจากชื่อขา (เหมือน labelOf เดิม) — reason คงคำ/เครื่องหมายของผู้เขียน (">2×")
+  const t = String(mname).replace(/^\s*\d+\s*[.)]\s*/, '').trim(), clean = (s) => s.replace(/[{}<>]/g, '').trim();
+  const at = t.search(/\s*(?:\(\s*|[—–-]\s*)?บริบท/);
+  if (at < 0) return { label: clean(t), ctx: false, reason: '' };
+  const tidy = (s) => s.replace(CTX_MARK, ' ').replace(/[()]/g, ' ').replace(/^[\s—–/·-]+|[\s—–/·-]+$/g, '').replace(/\s+/g, ' ').trim();
+  let label = t.slice(0, at).replace(/[\s—–-]+$/, '').trim(), pre = '';
+  // ป้ายบริบทอยู่ในวงเล็บที่เปิดก่อนหน้า ("Market Anchor (เป้านักวิเคราะห์ — บริบท …)") — ตัดวงเล็บกำพร้าออกจากชื่อ คำในวงเล็บไป reason
+  if ((label.match(/\(/g) || []).length > (label.match(/\)/g) || []).length) { const k = label.lastIndexOf('('); pre = tidy(label.slice(k + 1)); label = label.slice(0, k).trim(); }
+  const reason = [pre, tidy(t.slice(at))].filter(Boolean).join(' — ');
+  return { label: clean(label), ctx: true, reason };
+}
+const labelOf = (mname) => labelParts(mname).label;
 
 /** ขาทั้งหมดบน f (object เดียวกับ doc.fundamentals + currency/rps ที่ legValue ไม่อ่าน) → { legs, meta, epsBase, H, F } */
 function legsOf(parsed, fund, currency) {
@@ -767,4 +781,4 @@ function assemble(parsed0, ctx) {
   };
 }
 
-module.exports = { assemble, s6HintNote, guardLegs, extrasOf, analystOf, singleTarget, legsOf, weightsOf, generatedValHint, pxMetaOf, qualifierOf, hasProse, isProseToken, labelOf, multipleSourceOf, medianWindowOf };
+module.exports = { assemble, s6HintNote, guardLegs, extrasOf, analystOf, singleTarget, legsOf, weightsOf, generatedValHint, pxMetaOf, qualifierOf, hasProse, isProseToken, labelOf, labelParts, multipleSourceOf, medianWindowOf };

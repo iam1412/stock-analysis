@@ -227,4 +227,88 @@ t(EQ.TEMPLATE_VOCAB && EQ.TEMPLATE_VOCAB.s3.includes('เฉลี่ย') && EQ
     'I-3: CNC-shaped "EPS forward normalized" vs v3 basis label → "forward" TEXT LOST', JSON.stringify({ lost: fwd.eq.textLost, leg: fwd.doc.legs[0] }));
   t.eq(BK.bucketOf(fwd.notes, fwd.eq).bucket, 'HUMAN', 'I-3: → HUMAN');
 }
+// ── Plan 4c-prep Task 4 (spec §3.7 ค · D4) ──
+const SY = require('../../tools/migrate-v3/synonyms.js');
+const docOf = (patch) => { const d = JSON.parse(JSON.stringify(require('../fixtures/v3/ZTS.json'))); patch(d); return d; };
+// no fact word ever enters the vocabulary (reviewer rule — like TEMPLATE_VOCAB/FORMULA_VOCAB)
+{
+  const all = SY.SYNONYM_VOCAB.flatMap((e) => e.from.flat().concat(e.to));
+  t(all.every((w) => !SY.FACT_WORDS.some((re) => re.test(w))), 'SYNONYM_VOCAB holds no fact word (AFFO Core forward FY#E Tangible adj GAAP)', JSON.stringify(all.filter((w) => SY.FACT_WORDS.some((re) => re.test(w)))));
+  t(SY.SYNONYM_VOCAB.every((e) => e.id && e.roles.length && typeof e.guard === 'function' && e.why && e.why.length > 10), 'every entry names roles · guard · why');
+  t.eq(SY.FACT_WORDS.map(String).length >= 7, true, 'FACT_WORDS lists the seven fact words');
+}
+// Review Focus 4 — guards
+{
+  const g = (patch, extra) => ({ doc: docOf(patch), ...(extra || {}) });
+  const ap = (role, ws, gg) => SY.apply(role, ws, gg).tokens;
+  t.eq(ap('s6.exitRow', ['Exit', 'P/E'], g(() => {})), ['ออก', 'P/E'], 'exit row: Exit ≡ ออก');
+  t.eq(ap('s6.top', ['Rev', '+6%/ปี'], g((d) => { d.scenarios.driver = 'eps'; })), ['Rev', '+6%/ปี'], 'guard: Rev under driver eps stays (different quantity)');
+  t.eq(ap('s6.top', ['Rev', '+6%/ปี'], g((d) => { d.scenarios.driver = 'revenuePerShare'; })), ['รายได้', '+6%/ปี'], 'Rev ≡ รายได้ when driver revenuePerShare');
+  t.eq(ap('s6.endRow', ['รายได้ปี', '3'], g((d) => { d.scenarios.driver = 'revenuePerShare'; })), ['รายได้', 'ปี', '3'], 'รายได้ปี ≡ รายได้ ปี');
+  t.eq(ap('s6.divRow', ['ไม่จ่าย'], g(() => {}, { case: { divCum: 6.6 } })), ['ไม่จ่าย'], 'guard: ไม่จ่าย on a column with divCum > 0 stays');
+  t.eq(ap('s6.divRow', ['ไม่จ่าย'], g(() => {}, { case: { divCum: 0 } })), [], 'ไม่จ่าย ≡ divCum 0');
+  t.eq(ap('s6.top', ['EPS', 'ทรงตัว'], g(() => {}, { case: { growth: 1 } })), ['EPS', 'ทรงตัว'], 'guard: ทรงตัว with growth ≠ 0 stays');
+  t.eq(ap('s6.top', ['EPS', 'ทรงตัว'], g(() => {}, { case: { growth: 0 } })), ['EPS'], 'ทรงตัว ≡ growth 0');
+  t.eq(ap('s3.mname', ['DCF', '(บริบท', '—', 'ไม่รวมใน', 'FV)'], g(() => {}, { leg: { role: 'fv' } })), ['DCF', '(บริบท', '—', 'ไม่รวมใน', 'FV)'], 'guard: context words on a fv leg stay');
+  t.eq(ap('s3.mname', ['DCF', '(บริบท', '—', 'ไม่รวมใน', 'FV)'], g(() => {}, { leg: { role: 'context' } })), ['DCF', '—'], 'บริบท · ไม่รวมใน FV ≡ the v3 context suffix on a context leg');
+  t.eq(ap('s3.mdesc', ['มัธยฐานย้อนหลัง'], g(() => {}, { leg: { inputs: { multipleSource: 'author' } } })), ['มัธยฐานย้อนหลัง'], 'guard: มัธยฐานย้อนหลัง on an author multiple stays');
+  t.eq(ap('s3.mdesc', ['มัธยฐานย้อนหลัง'], g(() => {}, { leg: { inputs: { multipleSource: 'median5y' } } })), ['มัธยฐาน'], 'มัธยฐานย้อนหลัง ≡ มัธยฐาน on a median leg');
+  t.eq(ap('s6.top', ['FFO', '−5%/ปี'], g((d) => { d.fundamentals.ffoBasis = 'affo'; d.scenarios.driver = 'ffo'; })), ['FFO', '−5%/ปี'], 'guard: FFO under an AFFO basis stays (different fact)');
+  t.eq(ap('s6.ret', ['ต่อปี'], g((d) => { d.scenarios.perYear = null; })), ['ต่อปี'], 'guard: ต่อปี without perYear stays');
+  t.eq(ap('s6.ret', ['Total'], g(() => {})), [], 'Total in .ret ≡ the v3 total figure');
+  // self-review: every guard with a negative (and a positive) case · role scoping
+  t.eq(ap('s6.endRow', ['Rev', 'Sh', 'ปี', '3'], g((d) => { d.scenarios.driver = 'eps'; })), ['Rev', 'Sh', 'ปี', '3'], 'guard: Sh under a non-per-share driver (eps) stays');
+  t.eq(ap('s6.endRow', ['FCF', 'share', 'ปี', '3'], g((d) => { d.scenarios.driver = 'fcfPerShare'; })), ['FCF', 'หุ้น', 'ปี', '3'], 'share ≡ หุ้น when the driver is per-share (fcfPerShare)');
+  t.eq(ap('s6.endRow', ['รายได้ปี', '3'], g((d) => { d.scenarios.driver = 'fcfPerShare'; })), ['รายได้ปี', '3'], 'guard: รายได้ปี under a non-revenue driver stays');
+  t.eq(ap('s6.top', ['FFO', '−5%/ปี'], g((d) => { d.fundamentals.ffoBasis = 'ffo'; d.scenarios.driver = 'ffo'; })).join(' '), 'FFO −5%/ปี', 'FFO under an FFO basis: identity (recorded as used)');
+  t.eq(SY.apply('s6.top', ['FFO'], { doc: docOf((d) => { d.fundamentals.ffoBasis = 'ffo'; }) }).used.map((u) => u.id), ['ffo'], 'FFO synonym used under ffoBasis ffo');
+  t.eq(SY.apply('s6.top', ['FFO'], { doc: docOf((d) => { d.fundamentals.ffoBasis = 'coreFfo'; }) }).used, [], 'guard: FFO under a Core FFO basis — not used');
+  t.eq(ap('s6.ret', ['ต่อปี'], g((d) => { d.scenarios.perYear = 'cagr'; })), ['ปี'], 'ต่อปี ≡ ปี when perYear is set');
+  t.eq(ap('s3.mdesc', ['มัธยฐานย้อนหลัง'], g(() => {})), ['มัธยฐานย้อนหลัง'], 'guard: มัธยฐานย้อนหลัง without an aligned leg stays');
+  t.eq(ap('s6.top', ['Exit', 'P/E'], g(() => {})), ['Exit', 'P/E'], 'role scoping: Exit outside the exit row stays');
+  t.eq(ap('s6.endRow', ['Total'], g(() => {})), ['Total'], 'role scoping: Total outside .ret stays');
+  t.eq(ap('s6.divRow', ['ไม่จ่าย'], g(() => {})), ['ไม่จ่าย'], 'guard: ไม่จ่าย without an aligned column stays');
+}
+// integration — the migrator + gate on mutated fixtures: synonyms close the words, TEXT LOST reports what is not a synonym
+{
+  const html = raw('CASY').replace(/<span>P\/E ออก<\/span>/g, '<span>Exit P/E</span>');
+  const m = migrate('CASY', html);
+  t(!m.eq.textLost.includes('Exit') && m.eq.synonym.some((s) => s.id === 'exit' && s.zone === 's6'), 'CASY Exit P/E: closed by the exit synonym', JSON.stringify({ lost: m.eq.textLost, syn: m.eq.synonym }));
+}
+{
+  const html = raw('CASY').replace(/<span>ปันผลรวม 3 ปี<\/span>/g, '<span>ปันผลสะสม 3 ปี</span>');
+  const m = migrate('CASY', html);
+  t(!m.eq.textLost.includes('ปันผลสะสม') && m.eq.templateDropped.filter((w) => w === 'ปันผลสะสม').length === 3, 'CASY ปันผลสะสม ×3: s6 TEMPLATE_COUNTED (3 columns)', JSON.stringify(m.eq.textLost));
+  // condition "v3 column does not print the word": the author also writes it in the Bear scenario text (carried into cases[0].desc ⇒ inside a v3 column)
+  // ⇒ the counted rule is off for this doc ⇒ the three label occurrences are compared normally (v3 prints the word once) ⇒ 3 TEXT LOST
+  const inCol = html.replace(/(<li><span>สถานการณ์<\/span><span>)/, '$1ปันผลสะสม ');
+  const mc = migrate('CASY', inCol);
+  t.eq(mc.eq.textLost.filter((w) => w === 'ปันผลสะสม').length, 3, 'TEMPLATE_COUNTED off when a v3 column prints the word (not a template word there)');
+}
+// leg alignment on one label function (Task 6 M-4 · D4): an author context suffix with reasoning aligns and the reasoning is not lost once assemble carries it (Task 5) — here: labelParts itself
+{
+  const A = require('../../tools/migrate-v3/assemble.js');
+  t.eq(A.labelParts('3. Justified P/BV (บริบท — ห่างจากขายึดตลาด >2× ไม่รวมในกรอบ)'), { label: 'Justified P/BV', ctx: true, reason: 'ห่างจากขายึดตลาด >2×' }, 'labelParts: marker words out · reasoning kept');
+  t.eq(A.labelParts('2. DCF (Free Cash Flow) — บริบท ไม่รวมใน FV'), { label: 'DCF (Free Cash Flow)', ctx: true, reason: '' }, 'labelParts: trailing dash before the marker trimmed (no "—" residue)');
+  t.eq(A.labelParts('1. P/E Valuation (GAAP TTM)'), { label: 'P/E Valuation (GAAP TTM)', ctx: false, reason: '' }, 'labelParts: no context → label unchanged');
+  t.eq(A.labelParts('3. Market Anchor (เป้านักวิเคราะห์ — บริบท ไม่นับในค่าเฉลี่ย)'), { label: 'Market Anchor', ctx: true, reason: 'เป้านักวิเคราะห์' }, 'labelParts: marker inside an open paren (LULU) → no orphan "(" in the label · paren words → reason');
+  t.eq(A.labelParts('3. DCF (FCFE) — บริบท/stress-test เท่านั้น'), { label: 'DCF (FCFE)', ctx: true, reason: 'stress-test เท่านั้น' }, 'labelParts: IESC shape');
+  t.eq(A.labelOf('3. Justified P/BV (บริบท — ห่างจากขายึดตลาด >2× ไม่รวมในกรอบ)'), 'Justified P/BV', 'labelOf = labelParts(...).label');
+}
+// s8 — an author 3rd vcell is compared in full (its .k is not a template label) and an analyst cell is dropped only at its own index
+{
+  const html = raw('CASY').replace(/(<div class="vgrid">[\s\S]*?)(\n\s*<\/div>\s*<div class="zone">)/, '$1\n        <div class="vcell"><div class="k">จุดทยอยสะสม</div><div class="v">ใต้มูลค่าเหมาะสม</div></div>$2');
+  const m = migrate('CASY', html);
+  t(m.eq.textLost.includes('จุดทยอยสะสม'), 'without verdict.extraCells (assemble = Task 5) the 3rd vcell .k is TEXT LOST — no longer masked by the s8 normaliser', JSON.stringify(m.eq.textLost));
+}
+// the 4b .ret self-test (spec §10.2 d) still fails when an author word in .ret disappears — synonyms never mask it
+{
+  const html = raw('CASY').replace('{{rd:sc2ret}}', '{{rd:sc2ret}} ผู้เขียนพิเศษ');
+  const parsed = PV.parseV2('CASY', html);
+  const { doc } = A.assemble(parsed, { seeds: SEEDS, headUpdated: '2026-09-01T00:00:00+07:00', v2Hash: B.freshHash(html), today: parsed.rd.values.priceDate, analysisPx: null });
+  if (doc.scenarios.cases[1].retNote) delete doc.scenarios.cases[1].retNote;
+  const view = C.compute(doc, { seeds: SEEDS });
+  const eq = EQ.compare(B.expandReport(html), B.expandReport(R.toV2Source(doc, view)), doc, view, { v2src: html });
+  t(eq.textLost.includes('ผู้เขียนพิเศษ'), '.ret self-test: a dropped author word in .ret is TEXT LOST', JSON.stringify(eq.textLost));
+}
 t.done();
