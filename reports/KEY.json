@@ -1,0 +1,277 @@
+{
+  "v": 3,
+  "symbol": "KEY",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "KeyCorp",
+    "exchange": "NYSE",
+    "sub": "KeyCorp: Top-15 US bank (~$188B assets, 15 states, ~1,000 branches) • Ohio + Pacific Northwest + Colorado + Alaska footprint • Scotiabank ~14.9% stake ($2.8B, 2024) → balance sheet recapitalized, HTM losses addressed • Commercial (middle-market C&I, CRE) + Investment Banking (KeyBanc Capital Markets — TMT, healthcare) + Consumer • NIM 2.89% (Q2 2026) • ROTCE ~12.9% (Q2 2026) • ~3.9% dividend yield",
+    "headerTags": [
+      "Financial Services",
+      "Regional Bank"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis",
+      "Yahoo Finance",
+      "PR Newswire (KeyCorp IR)"
+    ],
+    "themeLegacy": {
+      "accent": "#008542",
+      "accentDark": "#005c2e",
+      "darkGrad": "linear-gradient(135deg,#003d1f 0%,#005c2e 60%,#007a3a 100%)",
+      "glow": "rgba(0,133,66,0.35)",
+      "subColor": "#e6f3ea",
+      "headerMuted": "#e6f2eb",
+      "verdictText": "#e0f7e9",
+      "vcellLabel": "#fefefe"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T15:39:58+07:00",
+      "v2Hash": "5ec41a01c3e3"
+    }
+  },
+  "market": {
+    "px": 20.25,
+    "priceDate": "2026-09-24",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          17.59
+        ],
+        [
+          "พ.ย.25",
+          18.38
+        ],
+        [
+          "ธ.ค.25",
+          20.64
+        ],
+        [
+          "ม.ค.26",
+          21.52
+        ],
+        [
+          "ก.พ.26",
+          20.74
+        ],
+        [
+          "มี.ค.26",
+          20.05
+        ],
+        [
+          "เม.ย.26",
+          22.11
+        ],
+        [
+          "พ.ค.26",
+          21.33
+        ],
+        [
+          "มิ.ย.26",
+          23.05
+        ],
+        [
+          "ก.ค.26",
+          22.59
+        ],
+        [
+          "ส.ค.26",
+          21.61
+        ],
+        [
+          "ก.ย.26",
+          20.25
+        ]
+      ],
+      "gridFmt": "v.toFixed(0)",
+      "dataFmt": "d[1].toFixed(2)"
+    },
+    "range52w": {
+      "lo": 16.47,
+      "hi": 24.07
+    }
+  },
+  "fundamentals": {
+    "eps": 1.71,
+    "dps": 0.82,
+    "shares": 1067128554,
+    "bvps": 16.19,
+    "revenue": 7370000000,
+    "beta": 1.04,
+    "bank": {
+      "nim": 2.89
+    },
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation",
+      "inputs": {
+        "multiple": 10.9,
+        "multipleSource": "median5y",
+        "medianWindow": "4 ปี"
+      },
+      "note": "10.9x คือมัธยฐาน P/E ย้อนหลัง 4 ปีงบของ KEY เอง (ช่วง 8.0–14.3x · ราคาเฉลี่ยงวด ÷ EPS diluted) ที่มาจากประวัติ ไม่ได้ถอดจาก P/E ปัจจุบัน",
+      "family": "market"
+    },
+    {
+      "method": "ddm",
+      "label": "DDM / Gordon Growth",
+      "inputs": {
+        "g": 3.5,
+        "r": 8.5
+      },
+      "note": "r, g เป็นสมมติฐานของเราเอง · ตระกูล (r,g) เดียวกับ Justified P/BV นับเป็น 1 เสียง",
+      "family": "rg"
+    },
+    {
+      "method": "pbv",
+      "label": "Justified P/BV",
+      "inputs": {
+        "g": 4,
+        "r": 9
+      },
+      "override": {
+        "roe": 12.5,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "ROE 12.5% เป็นสมมติฐานของเรา (ROTCE Q2 = 12.9%) · ตระกูล (r,g) เดียวกับ DDM",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "pbv",
+      {
+        "key": "nim",
+        "tone": "pos"
+      },
+      "eps",
+      "custom:0",
+      "custom:1",
+      "yield",
+      "revenue",
+      "custom:2",
+      "custom:3",
+      "beta"
+    ],
+    "custom": [
+      {
+        "label": "ROE / ROTCE",
+        "value": "~10.3% / 12.9%",
+        "note": "ROE TTM (vendor) · ROTCE Q2 2026",
+        "tone": "pos"
+      },
+      {
+        "label": "CET1 Ratio",
+        "value": "11.2%",
+        "note": "Q2 2026 (est.) · บัฟเฟอร์สูง",
+        "tone": "pos"
+      },
+      {
+        "label": "สินเชื่อ / เงินฝาก",
+        "value": "$110.1B / $147.6B",
+        "note": "ค่าเฉลี่ย Q2 2026 · C&I +$2.1B QoQ · LDR ~75%"
+      },
+      {
+        "label": "NPA / NCO",
+        "value": "0.74% / 0.42%",
+        "note": "Q2 2026 · สินทรัพย์ด้อยคุณภาพ/หนี้สูญ — ขยับขึ้นเล็กน้อย",
+        "tone": "neu"
+      }
+    ],
+    "notes": {
+      "mcap": "~1.07B shares outstanding",
+      "pe": "(diluted) · ฟื้นตัวจากขาดทุน FY2024",
+      "pbv": "TBVPS $13.62 (Q2 2026)",
+      "nim": "Q2 2026 · +23 bps YoY",
+      "eps": "Q2 2026 EPS $0.44 (+26% YoY) · FY2026E $1.83 (vendor)",
+      "yield": "{{dps}}/share/ปี ($0.205/ไตรมาส) · จ่ายต่อเนื่อง",
+      "revenue": "NII Q2 $1.26B · กำไรสุทธิ TTM $1.89B",
+      "beta": "ผันผวนใกล้เคียงตลาด · 5Y monthly"
+    },
+    "hint": "Q2 2026 / TTM ล่าสุด"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 0,
+        "exitMultiple": 10,
+        "divCum": 2.46,
+        "desc": "NIM ชะงัก · credit ตึง"
+      },
+      {
+        "growth": 12,
+        "exitMultiple": 11,
+        "divCum": 2.7,
+        "desc": "NIM 3.1% · ROTCE 15%"
+      },
+      {
+        "growth": 18,
+        "exitMultiple": 13,
+        "divCum": 2.8,
+        "desc": "NIM 3.3% · buyback หนุน EPS"
+      }
+    ],
+    "exitDp": 0,
+    "baseOverride": {
+      "value": 1.83,
+      "why": "EPS ฐานฉากที่ผู้เขียนใช้"
+    },
+    "note": "Base case อิง NIM ขยายสู่ 3.1% ปลายปี 2569 ตามแผน + ROTCE บรรลุ 15% ภายใน 2570 ตามเป้าผู้บริหาร + buyback ต่อเนื่อง ($341M ใน Q2 2569) หนุน EPS growth ~12%/ปี (ตัวคูณขาออก 10x/11x/13x เทียบมัธยฐานย้อนหลัง 10.9x) Bull case สะท้อน scenario ที่ rate environment เอื้อ, KeyBanc Capital Markets ฟื้นแรง, และ multiple re-rate เมื่อ ROTCE ชัดเจน Bear case คือสภาพแวดล้อม credit แย่กว่าคาด — NCO เพิ่ม, provisions กด net income, NIM ชะงัก ปันผล {{dps}}/share/ปี ให้ yield buffer ~3.9% ขณะรอ capital gains — คุ้มค่าสำหรับนักลงทุนเน้นรายได้",
+    "hintNote": "(FY2026E)"
+  },
+  "analyst": {
+    "target": 26.02,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "หุ้น KEY ปรับตัวขึ้นในรอบปี จากจุดต่ำสุดรายเดือนที่ $17.59 (ต.ค. 2568) ขึ้นไปสูงสุด $23.05 (มิ.ย. 2569) ก่อนย่อลงมาอยู่ที่ {{px}} ณ {{priceDate}} โดยกรอบ 52 สัปดาห์สูงสุดอยู่ที่ $24.07 แรงหนุนหลักคือ NIM ที่ขยายต่อเนื่อง (Q2 2569 = 2.89%, +23 bps YoY) และ EPS Q2 2569 ที่ $0.44 (+26% YoY) โดย KeyCorp ซื้อหุ้นคืน $341M ใน Q2 2569 — ส่วนการเพิ่มทุนจาก Scotiabank ($2.8B, ปลายปี 2567) เป็นปัจจัยแก้ปัญหา HTM bond losses ที่ผ่านมาแล้ว",
+    "valuation": "FV = เฉลี่ยของ 2 ตระกูล: (1) P/E มัธยฐานย้อนหลัง $18.64 และ (2) ค่าเฉลี่ยของ DDM $17.06 กับ Justified P/BV {{fvHigh}} = $22.29 (DDM กับ JPBV ใช้ r,g ชุดเดียวกัน จึงนับเสียงเดียว · สองตระกูลห่างกันไม่ถึง 2 เท่า จึงเฉลี่ยได้) → $20.46 ขาอิงตลาดล้วน (P/E) ให้ค่าต่ำกว่าราคาราว 10% ส่วนขา DDM/JPBV ให้ค่าสูงกว่าราคาราว 7% — ผลรวมจึงอยู่ใกล้ราคา · ความไวสูงต่อสมมติฐาน ROE 12.5% ของ JPBV ไม่ได้ใช้เป้านักวิเคราะห์เป็นขาของ FV (เป็นเพียงบริบท) · ตัวคูณ P/E 10.9x ต่ำกว่า P/E ปัจจุบันของ KEY จึงไม่ใช่สมอตายที่วนกลับมาที่ราคา",
+    "gauge": "ราคาปัจจุบัน {{px}} อยู่เหนือมูลค่าเหมาะสม {{fv}} เพียงเล็กน้อย สะท้อนว่าตลาดให้ราคาการฟื้นตัวของ NIM และ ROTCE ไปมากแล้ว เป้านักวิเคราะห์ {{analyst.target}} ({{analyst.pct}}, Buy · 19 คน) ใช้เป็นบริบทเท่านั้น ไม่ได้เป็นขาของ FV โซน MOS 20% ({{mos20}}) จะเป็นจุดเข้าสะสมที่มีส่วนเผื่อความปลอดภัยสูงขึ้น โซน MOS 30% ({{mos30}}) คาดยากจะถึง เว้นแต่เกิดวิกฤต credit หรือเศรษฐกิจถดถอยรุนแรง",
+    "mos": "ราคาเกิน Fair Value เล็กน้อย — ซื้อขายเหนือ FV เฉลี่ยนิดเดียว • ยังไม่ถึงโซน MOS ที่ชัดเจน",
+    "verdictHeadline": "Fairly Valued — Recovery Story ยังไม่เสร็จ หากบรรลุ ROTCE 15% มี Upside ชัดเจน",
+    "verdictBody": "KeyCorp ผ่านจุดต่ำสุดมาแล้วด้วยการระดมทุนจาก Scotiabank ($2.8B) ซึ่งแก้ปัญหา HTM bond losses และเสริมความแข็งแกร่งของงบดุล NIM ขยายต่อเนื่องเป็น 2.89% ใน Q2 2569 และ ROTCE 12.9% ราคาปัจจุบัน {{px}} ซื้อขายเหนือมูลค่าเหมาะสม {{fv}} ของเราเพียงเล็กน้อย สะท้อนว่าตลาดให้ราคา recovery ไปมากแล้ว อย่างไรก็ดี upside ยังมีหาก NIM และ earnings momentum ต่อเนื่อง — analyst 19 คน เป้าเฉลี่ย {{analyst.target}} (Buy) เป็นเพียงบริบท ไม่ใช่ขาของ FV · FV มาจาก 2 ตระกูลที่ต่างกัน (P/E มัธยฐานย้อนหลังกับ DDM/JPBV) และไวต่อสมมติฐาน ROE ของ JPBV",
+    "strategy": "ซื้อขายใกล้ Fair Value — เหมาะสำหรับ Dividend Investor ที่รับ yield 3.5%+ ขณะรอ recovery ครบ เป้าสะสมใกล้ FV ({{fv}}) และโซน MOS 20% ที่ {{mos20}} เป็น deep value entry หากมีการ pullback จาก macro headwinds หรือ rate concerns",
+    "disclaimerSources": "แหล่งข้อมูล: StockAnalysis.com, Yahoo Finance, KeyCorp Q2 2026 Press Release (PR Newswire, ก.ค. 2569), Scotiabank Press Release (ธ.ค. 2567)"
+  },
+  "text": {
+    "valHint": "2 ตระกูลสมมติฐาน",
+    "chartHint": "รายเดือน"
+  },
+  "catalysts": [
+    "<b>NIM Expansion ต่อเนื่อง:</b> NIM Q2 2569 = 2.89% (+23 bps YoY, +2 bps QoQ) — NII Q2 $1.26B (+9% YoY) หาก NIM ขยายต่อ กำไรและ EPS มีแรงหนุนเพิ่ม",
+    "<b>Scotiabank Recapitalization:</b> เงิน $2.8B ช่วยแก้ปัญหา HTM unrealized losses, เสริม CET1 11.2% (Q2 2569) — เป็น strategic validator และเปิดโอกาสกลยุทธ์ร่วมกัน",
+    "<b>Share Buyback:</b> ซื้อหุ้นคืน $341M ใน Q2 2569 ลดจำนวนหุ้นคงเหลือเหลือ ~1.07B — หนุน EPS growth แม้กำไรโต modest",
+    "<b>KeyBanc Capital Markets:</b> ธุรกิจ investment banking — fee-based ลดการพึ่งพา NIM และ diversify รายได้",
+    "<b>Credit Quality แข็งแกร่ง:</b> NCO 0.42% NPA 0.74% (Q2 2569) — ขยับขึ้นเล็กน้อยแต่ยังอยู่ระดับต่ำ ต้องติดตามต่อ",
+    "<b>ROTCE:</b> Q2 2569 = 12.9% — หากขยับสู่ระดับ 15%+ multiple อาจ re-rate จาก ~1.3x P/BV ขึ้นไป (สมมติฐานของเรา)"
+  ],
+  "risks": [
+    "<b>อัตราดอกเบี้ยและ Rate Sensitivity:</b> KEY มี asset-sensitive profile — ถ้า Fed ลดดอกเบี้ยเร็ว/มากกว่าคาด NIM อาจขยายช้าหรือหด กระทบ NII guidance",
+    "<b>CRE Exposure:</b> สินเชื่ออสังหาเชิงพาณิชย์ (office/multifamily) ยังมีความเสี่ยง valuations กดดัน — อาจต้องเพิ่ม provisions ถ้าตลาดออฟฟิศอ่อนแอต่อ",
+    "<b>Regional Bank Competition:</b> แข่งกับ JPM, WFC, และ fintech ในตลาด Ohio/Pacific NW — ความสามารถรักษาลูกค้าเงินฝากและ fee income เป็น key watch",
+    "<b>Scotiabank Overhang:</b> ~14.9% shareholder ขนาดใหญ่อาจสร้าง dilution uncertainty หรือ governance complexity ในอนาคต",
+    "<b>Basel III Endgame / Capital Requirements:</b> regulation เพิ่มเติมอาจกระทบ capital return plans — แม้ CET1 11.2% ให้ buffer สูง",
+    "<b>Macro Slowdown:</b> GDP ชะลอ + unemployment เพิ่ม → NCO เพิ่มจาก 0.42% ได้ โดยเฉพาะ middle-market C&I ที่ cyclical กว่า"
+  ],
+  "extras": [],
+  "_sig": "sha256:da506e9522f957cef0e9815e1003c7eb19af24dee39bb509cccfd0f20beb5767"
+}
