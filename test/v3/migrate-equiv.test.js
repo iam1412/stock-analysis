@@ -31,7 +31,9 @@ function migrate(sym, html) {
 const NON_HUMAN = ['CASY', 'FTV', 'SRE', 'SGC', 'NFG'];
 for (const sym of ['BBL', ...NON_HUMAN]) {
   const m = migrate(sym, raw(sym));
-  t.eq(m.eq.textLost, [], `${sym}: TEXT LOST = 0`);
+  // final-review I-1: BBL leg 1 "Normalized EPS ~฿22 × P/E เฉลี่ย ~9.0x" — the "เฉลี่ย" source claim sits in the formula head, v3 prints its own
+  // source label ⇒ the word is no longer masked: TEXT LOST (BBL is HUMAN anyway by the analyst note)
+  t.eq(m.eq.textLost, sym === 'BBL' ? ['เฉลี่ย'] : [], `${sym}: TEXT LOST = ${sym === 'BBL' ? '[เฉลี่ย] (computed-leg head word, I-1)' : '0'}`);
   const b = BK.bucketOf(m.notes, m.eq);
   if (NON_HUMAN.includes(sym)) t(b.bucket !== 'HUMAN', `${sym}: bucket is CLEAN or VALUE-DRIFT (${b.bucket}: ${b.reasons.join(' ; ')})`);
   else t(b.bucket === 'HUMAN' && m.notes.H.length && m.notes.H.every((r) => /analyst target .*max\/min/.test(r)), `${sym}: HUMAN only by the analyst max/min note (Task 5 round 4)`, JSON.stringify(m.notes.H));
@@ -156,5 +158,56 @@ for (const sym of ['AAPL', 'DDOG']) { const m = migrate(sym, raw(sym)); const b 
 t.eq(EQ.classifyNumber('฿163', '฿162.80'), 'rounding', 'number run within printed precision → rounding');
 t.eq(EQ.classifyNumber('฿163', '฿170.10'), 'value', 'number run beyond → value');
 t.eq(EQ.classifyNumber('8.7x', '8.68x'), 'rounding', 'multiple within half unit → rounding');
-t(EQ.TEMPLATE_VOCAB instanceof Set && EQ.TEMPLATE_VOCAB.has('เฉลี่ย') && EQ.TEMPLATE_VOCAB.has('มัธยฐาน'), 'TEMPLATE_VOCAB is a closed Set with the known template words');
+// final-review I-2 — TEMPLATE_VOCAB is zone → words (where the v2 skeleton prints each word); outside its zone a word goes through containment
+t(EQ.TEMPLATE_VOCAB && EQ.TEMPLATE_VOCAB.s3.includes('เฉลี่ย') && EQ.TEMPLATE_VOCAB.footer.includes('workflow') && EQ.TEMPLATE_VOCAB.header.includes('ราคา')
+  && !Object.values(EQ.TEMPLATE_VOCAB).some((ws) => ws.includes('มัธยฐาน')) && EQ.inVocab('s6', EQ.keyOf('ออก')) && !EQ.inVocab('s6', EQ.keyOf('มัธยฐาน')) && !EQ.inVocab('s7', EQ.keyOf('EPS')),
+  'TEMPLATE_VOCAB: zone-scoped closed map (มัธยฐาน in no zone · ออก only in s6)');
+{
+  // SIRI-shaped §6 exit cell: v2 "15x (มัธยฐาน 5 ปี)" → v3 prints the multiple only ⇒ the author's annotation is TEXT LOST (was masked page-wide)
+  const html = raw('SRE').replace('<li><span>P/E ออก</span><span>15x</span></li>', '<li><span>P/E ออก</span><span>15x (มัธยฐาน 5 ปี)</span></li>');
+  t(html !== raw('SRE'), 'I-2 setup: exit cell annotated');
+  const m = migrate('SRE', html);
+  t(m.eq.textLost.includes('มัธยฐาน') && !m.eq.templateDropped.includes('มัธยฐาน'), 'I-2: SIRI-shaped exit cell "15x (มัธยฐาน 5 ปี)" vs v3 "15x" → TEXT LOST', JSON.stringify({ lost: m.eq.textLost, td: m.eq.templateDropped }));
+  t.eq(BK.bucketOf(m.notes, m.eq).bucket, 'HUMAN', 'I-2: → HUMAN');
+  // legit template text stays dropped: CARR/ERIE footer "· สร้างด้วย stock-analyzer workflow" (footer zone)
+  const f = migrate('SRE', raw('SRE').replace('• สร้างด้วย stock-analyzer workflow</footer>', '· สร้างด้วย stock-analyzer workflow</footer>'));
+  t(f.eq.textLost.length === 0 && f.eq.templateDropped.includes('workflow'), 'I-2: footer template words stay templateDropped (CARR/ERIE shape)', JSON.stringify({ lost: f.eq.textLost, td: f.eq.templateDropped }));
+  // the same words outside their zone are author text
+  // the same words outside their zone are author text (v2 page only — v3 did not carry them)
+  const g0 = migrate('SRE', raw('SRE'));
+  const g = EQ.compare(g0.v2.replace(/(<div class="box cat">[\s\S]*?<li>)/, '$1สร้างด้วย workflow '), g0.v3, g0.doc, g0.view, { v2src: raw('SRE') });
+  t(g.textLost.includes('สร้างด้วย') && g.textLost.includes('workflow'), 'I-2: footer vocab words dropped from §7 → TEXT LOST', JSON.stringify(g.textLost));
+}
+// final-review I-1 — author text inside a computed leg's .mdesc: carried to leg.note (qualifierOf) or TEXT LOST — never silently dropped
+{
+  const FTV = raw('FTV');
+  const L2 = '÷ ~305M หุ้น</div>', L3 = '(FCF yield เป้าหมาย ~4.9%)</div>';
+  t(FTV.includes(L2) && FTV.includes(L3), 'I-1 setup: FTV leg 2/3 mdesc anchors found');
+  // WHA-shaped nested parens + inner dash → whole parenthetical carried, no orphan ")"
+  const wha = migrate('FTV', FTV.replace(L2, '÷ ~305M หุ้น (ตระกูล (r,g) เดียวกับ Justified P/BV — นับเป็นเสียงเดียว)</div>'));
+  t(wha.doc.legs[1].method === 'evebitda' && wha.doc.legs[1].note === 'ตระกูล (r,g) เดียวกับ Justified P/BV — นับเป็นเสียงเดียว', 'I-1: WHA-shaped nested paren → note carried whole', JSON.stringify(wha.doc.legs[1]));
+  const md = /<div class="mname">2\.[\s\S]*?<div class="mdesc">([\s\S]*?)<\/div>/.exec(wha.v3);
+  t(md && /— ตระกูล \(r,g\) เดียวกับ Justified P\/BV — นับเป็นเสียงเดียว$/.test(EQ.text(md[1])) && (md[1].match(/\(/g) || []).length === (md[1].match(/\)/g) || []).length, 'I-1: v3 mdesc prints the note with balanced parens (no orphan ")")', md && md[1]);
+  t.eq(wha.eq.textLost, [], 'I-1: WHA-shaped — nothing lost');
+  // LEN-shaped: a parenthetical that mentions r/g but carries the author's sentence
+  const len = migrate('FTV', FTV.replace(L3, '(FCF yield เป้าหมาย ~4.9%) (r, g เป็นสมมติฐานของผู้วิเคราะห์ · คนละตระกูลกับ P/E เพราะอิง ROE/book ไม่ใช่กำไรต่อหุ้น)</div>'));
+  t(len.doc.legs[2].method === 'fcfyield' && len.doc.legs[2].note === 'r, g เป็นสมมติฐานของผู้วิเคราะห์ · คนละตระกูลกับ P/E เพราะอิง ROE/book ไม่ใช่กำไรต่อหุ้น' && len.eq.textLost.length === 0,
+    'I-1: LEN-shaped (r, g … author sentence) → carried, not lost', JSON.stringify({ note: len.doc.legs[2].note, lost: len.eq.textLost }));
+  // CMCSA-shaped " · " segment after the formula → carried
+  const cm = migrate('FTV', FTV.replace(L2, '÷ ~305M หุ้น · เน้นกระแสเงินสดจ่ายคืนผู้ถือหุ้นระยะยาว (dividend + buyback)</div>'));
+  t(cm.doc.legs[1].note === 'เน้นกระแสเงินสดจ่ายคืนผู้ถือหุ้นระยะยาว (dividend + buyback)' && cm.eq.textLost.length === 0, 'I-1: CMCSA-shaped "· เน้นกระแสเงินสด…" → carried', JSON.stringify({ note: cm.doc.legs[1].note, lost: cm.eq.textLost }));
+  // gate mutation: a word removed from the computed leg's note (v3 side) → TEXT LOST → HUMAN
+  const doc = JSON.parse(JSON.stringify(cm.doc)); doc.legs[1].note = 'เน้นกระแสเงินสด (dividend + buyback)';
+  const view = C.compute(doc, { seeds: SEEDS });
+  const eq = EQ.compare(cm.v2, B.expandReport(R.toV2Source(doc, view)), doc, view, { v2src: FTV.replace(L2, '÷ ~305M หุ้น · เน้นกระแสเงินสดจ่ายคืนผู้ถือหุ้นระยะยาว (dividend + buyback)</div>') });
+  t(eq.textLost.includes('เน้นกระแสเงินสดจ่ายคืนผู้ถือหุ้นระยะยาว'), 'I-1: word removed from a computed leg note → TEXT LOST', JSON.stringify(eq.textLost));
+  t.eq(BK.bucketOf(cm.notes, eq).bucket, 'HUMAN', 'I-1: → HUMAN');
+  const d0 = JSON.parse(JSON.stringify(cm.doc)); delete d0.legs[1].note;
+  const v0 = C.compute(d0, { seeds: SEEDS });
+  const e0 = EQ.compare(cm.v2, B.expandReport(R.toV2Source(d0, v0)), d0, v0, { v2src: FTV });
+  t(e0.textLost.includes('เน้นกระแสเงินสดจ่ายคืนผู้ถือหุ้นระยะยาว') && e0.textLost.includes('dividend'), 'I-1: computed leg note dropped entirely → its words TEXT LOST', JSON.stringify(e0.textLost));
+  // an author word inside the formula head (qualifierOf does not carry it) → TEXT LOST; formula words (net debt · หุ้น) and generated words stay dropped
+  const head = migrate('FTV', FTV.replace('Adjusted EBITDA TTM $1,270M ×', 'Adjusted EBITDA TTM $1,270M มะม่วงสุกงอม ×'));
+  t(head.doc.legs[1].method === 'evebitda' && head.eq.textLost.length === 1 && head.eq.textLost[0] === 'มะม่วงสุกงอม', 'I-1: author word in the computed-leg formula head → TEXT LOST (only that word)', JSON.stringify(head.eq.textLost));
+}
 t.done();

@@ -18,6 +18,7 @@ const MC = require('./cards.js');
 const MP = require('./prose.js');
 const MS = require('./scenarios.js');
 const MT = require('./theme.js');
+const FM = require('./formula.js');
 
 const OVERRIDE_WHY = 'ค่าที่ผู้เขียนใช้ในใบ v2';
 const TEMPLATE_ASSUMP = 'P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต';
@@ -197,15 +198,62 @@ function medianWindowOf(seg) {
   const y = /(?<![0-9])([2-4])\s*ปี/.exec(seg);
   return y ? `${y[1]} ปี` : null;
 }
-/** mdesc ส่วนที่ extractor ไม่ได้ใช้ (qualifier · Task 0 G): หางหลัง " — " + วงเล็บที่เป็นคำ (ไม่ใช่สูตร) */
+/** ตำแหน่ง → ความลึกวงเล็บ (วงเล็บเปิดนับที่ความลึกก่อนเปิด · ปิดนับที่ความลึกหลังปิด) — ปิดเกิน = 0 */
+function depths(t) {
+  const d = new Array(t.length); let k = 0;
+  for (let i = 0; i < t.length; i++) { if (t[i] === '(') { d[i] = k; k++; } else if (t[i] === ')') { k = Math.max(0, k - 1); d[i] = k; } else d[i] = k; }
+  return d;
+}
+/** แยกข้อความที่ตัวคั่น (regex /g) เฉพาะที่ความลึก 0 */
+function splitTop(t, re) {
+  const d = depths(t), out = []; let at = 0;
+  for (const m of t.matchAll(re)) if (d[m.index] === 0 && d[m.index + m[0].length - 1] === 0) { out.push(t.slice(at, m.index)); at = m.index + m[0].length; }
+  out.push(t.slice(at));
+  return out;
+}
+/** วงเล็บชั้นนอกสุด (สมดุล — ซ้อนได้) → [{ inner, start, end }] · วงเล็บเปิดที่ไม่ปิด = ไม่นับ */
+function topParens(t) {
+  const out = []; let k = 0, st = -1;
+  for (let i = 0; i < t.length; i++) {
+    if (t[i] === '(') { if (k === 0) st = i; k++; }
+    else if (t[i] === ')' && k > 0) { k--; if (k === 0) out.push({ inner: t.slice(st + 1, i).trim(), start: st, end: i + 1 }); }
+  }
+  return out;
+}
+const outsideParens = (t) => { let s = '', at = 0; for (const p of topParens(t)) { s += t.slice(at, p.start) + ' '; at = p.end; } return s + t.slice(at); };
+// token ที่มีตัวเลข + ตัวอักษรที่เป็นแค่หน่วย/ปีงบ ("10.5x" "$958M" "FY2021–25" "5 ปี" "6.8pp") = ไม่ใช่ prose · ตัวดำเนินการ = × ÷ + − ≈ แยกคำ ("ปลายทาง=4%")
+const UNITISH = /^(?:x|X|M|B|K|T|bn|mn|pp|bp|bps|FY|Q|H|ล้าน|พันล้าน|ล้านล้าน|ล้านบาท|ลบ|ปี|years?|yrs?|เท่า|เดือน|months?)$/u;
+/** token เดียวเป็นคำของผู้เขียน = ≥2 ตัวอักษร · ไม่ใช่ตัวเลข+หน่วย · ไม่ใช่คำสูตร (FM.FORMULA_VOCAB) · withGen: ไม่ใช่คำที่ mdesc generate พิมพ์ได้ (FM.GEN_VOCAB)
+ *  gate (equiv.js) เรียกด้วย withGen=false แล้วทิ้งคำของ mdesc ที่ generate จริงของขานั้นเอง */
+function isProseToken(tk, withGen) {
+  const w = String(tk).replace(/[^\p{L}\p{M}\p{N}]/gu, '');
+  if ((w.match(/\p{L}/gu) || []).length < 2) return false;
+  if (/\p{N}/u.test(w) && UNITISH.test(w.replace(/\p{N}+/gu, ''))) return false;
+  const k = FM.keyOf(w);
+  return !FM.FORMULA_KEYS.has(k) && !(withGen && FM.GEN_KEYS.has(k));
+}
+/** มีคำของผู้เขียน (ดู isProseToken) — token {{…}} = ตัวเลขที่ render ไม่ใช่คำ */
+const hasProse = (s) => String(s).replace(/\{\{[^{}]*\}\}/g, ' ').split(/[\s/=×÷+−≈]+/).some((tk) => isProseToken(tk, true));
+/** mdesc ส่วนที่ extractor ไม่ได้ใช้ (qualifier · Task 0 G · final-review I-1): พกไปเป็น leg.note
+ *  ป้ายนำก่อน ":" · หางหลัง " — " ที่ความลึก 0 (ทั้งท่อน) · ท่อนที่คั่นด้วย " · " / → / ⇒ / ; / = ที่ความลึก 0 (ยกเว้นท่อนแรก = สูตร)
+ *  ที่มีคำของผู้เขียนนอกวงเล็บ = ทั้งท่อน
+ *  · วงเล็บชั้นนอก (ซ้อนได้) ที่มีคำของผู้เขียน แม้จะอ้าง r/g/%/× = ทั้งวงเล็บ (ไม่มีวงเล็บปิดกำพร้า)
+ *  คำที่เหลือในท่อนสูตรนอกวงเล็บ = ไม่พก → gate (equiv.js) นับ TEXT LOST ถ้าไม่ใช่คำสูตร/คำที่ generate */
 function qualifierOf(prose) {
   const t = String(prose || '');
-  const dash = /\s[—–]\s/.exec(t);
-  const head = dash ? t.slice(0, dash.index) : t, tail = dash ? t.slice(dash.index + dash[0].length).trim() : '';
-  const par = [...head.matchAll(/\(([^()]*)\)/g)].map((m) => m[1].trim())
-    .filter((x) => /[A-Za-z฀-๿]{2,}/.test(x) && !/[%×=]|\br\b|\bg\b/.test(x)
-      && !/^~?\s*[0-9][0-9.,]*\s*(?:ปี|years?|yrs?|x|เท่า|เดือน|months?)?\s*$/i.test(x));   // "(5 ปี)" = input ที่ extractor ใช้แล้ว
-  return par.concat(tail ? [tail] : []).join(' · ');
+  const d = depths(t);
+  let head = t, tail = '';
+  for (const m of t.matchAll(/\s[—–]\s/g)) if (d[m.index + 1] === 0) { head = t.slice(0, m.index); tail = t.slice(m.index + m[0].length).trim(); break; }
+  const out = [];
+  // ป้ายนำ "สมมติฐานของผู้วิเคราะห์เอง: FCF …" (HD ONTO) = คำผู้เขียนหน้าสูตร — ":" แรกที่ความลึก 0
+  const lead = /^([^:()]{1,80}):\s/.exec(head);
+  if (lead && hasProse(lead[1])) { out.push(lead[1].trim()); head = head.slice(lead[0].length); }
+  splitTop(head, /\s·\s|\s*[→⇒;=]\s*/g).forEach((seg, i) => {
+    if (i > 0 && hasProse(outsideParens(seg))) { if (seg.trim()) out.push(seg.trim()); return; }
+    for (const p of topParens(seg)) if (p.inner && hasProse(p.inner)) out.push(p.inner);
+  });
+  if (tail) out.push(tail);
+  return out.join(' · ');
 }
 const labelOf = (mname) => String(mname).replace(/^\s*\d+\s*[.)]\s*/, '').replace(/\s*\(?\s*บริบท[^)]*\)?\s*$/, '').replace(/[{}<>]/g, '').trim();
 
@@ -714,4 +762,4 @@ function assemble(parsed0, ctx) {
   };
 }
 
-module.exports = { assemble, s6HintNote, guardLegs, extrasOf, analystOf, singleTarget, legsOf, weightsOf, generatedValHint, pxMetaOf, qualifierOf, labelOf, multipleSourceOf };
+module.exports = { assemble, s6HintNote, guardLegs, extrasOf, analystOf, singleTarget, legsOf, weightsOf, generatedValHint, pxMetaOf, qualifierOf, hasProse, isProseToken, labelOf, multipleSourceOf };

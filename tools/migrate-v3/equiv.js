@@ -3,7 +3,7 @@
  * equiv.js — equivalence gate ต่อ zone ของ migration v2→v3 (Plan 4b Task 6 · spec §10.2/§10.3 · plan D2)
  * ทั้งสองฝั่งเป็นหน้า expandReport(...) — v2 = ต้นฉบับดิบ · v3 = expandReport(R.toV2Source(doc, view)) ⇒ zone หาด้วย regex เดียวกัน
  * ลำดับ (advisor pin 6): (1) zones → (2) norm() = transform ที่อนุมัติ ใช้กับ **ทั้งสองฝั่ง** → (3) LCS ระดับคำ → classify
- *   → (4) containment: คำที่หายเทียบ TEMPLATE_VOCAB (templateDropped) → word bag ทั้งหน้า v3 (moved) → ที่เหลือ = TEXT LOST (HUMAN)
+ *   → (4) containment: คำที่หายเทียบ TEMPLATE_VOCAB[zone] (templateDropped) → word bag ทั้งหน้า v3 (moved) → ที่เหลือ = TEXT LOST (HUMAN)
  *   → (5) structured diff ของ report-data/stock-meta (ค่าที่ engine วาดแต่ text compare มองไม่เห็น) → (6) สี (theme key · tone การ์ด)
  * อ่านอย่างเดียว — ไม่เขียนไฟล์ · ห้าม mask region ที่ผู้เขียนเขียน (spec §10.2 d) — normaliser ตัดเฉพาะข้อความที่ template พิมพ์เอง
  * ต้นทาง: prototype Plan 4 Task 0 (.superpowers/sdd/archive/plan4a/task0/proto/equiv.js) — zones/diffRuns/classify ปรับเป็น token ระดับคำ
@@ -16,14 +16,23 @@ const TH = require('./theme.js');
 const MC = require('./cards.js');
 const MP = require('./prose.js');
 const A = require('./assemble.js');
+const R = require('../../_template/v3/render.js');
 
-// ── คลังคำที่ template v2 พิมพ์แล้ว template v3 ทิ้ง/แทน (ปิด — เพิ่มได้ผ่าน review เท่านั้น · ทุกคำเพิ่มต้องมีคอมเมนต์ fixture + zone) ──
-const TEMPLATE_VOCAB = new Set([
-  // seed (plan Task 6 Step 3)
-  'เฉลี่ย', 'มัธยฐาน', 'ราคา', 'ณ', '≈', 'TTM', 'ปัจจุบัน', 'มูลค่าเหมาะสม', 'Fair', 'Value', 'กรอบ', 'เป้าหมาย', 'ปี', 'ออก',
-  'ปันผลรวม', 'สถานการณ์', 'จุดเข้า', 'ฐาน', 'EPS', 'รอบปี', 'ตั้งแต่', 'IPO', 'ราย', 'เป้านักวิเคราะห์', 'ด.', 'ส่วนต่างจากราคา',
-  'MOS', 'ที่มา', 'สัปดาห์', 'Stock', 'Analysis', 'Dashboard', 'ข้อมูล', 'สร้างด้วย', 'stock-analyzer', 'workflow', 'คำเตือน', 'โดยประมาณ',
-]);
+// ── คลังคำที่ template v2 พิมพ์แล้ว template v3 ทิ้ง/แทน — แยกตาม zone ที่ skeleton v2 พิมพ์คำนั้น (final-review I-2) ──
+// ปิด — เพิ่มได้ผ่าน review เท่านั้น · คำนอก zone ของมัน = containment ปกติ (SIRI/SMCI "6.0x (มัธยฐาน 5 ปี)" ในช่อง §6 = คำผู้เขียน → TEXT LOST)
+// ที่มา = _template/skeleton-{th,us}.html · seed เดิม (plan Task 6 Step 3) ที่ไม่มี zone: มัธยฐาน (skeleton ไม่พิมพ์นอกคอมเมนต์) ·
+//   TTM (ป้ายการ์ด §1 "P/E (TTM)" — norm ตัด .k ของการ์ด catalogue แล้ว) · ราย (ไม่พบใน skeleton) ⇒ ไม่ยกเว้นที่ไหน
+const TEMPLATE_VOCAB = {
+  header: ['ราคา', 'ณ', '≈', 'กรอบ', 'สัปดาห์', 'ที่มา', 'รอบปี', 'ตั้งแต่', 'IPO'],   // px-meta "ราคา ณ · กรอบ 52 สัปดาห์ · ที่มา:" + ป้าย .chg "(รอบปี)"/"(ตั้งแต่ IPO)" (MRVL NOW ORCL TXN)
+  s2: ['โดยประมาณ', 'ราคา', 'มูลค่าเหมาะสม'],   // hint "โดยประมาณ" · legend "ราคา SYM" / "มูลค่าเหมาะสม"
+  s3: ['เฉลี่ย', 'มูลค่าเหมาะสม', 'Fair', 'Value', 'กรอบ'],   // hint "เฉลี่ย N วิธี" · FV box "มูลค่าเหมาะสมเฉลี่ย (Fair Value) กรอบ …" (ไม่ใช้กับคำจาก mdesc ขา computed)
+  s4: ['ราคา', 'ปัจจุบัน', 'มูลค่าเหมาะสม', 'MOS', 'Fair', 'Value', 'กรอบ'],   // h2 "ราคาปัจจุบัน vs โซนต่างๆ" (CHRW) · marker/scale "ปัจจุบัน/เหมาะสม/MOS 30%/Fair Value/กรอบบน FV"
+  s5: ['MOS'],   // h2/metric "จุดซื้อ MOS 20%"
+  s6: ['EPS', 'ปี', 'ออก', 'ปันผลรวม', 'สถานการณ์', 'จุดเข้า', 'ฐาน'],   // .top "EPS x%/ปี" · แถว "EPS ปี 3 · P/E ออก · ปันผลรวม 3 ปี · สถานการณ์" · hint "จากจุดเข้า • EPS ฐาน" (L)
+  s8: ['มูลค่าเหมาะสม', 'ส่วนต่างจากราคา', 'MOS', 'เป้านักวิเคราะห์', 'ด.'],   // vcell .k
+  disc: ['คำเตือน', 'เป้าหมาย'],   // "คำเตือน:" · "โดยเฉพาะ P/E เป้าหมาย"
+  footer: ['Stock', 'Analysis', 'Dashboard', 'ข้อมูล', 'ณ', 'สร้างด้วย', 'stock-analyzer', 'workflow'],   // "Stock Analysis Dashboard • ข้อมูล ณ … • สร้างด้วย stock-analyzer workflow" (CARR ERIE)
+};
 
 // ── ข้อความ ──
 // entity: ชุดเดียวกับ migrate-v3/prose.js decode (&divide; &mdash; … ไม่งั้น "divide" กลายเป็นคำ — fix round 1)
@@ -84,7 +93,7 @@ function s6Residue(t, scen) {
 }
 
 /**
- * norm(zoneId, html, side, ctx) → ข้อความหลัง transform ที่อนุมัติ · ctx = { doc, view, dropped: [] (คำ v2 ที่ mdesc ขา computed ทิ้ง), shared: {} (genHint — ฝั่ง v3 รันก่อน) }
+ * norm(zoneId, html, side, ctx) → ข้อความหลัง transform ที่อนุมัติ · ctx = { doc, view, dropped: [] (คำ v2 ที่ transform ทิ้ง), mdescKeys: Set (คำผู้เขียนใน mdesc ขา computed ฝั่ง v2), shared: { gen: {} } (genHint · mdesc ที่ generate ต่อขา — ฝั่ง v3 รันก่อน) }
  * ฝั่ง v2/v3 ใช้กฎเดียวกันทุกข้อ — ต่างกันเฉพาะที่ template v3 พิมพ์ข้อความ generate (hint/mdesc) ซึ่ง v2 ไม่มีคู่
  */
 function norm(zoneId, html, side, ctx) {
@@ -139,9 +148,24 @@ function norm(zoneId, html, side, ctx) {
       const leg = k >= 0 ? legs[k] : null;
       let d = dOpen ? dOpen + mdesc + dClose : '';
       if (leg && leg.method !== 'declared' && dOpen) {
-        // ขา computed: mdesc = ข้อความ generate (v3) / คำอธิบายสูตรของผู้เขียน (v2) — transform ที่อนุมัติ (spec §10.2 b) · คำ v2 ที่หาย → templateDropped
-        if (side === 'v2') ctx.dropped.push(...tok(text(mdesc)));
-        d = dOpen + dClose;
+        // ขา computed (final-review I-1): mdesc ที่ generate (v3) แทนสูตรของผู้เขียน (v2) — transform ที่อนุมัติ (spec §10.2 b · plan D2)
+        //   ทิ้งเฉพาะ (i) คำที่ mdesc generate ของขานี้พิมพ์ (ii) คำสูตร (formula.js FORMULA_VOCAB · A.isProseToken) · ตัวเลข/สัญลักษณ์ (inputs ตรวจด้วย guardLegs แล้ว)
+        //   คำอื่นทั้งสองฝั่ง (v2 = คำผู้เขียน · v3 = leg.note หลัง " — ") เทียบกันต่อ → คำที่ note ไม่ได้พกไป = containment → TEXT LOST
+        // ตัวดำเนินการแยกคำ ("ปลายทาง=4%" · "D₁≈฿0.288") — กติกาเดียวกับ A.hasProse · ใช้ทั้งสองฝั่ง
+        const ops = (x) => String(x).replace(/≈|&asymp;/g, ' ≈ ').replace(/[=×÷+−]|&times;|&divide;|&minus;/g, ' $& ');
+        const t = text(ops(mdesc)), G = (ctx.shared.gen = ctx.shared.gen || {});
+        if (side === 'v3') { try { G[k] = text(ops(escHtml(R.mdesc(leg, view)))); } catch (_) { G[k] = ''; } }
+        const gen = G[k] || '';
+        const genKeys = new Set(tok(gen).map(keyOf));
+        const body = side === 'v3' ? (t.startsWith(gen) ? t.slice(gen.length).replace(/^\s*—\s*/, '') : t) : t;
+        const kept = [];
+        for (const w of tok(body)) {
+          if (!isWord(w)) continue;
+          if (genKeys.has(keyOf(w)) || !A.isProseToken(w, false)) { if (side === 'v2') ctx.dropped.push(w); continue; }   // คำ generate · คำสูตร · ตัวเลข+หน่วย ("6.8pp")
+          kept.push(w);
+          if (side === 'v2' && ctx.mdescKeys) ctx.mdescKeys.add(keyOf(w));
+        }
+        d = dOpen + escHtml(kept.join(' ')) + dClose;
       }
       return a + nm + b + d;
     });
@@ -198,7 +222,7 @@ function norm(zoneId, html, side, ctx) {
         labs.forEach((l) => tok(l).filter(isWord).forEach((w) => set.add(keyOf(w))));
         ctx.shared.s6Labels[name] = set;
       }
-      const ok = (t) => side === 'v3' || tok(t).filter(isWord).every((w) => (labelWords[name] || new Set()).has(keyOf(w)) || VOCAB_KEYS.has(keyOf(w)));
+      const ok = (t) => side === 'v3' || tok(t).filter(isWord).every((w) => (labelWords[name] || new Set()).has(keyOf(w)) || inVocab('s6', keyOf(w)));
       if (top) {
         const tl = topLab(top[2]);
         const nm = ok(text(top[1])) ? '' : escHtml(text(top[1]));
@@ -274,7 +298,8 @@ const wordOf = (t) => String(t).replace(/[^\p{L}\p{M}\p{N}]/gu, '');
 /** คีย์เทียบ: ตัวเลขในคำ → # (ตัวเลขเปลี่ยนเป็นเรื่องของ number ไม่ใช่คำหาย) */
 const keyOf = (t) => wordOf(t).replace(/\p{N}+/gu, '#');
 const isWord = (t) => (wordOf(t).match(/\p{L}/gu) || []).length >= 2 && !UNIT_WORD.has(wordOf(t).replace(/^\p{N}+/u, ''));
-const VOCAB_KEYS = new Set([...TEMPLATE_VOCAB].map(keyOf));
+const VOCAB_KEYS = Object.fromEntries(Object.entries(TEMPLATE_VOCAB).map(([z, ws]) => [z, new Set(ws.map(keyOf))]));
+const inVocab = (zone, k) => !!(VOCAB_KEYS[zone] && VOCAB_KEYS[zone].has(k));
 
 function bagSub(a, b) {   // multiset a − b (คีย์) → [token ของ a]
   const cnt = new Map(); for (const t of b) cnt.set(keyOf(t), (cnt.get(keyOf(t)) || 0) + 1);
@@ -349,8 +374,8 @@ const toneList = (s1) => [...String(s1 || '').matchAll(CARD_RE())].map((m) => ((
 function compare(v2Html, v3Html, doc, view, opts) {
   const o = opts || {};
   const z2 = zones(v2Html), z3 = zones(v3Html);
-  const shared = {};   // v3 ก่อน — hint ที่ generate ใช้ตัดสินฝั่ง v2
-  const c2 = { doc, view, dropped: [], shared }, c3 = { doc, view, dropped: [], shared };
+  const shared = { gen: {} };   // v3 ก่อน — hint/mdesc ที่ generate ใช้ตัดสินฝั่ง v2
+  const c2 = { doc, view, dropped: [], shared, mdescKeys: new Set() }, c3 = { doc, view, dropped: [], shared, mdescKeys: new Set() };
   const ids = [...new Set([...z2.keys(), ...z3.keys()])];
   const n2 = new Map(), n3 = new Map();
   for (const id of ids) n3.set(id, tok(norm(id, z3.get(id) || '', 'v3', c3)));
@@ -375,7 +400,8 @@ function compare(v2Html, v3Html, doc, view, opts) {
   const lostRuns = new Set();
   for (const { zone, w, run } of cand) {
     const k = keyOf(w);
-    if (VOCAB_KEYS.has(k)) { out.templateDropped.push(wordOf(w)); continue; }
+    // คลังคำ template เฉพาะ zone ของมัน · คำจาก mdesc ขา computed ใน s3 ไม่ใช้คลังคำ (เป็นคำผู้เขียน — ไม่ใช่ hint/FV box)
+    if (inVocab(zone, k) && !(zone === 's3' && c2.mdescKeys.has(k))) { out.templateDropped.push(wordOf(w)); continue; }
     if (!lostLeft.has(k)) lostLeft.set(k, Math.max(0, (bag2.get(k) || 0) - (bag3.get(k) || 0)));
     const left = lostLeft.get(k);
     if (left > 0) { lostLeft.set(k, left - 1); out.textLost.push(wordOf(w)); out.textLostAt.push({ zone, w: wordOf(w) }); lostRuns.add(run); } else out.moved.push(wordOf(w));
@@ -385,7 +411,7 @@ function compare(v2Html, v3Html, doc, view, opts) {
     if (run.kind === 'TEXT LOST' && lostRuns.has(run)) continue;
     if (classifyNumber(run.del, run.ins) === 'value') out.numberValue.push({ zone, del: run.del, ins: run.ins, ctx: run.ctx });
   }
-  // คำ v2 ใน mdesc ขา computed ที่ transform ทิ้ง — ไม่อยู่ที่ไหนในหน้า v3 เลย ⇒ บันทึกเป็น templateDropped (info)
+  // คำ v2 ที่ transform ทิ้ง (ป้าย (SYM) ใต้ราคา · สเกลเกจ · คำสูตร/คำ generate ของ mdesc ขา computed) — ไม่อยู่ที่ไหนในหน้า v3 เลย ⇒ templateDropped (info)
   const raw3 = new Set(tok(text(String(v3Html).replace(/<(script|style)\b[^>]*>[\s\S]*?<\/\1\s*>/gi, ' '))).filter(isWord).map(keyOf));
   for (const w of c2.dropped) if (isWord(w) && !raw3.has(keyOf(w))) out.templateDropped.push(wordOf(w));
   // structured + สี + tone
@@ -404,4 +430,4 @@ function compare(v2Html, v3Html, doc, view, opts) {
   return out;
 }
 
-module.exports = { zones, norm, text, tok, diffRuns, classify, classifyNumber, compare, structured, TEMPLATE_VOCAB, keyOf, wordOf, isWord };
+module.exports = { zones, norm, text, tok, diffRuns, classify, classifyNumber, compare, structured, TEMPLATE_VOCAB, inVocab, keyOf, wordOf, isWord };

@@ -458,4 +458,24 @@ const asm = (sym, html) => A.assemble(PV.parseV2(sym, html), { seeds: SEEDS, hea
   t.eq(A.multipleSourceOf('รายได้ TTM $2,707M × EV/Sales เป้าหมาย 12.05x = EV $32,619M + เงินสดสุทธิ $854M (เงินสด $1,092M − หนี้ $238M) ÷ 144.14M หุ้นคงเหลือ — ตัวคูณ 12.05x คือมัธยฐานที่วัดจริงของ EV/Sales ปีงบ FY21–FY25 ของ NTRA เอง (13.10x · 5.21x · 6.50x · 12.05x · 13.38x', [], 0, 12.05), 'median5y', 'fr3: NTRA "มัธยฐาน…ของ EV/Sales … ของ NTRA เอง" → median5y');
   t.eq(A.multipleSourceOf('× EV/EBITDA 20x = มัธยฐานของ EV/EBITDA รายปี FY2021–25', [], 0, 20), 'median5y', 'fr3: "ของ EV/EBITDA" is a multiple name → median5y');
 }
+// final-review I-1 — qualifierOf: balanced nested parens · split on " — " only at depth 0 · keep prose-bearing parens/segments even with r/g/%/×
+{
+  const Q = A.qualifierOf;
+  const bal = (x) => (x.match(/\(/g) || []).length === (x.match(/\)/g) || []).length;
+  const wha = Q('D₁ = ปันผล ฿0.21 × (1+g); g 5%, r 9.5% → 0.2205 ÷ 0.045 = ฿4.90 (ตระกูล (r,g) เดียวกับ Justified P/BV — นับเป็นเสียงเดียว)');
+  t.eq(wha, 'ตระกูล (r,g) เดียวกับ Justified P/BV — นับเป็นเสียงเดียว', 'I-1: WHA leg 2 nested paren + inner dash → whole parenthetical');
+  t(bal(wha), 'I-1: WHA note has no orphan ")"');
+  t.eq(Q('P/BV เหมาะสม = (ROE 12.0% − g 5%)/(r 9.5% − g 5%) ≈ 1.56 × BVPS ฿2.47 (ตระกูล (r,g) เดียวกับ DDM)'), 'ตระกูล (r,g) เดียวกับ DDM', 'I-1: WHA leg 3 nested (r,g) paren kept');
+  t.eq(Q('P/BV เหมาะสม = (ROE 5.96% − g 2.5%)/(r 9.5% − g 2.5%) ≈ 0.494 × BVPS $89.75 (r, g เป็นสมมติฐานของผู้วิเคราะห์ · คนละตระกูลกับ P/E เพราะอิง ROE/book ไม่ใช่กำไรต่อหุ้น)'),
+    'r, g เป็นสมมติฐานของผู้วิเคราะห์ · คนละตระกูลกับ P/E เพราะอิง ROE/book ไม่ใช่กำไรต่อหุ้น', 'I-1: LEN leg 2 paren with r/g + author sentence → kept');
+  t.eq(Q('D₁ = ปันผล $1.32 × (1+g) = $1.346; g 2%, r 8.5% → $1.346 ÷ 0.065 = $20.71 · เน้นกระแสเงินสดจ่ายคืนผู้ถือหุ้นระยะยาว (dividend + buyback)'),
+    'เน้นกระแสเงินสดจ่ายคืนผู้ถือหุ้นระยะยาว (dividend + buyback)', 'I-1: CMCSA leg 2 " · " prose segment → kept whole');
+  t.eq(Q('EPS $3.09 (GAAP diluted TTM) × P/E เป้าหมาย 10.5x (5 ปี) (r−g) — ท้ายของผู้เขียน'), 'ท้ายของผู้เขียน', 'I-1: formula-only parens (basis · years · r−g) not carried; tail kept');
+  t.eq(Q('สมมติฐานของผู้วิเคราะห์เอง: FCF TTM $15.10B โต 5%/ปี 10 ปี · r 8.5%'), 'สมมติฐานของผู้วิเคราะห์เอง', 'I-1: HD-shaped lead label before ":" carried');
+  t.eq(Q('D₁ = ปันผล $6.80 × (1+g); g 6.5%, r 9.0% → g สะท้อนการเติบโตปันผลระยะยาวที่ชะลอจาก ~10%+ ในอดีต, r ต่ำจาก beta 0.84'),
+    'g สะท้อนการเติบโตปันผลระยะยาวที่ชะลอจาก ~10%+ ในอดีต, r ต่ำจาก beta 0.84', 'I-1: ADP-shaped explanation after "→" carried');
+  t.eq(Q('EPS ~฿22 × P/E ~9x (กลางกรอบ (ช่วง 5 ปี) ของ BBL'), '', 'I-1: unclosed paren → nothing invented, no orphan fragment');
+  t(A.isProseToken('สมมติฐาน', true) && !A.isProseToken('WACC', true) && !A.isProseToken('6.8pp', true) && !A.isProseToken('FY2026E', true) && !A.isProseToken('เป้าหมาย', true) && A.isProseToken('เป้าหมาย', false) === false,
+    'I-1: isProseToken — author word vs formula vocab / number+unit / fiscal period / generated word');
+}
 t.done();
