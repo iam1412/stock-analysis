@@ -45,14 +45,16 @@ function cards(body) {
 }
 
 /** ขาประเมินในหมวด 3 — vmethod = <div class="vmethod"><div><div class="mname">…</div><div class="mdesc">…</div></div><div class="mval">…</div></div>
- *  ทน "เปลือกว่าง" (ไม่มี mdesc/mval) — ขาแบบนั้นติด empty:true · mval null ไม่ throw · blocks = จำนวน class="vmethod" ดิบ (ตรวจว่าแกะครบ) */
+ *  ขาที่มี mname แต่ไม่มีค่า (.mval ว่าง/ไม่มี) ติด empty:true · mval null — คิดซ้ำ/declare ไม่ได้ ไม่ throw
+ *  เปลือกที่ไม่มี mname (คลังจริง: <div class="vmethod"></div> เปล่า · หรือ vmethod ไม่ปิดที่ห่อ .fv-box) ไม่มีเนื้อหา ⇒ ไม่ออกเป็นขา
+ *  blocks = จำนวน class="vmethod" ดิบ — blocks > legs.length คือหลักฐานว่ามีเปลือกถูกข้าม (migrator จดหมายเหตุ) */
 function legs(body) {
   const out = [];
   const re = /<div class="vmethod">\s*<div>\s*<div class="mname">([\s\S]*?)<\/div>\s*(?:<div class="mdesc">([\s\S]*?)<\/div>\s*)?<\/div>\s*(?:<div class="mval">([\s\S]*?)<\/div>)?/g;
   let m;
   while ((m = re.exec(body))) {
     const mdesc = text(m[2] || ''), mval = text(m[3] || '');
-    out.push({ mnameHtml: m[1], mname: text(m[1]), mdescHtml: m[2] || '', mdesc, mvalHtml: m[3] || '', mval: mval || null, empty: !mdesc && !mval });
+    out.push({ mnameHtml: m[1], mname: text(m[1]), mdescHtml: m[2] || '', mdesc, mvalHtml: m[3] || '', mval: mval || null, empty: !mval });
   }
   return { legs: out, blocks: (body.match(/class="vmethod"/g) || []).length };
 }
