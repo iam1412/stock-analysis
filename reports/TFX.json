@@ -1,0 +1,283 @@
+{
+  "v": 3,
+  "symbol": "TFX",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Teleflex Incorporated",
+    "exchange": "NYSE",
+    "sub": "Specialty medtech · Vascular access (ARROW catheters, #1) · Anesthesia (LMA airways, #1) · Interventional urology (UroLift BPH) · Surgical/cardiac · High-barrier niches · Adj margin ~26% · Wayne PA",
+    "headerTags": [
+      "Medical Devices",
+      "Vascular Access · Anesthesia · Interventional"
+    ],
+    "analysisDate": "2026-09-22",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "StockAnalysis.com",
+      "Teleflex Q2 2569 Earnings (ผ่าน StockAnalysis)"
+    ],
+    "themeLegacy": {
+      "accent": "#B31B2A",
+      "accentDark": "#7A1018",
+      "darkGrad": "linear-gradient(135deg,#1a0406 0%,#2d0810 50%,#1a0406 100%)",
+      "glow": "rgba(179,27,42,0.35)",
+      "subColor": "#e8b4b8",
+      "headerMuted": "#a3787e",
+      "verdictText": "#f5c6cb",
+      "vcellLabel": "rgba(232,180,184,0.7)"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-22T01:46:25+07:00",
+      "v2Hash": "bc3d8b8c9ab2"
+    }
+  },
+  "market": {
+    "px": 120.09,
+    "priceDate": "2026-09-24",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          124.47
+        ],
+        [
+          "พ.ย.25",
+          114.42
+        ],
+        [
+          "ธ.ค.25",
+          122.04
+        ],
+        [
+          "ม.ค.26",
+          104.37
+        ],
+        [
+          "ก.พ.26",
+          122.06
+        ],
+        [
+          "มี.ค.26",
+          119.61
+        ],
+        [
+          "เม.ย.26",
+          123.91
+        ],
+        [
+          "พ.ค.26",
+          128.64
+        ],
+        [
+          "มิ.ย.26",
+          126.76
+        ],
+        [
+          "ก.ค.26",
+          136.71
+        ],
+        [
+          "ส.ค.26",
+          142.05
+        ],
+        [
+          "ก.ย.26",
+          120.09
+        ]
+      ],
+      "gridFmt": "v.toFixed(0)",
+      "dataFmt": "d[1].toFixed(2)"
+    },
+    "range52w": {
+      "lo": 100.18,
+      "hi": 145
+    }
+  },
+  "fundamentals": {
+    "eps": 7.05,
+    "dps": 1.36,
+    "bvps": 69.87,
+    "shares": 42372397,
+    "epsForward": 7.05,
+    "ebitda": 296000000,
+    "netDebt": 2600000000,
+    "opMargin": 26,
+    "beta": 0.82,
+    "fy": {
+      "period": "FY2025",
+      "revenue": 1990000000
+    },
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "dcf",
+      "label": "DCF — Levered FCF 5 ปี (สมมติฐานเอง: ฐาน)",
+      "inputs": {
+        "g1": 8,
+        "years1": 5,
+        "tg": 3,
+        "r": 10,
+        "rfCurrency": "USD"
+      },
+      "override": {
+        "fcf": 300000000,
+        "netDebt": 0,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "ต่ำกว่า TTM $327M จาก StockAnalysis เพื่อกันรายการพิเศษ · ทั้งหมดเป็นสมมติฐานของผู้วิเคราะห์ · 73.9% ของมูลค่ารวม",
+      "family": "rg"
+    },
+    {
+      "method": "dcf",
+      "label": "DCF — Levered FCF 5 ปี (สมมติฐานเอง: ระมัดระวัง · ตระกูลเดียวกับวิธี 1)",
+      "inputs": {
+        "g1": 5,
+        "years1": 5,
+        "tg": 2.5,
+        "r": 10,
+        "rfCurrency": "USD"
+      },
+      "override": {
+        "fcf": 327000000,
+        "netDebt": 0,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "TTM ตามที่ StockAnalysis รายงาน · 71.3% ของมูลค่ารวม · ชุด (r,g) ใกล้เคียงวิธี 1 จึงนับเป็นเสียงเดียว",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "peForward",
+      {
+        "key": "pe",
+        "tone": "neg"
+      },
+      "pbv",
+      {
+        "key": "revenueFy",
+        "tone": "none"
+      },
+      "custom:0",
+      "custom:1",
+      {
+        "key": "netDebt",
+        "tone": "neg"
+      },
+      "custom:2",
+      {
+        "key": "opMargin",
+        "tone": "pos"
+      },
+      "yield",
+      "beta"
+    ],
+    "custom": [
+      {
+        "label": "Adj EPS FY2026 (guidance)",
+        "value": "$6.90–7.20",
+        "note": "ปรับขึ้นจาก $6.25–6.55 · Q2 2569 actual $1.76 (est. $1.28)",
+        "tone": "pos"
+      },
+      {
+        "label": "EBITDA FY2025",
+        "value": "~$296M",
+        "note": "Continuing GAAP · Adj EBITDA ~$370–400M"
+      },
+      {
+        "label": "Gross Margin adj",
+        "value": "~59–60%",
+        "note": "GAAP 56% FY2025 · ปรับ amort. ~59%+",
+        "tone": "pos"
+      }
+    ],
+    "notes": {
+      "mcap": "42.4M หุ้นคงเหลือ (StockAnalysis)",
+      "peForward": "Adj EPS {{eps}} (กลาง guide $6.90–7.20)",
+      "pe": "n m · GAAP EPS −$23.41 (ขาดทุนจาก divestiture/impairment)",
+      "pbv": "Goodwill+Intang. ~$3.8B สูง",
+      "revenueFy": "Continuing ops · FY2026E ~$2.27B (consensus) · guide โต 13.4–14.4%",
+      "netDebt": "Debt $2.94B − Cash $0.32B (StockAnalysis TTM) · Leveraged",
+      "opMargin": "สูงสำหรับ specialty medtech · niche moat",
+      "yield": "Ex-div พ.ค. 2569 · เน้น deleveraging ก่อน",
+      "beta": "ความผันผวนต่ำกว่าตลาด · Defensive medtech"
+    },
+    "hint": "ข้อมูล ณ หลังงบ Q2 2569 (6 ส.ค. 2569) · อิงตัวเลขจากการดำเนินงานต่อเนื่อง (Continuing Ops)"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 3,
+        "exitMultiple": 15,
+        "divCum": 4.08,
+        "desc": "UroLift ฟื้นช้า leverage กดกำไร"
+      },
+      {
+        "growth": 8,
+        "exitMultiple": 19,
+        "divCum": 4.08,
+        "desc": "Vascular+Anesthesia โต deleveraging เร็ว"
+      },
+      {
+        "growth": 13,
+        "exitMultiple": 22,
+        "divCum": 4.08,
+        "desc": "UroLift ฟื้น margin expansion M&A value"
+      }
+    ],
+    "exitDp": 0,
+    "note": "Scenario ทั้ง 3 อิง adj EPS FY2026E ที่ {{eps}} (กลาง guide) เป็นฐาน ไม่ใช่ GAAP EPS ที่บิดเบือนจาก divestiture/impairment · P/E ออกเป็นสมมติฐานของผู้วิเคราะห์ (ไม่ได้ถอดจากตัวคูณวันนี้) Risk หลักคือ leverage (net debt ~$2.6B) ที่กดดันความยืดหยุ่นทางการเงิน และ UroLift ที่ยังไม่กลับมาเติบโตแข็งแกร่ง Bull scenario ต้องการ multiple re-rating ที่ 22x บน adj EPS ซึ่งต้องใช้เวลาสร้างความเชื่อมั่น ปันผล {{dps}}/ปี ให้ผลตอบแทนราว 1.1% ต่ำ แต่สัญญาณว่าบริษัทเน้น balance sheet ก่อน",
+    "hintNote": "(FY2026E adj กลาง guide)"
+  },
+  "analyst": {
+    "target": 154,
+    "n": null,
+    "rating": "Hold",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "TFX เคลื่อนไหวในกรอบกว้าง $104–145 ตลอดปีที่ผ่านมา แตะระดับต่ำสุด ~$104 ในช่วง ม.ค. 2569 ท่ามกลางความกังวลเรื่องการ divestiture และแรงกดดันจาก UroLift ที่เติบโตช้ากว่าคาด ก่อนฟื้นขึ้นทำสูงสุด 52 สัปดาห์ $145 ช่วง ส.ค. 2569 หลังงบ Q2 2569 ที่ adj EPS $1.76 ดีกว่าคาดและปรับ guidance ขึ้น จากนั้นราคาย่อลงมาอยู่ราว $125 ใกล้จุดเริ่มต้นของช่วง 12 เดือน (ทรงตัวรอบปี) กรอบ 52 สัปดาห์ $100.18–$145.00 สะท้อน turnaround story ที่ยังมีความไม่แน่นอน ราคาปัจจุบันใกล้เคียงกับ FV {{fv}}",
+    "valuation": "ตั้งแต่รอบนี้ FV ไม่ใช้ P/E, EV/EBITDA, P/FCF ที่อิงตัวคูณ peer ที่ประกาศเอง เพราะไม่มีตัวคูณมัธยฐานที่วัดได้ของ TFX บนฐาน adj EPS (มัธยฐาน P/E ย้อนหลัง 34.6x วัดบน GAAP EPS ปี 2564–2566 ซึ่ง EPS $7.5–10.2 ต่ำกว่า adj EPS ในยุคนั้นมาก จึงเอามาคูณ adj EPS ไม่ได้) และไม่ใช้เป้านักวิเคราะห์เป็นขาของ FV <b>FV จึงมาจากตระกูล DCF เพียงตระกูลเดียว (single-family)</b> · ความอ่อนไหว: ถ้า FV จริงต่ำกว่า/สูงกว่าค่านี้ 10% (ราว $111 / $135) ส่วนเผื่อจะอยู่ที่ติดลบราว 12 จุด / บวกราว 8 จุด ตามลำดับ · เป็นบริบท: forward P/E บน adj EPS กลาง guide {{eps}} อยู่ราว 17.7x, adj EPS พิมพ์ก่อน amortization/รายการพิเศษ (GAAP ต่างมาก) · Analyst consensus target $153.55 (Hold, 13 ราย) อิง recovery scenario ที่ UroLift และ deleveraging เร็วกว่าคาด",
+    "gauge": "ราคา {{px}} ใกล้เคียงมูลค่าเหมาะสม {{fv}} (MOS {{mos}}) จึงยังไม่มีส่วนเผื่อความปลอดภัย จุดซื้อที่ MOS 20% = {{mos20}} และ MOS 30% = {{mos30}} ซึ่งใกล้ต่ำสุด 52 สัปดาห์ ($100.18) ที่เคยทดสอบต้นปี 2569 Analyst consensus target $153.55 (Hold) เป็นเพียงบริบท ไม่ได้เป็นส่วนหนึ่งของ FV หากการฟื้นตัวหลัง divestiture เป็นไปตามแผน",
+    "mos": "ราคาใกล้เคียงมูลค่าเหมาะสม — ยังไม่มี margin of safety ที่หนาพอ (FV มาจาก DCF ตระกูลเดียว) รอจังหวะ dip ก่อนเข้า",
+    "verdictHeadline": "Medtech นิชที่มีกำแพงสูง — ใกล้มูลค่าเหมาะสม รอ dip หรือสัญญาณฟื้นตัวชัดก่อน",
+    "verdictBody": "Teleflex เป็นบริษัท specialty medical devices ที่มีตำแหน่งผู้นำตลาดในสองกลุ่มหลัก: ARROW vascular access catheters (global #1) และ LMA anesthesia airways (global #1) ซึ่งมีกำแพงการเปลี่ยนแบรนด์สูงจาก clinical training และ hospital protocol ที่ฝังอยู่ลึก หลัง divestiture OEM (~$1.5B) TFX กลายเป็น leaner, higher-margin business โดย adj operating margin อยู่ที่ ~26% adj EPS FY2026 guidance ปรับขึ้นเป็น $6.90–7.20 ความท้าทายหลักคือ UroLift/Interventional ที่ยังฟื้นตัวช้า leverage สูง (net debt ~$2.6B) และ GAAP EPS ที่บิดเบือนจากรายการพิเศษ ราคา {{px}} ใกล้เคียง Fair Value {{fv}} (MOS {{mos}}) ซึ่ง FV มาจาก DCF ตระกูลเดียวจึงมีความไม่แน่นอน ยังไม่มี margin of safety ที่หนาพอสำหรับการลงทุนแบบ value; นักลงทุนที่รอ dip ควรมองหาจุดเข้าที่ MOS 20% = {{mos20}}",
+    "strategy": "Watch & Wait — ราคาปัจจุบัน {{px}} ใกล้เคียง FV MOS ยังบางเกินไป ควรรอโอกาสที่ราคาปรับลงมาสู่โซน MOS 20% ({{mos20}}) ก่อน หากเป็น long-term investor ที่เชื่อมั่นใน ARROW+LMA moat และ deleveraging story ซื้อทยอยได้เมื่อราคาต่ำกว่า FV พร้อมรับ volatility จาก UroLift newsflow ต้องติดตามงบ Q3 2569 (คาด 5 พ.ย. 2569) เพื่อดูความคืบหน้า",
+    "disclaimerSources": "ที่มา: Yahoo Finance (ราคา {{px}} ณ {{priceDate}} · 52W $100.18–$145.00 · Beta 0.82), StockAnalysis.com (งบการเงิน · BVPS $69.87 · หุ้นคงเหลือ 42.37M · เป้า/นักวิเคราะห์ 13 ราย), Teleflex Q2 2569 Earnings (adj EPS $1.76 · guidance $6.90–7.20)"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 2 สถานการณ์ DCF (ตระกูลเดียวกัน = 1 เสียง)",
+    "chartHint": "· ราคารายเดือน",
+    "disclaimerAssump": " FCF ที่คาดการณ์ อัตราคิดลด (r) อัตราเติบโต (g) และ P/E ออกของ scenario"
+  },
+  "catalysts": [
+    "<b>ผู้นำตลาดในนิชที่มีกำแพงสูง:</b> ARROW catheters (vascular access #1 globally) และ LMA airways (anesthesia #1) มีส่วนแบ่งตลาดสูงและเปลี่ยนแบรนด์ยาก เนื่องจากการฝึกอบรมทางคลินิกและ hospital protocol ที่ฝังอยู่ลึก",
+    "<b>Simplified business หลัง divestiture:</b> TFX มุ่งเน้น higher-margin, faster-growing segments — vascular, anesthesia, interventional — ลดความซับซ้อนและเพิ่ม margin profile; adj operating margin ~26% สูงกว่า medtech ทั่วไป",
+    "<b>UroLift turnaround potential:</b> UroLift (BPH minimally invasive treatment) มีศักยภาพสูงในตลาดผู้สูงอายุชาย; ถ้า reimbursement ดีขึ้นและ physician awareness เพิ่ม จะเป็น catalyst สำคัญในระยะถัดไป",
+    "<b>De-leveraging pathway:</b> Net debt ~$2.6B; FCF ที่ normalize ควรช่วย pay down debt ~$200–250M/ปี ลด interest burden และเปิดโอกาส capital allocation ที่ดีขึ้น",
+    "<b>Valuation re-rating:</b> หุ้น de-rated จาก $400+ สู่ราว $125 ปัจจุบัน forward P/E บน adj EPS ~17.7x; หาก execution ดี multiple re-rating เป็นไปได้ในระยะ 2–3 ปี แต่เป็นสมมติฐาน ไม่ใช่ข้อเท็จจริง",
+    "<b>Q2 2569 beat & guidance raised:</b> adj EPS $1.76 (est. $1.28) บ่งชี้ momentum บวก; FY2026 adj EPS guidance ปรับขึ้นเป็น $6.90–7.20 จาก $6.25–6.55 (revenue growth guide ลดเป็น 13.4–14.4%)"
+  ],
+  "risks": [
+    "<b>UroLift growth disappoints persistently:</b> UroLift ยังเป็นความเสี่ยงหลัก; การเติบโตที่ช้ากว่าคาดมาต่อเนื่องเป็นสาเหตุหลักของ de-rating; competition จาก Rezum (Boston Scientific) และ GreenLight Laser ทำให้ตลาดแข่งขันสูง",
+    "<b>High financial leverage:</b> Net debt ~$2.6B เทียบ Market cap ~$5.3B สูง; อัตราดอกเบี้ยที่สูงกดดัน interest expense ลด bottom line; ถ้า FCF ต่ำกว่าคาด deleveraging ช้าลงกดดันหุ้น",
+    "<b>GAAP EPS ไม่สื่อความสามารถในการทำกำไรจริง:</b> การพึ่งพา adj EPS เต็มที่เสี่ยงถ้า amortization ยืดนาน; goodwill $2.3B + intangibles $1.5B รวม ~$3.8B ยังต้องตัดจำหน่ายอีกหลายปี อาจมี impairment ได้",
+    "<b>Reimbursement / regulatory risk:</b> UroLift และ vascular devices ขึ้นกับ CMS reimbursement; การลดอัตราจ่ายหรือเปลี่ยน coverage policy กระทบรายได้ได้ทันที เป็นความเสี่ยงนโยบายที่ควบคุมไม่ได้",
+    "<b>Transition costs & stranded costs:</b> การ divestiture มีต้นทุน TSA (transition service agreements) และ stranded costs ที่กดดัน margin ในระยะสั้น; FCF FY2025 $245M เทียบ $545M ในปี 2024; การรวม Interventional ล่าช้าตามที่สรุปงบ Q2",
+    "<b>Macro / hospital capex cycle:</b> สินค้าบางส่วนขึ้นกับ hospital capital expenditure ที่อาจถูก defer ในภาวะเศรษฐกิจกดดัน; แม้ vascular/anesthesia มีลักษณะ recurring แต่ interventional/cardiac มีความผันผวนมากกว่า"
+  ],
+  "extras": [],
+  "_sig": "sha256:d581f324a86868852e995564c9df231794c5b55231a49e9c6f0fe45c8c7c043d"
+}
