@@ -1,0 +1,252 @@
+{
+  "v": 3,
+  "symbol": "MCD",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "McDonald's Corporation",
+    "exchange": "NYSE",
+    "sub": "เครือร้านอาหารจานด่วนใหญ่สุดในโลก ~43,000 สาขา • โมเดล franchise ~95% (ค่าเช่า+royalty) • real estate ขนาดมหึมา • digital/delivery/loyalty (McDonald's Rewards)",
+    "headerTags": [
+      "Consumer Discretionary",
+      "Quick Service Restaurant"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis.com",
+      "Yahoo Finance",
+      "McDonald's Investor Relations",
+      "Macrotrends"
+    ],
+    "themeLegacy": {
+      "accent": "#b58800",
+      "accentDark": "#856400",
+      "darkGrad": "linear-gradient(135deg, #100D00 0%, #201A00 100%)",
+      "glow": "rgba(242,182,0,0.35)",
+      "subColor": "#FFD23F",
+      "headerMuted": "#a48200",
+      "verdictText": "#F5E8BC",
+      "vcellLabel": "rgba(245,232,188,0.6)"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T15:39:58+07:00",
+      "v2Hash": "7ac29ba29af5"
+    }
+  },
+  "market": {
+    "px": 237.02,
+    "priceDate": "2026-09-24",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          298.43
+        ],
+        [
+          "พ.ย.25",
+          311.82
+        ],
+        [
+          "ธ.ค.25",
+          305.63
+        ],
+        [
+          "ม.ค.26",
+          315
+        ],
+        [
+          "ก.พ.26",
+          341.06
+        ],
+        [
+          "มี.ค.26",
+          310.79
+        ],
+        [
+          "เม.ย.26",
+          293.59
+        ],
+        [
+          "พ.ค.26",
+          279.2
+        ],
+        [
+          "มิ.ย.26",
+          270.31
+        ],
+        [
+          "ก.ค.26",
+          270.64
+        ],
+        [
+          "ส.ค.26",
+          263.54
+        ],
+        [
+          "ก.ย.26",
+          237.02
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 247.65,
+      "hi": 341.75
+    }
+  },
+  "fundamentals": {
+    "eps": 12.31,
+    "dps": 7.72,
+    "shares": 707641531,
+    "peAvg5y": 24.8,
+    "opMargin": 46.1,
+    "roic": 19,
+    "revenue": 27700000000,
+    "netMargin": 31.9,
+    "beta": 0.72,
+    "fy": {
+      "period": "FY25",
+      "netIncome": 8600000000
+    },
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation (TTM)",
+      "inputs": {
+        "multiple": 24.8,
+        "multipleSource": "median5y"
+      },
+      "note": "มัธยฐานย้อนหลัง FY21–25 (5 จุด: 23.4–30.6x, ราคาเฉลี่ยรายปี ÷ EPS diluted) มาจากประวัติ ไม่ใช่จาก P/E ปัจจุบัน",
+      "family": "market"
+    },
+    {
+      "method": "dcf",
+      "label": "DCF (FCF to equity, 10 ปี)",
+      "inputs": {
+        "g1": 6,
+        "years1": 10,
+        "tg": 3,
+        "r": 9,
+        "rfCurrency": "USD"
+      },
+      "override": {
+        "fcf": 7761000000,
+        "netDebt": 0,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "สมมติฐานของผู้วิเคราะห์เอง",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "peAvg5y",
+      "custom:0",
+      "netIncomeFy",
+      "eps",
+      {
+        "key": "opMargin",
+        "tone": "pos"
+      },
+      "roic",
+      "revenue",
+      "netMargin",
+      "yield",
+      "beta"
+    ],
+    "custom": [
+      {
+        "label": "P/FCF",
+        "value": "~22.6x",
+        "note": "FCF/Share $10.97",
+        "tone": "neu"
+      }
+    ],
+    "notes": {
+      "mcap": "~708M หุ้น",
+      "peAvg5y": "มัธยฐาน 5 ปี (FY21–25) · ปัจจุบัน discount",
+      "netIncomeFy": "EPS $11.95 (+5% YoY)",
+      "eps": "FY26E $12.92 (consensus)",
+      "opMargin": "franchise-heavy model",
+      "roic": "equity neg จาก buyback",
+      "revenue": "+6.3% YoY (TTM)",
+      "netMargin": "franchise royalty สูง",
+      "yield": "Dividend Aristocrat",
+      "beta": "defensive QSR"
+    },
+    "hint": "ข้อมูล ณ 21 ก.ย. 2569"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 5,
+        "exitMultiple": 21,
+        "divCum": 23.16,
+        "desc": "traffic อ่อน ต่อเนื่อง"
+      },
+      {
+        "growth": 7,
+        "exitMultiple": 23,
+        "divCum": 23.16,
+        "desc": "traffic ฟื้น + digital growth"
+      },
+      {
+        "growth": 9,
+        "exitMultiple": 24,
+        "divCum": 23.16,
+        "desc": "McValue ฟื้น+ขยายระหว่างประเทศ"
+      }
+    ],
+    "exitDp": 0,
+    "note": "การคาดการณ์อิง EPS TTM {{eps}} เติบโต 5–9%/ปี (consensus ระยะกลาง +6–8%) ปันผล {{dps}}/ปี รวม 3 ปี ~$23.16 Base case P/E ออก 23x ต่ำกว่ามัธยฐานย้อนหลัง 24.8x เล็กน้อย (discount traffic อ่อน) ผลตอบแทน Base +40% ใน 3 ปี หรือ ~11.8% CAGR (ราคาอย่างเดียว ไม่รวมปันผล) defensive เหมาะสำหรับนักลงทุนระยะกลาง-ยาว"
+  },
+  "analyst": {
+    "target": 311.55,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "MCD เริ่มกราฟที่ราว $298 (ต.ค. 68) ก่อนพุ่งแตะ <b>$341.06 (ก.พ. 69)</b> จากกำไร Q4 FY25 ที่แข็งแกร่ง และความหวัง McValue ฟื้น traffic จากนั้นร่วงต่อเนื่องจนถึง ก.ย. 69 จากแรงกดดันด้าน consumer spending ที่อ่อนแอ ค่าจ้างและต้นทุนอาหารสูง ราคาปัจจุบัน <b>{{px}}</b> อยู่ที่จุดต่ำสุด 52 สัปดาห์ ($247.65) สะท้อนการ de-rating จาก high-P/E → valuation สมเหตุสมผลมากขึ้น ผลตอบแทนรอบปี <b>−16.8%</b>",
+    "valuation": "วิธี P/E TTM ($305) อิงมัธยฐานย้อนหลังของ MCD เอง ส่วน DCF ($237) เป็นสมมติฐานกระแสเงินสดของผู้วิเคราะห์ สองตระกูลอิสระต่างกันราว 1.3 เท่า จึงเฉลี่ยได้ เฉลี่ยสองวิธีได้ {{fv}} → <b>FV {{fv}}</b> · เป้านักวิเคราะห์ (consensus) ไม่ใช่ขาของ FV เป็นแค่บริบทเทียบ · ตัดขา Forward P/E ที่ใช้ consensus และ P/FCF ที่ตัวคูณไม่มีมัธยฐานวัดจริงออกในรอบนี้ · DDM เป็นบริบทรอง (yield ~3.1% แต่ไม่ใช่ขา FV) · Sensitivity: ถ้า P/E เป้าหมาย 22x ขา P/E เหลือราว $271 และ FV เฉลี่ยราว $254 · หมายเหตุ: equity ติดลบ จาก buyback → ROE บิดเบือน ใช้ ROIC ~19% แทน",
+    "gauge": "ราคาปัจจุบัน {{px}} ต่ำกว่า FV {{fv}} เล็กน้อย (MOS {{mos}}) อยู่ในโซน \"ราคาพอเหมาะ\" ใกล้เคียงมูลค่าเหมาะสม ห่างจาก MOS 20% ({{mos20}}) พอสมควร แสดงว่าไม่ใช่ \"ถูกมาก\" แต่ valuation สมเหตุสมผลเมื่อเทียบประวัติ นักวิเคราะห์ 31 รายมีเป้าเฉลี่ย {{analyst.target}} ({{analyst.pct}} upside) สะท้อน consensus เชิงบวกจากการฟื้น traffic ในระยะกลาง (ใช้เป็นบริบทเท่านั้น ไม่ใช่ขาของ FV)",
+    "mos": "MOS ต่ำ — ราคาใกล้เคียงมูลค่าเหมาะสม (defensive+ปันผลชดเชย)",
+    "verdictHeadline": "McDonald's — QSR อันดับ 1 โลก ราคาพอเหมาะ + ปันผล Aristocrat",
+    "verdictBody": "McDonald's เป็นเครือ QSR ขนาดใหญ่ที่สุดในโลก ~43,000 สาขา โมเดล franchise/real-estate ให้ margin ระดับ 46% เสถียร ถูกกดราคาราว −17% รอบปีจาก traffic อ่อนและ consumer spending ชะลอ แต่พื้นฐานยังแข็งแกร่ง ROIC 19% และ FCF generation สม่ำเสมอ ราคา {{px}} อยู่ที่ 52w low ให้ P/E ~{{pe}}x ต่ำกว่ามัธยฐาน 5 ปี (24.8x) FV {{fv}} (MOS {{mos}}) นักวิเคราะห์ 31 รายมีเป้าเฉลี่ย {{analyst.target}} ({{analyst.pct}}) สะท้อน upside เมื่อ traffic ฟื้น เหมาะสำหรับนักลงทุน defensive ที่ต้องการ dividend + capital gain ระยะกลาง",
+    "strategy": "ราคาปัจจุบันต่ำกว่า FV เล็กน้อย ทยอยสะสมได้สำหรับ defensive portfolio · เพิ่มน้ำหนักเมื่อ MOS กว้างขึ้น · รอ MOS 20% ({{mos20}}) สำหรับ aggressive entry · ปันผล ~3.1% ช่วย total return ระหว่างถือ",
+    "disclaimerSources": "ที่มา: StockAnalysis.com · Yahoo Finance · McDonald's Investor Relations · Macrotrends (ข้อมูล ณ 21 ก.ย. 2569)"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 2 วิธี"
+  },
+  "catalysts": [
+    "<b>McValue menu ฟื้น traffic:</b> โปรแกรม value offering ดึง price-sensitive consumer กลับ ช่วยแก้จุดอ่อนด้าน comp sales",
+    "<b>Digital / Loyalty (McDonald's Rewards):</b> สมาชิก 170M+ คน ช่วยเพิ่ม frequency และ basket size อย่างต่อเนื่อง",
+    "<b>Franchise model (95%):</b> รายได้ค่าเช่า + royalty แทบไม่มี operating leverage ลบ margin สูงคงที่แม้ traffic ขึ้น-ลง",
+    "<b>Real estate portfolio:</b> เป็นเจ้าของที่ดิน/อาคาร เป็นแหล่ง asset value ที่ไม่ถูก reflect ใน book equity",
+    "<b>ขยายตลาดโลก:</b> IOM + Developmental market ยังเติบโตได้ โดยเฉพาะ Asia ที่ penetration ยังต่ำ",
+    "<b>Dividend Aristocrat:</b> ปันผลเติบโต ~8% CAGR 10 ปี ดึงดูดนักลงทุน income เป็น floor ราคา"
+  ],
+  "risks": [
+    "<b>Consumer spending อ่อน:</b> เศรษฐกิจชะลอ ผู้บริโภคระวังจ่าย comp sales ติดลบต่อเนื่องกดดันรายได้ franchisee",
+    "<b>Negative equity (leverage สูง):</b> หนี้สิน $54.8B จาก buyback มหาศาล ดอกเบี้ยจ่ายสูงขึ้นจาก rate environment",
+    "<b>ต้นทุนอาหาร / ค่าจ้าง:</b> แรงกดดันค่าแรงขั้นต่ำและต้นทุนวัตถุดิบกดดัน franchisee margin",
+    "<b>FX risk:</b> รายได้ต่างประเทศ ~59% รายงานเป็น USD ค่าเงิน USD แข็งลด EPS reported",
+    "<b>การแข่งขัน QSR:</b> Wendy's, Burger King, Chick-fil-A, และ fast casual (Chipotle, Shake Shack) แย่งชิง value customer",
+    "<b>Reputational / Health trend:</b> กระแสสุขภาพ + ข่าว food safety อาจกระทบ traffic ระยะสั้น"
+  ],
+  "extras": [],
+  "_sig": "sha256:1bf96f3d9a10877335aa1c35a60c91d5a0f030a77c5c8e9c75f667e6bb2ea322"
+}
