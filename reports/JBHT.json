@@ -1,0 +1,258 @@
+{
+  "v": 3,
+  "symbol": "JBHT",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "J.B. Hunt Transport Services",
+    "exchange": "NASDAQ",
+    "sub": "#1 Intermodal transport US (truck+rail) • Dedicated Contract Services • ICS brokerage • Final Mile Services • Lowell AR",
+    "headerTags": [
+      "Transportation & Logistics",
+      "Intermodal / Trucking"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis.com",
+      "Digrin.com",
+      "Yahoo Finance"
+    ],
+    "themeLegacy": {
+      "accent": "#C41230",
+      "accentDark": "#8B0A1E",
+      "darkGrad": "linear-gradient(135deg,#1a0508 0%,#2d0b11 50%,#1a0508 100%)",
+      "glow": "rgba(196,18,48,0.35)",
+      "subColor": "#f7c6cc",
+      "headerMuted": "rgba(247,198,204,0.7)",
+      "verdictText": "#fce4e8",
+      "vcellLabel": "rgba(247,198,204,0.8)"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T15:39:58+07:00",
+      "v2Hash": "c21610cf5c06"
+    }
+  },
+  "market": {
+    "px": 229.15,
+    "priceDate": "2026-09-24",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          168.86
+        ],
+        [
+          "พ.ย.25",
+          173.96
+        ],
+        [
+          "ธ.ค.25",
+          194.34
+        ],
+        [
+          "ม.ค.26",
+          202.72
+        ],
+        [
+          "ก.พ.26",
+          233.41
+        ],
+        [
+          "มี.ค.26",
+          211.9
+        ],
+        [
+          "เม.ย.26",
+          251.53
+        ],
+        [
+          "พ.ค.26",
+          276.43
+        ],
+        [
+          "มิ.ย.26",
+          289.43
+        ],
+        [
+          "ก.ค.26",
+          271.75
+        ],
+        [
+          "ส.ค.26",
+          265.47
+        ],
+        [
+          "ก.ย.26",
+          229.15
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 130.12,
+      "hi": 299.76
+    }
+  },
+  "fundamentals": {
+    "eps": 7.62,
+    "dps": 1.8,
+    "bvps": 36.49,
+    "shares": 93914939,
+    "epsForward": 7.62,
+    "netIncome": 675000000,
+    "roe": 18.4,
+    "revenue": 12700000000,
+    "opMargin": 7.5,
+    "fcf": 1100000000,
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation (มัธยฐานย้อนหลัง)",
+      "inputs": {
+        "multiple": 25.2,
+        "multipleSource": "median5y"
+      },
+      "override": {
+        "eps": 7.05,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "มัธยฐาน 5 ปีจากประวัติ (ราคาเฉลี่ยรายปี ÷ EPS diluted: 2021 24.1x · 2022 19.4x · 2023 26.4x · 2024 32.2x · 2025 25.2x; ช่วง 19.4–32.2x) — ตัวคูณมาจากประวัติ ไม่ได้อิงตัวคูณปัจจุบัน",
+      "family": "market"
+    },
+    {
+      "method": "dcf",
+      "label": "DCF (สมมติฐานของเราเอง)",
+      "inputs": {
+        "g1": 5,
+        "years1": 5,
+        "tg": 3,
+        "r": 10,
+        "rfCurrency": "USD"
+      },
+      "override": {
+        "netDebt": 1399000000,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "r, g, อัตราโตเป็นสมมติฐานของเรา · PV FCF 5 ปี $4,794M + PV มูลค่าปลายทาง $12,827M (TV $20,657M = 73% ของ EV)",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      {
+        "key": "peForward",
+        "tone": "none"
+      },
+      "pbv",
+      "netIncome",
+      "custom:0",
+      "bvps",
+      "roe",
+      "revenue",
+      "opMargin",
+      "yield",
+      {
+        "key": "fcf",
+        "tone": "pos"
+      }
+    ],
+    "custom": [
+      {
+        "label": "EPS (TTM)",
+        "value": "~$7.05",
+        "note": "FY2027E consensus $10.04"
+      }
+    ],
+    "notes": {
+      "mcap": "~93.9M shares (คงเหลือ)",
+      "pe": "สูงกว่ามัธยฐาน 5 ปี 25.2x",
+      "peForward": "EPS FY2026E {{eps}} consensus",
+      "netIncome": "Margin 5.3% — ฟื้นตัวจาก trough",
+      "bvps": "Equity $3.59B (มี.ค. 69)",
+      "roe": "ROE (TTM) — ผลตอบแทนทุนแข็งแกร่ง",
+      "revenue": "ต่ำกว่า peak $14.8B (2565)",
+      "opMargin": "Gross margin 18.5%",
+      "yield": "{{dps}}/yr (DPS)",
+      "fcf": "FCF yield ~5.0% ของ Market Cap"
+    },
+    "hint": "ข้อมูล ณ 21 ก.ย. 2569 — EPS TTM ฟื้นตัวต่อเนื่อง"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 0,
+        "exitMultiple": 17,
+        "divCum": 5.4,
+        "desc": "Freight cycle ซบเซาต่อเนื่อง"
+      },
+      {
+        "growth": 12,
+        "exitMultiple": 22,
+        "divCum": 5.4,
+        "desc": "Freight ฟื้นตัวตามคาด"
+      },
+      {
+        "growth": 20,
+        "exitMultiple": 25,
+        "divCum": 5.4,
+        "desc": "Freight boom + intermodal win"
+      }
+    ],
+    "exitDp": 0,
+    "baseOverride": {
+      "value": 7.05,
+      "why": "EPS ฐานฉากที่ผู้เขียนใช้"
+    },
+    "note": "Bull (EPS โต 20%/ปี 3 ปี · P/E ออก 25x) ให้ผลตอบแทนรวม {{scn.bull.ret}} · Base {{scn.base.ret}} · Bear {{scn.bear.ret}} จากจุดเข้า {{px}} — ฉากส่วนใหญ่ไม่ชดเชยความเสี่ยงที่ราคาปัจจุบัน EPS FY2027E ตาม consensus $10.04 (vendor \"forward\" เป็นปีงบถัดไปอีกปี ไม่ใช่ FY2026) × P/E 25.2x (มัธยฐาน) = ~$253 — ราคาปัจจุบันจ่ายล่วงหน้าให้การฟื้นตัวเกือบเต็ม"
+  },
+  "analyst": {
+    "target": 299.09,
+    "n": 23,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "JBHT ขึ้นจาก ~$169 (สิ้น ต.ค. 2568) สู่จุดสูงสุดของกราฟ ~$289 (สิ้น มิ.ย. 2569) ก่อนย่อลงราว 19% ในสามเดือนหลัง ตลาดคาดกำไรฟื้นตัว: EPS consensus FY2026E {{eps}} → FY2027E $10.04 เทียบ EPS TTM $7.05 ราคาล่าสุด {{px}} ยังสูงกว่ามูลค่าเหมาะสม {{fv}} — ตลาดยังจ่ายล่วงหน้าให้การฟื้นตัวของ freight cycle",
+    "valuation": "สองวิธีเป็นคนละตระกูล (มัธยฐาน P/E ย้อนหลัง vs DCF) และให้ผลใกล้กัน ทำให้ FV {{fv}} อยู่ในกรอบ {{fvLow}} – {{fvHigh}} · ตัวเลขนี้ต่ำกว่าราคาล่าสุด {{px}} ความไว: หาก P/E เท่าค่าต่ำสุดในประวัติ 19.4x → ~$137 · ที่ค่าสูงสุด 32.2x → ~$227 (ต่ำกว่าราคาล่าสุดแม้ในกรณีสูงสุด) ขา EV/EBITDA และ FCF Yield เดิมถูกถอด เพราะเป็นตัวคูณที่สมมติเอง ไม่มีมัธยฐานที่วัดได้ · เป้านักวิเคราะห์ไม่ใช่ขาของ FV (ใช้เป็นบริบทเท่านั้น) · FCF ฐานได้อานิสงส์ capex ที่ลดลง จึงตั้งอัตราโตปานกลาง 5%",
+    "gauge": "ราคาล่าสุด {{px}} สูงกว่า Fair Value {{fv}} (MOS {{mos}}) — ตลาดยังจ่ายล่วงหน้าให้การฟื้นตัวของ freight cycle เป้าเฉลี่ยนักวิเคราะห์ {{analyst.target}} ({{analyst.pct}}) สูงกว่าราคา แต่ผูกกับ EPS ที่คาดโตแรง (FY2027E $10.04 เทียบ TTM $7.05) ซึ่ง FV ของเรา (EPS TTM + DCF) ไม่ได้จ่ายล่วงหน้า โซน MOS 20% ที่ {{mos20}} และ MOS 30% ที่ {{mos30}} เป็นระดับที่น่าสนใจสำหรับ value investor ที่ต้องการ margin of safety",
+    "mos": "ราคาสูงเกิน Fair Value อย่างมีนัยสำคัญ — ไม่มี Margin of Safety",
+    "verdictHeadline": "JBHT: ธุรกิจดี แต่ราคายังสูงกว่ามูลค่า — Wait for Better Entry",
+    "verdictBody": "J.B. Hunt Transport คือผู้นำ intermodal อันดับ 1 ของ US ที่มี moat ชัดเจน มีสัญญาระยะยาวกับ BNSF Railway และส่วนแบ่งตลาด ~60% ที่เส้นทางหลัก ราคาล่าสุด {{px}} สูงกว่า Fair Value {{fv}} (MOS {{mos}}) สะท้อนว่าตลาดจ่ายล่วงหน้าให้การฟื้นตัวของ freight cycle P/E TTM ~33x เทียบมัธยฐาน 5 ปี 25.2x — กำไรฟื้นจริง (EPS TTM $7.05 เทียบ $6.12 ปี 2568) แต่ตัวคูณยังสูงกว่าประวัติ Bull case (EPS โต 20%/ปี) ให้ผลตอบแทน 3 ปีราว {{scn.bull.ret}} ขณะที่ Base อยู่ที่ {{scn.base.ret}} — risk/reward ยังไม่คุ้มที่ราคานี้",
+    "strategy": "JBHT เป็นหุ้นคุณภาพสูงที่น่าถือในพอร์ตระยะยาว แต่ควรรอจุดเข้าที่ดีกว่า — โซน {{mos20}} (MOS 20%) จนถึง {{fv}} เป็นระดับที่น่าสนใจสำหรับ value investor ที่ต้องการ margin of safety · สำหรับผู้ที่เชื่อ freight cycle upcycle เต็มรูปแบบ ควรตั้ง stop-loss เพราะ downside จากระดับนี้มากกว่า upside อย่างเห็นได้ชัด",
+    "disclaimerSources": "แหล่งข้อมูล: StockAnalysis.com (ราคา/EPS/Financials), Digrin.com (ปันผล/Yield), Yahoo Finance (ข้อมูลตลาด), StockAnalysis Forecast (consensus estimates) — ราคา ณ {{priceDate}}"
+  },
+  "text": {
+    "valHint": "2 ตระกูล — P/E (มัธยฐานย้อนหลัง) · DCF",
+    "chartHint": "ต.ค. 2568 – ก.ย. 2569"
+  },
+  "catalysts": [
+    "<b>Freight Cycle Upcycle:</b> หลังจาก trough ยาวนาน 2022-2025 ตลาด freight กำลังฟื้นตัว — intermodal load คาดโต 5-8% ปี 2569-2570",
+    "<b>Intermodal Leadership:</b> JBHT คือ #1 ผู้ให้บริการ intermodal ใน US มีส่วนแบ่งตลาด ~60% และความสัมพันธ์ระยะยาวกับ BNSF Railway (joint venture)",
+    "<b>Rail Advantage ต้นทุนต่ำ:</b> Intermodal ประหยัดพลังงานกว่า over-the-road trucking ~2x — เมื่อราคาน้ำมันสูงหรือ ESG pressure เพิ่ม JBHT ได้เปรียบ",
+    "<b>Dedicated Contract Services (DCS) เสถียร:</b> ธุรกิจ DCS (~25% รายได้) มีสัญญาระยะยาว รายได้นิ่ง ลดความผันผวนจาก spot market",
+    "<b>FCF แข็งแกร่ง + ลด Capex:</b> FCF TTM $1.10B จาก capex ลดลง ช่วยให้มีเงินสดสำหรับ buyback และ dividend growth (หุ้นถัวเฉลี่ยลดจาก 107M ปี 2564 เหลือ 95.6M)",
+    "<b>Final Mile Expansion:</b> ธุรกิจ Final Mile Services ขยายตัวตาม e-commerce — JBHT เป็นผู้นำในการส่งสินค้าชิ้นใหญ่ถึงบ้าน"
+  ],
+  "risks": [
+    "<b>Valuation สูงเกินพื้นฐาน:</b> P/E TTM ~33x เทียบมัธยฐาน 5 ปี 25.2x — ตลาด price in การฟื้นตัวไปมากแล้ว ความผิดหวังใดๆ กดราคาได้หนัก",
+    "<b>Freight Cycle Risk:</b> ธุรกิจขนส่งผันผวนตาม GDP และอุปสงค์ผู้บริโภค — recession หรือ trade war กระทบรายได้โดยตรง",
+    "<b>Competition จาก Over-the-Road Trucking:</b> ช่วง spot rate ต่ำ shipper เปลี่ยนกลับไปใช้ trucking แทน intermodal — JBHT เสียส่วนแบ่ง",
+    "<b>Rail Service Disruptions:</b> ต้องพึ่งพา BNSF Railway — การหยุดงาน อุบัติเหตุ หรือ service degradation ของรถไฟกระทบตรง",
+    "<b>Driver Shortage และ Labor Cost:</b> DCS และ Truckload ต้องการคนขับรถ — ต้นทุนแรงงานสูงขึ้น กดดัน margin",
+    "<b>ICS Brokerage Compression:</b> ธุรกิจ ICS (brokerage ~10%) margin บางมากในช่วง soft market — อาจขาดทุนได้ในบางไตรมาส"
+  ],
+  "extras": [],
+  "_sig": "sha256:a084495f461d3cf2e4a27d5a24f7ba3eb0d01731ee3b797193ffe1169d02cd06"
+}
