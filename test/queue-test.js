@@ -1609,7 +1609,9 @@ let v3PrepatchPromise = null;   // Plan 4a fix1 (Review Focus 3) — prep() เ�
       let netCalls = 0;
       try {
         v3PrepatchPromise = Pp.prep('ZTS', { reportsDir: V3DIR, run: () => { netCalls++; throw new Error('network must not be called'); },
-          medianBlock: () => { netCalls++; throw new Error('network must not be called'); } })
+          medianBlock: () => { netCalls++; throw new Error('network must not be called'); },
+          statementAfterOf: () => { netCalls++; throw new Error('network must not be called'); },   // re-review R-2: ปฏิเสธก่อนค้นวันงบ (SEC) ด้วย
+          sec: () => { netCalls++; throw new Error('network must not be called'); } })
           .then(() => ok(false, 'v3/prep (4a fix1): ใบ v3 + PREPATCH → prep ต้องปฏิเสธ (Review Focus 3)', 'resolved'),
             (e) => ok(/ZTS เป็น PREPATCH/.test(e.message) && netCalls === 0, 'v3/prep (4a fix1): ใบ v3 + bucket PREPATCH → checkNotPrepatch ปฏิเสธก่อน network (Review Focus 3)', `${e.message} · netCalls=${netCalls}`));
       } finally { S.save(before); }

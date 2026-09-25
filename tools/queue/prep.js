@@ -415,12 +415,13 @@ async function prep(sym, opts) {
   const priceFresh = priceIso ? priceIso >= lastSession : null;
   const model = o.model || (hs.hard ? 'opus' : 'sonnet');
   const effort = hs.hard ? 'high' : 'medium';
+  const marketOpen = th ? setSessionOpen() : usSessionOpen();   // ใช้ทั้ง extraBlock (worker) และบรรทัด controller ของใบ v3 (re-review R-1)
 
   // 7. ประกอบ prompt
   const prompt = assemblePrompt(fs.readFileSync(TEMPLATE, 'utf8'),
     { SYMBOL: sym, MARKET: th ? 'TH' : 'US', MODE: mode, WORKTREE: ROOT, CURRENT_TAGS: tags, MEDIANS: med.text, FUNDAMENTALS: ps.out },
     // ยังไม่ pre-patch = worker ต้องรัน update-prices เอง ⇒ ต้องบอกด้วยว่าตลาดเปิดอยู่ไหม (--force ข้าม guard intraday เอง)
-    extraBlock({ sym, mode, modeWhy: dm.why, lightRule, priceFresh, priceDate: priceIso, lastSession, escalated, prePatched: rec.prePatched, marketOpen: th ? setSessionOpen() : usSessionOpen(), oldPrice: rec.oldPrice, price: src.price, v3: src.kind === 'v3', baseEPS: ctx && ctx.baseEPS, epsTTM: vend.epsTTM, epsScreen, snap, medWarn: med.warn, hard: hs.hard, hardWhy: hs.why, fyYears: vend.fyYears, traps: vend.traps, sidecarOk: sc !== null }));
+    extraBlock({ sym, mode, modeWhy: dm.why, lightRule, priceFresh, priceDate: priceIso, lastSession, escalated, prePatched: rec.prePatched, marketOpen, oldPrice: rec.oldPrice, price: src.price, v3: src.kind === 'v3', baseEPS: ctx && ctx.baseEPS, epsTTM: vend.epsTTM, epsScreen, snap, medWarn: med.warn, hard: hs.hard, hardWhy: hs.why, fyYears: vend.fyYears, traps: vend.traps, sidecarOk: sc !== null }));
   fs.mkdirSync(S.PREP_DIR, { recursive: true });
   const file = path.join(S.PREP_DIR, sym + '.md');
   fs.writeFileSync(file, prompt);
@@ -436,7 +437,7 @@ async function prep(sym, opts) {
   if (med.warn.length) console.log(`⚠ มัธยฐาน: ${med.warn.join(' · ')}`);
   console.log('\n── ขั้นที่ต้องทำเอง ──');
   let n = 0;
-  if (src.kind === 'v3' && priceFresh !== true) console.log(`${++n}. ใบ v3 ราคายังไม่สด: node tools/update-prices.js --write --force ${sym} แล้วรัน prep ใหม่ ก่อน spawn (worker ห้ามรันเอง)`);
+  if (src.kind === 'v3' && priceFresh !== true) console.log(`${++n}. ใบ v3 ราคายังไม่สด: node tools/update-prices.js --write --force ${sym} แล้วรัน prep ใหม่ ก่อน spawn (worker ห้ามรันเอง) · ${marketOpen ? 'ตลาดเปิดอยู่ตอนนี้ — รอปิดก่อน' : 'ตลาดปิดแล้ว รันได้'} (--force ข้าม guard intraday — ตลาดเปิดอยู่ = ราคา intraday ลงไฟล์)`);
   if (hs.hard) console.log(`${++n}. หุ้นยาก: ปรึกษา advisor แล้วแทนบรรทัด "<ยังไม่ได้วาง …>" ใน prompt ด้วยแนวทาง`);
   if (mode === 'NEW' && !o.brand) console.log(`${++n}. NEW: เลือกสีแบรนด์จาก tools/brand-colors.md แล้วรัน prep ใหม่ด้วย --brand "#hex" (หรือให้ worker รัน pick-brand เอง — มี lock แล้ว)`);
   console.log(`${++n}. spawn worker 1 ตัว: prompt = ไฟล์ข้างบน · pin model:"${model}" · effort ${effort} (Agent tool หรือ analyze-wave stocks=[1 ตัว])`);
