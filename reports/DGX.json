@@ -1,0 +1,241 @@
+{
+  "v": 3,
+  "symbol": "DGX",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Quest Diagnostics",
+    "exchange": "NYSE",
+    "sub": "Diagnostic Testing • Lab Duopoly (คู่กับ LH) • Routine & Specialty Tests • Patient Service Centers",
+    "headerTags": [
+      "Healthcare",
+      "Diagnostic Lab Duopoly"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis.com",
+      "Yahoo Finance",
+      "Google Finance"
+    ],
+    "priceNote": "16:00 ET ตลาดปิด",
+    "themeLegacy": {
+      "accent": "#9c2b4e",
+      "accentDark": "#5c1329",
+      "darkGrad": "linear-gradient(135deg,#1a0810 0%,#3d0f22 58%,#5c1329 140%)",
+      "glow": "rgba(156,43,78,.35)",
+      "subColor": "#f3c2d2",
+      "headerMuted": "#e2a0b5",
+      "verdictText": "#fbe4ea",
+      "vcellLabel": "#eab3c4"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T13:09:09+07:00",
+      "v2Hash": "47f53f06f53b"
+    }
+  },
+  "market": {
+    "px": 236.59,
+    "priceDate": "2026-09-24",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          175.95
+        ],
+        [
+          "พ.ย.25",
+          189.18
+        ],
+        [
+          "ธ.ค.25",
+          173.53
+        ],
+        [
+          "ม.ค.26",
+          187.03
+        ],
+        [
+          "ก.พ.26",
+          211.91
+        ],
+        [
+          "มี.ค.26",
+          195.98
+        ],
+        [
+          "เม.ย.26",
+          194.2
+        ],
+        [
+          "พ.ค.26",
+          194.9
+        ],
+        [
+          "มิ.ย.26",
+          211.95
+        ],
+        [
+          "ก.ค.26",
+          233.01
+        ],
+        [
+          "ส.ค.26",
+          240.3
+        ],
+        [
+          "ก.ย.26",
+          236.59
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 171.18,
+      "hi": 248.69
+    }
+  },
+  "fundamentals": {
+    "dps": 3.44,
+    "bvps": 66.36,
+    "shares": 110373360,
+    "peAvg5y": 18.2,
+    "netIncome": 1060000000,
+    "eps": 9.42,
+    "roe": 14.6,
+    "revenue": 11560000000,
+    "grossMargin": 33.2,
+    "beta": 0.57,
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation",
+      "inputs": {
+        "multiple": 18.2,
+        "multipleSource": "median5y"
+      },
+      "note": "มัธยฐานของ DGX เองย้อนหลัง 5 ปี (FY2021–25 ช่วง 9.0x–20.1x) ไม่ใช่ตัวคูณปัจจุบัน (~26.2x)",
+      "family": "market"
+    },
+    {
+      "method": "ddm",
+      "label": "DDM / Gordon Growth",
+      "inputs": {
+        "g": 5.5,
+        "r": 7.5
+      },
+      "note": "Beta ต่ำ 0.57 → required return ไม่สูง",
+      "family": "rg"
+    },
+    {
+      "method": "pbv",
+      "label": "Justified P/BV",
+      "inputs": {
+        "g": 5,
+        "r": 8
+      },
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "peAvg5y",
+      "pbv",
+      "netIncome",
+      "eps",
+      "bvps",
+      "roe",
+      "revenue",
+      "grossMargin",
+      "yield",
+      "beta"
+    ],
+    "notes": {
+      "mcap": "(NYSE)",
+      "pe": "Forward P/E ~22.0x (ฉันทามติ FY2026e)",
+      "peAvg5y": "มัธยฐาน FY2021–25 · ช่วง 9.0x–20.1x",
+      "pbv": "BVPS ~{{bvps}} · ROE หนุน premium เหนือ book",
+      "netIncome": "FY2025 $0.99B · Net margin 9.2%",
+      "eps": "diluted · FY2025 $8.75 (FY สิ้นสุด ธ.ค.)",
+      "bvps": "Equity ~$7.35B ÷ ~110.7M หุ้น (ตามรายงานเดิม)",
+      "roe": "ROE (TTM) · D/E 0.81x",
+      "revenue": "+9.9% YoY (TTM เทียบปีก่อน)",
+      "grossMargin": "Operating margin 14.6% · Net margin 9.2%",
+      "yield": "{{dps}}/หุ้น/ปี · Payout ~37%",
+      "beta": "ผันผวนต่ำกว่าตลาดมาก (defensive)"
+    },
+    "hint": "อิง TTM ณ Q2 2026"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": -2,
+        "exitMultiple": 16,
+        "divCum": 10.5,
+        "desc": "Reimbursement cut + volume ชะลอ"
+      },
+      {
+        "growth": 7,
+        "exitMultiple": 18.2,
+        "divCum": 11,
+        "desc": "เติบโตต่อเนื่องตามแนวโน้มปัจจุบัน (M&A+CIT)"
+      },
+      {
+        "growth": 12,
+        "exitMultiple": 20,
+        "divCum": 11.2,
+        "desc": "M&A เร่งตัว + re-rating เป็น premium multiple"
+      }
+    ],
+    "exitDp": 1,
+    "note": "Base case ({{scn.base.ret}} รวมปันผล) ให้ผลตอบแทนติดลบแม้ EPS โต +7%/ปี เพราะจุดเข้า ({{px}}) ตีราคา P/E สูงกว่าตัวคูณออก 18.2x (มัธยฐานย้อนหลังของ DGX) ผลตอบแทนที่ดีกว่านี้ต้องอาศัย EPS โตเร็วกว่านี้และตลาดยอมจ่าย P/E 20x+ กรณี Bull ({{scn.bull.ret}}) อาศัยการเร่ง M&A/CIT และ P/E ออก 20x (ขอบบนของช่วงย้อนหลัง) ส่วน Bear ({{scn.bear.ret}}) สะท้อนความเสี่ยง reimbursement cut และ de-rating กลับสู่ 16x ซึ่งอยู่ใต้ช่วงย้อนหลัง FY2022–25 (17.2x–20.1x)"
+  },
+  "analyst": {
+    "target": 247,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "DGX ปรับตัวขึ้นต่อเนื่องในรอบปี (ดูป้ายผลตอบแทนรอบปีด้านบน) จากจุดต่ำสุดปลายเดือน ธ.ค. 2568 ที่ ~$173.53 ฟื้นตัวแข็งแกร่งผ่าน ~$233 ปลายเดือน ก.ค. 2569 และ ~$240 ปลายเดือน ส.ค. 2569 หนุนจากรายได้ TTM โต +9.9% YoY ผลักดันราคาขึ้นมาที่ {{px}} ปัจจุบัน — ใกล้ 52-week high ($248.69) มาก สะท้อนความเชื่อมั่นตลาดต่อ growth reacceleration",
+    "valuation": "Fair Value = เฉลี่ย 2 ตระกูลสมมติฐาน: (1) P/E ที่ยึดมัธยฐานย้อนหลังของ DGX เอง และ (2) ค่าเฉลี่ยของ DDM ($181.45) กับ Justified P/BV ({{fvHigh}}) ซึ่งใช้ (r, g) ชุดเดียวกันจึงนับเป็นเสียงเดียว ผลคือ ({{fvLow}} + $196.90)/2 ≈ $184 · เป้าเฉลี่ยนักวิเคราะห์ ไม่ถูกใช้เป็นขาของ FV (เป็นเพียงบริบทเทียบเคียง) ราคาปัจจุบัน {{px}} สูงกว่า Fair Value {{fv}} ({{mos}}) บ่งชี้ว่าตลาดตีราคาที่ premium เหนือมูลค่าพื้นฐานไปแล้ว ส่วนหนึ่งจาก duopoly moat (คู่กับ LH) และผลประกอบการฟื้นตัวเร็วกว่าคาด",
+    "gauge": "ราคาปัจจุบัน {{px}} สูงกว่ากรอบบน Fair Value ({{fvHigh}}) และอยู่ระดับเดียวกับเป้าเฉลี่ยนักวิเคราะห์ (~$247) สะท้อนว่าตลาดให้น้ำหนักกับ growth reacceleration ไปมากแล้ว นักลงทุนสาย value อาจรอจังหวะย่อตัว สู่โซน MOS 20% ({{mos20}}) หรือต่ำกว่า Fair Value ({{fv}}) ก่อนพิจารณาสะสม",
+    "mos": "<b>ไม่มี Margin of Safety</b><br>ราคาปัจจุบัน {{px}} สูงกว่ามูลค่าเหมาะสม {{fv}} ({{mos}}) → ตามเกณฑ์ value investor ถือว่า <b>แพง</b> ยังไม่ใช่จุดซื้อที่ปลอดภัย ราคาย่อลงมาที่ {{mos20}}–{{fvLow}} จะน่าสนใจกว่า",
+    "verdictHeadline": "ถือ (Hold) — คุณภาพดีแต่ราคาตึงตัว รอจังหวะย่อสะสม",
+    "verdictBody": "Quest Diagnostics เป็นหนึ่งในสอง diagnostic lab ยักษ์ใหญ่ของสหรัฐฯ (duopoly ร่วมกับ Labcorp) มีโมเดลธุรกิจมั่นคง กระแสเงินสดสม่ำเสมอ และกำลังกลับมาเติบโตเร่งตัว (+11.0% YoY) จาก M&A และ CIT ทว่าราคาปัจจุบัน {{px}} ได้ปรับขึ้นสะท้อนมุมมองบวกไปมากแล้ว เทรดสูงกว่ามูลค่าเหมาะสมเฉลี่ย {{fv}} (MOS {{mos}}) เหมาะกับการถือของเดิมมากกว่าเข้าซื้อใหม่ ผู้ที่สนใจเข้าซื้อควรรอจังหวะย่อตัว สู่โซน {{mos20}}–{{fvLow}}",
+    "strategy": "รอสะสมที่โซน MOS 20% ({{mos20}}) ลงไป หรือถ้าเชื่อมั่นระยะยาวอาจทยอยเข้าบางส่วนต่ำกว่า Fair Value ({{fv}}) ผู้ถือเดิมสามารถถือต่อรับปันผล ~1.40%/ปี และรอผลตอบแทนจาก EPS growth",
+    "disclaimerSources": "ข้อมูลราคา ณ {{priceDate}} จาก StockAnalysis.com และ Yahoo Finance"
+  },
+  "text": {
+    "valHint": "2 ตระกูลสมมติฐาน (P/E + DDM/Justified P/BV)"
+  },
+  "catalysts": [
+    "<b>M&A synergy:</b> ควบรวมกิจการ lab/hospital outreach ต่อเนื่องหนุนรายได้เติบโตเกิน mid-single-digit",
+    "<b>Consumer-initiated testing (CIT):</b> บริการตรวจแล็บที่ผู้บริโภคสั่งเองโตเร็ว ขยายฐานลูกค้านอกเหนือ physician referral",
+    "<b>Duopoly moat:</b> อุตสาหกรรม lab testing กระจุกตัวอยู่กับ DGX และ LH (Labcorp) สร้าง pricing power และ scale advantage",
+    "<b>Advanced/specialty testing:</b> genetic testing, oncology, autoimmune ให้ margin สูงกว่า routine testing ผลักดัน mix ดีขึ้น",
+    "<b>Payout ยังมีช่องเพิ่ม:</b> Payout ratio ~37% ยังต่ำ เปิดทางเพิ่มเงินปันผล/ซื้อหุ้นคืนได้อีก",
+    "<b>Health system lab outsourcing:</b> โรงพยาบาลเริ่ม outsource lab operations ให้ DGX บริหารแทนเพื่อลดต้นทุน"
+  ],
+  "risks": [
+    "<b>Reimbursement cut:</b> Medicare/Medicaid และ payer เอกชนกดดันราคาตรวจแล็บต่อเนื่องทุกปี",
+    "<b>Valuation ตึงตัว:</b> เทรดที่ P/E ~26.2x สูงกว่ามัธยฐานย้อนหลัง 18.2x และเหนือ Fair Value (MOS {{mos}}) เสี่ยง de-rating หากผลประกอบการชะลอ",
+    "<b>Cyber/data breach:</b> ข้อมูลสุขภาพผู้ป่วยจำนวนมาก เสี่ยงถูกโจมตีทางไซเบอร์ (มีประวัติในอดีต)",
+    "<b>ต้นทุนแรงงานเพิ่ม:</b> ค่าจ้าง phlebotomist/lab tech สูงขึ้นกดดัน margin",
+    "<b>คู่แข่งและ hospital in-house lab:</b> LH (Labcorp) และแล็ปในโรงพยาบาลแย่งส่วนแบ่งตลาดในบางพื้นที่",
+    "<b>Regulatory:</b> FDA LDT (laboratory-developed test) oversight ที่เข้มขึ้นอาจเพิ่มต้นทุน compliance"
+  ],
+  "extras": [],
+  "_sig": "sha256:b42b71de7961c30f148bebafb4922ad41d51855821147a1d7a1575aca4d23d77"
+}
