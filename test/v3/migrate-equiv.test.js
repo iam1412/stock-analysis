@@ -56,7 +56,7 @@ for (const sym of ['AAPL', 'DDOG']) { const m = migrate(sym, raw(sym)); const b 
   t(/มะม่วงสุกงอม/.test(html), 'mutation applied (anchor found)');
   const m = migrate('BBL', html);
   t(m.eq.textLost.includes('มะม่วงสุกงอม'), '.ret injected word → TEXT LOST (region not masked)', JSON.stringify(m.eq.textLost));
-  t(BK.bucketOf(m.notes, m.eq).bucket === 'HUMAN', 'TEXT LOST → HUMAN');
+  { const bk = BK.bucketOf(m.notes, m.eq); t(bk.bucket === 'HUMAN' && bk.reasons.some((r) => /^TEXT LOST/.test(r)), 'TEXT LOST → HUMAN', JSON.stringify(bk.reasons.slice(0, 3))); }
   const k = migrate('BBL', raw('BBL').replace(/(<div class="ret[^"]*">\{\{rd:sc1ret\}\})/, '$1 มะม่วงสุกงอม'));
   t(k.doc.scenarios.cases[0].retNote === 'มะม่วงสุกงอม' && !k.eq.textLost.includes('มะม่วงสุกงอม'), '6b: a plain .ret annotation is carried (retNote) — not lost', JSON.stringify(k.eq.textLost));
 }

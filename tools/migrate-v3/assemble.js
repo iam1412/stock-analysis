@@ -126,32 +126,62 @@ const MULT_METHODS = ['pe', 'ps', 'evsales', 'evebitda', 'pfcf', 'pffo', 'pbv'];
 const MULT_TOKEN = /([0-9]+(?:\.[0-9]+)?)\s*(?:x(?![a-z])|เท่า)/gi;
 const MEDIAN_WORD = /มัธยฐาน|median/gi;
 const REL_WORD = /premium|discount|พรีเมียม|ส่วนลด|สูงกว่า|ต่ำกว่า|เหนือ|under|above|below/i;
-function multipleSourceOf(mdesc, F, i, multiple) {
+// fix round 1 (review I-2): มัธยฐานที่ถูกปฏิเสธ ("ไม่ใช้มัธยฐาน" · "ยังไม่มีมัธยฐาน") หรือตัวคูณที่ประกาศว่าตั้งเอง/สมมติ ≠ มัธยฐาน
+const NEG_BEFORE = /(?:ไม่มี|ไม่ใช้|ยังไม่มี|ไม่ได้ใช้|ไม่ใช่|\bno\b|\bnot\b|without)\s*$/i;
+const OWN_WORD = /สมมติ|ตั้งเอง|assum/i;
+const sameV = (a, b) => b != null && Math.abs(a - b) < 1e-9;
+function multipleSourceOf(mdesc, F, i, multiple, out) {
   const t = String(mdesc == null ? '' : mdesc);
+  const multRe = () => new RegExp(MULT_TOKEN.source, 'gi');
   const toks = [...t.matchAll(MULT_TOKEN)].map((m) => ({ at: m.index, end: m.index + m[0].length, v: parseFloat(m[1]) }));
-  const tok = toks.find((x) => multiple != null && Math.abs(x.v - multiple) < 1e-9) || toks[0] || null;
+  // fix round 1 (review I-1): ลองทุก token ที่มีค่าเท่า multiple ("× P/E 32.2x = $187 — 32.2x = มัธยฐาน 5 ปี") · ไม่มีค่าเท่า = token แรก
+  const eqToks = toks.filter((x) => sameV(x.v, multiple));
+  const cands = eqToks.length ? eqToks : toks.length ? [toks[0]] : [null];
   const meds = [...t.matchAll(MEDIAN_WORD)].map((m) => ({ at: m.index, end: m.index + m[0].length }));
-  let blocked = false;
-  for (const md of meds) {
-    let between;
-    if (tok) {
-      const gap = md.at >= tok.end ? md.at - tok.end : tok.at >= md.end ? tok.at - md.end : 0;
-      if (gap > 40) continue;
-      between = md.at >= tok.end ? t.slice(tok.end, md.at) : tok.at >= md.end ? t.slice(md.end, tok.at) : '';
-      if (REL_WORD.test(between) || new RegExp(MULT_TOKEN.source, 'i').test(between)) { blocked = true; continue; }
-      // คำมัธยฐานที่ตามด้วยตัวคูณอีกตัว ("29x — มัธยฐาน 5 ปี คือ 31.2x") = มัธยฐานเป็นของตัวเลขนั้น ไม่ใช่ตัวคูณที่ใช้
-      const nx = new RegExp(MULT_TOKEN.source, 'i').exec(t.slice(md.end, md.end + 30).split(/[·•—–;,()]/)[0]);
-      if (nx && md.end + nx.index !== tok.at) { blocked = true; continue; }
-    } else if (REL_WORD.test(t)) { blocked = true; continue; }
-    // ช่วงปีที่ติดคำมัธยฐาน (ก่อน/หลัง ≤15 ตัวอักษร) — 10 ปี เฉพาะเมื่อไม่มี 5 ปี ในช่วงเดียวกัน
-    const near = t.slice(Math.max(0, md.at - 15), md.end + 15);
-    const is10 = /(?<![0-9])10\s*ปี|10[-\s]*(?:year|yr)/i.test(near), is5 = /(?<![0-9])5\s*ปี|5[-\s]*(?:year|yr)/i.test(near);
-    return is10 && !is5 ? 'median10y' : 'median5y';
+  let why = null;   // เหตุที่คำมัธยฐานถูกปัด (F)
+  // ตัวคูณ "อื่น" = ค่าไม่เท่า multiple (ตัวซ้ำของค่าเดียวกันไม่นับ)
+  const otherIn = (x) => [...String(x).matchAll(multRe())].some((m) => !sameV(parseFloat(m[1]), multiple) || multiple == null);
+  for (const tok of cands) {
+    for (const md of meds) {
+      const neg = NEG_BEFORE.test(t.slice(Math.max(0, md.at - 12), md.at));
+      if (tok) {
+        const gap = md.at >= tok.end ? md.at - tok.end : tok.at >= md.end ? tok.at - md.end : 0;
+        if (gap > 40) { if (neg) why = why || 'negated median'; continue; }
+        const between = md.at >= tok.end ? t.slice(tok.end, md.at) : tok.at >= md.end ? t.slice(md.end, tok.at) : '';
+        if (OWN_WORD.test(between)) { why = 'author-set multiple'; continue; }   // ชนะเหตุอื่น (ไม่ไหลไป peer)
+        if (neg) { why = why || 'negated median'; continue; }
+        if (REL_WORD.test(between) || otherIn(between)) { why = why || 'premium/discount vs median'; continue; }
+        // คำมัธยฐานที่ตามด้วยตัวคูณอีกตัว ("29x — มัธยฐาน 5 ปี คือ 31.2x") = มัธยฐานเป็นของตัวเลขนั้น ไม่ใช่ตัวคูณที่ใช้
+        const nx = new RegExp(MULT_TOKEN.source, 'i').exec(t.slice(md.end, md.end + 30).split(/[·•—–;,()]/)[0]);
+        if (nx && md.end + nx.index !== tok.at && !sameV(parseFloat(nx[1]), multiple)) { why = why || 'premium/discount vs median'; continue; }
+      } else if (neg || REL_WORD.test(t) || OWN_WORD.test(t)) { why = why || (neg ? 'negated median' : 'premium/discount vs median'); continue; }
+      // ช่วงปีที่ติดคำมัธยฐาน (ก่อน/หลัง ≤15 ตัวอักษร) — 10 ปี เฉพาะเมื่อไม่มี 5 ปี ในช่วงเดียวกัน
+      const near = t.slice(Math.max(0, md.at - 15), md.end + 15);
+      const is10 = /(?<![0-9])10\s*ปี|10[-\s]*(?:year|yr)/i.test(near), is5 = /(?<![0-9])5\s*ปี|5[-\s]*(?:year|yr)/i.test(near);
+      // fix round 1 (review M-5): หน้าต่างมัธยฐาน 2–4 ปีที่ผู้เขียนระบุ → medianWindow (ไม่งั้น v3 พิมพ์ "5 ปี")
+      if (out && !is10 && !is5) { const w = medianWindowOf(t.slice(md.at, md.end + 60)); if (w) out.medianWindow = w; }
+      return is10 && !is5 ? 'median10y' : 'median5y';
+    }
   }
-  if (/peer|กลุ่ม|เทียบ/i.test(t)) return 'peer';
-  if (/เซกเตอร์|sector|อุตสาหกรรม/i.test(t)) return 'sector';
-  F.push(`leg ${i + 1}: multipleSource author (${blocked ? 'premium/discount vs median' : 'no median/peer/sector wording'})`);
+  // ผู้เขียนประกาศเองว่าตัวคูณ "ตั้งเอง/สมมติ" (CG) = author — ไม่ไหลไปจับคำ peer/กลุ่ม/เทียบ ที่อยู่ที่อื่นใน mdesc
+  if (why !== 'author-set multiple') {
+    if (/peer|กลุ่ม|เทียบ/i.test(t)) return 'peer';
+    if (/เซกเตอร์|sector|อุตสาหกรรม/i.test(t)) return 'sector';
+  }
+  F.push(`leg ${i + 1}: multipleSource author (${why || 'no median/peer/sector wording'})`);
   return 'author';
+}
+/** หน้าต่างมัธยฐานจากถ้อยคำหลังคำมัธยฐาน: "FY2023–FY2025" / "FY2021–25" → FYa–FYb (ถ้าช่วง 2–4 ปี) · ไม่งั้น "N ปี(งบ)" N = 2–4 → "N ปี" */
+function medianWindowOf(seg) {
+  const fy = /FY\s*(\d{4})\s*[–—-]\s*(?:FY\s*)?(\d{2,4})(?![0-9])/.exec(seg);
+  if (fy) {
+    const a = +fy[1], b = fy[2].length === 4 ? +fy[2] : Math.floor(a / 100) * 100 + +fy[2];
+    const n = b - a + 1;
+    if (n >= 2 && n <= 4) return `FY${a}–FY${b}`;
+    if (n >= 5) return null;
+  }
+  const y = /(?<![0-9])([2-4])\s*ปี/.exec(seg);
+  return y ? `${y[1]} ปี` : null;
 }
 /** mdesc ส่วนที่ extractor ไม่ได้ใช้ (qualifier · Task 0 G): หางหลัง " — " + วงเล็บที่เป็นคำ (ไม่ใช่สูตร) */
 function qualifierOf(prose) {
@@ -201,7 +231,7 @@ function legsOf(parsed, fund, currency) {
       if (x.ok) {
         const method = base === 'pbv:justified' ? 'pbv' : base;
         const inputs = { ...x.inputs };
-        if (MULT_METHODS.includes(method) && inputs.multiple != null) inputs.multipleSource = multipleSourceOf(pl.mdesc, F, i, inputs.multiple);
+        if (MULT_METHODS.includes(method) && inputs.multiple != null) { const o = {}; inputs.multipleSource = multipleSourceOf(pl.mdesc, F, i, inputs.multiple, o); if (o.medianWindow && inputs.medianWindow == null) inputs.medianWindow = o.medianWindow; }
         leg = { method, label, inputs };
         if (x.override) leg.override = { ...x.override, why: OVERRIDE_WHY };
         const q = qualifierOf(mdescProse); if (q) leg.note = q;
@@ -388,21 +418,46 @@ function proseZones(doc, src) {
  *  · ท่อนท้าย "รวมปันผล" เมื่อ divIncluded (= {{rd:scnNote}}) — คำอื่นทุกคำคงไว้ตามลำดับ (ตัวคั่น • / · → •)
  *  (brief ปักไว้ ^จากจุดเข้า\s+\S+\s+•\s+.+?ฐาน\s+~\S+ — ขยายให้ครอบ "EPS ฐาน (normalized) ~$N" / "EPS ฐาน TTM $N" ที่คำผู้เขียนอยู่กลางท่อน · ไม่ขึ้นต้น "จากจุดเข้า" = คงทั้งป้าย) */
 const S6_DRV = { eps: 'EPS', ffo: 'A?FFO', revenuePerShare: 'รายได้/หุ้น', bvps: 'BVPS', fcfPerShare: 'FCF/หุ้น', de: 'DE/หุ้น', fre: 'FRE/หุ้น' };
-const S6_BASE = /~?\s*(?:\{\{baseEps\}\}|(?:US\$|\$|฿)\s*[0-9][0-9,]*(?:\.[0-9]+)?[BMK]?)/;
+// fix round 1 (review M-1): ค่าฐานติดลบ ("~−$1.37" · "~ −$0.70" · "$−0.5") และตัวเลขเปล่าหลัง ~ — ไม่งั้นเหลือเศษ "~−" ใน hintNote
+// ค่าฐานของ template = ต่อหุ้น ⇒ ตัวเลขที่ตามด้วยหน่วยยอดรวม (B/M/K · ล้าน · พันล้าน — NET "ฐาน ~$2.51B" คือรายได้รวม) ไม่ใช่ค่าฐาน
+const S6_NUM = '[0-9][0-9,]*(?:\\.[0-9]+)?(?![0-9.,]|\\s*(?:[BMK](?![A-Za-z])|พันล้าน|ล้าน|bn|mn))';
+const S6_BASE = new RegExp(`~?\\s*\\{\\{baseEps\\}\\}|~\\s*[−-]?\\s*(?:US\\$|\\$|฿)?\\s*[−-]?\\s*${S6_NUM}|[−-]?\\s*(?:US\\$|\\$|฿)\\s*[−-]?\\s*${S6_NUM}`);
 function s6HintNote(t6, scen) {
   const t = String(t6 || '').trim();
-  const m = /^จากจุดเข้า\s+(?:\{\{px\}\}|[^\s•·(]+)/.exec(t);
+  // หัว template = "จากจุดเข้า <px>" · ยอมรูปเทียบเท่า "จากราคาปัจจุบัน <px>" (WDAY — review M-2) ไม่งั้นทั้งประโยค template ซ้ำบนหน้า
+  const m = /^จาก(?:จุดเข้า|ราคาปัจจุบัน|ราคา)\s+(?:\{\{px\}\}|[^\s•·(]+)/.exec(t);
   if (!m) return t;
   const segs = t.slice(m[0].length).split(/\s*[•·]\s*/).map((x) => x.trim());   // segs[0] = ก่อนตัวคั่นแรก (ปกติว่าง)
-  const k = segs.findIndex((x, i) => i > 0 && /ฐาน/.test(x) && S6_BASE.test(x.slice(x.indexOf('ฐาน'))));
-  if (k > 0) {
-    const lab = S6_DRV[scen.driver] || 'EPS';
-    segs[k] = segs[k].replace(new RegExp(`(?:${lab}\\s*)?ฐาน`), ' ').replace(S6_BASE, ' ').replace(/\s+/g, ' ').trim();
+  // ท่อนฐาน = ท่อนแรกที่มี "ฐาน" · ตัดป้าย "<driver> ฐาน" (template) · ตัดค่าฐานเฉพาะตัวที่ตามหลัง "ฐาน ~" / "ฐาน <driver> ~" ทันที
+  //  (Task 6 re-review addendum: ตัวเลขเงินอื่นในป้าย — INTC "รายได้ TTM $57.0B" · CPNG · KTOS · NET · APURE — ไม่ใช่ค่าฐานของ template ต้องคงไว้ให้เทียบได้)
+  //  "ฐาน" ของ template = คำเดี่ยว หรือติดท้ายป้าย driver ("รายได้/หุ้นฐาน") — ไม่ใช่ส่วนของคำ (มัธยฐาน · สมมติฐาน · ส่วนลดฐาน)
+  const lab = S6_DRV[scen.driver] || 'EPS';
+  const BASE_W = `(?:${lab}\\s*ฐาน|(?<![\\u0E00-\\u0E7F])ฐาน)`;
+  // ค่าฐาน = ตัวเลขต่อหุ้นที่ตามหลัง "ฐาน" (+ป้าย driver) ทันที — มี "~" หรือไม่ก็ได้ ("EPS ฐาน $2.03") · มีคำผู้เขียนคั่น = คงตัวเลขไว้
+  //  "ฐาน" ที่ติดท้ายคำผู้เขียน ("EPS ปกติฐาน ~$14.84") นับเป็น template เฉพาะเมื่อตามด้วยค่าฐานทันที
+  const VAL = `(?:${S6_BASE.source}|[−-]?\\s*(?:US\\$|\\$|฿)\\s*[−-]?\\s*${S6_NUM}|\\{\\{(?:baseEps|eps)\\}\\})`;
+  const imm = new RegExp(`(?:${lab}\\s*)?ฐาน\\s*(?:${lab}\\s*)?${VAL}`);
+  let k = segs.findIndex((x, i) => i > 0 && imm.test(x));
+  if (k > 0) segs[k] = segs[k].replace(imm, ' ');
+  else {
+    k = segs.findIndex((x, i) => i > 0 && new RegExp(BASE_W).test(x));
+    if (k > 0) segs[k] = segs[k].replace(new RegExp(BASE_W), ' ');
   }
+  if (k > 0) segs[k] = segs[k].replace(/\s+/g, ' ').trim().replace(/^[:：]\s*/, '');
   if (scen.divIncluded && segs.length > 1 && segs[segs.length - 1] === 'รวมปันผล') segs.pop();
   let out = segs[0];
   segs.slice(1).forEach((x, i) => { if (!x) return; out += (i + 1 === k && !out ? '' : ' • ') + x; });
   return out.trim();
+}
+
+/** ช่องโน้ตที่ migrator carry จากโซน template (Plan 4b Task 6b) → [obj, key, path] */
+function carriedNotes(doc) {
+  const out = [];
+  if (doc.text && typeof doc.text.chartHint === 'string') out.push([doc.text, 'chartHint', 'text.chartHint']);
+  const sc = doc.scenarios;
+  if (sc && typeof sc.hintNote === 'string') out.push([sc, 'hintNote', 'scenarios.hintNote']);
+  if (sc) (sc.cases || []).forEach((c, i) => { if (c && typeof c.retNote === 'string') out.push([c, 'retNote', `scenarios.cases[${i}].retNote`]); });
+  return out;
 }
 
 // ── หลัก ──
@@ -492,7 +547,9 @@ function assemble(parsed0, ctx) {
   if (doc.scenarios && parsed.s6hint) {
     const raw6 = String(parsed.s6hint).replace(/\{\{rd:scnNote\}\}/g, ' ');
     const rest = s6HintNote(MP.htmlToProse(raw6), doc.scenarios);
-    if (rest) { doc.scenarios.hintNote = rest; s6hintSrc = raw6; F.push(`scenarios hint kept → scenarios.hintNote "${rest}"`); }
+    const clash = rest ? MS.divClash(rest, doc.scenarios.divIncluded) : null;
+    if (clash) H.push(`scenarios hint "${rest}" not carried — dividend claim in the note contradicts divIncluded (${clash})`);
+    else if (rest) { doc.scenarios.hintNote = rest; s6hintSrc = raw6; F.push(`scenarios hint kept → scenarios.hintNote "${rest}"`); }
   }
   // prose / text
   const s2 = parsed.byN[2], s3 = parsed.byN[3], s4 = parsed.byN[4], s5 = parsed.byN[5];
@@ -630,6 +687,12 @@ function assemble(parsed0, ctx) {
     const errs = S.validate(out);
     if (errs.length) for (const e of errs.slice(0, 8)) H.push(`schema(after tokenise) ${e.path}: ${e.msg}`);
     else { try { view = C.compute(out, { seeds: ctx.seeds }); } catch (e) { H.push(`compute(after tokenise): ${String(e.message).split('\n')[0]}`); view = null; } }
+    // fix round 1 (review I-3): โน้ตที่ carry มา (chartHint · hintNote · retNote) ต้อง render ได้บน view จริง — token ที่ view ไม่มีค่า
+    //  (IFF: driver revenuePerShare แต่ hint อ้าง {{baseEps}}) = ไม่ carry + H (ไม่งั้น build ล้ม)
+    if (view) for (const [obj, key, path] of carriedNotes(out)) {
+      try { P3.renderProse(obj[key], view); } catch (e) { H.push(`hint note carries an unresolvable token — ${path} "${obj[key]}" not carried (${String(e.message).split('\n')[0]})`); delete obj[key]; }
+    }
+    if (out.text && !Object.keys(out.text).length) delete out.text;
   }
   return {
     doc: out, notes: { H, D, F },

@@ -22,12 +22,24 @@ const isEnd = (label) => /ปี\s*\d/.test(label) && !/ปันผล/.test(la
 const RET_ANCHOR = /\{\{rd:sc\d+ret\}\}|(?:[+\-−]|&minus;)?\s*[0-9][0-9.,]*\s*%/;
 // คำต่อท้ายที่ติดป้ายไปบนผลตอบแทนรวมของ v3 แล้วความหมายเพี้ยน: มี % (ตัวเลขผูกราคาอีกตัว) หรือหน่วยต่อปี (v2 พิมพ์ %/ปี แต่ v3 พิมพ์ผลตอบแทนรวม)
 const RET_UNSAFE = /%|\/\s*(?:ปี|yr|year)|ต่อปี|per\s*(?:year|annum)|\bp\.?a\.?(?![a-z])/i;
-function retNoteOf(html, i, H, F) {
+// fix round 1 (review I-5): คำอ้างเรื่องปันผลในโน้ตที่ขัดกับ divIncluded (หน้า v3 พิมพ์ "• รวมปันผล" จาก scnNote / total% รวมปันผล) → ไม่ carry + H
+const NO_DIV = /ไม่รวมปันผล|ไม่มี(?:เงิน)?ปันผล|ไม่จ่าย(?:เงิน)?ปันผล|ex-?div|excl\.?[^,;•·]*div/i;
+const INC_DIV = /(?<!ไม่)รวมปันผล|incl\.?[^,;•·]*div/i;
+/** โน้ต → เหตุขัดแย้ง (ข้อความ) หรือ null */
+function divClash(note, divIncluded) {
+  const t = String(note || '');
+  if (divIncluded && NO_DIV.test(t)) return 'says no dividend while divIncluded';
+  if (!divIncluded && !NO_DIV.test(t) && INC_DIV.test(t)) return 'says dividends included while divIncluded is false';
+  return null;
+}
+function retNoteOf(html, i, H, F, divIncluded) {
   const h = String(html || ''), m = RET_ANCHOR.exec(h);
   if (!m) return null;
   const note = MP.htmlToProse(h.slice(m.index + m[0].length));
   if (!note) return null;
   if (RET_UNSAFE.test(note)) { H.push(`scenarios.cases[${i}] .ret annotation "${note}" not carried — a per-year/number label would mislabel the v3 total return`); return null; }
+  const clash = divClash(note, divIncluded);
+  if (clash) { H.push(`scenarios.cases[${i}] .ret annotation "${note}" not carried — dividend claim in the note contradicts divIncluded (${clash})`); return null; }
   F.push(`scenarios.cases[${i}].retNote "${note}" (author annotation in .ret)`);
   return note;
 }
@@ -90,7 +102,7 @@ function scenarios(parsed, fund, legs) {
     const cs = { growth, exitMultiple };
     if (divCum != null) cs.divCum = divCum;
     cs.desc = desc;
-    const rn = retNoteOf(c.retHtml, i, H, F);
+    const rn = retNoteOf(c.retHtml, i, H, F, out.divIncluded);
     if (rn) cs.retNote = rn;
     return cs;
   });
@@ -141,4 +153,4 @@ function tgtCheck(parsed, view) {
   return D;
 }
 
-module.exports = { scenarios, tgtCheck, fundStart, DRIVER, EXIT };
+module.exports = { scenarios, tgtCheck, divClash, fundStart, DRIVER, EXIT };

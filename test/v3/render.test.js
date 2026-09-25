@@ -246,10 +246,10 @@ t.eq(JSON.parse(R.jsonScript('{"a":"</script>"}')).a, '</script>', 'jsonScript o
   d.text = Object.assign({}, d.text, { chartHint: 'A' }); d.scenarios.hintNote = 'B'; d.scenarios.cases[1].retNote = 'C ~{{px}}';
   const s2 = R.toV2Source(d, C.compute(d, { seeds }));
   t(s2.includes('<div class="hint">โดยประมาณ A</div>'), 'chartHint → "โดยประมาณ A"');
-  t(/\{\{rd:scnNote\}\} B<\/div>/.test(s2), 'hintNote → §6 hint ends " B"');
+  t(/~\{\{rd:baseEps\}\} B\{\{rd:scnNote\}\}<\/div>/.test(s2), 'hintNote → " B" before {{rd:scnNote}} (review I-4 — base qualifiers stay on the base, not on "รวมปันผล")');
   t(s2.includes('<div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}} C ~{{rd:px}}</div>'), 'retNote → after the token, rendered through pr() (v3 token → rd twin)');
   t(s2.includes('<div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>'), 'retNote is per case');
-  d.scenarios.hintNote = 'x & y'; t(R.toV2Source(d, C.compute(d, { seeds })).includes('{{rd:scnNote}} x &amp; y</div>'), 'hintNote escaped through pr()');
+  d.scenarios.hintNote = 'x & y'; t(R.toV2Source(d, C.compute(d, { seeds })).includes(' x &amp; y{{rd:scnNote}}</div>'), 'hintNote escaped through pr()');
 }
 {
   const d = load('ZTS'); const i = d.legs.findIndex((l) => l.method === 'pe');

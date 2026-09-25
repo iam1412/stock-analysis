@@ -290,11 +290,13 @@ const asm = (sym, html) => A.assemble(PV.parseV2(sym, html), { seeds: SEEDS, hea
   t(out.BBL.doc.scenarios.divIncluded === true, '6b: BBL divIncluded (precondition)');
   const lit = asm('BBL', raw('BBL').replace('~{{rd:baseEps}}{{rd:scnNote}}</div>', '~{{rd:baseEps}} • รวมปันผล</div>'));
   t(!('hintNote' in lit.doc.scenarios), '6b: literal "• รวมปันผล" (= what scnNote renders when divIncluded) → no hintNote key');
-  const nd = asm('BBL', raw('BBL').replace('~{{rd:baseEps}}{{rd:scnNote}}</div>', '~{{rd:baseEps}} • ไม่มีปันผล (buyback แทน)</div>'));
+  // fix round 1 (I-5): CASY divIncluded=false — the author's "ไม่มีปันผล" agrees, so it is carried (on BBL divIncluded=true it now clashes — below)
+  const nd = asm('CASY', raw('CASY').replace('~{{rd:baseEps}}{{rd:scnNote}}</div>', '~{{rd:baseEps}} • ไม่มีปันผล (buyback แทน)</div>'));
   t.eq(nd.doc.scenarios.hintNote, '• ไม่มีปันผล (buyback แทน)', '6b: author "ไม่มีปันผล …" residue → hintNote');
   const odd = asm('BBL', raw('BBL').replace('จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}', 'จากจุดเข้า {{rd:px}} • EPS ฐาน (ปรับ) ~฿22'));
-  t.eq(odd.doc.scenarios.hintNote, '(ปรับ)', '6b: author words inside the base segment kept, template label + printed base value stripped');
-  t.eq(A.s6HintNote('จากจุดเข้า {{px}} • EPS ฐาน TTM $3.2 • ไม่รวมปันผล', { driver: 'eps', divIncluded: false }), 'TTM • ไม่รวมปันผล', '6b: s6HintNote keeps words around the base');
+  // fix round 1 (re-review addendum): the base value is stripped only right after "ฐาน ~" — here author words sit between, so the figure stays (compared, not masked)
+  t.eq(odd.doc.scenarios.hintNote, '(ปรับ) ~฿22', '6b: author words inside the base segment kept · template label stripped · a figure not right after "ฐาน ~" kept');
+  t.eq(A.s6HintNote('จากจุดเข้า {{px}} • EPS ฐาน TTM $3.2 • ไม่รวมปันผล', { driver: 'eps', divIncluded: false }), 'TTM $3.2 • ไม่รวมปันผล', '6b: s6HintNote keeps words around the base (figure not right after "ฐาน ~" kept)');
   t.eq(A.s6HintNote('จากจุดเข้า {{px}} • ตัวแปรฉาก = ราคาทองแดง', { driver: 'eps', divIncluded: false }), '• ตัวแปรฉาก = ราคาทองแดง', '6b: no base segment → every author segment kept');
   t.eq(A.s6HintNote('จากจุดเข้า {{px}} · EPS ฐาน ~$2 · รวมปันผล', { driver: 'eps', divIncluded: true }), '', '6b: · separators + รวมปันผล (divIncluded) = template only');
   t.eq(A.s6HintNote('จากจุดเข้า {{px}} • EPS ฐาน ~{{baseEps}} • รวมปันผล', { driver: 'eps', divIncluded: false }), '• รวมปันผล', '6b: "รวมปันผล" kept when v3 would not print it (divIncluded false)');
@@ -365,5 +367,63 @@ const asm = (sym, html) => A.assemble(PV.parseV2(sym, html), { seeds: SEEDS, hea
   t(mx.a === null && mx.H[0] === 'analyst target on the gauge is a max/min, not a consensus', 'R-1: max-labelled gauge target → null + H');
   const g = run4(mk('USD', 'ไม่มีข้อมูล', ['$80', 'เป้าเฉลี่ย Analyst']));
   t(g.a && g.a.target === 80 && !g.H.length, 'R-1: consensus-labelled gauge target kept');
+}
+
+// ── Task 6b fix round 1 ──
+{ // I-1: every token equal to the multiple is tried — the author's "32.2x = มัธยฐาน 5 ปี" is a median
+  t.eq(A.multipleSourceOf('EPS $4.49 (TTM, diluted) × P/E 32.0x = $143.68 — 32.0x คือมัธยฐาน P/E จริง 5 ปี (FY2021–FY2025: 32.0 / 30.8 / 37.0 / 29.8 / 32.5x ช่วง 29.8–37.0x) มาจากประวัติ', [], 0, 32), 'median5y', 'I-1: PLD form → median5y');
+  t.eq(A.multipleSourceOf('EPS $5.82 (FY2025 GAAP dil.) × P/E 32.2x = $187 — 32.2x = มัธยฐาน 5 ปี (27.5–40.6x) วัดจริงบน GAAP diluted EPS ฐานเดียวกัน', [], 0, 32.2), 'median5y', 'I-1: BDX form → median5y');
+  t.eq(A.multipleSourceOf('EBITDA FY2025 $2,759M × 9.4x − Net Debt $12,717M (Debt รวม $13,406M รวม lease − Cash $689M) ÷ 63.77M หุ้น — 9.4x = มัธยฐาน EV/EBITDA สิ้นปี FY2021–25 ของ DVA (9.86/9.71/9.32/9.41/7.99x, StockAnalysis)', [], 0, 9.4), 'median5y', 'I-1: DVA form (list of yearly multiples after) → median5y');
+  t.eq(A.multipleSourceOf('× P/E 20x = $100 — 20x ต่ำกว่ามัธยฐาน 5 ปี 26x', [], 0, 20), 'author', 'I-1: a repeat of the value does not bypass the premium/discount rule');
+}
+{ // I-2: negated / self-set medians
+  const F = [];
+  t.eq(A.multipleSourceOf('EPS (TTM) ฿2.11 × P/E เป้าหมาย ~24x — ไม่ใช้มัธยฐาน 5 ปี (42.3x) เพราะ 3 ใน 5 ปี', F, 0, 24), 'author', 'I-2: CBG "ไม่ใช้มัธยฐาน" → author');
+  t(F.some((x) => /negated median/.test(x)), 'I-2: F names the negation');
+  t.eq(A.multipleSourceOf('DE ต่อหุ้น $3.93 × P/DE เป้าหมาย ~12.5x — เป็นตัวคูณที่ตั้งเอง (ไม่มีมัธยฐานย้อนหลังของ P/DE ที่วัดได้ในชุดข้อมูล) สูงกว่าตัวคูณที่ตลาดให้ CG เทียบกลุ่ม', [], 0, 12.5), 'author', 'I-2: CG "ตัวคูณที่ตั้งเอง (ไม่มีมัธยฐาน…)" → author (not peer from "เทียบกลุ่ม" elsewhere)');
+  t.eq(A.multipleSourceOf('EBITDA adj. $3.67B × 9x (ตัวคูณสมมติ ยังไม่มีมัธยฐานที่วัดจริง จึงไม่เป็นขาของ FV)', [], 0, 9), 'author', 'I-2: AMCR "ยังไม่มีมัธยฐาน" → author');
+}
+{ // M-5: 2–4 year median windows reach inputs.medianWindow
+  const w = (d, m) => { const o = {}; A.multipleSourceOf(d, [], 0, m, o); return o.medianWindow; };
+  t.eq(w('EPS ฿1.05 (TTM) × P/E เป้าหมาย 12.5x — มัธยฐาน P/E ของ SECURE เองย้อนหลัง 3 ปีงบ (FY2023–FY2025: 16.4x / 12.5x / 10.0x', 12.5), 'FY2023–FY2025', 'M-5: SECURE → FY2023–FY2025');
+  t.eq(w('EPS ฿0.43 (TTM) × P/E 12.6x — มัธยฐานที่วัดจากประวัติ SAK เอง 3 ปีงบล่าสุด (FY2023 14.6x · FY2024 12.6x', 12.6), '3 ปี', 'M-5: SAK → 3 ปี');
+  t.eq(w('EPS $7.23 × P/E 28.0x — มัธยฐานที่วัดจริงจากราคาเฉลี่ยรายปี ÷ EPS ของ 4 ปีงบ (FY2023–26: 60.7x / 28.9x', 28), 'FY2023–FY2026', 'M-5: CAH FY2023–26 → FY2023–FY2026');
+  t.eq(w('EPS ฿0.21 (FY2568) × P/E 41.2x — 41.2x = มัธยฐาน P/E ย้อนหลัง 4 ปีงบ (FY65–68: 74.2x', 41.2), '4 ปี', 'M-5: BE8 → 4 ปี');
+  t.eq(w('P/E มัธยฐาน 5 ปี 15.2x', 15.2), undefined, 'M-5: a 5-year median gets no window');
+  t.eq(w('× P/E 20x (มัธยฐาน FY2021–FY2025)', 20), undefined, 'M-5: a 5-year FY range gets no window');
+}
+{ // M-1 / M-2: signed base values · "จากราคาปัจจุบัน" head
+  t.eq(A.s6HintNote('จากจุดเข้า {{px}} • EPS ฐาน ~−$1.37 (TTM) • ไม่มีปันผล', { driver: 'eps', divIncluded: false }), '(TTM) • ไม่มีปันผล', 'M-1: NTRA negative base stripped whole (no "~−" orphan)');
+  t.eq(A.s6HintNote('จากจุดเข้า {{px}} • EPS ฐาน ~ −$0.70 (TTM) • ไม่มีปันผล', { driver: 'eps', divIncluded: false }), '(TTM) • ไม่มีปันผล', 'M-1: PDYN "~ −$0.70"');
+  t.eq(A.s6HintNote('จากราคาปัจจุบัน {{px}} • EPS ฐาน ~{{baseEps}} (non-GAAP FY2027E ฉันทามติ StockAnalysis)', { driver: 'eps', divIncluded: false }), '(non-GAAP FY2027E ฉันทามติ StockAnalysis)', 'M-2: WDAY head alias');
+}
+{ // re-review addendum: only the figure right after "ฐาน ~" is the template base — other money figures survive (INTC/NET shape)
+  const r = { driver: 'revenuePerShare', divIncluded: false };
+  t.eq(A.s6HintNote('จากจุดเข้า {{px}} • ฐาน: รายได้ TTM $57.0B × EV/Sales ออก (สมมติฐานฉาก) − หนี้สุทธิ ~$20.8B ÷ 5.25B หุ้น', r), 'รายได้ TTM $57.0B × EV/Sales ออก (สมมติฐานฉาก) − หนี้สุทธิ ~$20.8B ÷ 5.25B หุ้น', 'addendum: INTC revenue figure survives in hintNote');
+  t.eq(A.s6HintNote('จากจุดเข้า {{px}} • อิงรายได้ฐาน ~$2.51B (TTM) ÷ 356.08M หุ้น', r), '• อิงรายได้ฐาน ~$2.51B (TTM) ÷ 356.08M หุ้น', 'addendum: NET "ฐาน ~$2.51B" is an aggregate (B), not the per-share base — kept');
+  t.eq(A.s6HintNote('จากจุดเข้า {{px}} • ฐานรายได้/หุ้น TTM ฿2.00 • ออกด้วยตัวคูณ P/S', r), 'รายได้/หุ้น TTM ฿2.00 • ออกด้วยตัวคูณ P/S', 'addendum: APURE figure not right after "ฐาน ~" kept');
+  t.eq(A.s6HintNote('จากจุดเข้า {{px}} • EPS ฐาน (TTM) ~−$0.87', { driver: 'eps', divIncluded: false }), '(TTM) ~−$0.87', 'addendum: OUST base after author words kept whole (no orphan)');
+  t.eq(A.s6HintNote('จากจุดเข้า {{px}} • EPS ฐาน $2.03 • ไม่มีปันผล', { driver: 'eps', divIncluded: false }), '• ไม่มีปันผล', 'addendum: "ฐาน $2.03" (no ~) is still the template base');
+  t.eq(A.s6HintNote('จากจุดเข้า {{px}} • EPS ปกติฐาน ~$14.84 (ตัด gain on sale)', { driver: 'eps', divIncluded: false }), 'EPS ปกติ (ตัด gain on sale)', 'addendum: "ฐาน" glued to an author word + immediate value → template piece');
+  t.eq(A.s6HintNote('จากจุดเข้า {{px}} • อิง revenue exit multiple ที่ผูกกับช่วงมัธยฐานย้อนหลัง', { driver: 'revenuePerShare', divIncluded: false }), '• อิง revenue exit multiple ที่ผูกกับช่วงมัธยฐานย้อนหลัง', 'addendum: "ฐาน" inside มัธยฐาน is never stripped');
+}
+{ // I-5: a dividend claim that contradicts divIncluded is not carried (H)
+  const b = asm('BBL', raw('BBL').replace('~{{rd:baseEps}}{{rd:scnNote}}</div>', '~{{rd:baseEps}} (norm.) • ราคาเป้า = EPS × P/E (ไม่รวมปันผล)</div>'));
+  t(!('hintNote' in b.doc.scenarios) && b.notes.H.some((x) => /dividend claim in the note contradicts divIncluded/.test(x)), 'I-5: BBL divIncluded + hint "ไม่รวมปันผล" → H, not carried', b.notes.H.join(' ; '));
+  const c = asm('CASY', raw('CASY').replace('~{{rd:baseEps}}{{rd:scnNote}}</div>', '~{{rd:baseEps}} • รวมปันผล</div>'));
+  t(!('hintNote' in c.doc.scenarios) && c.notes.H.some((x) => /contradicts divIncluded/.test(x)), 'I-5: CASY divIncluded=false + literal "รวมปันผล" → H, not carried');
+  const r = asm('BBL', raw('BBL').replace(/(<div class="ret[^"]*">\{\{rd:sc2ret\}\})/, '$1 (ไม่รวมปันผล)'));
+  t(!('retNote' in r.doc.scenarios.cases[1]) && r.notes.H.some((x) => /cases\[1\].*contradicts divIncluded/.test(x)), 'I-5: .ret "(ไม่รวมปันผล)" on a divIncluded total → H, not carried');
+  const ok = asm('BBL', raw('BBL').replace(/(<div class="ret[^"]*">\{\{rd:sc2ret\}\})/, '$1 (รวมปันผล)'));
+  t.eq(ok.doc.scenarios.cases[1].retNote, '(รวมปันผล)', 'I-5: an agreeing claim is still carried');
+}
+{ // I-3: IFF shape — driver revenuePerShare, hint carries {{rd:baseEps}} (no value in the view) → not carried, H, doc still renders
+  const h = raw('FTV').replace(/<span>EPS ([+−-])/g, '<span>รายได้/หุ้น $1').replace(/<span>EPS ปี 3<\/span>/g, '<span>รายได้/หุ้น ปี 3</span>').replace(/<span>P\/E ออก<\/span>/g, '<span>P/S ออก</span>')
+    .replace('~{{rd:baseEps}} (TTM adj.){{rd:scnNote}}', '~{{rd:baseEps}}{{rd:scnNote}} • EPS อ้างอิง ~{{rd:baseEps}} (adj.)');
+  const r = asm('FTV', h);
+  t.eq(r.doc.scenarios.driver, 'revenuePerShare', 'I-3: IFF-shaped fixture (precondition)');
+  t(!('hintNote' in r.doc.scenarios) && r.notes.H.some((x) => /hint note carries an unresolvable token/.test(x)), 'I-3: unresolvable token → hintNote not carried + H', r.notes.H.join(' ; '));
+  let ok = true; try { const v = C.compute(r.doc, { seeds: SEEDS }); B.expandReport(R3.toV2Source(r.doc, v)); } catch (e) { ok = false; }
+  t(ok, 'I-3: the migrated doc renders (no build failure)');
 }
 t.done();
