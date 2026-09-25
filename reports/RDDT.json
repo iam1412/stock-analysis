@@ -1,0 +1,313 @@
+{
+  "v": 3,
+  "symbol": "RDDT",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Reddit Inc.",
+    "exchange": "NYSE",
+    "sub": "Social media platform • 126M+ DAU • Subreddit communities • AI data licensing (Google, OpenAI) • Ad revenue +70% YoY • IPO Mar 2024 • San Francisco",
+    "headerTags": [
+      "Social Media",
+      "AI Data Licensing"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "StockAnalysis.com",
+      "SEC Form 8-K"
+    ],
+    "themeLegacy": {
+      "accent": "#FF4500",
+      "accentDark": "#c23400",
+      "darkGrad": "linear-gradient(135deg,#1a0a00 0%,#2d1200 60%,#1a0a00 100%)",
+      "glow": "rgba(255,69,0,0.35)",
+      "subColor": "#ffb89a",
+      "headerMuted": "#ad7a63",
+      "verdictText": "#fff3ee",
+      "vcellLabel": "#ffb89a"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T23:32:21+07:00",
+      "v2Hash": "f55adc09aa66"
+    }
+  },
+  "market": {
+    "px": 152.72,
+    "priceDate": "2026-09-24",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          208.95
+        ],
+        [
+          "พ.ย.25",
+          216.47
+        ],
+        [
+          "ธ.ค.25",
+          229.87
+        ],
+        [
+          "ม.ค.26",
+          180.27
+        ],
+        [
+          "ก.พ.26",
+          145.81
+        ],
+        [
+          "มี.ค.26",
+          134.65
+        ],
+        [
+          "เม.ย.26",
+          147.23
+        ],
+        [
+          "พ.ค.26",
+          176
+        ],
+        [
+          "มิ.ย.26",
+          173.58
+        ],
+        [
+          "ก.ค.26",
+          140.67
+        ],
+        [
+          "ส.ค.26",
+          147.81
+        ],
+        [
+          "ก.ย.26",
+          152.72
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 119.27,
+      "hi": 263.5
+    }
+  },
+  "fundamentals": {
+    "eps": 4.29,
+    "shares": 192400000,
+    "revenue": 2780000000,
+    "grossMargin": 91.4,
+    "netMargin": 31.3,
+    "fcf": 1020000000,
+    "roe": 30.7,
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "dcf",
+      "label": "DCF Base (Growth Decelerating)",
+      "inputs": {
+        "stages": [
+          {
+            "years": 1,
+            "g": 45
+          },
+          {
+            "years": 1,
+            "g": 35
+          },
+          {
+            "years": 1,
+            "g": 25
+          },
+          {
+            "years": 1,
+            "g": 18
+          },
+          {
+            "years": 1,
+            "g": 12
+          }
+        ],
+        "tg": 4,
+        "r": 12,
+        "rfCurrency": "USD"
+      },
+      "override": {
+        "netDebt": -2765000000,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "สมมติฐานอัตราเติบโต/r/g เป็นของผู้วิเคราะห์เอง ไม่ใช่ตัวเลข consensus",
+      "family": "rg"
+    },
+    {
+      "method": "dcf",
+      "label": "DCF Conservative (Search-Traffic Stress)",
+      "inputs": {
+        "stages": [
+          {
+            "years": 1,
+            "g": 35
+          },
+          {
+            "years": 1,
+            "g": 28
+          },
+          {
+            "years": 1,
+            "g": 22
+          },
+          {
+            "years": 1,
+            "g": 16
+          },
+          {
+            "years": 1,
+            "g": 11
+          }
+        ],
+        "tg": 3.5,
+        "r": 12,
+        "rfCurrency": "USD"
+      },
+      "override": {
+        "netDebt": -2765000000,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "ตระกูล DCF เดียวกับวิธี 1 (นับเป็นเสียงเดียว) แต่ชะลอเร็วกว่า: FCF TTM $1,019M โต 35%",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "custom:0",
+      "ps",
+      "revenue",
+      {
+        "key": "grossMargin",
+        "tone": "pos"
+      },
+      {
+        "key": "netMargin",
+        "tone": "pos"
+      },
+      {
+        "key": "fcf",
+        "tone": "pos"
+      },
+      "custom:1",
+      "custom:2",
+      "roe",
+      "custom:3"
+    ],
+    "custom": [
+      {
+        "label": "EV/Revenue (TTM)",
+        "value": "~9.4x",
+        "note": "Revenue TTM $2.78B · เติบโต 67% YoY (TTM)"
+      },
+      {
+        "label": "DAU (Q1 2569)",
+        "value": "126.8M",
+        "note": "+17% YoY · US 53.5M · Intl 73.3M (ยังไม่มีเลข Q2 ทางการ)"
+      },
+      {
+        "label": "ARPU Global (Q1 2569)",
+        "value": "$5.23",
+        "note": "+44% YoY · US ARPU $9.63 · Intl ARPU $2.02"
+      },
+      {
+        "label": "เงินสด / หนี้",
+        "value": "$2.79B / $20.9M",
+        "note": "Net cash ~$2.77B · สุขภาพการเงินแข็งแกร่ง",
+        "tone": "pos"
+      }
+    ],
+    "notes": {
+      "mcap": "192.40M shares outstanding · Enterprise Value ~$26.3B",
+      "pe": "โต +64% YoY จากกำไรที่ขยายตัวต่อเนื่อง",
+      "ps": "สูงขึ้นตามราคาที่เด้งกลับจากจุดต่ำ",
+      "revenue": "Q2 2569: $805M (+61% YoY) · โฆษณา $762M (+64%)",
+      "grossMargin": "Platform economics ต้นทุนแปรผันต่ำมาก",
+      "netMargin": "Net Income TTM $871M · FY2568: $530M",
+      "fcf": "FCF Margin ~36.7% · FY2568: $684M",
+      "roe": "Net Income TTM $871M · D/E ~0.00 แทบไม่มีหนี้"
+    },
+    "hint": "ข้อมูล ณ 21 ก.ย. 2569 · ยืนยัน ≥2 แหล่ง"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 12,
+        "exitMultiple": 18,
+        "divCum": 0,
+        "desc": "Search-traffic ชะลอต่อเนื่อง + AI licensing ไม่ต่ออายุ + P/E compress"
+      },
+      {
+        "growth": 25,
+        "exitMultiple": 28,
+        "divCum": 0,
+        "desc": "Ad growth ชะลอลงตามคาด + AI licensing ต่ออายุราคาปกติ"
+      },
+      {
+        "growth": 35,
+        "exitMultiple": 35,
+        "divCum": 0,
+        "desc": "Search traffic ฟื้น + AI licensing สัญญาใหม่ราคาสูง + ARPU เร่งตัวต่อ"
+      }
+    ],
+    "exitDp": 0,
+    "note": "ผลตอบแทนขึ้นอยู่กับ 2 ปัจจัยหลัก: (1) อัตราเติบโต EPS — EPS TTM {{eps}} (โต +64% YoY) แต่ Q2 2569 shareholder letter เตือนว่า traffic จาก search engine เริ่ม \"choppy\" ทำให้ growth ระยะถัดไปไม่แน่นอนกว่าเดิม สมมติฐานจึงลดจากรายงานเดิม (เดิม 26-55%/ปี → ปัจจุบัน 12-35%/ปี); (2) P/E ขาออก — ปัจจุบัน ~{{pe}}x ถ้าตลาดยังกังวล search-traffic durability P/E อาจ compress ต่อ (Bear 18x) ควรติดตาม Q3 2569 guidance และการต่ออายุสัญญา AI data licensing กับ Google เป็นตัวชี้วัดหลัก Base case ใช้ EPS {{eps}} × 1.25³ = $8.38 × P/E 28x = $235 · Bull case {{eps}} × 1.35³ = $10.55 × P/E 35x = $370 · P/E ขาออกทั้งสามฉากเป็นสมมติฐานของฉาก (ไม่ใช่ตัวคูณที่วัดจากประวัติ) — ราคาเป้าไม่ได้ผูกกับ FV วันนี้",
+    "hintNote": "(TTM) ~{{eps}} • ไม่มีปันผล"
+  },
+  "analyst": {
+    "target": 215,
+    "n": null,
+    "rating": null,
+    "asOf": null
+  },
+  "prose": {
+    "chart": "RDDT ทะยานแตะจุดสูงสุดรอบปีที่ ~$230 ช่วง ต.ค.–ธ.ค. 2568 หนุนโดยผลประกอบการแข็งแกร่งและกระแส AI data licensing จากนั้นดิ่งลงแรงสู่ $134 (ต่ำสุด มี.ค. 2569) ท่ามกลางความกังวลเรื่อง valuation ก่อนฟื้นตัวขึ้นแตะ ~$176 (พ.ค. 2569) แล้วร่วงแรง −21% ในวันเดียว (31 ก.ค. 2569) เหลือ $140.67 หลัง Q2 2569 แม้รายได้ $805M (+61% YoY) และ EPS $1.25 เกิน consensus $0.97 แต่จดหมายผู้ถือหุ้นเตือนว่า traffic จาก search engine เริ่ม \"choppy\" นักลงทุนกังวล durability ของ growth ผลตอบแทนรอบปี (ต้นกราฟ ต.ค. 2568 ~$209 → ปัจจุบัน) ติดลบ แม้เด้งขึ้นจากจุดต่ำ $140.67 (31 ก.ค. 2569) มาได้ระดับหนึ่ง แต่ยังต่ำกว่าปีก่อน",
+    "valuation": "Q2 2569 (ประกาศ 30 ก.ค. 2569) รายได้ $805M (+61% YoY) และ EPS $1.25 เกิน consensus $0.97 ชัดเจน แต่หุ้นร่วง −21% เพราะจดหมายผู้ถือหุ้นเตือนว่า traffic จาก search engine เริ่ม \"choppy\" — ตลาดตีความว่า growth durability เสี่ยงมากขึ้น ★ การประเมินรอบนี้เป็น <b>ตระกูลเดียว (DCF จาก FCF)</b>: ขา P/E และ EV/Revenue เดิมถูกถอดออก เพราะตัวคูณ 35x ใกล้เคียง P/E ปัจจุบัน (สมอตายวนกลับ) และ EV/Rev 8x เป็นค่าที่ตั้งเอง — ยังไม่มีมัธยฐานย้อนหลังที่วัดจริง (RDDT เพิ่งมีกำไรปีเดียว = 1 จุด ต้องอย่างน้อย 3) · เป้านักวิเคราะห์ใช้เป็นเพียงบริบทเทียบ ไม่เป็นขาของ FV · ทั้งสอง DCF ใช้ FCF TTM, net cash และหุ้น 192.40M ชุดเดียวกัน ต่างกันที่ความเร็วการชะลอตัวของ growth และ terminal g จึงนับเป็นเสียงเดียว (ห่างกัน ~1.2 เท่า เฉลี่ยได้) FV เฉลี่ยเป็น {{fv}} ความไวต่อสมมติฐาน: ถ้า r เพิ่มเป็น 13% FV จะลดลงราว 8–10% · ยังไม่หัก SBC โดยตรง (FCF ตามงบ) และใช้หุ้นรวมทุกคลาส 192.40M ไม่ใช่หุ้นปรับลด 203M — FV ต่อหุ้นจึงอาจสูงกว่าจริงราว 5% ถ้านับ dilution · ราคาล่าสุดอยู่ต่ำกว่า Fair Value เล็กน้อย ({{mos}}) ส่วนเผื่อความปลอดภัยอยู่ในโซนพอใช้ ยังไม่ถึงจุดเข้าตามกรอบ MOS 20%",
+    "gauge": "ราคาล่าสุดฟื้นตัวขึ้นจากจุดต่ำหลังงบ $140.67 และยังต่ำกว่า Fair Value {{fv}} เล็กน้อย ส่วนเผื่อความปลอดภัยไม่มาก ยังต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ $213.71–215.23 (Yahoo n=33 / StockAnalysis Buy) ที่ปรับหลังงบ Q2 แล้ว (ใช้เป็นบริบทเทียบเท่านั้น ไม่ใช่ขาของ FV) โซน MOS 20% ที่ {{mos20}} ยังเป็นจุดสะสมน่าสนใจกว่าหากราคาย่อกลับ ความผันผวนสูง (Beta ~1.94) — ราคาอาจแกว่งต่อระหว่างรอความชัดเจนเรื่อง search-traffic ไตรมาสถัดไป",
+    "mos": "MOS อยู่ในโซนพอใช้ ราคายังต่ำกว่า Fair Value เล็กน้อยหลังหุ้นเด้งขึ้นจากจุดต่ำหลังงบ แต่ยังไม่ใช่จุดเข้าตามกรอบ MOS 20% — รอโซน MOS 20% ที่ {{mos20}} สำหรับ value investor",
+    "verdictHeadline": "Reddit: กำไรโตต่อเนื่อง แต่ตลาดกังวล Search-Traffic Durability — MOS พอใช้ ไม่ใช่ deep value",
+    "verdictBody": "Reddit ยังมีรายได้ 2 ทาง — โฆษณาที่โต 64% YoY และ data licensing กับ Google/OpenAI ที่ไม่ซ้ำใคร Q2 2569 ทุบ estimate ทั้งรายได้ ($805M +61%) และ EPS ($1.25 vs consensus $0.97) แต่ราคาร่วง −21% ในวันเดียว เพราะจดหมายผู้ถือหุ้นเตือนว่า traffic จาก search engine เริ่ม choppy หลังจากนั้นราคาเด้งฟื้นตัวกลับมาต่ำกว่า FV {{fv}} เล็กน้อย ส่วนเผื่อความปลอดภัยยังไม่มาก — ยังไม่ใช่จุดเข้าตามกรอบ MOS 20% รอโซนสะสมที่ {{mos20}} (MOS 20%) สำหรับผู้ลงทุนที่รับ volatility สูง (Beta ~1.94) ได้ ต้องติดตาม Q3 2569 guidance และการต่ออายุ AI licensing เป็นตัวชี้วัดว่า growth durability ยังอยู่หรือไม่",
+    "strategy": "ทยอยสะสมได้เมื่อราคาต่ำกว่า Fair Value ({{fv}}) · เพิ่มน้ำหนักเมื่อราคาลงมาแถว {{mos20}} (MOS 20%) · ลงทุนระยะ 3-5 ปีตามทิศทาง AI data licensing + ad growth แต่ต้องติดตาม search-traffic durability ใกล้ชิด · ติดตาม Q3 2569 guidance เป็นสัญญาณหลัก · ความเสี่ยงสูง — จำกัดน้ำหนัก portfolio ไม่เกิน 5% สำหรับ aggressive growth investor",
+    "disclaimerSources": "ที่มาข้อมูล: Yahoo Finance (52W $119.27–$263.50 · epsTTM $4.30 · เป้า $213.71 จาก 33 คน), StockAnalysis.com (Revenue TTM $2.78B · EPS TTM $4.29 · FCF $1.02B · ROE 30.7% · เป้า $215.23 Buy · fwdPE ของ vendor อิง EPS FY2570E ไม่ใช่ปีงบถัดไป จึงไม่ใช้ใน FV), SEC Form 8-K Q2 FY2569 (30 ก.ค. 2569: Revenue $805M +61% YoY · EPS $1.25 vs consensus $0.97 · Ad revenue $762M +64% · shareholder letter เตือน search-traffic choppy), StockAnalysis News/transcripts (ราคาร่วง −21% วันประกาศงบ 31 ก.ค. 2569 ก่อนเด้งฟื้นตัว · analyst target cuts $142 Wells Fargo ถึง $270 B.Riley), Google Finance (ยืนยัน 52 สัปดาห์และราคาปิด)"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 2 วิธี (DCF สองสมมติฐาน = ตระกูลเดียว) · สำหรับ growth platform",
+    "chartHint": "ต.ค. 2568 – ก.ย. 2569",
+    "disclaimerAssump": " EV/Revenue multiple, FCF growth rate และ discount rate ราคาหุ้นมีความผันผวนสูง (Beta ~1.94) ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ"
+  },
+  "catalysts": [
+    "<b>AI Data Licensing (unique moat):</b> Google, OpenAI และบริษัท AI จ่ายค่าใช้ข้อมูล UGC (User-Generated Content) ที่ไม่ซ้ำใครบน Reddit RDDT กำลังเจรจา \"dynamic pricing\" สัญญาปี 2570 ราคาสูงขึ้น เนื่องจากข้อมูล authentic human conversation หายากขึ้นในยุค AI",
+    "<b>Ad Revenue ยังเร่งตัว:</b> Q2 2569 โฆษณาโต +64% YoY ที่ $762M รายได้รวม $805M เกิน consensus $730.96M ยังมีพื้นที่ monetize ได้อีกมากโดยเฉพาะ US ARPU ที่ยังต่ำกว่า Meta มาก (Q1 2569 ARPU Global $5.23, +44% YoY)",
+    "<b>International Expansion:</b> DAU สากล +22% YoY ถึง 73.3M คน ARPU นอก US $2.02 ห่างจาก US $9.63 มาก — upside หลายปีจากการเปิดตลาดใหม่",
+    "<b>FCF Machine ที่แข็งแกร่ง:</b> FCF TTM $1.02B (margin ~36.7%) บวกเงินสดสุทธิ $2.77B แทบไม่มีหนี้ — ยืดหยุ่นสำหรับ buyback, M&A หรือ product investment",
+    "<b>Momentum กำไรต่อเนื่อง:</b> Net Income TTM $871M (Net margin 31.3%) จาก FY2568 $530M ขยายตัวเร็วจาก operating leverage — Q2 2569 EPS $1.25 เกิน consensus $0.97 ชัดเจน",
+    "<b>Community Moat ที่แท้จริง:</b> Subreddit 100,000+ แต่ละ niche มีผู้เชี่ยวชาญจริง \"authentic human conversation\" ยากสร้างใหม่ — ความได้เปรียบที่ AI ยังแทนไม่ได้"
+  ],
+  "risks": [
+    "<b>Valuation ยังสูงหลังเด้งกลับ:</b> P/E ~{{pe}}x · EV/Revenue ~9.4x · P/S ~10.4x ยังสูงกว่าค่าเฉลี่ยกลุ่ม ถ้า growth ชะลอกว่าคาดราคาจะ de-rate เพิ่มได้อีก — เพิ่งเห็นตัวอย่างจริง (−21% วันเดียว 31 ก.ค. 2569)",
+    "<b>การแข่งขันจาก Meta Threads / Bluesky:</b> Threads เติบโตเร็วในฐาน social discussion · Bluesky กำลังขยาย · TikTok/YouTube Shorts แย่ง engagement video — Reddit ยังไม่มี short-form video ที่แข็งแกร่ง",
+    "<b>Search-Traffic Durability (ความเสี่ยงหลักที่เพิ่งเปิดเผย):</b> Shareholder letter Q2 2569 ระบุว่า traffic จาก search engine เริ่ม \"choppy\" — ตลาดตีความว่า AI answer engines (ChatGPT/Perplexity/Google AI Overviews) อาจเริ่มดึง traffic ที่เคยส่งมา Reddit นี่คือสาเหตุหลักที่ราคาร่วง −21% แม้ผลประกอบการ Q2 (Revenue $805M +61%, EPS $1.25) ดีเกินคาด",
+    "<b>AI Licensing ไม่แน่นอน:</b> สัญญา data licensing กับ Google และ OpenAI มีกำหนดต่ออายุ ราคาใหม่ไม่แน่นอน บริษัท AI อาจพัฒนา synthetic data หรือ crawler ทางเลือก — ความเสี่ยงต่อ revenue stream รอง",
+    "<b>User Resistance ต่อ Over-Monetization:</b> Reddit users มีประวัติต่อต้านการเปลี่ยนแปลงกฎ platform (API Protest ปี 2566) การ push โฆษณาหรือ paywall มากเกินอาจกระทบ DAU และ community trust",
+    "<b>Beta สูง / Volatility รุนแรง:</b> Beta ~1.94 — ราคาผันผวนรุนแรงกว่า market ถึง 2 เท่า เหมาะสำหรับ investor ที่รับ drawdown 30-50% ได้โดยไม่ตื่นตระหนก"
+  ],
+  "extras": [],
+  "_sig": "sha256:f6a11006716ec530e9666a88fd73420d6292d27b85b4ad6cafcd3495f9380375"
+}
