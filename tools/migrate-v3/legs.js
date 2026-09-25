@@ -78,16 +78,85 @@ function reproduces(v, mval) {
   return Math.abs(v - n) <= Math.max(0.015 * Math.abs(n), 0.5 * Math.pow(10, -mvalDp(mval))) + 1e-9;
 }
 
-/** หนี้สุทธิ/เงินสดสุทธิที่พิมพ์พร้อมป้ายชิดตัวเงิน (ก้อน scaled) → ค่า netDebt ตามสัญญา v3 (เงินสดสุทธิ = ติดลบ) */
-function labelledNetDebt(mdesc) {
+// ── บทบาทของตัวเงินที่พิมพ์ใน mdesc (Task 4 R1-I1) — ตัวตั้ง (FCF/EBITDA/รายได้) ต้องเป็นก้อนที่ผู้เขียนใช้เป็นฐานจริง
+// ไม่ใช่หนี้/เงินสด/PV/EV/TV/ส่วนผู้ถือหุ้น/สมาชิกของลิสต์รายปี ที่บังเอิญคิดซ้ำได้ใกล้ mval แล้วถูกเขียนลง override
+const BASE_LABEL = {
+  fcf: /FCF|free\s*cash\s*flow|กระแสเงินสด(?:อิสระ)?|เงินสดอิสระ|cash\s*flow/gi,
+  ebitda: /EBITDA/gi,
+  revenue: /รายได้|ยอดขาย|revenue|sales/gi,
+};
+const ROLE_LABELS = [
+  ['excluded', /PV|มูลค่าปัจจุบัน|\bEV\b|\bTV\b|terminal|มูลค่าปลายทาง|equity|ส่วน(?:ของ)?ผู้ถือหุ้น|มูลค่าหุ้น|มูลค่าตลาด|market\s*cap|\bNCI\b|ส่วนได้เสียที่ไม่มีอำนาจ/gi],
+  ['netDebt', /net\s*debt|หนี้(?:สิน)?(?:มีดอกเบี้ย)?สุทธิ/gi],
+  ['netCash', /net\s*cash|เงินสดสุทธิ/gi],
+  ['debt', /debt|borrowing|หนี้|เงินกู้/gi],
+  ['cash', /\bcash\b(?!\s*flow)|เงินสด(?!อิสระ)|สภาพคล่อง|liquidity/gi],
+];
+const EXCLUDED_RE = new RegExp(ROLE_LABELS[0][1].source, 'i');
+const MULT_NAME = /\b(?:EV|P)\s*\/\s*(?:EBITDA|Sales|Revenue|FCF|CF|S|E|BV|B)\b|(?:EV|P)\s*\/\s*(?:รายได้|ยอดขาย)/gi;   // ชื่อตัวคูณ ไม่ใช่ป้ายของตัวเงิน
+const blank = (x) => ' '.repeat(x.length);
+/** ตัวเงินทุกก้อน + role จากป้ายที่อยู่ใกล้ที่สุดในข้อความตั้งแต่ตัวเงินก่อนหน้า (≤60 ตัวอักษร)
+ *  role: 'base' (ป้ายตรงตระกูล baseKey) · 'excluded' · 'netDebt' · 'netCash' · 'debt' · 'cash' · null (ไม่มีป้าย)
+ *  ป้ายฐานที่มีป้ายตัดออกนำหน้าในวลีเดียวกัน ("PV ของ FCF …") = excluded · list = สมาชิกของลิสต์ x / y / z */
+function moneyRoles(mdesc, baseKey) {
+  const ms = moneyAll(mdesc); let prevEnd = 0;
+  const labels = (baseKey && BASE_LABEL[baseKey] ? [['base', BASE_LABEL[baseKey]]] : []).concat(ROLE_LABELS);
+  return ms.map((x, i) => {
+    const end = x.at + x.raw.length;
+    const pre = mdesc.slice(Math.max(prevEnd, x.at - 60), x.at).replace(MULT_NAME, blank);
+    // สมาชิกลิสต์: คั่นด้วย "/" จากตัวเงินก่อนหน้า · หรือตามด้วย "/ ตัวเลข" ที่ไม่ใช่จำนวนหุ้น ("$13.9B / 285M shares" = หาร ไม่ใช่ลิสต์)
+    const fol = /^\s*\/\s*~?\s*(?:US\$|C\$|HK\$|\$|฿|€|£|¥)?\s*[0-9][0-9,]*(?:\.[0-9]+)?\s*(?:พันล้าน|ล้าน|[MBK]n?(?![A-Za-z]))?\s*(\S*)/.exec(mdesc.slice(end));
+    const list = (i > 0 && /^\s*\/\s*~?\s*$/.test(mdesc.slice(prevEnd, x.at))) || (fol != null && !/^(?:หุ้น|shares?|ADS)/i.test(fol[1]));
+    prevEnd = end;
+    let best = null;
+    for (const [role, re] of labels) for (const m of pre.matchAll(re)) {
+      const e = m.index + m[0].length;
+      if (!best || e > best.e || (e === best.e && m.index < best.s)) best = { role, e, s: m.index };
+    }
+    let role = best ? best.role : null;
+    // "PV ของ FCF …" — ป้ายตัดออกนำหน้าป้ายฐานในวลีเดียวกัน
+    if (role === 'base' && EXCLUDED_RE.test(pre.slice(Math.max(0, best.s - 20), best.s).split(/[·;()×=+−]|—|⇒/).pop())) role = 'excluded';
+    // "ไม่รวมเงินสดสุทธิ ฿32 ล้าน" — ผู้เขียนบอกว่าไม่ได้ใช้ก้อนนี้
+    if (/^(?:netDebt|netCash|debt|cash)$/.test(role) && /(?:ไม่(?:ได้)?\s*(?:รวม|หัก|บวก|นับ)|excl(?:uding|\.)?|\bnot)\s*$/i.test(pre.slice(Math.max(0, best.s - 16), best.s))) role = 'excluded';
+    // ยอดรวมที่ตามหลัง "… × ตัวคูณ =" โดยไม่มีป้าย = ผลคูณ (EV/มูลค่ารายส่วน) ไม่ใช่ตัวตั้ง
+    if (role === null && x.scaled && /[=≈]\s*~?\s*$/.test(pre) && /×|[0-9]\s*x\b/.test(pre)) role = 'excluded';
+    return { ...x, end, role, list };
+  });
+}
+/** ก้อนที่เป็นตัวตั้งได้ (ไม่ใช่สมาชิกลิสต์ · role base หรือไม่มีป้าย) เรียงก้อนที่ป้ายตรงตระกูลก่อน — ก้อนที่มีป้ายหนี้/เงินสด/PV/EV/TV/ส่วนผู้ถือหุ้นไม่เข้าเลย */
+function baseCandidates(roles) {
+  const c = roles.filter((x) => !x.list && (x.role === 'base' || x.role === null));
+  return c.filter((x) => x.role === 'base').concat(c.filter((x) => x.role === null));
+}
+/** หนี้สุทธิที่ผู้เขียนพิมพ์ (สัญญา v3: เงินสดสุทธิ = ติดลบ) — ก้อนหนี้สุทธิ/เงินสดสุทธิ (ต่อหุ้น × shares) · หนี้ − เงินสด (รวม · ก้อนแรก) */
+function labelledNetDebt(mdesc, roles, shares) {
+  const rs = (roles || moneyRoles(mdesc)).filter((x) => !x.list);
   const out = [];
-  for (const x of moneyAll(mdesc)) {
-    if (!x.scaled) continue;
-    const pre = mdesc.slice(Math.max(0, x.at - 24), x.at);
-    if (/(?:net\s*cash|เงินสดสุทธิ)[^0-9]{0,6}$/i.test(pre)) out.push(-x.v);
-    else if (/(?:net\s*debt|หนี้(?:สิน)?สุทธิ)[^0-9]{0,6}$/i.test(pre)) out.push(x.v);
+  for (const x of rs.filter((y) => y.scaled).concat(rs.filter((y) => !y.scaled))) {   // ยอดรวมก่อน ต่อหุ้น × shares ทีหลัง
+    const v = x.scaled ? x.v : (shares ? x.v * shares : null);
+    if (v == null) continue;
+    if (x.role === 'netDebt') out.push(v);
+    if (x.role === 'netCash') out.push(-v);
   }
-  return out;
+  const sc = rs.filter((x) => x.scaled);
+  const debts = sc.filter((x) => x.role === 'debt').map((x) => x.v), cashes = sc.filter((x) => x.role === 'cash').map((x) => x.v);
+  const sum = (a) => a.reduce((p, q) => p + q, 0);
+  if (debts.length || cashes.length) {
+    out.push(sum(debts) - sum(cashes));
+    out.push((debts[0] || 0) - (cashes[0] || 0));
+  }
+  return [...new Set(out.map((x) => +x.toPrecision(15)))];
+}
+
+/** จำนวนหุ้นที่ผู้เขียนหารจริง ("÷ หุ้นปรับลด 367M" · "÷ 1,091 ล้านหุ้น") — ใช้เป็น override.shares เมื่อ f.shares คิดซ้ำไม่ได้ */
+const SHARE_SCALE = { m: 1e6, mn: 1e6, b: 1e9, bn: 1e9, 'ล้าน': 1e6, 'พันล้าน': 1e9 };
+function printedShares(s) {
+  const out = [];
+  for (const m of s.matchAll(/÷\s*(?:หุ้น[^0-9÷=]{0,25})?~?\s*([0-9][0-9,]*(?:\.[0-9]+)?)\s*(พันล้าน|ล้าน|[MB]n?)(?![A-Za-z])\s*(?:หุ้น|shares?|ADS)?/g)) {
+    const v = +(num(m[1]) * SHARE_SCALE[m[2].toLowerCase()]).toPrecision(15);
+    if (v > 0) out.push(v);
+  }
+  return [...new Set(out)];
 }
 
 // ── ตาราง stages ของ DCF (§13-3) ──
@@ -146,6 +215,8 @@ function extractDcfStages(s) {
  *  f = fundamentals ที่ migrator จะเขียนจริง ({eps,dps,bvps,shares,revenue,rps,netDebt?,currency}) — currency = สกุลงบ → dcf inputs.rfCurrency (ไม่มี = ไม่เดา)
  *  คืน { inputs, override, value, ok, why, base?, baseKey?, stages?, shape? }
  *   · override = เฉพาะ OVERRIDE_KEYS ของ v3 · ค่าที่ match จริง ใส่เมื่อ f ไม่มีหรือต่างจาก f
+ *   · ตัวตั้ง fcf/ebitda/revenue = ก้อนที่ป้ายตรงตระกูลก่อน แล้วก้อนไม่มีป้าย — ไม่เคยเป็นหนี้/เงินสด/PV/EV/TV/ส่วนผู้ถือหุ้น/สมาชิกลิสต์ (moneyRoles)
+ *   · netDebt = ที่ผู้เขียนพิมพ์ก่อน (หนี้สุทธิ · เงินสดสุทธิ · หนี้ − เงินสด) แล้ว f.netDebt แล้ว 0 · shares = f.shares ก่อน แล้วจำนวนที่ผู้เขียนหาร (ฐานยอดรวมเท่านั้น)
  *   · ok:true ⇔ L.legValue({method: v3 method, inputs, override}, f) ผ่าน reproduces (value = ค่านั้นเอง — คิดซ้ำได้ตามนิยาม)
  *   · stages = ตาราง N-stage ที่ใช้ (dcf) · shape = เหตุที่ DCF ไม่ใช่ 2-stage มาตรฐาน (dcfShape · ข้อมูลประกอบ) */
 function extract(method, mdesc, mname, mval, f) {
@@ -179,7 +250,7 @@ function extract(method, mdesc, mname, mval, f) {
       if (finish(m, { multiple: k.v }, KEY ? { [KEY]: b.v } : { [TOT]: b.v * f.shares })) { out.base = b.v; if (KEY) out.baseKey = KEY; return out; }
     }
     // pfcf/ps: ยอดรวมที่พิมพ์ (รายได้/FCF ทั้งบริษัท) × ตัวคูณ ÷ shares
-    if (TOT && f.shares) for (const e of moneyAll(mdesc).filter((x) => x.scaled)) for (const k of mults) {
+    if (TOT && f.shares) for (const e of baseCandidates(moneyRoles(mdesc, TOT)).filter((x) => x.scaled)) for (const k of mults) {
       if (finish(m, { multiple: k.v }, { [TOT]: e.v }, `${TOT} total printed`)) return out;
     }
     // ตัวตั้งไม่ได้พิมพ์ — ใช้ fundamentals ตรง ๆ
@@ -212,19 +283,23 @@ function extract(method, mdesc, mname, mval, f) {
   if (m === 'dcf') {
     const g1 = pctAfter(s, 'โต|growth|g1|เติบโต'), r = pctAfter(s, 'WACC|\\br\\b|ส่วนลด|discount|Ke|ต้นทุน'), tg = pctAfter(s, 'terminal|ปลาย|ถาวร|g∞|ระยะยาว|perpetu|TG');
     const yrs = num((/([0-9]+)\s*(?:ปี|years?|Y\b)/i.exec(s) || [])[1]);
-    const monies = moneyAll(mdesc);
-    const fcfTot = monies.filter((x) => x.scaled).map((x) => x.v);
-    const fcfPs = monies.filter((x) => !x.scaled).map((x) => x.v);
+    const roles = moneyRoles(mdesc, 'fcf');
+    const bases = baseCandidates(roles);
+    const fcfTot = bases.filter((x) => x.scaled).map((x) => x.v);
+    const fcfPs = bases.filter((x) => !x.scaled).map((x) => x.v);
     const stages = extractDcfStages(s);
     const rfc = f.currency || null;   // สกุลงบ (ชั้น 0: rf ต้องสกุลเดียวกับกระแสเงินสด) — ไม่มี = ไม่เดา
-    const nds = [...new Set([0, f.netDebt, ...labelledNetDebt(mdesc)].filter((x) => x != null))];
+    // หนี้สุทธิที่ผู้เขียนพิมพ์ก่อน (R1-M1) แล้วค่อย f.netDebt แล้ว 0
+    const nds = [...new Set([...labelledNetDebt(mdesc, roles, f.shares), f.netDebt, 0].filter((x) => x != null))];
     out.shape = dcfShape(s);
-    // ลองฐาน FCF ที่พิมพ์ (ยอดรวม · หรือต่อหุ้น × shares) × หนี้สุทธิ {0, f.netDebt, ที่พิมพ์พร้อมป้าย}
+    // ลองฐาน FCF ที่พิมพ์ (ยอดรวม · หรือต่อหุ้น × shares — เฉพาะก้อนที่เป็นตัวตั้งได้) × หนี้สุทธิ {ที่พิมพ์, f.netDebt, 0}
+    // หุ้น: f.shares ก่อน แล้วค่อยจำนวนที่ผู้เขียนหารจริง (override.shares)
+    const shs = [...new Set([f.shares, ...printedShares(mdesc)].filter((x) => x > 0))];
     const attempt = (inputs) => {
-      if (!f.shares) return false;
-      for (const [list, per] of [[fcfTot, false], [fcfPs, true]]) for (const F of list) for (const nd of nds) {
-        const why = `${per ? 'fcf per share' : 'fcf total'}${nd ? (nd < 0 ? ' + printed net cash' : ' − net debt') : ' (no net debt)'}`;
-        if (finish('dcf', inputs, { fcf: per ? F * f.shares : F, netDebt: nd }, why)) return true;
+      // ต่อหุ้น × shares ใช้ได้เฉพาะ f.shares — จำนวนที่พิมพ์อาจเป็นหุ้นสามัญขณะที่ฐานเป็นต่อ ADR (TSM: ×5) ⇒ fcf รวมจะผิดหน่วย
+      for (const sh of shs) for (const [list, per] of [[fcfTot, false], [sh === f.shares ? fcfPs : [], true]]) for (const F of list) for (const nd of nds) {
+        const why = `${per ? 'fcf per share' : 'fcf total'}${nd ? (nd < 0 ? ' + printed net cash' : ' − net debt') : ' (no net debt)'}${sh !== f.shares ? ' · printed shares' : ''}`;
+        if (finish('dcf', inputs, { fcf: per ? F * sh : F, netDebt: nd, shares: sh }, why)) return true;
       }
       return false;
     };
@@ -235,7 +310,7 @@ function extract(method, mdesc, mname, mval, f) {
       return out;
     };
     const whys = [];
-    if (!f.shares) whys.push('no shares');
+    if (!shs.length) whys.push('no shares');
     // N-stage ก่อน (§13-3) — ต้องมี r/tg · years มาจากตาราง stages
     if (stages && r != null && tg != null && r > tg) {
       if (attempt(withRf({ stages, tg, r }))) { out.stages = stages; return done(); }
@@ -272,22 +347,18 @@ function extract(method, mdesc, mname, mval, f) {
   if (m === 'evebitda' || m === 'evsales') {
     // v3: (ฐาน × ตัวคูณ − netDebt) ÷ shares · คืนตัวแปรที่ match จริงเป็น override {ebitda|revenue, netDebt} (เงินสดสุทธิ = netDebt ติดลบ)
     const baseKey = m === 'evebitda' ? 'ebitda' : 'revenue';
-    const mults = multAll(s); const monies = moneyAll(mdesc).filter((x) => x.scaled);
-    if (!f.shares) { out.why = `ev: no shares (mults=${mults.length} monies=${monies.length})`; return out; }
-    const nds = [...new Set([0, f.netDebt].filter((x) => x != null))];
-    for (const e of monies) for (const k of mults) for (const nd of nds) {
-      if (finish(m, { multiple: k.v }, { [baseKey]: e.v, netDebt: nd }, nd ? 'ev base − net debt' : 'ev base (no net debt)')) return out;
+    const mults = multAll(s);
+    const roles = moneyRoles(mdesc, baseKey);
+    const monies = baseCandidates(roles).filter((x) => x.scaled);
+    const shs = [...new Set([f.shares, ...printedShares(mdesc)].filter((x) => x > 0))];
+    if (!shs.length) { out.why = `ev: no shares (mults=${mults.length} bases=${monies.length})`; return out; }
+    // หนี้สุทธิที่พิมพ์พร้อมป้าย (เครื่องหมายตามป้าย) ก่อน แล้ว f.netDebt แล้ว 0 · หุ้น f.shares ก่อน แล้วที่พิมพ์ · คืนตัวแปรที่ match เท่านั้น
+    const nds = [...new Set([...labelledNetDebt(mdesc, roles, f.shares), f.netDebt, 0].filter((x) => x != null))];
+    for (const sh of shs) for (const e of monies) for (const k of mults) for (const nd of nds) {
+      const why = `${nd > 0 ? 'ev base − net debt' : nd < 0 ? 'ev base + net cash' : 'ev base (no net debt)'}${sh !== f.shares ? ' · printed shares' : ''}`;
+      if (finish(m, { multiple: k.v }, { [baseKey]: e.v, netDebt: nd, shares: sh }, why)) return out;
     }
-    // หนี้สุทธิ/เงินสดสุทธิที่พิมพ์พร้อมป้าย (เครื่องหมายตามป้าย) ก่อน — แล้วค่อยก้อนที่ไม่มีป้าย ลองทั้งสองเครื่องหมาย · คืนตัวที่ match เท่านั้น
-    const labelled = labelledNetDebt(mdesc);
-    for (const e of monies) for (const k of mults) for (const nd of labelled) {
-      if (finish(m, { multiple: k.v }, { [baseKey]: e.v, netDebt: nd }, nd > 0 ? 'ev base − printed net debt' : 'ev base + printed net cash')) return out;
-    }
-    for (const e of monies) for (const k of mults) for (const x of monies) {
-      if (x === e) continue;
-      for (const nd of [x.v, -x.v]) if (finish(m, { multiple: k.v }, { [baseKey]: e.v, netDebt: nd }, nd > 0 ? 'ev base − printed net debt' : 'ev base + printed net cash')) return out;
-    }
-    out.why = `ev: mults=${mults.length} monies=${monies.length} — no variant reproduces`;
+    out.why = `ev: mults=${mults.length} bases=${monies.length} — no variant reproduces (base must be the labelled ${baseKey}, not debt/cash/PV/EV/list)`;
     return out;
   }
   if (m === 'fcfyield') {
@@ -318,4 +389,4 @@ function dcfShape(s) {
   return reasons;
 }
 
-module.exports = { classifyName, extract, dcfShape, extractDcfStages, reproduces, mvalDp, labelledNetDebt, mvalNum, mvalCur, CONTEXT_RE, ANALYST_RE, moneyAll, multAll, pctAll, pctAfter, close };
+module.exports = { classifyName, extract, dcfShape, extractDcfStages, reproduces, mvalDp, labelledNetDebt, moneyRoles, baseCandidates, printedShares, mvalNum, mvalCur, CONTEXT_RE, ANALYST_RE, moneyAll, multAll, pctAll, pctAfter, close };
