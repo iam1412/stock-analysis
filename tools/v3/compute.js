@@ -31,9 +31,16 @@ function driverStart(doc, f) {
   const s = doc.scenarios;
   if (s.baseOverride) return s.baseOverride.value;
   const per = (k) => (f[k] != null && f.shares ? f[k] / f.shares : null);
-  const v = { eps: f.eps, ffo: f.ffoPerShare, bvps: f.bvps, revenuePerShare: per('revenue'), fcfPerShare: per('fcf') }[s.driver];
+  const v = { eps: f.eps, ffo: f.ffoPerShare, bvps: f.bvps, revenuePerShare: per('revenue'), fcfPerShare: per('fcf'), de: f.dePerShare, fre: f.frePerShare }[s.driver];   // de/fre = Plan 4b Task 1 (alt managers)
   if (!(typeof v === 'number' && v > 0)) throw new Error(`scenarios.driver: ฐาน "${s.driver}" ไม่มีใน fundamentals (หรือ ≤ 0) — เติม fundamentals หรือใช้ scenarios.baseOverride`);
   return v;
+}
+
+// exit EV/Sales (Plan 4b Task 1 · §3.3): ราคาเป้า = รายได้/หุ้นปลายฉาก × EV/Sales − หนี้สุทธิ/หุ้น (สกุลราคา ผ่าน fq) · exit อื่น = ตัวตั้ง × ตัวคูณ
+function exitTarget(s, end, m, fq) {
+  if (s.exitMetric !== 'evsales') return end * m;
+  if (!(typeof fq.shares === 'number' && fq.shares > 0)) throw new Error('scenarios.exitMetric: evsales ต้องมี fundamentals.shares > 0 (หักหนี้สุทธิต่อหุ้น)');
+  return end * m - (fq.netDebt || 0) / fq.shares;
 }
 
 function themeOf(doc, seeds, dir) {
@@ -113,7 +120,7 @@ function compute(doc, opts) {
   const scn = s.cases.map((c, i) => {
     const end = start * Math.pow(1 + c.growth / 100, s.years);
     // divCum: เก็บผ่านเสมอเมื่อ author ให้มา (informational แม้ divIncluded=false — schema อนุญาต) · total% ตัดสินด้วย scnBasis.divIncluded ใน derive() v2 อยู่แล้ว ไม่ใช่ตรงนี้
-    return { name: SCN_NAMES[i], growth: c.growth, exitMultiple: c.exitMultiple, driverStart: start, driverEnd: end, tgt: end * c.exitMultiple, divCum: c.divCum == null ? null : c.divCum, desc: c.desc };
+    return { name: SCN_NAMES[i], growth: c.growth, exitMultiple: c.exitMultiple, driverStart: start, driverEnd: end, tgt: exitTarget(s, end, c.exitMultiple, fq), divCum: c.divCum == null ? null : c.divCum, desc: c.desc };
   });
 
   // ── bridge → v2 report-data + stock-meta (ใช้ RV.derive ตัวจริง) ──
@@ -179,6 +186,7 @@ function semanticErrors(doc, opts) {
     } catch (e) { out.push(splitErr(e, `legs[${i}]`)); }
   });
   try { driverStart(doc, fq); } catch (e) { out.push(splitErr(e, 'scenarios.driver')); }
+  { const s = doc.scenarios; try { s.cases.forEach((c) => exitTarget(s, 1, c.exitMultiple, fq)); } catch (e) { out.push(splitErr(e, 'scenarios.exitMetric')); } }
   try { themeOf(doc, opts && opts.seeds, null); } catch (e) { out.push(splitErr(e, 'meta.themeLegacy')); }
   return out;
 }

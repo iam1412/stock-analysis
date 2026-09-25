@@ -112,4 +112,19 @@ t.eq(K.CATALOGUE.peAvg5y.label(view), 'P/E มัธยฐาน ~5 ปี', 'pe
   t.throws(() => K.renderCard('evEbitda', v2), /fundamentals\.netDebt/, 'evEbitda card without netDebt names the field'); }
 { const d = load(); delete d.fundamentals.ebitda; const v2 = C.compute(d, { seeds: { ZTS: '#e8731a' } });
   t.throws(() => K.CATALOGUE.evEbitda.d(v2), /fundamentals\.ebitda/, 'evEbitda .d without ebitda names the field'); }
+// Plan 4b Task 1 — six catalogue keys (Task 0 Q3: Net Debt/EBITDA 16 · Occupancy 14 · Backlog 12 · Payout 10 · AUM 8 · P/TBV 7)
+{
+  const f = { ...view.doc.fundamentals, occupancy: 94.12, backlog: 1.25e9, aum: 3.1e11, tbvps: 40.5, dps: 2.12, eps: 6.13, netDebt: 7.84e9, ebitda: 3.2e9 };
+  const w = { ...view, doc: { ...view.doc, fundamentals: f }, fq: f };
+  t.eq(K.renderCard('occupancy', w).v, '94.1%', 'occupancy = pct1(fundamentals.occupancy)');
+  t.eq(K.renderCard('netDebtEbitda', w).v, (7.84e9 / 3.2e9).toFixed(1) + 'x', 'netDebtEbitda = netDebt ÷ ebitda (statement currency ratio)');
+  t.eq(K.renderCard('backlog', w).v, RV.fmtBig(1.25e9, w.stmtCur || w.cur), 'backlog = statement-currency big number');
+  t.eq(K.renderCard('payout', w).v, (2.12 / 6.13 * 100).toFixed(1) + '%', 'payout = dps ÷ eps');
+  t.eq(K.renderCard('aum', w).v, RV.fmtBig(3.1e11, w.stmtCur || w.cur), 'aum = statement-currency big number');
+  t.eq(K.renderCard('ptbv', w).v, (w.d.px / 40.5).toFixed(2) + 'x', 'ptbv = px ÷ tbvps (price-bound)');
+  t.eq(K.ptbvCalc(w).text, (w.d.px / 40.5).toFixed(2) + 'x', 'ptbvCalc text = card text (single owner)');
+  t.throws(() => K.renderCard('payout', { ...w, doc: { ...w.doc, fundamentals: { ...f, eps: -1 } }, fq: { ...f, eps: -1 } }), /payout/, 'payout with eps ≤ 0 → named throw');
+  t.throws(() => K.renderCard('netDebtEbitda', { ...w, doc: { ...w.doc, fundamentals: { ...f, ebitda: 0 } }, fq: { ...f, ebitda: 0 } }), /ebitda/, 'netDebtEbitda with ebitda ≤ 0 → named throw');
+}
+
 t.done();

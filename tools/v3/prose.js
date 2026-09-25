@@ -111,6 +111,7 @@ function priceBound(view) {
   try { const c = K.evEbitdaCalc(view); add('evEbitda', 'mult', c.raw, c.text); } catch (e) { /* no ebitda/netDebt → no bound */ }
   try { const c = K.pffoCalc(view); add('pffo', 'mult', c.raw, c.text); } catch (e) { /* no ffoPerShare → no bound */ }
   try { const c = K.pffoForwardCalc(view); add('pffoForward', 'mult', c.raw, c.text); } catch (e) { /* no ffoForward → no bound */ }
+  try { const c = K.ptbvCalc(view); add('ptbv', 'mult', c.raw, c.text); } catch (e) { /* no tbvps → no bound */ }   // Plan 4b Task 1
   ['bear', 'base', 'bull'].forEach((n, i) => { const s = d.scenarios[i]; if (s) { add(`scn.${n}.tgt`, 'money', s.tgt); add(`scn.${n}.ret`, 'pct', s.total); } });
   return out;
 }

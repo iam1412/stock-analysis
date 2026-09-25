@@ -34,6 +34,15 @@ for (let i = 1; i <= 4; i++) {
 TOKENS_V3.analysisDate = (view) => need(view.analysisDateText, 'analysisDate');
 TOKENS_V3['range52w.lo'] = (view) => money(view, need(view.doc && view.doc.market.range52w, 'range52w').lo);
 TOKENS_V3['range52w.hi'] = (view) => money(view, need(view.doc && view.doc.market.range52w, 'range52w').hi);
+// Plan 4b Task 1 (spec §10.1 token gaps: fund:eps 834 ใบ · dps 458 · bvps 223 · epsFy 45 · analyst:vsFv 30) — ค่าจากงบ ไม่ผูกราคา
+// (ไม่เข้า priceBound) แต่ทำให้ prose ตาม fundamentals เมื่อ UPDATE · เงินผ่าน RV.fmtPrice เหมือน token อื่น
+const fund = (view, k) => need(view.doc && view.doc.fundamentals && view.doc.fundamentals[k], k);
+TOKENS_V3.eps = (view) => money(view, fund(view, 'eps'));
+TOKENS_V3.dps = (view) => money(view, fund(view, 'dps'));
+TOKENS_V3.bvps = (view) => money(view, fund(view, 'bvps'));
+TOKENS_V3.epsFy = (view) => money(view, need(view.doc && view.doc.fundamentals && view.doc.fundamentals.fy && view.doc.fundamentals.fy.eps, 'epsFy'));
+// ส่วนต่างเป้านักวิเคราะห์เทียบ FV (ไม่ใช่เทียบราคา — นั่นคือ analyst.pct) · 1 ตำแหน่ง · ลบ = U+2212
+TOKENS_V3['analyst.vsFv'] = (view) => { const a = need(view.doc && view.doc.analyst, 'analyst.vsFv'); const x = (a.target - view.fv) / view.fv * 100; return (x < 0 ? '−' : '+') + Math.abs(x).toFixed(1) + '%'; };
 // Plan 2a Task 9 — P/FFO (ไม่มีคู่ v2 · รูปแบบเดียวกับ {{pe}}/{{pbv}} = ไม่มี x ต่อท้าย) — เลขมาจาก cards.js ตัวเดียวกับการ์ด
 TOKENS_V3.pffo = (view) => require('./cards.js').pffoCalc(view).raw.toFixed(1);
 TOKENS_V3.pffoForward = (view) => require('./cards.js').pffoForwardCalc(view).raw.toFixed(1);

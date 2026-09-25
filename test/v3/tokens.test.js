@@ -1,0 +1,25 @@
+'use strict';
+const t = require('./_t.js')('tokens');
+const path = require('path');
+const IO = require('../../tools/v3/io.js');
+const C = require('../../tools/v3/compute.js');
+const P = require('../../tools/v3/prose.js');
+const TK = require('../../tools/v3/tokens.js');
+const RV = require('../../tools/report-values.js');
+const SEEDS = require('../../tools/seeds.json');
+const doc = IO.read(path.join(__dirname, '../fixtures/v3/ZTS.json'));
+// ZTS fixture has no fundamentals.fy — add one (in memory) so {{epsFy}} has a value to resolve
+doc.fundamentals.fy = { period: 'FY2025', netIncome: 2.6e9, eps: 5.92, revenue: 9.3e9 };
+const view = C.compute(doc, { seeds: SEEDS });
+const f = doc.fundamentals;
+t.eq(TK.TOKENS_V3.eps(view), view.cur + RV.fmtPrice(f.eps), '{{eps}} = money(fundamentals.eps)');
+t.eq(TK.TOKENS_V3.dps(view), view.cur + RV.fmtPrice(f.dps), '{{dps}} = money(fundamentals.dps)');
+t.eq(TK.TOKENS_V3.bvps(view), view.cur + RV.fmtPrice(f.bvps), '{{bvps}} = money(fundamentals.bvps)');
+t.eq(TK.TOKENS_V3.epsFy(view), view.cur + RV.fmtPrice(f.fy.eps), '{{epsFy}} = money(fundamentals.fy.eps)');
+const vs = (doc.analyst.target - view.fv) / view.fv * 100;
+t.eq(TK.TOKENS_V3['analyst.vsFv'](view), (vs < 0 ? '−' : '+') + Math.abs(vs).toFixed(1) + '%', '{{analyst.vsFv}} = (target − FV)/FV, 1dp, U+2212 for negative');
+t.throws(() => TK.TOKENS_V3.epsFy({ ...view, doc: { ...doc, fundamentals: { ...f, fy: undefined } } }), /epsFy/, 'epsFy without fundamentals.fy → named throw');
+t.throws(() => TK.TOKENS_V3['analyst.vsFv']({ ...view, doc: { ...doc, analyst: null } }), /analyst/, 'analyst.vsFv without analyst → named throw');
+t.eq(P.renderProse('EPS {{eps}} · DPS {{dps}}', view), `EPS ${TK.TOKENS_V3.eps(view)} · DPS ${TK.TOKENS_V3.dps(view)}`, 'renderProse resolves the new tokens');
+t(P.renderProse('{{eps}}', view, { mode: 'v2src' }) === TK.TOKENS_V3.eps(view), 'new tokens have no v2 twin → rendered inline in v2src mode');
+t.done();

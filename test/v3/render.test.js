@@ -143,9 +143,10 @@ t.eq(JSON.parse(R.jsonScript('{"a":"</script>"}')).a, '</script>', 'jsonScript o
   const view = C.compute(doc, { seeds }); const src = R.toV2Source(doc, view);
   t(src.includes('EPS IFRS (TTM) $6.13 × P/E เป้าหมาย ~28x (มัธยฐาน FY2022–FY2025)'), 'medianWindow replaces the source name · ifrs label');
   t.eq(require('../../tools/v3/cards.js').renderCard('eps', view).d, 'IFRS', 'eps card base line says IFRS'); }
-// Plan 2a Task 7 — ไม่มีจำนวนราย → "n/a" แต่เป้า + ป้าย gauge ยังอยู่ (เดิมต้องตั้ง analyst:null = "ไม่มีข้อมูล" ซึ่งเป็นเท็จ)
+// Plan 2a Task 7 — ไม่มีจำนวนราย → ไม่พิมพ์จำนวน แต่เป้า + ป้าย gauge ยังอยู่ (เดิมต้องตั้ง analyst:null = "ไม่มีข้อมูล" ซึ่งเป็นเท็จ)
+// Plan 4b Task 1 — แทนรูปเดิม "(Buy · n/a)": n ที่ไม่ทราบไม่พิมพ์ ⇒ "(Buy)"
 { const doc = load('ZTS'); doc.analyst = { target: 190, rating: 'Buy' }; const src = R.toV2Source(doc, C.compute(doc, { seeds }));
-  t(src.includes('~{{rd:analystTgt}} (Buy · n/a)'), 'verdict cell shows n/a for the count');
+  t(src.includes('~{{rd:analystTgt}} (Buy)</div>') && !src.includes('(Buy · n/a)'), 'verdict cell omits the unknown count: "(Buy)"');
   t(src.includes('{{rd:analystTgt}}<br><small>เป้าเฉลี่ย Analyst</small>'), 'gauge marker kept');
   t.eq(CR.checkHtml(expandReport(src), 'ZTS.html', { source: src }).errors.map((e) => e.id), [], 'analyst without n: v2 gate 0 errors'); }
 // Plan 2a Task 9 — ป้าย AFFO ทุกที่ + hint §6 ของ driver ทุกชนิด
@@ -190,4 +191,23 @@ t.eq(JSON.parse(R.jsonScript('{"a":"</script>"}')).a, '</script>', 'jsonScript o
   x.rows = [['A', '', '', -100, -2], { kind: 'total', cells: ['รวม', '', '', -100, -2] }];
   const src = R.toV2Source(doc, C.compute(doc, { seeds }));
   t(src.includes('แปลงเป็น USD ที่ EURUSD 1.15566: <b>−$2.31</b>') && !src.includes('$-2.31'), 'fx row: negative total prints U+2212 before the symbol'); }
+// Plan 4b Task 1 — render honours the new enums / nullable rating / tone none
+{
+  const d = load('ZTS'); d.analyst = { target: 100.94, n: null, rating: null, asOf: null };
+  const v = C.compute(d, { seeds }), html = R.toV2Source(d, v);
+  t(/เป้านักวิเคราะห์ 12 ด\.<\/div><div class="v" style="color:#a5d6a7">~\{\{rd:analystTgt\}\}<\/div>/.test(html), 'analyst cell with rating null and n null prints the target only (no "(null · n/a)")');
+  d.analyst = { target: 100.94, n: 19, rating: null, asOf: null };
+  t(/~\{\{rd:analystTgt\}\} \(19 ราย\)<\/div>/.test(R.toV2Source(d, C.compute(d, { seeds }))), 'rating null + n → "(19 ราย)"');
+}
+{
+  const d = load('ZTS'); d.metrics.cards = [{ key: 'pe', tone: 'none' }].concat(d.metrics.cards.filter((c) => c !== 'pe' && !(c && c.key === 'pe')));
+  const html = R.toV2Source(d, C.compute(d, { seeds }));
+  t(/<div class="k">P\/E \(TTM\)<\/div><div class="v">/.test(html), 'tone none → .v has no class (catalogue default neu suppressed)');
+}
+{
+  const d = load('ZTS'); d.scenarios.driver = 'de'; d.fundamentals.dePerShare = 3.3; d.scenarios.exitMetric = 'evsales'; d.fundamentals.netDebt = 1e9; d.fundamentals.shares = d.fundamentals.shares || 4.3e8;
+  const html = R.toV2Source(d, C.compute(d, { seeds }));
+  t(/<span>DE\/หุ้น [+−][0-9.]+%\/ปี<\/span>/.test(html) && /<span>EV\/Sales ออก<\/span>/.test(html) && /DE\/หุ้น ฐาน ~/.test(html), 'driver de → "DE/หุ้น" labels · exitMetric evsales → "EV/Sales ออก"');
+}
+
 t.done();

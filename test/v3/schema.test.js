@@ -238,4 +238,33 @@ for (const f of ['BBL-real', 'EQIX-real', 'FER-real', 'ZTS-real', 'BBL', 'ZTS'])
   t(S.TODO_RE.test('  TODO: x') && !S.TODO_RE.test('todo: x'), 'TODO_RE: leading spaces allowed · case-sensitive');
   t.eq(S.stringLeaves({ a: ['x', { b: 'y' }], c: 1 }, '', []), [{ path: 'a[0]', text: 'x' }, { path: 'a[1].b', text: 'y' }], 'stringLeaves: JSON paths of every string');
 }
+// Plan 4b Task 1 — schema gaps the sweep needs (spec §10 "ช่องว่าง schema ที่ 4b ต้องปิด")
+{
+  const d = base();
+  d.metrics.cards = [{ key: 'pe', tone: 'none' }].concat(d.metrics.cards.filter((c) => c !== 'pe' && !(c && c.key === 'pe')));
+  t.eq(S.validate(d).filter((e) => /tone/.test(e.path)), [], 'tone "none" accepted (466 v2 cards have no class)');
+  d.metrics.cards[0].tone = 'loud';
+  t(S.validate(d).some((e) => e.path === 'metrics.cards[0].tone'), 'unknown tone still rejected');
+}
+{
+  const d = base(); d.analyst = { target: 80, n: null, rating: null, asOf: null };
+  t.eq(S.validate(d).filter((e) => /analyst/.test(e.path)), [], 'analyst.rating null accepted (114 v2 reports print no rating)');
+  delete d.analyst.rating;
+  t(S.validate(d).some((e) => e.path === 'analyst.rating'), 'analyst.rating key still required (closed object)');
+}
+{
+  const d = base(); d.meta.headerTags = ['a', 'b', 'c'];
+  t.eq(S.validate(d).filter((e) => /headerTags/.test(e.path)), [], 'headerTags max 3 (ADR/dual listing)');
+  d.meta.headerTags = ['a', 'b', 'c', 'd'];
+  t(S.validate(d).some((e) => e.path === 'meta.headerTags'), 'headerTags 4 rejected');
+}
+{
+  const d = base(); d.scenarios.driver = 'de'; d.scenarios.exitMetric = 'evsales'; d.fundamentals.dePerShare = 4.2;
+  t.eq(S.validate(d).filter((e) => /scenarios\.(driver|exitMetric)|dePerShare/.test(e.path)), [], 'driver de + exitMetric evsales + fundamentals.dePerShare accepted');
+  d.fundamentals.occupancy = 94.1; d.fundamentals.backlog = 1.2e9; d.fundamentals.aum = 3e11; d.fundamentals.tbvps = 40.5; d.fundamentals.frePerShare = 1.1;
+  t.eq(S.validate(d).filter((e) => /fundamentals\.(occupancy|backlog|aum|tbvps|frePerShare)/.test(e.path)), [], 'new fundamentals keys accepted');
+  d.metrics.cards = ['occupancy', 'netDebtEbitda', 'backlog', 'payout', 'aum', 'ptbv'];
+  t.eq(S.validate(d).filter((e) => /metrics\.cards/.test(e.path)), [], 'six new catalogue keys accepted');
+}
+
 t.done();

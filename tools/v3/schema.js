@@ -15,12 +15,13 @@ const ENUM = {
   method: ['pe', 'pbv', 'ps', 'evsales', 'evebitda', 'pfcf', 'fcfyield', 'pffo', 'ddm', 'ddm2', 'dcf', 'ri', 'declared'],
   multipleSource: ['median5y', 'median10y', 'peer', 'justified', 'sector', 'current'],   // 'current' = เฉพาะขา role:"context" (ตัวคูณสด คิดทุกวัน) · บนขา fv ห้าม = สมอตาย W18 (§13 ข้อ 6)
   declaredBasis: ['sotp', 'nav', 'rnpv', 'other'],
-  driver: ['eps', 'ffo', 'revenuePerShare', 'bvps', 'fcfPerShare'],
-  exitMetric: ['pe', 'ps', 'pbv', 'pffo', 'pfcf'],
+  // Plan 4b Task 1 (spec §10 "ช่องว่าง schema" · §3.3): driver de/fre (alt managers) · exitMetric evsales · tone 'none' = ไม่มีคลาสสี (466 การ์ด v2)
+  driver: ['eps', 'ffo', 'revenuePerShare', 'bvps', 'fcfPerShare', 'de', 'fre'],
+  exitMetric: ['pe', 'ps', 'pbv', 'pffo', 'pfcf', 'evsales'],
   perYear: ['cagr', 'linear', null],
   extrasAfter: ['metrics', 'valuation', 'scenarios', 'catalysts'],
   colUnit: ['none', 'pct', 'x', 'ccy'],
-  tone: ['pos', 'neg', 'neu'],
+  tone: ['pos', 'neg', 'neu', 'none'],
   role: ['fv', 'context'], family: ['market', 'rg', 'asset'],
 };
 // ต้องตรงกับคีย์ของ CATALOGUE ใน tools/v3/cards.js (test/v3/cards.test.js ตรวจว่าตรงกัน)
@@ -30,9 +31,11 @@ const CARD_KEYS = ['mcap', 'pe', 'peAvg5y', 'pbv', 'ps', 'netIncome', 'eps', 'bv
   'netMargin', 'opMargin', 'yield', 'beta', 'range52w', 'fcf', 'debtToEquity',
   'netDebt', 'ebitdaMargin', 'roic', 'evEbitda', 'peForward', 'analystTarget',
   'netIncomeFy', 'epsFy', 'revenueFy', 'nim', 'npl', 'capital',   // + Plan 2a Task 8 (§3.6 B/K)
-  'pffo', 'pffoForward', 'ffoPerShare', 'pffoAvg5y', 'ffoMargin', 'ffoPayout'];   // + Plan 2a Task 9 (§3.6 J)
+  'pffo', 'pffoForward', 'ffoPerShare', 'pffoAvg5y', 'ffoMargin', 'ffoPayout',   // + Plan 2a Task 9 (§3.6 J)
+  'occupancy', 'netDebtEbitda', 'backlog', 'payout', 'aum', 'ptbv'];   // + Plan 4b Task 1 (Task 0 Q3 top unmapped labels)
 const FUND_NUM = ['eps', 'dps', 'bvps', 'shares', 'revenue', 'netIncome', 'roe', 'roa', 'grossMargin', 'netMargin',
-  'opMargin', 'beta', 'debtToEquity', 'fcf', 'ebitda', 'netDebt', 'peAvg5y', 'ffoPerShare', 'roic', 'epsForward', 'pffoAvg5y', 'fx'];
+  'opMargin', 'beta', 'debtToEquity', 'fcf', 'ebitda', 'netDebt', 'peAvg5y', 'ffoPerShare', 'roic', 'epsForward', 'pffoAvg5y', 'fx',
+  'occupancy', 'backlog', 'aum', 'tbvps', 'dePerShare', 'frePerShare'];   // + Plan 4b Task 1
 const FUND_KEYS = FUND_NUM.concat(['epsBasis', 'fy', 'bank', 'ffoBasis', 'ffoForward', 'reportCurrency']);
 const FY_KEYS = ['period', 'netIncome', 'eps', 'revenue'];
 const BANK_KEYS = ['nim', 'npl', 'coverage', 'cet1', 'car'];
@@ -142,7 +145,7 @@ function validate(doc) {
   else {
     closed(m, 'meta', ['company', 'exchange', 'sub', 'headerTags', 'analysisDate', 'aiModel', 'sources', 'priceNote', 'themeLegacy', 'litReasons']);
     str(m.company, 'meta.company'); str(m.exchange, 'meta.exchange'); str(m.sub, 'meta.sub', { minLen: 10 });
-    if (m.headerTags != null) strList(m.headerTags, 'meta.headerTags', 0, 2);
+    if (m.headerTags != null) strList(m.headerTags, 'meta.headerTags', 0, 3);   // ≤ 3 (Plan 4b Task 1 — ADR/dual listing)
     if (!ISO.test(m.analysisDate || '')) E('meta.analysisDate', 'ต้องเป็น ISO YYYY-MM-DD (ค.ศ.)');
     if (!AI.test(m.aiModel || '')) E('meta.aiModel', 'ต้องเป็นรูป "Claude <ตระกูล> <เวอร์ชัน>"');
     strList(m.sources, 'meta.sources', 3, 8);
@@ -414,7 +417,9 @@ function validate(doc) {
       closed(a, 'analyst', ['target', 'n', 'rating', 'asOf']);
       num(a.target, 'analyst.target', { gt: 0 });
       if (a.n != null) num(a.n, 'analyst.n', { int: true, min: 1 });
-      str(a.rating, 'analyst.rating');
+      // rating nullable (Plan 4b Task 1 — 114 ใบ v2 ไม่พิมพ์ rating) · คีย์ยังบังคับ (closed object)
+      if (!('rating' in a)) E('analyst.rating', 'ต้องมีคีย์ — ข้อความ หรือ null เมื่อไม่ทราบ rating (114 ใบ v2 ไม่พิมพ์)');
+      else if (a.rating !== null) str(a.rating, 'analyst.rating');
       if (a.asOf != null && !(typeof a.asOf === 'string' && ISO.test(a.asOf))) E('analyst.asOf', 'ต้องเป็น ISO YYYY-MM-DD หรือ null');
     }
   }

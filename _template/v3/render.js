@@ -97,13 +97,15 @@ function toV2Source(doc, view) {
   const m = doc.meta, d = view.d, s = doc.scenarios, TH = doc.currency === 'THB';
   // ลำดับ = S.cardEntries (custom แทรกได้ด้วย "custom:<i>") · tone → class สีเดิม (.v pos|neg|neu) — ไม่มี markup ใน JSON (§3.6 H)
   const noteOf = (k) => doc.metrics.notes && doc.metrics.notes[k];
+  // tone 'none' (Plan 4b Task 1) = ไม่มีคลาสสี แม้การ์ดแคตตาล็อกมีค่าตั้งต้น (466 การ์ด v2 ไม่มีคลาส)
+  const toneCls = (tone, def) => (tone === 'none' ? '' : tone || def);
   const cards = S.cardEntries(doc.metrics).map((e) => {
     if (e.custom != null) {
       const c = doc.metrics.custom[e.custom];
-      return { k: esc(c.label), v: pr(c.value), d: c.note ? pr(c.note) : '', cls: e.tone || '' };
+      return { k: esc(c.label), v: pr(c.value), d: c.note ? pr(c.note) : '', cls: toneCls(e.tone, '') };
     }
     const c = K.renderCard(e.key, view), note = noteOf(e.key);
-    return { k: esc(c.k), v: esc(c.v), d: esc(c.d) + (note ? (c.d ? ' · ' : '') + pr(note) : ''), cls: e.tone || c.cls };
+    return { k: esc(c.k), v: esc(c.v), d: esc(c.d) + (note ? (c.d ? ' · ' : '') + pr(note) : ''), cls: toneCls(e.tone, c.cls) };
   });
   const cardHtml = cards.map((c) => `<div class="metric"><div class="k">${c.k}</div><div class="v${c.cls ? ' ' + c.cls : ''}">${c.v}</div><div class="d">${c.d}</div></div>`).join('\n      ');
   const legsHtml = view.legs.map((l, i) => `<div class="vmethod">
@@ -118,8 +120,8 @@ function toV2Source(doc, view) {
     .sort((a, b) => a.v - b.v)
     .map((x, i, arr) => `<span${i === 0 ? '' : i === arr.length - 1 ? ' style="text-align:right"' : ' style="text-align:center"'}>${x.tok}<br><small>${x.lab}</small></span>`).join('\n          ');
   const FFO = ffoLabel(doc);
-  const drv = { eps: 'EPS', ffo: FFO, revenuePerShare: 'รายได้/หุ้น', bvps: 'BVPS', fcfPerShare: 'FCF/หุ้น' }[s.driver];
-  const ex = { pe: 'P/E', ps: 'P/S', pbv: 'P/BV', pffo: `P/${FFO}`, pfcf: 'P/FCF' }[s.exitMetric];
+  const drv = { eps: 'EPS', ffo: FFO, revenuePerShare: 'รายได้/หุ้น', bvps: 'BVPS', fcfPerShare: 'FCF/หุ้น', de: 'DE/หุ้น', fre: 'FRE/หุ้น' }[s.driver];
+  const ex = { pe: 'P/E', ps: 'P/S', pbv: 'P/BV', pffo: `P/${FFO}`, pfcf: 'P/FCF', evsales: 'EV/Sales' }[s.exitMetric];
   const col = (i, cls, name) => {
     const sc = view.scn[i];
     // Finding 4 (postreview) — เลขลบใช้ minus glyph U+2212 (ตามธรรมเนียม v2) ไม่ใช่ ASCII hyphen
@@ -140,8 +142,10 @@ function toV2Source(doc, view) {
   };
   const li = (xs) => xs.map((x) => `<li>${pr(x)}</li>`).join('\n          ');
   const an = doc.analyst;
+  // rating/n ที่ไม่ทราบ (null) = ไม่พิมพ์ (Plan 4b Task 1 — 114 ใบ v2 ไม่พิมพ์ rating) · ไม่มีทั้งคู่ = เป้าอย่างเดียว
+  const anMeta = an ? [an.rating, an.n != null ? `${an.n} ราย` : null].filter(Boolean).join(' · ') : '';
   const analystCell = an
-    ? `<div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~{{rd:analystTgt}} (${esc(an.rating)} · ${an.n != null ? an.n + ' ราย' : 'n/a'})</div></div>`
+    ? `<div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~{{rd:analystTgt}}${anMeta ? ` (${esc(anMeta)})` : ''}</div></div>`
     : `<div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v">ไม่มีข้อมูล</div></div>`;
   const tags = [`${esc(m.exchange)}: ${esc(doc.symbol)}`].concat((m.headerTags || []).map(esc)).map((x) => `<span class="tag">${x}</span>`).join('\n      ');
   const r52 = doc.market.range52w;
