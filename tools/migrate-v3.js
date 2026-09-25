@@ -33,7 +33,7 @@ class UsageError extends Error {}
 const ISO_RE = /^\d{4}-\d{2}-\d{2}$/;
 
 function parseArgs(argv) {
-  const VAL = { '--reports-dir': 'reportsDir', '--head-manifest': 'headManifest', '--out': 'out', '--limit': 'limit' };
+  const VAL = { '--reports-dir': 'reportsDir', '--head-manifest': 'headManifest', '--out': 'out', '--limit': 'limit', '--today': 'today' };
   const o = { _: [], only: null, write: false, acceptDrift: false, noStale: false };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
@@ -47,19 +47,40 @@ function parseArgs(argv) {
   }
   if (o.limit != null && !/^\d+$/.test(o.limit)) throw new UsageError('--limit ต้องเป็นจำนวนเต็ม');
   if (o.limit != null) o.limit = +o.limit;
+  if (o.today != null && !ISO_RE.test(o.today)) throw new UsageError('--today ต้องเป็น YYYY-MM-DD');
   o.reportsDir = path.resolve(o.reportsDir || REAL_REPORTS);
   return o;
 }
 
 const seedsOf = () => JSON.parse(fs.readFileSync(path.join(ROOT, 'tools', 'seeds.json'), 'utf8'));
-const realpath = (p) => { try { return fs.realpathSync(p); } catch (e) { return path.resolve(p); } };
-const isRealReports = (dir) => path.resolve(dir) === REAL_REPORTS || realpath(dir) === realpath(REAL_REPORTS);
+// ★ realpathSync.native = ตัวพิมพ์ตามดิสก์ (APFS ไม่สนตัวพิมพ์ — realpathSync ของ JS คืนตัวพิมพ์ที่ผู้ใช้พิมพ์ ⇒ …/REPORTS หลุด guard · review I-1)
+const realpath = (p) => { try { return fs.realpathSync.native(p); } catch (e) { return path.resolve(p); } };
+const sameInode = (a, b) => { try { const x = fs.statSync(a), y = fs.statSync(b); return x.dev === y.dev && x.ino === y.ino; } catch (e) { return false; } };
+/** reports/ ของ checkout นี้ — เทียบ path · realpath.native · dev+ino (ครอบตัวพิมพ์ · symlink · hard/bind alias) */
+const isRealReports = (dir) => path.resolve(dir) === REAL_REPORTS || realpath(dir) === realpath(REAL_REPORTS) || sameInode(dir, REAL_REPORTS);
+/** reports/ ที่ git ติดตามของ checkout ใดก็ได้ (review M-1): โฟลเดอร์ชื่อ reports ที่แม่มี reports.json + build.js · หรือ git prefix = reports/ */
+function isCheckoutReports(dir) {
+  const real = realpath(dir);
+  if (path.basename(real).toLowerCase() === 'reports') {
+    const parent = path.dirname(real);
+    if (fs.existsSync(path.join(parent, 'reports.json')) && fs.existsSync(path.join(parent, 'build.js'))) return true;
+  }
+  try {
+    if (!fs.statSync(real).isDirectory()) return false;
+    const pre = cp.execFileSync('git', ['-C', real, 'rev-parse', '--show-prefix'], { stdio: ['ignore', 'pipe', 'ignore'] }).toString().trim();
+    return pre.toLowerCase() === 'reports/';
+  } catch (e) { return false; }
+}
+const isGuarded = (dir) => isRealReports(dir) || isCheckoutReports(dir);
 
 /** symbol → updated ของแถว manifest ที่ commit แล้ว (--head-manifest FILE หรือ git show HEAD:reports.json) */
 function loadManifest(file) {
   let txt;
   if (file) txt = fs.readFileSync(file, 'utf8');
-  else { try { txt = cp.execFileSync('git', ['show', 'HEAD:reports.json'], { cwd: ROOT, maxBuffer: 256 * 1024 * 1024, stdio: ['ignore', 'pipe', 'ignore'] }).toString(); } catch (e) { txt = '[]'; } }
+  else {
+    try { txt = cp.execFileSync('git', ['show', 'HEAD:reports.json'], { cwd: ROOT, maxBuffer: 256 * 1024 * 1024, stdio: ['ignore', 'pipe', 'ignore'] }).toString(); }
+    catch (e) { process.stderr.write('⚠ migrate-v3: อ่าน git show HEAD:reports.json ไม่ได้ — ไม่มีแถว manifest ⇒ meta.migratedFrom จะว่าง (ใช้ --head-manifest FILE)\n'); txt = '[]'; }
+  }
   const rows = JSON.parse(txt);
   return new Map((Array.isArray(rows) ? rows : []).filter((r) => r && r.symbol).map((r) => [String(r.symbol).toUpperCase(), r.updated || null]));
 }
@@ -138,6 +159,8 @@ function ctxOf(o) {
 /** sweep — อ่านอย่างเดียว · คืน { rows, code } */
 function runSweep(opts, log) {
   const say = log || ((s) => process.stdout.write(s + '\n'));
+  const outDir = path.dirname(path.resolve(opts.out || path.join(ROOT, 'docs', 'x')));
+  if (isGuarded(outDir)) { say(`✗ sweep: --out ชี้เข้า reports/ (${outDir}) — sweep เป็น read-only ห้ามเขียนลง reports/`); return { rows: [], code: 1 }; }
   const o = ctxOf(opts);
   let syms = RS.list(o.reportsDir).filter((e) => !e.v3).map((e) => e.symbol);
   if (o.only) { const want = new Set(o.only); syms = syms.filter((s) => want.has(s.toUpperCase())); }
@@ -150,12 +173,13 @@ function runSweep(opts, log) {
   });
   const date = FD.todayBangkok();
   const outBase = path.resolve(o.out || path.join(ROOT, 'docs', 'superpowers', 'specs', `${date}-v3-migration-sweep`));
+  // provenance (review M-5): git describe --dirty ⇒ md บอกได้ว่ารันจากโค้ดที่ commit แล้วหรือยัง
   let head = '?';
-  try { head = cp.execFileSync('git', ['rev-parse', '--short', 'HEAD'], { cwd: ROOT, stdio: ['ignore', 'pipe', 'ignore'] }).toString().trim(); } catch (e) { /* ไม่ใช่ git */ }
+  try { head = cp.execFileSync('git', ['describe', '--always', '--dirty'], { cwd: ROOT, stdio: ['ignore', 'pipe', 'ignore'] }).toString().trim(); } catch (e) { /* ไม่ใช่ git */ }
   const apxRows = rows.filter((r) => r.apx);
   const files = RP.writeSweep(rows, {
     out: outBase, head, date, noStale: !!o.noStale || !isRealReports(o.reportsDir), outRel: outBase.startsWith(ROOT + path.sep) ? path.relative(ROOT, outBase) : outBase,
-    apxFound: apxRows.length, apxMs: o.stats.apxMs, apxBulk: apxRows.filter((r) => /^6d4fd7ada/.test(r.apx.commit)).length,
+    apxFound: apxRows.length, apxMs: o.stats.apxMs, apxBulk: apxRows.filter((r) => r.apx.commit.startsWith(AP.BULK_FOOTER_COMMIT)).length, bulkCommit: AP.BULK_FOOTER_COMMIT,
   });
   const n = (b) => rows.filter((r) => r.bucket === b).length;
   const lostClean = rows.filter((r) => r.bucket === 'CLEAN' && r.textLost > 0).length;
@@ -172,7 +196,7 @@ function runConvert(symIn, opts, log, deps) {
   const d = deps || {};
   const sym = String(symIn || '').trim().toUpperCase();
   if (!sym) throw new UsageError('convert ต้องมี <SYM>');
-  if (opts.write && isRealReports(opts.reportsDir) && process.env.MIGRATE_V3_ALLOW_REAL !== '1') {
+  if (opts.write && isGuarded(opts.reportsDir) && process.env.MIGRATE_V3_ALLOW_REAL !== '1') {
     say(`✗ ${sym}: --write ใส่ reports/ จริงถูกปฏิเสธ — ต้องตั้ง MIGRATE_V3_ALLOW_REAL=1 (Plan 4c เท่านั้น)`);
     return 1;
   }
@@ -189,11 +213,15 @@ function runConvert(symIn, opts, log, deps) {
   if (!o.write) return code;
   if (m.bucket === 'HUMAN') { say(`✗ ${sym}: HUMAN — --write ปฏิเสธ (ต้องให้คนแก้ก่อน · --accept-drift ไม่ครอบ HUMAN)`); return 1; }
   if (m.bucket === 'VALUE-DRIFT' && !o.acceptDrift) { say(`✗ ${sym}: VALUE-DRIFT — --write ต้องมี --accept-drift`); return 2; }
+  // review M-3: ไม่มีแถว manifest = migratedFrom ว่าง ⇒ build ประทับ updated ใหม่ — ยอมเฉพาะเมื่อผู้ใช้ส่ง --head-manifest มาเอง
+  if (!o.headManifest && !o.manifest.get(sym)) { say(`✗ ${sym}: ไม่มีแถวใน manifest HEAD:reports.json — --write ปฏิเสธ (ส่ง --head-manifest FILE ถ้าตั้งใจ)`); return 1; }
+  // review M-4: gate ตอนเขียน = วันนี้ (Asia/Bangkok) เหมือน npm run verify · --today แทนได้ · sweep ยังใช้ priceDate (ไม่ขึ้นกับนาฬิกา)
+  const gateDay = o.today || FD.todayBangkok();
   const json = path.join(o.reportsDir, sym + '.json');
   IO.write(json, m.doc);
   fs.unlinkSync(m.file);
   let g;
-  try { g = (d.checkDoc || require('../test/check-v3.js').checkDoc)(IO.read(json), { seeds: o.seeds, today: m.today }); }
+  try { g = (d.checkDoc || require('../test/check-v3.js').checkDoc)(IO.read(json), { seeds: o.seeds, today: gateDay }); }
   catch (e) { g = { errors: [{ id: 'THROW', msg: String(e.message).split('\n')[0] }] }; }
   if (g.errors.length) {
     fs.writeFileSync(m.file, m.raw);
@@ -202,7 +230,7 @@ function runConvert(symIn, opts, log, deps) {
     for (const e of g.errors) say(`  ${e.id}: ${e.msg}`);
     return 1;
   }
-  say(`✓ ${sym}: เขียน ${path.basename(json)} · ลบ ${sym}.html · checkDoc 0 error${g.warnings && g.warnings.length ? ` · ${g.warnings.length} warning` : ''}`);
+  say(`✓ ${sym}: เขียน ${path.basename(json)} · ลบ ${sym}.html · checkDoc 0 error${g.warnings && g.warnings.length ? ` · ${g.warnings.length} warning` : ''} · gate วันที่ ${gateDay}${gateDay !== m.today ? ` (≠ priceDate ${m.today})` : ''}`);
   say('build now before editing — แก้ใบก่อน build ครั้งแรกจะทำให้ updated ของ v2 หาย (Task 3 · D1)');
   return 0;
 }
@@ -224,4 +252,4 @@ function main(argv) {
 
 if (require.main === module) process.exitCode = main(process.argv.slice(2));
 
-module.exports = { runSweep, runConvert, migrateOne, rowOf, parseArgs, loadManifest, isRealReports, main };
+module.exports = { runSweep, runConvert, migrateOne, rowOf, parseArgs, loadManifest, isRealReports, isCheckoutReports, isGuarded, main };

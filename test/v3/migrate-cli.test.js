@@ -1,6 +1,6 @@
 'use strict';
 // Plan 4b Task 7 — CLI tools/migrate-v3.js sweep|convert · report.js (md/csv · driftClass/maxDeltaPct) · tmp dirs only (never reports/)
-// ★ deviation from the brief (measured at HEAD 278aa155c): BBL is HUMAN since Task 5 round 4 (analyst max/min) and DPZ is HUMAN
+// ★ deviation from the brief (measured at base 769d1e7d4): BBL is HUMAN since Task 5 round 4 (analyst max/min) and DPZ is HUMAN
 //   (custom cards > 4) ⇒ the 7-fixture sweep has HUMAN 4 (AAPL BBL DDOG DPZ); the write path uses CASY (VALUE-DRIFT) instead of BBL
 const t = require('./_t.js')('migrate-cli');
 const fs = require('fs'), os = require('os'), path = require('path'), cp = require('child_process');
@@ -66,6 +66,25 @@ const realBefore = fs.readdirSync(REAL).length;
   t(rr.code === 1 && /MIGRATE_V3_ALLOW_REAL/.test(rr.out), '--write against the real reports/ refused without MIGRATE_V3_ALLOW_REAL=1');
   const rr2 = cli(['convert', 'CASY', '--write', '--accept-drift', '--reports-dir', path.join(REAL, '..', 'reports'), '--head-manifest', MAN, '--no-stale']);
   t(rr2.code === 1 && /MIGRATE_V3_ALLOW_REAL/.test(rr2.out), 'real reports/ guard resolves the path (reports/../reports)');
+  for (const alias of [path.join(ROOT, 'REPORTS'), path.join(ROOT, 'Reports') + path.sep + '.']) {
+    const ra = cli(['convert', 'CASY', '--write', '--accept-drift', '--reports-dir', alias, '--head-manifest', MAN, '--no-stale']);
+    t(ra.code === 1 && /MIGRATE_V3_ALLOW_REAL/.test(ra.out), `I-1: case alias ${path.relative(ROOT, alias)} → refused`, ra.out.slice(-200));
+  }
+  t(MV.isGuarded(path.join(ROOT, 'REPORTS')) && MV.isRealReports(path.join(ROOT, 'reports', '.')), 'isGuarded: case alias of reports/ (APFS)');
+  // M-1: a reports/ of ANY checkout (parent has reports.json + build.js) is guarded too
+  const FAKE = path.join(tmp, 'checkout'), FREP = path.join(FAKE, 'reports'); fs.mkdirSync(FREP, { recursive: true });
+  fs.writeFileSync(path.join(FAKE, 'reports.json'), '[]'); fs.writeFileSync(path.join(FAKE, 'build.js'), '');
+  fs.copyFileSync(path.join(REP, 'CASY.html'), path.join(FREP, 'CASY.html'));
+  const rf = cli(['convert', 'CASY', '--write', '--accept-drift', '--reports-dir', FREP, '--head-manifest', MAN, '--no-stale']);
+  t(rf.code === 1 && /MIGRATE_V3_ALLOW_REAL/.test(rf.out) && !fs.existsSync(path.join(FREP, 'CASY.json')), 'M-1: another checkout\'s reports/ → refused', rf.out.slice(-200));
+  t(!MV.isGuarded(REP), 'tmp reports dir without build.js is not guarded');
+  // M-2: sweep --out into a reports dir → refused, nothing written
+  const ro = cli(['sweep', ...common, '--out', path.join(FREP, 'sweep')]);
+  t(ro.code === 1 && /read-only/.test(ro.out) && !fs.existsSync(path.join(FREP, 'sweep.md')), 'M-2: sweep --out into reports/ → refused', ro.out.slice(-200));
+  // M-3: --write without a manifest row (and no --head-manifest) → refused
+  const lines = [];
+  const c3 = MV.runConvert('CASY', { ...MV.parseArgs(['--reports-dir', REP, '--no-stale', '--write', '--accept-drift']), manifest: new Map() }, (x) => lines.push(x));
+  t(c3 === 1 && lines.some((l) => /ไม่มีแถวใน manifest/.test(l)) && !fs.existsSync(path.join(REP, 'CASY.json')), 'M-3: no manifest row → --write refused', lines.join('\n'));
   t(fs.readdirSync(REAL).length === realBefore && !fs.existsSync(path.join(REAL, 'CASY' + '.json')), 'real reports/ untouched');
   const nf = cli(['convert', 'NOPE', ...common]); t(nf.code === 1 && /ไม่พบ/.test(nf.out), 'convert on a missing symbol → exit 1');
 }
@@ -73,8 +92,11 @@ const realBefore = fs.readdirSync(REAL).length;
 {
   const dry = cli(['convert', 'CASY', ...common]);
   t(dry.code === 2 && /CASY: VALUE-DRIFT/.test(dry.out) && /eq: textLost 0/.test(dry.out), 'convert dry-run prints the bucket + eq summary (exit 2 VALUE-DRIFT)', dry.out.slice(0, 300));
-  const r = cli(['convert', 'CASY', ...common, '--write', '--accept-drift']);
-  t(r.code === 0 && fs.existsSync(path.join(REP, 'CASY.json')) && !fs.existsSync(path.join(REP, 'CASY.html')) && /build now before editing/.test(r.out), 'convert --write: .json written, .html removed, "build now before editing"', r.out.slice(-300));
+  const pd = MV.migrateOne('CASY', { ...MV.parseArgs([...common]), seeds: SEEDS, manifest: new Map(), stats: { apxMs: 0 } }).today;
+  const late = cli(['convert', 'CASY', ...common, '--write', '--accept-drift', '--today', '2099-01-01']);
+  t(late.code === 1 && /E27/.test(late.out) && fs.existsSync(path.join(REP, 'CASY.html')) && !fs.existsSync(path.join(REP, 'CASY.json')), 'M-4: --write gate uses the given day (2099 → E27) → rolled back', late.out.slice(-300));
+  const r = cli(['convert', 'CASY', ...common, '--write', '--accept-drift', '--today', pd]);
+  t(r.code === 0 && new RegExp(`gate วันที่ ${pd}(?! \\(≠)`).test(r.out) && fs.existsSync(path.join(REP, 'CASY.json')) && !fs.existsSync(path.join(REP, 'CASY.html')) && /build now before editing/.test(r.out), 'convert --write: .json written, .html removed, "build now before editing"', r.out.slice(-300));
   const doc = IO.read(path.join(REP, 'CASY.json'));
   t(IO.verifySig(doc), 'written doc is signed by io.js');
   const g = CV.checkDoc(doc, { seeds: SEEDS, today: doc.market.priceDate, stage: 'save' });
@@ -103,11 +125,20 @@ const realBefore = fs.readdirSync(REAL).length;
   t.eq(RP.driftClass(V([{ path: 'values.scenarios[0].tgt', v2: 129.1, v3: 129.12 }, RP.noteItem('scn.bear.tgt 129.1 → 129.12')])), 'scn-tgt', 'scenario tgt rows/notes → scn-tgt');
   t.eq(RP.driftClass(V([{ path: 'sm.pe', v2: 30.9, v3: 30.95 }])), 'index', 'sm.pe → index');
   t.eq(RP.driftClass(V([RP.noteItem('prose stale copies ×2 (px@analysis)')])), 'prose-stale', 'stale copies only → prose-stale');
-  t.eq(RP.driftClass(V([{ path: 'fv', v2: 100, v3: 100.1 }, RP.noteItem('scn.bear.tgt 1 → 1')])), 'mixed', 'fv + scn → mixed');
+  t.eq(RP.driftClass(V([{ path: 'fv', v2: 100, v3: 100.1 }, RP.noteItem('scn.bear.tgt 1 → 1')])), 'multi-rounding', 'fv + scn within the bound → multi-rounding');
+  t.eq(RP.driftClass(V([{ path: 'fv', v2: 100, v3: 100.1 }, { path: 'sm.pe', v2: 30, v3: 30.1 }, RP.noteItem('scn.bear.tgt 1 → 1')])), 'multi-rounding', 'fv + scn + index → multi-rounding');
+  t.eq(RP.driftClass(V([{ path: 'fv', v2: 100, v3: 100.1 }, RP.noteItem('scn.bear.tgt 100 → 102')])), 'mixed', 'fv + scn with a > 1% row → mixed');
+  t.eq(RP.driftClass(V([{ path: 'fv', v2: 100, v3: 100.1 }, RP.noteItem('prose stale copies ×1 (px@analysis)')])), 'mixed', 'fv + stale → mixed (stale is not a rounding kind)');
+  // percent-point quantities (N-4): ≤ 0.5 pp absolute, never relative
+  t.eq(RP.driftClass(V([{ path: 'sm.mos', v2: -0.5, v3: -0.6 }])), 'fv-rounding', 'sm.mos −0.5 → −0.6 = 0.1 pp → within the bound');
+  t.eq(RP.driftClass(V([{ path: 'sm.upside', v2: 20, v3: 20.7 }])), 'mixed', 'sm.upside 0.7 pp → beyond the bound');
+  t.eq(RP.driftClass(V([{ path: 'sm.dividendYield', v2: 2.1, v3: 2.5 }, { path: 'sm.pe', v2: 30, v3: 30.2 }])), 'index', 'dividendYield 0.4 pp + pe 0.67% → index');
+  t.eq(RP.maxDeltaPct([{ path: 'sm.mos', v2: -0.5, v3: -0.6 }]), 0.1, 'maxDeltaPct: pp quantity contributes its absolute point difference');
   t.eq(RP.driftClass(V([RP.noteItem('prose:prose.gauge "+11.8%" → {{analyst.pct}}')])), 'mixed', 'prose token row → mixed');
   t.eq(RP.maxDeltaPct([{ path: 'fv', v2: 143, v3: 143.21 }, RP.noteItem('scn.base.tgt 172.4 → 172.44'), RP.noteItem('prose stale copies ×1 (px@analysis)')]), 0.15, 'maxDeltaPct 2 dp over valued rows');
   t.eq(RP.maxDeltaPct([]), 0, 'maxDeltaPct 0 when none');
-  t.eq(RP.maxDeltaPct([{ path: 'sm.mos', v2: 0, v3: 1 }]), 100, 'v2 = 0 → 100');
+  t.eq(RP.maxDeltaPct([{ path: 'fv', v2: 0, v3: 1 }]), 100, 'v2 = 0 → 100 (relative quantity)');
+  t.eq(RP.maxDeltaPct([{ path: 'sm.mos', v2: 0, v3: 1 }]), 1, 'v2 = 0 on a pp quantity → 1 pp');
 }
 fs.rmSync(tmp, { recursive: true, force: true });
 t.done();

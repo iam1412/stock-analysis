@@ -39,4 +39,7 @@ function analysisPx(sym, footerRaw, opts) {
 }
 const num = (x) => (typeof x === 'number' && Number.isFinite(x) ? x : null);
 
-module.exports = { analysisPx, _cache: cache };
+// commit ชุดที่เขียน footer ใหม่ทั้งคลัง (ค.ศ.→พ.ศ. 22 ก.ย. 69) — sweep นับใบที่ analysis-px ตกที่ commit นี้ (ค่าที่วัดแล้ว ไม่ใช่กติกา)
+const BULK_FOOTER_COMMIT = '6d4fd7ada';
+
+module.exports = { analysisPx, BULK_FOOTER_COMMIT, _cache: cache };

@@ -6,23 +6,30 @@
  * driftClass / maxDeltaPct (ruling 25 ก.ย. 69 · additive):
  *   items = แถว rd/sm ที่ไม่ใช่ gauge (gauge = F · plan D5) + D note ที่อ่านคู่ค่าได้ (FV a → b · scn.x.tgt a → b) + ป้าย prose-stale/prose-token/other
  *   แถว numberValue ของ equiv (เลขบนหน้าเปลี่ยน) = เงาของค่าต้นทาง ไม่ใช้จัดชั้น (นับในคอลัมน์ numberValue) — VALUE-DRIFT ที่มีแต่เงา = mixed
- *   Δ% = |v3 − v2| / |v2| × 100 · v2 = 0 และ v3 ≠ 0 → 100
+ *   Δ% = |v3 − v2| / |v2| × 100 · v2 = 0 และ v3 ≠ 0 → 100 · ปริมาณหน่วย % (sm.mos · sm.upside · sm.dividendYield) = |v3 − v2| เป็นจุด % สัมบูรณ์
+ *   ขอบปัดเศษ (plan amendment 25 ก.ย. 69 · review N-4) = ≤ 1% สัมพัทธ์ (เงิน/ตัวคูณ) · ≤ 0.5 จุด % สัมบูรณ์ (ปริมาณหน่วย %)
+ *   multi-rounding = มีตั้งแต่ 2 กลุ่มใน fv/scn/index และทุกแถวอยู่ในขอบ · HUMAN/CLEAN ก็มี maxDeltaPct (driftClass = '')
  */
 const fs = require('fs');
 const path = require('path');
 
 const COLS = ['symbol', 'market', 'bucket', 'reasons', 'legs', 'fvLegs', 'textLost', 'numberValue', 'rdRows', 'proseStale', 'customCards', 'fNotes', 'driftClass', 'maxDeltaPct'];
-const CLASSES = ['gauge-only', 'fv-rounding', 'scn-tgt', 'index', 'prose-stale', 'mixed'];
+const CLASSES = ['gauge-only', 'fv-rounding', 'scn-tgt', 'index', 'prose-stale', 'multi-rounding', 'mixed'];
 
 const FV_PATHS = /^(fv|values\.fvLow|values\.fvHigh|sm\.fairValue|sm\.mos|sm\.upside|note:FV)$/;
 const SCN_PATHS = /^(values\.scenarios\[\d+\]\.(tgt|div)|note:scn\.(bear|base|bull)\.(tgt|div))$/;
 const IDX_PATHS = /^sm\.(pe|dividendYield)$/;
 
+const PP_PATHS = /^sm\.(mos|upside|dividendYield)$/;
+const isPP = (it) => PP_PATHS.test(it.path);
+/** Δ ของแถว: เงิน/ตัวคูณ = % สัมพัทธ์ · หน่วย % = จุด % สัมบูรณ์ · ไม่มีคู่ค่า = null */
 const deltaPct = (it) => {
   if (typeof it.v2 !== 'number' || typeof it.v3 !== 'number') return null;
+  if (isPP(it)) return Math.abs(it.v3 - it.v2);
   if (it.v2 === 0) return it.v3 === 0 ? 0 : 100;
   return Math.abs(it.v3 - it.v2) / Math.abs(it.v2) * 100;
 };
+const withinBound = (it) => { const d = deltaPct(it); return d == null || d <= (isPP(it) ? 0.5 : 1) + 1e-9; };
 function maxDeltaPct(items) {
   let m = 0;
   for (const it of items || []) { const d = deltaPct(it); if (d != null && d > m) m = d; }
@@ -41,9 +48,9 @@ function driftClass(row) {
   const items = row.items || [];
   if (!items.length) return (row.numberValue || 0) > 0 ? 'mixed' : 'gauge-only';
   const groups = new Set(items.map((it) => groupOf(it.path)));
-  if (groups.size !== 1 || groups.has('other')) return 'mixed';
-  if (items.some((it) => { const d = deltaPct(it); return d != null && d > 1; })) return 'mixed';
-  return { fv: 'fv-rounding', scn: 'scn-tgt', index: 'index', stale: 'prose-stale' }[[...groups][0]];
+  if (groups.has('other') || !items.every(withinBound)) return 'mixed';
+  if (groups.size === 1) return { fv: 'fv-rounding', scn: 'scn-tgt', index: 'index', stale: 'prose-stale' }[[...groups][0]];
+  return [...groups].every((g) => g === 'fv' || g === 'scn' || g === 'index') ? 'multi-rounding' : 'mixed';
 }
 
 /** D note → item {path, v2, v3} (คู่ค่าเมื่ออ่านได้) */
@@ -90,11 +97,11 @@ function mdOf(rows, o) {
   L.push(`TEXT LOST ใน CLEAN: ${CL.filter((r) => r.textLost > 0).length}`, '');
   L.push(`VALUE-DRIFT per driftClass: ${CLASSES.map((c) => `${c} ${V.filter((r) => driftClass(r) === c).length}`).join(' · ')}`, '');
   const mixedSmall = V.filter((r) => driftClass(r) === 'mixed' && maxDeltaPct(r.items) <= 1).length;
-  L.push(`(ของ mixed: ${mixedSmall} ใบมี maxDeltaPct ≤ 1% — mixed เพราะมีหลายกลุ่ม fv/scn/index หรือ prose-token/numberValue ไม่ใช่เพราะค่าห่าง)`, '');
+  L.push(`(ของ mixed: ${mixedSmall} ใบมี maxDeltaPct ≤ 1 — mixed เพราะมี stale ร่วมกลุ่มอื่น · prose-token · other · หรือมีแต่ numberValue ไม่ใช่เพราะค่าห่าง)`, '');
   const mixed = V.filter((r) => driftClass(r) === 'mixed');
   if (mixed.length) {
     L.push('mixed แยกตามกลุ่มของแถว (fv · scn · index · stale · prose-token · other · echo = มีแต่ numberValue):', '');
-    L.push('| groups | ใบ | maxDeltaPct ≤ 1% |', '|---|---|---|');
+    L.push('| groups | ใบ | maxDeltaPct ≤ 1 |', '|---|---|---|');
     const key = (r) => groupsOf(r).join('+');
     for (const [k, n] of hist(mixed.map(key))) L.push(`| ${k} | ${n} | ${mixed.filter((r) => key(r) === k && maxDeltaPct(r.items) <= 1).length} |`);
     L.push('');
@@ -102,8 +109,8 @@ function mdOf(rows, o) {
   const mk = hist(rows.map((r) => r.market));
   L.push(`ตลาด: ${mk.map(([k, n]) => `${k} ${n}`).join(' · ')}`, '');
   if (o.noStale) L.push('> ⚠️ รันด้วย `--no-stale` — ไม่ได้หา analysis-px จาก git ⇒ ไม่มี D note `prose stale copies` (คอลัมน์ proseStale ว่าง) · ใบที่มีแต่ stale copy อาจอยู่ใน CLEAN แทน VALUE-DRIFT', '');
-  else L.push(`analysis-px: หาได้ ${o.apxFound == null ? '?' : o.apxFound}/${rows.length} ใบ${o.apxMs != null ? ` · ${(o.apxMs / 1000).toFixed(1)} s` : ''} · ใบที่ footer ถูกเขียนใหม่เป็นชุด (6d4fd7ada ค.ศ.→พ.ศ.) ได้ราคา ณ commit ชุดนั้น: ${o.apxBulk == null ? '?' : o.apxBulk} ใบ`, '');
-  L.push('คอลัมน์ csv: `' + COLS.join(',') + '` · reasons ครอบ "…" และคอมมาข้างในเป็น `;` · driftClass/maxDeltaPct คำนวณจากแถว rd/sm ที่ไม่ใช่ gauge + D note ที่มีคู่ค่า (numberValue = เงาบนหน้า ไม่ใช้จัดชั้น · VALUE-DRIFT ที่มีแต่เงา = mixed) · Δ% = |v3−v2|/|v2|×100 (v2=0 → 100)', '');
+  else L.push(`analysis-px: หาได้ ${o.apxFound == null ? '?' : o.apxFound}/${rows.length} ใบ · ใบที่ footer ถูกเขียนใหม่เป็นชุด (${o.bulkCommit || '6d4fd7ada'} ค.ศ.→พ.ศ.) ได้ราคา ณ commit ชุดนั้น: ${o.apxBulk == null ? '?' : o.apxBulk} ใบ`, '');
+  L.push('คอลัมน์ csv: `' + COLS.join(',') + '` · reasons ครอบ "…" และคอมมาข้างในเป็น `;` · driftClass/maxDeltaPct คำนวณจากแถว rd/sm ที่ไม่ใช่ gauge + D note ที่มีคู่ค่า (numberValue = เงาบนหน้า ไม่ใช้จัดชั้น · VALUE-DRIFT ที่มีแต่เงา = mixed) · Δ% = |v3−v2|/|v2|×100 (v2=0 → 100) · ปริมาณหน่วย % (sm.mos · sm.upside · sm.dividendYield) ใช้ผลต่างเป็น**จุด % สัมบูรณ์** ทั้งใน maxDeltaPct และขอบปัดเศษ · ขอบปัดเศษ = ≤ 1% สัมพัทธ์ (เงิน/ตัวคูณ) · ≤ 0.5 จุด % (หน่วย %) · multi-rounding = ≥ 2 กลุ่มใน fv/scn/index ทุกแถวอยู่ในขอบ · **แถว HUMAN (และ CLEAN) มี maxDeltaPct ด้วย** (driftClass ว่าง)', '');
 
   L.push('## HUMAN', '');
   L.push('| symbol | market | reasons |', '|---|---|---|');
@@ -129,7 +136,7 @@ function mdOf(rows, o) {
   const capAll = H.filter((r) => r.reasons.some((x) => /^custom cards \d+ > 4/.test(x))).length;
   const capOnly = H.filter((r) => r.capOnly).length;
   L.push(`1. **custom-card cap 4** — ${capAll} ใบ HUMAN มีเหตุ \`custom cards N > 4\` · ${capOnly} ใบ HUMAN ด้วยเหตุนี้อย่างเดียว (H note อื่นไม่มี และ TEXT LOST ทุกคำมาจากการ์ดที่ถูกตัด) — ยกเพดานหรือให้คนเลือกการ์ด?`);
-  L.push(`2. **นโยบายแบตช์ 4c สำหรับ VALUE-DRIFT ${V.length} ใบ** — แยกตาม driftClass ข้างบน (ruling เดิม: decisions §10 + PR body เป็นของเจ้าของ) · \`--accept-drift\` รายใบหรือรายชั้น?`);
+  L.push(`2. **นโยบายแบตช์ 4c สำหรับ VALUE-DRIFT ${V.length} ใบ** — ${V.filter((r) => ['fv-rounding', 'scn-tgt', 'index', 'multi-rounding'].includes(driftClass(r))).length} ใบอยู่ในชั้นปัดเศษ (fv-rounding · scn-tgt · index · multi-rounding) · prose-stale ${V.filter((r) => driftClass(r) === 'prose-stale').length} · mixed ${V.filter((r) => driftClass(r) === 'mixed').length} (ruling เดิม: decisions §10 + PR body เป็นของเจ้าของ) · \`--accept-drift\` รายใบหรือรายชั้น?`);
   const li = (k) => H.filter((r) => r.lostIn && r.lostIn[k]).map((r) => r.symbol);
   const lst = (a) => `${a.length} ใบ${a.length ? ` (${a.slice(0, 20).join(' ')}${a.length > 20 ? ' …' : ''})` : ''}`;
   L.push(`3. **gdots author words** — คำที่ผู้เขียนพิมพ์ในจุด gdots ของ header ไม่มีที่ใน v3 ⇒ TEXT LOST (header) = HUMAN · ${lst(li('gdots'))}`);
