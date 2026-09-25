@@ -1,0 +1,236 @@
+{
+  "v": 3,
+  "symbol": "CME",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "CME Group Inc.",
+    "exchange": "NASDAQ",
+    "sub": "ตลาดอนุพันธ์ใหญ่สุดในโลก • อัตราดอกเบี้ย (Treasury/SOFR) • ดัชนีหุ้น (E-mini S&P) • พลังงาน • เกษตร • โลหะ • FX • ข้อมูลตลาด",
+    "headerTags": [
+      "Financials · Exchanges",
+      "ตลาดอนุพันธ์โลก — รายได้ตามปริมาณซื้อขาย"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis.com",
+      "Yahoo Finance",
+      "digrin.com"
+    ],
+    "themeLegacy": {
+      "accent": "#00915a",
+      "accentDark": "#006e44",
+      "darkGrad": "linear-gradient(135deg,#0a1a12 0%,#0d2318 55%,#102d1f 140%)",
+      "glow": "rgba(0,145,90,.30)",
+      "subColor": "#a8c8b8",
+      "headerMuted": "#90b8a4",
+      "verdictText": "#c8ddd5",
+      "vcellLabel": "#9ab8aa"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-22T07:22:55+07:00",
+      "v2Hash": "f25c7336049a"
+    }
+  },
+  "market": {
+    "px": 268.91,
+    "priceDate": "2026-09-24",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          265.49
+        ],
+        [
+          "พ.ย.25",
+          281.46
+        ],
+        [
+          "ธ.ค.25",
+          273.08
+        ],
+        [
+          "ม.ค.26",
+          289.06
+        ],
+        [
+          "ก.พ.26",
+          319.5
+        ],
+        [
+          "มี.ค.26",
+          295.35
+        ],
+        [
+          "เม.ย.26",
+          287.82
+        ],
+        [
+          "พ.ค.26",
+          273.54
+        ],
+        [
+          "มิ.ย.26",
+          220.83
+        ],
+        [
+          "ก.ค.26",
+          267.79
+        ],
+        [
+          "ส.ค.26",
+          285.5
+        ],
+        [
+          "ก.ย.26",
+          268.91
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 218.31,
+      "hi": 329.16
+    }
+  },
+  "fundamentals": {
+    "eps": 11.79,
+    "dps": 5.2,
+    "bvps": 73.72,
+    "shares": 359579263,
+    "peAvg5y": 24.1,
+    "roe": 15.8,
+    "roa": 2.5,
+    "revenue": 6760000000,
+    "opMargin": 65.7,
+    "beta": 0.24,
+    "fy": {
+      "period": "FY2025",
+      "netIncome": 4020000000
+    },
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation",
+      "inputs": {
+        "multiple": 24.1,
+        "multipleSource": "median5y"
+      },
+      "note": "มัธยฐาน P/E 5 ปีที่วัดจริง (ราคาเฉลี่ยปี ÷ EPS ปีนั้น ช่วง 22.1–28.5x) ไม่ได้ลอกจาก P/E ปัจจุบัน",
+      "family": "market"
+    },
+    {
+      "method": "pbv",
+      "label": "Justified P/BV",
+      "inputs": {
+        "g": 6,
+        "r": 8.5
+      },
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "peAvg5y",
+      "pbv",
+      "netIncomeFy",
+      "eps",
+      "bvps",
+      "roe",
+      "revenue",
+      {
+        "key": "opMargin",
+        "tone": "pos"
+      },
+      "yield",
+      "beta"
+    ],
+    "notes": {
+      "mcap": "หุ้นคงเหลือ ~359.6 ล้านหุ้น",
+      "pe": "ใกล้มัธยฐาน 5ปี 24.1x",
+      "peAvg5y": "กรอบ 22.1–28.5x · ปัจจุบันใกล้ค่ากลาง",
+      "pbv": "สูงสมกับ Wide Moat",
+      "netIncomeFy": "▲ +15.5% YoY (TTM ~$4.27B)",
+      "eps": "FY2025 $11.16 · CAGR 5ปี ~15%",
+      "bvps": "เติบโตคงที่ตามกำไรสะสม",
+      "roe": "ROA ต่ำเพราะ goodwill CBOT/NYMEX",
+      "revenue": "▲ +5.0% YoY · RevCAGR 5ปี ~8%",
+      "opMargin": "ระดับ Elite — volume-driven ต้นทุนคงที่",
+      "yield": "+ Special div FY2025 $6.15",
+      "beta": "ผันผวนต่ำมาก — Defensive สูง"
+    },
+    "hint": "TTM ล่าสุด + งบ FY2025"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 4,
+        "exitMultiple": 17,
+        "divCum": 15.6,
+        "desc": "FMX กัดส่วนแบ่งได้ / ปริมาณชะลอ"
+      },
+      {
+        "growth": 9,
+        "exitMultiple": 24.1,
+        "divCum": 15.6,
+        "desc": "Competition fears overdone / P/E เท่ามัธยฐาน 5 ปี"
+      },
+      {
+        "growth": 14,
+        "exitMultiple": 28,
+        "divCum": 15.6,
+        "desc": "ADV พุ่ง + P/E ขึ้นขอบบน 5 ปี (28x) + CME รักษา Moat"
+      }
+    ],
+    "exitDp": 1,
+    "note": "การคาดการณ์อิงสมมติฐาน EPS ฐาน {{eps}} (TTM) รวมปันผลปกติ {{dps}}/ปี (ไม่รวม Special dividend ที่ผันแปร) Bear case {{scn.bear.ret}} สะท้อนกรณี competition กัดกำไรได้จริงและ P/E ลดต่ำกว่าช่วงประวัติศาสตร์ (17x) Base case {{scn.base.ret}} คือกรณี EPS โต 9%/ปีและ P/E เท่ามัธยฐาน 5 ปี (24.1x) ตามที่ใช้ใน FV Bull case {{scn.bull.ret}} ต้องการทั้ง EPS โต + P/E ขึ้นถึงขอบบนประวัติศาสตร์ (28x) ⚠️ ปันผลพิเศษ (Special dividend ~$6–7/ปี) อาจเพิ่ม Total Return ได้อีก แต่ขึ้นกับกำไรและมติ Board ไม่รับประกัน"
+  },
+  "analyst": {
+    "target": 283.6,
+    "n": null,
+    "rating": "Hold",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ราคารายเดือนเริ่มที่ ~$265 ใน ต.ค. 2025 ขึ้นสู่จุดสูงสุดรายเดือน ~$320 ใน ก.พ. 2026 (สูงสุดระหว่างวัน 52 สัปดาห์ $329.16) จากนั้นอ่อนตัวลงต่อเนื่องจนต่ำสุดรายเดือน ~$221 ใน มิ.ย. 2026 (ต่ำสุดระหว่างวัน $218.31) ก่อนฟื้นกลับมาสู่ระดับ ~$276 ใน ก.ย. 2026 — ทั้งรอบปีแทบทรงตัว ตลาดมักอธิบายช่วงอ่อนตัวด้วยความกังวลการแข่งขันจาก FMX (แพลตฟอร์มของ BGC Group ที่เริ่มเสนอ US Treasury futures ตั้งแต่ พ.ค. 2025) แต่ CEO ของ CME ระบุว่าปริมาณของ FMX ยังน้อย และ CME รายงานปริมาณ Treasury futures+options เฉลี่ย H1 2026 เพิ่ม ~8% YoY (ข้อมูลจากผลค้นหาเว็บ ไม่ได้ยืนยันกับเอกสารปฐมภูมิ — สาเหตุของการ de-rating จึงเป็นข้อสันนิษฐาน ไม่ใช่ข้อเท็จจริงที่ยืนยันแล้ว)",
+    "valuation": "FV เฉลี่ยจาก 2 ตระกูลอิสระ: (1) P/E ยึดตลาด — มัธยฐานประวัติของ CME เอง 24.1x × EPS TTM {{eps}} = {{fvLow}} (2) Justified P/BV ตระกูล (r,g) — ROE 15.8% · r 8.5% · g 6% × BVPS {{bvps}} = {{fvHigh}} ทั้งสองขาใกล้กัน (ต่างกัน ~1.7%) จึงไม่ต้องถ่วงน้ำหนักพิเศษ · รอบก่อนมีขา DCF (FCF/หุ้น ~$10.50) แต่ตรวจซ้ำไม่ได้จึงถอดออก เป้าเฉลี่ยนักวิเคราะห์ {{analyst.target}} (Hold · 15 คน) ใช้เป็นบริบทตรวจความสอดคล้องเท่านั้น ไม่นับเป็นขา FV",
+    "gauge": "ราคาปัจจุบัน {{px}} อยู่ต่ำกว่า Fair Value {{fv}} เพียงเล็กน้อย (MOS {{mos}}) และใกล้เป้านักวิเคราะห์เฉลี่ย {{analyst.target}} (Hold) ห่างจากโซน MOS 20% ({{mos20}}) พอสมควร — จุดเข้าที่มีส่วนเผื่อจริงต้องรอราคาย่อกลับ ตัวแปรหลักคือ competition risk — ถ้า FMX กัดส่วนแบ่งได้จริง P/E เป้าหมายอาจต่ำกว่ามัธยฐาน 24.1x (ขอบล่างประวัติ 22.1x ให้ FV ราว $261 จากขา P/E) แต่ถ้าความกังวลถูกตีราคาเกินไป P/E ก็อาจกลับสู่ช่วง 24–28x",
+    "mos": "ส่วนเผื่อความปลอดภัยบางมาก (ราคาต่ำกว่ามูลค่าเหมาะสมเล็กน้อย) — ระมัดระวังก่อนเข้าซื้อเพิ่ม",
+    "verdictHeadline": "Wide Moat แข็งแกร่ง แต่ราคาใกล้มูลค่าเหมาะสม ส่วนเผื่อบางมาก",
+    "verdictBody": "CME Group คือ Exchange ที่มี Wide Moat แท้จริงที่สุดในโลก — Network Effect ของ Open Interest ทำให้ liquidity รวมศูนย์และยากมากที่จะ replicate รายได้เติบโตสม่ำเสมอ (Rev CAGR ~9%, EPS CAGR ~15%) Operating Margin 64.4% ระดับ Elite และ Beta เพียง 0.24 ราคาปัจจุบัน {{px}} (P/E ~23.4x) ฟื้นตัวขึ้นมาจากจุดต่ำสุด 52 สัปดาห์ $218.31 (มิ.ย. 2026) กว่า 25% สะท้อนว่าตลาดคลายกังวลการแข่งขันจาก FMX บางส่วน ความเสี่ยงนี้ยังควรจับตา แต่ราคาที่ฟื้นตัวทำให้ MOS เหลือ {{mos}} จาก FV {{fv}} นักวิเคราะห์ 15 คนให้เป้าเฉลี่ย {{analyst.target}} (Hold) ใกล้ราคาปัจจุบัน — จุดเข้าปัจจุบันจึงมีส่วนเผื่อความปลอดภัยบางมาก",
+    "strategy": "ทยอยสะสมเมื่อราคาต่ำกว่ามูลค่าเหมาะสม {{fv}} · เพิ่มน้ำหนักถ้าราคาลงถึงโซน MOS 20% ที่ {{mos20}} · ติดตามตัวเลข ADV รายเดือนและส่วนแบ่งตลาด US Treasury Futures ของ FMX เป็น leading indicator หลัก · ถ้า FMX ส่วนแบ่งตลาดเกิน 10–15% ให้ทบทวน thesis อย่างจริงจัง",
+    "disclaimerSources": "แหล่งข้อมูล: StockAnalysis.com (ราคา/EPS/งบการเงิน), Yahoo Finance (ราคา/ปันผล/52w range), CME Group IR (ประกาศปันผล), digrin.com (ราคารายเดือนย้อนหลัง)"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 2 ตระกูล"
+  },
+  "catalysts": [
+    "<b>Wide Moat เต็มรูปแบบ:</b> Open Interest Network Effect — ผู้ซื้อขายต้องการ liquidity สูงสุด ซึ่ง CME มีมากกว่าคู่แข่งหลายเท่า ทำให้ switching cost สูงมาก",
+    "<b>Clearing House Monopoly:</b> CME Clearing รับรองทุก trade บน CME ไม่มีทางเลือกอื่น — รายได้ clearing มั่นคงแม้ปริมาณผันผวน",
+    "<b>ความผันผวนตลาดโลกสูง:</b> อัตราดอกเบี้ย, ค่าเงิน, สินค้าโภคภัณฑ์ผันผวนมากในยุค post-COVID → ปริมาณซื้อขายอนุพันธ์เพิ่มขึ้นต่อเนื่อง",
+    "<b>Market Data & Services:</b> รายได้จากข้อมูลตลาด CME DataMine ~$700M+/ปี เติบโตคงที่ ไม่ขึ้นกับปริมาณซื้อขาย",
+    "<b>Special Dividend เพิ่ม Yield:</b> ปันผลรวมย้อนหลัง 12 เดือน ~$11.35/share (yield ~4.1% ที่ราคาปัจจุบัน) สูงมากในกลุ่ม Exchange",
+    "<b>P/E ใกล้มัธยฐานประวัติ:</b> P/E ปัจจุบันใกล้มัธยฐาน 5 ปี (24.1x ช่วง 22.1–28.5x) — หาก EPS โตต่อ ยังมี upside จากกำไรแม้ตัวคูณไม่ขยับ"
+  ],
+  "risks": [
+    "<b>⚠️ #1 การแข่งขัน FMX (BGC Group):</b> FMX เริ่มเสนอ US Treasury futures (2 ปี/5 ปี) เมื่อ พ.ค. 2025 — ปัจจุบัน CEO ของ CME ระบุว่าปริมาณยังน้อย แต่ถ้าเร่งขึ้น CME อาจสูญเสีย pricing power ในตลาดอัตราดอกเบี้ย ซึ่งเป็นรายได้หลักที่สุด (ตลาดมักโยงกับการอ่อนตัวของราคาในปี 2026 — ยังไม่ยืนยัน)",
+    "<b>ปริมาณซื้อขาย Cyclical:</b> รายได้ CME แปรผันตามปริมาณ (ADV) ซึ่งขึ้นลงตาม Volatility — ถ้าตลาดเงียบและ VIX ต่ำ รายได้ลด",
+    "<b>ความเสี่ยงกฎระเบียบ:</b> CFTC อาจบังคับลดค่าธรรมเนียมหรือเปิดทาง interoperability ระหว่าง clearing houses — ลด moat ได้",
+    "<b>Tech Disruption / DeFi:</b> การเติบโตของ Decentralized Exchanges และ tokenized derivatives ในระยะยาว แม้ยังเป็น tail risk ในปัจจุบัน",
+    "<b>Special Dividend ไม่แน่นอน:</b> ปันผลพิเศษขึ้นกับกำไรและมติ Board — ถ้า EPS ลดหรือ Board เปลี่ยนนโยบาย yield จริงอาจลดจาก ~4.1% เหลือเพียง ~1.9% (ปันผลปกติ)"
+  ],
+  "extras": [],
+  "_sig": "sha256:6285ab5f005b291357346421f6bfe17aa1d034ac3ebcbe672de559586b58ca29"
+}
