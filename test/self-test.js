@@ -954,6 +954,26 @@ reject('W14', addCard('4. EV/EBITDA', 'EBITDA $4.0B (mid-point FY2026 $3.6B guid
   ok([/<div\b/g, /<\/div>/g, /<div class="ret/g, /<div class="tgt">/g, /<div class="col /g, /<li>/g]
     .every((re) => cnt(rgld, re) === cnt(DV.patchDerived(rgld, PX).html, re)),
     'W17: ซ่อมแล้วจำนวนแท็ก (div/ret/tgt/col/li) เท่าเดิมทุกตัว → ไม่ได้เขียนทับโครงสร้าง');
+
+  // ── Plan 4c-audit (26 ก.ย. 69): scnBasis ประกาศ "รวมปันผล" แต่ปันผลรวม 0 ในบางฉาก/ทุกฉาก (schema: div ≥ 0) ──
+  //   ใบ migrate CHKP (0/0/0) · S (0/0.05/0.08) + perYear null: เดิม impD = null → mean(null) throw ⇒ W17 = "ตรวจไม่สำเร็จ"
+  //   (ตัวซ่อม patchDerived#7 เรียก scenarioPlan ตัวเดียวกัน = cron ล้มที่ใบเดียวกัน) · ต้องตัดสินได้: ปันผล 0 = ราคาเป้าล้วน
+  for (const [tag, divs] of [['ทุกฉาก 0', [0, 0, 0]], ['Bear 0', [0, 1, 2]]]) {
+    let k = 0;
+    const zeroDiv = mutJson('report-data', (d) => { d.values.scnBasis = { ...d.values.scnBasis, perYear: null }; })(
+      base.replace(/(<li><span>ปันผลรวม[^<]*<\/span><span>~?)([^<]*)(<)/g, (m, a, v, b) => a + '฿' + divs[k++].toFixed(2) + b));
+    ok(k === 3 && zeroDiv !== base, `W17 (${tag}): (guard) แก้ปันผลรวมครบ 3 คอลัมน์ (แก้ ${k})`);
+    let freshZ = null, err = null;
+    const basisZ = { years: 3, divIncluded: true, perYear: null };   // ฐานเดียวกับที่ derivedPassV2 ส่ง (report-data.values.scnBasis)
+    try { freshZ = DV.patchDerived(zeroDiv, PX, { scnBasis: basisZ }).html; } catch (e) { err = e.message; }
+    ok(err == null, `W17 (${tag}): ตัวซ่อม patchDerived ต้องไม่ throw (ได้ ${err})`);
+    ok(!/ตรวจไม่สำเร็จ/.test(msgOf(zeroDiv)), `W17 (${tag}): scnBasis รวมปันผล + ปันผล 0 + perYear null → ตัวตรวจต้องไม่ throw (ได้ "${msgOf(zeroDiv)}")`);
+    if (freshZ) {
+      ok(!fires(freshZ), `W17 (${tag}): ซ่อมที่ราคาปัจจุบันแล้ว → เงียบ (${msgOf(freshZ)})`);
+      ok(freshZ !== zeroDiv, `W17 (${tag}): (guard) ตัวซ่อมเขียนหมวด 6 ใหม่จริง`);
+      ok(fires(DV.patchDerived(zeroDiv, PX * 0.8, { scnBasis: basisZ }).html), `W17 (${tag}): ค้างจากจุดเข้าต่ำกว่า 20% → ยังต้องจับ`);
+    }
+  }
 }
 
 // ── W18: สมอตายวนกลับ — ตัวคูณเป้าหมายลอกมาจากตัวคูณปัจจุบัน (9 ก.ย. 69) ──

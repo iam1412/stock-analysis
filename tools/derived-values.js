@@ -532,7 +532,10 @@ function scenarioPlan(html, price, why, basis) {
   // ทั้งสามคอลัมน์ใช้จุดเข้าเดียวกัน ⇒ สมมติฐานที่ถูกต้องจะให้ราคาเข้าที่เกาะกลุ่มกัน อีกอันจะกระจาย
   const impOf = (withDps) => b.cols.map((c, i) => (c.tgt + (withDps ? c.dps : 0)) / (1 + anchors[i].total / 100));
   const hasD = b.cols.every((c) => c.dps != null && c.dps > 0);
-  const impP = impOf(false), impD = hasD ? impOf(true) : null;
+  // ฐานที่ประกาศ "รวมปันผล" ยอมปันผล 0 ในบางฉาก/ทุกฉาก (schema: div ≥ 0) ⇒ ต้องถอดราคาเข้าฝั่งรวมปันผลด้วย
+  //   (เดิม impD = null เมื่อไม่ใช่ทุกฉาก > 0 ⇒ mean(null) throw — CHKP/S ใบ migrate: "ตรวจไม่สำเร็จ … reading 'reduce'")
+  const declD = !!(B && B.divIncluded) && b.cols.every((c) => c.dps != null && c.dps >= 0);
+  const impP = impOf(false), impD = hasD || declD ? impOf(true) : null;
   if (!impP.every((x) => x > 0)) return no('ถอดราคาเข้าไม่ได้');
   const spP = spreadOf(impP);
   const spD = (impD && impD.every((x) => x > 0)) ? spreadOf(impD) : Infinity;
