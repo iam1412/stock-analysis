@@ -1,0 +1,248 @@
+{
+  "v": 3,
+  "symbol": "AMP",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Ameriprise Financial, Inc.",
+    "exchange": "NYSE",
+    "sub": "บริการการเงิน/บริหารความมั่งคั่ง • Advice & Wealth Management (ที่ปรึกษา fee-based ~65% กำไร) • Asset Management (Columbia Threadneedle) • Retirement & Protection (annuity/ประกัน)",
+    "headerTags": [
+      "Financial Services",
+      "Wealth Management"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis.com",
+      "Yahoo Finance",
+      "Ameriprise Investor Relations"
+    ],
+    "themeLegacy": {
+      "accent": "#0B4DA2",
+      "accentDark": "#073676",
+      "darkGrad": "linear-gradient(135deg, #02060F 0%, #04122A 100%)",
+      "glow": "rgba(11,77,162,0.35)",
+      "subColor": "#4984cb",
+      "headerMuted": "#3a80ed",
+      "verdictText": "#CFDEF2",
+      "vcellLabel": "rgba(207,222,242,0.6)"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T10:24:06+07:00",
+      "v2Hash": "f6eb64004936"
+    }
+  },
+  "market": {
+    "px": 485.15,
+    "priceDate": "2026-09-24",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          452.77
+        ],
+        [
+          "พ.ย.25",
+          455.74
+        ],
+        [
+          "ธ.ค.25",
+          490.34
+        ],
+        [
+          "ม.ค.26",
+          527.19
+        ],
+        [
+          "ก.พ.26",
+          470.12
+        ],
+        [
+          "มี.ค.26",
+          444.4
+        ],
+        [
+          "เม.ย.26",
+          474.79
+        ],
+        [
+          "พ.ค.26",
+          445.71
+        ],
+        [
+          "มิ.ย.26",
+          458.76
+        ],
+        [
+          "ก.ค.26",
+          545.84
+        ],
+        [
+          "ส.ค.26",
+          553.11
+        ],
+        [
+          "ก.ย.26",
+          485.15
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 422.37,
+      "hi": 572.56
+    }
+  },
+  "fundamentals": {
+    "eps": 41.4,
+    "dps": 6.8,
+    "shares": 88333219,
+    "peAvg5y": 13.8,
+    "bvps": 58.4,
+    "opMargin": 35.7,
+    "beta": 1.25,
+    "fy": {
+      "period": "FY2025",
+      "netIncome": 3560000000,
+      "revenue": 18910000000
+    },
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation (มัธยฐานย้อนหลัง)",
+      "inputs": {
+        "multiple": 13.8,
+        "multipleSource": "median5y"
+      },
+      "note": "มัธยฐานของ P/E จริง 5 ปี (ราคาเฉลี่ยงวด ÷ EPS งวดนั้น; ช่วง 9.1–14.1x)",
+      "family": "market"
+    },
+    {
+      "method": "dcf",
+      "label": "DCF กำไรสุทธิ (5 ปี + terminal)",
+      "inputs": {
+        "g1": 6,
+        "years1": 5,
+        "tg": 2.5,
+        "r": 10.5,
+        "rfCurrency": "USD"
+      },
+      "override": {
+        "fcf": 3950000000,
+        "netDebt": 0,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "ใช้กำไรสุทธิแทน FCF เพราะ FCF รายงาน $8.1B (สูงกว่ากำไรสุทธิสองเท่า) ปนกระแสเงินสดฝั่งลูกค้า/ธนาคาร",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "peAvg5y",
+      "pbv",
+      "netIncomeFy",
+      "eps",
+      "bvps",
+      "custom:0",
+      "revenueFy",
+      "opMargin",
+      "yield",
+      "beta"
+    ],
+    "custom": [
+      {
+        "label": "ROE / ROIC",
+        "value": "~63.4%",
+        "note": "TTM · buyback-amplified (book equity ต่ำ)",
+        "tone": "pos"
+      }
+    ],
+    "notes": {
+      "mcap": "คงเหลือ (Market Cap ฐาน SA)",
+      "pe": "GAAP diluted EPS {{eps}} (TTM)",
+      "peAvg5y": "มัธยฐาน 5 ปี (ช่วง 9.1–14.1x)",
+      "pbv": "book equity ต่ำจาก buyback ดุดัน",
+      "netIncomeFy": "GAAP EPS $36.28 (+9.8% YoY)",
+      "eps": "diluted TTM; FY2025 $36.28",
+      "bvps": "book value ต่ำจาก buyback",
+      "revenueFy": "+5.5% YoY; AWM เป็นกำลังหลัก",
+      "opMargin": "FY2025 (TTM 35.1%)",
+      "yield": "{{dps}}/หุ้น/ปี; yield ต่ำ เน้น buyback",
+      "beta": "ไวต่อตลาด/ดอกเบี้ยกว่าค่าเฉลี่ย"
+    },
+    "hint": "FY2025 (ปีงบประมาณสิ้นสุด ธ.ค. 2568)"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 6,
+        "exitMultiple": 11,
+        "divCum": 20.4,
+        "desc": "ดอกเบี้ยลดกด NII + AUM outflow"
+      },
+      {
+        "growth": 9,
+        "exitMultiple": 13.8,
+        "divCum": 22.1,
+        "desc": "AWM fee-based เติบโต + buyback ต่อเนื่อง"
+      },
+      {
+        "growth": 12,
+        "exitMultiple": 14.1,
+        "divCum": 23.8,
+        "desc": "rate stable + AUM surge + multiple re-rating"
+      }
+    ],
+    "exitDp": 1,
+    "note": "การคาดการณ์อิง GAAP diluted EPS ฐาน {{eps}} (TTM) · P/E ออก Bear 11x / Base 13.8x (มัธยฐาน 5 ปี) / Bull 14.1x (ขอบบนของช่วงประวัติ) · Base +9%/ปี สูงกว่า CAGR GAAP EPS 5 ปี ~6% เพราะ buyback ลดจำนวนหุ้นต่อเนื่อง (หุ้นถัวเฉลี่ย 120M → 95M) แต่ต่ำกว่าประมาณการ consensus FY2026e · Bear +6% ถ้าดอกเบี้ยลงแรงกด cash sweep NII · ปันผล {{dps}}/ปี ปัจจุบัน · ราคาเป้าเป็นสมมติฐาน ผลตอบแทนคำนวณจากจุดเข้าปัจจุบัน"
+  },
+  "analyst": {
+    "target": 579,
+    "n": null,
+    "rating": null,
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ราคาปิดรายเดือน AMP แกว่งในกรอบราว 444–553 ดอลลาร์ตลอดปี: อ่อนตัวช่วง มี.ค.–พ.ค. 69 ก่อนฟื้นแรงช่วง มิ.ย.–ก.ค. 69 และปิดล่าสุดที่ {{px}} (รอบปี {{chg}}) — ต่ำกว่า Fair Value {{fv}} (MOS {{mos}}) · กรอบ 52 สัปดาห์ของ vendor ขยายไปถึง $572.56 (ระหว่างเดือน)",
+    "valuation": "วิธี P/E มัธยฐาน ให้ {{fvLow}} · DCF กำไรสุทธิ ให้ $662.77 (ไวต่อ r/g — ตัวเลข r,g เป็นสมมติฐาน) · เฉลี่ย 2 วิธี ≈ $617.05 → ปัดเป็น <b>{{fv}}</b> · เป้านักวิเคราะห์ (~$579, 11 ราย, Hold) และ forward P/E ~11.1x บน EPS FY2026e $46.53 เป็นบริบทตรวจความสอดคล้องเท่านั้น ไม่ใช่ขาของ FV · DDM ไม่ใช้ (yield 1.25% ต่ำ — AMP คืนทุนผ่าน buyback เป็นหลัก)",
+    "gauge": "AMP ซื้อขายที่ {{px}} ต่ำกว่า Fair Value {{fv}} (MOS {{mos}}) — margin of safety บาง ไม่ถึงโซน 20% · นักวิเคราะห์เป้าเฉลี่ย ~$579 (11 ราย มุมมอง Hold) สูงกว่าราคาปัจจุบันเล็กน้อย · จุดซื้อ MOS 20% อยู่ที่ {{mos20}} และ MOS 30% ที่ {{mos30}}",
+    "mos": "ราคาต่ำกว่า Fair Value {{fv}} (MOS {{mos}}) — มี margin of safety บางส่วนแต่ยังไม่ถึง 20% ประมาณการอิง r/g จึงควรเผื่อความคลาดเคลื่อน",
+    "verdictHeadline": "Wealth Franchise คุณภาพสูง — ราคาต่ำกว่ามูลค่าเหมาะสมเล็กน้อย",
+    "verdictBody": "Ameriprise Financial เป็น wealth management คุณภาพสูง (AWM fee-based recurring) พร้อม GAAP EPS TTM {{eps}}, ROE ~63%, buyback ต่อเนื่อง (หุ้นถัวเฉลี่ย 120M → 95M ใน 5 ปี) — P/E TTM ~13.2x ใกล้มัธยฐาน 5 ปี 13.8x ราคาปัจจุบัน {{px}} ต่ำกว่า Fair Value {{fv}} (MOS {{mos}}) ซึ่งมาจาก P/E มัธยฐาน + DCF กำไรสุทธิ (ขา DCF ไวต่อ r/g) margin of safety ยังบาง ไม่ถึงโซน 20%",
+    "strategy": "ทยอยสะสมเมื่อราคาต่ำกว่า {{fv}} และรอ MOS 20% ({{mos20}}) สำหรับเข้าเต็มน้ำหนัก — ผู้ถือเดิมถือต่อได้ · ระวัง rate cut cycle กด NII ระยะสั้น",
+    "disclaimerSources": "ข้อมูลอ้างอิง: StockAnalysis.com / Yahoo Finance / Ameriprise Investor Relations / Macrotrends"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 2 วิธี (P/E · DCF)"
+  },
+  "catalysts": [
+    "<b>Wealth Management ขยายตัว:</b> AWM fee-based recurring income ~65% กำไร ลด market sensitivity; ที่ปรึกษา IFA network แข็งแกร่ง",
+    "<b>Buyback ดุดัน:</b> คืน ~88% กำไรให้ผู้ถือหุ้น ผ่าน buyback + ปันผล ลดจำนวนหุ้น → EPS/share โต accelerate",
+    "<b>Columbia Threadneedle (Asset Mgmt):</b> ฐาน AUM global กว้าง; inflow recovery หลัง rate normalization",
+    "<b>EPS CAGR ~6% ย้อนหลัง 5 ปี:</b> GAAP diluted EPS $28.48 (FY2021) → $36.28 (FY2025) และ TTM {{eps}} — เร่งขึ้นล่าสุด",
+    "<b>Forward P/E ต่ำ:</b> ~11.1x บน EPS FY2026e $46.53 (consensus) เทียบ P/E TTM ~13.2x — ถ้าเป็นจริงตัวคูณย้อนหลังจะหดตัว",
+    "<b>นักวิเคราะห์ consensus:</b> 11 ราย เป้าเฉลี่ย ~$579 (มุมมอง Hold)"
+  ],
+  "risks": [
+    "<b>Rate-sensitive (cash sweep NII):</b> ดอกเบี้ยลดแรง → NII จาก cash sweep บัญชีลูกค้าลด กระทบกำไรตรง",
+    "<b>Asset Management outflow:</b> Columbia Threadneedle เผชิญ outflow pressure ช่วง uncertainty; fee revenue ผันผวน",
+    "<b>Market downturn กระทบ AUM:</b> AUM fee = % ของมูลค่าสินทรัพย์ — ตลาดหุ้นตก → fee ลดตาม",
+    "<b>ฐาน EPS ต่างกันตามแหล่ง:</b> รายงานนี้ใช้ GAAP diluted (TTM {{eps}}; FY2025 $36.28) — ตัวเลข adjusted operating ของบริษัทอาจต่างออกไป เทียบ P/E ข้ามแหล่งต้องดูฐานก่อน",
+    "<b>Annuity/Insurance legacy:</b> Retirement & Protection segment มี legacy exposure ที่มี duration/longevity risk",
+    "<b>Regulatory risk:</b> DOL fiduciary rule / SEC fee transparency อาจกระทบ fee structure wealth management"
+  ],
+  "extras": [],
+  "_sig": "sha256:b24cae20a26addbdcbedc12622d1b553a1c4e4983615a5977fb87519dc673732"
+}
