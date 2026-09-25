@@ -62,12 +62,15 @@ const realBefore = fs.readdirSync(REAL).length;
   t(r2.code === 1 && !fs.existsSync(path.join(REP, 'AAPL.json')), '--accept-drift does not override HUMAN');
   const r3 = cli(['convert', 'CASY', ...common, '--write']);
   t(r3.code === 2 && /--accept-drift/.test(r3.out) && fs.existsSync(path.join(REP, 'CASY.html')) && !fs.existsSync(path.join(REP, 'CASY.json')), 'VALUE-DRIFT --write without --accept-drift → exit 2, nothing written');
-  const rr = cli(['convert', 'BBL', '--write', '--reports-dir', REAL, '--head-manifest', MAN, '--no-stale']);
+  // final-review M-1: the real-path guard cases use a symbol that does NOT exist in reports/ — a regressed guard ends at "ไม่พบ", never writes real files
+  const NOPE = 'ZZZNOPE';
+  t(!fs.existsSync(path.join(REAL, NOPE + '.html')) && !fs.existsSync(path.join(REAL, NOPE + '.json')), `M-1: ${NOPE} is not a real report`);
+  const rr = cli(['convert', NOPE, '--write', '--reports-dir', REAL, '--head-manifest', MAN, '--no-stale']);
   t(rr.code === 1 && /MIGRATE_V3_ALLOW_REAL/.test(rr.out), '--write against the real reports/ refused without MIGRATE_V3_ALLOW_REAL=1');
-  const rr2 = cli(['convert', 'CASY', '--write', '--accept-drift', '--reports-dir', path.join(REAL, '..', 'reports'), '--head-manifest', MAN, '--no-stale']);
+  const rr2 = cli(['convert', NOPE, '--write', '--accept-drift', '--reports-dir', path.join(REAL, '..', 'reports'), '--head-manifest', MAN, '--no-stale']);
   t(rr2.code === 1 && /MIGRATE_V3_ALLOW_REAL/.test(rr2.out), 'real reports/ guard resolves the path (reports/../reports)');
   for (const alias of [path.join(ROOT, 'REPORTS'), path.join(ROOT, 'Reports') + path.sep + '.']) {
-    const ra = cli(['convert', 'CASY', '--write', '--accept-drift', '--reports-dir', alias, '--head-manifest', MAN, '--no-stale']);
+    const ra = cli(['convert', NOPE, '--write', '--accept-drift', '--reports-dir', alias, '--head-manifest', MAN, '--no-stale']);
     t(ra.code === 1 && /MIGRATE_V3_ALLOW_REAL/.test(ra.out), `I-1: case alias ${path.relative(ROOT, alias)} → refused`, ra.out.slice(-200));
   }
   t(MV.isGuarded(path.join(ROOT, 'REPORTS')) && MV.isRealReports(path.join(ROOT, 'reports', '.')), 'isGuarded: case alias of reports/ (APFS)');
@@ -81,6 +84,9 @@ const realBefore = fs.readdirSync(REAL).length;
   // M-2: sweep --out into a reports dir → refused, nothing written
   const ro = cli(['sweep', ...common, '--out', path.join(FREP, 'sweep')]);
   t(ro.code === 1 && /read-only/.test(ro.out) && !fs.existsSync(path.join(FREP, 'sweep.md')), 'M-2: sweep --out into reports/ → refused', ro.out.slice(-200));
+  // final-review M-2: any ancestor of --out guarded → refused (writeSweep mkdir -p would create reports/sub/)
+  const rs = cli(['sweep', ...common, '--out', path.join(FREP, 'sub', 'x')]);
+  t(rs.code === 1 && /read-only/.test(rs.out) && !fs.existsSync(path.join(FREP, 'sub')), 'M-2: sweep --out <reports>/sub/x → refused, no sub/ created', rs.out.slice(-200));
   // M-3: --write without a manifest row (and no --head-manifest) → refused
   const lines = [];
   const c3 = MV.runConvert('CASY', { ...MV.parseArgs(['--reports-dir', REP, '--no-stale', '--write', '--accept-drift']), manifest: new Map() }, (x) => lines.push(x));
@@ -96,7 +102,7 @@ const realBefore = fs.readdirSync(REAL).length;
   const late = cli(['convert', 'CASY', ...common, '--write', '--accept-drift', '--today', '2099-01-01']);
   t(late.code === 1 && /E27/.test(late.out) && fs.existsSync(path.join(REP, 'CASY.html')) && !fs.existsSync(path.join(REP, 'CASY.json')), 'M-4: --write gate uses the given day (2099 → E27) → rolled back', late.out.slice(-300));
   const r = cli(['convert', 'CASY', ...common, '--write', '--accept-drift', '--today', pd]);
-  t(r.code === 0 && new RegExp(`gate วันที่ ${pd}(?! \\(≠)`).test(r.out) && fs.existsSync(path.join(REP, 'CASY.json')) && !fs.existsSync(path.join(REP, 'CASY.html')) && /build now before editing/.test(r.out), 'convert --write: .json written, .html removed, "build now before editing"', r.out.slice(-300));
+  t(r.code === 0 && new RegExp(`gate วันที่ ${pd}(?! \\(≠)`).test(r.out) && fs.existsSync(path.join(REP, 'CASY.json')) && !fs.existsSync(path.join(REP, 'CASY.html')) && /build ทันทีก่อนแก้ — แก้ก่อน build ครั้งแรก = การแก้นั้นไม่ถูกประทับ updated \(คง updated ของ v2\)/.test(r.out), 'convert --write: .json written, .html removed, reminder "build ทันทีก่อนแก้" (final-review M-3 wording)', r.out.slice(-300));
   const doc = IO.read(path.join(REP, 'CASY.json'));
   t(IO.verifySig(doc), 'written doc is signed by io.js');
   const g = CV.checkDoc(doc, { seeds: SEEDS, today: doc.market.priceDate, stage: 'save' });

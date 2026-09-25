@@ -8,7 +8,8 @@
  *           exit 0 CLEAN · 2 VALUE-DRIFT · 1 HUMAN/error · --write: HUMAN ปฏิเสธ (1) · VALUE-DRIFT ต้อง --accept-drift (2)
  *           เขียน = IO.write(<SYM>.json) → ลบ <SYM>.html → checkDoc ต้อง 0 error ไม่งั้นคืน .html + ลบ .json (exit 1)
  * ★ --write ใส่ reports/ จริงต้องมี env MIGRATE_V3_ALLOW_REAL=1 (Plan 4c ตั้ง · PR นี้ไม่ตั้งนอก scratch rehearsal)
- * ★ นาฬิกา gate = values.priceDate ของใบ (sweep ต้องไม่ขึ้นกับวันนี้ — E27 ไม่ใช่คุณสมบัติของการ migrate)
+ * ★ นาฬิกา gate: sweep / convert dry-run = values.priceDate ของใบ (ไม่ขึ้นกับวันนี้ — E27 ไม่ใช่คุณสมบัติของการ migrate)
+ *   · convert --write = วันนี้ (Asia/Bangkok) เหมือน npm run verify · --today YYYY-MM-DD แทนได้ (review T7 M-4)
  */
 const fs = require('fs');
 const path = require('path');
@@ -160,7 +161,9 @@ function ctxOf(o) {
 function runSweep(opts, log) {
   const say = log || ((s) => process.stdout.write(s + '\n'));
   const outDir = path.dirname(path.resolve(opts.out || path.join(ROOT, 'docs', 'x')));
-  if (isGuarded(outDir)) { say(`✗ sweep: --out ชี้เข้า reports/ (${outDir}) — sweep เป็น read-only ห้ามเขียนลง reports/`); return { rows: [], code: 1 }; }
+  // final-review M-2: บรรพบุรุษใดก็ได้ของ --out เป็น reports/ = ปฏิเสธ (writeSweep mkdir -p จะสร้าง reports/sub/ ให้)
+  const ancestors = []; for (let d = outDir; ; d = path.dirname(d)) { ancestors.push(d); if (path.dirname(d) === d) break; }
+  if (ancestors.some(isGuarded)) { say(`✗ sweep: --out ชี้เข้า reports/ (${outDir}) — sweep เป็น read-only ห้ามเขียนลง reports/`); return { rows: [], code: 1 }; }
   const o = ctxOf(opts);
   let syms = RS.list(o.reportsDir).filter((e) => !e.v3).map((e) => e.symbol);
   if (o.only) { const want = new Set(o.only); syms = syms.filter((s) => want.has(s.toUpperCase())); }
@@ -231,7 +234,7 @@ function runConvert(symIn, opts, log, deps) {
     return 1;
   }
   say(`✓ ${sym}: เขียน ${path.basename(json)} · ลบ ${sym}.html · checkDoc 0 error${g.warnings && g.warnings.length ? ` · ${g.warnings.length} warning` : ''} · gate วันที่ ${gateDay}${gateDay !== m.today ? ` (≠ priceDate ${m.today})` : ''}`);
-  say('build now before editing — แก้ใบก่อน build ครั้งแรกจะทำให้ updated ของ v2 หาย (Task 3 · D1)');
+  say('build ทันทีก่อนแก้ — แก้ก่อน build ครั้งแรก = การแก้นั้นไม่ถูกประทับ updated (คง updated ของ v2) (Task 3 · D1)');
   return 0;
 }
 
