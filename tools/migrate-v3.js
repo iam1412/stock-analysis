@@ -12,8 +12,9 @@
  *           CLEAN ≤50 ใบ/commit · VALUE-DRIFT 1 ใบ/commit · convert → build → ship --migrate --no-push → verify + push ทุก N commit
  *   draft   <SYM> [--work-dir .work] [--force] [--reports-dir D] [--head-manifest FILE] [--today YYYY-MM-DD]   (Plan 4c-transcribe)
  *           migrateOne ทุกถัง (รวม HUMAN) → <work>/<SYM>.json (คีย์ของ worker · คง meta.migratedFrom) + <SYM>.brief.md (เหตุผล + ตัวเลขหลักของ v2)
- *   adopt   <SYM> [--doc <work>/<SYM>.json] [--reports-dir D] [--head-manifest FILE] [--today YYYY-MM-DD]
+ *   adopt   <SYM> [--doc <work>/<SYM>.json] [--reports-dir D] [--head-manifest FILE] [--today YYYY-MM-DD] [--accept-drift]
  *           guard เดียวกับ convert --write · merge market ของ migrator → checkDoc 0 error + ตัวเลขหลักตรง v2 (การปัดที่พิมพ์) → เขียน .json ลบ .html
+ *           --accept-drift: FV · FV low/high · เป้า 3 ฉาก · MOS คลาดได้ ≤ 1 หน่วยของหลักสุดท้ายที่ v2 พิมพ์ (verdict ต้องเท่ากัน) · พิมพ์ drift list
  *           equivalence gate = ข้อมูลเท่านั้น · ตรรกะ = tools/migrate-v3/transcribe.js
  * ★ --write ใส่ reports/ จริงต้องมี env MIGRATE_V3_ALLOW_REAL=1 (Plan 4c ตั้ง · PR นี้ไม่ตั้งนอก scratch rehearsal)
  * ★ นาฬิกา gate: sweep / convert dry-run = values.priceDate ของใบ (ไม่ขึ้นกับวันนี้ — E27 ไม่ใช่คุณสมบัติของการ migrate)

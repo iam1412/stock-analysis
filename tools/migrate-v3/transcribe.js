@@ -95,15 +95,32 @@ function v3Keys(doc, view, page) {
   };
 }
 
-/** เทียบตัวเลขหลัก → [{what, ok, v2, v3}] · ตัวตัดสินเดียว = NB.classifyNumber (ครึ่งหน่วยของทศนิยมที่หยาบกว่า) */
-function compareKeys(a, b) {
+/** หน่วยของหลักสุดท้ายที่ผู้เขียน v2 พิมพ์ ("262" = 1 · "103.95" = 0.01 · "−4%" = 1 จุด) — null = อ่านตัวเลขไม่ได้ */
+function printedStep(text) {
+  const n = NB.numsOf(String(text == null ? '' : text));
+  return n.length === 1 ? { v: n[0].v, step: 2 * n[0].half } : null;
+}
+/** --accept-drift (เจ้าของ 26 ก.ย. 69 · ACMR: ขา $64/$72/$82 เฉลี่ย 72.73 → MOS −5% vs v2 −4%): คลาดจาก v2 ได้ไม่เกิน 1 หน่วยของหลักสุดท้ายที่ v2 พิมพ์ */
+function withinOneStep(text, y) {
+  const p = printedStep(text);
+  return !!p && isNum(y) && Math.abs(y - p.v) <= p.step * (1 + 1e-9);
+}
+/**
+ * เทียบตัวเลขหลัก → [{what, ok, v2, v3, drift?}] · ตัวตัดสินเดียว = NB.classifyNumber (ครึ่งหน่วยของทศนิยมที่หยาบกว่า)
+ * opts.acceptDrift: FV · FV low/high · เป้า 3 ฉาก · MOS ที่ไม่ผ่านการปัดแต่คลาด ≤ 1 หน่วยของหลักสุดท้ายที่ v2 พิมพ์ = ok + drift:true
+ *   (FV low/high กลายเป็นตัวบล็อกด้วยเมื่อใช้ธงนี้ — เกิน 1 หน่วย = ปฏิเสธ) · verdict/symbol/currency ต้องเท่ากันเสมอ
+ */
+function compareKeys(a, b, opts) {
   const out = [];
+  const acc = !!(opts && opts.acceptDrift);
   const num = (what, x, y) => {
     if (!x || x.text == null) return;   // v2 ไม่พิมพ์ค่านี้ = ไม่มีเป้า
-    const ok = isNum(y) && NB.classifyNumber(x.text, f2(y)) === 'rounding';
-    out.push({ what, ok, v2: x.text, v3: isNum(y) ? f2(y) : '∅' });
+    const strict = isNum(y) && NB.classifyNumber(x.text, f2(y)) === 'rounding';
+    const drift = !strict && acc && withinOneStep(x.text, y);
+    out.push({ what, ok: strict || drift, v2: x.text, v3: isNum(y) ? f2(y) : '∅', ...(drift ? { drift: true } : {}) });
   };
   num('FV', a.fv, b.fv);
+  if (acc) { num('FV low', a.fvLow, b.fvLow); num('FV high', a.fvHigh, b.fvHigh); }
   a.targets.forEach((x, i) => num(`${x.name} target`, x, (b.targets || [])[i]));
   num('MOS', a.mos, b.mos);
   if (a.verdict != null) out.push({ what: 'verdict', ok: a.verdict === b.verdict, v2: a.verdict, v3: b.verdict == null ? '∅' : b.verdict });
@@ -112,10 +129,11 @@ function compareKeys(a, b) {
   return out;
 }
 /** ข้อมูลประกอบ (ไม่บล็อก): กรอบ FV + จำนวนปีของฉาก */
-function infoKeys(a, b) {
+function infoKeys(a, b, opts) {
   const out = [];
   const num = (what, x, y) => { if (x && x.text != null) out.push({ what, ok: isNum(y) && NB.classifyNumber(x.text, f2(y)) === 'rounding', v2: x.text, v3: isNum(y) ? f2(y) : '∅' }); };
-  num('FV low', a.fvLow, b.fvLow); num('FV high', a.fvHigh, b.fvHigh);
+  // --accept-drift: FV low/high อยู่ใน compareKeys (บล็อก) แล้ว — ไม่พิมพ์ซ้ำเป็นข้อมูลประกอบ
+  if (!(opts && opts.acceptDrift)) { num('FV low', a.fvLow, b.fvLow); num('FV high', a.fvHigh, b.fvHigh); }
   if (a.years != null) out.push({ what: 'years', ok: a.years === b.years, v2: String(a.years), v3: b.years == null ? '∅' : String(b.years) });
   return out;
 }
@@ -280,11 +298,14 @@ function runAdopt(symIn, opts, log, mv, deps) {
   if (vv.view && !vv.page) { try { vv.page = B.expandReport(R.toV2Source(full, vv.view)); } catch (_) { /* render error อยู่ใน checkDoc แล้ว */ } }
   if (!vv.view) fails.push(`key numbers: compute ไม่ได้ — ${vv.err || 'ดู checkDoc'}`);
   const k2 = v2Keys(m.parsed || {}, m.raw, sym), k3 = v3Keys(full, vv.view, vv.page);
-  const cmp = compareKeys(k2, k3);
-  say(`${sym}: adopt ${relOf(docFile)} · gate วันที่ ${gateDay}`);
-  for (const c of cmp) say(`  ${c.ok ? '✓' : '✗'} ${c.what}: v2 ${c.v2} · v3 ${c.v3}`);
-  for (const c of infoKeys(k2, k3)) say(`  ${c.ok ? 'ℹ' : '⚠'} ${c.what}: v2 ${c.v2} · v3 ${c.v3} (ข้อมูลประกอบ ไม่บล็อก)`);
-  for (const c of cmp) if (!c.ok) fails.push(`${c.what}: v2 ${c.v2} · v3 ${c.v3}`);
+  const kopt = { acceptDrift: !!o.acceptDrift };
+  const cmp = compareKeys(k2, k3, kopt);
+  say(`${sym}: adopt ${relOf(docFile)} · gate วันที่ ${gateDay}${kopt.acceptDrift ? ' · --accept-drift (≤ 1 หน่วยของหลักสุดท้ายที่ v2 พิมพ์ · verdict ต้องเท่ากัน)' : ''}`);
+  for (const c of cmp) say(`  ${c.drift ? '≈' : c.ok ? '✓' : '✗'} ${c.what}: v2 ${c.v2} · v3 ${c.v3}${c.drift ? ' (drift ≤ 1 printed step)' : ''}`);
+  for (const c of infoKeys(k2, k3, kopt)) say(`  ${c.ok ? 'ℹ' : '⚠'} ${c.what}: v2 ${c.v2} · v3 ${c.v3} (ข้อมูลประกอบ ไม่บล็อก)`);
+  for (const c of cmp) if (!c.ok) fails.push(`${c.what}: v2 ${c.v2} · v3 ${c.v3}${kopt.acceptDrift && /^(FV|FV low|FV high|Bear target|Base target|Bull target|MOS)$/.test(c.what) ? ' (เกิน 1 หน่วยของหลักสุดท้ายที่ v2 พิมพ์)' : ''}`);
+  const drifts = cmp.filter((c) => c.drift);
+  if (kopt.acceptDrift) say(`  drift list (${drifts.length}): ${drifts.length ? drifts.map((c) => `${c.what} v2 ${c.v2} → v3 ${c.v3}`).join(' · ') : 'none'}`);
   // equivalence gate = ข้อมูลเท่านั้น
   if (vv.view && vv.page) {
     try {
@@ -311,9 +332,9 @@ function runAdopt(symIn, opts, log, mv, deps) {
     for (const e of g2.errors) say(`  ${e.id}: ${e.msg}`);
     return 1;
   }
-  say(`✓ ${sym}: เขียน ${sym}.json · ลบ ${sym}.html · checkDoc 0 error${g2.warnings && g2.warnings.length ? ` · ${g2.warnings.length} warning` : ''} · ตัวเลขหลักตรง v2`);
+  say(`✓ ${sym}: เขียน ${sym}.json · ลบ ${sym}.html · checkDoc 0 error${g2.warnings && g2.warnings.length ? ` · ${g2.warnings.length} warning` : ''} · ตัวเลขหลักตรง v2${drifts.length ? ` (drift ${drifts.length} ข้อ ≤ 1 หน่วยที่พิมพ์ — --accept-drift)` : ''}`);
   say(`ต่อไป (controller): npm run build → npm run queue -- ship --migrate "${sym}" --model opus --no-push`);
   return 0;
 }
 
-module.exports = { workerDoc, v2Keys, v3Keys, compareKeys, infoKeys, briefOf, runDraft, runAdopt, literalTgt };
+module.exports = { workerDoc, v2Keys, v3Keys, compareKeys, infoKeys, printedStep, withinOneStep, briefOf, runDraft, runAdopt, literalTgt };
