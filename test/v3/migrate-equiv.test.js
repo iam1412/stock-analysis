@@ -40,16 +40,27 @@ for (const sym of ['BBL', ...NON_HUMAN]) {
   // fix round 2 · G-1 (controller ruling · plan D5): gauge.{min,max} rows are F — SGC/NFG drift only on the gauge ⇒ CLEAN, the rows stay in eq.rd + F reasons
   if (['SGC', 'NFG'].includes(sym)) t(b.bucket === 'CLEAN' && m.eq.rd.length > 0 && m.eq.rd.every((r) => /^gauge\./.test(r.path)) && b.reasons.some((r) => /^rd\/sm gauge\./.test(r)), `${sym}: gauge-only rd rows → CLEAN (gauge row kept as F)`, JSON.stringify({ b, rd: m.eq.rd }));
 }
-// DPZ = positive HUMAN case: the custom > 4 cap drops cards, and exactly their words surface as TEXT LOST (nothing else lost, nothing masked)
+// DPZ — Plan 4c-prep D5 (cap 8 for migrated docs): the 5th custom card is kept ⇒ its words are on the v3 page ⇒ not TEXT LOST, no cap H
 {
   const html = raw('DPZ'), m = migrate('DPZ', html);
   const b = BK.bucketOf(m.notes, m.eq);
-  const cap = m.notes.H.find((r) => /^custom cards \d+ > 4 — dropped /.test(r));
-  t(b.bucket === 'HUMAN' && !!cap, 'DPZ: HUMAN with a custom cards reason', JSON.stringify(m.notes.H));
+  const card = PV.parseV2('DPZ', html).s1cards.find((c) => c.k === 'Store Count (Global)');
+  const words = EQ.tok(EQ.text(`${card.kHtml} ${card.vHtml} ${card.dHtml}`)).filter(EQ.isWord).map(EQ.wordOf);
+  t(!m.notes.H.some((r) => /^custom cards/.test(r)) && b.bucket !== 'HUMAN', 'DPZ: no cap H with cap 8 (migrated) — not HUMAN', JSON.stringify({ H: m.notes.H, b }));
+  t(words.length > 0 && words.every((w) => !m.eq.textLost.includes(w)), 'DPZ: the 5th card words are not lost', JSON.stringify(m.eq.textLost));
+}
+// cap positive case moved to a synthetic 9-custom DPZ: 4 extra custom cards injected at the head of the §1 grid ⇒ 9 > 8 ⇒ H,
+// and the TEXT LOST words are exactly the dropped card's words (same shape as the 4b DPZ test — nothing else lost, nothing masked)
+{
+  const extra = [1, 2, 3, 4].map((i) => `<div class="metric"><div class="k">ตัวชี้วัดพิเศษ${i}</div><div class="v">ค่าพิเศษ${i}</div><div class="d">หมายเหตุพิเศษ${i}</div></div>`).join('\n      ');
+  const html = raw('DPZ').replace(/(<div class="grid g4">\s*)/, (m0, a) => `${a}${extra}\n      `);
+  const m = migrate('DPZ', html);
+  const cap = m.notes.H.find((r) => /^custom cards 9 > 8 — dropped /.test(r));
+  t(!!cap, 'DPZ+4: custom cards 9 > 8 → H', JSON.stringify(m.notes.H));
   const labels = cap ? [...cap.matchAll(/"([^"]+)"/g)].map((x) => x[1]) : [];
   const want = PV.parseV2('DPZ', html).s1cards.filter((c) => labels.includes(c.k)).flatMap((c) => EQ.tok(EQ.text(`${c.kHtml} ${c.vHtml} ${c.dHtml}`)).filter(EQ.isWord).map(EQ.wordOf));
-  t(labels.length > 0 && want.length > 0, 'DPZ: dropped custom card labels found in v2', JSON.stringify(labels));
-  t.eq(m.eq.textLost.slice().sort(), want.slice().sort(), 'DPZ: TEXT LOST words = exactly the dropped custom cards');
+  t(labels.length === 1 && want.length > 0, 'DPZ+4: exactly one card dropped', JSON.stringify(labels));
+  t.eq(m.eq.textLost.slice().sort(), want.slice().sort(), 'DPZ+4: TEXT LOST words = exactly the dropped card');
 }
 for (const sym of ['AAPL', 'DDOG']) { const m = migrate(sym, raw(sym)); const b = BK.bucketOf(m.notes, m.eq); t(b.bucket === 'HUMAN' && b.reasons.some((r) => /analyst/.test(r)), `${sym}: HUMAN (analyst leg)`); }
 // Review Focus 5a / spec §10.2 d — never mask a written region: a word injected into a token-bearing .ret cell must surface as TEXT LOST

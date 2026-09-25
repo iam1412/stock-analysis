@@ -79,6 +79,11 @@ const isNum = (v) => typeof v === 'number' && Number.isFinite(v);
 const isStr = (v) => typeof v === 'string' && v.trim().length > 0;
 const isObj = (v) => v != null && typeof v === 'object' && !Array.isArray(v);
 
+// เพดาน custom card (spec §3.7 ง · Plan 4c-prep D5): ใบ migrate (meta.migratedFrom) = 8 — ครอบ 97/102 ใบที่ชนเพดาน 4 · ใบ NEW = 4 เท่าเดิม
+// ทางย้อนกลับ: ลดค่านี้ ใบที่เกินกลับเป็น HUMAN ใน sweep
+const CUSTOM_CAP_MIGRATED = 8, CUSTOM_CAP = 4;
+const customCap = (doc) => (isObj(doc) && isObj(doc.meta) && doc.meta.migratedFrom != null ? CUSTOM_CAP_MIGRATED : CUSTOM_CAP);
+
 // metrics.cards[i]: "key" | "custom:<i>" | {key, tone} → ลำดับที่ render · custom ที่ไม่ถูกอ้างต่อท้าย (พฤติกรรม Plan 1)
 const CUSTOM_REF = /^custom:(\d)$/;
 function cardEntries(mt) {
@@ -409,7 +414,8 @@ function validate(doc) {
       else for (const [k, v] of Object.entries(mt.notes)) { if (!CARD_KEYS.includes(k)) E(`metrics.notes.${k}`, 'ไม่ใช่คีย์การ์ด'); str(v, `metrics.notes.${k}`); }
     }
     if (mt.custom != null) {
-      if (!Array.isArray(mt.custom) || mt.custom.length > 4) E('metrics.custom', 'ต้องเป็น array ≤4');
+      const cap = customCap(doc);
+      if (!Array.isArray(mt.custom) || mt.custom.length > cap) E('metrics.custom', `ต้องเป็น array ≤${cap}${cap === CUSTOM_CAP ? '' : ' (ใบ migrate)'}`);
       else mt.custom.forEach((c, i) => { if (!isObj(c)) return E(`metrics.custom[${i}]`, 'ต้องเป็น object'); closed(c, `metrics.custom[${i}]`, ['label', 'value', 'note', 'tone']); if (c.tone != null) en(c.tone, `metrics.custom[${i}].tone`, ENUM.tone); str(c.label, `metrics.custom[${i}].label`); str(c.value, `metrics.custom[${i}].value`); str(c.note, `metrics.custom[${i}].note`, { req: false }); });
     }
     str(mt.hint, 'metrics.hint', { req: false });
@@ -545,4 +551,4 @@ function OWNER(path) {
   return 'worker';
 }
 
-module.exports = { ENUM, CARD_KEYS, FUND_KEYS, FY_KEYS, BANK_KEYS, LEG_INPUTS, CURRENT_BASE, requiredFamily, OVERRIDE_KEYS, THEME_KEYS, TEXT_KEYS, cardEntries, validate, OWNER, RD_TOKEN, TODO_RE, stringLeaves };
+module.exports = { ENUM, CARD_KEYS, FUND_KEYS, FY_KEYS, BANK_KEYS, LEG_INPUTS, CURRENT_BASE, requiredFamily, OVERRIDE_KEYS, THEME_KEYS, TEXT_KEYS, cardEntries, customCap, CUSTOM_CAP, CUSTOM_CAP_MIGRATED, validate, OWNER, RD_TOKEN, TODO_RE, stringLeaves };

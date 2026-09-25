@@ -482,4 +482,26 @@ const asm = (sym, html) => A.assemble(PV.parseV2(sym, html), { seeds: SEEDS, hea
 t.eq(A.singleTarget('~US$1,245.50 (Buy)', 'USD'), { v: 1245.5 }, 'N-3: "US$" target on a USD doc → value');
 t.eq(A.singleTarget('~฿163.50 (Buy)', 'THB'), { v: 163.5 }, 'N-3: "฿" target on a THB doc → value');
 t.eq(A.singleTarget('~฿163.50', 'USD'), { reject: 'currency ฿' }, 'N-3: "฿" on a USD doc → rejected (currency)');
+// Plan 4c-prep Task 1 (#68 · D6) — targeted median rules (general "negated median ⇒ author" stays rejected)
+{
+  const BDMS = 'EPS (TTM) ฿0.96 × P/E เป้าหมาย 21.4x — 21.4x คือ P/E ที่วัดจริงของ FY2025 (ราคาเฉลี่ยปี ฿21.31 ÷ EPS ฿1.00) ไม่ได้มาจาก P/E ปัจจุบัน; ไม่ใช้มัธยฐาน 5 ปี 31.0x เพราะ P/E ลดลงทุกปี (44.4→33.8→31.0→27.3→21.4x) ตามการโตช้าลง มัธยฐานถูกลากด้วยปี FY2021–23';
+  const F = [], o = {};
+  t.eq(A.multipleSourceOf(BDMS, F, 0, 21.4, o), 'author', '#68 BDMS: a multiple inside an arrow series is history → author (not median5y)');
+  t(o.medianWindow == null && F.some((x) => /leg 1: multipleSource author/.test(x)), '#68 BDMS: no medianWindow · F names the leg', JSON.stringify({ o, F }));
+  const OWN = 'EPS $5.00 × P/E 22.0x — 22.0x = มัธยฐาน 5 ปีของบริษัทเอง (18.1→22.0→25.3x)';
+  t.eq(A.multipleSourceOf(OWN, [], 0, 22.0, {}), 'median5y', '#68: series rule does not demote a median named next to the leg multiple outside the series');
+  const TRMB = 'EPS $1.93 × P/E 41.7x — P/E 41.7x = มัธยฐานย้อนหลังของ TRMB เอง (4 ปีงบ FY2021–23 และ FY2025 ช่วง 35.4–42.6x ตัด FY2024 ที่มีกำไรพิเศษ)';
+  const o2 = {};
+  t.eq(A.multipleSourceOf(TRMB, [], 0, 41.7, o2), 'median5y', '#68 TRMB: still a median');
+  t.eq(o2.medianWindow, 'FY2021–FY2023, FY2025', '#68 TRMB: median window keeps the extra year');
+  t.eq(A.medianWindowOf('มัธยฐาน FY2022–FY2025'), 'FY2022–FY2025', '#68: plain window unchanged');
+}
+// Plan 4c-prep Task 1 (D5): custom cap follows meta.migratedFrom — DPZ (5 custom) keeps all 5 when migrated · still H without a manifest row
+{
+  const html = raw('DPZ'), p = PV.parseV2('DPZ', html);
+  const mig = A.assemble(p, { seeds: SEEDS, headUpdated: '2026-09-01T00:00:00+07:00', v2Hash: B.freshHash(html), today: p.rd.values.priceDate, analysisPx: null });
+  const nw = A.assemble(p, { seeds: SEEDS, headUpdated: null, v2Hash: B.freshHash(html), today: p.rd.values.priceDate, analysisPx: null });
+  t(mig.doc.metrics.custom.length === 5 && !mig.notes.H.some((h) => /^custom cards/.test(h)), 'cap: migrated DPZ keeps 5 custom cards, no cap H', JSON.stringify(mig.notes.H));
+  t(nw.notes.H.some((h) => /^custom cards 5 > 4 — dropped "Store Count \(Global\)"/.test(h)), 'cap: no migratedFrom → cap 4 still applies', JSON.stringify(nw.notes.H));
+}
 t.done();

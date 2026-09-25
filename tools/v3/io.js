@@ -28,6 +28,12 @@ function freshHash(doc) {
   const meta = { ...(rest.meta || {}) }; delete meta.aiModel;
   return sha('v3:' + canonical({ ...rest, meta })).slice(0, 12);
 }
+/** #67 (Plan 4c-prep · spec §3.7 ฉ): hash ของ ship --prepatch — เหมือน freshHash แต่ **นับ** meta.aiModel
+ *  freshHash (ฐานของ updated) ยังไม่นับ aiModel — แก้ป้ายรุ่นอย่างเดียวต้องไม่ขยับ updated แต่ต้องไม่หลุดเข้า commit "price:" */
+function prepatchHash(doc) {
+  const { _sig, market, ...rest } = doc;
+  return sha('v3pp:' + canonical(rest)).slice(0, 12);
+}
 function serialize(doc) {
   const ordered = {};
   for (const k of TOP_ORDER) if (k in doc) ordered[k] = doc[k];
@@ -70,4 +76,4 @@ function writeMarket(file, market, opts) {
   });
 }
 
-module.exports = { canonical, sign, verifySig, freshHash, serialize, read, write, writeMarket, TOP_ORDER };
+module.exports = { canonical, sign, verifySig, freshHash, prepatchHash, serialize, read, write, writeMarket, TOP_ORDER };

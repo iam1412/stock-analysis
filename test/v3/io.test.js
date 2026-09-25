@@ -80,4 +80,15 @@ t(IO.verifySig(IO.read(fileUndef)), 'write/read round-trip through an undefined-
   t.eq(bytes(f50), b50, 'writeMarket: E50 → bytes unchanged');
 }
 
+// Plan 4c-prep Task 1 (#67 · spec §3.7 ฉ · D6): prepatchHash = freshHash + meta.aiModel — ship --prepatch แยกการแก้ป้ายรุ่นออกจาก pre-patch ราคา
+{
+  const d = JSON.parse(JSON.stringify(require('../fixtures/v3/ZTS.json')));
+  const m = { ...d, meta: { ...d.meta, aiModel: 'Claude Opus 5' } };
+  const px = { ...d, market: { ...d.market, px: d.market.px + 1 } };
+  t.eq(IO.freshHash(m), IO.freshHash(d), '#67: freshHash still ignores meta.aiModel (updated must not move)');
+  t(IO.prepatchHash(m) !== IO.prepatchHash(d), '#67: prepatchHash sees an aiModel-only edit');
+  t.eq(IO.prepatchHash(px), IO.prepatchHash(d), '#67: prepatchHash ignores market (cron pre-patch passes)');
+  t.eq(IO.prepatchHash({ ...d, _sig: 'sha256:' + '0'.repeat(64) }), IO.prepatchHash(d), '#67: prepatchHash ignores _sig');
+  t(/^[0-9a-f]{12}$/.test(IO.prepatchHash(d)), '#67: 12 hex like freshHash');
+}
 t.done();

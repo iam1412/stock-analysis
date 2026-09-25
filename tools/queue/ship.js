@@ -6,7 +6,7 @@
  *   ship --prepatch: รันทันทีหลัง preflight (ก่อน worker เริ่ม — ดู note ข้าง prepatchBlockers) → build → preserve-dates
  *               → build → verify → commit "price: …" → push · กันตัวที่ worker วิเคราะห์ใหม่แล้วโดนกวาดไปด้วย
  *               · รอบที่มีแต่ PREPATCH (flip ในย่าน — ระยะ 1 ข้อ D) ปิด issue ตรงนี้ด้วย เพราะไม่มี `ship <SYM>` ตามมา
- *               · ใบ v3 (Plan 4b · #66) รับเมื่อเปลี่ยนแค่ market/_sig (freshHash ของ HEAD = worktree)
+ *               · ใบ v3 (Plan 4b · #66) รับเมื่อเปลี่ยนแค่ market/_sig (prepatchHash ของ HEAD = worktree — #67 นับ meta.aiModel)
  *   ship --migrate "SYM SYM…" --model sonnet|opus: ใบที่ migrate-v3 convert แล้ว (HEAD .html → worktree .json) → verify
  *               → preserve-dates+build → commit "migrate: v3 …" (−.html +.json) → pull --rebase → push
  * ★ ไม่ทำแทน: ตัดสิน publish/skip (postcheck ต้อง pass หรือ --force หลังรีวิวเอง)
@@ -350,7 +350,7 @@ function prepatchCandidates(entries) {
  *  ต้องไม่กวาดไปเป็น commit "price: …" ทั้งที่ยังไม่ผ่าน postcheck/รีวิว
  *  entries = [{ path, from?, untracked, headFooterISO, workFooterISO, v3?, headHash?, workHash? }] → คืน { blocked, unreadable, foreign } (ส่วนบริสุทธิ์ ไม่แตะ git)
  *  ★ ใบ v2: อ่าน footer ได้ข้างเดียว (เช่น HEAD parse ไม่ออก) = สงสัย → กันไว้ก่อน · อ่านไม่ได้ทั้งสองข้าง = ไม่รู้จริง ๆ → ไม่กัน แต่ขึ้น unreadable ให้คนตรวจเอง
- *  ★ ใบ v3 (Plan 4b · #66): pre-patch แตะแค่ market/_sig ⇒ freshHash (ไม่นับ market/_sig/meta.aiModel) ของ HEAD = worktree = ผ่าน
+ *  ★ ใบ v3 (Plan 4b · #66): pre-patch แตะแค่ market/_sig ⇒ prepatchHash (ไม่นับ market/_sig · **นับ** meta.aiModel — #67) ของ HEAD = worktree = ผ่าน
  *    · ต่าง = worker เขียน (blocked — Review Focus 2) · ไฟล์ใหม่/rename = blocked · hash อ่านไม่ได้ข้างใดข้างหนึ่ง = unreadable (fail closed: ship --prepatch ไม่ไปต่อ)
  *  ★ fail closed (spec §6.5 · Plan 2b): path ใต้ reports/ ที่ไม่ใช่ใบรายงานระดับบนสุด (reports/<SYM>.html | reports/<SYM>.json) = foreign
  *    ⇒ ship --prepatch ปฏิเสธ · รวม path ที่ git quote มา · ใต้โฟลเดอร์ย่อย (reports/sub/Y.html) · ตัวพิมพ์ .HTML · ชื่อมีช่องว่าง
@@ -393,6 +393,12 @@ function prepatchRefusal({ blocked, foreign }) {
   return L.length ? L.join('\n') : null;
 }
 
+/** คู่ hash ของใบ v3 ใน ship --prepatch (#67): HEAD (ข้อความจาก git show) กับ worktree (ตัวอ่านที่ส่งมา) · อ่าน/parse ไม่ได้ = null (fail closed) */
+function v3HashPair(headText, readWork) {
+  const hashOf = (f) => { try { return IO.prepatchHash(f()); } catch (_) { return null; } };
+  return { headHash: headText == null ? null : hashOf(() => JSON.parse(headText)), workHash: hashOf(readWork) };
+}
+
 function shipPrepatch() {
   // -z = ไม่มี quote (path มีช่องว่าง) · -uall = ไฟล์ในโฟลเดอร์ย่อยที่ยังไม่ track ขึ้นทีละไฟล์ (ไม่ยุบเป็น reports/sub/)
   const porcelain = parsePorcelainZ(run('git', ['status', '--porcelain', '-z', '--untracked-files=all', '--', 'reports']).out);
@@ -408,10 +414,9 @@ function shipPrepatch() {
     const untracked = e.isNew || e.from != null;   // rename/copy: ปลายทางไม่มีใน HEAD
     const head = untracked ? null : run('git', ['show', `HEAD:${e.path}`]);
     const fp = path.join(ROOT, e.path);
-    if (V3_REPORT_RE.test(e.path)) {   // Plan 4b: ใบ v3 เทียบ freshHash (market/_sig ไม่นับ) — parse/อ่านไม่ได้ = null → unreadable (fail closed)
-      const hashOf = (f) => { try { return IO.freshHash(f()); } catch (_) { return null; } };
-      const headHash = head && head.code === 0 ? hashOf(() => JSON.parse(head.out)) : null;
-      const workHash = fs.existsSync(fp) ? hashOf(() => IO.read(fp)) : null;
+    if (V3_REPORT_RE.test(e.path)) {   // Plan 4b/4c-prep #67: ใบ v3 เทียบ prepatchHash (market/_sig ไม่นับ · aiModel นับ) — parse/อ่านไม่ได้ = null → unreadable (fail closed)
+      const { headHash, workHash } = v3HashPair(head && head.code === 0 ? head.out : null,
+        () => { if (!fs.existsSync(fp)) throw new Error('missing'); return IO.read(fp); });   // ไฟล์หาย = null (unreadable)
       return { path: e.path, from: e.from, untracked, v3: true, headHash, workHash };
     }
     const headFooterISO = head && head.code === 0 ? ((footerDate(head.out) || {}).iso || null) : null;
@@ -470,6 +475,8 @@ function migratePlan(syms, probe) {
  *  ★ ทุกอย่างที่ล้มได้โดยไม่ต้องรันอะไร (symbol ว่าง · ไม่มี --model · แผนถูกปฏิเสธ) ล้มก่อน verify เสมอ */
 function shipMigrate(symsArg, opts) {
   const o = opts || {};
+  // Plan 4c-prep (batch runner): skipVerify = runner รัน npm run verify เองครั้งเดียวก่อน push ทุก N commit — ใช้ได้เฉพาะคู่ --no-push
+  if (o.skipVerify && !o.noPush) throw new Error('ship --migrate: skipVerify ใช้ได้เฉพาะกับ --no-push (runner verify เองก่อน push)');
   const syms = [...new Set(String(symsArg || '').split(/[\s,]+/).filter(Boolean).map((x) => x.toUpperCase()))];
   if (!syms.length) throw new Error('ship --migrate ต้องระบุ symbol อย่างน้อย 1 ตัว ("BBL CASY")');
   if (!o.model) throw new Error('ship --migrate: ไม่มี model — ต้องใส่ --model sonnet|opus (trailer ของ commit migrate ต้องตรงกับรุ่นที่รัน convert)');
@@ -480,7 +487,7 @@ function shipMigrate(symsArg, opts) {
     headHtml: run('git', ['cat-file', '-e', `HEAD:reports/${x}.html`]).code === 0, headJson: run('git', ['cat-file', '-e', `HEAD:reports/${x}.json`]).code === 0 });
   const plan = migratePlan(syms, probe);
   if (plan.refusals.length) throw new Error(plan.refusals.join('\n'));
-  verify(); keepDates();
+  if (!o.skipVerify) verify(); keepDates();
   // M-3: ไม่ stage tools/seeds.json — convert ไม่แตะสีแบรนด์ · seeds ที่สกปรกมาจาก pick-brand ของ worker ใบอื่น (ห้ามกวาดเข้า commit migrate)
   const files = plan.files.concat(['reports.json'].filter((f) => run('git', ['status', '--porcelain', '--', f]).out.trim()));
   must('git', ['add', '--', ...files], 'git add');
@@ -548,5 +555,5 @@ function status() {
   if (stale.length) console.log(`ค้างจากรอบก่อน — ยังไม่นับเป็น flag ใหม่ของรอบนี้ (${stale.length}): ${stale.join(' ')}`);
 }
 
-module.exports = { shipStock, shipPrepatch, shipMigrate, migratePlan, isMigratedDoc, filesToAdd, V3_REPORT_RE, status, commitMessage, commitArgs, trailer, resolveModel, resolveTrailer, reportAiModel,
+module.exports = { shipStock, shipPrepatch, shipMigrate, migratePlan, v3HashPair, isMigratedDoc, filesToAdd, V3_REPORT_RE, status, commitMessage, commitArgs, trailer, resolveModel, resolveTrailer, reportAiModel,
   landedOnOrigin, shipPhaseOf, rowsToHeal, reconcile, dirtyTracked, pushIfClean, shouldPush, closeIssueIfEmpty, closeIssueIfNoLlmRows, prepatchBlockers, prepatchRefusal, prepatchCandidates, parsePorcelain, parsePorcelainZ, unquotePath, pendingCommitFor, postcheckGuard, STOCK_FILES, TITLE };

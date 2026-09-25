@@ -140,7 +140,9 @@ const sameV = (a, b) => b != null && Math.abs(a - b) < 1e-9;
 function multipleSourceOf(mdesc, F, i, multiple, out) {
   const t = String(mdesc == null ? '' : mdesc);
   const multRe = () => new RegExp(MULT_TOKEN.source, 'gi');
-  const toks = [...t.matchAll(MULT_TOKEN)].map((m) => ({ at: m.index, end: m.index + m[0].length, v: parseFloat(m[1]) }));
+  // #68 (Plan 4c-prep · BDMS): ตัวคูณในลำดับลูกศร (44.4→33.8→…→21.4x) = ประวัติ ไม่ใช่ตัวคูณของขา — ไม่ใช้เป็นหลักยึดของคำมัธยฐาน
+  const inSeries = (x) => /→\s*$/.test(t.slice(Math.max(0, x.at - 3), x.at)) || /^\s*→/.test(t.slice(x.end, x.end + 3));
+  const toks = [...t.matchAll(MULT_TOKEN)].map((m) => ({ at: m.index, end: m.index + m[0].length, v: parseFloat(m[1]) })).filter((x) => !inSeries(x));
   // fix round 1 (review I-1): ลองทุก token ที่มีค่าเท่า multiple ("× P/E 32.2x = $187 — 32.2x = มัธยฐาน 5 ปี") · ไม่มีค่าเท่า = token แรก
   const eqToks = toks.filter((x) => sameV(x.v, multiple));
   const cands = eqToks.length ? eqToks : toks.length ? [toks[0]] : [null];
@@ -192,7 +194,10 @@ function medianWindowOf(seg) {
   if (fy) {
     const a = +fy[1], b = fy[2].length === 4 ? +fy[2] : Math.floor(a / 100) * 100 + +fy[2];
     const n = b - a + 1;
-    if (n >= 2 && n <= 4) return `FY${a}–FY${b}`;
+    // #68 (Plan 4c-prep · TRMB): "FY2021–23 และ FY2025" = หน้าต่างที่ข้ามปี — คงปีที่ต่อท้าย (≤40 ตัวอักษร · schema)
+    const lead = fy[0].replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const more = new RegExp('^' + lead + '\\s*(?:และ|,|\\+|/)\\s*FY\\s*(\\d{4})').exec(seg.slice(fy.index));
+    if (n >= 2 && n <= 4) return more ? `FY${a}–FY${b}, FY${more[1]}` : `FY${a}–FY${b}`;
     if (n >= 5) return null;
   }
   const y = /(?<![0-9])([2-4])\s*ปี/.exec(seg);
@@ -590,10 +595,11 @@ function assemble(parsed0, ctx) {
   const cardOpts = { currency, market: doc.market, analyst: doc.analyst, legs: doc.legs, force: new Map() };
   const setMetrics = (mc) => {
     let custom = mc.custom, cards = mc.cards;
-    mc.overflow = custom.length > 4 ? `custom cards ${custom.length} > 4 — dropped ${custom.slice(4).map((c) => `"${c.label}"`).join(', ')}` : null;
-    if (custom.length > 4) {
-      const keep = new Set(custom.slice(0, 4).map((_, i) => `custom:${i}`));
-      cards = cards.filter((c) => typeof c !== 'string' || !/^custom:/.test(c) || keep.has(c)); custom = custom.slice(0, 4);
+    const cap = S.customCap(doc);   // Plan 4c-prep D5 (spec §3.7 ง): 8 เมื่อมี meta.migratedFrom (metaOf ตั้งไว้ก่อนแล้ว) · ไม่งั้น 4
+    mc.overflow = custom.length > cap ? `custom cards ${custom.length} > ${cap} — dropped ${custom.slice(cap).map((c) => `"${c.label}"`).join(', ')}` : null;
+    if (custom.length > cap) {
+      const keep = new Set(custom.slice(0, cap).map((_, i) => `custom:${i}`));
+      cards = cards.filter((c) => typeof c !== 'string' || !/^custom:/.test(c) || keep.has(c)); custom = custom.slice(0, cap);
     }
     doc.metrics = { cards, custom: custom.length ? custom : undefined, notes: Object.keys(mc.notes).length ? mc.notes : undefined };
     if (parsed.s1hint) doc.metrics.hint = MP.htmlToProse(parsed.s1hint) || undefined;
@@ -762,4 +768,4 @@ function assemble(parsed0, ctx) {
   };
 }
 
-module.exports = { assemble, s6HintNote, guardLegs, extrasOf, analystOf, singleTarget, legsOf, weightsOf, generatedValHint, pxMetaOf, qualifierOf, hasProse, isProseToken, labelOf, multipleSourceOf };
+module.exports = { assemble, s6HintNote, guardLegs, extrasOf, analystOf, singleTarget, legsOf, weightsOf, generatedValHint, pxMetaOf, qualifierOf, hasProse, isProseToken, labelOf, multipleSourceOf, medianWindowOf };

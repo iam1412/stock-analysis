@@ -1578,6 +1578,17 @@ let v3PrepatchPromise = null;   // Plan 4a fix1 (Review Focus 3) — prep() เ�
       ok(Sh.isMigratedDoc(path.join(V3DIR, 'MIG.json')) === true, 'v3/ship (4b fix M-2): isMigratedDoc — มี meta.migratedFrom = true'); fs.unlinkSync(path.join(V3DIR, 'MIG.json')); }
     const mp2 = Sh.migratePlan(['A', 'B'], (s) => ({ A: { json: false, html: true, headHtml: true, headJson: false }, B: { json: true, html: true, headHtml: true, headJson: false } })[s]);
     ok(!mp2.files.length && /A: ไม่มี reports\/A\.json/.test(mp2.refusals[0]) && /B: reports\/B\.html ยังอยู่/.test(mp2.refusals[1]), 'v3/ship (4b): migratePlan — ยังไม่ convert / .html ยังอยู่ = refuse', JSON.stringify(mp2));
+    // Plan 4c-prep Task 1 (#67): คู่ hash ของ ship --prepatch ใช้ IO.prepatchHash — แก้ meta.aiModel อย่างเดียว = blocked
+    const zts = JSON.parse(fs.readFileSync(path.join(ROOT, 'test', 'fixtures', 'v3', 'ZTS-real.json'), 'utf8'));
+    const hp = Sh.v3HashPair(JSON.stringify(zts), () => ({ ...zts, meta: { ...zts.meta, aiModel: 'Claude Opus 5' } }));
+    const hpM = Sh.v3HashPair(JSON.stringify(zts), () => ({ ...zts, market: { ...zts.market, px: zts.market.px * 1.01 } }));
+    const hpBad = Sh.v3HashPair('{not json', () => zts);
+    const pb67 = Sh.prepatchBlockers([{ path: 'reports/ZTS.json', untracked: false, v3: true, ...hp }, { path: 'reports/OGE.json', untracked: false, v3: true, ...hpM }]);
+    ok(hp.headHash !== hp.workHash && pb67.blocked.join(',') === 'ZTS' && hpBad.headHash === null,
+      'v3/ship (4c-prep #67): aiModel-only edit = blocked · market-only = passes · HEAD JSON เสีย = null (unreadable)', JSON.stringify({ hp, hpM, pb67 }));
+    // skipVerify (batch runner): ใช้ได้เฉพาะคู่ --no-push — ไม่งั้นล้มก่อนรันอะไร
+    let sv = ''; try { Sh.shipMigrate('BBL', { model: 'opus', skipVerify: true }); } catch (e) { sv = e.message; }
+    ok(/skipVerify ใช้ได้เฉพาะกับ --no-push/.test(sv), 'v3/ship (4c-prep): shipMigrate skipVerify ต้องคู่ noPush (runner verify เองก่อน push)', sv);
     // ship --migrate: ล้มก่อน verify ทุกทาง (ห้ามรัน npm run verify/convert จริงในเทส) — ไม่มี symbol / ไม่มี --model / ใบไม่มีจริง
     const thr = (fn) => { try { fn(); return null; } catch (e) { return e.message; } };
     ok(/^ship --migrate: โมเดล "haiku" ไม่รู้จัก/.test(thr(() => Sh.shipMigrate('ZZNOPE1', { model: 'haiku', noPush: true })) || ''), 'v3/ship (4b fix N-1): โมเดลไม่รู้จัก → ข้อความขึ้นต้น "ship --migrate:" ไม่ใช่ "migrate:" เหมือน symbol');
