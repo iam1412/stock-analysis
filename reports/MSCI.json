@@ -1,0 +1,264 @@
+{
+  "v": 3,
+  "symbol": "MSCI",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "MSCI Inc.",
+    "exchange": "NYSE",
+    "sub": "ดัชนีหุ้น (MSCI Index — benchmark ETF/กองทุนทั่วโลก) • Analytics (บริหารความเสี่ยงพอร์ต/factor) • ESG & Climate • Private Assets",
+    "headerTags": [
+      "Financials · Capital Markets",
+      "ผู้ให้บริการดัชนี+วิเคราะห์ความเสี่ยงระดับสถาบัน"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis.com",
+      "Google Finance",
+      "MSCI IR (SEC 8-K)"
+    ],
+    "themeLegacy": {
+      "accent": "#1a4f8a",
+      "accentDark": "#10396b",
+      "darkGrad": "linear-gradient(135deg,#0a1e3a 0%,#0f2d52 55%,#1a4070 140%)",
+      "glow": "rgba(26,79,138,0.32)",
+      "subColor": "#7eb3e0",
+      "headerMuted": "#80aad5",
+      "verdictText": "#d0e4f7",
+      "vcellLabel": "#95bbdc"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-22T07:22:55+07:00",
+      "v2Hash": "fee956356f23"
+    }
+  },
+  "market": {
+    "px": 556.08,
+    "priceDate": "2026-09-24",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          588.55
+        ],
+        [
+          "พ.ย.25",
+          563.72
+        ],
+        [
+          "ธ.ค.25",
+          573.73
+        ],
+        [
+          "ม.ค.26",
+          609.22
+        ],
+        [
+          "ก.พ.26",
+          571.83
+        ],
+        [
+          "มี.ค.26",
+          539.01
+        ],
+        [
+          "เม.ย.26",
+          591.41
+        ],
+        [
+          "พ.ค.26",
+          631.38
+        ],
+        [
+          "มิ.ย.26",
+          560.04
+        ],
+        [
+          "ก.ค.26",
+          572.24
+        ],
+        [
+          "ส.ค.26",
+          570.64
+        ],
+        [
+          "ก.ย.26",
+          556.08
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 501.08,
+      "hi": 644.77
+    }
+  },
+  "fundamentals": {
+    "eps": 18.26,
+    "dps": 8.2,
+    "shares": 72800000,
+    "peAvg5y": 39.4,
+    "opMargin": 55.7,
+    "netIncome": 1330000000,
+    "bvps": -38.05,
+    "revenue": 3330000000,
+    "beta": 1.26,
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation",
+      "inputs": {
+        "multiple": 39.4,
+        "multipleSource": "median5y"
+      },
+      "note": "มัธยฐาน P/E ย้อนหลัง 5 ปีงบ (FY2021–25, ราคาเฉลี่ยรายปี ÷ EPS diluted; กรอบ 35.9–61.9x) มาจากประวัติของหุ้นเอง ไม่ได้ลอกจาก P/E ปัจจุบัน 30.3x",
+      "family": "market"
+    },
+    {
+      "method": "dcf",
+      "label": "DCF (FCF/หุ้น 10 ปี)",
+      "inputs": {
+        "stages": [
+          {
+            "years": 5,
+            "g": 10
+          },
+          {
+            "years": 5,
+            "g": 7
+          }
+        ],
+        "tg": 4,
+        "r": 9,
+        "rfCurrency": "USD"
+      },
+      "override": {
+        "fcf": 1598000000,
+        "netDebt": 0,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "TV $1,033 ที่ปี 10 · สมมติฐานของเราเอง · PV กระแส 10 ปี $222 + PV TV $436 · TV ~66% ของมูลค่า",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "peAvg5y",
+      {
+        "key": "opMargin",
+        "tone": "pos"
+      },
+      "netIncome",
+      "eps",
+      "custom:0",
+      {
+        "key": "bvps",
+        "tone": "neg"
+      },
+      "revenue",
+      "custom:1",
+      "yield",
+      "beta"
+    ],
+    "custom": [
+      {
+        "label": "ROA",
+        "value": "~24.24%",
+        "note": "ทำเงินสูงจากสินทรัพย์ (ธุรกิจดัชนีใช้ทุนน้อย)",
+        "tone": "pos"
+      },
+      {
+        "label": "อัตรากำไรจากการดำเนินงาน",
+        "value": "55.7%",
+        "note": "Recurring subscription ~95% retention · net new sales ชะลอบางกลุ่ม"
+      }
+    ],
+    "notes": {
+      "mcap": "~72.8 ล้านหุ้น",
+      "pe": "สมเหตุสมผลสำหรับ wide-moat",
+      "peAvg5y": "กรอบ 35.9–61.9x · P/E ปัจจุบันต่ำกว่ามัธยฐานชัดเจน",
+      "opMargin": "world-class แต่บาง segment เริ่มถูกกดดัน",
+      "netIncome": "▲ รายได้ +12.2% YoY (Q2)",
+      "eps": "FY2025 $15.69 · Q2'26 adj. EPS $4.94 (+18.5% YoY) · CAGR ~14%",
+      "bvps": "Equity ติดลบจากซื้อหุ้นคืนหนัก — ไม่ใช้ P/BV",
+      "revenue": "▲ +12.2% YoY (Q2) · RevCAGR ~12%",
+      "yield": "โต ~10%/ปี · Payout ~45%",
+      "beta": "ผันผวนมากกว่าตลาดเล็กน้อย"
+    },
+    "hint": "TTM สิ้นสุด Q2 2026 + งบ FY2025"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 5,
+        "exitMultiple": 23,
+        "divCum": 25,
+        "desc": "net new sales ชะลอต่อเนื่อง / ดอกเบี้ยสูงนาน"
+      },
+      {
+        "growth": 12,
+        "exitMultiple": 29,
+        "divCum": 27,
+        "desc": "ETF/ESG ฟื้นตัว เติบโตต่อเนื่องหลังชะลอชั่วคราว"
+      },
+      {
+        "growth": 16,
+        "exitMultiple": 33,
+        "divCum": 28,
+        "desc": "Private assets + AI analytics breakout"
+      }
+    ],
+    "exitDp": 0,
+    "note": "<b>หมายเหตุ:</b> หลังงบ Q2 2026 ปรับสมมติฐาน growth ลงจากเดิม (Bear 8%→5%, Base 14%→12%, Bull 18%→16%/ปี) สะท้อนสัญญาณ net new recurring subscription sales ชะลอในกลุ่ม Analytics/Sustainability · Bear scenario ยังคง floor ใกล้เคียงทุนเดิม (รวมปันผล ~$25) จากธุรกิจ subscription 95% retention · Base scenario +40% ใน 3 ปี (~11.8%/ปี) · ตัวเลขยังไม่รวม Buyback ที่ช่วยหนุน EPS เพิ่ม ~2–3%/ปี"
+  },
+  "analyst": {
+    "target": 692,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ราคา MSCI เคลื่อนไหวใน <b>กรอบ $539–$631</b> ตลอด 12 เดือน จุดสูงสุดที่ <b>$631 (พ.ค. 2026)</b> ขับเคลื่อนด้วยการเติบโตของ AUM กองทุน ETF อ้างอิง MSCI Index ก่อนร่วงแรงปลายเดือน ก.ค. 2026 หลังประกาศงบ Q2 2026 (21 ก.ค.) — EPS/รายได้ต่ำกว่าคาดเล็กน้อย ($4.94 vs consensus $5.03) บวกกับปรับเพิ่มประมาณการค่าใช้จ่ายปี 2026 และยอดขาย net new recurring subscription ชะลอตัวแรงใน กลุ่ม Analytics (−24.3%) และ Sustainability (−62%) ทำให้หุ้นร่วงเกือบ 12% ในวันเดียว — ราคาปัจจุบันต่ำกว่า Fair Value $585 อยู่ ~5.8%",
+    "valuation": "<b>หมายเหตุ:</b> หลังงบ Q2 2026 (ประกาศ 21 ก.ค. 2026) EPS TTM ขยับขึ้นเป็น {{eps}} แต่หุ้นร่วงเกือบ 12% ในวันประกาศ จาก EPS/รายได้ต่ำกว่าคาดเล็กน้อย ปรับเพิ่มประมาณการค่าใช้จ่ายปี 2026 และ net new recurring subscription sales ชะลอในกลุ่ม Analytics/Sustainability · รอบนี้จัดองค์ประกอบ FV ใหม่: ตัดขา forward P/E ที่ถอด EPS จากราคา ÷ fwd P/E (ผูกราคาวันนี้) ออก และตัด DCF เดิมที่ตรวจซ้ำไม่ได้ · ใช้ (1) P/E × มัธยฐานย้อนหลัง 5 ปีงบ (รวมช่วง 2021–22 ที่ตัวคูณสูง 44–62x จึงเป็นขาที่เอนขึ้น) และ (2) DCF ที่ระบุตารางกระแสเงินสดครบ ทั้งสองขาห่างกันไม่ถึง 2 เท่า · <b>FV เฉลี่ย {{fv}} = MOS {{mos}}</b> จากราคาปัจจุบัน {{px}} · ความไว: หากใช้ P/E ต่ำสุดในประวัติ 35.9x (= $656) FV จะเป็น ~$657 (ต่ำกว่า FV หลักราว $32) · เป้าเฉลี่ยนักวิเคราะห์ $692 (Buy) แสดงเป็นบริบทเปรียบเทียบเท่านั้น ไม่ใช่ขาของ FV",
+    "gauge": "ราคาปัจจุบัน <b>{{px}}</b> อยู่ <b>ต่ำกว่า Fair Value {{fv}}</b> (MOS {{mos}}) เริ่มใกล้โซน MOS 20% หลัง หุ้นร่วงแรงจากงบ Q2 2026 โซน MOS 20% ที่ <b>{{mos20}}</b> และ MOS 30% ที่ <b>{{mos30}}</b> เป็นจุดสะสมน่าสนใจ เป้าเฉลี่ยนักวิเคราะห์ <b>$692</b> (Rating: Buy) สูงกว่า FV ของเรา สะท้อนมุมมองนักวิเคราะห์ที่ยังเชื่อมั่นการเติบโตระยะยาว",
+    "mos": "MOS ปานกลาง — ราคาต่ำกว่า Fair Value ใกล้โซน 20% เริ่มมีส่วนเผื่อความปลอดภัยพอสมควร",
+    "verdictHeadline": "ธุรกิจ wide-moat คุณภาพสูง — ราคาร่วงหลังงบ Q2 เริ่มมี MOS เล็กน้อย",
+    "verdictBody": "MSCI Inc. เป็น <b>franchise ระดับโลกที่แทบแทนที่ไม่ได้</b> — ดัชนี MSCI เป็น benchmark มาตรฐานสำหรับ ETF กองทุนมูลค่ากว่า $15 ล้านล้านทั่วโลก ธุรกิจ subscription-based ที่มี retention rate ~95% สร้างรายได้ recurring ที่มั่นคงและเติบโต ~12%/ปี งบ Q2 2026 (21 ก.ค.) ยังโตแรง (EPS TTM {{eps}}, +18.5% YoY adj.) แต่หุ้นร่วงเกือบ 12% เพราะตลาดกังวล net new subscription sales ชะลอ + ปรับเพิ่มค่าใช้จ่ายปี 2026 มากกว่าพอใจกับกำไรที่ยังโต ราคาปัจจุบัน {{px}} ต่ำกว่า Fair Value {{fv}} (MOS {{mos}}) P/E ~30.3x ต่ำกว่ามัธยฐาน 5 ปีงบที่ ~39.4x ชัดเจน",
+    "strategy": "ราคาปัจจุบันต่ำกว่า Fair Value — เริ่มมี MOS ใกล้เกณฑ์ 20% ของ value investor เคร่งครัด โซนน่าสนใจยิ่งขึ้นที่ <b>< {{mos20}} (MOS 20%)</b> หรือ <b>< {{mos30}} (MOS 30%)</b> หากตลาดยังกังวล net new sales ต่อ สำหรับ quality-growth investor ที่ให้น้ำหนักความทนทานธุรกิจ ราคานี้เริ่มน่าสนใจทยอยสะสมได้แล้ว",
+    "disclaimerSources": "แหล่งข้อมูล: StockAnalysis.com, Google Finance, MSCI Investor Relations / SEC 8-K, digrin.com (ราคาย้อนหลัง) — ตรวจสอบ ≥2 แหล่งอิสระ ณ 21 ก.ย. 2026"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 2 วิธี",
+    "disclaimerAssump": " P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r)"
+  },
+  "catalysts": [
+    "<b>ETF & Passive Investing Megatrend:</b> AUM กองทุน ETF อ้างอิง MSCI Index เติบโตต่อเนื่อง ค่าธรรมเนียมอ้างอิงขนาด AUM โดยตรง",
+    "<b>ESG & Climate Segment:</b> ความต้องการ ESG rating/data จากผู้จัดการสินทรัพย์ทั่วโลก เร่งตัวจากกฎระเบียบ EU/SFDR",
+    "<b>Private Assets Expansion:</b> MSCI ขยายเข้าตลาด private equity/infrastructure ที่โตเร็ว — Revenue ส่วนนี้ยังเล็กแต่ potential สูง",
+    "<b>AI-Powered Analytics:</b> ใช้ AI เสริม Risk Analytics platform ดึงดูดลูกค้าสถาบันใหม่ เพิ่ม upsell บน existing base",
+    "<b>Pricing Power สูง:</b> ~95% retention rate + switching cost สูงมาก ทำให้ขึ้นราคา subscription ปีละ 4–6% ได้อย่างสม่ำเสมอ",
+    "<b>Buyback หนัก:</b> MSCI ซื้อหุ้นคืนต่อเนื่อง ลด share count ~3–4%/ปี หนุน EPS per share เติบโตเร็วกว่า net income"
+  ],
+  "risks": [
+    "<b>Net New Sales ชะลอตัว:</b> Q2 2026 net new recurring subscription sales ลด −24.3% (Analytics) และ −62% (Sustainability) — สัญญาณเติบโตระยะสั้นแผ่วลงแม้ EPS ยังโต",
+    "<b>ตลาดหุ้นซบเซา:</b> รายได้จาก index licensing ผูกกับ AUM — bear market ขนาดใหญ่กดรายได้ได้ 15–25% โดยไม่ขึ้นอยู่กับ MSCI",
+    "<b>การแข่งขันจากคู่แข่ง:</b> S&P Dow Jones Indices, FTSE Russell แข่งขันในดัชนีระดับโลก มีโอกาสที่ลูกค้าบางรายจะ switching",
+    "<b>ค่าใช้จ่ายเพิ่ม + ดอกเบี้ยสูงต่อเนื่อง:</b> ปรับเพิ่ม guidance ค่าใช้จ่ายปี 2026 + หนี้สินสูง ~$6.5B (leverage หนักจาก buyback) กดดัน margin/ต้นทุนการเงิน",
+    "<b>Regulatory Risk ESG:</b> การถกเถียงเรื่อง greenwashing / กฎระเบียบ ESG ที่เปลี่ยนแปลงอาจกระทบ ESG segment",
+    "<b>Valuation Re-rating:</b> P/E ปัจจุบัน ~30x — หากตลาดลด valuation multiple ให้ data company ต่อ ราคาปรับลงได้อีกแม้กำไรโต"
+  ],
+  "extras": [],
+  "_sig": "sha256:9a0537aead401f8933737d722c9c8e0498dce890a51ef7b44d2ca55dcb727b0f"
+}
