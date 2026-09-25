@@ -1,0 +1,255 @@
+{
+  "v": 3,
+  "symbol": "EME",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "EMCOR Group Inc.",
+    "exchange": "NYSE",
+    "sub": "Specialty construction & facilities services • Electrical & mechanical systems • Data center buildout • Healthcare & industrial • US infrastructure onshoring",
+    "headerTags": [
+      "Specialty Construction",
+      "Infrastructure Services"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis",
+      "Yahoo Finance",
+      "EMCOR Q2 2026 Earnings Release"
+    ],
+    "themeLegacy": {
+      "accent": "#D4291A",
+      "accentDark": "#A01E10",
+      "darkGrad": "linear-gradient(135deg,#1a0a08 0%,#2d1210 50%,#1a0a08 100%)",
+      "glow": "rgba(212,41,26,0.35)",
+      "subColor": "#f5a99a",
+      "headerMuted": "rgba(245,169,154,0.7)",
+      "verdictText": "#ffd5cf",
+      "vcellLabel": "#f5a99a"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T14:08:46+07:00",
+      "v2Hash": "d2bf568010d6"
+    }
+  },
+  "market": {
+    "px": 751.96,
+    "priceDate": "2026-09-24",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          675.78
+        ],
+        [
+          "พ.ย.25",
+          615.07
+        ],
+        [
+          "ธ.ค.25",
+          611.79
+        ],
+        [
+          "ม.ค.26",
+          720.73
+        ],
+        [
+          "ก.พ.26",
+          724.62
+        ],
+        [
+          "มี.ค.26",
+          738.31
+        ],
+        [
+          "เม.ย.26",
+          891.67
+        ],
+        [
+          "พ.ค.26",
+          826.82
+        ],
+        [
+          "มิ.ย.26",
+          829.88
+        ],
+        [
+          "ก.ค.26",
+          797.43
+        ],
+        [
+          "ส.ค.26",
+          734.54
+        ],
+        [
+          "ก.ย.26",
+          751.96
+        ]
+      ],
+      "gridFmt": "v.toFixed(0)",
+      "dataFmt": "d[1].toFixed(2)"
+    },
+    "range52w": {
+      "lo": 564.92,
+      "hi": 951.96
+    }
+  },
+  "fundamentals": {
+    "eps": 32.14,
+    "dps": 1.6,
+    "bvps": 87.01,
+    "shares": 44109901,
+    "epsForward": 32.63,
+    "netIncome": 1439000000,
+    "revenue": 18600000000,
+    "ebitda": 2135000000,
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation (TTM)",
+      "inputs": {
+        "multiple": 16.5,
+        "multipleSource": "median5y"
+      },
+      "note": "16.5x คือมัธยฐาน P/E ย้อนหลัง 5 ปีของ EME ที่วัดจากราคาเฉลี่ยรายปี ÷ EPS (ช่วง 14.3–19.0x) ไม่ได้มาจาก P/E ปัจจุบัน",
+      "family": "market"
+    },
+    {
+      "method": "pe",
+      "label": "Forward P/E (FY2026e)",
+      "inputs": {
+        "multiple": 16.5,
+        "multipleSource": "median5y",
+        "base": "epsForward"
+      },
+      "override": {
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2",
+        "epsForward": 32.85
+      },
+      "baseLabel": "FY2026e",
+      "note": "consensus FY2026e จาก StockAnalysis · ตัวคูณมัธยฐานเดียวกัน จึงเป็นตระกูลเดียวกับวิธีที่ 1 (นับเป็นเสียงเดียว)",
+      "family": "market"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      {
+        "key": "peForward",
+        "tone": "none"
+      },
+      "pbv",
+      "netIncome",
+      "eps",
+      "bvps",
+      "custom:0",
+      "revenue",
+      "custom:1",
+      "yield",
+      "custom:2"
+    ],
+    "custom": [
+      {
+        "label": "ROE / FCF Yield",
+        "value": "~40.3% / 3.5%",
+        "note": "FCF TTM ~$1,171M แข็งแกร่ง",
+        "tone": "pos"
+      },
+      {
+        "label": "Gross / Op Margin",
+        "value": "19.4% / 9.6%",
+        "note": "Op margin ขยายตัวต่อเนื่อง"
+      },
+      {
+        "label": "EV/EBITDA",
+        "value": "~15.3x",
+        "note": "EBITDA ~$2,135M (ประมาณการเดิม ยังไม่ได้ตรวจซ้ำ)"
+      }
+    ],
+    "notes": {
+      "mcap": "หุ้น 44.11 ล้านหุ้น",
+      "pe": "Premium vs มัธยฐาน 5 ปีของ EME 16.5x",
+      "peForward": "ราคา ÷ EPS guidance กลาง $32.63 (FY2026 $32.00–33.25)",
+      "pbv": "BVPS ~{{bvps}}",
+      "netIncome": "+34.8% YoY (Q2) · Margin ~7.7%",
+      "eps": "FY2026 Guidance $32.00–33.25 (ปรับเพิ่ม)",
+      "bvps": "D/E ต่ำ 0.13x",
+      "revenue": "+18.9% YoY (TTM)",
+      "yield": "($0.40/ไตรมาส)"
+    },
+    "hint": "ข้อมูล TTM ณ Q2 2026 (30 ก.ค. 2569)"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 5,
+        "exitMultiple": 14.3,
+        "divCum": 4.8,
+        "desc": "การลงทุน data center ชะลอจาก AI capex correction P/E ถอยไปต่ำสุดของช่วง 5 ปี (14.3x)"
+      },
+      {
+        "growth": 14,
+        "exitMultiple": 16.5,
+        "divCum": 4.8,
+        "desc": "Data center + healthcare + reshoring เติบโตต่อเนื่อง P/E กลับสู่มัธยฐาน 5 ปี (16.5x) RPO $17.14B หนุน visibility"
+      },
+      {
+        "growth": 20,
+        "exitMultiple": 19,
+        "divCum": 4.8,
+        "desc": "AI infrastructure boom เร่งตัวเกินคาด + US onshoring เต็มสูบ + margin expansion ต่อเนื่อง P/E ยืนที่ระดับสูงสุดของช่วง 5 ปี (19.0x)"
+      }
+    ],
+    "exitDp": 1,
+    "note": "สมมติฐาน Base case: EPS +14%/ปี สอดคล้องกับ guidance FY2026 ใหม่ $32.00–33.25 และ trajectory การเติบโตหลัง Q2 2026 บีตคาดอย่างมาก · P/E ออกทั้งสามฉากอิงช่วงที่วัดได้ 5 ปี (ต่ำสุด 14.3x / มัธยฐาน 16.5x / สูงสุด 19.0x) ไม่ได้ยึด P/E ปัจจุบัน · ปันผลสะสม 3 ปี ~$4.80 (yield ต่ำ total return หลักมาจาก capital gain) · Bear case สะท้อนความเสี่ยงหาก hyperscaler ลดการลงทุน data center หรือ margin ถูกกดจากการแข่งขัน · Bull case เป็นไปได้หาก AI infrastructure demand เร่งตัวกว่าคาดต่อเนื่องและ EME ได้ market share เพิ่ม"
+  },
+  "analyst": {
+    "target": 1033.29,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "EME ฟื้นตัวแรงจากจุดต่ำสุด ~$611 ในธ.ค. 2568 (ความกังวลเรื่องชะลอตัว) พุ่งทะลุ $891 ในเม.ย. 2569 หลังรายงาน Q1 2026 แข็งแกร่ง จากนั้นแกว่งและปรับฐานลงมาที่ {{px}} ท่ามกลางรายงาน Q2 2026 (30 ก.ค. 2569) ที่ EPS $9.06 บีตคาดการณ์ (+34.8% YoY) revenue $5.15B (+20% YoY) และปรับเพิ่ม guidance FY2026 เป็น $32.00–33.25 ขับเคลื่อนจาก data center construction boom (AI infrastructure) ผลตอบแทนรอบปี ~+11% เทียบจุดเริ่มกราฟ และยังต่ำกว่า 52w high $951.96",
+    "valuation": "⚠ มูลค่านี้ตั้งอยู่บน<b>ตระกูล P/E เพียงตระกูลเดียว</b> (TTM $530 และ FY2026e $542 เฉลี่ยเป็น FV {{fv}}) เพราะขา EV/EBITDA เดิมไม่มีมัธยฐานที่วัดได้ และ EBITDA ตรวจซ้ำไม่ได้ จึงตัดออกแทนที่จะเดาตัวคูณ · เป้าเฉลี่ยนักวิเคราะห์ {{analyst.target}} ไม่เป็นส่วนของ FV (ใช้เป็นบริบทเท่านั้น) · ความไว: ตัวคูณต่ำสุด–สูงสุดในช่วง 5 ปี (14.3x–19.0x) ให้ FV ประมาณ {{fvLow}}–{{fvHigh}} ซึ่งต่ำกว่าราคาตลาดทั้งช่วง · ส่วนต่างขนาดนี้ยังไม่ผ่านการยืนยันด้วยวิธีอื่น: มัธยฐานนี้มาจากช่วงที่ EPS โตเร็วและ ROE ต่ำกว่าปัจจุบัน (ROE 17.8%→40.3%) ตลาดจึงจ่าย P/E ~23x ให้ EPS ที่โตเร็วต่อเนื่อง และ RPO สถิติ $17.14B ค้ำ visibility — อ่านเป็นสัญญาณว่าราคาแพงเทียบประวัติ ไม่ใช่ราคาเป้าที่แม่นยำ",
+    "gauge": "ณ ราคา {{px}} EME trade สูงกว่า fair value {{fv}} อย่างมีนัยสำคัญ (MOS {{mos}}) นักวิเคราะห์ 7 ราย consensus \"Buy\" เป้าเฉลี่ย {{analyst.target}} ({{analyst.pct}}) สะท้อนมุมมองบวกต่อ data center backlog RPO สถิติ $17.14B และ guidance FY2026 ที่ปรับเพิ่มเป็น $32.00–33.25 · เป้านักวิเคราะห์เป็นเพียงบริบท ไม่ได้อยู่ใน FV · หุ้นยังอยู่ใต้ 52w high $951.96 — เหมาะสำหรับนักลงทุนที่เชื่อใน AI infrastructure demand story ระยะยาวมากกว่า value play",
+    "mos": "ราคาสูงกว่า Fair Value — ไม่มี Margin of Safety ณ ราคาปัจจุบัน",
+    "verdictHeadline": "EMCOR: ธุรกิจดีเยี่ยม แต่ราคา Premium — เหมาะซื้อในจังหวะปรับฐาน",
+    "verdictBody": "EMCOR Group คือผู้นำ specialty construction ที่ได้ประโยชน์อย่างชัดเจนจาก megatrend AI data center, US manufacturing reshoring และ healthcare expansion ผลประกอบการ Q2 2026 (30 ก.ค. 2569) EPS $9.06 บีตคาดการณ์ (+34.8% YoY) revenue $5.15B (+20% YoY) operating income +32% YoY และ RPO ทำสถิติสูงสุด $17.14B บริษัทปรับเพิ่ม guidance FY2026 เป็น $32.00–33.25 สะท้อน execution ที่แข็งแกร่งต่อเนื่อง ROE ~40% FCF margin แข็งแกร่ง ทำให้ fundamentals น่าประทับใจ อย่างไรก็ตาม ณ ราคา {{px}} หุ้นเทรดที่ ~23x P/E สูงกว่ามัธยฐาน 5 ปีของตัวเอง (16.5x) FV ตามตระกูล P/E ที่วัดได้ {{fv}} จึงต่ำกว่าราคา ({{mos}}) และไม่มี Margin of Safety — ตัวเลขนี้อิงตระกูลเดียวและอ่านเป็นสัญญาณว่าราคาแพงเทียบประวัติ ไม่ใช่เป้าแม่นยำ นักวิเคราะห์ consensus Buy เป้าเฉลี่ย {{analyst.target}} (ไม่ใช่ส่วนของ FV) risk/reward ดีที่สุดเมื่อราคาปรับฐานเข้าใกล้กรอบ FV",
+    "strategy": "EME เป็น high-quality compounder ใน structural growth themes แต่ราคาปัจจุบันสูงกว่า fair value — แนะนำ <b>Watch & Wait</b> รอจังหวะปรับฐานเข้าใกล้กรอบ FV ({{fvLow}}–{{fvHigh}}) ก่อนสะสม · จุดซื้อ value ที่ดีคือ {{mos20}} (MOS 20%) และ {{mos30}} (MOS 30%)",
+    "disclaimerSources": "ที่มา: StockAnalysis.com, Yahoo Finance, EMCOR Q2 2026 Earnings Release (30 ก.ค. 2569) — ตรวจสอบ ≥ 3 แหล่งอิสระ ราคาต่างกัน <2%"
+  },
+  "text": {
+    "valHint": "ตระกูล P/E ตระกูลเดียว"
+  },
+  "catalysts": [
+    "<b>AI Data Center Boom:</b> ความต้องการ electrical/mechanical systems ในศูนย์ข้อมูล AI พุ่งสูง hyperscaler (AWS, Microsoft, Google) ลงทุนหลัก EME ได้ประโยชน์โดยตรง backlog ทำสถิติสูงสุด",
+    "<b>US Manufacturing Reshoring:</b> นโยบาย CHIPS Act + IRA ดึงโรงงานกลับสหรัฐ EME รับงานก่อสร้างโรงงาน semiconductor, EV battery ขนาดใหญ่",
+    "<b>Healthcare Infrastructure:</b> โรงพยาบาลและศูนย์การแพทย์ขยายตัวต่อเนื่อง EME มีความเชี่ยวชาญ electrical/HVAC/fire protection สำหรับสถานพยาบาล",
+    "<b>Pricing Power & Margin Expansion:</b> ความต้องการสูงกว่าอุปทานแรงงานช่างฝีมือ ทำให้ EME มีอำนาจในการตั้งราคา operating income Q2 2026 โต +32% YoY เร็วกว่า revenue +20% YoY สะท้อน operating leverage แข็งแกร่ง",
+    "<b>Strong Free Cash Flow:</b> FCF TTM ~$1,161M ใช้ buyback หุ้น (shares ลดจาก ~50M → 44M) + เพิ่มปันผล เพิ่ม shareholder value",
+    "<b>Record Backlog:</b> คำสั่งงาน (RPO) ทำสถิติสูงสุดใหม่ที่ $17.14B (Q2 2026) revenue visibility สูงใน 12-18 เดือนข้างหน้า"
+  ],
+  "risks": [
+    "<b>Hyperscaler CapEx Cycle Risk:</b> หาก AI bubble แตกหรือ hyperscaler ลดงบลงทุน data center EME จะได้รับผลกระทบทันที เพราะ data center คือ driver หลักในปัจจุบัน",
+    "<b>Valuation Premium:</b> ราคาปัจจุบัน {{px}} (~23x P/E เทียบมัธยฐาน 5 ปี 16.5x) ไม่มี Margin of Safety vs fair value {{fv}} หากการเติบโตชะลอจะถูก de-rate รุนแรง",
+    "<b>Labor Shortage:</b> แรงงานช่างไฟฟ้า/เครื่องกลขาดแคลน อาจกดดัน margin หรือจำกัดความสามารถในการรับงานเพิ่ม",
+    "<b>Interest Rate Sensitivity:</b> ดอกเบี้ยสูงอาจชะลอโครงการก่อสร้างภาคเอกชน/อสังหาฯ กระทบ segment อื่นที่ไม่ใช่ data center",
+    "<b>Project Execution Risk:</b> งาน specialty construction มีความเสี่ยง cost overrun โดยเฉพาะโครงการขนาดใหญ่ที่ราคาวัสดุผันผวน",
+    "<b>Competition:</b> Comfort Systems (FIX), Quanta Services (PWR) แข่งขันในตลาดเดียวกัน อาจกดดัน pricing ในระยะยาว"
+  ],
+  "extras": [],
+  "_sig": "sha256:28d8bf67326e773b743be06b9cacebf4a58a862efae3933b459d1725d958e463"
+}
