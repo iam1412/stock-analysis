@@ -441,8 +441,9 @@ CLI: `node test/check-v3.js [SYM | path.json | dir/*.json …]` (ไม่ใส
 |---|---|---|
 | E50 | error | `_sig` ตรงเนื้อไฟล์ — ไฟล์ต้องเขียนผ่าน `tools/v3/io.js` เท่านั้น |
 | E51 | error | สคีมา v3 + `compute` + render สำเร็จ + prose ไม่มีแท็กนอก `<b> <i> <br>` + หน้าที่ render ไม่มีคำ `NaN`/`Infinity`/`undefined` หลุด (backstop ของ guard ต่อการ์ด · สแกนเนื้อหน้าไม่รวม `<script>`/`<style>` · คำที่ผู้เขียนพิมพ์เองเช่น CHKP "Infinity Platform" ไม่นับ — ตรวจด้วยการ render ซ้ำหลังทำให้คำในใบเป็นกลาง) · **Plan 2b**: ช่องข้อความใดมี `{{rd:…}}` (ไวยากรณ์ v2) · ค่าใดยังเป็น sentinel `TODO…` ที่ `report.js init` วางไว้ (ช่องตัวเลขที่ยังเป็นสตริงด้วย) · error เชิงความหมาย (ฐานฉาก/สีแบรนด์/extrasRef/'current'/ค่าขา) รายงานครบทุกข้อในครั้งเดียวผ่าน `C.semanticErrors()` ก่อน compute |
-| E52 | error | ขา `declared` (sotp/nav) อ้างตารางที่รวมยอดได้ · แถว total = Σ ภายใต้การปัด · ยอด × fx = ค่าขา ±1% · ขา declared อื่นต้องมีเหตุผลใน note |
+| E52 | error | ขา `declared` (sotp/nav) อ้างตารางที่รวมยอดได้ (ใบ migrate ที่หน้า v2 ไม่มีตาราง = ใช้กติกา note · Plan 4c-transcribe) · แถว total = Σ ภายใต้การปัด · ยอด × fx = ค่าขา ±1% · ขา declared อื่นต้องมีเหตุผลใน note |
 | E17 | error | ≥2 ขา `role:"fv"` (ขา context ไม่นับ — spec §13 ข้อ 4) |
+| W33 | warn | ใบ migrate (`meta.migratedFrom`) ที่ผู้เขียน v2 ประกาศขา fv ขาเดียว — แทน E17 (ถอดความเพิ่มขาไม่ได้ · Plan 4c-transcribe) · 0 ขา = E17 เสมอ · ใบ NEW = E17 |
 | E27 / W09 | error / warn | ความสดของ `market.priceDate` (120 / 45 วัน) |
 | W07 | warn | P/E · P/BV · yield · ROE ผิดวิสัย (เกณฑ์เดียวกับ v2) |
 | W18 / W25 | warn | ตัวคูณเป้าห่างตัวคูณปัจจุบัน / forward ≤7% — คำนวณจาก `legs[].inputs` ไม่ใช่ regex |
