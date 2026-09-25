@@ -186,7 +186,7 @@ EOF
 
 **Interfaces:**
 - Consumes: `RS.list(dir)` → `[{ symbol, v3 }]`; `RC.lightViolations(before, after)` (unchanged).
-- Produces: `listReportsFS(dir)` returns every symbol (v2 + v3), sorted · `v3Lines(rows)` text: `` v3 <SYM>: ราคายังไม่สด → controller pre-patch มือ `node tools/update-prices.js --write --force <SYM>` (pre-patch อัตโนมัติของใบ v3 = Plan 4b) · แล้ว npm run queue -- prep <SYM> ตามปกติ (worker: report.js export/save — SKILL STEP 5U) `` (exact string used by the test below).
+- Produces: `listReportsFS(dir)` returns every symbol (v2 + v3), sorted · `v3Lines(rows)` **branches on bucket (fix round 1 after review — the single string below was a plan defect)**: PREPATCH → `` v3 <SYM>: flip ในย่าน → controller pre-patch มือ `node tools/update-prices.js --write --force <SYM>` (ตลาดปิดแล้วเท่านั้น — --force ข้าม guard intraday) แล้ว npm run queue -- ship <SYM> (ship --prepatch ไม่รับ .json · pre-patch อัตโนมัติของใบ v3 = Plan 4b) `` · LIGHT/FULL not skipped → `` v3 <SYM>: หลัง ship --prepatch — ราคายังไม่สด → controller pre-patch มือ `node tools/update-prices.js --write --force <SYM>` (ตลาดปิดแล้วเท่านั้น) แล้ว npm run queue -- prep <SYM> ตามปกติ (worker: report.js export/save — SKILL STEP 5U · pre-patch อัตโนมัติของใบ v3 = Plan 4b) `` · other rows → no line.
 
 - [ ] **Step 1: Write the failing tests** — in `test/queue-test.js`:
 
@@ -322,7 +322,7 @@ Line 57 STEP 2 return line: replace `NEW: \`reports/{{SYMBOL}}.json\` save ✓ (
 
 `CLAUDE.md` line 36: replace `skeleton/\`.html\` ข้างบน = ใบ v2 เดิม (UPDATE จน P6)` with `skeleton/\`.html\` ข้างบน = ใบ v2 เดิม (UPDATE ของ v2 · ใบ v3 UPDATE = \`report.js export/save\` — stock-analyzer STEP 5U)`.
 
-`docs/price-refresh.md` line 114: replace the bullet with `- **แถว v3 ในคิว**: \`mos-sign-flip\` = pre-patch **มือ** \`node tools/update-prices.js --write --force <SYM>\` แล้ว \`npm run queue -- ship <SYM>\` (\`ship --prepatch\` ยังรับเฉพาะ \`.html\` — pre-patch อัตโนมัติของใบ v3 = Plan 4b) · แถวที่ต้องส่ง LLM (drift/age/FULL) = pre-patch มือถ้ายังไม่สด แล้ว \`prep <SYM>\` ตามปกติ (Plan 4a — worker: \`report.js export/save\`) · preflight พิมพ์บรรทัด \`v3 <SYM>: ราคายังไม่สด → …\` ต่อใบ`.
+`docs/price-refresh.md` line 114: replace the bullet with `- **แถว v3 ในคิว** (preflight พิมพ์บรรทัด \`v3 <SYM>: …\` ต่อใบตาม bucket — Plan 4a): \`mos-sign-flip\` (PREPATCH) = pre-patch **มือ** \`node tools/update-prices.js --write --force <SYM>\` **ตอนตลาดปิดแล้วเท่านั้น** (\`--force\` ข้าม guard intraday) แล้ว \`npm run queue -- ship <SYM>\` (\`ship --prepatch\` ยังรับเฉพาะ \`.html\` — pre-patch อัตโนมัติของใบ v3 = Plan 4b · open-items 66) · แถวที่ต้องส่ง LLM (LIGHT/FULL) = **หลัง** \`ship --prepatch\`: pre-patch มือถ้าราคายังไม่สด แล้ว \`prep <SYM>\` ตามปกติ (worker: \`report.js export/save\` — STEP 5U) · แถว skip/DELIST ไม่มีบรรทัด`.
 
 - [ ] **Step 4: decisions + open-items**
 
