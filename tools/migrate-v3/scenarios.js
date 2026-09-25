@@ -26,7 +26,7 @@ function fundStart(driver, f) {
   return typeof v === 'number' && v > 0 ? v : null;
 }
 
-function scenarios(parsed, fund) {
+function scenarios(parsed, fund, legs) {
   const H = [], D = [], F = [];
   const v = (parsed.rd && parsed.rd.values) || {};
   const b = v.scnBasis || {};
@@ -42,7 +42,7 @@ function scenarios(parsed, fund) {
     if (/รวมปันผล/.test(MP.htmlToProse(parsed.s6hint || '')) && divAll) out.divIncluded = true;
     F.push(`scenarios: no values.scnBasis — years ${out.years} · divIncluded ${out.divIncluded} · perYear null (from the section head/hint)`);
   }
-  const meta = { driverText: null, exitText: null, starts: [] };
+  const meta = { driverText: null, exitText: null, starts: [], ends: [], base: null };
   if (cols.length !== 3) { H.push(`scenarios: ${cols.length} columns (need Bear/Base/Bull)`); return { scenarios: null, H, D, F, meta }; }
   const top = cols[0].top ? cols[0].top[1] : '';
   meta.driverText = top;
@@ -73,23 +73,36 @@ function scenarios(parsed, fund) {
     const endLi = c.lis.find((x) => isEnd(x[0]));
     const end = endLi ? numOf(endLi[1]) : null;
     meta.starts.push(end != null && growth != null ? end / Math.pow(1 + growth / 100, out.years) : null);
+    meta.ends.push(end != null && growth != null ? { end, text: endLi[1], growth } : null);
     const cs = { growth, exitMultiple };
     if (divCum != null) cs.divCum = divCum;
     cs.desc = desc;
     return cs;
   });
   out.exitDp = Math.min(dp, 2);
-  // baseOverride — ฐานที่ผู้เขียนใช้จริง
+  // baseOverride (fix round 1 · I-2/M-3/M-4) — ค่าที่ผู้เขียนพิมพ์เท่านั้นที่อ้างว่า "ผู้เขียนใช้":
+  //  eps: values.baseEps · อื่น ๆ: ฐานต่อหุ้นที่ขาพิมพ์ (override ของขา) · ฐานจาก fundamentals ที่คิดค่าปลายฉากที่พิมพ์ได้ครบ 3 คอลัมน์ = ไม่ต้อง override
+  //  ไม่งั้นถอดกลับจากค่าปลายฉากที่พิมพ์ + F (ไม่อ้างว่าเป็นของผู้เขียน)
   const fStart = fundStart(out.driver, fund || {});
+  const ends = meta.ends.filter(Boolean);
+  const fits = (b) => b > 0 && ends.length > 0 && ends.every((e) => Math.abs(b * Math.pow(1 + e.growth / 100, out.years) - e.end) <= 0.5 * Math.pow(10, -decOf(e.text)) + 1e-9);
+  const LEG_BASE = { ffo: 'ffoPerShare', de: 'dePerShare', fre: 'frePerShare', bvps: 'bvps' };
   if (out.driver === 'eps' && typeof v.baseEps === 'number' && v.baseEps > 0) {
-    if (fStart == null || v.baseEps !== fStart) out.baseOverride = { value: v.baseEps, why: 'EPS ฐานฉากที่ผู้เขียนใช้' };
+    if (fStart == null || v.baseEps !== fStart) { out.baseOverride = { value: v.baseEps, why: 'EPS ฐานฉากที่ผู้เขียนใช้' }; meta.base = 'values.baseEps'; }
+  } else if (fits(fStart)) {
+    meta.base = 'fundamentals';   // ฐานจากงบคิดค่าปลายฉากที่พิมพ์ได้ครบ — ส่วนต่างเป็นแค่การปัด
   } else {
+    const legB = LEG_BASE[out.driver] ? [...new Set((legs || []).map((l) => l.override && l.override[LEG_BASE[out.driver]]).filter((x) => x > 0))].find(fits) : null;
     const printed = meta.starts.filter((x) => x != null && x > 0);
-    const p0 = printed.length ? printed[1] != null ? meta.starts[1] : printed[0] : null;   // คอลัมน์ Base ก่อน (ปัดน้อยสุดเมื่อ g กลาง ๆ)
-    if (p0 != null && (fStart == null || Math.abs(p0 - fStart) > 0.005 * fStart)) {
-      out.baseOverride = { value: +p0.toPrecision(6), why: out.driver === 'eps' ? 'EPS ฐานฉากที่ผู้เขียนใช้' : 'ฐานฉากที่ผู้เขียนใช้ (ย้อนจากค่าปลายฉากที่พิมพ์)' };
-      if (out.driver !== 'eps') F.push(`scenarios.baseOverride ${out.baseOverride.value} back-computed from the printed ${out.driver} end value`);
-    } else if (p0 == null && fStart == null) H.push(`scenarios: no base for driver ${out.driver} (fundamentals and printed end value both missing)`);
+    const p0 = meta.starts[1] > 0 ? meta.starts[1] : printed.length ? printed[0] : null;   // คอลัมน์ Base ก่อน
+    if (legB != null) {
+      out.baseOverride = { value: legB, why: 'ฐานฉากที่ผู้เขียนใช้ (ตัวตั้งที่ขาประเมินพิมพ์)' }; meta.base = 'leg override';
+      F.push(`scenarios.baseOverride ${legB} = the ${LEG_BASE[out.driver]} printed in a leg`);
+    } else if (p0 != null) {
+      out.baseOverride = { value: +p0.toPrecision(6), why: out.driver === 'eps' ? 'EPS ฐานฉากถอดกลับจากราคาเป้าที่พิมพ์' : 'ฐานฉากถอดกลับจากค่าปลายฉากที่พิมพ์' };
+      meta.base = 'back-computed';
+      F.push(`scenarios.baseOverride ${out.baseOverride.value} back-computed from the printed ${out.driver} end values${out.driver === 'eps' ? ' (values.baseEps absent)' : ''}`);
+    } else if (fStart == null) H.push(`scenarios: no base for driver ${out.driver} (fundamentals and printed end value both missing)`);
   }
   const note = (parsed.s6paras || []).map((p) => MP.htmlToProse(p)).filter(Boolean).join('<br>');
   if (note) out.note = note; else H.push('scenarios.note: no paragraph under the scenario columns');
@@ -102,10 +115,11 @@ function tgtCheck(parsed, view) {
   const v = (parsed.rd && parsed.rd.values) || {};
   const s6 = parsed.byN && parsed.byN[6];
   (view.scn || []).forEach((sc, i) => {
-    let shown = v.scenarios && v.scenarios[i] ? v.scenarios[i].tgt : null, txt = shown != null ? String(shown) : null;
-    if (shown == null && s6) { const m = /<div class="tgt">([\s\S]*?)<\/div>/.exec(s6.body.split(/<div class="col /)[i + 1] || ''); if (m && !/\{\{rd:/.test(m[1])) { txt = m[1]; shown = numOf(m[1]); } }
+    // values.scenarios พิมพ์ผ่าน fmtPrice (2 ตำแหน่ง) ⇒ ครึ่งหน่วย = 0.005 · .tgt ที่เป็น literal ใช้ทศนิยมที่พิมพ์ (fix round 1 · M-1)
+    let shown = v.scenarios && v.scenarios[i] ? v.scenarios[i].tgt : null, txt = shown != null ? String(shown) : null, tol = 0.005;
+    if (shown == null && s6) { const m = /<div class="tgt">([\s\S]*?)<\/div>/.exec(s6.body.split(/<div class="col /)[i + 1] || ''); if (m && !/\{\{rd:/.test(m[1])) { txt = m[1]; shown = numOf(m[1]); tol = 0.5 * Math.pow(10, -decOf(txt)); } }
     if (shown == null) return;
-    if (Math.abs(sc.tgt - shown) > 0.5 * Math.pow(10, -decOf(txt)) + 1e-9) D.push(`scn.${NAMES[i]}.tgt ${txt} → ${Math.round(sc.tgt * 100) / 100}`);
+    if (Math.abs(sc.tgt - shown) > tol + 1e-9) D.push(`scn.${NAMES[i]}.tgt ${txt} → ${Math.round(sc.tgt * 100) / 100}`);
   });
   return D;
 }

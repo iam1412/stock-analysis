@@ -36,15 +36,8 @@ function htmlToProse(html, unknown) {
     .replace(/^(?:<br>)+|(?:<br>)+$/g, '').trim();
 }
 
-// ── (a) CAND ของกติกา B (tools/v3/prose.js) — รูปเดียวกัน ──
-const NUM = '([0-9][0-9,]*(?:\\.[0-9]+)?)';
-const MONEY_UNIT = '(?![0-9.,]*\\s*(?:[MBK](?![A-Za-z])|bn(?![A-Za-z])|mn(?![A-Za-z])|(?:พัน|หมื่น|แสน)?ล้าน))';
-const CAND = [
-  { kind: 'money', re: () => new RegExp(`(?:US\\$|\\$|฿)\\s*${NUM}${MONEY_UNIT}`, 'g') },
-  { kind: 'money', re: () => new RegExp(`${NUM}\\s*บาท`, 'g') },
-  { kind: 'pct', re: () => new RegExp(`([+\\-−]?)${NUM}\\s*%`, 'g') },
-  { kind: 'mult', re: () => new RegExp(`${NUM}\\s*(?:x|เท่า)(?![A-Za-z])`, 'g') },
-];
+// ── (a) CAND ของกติกา B — ตัวเดียวกับ tools/v3/prose.js (import ไม่ก๊อป) · ห่อเป็น factory เพราะ RegExp /g มี lastIndex ติดตัว ──
+const CAND = P.CAND.map((c) => ({ kind: c.kind, re: () => new RegExp(c.re.source, c.re.flags) }));
 const normShown = (s) => String(s).replace(/[\s,]/g, '').replace(/−/g, '-').replace(/^\+/, '');
 const bare = (s) => normShown(s).replace(/^(US\$|\$|฿)/, '').replace(/(บาท|x|เท่า)$/, '');
 

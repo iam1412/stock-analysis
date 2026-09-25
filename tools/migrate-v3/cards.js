@@ -57,14 +57,18 @@ const bigOk = (a, raw, b) => b != null && Math.abs(a - b) <= Math.max(0.005 * Ma
 
 // ── คีย์ของการ์ด: กฎ bank/FY ก่อน CC.cardKey (แคตตาล็อก census ไม่มี nim/npl/capital/*Fy) ──
 const FY_RE = /FY\s*'?(\d{4}|\d{2})(?!\s*[A-Za-z]*E\b)(?![0-9])|ปี(?:บัญชี)?\s*(25\d\d|20\d\d)/;
-function keyOf(label) {
+// งวดย่อย (ไตรมาส/ครึ่งปี/9 เดือน) ในป้าย — ตัวเลขงวดนี้ไม่ใช่ทั้งปี/TTM ⇒ ห้ามลงคีย์ flow (fix round 1 · I-1)
+const PERIOD_RE = /(?:^|[^A-Za-z0-9])(?:Q[1-4]|[1-4]Q)(?:\b|\d|')|(?:^|[^A-Za-z0-9])(?:[12]H|H[12])\b|(?:^|[^A-Za-z0-9.])[69]M\b|ไตรมาส|quarter|ครึ่งปี|[69]\s*เดือน|งวด\s*\d/i;
+const FLOW_KEYS = ['revenue', 'netIncome', 'eps', 'fcf', 'grossMargin', 'opMargin', 'netMargin', 'ebitdaMargin', 'roe', 'roic'];
+/** ป้าย (+ ค่า) ระบุงวดย่อยที่ไม่ใช่ FY/TTM → true */
+const subPeriod = (label, value) => (PERIOD_RE.test(label) && !/TTM|LTM|12\s*เดือน/i.test(label)) || /\/\s*(?:ไตรมาส|quarter|qtr)/i.test(value || '');
+function keyOf(label, value) {
   if (/^NIM\b/i.test(label)) return 'nim';
   if (/^NPL\b/i.test(label)) return 'npl';
   if (/^(?:CET\s*1|CAR\b|BIS|Tier\s*1|เงินกองทุน)/i.test(label)) return 'capital';
   let k = CC.cardKey(label);
+  if (FLOW_KEYS.includes(k) && subPeriod(label, value)) return null;   // ก่อนต่อ 'Fy' เสมอ (งวดย่อย ≠ ทั้งปี)
   if (['netIncome', 'eps', 'revenue'].includes(k) && FY_RE.test(label) && !/TTM|12\s*เดือน|LTM/i.test(label)) k += 'Fy';
-  if (k === 'eps' && /Q[1-4]|ไตรมาส/i.test(label)) k = null;   // EPS รายไตรมาส ≠ TTM
-  if (['revenue', 'netIncome', 'fcf', 'grossMargin', 'opMargin'].includes(k) && /Q[1-4]\b|ไตรมาส/i.test(label) && !/TTM/i.test(label)) k = null;
   return k || null;
 }
 const fyPeriod = (label) => { const m = FY_RE.exec(label); return m ? (m[1] ? (/FY\s*'?(\d{2,4})/.exec(m[0]) ? 'FY' + m[1] : m[0]) : m[0]) : null; };
@@ -77,7 +81,7 @@ function cardFund(parsed, base) {
   const curOk = (c) => c == null || (cur === '฿' ? c === '฿' || c === 'บาท' : c === '$' || c === 'US$');
   const fyPeriods = new Set();
   for (const c of parsed.s1cards || []) {
-    const key = keyOf(c.k), vHtml = c.vHtml;
+    const key = keyOf(c.k, c.v), vHtml = c.vHtml;
     if (!key) {
       // ยอด EBITDA ของการ์ดที่ไม่มีคีย์ ("EBITDA (TTM) $5.56B") → ใช้เป็นค่าจากงบได้ (การ์ดเองเป็น custom)
       if (/^(?:Adj(?:usted)?\.?\s*)?EBITDA\b(?!.*(?:margin|\/|growth|%))/i.test(c.k)) { const r = readValue(c.v, 'money'); if (r.nums.length === 1 && r.nums[0].scaled && curOk(r.cur)) set('ebitda', r.nums[0].v, `card "${c.k}"`); }
@@ -243,8 +247,9 @@ function mapCards(parsed, base, opts) {
   const view = o.view || pseudoView(f, o.currency || (parsed.sm && parsed.sm.currency), o.legs, o.market, o.analyst);
   const cards = [], custom = [], notes = {}, used = new Set(), meta = [];
   (parsed.s1cards || []).forEach((c, i) => {
-    const key = keyOf(c.k);
+    const key = keyOf(c.k, c.v);
     let why = null;
+    if (!key && FLOW_KEYS.includes(CC.cardKey(c.k)) && subPeriod(c.k, c.v)) F.push(`card "${c.k}" → custom (period-labelled: not FY/TTM)`);
     if (!key) why = 'label not in catalogue';
     else if (used.has(key)) why = `duplicate ${key}`;
     else if (o.force && o.force.has(i)) why = o.force.get(i);
@@ -268,4 +273,4 @@ function mapCards(parsed, base, opts) {
   return { cards, custom, notes, fund: cf.fund, H, D, F, meta };
 }
 
-module.exports = { mapCards, cardFund, keyOf, readValue, missing, printedMismatch, customOf, noteFor, pseudoView, fyPeriod, NEED };
+module.exports = { mapCards, cardFund, keyOf, subPeriod, PERIOD_RE, readValue, missing, printedMismatch, customOf, noteFor, pseudoView, fyPeriod, NEED };

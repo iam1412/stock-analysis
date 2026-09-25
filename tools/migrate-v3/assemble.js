@@ -184,7 +184,7 @@ function legsOf(parsed, fund, currency) {
         if (method === 'pe' && x.baseKey === 'eps' && epsBase == null) epsBase = { v: x.base, label: pl.mdesc };
       } else {
         leg = declared('other', x.why);
-        if (leg) F.push(`leg ${n} ${base} → declared (${x.why})`);
+        if (leg) F.push(`leg ${n} ${base} → declared (${[...new Set(String(x.why).split(' · '))].join(' · ')})`);
       }
     }
     if (!leg) return;
@@ -214,7 +214,7 @@ function guardLegs(doc, legMeta) {
     const d = { method: 'declared', label: leg.label, inputs: { value, basis: 'other' } };
     const note = MP.htmlToProse(lm.mdescHtml || ''); if (note) d.note = note;
     if (leg.role) d.role = leg.role;
-    if (leg.family) d.family = leg.family === 'asset' ? 'asset' : leg.family;
+    if (leg.family) d.family = leg.family;
     doc.legs[i] = d; lm.computed = false;
     F.push(`leg ${lm.n || i + 1} ${leg.method}: demoted — no longer reproduces on final fundamentals`);
   });
@@ -301,7 +301,8 @@ function proseZones(doc, src) {
   for (const k of Object.keys(doc.metrics.notes || {})) add(`metrics.notes.${k}`, doc.metrics.notes, k, src.cardD[k]);
   (doc.metrics.custom || []).forEach((c, i) => add(`metrics.custom[${i}].note`, c, 'note', null));
   for (const k of Object.keys(doc.text || {})) add(`text.${k}`, doc.text, k, src.text[k]);
-  for (const k of Object.keys(doc.prose || {})) add(`prose.${k}`, doc.prose, k, src.prose[k]);
+  // prose.disclaimerSources = อ้างอิงแหล่ง/วันที่ในอดีต — คงเป็น literal เสมอ ไม่ tokenise (fix round 1 · M-2)
+  for (const k of Object.keys(doc.prose || {})) if (k !== 'disclaimerSources') add(`prose.${k}`, doc.prose, k, src.prose[k]);
   doc.legs.forEach((l, i) => add(`legs[${i}].note`, l, 'note', src.legs[i]));
   if (doc.scenarios) { (doc.scenarios.cases || []).forEach((c, i) => add(`scenarios.cases[${i}].desc`, c, 'desc', src.scnDesc[i])); add('scenarios.note', doc.scenarios, 'note', src.scnNote); }
   doc.catalysts.forEach((x, i) => add(`catalysts[${i}]`, doc.catalysts, i, src.cat[i]));
@@ -367,7 +368,7 @@ function assemble(parsed, ctx) {
   };
   let mc = setMetrics(MC.mapCards(parsed, doc.fundamentals, cardOpts));
 
-  const scn = MS.scenarios(parsed, doc.fundamentals);
+  const scn = MS.scenarios(parsed, doc.fundamentals, doc.legs);
   H.push(...scn.H); D.push(...scn.D); F.push(...scn.F);
   doc.scenarios = scn.scenarios || undefined;
 
@@ -457,7 +458,9 @@ function assemble(parsed, ctx) {
   const src = {
     sub: parsed.sub, s1hint: parsed.s1hint,
     cardD: Object.fromEntries(mc.meta.filter((m) => m.key).map((m) => [m.key, parsed.s1cards[m.i].dHtml])),
-    text: { valHint: parsed.s3hint, valIntro: before.join(' '), metricsNote: parsed.s1paras.join(' '), disclaimerAssump: parsed.disc },
+    // hit ของ E44 ต้องมาจากช่วงต้นทางของช่องนั้นเอง (M-2) — disclaimerAssump = ช่วง "โดยเฉพาะ … ราคาหุ้นมีความผันผวน" ของ disc ดิบ
+    text: { valHint: parsed.s3hint, valIntro: [longHint ? parsed.s3hint : '', before.join(' ')].join(' '), metricsNote: parsed.s1paras.join(' '),
+      disclaimerAssump: (() => { const d = String(parsed.disc || ''), a = d.indexOf('โดยเฉพาะ'), b = d.indexOf('ราคาหุ้นมีความผันผวน'); return a >= 0 && b > a ? d.slice(a, b) : ''; })() },
     prose: proseSrc, legs: pass.meta.map((m) => m.mdescHtml),
     scnDesc: parsed.s6cols.map((c) => { const li = c.lis.find((x) => /สถานการณ์/.test(x[0])); return li ? li[2] : ''; }),
     scnNote: parsed.s6paras.join(' '), cat: parsed.catalysts, risk: parsed.risks,
@@ -491,4 +494,4 @@ function assemble(parsed, ctx) {
   };
 }
 
-module.exports = { assemble, guardLegs, legsOf, weightsOf, generatedValHint, pxMetaOf, qualifierOf, labelOf, multipleSourceOf };
+module.exports = { assemble, guardLegs, extrasOf, legsOf, weightsOf, generatedValHint, pxMetaOf, qualifierOf, labelOf, multipleSourceOf };

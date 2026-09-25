@@ -111,7 +111,7 @@ for (const s of SYMS) for (const l of out[s].doc.legs) if (l.method === 'dcf') t
 {
   const p = PV.parseV2('BBL', raw('BBL')); p.legBlocks = p.legs.length + 2;
   const r = A.assemble(p, { seeds: SEEDS, headUpdated: null, v2Hash: B.freshHash(raw('BBL')), today: '2026-09-04', analysisPx: null });
-  t(r.notes.F.includes('F: 2 empty leg shell(s) dropped') || r.notes.F.some((f) => /^2 empty leg shell\(s\) dropped$/.test(f)), 'legBlocks > legs → F note', JSON.stringify(r.notes.F));
+  t(r.notes.F.includes('2 empty leg shell(s) dropped'), 'legBlocks > legs → F note', JSON.stringify(r.notes.F));
   t(!('migratedFrom' in r.doc.meta) && r.notes.F.some((f) => /no committed manifest row/.test(f)), 'headUpdated null → no migratedFrom + F');
 }
 // (4) tokenise skips a candidate token that is not in TK.TOKENS_V3 (defensive · no D)
@@ -119,5 +119,94 @@ for (const s of SYMS) for (const l of out[s].doc.legs) if (l.method === 'dcf') t
   const view = C.compute(out.SRE.doc, { seeds: SEEDS });
   const r = MP.tokenise('ราคาปัจจุบัน $1.23 เทียบ FV', view, [{ text: '$1.23', token: 'noSuchToken' }]);
   t(!r.text.includes('{{') && r.D.length === 0, 'tokenise: unknown token name skipped');
+}
+// ── fix round 1 ──
+const MC = require('../../tools/migrate-v3/cards.js'), MS = require('../../tools/migrate-v3/scenarios.js'), MT = require('../../tools/migrate-v3/theme.js');
+const L3 = require('../../tools/v3/legs.js'), bt = require('../../tools/brandtheme.js');
+// I-1: งวดย่อย (ไตรมาส / 2Q26 / 9M / 1H) ไม่ลงคีย์ FY/TTM — custom + F
+{
+  t.eq(MC.keyOf('กำไรสุทธิ 2Q26', '฿13,247 ลบ.'), null, 'I-1: "2Q26" label → no key');
+  t.eq(MC.keyOf('รายได้ Q2 FY2026', '$1.9B'), null, 'I-1: quarter label → no revenueFy');
+  t.eq(MC.keyOf('Free Cash Flow (9M FY26)', '$2.14B'), null, 'I-1: 9M FCF → no fcf key');
+  t.eq(MC.keyOf('EPS 1H FY2027 (Non-GAAP)', '$1.02'), null, 'I-1: 1H EPS → no epsFy');
+  t.eq([MC.keyOf('กำไรสุทธิ FY2025', '$107.6M'), MC.keyOf("รายได้ TTM (Q1'26)", '$26.0B'), MC.keyOf('NIM (Q2 2026)', '3.70%')], ['netIncomeFy', 'revenue', 'nim'], 'I-1: FY / TTM-labelled / point-in-time keys unchanged');
+  const p = PV.parseV2('BBL', raw('BBL'));
+  p.s1cards[4] = { ...p.s1cards[4], kHtml: 'กำไรสุทธิ Q2 FY2026', k: 'กำไรสุทธิ Q2 FY2026' };
+  const r = A.assemble(p, { seeds: SEEDS, headUpdated: null, v2Hash: 'x', today: '2026-09-04', analysisPx: null });
+  t(r.doc.metrics.custom.some((c) => c.label === 'กำไรสุทธิ Q2 FY2026' && c.value === '฿46,007 ล้าน') && !r.doc.fundamentals.fy.netIncome, 'I-1: quarter card → custom verbatim, not fy.netIncome');
+  t(r.notes.F.includes('card "กำไรสุทธิ Q2 FY2026" → custom (period-labelled: not FY/TTM)'), 'I-1: F note for the period card', JSON.stringify(r.notes.F));
+}
+// I-2 / M-3 / M-4: baseOverride — values.baseEps · fundamentals reproduce printed ends (no override) · back-compute + F · leg-printed base
+{
+  const p = PV.parseV2('BBL', raw('BBL'));
+  const f22 = { eps: 22 }, run2 = (pp, f, legs) => MS.scenarios(pp, f, legs);
+  t(!run2(p, f22).scenarios.baseOverride, 'baseOverride: values.baseEps = fundamentals.eps → none');
+  const p1 = PV.parseV2('BBL', raw('BBL')); p1.rd.values.baseEps = 21;
+  t.eq(run2(p1, f22).scenarios.baseOverride, { value: 21, why: 'EPS ฐานฉากที่ผู้เขียนใช้' }, 'baseOverride: from values.baseEps');
+  const p2 = PV.parseV2('BBL', raw('BBL')); delete p2.rd.values.baseEps;
+  const a = run2(p2, f22);   // 22 → 20.7 / 24.0 / 27.0 printed (rounding noise only — AAI-shaped)
+  t(!a.scenarios.baseOverride && !a.F.some((x) => /baseOverride/.test(x)), 'baseOverride: fundamentals.eps reproduces every printed end → no override');
+  const b = run2(p2, { eps: 25 });
+  t(b.scenarios.baseOverride && b.scenarios.baseOverride.why === 'EPS ฐานฉากถอดกลับจากราคาเป้าที่พิมพ์' && Math.abs(b.scenarios.baseOverride.value - 24 / Math.pow(1.03, 3)) < 1e-3, 'baseOverride: back-computed from the Base column, never attributed to the author', JSON.stringify(b.scenarios.baseOverride));
+  t(b.F.some((x) => /back-computed from the printed eps end values \(values\.baseEps absent\)/.test(x)), 'baseOverride: back-compute → F');
+  // M-3: Base column unreadable → first printed column
+  const p3 = PV.parseV2('BBL', raw('BBL')); delete p3.rd.values.baseEps; p3.s6cols[1] = { ...p3.s6cols[1], lis: p3.s6cols[1].lis.filter((x) => !/ปี\s*\d/.test(x[0]) || /ปันผล/.test(x[0])) };
+  const c = run2(p3, { eps: 25 });
+  t(c.scenarios.baseOverride && Math.abs(c.scenarios.baseOverride.value - 20.7 / Math.pow(0.98, 3)) < 1e-3, 'M-3: missing Base end value → Bear column start', JSON.stringify(c.scenarios.baseOverride));
+  // M-4: non-eps driver — a per-share base printed in a leg override that reproduces the printed ends wins over back-compute
+  const p4 = PV.parseV2('BBL', raw('BBL')); p4.s6cols.forEach((col) => { col.top = [col.top[0], col.top[1].replace('EPS', 'FFO')]; });
+  const d = run2(p4, {}, [{ method: 'pffo', override: { ffoPerShare: 22, why: 'x' } }]);
+  t.eq([d.scenarios.driver, d.scenarios.baseOverride && d.scenarios.baseOverride.value], ['ffo', 22], 'M-4: ffo base from the leg-printed ffoPerShare');
+}
+// M-1: tgt tolerance — values.scenarios printed 2 dp (0.005) · literal .tgt uses its own decimals
+{
+  const p = PV.parseV2('BBL', raw('BBL'));
+  const view = { scn: [{ tgt: 150.004 }, { tgt: 216.01 }, { tgt: 270 }] };
+  t.eq(MS.tgtCheck(p, view), ['scn.base.tgt 216 → 216.01'], 'M-1: 0.005 tolerance for values.scenarios targets');
+}
+// M-2: disclaimerSources never tokenised (historical citation stays literal)
+{
+  const h = raw('BBL').replace('• ราคา ณ ~{{rd:priceDate}} จาก', '• ราคาปัจจุบัน ฿191 ณ 4 ก.ย. จาก');
+  const r = A.assemble(PV.parseV2('BBL', h), { seeds: SEEDS, headUpdated: null, v2Hash: 'x', today: '2026-09-04', analysisPx: null });
+  t(/ราคาปัจจุบัน ฿191 ณ 4 ก\.ย\./.test(r.doc.prose.disclaimerSources) && !r.notes.D.some((x) => /disclaimerSources/.test(x)), 'M-2: labelled literal in disclaimerSources left literal, no D');
+}
+// M-5: theme
+{
+  const seed = '#1f6fd1', mk = bt.makeTheme(seed);
+  const near = MT.theme('ZZZ', { ...mk, badge: 'var(--blue-d)', chgBg: 'var(--green-soft)', chgColor: '#137333' }, { ZZZ: seed });
+  t(near.themeLegacy === null && !near.F.length && !near.H.length, 'theme: seed-near → no themeLegacy');
+  const bbl = PV.parseV2('BBL', raw('BBL')).rd.theme;
+  const far = MT.theme('BBL', { ...bbl, badge: '#ff00aa' }, {});
+  t.eq(Object.keys(far.themeLegacy), S.THEME_KEYS, 'theme: far/no seed → the 8 THEME_KEYS copied');
+  t.eq(far.F, ['theme.badge/chg dropped (template decoration)'], 'theme: non-default badge → F');
+}
+// M-5: staleCopies
+{
+  const st = MP.staleCopies('ตอนนั้นราคา $300.00 และ MOS +12.0% ส่วน P/E 25.5x', { px: 300, mos: 12, pe: 25.5, upside: 20 }, { px: 326.57, mos: -5, upside: -3, pe: 28 });
+  t.eq(st.map((x) => x.why), ['px@analysis', 'mos@analysis', 'pe@analysis'], 'staleCopies: px/mos/pe copies of the analysis-day values');
+  t.eq(MP.staleCopies('ราคา $326.57', { px: 326.57 }, { px: 326.57, mos: 0, upside: 0 }), [], 'staleCopies: value equal to today → not stale');
+}
+// M-5: extras table · pxMeta · card → custom F + .d prefix stripping
+{
+  const H = [];
+  const x = A.extrasOf({ extraSecs: [{ body: '<div class="s-head"><div class="n">9</div><h2>ตาราง SOTP</h2></div><div class="card"><table><tr><th>ส่วน</th><th>มูลค่า</th></tr><tr><td><b>ธุรกิจ A</b></td><td>1,200</td></tr></table></div>' }] }, H);
+  t.eq([x, H], [[{ after: 'valuation', title: 'ตาราง SOTP', headers: ['ส่วน', 'มูลค่า'], rows: [['<b>ธุรกิจ A</b>', 1200]], columns: null }], []], 'extras: single table → headers/rows (numbers parsed, text via htmlToProse)');
+  const H2 = []; A.extrasOf({ extraSecs: [{ body: '<div class="s-head"><h2>หมายเหตุ</h2></div><div class="card"><p>ข้อความ</p></div>' }] }, H2);
+  t(/extra section not a table/.test(H2[0] || ''), 'extras: non-table section → H');
+  const F = [];
+  const pm = A.pxMetaOf('ราคาปิด ณ {{rd:priceDate}} (ตลาดปิด)<br>กรอบ 52 สัปดาห์ $1.00 / $2.50 • ADR 1 = 8 หุ้นสามัญ<br>ที่มา: A / B, C และ D', null, F);
+  t.eq(pm, { sources: ['A', 'B', 'C', 'D'], priceNote: 'ปิด · ตลาดปิด · ADR 1 = 8 หุ้นสามัญ', range52w: { lo: 1, hi: 2.5 } }, 'pxMeta: sources · range with "/" · extra words → priceNote', JSON.stringify(pm));
+  t.eq(out.AAPL.doc.market.range52w, { lo: 196.86, hi: 317.4 }, 'range52w: falls back to the 52-week card');
+  t(out.AAPL.notes.F.includes('market.range52w from the 52-week card (px-meta has none)'), 'range52w fallback → F');
+  t.eq(out.AAPL.doc.metrics.notes.pe, 'สูงกว่าปกติ', 'card note: template .d prefix ("EPS TTM $8.26") stripped');
+  t(out.AAPL.notes.F.includes('card "FCF Yield" → custom (fcf: duplicate fcf)') && out.AAPL.doc.metrics.custom.some((c) => c.label === 'FCF Yield' && c.value === '~2.9%'), 'card → custom verbatim + F');
+}
+// M-5: THB dcf → rfCurrency THB (from f.currency via extract, no assemble override)
+{
+  const leg = { method: 'dcf', inputs: { g1: 5, years1: 5, tg: 2, r: 9, rfCurrency: 'THB' } };
+  const v = L3.legValue(leg, { fcf: 1000e6, shares: 1e8, netDebt: 0 });
+  const p = { legs: [{ mname: '1. DCF', mnameHtml: '1. DCF', mdesc: 'FCF ฿1,000 ล้าน โต 5%/ปี 5 ปี, WACC 9%, terminal 2%', mdescHtml: 'FCF ฿1,000 ล้าน โต 5%/ปี 5 ปี, WACC 9%, terminal 2%', mval: '฿' + v.toFixed(2), empty: false }] };
+  const r = A.legsOf(p, { shares: 1e8 }, 'THB');
+  t.eq([r.legs[0].method, r.legs[0].inputs.rfCurrency], ['dcf', 'THB'], 'THB dcf: rfCurrency THB', JSON.stringify(r));
 }
 t.done();
