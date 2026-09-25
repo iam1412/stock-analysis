@@ -18,6 +18,19 @@ const pctOf = (s) => { const m = /([+\-−]?)\s*([0-9]+(?:\.[0-9]+)?)\s*%/.exec(
 const decOf = (s) => { const m = /[0-9][0-9,]*(?:\.([0-9]+))?/.exec(String(s)); return m && m[1] ? m[1].length : 0; };
 const isExit = (label) => /ออก|exit/i.test(label);
 const isEnd = (label) => /ปี\s*\d/.test(label) && !/ปันผล/.test(label);
+// .ret (Plan 4b Task 6b): หลักยึด = token ผลตอบแทนของ v2 หรือเลข % ตัวแรก — ข้อความหลังหลักยึด = คำของผู้เขียน → cases[i].retNote (ตัวเลขไม่คัดลอก)
+const RET_ANCHOR = /\{\{rd:sc\d+ret\}\}|(?:[+\-−]|&minus;)?\s*[0-9][0-9.,]*\s*%/;
+// คำต่อท้ายที่ติดป้ายไปบนผลตอบแทนรวมของ v3 แล้วความหมายเพี้ยน: มี % (ตัวเลขผูกราคาอีกตัว) หรือหน่วยต่อปี (v2 พิมพ์ %/ปี แต่ v3 พิมพ์ผลตอบแทนรวม)
+const RET_UNSAFE = /%|\/\s*(?:ปี|yr|year)|ต่อปี|per\s*(?:year|annum)|\bp\.?a\.?(?![a-z])/i;
+function retNoteOf(html, i, H, F) {
+  const h = String(html || ''), m = RET_ANCHOR.exec(h);
+  if (!m) return null;
+  const note = MP.htmlToProse(h.slice(m.index + m[0].length));
+  if (!note) return null;
+  if (RET_UNSAFE.test(note)) { H.push(`scenarios.cases[${i}] .ret annotation "${note}" not carried — a per-year/number label would mislabel the v3 total return`); return null; }
+  F.push(`scenarios.cases[${i}].retNote "${note}" (author annotation in .ret)`);
+  return note;
+}
 
 /** ฐานของ driver จาก fundamentals (สูตรเดียวกับ compute.driverStart — fx = 1 เพราะ migrator ไม่ตั้ง reportCurrency) */
 function fundStart(driver, f) {
@@ -77,6 +90,8 @@ function scenarios(parsed, fund, legs) {
     const cs = { growth, exitMultiple };
     if (divCum != null) cs.divCum = divCum;
     cs.desc = desc;
+    const rn = retNoteOf(c.retHtml, i, H, F);
+    if (rn) cs.retNote = rn;
     return cs;
   });
   out.exitDp = Math.min(dp, 2);

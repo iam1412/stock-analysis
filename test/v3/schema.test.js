@@ -310,4 +310,29 @@ for (const f of ['BBL-real', 'EQIX-real', 'FER-real', 'ZTS-real', 'BBL', 'ZTS'])
   d.meta.migratedFrom = { updated: '2026-09-22T07:22:55+07:00', v2Hash: 'abcdef012345', extra: 1 };
   t(S.validate(d).some((e) => e.path === 'meta.migratedFrom.extra'), 'closed object');
 }
+
+// Plan 4b Task 6b — schema homes for migrated author text (text.chartHint · scenarios.hintNote · cases[i].retNote) + multipleSource 'author'
+{
+  const d = base(); d.text = Object.assign({}, d.text, { chartHint: 'x' });
+  t.eq(S.validate(d).filter((e) => /^text/.test(e.path)), [], 'text.chartHint accepted');
+  d.text.foo = 'y'; t(paths(S.validate(d)).includes('text.foo'), 'text stays closed (text.foo rejected)');
+  delete d.text.foo; d.text.chartHint = 'a <b>'; t(paths(S.validate(d)).includes('text.chartHint'), 'chartHint with < rejected');
+}
+{
+  const d = base(); d.scenarios.hintNote = '(TTM adj.)'; d.scenarios.cases[1].retNote = '(รวมปันผล)';
+  t.eq(S.validate(d), [], 'scenarios.hintNote + cases[1].retNote accepted');
+  d.scenarios.hintNote = '(x) <i>'; d.scenarios.cases[1].retNote = '<script>';
+  const ps = paths(S.validate(d));
+  t(ps.includes('scenarios.hintNote') && ps.includes('scenarios.cases[1].retNote'), 'hintNote/retNote with < > rejected');
+  const e = base(); e.scenarios.hintNotes = 'x'; e.scenarios.cases[0].retNotes = 'y';
+  const pe = paths(S.validate(e));
+  t(pe.includes('scenarios.hintNotes') && pe.includes('scenarios.cases[0].retNotes'), 'unknown scenarios / case keys still rejected');
+}
+for (const method of ['pe', 'ps', 'evsales', 'evebitda', 'pfcf', 'pffo', 'pbv']) {
+  const leg = { method, label: method, inputs: { multiple: 10, multipleSource: 'author' } };
+  const d = base(); d.legs.push(leg); d.fvWeights = null;
+  d.legs.forEach((l) => { if (l.role !== 'context' && !l.family) l.family = S.requiredFamily(l) || 'rg'; });
+  t(!paths(S.validate(d)).some((p) => p.startsWith('legs[2].inputs')), `multipleSource 'author' accepted on ${method}`, JSON.stringify(S.validate(d)));
+  t.eq(S.requiredFamily(leg), 'market', `requiredFamily(${method} author) = market`);
+}
 t.done();

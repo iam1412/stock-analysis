@@ -35,12 +35,16 @@ for (const sym of ['BBL', 'CASY', 'DPZ', 'FTV', 'SRE']) {
 }
 for (const sym of ['AAPL', 'DDOG']) { const m = migrate(sym, raw(sym)); const b = BK.bucketOf(m.notes, m.eq); t(b.bucket === 'HUMAN' && b.reasons.some((r) => /analyst/.test(r)), `${sym}: HUMAN (analyst leg)`); }
 // Review Focus 5a / spec §10.2 d — never mask a written region: a word injected into a token-bearing .ret cell must surface as TEXT LOST
+// Plan 4b Task 6b: a plain .ret annotation is now carried (cases[i].retNote) — so the non-masking proof injects behind a per-year label,
+// which assemble refuses to relabel onto the v3 total (not carried) · the plain word is asserted carried, not lost
 {
-  const html = raw('BBL').replace(/(<div class="ret[^"]*">\{\{rd:sc1ret\}\})/, '$1 มะม่วงสุกงอม');
+  const html = raw('BBL').replace(/(<div class="ret[^"]*">\{\{rd:sc1ret\}\})/, '$1 ต่อปี มะม่วงสุกงอม');
   t(/มะม่วงสุกงอม/.test(html), 'mutation applied (anchor found)');
   const m = migrate('BBL', html);
   t(m.eq.textLost.includes('มะม่วงสุกงอม'), '.ret injected word → TEXT LOST (region not masked)', JSON.stringify(m.eq.textLost));
   t(BK.bucketOf(m.notes, m.eq).bucket === 'HUMAN', 'TEXT LOST → HUMAN');
+  const k = migrate('BBL', raw('BBL').replace(/(<div class="ret[^"]*">\{\{rd:sc1ret\}\})/, '$1 มะม่วงสุกงอม'));
+  t(k.doc.scenarios.cases[0].retNote === 'มะม่วงสุกงอม' && !k.eq.textLost.includes('มะม่วงสุกงอม'), '6b: a plain .ret annotation is carried (retNote) — not lost', JSON.stringify(k.eq.textLost));
 }
 // Review Focus 5b — moved paragraph is "moved", not lost
 {

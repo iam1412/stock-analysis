@@ -87,20 +87,20 @@ function parseV2(sym, html) {
   const tags = [...header.matchAll(/<span class="tag">([\s\S]*?)<\/span>/g)].map((m) => text(m[1]));
   const pxMeta = first(/<div class="px-meta">([\s\S]*?)<\/div>/, header) || '';
   const fvBoxL = s3 ? first(/<div class="fv-box">\s*<div class="l">([\s\S]*?)<br>/, s3.body) : null;
-  // หมวด 6 — คอลัมน์ Bear/Base/Bull: top = [ชื่อฉาก, สมมติฐาน] · lis = [label, ค่า text, ค่า HTML]
+  // หมวด 6 — คอลัมน์ Bear/Base/Bull: top = [ชื่อฉาก, สมมติฐาน] · lis = [label, ค่า text, ค่า HTML] · retHtml = เนื้อใน .ret ดิบ (Plan 4b Task 6b)
   const cols = [];
   if (s6) for (const m of s6.body.matchAll(/<div class="col (bear|base|bull)">([\s\S]*?)<\/ul>/g)) {
     const c = m[2];
     const top = [...c.matchAll(/<div class="top"><span>([\s\S]*?)<\/span><span>([\s\S]*?)<\/span>/g)][0];
     const lis = [...c.matchAll(/<li><span>([\s\S]*?)<\/span><span>([\s\S]*?)<\/span><\/li>/g)].map((x) => [text(x[1]), text(x[2]), x[2]]);
-    cols.push({ name: m[1], top: top ? [text(top[1]), text(top[2])] : null, lis });
+    cols.push({ name: m[1], top: top ? [text(top[1]), text(top[2])] : null, lis, retHtml: first(/<div class="ret\b[^"]*">([\s\S]*?)<\/div>/, c) });
   }
   const lis = (b, cls) => { const box = first(new RegExp(`<div class="box ${cls}">([\\s\\S]*?)</ul>`), b || ''); return box ? [...box.matchAll(/<li>([\s\S]*?)<\/li>/g)].map((x) => x[1]) : []; };
   return {
     sym, html, rd, sm, fd, aiModel: RM.readAiModel(html), header, h1, sub, tags, pxMeta, secs, byN, extraSecs,
     s1cards: s1 ? cards(s1.body) : [], s1hint: s1 && s1.hint, s1paras: s1 ? paras(s1.body) : [],
     legs: L.legs, legBlocks: L.blocks, s3hint: s3 && s3.hint, s3paras: s3 ? paras(s3.body) : [], fvBoxL,
-    s6hint: s6 && s6.hint, s6cols: cols, s6paras: s6 ? paras(s6.body) : [],
+    s2hint: byN[2] ? byN[2].hint : null, s6hint: s6 && s6.hint, s6cols: cols, s6paras: s6 ? paras(s6.body) : [],
     catalysts: s7 ? lis(s7.body, 'cat') : [], risks: s7 ? lis(s7.body, 'risk') : [],
     s8: s8 ? { h2: first(/<div class="verdict">\s*<h2>([\s\S]*?)<\/h2>/, s8.body), p: first(/<div class="verdict">[\s\S]*?<\/h2>\s*<p>([\s\S]*?)<\/p>/, s8.body), zone: first(/<div class="zone">([\s\S]*?)<\/div>/, s8.body), vcells: [...s8.body.matchAll(/<div class="vcell"><div class="k">([\s\S]*?)<\/div><div class="v[^"]*"[^>]*>([\s\S]*?)<\/div><\/div>/g)].map((x) => [text(x[1]), x[2]]) } : null,
     disc, footer,

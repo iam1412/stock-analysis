@@ -271,4 +271,82 @@ const R3 = require('../../_template/v3/render.js');
   t.eq(r.doc.text.disclaimerAssump, ' แบงก์นี้อ่อนไหวต่อ <b>ดอกเบี้ยขาลง</b> และ NPL SME มาก หุ้น BBL ผันผวนตามวัฏจักร ผู้ลงทุนควรศึกษาเพิ่มเติมก่อนตัดสินใจ', 'B-4: reworded middle kept whole');
   t(/^อ้างอิงงบจริง FY2025/.test(r.doc.prose.disclaimerSources) && r.notes.F.some((x) => /disclaimer reworded/.test(x)), 'B-4: sources still split after "ก่อนตัดสินใจ •" + F');
 }
+
+// ── Plan 4b Task 6b — author text in template zones gets a schema home · multipleSource never misattributes a median ──
+const EQ6 = require('../../tools/migrate-v3/equiv.js');
+const asm = (sym, html) => A.assemble(PV.parseV2(sym, html), { seeds: SEEDS, headUpdated: null, v2Hash: 'x', today: PV.parseV2(sym, html).rd.values.priceDate, analysisPx: null });
+{
+  const { doc, notes } = out.DPZ;
+  t.eq(doc.text && doc.text.chartHint, '(รายเดือน, Yahoo Finance)', '6b: DPZ §2 hint residue → text.chartHint');
+  t(notes.F.some((x) => /chart hint kept/.test(x)), '6b: DPZ chart hint → F');
+  t(!('chartHint' in (out.FTV.doc.text || {})), '6b: template-only §2 hint → no chartHint key');
+}
+{
+  t.eq(out.FTV.doc.scenarios.hintNote, '(TTM adj.)', '6b: FTV §6 hint residue → scenarios.hintNote');
+  t.eq(out.DDOG.doc.scenarios.hintNote, '(non-GAAP)', '6b: DDOG §6 hint residue (no scnNote token) → hintNote');
+  const g = asm('FTV', raw('FTV').replace('~{{rd:baseEps}} (TTM adj.){{rd:scnNote}}', '~{{rd:baseEps}} (TTM GAAP){{rd:scnNote}}'));
+  t.eq(g.doc.scenarios.hintNote, '(TTM GAAP)', '6b: FTV-shaped "(TTM GAAP)" → hintNote');
+  t(!('hintNote' in out.BBL.doc.scenarios) && !('hintNote' in out.DPZ.doc.scenarios), '6b: template-form §6 hint → no hintNote key');
+  t(out.BBL.doc.scenarios.divIncluded === true, '6b: BBL divIncluded (precondition)');
+  const lit = asm('BBL', raw('BBL').replace('~{{rd:baseEps}}{{rd:scnNote}}</div>', '~{{rd:baseEps}} • รวมปันผล</div>'));
+  t(!('hintNote' in lit.doc.scenarios), '6b: literal "• รวมปันผล" (= what scnNote renders when divIncluded) → no hintNote key');
+  const nd = asm('BBL', raw('BBL').replace('~{{rd:baseEps}}{{rd:scnNote}}</div>', '~{{rd:baseEps}} • ไม่มีปันผล (buyback แทน)</div>'));
+  t.eq(nd.doc.scenarios.hintNote, '• ไม่มีปันผล (buyback แทน)', '6b: author "ไม่มีปันผล …" residue → hintNote');
+  const odd = asm('BBL', raw('BBL').replace('จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}', 'จากจุดเข้า {{rd:px}} • EPS ฐาน (ปรับ) ~฿22'));
+  t.eq(odd.doc.scenarios.hintNote, '(ปรับ)', '6b: author words inside the base segment kept, template label + printed base value stripped');
+  t.eq(A.s6HintNote('จากจุดเข้า {{px}} • EPS ฐาน TTM $3.2 • ไม่รวมปันผล', { driver: 'eps', divIncluded: false }), 'TTM • ไม่รวมปันผล', '6b: s6HintNote keeps words around the base');
+  t.eq(A.s6HintNote('จากจุดเข้า {{px}} • ตัวแปรฉาก = ราคาทองแดง', { driver: 'eps', divIncluded: false }), '• ตัวแปรฉาก = ราคาทองแดง', '6b: no base segment → every author segment kept');
+  t.eq(A.s6HintNote('จากจุดเข้า {{px}} · EPS ฐาน ~$2 · รวมปันผล', { driver: 'eps', divIncluded: true }), '', '6b: · separators + รวมปันผล (divIncluded) = template only');
+  t.eq(A.s6HintNote('จากจุดเข้า {{px}} • EPS ฐาน ~{{baseEps}} • รวมปันผล', { driver: 'eps', divIncluded: false }), '• รวมปันผล', '6b: "รวมปันผล" kept when v3 would not print it (divIncluded false)');
+  t.eq(A.s6HintNote('ราคาเป้า = EPS × P/E', { driver: 'eps', divIncluded: false }), 'ราคาเป้า = EPS × P/E', '6b: hint not starting "จากจุดเข้า" kept whole');
+}
+{
+  const h = raw('FTV').replace('<div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>', '<div class="ret pos">+42.3% (รวมปันผล)</div>')
+    .replace('<div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>', '<div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}} (รวม div)</div>');
+  const r = asm('FTV', h);
+  t.eq(r.doc.scenarios.cases.map((c) => c.retNote), [undefined, '(รวมปันผล)', '(รวม div)'], '6b: .ret residue → cases[i].retNote (literal % and token anchors)');
+  t(!/42\.3/.test(JSON.stringify(r.doc)), '6b: the .ret number itself is never copied');
+  t(r.notes.F.some((x) => /retNote/.test(x)), '6b: retNote → F');
+  const py = asm('FTV', raw('FTV').replace('<div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>', '<div class="ret pos">+12.3%/ปี</div>')
+    .replace('<div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>', '<div class="ret pos">+80% รวม / ~21%/ปี</div>'));
+  t(py.doc.scenarios.cases.every((c) => !('retNote' in c)) && py.notes.H.filter((x) => /\.ret/.test(x)).length === 2,
+    '6b: per-year / numeric .ret annotations are not relabelled onto the v3 total → H', py.notes.H.join(' ; '));
+}
+{
+  const F = [];
+  t.eq(A.multipleSourceOf('P/E 38x — premium เหนือมัธยฐาน 5 ปี 26.7x', F, 0, 38), 'author', '6b: premium over the median → author');
+  t(F.some((x) => /multipleSource author \(premium\/discount vs median\)/.test(x)), '6b: premium → F names it');
+  t.eq(A.multipleSourceOf('P/E มัธยฐาน 5 ปี 15.2x', [], 0, 15.2), 'median5y', '6b: the multiple called the 5y median → median5y');
+  t.eq(A.multipleSourceOf('EPS (TTM) $6.13 × P/E เป้าหมาย ~20x (มัธยฐาน 5 ปี)', [], 0, 20), 'median5y', '6b: median label after the multiple → median5y');
+  t.eq(A.multipleSourceOf('ต่ำกว่าค่าเฉลี่ยในอดีต', [], 0), 'author', '6b: "ต่ำกว่าค่าเฉลี่ยในอดีต" → author');
+  t.eq(A.multipleSourceOf('peer P/BV 1.4x', [], 0, 1.4), 'peer', '6b: peer wording → peer');
+  t.eq(A.multipleSourceOf('P/S 5x ค่ากลางเซกเตอร์', [], 0, 5), 'sector', '6b: sector wording → sector');
+  const F2 = [];
+  t.eq(A.multipleSourceOf('EPS $3 × 18x', F2, 1, 18), 'author', '6b: no wording → author (never peer)');
+  t(F2.some((x) => /leg 2: multipleSource author/.test(x)), '6b: no wording → F naming the leg');
+  t.eq(A.multipleSourceOf('P/E มัธยฐาน 10 ปี 20x', [], 0, 20), 'median10y', '6b: multiple called the 10y median → median10y');
+  t.eq(A.multipleSourceOf('P/E 15x (มัธยฐาน 5 ปี · ต่ำกว่าช่วง 10 ปี 18x)', [], 0, 15), 'median5y', '6b: a 10-year figure elsewhere does not make it median10y');
+  t.eq(A.multipleSourceOf('มัธยฐาน 5 ปี 26.7x → ใช้ 30x', [], 0, 30), 'author', '6b: the median names another multiple → author');
+  t.eq(A.multipleSourceOf('P/E เฉลี่ย 5 ปี 15x', [], 0, 15), 'author', '6b: "เฉลี่ย" (average) is not a median → author');
+  t.eq(A.multipleSourceOf('EPS $5.07 × P/E เป้าหมาย 29x — มัธยฐานย้อนหลัง 5 ปีของ A คือ 31.2x', [], 0, 29), 'author', '6b: the median word names a different multiple after it → author');
+  t.eq(A.multipleSourceOf('EPS TTM $8.72 × P/E เฉลี่ย 5 ปี ~28x (มัธยฐาน 27x)', [], 0, 28), 'author', '6b: "(มัธยฐาน 27x)" beside a 28x average → author');
+}
+// gate proof — the residue words reach the v3 page, so a hint normaliser narrowed to the template strings loses nothing
+{
+  const S2T = (t0) => t0.replace(/^โดยประมาณ\s*/, '');
+  const S6T = (t0) => t0.replace(/^จากจุดเข้า\s+\S+\s+•\s+.+?ฐาน\s+~\S+/, '').replace(/\s*•\s*รวมปันผล\s*$/, '').trim();
+  const hintOf = (page, z) => { const m = /<div class="s-head">[\s\S]*?<div class="hint">([\s\S]*?)<\/div>\s*<\/div>/.exec(EQ6.zones(page).get(z) || ''); return m ? EQ6.text(m[1]) : ''; };
+  const cases = [['DPZ', 'DPZ', raw('DPZ')], ['FTV', 'FTV', raw('FTV')], ['FTV-GAAP', 'FTV', raw('FTV').replace('~{{rd:baseEps}} (TTM adj.)', '~{{rd:baseEps}} (TTM GAAP)')]];
+  for (const [name, sym, html] of cases) {
+    const r = asm(sym, html), doc = r.doc, view = C.compute(doc, { seeds: SEEDS });
+    const v2 = B.expandReport(html), v3 = B.expandReport(R3.toV2Source(doc, view));
+    const eq = EQ6.compare(v2, v3, doc, view, { v2src: html });
+    t(!eq.textLost.some((w) => /adj|GAAP|รายเดือน|Yahoo/.test(w)), `6b gate: ${name} EQ.compare textLost has no adj/GAAP/รายเดือน/Yahoo`);
+    for (const [z, strip] of [['s2', S2T], ['s6', S6T]]) {
+      const a = EQ6.tok(strip(hintOf(v2, z))), b = EQ6.tok(strip(hintOf(v3, z)));
+      const left = b.slice(); const lost = a.filter((w) => { const k = left.indexOf(w); if (k < 0) return true; left.splice(k, 1); return false; });
+      t.eq(lost, [], `6b gate: ${name} ${z} hint — with the normaliser narrowed to the template string, every v2 residue word is on the v3 hint`);
+    }
+  }
+}
 t.done();

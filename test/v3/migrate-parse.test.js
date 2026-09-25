@@ -25,6 +25,7 @@ const legsOf = (r) => r.legs.map((l) => { const m = LG.classifyName(l.mname, l.m
   t.eq(r.legs[0].mname, '1. P/E Valuation', 'BBL: leg 1 name'); t.eq(r.legs[0].mval, '฿198', 'BBL: leg 1 value text');
   t.eq(r.s6cols[0].top, ['🐻 Bear', 'EPS −2%/ปี'], 'BBL: s6 bear top');
   t.eq(r.s6cols[0].lis.map((x) => x[0]), ['EPS ปี 3', 'P/E ออก', 'ปันผลรวม 3 ปี', 'สถานการณ์'], 'BBL: s6 bear rows');
+  t.eq([r.s2hint, r.s6cols.map((c) => c.retHtml)], ['โดยประมาณ', ['{{rd:sc1ret}}', '{{rd:sc2ret}}', '{{rd:sc3ret}}']], 'BBL: §2 hint + raw .ret per column (Plan 4b Task 6b)');
   t(/แบงก์อนุรักษ์นิยม/.test(r.s8.h2) && /กลยุทธ์/.test(r.s8.zone) && r.s8.vcells.length >= 2, 'BBL: s8 verdict parts');
   t(/ข้อมูล ณ 24 ก\.ค\. 2026/.test(PV.text(r.footer)), 'BBL: footer text');
   t.eq(r.aiModel, require('../../tools/report-meta.js').readAiModel(r.html), 'parser exposes <meta ai-model>');

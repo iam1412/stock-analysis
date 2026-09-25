@@ -13,7 +13,8 @@ const ENUM = {
   ffoBasis: ['ffo', 'affo'],   // Plan 2a Task 9 (§3.6 J) — ป้าย FFO/AFFO ของการ์ด/ขา/ฉาก REIT
   reportCurrency: ['USD', 'THB', 'EUR', 'CAD', 'GBP', 'JPY', 'CHF', 'TWD'],   // Plan 2a Task 10 (§3.6 L) — สกุลงบ (ยอดรวมทั้งบริษัท)
   method: ['pe', 'pbv', 'ps', 'evsales', 'evebitda', 'pfcf', 'fcfyield', 'pffo', 'ddm', 'ddm2', 'dcf', 'ri', 'declared'],
-  multipleSource: ['median5y', 'median10y', 'peer', 'justified', 'sector', 'current'],   // 'current' = เฉพาะขา role:"context" (ตัวคูณสด คิดทุกวัน) · บนขา fv ห้าม = สมอตาย W18 (§13 ข้อ 6)
+  multipleSource: ['median5y', 'median10y', 'peer', 'justified', 'sector', 'current', 'author'],   // 'current' = เฉพาะขา role:"context" (ตัวคูณสด คิดทุกวัน) · บนขา fv ห้าม = สมอตาย W18 (§13 ข้อ 6)
+  // 'author' = ตัวคูณที่ผู้วิเคราะห์กำหนดเอง (ไม่ใช่มัธยฐาน/peer/sector) — migrator ใช้เมื่อ mdesc ไม่ได้บอกว่าตัวคูณคือมัธยฐาน (Plan 4b Task 6b)
   declaredBasis: ['sotp', 'nav', 'rnpv', 'other'],
   // Plan 4b Task 1 (spec §10 "ช่องว่าง schema" · §3.3): driver de/fre (alt managers) · exitMetric evsales · tone 'none' = ไม่มีคลาสสี (466 การ์ด v2)
   driver: ['eps', 'ffo', 'revenuePerShare', 'bvps', 'fcfPerShare', 'de', 'fre'],
@@ -70,7 +71,7 @@ function requiredFamily(leg) {
 const CURRENT_BASE = { pe: 'eps', pbv: 'bvps', pffo: 'ffoPerShare' };
 const OVERRIDE_KEYS = ['eps', 'bvps', 'roe', 'dps', 'revenue', 'ebitda', 'fcf', 'netDebt', 'ffoPerShare', 'shares', 'why'];
 const THEME_KEYS = ['accent', 'accentDark', 'darkGrad', 'glow', 'subColor', 'headerMuted', 'verdictText', 'vcellLabel'];
-const TEXT_KEYS = ['valHint', 'valIntro', 'metricsNote', 'disclaimerAssump'];   // §3.6 A — แทนข้อความตายตัวของ template
+const TEXT_KEYS = ['valHint', 'valIntro', 'metricsNote', 'disclaimerAssump', 'chartHint'];   // §3.6 A — แทนข้อความตายตัวของ template · chartHint = ต่อท้ายป้าย §2 (Plan 4b Task 6b)
 const ISO = /^\d{4}-\d{2}-\d{2}$/;
 const AI = /^Claude\s+[A-Za-z]+\s+\d+(?:\.\d+)?$/;   // รูปเดียวกับ E28 / RM.parseAiModel
 
@@ -124,6 +125,8 @@ function validate(doc) {
   };
   // ช่องข้อความสั้นที่ render ตรง ไม่ผ่าน token/sanitize ของ prose — ห้ามมี { } < > (กัน token ปลอม/แท็กหลุดเข้าหน้า)
   const plain = (v, path) => { if (typeof v === 'string' && /[{}<>]/.test(v)) E(path, 'ห้ามมี { } < > — ช่องนี้เป็นป้ายสั้น ไม่รับ token/แท็ก'); };
+  // Plan 4b Task 6b — ป้ายสั้นที่ต่อท้าย template (chartHint · hintNote · retNote): prose (token ได้ · ผ่าน renderProse) แต่ห้ามมีแท็ก < >
+  const noTag = (v, path) => { if (typeof v === 'string' && /[<>]/.test(v)) E(path, 'ห้ามมี < > — ป้ายสั้นต่อท้าย template (token {{…}} ได้ · แท็กไม่ได้)'); };
   const en = (v, path, list) => { if (!list.includes(v)) E(path, `ต้องเป็นหนึ่งใน ${JSON.stringify(list)} — พบ ${JSON.stringify(v)}`); };
   const strList = (v, path, lo, hi) => {
     if (!Array.isArray(v) || v.length < lo || v.length > hi) return E(path, `ต้องเป็น array ของข้อความ ${lo}–${hi} ข้อ`);
@@ -416,7 +419,7 @@ function validate(doc) {
   const s = doc.scenarios;
   if (!isObj(s)) E('scenarios', 'ต้องมี (object)');
   else {
-    closed(s, 'scenarios', ['years', 'divIncluded', 'perYear', 'driver', 'exitMetric', 'exitDp', 'baseOverride', 'cases', 'note']);
+    closed(s, 'scenarios', ['years', 'divIncluded', 'perYear', 'driver', 'exitMetric', 'exitDp', 'baseOverride', 'cases', 'note', 'hintNote']);
     num(s.years, 'scenarios.years', { int: true, min: 1 }); if (isNum(s.years) && s.years > 10) E('scenarios.years', 'ต้อง ≤ 10');
     if (typeof s.divIncluded !== 'boolean') E('scenarios.divIncluded', 'ต้องเป็น true/false');
     en(s.perYear === undefined ? '∅' : s.perYear, 'scenarios.perYear', ENUM.perYear);
@@ -430,8 +433,9 @@ function validate(doc) {
     else s.cases.forEach((c, i) => {
       const p = `scenarios.cases[${i}]`;
       if (!isObj(c)) return E(p, 'ต้องเป็น object');
-      closed(c, p, ['growth', 'exitMultiple', 'divCum', 'desc']);
+      closed(c, p, ['growth', 'exitMultiple', 'divCum', 'desc', 'retNote']);
       num(c.growth, `${p}.growth`); num(c.exitMultiple, `${p}.exitMultiple`, { gt: 0 }); str(c.desc, `${p}.desc`);
+      str(c.retNote, `${p}.retNote`, { req: false }); noTag(c.retNote, `${p}.retNote`);
       // divCum = ปันผลสะสมต่อหุ้นถึงจุดออก — บังคับเมื่อ divIncluded=true (นับรวมใน total%)
       // ยอมให้มี (optional, informational) เมื่อ divIncluded=false ด้วย — คลัง v2 จริง 423/1097 ใบเก็บเลขนี้ไว้
       // แสดงแม้ไม่รวมในผลตอบแทน (parity gate: test/v3/tokens-corpus.test.js) — ไม่รวมใน total% เพราะ derive() v2 อ่าน scnBasis.divIncluded เป็นตัวตัดสินอยู่แล้ว
@@ -439,6 +443,7 @@ function validate(doc) {
       else if (c.divCum != null) num(c.divCum, `${p}.divCum`, { min: 0 });
     });
     str(s.note, 'scenarios.note');
+    str(s.hintNote, 'scenarios.hintNote', { req: false }); noTag(s.hintNote, 'scenarios.hintNote');
   }
 
   // ── analyst ──
@@ -465,6 +470,7 @@ function validate(doc) {
     else {
       closed(doc.text, 'text', TEXT_KEYS);
       for (const k of TEXT_KEYS) str(doc.text[k], `text.${k}`, { req: false });
+      noTag(doc.text.chartHint, 'text.chartHint');
       if (typeof doc.text.valHint === 'string' && doc.text.valHint.length > 80) E('text.valHint', 'ยาวเกิน 80 ตัวอักษร (เป็นป้ายหัว section)');
     }
   }

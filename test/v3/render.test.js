@@ -235,4 +235,28 @@ t.eq(JSON.parse(R.jsonScript('{"a":"</script>"}')).a, '</script>', 'jsonScript o
   delete d.scenarios.exitDp;
   t(/<span>P\/E ออก<\/span><span>17\.25x<\/span>/.test(R.toV2Source(d, C.compute(d, { seeds }))), 'exitDp absent → exitMultiple printed as-is (today\'s output)');
 }
+
+// Plan 4b Task 6b — chartHint · hintNote · retNote print only when present · SRC_NAME.author
+{
+  const d = load('ZTS'); delete d.scenarios.hintNote; if (d.text) delete d.text.chartHint;
+  const v = C.compute(d, { seeds }), src = R.toV2Source(d, v);
+  t(src.includes('<h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div>'), 'absent chartHint → §2 hint exactly "โดยประมาณ"');
+  t(/<div class="hint">จากจุดเข้า \{\{rd:px\}\} • EPS ฐาน ~\{\{rd:baseEps\}\}\{\{rd:scnNote\}\}<\/div>/.test(src), 'absent hintNote → §6 hint ends with {{rd:scnNote}} as today');
+  t(src.includes('<div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>'), 'absent retNote → .ret prints only the token');
+  d.text = Object.assign({}, d.text, { chartHint: 'A' }); d.scenarios.hintNote = 'B'; d.scenarios.cases[1].retNote = 'C ~{{px}}';
+  const s2 = R.toV2Source(d, C.compute(d, { seeds }));
+  t(s2.includes('<div class="hint">โดยประมาณ A</div>'), 'chartHint → "โดยประมาณ A"');
+  t(/\{\{rd:scnNote\}\} B<\/div>/.test(s2), 'hintNote → §6 hint ends " B"');
+  t(s2.includes('<div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}} C ~{{rd:px}}</div>'), 'retNote → after the token, rendered through pr() (v3 token → rd twin)');
+  t(s2.includes('<div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>'), 'retNote is per case');
+  d.scenarios.hintNote = 'x & y'; t(R.toV2Source(d, C.compute(d, { seeds })).includes('{{rd:scnNote}} x &amp; y</div>'), 'hintNote escaped through pr()');
+}
+{
+  const d = load('ZTS'); const i = d.legs.findIndex((l) => l.method === 'pe');
+  d.legs[i].inputs.multiple = 38; d.legs[i].inputs.multipleSource = 'author'; delete d.legs[i].inputs.medianWindow;
+  const v = C.compute(d, { seeds });
+  // brief wrote "× P/E 38.0x (…)" — the pe mdesc format is "× P/E เป้าหมาย ~38x (<source>)"; the source label is what this pins
+  t(/× P\/E เป้าหมาย ~38x \(ผู้วิเคราะห์กำหนด\)/.test(R.mdesc(d.legs[i], v)), "pe leg with multipleSource 'author' → (ผู้วิเคราะห์กำหนด): " + R.mdesc(d.legs[i], v));
+  t.eq(R.SRC_NAME && R.SRC_NAME.author, 'ผู้วิเคราะห์กำหนด', 'SRC_NAME.author');
+}
 t.done();
