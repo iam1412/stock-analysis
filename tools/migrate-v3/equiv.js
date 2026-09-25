@@ -14,6 +14,8 @@ const S = require('../v3/schema.js');
 const K = require('../v3/cards.js');
 const TH = require('./theme.js');
 const MC = require('./cards.js');
+const MP = require('./prose.js');
+const A = require('./assemble.js');
 
 // ── คลังคำที่ template v2 พิมพ์แล้ว template v3 ทิ้ง/แทน (ปิด — เพิ่มได้ผ่าน review เท่านั้น · ทุกคำเพิ่มต้องมีคอมเมนต์ fixture + zone) ──
 const TEMPLATE_VOCAB = new Set([
@@ -24,8 +26,8 @@ const TEMPLATE_VOCAB = new Set([
 ]);
 
 // ── ข้อความ ──
-const ENT = { nbsp: ' ', lt: '<', gt: '>', quot: '"', apos: "'", amp: '&', ndash: '–', mdash: '—', minus: '−', times: '×', bull: '•', middot: '·', rarr: '→', hellip: '…' };
-const decode = (s) => String(s).replace(/&(#x[0-9a-f]+|#\d+|[a-z]+);/gi, (m, e) => (e[0] === '#' ? String.fromCodePoint(e[1] === 'x' || e[1] === 'X' ? parseInt(e.slice(2), 16) : +e.slice(1)) : ENT[e.toLowerCase()] != null ? ENT[e.toLowerCase()] : m));
+// entity: ชุดเดียวกับ migrate-v3/prose.js decode (&divide; &mdash; … ไม่งั้น "divide" กลายเป็นคำ — fix round 1)
+const decode = MP.decode;
 const reEsc = (s) => String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const escHtml = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 /** HTML → ข้อความที่มองเห็น — ตัด emoji (Extended_Pictographic + variation selector + ZWJ) · ≈ → ณ (transform ที่อนุมัติ) */
@@ -54,14 +56,12 @@ function zones(html) {
 const DISC_FIXED = [
   'คำเตือน:', 'รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น', 'ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์',
   'ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ',
-  'ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ',
+  // สองท่อนแยกกัน — ผู้เขียนแก้ท่อนแรกแต่คงท่อนหลัง (ADBE) ต้องไม่กลายเป็นคำหาย (fix round 1 · M-1)
+  'ราคาหุ้นมีความผันผวนสูง', 'ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ',
 ];
-const S6_LAST = /^สถานการณ์/;
 const THAI_MONTH = { 'มกราคม': 'ม.ค.', 'กุมภาพันธ์': 'ก.พ.', 'มีนาคม': 'มี.ค.', 'เมษายน': 'เม.ย.', 'พฤษภาคม': 'พ.ค.', 'มิถุนายน': 'มิ.ย.',
   'กรกฎาคม': 'ก.ค.', 'สิงหาคม': 'ส.ค.', 'กันยายน': 'ก.ย.', 'ตุลาคม': 'ต.ค.', 'พฤศจิกายน': 'พ.ย.', 'ธันวาคม': 'ธ.ค.' };
 const CTX_SUFFIX = '(บริบท — ไม่นับใน FV)';
-const S6_DIV = /ปันผล|distribution|dividend|\bdiv\b/i;
-const S6_EXIT = /ออก|exit/i;
 const LEG_RE = /(<div class="vmethod">\s*<div>\s*<div class="mname">)([\s\S]*?)(<\/div>\s*)(?:(<div class="mdesc">)([\s\S]*?)(<\/div>))?/g;
 const CARD_RE = () => new RegExp(DV.CARD_SRC, 'g');
 
@@ -75,6 +75,14 @@ function stripTemplateD(dText, td) {
   return dText;
 }
 
+/** ป้ายหัว §6 → เศษที่ไม่ใช่ของ template (A.s6HintNote — กติกาเดียวกับที่ assemble ใช้เก็บ scenarios.hintNote)
+ *  divIncluded: "รวมปันผล" ที่ {{rd:scnNote}} พิมพ์อยู่ท่อนเดียวกับ hintNote บนหน้า v3 ("• รวมปันผล <hintNote>") → ตัดคำนำหน้านั้นหนึ่งครั้ง */
+function s6Residue(t, scen) {
+  let r = A.s6HintNote(t, scen);
+  if (scen.divIncluded) r = r.replace(/(^|•\s*)รวมปันผล(?=\s|$)/, '$1').replace(/^\s*•\s*|\s*•\s*$/g, '').trim();
+  return r;
+}
+
 /**
  * norm(zoneId, html, side, ctx) → ข้อความหลัง transform ที่อนุมัติ · ctx = { doc, view, dropped: [] (คำ v2 ที่ mdesc ขา computed ทิ้ง), shared: {} (genHint — ฝั่ง v3 รันก่อน) }
  * ฝั่ง v2/v3 ใช้กฎเดียวกันทุกข้อ — ต่างกันเฉพาะที่ template v3 พิมพ์ข้อความ generate (hint/mdesc) ซึ่ง v2 ไม่มีคู่
@@ -85,8 +93,9 @@ function norm(zoneId, html, side, ctx) {
   const sym = doc && doc.symbol;
   if (zoneId === 'header') {
     if (sym) h = h.replace(/(<h1[^>]*>[\s\S]*?)\s*\(\s*([A-Z0-9.\-]+)\s*\)\s*(<\/h1>)/, (m, a, s, c) => (s === sym ? a + c : m));
-    // gauge dots + (SYM) ใต้ราคา = ของตกแต่ง/ป้ายของ template (spec §10.2 b "gauge dots") — v2 บางใบใส่ข้อความในนั้น → templateDropped
-    h = h.replace(/(<div class="gdots">)([\s\S]*?)(<\/div>\s*<div>)/, (m, a, g, c) => { if (side === 'v2') ctx.dropped.push(...tok(text(g))); return a + c; });
+    // gauge dots + (SYM) ใต้ราคา = ของตกแต่ง/ป้ายของ template (spec §10.2 b "gauge dots")
+    // gdots: ตัดเฉพาะ glyph/สี (#hex) — คำตัวอักษรที่ v2 ใส่ไว้ = คำผู้เขียน เทียบเต็ม (fix round 1 · C-1)
+    h = h.replace(/(<div class="gdots">)([\s\S]*?)(<\/div>\s*<div>)/, (m, a, g, c) => a + escHtml(text(g).replace(/#[0-9a-f]{3,8}\b/gi, ' ').replace(/[^\s\p{L}\p{M}\p{N}]/gu, ' ')) + c);
     // <small> แรกใน .price-row = "(SYM)" ใต้ราคา (ไม่อ้าง regex ของ .px — เจ้าของเดียวคือ report-meta.js · parser-lint)
     h = h.replace(/(<div class="price-row">[\s\S]*?)<small>([\s\S]*?)<\/small>/, (m, a, g) => { if (side === 'v2') ctx.dropped.push(...tok(text(g))); return a; });
     // ป้ายตายตัวของ px-meta (ทุกรูปที่ v2 เขียน: "ราคา ณ" · "ราคาปิด ณ" · "ปิดตลาด ณ" · "ราคาปิด <วันที่>" · "ช่วง/กรอบ 52 สัปดาห์" · "52wk:" · "ที่มา:")
@@ -114,10 +123,13 @@ function norm(zoneId, html, side, ctx) {
   if (zoneId === 's3' && doc && view) {
     const legs = doc.legs || [], vl = view.legs || [];
     const found = [...h.matchAll(LEG_RE)];
-    const labelOf = (s) => text(s).replace(/^\d+\.\s*/, '').replace(/\(บริบท — ไม่นับใน FV\)\s*$/, '').trim();
+    // ขา v2 ↔ v3: ตามลำดับเมื่อป้ายตรงกัน (A.labelOf = กติกาเดียวกับที่ assemble ตั้ง label) · ไม่ตรง = หาด้วยป้าย · ไม่พบ = เทียบ mdesc เต็ม (fix round 1 · M-4)
+    const labOf = (s) => (side === 'v2' ? text(A.labelOf(text(s))) : text(s).replace(/^\d+\.\s*/, '').split(CTX_SUFFIX).join('').trim());
+    const vlab = vl.map((l) => text(l && l.label));
     const idxOf = (j, mname) => {
-      if (found.length === legs.length) return j;
-      const lab = labelOf(mname); const k = vl.findIndex((l) => l && text(l.label) === lab); return k;
+      const lab = labOf(mname);
+      if (found.length === legs.length && vlab[j] === lab) return j;
+      return vlab.indexOf(lab);
     };
     let j = 0;
     h = h.replace(LEG_RE, (m, a, mname, b, dOpen, mdesc, dClose) => {
@@ -144,20 +156,24 @@ function norm(zoneId, html, side, ctx) {
     // FV box ป้ายซ้าย (คำ + กรอบ) — ค่าอยู่ใน structured diff
     h = h.replace(/(<div class="fv-box">\s*<div class="l">)[\s\S]*?(<\/div>\s*<div class="r">)/, '$1$2');
   }
-  if (zoneId === 's2' || zoneId === 's6') {
-    // ป้ายหัวหมวด 2/6 (.s-head .hint) — v3 พิมพ์ข้อความ template ตายตัว ("โดยประมาณ" · "จากจุดเข้า … • EPS ฐาน …") ไม่มีช่องใน schema
-    // = zone "hint" ของ template ใน spec §10.2 b · ไม่เงียบ: คำ v2 ที่ไม่อยู่ที่ไหนในหน้า v3 → templateDropped (ตาราง sweep เห็น)
-    h = h.replace(/(<div class="s-head">[\s\S]*?<div class="hint">)([\s\S]*?)(<\/div>\s*<\/div>)/, (m, a, hint, c) => {
-      if (side === 'v2') ctx.dropped.push(...tok(text(hint)));
-      return a + c;
+  if (zoneId === 's2') {
+    // ป้ายหัวหมวด 2: template พิมพ์ "โดยประมาณ" ตัวอักษรตรงตัวเท่านั้น — เศษ (text.chartHint ของ v3 / คำผู้เขียนของ v2) เทียบเต็ม (fix round 1 · C-1)
+    h = h.replace(/(<div class="s-head">[\s\S]*?<div class="hint">)([\s\S]*?)(<\/div>\s*<\/div>)/, (m, a, hint, c) => a + escHtml(text(hint).replace(/^โดยประมาณ(?=\s|$)/, '')) + c);
+    // legend: ตัดเฉพาะป้าย skeleton 3 ชิ้น ("ราคา SYM" · "มูลค่าเหมาะสม" (ตัวเลข fv ยังเทียบ) · "จุดสำคัญ") — คำอื่นเทียบเต็ม
+    h = h.replace(/(<div class="legend">)([\s\S]*?)(<\/div>)/, (m, a, g, c) => {
+      let t = text(g);
+      if (sym) t = t.replace(new RegExp(`(^|\\s)ราคา ${reEsc(sym)}(?=\\s|$)`), '$1');
+      t = t.replace(/(^|\s)มูลค่าเหมาะสม(?=\s|$)/, '$1').replace(/(^|\s)จุดสำคัญ(?=\s|$)/, '$1');
+      return a + escHtml(t) + c;
     });
   }
-  if (zoneId === 's2') {
-    // legend ของกราฟ ("ราคา SYM" · "มูลค่าเหมาะสม {{fv}}" · "จุดสำคัญ") = ป้ายของ template · ค่า fv อยู่ใน structured diff
-    h = h.replace(/(<div class="legend">)([\s\S]*?)(<\/div>)/, (m, a, g, c) => { if (side === 'v2') ctx.dropped.push(...tok(text(g))); return a + c; });
+  if (zoneId === 's6' && doc && doc.scenarios) {
+    // ป้ายหัวหมวด 6: ตัดเฉพาะชิ้นที่ template พิมพ์เอง ด้วยกติกาเดียวกับ assemble (A.s6HintNote) ทั้งสองฝั่ง — เศษเทียบเต็ม (fix round 1 · C-1)
+    h = h.replace(/(<div class="s-head">[\s\S]*?<div class="hint">)([\s\S]*?)(<\/div>\s*<\/div>)/, (m, a, hint, c) => a + escHtml(s6Residue(text(hint), doc.scenarios)) + c);
   }
   if (zoneId === 's4') {
     // ป้ายสเกลเกจ (<small> ใน .scale) — v3 generate จาก values (MOS 30%/MOS 20%/Fair Value/กรอบบน FV/เป้าเฉลี่ย Analyst) · ค่าตัวเลขยังเทียบ
+    // ★ รับไว้โดย review Task 6 (ป้าย = zone "label" §10.2 b · tick ที่หายโผล่เป็น numberValue) — คำ v2 ที่ไม่อยู่ในหน้า v3 → templateDropped (info)
     h = h.replace(/<div class="scale">[\s\S]*?(?=<\/div>\s*<\/div>)/, (sc) => sc.replace(/<small>([\s\S]*?)<\/small>/g, (m, g) => { if (side === 'v2') ctx.dropped.push(...tok(text(g))); return ' '; }));
   }
   if (zoneId === 's5') {
@@ -165,26 +181,33 @@ function norm(zoneId, html, side, ctx) {
     h = h.replace(/<label>[\s\S]*?<\/label>/, ' ');
   }
   if (zoneId === 's6') {
-    // .top: ชื่อฉาก + ป้าย driver ก่อนตัวเลขการเติบโต (v2 เขียนหลายรูป: "EPS" · "ยอดขาย" · "รายได้ CAGR" …) = ป้ายของ template · ตัวเลข + คำหลังตัวเลขยังเทียบ
-    h = h.replace(/<div class="top"><span>([\s\S]*?)<\/span><span>([\s\S]*?)<\/span>/g, (m, name, g) => {
-      const t = text(g), at = t.search(/[+\-−±]?\d/), lab = at > 0 ? t.slice(0, at) : at < 0 ? t : '';
-      if (side === 'v2') ctx.dropped.push(...tok(text(name)), ...tok(lab));
-      return `<div class="top"><span></span><span>${escHtml(at >= 0 ? t.slice(at) : '')}</span>`;
-    });
-    // ป้ายแถว (span แรกของ li) ตามบทบาท: แถวแรก = driver ปี N · แถวตัวคูณออก (ป้ายมี ออก/exit · ไม่มี = แถวที่ 2) · แถวปันผล · แถวสุดท้าย = สถานการณ์ — v3 พิมพ์ป้ายเอง
-    // แถวอื่น (ผู้เขียนเพิ่มเอง เช่น "เงินสดสุทธิปี 3") เทียบเต็ม
-    h = h.replace(/<ul>([\s\S]*?)<\/ul>/g, (m, ul) => {
-      const rows = [...ul.matchAll(/<li><span>([\s\S]*?)<\/span>/g)].map((x) => text(x[1]));
-      const ex = rows.findIndex((t, i) => i > 0 && S6_EXIT.test(t)), exitIdx = ex > 0 ? ex : 1;
-      let r = 0;
-      return '<ul>' + ul.replace(/<li><span>([\s\S]*?)<\/span>/g, (li, lab) => {
-        const i = r++, last = rows.length - 1, t = rows[i];
-        const role = i === 0 || i === exitIdx || (i === last && S6_LAST.test(t)) || (i > 0 && i < last && i !== exitIdx && S6_DIV.test(t));
-        if (!role) return li;
-        if (side === 'v2') ctx.dropped.push(...tok(t));
-        return '<li><span></span>';
-      }) + '</ul>';
-    });
+    // .top + ป้ายแถว: ฝั่ง v3 = ป้ายของ template ตัดเสมอ · ฝั่ง v2 ตัดเฉพาะป้ายที่ทุกคำอยู่ในชุดป้าย v3 ของคอลัมน์เดียวกัน (หรือ TEMPLATE_VOCAB)
+    // ไม่เดาบทบาทจากตำแหน่ง — ป้ายที่ผู้เขียนเขียนเอง ("Exit P/FFO" · "ทรงตัว" · "เงินสดสุทธิปี 3") เทียบเต็ม (fix round 1 · M-2)
+    const cols = [...h.matchAll(/<div class="col (bear|base|bull)">([\s\S]*?)<\/ul>/g)];
+    const labelWords = side === 'v3' ? null : ctx.shared.s6Labels || {};
+    if (side === 'v3') ctx.shared.s6Labels = {};
+    for (const cm of cols) {
+      const name = cm[1];
+      let body = cm[2];
+      const top = /<div class="top"><span>([\s\S]*?)<\/span><span>([\s\S]*?)<\/span>/.exec(body);
+      const labs = [...body.matchAll(/<li><span>([\s\S]*?)<\/span>/g)].map((x) => text(x[1]));
+      const topLab = (x) => { const t = text(x), at = t.search(/[+\-−±]?\d/); return { lab: at > 0 ? t.slice(0, at) : at < 0 ? t : '', rest: at >= 0 ? t.slice(at) : '' }; };
+      if (side === 'v3') {
+        const set = new Set();
+        if (top) { tok(text(top[1])).concat(tok(topLab(top[2]).lab)).filter(isWord).forEach((w) => set.add(keyOf(w))); }
+        labs.forEach((l) => tok(l).filter(isWord).forEach((w) => set.add(keyOf(w))));
+        ctx.shared.s6Labels[name] = set;
+      }
+      const ok = (t) => side === 'v3' || tok(t).filter(isWord).every((w) => (labelWords[name] || new Set()).has(keyOf(w)) || VOCAB_KEYS.has(keyOf(w)));
+      if (top) {
+        const tl = topLab(top[2]);
+        const nm = ok(text(top[1])) ? '' : escHtml(text(top[1]));
+        const lab = ok(tl.lab) ? '' : escHtml(tl.lab) + ' ';
+        body = body.replace(top[0], `<div class="top"><span>${nm}</span><span>${lab}${escHtml(tl.rest)}</span>`);
+      }
+      body = body.replace(/<li><span>([\s\S]*?)<\/span>/g, (li, l) => (ok(text(l)) ? '<li><span></span>' : li));
+      h = h.replace(cm[2], () => body);
+    }
     return text(h).replace(/(^|\s)~/g, '$1').replace(/\s+/g, ' ').trim();
   }
   if (zoneId === 's8') {
@@ -276,16 +299,17 @@ function classify(run) {
 
 // ── structured diff (report-data / stock-meta) ──
 const VAL_KEYS = ['px', 'priceDate', 'fvLow', 'fvHigh', 'eps', 'dps', 'bvps', 'shares', 'revenue', 'baseEps', 'analystTgt'];
+const money = () => 0.005;
 function structured(v2src, view) {
   const rows = [];
   const a = (RM.readReportData(v2src) || {}).data || {}, b = view.rd || {};
   const num = (x) => typeof x === 'number' && isFinite(x);
   const cmp = (p, x, y, tol) => {
+    if (x === null && y != null && tol === money) { rows.push({ path: p, v2: null, v3: y }); return; }   // v2 ตั้ง null ชัด ๆ แต่ v3 มีค่า = ค่าที่ v3 สร้างเอง (fix round 1 · M-5)
     if (x == null) return;   // v2 ไม่มีช่องนี้ — v3 เพิ่มข้อมูล ไม่ใช่ drift
     if (num(x) && num(y)) { if (Math.abs(x - y) > tol(x)) rows.push({ path: p, v2: x, v3: y }); return; }
     if (JSON.stringify(x) !== JSON.stringify(y)) rows.push({ path: p, v2: x, v3: y == null ? null : y });
   };
-  const money = () => 0.005;
   cmp('fv', a.fv, b.fv, money);
   const av = a.values || {}, bv = b.values || {};
   for (const k of VAL_KEYS) cmp(`values.${k}`, av[k], bv[k], k === 'shares' || k === 'revenue' ? (x) => Math.abs(x) * 1e-9 : money);
@@ -330,13 +354,14 @@ function compare(v2Html, v3Html, doc, view, opts) {
   for (const id of ids) n3.set(id, tok(norm(id, z3.get(id) || '', 'v3', c3)));
   for (const id of ids) n2.set(id, tok(norm(id, z2.get(id) || '', 'v2', c2)));
   const out = { zones: [], textLost: [], textLostAt: [], moved: [], numberValue: [], numberRounding: [], templateDropped: [], rd: [], colour: { keys: [], themeLegacy: false }, tone: [] };
-  const cand = [];
+  const cand = [], mixed = [];
   for (const id of ids) {
     const runs = diffRuns(n2.get(id), n3.get(id)).map((r) => { const c = classify(r); return { kind: c.kind, del: r.del, ins: r.ins, ctx: r.ctx, lost: c.lost }; });
     for (const r of runs) {
       if (r.kind === 'number value') out.numberValue.push({ zone: id, del: r.del, ins: r.ins, ctx: r.ctx });
       else if (r.kind === 'number rounding') out.numberRounding.push({ zone: id, del: r.del, ins: r.ins, ctx: r.ctx });
-      for (const w of r.lost) cand.push({ zone: id, w });
+      else if ((r.kind === 'text changed' || r.kind === 'TEXT LOST') && numsOf(r.del).length) mixed.push({ zone: id, run: r, n: cand.length + r.lost.length });
+      for (const w of r.lost) cand.push({ zone: id, w, run: r });
     }
     out.zones.push({ id, runs: runs.map(({ kind, del, ins, ctx }) => ({ kind, del, ins, ctx })) });
   }
@@ -344,12 +369,18 @@ function compare(v2Html, v3Html, doc, view, opts) {
   const count = (m) => { const c = new Map(); for (const ts of m.values()) for (const t of ts) if (isWord(t)) c.set(keyOf(t), (c.get(keyOf(t)) || 0) + 1); return c; };
   const bag2 = count(n2), bag3 = count(n3);
   const lostLeft = new Map();
-  for (const { zone, w } of cand) {
+  const lostRuns = new Set();
+  for (const { zone, w, run } of cand) {
     const k = keyOf(w);
     if (VOCAB_KEYS.has(k)) { out.templateDropped.push(wordOf(w)); continue; }
     if (!lostLeft.has(k)) lostLeft.set(k, Math.max(0, (bag2.get(k) || 0) - (bag3.get(k) || 0)));
     const left = lostLeft.get(k);
-    if (left > 0) { lostLeft.set(k, left - 1); out.textLost.push(wordOf(w)); out.textLostAt.push({ zone, w: wordOf(w) }); } else out.moved.push(wordOf(w));
+    if (left > 0) { lostLeft.set(k, left - 1); out.textLost.push(wordOf(w)); out.textLostAt.push({ zone, w: wordOf(w) }); lostRuns.add(run); } else out.moved.push(wordOf(w));
+  }
+  // ตัวเลขในรันที่มีคำเปลี่ยนด้วย (fix round 1 · I-1): text changed เสมอ · TEXT LOST เมื่อคำทุกคำ resolve แล้ว (moved/vocab) — ค่าเปลี่ยน = numberValue
+  for (const { zone, run } of mixed) {
+    if (run.kind === 'TEXT LOST' && lostRuns.has(run)) continue;
+    if (classifyNumber(run.del, run.ins) === 'value') out.numberValue.push({ zone, del: run.del, ins: run.ins, ctx: run.ctx });
   }
   // คำ v2 ใน mdesc ขา computed ที่ transform ทิ้ง — ไม่อยู่ที่ไหนในหน้า v3 เลย ⇒ บันทึกเป็น templateDropped (info)
   const raw3 = new Set(tok(text(String(v3Html).replace(/<(script|style)\b[^>]*>[\s\S]*?<\/\1\s*>/gi, ' '))).filter(isWord).map(keyOf));
@@ -370,4 +401,4 @@ function compare(v2Html, v3Html, doc, view, opts) {
   return out;
 }
 
-module.exports = { zones, norm, text, tok, diffRuns, classify, classifyNumber, compare, structured, TEMPLATE_VOCAB, keyOf, wordOf };
+module.exports = { zones, norm, text, tok, diffRuns, classify, classifyNumber, compare, structured, TEMPLATE_VOCAB, keyOf, wordOf, isWord };
