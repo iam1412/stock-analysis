@@ -1,0 +1,261 @@
+{
+  "v": 3,
+  "symbol": "PTC",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "PTC Inc.",
+    "exchange": "NASDAQ",
+    "sub": "Industrial software • PLM (Windchill, Creo CAD) • IoT (ThingWorx) • AR (Vuforia) • ~90% recurring revenue • ARR $2.36B",
+    "headerTags": [
+      "Industrial Software",
+      "SaaS / PLM"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "StockAnalysis.com",
+      "PTC Investor Relations"
+    ],
+    "themeLegacy": {
+      "accent": "#0066CC",
+      "accentDark": "#004A99",
+      "darkGrad": "linear-gradient(135deg,#00214a 0%,#00478e 60%,#0062c3 100%)",
+      "glow": "rgba(0,102,204,0.28)",
+      "subColor": "#d8e9fd",
+      "headerMuted": "#dce9f7",
+      "verdictText": "#e8f0fe",
+      "vcellLabel": "#f1f5fc"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T23:32:21+07:00",
+      "v2Hash": "13f52838243e"
+    }
+  },
+  "market": {
+    "px": 137.41,
+    "priceDate": "2026-09-24",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          198.54
+        ],
+        [
+          "พ.ย.25",
+          175.43
+        ],
+        [
+          "ธ.ค.25",
+          174.21
+        ],
+        [
+          "ม.ค.26",
+          156.13
+        ],
+        [
+          "ก.พ.26",
+          156.59
+        ],
+        [
+          "มี.ค.26",
+          142.49
+        ],
+        [
+          "เม.ย.26",
+          136.3
+        ],
+        [
+          "พ.ค.26",
+          138.73
+        ],
+        [
+          "มิ.ย.26",
+          113.61
+        ],
+        [
+          "ก.ค.26",
+          137.2
+        ],
+        [
+          "ส.ค.26",
+          155.74
+        ],
+        [
+          "ก.ย.26",
+          137.41
+        ]
+      ],
+      "gridFmt": "v.toFixed(0)",
+      "dataFmt": "d[1].toFixed(2)"
+    },
+    "range52w": {
+      "lo": 108.5,
+      "hi": 207.49
+    }
+  },
+  "fundamentals": {
+    "eps": 10.32,
+    "bvps": 33.42,
+    "shares": 108506261,
+    "epsForward": 8.2,
+    "netIncome": 1224000000,
+    "roe": 35.1,
+    "revenue": 2950000000,
+    "grossMargin": 84.5,
+    "fcf": 935000000,
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation (ตัวคูณประวัติ · น้ำหนัก 50%)",
+      "inputs": {
+        "multiple": 30,
+        "multipleSource": "author",
+        "base": "epsForward"
+      },
+      "baseLabel": "FY2026e",
+      "note": "consensus FY2026e · ปลายล่างของ P/E ย้อนหลัง 5 ปีที่วัดจริง (FY2025 30.3x · FY2021 31.3x; มัธยฐาน 43.2x ไม่ใช้เพราะปีที่ EPS ต่ำ FY2022–24 ทำให้พอง) ไม่ได้มาจาก P/E ปัจจุบัน",
+      "family": "market"
+    },
+    {
+      "method": "dcf",
+      "label": "DCF (FCF 5 ปี · น้ำหนัก 50%)",
+      "inputs": {
+        "g1": 8,
+        "years1": 5,
+        "tg": 3,
+        "r": 10,
+        "rfCurrency": "USD"
+      },
+      "override": {
+        "netDebt": 1257000000,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "สมมติฐานเรา",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "peForward",
+      "custom:0",
+      "pbv",
+      "netIncome",
+      "custom:1",
+      "bvps",
+      "roe",
+      "revenue",
+      "grossMargin",
+      "custom:2",
+      "fcf"
+    ],
+    "custom": [
+      {
+        "label": "GAAP P/E (TTM)",
+        "value": "~{{pe}}x",
+        "note": "GAAP EPS {{eps}} (มีรายการพิเศษ)"
+      },
+      {
+        "label": "EPS FY2026e (consensus)",
+        "value": "~$8.20",
+        "note": "StockAnalysis forecast · FY2027e $8.91"
+      },
+      {
+        "label": "ARR (Annual Recurring Revenue)",
+        "value": "$2,388M",
+        "note": "+8.5% YoY (CC, excl. divested)",
+        "tone": "pos"
+      }
+    ],
+    "notes": {
+      "mcap": "~108.5M shares (คงเหลือ)",
+      "peForward": "ราคา / consensus EPS $8.20",
+      "netIncome": "NI margin 41% สูงกว่า Op margin — มีรายการพิเศษ",
+      "bvps": "Shareholders equity $3,860M",
+      "roe": "Net income / equity TTM",
+      "revenue": "+19.5% YoY (งบ TTM) · ARR growth แยกต่างหาก",
+      "grossMargin": "Op. margin 39.8%",
+      "fcf": "FCF/share ~$8.62 (÷หุ้นคงเหลือ) · EV/FCF ~17x"
+    },
+    "hint": "ข้อมูล ณ 21 ก.ย. 2569 · TTM = ย้อนหลัง 12 เดือน"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 3,
+        "exitMultiple": 14,
+        "divCum": 0,
+        "desc": "ARR growth ชะลอ <5%; P/E หด"
+      },
+      {
+        "growth": 8,
+        "exitMultiple": 19,
+        "divCum": 0,
+        "desc": "ARR growth 8–9%; SaaS re-rating"
+      },
+      {
+        "growth": 13,
+        "exitMultiple": 26,
+        "divCum": 0,
+        "desc": "AI-PLM acceleration; Rockwell synergy"
+      }
+    ],
+    "exitDp": 0,
+    "baseOverride": {
+      "value": 8.2,
+      "why": "EPS ฐานฉากที่ผู้เขียนใช้"
+    },
+    "note": "การฉายภาพใช้ EPS FY2026e $8.20 (consensus จาก StockAnalysis forecast) เป็นฐาน ไม่ใช่ GAAP EPS TTM {{eps}} ที่มีรายการพิเศษ Bear (+3%/ปี) สมมติ ARR growth ชะลอและ P/E หดเหลือ 14x (ต่ำกว่า P/E ปัจจุบัน) · Base (+8%/ปี ≈ ARR growth) ออกที่ 19x สอดคล้อง FV Bull (+13%/ปี) อิง AI integration ใน Windchill/Creo, Rockwell partnership และ re-rating ไป 26x (ยังต่ำกว่าขา P/E 30x ของ FV) PTC ไม่จ่ายปันผล; ผลตอบแทนทั้งหมดมาจาก capital gain",
+    "hintNote": "(consensus FY2026e) • ไม่มีปันผล"
+  },
+  "analyst": {
+    "target": 173.35,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ราคา PTC ปรับลดจาก $198.54 (ต.ค. 2568) ลงถึงจุดต่ำปิดรายเดือน $113.61 (มิ.ย. 2569) ก่อนฟื้นเป็น $155.74 (ส.ค. 2569) และย่อลงอีกล่าสุด ผลตอบแทนรอบปีดูป้ายด้านบน แรงกดดันหลักมาจาก: ราคา P/E หดตัวจากการปรับฐาน valuation หุ้นซอฟต์แวร์, ตัวเลข ARR growth ชะลอ, ผลกระทบจากการขายธุรกิจ และอัตราดอกเบี้ยสูงกดดัน growth multiple จุดต่ำสุดรอบปีที่ $108.50 (ระหว่างวัน) สะท้อนความกังวลตลาดเรื่อง guidance ราคาปัจจุบันอยู่ต่ำกว่า Fair Value {{fv}}",
+    "valuation": "ขา P/E ($246) ใช้ EPS consensus FY2026e $8.20 × 30x โดย 30x คือปลายล่างของประวัติที่วัดจริง (FY2025 30.3x, FY2021 31.3x) — ไม่ใช้มัธยฐาน 43.2x เพราะ 3 ใน 5 ปี (FY2022–24) มี GAAP EPS ต่ำ $2.06–$3.12 ทำให้ตัวคูณพอง (43–64x) และไม่ได้มาจากตัวคูณปัจจุบัน ~16.6x ขา DCF ($145) เป็นสมมติฐานของเราเอง (g FCF 8%, r 10%, g ปลาย 3%) ใกล้ราคาตลาด สองขาเป็นคนละตระกูล (ตัวคูณประวัติ vs กระแสเงินสดคิดลด) ห่าง 1.7 เท่า (ไม่เกิน 2.0) จึงเฉลี่ยได้ · sensitivity: ถ้าใช้เฉพาะขา DCF FV = $145 (แทบไม่มีส่วนเผื่อ) ถ้าใช้เฉพาะขา P/E FV = $246 — ผลสรุปไวต่อตัวคูณมาก GAAP P/E TTM ~13x ต่ำเพราะ EPS TTM {{eps}} มีรายการพิเศษ ไม่ใช่ตัวเลข run-rate · ARR multiple และ EV/FCF ที่เคยใช้ถูกถอดออก เพราะตัวคูณ (7x/25x) เป็นค่าที่ตั้งเอง ไม่มีมัธยฐานที่วัดได้รองรับ",
+    "gauge": "ราคาปัจจุบัน {{px}} อยู่ใกล้ขอบโซน MOS 30% ({{mos30}}) ตาม Fair Value {{fv}} Analyst consensus เฉลี่ย {{analyst.target}} (20 นักวิเคราะห์; Buy rating) อยู่ต่ำกว่า FV ของเรา — วางเป็นบริบทเทียบเท่านั้น ไม่ได้เป็นขาของ FV MOS ปัจจุบัน {{mos}} อยู่ในเกณฑ์ดี แต่พึ่งขา P/E 30x เป็นหลัก ส่วนขา DCF ให้ค่าใกล้ราคา",
+    "mos": "MOS สูง — โซน Deep Value สำหรับ Industrial SaaS",
+    "verdictHeadline": "PTC: Quality Industrial SaaS ราคาต่ำกว่ามูลค่า แต่ FV พึ่งตัวคูณ P/E",
+    "verdictBody": "PTC Inc. เป็น industrial software leader ที่ผ่านการ transition สู่ SaaS (~90% recurring) ด้วย FCF TTM $935M (margin ~32%) และ ROE ~35% ราคาหุ้นปรับลงแรงรอบปีเพราะ ARR growth ชะลอและ multiple compression ที่ราคา {{px}} หุ้น trade ที่ ~16.6x P/E เทียบ EPS FY2026e $8.20 ขณะที่ประวัติ 5 ปีของตัวเองอยู่ 30–64x (GAAP) — ช่องว่างนี้คือที่มาของ upside แต่ขาดข้อพิสูจน์ว่าตัวคูณจะกลับ ขา DCF (สมมติฐานของเราเอง) ให้ $145 ใกล้ราคา — FV {{fv}} จึงเป็นค่าเฉลี่ยของสองตระกูลที่ห่างกัน 1.7 เท่า · MOS {{mos}} · เป้านักวิเคราะห์เฉลี่ย {{analyst.target}} (20 คน, Buy) ต่ำกว่า FV ของเรา ควรอ่าน FV เป็นกรอบ ไม่ใช่จุดเดียว",
+    "strategy": "ราคาปัจจุบัน {{px}} ใกล้โซน MOS 30% ({{mos30}}) — เหมาะสำหรับ <b>ทยอยสะสมระยะยาว 2–3 ปี</b> โดยรู้ว่า FV พึ่งตัวคูณ P/E 30x (ขาต่ำสุดของประวัติที่วัดได้) จึงควรเข้าเป็นขั้นและไม่รีบเต็มจำนวน stop-loss conceptual ที่ต่ำกว่า $108 (52W low) สำหรับระยะสั้น ติดตาม ARR growth ทุกไตรมาส — ถ้าฟื้นเป็น 10%+ จะเป็น catalyst สำคัญให้ re-rating; ถ้าหล่นต่ำกว่า 6% เป็นสัญญาณ structural issue",
+    "disclaimerSources": "แหล่งข้อมูล: Yahoo Finance (ราคา {{px}} ณ {{priceDate}}), StockAnalysis.com (ข้อมูลงบการเงิน TTM, P/E, forecast FY2026e, ราคาเป้า), PTC Investor Relations Q2 FY2026 (ARR)"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 2 วิธี (คนละตระกูล)",
+    "disclaimerAssump": " P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ non-GAAP EPS ที่ใช้ในการคำนวณ"
+  },
+  "catalysts": [
+    "<b>ARR Growth Reacceleration:</b> FY2026 guidance 7.5–9.5% (constant currency) หลัง Kepware excluded — Q2 FY26 ทำได้ 8.5% (CC) ซึ่งอยู่ top of guidance; momentum ดีขึ้น",
+    "<b>AI Integration ใน PLM/CAD:</b> PTC นำ Generative AI เข้า Windchill และ Creo (design automation, predictive maintenance) สร้าง differentiation จาก Siemens/Dassault; ลูกค้า manufacturing ต้องการ AI copilot ใน workflow",
+    "<b>Rockwell Automation Partnership:</b> Rockwell ถือหุ้น ~8.4% ใน PTC และเป็น co-sell partner ด้าน industrial IoT; โอกาสขาย FactoryTalk+ThingWorx bundle ใน OT/IT convergence market",
+    "<b>SaaS Transition สมบูรณ์ ~90% Recurring:</b> รายได้มั่นคง, FCF predictable; margin expansion ยังมีที่เหลือเมื่อ transition cost ลด",
+    "<b>Valuation ต่ำเทียบ P/E ประวัติ:</b> P/E ปัจจุบัน ~16.6x (EPS FY2026e) เทียบ 30–64x ในประวัติ 5 ปี · EV/FCF ~17x; จำนวนหุ้นคงเหลือ 108.5M ต่ำกว่าถัวเฉลี่ยปรับลด 119M สะท้อนการซื้อหุ้นคืน — EPS accretive",
+    "<b>Onshoring / Manufacturing Renaissance:</b> นโยบาย reshoring ของ US/Europe หนุน demand PLM software สำหรับโรงงานใหม่ในอุตสาหกรรม Aerospace, EV, Defense"
+  ],
+  "risks": [
+    "<b>ARR Growth ชะลอต่อเนื่อง:</b> หาก ARR growth ลงต่ำกว่า 7% จะเป็นสัญญาณ structural slowdown; market saturation ในกลุ่ม PLM core; budget freeze ในลูกค้า manufacturing",
+    "<b>Competition จาก Siemens & Dassault:</b> Siemens (Teamcenter) และ Dassault (ENOVIA/CATIA) มีฐานลูกค้าใหญ่ และลงทุน AI เช่นกัน; สงคราม PLM ใน Tier-1 automotive OEM เข้มข้น",
+    "<b>ผลกระทบจาก Kepware Divestiture:</b> ขาย Kepware ทำให้รายได้ IoT Connectivity หาย; ARR reported ต่ำกว่าจริงเพราะ organic vs. reported เบลอ; ความไว้วางใจนักลงทุนลดลง",
+    "<b>Rate Sensitivity (High Multiple):</b> แม้ P/E จะลดลงมา แต่ถ้า Fed ยังสูงต่อ Discount Rate กดดัน DCF-based valuation; หุ้นซอฟต์แวร์ยังโดนแรงกดดัน",
+    "<b>Macro / CapEx Freeze:</b> Recession หรือ capital expenditure freeze ใน manufacturing sector จะกระทบ PTC โดยตรง; ลูกค้า auto/aero ระวัง cost ในช่วง demand อ่อน",
+    "<b>Integration Risk (Acquisitions):</b> PTC มีประวัติ acquisition บ่อย (Arena, ServiceMax) ซึ่งเสี่ยง goodwill impairment; debt $1.61B (cash $351M) อาจจำกัด M&A flexibility ในอนาคต"
+  ],
+  "extras": [],
+  "_sig": "sha256:d4b375d76903a72a43df4e0b097e70b9d1b05ef24cf026d9f7c3d0088dfd949a"
+}
