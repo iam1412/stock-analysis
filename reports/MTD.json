@@ -1,0 +1,270 @@
+{
+  "v": 3,
+  "symbol": "MTD",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Mettler-Toledo International",
+    "exchange": "NYSE",
+    "sub": "เครื่องชั่งห้องปฏิบัติการ & อุตสาหกรรม • วิเคราะห์กระบวนการ • ตรวจสอบผลิตภัณฑ์ • โซลูชันค้าปลีกอาหาร • ไม่จ่ายปันผล • buyback aggressive • HQ สวิตเซอร์แลนด์ / NYSE",
+    "sectorLine": "NYSE · MTD · Precision Instruments",
+    "headerTags": [
+      "Precision Instruments",
+      "Lab Analytics"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "StockAnalysis.com",
+      "Mettler-Toledo IR (mt.com)"
+    ],
+    "themeLegacy": {
+      "accent": "#c28100",
+      "accentDark": "#8f5f00",
+      "darkGrad": "linear-gradient(135deg,#2b1c00 0%,#4a2f00 55%,#8e5e00 100%)",
+      "glow": "rgba(204,136,0,0.35)",
+      "subColor": "#fbedcc",
+      "headerMuted": "#f6edd9",
+      "verdictText": "#FFF4CC",
+      "vcellLabel": "#fffefc"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T17:02:51+07:00",
+      "v2Hash": "8e6794d32fd1"
+    }
+  },
+  "market": {
+    "px": 1519.15,
+    "priceDate": "2026-09-24",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          1416.29
+        ],
+        [
+          "พ.ย.25",
+          1476.72
+        ],
+        [
+          "ธ.ค.25",
+          1394.19
+        ],
+        [
+          "ม.ค.26",
+          1373.24
+        ],
+        [
+          "ก.พ.26",
+          1366.69
+        ],
+        [
+          "มี.ค.26",
+          1261.2
+        ],
+        [
+          "เม.ย.26",
+          1276.61
+        ],
+        [
+          "พ.ค.26",
+          1180.58
+        ],
+        [
+          "มิ.ย.26",
+          1277.51
+        ],
+        [
+          "ก.ค.26",
+          1416.3
+        ],
+        [
+          "ส.ค.26",
+          1405.14
+        ],
+        [
+          "ก.ย.26",
+          1519.15
+        ]
+      ],
+      "gridFmt": "v.toFixed(0)",
+      "dataFmt": "d[1].toFixed(2)"
+    },
+    "range52w": {
+      "lo": 1023.05,
+      "hi": 1525.17
+    }
+  },
+  "fundamentals": {
+    "eps": 44.45,
+    "shares": 20036559,
+    "epsForward": 47.34,
+    "netDebt": 2090000000,
+    "revenue": 4130000000,
+    "fcf": 864000000,
+    "netIncome": 906000000,
+    "dps": 0,
+    "beta": 1.26,
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation",
+      "inputs": {
+        "multiple": 34.3,
+        "multipleSource": "median5y"
+      },
+      "note": "ตัวคูณนี้คือมัธยฐานย้อนหลัง 5 ปีของ MTD เอง (ราคาเฉลี่ยรายปี ÷ EPS diluted: 30.3x / 33.0x / 36.0x / 34.3x / 42.0x ช่วง FY2021–FY2025) มาจากประวัติ ไม่ได้มาจาก P/E ปัจจุบัน",
+      "family": "market"
+    },
+    {
+      "method": "dcf",
+      "label": "DCF (FCF to equity, 10 ปี)",
+      "inputs": {
+        "stages": [
+          {
+            "years": 5,
+            "g": 8
+          },
+          {
+            "years": 5,
+            "g": 6
+          }
+        ],
+        "tg": 3,
+        "r": 9,
+        "rfCurrency": "USD"
+      },
+      "override": {
+        "netDebt": 0,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "SA · สมมติฐานของผู้วิเคราะห์ · PV $12,319M = 61% ของมูลค่า · FCF หลังดอกเบี้ยจึงไม่หักหนี้ซ้ำ · ตระกูลอิสระจาก P/E (คนละสมมติฐาน)",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      {
+        "key": "peForward",
+        "tone": "none"
+      },
+      {
+        "key": "netDebt",
+        "tone": "neu"
+      },
+      "revenue",
+      "eps",
+      {
+        "key": "fcf",
+        "tone": "pos"
+      },
+      "custom:0",
+      "netIncome",
+      "custom:1",
+      "yield",
+      "beta"
+    ],
+    "custom": [
+      {
+        "label": "ROIC (ประมาณ)",
+        "value": "~25–30%",
+        "note": "ROE ไม่สื่อความหมาย (equity ติดลบจาก buyback)",
+        "tone": "pos"
+      },
+      {
+        "label": "Buyback (FY2025)",
+        "value": "$800M",
+        "note": "ซื้อคืนหุ้นแทนปันผล · equity ติดลบ −$24M"
+      }
+    ],
+    "notes": {
+      "mcap": "~20.04M หุ้นคงเหลือ (SA statistics)",
+      "pe": "GAAP EPS TTM {{eps}} · ต่ำกว่ามัธยฐาน 5 ปี ~34.3x",
+      "peForward": "EPS FY2026E $47.34 (consensus SA) · FY2027E $51.70",
+      "netDebt": "หนี้ $2,137M · เงินสด $51M",
+      "revenue": "+6.9% YoY · operating margin ~28.9%",
+      "eps": "TTM (diluted) · FY2025 $42.05",
+      "fcf": "FCF margin ~20.9% · $43.12/share (หุ้นคงเหลือ)",
+      "netIncome": "+4.3% เทียบ FY2025 ($869M) · net margin 21.9%",
+      "yield": "ไม่จ่าย · ผลตอบแทนผ่าน buyback เท่านั้น",
+      "beta": "ผันผวนสูงกว่าตลาดเล็กน้อย"
+    },
+    "hint": "ข้อมูล TTM ล่าสุดตาม StockAnalysis · ยืนยัน ≥2 แหล่ง"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 3,
+        "exitMultiple": 25,
+        "divCum": 0,
+        "desc": "ดอกเบี้ยสูง + China ฟื้นช้า"
+      },
+      {
+        "growth": 9,
+        "exitMultiple": 30,
+        "divCum": 0,
+        "desc": "biotech ฟื้น + pricing power ดี"
+      },
+      {
+        "growth": 13,
+        "exitMultiple": 35,
+        "divCum": 0,
+        "desc": "China เร่งลงทุน lab + re-rating ขึ้น"
+      }
+    ],
+    "exitDp": 1,
+    "note": "กรณีฐาน (Base) ใช้ EPS โต ~9%/ปีเป็นสมมติฐาน อิง consensus SA ที่ FY2026E $47.34 และ FY2027E $51.70 (+9.2%) โดย buyback ช่วยหนุน EPS ให้โตเร็วกว่ารายได้ P/E ออก 30x ต่ำกว่ามัธยฐานย้อนหลัง 34.3x (de-rate เล็กน้อย) MTD ไม่จ่ายปันผล ผลตอบแทนมาจาก capital gain ล้วน กรณี Bear รับน้ำหนักจากดอกเบี้ยสูงกดมัลติเพิลเหลือ 25x และการฟื้นตัวช้าของตลาด lab ใน China (สัดส่วนรายได้ ~15-20%) กรณี Bull คือ re-rating กลับสู่ 35x ซึ่งอยู่ในช่วงประวัติ 30.3–42.0x",
+    "hintNote": "• ไม่มีปันผล"
+  },
+  "analyst": {
+    "target": 1452.5,
+    "n": null,
+    "rating": "Hold",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "MTD ปรับตัวขึ้นแตะจุดสูงสุดรอบปีที่ ~$1,477 ในเดือน พ.ย. 2568 หนุนโดยผลประกอบการ Q3 ที่แข็งแกร่งและแนวโน้มการฟื้นตัวของตลาด lab equipment หลังจากที่ภาคชีวเภสัช/biotech กลับมาลงทุน ต่อมาหุ้นปรับฐานลงสู่จุดต่ำสุด ~$1,181 ในเดือน พ.ค. 2569 ท่ามกลางความกังวลเรื่องอัตราดอกเบี้ยและค่าเงินดอลลาร์แข็ง ปัจจุบันฟื้นตัวขึ้นต่อเนื่องมายืนที่ {{px}} ซึ่งสูงกว่ามูลค่าเหมาะสม {{fv}} เล็กน้อย",
+    "valuation": "FV = เฉลี่ยสองตระกูลอิสระ: P/E ประวัติ ($1,525) กับ DCF ($1,014) ห่างกัน 1.5 เท่า (ไม่เกิน 2 เท่า จึงเฉลี่ยได้) ตัดขา EV/EBITDA และ FCF yield เดิมออกเพราะใช้ตัวคูณที่ไม่มีมัธยฐานวัดจริงรองรับ · ความไวของ FV: ถ้าใช้ P/E ล้วน MOS จะเป็นบวก ถ้าใช้ DCF ล้วนราคาจะสูงกว่ามูลค่ามาก ค่าเฉลี่ยจึงอ่อนไหวต่อสมมติฐาน r/g ของ DCF · เป้านักวิเคราะห์เฉลี่ย {{analyst.target}} (Hold, 14 ราย) ใช้เป็นบริบทเทียบเท่านั้น ไม่ได้เป็นขาของ FV · ยืนยันจาก Yahoo Finance และ StockAnalysis.com",
+    "gauge": "ราคาปัจจุบัน {{px}} อยู่สูงกว่ามูลค่าเหมาะสม {{fv}} ({{mos}}) ไม่มี Margin of Safety เหลือ ณ ระดับนี้ สำหรับหุ้น compounder คุณภาพสูงอย่าง MTD นักลงทุนที่ยอมรับ premium ได้อาจถือต่อได้ แต่โซนน่าสนใจสำหรับ value investor คือต่ำกว่า {{mos20}} (MOS 20%) และ deep value ที่ {{mos30}} (MOS 30%)",
+    "mos": "ราคาสูงกว่า Fair Value — ไม่มี MOS · รอทยอยสะสมในโซนต่ำกว่า {{mos20}}",
+    "verdictHeadline": "Compounder คุณภาพสูง — ราคาสูงกว่ามูลค่าเหมาะสมเล็กน้อย ยังไม่ถูกพอ",
+    "verdictBody": "Mettler-Toledo เป็นหนึ่งในบริษัทที่มีคุณภาพสูงที่สุดในโลก วัดจาก ROIC ~25-30% ที่ยั่งยืนมาหลายทศวรรษ ธุรกิจ precision instruments มีแนวคูเมืองแข็งแกร่ง เพราะลูกค้า (ห้องปฏิบัติการ โรงงานยา โรงงานอาหาร) เปลี่ยนแบรนด์ยากมากเนื่องจากต้องผ่านการรับรองและ calibration ใหม่ทั้งหมด กลยุทธ์ buyback เชิงรุกสนับสนุน EPS CAGR ~9-12%/ปีอย่างต่อเนื่อง ราคาปัจจุบัน {{px}} สูงกว่า Fair Value {{fv}} ({{mos}}) ไม่มี Margin of Safety เหลือให้ นักลงทุนระยะยาวที่ยอมรับ premium ได้อาจถือต่อ แต่หากรอโซน {{mos20}} ลงมา (MOS 20%) จะมี upside ที่ดีกว่ามาก",
+    "strategy": "MTD เหมาะสำหรับนักลงทุนระยะยาวที่ต้องการ compounder คุณภาพสูงไว้ในพอร์ต ณ ราคาปัจจุบัน ({{px}}) ไม่มี MOS เหลือ ({{mos}}) เหนือ Fair Value แล้ว — แนะนำ <b>รอสะสมเพิ่ม</b> เมื่อราคาลงมาใกล้ {{mos20}} (MOS 20%) และเพิ่ม position เต็มที่หากราคาหลุด {{mos30}} (MOS 30%) ไม่แนะนำซื้อเพิ่มเมื่อราคาเหนือ {{fv}} (Fair Value)",
+    "disclaimerSources": "ที่มาข้อมูล: Yahoo Finance (finance.yahoo.com), StockAnalysis.com (stockanalysis.com), Mettler-Toledo IR (mt.com) — ราคา ณ {{priceDate}} ยืนยัน ≥2 แหล่ง (Yahoo และ StockAnalysis ราคาตรงกัน)"
+  },
+  "text": {
+    "valHint": "2 ตระกูลอิสระ (P/E ประวัติ + DCF)",
+    "chartHint": "ต.ค. 2568 – ก.ย. 2569",
+    "disclaimerAssump": " P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROIC ในอนาคต"
+  },
+  "catalysts": [
+    "<b>Pricing Power สูง:</b> MTD สามารถขึ้นราคาได้ต่อเนื่องทุกปี เนื่องจากเป็น market leader ในเครื่องชั่งและเครื่องมือวิเคราะห์คุณภาพสูงที่ไม่มีสินค้าทดแทนง่าย ลูกค้าต้อง recertify หากเปลี่ยนแบรนด์",
+    "<b>Recurring Revenue ของบริการ:</b> บริการหลังการขาย (service & calibration) คิดเป็น ~35% ของรายได้ สร้างกระแสเงินสดสม่ำเสมอและโตเร็วกว่า hardware",
+    "<b>Biotech/Pharma Recovery:</b> ตลาด biotech เริ่มกลับมาลงทุนหลัง down-cycle 2023-2024; FDA อนุมัติยาใหม่เพิ่มขึ้น → ความต้องการอุปกรณ์ lab เพิ่ม",
+    "<b>China Long-term Growth:</b> รัฐบาลจีนเร่งลงทุนโครงสร้างพื้นฐาน R&D และ food safety → MTD ซึ่งมีสถานะแข็งแกร่งในจีนได้ประโยชน์ระยะยาว",
+    "<b>Aggressive Buyback:</b> MTD ซื้อคืนหุ้น $787-900M/ปี ลด share count ต่อเนื่อง สนับสนุน EPS growth โดยอัตโนมัติแม้กำไรโตช้า",
+    "<b>Automation & Digitalization:</b> แนวโน้ม Industry 4.0 และ smart factory เพิ่มความต้องการ precision measurement และ process analytics ซึ่งเป็นธุรกิจหลักของ MTD"
+  ],
+  "risks": [
+    "<b>ความเสี่ยง China:</b> สัดส่วนรายได้จาก China ~15-20% หากความสัมพันธ์สหรัฐ-จีนตึงเครียดหรือเศรษฐกิจจีนชะลอตัวรุนแรงจะกระทบรายได้มีนัยสำคัญ",
+    "<b>Premium Valuation ไม่มี MOS:</b> ณ ราคาปัจจุบัน ราคาสูงกว่า Fair Value ({{mos}}) ไม่มี MOS เหลือ หากผลประกอบการต่ำกว่าคาดราคาหุ้นอาจปรับลงแรงได้ เพราะตลาดตั้งความคาดหวังสูง",
+    "<b>Currency Risk:</b> รายได้กว่า 80% มาจากนอกสหรัฐฯ ค่าเงินดอลลาร์แข็งกดทอนรายได้เมื่อแปลงกลับเป็น USD ส่งผลกระทบต่อผลงานรายไตรมาส",
+    "<b>Lab Spending Cycle:</b> การลงทุน lab equipment อิงงบประมาณของภาคเภสัชและรัฐบาล ซึ่งมีวงจรขึ้น-ลง หากงบถูกตัดจะกระทบ hardware revenue",
+    "<b>Leverage สูง:</b> หนี้ $2.14B กับ equity ติดลบ แม้กระแสเงินสดแข็งแกร่ง แต่อัตราดอกเบี้ยสูงเพิ่มต้นทุนการเงินและจำกัดความยืดหยุ่นทางการเงิน"
+  ],
+  "extras": [],
+  "_sig": "sha256:bc752aadd6ce0ccc9f587f9d0a9784d1f7c52f11df1f99376c64d5c56854530f"
+}
