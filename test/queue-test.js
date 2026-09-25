@@ -1629,8 +1629,8 @@ let v3PrepatchPromise = null;   // Plan 4a fix1 (Review Focus 3) — prep() เ�
       'v3/prep (4a): extraBlock ใบ v3 UPDATE-LIGHT → save --light + allowlist ของ save --light (มี meta.priceNote) + บอกว่า cron เป็นเจ้าของราคา · ไม่มีประโยค v2', ebV3L);
     // fix1 I-1: ราคายังไม่สด — ใบ v3 ห้าม worker รัน update-prices (controller pre-patch ก่อน spawn) · ใบ v2 ข้อความเดิม
     const ebV3S = Pp.extraBlock({ sym: 'ZTS', mode: 'UPDATE', v3: true, priceFresh: false, priceDate: '2026-09-21', lastSession: '2026-09-24', oldPrice: 71.33, price: 71.33, baseEPS: 5.5, epsTTM: 5.6, epsScreen: 1.8, snap: [], medWarn: [], hard: false, hardWhy: '', marketOpen: false });
-    ok(/worker ห้ามรัน/.test(ebV3S) && /pre-patch มือ/.test(ebV3S) && !/โหมด UPDATE รัน/.test(ebV3S) && /ยังไม่สด \(priceDate 2026-09-21 < session ล่าสุด 2026-09-24\)/.test(ebV3S) && !/ตลาดเปิดอยู่/.test(ebV3S),
-      'v3/prep (4a fix1): extraBlock ใบ v3 ราคายังไม่สด → controller pre-patch มือ · worker ห้ามรัน (ไม่มีคำสั่ง "โหมด UPDATE รัน")', ebV3S.split('\n')[1]);
+    ok(/worker ห้ามรัน/.test(ebV3S) && /ทางสำรอง .*--strict-gate ZTS/.test(ebV3S) && !/โหมด UPDATE รัน/.test(ebV3S) && /ยังไม่สด \(priceDate 2026-09-21 < session ล่าสุด 2026-09-24\)/.test(ebV3S) && !/ตลาดเปิดอยู่/.test(ebV3S),
+      'v3/prep (4a fix1 · 4b M-4): extraBlock ใบ v3 ราคายังไม่สด → ทางสำรองของ controller (--strict-gate) · worker ห้ามรัน (ไม่มีคำสั่ง "โหมด UPDATE รัน")', ebV3S.split('\n')[1]);
     const ebV3SO = Pp.extraBlock({ sym: 'ZTS', mode: 'UPDATE', v3: true, priceFresh: null, snap: [], medWarn: [], hard: false, hardWhy: '', marketOpen: true });
     ok(/ยังไม่สด \(ยังไม่ได้ pre-patch\) — ใบ v3/.test(ebV3SO) && /\(ตลาดเปิดอยู่ — รอปิดตลาดก่อน\)/.test(ebV3SO) && /worker ห้ามรัน/.test(ebV3SO),
       'v3/prep (4a fix1): ใบ v3 ยังไม่ pre-patch + ตลาดเปิด → stamp เดียวกับ v2 + รอปิดตลาด', ebV3SO.split('\n')[1]);
@@ -1799,6 +1799,18 @@ let v3PrepatchPromise = null;   // Plan 4a fix1 (Review Focus 3) — prep() เ�
       'preflight wiring (4b I-1): forced ต้องว่างภายใต้ --strict-gate — ถ้าไม่ว่าง throw ก่อนประทับ state', err);
   }
   ok(P.PREPATCH_FLAGS.join(' ') === '--write --force --strict-gate', 'preflight (4b I-1): flag ของ pre-patch = --write --force --strict-gate', P.PREPATCH_FLAGS.join(' '));
+}
+
+// ── Plan 4b final review M-4: prep ใบ v3 ราคายังไม่สด = ทางสำรอง (preflight pre-patch ให้แล้วตามปกติ) · คำสั่งมือมี --strict-gate
+{
+  const PR = require('../tools/queue/prep.js');
+  const base = { sym: 'ZZZQ', mode: 'UPDATE-LIGHT', v3: true, priceFresh: false, priceDate: '2026-09-24', lastSession: '2026-09-25', snap: [], medWarn: [] };
+  const txt = (i) => [].concat(PR.extraBlock(i)).join('\n');
+  const t1 = txt(base);
+  ok(t1.includes('ใบ v3: ปกติ preflight pre-patch ให้แล้ว · ทางสำรอง (แถวที่ preflight ข้าม เช่นตลาดเปิด): controller รัน `node tools/update-prices.js --write --force --strict-gate ZZZQ` ก่อน spawn'),
+    'prep (4b M-4): ใบ v3 ราคาไม่สด → ถ้อยคำทางสำรอง + --strict-gate', t1.slice(0, 400));
+  ok(!/--write --force ZZZQ/.test(t1), 'prep (4b M-4): ไม่มีคำสั่ง pre-patch มือที่ไม่มี --strict-gate');
+  ok(txt({ ...base, marketOpen: true }).includes('(ตลาดเปิดอยู่ — รอปิดตลาดก่อน)'), 'prep (4b M-4): ตลาดเปิด → รอปิดตลาดก่อน');
 }
 
 // ─────────────────────────── (Task 10–14 แทรกเทสเหนือบรรทัดนี้) ───────────────────────────
