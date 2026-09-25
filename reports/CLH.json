@@ -1,0 +1,238 @@
+{
+  "v": 3,
+  "symbol": "CLH",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Clean Harbors, Inc.",
+    "exchange": "NYSE",
+    "sub": "#1 North American hazardous waste management • Environmental Services & industrial cleaning • Safety-Kleen used oil recycling • Largest NA hazardous waste incinerator network • Norwell, MA",
+    "headerTags": [
+      "Environmental Services",
+      "Hazardous Waste"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "StockAnalysis.com",
+      "Yahoo chart API"
+    ],
+    "themeLegacy": {
+      "accent": "#CC5500",
+      "accentDark": "#993F00",
+      "darkGrad": "linear-gradient(135deg,#1a0d00 0%,#2d1a00 50%,#1a0d00 100%)",
+      "glow": "rgba(204,85,0,0.35)",
+      "subColor": "#ff9955",
+      "headerMuted": "rgba(255,153,85,0.7)",
+      "verdictText": "#ff9955",
+      "vcellLabel": "#ffb380"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T12:28:00+07:00",
+      "v2Hash": "b2f903958414"
+    }
+  },
+  "market": {
+    "px": 316.07,
+    "priceDate": "2026-09-24",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          210.51
+        ],
+        [
+          "พ.ย.25",
+          227.56
+        ],
+        [
+          "ธ.ค.25",
+          234.48
+        ],
+        [
+          "ม.ค.26",
+          259.91
+        ],
+        [
+          "ก.พ.26",
+          293.2
+        ],
+        [
+          "มี.ค.26",
+          286.73
+        ],
+        [
+          "เม.ย.26",
+          312.68
+        ],
+        [
+          "พ.ค.26",
+          281.03
+        ],
+        [
+          "มิ.ย.26",
+          298.75
+        ],
+        [
+          "ก.ค.26",
+          312.88
+        ],
+        [
+          "ส.ค.26",
+          315.25
+        ],
+        [
+          "ก.ย.26",
+          316.07
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 201.34,
+      "hi": 335.94
+    }
+  },
+  "fundamentals": {
+    "eps": 8.25,
+    "bvps": 51.84,
+    "shares": 52787248,
+    "peAvg5y": 25.5,
+    "roe": 15.6,
+    "revenue": 6240000000,
+    "opMargin": 11.9,
+    "dps": 0,
+    "beta": 0.85,
+    "fy": {
+      "period": "FY2025",
+      "netIncome": 391000000
+    },
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation",
+      "inputs": {
+        "multiple": 25.5,
+        "multipleSource": "median5y"
+      },
+      "note": "มัธยฐาน P/E ราคาเฉลี่ยรายปี ÷ EPS FY2021–FY2025 — ช่วง 14.0–30.9x",
+      "family": "market"
+    },
+    {
+      "method": "fcfyield",
+      "label": "FCF Yield Valuation",
+      "inputs": {
+        "yield": 3.7
+      },
+      "override": {
+        "fcf": 461888420,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "มัธยฐานย้อนหลัง FY2021–FY2025 = FCF ÷ (ราคาเฉลี่ยปี × หุ้นถัวเฉลี่ย): 5.9%, 4.9%, 3.7%, 2.9%, 3.7%",
+      "family": "market"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "peAvg5y",
+      "pbv",
+      "netIncomeFy",
+      "eps",
+      "bvps",
+      "roe",
+      "revenue",
+      "opMargin",
+      "yield",
+      "beta"
+    ],
+    "notes": {
+      "mcap": "52.79M shares",
+      "pe": "GAAP diluted EPS TTM {{eps}}",
+      "peAvg5y": "มัธยฐาน 5 FY (ช่วง 14.0–30.9x)",
+      "pbv": "BVPS ~{{bvps}}",
+      "netIncomeFy": "Net margin ~6.5% (TTM $439M)",
+      "eps": "FY2025 $7.28 (GAAP diluted)",
+      "bvps": "Equity ~$2.75B",
+      "roe": "ROE TTM · FY2025 14.7%",
+      "revenue": "+5.1% YoY",
+      "opMargin": "Gross margin 32.3% (TTM)",
+      "yield": "ไม่จ่าย · reinvest growth & M&A",
+      "beta": "Defensive industrial"
+    },
+    "hint": "ข้อมูล ณ 21 ก.ย. 2569 · งวดงบ TTM/FY2025 · ที่มา: Yahoo Finance, StockAnalysis"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 5,
+        "exitMultiple": 20,
+        "divCum": 0,
+        "desc": "เศรษฐกิจชะลอ อุตสาหกรรมหดตัว"
+      },
+      {
+        "growth": 10,
+        "exitMultiple": 25.5,
+        "divCum": 0,
+        "desc": "การเติบโตต่อเนื่อง M&A สร้างมูลค่า"
+      },
+      {
+        "growth": 15,
+        "exitMultiple": 30,
+        "divCum": 0,
+        "desc": "EPA กฎใหม่ + Superfund โตแรง + Safety-Kleen ขยาย"
+      }
+    ],
+    "exitDp": 1,
+    "note": "คาดการณ์อิง EPS TTM {{eps}} (GAAP diluted) ไม่มีปันผล ราคาเป้า = EPS ปี 3 × P/E ออก (Bear 20x · Base 25.5x = มัธยฐาน 5 FY · Bull 30x ≈ ระดับ FY2024–25) Base case ให้ผลตอบแทน 3 ปี {{scn.base.ret}} สะท้อนว่าราคาปัจจุบันจ่ายตัวคูณสูงกว่ามัธยฐานย้อนหลังอยู่แล้ว upside ต้องพึ่งการเติบโตของกำไรที่เร็วกว่า 10%/ปี หรือการคงตัวคูณระดับ 30x",
+    "hintNote": "• ไม่มีปันผล"
+  },
+  "analyst": {
+    "target": 360,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ราคา CLH ตามกราฟรายเดือน (ต.ค. 2568 – ก.ย. 2569) ปรับตัวขึ้นจาก $210.51 (จุดต่ำสุดรายเดือน ต.ค. 2568) มาอยู่ที่ {{px}} ซึ่งใกล้จุดสูงสุดของกราฟ ระหว่างทางมีการพักตัวช่วง พ.ค. 2569 ก่อนกลับขึ้นต่อ · กรอบ 52 สัปดาห์ $201.34–$335.94 ราคาปัจจุบันอยู่เหนือมูลค่าเหมาะสม {{fv}} ซึ่งอิงตัวคูณมัธยฐานย้อนหลังของบริษัทเอง สะท้อนว่าตลาดจ่าย premium สูงกว่าค่ามัธยฐานในอดีต",
+    "valuation": "สองวิธีอยู่คนละตระกูล (ตัวคูณกำไร vs อัตราผลตอบแทน FCF) และต่างกันไม่ถึง 2 เท่า จึงเฉลี่ยกันได้ ทั้งคู่ใช้ค่ามัธยฐานที่วัดจากประวัติ 5 ปีงบของ CLH เอง ไม่อิงตัวคูณปัจจุบัน ราคาปัจจุบัน {{px}} สูงกว่า FV เฉลี่ย {{fv}} มาก (MOS {{mos}}) — ส่วนต่างเกิน 40% จึงถือเป็นค่าประมาณที่ยังไม่ผ่านการยืนยันด้วยวิธีอิสระ: มัธยฐานย้อนหลังถูกดึงลงจากช่วงที่หุ้นเทรดถูก (P/E 14x ปี 2022) ขณะที่ 2 ปีล่าสุดเทรดที่ 30x ขึ้นไป ตลาดจึงจ่าย re-rating เหนือประวัติ · เป้าเฉลี่ยนักวิเคราะห์ $359.93 (Buy, 15 ราย) ใช้เป็นบริบทเท่านั้น ไม่ได้เป็นส่วนของ FV",
+    "gauge": "ราคาปัจจุบัน {{px}} สูงกว่ามูลค่าเหมาะสม {{fv}} จึงยังไม่มี Margin of Safety ในเชิง value investing เป้าหมาย consensus นักวิเคราะห์ $359.93 สูงกว่าราคาปัจจุบัน แต่เป็นมุมมอง growth ไม่ใช่ส่วนของ FV จุดซื้อน่าสนใจตาม MOS 20% คือ {{mos20}} และ MOS 30% คือ {{mos30}} ซึ่งอาจเกิดในช่วง market correction",
+    "mos": "ราคาสูงกว่ามูลค่าเหมาะสม — ยังไม่มี MOS ในเชิง value investing",
+    "verdictHeadline": "ธุรกิจดีเยี่ยม — แต่ราคาปัจจุบันสะท้อน Premium เต็มที่แล้ว",
+    "verdictBody": "Clean Harbors คือผู้ผูกขาดโดย regulatory moat ในธุรกิจกำจัดของเสียอันตรายอเมริกาเหนือ มีความได้เปรียบด้านเครือข่ายที่สร้างได้ยากมากและรายได้ประจำจากสัญญาระยะยาว อย่างไรก็ตาม ราคาปัจจุบัน {{px}} สูงกว่ามูลค่าเหมาะสม {{fv}} (MOS {{mos}}) P/E TTM ~{{pe}}x ตั้งอยู่บน premium เหนือมัธยฐานย้อนหลัง 25.5x แต่ upside จากจุดนี้ขึ้นอยู่กับการเติบโตที่เร็วกว่าคาดหรือตัวคูณที่คงระดับสูง เป็นหุ้นที่ควร \"ถือถ้ามีอยู่แล้ว\" และรอโอกาสสะสมเพิ่มเมื่อราคาปรับลดลง",
+    "strategy": "ธุรกิจคุณภาพสูงมาก แต่ราคา {{px}} สูงกว่า FV {{fv}} จึงยังไม่มี MOS ควรรอสะสมเมื่อราคาใกล้ {{fv}} หรือต่ำกว่า (MOS 20% = {{mos20}}) ถ้ามีหุ้นอยู่แล้วอาจถือต่อสำหรับ growth play โดยรู้ว่า FV ประมาณการจากตัวคูณย้อนหลัง",
+    "disclaimerSources": "ที่มา: Yahoo Finance (ราคา ณ {{priceDate}}), StockAnalysis.com (งบการเงิน + เป้าหมายนักวิเคราะห์ + rating), Yahoo chart API (กราฟ)"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 2 วิธี (ตัวคูณมัธยฐานย้อนหลัง)"
+  },
+  "catalysts": [
+    "<b>Regulatory Moat สูงสุด:</b> กฎระเบียบสิ่งแวดล้อมของ EPA เข้มงวดขึ้นต่อเนื่อง บังคับให้อุตสาหกรรมใช้บริการกำจัดของเสียอันตรายอย่างถูกต้อง ผลักดันความต้องการระยะยาว",
+    "<b>ผู้นำตลาดเบอร์ 1 NA:</b> เครือข่ายเตาเผาและโรงบำบัดขนาดใหญ่ที่สุดในอเมริกาเหนือ สร้าง barrier to entry ที่แทบเป็นไปไม่ได้สำหรับคู่แข่งรายใหม่",
+    "<b>Safety-Kleen Portfolio:</b> ธุรกิจ parts cleaning และรีไซเคิลน้ำมันใช้แล้วเสริมเครือข่ายให้ครบวงจร margin ขั้นต้น TTM 32.3% ปรับดีขึ้นจาก 31.3% ใน FY2025",
+    "<b>Safety-Kleen Circular Economy:</b> ธุรกิจรีไซเคิลน้ำมันใช้แล้ว (re-refining) ได้รับประโยชน์จากแนวโน้ม circular economy และราคาน้ำมันที่ค่อนข้างสูง margin ขั้นต้นขยับขึ้นตามตัวเลขงบ",
+    "<b>Superfund & Emergency Response:</b> สัญญาภาครัฐสำหรับ Superfund site cleanup และ emergency response เป็นแหล่งรายได้ที่สม่ำเสมอและมีมูลค่าสูง",
+    "<b>Free Cash Flow แข็งแกร่ง:</b> FCF TTM $462M ($8.75/share) สูงกว่า net income TTM $439M · FCF โตจาก $312M (FY2023) เป็น $442M (FY2025)"
+  ],
+  "risks": [
+    "<b>Valuation Premium สูง:</b> P/E TTM ~{{pe}}x สูงกว่ามัธยฐาน 5 FY ของตัวเองที่ 25.5x ถ้าการเติบโตชะลอหรือ margin ไม่ขยายตามคาด อาจเกิด multiple compression รุนแรง",
+    "<b>Environmental Liability:</b> ธุรกิจ hazardous waste มีความเสี่ยงด้าน environmental liability สะสม การเข้าซื้อกิจการอาจนำ legacy liability มาด้วย",
+    "<b>ความอ่อนไหวต่อวัฏจักรเศรษฐกิจ:</b> ธุรกิจ Safety-Kleen ขึ้นกับกิจกรรมอุตสาหกรรมและราคาน้ำมัน ถ้าเศรษฐกิจชะลอตัวหรือ oil price ลด margin อาจกดดัน",
+    "<b>การแข่งขันด้านแรงงาน:</b> technician และ driver สำหรับ hazardous waste มีจำกัด ต้นทุนแรงงานสูงขึ้น บีบ margin ในช่วงตลาดแรงงานตึงตัว",
+    "<b>กฎระเบียบด้านสิ่งแวดล้อมเพิ่มต้นทุน:</b> แม้โดยรวมเป็นบวก แต่กฎใหม่อาจเพิ่มต้นทุนการดำเนินงานและ capex ของ Clean Harbors เองด้วย เช่น ข้อกำหนดการอัปเกรดเตาเผา",
+    "<b>ความเสี่ยงจากการกระจุกตัว NA:</b> รายได้ส่วนใหญ่อยู่ในอเมริกาเหนือ การขยายธุรกิจระหว่างประเทศจำกัด ทำให้ขึ้นกับสภาพเศรษฐกิจ NA เป็นหลัก"
+  ],
+  "extras": [],
+  "_sig": "sha256:111bbb69192ec177eaa28ac4f04734782637be1f0395225145d512c6801dbb26"
+}
