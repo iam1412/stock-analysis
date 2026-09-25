@@ -47,4 +47,14 @@ t(/BBB: .*VALUE-DRIFT\/mixed ≠ ตาราง VALUE-DRIFT\/fv-rounding/.test(
   const r = BT.runBatch([{ symbol: 'AAA', bucket: 'CLEAN', driftClass: '' }], { classes: ['CLEAN'], n: 1, model: 'opus', noPush: true }, deps);
   t(r.code === 3 && msg === '' && /AAA: convert exit 1/.test(r.refused[0]), 'runBatch: a failed convert is a refusal · nothing shipped for an empty group', JSON.stringify(r));
 }
+// controller ruling (Task 1 concern 4): deps.fresh throws for one row → that row refused with the message · others continue · exit 3
+{
+  const calls = [];
+  const deps = { fresh: (s) => { if (s === 'GONE') throw new Error('ไม่พบ reports/GONE.html'); return { bucket: 'CLEAN', driftClass: '' }; },
+    convert: (s) => { calls.push(`convert ${s}`); return 0; }, build: () => calls.push('build'), ship: (x) => calls.push(`ship ${x.join(' ')}`), verify: () => calls.push('verify'), push: () => calls.push('push'), log: () => {} };
+  const r = BT.runBatch([{ symbol: 'AAA', bucket: 'CLEAN', driftClass: '' }, { symbol: 'GONE', bucket: 'CLEAN', driftClass: '' }, { symbol: 'EEE', bucket: 'CLEAN', driftClass: '' }],
+    { classes: ['CLEAN'], n: 1, model: 'opus', noPush: true, dryRun: false }, deps);
+  t.eq(calls, ['convert AAA', 'convert EEE', 'build', 'ship AAA EEE', 'verify'], 'runBatch: fresh throw → no convert for that row · others convert + ship');
+  t(r.code === 3 && r.refused.length === 1 && r.refused[0] === 'GONE: ไม่พบ reports/GONE.html', 'runBatch: fresh throw → refused "SYM: <message>" · exit 3', JSON.stringify(r));
+}
 t.done();

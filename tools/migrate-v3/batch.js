@@ -48,7 +48,9 @@ function runBatch(rows, opts, deps) {
   for (const group of commitGroups(picked)) {
     const ok = [];
     for (const r of group) {
-      const why = freshMismatch(r, deps.fresh(r.symbol));
+      // ruling (controller · Task 1 concern 4): migrate ใหม่ล้ม (เช่น .html หายแล้ว) = ปฏิเสธแถวนั้น ไม่ล้มทั้งรอบ
+      let why;
+      try { why = freshMismatch(r, deps.fresh(r.symbol)); } catch (e) { why = `${r.symbol}: ${String((e && e.message) || e).split('\n')[0]}`; }
       if (why) { refused.push(why); deps.log(`✗ ${why}`); continue; }
       if (opts.dryRun) { ok.push(r.symbol); continue; }
       const code = deps.convert(r.symbol, r.bucket === 'VALUE-DRIFT');
