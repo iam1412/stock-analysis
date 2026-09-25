@@ -1,0 +1,259 @@
+{
+  "v": 3,
+  "symbol": "SWK",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Stanley Black & Decker",
+    "exchange": "NYSE",
+    "sub": "Stanley Black & Decker: บริษัทเครื่องมือช่างรายใหญ่ (DEWALT, STANLEY, CRAFTSMAN, BLACK+DECKER, Irwin, Lenox) • Turnaround: กำไรสุทธิ TTM ฟื้นเป็น $621M (FY2023 ขาดทุน $310M) และหนี้ลดต่อเนื่อง • Pro Tools + ตลาดก่อสร้าง-รีโนเวทที่อ่อนไหวต่ออัตราดอกเบี้ย • เงินปันผล ~3.8% yield",
+    "headerTags": [
+      "Industrials",
+      "Tools & Storage"
+    ],
+    "analysisDate": "2026-09-22",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis.com",
+      "Yahoo Finance",
+      "StockAnalysis Financials (งบย้อนหลัง)"
+    ],
+    "themeLegacy": {
+      "accent": "#bf8500",
+      "accentDark": "#895e00",
+      "darkGrad": "linear-gradient(135deg,#1a1200 0%,#2a1f00 60%,#1a1200 100%)",
+      "glow": "rgba(242,169,0,0.18)",
+      "subColor": "#ffe0a0",
+      "headerMuted": "#b78100",
+      "verdictText": "#fff8e1",
+      "vcellLabel": "#ffe082"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-22T01:46:25+07:00",
+      "v2Hash": "013629332624"
+    }
+  },
+  "market": {
+    "px": 90.17,
+    "priceDate": "2026-09-24",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          67.72
+        ],
+        [
+          "พ.ย.25",
+          71.52
+        ],
+        [
+          "ธ.ค.25",
+          74.28
+        ],
+        [
+          "ม.ค.26",
+          78.66
+        ],
+        [
+          "ก.พ.26",
+          86.49
+        ],
+        [
+          "มี.ค.26",
+          71.06
+        ],
+        [
+          "เม.ย.26",
+          78.16
+        ],
+        [
+          "พ.ค.26",
+          79.42
+        ],
+        [
+          "มิ.ย.26",
+          94.12
+        ],
+        [
+          "ก.ค.26",
+          94.58
+        ],
+        [
+          "ส.ค.26",
+          96.37
+        ],
+        [
+          "ก.ย.26",
+          90.17
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 61.9,
+      "hi": 104.68
+    }
+  },
+  "fundamentals": {
+    "dps": 3.36,
+    "bvps": 59.6,
+    "shares": 151000000,
+    "epsForward": 6.38,
+    "netIncome": 621000000,
+    "eps": 4.09,
+    "roe": 6.9,
+    "revenue": 15250000000,
+    "grossMargin": 32.2,
+    "netDebt": 4620000000,
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation (GAAP TTM)",
+      "inputs": {
+        "multiple": 23,
+        "multipleSource": "median5y",
+        "medianWindow": "4 ปี"
+      },
+      "note": "23.0x คือมัธยฐาน P/E ย้อนหลังของ SWK (ราคาเฉลี่ยรายปี ÷ EPS(dil) ของ 4 ปีที่กำไรเป็นบวก: 16.2x / 18.7x / 27.2x / 48.0x — ช่วงกว้าง 3 เท่าเพราะ FY2024 กำไรต่ำทำให้ P/E พอง) มาจากประวัติ ไม่ได้มาจาก P/E ปัจจุบัน 21.9x",
+      "family": "market"
+    },
+    {
+      "method": "dcf",
+      "label": "DCF (FCF to equity, 5 ปี)",
+      "inputs": {
+        "g1": 3,
+        "years1": 5,
+        "tg": 2.5,
+        "r": 9,
+        "rfCurrency": "USD"
+      },
+      "override": {
+        "fcf": 910000000,
+        "netDebt": 0,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "สมมติฐานของผู้วิเคราะห์เอง · เฉลี่ย TTM $1,289M / FY2025 $688M / FY2024 $753M เพื่อลดความผันผวน · TV = 74% ของทั้งหมด",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      {
+        "key": "peForward",
+        "tone": "none"
+      },
+      "custom:0",
+      "netIncome",
+      "eps",
+      "custom:1",
+      "roe",
+      "revenue",
+      "grossMargin",
+      "yield",
+      {
+        "key": "netDebt",
+        "tone": "neg"
+      }
+    ],
+    "custom": [
+      {
+        "label": "P/BV (est.)",
+        "value": "~{{pbv}}x",
+        "note": "BVPS ~$59.6 (ประมาณจาก NI÷ROE) — มี goodwill/intangibles สูง",
+        "tone": "neu"
+      },
+      {
+        "label": "BVPS (est.)",
+        "value": "~$59.6",
+        "note": "Equity ~$9.0B (NI÷ROE) / 151.0M หุ้น"
+      }
+    ],
+    "notes": {
+      "mcap": "151.0M หุ้น",
+      "pe": "GAAP EPS TTM {{eps}} (FY2025: $2.65) — กำไรฟื้นตัวชัดเจน",
+      "peForward": "EPS $6.38 คือ FY2027e (ปีงบถัดไป FY2026e = $5.60 ⇒ ~16x) — ยังเป็น estimate",
+      "netIncome": "EPS(dil) TTM {{eps}} — FY2025: $402M ($2.65/หุ้น)",
+      "eps": "Fwd FY2027e: ~$6.38 (+56%) — ระวัง estimate อาจ optimistic",
+      "roe": "ฟื้นตัวจาก 4.5% (FY2025) — margin ดีขึ้นต่อเนื่อง",
+      "revenue": "ทรงตัว YoY +0.6% — FY2025: $15.13B, ยังต่ำกว่าจุดสูง $16.95B (FY2022)",
+      "grossMargin": "ดีขึ้นต่อเนื่อง — FY2025: 30.6% vs FY2024: 29.9%",
+      "yield": "{{dps}}/share ต่อปี — payout ~82% ของ EPS TTM {{eps}}",
+      "netDebt": "ลดจาก $6.06B (FY2025) → $4.62B (TTM: Debt $5.21B − Cash $0.59B) — ลดหนี้ชัดเจน"
+    },
+    "hint": "ข้อมูล ณ ก.ย. 2569 — อยู่ระหว่างปรับโครงสร้าง"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": -5,
+        "exitMultiple": 14,
+        "divCum": 10.08,
+        "desc": "margin ย่อกลับ ดอกเบี้ยสูงกดอสังหา ตลาดให้ P/E ต่ำกว่าช่วงต่ำสุดในประวัติ (16.2x)"
+      },
+      {
+        "growth": 12,
+        "exitMultiple": 18,
+        "divCum": 10.08,
+        "desc": "margin ที่ฟื้นยืนได้ต่อเนื่อง EPS เข้าใกล้ FY2026e $5.60 ตัวคูณอยู่แถวปีปกติ (16–19x)"
+      },
+      {
+        "growth": 22,
+        "exitMultiple": 23,
+        "divCum": 10.08,
+        "desc": "EPS ขึ้นสู่ระดับใกล้ consensus FY2027e ($6.38) และเกินไป ตลาดให้ P/E มัธยฐานประวัติ 23x"
+      }
+    ],
+    "exitDp": 0,
+    "note": "การคาดการณ์อิง GAAP EPS TTM {{eps}} เป็นฐาน (ไม่ใช้ blend กับ consensus) — P/E ออกอิงมัธยฐานประวัติ 23x (Bull) และช่วง 16–19x ของปีที่กำไรปกติ (Base) Base case ให้ผลตอบแทนรวม ~26% ใน 3 ปี (ราว +8%/ปี รวมปันผล) — พอใช้ ไม่หวือหวา ปันผลคิดคงที่ {{dps}} ต่อปี ความเสี่ยงสำคัญ: หนี้ยังมี $5.2B (net $4.6B) แม้ลดลงแล้ว / margin ที่ฟื้นต้องพิสูจน์ความยั่งยืนต่อ / ตลาดอสังหาและ home improvement ยังอ่อนแอ ปันผล {{dps}} ต่อปีมี FCF TTM ครอบคลุมสบาย (~$507M ต่อปีเทียบ FCF $1,289M) แต่ FCF ผันผวนสูงในอดีต นักลงทุน value ที่มีระยะยาว 3–5 ปีอาจรอซื้อที่ต่ำกว่า {{mos20}} (MOS 20%) หรือทยอยสะสมที่ ~$86 แทนไล่ราคา",
+    "hintNote": "(GAAP TTM)"
+  },
+  "analyst": {
+    "target": 100.73,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "SWK ฟื้นตัวแข็งแกร่ง +32.3% ในรอบปี (ต.ค. 2568 – ก.ย. 2569) จากจุดต่ำสุดรายเดือน ~$67.72 (ต.ค. 2568) ขึ้นไปปิดรายเดือนสูงสุดที่ $96.37 ในเดือน ส.ค. 2569 (กรอบ 52 สัปดาห์ $61.90 – $104.68) ก่อนย่อลงในเดือน ก.ย. พื้นฐานที่หนุน: EPS TTM {{eps}} (FY2025: $2.65), gross margin TTM 32.2%, net debt ลดเหลือ $4.62B, FCF TTM $1,289M จุดสูงในเดือน ก.พ. 2569 ($86.49) ตามมาด้วยการปรับฐานในเดือน มี.ค. ($71.06) ก่อนฟื้นแรงต่อเนื่องจนถึง มิ.ย.–ส.ค. ราคาปัจจุบัน {{px}} ต่ำกว่ามูลค่าที่ประเมิน ($96) เล็กน้อย — ราคาย่อจากยอดรายเดือนเดือน ส.ค. ราว 7%",
+    "valuation": "ทั้ง 2 วิธี (คนละตระกูล: P/E ที่ยึดตัวคูณประวัติจริง กับ DCF ที่ยึดกระแสเงินสด) ให้ค่าใกล้กัน ($94–$97) — FV เฉลี่ย {{fv}} วิธี P/E ใช้ GAAP EPS TTM {{eps}} (ตัวเลขจริง) ไม่ผสม consensus เพราะ vendor forward $6.38 เป็น FY2027e ไม่ใช่ปีงบถัดไป วิธี DCF ใช้ FCF เฉลี่ย 3 ช่วงเพราะ FCF ผันผวนมาก (FY2022 −$1,990M) · r และ g เป็นสมมติฐานของผู้วิเคราะห์ ไม่ใช่ข้อมูลตลาด เป้าเฉลี่ยนักวิเคราะห์ {{analyst.target}} (11 ราย, Buy) ไม่ถูกนำมาเป็นขาของ FV — ใช้เป็นการตรวจความสอดคล้องเท่านั้น: อยู่เหนือ FV ราว 5%",
+    "gauge": "ราคาปัจจุบัน {{px}} อยู่ต่ำกว่า fair value ที่ประเมินไว้ที่ $96 — MOS {{mos}} บ่งชี้ว่า SWK ซื้อขาย<b>ต่ำกว่ามูลค่าเหมาะสมเล็กน้อย</b> แต่ยังไม่ถึงเกณฑ์ margin of safety 20% โซนน่าสนใจสำหรับ value investor อยู่ที่ <b>ต่ำกว่า {{mos20}} (MOS 20%)</b> สำหรับ deep value อยู่ที่ <b>ต่ำกว่า {{mos30}} (MOS 30%)</b> — ซึ่งเกิดขึ้นได้ถ้าตลาดผิดหวังกับ margin ในไตรมาสถัดไป (งบถัดไปคาด 3 พ.ย. 2569) เป้าเฉลี่ยนักวิเคราะห์ {{analyst.target}} (11 นักวิเคราะห์, consensus: Buy) อยู่เหนือราคาปัจจุบันราว 12% และเหนือ FV ของเราเล็กน้อย — เราให้น้ำหนักกับตัวเลขที่ตรวจซ้ำได้ (P/E ประวัติ + DCF) มากกว่าเป้านักวิเคราะห์",
+    "mos": "ราคาต่ำกว่า Fair Value เล็กน้อย — margin of safety ยังบางกว่าเกณฑ์ 20%",
+    "verdictHeadline": "SWK: Turnaround เห็นผลในตัวเลข — ราคาต่ำกว่ามูลค่าเหมาะสมเล็กน้อย ยังไม่ถึงโซนเผื่อ 20%",
+    "verdictBody": "Stanley Black & Decker เป็น turnaround story ที่เห็นผลในตัวเลข — บริษัทเครื่องมือช่างรายใหญ่ กำลังฟื้นตัวจากปีขาดทุน (FY2023 ขาดทุนสุทธิ $310M) กำไรสุทธิ TTM กลับมาที่ $621M (EPS {{eps}}) gross margin TTM 32.2%, net debt ลดเหลือ $4.62B, FCF TTM $1,289M ราคา $89.58 ต่ำกว่า fair value ที่ประเมิน ($96 จาก P/E ตัวคูณประวัติ 23x และ DCF) เล็กน้อย และต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ ({{analyst.target}}) ความเสี่ยงหลักคือหนี้ที่ยังมีนัยสำคัญ (debt $5.2B) และการพิสูจน์ว่า margin ที่ฟื้นยั่งยืน ขณะที่รายได้ยังไม่โต สำหรับนักลงทุนระยะยาว 3–5 ปีที่เชื่อใน turnaround: การทยอยสะสมที่ ~$86 หรือรอ MOS 20% ที่ {{mos20}} ให้ risk/reward ดีกว่าการซื้อที่ราคาปัจจุบัน",
+    "strategy": "ราคาปัจจุบัน {{px}} ต่ำกว่า fair value ($96) เล็กน้อย — margin of safety ยังบาง นักลงทุน value ควร <b>ทยอยสะสมที่ ~$86 และเพิ่มที่ $77</b> (MOS 20%) แทนไล่ราคา ถือระยะยาวที่มีอยู่แล้ว: ปันผล ~3.8% ช่วย \"รอ\" ได้ระหว่างพิสูจน์ความยั่งยืนของ turnaround งบถัดไปคาด 3 พ.ย. 2569 — ติดตามว่า margin/FCF ระดับนี้ยืนได้ต่อเนื่อง FV ขึ้นกับสมมติฐานสองชุด (P/E ประวัติ 23x และ DCF r 9%/g 2.5%) จึงควรมองเป็นกรอบ $90–$102 มากกว่าตัวเลขเดียว",
+    "disclaimerSources": "แหล่งข้อมูล: StockAnalysis.com (ราคา $89.58 ณ 18 ก.ย. 2569 — ราคาล่าสุด Yahoo/StockAnalysis ~$89.1 ต่างกันไม่เกิน 0.5%, EPS TTM $4.09, fwd FY2027e $6.38, analyst consensus Buy), Yahoo Finance (chart รายเดือน, กรอบ 52 สัปดาห์), StockAnalysis.com Financials (งบย้อนหลัง FY2021–FY2025 + TTM)"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 2 วิธีคนละตระกูล — P/E ตัวคูณประวัติ + DCF",
+    "disclaimerAssump": " P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ EPS normalized ในอนาคต"
+  },
+  "catalysts": [
+    "<b>Restructuring/ลดหนี้:</b> กำไรสุทธิ TTM ฟื้นเป็น $621M จาก $402M (FY2025) และ $294M (FY2024) — OpM TTM 8.5% เทียบ 2.3% (FY2023)",
+    "<b>Debt deleveraging:</b> net debt ลดจาก $7.24B (FY2023) → $6.06B (FY2025) → $4.62B (TTM) ตามตารางงบ",
+    "<b>อัตราดอกเบี้ย:</b> ถ้าดอกเบี้ยลดลง จะช่วย residential construction/renovation demand (Pro tools: DEWALT/CRAFTSMAN) โดยตรง — เป็นปัจจัยภายนอกที่ยังไม่แน่นอน",
+    "<b>Brand power ยาวนาน:</b> DEWALT ครอง mindshare ช่างมืออาชีพ — pricing power ในกลุ่ม Pro tools",
+    "<b>FCF เป็นบวก:</b> FCF TTM $1,289M (FY2025 $688M) — ครอบคลุมปันผล {{dps}} × 151M หุ้น = ~$507M ได้สบาย ความเสี่ยง dividend cut ต่ำ",
+    "<b>Consensus ขาขึ้น:</b> นักวิเคราะห์ 11 ราย เฉลี่ย Buy คาด EPS FY2026e $5.60 และ FY2027e $6.38 — ถ้าเป็นจริงตัวคูณ forward ต่ำกว่า 16x"
+  ],
+  "risks": [
+    "<b>ภาระหนี้ยังมีนัยสำคัญ:</b> Net debt $4.62B เทียบ market cap $13.5B — ลดลงมากแล้วแต่ยังไม่ต่ำ ดอกเบี้ยแพงยังกดกำไรได้ถ้า revenue ลด (D/E 0.58)",
+    "<b>Estimate อาจ optimistic:</b> EPS forward $6.38 สูงกว่า TTM {{eps}} ราว 56% — ถ้าผลจริงต่ำกว่า ตัวคูณจะพอง และราคาย่อจากยอด ส.ค. แล้วราว 7%",
+    "<b>ตลาดอสังหา/renovation อ่อนแอ:</b> ดอกเบี้ยยังสูง ยอดขายบ้านใหม่ต่ำ กระทบ consumer tool demand (BLACK+DECKER, CRAFTSMAN)",
+    "<b>Competition:</b> คู่แข่ง cordless tools (เช่น Milwaukee/Techtronic) แข่งขันรุนแรง — SWK ต้องลงทุน R&D รักษาส่วนแบ่ง",
+    "<b>Tariff & Supply chain:</b> ห่วงโซ่อุปทานจากเอเชียเสี่ยงต่อมาตรการภาษีและต้นทุนที่สูงขึ้น กระทบ COGS",
+    "<b>Revenue นิ่ง:</b> รายได้ TTM $15.25B ยังต่ำกว่า FY2022 ($16.95B) — กำไรที่ฟื้นมาจาก margin/ต้นทุน ไม่ใช่ยอดขายโต"
+  ],
+  "extras": [],
+  "_sig": "sha256:be202cd445622bea52f0a058e8ed6ed72defe7d479f0c42225f7c613c746dac7"
+}
