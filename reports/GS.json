@@ -1,0 +1,251 @@
+{
+  "v": 3,
+  "symbol": "GS",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "The Goldman Sachs Group, Inc.",
+    "exchange": "NYSE",
+    "sub": "Investment banking • FICC trading • Equities • Asset & Wealth Management • Goldman Sachs Bank",
+    "headerTags": [
+      "Financials",
+      "Investment Banking"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "StockAnalysis.com",
+      "งบการเงินตาม StockAnalysis",
+      "SEC"
+    ],
+    "themeLegacy": {
+      "accent": "#003366",
+      "accentDark": "#00224d",
+      "darkGrad": "linear-gradient(135deg,#001a3d 0%,#003366 60%,#004080 100%)",
+      "glow": "rgba(0,51,102,0.45)",
+      "subColor": "#a0b8d8",
+      "headerMuted": "#9ab3d1",
+      "verdictText": "#e8f0fe",
+      "vcellLabel": "#aec3de"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T14:53:54+07:00",
+      "v2Hash": "98fe308ad8ce"
+    }
+  },
+  "market": {
+    "px": 923.29,
+    "priceDate": "2026-09-24",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          789.37
+        ],
+        [
+          "พ.ย.25",
+          826.04
+        ],
+        [
+          "ธ.ค.25",
+          879
+        ],
+        [
+          "ม.ค.26",
+          935.41
+        ],
+        [
+          "ก.พ.26",
+          859.57
+        ],
+        [
+          "มี.ค.26",
+          845.99
+        ],
+        [
+          "เม.ย.26",
+          923.77
+        ],
+        [
+          "พ.ค.26",
+          1025.56
+        ],
+        [
+          "มิ.ย.26",
+          1011.37
+        ],
+        [
+          "ก.ค.26",
+          1018.38
+        ],
+        [
+          "ส.ค.26",
+          1025.9
+        ],
+        [
+          "ก.ย.26",
+          923.29
+        ]
+      ],
+      "gridFmt": "v.toFixed(0)",
+      "dataFmt": "d[1].toFixed(2)"
+    },
+    "range52w": {
+      "lo": 740.01,
+      "hi": 1153.99
+    }
+  },
+  "fundamentals": {
+    "eps": 64.63,
+    "dps": 20,
+    "bvps": 362.05,
+    "shares": 302765312,
+    "roe": 16.9,
+    "revenue": 67600000000,
+    "netIncome": 20000000000,
+    "epsForward": 70.72,
+    "debtToEquity": 7.25,
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation",
+      "inputs": {
+        "multiple": 11.8,
+        "multipleSource": "median5y"
+      },
+      "note": "มัธยฐาน 5 ปีที่วัดจริง (ราคาเฉลี่ยรายปี ÷ EPS diluted FY2021–FY2025, ช่วง 6.1–14.8x) ที่มาคือประวัติของ GS เอง ไม่ได้ตั้งจาก P/E ปัจจุบัน",
+      "family": "market"
+    },
+    {
+      "method": "pbv",
+      "label": "Justified P/BV",
+      "inputs": {
+        "g": 5,
+        "r": 10
+      },
+      "note": "r, g เป็นสมมติฐานของเรา; ROE TTM อาจอยู่ใกล้จุดสูงของวัฏจักร",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "pbv",
+      "roe",
+      {
+        "key": "revenue",
+        "tone": "none"
+      },
+      {
+        "key": "netIncome",
+        "tone": "pos"
+      },
+      "eps",
+      "custom:0",
+      "yield",
+      "peForward",
+      {
+        "key": "payout",
+        "tone": "neu"
+      },
+      {
+        "key": "debtToEquity",
+        "tone": "neu"
+      }
+    ],
+    "custom": [
+      {
+        "label": "Equity (ล่าสุด)",
+        "value": "~$123.7B",
+        "note": "BVPS หุ้นสามัญ ~{{bvps}}"
+      }
+    ],
+    "notes": {
+      "mcap": "~302.8 ล้านหุ้น (คงเหลือ)",
+      "pe": "(diluted)",
+      "pbv": "BVPS ~{{bvps}}",
+      "roe": "ROE TTM (StockAnalysis)",
+      "revenue": "+23.3% YoY",
+      "netIncome": "Margin ~29.6%",
+      "eps": "FY25 $51.32 · FY24 $40.54",
+      "yield": "{{dps}}/yr",
+      "peForward": "EPS FY26E ~$70.72",
+      "payout": "ปันผลต่อกำไร (SA)",
+      "debtToEquity": "ธนาคาร — leverage สูงตามโครงสร้าง"
+    },
+    "hint": "ธนาคารเพื่อการลงทุนชั้นนำ — อิง P/BV + ROTE"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": -5,
+        "exitMultiple": 8,
+        "divCum": 60,
+        "desc": "IB fees ทรุด/วิกฤตสินเชื่อ"
+      },
+      {
+        "growth": 8,
+        "exitMultiple": 11.8,
+        "divCum": 63,
+        "desc": "IB recovery สม่ำเสมอ"
+      },
+      {
+        "growth": 15,
+        "exitMultiple": 14,
+        "divCum": 66,
+        "desc": "M&A boom + AWM growth แรง"
+      }
+    ],
+    "exitDp": 1,
+    "note": "จากราคาปัจจุบัน {{px}} ใน Base case (EPS +8%/ปี × P/E 11.8x ซึ่งเป็นมัธยฐานย้อนหลังของ GS) ผลตอบแทนจากราคา 3 ปีอยู่ที่ {{scn.base.ret}} (ยังไม่รวมปันผลราว 3 ปี) ส่วน Bear คือ {{scn.bear.ret}} และ Bull คือ {{scn.bull.ret}} — ตัวคูณออกของ Bear/Base/Bull (8x/11.8x/14x) อิงช่วงประวัติ 6.1–14.8x ไม่ใช่ P/E ปัจจุบัน ผลตอบแทนดีต้องอาศัย EPS เติบโต +15%/ปี (Bull) และตัวคูณไม่ลดลงจากระดับปัจจุบัน ความเสี่ยงด้านลบจึงสูงกว่าด้านบวกที่ระดับราคาปัจจุบัน"
+  },
+  "analyst": {
+    "target": 1142,
+    "n": null,
+    "rating": "Hold",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ราคา GS ปรับตัวขึ้นราว 19% ในรอบปี (ต.ค. 2568 – ก.ย. 2569) ตามกำไรที่โตต่อเนื่อง — EPS FY25 $51.32/หุ้น และ TTM {{eps}} (diluted) — ราคาย่อในช่วง ก.พ.–มี.ค. 2569 (ปิดรายเดือนราว $846–$860) ก่อนฟื้นขึ้นสู่ระดับปิดรายเดือนสูงสุดราว $1,026 ในเดือน ส.ค. 2569 (กรอบ 52 สัปดาห์ระหว่างวันสูงสุด $1,153.99) แล้วปรับลงมาที่ราคาล่าสุดตามกราฟ",
+    "valuation": "สองวิธีให้ช่วง {{fvLow}}–{{fvHigh}} มาจาก 2 ตระกูลที่ต่างกัน: P/E ที่ยึดตัวคูณมัธยฐานย้อนหลังที่วัดจริง (ขาต่ำ) และ Justified P/BV ที่อิง ROE กับ (r, g) ที่เราสมมติ (ขาสูง) — ความไวของ MOS: ถ้าใช้ขา P/E ขาเดียว ราคาปัจจุบันสูงกว่ามูลค่าราว 23% ถ้าใช้ขา P/BV ขาเดียวสูงกว่าราว 9% จึงสรุปได้ว่าราคาสูงกว่ามูลค่าทั้งสองทาง แต่ระดับความสูงขึ้นกับสมมติฐาน ROE ที่คงอยู่ระดับ TTM ต้องระวัง EPS TTM ที่โตเร็ว (+23% ต่อปีของรายได้) อาจเป็นช่วงบนของวัฏจักรตลาดทุน · เป้านักวิเคราะห์ (Hold) ใช้เป็นบริบทเปรียบเทียบเท่านั้น ไม่ได้เป็นขาของ FV · ตัด Historical P/BV เดิมออกเพราะตัวคูณ 1.8x ไม่มีการวัดรองรับ และตัด DDM เพราะ payout ต่ำ (~28%) ทำให้ประเมินต่ำเกินจริง",
+    "gauge": "ราคาปัจจุบัน {{px}} อยู่สูงกว่ามูลค่าเหมาะสม {{fv}} โดย MOS อยู่ที่ {{mos}} และต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ (ตามสเกล) โซนซื้อสะสม MOS 20% อยู่ที่ {{mos20}} ซึ่งต้องการราคาย่อลงมาพอสมควร ผู้ที่ถือครองอยู่แล้วอาจพิจารณา take profit บางส่วนหรือรอจังหวะดีกว่า",
+    "mos": "ราคาสูงกว่ามูลค่าเหมาะสม — ไม่มี Margin of Safety",
+    "verdictHeadline": "GS ธุรกิจเยี่ยม แต่ราคาสูงกว่ามูลค่าเหมาะสม — รอจังหวะ",
+    "verdictBody": "Goldman Sachs คือธนาคารเพื่อการลงทุนชั้นนำของโลก มีความได้เปรียบเชิงแข่งขันที่แข็งแกร่งใน IB advisory, FICC trading และ Asset & Wealth Management ผลประกอบการ FY25 แข็งแกร่ง EPS $51.32 (+124% จาก FY23) และ TTM EPS {{eps}} อย่างไรก็ดี ราคาปัจจุบัน {{px}} สูงกว่ามูลค่าเหมาะสมของเราที่ {{fv}} (MOS {{mos}}) และ P/BV {{pbv}}x ค่อนข้างสูงเมื่อเทียบกับผลตอบแทนที่ต้องการ แม้จะมีเหตุผล (กำไรโตเร็ว + IB recovery) แต่ upside จากระดับนี้ค่อนข้างจำกัด — เป้าเฉลี่ยนักวิเคราะห์อยู่สูงกว่าราคา แต่ฉันทามติเป็น Hold",
+    "strategy": "ไม่แนะนำซื้อเพิ่มที่ระดับปัจจุบัน {{px}} เนื่องจากขาด MOS โซนสะสมที่น่าสนใจ = ต่ำกว่าหรือใกล้ {{fv}}; MOS 20% ที่ {{mos20}} และ MOS 30% ที่ {{mos30}} ผู้ถือหุ้นอยู่แล้วพิจารณา take profit บางส่วน ธุรกิจระยะยาวยังแข็งแกร่ง แต่ต้องการ valuation ที่สมเหตุสมผลกว่านี้ก่อนเพิ่มสถานะ",
+    "disclaimerSources": "ราคา ณ {{priceDate}} อ้างอิง: Yahoo Finance, StockAnalysis.com (ราคาตรงกัน 0%) • งบการเงิน FY2025 และ TTM ล่าสุดตาม StockAnalysis · งบไตรมาสถัดไปคาดออก 13 ต.ค. 2569"
+  },
+  "text": {
+    "valHint": "2 วิธี (2 ตระกูลสมมติฐาน) เหมาะธนาคารเพื่อการลงทุน"
+  },
+  "catalysts": [
+    "<b>ตลาดทุนฟื้นตัว:</b> รายได้ TTM +23.3% YoY และ EPS จาก FY23 $22.87 เป็น TTM {{eps}} สะท้อนธุรกิจ advisory/underwriting ที่กลับมาแข็งแกร่งหลังซบเซาปี 2565-66",
+    "<b>AWM growth:</b> Asset & Wealth Management สร้าง recurring revenue ช่วยลดความผันผวนของรายได้",
+    "<b>FICC + Equities trading:</b> ผลประกอบการ trading desk แข็งแกร่งในสภาวะ volatility สูง; rate environment ช่วย FICC",
+    "<b>Margin ขยาย:</b> Op margin TTM 39.4% เทียบ 28.7% ใน FY23 (ตารางงบ 5 ปี)",
+    "<b>Capital return:</b> Buyback ต่อเนื่อง (หุ้นถัวเฉลี่ยปรับลดจาก 318M ใน FY25 เหลือ 310M ใน TTM) + ปันผล {{dps}}/หุ้น เสริม EPS per share",
+    "<b>Interest rate normalization:</b> Fed ลดดอกเบี้ยช้า เอื้อ spread ของ GS Bank และ lending book"
+  ],
+  "risks": [
+    "<b>Valuation premium สูง:</b> P/BV {{pbv}}x และ P/E ปัจจุบันสูงกว่ามัธยฐาน 5 ปี (11.8x) — de-rating แรงหาก EPS miss",
+    "<b>Revenue lumpiness:</b> IB fees ผันผวนสูงตาม deal flow — ปีที่ M&A/IPO ซบ รายได้ลดหนัก (FY2022: EPS $30.06, รายได้ −24.3% YoY)",
+    "<b>Regulatory capital:</b> Basel III endgame อาจบังคับ CET1 สูงขึ้น จำกัดการ return capital ให้ผู้ถือหุ้น",
+    "<b>Market downturn:</b> หุ้นและ fixed income ตกแรงกระทบ trading revenues และ investment portfolio losses",
+    "<b>Competition:</b> แข่งกับ MS, JPM (IB), BlackRock/Vanguard (AWM) และ fintech ใน private credit",
+    "<b>Geopolitical/macro:</b> tariff/trade war กระทบ deal flow ระดับโลก; recession ลด M&A/ECM อย่างรวดเร็ว"
+  ],
+  "extras": [],
+  "_sig": "sha256:aad673c020dbce1cbae955b37d4d33b664bd3f561be9a066638ec5080ab41d80"
+}
