@@ -1,0 +1,254 @@
+{
+  "v": 3,
+  "symbol": "ETR",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Entergy Corporation",
+    "exchange": "NYSE",
+    "sub": "Gulf South electric utility · 3M customers · AR/LA/MS/TX · Nuclear generation (50% mix, 11 units ~6,200 MW) · 8%/yr rate base growth · Data center/LNG industrial load · Hurricane exposure · New Orleans LA",
+    "headerTags": [
+      "Utilities — Regulated Electric",
+      "Gulf South"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "StockAnalysis.com",
+      "Digrin.com"
+    ],
+    "themeLegacy": {
+      "accent": "#007A5E",
+      "accentDark": "#005C44",
+      "darkGrad": "linear-gradient(135deg,#003D2E 0%,#006B54 100%)",
+      "glow": "#007A5E",
+      "subColor": "#bee5da",
+      "headerMuted": "#00fdc6",
+      "verdictText": "#7FFFD4",
+      "vcellLabel": "#ddf1ec"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T14:08:46+07:00",
+      "v2Hash": "a64a2a971821"
+    }
+  },
+  "market": {
+    "px": 98.16,
+    "priceDate": "2026-09-24",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          96.09
+        ],
+        [
+          "พ.ย.25",
+          97.52
+        ],
+        [
+          "ธ.ค.25",
+          92.43
+        ],
+        [
+          "ม.ค.26",
+          95.89
+        ],
+        [
+          "ก.พ.26",
+          107.11
+        ],
+        [
+          "มี.ค.26",
+          112.36
+        ],
+        [
+          "เม.ย.26",
+          117.91
+        ],
+        [
+          "พ.ค.26",
+          109.05
+        ],
+        [
+          "มิ.ย.26",
+          114.86
+        ],
+        [
+          "ก.ค.26",
+          107.62
+        ],
+        [
+          "ส.ค.26",
+          106.31
+        ],
+        [
+          "ก.ย.26",
+          98.16
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 87.38,
+      "hi": 118.44
+    }
+  },
+  "fundamentals": {
+    "eps": 3.91,
+    "dps": 2.56,
+    "bvps": 37.59,
+    "shares": 477777482,
+    "epsForward": 4.4,
+    "roe": 10.3,
+    "roa": 2.5,
+    "revenue": 13500000000,
+    "beta": 0.5,
+    "fy": {
+      "period": "FY2025",
+      "netIncome": 1758000000
+    },
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation",
+      "inputs": {
+        "multiple": 21,
+        "multipleSource": "median5y"
+      },
+      "note": "21x คือมัธยฐาน P/E ย้อนหลัง 5 ปี (2021–2025, ราคาเฉลี่ยปี ÷ EPS ปีนั้น, ช่วง 9.1–24.9x) มาจากประวัติของ ETR เอง ไม่ได้มาจาก P/E ปัจจุบัน",
+      "family": "market"
+    },
+    {
+      "method": "ddm",
+      "label": "DDM / Gordon Growth",
+      "inputs": {
+        "g": 4.5,
+        "r": 7.5
+      },
+      "note": "g อนุรักษ์นิยม (DGR5=5.0%); r สะท้อน cost of equity utility beta 0.50 · ใช้ (r,g) ชุดเดียวกับ P/BV จึงนับเป็นตระกูลเดียว",
+      "family": "rg"
+    },
+    {
+      "method": "pbv",
+      "label": "Justified P/BV",
+      "inputs": {
+        "g": 4.5,
+        "r": 7.5
+      },
+      "note": "ROE ปานกลาง regulated utility; leverage สูง D/E 1.87",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      {
+        "key": "peForward",
+        "tone": "none"
+      },
+      "pbv",
+      "netIncomeFy",
+      "eps",
+      "bvps",
+      "roe",
+      "revenue",
+      "custom:0",
+      "yield",
+      "beta"
+    ],
+    "custom": [
+      {
+        "label": "Rate Base Growth",
+        "value": "~8%/ปี",
+        "note": "Data center + LNG load ใน LA/TX",
+        "tone": "pos"
+      }
+    ],
+    "notes": {
+      "mcap": "~478M shares outstanding (StockAnalysis /statistics/)",
+      "pe": "(GAAP)",
+      "peForward": "EPS ประมาณการ $4.40 (analyst)",
+      "pbv": "(FY2025)",
+      "netIncomeFy": "+66% YoY (FY2024 กดด้วยพายุ)",
+      "eps": "NI TTM $1,797M ÷ ~461M หุ้นถัวเฉลี่ยปรับลด",
+      "bvps": "BVPS FY2025 จากรอบวิเคราะห์ก่อน (ไม่ได้ตรวจซ้ำกับงบดุลรอบนี้)",
+      "roe": "ระดับปกติ regulated utility",
+      "revenue": "FY2025 $12.95B (+9% YoY)",
+      "yield": "{{dps}}/share · DGR5 5.0%/ปี · 39 ปีต่อเนื่อง",
+      "beta": "ความผันผวนต่ำ — defensive utility"
+    },
+    "hint": "ข้อมูล ณ 21 ก.ย. 2569"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 3,
+        "exitMultiple": 18,
+        "divCum": 7.99,
+        "desc": "พายุรุนแรง/ดอกเบี้ยสูงนาน"
+      },
+      {
+        "growth": 7,
+        "exitMultiple": 20,
+        "divCum": 8.39,
+        "desc": "Rate base 8%/ปี + data center ตามเป้า"
+      },
+      {
+        "growth": 10,
+        "exitMultiple": 22,
+        "divCum": 8.64,
+        "desc": "Data center/LNG boom + ไม่มีพายุใหญ่"
+      }
+    ],
+    "exitDp": 0,
+    "note": "จากจุดเข้า {{px}} Base Case ให้ผลตอบแทนราคา {{scn.base.ret}} ใน 3 ปี และ Bear {{scn.bear.ret}} สะท้อนว่า premium ที่ตลาดให้ ETR อยู่ในระดับสูง เฉพาะ Bull Case (EPS โต 10%/ปี P/E ออก 22x) จึงจะได้ {{scn.bull.ret}} (ยังไม่รวมปันผล) ทั้งนี้ปันผล {{dps}}/share (yield ~2.51%) ช่วยชดเชยบางส่วน สำหรับนักลงทุนระยะยาวควรรอราคาปรับลงใกล้ Fair Value {{fv}} ก่อนสะสม"
+  },
+  "analyst": {
+    "target": 123.03,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ราคาปิดรายเดือนไต่ขึ้นจาก $96.09 (ต.ค. 2568) ไปสูงสุดที่ $117.91 ในเดือน เม.ย. 2569 (กรอบ 52 สัปดาห์ $87.38 – $118.44) สะท้อนความสนใจของนักลงทุนใน utility ที่มีนิวเคลียร์และโหลดอุตสาหกรรมเติบโตสูง ก่อนย่อตัวลงต่อเนื่องตั้งแต่ พ.ค. 2569 จนถึงราคาล่าสุด ราคาปัจจุบัน {{px}} ยังสูงกว่า Fair Value {{fv}} ชัดเจน บ่งชี้ว่าตลาดยังให้ growth premium อยู่",
+    "valuation": "FV = เฉลี่ยของ 2 ตระกูล: P/E ($82.11) กับ DDM/Justified P/BV ({{fvHigh}} และ {{fvLow}} ใช้ r,g ชุดเดียวกัน จึงเฉลี่ยกันก่อนเป็น $80.92) = {{fv}} ขา P/E ยึดมัธยฐานย้อนหลัง 21x ส่วนขา DDM/P/BV ยึดสมมติฐาน r 7.5% / g 4.5% · เป้านักวิเคราะห์ไม่ถูกนับเป็นขาของ FV FV {{fv}} ต่ำกว่าราคาตลาดปัจจุบัน (MOS {{mos}}) สะท้อนว่าราคาปัจจุบันรวม growth premium ไว้มากแล้ว",
+    "gauge": "ราคา ETR ปัจจุบัน {{px}} อยู่เหนือ Fair Value {{fv}} และต่ำกว่าเป้า Analyst {{analyst.target}} (SA · Yahoo $122.67) นักลงทุนกำลังจ่าย premium เหนือมูลค่าพื้นฐานราวหนึ่งในสี่ เพื่อรับ rate base growth ~8%/ปี และ data center tailwind โซน MOS 20% ({{mos20}}) และ MOS 30% ({{mos30}}) ห่างจากราคาปัจจุบันพอสมควร สะท้อนว่าตลาดให้ราคา ETR ในฐานะ \"growth utility\" ที่มี nuclear advantage มากกว่า value utility แบบดั้งเดิม",
+    "mos": "ราคาสูงกว่ามูลค่าเหมาะสม — Premium สูง ควรรอจังหวะ",
+    "verdictHeadline": "ETR — \"Growth Utility\" คุณภาพสูง แต่ราคาแพงกว่า Fair Value ราวหนึ่งในสี่",
+    "verdictBody": "Entergy เป็น utility คุณภาพสูงที่ได้ประโยชน์จาก megatrend สองอย่างพร้อมกัน: Data Center/AI ใน Louisiana–Texas และ nuclear revival ที่ให้ ETR มี competitive advantage ด้าน carbon-free baseload อย่างไรก็ตาม ราคาปัจจุบัน {{px}} สูงกว่า Fair Value {{fv}} (MOS {{mos}}) สะท้อนว่าตลาดได้ pricing in growth story ไปมากแล้ว ผลตอบแทน 3 ปีแม้แต่ Base Case ยังติดลบ นักลงทุนควรรอจังหวะราคาย่อตัวก่อนเข้าสะสม",
+    "strategy": "ETR เป็น utility fundamentally แข็งแกร่ง แต่ราคาปัจจุบัน {{px}} สูงกว่ามูลค่าพื้นฐาน แนะนำ <b>รอจังหวะ</b> ซื้อเมื่อราคาปรับลงใกล้ Fair Value {{fv}} หรือโซน MOS 20% ({{mos20}}) สำหรับนักลงทุนระยะยาว ปันผล {{dps}}/share ที่เติบโต 5%/ปี ยังน่าสนใจในฐานะ income stream ถ้ารับ valuation risk ได้",
+    "disclaimerSources": "ที่มา: Yahoo Finance, StockAnalysis.com, Digrin.com"
+  },
+  "text": {
+    "valHint": "2 ตระกูลสมมติฐาน (P/E · DDM+P/BV)"
+  },
+  "catalysts": [
+    "<b>Data Center Load Growth:</b> Louisiana และ Texas เป็นปลายทางหลักของ Hyperscaler (Microsoft, Google, Meta) ทำให้ demand ไฟฟ้าใน territory ของ ETR เติบโตเร็วกว่าค่าเฉลี่ยประเทศ",
+    "<b>LNG Industrial Load:</b> โรงงาน LNG Export ใน Gulf Coast ต้องการไฟฟ้าจำนวนมาก เพิ่ม industrial load base ให้ ETR อย่างต่อเนื่อง เสริม revenue visibility",
+    "<b>Rate Base Growth ~8%/ปี:</b> การลงทุนด้านโครงข่ายและ transmission ถูกอนุมัติผ่าน rate case ในทุกรัฐ สร้าง predictable earnings growth",
+    "<b>Nuclear Capacity Advantage:</b> 11 หน่วยนิวเคลียร์ ~6,200 MW (~50% ของ mix) ให้ carbon-free baseload ต้นทุนต่ำ ตรงกับ clean energy commitment ของ hyperscaler",
+    "<b>EPS Growth Visibility:</b> Analyst consensus FY2026 $4.40 และ FY2027 $5.10 (+16%) สะท้อนการมองเห็น growth ชัดเจน 20 analysts (Yahoo) เฉลี่ยระดับ Buy",
+    "<b>Dividend Stability:</b> จ่ายปันผลต่อเนื่อง 39 ปี DGR5 ที่ 5.0%/ปี เหมาะกับ income investor และ pension fund ที่มองหา regulated income"
+  ],
+  "risks": [
+    "<b>Hurricane Exposure:</b> ETR ให้บริการในพื้นที่เสี่ยงพายุ Gulf Coast สูงสุดในบรรดา utility ใหญ่ของสหรัฐฯ ค่าซ่อมพายุในปี 2024 ดึง EPS ลงเหลือ $2.45 (จาก $5.55 ในปี 2023)",
+    "<b>Valuation Premium สูง:</b> P/E TTM ~26x สูงกว่ามัธยฐานย้อนหลัง 5 ปีของ ETR เอง (21x) ถ้า growth story ชะลอ re-rating ลงอาจกดราคาได้มาก",
+    "<b>Interest Rate Risk:</b> Utility leveraged สูง (D/E 1.87, Total Debt $34.6B) ดอกเบี้ยสูงนานกระทบ refinancing cost และ valuation multiples",
+    "<b>Nuclear Decommissioning Cost:</b> ต้นทุนปลดระวางนิวเคลียร์สูงมาก อาจกระทบ EPS ระยะยาวถ้า regulatory ไม่อนุญาตให้ pass through ค่าใช้จ่าย",
+    "<b>Regulatory Risk (Multi-state):</b> ดำเนินงานใน 4 รัฐ (AR, LA, MS, TX) แต่ละรัฐมี regulatory body แยก ผลลัพธ์ rate case ไม่แน่นอน",
+    "<b>EPS Volatility:</b> GAAP EPS ผันผวนสูงตาม storm cost: FY2023=$5.55, FY2024=$2.45, FY2025={{eps}} ทำให้ P/E valuation และ planning ยาก"
+  ],
+  "extras": [],
+  "_sig": "sha256:7c6503e72cb939f00c8c8d32c1e3c6132389edf7ce4f2ccf7c3d7c54607bffce"
+}
