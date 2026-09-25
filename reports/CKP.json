@@ -1,0 +1,254 @@
+{
+  "v": 3,
+  "symbol": "CKP",
+  "currency": "THB",
+  "region": "TH",
+  "dateEra": "BE",
+  "meta": {
+    "company": "CK Power PCL (ซีเค พาวเวอร์)",
+    "exchange": "SET",
+    "sub": "พลังน้ำ (Hydropower) ลาว: Xayaburi 1,285 MW · Nam Ngum 2 615 MW · Nam Lik 1 · โซลาร์ฟาร์ม 13 แห่งในไทย 42 MW • Luang Prabang 1,460 MW (ก่อสร้าง)",
+    "headerTags": [
+      "พลังงานทดแทน",
+      "Hydropower"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis.com",
+      "Yahoo Finance",
+      "Nation Thailand"
+    ],
+    "priceNote": "งบ FY2025 สิ้นสุด ธ.ค. 2568",
+    "themeLegacy": {
+      "accent": "#0097a7",
+      "accentDark": "#007580",
+      "darkGrad": "linear-gradient(135deg,#00484a 0%,#00626b 60%,#00717d 100%)",
+      "glow": "rgba(0,151,167,0.3)",
+      "subColor": "#caf1f6",
+      "headerMuted": "#ddeef1",
+      "verdictText": "#e0f7fa",
+      "vcellLabel": "#f2fcfd"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T17:12:35+07:00",
+      "v2Hash": "05da4acae531"
+    }
+  },
+  "market": {
+    "px": 2.42,
+    "priceDate": "2026-09-24",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          2.56
+        ],
+        [
+          "พ.ย.25",
+          2.16
+        ],
+        [
+          "ธ.ค.25",
+          2.42
+        ],
+        [
+          "ม.ค.26",
+          2.28
+        ],
+        [
+          "ก.พ.26",
+          2.52
+        ],
+        [
+          "มี.ค.26",
+          2.32
+        ],
+        [
+          "เม.ย.26",
+          2.32
+        ],
+        [
+          "พ.ค.26",
+          2.3
+        ],
+        [
+          "มิ.ย.26",
+          2.38
+        ],
+        [
+          "ก.ค.26",
+          2.58
+        ],
+        [
+          "ส.ค.26",
+          2.5
+        ],
+        [
+          "ก.ย.26",
+          2.42
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 2.12,
+      "hi": 3
+    }
+  },
+  "fundamentals": {
+    "dps": 0.088,
+    "shares": 8129000000,
+    "peAvg5y": 17.3,
+    "eps": 0.29,
+    "bvps": 3.76,
+    "roe": 7.7,
+    "revenue": 9890000000,
+    "beta": 0.1,
+    "fy": {
+      "period": "FY2568",
+      "netIncome": 2782000000
+    },
+    "epsBasis": "ifrs"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation",
+      "inputs": {
+        "multiple": 19,
+        "multipleSource": "median5y"
+      },
+      "override": {
+        "eps": 0.252,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "เฉลี่ย FY2564–FY2568 5 ปี เพราะกำไรผันตามปริมาณน้ำ จึงไม่ใช้ EPS ปีเดียว · มัธยฐาน P/E ย้อนหลัง 5 ปีของ CKP ที่วัดจริง (7.5x / 22.7x / 20.1x / 17.2x / 19.0x) มาจากประวัติ ไม่ได้มาจาก P/E ปัจจุบัน · ช่วงกว้าง 3.0 เท่า และปีที่ EPS ต่ำ (FY2567) ดัน P/E สูงเทียม",
+      "family": "market"
+    },
+    {
+      "method": "ddm",
+      "label": "DDM / Gordon Growth",
+      "inputs": {
+        "g": 4,
+        "r": 9
+      },
+      "role": "context",
+      "note": "ห่างจากขายึดตลาด >2× · DDM เหมาะสมสำหรับกิจการโรงไฟฟ้าที่มีกระแสเงินสดสม่ำเสมอ แต่ให้ค่าต่ำเพราะ payout ratio ต่ำ (~30% ของ EPS TTM)",
+      "family": "rg"
+    },
+    {
+      "method": "pbv",
+      "label": "Justified P/BV",
+      "inputs": {
+        "g": 4,
+        "r": 9
+      },
+      "note": "สะท้อนมูลค่าสินทรัพย์โรงไฟฟ้า (ROE TTM; r/g เป็นสมมติฐานของผู้วิเคราะห์)",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "peAvg5y",
+      "pbv",
+      "netIncomeFy",
+      "eps",
+      "bvps",
+      "roe",
+      "revenue",
+      "custom:0",
+      "yield",
+      "beta"
+    ],
+    "custom": [
+      {
+        "label": "FCF ต่อหุ้น",
+        "value": "~฿0.50",
+        "note": "FCF TTM ฿4,039 ล้าน · Yield ~20% (สูง)"
+      }
+    ],
+    "notes": {
+      "mcap": "8,129 ล้านหุ้น",
+      "pe": "ต่ำกว่ามัธยฐาน 5 ปีมาก",
+      "peAvg5y": "มัธยฐาน 19.0x · ช่วง 7.5x – 22.7x (FY2564–2568)",
+      "pbv": "ซื้อต่ำกว่ามูลค่าทางบัญชี",
+      "netIncomeFy": "+107% YoY (core profit +81%)",
+      "eps": "FY2568 ฿0.34 · TTM NI ฿2,380 ล้าน ÷ 8,129 ล้านหุ้น",
+      "bvps": "Book Value ต่อหุ้น (FY2568)",
+      "roe": "FY2568 9.0% · D/E 0.79x (leverage สูง)",
+      "revenue": "FY2568: ฿10,638 ล้าน (−1.4% YoY)",
+      "yield": "฿0.088/หุ้น · XD พ.ค. 2569",
+      "beta": "ความผันผวนต่ำมาก (defensive)"
+    },
+    "hint": "ข้อมูล ณ 21 ก.ย. 2569 · TTM = 12 เดือนย้อนหลัง"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": "cagr",
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 0,
+        "exitMultiple": 7,
+        "divCum": 0.264,
+        "desc": "น้ำแล้ง + P/E ยังต่ำ"
+      },
+      {
+        "growth": 5,
+        "exitMultiple": 11,
+        "divCum": 0.264,
+        "desc": "ปริมาณน้ำปกติ + re-rating"
+      },
+      {
+        "growth": 8,
+        "exitMultiple": 15,
+        "divCum": 0.264,
+        "desc": "Luang Prabang COD ก่อนกำหนด + ดอกเบี้ยลด"
+      }
+    ],
+    "exitDp": 0,
+    "note": "สมมติฐาน: EPS ฐาน {{eps}} (TTM) · ปันผลคงที่ ~฿0.088/ปี · Bear = P/E ยังต่ำที่ 7x (ใกล้ต่ำสุดย้อนหลัง 7.5x ของ FY2568 · ตลาด discount hydropower ต่อเนื่อง) · Base = P/E re-rating กลับ 11x (ยังต่ำกว่ามัธยฐานย้อนหลัง 19.0x มาก) เมื่อดอกเบี้ยลงและรายได้สม่ำเสมอ · Bull = Luang Prabang เริ่มผลิตไฟ + ดอกเบี้ยลดทำให้ P/E 15x ในกรณี Bear ราคาเป้าต่ำกว่าราคาปัจจุบัน ปันผลชดเชยได้เพียงบางส่วน ผลตอบแทนรวมติดลบเล็กน้อย — ความเสี่ยงหลักคือกำไรที่ผันตามปริมาณน้ำ"
+  },
+  "analyst": {
+    "target": 3.13,
+    "n": 8,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ราคาปิดรายเดือนในช่วง 1 ปีที่ผ่านมา (ต.ค. 2568 – ก.ย. 2569) แกว่งตัวในกรอบแคบ ฿2.16–฿2.58 (กรอบ 52 สัปดาห์ ฿2.12–฿2.98) ต่ำกว่า Fair Value {{fv}} ตลอด ราคาปลายกราฟต่ำกว่าต้นกราฟเล็กน้อย แม้กำไรสุทธิ FY2568 จะโตแรง +107% (แต่ TTM ลดลงเหลือ ฿2,380 ล้าน) สะท้อน sentiment ตลาดที่ยังกังวลเรื่องราคา PPA ไฮโดรเพาเวอร์ ความผันผวนของปริมาณน้ำ และภาระหนี้ระยะยาว",
+    "valuation": "วิธี P/E ({{fvHigh}}) เป็นขายึดตลาดเพียงขาเดียว (มัธยฐาน P/E ประวัติ 5 ปีที่วัดจริง 19.0x × EPS normalized) จึงใช้เป็นสมอ วิธี Justified P/BV ({{fvLow}}) อยู่ในกรอบ [สมอ/2, สมอ×2] จึงรวมเป็นตระกูล r/g ได้ <b>dispersion gate 0.4c:</b> วิธี DDM (฿1.83) ห่างจากขายึดตลาด P/E ({{fvHigh}}) ถึง 2.6 เท่า (>2.0×) จึงเป็นบริบทไม่รวมเฉลี่ย (DDM กับ Justified P/BV ใช้ r/g ชุดเดียวกัน นับเป็นเสียงเดียว) FV = (สมอ P/E {{fvHigh}} + ตระกูล r/g [Justified P/BV] {{fvLow}})/2 = {{fv}} · Sensitivity: ถ้าใช้ P/E 15x แทนมัธยฐาน 19.0x ขา P/E เหลือ ฿3.78 และ FV ≈ ฿3.28 (ยังต่ำกว่าราคาตลาดอย่างชัดเจน) — ค่าประมาณทั้งหมดอิง EPS ที่ผันตามปริมาณน้ำ",
+    "gauge": "ราคา CKP ที่ {{px}} อยู่ในโซน MOS เกิน 30% — ต่ำกว่าจุด MOS 30% ({{mos30}}) ตามคำนิยาม Value Investor ถือว่า <b>เข้าโซน deep value</b> เป้านักวิเคราะห์ 8 ราย (Consensus: Buy) ที่ {{analyst.target}} บ่งชี้ Upside ~28% จากราคาปัจจุบัน ราคาต่ำกว่า BVPS ที่ {{bvps}} หมายความว่าตลาดให้ราคาต่ำกว่ามูลค่าทางบัญชีสินทรัพย์โรงไฟฟ้า",
+    "mos": "โซน Deep Value — ต่ำกว่าจุดซื้อ MOS 30% น่าทยอยสะสม",
+    "verdictHeadline": "CKP: Hydropower Defensive ราคาต่ำกว่ามูลค่า — น่าทยอยสะสม",
+    "verdictBody": "CK Power เป็นกิจการโรงไฟฟ้าไฮโดรเพาเวอร์รายใหญ่ในอาเซียน ด้วยกำลังผลิต 3,640 MW (รวม Nam Ngum 2 + Xayaburi + Nam Lik 1 + โซลาร์) และ Luang Prabang 1,460 MW ที่กำลังก่อสร้าง ราคาปัจจุบัน {{px}} ซื้อขายต่ำกว่า BVPS {{bvps}} (P/BV ~0.65x) และต่ำกว่า Fair Value เฉลี่ย {{fv}} (MOS {{mos}}) ขณะที่นักวิเคราะห์ 8 ราย (Consensus: Buy) ตั้งเป้า {{analyst.target}} ความเสี่ยงหลักคือ earnings จาก hydropower ที่ขึ้นกับปริมาณน้ำ (volatile) และภาระหนี้ที่สูง แต่สัญญา PPA ระยะยาวการัน cashflow ขั้นต่ำ เหมาะกับนักลงทุนที่ต้องการ defensive income stock พร้อม upside จาก P/E re-rating และ Luang Prabang long-term catalyst",
+    "strategy": "ทยอยสะสมในโซน MOS 20–30% ({{mos30}}–{{mos20}}) — ราคา {{px}} ต่ำกว่า MOS 30% แล้ว (deep value) ควรซื้อเป็น batch ขนาดเล็ก และเพิ่มหาก ลงไปอีก เป้าหมายระยะกลาง เป้านักวิเคราะห์ {{analyst.target}} ถึง FV {{fv}} (1–2 ปี) · ถือระยะยาวรับ Luang Prabang upside 2573 + ปันผล ~3.6%/ปี",
+    "disclaimerSources": "แหล่งข้อมูล: StockAnalysis.com (BKK:CKP, ข้อมูล TTM ล่าสุด ณ 21 ก.ย. 2569) · Yahoo Finance (CKP.BK, ราคา ก.ย. 2569) · Nation Thailand / Kaohoon International (CKPower งบ FY2568 ปี 2568) · CKPower Investor Relations"
+  },
+  "text": {
+    "valHint": "ถ่วงตระกูล 2 เสียง — P/E มัธยฐานย้อนหลัง + Justified P/BV"
+  },
+  "catalysts": [
+    "<b>Luang Prabang Project (2030):</b> โครงการไฮโดรเพาเวอร์ขนาด 1,460 MW บนแม่น้ำโขง (CKP ถือ 50%) หากเดินเครื่องตามกำหนดปี 2573 จะเพิ่มกำลังการผลิตและรายได้อีก ~50%",
+    "<b>ดอกเบี้ยลดทั้งสหรัฐฯ และไทย:</b> ภาระดอกเบี้ย (D/E 0.79x) คาดลดลงในปี 2569–70 ช่วยหนุน core profit และ P/E re-rating",
+    "<b>Xayaburi ประสิทธิภาพสูงต่อเนื่อง:</b> รายได้ Xayaburi ปี 2568 +202% YoY จากปริมาณน้ำสูง — โรงไฟฟ้าใหม่ยังอยู่ในช่วงเริ่มต้น efficieny improvements",
+    "<b>โซลาร์ไทยขยาย:</b> โครงการโซลาร์ร่วมกับ BEM (Bangkok Expressway and Metro) COD ปี 2568 เพิ่มรายได้ stable และ clean energy credentials",
+    "<b>P/BV ต่ำกว่า 1.0x:</b> ตลาดให้ราคาต่ำกว่ามูลค่าบัญชีสินทรัพย์ถาวร (โรงไฟฟ้า) — หาก sentiment เปลี่ยน P/BV re-rate กลับ 1.0x = ราคา ~{{bvps}}",
+    "<b>กระแสเงินสดมั่นคง (PPA):</b> สัญญา PPA ระยะยาวกับ EGAT และ EDL กับัน cashflow uncertainty — Dividend yield ~3.6% เป็นการ floor ราคา"
+  ],
+  "risks": [
+    "<b>ความเสี่ยงปริมาณน้ำ (Hydrological Risk):</b> กำไรสุทธิผันผวนตามปริมาณน้ำ: FY2565 ฿2,436 ล้าน → FY2567 ฿1,345 ล้าน → FY2568 ฿2,782 ล้าน → TTM ฿2,380 ล้าน ทำให้ EPS ปีเดียวไม่ใช่ฐานที่เชื่อถือได้",
+    "<b>ภาระหนี้สูง:</b> หนี้สินรวม ~฿33,433 ล้าน เงินสด ~฿10,052 ล้าน (Net Debt ~฿23,381 ล้าน · D/E 0.79x) — leverage สูงทำให้ดอกเบี้ยเป็น fixed cost กดดัน free cash flow",
+    "<b>ความเสี่ยงโครงการลาว:</b> การขึ้นอยู่กับสัมปทานรัฐบาล สปป.ลาว และ EDL (ไฟฟ้าลาว) — ความเสี่ยงด้านการเมือง, สัมปทาน, และอัตราแลกเปลี่ยน USD/THB",
+    "<b>การเลื่อน Luang Prabang:</b> โครงการ 1,460 MW กำหนด COD 2573 — ความล่าช้าในการก่อสร้างหรือปัญหาการเงินอาจส่งผลต่อราคาหุ้น",
+    "<b>ผลกระทบสิ่งแวดล้อม:</b> โครงการบนแม่น้ำโขงเผชิญแรงกดดันจาก ESG investors และ NGO ด้านผลกระทบต่อระบบนิเวศและชุมชน"
+  ],
+  "extras": [],
+  "_sig": "sha256:821ec6dbffdc129bd747fea7b01e46e050fb4ea25eaa6576bfc35c217d66de6a"
+}
