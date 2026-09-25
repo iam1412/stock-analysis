@@ -1,0 +1,254 @@
+{
+  "v": 3,
+  "symbol": "HLI",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Houlihan Lokey",
+    "exchange": "NYSE",
+    "sub": "Global independent investment bank • #1 restructuring advisor (25+ yrs) • M&A advisory & financial valuation (middle market $100M–$3B) • ~$2.6B revenue, growing dividend • Employee ownership culture",
+    "headerTags": [
+      "Investment Banking",
+      "Middle Market M&A"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "StockAnalysis.com",
+      "Macrotrends"
+    ],
+    "themeLegacy": {
+      "accent": "#E8601C",
+      "accentDark": "#B84A14",
+      "darkGrad": "linear-gradient(135deg,#1a0f08 0%,#2d1a0e 50%,#1a0f08 100%)",
+      "glow": "rgba(232,96,28,0.35)",
+      "subColor": "#f5c9a8",
+      "headerMuted": "rgba(245,201,168,0.7)",
+      "verdictText": "#fff3ec",
+      "vcellLabel": "rgba(245,201,168,0.8)"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T14:53:54+07:00",
+      "v2Hash": "819165545335"
+    }
+  },
+  "market": {
+    "px": 127.49,
+    "priceDate": "2026-09-24",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          179.08
+        ],
+        [
+          "พ.ย.25",
+          175.4
+        ],
+        [
+          "ธ.ค.25",
+          174.19
+        ],
+        [
+          "ม.ค.26",
+          168.32
+        ],
+        [
+          "ก.พ.26",
+          163.77
+        ],
+        [
+          "มี.ค.26",
+          143.62
+        ],
+        [
+          "เม.ย.26",
+          154.75
+        ],
+        [
+          "พ.ค.26",
+          141.66
+        ],
+        [
+          "มิ.ย.26",
+          134.13
+        ],
+        [
+          "ก.ค.26",
+          125.49
+        ],
+        [
+          "ส.ค.26",
+          133.29
+        ],
+        [
+          "ก.ย.26",
+          127.49
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 112.83,
+      "hi": 211.78
+    }
+  },
+  "fundamentals": {
+    "eps": 5.95,
+    "dps": 2.8,
+    "bvps": 34.23,
+    "shares": 69886500,
+    "epsForward": 7.08,
+    "roe": 17.8,
+    "opMargin": 23.6,
+    "beta": 0.95,
+    "fy": {
+      "period": "FY2026",
+      "netIncome": 426000000,
+      "revenue": 2618000000
+    },
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation",
+      "inputs": {
+        "multiple": 26.2,
+        "multipleSource": "median5y"
+      },
+      "note": "ตัวคูณเป็นมัธยฐานย้อนหลัง 5 ปีงบของ HLI เอง (FY2022–FY2026: ราคาเฉลี่ยของปี ÷ EPS diluted ของปี ช่วง 14.5x–28.4x) ไม่ได้มาจาก P/E ปัจจุบัน · ขานี้ยึดตลาด/ประวัติ ตระกูลที่ 1",
+      "family": "market"
+    },
+    {
+      "method": "ddm",
+      "label": "DDM / Gordon Growth (ตระกูล r,g)",
+      "inputs": {
+        "g": 7,
+        "r": 9
+      },
+      "override": {
+        "dps": 2.8224299065420557,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "r/g เป็นสมมติฐานของเราเอง · ตระกูล (r,g) เดียวกับ Justified P/BV · สองวิธีนี้นับเป็นหนึ่งเสียง (ตระกูลที่ 2)",
+      "family": "rg"
+    },
+    {
+      "method": "pbv",
+      "label": "Justified P/BV (ตระกูล r,g เดียวกับ DDM)",
+      "inputs": {
+        "g": 7,
+        "r": 9
+      },
+      "note": "(r,g) ชุดเดียวกับ DDM จึงเฉลี่ยสองวิธีเป็นหนึ่งเสียง (ค่าเฉลี่ยตระกูล ~$168) · ROE ใช้ TTM",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      {
+        "key": "peForward",
+        "tone": "none"
+      },
+      "pbv",
+      {
+        "key": "revenueFy",
+        "tone": "none"
+      },
+      "eps",
+      "bvps",
+      "roe",
+      "netIncomeFy",
+      "opMargin",
+      "yield",
+      "beta"
+    ],
+    "notes": {
+      "mcap": "69.9M shares outstanding (รวมทุกคลาส)",
+      "pe": "(GAAP diluted)",
+      "peForward": "EPS FY2027e $7.08 (ตลาดคาดฟื้น · StockAnalysis)",
+      "pbv": "(มี.ค. 2569)",
+      "revenueFy": "+9.5% YoY (FY2025: $2,389M)",
+      "eps": "diluted · FY2026: $6.22 · FY2025: $5.82",
+      "bvps": "เพิ่มจาก $31.68 FY2025",
+      "roe": "ROE TTM · FY2026: 18.3% · FY2025: 19.9%",
+      "netIncomeFy": "+6.5% YoY · Margin 16.3%",
+      "opMargin": "FY2025: 23.3% · TTM 23.1%",
+      "yield": "{{dps}}/share ปี · จ่ายต่อเนื่อง",
+      "beta": "ผันผวนใกล้เคียงตลาด"
+    },
+    "hint": "ข้อมูล ณ 21 ก.ย. 2569 · FY2026 สิ้นสุด มี.ค. 2569 · EPS/ROE แบบ TTM"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": -5,
+        "exitMultiple": 16,
+        "divCum": 8.7,
+        "desc": "M&A แห้งนาน · Restructuring ไม่ฟื้น"
+      },
+      {
+        "growth": 10,
+        "exitMultiple": 20,
+        "divCum": 9.3,
+        "desc": "M&A ฟื้น + Restructuring แข็งแกร่ง"
+      },
+      {
+        "growth": 15,
+        "exitMultiple": 24,
+        "divCum": 10.5,
+        "desc": "Super cycle M&A + Restructuring ใหญ่"
+      }
+    ],
+    "exitDp": 0,
+    "note": "Base case คาด EPS เติบโต ~10%/ปี จาก {{eps}} → $7.92 ใน 3 ปี (อนุรักษ์กว่าตลาดที่คาด EPS FY2027e $7.08 และ FY2028e $8.79) และ rebound ของตลาด M&A ที่คาดว่าจะฟื้นใน FY2027-2028 Bull case อิงการฟื้นตัว M&A แบบ super cycle หลังดอกเบี้ยลด + ดีล Restructuring จาก Corporate distress Bear case สะท้อนภาวะ recession ยาวและ M&A แห้งแล้ง ผลตอบแทนรวมปันผล ~$9 ใน 3 ปี (yield ~2%/ปี) เสริม total return ทุกสถานการณ์"
+  },
+  "analyst": {
+    "target": 153.5,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "HLI ปิดรายเดือนสูงสุดในกราฟที่ ~$179 ในเดือน ต.ค. 2568 (กรอบ 52 สัปดาห์สูงสุด $211.78) ก่อนปรับฐานลงต่อเนื่องตาม sentiment ตลาด M&A ที่ชะลอตัวและความกังวลภาวะเศรษฐกิจ ปิดรายเดือนต่ำสุด ~$125 ในเดือน ก.ค. 2569 (ต่ำสุดระหว่างวัน $112.83) แล้วฟื้นเล็กน้อยมาที่ {{px}} ปัจจุบัน ต่ำกว่า Fair Value {{fv}} ({{mos}}) — สร้าง MOS ที่น่าสนใจสำหรับนักลงทุนระยะยาวที่เชื่อมั่นใน restructuring cycle และ M&A rebound",
+    "valuation": "FV = เฉลี่ยของ 2 ตระกูล: (P/E ที่ยึดมัธยฐานประวัติ ~$156 + ค่าเฉลี่ยตระกูล DDM/Justified P/BV ~$168) ÷ 2 ≈ {{fv}} — เป้านักวิเคราะห์ {{analyst.target}} ไม่ใช่ขาของ FV เป็นเพียงจุดตรวจความสอดคล้อง · ความไวต่อ (r,g): ตระกูล DDM/JPBV อ่อนไหวมากเพราะ r−g เพียง 2 จุด หาก r เป็น 10% ตระกูลนี้ลดเหลือราว $112 และ FV ลดเหลือราว $134 ทำให้ MOS เกือบหายไป · ถ้าใช้ขา P/E เดี่ยว (~$156) ราคาปัจจุบันจะต่ำกว่าราว 16% ราคาปัจจุบัน {{px}} จึงมี MOS แต่ไม่หนามาก",
+    "gauge": "ราคาปัจจุบัน {{px}} อยู่เหนือโซน MOS 20% ({{mos20}}) เล็กน้อย และต่ำกว่า Fair Value ({{fv}}) นักวิเคราะห์มีเป้าเฉลี่ย {{analyst.target}} (n=8, consensus Buy ตาม StockAnalysis) สูงกว่าราคาปัจจุบัน ~17.6% — เป้านี้ใช้เป็นเพียงจุดเทียบ ไม่ได้เป็นขาของ FV ราคายังไม่เข้าโซน deep value (MOS 30% = {{mos30}}) แต่ MOS ระดับนี้บวก dividend yield ~2.1% เป็นจุดเข้าที่น่าพิจารณาสำหรับ quality advisory franchise",
+    "mos": "MOS พอสมควร — ราคาต่ำกว่ามูลค่าเหมาะสม เหมาะสะสมทยอย",
+    "verdictHeadline": "HLI: Quality Advisory Franchise ในราคาน่าสนใจหลังปรับฐานเกือบ 40%",
+    "verdictBody": "Houlihan Lokey คือธนาคารเพื่อการลงทุนอิสระระดับโลกที่มี moat ชัดเจน 2 ด้าน: (1) <b>#1 Restructuring Advisor</b> ที่ครองตำแหน่งนาน 25+ ปีต่อเนื่อง ทำให้ได้ fee แม้ตลาดซบเซา และ (2) <b>ความเชี่ยวชาญ middle market M&A</b> ที่ธนาคารขนาดใหญ่ไม่ให้ priority หลังปรับฐานเกือบ 40% จาก 52-สัปดาห์สูงสุด ราคาปัจจุบัน {{px}} ต่ำกว่า Fair Value {{fv}} ({{mos}}) และต่ำกว่าเป้านักวิเคราะห์ {{analyst.target}} ราว 15% โดย fundamentals ยังแข็ง (ROE TTM 17.8%, FCF margin FY2026 26%, ปันผลเติบโต) แต่ FV ไวต่อสมมติฐาน r/g ของตระกูล DDM/P/BV จึงควรมองว่า MOS ไม่หนา สถานการณ์นี้เหมาะกับนักลงทุนที่เชื่อว่า M&A จะฟื้นและ restructuring cycle ยังอยู่",
+    "strategy": "ราคาปัจจุบัน {{px}} อยู่เหนือ MOS 20% ({{mos20}}) เล็กน้อย และต่ำกว่า FV ({{fv}}) — เหมาะสำหรับ <b>ทยอยสะสม</b> ที่ระดับนี้และเพิ่มหากราคาลงต่อโซน MOS 20-30% ({{mos30}}–{{mos20}}) · ถือยาว 3-5 ปี รอ M&A rebound + restructuring cycle · ผลตอบแทน Base case รวมปันผลคาดประมาณ +28% ใน 3 ปี · <b>ความเสี่ยงหลักคือ deal flow ที่ยังไม่แน่นอน</b> ควรจัดสัดส่วนตามความเสี่ยงที่รับได้",
+    "disclaimerSources": "ข้อมูลอ้างอิง: Yahoo Finance (ราคา/กราฟ/52w range), StockAnalysis.com (งบการเงิน/EPS/BVPS/market cap), Macrotrends (ROE/ประวัติงบ) · ราคาจาก 2 แหล่งตรงกัน (ต่าง 0% · Yahoo vs StockAnalysis) · EPS TTM ตรงกัน 2 แหล่ง · ข้อมูล ณ 21 ก.ย. 2569"
+  },
+  "text": {
+    "valHint": "ถ่วง 2 ตระกูลสมมติฐาน",
+    "chartHint": "ต.ค. 2568 – ก.ย. 2569 · ราคารายเดือน"
+  },
+  "catalysts": [
+    "<b>#1 Restructuring Advisor (25+ ปีติดต่อกัน):</b> สถานะ counter-cyclical ที่แข็งแกร่ง — ยิ่งเศรษฐกิจแย่ ยิ่งดีล Restructuring มาก ลดความเสี่ยงของ pure-cycle M&A advisory",
+    "<b>M&A Rebound Cycle:</b> ดอกเบี้ยที่คาดว่าจะลดลงใน FY2027 + Private Equity dry powder ~$2-3T ที่ยังรอ deploy จะหนุน M&A deal flow โดยเฉพาะกลุ่ม middle market ซึ่ง HLI เป็นผู้นำ",
+    "<b>Middle Market Moat:</b> HLI เป็น go-to advisor สำหรับดีล $100M-$3B ที่ธนาคารขนาดใหญ่ไม่ give priority ลดการแข่งขันกับ Goldman/Morgan Stanley และสร้าง repeat business จาก PE firms",
+    "<b>Employee Ownership & Retention:</b> โครงสร้าง employee-owned ทำให้ banker retention สูง ลดความเสี่ยงการสูญ rainmaker และสร้าง culture ระยะยาวที่ต่างจากธนาคารทั่วไป",
+    "<b>Financial & Valuation Advisory (FVA):</b> แขนงนี้ให้ fee ต่อเนื่องไม่ขึ้นกับ deal cycle — งาน fairness opinion, portfolio valuation สำหรับ PE/Hedge Fund เป็น recurring revenue stabilizer",
+    "<b>FCF แข็งและปันผลเติบโต:</b> Free cash flow $682M ใน FY2026 (FCF margin ~26%; TTM $485M) สนับสนุนปันผล {{dps}}/share และ buyback — track record เพิ่มปันผลสม่ำเสมอ"
+  ],
+  "risks": [
+    "<b>M&A Cycle Risk:</b> รายได้ Corporate Finance ขึ้นกับ deal flow ซึ่งผันผวนตามดอกเบี้ย/ความเชื่อมั่น CEO — ภาวะดอกเบี้ยสูงและ uncertainty macro อาจกด deal ต่อเนื่อง",
+    "<b>Talent / Key Man Risk:</b> advisory firm พึ่งพา senior banker ที่มีความสัมพันธ์กับลูกค้า การลาออกของ managing director คนสำคัญอาจส่งผลต่อ revenue ในช่วงสั้น",
+    "<b>Multiple Risk:</b> มัธยฐาน P/E 26.2x ที่ใช้เป็นขา FV อิงช่วง FY2023–FY2026 ที่กำไรฟื้น (FY2022 ต่ำที่ 14.5x) หาก deal flow ไม่ฟื้น multiple อาจไม่กลับไปที่ระดับนั้น และ P/E ปัจจุบัน ~{{pe}}x ยังไม่ถูกมาก",
+    "<b>Competition จาก Evercore/Lazard/PJT:</b> boutique advisory เติบโตมาก HLI เผชิญ fee compression ในบาง segment แม้ restructuring จะยังมี moat แข็ง",
+    "<b>Regulatory & Geopolitical:</b> ดีล cross-border อาจถูกสกัดจากกฎ antitrust หรือ geopolitics โดยเฉพาะ US-China M&A"
+  ],
+  "extras": [],
+  "_sig": "sha256:086f826533fe4479369e7fa138a9ffcef6cb4ba7ae89f2fd1e3e35986d27500a"
+}
