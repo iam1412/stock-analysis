@@ -125,6 +125,8 @@ t.eq(K.CATALOGUE.peAvg5y.label(view), 'P/E มัธยฐาน ~5 ปี', 'pe
   t.eq(K.ptbvCalc(w).text, (w.d.px / 40.5).toFixed(2) + 'x', 'ptbvCalc text = card text (single owner)');
   t.throws(() => K.renderCard('payout', { ...w, doc: { ...w.doc, fundamentals: { ...f, eps: -1 } }, fq: { ...f, eps: -1 } }), /payout/, 'payout with eps ≤ 0 → named throw');
   t.throws(() => K.renderCard('netDebtEbitda', { ...w, doc: { ...w.doc, fundamentals: { ...f, ebitda: 0 } }, fq: { ...f, ebitda: 0 } }), /ebitda/, 'netDebtEbitda with ebitda ≤ 0 → named throw');
+  // fix round 1 (N-1): net cash → U+2212, never an ASCII hyphen
+  t.eq(K.renderCard('netDebtEbitda', { ...w, doc: { ...w.doc, fundamentals: { ...f, netDebt: -6.4e8 } } }).v, '−0.2x', 'netDebtEbitda net cash prints U+2212');
 }
 
 t.done();

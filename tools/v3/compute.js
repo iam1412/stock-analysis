@@ -37,11 +37,16 @@ function driverStart(doc, f) {
 }
 
 // exit EV/Sales (Plan 4b Task 1 · §3.3): ราคาเป้า = รายได้/หุ้นปลายฉาก × EV/Sales − หนี้สุทธิ/หุ้น (สกุลราคา ผ่าน fq) · exit อื่น = ตัวตั้ง × ตัวคูณ
-function exitTarget(s, end, m, fq) {
+// ราคาเป้า ≤ 0 (หนี้สุทธิท่วม EV) = throw ชี้ตัวคูณของฉากนั้น เหมือน equity() ใน legs.js — ไม่ปล่อยไปตกที่ E51 ตอน render
+function exitTarget(s, end, m, fq, i) {
   if (s.exitMetric !== 'evsales') return end * m;
   if (!(typeof fq.shares === 'number' && fq.shares > 0)) throw new Error('scenarios.exitMetric: evsales ต้องมี fundamentals.shares > 0 (หักหนี้สุทธิต่อหุ้น)');
-  return end * m - (fq.netDebt || 0) / fq.shares;
+  const ev = end * m, nd = (fq.netDebt || 0) / fq.shares, tgt = ev - nd;
+  if (!(tgt > 0)) throw new Error(`scenarios.cases[${i}].exitMultiple: evsales — ราคาเป้า ≤ 0 (EV/หุ้น ${ev.toFixed(2)} − หนี้สุทธิ/หุ้น ${nd.toFixed(2)}) — ตัวคูณ EV/Sales ฉากนี้ใช้กับหุ้นนี้ไม่ได้`);
+  return tgt;
 }
+// ตัวตั้งปลายฉาก — compute() และ semanticErrors() ใช้สูตรเดียวกัน
+const driverEndOf = (start, c, s) => start * Math.pow(1 + c.growth / 100, s.years);
 
 function themeOf(doc, seeds, dir) {
   let base;
@@ -118,9 +123,9 @@ function compute(doc, opts) {
   // ── scenarios ──
   const start = driverStart(doc, fq);
   const scn = s.cases.map((c, i) => {
-    const end = start * Math.pow(1 + c.growth / 100, s.years);
+    const end = driverEndOf(start, c, s);
     // divCum: เก็บผ่านเสมอเมื่อ author ให้มา (informational แม้ divIncluded=false — schema อนุญาต) · total% ตัดสินด้วย scnBasis.divIncluded ใน derive() v2 อยู่แล้ว ไม่ใช่ตรงนี้
-    return { name: SCN_NAMES[i], growth: c.growth, exitMultiple: c.exitMultiple, driverStart: start, driverEnd: end, tgt: exitTarget(s, end, c.exitMultiple, fq), divCum: c.divCum == null ? null : c.divCum, desc: c.desc };
+    return { name: SCN_NAMES[i], growth: c.growth, exitMultiple: c.exitMultiple, driverStart: start, driverEnd: end, tgt: exitTarget(s, end, c.exitMultiple, fq, i), divCum: c.divCum == null ? null : c.divCum, desc: c.desc };
   });
 
   // ── bridge → v2 report-data + stock-meta (ใช้ RV.derive ตัวจริง) ──
@@ -185,8 +190,16 @@ function semanticErrors(doc, opts) {
       for (const m of leg.inputs.multipleRange || []) L.legValue({ ...legQ, inputs: { ...leg.inputs, multiple: m } }, fq, `legs[${i}].inputs.multipleRange`);
     } catch (e) { out.push(splitErr(e, `legs[${i}]`)); }
   });
-  try { driverStart(doc, fq); } catch (e) { out.push(splitErr(e, 'scenarios.driver')); }
-  { const s = doc.scenarios; try { s.cases.forEach((c) => exitTarget(s, 1, c.exitMultiple, fq)); } catch (e) { out.push(splitErr(e, 'scenarios.exitMetric')); } }
+  // exitTarget ทีละฉากด้วยตัวตั้งปลายฉากจริง · driverStart throw = รายงานแล้วบน scenarios.driver → ข้าม · error ซ้ำ (shares ขาด ทั้ง 3 ฉาก) รายงานครั้งเดียว
+  try {
+    const s = doc.scenarios, start = driverStart(doc, fq);
+    s.cases.forEach((c, i) => {
+      try { exitTarget(s, driverEndOf(start, c, s), c.exitMultiple, fq, i); } catch (e) {
+        const x = splitErr(e, `scenarios.cases[${i}].exitMultiple`);
+        if (!out.some((o) => o.path === x.path && o.msg === x.msg)) out.push(x);
+      }
+    });
+  } catch (e) { out.push(splitErr(e, 'scenarios.driver')); }
   try { themeOf(doc, opts && opts.seeds, null); } catch (e) { out.push(splitErr(e, 'meta.themeLegacy')); }
   return out;
 }

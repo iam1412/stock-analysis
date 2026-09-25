@@ -204,10 +204,19 @@ t.eq(JSON.parse(R.jsonScript('{"a":"</script>"}')).a, '</script>', 'jsonScript o
   const html = R.toV2Source(d, C.compute(d, { seeds }));
   t(/<div class="k">P\/E \(TTM\)<\/div><div class="v">/.test(html), 'tone none → .v has no class (catalogue default neu suppressed)');
 }
+// fix round 1 (N-3 ruling): evsales pairs with revenuePerShare only ⇒ de/fre render on exit pe, evsales on revenuePerShare
 {
-  const d = load('ZTS'); d.scenarios.driver = 'de'; d.fundamentals.dePerShare = 3.3; d.scenarios.exitMetric = 'evsales'; d.fundamentals.netDebt = 1e9; d.fundamentals.shares = d.fundamentals.shares || 4.3e8;
+  const d = load('ZTS'); d.scenarios.driver = 'de'; d.fundamentals.dePerShare = 3.3;
   const html = R.toV2Source(d, C.compute(d, { seeds }));
-  t(/<span>DE\/หุ้น [+−][0-9.]+%\/ปี<\/span>/.test(html) && /<span>EV\/Sales ออก<\/span>/.test(html) && /DE\/หุ้น ฐาน ~/.test(html), 'driver de → "DE/หุ้น" labels · exitMetric evsales → "EV/Sales ออก"');
+  t(/<span>DE\/หุ้น [+−][0-9.]+%\/ปี<\/span>/.test(html) && /DE\/หุ้น ฐาน ~/.test(html), 'driver de → "DE/หุ้น" labels');
+  d.scenarios.driver = 'fre'; d.fundamentals.frePerShare = 1.7;
+  const h2 = R.toV2Source(d, C.compute(d, { seeds }));
+  t(/<span>FRE\/หุ้น [+−][0-9.]+%\/ปี<\/span>/.test(h2) && /FRE\/หุ้น ฐาน ~/.test(h2), 'driver fre → "FRE/หุ้น" labels');
+}
+{
+  const d = load('ZTS'); d.scenarios.driver = 'revenuePerShare'; d.scenarios.exitMetric = 'evsales'; d.fundamentals.netDebt = 1e9;
+  const html = R.toV2Source(d, C.compute(d, { seeds }));
+  t(/<span>EV\/Sales ออก<\/span>/.test(html) && /<span>รายได้\/หุ้น [+−][0-9.]+%\/ปี<\/span>/.test(html), 'exitMetric evsales → "EV/Sales ออก" (driver revenuePerShare)');
 }
 
 t.done();

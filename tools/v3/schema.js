@@ -393,6 +393,8 @@ function validate(doc) {
     if (typeof s.divIncluded !== 'boolean') E('scenarios.divIncluded', 'ต้องเป็น true/false');
     en(s.perYear === undefined ? '∅' : s.perYear, 'scenarios.perYear', ENUM.perYear);
     en(s.driver, 'scenarios.driver', ENUM.driver); en(s.exitMetric, 'scenarios.exitMetric', ENUM.exitMetric);
+    // Plan 4b Task 1 (fix round 1 · N-3): exit EV/Sales คูณรายได้ต่อหุ้น ⇒ ตัวตั้งต้องเป็น revenuePerShare เท่านั้น
+    if (s.exitMetric === 'evsales' && s.driver !== 'revenuePerShare') E('scenarios.exitMetric', `evsales (EV/Sales ออก) คูณรายได้ต่อหุ้น — ต้องใช้ scenarios.driver = "revenuePerShare" (พบ ${JSON.stringify(s.driver)})`);
     if (s.baseOverride != null) { closed(s.baseOverride, 'scenarios.baseOverride', ['value', 'why']); num(s.baseOverride.value, 'scenarios.baseOverride.value', { gt: 0 }); str(s.baseOverride.why, 'scenarios.baseOverride.why'); }
     if (!Array.isArray(s.cases) || s.cases.length !== 3) E('scenarios.cases', 'ต้องมี 3 ฉากพอดี (Bear/Base/Bull)');
     else s.cases.forEach((c, i) => {

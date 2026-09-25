@@ -22,4 +22,18 @@ t.eq(CC.cardKey('AUM'), 'aum', 'AUM → aum');
 t.eq(CC.cardKey('P/TBV'), 'ptbv', 'P/TBV → ptbv (before pbv rule)');
 t.eq(CC.cardKey('P/BV'), 'pbv', 'P/BV → pbv still');
 t.eq(CC.cardKey('P/E (TTM)'), 'pe', 'plain P/E → pe still');
+// fix round 1 (review I-3 · corpus re-diff) — combined labels keep their FIRST metric · FFO payout ≠ EPS payout · % growth ≠ stock
+t.eq(CC.cardKey('P/BV / P/TBV'), 'pbv', 'P/BV / P/TBV → pbv (first number is P/BV)');
+t.eq(CC.cardKey('ROE / Net Margin'), 'roe', 'ROE / Net Margin → roe');
+t.eq(CC.cardKey('ROE / Payout'), 'roe', 'ROE / Payout → roe');
+t.eq(CC.cardKey('FFO Payout Ratio'), 'ffoPayout', 'FFO Payout Ratio → ffoPayout (DPS ÷ FFO)');
+t.eq(CC.cardKey('Payout (AFFO basis)'), 'ffoPayout', 'Payout (AFFO basis) → ffoPayout');
+t.eq(CC.cardKey('Payout (ฐาน FFO)'), 'ffoPayout', 'Payout (ฐาน FFO) → ffoPayout');
+t.eq(CC.cardKey('Dividend Payout Ratio'), 'payout', 'Dividend Payout Ratio → payout');
+t.eq(CC.cardKey('AUM Growth YoY'), null, 'AUM Growth YoY → null (a % change, not AUM)');
+t.eq(CC.cardKey('Backlog รวม (YoY)'), null, 'Backlog รวม (YoY) → null');
+t.eq(CC.cardKey('Revenue Backlog'), 'backlog', 'Revenue Backlog → backlog (not revenue)');
+// M-3 — Thai "คาด" + "guidance" are forward estimates, not the TTM eps card
+t.eq(CC.cardKey('Adj EPS FY2026 (คาด)'), null, 'Adj EPS FY2026 (คาด) → null');
+t.eq(CC.cardKey('Adj. EPS 2026 (guidance)'), null, 'Adj. EPS 2026 (guidance) → null');
 t.done();

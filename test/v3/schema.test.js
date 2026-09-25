@@ -259,8 +259,15 @@ for (const f of ['BBL-real', 'EQIX-real', 'FER-real', 'ZTS-real', 'BBL', 'ZTS'])
   t(S.validate(d).some((e) => e.path === 'meta.headerTags'), 'headerTags 4 rejected');
 }
 {
-  const d = base(); d.scenarios.driver = 'de'; d.scenarios.exitMetric = 'evsales'; d.fundamentals.dePerShare = 4.2;
-  t.eq(S.validate(d).filter((e) => /scenarios\.(driver|exitMetric)|dePerShare/.test(e.path)), [], 'driver de + exitMetric evsales + fundamentals.dePerShare accepted');
+  const d = base(); d.scenarios.driver = 'de'; d.fundamentals.dePerShare = 4.2;
+  t.eq(S.validate(d).filter((e) => /scenarios\.(driver|exitMetric)|dePerShare/.test(e.path)), [], 'driver de + fundamentals.dePerShare accepted');
+  d.scenarios.driver = 'fre'; d.fundamentals.frePerShare = 1.1;
+  t.eq(S.validate(d).filter((e) => /scenarios\.(driver|exitMetric)|frePerShare/.test(e.path)), [], 'driver fre + fundamentals.frePerShare accepted');
+  // fix round 1 (N-3 ruling): EV/Sales exit multiplies revenue per share ⇒ requires driver revenuePerShare
+  d.scenarios.driver = 'revenuePerShare'; d.scenarios.exitMetric = 'evsales';
+  t.eq(S.validate(d).filter((e) => /scenarios\./.test(e.path)), [], 'exitMetric evsales + driver revenuePerShare accepted');
+  d.scenarios.driver = 'eps';
+  t.eq(paths(S.validate(d)).filter((p) => /scenarios\./.test(p)), ['scenarios.exitMetric'], 'exitMetric evsales + driver eps → error on scenarios.exitMetric');
   d.fundamentals.occupancy = 94.1; d.fundamentals.backlog = 1.2e9; d.fundamentals.aum = 3e11; d.fundamentals.tbvps = 40.5; d.fundamentals.frePerShare = 1.1;
   t.eq(S.validate(d).filter((e) => /fundamentals\.(occupancy|backlog|aum|tbvps|frePerShare)/.test(e.path)), [], 'new fundamentals keys accepted');
   d.metrics.cards = ['occupancy', 'netDebtEbitda', 'backlog', 'payout', 'aum', 'ptbv'];

@@ -164,4 +164,4 @@ function countMoneyLiterals(doc) {
   return n;
 }
 
-module.exports = { renderProse, sanitizeErrors, proseFields, checkRuleB, countMoneyLiterals, escapeKeepAllowed, TOKEN_RE, LIT_RE, stripSpans, litsOf, countLits, malformedLitPaths };
+module.exports = { renderProse, sanitizeErrors, proseFields, checkRuleB, countMoneyLiterals, escapeKeepAllowed, TOKEN_RE, LIT_RE, stripSpans, litsOf, countLits, malformedLitPaths, priceBound };   // priceBound exported (Plan 4b Task 1 fix round 1) — tokens.test pins every emitted name resolves; migrator tokenise (Task 5) consumes it

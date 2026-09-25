@@ -15,10 +15,13 @@ const RULES = [
   // schema.js/cards.js — วางไว้ก่อนกฎกว้างด้านล่างเสมอ (netDebt เจาะจงกว่า debtToEquity, peForward/evEbitda
   // เจาะจงกว่า pe/peAvg5y ทั่วไป) — ดู negative lookahead ใน netDebt: ไม่ดูด "Net Debt/EBITDA" (leverage
   // ratio คนละตัวชี้วัดกับหนี้สินสุทธิเป็นตัวเงิน — ตั้งแต่ Plan 4b Task 1 มีคีย์ netDebtEbitda ของตัวเองแล้ว)
-  // Plan 4b Task 1 — 6 คีย์ใหม่ วางก่อนกฎกว้างที่ชิง label เดียวกัน (netDebtEbitda ก่อน netDebt · payout ก่อน yield · ptbv ก่อน pbv)
+  // Plan 4b Task 1 — 6 คีย์ใหม่ วางก่อนกฎกว้างที่ชิง label เดียวกัน (netDebtEbitda ก่อน netDebt · payout ก่อน yield)
+  // fix round 1 (review I-3 — วัดทั้งคลัง 10,996 การ์ด): ffoPayout ก่อน payout (DPS ÷ FFO ≠ DPS ÷ EPS) · payout/ptbv ยึดต้น label
+  // ("ROE / Payout" = roe · "P/BV / P/TBV" = pbv — ตัวเลขแรกคือตัวแรกใน label) · aum/backlog ที่เป็น % เปลี่ยนแปลง (growth/YoY/%) ไม่ใช่ยอดเงิน → ไม่ลง
   ['netDebtEbitda', /Net\s*Debt\s*(?:\/|to)\s*EBITDA|หนี้สินสุทธิ\s*(?:\/|ต่อ)\s*EBITDA/i],
-  ['occupancy', /occupancy|อัตราการเช่า/i], ['backlog', /backlog|งานในมือ/i], ['aum', /\bAUM\b|สินทรัพย์ภายใต้การจัดการ/i],
-  ['payout', /payout|อัตราการจ่ายปันผล/i], ['ptbv', /P\s*\/\s*TBV/i],
+  ['occupancy', /occupancy|อัตราการเช่า/i], ['backlog', /^(?!.*(growth|YoY|%)).*(backlog|งานในมือ)/i], ['aum', /^(?!.*(growth|YoY|%)).*(\bAUM\b|สินทรัพย์ภายใต้การจัดการ)/i],
+  ['ffoPayout', /A?FFO.*payout|payout.*(A?FFO|ฐาน\s*A?FFO)/i],
+  ['payout', /^(?:Dividend\s+)?Payout|^อัตราการจ่ายปันผล/i], ['ptbv', /^P\s*\/\s*TBV/i],
   ['netDebt', /(หนี้.*สุทธิ|เงินสด.*สุทธิ|^หนี้สิน$|^เงินสด$|หนี้สิน\s*\/\s*เงินสด|เงินสด\s*\/\s*หนี้สิน)|Net\s*(Cash|Debt)(?!\s*[\/:\-]\s*(EBITDA|Equity|Adj))/i],
   ['ebitdaMargin', /EBITDA\s*margin/i], ['roic', /ROIC/i], ['evEbitda', /EV\s*\/\s*EBITDA/i],
   ['peForward', /(forward|fwd|NTM).*P\/E|P\/E.*(forward|fwd|NTM)/i],
@@ -30,9 +33,11 @@ const RULES = [
   ['peAvg5y', /P\/E.*(เฉลี่ย|avg|median|มัธยฐาน|ย้อนหลัง|5\s*ปี|10\s*ปี)/i], ['pe', /^P\/E(?!.*(เฉลี่ย|avg|median|มัธยฐาน|ย้อนหลัง|5|10|fwd|forward))/i],
   ['pbv', /^P\/B/i], ['ps', /^P\/S/i],
   // Task 0 Q3 fix 1: margin ก่อน netIncome — "อัตรากำไรสุทธิ" มีคำว่ากำไรสุทธิ
+  // fix round 1: ROE ที่ขึ้นต้น label ("ROE / Net Margin") คงเป็น roe — กฎ roe กว้างด้านล่างยังอยู่ที่เดิม
+  ['roe', /^ROE/i],
   ['netMargin', /net\s*margin|กำไรสุทธิ.*%|อัตรากำไรสุทธิ/i], ['netIncome', /กำไรสุทธิ|net\s*income/i],
   // Task 0 Q3 fix 3: GAAP/Adj/Diluted EPS
-  ['eps', /^(?:GAAP|Adj\.?|Adjusted|Diluted|Normali[sz]ed)?\s*EPS(?!.*(forward|fwd|20\d\dE|FY\s*'?\d{2,4}\s*E|consensus|ประมาณการ))/i], ['bvps', /^BVPS|book\s*value/i],
+  ['eps', /^(?:GAAP|Adj\.?|Adjusted|Diluted|Normali[sz]ed)?\s*EPS(?!.*(forward|fwd|20\d\dE|FY\s*'?\d{2,4}\s*E|consensus|ประมาณการ|คาด|guidance))/i], ['bvps', /^BVPS|book\s*value/i],
   ['roe', /ROE/i], ['revenue', /รายได้|revenue/i], ['grossMargin', /gross|ขั้นต้น/i],
   ['opMargin', /operating|ดำเนินงาน|EBIT\s*margin/i], ['yield', /ปันผล|dividend/i], ['beta', /beta/i], ['range52w', /52/],
   ['fcf', /FCF|free\s*cash/i],
