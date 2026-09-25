@@ -29,13 +29,30 @@ for (let i = 1; i <= 4; i++) {
 }
 ['bear', 'base', 'bull'].forEach((n, i) => {
   TOKENS_V3[`scn.${n}.end`] = (view) => money(view, need(view.scn && view.scn[i], `scn.${n}`).driverEnd);
-  TOKENS_V3[`scn.${n}.exit`] = (view) => need(view.scn && view.scn[i], `scn.${n}`).exitMultiple.toFixed(1) + 'x';
+  // Plan 4b Task 2: scenarios.exitDp ถ้ามี · ไม่มี = toFixed(1) เดิม (tokens-corpus parity)
+  TOKENS_V3[`scn.${n}.exit`] = (view) => { const e = need(view.scn && view.scn[i], `scn.${n}`).exitMultiple, s = view.doc && view.doc.scenarios;
+    return (s && s.exitDp != null ? e.toFixed(s.exitDp) : e.toFixed(1)) + 'x'; };
 });
 TOKENS_V3.analysisDate = (view) => need(view.analysisDateText, 'analysisDate');
 TOKENS_V3['range52w.lo'] = (view) => money(view, need(view.doc && view.doc.market.range52w, 'range52w').lo);
 TOKENS_V3['range52w.hi'] = (view) => money(view, need(view.doc && view.doc.market.range52w, 'range52w').hi);
+// Plan 4b Task 1 (spec §10.1 token gaps: fund:eps 834 ใบ · dps 458 · bvps 223 · epsFy 45 · analyst:vsFv 30) — ค่าจากงบ ไม่ผูกราคา
+// (ไม่เข้า priceBound) แต่ทำให้ prose ตาม fundamentals เมื่อ UPDATE · เงินผ่าน RV.fmtPrice เหมือน token อื่น
+const fund = (view, k) => need(view.doc && view.doc.fundamentals && view.doc.fundamentals[k], k);
+TOKENS_V3.eps = (view) => money(view, fund(view, 'eps'));
+TOKENS_V3.dps = (view) => money(view, fund(view, 'dps'));
+TOKENS_V3.bvps = (view) => money(view, fund(view, 'bvps'));
+TOKENS_V3.epsFy = (view) => money(view, need(view.doc && view.doc.fundamentals && view.doc.fundamentals.fy && view.doc.fundamentals.fy.eps, 'epsFy'));
+// ส่วนต่างเป้านักวิเคราะห์เทียบ FV (ไม่ใช่เทียบราคา — นั่นคือ analyst.pct) · 1 ตำแหน่ง · ลบ = U+2212
+// ปัดแล้วเป็น 0.0 = "+0.0%" (ไม่พิมพ์ "−0.0%")
+TOKENS_V3['analyst.vsFv'] = (view) => { const a = need(view.doc && view.doc.analyst, 'analyst.vsFv'); const x = (a.target - view.fv) / view.fv * 100; const r = Math.abs(x).toFixed(1); return (x < 0 && r !== '0.0' ? '−' : '+') + r + '%'; };
 // Plan 2a Task 9 — P/FFO (ไม่มีคู่ v2 · รูปแบบเดียวกับ {{pe}}/{{pbv}} = ไม่มี x ต่อท้าย) — เลขมาจาก cards.js ตัวเดียวกับการ์ด
 TOKENS_V3.pffo = (view) => require('./cards.js').pffoCalc(view).raw.toFixed(1);
 TOKENS_V3.pffoForward = (view) => require('./cards.js').pffoForwardCalc(view).raw.toFixed(1);
+// Plan 4b Task 1 (fix round 1 · I-2) — ทุกชื่อที่ prose.priceBound() ปล่อยต้องมี token จริง (กติกา B แนะนำ {{ชื่อ}} · migrator tokenise ใช้ชื่อเดียวกัน)
+// เลขจาก cards.js ตัวเดียวกับการ์ด · ไม่มี x ต่อท้าย (เหมือน {{pe}}/{{pbv}}/{{pffo}}) · ทศนิยมเท่าการ์ด
+TOKENS_V3.ptbv = (view) => require('./cards.js').ptbvCalc(view).raw.toFixed(2);
+TOKENS_V3.peForward = (view) => require('./cards.js').peForwardCalc(view).raw.toFixed(1);
+TOKENS_V3.evEbitda = (view) => require('./cards.js').evEbitdaCalc(view).raw.toFixed(1);
 
 module.exports = { TOKENS_V3, V2_TWIN };

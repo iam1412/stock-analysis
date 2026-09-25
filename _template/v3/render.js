@@ -17,9 +17,11 @@ const X = require('../../tools/v3/extras.js');
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const METHOD_NAME = { pe: 'P/E', pbv: 'P/BV', ps: 'P/S', evsales: 'EV/Sales', evebitda: 'EV/EBITDA', pfcf: 'P/FCF', fcfyield: 'FCF Yield',
   pffo: 'P/FFO', ddm: 'DDM / Gordon Growth', ddm2: 'DDM 2 ระยะ', dcf: 'DCF', ri: 'Residual Income', declared: 'มูลค่าประกาศ' };
-const SRC_NAME = { median5y: 'มัธยฐาน 5 ปี', median10y: 'มัธยฐาน 10 ปี', peer: 'ค่ากลางกลุ่มเทียบ', justified: 'justified', sector: 'ค่ากลางเซกเตอร์', current: 'ตัวคูณปัจจุบัน' };
+const SRC_NAME = { median5y: 'มัธยฐาน 5 ปี', median10y: 'มัธยฐาน 10 ปี', peer: 'ค่ากลางกลุ่มเทียบ', justified: 'justified', sector: 'ค่ากลางเซกเตอร์', current: 'ตัวคูณปัจจุบัน', author: 'ผู้วิเคราะห์กำหนด' };
 // Plan 2a Task 9 (§3.6 J) — ป้าย FFO/AFFO ของขา pffo · driver ffo · exit pffo
 const ffoLabel = (doc) => ({ ffo: 'FFO', affo: 'AFFO' }[doc.fundamentals.ffoBasis || 'ffo']);
+// Plan 4b Task 2: scenarios.exitDp → ทศนิยมคงที่ · ไม่มี = พิมพ์ค่าดิบเหมือนเดิม
+const exitText = (s, m) => (s.exitDp != null ? m.toFixed(s.exitDp) : String(m));
 const dot = (c) => `<div style="width:8px;height:8px;border-radius:50%;background:${c};display:inline-block;margin:0 3px"></div>`;
 // JSON ใน <script> ห้ามมี '<' ดิบ (กัน </script> ปิดแท็กก่อนเวลา) — '<' โผล่ได้เฉพาะในสตริง JSON ⇒ \u003c ยัง parse เป็นค่าเดิม
 const jsonScript = (s) => String(s).replace(/</g, '\\u003c');
@@ -53,7 +55,11 @@ function mdesc(leg, view) {
     case 'ddm2': return `D₁ ${m(i.d1)} โต ${i.g1}%/ปี ${i.years1} ปี แล้ว ${i.g2}%/ปี · r ${i.r}% · `
       + (i.horizon == null ? 'มูลค่าปลายงวดแบบ Gordon' : `${i.horizon} งวด ไม่มีมูลค่าปลายงวด`);
     // FCF = ยอดงบรวม (fundamentals/override) → สกุลงบ (view.stmtCur) เหมือนการ์ด FCF · ค่าขา (.mval) เป็นสกุลราคา (compute แปลงด้วย fx แล้ว)
-    case 'dcf': return `FCF ${RV.fmtBig(b.fcf, view.stmtCur || view.cur)} โต ${i.g1}%/ปี ${i.years1} ปี · โตถาวร ${i.tg}% · r ${i.r}%`;
+    case 'dcf': {
+      // Plan 4b Task 2 (§13-3): N-stage พิมพ์ทุกช่วงคั่นด้วย → · 2-stage พิมพ์เหมือนเดิมทุก byte
+      const sched = Array.isArray(i.stages) ? i.stages.map((s) => `${s.g}%/ปี ${s.years} ปี`).join(' → ') : `${i.g1}%/ปี ${i.years1} ปี`;
+      return `FCF ${RV.fmtBig(b.fcf, view.stmtCur || view.cur)} โต ${sched} · โตถาวร ${i.tg}% · r ${i.r}%`;
+    }
     case 'ri': return `BVPS ${m(b.bvps)} · ROE ${b.roe}% vs r ${i.r}% · ${i.years} ปี · payout ${i.payout}%`;
     case 'fcfyield': return `FCF/หุ้น ÷ yield เป้าหมาย ${i.yield}%`;
     case 'declared': return `ค่าประกาศ (${i.basis})` + (i.extrasRef != null ? ' — ดูตารางประกอบ' : '');
@@ -97,13 +103,15 @@ function toV2Source(doc, view) {
   const m = doc.meta, d = view.d, s = doc.scenarios, TH = doc.currency === 'THB';
   // ลำดับ = S.cardEntries (custom แทรกได้ด้วย "custom:<i>") · tone → class สีเดิม (.v pos|neg|neu) — ไม่มี markup ใน JSON (§3.6 H)
   const noteOf = (k) => doc.metrics.notes && doc.metrics.notes[k];
+  // tone 'none' (Plan 4b Task 1) = ไม่มีคลาสสี แม้การ์ดแคตตาล็อกมีค่าตั้งต้น (466 การ์ด v2 ไม่มีคลาส)
+  const toneCls = (tone, def) => (tone === 'none' ? '' : tone || def);
   const cards = S.cardEntries(doc.metrics).map((e) => {
     if (e.custom != null) {
       const c = doc.metrics.custom[e.custom];
-      return { k: esc(c.label), v: pr(c.value), d: c.note ? pr(c.note) : '', cls: e.tone || '' };
+      return { k: esc(c.label), v: pr(c.value), d: c.note ? pr(c.note) : '', cls: toneCls(e.tone, '') };
     }
     const c = K.renderCard(e.key, view), note = noteOf(e.key);
-    return { k: esc(c.k), v: esc(c.v), d: esc(c.d) + (note ? (c.d ? ' · ' : '') + pr(note) : ''), cls: e.tone || c.cls };
+    return { k: esc(c.k), v: esc(c.v), d: esc(c.d) + (note ? (c.d ? ' · ' : '') + pr(note) : ''), cls: toneCls(e.tone, c.cls) };
   });
   const cardHtml = cards.map((c) => `<div class="metric"><div class="k">${c.k}</div><div class="v${c.cls ? ' ' + c.cls : ''}">${c.v}</div><div class="d">${c.d}</div></div>`).join('\n      ');
   const legsHtml = view.legs.map((l, i) => `<div class="vmethod">
@@ -118,8 +126,8 @@ function toV2Source(doc, view) {
     .sort((a, b) => a.v - b.v)
     .map((x, i, arr) => `<span${i === 0 ? '' : i === arr.length - 1 ? ' style="text-align:right"' : ' style="text-align:center"'}>${x.tok}<br><small>${x.lab}</small></span>`).join('\n          ');
   const FFO = ffoLabel(doc);
-  const drv = { eps: 'EPS', ffo: FFO, revenuePerShare: 'รายได้/หุ้น', bvps: 'BVPS', fcfPerShare: 'FCF/หุ้น' }[s.driver];
-  const ex = { pe: 'P/E', ps: 'P/S', pbv: 'P/BV', pffo: `P/${FFO}`, pfcf: 'P/FCF' }[s.exitMetric];
+  const drv = { eps: 'EPS', ffo: FFO, revenuePerShare: 'รายได้/หุ้น', bvps: 'BVPS', fcfPerShare: 'FCF/หุ้น', de: 'DE/หุ้น', fre: 'FRE/หุ้น' }[s.driver];
+  const ex = { pe: 'P/E', ps: 'P/S', pbv: 'P/BV', pffo: `P/${FFO}`, pfcf: 'P/FCF', evsales: 'EV/Sales' }[s.exitMetric];
   const col = (i, cls, name) => {
     const sc = view.scn[i];
     // Finding 4 (postreview) — เลขลบใช้ minus glyph U+2212 (ตามธรรมเนียม v2) ไม่ใช่ ASCII hyphen
@@ -128,10 +136,10 @@ function toV2Source(doc, view) {
         <div class="top"><span>${name}</span><span>${drv} ${g}%/ปี</span></div>
         <div class="body">
           <div class="tgt">{{rd:sc${i + 1}tgt}}</div>
-          <div class="ret {{rd:sc${i + 1}retClass}}">{{rd:sc${i + 1}ret}}</div>
+          <div class="ret {{rd:sc${i + 1}retClass}}">{{rd:sc${i + 1}ret}}${s.cases[i].retNote ? ' ' + pr(s.cases[i].retNote) : ''}</div>
           <ul>
             <li><span>${drv} ปี ${s.years}</span><span>~${esc(view.cur + RV.fmtPrice(sc.driverEnd))}</span></li>
-            <li><span>${ex} ออก</span><span>${sc.exitMultiple}x</span></li>${sc.divCum != null ? `
+            <li><span>${ex} ออก</span><span>${exitText(s, sc.exitMultiple)}x</span></li>${sc.divCum != null ? `
             <li><span>ปันผลรวม ${s.years} ปี</span><span>~{{rd:sc${i + 1}div}}</span></li>` : ''}
             <li><span>สถานการณ์</span><span>${pr(sc.desc)}</span></li>
           </ul>
@@ -140,8 +148,10 @@ function toV2Source(doc, view) {
   };
   const li = (xs) => xs.map((x) => `<li>${pr(x)}</li>`).join('\n          ');
   const an = doc.analyst;
+  // rating/n ที่ไม่ทราบ (null) = ไม่พิมพ์ (Plan 4b Task 1 — 114 ใบ v2 ไม่พิมพ์ rating) · ไม่มีทั้งคู่ = เป้าอย่างเดียว
+  const anMeta = an ? [an.rating, an.n != null ? `${an.n} ราย` : null].filter(Boolean).join(' · ') : '';
   const analystCell = an
-    ? `<div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~{{rd:analystTgt}} (${esc(an.rating)} · ${an.n != null ? an.n + ' ราย' : 'n/a'})</div></div>`
+    ? `<div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~{{rd:analystTgt}}${anMeta ? ` (${esc(anMeta)})` : ''}</div></div>`
     : `<div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v">ไม่มีข้อมูล</div></div>`;
   const tags = [`${esc(m.exchange)}: ${esc(doc.symbol)}`].concat((m.headerTags || []).map(esc)).map((x) => `<span class="tag">${x}</span>`).join('\n      ');
   const r52 = doc.market.range52w;
@@ -192,7 +202,7 @@ ${jsonScript(RV.styledRD(view.rd))}
   </section>${extrasHtml(doc, view, 'metrics')}
 
   <section>
-    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ${T.chartHint ? ' ' + pr(T.chartHint) : ''}</div></div>
     <div class="card">
       <div class="chart-wrap">
         <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
@@ -263,7 +273,7 @@ ${jsonScript(RV.styledRD(view.rd))}
   </section>
 
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน ${s.years} ปี</h2><div class="hint">จากจุดเข้า {{rd:px}}${s.driver === 'eps' ? ' • EPS ฐาน ~{{rd:baseEps}}' : ` • ${drv} ฐาน ~${esc(view.cur + RV.fmtPrice(view.scn[0].driverStart))}`}{{rd:scnNote}}</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน ${s.years} ปี</h2><div class="hint">จากจุดเข้า {{rd:px}}${s.driver === 'eps' ? ' • EPS ฐาน ~{{rd:baseEps}}' : ` • ${drv} ฐาน ~${esc(view.cur + RV.fmtPrice(view.scn[0].driverStart))}`}${s.hintNote ? ' ' + pr(s.hintNote) : ''}{{rd:scnNote}}</div></div>
     <div class="scn">
       ${col(0, 'bear', 'Bear')}
       ${col(1, 'base', 'Base')}
@@ -323,4 +333,4 @@ ${jsonScript(RV.styledRD(view.rd))}
 `;
 }
 
-module.exports = { toV2Source, mdesc, jsonScript };
+module.exports = { toV2Source, mdesc, jsonScript, SRC_NAME };

@@ -59,6 +59,12 @@ function pffoCalc(view) {
   const raw = view.d.px / b; return { raw, text: raw.toFixed(1) + 'x' };
 }
 function pffoForwardCalc(view) { const raw = view.d.px / ffoFwd(view).value; return { raw, text: raw.toFixed(1) + 'x' }; }
+// Plan 4b Task 1 — P/TBV ผูกราคา (เจ้าของเดียวของเลข+ข้อความ เหมือน pffoCalc) · ตัวตั้ง fundamentals.tbvps
+function ptbvCalc(view) {
+  const b = need(view, 'tbvps');
+  if (!(b > 0)) throw new Error('metrics.cards: ptbv — TBVPS ≤ 0 ถอดการ์ดออก');
+  const raw = view.d.px / b; return { raw, text: raw.toFixed(2) + 'x' };
+}
 
 const CATALOGUE = {
   mcap: { label: () => 'Market Cap', value: (v) => big(v, priceBoundOrThrow('mcap', v.d.mcap)), d: (v) => sharesText(v, need(v, 'shares')), cls: '' },
@@ -131,6 +137,17 @@ const CATALOGUE = {
   ffoPayout: { label: (v) => `${ffoL(v)} Payout`, cls: '',
     value: (v) => { const b = need(v, 'ffoPerShare'); if (!(b > 0)) throw new Error('metrics.cards: ffoPayout — fundamentals.ffoPerShare ≤ 0 ถอดการ์ดออก'); return pct1(need(v, 'dps') / b * 100); },
     d: (v) => `ปันผล ÷ ${ffoL(v)}/หุ้น` },
+  // Plan 4b Task 1 — 6 คีย์จาก Task 0 Q3 (label ที่ตกเป็น custom บ่อยสุดหลัง Plan 2a): 4 จากงบ · payout อัตราส่วนไม่ผูกราคา · ptbv ผูกราคา
+  occupancy: { label: () => 'Occupancy', value: (v) => pct1(need(v, 'occupancy')), d: () => 'อัตราการเช่าพื้นที่', cls: '' },
+  netDebtEbitda: { label: () => 'Net Debt / EBITDA', cls: 'neu',
+    value: (v) => { const e = need(v, 'ebitda'); if (!(e > 0)) throw new Error('metrics.cards: netDebtEbitda — fundamentals.ebitda ≤ 0 ถอดการ์ดออก'); const x = need(v, 'netDebt') / e, r = Math.abs(x).toFixed(1); return (x < 0 && r !== '0.0' ? '−' : '') + r + 'x'; },   // เงินสดสุทธิ = ลบ U+2212 · ปัดเป็น 0.0 = ไม่มีเครื่องหมาย (final review N-1)
+    d: () => 'หนี้สินสุทธิ ÷ EBITDA (สกุลงบทั้งคู่)' },
+  backlog: { label: () => 'Backlog', value: (v) => stmt(v, need(v, 'backlog')), d: () => 'งานในมือ / คำสั่งซื้อค้างส่ง', cls: '' },
+  payout: { label: () => 'Payout Ratio', cls: '',
+    value: (v) => { const e = need(v, 'eps'); if (!(e > 0)) throw new Error('metrics.cards: payout — EPS ≤ 0 (ขาดทุน) payout ไม่มีความหมาย ถอดการ์ดออก'); return pct1(need(v, 'dps') / e * 100); },
+    d: () => 'ปันผล ÷ EPS' },
+  aum: { label: () => 'AUM', value: (v) => stmt(v, need(v, 'aum')), d: () => 'สินทรัพย์ภายใต้การจัดการ', cls: '' },
+  ptbv: { label: () => 'P/TBV', cls: 'neu', value: (v) => ptbvCalc(v).text, d: (v) => `TBVPS ${money(v, need(v, 'tbvps'))}` },
 };
 
 function renderCard(key, view, note) {
@@ -140,4 +157,4 @@ function renderCard(key, view, note) {
   return { k: c.label(view), v: c.value(view), d: note ? (d ? `${d} · ${note}` : note) : d, cls: c.cls };
 }
 
-module.exports = { CATALOGUE, renderCard, peForwardCalc, evEbitdaCalc, pffoCalc, pffoForwardCalc };
+module.exports = { CATALOGUE, renderCard, peForwardCalc, evEbitdaCalc, pffoCalc, pffoForwardCalc, ptbvCalc };

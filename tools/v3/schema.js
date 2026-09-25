@@ -13,14 +13,16 @@ const ENUM = {
   ffoBasis: ['ffo', 'affo'],   // Plan 2a Task 9 (§3.6 J) — ป้าย FFO/AFFO ของการ์ด/ขา/ฉาก REIT
   reportCurrency: ['USD', 'THB', 'EUR', 'CAD', 'GBP', 'JPY', 'CHF', 'TWD'],   // Plan 2a Task 10 (§3.6 L) — สกุลงบ (ยอดรวมทั้งบริษัท)
   method: ['pe', 'pbv', 'ps', 'evsales', 'evebitda', 'pfcf', 'fcfyield', 'pffo', 'ddm', 'ddm2', 'dcf', 'ri', 'declared'],
-  multipleSource: ['median5y', 'median10y', 'peer', 'justified', 'sector', 'current'],   // 'current' = เฉพาะขา role:"context" (ตัวคูณสด คิดทุกวัน) · บนขา fv ห้าม = สมอตาย W18 (§13 ข้อ 6)
+  multipleSource: ['median5y', 'median10y', 'peer', 'justified', 'sector', 'current', 'author'],   // 'current' = เฉพาะขา role:"context" (ตัวคูณสด คิดทุกวัน) · บนขา fv ห้าม = สมอตาย W18 (§13 ข้อ 6)
+  // 'author' = ตัวคูณที่ผู้วิเคราะห์กำหนดเอง (ไม่ใช่มัธยฐาน/peer/sector) — migrator ใช้เมื่อ mdesc ไม่ได้บอกว่าตัวคูณคือมัธยฐาน (Plan 4b Task 6b)
   declaredBasis: ['sotp', 'nav', 'rnpv', 'other'],
-  driver: ['eps', 'ffo', 'revenuePerShare', 'bvps', 'fcfPerShare'],
-  exitMetric: ['pe', 'ps', 'pbv', 'pffo', 'pfcf'],
+  // Plan 4b Task 1 (spec §10 "ช่องว่าง schema" · §3.3): driver de/fre (alt managers) · exitMetric evsales · tone 'none' = ไม่มีคลาสสี (466 การ์ด v2)
+  driver: ['eps', 'ffo', 'revenuePerShare', 'bvps', 'fcfPerShare', 'de', 'fre'],
+  exitMetric: ['pe', 'ps', 'pbv', 'pffo', 'pfcf', 'evsales'],
   perYear: ['cagr', 'linear', null],
   extrasAfter: ['metrics', 'valuation', 'scenarios', 'catalysts'],
   colUnit: ['none', 'pct', 'x', 'ccy'],
-  tone: ['pos', 'neg', 'neu'],
+  tone: ['pos', 'neg', 'neu', 'none'],
   role: ['fv', 'context'], family: ['market', 'rg', 'asset'],
 };
 // ต้องตรงกับคีย์ของ CATALOGUE ใน tools/v3/cards.js (test/v3/cards.test.js ตรวจว่าตรงกัน)
@@ -30,9 +32,11 @@ const CARD_KEYS = ['mcap', 'pe', 'peAvg5y', 'pbv', 'ps', 'netIncome', 'eps', 'bv
   'netMargin', 'opMargin', 'yield', 'beta', 'range52w', 'fcf', 'debtToEquity',
   'netDebt', 'ebitdaMargin', 'roic', 'evEbitda', 'peForward', 'analystTarget',
   'netIncomeFy', 'epsFy', 'revenueFy', 'nim', 'npl', 'capital',   // + Plan 2a Task 8 (§3.6 B/K)
-  'pffo', 'pffoForward', 'ffoPerShare', 'pffoAvg5y', 'ffoMargin', 'ffoPayout'];   // + Plan 2a Task 9 (§3.6 J)
+  'pffo', 'pffoForward', 'ffoPerShare', 'pffoAvg5y', 'ffoMargin', 'ffoPayout',   // + Plan 2a Task 9 (§3.6 J)
+  'occupancy', 'netDebtEbitda', 'backlog', 'payout', 'aum', 'ptbv'];   // + Plan 4b Task 1 (Task 0 Q3 top unmapped labels)
 const FUND_NUM = ['eps', 'dps', 'bvps', 'shares', 'revenue', 'netIncome', 'roe', 'roa', 'grossMargin', 'netMargin',
-  'opMargin', 'beta', 'debtToEquity', 'fcf', 'ebitda', 'netDebt', 'peAvg5y', 'ffoPerShare', 'roic', 'epsForward', 'pffoAvg5y', 'fx'];
+  'opMargin', 'beta', 'debtToEquity', 'fcf', 'ebitda', 'netDebt', 'peAvg5y', 'ffoPerShare', 'roic', 'epsForward', 'pffoAvg5y', 'fx',
+  'occupancy', 'backlog', 'aum', 'tbvps', 'dePerShare', 'frePerShare'];   // + Plan 4b Task 1
 const FUND_KEYS = FUND_NUM.concat(['epsBasis', 'fy', 'bank', 'ffoBasis', 'ffoForward', 'reportCurrency']);
 const FY_KEYS = ['period', 'netIncome', 'eps', 'revenue'];
 const BANK_KEYS = ['nim', 'npl', 'coverage', 'cet1', 'car'];
@@ -46,7 +50,7 @@ const LEG_INPUTS = {
   fcfyield: { req: ['yield'], opt: [] },
   ddm: { req: ['g', 'r'], opt: [] },
   ddm2: { req: ['d1', 'g1', 'years1', 'g2', 'r'], opt: ['horizon'] },   // §3.6 N — horizon: int ≥1 | null (null = Gordon ปลายช่วง 1) ต้องมีคีย์เสมอ
-  dcf: { req: ['g1', 'years1', 'tg', 'r', 'rfCurrency'], opt: [] },
+  dcf: { req: ['tg', 'r', 'rfCurrency'], opt: ['g1', 'years1', 'stages'] },   // Plan 4b Task 2 (§13-3): {g1, years1} 2-stage หรือ {stages} N-stage — ทางใดทางหนึ่ง (ตรวจใน legs loop)
   ri: { req: ['r', 'years', 'payout'], opt: [] },
   declared: { req: ['value', 'basis'], opt: ['extrasRef'] },
 };
@@ -67,7 +71,7 @@ function requiredFamily(leg) {
 const CURRENT_BASE = { pe: 'eps', pbv: 'bvps', pffo: 'ffoPerShare' };
 const OVERRIDE_KEYS = ['eps', 'bvps', 'roe', 'dps', 'revenue', 'ebitda', 'fcf', 'netDebt', 'ffoPerShare', 'shares', 'why'];
 const THEME_KEYS = ['accent', 'accentDark', 'darkGrad', 'glow', 'subColor', 'headerMuted', 'verdictText', 'vcellLabel'];
-const TEXT_KEYS = ['valHint', 'valIntro', 'metricsNote', 'disclaimerAssump'];   // §3.6 A — แทนข้อความตายตัวของ template
+const TEXT_KEYS = ['valHint', 'valIntro', 'metricsNote', 'disclaimerAssump', 'chartHint'];   // §3.6 A — แทนข้อความตายตัวของ template · chartHint = ต่อท้ายป้าย §2 (Plan 4b Task 6b)
 const ISO = /^\d{4}-\d{2}-\d{2}$/;
 const AI = /^Claude\s+[A-Za-z]+\s+\d+(?:\.\d+)?$/;   // รูปเดียวกับ E28 / RM.parseAiModel
 
@@ -121,6 +125,8 @@ function validate(doc) {
   };
   // ช่องข้อความสั้นที่ render ตรง ไม่ผ่าน token/sanitize ของ prose — ห้ามมี { } < > (กัน token ปลอม/แท็กหลุดเข้าหน้า)
   const plain = (v, path) => { if (typeof v === 'string' && /[{}<>]/.test(v)) E(path, 'ห้ามมี { } < > — ช่องนี้เป็นป้ายสั้น ไม่รับ token/แท็ก'); };
+  // Plan 4b Task 6b — ป้ายสั้นที่ต่อท้าย template (chartHint · hintNote · retNote): prose (token ได้ · ผ่าน renderProse) แต่ห้ามมีแท็ก < >
+  const noTag = (v, path) => { if (typeof v === 'string' && /[<>]/.test(v)) E(path, 'ห้ามมี < > — ป้ายสั้นต่อท้าย template (token {{…}} ได้ · แท็กไม่ได้)'); };
   const en = (v, path, list) => { if (!list.includes(v)) E(path, `ต้องเป็นหนึ่งใน ${JSON.stringify(list)} — พบ ${JSON.stringify(v)}`); };
   const strList = (v, path, lo, hi) => {
     if (!Array.isArray(v) || v.length < lo || v.length > hi) return E(path, `ต้องเป็น array ของข้อความ ${lo}–${hi} ข้อ`);
@@ -140,9 +146,9 @@ function validate(doc) {
   const m = doc.meta;
   if (!isObj(m)) E('meta', 'ต้องมี (object)');
   else {
-    closed(m, 'meta', ['company', 'exchange', 'sub', 'headerTags', 'analysisDate', 'aiModel', 'sources', 'priceNote', 'themeLegacy', 'litReasons']);
+    closed(m, 'meta', ['company', 'exchange', 'sub', 'headerTags', 'analysisDate', 'aiModel', 'sources', 'priceNote', 'themeLegacy', 'litReasons', 'migratedFrom']);
     str(m.company, 'meta.company'); str(m.exchange, 'meta.exchange'); str(m.sub, 'meta.sub', { minLen: 10 });
-    if (m.headerTags != null) strList(m.headerTags, 'meta.headerTags', 0, 2);
+    if (m.headerTags != null) strList(m.headerTags, 'meta.headerTags', 0, 3);   // ≤ 3 (Plan 4b Task 1 — ADR/dual listing)
     if (!ISO.test(m.analysisDate || '')) E('meta.analysisDate', 'ต้องเป็น ISO YYYY-MM-DD (ค.ศ.)');
     if (!AI.test(m.aiModel || '')) E('meta.aiModel', 'ต้องเป็นรูป "Claude <ตระกูล> <เวอร์ชัน>"');
     strList(m.sources, 'meta.sources', 3, 8);
@@ -161,6 +167,15 @@ function validate(doc) {
     if (m.litReasons != null) {
       if (!isObj(m.litReasons)) E('meta.litReasons', 'ต้องเป็น object { "<ข้อความใน {{lit:…}}>": "เหตุผล" }');
       else for (const [k, v] of Object.entries(m.litReasons)) str(v, `meta.litReasons[${JSON.stringify(k)}]`, { minLen: 5 });
+    }
+    // Plan 4b (spec §8 · D1): ที่มาของใบที่ migrate — build คง reports.json.updated เดิมเมื่อแถว manifest ยังถือ hash v2 · เขียนครั้งเดียวโดย migrator
+    if (m.migratedFrom != null) {
+      if (!isObj(m.migratedFrom)) E('meta.migratedFrom', 'ต้องเป็น object {updated, v2Hash}');
+      else {
+        closed(m.migratedFrom, 'meta.migratedFrom', ['updated', 'v2Hash']);
+        if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{2}:\d{2}$/.test(m.migratedFrom.updated || '')) E('meta.migratedFrom.updated', 'ต้องเป็น ISO datetime ของ reports.json (YYYY-MM-DDTHH:mm:ss+07:00)');
+        if (!/^[0-9a-f]{12}$/.test(m.migratedFrom.v2Hash || '')) E('meta.migratedFrom.v2Hash', 'ต้องเป็น freshHash ของใบ v2 (hex 12 ตัว)');
+      }
     }
   }
 
@@ -295,6 +310,25 @@ function validate(doc) {
       if (isNum(inp.d1) && !(inp.d1 > 0)) E(`${p}.inputs.d1`, 'ต้อง > 0');
       if (inp.horizon === null && isNum(inp.r) && isNum(inp.g2) && !(inp.r > inp.g2)) E(`${p}.inputs.g2`, `r (${inp.r}%) ต้อง > g2 (${inp.g2}%) — horizon null ใช้ Gordon ปลายงวดที่หารด้วย (r − g2)`);
     }
+    if (leg.method === 'dcf') {
+      const two = inp.g1 != null || inp.years1 != null, st = inp.stages != null;
+      if (two === st) E(`${p}.inputs`, 'dcf ใช้ได้ทางเดียว: {g1, years1} (2-stage) หรือ {stages: [{years, g}]} (N-stage · §13-3)');
+      if (two && (inp.g1 == null || inp.years1 == null)) E(`${p}.inputs`, 'dcf 2-stage ต้องมีทั้ง g1 และ years1');
+      if (st) {
+        const sp = `${p}.inputs.stages`;
+        if (!Array.isArray(inp.stages) || !inp.stages.length || inp.stages.length > 10) E(sp, 'ต้องเป็น array 1–10 ช่วง [{years, g}]');
+        else {
+          let total = 0;
+          inp.stages.forEach((s, k) => {
+            if (!isObj(s)) return E(`${sp}[${k}]`, 'ต้องเป็น object {years, g}');
+            closed(s, `${sp}[${k}]`, ['years', 'g']);
+            num(s.years, `${sp}[${k}].years`, { int: true, min: 1 }); num(s.g, `${sp}[${k}].g`);
+            if (isNum(s.years)) total += s.years;
+          });
+          if (total > 40) E(sp, `Σ years = ${total} เกิน 40 ปี`);
+        }
+      }
+    }
     if (inp.medianWindow != null) {
       const mp = `${p}.inputs.medianWindow`;
       if (typeof inp.medianWindow !== 'string' || !inp.medianWindow.trim() || inp.medianWindow.length > 40) E(mp, 'ต้องเป็นข้อความสั้น ≤40 ตัวอักษร (เช่น "FY2022–FY2025")');
@@ -385,18 +419,23 @@ function validate(doc) {
   const s = doc.scenarios;
   if (!isObj(s)) E('scenarios', 'ต้องมี (object)');
   else {
-    closed(s, 'scenarios', ['years', 'divIncluded', 'perYear', 'driver', 'exitMetric', 'baseOverride', 'cases', 'note']);
+    closed(s, 'scenarios', ['years', 'divIncluded', 'perYear', 'driver', 'exitMetric', 'exitDp', 'baseOverride', 'cases', 'note', 'hintNote']);
     num(s.years, 'scenarios.years', { int: true, min: 1 }); if (isNum(s.years) && s.years > 10) E('scenarios.years', 'ต้อง ≤ 10');
     if (typeof s.divIncluded !== 'boolean') E('scenarios.divIncluded', 'ต้องเป็น true/false');
     en(s.perYear === undefined ? '∅' : s.perYear, 'scenarios.perYear', ENUM.perYear);
     en(s.driver, 'scenarios.driver', ENUM.driver); en(s.exitMetric, 'scenarios.exitMetric', ENUM.exitMetric);
+    // Plan 4b Task 1 (fix round 1 · N-3): exit EV/Sales คูณรายได้ต่อหุ้น ⇒ ตัวตั้งต้องเป็น revenuePerShare เท่านั้น
+    if (s.exitMetric === 'evsales' && s.driver !== 'revenuePerShare') E('scenarios.exitMetric', `evsales (EV/Sales ออก) คูณรายได้ต่อหุ้น — ต้องใช้ scenarios.driver = "revenuePerShare" (พบ ${JSON.stringify(s.driver)})`);
+    // Plan 4b Task 2: exitDp = จำนวนทศนิยมที่พิมพ์ตัวคูณออก (v2 พิมพ์ 17.25x ได้) · ไม่มี = render พิมพ์ค่าดิบ / token toFixed(1) เหมือนเดิม
+    if (s.exitDp != null) { num(s.exitDp, 'scenarios.exitDp', { int: true, min: 0 }); if (isNum(s.exitDp) && s.exitDp > 2) E('scenarios.exitDp', 'ต้อง 0–2'); }
     if (s.baseOverride != null) { closed(s.baseOverride, 'scenarios.baseOverride', ['value', 'why']); num(s.baseOverride.value, 'scenarios.baseOverride.value', { gt: 0 }); str(s.baseOverride.why, 'scenarios.baseOverride.why'); }
     if (!Array.isArray(s.cases) || s.cases.length !== 3) E('scenarios.cases', 'ต้องมี 3 ฉากพอดี (Bear/Base/Bull)');
     else s.cases.forEach((c, i) => {
       const p = `scenarios.cases[${i}]`;
       if (!isObj(c)) return E(p, 'ต้องเป็น object');
-      closed(c, p, ['growth', 'exitMultiple', 'divCum', 'desc']);
+      closed(c, p, ['growth', 'exitMultiple', 'divCum', 'desc', 'retNote']);
       num(c.growth, `${p}.growth`); num(c.exitMultiple, `${p}.exitMultiple`, { gt: 0 }); str(c.desc, `${p}.desc`);
+      str(c.retNote, `${p}.retNote`, { req: false }); noTag(c.retNote, `${p}.retNote`);
       // divCum = ปันผลสะสมต่อหุ้นถึงจุดออก — บังคับเมื่อ divIncluded=true (นับรวมใน total%)
       // ยอมให้มี (optional, informational) เมื่อ divIncluded=false ด้วย — คลัง v2 จริง 423/1097 ใบเก็บเลขนี้ไว้
       // แสดงแม้ไม่รวมในผลตอบแทน (parity gate: test/v3/tokens-corpus.test.js) — ไม่รวมใน total% เพราะ derive() v2 อ่าน scnBasis.divIncluded เป็นตัวตัดสินอยู่แล้ว
@@ -404,6 +443,7 @@ function validate(doc) {
       else if (c.divCum != null) num(c.divCum, `${p}.divCum`, { min: 0 });
     });
     str(s.note, 'scenarios.note');
+    str(s.hintNote, 'scenarios.hintNote', { req: false }); noTag(s.hintNote, 'scenarios.hintNote');
   }
 
   // ── analyst ──
@@ -414,7 +454,9 @@ function validate(doc) {
       closed(a, 'analyst', ['target', 'n', 'rating', 'asOf']);
       num(a.target, 'analyst.target', { gt: 0 });
       if (a.n != null) num(a.n, 'analyst.n', { int: true, min: 1 });
-      str(a.rating, 'analyst.rating');
+      // rating nullable (Plan 4b Task 1 — 114 ใบ v2 ไม่พิมพ์ rating) · คีย์ยังบังคับ (closed object)
+      if (!('rating' in a)) E('analyst.rating', 'ต้องมีคีย์ — ข้อความ หรือ null เมื่อไม่ทราบ rating (114 ใบ v2 ไม่พิมพ์)');
+      else if (a.rating !== null) str(a.rating, 'analyst.rating');
       if (a.asOf != null && !(typeof a.asOf === 'string' && ISO.test(a.asOf))) E('analyst.asOf', 'ต้องเป็น ISO YYYY-MM-DD หรือ null');
     }
   }
@@ -428,6 +470,7 @@ function validate(doc) {
     else {
       closed(doc.text, 'text', TEXT_KEYS);
       for (const k of TEXT_KEYS) str(doc.text[k], `text.${k}`, { req: false });
+      noTag(doc.text.chartHint, 'text.chartHint');
       if (typeof doc.text.valHint === 'string' && doc.text.valHint.length > 80) E('text.valHint', 'ยาวเกิน 80 ตัวอักษร (เป็นป้ายหัว section)');
     }
   }

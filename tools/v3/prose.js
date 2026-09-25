@@ -61,8 +61,8 @@ function proseFields(doc) {
   for (const [k, v] of Object.entries(obj(obj(doc.metrics).notes))) add(`metrics.notes.${k}`, v);
   arr(obj(doc.metrics).custom).forEach((c, i) => { add(`metrics.custom[${i}].value`, obj(c).value); add(`metrics.custom[${i}].note`, obj(c).note); });
   arr(doc.legs).forEach((l, i) => add(`legs[${i}].note`, obj(l).note));
-  arr(obj(doc.scenarios).cases).forEach((c, i) => add(`scenarios.cases[${i}].desc`, obj(c).desc));
-  add('scenarios.note', obj(doc.scenarios).note);
+  arr(obj(doc.scenarios).cases).forEach((c, i) => { add(`scenarios.cases[${i}].desc`, obj(c).desc); add(`scenarios.cases[${i}].retNote`, obj(c).retNote); });
+  add('scenarios.note', obj(doc.scenarios).note); add('scenarios.hintNote', obj(doc.scenarios).hintNote);   // + Plan 4b Task 6b
   arr(doc.catalysts).forEach((x, i) => add(`catalysts[${i}]`, x));
   arr(doc.risks).forEach((x, i) => add(`risks[${i}]`, x));
   arr(doc.extras).forEach((x, i) => { add(`extras[${i}].title`, obj(x).title); add(`extras[${i}].note`, obj(x).note);
@@ -111,6 +111,7 @@ function priceBound(view) {
   try { const c = K.evEbitdaCalc(view); add('evEbitda', 'mult', c.raw, c.text); } catch (e) { /* no ebitda/netDebt → no bound */ }
   try { const c = K.pffoCalc(view); add('pffo', 'mult', c.raw, c.text); } catch (e) { /* no ffoPerShare → no bound */ }
   try { const c = K.pffoForwardCalc(view); add('pffoForward', 'mult', c.raw, c.text); } catch (e) { /* no ffoForward → no bound */ }
+  try { const c = K.ptbvCalc(view); add('ptbv', 'mult', c.raw, c.text); } catch (e) { /* no tbvps → no bound */ }   // Plan 4b Task 1
   ['bear', 'base', 'bull'].forEach((n, i) => { const s = d.scenarios[i]; if (s) { add(`scn.${n}.tgt`, 'money', s.tgt); add(`scn.${n}.ret`, 'pct', s.total); } });
   return out;
 }
@@ -163,4 +164,4 @@ function countMoneyLiterals(doc) {
   return n;
 }
 
-module.exports = { renderProse, sanitizeErrors, proseFields, checkRuleB, countMoneyLiterals, escapeKeepAllowed, TOKEN_RE, LIT_RE, stripSpans, litsOf, countLits, malformedLitPaths };
+module.exports = { renderProse, sanitizeErrors, proseFields, checkRuleB, countMoneyLiterals, escapeKeepAllowed, TOKEN_RE, LIT_RE, stripSpans, litsOf, countLits, malformedLitPaths, priceBound, CAND, MONEY_UNIT };   // priceBound + CAND/MONEY_UNIT (Plan 4b Task 5 fix round 1 · N-3 — same regexes, no copy) exported (Plan 4b Task 1 fix round 1) — tokens.test pins every emitted name resolves; migrator tokenise (Task 5) consumes it

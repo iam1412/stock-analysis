@@ -135,6 +135,12 @@ try {
     // Review Focus 5 — save ที่ล้มต้องไม่แตะไฟล์ · --light นอก allowlist ต้องบอก path
     t(r.code === 1 && /\[--light\] legs\[0\]\.inputs\.multiple/.test(r.out), '--light outside the allowlist → exit 1 naming legs[0].inputs.multiple');
     t(bytes(rf('ZTS')) === zts1, 'failed save leaves the report byte-identical'); }
+  // Plan 4b Task 3 (spec §8 · D1) — meta.migratedFrom เขียนครั้งเดียวโดย migrator → --light ต้องปฏิเสธ (allowlist ไม่ครอบ)
+  { const d = readW('ZTS'); const e = JSON.parse(JSON.stringify(d)); e.legs[0].inputs.multiple = 14;
+    writeW('ZTS', { ...e, meta: { ...e.meta, migratedFrom: { updated: '2026-09-01T00:00:00+07:00', v2Hash: 'abcdef012345' } } });
+    const r = cli(['save', 'ZTS', '--light'], '2026-09-22');
+    t(r.code === 1 && /\[--light\] meta\.migratedFrom/.test(r.out) && !/legs\[0\]/.test(r.out) && bytes(rf('ZTS')) === zts1,
+      `--light refuses a meta.migratedFrom change (write-once by the migrator) · file untouched (${r.out.slice(0, 300)})`); writeW('ZTS', d); }
   t.eq(RC.lightViolations({ analyst: { target: 1 }, meta: { sources: ['a'] }, fundamentals: { dps: 1, eps: 2 } },
     { analyst: { target: 2 }, meta: { sources: ['a', 'b'] }, fundamentals: { dps: 2, eps: 3 } }), ['fundamentals.eps'], 'lightViolations: analyst.* / meta.sources[*] / fundamentals.dps allowed');
   t.eq(RC.diffPaths({ market: 1, _sig: 'x', a: [1, 2], b: { c: 1 } }, { market: 2, a: [1], b: { c: 1, d: null } }), ['a[1]', 'b.d'], 'diffPaths: skips market/_sig, reports array tails and added keys');

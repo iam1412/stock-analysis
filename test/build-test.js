@@ -460,6 +460,43 @@ ok(b.injectTA(taBody, 'AAPL', null, { currency: 'USD' }, 'assets/ta-abc123.js') 
   ok(o1.includes('<div class="px">฿188.00</div>') && /gpos\(188\)/.test(o1), 'v1: identity ของ body (ไม่มี token) + engine เดิม');
 }
 
+// ── Plan 4b Task 3 (spec §8 · D1): updatedFor — ใบ migrate คง updated เดิมเมื่อแถว manifest ยังถือ hash v2 ──
+{
+  const OLD = '2026-09-22T07:22:55+07:00', NOW = '2026-09-25T12:00:00+07:00';
+  const mf = { updated: OLD, v2Hash: 'abcdef012345' };
+  ok(b.updatedFor({ hash: 'abcdef012345', updated: OLD }, 'v3hash000001', mf, NOW) === OLD, 'migratedFrom: manifest row still has the v2 hash → keep updated');
+  ok(b.updatedFor({ hash: 'v3hash000001', updated: OLD }, 'v3hash000001', mf, NOW) === OLD, 'after the first build: v3 hash matches → keep (normal path)');
+  ok(b.updatedFor({ hash: 'v3hash000001', updated: OLD }, 'v3hash000002', mf, NOW) === NOW, 'Review Focus 4: later real UPDATE (hash moved, row no longer v2) → stamp now');
+  ok(b.updatedFor(undefined, 'v3hash000001', mf, NOW) === NOW, 'no committed row → now (nothing to preserve — tighter rule, advisor)');
+  ok(b.updatedFor({ hash: 'other0000000', updated: OLD }, 'v3hash000001', mf, NOW) === NOW, 'row hash ≠ v2Hash (cron moved the v2 hash after the migrator ran) → now (two-build gate catches it)');
+  ok(b.updatedFor({ hash: 'x', updated: OLD }, 'y', null, NOW) === NOW, 'no migratedFrom → today\'s rule');
+  ok(b.updatedFor({ hash: 'y', updated: OLD }, 'y', null, NOW) === OLD, 'no migratedFrom, hash equal → keep (today\'s rule)');
+}
+
+// ── Plan 4b Task 3 fix round 1 (review M1): pin the WIRING — loadReportSource ส่ง migratedFrom ต่อ + ลูป build เรียก updatedFor ──
+{
+  const fsx = require('fs'), osx = require('os'), px = require('path');
+  const tmp = fsx.mkdtempSync(px.join(osx.tmpdir(), 'build-test-migrated-'));
+  const seeds = JSON.parse(fsx.readFileSync(px.join(__dirname, '..', 'tools', 'seeds.json'), 'utf8'));
+  try {
+    const zts = JSON.parse(fsx.readFileSync(px.join(__dirname, 'fixtures', 'v3', 'ZTS.json'), 'utf8'));
+    const mf = { updated: '2026-09-22T07:22:55+07:00', v2Hash: 'abcdef012345' };
+    fsx.writeFileSync(px.join(tmp, 'ZTS.json'), JSON.stringify({ ...zts, meta: { ...zts.meta, migratedFrom: mf } }, null, 2) + '\n');
+    const withMf = b.loadReportSource(tmp, 'ZTS.json', seeds);
+    ok(withMf.v3 === true && JSON.stringify(withMf.migratedFrom) === JSON.stringify(mf), 'loadReportSource (v3 + meta.migratedFrom) → returns that object');
+    fsx.writeFileSync(px.join(tmp, 'ZTS.json'), JSON.stringify(zts, null, 2) + '\n');
+    const noMf = b.loadReportSource(tmp, 'ZTS.json', seeds);
+    ok(noMf.v3 === true && noMf.migratedFrom === null, 'loadReportSource (v3 without migratedFrom) → migratedFrom: null');
+    fsx.copyFileSync(px.join(__dirname, 'fixtures', 'AAPL-v2.html'), px.join(tmp, 'AAPL.html'));
+    const v2 = b.loadReportSource(tmp, 'AAPL.html', seeds);
+    ok(v2.v3 === false && v2.migratedFrom === null, 'loadReportSource (v2 .html) → migratedFrom: null');
+  } finally { fsx.rmSync(tmp, { recursive: true, force: true }); }
+  // ลูป build รันกับ temp dir ไม่ได้ (ROOT ตายตัว) → pin รูปโค้ด: ต้อง destructure migratedFrom และเรียก updatedFor
+  const src = fsx.readFileSync(px.join(__dirname, '..', 'build.js'), 'utf8');
+  ok(/const\s*\{[^}]*\bmigratedFrom\b[^}]*\}\s*=\s*loadReportSource\(REPORTS_DIR/.test(src), 'build loop destructures migratedFrom from loadReportSource');
+  ok(/const updated = updatedFor\(old,\s*h,\s*migratedFrom,\s*nowISO\)/.test(src), 'build loop computes updated via updatedFor(old, h, migratedFrom, nowISO)');
+}
+
 console.log('\n' + '─'.repeat(50));
 console.log(`build-test: ${n - fails}/${n} ผ่าน`);
 if (fails) { console.log('\n❌ build.js มีพฤติกรรมผิด — แก้ build.js ก่อน push\n'); process.exit(1); }

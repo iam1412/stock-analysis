@@ -34,4 +34,16 @@ t.near(v('ddm2', { ...FER2, horizon: null }), 64.09901699407415, 1e-9, 'ddm2 hor
 t.throws(() => v('ddm2', { ...FER2, g2: 9, horizon: null }), /^legs\[0\].*g2/, 'Review Focus #3: horizon null with r ≤ g2 → path-named throw');
 t(v('ddm2', { ...FER2, g2: 9, horizon: 40 }) > 0, 'finite horizon needs no r > g2');
 t.near(v('ddm2', { ...FER2, horizon: 5 }), 9.84424146436744, 1e-9, 'ddm2 horizon < years1 → stage 1 only, finite (Σ 2.04·1.11^(t−1)/1.085^t, t=1..5)');
+// Plan 4b Task 2 — N-stage DCF (§13-3: 88/304 DCF legs are not 2-stage) · stages ≡ 2-stage when one stage
+const DCF2 = { g1: 7, years1: 5, tg: 3, r: 8.5, rfCurrency: 'USD' };
+t.near(v('dcf', { stages: [{ years: 5, g: 7 }], tg: 3, r: 8.5, rfCurrency: 'USD' }), v('dcf', DCF2), 1e-9, 'one stage = the 2-stage formula');
+// 3-stage: 7% ×5y → 4% ×5y → terminal 3% — hand-rolled reference
+{
+  const r = 0.085; let fcf = f.fcf, pv = 0, t_ = 0;
+  for (const st of [{ years: 5, g: 7 }, { years: 5, g: 4 }]) for (let k = 0; k < st.years; k++) { t_++; fcf *= 1 + st.g / 100; pv += fcf / Math.pow(1 + r, t_); }
+  const tv = fcf * 1.03 / (r - 0.03) / Math.pow(1 + r, t_);
+  t.near(v('dcf', { stages: [{ years: 5, g: 7 }, { years: 5, g: 4 }], tg: 3, r: 8.5, rfCurrency: 'USD' }), (pv + tv - f.netDebt) / f.shares, 1e-6, '3-stage DCF matches reference');
+}
+t.throws(() => v('dcf', { stages: [], tg: 3, r: 8.5, rfCurrency: 'USD' }), /^legs\[0\].*stages/, 'empty stages → path-named throw');
+t.throws(() => v('dcf', { stages: [{ years: 5, g: 7 }], tg: 9, r: 8.5, rfCurrency: 'USD' }), /^legs\[0\].*tg/, 'stages with r ≤ tg → path-named throw');
 t.done();

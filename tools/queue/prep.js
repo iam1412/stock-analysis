@@ -246,7 +246,8 @@ function extraBlock(i) {
     ? `ราคาในไฟล์สดแล้ว (${stamp}; ${i.oldPrice ?? '?'} → ${i.price ?? '?'}) ⇒ **ห้ามรัน update-prices ซ้ำ**${i.v3 ? '' : ' ยกเว้น SKILL 5B ข้อ 3 (แก้ fairValue — ปลอดภัยแล้วเพราะ lock)'}`
     : i.v3
       // Plan 4a fix1: ใบ v3 — update-prices --write บนใบ v3 เขียน reports/<SYM>.json ตรง (นอก report.js) ⇒ เป็นงานของ controller ก่อน spawn ไม่ใช่ของ worker
-      ? `ราคาในไฟล์ยังไม่สด${i.priceFresh === false ? ` (${stamp})` : ' (ยังไม่ได้ pre-patch)'} — ใบ v3: controller pre-patch มือ \`node tools/update-prices.js --write --force ${i.sym}\` ก่อน spawn${i.marketOpen ? ' (ตลาดเปิดอยู่ — รอปิดตลาดก่อน)' : ''} · **worker ห้ามรัน** (market.* เป็นของ cron/controller — ทำงานต่อได้ ราคาใน prose เป็น token)`
+      // Plan 4b final review M-4: ปกติ preflight pre-patch แถว v3 ให้แล้ว (--strict-gate) ⇒ บรรทัดนี้ = ทางสำรอง · คำสั่งมือมี --strict-gate (gate ตก = ไม่เขียน)
+      ? `ราคาในไฟล์ยังไม่สด${i.priceFresh === false ? ` (${stamp})` : ' (ยังไม่ได้ pre-patch)'} — ใบ v3: ปกติ preflight pre-patch ให้แล้ว · ทางสำรอง (แถวที่ preflight ข้าม เช่นตลาดเปิด): controller รัน \`node tools/update-prices.js --write --force --strict-gate ${i.sym}\` ก่อน spawn${i.marketOpen ? ' (ตลาดเปิดอยู่ — รอปิดตลาดก่อน)' : ''} · **worker ห้ามรัน** (market.* เป็นของ cron/controller — ทำงานต่อได้ ราคาใน prose เป็น token)`
       : `ราคาในไฟล์ยังไม่สด${i.priceFresh === false ? ` (${stamp})` : ' (ยังไม่ได้ pre-patch)'} — โหมด UPDATE รัน \`node tools/update-prices.js --write --force ${i.sym}\` ตาม SKILL STEP 1 ได้ · ตลาด${i.marketOpen ? 'เปิดอยู่ — ราคาจะเป็น intraday รอปิดตลาดก่อนรัน' : 'ปิดแล้ว รันได้'}`}`);
   if (i.lightRule === 'legacy') {
     if (i.epsScreen != null) L.push(`- EPS ในใบ ${i.baseEPS} vs vendor ${i.epsTTM} = ต่าง ${i.epsScreen.toFixed(1)}% → ${i.epsScreen <= EPS_SCREEN_PCT

@@ -143,9 +143,10 @@ t.eq(JSON.parse(R.jsonScript('{"a":"</script>"}')).a, '</script>', 'jsonScript o
   const view = C.compute(doc, { seeds }); const src = R.toV2Source(doc, view);
   t(src.includes('EPS IFRS (TTM) $6.13 × P/E เป้าหมาย ~28x (มัธยฐาน FY2022–FY2025)'), 'medianWindow replaces the source name · ifrs label');
   t.eq(require('../../tools/v3/cards.js').renderCard('eps', view).d, 'IFRS', 'eps card base line says IFRS'); }
-// Plan 2a Task 7 — ไม่มีจำนวนราย → "n/a" แต่เป้า + ป้าย gauge ยังอยู่ (เดิมต้องตั้ง analyst:null = "ไม่มีข้อมูล" ซึ่งเป็นเท็จ)
+// Plan 2a Task 7 — ไม่มีจำนวนราย → ไม่พิมพ์จำนวน แต่เป้า + ป้าย gauge ยังอยู่ (เดิมต้องตั้ง analyst:null = "ไม่มีข้อมูล" ซึ่งเป็นเท็จ)
+// Plan 4b Task 1 — แทนรูปเดิม "(Buy · n/a)": n ที่ไม่ทราบไม่พิมพ์ ⇒ "(Buy)"
 { const doc = load('ZTS'); doc.analyst = { target: 190, rating: 'Buy' }; const src = R.toV2Source(doc, C.compute(doc, { seeds }));
-  t(src.includes('~{{rd:analystTgt}} (Buy · n/a)'), 'verdict cell shows n/a for the count');
+  t(src.includes('~{{rd:analystTgt}} (Buy)</div>') && !src.includes('(Buy · n/a)'), 'verdict cell omits the unknown count: "(Buy)"');
   t(src.includes('{{rd:analystTgt}}<br><small>เป้าเฉลี่ย Analyst</small>'), 'gauge marker kept');
   t.eq(CR.checkHtml(expandReport(src), 'ZTS.html', { source: src }).errors.map((e) => e.id), [], 'analyst without n: v2 gate 0 errors'); }
 // Plan 2a Task 9 — ป้าย AFFO ทุกที่ + hint §6 ของ driver ทุกชนิด
@@ -190,4 +191,72 @@ t.eq(JSON.parse(R.jsonScript('{"a":"</script>"}')).a, '</script>', 'jsonScript o
   x.rows = [['A', '', '', -100, -2], { kind: 'total', cells: ['รวม', '', '', -100, -2] }];
   const src = R.toV2Source(doc, C.compute(doc, { seeds }));
   t(src.includes('แปลงเป็น USD ที่ EURUSD 1.15566: <b>−$2.31</b>') && !src.includes('$-2.31'), 'fx row: negative total prints U+2212 before the symbol'); }
+// Plan 4b Task 1 — render honours the new enums / nullable rating / tone none
+{
+  const d = load('ZTS'); d.analyst = { target: 100.94, n: null, rating: null, asOf: null };
+  const v = C.compute(d, { seeds }), html = R.toV2Source(d, v);
+  t(/เป้านักวิเคราะห์ 12 ด\.<\/div><div class="v" style="color:#a5d6a7">~\{\{rd:analystTgt\}\}<\/div>/.test(html), 'analyst cell with rating null and n null prints the target only (no "(null · n/a)")');
+  d.analyst = { target: 100.94, n: 19, rating: null, asOf: null };
+  t(/~\{\{rd:analystTgt\}\} \(19 ราย\)<\/div>/.test(R.toV2Source(d, C.compute(d, { seeds }))), 'rating null + n → "(19 ราย)"');
+}
+{
+  const d = load('ZTS'); d.metrics.cards = [{ key: 'pe', tone: 'none' }].concat(d.metrics.cards.filter((c) => c !== 'pe' && !(c && c.key === 'pe')));
+  const html = R.toV2Source(d, C.compute(d, { seeds }));
+  t(/<div class="k">P\/E \(TTM\)<\/div><div class="v">/.test(html), 'tone none → .v has no class (catalogue default neu suppressed)');
+}
+// fix round 1 (N-3 ruling): evsales pairs with revenuePerShare only ⇒ de/fre render on exit pe, evsales on revenuePerShare
+{
+  const d = load('ZTS'); d.scenarios.driver = 'de'; d.fundamentals.dePerShare = 3.3;
+  const html = R.toV2Source(d, C.compute(d, { seeds }));
+  t(/<span>DE\/หุ้น [+−][0-9.]+%\/ปี<\/span>/.test(html) && /DE\/หุ้น ฐาน ~/.test(html), 'driver de → "DE/หุ้น" labels');
+  d.scenarios.driver = 'fre'; d.fundamentals.frePerShare = 1.7;
+  const h2 = R.toV2Source(d, C.compute(d, { seeds }));
+  t(/<span>FRE\/หุ้น [+−][0-9.]+%\/ปี<\/span>/.test(h2) && /FRE\/หุ้น ฐาน ~/.test(h2), 'driver fre → "FRE/หุ้น" labels');
+}
+{
+  const d = load('ZTS'); d.scenarios.driver = 'revenuePerShare'; d.scenarios.exitMetric = 'evsales'; d.fundamentals.netDebt = 1e9;
+  const html = R.toV2Source(d, C.compute(d, { seeds }));
+  t(/<span>EV\/Sales ออก<\/span>/.test(html) && /<span>รายได้\/หุ้น [+−][0-9.]+%\/ปี<\/span>/.test(html), 'exitMetric evsales → "EV/Sales ออก" (driver revenuePerShare)');
+}
+
+// Plan 4b Task 2 — mdesc for stages · exitDp print (brief's doc/SEEDS = load('ZTS')/seeds here)
+{
+  const d = load('ZTS');
+  d.legs[1] = { method: 'dcf', label: 'DCF', role: 'fv', family: 'rg', inputs: { stages: [{ years: 5, g: 7 }, { years: 5, g: 4 }], tg: 3, r: 8.5, rfCurrency: d.currency } };
+  d.fvWeights = null; d.fundamentals.fcf = d.fundamentals.fcf || 2.3e9; d.fundamentals.shares = d.fundamentals.shares || 4.3e8;
+  d.legs.forEach((l) => { if (l.role !== 'context' && !l.family) l.family = l.method === 'pe' ? 'market' : 'rg'; });
+  const v = C.compute(d, { seeds });
+  t(/โต 7%\/ปี 5 ปี → 4%\/ปี 5 ปี · โตถาวร 3% · r 8\.5%/.test(R.mdesc(d.legs[1], v)), 'mdesc prints the stage schedule (no "undefined"): ' + R.mdesc(d.legs[1], v));
+  d.scenarios.exitDp = 1; d.scenarios.cases[0].exitMultiple = 17.25;
+  const html = R.toV2Source(d, C.compute(d, { seeds }));
+  t(/<span>P\/E ออก<\/span><span>17\.3x<\/span>/.test(html), 'exitDp 1 → exit multiple printed as 17.3x');
+  d.scenarios.exitDp = 0;
+  t(/<span>P\/E ออก<\/span><span>17x<\/span>/.test(R.toV2Source(d, C.compute(d, { seeds }))), 'exitDp 0 → 17x');
+  delete d.scenarios.exitDp;
+  t(/<span>P\/E ออก<\/span><span>17\.25x<\/span>/.test(R.toV2Source(d, C.compute(d, { seeds }))), 'exitDp absent → exitMultiple printed as-is (today\'s output)');
+}
+
+// Plan 4b Task 6b — chartHint · hintNote · retNote print only when present · SRC_NAME.author
+{
+  const d = load('ZTS'); delete d.scenarios.hintNote; if (d.text) delete d.text.chartHint;
+  const v = C.compute(d, { seeds }), src = R.toV2Source(d, v);
+  t(src.includes('<h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div>'), 'absent chartHint → §2 hint exactly "โดยประมาณ"');
+  t(/<div class="hint">จากจุดเข้า \{\{rd:px\}\} • EPS ฐาน ~\{\{rd:baseEps\}\}\{\{rd:scnNote\}\}<\/div>/.test(src), 'absent hintNote → §6 hint ends with {{rd:scnNote}} as today');
+  t(src.includes('<div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>'), 'absent retNote → .ret prints only the token');
+  d.text = Object.assign({}, d.text, { chartHint: 'A' }); d.scenarios.hintNote = 'B'; d.scenarios.cases[1].retNote = 'C ~{{px}}';
+  const s2 = R.toV2Source(d, C.compute(d, { seeds }));
+  t(s2.includes('<div class="hint">โดยประมาณ A</div>'), 'chartHint → "โดยประมาณ A"');
+  t(/~\{\{rd:baseEps\}\} B\{\{rd:scnNote\}\}<\/div>/.test(s2), 'hintNote → " B" before {{rd:scnNote}} (review I-4 — base qualifiers stay on the base, not on "รวมปันผล")');
+  t(s2.includes('<div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}} C ~{{rd:px}}</div>'), 'retNote → after the token, rendered through pr() (v3 token → rd twin)');
+  t(s2.includes('<div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>'), 'retNote is per case');
+  d.scenarios.hintNote = 'x & y'; t(R.toV2Source(d, C.compute(d, { seeds })).includes(' x &amp; y{{rd:scnNote}}</div>'), 'hintNote escaped through pr()');
+}
+{
+  const d = load('ZTS'); const i = d.legs.findIndex((l) => l.method === 'pe');
+  d.legs[i].inputs.multiple = 38; d.legs[i].inputs.multipleSource = 'author'; delete d.legs[i].inputs.medianWindow;
+  const v = C.compute(d, { seeds });
+  // brief wrote "× P/E 38.0x (…)" — the pe mdesc format is "× P/E เป้าหมาย ~38x (<source>)"; the source label is what this pins
+  t(/× P\/E เป้าหมาย ~38x \(ผู้วิเคราะห์กำหนด\)/.test(R.mdesc(d.legs[i], v)), "pe leg with multipleSource 'author' → (ผู้วิเคราะห์กำหนด): " + R.mdesc(d.legs[i], v));
+  t.eq(R.SRC_NAME && R.SRC_NAME.author, 'ผู้วิเคราะห์กำหนด', 'SRC_NAME.author');
+}
 t.done();

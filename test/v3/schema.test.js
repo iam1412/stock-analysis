@@ -238,4 +238,102 @@ for (const f of ['BBL-real', 'EQIX-real', 'FER-real', 'ZTS-real', 'BBL', 'ZTS'])
   t(S.TODO_RE.test('  TODO: x') && !S.TODO_RE.test('todo: x'), 'TODO_RE: leading spaces allowed · case-sensitive');
   t.eq(S.stringLeaves({ a: ['x', { b: 'y' }], c: 1 }, '', []), [{ path: 'a[0]', text: 'x' }, { path: 'a[1].b', text: 'y' }], 'stringLeaves: JSON paths of every string');
 }
+// Plan 4b Task 1 — schema gaps the sweep needs (spec §10 "ช่องว่าง schema ที่ 4b ต้องปิด")
+{
+  const d = base();
+  d.metrics.cards = [{ key: 'pe', tone: 'none' }].concat(d.metrics.cards.filter((c) => c !== 'pe' && !(c && c.key === 'pe')));
+  t.eq(S.validate(d).filter((e) => /tone/.test(e.path)), [], 'tone "none" accepted (466 v2 cards have no class)');
+  d.metrics.cards[0].tone = 'loud';
+  t(S.validate(d).some((e) => e.path === 'metrics.cards[0].tone'), 'unknown tone still rejected');
+}
+{
+  const d = base(); d.analyst = { target: 80, n: null, rating: null, asOf: null };
+  t.eq(S.validate(d).filter((e) => /analyst/.test(e.path)), [], 'analyst.rating null accepted (114 v2 reports print no rating)');
+  delete d.analyst.rating;
+  t(S.validate(d).some((e) => e.path === 'analyst.rating'), 'analyst.rating key still required (closed object)');
+}
+{
+  const d = base(); d.meta.headerTags = ['a', 'b', 'c'];
+  t.eq(S.validate(d).filter((e) => /headerTags/.test(e.path)), [], 'headerTags max 3 (ADR/dual listing)');
+  d.meta.headerTags = ['a', 'b', 'c', 'd'];
+  t(S.validate(d).some((e) => e.path === 'meta.headerTags'), 'headerTags 4 rejected');
+}
+{
+  const d = base(); d.scenarios.driver = 'de'; d.fundamentals.dePerShare = 4.2;
+  t.eq(S.validate(d).filter((e) => /scenarios\.(driver|exitMetric)|dePerShare/.test(e.path)), [], 'driver de + fundamentals.dePerShare accepted');
+  d.scenarios.driver = 'fre'; d.fundamentals.frePerShare = 1.1;
+  t.eq(S.validate(d).filter((e) => /scenarios\.(driver|exitMetric)|frePerShare/.test(e.path)), [], 'driver fre + fundamentals.frePerShare accepted');
+  // fix round 1 (N-3 ruling): EV/Sales exit multiplies revenue per share ⇒ requires driver revenuePerShare
+  d.scenarios.driver = 'revenuePerShare'; d.scenarios.exitMetric = 'evsales';
+  t.eq(S.validate(d).filter((e) => /scenarios\./.test(e.path)), [], 'exitMetric evsales + driver revenuePerShare accepted');
+  d.scenarios.driver = 'eps';
+  t.eq(paths(S.validate(d)).filter((p) => /scenarios\./.test(p)), ['scenarios.exitMetric'], 'exitMetric evsales + driver eps → error on scenarios.exitMetric');
+  d.fundamentals.occupancy = 94.1; d.fundamentals.backlog = 1.2e9; d.fundamentals.aum = 3e11; d.fundamentals.tbvps = 40.5; d.fundamentals.frePerShare = 1.1;
+  t.eq(S.validate(d).filter((e) => /fundamentals\.(occupancy|backlog|aum|tbvps|frePerShare)/.test(e.path)), [], 'new fundamentals keys accepted');
+  d.metrics.cards = ['occupancy', 'netDebtEbitda', 'backlog', 'payout', 'aum', 'ptbv'];
+  t.eq(S.validate(d).filter((e) => /metrics\.cards/.test(e.path)), [], 'six new catalogue keys accepted');
+}
+
+// Plan 4b Task 2 — dcf: exactly one of {g1, years1} | {stages} (brief's load()/errsOf() = base()/S.validate() here)
+{
+  const d = base();
+  const dcfLeg = (inputs) => ({ method: 'dcf', label: 'DCF', role: 'fv', family: 'rg', inputs });
+  d.legs = [d.legs[0], dcfLeg({ stages: [{ years: 5, g: 7 }, { years: 5, g: 4 }], tg: 3, r: 8.5, rfCurrency: d.currency })];
+  if (d.fvWeights) d.fvWeights = null;
+  d.fundamentals.fcf = d.fundamentals.fcf || 2.3e9; d.fundamentals.shares = d.fundamentals.shares || 4.3e8;
+  t.eq(S.validate(d).filter((e) => /legs\[1\]/.test(e.path)), [], 'dcf with stages accepted');
+  d.legs[1] = dcfLeg({ g1: 7, years1: 5, stages: [{ years: 5, g: 7 }], tg: 3, r: 8.5, rfCurrency: d.currency });
+  t(S.validate(d).some((e) => e.path === 'legs[1].inputs' && /ใช้ได้ทางเดียว/.test(e.msg)), 'g1/years1 together with stages → error (message: ใช้ได้ทางเดียว)');
+  d.legs[1] = dcfLeg({ tg: 3, r: 8.5, rfCurrency: d.currency });
+  t(S.validate(d).some((e) => e.path === 'legs[1].inputs' && /ใช้ได้ทางเดียว/.test(e.msg)), 'neither g1/years1 nor stages → error (message: ใช้ได้ทางเดียว)');
+  d.legs[1] = dcfLeg({ stages: [{ years: 0, g: 7 }], tg: 3, r: 8.5, rfCurrency: d.currency });
+  t(S.validate(d).some((e) => e.path === 'legs[1].inputs.stages[0].years' && /≥ 1/.test(e.msg)), 'stage years must be int ≥ 1 (message: ≥ 1)');
+  d.legs[1] = dcfLeg({ stages: Array.from({ length: 11 }, () => ({ years: 1, g: 5 })), tg: 3, r: 8.5, rfCurrency: d.currency });
+  t(S.validate(d).some((e) => e.path === 'legs[1].inputs.stages' && /1–10 ช่วง/.test(e.msg)), '> 10 stages → error (message: 1–10 ช่วง)');
+  d.legs[1] = dcfLeg({ stages: [{ years: 41, g: 5 }], tg: 3, r: 8.5, rfCurrency: d.currency });
+  t(S.validate(d).some((e) => e.path === 'legs[1].inputs.stages' && /Σ years = 41 เกิน 40 ปี/.test(e.msg)), 'Σ years > 40 → error (message: Σ years = 41 เกิน 40 ปี)');
+}
+{
+  const d = base(); d.scenarios.exitDp = 1;
+  t.eq(S.validate(d).filter((e) => /exitDp/.test(e.path)), [], 'scenarios.exitDp 1 accepted');
+  d.scenarios.exitDp = 3; t(S.validate(d).some((e) => e.path === 'scenarios.exitDp' && /ต้อง 0–2/.test(e.msg)), 'exitDp 3 rejected (message: ต้อง 0–2)');
+  d.scenarios.exitDp = 1.5; t(S.validate(d).some((e) => e.path === 'scenarios.exitDp' && /จำนวนเต็ม/.test(e.msg)), 'exitDp 1.5 rejected (message: จำนวนเต็ม) — Plan 4b final review N-2');
+}
+
+// Plan 4b Task 3 — meta.migratedFrom (spec §8 D1) (brief's load()/errsOf() = base()/S.validate() here)
+{
+  const d = base(); d.meta.migratedFrom = { updated: '2026-09-22T07:22:55+07:00', v2Hash: 'abcdef012345' };
+  t.eq(S.validate(d).filter((e) => /migratedFrom/.test(e.path)), [], 'migratedFrom {updated, v2Hash} accepted');
+  d.meta.migratedFrom = { updated: '2026-09-22', v2Hash: 'abcdef012345' };
+  t(S.validate(d).some((e) => e.path === 'meta.migratedFrom.updated'), 'updated must be the manifest ISO datetime with offset');
+  d.meta.migratedFrom = { updated: '2026-09-22T07:22:55+07:00', v2Hash: 'ABCDEF' };
+  t(S.validate(d).some((e) => e.path === 'meta.migratedFrom.v2Hash'), 'v2Hash must be 12 lowercase hex');
+  d.meta.migratedFrom = { updated: '2026-09-22T07:22:55+07:00', v2Hash: 'abcdef012345', extra: 1 };
+  t(S.validate(d).some((e) => e.path === 'meta.migratedFrom.extra'), 'closed object');
+}
+
+// Plan 4b Task 6b — schema homes for migrated author text (text.chartHint · scenarios.hintNote · cases[i].retNote) + multipleSource 'author'
+{
+  const d = base(); d.text = Object.assign({}, d.text, { chartHint: 'x' });
+  t.eq(S.validate(d).filter((e) => /^text/.test(e.path)), [], 'text.chartHint accepted');
+  d.text.foo = 'y'; t(paths(S.validate(d)).includes('text.foo'), 'text stays closed (text.foo rejected)');
+  delete d.text.foo; d.text.chartHint = 'a <b>'; t(paths(S.validate(d)).includes('text.chartHint'), 'chartHint with < rejected');
+}
+{
+  const d = base(); d.scenarios.hintNote = '(TTM adj.)'; d.scenarios.cases[1].retNote = '(รวมปันผล)';
+  t.eq(S.validate(d), [], 'scenarios.hintNote + cases[1].retNote accepted');
+  d.scenarios.hintNote = '(x) <i>'; d.scenarios.cases[1].retNote = '<script>';
+  const ps = paths(S.validate(d));
+  t(ps.includes('scenarios.hintNote') && ps.includes('scenarios.cases[1].retNote'), 'hintNote/retNote with < > rejected');
+  const e = base(); e.scenarios.hintNotes = 'x'; e.scenarios.cases[0].retNotes = 'y';
+  const pe = paths(S.validate(e));
+  t(pe.includes('scenarios.hintNotes') && pe.includes('scenarios.cases[0].retNotes'), 'unknown scenarios / case keys still rejected');
+}
+for (const method of ['pe', 'ps', 'evsales', 'evebitda', 'pfcf', 'pffo', 'pbv']) {
+  const leg = { method, label: method, inputs: { multiple: 10, multipleSource: 'author' } };
+  const d = base(); d.legs.push(leg); d.fvWeights = null;
+  d.legs.forEach((l) => { if (l.role !== 'context' && !l.family) l.family = S.requiredFamily(l) || 'rg'; });
+  t(!paths(S.validate(d)).some((p) => p.startsWith('legs[2].inputs')), `multipleSource 'author' accepted on ${method}`, JSON.stringify(S.validate(d)));
+  t.eq(S.requiredFamily(leg), 'market', `requiredFamily(${method} author) = market`);
+}
 t.done();
