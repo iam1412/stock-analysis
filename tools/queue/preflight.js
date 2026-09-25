@@ -2,8 +2,10 @@
 /**
  * preflight — ขั้น A1–A9 ของรอบเคลียร์คิว (docs-audit §5) ที่ script ทำแทนได้:
  *   pull --rebase · อ่านคิว · triage ครบทุก reason · ความสดจาก footer · snapshot ราคาเดิมลง state (postcheck ใช้ grep ราคาค้าง)
- *   · pre-patch ราคา LIGHT/FULL ทั้งชุดใน process เดียว (ไม่ pre-patch ระหว่างตลาดเปิด) → ยิง gate ต่อทันที คืนไฟล์ใบที่ตก
- *   (--force ข้าม quarantine ของ cron ⇒ preflight ต้องทำ quarantine เอง) · พิมพ์ขั้นที่ยังต้องทำเอง
+ *   · pre-patch ราคา LIGHT/FULL ทั้งชุดใน process เดียว (ไม่ pre-patch ระหว่างตลาดเปิด) → ใบ v2: ยิง gate ต่อทันที คืนไฟล์ใบที่ตก
+ *   (--force ข้าม quarantine ของ cron ⇒ preflight ต้องทำ quarantine เอง) · ใบ v3 (Plan 4b · #66): gate อยู่ใน update-prices เอง
+ *   (IO.writeMarket + checkDoc ใต้ lock เดียว — ตกแล้วไม่เขียนไฟล์) ⇒ ไม่ยิง check-reports · ไม่มีไฟล์ให้คืน · อ่านผลรายใบจาก stdout
+ *   (parseV3PatchResult) · พิมพ์ขั้นที่ยังต้องทำเอง
  *   · ปฏิทินงบ (WS6 ข้อ 2): flip ที่ "งบออกหลังวันวิเคราะห์" ยกเป็น LIGHT — earnings-calendar.json (ยังไม่เปิดใช้ · docs/price-refresh.md)
  *   · คิวตามอายุ (WS6 ข้อ 3): ใบเกิน STALE_DAYS เข้าคิวเองแม้ราคาไม่ขยับ — ทยอย ageLimit ตัว/รอบ แก่สุดก่อน (--age N / --no-age)
  * ★ ไม่ทำแทน: probe โมเดล (ต้อง spawn subagent) · ยืนยันเพิกถอน · แก้ plumbing · ตัดสินใจกำกวม
@@ -133,43 +135,48 @@ function plan(flags, today, opts) {
 function patchTargets(rows, m) {
   const cur = new Map(rows.map((r) => [r.symbol, r.currency]));
   const v3 = new Set(rows.filter((r) => r.v3).map((r) => r.symbol));
-  const out = { target: [], skippedUS: [], skippedTH: [], skippedNoReport: [], skippedV3: [] };
+  const out = { target: [], v3: [], skippedUS: [], skippedTH: [], skippedNoReport: [] };
   for (const sym of prePatchList(rows)) {
-    if (v3.has(sym)) { out.skippedV3.push(sym); continue; }   // ใบ v3: pre-patch อัตโนมัติ = Plan 4b (parseGateFailures/ทาง revert ยังผูกกับ .html) — preflight พิมพ์ v3Lines ชี้คำสั่งมือแทน
     const c = cur.get(sym);
     if (c == null) { out.skippedNoReport.push(sym); continue; }
     const th = c === 'THB';
     if (!m.allowIntraday && !th && m.usOpen) { out.skippedUS.push(sym); continue; }
     if (!m.allowIntraday && th && m.setOpen) { out.skippedTH.push(sym); continue; }
-    out.target.push(sym);
+    out.target.push(sym); if (v3.has(sym)) out.v3.push(sym);   // ใบ v3 (Plan 4b · #66): update-prices --write --force เขียนจริง + gate ใต้ lock เอง (Plan 3) — ไม่ต้อง check-reports/ไม่มีไฟล์ให้คืน
   }
   return out;
 }
 
-/** บรรทัดชี้คำสั่งมือต่อแถวใบ v3 (ส่วนบริสุทธิ์ · Plan 3 R8 → Plan 4a) — pre-patch อัตโนมัติของใบ v3 (patchTargets/parseGateFailures/
- *  ทาง revert/ship --prepatch) = Plan 4b · บรรทัดตาม bucket (Plan 4a fix round 1):
- *  PREPATCH (flip) → หลัง ship --prepatch: pre-patch มือ → npm test -- <SYM> → controller commit เอง "price: pre-patch <SYM> (v3 flip)" + push ตาม §5 (prep ปฏิเสธ PREPATCH · ship --prepatch ไม่รับ .json · pre-patch ก่อน ship --prepatch = .json สกปรก → ทั้งชุดถูกปฏิเสธ)
- *    ไม่ผ่าน postcheck → ship (final review I-1): pre-patch ราคาไม่แตะ meta.analysisDate ⇒ postcheck ได้ review (footer ≠ วันนี้) → postcheckGuard ปฏิเสธ · --force = commit ติดป้าย analyze: + trailer ผู้วิเคราะห์เดิม · อัตโนมัติ = Plan 4b
- *  LIGHT/FULL ที่ไม่ skip → หลัง ship --prepatch ของใบ v2 (pre-patch มือก่อนนั้น = .json สกปรก → ship --prepatch ปฏิเสธทั้งชุด) แล้ว prep ตามปกติ
- *  แถวอื่น (skip/DELIST/PLUMBING/REJECTED/UNKNOWN) → ไม่มีบรรทัด */
-function v3Lines(rows) {
-  const out = [];
-  for (const r of rows) {
-    if (!r.v3) continue;
-    const cmd = `\`node tools/update-prices.js --write --force ${r.symbol}\``;
-    if (r.bucket === 'PREPATCH') out.push(`v3 ${r.symbol}: flip ในย่าน → หลัง ship --prepatch: controller pre-patch มือ ${cmd} (ตลาดปิดแล้วเท่านั้น — --force ข้าม guard intraday) → npm test -- ${r.symbol} → commit เอง "price: pre-patch ${r.symbol} (v3 flip)" + push ตาม CLAUDE.md §5 (ไม่ผ่าน ship — postcheck ต้องการ analysisDate = วันนี้ · ship --prepatch ไม่รับ .json · อัตโนมัติ = Plan 4b)`);
-    else if ((r.bucket === 'LIGHT' || r.bucket === 'FULL') && !r.skip) out.push(`v3 ${r.symbol}: หลัง ship --prepatch — ราคายังไม่สด → controller pre-patch มือ ${cmd} (ตลาดปิดแล้วเท่านั้น) แล้ว npm run queue -- prep ${r.symbol} ตามปกติ (worker: report.js export/save — SKILL STEP 5U · pre-patch อัตโนมัติของใบ v3 = Plan 4b)`);
+/** ผลรายใบ v3 จาก stdout ของ update-prices (Plan 3 applyV3 พิมพ์บรรทัดเดียวต่อใบ) — ส่วนบริสุทธิ์ · นับเฉพาะ syms ที่ส่งมา
+ *  ✓ = เขียนแล้ว · = … v3 … = ไม่เปลี่ยน (ไม่มี session ใหม่/feed ค้าง) · ❄ freeze [reason] = gate/decide ปฏิเสธ ไม่เขียนไฟล์
+ *  · ⚠ … patch fail (v3) = plumbing ไม่เขียนไฟล์ · ✓ ที่ติด "--force เขียนทั้งที่ gate ตก" = forced (เขียนแล้วแต่ verify จะตก — ไม่ใช่ written)
+ *  ใบที่ไม่มีบรรทัดผลเลย (fetch fail / JSON อ่านไม่ได้) → v3Unaccounted */
+function parseV3PatchResult(out, syms) {
+  const want = new Set(syms), r = { written: [], unchanged: [], rejected: [], failed: [], forced: [] };
+  for (const line of String(out).split('\n')) {
+    const m = /^([✓=❄⚠])\s+(\S+)\s+(.*)$/.exec(line.trim());
+    if (!m || !want.has(m[2])) continue;
+    if (m[1] === '✓') (/--force เขียนทั้งที่ gate ตก/.test(m[3]) ? r.forced : r.written).push(m[2]);
+    else if (m[1] === '=' && /v3/.test(m[3])) r.unchanged.push(m[2]);
+    else if (m[1] === '❄') r.rejected.push({ sym: m[2], reason: (/\[([a-z-]+)\]/.exec(m[3]) || [, 'freeze'])[1] });
+    else if (m[1] === '⚠' && /patch fail \(v3\)/.test(m[3])) r.failed.push(m[2]);
   }
-  return out;
+  return r;
+}
+/** ใบ v3 ที่ส่งไป pre-patch แต่ไม่มีบรรทัดผลใน parseV3PatchResult (fetch fail · JSON อ่านไม่ได้ · ข้ามเพราะตลาดเปิด) — ส่วนบริสุทธิ์
+ *  ไม่ประทับทั้ง prePatched และ prePatchRejected (ไม่รู้ผล = ไม่อ้างว่าสด · prep ตัดสินความสดจาก priceDate เองอยู่แล้ว — BUG-008) */
+function v3Unaccounted(pv, syms) {
+  const seen = new Set([...pv.written, ...pv.unchanged, ...pv.failed, ...(pv.forced || []), ...pv.rejected.map((x) => x.sym)]);
+  return syms.filter((s) => !seen.has(s));
 }
 
-/** อ่านผล `node test/check-reports.js <syms>` → รายชื่อไฟล์ที่ "ตก" (ส่วนบริสุทธิ์ ไม่แตะดิสก์)
+/** อ่านผล `node test/check-reports.js <syms>` → รายชื่อไฟล์ที่ "ตก" (ส่วนบริสุทธิ์ ไม่แตะดิสก์) · รับทั้ง .html และ .json (Plan 4b)
  *  บรรทัดสรุปต่อไฟล์เริ่มต้นบรรทัดเสมอ (`✗ BBB.html 41/43 ผ่าน — 2 ปัญหา`) ส่วนรายละเอียด E-code ย่อหน้าเข้ามา
  *  (`    ✗ [E15] …`) ⇒ anchor `^✗` แยกสองชั้นนี้ออกจากกัน */
 function parseGateFailures(out) {
   const syms = [];
   for (const line of String(out).split('\n')) {
-    const m = /^✗\s+(\S+)\.html\b/.exec(line);
+    const m = /^✗\s+(\S+)\.(?:html|json)\b/.exec(line);
     if (m) syms.push(m[1]);
   }
   return syms;
@@ -314,27 +321,42 @@ function preflight(opts) {
   if (t.skippedUS.length) console.log(`\n⏳ ตลาด US เปิดอยู่ — ไม่ pre-patch ${t.skippedUS.join(' ')} (ราคา intraday · --force ข้าม guard ของ update-prices เอง — บทเรียน 9 ก.ย. 69) · ต้องการจริงใส่ --allow-intraday`);
   if (t.skippedTH.length) console.log(`\n⏳ SET เปิดอยู่ — ไม่ pre-patch ${t.skippedTH.join(' ')} · --allow-intraday ถ้าจงใจ`);
   if (t.skippedNoReport.length) console.log(`\n⚠ ไม่มีไฟล์รายงาน — ไม่ pre-patch ${t.skippedNoReport.join(' ')} (ลบไปแล้ว? รัน node tools/tag-apply.js --prune แล้วปล่อยให้ cron ตัด flag ทิ้ง)`);
-  const v3l = v3Lines(rows);   // ใบ v3 ไม่เข้า pre-patch อัตโนมัติ (Plan 4b) — บรรทัดชี้คำสั่งมือต่อใบ (Plan 4a: prep รับใบ v3 แล้ว)
-  if (v3l.length) console.log('\n' + v3l.map((l) => 'ℹ ' + l).join('\n'));
   if (t.target.length && !o.noPatch) {
     console.log(`\n▶ pre-patch ราคา ${t.target.length} ตัวใน process เดียว (lock กันคิวเพี้ยนแล้ว — WS4)`);
     const r = run('node', ['tools/update-prices.js', '--write', '--force', ...t.target]);
     process.stdout.write(r.out);
     if (r.code !== 0) throw new Error('pre-patch ล้ม: ' + (r.err || r.out).slice(-1000));
-    // ★ --force ข้าม quarantine ของ cron (cron patch แล้ว gate ตก = ไม่เขียนไฟล์ + flag patch-rejected) ⇒ ต้องยิง gate เอง
+    // ── ใบ v3 (Plan 4b · #66): gate อยู่ใน update-prices แล้ว (IO.writeMarket + checkDoc ใต้ lock เดียว — ตก = ไม่เขียนไฟล์ + flag)
+    //   ⇒ ไม่ยิง check-reports · ไม่มีไฟล์ให้คืน · ผลรายใบจาก stdout (ใบที่ไม่มีบรรทัดผล = ไม่ประทับอะไร)
+    const v2T = t.target.filter((x) => !t.v3.includes(x));
+    if (t.v3.length) {
+      const pv = parseV3PatchResult(r.out, t.v3);
+      const unacc = v3Unaccounted(pv, t.v3);
+      const v3Bad = pv.rejected.map((x) => x.sym).concat(pv.failed, pv.forced);
+      applyGateResult(s.stocks, t.v3.filter((x) => !unacc.includes(x)), v3Bad, today);
+      for (const sym of v3Bad) { const row = rows.find((x) => x.symbol === sym); if (row) row.prePatchRejected = today; }
+      console.log(`\nℹ v3 pre-patch: เขียน ${pv.written.length} · ไม่เปลี่ยน ${pv.unchanged.length} · ปฏิเสธ ${pv.rejected.length} (gate ใต้ lock · ไม่เขียนไฟล์) · ล้ม ${pv.failed.length}`
+        + `${pv.rejected.length ? ` — ${pv.rejected.map((x) => `${x.sym}[${x.reason}]`).join(' ')}` : ''}${pv.failed.length ? ` · ล้ม: ${pv.failed.join(' ')}` : ''}`);
+      if (pv.forced.length) console.log(`⛔ v3 ${pv.forced.join(' ')}: --force เขียนทั้งที่ gate ตก (ดูบรรทัด ✓ ด้านบน) — ship --prepatch จะ verify ตกทั้งชุด: แก้ใบให้ผ่าน หรือคืนไฟล์เองด้วย git checkout -- ${pv.forced.map((x) => `reports/${x}.json`).join(' ')}`);
+      if (unacc.length) console.log(`⚠ v3 ${unacc.join(' ')}: ไม่พบบรรทัดผล pre-patch (fetch fail/อ่านใบไม่ได้/ตลาดเปิด — ดูด้านบน) · ไม่ประทับสถานะ · prep ตัดสินความสดจาก priceDate เอง`);
+    }
+    // ★ ใบ v2: --force ข้าม quarantine ของ cron (cron patch แล้ว gate ตก = ไม่เขียนไฟล์ + flag patch-rejected) ⇒ ต้องยิง gate เอง
     //   ใบที่ตกต้องคืนไฟล์ ไม่งั้น `ship --prepatch` จะ verify ตกทั้งชุด และใบที่ดีก็ push ไม่ได้
-    console.log('\n▶ gate หลัง pre-patch: node test/check-reports.js ' + t.target.join(' '));
-    const g = run('node', ['test/check-reports.js', ...t.target]);
-    process.stdout.write(g.out);
-    const failed = parseGateFailures(g.out);
-    if (g.code !== 0 && !failed.length) throw new Error('check-reports หลัง pre-patch ล้มแต่แยกไฟล์ที่ตกไม่ได้ — ตรวจเอง (ราคาที่ patch ยังอยู่ในไฟล์):\n' + (g.err || g.out).trim().slice(-1000));
-    applyGateResult(s.stocks, t.target, failed, today);
-    for (const sym of failed) {   // สะท้อนลงแถวของรอบนี้ด้วย — manualSteps อ่านจาก rows ไม่ใช่ state
-      const row = rows.find((x) => x.symbol === sym);
-      if (row) row.prePatchRejected = today;
+    let failed = [];
+    if (v2T.length) {
+      console.log('\n▶ gate หลัง pre-patch: node test/check-reports.js ' + v2T.join(' '));
+      const g = run('node', ['test/check-reports.js', ...v2T]);
+      process.stdout.write(g.out);
+      failed = parseGateFailures(g.out);
+      if (g.code !== 0 && !failed.length) throw new Error('check-reports หลัง pre-patch ล้มแต่แยกไฟล์ที่ตกไม่ได้ — ตรวจเอง (ราคาที่ patch ยังอยู่ในไฟล์):\n' + (g.err || g.out).trim().slice(-1000));
+      applyGateResult(s.stocks, v2T, failed, today);
+      for (const sym of failed) {   // สะท้อนลงแถวของรอบนี้ด้วย — manualSteps อ่านจาก rows ไม่ใช่ state
+        const row = rows.find((x) => x.symbol === sym);
+        if (row) row.prePatchRejected = today;
+      }
     }
     S.save(s);   // บันทึกก่อนคืนไฟล์ — checkout ล้มแล้ว throw ก็ยังเหลือสถานะให้ postcheck/status อ่าน
-    for (const sym of failed) {
+    for (const sym of failed) {   // ใบ v2 เท่านั้น (v2T) — ใบ v3 ที่ gate ตกไม่ถูกเขียนตั้งแต่แรก
       must('git', ['checkout', '--', `reports/${sym}.html`], `คืนไฟล์ ${sym} หลัง gate ตก`);
       console.log(`⛔ ${sym} gate ตกหลัง pre-patch → คืนไฟล์แล้ว (ต้องแก้ใบให้ผ่าน npm test -- ${sym} ก่อน · ดูรายละเอียดด้านบน)`);
     }
@@ -344,4 +366,4 @@ function preflight(opts) {
   return rows;
 }
 
-module.exports = { preflight, plan, ageQueue, listReportsFS, v3Lines, earningsAfterOfWith, statementAfterOfWith, unknownSummary, patchTargets, renderTable, manualSteps, loadFlags, parseGateFailures, roundStart, isNewFlag, upsertRow, applyGateResult, synthAge };
+module.exports = { preflight, plan, ageQueue, listReportsFS, parseV3PatchResult, v3Unaccounted, earningsAfterOfWith, statementAfterOfWith, unknownSummary, patchTargets, renderTable, manualSteps, loadFlags, parseGateFailures, roundStart, isNewFlag, upsertRow, applyGateResult, synthAge };

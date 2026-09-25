@@ -8,6 +8,7 @@
  *   npm run queue -- prep <SYM>             prep-stock + มัธยฐาน + EPS screen + snapshot diff → .queue/prep/<SYM>.md ของ checkout หลัก (ใช้ร่วมทุก worktree) (prompt)
  *   npm run queue -- postcheck <SYM>        gate + spotcheck + ราคาค้าง + ai-model + pe/roe + footer
  *   npm run queue -- ship <SYM> [--tags …]  verify → commit 1 หุ้น → push · ปิด issue เมื่อคิวว่าง
+ *   npm run queue -- ship --migrate "SYM…" --model sonnet|opus   ใบที่ migrate-v3 convert แล้ว → verify → commit "migrate: v3 …" (−.html +.json) → push
  *   npm run queue -- status                 X/Y push แล้ว / รอ push / ยังไม่เริ่ม
  * สิ่งที่ยังต้องทำเอง (script พิมพ์บอกทุกครั้ง): probe โมเดล · courier/advisor หุ้นยาก · spawn worker (pin model) · ยืนยันเพิกถอน · ชั้น 0 valuation · publish/skip
  */
@@ -19,6 +20,7 @@ catch (e) { console.error('✗ ' + e.message); process.exit(1); }
 const usage = `ใช้: npm run queue -- <คำสั่ง> [ตัวเลือก]
   preflight [--no-patch] [--allow-intraday] [--allow-dirty] [--age N] [--no-age] [--light-rule new|legacy]
   ship --prepatch
+  ship --migrate "SYM SYM…" --model sonnet|opus [--no-push]
   prep <SYM> [--mode NEW|UPDATE|UPDATE-LIGHT] [--model sonnet|opus] [--brand "#hex"] [--median-spec SYM:TICKER] [--th] [--light-rule new|legacy]
   postcheck <SYM> [--model sonnet|opus]
   ship <SYM> [--tags "slug slug"] [--message "…"] [--model sonnet|opus] [--force] [--no-push] (commit เท่านั้น — ไม่ rebase/ไม่ push · flow branch → PR)
@@ -34,6 +36,11 @@ const usage = `ใช้: npm run queue -- <คำสั่ง> [ตัวเล
       // เช็คก่อน require — สองโหมดนี้คนละงานกัน (ใบเดียว vs ราคาทั้งชุด) ใส่คู่กันแปลว่าพิมพ์ผิด ห้ามเดาให้
       if (has('--prepatch') && sym) throw new Error('ship: ระบุ <SYM> หรือ --prepatch อย่างใดอย่างหนึ่ง');
       const sh = require('./queue/ship.js');
+      if (has('--migrate')) {   // Plan 4b: ชุด migrate v2→v3 (4c) — commit เดียวต่อชุด · model ต้องระบุ (trailer)
+        if (sym || has('--prepatch')) throw new Error('ship: --migrate ใช้เดี่ยว ๆ (ไม่คู่กับ <SYM>/--prepatch)');
+        sh.shipMigrate(val('--migrate'), { model: val('--model'), noPush: has('--no-push') });
+        break;
+      }
       if (has('--prepatch')) sh.shipPrepatch();
       // --model = ทางออกเมื่อ state ไม่มี record (prep คนละเครื่อง/ถูกล้าง) — ต้องตรงกับโมเดลที่รันจริง (ป้าย Co-Authored-By)
       else if (sym) sh.shipStock(sym, { tags: has('--tags') ? val('--tags') : null, message: val('--message'), model: val('--model'), force: has('--force'), noPush: has('--no-push') });
