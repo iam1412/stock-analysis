@@ -1,0 +1,256 @@
+{
+  "v": 3,
+  "symbol": "KKR",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "KKR & Co. Inc.",
+    "exchange": "NYSE",
+    "sub": "บริษัทจัดการสินทรัพย์ทางเลือกระดับโลก • Private Equity • Credit • Real Assets (infra/energy) • ประกัน Global Atlantic • Strategic Holdings • AUM $744B+",
+    "headerTags": [
+      "Alternative Asset Management",
+      "Private Equity · Credit · Real Assets"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis.com",
+      "Yahoo Finance",
+      "KKR Investor Relations",
+      "SEC Filings"
+    ],
+    "themeLegacy": {
+      "accent": "#3E6494",
+      "accentDark": "#2A4A6B",
+      "darkGrad": "linear-gradient(135deg, #03060A 0%, #080F18 100%)",
+      "glow": "rgba(62,100,148,0.38)",
+      "subColor": "#7193BC",
+      "headerMuted": "#5483bf",
+      "verdictText": "#D6E0EE",
+      "vcellLabel": "rgba(214,224,238,0.6)"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T15:39:58+07:00",
+      "v2Hash": "8144640f88b7"
+    }
+  },
+  "market": {
+    "px": 95.64,
+    "priceDate": "2026-09-24",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          118.33
+        ],
+        [
+          "พ.ย.25",
+          122.31
+        ],
+        [
+          "ธ.ค.25",
+          127.48
+        ],
+        [
+          "ม.ค.26",
+          114.26
+        ],
+        [
+          "ก.พ.26",
+          87.68
+        ],
+        [
+          "มี.ค.26",
+          92.5
+        ],
+        [
+          "เม.ย.26",
+          104.34
+        ],
+        [
+          "พ.ค.26",
+          95.94
+        ],
+        [
+          "มิ.ย.26",
+          91.78
+        ],
+        [
+          "ก.ค.26",
+          101.43
+        ],
+        [
+          "ส.ค.26",
+          109.72
+        ],
+        [
+          "ก.ย.26",
+          95.64
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 82.67,
+      "hi": 152.1
+    }
+  },
+  "fundamentals": {
+    "dps": 0.78,
+    "bvps": 60,
+    "shares": 898000000,
+    "peAvg5y": 35.9,
+    "eps": 3.13,
+    "roe": 7.3,
+    "roa": 2.1,
+    "aum": 744000000000,
+    "beta": 1.55,
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E (TTM × มัธยฐานย้อนหลัง)",
+      "inputs": {
+        "multiple": 35.9,
+        "multipleSource": "median5y",
+        "medianWindow": "FY2023–FY2025"
+      },
+      "note": "มัธยฐาน P/E ปีงบ FY2023–25 ที่วัดจริง (ราคาเฉลี่ยปี ÷ EPS ปีนั้น) มาจากประวัติ ไม่ได้ลอกจาก P/E ปัจจุบัน · ตระกูล P/E",
+      "family": "market"
+    },
+    {
+      "method": "pe",
+      "label": "P/E (EPS เฉลี่ย 3 ปี × มัธยฐาน)",
+      "inputs": {
+        "multiple": 35.9,
+        "multipleSource": "author"
+      },
+      "override": {
+        "eps": 3.24,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "เฉลี่ย FY2023–25: 4.09, 3.28, 2.34 · normalize กำไร mark-to-market ที่แกว่ง · ตระกูล P/E เดียวกับวิธี 1 นับเป็นเสียงเดียว (สองขาห่างกันไม่ถึง 2 เท่า)",
+      "family": "market"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "peAvg5y",
+      "pbv",
+      "custom:0",
+      "eps",
+      "custom:1",
+      "roe",
+      {
+        "key": "aum",
+        "tone": "neu"
+      },
+      "custom:2",
+      "yield",
+      "beta"
+    ],
+    "custom": [
+      {
+        "label": "ANI FY2025",
+        "value": "~$4.3B",
+        "note": "ANI/Share $4.87 (+3.6% YoY) — ตัวเลขบริษัทยกมาจากรอบก่อน ไม่ได้ตรวจซ้ำรอบนี้ ไม่ใช้ใน FV"
+      },
+      {
+        "label": "FRE (Fee-Related Earnings)",
+        "value": "$3.7B",
+        "note": "$4.13/sh · margin 69% · recurring มั่นคง",
+        "tone": "pos"
+      },
+      {
+        "label": "FRE Margin",
+        "value": "69%",
+        "note": "รายได้ recurring คุณภาพสูง"
+      }
+    ],
+    "notes": {
+      "mcap": "898M shares approx.",
+      "pe": "EPS (dil.) TTM {{eps}} · GAAP ผันผวนจาก mark-to-market",
+      "peAvg5y": "วัดจาก FY2023–25 (ช่วง 14.7–56.0x กว้างมาก) — ราคาเฉลี่ยปี ÷ EPS ปีนั้น",
+      "pbv": "Book value per share ~$60",
+      "eps": "ผันผวนสูง (mark-to-market) ไม่ใช่ตัววัดหลัก · ขึ้นจาก FY2025 $2.34",
+      "roe": "GAAP-based; ANI ROE สูงกว่า",
+      "aum": "+17% YoY · Fee-Paying AUM $604B",
+      "yield": "$0.195/ไตรมาส",
+      "beta": "ผันผวนกว่าตลาด (cyclical realization)"
+    },
+    "hint": "Alt Asset Manager — GAAP EPS ผันผวนสูง อ่านคู่กับ FRE"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 0,
+        "exitMultiple": 20,
+        "divCum": 2.34,
+        "desc": "EPS ไม่โต + P/E ลดลงสู่ช่วงต่ำของประวัติ"
+      },
+      {
+        "growth": 8,
+        "exitMultiple": 30,
+        "divCum": 2.34,
+        "desc": "EPS โตเฉลี่ย + P/E ลดลงเหลือ 30x เมื่อกำไรฟื้น (ต่ำกว่ามัธยฐาน 35.9x ที่วัดจากปีกำไรต่ำ)"
+      },
+      {
+        "growth": 12,
+        "exitMultiple": 35.9,
+        "divCum": 2.34,
+        "desc": "EPS ฟื้นแรง + ตัวคูณคงมัธยฐานย้อนหลัง 35.9x"
+      }
+    ],
+    "exitDp": 1,
+    "note": "การคาดการณ์อิง GAAP EPS (dil.) TTM {{eps}} ตามฐานเดียวกับ FV — อัตราเติบโตและ P/E ออกเป็นสมมติฐานของเราเอง (Base ใช้ 30x ต่ำกว่ามัธยฐานประวัติ 35.9x เพราะมัธยฐานวัดจากปีกำไรต่ำ) ส่วน consensus FY2026e EPS $6.32 (StockAnalysis) น่าจะคนละเกณฑ์กับ GAAP จึงไม่ใช้ · ราคาเป้าไม่ผูกกับราคาปัจจุบัน",
+    "hintNote": "GAAP TTM ~{{eps}}/sh"
+  },
+  "analyst": {
+    "target": 128.67,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ราคาปิดรายเดือนร่วงราว −31% จากจุดสูงสุดในกราฟ $127.48 (ธ.ค. 68) สู่จุดต่ำสุด $87.68 (ก.พ. 69) กดดันโดยความกังวลดอกเบี้ยสูง-นาน ซึ่งชะลอ realization (การ exit กองทุน Private Equity) และกดดัน valuation multiple ของ alt asset managers ทั้งกลุ่ม ก่อนฟื้นตัวช่วง มี.ค.–ส.ค. 69 ถึง $109.72 แล้วย่อกลับมาที่ {{px}} ณ {{priceDate}} ปัจจุบันอยู่ต่ำกว่า Fair Value {{fv}} ({{mos}})",
+    "valuation": "FV มาจากตระกูลเดียว (P/E มัธยฐานย้อนหลัง 35.9x ซึ่งวัดจาก 3 ปีงบที่เชื่อได้ ช่วง 14.7–56.0x กว้าง 3.8 เท่า) จึงไวต่อตัวคูณมาก: ที่ 30x บน EPS TTM FV ≈ $94 (ต่ำกว่าราคาตลาดราว 5%) ที่ 40x ≈ $125 (สูงกว่าราคาตลาดราว 27%) — กรอบ FV ในการ์ดคือ 30–40x · ถอดขา P/ANI ตัวคูณ peer, Forward P/ANI และ SOTP ออกเพราะไม่มีตัวคูณที่วัดได้/ตรวจซ้ำไม่ได้ · เป้านักวิเคราะห์ ({{analyst.target}}) เป็นบริบทเท่านั้น · ตัวเลข ANI/FRE/AUM ในรายงานยกมาจากรอบก่อน ไม่ได้ตรวจซ้ำรอบนี้",
+    "gauge": "ราคาปัจจุบัน {{px}} อยู่ต่ำกว่า Fair Value ({{fv}}) โดยมีส่วนเผื่อ {{mos}} แต่ FV อิงตัวคูณ P/E ที่ช่วงกว้าง ส่วนเผื่อจึงไม่แน่นอน นักวิเคราะห์ 20 รายให้เป้าเฉลี่ย {{analyst.target}} ({{analyst.pct}}) สูงกว่า Fair Value ของเรา — ไม่ใช้เป็นขาใน FV",
+    "mos": "ราคา {{px}} ต่ำกว่า Fair Value {{fv}} ระดับหนึ่ง แต่ FV ไวต่อตัวคูณ P/E มาก — ทยอยสะสมเมื่อเข้าโซน MOS 20% ที่ {{mos20}} เป็นหลัก",
+    "verdictHeadline": "KKR — Alt Asset Giant ถูกกดราคา: Value Pick ถ้าเชื่อ Realization ฟื้น",
+    "verdictBody": "KKR เป็นผู้นำระดับโลกด้าน Alternative Asset Management (AUM $744B +17%) ที่มี FRE recurring มั่นคง ($3.7B margin 69%) + ประกัน Global Atlantic เป็น permanent capital base + Strategic Holdings สร้าง income ระยะยาว ราคาฟื้นจากจุดต่ำสุดรายเดือน $87.68 (ก.พ. 69) มาอยู่ที่ {{px}} ต่ำกว่า Fair Value {{fv}} ({{mos}}) — แต่ FV มาจากตระกูล P/E ตระกูลเดียวที่ช่วงตัวคูณกว้าง จึงควรถือเป็นประมาณการหยาบ ผู้ที่ถืออยู่แล้วยังได้ประโยชน์จากการฟื้นของ realization ส่วนนักลงทุนใหม่ควรทยอยเข้าและเน้นโซน MOS 20%",
+    "strategy": "ราคาปัจจุบัน {{px}} ต่ำกว่า FV {{fv}} · ทยอยสะสมเมื่อเข้าโซน MOS 20% ที่ {{mos20}} · เป้าระยะกลางคือ FV {{fv}} · ระยะยาวเป้านักวิเคราะห์ {{analyst.target}} ถ้า realization + FRE ฟื้น · ทบทวนสมมติฐานถ้าหลุดจุด MOS 30% ที่ {{mos30}}",
+    "disclaimerSources": "ที่มาข้อมูล: StockAnalysis.com · Yahoo Finance · KKR Investor Relations · SEC Filings"
+  },
+  "text": {
+    "valHint": "2 วิธี ตระกูลเดียว (P/E มัธยฐานย้อนหลัง) · นับเป็นเสียงเดียว",
+    "disclaimerAssump": " P/ANI เป้าหมาย, อัตราเติบโต ANI และสภาวะ realization market ในอนาคต"
+  },
+  "catalysts": [
+    "<b>FRE Recurring มั่นคง:</b> Fee-Related Earnings $3.7B (margin 69%) เป็น recurring revenue ทนทานต่อ cycle ตลาด — ให้ floor กำไรที่มั่นคง",
+    "<b>Global Atlantic (Insurance):</b> ถือ 100% = permanent capital base + insurance float ลดความผันผวน ANI เพิ่ม predictability",
+    "<b>AUM Scale $744B (+17%):</b> ขนาดและ brand ของ KKR เป็น moat — LP ใหญ่ทั่วโลกเลือก KKR เพราะ track record + diversification ข้าม asset class",
+    "<b>Rate Cut Cycle:</b> เมื่อดอกเบี้ยลด → realization activity ฟื้น (IPO/M&A market เปิด) → Carried Interest + ANI เร่งตัว → multiple rerating",
+    "<b>เป้านักวิเคราะห์ {{analyst.target}} ({{analyst.pct}}):</b> Consensus Buy จาก 20 รายสะท้อนความเชื่อมั่นในโมเดลธุรกิจระยะยาว",
+    "<b>Strategic Holdings:</b> กำไรจากบริษัทในพอร์ตที่ถือระยะยาว (ไม่ขาย) เพิ่ม ANI โดยไม่ต้อง exit — สร้าง recurring income stream ใหม่"
+  ],
+  "risks": [
+    "<b>Realization Risk (cyclical):</b> ดอกเบี้ยสูงต่อเนื่อง → IPO/M&A ชะงัก → Carried Interest ล่าช้า → ANI ต่ำกว่าคาด — ความเสี่ยงหลักระยะสั้น",
+    "<b>GAAP ผันผวนสูง:</b> GAAP EPS แกว่งรุนแรงจาก mark-to-market portfolio → อาจทำให้ผู้ลงทุน retail เข้าใจผิด/panic sell",
+    "<b>EPS ต้องฟื้นสู่ consensus:</b> FY2026e $6.32 สูงราว 2 เท่าของ EPS TTM {{eps}} — ทำได้เฉพาะเมื่อ exit market เปิดกว้าง ถ้า higher-for-longer ยาวนานจะเลื่อนออกไป",
+    "<b>การแข่งขัน BX / Apollo / Ares:</b> Blackstone (AUM $1T+), Apollo, Ares โตเร็ว — LP มีทางเลือกมากขึ้น กดดัน fee rate",
+    "<b>Regulatory Risk:</b> Private credit และ insurance (Global Atlantic) อยู่ใน regulatory spotlight — กฎเกณฑ์ใหม่อาจเพิ่มต้นทุน compliance",
+    "<b>Key Man Risk:</b> Henry Kravis / George Roberts ผู้ก่อตั้งสูงวัย — succession risk แม้ทีมผู้บริหารรุ่นใหม่จะแข็งแกร่ง"
+  ],
+  "extras": [],
+  "_sig": "sha256:5ffb9f67bf74410582a534939ac3dcf0fe94b74944e7467f6ac962a6c34a6de7"
+}
