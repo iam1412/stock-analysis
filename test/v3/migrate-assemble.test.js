@@ -740,7 +740,8 @@ const runH = (sym, html) => { const p = PV.parseV2(sym, html); const r = A.assem
   t.eq(A.qualifierOf('EPS forward $5.10 → × P/E 22x'), '', 'round 2: lead-in with an unconsumed "forward" → nothing carried');
   t.eq(A.qualifierOf('non-GAAP EPS $4.88 ⇒ × 32x'), '', 'round 2: lead-in with "non-GAAP" → nothing carried');
   t.eq(A.qualifierOf('ปันผล forward D₁ = ปันผล $2.10 × (1+g); g 3%, r 8%'), '', 'round 2: PKG shape (lead-in "ปันผล forward D₁") → nothing carried from it');
-  t.eq(A.qualifierOf('FCF ฐานของบริษัทปีนี้ ~$2.0B → FCF × 20x'), '', 'round 2: HON shape (lead-in with a money literal) → not carried');
+  // fix round 3 (ruling B): กฎ "ข้อความนำที่มีตัวเลขเงิน = ไม่พก" ถอนแล้ว — ข้อความนำที่ไม่มีคำฐานพกทั้งท่อน (ตัวเลขตามที่ v2 พิมพ์)
+  t.eq(A.qualifierOf('FCF ฐานของบริษัทปีนี้ ~$2.0B → FCF × 20x'), 'FCF ฐานของบริษัทปีนี้ ~$2.0B', 'round 3 (ruling B): lead-in with a money literal but no basis word → carried whole');
   t.eq(A.qualifierOf('ปรับ combined ratio เป็น 88% → EPS $23 × P/E 14x'), 'ปรับ combined ratio เป็น 88%', 'round 2: CB lead-in (no basis word · % only) still carried whole');
   const vcell = (k, v) => `<div class="vcell"><div class="k">${k}</div><div class="v">${v}</div></div>`;
   const withCell = (cell) => raw('CASY').replace(/(<div class="vgrid">[\s\S]*?)(\n\s*<\/div>\s*<div class="zone">)/, `$1\n        ${cell}$2`);
@@ -751,5 +752,16 @@ const runH = (sym, html) => { const p = PV.parseV2(sym, html); const r = A.assem
   const vr = runH('CASY', withCell(vcell('EV/EBITDA (บริบท)', '9.5 เท่า — กลุ่ม 11.3–24.6')));
   t(!vr.doc.verdict && vr.notes.H.some((h) => /verdict\.extraCells "EV\/EBITDA \(บริบท\)" holds a price-bound literal/.test(h)), 'round 2: VRANDA shape (current multiple) → H', JSON.stringify(vr.notes.H));
   t.eq(runH('CASY', withCell(vcell('จุดทยอยสะสม', 'ใต้มูลค่าเหมาะสม'))).doc.verdict, { extraCells: [{ k: 'จุดทยอยสะสม', v: 'ใต้มูลค่าเหมาะสม' }] }, 'round 2: genuine author cell still carried');
+}
+// ── Plan 4c-prep Task 5 fix round 3 — ruling A (option ii): basis words on basis-labelled legs are never carried unless consumed ──
+{
+  const legOf = (mname, mdesc, mval, f) => A.legsOf({ legs: [{ mname, mdesc, mval, mdescHtml: mdesc }] }, f, 'USD').legs[0];
+  const hon = legOf('1. P/E Valuation', 'EPS $8.20 (adjusted FY2026E, กลาง guidance $8.05–$8.35) × P/E 22x — premium คุณภาพ', '$180.40', { eps: 8.2 });
+  t(hon && hon.method === 'pe' && !hon.inputs.base && !/adjusted|guidance/.test(hon.note || '') && /premium คุณภาพ/.test(hon.note || ''), 'ruling A: HON shape — basis parenthetical on a pe leg without a base → not carried (other reasoning kept)', JSON.stringify(hon));
+  const sre = legOf('1. DDM / Gordon Growth', 'D₁ = ปันผล $2.63 × (1+g); g 5.5%, r 8.0% → ปันผลโตต่อเนื่อง 4 ปี (~4%/ปี) ผสาน guidance EPS growth ระยะยาว 7-9% แบบระมัดระวัง', '$111.00', { dps: 2.5 });
+  t(sre && sre.method === 'ddm' && /ผสาน guidance EPS growth/.test(sre.note || ''), 'ruling A: SRE shape — growth reasoning on a ddm leg still carried', JSON.stringify(sre && sre.note));
+  const pos = legOf('1. P/E Valuation', 'EPS $5.10 × P/E 22x — premium compounder ค่าเฉลี่ย 5 ปี', '$112.20', { eps: 5.1 });
+  t(pos && /premium compounder/.test(pos.note || ''), 'ruling A: pe leg reasoning without basis words still carried', JSON.stringify(pos && pos.note));
+  t.eq(A.qualifierOf('EPS forward $5.10 → × P/E 22x'), '', 'ruling B keeps the lead-in basis-word check (all legs)');
 }
 t.done();

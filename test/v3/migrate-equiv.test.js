@@ -34,7 +34,15 @@ function recompare(m, html, mutate) {
   t(same.textLost.length === 0 && same.numberValue.length === 0 && same.zones.every((z) => !z.runs.length), 'compare(page, page) → no runs'); }
 // acceptance (fix round 1 · controller ruling): TEXT LOST = 0 on ≥5 fixtures · not HUMAN on ≥4 (spec §11 row 4b: CLEAN มี TEXT LOST = 0)
 // SGC (TH) / NFG (US) = corpus docs with the template-default §2 hint ("โดยประมาณ"), no H note, TEXT LOST 0 — frozen from reports/ 25 ก.ย. 69
-const NON_HUMAN = ['CASY', 'FTV', 'SRE', 'SGC', 'NFG'];
+// Plan 4c-prep Task 5 round 3 ruling: basis words on a pe leg without a consumed base are never carried —
+//  FTV leg 1 tail "อิง TTM adjusted diluted EPS (continuing ops) แบบอนุรักษ์นิยม ไม่รวม upside จาก guidance FY26" (adjusted · guidance)
+//  ⇒ TEXT LOST ⇒ FTV = HUMAN (re-pinned below, not dropped) · เกณฑ์ spec §11 row 4b ยังผ่าน: TEXT LOST 0 บน 5 ใบ (BBL CASY SRE SGC NFG) · ไม่ HUMAN 4 ใบ (CASY SRE SGC NFG)
+const NON_HUMAN = ['CASY', 'SRE', 'SGC', 'NFG'];
+const FTV_LOST = ['อิง', 'continuing', 'ops', 'แบบอนุรักษ์นิยม', 'ไม่รวม', 'upside', 'guidance'];
+{ const m = migrate('FTV', raw('FTV'));
+  t.eq(m.eq.textLost, FTV_LOST, 'FTV (round 3 ruling): pe-leg tail with basis words (adjusted · guidance) not carried → TEXT LOST');
+  t.eq(BK.bucketOf(m.notes, m.eq).bucket, 'HUMAN', 'FTV (round 3 ruling): → HUMAN'); }
+t(['BBL', ...NON_HUMAN].length >= 5 && NON_HUMAN.length >= 4, 'spec §11 row 4b acceptance still met: TEXT LOST 0 on ≥5 fixtures · not HUMAN on ≥4');
 for (const sym of ['BBL', ...NON_HUMAN]) {
   const m = migrate(sym, raw(sym));
   // final-review I-1: BBL leg 1 "Normalized EPS ~฿22 × P/E เฉลี่ย ~9.0x" — the "เฉลี่ย" source claim sits in the formula head
@@ -207,7 +215,9 @@ t(EQ.TEMPLATE_VOCAB && EQ.TEMPLATE_VOCAB.s3.includes('เฉลี่ย') && EQ
 }
 // final-review I-1 — author text inside a computed leg's .mdesc: carried to leg.note (qualifierOf) or TEXT LOST — never silently dropped
 {
-  const FTV = raw('FTV');
+  // Plan 4c-prep Task 5 round 3 ruling: FTV leg 1 tail (adjusted · guidance) ไม่ถูกพกแล้ว — test ในบล็อกนี้วัดขา 2/3 จึงกลางคำฐานของขา 1 ออกก่อน (ไม่งั้นคำขา 1 ปนใน textLost)
+  const FTV = raw('FTV').replace('อิง TTM adjusted diluted EPS (continuing ops) แบบอนุรักษ์นิยม ไม่รวม upside จาก guidance FY26', 'อิง TTM diluted EPS (continuing ops) แบบอนุรักษ์นิยม ไม่รวม upside');
+  t(FTV !== raw('FTV'), 'I-1 setup: FTV leg 1 basis words neutralised');
   const L2 = '÷ ~305M หุ้น</div>', L3 = '(FCF yield เป้าหมาย ~4.9%)</div>';
   t(FTV.includes(L2) && FTV.includes(L3), 'I-1 setup: FTV leg 2/3 mdesc anchors found');
   // WHA-shaped nested parens + inner dash → whole parenthetical carried, no orphan ")"

@@ -24,7 +24,8 @@ const realBefore = fs.readdirSync(REAL).length;
 {
   const out = path.join(tmp, 'sweep');
   const r = cli(['sweep', ...common, '--out', out]);
-  t(r.code === 0 && /sweep: 7 ใบ · CLEAN \d+ · VALUE-DRIFT \d+ · HUMAN 3 · TEXT LOST ใน CLEAN 0/.test(r.out), 'sweep: 7 fixtures · HUMAN 3 (AAPL BBL DDOG) — DPZ out by cap 8 (spec §3.7 ง)', r.out.slice(-400));
+  // Plan 4c-prep Task 5 round 3 ruling: basis words on a pe leg without a consumed base are never carried ⇒ FTV (leg 1 tail "adjusted … guidance") = HUMAN
+  t(r.code === 0 && /sweep: 7 ใบ · CLEAN \d+ · VALUE-DRIFT \d+ · HUMAN 4 · TEXT LOST ใน CLEAN 0/.test(r.out), 'sweep: 7 fixtures · HUMAN 4 (AAPL BBL DDOG FTV) — DPZ out by cap 8 (spec §3.7 ง)', r.out.slice(-400));
   t(fs.existsSync(out + '.md') && fs.existsSync(out + '.csv'), 'sweep writes md + csv');
   const csv = fs.readFileSync(out + '.csv', 'utf8').trim().split('\n');
   t(csv.length === 8 && /^symbol,market,bucket,reasons,legs,fvLegs,textLost,numberValue,rdRows,proseStale,customCards,fNotes,driftClass,maxDeltaPct$/.test(csv[0]), 'csv header + 7 rows', csv[0]);
@@ -116,10 +117,11 @@ const realBefore = fs.readdirSync(REAL).length;
 }
 // convert — gate failure after write restores the .html and removes the .json (injected checkDoc)
 {
-  const before = fs.readFileSync(path.join(REP, 'FTV.html'));
+  // Plan 4c-prep Task 5 round 3 ruling: FTV = HUMAN now (convert refuses before checkDoc) ⇒ this path uses SRE (VALUE-DRIFT) — same assertions
+  const before = fs.readFileSync(path.join(REP, 'SRE.html'));
   const lines = [];
-  const code = MV.runConvert('FTV', { ...MV.parseArgs([...common, '--write', '--accept-drift']) }, (s) => lines.push(s), { checkDoc: () => ({ errors: [{ id: 'E99', msg: 'injected' }], warnings: [] }) });
-  t(code === 1 && fs.existsSync(path.join(REP, 'FTV.html')) && !fs.existsSync(path.join(REP, 'FTV.json')) && fs.readFileSync(path.join(REP, 'FTV.html')).equals(before) && lines.some((l) => /E99/.test(l)), 'checkDoc error → .html restored byte-identical, .json removed, exit 1', lines.join('\n'));
+  const code = MV.runConvert('SRE', { ...MV.parseArgs([...common, '--write', '--accept-drift']) }, (s) => lines.push(s), { checkDoc: () => ({ errors: [{ id: 'E99', msg: 'injected' }], warnings: [] }) });
+  t(code === 1 && fs.existsSync(path.join(REP, 'SRE.html')) && !fs.existsSync(path.join(REP, 'SRE.json')) && fs.readFileSync(path.join(REP, 'SRE.html')).equals(before) && lines.some((l) => /E99/.test(l)), 'checkDoc error → .html restored byte-identical, .json removed, exit 1', lines.join('\n'));
 }
 // report.js — driftClass / maxDeltaPct
 {

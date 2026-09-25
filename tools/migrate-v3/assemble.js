@@ -310,14 +310,19 @@ function basisTainted(text, consumed) {
     return SY.FACT_WORDS.some((re) => re.test(bare)) || SY.qualifierBlocked(tk);
   });
 }
-const MONEY_LIT = /(?:US\$|\$|฿)\s*[0-9]|[0-9][0-9,.]*\s*บาท/;
+// ขาที่ mdesc ของ v3 พิมพ์ป้ายฐานของตัวตั้งจากงบ ("(TTM)" · "adj." · forward) — note ที่มีคำฐาน/งวดขัดป้ายนั้นได้ (fix round 3 · ruling A = option ii)
+const BASIS_METHODS = new Set(['pe', 'pfcf', 'pffo', 'ps', 'pbv']);
 function qualifierOf(prose, consumed, leg) {
   consumed = consumed || new Set();
   const t = String(prose || '');
   const d = depths(t);
   let head = t, tail = '';
   for (const m of t.matchAll(/\s[—–]\s/g)) if (d[m.index + 1] === 0) { head = t.slice(0, m.index); tail = t.slice(m.index + m[0].length).trim(); break; }
-  const out = [];
+  // fix round 3 (ruling A · option ii): ขาที่ v3 พิมพ์ป้ายฐาน (BASIS_METHODS) — ทุกทางที่พก (ป้าย ":" · ท่อนหลัง · วงเล็บ · หาง · round 3 · ข้อความนำ)
+  //  ข้อความที่มีคำฐาน/งวดที่ baseOf ไม่ได้กิน = ไม่พก (คำคง TEXT LOST → HUMAN · HON "adjusted FY2026E, กลาง guidance …") · ddm/dcf/declared = ไม่แตะ (SRE "guidance EPS growth")
+  const gate = !!(leg && BASIS_METHODS.has(leg.method));
+  const out0 = [];
+  const out = { push: (...xs) => { for (const x of xs) if (!(gate && basisTainted(x, consumed))) out0.push(x); } };
   // ป้ายนำ "สมมติฐานของผู้วิเคราะห์เอง: FCF …" (HD ONTO) = คำผู้เขียนหน้าสูตร — ":" แรกที่ความลึก 0
   const lead = /^([^:()]{1,80}):\s/.exec(head);
   if (lead && hasProse(lead[1])) { out.push(lead[1].trim()); head = head.slice(lead[0].length); }
@@ -325,15 +330,16 @@ function qualifierOf(prose, consumed, leg) {
   // ท่อนสูตร = ท่อนแรกที่มี "×" · ท่อนก่อนหน้า = ข้อความนำของผู้เขียน ("ปรับ combined ratio เป็น 88% (…) → EPS × P/E" · CB) — พกทั้งท่อนหรือไม่พกเลย (ห้ามแตกเป็นคำ · ruling I-1)
   const fi = Math.max(0, segs.findIndex((x) => /×|&times;/.test(x)));
   segs.forEach((seg, i) => {
-    // ข้อความนำ: มีคำฐาน/งวด (basisTainted ใน push) หรือมีตัวเลขเงิน ($/฿/บาท — ตรวจไม่ได้ใน note · fix round 2) = ไม่พกเลย · % ล้วนยังพกได้ ("combined ratio 88%")
+    // ข้อความนำ (ทุกขา · fix round 2): มีคำฐาน/งวดที่ไม่ได้ถูกกิน = ไม่พกเลย · ตัวเลข/เงินของผู้เขียนพกได้ตามที่ v2 พิมพ์ (fix round 3 · ruling B ถอนกฎตัวเลขเงิน)
     //  (ตรวจคำฐานนอกวงเล็บของข้อความนำ — CB "(ระดับ "ปกติ" ในระยะยาว)" คือคำอธิบาย combined ratio ไม่ใช่ฐาน EPS · ruling: CB ยังพกทั้งท่อน)
-    if (i < fi) { if (MONEY_LIT.test(seg) || basisTainted(outsideParens(seg), consumed)) return; if (headTokens(seg).some((tk) => !/\//.test(tk) && isProseToken(tk, true)) && seg.trim()) out.push(seg.trim()); else for (const p of topParens(seg)) if (p.inner && hasProse(p.inner)) out.push(p.inner); return; }
+    //  ข้อความนำพกตรง (out0 — ไม่ผ่านประตู ruling A ที่ตรวจทั้งวงเล็บ · ruling B: ตรวจนอกวงเล็บเท่านั้น)
+    if (i < fi) { if (basisTainted(outsideParens(seg), consumed)) return; if (headTokens(seg).some((tk) => !/\//.test(tk) && isProseToken(tk, true)) && seg.trim()) out0.push(seg.trim()); else for (const p of topParens(seg)) if (p.inner && hasProse(p.inner)) out.push(p.inner); return; }
     if (i > fi && hasProse(outsideParens(seg))) { if (seg.trim()) out.push(seg.trim()); return; }
     if (i === fi) out.push(...headRuns(seg, consumed, leg));
     for (const p of topParens(seg)) if (p.inner && hasProse(p.inner)) out.push(p.inner);
   });
   if (tail) out.push(tail);
-  return out.join(' · ');
+  return out0.join(' · ');
 }
 /** ชื่อขาของผู้เขียน (Plan 4c-prep D4): ตัดเลขนำ + ป้ายบริบทท้ายชื่อ · reason = คำอื่นในป้ายบริบท (→ legs[i].note ใน Task 5) · gate ใช้ฟังก์ชันเดียวกันทั้งสองฝั่ง */
 const CTX_MARK = /(?:^|[\s(—–-])(?:บริบท|ไม่รวมในกรอบ(?:\s*FV)?|ไม่รวมใน\s*(?:FV|ค่าเฉลี่ย|การเฉลี่ย)|ไม่นับใน\s*(?:FV|ค่าเฉลี่ย|กรอบ)?|ไม่เข้าค่าเฉลี่ย)(?=[\s)/—–-]|$|เท่านั้น)/g;   // "บริบทเท่านั้น" (ไทยไม่เว้นวรรค) = ป้าย + reason "เท่านั้น"
