@@ -298,4 +298,16 @@ for (const f of ['BBL-real', 'EQIX-real', 'FER-real', 'ZTS-real', 'BBL', 'ZTS'])
   t.eq(S.validate(d).filter((e) => /exitDp/.test(e.path)), [], 'scenarios.exitDp 1 accepted');
   d.scenarios.exitDp = 3; t(S.validate(d).some((e) => e.path === 'scenarios.exitDp'), 'exitDp 3 rejected (0–2)');
 }
+
+// Plan 4b Task 3 — meta.migratedFrom (spec §8 D1) (brief's load()/errsOf() = base()/S.validate() here)
+{
+  const d = base(); d.meta.migratedFrom = { updated: '2026-09-22T07:22:55+07:00', v2Hash: 'abcdef012345' };
+  t.eq(S.validate(d).filter((e) => /migratedFrom/.test(e.path)), [], 'migratedFrom {updated, v2Hash} accepted');
+  d.meta.migratedFrom = { updated: '2026-09-22', v2Hash: 'abcdef012345' };
+  t(S.validate(d).some((e) => e.path === 'meta.migratedFrom.updated'), 'updated must be the manifest ISO datetime with offset');
+  d.meta.migratedFrom = { updated: '2026-09-22T07:22:55+07:00', v2Hash: 'ABCDEF' };
+  t(S.validate(d).some((e) => e.path === 'meta.migratedFrom.v2Hash'), 'v2Hash must be 12 lowercase hex');
+  d.meta.migratedFrom = { updated: '2026-09-22T07:22:55+07:00', v2Hash: 'abcdef012345', extra: 1 };
+  t(S.validate(d).some((e) => e.path === 'meta.migratedFrom.extra'), 'closed object');
+}
 t.done();

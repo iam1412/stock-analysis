@@ -460,6 +460,19 @@ ok(b.injectTA(taBody, 'AAPL', null, { currency: 'USD' }, 'assets/ta-abc123.js') 
   ok(o1.includes('<div class="px">฿188.00</div>') && /gpos\(188\)/.test(o1), 'v1: identity ของ body (ไม่มี token) + engine เดิม');
 }
 
+// ── Plan 4b Task 3 (spec §8 · D1): updatedFor — ใบ migrate คง updated เดิมเมื่อแถว manifest ยังถือ hash v2 ──
+{
+  const OLD = '2026-09-22T07:22:55+07:00', NOW = '2026-09-25T12:00:00+07:00';
+  const mf = { updated: OLD, v2Hash: 'abcdef012345' };
+  ok(b.updatedFor({ hash: 'abcdef012345', updated: OLD }, 'v3hash000001', mf, NOW) === OLD, 'migratedFrom: manifest row still has the v2 hash → keep updated');
+  ok(b.updatedFor({ hash: 'v3hash000001', updated: OLD }, 'v3hash000001', mf, NOW) === OLD, 'after the first build: v3 hash matches → keep (normal path)');
+  ok(b.updatedFor({ hash: 'v3hash000001', updated: OLD }, 'v3hash000002', mf, NOW) === NOW, 'Review Focus 4: later real UPDATE (hash moved, row no longer v2) → stamp now');
+  ok(b.updatedFor(undefined, 'v3hash000001', mf, NOW) === NOW, 'no committed row → now (nothing to preserve — tighter rule, advisor)');
+  ok(b.updatedFor({ hash: 'other0000000', updated: OLD }, 'v3hash000001', mf, NOW) === NOW, 'row hash ≠ v2Hash (cron moved the v2 hash after the migrator ran) → now (two-build gate catches it)');
+  ok(b.updatedFor({ hash: 'x', updated: OLD }, 'y', null, NOW) === NOW, 'no migratedFrom → today\'s rule');
+  ok(b.updatedFor({ hash: 'y', updated: OLD }, 'y', null, NOW) === OLD, 'no migratedFrom, hash equal → keep (today\'s rule)');
+}
+
 console.log('\n' + '─'.repeat(50));
 console.log(`build-test: ${n - fails}/${n} ผ่าน`);
 if (fails) { console.log('\n❌ build.js มีพฤติกรรมผิด — แก้ build.js ก่อน push\n'); process.exit(1); }

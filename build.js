@@ -641,6 +641,13 @@ function reportEntries(dir) {
   if (both.length) throw new Error(`reports/: ${both.join(', ')} มีทั้ง .html และ .json (ลบไฟล์ v2 ออกเมื่อย้ายเป็น v3)`);
   return names;
 }
+// updated ของแถว manifest (spec §8 · Plan 4b D1): hash ตรง = คงเดิม · ใบ migrate (meta.migratedFrom) ที่แถว committed ยังถือ hash v2 = คง
+// updated ที่ migrator ลอกมาจาก HEAD:reports.json · นอกนั้น = ประทับ now (รวมไม่มีแถวเดิม — ไม่มีอะไรให้คง)
+function updatedFor(old, h, mf, nowISO) {
+  if (old && old.hash === h && old.updated) return old.updated;
+  if (mf && old && old.hash === mf.v2Hash && mf.updated) return mf.updated;
+  return nowISO;
+}
 function loadReportSource(dir, name, seeds) {
   const symbol = name.replace(/\.(html|json)$/i, '');
   const raw = fs.readFileSync(path.join(dir, name), 'utf8');
@@ -648,14 +655,14 @@ function loadReportSource(dir, name, seeds) {
     const doc = JSON.parse(raw);
     if (doc.symbol !== symbol) throw new Error(`${name}: symbol "${doc.symbol}" ไม่ตรงชื่อไฟล์`);
     const view = V3C.compute(doc, { seeds });
-    return { symbol, file: symbol + '.html', content: V3R.toV2Source(doc, view), hash: V3IO.freshHash(doc), v3: true };
+    return { symbol, file: symbol + '.html', content: V3R.toV2Source(doc, view), hash: V3IO.freshHash(doc), v3: true, migratedFrom: (doc.meta && doc.meta.migratedFrom) || null };
   }
-  return { symbol, file: name, content: raw, hash: freshHash(raw), v3: false };
+  return { symbol, file: name, content: raw, hash: freshHash(raw), v3: false, migratedFrom: null };
 }
 const SEEDS = JSON.parse(fs.readFileSync(path.join(ROOT, 'tools', 'seeds.json'), 'utf8'));
 
 // export ฟังก์ชันให้ unit-test (test/build-test.js) — ต้องอยู่ก่อนโค้ดที่รัน build จริง
-module.exports = { extractMeta, extractMetrics, freshHash, injectModelCredit, injectContactFooter, injectFooterCopyright, COPYRIGHT, injectTA, parseJsonScript, decorateReport, renderTagRow, pickHighlight, computeLeaders, HL_DEFS, AI_MODEL, AI_MAKER, expandReport, renderHead, renderEngine, validateReportData, THEME_DEFAULTS, deriveTheme, stripDecorEmoji, injectSectionNav, reportEntries, loadReportSource };
+module.exports = { extractMeta, extractMetrics, freshHash, injectModelCredit, injectContactFooter, injectFooterCopyright, COPYRIGHT, injectTA, parseJsonScript, decorateReport, renderTagRow, pickHighlight, computeLeaders, HL_DEFS, AI_MODEL, AI_MAKER, expandReport, renderHead, renderEngine, validateReportData, THEME_DEFAULTS, deriveTheme, stripDecorEmoji, injectSectionNav, reportEntries, loadReportSource, updatedFor };
 // ถูก require เข้ามาเพื่อเทส → ส่งออกฟังก์ชันแล้วหยุด ไม่รัน build (top-level return ใช้ได้ใน CommonJS module)
 if (require.main !== module) return;
 
@@ -693,9 +700,9 @@ log('assets:', TA_ASSET);
 const reports = [];
 if (fs.existsSync(REPORTS_DIR)) {
   for (const name of reportEntries(REPORTS_DIR)) {
-    const { symbol, file, content, hash: h } = loadReportSource(REPORTS_DIR, name, SEEDS);   // v2: hash = freshHash(content) เดิม
+    const { symbol, file, content, hash: h, migratedFrom } = loadReportSource(REPORTS_DIR, name, SEEDS);   // v2: hash = freshHash(content) เดิม
     const old = prev[symbol];
-    const updated = old && old.hash === h && old.updated ? old.updated : nowISO; // เปลี่ยน → ประทับเวลาใหม่
+    const updated = updatedFor(old, h, migratedFrom, nowISO); // เปลี่ยน → ประทับเวลาใหม่ (ใบ migrate คง updated v2 — D1)
 
     const rec = { symbol, file, ...extractMeta(content, symbol), metrics: extractMetrics(content), updated, hash: h };
     rec.tags = tagLib.tagsOf(symbol, TAG_DATA);

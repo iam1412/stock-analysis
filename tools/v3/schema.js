@@ -143,7 +143,7 @@ function validate(doc) {
   const m = doc.meta;
   if (!isObj(m)) E('meta', 'ต้องมี (object)');
   else {
-    closed(m, 'meta', ['company', 'exchange', 'sub', 'headerTags', 'analysisDate', 'aiModel', 'sources', 'priceNote', 'themeLegacy', 'litReasons']);
+    closed(m, 'meta', ['company', 'exchange', 'sub', 'headerTags', 'analysisDate', 'aiModel', 'sources', 'priceNote', 'themeLegacy', 'litReasons', 'migratedFrom']);
     str(m.company, 'meta.company'); str(m.exchange, 'meta.exchange'); str(m.sub, 'meta.sub', { minLen: 10 });
     if (m.headerTags != null) strList(m.headerTags, 'meta.headerTags', 0, 3);   // ≤ 3 (Plan 4b Task 1 — ADR/dual listing)
     if (!ISO.test(m.analysisDate || '')) E('meta.analysisDate', 'ต้องเป็น ISO YYYY-MM-DD (ค.ศ.)');
@@ -164,6 +164,15 @@ function validate(doc) {
     if (m.litReasons != null) {
       if (!isObj(m.litReasons)) E('meta.litReasons', 'ต้องเป็น object { "<ข้อความใน {{lit:…}}>": "เหตุผล" }');
       else for (const [k, v] of Object.entries(m.litReasons)) str(v, `meta.litReasons[${JSON.stringify(k)}]`, { minLen: 5 });
+    }
+    // Plan 4b (spec §8 · D1): ที่มาของใบที่ migrate — build คง reports.json.updated เดิมเมื่อแถว manifest ยังถือ hash v2 · เขียนครั้งเดียวโดย migrator
+    if (m.migratedFrom != null) {
+      if (!isObj(m.migratedFrom)) E('meta.migratedFrom', 'ต้องเป็น object {updated, v2Hash}');
+      else {
+        closed(m.migratedFrom, 'meta.migratedFrom', ['updated', 'v2Hash']);
+        if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{2}:\d{2}$/.test(m.migratedFrom.updated || '')) E('meta.migratedFrom.updated', 'ต้องเป็น ISO datetime ของ reports.json (YYYY-MM-DDTHH:mm:ss+07:00)');
+        if (!/^[0-9a-f]{12}$/.test(m.migratedFrom.v2Hash || '')) E('meta.migratedFrom.v2Hash', 'ต้องเป็น freshHash ของใบ v2 (hex 12 ตัว)');
+      }
     }
   }
 
