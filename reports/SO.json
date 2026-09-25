@@ -1,0 +1,237 @@
+{
+  "v": 3,
+  "symbol": "SO",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "The Southern Company",
+    "exchange": "NYSE",
+    "sub": "บริษัทสาธารณูปโภคไฟฟ้า/ก๊าซรายใหญ่ • Georgia/Alabama/Mississippi Power • Southern Company Gas • Vogtle นิวเคลียร์เสร็จแล้ว • ดีมานด์ไฟพุ่งจาก data center ในจอร์เจีย",
+    "headerTags": [
+      "Utilities",
+      "Electric & Gas Regulated"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis.com",
+      "Yahoo Finance",
+      "Southern Company Investor Relations",
+      "Macrotrends"
+    ],
+    "themeLegacy": {
+      "accent": "#144E8C",
+      "accentDark": "#0C3460",
+      "darkGrad": "linear-gradient(135deg, #02060C 0%, #04101F 100%)",
+      "glow": "rgba(20,78,140,0.38)",
+      "subColor": "#5684bc",
+      "headerMuted": "#2b80e3",
+      "verdictText": "#CFDEEE",
+      "vcellLabel": "rgba(207,222,238,0.6)"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-22T00:04:26+07:00",
+      "v2Hash": "2e43a9e8d6d5"
+    }
+  },
+  "market": {
+    "px": 82.89,
+    "priceDate": "2026-09-24",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          94.04
+        ],
+        [
+          "พ.ย.25",
+          91.12
+        ],
+        [
+          "ธ.ค.25",
+          87.2
+        ],
+        [
+          "ม.ค.26",
+          89.31
+        ],
+        [
+          "ก.พ.26",
+          97.38
+        ],
+        [
+          "มี.ค.26",
+          96.52
+        ],
+        [
+          "เม.ย.26",
+          96.7
+        ],
+        [
+          "พ.ค.26",
+          92.05
+        ],
+        [
+          "มิ.ย.26",
+          95.71
+        ],
+        [
+          "ก.ค.26",
+          94.54
+        ],
+        [
+          "ส.ค.26",
+          88
+        ],
+        [
+          "ก.ย.26",
+          82.89
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 83.8,
+      "hi": 100.84
+    }
+  },
+  "fundamentals": {
+    "dps": 3.04,
+    "bvps": 39,
+    "shares": 1150362966,
+    "peAvg5y": 21.8,
+    "eps": 4.15,
+    "roe": 11.5,
+    "revenue": 30200000000,
+    "netMargin": 15.4,
+    "debtToEquity": 1.82,
+    "fy": {
+      "period": "FY2025",
+      "netIncome": 4340000000
+    },
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation (EPS diluted TTM)",
+      "inputs": {
+        "multiple": 21.8,
+        "multipleSource": "median5y"
+      },
+      "note": "21.8x คือมัธยฐาน P/E ย้อนหลัง 5 ปีของ SO เอง (ราคาเฉลี่ยรายปี ÷ EPS diluted FY2021–FY2025, ช่วง 19.0–28.0x) มาจากประวัติ ไม่ได้ลอกจาก P/E ปัจจุบัน",
+      "family": "market"
+    },
+    {
+      "method": "ddm",
+      "label": "DDM / Gordon Growth",
+      "inputs": {
+        "g": 4,
+        "r": 7.5
+      },
+      "note": "ตระกูลอิสระจาก P/E · สมมติฐานของผู้วิเคราะห์เอง",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "peAvg5y",
+      "pbv",
+      "netIncomeFy",
+      "eps",
+      "bvps",
+      "roe",
+      "revenue",
+      "netMargin",
+      "yield",
+      "debtToEquity"
+    ],
+    "notes": {
+      "mcap": "หุ้นคงเหลือ ~1.15B หุ้น (StockAnalysis)",
+      "pe": "EPS diluted TTM {{eps}} · fwd P/E ~18.4x (FY27e)",
+      "peAvg5y": "วัดจริงช่วง 19.0–28.0x (FY2021–FY2025)",
+      "pbv": "BVPS ~{{bvps}} · utility สูงกว่าค่าเฉลี่ย",
+      "netIncomeFy": "GAAP −1.4% YoY · TTM ~$4.66B",
+      "eps": "FY2025 $3.92 · FY26E $4.59",
+      "bvps": "book value per share FY2025",
+      "roe": "TTM · regulated utility; ROE นิ่ง",
+      "revenue": "TTM +6.4% YoY · FY2025 $29.6B",
+      "netMargin": "FCF TTM −$3.27B (capex cycle)",
+      "debtToEquity": "หนี้ ~$77.1B · bond proxy · rate-sensitive"
+    },
+    "hint": "ข้อมูล FY2025 / TTM"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 5,
+        "exitMultiple": 18,
+        "divCum": 9.12,
+        "desc": "ดอกเบี้ยสูงต่อ, rate case ไม่ผ่าน, load growth ช้ากว่าคาด",
+        "retNote": "(capital gain)"
+      },
+      {
+        "growth": 7,
+        "exitMultiple": 20,
+        "divCum": 9.12,
+        "desc": "data-center load growth ต่อเนื่อง, rate-base +6%, Fed ลดดอก",
+        "retNote": "(capital gain)"
+      },
+      {
+        "growth": 8,
+        "exitMultiple": 21,
+        "divCum": 9.12,
+        "desc": "AI/hyperscaler load เร่งตัว, multiple expansion, ดอกเบี้ยลงเร็ว",
+        "retNote": "(capital gain)"
+      }
+    ],
+    "exitDp": 0,
+    "note": "ราคาเป้าคิดจาก EPS diluted TTM ฐาน {{eps}} เติบโต 5–8%/ปีตาม rate-base growth ~5–7%; P/E ออก 18–21x ขึ้นกับ rate environment (ต่ำกว่ามัธยฐานประวัติ 21.8x ทั้งสามฉาก) ตัวเลขผลตอบแทนในการ์ดไม่รวมปันผล · ปันผล {{dps}}/ปี (~$9.12 ใน 3 ปี) เป็นส่วนเสริมที่ช่วย total return ในทุก scenario"
+  },
+  "analyst": {
+    "target": 100,
+    "n": null,
+    "rating": "Hold",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "SO ย่อตัวลงตลอดปี (ต.ค. 68 – ก.ย. 69) จากฐาน $94.04 ลงมาที่ {{px}} ยอดสูงสุดในกราฟที่ ก.พ. 69 ($97.38) ก่อนไหลลงต่อเนื่องตั้งแต่ ส.ค. 69 ราคาล่าสุด {{px}} อยู่ใกล้ 52w low ($83.80) และห่างจาก 52w high ($100.84) พอสมควร ตามแรงกดดันของ utility ที่ไวต่อดอกเบี้ย",
+    "valuation": "สองวิธีจากสองตระกูลอิสระ (P/E ที่ยึดมัธยฐานประวัติ vs DDM ที่ยึด r/g) ให้ค่า {{fvHigh}} และ $90.34 ห่างกันไม่ถึง 2 เท่า เฉลี่ย ~$90.4 → ปัด $90 กรอบ FV ตั้ง $87–$93 จาก sensitivity ของ P/E 20x–23x (EPS {{eps}}) และ DDM g 3.5–4.5% · Forward P/E (FY26E EPS $4.59) และเป้านักวิเคราะห์ (~$100, 19 ราย) เป็นเพียงบริบท ไม่ได้นับเป็นขาของ FV g 4% = rate-base growth ระยะยาว, r 7.5% = risk-free + premium เป็นสมมติฐานของผู้วิเคราะห์เอง",
+    "gauge": "ราคาปัจจุบัน {{px}} ต่ำกว่า Fair Value {{fv}} เล็กน้อย (MOS {{mos}}) — ส่วนเผื่อบาง โซนน่าสนใจสำหรับ value คือจุดซื้อ MOS 20% ที่ {{mos20}}, deep value ที่ {{mos30}} นักวิเคราะห์เป้าเฉลี่ยสูงกว่าที่ ~$100 สะท้อน data-center load growth ที่โมเดลนี้ยังไม่ได้คิดเต็มที่",
+    "mos": "ราคาต่ำกว่ามูลค่าเหมาะสมเล็กน้อย — MOS บาง ยังไม่ถึงโซน 20% · ทยอยสะสมได้ระมัดระวัง",
+    "verdictHeadline": "Utility คุณภาพดี — ราคาเต็ม, รอย่อก่อนสะสม",
+    "verdictBody": "Southern Company (SO) คือ regulated utility ขนาดใหญ่ของสหรัฐ — รายได้ TTM ~$30.2B (+6.4%), Vogtle nuclear เสร็จแล้ว, rate-base โต ~5–7%/ปี และ data-center load growth ในจอร์เจียเป็นแรงหนุน ปันผล {{dps}}/ปี (yield ~3.5%) เป็น floor ของ total return ราคาปัจจุบัน {{px}} ต่ำกว่า Fair Value {{fv}} (MOS {{mos}}) เล็กน้อย โดย FV มาจากสองตระกูลที่ให้ค่าใกล้กัน (P/E มัธยฐานประวัติ 21.8x และ DDM) ข้อควรระวังคือ FCF ติดลบ หนี้สูง และความไวต่อดอกเบี้ย — margin of safety บาง กลยุทธ์: ทยอยสะสมอย่างระมัดระวัง หรือรอโซน MOS 20% ที่ {{mos20}} สำหรับจุดเข้าที่ปลอดภัยกว่า",
+    "strategy": "ทยอยสะสมได้เมื่อราคาต่ำกว่า FV ({{fv}}) · yield ~3.5% ช่วย floor · จุด MOS 20% ที่ {{mos20}} คือโซนที่ปลอดภัยกว่า · ถือระยะยาวได้หากรับ rate-sensitive risk และ capex cycle",
+    "disclaimerSources": "ที่มา: StockAnalysis.com / Yahoo Finance / Southern Company Investor Relations / Macrotrends"
+  },
+  "text": {
+    "valHint": "2 ตระกูลสมมติฐาน"
+  },
+  "catalysts": [
+    "<b>Data center / AI load growth:</b> Georgia Power เป็นที่ตั้ง data center รายใหญ่ (Google, Microsoft, Meta) demand ไฟพุ่ง → rate-base expansion เร็วกว่า utility ทั่วไป",
+    "<b>Vogtle Nuclear Unit 3 & 4 เสร็จแล้ว:</b> ไม่มีความเสี่ยง cost overrun อีกต่อไป → baseload clean energy เต็มกำลัง → ราคาไฟต่ำกว่าก๊าซ",
+    "<b>ปันผลสม่ำเสมอ:</b> {{dps}}/ปี yield ~3.5% จาก cashflow ของธุรกิจ regulated → ดึงดูด income investor",
+    "<b>Rate-base growth ~5–7%/ปี:</b> regulated business → รายได้แน่นอน, rate case ผ่านง่ายใน Georgia (favorable regulatory)",
+    "<b>Fed rate cut cycle:</b> utility เป็น bond proxy → ราคาหุ้นปรับขึ้นเมื่อดอกเบี้ยลด; lower WACC → multiple expansion",
+    "<b>ประมาณการ FY26E EPS ~$4.59 / FY27E ~$4.92:</b> visible earnings growth → consensus upgrades"
+  ],
+  "risks": [
+    "<b>Rate sensitivity (bond proxy):</b> ดอกเบี้ยสูงต่อ / Fed hawkish → valuation กดดันต่อ; P/E ที่ ~20.6x อาจ re-rate ลงได้",
+    "<b>Capex หนัก → FCF ติดลบ:</b> FCF TTM −$3.27B, หนี้ ~$77.1B (D/E ~1.82x) ต้องออกหุ้น/หนี้ต่อเนื่อง → dilution + leverage เพิ่ม",
+    "<b>Regulatory risk:</b> rate cases ต้องผ่านอนุมัติรัฐ → ล่าช้า/ได้น้อยกว่าขอ → กระทบ ROE",
+    "<b>Valuation ไม่ถูกมาก:</b> ราคาต่ำกว่า FV เพียงเล็กน้อย → margin of safety บาง; ผลขึ้นกับ P/E ที่ตลาดให้ (มัธยฐานประวัติ 21.8x แต่ช่วงกว้าง 19–28x)",
+    "<b>โมเมนตัมราคาอ่อน:</b> ราคาไหลลงใกล้ 52w low ($83.80) → อาจลงต่อหากดอกเบี้ยขึ้น",
+    "<b>Climate / regulatory transition:</b> ต้นทุน decarbonization, retirement โรงไฟฟ้าถ่านหิน, FERC policy เปลี่ยน"
+  ],
+  "extras": [],
+  "_sig": "sha256:232c7fc2e0b8e688a81bc79a9f0a7c5025de1c178036e630372f57c2e5bbc982"
+}
