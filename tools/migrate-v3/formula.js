@@ -20,10 +20,13 @@ const FORMULA_VOCAB = new Set([
   'หุ้น', 'ต่อหุ้น', 'ล้านหุ้น', 'พันล้านหุ้น', 'หุ้นคงเหลือ', 'ล้านหุ้นคงเหลือ', 'หุ้นเฉลี่ย', 'หุ้นถัวเฉลี่ยปรับลด', 'หุ้นฐาน',
   'share', 'Share', 'shares', 'sh', 'ADS',
   // (3) ฐาน/งวดของตัวตั้ง — v3 พิมพ์ฐานเป็นป้ายของตัวเอง ("EPS (TTM)" · "EPS ปรับ") (CMCSA AAON AJG TLN AMZN BBL BKR COCOCO ALC AZN ALAB CP ADI AMKR DEO AFL WFC VRSN
-  //     RMD V EMA ENB AIT CAMT A ADI AXTI DY MC NXPI BBL EXE EL SNX FMC TXRH WCC MBK DDOG FNV AMAT TEL DTM · ปีงบ FY#### ทุกรูป = คีย์ FY# · FY#E · FY#e · FY#FY#)
+  //     EMA ENB AIT CAMT AXTI DY MC NXPI BBL EXE EL SNX TXRH WCC MBK DDOG FNV DTM · ปีงบจริง FY#### = คีย์ FY# · FY#FY# — ไม่รวม FY#E/FY#e)
   'diluted', 'GAAP', 'NonGAAP', 'TTM', 'EPSTTM', 'adj', 'Adj', 'Adjusted', 'adjusted', 'normalized', 'Normalized', 'norm', 'ปกติ', 'core', 'Core',
-  'forward', 'Forward', 'est', 'preexceptional', 'exAOCI', 'Tangible', 'CAD', 'CADUSD',
-  'FY', 'FY2026', 'FY26E', 'FY2026e', 'FY2021–FY2025', 'ปีงบ', 'ปีงบนี้', 'ปีงบปัจจุบัน', 'ปีล่าสุด', 'คาดการณ์', 'ประมาณการ', 'ล่วงหน้า',
+  'preexceptional', 'exAOCI', 'CAD', 'CADUSD',
+  'FY', 'FY2026', 'FY2021–FY2025', 'ปีงบ', 'ปีล่าสุด',
+  // ★ ไม่อยู่ในคลัง (final re-review I-3): ฐานคาดการณ์/ล่วงหน้า/tangible — forward · Forward · est · คาดการณ์ · ประมาณการ · ล่วงหน้า ·
+  //   FY#E · FY#e · ปีงบนี้ · ปีงบปัจจุบัน · Tangible = "ผู้เขียนใช้ฐานไหน" ที่ v3 พิมพ์เป็นฐานอื่น (CNC forward → "EPS adj. (TTM)" · WFC Tangible BVPS → BVPS)
+  //   ⇒ หายจากหน้า = TEXT LOST (HUMAN) · diluted/GAAP/adj/normalized/core/ปกติ คงไว้ (v3 พิมพ์ฐานเทียบเท่าผ่าน epsBasis)
   // (4) ชื่อตัวตั้ง/ตัวคูณในสูตร (AEVA AKAM CTSH AMKR AVAV CEG AMP BDMS COCOCO JNJ PB SRE BNS KEY PR9 BAX A BGC CHD COST BLK CRM MFC PNW CL · Fair Value = HUMAN)
   'รายได้', 'Revenue', 'Rev', 'Sales', 'รายได้ต่อหุ้น', 'ยอดขายต่อหุ้น', 'กำไรสุทธิ', 'DPS', 'EPS', 'ปันผลปัจจุบัน', 'ปันผลล่าสุด', 'ปันผลประกาศ',
   'payout', 'Payout', 'ratio', 'ratioROE', 'margin', 'ราคาต่อมูลค่าทางบัญชี', 'multiple', 'ตัวคูณ', 'เป้าหมาย', 'เป้า', 'target', 'fair', 'Fair', 'Value',

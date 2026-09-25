@@ -475,8 +475,8 @@ const asm = (sym, html) => A.assemble(PV.parseV2(sym, html), { seeds: SEEDS, hea
   t.eq(Q('D₁ = ปันผล $6.80 × (1+g); g 6.5%, r 9.0% → g สะท้อนการเติบโตปันผลระยะยาวที่ชะลอจาก ~10%+ ในอดีต, r ต่ำจาก beta 0.84'),
     'g สะท้อนการเติบโตปันผลระยะยาวที่ชะลอจาก ~10%+ ในอดีต, r ต่ำจาก beta 0.84', 'I-1: ADP-shaped explanation after "→" carried');
   t.eq(Q('EPS ~฿22 × P/E ~9x (กลางกรอบ (ช่วง 5 ปี) ของ BBL'), '', 'I-1: unclosed paren → nothing invented, no orphan fragment');
-  t(A.isProseToken('สมมติฐาน', true) && !A.isProseToken('WACC', true) && !A.isProseToken('6.8pp', true) && !A.isProseToken('FY2026E', true) && !A.isProseToken('เป้าหมาย', true) && A.isProseToken('เป้าหมาย', false) === false,
-    'I-1: isProseToken — author word vs formula vocab / number+unit / fiscal period / generated word');
+  t(A.isProseToken('สมมติฐาน', true) && !A.isProseToken('WACC', true) && !A.isProseToken('6.8pp', true) && !A.isProseToken('FY2026', true) && A.isProseToken('FY2026E', true) && A.isProseToken('forward', true) && A.isProseToken('Tangible', true) && !A.isProseToken('เป้าหมาย', true) && A.isProseToken('เป้าหมาย', false) === false,
+    'I-1: isProseToken — author word vs formula vocab / number+unit / actual fiscal period / generated word · forward/estimate/Tangible basis = author word (re-review I-3)');
 }
 // Plan 4b final review N-3 — singleTarget positive cases for the own-currency prefixes (US$ on a USD doc · ฿ on a THB doc)
 t.eq(A.singleTarget('~US$1,245.50 (Buy)', 'USD'), { v: 1245.5 }, 'N-3: "US$" target on a USD doc → value');

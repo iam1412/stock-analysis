@@ -209,5 +209,11 @@ t(EQ.TEMPLATE_VOCAB && EQ.TEMPLATE_VOCAB.s3.includes('เฉลี่ย') && EQ
   // an author word inside the formula head (qualifierOf does not carry it) → TEXT LOST; formula words (net debt · หุ้น) and generated words stay dropped
   const head = migrate('FTV', FTV.replace('Adjusted EBITDA TTM $1,270M ×', 'Adjusted EBITDA TTM $1,270M มะม่วงสุกงอม ×'));
   t(head.doc.legs[1].method === 'evebitda' && head.eq.textLost.length === 1 && head.eq.textLost[0] === 'มะม่วงสุกงอม', 'I-1: author word in the computed-leg formula head → TEXT LOST (only that word)', JSON.stringify(head.eq.textLost));
+  // re-review I-3 (CNC shape): a forward/estimate basis qualifier the v3 label replaces ("EPS forward normalized $2.86" → "EPS … (TTM) $2.86")
+  // is a changed fact, not a formula word → TEXT LOST → HUMAN · "normalized" stays dropped (v3 prints an equivalent basis)
+  const fwd = migrate('FTV', FTV.replace('EPS adj. $2.86 ×', 'EPS forward normalized $2.86 ×'));
+  t(FTV.includes('EPS adj. $2.86 ×') && fwd.doc.legs[0].method === 'pe' && fwd.eq.textLost.includes('forward') && !fwd.eq.textLost.includes('normalized'),
+    'I-3: CNC-shaped "EPS forward normalized" vs v3 basis label → "forward" TEXT LOST', JSON.stringify({ lost: fwd.eq.textLost, leg: fwd.doc.legs[0] }));
+  t.eq(BK.bucketOf(fwd.notes, fwd.eq).bucket, 'HUMAN', 'I-3: → HUMAN');
 }
 t.done();
