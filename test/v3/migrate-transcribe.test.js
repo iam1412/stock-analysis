@@ -79,10 +79,10 @@ const adopt = (extra, env) => cli(['adopt', 'AAPL', ...common, '--doc', WF, '--t
   const d2 = transcribed(); d2.scenarios.cases[2].exitMultiple += 1; put(d2);
   const r2 = adopt();
   t(r2.code === 1 && /Bull target: v2 417 · v3 4\d\d\.\d\d/.test(r2.out) && !/✗ FV:/.test(r2.out), 'adopt refuses when a scenario target differs (only that check fails)', r2.out.slice(-600));
-  // meta.migratedFrom differing from the migrator's → refused
-  const d3 = transcribed(); d3.meta.migratedFrom = { ...d3.meta.migratedFrom, v2Hash: '000000000000' }; put(d3);
+  // meta.migratedFrom.updated differing from the HEAD manifest row → refused (a draft of another v2 revision)
+  const d3 = transcribed(); d3.meta.migratedFrom = { ...d3.meta.migratedFrom, updated: '2026-08-01T00:00:00+07:00' }; put(d3);
   const r3 = adopt();
-  t(r3.code === 1 && /meta\.migratedFrom/.test(r3.out) && /000000000000/.test(r3.out), 'adopt refuses a doc whose meta.migratedFrom differs from the migrator\'s', r3.out.slice(-400));
+  t(r3.code === 1 && /meta\.migratedFrom\.updated/.test(r3.out) && /2026-08-01T00:00:00\+07:00/.test(r3.out) && fs.existsSync(path.join(REP, 'AAPL.html')), 'adopt refuses a doc whose meta.migratedFrom.updated differs from the manifest row', r3.out.slice(-400));
   // author-fact sanity: symbol / currency
   const d4 = transcribed(); d4.symbol = 'AAPX'; put(d4);
   const r4 = adopt();
@@ -105,7 +105,8 @@ const adopt = (extra, env) => cli(['adopt', 'AAPL', ...common, '--doc', WF, '--t
 
 // ── adopt passes ──
 {
-  const d = transcribed(); delete d.meta.migratedFrom; put(d);   // dropped by the worker → adopt copies the migrator's
+  // stale draft: the nightly cron patched the .html after draft → v2Hash in the draft is stale · updated = manifest row → adopt re-derives
+  const d = transcribed(); const freshMf = d.meta.migratedFrom; d.meta.migratedFrom = { ...freshMf, v2Hash: '000000000000' }; put(d);
   const r = adopt();
   t(r.code === 0 && fs.existsSync(path.join(REP, 'AAPL.json')) && !fs.existsSync(path.join(REP, 'AAPL.html')), 'adopt a correct transcription: .json written, .html deleted', r.out.slice(-800));
   t(/✓ FV: v2 262 · v3 262\.00/.test(r.out) && /✓ verdict: v2 bad · v3 bad/.test(r.out), 'adopt prints each key-number check');
@@ -113,7 +114,9 @@ const adopt = (extra, env) => cli(['adopt', 'AAPL', ...common, '--doc', WF, '--t
   const eq = /ℹ equivalence \(info only — does not block adopt\): (CLEAN|VALUE-DRIFT|HUMAN)/.exec(r.out);
   t(eq && eq[1] !== 'CLEAN', 'equivalence result printed (info only) · non-CLEAN bucket did not block', eq && eq[0]);
   const doc = IO.read(path.join(REP, 'AAPL.json'));
-  t(IO.verifySig(doc) && doc.meta.migratedFrom && doc.meta.migratedFrom.updated === '2026-09-01T00:00:00+07:00' && doc.market && doc.market.px === 326.57, 'adopted doc: signed · migratedFrom copied · market from the v2 page');
+  t(IO.verifySig(doc) && doc.market && doc.market.px === 326.57, 'adopted doc: signed · market from the v2 page');
+  t.eq(doc.meta.migratedFrom, freshMf, 'stale draft v2Hash → adopted with the fresh migratedFrom (manifest updated + current freshHash)');
+  t(/ℹ meta\.migratedFrom\.v2Hash 000000000000 → /.test(r.out), 'adopt reports the v2Hash re-derivation');
   // ship --migrate commits it unchanged: migratePlan accepts (.json with migratedFrom · .html gone · HEAD has .html)
   const Sh = require('../../tools/queue/ship.js');
   const f = path.join(REP, 'AAPL.json');

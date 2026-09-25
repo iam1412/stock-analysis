@@ -555,6 +555,15 @@ reject('W07', setYieldCard('$45.00'), 'การ์ดปันผลจำน�
 // ฐาน BBL มีการ์ด DDM อยู่แล้ว (index iDDM) — mutate ค่า/desc ของการ์ดนั้น · ตระกูลอื่นฉีดการ์ดใหม่ต่อท้าย vgrid
 const iDDM = C.methods.findIndex((m) => /DDM|Gordon/i.test(m.name));
 const setMdesc = (idx, txt) => (h) => { let i = -1; return h.replace(/(<div class="mdesc">)([\s\S]*?)(<\/div>)/g, (m, a, v, b) => (++i === idx ? a + txt + b : m)); };
+// ── E21 + ป้ายงวด (Plan 4c-transcribe · 26 ก.ย. 69): "EPS FY2026e (forward) $x" — ป้ายงวดต้องไม่ถูกอ่านเป็น EPS ──
+// ใบ v3 render ป้ายฐานของขา pe แบบนี้ (baseLabel) · เดิม E21 ดึง 2026 เป็น EPS ⇒ 39 draft HUMAN + 20 ใบ convert ตกปลอม
+{
+  const fyLabel = (tok) => (h) => { let i = -1; return h.replace(/(<div class="mdesc">)([\s\S]*?)(<\/div>)/g, (m, a, v, b) => (++i === iPE ? a + v.replace(/EPS/, `EPS ${tok}`) + b : m)); };
+  for (const tok of ['FY2026e (forward)', 'FY26E', "FY'25", 'FY2569F', '2026e (forward)']) {
+    reject('E21', fyLabel(tok), `E21: ป้ายงวด "${tok}" หลังคำ EPS ไม่ใช่ค่า EPS → ต้องเงียบ (P/E ฐานตรงสูตร)`);
+    expect('E21', 'error', (h) => mutMval(iPE, numStr(C.methods[iPE].val * 1.5))(fyLabel(tok)(h)), `E21: ป้ายงวด "${tok}" + ค่าไม่ตรง EPS×P/E → ยังต้องยิง (อ่าน EPS หลังป้าย)`);
+  }
+}
 const addCard = (name, desc, val) => (h) => h.replace(/(<div class="vmethod">[\s\S]*?<\/div>\s*<\/div>)(?![\s\S]*<div class="vmethod">)/, (m) => m + `<div class="vmethod"><div class="mname">${name}</div><div class="mval">$${val}</div><div class="mdesc">${desc}</div></div>`);
 if (iDDM >= 0) {
   // DDM — ฐาน BBL: "D₁ = ปันผลยั่งยืน ~฿10.5 × (1+g); g 3%, r 9.5%" → 10.5×1.03/0.065 = 166.4 ≈ mval 162 (2.7% ผ่าน)

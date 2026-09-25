@@ -253,12 +253,21 @@ function runAdopt(symIn, opts, log, mv, deps) {
     const own = S.OWNER(k);
     if (own !== 'worker') fails.push(`${k}: เป็นของ ${own === 'cron' ? 'cron — adopt เติม market จากหน้า v2 ให้เอง' : 'io.js — adopt เซ็นให้เอง'} · ลบออกจาก doc`);
   }
-  // meta.migratedFrom: ไม่มี = คัดของ migrator · มีแต่ต่าง = ปฏิเสธ (ใบ v2 เปลี่ยนหลัง draft เช่น cron ราคา — ลบช่องนี้ให้ adopt คัดใหม่)
+  // meta.migratedFrom (spec §8 · D1) — ที่มาจริง = แถว manifest HEAD (updated) + freshHash ของหน้า v2 ปัจจุบัน (migrator คิดให้ทุกครั้ง):
+  //   ไม่มีใน doc = ใช้ของ migrator · updated ตรงแถว manifest แต่ v2Hash ค้าง (cron ราคาแก้ .html หลัง draft) = ใช้ของ migrator (ไม่ใช่ลบ — ลบ = build ประทับ updated ใหม่ ขัด §8)
+  //   updated ไม่ตรงแถว manifest = ปฏิเสธ (draft ของใบอื่น/รอบอื่น)
   const mf = m.doc.meta && m.doc.meta.migratedFrom;
   if (!mf) fails.push('meta.migratedFrom: migrator ไม่ได้ประทับ (ไม่มีแถว manifest ของ symbol นี้) — ship --migrate จะปฏิเสธ');
   const meta = doc.meta && typeof doc.meta === 'object' ? doc.meta : null;
-  if (meta && meta.migratedFrom == null && mf) doc.meta = { ...meta, migratedFrom: mf };
-  else if (meta && mf && JSON.stringify(meta.migratedFrom) !== JSON.stringify(mf)) fails.push(`meta.migratedFrom: doc ${JSON.stringify(meta.migratedFrom)} ≠ migrator ${JSON.stringify(mf)} — ใบ v2 เปลี่ยนหลัง draft? ลบ meta.migratedFrom ออกจาก doc ให้ adopt คัดของ migrator`);
+  const dm = meta && meta.migratedFrom;
+  if (meta && mf) {
+    if (dm == null) doc.meta = { ...meta, migratedFrom: mf };
+    else if (typeof dm !== 'object' || dm.updated !== mf.updated) fails.push(`meta.migratedFrom.updated: doc ${JSON.stringify(dm && dm.updated)} ≠ แถว manifest HEAD ${JSON.stringify(mf.updated)} — draft นี้ไม่ใช่ของใบ v2 ที่ HEAD (draft ใหม่)`);
+    else if (JSON.stringify(dm) !== JSON.stringify(mf)) {
+      say(`  ℹ meta.migratedFrom.v2Hash ${dm.v2Hash} → ${mf.v2Hash} (หน้า v2 เปลี่ยนหลัง draft เช่น cron ราคา · updated คงแถว manifest HEAD)`);
+      doc.meta = { ...meta, migratedFrom: mf };
+    }
+  }
   const full = { ...workerDoc(doc), market: m.doc.market };
   const gateDay = o.today || FD.todayBangkok();
   // (a) checkDoc 0 error ที่วันนี้ (เหมือน convert --write)
