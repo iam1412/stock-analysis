@@ -1,0 +1,254 @@
+{
+  "v": 3,
+  "symbol": "CCET",
+  "currency": "THB",
+  "region": "TH",
+  "dateEra": "BE",
+  "meta": {
+    "company": "แคล-คอมพ์ อีเล็คโทรนิคส์ (ประเทศไทย)",
+    "exchange": "SET",
+    "sub": "EMS (Electronics Manufacturing Services) รับจ้างผลิต laptop, computer peripherals, networking equipment • ลูกค้าระดับโลก • รายได้สูง มาร์จิ้นบาง",
+    "headerTags": [
+      "Technology",
+      "EMS / อิเล็กทรอนิกส์"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance (CCET.BK)",
+      "StockAnalysis.com",
+      "SET factsheet",
+      "Settrade.com"
+    ],
+    "themeLegacy": {
+      "accent": "#607d8b",
+      "accentDark": "#455a64",
+      "darkGrad": "linear-gradient(135deg,#2f3d44 0%,#495f69 60%,#536c78 100%)",
+      "glow": "rgba(96,125,139,0.3)",
+      "subColor": "#ebeef0",
+      "headerMuted": "#ebeef0",
+      "verdictText": "#eceff1",
+      "vcellLabel": "#ffffff"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T17:12:35+07:00",
+      "v2Hash": "c3efb54297e6"
+    }
+  },
+  "market": {
+    "px": 8.9,
+    "priceDate": "2026-09-24",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          6.1
+        ],
+        [
+          "พ.ย.25",
+          4.62
+        ],
+        [
+          "ธ.ค.25",
+          4.52
+        ],
+        [
+          "ม.ค.26",
+          4.78
+        ],
+        [
+          "ก.พ.26",
+          5.6
+        ],
+        [
+          "มี.ค.26",
+          4.84
+        ],
+        [
+          "เม.ย.26",
+          6.1
+        ],
+        [
+          "พ.ค.26",
+          8.8
+        ],
+        [
+          "มิ.ย.26",
+          9
+        ],
+        [
+          "ก.ค.26",
+          8.3
+        ],
+        [
+          "ส.ค.26",
+          9.5
+        ],
+        [
+          "ก.ย.26",
+          8.9
+        ]
+      ],
+      "gridFmt": "v.toFixed(2)",
+      "dataFmt": "d[1].toFixed(2)"
+    },
+    "range52w": {
+      "lo": 4.14,
+      "hi": 11.2
+    }
+  },
+  "fundamentals": {
+    "bvps": 2.54,
+    "shares": 10450000000,
+    "peAvg5y": 17.2,
+    "netIncome": 2171000000,
+    "eps": 0.22,
+    "roe": 8.3,
+    "revenue": 137237000000,
+    "fcf": -3621000000,
+    "dps": 0.23,
+    "beta": 1.2,
+    "epsBasis": "ifrs"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation (EPS TTM)",
+      "inputs": {
+        "multiple": 17.2,
+        "multipleSource": "median5y",
+        "medianWindow": "FY2022–FY2025"
+      },
+      "note": "มัธยฐานย้อนหลัง FY2022–25 ที่วัดจากราคาเฉลี่ยรายปี ไม่ใช่ P/E ปัจจุบัน",
+      "family": "market"
+    },
+    {
+      "method": "pe",
+      "label": "P/E Valuation (EPS FY2025 — ตระกูลเดียวกับข้อ 1 นับเป็นหนึ่งเสียง)",
+      "inputs": {
+        "multiple": 17.2,
+        "multipleSource": "median5y"
+      },
+      "override": {
+        "eps": 0.2,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "มัธยฐานเดียวกัน · ใช้ EPS ปีงบที่ปิดแล้วเป็นตัวเทียบกับ EPS TTM",
+      "family": "market"
+    },
+    {
+      "method": "pbv",
+      "label": "Justified P/BV (ตระกูล r/g — สมมติฐาน r, g เป็นของผู้วิเคราะห์เอง)",
+      "inputs": {
+        "g": 4,
+        "r": 9
+      },
+      "note": "สะท้อน ROE ต่ำของธุรกิจ EMS",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "peAvg5y",
+      "pbv",
+      "netIncome",
+      "eps",
+      "bvps",
+      {
+        "key": "roe",
+        "tone": "neu"
+      },
+      "revenue",
+      {
+        "key": "fcf",
+        "tone": "neu"
+      },
+      "yield",
+      "beta"
+    ],
+    "notes": {
+      "mcap": "หุ้นในตลาด ~10,450M หุ้น",
+      "pe": "สูงกว่ามัธยฐานย้อนหลังของตัวเอง 17.2x",
+      "peAvg5y": "FY2022–25 ช่วง 11.0–29.6x (ตัด FY2021 ออก)",
+      "pbv": "BVPS ~{{bvps}}/หุ้น",
+      "netIncome": "Net margin ~1.6% (EMS บาง)",
+      "eps": "NI TTM ÷ หุ้นถัวเฉลี่ยปรับลด ~10,071M (คงเหลือ 10,450M)",
+      "bvps": "Equity ~฿26,540M",
+      "roe": "ROE ต่ำ — EMS capital intensive · D/E 0.90",
+      "revenue": "YoY −6.9% · Gross margin ~5.2%",
+      "fcf": "FY2025 +฿479M · หนี้ ~฿24,210M",
+      "yield": "DPS ~{{dps}}/หุ้น · นโยบาย ≥30% ของกำไรสุทธิ",
+      "beta": "ความผันผวนสูงกว่าตลาด"
+    },
+    "hint": "ข้อมูล TTM ตาม StockAnalysis ณ 21 ก.ย. 2569"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": -10,
+        "exitMultiple": 12,
+        "divCum": 0.16,
+        "desc": "ลูกค้าหลักหาย/เศรษฐกิจถดถอย"
+      },
+      {
+        "growth": 8,
+        "exitMultiple": 17.2,
+        "divCum": 0.23,
+        "desc": "EMS ฟื้น/China+1 หนุน"
+      },
+      {
+        "growth": 20,
+        "exitMultiple": 25,
+        "divCum": 0.29,
+        "desc": "AI hardware boom/order surge"
+      }
+    ],
+    "exitDp": 1,
+    "note": "ณ จุดเข้า {{px}} แม้ใน scenario Bull (EPS โต 20%/ปี ออกที่ P/E 25x) ผลตอบแทน 3 ปีเพียง {{scn.bull.ret}} ส่วน Base (P/E ออก 17.2x = มัธยฐานย้อนหลัง) ได้ {{scn.base.ret}} สะท้อนว่าราคาปัจจุบันรับ premium สูงเกินไปแล้ว EPS ฐาน {{eps}}/หุ้น = Net Income TTM ฿2,171M ÷ หุ้นถัวเฉลี่ยปรับลด ~10,071M (StockAnalysis) — หากหารด้วยหุ้นคงเหลือ 10,450M จะได้ราว ฿0.21 ราคาเป้า = EPS ปี 3 × P/E ออก (ไม่รวมปันผล) ปันผลแสดงต่างหากใช้ payout ratio ~30% ตามนโยบายบริษัท"
+  },
+  "analyst": {
+    "target": 9.28,
+    "n": 5,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ตลอดปีที่ผ่านมา CCET แกว่งแรง: ต้นกราฟเดือน ต.ค. 68 อยู่ที่ ฿6.10 ก่อนย่อลงต่ำสุดในกราฟ ฿4.52 (ธ.ค. 68) แล้วดีดกลับตั้งแต่ เม.ย. 69 (฿6.10) ทะลุ ฿8.80 ในเดือน พ.ค. 69 และทำสูงสุดในกราฟ {{scn.bull.tgt}} เดือน ส.ค. 69 ก่อนพักตัวลงมาที่ระดับปัจจุบัน กรอบ 52 สัปดาห์ ฿4.14 – ฿11.20 (ที่มา: Yahoo Finance รายเดือน)",
+    "valuation": "<b>dispersion gate 0.4c:</b> ขา P/E สองขา (EPS TTM และ EPS FY2025 × มัธยฐาน 17.2x) เป็นตระกูลเดียวกัน นับเป็นหนึ่งเสียง ห่างกัน 1.10× จึงเฉลี่ยกันได้ = ฿3.61 อีกเสียงคือ Justified P/BV ({{fvLow}}, ตระกูล r/g) ห่างจากตระกูล P/E 1.66× (≤2.0×) จึงเฉลี่ยสองตระกูลเท่ากัน: FV = (3.61+2.18)/2 = <b>{{fv}}</b> กรอบ {{fvLow}} – {{fvHigh}} ถอดขา EV/EBITDA เดิมออกจาก FV เพราะตัวคูณ 10x เป็นค่าที่ตั้งเอง ไม่มีมัธยฐานที่วัดจริงรองรับ และ EBITDA ~฿1,292M ตรวจซ้ำจากแหล่งที่เปิดรอบนี้ไม่ได้ · สมมติฐาน r 9% / g 4% เป็นของผู้วิเคราะห์เอง <b>ค่านี้เป็นประมาณการที่ยังไม่ผ่านการยืนยันด้วยวิธีนอก (r,g)</b> เพราะ FV ต่ำกว่าราคามากเกิน 40% — ความไว: ถ้าใช้ P/E 29.6x ของ FY2025 (ปีที่ราคาเฉลี่ยพุ่ง) ขาเดียว ได้ ฿6.51 ซึ่งยังต่ำกว่าราคาตลาดราว 27% ข้อสรุป \"ราคาสูงกว่ามูลค่าพื้นฐาน\" จึงคงเดิมแม้เปลี่ยนตัวคูณ แต่ขนาดของส่วนต่างไวต่อสมมติฐานมาก",
+    "gauge": "ราคา {{px}} สูงกว่า Fair Value {{fv}} ราว 3 เท่า ซึ่งถือว่าแพงเกินมูลค่าพื้นฐานมาก เป้านักวิเคราะห์ {{analyst.target}} (5 ราย, Buy) อยู่เหนือกรอบ FV ทั้งกรอบ — ไม่ทราบสมมติฐานของเป้านั้น จึงใช้เป็นบริบทเท่านั้น ไม่ใช่ขาของ FV จุดน่าสนใจทาง fundamental คือ MOS 20% ({{mos20}}) และ MOS 30% ({{mos30}})",
+    "mos": "ราคาแพงเกิน Fair Value มาก — ไม่มี Margin of Safety",
+    "verdictHeadline": "CCET: ธุรกิจ EMS มีอนาคต แต่ราคาปัจจุบันแพงเกิน Fair Value มาก",
+    "verdictBody": "Cal-Comp Electronics (Thailand) เป็นผู้นำ EMS ในไทย ได้ประโยชน์จากเทรนด์ China+1 และ AI hardware แต่ราคาหุ้นปัจจุบัน {{px}} สูงกว่า Fair Value {{fv}} ราว 3 เท่า P/E ~40x ซึ่งสูงมากสำหรับธุรกิจ EMS ที่ ROE เพียง ~8.3% มาร์จิ้นสุทธิ ~1.6% รายได้ TTM หดตัว 6.9% YoY และ FCF TTM ติดลบ ในระยะสั้น sentiment บวกจาก AI hardware/China+1 อาจหนุนราคาต่อ แต่ในระยะยาว fundamental ยังไม่รองรับ valuation ระดับนี้ นักลงทุน value ควรรอโซน {{mos20}} (MOS 20%) หรือต่ำกว่าจึงจะน่าสนใจ",
+    "strategy": "รอซื้อโซน {{mos20}} (MOS 20%) เป็น entry แรก และ {{mos30}} (MOS 30%) สำหรับ deep value หลีกเลี่ยงซื้อในระดับราคาปัจจุบัน เพราะ risk/reward ไม่ดี — ถ้าถือแล้ว พิจารณา take profit บางส่วน",
+    "disclaimerSources": "ข้อมูลราคาและกราฟรายเดือน FY2025–2026: Yahoo Finance (CCET.BK) และ StockAnalysis.com ณ 21 ก.ย. 2569; งบย้อนหลัง FY2021–FY2025 + TTM, หุ้นคงเหลือ, forecast และเป้านักวิเคราะห์ 5 ราย: StockAnalysis.com; ข้อมูลธุรกิจและนโยบายปันผล (≥30% ของกำไรสุทธิ): Settrade.com / Cal-Comp Electronics Thailand"
+  },
+  "text": {
+    "valHint": "ถ่วงตระกูล — P/E มัธยฐาน + r/g"
+  },
+  "catalysts": [
+    "<b>China+1 Strategy:</b> ลูกค้าระดับโลกย้ายฐานผลิตออกจากจีนมาไทย/อาเซียน CCET ได้ประโยชน์โดยตรงจากเทรนด์นี้",
+    "<b>AI Hardware Boom:</b> ความต้องการ server, networking equipment, AI accelerator hardware เพิ่มขึ้นรวดเร็ว — ผลักดัน order EMS",
+    "<b>Capacity Expansion:</b> CCET ลงทุนขยายกำลังการผลิตรองรับ demand ที่เพิ่มขึ้น ส่งผลให้ revenue scale ขึ้น",
+    "<b>Cost Advantage:</b> ไทยมีต้นทุนแรงงานและโครงสร้างพื้นฐานที่แข่งขันได้ในภูมิภาค เอื้อต่อ margin ของ EMS",
+    "<b>Diversified Customer Base:</b> ลูกค้าหลากหลายอุตสาหกรรม ลดความเสี่ยงพึ่งพาลูกค้าเดียว"
+  ],
+  "risks": [
+    "<b>มาร์จิ้นบางสุด:</b> Net margin ~1.6% (TTM) ทำให้กำไรไวต่อ cost overrun วัตถุดิบแพง ค่าแรง หรือ FX ได้มาก",
+    "<b>Valuation แพงเกิน:</b> P/E ~40x สูงกว่ามัธยฐานย้อนหลัง 17.2x มาก — ถ้าผลงานไม่ตรงเป้าหุ้น derate แรง",
+    "<b>Customer Concentration Risk:</b> EMS พึ่งพาคำสั่งลูกค้าหลัก การเสียลูกค้าหรือ order ลดกระทบรายได้ทันที",
+    "<b>Supply Chain Disruption:</b> Semiconductor shortage / component shortage ส่งผลต่อการผลิตและ margin",
+    "<b>FX Risk:</b> รายได้หลักเป็น USD รายจ่ายเป็น THB — บาทแข็งกดดัน margin อย่างมีนัยสำคัญ",
+    "<b>Competition:</b> คู่แข่ง EMS จากเวียดนาม อินเดีย และจีน (ค่าแรงต่ำกว่า) กดดันราคาและ market share"
+  ],
+  "extras": [],
+  "_sig": "sha256:33a85942c76fe813e671dab4b78771d20f7c8acca1ce5fc82b79fe9d04f82a6d"
+}

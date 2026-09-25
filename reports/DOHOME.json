@@ -1,0 +1,247 @@
+{
+  "v": 3,
+  "symbol": "DOHOME",
+  "currency": "THB",
+  "region": "TH",
+  "dateEra": "BE",
+  "meta": {
+    "company": "บมจ. ดูโฮม (Do Home PCL)",
+    "exchange": "SET",
+    "sub": "ค้าปลีกวัสดุก่อสร้าง-ตกแต่งบ้าน • Warehouse Format ครบวงจร • House Brand • Dohome To Go • คู่แข่ง HomePro-Global House",
+    "headerTags": [
+      "ค้าปลีกวัสดุก่อสร้าง",
+      "Warehouse Format"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "Investing.com",
+      "StockAnalysis.com"
+    ],
+    "themeLegacy": {
+      "accent": "#e65100",
+      "accentDark": "#bf360c",
+      "darkGrad": "linear-gradient(135deg,#852507 0%,#a03800 60%,#a64a00 100%)",
+      "glow": "rgba(230,81,0,0.3)",
+      "subColor": "#ffe0b2",
+      "headerMuted": "#f3e7dd",
+      "verdictText": "#fff3e0",
+      "vcellLabel": "#fcf7f2"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T22:32:04+07:00",
+      "v2Hash": "f235f8a7706c"
+    }
+  },
+  "market": {
+    "px": 3.46,
+    "priceDate": "2026-09-24",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          3.9
+        ],
+        [
+          "พ.ย.25",
+          3.8
+        ],
+        [
+          "ธ.ค.25",
+          3.42
+        ],
+        [
+          "ม.ค.26",
+          3.38
+        ],
+        [
+          "ก.พ.26",
+          3.75
+        ],
+        [
+          "มี.ค.26",
+          3.3
+        ],
+        [
+          "เม.ย.26",
+          3.36
+        ],
+        [
+          "พ.ค.26",
+          3.46
+        ],
+        [
+          "มิ.ย.26",
+          3.72
+        ],
+        [
+          "ก.ค.26",
+          3.96
+        ],
+        [
+          "ส.ค.26",
+          3.56
+        ],
+        [
+          "ก.ย.26",
+          3.46
+        ]
+      ],
+      "gridFmt": "v.toFixed(2)",
+      "dataFmt": "d[1].toFixed(2)"
+    },
+    "range52w": {
+      "lo": 3.02,
+      "hi": 4.52
+    }
+  },
+  "fundamentals": {
+    "eps": 0.21,
+    "dps": 0.00444,
+    "bvps": 3.81,
+    "shares": 3519000000,
+    "peAvg5y": 53,
+    "roe": 5.6,
+    "revenue": 29700000000,
+    "grossMargin": 17.9,
+    "debtToEquity": 1.2,
+    "fy": {
+      "period": "FY2568",
+      "netIncome": 601000000
+    },
+    "epsBasis": "ifrs"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation (EPS TTM × P/E ปีล่าสุดที่วัดจริง)",
+      "inputs": {
+        "multiple": 26.4,
+        "multipleSource": "author"
+      },
+      "note": "26.4x คือ P/E จริงของ FY2568 (ราคาเฉลี่ยปี ÷ EPS ฿0.17) ที่วัดแล้ว ไม่ใช่ตัวคูณปัจจุบัน 16x · ไม่ใช้มัธยฐาน 5 ปี 53.5x เพราะปี FY2565–67 ราคา ฿10–14 บนกำไรฐานต่ำ (ช่วง 26–69x กว้าง 2.6 เท่า) สเกลธุรกิจไม่ตรงปัจจุบัน",
+      "family": "market"
+    },
+    {
+      "method": "pe",
+      "label": "P/E Valuation บน EPS ปีบัญชีล่าสุด (ตระกูลเดียวกับข้อ 1 — นับเป็นเสียงเดียว)",
+      "inputs": {
+        "multiple": 26.4,
+        "multipleSource": "author"
+      },
+      "override": {
+        "eps": 0.17,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "ใช้ตัวคูณ FY2568 เดียวกัน แต่ฐานกำไรปีบัญชีที่ปิดแล้วแทน TTM · ห่างจากข้อ 1 เพียง 1.2 เท่า",
+      "family": "market"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "peAvg5y",
+      "pbv",
+      "netIncomeFy",
+      "eps",
+      "bvps",
+      {
+        "key": "roe",
+        "tone": "neu"
+      },
+      "revenue",
+      "grossMargin",
+      "yield",
+      {
+        "key": "debtToEquity",
+        "tone": "neg"
+      }
+    ],
+    "notes": {
+      "mcap": "3,519M หุ้น × {{px}}",
+      "pe": "(NI ฿755M ÷ 3,519M หุ้น)",
+      "peAvg5y": "มัธยฐาน FY2564–68 (ช่วง 26–69x · ปีล่าสุด FY68 26.4x)",
+      "pbv": "ซื้อขายใกล้ book value",
+      "netIncomeFy": "−10.8% YoY (FY67 ฿674M)",
+      "eps": "FY68 ฿0.17 · FY67 ฿0.19",
+      "bvps": "Total equity ฿13,408M / 3,519M หุ้น",
+      "roe": "TTM · ROE ต่ำ สะท้อนหนี้สูง D/E ~1.2x (TTM)",
+      "revenue": "TTM ลด 2.4% YoY · FY68 ลด 6.1% (FY67 ฿31.0B)",
+      "grossMargin": "TTM · FY68 17.4% · FY67 17.2%",
+      "yield": "DPS ฿0.00444 · Ex-date มี.ค. 69 · ต่ำมาก",
+      "debtToEquity": "TTM · Total debt ฿16.8B · FY68 D/E 1.28x"
+    },
+    "hint": "ข้อมูล ณ 21 ก.ย. 2569 · TTM + FY2568 (ปีบัญชีสิ้นสุด ธ.ค.)"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": "cagr",
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": -5,
+        "exitMultiple": 12,
+        "divCum": 0.013,
+        "desc": "ก่อสร้างหดตัว กำไรลด"
+      },
+      {
+        "growth": 10,
+        "exitMultiple": 18,
+        "divCum": 0.013,
+        "desc": "ก่อสร้างฟื้น สาขาใหม่ขยาย"
+      },
+      {
+        "growth": 18,
+        "exitMultiple": 20,
+        "divCum": 0.013,
+        "desc": "House Brand + อสังหาฯ บูม"
+      }
+    ],
+    "exitDp": 0,
+    "note": "Base case EPS +10%/ปี จาก TTM {{eps}} สอดคล้อง consensus FY2569e ฿0.23 (vendor: StockAnalysis) และตัวคูณออก 18x ต่ำกว่า 26.4x ของ FV เพื่อสะท้อนความระมัดระวัง Bull ต้องอาศัยกำไรฟื้นแรงและตัวคูณ 20x Bear เกิดได้ถ้าเศรษฐกิจชะลอ ดอกเบี้ยทรงสูง กดดันหนี้ (D/E 1.2x) — ตัวคูณออกทุกฉากเป็นสมมติฐาน ไม่ใช่ค่าที่วัดจริง"
+  },
+  "analyst": {
+    "target": 3.95,
+    "n": null,
+    "rating": "Hold",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ราคารายเดือนเคลื่อนไหวในกรอบ ฿3.30–฿3.96 ตลอด 12 เดือนที่ผ่านมา (ต่ำสุด มี.ค. 69 · สูงสุด ก.ค. 69) กรอบ 52 สัปดาห์ ฿3.02–฿4.29 ราคาปัจจุบัน {{px}} ต่ำกว่ามูลค่าเหมาะสม {{fv}} ตามวิธี P/E ที่อิงตัวคูณย้อนหลัง FY68 ซึ่งสูงกว่า P/E ปัจจุบันมาก จึงต้องอ่านมูลค่านี้อย่างระวัง (ดูหมวด 3) ส่วนกำไร TTM ฿755M สูงกว่า FY68 ฿601M สะท้อนกำไรฟื้นตัวแม้รายได้ยังหดตัว",
+    "valuation": "FV = เฉลี่ยของ P/E บน EPS TTM {{eps}} และบน EPS FY68 ฿0.17 ที่ตัวคูณ 26.4x เดียวกัน (สองการ์ดเป็นตระกูลเดียว จึงเป็นเสียงเดียว ห่างกัน 1.2 เท่า เฉลี่ยได้ตามกฎ 0.4c) ⇒ <b>single-family valuation</b> ไม่มีขาอิสระที่สอง: ตัวคูณ EV/EBITDA และ P/S ในรายงานเดิมไม่มีมัธยฐานที่วัดจริงจึงถอดออก · เป้านักวิเคราะห์ {{analyst.target}} ไม่ใช่ขาของ FV แค่ใช้ตรวจความสอดคล้อง (ต่ำกว่า FV มาก) · <b>ความไว:</b> P/E ทุก 1x เปลี่ยน FV ราว ฿0.19 — ถ้าตลาดให้ตัวคูณแค่ 20x MOS จะเหลือราวหนึ่งในสาม ถ้า 16x (ใกล้ P/E ปัจจุบัน) MOS แทบเป็นศูนย์ ดังนั้น MOS ระดับสูงนี้ขึ้นกับสมมติฐานว่าตัวคูณ FY68 ยังใช้ได้ ซึ่งยังตรวจยืนยันไม่ได้ · ราคาปัจจุบัน {{px}} ต่ำกว่า FV {{fv}} · จุดเข้า MOS 20% ที่ {{mos20}} หรือ MOS 30% ที่ {{mos30}}",
+    "gauge": "ราคา {{px}} อยู่ต่ำกว่า Fair Value {{fv}} (MOS {{mos}}) แต่ FV มาจากตัวคูณ P/E ย้อนหลังเพียงตระกูลเดียว เป้านักวิเคราะห์เฉลี่ย {{analyst.target}} (13 คน · ฉันทามติ Hold) สูงกว่าราคาตลาดราว 14% และต่ำกว่า FV มาก บ่งชี้ว่า consensus ไม่ได้ให้ตัวคูณสูงเท่าที่ FV สมมติ โซนที่น่าสนใจสำหรับ Value Investor คือ {{mos20}} (MOS 20%) หรือรอหลักฐานกำไรฟื้นต่อเนื่องในงบไตรมาสถัดไป (คาดประกาศ 5 พ.ย. 2569)",
+    "mos": "ราคาต่ำกว่า Fair Value ชัดเจน — แต่ FV มาจาก P/E ตระกูลเดียว ไวต่อตัวคูณ · ใช้ประกอบการตัดสินใจอย่างระวัง",
+    "verdictHeadline": "ราคาต่ำกว่า Fair Value — แต่ FV ตระกูลเดียว ไวต่อตัวคูณ P/E",
+    "verdictBody": "DOHOME เป็นผู้เล่นค้าปลีกวัสดุก่อสร้าง Warehouse Format ที่มีศักยภาพการขยายสาขาในระยะยาว ปัจจุบันราคา {{px}} ต่ำกว่า Fair Value {{fv}} ตามวิธี P/E ที่ใช้ตัวคูณ FY68 (26.4x) กับ EPS TTM {{eps}} และ EPS FY68 ฿0.17 ซึ่งเป็นตระกูลเดียวจึงมีความไม่แน่นอนสูง (ถ้าตัวคูณลดเหลือ ~16x เท่า P/E ปัจจุบัน MOS แทบหมด) ธุรกิจมีจุดอ่อนคือ ROE ต่ำ ~5.6% สะท้อนภาระหนี้สูง D/E 1.2x และ Net Margin เพียง 2.5% แม้ Gross Margin ดีขึ้น เป้านักวิเคราะห์ {{analyst.target}} (13 คน · Hold) ต่ำกว่า FV มาก กลยุทธ์ที่เหมาะสมคือรอหลักฐานกำไรฟื้นต่อเนื่อง หรือราคาย่อสู่โซน {{mos30}}–{{mos20}} ก่อนพิจารณาสะสม",
+    "strategy": "รอราคาย่อลงสู่ {{mos20}} (MOS 20%) หรือ {{mos30}} (MOS 30%) หรือรอหลักฐานกำไรฟื้นในงบถัดไป · ติดตาม SSSG และ House Brand margin · FV ตระกูลเดียว ตรวจยืนยันตัวคูณด้วยงบใหม่ก่อนเพิ่มน้ำหนัก",
+    "disclaimerSources": "แหล่งข้อมูล: (1) Yahoo Finance — DOHOME.BK ราคา + กราฟรายเดือน (2) Investing.com — BK:DOHOME P/E, P/BV, ROE, analyst consensus (3) StockAnalysis.com — BKK:DOHOME งบการเงิน FY2568 รายได้/กำไร/EPS/BVPS (4) investor.dohome.co.th — แผนสาขา House Brand · ราคา ณ ก.ย. 2569"
+  },
+  "text": {
+    "valHint": "P/E ตระกูลเดียว 2 การ์ด (ตัวคูณวัดจริงจาก FY2568) — single-family valuation",
+    "chartHint": "ต.ค. 2568 – ก.ย. 2569"
+  },
+  "catalysts": [
+    "<b>House Brand Margin Expansion:</b> สินค้า House Brand อัตรากำไรขั้นต้นสูงกว่า National Brand ช่วยดัน Gross Margin (TTM 17.9% จาก 17.4% FY68)",
+    "<b>ขยายสาขาใหม่:</b> Warehouse Format ขยายต่อเนื่องเพิ่ม Revenue ระยะยาว (จำนวนสาขา/งบลงทุนตามแผนล่าสุดควรตรวจกับ investor.dohome.co.th)",
+    "<b>รายได้หดตัวแคบลง:</b> TTM ลด 2.4% YoY เทียบ FY68 ลด 6.1% แสดงสัญญาณหยุดหดตัว",
+    "<b>Dohome To Go Format:</b> รูปแบบสาขาขนาดเล็กเจาะ B2B และซ่อมแซมบ้าน capex ต่ำกว่า ช่วย Asset Turnover",
+    "<b>ตำแหน่ง \"ราคาถูก-ครบ-ใหญ่\":</b> ดึงดูดกลุ่ม Value Shopper และรับเหมาก่อสร้างรายย่อย SSI แตกต่างจาก HomePro เน้น Lifestyle",
+    "<b>กำไรฟื้นตัว:</b> กำไรสุทธิ TTM ฿755M สูงกว่า FY68 ฿601M (+26%) และ consensus คาด EPS FY2569e ฿0.23"
+  ],
+  "risks": [
+    "<b>หนี้สูง D/E 1.20x (TTM):</b> Total Debt ฿16.8B กดดัน Free Cash Flow (FCF TTM ติดลบ ฿51M) และ ROE ต่ำ ~5.6% ถ้าดอกเบี้ยสูงต่อเนื่องจะเพิ่ม Interest Burden",
+    "<b>รายได้หดตัวต่อเนื่อง:</b> รายได้ลดติดต่อกัน 3 ปี (FY66 −0.3% · FY67 −0.7% · FY68 −6.1%) TTM ยังลด 2.4% สะท้อนตลาดวัสดุก่อสร้างยังซบเซา",
+    "<b>การแข่งขันสูง:</b> HomePro (HMPRO) มี Market Share ใหญ่กว่า ทรัพยากรแบรนด์แข็งแกร่งกว่า Global House ก็ขยายสาขาเช่นกัน",
+    "<b>ROE ต่ำกว่า Cost of Equity:</b> ROE ~5.6% (TTM) ต่ำกว่าต้นทุนทุนที่มักอยู่ระดับ ~9% (สมมติฐาน) ทำลาย Shareholder Value เชิงทฤษฎี ถ้าไม่ปรับปรุงจะกด Valuation",
+    "<b>Same-Store Sales Growth ไม่ชัด:</b> ยังไม่มีข้อมูล SSSG ที่ตรวจได้ในรอบนี้ รายได้ที่หดตัวอาจสะท้อนยอดขายสาขาเดิมอ่อน",
+    "<b>Capex และเงินกู้:</b> การเปิดสาขาใหม่ต้องใช้เงินกู้เพิ่ม กดดัน Balance Sheet และ FCF"
+  ],
+  "extras": [],
+  "_sig": "sha256:2fd38b49e485a2a647473af2aaacb6422487f995fdce791299601e0539cd440b"
+}
