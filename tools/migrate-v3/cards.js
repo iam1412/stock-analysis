@@ -62,12 +62,19 @@ const PERIOD_RE = /(?:^|[^A-Za-z0-9])(?:Q[1-4]|[1-4]Q)(?:\b|\d|')|(?:^|[^A-Za-z0
 const FLOW_KEYS = ['revenue', 'netIncome', 'eps', 'fcf', 'grossMargin', 'opMargin', 'netMargin', 'ebitdaMargin', 'roe', 'roic'];
 /** ป้าย (+ ค่า) ระบุงวดย่อยที่ไม่ใช่ FY/TTM → true */
 const subPeriod = (label, value) => (PERIOD_RE.test(label) && !/TTM|LTM|12\s*เดือน/i.test(label)) || /\/\s*(?:ไตรมาส|quarter|qtr)/i.test(value || '');
+// ประมาณการ/ไกด์ (fix round 2 · I-3) — ตัวเลขคาดการณ์ ≠ ตัวเลขจริง FY/TTM ⇒ ห้ามลงคีย์จากงบ · P/E ที่ป้ายเป็น forward → peForward (ตรวจที่ mapCards)
+const FORECAST_RE = /guid|ไกด์|คาด|forecast|\best\.?(?![a-z])|estimate|\bfwd\b|forward|\bNTM\b|FY\s*'?\d{2,4}\s*e\b|\b(?:20|25)\d\d\s*E\b|ประมาณการ/i;
+const FORECAST_OK = ['peForward', 'analystTarget', 'range52w'];   // คีย์ที่ความหมายเป็นประมาณการ/ไม่ใช่ตัวเลขงวดอยู่แล้ว
+const forecastLabel = (label) => FORECAST_RE.test(label);
 function keyOf(label, value) {
   if (/^NIM\b/i.test(label)) return 'nim';
   if (/^NPL\b/i.test(label)) return 'npl';
   if (/^(?:CET\s*1|CAR\b|BIS|Tier\s*1|เงินกองทุน)/i.test(label)) return 'capital';
   let k = CC.cardKey(label);
   if (FLOW_KEYS.includes(k) && subPeriod(label, value)) return null;   // ก่อนต่อ 'Fy' เสมอ (งวดย่อย ≠ ทั้งปี)
+  // ปันผล "Forward/fwd" = อัตราต่อปีที่ประกาศแล้ว (indicated) ไม่ใช่ประมาณการ — การ์ด yield v3 คิดแบบเดียวกัน (dps ÷ ราคา)
+  const indicatedYield = k === 'yield' && /forward|fwd/i.test(label) && !/คาด|\best\b|estimate|guid|ไกด์|ประมาณการ|\d{4}\s*E\b/i.test(label);
+  if (k && !FORECAST_OK.includes(k) && !indicatedYield && forecastLabel(label)) return k === 'pe' ? 'peForward' : null;
   if (['netIncome', 'eps', 'revenue'].includes(k) && FY_RE.test(label) && !/TTM|12\s*เดือน|LTM/i.test(label)) k += 'Fy';
   return k || null;
 }
@@ -189,7 +196,14 @@ const PRINTED = {
   roe: ['pct', 'roe', 'roa'], npl: ['pct', 'bank.npl', 'bank.coverage'], capital: ['pct', 'bank.cet1', 'bank.car'],
   peAvg5y: ['plain', 'peAvg5y'], beta: ['plain', 'beta'], debtToEquity: ['plain', 'debtToEquity'],
 };
-function printedMismatch(key, c, f) {
+function printedMismatch(key, c, f, px) {
+  if (key === 'peForward') {
+    // ตัวคูณที่พิมพ์ต้องใกล้ ราคา ÷ EPS ประมาณการ (±5% — ราคาขยับได้หลังวันวิเคราะห์) · ค่าเป็น token/ไม่มีเลข = ไม่ตรวจ
+    const r = readValue(c.v, 'plain');
+    if (r.token || r.nums.length !== 1 || !(px > 0) || !(f.epsForward > 0)) return r.nums.length > 1 ? `printed ${r.nums.length} numbers` : null;
+    const want = px / f.epsForward;
+    return Math.abs(r.nums[0].v - want) <= 0.05 * want ? null : `printed ${r.nums[0].raw}x ≠ price ÷ epsForward ${want.toFixed(1)}x`;
+  }
   const spec = PRINTED[key];
   if (!spec) return null;
   const [kind, ...fields] = spec;
@@ -249,11 +263,13 @@ function mapCards(parsed, base, opts) {
   (parsed.s1cards || []).forEach((c, i) => {
     const key = keyOf(c.k, c.v);
     let why = null;
-    if (!key && FLOW_KEYS.includes(CC.cardKey(c.k)) && subPeriod(c.k, c.v)) F.push(`card "${c.k}" → custom (period-labelled: not FY/TTM)`);
+    const ck = CC.cardKey(c.k);
+    if (!key && FLOW_KEYS.includes(ck) && subPeriod(c.k, c.v)) F.push(`card "${c.k}" → custom (period-labelled: not FY/TTM)`);
+    else if (!key && ck && !FORECAST_OK.includes(ck) && forecastLabel(c.k)) F.push(`card "${c.k}" → custom (forecast-labelled: not actual)`);
     if (!key) why = 'label not in catalogue';
     else if (used.has(key)) why = `duplicate ${key}`;
     else if (o.force && o.force.has(i)) why = o.force.get(i);
-    else why = missing(key, f, ext) || printedMismatch(key, c, f);
+    else why = missing(key, f, ext) || printedMismatch(key, c, f, o.market && o.market.px);
     if (why) {
       if (key) F.push(`card "${c.k}" → custom (${key}: ${why})`);
       custom.push(customOf(c)); cards.push(`custom:${custom.length - 1}`); meta.push({ i, key: null, want: key, why });
@@ -273,4 +289,4 @@ function mapCards(parsed, base, opts) {
   return { cards, custom, notes, fund: cf.fund, H, D, F, meta };
 }
 
-module.exports = { mapCards, cardFund, keyOf, subPeriod, PERIOD_RE, readValue, missing, printedMismatch, customOf, noteFor, pseudoView, fyPeriod, NEED };
+module.exports = { mapCards, cardFund, keyOf, subPeriod, PERIOD_RE, FORECAST_RE, forecastLabel, readValue, missing, printedMismatch, customOf, noteFor, pseudoView, fyPeriod, NEED };

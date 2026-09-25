@@ -98,6 +98,8 @@ function scenarios(parsed, fund, legs) {
     if (legB != null) {
       out.baseOverride = { value: legB, why: 'ฐานฉากที่ผู้เขียนใช้ (ตัวตั้งที่ขาประเมินพิมพ์)' }; meta.base = 'leg override';
       F.push(`scenarios.baseOverride ${legB} = the ${LEG_BASE[out.driver]} printed in a leg`);
+    } else if (p0 != null && fStart != null && (() => { const e = meta.starts[1] > 0 ? meta.ends[1] : ends[0]; return e && Math.abs(p0 - fStart) <= 0.5 * Math.pow(10, -decOf(e.text)) + 1e-9; })()) {
+      meta.base = 'fundamentals (rounding)';   // ถอดกลับได้เท่า fundamentals ภายในการปัดของคอลัมน์ที่ใช้ (fix round 2 · M-7) — override ไม่เพิ่มข้อมูล
     } else if (p0 != null) {
       out.baseOverride = { value: +p0.toPrecision(6), why: out.driver === 'eps' ? 'EPS ฐานฉากถอดกลับจากราคาเป้าที่พิมพ์' : 'ฐานฉากถอดกลับจากค่าปลายฉากที่พิมพ์' };
       meta.base = 'back-computed';

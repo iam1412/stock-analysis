@@ -209,4 +209,33 @@ const L3 = require('../../tools/v3/legs.js'), bt = require('../../tools/brandthe
   const r = A.legsOf(p, { shares: 1e8 }, 'THB');
   t.eq([r.legs[0].method, r.legs[0].inputs.rfCurrency], ['dcf', 'THB'], 'THB dcf: rfCurrency THB', JSON.stringify(r));
 }
+// ── fix round 2 ──
+// I-3: forecast/guidance-labelled cards never map to actual FY/TTM keys · forward P/E → peForward only when epsForward reproduces
+{
+  t.eq([MC.keyOf('รายได้ FY27 (guide)', '$3.92B'), MC.keyOf('FCF (New BD est.)', '$2.1B'), MC.keyOf('รายได้คาด FY2569E', '฿500 ล้าน'), MC.keyOf('Free Cash Flow FY2026E', '$6.1B'), MC.keyOf('BVPS (est.)', '$80')], [null, null, null, null, null], 'I-3: guide / est. / คาด / FY2026E / est. → no key');
+  t.eq([MC.keyOf('รายได้ TTM', '$1B'), MC.keyOf('เงินปันผล (Forward)', '~3%'), MC.keyOf('เงินปันผล (คาด)', '~3%')], ['revenue', 'yield', null], 'I-3: TTM unchanged · indicated forward dividend stays yield · expected dividend → no key');
+  t.eq([MC.keyOf('P/E (FY26E)', '~18x'), MC.keyOf('P/E (TTM)', '~18x')], ['peForward', 'pe'], 'I-3: forward-labelled P/E → peForward');
+  const mut = (edit) => { const p = PV.parseV2('BBL', raw('BBL')); edit(p); return A.assemble(p, { seeds: SEEDS, headUpdated: null, v2Hash: 'x', today: '2026-09-04', analysisPx: null }); };
+  // FY2026E card next to a TTM key: the forecast card is custom + F, the TTM fundamentals stay unset by it
+  const r1 = mut((p) => { p.s1cards[4] = { ...p.s1cards[4], kHtml: 'กำไรสุทธิ FY2026E', k: 'กำไรสุทธิ FY2026E' }; });
+  t(r1.notes.F.includes('card "กำไรสุทธิ FY2026E" → custom (forecast-labelled: not actual)') && !r1.doc.fundamentals.netIncome && !(r1.doc.fundamentals.fy || {}).netIncome && r1.doc.metrics.custom.some((c) => c.label === 'กำไรสุทธิ FY2026E'), 'I-3: FY2026E card → custom + F, never fundamentals', JSON.stringify(r1.notes.F));
+  // forward P/E with its own .d EPS that reproduces price ÷ EPS → peForward
+  const r2 = mut((p) => { p.s1cards[2] = { kHtml: 'P/E (FY26E)', k: 'P/E (FY26E)', vHtml: '~8.1x', v: '~8.1x', vcls: '', dHtml: 'EPS FY2026E ฿24.0', d: 'EPS FY2026E ฿24.0', dcls: '' }; });
+  t(r2.doc.metrics.cards.some((c) => (c.key || c) === 'peForward') && r2.doc.fundamentals.epsForward === 24, 'I-3: forward P/E + reproducing .d EPS → peForward', JSON.stringify(r2.doc.metrics.cards));
+  const r3 = mut((p) => { p.s1cards[2] = { kHtml: 'P/E (FY26E)', k: 'P/E (FY26E)', vHtml: '~12.5x', v: '~12.5x', vcls: '', dHtml: 'EPS FY2026E ฿24.0', d: 'EPS FY2026E ฿24.0', dcls: '' }; });
+  t(r3.doc.metrics.custom.some((c) => c.label === 'P/E (FY26E)') && r3.notes.F.some((x) => /card "P\/E \(FY26E\)" → custom \(peForward: printed/.test(x)), 'I-3: forward P/E not reproducing price ÷ EPS → custom + F');
+  const r4 = mut((p) => { p.s1cards[2] = { kHtml: 'P/E (FY26E)', k: 'P/E (FY26E)', vHtml: '~8.1x', v: '~8.1x', vcls: '', dHtml: 'อิงประมาณการ', d: 'อิงประมาณการ', dcls: '' }; });
+  t(r4.notes.F.some((x) => /card "P\/E \(FY26E\)" → custom \(peForward: fundamentals\.epsForward missing\)/.test(x)), 'I-3: forward P/E without EPS → custom + F');
+}
+// M-7: back-computed eps base within the Base column's printed rounding of fundamentals.eps → no override (AME-shaped)
+{
+  const p = PV.parseV2('BBL', raw('BBL')); delete p.rd.values.baseEps;
+  // Bull end printed off (฿27.2) → fundamentals do not reproduce every end · Base back-compute 24.0/1.03³ = 21.963 lies within ±0.05 (Base prints 1 dp) of eps 21.97
+  p.s6cols[2] = { ...p.s6cols[2], lis: p.s6cols[2].lis.map((x) => (/ปี\s*\d/.test(x[0]) && !/ปันผล/.test(x[0]) ? [x[0], '~฿27.2', '~฿27.2'] : x)) };
+  const back = 24.0 / Math.pow(1.03, 3);   // 21.963
+  const a = MS.scenarios(p, { eps: 21.97 });
+  t(Math.abs(back - 21.97) <= 0.05 && !a.scenarios.baseOverride && a.meta.base === 'fundamentals (rounding)' && !a.F.some((x) => /baseOverride/.test(x)), 'M-7: back-computed base within printed rounding of fundamentals.eps → no override', JSON.stringify(a.meta.base));
+  const b = MS.scenarios(p, { eps: 21.5 });
+  t(b.scenarios.baseOverride && b.meta.base === 'back-computed', 'M-7: beyond the rounding → back-compute + F kept');
+}
 t.done();
