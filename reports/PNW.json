@@ -1,0 +1,229 @@
+{
+  "v": 3,
+  "symbol": "PNW",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Pinnacle West Capital",
+    "exchange": "NYSE",
+    "sub": "Arizona Electric Monopoly • APS • Phoenix Metro Boom • Palo Verde Nuclear • Chip Fab Power Demand",
+    "headerTags": [
+      "Regulated Utility",
+      "Arizona Electric Monopoly"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis.com",
+      "Yahoo Finance",
+      "Finviz"
+    ],
+    "themeLegacy": {
+      "accent": "#D97706",
+      "accentDark": "#92400E",
+      "darkGrad": "linear-gradient(135deg,#7c2d12 0%,#9a3412 55%,#c2410c 100%)",
+      "glow": "rgba(217,119,6,0.35)",
+      "subColor": "#fff6ec",
+      "headerMuted": "#fdf5ef",
+      "verdictText": "#fdf4f1",
+      "vcellLabel": "#ffffff"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T23:32:21+07:00",
+      "v2Hash": "3a46fe77906f"
+    }
+  },
+  "market": {
+    "px": 91.08,
+    "priceDate": "2026-09-24",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          88.52
+        ],
+        [
+          "พ.ย.25",
+          90.86
+        ],
+        [
+          "ธ.ค.25",
+          88.7
+        ],
+        [
+          "ม.ค.26",
+          93.56
+        ],
+        [
+          "ก.พ.26",
+          100.3
+        ],
+        [
+          "มี.ค.26",
+          100.75
+        ],
+        [
+          "เม.ย.26",
+          103.72
+        ],
+        [
+          "พ.ค.26",
+          99.74
+        ],
+        [
+          "มิ.ย.26",
+          107
+        ],
+        [
+          "ก.ค.26",
+          100.99
+        ],
+        [
+          "ส.ค.26",
+          97.64
+        ],
+        [
+          "ก.ย.26",
+          91.08
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 85.91,
+      "hi": 111.16
+    }
+  },
+  "fundamentals": {
+    "eps": 5.19,
+    "dps": 3.64,
+    "bvps": 58.32,
+    "shares": 121197234,
+    "peAvg5y": 17.1,
+    "netIncome": 640000000,
+    "roe": 9.4,
+    "roa": 2.4,
+    "revenue": 5550000000,
+    "opMargin": 20.9,
+    "beta": 0.42,
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "ddm",
+      "label": "DDM / Gordon Growth (วิธีหลัก)",
+      "inputs": {
+        "g": 4.5,
+        "r": 8.3
+      },
+      "note": "rate-base growth หลัง rate case 2024 settle, อนุรักษ์นิยมกว่า trailing 5yr CAGR ที่ถูกกดจาก rate freeze 2565 · risk-free ~4.3% + beta 0.42 × ERP ~9.5% · เหมาะกับ regulated utility ที่กระแสเงินสด/ปันผลคาดการณ์ได้สูง",
+      "family": "rg"
+    },
+    {
+      "method": "pe",
+      "label": "P/E Valuation (เสริม)",
+      "inputs": {
+        "multiple": 17.1,
+        "multipleSource": "median5y"
+      },
+      "note": "17.1x คือมัธยฐานย้อนหลัง FY2021–25 ของหุ้นตัวเอง (5 จุด กรอบ 13.9–18.0x วัดจากราคาเฉลี่ยงวด ÷ EPS diluted) มาจากประวัติ ไม่ได้อิงตัวคูณปัจจุบัน; ไม่ใช้เป้านักวิเคราะห์เป็นขา",
+      "family": "market"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "peAvg5y",
+      "pbv",
+      "netIncome",
+      "eps",
+      "bvps",
+      "roe",
+      "revenue",
+      "opMargin",
+      "yield",
+      "beta"
+    ],
+    "notes": {
+      "peAvg5y": "FY2021–25 กรอบ 13.9x–18.0x (ราคาเฉลี่ยงวด ÷ EPS diluted)",
+      "netIncome": "รายได้ TTM +5.7% YoY",
+      "eps": "TTM diluted (StockAnalysis) · FY2025 $5.05",
+      "bvps": "ROE ~9.4%",
+      "roe": "ตาม ACC อนุมัติ ROE 9.4% (rate case 2024)",
+      "revenue": "+5.7% YoY",
+      "opMargin": "Gross margin 42.3%",
+      "yield": "{{dps}}/หุ้น/ปี · Payout ~70%",
+      "beta": "ผันผวนต่ำ (defensive utility)"
+    },
+    "hint": "TTM ณ ก.ย. 2569"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": "cagr",
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 1,
+        "exitMultiple": 15,
+        "divCum": 11.15,
+        "desc": "rate case ใหม่ผิดหวัง/ACC เข้มงวด, capex ล่าช้า, multiple de-rate สู่ค่าเฉลี่ยยาว"
+      },
+      {
+        "growth": 5,
+        "exitMultiple": 17.1,
+        "divCum": 11.8,
+        "desc": "rate base โตตามแผน CAPEX, Arizona/chip-fab demand หนุนยอดขายไฟต่อเนื่อง"
+      },
+      {
+        "growth": 7,
+        "exitMultiple": 19,
+        "divCum": 12.05,
+        "desc": "data-center/AI power demand เร่งตัวแรง, rate case ถัดไปได้ ROE สูงกว่าคาด"
+      }
+    ],
+    "exitDp": 1,
+    "note": "Base case ใช้สมมติฐาน EPS growth ~5%/ปี จาก EPS ฐาน {{eps}} (สอดคล้องกับ rate-base growth หลัง rate case 2024 settle ที่ ROE 9.4%) และ exit P/E 17.1x = มัธยฐานย้อนหลัง 5 ปี — Bull (P/E 19x เหนือกรอบประวัติ 13.9–18.0x) สะท้อน upside จากกระแส AI/data-center power demand ที่อาจเร่ง capex/rate base ได้เร็วกว่าคาด ส่วน Bear สะท้อนความเสี่ยง regulatory (ACC) และ multiple compression กลับสู่ค่าเฉลี่ยประวัติศาสตร์"
+  },
+  "analyst": {
+    "target": 105.46,
+    "n": null,
+    "rating": "Hold",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ราคาปรับตัวขึ้นต่อเนื่องจากโซน $85-90 ในไตรมาส 3-4 ปี 2568 สู่จุดต่ำสุดรอบปีที่ $88.52 (ต.ค. 2568) ก่อนไต่ระดับแรงในต้นปี 2569 หลังตลาดตอบรับกระแส AI/data-center power demand และการลงทุนโรงงานชิปในแอริโซนา ดันราคาทะลุ $100 ในเดือนกุมภาพันธ์ และทำจุดสูงสุดของกราฟที่ $107 (มิ.ย. 2569) ก่อนย่อลงต่อเนื่องในเดือน ก.ค.–ก.ย. มาอยู่ที่ {{px}} ปัจจุบัน — ผลตอบแทนราคาล้วนรอบปีดูป้ายที่หัวรายงาน",
+    "valuation": "สองขาเป็นคนละตระกูลสมมติฐาน (DDM ใช้ r/g ที่เป็นสมมติฐานของเราเอง · P/E ใช้มัธยฐานย้อนหลัง) ห่างกัน ~1.1 เท่า จึงเฉลี่ยได้ — DDM ไวต่อ g มาก (g 4.0% → ~$88, g 5.0% → ~$116) ดังนั้น FV {{fv}} มี MOS {{mos}} เทียบราคา {{px}} ควรอ่านเป็น \"ใกล้เคียงราคา\" ไม่ใช่ตัวเลขแม่นยำ",
+    "gauge": "ราคาปัจจุบัน {{px}} อยู่สูงกว่าโซน MOS 20-30% ทั้งคู่ และเกือบเท่า Fair Value {{fv}} แต่ยังต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ {{analyst.target}} (consensus \"Hold\" จาก 13 สำนัก — ใช้เป็นบริบทเท่านั้น ไม่ได้เป็นขาของ FV) — สะท้อนว่าตลาดมองราคานี้ \"พอเหมาะ\" ใกล้เคียงมูลค่าพื้นฐาน",
+    "mos": "ราคาปัจจุบันเกือบเท่ามูลค่าเหมาะสม ({{fv}}) ทำให้ MOS อยู่เพียง {{mos}} ยังอยู่ในโซนต่ำ (ไม่ถูกพอสำหรับสาย value) — ตัวคูณ P/E เป้า 17.1x เป็นมัธยฐานย้อนหลังจริง ส่วน DDM ไวต่อ g มาก นักลงทุนสาย value ควรรอจังหวะราคาย่อตัวสู่โซน MOS 10-20% ก่อนเข้าซื้อเพิ่ม",
+    "verdictHeadline": "Hold — โครงสร้างธุรกิจดี แต่ราคาใกล้เคียงมูลค่าเหมาะสมแล้ว",
+    "verdictBody": "Pinnacle West เป็น regulated utility ผูกขาดในตลาดแอริโซนาที่กำลังเติบโตเร็วที่สุดใน US ทั้งจากประชากร ธุรกิจ และการลงทุนโรงงานผลิตชิปขนาดใหญ่ (TSMC/Intel/Amkor) บวกกับกระแส AI/data-center power demand ที่หนุน load growth ระยะยาว การผ่าน rate case ปี 2567 ด้วย ROE 9.4% ช่วยคลี่คลายความไม่แน่นอนด้านกำกับดูแลหลังช่วง rate freeze ที่ลำบากในปี 2565 ราคาหุ้นปัจจุบันเทรดใกล้เคียงกับมูลค่าเหมาะสมเฉลี่ยที่ประเมินได้ ({{fv}}) มาก MOS อยู่ในโซนต่ำเพียง {{mos}} เหมาะสำหรับถือรับปันผล {{yield}} มากกว่าไล่ซื้อเพิ่มที่ราคาปัจจุบัน",
+    "strategy": "รอราคาย่อลงมาใกล้โซน MOS 10-20% (ราว $85 ลงมาถึง {{mos20}}) ก่อนทยอยสะสมเพิ่ม สำหรับผู้ถืออยู่แล้วสามารถถือต่อเพื่อรับปันผล ~{{yield}}/ปี ระหว่างรอ rate-base/CAPEX เติบโตหนุน EPS ในระยะ 3-5 ปีข้างหน้า จากธีม Arizona growth + AI power demand",
+    "disclaimerSources": "ข้อมูลจาก StockAnalysis.com, Yahoo Finance, Finviz ณ 21 ก.ย. 2569"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 2 วิธี"
+  },
+  "catalysts": [
+    "<b>Phoenix metro boom:</b> แอริโซนาเป็นหนึ่งในรัฐที่ประชากร/ธุรกิจโตเร็วสุดใน US หนุนดีมานด์ไฟฟ้าที่อยู่อาศัย/พาณิชย์ระยะยาว",
+    "<b>Semiconductor fab supercycle:</b> TSMC (ลงทุนกว่า $65B+), Intel และ Amkor ขยายโรงงานผลิตชิปในแอริโซนา ต้องการไฟฟ้าปริมาณมหาศาลระดับ hyperscale",
+    "<b>AI/data-center power demand:</b> อุตสาหกรรมสาธารณูปโภคไฟฟ้าทั่ว US รวมถึง APS ได้อานิสงส์จาก load growth ที่เร่งตัวจากศูนย์ข้อมูล AI",
+    "<b>Palo Verde Nuclear (3.2 GW):</b> โรงไฟฟ้านิวเคลียร์ใหญ่ที่สุดใน US ให้ baseload carbon-free ต้นทุนต่ำ มูลค่าเชิงกลยุทธ์สูงขึ้นในยุค decarbonization",
+    "<b>Rate case 2024 ผ่านแล้ว:</b> ACC อนุมัติ ROE 9.4% คลี่คลายความไม่แน่นอนด้านกำกับดูแลหลัง rate freeze ปี 2565 เปิดทางให้ capex/rate base เติบโตต่อ",
+    "<b>Payout ratio ปกติ:</b> ~70% อยู่ในกรอบเป้าหมายอุตสาหกรรม เปิดทางให้ dividend growth เร่งตัวขึ้นตาม EPS ในระยะถัดไป"
+  ],
+  "risks": [
+    "<b>Valuation ตึงตัว:</b> เทรดที่ P/E ~{{pe}}x สูงกว่ามัธยฐาน 5 ปี (~17.1x) เล็กน้อย MOS ปัจจุบันอยู่ในโซนต่ำเพียง {{mos}}",
+    "<b>Regulatory risk:</b> ACC เคยสั่ง rate freeze ปี 2565 กดดันกำไรมาแล้ว การพิจารณา rate case รอบถัดไปยังมีความไม่แน่นอน",
+    "<b>Capex สูงต่อเนื่อง:</b> ต้องลงทุนขยาย grid/generation รองรับ data-center demand อาจกดดัน balance sheet หรือทำให้ต้องออกหุ้นเพิ่มทุน (dilution)",
+    "<b>ดอกเบี้ย/bond yield:</b> หุ้นปันผล utility อ่อนไหวต่อ risk-free rate หากดอกเบี้ยระยะยาวขึ้นต่อ กดดัน valuation multiple",
+    "<b>Climate/extreme heat:</b> ต้นทุนซ่อมบำรุง grid ในสภาพอากาศร้อนจัดของแอริโซนาเพิ่มขึ้นเรื่อยๆ รวมถึงความเสี่ยง wildfire",
+    "<b>Palo Verde operational risk:</b> เหตุ shutdown/บำรุงรักษาฉุกเฉินกระทบ baseload supply และเพิ่มต้นทุน replacement power"
+  ],
+  "extras": [],
+  "_sig": "sha256:b038a375dca6a90072a57a5e7cdc0d6c9e2b9f4d1330b376111050b996b1f9b7"
+}
