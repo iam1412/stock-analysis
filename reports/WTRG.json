@@ -1,0 +1,249 @@
+{
+  "v": 3,
+  "symbol": "WTRG",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Essential Utilities, Inc.",
+    "exchange": "NYSE",
+    "sub": "น้ำประปา + ก๊าซธรรมชาติแบบ regulated · ~5.5 ล้านลูกค้า · 10 รัฐ · Peoples Natural Gas (ซื้อกิจการ 2020) · ปันผลต่อเนื่อง 30+ ปี · rate base โต ~8-10%/ปี · สำนักงานใหญ่ Bryn Mawr PA",
+    "headerTags": [
+      "Utilities",
+      "Water & Gas Regulated"
+    ],
+    "analysisDate": "2026-09-22",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "StockAnalysis.com",
+      "Macrotrends"
+    ],
+    "themeLegacy": {
+      "accent": "#1B8CA6",
+      "accentDark": "#136980",
+      "darkGrad": "linear-gradient(135deg,#0d3d4d 0%,#1B4F5E 60%,#0f2d38 100%)",
+      "glow": "rgba(27,140,166,0.35)",
+      "subColor": "#7dd4e8",
+      "headerMuted": "#8ec7d5",
+      "verdictText": "#5ccbe4",
+      "vcellLabel": "#add6e0"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-22T03:05:24+07:00",
+      "v2Hash": "9aafe37ad222"
+    }
+  },
+  "market": {
+    "px": 39.74,
+    "priceDate": "2026-09-24",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          39.03
+        ],
+        [
+          "พ.ย.25",
+          39.59
+        ],
+        [
+          "ธ.ค.25",
+          38.36
+        ],
+        [
+          "ม.ค.26",
+          38.79
+        ],
+        [
+          "ก.พ.26",
+          39.97
+        ],
+        [
+          "มี.ค.26",
+          40.27
+        ],
+        [
+          "เม.ย.26",
+          38.2
+        ],
+        [
+          "พ.ค.26",
+          36.89
+        ],
+        [
+          "มิ.ย.26",
+          38.31
+        ],
+        [
+          "ก.ค.26",
+          39.85
+        ],
+        [
+          "ส.ค.26",
+          41.17
+        ],
+        [
+          "ก.ย.26",
+          39.74
+        ]
+      ],
+      "gridFmt": "v.toFixed(0)",
+      "dataFmt": "d[1].toFixed(2)"
+    },
+    "range52w": {
+      "lo": 36.11,
+      "hi": 42.37
+    }
+  },
+  "fundamentals": {
+    "dps": 1.353,
+    "bvps": 24.4,
+    "shares": 283600000,
+    "eps": 1.97,
+    "roe": 8.5,
+    "roa": 3.8,
+    "revenue": 2550000000,
+    "debtToEquity": 1.23,
+    "beta": 0.65,
+    "fy": {
+      "period": "FY2025",
+      "netIncome": 616000000
+    },
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation",
+      "inputs": {
+        "multiple": 22,
+        "multipleSource": "peer"
+      },
+      "note": "คู่แข่งกลุ่มน้ำ AWK ~24x, AWR ~28x; WTRG สมเหตุสมผลที่ 22x จาก 30+ ปีปันผลต่อเนื่อง + rate base เติบโต"
+    },
+    {
+      "method": "ddm",
+      "label": "DDM / Gordon Growth",
+      "inputs": {
+        "g": 5,
+        "r": 8
+      },
+      "override": {
+        "dps": 1.3047619047619048,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "อัตราโต 5% สอดคล้อง rate base growth + regulatory lag; r = 4.4% + 0.65×5.5% = 8%"
+    },
+    {
+      "method": "pbv",
+      "label": "Justified P/BV",
+      "inputs": {
+        "g": 5,
+        "r": 8
+      },
+      "note": "วิธีนี้ให้ค่าต่ำกว่าเนื่องจาก ROE ใกล้เคียง cost of equity; ใช้เป็น lower bound"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "custom:0",
+      "pbv",
+      "netIncomeFy",
+      "eps",
+      "bvps",
+      "roe",
+      "revenue",
+      "debtToEquity",
+      "yield",
+      "beta"
+    ],
+    "custom": [
+      {
+        "label": "P/E เฉลี่ย ~5 ปี",
+        "value": "~22–25x",
+        "note": "ช่วง 20–29x (ตาม sector)"
+      }
+    ],
+    "notes": {
+      "mcap": "~283.6 ล้านหุ้น",
+      "pe": "ต่ำกว่าค่าเฉลี่ยประวัติ ~22-25x",
+      "pbv": "BVPS ~{{bvps}} (TTM)",
+      "netIncomeFy": "EPS $2.20 (+YoY from $2.17)",
+      "eps": "diluted · FY2025 $2.20",
+      "bvps": "Equity $6.89B / 283M หุ้น",
+      "roe": "Net Income TTM $587M",
+      "revenue": "น้ำ ~55% + ก๊าซ ~45%",
+      "debtToEquity": "หนี้ $8.46B — typical สาธารณูปโภค",
+      "yield": "$1.353/หุ้น TTM · 30+ ปีต่อเนื่อง",
+      "beta": "ผันผวนต่ำกว่าตลาด ~35%"
+    },
+    "hint": "ข้อมูล ณ ไตรมาสล่าสุด (TTM)"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 3,
+        "exitMultiple": 19,
+        "divCum": 4.23,
+        "desc": "อัตราดอกเบี้ยสูงนาน กด P/E"
+      },
+      {
+        "growth": 6,
+        "exitMultiple": 21,
+        "divCum": 4.36,
+        "desc": "rate base โต 8-10% ตามแผน"
+      },
+      {
+        "growth": 8,
+        "exitMultiple": 23,
+        "divCum": 4.45,
+        "desc": "Fed ลดดอกเบี้ย + M&A acquisition"
+      }
+    ],
+    "exitDp": 0,
+    "note": "แม้ในสถานการณ์ Bear ราคาหุ้นยังให้ผลตอบแทนบวก ~18% ใน 3 ปี เนื่องจากสาธารณูปโภคที่ regulated 100% มีความสามารถในการปรับขึ้นอัตราค่าบริการ (rate case) ตามต้นทุน ทำให้กำไรเติบโตได้แม้ในสภาวะเศรษฐกิจชะลอ ปันผลสม่ำเสมอ ~3.5%/ปีเป็นรายได้ฐานที่ป้องกันการขาดทุน ทั้งนี้ความเสี่ยงหลักคืออัตราดอกเบี้ยที่สูงนาน ซึ่งกด P/E multiples ของ sector"
+  },
+  "analyst": {
+    "target": 41.6,
+    "n": null,
+    "rating": "Hold",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ราคา WTRG ในช่วง 1 ปีที่ผ่านมาเคลื่อนไหวในกรอบแคบ $36–$40 สะท้อนธรรมชาติของสาธารณูปโภคที่มีรายได้สม่ำเสมอ จากราคาต้นปี ~$36.80 ปรับขึ้นไปแตะ $40.27 ในเดือน ก.ย. 2568 จากความต้องการหุ้น defensive เมื่อตลาดกังวลเศรษฐกิจ ก่อนย่อตัวกลับในช่วงปลายปี เมื่อ Fed ส่งสัญญาณคงดอกเบี้ยนานขึ้น โดยรวมราคาปรับขึ้น +4.4% รอบปี (รวมปันผลผลตอบแทนรวม ~7.9%) ราคาปัจจุบันใกล้เคียงมูลค่าเหมาะสมเล็กน้อยเหนือกว่า",
+    "valuation": "P/E (22x) และ DDM ให้ค่า $43-46 สะท้อนพรีเมียมที่ผู้ลงทุนยอมจ่ายสำหรับหุ้นสาธารณูปโภคคุณภาพสูง ส่วน Justified P/BV ($28.63) ต่ำกว่าเพราะ ROE ~8.5% ใกล้เคียง cost of equity ทำให้ economic spread แคบ มูลค่าเฉลี่ย {{fv}} ใกล้เคียงราคาตลาดปัจจุบัน บ่งชี้ว่าหุ้นซื้อขายใกล้ fair value ไม่ถูกมาก แต่ก็ไม่แพงเกินไป",
+    "gauge": "ราคา {{px}} เทียบมูลค่าเหมาะสม {{fv}} (MOS {{mos}}) และต่ำกว่าเป้า Analyst เฉลี่ย {{analyst.target}} สะท้อนว่าหุ้นซื้อขายใกล้ fair value ผู้ลงทุนระยะยาวที่ต้องการกระแสปันผลสม่ำเสมออาจพิจารณาสะสมในโซน $36-38 (MOS 5-8%) ซึ่งให้ yield ที่น่าสนใจกว่า",
+    "mos": "ราคาใกล้ Fair Value — MOS จำกัด แต่ยังให้ Yield ~3.5%",
+    "verdictHeadline": "Fairly Valued — สาธารณูปโภค Defensive คุณภาพสูง เหมาะ Income Investor",
+    "verdictBody": "Essential Utilities (WTRG) เป็นหนึ่งในสาธารณูปโภคน้ำ+ก๊าซที่ดีที่สุดในสหรัฐฯ ด้วย 100% regulated business, 30+ ปีปันผลต่อเนื่อง, rate base เติบโต 8-10%/ปี และ beta ต่ำ 0.65 บ่งชี้ความผันผวนน้อย อย่างไรก็ตามราคาปัจจุบัน {{px}} เทียบมูลค่าเหมาะสม {{fv}} ทำให้ Margin of Safety อยู่ที่ {{mos}} ผู้ลงทุนที่เน้น capital gain ควรรอโซน $34-36 (MOS 8-13%) ก่อนสะสม ส่วน income investor ที่ต้องการ yield ~3.5%+ พร้อม dividend growth ~7%/ปี สามารถถือได้ในระยะยาว Analyst consensus = Hold กับเป้า {{analyst.target}}",
+    "strategy": "สะสมที่ราคาต่ำกว่า $37 เพื่อให้ได้ MOS 5%+ และ Yield ~3.7% — ถ้าราคาปัจจุบัน ให้ถือเพื่อปันผลสม่ำเสมอ รอโอกาสซื้อเพิ่มเมื่อตลาดปรับฐาน หรือเมื่อ Fed ส่งสัญญาณลดดอกเบี้ยชัดเจน (catalyst หลักของ sector)",
+    "disclaimerSources": "แหล่งข้อมูล: Yahoo Finance (ราคา/52W/ปันผล/beta/เป้า analyst), StockAnalysis.com (EPS/Revenue/BVPS/Equity), Macrotrends (EPS รายปี/ประวัติรายได้), การคำนวณ valuation โดย Claude Sonnet 5"
+  },
+  "catalysts": [
+    "<b>Rate Base Growth ~8-10%/ปี:</b> แผนลงทุน infrastructure มูลค่า ~$3.5B ใน 5 ปี (2024-2028) ขยาย rate base → รายได้เพิ่มสม่ำเสมอผ่านกระบวนการ regulatory approval",
+    "<b>ปันผล Aristocrat 30+ ปี:</b> WTRG ขึ้นปันผลต่อเนื่องกว่า 30 ปี อัตราเติบโตปันผล ~7%/ปีช่วง 5 ปีที่ผ่านมา เป็น dividend growth stock ที่เหมาะสำหรับ income investor",
+    "<b>การลดดอกเบี้ยของ Fed:</b> เมื่ออัตราดอกเบี้ยลด sector utilities ได้รับประโยชน์โดยตรง ทั้งลดต้นทุนการกู้ยืมใหม่ + ผู้ลงทุนหันมาซื้อหุ้น defensive yield สูงกว่า bond",
+    "<b>Peoples Natural Gas Synergy:</b> การรวมกิจการก๊าซ (2020) ยังคง unlocking synergies อย่างต่อเนื่อง ลดต้นทุนต่อลูกค้า + cross-selling water-gas ในพื้นที่ทับซ้อน",
+    "<b>Water Scarcity Tailwind:</b> โครงสร้างพื้นฐานน้ำในสหรัฐฯ เก่าเกิน 50-100 ปี ต้องการเงินลงทุนซ่อมแซมมหาศาล รัฐบาลสนับสนุน infrastructure spending อย่างต่อเนื่อง",
+    "<b>M&A โอกาสซื้อกิจการ:</b> บริษัทสาธารณูปโภคขนาดเล็กที่เทศบาลต้องการขายออก เป็นโอกาสขยาย rate base ในราคาที่เพิ่ม EPS accretive"
+  ],
+  "risks": [
+    "<b>Regulatory Risk:</b> รายได้ขึ้นอยู่กับการอนุมัติขึ้นราคาจาก Public Utility Commissions (PUC) ใน 10 รัฐ ความล่าช้าหรือการปฏิเสธคำขอ rate case อาจกระทบ margin",
+    "<b>ดอกเบี้ยสูง — Cost of Capital:</b> D/E ~1.23x หมายความว่าต้นทุนหนี้สูงกระทบ EPS โดยตรง; ถ้า Fed ไม่ลดดอกเบี้ยเร็ว การ refinance ใน 2-3 ปีข้างหน้าต้นทุนสูงขึ้น",
+    "<b>Weather & Drought Risk:</b> ภัยแล้งลด volume การใช้น้ำ แต่ Decoupling mechanism ในบางรัฐช่วยลดผลกระทบ — ยังมีความเสี่ยง basis อยู่ใน state ที่ไม่มี decoupling",
+    "<b>ภาระหนี้สูง:</b> Total Debt $8.46B vs Equity $6.89B — leverage สูงตามธรรมชาติ utility แต่ถ้าสภาพคล่องตลาดตึงตัว อาจต้อง equity dilution ซึ่งกด EPS per share",
+    "<b>Municipalization Risk:</b> บางเทศบาลพิจารณา \"municipalization\" (ซื้อระบบน้ำคืน) เป็นความเสี่ยงระยะยาวที่อาจลดจำนวนลูกค้าและ rate base ในพื้นที่นั้น"
+  ],
+  "extras": [],
+  "_sig": "sha256:75f3bb840755bb2444a9b697c1daabb374245668ecbec87f97e90da7c6ad5ea2"
+}
