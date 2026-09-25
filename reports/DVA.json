@@ -1,0 +1,256 @@
+{
+  "v": 3,
+  "symbol": "DVA",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "DaVita Inc.",
+    "exchange": "NYSE",
+    "sub": "Largest US kidney dialysis operator • ~2,800 outpatient centers • ~200K ESRD patients • Medicare/Medicaid ~80% revenue • Berkshire Hathaway ~38% stake",
+    "headerTags": [
+      "Healthcare Services",
+      "Kidney Dialysis"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "StockAnalysis",
+      "Macrotrends"
+    ],
+    "themeLegacy": {
+      "accent": "#E31837",
+      "accentDark": "#a01025",
+      "darkGrad": "linear-gradient(135deg,#1a0508 0%,#2d0a10 50%,#1a0508 100%)",
+      "glow": "rgba(227,24,55,0.18)",
+      "subColor": "#f8c8cf",
+      "headerMuted": "rgba(255,255,255,0.55)",
+      "verdictText": "#fff0f2",
+      "vcellLabel": "#f8c8cf"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T13:09:09+07:00",
+      "v2Hash": "ea9d1fe21869"
+    }
+  },
+  "market": {
+    "px": 174.67,
+    "priceDate": "2026-09-24",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          119.02
+        ],
+        [
+          "พ.ย.25",
+          119.68
+        ],
+        [
+          "ธ.ค.25",
+          113.61
+        ],
+        [
+          "ม.ค.26",
+          109.34
+        ],
+        [
+          "ก.พ.26",
+          156.3
+        ],
+        [
+          "มี.ค.26",
+          153.69
+        ],
+        [
+          "เม.ย.26",
+          155.14
+        ],
+        [
+          "พ.ค.26",
+          194.36
+        ],
+        [
+          "มิ.ย.26",
+          222.48
+        ],
+        [
+          "ก.ค.26",
+          240.09
+        ],
+        [
+          "ส.ค.26",
+          176.01
+        ],
+        [
+          "ก.ย.26",
+          174.67
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 101,
+      "hi": 247.49
+    }
+  },
+  "fundamentals": {
+    "eps": 12.11,
+    "shares": 63772000,
+    "ebitda": 2760000000,
+    "netDebt": 12700000000,
+    "revenue": 14000000000,
+    "fcf": 1310000000,
+    "dps": 0,
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation",
+      "inputs": {
+        "multiple": 13.2,
+        "multipleSource": "median5y"
+      },
+      "note": "มัธยฐานย้อนหลัง 5 ปีของ DVA เอง (ราคาเฉลี่ยปี ÷ EPS ปรับลด FY2021–25: 12.5–15.6x) ไม่อิงตัวคูณปัจจุบัน",
+      "family": "market"
+    },
+    {
+      "method": "evebitda",
+      "label": "EV/EBITDA Valuation",
+      "inputs": {
+        "multiple": 9.4,
+        "multipleSource": "median5y"
+      },
+      "note": "Debt รวม $13,406M รวม lease − Cash $689M · 9.4x = มัธยฐาน EV/EBITDA สิ้นปี FY2021–25 ของ DVA (9.86/9.71/9.32/9.41/7.99x, StockAnalysis) ฐาน EV รวม lease ตรงกับฐานของตัวคูณ",
+      "family": "market"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      {
+        "key": "evEbitda",
+        "tone": "none"
+      },
+      {
+        "key": "netDebt",
+        "tone": "neg"
+      },
+      "revenue",
+      "custom:0",
+      "eps",
+      {
+        "key": "fcf",
+        "tone": "pos"
+      },
+      "custom:1",
+      "yield",
+      "custom:2",
+      "range52w"
+    ],
+    "custom": [
+      {
+        "label": "Operating Income",
+        "value": "~$2.04B",
+        "note": "FY2025; EBITDA margin ~20.2%"
+      },
+      {
+        "label": "ROIC",
+        "value": "~12-14%",
+        "note": "สูงกว่า WACC; สะท้อนคูเมืองที่แข็งแกร่ง",
+        "tone": "pos"
+      },
+      {
+        "label": "Berkshire Stake",
+        "value": "~38%",
+        "note": "Buffett/Berkshire เชื่อมั่นระยะยาว",
+        "tone": "pos"
+      }
+    ],
+    "notes": {
+      "mcap": "~64M หุ้น (ซื้อคืนลดลงต่อเนื่อง)",
+      "pe": "EPS TTM ~{{eps}} (StockAnalysis, หลังงบ Q2/2569)",
+      "evEbitda": "EV ~$24.4B / EBITDA ~$2.76B (FY2025)",
+      "netDebt": "Debt รวม (รวม lease) $13.41B − Cash $0.69B (TTM)",
+      "revenue": "FY2025 $13.64B (+6.5% YoY)",
+      "eps": "FY2025: $9.84 | TTM: {{eps}} (หลังงบ Q2/2569)",
+      "fcf": "FY2025 (TTM $1.61B) — ก่อนชำระหนี้",
+      "yield": "ไม่จ่าย · Buyback-driven; BRK ถือ ~38%",
+      "range52w": "เคยพุ่ง 145% จากจุดต่ำสุด ธ.ค. 2567 ก่อนปรับฐานล่าสุด"
+    },
+    "hint": "ข้อมูล ณ ก.ย. 2569"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": -3,
+        "exitMultiple": 12.5,
+        "divCum": 0,
+        "desc": "Medicare ตัดอัตราชำระคืนแรง + GLP-1 กดผู้ป่วยใหม่"
+      },
+      {
+        "growth": 6,
+        "exitMultiple": 13.2,
+        "divCum": 0,
+        "desc": "Medicare คงอัตรา + Buyback ต่อเนื่อง + Volume เติบโตปกติ"
+      },
+      {
+        "growth": 10,
+        "exitMultiple": 15.6,
+        "divCum": 0,
+        "desc": "Medicare reimbursement ปรับขึ้น + International ขยาย + GLP-1 impact น้อยกว่าคาด"
+      }
+    ],
+    "exitDp": 1,
+    "note": "การคาดการณ์อิง EPS ฐาน {{eps}} เติบโต 3 ปี × P/E ขาออก (Bear 12.5x = ต่ำสุดย้อนหลัง / Base 13.2x = มัธยฐาน / Bull 15.6x = สูงสุดย้อนหลัง FY2021–25) ไม่รวมปันผล (DVA ไม่จ่ายปันผล) Base case ให้ผลตอบแทน {{scn.base.ret}} ใน 3 ปีจากจุดเข้าปัจจุบัน {{px}} — ผลตอบแทนพึ่ง EPS โตเป็นหลัก เพราะตัวคูณขาออกอิงมัธยฐานย้อนหลังซึ่งต่ำกว่าตัวคูณปัจจุบัน ยังต้องระวังความเสี่ยงด้าน Leverage ที่เพิ่มขึ้นต่อเนื่องซึ่งอาจกด Multiple ขาออกให้ต่ำกว่าสมมติฐาน",
+    "hintNote": "• ไม่มีปันผล"
+  },
+  "analyst": {
+    "target": 220,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "DVA ทรงตัวแถว ~$110–120 ช่วง ต.ค. 2568 – ม.ค. 2569 (จุดต่ำสุดรายเดือน ~$109 ม.ค. 2569) ท่ามกลางความกังวลเรื่องผลกระทบ GLP-1 ต่ออุบัติการณ์โรคไตวาย จากนั้นพุ่งขึ้นแรงใน ก.พ. 2569 (+43% เดือนเดียว) และต่อเนื่องแตะปิดรายเดือนสูงสุด ~$240 ใน ก.ค. 2569 (กรอบ 52 สัปดาห์สูงสุด $247.49) ก่อนปรับฐานแรงใน ส.ค. 2569 (ปิดรายเดือน ~$176) หลังประกาศงบ Q2/2569 และอยู่ที่ {{px}} ล่าสุด ({{chg}})",
+    "valuation": "ทั้งสองวิธีใช้ตัวคูณมัธยฐานย้อนหลังที่วัดจริง (ไม่ใช่ตัวคูณปัจจุบัน) — P/E (~$160) ต่ำกว่า EV/EBITDA (~$207) เพราะ DVA มีหนี้สูงมาก (Debt เพิ่มต่อเนื่องจาก Buyback) ซึ่ง P/E ตีราคาหนี้ผ่านกำไรสุทธิ ส่วน EV/EBITDA ตีจากกระแสเงินสดก่อนดอกเบี้ย ราคาปัจจุบัน {{px}} ใกล้เคียง Fair Value {{fv}} (MOS {{mos}}) — ตลาดตีตัวคูณปัจจุบันสูงกว่ามัธยฐานย้อนหลัง เป้านักวิเคราะห์ consensus ~$220 (Buy — StockAnalysis/Yahoo n=7 $219.86) ใช้เป็นบริบทเท่านั้น ไม่นับเป็นขา Fair Value",
+    "gauge": "ราคาปัจจุบัน {{px}} อยู่ใกล้ Fair Value {{fv}} (MOS {{mos}}) — ยังไม่มี Margin of Safety เพียงพอ โซนน่าสะสมคือ {{mos20}} (MOS 20%) และดีกว่าคือ {{mos30}} (MOS 30%) เป้า consensus ~$220 (Buy) เป็นเพียงบริบท ไม่ใช่ขาของ Fair Value",
+    "mos": "ราคาใกล้เคียงมูลค่าเหมาะสม — ยังไม่มี Margin of Safety เพียงพอ",
+    "verdictHeadline": "DVA: ธุรกิจแข็งแกร่ง ราคาใกล้ Fair Value — รอย่อตัวเข้าโซน MOS",
+    "verdictBody": "DaVita เป็นธุรกิจ Dialysis ที่มี Moat แข็งแกร่ง — Scale 2,800 ศูนย์, รายได้ Medicare มั่นคง, FCF สูง และ Berkshire ถือ 38% ราคาปรับฐานแรงจากจุดสูงราว $240 ลงมาที่ {{px}} หลังงบ Q2/2569 ปัจจุบันใกล้ Fair Value ที่ประเมินไว้ {{fv}} (MOS {{mos}}) และต่ำกว่า Analyst Consensus ~$220 ขณะที่ EPS TTM เติบโตต่อเนื่องเป็น {{eps}} ผลตอบแทน Base Case 3 ปีข้างหน้าจึงน่าสนใจขึ้นมากที่ +58% แม้ต้องระวังความเสี่ยงด้าน Leverage ที่เพิ่มขึ้นต่อเนื่อง นักลงทุน Value อาจพิจารณาทยอยสะสมได้ในโซนราคาปัจจุบัน",
+    "strategy": "<b>รอย่อตัว</b> — DVA ราคาใกล้ Fair Value (MOS {{mos}}) ยังไม่มี Margin of Safety เพียงพอ High-Quality Business แต่ควรรอราคาเข้าโซน โซนน่าสนใจ: <b>{{mos20}}</b> (MOS 20%); โซนถูกมาก: <b>{{mos30}}</b> (MOS 30%) ผู้ถือหุ้นระยะยาวถือต่อได้ เพราะ Berkshire Backing + Medicare Moat แข็งแกร่ง แต่ไม่แนะนำซื้อเพิ่มที่ระดับ All-Time High",
+    "disclaimerSources": "แหล่งที่มา: Yahoo Finance (ราคา/กราฟ ณ {{priceDate}}), StockAnalysis.com (EPS TTM $12.11 หลังงบ Q2/2569, Market Cap ~$11.7B), Macrotrends (Revenue/EBITDA/Net Income FY2025), StockAnalysis Forecast (Analyst consensus ~$220, Buy)"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 2 วิธี",
+    "chartHint": "ต.ค. 2568 – ก.ย. 2569",
+    "disclaimerAssump": " P/E เป้าหมาย, EV/EBITDA Multiple, และ EPS Growth ในอนาคต"
+  },
+  "catalysts": [
+    "<b>Berkshire Hathaway (~38%):</b> Warren Buffett ถือมา 20+ ปี สะท้อนความเชื่อมั่นใน Business Model ที่แข็งแกร่งและสร้างกระแสเงินสดสูง",
+    "<b>Medicare Reimbursement Stability:</b> โปรแกรม Bundled Payment ปรับเพิ่มทุกปีตาม CPI — ให้รายได้ที่คาดการณ์ได้และมั่นคงสูง",
+    "<b>Aging Demographics:</b> ประชากรสูงอายุ + เบาหวาน/ความดันที่เพิ่มขึ้น → ผู้ป่วย ESRD เพิ่มต่อเนื่อง 3–4%/ปี",
+    "<b>Aggressive Share Buybacks:</b> ลดหุ้นจาก 93M (2566) เหลือ 70M (TTM ส.ค. 2569) = ~+33% EPS per share boost ใน 3 ปี",
+    "<b>GLP-1 Fear Overstated:</b> นักวิจัยพบว่า GLP-1 ลด Diabetes แต่ไม่ได้ลด ESRD ในระยะสั้น 5–10 ปี เพราะโรคไตใช้เวลานานมาก",
+    "<b>Scale & Network Moat:</b> 2,800 ศูนย์ทั่ว US = ไม่มีคู่แข่งรายใหม่สร้างได้ง่าย; Fresenius เป็นคู่แข่งเดียวที่ใกล้เคียง"
+  ],
+  "risks": [
+    "<b>Medicare Reimbursement Cuts:</b> รัฐบาล Medicaid/Medicare ควบคุม ~80% รายได้ — การตัดงบฯ หรือเปลี่ยนนโยบายอาจกระทบกำไรรุนแรง",
+    "<b>GLP-1 Long-term Risk:</b> หาก GLP-1 (Ozempic/Wegovy) ลด ESRD Incidence จริงในระยะ 10–15 ปี จะกดปริมาณผู้ป่วยใหม่ลงอย่างมีนัยสำคัญ",
+    "<b>High Leverage:</b> หนี้รวม TTM เพิ่มเป็น ~$13.4B (D/E ~12.4x) — ดอกเบี้ยสูงกดกำไรสุทธิต่อเนื่อง; ดอกเบี้ยขึ้นกระทบต้นทุนทางการเงิน",
+    "<b>Negative/Low Book Value:</b> Buyback ต่อเนื่องทำ Equity ต่ำผิดปกติ (ROE ทางบัญชี TTM ~88% สะท้อนฐาน Equity ที่บางกว่าคุณภาพธุรกิจจริง ไม่ใช่ตัวชี้วัดที่เทียบได้ตรงไปตรงมา) + ธุรกิจขึ้นอยู่กับ Debt Refinancing อย่างต่อเนื่อง",
+    "<b>Labor Cost Pressure:</b> Dialysis Technician และ Nurse ขาดแคลน ค่าแรงเพิ่มต่อเนื่อง กดดัน EBITDA Margin",
+    "<b>Valuation Re-rating Risk:</b> P/E ปัจจุบัน ~{{pe}}x สูงกว่ามัธยฐานย้อนหลัง 13.2x และราคาปรับฐานแรงใน ส.ค. 2569 สะท้อนความกังวลเรื่อง Leverage — หาก Debt สูงขึ้นต่อเนื่องอาจกด Multiple ลงอีก"
+  ],
+  "extras": [],
+  "_sig": "sha256:c88d8b92e045cf4e6b06ae2078694d0f227fcaf38594ca6ddfe99384c8c16d06"
+}
