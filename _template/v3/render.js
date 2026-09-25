@@ -146,8 +146,8 @@ function toV2Source(doc, view) {
           <ul>
             <li><span>${drv} ปี ${s.years}</span><span>~${esc(view.cur + RV.fmtPrice(sc.driverEnd))}</span></li>
             <li><span>${ex} ออก</span><span>${exitText(s, sc.exitMultiple)}x</span></li>${sc.divCum != null ? `
-            <li><span>ปันผลรวม ${s.years} ปี</span><span>~{{rd:sc${i + 1}div}}</span></li>` : ''}
-            <li><span>สถานการณ์</span><span>${pr(sc.desc)}</span></li>
+            <li><span>ปันผลรวม ${s.years} ปี</span><span>~{{rd:sc${i + 1}div}}</span></li>` : ''}${sc.desc != null ? `
+            <li><span>สถานการณ์</span><span>${pr(sc.desc)}</span></li>` : ''}
           </ul>
         </div>
       </div>`;

@@ -175,7 +175,7 @@ tagCase('ZTS-real', (d) => { d.metrics.notes.eps += ' <font>x</font>'; }, 'metri
   } finally { fs.rmSync(tmp, { recursive: true, force: true }); }
 }
 // CODES ครบ inventory ของ ruling R4
-t.eq(CV.CODES.map((c) => c.id).sort(), ['E17', 'E27', 'E50', 'E51', 'E52', 'W07', 'W09', 'W18', 'W25', 'W30', 'W31', 'W32'], 'CODES = native inventory (R4)');
+t.eq(CV.CODES.map((c) => c.id).sort(), ['E17', 'E27', 'E50', 'E51', 'E52', 'W07', 'W09', 'W18', 'W25', 'W30', 'W31', 'W32', 'W33'], 'CODES = native inventory (R4)');
 // ── final review (3) — ffoPayout หารด้วย FFO/หุ้น: 0 → "Infinity%" · ลบ → payout ติดลบ ⇒ guard > 0 + backstop E51 ถ้าหน้าหลุด NaN/Infinity/undefined
 { const d = load('EQIX-real'); delete d._sig; d.fundamentals.ffoPerShare = 0; d.metrics.cards.push('ffoPayout');
   const r = noThrow(() => run(signed(d)), '(3) EQIX ffoPerShare 0');
