@@ -1,0 +1,287 @@
+{
+  "v": 3,
+  "symbol": "PNC",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "PNC Financial Services Group",
+    "exchange": "NYSE",
+    "sub": "6th largest US bank (~$600B assets) • BBVA USA acquisition 2021 (Sun Belt: TX/AZ/FL/CO/NM/CA) • Corporate & commercial banking • Harris Williams M&A advisory • Treasury management & capital markets • ~3.4% dividend yield (raised 18% Jun 2026) • BlackRock stake fully divested → pure banking focus",
+    "headerTags": [
+      "Financial Services",
+      "Regional Banking"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "StockAnalysis",
+      "PNC Investor Relations"
+    ],
+    "themeLegacy": {
+      "accent": "#001f5b",
+      "accentDark": "#001040",
+      "darkGrad": "linear-gradient(135deg,#001f5b 0%,#003080 60%,#0045a0 100%)",
+      "glow": "rgba(0,31,91,0.35)",
+      "subColor": "#b0c4e8",
+      "headerMuted": "#a9c0e2",
+      "verdictText": "#e8f0ff",
+      "vcellLabel": "#c0d0ed"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T23:32:21+07:00",
+      "v2Hash": "0234c8780a47"
+    }
+  },
+  "market": {
+    "px": 223.34,
+    "priceDate": "2026-09-24",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          182.55
+        ],
+        [
+          "พ.ย.25",
+          190.72
+        ],
+        [
+          "ธ.ค.25",
+          208.73
+        ],
+        [
+          "ม.ค.26",
+          223.3
+        ],
+        [
+          "ก.พ.26",
+          212.35
+        ],
+        [
+          "มี.ค.26",
+          208.09
+        ],
+        [
+          "เม.ย.26",
+          223
+        ],
+        [
+          "พ.ค.26",
+          221.12
+        ],
+        [
+          "มิ.ย.26",
+          246.22
+        ],
+        [
+          "ก.ค.26",
+          249.87
+        ],
+        [
+          "ส.ค.26",
+          239.63
+        ],
+        [
+          "ก.ย.26",
+          223.34
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 176.88,
+      "hi": 258.96
+    }
+  },
+  "fundamentals": {
+    "eps": 18.17,
+    "dps": 8,
+    "bvps": 145.51,
+    "shares": 399000000,
+    "peAvg5y": 12.3,
+    "roe": 12.6,
+    "roa": 1.3,
+    "fy": {
+      "period": "FY2025",
+      "netIncome": 6600000000,
+      "revenue": 22300000000
+    },
+    "bank": {
+      "nim": 2.96
+    },
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation",
+      "inputs": {
+        "multiple": 12.3,
+        "multipleSource": "median5y"
+      },
+      "note": "มัธยฐาน P/E ย้อนหลัง FY2021–FY2025 ของ PNC เอง (5 จุด ช่วง 10.5–14.7x) มาจากประวัติ ไม่ได้ลอกจาก P/E ปัจจุบัน",
+      "family": "market"
+    },
+    {
+      "method": "pbv",
+      "label": "Justified P/BV",
+      "inputs": {
+        "g": 4,
+        "r": 9.5
+      },
+      "override": {
+        "roe": 12,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "มาตรฐานการประเมินธนาคาร; r=9.5% (risk-free 4.2% + ERP 5.3%) g=4% (เติบโตยั่งยืน)",
+      "family": "rg"
+    },
+    {
+      "method": "ddm",
+      "label": "DDM (Gordon Growth)",
+      "inputs": {
+        "g": 4.5,
+        "r": 9.5
+      },
+      "override": {
+        "dps": 7.6555023923444985,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "$2.00/qtr × 4 · $160 ค่าเงินปันผลคิดลด · DDM ให้ค่าต่ำเพราะธนาคารมีข้อจำกัดการจ่ายปันผลจาก regulatory capital ไม่สะท้อน Earning power เต็ม",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "peAvg5y",
+      "pbv",
+      "netIncomeFy",
+      "eps",
+      "bvps",
+      "roe",
+      "revenueFy",
+      {
+        "key": "nim",
+        "tone": "pos"
+      },
+      "yield",
+      "custom:0",
+      "custom:1",
+      "custom:2",
+      "custom:3",
+      "payout"
+    ],
+    "custom": [
+      {
+        "label": "CET1 Ratio",
+        "value": "9.9%",
+        "note": "ประมาณการ ณ 30 มิ.ย. 2026 (Q2 2026)",
+        "tone": "neu"
+      },
+      {
+        "label": "สินเชื่อรวม (Q1 2026)",
+        "value": "$360.9B",
+        "note": "+9% YoY · หลัง FirstBank acquisition ม.ค. 2569"
+      },
+      {
+        "label": "NPL / Credit Quality",
+        "value": "ดีมาก",
+        "note": "SCB depletion 0.3% — ดีสุดในกลุ่ม Stress Test 2026",
+        "tone": "neu"
+      },
+      {
+        "label": "Loan Growth",
+        "value": "+7–9% YoY",
+        "note": "BBVA USA Sun Belt + FirstBank ขยายฐาน",
+        "tone": "pos"
+      }
+    ],
+    "notes": {
+      "mcap": "399M shares outstanding",
+      "pe": "(diluted, ถึง Q2 2026)",
+      "peAvg5y": "มัธยฐาน FY2021–FY2025 (ช่วง 10.5–14.7x)",
+      "pbv": "(StockAnalysis)",
+      "netIncomeFy": "+19.6% YoY (จาก $5.50B FY2024) · TTM $7.26B",
+      "eps": "FY2025 = $16.59 · Q2 2026 = $4.81",
+      "bvps": "Tangible BVPS ~$111 (Q2 2026)",
+      "roe": "FY2025 ROE 12.2% · TTM ROE 12.6%",
+      "revenueFy": "+7.5% YoY · TTM $24.3B (+14.5%)",
+      "nim": "Q2 2026 (+1 bps QoQ); ฝ่ายบริหารคาด >3% ภายในสิ้นปี",
+      "yield": "$2.00/qtr ({{dps}}/ปี) หลังขึ้น +18% จาก $1.70",
+      "payout": "อนุรักษ์นิยม · รองรับการขึ้นปันผลต่อเนื่อง"
+    },
+    "hint": "FY2025 / Q2 2026"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 2,
+        "exitMultiple": 10,
+        "divCum": 24,
+        "desc": "Recession/credit cycle"
+      },
+      {
+        "growth": 8,
+        "exitMultiple": 12.3,
+        "divCum": 25,
+        "desc": "NIM ขยาย + loan growth"
+      },
+      {
+        "growth": 13,
+        "exitMultiple": 14,
+        "divCum": 26,
+        "desc": "M&A growth + NIM >3%"
+      }
+    ],
+    "exitDp": 1,
+    "note": "Base case (+32% รวมปันผล ใน 3 ปี หรือ ~9.7%/ปี) สะท้อนการเติบโต EPS ~8%/ปี (นักวิเคราะห์คาด $19.31 ปี 2026, ~+6%) ออกที่ P/E มัธยฐาน {{pe}}x บวกกับ NIM ที่คาดว่าจะแตะ >3% ภายในสิ้นปี 2026 จาก NII ที่ขยายตัวหลัง FirstBank และ Floating-rate loan repricing Bear case อาจเกิดถ้า Fed ลดดอกเบี้ยเร็ว → NIM กดดัน + credit quality ถดถอยในพอร์ต BBVA USA (Sun Belt) Bull case ต้องการ M&A ต่อเนื่อง + ตลาด re-rate หุ้นธนาคารขนาดใหญ่ใกล้ Global Systemically Important Bank (GSIB) tier"
+  },
+  "analyst": {
+    "target": 278,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "PNC เริ่มกราฟที่ ~$183 (ต.ค. 2568) แล้วไต่ขึ้นต่อเนื่องจนแตะ ~$250 (ก.ค. 2569) ก่อนย่อลงมาที่ราคาปัจจุบัน กำไรสุทธิ FY2025 $6.6B (+19.6% YoY) และ Q2 2026 EPS $4.81 หนุนราคา; NIM ขยับเป็น 2.96% และปันผลขึ้น 18% เป็น $2.00/qtr ผลตอบแทนรอบปีที่ผ่านมาอยู่ที่ <b>+27.7%</b> (ต.ค. 2568 – ก.ย. 2569) จุดไฮไลต์: ต.ค. 2568 = จุดต่ำสุดของกราฟ ($183) + ก.ค. 2569 = สูงสุดของกราฟ ($250)",
+    "valuation": "P/E ($224) เป็นขามัธยฐานประวัติของตัวเอง — Justified P/BV ($212) และ DDM ($160) ใช้ r 9.5%/g ~4-4.5% ชุดเดียวกัน นับเป็นตระกูล r/g เดียว 1 เสียง (เฉลี่ย $186) ทั้ง 3 ขาห่างกันไม่เกิน 2 เท่า (<b>dispersion gate 0.4c</b>) — FV = (P/E $224 + ตระกูล r/g $186) / 2 = <b>$205</b> · มี 2 ตระกูลอิสระ ค่อนข้างอ่อนไหวต่อ r/g (หาก r/g ตระกูลหลังต่ำลง 10% FV ลดราว 4.5%) ราคาปัจจุบัน {{px}} สูงกว่า FV ~14% สะท้อนว่าตลาดให้ Premium จากการเติบโตของ NIM (คาด >3% ภายในสิ้นปี) และการซื้อกิจการ FirstBank นักวิเคราะห์ 20 คน (Consensus Buy) ให้เป้าเฉลี่ย $277.73 (ใช้เป็นบริบทตรวจสอบ ไม่ได้เป็นขาของ FV) — สูงกว่า FV ของเรา เพราะรวมการเติบโต EPS 2026E ($19.31, ~+6%)",
+    "gauge": "ราคาปัจจุบัน {{px}} อยู่เหนือ Fair Value {{fv}} ประมาณ <b>14%</b> อยู่ในโซน \"Premium\" — ตลาดให้ราคาสะท้อนการเติบโตของ NIM (คาด >3% ภายในสิ้นปี 2026) + EPS 2026E $19.31 + ผลจาก FirstBank acquisition จุดเข้าซื้อที่น่าสนใจ คือ ต่ำกว่า <b>$205</b> (FV) หรือโซน MOS 20% ที่ <b>$164</b> (Deep value) ซึ่งอาจเกิดได้หากตลาดกังวล credit cycle / ดอกเบี้ยลดเร็ว",
+    "mos": "ราคาสูงกว่ามูลค่าเหมาะสม — รอจังหวะดีกว่า",
+    "verdictHeadline": "HOLD — คุณภาพสูงแต่ราคา Premium; รอจังหวะ $185–$205",
+    "verdictBody": "PNC Financial Services เป็นธนาคารภูมิภาคคุณภาพสูงอันดับ 6 ของสหรัฐฯ ด้วยสินทรัพย์ ~$600B (หลัง FirstBank) ที่มีความแข็งแกร่งจาก NIM ขยายตัว (คาด >3% ภายในสิ้นปี 2026), Fee Revenue ที่หลากหลาย, และการเติบโตใน Sun Belt ผ่าน BBVA USA อย่างไรก็ตาม ราคาปัจจุบัน {{px}} สูงกว่า Fair Value {{fv}} ประมาณ <b>14%</b> สะท้อนว่าตลาดได้ Price-in การเติบโตส่วนใหญ่แล้ว นักวิเคราะห์ให้เป้า $277.73 (Consensus Buy, 20 คน) ซึ่งสูงกว่า FV ของเราเพราะรวม Forward EPS Growth ปี 2026-2027 กลยุทธ์ที่เหมาะสม: <b>ถือหุ้นที่มีอยู่</b> และรอ Pullback สู่โซน $185–$205 ก่อนเพิ่มสถานะ — จุดเข้าซื้อเชิง Value ที่ดีที่สุดคือ <$205 (FV) หรือ <$185 ถ้าต้องการ MOS 10%",
+    "strategy": "HOLD สำหรับผู้ถือหุ้นอยู่ — รอ Pullback <$205 (FV) เพื่อเพิ่มสถานะ · โซน MOS 20% ที่ $164 คือโอกาสสะสมเชิง Deep Value · ปันผลขึ้น 18% (Q3 2026) และ NIM >3% คือ Catalyst ระยะใกล้ที่ต้องติดตาม · ห้ามเข้าซื้อที่ราคาปัจจุบันในเชิง Value",
+    "disclaimerSources": "ข้อมูลราคาจาก Yahoo Finance ({{priceDate}}) · ผลการดำเนินงานจาก PNC Investor Relations / PR Newswire (Q2 2026 Earnings Release 15 ก.ค. 2569; FY2025 Annual Results) · Consensus และงบ 5 ปี จาก StockAnalysis.com (ก.ย. 2569) · เมตริกธนาคารและ Dividend จาก CompaniesMarketCap.com · ราคาทวนสอบ Yahoo Finance กับ StockAnalysis (ต่างกัน 0.03%)"
+  },
+  "text": {
+    "valHint": "3 วิธีสำหรับธนาคาร",
+    "chartHint": "ต.ค. 2568 – ก.ย. 2569"
+  },
+  "catalysts": [
+    "<b>NIM Expansion:</b> Q2 2026 NIM 2.96% (+1 bps QoQ) — ฝ่ายบริหารคาด >3% ภายในสิ้นปี 2026 จาก floating-rate repricing และ deposit cost stabilization หนุน NII แข็งแกร่ง",
+    "<b>FirstBank Acquisition (ม.ค. 2569):</b> ขยาย Loan book (สินเชื่อเฉลี่ย Q2 2026 $363B, +4% QoQ) — เพิ่มฐานลูกค้า Middle Market ในภาคตะวันออกเฉียงใต้; conversion เสร็จใน Q2 2026 · เป้าลดต้นทุน $350M ปี 2026",
+    "<b>ปันผลขึ้น 18%:</b> ประกาศขึ้น $1.70 → $2.00/qtr หลังผ่าน Fed Stress Test 2026 — CET1 depletion ต่ำสุดในกลุ่ม (0.3%) สะท้อนคุณภาพพอร์ตดีเยี่ยม",
+    "<b>Fee Revenue Diversification:</b> Harris Williams (M&A advisory) + Treasury Management ให้รายได้ค่าธรรมเนียม (Q2 2026 $2.3B, +~20% YoY) ลดการพึ่งพา NIM",
+    "<b>Sun Belt Exposure:</b> BBVA USA acquisition ทำให้ PNC มีฐานใน TX/AZ/FL/CO ที่ประชากรและเศรษฐกิจเติบโตเร็ว — loan demand แข็งแกร่งกว่า Rust Belt",
+    "<b>Capital Return Program:</b> Buyback ต่อเนื่อง ($610M ใน Q2 2026) + ปันผลเติบโต — กดดัน Share count ลง หนุน EPS growth ระยะยาว"
+  ],
+  "risks": [
+    "<b>Interest Rate Risk:</b> ถ้า Fed ลดดอกเบี้ยเร็วกว่าคาด → NIM ถูกกดดัน; PNC มี Asset-sensitive balance sheet — ได้ประโยชน์จากดอกเบี้ยสูง แต่เจ็บปวดถ้าลดเร็ว",
+    "<b>Credit Cycle Risk:</b> สินเชื่อภาคพาณิชย์และ CRE (Commercial Real Estate) ใน Sun Belt + Legacy BBVA USA อาจเกิด NPL ถ้าเศรษฐกิจชะลอ — BBVA USA มีพอร์ต Texas Energy ที่ต้องติดตาม",
+    "<b>Integration Risk:</b> FirstBank (ม.ค. 2569) เป็นดีลใหม่ — ความเสี่ยง IT integration, การรักษาพนักงาน, และ Credit quality ของพอร์ตที่รับมา",
+    "<b>Regulatory Pressure:</b> Basel III Endgame proposal (ถ้าบังคับใช้) อาจกำหนด Higher Capital Requirements — กด CET1 headroom สำหรับ buyback / acquisition",
+    "<b>Competition:</b> JPMorgan, Bank of America ขยาย Branch Network เข้า Sun Belt — ท้าทาย Market Share ของ PNC ในตลาดที่ PNC เพิ่งเข้า",
+    "<b>Valuation Premium:</b> P/E 12.8x ใกล้มัธยฐานย้อนหลัง {{pe}}x แต่ราคาสูงกว่า FV ~14% — ถ้าการเติบโตผิดหวังหรือ EPS miss ความเสี่ยง Multiple Compression สูง"
+  ],
+  "extras": [],
+  "_sig": "sha256:31b963fac08caa83d2ed0ec642987ea469ec80fc09042c3dd15a1cc3e77f3666"
+}
