@@ -285,6 +285,51 @@ const docOf = (patch) => { const d = JSON.parse(JSON.stringify(require('../fixtu
   const mc = migrate('CASY', inCol);
   t.eq(mc.eq.textLost.filter((w) => w === 'ปันผลสะสม').length, 3, 'TEMPLATE_COUNTED off when a v3 column prints the word (not a template word there)');
 }
+// fix round 1 (review I-1): TEMPLATE_COUNTED only at the label position of each column (≤1 per column) — never the hint, never a value cell
+{
+  // re-compare with the v3 doc patched so the author words are NOT carried (whatever assemble carried) — a word the v3 page lacks must be TEXT LOST
+  const recmp = (html, patch) => {
+    const parsed = PV.parseV2('CASY', html);
+    const { doc } = A.assemble(parsed, { seeds: SEEDS, headUpdated: '2026-09-01T00:00:00+07:00', v2Hash: B.freshHash(html), today: parsed.rd.values.priceDate, analysisPx: null });
+    patch(doc);
+    const view = C.compute(doc, { seeds: SEEDS });
+    return EQ.compare(B.expandReport(html), B.expandReport(R.toV2Source(doc, view)), doc, view, { v2src: html });
+  };
+  const base = raw('CASY');
+  const orig = JSON.parse(JSON.stringify(migrate('CASY', base).doc.scenarios));
+  const cnt = (xs, w) => xs.filter((x) => x === w).length;
+  // (a) the words in the §6 hint
+  const hint = base.replace('<div class="hint">จากจุดเข้า {{rd:px}}', '<div class="hint">รวม ปันผลสะสม รวมปันผล จากจุดเข้า {{rd:px}}');
+  t(hint !== base, 'fixture: §6 hint mutated');
+  const ea = recmp(hint, (d) => { d.scenarios.hintNote = orig.hintNote; if (d.scenarios.hintNote == null) delete d.scenarios.hintNote; });
+  t(['รวม', 'ปันผลสะสม', 'รวมปันผล'].every((w) => ea.textLost.includes(w)) && !ea.templateDropped.some((w) => ['รวม', 'ปันผลสะสม', 'รวมปันผล'].includes(w)),
+    'TEMPLATE_COUNTED never drops a hint word (รวม ปันผลสะสม รวมปันผล in the §6 hint → TEXT LOST)', JSON.stringify({ lost: ea.textLost, td: ea.templateDropped }));
+  // (b) the word 3× inside one column's value cell (สถานการณ์), not carried by v3 → all 3 TEXT LOST
+  const cell = base.replace(/(<li><span>สถานการณ์<\/span><span>)/, '$1ปันผลสะสม ปันผลสะสม ปันผลสะสม ');
+  t(cell !== base, 'fixture: bear สถานการณ์ cell mutated');
+  const eb = recmp(cell, (d) => { d.scenarios.cases[0].desc = orig.cases[0].desc; });
+  t.eq(cnt(eb.textLost, 'ปันผลสะสม'), 3, 'TEMPLATE_COUNTED never drops a value-cell word (×3 in one สถานการณ์ cell → 3 TEXT LOST)');
+  t.eq(cnt(eb.templateDropped, 'ปันผลสะสม'), 0, '… and none counted as template');
+  // (b') the word in 3 label spans of ONE column → at most one dropped (1 per column), the other two TEXT LOST
+  const labs3 = base.replace(/(<div class="col bear">[\s\S]*?)<span>EPS ปี 3<\/span>([\s\S]*?)<span>P\/E ออก<\/span>([\s\S]*?)<span>ปันผลรวม 3 ปี<\/span>/,
+    '$1<span>ปันผลสะสม EPS ปี 3</span>$2<span>ปันผลสะสม P/E ออก</span>$3<span>ปันผลสะสม 3 ปี</span>');
+  t(labs3 !== base, 'fixture: bear labels mutated');
+  const ec = migrate('CASY', labs3).eq;
+  t(cnt(ec.templateDropped, 'ปันผลสะสม') === 1 && cnt(ec.textLost, 'ปันผลสะสม') === 2, 'TEMPLATE_COUNTED: ≤ 1 per column (3 labels in bear → 1 dropped · 2 TEXT LOST)', JSON.stringify({ lost: ec.textLost, td: ec.templateDropped }));
+  // (c) positive: one per column label (×3 columns) → all dropped, none lost — also the .ret suffix of old skeletons
+  const pos = base.replace(/<span>ปันผลรวม 3 ปี<\/span>/g, '<span>ปันผลสะสม 3 ปี</span>').replace('{{rd:sc2ret}}', '{{rd:sc2ret}} รวมปันผล');
+  const ed = migrate('CASY', pos).eq;
+  t(cnt(ed.templateDropped, 'ปันผลสะสม') === 3 && cnt(ed.templateDropped, 'รวมปันผล') === 1 && !ed.textLost.includes('ปันผลสะสม') && !ed.textLost.includes('รวมปันผล'),
+    'TEMPLATE_COUNTED positive: one per column label + .ret suffix → dropped, not lost', JSON.stringify({ lost: ed.textLost, td: ed.templateDropped }));
+}
+// fix round 1 (review minors): ffo guard safe without a doc · labelParts marker only as a standalone word (corpus cases)
+{
+  t.eq(SY.apply('s6.top', ['FFO'], {}).used.map((u) => u.id), ['ffo'], 'ffo guard: no doc → default basis ffo, no TypeError');
+  t.eq(SY.apply('s6.top', ['FFO'], { doc: {} }).tokens, ['FFO'], 'ffo guard: doc without fundamentals → no TypeError');
+  const A2 = require('../../tools/migrate-v3/assemble.js');
+  t.eq(A2.labelParts('DDM (ตรวจเป็นบริบท ไม่นับใน FV)'), { label: 'DDM (ตรวจเป็นบริบท ไม่นับใน FV)', ctx: false, reason: '' }, 'labelParts: "ตรวจเป็นบริบท" is not the marker (never split mid-word)');
+  t.eq(A2.labelParts('3. DDM (Dividend Discount Model) — บริบทเท่านั้น'), { label: 'DDM (Dividend Discount Model)', ctx: true, reason: 'เท่านั้น' }, 'labelParts: "บริบทเท่านั้น" = marker + reason "เท่านั้น"');
+}
 // leg alignment on one label function (Task 6 M-4 · D4): an author context suffix with reasoning aligns and the reasoning is not lost once assemble carries it (Task 5) — here: labelParts itself
 {
   const A = require('../../tools/migrate-v3/assemble.js');

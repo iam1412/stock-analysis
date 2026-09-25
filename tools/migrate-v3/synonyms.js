@@ -20,7 +20,7 @@ const SYNONYM_VOCAB = [
     why: 'driver รายได้ต่อหุ้น — v3 พิมพ์ "รายได้/หุ้น" (measure §6.2: CRWV CSGP OKJ HSAI)' },
   { id: 'revenue-year', roles: ['s6.endRow'], from: [['รายได้ปี']], to: ['รายได้', 'ปี'], guard: (g) => scn(g).driver === 'revenuePerShare',
     why: 'แถวปลายฉาก "รายได้ปี 3" ≡ "รายได้/หุ้น ปี 3" (CPNG INTC)' },
-  { id: 'ffo', roles: ['s6.top', 's6.endRow', 's6.exitRow'], from: [['FFO']], to: ['FFO'], guard: (g) => S.FFO_LABEL[(g.doc.fundamentals || {}).ffoBasis || 'ffo'] === 'FFO',
+  { id: 'ffo', roles: ['s6.top', 's6.endRow', 's6.exitRow'], from: [['FFO']], to: ['FFO'], guard: (g) => S.FFO_LABEL[((g.doc || {}).fundamentals || {}).ffoBasis || 'ffo'] === 'FFO',
     why: 'FFO เฉพาะเมื่อ ffoBasis ของ v3 คือ FFO — ใต้ AFFO/Core FFO เป็นข้อเท็จจริงคนละตัว (Kind 1)' },
   { id: 'total', roles: ['s6.ret'], from: [['total'], ['Total'], ['รวม']], to: [], guard: () => true,
     why: 'ป้ายผลตอบแทนรวมใน .ret — ตัวเลขใน .ret ของ v3 คือผลตอบแทนรวม N ปีอยู่แล้ว (APO HLT)' },

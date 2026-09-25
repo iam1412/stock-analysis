@@ -226,7 +226,15 @@ function norm(zoneId, html, side, ctx) {
     // ไม่เดาบทบาทจากตำแหน่ง — ป้ายที่ผู้เขียนเขียนเอง ("Exit P/FFO" · "ทรงตัว" · "เงินสดสุทธิปี 3") เทียบเต็ม (fix round 1 · M-2)
     const cols = [...h.matchAll(/<div class="col (bear|base|bull)">([\s\S]*?)<\/ul>/g)];
     const labelWords = side === 'v3' ? null : ctx.shared.s6Labels || {};
-    if (side === 'v3') ctx.shared.s6Labels = {};
+    if (side === 'v3') {
+      ctx.shared.s6Labels = {};
+      // คำทุกคำในคอลัมน์ §6 ฝั่ง v3 (ดิบ ก่อนตัดป้าย) — TEMPLATE_COUNTED ใช้ได้เฉพาะคำที่ v3 ไม่พิมพ์ในคอลัมน์ใดเลย
+      ctx.shared.s6ColKeys = new Set(cols.flatMap((cm) => tok(text(cm[2])).map(keyOf)));
+    }
+    // TEMPLATE_COUNTED (Plan 4c-prep D4 · fix round 1): ฝั่ง v2 ทิ้งได้เฉพาะที่ตำแหน่งป้าย (<li> ช่องแรก · .ret) ≤ 1 ครั้งต่อคำต่อคอลัมน์
+    //   ไม่แตะ hint / ช่องค่า (สถานการณ์ ฯลฯ) — คำพวกนั้นเทียบตามปกติ · รวมทั้ง zone ไม่เกินเพดานใน TEMPLATE_COUNTED
+    const counted = side === 'v2' ? Object.keys(TEMPLATE_COUNTED.s6).filter((w) => !(ctx.shared.s6ColKeys || new Set()).has(keyOf(w))) : [];
+    const countedN = new Map();
     for (const cm of cols) {
       const name = cm[1];
       let body = cm[2];
@@ -252,6 +260,21 @@ function norm(zoneId, html, side, ctx) {
           return li;
         });
         body = body.replace(/(<div class="ret[^"]*">)([\s\S]*?)(<\/div>)/, (m, a, r, c) => a + rw('s6.ret', r) + c);
+      }
+      if (counted.length) {
+        const done = new Set();
+        const drop = (htm) => {
+          const ws = tok(text(htm)); let hit = false;
+          const kept = ws.filter((w) => {
+            const wd = wordOf(w);
+            if (!counted.includes(wd) || done.has(wd) || (countedN.get(wd) || 0) >= TEMPLATE_COUNTED.s6[wd]) return true;
+            done.add(wd); countedN.set(wd, (countedN.get(wd) || 0) + 1); (ctx.counted = ctx.counted || []).push(wd); hit = true;
+            return false;
+          });
+          return hit ? escHtml(kept.join(' ')) : htm;
+        };
+        body = body.replace(/<li><span>([\s\S]*?)<\/span>/g, (li, l) => `<li><span>${drop(l)}</span>`);
+        body = body.replace(/(<div class="ret[^"]*">)([\s\S]*?)(<\/div>)/, (m, a, r, c) => a + drop(r) + c);
       }
       const top = /<div class="top"><span>([\s\S]*?)<\/span><span>([\s\S]*?)<\/span>/.exec(body);
       const labs = [...body.matchAll(/<li><span>([\s\S]*?)<\/span>/g)].map((x) => text(x[1]));
@@ -399,7 +422,7 @@ function compare(v2Html, v3Html, doc, view, opts) {
   const o = opts || {};
   const z2 = zones(v2Html), z3 = zones(v3Html);
   const shared = { gen: {} };   // v3 ก่อน — hint/mdesc ที่ generate ใช้ตัดสินฝั่ง v2
-  const c2 = { doc, view, dropped: [], shared, mdescKeys: new Set(), syn: [] }, c3 = { doc, view, dropped: [], shared, mdescKeys: new Set(), syn: [] };
+  const c2 = { doc, view, dropped: [], shared, mdescKeys: new Set(), syn: [], counted: [] }, c3 = { doc, view, dropped: [], shared, mdescKeys: new Set(), syn: [], counted: [] };
   const ids = [...new Set([...z2.keys(), ...z3.keys()])];
   const n2 = new Map(), n3 = new Map();
   for (const id of ids) n3.set(id, tok(norm(id, z3.get(id) || '', 'v3', c3)));
@@ -422,14 +445,8 @@ function compare(v2Html, v3Html, doc, view, opts) {
   const bag2 = count(n2), bag3 = count(n3);
   const lostLeft = new Map();
   const lostRuns = new Set();
-  // คำทุกคำในคอลัมน์ของ §6 ฝั่ง v3 (ดิบ ก่อน norm) — TEMPLATE_COUNTED ใช้ได้เฉพาะคำที่ v3 ไม่พิมพ์ในคอลัมน์เลย
-  const v3ColKeys = new Set([...String(z3.get('s6') || '').matchAll(/<div class="col [^"]*">([\s\S]*?)<\/ul>/g)].flatMap((m) => tok(text(m[1])).map(keyOf)));
-  const usedCount = new Map();
   for (const { zone, w, run } of cand) {
     const k = keyOf(w);
-    // s6 คำ template ที่นับจำนวน (Plan 4c-prep D4): ทิ้งได้ ≤ 3 ครั้ง (1 ต่อคอลัมน์) และเฉพาะเมื่อคอลัมน์ v3 ไม่พิมพ์คำนั้น
-    const cap = (TEMPLATE_COUNTED[zone] || {})[wordOf(w)];
-    if (cap && !v3ColKeys.has(k) && (usedCount.get(k) || 0) < cap) { usedCount.set(k, (usedCount.get(k) || 0) + 1); out.templateDropped.push(wordOf(w)); continue; }
     // คลังคำ template เฉพาะ zone ของมัน · คำจาก mdesc ขา computed ใน s3 ไม่ใช้คลังคำ (เป็นคำผู้เขียน — ไม่ใช่ hint/FV box)
     if (inVocab(zone, k) && !(zone === 's3' && c2.mdescKeys.has(k))) { out.templateDropped.push(wordOf(w)); continue; }
     if (!lostLeft.has(k)) lostLeft.set(k, Math.max(0, (bag2.get(k) || 0) - (bag3.get(k) || 0)));
@@ -444,6 +461,7 @@ function compare(v2Html, v3Html, doc, view, opts) {
   // คำ v2 ที่ transform ทิ้ง (ป้าย (SYM) ใต้ราคา · สเกลเกจ · คำสูตร/คำ generate ของ mdesc ขา computed) — ไม่อยู่ที่ไหนในหน้า v3 เลย ⇒ templateDropped (info)
   const raw3 = new Set(tok(text(String(v3Html).replace(/<(script|style)\b[^>]*>[\s\S]*?<\/\1\s*>/gi, ' '))).filter(isWord).map(keyOf));
   for (const w of c2.dropped) if (isWord(w) && !raw3.has(keyOf(w))) out.templateDropped.push(wordOf(w));
+  for (const w of c2.counted || []) out.templateDropped.push(w);   // TEMPLATE_COUNTED (ป้าย §6 ≤ 1 ต่อคอลัมน์)
   // structured + สี + tone
   if (o.v2src) {
     const st = structured(o.v2src, view);
