@@ -1,0 +1,239 @@
+{
+  "v": 3,
+  "symbol": "APH",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Amphenol Corporation",
+    "exchange": "NYSE",
+    "sub": "ผู้นำคอนเนกเตอร์/สายสัญญาณความเร็วสูง — AEC, backplane/IO และ optical interconnect สำหรับ data center AI (800G/1.6T, ทรานซิชัน copper↔optics/CPO)",
+    "headerTags": [
+      "Technology • Interconnect",
+      "Large-cap • AI Datacenter"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "StockAnalysis.com",
+      "SEC 10-Q (Q2",
+      "2026)"
+    ],
+    "priceNote": "ปิดตลาด · ปรับฐานหลังแตกพาร์ 2:1 บอร์ดอนุมัติ ส.ค. 2569 · ห่างจากจุดสูงสุด ~13%",
+    "migratedFrom": {
+      "updated": "2026-09-22T07:22:55+07:00",
+      "v2Hash": "78cf0eead156"
+    }
+  },
+  "market": {
+    "px": 83.08,
+    "priceDate": "2026-09-24",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          69.67
+        ],
+        [
+          "พ.ย.25",
+          70.45
+        ],
+        [
+          "ธ.ค.25",
+          67.57
+        ],
+        [
+          "ม.ค.26",
+          72.04
+        ],
+        [
+          "ก.พ.26",
+          73.03
+        ],
+        [
+          "มี.ค.26",
+          63.17
+        ],
+        [
+          "เม.ย.26",
+          73.64
+        ],
+        [
+          "พ.ค.26",
+          74.38
+        ],
+        [
+          "มิ.ย.26",
+          88.16
+        ],
+        [
+          "ก.ค.26",
+          80.35
+        ],
+        [
+          "ส.ค.26",
+          79.28
+        ],
+        [
+          "ก.ย.26",
+          83.08
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 59.01,
+      "hi": 89.26
+    }
+  },
+  "fundamentals": {
+    "eps": 2,
+    "dps": 0.5,
+    "shares": 2470000000,
+    "epsForward": 2.67,
+    "roe": 38,
+    "revenue": 29000000000,
+    "netIncome": 5140000000,
+    "fy": {
+      "period": "FY2025",
+      "netIncome": 4270000000,
+      "eps": 1.67,
+      "revenue": 23100000000
+    },
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation ระมัดระวัง",
+      "inputs": {
+        "multiple": 28.2,
+        "multipleSource": "median5y",
+        "base": "epsForward"
+      },
+      "baseLabel": "FY2026e",
+      "note": "FY2026e, StockAnalysis · มัธยฐานย้อนหลัง 5 ปีของ APH ที่วัดจริง ช่วง 24.2–33.1x — ไม่ใช่ตัวคูณปัจจุบัน ~39x",
+      "family": "market"
+    },
+    {
+      "method": "declared",
+      "label": "DCF (2-stage)",
+      "inputs": {
+        "value": 85,
+        "basis": "other"
+      },
+      "note": "FCF โต ~20% 5 ปีแรกแล้วชะลอ, WACC ~8.5%, Terminal 3% — สะท้อนวงจร capex AI ที่ยังขยายและ M&A roll-up ต่อเนื่อง",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      {
+        "key": "peForward",
+        "tone": "none"
+      },
+      "eps",
+      {
+        "key": "revenueFy",
+        "tone": "none"
+      },
+      "netIncomeFy",
+      {
+        "key": "roe",
+        "tone": "none"
+      },
+      "epsFy",
+      {
+        "key": "revenue",
+        "tone": "none"
+      },
+      "netIncome",
+      "yield",
+      "range52w"
+    ],
+    "notes": {
+      "mcap": "~2.47 พันล้านหุ้น",
+      "pe": "พรีเมียมสูง",
+      "peForward": "EPS FY2026e ~$2.67 (SA) • FY2027e $3.27",
+      "eps": "▲ +14.9% YoY (งบ Q2/2026)",
+      "revenueFy": "▲ +51.7% YoY",
+      "netIncomeFy": "▲ Net margin ~18.5%",
+      "roe": "Op margin ~28% (TTM)",
+      "epsFy": "เทียบ FY2024 $0.96",
+      "revenue": "▲ +54.2% YoY",
+      "netIncome": "EPS GAAP {{eps}} (TTM)",
+      "yield": "payout ~25%",
+      "range52w": "เงินสด ~$5.4B • หนี้ ~$18.8B"
+    },
+    "hint": "งบ FY2025 (10-K) + TTM (ถึง Q2 2026)"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": "cagr",
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 8,
+        "exitMultiple": 21,
+        "desc": "capex AI ชะลอ / M&A สะดุด"
+      },
+      {
+        "growth": 22,
+        "exitMultiple": 27,
+        "desc": "โตตามแนวโน้ม AI interconnect"
+      },
+      {
+        "growth": 30,
+        "exitMultiple": 32,
+        "desc": "ครองตลาด AEC/optical 1.6T + M&A เร่ง"
+      }
+    ],
+    "exitDp": 0,
+    "note": "ความเสี่ยง–ผลตอบแทนเอียง <b>บวก</b> เพราะการเติบโต EPS เร่งตัวจาก AI datacom และ M&A roll-up — แต่ราคาเข้าที่ P/E พรีเมียม upside ที่แท้จริงขึ้นกับว่า capex AI ของ hyperscaler จะ <b>ขยายต่อเนื่อง</b> และ Amphenol รักษา margin/ส่วนแบ่ง interconnect (รวมทรานซิชัน copper↔optics) ได้แค่ไหน",
+    "hintNote": "(TTM) {{eps}}"
+  },
+  "analyst": {
+    "target": 99.26,
+    "n": null,
+    "rating": null,
+    "asOf": null
+  },
+  "prose": {
+    "chart": "หุ้นบวก <b>~11% ในรอบปี</b> (จุดกราฟทั้งเส้นเป็นฐานหลังแตกพาร์ 2:1) จากจุดต่ำ 52 สัปดาห์ ~$59 สู่จุดสูงสุด 52 สัปดาห์ ~$89 (มิ.ย. 2026) แรงหนุนจากความต้องการ <b>interconnect สำหรับ AI data center</b> (AEC/backplane/optical 800G–1.6T) และดีล M&A (CommScope) ที่ดัน IT datacom พุ่ง และ EPS TTM ที่กระโดดขึ้นเป็น {{eps}} หลังงบ Q2/2026 — ราคาล่าสุดย่อลงมาราว 13% จากจุดสูงสุด 52 สัปดาห์",
+    "valuation": "<b>หมายเหตุ:</b> <b>ตัวเลข \"ต่อหุ้น\" ทั้งใบเป็นฐานหลังแตกพาร์ 2:1</b> (บอร์ดอนุมัติ ส.ค. 2569) — มูลค่าเหมาะสม/ราคาเป้า/EPS ถูกหารสองทั้งหมด ส่วนอัตราส่วน (P/E, MOS, yield, ROE) ไม่เปลี่ยนจากการแตกพาร์ • ใช้ P/E + DCF (ข้าม DDM/P/BV — APH จ่ายปันผลน้อยมาก yield ~0.6%) • ปรับโครง FV รอบนี้: เป้านักวิเคราะห์/ค่า intrinsic ของนักวิเคราะห์ถูกตัดออกจากขา FV (เหลือเป็นบริบทเทียบเท่านั้น) และตัวคูณ P/E เปลี่ยนจาก 32x ที่ตั้งเองเป็นมัธยฐานที่วัดได้ 28.2x บน EPS FY2026e — P/E ปัจจุบัน ~39x (TTM) ยังสะท้อนความคาดหวัง AI เต็มที่ จึงใช้กรอบ <b>Value Investor / Margin of Safety</b> ที่อนุรักษ์นิยมกว่าเป้านักวิเคราะห์ฝั่ง momentum (เฉลี่ย {{analyst.target}})",
+    "gauge": "ราคา {{px}} อยู่ <b>ใกล้มูลค่าเหมาะสม</b> {{fv}} (MOS {{mos}}) — แต่ยัง <b>ต่ำกว่าเป้าหมาย 12 เดือน</b> ของนักวิเคราะห์ (เฉลี่ย {{analyst.target}}; Yahoo n=17, StockAnalysis Strong Buy) สะท้อน 2 มุมมอง: สาย value เห็นส่วนเผื่อความปลอดภัยบางมาก, สาย growth มองว่าวงจร capex AI ยังให้ upside เพิ่ม",
+    "mos": "<b>Margin of Safety บางมาก</b><br>ราคาปัจจุบัน {{px}} ใกล้มูลค่าเหมาะสม {{fv}} → ตามเกณฑ์ value investor ยังไม่เข้าโซนน่าสนใจ ต้องรอราคาย่อลงสู่โซน MOS 20% ที่ {{mos20}}",
+    "verdictHeadline": "ผู้ชนะฝั่งฟิสิคัล-เลเยอร์ของ AI — EPS กระโดดหลังงบ Q2/2026 เปิดพื้นที่ safety margin กลับมา",
+    "verdictBody": "Amphenol เป็นผู้นำคอนเนกเตอร์/สายสัญญาณความเร็วสูง (AEC, backplane/IO, optical) สำหรับ data center AI เติบโตเร็วเป็นประวัติการณ์ (รายได้ TTM +54.2% YoY) กำไรสูง M&A roll-up ต่อเนื่อง และกระจายปลายทางกว้าง — บริษัทแตกพาร์ 2:1 (มีผล 2 ก.ย. 2569) ตัวเลขต่อหุ้นทั้งใบจึงเป็นฐานใหม่ • งบ Q2/2026 ดัน EPS TTM ขึ้นเป็น {{eps}} (+14.9%) ที่ราคา {{px}} ตลาดยังให้ P/E TTM ~39x สะท้อนความคาดหวัง AI สูง เมื่อคิดตัวคูณมัธยฐานย้อนหลัง FV จึงอยู่ใกล้ราคา ส่วนเผื่อความปลอดภัยบางมาก ส่วนสาย growth ที่เชื่อวงจร capex AI และทรานซิชัน copper↔optics ยังเห็น upside ตามเป้านักวิเคราะห์ แต่ความเสี่ยง valuation และการ integrate M&A ยังสูง",
+    "strategy": "สาย value — รอย่อ/ทยอยสะสมเมื่อราคา <b>ต่ำกว่า {{fvLow}}</b> (น่าสนใจที่ <{{mos20}}) • สาย growth — เข้าได้แบบ DCA และยอมรับความผันผวน โดยติดตาม <b>capex AI ของ hyperscaler</b>, <b>การ integrate ดีล M&A (CommScope)</b> และ <b>operating margin</b> เป็นตัวชี้วัดหลัก",
+    "disclaimerSources": "อ้างอิงงบจริงจาก SEC (10-K FY2025, 10-Q Q2 2026) และ Yahoo Finance/StockAnalysis.com (ราคา ณ {{priceDate}}) • EPS TTM ปรับขึ้นเป็น $2.00 (สิ้น Q2 2026) จากเดิม $1.74 (+14.9%) • ตัวเลข \"ต่อหุ้น\" ทุกจุดในรายงานนี้เป็นฐาน<b>หลังแตกพาร์ 2:1</b> (บอร์ดอนุมัติ ส.ค. 2569) — เทียบกับรายงานฉบับก่อนหน้าต้องหารสอง"
+  },
+  "text": {
+    "valHint": "2 วิธี เฉลี่ยตามตระกูลสมมติฐาน",
+    "disclaimerAssump": " อัตราการเติบโตของ capex AI, ผลของ M&A (CommScope) และ P/E ออกในอนาคต ซึ่งเป็นจุดถกเถียงหลัก ราคาหุ้นเทคโนโลยี AI ผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ"
+  },
+  "catalysts": [
+    "<b>คลื่น AI interconnect:</b> AEC (active electrical cables), backplane/IO และ optical/fiber สำหรับคลัสเตอร์ GPU — IT datacom เป็นเซกเมนต์โตเร็วสุด, <b>เกือบทั้งหมดของการโต organic ต่อไตรมาสมาจาก AI</b>",
+    "<b>เติบโตเร่งตัวสุดในรอบหลายปี:</b> รายได้ Q1 2026 <b>+58% YoY</b> ($7.62B, organic +33%), FY2025 +51.7% — โมเมนตัมแรงกว่าทุกปีในประวัติบริษัท",
+    "<b>ทรานซิชัน 800G→1.6T + copper↔optics/CPO:</b> ดีมานด์สายความเร็วสูงและ optical engine สูงขึ้นตามความเร็วลิงก์ที่เพิ่ม — Amphenol อยู่ทั้งฝั่งทองแดงและออปติคอล จึงได้ประโยชน์ไม่ว่าจะเอนทางไหน",
+    "<b>กลยุทธ์ M&A roll-up:</b> ซื้อกิจการต่อเนื่องเป็นเครื่องยนต์โตคู่ขนานกับ organic — ดีล <b>CommScope (connectivity & cable)</b> เสริม IT datacom + กระจายพอร์ต",
+    "<b>กระจายปลายทางกว้าง:</b> IT datacom, defense, commercial air, industrial, mobile, automotive — <b>ทุก end-market มี book-to-bill ≥1</b> ใน Q1 2026 ลดการพึ่งวงจรเดียว",
+    "<b>กำไร+กระแสเงินสดแกร่ง:</b> adj operating margin Q1 ~27.3% (+380bps YoY), ROE ~38%, FCF TTM ~$4.7B — หนุนทั้งปันผล (payout ~25%) และเงินสดสำหรับ M&A"
+  ],
+  "risks": [
+    "<b>Valuation ตึง:</b> P/E ~41x (TTM), forward ~25x (Yahoo; SA ~28x), ปันผลน้อย (~0.6%) — ราคาสะท้อนการเติบโตสูงไปแล้ว, ส่วนเผื่อความปลอดภัยจำกัด, อ่อนไหวต่อ EPS/guidance miss",
+    "<b>การรวมกิจการ M&A:</b> เติบโตพึ่งดีลหลายรายการ — เสี่ยงจ่ายแพงเกิน, การ integrate ดีลใหญ่ (เช่น CommScope) สะดุด, goodwill/หนี้เพิ่ม (หนี้รวม ~$18.8B)",
+    "<b>วงจร capex AI:</b> ยอด IT datacom ผูกกับรอบลงทุน data center ของ hyperscaler ไม่กี่ราย — หากวงจร AI ชะลอ/overbuild รายได้ส่วนที่โตเร็วสุดแกว่งแรง",
+    "<b>ความเป็นวัฏจักรของปลายทางอื่น:</b> automotive, industrial, mobile อ่อนไหวต่อเศรษฐกิจมหภาค — แม้กระจายแต่ก็มีจังหวะชะลอพร้อมกันได้",
+    "<b>ความเสี่ยง FX + ห่วงโซ่อุปทาน:</b> รายได้ส่วนใหญ่อยู่นอกสหรัฐ ดอลลาร์แข็งกระทบกำไรแปลงค่า • ต้นทุนทองแดง/วัตถุดิบและ tariff กดดัน margin",
+    "<b>การแข่งขัน + เทคโนโลยีเปลี่ยน:</b> TE Connectivity, Molex, และ optical players แข่งใน high-speed interconnect • ถ้า CPO/optics แทน copper เร็วกว่าคาด อาจกระทบ mix สาย AEC เดิม"
+  ],
+  "extras": [],
+  "_sig": "sha256:e64867d548819bb692f2113c916cbfba8b25f3b1b9396ee70998874ce6a5a84c"
+}
