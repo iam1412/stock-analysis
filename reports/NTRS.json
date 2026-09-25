@@ -1,0 +1,260 @@
+{
+  "v": 3,
+  "symbol": "NTRS",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Northern Trust Corporation",
+    "exchange": "NASDAQ",
+    "sub": "Asset Servicing: AUC/A ~$20T (custody, fund admin, securities lending สำหรับสถาบัน/กองทุน) • Wealth Management: AUM ~$2T สำหรับ Ultra-High-Net-Worth families/individuals • Asset Management (Northern Trust Asset Management) • เน้นลูกค้าองค์กร/ครอบครัวรวยระดับโลก มากกว่า retail banking",
+    "headerTags": [
+      "Financial Services",
+      "Custody Banking & Wealth Management"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis.com",
+      "Yahoo Finance",
+      "SEC 8-K (Q2 2026)"
+    ],
+    "themeLegacy": {
+      "accent": "#00693e",
+      "accentDark": "#004428",
+      "darkGrad": "linear-gradient(135deg,#003b22 0%,#005b36 60%,#007544 100%)",
+      "glow": "rgba(0,105,62,0.35)",
+      "subColor": "#d9eee3",
+      "headerMuted": "#dfeee8",
+      "verdictText": "#ddefe5",
+      "vcellLabel": "#f5faf8"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T17:02:51+07:00",
+      "v2Hash": "6122d0b3ce03"
+    }
+  },
+  "market": {
+    "px": 174.5,
+    "priceDate": "2026-09-24",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          128.67
+        ],
+        [
+          "พ.ย.25",
+          131.34
+        ],
+        [
+          "ธ.ค.25",
+          136.59
+        ],
+        [
+          "ม.ค.26",
+          149.43
+        ],
+        [
+          "ก.พ.26",
+          143.09
+        ],
+        [
+          "มี.ค.26",
+          139.57
+        ],
+        [
+          "เม.ย.26",
+          166.34
+        ],
+        [
+          "พ.ค.26",
+          165.45
+        ],
+        [
+          "มิ.ย.26",
+          173.84
+        ],
+        [
+          "ก.ค.26",
+          182.19
+        ],
+        [
+          "ส.ค.26",
+          185.56
+        ],
+        [
+          "ก.ย.26",
+          174.5
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 121.12,
+      "hi": 195.78
+    }
+  },
+  "fundamentals": {
+    "dps": 3.52,
+    "bvps": 68.41,
+    "shares": 183000000,
+    "peAvg5y": 15.6,
+    "eps": 10.37,
+    "roe": 15.8,
+    "beta": 1.15,
+    "epsBasis": "adj-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation",
+      "inputs": {
+        "multiple": 15.6,
+        "multipleSource": "median5y"
+      },
+      "note": "EPS TTM ปรับ exclude one-time Visa gain (Q2/69) × มัธยฐาน P/E ย้อนหลัง 5 ปีที่วัดจริง 15.6x (มาจากประวัติ ไม่ได้อ้างอิง P/E ปัจจุบัน)",
+      "family": "market"
+    },
+    {
+      "method": "pbv",
+      "label": "Justified P/BV",
+      "inputs": {
+        "g": 4.5,
+        "r": 9
+      },
+      "note": "ตระกูล r/g ชุดเดียวกับวิธี 3 — นับรวมเป็น 1 เสียง",
+      "family": "rg"
+    },
+    {
+      "method": "declared",
+      "label": "Justified P/TBVPS (ROTCE)",
+      "inputs": {
+        "value": 176,
+        "basis": "other"
+      },
+      "note": "P/TBVPS เหมาะสม = (ROTCE core ~16.8% − g 4.5%)/(r 9% − g 4.5%) ≈ 2.73x × TBVPS ~$64.4 (ประมาณการ; ตระกูล r/g เดียวกับวิธี 2) — ROTCE core คำนวณจากกำไรหลังตัด one-time Visa gain ออก",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "peAvg5y",
+      "pbv",
+      "custom:0",
+      "eps",
+      "custom:1",
+      "roe",
+      "custom:2",
+      "custom:3",
+      "yield",
+      "beta"
+    ],
+    "custom": [
+      {
+        "label": "กำไรสุทธิ Q2 2569",
+        "value": "$792.2M",
+        "note": "+88% YoY (GAAP) — รวม Visa gain one-time $525.4M pre-tax; core ~$560M"
+      },
+      {
+        "label": "BVPS / TBVPS",
+        "value": "{{bvps}} / ~$64.4",
+        "note": "ณ 30 มิ.ย. 2569 · TBVPS ประมาณการ"
+      },
+      {
+        "label": "AUC / AUM",
+        "value": "$20T / $2T",
+        "note": "AUC/A +11% YoY · AUM +16% YoY (Q2 2569)",
+        "tone": "neu"
+      },
+      {
+        "label": "Fee Revenue Q2",
+        "value": "$1.349B",
+        "note": "+10% YoY · trust & servicing fee"
+      }
+    ],
+    "notes": {
+      "mcap": "~183M shares (หลัง buyback Q2 2569)",
+      "pe": "EPS ex-Visa gain · P/E ดิบ GAAP ~15.3x ต่ำผิดปกติ",
+      "peAvg5y": "มัธยฐาน · ช่วง 9.3–16.3x · ราคาเฉลี่ยรายปี ÷ EPS FY2021–FY2025 (5 ปี)",
+      "pbv": "P/TBVPS ~2.83x (ประมาณ)",
+      "eps": "ex-Visa gain Q2/69 · GAAP TTM ดิบ $11.63 บิดเบือนจาก one-time gain",
+      "roe": "ปกติ · GAAP Q2 annualized 25.9% บิดเบือนจาก Visa gain · core ~18.3%",
+      "yield": "$0.88/ไตรมาส (+10% QoQ) · fwd {{dps}}/ปี",
+      "beta": "sensitive ต่อระดับตลาดหุ้น/อัตราดอกเบี้ย"
+    },
+    "hint": "ข้อมูล ณ Q2 2569 · TTM adjusted ex-Visa gain"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": -2,
+        "exitMultiple": 13,
+        "divCum": 9.9,
+        "desc": "ตลาดหุ้นปรับฐาน + fee rev หด"
+      },
+      {
+        "growth": 8,
+        "exitMultiple": 16,
+        "divCum": 11.4,
+        "desc": "AUC/AUM โต + fee rev แข็ง"
+      },
+      {
+        "growth": 14,
+        "exitMultiple": 18,
+        "divCum": 12.5,
+        "desc": "ตลาดหุ้นโลกพุ่ง + wealth mgmt mandate ใหม่"
+      }
+    ],
+    "exitDp": 0,
+    "note": "การคาดการณ์ใช้ EPS TTM adjusted {{eps}} (ex-Visa gain) เป็นฐาน — ไม่ใช่ EPS TTM ดิบ GAAP $11.63 ที่บิดเบือนจาก one-time gain ในไตรมาส Q2 2569 · Base case คิด EPS growth +8%/ปี สอดคล้องกับ trust fee growth ~10% YoY ที่เห็นใน Q2 2569 หัก drag จากดอกเบี้ยที่อาจลดลง · ผลตอบแทน Base {{scn.base.ret}} ใน 3 ปี (รวมปันผล · P/E ออก 16x ใกล้มัธยฐานประวัติ 15.6x) เหมาะกับผู้ถือระยะยาวที่เชื่อมั่นใน AUC/AUM ที่โตต่อเนื่อง · Bull case เกิดเมื่อตลาดหุ้นโลกพุ่งแรงต่อเนื่อง (AUC/AUM fee ผูกกับมูลค่าสินทรัพย์โดยตรง) และ wealth management ชนะ mandate UHNW ใหม่จำนวนมาก · Bear case หากตลาดปรับฐานรุนแรง AUC/AUM ลดฮวบ กระทบ fee revenue ทันที",
+    "hintNote": "(TTM adj. ex-Visa gain)"
+  },
+  "analyst": {
+    "target": 184.27,
+    "n": 13,
+    "rating": "Hold",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "NTRS ปรับตัวขึ้นราว 38% ในรอบปี ทรงตัวช่วง $128–$150 ตลอดครึ่งหลังปี 2025 ถึงต้นปี 2026 ก่อนพุ่งแรงในเดือน เม.ย. 2569 (+19% MoM จาก $139.57 สู่ $166.34) หลังผลประกอบการ Q1 2569 เหนือคาด (EPS +43% YoY, fee revenue +11% YoY) และดำเนินต่อขึ้นแตะระดับ $173–$184 ในเดือน มิ.ย.–ก.ค. 2569 ก่อนแตะจุดสูงสุด 52 สัปดาห์ที่ $195.78 หลังงบ Q2 2569 (ประกาศ 22 ก.ค. 2569) รายงาน diluted EPS $4.23 (+40% YoY แบบ core ex-notable items) ซึ่งรวม one-time gain ~$525.4M pre-tax จากดีล Visa Class B share exchange สะท้อนตลาดหุ้นโลกฟื้นตัวหนุน AUC/AUM และความเชื่อมั่นต่อ capital return (buyback + dividend ขึ้น 10%) ที่แข็งแกร่ง",
+    "valuation": "ทั้ง 3 วิธีใช้ EPS/ROE แบบ <b>core (ตัด one-time gain ออก)</b> — Q2 2569 NTRS รายงาน net income GAAP $792.2M รวม gain จากดีล Visa ~$525.4M pre-tax (ตรวจกับ 8-K/EX-99.2 ลง SEC 22 ก.ค. 2569: ตาราง notable items รวมรายการอื่น เช่น ขาดทุนขายหลักทรัพย์ $73.9M, ค่า severance $51.0M ฝั่งลบ) ผลสุทธิหลังภาษีต่อกำไร ~$232M หรือ ~$1.26/หุ้น จึงใช้ EPS adj. {{eps}} (= GAAP TTM $11.63 − $1.26 — การปรับนี้ตัดเฉพาะผลสุทธิของ notable items ตามที่บริษัทแยกแสดง) · <b>โครง FV:</b> Justified P/BV กับ Justified P/TBVPS ใช้ (r, g) ชุดเดียวกัน จึงนับเป็นเสียงเดียว (เฉลี่ย ~$174) แล้วถ่วงเท่ากับ P/E ที่ยึดมัธยฐานตลาดย้อนหลัง 15.6x ($162) → FV = ($162 + $174)/2 = $168 · ขาเป้านักวิเคราะห์ไม่นับเป็นขา FV (ใช้เป็นเส้นเทียบใน section 4) · P/E ปรับใหม่จากเดิม 17x เพื่อยึดมัธยฐานที่วัดจริง ไม่อิงตัวคูณปัจจุบัน · FV {{fv}} ต่ำกว่าราคาปัจจุบัน {{px}} ({{mos}}) บ่งชี้ว่า NTRS ซื้อขายแพงกว่ามูลค่าเหมาะสมเล็กน้อย · ความอ่อนไหว: หากใช้ P/E 17x แทนมัธยฐาน ขา P/E = $176 และ FV ≈ $175 (ราคาแพงกว่า FV ราว 2%) — ข้อสรุป \"แพงเล็กน้อย\" ไม่เปลี่ยน · งบ Q3 คาดประกาศ 21 ต.ค. 2569",
+    "gauge": "ราคาปัจจุบัน {{px}} สูงกว่า Fair Value {{fv}} เล็กน้อย แต่ต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ {{analyst.target}} ({{analyst.pct}}; 13 ราย · ฉันทามติ Hold) แสดงว่า NTRS ซื้อขายแพงกว่ามูลค่าเหมาะสมเล็กน้อย ไม่มี margin of safety ในขณะนี้ · โซนน่าสนใจสำหรับสะสมเพิ่มคือช่วง MOS 20% ที่ {{mos20}} ลงไป ซึ่งใกล้ระดับราคาช่วงต้นปี 2569",
+    "mos": "ราคาปัจจุบันสูงกว่า Fair Value เล็กน้อย — ไม่มี Margin of Safety · รอโซน MOS 20% ที่ {{mos20}} จะน่าสนใจกว่าสำหรับ value investor",
+    "verdictHeadline": "NTRS — Fairly Valued (แพงกว่าเล็กน้อย) · Quality Custodian/Wealth Bank",
+    "verdictBody": "Northern Trust เป็นธนาคารเฉพาะทาง custody + wealth management ระดับโลก ให้บริการลูกค้าสถาบัน (AUC/A ~$20T) และครอบครัวรวย Ultra-High-Net-Worth (AUM ~$2T) ซึ่งเป็นธุรกิจ fee-based ที่มีความมั่นคงสูงและ switching cost สูง Q2 2569 บริษัทรายงาน net income GAAP $792.2M (+88% YoY) และ diluted EPS $4.23 แต่ตัวเลขนี้รวม one-time gain ~$525.4M pre-tax จากดีล Visa Class B share exchange — เมื่อตัด item นี้ออก <b>core EPS อยู่ที่ ~$2.97 (+40% YoY)</b> สะท้อนธุรกิจหลักที่ยังโตแข็งแกร่งจริง (trust fee +10% YoY, AUC/AUM โตต่อเนื่อง) ไม่ใช่แค่ noise จากรายการพิเศษ ราคาปัจจุบัน {{px}} แซง Fair Value เฉลี่ย {{fv}} (คำนวณจาก EPS TTM adjusted {{eps}} ex-Visa gain และ P/E มัธยฐาน 15.6x) ไปเล็กน้อย ({{mos}}) เหมาะสำหรับผู้ถือระยะยาวที่ต้องการ dividend stability + exposure ต่อการเติบโตของ AUC/AUM แต่นักลงทุนใหม่อาจรอ pullback สู่โซน MOS 20% ที่ {{mos20}} เพื่อ MOS ที่มีนัยสำคัญกว่า",
+    "strategy": "ราคาปัจจุบัน {{px}} แซง Fair Value {{fv}} ไปเล็กน้อย ไม่มี MOS ที่มีนัยสำคัญ — <b>รอ pullback สู่โซน MOS 20% ที่ {{mos20}}</b> เพื่อ MOS 10–20% ก่อนเข้าซื้อใหม่ หรือถ้าถืออยู่แล้วสามารถถือต่อได้ (dividend yield ~1.98% หลังปรับขึ้น 10% + buyback หนุน EPS growth ต่อเนื่อง) · เหมาะกับพอร์ตที่ต้องการ stability และ income มากกว่า capital gain เร่งด่วน · หากตลาดหุ้นโลก correction แรง เป็นโอกาสสะสมเพิ่ม · ⚠️ อย่าตีมูลค่าจาก headline GAAP EPS/ROE ของ Q2 2569 ตรงๆ เพราะรวม one-time Visa gain อยู่",
+    "disclaimerSources": "แหล่งที่มา: StockAnalysis.com (ราคา ณ {{priceDate}} {{px}}, P/E TTM ดิบ 15.30x, EPS TTM ดิบ $11.63, Dividend/share fwd $3.52, Yield 1.98%, 52W $121.12–$195.78, target $184.27), Yahoo Finance (ราคายืนยัน {{px}} Δ0.00%, EPS TTM ดิบ $11.64 Δ0.1%, P/E TTM 15.3x, target mean $184.27 (n=13), ROE TTM 17.07%), Northern Trust Q2 2026 Earnings Release/8-K SEC filing (22 ก.ค. 2569: Net income GAAP $792.2M +88% YoY, Diluted EPS GAAP $4.23, EPS excluding notable items ~$2.97 +40% YoY, Visa Class B Exchange Offer gain $525.4M pre-tax, AFS securities repositioning loss $73.9M pre-tax, Net income impact from notable items ~+$232M, ROE 25.9%, BVPS $68.41, Common equity $12,516.7M, Diluted shares avg 184.9M, AUC/A $20T +11% YoY, AUM $2T +16% YoY, Trust & servicing fee $1.349B +10% YoY, Quarterly dividend raised to $0.88 from $0.80 +10%) · EPS TTM adjusted ($10.37) และ FV คำนวณโดยผู้จัดทำรายงาน โดยหัก one-time Visa gain per-share impact ($1.26) ออกจาก EPS TTM ดิบ"
+  },
+  "text": {
+    "valHint": "P/E + Justified P/BV (2 ตระกูล)",
+    "chartHint": "ต.ค. 2025 – ก.ย. 2026"
+  },
+  "catalysts": [
+    "<b>AUC/A Scale ~$20T:</b> สินทรัพย์ภายใต้การดูแลระดับ Top 10 โลก — ตลาดหุ้นขึ้น → fee revenue เพิ่มอัตโนมัติโดยไม่ต้องหา client ใหม่",
+    "<b>Wealth Management UHNW:</b> AUM ~$2T (+16% YoY) กลุ่มลูกค้า Ultra-High-Net-Worth เป็น niche ที่มี margin สูงและ switching cost สูง (sticky relationships)",
+    "<b>Fee Growth แข็งแกร่ง:</b> Trust & servicing fee +10% YoY ใน Q2 2569 สะท้อนทั้งตลาดฟื้นตัวและ net new business",
+    "<b>Core EPS โตแรงต่อเนื่อง:</b> EPS core (ex-notable items) +40% YoY ใน Q2 2569 เป็นไตรมาสที่ 2 ติดต่อกันที่โตแรงกว่า 40% ไม่ใช่แค่ผลจาก one-time gain",
+    "<b>Dividend Raise 10%:</b> ปรับปันผลรายไตรมาสขึ้นเป็น $0.88 จาก $0.80 (บอร์ดอนุมัติ 21 ก.ค. 2569) สะท้อนความเชื่อมั่นต่อกระแสเงินสด",
+    "<b>Dividend Aristocrat-like:</b> ไม่เคยลดปันผลใน 10 ปีที่ผ่านมา เพิ่มต่อเนื่องหลายปีติด เหมาะกับ income investor"
+  ],
+  "risks": [
+    "<b>Revenue ผูกกับตลาดหุ้น:</b> AUC/AUM fee คิดจากมูลค่าสินทรัพย์ ณ ขณะนั้น — ตลาดหุ้นโลกปรับฐานรุนแรงกระทบรายได้ทันที ไม่ต้องรอ client ถอนเงิน",
+    "<b>NII Sensitivity:</b> Net Interest Margin (1.75%) พึ่งพา spread อัตราดอกเบี้ย — Fed ลดดอกเบี้ยเร็วกว่าคาดจะกดดัน NII",
+    "<b>Fee Compression:</b> การแข่งขันจาก State Street, BNY Mellon กดดันอัตราค่าธรรมเนียม custody ระยะยาว",
+    "<b>Valuation แซง Fair Value:</b> ราคาปัจจุบันสูงกว่า FV เล็กน้อย ({{mos}}) — หากผลประกอบการไตรมาสถัดไปพลาดคาด มีโอกาสปรับฐาน",
+    "<b>One-time Item บดบังกำไรจริง:</b> GAAP EPS Q2 2569 พุ่งจาก Visa Class B gain ~$525.4M ซึ่งไม่เกิดซ้ำ — นักลงทุนที่ดู headline EPS/ROE เฉยๆ อาจตีมูลค่าสูงเกินจริง",
+    "<b>Regulatory Capital:</b> ธนาคารขนาดใหญ่ต้องถือทุนตาม Basel IV/liquidity requirements สูงขึ้น อาจจำกัด buyback capacity ในอนาคต",
+    "<b>Concentration ลูกค้าสถาบัน/UHNW:</b> พึ่งพา relationship กับกองทุนบำนาญและครอบครัวรวยขนาดใหญ่ การเสีย mandate รายใหญ่กระทบรายได้อย่างมีนัยสำคัญ"
+  ],
+  "extras": [],
+  "_sig": "sha256:058ef040457c1589e36d48af2e3fd2daa7c3e7870268eb07d397a76103b38906"
+}
