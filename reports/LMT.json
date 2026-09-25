@@ -1,0 +1,259 @@
+{
+  "v": 3,
+  "symbol": "LMT",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Lockheed Martin Corporation",
+    "exchange": "NYSE",
+    "sub": "F-35 fighter jets • Missiles & Fire Control (HIMARS, PAC-3) • Rotary & Mission Systems (Sikorsky helicopters) • Space systems & satellites • ผู้รับเหมาอาวุธยุทโธปกรณ์รายใหญ่ที่สุดในสหรัฐฯ",
+    "headerTags": [
+      "Aerospace & Defense",
+      "Defense Contractor"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "StockAnalysis.com",
+      "Macrotrends"
+    ],
+    "themeLegacy": {
+      "accent": "#003591",
+      "accentDark": "#002268",
+      "darkGrad": "linear-gradient(135deg, #001428 0%, #002268 50%, #003591 100%)",
+      "glow": "rgba(0,53,145,0.35)",
+      "subColor": "#8bafd9",
+      "headerMuted": "#97acd3",
+      "verdictText": "#e8f0fe",
+      "vcellLabel": "#a2bfe1"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T15:39:58+07:00",
+      "v2Hash": "fc851930d20b"
+    }
+  },
+  "market": {
+    "px": 523.7,
+    "priceDate": "2026-09-24",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          491.88
+        ],
+        [
+          "พ.ย.25",
+          457.86
+        ],
+        [
+          "ธ.ค.25",
+          483.67
+        ],
+        [
+          "ม.ค.26",
+          634.22
+        ],
+        [
+          "ก.พ.26",
+          658.08
+        ],
+        [
+          "มี.ค.26",
+          604.39
+        ],
+        [
+          "เม.ย.26",
+          517.97
+        ],
+        [
+          "พ.ค.26",
+          530.45
+        ],
+        [
+          "มิ.ย.26",
+          509.46
+        ],
+        [
+          "ก.ค.26",
+          582.74
+        ],
+        [
+          "ส.ค.26",
+          561.23
+        ],
+        [
+          "ก.ย.26",
+          523.7
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 437.25,
+      "hi": 692
+    }
+  },
+  "fundamentals": {
+    "dps": 13.8,
+    "bvps": 38.12,
+    "shares": 230790753,
+    "epsForward": 30.5,
+    "eps": 27.14,
+    "revenue": 77000000000,
+    "netIncome": 6260000000,
+    "fcf": 8730000000,
+    "grossMargin": 11.8,
+    "beta": 0.11,
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation (Forward)",
+      "inputs": {
+        "multiple": 20.2,
+        "multipleSource": "median5y"
+      },
+      "note": "ตัวคูณมาจากมัธยฐาน P/E ย้อนหลัง 5 ปีของ LMT เอง (FY2021–FY2025: 15.6x–22.3x; ราคาเฉลี่ยรายปี ÷ EPS diluted) ไม่ได้มาจาก P/E ปัจจุบัน",
+      "family": "market"
+    },
+    {
+      "method": "ddm",
+      "label": "DDM / Gordon Growth Model",
+      "inputs": {
+        "g": 5,
+        "r": 8
+      },
+      "override": {
+        "dps": 13.142857142857142,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "ใช้ตรง ไม่ทบ g · สมมติฐานของผู้วิเคราะห์เอง · ให้ค่าฝั่งต่ำเพราะ LMT โตกว่าแค่ปันผล",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      {
+        "key": "peForward",
+        "tone": "none"
+      },
+      "pbv",
+      "eps",
+      "custom:0",
+      "revenue",
+      "netIncome",
+      {
+        "key": "fcf",
+        "tone": "pos"
+      },
+      "yield",
+      "grossMargin",
+      {
+        "key": "beta",
+        "tone": "pos"
+      }
+    ],
+    "custom": [
+      {
+        "label": "EPS FY2026 (คาดการณ์)",
+        "value": "~$30.50",
+        "note": "ประมาณการ FY2026E จาก StockAnalysis forecast (FY2027E $32.75) — เป็นประมาณการของ vendor ไม่ใช่ตัวเลขที่ปิดงวดแล้ว",
+        "tone": "pos"
+      }
+    ],
+    "notes": {
+      "mcap": "~230.8M shares outstanding (StockAnalysis /statistics/)",
+      "pe": "ราคา ÷ EPS TTM {{eps}} — Yahoo P/E 19.7x ตรงกัน; EPS ฟื้นจาก FY2025 $21.49",
+      "peForward": "ราคา {{px}} ÷ EPS FY2026E ~$30.50 (StockAnalysis forecast) — EPS forward $32.75 ของ Yahoo คือ FY2027E (fwd P/E ~16.3x)",
+      "pbv": "BVPS ~{{bvps}} (StockAnalysis) — สูงเพราะ buyback & leverage สูง",
+      "eps": "FY2025 $21.49 → TTM {{eps}} (Yahoo $27.10 · StockAnalysis {{eps}} ตรงกัน)",
+      "revenue": "+7.2% YoY (TTM $77.0B vs FY2025 $75.0B)",
+      "netIncome": "FY2025 $5.0B → TTM $6.3B — ใกล้เคียงระดับ FY23 $6.9B แล้ว",
+      "fcf": "FCF/share ~$37.82 (÷230.8M หุ้น) · FY2025 $6.91B — TTM สูงกว่าปีงบล่าสุดมาก จึงไม่ใช้เป็นขา FV",
+      "yield": "{{dps}}/หุ้น/ปี · ขึ้นติดต่อกันกว่า 20 ปี",
+      "grossMargin": "Margin ต่ำตามลักษณะอุตสาหกรรม (cost-plus contracts)",
+      "beta": "ผันผวนต่ำมาก — defensive stock คลาสสิก"
+    },
+    "hint": "ข้อมูล ณ 21 ก.ย. 2569 — TTM = Trailing Twelve Months"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 0,
+        "exitMultiple": 15,
+        "divCum": 41,
+        "desc": "งบกลาโหมถูกตัด Sequester ใหม่"
+      },
+      {
+        "growth": 7,
+        "exitMultiple": 18,
+        "divCum": 44,
+        "desc": "F-35 delivery +5–10%/ปี, backlog แข็งแกร่ง"
+      },
+      {
+        "growth": 12,
+        "exitMultiple": 21,
+        "divCum": 47,
+        "desc": "NATO re-arm เต็มสูบ, hypersonic, NGAD contracts"
+      }
+    ],
+    "exitDp": 0,
+    "baseOverride": {
+      "value": 30.5,
+      "why": "EPS ฐานฉากที่ผู้เขียนใช้"
+    },
+    "note": "การคาดการณ์นี้ใช้สมมติฐาน EPS FY2026E ~$30.50 (StockAnalysis forecast) เป็นฐาน และสมมติว่า P/E ในปีที่ 3 อยู่ที่ 15x–21x ตาม historical range ของ defense sector ความเสี่ยงหลักอยู่ที่การตัดงบประมาณกลาโหมสหรัฐฯ ซึ่งในสถานการณ์ bear อาจกดทั้ง EPS และ multiple พร้อมกัน ส่วนผลตอบแทนรวมรวมปันผลสะสมประมาณ $41–47 ตลอด 3 ปี (yield ~2.4% ต่อปี) ซึ่งช่วยรองรับ downside ได้บางส่วน",
+    "hintNote": "(FY2026E) ~{{dps}}/ปี"
+  },
+  "analyst": {
+    "target": 640,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "LMT เคลื่อนไหวในกรอบ 52 สัปดาห์ $437.25–$692.00 ราคาปิดรายเดือนต่ำสุดในกราฟ ~$458 (พ.ย. 2568) และสูงสุด ~$658 (ก.พ. 2569) จากนั้นปรับฐานลงสู่ ~$509–530 ช่วง เม.ย.–มิ.ย. 2569 ฟื้นขึ้นเป็น ~$583 ในเดือน ก.ค. แล้วอ่อนลงมาที่ {{px}} ณ {{priceDate}} ซึ่งต่ำกว่าจุดสูงสุดของกราฟราว 19% (ตัวเลขราคาจาก Yahoo Finance รายเดือน)",
+    "valuation": "P/E วิธีให้ค่าสูงสุด ($548) ใช้ EPS TTM ที่ฟื้นแล้วคูณตัวคูณมัธยฐาน DDM ให้ค่าต่ำสุด ($460) เนื่องจาก payout ratio ค่อนข้างต่ำ (~51% ของ EPS TTM) โดย FCF ส่วนใหญ่ไปหนุน buyback ทั้งสองวิธีห่างกันไม่ถึง 2 เท่า จึงเฉลี่ยตรง ๆ ได้ · ปรับปรุงจากรอบก่อน: ตัดขา FCF Yield (เป้า yield 4.5% เป็นตัวเลขที่ไม่มีมัธยฐานวัดจริงรองรับ และ FCF TTM $8.7B กระโดดจาก FY2025 $6.9B) และตัดตัวคูณ P/E 20x ที่อ้าง peer โดยไม่มีการวัด · หมายเหตุ: ประเมินจากตระกูล P/E (ตัวคูณวัดจริง) เพียงตระกูลเดียวคู่กับ DDM ที่ใช้สมมติฐาน r/g ของผู้วิเคราะห์ — ถ้าใช้ P/E อย่างเดียว ราคาอยู่ใต้ $548 เล็กน้อย ถ้าใช้ DDM อย่างเดียว ราคาสูงกว่า $460 ราว 16% จึงมี MOS แคบมากทั้งสองทาง",
+    "gauge": "ราคาปัจจุบัน {{px}} ซื้อขายสูงกว่า Fair Value {{fv}} เล็กน้อย — ไม่มี Margin of Safety ในขณะนี้ นักลงทุนที่ยังไม่ถือควรรอจังหวะปรับฐานก่อนเข้าซื้อ ราคาเป้านักวิเคราะห์เฉลี่ย $640.22 (Buy, 18 ราย) สูงกว่า FV ของรายงานนี้ — เป้านักวิเคราะห์ใช้เป็นบริบทเท่านั้น ไม่เป็นขาของ FV",
+    "mos": "<b>ไม่มี Margin of Safety (ราคาแพงกว่ามูลค่าเหมาะสม)</b><br>ราคาสูงกว่า Fair Value เล็กน้อย — รอจังหวะปรับฐานสู่โซน MOS 20–30% ก่อนเข้าซื้อเพิ่ม",
+    "verdictHeadline": "Quality Defense Titan — ซื้อขายสูงกว่า Fair Value เล็กน้อย • ไม่มี MOS ขณะนี้",
+    "verdictBody": "Lockheed Martin คือ \"ป้อมปราการแห่งกลาโหม\" ของสหรัฐฯ ที่ครองตลาดอาวุธยุทโธปกรณ์ระดับโลก ด้วยโปรแกรม F-35 และสัญญากลาโหมระยะยาว ธุรกิจมีความสม่ำเสมอและ predictability สูง EPS TTM ฟื้นเป็น {{eps}} (FY2025 $21.49) รายได้ TTM $77.0B ราคาปัจจุบัน {{px}} สูงกว่า Fair Value {{fv}} เล็กน้อย (ไม่มี MOS) แต่ยังต่ำกว่าเป้านักวิเคราะห์เฉลี่ย $640.22 (Buy) — Fair Value ของรอบนี้เฉลี่ยจาก P/E ตัวคูณมัธยฐาน 5 ปี ($548) กับ DDM ($460) จึงต่ำกว่ารอบก่อนที่ใช้ขา FCF Yield และ P/E 20x ซึ่งตัดออกแล้ว — เหมาะสำหรับนักลงทุนที่ต้องการหุ้นกลาโหมคุณภาพสูง Beta ต่ำ และปันผลเติบโตต่อเนื่อง แต่ควรรอจังหวะปรับฐานก่อนเข้าซื้อเพิ่ม",
+    "strategy": "ราคาปัจจุบันไม่มี MOS แล้ว — เหมาะสำหรับ <b>รอจังหวะปรับฐาน</b> สู่โซน {{mos20}}–{{fv}} (MOS 0–20%) ก่อนทยอยสะสม หรือ <b>รอเข้าลึก</b> ถ้าราคาปรับลงสู่ {{mos30}} (MOS 30%) สำหรับผู้ถือหุ้นเดิมระยะยาว ปันผล 2.59% + FCF TTM ที่ครอบคลุมปันผลได้สบาย แต่ upside ระยะสั้นจำกัดเมื่อราคาสูงกว่า FV",
+    "disclaimerSources": "ราคา ณ {{priceDate}} จาก StockAnalysis.com และ Yahoo Finance (ตรงกัน) • งบการเงิน/EPS/ประมาณการ FY2026E จาก StockAnalysis.com • เป้านักวิเคราะห์เฉลี่ย $640.22 (Buy, 18 ราย) จาก Yahoo/StockAnalysis"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 2 วิธี (P/E ตัวคูณมัธยฐาน 5 ปี · DDM) น้ำหนักเท่ากัน",
+    "chartHint": "ราคารายเดือน ต.ค. 2568 – ก.ย. 2569",
+    "legendNote": "(Jan–Feb 26 peak)",
+    "disclaimerAssump": " P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ EPS FY2026 guidance"
+  },
+  "catalysts": [
+    "<b>Backlog สัญญาระยะยาว:</b> รายได้ TTM โต +7.2% YoY และสัญญากลาโหมระยะยาวให้ visibility รายได้ล่วงหน้า (ตัวเลข backlog ล่าสุดไม่ได้ตรวจกับแหล่งปฐมภูมิในรอบนี้ จึงไม่ระบุ)",
+    "<b>F-35 Joint Strike Fighter:</b> โปรแกรมเครื่องบินรบที่ใหญ่ที่สุดในประวัติศาสตร์กลาโหม (มูลค่ารวม >$1.7 ล้านล้าน) ต้องการเครื่องบิน 3,000+ ลำ ยังส่งมอบแค่ ~1,000 ลำ — revenue สม่ำเสมอ 20+ ปีข้างหน้า",
+    "<b>NATO Re-armament:</b> ยุโรปเพิ่มงบกลาโหมหลัง Ukraine-Russia war ตามเป้า 3%+ GDP — คำสั่งซื้อ F-35, HIMARS, PAC-3 จากพันธมิตรยุโรปเพิ่มขึ้นแรง",
+    "<b>Hypersonic & Next-Gen Programs:</b> NGAD (Next-Generation Air Dominance), hypersonic missiles, satellite constellations — pipeline ใหม่ที่ยังไม่ fully priced-in",
+    "<b>Capital Allocation ดี:</b> Buyback หุ้นสม่ำเสมอ (−2.15% shares ต่อปี) + ปันผลขึ้นต่อเนื่อง 20+ ปี — คืนเงินผู้ถือหุ้นอย่างมีวินัย",
+    "<b>FCF แข็งแกร่ง:</b> FCF TTM $8.73B (~$37.82/หุ้น) ครอบคลุมปันผล (~{{dps}}/หุ้น) และ buyback สบาย"
+  ],
+  "risks": [
+    "<b>งบประมาณกลาโหมสหรัฐฯ:</b> รายได้ ~75% มาจากรัฐบาลสหรัฐฯ โดยตรง — ถ้าเกิด Sequester หรือ CR (Continuing Resolution) เป็นเวลานาน จะกระทบทั้งรายได้และกำไร",
+    "<b>F-35 Production Issues:</b> ปัญหา Tech Refresh 3 (TR-3) avionics ส่งผลให้ deliveries ล่าช้าและมีค่าใช้จ่ายพิเศษ — เป็นสาเหตุหลักที่ Q2'25 EPS ดิ่ง",
+    "<b>Cost-plus Contract Compression:</b> รัฐบาลกดดันให้ fixed-price contracts มากขึ้น — margin risk สูงกว่าสัญญา cost-plus แบบเดิม",
+    "<b>Concentration Risk:</b> รายได้กระจุกตัว (F-35 ~25–30% ของรายได้ทั้งหมด) — ปัญหาในโปรแกรมเดียวกระทบผลประกอบการมาก",
+    "<b>Leverage สูง:</b> หนี้สินรวม ~$20.5B vs equity ~$8.8B — D/E ratio ~2.3x (TTM) ถ้าอัตราดอกเบี้ยสูงต่อเนื่องกดดัน refinancing",
+    "<b>Geopolitical Risk (บวกแต่มีขาลบ):</b> ถ้าสงครามยุโรปสิ้นสุดหรือตึงเครียดลดลงกะทันหัน — sentiment อาจเปลี่ยนจาก \"risk-on\" กดหุ้นกลาโหม"
+  ],
+  "extras": [],
+  "_sig": "sha256:fd4b36a8e2461f7318616c1e36b507a41bd73d91af6e4a3ffd1cb2047980015b"
+}
