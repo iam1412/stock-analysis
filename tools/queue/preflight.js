@@ -34,9 +34,8 @@ function loadFlags() {
   catch (e) { if (e.code === 'ENOENT') return []; throw new Error(`อ่าน price-flags.json ไม่ได้ (${e.message})`); }
 }
 
-// ★ คิวตามอายุข้ามใบ v3 (Plan 2b): ใบ v3 ที่เก่าจะสร้างแถว LIGHT ทุกรอบ → prep ปฏิเสธ ("v3 UPDATE = P6") → issue คิวไม่ปิดเอง
-//   P6 (คิว v3 UPDATE) ต้องถอดตัวกรอง `!e.v3` นี้ออก
-const listReportsFS = (dir) => RS.list(dir || REPORTS).filter((e) => !e.v3).map((e) => e.symbol).sort();
+// Plan 4a: คิวตามอายุนับใบ v3 ด้วย — prep รับใบ v3 แล้ว (report.js export/save) · เดิม (Plan 2b–3) กรอง `!e.v3` ออกเพราะ prep ยังปฏิเสธใบ v3
+const listReportsFS = (dir) => RS.list(dir || REPORTS).map((e) => e.symbol).sort();
 const footerAgeFS = (today) => (sym) => { const iso = analysisIsoOf(readLite(sym)); return iso ? ageDays(iso, today) : null; };
 
 /** งบออกหลังวันวิเคราะห์ไหม (WS6 ข้อ 2 · ส่วนบริสุทธิ์: รับปฏิทิน + ตัวอ่านรายงานมาเลย ไม่แตะดิสก์เอง)
@@ -136,7 +135,7 @@ function patchTargets(rows, m) {
   const v3 = new Set(rows.filter((r) => r.v3).map((r) => r.symbol));
   const out = { target: [], skippedUS: [], skippedTH: [], skippedNoReport: [], skippedV3: [] };
   for (const sym of prePatchList(rows)) {
-    if (v3.has(sym)) { out.skippedV3.push(sym); continue; }   // ใบ v3: pre-patch อัตโนมัติ = P6 (Plan 3 R8) — preflight พิมพ์ v3Lines ชี้คำสั่งมือแทน
+    if (v3.has(sym)) { out.skippedV3.push(sym); continue; }   // ใบ v3: pre-patch อัตโนมัติ = Plan 4b (parseGateFailures/ทาง revert ยังผูกกับ .html) — preflight พิมพ์ v3Lines ชี้คำสั่งมือแทน
     const c = cur.get(sym);
     if (c == null) { out.skippedNoReport.push(sym); continue; }
     const th = c === 'THB';
@@ -147,10 +146,10 @@ function patchTargets(rows, m) {
   return out;
 }
 
-/** บรรทัดชี้คำสั่งมือต่อแถวใบ v3 (ส่วนบริสุทธิ์ · Plan 3 R8) — pre-patch อัตโนมัติของใบ v3 (patchTargets/parseGateFailures/ทาง revert/
- *  ship --prepatch) = P6 · P5 แค่ห้ามล้มและห้ามเงียบ: หนึ่งบรรทัดต่อใบ ไม่ว่าแถวนั้นอยู่ bucket ไหน (prep ปฏิเสธใบ v3 อยู่แล้ว) */
+/** บรรทัดชี้คำสั่งมือต่อแถวใบ v3 (ส่วนบริสุทธิ์ · Plan 3 R8 → Plan 4a) — pre-patch อัตโนมัติของใบ v3 (patchTargets/parseGateFailures/
+ *  ทาง revert/ship --prepatch) = Plan 4b · ตั้งแต่ 4a prep รับใบ v3 ⇒ บรรทัดนี้บอกแค่ "pre-patch มือถ้ายังไม่สด แล้ว prep ตามปกติ" */
 function v3Lines(rows) {
-  return rows.filter((r) => r.v3).map((r) => `v3 ${r.symbol}: controller → \`node tools/update-prices.js --write --force ${r.symbol}\` (flip) หรือ export/save (P6 queue flow)`);
+  return rows.filter((r) => r.v3).map((r) => `v3 ${r.symbol}: ราคายังไม่สด → controller pre-patch มือ \`node tools/update-prices.js --write --force ${r.symbol}\` (pre-patch อัตโนมัติของใบ v3 = Plan 4b) · แล้ว npm run queue -- prep ${r.symbol} ตามปกติ (worker: report.js export/save — SKILL STEP 5U)`);
 }
 
 /** อ่านผล `node test/check-reports.js <syms>` → รายชื่อไฟล์ที่ "ตก" (ส่วนบริสุทธิ์ ไม่แตะดิสก์)
@@ -304,7 +303,7 @@ function preflight(opts) {
   if (t.skippedUS.length) console.log(`\n⏳ ตลาด US เปิดอยู่ — ไม่ pre-patch ${t.skippedUS.join(' ')} (ราคา intraday · --force ข้าม guard ของ update-prices เอง — บทเรียน 9 ก.ย. 69) · ต้องการจริงใส่ --allow-intraday`);
   if (t.skippedTH.length) console.log(`\n⏳ SET เปิดอยู่ — ไม่ pre-patch ${t.skippedTH.join(' ')} · --allow-intraday ถ้าจงใจ`);
   if (t.skippedNoReport.length) console.log(`\n⚠ ไม่มีไฟล์รายงาน — ไม่ pre-patch ${t.skippedNoReport.join(' ')} (ลบไปแล้ว? รัน node tools/tag-apply.js --prune แล้วปล่อยให้ cron ตัด flag ทิ้ง)`);
-  const v3l = v3Lines(rows);   // Plan 3 R8: ใบ v3 ไม่เข้า pre-patch อัตโนมัติ (P6) — บรรทัดชี้คำสั่งมือต่อใบ
+  const v3l = v3Lines(rows);   // ใบ v3 ไม่เข้า pre-patch อัตโนมัติ (Plan 4b) — บรรทัดชี้คำสั่งมือต่อใบ (Plan 4a: prep รับใบ v3 แล้ว)
   if (v3l.length) console.log('\n' + v3l.map((l) => 'ℹ ' + l).join('\n'));
   if (t.target.length && !o.noPatch) {
     console.log(`\n▶ pre-patch ราคา ${t.target.length} ตัวใน process เดียว (lock กันคิวเพี้ยนแล้ว — WS4)`);
