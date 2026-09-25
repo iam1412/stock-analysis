@@ -20,6 +20,7 @@ const MT = require('./theme.js');
 const FM = require('./formula.js');
 const SY = require('./synonyms.js');
 const NB = require('./numbers.js');
+const R3 = require('../../_template/v3/render.js');
 
 const OVERRIDE_WHY = 'ค่าที่ผู้เขียนใช้ในใบ v2';
 const TEMPLATE_ASSUMP = 'P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต';
@@ -285,13 +286,13 @@ function headTokens(seg) {
   const open = out.indexOf('('); if (open >= 0) out = out.slice(0, open);
   return out.replace(/\{\{[^{}]*\}\}/g, ' ').replace(/<[^>]*>/g, ' ').split(ROUND3_SPLIT).filter(Boolean);
 }
-function headRuns(seg, consumed, leg) {
+function headRuns(seg, consumed, leg, label) {
   const runs = []; let cur = [];
   const flush = () => { if (cur.length && !(cur.length === 1 && ROUND3_RESIDUE.has(cur[0].replace(/[^\p{L}\p{M}\p{N}]/gu, '')))) runs.push(cur.join(' ')); cur = []; };
   const isConsumed = (k) => consumed.has(k) || consumed.has(k.toLowerCase());
   const toks = headTokens(seg);
   // คำฐาน/งวดที่ไม่ได้ถูกกิน → ท่อนนี้ไม่พกอะไร (fail closed)
-  if (toks.some((tk) => { const bare = tk.replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}.]+$/gu, ''); return !isConsumed(FM.keyOf(tk)) && (SY.FACT_WORDS.some((re) => re.test(bare)) || SY.qualifierBlocked(tk)); })) return [];
+  if (toks.some((tk) => !isConsumed(FM.keyOf(tk)) && basisWordBlocks(tk, label))) return [];
   for (const tk of toks) {
     const k = FM.keyOf(tk);
     const syn = SY.apply('s3.mdesc', [tk], { leg }).used.length > 0;
@@ -301,18 +302,43 @@ function headRuns(seg, consumed, leg) {
   flush();
   return runs;
 }
-/** ข้อความมีคำฐาน/งวด (FACT_WORDS · SY.QUALIFIER_BLOCK) ที่ baseOf ไม่ได้กิน (fix round 2 · ruling: ทุกทางที่พก qualifier) */
-function basisTainted(text, consumed) {
+/** fix round 4 (controller ruling · advisor 26 ก.ย. 69): คำยืนยันฐาน GAAP · adj. · adjusted · non-GAAP บนขา BASIS_METHODS
+ *  พกได้เฉพาะเมื่อ "เท่ากับ" ป้ายฐานที่ v3 render พิมพ์ให้ขานั้น — ตัวเทียบ = R3.epsLabel (pe · จาก fundamentals.epsBasis / inputs.base / override.eps)
+ *  หรือ "P/" + R3.ffoLabel (pffo · S.FFO_LABEL[ffoBasis]) — โค้ดป้ายตัวเดียวกับ mdesc ของ render (ไม่ทำสำเนา)
+ *  ★ ห้ามเทียบกับ legs[i].label / mname / คำใด ๆ ของผู้เขียน (วนกลับ: ZS เขียน "non-GAAP" ทั้งสองที่ แต่ v3 พิมพ์ "(TTM)")
+ *  adj. ≡ adj ≡ adjusted ≡ ป้าย "adj." ของ render · GAAP / non-GAAP ต้องตรงคำใน render (render ไม่มีคำนั้นให้ฐานใด = บล็อก)
+ *  คำล่วงหน้า/งวด (forward · FY#E · guidance · consensus · est. · fwd · คาดการณ์ · ประมาณการ · ปีหน้า · ปีงบนี้ · ปีงบปัจจุบัน)
+ *  และคำฐานปรับ (ปกติ · core · หลัก · normalized · underlying · FFOA) = บล็อกเสมอ (ยกเว้น baseOf กิน — ผู้เรียกตรวจ consumed ก่อน) */
+const bareOf = (tk) => String(tk).replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}.]+$/gu, '');
+const agreeKey = (tk) => { const b = bareOf(tk); return /^adj(?:usted|\.)?$/i.test(b) ? 'adj.' : /^non-?GAAP$/i.test(b) ? 'non-GAAP' : /^GAAP$/.test(b) ? 'GAAP' : null; };
+/** ป้ายฐานที่ render พิมพ์ให้ขานี้ ('' = ขาไม่มีป้ายฐานให้เทียบ → คำยืนยันฐานบล็อก) */
+function renderedBasisLabel(leg, fund) {
+  if (!leg || !fund) return '';
+  try {
+    if (leg.method === 'pe') return R3.epsLabel(leg, { doc: { fundamentals: fund } });
+    if (leg.method === 'pffo') return `P/${R3.ffoLabel({ fundamentals: fund })}`;
+  } catch (_) { return ''; }   // epsBasis ยังไม่รู้ (pass 1) = ไม่มีป้ายให้เทียบ → บล็อก (fail closed)
+  return '';
+}
+const agreesWithRender = (tk, label) => { const k = agreeKey(tk); return !!k && !!label && String(label).split(/[\s()]+/).some((x) => agreeKey(x) === k); };
+/** โทเค็นนี้ทำให้ข้อความพกไม่ได้ไหม (ยังไม่ได้ตรวจ consumed) · label = null/undefined = ไม่มีกฎยืนยันฐาน (บล็อกทั้งรายการเหมือนเดิม) */
+function basisWordBlocks(tk, label) {
+  if (label != null && agreeKey(tk)) return !agreesWithRender(tk, label);
+  return SY.FACT_WORDS.some((re) => re.test(bareOf(tk))) || SY.qualifierBlocked(tk);
+}
+/** ข้อความมีคำฐาน/งวด (FACT_WORDS · SY.QUALIFIER_BLOCK) ที่ baseOf ไม่ได้กิน (fix round 2 · ruling: ทุกทางที่พก qualifier) · label = fix round 4
+ *  fix round 4 ข้อ 3: บนขา BASIS_METHODS (label != null) "normalized" ในข้อความที่จะพกไป note = บล็อกด้วย (ไม่มีป้าย v3 ให้ยืนยัน)
+ *  — เฉพาะทางพก ไม่ใช่ท่อนสูตร (headRuns): "Normalized EPS ~฿22 ×" ในสูตร = FORMULA_VOCAB ที่ v3 พิมพ์เป็น epsBasis adj-ttm (epsBasisOf · 4b BBL acceptance) */
+function basisTainted(text, consumed, label) {
   const c = consumed || new Set();
   return String(text).replace(/\{\{[^{}]*\}\}/g, ' ').replace(/<[^>]*>/g, ' ').split(/[\s=×÷+−≈(),;:·/"“”]+/).filter(Boolean).some((tk) => {
     const k = FM.keyOf(tk); if (c.has(k) || c.has(k.toLowerCase())) return false;
-    const bare = tk.replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}.]+$/gu, '');
-    return SY.FACT_WORDS.some((re) => re.test(bare)) || SY.qualifierBlocked(tk);
+    return basisWordBlocks(tk, label) || (label != null && /^normali[sz]ed$/i.test(bareOf(tk)));
   });
 }
 // ขาที่ mdesc ของ v3 พิมพ์ป้ายฐานของตัวตั้งจากงบ ("(TTM)" · "adj." · forward) — note ที่มีคำฐาน/งวดขัดป้ายนั้นได้ (fix round 3 · ruling A = option ii)
 const BASIS_METHODS = new Set(['pe', 'pfcf', 'pffo', 'ps', 'pbv']);
-function qualifierOf(prose, consumed, leg) {
+function qualifierOf(prose, consumed, leg, fund) {
   consumed = consumed || new Set();
   const t = String(prose || '');
   const d = depths(t);
@@ -321,8 +347,10 @@ function qualifierOf(prose, consumed, leg) {
   // fix round 3 (ruling A · option ii): ขาที่ v3 พิมพ์ป้ายฐาน (BASIS_METHODS) — ทุกทางที่พก (ป้าย ":" · ท่อนหลัง · วงเล็บ · หาง · round 3 · ข้อความนำ)
   //  ข้อความที่มีคำฐาน/งวดที่ baseOf ไม่ได้กิน = ไม่พก (คำคง TEXT LOST → HUMAN · HON "adjusted FY2026E, กลาง guidance …") · ddm/dcf/declared = ไม่แตะ (SRE "guidance EPS growth")
   const gate = !!(leg && BASIS_METHODS.has(leg.method));
+  // fix round 4: บนขา BASIS_METHODS คำยืนยันฐานเทียบกับป้ายที่ render พิมพ์ (renderedBasisLabel) · ขาอื่น = null (กติกาเดิม)
+  const lab = gate ? renderedBasisLabel(leg, fund) : null;
   const out0 = [];
-  const out = { push: (...xs) => { for (const x of xs) if (!(gate && basisTainted(x, consumed))) out0.push(x); } };
+  const out = { push: (...xs) => { for (const x of xs) if (!(gate && basisTainted(x, consumed, lab))) out0.push(x); } };
   // ป้ายนำ "สมมติฐานของผู้วิเคราะห์เอง: FCF …" (HD ONTO) = คำผู้เขียนหน้าสูตร — ":" แรกที่ความลึก 0
   const lead = /^([^:()]{1,80}):\s/.exec(head);
   if (lead && hasProse(lead[1])) { out.push(lead[1].trim()); head = head.slice(lead[0].length); }
@@ -333,9 +361,9 @@ function qualifierOf(prose, consumed, leg) {
     // ข้อความนำ (ทุกขา · fix round 2): มีคำฐาน/งวดที่ไม่ได้ถูกกิน = ไม่พกเลย · ตัวเลข/เงินของผู้เขียนพกได้ตามที่ v2 พิมพ์ (fix round 3 · ruling B ถอนกฎตัวเลขเงิน)
     //  (ตรวจคำฐานนอกวงเล็บของข้อความนำ — CB "(ระดับ "ปกติ" ในระยะยาว)" คือคำอธิบาย combined ratio ไม่ใช่ฐาน EPS · ruling: CB ยังพกทั้งท่อน)
     //  ข้อความนำพกตรง (out0 — ไม่ผ่านประตู ruling A ที่ตรวจทั้งวงเล็บ · ruling B: ตรวจนอกวงเล็บเท่านั้น)
-    if (i < fi) { if (basisTainted(outsideParens(seg), consumed)) return; if (headTokens(seg).some((tk) => !/\//.test(tk) && isProseToken(tk, true)) && seg.trim()) out0.push(seg.trim()); else for (const p of topParens(seg)) if (p.inner && hasProse(p.inner)) out.push(p.inner); return; }
+    if (i < fi) { if (basisTainted(outsideParens(seg), consumed, lab)) return; if (headTokens(seg).some((tk) => !/\//.test(tk) && isProseToken(tk, true)) && seg.trim()) out0.push(seg.trim()); else for (const p of topParens(seg)) if (p.inner && hasProse(p.inner)) out.push(p.inner); return; }
     if (i > fi && hasProse(outsideParens(seg))) { if (seg.trim()) out.push(seg.trim()); return; }
-    if (i === fi) out.push(...headRuns(seg, consumed, leg));
+    if (i === fi) out.push(...headRuns(seg, consumed, leg, lab));
     for (const p of topParens(seg)) if (p.inner && hasProse(p.inner)) out.push(p.inner);
   });
   if (tail) out.push(tail);
@@ -442,7 +470,7 @@ function legsOf(parsed, fund, currency) {
           consumed = new Set([bs.label, 'forward', 'consensus', 'guidance'].filter(Boolean).flatMap((w) => w.split(/\s+/)).map((w) => FM.keyOf(w).toLowerCase()));
           F.push(`leg ${n}: pe base ${bs.base}${bs.label ? ` "${bs.label}"` : ''} from the author's wording`);
         }
-        const q = qualifierOf(mdescProse, consumed, leg); if (q) leg.note = q;
+        const q = qualifierOf(mdescProse, consumed, leg, fund); if (q) leg.note = q;
         lm.computed = true; lm.why = x.why || '';
         // ฐาน forward/FY ห้ามกลายเป็น fundamentals.eps (TTM) — ขา pe ธรรมดาตัวถัดไปเป็นคนให้ หรือ eps คงว่างเหมือนเดิม
         if (method === 'pe' && x.baseKey === 'eps' && epsBase == null && !bs) epsBase = { v: x.base, label: pl.mdesc };
@@ -996,4 +1024,4 @@ function assemble(parsed0, ctx) {
 }
 
 module.exports = { assemble, s6HintNote, guardLegs, extrasOf, analystOf, singleTarget, legsOf, weightsOf, generatedValHint, pxMetaOf, qualifierOf, hasProse, isProseToken, labelOf, labelParts, multipleSourceOf, medianWindowOf,
-  firstTagOf, sectorLineOf, ffoBasisOf, baseOf, extraCellsOf, legendNoteOf };
+  firstTagOf, sectorLineOf, ffoBasisOf, baseOf, extraCellsOf, legendNoteOf, renderedBasisLabel };

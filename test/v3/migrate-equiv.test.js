@@ -34,14 +34,15 @@ function recompare(m, html, mutate) {
   t(same.textLost.length === 0 && same.numberValue.length === 0 && same.zones.every((z) => !z.runs.length), 'compare(page, page) → no runs'); }
 // acceptance (fix round 1 · controller ruling): TEXT LOST = 0 on ≥5 fixtures · not HUMAN on ≥4 (spec §11 row 4b: CLEAN มี TEXT LOST = 0)
 // SGC (TH) / NFG (US) = corpus docs with the template-default §2 hint ("โดยประมาณ"), no H note, TEXT LOST 0 — frozen from reports/ 25 ก.ย. 69
-// Plan 4c-prep Task 5 round 3 ruling: basis words on a pe leg without a consumed base are never carried —
-//  FTV leg 1 tail "อิง TTM adjusted diluted EPS (continuing ops) แบบอนุรักษ์นิยม ไม่รวม upside จาก guidance FY26" (adjusted · guidance)
+// Plan 4c-prep Task 5 round 4 ruling (replaces round 3's blanket block): on a basis-bearing leg an agreement word (GAAP · adj. · adjusted · non-GAAP)
+//  is carried only when it equals the label v3 renders; forward/period words (guidance …) always block unless baseOf consumed them —
+//  FTV leg 1 tail "อิง TTM adjusted diluted EPS (continuing ops) แบบอนุรักษ์นิยม ไม่รวม upside จาก guidance FY26" ("guidance" = forward word · always blocks)
 //  ⇒ TEXT LOST ⇒ FTV = HUMAN (re-pinned below, not dropped) · เกณฑ์ spec §11 row 4b ยังผ่าน: TEXT LOST 0 บน 5 ใบ (BBL CASY SRE SGC NFG) · ไม่ HUMAN 4 ใบ (CASY SRE SGC NFG)
 const NON_HUMAN = ['CASY', 'SRE', 'SGC', 'NFG'];
 const FTV_LOST = ['อิง', 'continuing', 'ops', 'แบบอนุรักษ์นิยม', 'ไม่รวม', 'upside', 'guidance'];
 { const m = migrate('FTV', raw('FTV'));
-  t.eq(m.eq.textLost, FTV_LOST, 'FTV (round 3 ruling): pe-leg tail with basis words (adjusted · guidance) not carried → TEXT LOST');
-  t.eq(BK.bucketOf(m.notes, m.eq).bucket, 'HUMAN', 'FTV (round 3 ruling): → HUMAN'); }
+  t.eq(m.eq.textLost, FTV_LOST, 'FTV (round 4 ruling): pe-leg tail with a forward word (guidance) not carried → TEXT LOST');
+  t.eq(BK.bucketOf(m.notes, m.eq).bucket, 'HUMAN', 'FTV (round 4 ruling): → HUMAN'); }
 t(['BBL', ...NON_HUMAN].length >= 5 && NON_HUMAN.length >= 4, 'spec §11 row 4b acceptance still met: TEXT LOST 0 on ≥5 fixtures · not HUMAN on ≥4');
 for (const sym of ['BBL', ...NON_HUMAN]) {
   const m = migrate(sym, raw(sym));

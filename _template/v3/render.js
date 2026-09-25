@@ -339,4 +339,4 @@ ${jsonScript(RV.styledRD(view.rd))}
 `;
 }
 
-module.exports = { toV2Source, mdesc, jsonScript, SRC_NAME };
+module.exports = { toV2Source, mdesc, jsonScript, SRC_NAME, epsLabel, ffoLabel };

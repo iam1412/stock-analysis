@@ -764,4 +764,59 @@ const runH = (sym, html) => { const p = PV.parseV2(sym, html); const r = A.assem
   t(pos && /premium compounder/.test(pos.note || ''), 'ruling A: pe leg reasoning without basis words still carried', JSON.stringify(pos && pos.note));
   t.eq(A.qualifierOf('EPS forward $5.10 → × P/E 22x'), '', 'ruling B keeps the lead-in basis-word check (all legs)');
 }
+// ── Plan 4c-prep Task 5 fix round 4 — basis-agreement words (GAAP · adj. · adjusted · non-GAAP) carried only when they equal the label v3 RENDERS ──
+//  comparator = render's own epsLabel / ffoLabel (never the author's label/mname) · forward/period + core/normalised words always block
+{
+  const BK = require('../../tools/migrate-v3/buckets.js');
+  const legOf = (mdesc, mval, f, mname) => A.legsOf({ legs: [{ mname: mname || '1. P/E Valuation', mdesc, mval, mdescHtml: mdesc }] }, f, 'USD').legs[0];
+  // comparator is render's label code
+  t.eq(A.renderedBasisLabel({ method: 'pe', inputs: { multiple: 22 } }, { eps: 5.1, epsBasis: 'adj-ttm' }), 'EPS adj. (TTM)', 'round 4: rendered label pe adj-ttm = render epsLabel');
+  t.eq(A.renderedBasisLabel({ method: 'pe', inputs: { multiple: 22 } }, { eps: 5.1, epsBasis: 'gaap-ttm' }), 'EPS (TTM)', 'round 4: rendered label pe gaap-ttm = render epsLabel');
+  t.eq(A.renderedBasisLabel({ method: 'pffo', inputs: { multiple: 15 } }, { ffoBasis: 'affo' }), 'P/AFFO', 'round 4: rendered label pffo = P/ + S.FFO_LABEL[ffoBasis]');
+  t.eq(A.renderedBasisLabel({ method: 'pe', inputs: { multiple: 22 } }, { eps: 5.1 }), '', 'round 4: unknown epsBasis → no label (fail closed)');
+  // positive: "adj." agrees with the rendered "EPS adj. (TTM)"
+  const posAdj = legOf('EPS $5.10 × P/E 22x — adj. ฐานเดียวกับงบ premium compounder', '$112.20', { eps: 5.1, epsBasis: 'adj-ttm' });
+  t(posAdj && posAdj.note === 'adj. ฐานเดียวกับงบ premium compounder', 'round 4 positive: "adj." carried when v3 renders "EPS adj. (TTM)"', JSON.stringify(posAdj && posAdj.note));
+  const posAdjusted = legOf('EPS $5.10 × P/E 22x (adjusted ฐานเดียวกับงบ)', '$112.20', { eps: 5.1, epsBasis: 'adj-ttm' });
+  t(posAdjusted && posAdjusted.note === 'adjusted ฐานเดียวกับงบ', 'round 4 positive: "adjusted" ≡ render "adj." → carried', JSON.stringify(posAdjusted && posAdjusted.note));
+  // negative: "adj." but v3 renders plain "EPS (TTM)" (gaap-ttm)
+  const negAdj = legOf('EPS $5.10 × P/E 22x — adj. ฐานเดียวกับงบ premium compounder', '$112.20', { eps: 5.1, epsBasis: 'gaap-ttm' });
+  t(negAdj && !negAdj.note, 'round 4 negative: "adj." blocked when v3 renders "EPS (TTM)"', JSON.stringify(negAdj && negAdj.note));
+  // author's own label says adj. — still blocked (comparator is render, not the author)
+  const negAuthor = legOf('EPS $5.10 × P/E 22x — adj. ฐานเดียวกับงบ', '$112.20', { eps: 5.1, epsBasis: 'gaap-ttm' }, '1. P/E (EPS adj.)');
+  t(negAuthor && !/adj\./.test(negAuthor.note || ''), 'round 4 negative: the author\'s own label "EPS adj." is not the comparator', JSON.stringify(negAuthor));
+  // GAAP / non-GAAP: render prints neither word for any basis ⇒ blocked on every epsBasis
+  for (const eb of ['gaap-ttm', 'adj-ttm', 'ifrs']) {
+    const g = legOf('EPS $5.10 × P/E 22x — GAAP สมอคือ P/E เฉลี่ยรอบปีงบ', '$112.20', { eps: 5.1, epsBasis: eb });
+    t(g && !g.note, `round 4: "GAAP" blocked (render has no GAAP label · ${eb})`, JSON.stringify(g && g.note));
+  }
+  // forward/period words block even when an agreement word agrees
+  const fwdMix = legOf('EPS $5.10 × P/E 22x — adj. consensus premium', '$112.20', { eps: 5.1, epsBasis: 'adj-ttm' });
+  t(fwdMix && !fwdMix.note, 'round 4: forward word blocks although "adj." agrees', JSON.stringify(fwdMix && fwdMix.note));
+  for (const w of ['normalized', 'core', 'ปกติ', 'underlying']) {
+    const c = legOf(`EPS $5.10 × P/E 22x — adj. ${w} premium`, '$112.20', { eps: 5.1, epsBasis: 'adj-ttm' });
+    t(c && !c.note, `round 4: core/normalised word "${w}" always blocks`, JSON.stringify(c && c.note));
+  }
+  // pbv/ps/pfcf: no basis label ⇒ "adj." blocks
+  const pbv = legOf('BVPS $50 × P/BV 2x — adj. book premium', '$100', { bvps: 50, epsBasis: 'adj-ttm' }, '1. P/BV');
+  t(pbv && pbv.method === 'pbv' && !pbv.note, 'round 4: pbv leg has no rendered basis label → "adj." blocks', JSON.stringify(pbv));
+  // ddm untouched (ruling A)
+  const ddm = legOf('D₁ = ปันผล $2.63 × (1+g); g 5.5%, r 8.0% → adjusted payout ระยะยาว', '$111.00', { dps: 2.5, epsBasis: 'gaap-ttm' }, '1. DDM / Gordon Growth');
+  t(ddm && ddm.method === 'ddm' && /adjusted payout/.test(ddm.note || ''), 'round 4: ddm leg untouched', JSON.stringify(ddm && ddm.note));
+  // discriminators on the whole doc (CASY fixture, gaap-ttm): ZS / CENTEL / HON shapes stay HUMAN
+  const CASY1 = 'EPS adj. $19.16 × P/E เป้าหมาย ~35x — premium compounder ค่าเฉลี่ย 5 ปี ~34x; ให้ premium เล็กน้อยสำหรับการเติบโตที่เร่งขึ้น';
+  t(raw('CASY').includes(CASY1), 'round 4 setup: CASY leg 1 mdesc anchor');
+  const shapes = {
+    'ZS (non-GAAP tail)': 'EPS $19.16 × P/E เป้าหมาย ~35x — non-GAAP สมอคือ P/E เฉลี่ยรอบปีงบ',
+    'ZS (non-GAAP + guide)': 'EPS non-GAAP $19.16 (FY27 guide) × P/E เป้าหมาย ~35x — สมอคือ P/E เฉลี่ยรอบปีงบ',
+    CENTEL: 'EPS ปกติคาดการณ์ $19.16 (FY2026E ฉันทามติ vendor; FY2025 จริง $17.48) × P/E เป้าหมาย ~35x',
+    HON: 'EPS $19.16 (adjusted FY2026E, กลาง guidance $18.05–$20.35) × P/E เป้าหมาย ~35x — premium คุณภาพ',
+  };
+  for (const [name, md] of Object.entries(shapes)) {
+    const r = runH('CASY', raw('CASY').replace(CASY1, md));
+    const l0 = r.doc.legs[0];
+    t(l0.method === 'pe' && !l0.inputs.base && !/non-GAAP|GAAP|ปกติ|adjusted|guidance|guide/.test(l0.note || ''), `round 4: ${name} shape — basis word not carried`, JSON.stringify(l0));
+    t.eq(BK.bucketOf(r.notes, r.eq).bucket, 'HUMAN', `round 4: ${name} shape — doc stays HUMAN`);
+  }
+}
 t.done();
