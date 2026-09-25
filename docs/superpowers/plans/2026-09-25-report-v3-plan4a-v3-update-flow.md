@@ -186,16 +186,11 @@ EOF
 
 **Interfaces:**
 - Consumes: `RS.list(dir)` → `[{ symbol, v3 }]`; `RC.lightViolations(before, after)` (unchanged).
-- Produces: `listReportsFS(dir)` returns every symbol (v2 + v3), sorted · `v3Lines(rows)` **branches on bucket (fix round 1 after review — the single string below was a plan defect)**: PREPATCH → `` v3 <SYM>: flip ในย่าน → controller pre-patch มือ `node tools/update-prices.js --write --force <SYM>` (ตลาดปิดแล้วเท่านั้น — --force ข้าม guard intraday) แล้ว npm run queue -- ship <SYM> (ship --prepatch ไม่รับ .json · pre-patch อัตโนมัติของใบ v3 = Plan 4b) `` · LIGHT/FULL not skipped → `` v3 <SYM>: หลัง ship --prepatch — ราคายังไม่สด → controller pre-patch มือ `node tools/update-prices.js --write --force <SYM>` (ตลาดปิดแล้วเท่านั้น) แล้ว npm run queue -- prep <SYM> ตามปกติ (worker: report.js export/save — SKILL STEP 5U · pre-patch อัตโนมัติของใบ v3 = Plan 4b) `` · other rows → no line.
+- Produces: `listReportsFS(dir)` returns every symbol (v2 + v3), sorted · `v3Lines(rows)` **branches on bucket (fix round 1 after review — the single string below was a plan defect)**: PREPATCH → `` v3 <SYM>: flip ในย่าน → หลัง ship --prepatch: controller pre-patch มือ `node tools/update-prices.js --write --force <SYM>` (ตลาดปิดแล้วเท่านั้น — --force ข้าม guard intraday) → npm run queue -- postcheck <SYM> → ship <SYM> (ship ต้องผ่าน postcheck ก่อน · ship --prepatch ไม่รับ .json · pre-patch อัตโนมัติของใบ v3 = Plan 4b) `` (re-review residual: `ship` refuses without a postcheck pass, and the flip pre-patch must follow `ship --prepatch`) · LIGHT/FULL not skipped → `` v3 <SYM>: หลัง ship --prepatch — ราคายังไม่สด → controller pre-patch มือ `node tools/update-prices.js --write --force <SYM>` (ตลาดปิดแล้วเท่านั้น) แล้ว npm run queue -- prep <SYM> ตามปกติ (worker: report.js export/save — SKILL STEP 5U · pre-patch อัตโนมัติของใบ v3 = Plan 4b) `` · other rows → no line.
 
 - [ ] **Step 1: Write the failing tests** — in `test/queue-test.js`:
 
-Replace line 1571 (the `v3Lines` assertion) with:
-
-```js
-    ok(JSON.stringify(P.v3Lines(rows)) === JSON.stringify(['v3 ZTS: ราคายังไม่สด → controller pre-patch มือ `node tools/update-prices.js --write --force ZTS` (pre-patch อัตโนมัติของใบ v3 = Plan 4b) · แล้ว npm run queue -- prep ZTS ตามปกติ (worker: report.js export/save — SKILL STEP 5U)']),
-      'v3/preflight (4a): แถวใบ v3 = 1 บรรทัด: pre-patch มือ + prep ตามปกติ · ใบ v2 ไม่มีบรรทัด', JSON.stringify(P.v3Lines(rows)));
-```
+Replace the `v3Lines` assertion (locate by content) with three cases — LIGHT/FULL, PREPATCH, and skip/DELIST/PLUMBING/REJECTED/UNKNOWN → `[]` — asserting the exact strings in the **Produces** line above (superseded the original single-string assertion after the Task 2 review; the committed tests are `test/queue-test.js` block "v3/preflight (4a fix1…)").
 
 Replace lines 1604–1607 (the `fix round 1` age-queue block) with:
 
@@ -236,15 +231,7 @@ const listReportsFS = (dir) => RS.list(dir || REPORTS).map((e) => e.symbol).sort
 
 Replace the comment on line 139 with `// ใบ v3: pre-patch อัตโนมัติ = Plan 4b (parseGateFailures/ทาง revert ยังผูกกับ .html) — preflight พิมพ์ v3Lines ชี้คำสั่งมือแทน`.
 
-Replace lines 150–153 (`v3Lines` docblock + body) with:
-
-```js
-/** บรรทัดชี้คำสั่งมือต่อแถวใบ v3 (ส่วนบริสุทธิ์ · Plan 3 R8 → Plan 4a) — pre-patch อัตโนมัติของใบ v3 (patchTargets/parseGateFailures/
- *  ทาง revert/ship --prepatch) = Plan 4b · ตั้งแต่ 4a prep รับใบ v3 ⇒ บรรทัดนี้บอกแค่ "pre-patch มือถ้ายังไม่สด แล้ว prep ตามปกติ" */
-function v3Lines(rows) {
-  return rows.filter((r) => r.v3).map((r) => `v3 ${r.symbol}: ราคายังไม่สด → controller pre-patch มือ \`node tools/update-prices.js --write --force ${r.symbol}\` (pre-patch อัตโนมัติของใบ v3 = Plan 4b) · แล้ว npm run queue -- prep ${r.symbol} ตามปกติ (worker: report.js export/save — SKILL STEP 5U)`);
-}
-```
+Replace the `v3Lines` docblock + body so it branches on bucket exactly as the **Produces** line above (committed form: `tools/queue/preflight.js` function `v3Lines` — PREPATCH / LIGHT‑FULL‑not‑skipped / otherwise nothing).
 
 Replace the comment on line 307 with `// ใบ v3 ไม่เข้า pre-patch อัตโนมัติ (Plan 4b) — บรรทัดชี้คำสั่งมือต่อใบ (Plan 4a: prep รับใบ v3 แล้ว)`.
 
