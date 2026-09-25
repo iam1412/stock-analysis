@@ -45,6 +45,9 @@
  *   ไม่ได้ล้มแบบ plumbing (fetch/patch/meta) — ไม่งั้น net error ตอน --alive จะลดระดับ triage เงียบ ๆ
  *   --allow-intraday = ยอมรับราคา intraday (ตลาดยังเปิด) · --force/--alive ข้าม guard นี้ให้เองอยู่แล้ว
  *   เพราะ SKILL สั่ง `--force` ทุกรอบ re-analysis และเจ้าของรีโปทำงานตอนเย็นไทย = กลาง session US
+ *   --strict-gate (Plan 4b · สาย v3 เท่านั้น · default ปิด — cron/--write --force มือเหมือนเดิม) = --force ยังข้าม decide()/intraday/freeze
+ *   แต่ checkDoc ตก = **ไม่เขียน** (ทั้ง gate ของ planV3 และ gate ใต้ lock ของ IO.writeMarket) → บรรทัด `⚠ <SYM>: gate ตก (<codes>) · --strict-gate ไม่เขียน`
+ *   + flag patch-rejected · E50/E51 เหมือนเดิม · preflight ของคิวส่ง `--force --strict-gate` (ไม่มีไฟล์ v3 ที่ gate ตกค้างให้ ship --prepatch)
  */
 const fs = require('fs');
 const path = require('path');
@@ -973,13 +976,14 @@ function planV3(prev, q, chart, opts) {
     const preExisting = codes.every((c) => preCodes.includes(c));
     const detail = `${codes.join(',')}${preExisting ? ' (ค้างก่อน patch)' : ' (patch ทำให้ตก)'} — ${errText(g.errors)}`;
     if (!o.force || codes.some((c) => c === 'E50' || c === 'E51')) return reject(detail);
+    if (o.strictGate) return { ...reject(detail), strictGate: codes };   // Plan 4b I-1: --force ข้าม decide() ได้ แต่ไม่ข้าม gate
     forced = detail;
   }
   return { ...base, kind: 'write', next, view: g.view, warnings: g.warnings, forced, drift: d.drift };
 }
 
 /** ผลของ planV3 → ดิสก์ + บรรทัด log (Plan 3 R1/R10) · write จริงผ่าน IO.writeMarket (gate ซ้ำใต้ lock เดียว)
- *  opts = { write, seeds, today?, force } · คืน { kind, line, flag? (แถว price-flags รูปเดียวกับ v2), row? (บรรทัด commit body) }
+ *  opts = { write, seeds, today?, force, strictGate? (Plan 4b — gate ตก = ไม่เขียนแม้ --force) } · คืน { kind, line, flag? (แถว price-flags รูปเดียวกับ v2), row? (บรรทัด commit body) }
  *  เขียนไม่สำเร็จ = freeze ไม่ throw — ไฟล์เดิมทุก byte: gate ใต้ lock ตก (err.codes · รวมไฟล์ถูกแก้มือระหว่างรอบ = E50) = patch-rejected
  *    · throw อื่น (ไฟล์หาย/JSON เสีย/รอ lock เกิน/checkDoc throw) = patch-failed (plumbing) */
 function applyV3(file, plan, opts) {
@@ -990,12 +994,14 @@ function applyV3(file, plan, opts) {
   if (plan.kind === 'unchanged' && plan.stale)
     return { kind: 'unchanged', stale: true, line: `= ${S} v3 quote เก่ากว่า priceDate (${plan.quoteDate} < ${plan.priceDate}) — feed ค้าง ไม่เขียน · flag ที่ค้างคงไว้` };
   if (plan.kind === 'unchanged') return { kind: 'unchanged', line: `= ${S} v3 ไม่มี session ใหม่ — ${plan.reportPrice} @${plan.priceDate} เท่าเดิม ไม่เขียน` };
+  const strictLine = (codes) => `⚠ ${plan.symbol}: gate ตก (${codes.join(',')}) · --strict-gate ไม่เขียน`;
+  if (plan.kind === 'freeze' && plan.strictGate) return { kind: 'freeze', flag: flagOf(plan), line: strictLine(plan.strictGate) };
   if (plan.kind === 'freeze') {
     const tail = plan.detail ? `${plan.detail.slice(0, 160)} — ไม่เขียนไฟล์` : `${plan.reportPrice} → ${plan.marketPrice} (${pct(plan.diffPct)})`;
     return { kind: 'freeze', flag: flagOf(plan), line: `❄ ${S} freeze [${plan.reason}] ${tail}` };
   }
   if (o.write) {
-    try { IO.writeMarket(file, plan.next.market, { seeds: o.seeds, today: o.today, force: o.force }); }
+    try { IO.writeMarket(file, plan.next.market, { seeds: o.seeds, today: o.today, force: o.force && !o.strictGate }); }   // --strict-gate: gate ใต้ lock ไม่ force
     catch (e) {
       // throw ที่ไม่มี .codes = ไม่ใช่ gate (ไฟล์หาย/JSON เสีย/checkDoc throw/รอ lock เกิน) = plumbing → patch-failed (bucket เดิมของ v2)
       //   ไม่ใช่ patch-rejected — คิว triage ต้องไม่ส่งงาน plumbing ไปให้ agent re-analysis
@@ -1004,6 +1010,7 @@ function applyV3(file, plan, opts) {
         return { kind: 'freeze', flag: flagOf(pf), line: `⚠ ${S} patch fail (v3) ตอนเขียน — ${String(e.message).slice(0, 160)} · ไม่เขียนไฟล์` };
       }
       const p = { ...plan, reason: 'patch-rejected', detail: `${e.codes.join(',')} (ตอนเขียนใต้ lock) — ${e.message}`.slice(0, 400) };
+      if (o.strictGate && o.force && !e.codes.some((c) => c === 'E50' || c === 'E51')) return { kind: 'freeze', flag: flagOf(p), line: strictLine(e.codes) };
       return { kind: 'freeze', flag: flagOf(p), line: `❄ ${S} freeze [patch-rejected] ตอนเขียน — ${e.message.slice(0, 160)} · ไม่เขียนไฟล์` };
     }
   }
@@ -1096,6 +1103,7 @@ function healDerived(opts) {
 async function main() {
   const WRITE = process.argv.includes('--write');
   const FORCE = process.argv.includes('--force');
+  const STRICT_GATE = process.argv.includes('--strict-gate');   // Plan 4b I-1 — สาย v3 เท่านั้น (preflight ของคิว)
   const ALIVE = process.argv.includes('--alive');
   // --force/--alive ข้าม guard ให้เองด้วย: SKILL สั่ง --force ทุกรอบ re-analysis (STEP 1/5B/5C) และ
   // เจ้าของรีโปทำงานตอนเย็นไทย = กลาง session US ⇒ ถ้า guard คุมทางนั้นด้วย "วิเคราะห์ <US SYM>"
@@ -1198,7 +1206,7 @@ async function main() {
       }
       if (deadAlready.has(symbol)) console.log(`↻ ${symbol.padEnd(10)} --alive ทับ flag not-on-exchange — patch ต่อแล้วปลด flag (ยืนยันด้วยมือแล้ว)`);
       let r;
-      try { r = applyV3(fp, planV3(doc, q, await chartFor(symbol, currency, q), { force: FORCE, seeds: SEEDS }), { write: WRITE, seeds: SEEDS, force: FORCE }); }
+      try { r = applyV3(fp, planV3(doc, q, await chartFor(symbol, currency, q), { force: FORCE, strictGate: STRICT_GATE, seeds: SEEDS }), { write: WRITE, seeds: SEEDS, force: FORCE, strictGate: STRICT_GATE }); }
       catch (e) {   // compute/render ที่ throw นอกเหนือ gate = plumbing (เหมือน patch-failed ของ v2) — ไม่ล้มทั้งรอบ
         r = { kind: 'freeze', flag: { symbol, reason: 'patch-failed', detail: e.message, reportPrice, marketPrice: round(q.price, 2), diffPct }, line: `⚠ ${symbol.padEnd(10)} patch fail (v3): ${e.message}` };
       }

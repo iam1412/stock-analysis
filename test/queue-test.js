@@ -157,6 +157,9 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
     const pv = P.parseV3PatchResult(['✓ ZTS        71.33 → 72.10 (+1.1%) · v3 market @2026-09-25 · MOS −5.2%', '= OGE        v3 ไม่มี session ใหม่ — 44.28 @2026-09-24 เท่าเดิม ไม่เขียน', '❄ ICC        freeze [patch-rejected] ตอนเขียน — E52 … · ไม่เขียนไฟล์', '⚠ XYZ        patch fail (v3) ตอนเขียน — JSON เสีย · ไม่เขียนไฟล์', '✓ AAPL       200 → 201 (+0.5%)'].join('\n'), ['ZTS', 'OGE', 'ICC', 'XYZ']);
     ok(pv.written.join(',') === 'ZTS' && pv.unchanged.join(',') === 'OGE' && pv.rejected.length === 1 && pv.rejected[0].sym === 'ICC' && pv.rejected[0].reason === 'patch-rejected' && pv.failed.join(',') === 'XYZ', 'v3/preflight (4b): parseV3PatchResult แยก written/unchanged/rejected/failed · ไม่นับใบ v2 (AAPL)', JSON.stringify(pv));
     const pvF = P.parseV3PatchResult(['✓ ZTS        71.33 → 90 (+26.2%) · v3 market @2026-09-25 · MOS 3%  · ⚠ --force เขียนทั้งที่ gate ตก E40 (patch ทำให้ตก) — npm run verify จะไม่ผ่านจนกว่าจะแก้', '⚠ OGE        patch fail (v3): compute throw', '⚠ ICC        fetch fail: HTTP 429', '= KO         v3 quote เก่ากว่า priceDate (2026-09-23 < 2026-09-24) — feed ค้าง ไม่เขียน · flag ที่ค้างคงไว้'].join('\n'), ['ZTS', 'OGE', 'ICC', 'KO']);
+    const pvS = P.parseV3PatchResult(['⚠ ZTS: gate ตก (E27,E40) · --strict-gate ไม่เขียน', '❄ OGE        freeze [drift-gt-15pct] 44 → 52 (+18%)', '⚠ AAPL: gate ตก (E27) · --strict-gate ไม่เขียน'].join('\n'), ['ZTS', 'OGE']);
+    ok(JSON.stringify(pvS.rejected) === JSON.stringify([{ sym: 'ZTS', reason: 'strict-gate', codes: ['E27', 'E40'] }, { sym: 'OGE', reason: 'drift-gt-15pct' }]) && !pvS.forced.length && !pvS.written.length,
+      'v3/preflight (4b fix I-1 · M-1): บรรทัด --strict-gate = rejected [strict-gate] + codes · reason มีตัวเลข (drift-gt-15pct) ไม่ตกเป็น freeze · ไม่นับ AAPL', JSON.stringify(pvS));
     ok(pvF.forced.join() === 'ZTS' && !pvF.written.length && pvF.failed.join() === 'OGE' && pvF.unchanged.join() === 'KO' && !pvF.rejected.length && P.v3Unaccounted(pvF, ['ZTS', 'OGE', 'ICC', 'KO']).join() === 'ICC',
       'v3/preflight (4b): --force เขียนทั้งที่ gate ตก = forced (ไม่ใช่ written) · patch fail (v3): (throw ใน main) = failed · fetch fail = ไม่มีผล (unaccounted)', JSON.stringify(pvF));
   const table = P.renderTable(rows);
@@ -1562,13 +1565,22 @@ let v3PrepatchPromise = null;   // Plan 4a fix1 (Review Focus 3) — prep() เ�
       'v3/ship (4b): prepatchRefusal ยังปฏิเสธ foreign (ไฟล์อื่นใต้ reports/) + blocked · ใบ .json market-only ไม่อยู่ในข้อความ · ว่าง = null', pbRef);
     const fta = Sh.filesToAdd('BBL', (f) => f !== 'reports/BBL.html' && f !== 'tools/seeds.json', (f) => f === 'reports/BBL.html');
     ok(fta.includes('reports/BBL.json') && fta.includes('reports/BBL.html') && !fta.includes('tools/seeds.json'), 'v3/ship (4b): filesToAdd รวม .html ที่ถูกลบ (tracked-deleted) · ไม่รวมไฟล์ที่ไม่มี', fta.join(','));
-    const mp = Sh.migratePlan(['BBL', 'ZTS', 'NEW1'], (s) => ({ BBL: { json: true, html: false, headHtml: true, headJson: false }, ZTS: { json: true, html: false, headHtml: false, headJson: true }, NEW1: { json: true, html: false, headHtml: false, headJson: false } })[s]);
+    const mp = Sh.migratePlan(['BBL', 'ZTS', 'NEW1'], (s) => ({ BBL: { json: true, html: false, headHtml: true, headJson: false, migrated: true }, ZTS: { json: true, html: false, headHtml: false, headJson: true }, NEW1: { json: true, html: false, headHtml: false, headJson: false } })[s]);
     ok(mp.files.join(',') === 'reports/BBL.json,reports/BBL.html' && mp.refusals.length === 2 && /ZTS/.test(mp.refusals[0]) && /NEW1/.test(mp.refusals[1]),
       'v3/ship (4b): migratePlan — BBL (HEAD .html · worktree .json) = migrate · ZTS (HEAD .json อยู่แล้ว) / NEW1 (ไม่มีใน HEAD) = refuse', JSON.stringify(mp));
+    // review M-2: .json ที่ไม่มี meta.migratedFrom (worker save ทับ ไม่ใช่ convert) = refuse · probe จริงอ่านผ่าน isMigratedDoc (fixture ไม่มี migratedFrom = false)
+    const mp3 = Sh.migratePlan(['CASY', 'CASY'], () => ({ json: true, html: false, headHtml: true, headJson: false, migrated: false }));
+    ok(!mp3.files.length && mp3.refusals.length === 1 && mp3.refusals[0] === 'CASY: ไม่ใช่ใบที่ migrate (ไม่มี meta.migratedFrom) — ใช้ ship CASY', 'v3/ship (4b fix M-2 · N-2): ไม่มี meta.migratedFrom = refuse · symbol ซ้ำนับครั้งเดียว', JSON.stringify(mp3));
+    const mp4 = Sh.migratePlan(['BBL', 'BBL'], () => ({ json: true, html: false, headHtml: true, headJson: false, migrated: true }));
+    ok(mp4.files.join() === 'reports/BBL.json,reports/BBL.html', 'v3/ship (4b fix N-2): migratePlan dedupe "BBL BBL"', JSON.stringify(mp4));
+    ok(Sh.isMigratedDoc(path.join(V3DIR, 'ZTS.json')) === false && Sh.isMigratedDoc(path.join(V3DIR, 'NOPE.json')) === false, 'v3/ship (4b fix M-2): isMigratedDoc — fixture ไม่มี meta.migratedFrom / ไม่มีไฟล์ = false');
+    { const mz = JSON.parse(fs.readFileSync(path.join(V3DIR, 'ZTS.json'), 'utf8')); mz.meta.migratedFrom = { updated: '2026-09-01', v2Hash: 'abcdef012345' }; fs.writeFileSync(path.join(V3DIR, 'MIG.json'), JSON.stringify(mz));
+      ok(Sh.isMigratedDoc(path.join(V3DIR, 'MIG.json')) === true, 'v3/ship (4b fix M-2): isMigratedDoc — มี meta.migratedFrom = true'); fs.unlinkSync(path.join(V3DIR, 'MIG.json')); }
     const mp2 = Sh.migratePlan(['A', 'B'], (s) => ({ A: { json: false, html: true, headHtml: true, headJson: false }, B: { json: true, html: true, headHtml: true, headJson: false } })[s]);
     ok(!mp2.files.length && /A: ไม่มี reports\/A\.json/.test(mp2.refusals[0]) && /B: reports\/B\.html ยังอยู่/.test(mp2.refusals[1]), 'v3/ship (4b): migratePlan — ยังไม่ convert / .html ยังอยู่ = refuse', JSON.stringify(mp2));
     // ship --migrate: ล้มก่อน verify ทุกทาง (ห้ามรัน npm run verify/convert จริงในเทส) — ไม่มี symbol / ไม่มี --model / ใบไม่มีจริง
     const thr = (fn) => { try { fn(); return null; } catch (e) { return e.message; } };
+    ok(/^ship --migrate: โมเดล "haiku" ไม่รู้จัก/.test(thr(() => Sh.shipMigrate('ZZNOPE1', { model: 'haiku', noPush: true })) || ''), 'v3/ship (4b fix N-1): โมเดลไม่รู้จัก → ข้อความขึ้นต้น "ship --migrate:" ไม่ใช่ "migrate:" เหมือน symbol');
     ok(/อย่างน้อย 1 ตัว/.test(thr(() => Sh.shipMigrate('', { model: 'sonnet', noPush: true })) || ''), 'v3/ship (4b): shipMigrate ไม่มี symbol → throw ก่อน verify');
     ok(/ไม่มี model — ต้องใส่ --model/.test(thr(() => Sh.shipMigrate('ZZNOPE1', { noPush: true })) || ''), 'v3/ship (4b): shipMigrate ไม่มี --model → throw ก่อน verify (trailer ต้องระบุ)');
     ok(/ZZNOPE1: ไม่มี reports\/ZZNOPE1\.json/.test(thr(() => Sh.shipMigrate('zznope1', { model: 'sonnet', noPush: true })) || ''), 'v3/ship (4b): shipMigrate ใบที่ไม่ได้ convert → refuse ก่อน verify (ตัวพิมพ์เล็กถูกยกเป็นใหญ่)');
@@ -1737,6 +1749,56 @@ let v3PrepatchPromise = null;   // Plan 4a fix1 (Review Focus 3) — prep() เ�
     const hv2 = Pc.oldPriceHits({ v3: false, raw: 'a\nราคา $55.55\n' }, 55.55);
     ok(hv2.length === 1 && hv2[0].where === 'L2', 'v3/postcheck fix3: ใบ v2 ยังบอกเป็น L<บรรทัด>', JSON.stringify(hv2));
   } finally { fs.rmSync(V3DIR, { recursive: true, force: true }); }
+}
+
+// ── 24) Plan 4b fix M-4: preflight pre-patch wiring (prePatchStep + deps ฉีด) — ไม่ยิง update-prices/check-reports/git จริง ──
+{
+  const P = require('../tools/queue/preflight.js');
+  const TODAY = '2026-09-25';
+  const mk = (outs) => {
+    const calls = [], musts = [], logs = [], saves = [];
+    const deps = { run: (cmd, args) => { calls.push([cmd, ...args]); return outs.shift(); }, must: (cmd, args) => { musts.push([cmd, ...args]); return { code: 0, out: '' }; },
+      save: (s) => saves.push(JSON.parse(JSON.stringify(s))), log: (x) => logs.push(x), out: () => {} };
+    return { deps, calls, musts, logs, saves };
+  };
+  const rowsOf = (syms) => syms.map((symbol) => ({ symbol }));
+  // (a) v3 ล้วน: update-prices ครั้งเดียว (--force --strict-gate) · ไม่ยิง check-reports · ไม่ checkout · ประทับเฉพาะใบที่มีบรรทัดผล
+  {
+    const syms = ['ZTS', 'OGE', 'ICC', 'KO'];
+    const UP = ['✓ ZTS        71.33 → 72.1 (+1.1%) · v3 market @2026-09-24 · MOS −5.2%', '⚠ OGE: gate ตก (E27) · --strict-gate ไม่เขียน', '⚠ ICC        fetch fail: HTTP 429',
+      '= KO         v3 ไม่มี session ใหม่ — 60 @2026-09-24 เท่าเดิม ไม่เขียน', 'ℹ v3-lane: 4 ใบ · อัปเดต 1 · ไม่เปลี่ยน 1 · freeze 1 · ล้ม 1 · ข้ามเพราะตลาดเปิด 0 · ข้าม not-on-exchange 0'].join('\n');
+    const m = mk([{ code: 0, out: UP, err: '' }]);
+    const rows = rowsOf(syms), s = { stocks: { OGE: { prePatched: '2026-09-01' } } };
+    P.prePatchStep({ target: syms, v3: syms }, rows, s, TODAY, m.deps);
+    ok(m.calls.length === 1 && m.calls[0].join(' ') === 'node tools/update-prices.js --write --force --strict-gate ZTS OGE ICC KO' && !m.musts.length,
+      'preflight wiring (4b M-4): ใบ v3 ล้วน → update-prices --write --force --strict-gate ครั้งเดียว · ไม่ยิง check-reports · ไม่ git checkout', JSON.stringify({ calls: m.calls, musts: m.musts }));
+    ok(s.stocks.ZTS.prePatched === TODAY && s.stocks.KO.prePatched === TODAY && s.stocks.OGE.prePatchRejected === TODAY && !s.stocks.ICC && rows[1].prePatchRejected === TODAY && !rows[0].prePatchRejected && !rows[2].prePatchRejected,
+      'preflight wiring (4b M-4): applyGateResult บนใบ v3 ลบใบที่ไม่มีผล (ICC ไม่ถูกประทับ) · strict-gate reject = prePatchRejected (state + rows)', JSON.stringify(s.stocks));
+    ok(m.logs.includes('\nℹ v3 pre-patch: เขียน 1 · ไม่เปลี่ยน 1 · ปฏิเสธ 1 (gate ใต้ lock · ไม่เขียนไฟล์) · ล้ม 0 — OGE[strict-gate]')
+      && m.logs.includes('⚠ v3 ICC: ไม่พบบรรทัดผล pre-patch (fetch fail/อ่านใบไม่ได้/ตลาดเปิด — ดูด้านบน) · ไม่ประทับสถานะ · prep ตัดสินความสดจาก priceDate เอง')
+      && !m.logs.some((l) => /gate หลัง pre-patch|⛔/.test(l)) && m.saves.length === 1,
+      'preflight wiring (4b M-4): บรรทัด ℹ v3 pre-patch + ⚠ ไม่พบบรรทัดผล · ไม่มีบรรทัด gate ของ v2 / ⛔ · save ครั้งเดียว', JSON.stringify(m.logs));
+  }
+  // (b) ผสม v2+v3: check-reports เฉพาะใบ v2 · checkout เฉพาะ .html ของใบ v2 ที่ตก · ใบ v3 ไม่ถูกคืน
+  {
+    const m = mk([{ code: 0, out: '✓ ZTS        71.33 → 72.1 (+1.1%) · v3 market @2026-09-24 · MOS −5.2%\n✓ AAPL       200 → 201 (+0.5%)', err: '' },
+      { code: 1, out: '✗ AAPL.html      41/43 ผ่าน — 2 ปัญหา\n    ✗ [E15] x', err: '' }]);
+    const rows = rowsOf(['AAPL', 'ZTS']), s = { stocks: {} };
+    P.prePatchStep({ target: ['AAPL', 'ZTS'], v3: ['ZTS'] }, rows, s, TODAY, m.deps);
+    ok(m.calls.length === 2 && m.calls[1].join(' ') === 'node test/check-reports.js AAPL' && m.musts.length === 1 && m.musts[0].join(' ') === 'git checkout -- reports/AAPL.html',
+      'preflight wiring (4b M-4): ผสม → check-reports เฉพาะใบ v2 · คืนไฟล์เฉพาะ reports/AAPL.html', JSON.stringify({ calls: m.calls, musts: m.musts }));
+    ok(s.stocks.AAPL.prePatchRejected === TODAY && s.stocks.ZTS.prePatched === TODAY && rows[0].prePatchRejected === TODAY && !rows[1].prePatchRejected,
+      'preflight wiring (4b M-4): ใบ v2 ตก = prePatchRejected · ใบ v3 เขียนแล้ว = prePatched', JSON.stringify(s.stocks));
+  }
+  // (c) invariant: ภายใต้ --strict-gate ห้ามมีบรรทัด "✓ … --force เขียนทั้งที่ gate ตก" — เจอ = throw ก่อนประทับ/บันทึกอะไร
+  {
+    const m = mk([{ code: 0, out: '✓ ZTS        71.33 → 90 (+26.2%) · v3 market @2026-09-24 · MOS 3% · ⚠ --force เขียนทั้งที่ gate ตก E27 (patch ทำให้ตก) — npm run verify จะไม่ผ่านจนกว่าจะแก้', err: '' }]);
+    const s = { stocks: {} };
+    let err = null; try { P.prePatchStep({ target: ['ZTS'], v3: ['ZTS'] }, rowsOf(['ZTS']), s, TODAY, m.deps); } catch (e) { err = e.message; }
+    ok(/--strict-gate แต่ update-prices ยังเขียนใบ v3 ทั้งที่ gate ตก — ZTS · คืนไฟล์: git checkout -- reports\/ZTS\.json/.test(err || '') && !Object.keys(s.stocks).length && !m.saves.length,
+      'preflight wiring (4b I-1): forced ต้องว่างภายใต้ --strict-gate — ถ้าไม่ว่าง throw ก่อนประทับ state', err);
+  }
+  ok(P.PREPATCH_FLAGS.join(' ') === '--write --force --strict-gate', 'preflight (4b I-1): flag ของ pre-patch = --write --force --strict-gate', P.PREPATCH_FLAGS.join(' '));
 }
 
 // ─────────────────────────── (Task 10–14 แทรกเทสเหนือบรรทัดนี้) ───────────────────────────

@@ -447,16 +447,21 @@ function shipPrepatch() {
   closeIssueIfNoLlmRows(st.stocks, null, st.startedAt);
 }
 
+/** ใบ v3 นี้มาจาก migrate-v3 convert ไหม (meta.migratedFrom) — อ่าน/parse ไม่ได้ = false (fail closed) */
+function isMigratedDoc(file) { try { return !!((IO.read(file).meta || {}).migratedFrom); } catch (_) { return false; } }
 /** แผน ship --migrate (ส่วนบริสุทธิ์): ใบที่ migrate = worktree มี .json ไม่มี .html · HEAD มี .html ไม่มี .json → add ทั้งคู่ (−.html +.json)
- *  probe(sym) → { json, html, headHtml, headJson } (boolean) · ข้อใดไม่ตรง = refusal ต่อใบ (ทั้งชุดไม่ไปต่อ) */
+ *  probe(sym) → { json, html, headHtml, headJson, migrated } (boolean) · ข้อใดไม่ตรง = refusal ต่อใบ (ทั้งชุดไม่ไปต่อ)
+ *  ★ migrated = .json มี meta.migratedFrom (ประทับโดย migrate-v3 convert) — ใบ v3 ที่ worker save ทับหุ้นที่ HEAD ยังเป็น .html
+ *    ต้องไม่หลุดเข้า commit "migrate:" โดยข้าม postcheck/ship <SYM> (review M-2) · symbol ซ้ำ = นับครั้งเดียว (N-2) */
 function migratePlan(syms, probe) {
   const files = [], refusals = [];
-  for (const s of syms) {
+  for (const s of [...new Set(syms)]) {
     const p = probe(s);
     if (!p.json) { refusals.push(`${s}: ไม่มี reports/${s}.json ใน worktree — ยังไม่ได้ convert`); continue; }
     if (p.html) { refusals.push(`${s}: reports/${s}.html ยังอยู่ — convert ต้องลบใบ v2 ในคำสั่งเดียวกัน`); continue; }
     if (p.headJson) { refusals.push(`${s}: HEAD มี reports/${s}.json อยู่แล้ว — ไม่ใช่การ migrate (ใช้ ship ${s})`); continue; }
     if (!p.headHtml) { refusals.push(`${s}: HEAD ไม่มี reports/${s}.html — ใบใหม่ ไม่ใช่การ migrate (ใช้ ship ${s})`); continue; }
+    if (!p.migrated) { refusals.push(`${s}: ไม่ใช่ใบที่ migrate (ไม่มี meta.migratedFrom) — ใช้ ship ${s}`); continue; }
     files.push(`reports/${s}.json`, `reports/${s}.html`);
   }
   return { files, refusals };
@@ -465,16 +470,19 @@ function migratePlan(syms, probe) {
  *  ★ ทุกอย่างที่ล้มได้โดยไม่ต้องรันอะไร (symbol ว่าง · ไม่มี --model · แผนถูกปฏิเสธ) ล้มก่อน verify เสมอ */
 function shipMigrate(symsArg, opts) {
   const o = opts || {};
-  const syms = String(symsArg || '').split(/[\s,]+/).filter(Boolean).map((x) => x.toUpperCase());
+  const syms = [...new Set(String(symsArg || '').split(/[\s,]+/).filter(Boolean).map((x) => x.toUpperCase()))];
   if (!syms.length) throw new Error('ship --migrate ต้องระบุ symbol อย่างน้อย 1 ตัว ("BBL CASY")');
   if (!o.model) throw new Error('ship --migrate: ไม่มี model — ต้องใส่ --model sonnet|opus (trailer ของ commit migrate ต้องตรงกับรุ่นที่รัน convert)');
-  const tr = trailer(resolveModel('migrate', null, o.model));
-  const probe = (x) => ({ json: fs.existsSync(path.join(ROOT, 'reports', `${x}.json`)), html: fs.existsSync(path.join(ROOT, 'reports', `${x}.html`)),
+  const tr = trailer(resolveModel('ship --migrate', null, o.model));   // N-1: ข้อความ error ขึ้นต้นด้วยคำสั่ง ไม่ใช่เหมือน symbol
+  const jsonPath = (x) => path.join(ROOT, 'reports', `${x}.json`);
+  const probe = (x) => ({ json: fs.existsSync(jsonPath(x)), html: fs.existsSync(path.join(ROOT, 'reports', `${x}.html`)),
+    migrated: fs.existsSync(jsonPath(x)) && isMigratedDoc(jsonPath(x)),
     headHtml: run('git', ['cat-file', '-e', `HEAD:reports/${x}.html`]).code === 0, headJson: run('git', ['cat-file', '-e', `HEAD:reports/${x}.json`]).code === 0 });
   const plan = migratePlan(syms, probe);
   if (plan.refusals.length) throw new Error(plan.refusals.join('\n'));
   verify(); keepDates();
-  const files = plan.files.concat(['reports.json', 'tools/seeds.json'].filter((f) => run('git', ['status', '--porcelain', '--', f]).out.trim()));
+  // M-3: ไม่ stage tools/seeds.json — convert ไม่แตะสีแบรนด์ · seeds ที่สกปรกมาจาก pick-brand ของ worker ใบอื่น (ห้ามกวาดเข้า commit migrate)
+  const files = plan.files.concat(['reports.json'].filter((f) => run('git', ['status', '--porcelain', '--', f]).out.trim()));
   must('git', ['add', '--', ...files], 'git add');
   must('git', commitArgs(`migrate: v3 ${syms.join(' ')}\n\n${tr}`, files), 'git commit');
   console.log(`✅ migrate: v3 ${syms.join(' ')} — commit แล้ว (${plan.files.length / 2} ใบ · −.html +.json)`);
@@ -540,5 +548,5 @@ function status() {
   if (stale.length) console.log(`ค้างจากรอบก่อน — ยังไม่นับเป็น flag ใหม่ของรอบนี้ (${stale.length}): ${stale.join(' ')}`);
 }
 
-module.exports = { shipStock, shipPrepatch, shipMigrate, migratePlan, filesToAdd, V3_REPORT_RE, status, commitMessage, commitArgs, trailer, resolveModel, resolveTrailer, reportAiModel,
+module.exports = { shipStock, shipPrepatch, shipMigrate, migratePlan, isMigratedDoc, filesToAdd, V3_REPORT_RE, status, commitMessage, commitArgs, trailer, resolveModel, resolveTrailer, reportAiModel,
   landedOnOrigin, shipPhaseOf, rowsToHeal, reconcile, dirtyTracked, pushIfClean, shouldPush, closeIssueIfEmpty, closeIssueIfNoLlmRows, prepatchBlockers, prepatchRefusal, prepatchCandidates, parsePorcelain, parsePorcelainZ, unquotePath, pendingCommitFor, postcheckGuard, STOCK_FILES, TITLE };

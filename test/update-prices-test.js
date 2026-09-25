@@ -1666,6 +1666,56 @@ ok(U.commitBody([], []) === '', 'commitBody: ว่างเมื่อไม�
   }
 }
 
+// ── Plan 4b Task 8 fix I-1: --strict-gate (preflight ส่ง --force --strict-gate) — --force ยังข้าม decide()/intraday/freeze
+//    แต่ checkDoc ตก = ไม่เขียน (ทั้ง gate ในหน่วยความจำของ planV3 และ gate ใต้ lock ของ IO.writeMarket) · ไม่มี flag = พฤติกรรมเดิม
+//    ★ โฟลเดอร์ชั่วคราวเท่านั้น (ไม่แตะ reports/) · quote จำลอง ไม่ยิง network
+{
+  const os = require('os');
+  const IO = require('../tools/v3/io.js');
+  const seeds = require('../tools/seeds.json');
+  const real = () => JSON.parse(JSON.stringify(require('./fixtures/v3/ZTS-real.json')));   // px 71.33 · priceDate 2026-09-21
+  const T22 = Date.UTC(2026, 8, 22, 20, 0, 0) / 1000, NOW = T22 + 3600;
+  const mid = (i) => Date.UTC(2025, 9 + i, 15) / 1000;
+  const quote = (price) => ({ price, currency: 'USD', marketTime: T22, gmtoffset: -4 * 3600, regularStart: T22 - 23400, regularEnd: T22,
+    week52Low: 70.26, week52High: 148.79, bars: real().market.chart.data.map((p, i) => ({ ts: mid(i), close: p[1] })) });
+  const chartOf = (q) => ({ data: U.buildChartData(q.bars, q.price, q.gmtoffset), src: '1mo', bars: q.bars, gmtoffset: q.gmtoffset });
+  const plan = (doc, q, over) => U.planV3(doc, q, chartOf(q), { seeds, nowSec: NOW, ...over });
+  let tmp;
+  try {
+    tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'up-strict-'));
+    const zf = path.join(tmp, 'ZTS.json');
+    IO.write(zf, real());
+    const bytes = () => fs.readFileSync(zf, 'utf8');
+    const b0 = bytes();
+    const LATE = '2027-06-01';   // today ไกลเกิน → checkDoc ยิง E27 (non-E50/E51) — ตัวเดียวกับเคส R6 ใน test/v3/cron.test.js
+    // (a) planV3: --force + --strict-gate → freeze patch-rejected ติด strictGate codes (ไม่ใช่ write + forced)
+    const ps = plan(IO.read(zf), quote(73), { today: LATE, force: true, strictGate: true });
+    ok(ps.kind === 'freeze' && ps.reason === 'patch-rejected' && Array.isArray(ps.strictGate) && ps.strictGate.includes('E27') && !ps.forced,
+      'strict-gate (4b I-1): planV3 --force --strict-gate + gate ตก (E27) → freeze patch-rejected · strictGate=[codes] · ไม่มี forced', JSON.stringify({ kind: ps.kind, reason: ps.reason, strictGate: ps.strictGate, forced: ps.forced }));
+    const rs = U.applyV3(zf, ps, { write: true, seeds, today: LATE, force: true, strictGate: true });
+    ok(rs.kind === 'freeze' && rs.flag.reason === 'patch-rejected' && /^⚠ ZTS: gate ตก \(E27[^)]*\) · --strict-gate ไม่เขียน$/.test(rs.line) && bytes() === b0,
+      'strict-gate (4b I-1): applyV3 → บรรทัด "⚠ <SYM>: gate ตก (<codes>) · --strict-gate ไม่เขียน" · flag patch-rejected · ไฟล์เดิมทุก byte', rs.line);
+    // (b) gate ใต้ lock: แผน write ที่สะอาด (today = priceDate ใหม่) แต่ตอนเขียน today ทำให้ตก → writeMarket ไม่ force เมื่อ --strict-gate
+    const pw = plan(IO.read(zf), quote(73), { today: '2026-09-22', force: true, strictGate: true });
+    const rl = U.applyV3(zf, pw, { write: true, seeds, today: LATE, force: true, strictGate: true });
+    ok(pw.kind === 'write' && rl.kind === 'freeze' && /^⚠ ZTS: gate ตก \(E27[^)]*\) · --strict-gate ไม่เขียน$/.test(rl.line) && bytes() === b0,
+      'strict-gate (4b I-1): gate ใต้ lock (IO.writeMarket) ก็ไม่ force เมื่อ --strict-gate → ไม่เขียน · บรรทัดเดียวกัน', rl.line);
+    // (c) E50 ภายใต้ --strict-gate = บรรทัดเดิม (❄ freeze [patch-rejected]) — พฤติกรรม E50/E51 ไม่เปลี่ยน
+    const hand = IO.read(zf); hand.prose.mos += ' แก้มือ'; fs.writeFileSync(zf, JSON.stringify(hand, null, 2) + '\n');
+    const bh = bytes();
+    const re = U.applyV3(zf, plan(IO.read(zf), quote(73), { today: '2026-09-22', force: true, strictGate: true }), { write: true, seeds, today: '2026-09-22', force: true, strictGate: true });
+    ok(re.kind === 'freeze' && /^❄ ZTS\s+freeze \[patch-rejected\]/.test(re.line) && /E50/.test(re.flag.detail) && bytes() === bh,
+      'strict-gate (4b I-1): E50 ภายใต้ --strict-gate = ❄ freeze [patch-rejected] เหมือนเดิม · ไม่เขียน', re.line);
+    IO.write(zf, real());
+    const b1 = bytes();
+    // (d) ไม่มี --strict-gate = พฤติกรรมเดิม: --force เขียนทั้งที่ gate ตก (✓ … ⚠ --force เขียนทั้งที่ gate ตก)
+    const pf = plan(IO.read(zf), quote(73), { today: LATE, force: true });
+    const rf = U.applyV3(zf, pf, { write: true, seeds, today: LATE, force: true });
+    ok(pf.kind === 'write' && /E27/.test(pf.forced || '') && rf.kind === 'write' && /^✓ ZTS/.test(rf.line) && /--force เขียนทั้งที่ gate ตก/.test(rf.line) && bytes() !== b1 && IO.read(zf).market.px === 73,
+      'strict-gate (4b I-1): ไม่มี --strict-gate → --force เขียนทั้งที่ gate ตกเหมือนเดิม (cron/มือไม่เปลี่ยน)', rf.line);
+  } finally { if (tmp) fs.rmSync(tmp, { recursive: true, force: true }); }
+}
+
 Promise.resolve(pending).then(() => {
   console.log(nFail ? `\n✗ update-prices-test: ${nFail} failed / ${nOK} passed` : `\n✓ update-prices-test: ${nOK} passed`);
   process.exit(nFail ? 1 : 0);
