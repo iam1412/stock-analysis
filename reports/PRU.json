@@ -1,0 +1,245 @@
+{
+  "v": 3,
+  "symbol": "PRU",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Prudential Financial",
+    "exchange": "NYSE",
+    "sub": "Life insurance & annuities • PGIM asset management • Retirement solutions • Group insurance • International (Japan, Brazil) • ~5% dividend yield",
+    "headerTags": [
+      "Insurance & Asset Management",
+      "S&P 500"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance quoteSummary",
+      "Yahoo Finance chart API",
+      "StockAnalysis.com (งบ FY2021–FY2025 + TTM)"
+    ],
+    "themeLegacy": {
+      "accent": "#003B70",
+      "accentDark": "#002550",
+      "darkGrad": "linear-gradient(135deg,#001a4d 0%,#003B70 60%,#005a9e 100%)",
+      "glow": "rgba(0,59,112,0.35)",
+      "subColor": "#c0d8f2",
+      "headerMuted": "#c3d9e8",
+      "verdictText": "#e3f0ff",
+      "vcellLabel": "#dde7f1"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T23:32:21+07:00",
+      "v2Hash": "2045543ef987"
+    }
+  },
+  "market": {
+    "px": 118.75,
+    "priceDate": "2026-09-24",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          104
+        ],
+        [
+          "พ.ย.25",
+          108.25
+        ],
+        [
+          "ธ.ค.25",
+          112.88
+        ],
+        [
+          "ม.ค.26",
+          111.11
+        ],
+        [
+          "ก.พ.26",
+          98.38
+        ],
+        [
+          "มี.ค.26",
+          97.69
+        ],
+        [
+          "เม.ย.26",
+          98.11
+        ],
+        [
+          "พ.ค.26",
+          100.64
+        ],
+        [
+          "มิ.ย.26",
+          107.93
+        ],
+        [
+          "ก.ค.26",
+          122.08
+        ],
+        [
+          "ส.ค.26",
+          117.6
+        ],
+        [
+          "ก.ย.26",
+          118.75
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 91.89,
+      "hi": 127.72
+    }
+  },
+  "fundamentals": {
+    "eps": 11.06,
+    "dps": 5.6,
+    "bvps": 91.47,
+    "shares": 345212683,
+    "peAvg5y": 12.4,
+    "roe": 12,
+    "debtToEquity": 1.64,
+    "netMargin": 5.9,
+    "beta": 1.1,
+    "fy": {
+      "period": "FY2568",
+      "eps": 9.99
+    },
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation (GAAP diluted)",
+      "inputs": {
+        "multiple": 12.4,
+        "multipleSource": "median5y",
+        "medianWindow": "FY2023–FY2025"
+      },
+      "note": "มัธยฐานย้อนหลัง 4 ปีงบของ PRU เอง (FY2021, FY2023–2025; FY2022 ขาดทุนตัดออก ช่วง 4.5–15.7x) มาจากประวัติ ไม่ได้มาจาก P/E ปัจจุบัน",
+      "family": "market"
+    },
+    {
+      "method": "pbv",
+      "label": "Justified P/BV",
+      "inputs": {
+        "g": 3.5,
+        "r": 9.5
+      },
+      "note": "ตระกูล (r,g) เดียวกับ DDM",
+      "family": "rg"
+    },
+    {
+      "method": "ddm",
+      "label": "DDM / Gordon Growth",
+      "inputs": {
+        "g": 3.5,
+        "r": 9.5
+      },
+      "note": "(r,g) ชุดเดียวกับ P/BV จึงนับเป็นเสียงเดียว (เฉลี่ย P/BV+DDM = $113)",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "peAvg5y",
+      "pbv",
+      "epsFy",
+      "eps",
+      "bvps",
+      "roe",
+      {
+        "key": "debtToEquity",
+        "tone": "neu"
+      },
+      "netMargin",
+      "yield",
+      "beta"
+    ],
+    "notes": {
+      "mcap": "~345 ล้านหุ้น (คงเหลือ)",
+      "pe": "EPS GAAP diluted {{eps}} TTM",
+      "peAvg5y": "ช่วง 4.5–15.7x · FY2022 ขาดทุนตัดออก",
+      "pbv": "GAAP BVPS {{bvps}} (StockAnalysis)",
+      "epsFy": "หุ้น · +33.2% YoY vs $7.50 ปีก่อน",
+      "eps": "Yahoo $11.03 · ต่างกัน 0.3%",
+      "bvps": "StockAnalysis · ไม่ใช่ adj. book",
+      "roe": "FY2568 11.4% · FY2567 9.5%",
+      "debtToEquity": "หนี้ $56.7B · เงินสด $15.2B",
+      "netMargin": "FY2568 5.8% · FY2567 3.8%",
+      "yield": "$1.40/ไตรมาส",
+      "beta": "อ่อนไหวต่ออัตราดอกเบี้ยสูง"
+    },
+    "hint": "ใช้ GAAP diluted EPS ที่ยืนยันได้ 2 แหล่ง (Adj. operating เป็นบริบท ไม่ใช่ฐาน FV)"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 2,
+        "exitMultiple": 8,
+        "divCum": 16.97,
+        "desc": "กำไรโตช้า P/E de-rate"
+      },
+      {
+        "growth": 6,
+        "exitMultiple": 10,
+        "divCum": 17.47,
+        "desc": "กำไรโตต่อเนื่อง P/E ~10x"
+      },
+      {
+        "growth": 12,
+        "exitMultiple": 12.4,
+        "divCum": 17.81,
+        "desc": "กำไรฟื้นแรง กลับสู่ P/E มัธยฐาน"
+      }
+    ],
+    "exitDp": 1,
+    "note": "ราคาเป้าแต่ละฉากเป็นสมมติฐาน (EPS GAAP diluted {{eps}} เป็นฐาน) — Bear ให้ P/E ออก 8x ต่ำกว่าประวัติ, Base ใช้ ~10x, Bull กลับสู่มัธยฐาน 12.4x EPS GAAP diluted ที่วัดได้: $6.74 (FY2566) → $7.50 (FY2567) → {{epsFy}} (FY2568) → {{eps}} TTM — FY2565 ขาดทุน (−$4.49) ปันผล {{dps}}/ปี ช่วยรองรับผลตอบแทน แต่ผลตอบแทนฉาก Bear อาจติดลบตามราคาเป้า"
+  },
+  "analyst": {
+    "target": 113.4,
+    "n": null,
+    "rating": "Hold",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ตามกราฟรายเดือน PRU เริ่มที่ประมาณ $104 (ต.ค. 2568) ขึ้นไป $112.88 (ธ.ค. 2568) ก่อนปรับลงในช่วง ก.พ.–เม.ย. 2569 ถึงต่ำสุด $97.69 (มี.ค. 2569) แล้วฟื้นตัวแรงถึงสูงสุดของปี $122.08 (ก.ค. 2569) และปิดเดือนล่าสุดแถว $118 (ไม่ระบุสาเหตุรายเหตุการณ์ เพราะยังไม่ได้ตรวจแหล่งปฐมภูมิรอบนี้)",
+    "valuation": "FV = เฉลี่ยของ 2 ตระกูล: P/E ที่วัดจริง $137 และตระกูล (r,g) เดียวกัน (Justified P/BV $130 + DDM $97 = เฉลี่ย $113) ⇒ ($137 + $113)/2 ≈ {{fv}} ประมาณการนี้เป็น valuation ตระกูลแรกที่ยึดตลาด (P/E มัธยฐานย้อนหลัง) เทียบกับตระกูลที่ขึ้นกับ r/g ที่เป็นสมมติฐานของเรา จึงมีความไม่แน่นอน หากใช้เฉพาะ P/E ได้ $137 ส่วนเฉพาะตระกูล r/g ได้ $113 — MOS อ่อนไหวตามน้ำหนักนี้ ฐาน EPS เปลี่ยนจาก Adj. Operating เป็น GAAP diluted เพราะ P/E มัธยฐานวัดบน GAAP และ Adj. operating ตรวจซ้ำกับแหล่งปฐมภูมิรอบนี้ไม่ได้ เป้านักวิเคราะห์ (15 คน, Hold) ~{{analyst.target}} ใช้เป็นบริบทเท่านั้น ไม่ได้เป็นส่วนของ FV",
+    "gauge": "ราคาปัจจุบัน {{px}} อยู่ต่ำกว่ามูลค่าเหมาะสม {{fv}} ({{mos}}) — ส่วนเผื่อบาง โซน MOS 20% อยู่ที่ {{mos20}} และโซน MOS 30% (Deep Value) ที่ {{mos30}} ซึ่งใกล้ต่ำสุดรอบปี $97.69 เป้าเฉลี่ยนักวิเคราะห์ราว {{analyst.target}} (Hold) อยู่ใกล้ราคาตลาด — ไม่ใช่ตัวชี้ว่าถูกหรือแพง",
+    "mos": "ส่วนเผื่อบาง — ราคาใกล้มูลค่าเหมาะสม อาศัยปันผลช่วยลดความเสี่ยง (FV มาจาก 2 ตระกูล ความไม่แน่นอนสูง)",
+    "verdictHeadline": "Value Dividend — PRU ใกล้มูลค่าเหมาะสม ส่วนเผื่อบาง ปันผล {{mos}} ช่วยรองรับ",
+    "verdictBody": "Prudential Financial เป็นบริษัทประกันชีวิตและ Asset Manager ของสหรัฐ ROE GAAP ~12.0% ซื้อขายที่ P/E GAAP ~{{pe}}x เทียบมัธยฐานย้อนหลัง 12.4x การประเมินรอบนี้ใช้ EPS GAAP diluted ({{eps}}) ที่วัดได้ 2 แหล่ง แทน Adj. operating ที่ตรวจซ้ำไม่ได้ — FV จึงลดลงจากรอบก่อนอย่างมีนัย ราคาปัจจุบัน {{px}} เทียบ FV {{fv}} ให้ MOS {{mos}} — ส่วนเผื่อบาง เหมาะกับนักลงทุนแนว Income ที่รับความไม่แน่นอนของ FV 2 ตระกูลได้ ปันผล {{dps}}/ปี (~4.7%) ช่วยรองรับผลตอบแทน แต่ไม่ได้รับประกันผลบวกในทุกฉาก",
+    "strategy": "ราคาปัจจุบัน {{px}} ยังสูงกว่าโซน MOS 20% ({{mos20}}) — รอราคาปรับลงใกล้โซนนั้น หรือใกล้ MOS 30% ({{mos30}}) ก่อนสะสม ปันผล ~4.7% ช่วยลดความเสี่ยงด้านเวลา · ความเสี่ยง: กำไร GAAP ผันผวน (FY2565 ขาดทุน) และ FV มาจากสมมติฐานสองตระกูลที่ต่างกัน",
+    "disclaimerSources": "แหล่งข้อมูล: Yahoo Finance (ราคาตามหัวรายงาน · chart data จริงจาก Yahoo API · EPS TTM $11.03), StockAnalysis.com (งบ FY2021–FY2025 + TTM · EPS GAAP diluted $11.06 · BVPS $91.47 · ROE · forecast FY2026e $14.42 · เป้านักวิเคราะห์ $113.40 · 15 คน · Hold)"
+  },
+  "text": {
+    "valHint": "2 ตระกูลสมมติฐาน"
+  },
+  "catalysts": [
+    "<b>กำไรฟื้นต่อเนื่อง:</b> EPS GAAP diluted ขึ้นจาก $6.74 (FY2566) เป็น {{eps}} TTM และ ROE ปีงบ 11.4% (FY2568) เป็น 12.0% TTM",
+    "<b>P/E ต่ำกว่ามัธยฐานประวัติ:</b> P/E ปัจจุบันต่ำกว่ามัธยฐาน 12.4x ของ PRU เอง — มี upside หากกำไรทรงตัว",
+    "<b>Forward EPS สูงกว่า TTM:</b> ฉันทามติ FY2026e $14.42 (basis ของนักวิเคราะห์ น่าจะเป็น adj. operating — ไม่ใช่ GAAP) ใช้เป็นบริบท ไม่ใช่ฐาน FV",
+    "<b>เงินปันผล:</b> {{dps}}/ปี (yield ~4.7%) payout ~51% ของกำไร GAAP"
+  ],
+  "risks": [
+    "<b>กำไรผันผวน:</b> FY2565 ขาดทุน (EPS −$4.49) และ P/E ย้อนหลังกว้าง 4.5–15.7x — ฐาน P/E ไม่นิ่ง",
+    "<b>ภาระหนี้:</b> D/E 1.64x เพิ่มจาก 1.25x (FY2568) หนี้ $56.7B เทียบเงินสด $15.2B",
+    "<b>ความเสี่ยงอัตราดอกเบี้ย:</b> หากดอกเบี้ยลดเร็วหรือ yield curve inverted — กระทบ spread และ investment return ของ portfolio ประกัน",
+    "<b>เป้านักวิเคราะห์:</b> เฉลี่ยราว {{analyst.target}} (Hold, 15 คน) ต่ำกว่าราคาตลาดเล็กน้อย — upside จาก consensus จำกัด",
+    "<b>การแข่งขัน Asset Management:</b> fee compression ในอุตสาหกรรมบริหารสินทรัพย์ (ข้อสังเกตทั่วไป)"
+  ],
+  "extras": [],
+  "_sig": "sha256:5b294ddb17b4bffb444a652d37f8d86c738dd5dea16c4b73d1417d101b61354f"
+}
