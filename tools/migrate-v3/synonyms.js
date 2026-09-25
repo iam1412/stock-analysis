@@ -11,6 +11,25 @@ const keyOf = (t) => String(t).replace(/[^\p{L}\p{M}\p{N}]/gu, '').replace(/\p{N
 const PER_SHARE = ['revenuePerShare', 'fcfPerShare', 'de', 'fre', 'ebitdaPerShare'];
 const scn = (g) => (g.doc && g.doc.scenarios) || {};
 const FACT_WORDS = [/^AFFO$/i, /^Core$/i, /^forward$/i, /^FY\s*'?\d{2,4}\s*[EeF]$/, /^Tangible$/i, /^adj\.?$/i, /^GAAP$/i];
+/** คำฐาน/งวดที่ qualifierOf round 3 ห้ามพก เว้นแต่ baseOf กินไปแล้ว (Plan 4c-prep Task 5 fix round 1 · ruling I-1) — ★ ปิด เพิ่มผ่าน review ทีละคำ
+ *  เหตุร่วม: คำเหล่านี้บอก "ตัวตั้งฐานไหน" — v3 พิมพ์ป้ายฐานของตัวเอง (EPS adj./TTM) ⇒ พกคำไปไว้ใน note = ป้ายผิดแต่คำไม่หาย (4b I-3) ⇒ คง TEXT LOST (HUMAN)
+ *  thai: true = ตรวจแบบมีอยู่ในโทเค็น (ภาษาไทยไม่เว้นวรรค "ปกติคาดการณ์") · ไม่งั้นทั้งโทเค็น (ตัดเครื่องหมายหัวท้าย) */
+const QUALIFIER_BLOCK = [
+  { id: 'forward', re: /^(?:forward|fwd\.?)$/i, why: 'ฐานล่วงหน้า (FWD_WORD) — ต้องเป็น inputs.base epsForward' },
+  { id: 'consensus', re: /^consensus$/i, why: 'ประมาณการฉันทามติ = ฐานล่วงหน้า' },
+  { id: 'guidance', re: /^(?:guidance|guide)$/i, why: 'ไกด์ของบริษัท = ฐานล่วงหน้า (TMUS · ES · STRL)' },
+  { id: 'est', re: /^est\.?$/i, why: 'estimate = ตัวเลขประมาณ ไม่ใช่งบจริง (VRSN "EBITDA TTM est.")' },
+  { id: 'fy-estimate', re: /^(?:FY\s*'?\d{2,4}\s*[eEF]|20\d\d[eE])$/, why: 'งวดประมาณการ FY#E / 20##E (FWD_WORD)' },
+  { id: 'th-forward', re: /ล่วงหน้า|ประมาณการ|คาดการณ์/, thai: true, why: 'ฐานล่วงหน้าภาษาไทย (CENTEL "ปกติคาดการณ์")' },
+  { id: 'th-period', re: /ปีงบนี้|ปีงบปัจจุบัน|ปีหน้า/, thai: true, why: 'งวดปีปัจจุบัน/ปีหน้า = ฐานล่วงหน้า (formula.js ★ รายการเดิม "ปีงบนี้ · ปีงบปัจจุบัน")' },
+  { id: 'underlying', re: /^underlying$/i, why: 'underlying EPS = ฐานปรับปรุง (TAP)' },
+  { id: 'non-gaap', re: /^(?:non-?GAAP|adjusted|adj\.?)$/i, why: 'ฐาน non-GAAP/adjusted — v3 พิมพ์ epsBasis ของตัวเอง (ZS)' },
+  { id: 'oper', re: /^oper\.?$/i, why: 'operating EPS = ฐานเฉพาะ' },
+  { id: 'core', re: /^core$/i, why: 'Core EPS/FFO = ฐานเฉพาะ (Kind 1)' },
+  { id: 'th-basis', re: /หลัก|ปกติ/, thai: true, why: '"EPS หลัก" · "EPS ปกติ" = ฐานปรับปรุง (GOOGL QCOM UBER · CENTEL)' },
+  { id: 'ffoa', re: /^FFOA{1,2}$/i, why: 'FFO/AFFO ย่อผิดรูป — ฐาน FFO ต้องเป็น ffoBasis' },
+];
+const qualifierBlocked = (tk) => { const b = String(tk).replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}.]+$/gu, ''); return QUALIFIER_BLOCK.some((e) => e.re.test(e.thai ? String(tk) : b)); };
 const SYNONYM_VOCAB = [
   { id: 'exit', roles: ['s6.exitRow'], from: [['Exit'], ['ทางออก']], to: ['ออก'], guard: () => true,
     why: 'แถวตัวคูณออกของคอลัมน์เดียวกัน — v3 พิมพ์ "<ตัวคูณ> ออก" (measure §6.2 · CBRS L)' },
@@ -52,4 +71,4 @@ function apply(role, tokens, g) {
   }
   return { tokens: out, used };
 }
-module.exports = { SYNONYM_VOCAB, FACT_WORDS, apply, keyOf };
+module.exports = { SYNONYM_VOCAB, FACT_WORDS, QUALIFIER_BLOCK, qualifierBlocked, apply, keyOf };

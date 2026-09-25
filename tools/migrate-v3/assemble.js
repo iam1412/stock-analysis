@@ -274,19 +274,29 @@ const hasProse = (s) => String(s).replace(/\{\{[^{}]*\}\}/g, ' ').split(/[\s/=×
  *  · token ที่มี "/" = ชื่ออัตราส่วน/สูตร (P/E · P/BV · EV/EBITDA) ไม่ใช่คำ — ไม่แยกที่ "/" (ไม่งั้น "BV" หลุดเป็นคำผู้เขียน)
  *  · หลังวงเล็บเปิดที่ไม่ปิด = ในวงเล็บ (ไม่พก — กติกาเดียวกับ topParens: ไม่มีเศษวงเล็บกำพร้า)
  *  · คำข้อเท็จจริง (SY.FACT_WORDS: AFFO Core forward FY#E Tangible adj. GAAP) ไม่พก — ต้องมีช่อง/enum (Kind 1) ไม่งั้นป้ายฐานของ v3 ผิดแต่คำไม่หาย (4b I-3) ⇒ คง TEXT LOST
- *  · หน่วยเดี่ยว (ล้าน · พันล้าน · M · B …) ไม่ใช่คำ (gate นับเป็นส่วนของตัวเลข) · แท็ก HTML ตัดออก (ไม่พกแท็กเปิดกำพร้า) */
+ *  · หน่วยเดี่ยว (ล้าน · พันล้าน · M · B …) ไม่ใช่คำ (gate นับเป็นส่วนของตัวเลข) · แท็ก HTML ตัดออก (ไม่พกแท็กเปิดกำพร้า)
+ *  fix round 1 (ruling I-1 · fail closed): ท่อนสูตรที่มีคำฐาน/งวด (FACT_WORDS หรือ SY.QUALIFIER_BLOCK) ที่ baseOf ไม่ได้กิน = ไม่พกอะไรเลยจากท่อนนั้น
+ *   (คำฐานคง TEXT LOST → HUMAN · ไม่พกเศษคำรอบ ๆ "guidance · กึ่งกลาง") · ช่วงคำเดี่ยวที่เป็นเศษ (ROUND3_RESIDUE) ไม่พก */
 const ROUND3_SPLIT = /[\s=×÷+−≈]+/;
-function headRuns(seg, consumed, leg) {
-  const runs = []; let cur = [];
-  const flush = () => { if (cur.length) runs.push(cur.join(' ')); cur = []; };
+// ★ ปิด — คำเดี่ยวที่อ่านไม่ออกเมื่อหลุดจากวลี (ruling I-1: CB "เป็น" · AAOI "ออก" · FCX "ฉาก" · PAAS "Base") — ใช้กับช่วงคำ 1 โทเค็นเท่านั้น
+const ROUND3_RESIDUE = new Set(['เป็น', 'ออก', 'ฉาก', 'Base', 'Bear', 'Bull']);
+function headTokens(seg) {
   let out = outsideParens(seg);
   const open = out.indexOf('('); if (open >= 0) out = out.slice(0, open);
-  for (const tk of out.replace(/\{\{[^{}]*\}\}/g, ' ').replace(/<[^>]*>/g, ' ').split(ROUND3_SPLIT)) {
-    if (!tk) continue;
-    const k = FM.keyOf(tk), bare = tk.replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}.]+$/gu, '');
+  return out.replace(/\{\{[^{}]*\}\}/g, ' ').replace(/<[^>]*>/g, ' ').split(ROUND3_SPLIT).filter(Boolean);
+}
+function headRuns(seg, consumed, leg) {
+  const runs = []; let cur = [];
+  const flush = () => { if (cur.length && !(cur.length === 1 && ROUND3_RESIDUE.has(cur[0].replace(/[^\p{L}\p{M}\p{N}]/gu, '')))) runs.push(cur.join(' ')); cur = []; };
+  const isConsumed = (k) => consumed.has(k) || consumed.has(k.toLowerCase());
+  const toks = headTokens(seg);
+  // คำฐาน/งวดที่ไม่ได้ถูกกิน → ท่อนนี้ไม่พกอะไร (fail closed)
+  if (toks.some((tk) => { const bare = tk.replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}.]+$/gu, ''); return !isConsumed(FM.keyOf(tk)) && (SY.FACT_WORDS.some((re) => re.test(bare)) || SY.qualifierBlocked(tk)); })) return [];
+  for (const tk of toks) {
+    const k = FM.keyOf(tk);
     const syn = SY.apply('s3.mdesc', [tk], { leg }).used.length > 0;
-    const fact = SY.FACT_WORDS.some((re) => re.test(bare)), unit = NB.UNIT_WORD.has(k) || UNITISH.test(k);
-    if (!/\//.test(tk) && isProseToken(tk, true) && !fact && !unit && !consumed.has(k) && !consumed.has(k.toLowerCase()) && !syn) cur.push(tk); else flush();
+    const unit = NB.UNIT_WORD.has(k) || UNITISH.test(k);
+    if (!/\//.test(tk) && isProseToken(tk, true) && !unit && !isConsumed(k) && !syn) cur.push(tk); else flush();
   }
   flush();
   return runs;
@@ -301,9 +311,13 @@ function qualifierOf(prose, consumed, leg) {
   // ป้ายนำ "สมมติฐานของผู้วิเคราะห์เอง: FCF …" (HD ONTO) = คำผู้เขียนหน้าสูตร — ":" แรกที่ความลึก 0
   const lead = /^([^:()]{1,80}):\s/.exec(head);
   if (lead && hasProse(lead[1])) { out.push(lead[1].trim()); head = head.slice(lead[0].length); }
-  splitTop(head, /\s·\s|\s*[→⇒;=]\s*/g).forEach((seg, i) => {
-    if (i > 0 && hasProse(outsideParens(seg))) { if (seg.trim()) out.push(seg.trim()); return; }
-    if (i === 0) out.push(...headRuns(seg, consumed, leg));
+  const segs = splitTop(head, /\s·\s|\s*[→⇒;=]\s*/g);
+  // ท่อนสูตร = ท่อนแรกที่มี "×" · ท่อนก่อนหน้า = ข้อความนำของผู้เขียน ("ปรับ combined ratio เป็น 88% (…) → EPS × P/E" · CB) — พกทั้งท่อนหรือไม่พกเลย (ห้ามแตกเป็นคำ · ruling I-1)
+  const fi = Math.max(0, segs.findIndex((x) => /×|&times;/.test(x)));
+  segs.forEach((seg, i) => {
+    if (i < fi) { if (headTokens(seg).some((tk) => !/\//.test(tk) && isProseToken(tk, true)) && seg.trim()) out.push(seg.trim()); else for (const p of topParens(seg)) if (p.inner && hasProse(p.inner)) out.push(p.inner); return; }
+    if (i > fi && hasProse(outsideParens(seg))) { if (seg.trim()) out.push(seg.trim()); return; }
+    if (i === fi) out.push(...headRuns(seg, consumed, leg));
     for (const p of topParens(seg)) if (p.inner && hasProse(p.inner)) out.push(p.inner);
   });
   if (tail) out.push(tail);
@@ -582,18 +596,32 @@ function legendNoteOf(parsed, sym) {
   t = t.replace(/\s+/g, ' ').trim();
   return t || null;
 }
+/** fix round 1 (ruling I-3): เศษ legend ต้องเป็นคำผู้เขียนล้วน — ยังมีตัวเลขเงิน/% · token · "ราคา <…>" · คีย์ มูลค่าเหมาะสม/เป้า… = ซ้ำ/ขัดกับป้ายที่ template พิมพ์ → เหตุ (H) */
+function legendResidueBad(t) {
+  if (/\{\{/.test(t)) return 'token';
+  if (/(?:US\$|\$|฿)\s*[0-9]|[0-9]\s*%/.test(t)) return 'money/percent value';
+  if (/(?:^|\s)ราคา(?:\s|$)|ราคา\s*\S/.test(t)) return '"ราคา <…>" phrase';
+  if (/มูลค่าเหมาะสม|เป้า/.test(t)) return 'fair-value/target key';
+  return null;
+}
+// คีย์ของช่องที่ v3 หมวด 8 พิมพ์เอง (_template/v3/render.js: มูลค่าเหมาะสม · ส่วนต่างจากราคา · เป้านักวิเคราะห์ 12 ด.) + รูปเป้านักวิเคราะห์ของผู้เขียน (เป้าเฉลี่ย …)
+const V3_S8_KEY = /^(?:มูลค่าเหมาะสม|ส่วนต่างจากราคา|เป้านักวิเคราะห์|เป้าเฉลี่ย)/;
 /** vcell ที่ไม่ใช่ template (มูลค่าเหมาะสม · ส่วนต่างจากราคา · เป้านักวิเคราะห์ ตัวแรก) → verdict.extraCells (≤2 ไม่งั้น H) */
 function extraCellsOf(parsed) {
   const H = [], cells = [];
   let analystSeen = false;
+  let dup = false;
   for (const [k, vHtml] of (parsed.s8 && parsed.s8.vcells) || []) {
     const kk = txt(k);
     if (kk === 'มูลค่าเหมาะสม' || kk === 'ส่วนต่างจากราคา') continue;
     if (!analystSeen && /เป้านักวิเคราะห์/.test(kk)) { analystSeen = true; continue; }
+    // fix round 1 (ruling I-2): คีย์ที่ v3 หมวด 8 พิมพ์อยู่แล้ว + คำขยายของผู้เขียน ("มูลค่าเหมาะสม (normalized)" MPC · "เป้าเฉลี่ย 12 ด." WORK)
+    //  = ช่อง template ซ้ำ ไม่ใช่ช่องใหม่ — ไม่มีบ้านให้คำขยาย ⇒ H (fail closed)
+    if (V3_S8_KEY.test(kk.replace(/\s*\([^)]*\)/g, ' ').trim())) { H.push(`s8 vcell "${kk}" repeats a template cell with an author qualifier — no home (not carried)`); dup = true; continue; }
     cells.push({ k: kk.replace(/[{}<>]/g, '').trim(), v: MP.htmlToProse(vHtml) });
   }
   if (cells.length > 2) H.push(`s8 vcells ${cells.length + 3} > 5 — extra cells not carried`);
-  return { cells: cells.length && cells.length <= 2 ? cells : null, H };
+  return { cells: !dup && cells.length && cells.length <= 2 ? cells : null, H };
 }
 
 const pruneUndefined = (x) => {
@@ -839,7 +867,9 @@ function assemble(parsed0, ctx) {
   if (s2t) { text.chartHint = s2t; F.push(`chart hint kept → text.chartHint "${s2t}"`); }
   // Plan 4c-prep D4: เศษ legend หมวด 2 (นอกป้าย skeleton) → text.legendNote
   const ln = legendNoteOf(parsed, parsed.sym);
-  if (ln && ln.length <= 80) { text.legendNote = MP.htmlToProse(ln); F.push(`legend annotation → text.legendNote "${ln}"`); } else if (ln) H.push(`legend annotation ${ln.length} > 80 chars — not carried`);
+  const lnBad = ln ? legendResidueBad(ln) : null;
+  if (lnBad) H.push(`legend annotation "${ln}" not carried — ${lnBad} repeats/contradicts the template legend`);
+  else if (ln && ln.length <= 80) { text.legendNote = MP.htmlToProse(ln); F.push(`legend annotation → text.legendNote "${ln}"`); } else if (ln) H.push(`legend annotation ${ln.length} > 80 chars — not carried`);
   if (assumpBody && assumpBody !== TEMPLATE_ASSUMP) text.disclaimerAssump = ' ' + assumpBody;
   for (const k of Object.keys(text)) if (!text[k]) delete text[k];
   doc.text = Object.keys(text).length ? text : undefined;
@@ -906,6 +936,16 @@ function assemble(parsed0, ctx) {
       apxStale.push(...MP.staleCopies(r.text, ctx.analysisPx, view.d));
     }
     if (tokens) F.push(`prose literals → tokens ×${tokens}`);
+    // fix round 1 (ruling · minor): ช่อง verdict.extraCells ที่ยังมี literal ผูกราคาหลัง tokenise (เงิน · % · กรอบ 52 สัปดาห์ — SMPC yield · KYCCF/TKC)
+    //  = ค่าที่ cron แก้บนใบ v3 ไม่ได้ (ค้างเงียบ) ⇒ ไม่พก + H (fail closed) · token {{…}} = render ค่าสด (ผ่าน)
+    if (out.verdict && out.verdict.extraCells) {
+      const keep = out.verdict.extraCells.filter((c) => {
+        const lit = String(c.v).replace(/\{\{[^{}]*\}\}/g, ' ');
+        if (/(?:US\$|\$|฿)\s*[0-9]|[0-9]\s*%|52\s*(?:สัปดาห์|week|wk)/i.test(lit + ' ' + c.k)) { H.push(`verdict.extraCells "${c.k}" holds a price-bound literal ("${c.v}") that cannot be tokenised — not carried`); return false; }
+        return true;
+      });
+      if (keep.length) out.verdict.extraCells = keep; else delete out.verdict;
+    }
     // custom ที่ยังมี literal ผูกราคาหลัง tokenise (ไม่เท่าค่าที่ render ทุก byte) = ต้องให้คนตัดสิน · token {{pe}} ฯลฯ = รูปที่อนุมัติ (render ค่าสด) — Plan 4c-prep D3
     { const pb = P3.priceBound(view);
       (out.metrics.custom || []).forEach((c) => {

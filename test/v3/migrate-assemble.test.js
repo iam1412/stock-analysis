@@ -585,8 +585,12 @@ const runH = (sym, html) => { const p = PV.parseV2(sym, html); const r = A.assem
   t(/midcycle/.test(A.qualifierOf('EPS $5.10 × P/E midcycle 22x')), 'round 3: head word "midcycle" carried');
   t.eq(A.qualifierOf('EPS $5.10 × P/E 22x'), '', 'round 3: pure formula → nothing');
   const FM = require('../../tools/migrate-v3/formula.js');
+  // fix round 1 (ruling I-1): "guidance" ที่ baseOf ไม่ได้กิน = คำฐาน (SY.QUALIFIER_BLOCK) → ท่อนนี้ไม่พกอะไร · ที่กินแล้ว = ไม่พิมพ์ซ้ำ (ป้ายฐานพิมพ์เอง)
+  //  brief ปัก "guidance ถูกพก" ไว้ — เป็นไปไม่ได้ภายใต้ ruling (คำที่ baseOf กิน = ไม่พกโดยนิยาม) ⇒ แทนด้วย negative + positive ของคำอื่น
   const q3 = A.qualifierOf('EPS FY2026E $5.10 × P/E guidance 22x', new Set([FM.keyOf('FY2026E')]));
-  t(!/FY2026E/.test(q3) && /guidance/.test(q3), 'round 3: consumed keys (baseLabel) are not repeated · other head words carried', q3);
+  t.eq(q3, '', 'round 3 (ruling I-1): unconsumed "guidance" → nothing carried from the head (stays TEXT LOST)');
+  const q3b = A.qualifierOf('EPS FY2026E guidance $5.10 × P/E midcycle 22x', new Set(['FY#E', 'guidance'].map((x) => x.toLowerCase())));
+  t(!/FY2026E|guidance/.test(q3b) && /midcycle/.test(q3b), 'round 3: consumed keys (baseLabel · guidance) are not repeated · other head words carried', q3b);
 }
 // .ret round 2 (Review Focus 5): per-year → perYear · pre-anchor words → retNote · numeric equal → carried · numeric far → H
 {
@@ -675,7 +679,22 @@ const runH = (sym, html) => { const p = PV.parseV2(sym, html); const r = A.assem
 
 {
   // round 3 never carries fact words (SY.FACT_WORDS — need a Kind 1 home, 4b I-3), unit words, or HTML tags
-  t.eq(A.qualifierOf('EPS $5.10 × P/E Tangible midcycle 22x'), 'midcycle', 'round 3: fact word "Tangible" breaks the run and stays out (TEXT LOST → HUMAN)');
+  t.eq(A.qualifierOf('EPS $5.10 × P/E Tangible midcycle 22x'), '', 'round 3 (ruling I-1): a fact word in the head → nothing carried from it (TEXT LOST → HUMAN)');
+  // fix round 1 (ruling I-1): closed QUALIFIER_BLOCK list · corpus shapes
+  const SYq = require('../../tools/migrate-v3/synonyms.js');
+  for (const w of ['forward', 'Forward', 'fwd', 'Fwd', 'consensus', 'guidance', 'guide', 'est.', 'FY2026E', 'FY26E', '2026e', 'คาดการณ์', 'ประมาณการ', 'ล่วงหน้า', 'non-GAAP', 'nonGAAP', 'adjusted', 'adj', 'adj.', 'oper.', 'core', 'หลัก', 'ปกติ', 'FFOA', 'FFOAA', 'fwd.', 'ปีงบนี้', 'ปีงบปัจจุบัน', 'ปีหน้า', 'underlying'])
+    t(SYq.qualifierBlocked(w), `QUALIFIER_BLOCK covers "${w}"`);
+  t(SYq.QUALIFIER_BLOCK.every((e) => e.id && e.re instanceof RegExp && e.why), 'QUALIFIER_BLOCK: every entry has id · re · why');
+  t(!SYq.qualifierBlocked('midcycle') && !SYq.qualifierBlocked('เฉลี่ย'), 'QUALIFIER_BLOCK: plain qualifiers not blocked');
+  const legOf = (mdesc, mval, f) => A.legsOf({ legs: [{ mname: '1. P/E Valuation', mdesc, mval, mdescHtml: mdesc }] }, f, 'USD').legs[0];
+  const zs = legOf('EPS non-GAAP $4.88 (FY27 guide) × P/E 32x — สมอคือ P/E เฉลี่ยรอบปีงบ', '$156', { eps: 4.88 });
+  t(zs && !zs.inputs.base && !/non-GAAP/.test(zs.note || '') && /สมอคือ/.test(zs.note || ''), 'ZS shape: "non-GAAP" (no base) not carried — stays TEXT LOST', JSON.stringify(zs));
+  const centel = legOf('EPS ปกติคาดการณ์ ฿1.62 (FY2026E ฉันทามติ vendor; FY2025 จริง ฿1.48) × P/E เป้าหมาย 20x', '฿32.40', { eps: 1.62 });
+  t(centel && !centel.inputs.base && !/ปกติคาดการณ์/.test(centel.note || ''), 'CENTEL shape: "ปกติคาดการณ์" (no base) not carried', JSON.stringify(centel));
+  const cb = legOf('ปรับ combined ratio เป็น 88% (ระดับ "ปกติ" ในระยะยาว) → Normalized core EPS ~$23 × P/E 14x (รวม Asia Life growth premium)', '$322', { eps: 23 });
+  t(cb && /^ปรับ combined ratio เป็น 88% \(ระดับ "ปกติ" ในระยะยาว\) · รวม Asia Life growth premium$/.test(cb.note || ''), 'CB shape: prose lead-in before "→" carried whole · no fragment ("combined · เป็น")', JSON.stringify(cb && cb.note));
+  t.eq(A.qualifierOf('EPS ฉาก $2.34 × P/E 26.7x'), '', 'single-token residue ("ฉาก") not carried');
+  t.eq(A.qualifierOf('EBITDA Base $1,134M × EV/EBITDA 11.5x'), '', 'single-token residue ("Base") not carried');
   t.eq(A.qualifierOf('EPS $5.10 forward × P/E 22x'), '', 'round 3: "forward" without a detected base is not carried');
   t.eq(A.qualifierOf('รายได้ $1,234 ล้าน × P/S 3x'), '', 'round 3: a standalone unit word (ล้าน) is not an author word');
   t.eq(A.qualifierOf('<b>EPS</b> $5.10 × P/E <b>midcycle</b> 22x'), 'midcycle', 'round 3: HTML tags stripped (no orphan <b>)');
@@ -684,5 +703,36 @@ const runH = (sym, html) => { const p = PV.parseV2(sym, html); const r = A.assem
   const P0 = (cards) => ({ sm: { currency: 'USD' }, rd: { values: {} }, s1cards: cards.map(([k, v]) => ({ k, v, d: '', vHtml: v, dHtml: '' })) });
   const cf = MC.cardFund(P0([['Net Income FY2025', '$1.00B'], ['EPS FY25', '$2.00'], ['Revenue FY68', '$9.00B']]), {});
   t.eq([cf.fy && cf.fy.netIncome, cf.fy && cf.fy.eps, cf.fy && cf.fy.revenue], [1e9, 2, 9e9], 'fy: FY2025 / FY25 / FY68 (BE 2568) = one period → all kept', JSON.stringify(cf));
+}
+// ── Plan 4c-prep Task 5 fix round 1 — I-2 / I-3 / minor (fail closed) ──
+{
+  const vcell = (k, v) => `<div class="vcell"><div class="k">${k}</div><div class="v">${v}</div></div>`;
+  const withCell = (html, cell) => html.replace(/(<div class="vgrid">[\s\S]*?)(\n\s*<\/div>\s*<div class="zone">)/, `$1\n        ${cell}$2`);
+  // I-2: template key + author qualifier (MPC) → H, no extraCells
+  const mpc = runH('CASY', raw('CASY').replace('<div class="k">มูลค่าเหมาะสม</div>', '<div class="k">มูลค่าเหมาะสม (normalized)</div>'));
+  t(!mpc.doc.verdict && mpc.notes.H.some((h) => /s8 vcell "มูลค่าเหมาะสม \(normalized\)" repeats a template cell/.test(h)), 'I-2 MPC shape: "มูลค่าเหมาะสม (normalized)" → H, not an extra cell', JSON.stringify({ v: mpc.doc.verdict, H: mpc.notes.H }));
+  // I-2: WORK shape — "เป้าเฉลี่ย 12 ด." is the analyst cell under another name → H
+  const work = runH('CASY', withCell(raw('CASY'), vcell('เป้าเฉลี่ย 12 ด.', '฿8.45 (Yahoo, 2 นักวิเคราะห์)')));
+  t(!work.doc.verdict && work.notes.H.some((h) => /s8 vcell "เป้าเฉลี่ย 12 ด\." repeats a template cell/.test(h)), 'I-2 WORK shape: "เป้าเฉลี่ย 12 ด." → H', JSON.stringify(work.notes.H));
+  // a genuine author cell (different key, no price literal) is still carried
+  const ok = runH('CASY', withCell(raw('CASY'), vcell('จุดทยอยสะสม', 'ใต้มูลค่าเหมาะสม')));
+  t.eq(ok.doc.verdict, { extraCells: [{ k: 'จุดทยอยสะสม', v: 'ใต้มูลค่าเหมาะสม' }] }, 'I-2: a genuine author cell is still carried');
+  // minor: price-bound literal in an extra cell (SMPC yield · TKC 52-week) → H, not carried
+  const smpc = runH('CASY', withCell(raw('CASY'), vcell('เงินปันผล', '~6.86% ต่อปี (฿0.70/หุ้น)')));
+  t(!smpc.doc.verdict && smpc.notes.H.some((h) => /verdict\.extraCells "เงินปันผล" holds a price-bound literal/.test(h)), 'minor SMPC shape: yield % in an extra cell → H', JSON.stringify(smpc.notes.H));
+  const tkc = runH('CASY', withCell(raw('CASY'), vcell('กรอบ 52 สัปดาห์', '฿7.20–฿11.40')));
+  t(!tkc.doc.verdict && tkc.notes.H.some((h) => /verdict\.extraCells "กรอบ 52 สัปดาห์" holds a price-bound literal/.test(h)), 'minor TKC shape: 52-week range → H');
+  // I-3: legend residue with a value / token / "ราคา <…>" / fair-value key → H, not carried
+  const leg = (from, to) => runH('CASY', raw('CASY').replace(from, to));
+  const mpcL = leg('มูลค่าเหมาะสม {{rd:fv}}</span>', 'มูลค่าเหมาะสม (normalized) {{rd:fv}}</span>');
+  t(!(mpcL.doc.text || {}).legendNote && mpcL.notes.H.some((h) => /legend annotation .* not carried — token/.test(h)), 'I-3 MPC shape: qualifier + {{fv}} → H', JSON.stringify(mpcL.notes.H));
+  const fang = leg('มูลค่าเหมาะสม {{rd:fv}}</span>', 'มูลค่าเหมาะสม mid-cycle {{rd:fv}}</span>');
+  t(!(fang.doc.text || {}).legendNote && fang.notes.H.some((h) => /legend annotation "mid-cycle/.test(h)), 'I-3 FANG shape: "mid-cycle {{fv}}" → H');
+  const lanc = leg('ราคา CASY</span>', 'ราคา CASY/MZTI</span>');
+  t(!(lanc.doc.text || {}).legendNote && lanc.notes.H.some((h) => /legend annotation .*"ราคา <…>" phrase/.test(h)), 'I-3 LANC shape: "ราคา CASY/MZTI" → H', JSON.stringify(lanc.notes.H));
+  const stec = leg('ราคา CASY</span>', 'ราคา CASYX</span>');
+  t(!(stec.doc.text || {}).legendNote && stec.notes.H.some((h) => /legend annotation "ราคา CASYX"/.test(h)), 'I-3 STEC shape: printed ticker ≠ symbol → H');
+  const plain = leg('จุดสำคัญ</span>', 'จุดสำคัญ</span>\n        <span>เส้นประ = รอบก่อน</span>');
+  t.eq((plain.doc.text || {}).legendNote, 'เส้นประ = รอบก่อน', 'I-3: plain author-word residue still carried');
 }
 t.done();

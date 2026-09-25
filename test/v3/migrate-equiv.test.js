@@ -234,12 +234,18 @@ t(EQ.TEMPLATE_VOCAB && EQ.TEMPLATE_VOCAB.s3.includes('เฉลี่ย') && EQ
   const e0 = EQ.compare(cm.v2, B.expandReport(R.toV2Source(d0, v0)), d0, v0, { v2src: FTV });
   t(e0.textLost.includes('เน้นกระแสเงินสดจ่ายคืนผู้ถือหุ้นระยะยาว') && e0.textLost.includes('dividend'), 'I-1: computed leg note dropped entirely → its words TEXT LOST', JSON.stringify(e0.textLost));
   // an author word inside the formula head (qualifierOf does not carry it) → TEXT LOST; formula words (net debt · หุ้น) and generated words stay dropped
-  // Plan 4c-prep Task 5 (qualifierOf round 3): assemble พกคำนี้ไป note แล้ว — gate เทียบบน doc ที่ถอดคำนั้นออกจาก note
-  const headHtml = FTV.replace('Adjusted EBITDA TTM $1,270M ×', 'Adjusted EBITDA TTM $1,270M มะม่วงสุกงอม ×');
-  const head = migrate('FTV', headHtml);
-  t(/มะม่วงสุกงอม/.test(head.doc.legs[1].note || '') && head.eq.textLost.length === 0, 'Task 5: head word carried into legs[1].note by round 3', JSON.stringify({ note: head.doc.legs[1].note, lost: head.eq.textLost }));
-  const headLost = recompare(head, headHtml, (d) => { d.legs[1].note = d.legs[1].note.replace(/มะม่วงสุกงอม(?: · )?/, '').trim(); if (!d.legs[1].note) delete d.legs[1].note; }).textLost;
-  t(head.doc.legs[1].method === 'evebitda' && headLost.length === 1 && headLost[0] === 'มะม่วงสุกงอม', 'I-1: author word in the computed-leg formula head → TEXT LOST (only that word)', JSON.stringify(headLost));
+  // Plan 4c-prep Task 5 fix round 1 (ruling I-1 · fail closed): ท่อนสูตรนี้มี "Adjusted" (SY.QUALIFIER_BLOCK) ⇒ round 3 ไม่พกอะไรจากท่อนนี้ ⇒ assertion เดิมของ gate กลับมาตรง ๆ
+  const head = migrate('FTV', FTV.replace('Adjusted EBITDA TTM $1,270M ×', 'Adjusted EBITDA TTM $1,270M มะม่วงสุกงอม ×'));
+  t(!/มะม่วงสุกงอม/.test(head.doc.legs[1].note || ''), 'fix round 1: a head with a blocked basis word carries nothing', head.doc.legs[1].note);
+  t(head.doc.legs[1].method === 'evebitda' && head.eq.textLost.length === 1 && head.eq.textLost[0] === 'มะม่วงสุกงอม', 'I-1: author word in the computed-leg formula head → TEXT LOST (only that word)', JSON.stringify(head.eq.textLost));
+  // round 3 (head without a basis word) carries the word · gate still catches it when the note loses it
+  const headHtml = FTV.replace('Adjusted EBITDA TTM $1,270M ×', 'EBITDA TTM $1,270M มะม่วงสุกงอม ×');
+  const h2 = migrate('FTV', headHtml);
+  if (h2.doc.legs[1].method === 'evebitda') {
+    t(/มะม่วงสุกงอม/.test(h2.doc.legs[1].note || '') && !h2.eq.textLost.includes('มะม่วงสุกงอม'), 'Task 5: head word carried into legs[1].note by round 3', JSON.stringify({ note: h2.doc.legs[1].note, lost: h2.eq.textLost }));
+    const headLost = recompare(h2, headHtml, (d) => { d.legs[1].note = d.legs[1].note.replace(/มะม่วงสุกงอม(?: · )?/, '').trim(); if (!d.legs[1].note) delete d.legs[1].note; }).textLost;
+    t(headLost.includes('มะม่วงสุกงอม'), 'I-1: without the carried word → TEXT LOST', JSON.stringify(headLost));
+  } else t(false, 'fixture: FTV leg 2 still evebitda without "Adjusted"', h2.doc.legs[1].method);
   // re-review I-3 (CNC shape): a forward/estimate basis qualifier the v3 label replaces ("EPS forward normalized $2.86" → "EPS … (TTM) $2.86")
   // is a changed fact, not a formula word → TEXT LOST → HUMAN · "normalized" stays dropped (v3 prints an equivalent basis)
   // Plan 4c-prep Task 5 (D2): assemble อ่านฐาน forward → inputs.base 'epsForward' (v3 พิมพ์ "EPS (forward)") ⇒ ไม่หาย
