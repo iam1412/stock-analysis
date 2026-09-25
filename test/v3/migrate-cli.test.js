@@ -20,6 +20,7 @@ const cli = (args, env) => { const r = cp.spawnSync(process.execPath, [path.join
 const common = ['--reports-dir', REP, '--head-manifest', MAN, '--no-stale'];
 const REAL = path.join(ROOT, 'reports');   // guard target only — never read as a fixture
 const realBefore = fs.readdirSync(REAL).length;
+const realCasyJson = fs.existsSync(path.join(REAL, 'CASY.json'));   // Plan 4c: CASY อาจถูก migrate จริงแล้ว — เทียบกับสถานะก่อนเทสต์ ไม่ใช่สมมติว่ายังเป็น v2
 // sweep
 {
   const out = path.join(tmp, 'sweep');
@@ -94,7 +95,7 @@ const realBefore = fs.readdirSync(REAL).length;
   const lines = [];
   const c3 = MV.runConvert('CASY', { ...MV.parseArgs(['--reports-dir', REP, '--no-stale', '--write', '--accept-drift']), manifest: new Map() }, (x) => lines.push(x));
   t(c3 === 1 && lines.some((l) => /ไม่มีแถวใน manifest/.test(l)) && !fs.existsSync(path.join(REP, 'CASY.json')), 'M-3: no manifest row → --write refused', lines.join('\n'));
-  t(fs.readdirSync(REAL).length === realBefore && !fs.existsSync(path.join(REAL, 'CASY' + '.json')), 'real reports/ untouched');
+  t(fs.readdirSync(REAL).length === realBefore && fs.existsSync(path.join(REAL, 'CASY' + '.json')) === realCasyJson, 'real reports/ untouched');
   const nf = cli(['convert', 'NOPE', ...common]); t(nf.code === 1 && /ไม่พบ/.test(nf.out), 'convert on a missing symbol → exit 1');
 }
 // convert — write path (CASY = VALUE-DRIFT)
