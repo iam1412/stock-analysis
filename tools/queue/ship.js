@@ -466,7 +466,7 @@ function migratePlan(syms, probe) {
   }
   return { files, refusals };
 }
-/** ship --migrate "SYM SYM…" (Plan 4b · 4c batches): commit เดียวต่อชุด "migrate: v3 …" (−.html +.json) + reports.json/seeds.json ถ้าเปลี่ยน
+/** ship --migrate "SYM SYM…" (Plan 4b · 4c batches): commit เดียวต่อชุด "migrate: v3 …" (−.html +.json) + reports.json ถ้าเปลี่ยน · ไม่ stage tools/seeds.json (T9 M-3 · final review N-4)
  *  ★ ทุกอย่างที่ล้มได้โดยไม่ต้องรันอะไร (symbol ว่าง · ไม่มี --model · แผนถูกปฏิเสธ) ล้มก่อน verify เสมอ */
 function shipMigrate(symsArg, opts) {
   const o = opts || {};

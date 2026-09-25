@@ -478,4 +478,8 @@ const asm = (sym, html) => A.assemble(PV.parseV2(sym, html), { seeds: SEEDS, hea
   t(A.isProseToken('สมมติฐาน', true) && !A.isProseToken('WACC', true) && !A.isProseToken('6.8pp', true) && !A.isProseToken('FY2026E', true) && !A.isProseToken('เป้าหมาย', true) && A.isProseToken('เป้าหมาย', false) === false,
     'I-1: isProseToken — author word vs formula vocab / number+unit / fiscal period / generated word');
 }
+// Plan 4b final review N-3 — singleTarget positive cases for the own-currency prefixes (US$ on a USD doc · ฿ on a THB doc)
+t.eq(A.singleTarget('~US$1,245.50 (Buy)', 'USD'), { v: 1245.5 }, 'N-3: "US$" target on a USD doc → value');
+t.eq(A.singleTarget('~฿163.50 (Buy)', 'THB'), { v: 163.5 }, 'N-3: "฿" target on a THB doc → value');
+t.eq(A.singleTarget('~฿163.50', 'USD'), { reject: 'currency ฿' }, 'N-3: "฿" on a USD doc → rejected (currency)');
 t.done();

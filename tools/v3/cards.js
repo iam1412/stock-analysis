@@ -140,7 +140,7 @@ const CATALOGUE = {
   // Plan 4b Task 1 — 6 คีย์จาก Task 0 Q3 (label ที่ตกเป็น custom บ่อยสุดหลัง Plan 2a): 4 จากงบ · payout อัตราส่วนไม่ผูกราคา · ptbv ผูกราคา
   occupancy: { label: () => 'Occupancy', value: (v) => pct1(need(v, 'occupancy')), d: () => 'อัตราการเช่าพื้นที่', cls: '' },
   netDebtEbitda: { label: () => 'Net Debt / EBITDA', cls: 'neu',
-    value: (v) => { const e = need(v, 'ebitda'); if (!(e > 0)) throw new Error('metrics.cards: netDebtEbitda — fundamentals.ebitda ≤ 0 ถอดการ์ดออก'); const x = need(v, 'netDebt') / e; return (x < 0 ? '−' : '') + Math.abs(x).toFixed(1) + 'x'; },   // เงินสดสุทธิ = ลบ U+2212
+    value: (v) => { const e = need(v, 'ebitda'); if (!(e > 0)) throw new Error('metrics.cards: netDebtEbitda — fundamentals.ebitda ≤ 0 ถอดการ์ดออก'); const x = need(v, 'netDebt') / e, r = Math.abs(x).toFixed(1); return (x < 0 && r !== '0.0' ? '−' : '') + r + 'x'; },   // เงินสดสุทธิ = ลบ U+2212 · ปัดเป็น 0.0 = ไม่มีเครื่องหมาย (final review N-1)
     d: () => 'หนี้สินสุทธิ ÷ EBITDA (สกุลงบทั้งคู่)' },
   backlog: { label: () => 'Backlog', value: (v) => stmt(v, need(v, 'backlog')), d: () => 'งานในมือ / คำสั่งซื้อค้างส่ง', cls: '' },
   payout: { label: () => 'Payout Ratio', cls: '',

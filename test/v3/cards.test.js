@@ -127,6 +127,8 @@ t.eq(K.CATALOGUE.peAvg5y.label(view), 'P/E มัธยฐาน ~5 ปี', 'pe
   t.throws(() => K.renderCard('netDebtEbitda', { ...w, doc: { ...w.doc, fundamentals: { ...f, ebitda: 0 } }, fq: { ...f, ebitda: 0 } }), /ebitda/, 'netDebtEbitda with ebitda ≤ 0 → named throw');
   // fix round 1 (N-1): net cash → U+2212, never an ASCII hyphen
   t.eq(K.renderCard('netDebtEbitda', { ...w, doc: { ...w.doc, fundamentals: { ...f, netDebt: -6.4e8 } } }).v, '−0.2x', 'netDebtEbitda net cash prints U+2212');
+  // Plan 4b final review N-1: tiny net cash rounds to 0.0 → no sign ("0.0x", never "−0.0x") — mirrors analyst.vsFv's zero guard
+  t.eq(K.renderCard('netDebtEbitda', { ...w, doc: { ...w.doc, fundamentals: { ...f, netDebt: -1e6 } } }).v, '0.0x', 'netDebtEbitda tiny net cash → 0.0x (no −0.0x)');
 }
 
 t.done();

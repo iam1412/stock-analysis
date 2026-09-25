@@ -283,20 +283,21 @@ for (const f of ['BBL-real', 'EQIX-real', 'FER-real', 'ZTS-real', 'BBL', 'ZTS'])
   d.fundamentals.fcf = d.fundamentals.fcf || 2.3e9; d.fundamentals.shares = d.fundamentals.shares || 4.3e8;
   t.eq(S.validate(d).filter((e) => /legs\[1\]/.test(e.path)), [], 'dcf with stages accepted');
   d.legs[1] = dcfLeg({ g1: 7, years1: 5, stages: [{ years: 5, g: 7 }], tg: 3, r: 8.5, rfCurrency: d.currency });
-  t(S.validate(d).some((e) => e.path === 'legs[1].inputs'), 'g1/years1 together with stages → error');
+  t(S.validate(d).some((e) => e.path === 'legs[1].inputs' && /ใช้ได้ทางเดียว/.test(e.msg)), 'g1/years1 together with stages → error (message: ใช้ได้ทางเดียว)');
   d.legs[1] = dcfLeg({ tg: 3, r: 8.5, rfCurrency: d.currency });
-  t(S.validate(d).some((e) => e.path === 'legs[1].inputs'), 'neither g1/years1 nor stages → error');
+  t(S.validate(d).some((e) => e.path === 'legs[1].inputs' && /ใช้ได้ทางเดียว/.test(e.msg)), 'neither g1/years1 nor stages → error (message: ใช้ได้ทางเดียว)');
   d.legs[1] = dcfLeg({ stages: [{ years: 0, g: 7 }], tg: 3, r: 8.5, rfCurrency: d.currency });
-  t(S.validate(d).some((e) => e.path === 'legs[1].inputs.stages[0].years'), 'stage years must be int ≥ 1');
+  t(S.validate(d).some((e) => e.path === 'legs[1].inputs.stages[0].years' && /≥ 1/.test(e.msg)), 'stage years must be int ≥ 1 (message: ≥ 1)');
   d.legs[1] = dcfLeg({ stages: Array.from({ length: 11 }, () => ({ years: 1, g: 5 })), tg: 3, r: 8.5, rfCurrency: d.currency });
-  t(S.validate(d).some((e) => e.path === 'legs[1].inputs.stages'), '> 10 stages → error');
+  t(S.validate(d).some((e) => e.path === 'legs[1].inputs.stages' && /1–10 ช่วง/.test(e.msg)), '> 10 stages → error (message: 1–10 ช่วง)');
   d.legs[1] = dcfLeg({ stages: [{ years: 41, g: 5 }], tg: 3, r: 8.5, rfCurrency: d.currency });
-  t(S.validate(d).some((e) => e.path === 'legs[1].inputs.stages'), 'Σ years > 40 → error');
+  t(S.validate(d).some((e) => e.path === 'legs[1].inputs.stages' && /Σ years = 41 เกิน 40 ปี/.test(e.msg)), 'Σ years > 40 → error (message: Σ years = 41 เกิน 40 ปี)');
 }
 {
   const d = base(); d.scenarios.exitDp = 1;
   t.eq(S.validate(d).filter((e) => /exitDp/.test(e.path)), [], 'scenarios.exitDp 1 accepted');
-  d.scenarios.exitDp = 3; t(S.validate(d).some((e) => e.path === 'scenarios.exitDp'), 'exitDp 3 rejected (0–2)');
+  d.scenarios.exitDp = 3; t(S.validate(d).some((e) => e.path === 'scenarios.exitDp' && /ต้อง 0–2/.test(e.msg)), 'exitDp 3 rejected (message: ต้อง 0–2)');
+  d.scenarios.exitDp = 1.5; t(S.validate(d).some((e) => e.path === 'scenarios.exitDp' && /จำนวนเต็ม/.test(e.msg)), 'exitDp 1.5 rejected (message: จำนวนเต็ม) — Plan 4b final review N-2');
 }
 
 // Plan 4b Task 3 — meta.migratedFrom (spec §8 D1) (brief's load()/errsOf() = base()/S.validate() here)
