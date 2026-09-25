@@ -1,0 +1,233 @@
+{
+  "v": 3,
+  "symbol": "RJF",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Raymond James Financial",
+    "exchange": "NYSE",
+    "sub": "Wealth management & investment banking • 8,700+ financial advisors • Raymond James Bank • Capital markets • St. Petersburg, FL",
+    "headerTags": [
+      "Financial Services",
+      "Wealth Management"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "StockAnalysis.com",
+      "Finviz.com"
+    ],
+    "themeLegacy": {
+      "accent": "#004B87",
+      "accentDark": "#003070",
+      "darkGrad": "linear-gradient(135deg,#001f4d 0%,#003070 60%,#004B87 100%)",
+      "glow": "rgba(0,75,135,0.35)",
+      "subColor": "#9fc2dd",
+      "headerMuted": "#a3c1da",
+      "verdictText": "#cce0f5",
+      "vcellLabel": "#bad3e7"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T23:32:21+07:00",
+      "v2Hash": "a5eb06ed3ddb"
+    }
+  },
+  "market": {
+    "px": 158.76,
+    "priceDate": "2026-09-24",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          158.67
+        ],
+        [
+          "พ.ย.25",
+          156.54
+        ],
+        [
+          "ธ.ค.25",
+          160.59
+        ],
+        [
+          "ม.ค.26",
+          165.86
+        ],
+        [
+          "ก.พ.26",
+          153.08
+        ],
+        [
+          "มี.ค.26",
+          144.79
+        ],
+        [
+          "เม.ย.26",
+          158.32
+        ],
+        [
+          "พ.ค.26",
+          143.41
+        ],
+        [
+          "มิ.ย.26",
+          152.03
+        ],
+        [
+          "ก.ค.26",
+          175.98
+        ],
+        [
+          "ส.ค.26",
+          178.17
+        ],
+        [
+          "ก.ย.26",
+          158.76
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 138.82,
+      "hi": 182.73
+    }
+  },
+  "fundamentals": {
+    "eps": 11.48,
+    "dps": 2.16,
+    "bvps": 64.56,
+    "shares": 192361711,
+    "epsForward": 12.13,
+    "netIncome": 2299000000,
+    "roe": 18.42,
+    "revenue": 15240000000,
+    "netMargin": 15.1,
+    "debtToEquity": 0.48,
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation (TTM)",
+      "inputs": {
+        "multiple": 13.1,
+        "multipleSource": "median5y"
+      },
+      "note": "มัธยฐาน P/E ย้อนหลัง 5 ปีงบ (FY2021–FY2025: 11.8x–15.2x) ของ RJF เอง วัดจากราคาเฉลี่ยงวด ÷ EPS diluted ที่มาจากประวัติ ไม่ได้ลอกจาก P/E ปัจจุบัน",
+      "family": "market"
+    },
+    {
+      "method": "pbv",
+      "label": "Justified P/BV",
+      "inputs": {
+        "g": 6,
+        "r": 10
+      },
+      "note": "r และ g เป็นสมมติฐานของเราเอง คนละตระกูลกับ P/E (ROE TTM สูงใกล้จุดสูงของช่วง 5 ปีที่ 17–19%)",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      {
+        "key": "peForward",
+        "tone": "none"
+      },
+      "pbv",
+      "netIncome",
+      "eps",
+      "bvps",
+      "roe",
+      "revenue",
+      "netMargin",
+      "yield",
+      "debtToEquity"
+    ],
+    "notes": {
+      "mcap": "~192.4 ล้านหุ้น (คงเหลือ)",
+      "peForward": "FY2026E EPS $12.13",
+      "netIncome": "+8.1% vs FY2025 ($2,127M)",
+      "eps": "FY2025: $10.30 · FY2024: $9.70",
+      "bvps": "Total Equity $12.6B",
+      "roe": "ROE TTM คุณภาพสูงสำหรับ IB/WM",
+      "revenue": "FY2025: $14.02B · TTM โต +10.7% YoY",
+      "netMargin": "FY2025: 15.2% · FY2024: 16.1%",
+      "yield": "$0.54/ไตรมาส = {{dps}}/ปี",
+      "debtToEquity": "งบดุลอนุรักษ์นิยม"
+    },
+    "hint": "ข้อมูล TTM ณ มิ.ย. 2569"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 3,
+        "exitMultiple": 11,
+        "divCum": 6.48,
+        "desc": "ตลาดซบ, M&A ชะลอ, rate cut กด NII"
+      },
+      {
+        "growth": 10,
+        "exitMultiple": 13,
+        "divCum": 6.48,
+        "desc": "advisor โต, wealth management ขยาย, NII ทรงตัว"
+      },
+      {
+        "growth": 15,
+        "exitMultiple": 15,
+        "divCum": 6.48,
+        "desc": "M&A บูม, ดอกเบี้ยสูงหนุน NII, market share เพิ่ม"
+      }
+    ],
+    "exitDp": 0,
+    "note": "ผลตอบแทนขึ้นอยู่กับ (1) ความสามารถรักษา EPS growth 10%+ ซึ่ง RJF ทำได้ต่อเนื่อง (FY2021–FY2025 CAGR ~12%) (2) multiple ปลาย — P/E ปลายทาง 11–15x (มัธยฐานประวัติ {{peForward}}) สมเหตุสมผลถ้า ROE ยืนเหนือ 17% (3) ดอกเบี้ยในระบบที่กระทบ Raymond James Bank (NII คิดเป็น ~25% รายได้รวม) ปันผลรวม 3 ปี ~$6.48 ({{dps}}/ปี) ใกล้เคียงทุกสถานการณ์"
+  },
+  "analyst": {
+    "target": 186,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "หุ้น RJF ย้อนหลัง 1 ปี (ต.ค. 2568 – ก.ย. 2569) แกว่งในกรอบ $143–$178 ช่วง ก.พ.–พ.ค. 2569 ตลาดกังวลภาวะดอกเบี้ยสูงนาน กดราคาลงสู่ $143–$153 ก่อนฟื้นแรงในช่วง ก.ค.–ส.ค. 2569 ขึ้นแตะ $176–$178 แล้วย่อลงมาเล็กน้อยในเดือน ก.ย. ราคาปัจจุบัน {{px}} ต่ำกว่าจุดสูงสุด 52 สัปดาห์ที่ $182.73 ผลตอบแทนรอบปีดูป้ายที่หัวรายงาน",
+    "valuation": "FV = เฉลี่ยสองตระกูลที่ต่างกัน 1.33 เท่า (ไม่เกิน {{ps}} เท่า) — P/E ที่ยึดมัธยฐานประวัติให้ค่าต่ำ ส่วน Justified P/BV ให้ค่าสูงเพราะ ROE ปัจจุบันสูงและ g 6% เป็นสมมติฐาน ผู้อ่านควรถือ Justified P/BV เป็นขอบบนที่ไวต่อ r/g (ถ้า g 5% ได้ราว $173 ⇒ FV ราว $162) เป้าเฉลี่ยนักวิเคราะห์ $186 (13 คน) ไม่ได้ใช้เป็นขาของ FV เป็นเพียงข้อมูลเทียบ ราคาปัจจุบัน {{px}} เทียบ FV {{fv}} ได้ MOS {{mos}} · Forward P/E FY2026E ($12.13) เป็นตระกูล P/E เดียวกันจึงไม่นับเป็นเสียงแยก",
+    "gauge": "ราคาปัจจุบัน {{px}} เทียบ FV {{fv}} ส่วนต่างสะท้อนที่ MOS {{mos}} โซนน่าสนใจ MOS 20% อยู่ที่ {{mos20}} และ MOS 30% ที่ {{mos30}} ซึ่งใกล้/ต่ำกว่า 52W low ที่ $138.82 เป้าเฉลี่ยนักวิเคราะห์ $186 (13 คน, consensus Buy) สูงกว่า FV ของเรา จึงเป็นเพียงข้อมูลเทียบ ไม่ได้ใช้ในการคำนวณ",
+    "mos": "MOS ต่ำ — ราคาใกล้ Fair Value ยังไม่มีส่วนลดเพียงพอ",
+    "verdictHeadline": "RJF — คุณภาพดี ราคาใกล้มูลค่าเหมาะสม",
+    "verdictBody": "Raymond James Financial เป็นหนึ่งในบริษัทบริหารความมั่งคั่งชั้นนำของสหรัฐฯ ที่มีวัฒนธรรมอนุรักษ์นิยม ROE ยืนเหนือ 17% และ EPS โต ~12% CAGR FY2021–FY2025 — คุณภาพธุรกิจเหนือ peer ส่วนใหญ่ อย่างไรก็ตาม ราคาปัจจุบัน {{px}} ใกล้ Fair Value {{fv}} (MOS {{mos}}) ซึ่งยังไม่มีส่วนเผื่อเพียงพอ นักลงทุนสายคุณค่าควรรอจังหวะราคาอ่อนตัวสู่โซน MOS 20% ที่ {{mos20}} ก่อนสะสม",
+    "strategy": "RJF เป็นหุ้นคุณภาพที่ควรติดตาม ทยอยสะสมเมื่อราคาต่ำกว่า {{fv}} และรอโซน MOS 20% ที่ {{mos20}} (MOS 30% ที่ {{mos30}}) ที่ให้ส่วนเผื่อความปลอดภัยเพียงพอ ผู้ถือหุ้นระยะยาวที่ซื้อราคาต่ำกว่านี้สามารถถือต่อได้ เนื่องจากธุรกิจยังเติบโตดี",
+    "disclaimerSources": "ข้อมูล ณ 21 ก.ย. 2569 · แหล่งที่มา: Yahoo Finance (ราคา/กราฟ/52W range), StockAnalysis.com (งบการเงิน/EPS/BVPS/analyst targets), Finviz.com (ROE/P/BV/D/E/forward P/E)"
+  },
+  "text": {
+    "valHint": "2 ตระกูลอิสระ (P/E + Justified P/BV)",
+    "chartHint": "ราคาจริงรายเดือน (Yahoo Finance)"
+  },
+  "catalysts": [
+    "<b>Wealth Management Tailwind:</b> สินทรัพย์ภายใต้การจัดการ (AUM) เพิ่มขึ้นต่อเนื่องจาก Baby Boomer retirement wave; 8,700+ advisors เป็นฐานรายได้ recurring ที่มั่นคง",
+    "<b>Raymond James Bank NII:</b> รายได้ดอกเบี้ยสุทธิจากธนาคารในเครือ (~25% รายได้รวม) ยังสูงในสภาพแวดล้อมดอกเบี้ยยืน; credit quality แข็งแกร่ง",
+    "<b>Capital Markets Revival:</b> M&A และ IPO ที่เริ่มฟื้นตัวปี 2569 หนุนรายได้ investment banking ซึ่งเป็น high-margin segment",
+    "<b>Share Buyback คุ้มค่า:</b> หุ้นถัวเฉลี่ยลดจาก 217M (FY2023) เหลือ 200M (TTM) (−8%) buyback ที่ราคาต่ำกว่า FV เพิ่ม EPS per share อย่างมีประสิทธิภาพ",
+    "<b>Conservative Culture = Lower Tail Risk:</b> วัฒนธรรมบริษัทระมัดระวัง ไม่มีการเทรดเพื่อบัญชีตัวเอง (prop trading) ทำให้ downside จำกัดกว่า bulge bracket ในวิกฤต",
+    "<b>EPS Visibility สูง:</b> Fee-based revenue จาก PCG (Private Client Group) ~70% รายได้รวม คาดการณ์ง่ายกว่า market-sensitive peers"
+  ],
+  "risks": [
+    "<b>ดอกเบี้ยขาลง กด NII:</b> หาก Fed ลดดอกเบี้ยมากกว่าคาด Raymond James Bank จะเผชิญ margin compression กดรายได้ส่วนที่เป็น interest income",
+    "<b>Market Downturn ลดค่า AUM:</b> รายได้ asset management ผูกกับ AUM — ตลาดหุ้นร่วงแรง (เช่น −20%+) จะกด fee โดยตรง แม้ RJF มีส่วน fixed-fee ช่วยกันชน",
+    "<b>Advisor Recruitment Competition:</b> สงครามชิงตัว advisor กับ LPL Financial, Merrill Lynch อาจกดดันต้นทุน; ถ้า top advisor ย้ายออก ก็นำ AUM ไปด้วย",
+    "<b>Regulatory & Compliance:</b> กฎระเบียบใหม่ (Regulation Best Interest, fiduciary rules) เพิ่มต้นทุน compliance และอาจจำกัดโมเดลรายได้บางส่วน",
+    "<b>Valuation Premium จำกัด Upside:</b> ราคาปัจจุบันใกล้ FV (MOS {{mos}}) ทำให้ margin of error น้อย — ข่าวลบเล็กน้อยอาจทำให้ราคาร่วงต่ำกว่า FV ได้ง่าย",
+    "<b>Concentration ใน US Market:</b> รายได้หลักมาจากตลาดสหรัฐฯ เกือบ 100% การชะลอตัวเศรษฐกิจสหรัฐฯ กระทบรายได้ทุก segment พร้อมกัน"
+  ],
+  "extras": [],
+  "_sig": "sha256:c683e8df6450f5f983a07d292a5307b4da3d6878d2d37975b2f9908664f7d460"
+}
