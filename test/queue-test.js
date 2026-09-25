@@ -1616,6 +1616,23 @@ let v3PrepatchPromise = null;   // Plan 4a fix1 (Review Focus 3) — prep() เ�
             (e) => ok(/ZTS เป็น PREPATCH/.test(e.message) && netCalls === 0, 'v3/prep (4a fix1): ใบ v3 + bucket PREPATCH → checkNotPrepatch ปฏิเสธก่อน network (Review Focus 3)', `${e.message} · netCalls=${netCalls}`));
       } finally { S.save(before); }
     }
+    // final review M-4: prep() ใบ v3 เดินจบ offline (buildCtx บนหน้า render · ★ 5U ใน .md · ไม่มี sidecar · คืน mode/model)
+    //   reportSource อ่าน V3DIR แบบ sync ก่อน await แรก ⇒ finally ข้างล่างลบ V3DIR ได้ · .md ลง QUEUE_DIR ชั่วคราว (บรรทัดบนสุด)
+    {
+      const S = require('../tools/queue/state.js');
+      const ZOUT = `=== PREP ZTS (UPDATE) ===\n✅ ราคา 2 แหล่งต่าง 0.10% (≤2%) — ผ่าน\n[1] Yahoo quoteSummary (ZTS):\n    price=71.33 epsTTM=5.9 epsFwd=6.3 PE=12.1 target=90 (n=20) 52wk=60–120\n[2] StockAnalysis (quote/zts):\n    price=71.3 (ณ Sep 24) epsTTM=5.9 PE=12.1 target=90 (20) 52wk=60–120`;
+      const e2e = Pp.prep('ZTS', { reportsDir: V3DIR, run: () => ({ code: 0, out: ZOUT, err: '' }), sec: null, mode: 'UPDATE', model: 'opus',
+        medianBlock: async () => ({ text: '=== ตัวคูณมัธยฐานย้อนหลัง: ZTS ===', warn: [], r: null }), statementAfterOf: () => null })
+        .then((r) => {
+          const md = fs.readFileSync(path.join(S.PREP_DIR, 'ZTS.md'), 'utf8');
+          ok(md.includes('★ ใบ v3 UPDATE — ทำตาม SKILL STEP 5U') && !fs.existsSync(path.join(S.PREP_DIR, 'ZTS.json')) && r.mode === 'UPDATE' && r.model === 'opus',
+            'v3/prep (4a final M-4): prep() ใบ v3 เดินจบ offline — .md มี ★ 5U · ไม่มี sidecar .json · คืน UPDATE/opus', JSON.stringify({ mode: r.mode, model: r.model, sidecar: fs.existsSync(path.join(S.PREP_DIR, 'ZTS.json')) }));
+        }, (e) => ok(false, 'v3/prep (4a final M-4): prep() ใบ v3 เดินจบ offline', e && e.message))
+        .finally(() => { try { fs.unlinkSync(path.join(S.PREP_DIR, 'ZTS.md')); } catch (_) { /* ไม่มีไฟล์ = assert ข้างบนฟ้องแล้ว */ } const st = S.load(); delete st.stocks.ZTS; S.save(st); });
+      v3PrepatchPromise = Promise.all([v3PrepatchPromise, e2e]);
+      const ebN1 = Pp.extraBlock({ sym: 'ZTS', mode: 'UPDATE', v3: true, lightRule: 'legacy', priceFresh: true, priceDate: '2026-09-24', lastSession: '2026-09-24', oldPrice: 1, price: 1, baseEPS: 1, epsTTM: 1, epsScreen: 0, snap: [], medWarn: [], hard: false, hardWhy: '' });
+      ok(/UPDATE-LIGHT ตาม 5C ข้อ 2\) \(ใบ v3: STEP 5U\)/.test(ebN1), 'v3/prep (4a final N-1): บรรทัด EPS screen ที่อ้าง 5C ข้อ 2 ต่อท้าย (ใบ v3: STEP 5U) เฉพาะใบ v3', ebN1);
+    }
     // postcheck
     const src = RS.load('ZTS', V3DIR);
     src.doc.prose.mos += ' เคยซื้อขายที่ $55.55';
@@ -1634,8 +1651,8 @@ let v3PrepatchPromise = null;   // Plan 4a fix1 (Review Focus 3) — prep() เ�
     ok(byS.ZTS.bucket === 'LIGHT' && !byS.ZTS.skip && JSON.stringify(P.v3Lines(rows)) === JSON.stringify(['v3 ZTS: หลัง ship --prepatch — ราคายังไม่สด → controller pre-patch มือ `node tools/update-prices.js --write --force ZTS` (ตลาดปิดแล้วเท่านั้น) แล้ว npm run queue -- prep ZTS ตามปกติ (worker: report.js export/save — SKILL STEP 5U · pre-patch อัตโนมัติของใบ v3 = Plan 4b)']),
       'v3/preflight (4a fix1): แถวใบ v3 LIGHT/FULL = 1 บรรทัด: หลัง ship --prepatch → pre-patch มือ + prep ตามปกติ · ใบ v2 ไม่มีบรรทัด', JSON.stringify([byS.ZTS.bucket, P.v3Lines(rows)]));
     const rowsFlip = P.plan([{ symbol: 'ZTS', reason: 'mos-sign-flip', diffPct: 3, flaggedAt: '2026-09-22' }], '2026-09-22', { ageLimit: 0, footerAgeOf: () => 30, lightRule: 'legacy', liteOf });
-    ok(rowsFlip[0].bucket === 'PREPATCH' && JSON.stringify(P.v3Lines(rowsFlip)) === JSON.stringify(['v3 ZTS: flip ในย่าน → หลัง ship --prepatch: controller pre-patch มือ `node tools/update-prices.js --write --force ZTS` (ตลาดปิดแล้วเท่านั้น — --force ข้าม guard intraday) → npm run queue -- postcheck ZTS → ship ZTS (ship ต้องผ่าน postcheck ก่อน · ship --prepatch ไม่รับ .json · pre-patch อัตโนมัติของใบ v3 = Plan 4b)']),
-      'v3/preflight (4a fix1+): แถวใบ v3 PREPATCH (flip) → หลัง ship --prepatch: pre-patch มือ → postcheck → ship <SYM> (ไม่ใช่ prep — prep ปฏิเสธ PREPATCH · ship ต้องผ่าน postcheckGuard)', JSON.stringify([rowsFlip[0].bucket, P.v3Lines(rowsFlip)]));
+    ok(rowsFlip[0].bucket === 'PREPATCH' && JSON.stringify(P.v3Lines(rowsFlip)) === JSON.stringify(['v3 ZTS: flip ในย่าน → หลัง ship --prepatch: controller pre-patch มือ `node tools/update-prices.js --write --force ZTS` (ตลาดปิดแล้วเท่านั้น — --force ข้าม guard intraday) → npm test -- ZTS → commit เอง "price: pre-patch ZTS (v3 flip)" + push ตาม CLAUDE.md §5 (ไม่ผ่าน ship — postcheck ต้องการ analysisDate = วันนี้ · ship --prepatch ไม่รับ .json · อัตโนมัติ = Plan 4b)']),
+      'v3/preflight (4a final I-1): แถวใบ v3 PREPATCH (flip) → หลัง ship --prepatch: pre-patch มือ → npm test → commit price: เอง (ไม่ใช่ prep — prep ปฏิเสธ PREPATCH · ไม่ใช่ postcheck → ship — review เพราะ analysisDate ≠ วันนี้)', JSON.stringify([rowsFlip[0].bucket, P.v3Lines(rowsFlip)]));
     ok(JSON.stringify(P.v3Lines([{ symbol: 'ZTS', v3: true, bucket: 'DELIST' }, { symbol: 'ZTS', v3: true, bucket: 'LIGHT', skip: 'fresh' }, { symbol: 'ZTS', v3: true, bucket: 'PLUMBING' }, { symbol: 'ZTS', v3: true, bucket: 'REJECTED' }, { symbol: 'ZTS', v3: true, bucket: 'UNKNOWN' }])) === '[]',
       'v3/preflight (4a fix1): แถวใบ v3 skip/DELIST/PLUMBING/REJECTED/UNKNOWN → ไม่มีบรรทัด', JSON.stringify(P.v3Lines([{ symbol: 'ZTS', v3: true, bucket: 'DELIST' }])));
     ok(JSON.stringify(P.v3Lines([{ symbol: 'ZTS', v3: true, bucket: 'FULL' }])) === JSON.stringify(P.v3Lines([{ symbol: 'ZTS', v3: true, bucket: 'LIGHT' }])) && /หลัง ship --prepatch — ราคายังไม่สด/.test(P.v3Lines([{ symbol: 'ZTS', v3: true, bucket: 'FULL' }])[0] || ''),

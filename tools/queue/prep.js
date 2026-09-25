@@ -262,6 +262,8 @@ function extraBlock(i) {
       ? `- ⚠ EPS (คำเตือน — ไม่เปลี่ยนโหมด): เทียบไม่ได้ — ${both}`
       : `- ${i.epsScreen > EPS_SCREEN_PCT ? '⚠ ' : ''}EPS (คำเตือน — ไม่เปลี่ยนโหมด): ${both} = ต่าง ${i.epsScreen.toFixed(1)}%${i.epsScreen > EPS_SCREEN_PCT ? ' → ตรวจว่าต่างเพราะฐานคนละแบบ (adj vs GAAP) หรือเพราะงบใหม่/split จริง · ถ้าเจองบใหม่/split ที่กฎ prep มองไม่เห็น ยกเป็น UPDATE เต็มตาม STEP 5C ข้อ 2' : ' (ตรงกัน)'}`);
   }
+  // final review N-1: ใบ v3 ทำตาม STEP 5U ไม่ใช่ 5C — ต่อท้ายบรรทัด EPS screen ที่อ้าง 5C ข้อ 2 (ใบ v2 ไม่เปลี่ยนแม้แต่ byte)
+  if (i.v3 && /5C ข้อ 2/.test(L[L.length - 1])) L[L.length - 1] += ' (ใบ v3: STEP 5U)';
   if (i.fyYears != null) L.push(`- FY ที่มี EPS จริง: ${i.fyYears} ปี — ป้าย "P/E เฉลี่ย ~M ปี" ห้ามเกิน ${i.fyYears}`);
   // ข้อ 1 (plan gap — Task 21 Step 2): กับดักเชิงกลจาก fetch-fundamentals ต้องขึ้นเป็นหัวข้อแยก ไม่จมอยู่กลางบล็อก FUNDAMENTALS
   if (i.traps && i.traps.length) L.push(`- **กับดักที่ prep พบ (ต้องจัดการก่อนเขียนเลข)**:\n${i.traps.map((t) => '    · ' + t).join('\n')}`);
