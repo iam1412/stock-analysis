@@ -1,0 +1,260 @@
+{
+  "v": 3,
+  "symbol": "STZ",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Constellation Brands",
+    "exchange": "NYSE",
+    "sub": "เบียร์นำเข้าอันดับ 1 สหรัฐฯ — Modelo · Corona · Pacifico • ไวน์ & สุรา (Robert Mondavi, Kim Crawford) • การลงทุนใน Canopy Growth (กัญชา)",
+    "headerTags": [
+      "Consumer Staples",
+      "Beverages – Beer & Wine"
+    ],
+    "analysisDate": "2026-09-22",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis.com",
+      "Yahoo Finance",
+      "Google Finance"
+    ],
+    "themeLegacy": {
+      "accent": "#c8860a",
+      "accentDark": "#8b5c00",
+      "darkGrad": "linear-gradient(135deg,#2a1a00 0%,#1a1000 100%)",
+      "glow": "rgba(200,134,10,0.25)",
+      "subColor": "#e8c47a",
+      "headerMuted": "#a5864b",
+      "verdictText": "#ffd270",
+      "vcellLabel": "#c8a060"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-22T01:46:25+07:00",
+      "v2Hash": "3a2aef978238"
+    }
+  },
+  "market": {
+    "px": 114.21,
+    "priceDate": "2026-09-24",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          131.38
+        ],
+        [
+          "พ.ย.25",
+          136.38
+        ],
+        [
+          "ธ.ค.25",
+          137.96
+        ],
+        [
+          "ม.ค.26",
+          156.7
+        ],
+        [
+          "ก.พ.26",
+          157.86
+        ],
+        [
+          "มี.ค.26",
+          150
+        ],
+        [
+          "เม.ย.26",
+          156.58
+        ],
+        [
+          "พ.ค.26",
+          138.82
+        ],
+        [
+          "มิ.ย.26",
+          139.09
+        ],
+        [
+          "ก.ค.26",
+          130.23
+        ],
+        [
+          "ส.ค.26",
+          130.62
+        ],
+        [
+          "ก.ย.26",
+          114.21
+        ]
+      ],
+      "gridFmt": "v.toFixed(0)",
+      "dataFmt": "d[1].toFixed(2)"
+    },
+    "range52w": {
+      "lo": 116.93,
+      "hi": 168.6
+    }
+  },
+  "fundamentals": {
+    "dps": 4.12,
+    "bvps": 46.04,
+    "shares": 170750000,
+    "epsForward": 11.79,
+    "revenue": 9060000000,
+    "eps": 10.48,
+    "opMargin": 33.6,
+    "grossMargin": 52.7,
+    "fcf": 1830000000,
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "ddm",
+      "label": "DDM / Gordon Growth Model",
+      "inputs": {
+        "g": 4,
+        "r": 8.5
+      },
+      "note": "สมมติฐานของเราเอง — ปันผล {{dps}}/ปี จาก StockAnalysis, payout ~39% ของ GAAP EPS จึงมีที่ว่างโตแต่เราใช้ g อนุรักษ์ · ค่านี้ต่ำเพราะ r−g แคบและเป็นวิธีที่อ่อนไหวต่อสมมติฐาน",
+      "family": "rg"
+    },
+    {
+      "method": "dcf",
+      "label": "DCF (FCF to equity, 5 ปี)",
+      "inputs": {
+        "g1": 3,
+        "years1": 5,
+        "tg": 2,
+        "r": 8.5,
+        "rfCurrency": "USD"
+      },
+      "override": {
+        "netDebt": 0,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "StockAnalysis · เป็น FCF หลังดอกเบี้ย จึงคิดเป็นมูลค่า equity โดยตรง ไม่หักหนี้ซ้ำ · สมมติฐานของเราเอง · TV = 74% ของรวม",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      {
+        "key": "peForward",
+        "tone": "none"
+      },
+      "pbv",
+      "revenue",
+      "eps",
+      "opMargin",
+      "custom:0",
+      "grossMargin",
+      {
+        "key": "fcf",
+        "tone": "pos"
+      },
+      "yield",
+      "custom:1"
+    ],
+    "custom": [
+      {
+        "label": "ROE / D/E",
+        "value": "~23.7% / 1.23x",
+        "note": "ROE สูงสะท้อน leverage + Brand moat · หนี้ $10.5B เทียบเงินสด $97M",
+        "tone": "pos"
+      },
+      {
+        "label": "Shares (diluted wtd-avg)",
+        "value": "174M",
+        "note": "FY2026 176M · FY2025 181M · ลดลงต่อเนื่องจาก buyback"
+      }
+    ],
+    "notes": {
+      "mcap": "170.75M shares outstanding (174M diluted wtd-avg TTM)",
+      "pe": "GAAP EPS {{eps}} (TTM · Yahoo $10.51) · FY2026 diluted $9.61 → P/E ~12.4x",
+      "peForward": "EPS FY2027e ~$11.79 (StockAnalysis consensus) · Yahoo forward $12.36 เป็นค่า FY2028e จึงไม่ใช้",
+      "pbv": "BVPS ~{{bvps}} · TBV/share ~$1.80 (goodwill มาก)",
+      "revenue": "−10.0% YoY (FY2026 $9.14B, −10.5% YoY)",
+      "eps": "FY2026 $9.61 · FY2025 −$0.45 · FY2024 $9.39 (ปีขาดทุนมาจากการตัดมูลค่า non-cash)",
+      "opMargin": "FY2026 32.4% · FY2025 34.4% · Net margin TTM 20.1%",
+      "grossMargin": "TTM · Beer segment มีกำไรสูงกว่า Wine",
+      "fcf": "FCF/share ~$10.54 · รองรับปันผล + ลดหนี้",
+      "yield": "Payout ~39% ของ GAAP EPS(TTM)"
+    },
+    "hint": "ข้อมูล ณ 22 ก.ย. 2569 · EPS = GAAP diluted (StockAnalysis + Yahoo) · งวด TTM/FY2026 (ปีงบสิ้นก.พ.)"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": -2,
+        "exitMultiple": 10,
+        "divCum": 13,
+        "desc": "Tariff กระทบหนัก · Beer volume ลด · Canopy ยังเป็น drag"
+      },
+      {
+        "growth": 4,
+        "exitMultiple": 13,
+        "divCum": 13,
+        "desc": "Beer ฟื้น · Tariff ผ่อนคลาย · FCF ลดหนี้ต่อเนื่อง"
+      },
+      {
+        "growth": 8,
+        "exitMultiple": 16,
+        "divCum": 13,
+        "desc": "Modelo ครองตลาดต่อ · ขยาย premium tier · Canopy ตัดออก → P/E re-rate"
+      }
+    ],
+    "exitDp": 0,
+    "note": "การคาดการณ์อิง GAAP diluted EPS ฐาน ~{{baseEps}} · P/E ออกเป็นสมมติฐานของเรา (Bear 10x ต่ำกว่าปัจจุบัน · Base 13x · Bull 16x ใกล้ 16.4x ของ FY2026) ไม่ได้ลอกจากตัวคูณปัจจุบัน · ผลตอบแทนรวมปันผล: Bear {{scn.bear.ret}} · Base {{scn.base.ret}} · Bull {{scn.bull.ret}} · Bear ยังเป็นลบเพราะ de-rating จริงจัง · ความเสี่ยงหลักคือ Tariff ถาวรที่ทำให้ต้นทุนนำเข้าจากเม็กซิโกพุ่ง · ตัวเลขเหล่านี้เป็นการประมาณการเท่านั้น ไม่ใช่การรับประกันผลตอบแทน",
+    "hintNote": "(GAAP diluted TTM)"
+  },
+  "analyst": {
+    "target": 169.7,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "หุ้น STZ เคลื่อนไหวในกรอบราว <b>$118–$158</b> ในรอบปี แตะจุดสูงสุดต้นปี 2569 (ม.ค.–ก.พ.) ก่อนร่วงต่อเนื่องจนราคาล่าสุดใกล้ต่ำสุดของกราฟ ใกล้ขอบล่างกรอบ 52 สัปดาห์ ($116.93) ความกังวลที่ตลาดให้น้ำหนักคือ <b>การชะลอตัวของ Beer segment</b> · ผลขาดทุน non-cash จาก Canopy Growth ก่อนหน้า · และ <b>ภาษีนำเข้า (tariff)</b> ต่อเบียร์นำเข้าจากเม็กซิโก (ความเสี่ยงเชิงกรอบ ไม่ได้ตรวจแหล่งข่าวรอบนี้) ราคาปัจจุบัน {{px}} ต่ำกว่า Fair Value {{fv}} ({{mos}})",
+    "valuation": "DDM ให้ค่าต่ำสุด ($95) และ DCF ให้ค่าสูงสุด ($176) ห่างกัน ~1.85 เท่า (ไม่เกิน 2 เท่าตามกฎเฉลี่ย) จึงเฉลี่ยตรง ๆ ได้ แต่ควรอ่านเป็นกรอบ {{fvLow}}–{{fvHigh}} มากกว่าจุดเดียว · <b>ข้อจำกัด:</b> P/E, EV/EBITDA และ multiple อื่นถูกถอดออก เพราะไม่มีตัวคูณมัธยฐานที่วัดได้ (P/E ย้อนหลังใช้ได้แค่ 2 จุด: 16.4x FY2026, 26.1x FY2024 — ต่ำกว่า 3 จุดขั้นต่ำ) และห้ามใช้ตัวคูณปัจจุบันเป็นสมอ · ทั้ง 2 วิธีขึ้นกับ r/g ที่เป็นสมมติฐานของเราเอง (ไม่ใช่ multiple ของตลาด) จึงเป็นการประเมินที่พึ่งสมมติฐานสูง — MOS อ่อนไหวต่อ r/g มาก · เป้านักวิเคราะห์ (~{{analyst.target}}) อยู่ใกล้ปลายบนของกรอบ ใช้เป็นบริบทเปรียบเทียบเท่านั้น ไม่ใช่ขาของ FV",
+    "gauge": "ราคาปัจจุบัน {{px}} ต่ำกว่า Fair Value {{fv}} ({{mos}}) อยู่เหนือโซน MOS 20% ({{mos20}}) — ยังไม่ถึงโซนที่ให้ margin of safety หนา · deep value (MOS 30%) อยู่ที่ {{mos30}} · เป้า analyst consensus ~{{analyst.target}} (Yahoo $168.65, n=23) สูงกว่า FV ของเรา สะท้อนว่าตลาดคาดการฟื้นตัวมากกว่าสมมติฐานอนุรักษ์ของเรา",
+    "mos": "MOS ปานกลาง — มีส่วนต่างความปลอดภัยพอสมควร เหมาะสะสมทยอย",
+    "verdictHeadline": "เบียร์ที่ดีที่สุดสหรัฐฯ ราคา Discount — Accumulate",
+    "verdictBody": "STZ เป็นเจ้าของแบรนด์เบียร์นำเข้ารายใหญ่ของสหรัฐฯ (Modelo · Corona) พร้อม moat ทางแบรนด์ยาวนาน ราคาปัจจุบัน {{px}} ใกล้ขอบล่างกรอบ 52 สัปดาห์ ($116.93) จากความกังวลเรื่อง Tariff + Canopy Growth drag ก่อนหน้า + การชะลอ growth · รอบนี้เราถอด P/E/EV-EBITDA ออกจาก FV (ไม่มีตัวคูณมัธยฐานที่วัดได้) เหลือ DDM + DCF ที่พึ่งสมมติฐาน r/g ของเราเอง ได้ Fair Value {{fv}} ({{mos}}) เป็นระดับ margin of safety ปานกลาง — กลยุทธ์เหมาะสมคือ <b>ทยอยสะสม</b> โดยเพิ่มน้ำหนักเมื่อราคาลงถึงโซน MOS 20% ({{mos20}})",
+    "strategy": "ทยอยสะสมที่ราคาปัจจุบัน {{px}} — จุดเพิ่มน้ำหนักที่ {{mos20}} (MOS 20%) และ {{mos30}} (MOS 30%) หากลงถึง · ถือยาว 3 ปีขึ้นไปด้วย FCF แข็งแกร่ง + ปันผลต่อเนื่อง · Monitor: ผลประกอบการ 6 ต.ค. 2569 · ความคืบหน้า Tariff เม็กซิโก + Beer volume growth QoQ",
+    "disclaimerSources": "ราคา ณ {{priceDate}} อ้างอิง: StockAnalysis.com (https://stockanalysis.com/stocks/stz/) · Yahoo Finance (https://finance.yahoo.com/quote/STZ/) · Google Finance (https://www.google.com/finance/quote/STZ:NYSE) · Constellation Brands Investor Relations · ข้อมูลกราฟ: Yahoo Finance Chart API"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 2 วิธีต่างตระกูล · ไม่ใช้เป้านักวิเคราะห์เป็นขา",
+    "metricsNote": "⚠️ <b>หมายเหตุสำคัญ:</b> GAAP EPS ของ STZ บิดเบือนจากการตัดมูลค่าเงินลงทุนใน <b>Canopy Growth</b> (กัญชา) ใน FY2023 และ FY2025 จนทำให้ GAAP net income ติดลบ (FY2025 EPS GAAP −$0.45) — ปัจจุบัน GAAP EPS(TTM) ฟื้นเป็นบวกที่ {{eps}} รอบนี้ (UPDATE 22 ก.ย. 2569) <b>ตัดค่า Adjusted EPS ~$11.74 ของรอบก่อนออกจากฐาน valuation</b> เพราะ vendor ที่เปิดตรวจไม่มีค่านี้ให้ cross-verify · ฐานที่ใช้ = GAAP diluted ที่ตรวจได้ 3 ทาง (Yahoo · StockAnalysis · ตารางงบ) ผลคือ FV ไม่พึ่ง multiple ที่วัดไม่ได้ (ประวัติ P/E มีจุดที่ใช้ได้แค่ 2 จุด)",
+    "chartHint": "ต.ค. 2568 – ปัจจุบัน · รายเดือน",
+    "disclaimerAssump": " P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ EPS adjusted ในอนาคต การใช้ Adjusted EPS แทน GAAP อาจไม่สะท้อนผลขาดทุนจริง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ"
+  },
+  "catalysts": [
+    "<b>Modelo & Corona — แบรนด์หลักของ Beer segment:</b> moat ทางแบรนด์ทำให้ Gross margin ~52.7% และ Operating margin ~33.6% (TTM) ยังสูง",
+    "<b>การปรับโครงสร้างพอร์ต:</b> รายได้ลด −10.5% ใน FY2026 สอดคล้องกับการลดขนาด/โฟกัสธุรกิจ (ไม่ได้ตรวจเอกสารบริษัทรอบนี้) ขณะที่ Operating margin TTM ~33.6% ยังสูง",
+    "<b>Free Cash Flow แข็งแกร่ง:</b> FCF ~$1.83B/ปี รองรับการลดหนี้ + ปันผล + buyback (หุ้นเฉลี่ยลด 181M→174M ใน 2 ปี) — dividend yield ~3.5% เป็น floor ให้กับผู้ถือหุ้น",
+    "<b>Canopy Growth — ลด Drag:</b> การตัดมูลค่า Canopy Growth ออกส่วนใหญ่แล้ว หากตัดสัมพันธ์ได้สมบูรณ์จะทำให้ GAAP EPS กลับมาตรงกับ Adjusted EPS ส่ง P/E re-rating",
+    "<b>Valuation ที่ถูกลงมาก:</b> P/E TTM (GAAP) ~11.4x เทียบ 16.4x (FY2026) และ 26.1x (FY2024) จากราคาเฉลี่ยปี ÷ EPS — วัดได้เพียง 2 จุด จึงเป็นบริบทไม่ใช่สมอ — ราคาอาจ discount ความเสี่ยงมากเกินจริง",
+    "<b>Analyst Consensus Buy:</b> 23 นักวิเคราะห์ (Yahoo) เป้าเฉลี่ย ~{{analyst.target}} (StockAnalysis: Buy) สูงกว่าราคาปัจจุบันมาก"
+  ],
+  "risks": [
+    "<b>ความเสี่ยง Tariff เม็กซิโก:</b> เบียร์ Modelo/Corona ผลิตและนำเข้าจากเม็กซิโก ภาษีนำเข้าที่สูงขึ้นจะกระทบ margin โดยตรง — ความเสี่ยงที่ใหญ่ที่สุดในปัจจุบัน",
+    "<b>การชะลอตัวของ Beer Segment:</b> หลังเติบโตสูงหลายปี ยอดขายเบียร์ premium เริ่มชะลอ competition จาก hard seltzer, RTD cocktails, และเครื่องดื่มไม่มีแอลกอฮอล์",
+    "<b>ภาระหนี้สูง:</b> Total debt ~$10.5B เทียบเงินสด ~$97M (D/E 1.23x) จำกัด flexibility ในการลงทุน/buyback และเพิ่ม interest expense เมื่ออัตราดอกเบี้ยสูง",
+    "<b>Canopy Growth — ความไม่แน่นอนต่อเนื่อง:</b> การลงทุนใน Canopy ยังคงเป็นแหล่ง non-cash charges ที่ไม่สามารถคาดเดาได้แน่นอน จนกว่าจะตัดออกสมบูรณ์",
+    "<b>Revenue Decline:</b> รายได้ลด −10.5% YoY ใน FY2026 และ −10.0% TTM — สร้าง top-line pressure และความไม่แน่นอนในการประเมิน",
+    "<b>Consumer Spending ชะลอ:</b> ในภาวะเศรษฐกิจชะลอ ผู้บริโภคอาจ trade-down จาก premium brands ไป value brands กดดัน volume + pricing power"
+  ],
+  "extras": [],
+  "_sig": "sha256:5f22ba6bd426bfd7b3eafe1ad411cb2dc92b594df3a275953c10ce8a4ee721de"
+}
