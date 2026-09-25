@@ -18,6 +18,8 @@ const MP = require('./prose.js');
 const MS = require('./scenarios.js');
 const MT = require('./theme.js');
 const FM = require('./formula.js');
+const SY = require('./synonyms.js');
+const NB = require('./numbers.js');
 
 const OVERRIDE_WHY = 'ค่าที่ผู้เขียนใช้ในใบ v2';
 const TEMPLATE_ASSUMP = 'P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต';
@@ -63,17 +65,41 @@ function pxMetaOf(pxMeta, cur, F) {
   return out;
 }
 
+/** แท็กแรก "<EXCH>: <SYM> …" (Plan 4c-prep D3 · 14 ใบ) → { exchange, extra } · ส่วนท้าย (ADR) / "/ TSX: CCO" / "• TSXV: PTK" / "→ MZTI" / "/ GOOG" = แท็กถัดไป
+ *  ticker ที่พิมพ์ ≠ symbol ของไฟล์ (STEC ↔ STECON) = คง ticker ที่พิมพ์เป็นแท็ก (คำไม่หาย) · ไม่ใช่รูป "<EXCH>: …" = null (H คงเดิม) */
+function firstTagOf(tag0, sym) {
+  const m = /^([A-Za-z][A-Za-z ]*?):\s*([A-Z0-9.\-]+)\s*(.*)$/.exec(String(tag0 || '').trim());
+  if (!m) return null;
+  const extra = [];
+  if (m[2] !== sym) extra.push(m[2]);
+  const rest = m[3].trim();
+  if (rest) {
+    const adr = /^\((ADR|ADS|GDR)\)$/.exec(rest);
+    extra.push(adr ? adr[1] : rest.replace(/^[/•·]\s*/, '').trim());
+  }
+  return { exchange: m[1].trim(), extra };
+}
+/** ข้อความใน gdots = ข้อความที่ v2 แสดง → meta.sectorLine (≤100 ไม่งั้น H) · glyph/สีล้วน (●●● ◆ ◆ ◆ ◉ ⬤ ★ …) = ของตกแต่ง → null
+ *  เกณฑ์ = มีตัวอักษร/ตัวเลขหลังตัดรหัสสี (กติกาเดียวกับ equiv header ที่ตัดสัญลักษณ์ทิ้ง) — brief ใช้รายการ glyph ปิด (●•·○◦⬤) ซึ่งจะพก "◆ ◆ ◆" (46 ใบ) เป็นข้อความ */
+function sectorLineOf(parsed) {
+  const t = txt(parsed.gdots || '');
+  return t && /[\p{L}\p{N}]/u.test(t.replace(/#[0-9a-f]{3,8}\b/gi, ' ')) ? t : null;
+}
+
 function metaOf(parsed, ctx, H, F) {
   const sym = parsed.sym;
   const m = {};
   const company = txt(parsed.h1).replace(new RegExp(`\\s*\\(${esc(sym)}\\)\\s*$`), '').trim();
   m.company = company;
   const tag0 = parsed.tags[0] || '';
-  const ex = new RegExp(`^([A-Za-z ]+):\\s*${esc(sym)}$`).exec(tag0);
-  if (!ex) H.push(`first header tag not "<EXCH>: ${sym}" ("${tag0}")`);
-  m.exchange = ex ? ex[1].trim() : (tag0.split(':')[0] || '').trim() || '?';
+  const ft = firstTagOf(tag0, sym);
+  if (!ft) H.push(`first header tag not "<EXCH>: ${sym}" ("${tag0}")`);
+  m.exchange = ft ? ft.exchange : (tag0.split(':')[0] || '').trim() || '?';
+  if (ft && ft.extra.length) F.push(`first tag "${tag0}" → exchange ${ft.exchange} + tags ${JSON.stringify(ft.extra)}`);
   m.sub = MP.htmlToProse(parsed.sub || '');
-  const tags = parsed.tags.slice(1).map((x) => x.replace(/[{}<>]/g, '').trim()).filter(Boolean);
+  const sl = sectorLineOf(parsed);
+  if (sl && sl.length <= 100) { m.sectorLine = MP.htmlToProse(sl); F.push(`gdots text → meta.sectorLine "${sl}"`); } else if (sl) H.push(`gdots text ${sl.length} > 100 chars — not carried`);
+  const tags = (ft ? ft.extra : []).concat(parsed.tags.slice(1)).map((x) => x.replace(/[{}<>]/g, '').trim()).filter(Boolean);
   if (tags.length > 3) H.push(`header tags ${tags.length} > 3`);
   m.headerTags = tags.slice(0, 3);
   if (parsed.fd && parsed.fd.iso) m.analysisDate = parsed.fd.iso; else H.push('footer unreadable (no "ข้อมูล ณ" date)');
@@ -243,7 +269,30 @@ const hasProse = (s) => String(s).replace(/\{\{[^{}]*\}\}/g, ' ').split(/[\s/=×
  *  ที่มีคำของผู้เขียนนอกวงเล็บ = ทั้งท่อน
  *  · วงเล็บชั้นนอก (ซ้อนได้) ที่มีคำของผู้เขียน แม้จะอ้าง r/g/%/× = ทั้งวงเล็บ (ไม่มีวงเล็บปิดกำพร้า)
  *  คำที่เหลือในท่อนสูตรนอกวงเล็บ = ไม่พก → gate (equiv.js) นับ TEXT LOST ถ้าไม่ใช่คำสูตร/คำที่ generate */
-function qualifierOf(prose) {
+/** round 3 (Plan 4c-prep Task 5): คำของผู้เขียนที่ค้างในท่อนสูตรนอกวงเล็บ ("P/E midcycle 22x") = พกเป็นช่วงคำต่อเนื่อง
+ *  ยกเว้นคีย์ใน consumed (ป้ายฐานที่ v3 พิมพ์เอง — baseLabel/forward · เทียบไม่สนตัวพิมพ์) และคำพ้องของขานี้ (SY 's3.mdesc' · g.leg = leg)
+ *  · token ที่มี "/" = ชื่ออัตราส่วน/สูตร (P/E · P/BV · EV/EBITDA) ไม่ใช่คำ — ไม่แยกที่ "/" (ไม่งั้น "BV" หลุดเป็นคำผู้เขียน)
+ *  · หลังวงเล็บเปิดที่ไม่ปิด = ในวงเล็บ (ไม่พก — กติกาเดียวกับ topParens: ไม่มีเศษวงเล็บกำพร้า)
+ *  · คำข้อเท็จจริง (SY.FACT_WORDS: AFFO Core forward FY#E Tangible adj. GAAP) ไม่พก — ต้องมีช่อง/enum (Kind 1) ไม่งั้นป้ายฐานของ v3 ผิดแต่คำไม่หาย (4b I-3) ⇒ คง TEXT LOST
+ *  · หน่วยเดี่ยว (ล้าน · พันล้าน · M · B …) ไม่ใช่คำ (gate นับเป็นส่วนของตัวเลข) · แท็ก HTML ตัดออก (ไม่พกแท็กเปิดกำพร้า) */
+const ROUND3_SPLIT = /[\s=×÷+−≈]+/;
+function headRuns(seg, consumed, leg) {
+  const runs = []; let cur = [];
+  const flush = () => { if (cur.length) runs.push(cur.join(' ')); cur = []; };
+  let out = outsideParens(seg);
+  const open = out.indexOf('('); if (open >= 0) out = out.slice(0, open);
+  for (const tk of out.replace(/\{\{[^{}]*\}\}/g, ' ').replace(/<[^>]*>/g, ' ').split(ROUND3_SPLIT)) {
+    if (!tk) continue;
+    const k = FM.keyOf(tk), bare = tk.replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}.]+$/gu, '');
+    const syn = SY.apply('s3.mdesc', [tk], { leg }).used.length > 0;
+    const fact = SY.FACT_WORDS.some((re) => re.test(bare)), unit = NB.UNIT_WORD.has(k) || UNITISH.test(k);
+    if (!/\//.test(tk) && isProseToken(tk, true) && !fact && !unit && !consumed.has(k) && !consumed.has(k.toLowerCase()) && !syn) cur.push(tk); else flush();
+  }
+  flush();
+  return runs;
+}
+function qualifierOf(prose, consumed, leg) {
+  consumed = consumed || new Set();
   const t = String(prose || '');
   const d = depths(t);
   let head = t, tail = '';
@@ -254,6 +303,7 @@ function qualifierOf(prose) {
   if (lead && hasProse(lead[1])) { out.push(lead[1].trim()); head = head.slice(lead[0].length); }
   splitTop(head, /\s·\s|\s*[→⇒;=]\s*/g).forEach((seg, i) => {
     if (i > 0 && hasProse(outsideParens(seg))) { if (seg.trim()) out.push(seg.trim()); return; }
+    if (i === 0) out.push(...headRuns(seg, consumed, leg));
     for (const p of topParens(seg)) if (p.inner && hasProse(p.inner)) out.push(p.inner);
   });
   if (tail) out.push(tail);
@@ -276,18 +326,47 @@ function labelParts(mname) {
 }
 const labelOf = (mname) => labelParts(mname).label;
 
+// ฐาน forward/FY ของขา pe (Plan 4c-prep D2 · measure §6.3: 112 ขา · 17 พิมพ์ TTM ผิด) — ท่อนตัวตั้ง = ก่อน "×" ตัวแรก
+const FWD_WORD = /forward|ล่วงหน้า|ประมาณการ|คาดการณ์|consensus|guidance|\bFY\s*'?\d{2,4}\s*[eEF]\b|\b20\d\d[eE]\b/i;
+const FY_ACT = /\bFY\s*'?(\d{4}|\d{2})(?![0-9eEF])/;
+/** mdesc ของขา pe → { base, label, v } | null (TTM / ไม่มีคำ EPS / ไม่มีตัวเลขเงิน = null · FY จริงเฉพาะเมื่อเท่า fundamentals.fy.eps) */
+function baseOf(mdesc, fund) {
+  const head = String(mdesc || '').split(/×|&times;/)[0];
+  if (!/EPS|กำไรต่อหุ้น/i.test(head) || /\bTTM\b/i.test(head)) return null;
+  const mv = LG.moneyAll(head); const v = mv.length ? mv[mv.length - 1].v : null;
+  if (!(v > 0)) return null;
+  const lab = (re) => { const m = re.exec(head.replace(/[()]/g, ' ').replace(/,/g, ' ').replace(/\s+/g, ' ')); return m ? m[0].trim().slice(0, 24) : null; };
+  // ป้าย "forward" เปล่า = คำที่ render พิมพ์เองอยู่แล้ว ("EPS (forward)") → ไม่ตั้ง baseLabel (กัน "EPS forward (forward)")
+  if (FWD_WORD.test(head)) { const l = lab(/(?:\bFY\s*'?\d{2,4}\s*[eEF]|\b20\d\d[eE])(?:\s+(?:consensus|guidance))?|forward|ล่วงหน้า/i); return { base: 'epsForward', label: l && !/^forward$/i.test(l) ? l : null, v }; }
+  const fy = FY_ACT.exec(head);
+  if (fy && fund && fund.fy && typeof fund.fy.eps === 'number' && Math.abs(fund.fy.eps - v) <= 0.005 + 1e-9) return { base: 'epsFy', label: null, v };
+  return null;
+}
+/** ชื่อขายาวเกิน 80 (schema ใบ migrate) → ตัดที่ "(" ชั้นนอกตัวสุดท้ายก่อนตำแหน่ง 80 · หาง (วงเล็บ) ไปต้น note — ไม่มี "(" = คงเดิม (schema H) */
+function splitLongLabel(label) {
+  if (label.length <= 80) return null;
+  const d = depths(label);
+  let k = -1;
+  for (let i = 0; i < Math.min(80, label.length); i++) if (label[i] === '(' && d[i] === 0) k = i;
+  const head = k > 0 ? label.slice(0, k).trim() : '';
+  return head && head.length <= 80 ? { label: head, tail: label.slice(k).trim() } : null;
+}
+
 /** ขาทั้งหมดบน f (object เดียวกับ doc.fundamentals + currency/rps ที่ legValue ไม่อ่าน) → { legs, meta, epsBase, H, F } */
 function legsOf(parsed, fund, currency) {
   const H = [], F = [], legs = [], meta = [];
   const f = { ...fund, currency };
   if (isNum(fund.revenue) && isNum(fund.shares) && fund.shares > 0) f.rps = fund.revenue / fund.shares;
-  let epsBase = null;
+  let epsBase = null, fwdBase = null;
   parsed.legs.forEach((pl, i) => {
     const n = i + 1;
     if (pl.empty) { H.push(`leg ${n} unparsed ("${pl.mname}" has no value)`); return; }
     const cls = LG.classifyName(pl.mname, pl.mdesc);
     const ctxLeg = CONTEXT_RE.test(pl.mname);
-    const label = labelOf(pl.mname) || `วิธีที่ ${n}`;
+    const lp = labelParts(pl.mname);
+    let label = lp.label || `วิธีที่ ${n}`, labelTail = '';
+    const ll = splitLongLabel(label);
+    if (ll) { label = ll.label; labelTail = ll.tail; F.push(`leg ${n}: label ${lp.label.length} > 80 chars — "${ll.tail}" moved to the note`); }
     const mdescProse = MP.htmlToProse(pl.mdescHtml);
     const value = LG.mvalNum(pl.mval);
     const lm = { n, cls, mval: pl.mval, mdescHtml: pl.mdescHtml, mnameText: pl.mname, computed: false, why: '' };
@@ -315,16 +394,35 @@ function legsOf(parsed, fund, currency) {
         if (MULT_METHODS.includes(method) && inputs.multiple != null) { const o = {}; inputs.multipleSource = multipleSourceOf(pl.mdesc, F, i, inputs.multiple, o); if (o.medianWindow && inputs.medianWindow == null) inputs.medianWindow = o.medianWindow; }
         leg = { method, label, inputs };
         if (x.override) leg.override = { ...x.override, why: OVERRIDE_WHY };
-        const q = qualifierOf(mdescProse); if (q) leg.note = q;
         if (ctxLeg) leg.role = 'context';
+        // ฐาน forward/FY (Plan 4c-prep D2): เฉพาะเมื่อตัวตั้งที่ extractor ใช้ = ตัวเลขในท่อนตัวตั้งที่ baseOf อ่าน (ค่าขาไม่เปลี่ยน — ไปทาง C.withBase แทน override.eps)
+        const bs = method === 'pe' ? baseOf(pl.mdesc, f) : null;
+        let consumed = new Set();
+        if (bs && x.baseKey === 'eps' && sameV(x.base, bs.v)) {
+          inputs.base = bs.base;
+          if (bs.label) leg.baseLabel = bs.label;
+          const ov = { ...(leg.override || {}) }; delete ov.eps;
+          if (bs.base === 'epsForward') {
+            if (f.epsForward == null) { if (!fwdBase) fwdBase = { v: bs.v, n }; }
+            else if (!sameV(f.epsForward, bs.v)) { ov.epsForward = bs.v; ov.why = OVERRIDE_WHY; }
+          }
+          if (Object.keys(ov).some((k) => k !== 'why')) leg.override = ov; else delete leg.override;
+          consumed = new Set([bs.label, 'forward', 'consensus', 'guidance'].filter(Boolean).flatMap((w) => w.split(/\s+/)).map((w) => FM.keyOf(w).toLowerCase()));
+          F.push(`leg ${n}: pe base ${bs.base}${bs.label ? ` "${bs.label}"` : ''} from the author's wording`);
+        }
+        const q = qualifierOf(mdescProse, consumed, leg); if (q) leg.note = q;
         lm.computed = true; lm.why = x.why || '';
-        if (method === 'pe' && x.baseKey === 'eps' && epsBase == null) epsBase = { v: x.base, label: pl.mdesc };
+        // ฐาน forward/FY ห้ามกลายเป็น fundamentals.eps (TTM) — ขา pe ธรรมดาตัวถัดไปเป็นคนให้ หรือ eps คงว่างเหมือนเดิม
+        if (method === 'pe' && x.baseKey === 'eps' && epsBase == null && !bs) epsBase = { v: x.base, label: pl.mdesc };
       } else {
         leg = declared('other', x.why);
         if (leg) F.push(`leg ${n} ${base} → declared (${[...new Set(String(x.why).split(' · '))].join(' · ')})`);
       }
     }
     if (!leg) return;
+    // Plan 4c-prep D4: เหตุผลในป้ายบริบทของชื่อขา (labelParts.reason) + หางชื่อที่ยาวเกิน → ต้น note (คำไม่หาย)
+    const pre = [lp.ctx ? lp.reason : '', labelTail].filter(Boolean).join(' · ');
+    if (pre) leg.note = leg.note ? `${pre} · ${leg.note}` : pre;
     // family (1 ตระกูล 1 เสียง · §3.6 C) — บังคับโดยโครงสร้างก่อน · โซนเทา: declared other/rnpv → rg (F) · fcfyield → market
     const need = S.requiredFamily(leg);
     if (need) leg.family = need;
@@ -334,7 +432,7 @@ function legsOf(parsed, fund, currency) {
     }
     legs.push(leg); meta.push(lm);
   });
-  return { legs, meta, epsBase, H, F };
+  return { legs, meta, epsBase, fwdBase, H, F };
 }
 
 /** ชั้นกัน (ruling Task 4 R1-I1): ทุกขาที่คิดได้ต้องคิดซ้ำได้ .mval บน doc.fundamentals สุดท้าย — ไม่ได้ = declared other + F
@@ -467,6 +565,37 @@ function extrasOf(parsed, H) {
   return out;
 }
 
+/** ffoBasis จากถ้อยคำผู้เขียน (spec §3.7 ก · measure §6.2: 8 ใบ AFFO · 2 Core FFO) — การ์ด · ขา pffo · หัวคอลัมน์ฉาก/แถวออก
+ *  ทุกจุดที่พูดถึงปริมาณ FFO ต้องตรงกัน · ปนกัน = null (ไม่เดา — gate ตัดสิน) */
+function ffoBasisOf(parsed) {
+  const texts = [].concat((parsed.s1cards || []).map((c) => c.k), (parsed.legs || []).flatMap((l) => [l.mname, l.mdesc]),
+    (parsed.s6cols || []).flatMap((c) => [c.top ? c.top[1] : '', ...(c.lis || []).map((x) => x[0])]));
+  const kinds = new Set();
+  for (const s of texts) for (const m of String(s || '').matchAll(/\b(Core\s*FFO|AFFO|FFO)\b/gi)) kinds.add(/core/i.test(m[1]) ? 'coreFfo' : m[1].toUpperCase() === 'AFFO' ? 'affo' : 'ffo');
+  return kinds.size === 1 ? [...kinds][0] : null;
+}
+/** legend หมวด 2 — ตัดป้าย skeleton 3 ชิ้น (กติกาเดียวกับ equiv s2) · เศษ → text.legendNote (≤80 ไม่งั้น H) */
+function legendNoteOf(parsed, sym) {
+  let t = txt(parsed.legend || '');
+  if (!t) return null;
+  t = t.replace(new RegExp(`(^|\\s)ราคา ${esc(sym)}(?=\\s|$)`), '$1').replace(/(^|\s)มูลค่าเหมาะสม(?:\s*\{\{rd:fv\}\}|\s*(?:US\$|\$|฿)\s*[0-9][0-9,.]*)?(?=\s|$)/, '$1').replace(/(^|\s)จุดสำคัญ(?=\s|$)/, '$1');
+  t = t.replace(/\s+/g, ' ').trim();
+  return t || null;
+}
+/** vcell ที่ไม่ใช่ template (มูลค่าเหมาะสม · ส่วนต่างจากราคา · เป้านักวิเคราะห์ ตัวแรก) → verdict.extraCells (≤2 ไม่งั้น H) */
+function extraCellsOf(parsed) {
+  const H = [], cells = [];
+  let analystSeen = false;
+  for (const [k, vHtml] of (parsed.s8 && parsed.s8.vcells) || []) {
+    const kk = txt(k);
+    if (kk === 'มูลค่าเหมาะสม' || kk === 'ส่วนต่างจากราคา') continue;
+    if (!analystSeen && /เป้านักวิเคราะห์/.test(kk)) { analystSeen = true; continue; }
+    cells.push({ k: kk.replace(/[{}<>]/g, '').trim(), v: MP.htmlToProse(vHtml) });
+  }
+  if (cells.length > 2) H.push(`s8 vcells ${cells.length + 3} > 5 — extra cells not carried`);
+  return { cells: cells.length && cells.length <= 2 ? cells : null, H };
+}
+
 const pruneUndefined = (x) => {
   if (Array.isArray(x)) return x.map(pruneUndefined);
   if (x && typeof x === 'object') { const o = {}; for (const [k, v] of Object.entries(x)) if (v !== undefined) o[k] = pruneUndefined(v); return o; }
@@ -481,6 +610,9 @@ function proseZones(doc, src) {
   add('metrics.hint', doc.metrics, 'hint', src.s1hint);
   for (const k of Object.keys(doc.metrics.notes || {})) add(`metrics.notes.${k}`, doc.metrics.notes, k, src.cardD[k]);
   (doc.metrics.custom || []).forEach((c, i) => add(`metrics.custom[${i}].note`, c, 'note', null));
+  // ค่าการ์ด custom (Plan 4c-prep D3): tokenise เฉพาะ literal ที่เท่าค่าที่ render ทุก byte (ไม่มี hit ป้าย E44 — html '')
+  (doc.metrics.custom || []).forEach((c, i) => add(`metrics.custom[${i}].value`, c, 'value', ''));
+  ((doc.verdict && doc.verdict.extraCells) || []).forEach((c, i) => add(`verdict.extraCells[${i}].v`, c, 'v', null));
   for (const k of Object.keys(doc.text || {})) add(`text.${k}`, doc.text, k, src.text[k]);
   // prose.disclaimerSources = อ้างอิงแหล่ง/วันที่ในอดีต — คงเป็น literal เสมอ ไม่ tokenise (fix round 1 · M-2)
   for (const k of Object.keys(doc.prose || {})) if (k !== 'disclaimerSources') add(`prose.${k}`, doc.prose, k, src.prose[k]);
@@ -570,7 +702,7 @@ function assemble(parsed0, ctx) {
 
   // fundamentals ก่อนขา (ruling 1) — values ชนะ · การ์ด · แล้ว eps จากฐานขา pe แรกเมื่อยังไม่มี (two-pass)
   const cf = MC.cardFund(parsed, {});
-  F.push(...cf.F); if (cf.fyConflict) H.push('fy periods conflict across FY cards');
+  F.push(...cf.F);   // Plan 4c-prep: FY หลายงวด = เก็บงวดล่าสุด + F (cards.js) — ไม่ใช่ H อีกต่อไป
   // range 52 สัปดาห์: px-meta ก่อน · ไม่มีแล้วการ์ด "52 สัปดาห์" ที่พิมพ์ครบคู่ (ตัวเลขของผู้เขียน · cron เขียนทับตามรอบ)
   let range52w = mo.range52w;
   if (!range52w) {
@@ -582,6 +714,9 @@ function assemble(parsed0, ctx) {
   const fo = fundOf(parsed, cf);
   let fund = fo.f;
   const srcs = fo.src;
+  // Plan 4c-prep (spec §3.7 ก): AFFO / Core FFO ที่ผู้เขียนใช้ทุกจุดตรงกัน → ffoBasis (ป้ายการ์ด/ขา/ฉากของ v3 พิมพ์คำเดียวกัน)
+  const fb = ffoBasisOf(parsed);
+  if (fb && fb !== 'ffo') { fund = { ...fund, ffoBasis: fb }; F.push(`fundamentals.ffoBasis ${fb} from the author's wording`); }
   // B-2 (fix round 3): ใบ v2 แสดง dividend yield (stock-meta) แต่ไม่มี dps ที่พิมพ์ — dps = yield × ราคาใน stock-meta (ค่าที่ v2 render ออกมาเอง) ⇒ การ์ด/sm.dividendYield ของ v3 เท่าเดิม
   if (fund.dps == null && isNum(sm.dividendYield) && sm.dividendYield >= 0) {
     const pxY = isNum(sm.price) && sm.price > 0 ? sm.price : v.px;
@@ -590,6 +725,7 @@ function assemble(parsed0, ctx) {
   }
   let pass = legsOf(parsed, fund, currency);
   if (fund.eps == null && pass.epsBase) { fund = { ...fund, eps: pass.epsBase.v }; srcs.eps = 'first pe leg base'; srcs.epsLabel = pass.epsBase.label; }
+  if (fund.epsForward == null && pass.fwdBase) { fund = { ...fund, epsForward: pass.fwdBase.v }; srcs.epsForward = `leg ${pass.fwdBase.n} base`; F.push(`fundamentals.epsForward ${pass.fwdBase.v} from leg ${pass.fwdBase.n} base`); }
   if (fund.eps != null) fund.epsBasis = epsBasisOf(srcs.eps === 'first pe leg base' ? srcs.epsLabel : (cf.src.epsLabel || (parsed.legs.find((l) => /P\s*\/\s*E/i.test(l.mname)) || {}).mdesc), region);
   doc.fundamentals = fund;
   pass = legsOf(parsed, doc.fundamentals, currency);   // pass 2 บน object เดียวกับ doc.fundamentals
@@ -606,6 +742,10 @@ function assemble(parsed0, ctx) {
 
   // metrics (รอบแรกด้วย view เทียม — render check/notes จริงหลัง compute)
   doc.analyst = analystOf(parsed, F, H);
+  // Plan 4c-prep D4: vcell ของผู้เขียนนอก template หมวด 8 → verdict.extraCells
+  const xc = extraCellsOf(parsed);
+  H.push(...xc.H);
+  if (xc.cells) { doc.verdict = { extraCells: xc.cells }; F.push(`s8 extra vcells → verdict.extraCells ×${xc.cells.length}`); }
   const cardOpts = { currency, market: doc.market, analyst: doc.analyst, legs: doc.legs, force: new Map() };
   const setMetrics = (mc) => {
     let custom = mc.custom, cards = mc.cards;
@@ -697,6 +837,9 @@ function assemble(parsed0, ctx) {
   // §2 hint (Plan 4b Task 6b): template พิมพ์ "โดยประมาณ" เอง — เศษหลังคำนั้น (หรือทั้งป้ายถ้าผู้เขียนเขียนใหม่) → text.chartHint
   const s2t = parsed.s2hint ? pr(parsed.s2hint).replace(/^โดยประมาณ\s*/, '').trim() : '';
   if (s2t) { text.chartHint = s2t; F.push(`chart hint kept → text.chartHint "${s2t}"`); }
+  // Plan 4c-prep D4: เศษ legend หมวด 2 (นอกป้าย skeleton) → text.legendNote
+  const ln = legendNoteOf(parsed, parsed.sym);
+  if (ln && ln.length <= 80) { text.legendNote = MP.htmlToProse(ln); F.push(`legend annotation → text.legendNote "${ln}"`); } else if (ln) H.push(`legend annotation ${ln.length} > 80 chars — not carried`);
   if (assumpBody && assumpBody !== TEMPLATE_ASSUMP) text.disclaimerAssump = ' ' + assumpBody;
   for (const k of Object.keys(text)) if (!text[k]) delete text[k];
   doc.text = Object.keys(text).length ? text : undefined;
@@ -750,13 +893,11 @@ function assemble(parsed0, ctx) {
   let tokens = 0;
   if (view) {
     D.push(...MS.tgtCheck(parsed, view));
-    // custom ที่เป็นค่าผูกราคา (token หรือ literal เท่าค่าที่ render) = แคตตาล็อกที่ขาดข้อมูล — ต้องให้คนตัดสิน
-    const pb = P3.priceBound(view);
-    const PRICE_TOK = /\{\{(px|fv|mos|mos20|mos30|upside|pe|pbv|ps|yield|mcap|analyst\.target|analyst\.pct|scn\.[a-z]+\.(?:tgt|ret))\}\}/;
-    (out.metrics.custom || []).forEach((c) => {
-      const lit = MP.CAND.some(({ kind, re }) => { const R = re(); let m; while ((m = R.exec(c.value))) { const l = m[0].trim(); if (pb.some((b) => b.kind === kind && MP.bare(l) === MP.bare(b.shown))) return true; } return false; });
-      if (PRICE_TOK.test(c.value) || lit) H.push(`price-bound custom card "${c.label}"`);
-    });
+    // Plan 4c-prep D3: โน้ต .ret ที่มีตัวเลข % (pending จาก scenarios) — เท่าผลตอบแทนรวม v3 ภายในการปัด = พาคำ (ไม่พาตัวเลข) · ไม่งั้น H เดิม
+    //  (ก่อน tokenise → retNote ที่เพิ่มผ่าน tokenise + C.compute ข้างล่างเหมือนช่องอื่น)
+    const rr = MS.retResolve(scn.meta.retPending, view);
+    H.push(...rr.H);
+    for (const { i, note } of rr.set) { if (note && out.scenarios) out.scenarios.cases[i].retNote = note; F.push(`scenarios.cases[${i}] numeric .ret = v3 total → carried without the number`); }
     const apxStale = [];
     for (const z of proseZones(out, src)) {
       const hits = z.html ? RV.proseBoundHits(`<p>${z.html}</p>`, view.d) : [];
@@ -765,6 +906,12 @@ function assemble(parsed0, ctx) {
       apxStale.push(...MP.staleCopies(r.text, ctx.analysisPx, view.d));
     }
     if (tokens) F.push(`prose literals → tokens ×${tokens}`);
+    // custom ที่ยังมี literal ผูกราคาหลัง tokenise (ไม่เท่าค่าที่ render ทุก byte) = ต้องให้คนตัดสิน · token {{pe}} ฯลฯ = รูปที่อนุมัติ (render ค่าสด) — Plan 4c-prep D3
+    { const pb = P3.priceBound(view);
+      (out.metrics.custom || []).forEach((c) => {
+        const lit = MP.CAND.some(({ kind, re }) => { const R = re(); let m; while ((m = R.exec(c.value))) { const l = m[0].trim(); if (pb.some((b) => b.kind === kind && MP.bare(l) === MP.bare(b.shown))) return true; } return false; });
+        if (lit) H.push(`price-bound custom card "${c.label}"`);
+      }); }
     if (apxStale.length) D.push(`prose stale copies ×${apxStale.length} (${[...new Set(apxStale.map((x) => x.why))].join(',')})`);
     const errs = S.validate(out);
     if (errs.length) for (const e of errs.slice(0, 8)) H.push(`schema(after tokenise) ${e.path}: ${e.msg}`);
@@ -775,11 +922,12 @@ function assemble(parsed0, ctx) {
       try { P3.renderProse(obj[key], view); } catch (e) { H.push(`hint note carries an unresolvable token — ${path} "${obj[key]}" not carried (${String(e.message).split('\n')[0]})`); delete obj[key]; }
     }
     if (out.text && !Object.keys(out.text).length) delete out.text;
-  }
+  } else H.push(...(scn.meta.retPending || []).filter(Boolean).map((p) => p.H));   // ไม่มี view = ตัดสินตัวเลขใน .ret ไม่ได้ → H เดิม
   return {
     doc: out, notes: { H, D, F },
     meta: { legs: pass.meta, weights: wk, scn: scn.meta, cards: mc.meta, prose: { tokens }, fundSrc: srcs, computed: !!view, fv: view ? view.fv : null },
   };
 }
 
-module.exports = { assemble, s6HintNote, guardLegs, extrasOf, analystOf, singleTarget, legsOf, weightsOf, generatedValHint, pxMetaOf, qualifierOf, hasProse, isProseToken, labelOf, labelParts, multipleSourceOf, medianWindowOf };
+module.exports = { assemble, s6HintNote, guardLegs, extrasOf, analystOf, singleTarget, legsOf, weightsOf, generatedValHint, pxMetaOf, qualifierOf, hasProse, isProseToken, labelOf, labelParts, multipleSourceOf, medianWindowOf,
+  firstTagOf, sectorLineOf, ffoBasisOf, baseOf, extraCellsOf, legendNoteOf };

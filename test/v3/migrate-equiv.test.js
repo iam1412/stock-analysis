@@ -19,6 +19,12 @@ function migrate(sym, html) {
   const v2 = B.expandReport(html), v3 = B.expandReport(R.toV2Source(doc, view));
   return { doc, view, notes, v2, v3, eq: EQ.compare(v2, v3, doc, view, { v2src: html }) };
 }
+// Plan 4c-prep Task 5: assemble พกคำเข้าช่องใหม่แล้ว — test ของ gate ถอดช่องที่พกออกจาก doc (v3 ไม่พกคำ) แล้วเทียบใหม่: gate ต้องยังจับคำที่หาย
+function recompare(m, html, mutate) {
+  const doc = JSON.parse(JSON.stringify(m.doc)); mutate(doc);
+  const view = C.compute(doc, { seeds: SEEDS });
+  return EQ.compare(m.v2, B.expandReport(R.toV2Source(doc, view)), doc, view, { v2src: html });
+}
 // identity
 { const html = raw('BBL'); const v2 = B.expandReport(html); const z = EQ.zones(v2);
   t(z.has('header') && z.has('s1') && z.has('s8') && z.has('disc') && z.has('footer'), 'zones: header · s1…s8 · disc · footer located');
@@ -31,9 +37,14 @@ function migrate(sym, html) {
 const NON_HUMAN = ['CASY', 'FTV', 'SRE', 'SGC', 'NFG'];
 for (const sym of ['BBL', ...NON_HUMAN]) {
   const m = migrate(sym, raw(sym));
-  // final-review I-1: BBL leg 1 "Normalized EPS ~฿22 × P/E เฉลี่ย ~9.0x" — the "เฉลี่ย" source claim sits in the formula head, v3 prints its own
-  // source label ⇒ the word is no longer masked: TEXT LOST (BBL is HUMAN anyway by the analyst note)
-  t.eq(m.eq.textLost, sym === 'BBL' ? ['เฉลี่ย'] : [], `${sym}: TEXT LOST = ${sym === 'BBL' ? '[เฉลี่ย] (computed-leg head word, I-1)' : '0'}`);
+  // final-review I-1: BBL leg 1 "Normalized EPS ~฿22 × P/E เฉลี่ย ~9.0x" — the "เฉลี่ย" source claim sits in the formula head
+  // Plan 4c-prep Task 5 (qualifierOf round 3 — brief Step 4): คำผู้เขียนในท่อนสูตรนอกวงเล็บ = พกไป legs[i].note ⇒ BBL TEXT LOST 0
+  //  gate ยังจับคำนี้ได้: ถอด "เฉลี่ย" ออกจาก note ของ v3 → TEXT LOST ['เฉลี่ย'] (ค่าที่ pin เดิม)
+  t.eq(m.eq.textLost, [], `${sym}: TEXT LOST = 0`);
+  if (sym === 'BBL') {
+    t(/^เฉลี่ย · /.test(m.doc.legs[0].note || ''), 'BBL: round 3 carries the head word "เฉลี่ย" into legs[0].note', m.doc.legs[0].note);
+    t.eq(recompare(m, raw(sym), (d) => { d.legs[0].note = d.legs[0].note.replace(/^เฉลี่ย · /, ''); }).textLost, ['เฉลี่ย'], 'BBL: without the carried word → TEXT LOST [เฉลี่ย] (computed-leg head word, I-1)');
+  }
   const b = BK.bucketOf(m.notes, m.eq);
   if (NON_HUMAN.includes(sym)) t(b.bucket !== 'HUMAN', `${sym}: bucket is CLEAN or VALUE-DRIFT (${b.bucket}: ${b.reasons.join(' ; ')})`);
   else t(b.bucket === 'HUMAN' && m.notes.H.length && m.notes.H.every((r) => /analyst target .*max\/min/.test(r)), `${sym}: HUMAN only by the analyst max/min note (Task 5 round 4)`, JSON.stringify(m.notes.H));
@@ -138,9 +149,14 @@ for (const sym of ['AAPL', 'DDOG']) { const m = migrate(sym, raw(sym)); const b 
 {
   const html = raw('SRE').replace(/(<div class="gdots">)/, '$1คำทดสอบในจุดสี ');
   t(/คำทดสอบในจุดสี/.test(html), 'C-1 setup: gdots word injected');
-  t(migrate('SRE', html).eq.textLost.includes('คำทดสอบในจุดสี'), 'C-1: a word inside .gdots is compared (not masked)');
+  // Plan 4c-prep Task 5: assemble พกข้อความ gdots → meta.sectorLine / เศษ legend → text.legendNote — gate เทียบบน doc ที่ถอดช่องนั้นออก
+  const g1 = migrate('SRE', html);
+  t(/คำทดสอบในจุดสี/.test(g1.doc.meta.sectorLine || '') && !g1.eq.textLost.includes('คำทดสอบในจุดสี'), 'C-1/Task 5: gdots word carried by meta.sectorLine', JSON.stringify(g1.doc.meta.sectorLine));
+  t(recompare(g1, html, (d) => { delete d.meta.sectorLine; }).textLost.includes('คำทดสอบในจุดสี'), 'C-1: a word inside .gdots is compared (not masked)');
   const html2 = raw('SRE').replace(/(<div class="legend">[\s\S]*?จุดสำคัญ)/, '$1 (คำอธิบายจุดพิเศษ)');
-  t(html2 !== raw('SRE') && migrate('SRE', html2).eq.textLost.includes('คำอธิบายจุดพิเศษ'), 'C-1: an author word in the chart legend is compared (not masked)');
+  const g2 = migrate('SRE', html2);
+  t(html2 !== raw('SRE') && /คำอธิบายจุดพิเศษ/.test((g2.doc.text || {}).legendNote || '') && !g2.eq.textLost.includes('คำอธิบายจุดพิเศษ'), 'C-1/Task 5: legend word carried by text.legendNote', JSON.stringify(g2.doc.text));
+  t(recompare(g2, html2, (d) => { delete d.text.legendNote; if (!Object.keys(d.text).length) delete d.text; }).textLost.includes('คำอธิบายจุดพิเศษ'), 'C-1: an author word in the chart legend is compared (not masked)');
   const m = migrate('DPZ', raw('DPZ'));
   t(m.doc.text && m.doc.text.chartHint && !m.eq.textLost.includes('รายเดือน'), 'C-1: DPZ §2 hint residue is carried (text.chartHint) — not lost', JSON.stringify(m.doc.text));
   const doc = JSON.parse(JSON.stringify(m.doc)); delete doc.text.chartHint;
@@ -218,14 +234,23 @@ t(EQ.TEMPLATE_VOCAB && EQ.TEMPLATE_VOCAB.s3.includes('เฉลี่ย') && EQ
   const e0 = EQ.compare(cm.v2, B.expandReport(R.toV2Source(d0, v0)), d0, v0, { v2src: FTV });
   t(e0.textLost.includes('เน้นกระแสเงินสดจ่ายคืนผู้ถือหุ้นระยะยาว') && e0.textLost.includes('dividend'), 'I-1: computed leg note dropped entirely → its words TEXT LOST', JSON.stringify(e0.textLost));
   // an author word inside the formula head (qualifierOf does not carry it) → TEXT LOST; formula words (net debt · หุ้น) and generated words stay dropped
-  const head = migrate('FTV', FTV.replace('Adjusted EBITDA TTM $1,270M ×', 'Adjusted EBITDA TTM $1,270M มะม่วงสุกงอม ×'));
-  t(head.doc.legs[1].method === 'evebitda' && head.eq.textLost.length === 1 && head.eq.textLost[0] === 'มะม่วงสุกงอม', 'I-1: author word in the computed-leg formula head → TEXT LOST (only that word)', JSON.stringify(head.eq.textLost));
+  // Plan 4c-prep Task 5 (qualifierOf round 3): assemble พกคำนี้ไป note แล้ว — gate เทียบบน doc ที่ถอดคำนั้นออกจาก note
+  const headHtml = FTV.replace('Adjusted EBITDA TTM $1,270M ×', 'Adjusted EBITDA TTM $1,270M มะม่วงสุกงอม ×');
+  const head = migrate('FTV', headHtml);
+  t(/มะม่วงสุกงอม/.test(head.doc.legs[1].note || '') && head.eq.textLost.length === 0, 'Task 5: head word carried into legs[1].note by round 3', JSON.stringify({ note: head.doc.legs[1].note, lost: head.eq.textLost }));
+  const headLost = recompare(head, headHtml, (d) => { d.legs[1].note = d.legs[1].note.replace(/มะม่วงสุกงอม(?: · )?/, '').trim(); if (!d.legs[1].note) delete d.legs[1].note; }).textLost;
+  t(head.doc.legs[1].method === 'evebitda' && headLost.length === 1 && headLost[0] === 'มะม่วงสุกงอม', 'I-1: author word in the computed-leg formula head → TEXT LOST (only that word)', JSON.stringify(headLost));
   // re-review I-3 (CNC shape): a forward/estimate basis qualifier the v3 label replaces ("EPS forward normalized $2.86" → "EPS … (TTM) $2.86")
   // is a changed fact, not a formula word → TEXT LOST → HUMAN · "normalized" stays dropped (v3 prints an equivalent basis)
-  const fwd = migrate('FTV', FTV.replace('EPS adj. $2.86 ×', 'EPS forward normalized $2.86 ×'));
-  t(FTV.includes('EPS adj. $2.86 ×') && fwd.doc.legs[0].method === 'pe' && fwd.eq.textLost.includes('forward') && !fwd.eq.textLost.includes('normalized'),
-    'I-3: CNC-shaped "EPS forward normalized" vs v3 basis label → "forward" TEXT LOST', JSON.stringify({ lost: fwd.eq.textLost, leg: fwd.doc.legs[0] }));
-  t.eq(BK.bucketOf(fwd.notes, fwd.eq).bucket, 'HUMAN', 'I-3: → HUMAN');
+  // Plan 4c-prep Task 5 (D2): assemble อ่านฐาน forward → inputs.base 'epsForward' (v3 พิมพ์ "EPS (forward)") ⇒ ไม่หาย
+  //  gate ยังจับ: ถอด inputs.base (กลับไปเป็นฐาน TTM ที่ v3 ติดป้ายผิด) → "forward" TEXT LOST → HUMAN (ค่าที่ pin เดิม)
+  const fwdHtml = FTV.replace('EPS adj. $2.86 ×', 'EPS forward normalized $2.86 ×');
+  const fwd = migrate('FTV', fwdHtml);
+  t(fwd.doc.legs[0].inputs.base === 'epsForward' && !fwd.eq.textLost.includes('forward'), 'Task 5: forward base detected → "forward" printed by the v3 base label', JSON.stringify({ lost: fwd.eq.textLost, leg: fwd.doc.legs[0] }));
+  const fwdLost = recompare(fwd, fwdHtml, (d) => { delete d.legs[0].inputs.base; delete d.legs[0].baseLabel; d.legs[0].override = { eps: 2.86, why: 'ค่าที่ผู้เขียนใช้ในใบ v2' }; });
+  t(FTV.includes('EPS adj. $2.86 ×') && fwd.doc.legs[0].method === 'pe' && fwdLost.textLost.includes('forward') && !fwdLost.textLost.includes('normalized'),
+    'I-3: CNC-shaped "EPS forward normalized" vs v3 basis label → "forward" TEXT LOST', JSON.stringify({ lost: fwdLost.textLost }));
+  t.eq(BK.bucketOf(fwd.notes, fwdLost).bucket, 'HUMAN', 'I-3: → HUMAN');
 }
 // ── Plan 4c-prep Task 4 (spec §3.7 ค · D4) ──
 const SY = require('../../tools/migrate-v3/synonyms.js');
@@ -344,7 +369,9 @@ const docOf = (patch) => { const d = JSON.parse(JSON.stringify(require('../fixtu
 {
   const html = raw('CASY').replace(/(<div class="vgrid">[\s\S]*?)(\n\s*<\/div>\s*<div class="zone">)/, '$1\n        <div class="vcell"><div class="k">จุดทยอยสะสม</div><div class="v">ใต้มูลค่าเหมาะสม</div></div>$2');
   const m = migrate('CASY', html);
-  t(m.eq.textLost.includes('จุดทยอยสะสม'), 'without verdict.extraCells (assemble = Task 5) the 3rd vcell .k is TEXT LOST — no longer masked by the s8 normaliser', JSON.stringify(m.eq.textLost));
+  t(m.doc.verdict && !m.eq.textLost.includes('จุดทยอยสะสม'), 'Task 5: 3rd vcell carried by verdict.extraCells → not lost', JSON.stringify(m.eq.textLost));
+  const lost = recompare(m, html, (d) => { delete d.verdict; }).textLost;
+  t(lost.includes('จุดทยอยสะสม'), 'without verdict.extraCells the 3rd vcell .k is TEXT LOST — no longer masked by the s8 normaliser', JSON.stringify(lost));
 }
 // the 4b .ret self-test (spec §10.2 d) still fails when an author word in .ret disappears — synonyms never mask it
 {

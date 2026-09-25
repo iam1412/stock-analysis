@@ -98,6 +98,8 @@ function parseV2(sym, html) {
   const lis = (b, cls) => { const box = first(new RegExp(`<div class="box ${cls}">([\\s\\S]*?)</ul>`), b || ''); return box ? [...box.matchAll(/<li>([\s\S]*?)<\/li>/g)].map((x) => x[1]) : []; };
   return {
     sym, html, rd, sm, fd, aiModel: RM.readAiModel(html), header, h1, sub, tags, pxMeta, secs, byN, extraSecs,
+    // Plan 4c-prep Task 5: gdots (ข้อความที่ v2 แสดงใต้หัว) · legend หมวด 2 — HTML ดิบ (assemble ตัดสินเอง)
+    gdots: first(/<div class="gdots">([\s\S]*?)<\/div>/, header), legend: byN[2] ? first(/<div class="legend">([\s\S]*?)<\/div>/, byN[2].body) : null,
     s1cards: s1 ? cards(s1.body) : [], s1hint: s1 && s1.hint, s1paras: s1 ? paras(s1.body) : [],
     legs: L.legs, legBlocks: L.blocks, s3hint: s3 && s3.hint, s3paras: s3 ? paras(s3.body) : [], fvBoxL,
     s2hint: byN[2] ? byN[2].hint : null, s6hint: s6 && s6.hint, s6cols: cols, s6paras: s6 ? paras(s6.body) : [],
