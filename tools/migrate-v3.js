@@ -7,6 +7,9 @@
  *   convert <SYM> [--reports-dir D] [--write] [--accept-drift] [--head-manifest FILE] [--no-stale]
  *           exit 0 CLEAN · 2 VALUE-DRIFT · 1 HUMAN/error · --write: HUMAN ปฏิเสธ (1) · VALUE-DRIFT ต้อง --accept-drift (2)
  *           เขียน = IO.write(<SYM>.json) → ลบ <SYM>.html → checkDoc ต้อง 0 error ไม่งั้นคืน .html + ลบ .json (exit 1)
+ *   batch   <table.csv> --class CLEAN|<driftClass…> --model sonnet|opus [--n N] [--dry-run] [--no-push] [--head-manifest FILE]
+ *           ตาราง = csv รูปเดียวกับ sweep ที่ advisor อนุมัติ · migrate ใหม่แล้วเทียบ bucket/driftClass (ต่าง = ปฏิเสธ · exit 3)
+ *           CLEAN ≤50 ใบ/commit · VALUE-DRIFT 1 ใบ/commit · convert → build → ship --migrate --no-push → verify + push ทุก N commit
  * ★ --write ใส่ reports/ จริงต้องมี env MIGRATE_V3_ALLOW_REAL=1 (Plan 4c ตั้ง · PR นี้ไม่ตั้งนอก scratch rehearsal)
  * ★ นาฬิกา gate: sweep / convert dry-run = values.priceDate ของใบ (ไม่ขึ้นกับวันนี้ — E27 ไม่ใช่คุณสมบัติของการ migrate)
  *   · convert --write = วันนี้ (Asia/Bangkok) เหมือน npm run verify · --today YYYY-MM-DD แทนได้ (review T7 M-4)
@@ -29,17 +32,21 @@ const EQ = require('./migrate-v3/equiv.js');
 const BK = require('./migrate-v3/buckets.js');
 const AP = require('./migrate-v3/analysis-px.js');
 const RP = require('./migrate-v3/report.js');
+const BT = require('./migrate-v3/batch.js');
 
 class UsageError extends Error {}
 const ISO_RE = /^\d{4}-\d{2}-\d{2}$/;
 
 function parseArgs(argv) {
-  const VAL = { '--reports-dir': 'reportsDir', '--head-manifest': 'headManifest', '--out': 'out', '--limit': 'limit', '--today': 'today' };
+  const VAL = { '--reports-dir': 'reportsDir', '--head-manifest': 'headManifest', '--out': 'out', '--limit': 'limit', '--today': 'today', '--n': 'n', '--model': 'model' };
   const o = { _: [], only: null, write: false, acceptDrift: false, noStale: false };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (VAL[a]) { if (argv[i + 1] == null) throw new UsageError(`${a} ต้องมีค่า`); o[VAL[a]] = argv[++i]; }
     else if (a === '--only') { o.only = o.only || []; while (argv[i + 1] != null && !argv[i + 1].startsWith('--')) o.only.push(argv[++i].toUpperCase()); if (!o.only.length) throw new UsageError('--only ต้องมีอย่างน้อย 1 symbol'); }
+    else if (a === '--class') { o.classes = o.classes || []; while (argv[i + 1] != null && !argv[i + 1].startsWith('--')) o.classes.push(argv[++i]); if (!o.classes.length) throw new UsageError('--class ต้องมีอย่างน้อย 1 ชั้น (CLEAN หรือ driftClass)'); }
+    else if (a === '--dry-run') o.dryRun = true;
+    else if (a === '--no-push') o.noPush = true;
     else if (a === '--write') o.write = true;
     else if (a === '--accept-drift') o.acceptDrift = true;
     else if (a === '--no-stale') o.noStale = true;
@@ -48,6 +55,8 @@ function parseArgs(argv) {
   }
   if (o.limit != null && !/^\d+$/.test(o.limit)) throw new UsageError('--limit ต้องเป็นจำนวนเต็ม');
   if (o.limit != null) o.limit = +o.limit;
+  if (o.n != null && !/^[1-9]\d*$/.test(o.n)) throw new UsageError('--n ต้องเป็นจำนวนเต็ม ≥ 1');
+  o.n = o.n != null ? +o.n : 1;
   if (o.today != null && !ISO_RE.test(o.today)) throw new UsageError('--today ต้องเป็น YYYY-MM-DD');
   o.reportsDir = path.resolve(o.reportsDir || REAL_REPORTS);
   return o;
@@ -126,9 +135,9 @@ function rowOf(m, o) {
   const stale = m.notes.D.map((d) => /^prose stale copies ×(\d+)/.exec(d)).find(Boolean);
   const gaugeF = eq.rd.filter((r) => /^gauge\.(min|max)$/.test(r.path)).map((r) => `rd/sm ${r.path}: ${r.v2} → ${r.v3}`);
   const items = eq.rd.filter((r) => !/^gauge\.(min|max)$/.test(r.path)).map((r) => ({ path: r.path, v2: r.v2, v3: r.v3 })).concat(m.notes.D.map(RP.noteItem));
-  // เพดานการ์ด custom 4: HUMAN ด้วยเหตุนี้อย่างเดียว = H note อื่นไม่มี และ TEXT LOST ทุกคำมาจากการ์ดที่ถูกตัด
+  // เพดานการ์ด custom (4 · ใบ migrate 8 — S.customCap): HUMAN ด้วยเหตุนี้อย่างเดียว = H note อื่นไม่มี และ TEXT LOST ทุกคำมาจากการ์ดที่ถูกตัด
   let capOnly = false;
-  const cap = m.notes.H.find((r) => /^custom cards \d+ > 4 — dropped /.test(r));
+  const cap = m.notes.H.find((r) => /^custom cards \d+ > \d+ — dropped /.test(r));
   if (m.bucket === 'HUMAN' && !m.failed && cap && m.notes.H.length === 1 && !(eq.colour && eq.colour.keys && eq.colour.keys.length)) {
     const labels = [...cap.matchAll(/"([^"]+)"/g)].map((x) => x[1]);
     const pool = new Set(m.parsed.s1cards.filter((c) => labels.includes(c.k)).flatMap((c) => words(`${c.kHtml} ${c.vHtml} ${c.dHtml}`)));
@@ -238,6 +247,31 @@ function runConvert(symIn, opts, log, deps) {
   return 0;
 }
 
+/** batch — spec §3.7 ฉ · plan 4c-prep D6 · ★ เขียนได้เฉพาะ reports/ ของ checkout นี้ (ship --migrate commit ที่นี่) + env MIGRATE_V3_ALLOW_REAL=1 */
+function runBatchCli(tablePath, opts, log) {
+  const say = log || ((s) => process.stdout.write(s + '\n'));
+  if (!opts.classes || !opts.classes.length) throw new UsageError('batch ต้องมี --class CLEAN|<driftClass…>');
+  if (!opts.model) throw new UsageError('batch ต้องมี --model sonnet|opus (trailer ของ commit migrate)');
+  if (!opts.dryRun) {
+    if (!isRealReports(opts.reportsDir)) { say(`✗ batch เขียนได้เฉพาะ reports/ ของ checkout นี้ (ship --migrate commit ที่ ${REAL_REPORTS}) — ใช้ --dry-run กับ --reports-dir อื่น`); return 1; }
+    if (process.env.MIGRATE_V3_ALLOW_REAL !== '1') { say('✗ batch: เขียน reports/ จริงต้องตั้ง MIGRATE_V3_ALLOW_REAL=1 (Plan 4c เท่านั้น)'); return 1; }
+  }
+  const o = ctxOf(opts);
+  const rows = BT.readTable(fs.readFileSync(tablePath, 'utf8'));
+  const Sh = require('./queue/ship.js');
+  const run = (cmd, args) => { const r = cp.spawnSync(cmd, args, { cwd: ROOT, stdio: 'inherit' }); if (r.status !== 0) throw new Error(`batch: ${cmd} ${args.join(' ')} exit ${r.status}`); };
+  const deps = {
+    fresh: (sym) => { const m = migrateOne(sym, o); return { bucket: m.bucket, driftClass: RP.driftClass(rowOf(m, o)) }; },
+    convert: (sym, acceptDrift) => runConvert(sym, { ...opts, write: true, acceptDrift }, say),
+    build: () => run('npm', ['run', 'build']),
+    ship: (syms) => Sh.shipMigrate(syms.join(' '), { model: opts.model, noPush: true, skipVerify: true }),
+    verify: () => run('npm', ['run', 'verify']),
+    push: () => { run('git', ['pull', '--rebase', 'origin', 'main']); run('git', ['push', 'origin', 'HEAD:main']); },
+    log: say,
+  };
+  return BT.runBatch(rows, { classes: opts.classes, n: opts.n || 1, model: opts.model, noPush: !!opts.noPush, dryRun: !!opts.dryRun }, deps).code;
+}
+
 function main(argv) {
   let o;
   try {
@@ -245,7 +279,8 @@ function main(argv) {
     o = parseArgs(rest);
     if (cmd === 'sweep') return runSweep(o).code;
     if (cmd === 'convert') { if (o._.length !== 1) throw new UsageError('convert ต้องมี <SYM> ตัวเดียว'); return runConvert(o._[0], o); }
-    throw new UsageError('ใช้: migrate-v3.js sweep|convert …');
+    if (cmd === 'batch') { if (o._.length !== 1) throw new UsageError('batch ต้องมี <table.csv> ตัวเดียว'); return runBatchCli(o._[0], o); }
+    throw new UsageError('ใช้: migrate-v3.js sweep|convert|batch …');
   } catch (e) {
     if (e instanceof UsageError) { process.stderr.write(`✗ ${e.message}\n`); return 1; }
     process.stderr.write(`✗ ${e.stack || e}\n`);
@@ -255,4 +290,4 @@ function main(argv) {
 
 if (require.main === module) process.exitCode = main(process.argv.slice(2));
 
-module.exports = { runSweep, runConvert, migrateOne, rowOf, parseArgs, loadManifest, isRealReports, isCheckoutReports, isGuarded, main };
+module.exports = { runSweep, runConvert, runBatchCli, migrateOne, rowOf, parseArgs, loadManifest, isRealReports, isCheckoutReports, isGuarded, main };

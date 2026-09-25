@@ -133,9 +133,9 @@ function mdOf(rows, o) {
   for (const [k, n] of hist(H.flatMap((r) => [...new Set(r.reasons.filter((x) => !/^D: /.test(x)).map(kindOf))])).slice(0, 10)) L.push(`| ${mdCell(k)} | ${n} |`);
   L.push('');
   L.push('## Known open questions for the owner before 4c', '');
-  const capAll = H.filter((r) => r.reasons.some((x) => /^custom cards \d+ > 4/.test(x))).length;
+  const capAll = H.filter((r) => r.reasons.some((x) => /^custom cards \d+ > \d+/.test(x))).length;
   const capOnly = H.filter((r) => r.capOnly).length;
-  L.push(`1. **custom-card cap 4** — ${capAll} ใบ HUMAN มีเหตุ \`custom cards N > 4\` · ${capOnly} ใบ HUMAN ด้วยเหตุนี้อย่างเดียว (H note อื่นไม่มี และ TEXT LOST ทุกคำมาจากการ์ดที่ถูกตัด) — ยกเพดานหรือให้คนเลือกการ์ด?`);
+  L.push(`1. **custom-card cap 8 (ใบ migrate)** — ${capAll} ใบ HUMAN มีเหตุ \`custom cards N > 8\` · ${capOnly} ใบ HUMAN ด้วยเหตุนี้อย่างเดียว — ลดเพดาน = ใบที่เกินกลับเป็น HUMAN (spec §3.7 ง)`);
   L.push(`2. **นโยบายแบตช์ 4c สำหรับ VALUE-DRIFT ${V.length} ใบ** — ${V.filter((r) => ['fv-rounding', 'scn-tgt', 'index', 'multi-rounding'].includes(driftClass(r))).length} ใบอยู่ในชั้นปัดเศษ (fv-rounding · scn-tgt · index · multi-rounding) · prose-stale ${V.filter((r) => driftClass(r) === 'prose-stale').length} · mixed ${V.filter((r) => driftClass(r) === 'mixed').length} (ruling เดิม: decisions §10 + PR body เป็นของเจ้าของ) · \`--accept-drift\` รายใบหรือรายชั้น?`);
   const li = (k) => H.filter((r) => r.lostIn && r.lostIn[k]).map((r) => r.symbol);
   const lst = (a) => `${a.length} ใบ${a.length ? ` (${a.slice(0, 20).join(' ')}${a.length > 20 ? ' …' : ''})` : ''}`;

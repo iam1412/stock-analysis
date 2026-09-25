@@ -1,7 +1,7 @@
 'use strict';
 // Plan 4b Task 7 — CLI tools/migrate-v3.js sweep|convert · report.js (md/csv · driftClass/maxDeltaPct) · tmp dirs only (never reports/)
-// ★ deviation from the brief (measured at base 769d1e7d4): BBL is HUMAN since Task 5 round 4 (analyst max/min) and DPZ is HUMAN
-//   (custom cards > 4) ⇒ the 7-fixture sweep has HUMAN 4 (AAPL BBL DDOG DPZ); the write path uses CASY (VALUE-DRIFT) instead of BBL
+// ★ deviation from the brief (measured at base 769d1e7d4): BBL is HUMAN since Task 5 round 4 (analyst max/min) ⇒ the write path uses CASY
+//   (VALUE-DRIFT) instead of BBL · Plan 4c-prep D5 (spec §3.7 ง: cap 8 migrated-only): DPZ (5 custom) is no longer HUMAN ⇒ HUMAN 3 (AAPL BBL DDOG)
 const t = require('./_t.js')('migrate-cli');
 const fs = require('fs'), os = require('os'), path = require('path'), cp = require('child_process');
 const ROOT = path.join(__dirname, '..', '..');
@@ -24,12 +24,13 @@ const realBefore = fs.readdirSync(REAL).length;
 {
   const out = path.join(tmp, 'sweep');
   const r = cli(['sweep', ...common, '--out', out]);
-  t(r.code === 0 && /sweep: 7 ใบ · CLEAN \d+ · VALUE-DRIFT \d+ · HUMAN 4 · TEXT LOST ใน CLEAN 0/.test(r.out), 'sweep: 7 fixtures · HUMAN 4 (AAPL BBL DDOG DPZ)', r.out.slice(-400));
+  // Plan 4c-prep Task 5 round 3 ruling: basis words on a pe leg without a consumed base are never carried ⇒ FTV (leg 1 tail "adjusted … guidance") = HUMAN
+  t(r.code === 0 && /sweep: 7 ใบ · CLEAN \d+ · VALUE-DRIFT \d+ · HUMAN 4 · TEXT LOST ใน CLEAN 0/.test(r.out), 'sweep: 7 fixtures · HUMAN 4 (AAPL BBL DDOG FTV) — DPZ out by cap 8 (spec §3.7 ง)', r.out.slice(-400));
   t(fs.existsSync(out + '.md') && fs.existsSync(out + '.csv'), 'sweep writes md + csv');
   const csv = fs.readFileSync(out + '.csv', 'utf8').trim().split('\n');
   t(csv.length === 8 && /^symbol,market,bucket,reasons,legs,fvLegs,textLost,numberValue,rdRows,proseStale,customCards,fNotes,driftClass,maxDeltaPct$/.test(csv[0]), 'csv header + 7 rows', csv[0]);
   const all = csv.join('\n');
-  t(/AAPL,US,HUMAN/.test(all) && /DDOG,US,HUMAN/.test(all) && /BBL,TH,HUMAN/.test(all) && /DPZ,US,HUMAN/.test(all) && /CASY,US,VALUE-DRIFT/.test(all), 'csv buckets');
+  t(/AAPL,US,HUMAN/.test(all) && /DDOG,US,HUMAN/.test(all) && /BBL,TH,HUMAN/.test(all) && !/DPZ,US,HUMAN/.test(all) && /CASY,US,VALUE-DRIFT/.test(all), 'csv buckets');
   // positional columns survive reasons with commas (reasons always quoted, inner commas → ';')
   t(csv.slice(1).every((l) => { const m = /^[A-Z.]+,[A-Z]+,[A-Z-]+,"((?:[^"]|"")*)",(.*)$/.exec(l); return m && !m[1].includes(',') && m[2].split(',').length === 10; }), 'csv: reasons quoted without commas · 10 columns after it');
   const casy = csv.find((l) => l.startsWith('CASY,')).split(',');
@@ -38,7 +39,9 @@ const realBefore = fs.readdirSync(REAL).length;
   const md = fs.readFileSync(out + '.md', 'utf8');
   t(/## HUMAN/.test(md) && /## VALUE-DRIFT/.test(md) && /## CLEAN/.test(md) && /migrate-v3\.js sweep/.test(md), 'md has the three bucket sections + regenerate line');
   t(/## F-note histogram/.test(md) && /## Top-10 HUMAN reasons/.test(md) && /Known open questions for the owner before 4c/.test(md) && /VALUE-DRIFT per driftClass: gauge-only \d+ · fv-rounding \d+/.test(md) && /--no-stale/.test(md) && /gdots author words.* \d+ ใบ/.test(md) && /s8 third vcell.* \d+ ใบ/.test(md) && /legend annotations.* \d+ ใบ/.test(md), 'md: histogram · top-10 · owner questions · per-class counts · no-stale note');
-  t(/\| DPZ \| US \|/.test(md) && /custom-card cap 4\*\* — \d+ ใบ HUMAN .* 1 ใบ HUMAN ด้วยเหตุนี้อย่างเดียว/.test(md), 'md: DPZ in HUMAN table · cap-only count = 1 (DPZ)', (md.match(/custom-card cap 4.*/) || [''])[0]);
+  // Plan 4c-prep D5 (spec §3.7 ง: cap 8 migrated-only) replaces the 4b pin (DPZ in HUMAN table · cap-4 cap-only count 1)
+  const humanTbl = (md.split('## HUMAN')[1] || '').split('\n## ')[0];
+  t(!/\| DPZ \| US \|/.test(humanTbl) && /custom-card cap 8 \(ใบ migrate\)\*\* — 0 ใบ HUMAN/.test(md), 'md: DPZ not in HUMAN table · cap-8 line counts 0 HUMAN', (md.match(/custom-card cap 8.*/) || [''])[0]);
   t(fs.existsSync(path.join(REP, 'AAPL.html')) && !fs.readdirSync(REP).some((f) => f.endsWith('.json')), 'sweep is read-only');
   const r2 = cli(['sweep', ...common, '--out', out, '--only', 'SRE', 'FTV']); t(/sweep: 2 ใบ/.test(r2.out), '--only limits the sweep');
   const r3 = cli(['sweep', ...common, '--out', out, '--limit', '3']); t(/sweep: 3 ใบ/.test(r3.out), '--limit limits the sweep');
@@ -114,10 +117,11 @@ const realBefore = fs.readdirSync(REAL).length;
 }
 // convert — gate failure after write restores the .html and removes the .json (injected checkDoc)
 {
-  const before = fs.readFileSync(path.join(REP, 'FTV.html'));
+  // Plan 4c-prep Task 5 round 3 ruling: FTV = HUMAN now (convert refuses before checkDoc) ⇒ this path uses SRE (VALUE-DRIFT) — same assertions
+  const before = fs.readFileSync(path.join(REP, 'SRE.html'));
   const lines = [];
-  const code = MV.runConvert('FTV', { ...MV.parseArgs([...common, '--write', '--accept-drift']) }, (s) => lines.push(s), { checkDoc: () => ({ errors: [{ id: 'E99', msg: 'injected' }], warnings: [] }) });
-  t(code === 1 && fs.existsSync(path.join(REP, 'FTV.html')) && !fs.existsSync(path.join(REP, 'FTV.json')) && fs.readFileSync(path.join(REP, 'FTV.html')).equals(before) && lines.some((l) => /E99/.test(l)), 'checkDoc error → .html restored byte-identical, .json removed, exit 1', lines.join('\n'));
+  const code = MV.runConvert('SRE', { ...MV.parseArgs([...common, '--write', '--accept-drift']) }, (s) => lines.push(s), { checkDoc: () => ({ errors: [{ id: 'E99', msg: 'injected' }], warnings: [] }) });
+  t(code === 1 && fs.existsSync(path.join(REP, 'SRE.html')) && !fs.existsSync(path.join(REP, 'SRE.json')) && fs.readFileSync(path.join(REP, 'SRE.html')).equals(before) && lines.some((l) => /E99/.test(l)), 'checkDoc error → .html restored byte-identical, .json removed, exit 1', lines.join('\n'));
 }
 // report.js — driftClass / maxDeltaPct
 {
@@ -145,6 +149,29 @@ const realBefore = fs.readdirSync(REAL).length;
   t.eq(RP.maxDeltaPct([]), 0, 'maxDeltaPct 0 when none');
   t.eq(RP.maxDeltaPct([{ path: 'fv', v2: 0, v3: 1 }]), 100, 'v2 = 0 → 100 (relative quantity)');
   t.eq(RP.maxDeltaPct([{ path: 'sm.mos', v2: 0, v3: 1 }]), 1, 'v2 = 0 on a pp quantity → 1 pp');
+}
+// Plan 4c-prep Task 1 — batch CLI: dry-run on tmp fixtures · refusals (real reports without env · non-dry on a tmp dir)
+// ★ deviation from the brief: the write-path block above already converted REP/CASY → .json ⇒ the batch block gets its own tmp reports dir (fresh CASY-v2 fixture)
+{
+  const REPB = path.join(tmp, 'reports-b'); fs.mkdirSync(REPB);
+  fs.copyFileSync(path.join(ROOT, 'test', 'fixtures', 'CASY-v2.html'), path.join(REPB, 'CASY.html'));
+  const common = ['--reports-dir', REPB, '--head-manifest', MAN, '--no-stale'];
+  const out = path.join(tmp, 'sweep-b');
+  cli(['sweep', ...common, '--out', out]);
+  const lines = fs.readFileSync(out + '.csv', 'utf8').trim().split('\n');
+  const casy = lines.find((l) => l.startsWith('CASY,'));
+  const wrong = casy.replace(/^CASY,US,VALUE-DRIFT,/, 'CASY,US,CLEAN,').replace(/,[a-z-]+,([\d.]+)$/, ',,$1');   // ตารางอ้างว่า CLEAN แต่ migrate ใหม่ได้ VALUE-DRIFT
+  const TB = path.join(tmp, 'table.csv'); fs.writeFileSync(TB, [lines[0], casy].join('\n') + '\n');   // ตารางตรงกับผล migrate ใหม่
+  const ok1 = cli(['batch', TB, '--class', casy.split(',')[12], '--n', '1', '--model', 'opus', '--dry-run', ...common]);
+  t(ok1.code === 0 && /plan: 1 commit/.test(ok1.out) && /CASY/.test(ok1.out) && fs.existsSync(path.join(REPB, 'CASY.html')) && !fs.existsSync(path.join(REPB, 'CASY.json')), 'batch --dry-run: row matching the fresh bucket → planned, nothing written', ok1.out.slice(-300));
+  const TW = path.join(tmp, 'table-wrong.csv'); fs.writeFileSync(TW, [lines[0], wrong].join('\n') + '\n');
+  const bad = cli(['batch', TW, '--class', 'CLEAN', '--n', '1', '--model', 'opus', '--dry-run', ...common]);
+  t(bad.code === 3 && /✗ CASY: .*VALUE-DRIFT.* ≠ ตาราง CLEAN/.test(bad.out), 'batch: row whose fresh bucket differs → refused (exit 3)', bad.out.slice(-300));
+  const real = cli(['batch', TB, '--class', 'CLEAN', '--n', '1', '--model', 'opus', '--head-manifest', MAN]);
+  t(real.code === 1 && /MIGRATE_V3_ALLOW_REAL=1/.test(real.out), 'batch on the real reports/ without the env → refused', real.out.slice(-200));
+  const tmpw = cli(['batch', TB, '--class', 'CLEAN', '--n', '1', '--model', 'opus', ...common]);
+  t(tmpw.code === 1 && /batch เขียนได้เฉพาะ reports\/ ของ checkout นี้/.test(tmpw.out), 'batch (not dry-run) on a tmp --reports-dir → refused (ship --migrate commits this checkout)', tmpw.out.slice(-200));
+  t(fs.readdirSync(REAL).length === realBefore, 'batch tests never touched the real reports/');
 }
 fs.rmSync(tmp, { recursive: true, force: true });
 t.done();

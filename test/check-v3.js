@@ -122,12 +122,15 @@ function checkDoc(doc, opts) {
     const k = MULT_BASE[leg.method], m = leg.inputs.multiple;
     if (leg.role === 'context' || !k || !isNum(m)) return;
     // override เป็นสกุลงบเหมือน fundamentals → แปลงชุดเดียวกับ compute (toQuote แตะแค่ยอดรวม · ตัวตั้งต่อหุ้นคงเดิม)
-    const base = L.inputsOf({ ...leg, override: C.toQuote(leg.override, view.fx) }, fq)[k];
+    // Plan 4c-prep Task 5 (ruling Task 2 review): ตัวตั้งตาม inputs.base (epsForward/epsFy) ผ่าน C.withBase ตัวเดียวกับ compute — ไม่งั้นขาฐาน FY ที่ตัวคูณ = ราคา ÷ fy.eps หลุด W18
+    let legB = leg; try { legB = C.withBase(leg, fq, `legs[${i}]`); } catch (_) { /* compute ผ่านแล้ว — ไม่ควรถึง */ }
+    const base = L.inputsOf({ ...legB, override: C.toQuote(legB.override, view.fx) }, fq)[k];
     if (isNum(base) && base > 0) {
       const cur = px / base, gap = Math.abs(m - cur) / cur * 100;
       if (gap <= DEAD_ANCHOR_PCT) { add('W18', `legs[${i}] ${leg.method} เป้า ${m}x เทียบตัวคูณปัจจุบัน ${cur.toFixed(1)}x ห่างเพียง ${gap.toFixed(1)}% — ขานี้คืนราคาตลาดกลับมา ต้องยึดมัธยฐาน/peer ที่วัดจริง`); return; }
     }
-    const fwd = leg.method === 'pe' ? fq.epsForward : leg.method === 'pffo' && fq.ffoForward ? fq.ffoForward.value : null;
+    // W25 ของ pe: ฐานที่เป็น epsForward อยู่แล้ว = W18 ข้างบนเทียบ forward ที่ resolve แล้ว (รวม override.epsForward — schema ให้มีคู่ base 'epsForward' เท่านั้น) → ข้าม
+    const fwd = leg.method === 'pe' ? (leg.inputs.base === 'epsForward' ? null : fq.epsForward) : leg.method === 'pffo' && fq.ffoForward ? fq.ffoForward.value : null;
     if (isNum(fwd) && fwd > 0) {
       const cur = px / fwd, gap = Math.abs(m - cur) / cur * 100;
       if (gap <= DEAD_ANCHOR_PCT) add('W25', `legs[${i}] ${leg.method} เป้า ${m}x เทียบตัวคูณ forward ${cur.toFixed(1)}x ห่างเพียง ${gap.toFixed(1)}% — ตัวคูณนั้นคิดจากราคาวันนี้`);

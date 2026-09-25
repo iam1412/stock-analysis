@@ -67,6 +67,24 @@ const today0 = Z().market.priceDate;
   t(ids(run(signed(d)), 'warnings').includes('W18'), 'W18: target multiple ≈ current multiple'); }
 { const d = Z(); delete d._sig; d.fundamentals.epsForward = +(d.market.px / d.legs[0].inputs.multiple).toFixed(4);
   t(ids(run(signed(d)), 'warnings').includes('W25'), 'W25: target multiple ≈ forward multiple'); }
+// Plan 4c-prep Task 5 (ruling Task 2 review): W18/W25 อ่านตัวตั้งตาม inputs.base (C.withBase) — ฐาน FY / forward ที่ตัวคูณ = ราคา ÷ ตัวตั้งนั้น ต้องไม่หลุด
+{ const d = Z(); delete d._sig; const L = d.legs[0];
+  d.fundamentals.fy = { period: 'FY2025', eps: 5.0 }; L.inputs.base = 'epsFy'; delete L.override;
+  L.inputs.multiple = +(d.market.px / 5.0).toFixed(1);
+  t(ids(run(signed(d)), 'warnings').includes('W18'), 'W18: base epsFy — multiple ≈ px ÷ fy.eps (resolved base, not TTM eps)'); }
+{ const d = Z(); delete d._sig; const L = d.legs[0];
+  d.fundamentals.epsForward = 6.8; L.inputs.base = 'epsForward'; L.override = { epsForward: 5.0, why: 'ค่าที่ผู้เขียนใช้' };
+  L.inputs.multiple = +(d.market.px / 5.0).toFixed(1);
+  t(ids(run(signed(d)), 'warnings').includes('W18'), 'W18: base epsForward — multiple ≈ px ÷ override.epsForward (resolved forward value)'); }
+{ const d = Z(); delete d._sig; const L = d.legs[0];
+  d.fundamentals.epsForward = 5.0; L.inputs.base = 'epsForward'; delete L.override;
+  L.inputs.multiple = +(d.market.px / 5.0).toFixed(1);
+  const w = ids(run(signed(d)), 'warnings');
+  t(w.includes('W18') && !w.includes('W25'), 'base epsForward: W18 on the forward base · W25 skipped (not reported twice)', JSON.stringify(w)); }
+{ const d = Z(); delete d._sig; const L = d.legs[0];
+  d.fundamentals.fy = { period: 'FY2025', eps: 5.0 }; L.inputs.base = 'epsFy'; delete L.override; L.inputs.multiple = 20;   // px ÷ fy.eps ≈ 14.3x → ไม่ใช่ W18
+  d.fundamentals.epsForward = +(d.market.px / L.inputs.multiple).toFixed(4);
+  t(ids(run(signed(d)), 'warnings').includes('W25'), 'W25: base epsFy still compared with fundamentals.epsForward'); }
 { const d = Z(); delete d._sig; d.prose.chart += ' {{lit:$1.00}} {{lit:$2.00}} {{lit:$3.00}}';
   d.meta.litReasons = { '$1.00': 'ราคา IPO ปี 2556', '$2.00': 'ราคาแตกพาร์ปี 2560', '$3.00': 'ราคาเพิ่มทุนปี 2563' };
   t(ids(run(signed(d)), 'warnings').includes('W30'), 'W30: more than 2 lits'); }

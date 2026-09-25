@@ -134,7 +134,8 @@ t.eq(C.weightsOf(load('ZTS')), [0.5, 0.5], 'legacy: equal weights, byte-identica
     t.eq(!!threw, nSem > 0, `parity ${name}: semanticErrors empty ⇔ compute() does not throw (${nSem} error, ${threw ? 'threw' : 'ok'})`);
   }
   // tripwire (review รอบ 1): จำนวนจุด throw ของ compute.js + legs.js (legs ผ่าน `${P}` = path ที่ผู้เรียกส่งมา ทุกจุด)
-  // วันนี้: compute.js 7 = 6 จุดความหมาย (SITES · + exitTarget shares / equity ≤ 0 — Plan 4b Task 1) + 1 = S.validate (สคีมา — checkDoc หยุดก่อนถึง) · legs.js 6 จุด ทั้งหมดขึ้นต้น `${P}` (= แถว L.legValue)
+  // วันนี้: compute.js 8 = 6 จุดความหมาย (SITES · + exitTarget shares / equity ≤ 0 — Plan 4b Task 1) + 1 = S.validate (สคีมา — checkDoc หยุดก่อนถึง)
+  //   + 1 = withBase ตัวตั้ง inputs.base หาย (Plan 4c-prep Task 2) — สคีมาปฏิเสธก่อนถึง (legs[i].inputs.base) จึงไม่มีแถว SITES · pin แยกด้านล่างเหมือน dcf stages [] · legs.js 6 จุด ทั้งหมดขึ้นต้น `${P}` (= แถว L.legValue)
   //   Plan 4b Task 2: จุดที่ 6 ของ legs.js = dcf `stages: []` — สคีมาปฏิเสธก่อนถึง (stages 1–10 ช่วง) จึงไม่มีแถว SITES (ต้องผ่านสคีมา) · pin แยกด้านล่างว่า semanticErrors/compute ยังชี้ path เดียวกัน
   // ตัวเลขขยับ = มีจุด throw ใหม่/หาย → ตรวจว่า semanticErrors ครอบหรือยัง แล้ว add a SITES row ก่อนแก้ตัวเลขนี้
   const fs = require('fs'), path = require('path');
@@ -142,8 +143,8 @@ t.eq(C.weightsOf(load('ZTS')), [0.5, 0.5], 'legacy: equal weights, byte-identica
   const count = (s, re) => (s.match(re) || []).length;
   const code = (s) => s.replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|\s)\/\/.*$/gm, '$1');   // ตัดคอมเมนต์ (คำว่า throw ในคอมเมนต์ไม่นับ)
   const cSrc = code(src('compute.js')), lSrc = code(src('legs.js'));
-  t.eq(count(cSrc, /\bthrow\b/g), 7, 'tripwire: compute.js has 7 throw sites — changed? add a SITES row');
-  t.eq(count(cSrc, /throw new Error\(/g), 7, 'tripwire: compute.js throws are all `throw new Error(` — changed? add a SITES row');
+  t.eq(count(cSrc, /\bthrow\b/g), 8, 'tripwire: compute.js has 8 throw sites — changed? add a SITES row');
+  t.eq(count(cSrc, /throw new Error\(/g), 8, 'tripwire: compute.js throws are all `throw new Error(` — changed? add a SITES row');
   t.eq(count(lSrc, /\bthrow\b/g), 6, 'tripwire: legs.js has 6 throw sites — changed? add a SITES row');
   t.eq(count(lSrc, /throw new Error\(`\$\{P\}/g), 6, 'tripwire: every legs.js throw is funnelled through ${P} (path from the caller) — changed? add a SITES row');
   // Plan 4b Task 2 — schema-unreachable legs.js site (dcf stages: []): schema names it · semanticErrors ⇔ compute() agree on the path
@@ -151,6 +152,11 @@ t.eq(C.weightsOf(load('ZTS')), [0.5, 0.5], 'legacy: equal weights, byte-identica
     t(S.validate(d).some((e) => e.path === 'legs[2].inputs.stages'), 'dcf stages [] — schema rejects it first (why no SITES row)');
     t.eq(C.semanticErrors(d, { seeds: {} }).map((e) => e.path), ['legs[2].inputs.stages'], 'dcf stages [] — semanticErrors names legs[2].inputs.stages');
     t.throws(() => C.compute(d, { seeds: {} }), /legs\[2\]\.inputs\.stages/, 'dcf stages [] — compute() throws at the same path'); }
+  // Plan 4c-prep Task 2 — schema-unreachable compute.js site (withBase: inputs.base ไม่มีตัวตั้ง): schema names it · semanticErrors ⇔ compute() agree on the path
+  { const d = Z(); d.legs[0].inputs.base = 'epsForward';
+    t(S.validate(d).some((e) => e.path === 'legs[0].inputs.base'), 'withBase no forward base — schema rejects it first (why no SITES row)');
+    t.eq(C.semanticErrors(d, { seeds: {} }).map((e) => e.path), ['legs[0].inputs.base'], 'withBase no forward base — semanticErrors names legs[0].inputs.base');
+    t.throws(() => C.compute(d, { seeds: {} }), /legs\[0\]\.inputs\.base/, 'withBase no forward base — compute() throws at the same path'); }
 }
 // final review 2c-ii — กระจก stock-meta ของ v3 ต้องปัด mos/upside 1 ตำแหน่งเหมือน v2 (cron เขียน ≤1dp ทั้ง 909 ใบ) — ไม่งั้นการ์ด index โชว์ −27.52% ท่ามกลาง −27.5%
 { const dp = (x) => (String(x).split('.')[1] || '').length;
@@ -184,4 +190,30 @@ t.eq(C.weightsOf(load('ZTS')), [0.5, 0.5], 'legacy: equal weights, byte-identica
   t.near(v.scn[1].tgt, end * c.exitMultiple - f.netDebt * f.fx / f.shares, 1e-9, 'evsales at fx ≠ 1: tgt = end×m − netDebt×fx/shares');
 }
 
+// Plan 4c-prep Task 2 (D2) — inputs.base is a computation input; legs.js untouched
+{
+  const L = require('../../tools/v3/legs.js');
+  const d = load('ZTS'); d.fundamentals.epsForward = 6.8; d.legs[0].inputs.base = 'epsForward';
+  const v1 = C.compute(d, { seeds });
+  t.near(v1.legs[0].value, 6.8 * 28, 1e-9, 'base epsForward → fundamentals.epsForward × multiple');
+  d.legs[0].override = { epsForward: 7.0, why: 'consensus ของผู้เขียน' };
+  t.near(C.compute(d, { seeds }).legs[0].value, 7.0 * 28, 1e-9, 'override.epsForward wins over fundamentals.epsForward');
+  const e = load('ZTS'); e.fundamentals.fy = { period: 'FY2025', eps: 6.5 }; e.legs[0].inputs.base = 'epsFy';
+  t.near(C.compute(e, { seeds }).legs[0].value, 6.5 * 28, 1e-9, 'base epsFy → fundamentals.fy.eps × multiple');
+  const z = load('ZTS');
+  t(C.withBase(z.legs[0], z.fundamentals) === z.legs[0], 'no base → withBase returns the same leg object (byte-identical path)');
+  t.near(C.legValueOf(d.legs[0], d.fundamentals), 7.0 * 28, 1e-9, 'legValueOf = L.legValue over withBase');
+  t.eq(L.legValue.length, 3, 'L.legValue signature unchanged (leg, fundamentals, path)');
+  const bad = load('ZTS'); bad.legs[0].inputs.base = 'epsForward';
+  t.throws(() => C.withBase(bad.legs[0], bad.fundamentals, 'legs[0]'), /^legs\[0\]\.inputs\.base: 'epsForward' ต้องมี fundamentals\.epsForward/, 'missing forward base → path-named throw');
+}
+{
+  const d = load('ZTS'); d.fundamentals.ebitda = 3.2e9; d.scenarios.driver = 'ebitdaPerShare'; d.scenarios.exitMetric = 'evebitda';
+  d.scenarios.cases.forEach((c, i) => { c.exitMultiple = [14, 16, 18][i]; });
+  const v = C.compute(d, { seeds });
+  const start = 3.2e9 / 443e6, end = start * Math.pow(1.08, 3);
+  t.near(v.scn[1].tgt, end * 16 - 5.1e9 / 443e6, 1e-9, 'evebitda exit: EBITDA/share end × EV/EBITDA − netDebt/share');
+  d.scenarios.cases[0].exitMultiple = 0.1;
+  t.throws(() => C.compute(d, { seeds }), /scenarios\.cases\[0\]\.exitMultiple: evebitda — ราคาเป้า ≤ 0/, 'evebitda target ≤ 0 → same named throw as evsales');
+}
 t.done();

@@ -57,12 +57,14 @@ function proseFields(doc) {
   for (const [k, v] of Object.entries(obj(doc.prose))) add(`prose.${k}`, v);
   for (const [k, v] of Object.entries(obj(doc.text))) add(`text.${k}`, v);
   add('meta.sub', obj(doc.meta).sub); add('meta.priceNote', obj(doc.meta).priceNote);
+  add('meta.sectorLine', obj(doc.meta).sectorLine);   // + Plan 4c-prep Task 3
   add('metrics.hint', obj(doc.metrics).hint);
   for (const [k, v] of Object.entries(obj(obj(doc.metrics).notes))) add(`metrics.notes.${k}`, v);
   arr(obj(doc.metrics).custom).forEach((c, i) => { add(`metrics.custom[${i}].value`, obj(c).value); add(`metrics.custom[${i}].note`, obj(c).note); });
   arr(doc.legs).forEach((l, i) => add(`legs[${i}].note`, obj(l).note));
   arr(obj(doc.scenarios).cases).forEach((c, i) => { add(`scenarios.cases[${i}].desc`, obj(c).desc); add(`scenarios.cases[${i}].retNote`, obj(c).retNote); });
   add('scenarios.note', obj(doc.scenarios).note); add('scenarios.hintNote', obj(doc.scenarios).hintNote);   // + Plan 4b Task 6b
+  arr(obj(doc.verdict).extraCells).forEach((c, i) => { add(`verdict.extraCells[${i}].k`, obj(c).k); add(`verdict.extraCells[${i}].v`, obj(c).v); });   // + Plan 4c-prep Task 3
   arr(doc.catalysts).forEach((x, i) => add(`catalysts[${i}]`, x));
   arr(doc.risks).forEach((x, i) => add(`risks[${i}]`, x));
   arr(doc.extras).forEach((x, i) => { add(`extras[${i}].title`, obj(x).title); add(`extras[${i}].note`, obj(x).note);

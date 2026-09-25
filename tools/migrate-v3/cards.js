@@ -86,7 +86,7 @@ function cardFund(parsed, base) {
   const set = (k, v, why) => { if (v == null || !Number.isFinite(v) || fund[k] != null) return; fund[k] = v; src[k] = why; };
   const cur = parsed.sm && parsed.sm.currency === 'THB' ? '฿' : '$';
   const curOk = (c) => c == null || (cur === '฿' ? c === '฿' || c === 'บาท' : c === '$' || c === 'US$');
-  const fyPeriods = new Set();
+  const fyPeriods = new Set(), fyCands = [];
   for (const c of parsed.s1cards || []) {
     const key = keyOf(c.k, c.v), vHtml = c.vHtml;
     if (!key) {
@@ -133,7 +133,7 @@ function cardFund(parsed, base) {
         const r = readValue(c.v, 'money');
         if (r.nums.length === 1 && curOk(r.cur) && (k === 'eps' ? !r.nums[0].scaled : r.nums[0].scaled) && p) {
           fyPeriods.add(p);
-          if (fy[k] == null) { fy[k] = r.nums[0].v; src[`fy.${k}`] = `card "${c.k}"`; if (!fy.period) fy.period = p; }
+          fyCands.push({ p, k, v: r.nums[0].v, why: `card "${c.k}"` });
         }
         break;
       }
@@ -160,7 +160,13 @@ function cardFund(parsed, base) {
       default: break;
     }
   }
-  if (fyPeriods.size > 1) F.push(`fy periods differ ${[...fyPeriods].join(' / ')} — kept ${fy.period}`);
+  // Plan 4c-prep: FY หลายงวด → เก็บงวดล่าสุด (ปีมากสุด · ปี 2 หลัก +2000) ค่าเฉพาะการ์ดของงวดนั้น + F (ไม่ใช่ H อีกต่อไป · fyConflict = info)
+  //  ปี พ.ศ. (≥2400 · หรือ 2 หลัก ≥60 เช่น "FY68" = 2568) → ค.ศ. ก่อนเทียบ (กำหนดตายตัว ไม่อิงนาฬิกา) · งวดเดียวกันเขียนต่างรูป ("FY25" / "FY2025") = งวดเดียวกัน (เทียบปี ไม่ใช่ข้อความ)
+  const yearOf = (p) => { const m = /(\d{2,4})/.exec(p); if (!m) return -Infinity; const n = +m[1];
+    const y = m[1].length === 2 ? (n >= 60 ? 2500 + n : 2000 + n) : n; return y >= 2400 ? y - 543 : y; };
+  const latest = fyCands.reduce((a, x) => (a == null || yearOf(x.p) > yearOf(a) ? x.p : a), null);
+  for (const x of fyCands) if (yearOf(x.p) === yearOf(latest) && fy[x.k] == null) { fy[x.k] = x.v; src[`fy.${x.k}`] = x.why; if (!fy.period) fy.period = x.p; }
+  if (fyPeriods.size > 1) F.push(`fy periods differ ${[...fyPeriods].join(' / ')} — kept ${latest} (latest)`);
   const fyOut = {}; for (const k of S.FY_KEYS) if (fy[k] != null) fyOut[k] = fy[k];
   const bankOut = {}; for (const k of S.BANK_KEYS) if (bank[k] != null) bankOut[k] = bank[k];
   return { fund, fy: fyOut.period && Object.keys(fyOut).length > 1 ? fyOut : null, bank: Object.keys(bankOut).length ? bankOut : null, src, F, fyConflict: fyPeriods.size > 1 };

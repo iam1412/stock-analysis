@@ -8,15 +8,18 @@
  */
 const S = require('../v3/schema.js');
 const MP = require('./prose.js');
+const SY = require('./synonyms.js');
+const NB = require('./numbers.js');
 
-const DRIVER = [['de', /\bDE\b|distributable/i], ['fre', /\bFRE\b|fee[-\s]*related/i],
+// Plan 4c-prep (spec §3.7 ก): EBITDA มาก่อน revenue/eps · EV/EBITDA ก่อน EV/Sales · EV/Revenue ≡ evsales
+const DRIVER = [['ebitdaPerShare', /EBITDA/i], ['de', /\bDE\b|distributable/i], ['fre', /\bFRE\b|fee[-\s]*related/i],
   ['revenuePerShare', /ยอดขาย|รายได้|revenue|\bRev\b|sales/i], ['ffo', /A?FFO/i], ['bvps', /BVPS|BV\b|book/i], ['fcfPerShare', /FCF/i], ['eps', /EPS|กำไร/i]];
-const EXIT = [['evsales', /EV\s*\/\s*S(?:ales)?\b/i], ['ps', /(?<!EV)\s*\bP\s*\/\s*S\b/i], ['pffo', /P\s*\/\s*A?FFO/i], ['pbv', /P\s*\/\s*BV|P\/B\b/i], ['pfcf', /P\s*\/\s*FCF/i], ['pe', /P\s*\/\s*E/i]];
+const EXIT = [['evebitda', /EV\s*\/\s*EBITDA/i], ['evsales', /EV\s*\/\s*(?:S(?:ales)?|Rev(?:enue)?)\b/i], ['ps', /(?<!EV)\s*\bP\s*\/\s*S\b/i], ['pffo', /P\s*\/\s*A?FFO/i], ['pbv', /P\s*\/\s*BV|P\/B\b/i], ['pfcf', /P\s*\/\s*FCF/i], ['pe', /P\s*\/\s*E/i]];
 const NAMES = ['bear', 'base', 'bull'];
 const numOf = (s) => { const m = /([0-9][0-9,]*(?:\.[0-9]+)?)/.exec(String(s == null ? '' : s)); return m ? parseFloat(m[1].replace(/,/g, '')) : null; };
 const pctOf = (s) => { const m = /([+\-−]?)\s*([0-9]+(?:\.[0-9]+)?)\s*%/.exec(String(s || '')); return m ? parseFloat(m[2]) * (m[1] === '-' || m[1] === '−' ? -1 : 1) : null; };
 const decOf = (s) => { const m = /[0-9][0-9,]*(?:\.([0-9]+))?/.exec(String(s)); return m && m[1] ? m[1].length : 0; };
-const isExit = (label) => /ออก|exit/i.test(label);
+const isExit = (label) => /ออก|exit|ทางออก/i.test(label);
 const isEnd = (label) => /ปี\s*\d/.test(label) && !/ปันผล/.test(label);
 // .ret (Plan 4b Task 6b): หลักยึด = token ผลตอบแทนของ v2 หรือเลข % ตัวแรก — ข้อความหลังหลักยึด = คำของผู้เขียน → cases[i].retNote (ตัวเลขไม่คัดลอก)
 const RET_ANCHOR = /\{\{rd:sc\d+ret\}\}|(?:[+\-−]|&minus;)?\s*[0-9][0-9.,]*\s*%/;
@@ -32,22 +35,72 @@ function divClash(note, divIncluded) {
   if (!divIncluded && !NO_DIV.test(t) && INC_DIV.test(t)) return 'says dividends included while divIncluded is false';
   return null;
 }
-function retNoteOf(html, i, H, F, divIncluded) {
+const PY_NUM = /[≈~]?\s*([+\-−]?)\s*[≈~]?\s*([0-9]+(?:\.[0-9]+)?)\s*%\s*(?:\/\s*(?:ปี|yr|year)|ต่อปี|per\s*(?:year|annum)|p\.?a\.?)/i;
+/** .ret (Plan 4c-prep D3): pre = ก่อนหลักยึด % · post = หลังหลักยึด → { pre, post, perYear: number|'anchor'|null, numeric: {v, text}|null, raw } */
+function retParts(html) {
   const h = String(html || ''), m = RET_ANCHOR.exec(h);
   if (!m) return null;
-  const note = MP.htmlToProse(h.slice(m.index + m[0].length));
-  if (!note) return null;
-  if (RET_UNSAFE.test(note)) { H.push(`scenarios.cases[${i}] .ret annotation "${note}" not carried — a per-year/number label would mislabel the v3 total return`); return null; }
-  const clash = divClash(note, divIncluded);
-  if (clash) { H.push(`scenarios.cases[${i}] .ret annotation "${note}" not carried — dividend claim in the note contradicts divIncluded (${clash})`); return null; }
+  const pre = MP.htmlToProse(h.slice(0, m.index)).trim();
+  const raw = MP.htmlToProse(h.slice(m.index + m[0].length)).trim();
+  let post = raw, perYear = null, numeric = null;
+  const py = PY_NUM.exec(post);
+  if (py) { perYear = parseFloat(py[2]) * (py[1] === '-' || py[1] === '−' ? -1 : 1); post = post.replace(py[0], ' '); }
+  else if (/^\s*(?:\/\s*ปี|ต่อปี)\s*$/.test(post)) {
+    // หลักยึดเองคือตัวเลขต่อปี: literal = ตัวเลขที่ผู้เขียนพิมพ์ (เทียบสูตรได้) · token {{rd:scNret}} = ผลตอบแทนรวมของ v2 ที่ติดป้าย /ปี → 'anchor' (perYearOf ไม่อนุมาน)
+    const lit = /\{\{rd:/.test(m[0]) ? null : /([+\-−]|&minus;)?\s*([0-9][0-9.,]*)\s*%/.exec(m[0]);
+    perYear = lit ? parseFloat(lit[2].replace(/,/g, '')) * (lit[1] && lit[1] !== '+' ? -1 : 1) : 'anchor'; post = '';
+  }
+  const nm = /([+\-−])?\s*~?\s*([0-9]+(?:\.[0-9]+)?)\s*%/.exec(post);
+  if (nm) { numeric = { text: nm[0].trim(), v: parseFloat(nm[2]) * (nm[1] === '-' || nm[1] === '−' ? -1 : 1) }; post = post.replace(nm[0], ' '); }
+  const clean = (s) => s.replace(/\s+\/\s+/g, ' ').replace(/^[\s/,·~≈]+|[\s/,·~≈]+$/g, '').replace(/\(\s*\)/g, '').replace(/\s+/g, ' ').trim();
+  return { pre: clean(pre), post: clean(post), perYear, numeric, raw };
+}
+/** perYear จากป้าย /ปี ทุกคอลัมน์ (measure §5: cagr = แบบแผนผู้เขียน 138/147) · linear เฉพาะเมื่อทุกคอลัมน์ตรง linear และไม่ตรง cagr (±0.5 จุด) ·
+ *  คู่ที่พิมพ์ไม่เข้าสูตรไหนเลย (mirror `derived-values.js` 'bad' — ไม่แตะ) → null: v3 ไม่พิมพ์ %/ปี · คำ /ปี ยังหลุด → HUMAN (advisor 26 ก.ย. 69) — ห้ามคืน 'cagr' ให้ตัวเลขที่ผู้เขียนไม่เคยพิมพ์ */
+function perYearOf(parts, v2totals, years) {
+  if (parts.length !== 3 || !parts.every((p) => p && p.perYear != null)) return null;
+  // 'anchor' = ตัวเลขที่ติดป้าย /ปี คือผลตอบแทนรวมของ v2 ({{rd:scNret}}) — ผู้เขียนไม่เคยพิมพ์ตัวเลขต่อปีจริง ⇒ ไม่อนุมาน (ruling: ห้ามคืน 'cagr' ให้ตัวเลขที่ไม่เคยพิมพ์)
+  if (parts.some((p) => p.perYear === 'anchor')) return null;
+  const nums = parts.map((p, i) => ({ p: p.perYear, T: v2totals[i] })).filter((x) => typeof x.p === 'number' && typeof x.T === 'number');
+  const near = (a, b) => Math.abs(a - b) <= 0.5 + 1e-9;
+  const cagr = (T) => (Math.pow(1 + T / 100, 1 / years) - 1) * 100;
+  if (nums.some((x) => !near(x.p, x.T / years) && !near(x.p, cagr(x.T)))) return null;   // fits neither formula → no per-year figure (never 'cagr')
+  if (nums.length && nums.every((x) => near(x.p, x.T / years) && !near(x.p, cagr(x.T)))) return 'linear';
+  return 'cagr';
+}
+/** โน้ต .ret ของคอลัมน์ i (Plan 4c-prep D3) — คำก่อนหลักยึด (ยกเว้นคำพ้อง total/รวม) + คำหลังหลักยึด · ตัวเลข %/ปี ทิ้งเมื่อ perYear ตั้งแล้ว (template พิมพ์เอง)
+ *  · ตัวเลข % อื่น = pending (retResolve หลัง compute ตัดสิน) · → { note, pending } */
+function retNoteOf(parts, i, H, F, scn) {
+  if (!parts) return { note: null, pending: null };
+  const unsafeH = (n) => `scenarios.cases[${i}] .ret annotation "${n}" not carried — a per-year/number label would mislabel the v3 total return`;
+  const raw = [parts.pre, parts.raw].filter(Boolean).join(' ');
+  if (parts.perYear != null && scn.perYear == null) { if (parts.raw) H.push(unsafeH(parts.raw)); return { note: null, pending: null }; }
+  const pre = parts.pre ? SY.apply('s6.ret', parts.pre.split(/\s+/), { doc: { scenarios: scn } }).tokens.join(' ') : '';
+  const note = [pre, parts.post].filter(Boolean).join(' ').trim();
+  if (note && RET_UNSAFE.test(note)) { H.push(unsafeH(raw)); return { note: null, pending: null }; }
+  const clash = note ? divClash(note, scn.divIncluded) : null;
+  if (clash) { H.push(`scenarios.cases[${i}] .ret annotation "${note}" not carried — dividend claim in the note contradicts divIncluded (${clash})`); return { note: null, pending: null }; }
+  if (parts.numeric) return { note: null, pending: { note, numeric: parts.numeric, H: unsafeH(parts.raw) } };
+  if (!note) return { note: null, pending: null };
   F.push(`scenarios.cases[${i}].retNote "${note}" (author annotation in .ret)`);
-  return note;
+  return { note, pending: null };
+}
+/** หลัง compute (Plan 4c-prep D3 · Review Focus 5): โน้ต .ret ที่มีตัวเลข % — พาได้เมื่อเท่าผลตอบแทนรวมของ v3 ภายในการปัดที่พิมพ์ ไม่งั้น H เดิม */
+function retResolve(pending, view) {
+  const set = [], H = [];
+  (pending || []).forEach((p, i) => {
+    if (!p) return;
+    const tot = view.d.scenarios[i].total, shown = `${tot >= 0 ? '+' : '−'}${Math.abs(tot)}%`;
+    if (NB.classifyNumber(p.numeric.text.replace('−', '-'), shown.replace('−', '-')) === 'rounding') set.push({ i, note: p.note });
+    else H.push(p.H);
+  });
+  return { set, H };
 }
 
 /** ฐานของ driver จาก fundamentals (สูตรเดียวกับ compute.driverStart — fx = 1 เพราะ migrator ไม่ตั้ง reportCurrency) */
 function fundStart(driver, f) {
   const per = (k) => (f[k] != null && f.shares ? f[k] / f.shares : null);
-  const v = { eps: f.eps, ffo: f.ffoPerShare, bvps: f.bvps, revenuePerShare: per('revenue'), fcfPerShare: per('fcf'), de: f.dePerShare, fre: f.frePerShare }[driver];
+  const v = { eps: f.eps, ffo: f.ffoPerShare, bvps: f.bvps, revenuePerShare: per('revenue'), fcfPerShare: per('fcf'), de: f.dePerShare, fre: f.frePerShare, ebitdaPerShare: per('ebitda') }[driver];
   return typeof v === 'number' && v > 0 ? v : null;
 }
 
@@ -82,8 +135,15 @@ function scenarios(parsed, fund, legs) {
   out.driver = drv || 'eps'; out.exitMetric = ex || 'pe';
   let dp = 0;
   const vs = Array.isArray(v.scenarios) ? v.scenarios : null;
+  // .ret ทั้ง 3 คอลัมน์ก่อน (Plan 4c-prep D3): ป้าย %/ปี ทุกคอลัมน์ + ผลตอบแทนรวมของ v2 → perYear (ไม่ทับค่าที่ผู้เขียนตั้งไว้ใน scnBasis)
+  const parts = cols.map((c) => retParts(c.retHtml));
+  const v2t = cols.map((_, i) => { const s = vs && vs[i]; return s && typeof s.tgt === 'number' && v.px > 0 ? ((s.tgt + (out.divIncluded && typeof s.div === 'number' ? s.div : 0)) - v.px) / v.px * 100 : null; });
+  const py = perYearOf(parts, v2t, out.years);
+  if (py && out.perYear == null) { out.perYear = py; F.push(`scenarios.perYear ${py} inferred from the per-year .ret labels`); }
+  meta.retPending = [null, null, null];
   out.cases = cols.map((c, i) => {
-    const growth = c.top ? pctOf(c.top[1]) : null;
+    // "EBITDA margin 6.2%" (IVL) = ระดับมาร์จิ้น ไม่ใช่อัตราเติบโต — driver อ่านได้ (ebitdaPerShare) แต่ growth อ่านไม่ได้ → H (residual D5 · ห้ามแปลง prose เป็นตัวเลข)
+    const growth = c.top && !/margin|มาร์จิ้น/i.test(c.top[1]) ? pctOf(c.top[1]) : null;
     const exS = (c.lis.find((x) => isExit(x[0])) || [])[1];
     const exitMultiple = numOf(exS);
     if (exS != null) dp = Math.max(dp, decOf(exS));
@@ -104,8 +164,9 @@ function scenarios(parsed, fund, legs) {
     const cs = { growth, exitMultiple };
     if (divCum != null) cs.divCum = divCum;
     cs.desc = desc;
-    const rn = retNoteOf(c.retHtml, i, H, F, out.divIncluded);
-    if (rn) cs.retNote = rn;
+    const rn = retNoteOf(parts[i], i, H, F, out);
+    if (rn.note) cs.retNote = rn.note;
+    if (rn.pending) meta.retPending[i] = rn.pending;
     return cs;
   });
   out.exitDp = Math.min(dp, 2);
@@ -155,4 +216,4 @@ function tgtCheck(parsed, view) {
   return D;
 }
 
-module.exports = { scenarios, tgtCheck, divClash, fundStart, DRIVER, EXIT };
+module.exports = { scenarios, tgtCheck, divClash, fundStart, retParts, perYearOf, retResolve, DRIVER, EXIT };

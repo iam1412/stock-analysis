@@ -31,20 +31,36 @@ function driverStart(doc, f) {
   const s = doc.scenarios;
   if (s.baseOverride) return s.baseOverride.value;
   const per = (k) => (f[k] != null && f.shares ? f[k] / f.shares : null);
-  const v = { eps: f.eps, ffo: f.ffoPerShare, bvps: f.bvps, revenuePerShare: per('revenue'), fcfPerShare: per('fcf'), de: f.dePerShare, fre: f.frePerShare }[s.driver];   // de/fre = Plan 4b Task 1 (alt managers)
+  const v = { eps: f.eps, ffo: f.ffoPerShare, bvps: f.bvps, revenuePerShare: per('revenue'), fcfPerShare: per('fcf'), de: f.dePerShare, fre: f.frePerShare, ebitdaPerShare: per('ebitda') }[s.driver];   // de/fre = Plan 4b Task 1 (alt managers) · ebitdaPerShare = Plan 4c-prep (EBITDA รวม สกุลราคา ÷ หุ้น)
   if (!(typeof v === 'number' && v > 0)) throw new Error(`scenarios.driver: ฐาน "${s.driver}" ไม่มีใน fundamentals (หรือ ≤ 0) — เติม fundamentals หรือใช้ scenarios.baseOverride`);
   return v;
 }
 
-// exit EV/Sales (Plan 4b Task 1 · §3.3): ราคาเป้า = รายได้/หุ้นปลายฉาก × EV/Sales − หนี้สุทธิ/หุ้น (สกุลราคา ผ่าน fq) · exit อื่น = ตัวตั้ง × ตัวคูณ
+// exit แบบ EV (Plan 4b Task 1 evsales · Plan 4c-prep evebitda · §3.3): ราคาเป้า = ตัวตั้งต่อหุ้นปลายฉาก × ตัวคูณ − หนี้สุทธิ/หุ้น (สกุลราคา ผ่าน fq) · exit อื่น = ตัวตั้ง × ตัวคูณ
 // ราคาเป้า ≤ 0 (หนี้สุทธิท่วม EV) = throw ชี้ตัวคูณของฉากนั้น เหมือน equity() ใน legs.js — ไม่ปล่อยไปตกที่ E51 ตอน render
+const EV_EXITS = { evsales: 'EV/Sales', evebitda: 'EV/EBITDA' };
 function exitTarget(s, end, m, fq, i) {
-  if (s.exitMetric !== 'evsales') return end * m;
-  if (!(typeof fq.shares === 'number' && fq.shares > 0)) throw new Error('scenarios.exitMetric: evsales ต้องมี fundamentals.shares > 0 (หักหนี้สุทธิต่อหุ้น)');
+  const evName = EV_EXITS[s.exitMetric];
+  if (!evName) return end * m;
+  if (!(typeof fq.shares === 'number' && fq.shares > 0)) throw new Error(`scenarios.exitMetric: ${s.exitMetric} ต้องมี fundamentals.shares > 0 (หักหนี้สุทธิต่อหุ้น)`);
   const ev = end * m, nd = (fq.netDebt || 0) / fq.shares, tgt = ev - nd;
-  if (!(tgt > 0)) throw new Error(`scenarios.cases[${i}].exitMultiple: evsales — ราคาเป้า ≤ 0 (EV/หุ้น ${ev.toFixed(2)} − หนี้สุทธิ/หุ้น ${nd.toFixed(2)}) — ตัวคูณ EV/Sales ฉากนี้ใช้กับหุ้นนี้ไม่ได้`);
+  if (!(tgt > 0)) throw new Error(`scenarios.cases[${i}].exitMultiple: ${s.exitMetric} — ราคาเป้า ≤ 0 (EV/หุ้น ${ev.toFixed(2)} − หนี้สุทธิ/หุ้น ${nd.toFixed(2)}) — ตัวคูณ ${evName} ฉากนี้ใช้กับหุ้นนี้ไม่ได้`);
   return tgt;
 }
+
+// ตัวตั้งของขา pe ตาม inputs.base (Plan 4c-prep · spec §3.7 ก · D2) — ป้อน L.legValue ผ่าน override.eps โดยไม่แตะ legs.js
+// ไม่มี base / base 'eps' / ไม่ใช่ pe = คืน object เดิม (ทางเดิมทุก byte)
+function withBase(leg, f, path) {
+  const b = leg && leg.inputs && leg.inputs.base;
+  if (!leg || leg.method !== 'pe' || b == null || b === 'eps') return leg;
+  const ov = leg.override || {}, fb = f || {};
+  const v = b === 'epsForward' ? (ov.epsForward != null ? ov.epsForward : fb.epsForward) : fb.fy && fb.fy.eps;
+  if (!(typeof v === 'number' && v > 0)) throw new Error(`${path || 'leg'}.inputs.base: '${b}' ต้องมี ${b === 'epsForward' ? 'fundamentals.epsForward (หรือ override.epsForward)' : 'fundamentals.fy.eps'} > 0`);
+  const o = { ...ov, eps: v, why: ov.why || `ฐาน ${b}` };
+  delete o.epsForward;
+  return { ...leg, override: o };
+}
+const legValueOf = (leg, f, path) => L.legValue(withBase(leg, f, path), f, path);
 // ตัวตั้งปลายฉาก — compute() และ semanticErrors() ใช้สูตรเดียวกัน
 const driverEndOf = (start, c, s) => start * Math.pow(1 + c.growth / 100, s.years);
 
@@ -85,7 +101,8 @@ function prepLeg(doc, leg, i, fq, fx) {
     throw new Error(`legs[${i}].inputs.extrasRef: ไม่มี extras[${leg.inputs.extrasRef}]`);
   // R7 (§13 ข้อ 6): ขา context 'current' — ตัวคูณสด = ราคา ÷ ตัวตั้ง (รวม override) · ค่าขา ≡ ราคา · ไม่มีเลขแช่แข็ง
   // override ของขาเป็นสกุลงบเหมือน fundamentals → แปลงชุดเดียวกัน
-  const legQ = fx === 1 ? leg : { ...leg, override: toQuote(leg.override, fx) };
+  const legB = withBase(leg, fq, `legs[${i}]`);   // Plan 4c-prep: ตัวตั้ง inputs.base → override.eps ก่อน L.legValue
+  const legQ = fx === 1 ? legB : { ...legB, override: toQuote(legB.override, fx) };
   let liveMultiple = null;
   if (leg.inputs.multipleSource === 'current') {
     const k = S.CURRENT_BASE[leg.method], base = L.inputsOf(legQ, fq)[k];
@@ -204,4 +221,4 @@ function semanticErrors(doc, opts) {
   return out;
 }
 
-module.exports = { compute, semanticErrors, weightsOf, toQuote, SCN_NAMES };
+module.exports = { compute, semanticErrors, weightsOf, toQuote, SCN_NAMES, withBase, legValueOf };

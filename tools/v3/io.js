@@ -12,7 +12,7 @@ const S = require('./schema.js');
 const LK = require('../lockfile.js');
 
 const TOP_ORDER = ['v', 'symbol', 'currency', 'region', 'dateEra', 'meta', 'market', 'fundamentals', 'legs', 'fvWeights',
-  'metrics', 'scenarios', 'analyst', 'prose', 'text', 'catalysts', 'risks', 'extras', '_sig'];
+  'metrics', 'scenarios', 'analyst', 'verdict', 'prose', 'text', 'catalysts', 'risks', 'extras', '_sig'];
 
 function canonical(x) {
   if (Array.isArray(x)) return '[' + x.map((v) => (v === undefined ? 'null' : canonical(v))).join(',') + ']';
@@ -27,6 +27,12 @@ function freshHash(doc) {
   const { _sig, market, ...rest } = doc;
   const meta = { ...(rest.meta || {}) }; delete meta.aiModel;
   return sha('v3:' + canonical({ ...rest, meta })).slice(0, 12);
+}
+/** #67 (Plan 4c-prep · spec §3.7 ฉ): hash ของ ship --prepatch — เหมือน freshHash แต่ **นับ** meta.aiModel
+ *  freshHash (ฐานของ updated) ยังไม่นับ aiModel — แก้ป้ายรุ่นอย่างเดียวต้องไม่ขยับ updated แต่ต้องไม่หลุดเข้า commit "price:" */
+function prepatchHash(doc) {
+  const { _sig, market, ...rest } = doc;
+  return sha('v3pp:' + canonical(rest)).slice(0, 12);
 }
 function serialize(doc) {
   const ordered = {};
@@ -70,4 +76,4 @@ function writeMarket(file, market, opts) {
   });
 }
 
-module.exports = { canonical, sign, verifySig, freshHash, serialize, read, write, writeMarket, TOP_ORDER };
+module.exports = { canonical, sign, verifySig, freshHash, prepatchHash, serialize, read, write, writeMarket, TOP_ORDER };

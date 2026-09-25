@@ -13,13 +13,14 @@ const P = require('../../tools/v3/prose.js');
 const K = require('../../tools/v3/cards.js');
 const S = require('../../tools/v3/schema.js');
 const X = require('../../tools/v3/extras.js');
+const C = require('../../tools/v3/compute.js');
 
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const METHOD_NAME = { pe: 'P/E', pbv: 'P/BV', ps: 'P/S', evsales: 'EV/Sales', evebitda: 'EV/EBITDA', pfcf: 'P/FCF', fcfyield: 'FCF Yield',
   pffo: 'P/FFO', ddm: 'DDM / Gordon Growth', ddm2: 'DDM 2 ระยะ', dcf: 'DCF', ri: 'Residual Income', declared: 'มูลค่าประกาศ' };
 const SRC_NAME = { median5y: 'มัธยฐาน 5 ปี', median10y: 'มัธยฐาน 10 ปี', peer: 'ค่ากลางกลุ่มเทียบ', justified: 'justified', sector: 'ค่ากลางเซกเตอร์', current: 'ตัวคูณปัจจุบัน', author: 'ผู้วิเคราะห์กำหนด' };
-// Plan 2a Task 9 (§3.6 J) — ป้าย FFO/AFFO ของขา pffo · driver ffo · exit pffo
-const ffoLabel = (doc) => ({ ffo: 'FFO', affo: 'AFFO' }[doc.fundamentals.ffoBasis || 'ffo']);
+// Plan 2a Task 9 (§3.6 J) — ป้าย FFO/AFFO ของขา pffo · driver ffo · exit pffo · ชุดเดียวกับการ์ด/gate (S.FFO_LABEL · Plan 4c-prep + Core FFO)
+const ffoLabel = (doc) => S.FFO_LABEL[doc.fundamentals.ffoBasis || 'ffo'];
 // Plan 4b Task 2: scenarios.exitDp → ทศนิยมคงที่ · ไม่มี = พิมพ์ค่าดิบเหมือนเดิม
 const exitText = (s, m) => (s.exitDp != null ? m.toFixed(s.exitDp) : String(m));
 const dot = (c) => `<div style="width:8px;height:8px;border-radius:50%;background:${c};display:inline-block;margin:0 3px"></div>`;
@@ -30,6 +31,10 @@ const jsonScript = (s) => String(s).replace(/</g, '\\u003c');
 // ไม่งั้นตาม fundamentals.epsBasis (gaap-ttm/adj-ttm/fy) — เดิม mdesc พิมพ์ "EPS (TTM)" ตายตัวแม้ eps มาจาก override
 const EPS_BASIS_LABEL = { 'gaap-ttm': 'EPS (TTM)', 'adj-ttm': 'EPS adj. (TTM)', fy: 'EPS (FY)', ifrs: 'EPS IFRS (TTM)' };
 function epsLabel(leg, view) {
+  // Plan 4c-prep (D2): ป้ายฐานมาจาก inputs.base — forward/FY พิมพ์ของมันเอง (ไม่ใช่ "EPS ปรับ"/TTM) · baseLabel = ถ้อยคำงวดของผู้เขียน
+  const base = leg.inputs && leg.inputs.base;
+  if (base === 'epsForward') return `EPS ${leg.baseLabel ? leg.baseLabel + ' ' : ''}(forward)`;
+  if (base === 'epsFy') return `EPS ${leg.baseLabel || view.doc.fundamentals.fy.period}`;
   if (leg.override && leg.override.eps != null) return 'EPS ปรับ';
   const basis = view.doc.fundamentals.epsBasis;
   // ไม่เดา: ฐานที่ไม่รู้จัก = ข้อมูลผิด (schema บังคับ enum เมื่อมี eps) — fallback เงียบเป็น "EPS (TTM)" จะพิมพ์ฐานผิดให้คนอ่าน
@@ -40,7 +45,8 @@ function epsLabel(leg, view) {
 }
 function mdesc(leg, view) {
   const m = (v) => view.cur + RV.fmtPrice(v);
-  const i = leg.inputs, b = { ...view.doc.fundamentals, ...(leg.override || {}) };
+  // Plan 4c-prep (D2): ตัวตั้งตาม inputs.base ผ่าน C.withBase (ตัวเดียวกับ compute) · epsLabel ยังรับ leg เดิม
+  const i = leg.inputs, lb = C.withBase(leg, view.doc.fundamentals), b = { ...view.doc.fundamentals, ...(lb.override || {}) };
   const src = i.medianWindow ? ` (มัธยฐาน ${i.medianWindow})` : i.multipleSource ? ` (${SRC_NAME[i.multipleSource]})` : '';
   const rng = i.multipleRange ? ` · กรอบ ${i.multipleRange[0]}–${i.multipleRange[1]}x` : '';
   // R7 — 'current': ตัวคูณสดจากราคาวันนี้ (หน้า v3 build ใหม่จาก JSON ทุกครั้ง จึงไม่ค้าง) · ตัวตั้งเดียวกับ compute (S.CURRENT_BASE + override)
@@ -126,8 +132,8 @@ function toV2Source(doc, view) {
     .sort((a, b) => a.v - b.v)
     .map((x, i, arr) => `<span${i === 0 ? '' : i === arr.length - 1 ? ' style="text-align:right"' : ' style="text-align:center"'}>${x.tok}<br><small>${x.lab}</small></span>`).join('\n          ');
   const FFO = ffoLabel(doc);
-  const drv = { eps: 'EPS', ffo: FFO, revenuePerShare: 'รายได้/หุ้น', bvps: 'BVPS', fcfPerShare: 'FCF/หุ้น', de: 'DE/หุ้น', fre: 'FRE/หุ้น' }[s.driver];
-  const ex = { pe: 'P/E', ps: 'P/S', pbv: 'P/BV', pffo: `P/${FFO}`, pfcf: 'P/FCF', evsales: 'EV/Sales' }[s.exitMetric];
+  const drv = { eps: 'EPS', ffo: FFO, revenuePerShare: 'รายได้/หุ้น', bvps: 'BVPS', fcfPerShare: 'FCF/หุ้น', de: 'DE/หุ้น', fre: 'FRE/หุ้น', ebitdaPerShare: 'EBITDA/หุ้น' }[s.driver];
+  const ex = { pe: 'P/E', ps: 'P/S', pbv: 'P/BV', pffo: `P/${FFO}`, pfcf: 'P/FCF', evsales: 'EV/Sales', evebitda: 'EV/EBITDA' }[s.exitMetric];
   const col = (i, cls, name) => {
     const sc = view.scn[i];
     // Finding 4 (postreview) — เลขลบใช้ minus glyph U+2212 (ตามธรรมเนียม v2) ไม่ใช่ ASCII hyphen
@@ -178,7 +184,7 @@ ${jsonScript(RV.styledRD(view.rd))}
     <div class="gdots">${view.gdots.map(dot).join('')}</div>
     <div>
       ${tags}
-    </div>
+    </div>${m.sectorLine ? `\n    <div style="font-size:12.5px;opacity:.85;margin-top:6px">${pr(m.sectorLine)}</div>` : ''}
     <h1>${esc(m.company)} (${esc(doc.symbol)})</h1>
     <div class="sub">${pr(m.sub)}</div>
     <div class="price-row">
@@ -210,7 +216,7 @@ ${jsonScript(RV.styledRD(view.rd))}
       <div class="legend">
         <span><i style="background:var(--blue)"></i>ราคา ${esc(doc.symbol)}</span>
         <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
-        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>${T.legendNote ? `\n        <span>${pr(T.legendNote)}</span>` : ''}
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
         ${pr(doc.prose.chart)}
@@ -310,7 +316,7 @@ ${jsonScript(RV.styledRD(view.rd))}
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v {{rd:mosClass}}">MOS ~ {{rd:mos}}</div></div>
-        ${analystCell}
+        ${analystCell}${((doc.verdict && doc.verdict.extraCells) || []).map((c) => `\n        <div class="vcell"><div class="k">${esc(c.k)}</div><div class="v">${pr(c.v)}</div></div>`).join('')}
       </div>
       <div class="zone">
         <b>กลยุทธ์:</b> ${pr(doc.prose.strategy)}
@@ -333,4 +339,4 @@ ${jsonScript(RV.styledRD(view.rd))}
 `;
 }
 
-module.exports = { toV2Source, mdesc, jsonScript, SRC_NAME };
+module.exports = { toV2Source, mdesc, jsonScript, SRC_NAME, epsLabel, ffoLabel };

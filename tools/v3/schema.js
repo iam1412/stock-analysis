@@ -10,15 +10,16 @@ const SV = require('../safe-values.js');
 const ENUM = {
   currency: ['USD', 'THB'], region: ['US', 'TH'], dateEra: ['BE', 'CE'], chgSuffix: ['รอบปี', 'ตั้งแต่ IPO'],
   epsBasis: ['gaap-ttm', 'adj-ttm', 'fy', 'ifrs'],
-  ffoBasis: ['ffo', 'affo'],   // Plan 2a Task 9 (§3.6 J) — ป้าย FFO/AFFO ของการ์ด/ขา/ฉาก REIT
+  ffoBasis: ['ffo', 'affo', 'coreFfo'],   // Plan 2a Task 9 (§3.6 J) — ป้าย FFO/AFFO ของการ์ด/ขา/ฉาก REIT · + coreFfo (Plan 4c-prep spec §3.7 ก): Core FFO ≠ FFO ≠ AFFO — ข้อเท็จจริงคนละตัว
   reportCurrency: ['USD', 'THB', 'EUR', 'CAD', 'GBP', 'JPY', 'CHF', 'TWD'],   // Plan 2a Task 10 (§3.6 L) — สกุลงบ (ยอดรวมทั้งบริษัท)
   method: ['pe', 'pbv', 'ps', 'evsales', 'evebitda', 'pfcf', 'fcfyield', 'pffo', 'ddm', 'ddm2', 'dcf', 'ri', 'declared'],
   multipleSource: ['median5y', 'median10y', 'peer', 'justified', 'sector', 'current', 'author'],   // 'current' = เฉพาะขา role:"context" (ตัวคูณสด คิดทุกวัน) · บนขา fv ห้าม = สมอตาย W18 (§13 ข้อ 6)
   // 'author' = ตัวคูณที่ผู้วิเคราะห์กำหนดเอง (ไม่ใช่มัธยฐาน/peer/sector) — migrator ใช้เมื่อ mdesc ไม่ได้บอกว่าตัวคูณคือมัธยฐาน (Plan 4b Task 6b)
   declaredBasis: ['sotp', 'nav', 'rnpv', 'other'],
   // Plan 4b Task 1 (spec §10 "ช่องว่าง schema" · §3.3): driver de/fre (alt managers) · exitMetric evsales · tone 'none' = ไม่มีคลาสสี (466 การ์ด v2)
-  driver: ['eps', 'ffo', 'revenuePerShare', 'bvps', 'fcfPerShare', 'de', 'fre'],
-  exitMetric: ['pe', 'ps', 'pbv', 'pffo', 'pfcf', 'evsales'],
+  driver: ['eps', 'ffo', 'revenuePerShare', 'bvps', 'fcfPerShare', 'de', 'fre', 'ebitdaPerShare'],   // + ebitdaPerShare (Plan 4c-prep)
+  exitMetric: ['pe', 'ps', 'pbv', 'pffo', 'pfcf', 'evsales', 'evebitda'],   // + evebitda (Plan 4c-prep · สูตรเดียวกับ evsales)
+  legBase: ['eps', 'epsForward', 'epsFy'],   // Plan 4c-prep: ตัวตั้งของขา pe = input ของการคำนวณ (compute.withBase) ไม่ใช่ป้าย
   perYear: ['cagr', 'linear', null],
   extrasAfter: ['metrics', 'valuation', 'scenarios', 'catalysts'],
   colUnit: ['none', 'pct', 'x', 'ccy'],
@@ -43,7 +44,7 @@ const BANK_KEYS = ['nim', 'npl', 'coverage', 'cet1', 'car'];
 const MULT = ['multiple', 'multipleSource'];
 const RANGE = ['multipleRange', 'medianWindow'];   // §3.6 F — กรอบความไวของตัวคูณ [lo, hi] → กรอบ FV · §3.6 G — ช่วงปีของมัธยฐาน (ขาตัวคูณเดียวกัน)
 const LEG_INPUTS = {
-  pe: { req: MULT, opt: RANGE },
+  pe: { req: MULT, opt: RANGE.concat(['base']) },   // base = Plan 4c-prep (D2) ตัวตั้ง eps | epsForward | epsFy
   pbv: { req: [], opt: ['multiple', 'multipleSource', 'g', 'r'].concat(RANGE) },   // multiple+source หรือ g+r (justified) — ตรวจคู่ด้านล่าง
   ps: { req: MULT, opt: RANGE }, evsales: { req: MULT, opt: RANGE }, evebitda: { req: MULT, opt: RANGE },
   pfcf: { req: MULT, opt: RANGE }, pffo: { req: MULT, opt: RANGE },
@@ -69,15 +70,22 @@ function requiredFamily(leg) {
 }
 // ตัวตั้งต่อหุ้นของขาที่ใช้ตัวคูณสด (multipleSource 'current') — compute ใช้หาตัวคูณสด · check-v3 ใช้เป็นฐาน W18
 const CURRENT_BASE = { pe: 'eps', pbv: 'bvps', pffo: 'ffoPerShare' };
-const OVERRIDE_KEYS = ['eps', 'bvps', 'roe', 'dps', 'revenue', 'ebitda', 'fcf', 'netDebt', 'ffoPerShare', 'shares', 'why'];
+const OVERRIDE_KEYS = ['eps', 'bvps', 'roe', 'dps', 'revenue', 'ebitda', 'fcf', 'netDebt', 'ffoPerShare', 'shares', 'epsForward', 'why'];   // epsForward = Plan 4c-prep (คู่ inputs.base 'epsForward')
+// ป้าย FFO ชุดเดียวของ render / cards.js / check-v3.js (Plan 4c-prep)
+const FFO_LABEL = { ffo: 'FFO', affo: 'AFFO', coreFfo: 'Core FFO' };
 const THEME_KEYS = ['accent', 'accentDark', 'darkGrad', 'glow', 'subColor', 'headerMuted', 'verdictText', 'vcellLabel'];
-const TEXT_KEYS = ['valHint', 'valIntro', 'metricsNote', 'disclaimerAssump', 'chartHint'];   // §3.6 A — แทนข้อความตายตัวของ template · chartHint = ต่อท้ายป้าย §2 (Plan 4b Task 6b)
+const TEXT_KEYS = ['valHint', 'valIntro', 'metricsNote', 'disclaimerAssump', 'chartHint', 'legendNote'];   // §3.6 A — แทนข้อความตายตัวของ template · chartHint = ต่อท้ายป้าย §2 (Plan 4b Task 6b)
 const ISO = /^\d{4}-\d{2}-\d{2}$/;
 const AI = /^Claude\s+[A-Za-z]+\s+\d+(?:\.\d+)?$/;   // รูปเดียวกับ E28 / RM.parseAiModel
 
 const isNum = (v) => typeof v === 'number' && Number.isFinite(v);
 const isStr = (v) => typeof v === 'string' && v.trim().length > 0;
 const isObj = (v) => v != null && typeof v === 'object' && !Array.isArray(v);
+
+// เพดาน custom card (spec §3.7 ง · Plan 4c-prep D5): ใบ migrate (meta.migratedFrom) = 8 — ครอบ 97/102 ใบที่ชนเพดาน 4 · ใบ NEW = 4 เท่าเดิม
+// ทางย้อนกลับ: ลดค่านี้ ใบที่เกินกลับเป็น HUMAN ใน sweep
+const CUSTOM_CAP_MIGRATED = 8, CUSTOM_CAP = 4;
+const customCap = (doc) => (isObj(doc) && isObj(doc.meta) && doc.meta.migratedFrom != null ? CUSTOM_CAP_MIGRATED : CUSTOM_CAP);
 
 // metrics.cards[i]: "key" | "custom:<i>" | {key, tone} → ลำดับที่ render · custom ที่ไม่ถูกอ้างต่อท้าย (พฤติกรรม Plan 1)
 const CUSTOM_REF = /^custom:(\d)$/;
@@ -135,7 +143,7 @@ function validate(doc) {
 
   if (!isObj(doc)) return [{ path: '', msg: 'เอกสารต้องเป็น JSON object' }];
   closed(doc, '', ['v', 'symbol', 'currency', 'region', 'dateEra', 'meta', 'market', 'fundamentals', 'legs', 'fvWeights',
-    'metrics', 'scenarios', 'analyst', 'prose', 'text', 'catalysts', 'risks', 'extras', '_sig']);
+    'metrics', 'scenarios', 'analyst', 'verdict', 'prose', 'text', 'catalysts', 'risks', 'extras', '_sig']);
   if (doc.v !== 3) E('v', 'ต้องเป็น 3');
   if (!/^[A-Z0-9][A-Z0-9.\-]*$/.test(doc.symbol || '')) E('symbol', 'ต้องเป็นตัวพิมพ์ใหญ่/ตัวเลข/จุด/ขีด');
   en(doc.currency, 'currency', ENUM.currency);
@@ -146,13 +154,15 @@ function validate(doc) {
   const m = doc.meta;
   if (!isObj(m)) E('meta', 'ต้องมี (object)');
   else {
-    closed(m, 'meta', ['company', 'exchange', 'sub', 'headerTags', 'analysisDate', 'aiModel', 'sources', 'priceNote', 'themeLegacy', 'litReasons', 'migratedFrom']);
+    closed(m, 'meta', ['company', 'exchange', 'sub', 'headerTags', 'analysisDate', 'aiModel', 'sources', 'priceNote', 'sectorLine', 'themeLegacy', 'litReasons', 'migratedFrom']);
     str(m.company, 'meta.company'); str(m.exchange, 'meta.exchange'); str(m.sub, 'meta.sub', { minLen: 10 });
     if (m.headerTags != null) strList(m.headerTags, 'meta.headerTags', 0, 3);   // ≤ 3 (Plan 4b Task 1 — ADR/dual listing)
     if (!ISO.test(m.analysisDate || '')) E('meta.analysisDate', 'ต้องเป็น ISO YYYY-MM-DD (ค.ศ.)');
     if (!AI.test(m.aiModel || '')) E('meta.aiModel', 'ต้องเป็นรูป "Claude <ตระกูล> <เวอร์ชัน>"');
     strList(m.sources, 'meta.sources', 3, 8);
     str(m.priceNote, 'meta.priceNote', { req: false });
+    // Plan 4c-prep (spec §3.7 ข · D3): คำที่ผู้เขียนพิมพ์ในจุด gdots ของ header (v2 แสดงจริง) — บรรทัดเล็กใต้ tags
+    if (m.sectorLine != null) { str(m.sectorLine, 'meta.sectorLine'); noTag(m.sectorLine, 'meta.sectorLine'); if (typeof m.sectorLine === 'string' && m.sectorLine.length > 100) E('meta.sectorLine', 'ยาวเกิน 100 ตัวอักษร'); }
     if (m.themeLegacy != null) {
       if (!isObj(m.themeLegacy)) E('meta.themeLegacy', 'ต้องเป็น object หรือ null');
       else {
@@ -258,11 +268,13 @@ function validate(doc) {
   else doc.legs.forEach((leg, i) => {
     const p = `legs[${i}]`;
     if (!isObj(leg)) return E(p, 'ต้องเป็น object');
-    closed(leg, p, ['method', 'label', 'inputs', 'override', 'note', 'role', 'family']);
+    closed(leg, p, ['method', 'label', 'inputs', 'override', 'note', 'role', 'family', 'baseLabel']);
     if (leg.role != null) en(leg.role, `${p}.role`, ENUM.role);
     if (leg.family != null) en(leg.family, `${p}.family`, ENUM.family);
     en(leg.method, `${p}.method`, ENUM.method);
     str(leg.label, `${p}.label`); plain(leg.label, `${p}.label`); str(leg.note, `${p}.note`, { req: false });
+    // Plan 4c-prep (D2): ชื่อขาของผู้เขียนบนใบ migrate ≤ 80 · ใบ NEW ไม่เปลี่ยน
+    if (isObj(doc.meta) && doc.meta.migratedFrom != null && typeof leg.label === 'string' && leg.label.length > 80) E(`${p}.label`, 'ใบ migrate: ชื่อขา ≤ 80 ตัวอักษร (ส่วนที่เหลือไป legs[i].note)');
     // family ต้องตรงโครงสร้างของ method — ป้ายผิดตระกูลเปลี่ยนน้ำหนัก FV ได้เงียบ ๆ (probe: BBL ขา rg → 'market' ⇒ FV 176.77 → 181.43)
     const need = requiredFamily(leg);
     if (leg.family != null && need && leg.family !== need) {
@@ -344,6 +356,21 @@ function validate(doc) {
       if (inp.value != null && !(inp.value > 0)) E(`${p}.inputs.value`, 'ต้อง > 0');
       if (inp.extrasRef != null) num(inp.extrasRef, `${p}.inputs.extrasRef`, { int: true, min: 0 });
     }
+    // Plan 4c-prep (spec §3.7 ก · D2): inputs.base (pe) — ตัวตั้งอ่านจาก fundamentals ตามนี้ · override.epsForward เมื่อเลขผู้เขียนต่าง
+    const fb = isObj(doc.fundamentals) ? doc.fundamentals : {}, ov = isObj(leg.override) ? leg.override : {};
+    const baseK = inp.base == null ? 'eps' : inp.base;
+    if (inp.base != null) {
+      en(inp.base, `${p}.inputs.base`, ENUM.legBase);
+      if (inp.base === 'epsForward' && !(isNum(ov.epsForward) && ov.epsForward > 0) && !(isNum(fb.epsForward) && fb.epsForward > 0)) E(`${p}.inputs.base`, "'epsForward' ต้องมี fundamentals.epsForward หรือ override.epsForward > 0");
+      if (inp.base === 'epsFy' && !(isObj(fb.fy) && isNum(fb.fy.eps) && fb.fy.eps > 0)) E(`${p}.inputs.base`, "'epsFy' ต้องมี fundamentals.fy.eps > 0");
+    }
+    if (baseK !== 'eps' && ov.eps != null) E(`${p}.override.eps`, `inputs.base '${baseK}' — ตัวเลขของผู้เขียนใช้ override.epsForward (ฐาน forward) ไม่ใช่ override.eps`);
+    if (baseK !== 'epsForward' && ov.epsForward != null) E(`${p}.override.epsForward`, "ใช้ได้เฉพาะคู่ inputs.base 'epsForward'");
+    if (leg.baseLabel != null) {
+      if (typeof leg.baseLabel !== 'string' || !leg.baseLabel.trim() || leg.baseLabel.length > 24) E(`${p}.baseLabel`, 'ต้องเป็นข้อความสั้น ≤24 ตัวอักษร (ถ้อยคำงวด เช่น "FY2026E consensus")');
+      plain(leg.baseLabel, `${p}.baseLabel`);
+      if (baseK === 'eps') E(`${p}.baseLabel`, "ใช้คู่ inputs.base 'epsForward' | 'epsFy' เท่านั้น");
+    }
     if (leg.override != null) {
       if (!isObj(leg.override)) E(`${p}.override`, 'ต้องเป็น object');
       else {
@@ -409,7 +436,8 @@ function validate(doc) {
       else for (const [k, v] of Object.entries(mt.notes)) { if (!CARD_KEYS.includes(k)) E(`metrics.notes.${k}`, 'ไม่ใช่คีย์การ์ด'); str(v, `metrics.notes.${k}`); }
     }
     if (mt.custom != null) {
-      if (!Array.isArray(mt.custom) || mt.custom.length > 4) E('metrics.custom', 'ต้องเป็น array ≤4');
+      const cap = customCap(doc);
+      if (!Array.isArray(mt.custom) || mt.custom.length > cap) E('metrics.custom', `ต้องเป็น array ≤${cap}${cap === CUSTOM_CAP ? '' : ' (ใบ migrate)'}`);
       else mt.custom.forEach((c, i) => { if (!isObj(c)) return E(`metrics.custom[${i}]`, 'ต้องเป็น object'); closed(c, `metrics.custom[${i}]`, ['label', 'value', 'note', 'tone']); if (c.tone != null) en(c.tone, `metrics.custom[${i}].tone`, ENUM.tone); str(c.label, `metrics.custom[${i}].label`); str(c.value, `metrics.custom[${i}].value`); str(c.note, `metrics.custom[${i}].note`, { req: false }); });
     }
     str(mt.hint, 'metrics.hint', { req: false });
@@ -426,6 +454,9 @@ function validate(doc) {
     en(s.driver, 'scenarios.driver', ENUM.driver); en(s.exitMetric, 'scenarios.exitMetric', ENUM.exitMetric);
     // Plan 4b Task 1 (fix round 1 · N-3): exit EV/Sales คูณรายได้ต่อหุ้น ⇒ ตัวตั้งต้องเป็น revenuePerShare เท่านั้น
     if (s.exitMetric === 'evsales' && s.driver !== 'revenuePerShare') E('scenarios.exitMetric', `evsales (EV/Sales ออก) คูณรายได้ต่อหุ้น — ต้องใช้ scenarios.driver = "revenuePerShare" (พบ ${JSON.stringify(s.driver)})`);
+    // Plan 4c-prep (spec §3.7 ก): EV/EBITDA ออก คู่ EBITDA ต่อหุ้น — กันทั้งสองทาง
+    if (s.exitMetric === 'evebitda' && s.driver !== 'ebitdaPerShare') E('scenarios.exitMetric', `evebitda (EV/EBITDA ออก) คูณ EBITDA ต่อหุ้น — ต้องใช้ scenarios.driver = "ebitdaPerShare" (พบ ${JSON.stringify(s.driver)})`);
+    if (s.driver === 'ebitdaPerShare' && s.exitMetric !== 'evebitda') E('scenarios.driver', `ebitdaPerShare ใช้คู่ exitMetric "evebitda" เท่านั้น (พบ ${JSON.stringify(s.exitMetric)})`);
     // Plan 4b Task 2: exitDp = จำนวนทศนิยมที่พิมพ์ตัวคูณออก (v2 พิมพ์ 17.25x ได้) · ไม่มี = render พิมพ์ค่าดิบ / token toFixed(1) เหมือนเดิม
     if (s.exitDp != null) { num(s.exitDp, 'scenarios.exitDp', { int: true, min: 0 }); if (isNum(s.exitDp) && s.exitDp > 2) E('scenarios.exitDp', 'ต้อง 0–2'); }
     if (s.baseOverride != null) { closed(s.baseOverride, 'scenarios.baseOverride', ['value', 'why']); num(s.baseOverride.value, 'scenarios.baseOverride.value', { gt: 0 }); str(s.baseOverride.why, 'scenarios.baseOverride.why'); }
@@ -461,6 +492,23 @@ function validate(doc) {
     }
   }
 
+  // ── verdict (Plan 4c-prep · spec §3.7 ข) — vcell ที่ 3+ ของหมวด 8 ของผู้เขียน (ไม่บังคับ) ──
+  if (doc.verdict != null) {
+    const vd = doc.verdict;
+    if (!isObj(vd)) E('verdict', 'ต้องเป็น object {extraCells}');
+    else {
+      closed(vd, 'verdict', ['extraCells']);
+      const xc = vd.extraCells;
+      if (!Array.isArray(xc) || xc.length < 1 || xc.length > 2) E('verdict.extraCells', 'ต้องเป็น array 1–2 ช่อง [{k, v}]');
+      else xc.forEach((c, i) => {
+        const p = `verdict.extraCells[${i}]`;
+        if (!isObj(c)) return E(p, 'ต้องเป็น {k, v}');
+        closed(c, p, ['k', 'v']); str(c.k, `${p}.k`); plain(c.k, `${p}.k`); str(c.v, `${p}.v`); noTag(c.v, `${p}.v`);
+        if (typeof c.k === 'string' && c.k.length > 40) E(`${p}.k`, 'ป้าย ≤ 40 ตัวอักษร');
+      });
+    }
+  }
+
   // ── prose / lists / extras ──
   const PROSE_REQ = ['chart', 'valuation', 'gauge', 'mos', 'verdictHeadline', 'verdictBody', 'strategy', 'disclaimerSources'];
   if (!isObj(doc.prose)) E('prose', 'ต้องมี (object)');
@@ -471,6 +519,7 @@ function validate(doc) {
       closed(doc.text, 'text', TEXT_KEYS);
       for (const k of TEXT_KEYS) str(doc.text[k], `text.${k}`, { req: false });
       noTag(doc.text.chartHint, 'text.chartHint');
+      noTag(doc.text.legendNote, 'text.legendNote'); if (typeof doc.text.legendNote === 'string' && doc.text.legendNote.length > 80) E('text.legendNote', 'ยาวเกิน 80 ตัวอักษร (ป้าย legend หมวด 2)');
       if (typeof doc.text.valHint === 'string' && doc.text.valHint.length > 80) E('text.valHint', 'ยาวเกิน 80 ตัวอักษร (เป็นป้ายหัว section)');
     }
   }
@@ -545,4 +594,4 @@ function OWNER(path) {
   return 'worker';
 }
 
-module.exports = { ENUM, CARD_KEYS, FUND_KEYS, FY_KEYS, BANK_KEYS, LEG_INPUTS, CURRENT_BASE, requiredFamily, OVERRIDE_KEYS, THEME_KEYS, TEXT_KEYS, cardEntries, validate, OWNER, RD_TOKEN, TODO_RE, stringLeaves };
+module.exports = { ENUM, FFO_LABEL, CARD_KEYS, FUND_KEYS, FY_KEYS, BANK_KEYS, LEG_INPUTS, CURRENT_BASE, requiredFamily, OVERRIDE_KEYS, THEME_KEYS, TEXT_KEYS, cardEntries, customCap, CUSTOM_CAP, CUSTOM_CAP_MIGRATED, validate, OWNER, RD_TOKEN, TODO_RE, stringLeaves };
