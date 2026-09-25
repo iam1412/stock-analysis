@@ -289,6 +289,8 @@ function classify(run) {
   if (!lost.length && !added.length) {
     const dn = numsOf(run.del), inn = numsOf(run.ins);
     if (!dn.length && !inn.length) return { kind: 'symbol', lost, added };
+    // ตัวเลขที่ v3 เพิ่มเอง (v2 ไม่มีตัวเลขในรันนี้เลย เช่น กรอบ 52 สัปดาห์จาก market.range52w) = info ไม่ใช่ drift (fix round 2 · N-1)
+    if (!dn.length) return { kind: 'number added', lost, added };
     const same = dn.length === inn.length && dn.every((x, k) => x.v === inn[k].v);
     return { kind: same ? 'symbol' : `number ${classifyNumber(run.del, run.ins)}`, lost, added };
   }
@@ -353,12 +355,13 @@ function compare(v2Html, v3Html, doc, view, opts) {
   const n2 = new Map(), n3 = new Map();
   for (const id of ids) n3.set(id, tok(norm(id, z3.get(id) || '', 'v3', c3)));
   for (const id of ids) n2.set(id, tok(norm(id, z2.get(id) || '', 'v2', c2)));
-  const out = { zones: [], textLost: [], textLostAt: [], moved: [], numberValue: [], numberRounding: [], templateDropped: [], rd: [], colour: { keys: [], themeLegacy: false }, tone: [] };
+  const out = { zones: [], textLost: [], textLostAt: [], moved: [], numberValue: [], numberRounding: [], numberAdded: [], templateDropped: [], rd: [], colour: { keys: [], themeLegacy: false }, tone: [] };
   const cand = [], mixed = [];
   for (const id of ids) {
     const runs = diffRuns(n2.get(id), n3.get(id)).map((r) => { const c = classify(r); return { kind: c.kind, del: r.del, ins: r.ins, ctx: r.ctx, lost: c.lost }; });
     for (const r of runs) {
       if (r.kind === 'number value') out.numberValue.push({ zone: id, del: r.del, ins: r.ins, ctx: r.ctx });
+      else if (r.kind === 'number added') out.numberAdded.push({ zone: id, ins: r.ins, ctx: r.ctx });
       else if (r.kind === 'number rounding') out.numberRounding.push({ zone: id, del: r.del, ins: r.ins, ctx: r.ctx });
       else if ((r.kind === 'text changed' || r.kind === 'TEXT LOST') && numsOf(r.del).length) mixed.push({ zone: id, run: r, n: cand.length + r.lost.length });
       for (const w of r.lost) cand.push({ zone: id, w, run: r });

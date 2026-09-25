@@ -35,6 +35,8 @@ for (const sym of ['BBL', ...NON_HUMAN]) {
   const b = BK.bucketOf(m.notes, m.eq);
   if (NON_HUMAN.includes(sym)) t(b.bucket !== 'HUMAN', `${sym}: bucket is CLEAN or VALUE-DRIFT (${b.bucket}: ${b.reasons.join(' ; ')})`);
   else t(b.bucket === 'HUMAN' && m.notes.H.length && m.notes.H.every((r) => /analyst target .*max\/min/.test(r)), `${sym}: HUMAN only by the analyst max/min note (Task 5 round 4)`, JSON.stringify(m.notes.H));
+  // fix round 2 · G-1 (controller ruling · plan D5): gauge.{min,max} rows are F — SGC/NFG drift only on the gauge ⇒ CLEAN, the rows stay in eq.rd + F reasons
+  if (['SGC', 'NFG'].includes(sym)) t(b.bucket === 'CLEAN' && m.eq.rd.length > 0 && m.eq.rd.every((r) => /^gauge\./.test(r.path)) && b.reasons.some((r) => /^rd\/sm gauge\./.test(r)), `${sym}: gauge-only rd rows → CLEAN (gauge row kept as F)`, JSON.stringify({ b, rd: m.eq.rd }));
 }
 // DPZ = positive HUMAN case: the custom > 4 cap drops cards, and exactly their words surface as TEXT LOST (nothing else lost, nothing masked)
 {
@@ -137,6 +139,18 @@ for (const sym of ['AAPL', 'DDOG']) { const m = migrate(sym, raw(sym)); const b 
   const v2v = C.compute(d2, { seeds: SEEDS });
   const e2 = EQ.compare(f.v2, B.expandReport(R.toV2Source(d2, v2v)), d2, v2v, { v2src: raw('FTV') });
   t(f.doc.scenarios.hintNote && e2.textLost.includes('adj'), 'C-1: FTV §6 hint "(TTM adj.)" is author text — dropped hintNote → TEXT LOST', JSON.stringify({ hn: f.doc.scenarios.hintNote, lost: e2.textLost }));
+}
+// fix round 2 · N-1 — a number run that exists only on the v3 side (52-week range from market.range52w) is info, not drift
+{
+  const m0 = migrate('SGC', raw('SGC'));
+  const line = /กรอบ 52 สัปดาห์[^<]*<br>\s*/;
+  const v2 = m0.v2.replace(line, '');
+  const v3 = line.test(m0.v3) ? m0.v3 : m0.v3.replace(/(ที่มา:)/, 'กรอบ 52 สัปดาห์ ฿1.00 – ฿2.00<br>\n        $1');
+  t(!line.test(v2) && line.test(v3), 'N-1 setup: v2 has no 52-week range, v3 has one');
+  const eq = EQ.compare(v2, v3, m0.doc, m0.view, { v2src: raw('SGC') });
+  t(!eq.numberValue.some((r) => r.zone === 'header') && eq.numberAdded.some((r) => r.zone === 'header'), 'N-1: v3-only number run → numberAdded (info), no numberValue', JSON.stringify({ nv: eq.numberValue, na: eq.numberAdded }));
+  t.eq(BK.bucketOf(m0.notes, eq).bucket, BK.bucketOf(m0.notes, m0.eq).bucket, 'N-1: bucket unaffected by a v3-only number run');
+  t(EQ.classify({ del: '฿5.00', ins: '' }).kind === 'number value', 'N-1: v2 number with no v3 counterpart stays value');
 }
 // number classification
 t.eq(EQ.classifyNumber('฿163', '฿162.80'), 'rounding', 'number run within printed precision → rounding');
