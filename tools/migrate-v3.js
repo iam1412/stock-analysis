@@ -10,6 +10,11 @@
  *   batch   <table.csv> --class CLEAN|<driftClass…> --model sonnet|opus [--n N] [--dry-run] [--no-push] [--head-manifest FILE]
  *           ตาราง = csv รูปเดียวกับ sweep ที่ advisor อนุมัติ · migrate ใหม่แล้วเทียบ bucket/driftClass (ต่าง = ปฏิเสธ · exit 3)
  *           CLEAN ≤50 ใบ/commit · VALUE-DRIFT 1 ใบ/commit · convert → build → ship --migrate --no-push → verify + push ทุก N commit
+ *   draft   <SYM> [--work-dir .work] [--force] [--reports-dir D] [--head-manifest FILE] [--today YYYY-MM-DD]   (Plan 4c-transcribe)
+ *           migrateOne ทุกถัง (รวม HUMAN) → <work>/<SYM>.json (คีย์ของ worker · คง meta.migratedFrom) + <SYM>.brief.md (เหตุผล + ตัวเลขหลักของ v2)
+ *   adopt   <SYM> [--doc <work>/<SYM>.json] [--reports-dir D] [--head-manifest FILE] [--today YYYY-MM-DD]
+ *           guard เดียวกับ convert --write · merge market ของ migrator → checkDoc 0 error + ตัวเลขหลักตรง v2 (การปัดที่พิมพ์) → เขียน .json ลบ .html
+ *           equivalence gate = ข้อมูลเท่านั้น · ตรรกะ = tools/migrate-v3/transcribe.js
  * ★ --write ใส่ reports/ จริงต้องมี env MIGRATE_V3_ALLOW_REAL=1 (Plan 4c ตั้ง · PR นี้ไม่ตั้งนอก scratch rehearsal)
  * ★ นาฬิกา gate: sweep / convert dry-run = values.priceDate ของใบ (ไม่ขึ้นกับวันนี้ — E27 ไม่ใช่คุณสมบัติของการ migrate)
  *   · convert --write = วันนี้ (Asia/Bangkok) เหมือน npm run verify · --today YYYY-MM-DD แทนได้ (review T7 M-4)
@@ -33,13 +38,14 @@ const BK = require('./migrate-v3/buckets.js');
 const AP = require('./migrate-v3/analysis-px.js');
 const RP = require('./migrate-v3/report.js');
 const BT = require('./migrate-v3/batch.js');
+const TR = require('./migrate-v3/transcribe.js');
 
 class UsageError extends Error {}
 const ISO_RE = /^\d{4}-\d{2}-\d{2}$/;
 
 function parseArgs(argv) {
-  const VAL = { '--reports-dir': 'reportsDir', '--head-manifest': 'headManifest', '--out': 'out', '--limit': 'limit', '--today': 'today', '--n': 'n', '--model': 'model' };
-  const o = { _: [], only: null, write: false, acceptDrift: false, noStale: false };
+  const VAL = { '--reports-dir': 'reportsDir', '--head-manifest': 'headManifest', '--out': 'out', '--limit': 'limit', '--today': 'today', '--n': 'n', '--model': 'model', '--work-dir': 'workDir', '--doc': 'doc' };
+  const o = { _: [], only: null, write: false, acceptDrift: false, noStale: false, force: false };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (VAL[a]) { if (argv[i + 1] == null) throw new UsageError(`${a} ต้องมีค่า`); o[VAL[a]] = argv[++i]; }
@@ -50,6 +56,7 @@ function parseArgs(argv) {
     else if (a === '--write') o.write = true;
     else if (a === '--accept-drift') o.acceptDrift = true;
     else if (a === '--no-stale') o.noStale = true;
+    else if (a === '--force') o.force = true;
     else if (a.startsWith('--')) throw new UsageError(`ไม่รู้จักตัวเลือก ${a}`);
     else o._.push(a);
   }
@@ -272,6 +279,9 @@ function runBatchCli(tablePath, opts, log) {
   return BT.runBatch(rows, { classes: opts.classes, n: opts.n || 1, model: opts.model, noPush: !!opts.noPush, dryRun: !!opts.dryRun }, deps).code;
 }
 
+// transcribe.js ใช้ท่อ/guard ชุดเดียวกับ convert (ไม่ require วงกลับ)
+const TRANSCRIBE_ENV = { migrateOne, ctxOf, isGuarded };
+
 function main(argv) {
   let o;
   try {
@@ -280,7 +290,9 @@ function main(argv) {
     if (cmd === 'sweep') return runSweep(o).code;
     if (cmd === 'convert') { if (o._.length !== 1) throw new UsageError('convert ต้องมี <SYM> ตัวเดียว'); return runConvert(o._[0], o); }
     if (cmd === 'batch') { if (o._.length !== 1) throw new UsageError('batch ต้องมี <table.csv> ตัวเดียว'); return runBatchCli(o._[0], o); }
-    throw new UsageError('ใช้: migrate-v3.js sweep|convert|batch …');
+    if (cmd === 'draft') { if (o._.length !== 1) throw new UsageError('draft ต้องมี <SYM> ตัวเดียว'); return TR.runDraft(o._[0], o, null, TRANSCRIBE_ENV); }
+    if (cmd === 'adopt') { if (o._.length !== 1) throw new UsageError('adopt ต้องมี <SYM> ตัวเดียว'); return TR.runAdopt(o._[0], o, null, TRANSCRIBE_ENV); }
+    throw new UsageError('ใช้: migrate-v3.js sweep|convert|batch|draft|adopt …');
   } catch (e) {
     if (e instanceof UsageError) { process.stderr.write(`✗ ${e.message}\n`); return 1; }
     process.stderr.write(`✗ ${e.stack || e}\n`);
@@ -290,4 +302,4 @@ function main(argv) {
 
 if (require.main === module) process.exitCode = main(process.argv.slice(2));
 
-module.exports = { runSweep, runConvert, runBatchCli, migrateOne, rowOf, parseArgs, loadManifest, isRealReports, isCheckoutReports, isGuarded, main };
+module.exports = { runSweep, runConvert, runBatchCli, migrateOne, rowOf, parseArgs, loadManifest, isRealReports, isCheckoutReports, isGuarded, ctxOf, main };

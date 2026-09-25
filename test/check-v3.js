@@ -4,6 +4,7 @@
  *   คิดเองจาก JSON: E50 ลายเซ็น · E51 สคีมา/compute/render/แท็ก/NaN หลุด · E52 ขา declared ↔ ตาราง · E17 ≥2 ขา fv
  *                   E27/W09 ความสดราคา · W07 ตัวเลขผิดวิสัย · W18/W25 สมอตาย (จาก inputs) · W30 lit เกิน · W31 literal เงินค้าง
  *                   W32 |MOS| > 40% ไม่มีขา fv นอกตระกูล (r,g) (§13 ข้อ 7)
+ *                   W33 ใบ migrate ที่ผู้เขียน v2 ประกาศขา fv ขาเดียว (แทน E17 — Plan 4c-transcribe · ใบ NEW ยังเป็น E17)
  *   ผ่าน gate v2 บนหน้าที่ render (render smoke test): โค้ดที่เหลือทั้งหมด รายงานเป็น "v2:<id>" — ย้ายเป็น native ใน P7
  *   ไม่รันกติกา B (ruling R5 — กติกา B เป็นของ save · ราคาขยับทุกวันจะทำให้ "เป๊ะ" กระพริบ)
  *   ลำดับต่อใบ (ruling Task 12 a): validate (รวม {{rd:}} + TODO) → (0 schema error เท่านั้น) semanticErrors → compute → tieOut → render → gate v2
@@ -43,6 +44,7 @@ const CODES = [
   { id: 'W25', level: 'warn', label: 'ตัวคูณเป้า ≈ ตัวคูณ forward (สมอตายฝั่ง forward)' },
   { id: 'W30', level: 'warn', label: '{{lit:…}} เกิน 2 ต่อใบ' },
   { id: 'W31', level: 'warn', label: 'literal รูปเงินค้างใน prose (แก้ตอนแตะใบ)' },
+  { id: 'W33', level: 'warn', label: 'ใบ migrate: ขา fv ขาเดียวตามที่ผู้เขียน v2 ประกาศ (ชั้น 0 ยังค้าง — §13 ข้อ 4 · ใบ NEW = E17)' },
   { id: 'W32', level: 'warn', label: '|MOS| > 40% ต้องมีขา fv ที่ไม่ใช่ตระกูล (r,g) ยืนยัน (ชั้น 0 · §13 ข้อ 7)' },
 ];
 const CODE = Object.fromEntries(CODES.map((c) => [c.id, c]));
@@ -101,7 +103,9 @@ function checkDoc(doc, opts) {
   for (const i of X.tieOut(doc, view)) add('E52', `${i.path}: ${i.msg}`);
 
   const nFv = view.legs.filter(isFvLeg).length;
-  if (nFv < 2) add('E17', `ขา role:"fv" มี ${nFv} ขา (ต้อง ≥ 2) — ขา context ไม่นับ (spec §13 ข้อ 4)`);
+  // Plan 4c-transcribe: ใบ migrate ที่หน้า v2 ประกาศขา fv ขาเดียว (ขาอื่น "บริบท — ไม่รวมใน FV" · 11/447 ใบ HUMAN ที่วัด) ถอดความเพิ่มขาไม่ได้ → W33 (มองเห็น ไม่บล็อก) · 0 ขา = E17 เสมอ
+  if (nFv === 1 && S.isMigrated(doc)) add('W33', `ขา role:"fv" มี 1 ขา ตามหน้า v2 — ใบ migrate ถอดความเพิ่มขาไม่ได้ (spec §13 ข้อ 4 ยังค้าง)`);
+  else if (nFv < 2) add('E17', `ขา role:"fv" มี ${nFv} ขา (ต้อง ≥ 2) — ขา context ไม่นับ (spec §13 ข้อ 4)`);
 
   const today = o.today || thaiToday(), pd = doc.market.priceDate, age = days(pd, today);
   const errDays = parseInt(process.env.STALE_ERROR_DAYS || '120', 10), warnDays = parseInt(process.env.STALE_WARN_DAYS || '45', 10);

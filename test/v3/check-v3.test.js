@@ -175,7 +175,7 @@ tagCase('ZTS-real', (d) => { d.metrics.notes.eps += ' <font>x</font>'; }, 'metri
   } finally { fs.rmSync(tmp, { recursive: true, force: true }); }
 }
 // CODES ครบ inventory ของ ruling R4
-t.eq(CV.CODES.map((c) => c.id).sort(), ['E17', 'E27', 'E50', 'E51', 'E52', 'W07', 'W09', 'W18', 'W25', 'W30', 'W31', 'W32'], 'CODES = native inventory (R4)');
+t.eq(CV.CODES.map((c) => c.id).sort(), ['E17', 'E27', 'E50', 'E51', 'E52', 'W07', 'W09', 'W18', 'W25', 'W30', 'W31', 'W32', 'W33'], 'CODES = native inventory (R4)');
 // ── final review (3) — ffoPayout หารด้วย FFO/หุ้น: 0 → "Infinity%" · ลบ → payout ติดลบ ⇒ guard > 0 + backstop E51 ถ้าหน้าหลุด NaN/Infinity/undefined
 { const d = load('EQIX-real'); delete d._sig; d.fundamentals.ffoPerShare = 0; d.metrics.cards.push('ffoPayout');
   const r = noThrow(() => run(signed(d)), '(3) EQIX ffoPerShare 0');
@@ -225,4 +225,12 @@ const e51 = (r) => r.errors.find((x) => x.id === 'E51');
   t.eq(ids(run(signed(d), { stage: 'save' }), 'errors'), ['v2:E28'], "stage:'save' drops exactly v2:E40 — v2:E28 still fails"); }
 t.throws(() => CV.checkDoc(Z(), { seeds: {}, stage: 'publish' }), /stage/, 'unknown stage throws');
 t.eq(run(Z()).dropped, [], 'no stage → dropped is empty');
+// Plan 4c-transcribe: ขา pe ฐาน forward ที่มีป้ายงวด (baseLabel) → mdesc "EPS FY2026e (forward) $6.20" — v2:E21 ต้องไม่อ่าน 2026 เป็น EPS
+{ const d = Z(); delete d._sig; const leg = d.legs[0]; d.fundamentals.epsForward = leg.override.eps; delete leg.override;
+  leg.inputs.base = 'epsForward'; leg.baseLabel = 'FY2026e';
+  const r = run(signed(d));
+  const html = require('../../build.js').expandReport(require('../../_template/v3/render.js').toV2Source(d, r.view));
+  t(/EPS FY2026e \(forward\) \$6\.20/.test(html), 'baseLabel renders "EPS FY2026e (forward) $6.20" in mdesc');
+  t(!ids(r, 'errors').includes('v2:E21'), 'v2:E21 silent: the FY period label is not read as the EPS', JSON.stringify(r.errors.map((e) => e.id + ' ' + e.msg)));
+  t.near(r.view.legs[0].value, 6.2 * 14, 1e-9, 'leg value unchanged (6.20 × 14)'); }
 t.done();

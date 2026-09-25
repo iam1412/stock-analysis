@@ -5,6 +5,7 @@
  *      ขาที่ไม่อ้างตารางต้องมีเหตุผลใน note
  */
 const RV = require('../report-values.js');
+const S = require('./schema.js');
 const isNum = (v) => typeof v === 'number' && Number.isFinite(v);
 
 // ปัดด้วย RV.round (สูตรเดียวกับ fmtPrice: 2.675 → 2.68) แล้วค่อยตัดสินเครื่องหมาย — ค่าที่ปัดแล้วเป็น 0 ไม่มี −/+ ค้าง
@@ -34,7 +35,8 @@ function tieOut(doc, view) {
     if (leg.method !== 'declared') return;
     const p = `legs[${i}]`, inp = leg.inputs;
     // กติกาเดียวที่ขึ้นกับ basis: sotp/nav ต้องมีตาราง · การตรวจยอด (E52) ผูกกับ extrasRef ไม่ใช่ basis (spec §3.6 M)
-    if ((inp.basis === 'sotp' || inp.basis === 'nav') && inp.extrasRef == null) {
+    // Plan 4c-transcribe: ใบ migrate (meta.migratedFrom) ที่หน้า v2 ไม่มีตารางองค์ประกอบ (16/17 ใบ HUMAN ที่วัด) → ตกไปกติกา note เหมือน declared อื่น
+    if ((inp.basis === 'sotp' || inp.basis === 'nav') && inp.extrasRef == null && !S.isMigrated(doc)) {
       out.push({ path: `${p}.inputs.extrasRef`, msg: `ขา declared (${inp.basis}) ต้องอ้างตาราง extras ที่รวมยอดได้` }); return;
     }
     if (inp.extrasRef != null) {

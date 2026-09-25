@@ -85,7 +85,12 @@ const isObj = (v) => v != null && typeof v === 'object' && !Array.isArray(v);
 // เพดาน custom card (spec §3.7 ง · Plan 4c-prep D5): ใบ migrate (meta.migratedFrom) = 8 — ครอบ 97/102 ใบที่ชนเพดาน 4 · ใบ NEW = 4 เท่าเดิม
 // ทางย้อนกลับ: ลดค่านี้ ใบที่เกินกลับเป็น HUMAN ใน sweep
 const CUSTOM_CAP_MIGRATED = 8, CUSTOM_CAP = 4;
-const customCap = (doc) => (isObj(doc) && isObj(doc.meta) && doc.meta.migratedFrom != null ? CUSTOM_CAP_MIGRATED : CUSTOM_CAP);
+const isMigrated = (doc) => isObj(doc) && isObj(doc.meta) && doc.meta.migratedFrom != null;
+const customCap = (doc) => (isMigrated(doc) ? CUSTOM_CAP_MIGRATED : CUSTOM_CAP);
+// Plan 4c-transcribe (measured on the 447 HUMAN drafts — spec §10 "4c-transcribe"): allowances ของใบ migrate เท่านั้น (meta.migratedFrom) · ใบ NEW เท่าเดิม
+//   sources ≥ 2: หน้า v2 ระบุแหล่ง 2 แหล่ง (v2 cross-verify ≥ 2) ไม่มีแหล่งที่ 3 ให้ถอดความ (FISV)
+//   scenarios.cases[i].desc ไม่มีได้: คอลัมน์ v2 ไม่มีแถว "สถานการณ์" (DHR · EQIX Bull) — render ไม่พิมพ์แถวว่าง · สตริงว่างยังผิด
+const SOURCES_MIN = 3, SOURCES_MIN_MIGRATED = 2;
 
 // metrics.cards[i]: "key" | "custom:<i>" | {key, tone} → ลำดับที่ render · custom ที่ไม่ถูกอ้างต่อท้าย (พฤติกรรม Plan 1)
 const CUSTOM_REF = /^custom:(\d)$/;
@@ -159,7 +164,7 @@ function validate(doc) {
     if (m.headerTags != null) strList(m.headerTags, 'meta.headerTags', 0, 3);   // ≤ 3 (Plan 4b Task 1 — ADR/dual listing)
     if (!ISO.test(m.analysisDate || '')) E('meta.analysisDate', 'ต้องเป็น ISO YYYY-MM-DD (ค.ศ.)');
     if (!AI.test(m.aiModel || '')) E('meta.aiModel', 'ต้องเป็นรูป "Claude <ตระกูล> <เวอร์ชัน>"');
-    strList(m.sources, 'meta.sources', 3, 8);
+    strList(m.sources, 'meta.sources', isMigrated(doc) ? SOURCES_MIN_MIGRATED : SOURCES_MIN, 8);
     str(m.priceNote, 'meta.priceNote', { req: false });
     // Plan 4c-prep (spec §3.7 ข · D3): คำที่ผู้เขียนพิมพ์ในจุด gdots ของ header (v2 แสดงจริง) — บรรทัดเล็กใต้ tags
     if (m.sectorLine != null) { str(m.sectorLine, 'meta.sectorLine'); noTag(m.sectorLine, 'meta.sectorLine'); if (typeof m.sectorLine === 'string' && m.sectorLine.length > 100) E('meta.sectorLine', 'ยาวเกิน 100 ตัวอักษร'); }
@@ -465,7 +470,7 @@ function validate(doc) {
       const p = `scenarios.cases[${i}]`;
       if (!isObj(c)) return E(p, 'ต้องเป็น object');
       closed(c, p, ['growth', 'exitMultiple', 'divCum', 'desc', 'retNote']);
-      num(c.growth, `${p}.growth`); num(c.exitMultiple, `${p}.exitMultiple`, { gt: 0 }); str(c.desc, `${p}.desc`);
+      num(c.growth, `${p}.growth`); num(c.exitMultiple, `${p}.exitMultiple`, { gt: 0 }); str(c.desc, `${p}.desc`, { req: !isMigrated(doc) });
       str(c.retNote, `${p}.retNote`, { req: false }); noTag(c.retNote, `${p}.retNote`);
       // divCum = ปันผลสะสมต่อหุ้นถึงจุดออก — บังคับเมื่อ divIncluded=true (นับรวมใน total%)
       // ยอมให้มี (optional, informational) เมื่อ divIncluded=false ด้วย — คลัง v2 จริง 423/1097 ใบเก็บเลขนี้ไว้
@@ -594,4 +599,4 @@ function OWNER(path) {
   return 'worker';
 }
 
-module.exports = { ENUM, FFO_LABEL, CARD_KEYS, FUND_KEYS, FY_KEYS, BANK_KEYS, LEG_INPUTS, CURRENT_BASE, requiredFamily, OVERRIDE_KEYS, THEME_KEYS, TEXT_KEYS, cardEntries, customCap, CUSTOM_CAP, CUSTOM_CAP_MIGRATED, validate, OWNER, RD_TOKEN, TODO_RE, stringLeaves };
+module.exports = { ENUM, FFO_LABEL, CARD_KEYS, FUND_KEYS, FY_KEYS, BANK_KEYS, LEG_INPUTS, CURRENT_BASE, requiredFamily, OVERRIDE_KEYS, THEME_KEYS, TEXT_KEYS, cardEntries, customCap, CUSTOM_CAP, CUSTOM_CAP_MIGRATED, isMigrated, SOURCES_MIN, SOURCES_MIN_MIGRATED, validate, OWNER, RD_TOKEN, TODO_RE, stringLeaves };
