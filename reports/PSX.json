@@ -1,0 +1,253 @@
+{
+  "v": 3,
+  "symbol": "PSX",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Phillips 66",
+    "exchange": "NYSE",
+    "sub": "Diversified downstream energy (spun off ConocoPhillips 2012) • Refining (~2M bbl/day, US + Europe) • CPChem (50/50 JV w/ Chevron — world-scale ethylene/polyolefin) • Midstream (DCP/Gray Oak pipelines) • Marketing & lubes • Lower cycle exposure than pure refiners via CPChem/midstream • ~1.9% dividend yield",
+    "headerTags": [
+      "Downstream Energy",
+      "Refining • Chemicals • Midstream"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis.com",
+      "Yahoo Finance",
+      "Macrotrends"
+    ],
+    "themeLegacy": {
+      "accent": "#D62000",
+      "accentDark": "#a31800",
+      "darkGrad": "linear-gradient(135deg,#1a0a00 0%,#2d1000 50%,#1a0800 100%)",
+      "glow": "rgba(214,32,0,0.18)",
+      "subColor": "#ff7043",
+      "headerMuted": "#d36640",
+      "verdictText": "#ff8a65",
+      "vcellLabel": "#ffccbc"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T23:32:21+07:00",
+      "v2Hash": "0c8b0be7b179"
+    }
+  },
+  "market": {
+    "px": 255.87,
+    "priceDate": "2026-09-24",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          136.14
+        ],
+        [
+          "พ.ย.25",
+          136.96
+        ],
+        [
+          "ธ.ค.25",
+          129.04
+        ],
+        [
+          "ม.ค.26",
+          143.56
+        ],
+        [
+          "ก.พ.26",
+          154.33
+        ],
+        [
+          "มี.ค.26",
+          182.18
+        ],
+        [
+          "เม.ย.26",
+          179.15
+        ],
+        [
+          "พ.ค.26",
+          175.88
+        ],
+        [
+          "มิ.ย.26",
+          169.05
+        ],
+        [
+          "ก.ค.26",
+          211.68
+        ],
+        [
+          "ส.ค.26",
+          246.58
+        ],
+        [
+          "ก.ย.26",
+          255.87
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 126.74,
+      "hi": 277.12
+    }
+  },
+  "fundamentals": {
+    "dps": 5.08,
+    "bvps": 70.36,
+    "shares": 399020916,
+    "epsForward": 27.9,
+    "netIncome": 7090000000,
+    "eps": 17.51,
+    "revenue": 152200000000,
+    "fcf": 6390000000,
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation (Normalized)",
+      "inputs": {
+        "multiple": 11.6,
+        "multipleSource": "median5y"
+      },
+      "override": {
+        "eps": 11.5,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "EPS = ค่าเฉลี่ย 5 ปีงบ FY2021–FY2025 (10.79, 4.99, 15.48, 23.27, 2.97 → $11.50) ใช้เป็น EPS mid-cycle แทน TTM {{eps}} ที่ยังอยู่ช่วงรอบขาขึ้น; P/E 11.6x = มัธยฐานย้อนหลังที่วัดจริง 5 ปีงบ (ราคาเฉลี่ยของปี ÷ EPS ของปี; ช่วง 3.9–27.8x กว้างมาก จึงเป็นค่าที่มีความไม่แน่นอนสูง) ไม่ได้มาจาก P/E ปัจจุบัน",
+      "family": "market"
+    },
+    {
+      "method": "ddm",
+      "label": "DDM (Gordon Growth)",
+      "inputs": {
+        "g": 5,
+        "r": 9
+      },
+      "note": "r,g เป็นสมมติฐานของผู้วิเคราะห์เอง ไม่ได้วัดจากตลาด; ตระกูล (r,g) แยกจาก P/E และไวต่อสมมติฐานมาก",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      {
+        "key": "peForward",
+        "tone": "none"
+      },
+      "pbv",
+      "netIncome",
+      "eps",
+      "bvps",
+      "custom:0",
+      "revenue",
+      "custom:1",
+      "yield",
+      "fcf"
+    ],
+    "custom": [
+      {
+        "label": "ROE / Net margin",
+        "value": "~23.5% / 4.7%",
+        "note": "ROE TTM (Yahoo) / NI $7.09B ÷ Rev $152.2B",
+        "tone": "pos"
+      },
+      {
+        "label": "Op margin (TTM)",
+        "value": "5.0%",
+        "note": "Gross 13.1% · refining margin-dependent"
+      }
+    ],
+    "notes": {
+      "mcap": "~399.0M shares outstanding",
+      "pe": "(FY2025 $10.79 · เฉลี่ย 5 ปี $11.50)",
+      "peForward": "EPS FY2026E ~$27.9 (SA forecast · Yahoo fwd $24.57 = FY2027E)",
+      "pbv": "BVPS ~{{bvps}}",
+      "netIncome": "FY2025: $4.39B | FY2024: $2.11B (ต่ำสุด)",
+      "eps": "Diluted; cyclical — ค่าเฉลี่ย 5 ปี ~$11.50 (ฐาน normalized)",
+      "bvps": "ฐานเดิมของรายงาน — ยังไม่ตรวจซ้ำกับงบล่าสุด",
+      "revenue": "FY2025 $132.4B · FY2022 $170.0B · TTM +14.4% YoY",
+      "yield": "{{dps}}/share/ปี • ปรับขึ้นต่อเนื่อง",
+      "fcf": "FY2025 $2.73B · Debt $20.6B / Cash $4.1B"
+    },
+    "hint": "ข้อมูล ณ 21 ก.ย. 2569 • ราคา/EPS ยืนยัน ≥2 แหล่ง"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": -5,
+        "exitMultiple": 8,
+        "divCum": 15,
+        "desc": "Crack spread ตกต่ำ + CPChem อ่อน + demand destruction"
+      },
+      {
+        "growth": 10,
+        "exitMultiple": 11,
+        "divCum": 15,
+        "desc": "Mid-cycle recovery + CPChem expansion เสร็จ + midstream EBITDA เพิ่ม"
+      },
+      {
+        "growth": 20,
+        "exitMultiple": 13,
+        "divCum": 15,
+        "desc": "Peak-cycle crack spread + CPChem เต็มกำลัง + midstream expansion + buyback ต่อเนื่อง"
+      }
+    ],
+    "exitDp": 0,
+    "baseOverride": {
+      "value": 11.5026,
+      "why": "EPS ฐานฉากถอดกลับจากราคาเป้าที่พิมพ์"
+    },
+    "note": "PSX เป็นหุ้น cyclical สูง — ผลตอบแทน 3 ปีขึ้นกับ crack spread เป็นหลัก ใน Base case EPS ฟื้นตัวจาก normalized $11.50 ด้วย CPChem expansion + midstream growth ให้ผลตอบแทนรวม {{scn.base.ret}} (ติดลบ เพราะเริ่มต้น overvalued) ใน Bear case refining downturn ซ้ำ 2024 ให้ผลขาดทุนหนัก ความหลากหลาย CPChem + midstream ช่วยลด downside vs pure refiner (เช่น MPC/VLO) แต่ไม่ใช่ insulator เต็มที่ ปันผล {{dps}}/ปี (~1.9%) เป็นตัวช่วยในช่วง cycle ต่ำ",
+    "hintNote": "normalized ~$11.50"
+  },
+  "analyst": {
+    "target": 249,
+    "n": 19,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "PSX เคลื่อนไหวในกรอบ $129–$137 ช่วง ต.ค.–ธ.ค. 2025 ก่อนไต่ขึ้นต่อเนื่อง: ทะลุ $180 ในเดือน มี.ค. 2026 ย่อลงแถว $169 ในเดือน มิ.ย. แล้วพุ่งแรงในไตรมาส 3 (ก.ค. ~$212 → ส.ค. ~$247 → ก.ย. ~$273) ใกล้จุดสูงสุด 52 สัปดาห์ $277.12 ผลตอบแทนรอบปีดูที่ป้ายด้านบน — ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสมเชิง normalized อย่างมีนัย และกำไรที่ตลาดรับรู้คือ EPS TTM ที่ฟื้นแล้ว ไม่ใช่ค่าเฉลี่ยรอบวัฏจักร",
+    "valuation": "ทั้ง 2 วิธีให้ FV ใกล้เคียงกันที่ ~$133 (กรอบ ±10% เป็นช่วงความไวเท่านั้น) สะท้อน \"mid-cycle normalization\" ที่จำเป็นสำหรับ PSX: กำไรผันผวนมาก (EPS FY2022 $23.27 → FY2024 $4.99 → TTM {{eps}}) เมื่อใช้ EPS TTM {{eps}} × P/E มัธยฐาน 11.6x จะได้ราว $203 (ราคาตลาดสูงกว่านั้นราว 1.3 เท่า) และ EPS FY2026E ~$27.9 ยิ่งสูงกว่านั้น — ผลลัพธ์จึงขึ้นกับว่าเชื่อ EPS รอบขาขึ้นหรือค่าเฉลี่ยรอบวัฏจักร ค่า MOS ที่ติดลบลึก (>40%) มีความไม่แน่นอนสูงและไม่ควรอ่านเป็นตัวเลขแม่นยำ; ตรวจสอบด้านอื่น: FCF TTM $6.39B ≈ 5.9% ของมูลค่าตลาด และเป้านักวิเคราะห์ (~$249) ใช้เป็นบริบทเท่านั้น ไม่ได้เป็นขาของ FV",
+    "gauge": "ราคาปัจจุบัน {{px}} อยู่สูงกว่า Fair Value {{fv}} มาก อยู่ใน \"โซน Premium\" ต่อ normalized valuation ขณะที่เป้าเฉลี่ย analyst ~$249 (SA $249.32 / Yahoo $251.95, Buy, 19 คน) อยู่ใกล้ราคาตลาดพอดี — สะท้อนว่าตลาดและนักวิเคราะห์ price in EPS ขาขึ้นไปแล้ว ผู้ลงทุน value ควรรอ pull-back เข้าโซน {{mos20}}–{{fv}} ก่อนสะสม",
+    "mos": "ราคาสูงกว่ามูลค่าเหมาะสม (Overvalued vs. Normalized FV) — ตลาดกำลัง price in EPS รอบขาขึ้นแล้ว; ประมาณการ MOS ลึกกว่า 40% ยังไม่ยืนยันได้แน่ชัด (ไวต่อ EPS normalized)",
+    "verdictHeadline": "PSX — Diversified Downstream ที่ดี แต่ Overvalued vs. Normalized Mid-Cycle",
+    "verdictBody": "Phillips 66 เป็นบริษัท downstream energy ที่มีคุณภาพสูงกว่า pure refiner ทั่วไป ด้วย CPChem (50/50 JV กับ Chevron) และ midstream ที่ให้ fee-based income ที่ stable กว่า refining ปันผล {{dps}}/ปี (~1.9%) แต่ ณ ราคา {{px}} ซึ่งสูงกว่า Fair Value {{fv}} (MOS {{mos}}) ส่วนเผื่อความปลอดภัยเป็นลบอย่างมีนัย — FV มาจากสองตระกูล (P/E มัธยฐาน 11.6x × EPS เฉลี่ย 5 ปี $11.50 และ DDM สมมติฐานเอง) จึงไวต่อสมมติฐาน EPS mid-cycle มาก: หากใช้ EPS TTM {{eps}} FV จะอยู่ราว $203 ผลตอบแทน Base case 3 ปี {{scn.base.ret}} ไม่น่าดึงดูดสำหรับ value investor เป้านักวิเคราะห์ ~$249 ใกล้ราคาตลาด บ่งชี้ว่าตลาด price in EPS ขาขึ้น (FY2026E ~$27.9) ไปแล้ว รอโอกาสสะสมที่โซน {{mos20}}–{{fv}}",
+    "strategy": "PSX เป็น high-quality diversified downstream ที่เหมาะสะสมในช่วง cycle trough โซน {{mos20}}–{{fv}} (MOS 0-20%) คือ entry zone ที่ดี สำหรับผู้ถืออยู่แล้ว ราคา {{px}} สูงกว่า normalized FV — พิจารณา trim บางส่วน แต่ยังถือต่อได้หากเชื่อว่า EPS FY2026E ~$27.9 เกิดขึ้นจริง (forward P/E ต่ำกว่า 10x) ติดตาม crack spread และ CPChem margin รายไตรมาส",
+    "disclaimerSources": "ราคาอ้างอิง ณ {{priceDate}}; ตรวจกับ StockAnalysis.com และ Yahoo Finance ที่ ~$267.3 (ระหว่างวัน 21 ก.ย. 2569 ต่างกัน 0.01% ระหว่างสองแหล่ง) • EPS TTM $17.51 จาก StockAnalysis.com และ Yahoo Finance (ตรงกัน) • งบการเงิน/อัตราส่วน: Macrotrends"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 2 วิธี (คนละตระกูล) • Normalized mid-cycle",
+    "disclaimerAssump": " EPS normalized mid-cycle, P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ EBITDA ที่ปรับ crack spread แล้ว"
+  },
+  "catalysts": [
+    "<b>CPChem Expansion Project:</b> โรงงาน ethylene ขนาด world-scale แห่งใหม่ใน Texas (Gulf Coast II) + Qatar Project — เมื่อเสร็จจะเพิ่ม capacity อย่างมีนัย หนุน EBITDA ระยะยาว",
+    "<b>Midstream Growth:</b> Gray Oak Pipeline + Coastal Bend Fractionator 3 + Zeus Gas Plant (Permian) — ขยายรายได้ fee-based ที่ stable กว่า refining",
+    "<b>Portfolio Transformation:</b> ออกจาก legacy refinery ที่ margin ต่ำ เน้น high-value assets — ลด CAPEX waste เพิ่ม FCF quality",
+    "<b>Refining Margin Recovery:</b> TTM EPS {{eps}} ฟื้นจาก FY2025 $10.79 (รายได้ TTM +14.4% YoY, Op margin 5.0%) และ SA forecast FY2026E ~$27.9 — หาก crack spread ยืนระดับสูงต่อจะหนุนกำไร",
+    "<b>Capital Return:</b> จำนวนหุ้นถัวเฉลี่ยปรับลดลดจาก 474M (FY2022) เหลือ 405M (TTM) + ปันผล {{dps}}/หุ้น; หุ้นที่ลดลงช่วยหนุน EPS per share",
+    "<b>Sector Diversification Moat:</b> CPChem world-scale ethylene + midstream fee-based income ช่วยลด sensitivity ต่อ crack spread cycle เมื่อเทียบกับ pure refiner"
+  ],
+  "risks": [
+    "<b>Crack Spread Volatility:</b> refining margin ขึ้นกับส่วนต่าง crude-product ซึ่งผันผวนสูง FY2024 EPS เพียง $4.99 สะท้อน downside ที่รุนแรงในปีที่ margin แย่",
+    "<b>CPChem Cycle Risk:</b> ธุรกิจ petrochemical มี cycle ยาวกว่า refining — overcapacity จากโรงใหม่ในเอเชีย/ตะวันออกกลาง กดดัน ethylene margin",
+    "<b>Debt Load:</b> Total debt $20.6B (TTM) vs เงินสด $4.1B, D/E 0.63 (FY2025 debt $21.6B) — ภาระหนี้ยังสูงในหุ้นวัฏจักร ทำให้ balance sheet ยืดหยุ่นน้อยลงหากมาร์จิ้นตก",
+    "<b>Energy Transition:</b> demand น้ำมันระยะยาวถูก pressure จาก EV + policy — refinery asset อาจ stranded ในอีก 10-15 ปี",
+    "<b>EPS Lumpiness:</b> EPS รายปีแกว่งมาก (FY2021 $2.97 → FY2022 $23.27 → FY2024 $4.99 → TTM {{eps}}) — คาดการณ์ยาก และ vendor forward EPS (Yahoo $24.57 = FY2027E) กับ SA FY2026E $27.9 ต่างปีงบกัน ต้องระวังการเทียบ",
+    "<b>Regulatory/Tariff Risk:</b> PSX มีโรงกลั่นใน Europe — policy ด้านพลังงาน/สภาพอากาศของ EU + tariff trade war อาจกระทบ margin"
+  ],
+  "extras": [],
+  "_sig": "sha256:dea02780aef515ffc4ca5837d382a875f9900550b909d3d1c200cee30b703637"
+}
