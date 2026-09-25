@@ -20,6 +20,8 @@ const METHOD_NAME = { pe: 'P/E', pbv: 'P/BV', ps: 'P/S', evsales: 'EV/Sales', ev
 const SRC_NAME = { median5y: 'มัธยฐาน 5 ปี', median10y: 'มัธยฐาน 10 ปี', peer: 'ค่ากลางกลุ่มเทียบ', justified: 'justified', sector: 'ค่ากลางเซกเตอร์', current: 'ตัวคูณปัจจุบัน' };
 // Plan 2a Task 9 (§3.6 J) — ป้าย FFO/AFFO ของขา pffo · driver ffo · exit pffo
 const ffoLabel = (doc) => ({ ffo: 'FFO', affo: 'AFFO' }[doc.fundamentals.ffoBasis || 'ffo']);
+// Plan 4b Task 2: scenarios.exitDp → ทศนิยมคงที่ · ไม่มี = พิมพ์ค่าดิบเหมือนเดิม
+const exitText = (s, m) => (s.exitDp != null ? m.toFixed(s.exitDp) : String(m));
 const dot = (c) => `<div style="width:8px;height:8px;border-radius:50%;background:${c};display:inline-block;margin:0 3px"></div>`;
 // JSON ใน <script> ห้ามมี '<' ดิบ (กัน </script> ปิดแท็กก่อนเวลา) — '<' โผล่ได้เฉพาะในสตริง JSON ⇒ \u003c ยัง parse เป็นค่าเดิม
 const jsonScript = (s) => String(s).replace(/</g, '\\u003c');
@@ -53,7 +55,11 @@ function mdesc(leg, view) {
     case 'ddm2': return `D₁ ${m(i.d1)} โต ${i.g1}%/ปี ${i.years1} ปี แล้ว ${i.g2}%/ปี · r ${i.r}% · `
       + (i.horizon == null ? 'มูลค่าปลายงวดแบบ Gordon' : `${i.horizon} งวด ไม่มีมูลค่าปลายงวด`);
     // FCF = ยอดงบรวม (fundamentals/override) → สกุลงบ (view.stmtCur) เหมือนการ์ด FCF · ค่าขา (.mval) เป็นสกุลราคา (compute แปลงด้วย fx แล้ว)
-    case 'dcf': return `FCF ${RV.fmtBig(b.fcf, view.stmtCur || view.cur)} โต ${i.g1}%/ปี ${i.years1} ปี · โตถาวร ${i.tg}% · r ${i.r}%`;
+    case 'dcf': {
+      // Plan 4b Task 2 (§13-3): N-stage พิมพ์ทุกช่วงคั่นด้วย → · 2-stage พิมพ์เหมือนเดิมทุก byte
+      const sched = Array.isArray(i.stages) ? i.stages.map((s) => `${s.g}%/ปี ${s.years} ปี`).join(' → ') : `${i.g1}%/ปี ${i.years1} ปี`;
+      return `FCF ${RV.fmtBig(b.fcf, view.stmtCur || view.cur)} โต ${sched} · โตถาวร ${i.tg}% · r ${i.r}%`;
+    }
     case 'ri': return `BVPS ${m(b.bvps)} · ROE ${b.roe}% vs r ${i.r}% · ${i.years} ปี · payout ${i.payout}%`;
     case 'fcfyield': return `FCF/หุ้น ÷ yield เป้าหมาย ${i.yield}%`;
     case 'declared': return `ค่าประกาศ (${i.basis})` + (i.extrasRef != null ? ' — ดูตารางประกอบ' : '');
@@ -133,7 +139,7 @@ function toV2Source(doc, view) {
           <div class="ret {{rd:sc${i + 1}retClass}}">{{rd:sc${i + 1}ret}}</div>
           <ul>
             <li><span>${drv} ปี ${s.years}</span><span>~${esc(view.cur + RV.fmtPrice(sc.driverEnd))}</span></li>
-            <li><span>${ex} ออก</span><span>${sc.exitMultiple}x</span></li>${sc.divCum != null ? `
+            <li><span>${ex} ออก</span><span>${exitText(s, sc.exitMultiple)}x</span></li>${sc.divCum != null ? `
             <li><span>ปันผลรวม ${s.years} ปี</span><span>~{{rd:sc${i + 1}div}}</span></li>` : ''}
             <li><span>สถานการณ์</span><span>${pr(sc.desc)}</span></li>
           </ul>

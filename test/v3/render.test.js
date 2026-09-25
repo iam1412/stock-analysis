@@ -219,4 +219,20 @@ t.eq(JSON.parse(R.jsonScript('{"a":"</script>"}')).a, '</script>', 'jsonScript o
   t(/<span>EV\/Sales ออก<\/span>/.test(html) && /<span>รายได้\/หุ้น [+−][0-9.]+%\/ปี<\/span>/.test(html), 'exitMetric evsales → "EV/Sales ออก" (driver revenuePerShare)');
 }
 
+// Plan 4b Task 2 — mdesc for stages · exitDp print (brief's doc/SEEDS = load('ZTS')/seeds here)
+{
+  const d = load('ZTS');
+  d.legs[1] = { method: 'dcf', label: 'DCF', role: 'fv', family: 'rg', inputs: { stages: [{ years: 5, g: 7 }, { years: 5, g: 4 }], tg: 3, r: 8.5, rfCurrency: d.currency } };
+  d.fvWeights = null; d.fundamentals.fcf = d.fundamentals.fcf || 2.3e9; d.fundamentals.shares = d.fundamentals.shares || 4.3e8;
+  d.legs.forEach((l) => { if (l.role !== 'context' && !l.family) l.family = l.method === 'pe' ? 'market' : 'rg'; });
+  const v = C.compute(d, { seeds });
+  t(/โต 7%\/ปี 5 ปี → 4%\/ปี 5 ปี · โตถาวร 3% · r 8\.5%/.test(R.mdesc(d.legs[1], v)), 'mdesc prints the stage schedule (no "undefined"): ' + R.mdesc(d.legs[1], v));
+  d.scenarios.exitDp = 1; d.scenarios.cases[0].exitMultiple = 17.25;
+  const html = R.toV2Source(d, C.compute(d, { seeds }));
+  t(/<span>P\/E ออก<\/span><span>17\.3x<\/span>/.test(html), 'exitDp 1 → exit multiple printed as 17.3x');
+  d.scenarios.exitDp = 0;
+  t(/<span>P\/E ออก<\/span><span>17x<\/span>/.test(R.toV2Source(d, C.compute(d, { seeds }))), 'exitDp 0 → 17x');
+  delete d.scenarios.exitDp;
+  t(/<span>P\/E ออก<\/span><span>17\.25x<\/span>/.test(R.toV2Source(d, C.compute(d, { seeds }))), 'exitDp absent → exitMultiple printed as-is (today\'s output)');
+}
 t.done();

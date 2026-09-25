@@ -134,7 +134,8 @@ t.eq(C.weightsOf(load('ZTS')), [0.5, 0.5], 'legacy: equal weights, byte-identica
     t.eq(!!threw, nSem > 0, `parity ${name}: semanticErrors empty ⇔ compute() does not throw (${nSem} error, ${threw ? 'threw' : 'ok'})`);
   }
   // tripwire (review รอบ 1): จำนวนจุด throw ของ compute.js + legs.js (legs ผ่าน `${P}` = path ที่ผู้เรียกส่งมา ทุกจุด)
-  // วันนี้: compute.js 7 = 6 จุดความหมาย (SITES · + exitTarget shares / equity ≤ 0 — Plan 4b Task 1) + 1 = S.validate (สคีมา — checkDoc หยุดก่อนถึง) · legs.js 5 จุด ทั้งหมดขึ้นต้น `${P}` (= แถว L.legValue)
+  // วันนี้: compute.js 7 = 6 จุดความหมาย (SITES · + exitTarget shares / equity ≤ 0 — Plan 4b Task 1) + 1 = S.validate (สคีมา — checkDoc หยุดก่อนถึง) · legs.js 6 จุด ทั้งหมดขึ้นต้น `${P}` (= แถว L.legValue)
+  //   Plan 4b Task 2: จุดที่ 6 ของ legs.js = dcf `stages: []` — สคีมาปฏิเสธก่อนถึง (stages 1–10 ช่วง) จึงไม่มีแถว SITES (ต้องผ่านสคีมา) · pin แยกด้านล่างว่า semanticErrors/compute ยังชี้ path เดียวกัน
   // ตัวเลขขยับ = มีจุด throw ใหม่/หาย → ตรวจว่า semanticErrors ครอบหรือยัง แล้ว add a SITES row ก่อนแก้ตัวเลขนี้
   const fs = require('fs'), path = require('path');
   const src = (f) => fs.readFileSync(path.join(__dirname, '../../tools/v3', f), 'utf8');
@@ -143,8 +144,13 @@ t.eq(C.weightsOf(load('ZTS')), [0.5, 0.5], 'legacy: equal weights, byte-identica
   const cSrc = code(src('compute.js')), lSrc = code(src('legs.js'));
   t.eq(count(cSrc, /\bthrow\b/g), 7, 'tripwire: compute.js has 7 throw sites — changed? add a SITES row');
   t.eq(count(cSrc, /throw new Error\(/g), 7, 'tripwire: compute.js throws are all `throw new Error(` — changed? add a SITES row');
-  t.eq(count(lSrc, /\bthrow\b/g), 5, 'tripwire: legs.js has 5 throw sites — changed? add a SITES row');
-  t.eq(count(lSrc, /throw new Error\(`\$\{P\}/g), 5, 'tripwire: every legs.js throw is funnelled through ${P} (path from the caller) — changed? add a SITES row');
+  t.eq(count(lSrc, /\bthrow\b/g), 6, 'tripwire: legs.js has 6 throw sites — changed? add a SITES row');
+  t.eq(count(lSrc, /throw new Error\(`\$\{P\}/g), 6, 'tripwire: every legs.js throw is funnelled through ${P} (path from the caller) — changed? add a SITES row');
+  // Plan 4b Task 2 — schema-unreachable legs.js site (dcf stages: []): schema names it · semanticErrors ⇔ compute() agree on the path
+  { const d = Z(); d.fvWeights = null; d.legs[2] = { method: 'dcf', label: 'DCF', family: 'rg', inputs: { stages: [], tg: 3, r: 8.5, rfCurrency: d.currency } };
+    t(S.validate(d).some((e) => e.path === 'legs[2].inputs.stages'), 'dcf stages [] — schema rejects it first (why no SITES row)');
+    t.eq(C.semanticErrors(d, { seeds: {} }).map((e) => e.path), ['legs[2].inputs.stages'], 'dcf stages [] — semanticErrors names legs[2].inputs.stages');
+    t.throws(() => C.compute(d, { seeds: {} }), /legs\[2\]\.inputs\.stages/, 'dcf stages [] — compute() throws at the same path'); }
 }
 // final review 2c-ii — กระจก stock-meta ของ v3 ต้องปัด mos/upside 1 ตำแหน่งเหมือน v2 (cron เขียน ≤1dp ทั้ง 909 ใบ) — ไม่งั้นการ์ด index โชว์ −27.52% ท่ามกลาง −27.5%
 { const dp = (x) => (String(x).split('.')[1] || '').length;

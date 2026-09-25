@@ -49,7 +49,7 @@ const LEG_INPUTS = {
   fcfyield: { req: ['yield'], opt: [] },
   ddm: { req: ['g', 'r'], opt: [] },
   ddm2: { req: ['d1', 'g1', 'years1', 'g2', 'r'], opt: ['horizon'] },   // §3.6 N — horizon: int ≥1 | null (null = Gordon ปลายช่วง 1) ต้องมีคีย์เสมอ
-  dcf: { req: ['g1', 'years1', 'tg', 'r', 'rfCurrency'], opt: [] },
+  dcf: { req: ['tg', 'r', 'rfCurrency'], opt: ['g1', 'years1', 'stages'] },   // Plan 4b Task 2 (§13-3): {g1, years1} 2-stage หรือ {stages} N-stage — ทางใดทางหนึ่ง (ตรวจใน legs loop)
   ri: { req: ['r', 'years', 'payout'], opt: [] },
   declared: { req: ['value', 'basis'], opt: ['extrasRef'] },
 };
@@ -298,6 +298,25 @@ function validate(doc) {
       if (isNum(inp.d1) && !(inp.d1 > 0)) E(`${p}.inputs.d1`, 'ต้อง > 0');
       if (inp.horizon === null && isNum(inp.r) && isNum(inp.g2) && !(inp.r > inp.g2)) E(`${p}.inputs.g2`, `r (${inp.r}%) ต้อง > g2 (${inp.g2}%) — horizon null ใช้ Gordon ปลายงวดที่หารด้วย (r − g2)`);
     }
+    if (leg.method === 'dcf') {
+      const two = inp.g1 != null || inp.years1 != null, st = inp.stages != null;
+      if (two === st) E(`${p}.inputs`, 'dcf ใช้ได้ทางเดียว: {g1, years1} (2-stage) หรือ {stages: [{years, g}]} (N-stage · §13-3)');
+      if (two && (inp.g1 == null || inp.years1 == null)) E(`${p}.inputs`, 'dcf 2-stage ต้องมีทั้ง g1 และ years1');
+      if (st) {
+        const sp = `${p}.inputs.stages`;
+        if (!Array.isArray(inp.stages) || !inp.stages.length || inp.stages.length > 10) E(sp, 'ต้องเป็น array 1–10 ช่วง [{years, g}]');
+        else {
+          let total = 0;
+          inp.stages.forEach((s, k) => {
+            if (!isObj(s)) return E(`${sp}[${k}]`, 'ต้องเป็น object {years, g}');
+            closed(s, `${sp}[${k}]`, ['years', 'g']);
+            num(s.years, `${sp}[${k}].years`, { int: true, min: 1 }); num(s.g, `${sp}[${k}].g`);
+            if (isNum(s.years)) total += s.years;
+          });
+          if (total > 40) E(sp, `Σ years = ${total} เกิน 40 ปี`);
+        }
+      }
+    }
     if (inp.medianWindow != null) {
       const mp = `${p}.inputs.medianWindow`;
       if (typeof inp.medianWindow !== 'string' || !inp.medianWindow.trim() || inp.medianWindow.length > 40) E(mp, 'ต้องเป็นข้อความสั้น ≤40 ตัวอักษร (เช่น "FY2022–FY2025")');
@@ -388,13 +407,15 @@ function validate(doc) {
   const s = doc.scenarios;
   if (!isObj(s)) E('scenarios', 'ต้องมี (object)');
   else {
-    closed(s, 'scenarios', ['years', 'divIncluded', 'perYear', 'driver', 'exitMetric', 'baseOverride', 'cases', 'note']);
+    closed(s, 'scenarios', ['years', 'divIncluded', 'perYear', 'driver', 'exitMetric', 'exitDp', 'baseOverride', 'cases', 'note']);
     num(s.years, 'scenarios.years', { int: true, min: 1 }); if (isNum(s.years) && s.years > 10) E('scenarios.years', 'ต้อง ≤ 10');
     if (typeof s.divIncluded !== 'boolean') E('scenarios.divIncluded', 'ต้องเป็น true/false');
     en(s.perYear === undefined ? '∅' : s.perYear, 'scenarios.perYear', ENUM.perYear);
     en(s.driver, 'scenarios.driver', ENUM.driver); en(s.exitMetric, 'scenarios.exitMetric', ENUM.exitMetric);
     // Plan 4b Task 1 (fix round 1 · N-3): exit EV/Sales คูณรายได้ต่อหุ้น ⇒ ตัวตั้งต้องเป็น revenuePerShare เท่านั้น
     if (s.exitMetric === 'evsales' && s.driver !== 'revenuePerShare') E('scenarios.exitMetric', `evsales (EV/Sales ออก) คูณรายได้ต่อหุ้น — ต้องใช้ scenarios.driver = "revenuePerShare" (พบ ${JSON.stringify(s.driver)})`);
+    // Plan 4b Task 2: exitDp = จำนวนทศนิยมที่พิมพ์ตัวคูณออก (v2 พิมพ์ 17.25x ได้) · ไม่มี = render พิมพ์ค่าดิบ / token toFixed(1) เหมือนเดิม
+    if (s.exitDp != null) { num(s.exitDp, 'scenarios.exitDp', { int: true, min: 0 }); if (isNum(s.exitDp) && s.exitDp > 2) E('scenarios.exitDp', 'ต้อง 0–2'); }
     if (s.baseOverride != null) { closed(s.baseOverride, 'scenarios.baseOverride', ['value', 'why']); num(s.baseOverride.value, 'scenarios.baseOverride.value', { gt: 0 }); str(s.baseOverride.why, 'scenarios.baseOverride.why'); }
     if (!Array.isArray(s.cases) || s.cases.length !== 3) E('scenarios.cases', 'ต้องมี 3 ฉากพอดี (Bear/Base/Bull)');
     else s.cases.forEach((c, i) => {

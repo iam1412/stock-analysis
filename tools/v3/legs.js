@@ -59,9 +59,12 @@ function legValue(leg, fundamentals, path) {
     case 'dcf': {
       const r = pct(i.r);
       spread(i.r, i.tg, 'tg');
-      let fcf = need('fcf'), pv = 0;
-      for (let t = 1; t <= i.years1; t++) { fcf *= 1 + pct(i.g1); pv += fcf / Math.pow(1 + r, t); }
-      const tv = fcf * (1 + pct(i.tg)) / (r - pct(i.tg)) / Math.pow(1 + r, i.years1);
+      // §13-3 (Plan 4b): ตาราง stages [{years, g}] แทน g1/years1 ได้ — หนึ่ง stage = สูตร 2-stage เดิมทุก byte
+      const sched = Array.isArray(i.stages) ? i.stages : [{ years: i.years1, g: i.g1 }];
+      if (!sched.length) throw new Error(`${P}.inputs.stages: ต้องมีอย่างน้อย 1 ช่วง`);
+      let fcf = need('fcf'), pv = 0, t = 0;
+      for (const st of sched) for (let k = 0; k < st.years; k++) { t++; fcf *= 1 + pct(st.g); pv += fcf / Math.pow(1 + r, t); }
+      const tv = fcf * (1 + pct(i.tg)) / (r - pct(i.tg)) / Math.pow(1 + r, t);
       v = perShare(equity(pv + tv));
       break;
     }

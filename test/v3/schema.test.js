@@ -274,4 +274,28 @@ for (const f of ['BBL-real', 'EQIX-real', 'FER-real', 'ZTS-real', 'BBL', 'ZTS'])
   t.eq(S.validate(d).filter((e) => /metrics\.cards/.test(e.path)), [], 'six new catalogue keys accepted');
 }
 
+// Plan 4b Task 2 — dcf: exactly one of {g1, years1} | {stages} (brief's load()/errsOf() = base()/S.validate() here)
+{
+  const d = base();
+  const dcfLeg = (inputs) => ({ method: 'dcf', label: 'DCF', role: 'fv', family: 'rg', inputs });
+  d.legs = [d.legs[0], dcfLeg({ stages: [{ years: 5, g: 7 }, { years: 5, g: 4 }], tg: 3, r: 8.5, rfCurrency: d.currency })];
+  if (d.fvWeights) d.fvWeights = null;
+  d.fundamentals.fcf = d.fundamentals.fcf || 2.3e9; d.fundamentals.shares = d.fundamentals.shares || 4.3e8;
+  t.eq(S.validate(d).filter((e) => /legs\[1\]/.test(e.path)), [], 'dcf with stages accepted');
+  d.legs[1] = dcfLeg({ g1: 7, years1: 5, stages: [{ years: 5, g: 7 }], tg: 3, r: 8.5, rfCurrency: d.currency });
+  t(S.validate(d).some((e) => e.path === 'legs[1].inputs'), 'g1/years1 together with stages → error');
+  d.legs[1] = dcfLeg({ tg: 3, r: 8.5, rfCurrency: d.currency });
+  t(S.validate(d).some((e) => e.path === 'legs[1].inputs'), 'neither g1/years1 nor stages → error');
+  d.legs[1] = dcfLeg({ stages: [{ years: 0, g: 7 }], tg: 3, r: 8.5, rfCurrency: d.currency });
+  t(S.validate(d).some((e) => e.path === 'legs[1].inputs.stages[0].years'), 'stage years must be int ≥ 1');
+  d.legs[1] = dcfLeg({ stages: Array.from({ length: 11 }, () => ({ years: 1, g: 5 })), tg: 3, r: 8.5, rfCurrency: d.currency });
+  t(S.validate(d).some((e) => e.path === 'legs[1].inputs.stages'), '> 10 stages → error');
+  d.legs[1] = dcfLeg({ stages: [{ years: 41, g: 5 }], tg: 3, r: 8.5, rfCurrency: d.currency });
+  t(S.validate(d).some((e) => e.path === 'legs[1].inputs.stages'), 'Σ years > 40 → error');
+}
+{
+  const d = base(); d.scenarios.exitDp = 1;
+  t.eq(S.validate(d).filter((e) => /exitDp/.test(e.path)), [], 'scenarios.exitDp 1 accepted');
+  d.scenarios.exitDp = 3; t(S.validate(d).some((e) => e.path === 'scenarios.exitDp'), 'exitDp 3 rejected (0–2)');
+}
 t.done();

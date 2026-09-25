@@ -29,7 +29,9 @@ for (let i = 1; i <= 4; i++) {
 }
 ['bear', 'base', 'bull'].forEach((n, i) => {
   TOKENS_V3[`scn.${n}.end`] = (view) => money(view, need(view.scn && view.scn[i], `scn.${n}`).driverEnd);
-  TOKENS_V3[`scn.${n}.exit`] = (view) => need(view.scn && view.scn[i], `scn.${n}`).exitMultiple.toFixed(1) + 'x';
+  // Plan 4b Task 2: scenarios.exitDp ถ้ามี · ไม่มี = toFixed(1) เดิม (tokens-corpus parity)
+  TOKENS_V3[`scn.${n}.exit`] = (view) => { const e = need(view.scn && view.scn[i], `scn.${n}`).exitMultiple, s = view.doc && view.doc.scenarios;
+    return (s && s.exitDp != null ? e.toFixed(s.exitDp) : e.toFixed(1)) + 'x'; };
 });
 TOKENS_V3.analysisDate = (view) => need(view.analysisDateText, 'analysisDate');
 TOKENS_V3['range52w.lo'] = (view) => money(view, need(view.doc && view.doc.market.range52w, 'range52w').lo);

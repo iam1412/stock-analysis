@@ -39,4 +39,9 @@ t.eq(TK.TOKENS_V3['analyst.vsFv']({ ...view, doc: { ...doc, analyst: { ...doc.an
 }
 t.eq(P.renderProse('EPS {{eps}} · DPS {{dps}}', view), `EPS ${TK.TOKENS_V3.eps(view)} · DPS ${TK.TOKENS_V3.dps(view)}`, 'renderProse resolves the new tokens');
 t(P.renderProse('{{eps}}', view, { mode: 'v2src' }) === TK.TOKENS_V3.eps(view), 'new tokens have no v2 twin → rendered inline in v2src mode');
+// Plan 4b Task 2 — scn.*.exit: toFixed(1) default (corpus parity) · scenarios.exitDp overrides
+{ const d = JSON.parse(JSON.stringify(doc)); d.scenarios.cases[0].exitMultiple = 17.25;
+  t.eq(TK.TOKENS_V3['scn.bear.exit'](C.compute(d, { seeds: SEEDS })), '17.3x', 'no exitDp → toFixed(1) as before');
+  d.scenarios.exitDp = 2; t.eq(TK.TOKENS_V3['scn.bear.exit'](C.compute(d, { seeds: SEEDS })), '17.25x', 'exitDp 2 → 17.25x');
+  d.scenarios.exitDp = 0; t.eq(TK.TOKENS_V3['scn.bear.exit'](C.compute(d, { seeds: SEEDS })), '17x', 'exitDp 0 → 17x'); }
 t.done();
