@@ -35,7 +35,7 @@
 
 ## Review Focus
 
-1. **A v2 report whose `.vmethod` block is an empty shell** (23 of 2075 in the corpus: `mname` present, `mdesc`/`mval` empty) — the parser must return the leg with `mval: null` and the classifier must route it to HUMAN (`leg unparsed`), not throw or silently drop the leg. Test in Task 4 (synthetic HTML with one empty shell).
+1. **A v2 report whose `.vmethod` block is an empty shell** (23 of 2075 in the corpus — measured in Task 4 review: all 23 have NO `mname`: 20 bare `<div class="vmethod"></div>`, 3 unclosed shells wrapping `.fv-box` (APH COO HUBB)) — the parser must not throw; a shell without `mname` is dropped and only `legBlocks` counts it (Task 5 adds an F note when `legBlocks > legs.length`); a shell WITH an `mname` but no `mdesc`/`mval` is returned with `mval: null, empty: true` and routed to HUMAN (`leg unparsed`). Tests in Task 4 (both shapes).
 2. **A `.json` under `reports/` in `ship --prepatch` whose HEAD and worktree `freshHash` differ** (a worker's UPDATE, not a pre-patch) — must be `blocked`, never swept into a `price:` commit. Test in Task 8 (`prepatchBlockers` entry with `v3:true, headHash ≠ workHash`).
 3. **`convert --write` on a HUMAN report** — must refuse before writing or deleting anything; `--accept-drift` must not override HUMAN. Test in Task 7 (AAPL-v2 fixture → analyst leg → HUMAN → `.html` still present, no `.json`).
 4. **A migrated doc whose committed manifest row has already moved to the v3 hash, then a real UPDATE** — `updatedFor` must stamp now (not keep `migratedFrom.updated`). Test in Task 3.
