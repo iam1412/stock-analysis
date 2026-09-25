@@ -346,4 +346,51 @@ for (const method of ['pe', 'ps', 'evsales', 'evebitda', 'pfcf', 'pffo', 'pbv'])
   t.eq([S.customCap(mk(0, true)), S.customCap(mk(0, false))], [8, 4], 'S.customCap: 8 migrated · 4 new');
   t(/≤8/.test((S.validate(mk(9, true)).find((e) => e.path === 'metrics.custom') || {}).msg || ''), 'cap: message names the cap in force');
 }
+// Plan 4c-prep Task 2 (spec §3.7 ก · D2) — Kind 1 enums + inputs.base
+{
+  const d = base(); d.fundamentals.ffoBasis = 'coreFfo'; d.fundamentals.ffoPerShare = 4;
+  t(!paths(S.validate(d)).includes('fundamentals.ffoBasis'), 'ffoBasis coreFfo accepted');
+  t.eq(S.FFO_LABEL, { ffo: 'FFO', affo: 'AFFO', coreFfo: 'Core FFO' }, 'one shared FFO label map');
+}
+{
+  const d = base(); d.fundamentals.ebitda = 3.2e9; d.scenarios.driver = 'ebitdaPerShare'; d.scenarios.exitMetric = 'evebitda';
+  t.eq(S.validate(d).filter((e) => /^scenarios\.(driver|exitMetric)/.test(e.path)), [], 'driver ebitdaPerShare + exit evebitda accepted');
+  d.scenarios.driver = 'eps';
+  t(paths(S.validate(d)).includes('scenarios.exitMetric'), 'evebitda requires driver ebitdaPerShare');
+  d.scenarios.driver = 'ebitdaPerShare'; d.scenarios.exitMetric = 'pe';
+  t(paths(S.validate(d)).includes('scenarios.driver'), 'driver ebitdaPerShare requires exit evebitda (converse guard)');
+}
+{
+  const d = base(); d.fundamentals.epsForward = 6.8; d.legs[0].inputs.base = 'epsForward'; d.legs[0].baseLabel = 'FY2026E consensus';
+  t.eq(S.validate(d), [], 'pe inputs.base epsForward + baseLabel accepted');
+  d.legs[0].inputs.base = 'ttm';
+  t(paths(S.validate(d)).includes('legs[0].inputs.base'), 'inputs.base enum');
+  d.legs[0].inputs.base = 'epsForward'; delete d.fundamentals.epsForward;
+  t(paths(S.validate(d)).includes('legs[0].inputs.base'), 'epsForward base needs fundamentals.epsForward or override.epsForward');
+  d.legs[0].override = { epsForward: 7.1, why: 'consensus ต่างจาก prep' };
+  t.eq(S.validate(d), [], 'override.epsForward satisfies the forward base');
+  d.legs[0].override = { eps: 7.1, why: 'x' };
+  t(paths(S.validate(d)).includes('legs[0].override.eps'), 'override.eps with a non-eps base → error (use override.epsForward)');
+  d.legs[0].override = { epsForward: 7.1, why: 'x' }; d.legs[0].inputs.base = 'eps';
+  t(paths(S.validate(d)).includes('legs[0].override.epsForward'), 'override.epsForward only with base epsForward');
+}
+{
+  const d = base(); d.legs[1].inputs.base = 'eps';
+  t(paths(S.validate(d)).includes('legs[1].inputs.base'), 'inputs.base only on pe legs (dcf rejects it as an unknown input)');
+  const e = base(); e.legs[0].baseLabel = 'FY2026E consensus estimate x';
+  t(paths(S.validate(e)).includes('legs[0].baseLabel'), 'baseLabel ≤ 24');
+  const g = base(); g.legs[0].baseLabel = 'FY2026E';
+  t(paths(S.validate(g)).includes('legs[0].baseLabel'), 'baseLabel only with a non-eps inputs.base');
+  const h = base(); h.legs[0].inputs.base = 'epsFy'; h.fundamentals.fy = { period: 'FY2025', eps: 6.5 };
+  t.eq(S.validate(h), [], 'epsFy base with fundamentals.fy.eps');
+  delete h.fundamentals.fy.eps; h.fundamentals.fy.netIncome = 1e9;
+  t(paths(S.validate(h)).includes('legs[0].inputs.base'), 'epsFy base needs fundamentals.fy.eps');
+}
+{
+  const long = 'x'.repeat(81);
+  const d = base(); d.legs[0].label = long;
+  t(!paths(S.validate(d)).includes('legs[0].label'), 'label length unbounded on NEW docs (unchanged)');
+  d.meta.migratedFrom = { updated: '2026-09-01T00:00:00+07:00', v2Hash: 'abcdef012345' };
+  t(paths(S.validate(d)).includes('legs[0].label'), 'label ≤ 80 on migrated docs');
+}
 t.done();

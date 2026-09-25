@@ -259,4 +259,25 @@ t.eq(JSON.parse(R.jsonScript('{"a":"</script>"}')).a, '</script>', 'jsonScript o
   t(/× P\/E เป้าหมาย ~38x \(ผู้วิเคราะห์กำหนด\)/.test(R.mdesc(d.legs[i], v)), "pe leg with multipleSource 'author' → (ผู้วิเคราะห์กำหนด): " + R.mdesc(d.legs[i], v));
   t.eq(R.SRC_NAME && R.SRC_NAME.author, 'ผู้วิเคราะห์กำหนด', 'SRC_NAME.author');
 }
+// Plan 4c-prep Task 2 (D2) — labels from base/baseLabel · new enum labels · absent ⇒ unchanged
+{
+  const d = load('ZTS'); const before = R.toV2Source(d, C.compute(d, { seeds }));
+  d.fundamentals.epsForward = 6.8; d.legs[0].inputs.base = 'epsForward'; d.legs[0].baseLabel = 'FY2026E consensus';
+  const src = R.toV2Source(d, C.compute(d, { seeds }));
+  t(src.includes('EPS FY2026E consensus (forward) $6.80 × P/E เป้าหมาย ~28x'), 'forward base prints its own label and the forward EPS', (src.match(/<div class="mdesc">[^<]*/) || [''])[0]);
+  delete d.legs[0].baseLabel;
+  t(R.toV2Source(d, C.compute(d, { seeds })).includes('EPS (forward) $6.80 ×'), 'forward base without baseLabel → "EPS (forward)"');
+  const f = load('ZTS'); f.fundamentals.fy = { period: 'FY2025', eps: 6.5 }; f.legs[0].inputs.base = 'epsFy';
+  t(R.toV2Source(f, C.compute(f, { seeds })).includes('EPS FY2025 $6.50 ×'), 'epsFy base prints the fy period');
+  const z = load('ZTS');
+  t.eq(R.toV2Source(z, C.compute(z, { seeds })), before, 'fields absent → toV2Source byte-identical');
+}
+{
+  const d = load('ZTS'); d.fundamentals.ebitda = 3.2e9; d.scenarios.driver = 'ebitdaPerShare'; d.scenarios.exitMetric = 'evebitda';
+  d.scenarios.cases.forEach((c, i) => { c.exitMultiple = [14, 16, 18][i]; });
+  const src = R.toV2Source(d, C.compute(d, { seeds }));
+  t(/<span>EBITDA\/หุ้น \+8%\/ปี<\/span>/.test(src) && /<span>EV\/EBITDA ออก<\/span>/.test(src) && /EBITDA\/หุ้น ฐาน ~/.test(src), 'driver ebitdaPerShare / exit evebitda labels');
+  const r = load('ZTS'); r.fundamentals.ffoBasis = 'coreFfo'; r.fundamentals.ffoPerShare = 4; r.legs[0] = { method: 'pffo', label: 'P/Core FFO', inputs: { multiple: 20, multipleSource: 'peer' } };
+  t(R.toV2Source(r, C.compute(r, { seeds })).includes('P/Core FFO 20x (ค่ากลางกลุ่มเทียบ)'), 'coreFfo → "P/Core FFO" in the pffo mdesc');
+}
 t.done();

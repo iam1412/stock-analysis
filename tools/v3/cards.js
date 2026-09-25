@@ -23,7 +23,8 @@ function sharesText(view, n) {
   if (view.cur === '฿') return n >= 1e9 ? `~${(n / 1e9).toFixed(2)} พันล้านหุ้น` : `~${(n / 1e6).toFixed(1)} ล้านหุ้น`;
   return n >= 1e9 ? `~${(n / 1e9).toFixed(2)}B หุ้น` : `~${(n / 1e6).toFixed(1)}M หุ้น`;
 }
-const ffoL = (view) => ({ ffo: 'FFO', affo: 'AFFO' }[f(view).ffoBasis || 'ffo']);
+// ป้าย FFO ชุดเดียวกับ render/gate (S.FFO_LABEL · Plan 4c-prep + Core FFO) — require ตอนเรียก: schema → prose → cards เป็นวง ⇒ require บนหัวไฟล์ได้ exports ครึ่งเดียว
+const ffoL = (view) => require('./schema.js').FFO_LABEL[f(view).ffoBasis || 'ffo'];
 function ffoFwd(view) { const x = f(view).ffoForward; if (!x) throw new Error('metrics.cards: การ์ดต้องใช้ fundamentals.ffoForward — เติม หรือถอดการ์ดออก'); return x; }
 // fundamentals ในสกุลราคา (compute: view.fq · §3.6 L) — อัตราส่วนผูกราคาและฐานใน .d ของมันใช้ตัวนี้ ไม่ใช่ยอดสกุลงบ
 const fq = (view) => view.fq || view.doc.fundamentals;

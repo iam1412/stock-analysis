@@ -8,7 +8,6 @@
  */
 const S = require('../v3/schema.js');
 const C = require('../v3/compute.js');
-const L = require('../v3/legs.js');
 const K = require('../v3/cards.js');
 const P3 = require('../v3/prose.js');
 const RV = require('../report-values.js');
@@ -331,7 +330,7 @@ function guardLegs(doc, legMeta) {
     if (leg.method === 'declared') return;
     const lm = legMeta[i] || {};
     let v = null;
-    try { v = L.legValue(leg, doc.fundamentals); } catch (_) { v = null; }
+    try { v = C.legValueOf(leg, doc.fundamentals); } catch (_) { v = null; }
     if (LG.reproduces(v, lm.mval)) return;
     const value = LG.mvalNum(lm.mval);
     const d = { method: 'declared', label: leg.label, inputs: { value, basis: 'other' } };
@@ -347,7 +346,7 @@ function guardLegs(doc, legMeta) {
 // ── น้ำหนัก FV (prototype weightsFit · ผลได้แค่ equal / family / ไม่ตรง) ──
 function weightsOf(doc, shownFv, H, D, F) {
   const fvIdx = doc.legs.map((l, i) => (l.role === 'context' ? -1 : i)).filter((i) => i >= 0);
-  const vals = fvIdx.map((i) => { try { return L.legValue(doc.legs[i], doc.fundamentals); } catch (_) { return null; } });
+  const vals = fvIdx.map((i) => { try { return C.legValueOf(doc.legs[i], doc.fundamentals); } catch (_) { return null; } });
   if (!fvIdx.length || vals.some((x) => x == null) || !isNum(shownFv)) return { kind: 'unknown' };
   const tol = Math.max(0.005 * shownFv, 0.01);
   const mean = (a) => a.reduce((x, y) => x + y, 0) / a.length;
