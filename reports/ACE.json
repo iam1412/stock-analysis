@@ -1,0 +1,257 @@
+{
+  "v": 3,
+  "symbol": "ACE",
+  "currency": "THB",
+  "region": "TH",
+  "dateEra": "BE",
+  "meta": {
+    "company": "แอ็บโซลูท คลีน เอ็นเนอร์จี้",
+    "exchange": "SET",
+    "sub": "โรงไฟฟ้าชีวมวล • พลังงานแสงอาทิตย์ • พลังงานลม • สัญญา PPA กับ EGAT/PEA • Absolute Clean Energy PCL",
+    "headerTags": [
+      "พลังงานสะอาด",
+      "ชีวมวล · โซลาร์ · ลม"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "SET Factsheet",
+      "Yahoo Finance",
+      "StockAnalysis"
+    ],
+    "themeLegacy": {
+      "accent": "#2d7d46",
+      "accentDark": "#1a5c30",
+      "darkGrad": "linear-gradient(135deg,#1a3d22 0%,#0f2516 100%)",
+      "glow": "rgba(45,125,70,0.35)",
+      "subColor": "#a8d5b5",
+      "headerMuted": "#86ad91",
+      "verdictText": "#e8f5e9",
+      "vcellLabel": "#a8d5b5"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T09:52:17+07:00",
+      "v2Hash": "8d0f3d3b1456"
+    }
+  },
+  "market": {
+    "px": 1.3,
+    "priceDate": "2026-09-24",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          1.31
+        ],
+        [
+          "พ.ย.25",
+          1.31
+        ],
+        [
+          "ธ.ค.25",
+          1.31
+        ],
+        [
+          "ม.ค.26",
+          1.29
+        ],
+        [
+          "ก.พ.26",
+          1.29
+        ],
+        [
+          "มี.ค.26",
+          1.28
+        ],
+        [
+          "เม.ย.26",
+          1.28
+        ],
+        [
+          "พ.ค.26",
+          1.3
+        ],
+        [
+          "มิ.ย.26",
+          1.29
+        ],
+        [
+          "ก.ค.26",
+          1.33
+        ],
+        [
+          "ส.ค.26",
+          1.31
+        ],
+        [
+          "ก.ย.26",
+          1.3
+        ]
+      ],
+      "gridFmt": "v.toFixed(2)",
+      "dataFmt": "d[1].toFixed(2)"
+    },
+    "range52w": {
+      "lo": 1.26,
+      "hi": 1.52
+    }
+  },
+  "fundamentals": {
+    "shares": 9750747760,
+    "bvps": 1.71,
+    "netIncome": 1017000000,
+    "eps": 0.1,
+    "roe": 6.1,
+    "roa": 3.9,
+    "revenue": 6640000000,
+    "dps": 0.01,
+    "beta": 0,
+    "epsBasis": "ifrs"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation",
+      "inputs": {
+        "multiple": 15,
+        "multipleSource": "author"
+      },
+      "note": "ต่ำกว่ามัธยฐาน P/E ย้อนหลัง 5 ปีของ ACE เอง 18.0x (ช่วง 16.2–25.0x) เพราะ ROE เพียง ~6% และ margin TTM สูงกว่าปีก่อน จึงไม่ให้ Re-rating เต็มมัธยฐาน",
+      "family": "market"
+    },
+    {
+      "method": "evebitda",
+      "label": "EV/EBITDA Valuation",
+      "inputs": {
+        "multiple": 9,
+        "multipleSource": "peer"
+      },
+      "override": {
+        "ebitda": 2300000000,
+        "netDebt": 6891000000,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "อิง Peer utility ชีวมวลเอเชีย (ตัวเลข EBITDA ยังเป็นของรอบก่อน)",
+      "family": "market"
+    },
+    {
+      "method": "pbv",
+      "label": "P/BV Peer Comparison",
+      "inputs": {
+        "multiple": 0.9,
+        "multipleSource": "peer"
+      },
+      "note": "เฉลี่ย Peer กลุ่ม RE ไทย · โรงไฟฟ้า PPA ระยะยาวควรซื้อขายเหนือ Book Value; ปัจจุบัน 0.75x ยังมี Discount",
+      "family": "market"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "custom:0",
+      "pbv",
+      "netIncome",
+      "eps",
+      "bvps",
+      "roe",
+      "revenue",
+      "custom:1",
+      "yield",
+      "beta"
+    ],
+    "custom": [
+      {
+        "label": "P/E เฉลี่ย ~5 ปี",
+        "value": "~16–25x",
+        "note": "P/E ประวัติของ ACE เอง มัธยฐาน 18.0x (FY2021–25)"
+      },
+      {
+        "label": "EBITDA / Margin",
+        "value": "฿2.30B / 35%",
+        "note": "EV/EBITDA ~8.5x · EV ~฿19,660M · SET (EBITDA ก.ค.)"
+      }
+    ],
+    "notes": {
+      "mcap": "~9,751 ล้านหุ้น · พาร์ ฿0.50 · StockAnalysis",
+      "pe": "Yahoo 13.1x · StockAnalysis 12.6x (ยืนยันข้ามแหล่ง)",
+      "pbv": "ต่ำกว่า Book Value · ราคา ÷ BVPS {{bvps}}",
+      "netIncome": "FY2568 = ฿799M · Q1/69 = ฿314M",
+      "eps": "Yahoo/StockAnalysis (diluted) · P/E check: 1.31÷0.10≈13.1x ✓",
+      "bvps": "Equity ฿16.9B ÷ ~9.75B หุ้น (Q1/69)",
+      "roe": "สินทรัพย์ ฿25.8B · Equity ฿16.9B (Q1/69)",
+      "revenue": "FY2568 ฿6.55B · StockAnalysis",
+      "yield": "{{dps}}/หุ้น · Payout ~10% · Yahoo/StockAnalysis",
+      "beta": "ความผันผวนต่ำมาก · Defensive Stock"
+    },
+    "hint": "ข้อมูล ณ 21 ก.ย. 2569 • ที่มา: SET, StockAnalysis, Yahoo Finance"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": -5,
+        "exitMultiple": 12,
+        "divCum": 0.03,
+        "desc": "ค่าไฟฟ้าตก, PPA ไม่ต่อ"
+      },
+      {
+        "growth": 8,
+        "exitMultiple": 15,
+        "divCum": 0.04,
+        "desc": "ขยายกำลังผลิต RE ตามแผน"
+      },
+      {
+        "growth": 15,
+        "exitMultiple": 16,
+        "divCum": 0.05,
+        "desc": "ชนะ PPA ใหม่, RE แพงขึ้น"
+      }
+    ],
+    "exitDp": 0,
+    "note": "Bear: EPS {{eps}} × (1−0.05)³ = ฿0.086 × P/E 12x ≈ {{scn.bear.tgt}} (ปันผลรวมแยก ~฿0.03) · Base: EPS {{eps}} × (1.08)³ = ฿0.126 × P/E 15x ≈ {{scn.base.tgt}} (ปันผลรวมแยก ~฿0.04) · Bull: EPS {{eps}} × (1.15)³ = ฿0.152 × P/E 16x ≈ {{scn.bull.tgt}} (ปันผลรวมแยก ~฿0.05) หมายเหตุ: ราคาเป้าไม่รวมปันผล ตัวเลขคาดการณ์อิงสมมติฐาน ไม่ใช่การรับประกัน"
+  },
+  "analyst": {
+    "target": 1.5,
+    "n": null,
+    "rating": null,
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ราคาปิดรายเดือนของ ACE เคลื่อนไหวในกรอบแคบ ฿1.28–฿1.33 ตลอดรอบปี ต.ค. 2568 – ก.ย. 2569 (กรอบ 52 สัปดาห์ ฿1.26–฿1.52) ทรงตัวใกล้ ฿1.31 ส่วนใหญ่ สะท้อนรายได้มั่นคงจาก PPA แต่ขาดตัวเร่งราคาขึ้น ผลตอบแทนรอบปีเกือบทรงตัว สะท้อนลักษณะ Defensive ความผันผวนต่ำ Beta ≈ 0",
+    "valuation": "วิธี EV/EBITDA ให้ค่าต่ำสุด ({{fvLow}}) เนื่องจาก Net Debt สูง ฿6,891M กดมูลค่าต่อหุ้น ส่วนวิธี P/BV Peer ให้ค่าสูงสุด ({{fvHigh}}) สะท้อน Premium ที่ควรมีจาก PPA ระยะยาว Fair Value เฉลี่ย {{fv}} (เฉลี่ย 3 วิธีเท่ากัน) อิงสมมติฐาน EPS เติบโตปานกลาง และ Peer Sector จากกลุ่มโรงไฟฟ้า RE ที่ซื้อขายใน SET",
+    "gauge": "ราคา {{px}} ต่ำกว่า Fair Value {{fv}} อยู่ ({{mos}} · MOS ปานกลาง) ยังสูงกว่าจุดซื้อ MOS 20% ที่ {{mos20}} เป้านักวิเคราะห์จาก TradingView (ก.ค. 2569) อยู่ราว {{analyst.target}} แต่ Yahoo และ StockAnalysis ไม่มีเป้าให้ในวันนี้ จึงไม่ใช้เป็นตัวยืนยัน Upside ที่เหลือขึ้นกับกำไรเติบโตและการ Re-rating P/BV กลับสู่ 0.9x",
+    "mos": "MOS ปานกลาง — ราคายังต่ำกว่า Fair Value แต่ยังไม่ถึงโซน Deep Value (MOS 20%+)",
+    "verdictHeadline": "ACE — โรงไฟฟ้า RE กระแสเงินสดมั่นคง ราคาต่ำกว่า Fair Value เล็กน้อย แต่ขาด Catalyst",
+    "verdictBody": "ACE เป็นผู้ผลิตไฟฟ้าจากพลังงานทดแทนที่มี PPA ระยะยาวกับ EGAT/PEA ทำให้รายได้คาดการณ์ได้ EBITDA Margin 35% บ่งบอกธุรกิจมีคุณภาพ แต่ ROE เพียง ~6.1% และ Net Debt สูง ฿6,891M คือจุดอ่อนสำคัญ ราคา {{px}} ซื้อขายต่ำกว่า Book Value (P/BV 0.77x) และต่ำกว่า Fair Value {{fv}} ({{mos}} MOS) เป้านักวิเคราะห์จาก TradingView ราว {{analyst.target}} ไม่มีการยืนยันซ้ำจาก Yahoo/StockAnalysis เหมาะกับนักลงทุนที่มองหาหุ้น Defensive กระแสเงินสดมั่นคงในพอร์ต RE ไทย แต่ไม่เหมาะสำหรับผู้ต้องการ Capital Gain เร็ว",
+    "strategy": "ทยอยสะสมที่ระดับ {{mos20}}–{{px}} (MOS 12–20%) เพิ่มน้ำหนักหาก P/BV ลงต่ำกว่า 0.65x หรือราคาย่อถึง {{mos30}} (MOS 30%) ตัดขายหากพื้นฐานเปลี่ยน เช่น PPA ต่อไม่ได้ หรือ Net Debt เพิ่มขึ้นอย่างมีนัย จุดตั้ง Stop Loss แนะนำ ฿1.20 (ต่ำกว่าฐาน 52 สัปดาห์ ฿1.26)",
+    "disclaimerSources": "ที่มาข้อมูล: Yahoo Finance ACE.BK (18 ก.ย. 2569), StockAnalysis BKK:ACE (18 ก.ย. 2569), SET Factsheet (3 ก.ค. 2569), TradingView SET:ACE (3 ก.ค. 2569)"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 3 วิธี"
+  },
+  "catalysts": [
+    "<b>แผน PDP 2024 หนุน RE:</b> แผนพัฒนาพลังงานแห่งชาติเน้นเพิ่มสัดส่วน RE ให้ถึง 51% ในปี 2580 ACE เป็นผู้ประกอบการชีวมวล-โซลาร์ที่มีประสบการณ์พร้อมรับ PPA ใหม่",
+    "<b>PPA ระยะยาวสร้างรายได้มั่นคง:</b> สัญญาซื้อขายไฟฟ้า VSPP/SPP กับ EGAT/PEA ระยะ 20–25 ปี ให้กระแสเงินสดคาดการณ์ได้สูง ลด Earnings Volatility",
+    "<b>Q1/2569 กำไรแข็งแกร่ง:</b> กำไรสุทธิ ฿314M ใน Q1 สูงกว่าค่าเฉลี่ยรายไตรมาส สะท้อน Utilization Rate ที่ดีขึ้นและการควบคุมต้นทุนเชื้อเพลิงชีวมวล",
+    "<b>ขยายพอร์ต Solar และ Wind:</b> ลดความพึ่งพิงชีวมวลเพียงอย่างเดียว กระจายความเสี่ยงเชื้อเพลิง หนุนรายได้ในฤดูกาลที่ชีวมวลอ่อนแอ EBITDA Margin 35% บ่งบอกประสิทธิภาพสูง",
+    "<b>P/BV 0.77x = ราคาต่ำกว่า Book:</b> สินทรัพย์โรงไฟฟ้าถูกตีราคาต่ำกว่า Book Value มี Margin of Safety ด้านสินทรัพย์ หาก Peer กลับมา Re-rate สู่ 0.9x ราคาจะขึ้นราว 17%",
+    "<b>Beta ≈ 0 หุ้น Defensive:</b> ความผันผวนต่ำมาก เหมาะเป็น Diversifier ในพอร์ตช่วงตลาดผันผวน กระแสเงินสดจาก PPA สม่ำเสมอทุกปี"
+  ],
+  "risks": [
+    "<b>ความเสี่ยงเชื้อเพลิงชีวมวล:</b> ราคาแกลบ/เศษไม้/ชีวมวลผันผวนตามฤดูกาลและผลผลิตเกษตร ต้นทุนเชื้อเพลิงสูงกระทบ EBITDA Margin โดยตรง",
+    "<b>Net Debt สูง ฿6,891M:</b> หนี้ ฿7,869M − เงินสด ฿978M สะท้อน Leverage สูง ดอกเบี้ยกัดกำไรในภาวะดอกเบี้ยขาขึ้น กดดัน FCF และ DSCR",
+    "<b>ROE ต่ำ ~6.1%:</b> ต่ำกว่าต้นทุนส่วนของผู้ถือหุ้น (Ke ~8%) บ่งชี้ว่ากำไรไม่สร้าง Value เพียงพอหากไม่เติบโต",
+    "<b>PPA ต่ออายุและการต่ออายุสัญญา:</b> หากสัญญา PPA เดิมสิ้นสุดแล้วต่อไม่ได้หรือต่อในราคาต่ำลง รายได้และกำไรจะลดฮวบอย่างมีนัย",
+    "<b>Liquidity ต่ำมาก:</b> Volume เฉลี่ย ฿885K/วัน (688K หุ้น) ผู้ลงทุนสถาบันไม่สนใจ ทำให้ Re-rating ช้า และซื้อ/ขายยากในปริมาณมาก",
+    "<b>ราคาหุ้น Sideway ยาวนาน:</b> 5 ปีที่ผ่านมา −65% จากจุดสูงสุด ค่า Beta ≈ 0 แสดงว่าไม่มีตัวเร่งราคา หากกำไรไม่เติบโตชัดเจนหุ้นจะ Sideway ต่อ"
+  ],
+  "extras": [],
+  "_sig": "sha256:7e380a24704d9f9df2f5d0905bc4e08265ba98de58dae760e3ab4ac2e6ba98c7"
+}
