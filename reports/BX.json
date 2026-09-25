@@ -1,0 +1,260 @@
+{
+  "v": 3,
+  "symbol": "BX",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Blackstone Inc.",
+    "exchange": "NYSE",
+    "sub": "บริษัทจัดการสินทรัพย์ทางเลือกใหญ่สุดในโลก AUM $1.3T+ • Private Equity • Real Estate • Credit & Insurance • Multi-Asset (Hedge Fund Solutions)",
+    "headerTags": [
+      "Alternative Asset Management",
+      "Private Markets"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis.com",
+      "Yahoo Finance",
+      "Blackstone Investor Relations",
+      "Macrotrends"
+    ],
+    "themeLegacy": {
+      "accent": "#4A6491",
+      "accentDark": "#2C3E5C",
+      "darkGrad": "linear-gradient(135deg, #04060A 0%, #0A1018 100%)",
+      "glow": "rgba(74,100,145,0.38)",
+      "subColor": "#7E93B5",
+      "headerMuted": "#5f83b7",
+      "verdictText": "#D6DEEC",
+      "vcellLabel": "rgba(214,222,236,0.6)"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T11:54:28+07:00",
+      "v2Hash": "75217f1ca543"
+    }
+  },
+  "market": {
+    "px": 117.21,
+    "priceDate": "2026-09-24",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          146.64
+        ],
+        [
+          "พ.ย.25",
+          146.42
+        ],
+        [
+          "ธ.ค.25",
+          154.14
+        ],
+        [
+          "ม.ค.26",
+          142.42
+        ],
+        [
+          "ก.พ.26",
+          113.37
+        ],
+        [
+          "มี.ค.26",
+          114.99
+        ],
+        [
+          "เม.ย.26",
+          125.58
+        ],
+        [
+          "พ.ค.26",
+          116.97
+        ],
+        [
+          "มิ.ย.26",
+          117.67
+        ],
+        [
+          "ก.ค.26",
+          127.75
+        ],
+        [
+          "ส.ค.26",
+          143.24
+        ],
+        [
+          "ก.ย.26",
+          117.21
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 101.73,
+      "hi": 190.09
+    }
+  },
+  "fundamentals": {
+    "eps": 4.47,
+    "dps": 4.74,
+    "shares": 1243813031,
+    "peAvg5y": 41.8,
+    "aum": 1275000000000,
+    "roe": 31.4,
+    "revenue": 5700000000,
+    "beta": 1.45,
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E มัธยฐานย้อนหลัง (own-history)",
+      "inputs": {
+        "multiple": 41.8,
+        "multipleSource": "median5y",
+        "medianWindow": "FY2022–FY2025"
+      },
+      "note": "มัธยฐาน P/E ของ BX FY2022–FY2025 (39.4x/43.6x/54.2x/40.1x · ราคาเฉลี่ยปี ÷ EPS ปีนั้น · ตัด FY2021 ที่ 12.9x เป็นกำไรพิเศษ) · GAAP ผันผวนจาก unrealized gains จึงใช้มัธยฐานหลายปีแทนตัวคูณ spot",
+      "family": "market"
+    },
+    {
+      "method": "ddm",
+      "label": "Dividend Discount (DDM แบบ Gordon)",
+      "inputs": {
+        "g": 5,
+        "r": 9
+      },
+      "note": "r/g เป็นสมมติฐานของรายงาน (ปันผลผันแปรตาม realization) ไม่ได้อิงตัวคูณตลาดวันนี้",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "peAvg5y",
+      "custom:0",
+      "custom:1",
+      "custom:2",
+      "custom:3",
+      {
+        "key": "aum",
+        "tone": "pos"
+      },
+      "roe",
+      "yield",
+      "revenue",
+      "custom:4",
+      "beta"
+    ],
+    "custom": [
+      {
+        "label": "ช่วง P/E ย้อนหลัง",
+        "value": "39.4–54.2x",
+        "note": "FY2022–FY2025 · EPS GAAP ต่ำกว่า DE จึงตัวคูณสูง"
+      },
+      {
+        "label": "GAAP P/E (TTM)",
+        "value": "~{{pe}}x",
+        "note": "GAAP EPS TTM {{eps}} (FY2025 $3.87) — ผันผวนสูงจาก unrealized gains",
+        "tone": "neu"
+      },
+      {
+        "label": "EPS FY2026E (consensus)",
+        "value": "$6.02",
+        "note": "vs TTM {{eps}} · FY2027E $7.48 (SA /forecast/)",
+        "tone": "pos"
+      },
+      {
+        "label": "Fee-Related Earnings (FRE)",
+        "value": "$5.7B",
+        "note": "+9% YoY — recurring revenue base"
+      },
+      {
+        "label": "Credit & Insurance AUM",
+        "value": "$354B",
+        "note": "+15% YoY — segment โตเร็วสุด"
+      }
+    ],
+    "notes": {
+      "mcap": "1.24B หุ้นรวมทุกคลาส (StockAnalysis)",
+      "peAvg5y": "ราคาเฉลี่ยรายปี ÷ EPS diluted · 4 ปี (ตัด FY2021 12.9x ผิดปกติ)",
+      "aum": "+13% YoY · perpetual capital 46% ของ fee-AUM",
+      "roe": "สูงมากสำหรับ asset-light business",
+      "yield": "~85% ของ DE · ปรับตาม realization",
+      "revenue": "ปี · มั่นคง — management fee จาก locked-up capital",
+      "beta": "ผันผวนกว่า S&P 500 ตามวัฏจักรตลาด private"
+    },
+    "hint": "Alternative Asset Manager — GAAP EPS ผันผวนจาก unrealized gains จึงใช้มัธยฐาน P/E หลายปี + ปันผล"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 6,
+        "exitMultiple": 22,
+        "divCum": 14.2,
+        "desc": "ดอกเบี้ยสูงยาว realization ช้า"
+      },
+      {
+        "growth": 12,
+        "exitMultiple": 25,
+        "divCum": 16,
+        "desc": "Fed ลดดอกเบี้ย realization ฟื้น AUM โต"
+      },
+      {
+        "growth": 18,
+        "exitMultiple": 30,
+        "divCum": 17.3,
+        "desc": "ดอกเบี้ยลดเร็ว PE/RE exit บูม AUM $1.7T+"
+      }
+    ],
+    "exitDp": 0,
+    "note": "การคาดการณ์อิงจาก EPS GAAP diluted ฐาน {{eps}} (TTM) × อัตราเติบโต 3 ปี × P/E ออกที่เป็นสมมติฐานของแต่ละฉาก (22x/25x/30x — ต่ำกว่ามัธยฐานย้อนหลัง 41.8x ทั้งหมด) + ปันผลรวม 3 ปี ({{dps}}/ปี คงที่ใน Bear · โต 6%/ปี ใน Base · 10%/ปี ใน Bull) · consensus FY2026E EPS $6.02 สูงกว่าฐาน TTM มาก จึงเป็นข้อมูลเทียบ ไม่ได้ใช้ตรง ๆ กรณี Bear ราคาเป้าต่ำกว่าจุดเข้าเล็กน้อย แต่เมื่อรวมปันผลรวม 3 ปีแล้วยังเป็นบวกเล็กน้อย ความเสี่ยงหลักคือ multiple compression หาก sentiment ต่อ private markets ยังเป็นลบ หรือ GAAP losses กดราคาในระยะสั้น Base case ราคาเป้าเทียบจุดเข้า {{scn.base.ret}} (ยังไม่รวมปันผล)",
+    "hintNote": "TTM {{eps}}"
+  },
+  "analyst": {
+    "target": 144.38,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ราคาปิดรายเดือนของ BX ลดจากจุดสูง $154.14 (ธ.ค. 2568) สู่จุดต่ำ $113.37 (ก.พ. 2569) ราว −26% ก่อนฟื้นถึง $143.24 (ส.ค. 2569) แล้วย่อกลับมาอยู่ที่ {{px}} ปัจจุบัน กรอบ 52 สัปดาห์ $101.73–$190.09 แรงกดดันหลักมาจากความกังวลว่าดอกเบี้ยสูงนาน ทำให้การ exit กองทุน Private Equity และ Real Estate ล่าช้า ส่งผลกด realization income ราคาปัจจุบัน {{px}} ต่ำกว่า Fair Value {{fv}} ที่คำนวณจาก P/E มัธยฐานย้อนหลัง + DDM (MOS {{mos}}) — อยู่ใกล้จุดซื้อ MOS 20%",
+    "valuation": "สองขาห่างกันมาก ({{fvHigh}} vs {{fvLow}}) เพราะต่างตระกูล: P/E มัธยฐานย้อนหลัง 41.8x บนกำไร GAAP ให้ค่าสูง (EPS GAAP ของ BX ต่ำกว่า DE ตัวคูณจึงสูงเสมอ · ปัจจุบันซื้อขายต่ำกว่ามัธยฐานของตัวเองมาก) ส่วน DDM ให้ค่าต่ำกว่าเพราะอิงเงินสดที่จ่ายจริง ค่าเฉลี่ย {{fv}} จึงเป็นการถ่วงสองมุมมอง ไม่ใช่ค่าที่ยืนยันแม่นยำ — ตัวเลข DE/share ที่รายงานฉบับก่อนใช้ตรวจซ้ำกับงวดล่าสุดไม่ได้ จึงถอดออกจากทุกขา เป้านักวิเคราะห์ {{analyst.target}} ใช้เป็นข้อมูลเทียบเท่านั้น ไม่ใช่ขาของ FV",
+    "gauge": "ราคาปัจจุบัน {{px}} อยู่ต่ำกว่า Fair Value {{fv}} (MOS {{mos}}) ใกล้จุด MOS 20% ({{mos20}}) แต่ FV มาจากสองขาที่ห่างกันมาก ส่วนเผื่อจึงมีความไม่แน่นอนสูง นักวิเคราะห์ 21 ราย (Yahoo) มีเป้าเฉลี่ย {{analyst.target}} ต่ำกว่า Fair Value ของรายงานนี้ — ใช้เป็นข้อมูลเทียบเท่านั้น ไม่ได้เป็นขาของ FV",
+    "mos": "MOS ปานกลาง — ราคาใกล้โซนซื้อ MOS 20% แต่ FV ไม่แน่นอนสูง",
+    "verdictHeadline": "BX: เจ้าตลาด Alt Asset โลก — ราคาถูกกดจากความกลัวดอกเบี้ย",
+    "verdictBody": "Blackstone คือ franchise สินทรัพย์ทางเลือกที่แข็งแกร่งที่สุดในโลก AUM $1.275T, FRE recurring $5.7B, ROE ~31% ราคาอยู่ต่ำกว่าจุดสูง 52 สัปดาห์ ($190.09) ราว 34% จากความกังวลดอกเบี้ยสูงที่ชะลอการ exit กองทุน P/E GAAP ปัจจุบัน ~{{pe}}x ต่ำกว่ามัธยฐานย้อนหลังของตัวเอง 41.8x (ตัวคูณ GAAP สูงเพราะ EPS ถูกกดจาก unrealized items) และ consensus EPS FY2026E $6.02 ปันผล ~3.8% + เป้านักวิเคราะห์เฉลี่ย {{analyst.target}} = upside ถ้าดอกเบี้ยลดในระยะอันใกล้ FV มาจากสองขาที่ห่างกัน จึงควรมองส่วนเผื่อเป็นช่วง ไม่ใช่ตัวเลขเดียว",
+    "strategy": "ราคาปัจจุบัน {{px}} (MOS {{mos}}) ใกล้โซนสะสม · ทยอยสะสมที่โซน {{mos20}} (MOS 20%) · ถือระยะยาว 2–3 ปี รอ realization cycle ฟื้น + ดอกเบี้ยลด · รับปันผล ~3.8%/ปี ระหว่างรอ",
+    "disclaimerSources": "ที่มาข้อมูล: StockAnalysis.com (ราคา/EPS/Financials) · Yahoo Finance (ราคา/52w range) · Blackstone Investor Relations (AUM/FRE) · Macrotrends (historical P/E)"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 2 วิธีต่างตระกูล — P/E own-history + DDM",
+    "disclaimerAssump": " ตัวคูณ P/E ย้อนหลัง (GAAP), r/g ของ DDM, อัตราเติบโต EPS และสมมติฐาน realization cycle BX เป็น alternative asset manager — GAAP EPS มีความผันผวนสูงจาก unrealized gains/losses จึงใช้มัธยฐาน P/E หลายปี ร่วมกับ DDM และไม่ใช้ตัวเลข DE/share ที่ตรวจซ้ำไม่ได้ ปันผลผันแปรตาม DE จริง อาจลดลงในปีที่ realization ต่ำ ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ"
+  },
+  "catalysts": [
+    "<b>Fed ลดดอกเบี้ย:</b> กระตุ้นการ exit กองทุน PE/RE ที่ค้างอยู่ realization income พุ่ง → DE/share โตเร็ว",
+    "<b>AUM เติบโตต่อเนื่อง:</b> AUM $1.275T +13% YoY · กองทุนใหม่ BREIT/BCP/BXC ระดมทุนได้ดี → fee base ขยาย",
+    "<b>Credit & Insurance บูม:</b> segment โต +15% YoY · private credit demand สูงจากธนาคารถอยออกจาก leveraged loans",
+    "<b>Perpetual Capital:</b> 46% ของ fee-AUM เป็น perpetual capital (BREIT/BCRED) → FRE มั่นคง ไม่ขึ้นกับ realization",
+    "<b>นักวิเคราะห์ consensus:</b> 21 ราย เป้าเฉลี่ย {{analyst.target}} · rating Buy (StockAnalysis)",
+    "<b>Brand moat:</b> ชื่อ Blackstone = magnet สำหรับ LP ระดับ sovereign wealth fund/pension — ได้เปรียบคู่แข่งรายใหม่"
+  ],
+  "risks": [
+    "<b>ดอกเบี้ยสูงยาว:</b> delayed exit ยิ่งกด realization income → DE/share ต่ำกว่าคาด · valuation ยืด",
+    "<b>GAAP EPS ผันผวน:</b> unrealized mark-to-market ทำให้ GAAP EPS กระโดดได้ทั้งสองทาง อาจสับสนนักลงทุนรายย่อย",
+    "<b>ปันผลผันแปร:</b> จ่าย ~85% ของ DE — ถ้า DE ตก ปันผลลด สร้างแรงขายจาก income investors",
+    "<b>Regulatory risk:</b> private credit กำลังถูก SEC/Fed จับตา · กฎเกณฑ์ใหม่อาจเพิ่มต้นทุนหรือจำกัด leverage",
+    "<b>การแข่งขัน:</b> KKR, Apollo, Ares, Carlyle ระดมทุนแข่งกัน → fee compression ในระยะยาว",
+    "<b>Real estate headwind:</b> BREIT (RE fund ใหญ่) ยังเจอ redemption pressure จากดอกเบี้ยสูง + office market อ่อนแอ"
+  ],
+  "extras": [],
+  "_sig": "sha256:e70d9fbba9c5060ae56e64b0998ba23d71c49f2555a75d834add573c1c8d5e9c"
+}
