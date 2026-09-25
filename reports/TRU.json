@@ -1,0 +1,283 @@
+{
+  "v": 3,
+  "symbol": "TRU",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "TransUnion",
+    "exchange": "NYSE",
+    "sub": "Credit bureau & data analytics • US Markets + International (India, UK, Africa) • Lending, insurance, tenant screening • Deleveraging post-PE",
+    "headerTags": [
+      "Financial Data & Analytics",
+      "Credit Bureau"
+    ],
+    "analysisDate": "2026-09-22",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "StockAnalysis",
+      "Finviz"
+    ],
+    "priceNote": "StockAnalysis · Yahoo แสดงจุดสูง $89.25",
+    "themeLegacy": {
+      "accent": "#1565C0",
+      "accentDark": "#0D47A1",
+      "darkGrad": "linear-gradient(135deg,#0b3d8b 0%,#1566b5 100%)",
+      "glow": "rgba(21,101,192,0.35)",
+      "subColor": "#d9edfd",
+      "headerMuted": "#dcebf9",
+      "verdictText": "#E3F2FD",
+      "vcellLabel": "#f6fbfe"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-22T01:46:25+07:00",
+      "v2Hash": "7517d35ffcbf"
+    }
+  },
+  "market": {
+    "px": 67.54,
+    "priceDate": "2026-09-24",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          81.18
+        ],
+        [
+          "พ.ย.25",
+          85.05
+        ],
+        [
+          "ธ.ค.25",
+          85.75
+        ],
+        [
+          "ม.ค.26",
+          79.02
+        ],
+        [
+          "ก.พ.26",
+          78.55
+        ],
+        [
+          "มี.ค.26",
+          69.19
+        ],
+        [
+          "เม.ย.26",
+          71
+        ],
+        [
+          "พ.ค.26",
+          71.56
+        ],
+        [
+          "มิ.ย.26",
+          72.14
+        ],
+        [
+          "ก.ค.26",
+          78.62
+        ],
+        [
+          "ส.ค.26",
+          84.91
+        ],
+        [
+          "ก.ย.26",
+          67.54
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 63.37,
+      "hi": 94.23
+    }
+  },
+  "fundamentals": {
+    "eps": 3.79,
+    "dps": 0.5,
+    "bvps": 24.26,
+    "shares": 191600000,
+    "epsForward": 4.75,
+    "roe": 15.8,
+    "roa": 6.1,
+    "grossMargin": 58.8,
+    "beta": 1.53,
+    "netDebt": 4820000000,
+    "fcf": 788000000,
+    "ebitda": 1433000000,
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "dcf",
+      "label": "DCF (FCF ถึงผู้ถือหุ้น) — กรณีฐาน",
+      "inputs": {
+        "g1": 8,
+        "years1": 5,
+        "tg": 3,
+        "r": 10,
+        "rfCurrency": "USD"
+      },
+      "override": {
+        "netDebt": 0,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "หลังดอกเบี้ย จึงคิดลดที่ต้นทุนส่วนของผู้ถือหุ้นโดยตรง · สมมติฐานของเราเอง · PV $10,578M, สัดส่วน TV 73.9%",
+      "family": "rg"
+    },
+    {
+      "method": "declared",
+      "label": "DCF (FCF ถึงผู้ถือหุ้น) — กรณีระมัดระวัง",
+      "inputs": {
+        "value": 65.13,
+        "basis": "other"
+      },
+      "note": "ตระกูลเดียวกับข้อ 1 (นับเป็นเสียงเดียว) · FCF TTM $788M โต 6%/ปี: $835M, $885M, $939M, $995M, $1,054M · r 10%, g 2.5% · PV 5 ปี $3,531M + TV $14,412M (PV $8,949M, สัดส่วน TV 71.7%) = Equity $12,479M ÷ 191.6M หุ้น = {{fvLow}}",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      {
+        "key": "peForward",
+        "tone": "none"
+      },
+      "pbv",
+      "custom:0",
+      "eps",
+      "bvps",
+      "roe",
+      "custom:1",
+      "grossMargin",
+      "yield",
+      "beta",
+      {
+        "key": "netDebt",
+        "tone": "neg"
+      },
+      {
+        "key": "fcf",
+        "tone": "pos"
+      },
+      {
+        "key": "evEbitda",
+        "tone": "none"
+      },
+      {
+        "key": "analystTarget",
+        "tone": "pos"
+      }
+    ],
+    "custom": [
+      {
+        "label": "Adj. EPS Q2/2026",
+        "value": "$1.23",
+        "note": "บีตคาด $1.15 · diluted $0.74 (จาก $0.56)",
+        "tone": "pos"
+      },
+      {
+        "label": "รายได้ Q2/2026",
+        "value": "$1,310M",
+        "note": "+15% YoY · บีตคาด $1.28B",
+        "tone": "pos"
+      }
+    ],
+    "notes": {
+      "mcap": "~191.6M shares",
+      "pe": "GAAP diluted EPS {{eps}} TTM (StockAnalysis $3.78)",
+      "peForward": "Adj. EPS guide $4.75–$4.83",
+      "pbv": "BVPS ~{{bvps}} (มีหนี้สูง)",
+      "eps": "Adj. EPS guide FY26 $4.75–$4.83",
+      "bvps": "Book value / share (ล่าสุดที่มีข้อมูล)",
+      "roe": "ROIC ~6.9% (heavy debt)",
+      "grossMargin": "Op. margin 18.0% · EBITDA margin 30.3% (FY25)",
+      "yield": "{{dps}}/yr · Payout ~20%",
+      "beta": "ความผันผวนสูงกว่าตลาด",
+      "netDebt": "Debt $5.66B − Cash $0.84B · D/E ~1.13x (TTM)",
+      "fcf": "FCF yield ~5.7% ของ Market Cap · FY25 $662M",
+      "evEbitda": "EV ≈ Market Cap + Net Debt ÷ Adj. EBITDA FY25 $1,433M",
+      "analystTarget": "Buy consensus · Yahoo $97.90 (n=21) / StockAnalysis {{analyst.target}}"
+    },
+    "hint": "ข้อมูล TTM / Q2 2569 · ณ 30 ก.ค. 2569"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 5,
+        "exitMultiple": 11,
+        "divCum": 1.5,
+        "desc": "อัตราดอกเบี้ยสูงนาน กดตลาดสินเชื่อ momentum จาก Q2 ไม่ต่อเนื่อง"
+      },
+      {
+        "growth": 11,
+        "exitMultiple": 14.5,
+        "divCum": 1.5,
+        "desc": "guidance FY26 ที่ปรับเพิ่มยืนได้ + international ขยายตัวต่อเนื่อง"
+      },
+      {
+        "growth": 16,
+        "exitMultiple": 18,
+        "divCum": 1.5,
+        "desc": "ดอกเบี้ยลด + India/EM โตเร็ว + ลดหนี้เร็ว + P/E re-rate ขึ้น"
+      }
+    ],
+    "exitDp": 1,
+    "baseOverride": {
+      "value": 4.7893,
+      "why": "EPS ฐานฉากถอดกลับจากราคาเป้าที่พิมพ์"
+    },
+    "note": "Base case ใช้ EPS ฐาน = guidance FY26 ที่ปรับเพิ่มหลัง Q2 beat ($4.75–$4.83, กลาง $4.79) แล้วโต ~11%/ปีต่อจากนั้น × P/E 14.5x (ตัวคูณที่ FV จาก DCF สื่อ: FV ÷ adj. EPS guide $4.79 ≈ 14.6x — ไม่ใช่ตัวคูณปัจจุบันของตลาด) · Bear 11x, Bull 18x เป็นสมมติฐานฉาก Bull case เป็นไปได้ถ้า Fed ลดดอกเบี้ยหนุนตลาดสินเชื่อ + India/EM growth accelerate + leverage ลดเร็วกว่าคาด Bear case เกิดถ้าอัตราดอกเบี้ยสูงต่อเนื่องกดความต้องการสินเชื่อ P/E ยังถูก re-rate ลง ผลตอบแทนปันผล ~0.7%/ปี (ค่อนข้างต่ำ เน้น growth มากกว่า income) · คำนวณ ณ 22 ก.ย. 2569",
+    "hintNote": "(guide FY26) ~$4.79"
+  },
+  "analyst": {
+    "target": 97.86,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "TRU ร่วงจากจุดสูงในกรอบ 52 สัปดาห์ที่ $94.23 ลงแตะจุดต่ำสุดของกราฟที่ $69.19 ใน มี.ค. 69 จากแรงกดดันดอกเบี้ยสูงต่อตลาดสินเชื่อ ก่อนฟื้นตัวแรงหลังผลประกอบการ Q2/2026 ที่รายงาน 28 ก.ค. 2569 ขึ้นไปแตะ $84.91 ใน ส.ค. 69 แล้วปรับฐานลงมาที่ {{px}} ณ {{priceDate}} แรงหนุนช่วงฟื้นตัวคือ Adjusted EPS $1.23 (บีตคาด $1.15), diluted EPS $0.74 (จาก $0.56 ปีก่อน), revenue $1,310M (+15% YoY, บีตคาด $1.28B) และบริษัทปรับเพิ่ม guidance FY2026 เป็น adj. diluted EPS growth 11–12% ($4.75–$4.83) หุ้นพุ่ง +10.44% ในวันประกาศงบ ที่มา: Yahoo Finance (รายเดือน)",
+    "valuation": "รอบนี้ปรับโครง FV: ตัดขา P/E 21x, EV/EBITDA 14x และ EV/FCF 18x ออก เพราะเป็นตัวคูณที่ตั้งเองโดยไม่มีมัธยฐานที่วัดได้ (P/E มัธยฐานย้อนหลังที่วัดได้ 57.0x อิง GAAP EPS ที่ถูกกดด้วยค่าตัดจำหน่าย จึงใช้กับ adj. EPS ไม่ได้) และตัดเป้า analyst ออกจากการคำนวณ (ใช้เป็นบริบทเท่านั้น) ⚠ <b>ประเมินตระกูลเดียว (DCF)</b> — สองกรณีต่างกัน 1.15 เท่า จึงเฉลี่ยได้ ให้ Fair Value {{fv}} · ความไว: r 9% + g 3% + โต 6% ให้ ~$80 (สูงกว่าราคาปัจจุบันราว 10%) ส่วน r 10% + g 2.5% ให้ $65 (MOS ติดลบชัดเจน) ⇒ ข้อสรุป \"ราคาใกล้/สูงกว่า FV เล็กน้อย\" ไวต่อ r และ g · Cross-check: ราคาเทียบ adj. EPS guide FY26 $4.79 อยู่ที่ ~15x ส่วนเป้าเฉลี่ย analyst {{analyst.target}} สูงกว่า FV มาก — ไม่ใช้เป็นขา FV",
+    "gauge": "TRU ซื้อขายที่ {{px}} เทียบ Fair Value {{fv}} (MOS {{mos}}) ราคาอยู่ในโซน \"ใกล้มูลค่าเหมาะสม\" และยังไม่ถึงโซน MOS 20% ({{mos20}}) ที่ถือว่าน่าสนใจสำหรับนักลงทุนเน้นคุณค่า Analyst consensus ที่ {{analyst.target}} (Buy) สูงกว่าราคาตลาดมาก แต่ไม่ได้ใช้เป็นขาของ FV",
+    "mos": "MOS ต่ำ/ติดลบเล็กน้อย — ราคาใกล้ Fair Value · รอโซน MOS 20% ({{mos20}}) เพื่อ margin ที่ดีขึ้น",
+    "verdictHeadline": "TRU — Credit Bureau คุณภาพดี งบ Q2/2026 บีตคาด + ปรับเพิ่ม guidance · ราคาใกล้ Fair Value",
+    "verdictBody": "TransUnion เป็นหนึ่งใน 3 credit bureau ยักษ์ใหญ่ของสหรัฐ มีคูเมืองแข็งแกร่งจากข้อมูลสินเชื่อที่สะสมมาหลายทศวรรษ Q2/2026 (รายงาน 28 ก.ค. 2569) revenue $1,310M +15% YoY บีตคาด $1.28B และ Adj. EPS $1.23 บีตคาด $1.15 บริษัทปรับเพิ่ม guidance FY2026 เป็น adj. diluted EPS growth 11–12% ($4.75–$4.83) — fundamentals แข็งแกร่งขึ้นชัดเจน หุ้นพุ่ง +10.44% วันประกาศ ความท้าทายหลักยังคือหนี้สินจากยุค PE buyout (Net Debt $4.82B, D/E 1.13x) และ sensitivity ต่อ credit cycle ราคาปัจจุบัน {{px}} เทียบ Fair Value {{fv}} ({{mos}} — MOS ต่ำ ประเมินตระกูล DCF เดียว) เหมาะกับนักลงทุนระยะกลาง-ยาวที่รอสะสมในโซน MOS 20%",
+    "strategy": "ราคาปัจจุบัน {{px}} ใกล้ Fair Value แต่ MOS ต่ำ — ทยอยสะสมเมื่อราคาลงมาใกล้ FV โซนน่าสนใจมากขึ้นที่ {{mos20}} (MOS 20%) · เป้า analyst consensus ที่ {{analyst.target}} (ไม่ใช่ขา FV) หุ้นมี beta 1.53 ผันผวนสูง — จัดพอร์ตตามความเสี่ยงที่รับได้ · ไม่ใช่คำแนะนำซื้อ-ขาย",
+    "disclaimerSources": "แหล่งข้อมูล: Yahoo Finance (ราคา/กราฟ ก.ย. 2568–ก.ย. 2569, EPS/target), StockAnalysis.com (financials, forecast, analyst targets), Finviz (ratios, beta) · ราคาครอสเช็ค 2 แหล่ง ต่างกัน 0.12% (Yahoo $71.45, StockAnalysis $71.54 ณ 21 ก.ย. 2569) · งบ Q2/2026 อ้างอิงคำแถลงผลประกอบการบริษัท 28 ก.ค. 2569"
+  },
+  "text": {
+    "valHint": "DCF 2 กรณี (ตระกูลเดียว)",
+    "chartHint": "ส.ค. 2568 – ก.ค. 2569 · รายเดือน",
+    "disclaimerAssump": " P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r)"
+  },
+  "catalysts": [
+    "<b>International expansion:</b> ตลาดอินเดีย แอฟริกา ละตินอเมริกา และ UK เติบโตเร็วกว่า US หนุน revenue diversification",
+    "<b>Credit cycle recovery:</b> เมื่อ Fed ลดดอกเบี้ย ตลาดสินเชื่อรายย่อยและ mortgage จะฟื้น หนุน core US Markets revenue",
+    "<b>Deleveraging story:</b> TRU ลดหนี้จากยุค GS Capital PE ต่อเนื่อง — ถ้า net debt ลด → interest expense ลด → EPS เพิ่มขึ้น",
+    "<b>AI & analytics upsell:</b> TruIQ และโซลูชัน data analytics ช่วยเพิ่ม ARPU จากลูกค้าเดิม ไม่ต้องหาลูกค้าใหม่",
+    "<b>Insurance vertical growth:</b> ธุรกิจ insurance data (ประกันรถ ประกันบ้าน) เติบโตสูงจากความต้องการ risk-based pricing",
+    "<b>Q2/2026 beat + guidance raise:</b> Adj. EPS $1.23 (บีตคาด $1.15), revenue +15% YoY $1,310M บีตคาด $1.28B และปรับเพิ่ม guidance FY26 adj. diluted EPS growth เป็น 11–12% ($4.75–$4.83) หุ้นพุ่ง +10.44% วันประกาศ · เป้าเฉลี่ย analyst ~{{analyst.target}} (Buy)"
+  ],
+  "risks": [
+    "<b>High leverage:</b> Net Debt $4.82B สูงมากเมื่อเทียบกับ equity — ดอกเบี้ยสูงต่อเนื่องกินกำไรและจำกัด buyback/growth investment",
+    "<b>Credit market sensitivity:</b> รายได้ขึ้นกับ volume สินเชื่อ (mortgage, auto, card) ซึ่งผันผวนตาม rate cycle",
+    "<b>Regulatory risk:</b> CFPB และ data privacy regulation เพิ่มขึ้นทั่วโลก กระทบโมเดลธุรกิจที่ใช้ข้อมูลผู้บริโภค",
+    "<b>Competition:</b> Equifax (EFX) และ Experian แข็งแกร่งกว่าในบางตลาด FICO ครองตลาด scoring standard ในสหรัฐ",
+    "<b>Cyber/data breach:</b> บริษัท credit bureau คือเป้าหมายหลักของ hacker — data breach อาจกระทบ brand และนำสู่ค่าปรับใหญ่",
+    "<b>Beta สูง (1.53):</b> หุ้นผันผวนกว่าตลาด ช่วง risk-off หรือ rate spike ราคาอาจร่วงแรงกว่า index"
+  ],
+  "extras": [],
+  "_sig": "sha256:906cfd53d6ab50eeb6007ef541b075ea2cc5793c96b3a60e7d071a238211b16c"
+}
