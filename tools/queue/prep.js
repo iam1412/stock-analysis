@@ -244,7 +244,10 @@ function extraBlock(i) {
   if (i.mode === 'NEW') L.push(`- โหมด **${i.mode}**${i.modeWhy ? ` (${i.modeWhy})` : ''}`);
   else L.push(`- โหมด **${i.mode}**${i.modeWhy ? ` (${i.modeWhy})` : ''} · ${fresh
     ? `ราคาในไฟล์สดแล้ว (${stamp}; ${i.oldPrice ?? '?'} → ${i.price ?? '?'}) ⇒ **ห้ามรัน update-prices ซ้ำ**${i.v3 ? '' : ' ยกเว้น SKILL 5B ข้อ 3 (แก้ fairValue — ปลอดภัยแล้วเพราะ lock)'}`
-    : `ราคาในไฟล์ยังไม่สด${i.priceFresh === false ? ` (${stamp})` : ' (ยังไม่ได้ pre-patch)'} — โหมด UPDATE รัน \`node tools/update-prices.js --write --force ${i.sym}\` ตาม SKILL STEP 1 ได้ · ตลาด${i.marketOpen ? 'เปิดอยู่ — ราคาจะเป็น intraday รอปิดตลาดก่อนรัน' : 'ปิดแล้ว รันได้'}`}`);
+    : i.v3
+      // Plan 4a fix1: ใบ v3 — update-prices --write บนใบ v3 เขียน reports/<SYM>.json ตรง (นอก report.js) ⇒ เป็นงานของ controller ก่อน spawn ไม่ใช่ของ worker
+      ? `ราคาในไฟล์ยังไม่สด${i.priceFresh === false ? ` (${stamp})` : ' (ยังไม่ได้ pre-patch)'} — ใบ v3: controller pre-patch มือ \`node tools/update-prices.js --write --force ${i.sym}\` ก่อน spawn${i.marketOpen ? ' (ตลาดเปิดอยู่ — รอปิดตลาดก่อน)' : ''} · **worker ห้ามรัน** (market.* เป็นของ cron/controller — ทำงานต่อได้ ราคาใน prose เป็น token)`
+      : `ราคาในไฟล์ยังไม่สด${i.priceFresh === false ? ` (${stamp})` : ' (ยังไม่ได้ pre-patch)'} — โหมด UPDATE รัน \`node tools/update-prices.js --write --force ${i.sym}\` ตาม SKILL STEP 1 ได้ · ตลาด${i.marketOpen ? 'เปิดอยู่ — ราคาจะเป็น intraday รอปิดตลาดก่อนรัน' : 'ปิดแล้ว รันได้'}`}`);
   if (i.lightRule === 'legacy') {
     if (i.epsScreen != null) L.push(`- EPS ในใบ ${i.baseEPS} vs vendor ${i.epsTTM} = ต่าง ${i.epsScreen.toFixed(1)}% → ${i.epsScreen <= EPS_SCREEN_PCT
       ? 'FV เดิมยืนได้ (UPDATE-LIGHT ตาม 5C ข้อ 2)'
@@ -276,7 +279,7 @@ function extraBlock(i) {
   if (i.mode === 'NEW' && i.sidecarOk) L.push(`★ ใบ NEW เขียนเป็น v3 — ทำตาม SKILL STEP 5V: node tools/report.js init ${i.sym} → เติม .work/${i.sym}.json → pick-brand → save (sidecar: .queue/prep/${i.sym}.json) · ห้ามเขียน reports/ ด้วย Write/Edit/Bash · save ✓ = gate ของ worker (ไม่ต้องรัน npm test)`);
   // Plan 4a: ใบ v3 เดิม → worker เขียนผ่าน report.js เท่านั้น (SKILL STEP 5U) · LIGHT = save --light (ราคาเป็นของ cron แล้ว — E27/W09 อยู่บน priceDate)
   if (i.v3 && i.mode !== 'NEW') L.push(i.mode === 'UPDATE-LIGHT'
-    ? `★ ใบ v3 UPDATE-LIGHT — ทำตาม SKILL STEP 5U: node tools/report.js export ${i.sym} → แก้ .work/${i.sym}.json เฉพาะ allowlist (meta.analysisDate · meta.aiModel · meta.sources · analyst · fundamentals.dps · prose/text) → node tools/report.js save ${i.sym} --light · cron เป็นเจ้าของราคา (market.*) — ห้ามแก้ · ห้าม apply-edits/Write ลง reports/`
+    ? `★ ใบ v3 UPDATE-LIGHT — ทำตาม SKILL STEP 5U: node tools/report.js export ${i.sym} → แก้ .work/${i.sym}.json เฉพาะ allowlist ของ save --light (meta.analysisDate · meta.aiModel · meta.sources · meta.priceNote · analyst.* · fundamentals.dps · ทุกช่อง prose/text — save ปฏิเสธพร้อม path ถ้าเกิน) → node tools/report.js save ${i.sym} --light · cron เป็นเจ้าของราคา (market.*) — ห้ามแก้ · ห้าม apply-edits/Write ลง reports/`
     : `★ ใบ v3 UPDATE — ทำตาม SKILL STEP 5U: node tools/report.js export ${i.sym} → แก้ .work/${i.sym}.json → node tools/report.js save ${i.sym} (save พิมพ์ทุก error รอบเดียว) · cron เป็นเจ้าของราคา (market.*) — ห้ามแก้ · ห้าม apply-edits/Write ลง reports/`);
   return L.join('\n');
 }
@@ -339,7 +342,8 @@ function runJson(script, args, runner) {
 async function prep(sym, opts) {
   const o = opts || {};
   const R = o.run || run;   // ฉีดได้ในเทส (offline) — ค่าจริง = sh.run
-  const src = reportSource(sym, REPORTS, !!o.th);   // Plan 4a: ใบ v2 และ v3 เข้า prep ได้ทั้งคู่ · .json เสีย = throw ตรงนี้ก่อน network
+  const src = reportSource(sym, o.reportsDir || REPORTS, !!o.th);   // Plan 4a: ใบ v2 และ v3 เข้า prep ได้ทั้งคู่ · .json เสีย = throw ตรงนี้ก่อน network
+  //   o.reportsDir = เทสเท่านั้น (Review Focus 3) — ส่งเข้า reportSource อย่างเดียว (อ่านอย่างเดียว) ไม่เปลี่ยนที่ใดที่ prep เขียน
   const exists = src.kind !== null;
   const html = src.html;
   const th = src.th;
@@ -432,6 +436,7 @@ async function prep(sym, opts) {
   if (med.warn.length) console.log(`⚠ มัธยฐาน: ${med.warn.join(' · ')}`);
   console.log('\n── ขั้นที่ต้องทำเอง ──');
   let n = 0;
+  if (src.kind === 'v3' && priceFresh !== true) console.log(`${++n}. ใบ v3 ราคายังไม่สด: node tools/update-prices.js --write --force ${sym} แล้วรัน prep ใหม่ ก่อน spawn (worker ห้ามรันเอง)`);
   if (hs.hard) console.log(`${++n}. หุ้นยาก: ปรึกษา advisor แล้วแทนบรรทัด "<ยังไม่ได้วาง …>" ใน prompt ด้วยแนวทาง`);
   if (mode === 'NEW' && !o.brand) console.log(`${++n}. NEW: เลือกสีแบรนด์จาก tools/brand-colors.md แล้วรัน prep ใหม่ด้วย --brand "#hex" (หรือให้ worker รัน pick-brand เอง — มี lock แล้ว)`);
   console.log(`${++n}. spawn worker 1 ตัว: prompt = ไฟล์ข้างบน · pin model:"${model}" · effort ${effort} (Agent tool หรือ analyze-wave stocks=[1 ตัว])`);
