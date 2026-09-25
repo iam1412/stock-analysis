@@ -1,0 +1,242 @@
+{
+  "v": 3,
+  "symbol": "CNI",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Canadian National Railway",
+    "exchange": "NYSE",
+    "sub": "Railroad duopoly แคนาดา • Pacific–Atlantic–Gulf Coast 24,000+ กม. • Grain • Intermodal • Energy • Potash",
+    "headerTags": [
+      "Industrials",
+      "Class I Railroad"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis.com",
+      "Yahoo Finance",
+      "Macrotrends"
+    ],
+    "priceNote": "16:00 ET ตลาดปิด",
+    "themeLegacy": {
+      "accent": "#c62828",
+      "accentDark": "#8b0000",
+      "darkGrad": "linear-gradient(135deg,#1a0000 0%,#2a0808 58%,#3d1010 140%)",
+      "glow": "rgba(198,40,40,.35)",
+      "subColor": "#f5c6c6",
+      "headerMuted": "#d49090",
+      "verdictText": "#f0d4d4",
+      "vcellLabel": "#c09090"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T12:28:00+07:00",
+      "v2Hash": "8313e95ca238"
+    }
+  },
+  "market": {
+    "px": 119.92,
+    "priceDate": "2026-09-24",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          95.91
+        ],
+        [
+          "พ.ย.25",
+          95.89
+        ],
+        [
+          "ธ.ค.25",
+          98.85
+        ],
+        [
+          "ม.ค.26",
+          96.22
+        ],
+        [
+          "ก.พ.26",
+          112.19
+        ],
+        [
+          "มี.ค.26",
+          102.77
+        ],
+        [
+          "เม.ย.26",
+          112.13
+        ],
+        [
+          "พ.ค.26",
+          118.55
+        ],
+        [
+          "มิ.ย.26",
+          119.24
+        ],
+        [
+          "ก.ค.26",
+          127.21
+        ],
+        [
+          "ส.ค.26",
+          124.75
+        ],
+        [
+          "ก.ย.26",
+          119.92
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 90.74,
+      "hi": 131.55
+    }
+  },
+  "fundamentals": {
+    "dps": 2.63,
+    "bvps": 25.6,
+    "shares": 604100000,
+    "peAvg5y": 20.7,
+    "eps": 5.49,
+    "roe": 22,
+    "roa": 7.8,
+    "opMargin": 40.7,
+    "beta": 1,
+    "fy": {
+      "period": "FY2025",
+      "netIncome": 3370000000
+    },
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation",
+      "inputs": {
+        "multiple": 20.7,
+        "multipleSource": "median5y"
+      },
+      "note": "มัธยฐาน P/E ปีงบ FY2021–25 ที่วัดจาก StockAnalysis (22.4 / 21.2 / 19.1 / 20.7 / 17.7); P/E ปัจจุบัน ~21.7x สูงกว่ามัธยฐานเล็กน้อย",
+      "family": "market"
+    },
+    {
+      "method": "ddm",
+      "label": "DDM (Gordon Growth)",
+      "inputs": {
+        "g": 6,
+        "r": 8.5
+      },
+      "note": "ปันผล CAGR ~8% ใน 5 ปีที่ผ่านมา (ไวต่อส่วนต่าง r−g 2.5% มาก)",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "peAvg5y",
+      "pbv",
+      "netIncomeFy",
+      "eps",
+      "bvps",
+      "roe",
+      "custom:0",
+      "opMargin",
+      "yield",
+      "beta"
+    ],
+    "custom": [
+      {
+        "label": "รายได้ TTM",
+        "value": "C$17.76B",
+        "note": "YoY +3.6% (TTM, งบเป็น CAD)",
+        "tone": "neu"
+      }
+    ],
+    "notes": {
+      "mcap": "~604 ล้านหุ้น (NYSE)",
+      "pe": "Forward P/E ~18.5–19.6x (Yahoo / StockAnalysis)",
+      "peAvg5y": "มัธยฐาน FY2021–25 · ปัจจุบัน premium ~5%",
+      "pbv": "BVPS ~{{bvps}} USD (CAD 34.58)",
+      "netIncomeFy": "Net margin 27.2%",
+      "eps": "TTM (USD, StockAnalysis)",
+      "bvps": "USD (คำนวณจากงบ CAD)",
+      "roe": "คุณภาพสูงสำหรับ railroad",
+      "opMargin": "Operating ratio ~59% (ดีมาก)",
+      "yield": "{{dps}}/หุ้น/ปี CAGR ~8% ใน 5 ปี",
+      "beta": "ผันผวนเท่าตลาด"
+    },
+    "hint": "อิง TTM / FY2025"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 2,
+        "exitMultiple": 17,
+        "divCum": 8.4,
+        "desc": "Freight slowdown, P/E de-rate"
+      },
+      {
+        "growth": 7,
+        "exitMultiple": 20.7,
+        "divCum": 8.4,
+        "desc": "Freight ฟื้นตัว, PSR ดันมาร์จิน"
+      },
+      {
+        "growth": 12,
+        "exitMultiple": 23,
+        "divCum": 8.4,
+        "desc": "Nearshoring ดัน volume + pricing power"
+      }
+    ],
+    "exitDp": 1,
+    "note": "Base case ({{scn.base.ret}} / 3 ปี รวมปันผล) พอน่าสนใจในแง่ total return แต่ risk/reward ที่ราคา {{px}} ยังไม่เอื้อนัก เพราะ bear case อาจได้ {{scn.bear.ret}} หากเศรษฐกิจชะลอ — การรอ pullback สู่ใกล้ {{fv}} จะช่วยให้ risk/reward ดีขึ้น"
+  },
+  "analyst": {
+    "target": 139.33,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "CNI สร้างผลตอบแทน +24.0% ในรอบปีที่ผ่านมา จากฐาน ~$96–99 ช่วง ต.ค. 2568–ม.ค. 2569 ก่อนกระโดดขึ้นสู่ ~$112 ในเดือน ก.พ. 2569 มีปรับฐานที่ ~$103 เดือน มี.ค. 2569 แล้วฟื้นขึ้นต่อเนื่องจนแตะ ~$127 เดือน ก.ค. (กรอบ 52 สัปดาห์สูงสุด $131.55) ก่อนย่อลงมาปิดเดือน ก.ย. โดยโซนมูลค่าเหมาะสมอยู่ใกล้ {{fv}}",
+    "valuation": "FV = เฉลี่ยสองตระกูลอิสระ: P/E (ตัวคูณมัธยฐานย้อนหลังที่วัดจริง) และ DDM (สมมติฐาน r/g) ให้ค่าใกล้กันในกรอบ $111–$113 ตัด EV/EBITDA ออกจากขา FV: ตัวคูณที่เคยใช้ (12x) เป็นค่า \"peer\" ที่วัดซ้ำไม่ได้ และมัธยฐาน EV/EBITDA FY2021–25 (~13.7x) เท่ากับค่าปัจจุบัน (~13.7x) จึงเป็นสมอตาย — ใช้เป็นบริบทเท่านั้น ราคาปัจจุบัน {{px}} สูงกว่า FV {{fv}} เล็กน้อย (MOS {{mos}}) และอยู่เหนือกรอบบน {{fvHigh}} เล็กน้อย",
+    "gauge": "ราคาปัจจุบัน {{px}} สูงกว่า Fair Value {{fv}} เล็กน้อย (MOS {{mos}}) แต่ยังต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ ~{{analyst.target}} (StockAnalysis, Buy) เป้านักวิเคราะห์เป็นเพียงข้อมูลเทียบเคียง ไม่ได้ใช้เป็นขาของ FV — ยังไม่มี margin of safety ณ ราคานี้ จุดเข้าซื้อ MOS 20% อยู่ที่ {{mos20}} และ MOS 30% ที่ {{mos30}}",
+    "mos": "ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสมเล็กน้อย — ไม่มี margin of safety ณ ราคานี้ รอ pullback สู่ใกล้ {{fv}} หรือต่ำกว่าก่อนพิจารณาสะสม",
+    "verdictHeadline": "Railroad คุณภาพสูง แต่ราคาสูงกว่า FV เล็กน้อย — รอ Pullback ก่อน",
+    "verdictBody": "CNI เป็น Class I railroad duopoly แห่งแคนาดา ครอง 24,000+ กม. เชื่อม Pacific–Atlantic–Gulf Coast ธุรกิจมีคูเมืองแข็งแกร่งในฐานะโครงสร้างพื้นฐานที่สร้างใหม่ไม่ได้ operating ratio ~59% ROE ~22% และปันผลเติบโตต่อเนื่อง ~8%/ปี สะท้อนคุณภาพที่ยอดเยี่ยม อย่างไรก็ตาม ราคาปัจจุบัน {{px}} อยู่เหนือ Fair Value เฉลี่ย {{fv}} เล็กน้อย (MOS {{mos}}) แม้ยังต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ — แนะนำ Hold ถ้ามีอยู่แล้ว รอ pullback สู่ใกล้ {{fv}} ก่อนพิจารณาสะสมใหม่",
+    "strategy": "Hold ถ้ามีอยู่แล้ว (คุณภาพดี ปันผลเติบโต) · ผู้ที่ยังไม่มีรอ pullback ใกล้ {{fv}} (near FV) · จุดเข้าที่ดีที่สุด {{mos20}} (MOS 20%) เหมาะสำหรับ deep value investor ที่อดทนรอได้",
+    "disclaimerSources": "ราคา ณ {{priceDate}} · แหล่ง: StockAnalysis.com (FY2025 · Q1/2569) · Yahoo Finance (Sep 2026 · ราคา/กราฟ) · Macrotrends (ประวัติงบการเงิน)"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 2 วิธี"
+  },
+  "catalysts": [
+    "<b>Nearshoring/Reshoring:</b> การย้ายฐานผลิตกลับอเมริกาเหนือเพิ่ม freight volume — CNI เส้นทางหลักเชื่อม Pacific coast",
+    "<b>Grain & Potash Export:</b> แคนาดาส่งออกธัญพืชและโพแทชเป็นผู้นำโลก — demand มั่นคงระยะยาว",
+    "<b>Intermodal Growth:</b> ตู้คอนเทนเนอร์ทางรถไฟเชื่อม Vancouver/Prince Rupert สู่ interior US เติบโต",
+    "<b>PSR Efficiency:</b> Precision Scheduled Railroading รักษา operating ratio ~59% ดีที่สุดกลุ่ม",
+    "<b>ปันผลเติบโตต่อเนื่อง:</b> CAGR ~8%/ปี ใน 5 ปี — สะท้อน FCF generation ที่แข็งแกร่ง",
+    "<b>Energy Infrastructure:</b> ขนส่ง crude oil/LNG จาก Alberta เป็น essential infrastructure ระยะยาว"
+  ],
+  "risks": [
+    "<b>Freight Volume Slowdown:</b> เศรษฐกิจชะลอกระทบ coal/grain/intermodal volumes โดยตรง",
+    "<b>FX Risk:</b> รายได้/ต้นทุนบางส่วนใน CAD — ค่าเงิน CAD/USD อ่อนค่ากระทบกำไรรายงาน USD",
+    "<b>Valuation Premium:</b> P/E ~21.7x เหนือมัธยฐาน 5 ปี ~20.7x — downside หากเติบโตไม่เป็นไปตามคาด",
+    "<b>Labour Disputes:</b> ข้อพิพาทสหภาพ TCRC/Teamsters อาจหยุดชะงักชั่วคราว (เกิดขึ้นปี 2567)",
+    "<b>Fuel Cost:</b> Diesel cost ผันผวน — railroad ใช้ปริมาณมาก กระทบมาร์จิน",
+    "<b>Regulatory Risk:</b> CTA (แคนาดา) + STB (US) อาจบังคับ rate cap หรือ access requirement"
+  ],
+  "extras": [],
+  "_sig": "sha256:0abf9a32f638a24f48012daa0e656bdb992fbc61ac0145b14a5ebaadd2239bff"
+}
