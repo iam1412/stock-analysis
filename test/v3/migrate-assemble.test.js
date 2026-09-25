@@ -450,4 +450,12 @@ const asm = (sym, html) => A.assemble(PV.parseV2(sym, html), { seeds: SEEDS, hea
   t.eq(A.multipleSourceOf('EPS $0.80 (TTM GAAP) × P/E 23.34x (มัธยฐาน trailing P/E ของ MCK 23.34x / CAH 31.17x / COR 22.94x — StockAnalysis)', [], 0, 23.34), 'peer', 'I-6: MDLN "มัธยฐาน … ของ MCK / CAH / COR" → peer');
   t.eq(A.multipleSourceOf('EPS ที่ราคาทอง Base $5.78 × P/E เป้าหมาย ~36.5x — ตัวคูณคือมัธยฐานของ FNV เอง (ไม่ใช่ของกลุ่มเหมือง) วัดจากราคาเฉลี่ยของปี ÷ EPS ปรับลดของปีนั้น', [], 0, 36.5), 'median5y', 'I-6: FNV "มัธยฐานของ FNV เอง (ไม่ใช่ของกลุ่มเหมือง)" stays median5y');
 }
+
+// ── Task 6b fix round 3 (re-review I-7 + TLN) ──
+{
+  t.eq(A.multipleSourceOf('Adjusted EBITDA guidance FY2026 กลาง $2,125M (guidance $2,025–2,225M ปรับขึ้น 5 ส.ค. 2569 หลังปิดดีล Cornerstone) × EV/EBITDA มัธยฐานกลุ่ม IPP ปัจจุบัน (TTM ณ 21 ก.ย. 2569, stockanalysis.com): Vistra 10.12x / NRG 13.83x / Constellation 14.76x → มัธยฐาน 13.83x (NRG) = EV $29,389M − หนี้สุทธิ $9,343M', [], 0, 13.83), 'peer', 'fr3: TLN real mdesc (peer set named at an earlier median word in the same clause) → peer');
+  t.eq(A.multipleSourceOf('รายได้ TTM $3,219M × EV/Sales 11.9x = EV $38.2B − หนี้ $1,851M + เงินสด $693M = มูลค่าหุ้น $37.0B ÷ หุ้นคงเหลือ 81.24M — 11.9x = มัธยฐานของ EV/Sales รายปี FY2022–25 (7.7x / 9.7x / 14.0x / 19.7x = (ราคาเฉลี่ยของปี × หุ้นถัวเฉลี่ยปรับลด + หนี้ − เงินสด ณ สิ้นปี) ÷ รายได้', [], 0, 11.9), 'median5y', 'fr3: AXON "มัธยฐานของ EV/Sales" (multiple name, not tickers) → median5y');
+  t.eq(A.multipleSourceOf('รายได้ TTM $2,707M × EV/Sales เป้าหมาย 12.05x = EV $32,619M + เงินสดสุทธิ $854M (เงินสด $1,092M − หนี้ $238M) ÷ 144.14M หุ้นคงเหลือ — ตัวคูณ 12.05x คือมัธยฐานที่วัดจริงของ EV/Sales ปีงบ FY21–FY25 ของ NTRA เอง (13.10x · 5.21x · 6.50x · 12.05x · 13.38x', [], 0, 12.05), 'median5y', 'fr3: NTRA "มัธยฐาน…ของ EV/Sales … ของ NTRA เอง" → median5y');
+  t.eq(A.multipleSourceOf('× EV/EBITDA 20x = มัธยฐานของ EV/EBITDA รายปี FY2021–25', [], 0, 20), 'median5y', 'fr3: "ของ EV/EBITDA" is a multiple name → median5y');
+}
 t.done();
