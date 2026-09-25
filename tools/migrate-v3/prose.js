@@ -12,9 +12,10 @@ const P = require('../v3/prose.js');
 
 const V2_TO_V3 = Object.fromEntries(Object.entries(TK.V2_TWIN).map(([v3, v2]) => [v2, v3]));
 const ENT = { nbsp: ' ', lt: '<', gt: '>', quot: '"', apos: "'", amp: '&', bull: '•', middot: '·', mdash: '—', ndash: '–', hellip: '…', rarr: '→', larr: '←',
+  laquo: '«', raquo: '»', lsaquo: '‹', rsaquo: '›', sbquo: '‚', bdquo: '„', prime: '′', Prime: '″', thinsp: ' ', ensp: ' ', emsp: ' ', zwj: '', zwnj: '', shy: '', copy: '©', reg: '®', trade: '™', euro: '€', pound: '£', yen: '¥', cent: '¢', sect: '§', para: '¶', frac12: '½', frac14: '¼', frac34: '¾', sup2: '²', sup3: '³', micro: 'µ', check: '✓', infin: '∞', ne: '≠', harr: '↔',
   times: '×', minus: '−', divide: '÷', le: '≤', ge: '≥', asymp: '≈', deg: '°', plusmn: '±', rsquo: '’', lsquo: '‘', rdquo: '”', ldquo: '“', uarr: '↑', darr: '↓' };
 const decode = (s) => String(s).replace(/&#x([0-9a-f]+);/gi, (_, h) => String.fromCodePoint(parseInt(h, 16))).replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(+n))
-  .replace(/&([a-z]+);/gi, (m, k) => (Object.prototype.hasOwnProperty.call(ENT, k) ? ENT[k] : m));
+  .replace(/&([a-z][a-z0-9]*);/gi, (m, k) => (Object.prototype.hasOwnProperty.call(ENT, k) ? ENT[k] : Object.prototype.hasOwnProperty.call(ENT, k.toLowerCase()) ? ENT[k.toLowerCase()] : m));
 
 /** HTML ของ v2 → prose v3 · unknown = รายการชื่อ rd token ที่ไม่มีคู่ v3 (caller จด H) — ค้างไว้เป็น {{rd:X}} ให้ schema ฟ้องต่อ */
 function htmlToProse(html, unknown) {

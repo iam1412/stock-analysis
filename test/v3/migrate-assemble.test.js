@@ -41,7 +41,7 @@ for (const s of SYMS) {
   t(/ใกล้ค่าเฉลี่ย/.test(doc.metrics.notes.pe || ''), 'BBL: v2 .d text preserved in metrics.notes.pe');
   t.eq(doc.scenarios.driver, 'eps'); t.eq(doc.scenarios.exitMetric, 'pe'); t.eq(doc.scenarios.cases[0].exitMultiple, 7.2, 'BBL: printed exit multiple kept'); t.eq(doc.scenarios.exitDp, 1, 'BBL: exitDp from printed decimals');
   t.eq(doc.scenarios.divIncluded, true, 'BBL: divIncluded from scnBasis');
-  t.eq(doc.analyst, null, 'BBL: no analyst target');
+  t.eq(doc.analyst, { target: 201, n: null, rating: null, asOf: null }, 'BBL: analyst target from the gauge label (fix round 3 · B-3 ruling — replaces the brief\'s null)');
   t(/^แบงก์อนุรักษ์นิยม/.test(doc.prose.verdictHeadline) && /^สาย value/.test(doc.prose.strategy), 'BBL: verdict headline + strategy without the กลยุทธ์ label');
   t(/Normalized EPS/.test(doc.text.disclaimerAssump || ''), 'BBL: disclaimerAssump captured');
   t(!notes.H.length, 'BBL: no HUMAN reasons', notes.H.join(' ; '));
@@ -237,5 +237,38 @@ const L3 = require('../../tools/v3/legs.js'), bt = require('../../tools/brandthe
   t(Math.abs(back - 21.97) <= 0.05 && !a.scenarios.baseOverride && a.meta.base === 'fundamentals (rounding)' && !a.F.some((x) => /baseOverride/.test(x)), 'M-7: back-computed base within printed rounding of fundamentals.eps → no override', JSON.stringify(a.meta.base));
   const b = MS.scenarios(p, { eps: 21.5 });
   t(b.scenarios.baseOverride && b.meta.base === 'back-computed', 'M-7: beyond the rounding → back-compute + F kept');
+}
+// ── fix round 3 (Task 6 carry losses) ──
+const R3 = require('../../_template/v3/render.js');
+// B-1: entity names fully decoded before storing (no "&amp;mdash;" on the v3 page)
+{
+  const h = raw('BBL').replace('<span class="tag">Financials • Banking</span>', '<span class="tag">Financials &mdash; Banking &divide; Retail</span>')
+    .replace('Normalized EPS ~฿22 × P/E เฉลี่ย ~9.0x (กลางกรอบ 5 ปี)', 'Normalized EPS ~฿22 &times; P/E เฉลี่ย ~9.0x (กลางกรอบ 5 ปี) &mdash; ทบทวน &divide; 2 รอบ');
+  const r = A.assemble(PV.parseV2('BBL', h), { seeds: SEEDS, headUpdated: null, v2Hash: 'x', today: '2026-09-04', analysisPx: null });
+  t.eq(r.doc.meta.headerTags[0], 'Financials — Banking ÷ Retail', 'B-1: header tag entities decoded');
+  t(r.doc.legs[0].method === 'pe' && r.doc.legs[0].note === 'กลางกรอบ 5 ปี · ทบทวน ÷ 2 รอบ' && !/&[a-z]+;/.test(JSON.stringify(r.doc)), 'B-1: mdesc &times;/&divide;/&mdash; decoded (leg still computed · note decoded · no entity names left)', JSON.stringify(r.doc.legs[0]));
+  const view = C.compute(r.doc, { seeds: SEEDS }), page = B.expandReport(R3.toV2Source(r.doc, view));
+  t(!/&amp;(?:mdash|divide|times);/.test(page), 'B-1: rendered page has no double-escaped entity');
+}
+// B-2: v2 stock-meta dividend yield without a printed dps → dps derived, v3 yield renders the same
+{
+  const { doc, notes } = out.FTV, view = C.compute(doc, { seeds: SEEDS });
+  t(Math.abs(view.sm.dividendYield - 0.38) < 0.005, 'B-2: FTV sm.dividendYield ≈ 0.38', String(view.sm.dividendYield));
+  t(notes.F.some((x) => /fundamentals\.dps .* derived from stock-meta dividendYield 0\.38%/.test(x)) && doc.metrics.cards.includes('yield'), 'B-2: derived dps → F note · yield card stays a catalogue card');
+}
+// B-3: analyst target printed only on the gauge / vcell → doc.analyst (rating null unless the vcell states it for that target)
+{
+  const bbl = out.BBL.doc, view = C.compute(bbl, { seeds: SEEDS });
+  t(/\{\{rd:analystTgt\}\}<br><small>เป้าเฉลี่ย Analyst/.test(R3.toV2Source(bbl, view)), 'B-3: BBL gauge marker rendered');
+  t.eq(out.CASY.doc.analyst, { target: 954, n: 20, rating: 'Buy', asOf: null }, 'B-3: CASY target + n + rating from the matching vcell');
+}
+// B-4: reworded volatility sentence — the whole author middle lands in disclaimerAssump
+{
+  const h = raw('BBL').replace(/ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ([\s\S]*?)ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ/,
+    'แบงก์นี้อ่อนไหวต่อ <b>ดอกเบี้ยขาลง</b> และ NPL SME มาก หุ้น BBL ผันผวนตามวัฏจักร ผู้ลงทุนควรศึกษาเพิ่มเติมก่อนตัดสินใจ');
+  t(/แบงก์นี้อ่อนไหว/.test(h), 'B-4: mutation applied');
+  const r = A.assemble(PV.parseV2('BBL', h), { seeds: SEEDS, headUpdated: null, v2Hash: 'x', today: '2026-09-04', analysisPx: null });
+  t.eq(r.doc.text.disclaimerAssump, ' แบงก์นี้อ่อนไหวต่อ <b>ดอกเบี้ยขาลง</b> และ NPL SME มาก หุ้น BBL ผันผวนตามวัฏจักร ผู้ลงทุนควรศึกษาเพิ่มเติมก่อนตัดสินใจ', 'B-4: reworded middle kept whole');
+  t(/^อ้างอิงงบจริง FY2025/.test(r.doc.prose.disclaimerSources) && r.notes.F.some((x) => /disclaimer reworded/.test(x)), 'B-4: sources still split after "ก่อนตัดสินใจ •" + F');
 }
 t.done();

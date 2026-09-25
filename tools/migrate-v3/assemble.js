@@ -26,7 +26,7 @@ const esc = (s) => String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 // ── meta ──
 function pxMetaOf(pxMeta, cur, F) {
-  const lines = String(pxMeta || '').split(/<br\s*\/?>/i).map((l) => PV.text(l)).filter(Boolean);
+  const lines = String(pxMeta || '').split(/<br\s*\/?>/i).map((l) => txt(l)).filter(Boolean);
   const out = { sources: [], priceNote: null, range52w: null };
   const notes = [];
   for (const line of lines) {
@@ -66,7 +66,7 @@ function pxMetaOf(pxMeta, cur, F) {
 function metaOf(parsed, ctx, H, F) {
   const sym = parsed.sym;
   const m = {};
-  const company = PV.text(parsed.h1 || '').replace(new RegExp(`\\s*\\(${esc(sym)}\\)\\s*$`), '').trim();
+  const company = txt(parsed.h1).replace(new RegExp(`\\s*\\(${esc(sym)}\\)\\s*$`), '').trim();
   m.company = company;
   const tag0 = parsed.tags[0] || '';
   const ex = new RegExp(`^([A-Za-z ]+):\\s*${esc(sym)}$`).exec(tag0);
@@ -258,24 +258,45 @@ function generatedValHint(doc) {
 // ── section prose ──
 const parasOf = (body) => [...String(body || '').matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/g)].map((m) => ({ html: m[1], at: m.index }));
 const joinProse = (xs) => xs.map((x) => MP.htmlToProse(x)).filter(Boolean).join('<br>');
-function analystOf(parsed) {
+/** เป้านักวิเคราะห์ (fix round 3 · B-3): values.analystTgt → ป้ายเกจหมวด 4 ("฿201 เป้า… Analyst") → vcell "เป้า…" หมวด 8 → การ์ด analystTarget
+ *  ตัวเลขที่ผู้เขียนพิมพ์เท่านั้น · rating จาก vcell เมื่อเป้าใน vcell ตรงกับเป้าที่ใช้ (±0.5%) ไม่งั้น null (schema: rating nullable) */
+const MONEY1 = /(?:US\$|\$|฿)\s*~?\s*([0-9][0-9,]*(?:\.[0-9]+)?)(?![0-9.,]*\s*(?:[MBK](?![A-Za-z])|bn|ล้าน|พันล้าน))/;
+function analystOf(parsed, F) {
   const v = parsed.rd.values;
-  if (!isNum(v.analystTgt)) return null;
   const cell = parsed.s8 && parsed.s8.vcells.find(([k]) => /เป้า/.test(k));
-  const t = cell ? PV.text(cell[1]) : '';
-  const n = /(\d+)\s*ราย/.exec(t);
-  const r = /(strong\s+)?(buy|sell|hold|outperform|overweight|neutral|underweight|ซื้อ|ขาย|ถือ)/i.exec(t);
-  return { target: v.analystTgt, n: n ? +n[1] : null, rating: r ? r[0] : null, asOf: null };
+  const cellT = cell ? txt(cell[1]) : '';
+  const numOf = (s) => { const m = MONEY1.exec(s || ''); return m ? parseFloat(m[1].replace(/,/g, '')) : null; };
+  let target = isNum(v.analystTgt) ? v.analystTgt : null, src = 'values.analystTgt', label = '';
+  if (target == null) {
+    const s4 = parsed.byN && parsed.byN[4];
+    for (const m of String(s4 ? s4.body : '').matchAll(/<span[^>]*>([^<]*?)<br>\s*<small>([^<]*)<\/small>/g)) {
+      const lab = txt(m[2]);
+      if (!/Analyst|นักวิเคราะห์|consensus/i.test(lab) || /\{\{rd:/.test(m[1])) continue;
+      const x = numOf(txt(m[1])); if (x > 0) { target = x; src = `gauge "${lab}"`; label = lab; break; }
+    }
+  }
+  if (target == null && cell && !/\{\{rd:/.test(cell[1])) { const x = numOf(cellT); if (x > 0) { target = x; src = 's8 vcell'; } }
+  if (target == null) {
+    const c = (parsed.s1cards || []).find((x) => MC.keyOf(x.k, x.v) === 'analystTarget' && !/\{\{rd:/.test(x.vHtml));
+    const x = c ? numOf(c.v) : null; if (x > 0) { target = x; src = `card "${c.k}"`; label = c.k + ' ' + c.d; }
+  }
+  if (target == null) return null;
+  const cellX = numOf(cellT);
+  const sameCell = src === 'values.analystTgt' || /\{\{rd:analystTgt\}\}/.test(cell ? cell[1] : '') || (cellX != null && Math.abs(cellX - target) <= 0.005 * target);
+  const nm = /(\d+)\s*(?:ราย|analysts?|สำนัก|brokers?)|n\s*=\s*(\d+)/i.exec(sameCell ? cellT : '') || /(\d+)\s*(?:ราย|analysts?|สำนัก|brokers?)|n\s*=\s*(\d+)/i.exec(label);
+  const r = sameCell ? /(strong\s+)?(buy|sell|hold|outperform|overweight|neutral|underweight|ซื้อ|ขาย|ถือ)/i.exec(cellT) : null;
+  if (src !== 'values.analystTgt' && F) F.push(`analyst.target ${target} from ${src} (no values.analystTgt)`);
+  return { target, n: nm ? +(nm[1] || nm[2]) : null, rating: r ? r[0] : null, asOf: null };
 }
 function extrasOf(parsed, H) {
   const out = [];
   for (const s of parsed.extraSecs) {
-    const title = PV.text((/<h[23][^>]*>([\s\S]*?)<\/h[23]>/.exec(s.body) || [])[1] || '').replace(/[{}<>]/g, '');
+    const title = txt((/<h[23][^>]*>([\s\S]*?)<\/h[23]>/.exec(s.body) || [])[1] || '').replace(/[{}<>]/g, '');
     const tables = s.body.match(/<table\b[\s\S]*?<\/table>/g) || [];
     const rest = PV.text(s.body.replace(/<div class="s-head">[\s\S]*?<\/div>\s*<\/div>|<div class="s-head">[\s\S]*?<\/h2>\s*<\/div>/, '').replace(/<h[23][^>]*>[\s\S]*?<\/h[23]>/g, '').replace(/<table\b[\s\S]*?<\/table>/g, ''));
     if (tables.length !== 1 || rest) { H.push(`extra section not a table ("${title}")`); continue; }
     const tb = tables[0];
-    const headers = [...tb.matchAll(/<th\b[^>]*>([\s\S]*?)<\/th>/g)].map((m) => PV.text(m[1]).replace(/[{}<>]/g, ''));
+    const headers = [...tb.matchAll(/<th\b[^>]*>([\s\S]*?)<\/th>/g)].map((m) => txt(m[1]).replace(/[{}<>]/g, ''));
     const rows = [...tb.matchAll(/<tr\b[^>]*>([\s\S]*?)<\/tr>/g)].map((m) => [...m[1].matchAll(/<td\b[^>]*>([\s\S]*?)<\/td>/g)].map((c) => {
       const t = PV.text(c[1]);
       return /^[+\-−]?[0-9][0-9,]*(?:\.[0-9]+)?$/.test(t) ? parseFloat(t.replace(/,/g, '').replace('−', '-')) : MP.htmlToProse(c[1]);
@@ -311,9 +332,24 @@ function proseZones(doc, src) {
 }
 
 // ── หลัก ──
-function assemble(parsed, ctx) {
+/** ช่องข้อความที่ parser ถอดแท็กแล้ว (PV.text) ยังค้าง entity ชื่อ (&mdash; &divide; &bull;…) — ถอดให้ครบก่อนเก็บ ไม่งั้น render escape ซ้ำเป็น "&amp;mdash;" (fix round 3 · B-1)
+ *  คืนสำเนา (ไม่แก้ parsed ของผู้เรียก) · ช่อง *Html ผ่าน MP.htmlToProse ที่ถอดครบอยู่แล้ว */
+function decodeParsed(parsed) {
+  const d = (x) => (typeof x === 'string' ? MP.decode(x) : x);
+  return {
+    ...parsed,
+    tags: (parsed.tags || []).map(d),
+    s1cards: (parsed.s1cards || []).map((c) => ({ ...c, k: d(c.k), v: d(c.v), d: d(c.d) })),
+    legs: (parsed.legs || []).map((l) => ({ ...l, mname: d(l.mname), mdesc: d(l.mdesc), mval: d(l.mval) })),
+    s6cols: (parsed.s6cols || []).map((c) => ({ ...c, top: c.top && c.top.map(d), lis: c.lis.map((x) => [d(x[0]), d(x[1]), x[2]]) })),
+  };
+}
+const txt = (h) => MP.decode(PV.text(h || ''));
+
+function assemble(parsed0, ctx) {
   const H = [], D = [], F = [];
   ctx = ctx || {};
+  const parsed = parsed0 && parsed0.rd ? decodeParsed(parsed0) : parsed0;
   if (!parsed.rd || !parsed.rd.values) return { doc: null, notes: { H: ['report-data unreadable'], D, F }, meta: {} };
   const v = parsed.rd.values, sm = parsed.sm || {};
   const currency = sm.currency, region = currency === 'THB' ? 'TH' : 'US';
@@ -336,6 +372,12 @@ function assemble(parsed, ctx) {
   const fo = fundOf(parsed, cf);
   let fund = fo.f;
   const srcs = fo.src;
+  // B-2 (fix round 3): ใบ v2 แสดง dividend yield (stock-meta) แต่ไม่มี dps ที่พิมพ์ — dps = yield × ราคาใน stock-meta (ค่าที่ v2 render ออกมาเอง) ⇒ การ์ด/sm.dividendYield ของ v3 เท่าเดิม
+  if (fund.dps == null && isNum(sm.dividendYield) && sm.dividendYield >= 0) {
+    const pxY = isNum(sm.price) && sm.price > 0 ? sm.price : v.px;
+    fund = { ...fund, dps: +(sm.dividendYield * pxY / 100).toPrecision(6) }; srcs.dps = 'stock-meta dividendYield × price';
+    F.push(`fundamentals.dps ${fund.dps} derived from stock-meta dividendYield ${sm.dividendYield}% × ${pxY} (no printed dps)`);
+  }
   let pass = legsOf(parsed, fund, currency);
   if (fund.eps == null && pass.epsBase) { fund = { ...fund, eps: pass.epsBase.v }; srcs.eps = 'first pe leg base'; srcs.epsLabel = pass.epsBase.label; }
   if (fund.eps != null) fund.epsBasis = epsBasisOf(srcs.eps === 'first pe leg base' ? srcs.epsLabel : (cf.src.epsLabel || (parsed.legs.find((l) => /P\s*\/\s*E/i.test(l.mname)) || {}).mdesc), region);
@@ -353,7 +395,7 @@ function assemble(parsed, ctx) {
   doc.legs.forEach((l, i) => { if (l.method === 'declared' && ['sotp', 'nav'].includes(l.inputs.basis)) H.push(`leg ${i + 1} declared ${l.inputs.basis} has no extras table (E52)`); });
 
   // metrics (รอบแรกด้วย view เทียม — render check/notes จริงหลัง compute)
-  doc.analyst = analystOf(parsed);
+  doc.analyst = analystOf(parsed, F);
   const cardOpts = { currency, market: doc.market, analyst: doc.analyst, legs: doc.legs, force: new Map() };
   const setMetrics = (mc) => {
     let custom = mc.custom, cards = mc.cards;
@@ -382,13 +424,32 @@ function assemble(parsed, ctx) {
   const zone = parsed.s8 && parsed.s8.zone;
   const strategy = zone ? pr(zone).replace(/^\s*(?:[\p{Extended_Pictographic}️‍]\s*)*(?:<b>\s*กลยุทธ์\s*:?\s*<\/b>\s*:?|กลยุทธ์\s*:)\s*/u, '') : '';
   const discP = pr(parsed.disc);
-  const volAt = discP.indexOf('ราคาหุ้นมีความผันผวน');
-  // แหล่งที่มาต่อท้ายคำเตือน: หลังตัวคั่น (• หรือ ·) ตัวแรกที่ตามประโยค "…ก่อนตัดสินใจ" (template พิมพ์ส่วนหน้าเอง) — ไม่มีประโยคนั้น = ตัวคั่นตัวสุดท้าย
-  const decideAt = volAt >= 0 ? discP.indexOf('ก่อนตัดสินใจ', volAt) : -1;
-  const sepRe = /[•·]/g; sepRe.lastIndex = decideAt >= 0 ? decideAt : volAt >= 0 ? volAt : 0;
-  let sep = sepRe.exec(discP);
-  if (!sep && volAt < 0) { const all = [...discP.matchAll(/[•·]/g)]; sep = all[all.length - 1] || null; }
-  const disclaimerSources = sep ? discP.slice(sep.index + 1).trim() : '';
+  // คำเตือน (fix round 3 · B-4): template = "<b>คำเตือน:</b> … <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b> ตัวเลข valuation … โดยเฉพาะ{assump} ราคาหุ้นมีความผันผวนสูง … ก่อนตัดสินใจ • {sources}"
+  //  แยกตามโครง: ส่วนกลาง = หลังประโยคนำ (ไม่ใช่คำแนะนำ…) ถึง "ก่อนตัดสินใจ" · ตัดหัว/ท้ายเฉพาะเมื่อตรง template เป๊ะ — ผู้เขียนเขียนใหม่ = เก็บทั้งประโยคใน disclaimerAssump (คำไม่หาย)
+  const LEAD = 'ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์', DHEAD = 'ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ', DTAIL = 'ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ';
+  const leadAt = discP.indexOf(LEAD);
+  let midStart = leadAt >= 0 ? leadAt + LEAD.length : 0;
+  { const m = /^\s*<\/b>\s*/.exec(discP.slice(midStart)); if (m) midStart += m[0].length; }
+  const decideAt = discP.indexOf('ก่อนตัดสินใจ', midStart);
+  const midEnd = decideAt >= 0 ? decideAt + 'ก่อนตัดสินใจ'.length : -1;
+  let disclaimerSources, assumpBody;
+  if (midEnd >= 0) {
+    // แหล่งที่มา = ทุกอย่างหลัง "ก่อนตัดสินใจ" (ตัดตัวคั่นนำหน้า) · ไม่มีเลย = ท่อนสุดท้ายหลังตัวคั่นในส่วนกลาง (ย้ายตำแหน่ง ไม่ทิ้งคำ)
+    disclaimerSources = discP.slice(midEnd).replace(/^[\s•·]+/, '').trim();
+    assumpBody = discP.slice(midStart, midEnd).trim();
+    if (!disclaimerSources) {
+      const all = [...assumpBody.matchAll(/[•·]/g)], last = all[all.length - 1];
+      if (last) { disclaimerSources = assumpBody.slice(last.index + 1).trim(); assumpBody = assumpBody.slice(0, last.index).trim(); F.push('disclaimer has no sources after "ก่อนตัดสินใจ" — its last bullet moved to prose.disclaimerSources'); }
+    }
+  } else {
+    const all = [...discP.matchAll(/[•·]/g)], sep = all.find((m) => m.index >= midStart) ? all[all.length - 1] : null;
+    disclaimerSources = sep ? discP.slice(sep.index + 1).trim() : '';
+    assumpBody = discP.slice(midStart, sep ? sep.index : discP.length).trim();
+  }
+  let reworded = false;
+  if (assumpBody.startsWith(DHEAD)) assumpBody = assumpBody.slice(DHEAD.length).trim(); else if (assumpBody) reworded = true;
+  if (assumpBody.endsWith(DTAIL)) assumpBody = assumpBody.slice(0, -DTAIL.length).trim(); else if (assumpBody) reworded = true;
+  if (reworded) F.push('disclaimer reworded by the author — the whole sentence kept in text.disclaimerAssump (template wording around it is added, not lost)');
   const txtOf = (b) => { const m = /<div class="txt">([\s\S]*?)<\/div>/.exec(b || ''); return m ? m[1] : ''; };
   const proseSrc = {
     chart: s2 ? parasOf(s2.body).map((p) => p.html).join('<br>') : '',
@@ -414,8 +475,7 @@ function assemble(parsed, ctx) {
   }
   if (before.length || longHint) text.valIntro = [longHint, joinProse(before)].filter(Boolean).join('<br>');
   if (parsed.s1paras.length) text.metricsNote = joinProse(parsed.s1paras);
-  const assump = volAt >= 0 && discP.indexOf('โดยเฉพาะ') >= 0 && discP.indexOf('โดยเฉพาะ') < volAt ? discP.slice(discP.indexOf('โดยเฉพาะ') + 'โดยเฉพาะ'.length, volAt).trim() : '';
-  if (assump && assump !== TEMPLATE_ASSUMP) text.disclaimerAssump = ' ' + assump;
+  if (assumpBody && assumpBody !== TEMPLATE_ASSUMP) text.disclaimerAssump = ' ' + assumpBody;
   for (const k of Object.keys(text)) if (!text[k]) delete text[k];
   doc.text = Object.keys(text).length ? text : undefined;
   doc.catalysts = parsed.catalysts.map((x) => pr(x)).filter(Boolean);
@@ -460,7 +520,7 @@ function assemble(parsed, ctx) {
     cardD: Object.fromEntries(mc.meta.filter((m) => m.key).map((m) => [m.key, parsed.s1cards[m.i].dHtml])),
     // hit ของ E44 ต้องมาจากช่วงต้นทางของช่องนั้นเอง (M-2) — disclaimerAssump = ช่วง "โดยเฉพาะ … ราคาหุ้นมีความผันผวน" ของ disc ดิบ
     text: { valHint: parsed.s3hint, valIntro: [longHint ? parsed.s3hint : '', before.join(' ')].join(' '), metricsNote: parsed.s1paras.join(' '),
-      disclaimerAssump: (() => { const d = String(parsed.disc || ''), a = d.indexOf('โดยเฉพาะ'), b = d.indexOf('ราคาหุ้นมีความผันผวน'); return a >= 0 && b > a ? d.slice(a, b) : ''; })() },
+      disclaimerAssump: (() => { const d = String(parsed.disc || ''), a = d.indexOf(LEAD), b = d.indexOf('ก่อนตัดสินใจ', Math.max(0, a)); return a >= 0 && b > a ? d.slice(a + LEAD.length, b) : ''; })() },
     prose: proseSrc, legs: pass.meta.map((m) => m.mdescHtml),
     scnDesc: parsed.s6cols.map((c) => { const li = c.lis.find((x) => /สถานการณ์/.test(x[0])); return li ? li[2] : ''; }),
     scnNote: parsed.s6paras.join(' '), cat: parsed.catalysts, risk: parsed.risks,
