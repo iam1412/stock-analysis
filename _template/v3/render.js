@@ -184,7 +184,7 @@ ${jsonScript(RV.styledRD(view.rd))}
     <div class="gdots">${view.gdots.map(dot).join('')}</div>
     <div>
       ${tags}
-    </div>
+    </div>${m.sectorLine ? `\n    <div style="font-size:12.5px;opacity:.85;margin-top:6px">${pr(m.sectorLine)}</div>` : ''}
     <h1>${esc(m.company)} (${esc(doc.symbol)})</h1>
     <div class="sub">${pr(m.sub)}</div>
     <div class="price-row">
@@ -216,7 +216,7 @@ ${jsonScript(RV.styledRD(view.rd))}
       <div class="legend">
         <span><i style="background:var(--blue)"></i>ราคา ${esc(doc.symbol)}</span>
         <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
-        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>${T.legendNote ? `\n        <span>${pr(T.legendNote)}</span>` : ''}
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
         ${pr(doc.prose.chart)}
@@ -316,7 +316,7 @@ ${jsonScript(RV.styledRD(view.rd))}
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v {{rd:mosClass}}">MOS ~ {{rd:mos}}</div></div>
-        ${analystCell}
+        ${analystCell}${((doc.verdict && doc.verdict.extraCells) || []).map((c) => `\n        <div class="vcell"><div class="k">${esc(c.k)}</div><div class="v">${pr(c.v)}</div></div>`).join('')}
       </div>
       <div class="zone">
         <b>กลยุทธ์:</b> ${pr(doc.prose.strategy)}

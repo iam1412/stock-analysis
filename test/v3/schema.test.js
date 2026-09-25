@@ -393,4 +393,20 @@ for (const method of ['pe', 'ps', 'evsales', 'evebitda', 'pfcf', 'pffo', 'pbv'])
   d.meta.migratedFrom = { updated: '2026-09-01T00:00:00+07:00', v2Hash: 'abcdef012345' };
   t(paths(S.validate(d)).includes('legs[0].label'), 'label ≤ 80 on migrated docs');
 }
+// Plan 4c-prep Task 3 (spec §3.7 ข · D3) — carry fields (optional)
+{
+  const d = base(); d.meta.sectorLine = 'NYSE · Healthcare · Medical Devices'; d.text = { legendNote: 'เส้นประ = FV รอบก่อน' };
+  d.verdict = { extraCells: [{ k: 'จุดทยอยสะสม', v: 'ต่ำกว่า {{fv}}' }] };
+  t.eq(S.validate(d), [], 'sectorLine · text.legendNote · verdict.extraCells accepted');
+  d.meta.sectorLine = 'x'.repeat(101); t(paths(S.validate(d)).includes('meta.sectorLine'), 'sectorLine ≤ 100');
+  d.meta.sectorLine = 'NYSE <b>x</b>'; t(paths(S.validate(d)).includes('meta.sectorLine'), 'sectorLine: no tags');
+}
+{
+  const d = base(); d.text = { legendNote: 'y'.repeat(81) }; t(paths(S.validate(d)).includes('text.legendNote'), 'legendNote ≤ 80');
+  const e = base(); e.verdict = { extraCells: [1, 2, 3].map((i) => ({ k: `k${i}`, v: `v${i}` })) }; t(paths(S.validate(e)).includes('verdict.extraCells'), 'extraCells ≤ 2');
+  const g = base(); g.verdict = { extraCells: [{ k: 'k', v: 'v', x: 1 }] }; t(paths(S.validate(g)).includes('verdict.extraCells[0].x'), 'extraCells[i] closed {k, v}');
+  const h = base(); h.verdict = { extraCells: [{ k: '{{px}}', v: 'v' }] }; t(paths(S.validate(h)).includes('verdict.extraCells[0].k'), 'extraCells[i].k plain (no token)');
+  const w = base(); w.verdict = { other: 1 }; t(paths(S.validate(w)).includes('verdict.other'), 'verdict object closed');
+  const z = base(); z.verdict = { extraCells: [] }; t(paths(S.validate(z)).includes('verdict.extraCells'), 'extraCells present ⇒ 1–2 cells');
+}
 t.done();

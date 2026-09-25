@@ -12,7 +12,7 @@ const S = require('./schema.js');
 const LK = require('../lockfile.js');
 
 const TOP_ORDER = ['v', 'symbol', 'currency', 'region', 'dateEra', 'meta', 'market', 'fundamentals', 'legs', 'fvWeights',
-  'metrics', 'scenarios', 'analyst', 'prose', 'text', 'catalysts', 'risks', 'extras', '_sig'];
+  'metrics', 'scenarios', 'analyst', 'verdict', 'prose', 'text', 'catalysts', 'risks', 'extras', '_sig'];
 
 function canonical(x) {
   if (Array.isArray(x)) return '[' + x.map((v) => (v === undefined ? 'null' : canonical(v))).join(',') + ']';

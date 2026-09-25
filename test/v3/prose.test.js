@@ -76,4 +76,11 @@ t.eq(P.renderProse('a {{lit:x < y}} b', view, { mode: 'text' }), 'a x &lt; y b',
   const v2 = C.compute(d, { seeds: { ZTS: '#e8731a' } }), n = d.legs.length;
   t.eq(P.renderProse(`{{leg${n}.multiple}}`, v2, { mode: 'v2src' }), (120 / 6.13).toFixed(1) + 'x', "leg multiple token of a 'current' context leg = px ÷ base");
   t.eq(P.renderProse('{{leg1.multiple}}', v2, { mode: 'v2src' }), d.legs[0].inputs.multiple.toFixed(1) + 'x', 'fv leg multiple token still reads inputs.multiple'); }
+// Plan 4c-prep Task 3 — new prose fields are scanned by rule B
+{
+  const d = JSON.parse(JSON.stringify(require('../fixtures/v3/ZTS.json')));
+  d.meta.sectorLine = 'NYSE · Animal Health'; d.text = { legendNote: 'จุดแดง = งบออก' }; d.verdict = { extraCells: [{ k: 'จุดซื้อ', v: 'ใต้ FV' }] };
+  const ps = P.proseFields(d).map((x) => x.path);
+  t(['meta.sectorLine', 'text.legendNote', 'verdict.extraCells[0].k', 'verdict.extraCells[0].v'].every((p) => ps.includes(p)), 'proseFields lists the carry fields', JSON.stringify(ps.filter((p) => /sector|legend|verdict/.test(p))));
+}
 t.done();

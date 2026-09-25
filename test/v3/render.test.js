@@ -280,4 +280,17 @@ t.eq(JSON.parse(R.jsonScript('{"a":"</script>"}')).a, '</script>', 'jsonScript o
   const r = load('ZTS'); r.fundamentals.ffoBasis = 'coreFfo'; r.fundamentals.ffoPerShare = 4; r.legs[0] = { method: 'pffo', label: 'P/Core FFO', inputs: { multiple: 20, multipleSource: 'peer' } };
   t(R.toV2Source(r, C.compute(r, { seeds })).includes('P/Core FFO 20x (ค่ากลางกลุ่มเทียบ)'), 'coreFfo → "P/Core FFO" in the pffo mdesc');
 }
+// Plan 4c-prep Task 3 (D3) — carry fields render where v2 printed them · absent ⇒ byte-identical
+{
+  const z = load('ZTS'); const before = R.toV2Source(z, C.compute(z, { seeds }));
+  const d = load('ZTS'); d.meta.sectorLine = 'NYSE · Animal Health'; d.text = { legendNote: 'จุดแดง = งบออก' };
+  d.verdict = { extraCells: [{ k: 'จุดทยอยสะสม', v: 'ต่ำกว่า {{fv}}' }, { k: 'คะแนนคุณภาพ', v: 'สูง' }] };
+  const src = R.toV2Source(d, C.compute(d, { seeds }));
+  t(/<\/span>\n    <\/div>\n    <div style="font-size:12\.5px;opacity:\.85;margin-top:6px">NYSE · Animal Health<\/div>\n    <h1>/.test(src), 'sectorLine: small line between the tags and h1');
+  t(/จุดสำคัญ<\/span>\n        <span>จุดแดง = งบออก<\/span>\n      <\/div>/.test(src), 'legendNote: 4th legend span');
+  t(/เป้านักวิเคราะห์ 12 ด\.[\s\S]*?<\/div><\/div>\n        <div class="vcell"><div class="k">จุดทยอยสะสม<\/div><div class="v">ต่ำกว่า \{\{rd:fv\}\}<\/div><\/div>\n        <div class="vcell"><div class="k">คะแนนคุณภาพ<\/div><div class="v">สูง<\/div><\/div>\n      <\/div>/.test(src), 'extraCells: vcells after the analyst cell, tokens rendered');
+  const html = expandReport(src);
+  t.eq(CR.checkHtml(html, 'ZTS.html', { source: src }).errors.map((e) => `${e.id} ${e.msg}`), [], 'carry fields: full v2 gate — zero errors');
+  t.eq(R.toV2Source(z, C.compute(z, { seeds })), before, 'fields absent → byte-identical');
+}
 t.done();

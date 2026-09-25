@@ -692,7 +692,7 @@ function assemble(parsed0, ctx) {
   doc.extras = extrasOf(parsed, H);
 
   // ── compute (view) → render check การ์ด · notes จริง · custom ผูกราคา · ราคาเป้าฉาก · tokenise ──
-  const order = ['v', 'symbol', 'currency', 'region', 'dateEra', 'meta', 'market', 'fundamentals', 'legs', 'fvWeights', 'metrics', 'scenarios', 'analyst', 'prose', 'text', 'catalysts', 'risks', 'extras'];
+  const order = ['v', 'symbol', 'currency', 'region', 'dateEra', 'meta', 'market', 'fundamentals', 'legs', 'fvWeights', 'metrics', 'scenarios', 'analyst', 'verdict', 'prose', 'text', 'catalysts', 'risks', 'extras'];
   const tidy = () => { const o = {}; for (const k of order) if (doc[k] !== undefined) o[k] = doc[k]; return pruneUndefined(o); };
   let out = tidy();
   let view = null;

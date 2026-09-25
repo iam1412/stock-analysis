@@ -74,7 +74,7 @@ const OVERRIDE_KEYS = ['eps', 'bvps', 'roe', 'dps', 'revenue', 'ebitda', 'fcf', 
 // ป้าย FFO ชุดเดียวของ render / cards.js / check-v3.js (Plan 4c-prep)
 const FFO_LABEL = { ffo: 'FFO', affo: 'AFFO', coreFfo: 'Core FFO' };
 const THEME_KEYS = ['accent', 'accentDark', 'darkGrad', 'glow', 'subColor', 'headerMuted', 'verdictText', 'vcellLabel'];
-const TEXT_KEYS = ['valHint', 'valIntro', 'metricsNote', 'disclaimerAssump', 'chartHint'];   // §3.6 A — แทนข้อความตายตัวของ template · chartHint = ต่อท้ายป้าย §2 (Plan 4b Task 6b)
+const TEXT_KEYS = ['valHint', 'valIntro', 'metricsNote', 'disclaimerAssump', 'chartHint', 'legendNote'];   // §3.6 A — แทนข้อความตายตัวของ template · chartHint = ต่อท้ายป้าย §2 (Plan 4b Task 6b)
 const ISO = /^\d{4}-\d{2}-\d{2}$/;
 const AI = /^Claude\s+[A-Za-z]+\s+\d+(?:\.\d+)?$/;   // รูปเดียวกับ E28 / RM.parseAiModel
 
@@ -143,7 +143,7 @@ function validate(doc) {
 
   if (!isObj(doc)) return [{ path: '', msg: 'เอกสารต้องเป็น JSON object' }];
   closed(doc, '', ['v', 'symbol', 'currency', 'region', 'dateEra', 'meta', 'market', 'fundamentals', 'legs', 'fvWeights',
-    'metrics', 'scenarios', 'analyst', 'prose', 'text', 'catalysts', 'risks', 'extras', '_sig']);
+    'metrics', 'scenarios', 'analyst', 'verdict', 'prose', 'text', 'catalysts', 'risks', 'extras', '_sig']);
   if (doc.v !== 3) E('v', 'ต้องเป็น 3');
   if (!/^[A-Z0-9][A-Z0-9.\-]*$/.test(doc.symbol || '')) E('symbol', 'ต้องเป็นตัวพิมพ์ใหญ่/ตัวเลข/จุด/ขีด');
   en(doc.currency, 'currency', ENUM.currency);
@@ -154,13 +154,15 @@ function validate(doc) {
   const m = doc.meta;
   if (!isObj(m)) E('meta', 'ต้องมี (object)');
   else {
-    closed(m, 'meta', ['company', 'exchange', 'sub', 'headerTags', 'analysisDate', 'aiModel', 'sources', 'priceNote', 'themeLegacy', 'litReasons', 'migratedFrom']);
+    closed(m, 'meta', ['company', 'exchange', 'sub', 'headerTags', 'analysisDate', 'aiModel', 'sources', 'priceNote', 'sectorLine', 'themeLegacy', 'litReasons', 'migratedFrom']);
     str(m.company, 'meta.company'); str(m.exchange, 'meta.exchange'); str(m.sub, 'meta.sub', { minLen: 10 });
     if (m.headerTags != null) strList(m.headerTags, 'meta.headerTags', 0, 3);   // ≤ 3 (Plan 4b Task 1 — ADR/dual listing)
     if (!ISO.test(m.analysisDate || '')) E('meta.analysisDate', 'ต้องเป็น ISO YYYY-MM-DD (ค.ศ.)');
     if (!AI.test(m.aiModel || '')) E('meta.aiModel', 'ต้องเป็นรูป "Claude <ตระกูล> <เวอร์ชัน>"');
     strList(m.sources, 'meta.sources', 3, 8);
     str(m.priceNote, 'meta.priceNote', { req: false });
+    // Plan 4c-prep (spec §3.7 ข · D3): คำที่ผู้เขียนพิมพ์ในจุด gdots ของ header (v2 แสดงจริง) — บรรทัดเล็กใต้ tags
+    if (m.sectorLine != null) { str(m.sectorLine, 'meta.sectorLine'); noTag(m.sectorLine, 'meta.sectorLine'); if (typeof m.sectorLine === 'string' && m.sectorLine.length > 100) E('meta.sectorLine', 'ยาวเกิน 100 ตัวอักษร'); }
     if (m.themeLegacy != null) {
       if (!isObj(m.themeLegacy)) E('meta.themeLegacy', 'ต้องเป็น object หรือ null');
       else {
@@ -490,6 +492,23 @@ function validate(doc) {
     }
   }
 
+  // ── verdict (Plan 4c-prep · spec §3.7 ข) — vcell ที่ 3+ ของหมวด 8 ของผู้เขียน (ไม่บังคับ) ──
+  if (doc.verdict != null) {
+    const vd = doc.verdict;
+    if (!isObj(vd)) E('verdict', 'ต้องเป็น object {extraCells}');
+    else {
+      closed(vd, 'verdict', ['extraCells']);
+      const xc = vd.extraCells;
+      if (!Array.isArray(xc) || xc.length < 1 || xc.length > 2) E('verdict.extraCells', 'ต้องเป็น array 1–2 ช่อง [{k, v}]');
+      else xc.forEach((c, i) => {
+        const p = `verdict.extraCells[${i}]`;
+        if (!isObj(c)) return E(p, 'ต้องเป็น {k, v}');
+        closed(c, p, ['k', 'v']); str(c.k, `${p}.k`); plain(c.k, `${p}.k`); str(c.v, `${p}.v`); noTag(c.v, `${p}.v`);
+        if (typeof c.k === 'string' && c.k.length > 40) E(`${p}.k`, 'ป้าย ≤ 40 ตัวอักษร');
+      });
+    }
+  }
+
   // ── prose / lists / extras ──
   const PROSE_REQ = ['chart', 'valuation', 'gauge', 'mos', 'verdictHeadline', 'verdictBody', 'strategy', 'disclaimerSources'];
   if (!isObj(doc.prose)) E('prose', 'ต้องมี (object)');
@@ -500,6 +519,7 @@ function validate(doc) {
       closed(doc.text, 'text', TEXT_KEYS);
       for (const k of TEXT_KEYS) str(doc.text[k], `text.${k}`, { req: false });
       noTag(doc.text.chartHint, 'text.chartHint');
+      noTag(doc.text.legendNote, 'text.legendNote'); if (typeof doc.text.legendNote === 'string' && doc.text.legendNote.length > 80) E('text.legendNote', 'ยาวเกิน 80 ตัวอักษร (ป้าย legend หมวด 2)');
       if (typeof doc.text.valHint === 'string' && doc.text.valHint.length > 80) E('text.valHint', 'ยาวเกิน 80 ตัวอักษร (เป็นป้ายหัว section)');
     }
   }
