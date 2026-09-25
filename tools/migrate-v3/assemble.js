@@ -139,7 +139,21 @@ function fundOf(parsed, cf) {
   if (cf.bank) f.bank = cf.bank;
   return { f, src };
 }
-const epsBasisOf = (label, region) => (/adj|normali[sz]ed|ปรับ/i.test(label || '') ? 'adj-ttm' : region === 'TH' ? 'ifrs' : 'gaap-ttm');
+// fix round 5 (controller ruling): คำ adj/normalized/ปรับ ที่อยู่หลังคำปฏิเสธในอนุประโยคเดียวกัน ("ไม่ใช้ EPS adj." · "not adjusted" · "excl. adj.") ไม่ตั้งฐาน
+//  (ZBH "(TTM diluted) … ไม่ใช้ EPS adj." เคยได้ adj-ttm → v3 พิมพ์ "EPS adj. (TTM)" ผิด) · อนุประโยค = ตั้งแต่ขอบ · ; — – ( ) ขึ้นบรรทัด ตัวสุดท้ายก่อนคำ (ไม่ตัดที่ "." — "adj." มีจุด)
+const ADJ_WORD = /adj|normali[sz]ed|ปรับ/gi;
+const NEGATION = /ไม่ใช้|ไม่รวม|ไม่ใช่|\bnot\b|\bex-|\bexcl\b|\bexcluding\b/i;
+const CLAUSE_EDGE = /[·;—–()\n]/g;
+function adjAsserted(text) {
+  const t = String(text || '');
+  for (const m of t.matchAll(ADJ_WORD)) {
+    const pre = t.slice(0, m.index); let from = 0;
+    for (const e of pre.matchAll(CLAUSE_EDGE)) from = e.index + 1;
+    if (!NEGATION.test(pre.slice(from))) return true;
+  }
+  return false;
+}
+const epsBasisOf = (label, region) => (adjAsserted(label) ? 'adj-ttm' : region === 'TH' ? 'ifrs' : 'gaap-ttm');
 
 // ── legs ──
 const CONTEXT_RE = LG.CONTEXT_RE;
@@ -306,11 +320,16 @@ function headRuns(seg, consumed, leg, label) {
  *  พกได้เฉพาะเมื่อ "เท่ากับ" ป้ายฐานที่ v3 render พิมพ์ให้ขานั้น — ตัวเทียบ = R3.epsLabel (pe · จาก fundamentals.epsBasis / inputs.base / override.eps)
  *  หรือ "P/" + R3.ffoLabel (pffo · S.FFO_LABEL[ffoBasis]) — โค้ดป้ายตัวเดียวกับ mdesc ของ render (ไม่ทำสำเนา)
  *  ★ ห้ามเทียบกับ legs[i].label / mname / คำใด ๆ ของผู้เขียน (วนกลับ: ZS เขียน "non-GAAP" ทั้งสองที่ แต่ v3 พิมพ์ "(TTM)")
- *  adj. ≡ adj ≡ adjusted ≡ ป้าย "adj." ของ render · GAAP / non-GAAP ต้องตรงคำใน render (render ไม่มีคำนั้นให้ฐานใด = บล็อก)
+ *  (round 4 เทียบสตริงตรงตัว → round 5 เทียบฐาน: ดู agreeKey/labelBasis)
  *  คำล่วงหน้า/งวด (forward · FY#E · guidance · consensus · est. · fwd · คาดการณ์ · ประมาณการ · ปีหน้า · ปีงบนี้ · ปีงบปัจจุบัน)
  *  และคำฐานปรับ (ปกติ · core · หลัก · normalized · underlying · FFOA) = บล็อกเสมอ (ยกเว้น baseOf กิน — ผู้เรียกตรวจ consumed ก่อน) */
 const bareOf = (tk) => String(tk).replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}.]+$/gu, '');
-const agreeKey = (tk) => { const b = bareOf(tk); return /^adj(?:usted|\.)?$/i.test(b) ? 'adj.' : /^non-?GAAP$/i.test(b) ? 'non-GAAP' : /^GAAP$/.test(b) ? 'GAAP' : null; };
+// fix round 5 (controller ruling): เทียบ "ฐาน" ที่ render พิมพ์ ไม่ใช่สตริงตรงตัว — ฐาน GAAP ("EPS (TTM)") ≡ GAAP (· GAAP diluted) · ฐาน adj ("EPS adj. (TTM)") ≡ adj. · adjusted · non-GAAP
+//  คำที่ตรงกับอีกฐาน = บล็อก · ฐานอื่น (IFRS · FY · forward · "EPS ปรับ" · P/FFO) = ไม่มีฐานให้ยืนยัน → บล็อก
+const agreeKey = (tk) => { const b = bareOf(tk); return /^(?:adj(?:usted|\.)?|non-?GAAP)$/i.test(b) ? 'adj' : /^GAAP$/.test(b) ? 'gaap' : null; };
+/** ฐานของป้ายที่ render พิมพ์ — อ่านจากสตริงของ R3.epsLabel เอง (ไม่ทำตาราง epsBasis ซ้ำ ⇒ ไม่ drift จาก render) */
+const labelBasis = (label) => (label === R3.epsLabel({ inputs: {} }, { doc: { fundamentals: { epsBasis: 'gaap-ttm' } } }) ? 'gaap'
+  : label === R3.epsLabel({ inputs: {} }, { doc: { fundamentals: { epsBasis: 'adj-ttm' } } }) ? 'adj' : null);
 /** ป้ายฐานที่ render พิมพ์ให้ขานี้ ('' = ขาไม่มีป้ายฐานให้เทียบ → คำยืนยันฐานบล็อก) */
 function renderedBasisLabel(leg, fund) {
   if (!leg || !fund) return '';
@@ -320,7 +339,7 @@ function renderedBasisLabel(leg, fund) {
   } catch (_) { return ''; }   // epsBasis ยังไม่รู้ (pass 1) = ไม่มีป้ายให้เทียบ → บล็อก (fail closed)
   return '';
 }
-const agreesWithRender = (tk, label) => { const k = agreeKey(tk); return !!k && !!label && String(label).split(/[\s()]+/).some((x) => agreeKey(x) === k); };
+const agreesWithRender = (tk, label) => { const k = agreeKey(tk); return !!k && !!label && labelBasis(label) === k; };
 /** โทเค็นนี้ทำให้ข้อความพกไม่ได้ไหม (ยังไม่ได้ตรวจ consumed) · label = null/undefined = ไม่มีกฎยืนยันฐาน (บล็อกทั้งรายการเหมือนเดิม) */
 function basisWordBlocks(tk, label) {
   if (label != null && agreeKey(tk)) return !agreesWithRender(tk, label);
@@ -1024,4 +1043,4 @@ function assemble(parsed0, ctx) {
 }
 
 module.exports = { assemble, s6HintNote, guardLegs, extrasOf, analystOf, singleTarget, legsOf, weightsOf, generatedValHint, pxMetaOf, qualifierOf, hasProse, isProseToken, labelOf, labelParts, multipleSourceOf, medianWindowOf,
-  firstTagOf, sectorLineOf, ffoBasisOf, baseOf, extraCellsOf, legendNoteOf, renderedBasisLabel };
+  firstTagOf, sectorLineOf, ffoBasisOf, baseOf, extraCellsOf, legendNoteOf, renderedBasisLabel, epsBasisOf };

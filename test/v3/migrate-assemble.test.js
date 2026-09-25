@@ -785,11 +785,29 @@ const runH = (sym, html) => { const p = PV.parseV2(sym, html); const r = A.assem
   // author's own label says adj. — still blocked (comparator is render, not the author)
   const negAuthor = legOf('EPS $5.10 × P/E 22x — adj. ฐานเดียวกับงบ', '$112.20', { eps: 5.1, epsBasis: 'gaap-ttm' }, '1. P/E (EPS adj.)');
   t(negAuthor && !/adj\./.test(negAuthor.note || ''), 'round 4 negative: the author\'s own label "EPS adj." is not the comparator', JSON.stringify(negAuthor));
-  // GAAP / non-GAAP: render prints neither word for any basis ⇒ blocked on every epsBasis
-  for (const eb of ['gaap-ttm', 'adj-ttm', 'ifrs']) {
+  // fix round 5 (controller ruling): comparator = the BASIS render prints — GAAP basis ("EPS (TTM)") ≡ GAAP · GAAP diluted · adj basis ("EPS adj. (TTM)") ≡ adj. · adjusted · non-GAAP
+  const gd = legOf('EPS $5.10 × P/E 22x — GAAP diluted สมอคือ P/E เฉลี่ยรอบปีงบ', '$112.20', { eps: 5.1, epsBasis: 'gaap-ttm' });
+  t(gd && gd.note === 'GAAP diluted สมอคือ P/E เฉลี่ยรอบปีงบ', 'round 5: GAAP-basis pe leg, note "GAAP diluted" → carried', JSON.stringify(gd && gd.note));
+  const dg = legOf('EPS $5.10 × P/E 22x (diluted GAAP ฐานเดียวกับงบ)', '$112.20', { eps: 5.1, epsBasis: 'gaap-ttm' });
+  t(dg && dg.note === 'diluted GAAP ฐานเดียวกับงบ', 'round 5: GAAP-basis pe leg, "(diluted GAAP …)" → carried', JSON.stringify(dg && dg.note));
+  for (const eb of ['adj-ttm', 'ifrs']) {
     const g = legOf('EPS $5.10 × P/E 22x — GAAP สมอคือ P/E เฉลี่ยรอบปีงบ', '$112.20', { eps: 5.1, epsBasis: eb });
-    t(g && !g.note, `round 4: "GAAP" blocked (render has no GAAP label · ${eb})`, JSON.stringify(g && g.note));
+    t(g && !g.note, `round 5: "GAAP" blocked when render's basis is not GAAP (${eb})`, JSON.stringify(g && g.note));
   }
+  const ng = legOf('EPS $5.10 × P/E 22x — non-GAAP สมอคือ P/E เฉลี่ยรอบปีงบ', '$112.20', { eps: 5.1, epsBasis: 'adj-ttm' });
+  t(ng && ng.note === 'non-GAAP สมอคือ P/E เฉลี่ยรอบปีงบ', 'round 5: adj-ttm pe leg, "non-GAAP" → carried', JSON.stringify(ng && ng.note));
+  const ngG = legOf('EPS $5.10 × P/E 22x — non-GAAP สมอคือ P/E เฉลี่ยรอบปีงบ', '$112.20', { eps: 5.1, epsBasis: 'gaap-ttm' });
+  t(ngG && !ngG.note, 'round 5: GAAP-basis pe leg, "non-GAAP" (other basis) → blocked', JSON.stringify(ngG && ngG.note));
+  // override.eps → render "EPS ปรับ" (no GAAP/adj basis) ⇒ both families block
+  const ov = legOf('EPS $5.10 × P/E 22x — GAAP diluted สมอ', '$112.20', { eps: 4.0, epsBasis: 'gaap-ttm' });
+  t(ov && ov.override && ov.override.eps === 5.1 && A.renderedBasisLabel(ov, { eps: 4.0, epsBasis: 'gaap-ttm' }) === 'EPS ปรับ' && !ov.note, 'round 5: "EPS ปรับ" (override.eps) has no basis to agree with → "GAAP diluted" blocked', JSON.stringify(ov));
+  // epsBasisOf: an adj word inside a negation does not set the basis (ZBH)
+  t.eq(A.epsBasisOf('EPS $4.12 (TTM diluted) × P/E 26x = $107 — 26x = มัธยฐาน · ไม่ใช้ EPS adj. เพราะไม่มีตัวคูณมัธยฐานที่วัดบนฐาน adj.', 'US'), 'gaap-ttm', 'round 5: epsBasisOf — ZBH "ไม่ใช้ EPS adj." negation → gaap-ttm');
+  t.eq(A.epsBasisOf('EPS ไม่รวม adjusted items $4', 'TH'), 'ifrs', 'round 5: epsBasisOf — ไม่รวม negation → region default');
+  t.eq(A.epsBasisOf('GAAP EPS, not adjusted', 'US'), 'gaap-ttm', 'round 5: epsBasisOf — English "not" negation');
+  t.eq(A.epsBasisOf('EPS excl. adj. $3', 'US'), 'gaap-ttm', 'round 5: epsBasisOf — "excl." negation');
+  t.eq(A.epsBasisOf('EPS adj. $19.16 × P/E ~35x', 'US'), 'adj-ttm', 'round 5: epsBasisOf — plain adj. still sets adj-ttm');
+  t.eq(A.epsBasisOf('ไม่ใช้ GAAP · EPS adj. $3', 'US'), 'adj-ttm', 'round 5: epsBasisOf — negation in an earlier clause does not reach the word');
   // forward/period words block even when an agreement word agrees
   const fwdMix = legOf('EPS $5.10 × P/E 22x — adj. consensus premium', '$112.20', { eps: 5.1, epsBasis: 'adj-ttm' });
   t(fwdMix && !fwdMix.note, 'round 4: forward word blocks although "adj." agrees', JSON.stringify(fwdMix && fwdMix.note));
