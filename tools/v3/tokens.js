@@ -19,6 +19,8 @@ const V2_TWIN = {
 
 function need(v, name) { if (v == null) throw new Error(`token {{${name}}} ชี้ค่าที่ไม่มีในรายงานนี้`); return v; }
 const money = (view, v) => view.d.cur + RV.fmtPrice(v);
+// ค่าต่อหุ้น — ตัวเดียวกับการ์ด/mdesc (RV.fmtPerShare: ≥ 1 เดิมทุก byte · < 1 = 3 หลักมีนัย · Plan 4c-audit)
+const perShare = (view, v) => view.d.cur + RV.fmtPerShare(v);
 const TOKENS_V3 = {};
 for (const [v3, v2] of Object.entries(V2_TWIN)) TOKENS_V3[v3] = (view) => String(RV.TOKENS[v2](view.d));
 for (let i = 1; i <= 4; i++) {
@@ -28,7 +30,7 @@ for (let i = 1; i <= 4; i++) {
     return need(l.liveMultiple != null ? l.liveMultiple : l.inputs.multiple, `leg${i}.multiple`).toFixed(1) + 'x'; };
 }
 ['bear', 'base', 'bull'].forEach((n, i) => {
-  TOKENS_V3[`scn.${n}.end`] = (view) => money(view, need(view.scn && view.scn[i], `scn.${n}`).driverEnd);
+  TOKENS_V3[`scn.${n}.end`] = (view) => perShare(view, need(view.scn && view.scn[i], `scn.${n}`).driverEnd);
   // Plan 4b Task 2: scenarios.exitDp ถ้ามี · ไม่มี = toFixed(1) เดิม (tokens-corpus parity)
   TOKENS_V3[`scn.${n}.exit`] = (view) => { const e = need(view.scn && view.scn[i], `scn.${n}`).exitMultiple, s = view.doc && view.doc.scenarios;
     return (s && s.exitDp != null ? e.toFixed(s.exitDp) : e.toFixed(1)) + 'x'; };
@@ -39,10 +41,10 @@ TOKENS_V3['range52w.hi'] = (view) => money(view, need(view.doc && view.doc.marke
 // Plan 4b Task 1 (spec §10.1 token gaps: fund:eps 834 ใบ · dps 458 · bvps 223 · epsFy 45 · analyst:vsFv 30) — ค่าจากงบ ไม่ผูกราคา
 // (ไม่เข้า priceBound) แต่ทำให้ prose ตาม fundamentals เมื่อ UPDATE · เงินผ่าน RV.fmtPrice เหมือน token อื่น
 const fund = (view, k) => need(view.doc && view.doc.fundamentals && view.doc.fundamentals[k], k);
-TOKENS_V3.eps = (view) => money(view, fund(view, 'eps'));
-TOKENS_V3.dps = (view) => money(view, fund(view, 'dps'));
-TOKENS_V3.bvps = (view) => money(view, fund(view, 'bvps'));
-TOKENS_V3.epsFy = (view) => money(view, need(view.doc && view.doc.fundamentals && view.doc.fundamentals.fy && view.doc.fundamentals.fy.eps, 'epsFy'));
+TOKENS_V3.eps = (view) => perShare(view, fund(view, 'eps'));
+TOKENS_V3.dps = (view) => perShare(view, fund(view, 'dps'));
+TOKENS_V3.bvps = (view) => perShare(view, fund(view, 'bvps'));
+TOKENS_V3.epsFy = (view) => perShare(view, need(view.doc && view.doc.fundamentals && view.doc.fundamentals.fy && view.doc.fundamentals.fy.eps, 'epsFy'));
 // ส่วนต่างเป้านักวิเคราะห์เทียบ FV (ไม่ใช่เทียบราคา — นั่นคือ analyst.pct) · 1 ตำแหน่ง · ลบ = U+2212
 // ปัดแล้วเป็น 0.0 = "+0.0%" (ไม่พิมพ์ "−0.0%")
 TOKENS_V3['analyst.vsFv'] = (view) => { const a = need(view.doc && view.doc.analyst, 'analyst.vsFv'); const x = (a.target - view.fv) / view.fv * 100; const r = Math.abs(x).toFixed(1); return (x < 0 && r !== '0.0' ? '−' : '+') + r + '%'; };

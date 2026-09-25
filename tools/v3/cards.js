@@ -10,6 +10,8 @@ const RV = require('../report-values.js');
 const f = (view) => view.doc.fundamentals;
 const need = (view, k) => { const v = f(view)[k]; if (typeof v !== 'number' || !Number.isFinite(v)) throw new Error(`metrics.cards: การ์ดต้องใช้ fundamentals.${k} — เติมค่า หรือถอดการ์ดออก`); return v; };
 const money = (view, v) => view.cur + RV.fmtPrice(v);
+// ค่าต่อหุ้น (EPS · BVPS · DPS · FFO/หุ้น · TBVPS) — RV.fmtPerShare: ≥ 1 เดิมทุก byte · < 1 = 3 หลักมีนัย (Plan 4c-audit · EPS ฿0.0158 ≠ ฿0.02)
+const perShare = (view, v) => view.cur + RV.fmtPerShare(v);
 const big = (view, v) => RV.fmtBig(v, view.cur);
 const pct1 = (v) => v.toFixed(1) + '%';
 const isNum = (x) => typeof x === 'number' && Number.isFinite(x);
@@ -71,16 +73,16 @@ const CATALOGUE = {
   mcap: { label: () => 'Market Cap', value: (v) => big(v, priceBoundOrThrow('mcap', v.d.mcap)), d: (v) => sharesText(v, need(v, 'shares')), cls: '' },
   pe: { label: () => 'P/E (TTM)', cls: 'neu',
     value: (v) => { const e = need(v, 'eps'); if (!(e > 0)) throw new Error('metrics.cards: pe — EPS ≤ 0 (ขาดทุน) P/E ไม่มีความหมาย ถอดการ์ดออก'); return v.d.pe.toFixed(1) + 'x'; },
-    d: (v) => `EPS TTM ${money(v, need(v, 'eps'))}` },
+    d: (v) => `EPS TTM ${perShare(v, need(v, 'eps'))}` },
   // ป้ายจำนวนปี = ช่วง medianWindow ของขา fv ที่ใช้มัธยฐาน (FY2022–FY2025 → 4 ปี · ICC 24 ก.ย. 69 ตัด FY2021 ทิ้ง) · ไม่มีขา/ไม่มี window → 5 ตามชื่อคีย์
   peAvg5y: { label: (v) => `P/E มัธยฐาน ~${medianYears(v)} ปี`, value: (v) => need(v, 'peAvg5y').toFixed(1) + 'x', d: () => 'มัธยฐานย้อนหลัง', cls: '' },
-  pbv: { label: () => 'P/BV', cls: 'neu', value: (v) => priceBoundOrThrow('pbv', v.d.pbv).toFixed(2) + 'x', d: (v) => `BVPS ${money(v, need(v, 'bvps'))}` },
+  pbv: { label: () => 'P/BV', cls: 'neu', value: (v) => priceBoundOrThrow('pbv', v.d.pbv).toFixed(2) + 'x', d: (v) => `BVPS ${perShare(v, need(v, 'bvps'))}` },
   // ฐานใน .d = รายได้สกุลราคา (fq) เหมือนตัวหารของ P/S — W16 ของ gate v2 อ่านเลขนี้คิด mcap ÷ รายได้ โดยไม่ดูสัญลักษณ์สกุล
   ps: { label: () => 'P/S', cls: 'neu', value: (v) => priceBoundOrThrow('ps', v.d.ps).toFixed(1) + 'x',
     d: (v) => { need(v, 'revenue'); return `รายได้ TTM ${signedBig(v.cur, fq(v).revenue)}`; } },
   netIncome: { label: () => 'กำไรสุทธิ TTM', value: (v) => stmt(v, need(v, 'netIncome')), d: () => 'รอบ 12 เดือนล่าสุด', cls: '' },
-  eps: { label: () => 'EPS (TTM)', value: (v) => '~' + money(v, need(v, 'eps')), d: (v) => ({ 'gaap-ttm': 'GAAP', 'adj-ttm': 'Adjusted', fy: 'ปีบัญชีล่าสุด', ifrs: 'IFRS' }[f(v).epsBasis] || ''), cls: '' },
-  bvps: { label: () => 'BVPS', value: (v) => '~' + money(v, need(v, 'bvps')), d: () => 'มูลค่าทางบัญชีต่อหุ้น', cls: '' },
+  eps: { label: () => 'EPS (TTM)', value: (v) => '~' + perShare(v, need(v, 'eps')), d: (v) => ({ 'gaap-ttm': 'GAAP', 'adj-ttm': 'Adjusted', fy: 'ปีบัญชีล่าสุด', ifrs: 'IFRS' }[f(v).epsBasis] || ''), cls: '' },
+  bvps: { label: () => 'BVPS', value: (v) => '~' + perShare(v, need(v, 'bvps')), d: () => 'มูลค่าทางบัญชีต่อหุ้น', cls: '' },
   roe: { label: () => 'ROE / ROA', cls: 'pos', value: (v) => `~${need(v, 'roe').toFixed(1)}%` + (f(v).roa != null ? ` / ${f(v).roa.toFixed(1)}%` : ''), d: () => 'ผลตอบแทนต่อทุน / สินทรัพย์' },
   revenue: { label: () => 'รายได้ TTM', cls: 'neu', value: (v) => stmt(v, need(v, 'revenue')), d: () => 'รอบ 12 เดือนล่าสุด' },
   grossMargin: { label: () => 'อัตรากำไรขั้นต้น', value: (v) => pct1(need(v, 'grossMargin')), d: () => 'Gross margin', cls: '' },
@@ -88,7 +90,7 @@ const CATALOGUE = {
   opMargin: { label: () => 'อัตรากำไรจากดำเนินงาน', value: (v) => pct1(need(v, 'opMargin')), d: () => 'Operating margin', cls: '' },
   // ค่า yield ใช้ RV.TOKENS.yield ตรง ๆ (ไม่ hand-format ซ้ำ) — 2 ทศนิยม site-wide (คำตัดสินเจ้าของ 24 ก.ย. 69)
   // priceBoundOrThrow เรียกเพื่อ guard อย่างเดียว (ทิ้งค่าที่คืน) — ตัวเลขที่โชว์มาจาก RV.TOKENS.yield (2dp ทั้งเว็บ)
-  yield: { label: () => 'เงินปันผล', value: (v) => { priceBoundOrThrow('yield', v.d.yield); return RV.TOKENS.yield(v.d); }, d: (v) => `${money(v, need(v, 'dps'))}/ปี`, cls: '' },
+  yield: { label: () => 'เงินปันผล', value: (v) => { priceBoundOrThrow('yield', v.d.yield); return RV.TOKENS.yield(v.d); }, d: (v) => `${perShare(v, need(v, 'dps'))}/ปี`, cls: '' },
   beta: { label: () => 'Beta', value: (v) => need(v, 'beta').toFixed(2), d: () => 'ความผันผวนเทียบตลาด', cls: '' },
   range52w: { label: () => 'กรอบ 52 สัปดาห์', cls: '',
     value: (v) => { const r = v.doc.market.range52w; if (!r) throw new Error('metrics.cards: range52w — ไม่มี market.range52w (cron เติม)'); return `${money(v, r.lo)} – ${money(v, r.hi)}`; },
@@ -111,24 +113,24 @@ const CATALOGUE = {
     d: (v) => { need(v, 'netDebt'); need(v, 'ebitda'); return `EV ${big(v, priceBoundOrThrow('mcap', v.d.mcap) + fq(v).netDebt)} ÷ EBITDA ${big(v, fq(v).ebitda)}`; } },
   peForward: { label: () => 'Forward P/E', cls: 'neu',
     value: (v) => peForwardCalc(v).text,
-    d: (v) => `EPS ประมาณการ (Forward) ${money(v, need(v, 'epsForward'))}` },
+    d: (v) => `EPS ประมาณการ (Forward) ${perShare(v, need(v, 'epsForward'))}` },
   // % ใช้ RV.TOKENS.analystPct(v.d) ตัวเดียวกับ token {{rd:analystPct}}/{{analyst.pct}} — ไม่คิดสูตร/ปัดเลขซ้ำเอง
   analystTarget: { label: () => 'เป้านักวิเคราะห์ (Consensus)', cls: '',
     value: (v) => { const t = v.doc.analyst && v.doc.analyst.target; if (typeof t !== 'number' || !Number.isFinite(t)) throw new Error('metrics.cards: analystTarget — ไม่มี doc.analyst.target'); return `${money(v, t)} (${RV.TOKENS.analystPct(v.d)})`; },
     d: () => 'เป้าเฉลี่ยนักวิเคราะห์ 12 เดือน' },
   // Plan 2a Task 8 — ตัวเลขทั้งปีคู่ TTM (§3.6 B) · ป้ายต่อท้ายด้วย period ที่ประกาศ
   netIncomeFy: { label: (v) => `กำไรสุทธิ ${fyOf(v).period}`, value: (v) => stmt(v, needFy(v, 'netIncome')), d: () => 'ทั้งปีบัญชี', cls: '' },
-  epsFy: { label: (v) => `EPS ${fyOf(v).period}`, value: (v) => '~' + money(v, needFy(v, 'eps')), d: () => 'ทั้งปีบัญชี', cls: '' },
+  epsFy: { label: (v) => `EPS ${fyOf(v).period}`, value: (v) => '~' + perShare(v, needFy(v, 'eps')), d: () => 'ทั้งปีบัญชี', cls: '' },
   revenueFy: { label: (v) => `รายได้ ${fyOf(v).period}`, cls: 'neu', value: (v) => stmt(v, needFy(v, 'revenue')), d: () => 'ทั้งปีบัญชี' },
   // Plan 2a Task 8 — KPI ธนาคาร (§3.6 K)
   nim: { label: () => 'NIM', value: (v) => needBank(v, 'nim').toFixed(2) + '%', d: () => 'ส่วนต่างอัตราดอกเบี้ยสุทธิ', cls: '' },
   npl: { label: () => 'NPL / Coverage', value: (v) => `${needBank(v, 'npl').toFixed(1)}% / ${needBank(v, 'coverage').toFixed(0)}%`, d: () => 'หนี้เสีย / สำรองต่อหนี้เสีย', cls: '' },
   capital: { label: () => 'CET1 / CAR', cls: 'pos', value: (v) => `~${needBank(v, 'cet1').toFixed(1)}% / ${needBank(v, 'car').toFixed(1)}%`, d: () => 'เงินกองทุนชั้นที่ 1 / เงินกองทุนรวม' },
   // Plan 2a Task 9 — REIT (§3.6 J) · ป้าย FFO/AFFO ตาม fundamentals.ffoBasis
-  pffo: { label: (v) => `P/${ffoL(v)} (TTM)`, cls: 'neu', value: (v) => pffoCalc(v).text, d: (v) => `${ffoL(v)}/หุ้น ${money(v, need(v, 'ffoPerShare'))}` },
+  pffo: { label: (v) => `P/${ffoL(v)} (TTM)`, cls: 'neu', value: (v) => pffoCalc(v).text, d: (v) => `${ffoL(v)}/หุ้น ${perShare(v, need(v, 'ffoPerShare'))}` },
   pffoForward: { label: (v) => `Forward P/${ffoL(v)}`, cls: 'neu', value: (v) => pffoForwardCalc(v).text,
-    d: (v) => { const x = ffoFwd(v); return `${ffoL(v)} ${x.period} ` + (isNum(x.low) && isNum(x.high) ? `${money(v, x.low)}–${money(v, x.high)}` : money(v, x.value)); } },
-  ffoPerShare: { label: (v) => `${ffoL(v)}/หุ้น (TTM)`, value: (v) => money(v, need(v, 'ffoPerShare')), d: () => 'ต่อหุ้น รอบ 12 เดือนล่าสุด', cls: '' },
+    d: (v) => { const x = ffoFwd(v); return `${ffoL(v)} ${x.period} ` + (isNum(x.low) && isNum(x.high) ? `${perShare(v, x.low)}–${perShare(v, x.high)}` : perShare(v, x.value)); } },
+  ffoPerShare: { label: (v) => `${ffoL(v)}/หุ้น (TTM)`, value: (v) => perShare(v, need(v, 'ffoPerShare')), d: () => 'ต่อหุ้น รอบ 12 เดือนล่าสุด', cls: '' },
   // ป้าย "เฉลี่ย" ไม่ใช่ "มัธยฐาน": ค่านี้ผู้เขียนพิมพ์เอง (ไม่มี median-multiples ของ P/FFO) — ต่างจาก peAvg5y (Task 2) · EQIX ต้นทาง "เฉลี่ย ~5 ปี"
   pffoAvg5y: { label: (v) => `P/${ffoL(v)} เฉลี่ย ~5 ปี`, value: (v) => need(v, 'pffoAvg5y').toFixed(1) + 'x', d: () => 'ค่าเฉลี่ยย้อนหลัง', cls: '' },
   ffoMargin: { label: (v) => `${ffoL(v)} Margin`, cls: '',
@@ -148,7 +150,7 @@ const CATALOGUE = {
     value: (v) => { const e = need(v, 'eps'); if (!(e > 0)) throw new Error('metrics.cards: payout — EPS ≤ 0 (ขาดทุน) payout ไม่มีความหมาย ถอดการ์ดออก'); return pct1(need(v, 'dps') / e * 100); },
     d: () => 'ปันผล ÷ EPS' },
   aum: { label: () => 'AUM', value: (v) => stmt(v, need(v, 'aum')), d: () => 'สินทรัพย์ภายใต้การจัดการ', cls: '' },
-  ptbv: { label: () => 'P/TBV', cls: 'neu', value: (v) => ptbvCalc(v).text, d: (v) => `TBVPS ${money(v, need(v, 'tbvps'))}` },
+  ptbv: { label: () => 'P/TBV', cls: 'neu', value: (v) => ptbvCalc(v).text, d: (v) => `TBVPS ${perShare(v, need(v, 'tbvps'))}` },
 };
 
 function renderCard(key, view, note) {

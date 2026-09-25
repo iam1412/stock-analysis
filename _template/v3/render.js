@@ -44,7 +44,8 @@ function epsLabel(leg, view) {
   return EPS_BASIS_LABEL[basis];
 }
 function mdesc(leg, view) {
-  const m = (v) => view.cur + RV.fmtPrice(v);
+  // ค่าต่อหุ้นใน mdesc (EPS · BVPS · DPS · D₁) — RV.fmtPerShare: ≥ 1 เดิมทุก byte · < 1 คง 3 หลักมีนัย (HENG EPS ฿0.0158 ไม่ใช่ ฿0.02)
+  const m = (v) => view.cur + RV.fmtPerShare(v);
   // Plan 4c-prep (D2): ตัวตั้งตาม inputs.base ผ่าน C.withBase (ตัวเดียวกับ compute) · epsLabel ยังรับ leg เดิม
   const i = leg.inputs, lb = C.withBase(leg, view.doc.fundamentals), b = { ...view.doc.fundamentals, ...(lb.override || {}) };
   const src = i.medianWindow ? ` (มัธยฐาน ${i.medianWindow})` : i.multipleSource ? ` (${SRC_NAME[i.multipleSource]})` : '';
@@ -144,7 +145,7 @@ function toV2Source(doc, view) {
           <div class="tgt">{{rd:sc${i + 1}tgt}}</div>
           <div class="ret {{rd:sc${i + 1}retClass}}">{{rd:sc${i + 1}ret}}${s.cases[i].retNote ? ' ' + pr(s.cases[i].retNote) : ''}</div>
           <ul>
-            <li><span>${drv} ปี ${s.years}</span><span>~${esc(view.cur + RV.fmtPrice(sc.driverEnd))}</span></li>
+            <li><span>${drv} ปี ${s.years}</span><span>~${esc(view.cur + RV.fmtPerShare(sc.driverEnd))}</span></li>
             <li><span>${ex} ออก</span><span>${exitText(s, sc.exitMultiple)}x</span></li>${sc.divCum != null ? `
             <li><span>ปันผลรวม ${s.years} ปี</span><span>~{{rd:sc${i + 1}div}}</span></li>` : ''}${sc.desc != null ? `
             <li><span>สถานการณ์</span><span>${pr(sc.desc)}</span></li>` : ''}
@@ -279,7 +280,7 @@ ${jsonScript(RV.styledRD(view.rd))}
   </section>
 
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน ${s.years} ปี</h2><div class="hint">จากจุดเข้า {{rd:px}}${s.driver === 'eps' ? ' • EPS ฐาน ~{{rd:baseEps}}' : ` • ${drv} ฐาน ~${esc(view.cur + RV.fmtPrice(view.scn[0].driverStart))}`}${s.hintNote ? ' ' + pr(s.hintNote) : ''}{{rd:scnNote}}</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน ${s.years} ปี</h2><div class="hint">จากจุดเข้า {{rd:px}}${s.driver === 'eps' ? ' • EPS ฐาน ~{{rd:baseEps}}' : ` • ${drv} ฐาน ~${esc(view.cur + RV.fmtPerShare(view.scn[0].driverStart))}`}${s.hintNote ? ' ' + pr(s.hintNote) : ''}{{rd:scnNote}}</div></div>
     <div class="scn">
       ${col(0, 'bear', 'Bear')}
       ${col(1, 'base', 'Base')}

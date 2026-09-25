@@ -564,6 +564,14 @@ const setMdesc = (idx, txt) => (h) => { let i = -1; return h.replace(/(<div clas
     expect('E21', 'error', (h) => mutMval(iPE, numStr(C.methods[iPE].val * 1.5))(fyLabel(tok)(h)), `E21: ป้ายงวด "${tok}" + ค่าไม่ตรง EPS×P/E → ยังต้องยิง (อ่าน EPS หลังป้าย)`);
   }
 }
+// ── E21 + ค่าเล็ก (Plan 4c-audit · HENG/MICRO/DCC · 26 ก.ย. 69): mval พิมพ์ 2 ตำแหน่ง ⇒ ครึ่งหน่วยที่พิมพ์ (0.005) ใหญ่กว่า 3% เมื่อค่า < 0.17 ──
+//   "EPS ฿0.0158 × 8.5x" = 0.1343 พิมพ์ "฿0.13" (คลาด 3.2% จากการปัดล้วน ๆ) → ต้องเงียบ · ค่าที่ผิดจริง ("฿0.15") → ยังต้องยิง
+{
+  const small = (mval) => (h) => mutMval(iPE, mval)(setMdesc(iPE, 'EPS ฿0.0158 × P/E เป้าหมาย ~8.5x (มัธยฐาน 5 ปี)')(h));
+  reject('E21', small('0.13'), 'E21: EPS ฿0.0158 × 8.5x = 0.1343 พิมพ์ ฿0.13 (ครึ่งหน่วยที่พิมพ์) → ต้องเงียบ');
+  expect('E21', 'error', small('0.15'), 'E21: EPS ฿0.0158 × 8.5x = 0.1343 แต่พิมพ์ ฿0.15 (เกินครึ่งหน่วยและ 3%) → ต้องยิง');
+  expect('E21', 'error', small('0.12'), 'E21: EPS ฿0.0158 × 8.5x = 0.1343 แต่พิมพ์ ฿0.12 → ต้องยิง');
+}
 const addCard = (name, desc, val) => (h) => h.replace(/(<div class="vmethod">[\s\S]*?<\/div>\s*<\/div>)(?![\s\S]*<div class="vmethod">)/, (m) => m + `<div class="vmethod"><div class="mname">${name}</div><div class="mval">$${val}</div><div class="mdesc">${desc}</div></div>`);
 if (iDDM >= 0) {
   // DDM — ฐาน BBL: "D₁ = ปันผลยั่งยืน ~฿10.5 × (1+g); g 3%, r 9.5%" → 10.5×1.03/0.065 = 166.4 ≈ mval 162 (2.7% ผ่าน)

@@ -293,4 +293,18 @@ t.eq(JSON.parse(R.jsonScript('{"a":"</script>"}')).a, '</script>', 'jsonScript o
   t.eq(CR.checkHtml(html, 'ZTS.html', { source: src }).errors.map((e) => `${e.id} ${e.msg}`), [], 'carry fields: full v2 gate — zero errors');
   t.eq(R.toV2Source(z, C.compute(z, { seeds })), before, 'fields absent → byte-identical');
 }
+// Plan 4c-audit (HENG/MICRO/DCC): ค่าต่อหุ้น < 1 ต้องพิมพ์ 3 หลักมีนัย — fmtPrice ปัด EPS ฿0.0158 เป็น ฿0.02
+//   ⇒ หน้าโชว์ "EPS ฿0.02 × P/E 8.5x" คู่ ฿0.13 (คูณไม่ได้ · E21) และ "EPS ปี 3 ~฿0.02" จากฐาน ฿0.0158 ที่โต 0% (E24)
+{
+  t.eq([0.0157986, 0.095, 0.5, 0.157, 0.0115, 0, 1, 1.234, 12.5, 1234.5].map(RV.fmtPerShare),
+    ['0.0158', '0.095', '0.50', '0.157', '0.0115', '0.00', '1.00', '1.23', '12.50', '1,234.50'], 'fmtPerShare: < 1 = 3 หลักมีนัย (≥ 2 ตำแหน่ง) · ≥ 1 = fmtPrice');
+  for (const v of [0, 1, 1.234, 12.5, 1234.5, 99.999]) t(RV.fmtPerShare(v) === RV.fmtPrice(v), `fmtPerShare(${v}) = fmtPrice เดิมทุก byte`);
+  const doc = load('BBL'); doc.fundamentals.eps = 0.0158;
+  const view = C.compute(doc, { seeds }); const src = R.toV2Source(doc, view);
+  t(src.includes('฿0.0158 × P/E เป้าหมาย'), 'mdesc ขา P/E พิมพ์ EPS ฿0.0158 (ไม่ใช่ ฿0.02)');
+  t(/EPS ฐาน ~\{\{rd:baseEps\}\}/.test(src) && expandReport(src).includes('EPS ฐาน ~฿0.0158'), 'hint หมวด 6: EPS ฐาน ~฿0.0158');
+  t(src.includes('<span>~฿0.0158</span>'), 'หมวด 6 Bear (โต 0%): EPS ปี 3 ~฿0.0158 (ไม่ใช่ ฿0.02)');
+  const ids = CR.checkHtml(expandReport(src), 'BBL.html', { source: src }).errors.map((e) => e.id);
+  t(!ids.includes('E21') && !ids.includes('E24'), `EPS ฿0.0158: E21/E24 ไม่ยิงบนหน้าที่ render (ได้ ${ids.join(',')})`);
+}
 t.done();
