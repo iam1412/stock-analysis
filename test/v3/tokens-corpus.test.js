@@ -64,7 +64,9 @@ for (const f of fs.readdirSync(dir).filter((x) => x.endsWith('.html'))) {
 }
 if (findings.length) console.log(`  ℹ compute() refused ${findings.length} v2 value sets (schema findings — review, don't loosen blindly):\n    ` + findings.slice(0, 30).join('\n    '));
 console.log(`  ℹ compute() accepted ${ok}/${files} v2 value sets · ${checked} token renders compared`);
-t(files >= 880, `scanned the v2 corpus (${files} files)`);
+// Plan 4c (26 ก.ย. 69): คลัง v2 หดลงทุกแบตช์ migrate (909 → 0) ⇒ เลิกพื้นตายตัว 880 · กันสแกนเงียบด้วย "นับครบทุก .html ที่เป็น v2 ในโฟลเดอร์"
+const v2Html = fs.readdirSync(dir).filter((x) => x.endsWith('.html')).length;
+t(files === v2Html, `scanned every v2 report in the corpus (${files}/${v2Html} files)`);
 t(ok >= files * 0.97, `compute() accepted ≥97% of real v2 value sets (${ok}/${files})`);
-t(checked > 0, `compared ${checked} token renders`);
+t(files === 0 || checked > 0, `compared ${checked} token renders`);   // คลัง v2 ว่าง (หลัง migrate ครบ) = ไม่มีอะไรให้เทียบ
 t.done();
