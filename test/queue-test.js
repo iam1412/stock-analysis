@@ -1632,6 +1632,8 @@ let v3PrepatchPromise = null;   // Plan 4a fix1 (Review Focus 3) — prep() เ�
       v3PrepatchPromise = Promise.all([v3PrepatchPromise, e2e]);
       const ebN1 = Pp.extraBlock({ sym: 'ZTS', mode: 'UPDATE', v3: true, lightRule: 'legacy', priceFresh: true, priceDate: '2026-09-24', lastSession: '2026-09-24', oldPrice: 1, price: 1, baseEPS: 1, epsTTM: 1, epsScreen: 0, snap: [], medWarn: [], hard: false, hardWhy: '' });
       ok(/UPDATE-LIGHT ตาม 5C ข้อ 2\) \(ใบ v3: STEP 5U\)/.test(ebN1), 'v3/prep (4a final N-1): บรรทัด EPS screen ที่อ้าง 5C ข้อ 2 ต่อท้าย (ใบ v3: STEP 5U) เฉพาะใบ v3', ebN1);
+      const ebN1v2 = Pp.extraBlock({ sym: 'AAPL', mode: 'UPDATE', v3: false, lightRule: 'legacy', priceFresh: true, priceDate: '2026-09-24', lastSession: '2026-09-24', oldPrice: 1, price: 1, baseEPS: 1, epsTTM: 1, epsScreen: 0, snap: [], medWarn: [], hard: false, hardWhy: '' });
+      ok(/UPDATE-LIGHT ตาม 5C ข้อ 2\)$/m.test(ebN1v2) && !/STEP 5U/.test(ebN1v2), 'v3/prep (4a final N-1 · re-review nit): ใบ v2 ไม่ได้ suffix (ใบ v3: STEP 5U)', ebN1v2);
     }
     // postcheck
     const src = RS.load('ZTS', V3DIR);
