@@ -1,0 +1,272 @@
+{
+  "v": 3,
+  "symbol": "RYAN",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Ryan Specialty Holdings",
+    "exchange": "NYSE",
+    "sub": "Wholesale Brokerage (E&S) • Binding Authority • Underwriting Management (MGA/MGU)",
+    "headerTags": [
+      "Insurance Brokerage",
+      "Specialty / E&S Wholesale"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis.com",
+      "Yahoo Finance",
+      "Ryan Specialty IR"
+    ],
+    "priceNote": "StockAnalysis.com, ตรงกับ Yahoo Finance",
+    "migratedFrom": {
+      "updated": "2026-09-21T23:32:21+07:00",
+      "v2Hash": "c6b2f612c335"
+    }
+  },
+  "market": {
+    "px": 36.74,
+    "priceDate": "2026-09-24",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          54.8
+        ],
+        [
+          "พ.ย.25",
+          58.07
+        ],
+        [
+          "ธ.ค.25",
+          51.63
+        ],
+        [
+          "ม.ค.26",
+          48.28
+        ],
+        [
+          "ก.พ.26",
+          39.35
+        ],
+        [
+          "มี.ค.26",
+          33.74
+        ],
+        [
+          "เม.ย.26",
+          34.77
+        ],
+        [
+          "พ.ค.26",
+          31.85
+        ],
+        [
+          "มิ.ย.26",
+          37.76
+        ],
+        [
+          "ก.ค.26",
+          44.16
+        ],
+        [
+          "ส.ค.26",
+          42.18
+        ],
+        [
+          "ก.ย.26",
+          36.74
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 29.28,
+      "hi": 59.19
+    }
+  },
+  "fundamentals": {
+    "eps": 2.13,
+    "dps": 0.52,
+    "shares": 255600000,
+    "bvps": 3.81,
+    "revenue": 3163000000,
+    "fy": {
+      "period": "FY2025",
+      "netIncome": 63400000
+    },
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "dcf",
+      "label": "DCF (Free Cash Flow, fully exchanged) — r 10%, g 3%",
+      "inputs": {
+        "stages": [
+          {
+            "years": 1,
+            "g": 10
+          },
+          {
+            "years": 1,
+            "g": 9
+          },
+          {
+            "years": 1,
+            "g": 8
+          },
+          {
+            "years": 1,
+            "g": 7
+          },
+          {
+            "years": 1,
+            "g": 6
+          }
+        ],
+        "tg": 3,
+        "r": 10,
+        "rfCurrency": "USD"
+      },
+      "override": {
+        "fcf": 493000000,
+        "netDebt": 0,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "FCF TTM $493M ÷ 255.8M หุ้นรวมทุกคลาส · สมมติฐานของเราเอง · PV กระแสเงินสด 5 ปี · 73.6% ของมูลค่า ≤75% · วิธีเดียวกับการ์ด 2 (ตระกูลสมมติฐานเดียวกัน นับเป็นเสียงเดียว)",
+      "family": "rg"
+    },
+    {
+      "method": "declared",
+      "label": "DCF (Free Cash Flow) — r 10.5%, g 3% (ฉากอนุรักษ์)",
+      "inputs": {
+        "value": 32.81,
+        "basis": "other"
+      },
+      "note": "กระแส FCF/share ชุดเดียวกับการ์ด 1 ($2.12→$2.84) แต่ r 10.5%, g 3% · PV 5 ปี = $9.18 · TV = 2.84×1.03/(0.105−0.03) = $38.93 ณ ปี 5 → PV $23.63 (72.0% ≤75%) · รวม {{fvLow}}/หุ้น · ตระกูลเดียวกับการ์ด 1 (ต่างกันแค่ r) นับเป็นเสียงเดียว — ไม่ใช่การยืนยันอิสระ",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "custom:0",
+      "pbv",
+      "netIncomeFy",
+      "custom:1",
+      "bvps",
+      "custom:2",
+      "revenue",
+      "custom:3",
+      "yield",
+      "custom:4"
+    ],
+    "custom": [
+      {
+        "label": "P/E เฉลี่ย ~5 ปี",
+        "value": "N/A",
+        "note": "IPO ก.ค. 2564 — GAAP P/E ผันผวนสูงจากโครงสร้าง Up-C ไม่มีค่าเฉลี่ยที่เชื่อถือได้"
+      },
+      {
+        "label": "EPS (TTM)",
+        "value": "~$0.73",
+        "note": "GAAP (Class A attributable) · Adjusted (fully exchanged) EPS TTM {{eps}}"
+      },
+      {
+        "label": "ROE / D-E",
+        "value": "~22.1% / 0.17x",
+        "note": "TTM — D/E เพิ่มจาก 0.14 (FY2025)",
+        "tone": "pos"
+      },
+      {
+        "label": "Adjusted EBITDAC Margin",
+        "value": "35.7%",
+        "note": "Q2 2026 (vs 36.1% Q2 2025) — บวกกลับ equity comp, amortization intangibles, M&A costs, restructuring (Empower)"
+      },
+      {
+        "label": "Beta",
+        "value": "N/A",
+        "note": "ไม่มีในแหล่งข้อมูลที่ใช้ cross-verify"
+      }
+    ],
+    "notes": {
+      "mcap": "Class A · 121.4M Class A + 134.2M LLC Units = 255.6M หุ้น fully exchanged (≈{{mcap}})",
+      "pe": "บน EPS adj. (fully exchanged) {{eps}} · P/E GAAP diluted (Class A) ~55x — ดูหมายเหตุ valuation",
+      "pbv": "BVPS ประมาณจาก ROE/NI (Class A equity ต่ำจากโครงสร้าง Up-C + TRA + buyback ต่อเนื่อง)",
+      "netIncomeFy": "-33.0% YoY (GAAP Class A — ผลจากสัดส่วน NCI Up-C ไม่ใช่ธุรกิจอ่อนแอ; Adjusted Diluted EPS +9.5% YoY)",
+      "bvps": "ประมาณจาก Equity ≈ NI/ROE — ต่ำเพราะโครงสร้าง Up-C",
+      "revenue": "+14.8% YoY (TTM)",
+      "yield": "($0.13/ไตรมาส ประกาศ 30 ก.ค. 2569)"
+    },
+    "hint": "ธุรกิจนายหน้าประกันภัยเฉพาะทาง (E&S) — Up-C structure"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 0,
+        "exitMultiple": 16,
+        "divCum": 1.5,
+        "desc": "E&S rate softening เร่งตัว organic growth แผ่วเหลือ 0–2% margin หดตัวสู่ต้น-30% multiple de-rate สู่ 16x"
+      },
+      {
+        "growth": 9,
+        "exitMultiple": 21,
+        "divCum": 1.6,
+        "desc": "organic growth ทรงตัว 7–9%/ปี ตาม H1 2026 M&A bolt-on ต่อเนื่อง margin คงที่ 33–36% multiple ทรงตัวใกล้ปัจจุบัน"
+      },
+      {
+        "growth": 16,
+        "exitMultiple": 23,
+        "divCum": 1.75,
+        "desc": "E&S rate หันกลับมาแข็ง organic growth เร่งสู่ระดับเลขสองหลัก margin ขยายจาก Empower Program multiple รีเรตสู่พรีเมียมกลุ่ม (~23x)"
+      }
+    ],
+    "exitDp": 0,
+    "note": "ฐาน EPS ใช้ Adjusted Diluted EPS (fully exchanged) TTM {{eps}} ไม่ใช่ GAAP EPS $0.73 เพราะเป็นตัวเลขที่บริษัทและนักวิเคราะห์ใช้ประมาณการล่วงหน้า — ผลตอบแทนคำนวณจากจุดเข้าราคาปัจจุบัน {{px}} รวมปันผลสะสม 3 ปีตามสมมติฐานแต่ละ scenario เป้าราคา Base ({{scn.base.tgt}}) สูงกว่า Fair Value วันนี้ ({{fv}}) เพราะเป็นราคาคาดการณ์ปีที่ 3 ที่รวมการเติบโตของ EPS ไปด้วยแล้ว ไม่ใช่มูลค่าปัจจุบัน",
+    "hintNote": "(adj. fully exchanged)"
+  },
+  "analyst": {
+    "target": 50.84,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "หุ้นไล่ลงจากจุดสูง $58.07 (พ.ย. 2568) สู่จุดต่ำสุดรอบปี $31.85 (พ.ค. 2569) รวม −45% จากยอด — สอดคล้องกับการ de-rating ทั้งกลุ่ม specialty broker ช่วงต้นปี 2569 ที่ตลาดกังวล E&S rate softening + organic growth ชะลอตัว จากนั้นฟื้นตัวขึ้นมา +32% สู่ $42.18 (ปิดเดือน ส.ค. 2569) หลัง Q2 2026 (ประกาศ 30 ก.ค. 2569) ออกมาดีกว่าคาด Adjusted Diluted EPS โต +12.1% YoY แม้ organic growth และ margin จะชะลอลงบ้าง — รวมทั้งปี {{chg}}",
+    "valuation": "<b>โครงสร้าง FV รอบนี้ (แก้จากรอบก่อน):</b> FV มาจากตระกูล DCF ตระกูลเดียว (สองการ์ดต่างกันแค่ r) — ขา P/E เดิมถอดออกเพราะตัวคูณเป้า ~21x ผูกกับ P/E adjusted ปัจจุบัน (สมอตายวนกลับ) และตัวคูณมัธยฐานที่วัดได้ (83x) อยู่บนฐาน GAAP EPS ของ Class A จึงใช้กับ EPS adj. ไม่ได้ · ขาเป้านักวิเคราะห์ไม่เป็นขา FV · ความไว: เมื่อ r เพิ่มจาก 10% เป็น 10.5% มูลค่าต่อหุ้นจะลดลงราวหนึ่งในสิบสี่ (เหลือ {{fvLow}}) และ r/g ทั้งหมดเป็นสมมติฐานของเราเอง ⇒ ตัวเลข FV ควรอ่านเป็นกรอบ ไม่ใช่จุดเดียว · <b>เปิดเผยเต็มรูปแบบ (Up-C + TRA + การเลือก EPS):</b> Ryan Specialty เป็นโครงสร้าง Up-C — หุ้น Class A ที่ซื้อขายในตลาด (ticker RYAN) ถือสิทธิ์ทางเศรษฐกิจในบริษัทแม่ Ryan Specialty Holdings, LLC เพียง ~47.5% (ณ 30 มิ.ย. 2569) ส่วนที่เหลือ ~52.5% ถือโดยผู้ถือหน่วย LLC เดิม (LLC Common Units) ซึ่งแปลงเป็นหุ้น Class A ได้ 1:1 — กำไร/EPS แบบ GAAP ที่รายงาน (attributable แก่ Class A เท่านั้น) จึงสะท้อนแค่ส่วนของ Class A ไม่ใช่ทั้งกิจการ รายงานนี้จึงใช้จำนวนหุ้นแบบ fully exchanged (Class A 121.4M + LLC Units 134.2M = 255.6M หุ้น) ในการคำนวณ FCF/share และมูลค่ากิจการ เพื่อไม่ให้ประเมินต่ำเกินจริงจากนับหุ้นไม่ครบ นอกจากนี้บริษัทมีภาระผูกพัน Tax Receivable Agreement (TRA) กับผู้ถือหน่วยเดิมรวม $463.6M (current $30.3M + non-current $433.3M ณ 30 มิ.ย. 2569) เป็นภาระจ่ายเงินสดระยะยาว (~85% ของผลประโยชน์ภาษีจาก step-up สินทรัพย์เมื่อมีการแปลงหน่วย) ที่ลดกระแสเงินสดสุทธิถึงผู้ถือหุ้น Class A ในระยะยาว แม้ไม่รวมเข้า EV โดยตรง — EPS ที่ใช้: การ์ด P/E (TTM) headline ในรายงานนี้ใช้ EPS(TTM) GAAP $0.73 (Yahoo $0.74 กับ StockAnalysis $0.73 ต่างกัน 1.4% ซึ่งกระทบยอดได้จากตัวเลข GAAP diluted EPS รายงวดที่บริษัทเปิดเผยเอง: H2 FY2025 ($0.47 เต็มปี − $0.18 ครึ่งปีแรก) + H1 FY2026 ($0.45) = $0.74 อยู่ในกรอบ ±2% ของทั้งสองแหล่ง ยืนยันว่าไม่ใช่ความขัดแย้งจริง เพียงต่างช่วง TTM เล็กน้อย) ส่วน scenario หมวด 6 ใช้ <b>EPS adj. (fully exchanged) TTM {{eps}}</b> (H2 FY2025 $0.91 + H1 FY2026 $1.22 ตามที่บริษัทเปิดเผยใน press release Q2 2026 — ตัวเลขนี้ยกจากรอบก่อน ไม่ได้เปิดเอกสารต้นทางซ้ำรอบนี้) เป็นฐาน เพราะไม่ถูกบิดเบือนจากสัดส่วน NCI และสอดคล้องกับ consensus ของ StockAnalysis (FY2026e EPS $2.17 · FY2027e $2.42 — ค่า forward $2.42 ของ Yahoo ตรงกับ FY2027e ไม่ใช่ปีถัดไป) อธิบายช่องว่าง P/E trailing ~55x vs forward ~17x — รายการที่บวกกลับใน Adjusted Net Income/EBITDAC ตามที่บริษัทเปิดเผย: equity-based compensation (non-cash), amortization ของ intangibles/customer relationships, ค่าใช้จ่ายเกี่ยวกับการซื้อกิจการ (diligence/transaction/integration), ค่าตอบแทนจูงใจระยะยาวที่เกี่ยวกับการซื้อกิจการ, ค่าใช้จ่ายปรับโครงสร้าง (Empower Program), amortization ต้นทุนออกตราสารหนี้, การเปลี่ยนแปลง contingent consideration และรายการไม่เกิดซ้ำอื่น ๆ",
+    "gauge": "ราคาปัจจุบัน {{px}} อยู่สูงกว่ามูลค่าเหมาะสม {{fv}} (MOS {{mos}}) แต่ต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ {{analyst.target}} (16 ราย, ระดับ Buy) ราว 20% — เป้านักวิเคราะห์แสดงเป็นบริบทเท่านั้น ไม่ใช่ขา FV · โซน MOS 20% ({{mos20}}) และ MOS 30% ({{mos30}}) ต่ำกว่าจุดต่ำสุดรอบปีที่ปิดรายเดือน ($31.85 พ.ค. 2569)",
+    "mos": "<b>ราคาสูงกว่ามูลค่าเหมาะสมตาม DCF — ไม่มี Margin of Safety</b><br>P/E GAAP ที่ดูสูง (~55x) มาจากโครงสร้าง Up-C ไม่ใช่ตัวชี้ว่าแพงโดยลำพัง แต่ FV มาจาก DCF ตระกูลเดียวที่อ่อนไหวต่อ r/g — รอย่อลงมาโซน MOS 20% ({{mos20}}) หรือ MOS 30% ({{mos30}}) จึงจะมีส่วนเผื่อความปลอดภัย",
+    "verdictHeadline": "RYAN: ผู้นำ E&S Broker ที่ราคาสูงกว่ามูลค่าเหมาะสมตาม DCF — รอจังหวะที่ดีกว่า",
+    "verdictBody": "Ryan Specialty เป็นผู้นำนายหน้าประกันภัยเฉพาะทาง (E&S) ที่มี organic growth เป็นบวกต่อเนื่องแม้ชะลอตัวลง และ FCF conversion สูงจากโมเดล asset-light หลังราคาหุ้นร่วงในรอบปี ปัจจุบันเทรดสูงกว่ามูลค่าเหมาะสมตาม DCF (MOS {{mos}}) โครงสร้าง Up-C ทำให้ P/E GAAP headline ดูแพงกว่าความเป็นจริง บน EPS adjusted (fully exchanged) หุ้นซื้อขายที่ ~19x ซึ่งไม่แพงเทียบ organic growth ที่ยังเป็นบวก แต่การประเมินด้วย DCF ตระกูลเดียวไม่ให้ส่วนเผื่อความปลอดภัย — ความเสี่ยงหลักอยู่ที่วัฏจักร E&S ที่กำลังอ่อนตัวและภาระ TRA ระยะยาว",
+    "strategy": "รอราคาย่อลงมาใกล้โซน MOS 20% ({{mos20}}) เพื่อเพิ่มส่วนเผื่อความปลอดภัย หรือทยอยสะสมระยะยาวหากเชื่อมั่นในโมเมนตัม M&A + organic growth ที่ยังเป็นบวก — ไม่แนะนำไล่ซื้อ ณ ราคาปัจจุบันที่ไม่มี MOS",
+    "disclaimerSources": "ราคา ณ {{priceDate}} จาก StockAnalysis.com (cross-check กับ Yahoo Finance ตรงกัน) • ข้อมูลงบการเงิน/Q2 2026 (30 มิ.ย. 2569) จาก Ryan Specialty IR (ir.ryanspecialty.com) และ SEC EDGAR 10-Q/8-K • โครงสร้าง Up-C/TRA จากรายงาน 10-Q Q2 2026"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 2 วิธี"
+  },
+  "catalysts": [
+    "<b>โมเมนตัม M&A ต่อเนื่อง:</b> ซื้อกิจการ MGA/wholesale broker ขนาดเล็กสม่ำเสมอ ขยาย product line และภูมิศาสตร์ หนุน growth เกิน organic เพียงอย่างเดียว",
+    "<b>Organic growth ยังเป็นบวก:</b> Q2 2026 ที่ 6.7% (จาก 7.1% Q2 2025) แม้ชะลอแต่ยังบวกต่อเนื่อง สะท้อน demand ธุรกิจ E&S ที่ทนทานกว่าประกันมาตรฐาน",
+    "<b>FCF conversion สูง โมเดล asset-light:</b> FCF TTM $493M หนุนเงินปันผล + ซื้อหุ้นคืนต่อเนื่อง ($260M ซื้อหุ้นคืนใน Q2 2026 ไตรมาสเดียว)",
+    "<b>ตลาด E&S (excess & surplus) ยังใหญ่และโตเร็ว:</b> รับความเสี่ยงที่ตลาดประกันมาตรฐานไม่รับ (climate, cyber, liability ซับซ้อน)",
+    "<b>Q2 2026 beat คาด:</b> Adjusted Diluted EPS +12.1% YoY สู่ $0.74 ดีกว่า consensus หนุนราคาฟื้นตัวหลังประกาศงบ"
+  ],
+  "risks": [
+    "<b>โครงสร้าง Up-C + TRA ซับซ้อน:</b> ผู้ถือหุ้น Class A รับความเสี่ยง dilution เมื่อ LLC Unitholders แปลงหน่วยเพิ่ม + ภาระ TRA $463.6M ที่ลดกระแสเงินสดสุทธิระยะยาว",
+    "<b>วัฏจักรตลาดประกัน E&S อ่อนตัว:</b> rate softening ต่อเนื่องกดดัน organic growth ให้ชะลอ (10.1% FY25 → 8.9% H1 2026 → 6.7% Q2 2026) และ Adjusted EBITDAC margin หดตัวเล็กน้อย (36.1%→35.7% Q2 YoY)",
+    "<b>P/E GAAP สูงลิ่ว (~55x) ทำให้หุ้นดู \"แพง\" ต่อนักลงทุนที่ไม่เข้าใจโครงสร้าง Up-C</b> เสี่ยง sentiment/technical repricing หากตลาดตีความ headline P/E ผิด",
+    "<b>พึ่งพา M&A:</b> growth ส่วนหนึ่งมาจากการซื้อกิจการต่อเนื่อง หากชะลอหรือราคาซื้อแพงขึ้นอาจกระทบ ROIC และช่องว่าง GAAP-Adjusted",
+    "<b>หนี้และภาระ TRA เพิ่มขึ้น:</b> D/E ขยับจาก 0.14 (FY2025) เป็น 0.17 (TTM) พร้อมภาระ TRA ระยะยาว",
+    "<b>Key-person/relationship risk:</b> ธุรกิจ specialty broker พึ่งพาความสัมพันธ์นายหน้า/underwriter เฉพาะทางสูง"
+  ],
+  "extras": [],
+  "_sig": "sha256:bad819463f63d6824ce4b2040de9be66b5a63451fb7f3922e2af1f9c7ba2ad86"
+}
