@@ -17,8 +17,7 @@
     "sources": [
       "Yahoo Finance",
       "StockAnalysis.com",
-      "งบบริษัท (10-K",
-      "10-Q ผ่าน StockAnalysis)"
+      "งบบริษัท (10-K/10-Q ผ่าน StockAnalysis)"
     ],
     "themeLegacy": {
       "accent": "#0057A8",
@@ -33,7 +32,7 @@
     "migratedFrom": {
       "updated": "2026-09-21T15:39:58+07:00",
       "v2Hash": "7d7db6e71ba8",
-      "prevHash": "e81550e15972"
+      "prevHash": "116331884eb3"
     }
   },
   "market": {
@@ -225,7 +224,7 @@
     "verdictHeadline": "Defensive Dividend King — ราคาลงแล้ว MOS ดีบนกระดาษ แต่ FV อ่อนไหวสูง",
     "verdictBody": "KMB เป็น consumer staples ระดับ Premium — แบรนด์ Huggies, Kleenex, Cottonelle บวกประวัติเพิ่มปันผลยาวนาน (Dividend King) ราคาลงมาที่ {{px}} ทำให้ yield ~5.2% น่าสนใจสำหรับ income investor และ Fair Value {{fv}} (P/E มัธยฐาน + DDM) ให้ MOS {{mos}} แต่ MOS นี้อ่อนไหวมาก — P/E ต่ำสุดในอดีตหรือ r 8% ให้มูลค่าเพียง ~$104–105 ใกล้ราคาตลาด ขณะที่ดีล Kenvue ยังรออนุมัติและ guidance FY27 ถูกลด จึงควรมองเป็นภาพแบบมีช่วง ไม่ใช่ตัวเลขเดียว · จุดซื้อ MOS 20% อยู่ที่ {{mos20}}",
     "strategy": "income investor ที่รับความเสี่ยงเรื่องดีล Kenvue ได้อาจทยอยสะสมใกล้/ต่ำกว่าโซน MOS 20% ที่ {{mos20}} (ราคาปัจจุบัน {{px}}) — ไม่เหมาะกับผู้หวัง capital gain ระยะสั้น; Beta 0.30 ช่วยลด volatility ได้ · ไม่ใช่คำแนะนำการลงทุน",
-    "disclaimerSources": "ที่มาข้อมูล: (1) Yahoo Finance (ราคา ณ {{priceDate}} {{px}}, EPS TTM $5.06, ปันผล $5.12/ปี, 52wk $92.42–$126.55, Beta 0.30), (2) StockAnalysis.com (งบการเงิน TTM, EPS TTM $5.86, forecast FY2026E EPS $7.39, analyst avg target $117.00, P/E 16.70), (3) StockAnalysis news (สถานะดีล Kenvue, guidance FY26/FY27 ณ 21 ก.ย. 2569) · หมายเหตุ: EPS TTM Yahoo $5.06 ต่างจาก StockAnalysis $5.86 (13.7%) — ใช้ $5.86 เพราะตรงกับ NI $1,955M ÷ 333M หุ้น"
+    "disclaimerSources": "ที่มาข้อมูล: (1) Yahoo Finance (ราคา ณ {{priceDate}} {{px}}, EPS TTM $5.06, ปันผล $5.12/ปี, 52wk $92.42–$126.55, Beta 0.30), (2) StockAnalysis.com (งบการเงิน TTM, EPS TTM $5.86, forecast FY2026E EPS $7.39, analyst avg target {{analyst.target}}, P/E 16.70), (3) StockAnalysis news (สถานะดีล Kenvue, guidance FY26/FY27 ณ 21 ก.ย. 2569) · หมายเหตุ: EPS TTM Yahoo $5.06 ต่างจาก StockAnalysis $5.86 (13.7%) — ใช้ $5.86 เพราะตรงกับ NI $1,955M ÷ 333M หุ้น"
   },
   "text": {
     "valHint": "เฉลี่ย 2 วิธี (2 ตระกูล)",
@@ -254,7 +253,6 @@
       "EPS $5.86 (GAAP TTM) × P/E 22.8x = $134 — 22.8x คือมัธยฐานย้อนหลัง 5 ปีงบ (ราคาเฉลี่ยรายปี ÷ EPS dil., ช่วง 17.7–25.0x) มาจากประวัติ ไม่ได้มาจาก P/E ปัจจุบัน · ฐานเดียวกัน (GAAP) · ระวัง: ราคาเฉลี่ยในอดีตสูงกว่าปัจจุบันมาก",
       "D₁ = $5.12 × 1.03 = $5.27; g 3%, r 7% (สมมติฐานของเราเอง) → $5.27/(0.07−0.03) = $131.75 — ปันผล $5.12 ≈ 87% ของ EPS TTM และ FCF TTM $1.82B ครอบคลุมเงินปันผลรวม ~$1.7B · ความอ่อนไหวต่อ r ดูย่อหน้าสรุปด้านล่าง"
     ],
-    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~$7.39 (FY2026E consensus)",
     "vcells": [
       {
         "k": "มูลค่าเหมาะสม",
@@ -262,25 +260,12 @@
       },
       {
         "k": "ส่วนต่างจากราคา",
-        "v": "MOS ~ {{mos}}"
+        "v": "MOS ~ {{mos}}",
+        "tone": "mos"
       },
       {
         "k": "เป้านักวิเคราะห์ 12 ด.",
         "v": "~$117 (consensus Buy)"
-      }
-    ],
-    "legend": [
-      {
-        "text": "ราคา KMB",
-        "swatch": "price"
-      },
-      {
-        "text": "มูลค่าเหมาะสม {{fv}}",
-        "swatch": "fv"
-      },
-      {
-        "text": "จุดสำคัญ",
-        "swatch": "point"
       }
     ],
     "s6": [
@@ -297,7 +282,8 @@
           ],
           [
             "ปันผลรวม 3 ปี",
-            "~$15.36 (+15.7%)"
+            "~$15.36 (+15.7%)",
+            "div"
           ]
         ]
       },
@@ -314,7 +300,8 @@
           ],
           [
             "ปันผลรวม 3 ปี",
-            "~$15.84 (+16.2%)"
+            "~$15.84 (+16.2%)",
+            "div"
           ]
         ]
       },
@@ -331,16 +318,37 @@
           ],
           [
             "ปันผลรวม 3 ปี",
-            "~$16.15 (+16.5%)"
+            "~$16.15 (+16.5%)",
+            "div"
           ]
         ]
       }
     ],
     "targets": [
-      88.73,
-      129.28,
-      154.08
+      89,
+      129,
+      154
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~$7.39 (FY2026E consensus)",
+    "legend": [
+      {
+        "text": "ราคา KMB",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
+    "fv": 133,
+    "fvRange": [
+      132,
+      134
     ]
   },
-  "_sig": "sha256:f3bafb6a34963347407269b3b29c13caa7b298fae5c2288314680bfb38399f46"
+  "_sig": "sha256:3e7842ba6b551796e99ead65558502b9b6c42845e9c85c29f8055540ad04a41f"
 }
