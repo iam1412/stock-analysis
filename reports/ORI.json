@@ -1,0 +1,287 @@
+{
+  "v": 3,
+  "symbol": "ORI",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Old Republic International",
+    "exchange": "NYSE",
+    "sub": "Diversified multi-line insurer • General (workers comp/liability/auto) • Title insurance (real estate) • Long dividend record • Regular + special dividends • Chicago IL",
+    "headerTags": [
+      "Insurance",
+      "Multi-line / Title"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "StockAnalysis.com",
+      "ORI Investor Relations"
+    ],
+    "themeLegacy": {
+      "accent": "#2E7D32",
+      "accentDark": "#1B5E20",
+      "darkGrad": "linear-gradient(135deg,#154b1a 0%,#256428 60%,#2d7230 100%)",
+      "glow": "rgba(46,125,50,0.35)",
+      "subColor": "#daeeda",
+      "headerMuted": "#ddecdd",
+      "verdictText": "#daeeda",
+      "vcellLabel": "#f6fbf6"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T22:32:04+07:00",
+      "v2Hash": "e7035a9af52a"
+    }
+  },
+  "market": {
+    "px": 37.74,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          39.46
+        ],
+        [
+          "พ.ย.25",
+          46.1
+        ],
+        [
+          "ธ.ค.25",
+          45.64
+        ],
+        [
+          "ม.ค.26",
+          39.17
+        ],
+        [
+          "ก.พ.26",
+          42.87
+        ],
+        [
+          "มี.ค.26",
+          39.9
+        ],
+        [
+          "เม.ย.26",
+          39.95
+        ],
+        [
+          "พ.ค.26",
+          37.23
+        ],
+        [
+          "มิ.ย.26",
+          40.92
+        ],
+        [
+          "ก.ค.26",
+          43.21
+        ],
+        [
+          "ส.ค.26",
+          41.73
+        ],
+        [
+          "ก.ย.26",
+          37.74
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 36.65,
+      "hi": 46.76
+    }
+  },
+  "fundamentals": {
+    "eps": 4.55,
+    "dps": 1.26,
+    "bvps": 23.53,
+    "shares": 239405529,
+    "peAvg5y": 10.5,
+    "roe": 18.6,
+    "netMargin": 11.7,
+    "debtToEquity": 0.38,
+    "fy": {
+      "period": "FY2025",
+      "netIncome": 935000000
+    },
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation",
+      "inputs": {
+        "multiple": 10.5,
+        "multipleSource": "median5y"
+      },
+      "note": "10.5x คือมัธยฐาน P/E ย้อนหลัง 5 ปีงบ (FY2021–FY2025) ของ ORI เอง (ราคาเฉลี่ยรายปี ÷ EPS ช่วง 4.7–12.7x) มาจากประวัติ ไม่ได้ลอกจาก P/E ปัจจุบัน",
+      "family": "market"
+    },
+    {
+      "method": "ddm",
+      "label": "DDM / Gordon Growth",
+      "inputs": {
+        "g": 6,
+        "r": 9
+      },
+      "note": "ใช้ปันผลปกติ · สมมติฐานของเรา · ไม่รวมปันผลพิเศษ • ตระกูลเดียวกับ Justified P/BV (นับ 1 เสียง)",
+      "family": "rg"
+    },
+    {
+      "method": "pbv",
+      "label": "Justified P/BV",
+      "inputs": {
+        "g": 4,
+        "r": 9
+      },
+      "override": {
+        "roe": 13,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "family": "rg",
+      "note": "ใช้ normalized ROE 13% (cyclical title) • ตระกูล (r,g) เดียวกับ DDM (เฉลี่ยสองขานี้เป็น 1 เสียง)"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "peAvg5y",
+      "pbv",
+      "netIncomeFy",
+      "eps",
+      "bvps",
+      "roe",
+      {
+        "key": "netMargin",
+        "tone": "neu"
+      },
+      "custom:0",
+      {
+        "key": "yield",
+        "tone": "pos"
+      },
+      "debtToEquity"
+    ],
+    "custom": [
+      {
+        "label": "หุ้นถัวเฉลี่ย FY2021→TTM",
+        "value": "304M → 250M",
+        "note": "ซื้อหุ้นคืนต่อเนื่อง (diluted)",
+        "tone": "pos"
+      }
+    ],
+    "notes": {
+      "mcap": "239.4M หุ้นคงเหลือ (diluted ถัวเฉลี่ย ~250M)",
+      "pe": "(GAAP diluted)",
+      "peAvg5y": "FY2021–FY2025 ช่วง 4.7–12.7x",
+      "pbv": "(FY2025)",
+      "netIncomeFy": "+9.6% YoY vs $853M ปีก่อน",
+      "eps": "diluted • FY2025 $3.72",
+      "bvps": "FY2025 • เพิ่มจาก $21.37 ปีก่อน",
+      "roe": "NI TTM $1.14B • FY2025 16.3%",
+      "netMargin": "Op margin 15.6% (FY2025 13.7%)",
+      "yield": "(regular) • พิเศษ $2.50 (อยู่ใน TTM)",
+      "debtToEquity": "หนี้ $2.28B • เงินสด $418M (TTM)"
+    },
+    "hint": "ข้อมูล ณ 21 ก.ย. 2569"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": -8,
+        "exitMultiple": 9,
+        "divCum": 3.8,
+        "desc": "Title recession + EPS ถอยจากระดับ TTM"
+      },
+      {
+        "growth": 0,
+        "exitMultiple": 10.5,
+        "divCum": 4.1,
+        "desc": "EPS คงระดับ TTM + P/E กลับมัธยฐาน"
+      },
+      {
+        "growth": 5,
+        "exitMultiple": 12,
+        "divCum": 4.4,
+        "desc": "Housing ฟื้น + ซื้อหุ้นคืนต่อ + P/E ใกล้ขอบบนประวัติ"
+      }
+    ],
+    "exitDp": 1,
+    "note": "ผลตอบแทนที่แสดง = ส่วนต่างราคาเป้าเทียบจุดเข้า (ไม่รวมปันผลปกติที่แสดงแยกในแถว \"ปันผลรวม 3 ปี\" และไม่รวมปันผลพิเศษ) Base ตั้ง EPS คงที่ที่ระดับ TTM เพื่อสอดคล้องกับขา P/E ของ FV — ซึ่งอาจมองโลกในแง่ดีเพราะ consensus FY2026e ต่ำกว่า TTM มาก Bear: Title ถดถอย/ดอกเบี้ยสูง EPS ลด ~8%/ปีและ P/E ต่ำกว่ามัธยฐาน Bull: housing ฟื้นและซื้อหุ้นคืนต่อ EPS โต ~5%/ปี ราคาเป้าเป็นสมมติฐาน ไม่ใช่คำพยากรณ์",
+    "hintNote": "(TTM) • ไม่รวมปันผล"
+  },
+  "analyst": {
+    "target": 43.5,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ราคา ORI เคลื่อนไหวในกรอบ 52 สัปดาห์ $36.65–$46.76 โดยเริ่มที่ $39.46 ในเดือน ต.ค. 2568 ขึ้นสูงสุดรายเดือน $46.10 (พ.ย. 2568) ก่อนย่อลงต่ำสุด $37.23 (พ.ค. 2569) แล้วฟื้นถึง $43.21 (ก.ค. 2569) และกลับมาใกล้จุดเริ่มต้น ผลตอบแทนรอบปีดูที่ป้ายด้านบน ราคาปัจจุบัน {{px}} ต่ำกว่ามูลค่าเหมาะสม {{fv}}",
+    "valuation": "FV = เฉลี่ยของ 2 ตระกูล: P/E {{fvHigh}} กับค่าเฉลี่ย DDM/Justified P/BV ($44.53, {{fvLow}} → $43.44) ทั้งสองห่างกันไม่ถึง 2 เท่า • เป้านักวิเคราะห์ไม่ได้เป็นขาใน FV (ใช้ตรวจสอบเท่านั้น) • ความไว: EPS TTM {{eps}} สูงกว่า FY2025 ($3.72) และ consensus FY2026e ($2.94; FY2027e $3.30) มาก หากใช้ EPS ต่ำกว่านี้กับ P/E 10.5x ขา P/E จะต่ำลงและ FV ลดจนราคาปัจจุบันเข้าใกล้หรือสูงกว่า FV ⇒ MOS ที่เห็นบางและขึ้นกับว่า EPS TTM ยั่งยืนแค่ไหน (ยังไม่ได้ตรวจแยกกำไรจากการลงทุน/ผลขาดทุนภัยพิบัติ)",
+    "gauge": "ราคาปัจจุบัน {{px}} ต่ำกว่า Fair Value {{fv}} (MOS {{mos}}) ยังไม่ถึงโซนน่าสนใจมาก (MOS 20% = {{mos20}}) เป้าเฉลี่ยนักวิเคราะห์ {{analyst.target}} ({{analyst.pct}}) จาก 2 ราย (Buy) อยู่ต่ำกว่า FV ของเรา จึงใช้เป็นข้อมูลตรวจสอบเท่านั้น ผู้เน้นปันผลอาจทยอยสะสมได้ ส่วน deep value รอโซน MOS 20–30% ({{mos20}}–{{mos30}})",
+    "mos": "MOS ระดับกลาง — ราคาต่ำกว่า FV แต่ยังไม่ถึงโซน deep value • เหมาะทยอยสะสมสำหรับ income investor",
+    "verdictHeadline": "ORI — Dividend Compounder ราคาต่ำกว่า FV เล็กน้อย ปันผลปกติ+พิเศษ แต่ระวัง EPS TTM สูงกว่า forward",
+    "verdictBody": "Old Republic International เป็น multi-line insurer ที่จ่ายปันผลปกติต่อเนื่อง ด้วย EPS TTM {{eps}} และราคาปัจจุบัน {{px}} ซื้อขายที่ P/E ~{{pe}}x ต่ำกว่ามัธยฐานย้อนหลัง 5 ปีงบของตัวเอง (10.5x) ปันผลปกติ ~3.15% + ปันผลพิเศษ $2.50 ใน TTM ทำให้ TTM yield รวม ~9.4% General Insurance ให้รายได้มั่นคง ขณะที่ Title Insurance มี upside ตาม housing cycle ราคาต่ำกว่า FV {{fv}} เล็กน้อย แต่ FV ขึ้นกับ EPS TTM ที่สูงกว่า consensus forward มาก จึงเหมาะสำหรับ income investor ที่ยอมรับความไม่แน่นอนของ EPS",
+    "strategy": "เหมาะ <b>Income Investor / Dividend Growth</b> — ทยอยสะสมได้ใกล้ราคาปัจจุบัน {{px}} (ต่ำกว่า FV {{fv}}) สำหรับ value investor เข้มข้นรอโซน MOS 20% ที่ {{mos20}} จุดเด่นคือ <b>ปันผลปกติ ~3%</b> + โอกาสรับ <b>ปันผลพิเศษ</b> เมื่อ Title Insurance มีกำไรส่วนเกิน (ไม่แน่นอน) ถือระยะยาว 3–5 ปี แต่ควรติดตามงบไตรมาสถัดไป (22 ต.ค. 2569) ว่า EPS ยั่งยืนหรือไม่",
+    "disclaimerSources": "ที่มาข้อมูล: Yahoo Finance (finance.yahoo.com/quote/ORI), StockAnalysis.com (stockanalysis.com/stocks/ori), Old Republic IR / StockAnalysis Balance Sheet (stockanalysis.com/stocks/ori/financials/balance-sheet) ราคา ณ {{priceDate}}"
+  },
+  "text": {
+    "valHint": "2 ตระกูล (P/E • DDM+P/BV)",
+    "chartHint": "ต.ค. 2568 – ก.ย. 2569",
+    "metricsNote": "<b>หมายเหตุปันผล:</b> ORI จ่ายปันผล 2 ส่วน: <b>(1) ปันผลปกติ</b> $0.315/ไตรมาส ({{dps}}/ปี) และ <b>(2) ปันผลพิเศษ</b> เมื่อ Title Insurance มีกำไรส่วนเกิน — ใน TTM มีพิเศษ $2.50/หุ้น (DPS รวม $3.76 ตาม StockAnalysis) แต่ปันผลพิเศษไม่แน่นอน จึงใช้เฉพาะปันผลปกติ {{dps}} ใน DDM"
+  },
+  "catalysts": [
+    "<b>ดอกเบี้ยลด — Title Insurance ฟื้น:</b> หากดอกเบี้ยลด refinancing + home sales ควรหนุน Title segment ที่ผูกกับตลาดอสังหาริมทรัพย์โดยตรง",
+    "<b>ปันผลปกติ + พิเศษ:</b> ปันผลปกติ {{dps}}/ปี (~3.15%) และพิเศษ $2.50 ใน TTM ทำให้ผลตอบแทนเงินสดรวมสูงในปีที่มีพิเศษ (ไม่รับประกัน)",
+    "<b>กำไรสูงขึ้น:</b> NI TTM $1.14B (net margin 11.7%) สูงกว่า FY2025 ($935M) สะท้อนกำไรจากธุรกิจหลักดีขึ้น (ยังไม่ได้แยกส่วนกำไรจากการลงทุน)",
+    "<b>ROE สูง & Balance sheet:</b> ROE TTM 18.6% (FY2025 16.3%) D/E 0.38 เงินสด $418M",
+    "<b>Buyback + Dividend:</b> หุ้นถัวเฉลี่ย diluted ลดจาก 304M (FY2021) เหลือ 250M (TTM) เพิ่ม EPS ต่อหุ้น + ปันผลพิเศษเมื่อทุนเกิน"
+  ],
+  "risks": [
+    "<b>Title Insurance Cyclicality:</b> Title segment สัมพันธ์ตรงกับ housing market ดอกเบี้ยสูงนาน/ตลาดอสังหาริมทรัพย์แช่แข็ง → EPS ผันผวนมาก",
+    "<b>ดอกเบี้ยขาขึ้น:</b> ดอกเบี้ยสูงกดทั้ง Title volume และ bond portfolio มูลค่า (unrealized loss) ขณะที่ cost of claims เพิ่ม",
+    "<b>Catastrophic Insurance Losses:</b> General Insurance เสี่ยงภัยธรรมชาติ/catastrophe ขนาดใหญ่ที่กดัน combined ratio ในปีที่เกิดเหตุ",
+    "<b>การแข่งขันสูงในตลาด Title:</b> Fidelity National, First American เป็นคู่แข่งหลัก การรักษาส่วนแบ่งตลาดทำได้ยากในช่วง volume ต่ำ",
+    "<b>Analyst coverage ต่ำ + EPS forward ต่ำกว่า TTM:</b> มีเพียง 2 นักวิเคราะห์ (Yahoo) consensus FY2026e $2.94 ต่ำกว่า EPS TTM {{eps}} มาก แปลว่า TTM อาจสูงชั่วคราว ราคาอาจเบี่ยงจาก FV ได้นาน"
+  ],
+  "extras": [],
+  "v2Display": {
+    "legValues": [
+      47.78,
+      44.53,
+      null
+    ],
+    "targets": [
+      null,
+      47.78,
+      63.24
+    ],
+    "rets": {
+      "texts": [
+        "-15.5%",
+        "+26.6%",
+        "+67.6%"
+      ],
+      "neg": "-",
+      "perYear": "cagr",
+      "div": false
+    },
+    "fvRange": [
+      42.35,
+      47.78
+    ]
+  },
+  "_sig": "sha256:c0f75635f2cdf0e3cfb755df0912556e2db44b764bce9095863e35d2555692a1"
+}

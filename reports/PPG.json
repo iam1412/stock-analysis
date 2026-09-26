@@ -1,0 +1,274 @@
+{
+  "v": 3,
+  "symbol": "PPG",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "PPG Industries, Inc.",
+    "exchange": "NYSE",
+    "sub": "Global coatings leader • Architectural (Glidden/Olympic) • Automotive OEM & refinish • Aerospace & industrial coatings • Sikkens brand • ~$16B revenue • Recovery play on auto/construction",
+    "headerTags": [
+      "Materials · Specialty Chemicals",
+      "Global Coatings"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "StockAnalysis.com",
+      "PPG Investor Relations"
+    ],
+    "themeLegacy": {
+      "accent": "#f56200",
+      "accentDark": "#b83d00",
+      "darkGrad": "linear-gradient(135deg,#1a0800 0%,#2d1200 40%,#1a0800 100%)",
+      "glow": "rgba(255,102,0,0.18)",
+      "subColor": "#ff8833",
+      "headerMuted": "#e35a00",
+      "verdictText": "#fff3ee",
+      "vcellLabel": "#f76706"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T23:32:21+07:00",
+      "v2Hash": "872063b98123"
+    }
+  },
+  "market": {
+    "px": 107.52,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          97.75
+        ],
+        [
+          "พ.ย.25",
+          100.04
+        ],
+        [
+          "ธ.ค.25",
+          102.46
+        ],
+        [
+          "ม.ค.26",
+          115.63
+        ],
+        [
+          "ก.พ.26",
+          123.27
+        ],
+        [
+          "มี.ค.26",
+          106.88
+        ],
+        [
+          "เม.ย.26",
+          108.5
+        ],
+        [
+          "พ.ค.26",
+          112.98
+        ],
+        [
+          "มิ.ย.26",
+          121.29
+        ],
+        [
+          "ก.ค.26",
+          110.52
+        ],
+        [
+          "ส.ค.26",
+          112.17
+        ],
+        [
+          "ก.ย.26",
+          107.52
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 93.39,
+      "hi": 133.43
+    }
+  },
+  "fundamentals": {
+    "eps": 7.9,
+    "dps": 2.96,
+    "bvps": 35.87,
+    "shares": 222300000,
+    "epsForward": 7.9,
+    "revenue": 16400000000,
+    "ebitda": 2630000000,
+    "roe": 19.3,
+    "roa": 7.2,
+    "fcf": 1410000000,
+    "netDebt": 5860000000,
+    "beta": 1,
+    "epsBasis": "adj-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation (Adjusted EPS)",
+      "inputs": {
+        "multiple": 15,
+        "multipleSource": "median5y",
+        "medianWindow": "FY2024–FY2025"
+      },
+      "family": "market",
+      "note": "อ้างอิง FY2026E guidance midpoint $7.70–$8.10 (reaffirmed ในงบ Q2 2026 28 ก.ค. 2569) · P/E เป้า 15x = มัธยฐานตัวคูณ adjusted ย้อนหลังของ PPG เอง (FY2025 14.2x · FY2024 16.6x — ก่อนหน้านั้นฐานไม่เทียบกันได้จากการขายธุรกิจ architectural US/Canada + silicas) · ราคาปัจจุบันเทรดที่ P/E adj. (fwd) ~{{peForward}}x ต่ำกว่าเป้าเล็กน้อย · หมายเหตุ: ตัวคูณ GAAP ย้อนหลัง 5 ปีมัธยฐาน 26.3x ไม่ใช้ เพราะ GAAP EPS ถูกบิดจากรายการพิเศษ/ขายธุรกิจ"
+    },
+    {
+      "method": "dcf",
+      "label": "DCF (FCF to equity — สมมติฐานของผู้วิเคราะห์เอง)",
+      "inputs": {
+        "g1": 5,
+        "years1": 5,
+        "tg": 2.5,
+        "r": 9,
+        "rfCurrency": "USD"
+      },
+      "override": {
+        "netDebt": 0,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "ที่มา StockAnalysis · สมมติฐานเอง · g ปลายทาง 2.5% สมมติฐานเอง · 74.5% ของมูลค่ารวม · ตระกูล DCF/FCF อิสระจาก P/E · ไม่ใช้ EV/EBITDA และ FCF-yield แบบเดิมเพราะตัวคูณ peer/yield เป็นค่าที่ยกมาโดยไม่มีมัธยฐานวัดจริงรองรับ",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "peForward",
+      "custom:0",
+      "pbv",
+      {
+        "key": "revenue",
+        "tone": "none"
+      },
+      "custom:1",
+      "ebitdaMargin",
+      "roe",
+      {
+        "key": "fcf",
+        "tone": "neu"
+      },
+      "netDebt",
+      "yield",
+      "beta"
+    ],
+    "custom": [
+      {
+        "label": "P/E adj. เฉลี่ย (2 ปีเทียบกันได้)",
+        "value": "14.2–16.6x",
+        "note": "FY2025 14.2x · FY2024 16.6x — ก่อนหน้านั้นฐานไม่เทียบกัน (ขายธุรกิจ architectural US/Canada + silicas)"
+      },
+      {
+        "label": "EPS adj. FY2025 / FY2026E",
+        "value": "$7.58 / {{eps}}",
+        "note": "FY2024 adj: $7.87 · H1'26 adj: $4.06 (Q1 $1.83 + Q2 $2.23)"
+      }
+    ],
+    "notes": {
+      "mcap": "222.3M หุ้น (shares outstanding)",
+      "peForward": "GAAP TTM P/E ~15.0x · adj EPS 2026E {{eps}} (reaffirmed 28 ก.ค. 2569)",
+      "pbv": "(Q1 2026)",
+      "revenue": "FY2025: $15.9B · FY2024: $15.8B",
+      "roe": "TTM · Equity ~$8.0B · Assets $22.1B",
+      "fcf": "FY2025 $1.16B → TTM ฟื้นตัวต่อเนื่อง · FCF/sh ~$6.33",
+      "netDebt": "Debt $7.47B · Cash $1.61B · Net D/EBITDA ~2.2x",
+      "yield": "{{dps}}/sh ต่อปี (~$0.74/ไตรมาส) · ปันผลต่อเนื่อง 55 ปี",
+      "beta": "Cyclical exposure: auto OEM + construction"
+    },
+    "hint": "ข้อมูล ณ 21 ก.ย. 2569 / FY2025 + Q2 2026"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 0,
+        "exitMultiple": 12,
+        "divCum": 8.88,
+        "desc": "Auto OEM ไม่ฟื้น · macro อ่อน · P/E หด"
+      },
+      {
+        "growth": 5,
+        "exitMultiple": 15,
+        "divCum": 8.88,
+        "desc": "Auto & construction ฟื้น · margin ปรับตัวขึ้น"
+      },
+      {
+        "growth": 8,
+        "exitMultiple": 17,
+        "divCum": 8.88,
+        "desc": "Re-rate กลับ mid-cycle · aerospace & pricing power เต็มที่"
+      }
+    ],
+    "exitDp": 0,
+    "note": "การคาดการณ์นี้ใช้ EPS adjusted FY2026E {{eps}} (midpoint guidance $7.70–$8.10 — reaffirmed ในงบ Q2 2026 28 ก.ค. 2569) เป็นฐาน · ปันผลรวม 3 ปี {{scn.base.div}} ({{dps}}/ปี — PPG ปันผลต่อเนื่อง 55 ปี ถือว่า reliable) · P/E ออกอิงมัธยฐาน adjusted ย้อนหลังของ PPG เอง (14.2–16.6x) ไม่ใช่ตัวคูณปัจจุบัน Bear case: หาก auto OEM ยังซบเซา, housing starts ยังอ่อน และ industrial volume ไม่ฟื้น — earnings growth อาจหยุดนิ่งและ market de-rate · Base/Bull case: Q2 2026 organic +4% ต่อเนื่องเป็นไตรมาสที่ 6 สนับสนุนมุมมองฟื้นตัวใน 2H 2026 – 2027 หลังสต็อกลดลง + aerospace demand เพิ่มขึ้น"
+  },
+  "analyst": {
+    "target": 126.29,
+    "n": 21,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "หุ้น PPG เคลื่อนไหวระหว่าง <b>$93.39–$133.43</b> ในรอบ 52 สัปดาห์ โดยช่วง ต.ค. 2568 เป็นจุดต่ำสุดของกราฟรายเดือนที่ $97.75 จากแรงกดดัน auto OEM ที่อ่อนแอและตลาดสีอาคารพาณิชย์ชะลอตัว จากนั้นฟื้นตัวแรงช่วง ม.ค.–ก.พ. 2569 แตะสูงสุดของกราฟที่ $123.27 หลัง Q1 2026 adjusted EPS $1.83 เกินคาด (+6% YoY) และ Q2 2026 adj EPS $2.23 ต่อเนื่อง (organic +4%) ราคาย่อตัวลงมาอยู่ที่ {{px}} ในเดือน ก.ย. 2569 ยังต่ำกว่ามูลค่าเหมาะสม {{fv}} ({{mos}}) สะท้อนว่าตลาดยังรอความชัดเจนของ organic volume growth ผลตอบแทนรอบปี {{chg}}",
+    "valuation": "P/E method ($119) ยึดตัวคูณ adjusted ที่วัดจริงของ PPG เอง (14.2–16.6x) · DCF ($111) เป็นสมมติฐานของผู้วิเคราะห์ (FCF โต 5% · r 9% · g 2.5%) ที่แสดงตารางครบ — ทั้งสองอยู่ห่างกันไม่ถึง 2 เท่า · ปรับโครง FV ตามรอบนี้: ตัด EV/EBITDA (ตัวคูณ peer ยกมาเอง ไม่มีมัธยฐานวัด) และ FCF yield (4.8% ไม่มีที่มาวัดได้) ออกจากขา FV · ค่าเฉลี่ย 2 วิธี $115.1 ปัดเป็น <b>{{fv}}</b> เป็น Fair Value หลัก · single-family sensitivity: ถ้า P/E 14.2x → $112 ค่าเฉลี่ยราว $111.6 (MOS ต่ำลง) · ถ้า P/E 16.6x → $131 ค่าเฉลี่ยราว $121 · เป้า analyst 21 คน {{analyst.target}} ({{analyst.pct}} จากราคาปัจจุบัน) ใช้เป็นบริบทตรวจความสอดคล้องเท่านั้น ไม่ใช่ขาของ FV แหล่งอ้างอิงที่ 1: Yahoo Finance ({{px}}, 52W range $93.39–$133.43, P/E TTM adj ~13.2x) · แหล่งอ้างอิงที่ 2: StockAnalysis.com/PPG (EPS, EBITDA, FCF, balance sheet) · แหล่งอ้างอิงที่ 3: PPG Investor Relations Q2 2026 press release (28 ก.ค. 2569 — adj EPS $2.23, guidance reaffirmed $7.70–$8.10)",
+    "gauge": "ราคา {{px}} ยัง<b>อยู่เหนือโซน MOS 20% ({{mos20}})</b> และ<b>ต่ำกว่า Fair Value ({{fv}}) ราว {{mos}}</b> · เป้าเฉลี่ย Analyst {{analyst.target}} สูงกว่า FV ที่คำนวณเอง สะท้อนว่านักวิเคราะห์มองฟื้นตัวเร็วกว่าสมมติฐานฐานของเรา โซนสะสมที่น่าสนใจสำหรับ value investor คือรอบ {{mos20}} ลงไป · ถ้าตลาดขาย panic จาก auto OEM slowdown อีกรอบ → โซน Deep Value {{mos30}} (MOS 30%) จะเป็น entry ที่ดีมาก",
+    "mos": "MOS บางหลังปรับโครง FV ให้เหลือเฉพาะขาที่วัด/แสดงที่มาได้ (P/E ที่วัดจริง + DCF ตารางเต็ม) · ราคาใกล้มูลค่าเหมาะสม ยังไม่ถึงโซน MOS 20% — รอจังหวะย่อ",
+    "verdictHeadline": "PPG — Recovery Play ราคาใกล้มูลค่าเหมาะสม · ปันผล 55 ปีต่อเนื่อง",
+    "verdictBody": "PPG Industries เป็น global coatings leader ที่มี moat แข็งแกร่ง (แบรนด์ Glidden/Olympic/Sikkens · aerospace coatings · distribution network ลึก) แต่ปี 2024–2025 กดดันจาก auto OEM slowdown, housing weakness และ industrial destocking ทำให้ adj EPS ลดจาก $7.87 (FY2024) → $7.58 (FY2025) · Q1–Q2 2026 เริ่มฟื้นชัดเจนขึ้น (adj EPS $1.83 + $2.23 = H1 $4.06 · organic +4% ใน Q2 เป็นไตรมาสที่ 6 ติดต่อกันที่โต) และ guidance FY2026 $7.70–$8.10 ถูก reaffirm ในงบ Q2 2026 (28 ก.ค. 2569) · ราคาปัจจุบัน {{px}} ต่ำกว่า Fair Value {{fv}} ({{mos}}) สะท้อนว่าตลาดยังรอความชัดเจนของ volume recovery · ถ้า base case เป็นจริง (EPS +5%/ปี + P/E ออก 15x — อิงมัธยฐาน adjusted ย้อนหลังของ PPG เอง) ผลตอบแทน 3 ปี {{scn.base.ret}} (ไม่รวมปันผลเพิ่มอีก {{scn.base.div}}) · ปันผล {{dps}}/ปี ต่อเนื่อง 55 ปีเป็น safety net ระหว่างรอ",
+    "strategy": "ทยอยสะสมที่ระดับ {{mos20}} ลงไป · เพิ่มน้ำหนักถ้าราคาลงถึง {{mos30}} (MOS 30%) · ตั้ง Stop ถ้า EPS guidance ลดลงต่อเนื่อง 2 ไตรมาส · Hold ระยะ 2–3 ปีรอ volume recovery ต่อเนื่องจาก Q2 2026 + margin expansion",
+    "disclaimerSources": "แหล่งข้อมูล: Yahoo Finance (ราคา, chart, 52W range) · StockAnalysis.com (EPS, EBITDA, FCF, balance sheet) · PPG Investor Relations / BusinessWire (Q2 2026 earnings release 28 ก.ค. 2569, FY2025 earnings — guidance $7.70–$8.10 reaffirmed) · StockAnalysis forecast (analyst consensus $126.29, 21 analysts)"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 2 วิธี (P/E · DCF)",
+    "chartHint": "ต.ค. 2568 – ก.ย. 2569"
+  },
+  "catalysts": [
+    "<b>Aerospace recovery:</b> Performance Coatings segment margin 24.4% ใน Q1 2026 ยังแข็งแกร่ง — Boeing/Airbus production ramp-up ช่วย PPG ตรง",
+    "<b>Auto refinish resilience:</b> ธุรกิจสี auto refinish (ซ่อม) เป็น non-discretionary — ผู้คนยังต้องซ่อมรถเสมอ เป็น cushion ระหว่าง OEM slowdown",
+    "<b>Pricing power & raw material tailwind:</b> ราคาวัตถุดิบ (TiO2, solvents) ลดลงจาก peak — ช่วยขยาย margin โดยไม่ต้องขึ้นราคาขาย",
+    "<b>Volume recovery ต่อเนื่อง:</b> PPG reaffirmed EPS guidance $7.70–$8.10 ในงบ Q2 2026 (28 ก.ค. 2569) · Q2 sales +7% YoY, organic +4% (ไตรมาสที่ 6 ติดต่อกันที่โต) · outlook Q3 2026 organic growth low-to-mid single digit",
+    "<b>Share buyback + dividend:</b> ซื้อคืนหุ้น ~$100M ใน Q1 2026 + ปันผล ~$0.74/ไตรมาส ({{dps}}/ปี) · capital allocation มีวินัย เพิ่ม EPS per share",
+    "<b>Architectural coatings stabilization:</b> ตลาดสีอาคารในยุโรปเริ่ม bottom out · Glidden/Olympic แบรนด์แข็งแกร่งในสหรัฐ"
+  ],
+  "risks": [
+    "<b>Auto OEM volume weakness:</b> สัดส่วน Industrial Coatings ~40% ของ revenue — ถ้า auto production ยังต่ำ (EV transition ชะลอยอดโดยรวม) กดดัน margins ต่อเนื่อง",
+    "<b>Net debt สูง:</b> Net debt ~$5.86B · Net D/EBITDA ~2.2x — ถ้า rates สูงนาน ดอกเบี้ยจ่ายเพิ่มกดดัน EPS · refunding risk ปี 2026–2027",
+    "<b>Housing market slowdown:</b> Architectural coatings อ่อนแอถ้า housing starts ยังต่ำ (ดอกเบี้ยสูง) — โดยเฉพาะ Do-It-Yourself segment",
+    "<b>Iran conflict cost inflation:</b> PPG เตือน mid-single-digit inflation จาก Iran conflict ใน Q1 2026 earnings call — กดดัน raw material cost ถ้าความขัดแย้งยืดเยื้อ",
+    "<b>Volume growth momentum ยังต้องพิสูจน์:</b> แม้ Q2 2026 organic +4% (ไตรมาสที่ 6 ติดต่อกันที่โต) แต่ยังต้องดูว่า momentum นี้ sustain ต่อได้ไหมใน 2H 2026 ก่อนตลาดจะ re-rate เต็มที่",
+    "<b>Currency headwinds:</b> PPG มี revenue ต่างประเทศสูง (~55%) — USD แข็งค่ากด reported revenue/EPS"
+  ],
+  "extras": [],
+  "v2Display": {
+    "fv": 115,
+    "fvRange": [
+      111,
+      119
+    ],
+    "cards": {
+      "ebitdaMargin": {
+        "v": "~16.6%",
+        "d": "EBITDA $2.63B · Segment EBITDA margin 19%+"
+      }
+    },
+    "legValues": [
+      119,
+      111
+    ]
+  },
+  "_sig": "sha256:a00c18d1c66defd3daca8799868d8789909ae97e672a9b02e01724c8b5e9f62b"
+}
