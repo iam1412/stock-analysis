@@ -19,7 +19,8 @@ const DV = require('../../tools/derived-values.js');
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const METHOD_NAME = { pe: 'P/E', pbv: 'P/BV', ps: 'P/S', evsales: 'EV/Sales', evebitda: 'EV/EBITDA', pfcf: 'P/FCF', fcfyield: 'FCF Yield',
   pffo: 'P/FFO', ddm: 'DDM / Gordon Growth', ddm2: 'DDM 2 ระยะ', dcf: 'DCF', ri: 'Residual Income', declared: 'มูลค่าประกาศ' };
-const SRC_NAME = { median5y: 'มัธยฐาน 5 ปี', median10y: 'มัธยฐาน 10 ปี', peer: 'ค่ากลางกลุ่มเทียบ', justified: 'justified', sector: 'ค่ากลางเซกเตอร์', current: 'ตัวคูณปัจจุบัน', author: 'ผู้วิเคราะห์กำหนด' };
+// author = ผู้เขียนตั้งตัวคูณเอง — template ไม่พิมพ์ป้ายที่ผู้เขียนไม่ได้เขียน (เจ้าของ 27 ก.ย. 69: ห้ามป้ายที่ template คิดขึ้นเอง) ⇒ ช่องว่าง
+const SRC_NAME = { median5y: 'มัธยฐาน 5 ปี', median10y: 'มัธยฐาน 10 ปี', peer: 'ค่ากลางกลุ่มเทียบ', justified: 'justified', sector: 'ค่ากลางเซกเตอร์', current: 'ตัวคูณปัจจุบัน', author: '' };
 // Plan 2a Task 9 (§3.6 J) — ป้าย FFO/AFFO ของขา pffo · driver ffo · exit pffo · ชุดเดียวกับการ์ด/gate (S.FFO_LABEL · Plan 4c-prep + Core FFO)
 const ffoLabel = (doc) => S.FFO_LABEL[doc.fundamentals.ffoBasis || 'ffo'];
 // Plan 4b Task 2: scenarios.exitDp → ทศนิยมคงที่ · ไม่มี = พิมพ์ค่าดิบเหมือนเดิม
@@ -49,7 +50,7 @@ function mdesc(leg, view) {
   const m = (v) => view.cur + RV.fmtPerShare(v);
   // Plan 4c-prep (D2): ตัวตั้งตาม inputs.base ผ่าน C.withBase (ตัวเดียวกับ compute) · epsLabel ยังรับ leg เดิม
   const i = leg.inputs, lb = C.withBase(leg, view.doc.fundamentals), b = { ...view.doc.fundamentals, ...(lb.override || {}) };
-  const src = i.medianWindow ? ` (มัธยฐาน ${i.medianWindow})` : i.multipleSource ? ` (${SRC_NAME[i.multipleSource]})` : '';
+  const src = i.medianWindow ? ` (มัธยฐาน ${i.medianWindow})` : i.multipleSource && SRC_NAME[i.multipleSource] ? ` (${SRC_NAME[i.multipleSource]})` : '';
   const rng = i.multipleRange ? ` · กรอบ ${i.multipleRange[0]}–${i.multipleRange[1]}x` : '';
   // R7 — 'current': ตัวคูณสดจากราคาวันนี้ (หน้า v3 build ใหม่จาก JSON ทุกครั้ง จึงไม่ค้าง) · ตัวตั้งเดียวกับ compute (S.CURRENT_BASE + override)
   const live = i.multipleSource === 'current';
@@ -74,6 +75,22 @@ function mdesc(leg, view) {
     case 'declared': return `ค่าประกาศ (${i.basis})` + (i.extrasRef != null ? ' — ดูตารางประกอบ' : '');
     default: return `${leg.method === 'pffo' ? `P/${ffoLabel(view.doc)}` : METHOD_NAME[leg.method]} ${live ? 'ปัจจุบัน ' : ''}${mult}x${live ? '' : src}${rng}`;
   }
+}
+
+// v2Display.blocks (ใบ migrate · 27 ก.ย. 69): บล็อกที่ผู้เขียนแทรกนอกโครง template (ข้อความ prose · ตาราง cell = prose) ตามลำดับเดิม
+//   ไม่มี section = การ์ดท้ายหมวด after (ในหมวดเดียวกัน) · section = หมวดเสริมของผู้เขียนทั้งหมวดต่อจากหมวด after (เลข/หัว h2 ของผู้เขียน)
+function blockBody(b, view) {
+  const pr = (s) => P.renderProse(s, view, { mode: 'v2src' });
+  return b.parts.map((pt) => (pt.text != null ? `<p style="font-size:12.5px;line-height:1.7;margin:0 0 10px">${pr(pt.text)}</p>`
+    : `<table class="xtab">${pt.table.headers.length ? `<tr>${pt.table.headers.map((h) => `<th>${esc(h)}</th>`).join('')}</tr>` : ''}${pt.table.rows.map((r) => `<tr>${r.map((c) => `<td>${pr(c)}</td>`).join('')}</tr>`).join('')}</table>`)).join('');
+}
+const blocksOf = (doc, n, sec, top) => { const vd = C.v2DisplayOf(doc); return vd && Array.isArray(vd.blocks) ? vd.blocks.filter((b) => b.after === String(n) && !!b.section === sec && (sec || (b.at === 'top') === !!top)) : []; };
+// at: 'top' = บล็อกที่ผู้เขียนวางก่อนเนื้อหาของหมวด (ต่อจากหัวหมวด — B/FTS กล่อง "อ่านก่อน") · ไม่มี = ท้ายหมวด
+function blocksIn(doc, view, n, top) {
+  return blocksOf(doc, n, false, top).map((b) => `\n    <div class="card" style="${top ? 'margin-bottom:14px' : 'margin-top:14px'}">${blockBody(b, view)}</div>`).join('');
+}
+function blocksHtml(doc, view, n) {
+  return blocksOf(doc, n, true).map((b) => `\n  <section>\n    <div class="s-head">${b.section.n != null ? `<div class="n">${b.section.n}</div>` : ''}<h2>${esc(b.section.title || '')}</h2></div>\n    <div class="card">${blockBody(b, view)}</div>\n  </section>`).join('');
 }
 
 function extrasHtml(doc, view, after) {
@@ -102,7 +119,8 @@ function liveCardValue(fz, px) {
   let k = 0;
   return fz.v.replace(/[0-9][0-9,]*(?:\.[0-9]+)?/g, (n) => {
     if (k >= bases.length) return n;
-    const b = bases[k++], want = fz.op === 'basePct' ? b / px * 100 : px / b;
+    // pxTimesBase = ราคา × ฐาน (Market Cap ในหน่วยที่ผู้เขียนพิมพ์ — ฐาน = หุ้น ÷ หน่วย · TD "~US$198 พันล้าน")
+    const b = bases[k++], want = fz.op === 'basePct' ? b / px * 100 : fz.op === 'pxTimesBase' ? px * b : px / b;
     return want.toFixed(DV.decOfNum(n));
   });
 }
@@ -175,6 +193,20 @@ function v2Ret(rets, i, view) {
   return out;
 }
 
+// แถวผลตอบแทนของผู้เขียนในเซลล์ §6 (v2Display.s6[i].rows[j][2] — 27 ก.ย. 69): ตัวเลข % ตัวเดียวคิดสดที่ราคาปัจจุบัน ('tot' รวม · 'py' ต่อปี CAGR/linear ตาม scenarios.perYear)
+//   ทศนิยม · เครื่องหมาย + · ขีดลบ (− หรือ -) ตามที่ผู้เขียนพิมพ์
+function liveRowRet(text, kind, i, view) {
+  const sc = view.d && view.d.scenarios && view.d.scenarios[i];
+  if (!sc) return text;
+  const years = view.doc.scenarios.years;
+  const want = kind === 'tot' ? sc.total : sc.perYear != null ? sc.perYear
+    : view.doc.scenarios.perYear === 'linear' ? sc.total / years : (Math.pow(1 + sc.total / 100, 1 / years) - 1) * 100;
+  return String(text).replace(/([+\-−–]?)\s*([0-9][0-9,]*(?:\.([0-9]+))?)(\s*%)/, (m, sg, n, dec, pct) => {
+    const r = Math.abs(want).toFixed(dec ? dec.length : 0), neg = want < 0 && +r !== 0;
+    return (neg ? (sg === '-' ? '-' : '−') : sg === '+' || !sg ? (sg ? '+' : '') : '+') + r + pct;
+  });
+}
+
 function valHintParts(doc, view) {
   if (doc.text && doc.text.valHint) return { hint: P.renderProse(doc.text.valHint, view, { mode: 'v2src' }), box: 'มูลค่าเหมาะสม (Fair Value)' };
   const fv = view.legs.filter((l) => l.role === 'fv'), nCtx = view.legs.length - fv.length;
@@ -185,11 +217,20 @@ function valHintParts(doc, view) {
   return { hint, box: `มูลค่าเหมาะสม${word} (Fair Value)` };
 }
 
+// สัญลักษณ์สีใน legend หมวด 2 (ราคา · มูลค่าเหมาะสม · จุดสำคัญ) — ชุดเดียวของ template · v2Display.legend อ้างด้วยชื่อ
+const SWATCH = { price: '<i style="background:var(--blue)"></i>', fv: '<i style="background:#1e8e3e"></i>', point: '<i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>' };
+
 function toV2Source(doc, view) {
   const pr = (s) => P.renderProse(s, view, { mode: 'v2src' });
   const T = doc.text || {}; const vh = valHintParts(doc, view);
   const m = doc.meta, d = view.d, s = doc.scenarios, TH = doc.currency === 'THB';
   const vd = C.v2DisplayOf(doc);
+  // v2Display.titles (ใบ migrate · 27 ก.ย. 69): หัวหมวดที่ผู้เขียนเขียนเอง ("ราคาตั้งแต่ IPO" · "… — วิเคราะห์ Moat เชิงลึก") · ไม่มี = หัวของ template
+  // v2Display.hints (ใบ migrate): ป้าย .hint หัวหมวดที่ template ไม่มี (หมวด 4 · 5 · 7 · 8 — CIEN "รายละเอียดธุรกิจ ณ งบ Q2 FY2026")
+  const hnt = (n) => (vd && vd.hints && vd.hints[String(n)] != null ? `<div class="hint">${pr(vd.hints[String(n)])}</div>` : '');
+  const ttl = (n, def) => (vd && vd.titles && vd.titles[String(n)] != null ? esc(vd.titles[String(n)]) : def);
+  // v2Display.markers (ใบ migrate): ป้ายหมุดเกจหมวด 4 ของผู้เขียน {cur?, fair?} (prose · token สด) — "เหมาะสม mid-cycle {{fv}}" (FANG)
+  // v2Display.legend (ใบ migrate): legend หมวด 2 ของผู้เขียนทุกช่องตามตัว [{text (prose), swatch?}]
   // ลำดับ = S.cardEntries (custom แทรกได้ด้วย "custom:<i>") · tone → class สีเดิม (.v pos|neg|neu) — ไม่มี markup ใน JSON (§3.6 H)
   const noteOf = (k) => doc.metrics.notes && doc.metrics.notes[k];
   // tone 'none' (Plan 4b Task 1) = ไม่มีคลาสสี แม้การ์ดแคตตาล็อกมีค่าตั้งต้น (466 การ์ด v2 ไม่มีคลาส)
@@ -209,10 +250,25 @@ function toV2Source(doc, view) {
     return { k: esc(c.k), v: esc(c.v), d: esc(c.d) + (note ? (c.d ? ' · ' : '') + pr(note) : ''), cls: toneCls(e.tone, c.cls) };
   });
   const cardHtml = cards.map((c) => `<div class="metric"><div class="k">${c.k}</div><div class="v${c.cls ? ' ' + c.cls : ''}">${c.v}</div><div class="d">${c.d}</div></div>`).join('\n      ');
-  const legsHtml = view.legs.map((l, i) => `<div class="vmethod">
-        <div><div class="mname">${i + 1}. ${esc(l.label)}${l.role === 'context' ? ' (บริบท — ไม่นับใน FV)' : ''}</div><div class="mdesc">${esc(mdesc(doc.legs[i], view))}${l.note ? ' — ' + pr(l.note) : ''}</div></div>
+  // v2Display.legDescs[i] (ใบ migrate · เจ้าของ 27 ก.ย. 69 "ข้อความของผู้เขียนตามตัว"): บรรทัดคำอธิบายขา = ข้อความ .mdesc ของหน้า v2 ตามตัว
+  //   แทนสูตร+ป้ายที่ template สร้าง (ค่าขา .mval ยังคิดสด) · ตัวเลขการเงินของผู้เขียนคงตามที่เขียน · ค่าผูกราคาเป็น token (tokenise ของ migrator)
+  //   note ของขาที่พกข้อความตามตัว = คำจากชื่อขาของผู้เขียน (ป้ายบริบท · หางชื่อยาว) → พิมพ์ก่อนคำอธิบาย (ลำดับเดียวกับหน้า v2: ชื่อ → คำอธิบาย)
+  const vdesc = (i) => (vd && Array.isArray(vd.legDescs) && vd.legDescs[i] != null ? vd.legDescs[i] : null);
+  const legDesc = (i, l) => {
+    const t = vdesc(i);
+    if (t == null) return `${esc(mdesc(doc.legs[i], view))}${l.note ? ' — ' + pr(l.note) : ''}`;
+    return [l.note ? pr(l.note) : '', pr(t)].filter(Boolean).join(' — ');
+  };
+  // v2Display.textLegs (ใบ migrate): ขาที่หน้า v2 พิมพ์ค่าเป็นขีด/ข้อความ (ไม่นับใน FV · ไม่คิดค่า) — แถวข้อความตามตัว ณ ตำแหน่งเดิม (ก่อนขาลำดับ at)
+  const textLeg = (t) => `<div class="vmethod">
+        <div><div class="mname">${esc(t.name)}</div><div class="mdesc">${pr(t.desc)}</div></div>
+        <div class="mval">${esc(t.val)}</div>
+      </div>`;
+  const tls = (at) => (vd && Array.isArray(vd.textLegs) ? vd.textLegs.filter((t) => t.at === at).map(textLeg) : []);
+  const legsHtml = view.legs.flatMap((l, i) => tls(i).concat([`<div class="vmethod">
+        <div><div class="mname">${i + 1}. ${esc(l.label)}${l.role === 'context' ? ' (บริบท — ไม่นับใน FV)' : ''}</div><div class="mdesc">${legDesc(i, l)}</div></div>
         <div class="mval">${esc(legShown(l, view))}</div>
-      </div>`).join('\n      ');
+      </div>`])).concat(tls(view.legs.length)).join('\n      ');
   // Review Focus #2 — ป้ายเกจเรียงค่าจากน้อยไปมากเสมอ (E26)
   const scale = vd && vd.gauge ? gaugeScale(vd.gauge, d, view) : [
     { v: d.mos30, tok: '{{rd:mos30}}', lab: 'MOS 30%' }, { v: d.mos20, tok: '{{rd:mos20}}', lab: 'MOS 20%' },
@@ -221,6 +277,7 @@ function toV2Source(doc, view) {
     .sort((a, b) => a.v - b.v)
     .map((x, i, arr) => `<span${i === 0 ? '' : i === arr.length - 1 ? ' style="text-align:right"' : ' style="text-align:center"'}>${x.tok}<br><small>${x.lab}</small></span>`).join('\n          ');
   const FFO = ffoLabel(doc);
+  // v2Display.s6Hint (ใบ migrate · 27 ก.ย. 69): ป้ายหัว §6 ของผู้เขียนทั้งป้าย (ราคาจุดเข้า = token สด) แทน "จากจุดเข้า … • <driver> ฐาน ~… • รวมปันผล" ของ template
   // v2Display.driverTotal (ใบ migrate — CPNG/NET): หน้า v2 พิมพ์ตัวตั้งเป็นยอดรวมทั้งบริษัท ⇒ ป้าย "รายได้" + ค่า = ต่อหุ้น × หุ้น (fmtBig)
   const tot = !!(vd && vd.driverTotal) && doc.fundamentals.shares > 0;
   const drv = tot ? { revenuePerShare: 'รายได้', ebitdaPerShare: 'EBITDA', fcfPerShare: 'FCF' }[s.driver]
@@ -235,8 +292,8 @@ function toV2Source(doc, view) {
     const cell = C.cellOf(doc, i);
     const head = cell && cell.head != null ? esc(cell.head)
       : `${drv} ${sc.growth >= 0 ? `+${sc.growth}` : `−${Math.abs(sc.growth)}`}%/ปี`;
-    const rows = cell && cell.rows != null ? cell.rows.map(([k, v]) => `
-            <li><span>${esc(k)}</span><span>${esc(v)}</span></li>`).join('') : null;
+    const rows = cell && cell.rows != null ? cell.rows.map(([k, v, live]) => `
+            <li><span>${esc(k)}</span><span>${esc(live ? liveRowRet(v, live, i, view) : v)}</span></li>`).join('') : null;
     return `<div class="col ${cls}">
         <div class="top"><span>${name}</span><span>${head}</span></div>
         <div class="body">
@@ -254,6 +311,7 @@ function toV2Source(doc, view) {
       </div>`;
   };
   const li = (xs) => xs.map((x) => `<li>${pr(x)}</li>`).join('\n          ');
+  // v2Display.vcells (ใบ migrate · 27 ก.ย. 69): ช่อง vgrid หมวด 8 ของผู้เขียนทุกช่องตามตัว (ป้าย + ค่า prose · token สด) แทน 3 ช่องของ template + extraCells
   const an = doc.analyst;
   // rating/n ที่ไม่ทราบ (null) = ไม่พิมพ์ (Plan 4b Task 1 — 114 ใบ v2 ไม่พิมพ์ rating) · ไม่มีทั้งคู่ = เป้าอย่างเดียว
   const anMeta = an ? [an.rating, an.n != null ? `${an.n} ราย` : null].filter(Boolean).join(' · ') : '';
@@ -302,31 +360,31 @@ ${jsonScript(RV.styledRD(view.rd))}
   </header>
 
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2>${doc.metrics.hint ? `<div class="hint">${pr(doc.metrics.hint)}</div>` : ''}</div>
+    <div class="s-head"><div class="n">1</div><h2>${ttl(1, 'ข้อมูลสำคัญ (Key Metrics)')}</h2>${doc.metrics.hint ? `<div class="hint">${pr(doc.metrics.hint)}</div>` : ''}</div>${blocksIn(doc, view, 1, true)}
     <div class="grid g4">
       ${cardHtml}
-    </div>${T.metricsNote ? `\n    <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">${pr(T.metricsNote)}</p>` : ''}
-  </section>${extrasHtml(doc, view, 'metrics')}
+    </div>${T.metricsNote ? `\n    <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">${pr(T.metricsNote)}</p>` : ''}${blocksIn(doc, view, 1)}
+  </section>${extrasHtml(doc, view, 'metrics')}${blocksHtml(doc, view, 1)}
 
   <section>
-    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ${T.chartHint ? ' ' + pr(T.chartHint) : ''}</div></div>
+    <div class="s-head"><div class="n">2</div><h2>${ttl(2, 'ราคาย้อนหลัง ~1 ปี')}</h2><div class="hint">โดยประมาณ${T.chartHint ? ' ' + pr(T.chartHint) : ''}</div></div>${blocksIn(doc, view, 2, true)}
     <div class="card">
       <div class="chart-wrap">
         <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
       </div>
       <div class="legend">
-        <span><i style="background:var(--blue)"></i>ราคา ${esc(doc.symbol)}</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
-        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>${T.legendNote ? `\n        <span>${pr(T.legendNote)}</span>` : ''}
+        ${vd && vd.legend ? vd.legend.map((it) => `<span>${SWATCH[it.swatch] || ''}${pr(it.text)}</span>`).join('\n        ') : `<span>${SWATCH.price}ราคา ${esc(doc.symbol)}</span>
+        <span>${SWATCH.fv}มูลค่าเหมาะสม {{rd:fv}}</span>
+        <span>${SWATCH.point}จุดสำคัญ</span>${T.legendNote ? `\n        <span>${pr(T.legendNote)}</span>` : ''}`}
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
         ${pr(doc.prose.chart)}
       </p>
-    </div>
-  </section>
+    </div>${blocksIn(doc, view, 2)}
+  </section>${blocksHtml(doc, view, 2)}
 
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">${vh.hint}</div></div>
+    <div class="s-head"><div class="n">3</div><h2>${ttl(3, 'การประเมินมูลค่า (Valuation)')}</h2><div class="hint">${vh.hint}</div></div>${blocksIn(doc, view, 3, true)}
     <div class="card">
       ${T.valIntro ? `<p style="font-size:12px;color:var(--muted);margin:0 0 12px;line-height:1.6">${pr(T.valIntro)}</p>\n      ` : ''}${legsHtml}
       <div class="fv-box">
@@ -336,16 +394,16 @@ ${jsonScript(RV.styledRD(view.rd))}
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         ${pr(doc.prose.valuation)}
       </p>
-    </div>
-  </section>${extrasHtml(doc, view, 'valuation')}
+    </div>${blocksIn(doc, view, 3)}
+  </section>${extrasHtml(doc, view, 'valuation')}${blocksHtml(doc, view, 3)}
 
   <section>
-    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="s-head"><div class="n">4</div><h2>${ttl(4, 'ราคาปัจจุบัน vs โซนต่างๆ')}</h2>${hnt(4)}</div>${blocksIn(doc, view, 4, true)}
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#067647">เหมาะสม {{rd:fv}}</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">${vd && vd.markers && vd.markers.cur != null ? pr(vd.markers.cur) : 'ปัจจุบัน {{rd:px}}'}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#067647">${vd && vd.markers && vd.markers.fair != null ? pr(vd.markers.fair) : 'เหมาะสม {{rd:fv}}'}</div></div>
         </div>
         <div class="scale">
           ${scale}
@@ -354,11 +412,11 @@ ${jsonScript(RV.styledRD(view.rd))}
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
         ${pr(doc.prose.gauge)}
       </p>
-    </div>
-  </section>
+    </div>${blocksIn(doc, view, 4)}
+  </section>${blocksHtml(doc, view, 4)}
 
   <section>
-    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="s-head"><div class="n">5</div><h2>${ttl(5, 'Margin of Safety (ส่วนเผื่อความปลอดภัย)')}</h2>${hnt(5)}</div>${blocksIn(doc, view, 5, true)}
     <div class="card">
       <div class="mos-verdict {{rd:mosClass}}">
         <div class="big">{{rd:mos}}</div>
@@ -376,11 +434,11 @@ ${jsonScript(RV.styledRD(view.rd))}
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
-    </div>
-  </section>
+    </div>${blocksIn(doc, view, 5)}
+  </section>${blocksHtml(doc, view, 5)}
 
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน ${s.years} ปี</h2><div class="hint">จากจุดเข้า {{rd:px}}${view.scn[0].driverStart == null ? '' : s.driver === 'eps' ? ' • EPS ฐาน ~{{rd:baseEps}}' : ` • ${drv} ฐาน ~${esc(drvAmt(view.scn[0].driverStart))}`}${s.hintNote ? ' ' + pr(s.hintNote) : ''}{{rd:scnNote}}</div></div>
+    <div class="s-head"><div class="n">6</div><h2>${ttl(6, `คาดการณ์ผลตอบแทน ${s.years} ปี`)}</h2><div class="hint">${vd && vd.s6Hint != null ? pr(vd.s6Hint) : `จากจุดเข้า {{rd:px}}${view.scn[0].driverStart == null ? '' : s.driver === 'eps' ? ' • EPS ฐาน ~{{rd:baseEps}}' : ` • ${drv} ฐาน ~${esc(drvAmt(view.scn[0].driverStart))}`}${s.hintNote ? ' ' + pr(s.hintNote) : ''}{{rd:scnNote}}`}</div></div>${blocksIn(doc, view, 6, true)}
     <div class="scn">
       ${col(0, 'bear', 'Bear')}
       ${col(1, 'base', 'Base')}
@@ -388,11 +446,11 @@ ${jsonScript(RV.styledRD(view.rd))}
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
       ${pr(s.note)}
-    </p>
-  </section>${extrasHtml(doc, view, 'scenarios')}
+    </p>${blocksIn(doc, view, 6)}
+  </section>${extrasHtml(doc, view, 'scenarios')}${blocksHtml(doc, view, 6)}
 
   <section>
-    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="s-head"><div class="n">7</div><h2>${ttl(7, 'ปัจจัยบวก & ความเสี่ยง')}</h2>${hnt(7)}</div>${blocksIn(doc, view, 7, true)}
     <div class="cr">
       <div class="box cat">
         <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
@@ -406,24 +464,24 @@ ${jsonScript(RV.styledRD(view.rd))}
           ${li(doc.risks)}
         </ul>
       </div>
-    </div>
-  </section>${extrasHtml(doc, view, 'catalysts')}
+    </div>${blocksIn(doc, view, 7)}
+  </section>${extrasHtml(doc, view, 'catalysts')}${blocksHtml(doc, view, 7)}
 
   <section>
-    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="s-head"><div class="n">8</div><h2>${ttl(8, 'สรุปภาพรวม')}</h2>${hnt(8)}</div>${blocksIn(doc, view, 8, true)}
     <div class="verdict">
       <h2>${pr(doc.prose.verdictHeadline)}</h2>
       <p>${pr(doc.prose.verdictBody)}</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        ${vd && vd.vcells ? vd.vcells.map((c) => `<div class="vcell"><div class="k">${esc(c.k)}</div><div class="v${c.tone === 'mos' ? ' {{rd:mosClass}}' : c.tone ? ' ' + c.tone : ''}">${pr(c.v)}</div></div>`).join('\n        ') : `<div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
         <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v {{rd:mosClass}}">MOS ~ {{rd:mos}}</div></div>
-        ${analystCell}${((doc.verdict && doc.verdict.extraCells) || []).map((c) => `\n        <div class="vcell"><div class="k">${esc(c.k)}</div><div class="v">${pr(c.v)}</div></div>`).join('')}
+        ${analystCell}${((doc.verdict && doc.verdict.extraCells) || []).map((c) => `\n        <div class="vcell"><div class="k">${esc(c.k)}</div><div class="v">${pr(c.v)}</div></div>`).join('')}`}
       </div>
       <div class="zone">
         <b>กลยุทธ์:</b> ${pr(doc.prose.strategy)}
       </div>
-    </div>
-  </section>
+    </div>${blocksIn(doc, view, 8)}
+  </section>${blocksHtml(doc, view, 8)}
 
   <div class="disc">
     <b>คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
@@ -440,4 +498,4 @@ ${jsonScript(RV.styledRD(view.rd))}
 `;
 }
 
-module.exports = { toV2Source, legShown, mdesc, jsonScript, SRC_NAME, epsLabel, ffoLabel, v2RetTokens, v2RetWants };
+module.exports = { toV2Source, legShown, mdesc, jsonScript, SRC_NAME, epsLabel, ffoLabel, v2RetTokens, v2RetWants, liveRowRet };

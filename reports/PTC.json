@@ -31,7 +31,8 @@
     },
     "migratedFrom": {
       "updated": "2026-09-21T23:32:21+07:00",
-      "v2Hash": "13f52838243e"
+      "v2Hash": "13f52838243e",
+      "prevHash": "0b97dc7e0d6e"
     }
   },
   "market": {
@@ -119,7 +120,6 @@
         "base": "epsForward"
       },
       "baseLabel": "FY2026e",
-      "note": "consensus FY2026e · ปลายล่างของ P/E ย้อนหลัง 5 ปีที่วัดจริง (FY2025 30.3x · FY2021 31.3x; มัธยฐาน 43.2x ไม่ใช้เพราะปีที่ EPS ต่ำ FY2022–24 ทำให้พอง) ไม่ได้มาจาก P/E ปัจจุบัน",
       "family": "market"
     },
     {
@@ -136,7 +136,6 @@
         "netDebt": 1257000000,
         "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
       },
-      "note": "สมมติฐานเรา",
       "family": "rg"
     }
   ],
@@ -217,8 +216,7 @@
       "value": 8.2,
       "why": "EPS ฐานฉากที่ผู้เขียนใช้"
     },
-    "note": "การฉายภาพใช้ EPS FY2026e $8.20 (consensus จาก StockAnalysis forecast) เป็นฐาน ไม่ใช่ GAAP EPS TTM {{eps}} ที่มีรายการพิเศษ Bear (+3%/ปี) สมมติ ARR growth ชะลอและ P/E หดเหลือ 14x (ต่ำกว่า P/E ปัจจุบัน) · Base (+8%/ปี ≈ ARR growth) ออกที่ 19x สอดคล้อง FV Bull (+13%/ปี) อิง AI integration ใน Windchill/Creo, Rockwell partnership และ re-rating ไป 26x (ยังต่ำกว่าขา P/E 30x ของ FV) PTC ไม่จ่ายปันผล; ผลตอบแทนทั้งหมดมาจาก capital gain",
-    "hintNote": "(consensus FY2026e) • ไม่มีปันผล"
+    "note": "การฉายภาพใช้ EPS FY2026e $8.20 (consensus จาก StockAnalysis forecast) เป็นฐาน ไม่ใช่ GAAP EPS TTM {{eps}} ที่มีรายการพิเศษ Bear (+3%/ปี) สมมติ ARR growth ชะลอและ P/E หดเหลือ 14x (ต่ำกว่า P/E ปัจจุบัน) · Base (+8%/ปี ≈ ARR growth) ออกที่ 19x สอดคล้อง FV Bull (+13%/ปี) อิง AI integration ใน Windchill/Creo, Rockwell partnership และ re-rating ไป 26x (ยังต่ำกว่าขา P/E 30x ของ FV) PTC ไม่จ่ายปันผล; ผลตอบแทนทั้งหมดมาจาก capital gain"
   },
   "analyst": {
     "target": 173.35,
@@ -257,5 +255,98 @@
     "<b>Integration Risk (Acquisitions):</b> PTC มีประวัติ acquisition บ่อย (Arena, ServiceMax) ซึ่งเสี่ยง goodwill impairment; debt $1.61B (cash $351M) อาจจำกัด M&A flexibility ในอนาคต"
   ],
   "extras": [],
-  "_sig": "sha256:d4b375d76903a72a43df4e0b097e70b9d1b05ef24cf026d9f7c3d0088dfd949a"
+  "v2Display": {
+    "legDescs": [
+      "EPS $8.20 (consensus FY2026e) × P/E 30x — ปลายล่างของ P/E ย้อนหลัง 5 ปีที่วัดจริง (FY2025 30.3x · FY2021 31.3x; มัธยฐาน 43.2x ไม่ใช้เพราะปีที่ EPS ต่ำ FY2022–24 ทำให้พอง) ไม่ได้มาจาก P/E ปัจจุบัน",
+      "FCF TTM $935M โต 8%/ปี (สมมติฐานเรา) → $1,010M / $1,091M / $1,178M / $1,272M / $1,374M · r 10%, g ปลาย 3% · TV = $1,374M×1.03÷0.07 = $20,215M (PV $12,552M = 74% ของ EV) · EV $16,978M − net debt $1,257M (debt $1,608M − cash $351M) = $15,721M ÷ 108.51M หุ้นคงเหลือ"
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~{{baseEps}} (consensus FY2026e) • ไม่มีปันผล",
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "~$173.35 (Buy)"
+      }
+    ],
+    "legend": [
+      {
+        "text": "ราคา PTC",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
+    "s6": [
+      {
+        "head": "EPS +3%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$8.96"
+          ],
+          [
+            "P/E ออก",
+            "14x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$0.00"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +8%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$10.33"
+          ],
+          [
+            "P/E ออก",
+            "19x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$0.00"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +13%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$11.83"
+          ],
+          [
+            "P/E ออก",
+            "26x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$0.00"
+          ]
+        ]
+      }
+    ],
+    "targets": [
+      125.45,
+      196.26,
+      307.63
+    ]
+  },
+  "_sig": "sha256:21a7575eccf555bccebac04ffdcc360f8cf5cea1d8b175e530ba5ecd70b991e4"
 }

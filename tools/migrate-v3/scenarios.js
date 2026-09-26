@@ -119,7 +119,21 @@ function fundStart(driver, f) {
   return typeof v === 'number' && v > 0 ? v : null;
 }
 
-function scenarios(parsed, fund, legs) {
+// ใบ migrate (เจ้าของ 27 ก.ย. 69 "ข้อความของผู้เขียนตามตัว"): คำในหัวคอลัมน์/แถวของผู้เขียนที่ template พิมพ์เองไม่ได้ → โหมดเซลล์ของผู้เขียน
+//   ชุดคำที่ template พิมพ์ในคอลัมน์ (render.js col()): ป้าย driver ("EPS" · "รายได้/หุ้น" · FFO ตาม ffoBasis …) · "ปี" · ป้ายตัวคูณออก + "ออก" · "ปันผลรวม" · หน่วย
+const TEMPLATE_S6_WORDS = (driver, exitMetric, fund) => {
+  const ffo = S.FFO_LABEL[(fund && fund.ffoBasis) || 'ffo'];
+  const drv = { eps: 'EPS', ffo, revenuePerShare: 'รายได้/หุ้น', bvps: 'BVPS', fcfPerShare: 'FCF/หุ้น', de: 'DE/หุ้น', fre: 'FRE/หุ้น', ebitdaPerShare: 'EBITDA/หุ้น' }[driver] || '';
+  const ex = { pe: 'P/E', ps: 'P/S', pbv: 'P/BV', pffo: `P/${ffo}`, pfcf: 'P/FCF', evsales: 'EV/Sales', evebitda: 'EV/EBITDA' }[exitMetric] || '';
+  return new Set(`${drv} ${ex} ปี ออก ปันผลรวม เท่า`.split(/[\s/]+/).map((w) => w.replace(/[^\p{L}\p{M}\p{N}]/gu, '')).filter(Boolean));
+};
+function authorWording(cols, driver, exitMetric, fund) {
+  const ok = TEMPLATE_S6_WORDS(driver, exitMetric, fund);
+  const words = (t) => String(t || '').split(/[\s/]+/).map((w) => w.replace(/[^\p{L}\p{M}\p{N}]/gu, '').replace(/^\p{N}+/u, '')).filter((w) => (w.match(/\p{L}/gu) || []).length >= 2 && !NB.UNIT_WORD.has(w));
+  return cols.some((c) => [c.top ? c.top[1] : ''].concat(...c.lis.filter((x) => !/สถานการณ์/.test(x[0])).map((x) => [x[0], x[1]])).some((t) => words(t).some((w) => !ok.has(w))));
+}
+function scenarios(parsed, fund, legs, opts) {
+  const verbatim = !!(opts && opts.verbatim);
   const H = [], D = [], F = [];
   const v = (parsed.rd && parsed.rd.values) || {};
   const b = v.scnBasis || {};
@@ -168,8 +182,10 @@ function scenarios(parsed, fund, legs) {
     let divCum = null;
     if (divLi && !/\{\{rd:/.test(divLi[2])) divCum = numOf(divLi[1]);
     else if (vs && vs[i] && typeof vs[i].div === 'number') divCum = vs[i].div;
-    const descLi = c.lis.find((x) => /สถานการณ์/.test(x[0]));
-    const desc = descLi ? MP.htmlToProse(descLi[2]) : '';
+    // แถว "สถานการณ์" หลายแถว (AMRZ Bull · 27 ก.ย. 69) = desc เดียวหลายบรรทัด (<br>) ตามลำดับ — ข้อความไม่หาย
+    const descLis = c.lis.filter((x) => /สถานการณ์/.test(x[0]));
+    const descLi = descLis[0];
+    const desc = descLis.map((x) => MP.htmlToProse(x[2])).filter(Boolean).join('<br>');
     if (growth == null) meta.noGrowth.push(i);   // H หลังตัดสินโหมดรายคอลัมน์ (display-fix2) — อ่าน growth ไม่ได้แต่พกหัว + ตัวตั้งปลายฉากของผู้เขียนได้
     // exitMultiple อ่านไม่ได้ → H หลังตัดสินโหมดเซลล์ของผู้เขียน (display-fix2)
     if (!desc) H.push(`scenarios.cases[${i}].desc: no "สถานการณ์" row`);
@@ -235,6 +251,7 @@ function scenarios(parsed, fund, legs) {
   const exitCell = (c) => (c.lis.find((x) => isExit(x[0])) || [])[1];
   // hard = template คิด/พิมพ์ฉากนี้ไม่ได้เลย (อ่านไม่ได้ → H เมื่อพกเซลล์ไม่ได้) · soft = template พิมพ์ได้แต่ไม่ตรงคำผู้เขียน (พกไม่ได้ = คงทางเดิม + F)
   const soft = [];
+  if (verbatim && authorWording(cols, out.driver, out.exitMetric, fund)) soft.push("author's wording in the column cells");
   if (cols.some((c) => { const t = exitCell(c); return t == null || numOf(t) == null; })) why.push('exit multiple not printed');
   else if (cols.some((c) => /[^\s0-9.,x×~≈+\-−]/i.test(String(exitCell(c)).replace(/^[\s~≈]+/, '')))) soft.push('exit cell annotated');
   const divRow = (c) => c.lis.find((x) => /ปันผล/.test(x[0]));
@@ -266,10 +283,13 @@ function scenarios(parsed, fund, legs) {
         let v = x[1];
         const dm = /\{\{rd:sc(\d)div\}\}/.exec(v);
         if (dm) { const dv = vs && vs[+dm[1] - 1] && vs[+dm[1] - 1].div; if (typeof dv === 'number') v = v.replace(dm[0], cur + RV.fmtPrice(dv)); }
-        return [String(x[0]).replace(/\s+/g, ' ').trim(), String(v).replace(/\s+/g, ' ').trim()];
+        const row = [String(x[0]).replace(/\s+/g, ' ').trim(), String(v).replace(/\s+/g, ' ').trim()];
+        // แถวผลตอบแทนของผู้เขียน (CBOE "ผลตอบแทน/ปี" · GABLE "ผลตอบแทนราคารวม 3 ปี") = ผูกราคา → คิดสด ('py' ต่อปี · 'tot' รวม) · ตัวเลข % ต้องมีตัวเดียว
+        if (S.s6RowPriceBound(row[0], row[1]) && (row[1].match(/[0-9][0-9.,]*\s*%/g) || []).length === 1) row.push(/\/\s*ปี|ต่อปี|per\s*year|CAGR|p\.?a\./i.test(row[0] + ' ' + row[1]) ? 'py' : 'tot');
+        return row;
       });
       const head = meta.heads[i];
-      rows.forEach(([k, v], j) => { if (!k || !v || /[{}<>]/.test(k + v) || k.length > 60 || v.length > 80 || S.S6_PRICE_RE.test(k)) bad.push(`scenarios.cases[${i}] row ${j} "${k}: ${v}" cannot be carried`); });
+      rows.forEach(([k, v, live], j) => { if (!k || !v || /[{}<>]/.test(k + v) || k.length > 120 || v.length > 400 || (!live && S.s6RowPriceBound(k, v))) bad.push(`scenarios.cases[${i}] row ${j} "${k}: ${v}" cannot be carried`); });
       if (!rows.length || rows.length > 5) bad.push(`scenarios.cases[${i}]: ${rows.length} rows (carry 1–5)`);
       if (!head || head.length > 80) bad.push(`scenarios.cases[${i}]: column header "${head || ''}" cannot be carried`);
       if (tgts[i] == null) bad.push(`scenarios.cases[${i}]: no printed target to carry`);

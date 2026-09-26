@@ -32,7 +32,7 @@
     "migratedFrom": {
       "updated": "2026-09-21T11:06:17+07:00",
       "v2Hash": "d18f178db348",
-      "prevHash": "6f231fb855a8"
+      "prevHash": "406edc9b36b9"
     }
   },
   "market": {
@@ -121,7 +121,6 @@
         "multiple": 12.4,
         "multipleSource": "median5y"
       },
-      "note": "มัธยฐาน P/E ย้อนหลัง 5 ปีที่วัดจริง (ช่วง 8.9–21.7x) ไม่ใช้ตัวคูณปัจจุบัน",
       "family": "market"
     },
     {
@@ -131,7 +130,6 @@
         "g": 4,
         "r": 9
       },
-      "note": "สะท้อน payout ต่ำ + ROE ต่ำ",
       "family": "rg"
     },
     {
@@ -141,7 +139,6 @@
         "g": 3,
         "r": 9
       },
-      "note": "ค่าต่ำสะท้อน ROE ที่ยังต่ำกว่า cost of equity",
       "family": "rg"
     }
   ],
@@ -245,6 +242,40 @@
   ],
   "extras": [],
   "v2Display": {
+    "legDescs": [
+      "EPS ฿0.95 (TTM) × P/E เป้าหมาย 12.4x — มัธยฐาน P/E ย้อนหลัง 5 ปีที่วัดจริง (ช่วง 8.9–21.7x) ไม่ใช้ตัวคูณปัจจุบัน",
+      "D₁ = ปันผล ฿0.40 × (1+4%); g 4%, r 9% → ฿0.416 / (9%−4%) = ฿8.32 — สะท้อน payout ต่ำ + ROE ต่ำ",
+      "P/BV เหมาะสม = (ROE 5.7% − g 3%)/(r 9% − g 3%) ≈ 0.45 × BVPS ฿17.15 → ค่าต่ำสะท้อน ROE ที่ยังต่ำกว่า cost of equity"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "{{analyst.target}} (Strong Buy)"
+      }
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~฿0.95",
+    "legend": [
+      {
+        "text": "ราคา ASK",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
     "cards": {
       "netIncomeFy": {
         "v": "฿531.6 ล้าน",
@@ -262,5 +293,5 @@
       "div": false
     }
   },
-  "_sig": "sha256:c393a15d278819325d065e843ef7c9d1acf5e1936b5a05ea6c84480124096feb"
+  "_sig": "sha256:4f70aad6114434e12cf0641466f6ac93a5ec212798fab8a2e6cd89b51d7dc23e"
 }

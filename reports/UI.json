@@ -31,7 +31,8 @@
     },
     "migratedFrom": {
       "updated": "2026-09-22T01:46:25+07:00",
-      "v2Hash": "8ac9c000d78f"
+      "v2Hash": "8ac9c000d78f",
+      "prevHash": "f8bbb86cde7f"
     }
   },
   "market": {
@@ -116,7 +117,6 @@
         "multiple": 30,
         "multipleSource": "author"
       },
-      "note": "ใช้ multiple 30x เพื่อสะท้อน quality premium แต่ conservative กว่าปัจจุบัน 34x เนื่องจากการเติบโตเริ่ม normalize",
       "family": "market"
     },
     {
@@ -136,7 +136,6 @@
         "value": 505,
         "basis": "other"
       },
-      "note": "FCF/share TTM ~$10.09 × 50x FCF multiple = $504.50 — multiple 50x สะท้อนธุรกิจ asset-light, capital-light ที่แปลง revenue เป็น FCF ได้ดี (FCF margin ~20%) และต้นทุนทางธุรกิจต่ำมาก",
       "family": "rg"
     }
   ],
@@ -257,21 +256,103 @@
   ],
   "extras": [],
   "v2Display": {
-    "fv": 507,
-    "fvRange": [
-      400,
-      650
+    "legDescs": [
+      "adj. EPS $15.56 × P/E 30x = $466.80 — ใช้ multiple 30x เพื่อสะท้อน quality premium แต่ conservative กว่าปัจจุบัน 34x เนื่องจากการเติบโตเริ่ม normalize",
+      "Forward EPS FY2027 ~$17.23 × P/E 32x = $551.36 — ใช้ 32x สะท้อน growth profile ปีหน้า +13% EPS growth บวก margin expansion จาก product mix ที่ดีขึ้น",
+      "FCF/share TTM ~$10.09 × 50x FCF multiple = $504.50 — multiple 50x สะท้อนธุรกิจ asset-light, capital-light ที่แปลง revenue เป็น FCF ได้ดี (FCF margin ~20%) และต้นทุนทางธุรกิจต่ำมาก"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "~$826 (Hold)"
+      }
+    ],
+    "s6": [
+      {
+        "head": "EPS +5%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$18.01"
+          ],
+          [
+            "P/E ออก",
+            "22x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$9.60"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +13%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$22.34"
+          ],
+          [
+            "P/E ออก",
+            "28x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$9.60"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +20%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$26.88"
+          ],
+          [
+            "P/E ออก",
+            "33x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$9.60"
+          ]
+        ]
+      }
     ],
     "targets": [
       405.6,
       635.12,
       896.64
     ],
-    "driverEnds": [
-      null,
-      "~$22.34",
-      null
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~{{baseEps}}",
+    "legend": [
+      {
+        "text": "ราคา UI",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
+    "fv": 507,
+    "fvRange": [
+      400,
+      650
     ]
   },
-  "_sig": "sha256:edbaa60526dd2d11548310c3d16090b90965216e51d56cd8e66b0759f6b5ea3c"
+  "_sig": "sha256:a62d40c1ba00f11ec78d7d2dd629001fbd9765908ae0429720f13eceb83d95f1"
 }

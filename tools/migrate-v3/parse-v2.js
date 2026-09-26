@@ -67,6 +67,24 @@ function paras(body) {
   return out;
 }
 
+/** ย่อหน้า <p> ทุกย่อหน้าของกล่อง verdict หมวด 8 (หลัง <h2> · นอกช่อง .vgrid/.zone) — เดิมอ่านแค่ย่อหน้าแรก (AEM <h2><p><p> ย่อหน้าที่สองหาย · 27 ก.ย. 69) */
+function verdictParas(body) {
+  const at = String(body).search(/<div class="verdict">/);
+  if (at < 0) return [];
+  let b = String(body).slice(at);
+  const h2 = /<\/h2>/.exec(b); if (h2) b = b.slice(h2.index + h2[0].length);
+  b = b.replace(/<div class="zone">[\s\S]*?<\/div>/g, ' ').replace(/<div class="vcell">[\s\S]*?<\/div><\/div>/g, ' ');
+  // <p> ที่ผู้เขียนไม่ได้ปิด (COR "<p>…" ต่อด้วย <div class="vgrid">) = ถึงแท็กบล็อกถัดไป
+  const out = [];
+  for (const m of b.matchAll(/<p\b[^>]*>/g)) {
+    const rest = b.slice(m.index + m[0].length);
+    const end = rest.search(/<\/p>|<p\b|<div\b|<\/div>/);
+    const t = end < 0 ? rest : rest.slice(0, end);
+    if (t.trim()) out.push(t);
+  }
+  return out;
+}
+
 /** ใบ v2 ทั้งใบ → โซน · rd = report-data (null ถ้าอ่านไม่ได้) · sm = stock-meta · fd = วันที่ footer "ข้อมูล ณ" · aiModel = <meta ai-model>
  *  byN = หมวดแรกของแต่ละเลข · extraSecs = หมวดไม่มีเลข/เลข > 8 (migrator ต้องตัดสินเอง) */
 function parseV2(sym, html) {
@@ -89,10 +107,12 @@ function parseV2(sym, html) {
   const fvBoxL = s3 ? first(/<div class="fv-box">\s*<div class="l">([\s\S]*?)<br>/, s3.body) : null;
   // หมวด 6 — คอลัมน์ Bear/Base/Bull: top = [ชื่อฉาก, สมมติฐาน] · lis = [label, ค่า text, ค่า HTML] · retHtml = เนื้อใน .ret ดิบ (Plan 4b Task 6b)
   const cols = [];
-  if (s6) for (const m of s6.body.matchAll(/<div class="col (bear|base|bull)">([\s\S]*?)<\/ul>/g)) {
+  // คอลัมน์ = ถึง </ul> · ผู้เขียนลืมปิด </ul> (AMRZ Bull · 27 ก.ย. 69) = ถึงคอลัมน์ถัดไป/ท้ายหมวด
+  if (s6) for (const m of s6.body.matchAll(/<div class="col (bear|base|bull)">([\s\S]*?)(?:<\/ul>|(?=<div class="col (?:bear|base|bull)">)|$)/g)) {
     const c = m[2];
     const top = [...c.matchAll(/<div class="top"><span>([\s\S]*?)<\/span><span>([\s\S]*?)<\/span>/g)][0];
-    const lis = [...c.matchAll(/<li><span>([\s\S]*?)<\/span><span>([\s\S]*?)<\/span><\/li>/g)].map((x) => [text(x[1]), text(x[2]), x[2]]);
+    // แถวที่ผู้เขียนปิดผิดแท็ก ("…</span></div>" แทน "</li>" — DHR Bull · เบราว์เซอร์ยังแสดงแถว) นับเป็นแถว (27 ก.ย. 69)
+    const lis = [...c.matchAll(/<li><span>([\s\S]*?)<\/span><span>([\s\S]*?)<\/span>\s*<\/(?:li|div)>/g)].map((x) => [text(x[1]), text(x[2]), x[2]]);
     cols.push({ name: m[1], top: top ? [text(top[1]), text(top[2])] : null, lis, retHtml: first(/<div class="ret\b[^"]*">([\s\S]*?)<\/div>/, c) });
   }
   const lis = (b, cls) => { const box = first(new RegExp(`<div class="box ${cls}">([\\s\\S]*?)</ul>`), b || ''); return box ? [...box.matchAll(/<li>([\s\S]*?)<\/li>/g)].map((x) => x[1]) : []; };
@@ -104,9 +124,9 @@ function parseV2(sym, html) {
     legs: L.legs, legBlocks: L.blocks, s3hint: s3 && s3.hint, s3paras: s3 ? paras(s3.body) : [], fvBoxL,
     s2hint: byN[2] ? byN[2].hint : null, s6hint: s6 && s6.hint, s6cols: cols, s6paras: s6 ? paras(s6.body) : [],
     catalysts: s7 ? lis(s7.body, 'cat') : [], risks: s7 ? lis(s7.body, 'risk') : [],
-    s8: s8 ? { h2: first(/<div class="verdict">\s*<h2>([\s\S]*?)<\/h2>/, s8.body), p: first(/<div class="verdict">[\s\S]*?<\/h2>\s*<p>([\s\S]*?)<\/p>/, s8.body), zone: first(/<div class="zone">([\s\S]*?)<\/div>/, s8.body), vcells: [...s8.body.matchAll(/<div class="vcell"><div class="k">([\s\S]*?)<\/div><div class="v[^"]*"[^>]*>([\s\S]*?)<\/div><\/div>/g)].map((x) => [text(x[1]), x[2]]) } : null,
+    s8: s8 ? { h2: first(/<div class="verdict">\s*<h2>([\s\S]*?)<\/h2>/, s8.body), p: first(/<div class="verdict">[\s\S]*?<\/h2>\s*<p>([\s\S]*?)<\/p>/, s8.body), ps: verdictParas(s8.body), zone: first(/<div class="zone">([\s\S]*?)<\/div>/, s8.body), vcells: [...s8.body.matchAll(/<div class="vcell"><div class="k">([\s\S]*?)<\/div><div class="v([^"]*)"[^>]*>([\s\S]*?)<\/div><\/div>/g)].map((x) => [text(x[1]), x[3], x[2].trim()]) } : null,
     disc, footer,
   };
 }
 
-module.exports = { parseV2, text, decode, sections, cards, legs, ROOT };
+module.exports = { parseV2, text, decode, sections, cards, legs, verdictParas, ROOT };

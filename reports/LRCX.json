@@ -17,13 +17,13 @@
     "sources": [
       "StockAnalysis.com",
       "Yahoo Finance",
-      "StockAnalysis Forecast",
-      "Google Finance"
+      "StockAnalysis Forecast"
     ],
-    "priceNote": "หลังพักฐานแรงจากจุดสูงสุดตลอดกาล $438.50 (มิ.ย. 2026) · งบ Q4 FY2026 (ปิดงวด 28 มิ.ย. 2026) รายได้ $6.72B (+30% YoY) EPS ปรับลด $1.81 — ตลาดยัง de-rate ต่อจากจุดสูงสุดของวัฏจักร",
+    "priceNote": "หลังพักฐานแรงจากจุดสูงสุดตลอดกาล $438.50 มิ.ย. 2026 · งบ Q4 FY2026 ปิดงวด 28 มิ.ย. 2026 รายได้ $6.72B +30% YoY EPS ปรับลด $1.81 — ตลาดยัง de-rate ต่อจากจุดสูงสุดของวัฏจักร · ราคา ณ {{priceDate}}",
     "migratedFrom": {
       "updated": "2026-09-22T07:22:55+07:00",
-      "v2Hash": "196226bacf69"
+      "v2Hash": "196226bacf69",
+      "prevHash": "d245175fcd2b"
     }
   },
   "market": {
@@ -109,7 +109,6 @@
         "base": "epsForward"
       },
       "baseLabel": "FY2027E",
-      "note": "FY2027E ฉันทามติ SA · ตัวคูณคือมัธยฐาน 5 ปีของหุ้นเอง (ราคาเฉลี่ยงวด ÷ EPS งวดนั้น) ไม่ได้มาจาก P/E ปัจจุบัน",
       "family": "market"
     },
     {
@@ -119,7 +118,6 @@
         "multiple": 19.2,
         "multipleSource": "median5y"
       },
-      "note": "FY2026 จริง · ตัวคูณมัธยฐานเดียวกัน ฐาน EPS ตามงบจริง นับเป็นเสียงเดียวกับข้อ 1",
       "family": "market"
     }
   ],
@@ -175,17 +173,14 @@
     "exitMetric": "pe",
     "cases": [
       {
-        "growth": 3,
         "exitMultiple": 15,
         "desc": "WFE เข้าขาลง / P/E ลงแถวต่ำสุด 5 ปี (14.8x)"
       },
       {
-        "growth": 12,
         "exitMultiple": 19.2,
         "desc": "WFE โตต่อเนื่อง P/E กลับมัธยฐาน 5 ปี"
       },
       {
-        "growth": 20,
         "exitMultiple": 28,
         "desc": "super-cycle ยืดยาว P/E ค้างสูง (FY26 เฉลี่ย 36.2x)"
       }
@@ -236,20 +231,108 @@
   ],
   "extras": [],
   "v2Display": {
-    "fv": 147,
-    "fvRange": [
-      111,
-      183
+    "legDescs": [
+      "EPS $9.51 (FY2027E ฉันทามติ SA) × P/E 19.2x — ตัวคูณคือมัธยฐาน 5 ปีของหุ้นเอง (ราคาเฉลี่ยงวด ÷ EPS งวดนั้น) ไม่ได้มาจาก P/E ปัจจุบัน",
+      "EPS $5.76 (FY2026 จริง) × P/E 19.2x — ตัวคูณมัธยฐานเดียวกัน ฐาน EPS ตามงบจริง นับเป็นเสียงเดียวกับข้อ 1"
     ],
-    "legValues": [
-      183,
-      111
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "{{analyst.target}} ({{analyst.pct}})"
+      }
+    ],
+    "s6": [
+      {
+        "head": "EPS +3%/ปี จากฐาน FY2027E",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "$10.4"
+          ],
+          [
+            "P/E ออก",
+            "15x"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +12%/ปี จากฐาน FY2027E",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "$13.4"
+          ],
+          [
+            "P/E ออก",
+            "19.2x"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +20%/ปี จากฐาน FY2027E",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "$16.4"
+          ],
+          [
+            "P/E ออก",
+            "28x"
+          ]
+        ]
+      }
     ],
     "targets": [
       156,
       257,
       460
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~{{baseEps}}",
+    "legend": [
+      {
+        "text": "ราคา LRCX",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
+    "fv": 147,
+    "fvRange": [
+      111,
+      183
+    ],
+    "gauge": [
+      {
+        "ref": "mos30",
+        "label": "MOS 30%"
+      },
+      {
+        "ref": "mos20",
+        "label": "MOS 20%"
+      },
+      {
+        "ref": "fv",
+        "label": "Fair Value"
+      },
+      {
+        "ref": "analystTgt",
+        "label": "เป้า Analyst"
+      }
     ]
   },
-  "_sig": "sha256:14f15dc945349ebaefa72433e2d758a8bc4bbaa26a2351919f5bc0a946c40fad"
+  "_sig": "sha256:e6f65e70156c63643841d3352b6693f94c32e6afc516b23eeefbda1ae23a790a"
 }

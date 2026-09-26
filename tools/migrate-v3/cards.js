@@ -49,7 +49,10 @@ function readValue(vText, kind) {
     rest = rest.replace(NUMRE, ' ');
     out.residual = rest;
   }
-  out.residual = out.residual.replace(UNIT_WORDS, ' ').replace(/(^|[\s~≈(])(?:x|เท่า|[TBMK]|bn|mn)(?=[\s)/,]|$)/gi, '$1 ').replace(/[~≈%×/()+\-−,.:;|•·*]/g, ' ').replace(/⟦tok⟧/g, ' ').replace(/\s+/g, ' ').trim();
+  // เครื่องหมายตัดเฉพาะที่ขอบคำ — เครื่องหมายในคำคงไว้ ("n.d." ไม่กลายเป็น "n d" · JAZZ 27 ก.ย. 69)
+  const PUN = '~≈%×/()+\\-−,.:;|•·*';
+  out.residual = out.residual.replace(UNIT_WORDS, ' ').replace(/(^|[\s~≈(])(?:x|เท่า|[TBMK]|bn|mn)(?=[\s)/,]|$)/gi, '$1 ').replace(/⟦tok⟧/g, ' ')
+    .split(/[\s/]+/).map((w) => w.replace(new RegExp(`^[${PUN}]+|[${PUN}]+$`, 'g'), '')).filter(Boolean).join(' ');
   return out;
 }
 const halfOk = (a, raw, b) => b != null && Math.abs(a - b) <= 0.5 * Math.pow(10, -decOf(raw)) + 1e-9;
@@ -114,7 +117,10 @@ function cardFund(parsed, base) {
         // ต่อหุ้นไม่ระบุงวด ("฿0.33/หุ้น" · "DPS ฿0.67") — รับเมื่อ yield ที่พิมพ์ ≈ dps ÷ ราคา (±20%) · รายไตรมาส/งวดไม่รับ
         const ps = !m && !/ไตรมาส|quarter|interim|งวด|ครึ่งปี/i.test(c.d) && (new RegExp(`((?:US\\$|\\$|฿)\\s*[0-9][0-9,]*(?:\\.[0-9]+)?)\\s*/\\s*(?:หุ้น|share)`, 'i').exec(c.d) || /DPS[^$฿]{0,12}((?:US\$|\$|฿)\s*[0-9][0-9,]*(?:\.[0-9]+)?)/i.exec(c.d));
         const yv = readValue(c.v, 'pct'), px = parsed.rd && parsed.rd.values && parsed.rd.values.px;
+        // ค่าการ์ดที่พิมพ์ทั้งเงินต่อหุ้นและ % ("$1.92 (5.12%)" — TAP · 27 ก.ย. 69) = ปันผลต่อหุ้นของผู้เขียน (ไม่ถอดจาก stock-meta)
+        const vm = !m && /%/.test(c.v) ? /^\s*~?\s*((?:US\$|\$|฿)\s*[0-9][0-9,]*(?:\.[0-9]+)?)(?!\s*(?:[BMK](?![A-Za-z])|ล้าน|พันล้าน|bn|mn))/.exec(c.v) : null;
         if (m) set('dps', LG.moneyAll(m[1])[0].v, `card "${c.k}" .d`);
+        else if (vm) set('dps', LG.moneyAll(vm[1])[0].v, `card "${c.k}" value (per share + %)`);
         else if (ps && yv.nums.length === 1 && !yv.token && px > 0 && Math.abs(LG.moneyAll(ps[1])[0].v / px * 100 - yv.nums[0].v) <= 0.2 * yv.nums[0].v) set('dps', LG.moneyAll(ps[1])[0].v, `card "${c.k}" .d per share (yield-checked)`);
         else if (/^\s*~?\s*0(?:\.0+)?\s*%/.test(c.v) || /^\s*[—–-]?\s*(?:ไม่มี|ไม่ปันผล|ไม่จ่าย|none|n\/a)\b/i.test(c.v) || /ไม่(?:ได้)?จ่าย(?:ปันผล)?|ไม่มีปันผล|งดจ่าย|ไม่ปันผล/.test(c.v + ' ' + c.d)) set('dps', 0, `card "${c.k}" says none`);
         break;
@@ -260,6 +266,8 @@ function customOf(c) {
   return x;
 }
 
+/** การ์ดปันผลที่พิมพ์เป็นเงินต่อหุ้น ไม่มี % ("เงินปันผล (รายปี) $3.25" — O) ≠ การ์ด yield (% ผูกราคา) · ใช้ทั้ง mapCards และ audit (display.pairsOf) */
+const amountNotYield = (key, c) => key === 'yield' && /[0-9]/.test(c.v) && !/%/.test(c.v);
 /** การ์ด → { cards, custom, notes, fund, H, D, F, meta } · base = fundamentals สุดท้าย (หลังรวม values + การ์ด + ขา)
  *  opts = { currency, market, analyst, legs, view?, force?: Set(index→custom) } */
 function mapCards(parsed, base, opts) {
@@ -279,6 +287,8 @@ function mapCards(parsed, base, opts) {
     if (!key) why = 'label not in catalogue';
     else if (used.has(key)) why = `duplicate ${key}`;
     else if (o.force && o.force.has(i)) why = o.force.get(i);
+    // การ์ดปันผลที่พิมพ์เป็นเงินต่อหุ้น ไม่มี % ("เงินปันผล (รายปี) $3.25" — O) ≠ การ์ด yield ของ template (% ผูกราคา) → การ์ดของผู้เขียน (27 ก.ย. 69)
+    else if (amountNotYield(key, c)) why = 'per-share amount, not a yield %';
     else why = missing(key, f, ext) || printedMismatch(key, c, f, o.market && o.market.px);
     if (why) {
       if (key) F.push(`card "${c.k}" → custom (${key}: ${why})`);
@@ -299,4 +309,4 @@ function mapCards(parsed, base, opts) {
   return { cards, custom, notes, fund: cf.fund, H, D, F, meta };
 }
 
-module.exports = { mapCards, cardFund, keyOf, subPeriod, PERIOD_RE, FORECAST_RE, forecastLabel, readValue, missing, printedMismatch, customOf, noteFor, pseudoView, fyPeriod, NEED };
+module.exports = { amountNotYield, mapCards, cardFund, keyOf, subPeriod, PERIOD_RE, FORECAST_RE, forecastLabel, readValue, missing, printedMismatch, customOf, noteFor, pseudoView, fyPeriod, NEED };

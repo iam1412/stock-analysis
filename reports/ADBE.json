@@ -32,7 +32,8 @@
     },
     "migratedFrom": {
       "updated": "2026-09-22T07:22:55+07:00",
-      "v2Hash": "4e86dc7ffe21"
+      "v2Hash": "4e86dc7ffe21",
+      "prevHash": "68f8c37a15e9"
     }
   },
   "market": {
@@ -112,8 +113,7 @@
       "inputs": {
         "multiple": 13,
         "multipleSource": "author"
-      },
-      "note": "ตั้งใจต่ำกว่าช่วงประวัติ 23–56x มาก เพื่อสะท้อนความเสี่ยงดิสรัปต์ AI"
+      }
     },
     {
       "method": "declared",
@@ -121,8 +121,7 @@
       "inputs": {
         "value": 245,
         "basis": "other"
-      },
-      "note": "FCF margin ~38–40%, โต ~8–9% 5 ปีแรก, WACC 9.5%, Terminal 3% — สมมติ FCF แข็งแกร่งต่อเนื่อง"
+      }
     },
     {
       "method": "declared",
@@ -130,8 +129,7 @@
       "inputs": {
         "value": 235,
         "basis": "other"
-      },
-      "note": "ค่าเฉลี่ยถ่วงน้ำหนักจากโมเดล fair value สาย value ของนักวิเคราะห์ (กรอบ ~$225–$250)"
+      }
     }
   ],
   "fvWeights": null,
@@ -259,6 +257,40 @@
   ],
   "extras": [],
   "v2Display": {
+    "legDescs": [
+      "EPS ~$17.9 × P/E ~13x (ตั้งใจต่ำกว่าช่วงประวัติ 23–56x มาก เพื่อสะท้อนความเสี่ยงดิสรัปต์ AI)",
+      "FCF margin ~38–40%, โต ~8–9% 5 ปีแรก, WACC 9.5%, Terminal 3% — สมมติ FCF แข็งแกร่งต่อเนื่อง",
+      "ค่าเฉลี่ยถ่วงน้ำหนักจากโมเดล fair value สาย value ของนักวิเคราะห์ (กรอบ ~$225–$250)"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "{{analyst.target}} ({{analyst.pct}})"
+      }
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~{{baseEps}}",
+    "legend": [
+      {
+        "text": "ราคา ADBE",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
     "fv": 238,
     "fvRange": [
       233,
@@ -298,5 +330,5 @@
       }
     }
   },
-  "_sig": "sha256:4ed8d838976d2b72b9162e9ba2bc486e484b81d3ba7cd125598ae80fd30711fd"
+  "_sig": "sha256:06a201d307b052cce54cbb280b521bad2e8dd6ea54ba2f4261c61307711cc82d"
 }

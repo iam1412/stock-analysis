@@ -31,7 +31,8 @@
     },
     "migratedFrom": {
       "updated": "2026-09-22T01:46:25+07:00",
-      "v2Hash": "7d23a1cdfa1a"
+      "v2Hash": "7d23a1cdfa1a",
+      "prevHash": "13611b551526"
     }
   },
   "market": {
@@ -122,8 +123,7 @@
       "override": {
         "eps": 4.85,
         "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
-      },
-      "note": "ใช้ epsFwd เฉลี่ย Yahoo $5.00 และ StockAnalysis ~$4.69 (ปรับขึ้นจาก $4.54 เดิมหลัง Q2 2026 beat) × P/E 12x (คงเดิม เทียบ PNC/USB 12–13x)"
+      }
     },
     {
       "method": "ddm",
@@ -131,8 +131,7 @@
       "inputs": {
         "g": 4,
         "r": 8.5
-      },
-      "note": "ใช้ g 4% (Sun Belt loan growth + NIM recovery) และ r 8.5% (cost of equity regional bank)"
+      }
     },
     {
       "method": "declared",
@@ -140,8 +139,7 @@
       "inputs": {
         "value": 56.8,
         "basis": "other"
-      },
-      "note": "P/TBV เหมาะสม = (ROTCE ~14.2% − g 4%)/(r 10% − g 4%) ≈ 1.7 × TBVPS $33.40 — ใช้ ROTCE กลางระหว่าง Q1 26 13.8% และ Q2 26 15.4% (guidance FY26 >14%, ไม่ใช้ spike Q2 ตรง ๆ เพราะมี trading revenue ชั่วคราวหนุน); TBVPS $33.40 (Q2 2026); r 10% สะท้อนความเสี่ยงช่วง CEO transition"
+      }
     }
   ],
   "fvWeights": null,
@@ -246,8 +244,7 @@
       }
     ],
     "exitDp": 1,
-    "note": "กรณี Base (+43%) อิงการเติบโต EPS 9%/ปี จากฐาน EPS TTM ใหม่ {{eps}} หลัง Q2 2026 beat สอดคล้องกับ NIM ฟื้นตัว + efficiency ratio ดีขึ้น + buyback $5B ลด share count · กรณี Bear (+1%) สะท้อน NIM ที่กดดันต่อเนื่อง (2.98% Q2 26) และ rate environment ที่ไม่เอื้อ แต่ยังมีปันผล $6.24 ช่วยพยุง total return · กรณี Bull อิงการ re-rating เมื่อ ROTCE ยืนเหนือ 15%+ ต่อเนื่องและตลาดให้ multiple สูงขึ้นเทียบเท่า PNC/USB <b>คำเตือน:</b> ตัวเลขนี้เป็นการคาดการณ์ ไม่ใช่การรับประกันผลตอบแทน",
-    "hintNote": "(TTM GAAP)"
+    "note": "กรณี Base (+43%) อิงการเติบโต EPS 9%/ปี จากฐาน EPS TTM ใหม่ {{eps}} หลัง Q2 2026 beat สอดคล้องกับ NIM ฟื้นตัว + efficiency ratio ดีขึ้น + buyback $5B ลด share count · กรณี Bear (+1%) สะท้อน NIM ที่กดดันต่อเนื่อง (2.98% Q2 26) และ rate environment ที่ไม่เอื้อ แต่ยังมีปันผล $6.24 ช่วยพยุง total return · กรณี Bull อิงการ re-rating เมื่อ ROTCE ยืนเหนือ 15%+ ต่อเนื่องและตลาดให้ multiple สูงขึ้นเทียบเท่า PNC/USB <b>คำเตือน:</b> ตัวเลขนี้เป็นการคาดการณ์ ไม่ใช่การรับประกันผลตอบแทน"
   },
   "analyst": {
     "target": 54.9,
@@ -283,15 +280,102 @@
   ],
   "extras": [],
   "v2Display": {
+    "legDescs": [
+      "EPS fwd blended $4.85 × P/E 12x = $58.2 — ใช้ epsFwd เฉลี่ย Yahoo $5.00 และ StockAnalysis ~$4.69 (ปรับขึ้นจาก $4.54 เดิมหลัง Q2 2026 beat) × P/E 12x (คงเดิม เทียบ PNC/USB 12–13x)",
+      "D₁ = $2.08 × (1+4%) = $2.163; g 4%, r 8.5% → $2.163 / (8.5%−4%) = $48.1 — ใช้ g 4% (Sun Belt loan growth + NIM recovery) และ r 8.5% (cost of equity regional bank)",
+      "P/TBV เหมาะสม = (ROTCE ~14.2% − g 4%)/(r 10% − g 4%) ≈ 1.7 × TBVPS $33.40 — ใช้ ROTCE กลางระหว่าง Q1 26 13.8% และ Q2 26 15.4% (guidance FY26 >14%, ไม่ใช้ spike Q2 ตรง ๆ เพราะมี trading revenue ชั่วคราวหนุน); TBVPS $33.40 (Q2 2026); r 10% สะท้อนความเสี่ยงช่วง CEO transition"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "~$54.86 (Hold · 18 นักวิเคราะห์)"
+      }
+    ],
+    "s6": [
+      {
+        "head": "EPS +2%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$4.62"
+          ],
+          [
+            "P/E ออก",
+            "10x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$6.24"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +9%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$5.63"
+          ],
+          [
+            "P/E ออก",
+            "12x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$6.24"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +15%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$6.62"
+          ],
+          [
+            "P/E ออก",
+            "13.5x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$6.24"
+          ]
+        ]
+      }
+    ],
+    "targets": [
+      46.2,
+      67.6,
+      89.4
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~{{baseEps}} (TTM GAAP) • รวมปันผล",
+    "legend": [
+      {
+        "text": "ราคา TFC",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
     "fv": 54.4,
     "fvRange": [
       48,
       58
-    ],
-    "targets": [
-      46.2,
-      null,
-      89.4
     ],
     "cards": {
       "pbv": {
@@ -305,5 +389,5 @@
       }
     }
   },
-  "_sig": "sha256:b8d88285db7b4d2a461f93938f58a0f1a39e36344fd74176413ce84e74db4898"
+  "_sig": "sha256:71633fe55e906089798bbed59b43cc998c771614ea12f1ecc21a7f20cb005fd7"
 }

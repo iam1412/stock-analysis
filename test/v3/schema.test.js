@@ -336,15 +336,16 @@ for (const method of ['pe', 'ps', 'evsales', 'evebitda', 'pfcf', 'pffo', 'pbv'])
   t(!paths(S.validate(d)).some((p) => p.startsWith('legs[2].inputs')), `multipleSource 'author' accepted on ${method}`, JSON.stringify(S.validate(d)));
   t.eq(S.requiredFamily(leg), 'market', `requiredFamily(${method} author) = market`);
 }
-// Plan 4c-prep Task 1 (spec §3.7 ง · D5): เพดาน custom 8 เฉพาะใบ migrate (meta.migratedFrom) · ใบ NEW คง 4
+// Plan 4c-prep Task 1 (spec §3.7 ง · D5): เพดาน custom เฉพาะใบ migrate (meta.migratedFrom · 16 ตั้งแต่ 27 ก.ย. 69) · ใบ NEW คง 4
 {
   const mk = (n, migrated) => { const d = base(); d.metrics.custom = Array.from({ length: n }, (_, i) => ({ label: `การ์ด ${i + 1}`, value: `ค่า ${i + 1}` }));
     if (migrated) d.meta.migratedFrom = { updated: '2026-09-01T00:00:00+07:00', v2Hash: 'abcdef012345' }; return d; };
   t(paths(S.validate(mk(5, false))).includes('metrics.custom'), 'cap: NEW doc with 5 custom → error (cap 4)');
-  t(!paths(S.validate(mk(5, true))).includes('metrics.custom') && !paths(S.validate(mk(8, true))).includes('metrics.custom'), 'cap: migrated doc with 5 / 8 custom → valid');
-  t(paths(S.validate(mk(9, true))).includes('metrics.custom'), 'cap: migrated doc with 9 custom → error (cap 8)');
-  t.eq([S.customCap(mk(0, true)), S.customCap(mk(0, false))], [8, 4], 'S.customCap: 8 migrated · 4 new');
-  t(/≤8/.test((S.validate(mk(9, true)).find((e) => e.path === 'metrics.custom') || {}).msg || ''), 'cap: message names the cap in force');
+  // 27 ก.ย. 69: เพดานใบ migrate 8 → 16 (DASH/BXP/INSM/VMRK/IRM พกการ์ด custom 9 ใบ — เพดาน 8 ตัดการ์ดท้ายทิ้ง = ข้อความหาย)
+  t(!paths(S.validate(mk(5, true))).includes('metrics.custom') && !paths(S.validate(mk(9, true))).includes('metrics.custom') && !paths(S.validate(mk(16, true))).includes('metrics.custom'), 'cap: migrated doc with 5 / 9 / 16 custom → valid');
+  t(paths(S.validate(mk(17, true))).includes('metrics.custom'), 'cap: migrated doc with 17 custom → error (cap 16)');
+  t.eq([S.customCap(mk(0, true)), S.customCap(mk(0, false))], [16, 4], 'S.customCap: 16 migrated · 4 new');
+  t(/≤16/.test((S.validate(mk(17, true)).find((e) => e.path === 'metrics.custom') || {}).msg || ''), 'cap: message names the cap in force');
 }
 // Plan 4c-prep Task 2 (spec §3.7 ก · D2) — Kind 1 enums + inputs.base
 {

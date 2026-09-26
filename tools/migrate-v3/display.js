@@ -245,7 +245,7 @@ function v2DisplayOf(o) {
 const PRICE_KEYS = new Set(['mcap', 'pe', 'pbv', 'ps', 'yield', 'evEbitda', 'peForward', 'analystTarget', 'pffo', 'pffoForward', 'ptbv']);
 const firstNum = (t) => NB.numsOf(t)[0] || null;
 /** ค่าของการ์ดที่ฐาน b ที่ราคา px (ตัวเลขแรกของข้อความ · ทศนิยมเท่าเดิม) — ตัวเดียวกับ render liveCardValue */
-const opValue = (op, b, px) => (op === 'basePct' ? b / px * 100 : px / b);
+const opValue = (op, b, px) => (op === 'basePct' ? b / px * 100 : op === 'pxTimesBase' ? px * b : px / b);
 /** ฐานผู้สมัครของการ์ดผูกราคา (จาก fundamentals/ขาของใบ = ตัวเลขที่หน้า v2 ใช้) */
 function candBases(key, doc) {
   const f = doc.fundamentals || {}, legs = doc.legs || [];
@@ -270,6 +270,8 @@ function newNumbers(a, b) {
   const xs = curNums(a), ys = curNums(b);
   return xs.some((q) => !ys.some((p) => p.cur === q.cur && [1, 1e3, 1e6, 1e9].some((k) => Math.abs(p.v * k - q.v) <= 2 * Math.max(p.half * k, q.half) * (1 + 1e-9))));
 }
+/** คำของ a ที่ b ไม่มี (≥ 2 ตัวอักษร · ตัดเครื่องหมาย) — ถ้อยคำของผู้เขียนที่ข้อความของ template ไม่พิมพ์ */
+const wordsLost = (a, b) => { const w = (t) => String(t).split(/[\s/]+/).map((x) => x.replace(/[^\p{L}\p{M}\p{N}]/gu, '')).filter((x) => (x.match(/\p{L}/gu) || []).length >= 2); const B = new Set(w(b)); return w(a).some((x) => !B.has(x)); };
 function cardPlan(parsed, doc, view, pairs) {
   const out = [];
   const px = view.d.px, cur = parsed.sm && parsed.sm.currency;
@@ -284,9 +286,16 @@ function cardPlan(parsed, doc, view, pairs) {
     // .d ของ template พิมพ์ฐานที่การ์ด v2 ไม่มี (ปันผล "$1.97/ปี" ถอดจาก yield × ราคา ขณะที่ผู้เขียนพิมพ์ "$0.50/ไตรมาส") = ตัวเลขที่ผู้เขียนไม่ได้พิมพ์
     //   ⇒ แสดงบรรทัดล่างของผู้เขียน (ค่ายังคิดสดจากฐาน) แม้ค่าการ์ดจะเท่ากัน (audit: invented)
     const dNew = D_BASE_KEYS.has(key) && newNumbers(td, `${v2t} ${d2}`);
+    const x0 = { i, key, label: c.k, v2t, v3, d: d2 };
+    // Market Cap ที่ผู้เขียนพิมพ์ด้วยถ้อยคำ/หน่วยของตัวเอง ("~US$198 พันล้าน" — TD · 27 ก.ย. 69): ค่าเท่ากันแต่คำต่าง → ข้อความของผู้เขียนคิดสด (ราคา × หุ้น ในหน่วยที่ผู้เขียนพิมพ์)
+    if (key === 'mcap' && sameNumbers(v2t, v3) && wordsLost(v2t, v3)) {
+      const sh = doc.fundamentals && doc.fundamentals.shares, n0 = firstNum(v2t), m0 = /[0-9][0-9,]*(?:\.[0-9]+)?/.exec(v2t);
+      const raw = m0 ? parseFloat(m0[0].replace(/,/g, '')) : null;
+      if (sh > 0 && n0 && raw > 0 && Math.abs(px * sh - n0.v) <= 2 * n0.half * (1 + 1e-9)) { out.push({ ...x0, kind: 'base', op: 'pxTimesBase', base: +(sh / (n0.v / raw)).toPrecision(8) }); continue; }
+    }
     if (sameNumbers(v2t, v3) && !dNew) continue;
     const a2 = NB.numsOf(v2t), a3 = NB.numsOf(v3);
-    const x = { i, key, label: c.k, v2t, v3, d: d2 };
+    const x = x0;
     // ไม่ผูกราคา หรือหน้า v2 พิมพ์ข้อความไม่มีตัวเลข ("ขาดทุน GAAP" · "ไม่มี" — ข้อเท็จจริงของผู้เขียน ไม่ใช่ฟังก์ชันของราคา) → ข้อความของผู้เขียน
     if (!PRICE_KEYS.has(key) || !a2.length) { out.push({ ...x, kind: 'text' }); continue; }
     const n = firstNum(v2t);
@@ -310,7 +319,7 @@ function pairsOf(parsed, doc) {
   const MC = require('./cards.js');
   const keys = S.cardEntries(doc.metrics || {}).filter((e) => e.key).map((e) => e.key);
   const used = new Set(), out = [];
-  parsed.s1cards.forEach((c, i) => { const k = MC.keyOf(c.k, c.v); if (k && keys.includes(k) && !used.has(k)) { used.add(k); out.push({ i, key: k }); } });
+  parsed.s1cards.forEach((c, i) => { const k = MC.keyOf(c.k, c.v); if (k && keys.includes(k) && !used.has(k) && !MC.amountNotYield(k, c)) { used.add(k); out.push({ i, key: k }); } });
   return out;
 }
 /**

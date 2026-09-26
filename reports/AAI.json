@@ -32,7 +32,8 @@
     },
     "migratedFrom": {
       "updated": "2026-09-21T09:52:17+07:00",
-      "v2Hash": "ecfc4e5a3109"
+      "v2Hash": "ecfc4e5a3109",
+      "prevHash": "f8d65031ea32"
     }
   },
   "market": {
@@ -112,6 +113,7 @@
       "period": "FY2568",
       "netIncome": 741000000
     },
+    "epsForward": 0.32,
     "epsBasis": "ifrs"
   },
   "legs": [
@@ -120,12 +122,11 @@
       "label": "P/E Valuation",
       "inputs": {
         "multiple": 13.6,
-        "multipleSource": "author"
+        "multipleSource": "median5y",
+        "medianWindow": "3 ปี",
+        "base": "epsForward"
       },
-      "override": {
-        "eps": 0.32,
-        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
-      },
+      "baseLabel": "FY2026e",
       "family": "market"
     },
     {
@@ -135,7 +136,6 @@
         "g": 4,
         "r": 9
       },
-      "note": "อิงนโยบายจ่าย ≥50% net profit; g สอดคล้องการเติบโตรายได้ระยะยาว ~4%",
       "family": "rg"
     },
     {
@@ -145,7 +145,6 @@
         "g": 4,
         "r": 9
       },
-      "note": "ROE TTM อิงงบล่าสุด; อนุรักษ์นิยมเพราะ ROE ต่ำกว่า FY2567",
       "family": "rg"
     }
   ],
@@ -166,7 +165,6 @@
       "beta"
     ],
     "notes": {
-      "mcap": "หุ้น 2,117 ล้านหุ้น (Par ฿1)",
       "pe": "ค่าเฉลี่ยเซกเตอร์ ~15–18x",
       "peAvg5y": "มัธยฐาน ช่วง 11.8–25.9x (ผันผวนตามวัฏจักรราคาวัตถุดิบ)",
       "pbv": "ซื้อขายเหนือ Book Value",
@@ -247,17 +245,57 @@
   ],
   "extras": [],
   "v2Display": {
+    "legDescs": [
+      "EPS adj. ฿0.32 × P/E เป้าหมาย ~13.6x — EPS = ประมาณการ FY2026e (StockAnalysis) เพราะ EPS แกว่งตาม tuna cycle (TTM ฿0.28); P/E = มัธยฐานย้อนหลังของ AAI เอง 3 ปีที่วัดได้ (11.8–25.9x)",
+      "D₁ = ฿0.33 × (1+4%); g 4%, r 9% → ฿0.343 / (9%−4%) — อิงนโยบายจ่าย ≥50% net profit; g สอดคล้องการเติบโตรายได้ระยะยาว ~4%",
+      "P/BV เหมาะสม = (ROE 12.2% − g 4%)/(r 9% − g 4%) ≈ 1.64x × BVPS ฿2.34 — ROE TTM อิงงบล่าสุด; อนุรักษ์นิยมเพราะ ROE ต่ำกว่า FY2567"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "~฿4.40 consensus (StockAnalysis / Yahoo)"
+      }
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~฿0.28 • รวมปันผล",
+    "legend": [
+      {
+        "text": "ราคา AAI",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
     "targets": [
       null,
       4.76,
       6.88
     ],
     "cards": {
+      "mcap": {
+        "v": "฿9,059 ล้าน",
+        "d": "หุ้น 2,117 ล้านหุ้น (Par ฿1)",
+        "op": "pxTimesBase",
+        "base": 2116.6497
+      },
       "revenue": {
         "v": "฿6,697 ล้าน",
         "d": "FY2568: ฿7,105M (+2.6% YoY) · TTM −8.6% YoY"
       }
     }
   },
-  "_sig": "sha256:727606dc5dfe4e546171f29c87746b7a77b2343e068de0e578a8288abc8407f0"
+  "_sig": "sha256:1223478943736d444eea6ff79798888bea6b15f74d6519d3eb53ba30e7b57800"
 }

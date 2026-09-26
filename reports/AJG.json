@@ -32,7 +32,8 @@
     },
     "migratedFrom": {
       "updated": "2026-09-21T09:52:17+07:00",
-      "v2Hash": "2c943b7be16f"
+      "v2Hash": "2c943b7be16f",
+      "prevHash": "42d039c02443"
     }
   },
   "market": {
@@ -120,8 +121,7 @@
       "inputs": {
         "multiple": 21,
         "multipleSource": "peer"
-      },
-      "note": "peer/historical de-rated post AssuredPartners"
+      }
     },
     {
       "method": "pe",
@@ -147,8 +147,7 @@
         "fcf": 1835401560,
         "netDebt": 0,
         "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
-      },
-      "note": "capital-light recurring commission"
+      }
     }
   ],
   "fvWeights": null,
@@ -254,5 +253,99 @@
     "<b>Valuation premium:</b> adj P/E ~20x ต่ำกว่า historical แต่ยังไม่ถือว่า cheap — MOS เป็นบวกเล็กน้อยเพียง {{mos}} คุ้มค่าเฉพาะนักลงทุนระยะยาว"
   ],
   "extras": [],
-  "_sig": "sha256:092e1aaecc62a08891fc12af89777391eadcf90fe0321ab71ae506d0bb04de1b"
+  "v2Display": {
+    "legDescs": [
+      "Adj EPS (TTM) $11.96 × P/E เป้าหมาย ~21x — peer/historical de-rated post AssuredPartners",
+      "FY26E Adj EPS $13.18 × P/E เป้าหมาย ~21x — consensus (StockAnalysis) หลัง Q2 2026 beat บน adj basis",
+      "FCF/Share $7.16 เติบโต 10%/ปี 5 ปี · terminal g 3% · r 7% — capital-light recurring commission"
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~{{baseEps}}",
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "~$291.72 (Buy)"
+      }
+    ],
+    "legend": [
+      {
+        "text": "ราคา AJG",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
+    "s6": [
+      {
+        "head": "EPS +5%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$13.85"
+          ],
+          [
+            "P/E ออก",
+            "17x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$8.40"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +10%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$15.92"
+          ],
+          [
+            "P/E ออก",
+            "21x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$8.40"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +13%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$17.26"
+          ],
+          [
+            "P/E ออก",
+            "22x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$8.40"
+          ]
+        ]
+      }
+    ],
+    "targets": [
+      235.37,
+      334.29,
+      379.66
+    ]
+  },
+  "_sig": "sha256:3e0d02a384391f89ac7a66d3eaee5823687a63ad174155fac6d4e8b5ea6a1ef1"
 }

@@ -31,7 +31,8 @@
     },
     "migratedFrom": {
       "updated": "2026-09-21T15:39:58+07:00",
-      "v2Hash": "8436b559f783"
+      "v2Hash": "8436b559f783",
+      "prevHash": "285315385ecd"
     }
   },
   "market": {
@@ -142,7 +143,6 @@
         "netDebt": 0,
         "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
       },
-      "note": "สมมติฐานผู้วิเคราะห์ · สมมติฐานผู้วิเคราะห์ · 74.6% ของรวม · FCF หลังดอกเบี้ยแล้ว จึงไม่หัก net debt",
       "family": "rg"
     }
   ],
@@ -229,7 +229,7 @@
     "verdictHeadline": "Kroger: Defensive Value ราคาใกล้โซนสะสม",
     "verdictBody": "KR ซื้อขายที่ Forward P/E ~11.6x บน Adj. EPS consensus FY2027 $5.19 ซึ่ง <b>ต่ำกว่ามัธยฐานย้อนหลัง 5 ปี 15.9x</b> (วัดบน EPS GAAP จึงเทียบเป็นแนวทาง) ราคา {{px}} อยู่ใกล้โซน MOS 20% ({{mos20}}) ทำให้ downside ค่อนข้างจำกัดในฐานะ defensive grocery stock จุดแข็งคือ <b>FCF TTM $2.38B</b> (FCF yield ~6.7%), buyback เชิงรุก, private label ขยายตัว • ข้อควรระวัง: กำไร GAAP FY2026 ตกแรง (NI −62% YoY) และ leverage สูง (D/E 4.13x) • นักวิเคราะห์ 22 คน consensus \"Buy\" เป้าเฉลี่ย {{analyst.target}} (ไม่ใช่ขาของ FV) • FV ของเราคิดจาก P/E มัธยฐาน + DCF จึงต่างจากเป้านักวิเคราะห์",
     "strategy": "ราคาปัจจุบัน {{px}} เฉียดโซน MOS 20% ({{mos20}}) — เหมาะสำหรับ <b>ทยอยสะสม</b> สำหรับ defensive income investor ที่ต้องการปันผล {{yield}} + buyback upside • deep value ที่โซน MOS 30% ({{mos30}}) • Bull case ~$95 ภายใน 3 ปีหาก private label รักษา margin ได้และ multiple re-rate • ไม่เหมาะกับ growth investor ที่ต้องการ upside >20%/ปี",
-    "disclaimerSources": "แหล่งข้อมูล: Yahoo Finance (ราคา ณ {{priceDate}}, 52-week range $54.15–$76.58), StockAnalysis.com (งบการเงิน, forecast, analyst consensus 22 คน avg $67.91), S&P Global Market Intelligence (ผ่าน StockAnalysis)"
+    "disclaimerSources": "แหล่งข้อมูล: Yahoo Finance (ราคา ณ {{priceDate}}, 52-week range $54.15–$76.58), StockAnalysis.com (งบการเงิน, forecast, analyst consensus 22 คน avg {{analyst.target}}), S&P Global Market Intelligence (ผ่าน StockAnalysis)"
   },
   "text": {
     "valHint": "2 วิธี • P/E (มัธยฐานย้อนหลัง) และ DCF (FCF ต่อผู้ถือหุ้น)",
@@ -253,6 +253,97 @@
   ],
   "extras": [],
   "v2Display": {
+    "legDescs": [
+      "EPS $4.85 (FY2026, adjusted — ตรงกับตาราง consensus ของ StockAnalysis) × 15.9x = $77.12 — 15.9x คือมัธยฐาน 5 ปีของ KR เอง (ราคาเฉลี่ยงวด ÷ EPS dil.; ช่วง 15.3–43.6x โดยปีล่าสุด 43.6x บิดเบือนจาก EPS GAAP ที่ถูกกดด้วยรายการพิเศษ) จึงมาจากประวัติ ไม่ใช่จาก P/E ปัจจุบัน • ข้อควรระวัง: มัธยฐานคำนวณบน EPS GAAP แต่ใช้กับ adj. EPS จึงอาจเกินจริงเล็กน้อย",
+      "FCF TTM $2.384B โต 5%/ปี 5 ปี (สมมติฐานผู้วิเคราะห์) = $2.503B, $2.628B, $2.760B, $2.898B, $3.043B; r 8.5%, g ปลาย 2.0% (สมมติฐานผู้วิเคราะห์); PV 5 ปี = $10.81B; TV = 3.043 × 1.02 ÷ 0.065 = $47.75B, PV = $31.75B (74.6% ของรวม); รวม $42.57B (FCF หลังดอกเบี้ยแล้ว จึงไม่หัก net debt) ÷ 590.59M หุ้น"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "~$67.91 (Buy)"
+      }
+    ],
+    "s6": [
+      {
+        "head": "EPS 0%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$4.85"
+          ],
+          [
+            "P/E ออก",
+            "10x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$4.68"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +8%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$6.11"
+          ],
+          [
+            "P/E ออก",
+            "12x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$4.92"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +12%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$6.81"
+          ],
+          [
+            "P/E ออก",
+            "14x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$5.06"
+          ]
+        ]
+      }
+    ],
+    "targets": [
+      48.5,
+      73.31,
+      95.39
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~{{baseEps}}",
+    "legend": [
+      {
+        "text": "ราคา KR",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
     "fv": 74.6,
     "fvRange": [
       72,
@@ -262,11 +353,6 @@
       null,
       72.08
     ],
-    "targets": [
-      null,
-      73.31,
-      null
-    ],
     "cards": {
       "revenue": {
         "v": "~$149.3B",
@@ -274,5 +360,5 @@
       }
     }
   },
-  "_sig": "sha256:c018075c61b8aec0d19fce7aa1ce4f25d29035c3b01d6d5ab3ee60754610b9cc"
+  "_sig": "sha256:1154018fcd3949d12c10b6c9da5d9142fbd867e1643cbdcd555917b6b2b4d4ff"
 }

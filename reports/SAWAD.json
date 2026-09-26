@@ -31,7 +31,8 @@
     },
     "migratedFrom": {
       "updated": "2026-09-21T23:32:21+07:00",
-      "v2Hash": "857d65daab30"
+      "v2Hash": "857d65daab30",
+      "prevHash": "8f380dbc1b8c"
     }
   },
   "market": {
@@ -113,7 +114,6 @@
         "multiple": 10,
         "multipleSource": "sector"
       },
-      "note": "ค่าเฉลี่ยอุตสาหกรรม Non-Bank ไทย; ปัจจุบัน 7.28x discount สะท้อน NPL risk",
       "family": "market"
     },
     {
@@ -124,7 +124,7 @@
         "r": 10
       },
       "role": "context",
-      "note": "ห่างจากขายึดตลาด >2× · Payout ratio ต่ำ (~22%) ทำให้ DDM ให้ค่าอนุรักษ์นิยม",
+      "note": "บริบท — ห่างจากขายึดตลาด >2× ไม่รวมในกรอบ FV",
       "family": "rg"
     },
     {
@@ -134,7 +134,6 @@
         "g": 3,
         "r": 10
       },
-      "note": "สะท้อน ROE เหนือ Cost of Equity",
       "family": "rg"
     }
   ],
@@ -182,7 +181,6 @@
       "mcap": "~1,661 ล้านหุ้น · par ฿1",
       "pe": "ต่ำกว่าค่าเฉลี่ยกลุ่ม ~10x",
       "pbv": "ใกล้ book value · SET factsheet",
-      "netIncome": "งบ TTM (StockAnalysis) ÷ 1,661M หุ้น",
       "eps": "NI TTM ฿5,394M ÷ 1,661M หุ้น (Yahoo · StockAnalysis)",
       "bvps": "ราคา ÷ P/BV = 23.60÷1.01",
       "roe": "EPS/BVPS · Non-bank leverage ~4x",
@@ -233,12 +231,11 @@
     "verdictHeadline": "น่าสนใจระดับกลาง — Non-Bank ชั้นนำ P/E ต่ำกว่าค่าเฉลี่ย 5 ปี อย่างมีนัย",
     "verdictBody": "SAWAD เป็นบริษัทสินเชื่อ Non-Bank ที่มีความได้เปรียบเชิงแข่งขันจากเครือข่ายสาขาหนาแน่น >5,700 แห่งและฐานลูกค้า ~3 ล้านรายในกลุ่มเป้าหมายที่ธนาคารพาณิชย์ยังเข้าถึงได้ยาก ปัจจุบัน P/E 7.28x ต่ำกว่าค่าเฉลี่ย 5 ปี (~10-12x) อย่างมีนัยสำคัญ สะท้อนความกังวลเรื่อง NPL และสภาวะดอกเบี้ยสูง ซึ่งถ้าปัจจัยเหล่านี้ผ่อนคลาย โอกาส P/E Re-rating สูงมาก Fair Value ฿{{fv}} (สมอ P/E + ตระกูล r/g ตาม dispersion gate 0.4c) ให้ MOS ~{{mos}} จากราคาปัจจุบัน ฿{{px}} แหล่งข้อมูล: SET / Yahoo Finance / Google Finance (ยืนยัน 3 แหล่ง)",
     "strategy": "ราคาปัจจุบัน ฿{{px}} ต่ำกว่าจุดซื้อ MOS 30% (฿{{mos30}}) อยู่แล้ว ทยอยสะสมได้ถึงระดับ {{mos20}} (MOS 20%) เป้าหมาย 12-18 เดือน ฿32-36 · ตัด Loss ถ้าราคาหลุด ฿19.90 (52-week low) อย่างมีนัยสำคัญ",
-    "disclaimerSources": "แหล่งข้อมูล: (1) SET Factsheet (set.or.th) — P/E 7.28x, P/BV 1.01x, Market Cap ฿39,212M, ราคา ฿23.60 ณ 14 ส.ค. 2569 · (2) Yahoo Finance (SAWAD.BK) — ราคา ฿23.60, EPS(TTM) ฿3.24, เป้านักวิเคราะห์ ฿30.48 (n=16), 52W ฿19.90–฿32.00 · (3) StockAnalysis.com (quote/bkk/SAWAD) — ราคา ฿23.60 ณ 14 ส.ค. 2569, EPS(TTM) ฿3.24, NI TTM ฿5,394M (ถึงไตรมาส Q2/2569), เงินปันผล ฿0.70/ปี (yield 2.97%) · (4) Google Finance (SAWAD:BKK) — ราคาปิดล่าสุด ฿23.60 (ยืนยันข้ามแหล่ง ≤5%)"
+    "disclaimerSources": "แหล่งข้อมูล: (1) SET Factsheet (set.or.th) — P/E 7.28x, P/BV 1.01x, Market Cap ฿39,212M, ราคา ฿23.60 ณ 14 ส.ค. 2569 · (2) Yahoo Finance (SAWAD.BK) — ราคา ฿23.60, EPS(TTM) ฿3.24, เป้านักวิเคราะห์ {{analyst.target}} (n=16), 52W ฿19.90–฿32.00 · (3) StockAnalysis.com (quote/bkk/SAWAD) — ราคา ฿23.60 ณ 14 ส.ค. 2569, EPS(TTM) ฿3.24, NI TTM ฿5,394M (ถึงไตรมาส Q2/2569), เงินปันผล ฿0.70/ปี (yield 2.97%) · (4) Google Finance (SAWAD:BKK) — ราคาปิดล่าสุด ฿23.60 (ยืนยันข้ามแหล่ง ≤5%)"
   },
   "text": {
     "valHint": "ถ่วงตามตระกูล — สมอ P/E + ตระกูล r/g (dispersion gate 0.4c)",
-    "chartHint": "ก.ย. 2568 – ส.ค. 2569 · รายเดือน",
-    "legendNote": "จุดสูงสุดปี"
+    "chartHint": "ก.ย. 2568 – ส.ค. 2569 · รายเดือน"
   },
   "catalysts": [
     "<b>การลดดอกเบี้ยนโยบาย:</b> ต้นทุนเงินกู้ (Cost of Fund) ของ SAWAD จะลดลงตาม กนง. ทำให้ NIM และกำไรสุทธิขยายตัวได้ทันที",
@@ -257,5 +254,105 @@
     "<b>Regulatory Risk ด้าน Capital:</b> BOT อาจกำหนด Capital Requirement เพิ่มเติมสำหรับ Non-Bank ขนาดใหญ่ ทำให้จ่ายปันผลได้น้อยลง"
   ],
   "extras": [],
-  "_sig": "sha256:ad94ce6780f48f29266c0a33a7b46744744dc3e569a988990d6c71e42c63b94e"
+  "v2Display": {
+    "legDescs": [
+      "EPS (TTM) ฿3.24 × P/E 10x — ค่าเฉลี่ยอุตสาหกรรม Non-Bank ไทย; ปัจจุบัน 7.28x discount สะท้อน NPL risk",
+      "D₁ = DPS ฿0.70 × (1+4%); g 4%, r 10% → ฿0.728 ÷ 0.06 — Payout ratio ต่ำ (~22%) ทำให้ DDM ให้ค่าอนุรักษ์นิยม",
+      "P/BV เหมาะสม = (ROE 13.9% − g 3%)/(r 10% − g 3%) ≈ 1.557x × BVPS ฿23.37 — สะท้อน ROE เหนือ Cost of Equity"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "~฿30.48 (Buy)"
+      }
+    ],
+    "s6": [
+      {
+        "head": "EPS −3%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~฿2.96"
+          ],
+          [
+            "P/E ออก",
+            "6x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~฿2.10"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +8%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~฿4.08"
+          ],
+          [
+            "P/E ออก",
+            "8.3x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~฿2.40"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +15%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~฿4.93"
+          ],
+          [
+            "P/E ออก",
+            "10x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~฿2.80"
+          ]
+        ]
+      }
+    ],
+    "targets": [
+      17.74,
+      33.88,
+      49.28
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~{{baseEps}} • รวมปันผล",
+    "legend": [
+      {
+        "text": "ราคา SAWAD",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสูงสุดปี",
+        "swatch": "point"
+      }
+    ],
+    "cards": {
+      "netIncome": {
+        "v": "~฿5,394 ล้าน",
+        "d": "งบ TTM (StockAnalysis) ÷ 1,661M หุ้น"
+      }
+    }
+  },
+  "_sig": "sha256:21b4820873767c4e10698ac3f65364d0621427d37deb78fb185976c144198d88"
 }

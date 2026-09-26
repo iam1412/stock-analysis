@@ -25,8 +25,9 @@ const realCasyJson = fs.existsSync(path.join(REAL, 'CASY.json'));   // Plan 4c: 
 {
   const out = path.join(tmp, 'sweep');
   const r = cli(['sweep', ...common, '--out', out]);
-  // Plan 4c-prep Task 5 round 3 ruling: basis words on a pe leg without a consumed base are never carried ⇒ FTV (leg 1 tail "adjusted … guidance") = HUMAN
-  t(r.code === 0 && /sweep: 7 ใบ · CLEAN \d+ · VALUE-DRIFT \d+ · HUMAN 4 · TEXT LOST ใน CLEAN 0/.test(r.out), 'sweep: 7 fixtures · HUMAN 4 (AAPL BBL DDOG FTV) — DPZ out by cap 8 (spec §3.7 ง)', r.out.slice(-400));
+  // 27 ก.ย. 69: ใบที่มีแถว manifest พกบรรทัดขาของผู้เขียนตามตัว (v2Display.legDescs) ⇒ FTV (leg 1 tail "adjusted … guidance") ไม่หายแล้ว = ไม่ HUMAN
+  //   (Plan 4c-prep round 3 ruling ยังใช้กับทางที่ไม่มีแถว manifest — test/v3/migrate-equiv.test.js)
+  t(r.code === 0 && /sweep: 7 ใบ · CLEAN \d+ · VALUE-DRIFT \d+ · HUMAN 3 · TEXT LOST ใน CLEAN 0/.test(r.out), 'sweep: 7 fixtures · HUMAN 3 (AAPL BBL DDOG) — FTV verbatim · DPZ within the migrated cap (spec §3.7 ง)', r.out.slice(-400));
   t(fs.existsSync(out + '.md') && fs.existsSync(out + '.csv'), 'sweep writes md + csv');
   const csv = fs.readFileSync(out + '.csv', 'utf8').trim().split('\n');
   t(csv.length === 8 && /^symbol,market,bucket,reasons,legs,fvLegs,textLost,numberValue,rdRows,proseStale,customCards,fNotes,driftClass,maxDeltaPct$/.test(csv[0]), 'csv header + 7 rows', csv[0]);

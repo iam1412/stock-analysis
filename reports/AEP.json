@@ -31,7 +31,8 @@
     },
     "migratedFrom": {
       "updated": "2026-09-21T09:52:17+07:00",
-      "v2Hash": "27b5e068ee8f"
+      "v2Hash": "27b5e068ee8f",
+      "prevHash": "358811cd2687"
     }
   },
   "market": {
@@ -127,8 +128,7 @@
       "inputs": {
         "value": 123,
         "basis": "other"
-      },
-      "note": "EPS ฐาน $6.40 เติบโต 8%/ปี (midpoint guidance) 5 ปี · Terminal 17x EPS 2030 (มัธยฐานย้อนหลัง) · Discount rate 8.5% → PV ปันผล 5 ปี $17.1 + Terminal PV $106.3 = $123.4"
+      }
     },
     {
       "method": "declared",
@@ -136,8 +136,7 @@
       "inputs": {
         "value": 144,
         "basis": "other"
-      },
-      "note": "Consensus นักวิเคราะห์ (Buy) · ค่าเฉลี่ย {{analyst.target}} (StockAnalysis, +19.6% จากราคา) / $143.22 (Yahoo, n=20)"
+      }
     }
   ],
   "fvWeights": null,
@@ -248,16 +247,103 @@
   ],
   "extras": [],
   "v2Display": {
-    "fv": 130,
-    "fvRange": [
-      122,
-      144
+    "legDescs": [
+      "EPS oper. adj. $6.40 × P/E 19x = $121.60 — ใช้ EPS guide 2026 midpoint ($6.25–$6.55 หลังปรับขึ้นเมื่อ 30 ก.ค. 2569) × 19x (สูงกว่ามัธยฐานย้อนหลัง 5 ปี 17.0x [ช่วง 16.5–21.2x] เพราะ EPS growth >9% + AI/data center tailwind)",
+      "EPS ฐาน $6.40 เติบโต 8%/ปี (midpoint guidance) 5 ปี · Terminal 17x EPS 2030 (มัธยฐานย้อนหลัง) · Discount rate 8.5% → PV ปันผล 5 ปี $17.1 + Terminal PV $106.3 = $123.4",
+      "Consensus นักวิเคราะห์ (Buy) · ค่าเฉลี่ย $143.57 (StockAnalysis, +19.6% จากราคา) / $143.22 (Yahoo, n=20)"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "~$143.57 (Buy)"
+      }
+    ],
+    "s6": [
+      {
+        "head": "EPS +4%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$7.20"
+          ],
+          [
+            "P/E ออก",
+            "16x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$11.86"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +8%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$8.06"
+          ],
+          [
+            "P/E ออก",
+            "18x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$12.10"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +10%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$8.52"
+          ],
+          [
+            "P/E ออก",
+            "21x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$12.10"
+          ]
+        ]
+      }
     ],
     "targets": [
       115,
       145,
       179
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~{{baseEps}}",
+    "legend": [
+      {
+        "text": "ราคา AEP",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
+    "fv": 130,
+    "fvRange": [
+      122,
+      144
     ]
   },
-  "_sig": "sha256:673193644638064f14fdf13a04d21fe81c71dfaf0126e2c7e681eb2a3cea0209"
+  "_sig": "sha256:de821311057a6157cd9121657dbeff7ff5fcfd014732c3cdfc704526e89a8993"
 }

@@ -32,7 +32,8 @@
     },
     "migratedFrom": {
       "updated": "2026-09-22T07:22:55+07:00",
-      "v2Hash": "acc8d0cbad20"
+      "v2Hash": "acc8d0cbad20",
+      "prevHash": "3efef763dba2"
     }
   },
   "market": {
@@ -117,8 +118,7 @@
       "inputs": {
         "multiple": 58,
         "multipleSource": "author"
-      },
-      "note": "ปลายล่างของช่วง 58–70x ที่วัดจริง 5 FY มัธยฐาน ~67x สะท้อนการ de-rate"
+      }
     },
     {
       "method": "declared",
@@ -126,8 +126,7 @@
       "inputs": {
         "value": 403,
         "basis": "other"
-      },
-      "note": "FCF TTM $3.22B โต 15%/ปี 5 ปีแรก แล้ว 10%/ปี อีก 5 ปี, WACC ~8.5%, Terminal ~3.5% + เงินสด $5.2B ÷ 353M หุ้น"
+      }
     },
     {
       "method": "declared",
@@ -135,8 +134,7 @@
       "inputs": {
         "value": 439,
         "basis": "other"
-      },
-      "note": "เป้าเฉลี่ย 12 เดือน $476 (29 นักวิเคราะห์, Buy) คิดลด 1 ปีที่ 8.5% กลับมาเป็นมูลค่าปัจจุบัน"
+      }
     }
   ],
   "fvWeights": null,
@@ -250,6 +248,40 @@
   ],
   "extras": [],
   "v2Display": {
+    "legDescs": [
+      "EPS ~$8.72 × P/E ~58x (ปลายล่างของช่วง 58–70x ที่วัดจริง 5 FY มัธยฐาน ~67x สะท้อนการ de-rate)",
+      "FCF TTM $3.22B โต 15%/ปี 5 ปีแรก แล้ว 10%/ปี อีก 5 ปี, WACC ~8.5%, Terminal ~3.5% + เงินสด $5.2B ÷ 353M หุ้น",
+      "เป้าเฉลี่ย 12 เดือน $476 (29 นักวิเคราะห์, Buy) คิดลด 1 ปีที่ 8.5% กลับมาเป็นมูลค่าปัจจุบัน"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "{{analyst.target}} ({{analyst.pct}})"
+      }
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~{{baseEps}}",
+    "legend": [
+      {
+        "text": "ราคา ISRG",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
     "fv": 450,
     "fvRange": [
       403,
@@ -289,5 +321,5 @@
       }
     }
   },
-  "_sig": "sha256:02a064135d2ec74675c14834d2559ac2e51840459047d577020f06b0e2c023da"
+  "_sig": "sha256:70ebd38f3f2098100fad4ad38ae1750099294b990eb54f3c3549961efd136d03"
 }

@@ -256,8 +256,10 @@ t.eq(JSON.parse(R.jsonScript('{"a":"</script>"}')).a, '</script>', 'jsonScript o
   d.legs[i].inputs.multiple = 38; d.legs[i].inputs.multipleSource = 'author'; delete d.legs[i].inputs.medianWindow;
   const v = C.compute(d, { seeds });
   // brief wrote "× P/E 38.0x (…)" — the pe mdesc format is "× P/E เป้าหมาย ~38x (<source>)"; the source label is what this pins
-  t(/× P\/E เป้าหมาย ~38x \(ผู้วิเคราะห์กำหนด\)/.test(R.mdesc(d.legs[i], v)), "pe leg with multipleSource 'author' → (ผู้วิเคราะห์กำหนด): " + R.mdesc(d.legs[i], v));
-  t.eq(R.SRC_NAME && R.SRC_NAME.author, 'ผู้วิเคราะห์กำหนด', 'SRC_NAME.author');
+  // เจ้าของ 27 ก.ย. 69: template ห้ามพิมพ์ป้ายที่ผู้เขียนไม่ได้เขียน — 'author' = ไม่มีวงเล็บแหล่งตัวคูณ
+  t(/× P\/E เป้าหมาย ~38x$/.test(R.mdesc(d.legs[i], v)), "pe leg with multipleSource 'author' → no source label: " + R.mdesc(d.legs[i], v));
+  t(!/ผู้วิเคราะห์กำหนด/.test(R.toV2Source(d, v)), "multipleSource 'author' never prints ผู้วิเคราะห์กำหนด");
+  t.eq(R.SRC_NAME && R.SRC_NAME.author, '', 'SRC_NAME.author is empty');
 }
 // Plan 4c-prep Task 2 (D2) — labels from base/baseLabel · new enum labels · absent ⇒ unchanged
 {

@@ -32,7 +32,8 @@
     },
     "migratedFrom": {
       "updated": "2026-09-21T12:28:00+07:00",
-      "v2Hash": "dc1e390ae178"
+      "v2Hash": "dc1e390ae178",
+      "prevHash": "7fb185cf6eb9"
     }
   },
   "market": {
@@ -125,7 +126,6 @@
         "eps": 7.5,
         "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
       },
-      "note": "norm. mid-cycle",
       "family": "market"
     },
     {
@@ -139,7 +139,6 @@
         "roe": 15,
         "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
       },
-      "note": "ใช้ ROE mid-cycle 15% เป็นสมมติฐานอนุรักษ์นิยม (ต่ำกว่า ROE รายปีที่วัดได้ FY2021–25 ซึ่งอยู่ที่ 18.5–56.7%; ต่ำสุด FY2024 18.5%) · ไม่ใช้ FY2025 23.4% เพราะสะท้อนวงจรขาขึ้น · 9% คิดจาก Risk-Free 4.3% + ERP 4.7%",
       "family": "rg"
     }
   ],
@@ -236,8 +235,7 @@
       "value": 7.5,
       "why": "EPS ฐานฉากที่ผู้เขียนใช้"
     },
-    "note": "<b>Base case EPS ฐาน $7.50</b> อิง Mid-Cycle Normalized — เติบโต 5%/ปีสะท้อน: ปริมาณขายเพิ่มจาก Donaldsonville + ราคาไนโตรเจนทรงตัวระดับกลาง + Buyback ลดหุ้น 2–3%/ปี P/E exit Base 9.8x = มัธยฐานย้อนหลัง 5 ปีที่วัดจริง (Bear 7x ใกล้ต่ำสุด 5.7x · Bull 12x ใกล้สูงสุด 12.2x) · Bull case อิงราคา NH₃ สูงต่อเนื่อง + Premium จาก Green Ammonia/Hydrogen ที่ CF พัฒนา (CCS ที่ Donaldsonville) Bear case สะท้อนวงจรขาลง: ราคา Urea ดิ่ง + Supply ใหม่จาก OCI/Saudi/Grupo Mexico · ปันผล {{dps}}/ปี คงที่ในทุก scenario; $7.20 รวม 3 ปี ณ จุดเข้า {{px}} Base case ให้ผลตอบแทน {{scn.base.ret}} — บ่งชี้ว่าราคาได้ Pricing EPS ปัจจุบันสูงไปมากแล้ว",
-    "hintNote": "(norm. mid-cycle)"
+    "note": "<b>Base case EPS ฐาน $7.50</b> อิง Mid-Cycle Normalized — เติบโต 5%/ปีสะท้อน: ปริมาณขายเพิ่มจาก Donaldsonville + ราคาไนโตรเจนทรงตัวระดับกลาง + Buyback ลดหุ้น 2–3%/ปี P/E exit Base 9.8x = มัธยฐานย้อนหลัง 5 ปีที่วัดจริง (Bear 7x ใกล้ต่ำสุด 5.7x · Bull 12x ใกล้สูงสุด 12.2x) · Bull case อิงราคา NH₃ สูงต่อเนื่อง + Premium จาก Green Ammonia/Hydrogen ที่ CF พัฒนา (CCS ที่ Donaldsonville) Bear case สะท้อนวงจรขาลง: ราคา Urea ดิ่ง + Supply ใหม่จาก OCI/Saudi/Grupo Mexico · ปันผล {{dps}}/ปี คงที่ในทุก scenario; $7.20 รวม 3 ปี ณ จุดเข้า {{px}} Base case ให้ผลตอบแทน {{scn.base.ret}} — บ่งชี้ว่าราคาได้ Pricing EPS ปัจจุบันสูงไปมากแล้ว"
   },
   "analyst": {
     "target": 125,
@@ -277,15 +275,101 @@
   ],
   "extras": [],
   "v2Display": {
-    "fv": 79,
-    "fvRange": [
-      74,
-      83
+    "legDescs": [
+      "EPS adj. $7.50 (norm. mid-cycle) × P/E 9.8x = $74 — เฉลี่ย EPS GAAP ปี 2564/2566/2567/2568 (ไม่รวมปี 2565 peak $16.38) = $6.96; ปรับเพิ่ม $0.54 สะท้อน Structural Cost Advantage จากก๊าซ US ถูก (สมมติฐานผู้วิเคราะห์ ไม่ได้วัดจากข้อมูล) · P/E 9.8x = มัธยฐานย้อนหลัง 5 ปีที่วัดจริง (ราคาเฉลี่ยของปี ÷ EPS dil: ช่วง 5.7–12.2x) ไม่ใช่ตัวคูณปัจจุบัน · ขา EV/EBITDA เดิม (~$103) ถอดออก: EBITDA ~$2,400M และตัวคูณ 7.5x ตรวจซ้ำ/วัดมัธยฐานไม่ได้",
+      "P/BV เหมาะสม = (ROE 15% − g 4%)/(r 9% − g 4%) ≈ 2.2x × BVPS $37.92 · ใช้ ROE mid-cycle 15% เป็นสมมติฐานอนุรักษ์นิยม (ต่ำกว่า ROE รายปีที่วัดได้ FY2021–25 ซึ่งอยู่ที่ 18.5–56.7%; ต่ำสุด FY2024 18.5%) · ไม่ใช้ FY2025 23.4% เพราะสะท้อนวงจรขาขึ้น; r=9% คิดจาก Risk-Free 4.3% + ERP 4.7%"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "~$125 (Hold — 19 คน)"
+      }
+    ],
+    "s6": [
+      {
+        "head": "EPS −5%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$6.43"
+          ],
+          [
+            "P/E ออก",
+            "7x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$7.20"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +5%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$8.68"
+          ],
+          [
+            "P/E ออก",
+            "9.8x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$7.20"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +15%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$11.41"
+          ],
+          [
+            "P/E ออก",
+            "12x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$7.20"
+          ]
+        ]
+      }
     ],
     "targets": [
       45,
       85,
       137
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~{{baseEps}} (norm. mid-cycle)",
+    "legend": [
+      {
+        "text": "ราคา CF",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
+    "fv": 79,
+    "fvRange": [
+      74,
+      83
     ],
     "cards": {
       "netIncomeFy": {
@@ -298,5 +382,5 @@
       }
     }
   },
-  "_sig": "sha256:94c22dd541b96e6ceb5744170abbd86593476d6098c7749e14c039a97ee89b4e"
+  "_sig": "sha256:eeff24780a401e948b9f0eeaba3c4ce0ec3a1be14d9d85fd37b3a4490a47dc93"
 }

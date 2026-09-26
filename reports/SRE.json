@@ -15,10 +15,8 @@
     "analysisDate": "2026-09-22",
     "aiModel": "Claude Sonnet 5",
     "sources": [
-      "StockAnalysis.com (quote",
-      "งบ)",
-      "StockAnalysis.com (forecast",
-      "statistics)",
+      "StockAnalysis.com (quote/งบ)",
+      "StockAnalysis.com (forecast/statistics)",
       "Yahoo Finance"
     ],
     "themeLegacy": {
@@ -33,7 +31,8 @@
     },
     "migratedFrom": {
       "updated": "2026-09-22T01:46:25+07:00",
-      "v2Hash": "8878b290f968"
+      "v2Hash": "8878b290f968",
+      "prevHash": "3cec5eca60a1"
     }
   },
   "market": {
@@ -126,7 +125,6 @@
         "dps": 2.63,
         "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
       },
-      "note": "สมมติฐานของผู้วิเคราะห์เอง — ปันผลโตจริง ~4%/ปี ช่วง 2566–2568 จึงเป็นกรณีค่อนข้างสูง · ไวต่อ r−g มาก (ลด g ลง 0.5 จุด FV ของขานี้ลดราว 17%)",
       "family": "rg"
     },
     {
@@ -216,7 +214,7 @@
     "verdictHeadline": "SRE — Utility California/Texas ผสาน LNG Growth (Port Arthur) | ราคาต่ำกว่า Fair Value ระดับกลาง, Analyst Consensus Buy",
     "verdictBody": "Sempra เป็น holding company ของ regulated utility 3 ธุรกิจหลัก: SoCalGas + SDG&E ในแคลิฟอร์เนีย, Oncor ในเท็กซัส (ถือหุ้น 80.25%) และ Sempra Infrastructure ที่พัฒนา Port Arthur LNG export platform GAAP EPS ปี 2568 ลดลง 38% YoY เหลือ $2.75 (จาก $4.42) และ EPS(TTM) ล่าสุด {{eps}} (P/E TTM ~23.5x) ขณะที่ consensus EPS ปรับปรุงอยู่ที่ ~$5.11 (2569) และ $5.54 (2570) ช่องว่าง GAAP กับ adjusted คือความไม่แน่นอนหลักของการประเมิน Fair Value {{fv}} มาจาก 2 ตระกูลอิสระ: DDM ({{fvHigh}}, สมมติฐาน r/g ของผู้วิเคราะห์) และ P/E มัธยฐานย้อนหลัง 5 ปี 23.6x × EPS GAAP TTM ({{fvLow}}) ที่ราคา {{px}} จึงมี MOS {{mos}} และ upside {{upside}} เป้าเฉลี่ยนักวิเคราะห์ 17 ราย ({{analyst.target}}, Buy) ใช้เป็นจุดตรวจสอบเท่านั้น ไม่ได้เป็นขาของ FV ความเสี่ยงหลักคือ California wildfire liability และ capex ขนาดใหญ่ที่ต้องพึ่งพาเงินทุนต่อเนื่อง",
     "strategy": "ราคาปัจจุบัน {{px}} ต่ำกว่า Fair Value {{fv}} ({{mos}}) และต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ {{analyst.target}} (Buy, 17 ราย) เหมาะทยอยสะสมเป็นไม้สำหรับนักลงทุนที่รับความเสี่ยง wildfire/capex ได้ และเพิ่มน้ำหนักเมื่อลงใกล้โซน MOS 20% ที่ {{mos20}} ถือระยะยาวรับปันผล ~3.2%/ปีที่โตต่อเนื่องมา 4 ปี",
-    "disclaimerSources": "ที่มา: StockAnalysis.com (ราคา $81.40 ณ 21 ก.ย. 2569, EPS TTM $3.46, forward P/E 15.46x, analyst target $101.82, forecast FY2026e EPS $5.11 / FY2027e $5.54), Yahoo Finance (ราคา $81.31 ยืนยันตรงกัน, EPS TTM $3.45, ปันผล $2.63/3.23%, 52wk $79.59–$101.04, analyst target $101.59), ข้อมูล ณ 22 ก.ย. 2569"
+    "disclaimerSources": "ที่มา: StockAnalysis.com (ราคา $81.40 ณ 21 ก.ย. 2569, EPS TTM $3.46, forward P/E 15.46x, analyst target $101.82, forecast FY2026e EPS $5.11 / FY2027e $5.54), Yahoo Finance (ราคา $81.31 ยืนยันตรงกัน, EPS TTM $3.45, ปันผล $2.63/3.23%, 52wk $79.59–$101.04, analyst target {{analyst.target}}), ข้อมูล ณ 22 ก.ย. 2569"
   },
   "text": {
     "valHint": "เฉลี่ย 2 วิธี (คนละตระกูล) — DDM + P/E มัธยฐานย้อนหลัง"
@@ -239,12 +237,98 @@
   ],
   "extras": [],
   "v2Display": {
-    "fv": 96.33,
+    "legDescs": [
+      "D₁ = ปันผลประกาศ $2.63 × (1+g) = $2.77; g 5.5%, r 8.0% (สมมติฐานของผู้วิเคราะห์เอง — ปันผลโตจริง ~4%/ปี ช่วง 2566–2568 จึงเป็นกรณีค่อนข้างสูง) → $2.77 ÷ (8.0% − 5.5%) = $110.99 · ไวต่อ r−g มาก (ลด g ลง 0.5 จุด FV ของขานี้ลดราว 17%)",
+      "EPS GAAP $3.46 (TTM) × P/E 23.6x — มัธยฐานย้อนหลัง 5 ปีงบของหุ้นเอง (ราคาเฉลี่ยรายปี ÷ EPS diluted, ช่วง 15.4–32.1x) ที่มาคือประวัติ ไม่ได้ลอกจาก P/E ปัจจุบัน · ใช้ EPS GAAP ฐานเดียวกับที่วัดมัธยฐาน (EPS ปรับปรุง/consensus คนละฐาน จึงไม่นำมาคูณ)"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "~$101.59 (Buy)"
+      }
+    ],
+    "s6": [
+      {
+        "head": "EPS 0%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$5.10"
+          ],
+          [
+            "P/E ออก",
+            "15x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$7.90"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +7%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$6.25"
+          ],
+          [
+            "P/E ออก",
+            "18x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$8.70"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +9%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$6.60"
+          ],
+          [
+            "P/E ออก",
+            "20x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$8.88"
+          ]
+        ]
+      }
+    ],
     "targets": [
       77,
       113,
       132
     ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~{{baseEps}} • รวมปันผล",
+    "legend": [
+      {
+        "text": "ราคา SRE",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
+    "fv": 96.33,
     "cards": {
       "netIncomeFy": {
         "v": "$1,796M",
@@ -256,5 +340,5 @@
       }
     }
   },
-  "_sig": "sha256:da800e5d2b822c39c071f4e13aec5a0defa969e34d6b25bdac9e3322fbb937c9"
+  "_sig": "sha256:8d924e511340ab4a1ad5eb530c512578104efb9b7e5b658bfd90f61d34e3e203"
 }

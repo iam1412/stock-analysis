@@ -18,13 +18,13 @@
  *           equivalence gate = ข้อมูลเท่านั้น · ตรรกะ = tools/migrate-v3/transcribe.js
  *   audit   [<SYM>…] [--all] [--out PATHBASE] [--reports-dir D] [--v2-repo DIR]   (Plan 4c-audit · อ่านอย่างเดียว · tools/migrate-v3/audit.js)
  *           ใบ v3 ที่มี meta.migratedFrom: v2 สุดท้ายใน git vs v3 render แบบเว็บ (ที่ market ของ v2) ด้วย EQ.compare + sanity บนหน้า v3
- *           → PATHBASE.csv (symbol,status,valueDiffs,roundingDiffs,textLost,sanity) + .md · exit 1 เมื่อมี valueDiffs > 0 หรือ sanity ตก
+ *           → PATHBASE.csv (symbol,status,valueDiffs,roundingDiffs,textLost,sanity) + .md · exit 1 เมื่อมี valueDiffs > 0 · sanity ตก · invented > 0 · textLost > 0
  *   remigrate <SYM…|--all-failing <audit.csv>> [--reports-dir D] [--v2-repo DIR] [--write] [--today YYYY-MM-DD]   (display-fix · tools/migrate-v3/remigrate.js)
  *           ใบ migrate ที่แสดงค่าไม่เท่าหน้า v2: migrator ที่แก้แล้ว (fresh) หรือใบเดิม + v2Display (graft) · คง meta.migratedFrom (+ prevHash ⇒ updated ไม่ขยับ)
  *           เขียนเฉพาะเมื่อ audit สะอาด + checkDoc 0 error + ราคาอื่นไม่มี error ใหม่ · พิมพ์ FIXED / STILL-FAILING <เหตุผล> · ไม่ --write = ตรวจอย่างเดียว
  *   fix-gauge [<SYM>…] [--reports-dir D] [--write]   (display-fix2 · tools/migrate-v3/fix-gauge.js)
  *           ใบ migrate ที่ v2Display.gauge แช่ค่าตลาดเป็นข้อความ (ราคา · 52 สัปดาห์ — schema ปฏิเสธแล้ว) → ref สด px/hi52w/lo52w · คง updated (prevHash)
- * ★ convert --write / adopt ต้องผ่าน display audit ด้วย (valueDiffs 0 · sanity ผ่าน — audit.auditDoc เทียบหน้า v2 ที่ market ของหน้า v2)
+ * ★ convert --write / adopt ต้องผ่าน display audit ด้วย (valueDiffs 0 · sanity ผ่าน · invented 0 · textLost 0 — audit.auditDoc เทียบหน้า v2 ที่ market ของหน้า v2)
  * ★ --write ใส่ reports/ จริงต้องมี env MIGRATE_V3_ALLOW_REAL=1 (Plan 4c ตั้ง · PR นี้ไม่ตั้งนอก scratch rehearsal)
  * ★ นาฬิกา gate: sweep / convert dry-run = values.priceDate ของใบ (ไม่ขึ้นกับวันนี้ — E27 ไม่ใช่คุณสมบัติของการ migrate)
  *   · convert --write = วันนี้ (Asia/Bangkok) เหมือน npm run verify · --today YYYY-MM-DD แทนได้ (review T7 M-4)
@@ -277,6 +277,8 @@ function displayGate(sym, doc, raw, seeds) {
   if (r.valueDiffs) out.push(`valueDiffs ${r.valueDiffs}: ${r.values.slice(0, 3).map((x) => `${x.zone}: ${x.del} → ${x.ins}`).join(' · ')}`);
   for (const x of r.sanity) out.push(`sanity: ${x}`);
   if (r.invented) out.push(`invented ${r.invented}: ${r.addedList.filter((x) => x.cls === 'invented').slice(0, 3).map((x) => `${x.zone}: ${x.v} in "${String(x.ins).slice(0, 40)}"`).join(' · ')}`);
+  // เจ้าของ 27 ก.ย. 69: ข้อความของผู้เขียนที่หาย (คำ หรือตัวเลขที่หายไปกับข้อความ) = error
+  if (r.textLost) out.push(`textLost ${r.textLost}: ${r.lost.slice(0, 12).map((x) => `${x.w}@${x.zone}`).join(' ')}`);
   return out;
 }
 

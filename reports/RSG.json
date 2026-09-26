@@ -32,7 +32,8 @@
     },
     "migratedFrom": {
       "updated": "2026-09-22T01:46:25+07:00",
-      "v2Hash": "86ed8c955a31"
+      "v2Hash": "86ed8c955a31",
+      "prevHash": "eca978d50b55"
     }
   },
   "market": {
@@ -118,7 +119,6 @@
         "multiple": 26,
         "multipleSource": "author"
       },
-      "note": "discount จาก P/E ปัจจุบัน 31x สะท้อนการเติบโต ~8% ระยะยาว",
       "family": "market"
     },
     {
@@ -143,7 +143,6 @@
         "fcf": 2652120000,
         "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
       },
-      "note": "waste sector ให้ premium FCF เพราะ predictable cash flow; DDM yield 1.16% ใช้เป็น floor เท่านั้น",
       "family": "market"
     }
   ],
@@ -264,12 +263,99 @@
   ],
   "extras": [],
   "v2Display": {
-    "fv": 190,
+    "legDescs": [
+      "adj EPS (TTM) $7.02 × P/E เป้าหมาย ~26x — discount จาก P/E ปัจจุบัน 31x สะท้อนการเติบโต ~8% ระยะยาว",
+      "FY26E EPS $7.24 × Forward P/E ~26x — consensus estimate นักวิเคราะห์ EPS ปีหน้า",
+      "FCF/Share $8.34 × P/FCF ~24x — waste sector ให้ premium FCF เพราะ predictable cash flow; DDM yield 1.16% ใช้เป็น floor เท่านั้น"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "~$244 (Buy consensus)"
+      }
+    ],
+    "s6": [
+      {
+        "head": "EPS +6%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$8.36"
+          ],
+          [
+            "P/E ออก",
+            "22x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$7.50"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +9%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$9.09"
+          ],
+          [
+            "P/E ออก",
+            "25x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$7.50"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +12%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$9.86"
+          ],
+          [
+            "P/E ออก",
+            "27x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$7.50"
+          ]
+        ]
+      }
+    ],
     "targets": [
       183.92,
       227.25,
       266.22
-    ]
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~{{baseEps}}",
+    "legend": [
+      {
+        "text": "ราคา RSG",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
+    "fv": 190
   },
-  "_sig": "sha256:3a5d54acb2b15dee5be8ea1864b7a5bf38256f7083c712e9f2a9748a3969df47"
+  "_sig": "sha256:a1f702f0e6a62807bd40abaf8ce9c1feccfe3062c93086034146f86578df8a2d"
 }

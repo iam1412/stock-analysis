@@ -31,7 +31,8 @@
     },
     "migratedFrom": {
       "updated": "2026-09-21T10:24:06+07:00",
-      "v2Hash": "f580af094abb"
+      "v2Hash": "f580af094abb",
+      "prevHash": "fb3cdcaeb116"
     }
   },
   "market": {
@@ -134,7 +135,6 @@
         "netDebt": -982000000,
         "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
       },
-      "note": "ตัวคูณ 18x เป็นสมมติฐานกลุ่ม medtech (ไม่มีมัธยฐานที่วัดมา) และ EBITDA ยังไม่ได้ refresh",
       "family": "market"
     },
     {
@@ -144,7 +144,6 @@
         "multiple": 25,
         "multipleSource": "author"
       },
-      "note": "เหมาะ capital-light model FCF margin 15% ที่ใช้ buyback แทนปันผล (25x เป็นสมมติฐาน ไม่มีมัธยฐานที่วัดมา)",
       "family": "market"
     }
   ],
@@ -229,8 +228,7 @@
       "value": 10.9708,
       "why": "EPS ฐานฉากถอดกลับจากราคาเป้าที่พิมพ์"
     },
-    "note": "ใช้ EPS adjusted (non-GAAP) เป็นฐาน ~$10.97 TTM (บวก SBC และ amortization กลับเข้า — มาตรฐานที่นักวิเคราะห์และบริษัทรายงาน) Bear case (+3%/yr EPS, P/E ออก 18x) ให้ผลตอบแทน {{scn.bear.ret}} หาก multiple ฟื้นจาก ~13.5x ปัจจุบันมา 18x — เป็นสมมติฐานที่พึ่ง re-rating ความเสี่ยงหลัก: ถ้า EU สั่งห้าม business practice สำคัญ อาจกด EPS และ multiple พร้อมกัน ทำให้ Bear case แย่กว่าที่คำนวณ",
-    "hintNote": "EPS adj. • ไม่มีปันผล"
+    "note": "ใช้ EPS adjusted (non-GAAP) เป็นฐาน ~$10.97 TTM (บวก SBC และ amortization กลับเข้า — มาตรฐานที่นักวิเคราะห์และบริษัทรายงาน) Bear case (+3%/yr EPS, P/E ออก 18x) ให้ผลตอบแทน {{scn.bear.ret}} หาก multiple ฟื้นจาก ~13.5x ปัจจุบันมา 18x — เป็นสมมติฐานที่พึ่ง re-rating ความเสี่ยงหลัก: ถ้า EU สั่งห้าม business practice สำคัญ อาจกด EPS และ multiple พร้อมกัน ทำให้ Bear case แย่กว่าที่คำนวณ"
   },
   "analyst": {
     "target": 209,
@@ -271,16 +269,109 @@
   ],
   "extras": [],
   "v2Display": {
-    "fv": 220,
-    "fvRange": [
-      219,
-      223
+    "legDescs": [
+      "EPS adj. $10.97 × P/E 20x — ไม่ใช้มัธยฐานย้อนหลัง GAAP 51.6x (ช่วง 28.7–64.7x) เพราะเป็นยุครายได้โต 60% ปี 2021 และราคาเฉลี่ย $250–616 · ปัจจุบันโต ~4–8%/ปี จึงใช้ 20x บนกำไร adj. (ปีล่าสุด FY2025 GAAP อยู่ 28.7x ⇒ 20x บน adj. เป็นกรอบอนุรักษ์นิยม) · ปัจจุบัน adj. P/E ~13.5x เป็นเพียงบริบท",
+      "EBITDA $811M × EV/EBITDA 18x = EV $14,598M + cash $1,103M − debt $121M = $15,580M ÷ 71.04M shares — ตัวคูณ 18x เป็นสมมติฐานกลุ่ม medtech (ไม่มีมัธยฐานที่วัดมา) และ EBITDA ยังไม่ได้ refresh",
+      "FCF TTM $634M ÷ 71.04M = $8.92/share × P/FCF 25x — เหมาะ capital-light model FCF margin 15% ที่ใช้ buyback แทนปันผล (25x เป็นสมมติฐาน ไม่มีมัธยฐานที่วัดมา)"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "~$209 (Buy · 16 analysts)"
+      }
+    ],
+    "s6": [
+      {
+        "head": "EPS +3%/ปี",
+        "rows": [
+          [
+            "EPS adj. ปี 3",
+            "~$11.99"
+          ],
+          [
+            "P/E ออก",
+            "18x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$0.00"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +8%/ปี",
+        "rows": [
+          [
+            "EPS adj. ปี 3",
+            "~$13.82"
+          ],
+          [
+            "P/E ออก",
+            "20x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$0.00"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +12%/ปี",
+        "rows": [
+          [
+            "EPS adj. ปี 3",
+            "~$15.41"
+          ],
+          [
+            "P/E ออก",
+            "25x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$0.00"
+          ]
+        ]
+      }
     ],
     "targets": [
       216,
       276,
       385
-    ]
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS adj. ฐาน ~$10.97 • ไม่มีปันผล",
+    "legend": [
+      {
+        "text": "ราคา ALGN",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
+    "fv": 220,
+    "fvRange": [
+      219,
+      223
+    ],
+    "custom": {
+      "0": {
+        "op": "pxOverBase",
+        "base": 10.97
+      }
+    }
   },
-  "_sig": "sha256:2eb08a1633e45374a712ae0ee3ef126557a51e890fe16fc295c57fe526e05136"
+  "_sig": "sha256:9347e7e69a8a99b43064c11a2d9cf64612deb8791dd1a8eb80221178b583d4bf"
 }

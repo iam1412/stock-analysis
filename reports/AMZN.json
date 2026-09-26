@@ -32,7 +32,7 @@
     "migratedFrom": {
       "updated": "2026-09-22T07:22:55+07:00",
       "v2Hash": "9624f0d99155",
-      "prevHash": "c2ed4386a3b5"
+      "prevHash": "acf41f4db5a3"
     }
   },
   "market": {
@@ -124,7 +124,6 @@
         "eps": 7.4,
         "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
       },
-      "note": "หัก gain MTM Anthropic ~$70B pretax ออกจาก TTM · มัธยฐานย้อนหลัง 4 ปี ช่วง 30.7–51.2x",
       "family": "market"
     },
     {
@@ -134,7 +133,6 @@
         "value": 240,
         "basis": "other"
       },
-      "note": "FCF โต stage 1 ~8%, WACC 9%, Terminal 3.5% — FCF TTM ติดลบ (−$11.6B) จาก capex AI ramp กดค่าปัจจุบันลง",
       "family": "rg"
     }
   ],
@@ -173,7 +171,6 @@
       }
     ],
     "notes": {
-      "mcap": "~10.79 พันล้านหุ้น (คงเหลือ)",
       "pe": "บวม gain MTM Anthropic",
       "peForward": "EPS คาด FY2027e ~$10.38 (ตามที่ vendor รายงาน · FY2026e $12.87 รวม gain)",
       "peAvg5y": "4 ปีที่ EPS เป็นบวก (ช่วง 30.7–51.2x) ลดลงจากกำไรโต",
@@ -210,8 +207,7 @@
       }
     ],
     "exitDp": 0,
-    "note": "<b>base case (EPS หลักไม่รวม gain) ให้ผลตอบแทนปานกลาง (~4%/ปี)</b> ขณะที่ downside ~−33% หากไม่มี gain การลงทุนซ้ำและตลาด de-rate — ตัวแปรหลักคือ <b>FCF</b> หลังหัก capex และว่า gain ทางบัญชีจะกลับมาซ้ำหรือไม่",
-    "hintNote": "• EPS ฐาน (normalized) ~$7.4"
+    "note": "<b>base case (EPS หลักไม่รวม gain) ให้ผลตอบแทนปานกลาง (~4%/ปี)</b> ขณะที่ downside ~−33% หากไม่มี gain การลงทุนซ้ำและตลาด de-rate — ตัวแปรหลักคือ <b>FCF</b> หลังหัก capex และว่า gain ทางบัญชีจะกลับมาซ้ำหรือไม่"
   },
   "analyst": {
     "target": 328.22,
@@ -251,6 +247,24 @@
   ],
   "extras": [],
   "v2Display": {
+    "legDescs": [
+      "EPS normalized $7.4 (หัก gain MTM Anthropic ~$70B pretax ออกจาก TTM) × P/E 38.1x (มัธยฐานย้อนหลัง 4 ปี ช่วง 30.7–51.2x)",
+      "FCF โต stage 1 ~8%, WACC 9%, Terminal 3.5% — FCF TTM ติดลบ (−$11.6B) จาก capex AI ramp กดค่าปัจจุบันลง"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "{{analyst.target}} ({{analyst.pct}})"
+      }
+    ],
     "s6": [
       {
         "head": "EPS +5%/ปี",
@@ -298,6 +312,21 @@
       384
     ],
     "noBase": true,
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน (normalized) ~$7.4",
+    "legend": [
+      {
+        "text": "ราคา AMZN",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
     "fv": 261,
     "fvRange": [
       240,
@@ -324,7 +353,15 @@
         "ref": "analystTgt",
         "label": "เป้า Analyst"
       }
-    ]
+    ],
+    "cards": {
+      "mcap": {
+        "v": "~$2.69 ล้านล้าน",
+        "d": "~10.79 พันล้านหุ้น (คงเหลือ)",
+        "op": "pxTimesBase",
+        "base": 0.010786314
+      }
+    }
   },
-  "_sig": "sha256:8491cd5d6edc1578ecf8cd45d31264baad85c0d35212d062ef490af6aec98d25"
+  "_sig": "sha256:b53ab532b265c916620218ff4684cb3c3362dea250b45e020a1b4493f9a8d2cd"
 }

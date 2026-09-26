@@ -32,7 +32,8 @@
     },
     "migratedFrom": {
       "updated": "2026-09-22T07:22:55+07:00",
-      "v2Hash": "17e19c123940"
+      "v2Hash": "17e19c123940",
+      "prevHash": "3950a631657b"
     }
   },
   "market": {
@@ -123,8 +124,7 @@
         "eps": 3.2,
         "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
       },
-      "family": "market",
-      "note": "EPS หลัก ~$3.2 (ประมาณจากกำไรจากการดำเนินงาน TTM $6.7B หักภาษี/ดอกเบี้ย ไม่รวม deferred-tax/กำไรพอร์ตลงทุน; ฉันทามติ FY2026e $3.36) — P/E มัธยฐานย้อนหลัง 18.0x (GAAP) ปรับเป็น 20x สำหรับธุรกิจโต"
+      "family": "market"
     },
     {
       "method": "declared",
@@ -133,7 +133,6 @@
         "value": 88,
         "basis": "other"
       },
-      "note": "FCF หัก SBC ~$8.2B (FCF TTM $10.1B) โต stage 1 ~12% 5 ปี → terminal 3%, WACC ~9.5% หักหนี้สุทธิ ~$9.3B",
       "family": "rg"
     }
   ],
@@ -259,9 +258,38 @@
   ],
   "extras": [],
   "v2Display": {
-    "legValues": [
-      64,
-      null
+    "legDescs": [
+      "EPS หลัก ~$3.2 × P/E ~20x (ประมาณจากกำไรจากการดำเนินงาน TTM $6.7B หักภาษี/ดอกเบี้ย ไม่รวม deferred-tax/กำไรพอร์ตลงทุน; ฉันทามติ FY2026e $3.36) — P/E มัธยฐานย้อนหลัง 18.0x (GAAP) ปรับเป็น 20x สำหรับธุรกิจโต",
+      "FCF หัก SBC ~$8.2B (FCF TTM $10.1B) โต stage 1 ~12% 5 ปี → terminal 3%, WACC ~9.5% หักหนี้สุทธิ ~$9.3B"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "{{analyst.target}} ({{analyst.pct}})"
+      }
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~{{baseEps}}",
+    "legend": [
+      {
+        "text": "ราคา UBER",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
     ],
     "targets": [
       56,
@@ -293,5 +321,5 @@
       }
     }
   },
-  "_sig": "sha256:efd436b8301b75b7284742e4417d468298c744fb82f8338fa5a2df302d791497"
+  "_sig": "sha256:7a9d46a983def18cc645fb54bf4cea23fc163d2ae821ef5e15409c4a0311bd18"
 }

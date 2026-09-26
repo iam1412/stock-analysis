@@ -12,9 +12,11 @@ const BK = require('../../tools/migrate-v3/buckets.js');
 const SEEDS = require('../../tools/seeds.json');
 const FIX = path.join(__dirname, '..', 'fixtures');
 const raw = (sym) => fs.readFileSync(path.join(FIX, `${sym}-v2.html`), 'utf8');
-function migrate(sym, html) {
+// ค่าตั้งต้น = ทางเดิม (ไม่มีแถว manifest) — เทสต์ของ gate/กลไก qualifier (Plan 4b–4c-prep) · ใบ migrate ส่ง MIG (ข้อความตามตัว v2Display — 27 ก.ย. 69)
+const MIG = '2026-09-01T00:00:00+07:00';
+function migrate(sym, html, headUpdated) {
   const parsed = PV.parseV2(sym, html);
-  const { doc, notes } = A.assemble(parsed, { seeds: SEEDS, headUpdated: '2026-09-01T00:00:00+07:00', v2Hash: B.freshHash(html), today: parsed.rd.values.priceDate, analysisPx: null });
+  const { doc, notes } = A.assemble(parsed, { seeds: SEEDS, headUpdated: headUpdated === undefined ? null : headUpdated, v2Hash: B.freshHash(html), today: parsed.rd.values.priceDate, analysisPx: null });
   const view = C.compute(doc, { seeds: SEEDS });
   const v2 = B.expandReport(html), v3 = B.expandReport(R.toV2Source(doc, view));
   return { doc, view, notes, v2, v3, eq: EQ.compare(v2, v3, doc, view, { v2src: html }) };
@@ -26,7 +28,7 @@ function recompare(m, html, mutate) {
   return EQ.compare(m.v2, B.expandReport(R.toV2Source(doc, view)), doc, view, { v2src: html });
 }
 // display-fix2: assemble พกเซลล์หมวด 6 ของผู้เขียน (v2Display.s6) เมื่อ template พิมพ์ไม่ตรง — test ของ gate (TEXT LOST/TEMPLATE_COUNTED บนทาง template) ถอดเซลล์ออกแล้วเทียบใหม่
-const stripCells = (doc) => { if (doc.v2Display) { delete doc.v2Display.s6; delete doc.v2Display.noBase; if (!Object.keys(doc.v2Display).length) delete doc.v2Display; } };
+const stripCells = (doc) => { if (doc.v2Display) { delete doc.v2Display.s6; delete doc.v2Display.noBase; delete doc.v2Display.s6Hint; if (!Object.keys(doc.v2Display).length) delete doc.v2Display; } };   // + s6Hint (27 ก.ย. 69 — ป้ายหัว §6 ตามตัว)
 // identity
 { const html = raw('BBL'); const v2 = B.expandReport(html); const z = EQ.zones(v2);
   t(z.has('header') && z.has('s1') && z.has('s8') && z.has('disc') && z.has('footer'), 'zones: header · s1…s8 · disc · footer located');
@@ -42,19 +44,27 @@ const stripCells = (doc) => { if (doc.v2Display) { delete doc.v2Display.s6; dele
 //  ⇒ TEXT LOST ⇒ FTV = HUMAN (re-pinned below, not dropped) · เกณฑ์ spec §11 row 4b ยังผ่าน: TEXT LOST 0 บน 5 ใบ (BBL CASY SRE SGC NFG) · ไม่ HUMAN 4 ใบ (CASY SRE SGC NFG)
 const NON_HUMAN = ['CASY', 'SRE', 'SGC', 'NFG'];
 const FTV_LOST = ['อิง', 'continuing', 'ops', 'แบบอนุรักษ์นิยม', 'ไม่รวม', 'upside', 'guidance'];
-{ const m = migrate('FTV', raw('FTV'));
-  t.eq(m.eq.textLost, FTV_LOST, 'FTV (round 4 ruling): pe-leg tail with a forward word (guidance) not carried → TEXT LOST');
-  t.eq(BK.bucketOf(m.notes, m.eq).bucket, 'HUMAN', 'FTV (round 4 ruling): → HUMAN'); }
+// ทางเดิม (ไม่มีแถว manifest): กลไก qualifier/QUALIFIER_BLOCK ของ Plan 4c-prep · ใบ migrate (27 ก.ย. 69) = บรรทัดของผู้เขียนตามตัว (v2Display.legDescs) ไม่มีอะไรให้บล็อก
+{ const m = migrate('FTV', raw('FTV'), null);
+  t.eq(m.eq.textLost, FTV_LOST, 'FTV (round 4 ruling · no manifest row): pe-leg tail with a forward word (guidance) not carried → TEXT LOST');
+  t.eq(BK.bucketOf(m.notes, m.eq).bucket, 'HUMAN', 'FTV (round 4 ruling · no manifest row): → HUMAN');
+  const v = migrate('FTV', raw('FTV'), MIG);
+  t.eq(v.eq.textLost, [], 'FTV (migrated · verbatim leg lines): nothing lost');
+  t(v.doc.v2Display.legDescs.some((x) => /continuing ops/.test(x) && /guidance FY26/.test(x)), 'FTV (migrated): the author\'s pe-leg line is carried whole', JSON.stringify(v.doc.v2Display.legDescs)); }
 t(['BBL', ...NON_HUMAN].length >= 5 && NON_HUMAN.length >= 4, 'spec §11 row 4b acceptance still met: TEXT LOST 0 on ≥5 fixtures · not HUMAN on ≥4');
 for (const sym of ['BBL', ...NON_HUMAN]) {
-  const m = migrate(sym, raw(sym));
+  const m = migrate(sym, raw(sym), MIG);
   // final-review I-1: BBL leg 1 "Normalized EPS ~฿22 × P/E เฉลี่ย ~9.0x" — the "เฉลี่ย" source claim sits in the formula head
   // Plan 4c-prep Task 5 (qualifierOf round 3 — brief Step 4): คำผู้เขียนในท่อนสูตรนอกวงเล็บ = พกไป legs[i].note ⇒ BBL TEXT LOST 0
   //  gate ยังจับคำนี้ได้: ถอด "เฉลี่ย" ออกจาก note ของ v3 → TEXT LOST ['เฉลี่ย'] (ค่าที่ pin เดิม)
   t.eq(m.eq.textLost, [], `${sym}: TEXT LOST = 0`);
   if (sym === 'BBL') {
-    t(/^เฉลี่ย · /.test(m.doc.legs[0].note || ''), 'BBL: round 3 carries the head word "เฉลี่ย" into legs[0].note', m.doc.legs[0].note);
-    t.eq(recompare(m, raw(sym), (d) => { d.legs[0].note = d.legs[0].note.replace(/^เฉลี่ย · /, ''); }).textLost, ['เฉลี่ย'], 'BBL: without the carried word → TEXT LOST [เฉลี่ย] (computed-leg head word, I-1)');
+    const l = migrate(sym, raw(sym), null);
+    t(/^เฉลี่ย · /.test(l.doc.legs[0].note || ''), 'BBL (no manifest row): round 3 carries the head word "เฉลี่ย" into legs[0].note', l.doc.legs[0].note);
+    t.eq(recompare(l, raw(sym), (d) => { d.legs[0].note = d.legs[0].note.replace(/^เฉลี่ย · /, ''); }).textLost, ['เฉลี่ย'], 'BBL (no manifest row): without the carried word → TEXT LOST [เฉลี่ย] (computed-leg head word, I-1)');
+    // ใบ migrate: บรรทัดของผู้เขียนตามตัว — ถอดออกแล้ว gate ต้องจับคำที่หาย (template line แทน)
+    t(/เฉลี่ย/.test(m.doc.v2Display.legDescs[0]), 'BBL (migrated): the author\'s leg line carried verbatim', m.doc.v2Display.legDescs[0]);
+    t(recompare(m, raw(sym), (d) => { delete d.v2Display.legDescs; }).textLost.includes('เฉลี่ย'), 'BBL (migrated): without legDescs the template line loses "เฉลี่ย" → TEXT LOST (gate still sees it)');
   }
   const b = BK.bucketOf(m.notes, m.eq);
   if (NON_HUMAN.includes(sym)) t(b.bucket !== 'HUMAN', `${sym}: bucket is CLEAN or VALUE-DRIFT (${b.bucket}: ${b.reasons.join(' ; ')})`);
@@ -64,25 +74,23 @@ for (const sym of ['BBL', ...NON_HUMAN]) {
 }
 // DPZ — Plan 4c-prep D5 (cap 8 for migrated docs): the 5th custom card is kept ⇒ its words are on the v3 page ⇒ not TEXT LOST, no cap H
 {
-  const html = raw('DPZ'), m = migrate('DPZ', html);
+  const html = raw('DPZ'), m = migrate('DPZ', html, MIG);
   const b = BK.bucketOf(m.notes, m.eq);
   const card = PV.parseV2('DPZ', html).s1cards.find((c) => c.k === 'Store Count (Global)');
   const words = EQ.tok(EQ.text(`${card.kHtml} ${card.vHtml} ${card.dHtml}`)).filter(EQ.isWord).map(EQ.wordOf);
   t(!m.notes.H.some((r) => /^custom cards/.test(r)) && b.bucket !== 'HUMAN', 'DPZ: no cap H with cap 8 (migrated) — not HUMAN', JSON.stringify({ H: m.notes.H, b }));
   t(words.length > 0 && words.every((w) => !m.eq.textLost.includes(w)), 'DPZ: the 5th card words are not lost', JSON.stringify(m.eq.textLost));
 }
-// cap positive case moved to a synthetic 9-custom DPZ: 4 extra custom cards injected at the head of the §1 grid ⇒ 9 > 8 ⇒ H,
-// and the TEXT LOST words are exactly the dropped card's words (same shape as the 4b DPZ test — nothing else lost, nothing masked)
+// cap positive case: a synthetic DPZ with 17 custom cards (cap 16 for migrated docs since 27 ก.ย. 69 — was 8) ⇒ 17 > 16 ⇒ H (the doc also exceeds the 16-card
+// total, so this is checked on the assembler notes — the cap is a backstop; no real v2 page has more than 16 cards)
 {
-  const extra = [1, 2, 3, 4].map((i) => `<div class="metric"><div class="k">ตัวชี้วัดพิเศษ${i}</div><div class="v">ค่าพิเศษ${i}</div><div class="d">หมายเหตุพิเศษ${i}</div></div>`).join('\n      ');
+  const extra = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((i) => `<div class="metric"><div class="k">ตัวชี้วัดพิเศษ${i}</div><div class="v">ค่าพิเศษ${i}</div><div class="d">หมายเหตุพิเศษ${i}</div></div>`).join('\n      ');
   const html = raw('DPZ').replace(/(<div class="grid g4">\s*)/, (m0, a) => `${a}${extra}\n      `);
-  const m = migrate('DPZ', html);
-  const cap = m.notes.H.find((r) => /^custom cards 9 > 8 — dropped /.test(r));
-  t(!!cap, 'DPZ+4: custom cards 9 > 8 → H', JSON.stringify(m.notes.H));
-  const labels = cap ? [...cap.matchAll(/"([^"]+)"/g)].map((x) => x[1]) : [];
-  const want = PV.parseV2('DPZ', html).s1cards.filter((c) => labels.includes(c.k)).flatMap((c) => EQ.tok(EQ.text(`${c.kHtml} ${c.vHtml} ${c.dHtml}`)).filter(EQ.isWord).map(EQ.wordOf));
-  t(labels.length === 1 && want.length > 0, 'DPZ+4: exactly one card dropped', JSON.stringify(labels));
-  t.eq(m.eq.textLost.slice().sort(), want.slice().sort(), 'DPZ+4: TEXT LOST words = exactly the dropped card');
+  const p = PV.parseV2('DPZ', html);
+  const r = A.assemble(p, { seeds: SEEDS, headUpdated: MIG, v2Hash: B.freshHash(html), today: p.rd.values.priceDate, analysisPx: null });
+  const cap = r.notes.H.find((x) => /^custom cards 17 > 16 — dropped /.test(x));
+  t(!!cap, 'DPZ+12: custom cards 17 > 16 → H', JSON.stringify(r.notes.H));
+  t(cap && [...cap.matchAll(/"([^"]+)"/g)].length === 1, 'DPZ+12: exactly one card dropped', cap);
 }
 for (const sym of ['AAPL', 'DDOG']) { const m = migrate(sym, raw(sym)); const b = BK.bucketOf(m.notes, m.eq); t(b.bucket === 'HUMAN' && b.reasons.some((r) => /analyst/.test(r)), `${sym}: HUMAN (analyst leg)`); }
 // Review Focus 5a / spec §10.2 d — never mask a written region: a word injected into a token-bearing .ret cell must surface as TEXT LOST
@@ -204,7 +212,7 @@ t(EQ.TEMPLATE_VOCAB && EQ.TEMPLATE_VOCAB.s3.includes('เฉลี่ย') && EQ
   // SIRI-shaped §6 exit cell: v2 "15x (มัธยฐาน 5 ปี)" → v3 prints the multiple only ⇒ the author's annotation is TEXT LOST (was masked page-wide)
   const html = raw('SRE').replace('<li><span>P/E ออก</span><span>15x</span></li>', '<li><span>P/E ออก</span><span>15x (มัธยฐาน 5 ปี)</span></li>');
   t(html !== raw('SRE'), 'I-2 setup: exit cell annotated');
-  const m0 = migrate('SRE', html);
+  const m0 = migrate('SRE', html, MIG);
   // display-fix2: the migrator now carries the author's cells (v2Display.s6) ⇒ the annotation is displayed, not lost
   t(m0.doc.v2Display && m0.doc.v2Display.s6 && m0.doc.v2Display.s6.every((c) => c.rows.some(([k, v]) => /ออก/.test(k) && (v === '15x (มัธยฐาน 5 ปี)' || !/มัธยฐาน/.test(v)))) && !m0.eq.textLost.includes('มัธยฐาน'), 'display-fix2: annotated exit cell carried verbatim (v2Display.s6) → not TEXT LOST', JSON.stringify({ s6: m0.doc.v2Display && m0.doc.v2Display.s6, lost: m0.eq.textLost }));
   const m = { ...m0, eq: recompare(m0, html, stripCells) };   // the template path (no author cells) — the gate must still see the loss
@@ -324,14 +332,14 @@ const docOf = (patch) => { const d = JSON.parse(JSON.stringify(require('../fixtu
 }
 {
   const html = raw('CASY').replace(/<span>ปันผลรวม 3 ปี<\/span>/g, '<span>ปันผลสะสม 3 ปี</span>');
-  const m0 = migrate('CASY', html);
+  const m0 = migrate('CASY', html, MIG);
   t(m0.doc.v2Display && m0.doc.v2Display.s6 && m0.doc.v2Display.s6.every((c) => c.rows.some(([k]) => k === 'ปันผลสะสม 3 ปี')), "display-fix2: the author's dividend label carried (v2Display.s6)", JSON.stringify(m0.doc.v2Display));
   const m = { ...m0, eq: recompare(m0, html, stripCells) };
   t(!m.eq.textLost.includes('ปันผลสะสม') && m.eq.templateDropped.filter((w) => w === 'ปันผลสะสม').length === 3, 'CASY ปันผลสะสม ×3: s6 TEMPLATE_COUNTED (3 columns)', JSON.stringify(m.eq.textLost));
   // condition "v3 column does not print the word": the author also writes it in the Bear scenario text (carried into cases[0].desc ⇒ inside a v3 column)
   // ⇒ the counted rule is off for this doc ⇒ the three label occurrences are compared normally (v3 prints the word once) ⇒ 3 TEXT LOST
   const inCol = html.replace(/(<li><span>สถานการณ์<\/span><span>)/, '$1ปันผลสะสม ');
-  const mc0 = migrate('CASY', inCol), mc = { ...mc0, eq: recompare(mc0, inCol, stripCells) };
+  const mc0 = migrate('CASY', inCol, MIG), mc = { ...mc0, eq: recompare(mc0, inCol, stripCells) };
   t.eq(mc.eq.textLost.filter((w) => w === 'ปันผลสะสม').length, 3, 'TEMPLATE_COUNTED off when a v3 column prints the word (not a template word there)');
 }
 // fix round 1 (review I-1): TEMPLATE_COUNTED only at the label position of each column (≤1 per column) — never the hint, never a value cell
@@ -377,16 +385,16 @@ const docOf = (patch) => { const d = JSON.parse(JSON.stringify(require('../fixtu
   t.eq(SY.apply('s6.top', ['FFO'], { doc: {} }).tokens, ['FFO'], 'ffo guard: doc without fundamentals → no TypeError');
   const A2 = require('../../tools/migrate-v3/assemble.js');
   t.eq(A2.labelParts('DDM (ตรวจเป็นบริบท ไม่นับใน FV)'), { label: 'DDM (ตรวจเป็นบริบท ไม่นับใน FV)', ctx: false, reason: '' }, 'labelParts: "ตรวจเป็นบริบท" is not the marker (never split mid-word)');
-  t.eq(A2.labelParts('3. DDM (Dividend Discount Model) — บริบทเท่านั้น'), { label: 'DDM (Dividend Discount Model)', ctx: true, reason: 'เท่านั้น' }, 'labelParts: "บริบทเท่านั้น" = marker + reason "เท่านั้น"');
+  t.eq(A2.labelParts('3. DDM (Dividend Discount Model) — บริบทเท่านั้น'), { label: 'DDM (Dividend Discount Model)', ctx: true, reason: 'เท่านั้น', raw: 'บริบทเท่านั้น' }, 'labelParts: "บริบทเท่านั้น" = marker + reason "เท่านั้น"');
 }
 // leg alignment on one label function (Task 6 M-4 · D4): an author context suffix with reasoning aligns and the reasoning is not lost once assemble carries it (Task 5) — here: labelParts itself
 {
   const A = require('../../tools/migrate-v3/assemble.js');
-  t.eq(A.labelParts('3. Justified P/BV (บริบท — ห่างจากขายึดตลาด >2× ไม่รวมในกรอบ)'), { label: 'Justified P/BV', ctx: true, reason: 'ห่างจากขายึดตลาด >2×' }, 'labelParts: marker words out · reasoning kept');
-  t.eq(A.labelParts('2. DCF (Free Cash Flow) — บริบท ไม่รวมใน FV'), { label: 'DCF (Free Cash Flow)', ctx: true, reason: '' }, 'labelParts: trailing dash before the marker trimmed (no "—" residue)');
+  t.eq(A.labelParts('3. Justified P/BV (บริบท — ห่างจากขายึดตลาด >2× ไม่รวมในกรอบ)'), { label: 'Justified P/BV', ctx: true, reason: 'ห่างจากขายึดตลาด >2×', raw: 'บริบท — ห่างจากขายึดตลาด >2× ไม่รวมในกรอบ' }, 'labelParts: marker words out · reasoning kept · raw = the author\'s context words verbatim (migrated note)');
+  t.eq(A.labelParts('2. DCF (Free Cash Flow) — บริบท ไม่รวมใน FV'), { label: 'DCF (Free Cash Flow)', ctx: true, reason: '', raw: 'บริบท ไม่รวมใน FV' }, 'labelParts: trailing dash before the marker trimmed (no "—" residue)');
   t.eq(A.labelParts('1. P/E Valuation (GAAP TTM)'), { label: 'P/E Valuation (GAAP TTM)', ctx: false, reason: '' }, 'labelParts: no context → label unchanged');
-  t.eq(A.labelParts('3. Market Anchor (เป้านักวิเคราะห์ — บริบท ไม่นับในค่าเฉลี่ย)'), { label: 'Market Anchor', ctx: true, reason: 'เป้านักวิเคราะห์' }, 'labelParts: marker inside an open paren (LULU) → no orphan "(" in the label · paren words → reason');
-  t.eq(A.labelParts('3. DCF (FCFE) — บริบท/stress-test เท่านั้น'), { label: 'DCF (FCFE)', ctx: true, reason: 'stress-test เท่านั้น' }, 'labelParts: IESC shape');
+  t.eq(A.labelParts('3. Market Anchor (เป้านักวิเคราะห์ — บริบท ไม่นับในค่าเฉลี่ย)'), { label: 'Market Anchor', ctx: true, reason: 'เป้านักวิเคราะห์', raw: 'เป้านักวิเคราะห์ — บริบท ไม่นับในค่าเฉลี่ย' }, 'labelParts: marker inside an open paren (LULU) → no orphan "(" in the label · paren words → reason');
+  t.eq(A.labelParts('3. DCF (FCFE) — บริบท/stress-test เท่านั้น'), { label: 'DCF (FCFE)', ctx: true, reason: 'stress-test เท่านั้น', raw: 'บริบท/stress-test เท่านั้น' }, 'labelParts: IESC shape');
   t.eq(A.labelOf('3. Justified P/BV (บริบท — ห่างจากขายึดตลาด >2× ไม่รวมในกรอบ)'), 'Justified P/BV', 'labelOf = labelParts(...).label');
 }
 // s8 — an author 3rd vcell is compared in full (its .k is not a template label) and an analyst cell is dropped only at its own index

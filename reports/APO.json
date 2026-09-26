@@ -32,7 +32,8 @@
     },
     "migratedFrom": {
       "updated": "2026-09-21T10:24:06+07:00",
-      "v2Hash": "47aea64c1ece"
+      "v2Hash": "47aea64c1ece",
+      "prevHash": "e59083cd01cb"
     }
   },
   "market": {
@@ -112,7 +113,6 @@
         "multiple": 15,
         "multipleSource": "author"
       },
-      "note": "FRE+SRE, LTM",
       "family": "market"
     },
     {
@@ -122,7 +122,6 @@
         "value": 164.61,
         "basis": "sotp"
       },
-      "note": "FRE/share $4.34 × 27x (fee income คุณภาพสูง ไม่มี credit/insurance risk เหมือน peer BX ที่ 25-28x) + SRE/share $5.27 × 9x (spread earnings มี leverage + liability risk ต่ำกว่า multiple มาก)",
       "family": "asset"
     },
     {
@@ -132,7 +131,6 @@
         "value": 136,
         "basis": "other"
       },
-      "note": "ANI/share (LTM) $8.50 × P/ANI เป้าหมาย ~16x — ANI รวม principal investment income ที่ผันผวนกว่า DE จึงใช้ multiple ต่ำกว่า Price/DE เล็กน้อย",
       "family": "rg"
     }
   ],
@@ -240,8 +238,7 @@
       "value": 9.61331,
       "why": "ฐานฉากถอดกลับจากค่าปลายฉากที่พิมพ์"
     },
-    "note": "ประมาณการอิง Total Distributable Earnings (FRE+SRE) เติบโตและ exit ที่ multiple ต่างกันตาม scenario — ปัจจุบัน APO ซื้อขายที่ ~13.1x DE (ต่ำกว่าค่าเฉลี่ยยาว ๆ ที่มัก 15-18x) ให้ downside จำกัดใน Bear case แต่ upside มากใน Base/Bull หาก spread Athene ฟื้นตัวและ credit market share ยังโต",
-    "hintNote": "DE /share"
+    "note": "ประมาณการอิง Total Distributable Earnings (FRE+SRE) เติบโตและ exit ที่ multiple ต่างกันตาม scenario — ปัจจุบัน APO ซื้อขายที่ ~13.1x DE (ต่ำกว่าค่าเฉลี่ยยาว ๆ ที่มัก 15-18x) ให้ downside จำกัดใน Bear case แต่ upside มากใน Base/Bull หาก spread Athene ฟื้นตัวและ credit market share ยังโต"
   },
   "analyst": {
     "target": 153.47,
@@ -279,10 +276,97 @@
   ],
   "extras": [],
   "v2Display": {
+    "legDescs": [
+      "DE/share (FRE+SRE, LTM) $9.61 × Price/DE เป้าหมาย ~15x — ระดับอนุรักษ์นิยม ต่ำกว่า multiple ปกติของ APO ในช่วงตลาดปกติ (~16-18x) สะท้อน credit cycle uncertainty",
+      "FRE/share $4.34 × 27x (fee income คุณภาพสูง ไม่มี credit/insurance risk เหมือน peer BX ที่ 25-28x) + SRE/share $5.27 × 9x (spread earnings มี leverage + liability risk ต่ำกว่า multiple มาก)",
+      "ANI/share (LTM) $8.50 × P/ANI เป้าหมาย ~16x — ANI รวม principal investment income ที่ผันผวนกว่า DE จึงใช้ multiple ต่ำกว่า Price/DE เล็กน้อย"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "$153.47 (Buy)"
+      }
+    ],
+    "s6": [
+      {
+        "head": "DE +2%/ปี",
+        "rows": [
+          [
+            "DE ปี 3",
+            "~$10.20"
+          ],
+          [
+            "Price/DE ออก",
+            "11x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$6.82"
+          ]
+        ]
+      },
+      {
+        "head": "DE +8%/ปี",
+        "rows": [
+          [
+            "DE ปี 3",
+            "~$12.11"
+          ],
+          [
+            "Price/DE ออก",
+            "13.5x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$7.02"
+          ]
+        ]
+      },
+      {
+        "head": "DE +13%/ปี",
+        "rows": [
+          [
+            "DE ปี 3",
+            "~$13.87"
+          ],
+          [
+            "Price/DE ออก",
+            "16x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$7.19"
+          ]
+        ]
+      }
+    ],
     "targets": [
       112.18,
       163.43,
       221.86
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • DE ฐาน ~$9.61/share • รวมปันผล",
+    "legend": [
+      {
+        "text": "ราคา APO",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
     ],
     "rets": {
       "texts": [
@@ -295,5 +379,5 @@
       "div": true
     }
   },
-  "_sig": "sha256:8b6bfe5655844da08537b103e7232a9221355e91b368cfdea6d934322263ac03"
+  "_sig": "sha256:2fc8f24d08ab7ca4615746e57b2a2122884e7961c0c3c9561d2b1e51133e9614"
 }

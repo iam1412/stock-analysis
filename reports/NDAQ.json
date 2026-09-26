@@ -32,7 +32,8 @@
     },
     "migratedFrom": {
       "updated": "2026-09-21T17:02:51+07:00",
-      "v2Hash": "df4f1a965be1"
+      "v2Hash": "df4f1a965be1",
+      "prevHash": "180a57f05a2e"
     }
   },
   "market": {
@@ -116,7 +117,6 @@
         "multiple": 25.9,
         "multipleSource": "median5y"
       },
-      "note": "มัธยฐานย้อนหลัง 5 FY ของ NDAQ เอง (ราคาเฉลี่ยของปี ÷ EPS ปีนั้น: 28.1x / 34.7x / 25.9x / 25.8x / 25.1x) ไม่ได้อิงจาก P/E ปัจจุบัน",
       "family": "market"
     },
     {
@@ -142,7 +142,6 @@
         "netDebt": 0,
         "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
       },
-      "note": "สมมติฐานของผู้วิเคราะห์: FCF โต 8%/ปี ปี 1–5 และ 5%/ปี ปี 6–10 · TV = 62% ของมูลค่า",
       "family": "rg"
     }
   ],
@@ -212,8 +211,7 @@
       }
     ],
     "exitDp": 0,
-    "note": "การคาดการณ์อิง EPS ฐาน {{eps}} (TTM, GAAP diluted) · ทั้ง 3 scenario รวมปันผลรวม 3 ปี ~$3.72 ({{dps}}/ปี) · Bear case ให้ผล {{scn.bear.ret}} เพราะ de-rating เหลือ 19x และ EPS โตช้า · Base case {{scn.base.ret}} ใช้ P/E ออก 21x (ต่ำกว่ามัธยฐานย้อนหลัง 25.9x) ซึ่งสมเหตุสมผลถ้า ARR โตต่อเนื่องและ D/E ลดลง · Bull case {{scn.bull.ret}} ต้องการทั้ง EPS growth แข็งและ multiple expansion · ผลตอบแทนจริงขึ้นอยู่กับ integration Adenza, ดอกเบี้ย, และ sentiment ตลาด fintech/exchange",
-    "hintNote": "(TTM)"
+    "note": "การคาดการณ์อิง EPS ฐาน {{eps}} (TTM, GAAP diluted) · ทั้ง 3 scenario รวมปันผลรวม 3 ปี ~$3.72 ({{dps}}/ปี) · Bear case ให้ผล {{scn.bear.ret}} เพราะ de-rating เหลือ 19x และ EPS โตช้า · Base case {{scn.base.ret}} ใช้ P/E ออก 21x (ต่ำกว่ามัธยฐานย้อนหลัง 25.9x) ซึ่งสมเหตุสมผลถ้า ARR โตต่อเนื่องและ D/E ลดลง · Bull case {{scn.bull.ret}} ต้องการทั้ง EPS growth แข็งและ multiple expansion · ผลตอบแทนจริงขึ้นอยู่กับ integration Adenza, ดอกเบี้ย, และ sentiment ตลาด fintech/exchange"
   },
   "analyst": {
     "target": 109.67,
@@ -250,6 +248,97 @@
   ],
   "extras": [],
   "v2Display": {
+    "legDescs": [
+      "EPS $3.43 (TTM, GAAP diluted) × P/E 25.9x — มัธยฐานย้อนหลัง 5 FY ของ NDAQ เอง (ราคาเฉลี่ยของปี ÷ EPS ปีนั้น: 28.1x / 34.7x / 25.9x / 25.8x / 25.1x) ไม่ได้อิงจาก P/E ปัจจุบัน",
+      "FCF TTM $1,951M ÷ 574M หุ้น (diluted) = $3.40/หุ้น · สมมติฐานของผู้วิเคราะห์: FCF โต 8%/ปี ปี 1–5 และ 5%/ปี ปี 6–10 · r 8.5% · terminal g 3.0% · FCF/หุ้นรายปี $3.67, 3.96, 4.28, 4.62, 4.99, 5.24, 5.51, 5.78, 6.07, 6.37 · PV ของ 10 ปี ≈ $31.83 · TV = 6.37×1.03÷(0.085−0.03) = $119.37 → PV ≈ $52.79 (TV = 62% ของมูลค่า) · รวม ≈ $84.62/หุ้น"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "~{{analyst.target}} (Buy consensus)"
+      }
+    ],
+    "s6": [
+      {
+        "head": "EPS +8%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$4.32"
+          ],
+          [
+            "P/E ออก",
+            "19x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$3.72"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +12%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$4.82"
+          ],
+          [
+            "P/E ออก",
+            "21x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$3.72"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +15%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$5.22"
+          ],
+          [
+            "P/E ออก",
+            "22x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$3.72"
+          ]
+        ]
+      }
+    ],
+    "targets": [
+      82.1,
+      101.2,
+      114.8
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~{{baseEps}} (TTM) • รวมปันผล",
+    "legend": [
+      {
+        "text": "ราคา NDAQ",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
     "fv": 86.73,
     "fvRange": [
       84.62,
@@ -258,12 +347,7 @@
     "legValues": [
       null,
       84.62
-    ],
-    "targets": [
-      null,
-      null,
-      114.8
     ]
   },
-  "_sig": "sha256:690049254a8356a7683979c440884c0e9ce5f4e7223e7db0e339da5e75ca55ed"
+  "_sig": "sha256:ea740d7df7594affa238bd2b8fbe453fe42b018e1c3776116083dc6c936140be"
 }

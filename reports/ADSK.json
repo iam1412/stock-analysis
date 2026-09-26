@@ -22,7 +22,8 @@
     "priceNote": "ปิดตลาด 16:00 ET · เป้านักวิเคราะห์เฉลี่ย {{analyst.target}}",
     "migratedFrom": {
       "updated": "2026-09-22T07:22:55+07:00",
-      "v2Hash": "501eeea25d42"
+      "v2Hash": "501eeea25d42",
+      "prevHash": "b2a8523fe247"
     }
   },
   "market": {
@@ -113,8 +114,7 @@
       "override": {
         "eps": 12.5,
         "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
-      },
-      "note": "ต่ำกว่าค่าเฉลี่ยในอดีตของบริษัท สะท้อนความระมัดระวัง"
+      }
     },
     {
       "method": "declared",
@@ -122,8 +122,7 @@
       "inputs": {
         "value": 245,
         "basis": "other"
-      },
-      "note": "FCF ~$2.8B โต ~12% → 5% terminal, WACC 9.5% — FCF conversion สูง margin ขยายต่อ"
+      }
     },
     {
       "method": "declared",
@@ -131,8 +130,7 @@
       "inputs": {
         "value": 255,
         "basis": "other"
-      },
-      "note": "ค่าเฉลี่ยจากโมเดล fair value สาย value (อนุรักษ์นิยมกว่าเป้า momentum $235–$300)"
+      }
     }
   ],
   "fvWeights": null,
@@ -207,8 +205,7 @@
       "value": 12.5,
       "why": "EPS ฐานฉากที่ผู้เขียนใช้"
     },
-    "note": "ความเสี่ยง–ผลตอบแทน <b>ยังเอียงบวก แต่แคบลงหลังราคาเด้ง</b>: ที่ราคานี้ base case {{scn.base.ret}} และ bull {{scn.bull.ret}} ขณะที่ bear {{scn.bear.ret}} หาก multiple หดตัวต่อ — โครงสร้าง <b>asymmetric เอียงขึ้นพอประมาณ</b>",
-    "hintNote": "(non-GAAP)"
+    "note": "ความเสี่ยง–ผลตอบแทน <b>ยังเอียงบวก แต่แคบลงหลังราคาเด้ง</b>: ที่ราคานี้ base case {{scn.base.ret}} และ bull {{scn.bull.ret}} ขณะที่ bear {{scn.bear.ret}} หาก multiple หดตัวต่อ — โครงสร้าง <b>asymmetric เอียงขึ้นพอประมาณ</b>"
   },
   "analyst": {
     "target": 312.87,
@@ -248,6 +245,40 @@
   ],
   "extras": [],
   "v2Display": {
+    "legDescs": [
+      "EPS non-GAAP ~$12.5 × P/E ~19x (ต่ำกว่าค่าเฉลี่ยในอดีตของบริษัท สะท้อนความระมัดระวัง)",
+      "FCF ~$2.8B โต ~12% → 5% terminal, WACC 9.5% — FCF conversion สูง margin ขยายต่อ",
+      "ค่าเฉลี่ยจากโมเดล fair value สาย value (อนุรักษ์นิยมกว่าเป้า momentum $235–$300)"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "{{analyst.target}} ({{analyst.pct}})"
+      }
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~{{baseEps}} (non-GAAP)",
+    "legend": [
+      {
+        "text": "ราคา ADSK",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
     "fv": 246,
     "fvRange": [
       238,
@@ -287,5 +318,5 @@
       }
     }
   },
-  "_sig": "sha256:e5392ee0a6deb4d8ccfd045ac6c0940b3485499dc46aa3b98f5044ffbc9d0181"
+  "_sig": "sha256:6338795f33e5f3ce32ae1de515b9991619c255744b6013f83237253d57d819b7"
 }

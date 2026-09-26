@@ -31,7 +31,8 @@
     },
     "migratedFrom": {
       "updated": "2026-09-21T11:54:28+07:00",
-      "v2Hash": "49450d6c574b"
+      "v2Hash": "49450d6c574b",
+      "prevHash": "6ebab566632e"
     }
   },
   "market": {
@@ -110,7 +111,6 @@
         "multiple": 13.5,
         "multipleSource": "peer"
       },
-      "note": "ประกันคุณภาพสูงระดับ world-class ควรได้ premium ต่อค่าเฉลี่ยอุตสาหกรรม เทียบ TRV/AFL ที่ trade ที่ 11–13x; ให้ Chubb premium 13.5x จากการกระจายตัว global + Asia Life growth",
       "family": "market"
     },
     {
@@ -120,7 +120,6 @@
         "value": 351,
         "basis": "other"
       },
-      "note": "P/BV เหมาะสม = (ROE 16.2% − g 6%)/(r 10% − g 6%) ≈ 2.55x ปรับลดเป็น 1.85x (ตลาดจ่าย discount ให้ intangible-heavy insurer) × BVPS {{bvps}}",
       "family": "rg"
     },
     {
@@ -134,7 +133,6 @@
         "eps": 23,
         "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
       },
-      "note": "ปรับ combined ratio เป็น 88% (ระดับ \"ปกติ\" ในระยะยาว ก่อนจะเป็น record 85.7%) · รวม Asia Life growth premium · ให้ค่าพื้น conservative ลดความเสี่ยง mean reversion",
       "family": "market"
     }
   ],
@@ -269,15 +267,102 @@
   ],
   "extras": [],
   "v2Display": {
-    "fv": 350,
-    "fvRange": [
-      322,
-      377
+    "legDescs": [
+      "EPS core adj. $27.93 × P/E เป้าหมาย 13.5x — ประกันคุณภาพสูงระดับ world-class ควรได้ premium ต่อค่าเฉลี่ยอุตสาหกรรม เทียบ TRV/AFL ที่ trade ที่ 11–13x; ให้ Chubb premium 13.5x จากการกระจายตัว global + Asia Life growth",
+      "P/BV เหมาะสม = (ROE 16.2% − g 6%)/(r 10% − g 6%) ≈ 2.55x ปรับลดเป็น 1.85x (ตลาดจ่าย discount ให้ intangible-heavy insurer) × BVPS $189.93",
+      "ปรับ combined ratio เป็น 88% (ระดับ \"ปกติ\" ในระยะยาว ก่อนจะเป็น record 85.7%) → Normalized core EPS ~$23 × P/E 14x (รวม Asia Life growth premium) — ให้ค่าพื้น conservative ลดความเสี่ยง mean reversion"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "~$366 (Buy)"
+      }
+    ],
+    "s6": [
+      {
+        "head": "EPS +2%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$29.64"
+          ],
+          [
+            "P/E ออก",
+            "10x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$12.50"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +7%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$34.21"
+          ],
+          [
+            "P/E ออก",
+            "11.2x (มัธยฐาน 5 ปี)"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$13.50"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +12%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$39.24"
+          ],
+          [
+            "P/E ออก",
+            "14x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$14.50"
+          ]
+        ]
+      }
     ],
     "targets": [
       309,
       397,
       564
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~$27.93 • รวมปันผล",
+    "legend": [
+      {
+        "text": "ราคา CB",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
+    "fv": 350,
+    "fvRange": [
+      322,
+      377
     ],
     "rets": {
       "texts": [
@@ -290,5 +375,5 @@
       "div": false
     }
   },
-  "_sig": "sha256:7edd73c91590801ef33ab896159a69de70438dd13c93fa61e15587dbe71e779e"
+  "_sig": "sha256:8b9f00fdf9a4485cb7682fff5d6b9e69ea455876029e87dbf55fe649e081e555"
 }

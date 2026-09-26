@@ -17,16 +17,15 @@
     "sources": [
       "Yahoo Finance",
       "StockAnalysis.com",
-      "SEC EDGAR (8-K Q2",
-      "2026",
-      "10-Q)",
+      "SEC EDGAR (8-K Q2/2026 · 10-Q)",
       "Pinnacle Financial Partners IR",
       "Synovus IR"
     ],
     "priceNote": "Yahoo Finance ตรงกับ StockAnalysis.com Δ0.1%",
     "migratedFrom": {
       "updated": "2026-09-21T23:32:21+07:00",
-      "v2Hash": "8a86ebd67f02"
+      "v2Hash": "8a86ebd67f02",
+      "prevHash": "1eea78abf459"
     }
   },
   "market": {
@@ -117,7 +116,6 @@
         "eps": 6.83,
         "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
       },
-      "note": "StockAnalysis — ตรงกับตาราง [3]: กำไรสุทธิ TTM $784M ÷ หุ้นถัวเฉลี่ยถ่วงน้ำหนักปรับลด TTM 115M, Δ0% · FY2021–FY2025 ก่อนควบรวม Synovus — วัดจากราคาเฉลี่ยรายงวด ÷ EPS diluted ของงวดนั้น · ช่วง 9.3x–15.9x, 5 จุดครบ",
       "family": "market"
     },
     {
@@ -127,7 +125,6 @@
         "value": 105.03,
         "basis": "other"
       },
-      "note": "P/TBV เหมาะสม = (ROTE 15.0% − g 5.0%)/(r 11.0% − g 5.0%) ≈ 1.67x × BVPS $63.02 (TBVPS, Q2/2026) — r สร้างจาก CAPM: rf 4.65% (UST10Y, 7 ส.ค. 2569, CNBC/Treasury) + β 0.90 (ปรับเพิ่มจาก 0.81 จริงเพื่อสะท้อนความเสี่ยง integration) × ERP 5.5% = 9.6% บวก premium ดุลพินิจเฉพาะตัว 1.4pp (integration/CRE concentration) = 11.0% — เทียบกับ implied-rate check ด้านล่าง (ตลาดฝัง ~11.5% สูงกว่า r ที่ใช้ราว 0.5pp)",
       "family": "rg"
     }
   ],
@@ -202,8 +199,7 @@
       }
     ],
     "exitDp": 1,
-    "note": "EPS ฐานใช้ normalized run-rate {{eps}} (H1/2026 adjusted diluted EPS ×2) ไม่ใช่ EPS TTM GAAP $6.83–$7.26 (ตามแหล่ง) ที่คร่อมช่วงควบรวมและไม่สะท้อนธุรกิจหลังรวมกิจการเต็มไตรมาส — ทุก scenario สมมติไม่มีการซื้อกิจการเพิ่มเติมและ integration ดำเนินต่อตามแผนที่ประกาศ (แล้วเสร็จต้นปี 2570)",
-    "hintNote": "(normalized run-rate) ~{{eps}}"
+    "note": "EPS ฐานใช้ normalized run-rate {{eps}} (H1/2026 adjusted diluted EPS ×2) ไม่ใช่ EPS TTM GAAP $6.83–$7.26 (ตามแหล่ง) ที่คร่อมช่วงควบรวมและไม่สะท้อนธุรกิจหลังรวมกิจการเต็มไตรมาส — ทุก scenario สมมติไม่มีการซื้อกิจการเพิ่มเติมและ integration ดำเนินต่อตามแผนที่ประกาศ (แล้วเสร็จต้นปี 2570)"
   },
   "analyst": {
     "target": 120.1,
@@ -241,12 +237,98 @@
   ],
   "extras": [],
   "v2Display": {
-    "fv": 95.21,
+    "legDescs": [
+      "EPS diluted GAAP TTM $6.83 (StockAnalysis — ตรงกับตาราง [3]: กำไรสุทธิ TTM $784M ÷ หุ้นถัวเฉลี่ยถ่วงน้ำหนักปรับลด TTM 115M, Δ0%) × P/E มัธยฐานย้อนหลัง 5 ปี (FY2021–FY2025 ก่อนควบรวม Synovus — วัดจากราคาเฉลี่ยรายงวด ÷ EPS diluted ของงวดนั้น) 12.5x (ช่วง 9.3x–15.9x, 5 จุดครบ) — ใช้สมอที่วัดจริงแทนตัวคูณตลาดปัจจุบัน (~{{pe}}x บนฐาน EPS normalized) เพื่อเลี่ยงสมอตายวนกลับ · ใช้ EPS ฐาน GAAP diluted (ไม่ใช่ EPS adjusted normalized $9.78 ที่ใช้ใน Key Metrics/scenario) เพื่อให้ตรงฐานเดียวกับมัธยฐานที่วัด — TTM นี้ยังมีค่าใช้จ่ายดีล/merger-related expense ค้างอยู่ในช่วงคร่อมควบรวม ผลลัพธ์วิธีนี้จึงระมัดระวังกว่าฐาน adjusted",
+      "P/TBV เหมาะสม = (ROTE 15.0% − g 5.0%)/(r 11.0% − g 5.0%) ≈ 1.67x × BVPS $63.02 (TBVPS, Q2/2026) — r สร้างจาก CAPM: rf 4.65% (UST10Y, 7 ส.ค. 2569, CNBC/Treasury) + β 0.90 (ปรับเพิ่มจาก 0.81 จริงเพื่อสะท้อนความเสี่ยง integration) × ERP 5.5% = 9.6% บวก premium ดุลพินิจเฉพาะตัว 1.4pp (integration/CRE concentration) = 11.0% — เทียบกับ implied-rate check ด้านล่าง (ตลาดฝัง ~11.5% สูงกว่า r ที่ใช้ราว 0.5pp)"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "~$120.10 (Buy)"
+      }
+    ],
+    "s6": [
+      {
+        "head": "EPS +2%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$10.38"
+          ],
+          [
+            "P/E ออก",
+            "9.0x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$6.00"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +8%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$12.32"
+          ],
+          [
+            "P/E ออก",
+            "11.0x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$6.30"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +13%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$14.11"
+          ],
+          [
+            "P/E ออก",
+            "13.0x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$6.50"
+          ]
+        ]
+      }
+    ],
     "targets": [
       93.42,
-      null,
+      135.52,
       183.43
     ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน (normalized run-rate) ~$9.78 • รวมปันผล",
+    "legend": [
+      {
+        "text": "ราคา PNFP",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
+    "fv": 95.21,
     "cards": {
       "revenue": {
         "v": "$1.885B",
@@ -254,5 +336,5 @@
       }
     }
   },
-  "_sig": "sha256:04d99c524e52f8f67fbbefb8370dacac449a5d790bc23109c55cc088bac8b467"
+  "_sig": "sha256:0fed256e8aea77f1d4eb7026f46295a543a5183c20d97060499d352b677c92fc"
 }

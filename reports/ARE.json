@@ -31,7 +31,8 @@
     },
     "migratedFrom": {
       "updated": "2026-09-21T08:28:49+07:00",
-      "v2Hash": "66e195bcee63"
+      "v2Hash": "66e195bcee63",
+      "prevHash": "f50a68b18fe2"
     }
   },
   "market": {
@@ -117,7 +118,6 @@
         "ffoPerShare": 6.4,
         "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
       },
-      "note": "stressed life science REIT, leverage สูง",
       "family": "market"
     },
     {
@@ -131,7 +131,6 @@
         "dps": 2.7961165048543686,
         "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
       },
-      "note": "ปันผล forward {{dps}}/ปี · required return สูงรับ leverage + biotech risk · ฟื้นตัวระยะยาว · สะท้อน risk premium ที่ตลาดเรียกร้อง",
       "family": "rg"
     },
     {
@@ -141,7 +140,6 @@
         "value": 67,
         "basis": "nav"
       },
-      "note": "BVPS ~$111 × P/BV เป้า 0.60x (discount รับ high leverage Net Debt/EBITDA สูง + ค่าเสื่อมราคาสินทรัพย์ lab ที่อาจต่ำกว่า book) → $111 × 0.60 = $66.60",
       "family": "asset"
     }
   ],
@@ -237,8 +235,7 @@
       "value": 6.4,
       "why": "ฐานฉากที่ผู้เขียนใช้ (ตัวตั้งที่ขาประเมินพิมพ์)"
     },
-    "note": "การคาดการณ์อิง FFO as adjusted/share เป็นตัวชี้วัดหลัก (ไม่ใช่ EPS) เนื่องจาก REIT มีค่าเสื่อมสูง โดย bear scenario ขาดทุนราคาหนักกว่าปันผลที่ได้ ส่วน base/bull ขึ้นกับ re-rating ของ P/FFO จาก ~8.3x กลับสู่ระดับ 10-13x ซึ่งเป็นไปได้หาก biotech funding ฟื้น, Fed ลดดอกเบี้ย, และ ARE สามารถลด net debt ผ่าน asset disposal ได้สำเร็จ ความเสี่ยงหลัก: net debt $12.4B ที่ต้อง refinance, occupancy ห้อง lab ที่กดดัน, และโอกาส write-off เพิ่มเติม",
-    "hintNote": "FFO adj. /หุ้น"
+    "note": "การคาดการณ์อิง FFO as adjusted/share เป็นตัวชี้วัดหลัก (ไม่ใช่ EPS) เนื่องจาก REIT มีค่าเสื่อมสูง โดย bear scenario ขาดทุนราคาหนักกว่าปันผลที่ได้ ส่วน base/bull ขึ้นกับ re-rating ของ P/FFO จาก ~8.3x กลับสู่ระดับ 10-13x ซึ่งเป็นไปได้หาก biotech funding ฟื้น, Fed ลดดอกเบี้ย, และ ARE สามารถลด net debt ผ่าน asset disposal ได้สำเร็จ ความเสี่ยงหลัก: net debt $12.4B ที่ต้อง refinance, occupancy ห้อง lab ที่กดดัน, และโอกาส write-off เพิ่มเติม"
   },
   "analyst": {
     "target": 53,
@@ -278,5 +275,111 @@
     "<b>Refinancing risk:</b> หนี้ $12.4B ต้อง roll over บางส่วนในสภาพอัตราดอกเบี้ยสูง — spread อาจกว้างขึ้นเพิ่มต้นทุนการเงิน"
   ],
   "extras": [],
-  "_sig": "sha256:1a143d072f095776fee222d06479d69db7744bf397f5f2d1c66b75f4fab98461"
+  "v2Display": {
+    "legDescs": [
+      "FFO adj./sh 2026e $6.40 × P/FFO เป้าหมาย 10x (stressed life science REIT, leverage สูง) = $64 — ปกติ 20-25x แต่ปรับลดรับความเสี่ยง net debt $12.4B + sector headwind",
+      "D₁ = ปันผล forward $2.88/ปี; r = 8.5% (required return สูงรับ leverage + biotech risk); g = 3% (ฟื้นตัวระยะยาว) → $2.88/(8.5%−3%) = $52.36 — สะท้อน risk premium ที่ตลาดเรียกร้อง",
+      "BVPS ~$111 × P/BV เป้า 0.60x (discount รับ high leverage Net Debt/EBITDA สูง + ค่าเสื่อมราคาสินทรัพย์ lab ที่อาจต่ำกว่า book) → $111 × 0.60 = $66.60"
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • FFO adj. ฐาน ~$6.40/หุ้น",
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "~$53.00 (Hold · 14 คน)"
+      }
+    ],
+    "legend": [
+      {
+        "text": "ราคา ARE",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
+    "s6": [
+      {
+        "head": "FFO −5%/ปี",
+        "rows": [
+          [
+            "FFO ปี 3",
+            "~$5.49/sh"
+          ],
+          [
+            "Exit P/FFO",
+            "7x"
+          ],
+          [
+            "ราคาออก",
+            "~$38"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$8.64"
+          ]
+        ]
+      },
+      {
+        "head": "FFO +2%/ปี",
+        "rows": [
+          [
+            "FFO ปี 3",
+            "~$6.79/sh"
+          ],
+          [
+            "Exit P/FFO",
+            "10x"
+          ],
+          [
+            "ราคาออก",
+            "~$68"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$8.64"
+          ]
+        ]
+      },
+      {
+        "head": "FFO +5%/ปี",
+        "rows": [
+          [
+            "FFO ปี 3",
+            "~$7.41/sh"
+          ],
+          [
+            "Exit P/FFO",
+            "13x"
+          ],
+          [
+            "ราคาออก",
+            "~$96"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$8.64"
+          ]
+        ]
+      }
+    ],
+    "targets": [
+      38.41,
+      67.92,
+      96.31
+    ]
+  },
+  "_sig": "sha256:45509eaf92b0d4298c8f2fabbf68af04202ae1fb5e54d8fa6f4b878d1c2ee629"
 }

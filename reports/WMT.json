@@ -32,7 +32,7 @@
     "migratedFrom": {
       "updated": "2026-09-22T03:05:24+07:00",
       "v2Hash": "f9c15d5af75c",
-      "prevHash": "bc32e32c8907"
+      "prevHash": "21347b89c9cf"
     }
   },
   "market": {
@@ -122,7 +122,6 @@
         "multiple": 31.2,
         "multipleSource": "median5y"
       },
-      "note": "มัธยฐานย้อนหลัง 5 ปีงบของ WMT เอง จากราคาเฉลี่ยรายปี ÷ EPS diluted ปีนั้น ช่วง 27.2–37.3x — มาจากประวัติ ไม่ได้ลอกจาก P/E ปัจจุบัน · ตระกูล P/E เดียวกับขาที่ 2 นับเป็น 1 เสียง",
       "family": "market"
     },
     {
@@ -134,7 +133,6 @@
         "base": "epsForward"
       },
       "baseLabel": "FY2027E consensus",
-      "note": "FY2027E consensus จาก StockAnalysis /forecast/ · มัธยฐานย้อนหลัง 5 ปีงบชุดเดียวกับขาที่ 1 · ตระกูล P/E เดียวกัน นับรวมเป็น 1 เสียง; ขาทั้งสองห่างกันไม่ถึง 2 เท่า",
       "family": "market"
     }
   ],
@@ -240,7 +238,7 @@
     "verdictHeadline": "Quality Compounder ราคาพรีเมียม — ราคาสูงกว่า FV แต่ธุรกิจแข็งแกร่ง",
     "verdictBody": "Walmart เป็น world-class retailer ที่กำลัง transform ตัวเองจาก \"discount grocery chain\" สู่ \"omnichannel ecosystem\" ที่มี e-commerce, advertising, fintech (India), และ membership revenue คุณภาพธุรกิจดีขึ้นอย่างมีนัยสำคัญในช่วง 3-5 ปีที่ผ่านมา — ทั้ง margin expansion, e-commerce share gain, และ premium shopper acquisition อย่างไรก็ตาม ราคาปัจจุบัน {{px}} ที่ ~39x P/E สะท้อน optimism ไปมากแล้ว เทียบ FV {{fv}} (MOS {{mos}}) ซึ่งไม่มี margin of safety สำหรับ value investor แต่สำหรับ long-term quality investor ที่ยอมจ่ายพรีเมียมเพื่อ compounding ที่น่าเชื่อถือ WMT ยังเป็นตัวเลือกในพอร์ต defensive (ตระหนักว่า FV นี้อิงตระกูล P/E เพียงตระกูลเดียว)",
     "strategy": "ณ ราคาปัจจุบัน {{px}} WMT เหมาะกับ long-term compounder investor (ถือ 5+ ปี) ที่เน้นคุณภาพธุรกิจและยอมรับว่าจ่ายเกิน FV จุดเข้าซื้อที่ดีกว่าคือใกล้ {{mos20}} (MOS 20%) หรือต่ำกว่า หากเกิด market pullback การถือยาวได้ปันผลที่โตสม่ำเสมอ + EPS growth + India optionality · ไม่เหมาะสำหรับ short-term trade เพราะไม่มี MOS",
-    "disclaimerSources": "ราคา ณ {{priceDate}} จาก Yahoo Finance ($107.48) · ยืนยัน StockAnalysis.com ($107.47) · EPS GAAP TTM $2.76 จาก StockAnalysis.com (ตรง Yahoo) · ข้อมูลงบการเงิน FY2026 จาก StockAnalysis.com · นักวิเคราะห์ 40 คน (consensus Buy, เป้า $127.42) จาก StockAnalysis.com/Yahoo Finance"
+    "disclaimerSources": "ราคา ณ {{priceDate}} จาก Yahoo Finance ($107.48) · ยืนยัน StockAnalysis.com ($107.47) · EPS GAAP TTM $2.76 จาก StockAnalysis.com (ตรง Yahoo) · ข้อมูลงบการเงิน FY2026 จาก StockAnalysis.com · นักวิเคราะห์ 40 คน (consensus Buy, เป้า {{analyst.target}}) จาก StockAnalysis.com/Yahoo Finance"
   },
   "text": {
     "valHint": "P/E 2 ขา (ตระกูลเดียว)"
@@ -263,15 +261,101 @@
   ],
   "extras": [],
   "v2Display": {
-    "fv": 88,
-    "fvRange": [
-      75,
-      108
+    "legDescs": [
+      "EPS $2.76 (TTM, diluted) × P/E เป้าหมาย 31.2x (มัธยฐานย้อนหลัง 5 ปีงบของ WMT เอง จากราคาเฉลี่ยรายปี ÷ EPS diluted ปีนั้น ช่วง 27.2–37.3x — มาจากประวัติ ไม่ได้ลอกจาก P/E ปัจจุบัน) · ตระกูล P/E เดียวกับขาที่ 2 นับเป็น 1 เสียง",
+      "EPS $2.89 (FY2027E consensus จาก StockAnalysis /forecast/) × P/E เป้าหมาย 31.2x (มัธยฐานย้อนหลัง 5 ปีงบชุดเดียวกับขาที่ 1) — ตระกูล P/E เดียวกัน นับรวมเป็น 1 เสียง; ขาทั้งสองห่างกันไม่ถึง 2 เท่า"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "~$127.42 (Buy · 40 คน)"
+      }
+    ],
+    "s6": [
+      {
+        "head": "EPS +3%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$3.02"
+          ],
+          [
+            "P/E ออก",
+            "27.2x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$2.97"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +9%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$3.57"
+          ],
+          [
+            "P/E ออก",
+            "31.2x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$2.97"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +15%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$4.20"
+          ],
+          [
+            "P/E ออก",
+            "37.3x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$2.97"
+          ]
+        ]
+      }
     ],
     "targets": [
       82,
       112,
       157
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~{{baseEps}} • รวมปันผล",
+    "legend": [
+      {
+        "text": "ราคา WMT",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
+    "fv": 88,
+    "fvRange": [
+      75,
+      108
     ],
     "cards": {
       "revenue": {
@@ -280,5 +364,5 @@
       }
     }
   },
-  "_sig": "sha256:3d7a5f201355a1b21f4b72f22fe82887a02d3635bfab855233be88be2672f568"
+  "_sig": "sha256:61b83f9d7eaf6d268b18be37b75f631c342478c956136fda2b3c9d0532dfa2b1"
 }
