@@ -52,6 +52,12 @@ function graftOf(existing, fresh) {
   const { _sig, ...doc } = existing;
   const x = {};
   for (const k of ['fv', 'fvRange', 'targets', 'driverEnds', 'gauge', 'footer']) if (vd[k] != null) x[k] = vd[k];
+  // display-fix2: การ์ด custom คิดสด — เฉพาะช่องที่ป้ายเดียวกับของ fresh
+  if (vd.custom) {
+    const cu = Object.fromEntries(Object.entries(vd.custom).filter(([k]) => doc.metrics && doc.metrics.custom && doc.metrics.custom[+k] && fresh.metrics.custom && fresh.metrics.custom[+k]
+      && doc.metrics.custom[+k].label === fresh.metrics.custom[+k].label && !/\{\{/.test(String(doc.metrics.custom[+k].value))));
+    if (Object.keys(cu).length) x.custom = cu;
+  }
   // display-fix2: ข้อความขา context (ช่วง/ขีด) — ขาเดียวกันเท่านั้น
   if (vd.legTexts && Array.isArray(doc.legs) && doc.legs.length === vd.legTexts.length && vd.legTexts.every((t, i) => t == null || (doc.legs[i] && doc.legs[i].role === 'context'))) x.legTexts = vd.legTexts;
   if (vd.legValues && Array.isArray(doc.legs) && doc.legs.length === vd.legValues.length

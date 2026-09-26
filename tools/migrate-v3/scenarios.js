@@ -242,6 +242,8 @@ function scenarios(parsed, fund, legs) {
   const colDrv = (c) => { const t = c.top ? c.top[1] : '', e = (endLiOf(c) || [''])[0]; return (DRIVER.find(([, re]) => re.test(t)) || DRIVER.find(([, re]) => re.test(e)) || [null])[0]; };
   const colEx = (c) => { const l = (c.lis.find((x) => isExit(x[0])) || [''])[0]; return (EXIT.find(([, re]) => re.test(l)) || [null])[0]; };
   if (cols.some((c) => colDrv(c) && colDrv(c) !== out.driver) || cols.some((c) => colEx(c) && colEx(c) !== out.exitMetric)) why.push('driver/exit differs per column');
+  // คู่ driver × exit ที่ template คิดไม่ได้ (EV/Sales ต้องคูณรายได้ต่อหุ้น · EV/EBITDA คู่ EBITDA ต่อหุ้น — PDYN/RCAT "EPS" + "EV/Sales ออก") = เป้ามาจากตัวตั้งอื่นของผู้เขียน
+  if ((out.exitMetric === 'evsales' && out.driver !== 'revenuePerShare') || ((out.exitMetric === 'evebitda') !== (out.driver === 'ebitdaPerShare'))) why.push(`driver ${out.driver} × exit ${out.exitMetric} is not a template pair`);
   if (why.length || soft.length) {
     const cur = parsed.sm && parsed.sm.data && parsed.sm.data.currency ? (RV.CUR_SYMBOL[parsed.sm.data.currency] || '') : '';
     const tgts = cols.map((c, i) => {

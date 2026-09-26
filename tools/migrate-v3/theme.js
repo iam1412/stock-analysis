@@ -30,12 +30,17 @@ function theme(sym, rdTheme, seeds) {
   const near = seed ? (() => { const mk = bt.makeTheme(seed); return S.THEME_KEYS.every((k) => keyDist(mk[k], th[k]) <= 12); })() : false;
   if (!near) {
     themeLegacy = {};
+    // display-fix2 (FANG/UDR): หน้า v2 ที่ประกาศแค่ accent — build v2 เติมคีย์ที่เหลือจาก THEME_DEFAULTS (build.js deriveTheme) ⇒ หน้า v2 แสดงค่าตั้งต้นนั้นจริง
+    const DEF = th.accent ? require('../../build.js').THEME_DEFAULTS : null;
+    const filled = [];
     for (const k of S.THEME_KEYS) {
-      const v = th[k];
+      let v = th[k];
+      if ((typeof v !== 'string' || !v.trim()) && DEF && typeof DEF[k] === 'string') { v = DEF[k]; filled.push(k); }
       if (typeof v !== 'string' || !v.trim()) { H.push(`theme.${k} missing (no seed to fall back on)`); continue; }
       if (!SV.colorOK(v, k === 'darkGrad')) H.push(`theme.${k} ${JSON.stringify(v)} fails the colour allowlist`);
       themeLegacy[k] = v.trim();
     }
+    if (filled.length) F.push(`theme ${filled.join('/')} = the build defaults the v2 page rendered (report-data declared accent only)`);
   }
   const badgeOff = th.badge != null && !DECOR_OK.badge.includes(String(th.badge).trim());
   const chgOff = (th.chgBg != null || th.chgColor != null) && !DECOR_OK.chg.some(([b, c]) => String(th.chgBg).trim() === b && String(th.chgColor).trim().toLowerCase() === c);

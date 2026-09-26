@@ -123,6 +123,8 @@ function norm(zoneId, html, side, ctx) {
     h = h.replace(/(<div class="price-row">[\s\S]*?)<small>([\s\S]*?)<\/small>/, (m, a, g) => { if (side === 'v2') ctx.dropped.push(...tok(text(g))); return a; });
     // ป้ายตายตัวของ px-meta (ทุกรูปที่ v2 เขียน: "ราคา ณ" · "ราคาปิด ณ" · "ปิดตลาด ณ" · "ราคาปิด <วันที่>" · "ช่วง/กรอบ 52 สัปดาห์" · "52wk:" · "ที่มา:")
     let tx = text(h);
+    // display-fix2 (KLAC): กรอบ 52 สัปดาห์ = ค่าตลาด — template v3 พิมพ์สดจาก market.range52w (cron) แม้หน้า v2 ไม่ได้พิมพ์ · ตัวเลขช่วงนี้ไม่ใช่ตัวเลขของผู้เขียน ⇒ ไม่เทียบ (ทั้งสองฝั่ง)
+    tx = tx.replace(/(?:ช่วง|กรอบ)?\s*52\s*(?:สัปดาห์|wk|weeks?)\s*:?\s*\(?\s*(?:US\$|C\$|HK\$|\$|฿|€|£|¥)?\s*~?[0-9][0-9,]*(?:\.[0-9]+)?\s*(?:บาท)?\s*[–—-]\s*(?:US\$|C\$|HK\$|\$|฿|€|£|¥)?\s*~?[0-9][0-9,]*(?:\.[0-9]+)?\s*(?:บาท)?\s*\)?/gi, (m) => { if (ctx.range52) ctx.range52.push(m.replace(/^[^$฿€£¥0-9~(]*/, '').replace(/[()]/g, '').replace(/\s+/g, ' ').trim()); return ' '; });
     tx = tx.replace(/(?:ราคาปิด|ราคา|ปิดตลาด)\s*ณ/g, ' ').replace(/ราคาปิด(?=\s+\d)/g, ' ').replace(/(?:ช่วง|กรอบ)?\s*52\s*(?:สัปดาห์|wk|weeks?)\s*:?/gi, ' ').replace(/ที่มา\s*:/g, ' ');
     return tx.replace(/\s+/g, ' ').trim();
   }
@@ -424,12 +426,14 @@ function compare(v2Html, v3Html, doc, view, opts) {
   const o = opts || {};
   const z2 = zones(v2Html), z3 = zones(v3Html);
   const shared = { gen: {} };   // v3 ก่อน — hint/mdesc ที่ generate ใช้ตัดสินฝั่ง v2
-  const c2 = { doc, view, dropped: [], shared, mdescKeys: new Set(), syn: [], counted: [] }, c3 = { doc, view, dropped: [], shared, mdescKeys: new Set(), syn: [], counted: [] };
+  const c2 = { doc, view, dropped: [], shared, mdescKeys: new Set(), syn: [], counted: [], range52: [] }, c3 = { doc, view, dropped: [], shared, mdescKeys: new Set(), syn: [], counted: [], range52: [] };
   const ids = [...new Set([...z2.keys(), ...z3.keys()])];
   const n2 = new Map(), n3 = new Map();
   for (const id of ids) n3.set(id, tok(norm(id, z3.get(id) || '', 'v3', c3)));
   for (const id of ids) n2.set(id, tok(norm(id, z2.get(id) || '', 'v2', c2)));
   const out = { synonym: c2.syn, zones: [], textLost: [], textLostAt: [], moved: [], numberValue: [], numberRounding: [], numberAdded: [], templateDropped: [], rd: [], colour: { keys: [], themeLegacy: false }, tone: [] };
+  // กรอบ 52 สัปดาห์ของ header (ค่าตลาด — ไม่เทียบในรัน): หน้า v3 พิมพ์ช่วงที่หน้า v2 ไม่มี/ต่าง = ข้อมูลประกอบ (numberAdded) ไม่ใช่ numberValue (display-fix2 · KLAC)
+  c3.range52.forEach((r, i) => { if (r && r !== c2.range52[i]) out.numberAdded.push({ zone: 'header', ins: r, ctx: 'กรอบ 52 สัปดาห์ (market.range52w)' }); });
   const cand = [], mixed = [];
   for (const id of ids) {
     const runs = diffRuns(n2.get(id), n3.get(id)).map((r) => { const c = classify(r); return { kind: c.kind, del: r.del, ins: r.ins, ctx: r.ctx, lost: c.lost }; });
