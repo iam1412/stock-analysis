@@ -40,17 +40,24 @@ function v3FromV2(rd, sm, symbol) {
 }
 
 const dir = path.join(__dirname, '..', '..', 'reports');
-let files = 0, ok = 0, checked = 0;
+const FIX = path.join(__dirname, '..', 'fixtures');
+// แหล่ง = ใบ v2 จริงในคลัง (ถ้ายังเหลือ) + fixture v2 ที่ commit ไว้ (test/fixtures/*-v2.html) เสมอ
+//   Plan 4c: คลัง v2 = 0 หลัง migrate ครบ ⇒ ไม่มี fixture = เทสนี้เทียบศูนย์ใบแล้วผ่านเงียบ — fixture ทำให้ยังมีของจริงให้เทียบทุกครั้ง
+const corpusHtml = fs.existsSync(dir) ? fs.readdirSync(dir).filter((x) => x.endsWith('.html')).sort() : [];
+const fixtureHtml = fs.readdirSync(FIX).filter((x) => /-v2\.html$/.test(x)).sort();
+const sources = [...corpusHtml.map((f) => ({ fp: path.join(dir, f), sym: f.replace(/\.html$/, ''), corpus: true })),
+  ...fixtureHtml.map((f) => ({ fp: path.join(FIX, f), sym: 'fixture:' + f.replace(/-v2\.html$/, ''), corpus: false }))];
+let files = 0, ok = 0, checked = 0, corpusV2 = 0, fixtureV2 = 0;
 const findings = [];
-for (const f of fs.readdirSync(dir).filter((x) => x.endsWith('.html'))) {
-  const html = fs.readFileSync(path.join(dir, f), 'utf8');
+for (const src of sources) {
+  const html = fs.readFileSync(src.fp, 'utf8');
   const rd = RM.readReportData(html).data;
   if (!RV.isV2(rd)) continue;
   const sm = RM.readStockMeta(html);
-  const sym = f.replace(/\.html$/, '');
-  files++;
+  const sym = src.sym;
+  files++; if (src.corpus) corpusV2++; else fixtureV2++;
   let out;
-  try { out = C.compute(v3FromV2(rd, sm, sym), {}); } catch (e) { findings.push(`${sym}: ${e.message.split('\n')[0]}`); continue; }
+  try { out = C.compute(v3FromV2(rd, sm, sym.replace(/^fixture:/, '')), {}); } catch (e) { findings.push(`${sym}: ${e.message.split('\n')[0]}`); continue; }
   ok++;
   const dA = RV.derive(rd, sm);
   for (const [v3, v2] of Object.entries(TK.V2_TWIN)) {
@@ -63,10 +70,11 @@ for (const f of fs.readdirSync(dir).filter((x) => x.endsWith('.html'))) {
   }
 }
 if (findings.length) console.log(`  ℹ compute() refused ${findings.length} v2 value sets (schema findings — review, don't loosen blindly):\n    ` + findings.slice(0, 30).join('\n    '));
-console.log(`  ℹ compute() accepted ${ok}/${files} v2 value sets · ${checked} token renders compared`);
+if (!corpusHtml.length) console.log('  ℹ no v2 reports in reports/ (corpus is all v3) — parity checked on committed v2 fixtures only');
+console.log(`  ℹ compute() accepted ${ok}/${files} v2 value sets (corpus ${corpusV2} · fixtures ${fixtureV2}) · ${checked} token renders compared`);
 // Plan 4c (26 ก.ย. 69): คลัง v2 หดลงทุกแบตช์ migrate (909 → 0) ⇒ เลิกพื้นตายตัว 880 · กันสแกนเงียบด้วย "นับครบทุก .html ที่เป็น v2 ในโฟลเดอร์"
-const v2Html = fs.readdirSync(dir).filter((x) => x.endsWith('.html')).length;
-t(files === v2Html, `scanned every v2 report in the corpus (${files}/${v2Html} files)`);
+t(corpusV2 === corpusHtml.length, `scanned every v2 report in the corpus (${corpusV2}/${corpusHtml.length} files)`);
+t(fixtureV2 === fixtureHtml.length && fixtureV2 > 0, `scanned every committed v2 fixture (${fixtureV2}/${fixtureHtml.length} files)`);
 t(ok >= files * 0.97, `compute() accepted ≥97% of real v2 value sets (${ok}/${files})`);
-t(files === 0 || checked > 0, `compared ${checked} token renders`);   // คลัง v2 ว่าง (หลัง migrate ครบ) = ไม่มีอะไรให้เทียบ
+t(checked > 0, `compared ${checked} token renders`);
 t.done();

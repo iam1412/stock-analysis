@@ -1043,9 +1043,17 @@ function runCli(argv, opts) {
   const have = new Set(entries.map((e) => e.symbol.toUpperCase()));
   const missing = want ? [...want].filter((s) => !have.has(s)) : [];
   for (const s of missing) err(`✗ ${s} ไม่พบ (ไม่มี reports/${s}.html หรือ reports/${s}.json)`);
-  if (!files.length && !v3.length) { err('❌ ไม่พบไฟล์รายงานให้ตรวจ'); return 1; }
   const nV3 = want ? 0 : entries.filter((e) => e.v3).length;
   const note = nV3 ? `ℹ ใบ v3 ${nV3} ใบ — ตรวจโดย node test/check-v3.js (ขั้นถัดไปของ verify)` : null;
+  // Plan 4c: คลังที่ migrate ครบ = ใบ v2 0 ใบ เป็นสถานะที่ถูกต้อง (กวาดทั้งคลังเท่านั้น — ระบุชื่อแล้วไม่เจอยังล้ม)
+  //   ว่างทั้ง v2 และ v3 = ยังล้ม (โฟลเดอร์ว่าง/อ่านผิดที่ ห้ามผ่านเงียบ)
+  if (!want && !files.length && nV3) {
+    log(`\n🔍 ตรวจคุณภาพรายงาน v2 0 ไฟล์ (reports/) — ไม่มีใบ v2 เหลือในคลัง (0 v2 reports)`);
+    log(note);
+    log('\n✅ ผ่าน quality gate ฝั่ง v2 (ไม่มีใบให้ตรวจ) — คลังทั้งหมดตรวจโดย check-v3\n');
+    return 0;
+  }
+  if (!files.length && !v3.length) { err('❌ ไม่พบไฟล์รายงานให้ตรวจ'); return 1; }
   const v2Code = files.length ? runV2(files, dir, log, note) : null;
   let v3Code = null;
   if (v3.length) {
