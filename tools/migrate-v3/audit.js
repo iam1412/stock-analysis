@@ -63,9 +63,29 @@ function v2Market(sym, raw, doc, seeds) {
   return mk;
 }
 
+/**
+ * หน้า v2 "ตามที่เว็บแสดง" ที่ราคา snapshot = ต้นฉบับหลัง cron v2 รอบที่ราคานั้น (UP.derivedPassV2 — ตัวเดียวกับ cron จริง)
+ *   cron v2 เขียนตัวเลขผูกราคา (P/E · Market Cap · ปันผล % · P/BV · % เป้า · ผลตอบแทนฉาก · ช่องสรุป) ใหม่ทุกวันจากตัวเลขของผู้เขียน
+ *   ⇒ ค่าผูกราคาของหน้า v2 ที่ราคา snapshot = ค่าที่ cron พิมพ์ ไม่ใช่ literal ที่ค้างจากวันวิเคราะห์ (ยังไม่ถึงรอบ cron)
+ *   ตัวเลขของผู้เขียน (FV · เป้า · prose) cron ไม่แตะ — เทียบตามต้นฉบับเหมือนเดิม · อ่าน/รันไม่ได้ = ต้นฉบับ
+ */
+function v2Served(raw) {
+  try {
+    const rd = (RM.readReportData(raw) || {}).data;
+    if (!rd || !rd.values || !(rd.values.px > 0)) return raw;
+    return require('../update-prices.js').derivedPassV2(raw, rd.values.px, {}).html;
+  } catch (e) { return raw; }
+}
+
 const visible = (html) => String(html).replace(/<(script|style)\b[^>]*>[\s\S]*?<\/\1\s*>/gi, ' ');
 const textOf = (html) => visible(html).replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ');
 const isNum = (x) => typeof x === 'number' && Number.isFinite(x);
+
+const LEAK_WORD = /\b(undefined|NaN|null|TODO)\b/g;
+const unleak = (x) => (typeof x === 'string' ? x.replace(LEAK_WORD, (w) => w[0] + '\u2060' + w.slice(1))
+  : Array.isArray(x) ? x.map(unleak) : x && typeof x === 'object' ? Object.fromEntries(Object.entries(x).map(([k, v]) => [unleak(k), unleak(v)])) : x);
+let SEEDS = null;
+const seedsOf = () => SEEDS;
 
 /** sanity บนหน้า v3 ที่เว็บแสดงจริง → [ข้อความที่ตก] */
 function sanityOf(page, doc, view) {
@@ -74,7 +94,20 @@ function sanityOf(page, doc, view) {
   const toks = vis.match(/\{\{[^}]*\}\}/g);
   if (toks) bad.push(`token ค้าง ${toks.length}: ${[...new Set(toks)].slice(0, 5).join(' ')}`);
   const words = textOf(page).match(/\b(?:undefined|NaN|null|TODO)\b/g);
-  if (words) bad.push(`ข้อความเสีย: ${[...new Set(words)].join(' ')}`);
+  // คำเดียวกันที่ผู้เขียนพิมพ์เอง (MAA "pe:null" · CRWV "roe:null ใน meta") ไม่ใช่ render เสีย — วิธีเดียวกับ check-v3 renderLeak:
+  //   แทรก U+2060 ในทุก string ของใบแล้ว render ซ้ำ · ยังเจอ = compute/render สร้างเอง
+  if (words) {
+    // จำนวนครั้งที่ผู้เขียนพิมพ์เอง = (หน้า render ปกติ) − (หน้า render ที่ string ของใบถูกแทรก U+2060) · หน้าที่ตรวจมีมากกว่านั้น = เสีย
+    const cnt = (xs) => { const m = new Map(); for (const w of xs || []) m.set(w, (m.get(w) || 0) + 1); return m; };
+    let author = new Map();
+    try {
+      const plain = cnt(textOf(B.expandReport(R.toV2Source(doc, C.compute(doc, { seeds: seedsOf() })))).match(LEAK_WORD));
+      const u = unleak(doc), hidden = cnt(textOf(B.expandReport(R.toV2Source(u, C.compute(u, { seeds: seedsOf() })))).match(LEAK_WORD));
+      author = new Map([...plain].map(([w, n]) => [w, n - (hidden.get(w) || 0)]));
+    } catch (e) { author = new Map(); }
+    const left = [...cnt(words)].filter(([w, n]) => n > (author.get(w) || 0)).map(([w]) => w);
+    if (left.length) bad.push(`ข้อความเสีย: ${left.join(' ')}`);
+  }
   const miss = [1, 2, 3, 4, 5, 6, 7, 8].filter((k) => !page.includes(`<div class="n">${k}</div>`));
   if (miss.length) bad.push(`หมวดหาย: ${miss.join(',')}`);
   const mk = doc.market || {};
@@ -152,23 +185,36 @@ function reasonsOf(rd, values, steps) {
   return out;
 }
 
-/** ใบเดียว → แถวผล · ไม่ throw */
+/** ใบเดียว → แถวผล · ไม่ throw · o.v2Of(sym) (ไม่บังคับ) = หน้า v2 จากที่อื่น { raw, ref } (เช่นสำเนา reports ชั่วคราวที่ไม่ใช่ git) */
 function auditOne(sym, o) {
-  const row = { symbol: sym, status: 'OK', valueDiffs: 0, roundingDiffs: 0, textLost: 0, sanity: [], values: [], step: [], moved: [], rounding: [], lost: [], rd: [], added: 0, ref: null, error: null };
+  let doc;
+  try { doc = JSON.parse(fs.readFileSync(path.join(o.reportsDir, sym + '.json'), 'utf8')); }
+  catch (e) { const row = emptyRow(sym); row.error = String(e && e.message || e).split('\n')[0]; row.sanity.push(`audit error: ${row.error}`); row.status = 'SANITY'; return row; }
+  if (!(doc.meta && doc.meta.migratedFrom)) { const row = emptyRow(sym); row.status = 'SKIP'; row.error = 'ไม่มี meta.migratedFrom (ใบ v3 ต้นฉบับ ไม่ใช่ใบ migrate)'; return row; }
+  let src = null, err = null;
+  try { src = o.v2Of ? o.v2Of(sym) : v2Source(sym, o.reportsDir); } catch (e) { err = e; }
+  return auditDoc(sym, doc, src, o, err);
+}
+const emptyRow = (sym) => ({ symbol: sym, status: 'OK', valueDiffs: 0, roundingDiffs: 0, textLost: 0, sanity: [], values: [], step: [], moved: [], rounding: [], lost: [], rd: [], added: 0, ref: null, error: null });
+
+/** doc (ใบ v3 ในหน่วยความจำ) เทียบหน้า v2 src = { raw, ref } → แถวผล · ไม่ throw (remigrate/adopt/convert ใช้ตัวเดียวกับ audit) */
+function auditDoc(sym, doc, src, o, srcErr) {
+  const row = emptyRow(sym);
+  SEEDS = o.seeds;
   try {
-    const doc = JSON.parse(fs.readFileSync(path.join(o.reportsDir, sym + '.json'), 'utf8'));
-    if (!(doc.meta && doc.meta.migratedFrom)) { row.status = 'SKIP'; row.error = 'ไม่มี meta.migratedFrom (ใบ v3 ต้นฉบับ ไม่ใช่ใบ migrate)'; return row; }
     // sanity — หน้าที่เว็บแสดงจริง (market ปัจจุบันของใบ)
     const view = C.compute(doc, { seeds: o.seeds });
     const page = B.expandReport(R.toV2Source(doc, view));
     row.sanity = sanityOf(page, doc, view);
+    if (srcErr) throw srcErr;
+    if (!src) throw new Error('ไม่มีหน้า v2 ให้เทียบ');
     // เทียบ — v2 สุดท้ายใน git กับ v3 ที่ market ของหน้า v2 (apples to apples)
-    const src = v2Source(sym, o.reportsDir);
     row.ref = src.ref;
     const at = { ...doc, market: v2Market(sym, src.raw, doc, o.seeds) };
     const viewAt = C.compute(at, { seeds: o.seeds });
     const v3At = B.expandReport(R.toV2Source(at, viewAt));
-    const eq = EQ.compare(B.expandReport(src.raw), v3At, at, viewAt, { v2src: src.raw });
+    const served = v2Served(src.raw);
+    const eq = EQ.compare(B.expandReport(served), v3At, at, viewAt, { v2src: served });
     const steps = authorSteps(src.raw);
     const k = splitValues(eq.numberValue, v3At, steps);
     row.reasons = reasonsOf(eq.rd, k.value, steps);
@@ -180,12 +226,10 @@ function auditOne(sym, o) {
     row.error = String(e && e.message || e).split('\n')[0];
     row.sanity.push(`audit error: ${row.error}`);
   }
-  if (row.status !== 'SKIP') {
-    const f = [];
-    if (row.valueDiffs > 0) f.push('VALUE-DIFF');
-    if (row.sanity.length) f.push('SANITY');
-    row.status = f.length ? f.join('+') : 'OK';
-  }
+  const f = [];
+  if (row.valueDiffs > 0) f.push('VALUE-DIFF');
+  if (row.sanity.length) f.push('SANITY');
+  row.status = f.length ? f.join('+') : 'OK';
   return row;
 }
 
@@ -200,7 +244,7 @@ function toMd(rows, meta) {
   const n = (f) => rows.filter(f).length;
   const audited = rows.filter((r) => r.status !== 'SKIP');
   const L = [`# v3 display audit — ${meta.date}`, '', `- code: \`${meta.head}\` · reports: \`${meta.reportsRel}\``,
-    '- v2 = `reports/<SYM>.html` at the last commit that had it · v3 rendered as the site does · comparison at the v2 page\'s `market` (price-bound figures at the v2 snapshot price) · sanity on the v3 page as served (current `market`)', '',
+    '- v2 = `reports/<SYM>.html` at the last commit that had it, as served after the v2 cron at its own snapshot price (price-bound figures the cron rewrites daily) · v3 rendered as the site does · comparison at the v2 page\'s `market` · sanity on the v3 page as served (current `market`)', '',
     '| | count |', '|---|---|',
     `| audited | ${audited.length} |`, `| OK | ${n((r) => r.status === 'OK')} |`,
     `| value diff (valueDiffs > 0) | ${n((r) => r.valueDiffs > 0)} |`, `| sanity failure | ${n((r) => r.sanity.length > 0)} |`,
@@ -258,4 +302,4 @@ function runAudit(syms, o, log, ctx) {
   return { rows, code: vd.length || sn.length ? 1 : 0, files };
 }
 
-module.exports = { runAudit, auditOne, splitValues, authorSteps, v2Source, v2Market, sanityOf, toCsv, toMd, GIT_SCRUB };
+module.exports = { runAudit, auditOne, auditDoc, emptyRow, v2Served, splitValues, authorSteps, v2Source, v2Market, sanityOf, toCsv, toMd, GIT_SCRUB };
