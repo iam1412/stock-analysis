@@ -46,6 +46,20 @@ try {
     const a = cli(['ZTS']);
     t(a.code === 1 && /ZTS มีทั้ง \.html และ \.json/.test(a.out), 'both files for one symbol → exit 1 naming it');
     fs.unlinkSync(path.join(tmp, 'ZTS.html')); }
+  { // Plan 4c: คลังที่ migrate ครบ (ไม่มี .html เลย) = gate ฝั่ง v2 ผ่านพร้อมบอก "0 v2" — ไม่ใช่ "ไม่พบไฟล์รายงานให้ตรวจ"
+    const all3 = fs.mkdtempSync(path.join(os.tmpdir(), 'v3-scan-all3-'));
+    const empty = fs.mkdtempSync(path.join(os.tmpdir(), 'v3-scan-empty-'));
+    try {
+      fs.copyFileSync(path.join(FIX, 'v3', 'ZTS-real.json'), path.join(all3, 'ZTS.json'));
+      const run = (d, args) => { const out = []; const code = CR.runCli(args, { reportsDir: d, log: (x) => out.push(String(x)), err: (x) => out.push(String(x)) }); return { code, out: out.join('\n') }; };
+      const a = run(all3, []);
+      t(a.code === 0 && /0 v2 reports/.test(a.out) && /ใบ v3 1 ใบ/.test(a.out) && !/ไม่พบไฟล์รายงานให้ตรวจ/.test(a.out), 'sweep of an all-v3 corpus: exit 0, says "0 v2 reports" and points at check-v3');
+      const b = run(all3, ['NOPE']);
+      t(b.code === 1 && /ไม่พบไฟล์รายงานให้ตรวจ/.test(b.out), 'all-v3 corpus + unknown symbol still exits 1');
+      const c = run(empty, []);
+      t(c.code === 1 && /ไม่พบไฟล์รายงานให้ตรวจ/.test(c.out), 'empty reports/ (no v2, no v3) still exits 1 — never pass on nothing');
+    } finally { fs.rmSync(all3, { recursive: true, force: true }); fs.rmSync(empty, { recursive: true, force: true }); }
+  }
   { const html = RS.renderedHtml('ZTS', tmp);
     const r = E.runEngine(E.extractEngine(html), E.seedFromHtml(html));
     t(r.ok && E.assertRendered(r.doc).length === 0, 'engine-exec: a v3 page runs its engine in the mock DOM (chart + gauge + MOS calc)'); }
