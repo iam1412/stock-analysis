@@ -12,6 +12,8 @@ const need = (view, k) => { const v = f(view)[k]; if (typeof v !== 'number' || !
 const money = (view, v) => view.cur + RV.fmtPrice(v);
 // ค่าต่อหุ้น (EPS · BVPS · DPS · FFO/หุ้น · TBVPS) — RV.fmtPerShare: ≥ 1 เดิมทุก byte · < 1 = 3 หลักมีนัย (Plan 4c-audit · EPS ฿0.0158 ≠ ฿0.02)
 const perShare = (view, v) => view.cur + RV.fmtPerShare(v);
+// ค่าต่อหุ้นที่ติดลบได้ (EPS ขาดทุน) — ลบ U+2212 นำหน้าสัญลักษณ์ "−$0.77" ตามธรรมเนียม v2 (display-fix · เดิม "~$-0.77")
+const signedPerShare = (view, v) => (v < 0 ? '−' + perShare(view, -v) : perShare(view, v));
 const big = (view, v) => RV.fmtBig(v, view.cur);
 const pct1 = (v) => v.toFixed(1) + '%';
 const isNum = (x) => typeof x === 'number' && Number.isFinite(x);
@@ -81,8 +83,8 @@ const CATALOGUE = {
   ps: { label: () => 'P/S', cls: 'neu', value: (v) => priceBoundOrThrow('ps', v.d.ps).toFixed(1) + 'x',
     d: (v) => { need(v, 'revenue'); return `รายได้ TTM ${signedBig(v.cur, fq(v).revenue)}`; } },
   netIncome: { label: () => 'กำไรสุทธิ TTM', value: (v) => stmt(v, need(v, 'netIncome')), d: () => 'รอบ 12 เดือนล่าสุด', cls: '' },
-  eps: { label: () => 'EPS (TTM)', value: (v) => '~' + perShare(v, need(v, 'eps')), d: (v) => ({ 'gaap-ttm': 'GAAP', 'adj-ttm': 'Adjusted', fy: 'ปีบัญชีล่าสุด', ifrs: 'IFRS' }[f(v).epsBasis] || ''), cls: '' },
-  bvps: { label: () => 'BVPS', value: (v) => '~' + perShare(v, need(v, 'bvps')), d: () => 'มูลค่าทางบัญชีต่อหุ้น', cls: '' },
+  eps: { label: () => 'EPS (TTM)', value: (v) => '~' + signedPerShare(v, need(v, 'eps')), d: (v) => ({ 'gaap-ttm': 'GAAP', 'adj-ttm': 'Adjusted', fy: 'ปีบัญชีล่าสุด', ifrs: 'IFRS' }[f(v).epsBasis] || ''), cls: '' },
+  bvps: { label: () => 'BVPS', value: (v) => '~' + signedPerShare(v, need(v, 'bvps')), d: () => 'มูลค่าทางบัญชีต่อหุ้น', cls: '' },
   roe: { label: () => 'ROE / ROA', cls: 'pos', value: (v) => `~${need(v, 'roe').toFixed(1)}%` + (f(v).roa != null ? ` / ${f(v).roa.toFixed(1)}%` : ''), d: () => 'ผลตอบแทนต่อทุน / สินทรัพย์' },
   revenue: { label: () => 'รายได้ TTM', cls: 'neu', value: (v) => stmt(v, need(v, 'revenue')), d: () => 'รอบ 12 เดือนล่าสุด' },
   grossMargin: { label: () => 'อัตรากำไรขั้นต้น', value: (v) => pct1(need(v, 'grossMargin')), d: () => 'Gross margin', cls: '' },
@@ -120,7 +122,7 @@ const CATALOGUE = {
     d: () => 'เป้าเฉลี่ยนักวิเคราะห์ 12 เดือน' },
   // Plan 2a Task 8 — ตัวเลขทั้งปีคู่ TTM (§3.6 B) · ป้ายต่อท้ายด้วย period ที่ประกาศ
   netIncomeFy: { label: (v) => `กำไรสุทธิ ${fyOf(v).period}`, value: (v) => stmt(v, needFy(v, 'netIncome')), d: () => 'ทั้งปีบัญชี', cls: '' },
-  epsFy: { label: (v) => `EPS ${fyOf(v).period}`, value: (v) => '~' + perShare(v, needFy(v, 'eps')), d: () => 'ทั้งปีบัญชี', cls: '' },
+  epsFy: { label: (v) => `EPS ${fyOf(v).period}`, value: (v) => '~' + signedPerShare(v, needFy(v, 'eps')), d: () => 'ทั้งปีบัญชี', cls: '' },
   revenueFy: { label: (v) => `รายได้ ${fyOf(v).period}`, cls: 'neu', value: (v) => stmt(v, needFy(v, 'revenue')), d: () => 'ทั้งปีบัญชี' },
   // Plan 2a Task 8 — KPI ธนาคาร (§3.6 K)
   nim: { label: () => 'NIM', value: (v) => needBank(v, 'nim').toFixed(2) + '%', d: () => 'ส่วนต่างอัตราดอกเบี้ยสุทธิ', cls: '' },

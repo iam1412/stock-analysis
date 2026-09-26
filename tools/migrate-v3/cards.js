@@ -21,7 +21,7 @@ const hasWords = (s) => /[A-Za-z฀-๿]/.test(s);
 
 /** ตัวเลขในช่องค่า + ส่วนที่เหลือ (คำ) — kind 'money' = เงิน (สเกล ล้าน/B/M) · 'pct' · 'plain' */
 // ตัวย่อหน่วยเงินไทย ("฿93.5 พันล." · "฿6,399 ล." · "1,461 ลบ.") → คำเต็มก่อนแกะ
-const thaiUnits = (s) => String(s).replace(/([0-9])\s*พันล\.(?=\s|$|[)·,])/g, '$1 พันล้าน').replace(/([0-9])\s*ลบ\.(?=\s|$|[)·,])/g, '$1 ล้านบาท').replace(/([0-9])\s*ล\.(?=\s|$|[)·,])/g, '$1 ล้าน');
+const thaiUnits = (s) => String(s).replace(/([0-9])\s*(พัน|หมื่น|แสน)\s*ลบ\.(?=\s|$|[)·,])/g, '$1 $2ล้านบาท').replace(/([0-9])\s*พัน\s*ล\.(?=\s|$|[)·,])/g, '$1 พันล้าน').replace(/([0-9])\s*ลบ\.(?=\s|$|[)·,])/g, '$1 ล้านบาท').replace(/([0-9])\s*ล\.(?=\s|$|[)·,])/g, '$1 ล้าน');
 function readValue(vText, kind) {
   const t = thaiUnits(String(vText || '')).replace(/\{\{rd:[A-Za-z0-9]+\}\}/g, ' ⟦tok⟧ ');
   const out = { nums: [], residual: '', token: /⟦tok⟧/.test(t), cur: null };
@@ -244,7 +244,7 @@ function noteFor(key, c, view) {
   const td = templateD(key, view);
   let note = v2d;
   if (td != null && v2d === td) note = '';
-  else if (td && v2d.startsWith(td)) note = v2d.slice(td.length).replace(/^[\s·•,;:—–-]+/, '').trim();
+  else if (td && v2d.startsWith(td)) note = v2d.slice(td.length).replace(/^(?:[\s·•,;:—–]|-(?![0-9]))+/, '').trim();
   if (words) note = note ? `${words} · ${note}` : words;
   return note;
 }
