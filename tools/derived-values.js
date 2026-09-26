@@ -1201,6 +1201,7 @@ module.exports = {
   // หมวด 6 (ผลตอบแทนฉาก 3 ปี) — W17 + ตัวซ่อม
   TOL_RET_PP, TOL_RET_REL, TOL_PY_PP, SCN_TIGHT, SCN_VOTE_RATIO, CONV_PP,
   SCN_COL_OPEN, SCN_PERYEAR_AFTER, scenarioColumns, scenarioBlock, scenarioPlan, retTokens, retOff, pyOff, retWrite, retShown,
+  decOfNum: decOf,   // display-fix: ทศนิยมของตัวเลขที่พิมพ์ (render v3 ของ v2Display.rets ใช้กติกาเดียวกับ scenarioPlan)
   // สมอตายวนกลับ — W18 + tools/spotcheck.js
   DA_GAP, DA_ANCHORED, deadAnchor,
   // สมอตายฝั่ง forward — W25 (จุดบอดของ W18 · เคส GNRC 20 ก.ย. 69)

@@ -75,6 +75,9 @@ function themeOf(doc, seeds, dir) {
   return { theme, gdots: [theme.accent, theme.accentDark, gradMid] };
 }
 
+// v2Display ของใบ migrate (display-fix) — null เมื่อไม่มี หรือใบไม่ใช่ migrate (schema ปฏิเสธอยู่แล้ว · กันซ้ำตรงนี้: ใบ NEW ต้องคิดจาก inputs เสมอ)
+const v2DisplayOf = (doc) => (doc.v2Display && S.isMigrated(doc) ? doc.v2Display : null);
+
 // น้ำหนัก FV (§3.6 C/I): fvWeights ที่เขียนชัด > family (1 ตระกูล 1 เสียง แบ่งเท่ากันในตระกูล) > เท่ากันทุกขา fv · ขา context = 0 เสมอ
 function weightsOf(doc) {
   const isFv = (l) => l.role !== 'context';
@@ -130,19 +133,29 @@ function compute(doc, opts) {
   });
   const w = weightsOf(doc);
   legs.forEach((l, i) => { l.weight = w[i]; });
-  const fv = legs.reduce((a, l) => a + l.value * l.weight, 0);
+  // v2Display (ใบ migrate เท่านั้น — schema): ตัวเลขของผู้เขียนที่หน้า v2 พิมพ์ แทนค่าที่คิดจาก inputs · ใบ NEW = null ⇒ ทางเดิมทุก byte
+  const vd = v2DisplayOf(doc);
   const fvLegs = legs.filter((l) => l.role === 'fv');
+  let fv = legs.reduce((a, l) => a + l.value * l.weight, 0);
   // กรอบ FV (§3.6 F): มีขาใดประกาศ multipleRange → Σ w·lo / Σ w·hi · ไม่มี = min/max ของขา fv (ขา context ไม่นับ — §3.6 I)
   const ranged = fvLegs.some((l) => l.ranged);
-  const fvLow = ranged ? fvLegs.reduce((a, l) => a + l.lo * l.weight, 0) : Math.min(...fvLegs.map((l) => l.value));
-  const fvHigh = ranged ? fvLegs.reduce((a, l) => a + l.hi * l.weight, 0) : Math.max(...fvLegs.map((l) => l.value));
+  let fvLow = ranged ? fvLegs.reduce((a, l) => a + l.lo * l.weight, 0) : Math.min(...fvLegs.map((l) => l.value));
+  let fvHigh = ranged ? fvLegs.reduce((a, l) => a + l.hi * l.weight, 0) : Math.max(...fvLegs.map((l) => l.value));
+  if (vd) {
+    if (vd.fv != null) fv = vd.fv;
+    if (vd.fvRange) [fvLow, fvHigh] = vd.fvRange;
+    // ค่าขาที่พิมพ์ (.mval · {{legN}}) — FV/กรอบข้างบนคิดจากค่าที่คำนวณแล้ว · computed = ค่าจาก inputs (ไว้ตรวจ/อ้างอิง)
+    if (vd.legValues) legs.forEach((l, i) => { if (vd.legValues[i] != null) { l.computed = l.value; l.value = vd.legValues[i]; } });
+  }
 
   // ── scenarios ──
   const start = driverStart(doc, fq);
   const scn = s.cases.map((c, i) => {
     const end = driverEndOf(start, c, s);
+    let tgt = exitTarget(s, end, c.exitMultiple, fq, i);
+    if (vd && vd.targets && vd.targets[i] != null) tgt = vd.targets[i];
     // divCum: เก็บผ่านเสมอเมื่อ author ให้มา (informational แม้ divIncluded=false — schema อนุญาต) · total% ตัดสินด้วย scnBasis.divIncluded ใน derive() v2 อยู่แล้ว ไม่ใช่ตรงนี้
-    return { name: SCN_NAMES[i], growth: c.growth, exitMultiple: c.exitMultiple, driverStart: start, driverEnd: end, tgt: exitTarget(s, end, c.exitMultiple, fq, i), divCum: c.divCum == null ? null : c.divCum, desc: c.desc };
+    return { name: SCN_NAMES[i], growth: c.growth, exitMultiple: c.exitMultiple, driverStart: start, driverEnd: end, tgt, divCum: c.divCum == null ? null : c.divCum, desc: c.desc };
   });
 
   // ── bridge → v2 report-data + stock-meta (ใช้ RV.derive ตัวจริง) ──
@@ -221,4 +234,4 @@ function semanticErrors(doc, opts) {
   return out;
 }
 
-module.exports = { compute, semanticErrors, weightsOf, toQuote, SCN_NAMES, withBase, legValueOf };
+module.exports = { v2DisplayOf, compute, semanticErrors, weightsOf, toQuote, SCN_NAMES, withBase, legValueOf };

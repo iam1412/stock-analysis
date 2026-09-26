@@ -14,6 +14,7 @@ const K = require('../../tools/v3/cards.js');
 const S = require('../../tools/v3/schema.js');
 const X = require('../../tools/v3/extras.js');
 const C = require('../../tools/v3/compute.js');
+const DV = require('../../tools/derived-values.js');
 
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const METHOD_NAME = { pe: 'P/E', pbv: 'P/BV', ps: 'P/S', evsales: 'EV/Sales', evebitda: 'EV/EBITDA', pfcf: 'P/FCF', fcfyield: 'FCF Yield',
@@ -94,6 +95,48 @@ function extrasHtml(doc, view, after) {
 }
 
 // หัว §3 + ป้ายกล่อง FV — ruling R6 (valHint: ป้ายกล่องเป็นกลาง ไม่ให้คำที่ generate ขัดกับ hint ของผู้เขียน) · §3.6 C (family) · §3.6 I (ขา context ไม่นับ)
+// v2Display.cards[k].op (ใบ migrate): ตัวเลขแรกในข้อความของผู้เขียนเขียนใหม่ที่ราคาปัจจุบัน ทศนิยมเท่าเดิม — กติกาเดียวกับ cron v2 (DV.patchDerived · fixed(price/base, decOf))
+function liveCardValue(fz, px) {
+  const bases = Array.isArray(fz.base) ? fz.base : [fz.base];
+  let k = 0;
+  return fz.v.replace(/[0-9][0-9,]*(?:\.[0-9]+)?/g, (n) => {
+    if (k >= bases.length) return n;
+    const b = bases[k++], want = fz.op === 'basePct' ? b / px * 100 : px / b;
+    return want.toFixed(DV.decOfNum(n));
+  });
+}
+
+// v2Display.gauge (ใบ migrate): สเกลเกจที่ผู้เขียน v2 เลือกเอง (ป้าย/จำนวนช่องต่างจาก template) · ref = ค่าของ view ({{rd:<ref>}}) · text = ป้ายตัวเลขคงที่ของผู้เขียน
+//   เรียงจากน้อยไปมากตามค่าปัจจุบันเมื่ออ่านค่าได้ครบทุกช่อง (E26 — ช่อง {{rd:px}} ขยับตามราคา) · อ่านไม่ได้ (เช่น "N/A") = ลำดับของผู้เขียน
+const GAUGE_VALUE = { mos30: (d) => d.mos30, mos20: (d) => d.mos20, fv: (d) => d.fv, fvLow: (d) => d.values.fvLow, fvHigh: (d) => d.values.fvHigh,
+  analystTgt: (d) => d.values.analystTgt, px: (d) => d.px, sc1tgt: (d) => d.scenarios[0].tgt, sc2tgt: (d) => d.scenarios[1].tgt, sc3tgt: (d) => d.scenarios[2].tgt };
+function gaugeScale(ticks, d) {
+  const valOf = (t) => { if (t.ref != null) return GAUGE_VALUE[t.ref](d); const m = /[0-9][0-9,]*(?:\.[0-9]+)?/.exec(t.text); return m ? parseFloat(m[0].replace(/,/g, '')) : null; };
+  const xs = ticks.map((t, i) => ({ t, i, v: valOf(t) }));
+  if (xs.every((x) => typeof x.v === 'number' && Number.isFinite(x.v))) xs.sort((a, b) => a.v - b.v || a.i - b.i);
+  return xs.map(({ t }, i, arr) => `<span${i === 0 ? '' : i === arr.length - 1 ? ' style="text-align:right"' : ' style="text-align:center"'}>${t.ref != null ? `{{rd:${t.ref}}}` : esc(t.text)}<br><small>${esc(t.label)}</small></span>`).join('\n          ');
+}
+
+// v2Display.rets (ใบ migrate): ข้อความ .ret ของผู้เขียน v2 · live = ตัวเลข % เขียนใหม่ที่ราคาปัจจุบันด้วยกติกาเดียวกับ cron v2
+//   (DV.scenarioPlan #7: total = (เป้า [+ ปันผลเมื่อ divIncluded] − ราคา)/ราคา · %/ปี จาก total ที่ปัดตามช่องแล้ว · DV.retWrite คงทศนิยม/ขีดลบ/เครื่องหมาย +)
+function v2Ret(rets, i, view) {
+  const text = rets.texts[i];
+  if (!rets.live) return text;
+  const toks = DV.retTokens(text), tot = toks.filter((t) => !t.perYear), py = toks.filter((t) => t.perYear);
+  if (tot.length > 1 || py.length > 1 || !toks.length) return text;
+  const years = view.doc.scenarios.years, sc = view.scn[i], px = view.d.px;
+  const total = (sc.tgt + (rets.div && sc.divCum != null ? sc.divCum : 0) - px) / px * 100;
+  const edits = [];
+  if (tot[0]) edits.push({ t: tot[0], want: total });
+  if (py[0]) {
+    const base = tot[0] ? parseFloat(total.toFixed(DV.decOfNum(tot[0].num))) : total;
+    edits.push({ t: py[0], want: rets.perYear === 'linear' ? base / years : (Math.pow(1 + base / 100, 1 / years) - 1) * 100 });
+  }
+  let out = text;
+  for (const e of edits.sort((a, b) => b.t.index - a.t.index)) { const w = DV.retWrite(e.t, e.want, rets.neg); if (w) out = out.slice(0, e.t.index) + w.text + out.slice(e.t.index + e.t.len); }
+  return out;
+}
+
 function valHintParts(doc, view) {
   if (doc.text && doc.text.valHint) return { hint: P.renderProse(doc.text.valHint, view, { mode: 'v2src' }), box: 'มูลค่าเหมาะสม (Fair Value)' };
   const fv = view.legs.filter((l) => l.role === 'fv'), nCtx = view.legs.length - fv.length;
@@ -108,6 +151,7 @@ function toV2Source(doc, view) {
   const pr = (s) => P.renderProse(s, view, { mode: 'v2src' });
   const T = doc.text || {}; const vh = valHintParts(doc, view);
   const m = doc.meta, d = view.d, s = doc.scenarios, TH = doc.currency === 'THB';
+  const vd = C.v2DisplayOf(doc);
   // ลำดับ = S.cardEntries (custom แทรกได้ด้วย "custom:<i>") · tone → class สีเดิม (.v pos|neg|neu) — ไม่มี markup ใน JSON (§3.6 H)
   const noteOf = (k) => doc.metrics.notes && doc.metrics.notes[k];
   // tone 'none' (Plan 4b Task 1) = ไม่มีคลาสสี แม้การ์ดแคตตาล็อกมีค่าตั้งต้น (466 การ์ด v2 ไม่มีคลาส)
@@ -118,6 +162,10 @@ function toV2Source(doc, view) {
       return { k: esc(c.label), v: pr(c.value), d: c.note ? pr(c.note) : '', cls: toneCls(e.tone, '') };
     }
     const c = K.renderCard(e.key, view), note = noteOf(e.key);
+    // v2Display.cards (ใบ migrate): การ์ดที่ cron v2 ไม่เคยแตะ = ข้อความคงที่ของผู้เขียน — ค่า + บรรทัดล่างตามหน้า v2 (ป้ายยังเป็นของ template)
+    //   .d ของ template ไม่พิมพ์ — ฐานที่ template ประกาศ (EPS/BVPS/หุ้น) จะผูกค่าคงที่นี้เข้ากับราคาของ gate (E41/E43/W19/W20) ทั้งที่หน้า v2 ไม่เคยผูก
+    const fz = vd && vd.cards && vd.cards[e.key];
+    if (fz) return { k: esc(c.k), v: esc(fz.op ? liveCardValue(fz, view.d.px) : fz.v), d: esc(fz.d), cls: toneCls(e.tone, c.cls) };
     return { k: esc(c.k), v: esc(c.v), d: esc(c.d) + (note ? (c.d ? ' · ' : '') + pr(note) : ''), cls: toneCls(e.tone, c.cls) };
   });
   const cardHtml = cards.map((c) => `<div class="metric"><div class="k">${c.k}</div><div class="v${c.cls ? ' ' + c.cls : ''}">${c.v}</div><div class="d">${c.d}</div></div>`).join('\n      ');
@@ -126,7 +174,7 @@ function toV2Source(doc, view) {
         <div class="mval">${esc(view.cur + RV.fmtPrice(l.value))}</div>
       </div>`).join('\n      ');
   // Review Focus #2 — ป้ายเกจเรียงค่าจากน้อยไปมากเสมอ (E26)
-  const scale = [
+  const scale = vd && vd.gauge ? gaugeScale(vd.gauge, d) : [
     { v: d.mos30, tok: '{{rd:mos30}}', lab: 'MOS 30%' }, { v: d.mos20, tok: '{{rd:mos20}}', lab: 'MOS 20%' },
     { v: d.fv, tok: '{{rd:fv}}', lab: 'Fair Value' }, { v: d.values.fvHigh, tok: '{{rd:fvHigh}}', lab: 'กรอบบน FV' },
   ].concat(doc.analyst ? [{ v: doc.analyst.target, tok: '{{rd:analystTgt}}', lab: 'เป้าเฉลี่ย Analyst' }] : [])
@@ -143,9 +191,9 @@ function toV2Source(doc, view) {
         <div class="top"><span>${name}</span><span>${drv} ${g}%/ปี</span></div>
         <div class="body">
           <div class="tgt">{{rd:sc${i + 1}tgt}}</div>
-          <div class="ret {{rd:sc${i + 1}retClass}}">{{rd:sc${i + 1}ret}}${s.cases[i].retNote ? ' ' + pr(s.cases[i].retNote) : ''}</div>
+          ${vd && vd.rets ? `<div class="ret ${vd.rets.live ? `{{rd:sc${i + 1}retClass}}` : vd.rets.cls[i]}">${esc(v2Ret(vd.rets, i, view))}</div>` : `<div class="ret {{rd:sc${i + 1}retClass}}">{{rd:sc${i + 1}ret}}${s.cases[i].retNote ? ' ' + pr(s.cases[i].retNote) : ''}</div>`}
           <ul>
-            <li><span>${drv} ปี ${s.years}</span><span>~${esc(view.cur + RV.fmtPerShare(sc.driverEnd))}</span></li>
+            <li><span>${drv} ปี ${s.years}</span><span>${vd && vd.driverEnds && vd.driverEnds[i] != null ? esc(vd.driverEnds[i]) : `~${esc(view.cur + RV.fmtPerShare(sc.driverEnd))}`}</span></li>
             <li><span>${ex} ออก</span><span>${exitText(s, sc.exitMultiple)}x</span></li>${sc.divCum != null ? `
             <li><span>ปันผลรวม ${s.years} ปี</span><span>~{{rd:sc${i + 1}div}}</span></li>` : ''}${sc.desc != null ? `
             <li><span>สถานการณ์</span><span>${pr(sc.desc)}</span></li>` : ''}
@@ -330,7 +378,7 @@ ${jsonScript(RV.styledRD(view.rd))}
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ${T.disclaimerAssump ? pr(T.disclaimerAssump) : ' P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต'}
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ${pr(doc.prose.disclaimerSources)}
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ ${esc(view.analysisDateText)} • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ ${esc(vd && vd.footer ? vd.footer : view.analysisDateText)} • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
