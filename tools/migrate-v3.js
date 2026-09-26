@@ -276,6 +276,7 @@ function displayGate(sym, doc, raw, seeds) {
   const out = [];
   if (r.valueDiffs) out.push(`valueDiffs ${r.valueDiffs}: ${r.values.slice(0, 3).map((x) => `${x.zone}: ${x.del} → ${x.ins}`).join(' · ')}`);
   for (const x of r.sanity) out.push(`sanity: ${x}`);
+  if (r.invented) out.push(`invented ${r.invented}: ${r.addedList.filter((x) => x.cls === 'invented').slice(0, 3).map((x) => `${x.zone}: ${x.v} in "${String(x.ins).slice(0, 40)}"`).join(' · ')}`);
   return out;
 }
 

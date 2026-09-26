@@ -59,7 +59,8 @@ function mdesc(leg, view) {
       : `${epsLabel(leg, view)} ${m(b.eps)} × P/E เป้าหมาย ~${mult}x${src}${rng}`;
     case 'pbv': return i.multipleSource != null ? `BVPS ${m(b.bvps)} × P/BV ${live ? 'ปัจจุบัน ' : ''}${mult}x${live ? '' : src}${rng}`
       : `P/BV เหมาะสม = (ROE ${b.roe}% − g ${i.g}%)/(r ${i.r}% − g ${i.g}%) ≈ ${((b.roe - i.g) / (i.r - i.g)).toFixed(2)} × BVPS ${m(b.bvps)}`;
-    case 'ddm': return i.d1 != null ? `D₁ ${m(i.d1)}; g ${i.g}%, r ${i.r}%` : `D₁ = ปันผล ${m(b.dps)} × (1+g); g ${i.g}%, r ${i.r}%`;
+    // d1 = ปันผลปีหน้าที่ผู้เขียนพิมพ์ ("D₁ = ปันผล $1.37") — คำ "ปันผล" คงไว้เหมือนรูปที่คิดจาก dps (คำผู้เขียนไม่หายเมื่อย้ายเป็น d1)
+    case 'ddm': return i.d1 != null ? `D₁ = ปันผล ${m(i.d1)}; g ${i.g}%, r ${i.r}%` : `D₁ = ปันผล ${m(b.dps)} × (1+g); g ${i.g}%, r ${i.r}%`;
     case 'ddm2': return `D₁ ${m(i.d1)} โต ${i.g1}%/ปี ${i.years1} ปี แล้ว ${i.g2}%/ปี · r ${i.r}% · `
       + (i.horizon == null ? 'มูลค่าปลายงวดแบบ Gordon' : `${i.horizon} งวด ไม่มีมูลค่าปลายงวด`);
     // FCF = ยอดงบรวม (fundamentals/override) → สกุลงบ (view.stmtCur) เหมือนการ์ด FCF · ค่าขา (.mval) เป็นสกุลราคา (compute แปลงด้วย fx แล้ว)

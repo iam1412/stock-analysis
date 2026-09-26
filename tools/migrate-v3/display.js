@@ -260,6 +260,16 @@ function candBases(key, doc) {
  * แผนการ์ด §1: [{i, key, label, v2t, v3, d, kind: 'text'|'base'|'rounding'|'stale', op?, base?}] (เฉพาะการ์ดที่ตัวเลขต่างเกิน 1 หน่วยที่พิมพ์)
  *   parsed = หน้า v2 ตามที่เว็บแสดง (หลัง cron ที่ราคาของมันเอง) · pairs = [{i (ดัชนีการ์ด v2), key}] · view = compute ที่ market ของหน้า v2
  */
+// การ์ดผูกราคาที่ .d ของ template พิมพ์ฐานต่อหุ้นซึ่งอาจถอดกลับจาก % ของผู้เขียน (DPS = yield × ราคา · stock-meta.dividendYield)
+//   EPS/BVPS ของ P/E · P/BV มาจากการ์ด/ขาที่ผู้เขียนพิมพ์ — ไม่ใช่ตัวถอดกลับ (BBL)
+const D_BASE_KEYS = new Set(['yield']);
+/** ตัวเลขใน a ที่ไม่มีคู่ใน b (มี/ไม่มีสัญลักษณ์เงินเหมือนกัน · ห่าง ≤ 1 หน่วยที่พิมพ์ · สเกลหน่วยต่างกันได้ — "82.5M" ↔ "82.5 ล้าน")
+ *  สัญลักษณ์เงินต้องตรง — "$3.09/ปี" ไม่ใช่คู่ของ "Q3" (TD) */
+const curNums = (t) => [...String(t || '').matchAll(NB.NUM_RE)].map((m) => ({ ...NB.numsOf(m[0])[0], cur: /[$฿€£¥]/.test(m[0]) })).filter((x) => x.v != null);
+function newNumbers(a, b) {
+  const xs = curNums(a), ys = curNums(b);
+  return xs.some((q) => !ys.some((p) => p.cur === q.cur && [1, 1e3, 1e6, 1e9].some((k) => Math.abs(p.v * k - q.v) <= 2 * Math.max(p.half * k, q.half) * (1 + 1e-9))));
+}
 function cardPlan(parsed, doc, view, pairs) {
   const out = [];
   const px = view.d.px, cur = parsed.sm && parsed.sm.currency;
@@ -267,12 +277,16 @@ function cardPlan(parsed, doc, view, pairs) {
   for (const { i, key } of pairs) {
     const c = parsed.s1cards[i];
     if (!c) continue;
-    let v3;
-    try { v3 = K.renderCard(key, view).v; } catch (_) { continue; }
+    let v3, td;
+    try { const rc = K.renderCard(key, view); v3 = rc.v; td = rc.d; } catch (_) { continue; }
     const v2t = clean(shownV2(c.vHtml, parsed.rd, parsed.sm));
-    if (sameNumbers(v2t, v3)) continue;
+    const d2 = clean(shownV2(c.dHtml, parsed.rd, parsed.sm));
+    // .d ของ template พิมพ์ฐานที่การ์ด v2 ไม่มี (ปันผล "$1.97/ปี" ถอดจาก yield × ราคา ขณะที่ผู้เขียนพิมพ์ "$0.50/ไตรมาส") = ตัวเลขที่ผู้เขียนไม่ได้พิมพ์
+    //   ⇒ แสดงบรรทัดล่างของผู้เขียน (ค่ายังคิดสดจากฐาน) แม้ค่าการ์ดจะเท่ากัน (audit: invented)
+    const dNew = D_BASE_KEYS.has(key) && newNumbers(td, `${v2t} ${d2}`);
+    if (sameNumbers(v2t, v3) && !dNew) continue;
     const a2 = NB.numsOf(v2t), a3 = NB.numsOf(v3);
-    const x = { i, key, label: c.k, v2t, v3, d: clean(shownV2(c.dHtml, parsed.rd, parsed.sm)) };
+    const x = { i, key, label: c.k, v2t, v3, d: d2 };
     // ไม่ผูกราคา หรือหน้า v2 พิมพ์ข้อความไม่มีตัวเลข ("ขาดทุน GAAP" · "ไม่มี" — ข้อเท็จจริงของผู้เขียน ไม่ใช่ฟังก์ชันของราคา) → ข้อความของผู้เขียน
     if (!PRICE_KEYS.has(key) || !a2.length) { out.push({ ...x, kind: 'text' }); continue; }
     const n = firstNum(v2t);
@@ -285,6 +299,7 @@ function cardPlan(parsed, doc, view, pairs) {
     const hit = cb.op && cb.bases.find((b) => reproduces(cb.op, b));
     if (hit) { out.push({ ...x, kind: 'base', op: cb.op, base: hit }); continue; }
     // ต่างแค่ความละเอียดที่ v3 พิมพ์ (fmtBig 3 หลัก "$24.95B" ↔ "$24.9B") = การปัด ไม่ใช่การ์ดค้าง
+    if (dNew && sameNumbers(v2t, v3)) continue;   // ไม่มีฐานใดให้คิดสด — คงการ์ดของ template (audit ยังรายงาน)
     if (a2.length === a3.length && a2.every((p, j) => Math.abs(p.v - a3[j].v) <= 2 * Math.max(p.half, a3[j].half) * (1 + 1e-9))) { out.push({ ...x, kind: 'rounding' }); continue; }
     out.push({ ...x, kind: 'stale' });
   }

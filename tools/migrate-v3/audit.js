@@ -54,7 +54,14 @@ function v2Market(sym, raw, doc, seeds) {
   const parsed = PV.parseV2(sym, raw);
   try {
     const r = A.assemble(parsed, { seeds, headUpdated: null, v2Hash: B.freshHash(raw), today: parsed.rd.values.priceDate, analysisPx: null });
-    if (r.doc && r.doc.market) return r.doc.market;
+    if (r.doc && r.doc.market) {
+      // กรอบ 52 สัปดาห์ที่หัวหน้า v2 พิมพ์ปัดแล้ว ("$229–$413") แต่ตัวเลขเต็มของใบ (cron) อยู่ในการปัดนั้น (228.63 · 412.7) = ค่าเดียวกัน
+      //   ⇒ ใช้ตัวเลขเต็ม (ป้ายเกจ hi52w ของ CEG ที่ผู้เขียนพิมพ์ "$412.7" ไม่กลายเป็น "$413.00" เพราะการปัดของหัว)
+      const a = r.doc.market.range52w, b = doc.market && doc.market.range52w;
+      const within = (x, y) => isNum(x) && isNum(y) && Math.abs(x - y) <= 0.5 * Math.pow(10, -((String(x).split('.')[1] || '').length)) * (1 + 1e-9);
+      if (a && b && within(a.lo, b.lo) && within(a.hi, b.hi)) return { ...r.doc.market, range52w: { ...b } };
+      return r.doc.market;
+    }
   } catch (e) { /* ใบ HUMAN — assemble ไม่ครบ ⇒ ใช้ค่าจาก report-data */ }
   const v = parsed.rd.values, ch = parsed.rd.chart || {};
   const chart = { data: ch.data };
@@ -279,6 +286,134 @@ function reasonsOf(rd, values, steps) {
   return out;
 }
 
+/**
+ * ตัวเลขที่หน้า v3 พิมพ์แต่หน้า v2 ไม่มี (จุดบอดของ valueDiffs: numberValue เทียบเฉพาะตัวเลขที่อยู่ทั้งสองฝั่ง)
+ *   ผู้สมัคร = EQ numberAdded (รันตัวเลขล้วนที่ฝั่ง v2 ไม่มีตัวเลข) + ตัวเลขในรัน text added/changed ที่ฝั่ง v2 ของรันไม่มีตัวเลขเลย
+ *     (รันที่ฝั่ง v2 มีตัวเลข = EQ ส่งเข้า numberValue แล้ว — ไม่นับซ้ำ)
+ *   จัดชั้นทีละตัวเลข (ADDED_CLASSES):
+ *     live  — ค่าที่ template v3 พิมพ์สดทุกใบ (ราคา · วันที่ราคา · กรอบ 52 สัปดาห์ · กราฟ · ค่าผูกราคา P/E P/S P/BV ปันผล % Market Cap
+ *             MOS/upside · % เป้านักวิเคราะห์ · ผลตอบแทนฉาก · จุดซื้อ MOS 20%/30%) — ADDED_LIVE_KINDS
+ *     twin  — ตัวเลขเดียวกับที่หน้า v2 พิมพ์อยู่แล้ว (ย้ายตำแหน่งในโซน/ข้ามโซน หรือห่าง ≤ 1 หน่วยที่พิมพ์ = รูปแบบ/การปัดของตัวเลข v2)
+ *     invented — ที่เหลือ = ตัวเลขที่ดูเหมือนของผู้เขียนแต่ผู้เขียนไม่เคยพิมพ์ (ต้องเป็น 0)
+ *   → [{ zone, v, cls, kind, ins, ctx, via }]
+ */
+const ADDED_CLASSES = ['live', 'twin', 'invented'];
+function liveValuesOf(view, doc) {
+  const out = [];
+  const add = (kind, v, tags) => { if (isNum(v)) out.push({ kind, v, tags }); };
+  const M = ['$', ''], P = ['%'], X = ['x'], N = [''];
+  const d = (view && view.d) || {};
+  add('price', d.px, M);
+  const pd = d.priceDate || {};
+  add('price-date', pd.day, N); add('price-date', pd.yearCE, N); add('price-date', pd.yearCE + 543, N);
+  const r52 = (doc && doc.market && doc.market.range52w) || {};
+  add('range52w', r52.lo, M); add('range52w', r52.hi, M);
+  const ch = (view && view.chart) || {};
+  for (const p of ch.data || []) add('chart', p[1], M);
+  for (const g of ch.grid || []) add('chart', g, M);
+  add('chart', ch.min, M); add('chart', ch.max, M);
+  const ga = (view && view.gauge) || {};
+  for (const k of Object.keys(ga)) add('gauge', ga[k], M);
+  add('price-bound:mcap', d.mcap, ['$']);
+  // EV ในการ์ด EV/EBITDA = Market Cap (สด) + หนี้สุทธิ
+  const fq = (view && (view.fq || (view.doc && view.doc.fundamentals))) || {};   // สกุลราคา (ตัวเดียวกับ cards.evEbitdaCalc)
+  if (isNum(d.mcap) && isNum(fq.netDebt)) add('price-bound:ev', d.mcap + fq.netDebt, ['$']);
+  for (const k of ['pe', 'ps', 'pbv']) add(`price-bound:${k}`, d[k], X);
+  for (const k of ['yield', 'mos', 'mosShown', 'upside', 'analystPct']) add(`price-bound:${k}`, d[k], P);
+  if (d.chg) add('price-bound:chg', d.chg.pct, P);
+  add('buy-zone', d.mos20, M); add('buy-zone', d.mos30, M);
+  for (const c of d.scenarios || []) { add('scenario-return', c.total, P); add('scenario-return', c.perYear, P); }
+  return out;
+}
+// การ์ดผูกราคาใน §1 ที่หน้า v2 ไม่มีตัวเลข ("N/A" · "—" · "ขาดทุน GAAP") แต่หน้า v3 พิมพ์ค่าที่คิดจาก inputs = ตัวเลขที่ผู้เขียนไม่เคยพิมพ์
+//   (SNOW/SYM/TFX "P/E (TTM) N/A" → ค่าจาก EPS forward) · ยกเว้นปันผล 0% ของใบที่ผู้เขียนบอกว่าไม่จ่ายปันผล (dps 0 — ข้อเท็จจริงเดียวกัน)
+const TEMPLATE_LABEL_RE = /เป้านักวิเคราะห์ 12 ด\.|ราคาย้อนหลัง ~1 ปี/;
+const TEMPLATE_LABEL_NUMS = [1, 12];
+const CARD_LIVE_RE = /^price-bound:(?:pe|ps|pbv|mcap|yield)$/;
+const NB = require('./numbers.js');
+/** ตัวเลข + ชนิดหน่วยที่พิมพ์ (เงิน $ · % · x · ไม่มี) — "2567.0x" ไม่ใช่คู่ของปี "2567" · "$386" คู่กับ "$386.46" */
+function taggedNums(s) {
+  const t = String(s), out = [];
+  for (const m of t.matchAll(NB.NUM_RE)) {
+    const q = NB.numsOf(m[0])[0];
+    if (!q) continue;
+    const after = t.slice(m.index + m[0].length, m.index + m[0].length + 80);
+    const cur = /[$฿€£¥]/.test(m[0]);
+    // รายการ "55/50/44/…/7%" · "+35/+23/…/+8%" — % ตัวท้ายเป็นหน่วยของทุกตัวในรายการ
+    const suf = /^\s?%/.test(after) || /^(?:\s?\/\s?[+\-−]?[0-9][0-9.]*)+\s?%/.test(after) ? '%' : /^\s?(?:x(?![A-Za-z])|เท่า)/.test(after) ? 'x' : '';
+    out.push({ v: q.v, half: q.half, tag: (cur ? '$' : '') + suf, at: m.index, len: m[0].length });
+  }
+  return out;
+}
+/** ข้อความรอบตัวเลข (บริบทในรายงาน audit) */
+const snippet = (t, q) => t.slice(Math.max(0, q.at - 50), q.at + q.len + 30).trim();
+/** ข้อความของโซน — "<" ที่ไม่ใช่ต้นแท็ก (ผู้เขียน v2 พิมพ์ "(<2%)" ดิบ · เบราว์เซอร์แสดงตามตัว) ไม่ใช่แท็ก */
+const zoneText = (html) => EQ.text(String(html || '').replace(/<(?![A-Za-z\/!])/g, '&lt;'));
+function addedNumbersOf(eq, v2Html, v3Html, view, doc, steps) {
+  const cand = [];
+  for (const x of eq.numberAdded || []) {
+    if (/market\.range52w/.test(x.ctx || '')) { cand.push({ zone: x.zone, v: null, half: 0, ins: x.ins, ctx: x.ctx, via: 'range52' }); continue; }
+    for (const q of taggedNums(x.ins)) cand.push({ zone: x.zone, v: q.v, half: q.half, tag: q.tag, ins: x.ins, ctx: x.ctx, via: 'number' });
+  }
+  for (const z of eq.zones || []) for (const r of z.runs) {
+    if (!(r.kind === 'text added' || r.kind === 'text changed') || EQ.numsOf(r.del).length) continue;
+    for (const q of taggedNums(r.ins)) cand.push({ zone: z.id, v: q.v, half: q.half, tag: q.tag, ins: r.ins, del: r.del, ctx: r.ctx, via: 'text' });
+  }
+  const z2 = EQ.zones(v2Html), z3 = EQ.zones(v3Html);
+  const numsZ = new Map();
+  const numsIn = (zs, side, id) => { const k = side + id; if (!numsZ.has(k)) numsZ.set(k, taggedNums(zoneText(zs.get(id)))); return numsZ.get(k); };
+  const all2 = [...z2.keys()].flatMap((id) => numsIn(z2, 'v2', id)), all3 = [...z3.keys()].flatMap((id) => numsIn(z3, 'v3', id));
+  const same = (p, q) => p.tag === q.tag && Math.abs(p.v - q.v) <= Math.max(p.half, q.half) * (1 + 1e-9);
+  const count = (xs, q) => xs.filter((p) => same(p, q)).length;
+  // ช่องที่ EQ.norm ตัดทิ้งทั้งสองฝั่ง (.d ของการ์ด template · สูตรใน mdesc ขา computed · ฐานในหัว §6) ไม่เข้ารันเลย
+  //   ⇒ กวาดทั้งหน้า v3 อีกชั้น: ตัวเลขที่ไม่มีที่ไหนในหน้า v2 (หน่วยเดียวกัน · ห่าง ≤ 1 หน่วยที่พิมพ์) = ผู้สมัคร (via 'page')
+  // คู่บนหน้า v2: หน่วยเดียวกัน · ห่าง ≤ 1 หน่วยที่พิมพ์ (หรือ 1 หน่วยที่ผู้เขียนเขียนใน report-data — authorSteps · FV "$233" → v3 $233.31)
+  //   · สเกลหน่วยต่างกันได้ ("~82.5M หุ้น" ↔ "82.5 ล้านหุ้น" ที่ตัวอ่านไม่เห็นหน่วยเพราะติดคำไทย)
+  const stepOf = (p) => (steps || []).reduce((b, a) => (Math.abs(a.v - p.v) <= p.half * (1 + 1e-9) && a.step > b ? a.step : b), 0);
+  const SCALES = [1, 1e3, 1e6, 1e9, 1e12];
+  const near2 = (q) => all2.some((p) => p.tag === q.tag && SCALES.some((k) => Math.abs(p.v * k - q.v) <= Math.max(2 * p.half * k, 2 * q.half, stepOf(p) * k) * (1 + 1e-9)));
+  // ยอดรวม = ต่อหุ้นที่ผู้เขียนพิมพ์ × หุ้น (ขา DCF "FCF/หุ้น $9.25" → template พิมพ์ "FCF $135B") — ตัวเลขเดียวกันคนละหน่วย
+  const shares = doc && doc.fundamentals && doc.fundamentals.shares;
+  const perShare2 = (q) => shares > 0 && q.tag === '$' && all2.some((p) => p.tag === '$' && Math.abs(p.v * shares - q.v) <= Math.max(2 * q.half, 2 * p.half * shares) * (1 + 1e-9));
+  //   ตัวเลขที่อยู่ในรันของ EQ แล้ว (numberValue/rounding/deviation — audit ตัดสินไปแล้ว) ไม่นับซ้ำ
+  const inRuns = new Map((eq.zones || []).map((z) => [z.id, z.runs.flatMap((r) => taggedNums(r.ins))]));
+  for (const [id, html] of z3) {
+    const t = zoneText(html), ri = inRuns.get(id) || [];
+    for (const q of taggedNums(t)) {
+      if (near2(q) || cand.some((c) => c.zone === id && c.v === q.v) || ri.some((p) => Math.abs(p.v - q.v) <= Math.max(p.half, q.half) * (1 + 1e-9))) continue;
+      cand.push({ zone: id, v: q.v, half: q.half, tag: q.tag, ins: snippet(t, q), ctx: '', via: 'page' });
+    }
+  }
+  if (!cand.length) return [];
+  const live = liveValuesOf(view, doc);
+  const FLAT = /ทรงตัว|คงที่|\bflat\b/gi;
+  const flatGone = (id) => (zoneText(z2.get(id)).match(FLAT) || []).length > (zoneText(z3.get(id)).match(FLAT) || []).length;
+  const out = [];
+  for (const c of cand) {
+    const row = { zone: c.zone, v: c.v, ins: c.ins, ctx: c.ctx, via: c.via };
+    if (c.via === 'range52') { out.push({ ...row, cls: 'live', kind: 'range52w' }); continue; }
+    // ป้ายตายตัวของ template ("เป้านักวิเคราะห์ 12 ด." · "ราคาย้อนหลัง ~1 ปี") — ไม่ใช่ตัวเลขของผู้เขียน
+    if (TEMPLATE_LABEL_RE.test(c.ins) && TEMPLATE_LABEL_NUMS.includes(c.v)) { out.push({ ...row, cls: 'live', kind: 'template-label' }); continue; }
+    const q = { v: c.v, half: c.half, tag: c.tag };
+    const lv = live.find((x) => x.tags.includes(q.tag) && Math.abs(x.v - q.v) <= Math.max(q.half, 1e-9 * Math.abs(q.v)) * (1 + 1e-9));
+    if (count(numsIn(z3, 'v3', c.zone), q) <= count(numsIn(z2, 'v2', c.zone), q)) out.push({ ...row, cls: 'twin', kind: 'moved-in-zone' });
+    // ปันผล 0 ของใบที่ผู้เขียนบอกว่าไม่จ่าย (fundamentals.dps 0) — "0.00%" · "$0.00/ปี" ในการ์ดปันผล = ข้อเท็จจริงเดียวกัน
+    else if (q.v === 0 && c.zone === 's1' && doc && doc.fundamentals && doc.fundamentals.dps === 0 && /ปันผล/.test(c.ins)) out.push({ ...row, cls: 'live', kind: 'price-bound:yield (dps 0)' });
+    // "ทรงตัว"/"คงที่" ของผู้เขียน → "+0%/ปี" = ค่าเดียวกันในรูปตัวเลข
+    //   (รันตัวเลขล้วนไม่พกฝั่ง v2 — ดูคำในโซนเดียวกันของหน้า v2 ที่หน้า v3 ไม่มีแล้ว)
+    else if (q.v === 0 && q.tag === '%' && (/ทรงตัว|คงที่|\bflat\b/i.test(c.del || '') || flatGone(c.zone))) out.push({ ...row, cls: 'twin', kind: 'flat-as-0%' });
+    else if (lv && c.zone === 's1' && CARD_LIVE_RE.test(lv.kind)) {
+      if (lv.kind === 'price-bound:yield' && q.v === 0 && doc && doc.fundamentals && doc.fundamentals.dps === 0) out.push({ ...row, cls: 'live', kind: 'price-bound:yield (dps 0)' });
+      else out.push({ ...row, cls: 'invented', kind: `${lv.kind} where the v2 card printed no number` });
+    } else if (lv) out.push({ ...row, cls: 'live', kind: lv.kind });
+    else if (count(all3, q) <= count(all2, q)) out.push({ ...row, cls: 'twin', kind: 'moved-across-zones' });
+    else if (perShare2(q)) out.push({ ...row, cls: 'twin', kind: 'per-share × shares' });
+    else if (near2(q)) out.push({ ...row, cls: 'twin', kind: 'rounding' });
+    else out.push({ ...row, cls: 'invented', kind: 'no v2 source' });
+  }
+  return out;
+}
+
 /** ใบเดียว → แถวผล · ไม่ throw · o.v2Of(sym) (ไม่บังคับ) = หน้า v2 จากที่อื่น { raw, ref } (เช่นสำเนา reports ชั่วคราวที่ไม่ใช่ git) */
 function auditOne(sym, o) {
   let doc;
@@ -289,7 +424,7 @@ function auditOne(sym, o) {
   try { src = o.v2Of ? o.v2Of(sym) : v2Source(sym, o.reportsDir); } catch (e) { err = e; }
   return auditDoc(sym, doc, src, o, err);
 }
-const emptyRow = (sym) => ({ symbol: sym, status: 'OK', valueDiffs: 0, roundingDiffs: 0, textLost: 0, sanity: [], values: [], step: [], moved: [], rounding: [], lost: [], rd: [], added: 0, ref: null, error: null, deviations: [] });
+const emptyRow = (sym) => ({ symbol: sym, status: 'OK', valueDiffs: 0, roundingDiffs: 0, textLost: 0, sanity: [], values: [], step: [], moved: [], rounding: [], lost: [], rd: [], added: 0, addedList: [], invented: 0, ref: null, error: null, deviations: [] });
 
 /** doc (ใบ v3 ในหน่วยความจำ) เทียบหน้า v2 src = { raw, ref } → แถวผล · ไม่ throw (remigrate/adopt/convert ใช้ตัวเดียวกับ audit) */
 function auditDoc(sym, doc, src, o, srcErr) {
@@ -312,7 +447,8 @@ function auditDoc(sym, doc, src, o, srcErr) {
     // ส่วนเบี่ยงที่ตั้งใจ (คำตัดสิน controller 26 ก.ย. 69 · round 2) — แคบเท่าที่นิยามไว้เท่านั้น
     const dev = o.noDeviations ? { served: served0, list: [], rounding: [], accept: () => null } : deviationsOf(sym, served0, at, viewAt, v3At);   // noDeviations = วัดผลเท่านั้น
     const served = dev.served;
-    const eq = EQ.compare(B.expandReport(served), v3At, at, viewAt, { v2src: served });
+    const v2Page = B.expandReport(served);
+    const eq = EQ.compare(v2Page, v3At, at, viewAt, { v2src: served });
     const steps = authorSteps(src.raw);
     const k0 = splitValues(eq.numberValue, v3At, steps);
     const k = { ...k0, value: [] };
@@ -324,7 +460,7 @@ function auditDoc(sym, doc, src, o, srcErr) {
     row.reasons = reasonsOf(eq.rd, k.value, steps);
     row.values = k.value; row.step = k.step.concat(dev.rounding); row.moved = k.moved; row.rounding = eq.numberRounding;
     row.lost = eq.textLostAt || eq.textLost.map((w) => ({ zone: '?', w }));
-    row.rd = eq.rd; row.added = eq.numberAdded.length;
+    row.rd = eq.rd; row.added = eq.numberAdded.length; row.addedList = addedNumbersOf(eq, v2Page, v3At, viewAt, at, steps); row.invented = row.addedList.filter((x) => x.cls === 'invented').length;
     row.valueDiffs = k.value.length; row.roundingDiffs = eq.numberRounding.length + k.step.length + dev.rounding.length; row.textLost = eq.textLost.length;
   } catch (e) {
     row.error = String(e && e.message || e).split('\n')[0];
@@ -333,14 +469,16 @@ function auditDoc(sym, doc, src, o, srcErr) {
   const f = [];
   if (row.valueDiffs > 0) f.push('VALUE-DIFF');
   if (row.sanity.length) f.push('SANITY');
+  if (row.invented > 0) f.push('INVENTED');
   row.status = f.length ? f.join('+') : 'OK';
   return row;
 }
 
 const csvCell = (s) => { const t = String(s == null ? '' : s); return /[",\n]/.test(t) ? `"${t.replace(/"/g, '""')}"` : t; };
 function toCsv(rows) {
-  const L = ['symbol,status,valueDiffs,roundingDiffs,textLost,sanity'];
-  for (const r of rows) L.push([r.symbol, r.status, r.valueDiffs, r.roundingDiffs, r.textLost, r.sanity.join(' | ')].map(csvCell).join(','));
+  const L = ['symbol,status,valueDiffs,roundingDiffs,textLost,sanity,added,invented,addedList'];
+  const addedCell = (r) => (r.addedList || []).map((x) => `${x.cls}:${x.kind}@${x.zone}=${x.v == null ? String(x.ins) : x.v}`).join(' | ');
+  for (const r of rows) L.push([r.symbol, r.status, r.valueDiffs, r.roundingDiffs, r.textLost, r.sanity.join(' | '), (r.addedList || []).length, r.invented || 0, addedCell(r)].map(csvCell).join(','));
   return L.join('\n') + '\n';
 }
 const mdCell = (s) => String(s == null ? '' : s).replace(/\|/g, '\\|').replace(/\n/g, ' ');
@@ -355,6 +493,7 @@ function toMd(rows, meta) {
     `| value diff (valueDiffs > 0) | ${n((r) => r.valueDiffs > 0)} |`, `| sanity failure | ${n((r) => r.sanity.length > 0)} |`,
     `| rounding drift only (OK with roundingDiffs > 0) | ${n((r) => r.status === 'OK' && r.roundingDiffs > 0)} |`,
     `| text lost (textLost > 0) | ${n((r) => r.textLost > 0)} |`, `| skipped (not migrated) | ${n((r) => r.status === 'SKIP')} |`,
+    ...ADDED_CLASSES.map((c) => `| added numbers — ${c} (numbers · reports) | ${audited.reduce((k, r) => k + (r.addedList || []).filter((x) => x.cls === c).length, 0)} · ${n((r) => (r.addedList || []).some((x) => x.cls === c))} |`),
     ...DEV_CLASSES.map((c) => `| deliberate deviation: ${c} (reports) | ${n((r) => (r.deviations || []).some((d) => d.class === c))} |`), ''];
   const devs = audited.filter((r) => (r.deviations || []).length);
   if (devs.length) {
@@ -366,6 +505,15 @@ function toMd(rows, meta) {
     for (const c of DEV_CLASSES) { const xs = devs.filter((r) => r.deviations.some((d) => d.class === c)).map((r) => r.symbol); if (xs.length) L.push(`- ${c} (${xs.length}): ${xs.join(' ')}`); }
     L.push('');
   }
+  L.push('## Numbers the v3 page prints that the v2 page did not (added)', '',
+    '- `live`: a template/live value every v3 page prints (price · price date · 52-week range · chart · gauge · price-bound P/E P/S P/BV yield Market Cap EV · MOS/upside · analyst % · scenario returns · MOS 20%/30% buy zones · template labels)',
+    '- `twin`: the same figure the v2 page printed (moved in or across zones · within one printed/author step · another unit scale · per share × shares · "ทรงตัว" as +0%)',
+    '- `invented`: an author-looking figure the v2 page never printed (must be 0)', '');
+  const kinds = new Map();
+  for (const r of audited) for (const x of r.addedList || []) kinds.set(`${x.cls}: ${x.kind}`, (kinds.get(`${x.cls}: ${x.kind}`) || 0) + 1);
+  for (const [k, c] of [...kinds].sort()) L.push(`- ${k} ×${c}`);
+  const inv = audited.filter((r) => r.invented);
+  L.push('', `- invented (${inv.length} reports): ${inv.length ? inv.map((r) => r.symbol).join(' ') : 'none'}`, '');
   const bad = audited.filter((r) => r.status !== 'OK');
   L.push('## Failing reports', '');
   if (!bad.length) L.push('- none');
@@ -374,7 +522,7 @@ function toMd(rows, meta) {
     for (const r of bad) L.push(`| ${r.symbol} | ${r.status} | ${r.valueDiffs} | ${mdCell((r.reasons || []).join(' · '))} | ${mdCell(r.sanity.join(' · '))} | ${mdCell(r.values.slice(0, 2).map((x) => `${x.zone}: ${x.del} → ${x.ins}`).join(' · '))} |`);
   }
   L.push('', '## Per report details (non-OK · text lost · rounding drift)', '');
-  for (const r of audited.filter((x) => x.status !== 'OK' || x.textLost || x.roundingDiffs || x.moved.length || (x.deviations || []).length)) {
+  for (const r of audited.filter((x) => x.status !== 'OK' || x.textLost || x.roundingDiffs || x.moved.length || (x.deviations || []).length || (x.addedList || []).length)) {
     L.push(`### ${r.symbol} — ${r.status} (v2 @ ${r.ref || '?'})`, '');
     for (const s of r.sanity) L.push(`- sanity: ${mdCell(s)}`);
     for (const x of r.values) L.push(`- value ${x.zone}: \`${mdCell(x.del)}\` → \`${mdCell(x.ins)}\``);
@@ -383,6 +531,7 @@ function toMd(rows, meta) {
     if (r.rounding.length) L.push(`- rounding ×${r.rounding.length}: ${mdCell(r.rounding.slice(0, 12).map((x) => `${x.del} → ${x.ins}`).join(' · '))}${r.rounding.length > 12 ? ' …' : ''}`);
     if (r.step.length) L.push(`- one printed step (accepted drift) ×${r.step.length}: ${mdCell(r.step.slice(0, 12).map((x) => `${x.zone}: ${x.del} → ${x.ins}`).join(' · '))}${r.step.length > 12 ? ' …' : ''}`);
     if (r.moved.length) L.push(`- moved within the zone (info) ×${r.moved.length}: ${mdCell(r.moved.map((x) => `${x.zone}: ${x.del}`).join(' · '))}`);
+    for (const x of r.addedList || []) L.push(`- added ${x.cls} (${x.kind}) ${x.zone}: \`${mdCell(x.v == null ? x.ins : x.v)}\` in \`${mdCell(String(x.ins).slice(-120))}\``);
     const rdv = r.rd.filter((x) => !/^gauge\.(min|max)$/.test(x.path));
     if (rdv.length) L.push(`- report-data/stock-meta (info): ${mdCell(rdv.map((x) => `${x.path} ${x.v2} → ${x.v3}`).join(' · '))}`);
     L.push('');
@@ -413,10 +562,13 @@ function runAudit(syms, o, log, ctx) {
   }
   const audited = rows.filter((r) => r.status !== 'SKIP');
   const vd = audited.filter((r) => r.valueDiffs > 0), sn = audited.filter((r) => r.sanity.length);
-  say(`audit: ${audited.length} ใบ · OK ${audited.filter((r) => r.status === 'OK').length} · value diff ${vd.length} · sanity ${sn.length} · rounding-only ${audited.filter((r) => r.status === 'OK' && r.roundingDiffs > 0).length} · text lost ${audited.filter((r) => r.textLost > 0).length}${rows.length > audited.length ? ` · skip ${rows.length - audited.length}` : ''}`);
+  const inv = audited.filter((r) => r.invented > 0);
+  const addedN = (c) => audited.reduce((k, r) => k + (r.addedList || []).filter((x) => x.cls === c).length, 0);
+  say(`audit: ${audited.length} ใบ · OK ${audited.filter((r) => r.status === 'OK').length} · value diff ${vd.length} · sanity ${sn.length} · invented ${inv.length} · rounding-only ${audited.filter((r) => r.status === 'OK' && r.roundingDiffs > 0).length} · text lost ${audited.filter((r) => r.textLost > 0).length}${rows.length > audited.length ? ` · skip ${rows.length - audited.length}` : ''}`);
+  say(`  added numbers: ${ADDED_CLASSES.map((c) => `${c} ${addedN(c)}`).join(' · ')}${inv.length ? ` · invented in ${inv.map((r) => r.symbol).join(' ')}` : ''}`);
   for (const r of audited.filter((x) => x.status !== 'OK')) say(`  ✗ ${r.symbol} ${r.status} · valueDiffs ${r.valueDiffs}${r.sanity.length ? ` · ${r.sanity.join(' · ')}` : ''}${r.values.length ? ` · ${r.values.slice(0, 2).map((x) => `${x.zone}: ${x.del} → ${x.ins}`).join(' · ')}` : ''}`);
   if (files.md) say(`  → ${files.md} · ${files.csv}`);
-  return { rows, code: vd.length || sn.length ? 1 : 0, files };
+  return { rows, code: vd.length || sn.length || inv.length ? 1 : 0, files };
 }
 
-module.exports = { runAudit, auditOne, auditDoc, deviationsOf, emptyRow, v2Served, splitValues, authorSteps, v2Source, v2Market, sanityOf, toCsv, toMd, GIT_SCRUB };
+module.exports = { runAudit, auditOne, auditDoc, addedNumbersOf, liveValuesOf, taggedNums, ADDED_CLASSES, deviationsOf, emptyRow, v2Served, splitValues, authorSteps, v2Source, v2Market, sanityOf, toCsv, toMd, GIT_SCRUB };

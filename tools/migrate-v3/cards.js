@@ -66,6 +66,8 @@ const subPeriod = (label, value) => (PERIOD_RE.test(label) && !/TTM|LTM|12\s*เ
 const FORECAST_RE = /guid|ไกด์|คาด|forecast|\best\.?(?![a-z])|estimate|\bfwd\b|forward|\bNTM\b|FY\s*'?\d{2,4}\s*e\b|\b(?:20|25)\d\d\s*E\b|ประมาณการ/i;
 const FORECAST_OK = ['peForward', 'analystTarget', 'range52w'];   // คีย์ที่ความหมายเป็นประมาณการ/ไม่ใช่ตัวเลขงวดอยู่แล้ว
 const forecastLabel = (label) => FORECAST_RE.test(label);
+// ค่าการ์ดที่ขึ้นต้นด้วยคำว่าไม่มีค่า (N/A · n/m · — · ไม่มี) = ผู้เขียนไม่ได้ให้ตัวเลข — ตัวเลขที่ตามมาเป็นคำอธิบาย
+const NO_VALUE_RE = /^\s*(?:N\/?A\b|n\/?m\b|NM\b|[—–]|-(?!\s*[0-9])|ไม่มี)/i;
 function keyOf(label, value) {
   if (/^NIM\b/i.test(label)) return 'nim';
   if (/^NPL\b/i.test(label)) return 'npl';
@@ -143,7 +145,8 @@ function cardFund(parsed, base) {
       case 'roe': {
         const r = readValue(c.v, 'pct');
         if (r.nums.length === 1) set('roe', r.nums[0].v, `card "${c.k}"`);
-        if (r.nums.length === 2 && /ROA/i.test(c.k)) { set('roe', r.nums[0].v, `card "${c.k}"`); set('roa', r.nums[1].v, `card "${c.k}"`); }
+        // ROA = ตัวเลขที่สองต้องพิมพ์เป็น % เอง — "~21.6% / D/E 0.07" (MEGA/SPOT) ตัวที่สองคือ D/E ไม่ใช่ ROA (audit: invented)
+        if (r.nums.length === 2 && /ROA/i.test(c.k) && (c.v.match(/[0-9]\s*%/g) || []).length === 2) { set('roe', r.nums[0].v, `card "${c.k}"`); set('roa', r.nums[1].v, `card "${c.k}"`); }
         break;
       }
       case 'roic': case 'grossMargin': case 'netMargin': case 'opMargin': case 'occupancy': {
@@ -154,7 +157,8 @@ function cardFund(parsed, base) {
       }
       case 'peAvg5y': case 'beta': case 'debtToEquity': {
         const r = readValue(c.v, 'plain');
-        if (r.nums.length === 1 && !/%/.test(c.v)) set(key, r.nums[0].v, `card "${c.k}"`);
+        // ค่าที่ผู้เขียนบอกว่าไม่มี ("N/A (IPO <3 ปี)" AS · "N/A — IPO ต.ค. 2567" TMAN) — ตัวเลขในวงเล็บ/ปี IPO ไม่ใช่ค่าของการ์ด (audit: invented 3.0x · 2567.0x)
+        if (r.nums.length === 1 && !/%/.test(c.v) && !NO_VALUE_RE.test(c.v)) set(key, r.nums[0].v, `card "${c.k}"`);
         break;
       }
       default: break;

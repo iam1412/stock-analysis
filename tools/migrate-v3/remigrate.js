@@ -47,8 +47,8 @@ const ids = (errs) => new Set(errs.map((e) => e.id));
 
 /** v2Display ของ fresh → ใบเดิม (เฉพาะส่วนที่โครงของใบเดิมรับได้) · คืน null เมื่อไม่มีอะไรให้ต่อ */
 function graftOf(existing, fresh) {
-  const vd = fresh && fresh.v2Display;
-  if (!vd) return null;
+  if (!fresh) return null;
+  const vd = fresh.v2Display || {};
   const { _sig, ...doc } = existing;
   const x = {};
   for (const k of ['fv', 'fvRange', 'targets', 'driverEnds', 'gauge', 'footer']) if (vd[k] != null) x[k] = vd[k];
@@ -95,8 +95,23 @@ function graftOf(existing, fresh) {
     if (vd.noBase) x.noBase = true;
     scenarios = { ...fresh.scenarios, cases: fresh.scenarios.cases.map((c, i) => ({ ...c, desc: (doc.scenarios.cases[i] || {}).desc != null ? doc.scenarios.cases[i].desc : c.desc })), note: doc.scenarios.note };
   }
-  if (!Object.keys(x).length) return null;
-  return { ...doc, metrics, scenarios, v2Display: x };
+  // DDM ที่ผู้เขียนพิมพ์ D₁ (display-fix2 · inputs.d1): ขาเดียวกัน (method ddm ทั้งคู่ · r/g เท่ากัน) ที่ใบเดิมยังพิมพ์ "ปันผล $X × (1+g)" จาก dps ที่ถอดกลับ
+  //   ⇒ inputs.d1 ของ fresh (ตัวเลขของผู้เขียน) · ตัด override.dps ของขานั้น (d1 แทนแล้ว) — audit: invented
+  let legs = doc.legs, legsChanged = false;
+  if (Array.isArray(doc.legs) && fresh.legs && doc.legs.length === fresh.legs.length) {
+    legs = doc.legs.map((l, i) => {
+      const fl = fresh.legs[i];
+      if (!(l && fl && l.method === 'ddm' && fl.method === 'ddm' && l.inputs && fl.inputs && fl.inputs.d1 != null && l.inputs.d1 == null
+        && l.inputs.g === fl.inputs.g && l.inputs.r === fl.inputs.r)) return l;
+      legsChanged = true;
+      const nl = { ...l, inputs: { ...l.inputs, d1: fl.inputs.d1 } };
+      if (nl.override && nl.override.dps != null) { const { dps, ...ov } = nl.override; if (Object.keys(ov).some((k) => k !== 'why')) nl.override = ov; else delete nl.override; }
+      return nl;
+    });
+  }
+  if (!Object.keys(x).length && !legsChanged) return null;
+  // v2Display: ของ fresh เมื่อมี (แทนทั้งก้อน — เหมือนเดิม) · ต่อแค่ขา DDM = คง v2Display ของใบเดิม
+  return Object.keys(x).length ? { ...doc, metrics, scenarios, legs, v2Display: x } : { ...doc, metrics, scenarios, legs };
 }
 
 /** ใบเดียว → { sym, result, via, why[], doc, row } · ไม่ throw */
@@ -139,6 +154,7 @@ function remigrateOne(sym, o, env) {
     const r = AU.auditDoc(sym, c.doc, src, aOpts);
     if (r.valueDiffs) why.push(`valueDiffs ${r.valueDiffs} (${r.values.slice(0, 2).map((x) => `${x.zone}: ${x.del} → ${x.ins}`).join(' · ')})`);
     if (r.sanity.length) why.push(`sanity: ${r.sanity.join(' · ')}`);
+    if (r.invented) why.push(`invented ${r.invented} (${r.addedList.filter((x) => x.cls === 'invented').slice(0, 2).map((x) => `${x.zone}: ${x.v} in "${String(x.ins).slice(0, 40)}"`).join(' · ')})`);
     if (r.textLost > exRow.textLost) why.push(`textLost ${r.textLost} > current ${exRow.textLost}`);
     const g0 = gateAt(c.doc, 1, o);
     if (g0.length) why.push(`checkDoc ${g0.map((e) => `${e.id} ${String(e.msg).slice(0, 90)}`).join(' ; ')}`);
