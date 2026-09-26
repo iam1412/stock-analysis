@@ -76,7 +76,11 @@ t.eq(MP.htmlToProse('ราคา <b>{{rd:px}}</b> และ <span class="pill">
   const r = MP.tokenise(`ราคาปัจจุบัน ${px} เทียบ FV`, view, []);
   t(r.text.includes('{{px}}') && r.D.length === 0, 'tokenise: exact current price literal → {{px}} with no D');
   const r2 = MP.tokenise('ราคาปัจจุบัน $1.23 เทียบ FV', view, [{ text: '$1.23', token: 'px' }]);
-  t(r2.text.includes('{{px}}') && r2.D.length === 1 && /prose/.test(r2.D[0]), 'tokenise: labelled literal ≠ rendered → token + D row');
+  // display-fix (owner 26 ก.ย. 69 — the v3 page shows what the v2 page showed): a labelled literal whose value ≠ the rendered token stays the
+  //   author's literal (was: token + D row ⇒ A "+11.8%" became "+1.3%") · noted in F · an equal one still becomes the token
+  t(!r2.text.includes('{{') && r2.text.includes('$1.23') && r2.D.length === 0 && r2.F.length === 1 && /\$1\.23" kept/.test(r2.F[0]), 'tokenise: labelled literal ≠ rendered → author literal kept + F row', JSON.stringify(r2));
+  const r2b = MP.tokenise(`ราคาปัจจุบัน ${px} เทียบ FV`, view, [{ text: px, token: 'px' }]);
+  t(r2b.text.includes('{{px}}') && r2b.D.length === 0 && r2b.F.length === 0, 'tokenise: labelled literal = rendered → token (no D/F)', JSON.stringify(r2b));
   const r3 = MP.tokenise('ยอดซื้อคืน $1.23 ล้าน', view, []);
   t(!r3.text.includes('{{') && r3.D.length === 0, 'tokenise: unlabelled non-matching literal untouched');
 }

@@ -60,20 +60,21 @@ function shownOf(token, view) {
  *  คืน { text, D, n } (n = จำนวน token ที่ใส่) */
 function tokenise(text, view, hits, field) {
   let s = String(text);
-  const D = []; let n = 0;
+  const D = [], F = []; let n = 0;
   const where = field || 'text';
-  // (b) ป้ายเป็นเจ้าของเลข (E44) — แทนแม้รูปไม่ตรง แล้วจด D เมื่อหน้าตาที่ render เปลี่ยน
+  // (b) ป้ายเป็นเจ้าของเลข (E44) — แทนเฉพาะเมื่อตัวเลขที่ render เท่ากับที่ผู้เขียนพิมพ์ (display-fix · เจ้าของ 26 ก.ย. 69:
+  //     หน้า v3 ต้องแสดงสิ่งที่หน้า v2 แสดง — เดิมแทนแม้ค่าต่าง ⇒ A "+11.8%" กลายเป็น "+1.3%") · ค่าต่าง = คง literal ของผู้เขียน + จด F
   for (const h of hits || []) {
     const name = V2_TO_V3[h.token] || h.token;
     const shown = shownOf(name, view);
     if (shown == null) continue;   // token ที่ไม่มีใน TOKENS_V3 / ไม่มีค่า = ข้าม (ไม่จด D)
+    if (bare(h.text) !== bare(shown)) { F.push(`prose:${where} "${h.text}" kept (v3 {{${name}}} would show "${shown}")`); continue; }
     let done = false;
     for (const [a, b] of freeSpans(s)) {
       const i = s.slice(a, b).indexOf(h.text);
       if (i < 0) continue;
       const at = a + i;
       s = s.slice(0, at) + `{{${name}}}` + s.slice(at + h.text.length); n++; done = true;
-      if (bare(h.text) !== bare(shown)) D.push(`prose:${where} "${h.text}" → {{${name}}}`);
       break;
     }
     if (!done) continue;
@@ -102,7 +103,7 @@ function tokenise(text, view, hits, field) {
       }
     }
   }
-  return { text: s, D, n };
+  return { text: s, D, F, n };
 }
 
 const decOf = (s) => { const m = /[0-9][0-9,]*(?:\.([0-9]+))?/.exec(String(s)); return m && m[1] ? m[1].length : 0; };
