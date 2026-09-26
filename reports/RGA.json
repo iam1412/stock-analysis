@@ -1,0 +1,277 @@
+{
+  "v": 3,
+  "symbol": "RGA",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Reinsurance Group of America",
+    "exchange": "NYSE",
+    "sub": "Life & health reinsurance worldwide • Mortality · Longevity · Critical illness · Financial solutions • #1 life reinsurer globally • St. Louis, MO",
+    "headerTags": [
+      "Insurance / Reinsurance",
+      "Life & Health Re"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "StockAnalysis.com",
+      "Barchart.com"
+    ],
+    "themeLegacy": {
+      "accent": "#30a636",
+      "accentDark": "#237627",
+      "darkGrad": "linear-gradient(135deg,#103212 0%,#1d5d20 58%,#2e9333 140%)",
+      "glow": "rgba(69,186,75,.35)",
+      "subColor": "#e9f2e9",
+      "headerMuted": "#eef2ee",
+      "verdictText": "#e8f2e9",
+      "vcellLabel": "#ffffff"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T23:32:21+07:00",
+      "v2Hash": "b551ce59c8cd"
+    }
+  },
+  "market": {
+    "px": 248.65,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          182.46
+        ],
+        [
+          "พ.ย.25",
+          189.87
+        ],
+        [
+          "ธ.ค.25",
+          203.46
+        ],
+        [
+          "ม.ค.26",
+          202.75
+        ],
+        [
+          "ก.พ.26",
+          215.73
+        ],
+        [
+          "มี.ค.26",
+          204.16
+        ],
+        [
+          "เม.ย.26",
+          211.46
+        ],
+        [
+          "พ.ค.26",
+          200.74
+        ],
+        [
+          "มิ.ย.26",
+          212.65
+        ],
+        [
+          "ก.ค.26",
+          236.85
+        ],
+        [
+          "ส.ค.26",
+          246.04
+        ],
+        [
+          "ก.ย.26",
+          248.65
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 178.21,
+      "hi": 257.81
+    }
+  },
+  "fundamentals": {
+    "eps": 22.72,
+    "dps": 3.68,
+    "shares": 66000000,
+    "bvps": 199.79,
+    "revenue": 24900000000,
+    "netMargin": 5,
+    "beta": 0.48,
+    "fy": {
+      "period": "FY2025",
+      "netIncome": 1182000000
+    },
+    "epsBasis": "adj-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation (Adjusted Operating EPS)",
+      "inputs": {
+        "multiple": 12,
+        "multipleSource": "author"
+      },
+      "note": "P/E เป้าหมายกลาง (RGA ซื้อขายที่ 10–14x adj. EPS ปกติ; 12x = ระดับกลางสมเหตุสมผลสำหรับ Life Re ผู้นำโลก)"
+    },
+    {
+      "method": "pbv",
+      "label": "Justified P/BV",
+      "inputs": {
+        "g": 6.5,
+        "r": 10.5
+      },
+      "override": {
+        "roe": 11.4,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "ROE blend Adj.(12.4%) & GAAP(9.7%); r=10.5% ชดเชยความเสี่ยงรีประกัน"
+    },
+    {
+      "method": "declared",
+      "label": "Forward P/E (FY2026 Consensus Est.)",
+      "inputs": {
+        "value": 298,
+        "basis": "other"
+      },
+      "note": "EPS adj. est. $27.07 × P/E 11x — EPS คาดการณ์ FY2026 นักวิเคราะห์ (consensus StockAnalysis.com); 11x = ระดับอนุรักษ์นิยมสำหรับ Life Re ที่เติบโต EPS +19%"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "custom:0",
+      "pbv",
+      "netIncomeFy",
+      "eps",
+      "bvps",
+      "custom:1",
+      "revenue",
+      "netMargin",
+      "yield",
+      "beta"
+    ],
+    "custom": [
+      {
+        "label": "P/E เฉลี่ย ~5 ปี",
+        "value": "~10–13x",
+        "note": "Adj. operating P/E ปกติ 10–14x"
+      },
+      {
+        "label": "ROE / Adj. Operating ROE",
+        "value": "~9.7% / ~12.4%",
+        "note": "GAAP FY2025 / Adj. Operating",
+        "tone": "pos"
+      }
+    ],
+    "notes": {
+      "mcap": "~66 ล้านหุ้น",
+      "pe": "Adj. EPS FY2025 = {{eps}}",
+      "pbv": "BVPS TTM = {{bvps}}",
+      "eps": "FY2025 Adj. | GAAP TTM = {{eps}}",
+      "bvps": "TTM | FY2025 = $201.51",
+      "revenue": "+5.2% YoY | FY2025 = $23.7B",
+      "netMargin": "ลักษณะรีประกัน: margin ต่ำ ROE ดี",
+      "yield": "~{{dps}}/ปี (~$0.92/ไตรมาส)",
+      "beta": "ความผันผวนต่ำกว่าตลาดมาก"
+    },
+    "hint": "ข้อมูล ณ ก.ย. 2569 · อิง Adj. Operating EPS"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 3,
+        "exitMultiple": 9,
+        "divCum": 11,
+        "desc": "อัตรามรณกรรมพุ่งสูง/เหตุพิเศษ"
+      },
+      {
+        "growth": 8,
+        "exitMultiple": 11,
+        "divCum": 11,
+        "desc": "ขยาย Asia-Pacific + Financial Solutions"
+      },
+      {
+        "growth": 12,
+        "exitMultiple": 13,
+        "divCum": 11,
+        "desc": "Longevity บูม + M&A + re-rating"
+      }
+    ],
+    "exitDp": 0,
+    "note": "สมมติฐาน: Base case อิงการเติบโต EPS 8%/ปี สอดคล้องกับ consensus ที่คาด FY2026 = $27.07 (+19%) แต่ normalization กลับระดับปกติในปีถัดไป P/E ออก 11x สอดคล้องกับ P/E เฉลี่ยอุตสาหกรรม Life Re ปันผลสะสม 3 ปี ~$11 (~{{dps}}/ปี) ผลตอบแทน Base ~53% ใน 3 ปี หรือ ~15%/ปี อยู่ในระดับดีมากสำหรับหุ้น beta ต่ำ (0.48) ที่เสถียรกว่าตลาดทั่วไปมาก",
+    "hintNote": "(Adj.)"
+  },
+  "analyst": {
+    "target": 272,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "RGA เริ่มต้นที่ $188.93 ก.ค. 2568 ปรับตัวลงแตะจุดต่ำสุด ~$180 ต.ค. 2568 จากแรงกดดันตลาดและข้อกังวลอัตราดอกเบี้ย จากนั้นฟื้นตัวแข็งแกร่งรับผล Q4 2568 ที่ EPS $6.97 (สูงสุดของปี) ราคาแตะ ~$215 ก.พ. 2569 ปรับฐานช่วง มี.ค.–พ.ค. ก่อนฟื้นกลับ ~$213–215 ปัจจุบัน ผลตอบแทนรวม 1 ปี +12.6% สะท้อนคุณภาพธุรกิจรีประกันชีวิตที่เสถียรและปันผลสม่ำเสมอ",
+    "valuation": "วิธี Forward P/E ให้ค่าสูงสุด ($298) สะท้อนความคาดหวังการเติบโต EPS แรง 19% ในปี FY2026 ขณะที่ Justified P/BV ต่ำสุด ($246) เนื่องจาก ROE อยู่ในระดับปานกลางเทียบกับต้นทุนทุน ค่าเฉลี่ย 3 วิธี = $272 ปัดเป็น $270 เป็น Fair Value เชิงอนุรักษ์นิยม RGA ซื้อขายต่ำกว่า FV เล็กน้อย (MOS {{mos}}) Margin of Safety จึงบางกว่าช่วงก่อนหน้า",
+    "gauge": "ราคาปัจจุบัน {{px}} ส่วนต่างจาก Fair Value {{fv}} (MOS {{mos}}) และอยู่ต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ $272 (9 คน, consensus Buy) เล็กน้อย โซน MOS 20% อยู่ที่ {{mos20}} และ MOS 30% ที่ {{mos30}} ซึ่งเป็นโซนที่ราคาเคยอยู่ช่วง ต.ค. 2568",
+    "mos": "MOS น่าสนใจ — ราคาต่ำกว่า Fair Value ราว 21% เหมาะสมสำหรับนักลงทุนเน้นคุณค่า",
+    "verdictHeadline": "RGA: Life Re ผู้นำโลก ราคา Undervalued — MOS 21% น่าสะสม",
+    "verdictBody": "Reinsurance Group of America ครองตำแหน่ง #1 ในโลกด้าน Life & Health Reinsurance ด้วยสถานะที่แทบทดแทนไม่ได้ในตลาด mortality, longevity, และ financial solutions ธุรกิจมีกระแสเงินสดสม่ำเสมอ (Operating CF $4–5B/ปี) beta ต่ำมาก (0.48) และ EPS Adj. กำลังเข้าสู่ช่วงขยายตัวแรง คาดการณ์ $27.07 (+19%) ในปี FY2026 ราคาปัจจุบัน {{px}} ต่ำกว่า Fair Value {{fv}} (MOS {{mos}}) และต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ $272 เหมาะสำหรับนักลงทุนที่ต้องการ quality defensive business ในราคาสมเหตุสมผล",
+    "strategy": "ราคาใกล้ Fair Value แล้ว (MOS {{mos}}) รอย่อเข้าโซน MOS 20% ({{mos20}}) ค่อยทยอยสะสม เพิ่มน้ำหนักที่โซน MOS 30% ({{mos30}}) หากมีโอกาส เป้านักวิเคราะห์ 12 เดือน $272 · ปันผล ~1.6% เหมาะกับพอร์ตที่ต้องการ defensive quality ความผันผวนต่ำ",
+    "disclaimerSources": "แหล่งข้อมูล: Yahoo Finance finance.yahoo.com/quote/RGA (ราคา ณ 25 ก.ย. 2569 · GAAP EPS TTM $22.72 · Beta 0.48 · 52W $178.21–$257.81) · StockAnalysis.com stockanalysis.com/stocks/rga (BVPS $199.79 · Adj. EPS FY2025 $22.72 · FY2026 est. $27.07 · Analyst target avg $272.33 · Balance sheet) · Barchart.com barchart.com/stocks/quotes/RGA (GAAP EPS FY2025 $17.69 · Shareholders equity $13,551M FY2025)"
+  },
+  "text": {
+    "chartHint": "ก.ค. 2568 – ก.ค. 2569"
+  },
+  "catalysts": [
+    "<b>ผู้นำตลาดโลก:</b> RGA เป็น #1 ในโลกด้าน Life & Health Reinsurance ด้วยพอร์ตธุรกิจใน 25+ ประเทศ มีข้อมูล mortality และ underwriting expertise ที่เป็น moat แข็งแกร่งมาก",
+    "<b>Longevity Solutions เติบโตแรง:</b> ตลาด pension risk transfer และ longevity reinsurance ทั่วโลก (โดยเฉพาะ UK/Europe) เติบโตสูงต่อเนื่อง ช่วยกระจายความเสี่ยงจาก mortality",
+    "<b>Financial Solutions segment:</b> ธุรกิจ capital solutions, embedded value transaction, และ in-force management ให้ margin สูงกว่าและ fee-based recurring — ลด cyclicality",
+    "<b>Asia-Pacific expansion:</b> ตลาดเอเชีย (จีน อินเดีย ญี่ปุ่น อาเซียน) มี life insurance penetration ต่ำมาก RGA กำลังขยายพอร์ตและชนะสัญญาใหม่ต่อเนื่อง",
+    "<b>EPS visibility สูง:</b> ธุรกิจรีประกันชีวิตมี long-term contracts → cash flow คาดการณ์ได้ดี EPS Adj. คาด $27+ ในปี FY2026 (+19%) หนุนการ re-rating",
+    "<b>Balance sheet แข็งแกร่ง:</b> BVPS เพิ่มจาก $135 (FY2023) เป็น $201 (FY2025) Operating CF $4–5B ต่อปี รองรับ buyback และปันผลเพิ่มขึ้น"
+  ],
+  "risks": [
+    "<b>Pandemic / Excess Mortality:</b> โรคระบาดหรือเหตุการณ์ที่ทำให้อัตราการเสียชีวิตผิดปกติ (เช่น COVID-19) เป็นความเสี่ยงหลัก ปี FY2024 GAAP EPS ต่ำ ($10.73) จากเหตุพิเศษ",
+    "<b>Interest Rate / OCI Volatility:</b> BVPS ผันผวนตาม mark-to-market พอร์ตตราสารหนี้ ดอกเบี้ยขึ้น-ลงส่งผลต่อ book value อย่างมาก — FY2024 BVPS เหลือแค่ $165",
+    "<b>Catastrophe / Mass Casualty:</b> แม้จะเป็นรีประกันชีวิต/สุขภาพ แต่เหตุการณ์ mass casualty ขนาดใหญ่ (ภัยพิบัติ สงคราม) อาจกระทบพอร์ต mortality อย่างรุนแรง",
+    "<b>Concentrated Market Exposure:</b> US/North America คิดเป็น ~55% ของพรีเมียม ความเสี่ยงจากการเปลี่ยนแปลงกฎระเบียบ ภาษี หรือ Medical trends ในตลาดหลัก",
+    "<b>FX Risk:</b> รายได้ต่างประเทศ ~45% ความผันผวนค่าเงิน USD กระทบรายได้และ BVPS ที่แปลงกลับ"
+  ],
+  "extras": [],
+  "v2Display": {
+    "fv": 270,
+    "fvRange": [
+      246,
+      298
+    ],
+    "legValues": [
+      273,
+      246,
+      null
+    ],
+    "targets": [
+      234,
+      326,
+      426
+    ],
+    "footer": "21 กันยายน 2569",
+    "cards": {
+      "netIncomeFy": {
+        "v": "$1,182M",
+        "d": "+64.9% YoY (GAAP)"
+      }
+    }
+  },
+  "_sig": "sha256:f237cf60a710e1cd0719077f48287825c5ecae8dcdeddb64c0ebbad88bb92ddb"
+}
