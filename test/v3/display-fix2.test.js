@@ -177,7 +177,7 @@ const gate = (d) => CV.checkDoc(d, { skipSig: true, seeds: SEEDS, today: d.marke
   t.eq(S.validate(dd), [], 'schema: ddm inputs.d1');
   const lv = C.compute(dd, { seeds: SEEDS }).legs[ddm], i = dd.legs[ddm].inputs;
   t(Math.abs(lv.value - 6 / ((i.r - i.g) / 100)) < 1e-9, 'legs: ddm with d1 = D₁/(r−g)');
-  t(src(dd).includes(`D₁ $6.00; g ${i.g}%, r ${i.r}%`), 'render: ddm line prints the author D₁');
+  t(src(dd).includes(`D₁ = ปันผล $6.00; g ${i.g}%, r ${i.r}%`), 'render: ddm line prints the author D₁');
   t(has(S.validate({ ...dd, legs: dd.legs.map((l, k) => (k === ddm ? { ...l, inputs: { ...l.inputs, d1: -1 } } : l)) }), `legs[${ddm}].inputs.d1`), 'schema: ddm d1 must be > 0');
   // live custom card (ZS "P/E Non-GAAP (FY26 จริง) ~46x" on EPS non-GAAP $4.21)
   const cz = { ...d, metrics: { ...d.metrics, custom: [{ label: 'P/E Non-GAAP (FY26 จริง)', value: '~46x', note: 'EPS non-GAAP FY26 $4.21' }] }, v2Display: { custom: { 0: { op: 'pxOverBase', base: 4.21 } } } };

@@ -244,7 +244,14 @@ function scenarios(parsed, fund, legs) {
   if (cols.some((c) => colDrv(c) && colDrv(c) !== out.driver) || cols.some((c) => colEx(c) && colEx(c) !== out.exitMetric)) why.push('driver/exit differs per column');
   // คู่ driver × exit ที่ template คิดไม่ได้ (EV/Sales ต้องคูณรายได้ต่อหุ้น · EV/EBITDA คู่ EBITDA ต่อหุ้น — PDYN/RCAT "EPS" + "EV/Sales ออก") = เป้ามาจากตัวตั้งอื่นของผู้เขียน
   if ((out.exitMetric === 'evsales' && out.driver !== 'revenuePerShare') || ((out.exitMetric === 'evebitda') !== (out.driver === 'ebitdaPerShare'))) why.push(`driver ${out.driver} × exit ${out.exitMetric} is not a template pair`);
-  if (why.length || soft.length) {
+  // ฐานที่ถอดกลับจากเป้า (ผู้เขียนไม่ได้พิมพ์ฐานเดียว) — template จะพิมพ์ "<driver> ฐาน ~ค่า" ที่ผู้เขียนไม่เคยพิมพ์ (ONTO ~$8.09 · ผู้เขียน FY2026e $8.11)
+  //   ⇒ เซลล์ของผู้เขียน + noBase เมื่อพกเซลล์ได้ · พกไม่ได้ = ทางเดิม (F)
+  //   ฐานที่ผู้เขียนพิมพ์ไว้ในหัว §6 (ตัวเลขในการปัด · หรือ token ฐาน {{rd:baseEps}}/{{rd:eps}}) = ไม่ใช่ตัวเลขใหม่ → ทางเดิม
+  const hint6 = (/<div class="hint">([\s\S]*?)<\/div>/.exec((parsed.byN && parsed.byN[6] && parsed.byN[6].body) || '') || [])[1] || '';
+  const basePrinted = (b) => /\{\{rd:(?:baseEps|eps)\}\}/.test(hint6)
+    || NB.numsOf(MP.htmlToProse(hint6)).some((q) => Math.abs(q.v - b) <= 2 * q.half * (1 + 1e-9));
+  const backOnly = meta.base === 'back-computed' && !!out.baseOverride && !basePrinted(out.baseOverride.value);
+  if (why.length || soft.length || backOnly) {
     const cur = RV.CUR_SYMBOL[parsed.sm && parsed.sm.currency] || '';
     const tgts = cols.map((c, i) => {
       if (vs && vs[i] && typeof vs[i].tgt === 'number' && vs[i].tgt > 0) return vs[i].tgt;
@@ -272,11 +279,11 @@ function scenarios(parsed, fund, legs) {
     else {
       meta.perCase = true;
       // ฐานเดียวที่ template ใช้ไม่ได้ (hard) = ไม่มีฐาน: ไม่ถอดกลับ · ไม่พิมพ์ฐานของ template (noBase) · ฐานของผู้เขียน (values.baseEps) / fundamentals ที่ใช้ได้ = คงไว้
-      if (why.length && meta.base !== 'values.baseEps' && meta.base !== 'leg override') { delete out.baseOverride; meta.base = 'author cells'; meta.noBase = true; }
+      if ((why.length || backOnly) && meta.base !== 'values.baseEps' && meta.base !== 'leg override') { delete out.baseOverride; meta.base = 'author cells'; meta.noBase = true; }
       out.cases.forEach((cs, i) => { if (cs.growth == null || !simpleHead(cells[i].head, out.driver)) delete cs.growth; if (cs.exitMultiple == null) delete cs.exitMultiple; });
       meta.display = { s6: cells, targets: tgts };
       if (meta.noBase) meta.display.noBase = true;
-      F.push(`scenarios: the author's cells per column (v2Display.s6 + targets — ${why.concat(soft).join(' · ')})`);
+      F.push(`scenarios: the author's cells per column (v2Display.s6 + targets — ${why.concat(soft, backOnly && !why.length ? ['base back-computed — the author printed no single base'] : []).join(' · ')})`);
     }
   }
   if (!meta.perCase) H.push(...meta.noGrowth.map((i) => `scenarios.cases[${i}].growth unreadable ("${cols[i].top ? cols[i].top[1] : ''}")`));
