@@ -4,12 +4,14 @@
  *   กติกา "ถูก" = หน้า v3 แสดงสิ่งที่หน้า v2 แสดง (ตัวเลขของผู้เขียน ภายในการปัดที่ผู้เขียนพิมพ์) · ห้ามเปลี่ยนตัวเลขของผู้เขียน
  *   ค่าที่ผูกราคาเทียบที่ราคา snapshot ของ v2 (view ที่ส่งมา = compute บน market ของหน้า v2)
  *   fv/fvRange/targets = report-data ของ v2 (ตัวเลขที่ผู้เขียนเขียน — หน้า v2 พิมพ์ผ่าน token) · legValues/driverEnds = ข้อความที่หน้า v2 พิมพ์
- *   gauge = สเกลเกจที่ผู้เขียนเลือกเอง (เมื่อชุดตัวเลขต่างจาก template) · cards = การ์ดที่ cron v2 ไม่เคยแตะ (ข้อความคงที่) แต่ v3 คิดได้ไม่เท่า
- *     "cron v2 ไม่เคยแตะ" วัดด้วยการจำลอง cron v2 (UP.derivedPassV2) ที่ราคาอื่น — ค่าการ์ดไม่ขยับ = คงที่ ⇒ พกข้อความ (v2 ก็ไม่เคยแก้)
- *     การ์ดที่ขยับตามราคา (live) ไม่พก — ต้องให้ v3 คิดได้เท่าเอง (ไม่งั้นค้างเงียบ + gate E41/E43 ฟ้องเมื่อราคาขยับ)
- * อ่านอย่างเดียว — คืน { v2Display | null, notes: [] }
+ *   gauge = สเกลเกจที่ผู้เขียนเลือกเอง (เมื่อชุดตัวเลขต่างจาก template)
+ *   ★ round 2 (controller 26 ก.ย. 69): v2Display พกเฉพาะสมมติฐาน/ข้อเท็จจริงของผู้เขียน — **ห้ามค่าที่เป็นฟังก์ชันของราคา**
+ *     cards: การ์ดผูกราคา (PRICE_KEYS) = ฐานของผู้เขียนที่ให้ค่าของหน้า v2 ที่ราคาของมันเอง → {op, base} คิดสด · ไม่มีฐานใด = การ์ด v2 ค้างเอง (ไม่พก · staleCards)
+ *            การ์ดไม่ผูกราคา / ข้อความไม่มีตัวเลข = ข้อความของผู้เขียน {v, d}
+ *     rets: รูปแบบข้อความของผู้เขียน คิดตัวเลขใหม่ทุกครั้ง — เฉพาะเมื่อตัวเลขของหน้า v2 สอดคล้องกับเป้าของตัวเอง (ไม่งั้น v3 คิดเอง · retsInconsistent)
+ *     driverTotal: หน้า v2 พิมพ์ตัวตั้งฉากเป็นยอดรวมทั้งบริษัท (CPNG/NET)
+ * อ่านอย่างเดียว — คืน { v2Display | null, notes: [], staleCards: [], retsInconsistent: [คอลัมน์] | null }
  */
-const RM = require('../report-meta.js');
 const RV = require('../report-values.js');
 const S = require('../v3/schema.js');
 const K = require('../v3/cards.js');
@@ -37,39 +39,6 @@ function shownV2(html, rd, sm) {
   let h = String(html || '');
   try { h = RV.renderValues(h, rd, sm); } catch (_) { /* token ที่ render ไม่ได้ = คงไว้ (ไม่ตรงอะไร) */ }
   return MP.decode(PV.text(h));
-}
-
-/** จำลอง cron v2 ที่ราคา px×f (UP.derivedPassV2 — ทางเดียวกับ cron จริง) → { cards: ข้อความค่าการ์ด §1, rets: ข้อความ .ret §6 } · จำลองไม่ได้ = null */
-function cronSim(raw, f) {
-  try {
-    const UP = require('../update-prices.js');
-    const rdS = RM.readReportData(raw), sm = RM.readStockMeta(raw);
-    if (!rdS || !rdS.ok || !sm) return null;
-    const rd = JSON.parse(JSON.stringify(rdS.data));
-    const px = round2(rd.values.px * f);
-    rd.values.px = px;
-    const m = raw.match(RM.REPORT_DATA_PARTS_RE);
-    if (!m) return null;
-    const raw2 = raw.replace(m[0], m[1] + RV.styledRD(rd) + m[3]);
-    const out = UP.derivedPassV2(raw2, px, {}).html;
-    const sm2 = { ...sm, price: px };
-    const p = PV.parseV2('X', out);
-    return { cards: p.s1cards.map((c) => shownV2(c.vHtml, rd, sm2)), rets: p.s6cols.map((c) => shownV2(c.retHtml, rd, sm2)) };
-  } catch (_) { return null; }
-}
-
-/** ชิ้นของหน้า v2 ที่ค่าขยับตามราคา (cron v2 เขียนทับ หรือเป็น token) → { cards: Set(index), rets: Set(index) } · จำลองไม่ได้ = null */
-function liveParts(raw, parsed) {
-  const base = { cards: parsed.s1cards.map((c) => shownV2(c.vHtml, parsed.rd, parsed.sm)), rets: parsed.s6cols.map((c) => shownV2(c.retHtml, parsed.rd, parsed.sm)) };
-  const live = { cards: new Set(), rets: new Set() };
-  parsed.s1cards.forEach((c, i) => { if (/\{\{rd:/.test(c.vHtml)) live.cards.add(i); });
-  parsed.s6cols.forEach((c, i) => { if (/\{\{rd:/.test(c.retHtml || '')) live.rets.add(i); });
-  for (const f of [1.37, 0.71]) {
-    const x = cronSim(raw, f);
-    if (!x || x.cards.length !== base.cards.length || x.rets.length !== base.rets.length) return null;
-    for (const k of ['cards', 'rets']) x[k].forEach((t, i) => { if (t !== base[k][i]) live[k].add(i); });
-  }
-  return live;
 }
 
 /** การ์ดผูกราคาของหน้า v2 → ฐานที่ cron v2 ใช้ ({op, base}) · ตัวเดียวกับ DV (P/E: peCards+basisFor · ปันผล: yieldCardPlan · P/BV: pbvCardPlan) · ไม่ได้ = null */
@@ -148,7 +117,8 @@ function v2DisplayOf(o) {
   const ends = ((o.scnMeta && o.scnMeta.ends) || []).map((e, i) => {
     const sc = view.scn[i];
     if (!e || !sc || !isNum(e.end) || !e.text || /\{\{/.test(e.text)) return null;
-    const v3t = `~${view.cur}${RV.fmtPerShare(sc.driverEnd)}`;
+    const sh = doc.fundamentals && doc.fundamentals.shares;
+    const v3t = o.scnMeta.total && sh > 0 ? `~${RV.fmtBig(sc.driverEnd * sh, view.cur)}` : `~${view.cur}${RV.fmtPerShare(sc.driverEnd)}`;
     return sameNumbers(e.text, v3t) ? null : String(e.text).replace(/[{}<>]/g, '').trim() || null;
   });
   if (ends.length === 3 && ends.some((x) => x != null)) { out.driverEnds = ends; notes.push(`scenario end values ${ends.map((x) => (x == null ? '·' : x)).join(' ')}`); }
@@ -176,60 +146,143 @@ function v2DisplayOf(o) {
     const myRefs = g.map((t) => t.ref || '#').sort().join(',');
     if (myRefs !== genRefs) { out.gauge = g; notes.push(`gauge scale ×${g.length} from the v2 page`); }
   }
-  // การ์ดคงที่ (cron v2 ไม่เคยแตะ) ที่ v3 คิดได้ไม่เท่า
-  const cm = (o.cardMeta || []).filter((m) => m.key);
-  if (cm.length) {
-    let live = null, liveTried = false;
-    const cards = {};
-    for (const m of cm) {
-      const c = parsed.s1cards[m.i];
-      if (!c) continue;
-      let v3;
-      try { v3 = K.renderCard(m.key, view).v; } catch (_) { continue; }
-      const v2t = shownV2(c.vHtml, parsed.rd, parsed.sm);
-      if (sameNumbers(v2t, v3)) continue;
-      if (!liveTried) { live = liveParts(raw, parsed); liveTried = true; }
-      if (!live) { notes.push(`card "${c.k}" (${m.key}) differs but the v2 cron could not be simulated — not carried`); continue; }
-      const clean = (s) => String(s).replace(/[{}<>]/g, '').replace(/\s+/g, ' ').trim();
-      if (live.cards.has(m.i)) {
-        // การ์ดผูกราคาที่ cron v2 คิดจากฐานที่ .d ของการ์ดประกาศเอง (EPS/DPS/BVPS คนละตัวกับ fundamentals) → v3 คิดจากฐานเดียวกัน (ยังขยับตามราคา)
-        const lb = /\{\{rd:/.test(c.vHtml) ? null : liveBase(c, v.px, parsed.sm && parsed.sm.currency);
-        if (!lb) { notes.push(`card "${c.k}" (${m.key}) is price-bound on the v2 page (cron rewrote it) and v3 shows ${v3} vs ${v2t} — not carried`); continue; }
-        cards[m.key] = { v: clean(v2t), d: clean(shownV2(c.dHtml, parsed.rd, parsed.sm)), op: lb.op, base: lb.base };
-        notes.push(`card "${c.k}" (${m.key}) ${v3} → v2 base ${lb.base} (${lb.op})`);
-        continue;
-      }
-      cards[m.key] = { v: clean(v2t) || '—', d: clean(shownV2(c.dHtml, parsed.rd, parsed.sm)) };
-      notes.push(`card "${c.k}" (${m.key}) ${v3} → v2 fixed text "${cards[m.key].v}"`);
-    }
-    if (Object.keys(cards).length) out.cards = cards;
+  // การ์ด §1 (round 2 · advisor/controller: v2Display = สมมติฐาน/ข้อเท็จจริงของผู้เขียนเท่านั้น — ห้ามค่าที่เป็นฟังก์ชันของราคา)
+  //   ผูกราคา: ฐาน (EPS/BVPS/DPS…) ที่ทำให้ได้ค่าของหน้า v2 ที่ราคาของมันเอง → {op, base} (คิดสดที่ราคาปัจจุบัน) · ไม่มีฐานใดได้ค่านั้น = การ์ด v2 ค้างเอง → ค่าที่ v3 คิด (ไม่พก · จด)
+  //   ไม่ผูกราคา (รายได้ · กำไร · margin …): ข้อความของผู้เขียน {v, d}
+  const plan = cardPlan(parsed, doc, view, (o.cardMeta || []).filter((m) => m.key).map((m) => ({ i: m.i, key: m.key })));
+  const cards = {};
+  const stale = [];
+  for (const x of plan) {
+    if (x.kind === 'text') { cards[x.key] = { v: x.v2t || '—', d: x.d }; notes.push(`card "${x.label}" (${x.key}) ${x.v3} → v2 text "${x.v2t}" (not price-bound)`); }
+    else if (x.kind === 'base') { cards[x.key] = { v: x.v2t, d: x.d, op: x.op, base: x.base }; notes.push(`card "${x.label}" (${x.key}) ${x.v3} → live on the v2 base ${JSON.stringify(x.base)} (${x.op})`); }
+    else if (x.kind === 'stale') { stale.push(x); notes.push(`card "${x.label}" (${x.key}) v2 "${x.v2t}" is stale on the v2 page (no base reproduces it at the v2 price) — v3 shows ${x.v3}`); }
   }
-  // ช่องผลตอบแทนฉาก (.ret) ที่ผู้เขียนพิมพ์เป็นข้อความ แต่ v3 (token ผลตอบแทน + retNote) พิมพ์ตัวเลขชุดอื่น
+  if (Object.keys(cards).length) out.cards = cards;
+  // ช่องผลตอบแทนฉาก (.ret) ที่ผู้เขียนพิมพ์เป็นข้อความ — ค่าผูกราคา ⇒ พกได้แค่ "รูปแบบ" (คิดสดทุกครั้ง · live) และเฉพาะเมื่อตัวเลขของหน้า v2
+  //   สอดคล้องกับราคาเป้า/ราคาของหน้าเอง · ไม่สอดคล้อง (v2 พิมพ์ผิด/ค้าง — AON Bear "−3%") = v3 คิดเอง (ส่วนเบี่ยงที่ตั้งใจ · audit รับเฉพาะคลาสนี้)
   const cols = parsed.s6cols || [];
+  let retsInconsistent = null;
   if (cols.length === 3 && doc.scenarios && cols.every((c) => c.retHtml != null && !/\{\{rd:sc\dret\}\}/.test(c.retHtml))) {
     const v2t = cols.map((c) => shownV2(c.retHtml, parsed.rd, parsed.sm));
     const v3t = cols.map((c, i) => { try { return `${RV.TOKENS[`sc${i + 1}ret`](view.d)} ${doc.scenarios.cases[i].retNote || ''}`; } catch (_) { return ''; } });
     if (v2t.every((t) => t.trim()) && v2t.some((t, i) => !sameNumbers(t, v3t[i]))) {
-      const live = liveParts(raw, parsed);
-      if (!live) notes.push('scenario returns differ but the v2 cron could not be simulated — not carried');
-      else {
-        const isLive = live.rets.size > 0;
+      const R = require('../../_template/v3/render.js');
+      const perYear = (v.scnBasis && v.scnBasis.perYear) || pyConvOf(v2t, doc.scenarios.years);
+      const cons = retConsistency(parsed, v.px, doc.scenarios.years, perYear);
+      if (!v2t.every((t) => R.v2RetTokens(t))) {
+        // รูปที่เขียนใหม่ไม่ได้ (หลายผลตอบแทนรวม/หลาย %/ปี ต่อช่อง) → รูปแบบ v3 · คอลัมน์ที่ v2 พิมพ์ขัดกับเป้าของตัวเอง = ส่วนเบี่ยงที่ตั้งใจ
+        const bad = cons.map((c, i) => (c && !c.ok ? i : -1)).filter((i) => i >= 0);
+        if (bad.length) retsInconsistent = bad;
+        notes.push(`scenario returns: v2 format not rewritable — v3 format${bad.length ? ` (columns ${bad.join(',')} contradict their own targets)` : ''}`);
+      } else {
+        // ฐานปันผล = ฐานที่คอลัมน์ตรงมากที่สุด (เสมอกัน: ฐานของ cron v2 [DV.scenarioPlan · scnBasis ชนะ] → divIncluded ของใบ)
+        //   คอลัมน์ที่ไม่ตรงภายใต้ฐานนั้น = v2 พิมพ์ขัดกับเป้าของตัวเอง (AON Bear "−3%" · MAJOR ปนสองฐาน) → ตัวเลขคิดใหม่ในรูปแบบของผู้เขียน (ส่วนเบี่ยงที่ตั้งใจ)
+        let plan = null;
+        try { plan = DV.scenarioPlan(RV.renderValues(raw, parsed.rd, parsed.sm), v.px, undefined, v.scnBasis || undefined); } catch (_) { plan = null; }
+        const pd = plan ? plan.conv === 'div' : null;
+        const order = [...new Set([pd, !!doc.scenarios.divIncluded, false, true].filter((x) => x != null))];
+        const score = (d) => cons.filter((c) => c && c.divs.includes(d)).length;
+        const div = order.reduce((best, d) => (score(d) > score(best) ? d : best), order[0]);
+        const bad = cons.map((c, i) => (c && !c.divs.includes(div) ? i : -1)).filter((i) => i >= 0);
+        if (bad.length) { retsInconsistent = bad; notes.push(`scenario returns: columns ${bad.join(',')} contradict their own targets at the page's own price (${div ? 'with-dividend' : 'price-only'} basis) — computed there (deliberate deviation)`); }
         const s6t = PV.text((parsed.byN[6] || {}).body || '');
-        const r = { texts: v2t.map((t) => t.replace(/[{}<>]/g, '').trim()), live: isLive, neg: /−/.test(s6t) ? '−' : '-' };
-        if (isLive) {
-          // ฐานเดียวกับ cron v2 (DV.scenarioPlan บนหน้า v2 ที่ render แล้ว · ฐานที่ประกาศใน scnBasis ชนะการอนุมาน): ปันผลรวมในผลตอบแทนไหม
-          let plan = null;
-          try { plan = DV.scenarioPlan(RV.renderValues(raw, parsed.rd, parsed.sm), v.px, undefined, v.scnBasis || undefined); } catch (_) { plan = null; }
-          r.div = plan ? plan.conv === 'div' : !!doc.scenarios.divIncluded;
-          r.perYear = (v.scnBasis && v.scnBasis.perYear) || pyConvOf(r.texts, doc.scenarios.years);
-        }
-        else r.cls = cols.map((c, i) => { const m = /<div class="ret\s+(pos|neg)\b/.exec((((parsed.byN[6] || {}).body || '').split(/<div class="col /)[i + 1]) || ''); return m ? m[1] : (/^[\s~≈]*[-−]/.test(r.texts[i]) ? 'neg' : 'pos'); });
-        out.rets = r;
-        notes.push(`scenario returns ${isLive ? 'live (v2 cron format)' : 'fixed text'} from the v2 page`);
+        out.rets = { texts: v2t.map((t) => t.replace(/[{}<>]/g, '').trim()), neg: /−/.test(s6t) ? '−' : '-', perYear, div };
+        notes.push('scenario returns: the v2 format, rewritten live at the current price (v2 cron dead-band)');
       }
     }
   }
-  return { v2Display: Object.keys(out).length ? out : null, notes };
+  // ตัวตั้งปลายฉากเป็นยอดรวมทั้งบริษัท ("รายได้ปี 3 ~$38.75B" — CPNG/NET) ⇒ แถว/ป้ายพิมพ์ยอดรวม (driver ยังเป็นต่อหุ้น · ยอดรวม = ต่อหุ้น × หุ้น)
+  if (o.scnMeta && o.scnMeta.total && doc.scenarios && ['revenuePerShare', 'ebitdaPerShare', 'fcfPerShare'].includes(doc.scenarios.driver) && doc.fundamentals && doc.fundamentals.shares > 0) { out.driverTotal = true; notes.push('scenario driver printed as a company total (per share × shares), as on the v2 page'); }
+  return { v2Display: Object.keys(out).length ? out : null, notes, staleCards: stale, retsInconsistent };
+}
+
+const PRICE_KEYS = new Set(['mcap', 'pe', 'pbv', 'ps', 'yield', 'evEbitda', 'peForward', 'analystTarget', 'pffo', 'pffoForward', 'ptbv']);
+const firstNum = (t) => NB.numsOf(t)[0] || null;
+/** ค่าของการ์ดที่ฐาน b ที่ราคา px (ตัวเลขแรกของข้อความ · ทศนิยมเท่าเดิม) — ตัวเดียวกับ render liveCardValue */
+const opValue = (op, b, px) => (op === 'basePct' ? b / px * 100 : px / b);
+/** ฐานผู้สมัครของการ์ดผูกราคา (จาก fundamentals/ขาของใบ = ตัวเลขที่หน้า v2 ใช้) */
+function candBases(key, doc) {
+  const f = doc.fundamentals || {}, legs = doc.legs || [];
+  const ov = (k) => legs.map((l) => l.override && l.override[k]).filter((x) => isNum(x) && x > 0);
+  if (key === 'pe' || key === 'peForward') return { op: 'pxOverBase', bases: [f.eps, f.epsForward, f.fy && f.fy.eps, ...ov('eps'), ...ov('epsForward')].filter((x) => isNum(x) && x > 0) };
+  if (key === 'pbv' || key === 'ptbv') return { op: 'pxOverBase', bases: [f.bvps, f.tbvps, ...ov('bvps')].filter((x) => isNum(x) && x > 0) };
+  if (key === 'pffo') return { op: 'pxOverBase', bases: [f.ffoPerShare].filter((x) => isNum(x) && x > 0) };
+  if (key === 'yield') return { op: 'basePct', bases: [f.dps].filter((x) => isNum(x) && x > 0) };
+  return { op: null, bases: [] };
+}
+/**
+ * แผนการ์ด §1: [{i, key, label, v2t, v3, d, kind: 'text'|'base'|'rounding'|'stale', op?, base?}] (เฉพาะการ์ดที่ตัวเลขต่างเกิน 1 หน่วยที่พิมพ์)
+ *   parsed = หน้า v2 ตามที่เว็บแสดง (หลัง cron ที่ราคาของมันเอง) · pairs = [{i (ดัชนีการ์ด v2), key}] · view = compute ที่ market ของหน้า v2
+ */
+function cardPlan(parsed, doc, view, pairs) {
+  const out = [];
+  const px = view.d.px, cur = parsed.sm && parsed.sm.currency;
+  const clean = (s) => String(s).replace(/[{}<>]/g, '').replace(/\s+/g, ' ').trim();
+  for (const { i, key } of pairs) {
+    const c = parsed.s1cards[i];
+    if (!c) continue;
+    let v3;
+    try { v3 = K.renderCard(key, view).v; } catch (_) { continue; }
+    const v2t = clean(shownV2(c.vHtml, parsed.rd, parsed.sm));
+    if (sameNumbers(v2t, v3)) continue;
+    const a2 = NB.numsOf(v2t), a3 = NB.numsOf(v3);
+    const x = { i, key, label: c.k, v2t, v3, d: clean(shownV2(c.dHtml, parsed.rd, parsed.sm)) };
+    // ไม่ผูกราคา หรือหน้า v2 พิมพ์ข้อความไม่มีตัวเลข ("ขาดทุน GAAP" · "ไม่มี" — ข้อเท็จจริงของผู้เขียน ไม่ใช่ฟังก์ชันของราคา) → ข้อความของผู้เขียน
+    if (!PRICE_KEYS.has(key) || !a2.length) { out.push({ ...x, kind: 'text' }); continue; }
+    const n = firstNum(v2t);
+    const reproduces = (op, b) => n && Math.abs(opValue(op, Array.isArray(b) ? b[0] : b, px) - n.v) <= 2 * n.half * (1 + 1e-9);
+    // (1) ฐานที่ .d ของการ์ดประกาศ (DV — ตัวเดียวกับ cron v2 / E41 · W19 · W20)
+    const lb = /\{\{rd:/.test(c.vHtml) ? null : liveBase(c, px, cur);
+    if (lb && reproduces(lb.op, lb.base)) { out.push({ ...x, kind: 'base', op: lb.op, base: lb.base }); continue; }
+    // (2) ตัวเลขของใบ (fundamentals · override ของขา) ที่ได้ค่าของหน้า v2 ที่ราคาของมันเอง
+    const cb = candBases(key, doc);
+    const hit = cb.op && cb.bases.find((b) => reproduces(cb.op, b));
+    if (hit) { out.push({ ...x, kind: 'base', op: cb.op, base: hit }); continue; }
+    // ต่างแค่ความละเอียดที่ v3 พิมพ์ (fmtBig 3 หลัก "$24.95B" ↔ "$24.9B") = การปัด ไม่ใช่การ์ดค้าง
+    if (a2.length === a3.length && a2.every((p, j) => Math.abs(p.v - a3[j].v) <= 2 * Math.max(p.half, a3[j].half) * (1 + 1e-9))) { out.push({ ...x, kind: 'rounding' }); continue; }
+    out.push({ ...x, kind: 'stale' });
+  }
+  return out;
+}
+/** การ์ด v2 ↔ คีย์ของใบ (ลำดับ · MC.keyOf — แบบเดียวกับ EQ.norm) สำหรับ audit ที่ไม่มี meta ของ migrator */
+function pairsOf(parsed, doc) {
+  const MC = require('./cards.js');
+  const keys = S.cardEntries(doc.metrics || {}).filter((e) => e.key).map((e) => e.key);
+  const used = new Set(), out = [];
+  parsed.s1cards.forEach((c, i) => { const k = MC.keyOf(c.k, c.v); if (k && keys.includes(k) && !used.has(k)) { used.add(k); out.push({ i, key: k }); } });
+  return out;
+}
+/**
+ * ความสอดคล้องของ .ret ที่หน้า v2 พิมพ์ กับราคาเป้า (+ปันผล) ของคอลัมน์และราคาของหน้าเอง → [{ok, divs: [สมมติฐานปันผลที่ตรง], text} | null] ต่อคอลัมน์
+ *   เกณฑ์ = ของ cron v2 เอง (DV.retOff: max(TOL_RET_PP, 1% ของค่า) ≥ max(TOL_RET_PP, 1 หน่วยที่พิมพ์) · %/ปี DV.pyOff) — ตัวเดียวกับ dead-band ของ render
+ *   ⇒ ok = หน้า v3 ที่ราคาของหน้า v2 พิมพ์ตัวเลขเดียวกันทุกตัว · ไม่ ok = v2 พิมพ์ขัดกับเป้าของตัวเอง (หน้า v3 พิมพ์ค่าที่คิดใหม่)
+ *   · perYear = สูตร %/ปี ที่หน้า v3 ใช้ (ไม่ส่ง = CAGR หรือเส้นตรงตัวไหนก็ได้) · null = อ่าน token/เป้าไม่ได้
+ */
+function retConsistency(parsed, px, years, perYear) {
+  const R = require('../../_template/v3/render.js');
+  const s6 = (parsed.byN && parsed.byN[6]) || {}, v = (parsed.rd && parsed.rd.values) || {};
+  return (parsed.s6cols || []).map((c, i) => {
+    const text = shownV2(c.retHtml, parsed.rd, parsed.sm), parts = R.v2RetTokens(text);
+    if (!parts) return null;
+    const colHtml = String(s6.body || '').split(/<div class="col /)[i + 1] || '';
+    const m = /<div class="tgt">([\s\S]*?)<\/div>/.exec(colHtml);
+    let T = m ? (firstNum(shownV2(m[1], parsed.rd, parsed.sm)) || {}).v : null;
+    if (!isNum(T) && v.scenarios && v.scenarios[i]) T = v.scenarios[i].tgt;
+    const dl = c.lis.find((x) => /ปันผล/.test(x[0]));
+    let D = dl ? (firstNum(shownV2(dl[2], parsed.rd, parsed.sm)) || {}).v : null;
+    if (!isNum(D) && v.scenarios && v.scenarios[i] && isNum(v.scenarios[i].div)) D = v.scenarios[i].div;
+    if (!isNum(T) || !(px > 0)) return null;
+    const divs = [];
+    for (const div of [false, true]) {
+      if (div && !isNum(D)) continue;
+      const ok = (perYear ? [perYear] : ['cagr', 'linear']).some((py) => {
+        const w = R.v2RetWants(parts, { tgt: T, divCum: isNum(D) ? D : null, px, years, div, perYear: py });
+        return w && parts.every((x, k) => !(x.kind === 'py' ? DV.pyOff(x.v, w[k]) : DV.retOff(x.v, w[k])));
+      });
+      if (ok) divs.push(div);
+    }
+    return { ok: divs.length > 0, divs, text };
+  });
 }
 
 /** สูตร %/ปี ของข้อความ .ret (คู่ total + %/ปี ในช่องเดียวกัน) — แบบเดียวกับ DV.scenarioPlan: ช่องที่แยกขาดชี้ · ไม่มีหลักฐาน = cagr (prior ของคลัง) */
@@ -245,4 +298,4 @@ function pyConvOf(texts, years) {
   return l > c * 2 ? 'linear' : 'cagr';
 }
 
-module.exports = { v2DisplayOf, liveParts, cronSim, v2Gauge, sameNumbers, shownV2, pyConvOf };
+module.exports = { v2DisplayOf, v2Gauge, sameNumbers, shownV2, pyConvOf, cardPlan, pairsOf, retConsistency, PRICE_KEYS };

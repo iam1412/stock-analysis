@@ -117,22 +117,49 @@ function gaugeScale(ticks, d) {
   return xs.map(({ t }, i, arr) => `<span${i === 0 ? '' : i === arr.length - 1 ? ' style="text-align:right"' : ' style="text-align:center"'}>${t.ref != null ? `{{rd:${t.ref}}}` : esc(t.text)}<br><small>${esc(t.label)}</small></span>`).join('\n          ');
 }
 
-// v2Display.rets (ใบ migrate): ข้อความ .ret ของผู้เขียน v2 · live = ตัวเลข % เขียนใหม่ที่ราคาปัจจุบันด้วยกติกาเดียวกับ cron v2
-//   (DV.scenarioPlan #7: total = (เป้า [+ ปันผลเมื่อ divIncluded] − ราคา)/ราคา · %/ปี จาก total ที่ปัดตามช่องแล้ว · DV.retWrite คงทศนิยม/ขีดลบ/เครื่องหมาย +)
+// v2Display.rets (ใบ migrate): รูปแบบข้อความ .ret ของผู้เขียน v2 · ตัวเลข % คิดใหม่ทุกครั้งที่ราคาปัจจุบันด้วยกติกาเดียวกับ cron v2
+//   (DV.scenarioPlan #7: total = (เป้า [+ ปันผลเมื่อ div] − ราคา)/ราคา · %/ปี จาก total ที่ปัดตามช่องแล้ว · DV.retWrite คงทศนิยม/ขีดลบ/เครื่องหมาย +)
+//   · dead-band เดียวกับ cron (DV.retOff/pyOff): ตัวเลขที่ยังอยู่ในเกณฑ์ ไม่เขียนใหม่ — เกินเกณฑ์เมื่อไร เขียนใหม่ทันที (ไม่มีค่าค้าง)
+/** token % ของข้อความ .ret → [{t, kind: 'tot'|'totDiv'|'py', v (มีเครื่องหมาย)}] · null = รูปที่เขียนใหม่ไม่ได้
+ *  'py' = ป้าย /ปี (DV) หรือ "… % CAGR" · ผลตอบแทนรวมตัวที่สองหลังคำว่าปันผล/div = รวมปันผล ("+57.4% (+4.92 ปันผล = +71%)" · TRI "div −12.4%") */
+function v2RetTokens(text) {
+  const toks = DV.retTokens(text);
+  const out = [];
+  let nTot = 0;
+  for (const t of toks) {
+    const v = (/[-−–]/.test(t.sign || '') ? -1 : 1) * t.val;
+    const after = text.slice(t.index + t.len);
+    if (t.perYear || /^\s*\)?\s*CAGR/i.test(after)) { out.push({ t, kind: 'py', v }); continue; }
+    nTot++;
+    if (nTot === 1) { out.push({ t, kind: 'tot', v }); continue; }
+    const prev = out.filter((x) => x.kind !== 'py').pop();
+    // ตัวที่สองเป็น "รวมปันผล" เมื่อ: คำระหว่างสองตัวพูดถึงปันผล/div · ตัวแรกติดป้ายราคาอย่างเดียว ("(capital)" · "(ราคา)") · ตัวที่สองติดป้าย total/รวม (HLT · TEAMG)
+    const between = text.slice(prev.t.index + prev.t.len, t.index), after2 = text.slice(t.index + t.len);
+    if (nTot === 2 && (/ปันผล|div/i.test(between) || /^\s*\(?\s*(?:capital|ราคา|price)\b/i.test(between) || /^\s*\(?\s*(?:total|รวม)/i.test(after2))) { out.push({ t, kind: 'totDiv', v }); continue; }
+    return null;
+  }
+  if (!out.length || out.filter((x) => x.kind === 'py').length > 1) return null;
+  return out;
+}
+/** ค่าที่ควรเป็นของแต่ละ token ที่ราคา px (เป้า tgt · ปันผลรวม divCum · div = ผลตอบแทนรวม "tot" รวมปันผลไหม) → [want] · null = คิดไม่ได้ */
+function v2RetWants(parts, { tgt, divCum, px, years, div, perYear }) {
+  const hasDiv = parts.some((x) => x.kind === 'totDiv');
+  if (hasDiv && divCum == null) return null;
+  const tot = (tgt + (div && !hasDiv && divCum != null ? divCum : 0) - px) / px * 100;
+  const totD = hasDiv ? (tgt + divCum - px) / px * 100 : null;
+  const t0 = parts.find((x) => x.kind === 'tot');
+  const base = t0 ? parseFloat(tot.toFixed(DV.decOfNum(t0.t.num))) : tot;
+  return parts.map((x) => (x.kind === 'tot' ? tot : x.kind === 'totDiv' ? totD : perYear === 'linear' ? base / years : (Math.pow(1 + base / 100, 1 / years) - 1) * 100));
+}
 function v2Ret(rets, i, view) {
   const text = rets.texts[i];
-  if (!rets.live) return text;
-  const toks = DV.retTokens(text), tot = toks.filter((t) => !t.perYear), py = toks.filter((t) => t.perYear);
-  if (tot.length > 1 || py.length > 1 || !toks.length) return text;
-  const years = view.doc.scenarios.years, sc = view.scn[i], px = view.d.px;
-  const total = (sc.tgt + (rets.div && sc.divCum != null ? sc.divCum : 0) - px) / px * 100;
-  const edits = [];
-  if (tot[0]) edits.push({ t: tot[0], want: total });
-  if (py[0]) {
-    const base = tot[0] ? parseFloat(total.toFixed(DV.decOfNum(tot[0].num))) : total;
-    edits.push({ t: py[0], want: rets.perYear === 'linear' ? base / years : (Math.pow(1 + base / 100, 1 / years) - 1) * 100 });
-  }
+  const parts = v2RetTokens(text);
+  if (!parts) return text;
+  const sc = view.scn[i];
+  const wants = v2RetWants(parts, { tgt: sc.tgt, divCum: sc.divCum, px: view.d.px, years: view.doc.scenarios.years, div: rets.div, perYear: rets.perYear });
+  if (!wants) return text;
   let out = text;
+  const edits = parts.map((x, k) => ({ ...x, want: wants[k] })).filter((e) => (e.kind === 'py' ? DV.pyOff(e.v, e.want) : DV.retOff(e.v, e.want)));
   for (const e of edits.sort((a, b) => b.t.index - a.t.index)) { const w = DV.retWrite(e.t, e.want, rets.neg); if (w) out = out.slice(0, e.t.index) + w.text + out.slice(e.t.index + e.t.len); }
   return out;
 }
@@ -181,7 +208,11 @@ function toV2Source(doc, view) {
     .sort((a, b) => a.v - b.v)
     .map((x, i, arr) => `<span${i === 0 ? '' : i === arr.length - 1 ? ' style="text-align:right"' : ' style="text-align:center"'}>${x.tok}<br><small>${x.lab}</small></span>`).join('\n          ');
   const FFO = ffoLabel(doc);
-  const drv = { eps: 'EPS', ffo: FFO, revenuePerShare: 'รายได้/หุ้น', bvps: 'BVPS', fcfPerShare: 'FCF/หุ้น', de: 'DE/หุ้น', fre: 'FRE/หุ้น', ebitdaPerShare: 'EBITDA/หุ้น' }[s.driver];
+  // v2Display.driverTotal (ใบ migrate — CPNG/NET): หน้า v2 พิมพ์ตัวตั้งเป็นยอดรวมทั้งบริษัท ⇒ ป้าย "รายได้" + ค่า = ต่อหุ้น × หุ้น (fmtBig)
+  const tot = !!(vd && vd.driverTotal) && doc.fundamentals.shares > 0;
+  const drv = tot ? { revenuePerShare: 'รายได้', ebitdaPerShare: 'EBITDA', fcfPerShare: 'FCF' }[s.driver]
+    : { eps: 'EPS', ffo: FFO, revenuePerShare: 'รายได้/หุ้น', bvps: 'BVPS', fcfPerShare: 'FCF/หุ้น', de: 'DE/หุ้น', fre: 'FRE/หุ้น', ebitdaPerShare: 'EBITDA/หุ้น' }[s.driver];
+  const drvAmt = (x) => (tot ? RV.fmtBig(x * doc.fundamentals.shares, view.cur) : view.cur + RV.fmtPerShare(x));
   const ex = { pe: 'P/E', ps: 'P/S', pbv: 'P/BV', pffo: `P/${FFO}`, pfcf: 'P/FCF', evsales: 'EV/Sales', evebitda: 'EV/EBITDA' }[s.exitMetric];
   const col = (i, cls, name) => {
     const sc = view.scn[i];
@@ -191,9 +222,9 @@ function toV2Source(doc, view) {
         <div class="top"><span>${name}</span><span>${drv} ${g}%/ปี</span></div>
         <div class="body">
           <div class="tgt">{{rd:sc${i + 1}tgt}}</div>
-          ${vd && vd.rets ? `<div class="ret ${vd.rets.live ? `{{rd:sc${i + 1}retClass}}` : vd.rets.cls[i]}">${esc(v2Ret(vd.rets, i, view))}</div>` : `<div class="ret {{rd:sc${i + 1}retClass}}">{{rd:sc${i + 1}ret}}${s.cases[i].retNote ? ' ' + pr(s.cases[i].retNote) : ''}</div>`}
+          ${vd && vd.rets ? `<div class="ret {{rd:sc${i + 1}retClass}}">${esc(v2Ret(vd.rets, i, view))}</div>` : `<div class="ret {{rd:sc${i + 1}retClass}}">{{rd:sc${i + 1}ret}}${s.cases[i].retNote ? ' ' + pr(s.cases[i].retNote) : ''}</div>`}
           <ul>
-            <li><span>${drv} ปี ${s.years}</span><span>${vd && vd.driverEnds && vd.driverEnds[i] != null ? esc(vd.driverEnds[i]) : `~${esc(view.cur + RV.fmtPerShare(sc.driverEnd))}`}</span></li>
+            <li><span>${drv} ปี ${s.years}</span><span>${vd && vd.driverEnds && vd.driverEnds[i] != null ? esc(vd.driverEnds[i]) : `~${esc(drvAmt(sc.driverEnd))}`}</span></li>
             <li><span>${ex} ออก</span><span>${exitText(s, sc.exitMultiple)}x</span></li>${sc.divCum != null ? `
             <li><span>ปันผลรวม ${s.years} ปี</span><span>~{{rd:sc${i + 1}div}}</span></li>` : ''}${sc.desc != null ? `
             <li><span>สถานการณ์</span><span>${pr(sc.desc)}</span></li>` : ''}
@@ -328,7 +359,7 @@ ${jsonScript(RV.styledRD(view.rd))}
   </section>
 
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน ${s.years} ปี</h2><div class="hint">จากจุดเข้า {{rd:px}}${s.driver === 'eps' ? ' • EPS ฐาน ~{{rd:baseEps}}' : ` • ${drv} ฐาน ~${esc(view.cur + RV.fmtPerShare(view.scn[0].driverStart))}`}${s.hintNote ? ' ' + pr(s.hintNote) : ''}{{rd:scnNote}}</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน ${s.years} ปี</h2><div class="hint">จากจุดเข้า {{rd:px}}${s.driver === 'eps' ? ' • EPS ฐาน ~{{rd:baseEps}}' : ` • ${drv} ฐาน ~${esc(drvAmt(view.scn[0].driverStart))}`}${s.hintNote ? ' ' + pr(s.hintNote) : ''}{{rd:scnNote}}</div></div>
     <div class="scn">
       ${col(0, 'bear', 'Bear')}
       ${col(1, 'base', 'Base')}
@@ -388,4 +419,4 @@ ${jsonScript(RV.styledRD(view.rd))}
 `;
 }
 
-module.exports = { toV2Source, mdesc, jsonScript, SRC_NAME, epsLabel, ffoLabel };
+module.exports = { toV2Source, mdesc, jsonScript, SRC_NAME, epsLabel, ffoLabel, v2RetTokens, v2RetWants };

@@ -49,6 +49,18 @@ t.eq(txt('~฿4.18 พัน ล. และ ฿17.4 พัน ลบ.'), '~฿4.
   const withNote = { ...mig, metrics: { ...mig.metrics, notes: { ...(mig.metrics.notes || {}), pe: 'x' } }, v2Display: { cards: { pe: { v: '~9x', d: '' } } } };
   t(S.validate(withNote).some((e) => e.path === 'metrics.notes.pe'), 'schema: a frozen card carries no metrics.notes (its .d is the v2 line)');
   t(S.validate({ ...mig, v2Display: { cards: { pe: { v: '~9x', d: '', op: 'pxOverBase' } } } }).some((e) => e.path === 'v2Display.cards.pe'), 'schema: op needs base');
+  // round 2 (controller): v2Display carries author assumptions only — a price-bound card (P/E · mcap · yield …) with a number must be live (op/base)
+  t(S.validate({ ...mig, v2Display: { cards: { pe: { v: '~22.6x', d: 'Forward P/E ~20.2x' } } } }).some((e) => e.path === 'v2Display.cards.pe' && /ผูกราคา/.test(e.msg)), 'schema: a frozen price-bound card (number, no op/base) → error');
+  t(S.validate({ ...mig, v2Display: { cards: { mcap: { v: '$40.1B', d: '' } } } }).some((e) => e.path === 'v2Display.cards.mcap'), 'schema: frozen market cap → error');
+  t.eq(S.validate({ ...mig, v2Display: { cards: { pe: { v: 'ขาดทุน GAAP', d: 'EPS TTM −$0.59' } } } }), [], 'schema: a price card whose v2 text has no number (author fact) may stay text');
+  const noRevNote = { ...mig.metrics, notes: Object.fromEntries(Object.entries(mig.metrics.notes || {}).filter(([k]) => k !== 'revenue')) };
+  t.eq(S.validate({ ...mig, metrics: noRevNote, v2Display: { cards: { revenue: { v: '$9.3B', d: '+4% YoY' } } } }), [], 'schema: a non-price card (revenue) may carry the author text');
+  t.eq(S.V2DISPLAY_PRICE_CARDS.slice().sort(), ['analystTarget', 'evEbitda', 'mcap', 'pbv', 'pe', 'peForward', 'pffo', 'pffoForward', 'ps', 'ptbv', 'yield'], 'schema: the price-bound card keys');
+  const R3 = { texts: ['−2%', '+19%', '+39%'], neg: '−', div: false };
+  t.eq(S.validate({ ...mig, v2Display: { rets: R3 } }), [], 'schema: rets = the author format, always live');
+  t(S.validate({ ...mig, v2Display: { rets: { ...R3, live: false, cls: ['neg', 'pos', 'pos'] } } }).some((e) => e.path === 'v2Display.rets.live'), 'schema: fixed return text (live:false/cls) is gone — returns are a function of price');
+  t(S.validate({ ...mig, v2Display: { rets: { texts: R3.texts, neg: '−' } } }).some((e) => e.path === 'v2Display.rets.div'), 'schema: rets.div required');
+  t(S.validate({ ...mig, v2Display: { driverTotal: true } }).some((e) => e.path === 'v2Display.driverTotal'), 'schema: driverTotal only on a per-share total driver (ZTS = eps)');
   t(S.validate({ ...mig, meta: { ...mig.meta, migratedFrom: { ...MF, prevHash: 'zz' } } }).some((e) => e.path === 'meta.migratedFrom.prevHash'), 'schema: prevHash = 12 hex');
   t.eq(S.validate({ ...mig, meta: { ...mig.meta, migratedFrom: { ...MF, prevHash: '0123456789ab' } } }), [], 'schema: prevHash ok');
 }
@@ -77,7 +89,7 @@ t.eq(txt('~฿4.18 พัน ล. และ ฿17.4 พัน ลบ.'), '~฿4.
   const d = { ...zts, metrics: { ...zts.metrics, notes }, scenarios: { ...zts.scenarios, cases: zts.scenarios.cases.map(({ retNote, ...c }) => c) },
     v2Display: { gauge: [{ text: '$999', label: 'เป้าสูงสุด' }, { ref: 'mos30', label: 'MOS 30%' }, { ref: 'fv', label: 'Fair Value' }],
       cards: { pe: { v: '~31.4x', d: 'EPS TTM $5.00 (dil.)', op: 'pxOverBase', base: 5 } },
-      rets: { texts: ['−2.5%/ปี', '+19.4%/ปี', '+39.4%/ปี'], live: true, neg: '−', perYear: 'cagr', div: false },
+      rets: { texts: ['−2.5%/ปี', '+19.4%/ปี', '+39.4%/ปี'], neg: '−', perYear: 'cagr', div: false },
       footer: '21 ก.ย. 2569 (2026)', driverEnds: ['~$38.75B', null, null] } };
   t(key === 'pe', 'fixture has a pe card');
   t.eq(S.validate(d), [], 'schema: the full v2Display example validates', JSON.stringify(S.validate(d)));
@@ -88,16 +100,21 @@ t.eq(txt('~฿4.18 พัน ล. และ ฿17.4 พัน ลบ.'), '~฿4.
   t(src.includes(`~${want}x`) && src.includes('EPS TTM $5.00 (dil.)'), `render: live card = price ÷ the author base (${want}x) + the v2 .d line`);
   const hi = { ...d, market: { ...d.market, px: +(px * 1.2).toFixed(2) } };
   t(R.toV2Source(hi, C.compute(hi, { seeds: SEEDS })).includes(`~${(hi.market.px / 5).toFixed(1)}x`), 'live card follows the price (cron keeps it right)');
+  // round 2 blocker test: a migrated doc with an author-base card · price +10% → the card value changes (nothing price-bound is frozen)
+  const p10 = { ...d, market: { ...d.market, px: +(px * 1.1).toFixed(2) } };
+  const cardV = (x) => (/<div class="k">[^<]*P\/E[^<]*<\/div><div class="v[^"]*">([^<]*)<\/div>/.exec(R.toV2Source(x, C.compute(x, { seeds: SEEDS }))) || [])[1];
+  t(cardV(p10) && cardV(d) && cardV(p10) !== cardV(d) && cardV(p10) === `~${(p10.market.px / 5).toFixed(1)}x`, `price +10% → the P/E card moves (${cardV(d)} → ${cardV(p10)})`);
   const bear = (src.split('<div class="col bear">')[1] || '').split('</ul>')[0];
   const T = (v.scn[0].tgt - px) / px * 100, py = (Math.pow(1 + T / 100, 1 / d.scenarios.years) - 1) * 100;
   t(bear.includes(`${py < 0 ? '−' : '+'}${Math.abs(py).toFixed(1)}%/ปี`), `render: live ret keeps the author format (per-year 1 dp) at the current price (${py.toFixed(1)})`, bear.slice(0, 300));
   t(bear.includes('~$38.75B') && />~\$38\.75B</.test(bear), 'render: scenario end value = the author\'s text');
   t(/ข้อมูล ณ 21 ก\.ย\. 2569 \(2026\)/.test(src), 'render: footer date as the v2 page printed it');
-  const fixed = { ...d, v2Display: { ...d.v2Display, rets: { texts: ['-3% (3 ปี)', '+39% (3 ปี)', '+72% (3 ปี)'], live: false, neg: '-', cls: ['neg', 'pos', 'pos'] } } };
-  const fsrc = R.toV2Source(fixed, C.compute(fixed, { seeds: SEEDS }));
-  t(/<div class="ret neg">-3% \(3 ปี\)<\/div>/.test(fsrc), 'render: fixed ret text + class as on the v2 page');
-  const fz = { ...d, v2Display: { cards: { pe: { v: '~22.6x', d: 'Forward P/E ~20.2x' } } } };
-  t(R.toV2Source(fz, C.compute(fz, { seeds: SEEDS })).includes('<div class="v neu">~22.6x</div><div class="d">Forward P/E ~20.2x</div>'), 'render: frozen card (cron v2 never touched it) = v2 value + v2 .d');
+  const lv = { ...d, v2Display: { ...d.v2Display, rets: { texts: ['-3% (3 ปี)', '+39% (3 ปี)', '+72% (3 ปี)'], neg: '-', div: false } } };
+  const lsrc = R.toV2Source(lv, C.compute(lv, { seeds: SEEDS }));
+  const T0 = Math.round((C.compute(lv, { seeds: SEEDS }).scn[0].tgt - px) / px * 100);
+  t(new RegExp(`<div class="ret \\{\\{rd:sc1retClass\\}\\}">${T0 < 0 ? '-' : '\\+'}${Math.abs(T0)}% \\(3 ปี\\)</div>`).test(lsrc), `render: the author ret format, numbers live at the current price (${T0}%) + live class token`, (/<div class="ret[^>]*>[^<]*/.exec(lsrc) || [])[0]);
+  const fz = { ...d, v2Display: { cards: { pe: { v: 'ขาดทุน GAAP', d: 'EPS TTM −$0.59' } } } };
+  t(R.toV2Source(fz, C.compute(fz, { seeds: SEEDS })).includes('<div class="v neu">ขาดทุน GAAP</div><div class="d">EPS TTM −$0.59</div>'), 'render: an author-fact card (no number) = v2 text + v2 .d');
   const neg = load('ZTS-real'); neg.fundamentals.eps = -0.77;
   const ek = neg.metrics.cards.map((c) => (typeof c === 'string' ? c : c.key));
   if (!ek.includes('eps')) neg.metrics.cards = neg.metrics.cards.filter((c) => (typeof c === 'string' ? c : c.key) !== 'pe').concat(['eps']);
@@ -123,10 +140,6 @@ const tmp = fs.realpathSync.native(fs.mkdtempSync(path.join(os.tmpdir(), 'dfix-'
     // without v2Display the same doc shows other values (what the pre-fix migrator produced)
     if (s === 'AAPL') { const x = { ...m.doc }; delete x.v2Display; t(AU.auditDoc(s, x, { raw: m.raw }, { seeds: SEEDS }).valueDiffs > 0, 'AAPL without v2Display → value diffs (the bug class)'); }
   }
-  // cron simulation: a card the v2 cron rewrites is "live" — a fixed card is not
-  const raw = fs.readFileSync(path.join(D, 'BBL.html'), 'utf8'), parsed = require('../../tools/migrate-v3/parse-v2.js').parseV2('BBL', raw);
-  const live = DS.liveParts(raw, parsed);
-  t(live && live.cards instanceof Set, 'liveParts simulates the v2 cron');
   t.eq(DS.pyConvOf(['+10.0% (3 ปี · ≈3.2%/ปี)', '+41.9% (3 ปี · ≈12.4%/ปี)', '+65.8% (3 ปี · ≈18.4%/ปี)'], 3), 'cagr', 'pyConvOf: CAGR pairs');
   t.eq(DS.pyConvOf(['+30.0% / 10.0%/ปี', '+60.0% / 20.0%/ปี', '+90.0% / 30.0%/ปี'], 3), 'linear', 'pyConvOf: linear pairs');
 }
@@ -202,6 +215,83 @@ const tmp = fs.realpathSync.native(fs.mkdtempSync(path.join(os.tmpdir(), 'dfix-'
   const u = cli([...common]);
   t(u.code === 1 && /ต้องมี <SYM>/.test(u.out), 'no symbols → usage error');
 }
+
+// ── round 2: card plan (live base or stale — never frozen) · returns consistency · deviations · E44 · company-total driver · exclusions ──
+{
+  const zts = load('ZTS-real'); zts.meta.migratedFrom = MF;
+  const v = C.compute(zts, { seeds: SEEDS }), px = v.d.px;
+  const card = (vHtml, dHtml) => ({ k: 'P/E (TTM)', kHtml: 'P/E (TTM)', vHtml, dHtml });
+  const parsedOf = (cards) => ({ s1cards: cards, rd: { values: { px } }, sm: { currency: 'USD' } });
+  const at5 = `~${(px / 5).toFixed(1)}x`;
+  const pl = DS.cardPlan(parsedOf([card(at5, 'EPS TTM $5.00 (dil.)')]), zts, v, [{ i: 0, key: 'pe' }]);
+  t(pl.length === 1 && pl[0].kind === 'base' && pl[0].base === 5 && pl[0].op === 'pxOverBase', 'cardPlan: the base the card declares reproduces the v2 value → live {op, base}', JSON.stringify(pl));
+  const eps = zts.fundamentals.eps, fwd = zts.fundamentals.epsForward;
+  if (fwd > 0 && Math.abs(px / fwd - px / eps) > 1) {
+    const pf = DS.cardPlan(parsedOf([card(`~${(px / fwd).toFixed(1)}x`, 'forward')]), zts, v, [{ i: 0, key: 'pe' }]);
+    t(pf.length === 1 && pf[0].kind === 'base' && pf[0].base === fwd, 'cardPlan: a doc base (epsForward) that reproduces the v2 value → live', JSON.stringify(pf));
+  }
+  const st = DS.cardPlan(parsedOf([card('~99.9x', 'EPS TTM $1.23')]), zts, v, [{ i: 0, key: 'pe' }]);
+  t(st.length === 1 && st[0].kind === 'stale', 'cardPlan: no base reproduces the v2 value → the v2 card was stale (v3 value shown, nothing carried)', JSON.stringify(st));
+  const tx = DS.cardPlan(parsedOf([card('ขาดทุน GAAP', 'EPS ติดลบ')]), zts, v, [{ i: 0, key: 'pe' }]);
+  t(tx.length === 1 && tx[0].kind === 'text', 'cardPlan: a number-less author fact stays text');
+  // returns consistency with the page's own targets (tolerance max(TOL_RET_PP, 1 printed unit))
+  const col = (r) => ({ retHtml: r, lis: [] });
+  const pr = { rd: { values: { px: 100, scenarios: [{ tgt: 90 }, { tgt: 120 }, { tgt: 150 }] } }, sm: { currency: 'USD' }, byN: { 6: { body: '' } }, s6cols: [col('−10%'), col('+20.5% (≈6.4%/ปี)'), col('+35%')] };
+  const cs = DS.retConsistency(pr, 100, 3);
+  t.eq(cs.map((c) => c.ok), [true, true, false], 'retConsistency: Bull +35% contradicts its own $150 target at $100 → inconsistent (others within tolerance)');
+  const two = { ...pr, rd: { values: { px: 100, scenarios: [{ tgt: 90, div: 5 }, { tgt: 120, div: 5 }, { tgt: 150, div: 5 }] } }, s6cols: [col('−10% (+$5 ปันผล = −5%)'), col('+20% (+$5 ปันผล = +25%)'), col('+50% (+$5 ปันผล = +60%)')] };
+  t.eq(DS.retConsistency(two, 100, 3).map((c) => c.ok), [true, true, false], 'retConsistency: "total (+div = total)" read as price-only + with-dividend (NKE/TRI shape) · Bull +60% ≠ +55%');
+  t.eq(R.v2RetTokens('$212 +50.2% 3 ปี (~14.5% CAGR)').map((x) => x.kind), ['tot', 'py'], 'v2RetTokens: "% CAGR" is the per-year figure');
+  t.eq(R.v2RetTokens('−21.2% + ปันผล $8.34 (ราคาลด, div −12.4%)').map((x) => x.kind), ['tot', 'totDiv'], 'v2RetTokens: the second total after ปันผล/div = with dividends');
+  t.eq(['−48.1% (capital) / −47.5% total', '-3.4% (ราคา) / +13.9% (รวมปันผล)'].map((x) => R.v2RetTokens(x).map((y) => y.kind).join()), ['tot,totDiv', 'tot,totDiv'], 'v2RetTokens: "(capital)/(ราคา) … total/รวม" = price-only + with-dividend (HLT · TEAMG)');
+  t(R.v2RetTokens('+10% หรือ +20% หรือ +30%') === null && R.v2RetTokens('+10% / +20%') === null, 'v2RetTokens: three totals / two unlabelled totals → not rewritable (v3 format)');
+  // dead-band = the v2 cron's own (DV.retOff): an author figure within tolerance stays, beyond it is rewritten — at any price, nothing frozen
+  const sc0 = C.compute(zts, { seeds: SEEDS }).scn[0], T = (sc0.tgt - px) / px * 100;
+  const within = `${T - 0.4 < 0 ? '−' : '+'}${Math.abs(T - 0.4).toFixed(1)}%`, beyond = `${T - 5 < 0 ? '−' : '+'}${Math.abs(T - 5).toFixed(1)}%`;
+  const dz = (txt) => { const x = { ...zts, scenarios: { ...zts.scenarios, cases: zts.scenarios.cases.map(({ retNote, ...c }) => c) }, v2Display: { rets: { texts: [txt, '+1%', '+2%'], neg: '−', div: false } } }; return (R.toV2Source(x, C.compute(x, { seeds: SEEDS })).split('<div class="col bear">')[1] || '').split('</ul>')[0]; };
+  t(dz(within).includes(`>${within}<`), `render: author return within the cron tolerance stays (${within} vs ${T.toFixed(1)})`);
+  t(dz(beyond).includes(`>${T < 0 ? '−' : '+'}${Math.abs(T).toFixed(1)}%<`), `render: beyond the tolerance → rewritten (${beyond} → ${T.toFixed(1)})`);
+  // audit deviations: only the defined classes
+  const src = R.toV2Source(zts, v);
+  const bullRet = (/<div class="col bull">[\s\S]*?<div class="ret [^"]*">([^<]*)<\/div>/.exec(B.expandReport(src)) || [])[1];
+  const v2Bad = src.replace(/(<div class="col bull">[\s\S]*?<div class="ret [^"]*">)[^<]*(<\/div>)/, '$1+999%$2');
+  const dv = AU.deviationsOf('ZTS', v2Bad, zts, v, B.expandReport(src));
+  t(dv.accept({ zone: 's6', del: '+999%', ins: bullRet }) === 'v2-inconsistent-returns', 'audit: a v2 return that contradicts its own target → v2-inconsistent-returns', bullRet);
+  t(dv.accept({ zone: 's6', del: '+998%', ins: bullRet }) === null && dv.accept({ zone: 's2', del: '+999%', ins: bullRet }) === null, 'audit: nothing broader (other numbers / other zones stay value diffs)');
+  t(AU.deviationsOf('ZTS', src, zts, v, B.expandReport(src)).accept({ zone: 's6', del: '+999%', ins: bullRet }) === null, 'audit: consistent v2 returns → no deviation');
+}
+{
+  // E44: a doc analysed since PROSE_TOKEN_SINCE — a stale price-bound prose literal becomes the live token (NDSN/NOC ruling)
+  const MP = require('../../tools/migrate-v3/prose.js');
+  const zts = load('ZTS-real'); zts.meta.migratedFrom = MF; const v = C.compute(zts, { seeds: SEEDS });
+  const hits = [{ token: 'px', text: '$1.23' }];
+  const keep = MP.tokenise('ราคา $1.23 วันนี้', v, hits, 'x'), live = MP.tokenise('ราคา $1.23 วันนี้', v, hits, 'x', { e44: new Set(['px|$1.23']) });
+  t(keep.text === 'ราคา $1.23 วันนี้' && /\{\{px\}\}/.test(live.text) && live.F.some((f) => /E44/.test(f)), 'tokenise: stale literal kept before SINCE · live token (with an F note) when E44 flags the author literal', JSON.stringify([keep.text, live.text]));
+  const tok = MP.tokenise('ราคา $1.23 วันนี้', v, hits, 'x', { e44: new Set(['mos20|$1.23']) });
+  t(tok.text === 'ราคา $1.23 วันนี้', 'tokenise: a number the v2 page rendered from a token (not an author literal) is never re-tokenised to another token (TMUS)');
+}
+{
+  // company-total scenario ends (CPNG "รายได้ปี 3 ~$38.75B"): per share = total ÷ shares · the page prints the total label and amounts
+  const MS = require('../../tools/migrate-v3/scenarios.js');
+  const colOf = (g, end, ex) => ({ top: ['', `รายได้ +${g}%/ปี`], retHtml: '{{rd:sc1ret}}', lis: [['รายได้ปี 3', end, end], ['EV/Sales ออก', ex, ex], ['สถานการณ์', 'x', 'x']] });
+  const pp = { rd: { values: {} }, byN: {}, s6paras: ['n'], s6cols: [colOf(3, '~$38.75B', '0.45x'), colOf(9, '~$45.9B', '1.0x'), colOf(12, '~$49.8B', '1.22x')] };
+  const r = MS.scenarios(pp, { shares: 1797511702, revenue: 35.46e9 }, []);
+  t(r.meta.total === true && r.scenarios.driver === 'revenuePerShare' && !r.scenarios.baseOverride && Math.abs(r.meta.ends[0].end - 38.75e9 / 1797511702) < 1e-9, 'scenarios: a company-total end → per share (÷ shares) · base = fundamentals (no bogus override)', JSON.stringify([r.meta.base, r.scenarios.baseOverride]));
+  const r2 = MS.scenarios(pp, { revenue: 35.46e9 }, []);
+  t(r2.H.some((h) => /company total/.test(h)), 'scenarios: a total end without shares → HUMAN (not read as per share)');
+  const zts = load('ZTS-real'); zts.meta.migratedFrom = MF;
+  const d = { ...zts, scenarios: { ...zts.scenarios, driver: 'revenuePerShare', exitMetric: 'ps', baseOverride: undefined }, v2Display: { driverTotal: true } };
+  delete d.scenarios.baseOverride;
+  t.eq(S.validate(d), [], 'schema: driverTotal on a revenue driver', JSON.stringify(S.validate(d)));
+  const vv = C.compute(d, { seeds: SEEDS }), h = R.toV2Source(d, vv);
+  const RV = require('../../tools/report-values.js');
+  const endT = RV.fmtBig(vv.scn[0].driverEnd * d.fundamentals.shares, '$'), baseT = RV.fmtBig(vv.scn[0].driverStart * d.fundamentals.shares, '$');
+  t(/<span>รายได้ \+/.test(h) && h.includes(`<span>รายได้ ปี ${d.scenarios.years}</span><span>~${endT}</span>`) && h.includes(`รายได้ ฐาน ~${baseT}`) && !/รายได้\/หุ้น/.test(h), `render: total label + total amounts (${baseT} → ${endT})`);
+  const plain = { ...d, v2Display: undefined }; delete plain.v2Display;
+  t(/รายได้\/หุ้น ฐาน/.test(R.toV2Source(plain, C.compute(plain, { seeds: SEEDS }))), 'render: without driverTotal the per-share label stays');
+}
+t.eq(Object.keys(RMG.EXCLUDED).sort(), ['ABT', 'UNP'], 'remigrate: ABT/UNP excluded (controller ruling)');
+t.eq(RMG.remigrateOne('ABT', { reportsDir: REAL }, {}).result, 'SKIP', 'remigrate ABT → SKIP before reading anything');
 
 t(fs.readdirSync(REAL).length === realBefore, 'real reports/ untouched');
 fs.rmSync(tmp, { recursive: true, force: true });

@@ -70,19 +70,27 @@ function graftOf(existing, fresh) {
   }
   let scenarios = doc.scenarios;
   // ผลตอบแทนฉาก: ฐานปันผลต้องเท่าฐานที่ cron v2 พิมพ์ข้อความนั้น (เหมือน assemble) — ต่างแล้วปรับได้เมื่อไม่ต้องเพิ่มปันผลที่ใบไม่มี
-  const divOk = vd.rets && (!vd.rets.live || vd.rets.div === !!doc.scenarios.divIncluded || !vd.rets.div || doc.scenarios.cases.every((c) => c.divCum != null));
+  const divOk = vd.rets && (vd.rets.div === !!doc.scenarios.divIncluded || !vd.rets.div || doc.scenarios.cases.every((c) => c.divCum != null));
   if (vd.rets && divOk) {
     x.rets = vd.rets;
-    scenarios = { ...doc.scenarios, cases: doc.scenarios.cases.map(({ retNote, ...c }) => c) };
-    if (vd.rets.live) scenarios.divIncluded = vd.rets.div;
+    scenarios = { ...doc.scenarios, cases: doc.scenarios.cases.map(({ retNote, ...c }) => c), divIncluded: vd.rets.div };
+  }
+  // ตัวตั้งปลายฉากเป็นยอดรวม (CPNG/NET): ฐานต่อหุ้นต้องเป็นของ fresh (ใบเดิมอาจถอดฐานจากยอดรวมเป็น "ต่อหุ้น" — NET 2.51392) · driver ต่างกัน = ไม่ต่อ
+  if (vd.driverTotal && fresh.scenarios && doc.scenarios && fresh.scenarios.driver === doc.scenarios.driver) {
+    x.driverTotal = true;
+    const { baseOverride, ...rest } = scenarios;
+    scenarios = fresh.scenarios.baseOverride ? { ...rest, baseOverride: fresh.scenarios.baseOverride } : rest;
   }
   if (!Object.keys(x).length) return null;
   return { ...doc, metrics, scenarios, v2Display: x };
 }
 
 /** ใบเดียว → { sym, result, via, why[], doc, row } · ไม่ throw */
+// ใบที่ controller สั่งคงไว้ (คำตัดสิน 26 ก.ย. 69 round 2): ใบที่ worker ถอดเองดีกว่าผล remigrate — ไม่แตะ
+const EXCLUDED = { ABT: 'controller ruling: keep worker transcription', UNP: 'controller ruling: keep worker transcription' };
 function remigrateOne(sym, o, env) {
   const out = { sym, result: 'STILL-FAILING', via: null, why: [], doc: null };
+  if (EXCLUDED[sym]) { out.result = 'SKIP'; out.why.push(EXCLUDED[sym]); return out; }
   const file = path.join(o.reportsDir, sym + '.json');
   let existing;
   try { existing = IO.read(file); } catch (e) { out.result = 'SKIP'; out.why.push(`อ่าน ${sym}.json ไม่ได้ — ${String(e.message).split('\n')[0]}`); return out; }
@@ -160,4 +168,4 @@ function runRemigrate(syms, opts, log, env) {
   return { code: n('STILL-FAILING') ? 1 : 0, res };
 }
 
-module.exports = { runRemigrate, remigrateOne, graftOf, failingOf, headRows, gateAt };
+module.exports = { EXCLUDED, runRemigrate, remigrateOne, graftOf, failingOf, headRows, gateAt };

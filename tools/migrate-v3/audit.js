@@ -23,6 +23,8 @@ const PV = require('./parse-v2.js');
 const A = require('./assemble.js');
 const EQ = require('./equiv.js');
 const RM = require('../report-meta.js');
+const DV = require('../derived-values.js');
+const FD = require('../queue/footer-date.js');
 
 const GIT_SCRUB = ['GIT_DIR', 'GIT_WORK_TREE', 'GIT_INDEX_FILE', 'GIT_COMMON_DIR', 'GIT_PREFIX', 'GIT_OBJECT_DIRECTORY'];
 const gitEnv = () => { const e = { ...process.env }; for (const k of GIT_SCRUB) delete e[k]; return e; };
@@ -165,6 +167,89 @@ function splitValues(runs, v3Html, steps) {
   return out;
 }
 
+/**
+ * ส่วนเบี่ยงที่ตั้งใจ (round 2 · คำตัดสิน controller) ของหน้า v3 จากหน้า v2 → { served (หน้า v2 ที่แทนการ์ดค้างแล้ว), list, accept(run) → ชื่อคลาส | null }
+ *   v2-stale-card — การ์ดผูกราคาที่ไม่มีฐานใด (ที่การ์ดประกาศ / ตัวเลขของใบ) ได้ค่าที่หน้า v2 พิมพ์ที่ราคาของมันเอง = การ์ด v2 ค้างเอง
+ *                   ⇒ baseline ใช้ค่าที่ v3 คิด (หน้า v3 ถูก — ค่าผูกราคาต้องสด) · จดทุกใบ
+ *   v2-inconsistent-returns — รันในหมวด 6 ที่ตัวเลขฝั่ง v2 ทุกตัวเป็นผลตอบแทน (.ret) ของคอลัมน์ที่ขัดกับราคาเป้า (+ปันผล) ของตัวเองที่ราคาของหน้า
+ *                   (เกณฑ์ max(TOL_RET_PP, 1 หน่วยที่พิมพ์) — DS.retConsistency) และฝั่ง v3 ทุกตัวเป็นผลตอบแทนที่หน้า v3 พิมพ์ในคอลัมน์เดียวกัน
+ *   v2-stale-prose-e44 — ใบวิเคราะห์ ≥ RV.PROSE_TOKEN_SINCE: รัน prose ที่ตัวเลขฝั่ง v2 ทุกตัวเป็น literal ผูกราคาที่ E44 ฟ้อง (RV.proseBoundHits)
+ *                   และฝั่ง v3 ทุกตัวเป็นค่าสดของ token เดียวกัน
+ */
+function deviationsOf(sym, served0, at, viewAt, v3At) {
+  const DS = require('./display.js');
+  const list = [], rounding = [];
+  let served = served0;
+  let pv = null;
+  try { pv = PV.parseV2(sym, served0); } catch (e) { pv = null; }
+  const num = (t) => EQ.numsOf(String(t || ''));
+  const near = (a, b) => Math.abs(a.v - b.v) <= Math.max(a.half, b.half) * (1 + 1e-9);
+  const subset = (xs, pool0) => { const pool = pool0.slice(); return xs.every((p) => { const i = pool.findIndex((q) => near(p, q)); if (i < 0) return false; pool.splice(i, 1); return true; }); };
+  // (1) การ์ดค้าง
+  if (pv && pv.rd) {
+    let stale = [];
+    try { stale = DS.cardPlan(pv, at, viewAt, DS.pairsOf(pv, at)).filter((x) => x.kind === 'stale' || x.kind === 'rounding'); } catch (e) { stale = []; }
+    if (stale.length) {
+      const a = served.indexOf('<div class="n">1</div>'), z = a < 0 ? -1 : served.indexOf('</section>', a);
+      if (a >= 0 && z > a) {
+        let sec = served.slice(a, z);
+        const edits = [];
+        const re = new RegExp(DV.CARD_SRC, 'g');
+        let m, i = 0;
+        while ((m = re.exec(sec))) {
+          const x = stale.find((y) => y.i === i);
+          if (x) { const st = m.index + '<div class="k">'.length + m[1].length + '</div>'.length + m[2].length; edits.push({ st, len: m[3].length, text: x.v3.replace(/&/g, '&amp;').replace(/</g, '&lt;') }); }
+          i++;
+        }
+        for (const e of edits.sort((p, q) => q.st - p.st)) sec = sec.slice(0, e.st) + e.text + sec.slice(e.st + e.len);
+        served = served.slice(0, a) + sec + served.slice(z);
+        // rounding = v3 พิมพ์หยาบกว่า (ภายใน 1 หน่วยที่ v3 พิมพ์) → นับเป็นการปัด ไม่ใช่ส่วนเบี่ยง
+        for (const x of stale) (x.kind === 'stale' ? list : rounding).push({ class: x.kind === 'stale' ? 'v2-stale-card' : 'v3-coarser-card', zone: 's1', del: x.v2t, ins: x.v3, card: x.key });
+      }
+    }
+  }
+  // (2) ผลตอบแทนที่ขัดกับเป้าของตัวเอง
+  let bad = [];
+  if (pv && pv.rd && pv.rd.values && at.scenarios) {
+    // ใบที่พก rets: ฐานปันผล/สูตร %/ปี ของหน้า v3 · ไม่พก: ขัดกับเป้าของตัวเองภายใต้ทุกฐาน
+    const rt = at.v2Display && at.v2Display.rets;
+    try {
+      bad = DS.retConsistency(pv, pv.rd.values.px, at.scenarios.years, rt ? rt.perYear || 'cagr' : undefined)
+        .map((c, i) => (c && (rt ? !c.divs.includes(rt.div) : !c.ok) ? { i, text: c.text } : null)).filter(Boolean);
+    } catch (e) { bad = []; }
+  }
+  let v3rets = [];
+  if (bad.length) { try { v3rets = PV.parseV2(sym, v3At).s6cols.map((c) => PV.text(c.retHtml || '')); } catch (e) { v3rets = []; } }
+  const pct = (text) => DV.retTokens(text).map((t) => ({ v: (/[-−–]/.test(t.sign || '') ? -1 : 1) * t.val, half: 0.5 * Math.pow(10, -DV.decOfNum(t.num)) }));
+  const badV2 = bad.flatMap((b) => pct(b.text)), badV3 = bad.flatMap((b) => pct(v3rets[b.i] || ''));
+  // (3) prose ค้างของใบใหม่ (E44)
+  let e44V2 = [], e44V3 = [];
+  try {
+    const fd = FD.footerDate(served0);
+    if (fd && fd.iso >= RV.PROSE_TOKEN_SINCE && pv && pv.rd) {
+      // ค่าที่ใบประกาศ = ของหน้า v3 (ตัวเดียวกับที่ migrator tokenise และที่ E44 ของ check-v3 ใช้ — v2 บางใบไม่ประกาศ analystTgt แต่ใบ v3 มี analyst.target)
+      const hits = RV.proseBoundHits(served0, viewAt.d);   // served0 = ต้นฉบับ (token {{rd:…}} ยังไม่ render) ⇒ hits = literal ของผู้เขียนเท่านั้น
+      for (const h of hits) {
+        // ค่าที่หน้า v3 พิมพ์ = token v3 ที่ migrator ใส่แทน (MP.shownOf — รูปแบบของ v3 เช่น analystPct ทศนิยม 0)
+        const MP = require('./prose.js');
+        const shown = MP.shownOf(MP.V2_TO_V3[h.token] || h.token, viewAt);
+        if (shown == null) continue;
+        e44V2.push(...num(h.text)); e44V3.push(...num(shown));
+      }
+    }
+  } catch (e) { e44V2 = []; e44V3 = []; }
+  const accept = (r) => {
+    let x = num(r.del), y = num(r.ins);
+    // ตัวเลขที่อยู่ทั้งสองฝั่ง (ห่าง ≤ 1 หน่วยที่ v2 พิมพ์ — บริบทของรัน "$278" → "$278.00" · เป้า "$212") ไม่ใช่ส่วนเบี่ยง · ตัดออกก่อน
+    { const y2 = y.slice(); x = x.filter((p) => { const j = y2.findIndex((q) => Math.abs(p.v - q.v) <= 2 * p.half * (1 + 1e-9)); if (j < 0) return true; y2.splice(j, 1); return false; }); y = y2; }
+    if (!x.length) return null;
+    if (r.zone === 's6' && badV2.length && subset(x, badV2) && subset(y, badV3)) return 'v2-inconsistent-returns';
+    if (e44V2.length && subset(x, e44V2) && subset(y, e44V3)) return 'v2-stale-prose-e44';
+    return null;
+  };
+  return { served, list, rounding, accept };
+}
+
 /** เหตุผลสั้นต่อใบ (ตาราง md): ค่า report-data/stock-meta ที่ต่างเกิน 1 หน่วยที่ผู้เขียนเขียน + โซนของ value diff ที่เหลือ */
 const KEY_LABEL = [[/^fv$/, 'FV'], [/^values\.fvLow$/, 'FV low'], [/^values\.fvHigh$/, 'FV high'], [/^values\.scenarios\[(\d)\]\.tgt$/, (m) => `${['Bear', 'Base', 'Bull'][+m[1]]} target`],
   [/^values\.scenarios\[(\d)\]\.div$/, (m) => `${['Bear', 'Base', 'Bull'][+m[1]]} dividends`], [/^values\.(eps|dps|bvps|analystTgt|baseEps)$/, (m) => m[1]], [/^sm\.pe$/, 'stock-meta P/E']];
@@ -195,7 +280,7 @@ function auditOne(sym, o) {
   try { src = o.v2Of ? o.v2Of(sym) : v2Source(sym, o.reportsDir); } catch (e) { err = e; }
   return auditDoc(sym, doc, src, o, err);
 }
-const emptyRow = (sym) => ({ symbol: sym, status: 'OK', valueDiffs: 0, roundingDiffs: 0, textLost: 0, sanity: [], values: [], step: [], moved: [], rounding: [], lost: [], rd: [], added: 0, ref: null, error: null });
+const emptyRow = (sym) => ({ symbol: sym, status: 'OK', valueDiffs: 0, roundingDiffs: 0, textLost: 0, sanity: [], values: [], step: [], moved: [], rounding: [], lost: [], rd: [], added: 0, ref: null, error: null, deviations: [] });
 
 /** doc (ใบ v3 ในหน่วยความจำ) เทียบหน้า v2 src = { raw, ref } → แถวผล · ไม่ throw (remigrate/adopt/convert ใช้ตัวเดียวกับ audit) */
 function auditDoc(sym, doc, src, o, srcErr) {
@@ -213,15 +298,25 @@ function auditDoc(sym, doc, src, o, srcErr) {
     const at = { ...doc, market: v2Market(sym, src.raw, doc, o.seeds) };
     const viewAt = C.compute(at, { seeds: o.seeds });
     const v3At = B.expandReport(R.toV2Source(at, viewAt));
-    const served = v2Served(src.raw);
+    // o.rawBaseline (วัดผลเท่านั้น — round 2 ข้อ 4): เทียบกับต้นฉบับ v2 ก่อน cron แทนหน้าที่เว็บแสดง
+    const served0 = o.rawBaseline ? src.raw : v2Served(src.raw);
+    // ส่วนเบี่ยงที่ตั้งใจ (คำตัดสิน controller 26 ก.ย. 69 · round 2) — แคบเท่าที่นิยามไว้เท่านั้น
+    const dev = o.noDeviations ? { served: served0, list: [], rounding: [], accept: () => null } : deviationsOf(sym, served0, at, viewAt, v3At);   // noDeviations = วัดผลเท่านั้น
+    const served = dev.served;
     const eq = EQ.compare(B.expandReport(served), v3At, at, viewAt, { v2src: served });
     const steps = authorSteps(src.raw);
-    const k = splitValues(eq.numberValue, v3At, steps);
+    const k0 = splitValues(eq.numberValue, v3At, steps);
+    const k = { ...k0, value: [] };
+    row.deviations = dev.list.slice();
+    for (const r of k0.value) {
+      const cls = dev.accept(r);
+      if (cls) row.deviations.push({ class: cls, zone: r.zone, del: r.del, ins: r.ins }); else k.value.push(r);
+    }
     row.reasons = reasonsOf(eq.rd, k.value, steps);
-    row.values = k.value; row.step = k.step; row.moved = k.moved; row.rounding = eq.numberRounding;
+    row.values = k.value; row.step = k.step.concat(dev.rounding); row.moved = k.moved; row.rounding = eq.numberRounding;
     row.lost = eq.textLostAt || eq.textLost.map((w) => ({ zone: '?', w }));
     row.rd = eq.rd; row.added = eq.numberAdded.length;
-    row.valueDiffs = k.value.length; row.roundingDiffs = eq.numberRounding.length + k.step.length; row.textLost = eq.textLost.length;
+    row.valueDiffs = k.value.length; row.roundingDiffs = eq.numberRounding.length + k.step.length + dev.rounding.length; row.textLost = eq.textLost.length;
   } catch (e) {
     row.error = String(e && e.message || e).split('\n')[0];
     row.sanity.push(`audit error: ${row.error}`);
@@ -240,6 +335,7 @@ function toCsv(rows) {
   return L.join('\n') + '\n';
 }
 const mdCell = (s) => String(s == null ? '' : s).replace(/\|/g, '\\|').replace(/\n/g, ' ');
+const DEV_CLASSES = ['v2-stale-card', 'v2-inconsistent-returns', 'v2-stale-prose-e44'];
 function toMd(rows, meta) {
   const n = (f) => rows.filter(f).length;
   const audited = rows.filter((r) => r.status !== 'SKIP');
@@ -249,7 +345,17 @@ function toMd(rows, meta) {
     `| audited | ${audited.length} |`, `| OK | ${n((r) => r.status === 'OK')} |`,
     `| value diff (valueDiffs > 0) | ${n((r) => r.valueDiffs > 0)} |`, `| sanity failure | ${n((r) => r.sanity.length > 0)} |`,
     `| rounding drift only (OK with roundingDiffs > 0) | ${n((r) => r.status === 'OK' && r.roundingDiffs > 0)} |`,
-    `| text lost (textLost > 0) | ${n((r) => r.textLost > 0)} |`, `| skipped (not migrated) | ${n((r) => r.status === 'SKIP')} |`, ''];
+    `| text lost (textLost > 0) | ${n((r) => r.textLost > 0)} |`, `| skipped (not migrated) | ${n((r) => r.status === 'SKIP')} |`,
+    ...DEV_CLASSES.map((c) => `| deliberate deviation: ${c} (reports) | ${n((r) => (r.deviations || []).some((d) => d.class === c))} |`), ''];
+  const devs = audited.filter((r) => (r.deviations || []).length);
+  if (devs.length) {
+    L.push('## Deliberate deviations (controller rulings 26 Sep 2026 — the v3 page is right, not the v2 page)', '',
+      '- `v2-stale-card`: a price-bound card no base reproduces at the v2 page\'s own price → v3 shows its live value',
+      '- `v2-inconsistent-returns`: a scenario return the v2 page printed inconsistently with its own target (+dividends) at its own price → v3 computes it',
+      '- `v2-stale-prose-e44`: a price-bound prose literal in a report analysed since ' + RV.PROSE_TOKEN_SINCE + ' (E44) → v3 prints the live token', '');
+    for (const c of DEV_CLASSES) { const xs = devs.filter((r) => r.deviations.some((d) => d.class === c)).map((r) => r.symbol); if (xs.length) L.push(`- ${c} (${xs.length}): ${xs.join(' ')}`); }
+    L.push('');
+  }
   const bad = audited.filter((r) => r.status !== 'OK');
   L.push('## Failing reports', '');
   if (!bad.length) L.push('- none');
@@ -258,10 +364,11 @@ function toMd(rows, meta) {
     for (const r of bad) L.push(`| ${r.symbol} | ${r.status} | ${r.valueDiffs} | ${mdCell((r.reasons || []).join(' · '))} | ${mdCell(r.sanity.join(' · '))} | ${mdCell(r.values.slice(0, 2).map((x) => `${x.zone}: ${x.del} → ${x.ins}`).join(' · '))} |`);
   }
   L.push('', '## Per report details (non-OK · text lost · rounding drift)', '');
-  for (const r of audited.filter((x) => x.status !== 'OK' || x.textLost || x.roundingDiffs || x.moved.length)) {
+  for (const r of audited.filter((x) => x.status !== 'OK' || x.textLost || x.roundingDiffs || x.moved.length || (x.deviations || []).length)) {
     L.push(`### ${r.symbol} — ${r.status} (v2 @ ${r.ref || '?'})`, '');
     for (const s of r.sanity) L.push(`- sanity: ${mdCell(s)}`);
     for (const x of r.values) L.push(`- value ${x.zone}: \`${mdCell(x.del)}\` → \`${mdCell(x.ins)}\``);
+    for (const x of r.deviations || []) L.push(`- deviation ${x.class} ${x.zone}: \`${mdCell(x.del)}\` → \`${mdCell(x.ins)}\``);
     if (r.textLost) L.push(`- text lost ×${r.textLost}: ${mdCell(r.lost.map((x) => `${x.w}@${x.zone}`).join(' '))}`);
     if (r.rounding.length) L.push(`- rounding ×${r.rounding.length}: ${mdCell(r.rounding.slice(0, 12).map((x) => `${x.del} → ${x.ins}`).join(' · '))}${r.rounding.length > 12 ? ' …' : ''}`);
     if (r.step.length) L.push(`- one printed step (accepted drift) ×${r.step.length}: ${mdCell(r.step.slice(0, 12).map((x) => `${x.zone}: ${x.del} → ${x.ins}`).join(' · '))}${r.step.length > 12 ? ' …' : ''}`);
@@ -302,4 +409,4 @@ function runAudit(syms, o, log, ctx) {
   return { rows, code: vd.length || sn.length ? 1 : 0, files };
 }
 
-module.exports = { runAudit, auditOne, auditDoc, emptyRow, v2Served, splitValues, authorSteps, v2Source, v2Market, sanityOf, toCsv, toMd, GIT_SCRUB };
+module.exports = { runAudit, auditOne, auditDoc, deviationsOf, emptyRow, v2Served, splitValues, authorSteps, v2Source, v2Market, sanityOf, toCsv, toMd, GIT_SCRUB };

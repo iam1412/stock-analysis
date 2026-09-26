@@ -57,8 +57,9 @@ function shownOf(token, view) {
 }
 
 /** แทน literal → token · hits = RV.proseBoundHits(<field html>, view.d) (ชื่อ token v2) · field = ชื่อช่องไว้เขียน D
- *  คืน { text, D, n } (n = จำนวน token ที่ใส่) */
-function tokenise(text, view, hits, field) {
+ *  opts.e44 = Set("token|ข้อความ") — literal ที่ E44 ฟ้องในต้นฉบับ v2 ของใบวิเคราะห์ ≥ RV.PROSE_TOKEN_SINCE (ค่าต่างก็แทน — literal ค้าง) · คืน { text, D, F, n } (n = จำนวน token ที่ใส่) */
+function tokenise(text, view, hits, field, opts) {
+  const e44 = opts && opts.e44;   // Set("token|ข้อความ") ของ literal ที่ E44 ฟ้องในต้นฉบับ v2 (ใบ ≥ SINCE) · อื่น = ไม่มี
   let s = String(text);
   const D = [], F = []; let n = 0;
   const where = field || 'text';
@@ -68,7 +69,11 @@ function tokenise(text, view, hits, field) {
     const name = V2_TO_V3[h.token] || h.token;
     const shown = shownOf(name, view);
     if (shown == null) continue;   // token ที่ไม่มีใน TOKENS_V3 / ไม่มีค่า = ข้าม (ไม่จด D)
-    if (bare(h.text) !== bare(shown)) { F.push(`prose:${where} "${h.text}" kept (v3 {{${name}}} would show "${shown}")`); continue; }
+    // ใบที่วิเคราะห์ตั้งแต่ RV.PROSE_TOKEN_SINCE (opts.e44): literal ผูกราคาใน prose ผิดกติกา E44 อยู่แล้ว (ต้องเป็น token) — ค่าต่าง = literal ค้าง
+    //   ⇒ ใช้ token สด (คำตัดสิน controller 26 ก.ย. 69 · NDSN/NOC) · audit รับเฉพาะคลาสนี้ (v2-stale-prose-e44)
+    const same = bare(h.text) === bare(shown);
+    if (!same && !(e44 && e44.has(`${h.token}|${h.text}`))) { F.push(`prose:${where} "${h.text}" kept (v3 {{${name}}} would show "${shown}")`); continue; }
+    if (!same) F.push(`prose:${where} "${h.text}" → {{${name}}} "${shown}" (E44: the v2 literal was stale — live token)`);
     let done = false;
     for (const [a, b] of freeSpans(s)) {
       const i = s.slice(a, b).indexOf(h.text);
@@ -134,4 +139,4 @@ function staleCopies(text, apx, d) {
   return out;
 }
 
-module.exports = { htmlToProse, tokenise, staleCopies, decode, bare, V2_TO_V3, freeSpans, CAND };
+module.exports = { htmlToProse, tokenise, staleCopies, decode, bare, V2_TO_V3, freeSpans, CAND, shownOf };

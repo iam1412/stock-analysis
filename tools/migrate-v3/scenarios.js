@@ -16,6 +16,8 @@ const DRIVER = [['ebitdaPerShare', /EBITDA/i], ['de', /\bDE\b|distributable/i], 
   ['revenuePerShare', /ยอดขาย|รายได้|revenue|\bRev\b|sales/i], ['ffo', /A?FFO/i], ['bvps', /BVPS|BV\b|book/i], ['fcfPerShare', /FCF/i], ['eps', /EPS|กำไร/i]];
 const EXIT = [['evebitda', /EV\s*\/\s*EBITDA/i], ['evsales', /EV\s*\/\s*(?:S(?:ales)?|Rev(?:enue)?)\b/i], ['ps', /(?<!EV)\s*\bP\s*\/\s*S\b/i], ['pffo', /P\s*\/\s*A?FFO/i], ['pbv', /P\s*\/\s*BV|P\/B\b/i], ['pfcf', /P\s*\/\s*FCF/i], ['pe', /P\s*\/\s*E/i]];
 const NAMES = ['bear', 'base', 'bull'];
+// driver ต่อหุ้นของยอดรวมทั้งบริษัท (รายได้/EBITDA/FCF ÷ หุ้น) — ค่าปลายฉากที่พิมพ์เป็นยอดรวม (B/M/ล้าน) แปลงเป็นต่อหุ้นได้
+const TOTAL_DRIVERS = ['revenuePerShare', 'ebitdaPerShare', 'fcfPerShare'];
 const numOf = (s) => { const m = /([0-9][0-9,]*(?:\.[0-9]+)?)/.exec(String(s == null ? '' : s)); return m ? parseFloat(m[1].replace(/,/g, '')) : null; };
 const pctOf = (s) => { const m = /([+\-−]?)\s*([0-9]+(?:\.[0-9]+)?)\s*%/.exec(String(s || '')); return m ? parseFloat(m[2]) * (m[1] === '-' || m[1] === '−' ? -1 : 1) : null; };
 const decOf = (s) => { const m = /[0-9][0-9,]*(?:\.([0-9]+))?/.exec(String(s)); return m && m[1] ? m[1].length : 0; };
@@ -158,9 +160,16 @@ function scenarios(parsed, fund, legs) {
     if (!desc) H.push(`scenarios.cases[${i}].desc: no "สถานการณ์" row`);
     if (out.divIncluded && divCum == null) H.push(`scenarios.cases[${i}].divCum missing while divIncluded`);
     const endLi = c.lis.find((x) => isEnd(x[0]));
-    const end = endLi ? numOf(endLi[1]) : null;
+    let end = endLi ? numOf(endLi[1]) : null, tol = endLi ? 0.5 * Math.pow(10, -decOf(endLi[1])) : null;
+    // ค่าปลายฉากที่พิมพ์เป็นยอดรวมทั้งบริษัท ("รายได้ปี 3 ~$38.75B" — CPNG/NET) ของ driver ต่อหุ้น → ต่อหุ้น = ยอดรวม ÷ หุ้น (หน่วยปัดก็หารด้วย)
+    const big = endLi ? NB.numsOf(endLi[1])[0] : null;
+    if (end != null && big && big.v !== end && TOTAL_DRIVERS.includes(out.driver)) {
+      const sh = fund && fund.shares;
+      if (sh > 0) { end = big.v / sh; tol = big.half / sh; meta.total = true; }
+      else { H.push(`scenarios.cases[${i}] end value "${endLi[1]}" is a company total but fundamentals.shares is missing`); end = null; }
+    }
     meta.starts.push(end != null && growth != null ? end / Math.pow(1 + growth / 100, out.years) : null);
-    meta.ends.push(end != null && growth != null ? { end, text: endLi[1], growth } : null);
+    meta.ends.push(end != null && growth != null ? { end, text: endLi[1], growth, tol } : null);
     const cs = { growth, exitMultiple };
     if (divCum != null) cs.divCum = divCum;
     cs.desc = desc;
@@ -175,7 +184,7 @@ function scenarios(parsed, fund, legs) {
   //  ไม่งั้นถอดกลับจากค่าปลายฉากที่พิมพ์ + F (ไม่อ้างว่าเป็นของผู้เขียน)
   const fStart = fundStart(out.driver, fund || {});
   const ends = meta.ends.filter(Boolean);
-  const fits = (b) => b > 0 && ends.length > 0 && ends.every((e) => Math.abs(b * Math.pow(1 + e.growth / 100, out.years) - e.end) <= 0.5 * Math.pow(10, -decOf(e.text)) + 1e-9);
+  const fits = (b) => b > 0 && ends.length > 0 && ends.every((e) => Math.abs(b * Math.pow(1 + e.growth / 100, out.years) - e.end) <= e.tol + 1e-9);
   const LEG_BASE = { ffo: 'ffoPerShare', de: 'dePerShare', fre: 'frePerShare', bvps: 'bvps' };
   if (out.driver === 'eps' && typeof v.baseEps === 'number' && v.baseEps > 0) {
     if (fStart == null || v.baseEps !== fStart) { out.baseOverride = { value: v.baseEps, why: 'EPS ฐานฉากที่ผู้เขียนใช้' }; meta.base = 'values.baseEps'; }
@@ -188,7 +197,7 @@ function scenarios(parsed, fund, legs) {
     if (legB != null) {
       out.baseOverride = { value: legB, why: 'ฐานฉากที่ผู้เขียนใช้ (ตัวตั้งที่ขาประเมินพิมพ์)' }; meta.base = 'leg override';
       F.push(`scenarios.baseOverride ${legB} = the ${LEG_BASE[out.driver]} printed in a leg`);
-    } else if (p0 != null && fStart != null && (() => { const e = meta.starts[1] > 0 ? meta.ends[1] : ends[0]; return e && Math.abs(p0 - fStart) <= 0.5 * Math.pow(10, -decOf(e.text)) + 1e-9; })()) {
+    } else if (p0 != null && fStart != null && (() => { const e = meta.starts[1] > 0 ? meta.ends[1] : ends[0]; return e && Math.abs(p0 - fStart) <= e.tol + 1e-9; })()) {
       meta.base = 'fundamentals (rounding)';   // ถอดกลับได้เท่า fundamentals ภายในการปัดของคอลัมน์ที่ใช้ (fix round 2 · M-7) — override ไม่เพิ่มข้อมูล
     } else if (p0 != null) {
       out.baseOverride = { value: +p0.toPrecision(6), why: out.driver === 'eps' ? 'EPS ฐานฉากถอดกลับจากราคาเป้าที่พิมพ์' : 'ฐานฉากถอดกลับจากค่าปลายฉากที่พิมพ์' };

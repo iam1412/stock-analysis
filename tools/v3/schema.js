@@ -600,7 +600,9 @@ function validate(doc) {
 
 // v2Display: คีย์ของเกจที่อ้างค่าของ view ได้ (ชื่อ token ของ v2 — render พิมพ์เป็น {{rd:<ref>}})
 const GAUGE_REFS = ['mos30', 'mos20', 'fv', 'fvLow', 'fvHigh', 'analystTgt', 'px', 'sc1tgt', 'sc2tgt', 'sc3tgt'];
-const V2DISPLAY_KEYS = ['fv', 'fvRange', 'legValues', 'targets', 'driverEnds', 'gauge', 'cards', 'rets', 'footer'];
+const V2DISPLAY_KEYS = ['fv', 'fvRange', 'legValues', 'targets', 'driverEnds', 'driverTotal', 'gauge', 'cards', 'rets', 'footer'];
+// การ์ดที่ค่าเป็นฟังก์ชันของราคา — v2Display.cards ของคีย์เหล่านี้ต้องคิดสด (op/base) เท่านั้น
+const V2DISPLAY_PRICE_CARDS = ['mcap', 'pe', 'pbv', 'ps', 'yield', 'evEbitda', 'peForward', 'analystTarget', 'pffo', 'pffoForward', 'ptbv'];
 function validateV2Display(doc, E, closed, num, plain, en) {
   const x = doc.v2Display, P0 = 'v2Display';
   if (!isObj(x)) return E(P0, 'ต้องเป็น object');
@@ -608,6 +610,11 @@ function validateV2Display(doc, E, closed, num, plain, en) {
   closed(x, P0, V2DISPLAY_KEYS);
   if (!Object.keys(x).length) E(P0, 'ว่าง — ลบออก');
   if (x.fv != null) num(x.fv, `${P0}.fv`, { gt: 0 });
+  // driverTotal: แถวตัวตั้งปลายฉาก/ป้าย hint พิมพ์เป็นยอดรวมทั้งบริษัท (ต่อหุ้น × หุ้น) ตามหน้า v2 (CPNG/NET "รายได้ปี 3 ~$38.75B")
+  if (x.driverTotal != null) {
+    if (x.driverTotal !== true) E(`${P0}.driverTotal`, 'ต้องเป็น true (หรือลบออก)');
+    else if (!(isObj(doc.scenarios) && ['revenuePerShare', 'ebitdaPerShare', 'fcfPerShare'].includes(doc.scenarios.driver))) E(`${P0}.driverTotal`, 'ใช้ได้เฉพาะ driver ต่อหุ้นของยอดรวม (revenuePerShare/ebitdaPerShare/fcfPerShare)');
+  }
   if (x.fvRange != null) {
     if (!Array.isArray(x.fvRange) || x.fvRange.length !== 2 || !x.fvRange.every((v) => isNum(v) && v > 0) || x.fvRange[0] > x.fvRange[1]) E(`${P0}.fvRange`, 'ต้องเป็น [ล่าง, บน] ตัวเลข > 0 และ ล่าง ≤ บน');
   }
@@ -635,22 +642,17 @@ function validateV2Display(doc, E, closed, num, plain, en) {
       if (typeof t.label !== 'string') E(`${p}.label`, 'ต้องเป็นข้อความ (ว่างได้)'); else plain(t.label, `${p}.label`);
     });
   }
-  // rets: ช่องผลตอบแทนฉาก (.ret) ที่ผู้เขียน v2 พิมพ์เป็นข้อความ (ไม่ใช่ token) · live = cron v2 เขียนตัวเลขใหม่ตามราคา (คงรูปแบบ) → render คิดใหม่แบบเดียวกัน
-  //   ไม่ live = ข้อความคงที่ (cron v2 ตัดสินไม่ได้ ไม่เคยแตะ) พร้อม cls สีเดิม
+  // rets: รูปแบบข้อความ .ret ของผู้เขียน v2 — ตัวเลข % คิดใหม่ทุกครั้งที่ราคาปัจจุบัน (กติกาเดียวกับ cron v2) · ไม่มีแบบข้อความคงที่ (ผลตอบแทนเป็นฟังก์ชันของราคา — round 2)
   if (x.rets != null) {
     const r = x.rets, p = `${P0}.rets`;
-    if (!isObj(r)) E(p, 'ต้องเป็น {texts, live, neg, perYear?, cls?}');
+    if (!isObj(r)) E(p, 'ต้องเป็น {texts, neg, div, perYear?}');
     else {
-      closed(r, p, ['texts', 'live', 'neg', 'perYear', 'div', 'cls']);
+      closed(r, p, ['texts', 'neg', 'perYear', 'div']);
       if (!Array.isArray(r.texts) || r.texts.length !== 3) E(`${p}.texts`, 'ต้องเป็น array ข้อความ 3 ช่อง (Bear/Base/Bull)');
       else r.texts.forEach((t, i) => { if (typeof t !== 'string' || !t.trim()) E(`${p}.texts[${i}]`, 'ต้องเป็นข้อความ'); else plain(t, `${p}.texts[${i}]`); });
-      if (typeof r.live !== 'boolean') E(`${p}.live`, 'ต้องเป็น true/false');
       en(r.neg, `${p}.neg`, ['−', '-']);
       if (r.perYear != null) en(r.perYear, `${p}.perYear`, ['cagr', 'linear']);
-      if (r.live === true && typeof r.div !== 'boolean') E(`${p}.div`, 'live ต้องบอกว่าผลตอบแทนรวมปันผลไหม (true/false — ฐานเดียวกับ cron v2)');
-      if (r.live === false && r.div != null) E(`${p}.div`, 'ใช้เฉพาะ live: true');
-      if (r.live === false) { if (!Array.isArray(r.cls) || r.cls.length !== 3 || !r.cls.every((c) => c === 'pos' || c === 'neg')) E(`${p}.cls`, 'ข้อความคงที่ต้องมี cls 3 ช่อง (pos|neg)'); }
-      else if (r.cls != null) E(`${p}.cls`, 'ใช้เฉพาะ live: false');
+      if (typeof r.div !== 'boolean') E(`${p}.div`, 'ต้องบอกว่าผลตอบแทนรวมปันผลไหม (true/false — ฐานเดียวกับ cron v2)');
       if (isObj(doc.scenarios) && Array.isArray(doc.scenarios.cases) && doc.scenarios.cases.some((c) => isObj(c) && c.retNote != null)) E(`${p}`, 'ช่อง .ret เป็นข้อความของหน้า v2 ทั้งช่อง — ลบ scenarios.cases[i].retNote');
     }
   }
@@ -673,6 +675,9 @@ function validateV2Display(doc, E, closed, num, plain, en) {
           const nNum = typeof c.v === 'string' ? (c.v.match(/[0-9][0-9,]*(?:\.[0-9]+)?/g) || []).length : 0;
           if (nNum < bs.length) E(`${p}.v`, `op ต้องมีตัวเลขในข้อความอย่างน้อย ${bs.length} ตัวให้เขียนใหม่`);
         }
+        // การ์ดผูกราคา (ค่า = ฟังก์ชันของราคา) ห้ามแช่ข้อความ — ต้องมีฐาน (op/base) ให้คิดสดที่ราคาปัจจุบัน · ไม่มีฐาน = ไม่พก (v3 คิดเอง)
+        //   ยกเว้นข้อความไม่มีตัวเลข ("ขาดทุน GAAP" · "ไม่มี") = ข้อเท็จจริงของผู้เขียน ไม่ใช่ค่าที่คิดจากราคา
+        if (V2DISPLAY_PRICE_CARDS.includes(k) && c.op == null && /[0-9]/.test(String(c.v))) E(p, 'การ์ดผูกราคา — ต้องมี op/base (ฐานของผู้เขียน) ห้ามพกข้อความค่าคงที่ที่มีตัวเลข');
         if (typeof c.v !== 'string' || !c.v.trim()) E(`${p}.v`, 'ต้องเป็นข้อความ'); else plain(c.v, `${p}.v`);
         if (typeof c.d !== 'string') E(`${p}.d`, 'ต้องเป็นข้อความ (ว่างได้)'); else plain(c.d, `${p}.d`);
         if (isObj(doc.metrics) && isObj(doc.metrics.notes) && doc.metrics.notes[k] != null) E(`metrics.notes.${k}`, `การ์ดนี้แสดงบรรทัดล่างของหน้า v2 (${p}.d) — ลบ note ออก`);
@@ -688,4 +693,4 @@ function OWNER(path) {
   return 'worker';
 }
 
-module.exports = { GAUGE_REFS, V2DISPLAY_KEYS, ENUM, FFO_LABEL, CARD_KEYS, FUND_KEYS, FY_KEYS, BANK_KEYS, LEG_INPUTS, CURRENT_BASE, requiredFamily, OVERRIDE_KEYS, THEME_KEYS, TEXT_KEYS, cardEntries, customCap, CUSTOM_CAP, CUSTOM_CAP_MIGRATED, isMigrated, SOURCES_MIN, SOURCES_MIN_MIGRATED, validate, OWNER, RD_TOKEN, TODO_RE, stringLeaves };
+module.exports = { GAUGE_REFS, V2DISPLAY_KEYS, V2DISPLAY_PRICE_CARDS, ENUM, FFO_LABEL, CARD_KEYS, FUND_KEYS, FY_KEYS, BANK_KEYS, LEG_INPUTS, CURRENT_BASE, requiredFamily, OVERRIDE_KEYS, THEME_KEYS, TEXT_KEYS, cardEntries, customCap, CUSTOM_CAP, CUSTOM_CAP_MIGRATED, isMigrated, SOURCES_MIN, SOURCES_MIN_MIGRATED, validate, OWNER, RD_TOKEN, TODO_RE, stringLeaves };

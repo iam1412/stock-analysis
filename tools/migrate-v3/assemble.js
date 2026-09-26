@@ -1013,7 +1013,7 @@ function assemble(parsed0, ctx) {
       if (dx.v2Display.rets && out.scenarios) out = { ...out, scenarios: { ...out.scenarios, cases: out.scenarios.cases.map(({ retNote, ...c }) => c) } };
       // ฐานปันผลของผลตอบแทนฉาก = ฐานที่ cron v2 ใช้พิมพ์ข้อความนั้น (หน้า v2 ไม่มี scnBasis — migrator เดาจากป้าย "รวมปันผล" ได้คนละฐาน · UNP)
       const rt = dx.v2Display.rets;
-      if (rt && rt.live && out.scenarios && out.scenarios.divIncluded !== rt.div && (!rt.div || out.scenarios.cases.every((c) => c.divCum != null))) {
+      if (rt && out.scenarios && out.scenarios.divIncluded !== rt.div && (!rt.div || out.scenarios.cases.every((c) => c.divCum != null))) {
         F.push(`scenarios.divIncluded ${out.scenarios.divIncluded} → ${rt.div} (the basis the v2 cron printed the returns on)`);
         out = { ...out, scenarios: { ...out.scenarios, divIncluded: rt.div } };
       }
@@ -1030,9 +1030,13 @@ function assemble(parsed0, ctx) {
     H.push(...rr.H);
     if (!(out.v2Display && out.v2Display.rets)) for (const { i, note } of rr.set) { if (note && out.scenarios) out.scenarios.cases[i].retNote = note; F.push(`scenarios.cases[${i}] numeric .ret = v3 total → carried without the number`); }
     const apxStale = [];
+    const fd = require('../queue/footer-date.js').footerDate(parsed.html || '');
+    // ขอบเขตเดียวกับ E44 (check-reports): ใบวิเคราะห์ ≥ SINCE · เฉพาะ literal ที่ผู้เขียนพิมพ์ในต้นฉบับ v2 (ไม่ใช่ค่าที่ token {{rd:…}} render ออกมา —
+    //   TMUS "ราคาปัจจุบัน–{{rd:mos20}}" ห้ามกลายเป็น {{px}}) → ชุด "token|ข้อความ"
+    const e44 = fd && fd.iso >= RV.PROSE_TOKEN_SINCE ? new Set(RV.proseBoundHits(parsed.html || '', view.d).map((h) => `${h.token}|${h.text}`)) : null;
     for (const z of proseZones(out, src)) {
       const hits = z.html ? RV.proseBoundHits(`<p>${z.html}</p>`, view.d) : [];
-      const r = MP.tokenise(z.obj[z.key], view, hits, z.field);
+      const r = MP.tokenise(z.obj[z.key], view, hits, z.field, { e44 });
       z.obj[z.key] = r.text; D.push(...r.D); F.push(...(r.F || [])); tokens += r.n;
       apxStale.push(...MP.staleCopies(r.text, ctx.analysisPx, view.d));
     }
