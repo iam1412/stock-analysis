@@ -1,0 +1,252 @@
+{
+  "v": 3,
+  "symbol": "DVN",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Devon Energy Corporation",
+    "exchange": "NYSE",
+    "sub": "Multi-basin E&P: Delaware Basin (Permian) + Anadarko + Eagle Ford + Powder River + Williston • ผู้บุกเบิก Fixed+Variable Dividend Model • ควบรวม Coterra Energy เสร็จ 7 พ.ค. 2569 (all-stock) • Cyclical FCF ผันผวนตามราคาน้ำมัน",
+    "headerTags": [
+      "Energy / E&P",
+      "Independent Oil & Gas"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "StockAnalysis.com",
+      "Devon Energy IR"
+    ],
+    "themeLegacy": {
+      "accent": "#1A7A40",
+      "accentDark": "#0F5C2E",
+      "darkGrad": "linear-gradient(135deg,#0a4020 0%,#12552d 60%,#1e7534 100%)",
+      "glow": "rgba(26,122,64,0.35)",
+      "subColor": "#e8f5ec",
+      "headerMuted": "#e3eee6",
+      "verdictText": "#c6f6d9",
+      "vcellLabel": "#f7fdf9"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T14:08:46+07:00",
+      "v2Hash": "91cd43e8d900"
+    }
+  },
+  "market": {
+    "px": 47.05,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          32.49
+        ],
+        [
+          "พ.ย.25",
+          37.06
+        ],
+        [
+          "ธ.ค.25",
+          36.63
+        ],
+        [
+          "ม.ค.26",
+          40.21
+        ],
+        [
+          "ก.พ.26",
+          43.53
+        ],
+        [
+          "มี.ค.26",
+          50.32
+        ],
+        [
+          "เม.ย.26",
+          51.37
+        ],
+        [
+          "พ.ค.26",
+          44.49
+        ],
+        [
+          "มิ.ย.26",
+          41.32
+        ],
+        [
+          "ก.ค.26",
+          45.13
+        ],
+        [
+          "ส.ค.26",
+          48.51
+        ],
+        [
+          "ก.ย.26",
+          47.05
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 31.47,
+      "hi": 52.71
+    }
+  },
+  "fundamentals": {
+    "dps": 1.28,
+    "bvps": 24.97,
+    "shares": 1150000000,
+    "epsForward": 5.37,
+    "eps": 4.66,
+    "roe": 11.5,
+    "netDebt": 10900000000,
+    "revenue": 18800000000,
+    "fcf": 1480000000,
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation — ฐาน EPS TTM (diluted)",
+      "inputs": {
+        "multiple": 8.2,
+        "multipleSource": "median5y"
+      },
+      "note": "P/E 8.2x คือมัธยฐานที่วัดจากประวัติของ DVN เอง (ราคาเฉลี่ยรายปี ÷ EPS diluted: FY2021 7.1x · FY2022 6.9x · FY2023 8.6x · FY2024 9.6x · FY2025 8.2x; ช่วง 6.9–9.6x) ไม่ได้มาจาก P/E ปัจจุบันหรือเป้านักวิเคราะห์",
+      "family": "market"
+    },
+    {
+      "method": "pe",
+      "label": "P/E Valuation — ฐาน EPS FY2025 (ก่อนควบรวม)",
+      "inputs": {
+        "multiple": 8.2,
+        "multipleSource": "median5y"
+      },
+      "override": {
+        "eps": 4.17,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "ตัวคูณมัธยฐานเดียวกัน ใช้ฐาน EPS ปีงบที่ปิดแล้วและไม่ปนงบ Coterra (จึงไม่รวมกำไรหลังควบรวม)",
+      "family": "market"
+    },
+    {
+      "method": "pe",
+      "label": "P/E Valuation — ฐาน EPS FY2026e (ประมาณการ)",
+      "inputs": {
+        "multiple": 8.2,
+        "multipleSource": "author",
+        "base": "epsForward"
+      },
+      "baseLabel": "FY2026e",
+      "note": "FY2026e, StockAnalysis forecast",
+      "family": "market"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      {
+        "key": "peForward",
+        "tone": "none"
+      },
+      "pbv",
+      "eps",
+      "bvps",
+      "roe",
+      "netDebt",
+      "revenue",
+      "fcf",
+      "yield",
+      "range52w"
+    ],
+    "notes": {
+      "mcap": "~1.15B shares คงเหลือ (StockAnalysis, หลังควบรวม)",
+      "pe": "diluted = NI $3,280M ÷ 703M หุ้นถัวเฉลี่ย (Coterra รวมบางส่วนของงวด)",
+      "peForward": "EPS FY2026e ~$5.37 (StockAnalysis forecast; Yahoo fwd $5.36 ตรงกับ FY2027e)",
+      "pbv": "BVPS ~{{bvps}} (ค่าเดิมในรายงาน ยังไม่ได้ยืนยันซ้ำรอบนี้)",
+      "eps": "diluted TTM · FY2025 $4.17 · FY2024 $4.56 · FY2023 $5.84",
+      "bvps": "ค่าเดิมในรายงาน — ไม่ได้ยืนยันซ้ำ",
+      "roe": "TTM (Yahoo และ StockAnalysis ตรงกัน) ฐานงบผสมก่อน/หลังควบรวม",
+      "netDebt": "หนี้ $11.9B − เงินสด $0.95B (งบ TTM ล่าสุด)",
+      "revenue": "TTM (รวม Coterra เพียงบางส่วนของงวด)",
+      "fcf": "FY2025 $2.80B · FY2024 −$0.85B (ผันผวนมาก)",
+      "yield": "$0.32/qtr ({{dps}}/yr) — fixed+variable model",
+      "range52w": "Yahoo และ StockAnalysis ตรงกัน"
+    },
+    "hint": "ข้อมูล ณ 21 ก.ย. 2569 — งบ TTM รวม Coterra เพียงบางส่วนของงวด (ควบรวม 7 พ.ค. 2569)"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": -8,
+        "exitMultiple": 6.9,
+        "divCum": 3.84,
+        "desc": "WTI ต่ำกว่า $55 นาน + de-rating ลงต่ำสุดของช่วง 5 ปี + leverage กดดัน"
+      },
+      {
+        "growth": 7,
+        "exitMultiple": 8.2,
+        "divCum": 3.84,
+        "desc": "WTI $65-75 + synergies ทยอยเข้า; P/E กลับสู่มัธยฐานย้อนหลัง"
+      },
+      {
+        "growth": 15,
+        "exitMultiple": 9.6,
+        "divCum": 3.84,
+        "desc": "WTI $80+ + synergies เกินเป้า; P/E ขึ้นสูงสุดของช่วง 5 ปี"
+      }
+    ],
+    "exitDp": 1,
+    "note": "<b>หมายเหตุสำคัญ:</b> Devon เป็นหุ้น cyclical E&P ผลตอบแทนผูกกับ WTI อย่างมาก Bear: oil ต่ำนาน EPS ลดหนัก variable dividend แทบหาย และ leverage (หนี้ $11.9B เทียบเงินสด $0.95B) กดดัน Base ($65-75 WTI): EPS โต 7%/ปีจากฐาน TTM ที่ผสมงบหลังควบรวมบางส่วน — จึงเป็นสมมติฐาน ไม่ใช่ประมาณการที่ยืนยันแล้ว ปันผลรวม 3 ปีนับเฉพาะ fixed {{dps}}/ปี (conservative) ราคาเป้าเป็นสมมติฐาน ไม่ได้ขยับตามราคาตลาด",
+    "hintNote": "(TTM diluted) • P/E ออก = ช่วงย้อนหลัง 5 ปี (6.9x / 8.2x / 9.6x) • รวมปันผล fixed"
+  },
+  "analyst": {
+    "target": 60.07,
+    "n": null,
+    "rating": "Strong Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ราคาปลายเดือนใน chart ขยับจาก $32.49 (ต.ค. 2025) เป็น {{px}} ปัจจุบัน โดยจุดสูงสุดรายเดือนใน chart คือ $51.37 (เม.ย. 2026) และกรอบ 52 สัปดาห์ $31.47–$52.71 ควบรวม Coterra เสร็จ 7 พ.ค. 2569 (IR) และราคาปลายเดือน พ.ค. อยู่ที่ $44.49 ก่อนฟื้นตัวสู่ระดับปัจจุบัน — ไม่ได้ยืนยันสาเหตุของการเคลื่อนไหวรายเดือน (ดีล/ราคา oil/อื่น ๆ)",
+    "valuation": "<b>FV = ค่าเฉลี่ยของ 3 ฐาน EPS ที่คูณตัวคูณมัธยฐานตัวเดียวกัน (8.2x)</b> = ($38.21 + {{fvLow}} + {{fvHigh}}) ÷ 3 = {{fv}} ≈ $38.8 — เป็น \"ตระกูลสมมติฐานเดียว\" (นับเป็นเสียงเดียว ไม่ใช่สามขาอิสระ) ใช้กรอบ {{fvLow}}–{{fvHigh}} แสดงความไวต่อฐาน EPS EPS TTM คือกำไร $3,280M ÷ 703M หุ้นถัวเฉลี่ย ซึ่งรวม Coterra เพียงบางส่วนของงวด (ควบรวม 7 พ.ค. 2569) ขณะหุ้นคงเหลือ ~1.15B จึงไม่ใช่ฐานหลังควบรวมเต็ม<br><b>ขาที่ถอดออกจากรอบนี้:</b> EV/EBITDAX 4.5x และ FCF yield 7% — ตัวคูณทั้งสองเป็นค่าที่ประมาณเอง ไม่มีมัธยฐานที่วัดได้ และ EBITDA/FCF \"combined\" ผสมฐานงวดกับหุ้น/หนี้หลังควบรวมเต็ม จึงตรวจซ้ำไม่ได้ · เป้านักวิเคราะห์ {{analyst.target}} (StockAnalysis) / $60.43 (Yahoo, 28 คน) ใช้เป็นบริบทเท่านั้น <b>สรุป: FV นี้ตั้งบนตระกูลเดียว ไม่มีขาอิสระมายืนยัน</b>",
+    "gauge": "ราคาปัจจุบัน {{px}} อยู่เหนือ Fair Value {{fv}} ({{mos}}) — FV มาจากตระกูลเดียว (P/E มัธยฐานย้อนหลัง) และกรอบ {{fvLow}}–{{fvHigh}} สะท้อนความไม่แน่นอนของฐาน EPS ยังห่างจากจุดซื้อ MOS 20% ({{mos20}}) พอสมควร จึงยังไม่เข้าโซนสะสม จุดเข้าสะสมที่น่าสนใจอยู่ที่ {{mos30}}–{{mos20}} (MOS 20-30%) เป้านักวิเคราะห์เฉลี่ย {{analyst.target}} (StockAnalysis) เป็นเพียงบริบท — ไม่ได้ใช้เป็นส่วนหนึ่งของ FV",
+    "mos": "ราคาสูงกว่า Fair Value ที่ได้จากขา P/E ขาเดียว (มัธยฐาน 8.2x เฉลี่ยสามฐาน EPS) — ส่วนต่างไวต่อฐาน EPS (FV {{fvLow}}–{{fvHigh}}) ยังไม่มี margin of safety ในทุกฐาน; รอย่อสู่โซน MOS 20-30% ({{mos30}}–{{mos20}}) ก่อนเริ่มสะสม และถือความเชื่อมั่นของตัวเลขนี้ต่ำ",
+    "verdictHeadline": "DVN: Mega-E&P Cyclical — ราคาสูงกว่า FV จากขา P/E ขาเดียว (ความเชื่อมั่นต่ำ) รอย่อสู่ {{mos30}}–{{mos20}}",
+    "verdictBody": "Devon Energy ควบรวม Coterra Energy เสร็จเมื่อ 7 พ.ค. 2569 (all-stock, IR) หุ้นคงเหลือเพิ่มจาก 633M (ถัวเฉลี่ย FY2025) เป็น ~1.15B และหนี้เพิ่มเป็น $11.9B ขณะเงินสด $0.95B — งบ TTM จึงผสมฐานก่อน/หลังควบรวม (กำไร $3,280M ÷ 703M หุ้นถัวเฉลี่ย) ราคา {{px}} เทียบ Fair Value {{fv}} ({{mos}}) ที่ได้จากตระกูลเดียวคือ P/E มัธยฐานย้อนหลัง 8.2x เฉลี่ยสามฐาน EPS (TTM {{eps}} · FY2025 $4.17 · FY2026e $5.37) <b>ความเชื่อมั่นต่ำถึงปานกลาง</b>: ขามูลค่าอื่นที่เคยใช้ (EV/EBITDAX 4.5x, FCF yield 7%) ถูกถอดเพราะตัวคูณเป็นค่าประมาณไม่มีมัธยฐานที่วัดได้ และ EBITDA/FCF \"combined\" ผสมฐานงวดกับจำนวนหุ้นหลังควบรวม ผลคือ FV ไวต่อฐาน EPS: ใช้ EPS FY2025 ก่อนควบรวม $4.17 ได้ ~{{fvLow}} (ราคาสูงกว่าราว 42%) ใช้ EPS FY2026e $5.37 (ประมาณการ vendor) ได้ ~{{fvHigh}} (สูงกว่าราว 10%) ทุกฐานราคายังสูงกว่ามูลค่า แต่ขนาดส่วนต่างไม่แน่นอน จึงไม่ควรตีความส่วนต่างเป็นตัวเลขแม่นยำ",
+    "strategy": "รอย่อสู่ {{mos30}}–{{mos20}} (MOS 20-30% บนขา P/E) ก่อนเริ่มทยอยสะสม • ตัวเลขนี้ไวต่อฐาน EPS มาก (ช่วง FV {{fvLow}}–{{fvHigh}}) จึงควรถือเป็นช่วงกว้าง ไม่ใช่จุดเดียว • ถือยาว 2-3 ปีรอ synergies และผลการรวมงบเต็มปี • หยุดสะสมถ้า WTI ต่ำกว่า $55 นาน (กระทบ FCF และ variable dividend) • ระวังหาก net debt ไม่ลดลง",
+    "disclaimerSources": "แหล่งข้อมูล: (1) Yahoo Finance — ราคา {{px}} ณ {{priceDate}}, 52 สัปดาห์ $31.47-$52.71, EPS TTM $4.60 (basic/diluted ต่างฐาน), เป้านักวิเคราะห์ $60.43 (28 คน); (2) StockAnalysis.com — งบ TTM/FY2021-2025 (EPS diluted TTM $4.66, NI $3,280M, หุ้นถัวเฉลี่ยปรับลด 703M, หุ้นคงเหลือ 1.15B, หนี้ $11.9B, เงินสด $0.95B), เป้านักวิเคราะห์เฉลี่ย $60.07, forecast FY2026e EPS $5.37; (3) Devon Energy IR — ประกาศควบรวม Coterra เสร็จ 7 พ.ค. 2569 (อัตราแลกเปลี่ยน 0.70 หุ้น DVN ต่อ 1 หุ้น CTRA, synergies $1B ก่อนภาษีต่อปีเป้าภายในสิ้นปี 2570) • ตัวคูณ P/E มัธยฐาน 8.2x คำนวณจากราคาเฉลี่ยรายปี ÷ EPS diluted FY2021-FY2025 (มัธยฐานที่วัดจริง)"
+  },
+  "text": {
+    "valHint": "1 ตระกูล (P/E มัธยฐานย้อนหลัง × 3 ฐาน EPS = 1 เสียง) — ความเชื่อมั่นต่ำ",
+    "legendNote": "(Coterra merger)",
+    "disclaimerAssump": " EPS normalized, ราคาน้ำมันสมมติฐาน, synergy capture rate, และ P/E เป้าหมาย ราคาหุ้นมีความผันผวนสูงตามวัฏจักรน้ำมัน ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ"
+  },
+  "catalysts": [
+    "<b>Coterra Merger Synergies:</b> ควบรวมเสร็จ 7 พ.ค. 2569; บริษัทตั้งเป้า synergies ก่อนภาษี $1B ต่อปีภายในสิ้นปี 2570 (IR) หากทำได้จะยก EPS ต่อหุ้น",
+    "<b>Delaware Basin:</b> IR ระบุว่าบริษัทรวมมีตำแหน่งนำใน core ของ Delaware Basin — ฐาน inventory คุณภาพสูง",
+    "<b>Fixed Dividend:</b> ปันผล $0.32/ไตรมาส ({{dps}}/ปี) — ตามข้อมูล StockAnalysis; ส่วน variable ขึ้นกับ oil",
+    "<b>Analyst Consensus:</b> StockAnalysis เป้าเฉลี่ย {{analyst.target}} (Strong Buy) และ Yahoo $60.43 (28 คน) — เป็นข้อมูลบริบท ไม่ได้ใช้เป็นขา FV",
+    "<b>Oil Price Recovery Leverage:</b> ราคา oil สูงขึ้นดันกำไรและปันผลผันแปร (ไวต่อ WTI)",
+    "<b>Forward P/E ต่ำ:</b> EPS FY2026e ~$5.37 (StockAnalysis) หากเป็นจริง กำไรต่อหุ้นสูงกว่าฐาน TTM"
+  ],
+  "risks": [
+    "<b>Oil Price Cyclicality (ความเสี่ยงหลัก):</b> EPS และ variable dividend ผูกกับ WTI โดยตรง — EPS diluted ผันผวนจาก $9.12 (FY2022) เหลือ $4.17 (FY2025); ถ้า oil ต่ำนานกำไรและปันผลผันแปรลดลงหนัก",
+    "<b>Merger Integration Risk:</b> synergies $1B ก่อนภาษีต่อปีเป็น \"เป้า\" ของบริษัท (IR) ยังไม่ได้เกิดขึ้นจริง — อาจช้า/ต่ำกว่าแผน",
+    "<b>Leverage เพิ่ม:</b> หนี้ $11.9B (TTM) เทียบ $8.7B (FY2025) และเงินสด $0.95B — ดอกเบี้ยกดดัน FCF หาก oil อ่อน",
+    "<b>Share Dilution:</b> หุ้นถัวเฉลี่ย 633M (FY2025) → หุ้นคงเหลือ ~1.15B หลังควบรวม — ตัวเลขต่อหุ้นและ TTM EPS ผสมฐาน ทำให้ P/E ตามงบและ FV ไวต่อฐานที่เลือก",
+    "<b>FCF ผันผวน:</b> FCF FY2024 ติดลบ $853M, FY2025 $2.80B, TTM $1.48B — E&P ต้องลงทุนต่อเนื่องเพื่อรักษาการผลิต ทำให้ FCF จริงคาดเดายาก",
+    "<b>ข้อจำกัดของการประเมิน:</b> FV ตั้งบนตระกูลเดียว (P/E มัธยฐาน × 3 ฐาน EPS) จึงไม่มีขาอิสระมายืนยัน"
+  ],
+  "extras": [],
+  "_sig": "sha256:10d753f0d0749a0b985a41f1a7243725293cf7b62b35a5c38cfb50533b16569d"
+}

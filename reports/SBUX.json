@@ -1,0 +1,283 @@
+{
+  "v": 3,
+  "symbol": "SBUX",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Starbucks Corporation",
+    "exchange": "NASDAQ",
+    "sub": "Global coffeehouse chain (~38,000 stores) • Loyalty program (34M+ active members) • Brian Niccol \"Back to Starbucks\" turnaround • China ~7,000 stores • Coffee-tea-beverage • Roastery experiences",
+    "headerTags": [
+      "Consumer Discretionary",
+      "QSR / Coffeehouse"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "StockAnalysis.com",
+      "Starbucks IR"
+    ],
+    "themeLegacy": {
+      "accent": "#00704A",
+      "accentDark": "#004e34",
+      "darkGrad": "linear-gradient(135deg,#003d28 0%,#00704A 100%)",
+      "glow": "rgba(0,112,74,0.35)",
+      "subColor": "#cceade",
+      "headerMuted": "#d4e7e1",
+      "verdictText": "#e0f5ed",
+      "vcellLabel": "#e8f6ef"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T23:32:21+07:00",
+      "v2Hash": "0c49057976f5"
+    }
+  },
+  "market": {
+    "px": 94.86,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          80.87
+        ],
+        [
+          "พ.ย.25",
+          87.11
+        ],
+        [
+          "ธ.ค.25",
+          84.21
+        ],
+        [
+          "ม.ค.26",
+          91.95
+        ],
+        [
+          "ก.พ.26",
+          98.02
+        ],
+        [
+          "มี.ค.26",
+          89.59
+        ],
+        [
+          "เม.ย.26",
+          105.33
+        ],
+        [
+          "พ.ค.26",
+          99.16
+        ],
+        [
+          "มิ.ย.26",
+          102.19
+        ],
+        [
+          "ก.ค.26",
+          105.25
+        ],
+        [
+          "ส.ค.26",
+          106.25
+        ],
+        [
+          "ก.ย.26",
+          94.86
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 77.99,
+      "hi": 110.51
+    }
+  },
+  "fundamentals": {
+    "eps": 1.74,
+    "dps": 2.48,
+    "shares": 1140000000,
+    "ebitda": 5400000000,
+    "revenue": 38300000000,
+    "beta": 0.98,
+    "epsForward": 2.59,
+    "epsBasis": "adj-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation (FY2026E EPS × มัธยฐาน 5 ปี)",
+      "inputs": {
+        "multiple": 30.9,
+        "multipleSource": "median5y",
+        "base": "epsForward"
+      },
+      "baseLabel": "FY2026E consensus",
+      "note": "FY2026E consensus StockAnalysis",
+      "family": "market"
+    },
+    {
+      "method": "dcf",
+      "label": "DCF (FCF TTM, r 10%, g 3%)",
+      "inputs": {
+        "g1": 8,
+        "years1": 5,
+        "tg": 3,
+        "r": 10,
+        "rfCurrency": "USD"
+      },
+      "override": {
+        "fcf": 3642000000,
+        "netDebt": 0,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "สมมติฐานของผู้วิเคราะห์เอง · FCF TTM $3,642M (StockAnalysis) โต 8%/ปี 5 ปี, r 10%, g ปลาย 3%, FCF หลังดอกเบี้ยจึงไม่หักหนี้สุทธิซ้ำ · 74% ของมูลค่ารวม · ตระกูลสมมติฐาน (r,g) ต่างจากขา P/E · ฐาน FCF TTM สูงกว่า FY2025 ($2,442M) จึงไม่หวือหวากว่านี้",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "custom:0",
+      "custom:1",
+      {
+        "key": "revenue",
+        "tone": "none"
+      },
+      "custom:2",
+      "custom:3",
+      "custom:4",
+      "custom:5",
+      "yield",
+      "custom:6",
+      "beta"
+    ],
+    "custom": [
+      {
+        "label": "P/E ล่วงหน้า FY2026",
+        "value": "~{{peForward}}",
+        "note": "EPS FY2026E $2.59 (consensus StockAnalysis)",
+        "tone": "neu"
+      },
+      {
+        "label": "EV/EBITDA",
+        "value": "~26.2x",
+        "note": "EBITDA TTM $5.4B; เหนือ MCD ~17x",
+        "tone": "neu"
+      },
+      {
+        "label": "EPS Adj. (Non-GAAP)",
+        "value": "$2.13",
+        "note": "FY2025; consensus FY2026E $2.59 / FY2027E $3.12"
+      },
+      {
+        "label": "อัตรากำไร Op. Margin",
+        "value": "10.4%",
+        "note": "TTM (StockAnalysis); FY2025 9.9%",
+        "tone": "neu"
+      },
+      {
+        "label": "ROE",
+        "value": "N/A",
+        "note": "ส่วนทุนติดลบ −$8.1B (buyback)",
+        "tone": "neg"
+      },
+      {
+        "label": "EPS ประวัติ GAAP",
+        "value": "$1.63/$3.31/$3.58",
+        "note": "FY25/FY24/FY23 — ปี 25 ต่ำสุดรอบ 5 ปี"
+      },
+      {
+        "label": "Comp. Sales Q2 FY26",
+        "value": "+7.1% (US)",
+        "note": "Global +6.2%; China +0.5% ยังอ่อน",
+        "tone": "pos"
+      }
+    ],
+    "notes": {
+      "mcap": "หุ้น 1.14B หน่วย",
+      "pe": "GAAP EPS TTM {{eps}} (ต่ำชั่วคราว)",
+      "revenue": "+4.5% YoY; FY2025 $37.2B (+2.8%)",
+      "yield": "{{dps}}/หุ้น/ปี — 62 ไตรมาสต่อเนื่อง",
+      "beta": "ใกล้เคียง S&P 500; ความผันผวนปานกลาง"
+    },
+    "hint": "ข้อมูล ณ 21 ก.ย. 2569 / FY2025 สิ้นสุด ก.ย. 2568"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": -5,
+        "exitMultiple": 18,
+        "divCum": 7.44,
+        "desc": "Turnaround ล้มเหลว"
+      },
+      {
+        "growth": 12,
+        "exitMultiple": 25,
+        "divCum": 7.65,
+        "desc": "Turnaround ค่อยๆ ฟื้น"
+      },
+      {
+        "growth": 25,
+        "exitMultiple": 32,
+        "divCum": 8.1,
+        "desc": "Chipotle-like turnaround"
+      }
+    ],
+    "exitDp": 0,
+    "baseOverride": {
+      "value": 2.59,
+      "why": "EPS ฐานฉากที่ผู้เขียนใช้"
+    },
+    "note": "การคาดการณ์อิง EPS FY2026E $2.59 (consensus) เป็นฐาน · <b>Base case (ฟื้นค่อยๆ)</b> ให้ผลตอบแทนรวม {{scn.base.ret}} โดยตั้ง P/E ออก 25x ต่ำกว่ามัธยฐานประวัติ 30.9x (สมมติฐานผู้วิเคราะห์) — นักลงทุนต้องพึ่ง <b>Bull case ถึงจะได้ผลตอบแทนดี</b> ซึ่งต้องอาศัย Niccol ทำซ้ำ \"Chipotle playbook\" ได้สำเร็จ (comp sales +5%+ ต่อเนื่อง + margin recovery) ปันผล {{dps}}/ปี ช่วยบรรเทา downside แต่ไม่พอป้องกัน bear case ที่ราคาอาจกลับสู่ Fair Value",
+    "hintNote": "(FY2026E consensus)"
+  },
+  "analyst": {
+    "target": 112,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ราคาปิดรายเดือนในกราฟเริ่มที่ $80.87 (ต.ค. 68) ช่วง Brian Niccol เพิ่งรับตำแหน่ง CEO ตลาดฟื้นกลับหลัง Q2 FY2026 (มี.ค. 69) แสดงผล US Comp +7.1% ดีกว่าคาด ราคาแตะ $105.33 (เม.ย.) และปิดสูงสุดของกราฟที่ $106.25 (ส.ค. 69) ก่อนย่อลงมาที่ {{px}} ปัจจุบัน ซึ่งยังสูงกว่ามูลค่าเหมาะสม {{fv}} ({{mos}})",
+    "valuation": "<b>dispersion gate 0.4c:</b> 2 ตระกูลอิสระ (P/E มัธยฐานประวัติ vs DCF) ห่างกัน $80/$58 = 1.38× (ไม่เกิน 2 เท่า) จึงเฉลี่ยตรงได้ — FV = ({{fvHigh}} + $58.02)/2 = $69.03 ≈ <b>{{fv}}</b> · การปรับโครงสร้างรอบนี้: ตัดขา EV/EBITDA ที่ตัวคูณ 19x เป็นค่าที่ตั้งเองโดยไม่มีมัธยฐานที่วัดได้, ตัดขา P/E FY2027 ที่ซ้ำตระกูลเดียวกับขา P/E FY2026, และเปลี่ยน P/E 32x ที่ตั้งเองเป็นมัธยฐานประวัติ 30.9x · เป้านักวิเคราะห์ $112.23 ไม่นับเป็นขา FV (ใช้เป็นบริบทเท่านั้น) · ความไว: ถ้าใช้ P/E ขาเดียว FV = $80 ถ้า DCF ขาเดียว = $58 ⇒ ทุกกรณีราคาปัจจุบัน {{px}} สูงกว่า FV · ค่าประเมินเป็นการประมาณ กรอบ {{fvLow}}–{{fvHigh}} คือช่วงระหว่างสองขา",
+    "gauge": "ราคา {{px}} อยู่ <b>สูงกว่า Fair Value {{fv}}</b> ({{mos}}) บ่งชี้ว่าตลาดกำลังฝัง premium สำหรับการฟื้นตัวที่ยังไม่เกิดขึ้นเต็มที่ โซนน่าสนใจสำหรับ value investor คือต่ำกว่า {{fv}} (ใกล้ FV) หรือ {{mos20}} (MOS 20%) โซน deep value ที่ {{mos30}} ลงมา (MOS 30%) เป้า analyst $112 เป็นเพียงมุมมองฝั่งตลาด ไม่ได้ใช้คำนวณ Fair Value",
+    "mos": "ราคาเกิน Fair Value — ไม่มี MOS; ตลาดฝัง recovery premium ล่วงหน้า (ประเมินจาก 2 ตระกูล ค่าไม่แน่นอนสูง)",
+    "verdictHeadline": "SBUX — Turnaround Story ที่น่าสนใจ แต่ราคาไม่ให้ MOS",
+    "verdictBody": "Starbucks กำลังอยู่ในจุดเปลี่ยน (inflection point) ภายใต้ CEO Brian Niccol ซึ่งพลิกฟื้น Chipotle ได้สำเร็จ Q2 FY2026 US Comp Sales +7.1% เป็นสัญญาณแรกที่ดี แต่ <b>ราคา {{px}} ได้ฝัง recovery scenario ไปแล้วเกือบทั้งหมด</b> Fair Value จาก 2 ตระกูล (P/E มัธยฐานประวัติ + DCF ที่แสดงสมมติฐานครบ) ให้ค่าเฉลี่ย {{fvLow}}–{{fvHigh}} ≈ {{fv}} ต่ำกว่าราคาปัจจุบัน นักลงทุนที่ซื้อวันนี้กำลังจ่ายค่า \"option\" ว่า Niccol จะสำเร็จเท่า Chipotle — ผลตอบแทน 3 ปี Bull {{scn.bull.ret}}; Bear {{scn.bear.ret}}",
+    "strategy": "รอจังหวะซื้อที่ {{fv}} (Fair Value) หรือต่ำกว่า เพื่อให้มี MOS; สำหรับนักลงทุนระยะยาวที่เชื่อมั่นในแบรนด์และ Niccol อาจพิจารณา DCA แต่ควรรับรู้ว่าราคาตอนนี้ฝัง \"perfect execution\" ไว้แล้ว — โซนน่าสนใจ MOS 20% ที่ {{mos20}} (FV × 0.8) หากตลาด re-rate ลงจากความกังวล China หรือ execution lag",
+    "disclaimerSources": "แหล่งข้อมูล: Yahoo Finance (ราคา/chart), StockAnalysis.com (financials/forecast), Starbucks Investor Relations (Q2 FY2026/FY2025 earnings), GuruFocus (EV/EBITDA), MarketBeat (analyst consensus) ราคา ณ {{priceDate}}"
+  },
+  "text": {
+    "valHint": "2 วิธี (2 ตระกูล)",
+    "chartHint": "ราคาปิดรายเดือน Yahoo Finance",
+    "disclaimerAssump": " P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ EPS ในอนาคต"
+  },
+  "catalysts": [
+    "<b>Brian Niccol \"Back to Starbucks\":</b> CEO ใหม่มีประวัติพลิกฟื้น Chipotle ได้สำเร็จ — Q2 FY2026 US Comp +7.1% เป็นสัญญาณแรกที่น่าหวัง",
+    "<b>Loyalty Program ขนาดใหญ่:</b> สมาชิก 34M+ คน ในสหรัฐฯ — ฐานรายได้ประจำที่เหนียวแน่น ใช้สะสมข้อมูลพฤติกรรมและ personalization",
+    "<b>การขยายตัวระยะยาว:</b> Niccol มีแผน 10,000 ร้านในสหรัฐฯ ระยะยาว; ตลาด international ยังมีโอกาสในตลาดเกิดใหม่",
+    "<b>Margin Recovery:</b> Non-GAAP Operating Margin ปรับตัวขึ้น YoY ใน Q2 FY2026 (+120 bps) — หากทำได้ต่อเนื่อง EPS จะฟื้นเร็วกว่าคาด",
+    "<b>เงินปันผลมั่นคง:</b> ปันผล {{dps}}/ปี (~2.6%) 62 ไตรมาสต่อเนื่อง CAGR 18% — สร้าง downside support ในตลาดผันผวน",
+    "<b>China turnaround optionality:</b> Comp +0.5% ใน Q2 FY2026 หยุดการหดตัว — หากพลิกฟื้นได้จะเป็น upside ครั้งใหญ่"
+  ],
+  "risks": [
+    "<b>Valuation แพงมาก:</b> P/E TTM ~55x, Forward P/E ~37x — ตลาดฝัง recovery expectations ไว้สูง; ถ้า turnaround ช้ากว่าคาดราคาจะปรับลงรุนแรง",
+    "<b>China competition:</b> Luckin Coffee, Cotti Coffee ขยายอย่างรวดเร็วด้วยราคาต่ำกว่ามาก; consumer spending อ่อนแอในจีน — ยากจะฟื้นเร็ว",
+    "<b>ส่วนทุกติดลบ (Negative Equity):</b> Buyback aggressive ทำให้ equity −$8.1B, debt $26.6B — ความยืดหยุ่นทางการเงินจำกัดในภาวะวิกฤต",
+    "<b>Labor cost & unionization:</b> พนักงานในสหรัฐฯ รวมกลุ่มสหภาพมากขึ้น — กดดัน operating costs; ยากต่อการ efficiency ในระยะสั้น",
+    "<b>Execution risk:</b> Niccol อาจใช้เวลานานกว่าคาดใน Starbucks ซึ่งซับซ้อนกว่า Chipotle มาก (ร้านในห้างสรรพสินค้า/licensed stores/international)",
+    "<b>Coffee price inflation:</b> ราคากาแฟดิบ (Arabica) ผันผวนสูง — อาจกดดัน gross margin หากราคาขายปลีกปรับขึ้นได้ยาก"
+  ],
+  "extras": [],
+  "_sig": "sha256:500cefc371390e8423e6364adf9e10a64483fb7f7c055349ce876ac39a8c6c03"
+}

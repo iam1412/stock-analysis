@@ -1,0 +1,248 @@
+{
+  "v": 3,
+  "symbol": "BNY",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "BNY Mellon",
+    "exchange": "NYSE",
+    "sub": "Bank of New York Mellon: World's largest asset custodian (~$53T AUC/A) • Pershing (clearing/custody for wealth advisors & broker-dealers) + Treasury services + FX • Dreyfus mutual funds + Mellon Investments • Berkshire Hathaway holding (~8.4%) • Robin Vince CEO: tech modernization + cost control • ~1.4% dividend yield + buybacks",
+    "headerTags": [
+      "Financial Services",
+      "Asset Custodian / Servicer"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis.com",
+      "Yahoo Finance",
+      "NYSE",
+      "BNY press release"
+    ],
+    "priceNote": "ปิดตลาด · ⚠️ NYSE เปลี่ยนสัญลักษณ์หุ้นจาก BK เป็น BNY มีผล 21 พ.ค. 2569 — ไฟล์รายงานนี้เปลี่ยนชื่อตามเป็น BNY.html แล้ว",
+    "themeLegacy": {
+      "accent": "#1C2C6B",
+      "accentDark": "#142050",
+      "darkGrad": "linear-gradient(135deg,#0d1a3f 0%,#1C2C6B 60%,#2a3f8f 100%)",
+      "glow": "rgba(28,44,107,0.35)",
+      "subColor": "#a3b8e6",
+      "headerMuted": "#aab9df",
+      "verdictText": "#c8d8f8",
+      "vcellLabel": "#bacbea"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T11:54:28+07:00",
+      "v2Hash": "f4ffbfe6174b"
+    }
+  },
+  "market": {
+    "px": 150.15,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          107.93
+        ],
+        [
+          "พ.ย.25",
+          112.1
+        ],
+        [
+          "ธ.ค.25",
+          116.09
+        ],
+        [
+          "ม.ค.26",
+          119.92
+        ],
+        [
+          "ก.พ.26",
+          119.1
+        ],
+        [
+          "มี.ค.26",
+          118.63
+        ],
+        [
+          "เม.ย.26",
+          134.37
+        ],
+        [
+          "พ.ค.26",
+          139.43
+        ],
+        [
+          "มิ.ย.26",
+          144.61
+        ],
+        [
+          "ก.ค.26",
+          156.33
+        ],
+        [
+          "ส.ค.26",
+          161.28
+        ],
+        [
+          "ก.ย.26",
+          150.15
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 103.11,
+      "hi": 165.84
+    }
+  },
+  "fundamentals": {
+    "eps": 8.57,
+    "dps": 2.12,
+    "shares": 678504142,
+    "peAvg5y": 12.3,
+    "bvps": 63.16,
+    "roe": 14.1,
+    "revenue": 21420000000,
+    "beta": 1.06,
+    "fy": {
+      "period": "FY2025",
+      "netIncome": 5310000000
+    },
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation (GAAP TTM × มัธยฐานย้อนหลัง)",
+      "inputs": {
+        "multiple": 12.3,
+        "multipleSource": "median5y"
+      },
+      "family": "market"
+    },
+    {
+      "method": "declared",
+      "label": "Justified P/TBV (Residual Income)",
+      "inputs": {
+        "value": 135,
+        "basis": "other"
+      },
+      "note": "P/TBV เหมาะสม = (ROTCE 23% − g 4%) / (r 9% − g 4%) = 3.8x × TBVPS $35.60 = $135 — ใช้ ROTCE ปรับ normalize ~23% (สูงกว่าฐาน FY2025 22% แต่ระมัดระวังกว่าตัวเลข Q1 2569 จริง 29.3% ที่อาจมี buyback/timing หนุน) · ข้อมูล TBVPS/ROTCE มาจากรอบ Q1 2569 ยังไม่ได้ตรวจซ้ำกับงวดล่าสุดในรอบนี้ · r/g เป็นสมมติฐาน จึงเป็นอีกตระกูลที่ไม่ผูกกับตัวคูณตลาด",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "peAvg5y",
+      "pbv",
+      "netIncomeFy",
+      "eps",
+      "custom:0",
+      "roe",
+      "revenue",
+      "custom:1",
+      "yield",
+      "beta"
+    ],
+    "custom": [
+      {
+        "label": "ROTCE",
+        "value": "~29.3%",
+        "note": "Q1 2569 (+5.1pp YoY) จาก ~22% FY2025",
+        "tone": "pos"
+      },
+      {
+        "label": "AUC/A",
+        "value": "~$53T+",
+        "note": "World's largest asset custodian"
+      }
+    ],
+    "notes": {
+      "mcap": "678.5M shares out.",
+      "pe": "GAAP EPS {{eps}} TTM",
+      "peAvg5y": "มัธยฐาน 5 ปีงบ (ช่วง 11.3–15.9x) · re-rating ต่อเนื่อง 2024–2026",
+      "pbv": "TBVPS $35.60",
+      "netIncomeFy": "+22.4% YoY · TTM $6.02B",
+      "eps": "diluted TTM (FY2025 $7.40)",
+      "roe": "ตาม vendor · ROE ต่ำกว่า ROTCE เพราะ goodwill $16.8B",
+      "revenue": "Fee ~75% + NII ~25%",
+      "yield": "{{dps}}/yr จริง · ประกาศขึ้น 19% → $2.52 fwd (ยังไม่มีผล)",
+      "beta": "ใกล้เคียงตลาด · ผูกกับ equity mkt"
+    },
+    "hint": "ข้อมูล ณ 21 ก.ย. 2569"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 3,
+        "exitMultiple": 11,
+        "divCum": 7.15,
+        "desc": "Equity bear + NII กดดัน"
+      },
+      {
+        "growth": 9,
+        "exitMultiple": 12.3,
+        "divCum": 7.15,
+        "desc": "AUC/A โต, transformation ดำเนินต่อ"
+      },
+      {
+        "growth": 15,
+        "exitMultiple": 15.9,
+        "divCum": 7.15,
+        "desc": "Tech modernization เต็มรูป + bull market"
+      }
+    ],
+    "exitDp": 1,
+    "note": "Base case ({{scn.base.ret}} ใน 3 ปี รวมปันผล; P/E ออก = มัธยฐานย้อนหลัง 12.3x, Bear 11x ≈ ต่ำสุดของช่วง, Bull 15.9x = สูงสุดของช่วง) สะท้อนภาพ BNY ที่ EPS ยังโต แต่หลังราคาวิ่งขึ้นแรงมาทั้งปี valuation ตึงตัว ที่จุดเข้า {{px}} ผลตอบแทนที่คาดหวังไม่คุ้มเทียบกับ risk ที่แบกรับ Bear case ({{scn.bear.ret}}) เป็นไปได้หาก equity market ปรับฐานหนัก ทำให้ AUC/A และ fee income ลดลงพร้อมกัน และ P/E de-rate กลับสู่ historical range Bull case ({{scn.bull.ret}}) ต้องอาศัยทั้ง EPS growth แรงต่อเนื่องแบบ Q1 2569 (+42% YoY) และ P/E re-rating ต่อ ซึ่งมีความเป็นไปได้หาก Pershing + tech platform ออกดอกเต็มที่ ปันผลจริงปัจจุบัน {{dps}}/ปี (~1.4%) และแผนขึ้นเป็น $2.52/ปี (ประกาศแล้ว รอมีผลจ่ายจริง) เป็น income เสริมที่มั่นคง"
+  },
+  "analyst": {
+    "target": 167.79,
+    "n": 14,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "BNY Mellon (เปลี่ยนสัญลักษณ์จาก BK เป็น BNY ที่ NYSE 21 พ.ค. 2569) ปรับตัวขึ้นแข็งแกร่งในรอบปี (ต.ค. 2568 – ก.ย. 2569 ตามป้ายรอบปีด้านบน) ไต่ระดับต่อเนื่องตลอดปีจาก momentum กำไรที่แข็งแกร่งต่อเนื่อง (Q1 2569 EPS +42% YoY เป็น $2.24), AUC/A ทำ new high ตามตลาดหุ้นโลก, Berkshire ถือไม่ขาย และการ transform องค์กรของ Robin Vince CEO ที่ทำให้ ROTCE ทะยานถึง ~29.3% ใน Q1 2569 (+5.1pp YoY) พร้อมประกาศแผนขึ้นปันผล 19% เป็น $0.63/ไตรมาส (ยังไม่มีผลจ่ายจริง) ราคาปัจจุบันซื้อขายเหนือมูลค่าเหมาะสมตามแบบจำลอง ({{fv}}) สะท้อน premium ที่ตลาดให้กับคุณภาพธุรกิจ custodian และโมเมนตัมกำไรที่เร่งตัว",
+    "valuation": "2 ตระกูลวิธีให้กรอบ {{fvLow}}–{{fvHigh}} (P/E มัธยฐานย้อนหลัง = ต่ำสุด · Justified P/TBV = สูงสุด) เฉลี่ยเป็น {{fv}} ต่ำกว่าราคาปัจจุบัน {{px}} (MOS {{mos}}) · เป้านักวิเคราะห์ใช้เป็นบริบทตรวจสอบเท่านั้น ไม่เป็นขาของ FV · P/E ปัจจุบัน ~{{pe}}x สูงกว่ามัธยฐานย้อนหลัง 12.3x (ซึ่งอิงราคาเฉลี่ยรอบปีก่อน re-rating เต็มที่ จึงเป็นเกณฑ์อนุรักษ์) แต่ตลาดให้ premium เพราะ: (1) momentum กำไรเร่งตัว (Q1 2569 EPS +42% YoY) (2) AUC/A ทำ new high ทุกปีตาม equity market (3) Berkshire Hathaway ถืออยู่ = signal คุณภาพ (4) ROTCE พุ่งขึ้นถึง 29.3% ใน Q1 2569 จาก transformation ของ Robin Vince กรอบ FV {{fvLow}}–{{fvHigh}} สะท้อนความไม่แน่นอนว่า ROTCE ระดับ Q1 (29.3%) จะยั่งยืนแค่ไหน และทิศทางดอกเบี้ย (ลดดอกเบี้ย = NII ลด แต่ equity market ขึ้น = AUC/A และ fee income โต)",
+    "gauge": "BNY ซื้อขายที่ {{px}} — เหนือมูลค่าเหมาะสม {{fv}} (MOS {{mos}}) และต่ำกว่าเป้า consensus นักวิเคราะห์เฉลี่ย {{analyst.target}} ({{analyst.pct}}) (Buy rating, n=14 ตาม Yahoo) ราคาสะท้อน premium สำหรับ franchise คุณภาพสูง + momentum กำไรที่เร่งตัวแรง โซนน่าสนใจสำหรับนักลงทุน value คือต่ำกว่า {{mos20}} (MOS 20%) และ deep value ที่ {{mos30}} (MOS 30%) ซึ่งน่าจะเกิดได้เฉพาะกรณี equity market ปรับฐานหนักหรือ NII กดดันมากกว่าคาด",
+    "mos": "ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสม — ยังไม่มี Margin of Safety",
+    "verdictHeadline": "BNY Mellon — Franchise คุณภาพระดับโลก แต่ราคาปัจจุบันสะท้อนข่าวดีส่วนใหญ่แล้ว",
+    "verdictBody": "BNY Mellon (เปลี่ยนสัญลักษณ์จาก BK เป็น BNY ที่ NYSE 21 พ.ค. 2569) เป็น custodian bank คุณภาพสูงสุดในโลก — AUC/A $53T+ คือ \"สาธารณูปโภค\" ของระบบการเงินโลก ธุรกิจ Pershing ครองตลาด clearing สำหรับ RIA/wealth advisor, Robin Vince transform องค์กรด้วยผลที่จับต้องได้ยิ่งขึ้น (ROTCE พุ่งถึง 29.3% ใน Q1 2569, EPS +42% YoY), และ Berkshire Hathaway ถือ 8.4% เป็น stamp of approval จาก Warren Buffett อย่างไรก็ตาม ราคา {{px}} ซื้อขายเหนือ FV {{fv}} (MOS {{mos}}) และ P/E ~{{pe}}x อยู่เหนือมัธยฐานย้อนหลัง 12.3x — นักลงทุน value ควรรอโอกาสราคาอ่อนตัว สำหรับนักลงทุนระยะยาวที่ยอมรับ premium price เพื่อ quality, BNY ยังเป็นหุ้นที่ถือได้สบายใจ",
+    "strategy": "<b>ยังไม่ใช่จุดเข้าซื้อสำหรับ value investor</b> — รอให้ราคาต่ำกว่า {{fv}} (FV) โดยเฉพาะโซน {{mos30}}–{{mos20}} จึงจะน่าสนใจ สำหรับผู้ที่ถืออยู่แล้ว: คงถือต่อ เป็น quality compounder ที่ Buffett ไว้วางใจ พร้อมติดตามว่า ROTCE ระดับ 29.3% ยั่งยืนหรือไม่ในไตรมาสถัดไป ถ้าตลาด equity ปรับฐานหรือ BNY มีข่าวลบชั่วคราว → โอกาสสะสมที่ดีกว่านี้",
+    "disclaimerSources": "หมายเหตุ: NYSE เปลี่ยนสัญลักษณ์หุ้นจาก BK เป็น BNY มีผล 21 พ.ค. 2569 (ไฟล์รายงานนี้เปลี่ยนชื่อเป็น BNY.html ตามแล้ว) • แหล่งข้อมูล: StockAnalysis.com (ราคาปิด 24 ก.ย. 2569 $153.79 4:00pm EDT · EPS GAAP TTM $8.57 · EPS forecast FY2026e $9.25 · BVPS $63.16 · TBVPS $35.60 · เป้าเฉลี่ย {{analyst.target}} จาก 14 analysts), Yahoo Finance chart API (ticker BNY — ราคาปิดรายเดือน 1 ปี ตรงกับ StockAnalysis พอดี), ข่าวประกาศเปลี่ยนสัญลักษณ์หุ้น BNY/PR Newswire และผลประกอบการ Q1 2569 (ROTCE 29.3%, ROE 16.1%, EPS $2.24 +42% YoY)"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 2 ตระกูลสมมติฐาน",
+    "chartHint": "ต.ค. 2568 – ก.ย. 2569",
+    "disclaimerAssump": " P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROTCE ในอนาคต"
+  },
+  "catalysts": [
+    "<b>AUC/A $53T+ ทำ new high:</b> ทุก $1T ที่ equity market เพิ่ม = fee income BNY โตตาม ไม่ต้องลงทุนเพิ่ม — structural tailwind จาก wealth accumulation ทั่วโลก",
+    "<b>Robin Vince Transformation เร่งตัว:</b> CEO ตั้งแต่ 2022 ปรับโครงสร้าง 3 segment (Securities Services, Market & Wealth Services, Investment & Wealth Management) + tech modernization ทำ ROTCE ขยับจาก ~18% (2022) → ~22% (FY2025) → พุ่งถึง 29.3% ใน Q1 2569 (+5.1pp YoY) พร้อม EPS +42% YoY",
+    "<b>Pershing — strategic moat:</b> clearing/custody platform สำหรับ wealth advisors & RIAs เป็น \"toll road\" สำหรับ wealth management industry ที่กำลังเติบโตสูง แทบเป็น duopoly กับ Schwab",
+    "<b>Berkshire Hathaway backing:</b> Buffett ถือ ~8.4% — signal คุณภาพที่แข็งแกร่ง ลดโอกาส downside รุนแรง และดึง long-term institutional investors",
+    "<b>Capital return แข็งแกร่ง:</b> ประกาศแผนขึ้นปันผล 19% เป็น $0.63/ไตรมาส (annualized $2.52 — ยังไม่มีผลจ่ายจริง ปัจจุบันจ่าย $0.53/ไตรมาส) + buyback ต่อเนื่อง (~$983M ใน Q1 2569) ลด share count → EPS per share โตเร็วกว่า net income",
+    "<b>Fee-based ธุรกิจทนทาน:</b> รายได้ 75% เป็น fee-based (custody, settlement, fund accounting) ไม่ขึ้นกับดอกเบี้ย — portfolio ที่ diversified กว่า commercial bank ทั่วไป"
+  ],
+  "risks": [
+    "<b>Valuation ตึงตัวขึ้น:</b> P/E ~{{pe}}x เหนือมัธยฐานย้อนหลัง 12.3x (ช่วง 11.3–15.9x) และ P/TBV ~4.3x สูงกว่า peer STT — ROTCE 29.3% ใน Q1 2569 อาจมีปัจจัยชั่วคราว (buyback timing) หนุนอยู่ หากไม่ยั่งยืน + momentum ชะลอ de-rating ได้ง่าย ผลตอบแทนคาดหวังช่วง 1–2 ปีถัดไปค่อนข้างจำกัดแล้ว",
+    "<b>NII sensitivity:</b> Fed ลดดอกเบี้ยต่อเนื่อง → NII ลดลง (25% ของรายได้) ปีที่ผ่านมา NII ฟื้นจากดอกเบี้ยสูง แต่ถ้า rate ลงเร็วจะกดดัน earnings",
+    "<b>Equity market correction:</b> AUC/A ผูกกับ asset prices — ถ้า equity/bond market ปรับฐาน 20% AUC/A หดและ fee income ลด ราคาหุ้น BNY มักปรับฐานตาม (Beta 1.06)",
+    "<b>Operational & cybersecurity risk:</b> ในฐานะ custodian ถือทรัพย์สินสำหรับ institutions ทั่วโลก — systemic risk สูง, cyber breach หรือ settlement failure อาจเป็น tail risk รุนแรง",
+    "<b>Competition จาก FinTech & Big Tech:</b> Tokenization, blockchain settlement และ digital assets อาจ disrupt ธุรกิจ custody traditional ในระยะยาว แม้ BNY กำลัง explore ด้วย",
+    "<b>Regulatory & capital requirements:</b> Basel IV / G-SIB surcharge สูง ต้องถือ capital เพิ่ม → จำกัด payout และ ROE upside; regulation ขึ้นอยู่กับ political cycle",
+    "<b>ประวัติเปลี่ยนสัญลักษณ์หุ้น BK → BNY:</b> มีผล 21 พ.ค. 2569 ที่ NYSE (rebrand เป็น \"BNY\") — ไม่กระทบพื้นฐานธุรกิจ แต่ระบบดึงราคาอัตโนมัติ (Yahoo Finance) ที่อ้างอิงสัญลักษณ์เดิม \"BK\" คืนข้อมูลว่างเปล่าหลังเปลี่ยนสัญลักษณ์ — แก้แล้วโดยเปลี่ยนชื่อไฟล์รายงานเป็น BNY.html ให้ตรงกับ ticker ปัจจุบัน"
+  ],
+  "extras": [],
+  "_sig": "sha256:14011d89ed3c059fdd495b2fba424b75183bd279262c8c018711183c85ebddcc"
+}

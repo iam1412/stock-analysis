@@ -1,0 +1,252 @@
+{
+  "v": 3,
+  "symbol": "TRV",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "The Travelers Companies",
+    "exchange": "NYSE",
+    "sub": "P&C insurance leader • Business Insurance (commercial) • Bond & Specialty (surety, D&O) • Personal Insurance (auto, home) • Dow Jones 30 • Red Umbrella brand • Dividend Grower 22yr",
+    "headerTags": [
+      "P&C Insurance",
+      "Dow Jones 30 · Dividend Grower 22yr"
+    ],
+    "analysisDate": "2026-09-22",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "StockAnalysis.com",
+      "Travelers IR"
+    ],
+    "themeLegacy": {
+      "accent": "#C8102E",
+      "accentDark": "#8B0B20",
+      "darkGrad": "linear-gradient(135deg,#1a0406 0%,#2d0609 50%,#1a0406 100%)",
+      "glow": "rgba(200,16,46,0.35)",
+      "subColor": "#f5a0ab",
+      "headerMuted": "#ac7279",
+      "verdictText": "#ffd0d6",
+      "vcellLabel": "#d08090"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-22T01:46:25+07:00",
+      "v2Hash": "7fcabc8f2ad9"
+    }
+  },
+  "market": {
+    "px": 363.04,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          268.62
+        ],
+        [
+          "พ.ย.25",
+          292.86
+        ],
+        [
+          "ธ.ค.25",
+          290.06
+        ],
+        [
+          "ม.ค.26",
+          284.51
+        ],
+        [
+          "ก.พ.26",
+          308.64
+        ],
+        [
+          "มี.ค.26",
+          291.68
+        ],
+        [
+          "เม.ย.26",
+          305.14
+        ],
+        [
+          "พ.ค.26",
+          291.89
+        ],
+        [
+          "มิ.ย.26",
+          330.12
+        ],
+        [
+          "ก.ค.26",
+          374.36
+        ],
+        [
+          "ส.ค.26",
+          365.93
+        ],
+        [
+          "ก.ย.26",
+          363.04
+        ]
+      ],
+      "gridFmt": "v.toFixed(0)",
+      "dataFmt": "d[1].toFixed(2)"
+    },
+    "range52w": {
+      "lo": 252.26,
+      "hi": 398.69
+    }
+  },
+  "fundamentals": {
+    "eps": 37.02,
+    "dps": 5,
+    "bvps": 168,
+    "shares": 221000000,
+    "peAvg5y": 12.7,
+    "roe": 20.5,
+    "roa": 4.9,
+    "revenue": 48900000000,
+    "beta": 0.5,
+    "fy": {
+      "period": "FY2025",
+      "netIncome": 6290000000
+    },
+    "epsBasis": "adj-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation (Core)",
+      "inputs": {
+        "multiple": 11,
+        "multipleSource": "author"
+      }
+    },
+    {
+      "method": "declared",
+      "label": "DDM / Gordon Growth",
+      "inputs": {
+        "value": 265,
+        "basis": "other"
+      },
+      "note": "D₁ = ปันผล {{dps}} × (1+g=6%) = $5.30; r = 8.5%, g = 6.5% → $5.30/(0.085−0.065) — TRV เพิ่มปันผล CAGR ~8% / 22 ปี; ใช้ conservative เพราะ payout ratio ต่ำ (~14%)"
+    },
+    {
+      "method": "pbv",
+      "label": "Justified P/BV",
+      "inputs": {
+        "g": 5,
+        "r": 10
+      }
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "peAvg5y",
+      "pbv",
+      "netIncomeFy",
+      "custom:0",
+      "bvps",
+      "roe",
+      "revenue",
+      "custom:1",
+      "yield",
+      "beta"
+    ],
+    "custom": [
+      {
+        "label": "Core EPS (TTM)",
+        "value": "~{{eps}}",
+        "note": "Q2'26 $10.04 + Q1'26 $7.71 + Q4'25 $11.13 + Q3'25 $8.14"
+      },
+      {
+        "label": "Combined Ratio Q2'26",
+        "value": "83.6%",
+        "note": "ดีขึ้นจาก Q1'26 88.6% · FY2025 89.9% · <100% = กำไรจาก underwriting",
+        "tone": "pos"
+      }
+    ],
+    "notes": {
+      "mcap": "221M หุ้น diluted · Dow Jones 30",
+      "pe": "Core EPS TTM ~{{eps}}; ต่ำกว่าเฉลี่ย 5 ปี ~12.7x",
+      "peAvg5y": "ช่วง ~9–18x; ปัจจุบัน discount 21%",
+      "pbv": "BVPS ~$168 (adj., Jun 2026) · เฉลี่ยประวัติ ~2.0x",
+      "netIncomeFy": "+26% YoY · Core income $6.30B ($27.59/share)",
+      "bvps": "Dec 2025: $151.21 (adj) · Jun 2026: $168.20 (adj, +16% YoY)",
+      "roe": "Q2'26 core ROE 24.9%; Q1'26 19.7%; TTM ~20.5%; เป้า >15%",
+      "revenue": "FY2025 $48.8B · FY2024 $46.4B · FY2023 $41.4B",
+      "yield": "($1.25 ไตรมาส) · เพิ่ม 14% Q2'69 · 22 ปีติดต่อกัน",
+      "beta": "Defensive insurer · ผันผวนต่ำกว่าตลาดครึ่งหนึ่ง"
+    },
+    "hint": "P&C Insurance Leader · ข้อมูล ณ มิ.ย. 2569"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": -5,
+        "exitMultiple": 9,
+        "divCum": 15,
+        "desc": "Cat losses พุ่ง + rate softening"
+      },
+      {
+        "growth": 7,
+        "exitMultiple": 12,
+        "divCum": 16.5,
+        "desc": "Premium hardening + favorable cats"
+      },
+      {
+        "growth": 12,
+        "exitMultiple": 13,
+        "divCum": 18,
+        "desc": "Strong pricing cycle + investment income ดีด"
+      }
+    ],
+    "exitDp": 0,
+    "note": "สมมติฐาน Base: Core EPS เติบโต 7%/ปี (อิงจากการขึ้นเบี้ยประกันภัย commercial lines +5–8%/ปี + investment income สูงขึ้น) ออกที่ P/E 12x (สู่ค่าเฉลี่ยประวัติ) + ปันผลสะสม ผลตอบแทนรวม ~+52% ใน 3 ปี Bear: หาก cat losses พุ่งสูงซ้ำ (LA wildfires/hurricane) กดราคาลง; Bull: รอบ hardening ยาวกว่าคาด + net investment income พุ่งจาก rate environment สูง"
+  },
+  "analyst": {
+    "target": 337,
+    "n": null,
+    "rating": "Hold",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "TRV ปรับตัวขึ้นสู่ระดับ $308 ในเดือน ส.ค. 2568 จากแรงหนุนผลประกอบการ Q2'25 ที่แข็งแกร่ง ก่อนย่อลงช่วงกันยายน–พฤศจิกายนจากความกังวลเรื่อง catastrophe losses จากนั้นไต่ขึ้นต่อเนื่องและพุ่งแรงสู่ $368.98 ในเดือน ก.ค. 2569 หลัง Q2'26 core EPS ทะยานสู่ $10.04/share (cat losses ต่ำผิดปกติ, combined ratio 83.6%) ผลตอบแทนรอบปี (ก.ค. 2568–ก.ค. 2569) อยู่ที่ประมาณ +35.9% ราคาปัจจุบันเป็นระดับสูงสุดใหม่ในรอบ 52 สัปดาห์ ($251.30–$370.43)",
+    "valuation": "วิธี P/E core ให้ $407 สะท้อนสมมติฐาน reversion สู่ P/E เฉลี่ยระยะยาว (ใช้ multiple ต่ำกว่าเฉลี่ยเพราะ Q2'26 ได้แรงหนุนจาก cat losses ต่ำผิดปกติ); Justified P/BV $521 สูงสุดเพราะ core ROE พุ่งขึ้นแรงหลัง Q2'26 (24.9%); DDM $265 ต่ำสุดเพราะ TRV ยังรักษา payout ratio ต่ำ (~14%) เพื่อสะสมทุน ดังนั้น DDM ให้น้ำหนักน้อยกว่า เฉลี่ยทั้ง 3 วิธี ≈ {{fv}} สะท้อนมูลค่าที่เป็นธรรมหลัง Q2'26 core earnings แข็งแกร่งเกินคาด",
+    "gauge": "ราคาปัจจุบัน {{px}} อยู่ต่ำกว่า Fair Value {{fv}} (MOS {{mos}}) ถือว่า <b>Fairly Valued ถึงเล็กน้อย Undervalued</b> สังเกตว่า consensus analyst target ที่ $360.54 ต่ำกว่าราคาตลาดปัจจุบันเช่นกัน สะท้อนว่านักวิเคราะห์ส่วนใหญ่ยังระมัดระวังแม้ core earnings Q2'26 จะแข็งแกร่งเกินคาด (Hold consensus) แต่ based on P/E และ P/BV valuation ยังมี upside อยู่หากพิจารณาจาก reversion to mean",
+    "mos": "Fairly Valued — ราคาต่ำกว่า Fair Value เล็กน้อย รอย่อตัวสู่โซน MOS 20% ({{mos20}}) จะดีกว่า",
+    "verdictHeadline": "Fairly Valued Quality Compounder — รอ Pullback สู่โซน MOS 20%",
+    "verdictBody": "The Travelers Companies เป็น P&C insurer คุณภาพสูงสุดในสหรัฐฯ สมาชิก Dow Jones 30 มีประวัติ underwriting discipline 160+ ปี Core ROE ระดับ ~20% สะท้อน moat ที่แข็งแกร่งจาก data advantage และการบริหาร cat risk ที่เชี่ยวชาญ ปัจจุบันราคา {{px}} ให้ MOS เพียง {{mos}} เทียบ Fair Value {{fv}} (ปรับขึ้นหลัง Q2'26 core earnings แข็งแกร่งเกินคาด) โดยที่ consensus analyst ตั้งเป้าเฉลี่ย $336.50 (ต่ำกว่าราคาตลาด) — เหมาะสำหรับ long-term investor ที่ต้องการ quality insurer ในพอร์ต แต่ควรรอ pullback ลงสู่โซน $318–$337 เพื่อ MOS 15–20%",
+    "strategy": "TRV เป็น quality compounder ระยะยาว (22 ปีปันผลขึ้น + buyback) ราคาปัจจุบัน {{px}} ใกล้ Fair Value — ทยอยสะสมได้เมื่อราคาลงสู่โซน MOS 20% ตามการ์ดจุดซื้อด้านบน; เป้าหมายระยะยาว $544–$676 ใน 3 ปี (Base–Bull scenario) ขึ้นกับ premium pricing cycle และ cat loss environment; หลีกเลี่ยงเพิ่มนัยสำคัญที่ราคาปัจจุบันเพราะ analyst consensus มองว่า fairly valued",
+    "disclaimerSources": "แหล่งข้อมูล: StockAnalysis.com (ราคา/52-wk range/งบการเงิน · TTM มิ.ย. 2569 · 22 ก.ย. 2569), Travelers Investor Relations press releases Q4 2025 + Q1 2026 + Q2 2026 (investor.travelers.com), SEC 8-K/10-Q filings (sec.gov)"
+  },
+  "text": {
+    "chartHint": "(Yahoo Finance monthly closes)"
+  },
+  "catalysts": [
+    "<b>Premium Rate Hardening:</b> Commercial lines ยังปรับราคาขึ้น 5–8%/ปี กดดันโดย inflation ค่าซ่อม/สาธารณสุข; TRV มี pricing power สูงจากข้อมูลการรับประกันภัย 160+ ปี",
+    "<b>Net Investment Income สูง:</b> พอร์ตพันธบัตร ~$90B+ ได้ประโยชน์จาก interest rate สูง; investment income เติบโต double-digit ปี 2024–2025",
+    "<b>Underwriting Discipline ยอดเยี่ยม:</b> Combined ratio Q2'26 เพียง 83.6% (Q1'26 88.6%) สะท้อนการคัดเลือกความเสี่ยงที่เข้มงวด; 6 ไตรมาสติดต่อกัน underlying income >$1.5B",
+    "<b>Dividend Grower 22 ปีติดต่อกัน:</b> ขึ้นปันผล 14% ใน Q2'69 สู่ $1.25/ไตรมาส (CAGR 8% / 22 ปี); สะท้อนความมั่นใจของผู้บริหาร",
+    "<b>P/E Discount vs ประวัติ:</b> Core P/E ~10.0x เทียบ 5yr avg ~12.7x — โอกาส multiple expansion หาก cat loss environment ปรับตัวดี",
+    "<b>Share Buyback $5B Authorization:</b> TRV อนุมัติ buyback ใหม่ $5B ปี 2025; EPS accretive สนับสนุนการเติบโตต่อหุ้น"
+  ],
+  "risks": [
+    "<b>Catastrophe Loss Volatility:</b> Q1'25 cat losses $2.27B สูงผิดปกติ (LA wildfires); Q2'26 cat losses ต่ำมาก (combined ratio 83.6%) หนุนกำไรระยะสั้น แต่ไม่ sustainable — ปีที่มี hurricane/wildfire รุนแรงจะกดกำไรกลับได้มาก",
+    "<b>Climate Change Tail Risk:</b> ความถี่และความรุนแรงของภัยธรรมชาติสูงขึ้น; Travelers ปรับเบี้ยขึ้นและถอนจากตลาดเสี่ยง (California home) แต่ exposure ยังมี",
+    "<b>Rate Softening Cycle:</b> หากคู่แข่งแข่งราคาลงในช่วง soft market กดดัน combined ratio; ปัจจุบัน cycle ยังเป็น hard แต่อาจพลิกในอีก 2–3 ปี",
+    "<b>Analyst Target ต่ำกว่าราคา:</b> Consensus นักวิเคราะห์อยู่ที่ $336.50 (ต่ำกว่าปัจจุบัน 8.8%) → ตลาดอาจมองว่า Q2'26 core EPS จะ normalize ลงหลัง cat losses กลับสู่ระดับปกติ",
+    "<b>Interest Rate Risk:</b> หาก rate ลงเร็วกว่าคาด investment income จะโต less; bond portfolio ยังมี unrealized gain/loss ตามตลาด",
+    "<b>Social Inflation:</b> ค่าสินไหม litigation costs เพิ่มสูงขึ้นในสหรัฐฯ กดดัน loss ratio commercial lines ระยะยาว"
+  ],
+  "extras": [],
+  "_sig": "sha256:93398af332396af8f2a1260cb3d0abb85c2c12aa86bac929f1f641fa2af8c01b"
+}

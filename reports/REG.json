@@ -1,0 +1,271 @@
+{
+  "v": 3,
+  "symbol": "REG",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Regency Centers Corporation",
+    "exchange": "NYSE",
+    "sub": "Grocery-Anchored Retail REIT • 480+ Shopping Centers • ~59M sq ft • Kroger • Publix • Whole Foods • Sprouts • Merged with Urstadt Biddle (2023) → เพิ่มพอร์ตตะวันออกเฉียงเหนือ • Credit rating สูงสุดในกลุ่ม (Moody's A3, S&P A-) • REIT วัดมูลค่าด้วย P/E ประวัติ + DDM (ตรวจเทียบด้วย P/AFFO)",
+    "headerTags": [
+      "Real Estate • REIT",
+      "Grocery-Anchored Retail"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis.com",
+      "Google Finance",
+      "Regency Centers IR"
+    ],
+    "themeLegacy": {
+      "accent": "#0d9488",
+      "accentDark": "#0f766e",
+      "darkGrad": "linear-gradient(135deg,#0a2927 0%,#074d46 60%,#176f64 100%)",
+      "glow": "rgba(13,148,136,0.35)",
+      "subColor": "#99f6e4",
+      "headerMuted": "#c9ece6",
+      "verdictText": "#ecfdf5",
+      "vcellLabel": "#e1fbf7"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-22T00:04:26+07:00",
+      "v2Hash": "485e05aa3870"
+    }
+  },
+  "market": {
+    "px": 73.23,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          68.95
+        ],
+        [
+          "พ.ย.25",
+          71.16
+        ],
+        [
+          "ธ.ค.25",
+          69.03
+        ],
+        [
+          "ม.ค.26",
+          72.87
+        ],
+        [
+          "ก.พ.26",
+          79
+        ],
+        [
+          "มี.ค.26",
+          75.66
+        ],
+        [
+          "เม.ย.26",
+          77.85
+        ],
+        [
+          "พ.ค.26",
+          77.35
+        ],
+        [
+          "มิ.ย.26",
+          79.74
+        ],
+        [
+          "ก.ค.26",
+          80.29
+        ],
+        [
+          "ส.ค.26",
+          74.77
+        ],
+        [
+          "ก.ย.26",
+          73.23
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 66.86,
+      "hi": 83.66
+    }
+  },
+  "fundamentals": {
+    "dps": 3.02,
+    "bvps": 36.44,
+    "shares": 186547145,
+    "occupancy": 96.6,
+    "revenue": 1650000000,
+    "eps": 2.97,
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation (มัธยฐานย้อนหลัง 5 ปี)",
+      "inputs": {
+        "multiple": 30.2,
+        "multipleSource": "median5y"
+      },
+      "family": "market"
+    },
+    {
+      "method": "declared",
+      "label": "DDM / Gordon Growth Model",
+      "inputs": {
+        "value": 82.37,
+        "basis": "other"
+      },
+      "note": "D₁ = $3.13 (forward, +3.5% growth สอดคล้อง same-property NOI growth +4.4%); g = 3.5%; r = 7.3% (required return, ต่ำกว่า KIM เพราะ credit rating สูงกว่า) → FV = $3.13 / (7.3%−3.5%)",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "custom:0",
+      "custom:1",
+      "custom:2",
+      {
+        "key": "occupancy",
+        "tone": "pos"
+      },
+      "custom:3",
+      "custom:4",
+      {
+        "key": "yield",
+        "tone": "pos"
+      },
+      "revenue",
+      "custom:5",
+      "pbv",
+      "custom:6"
+    ],
+    "custom": [
+      {
+        "label": "AFFO/sh (FY2025A)",
+        "value": "$3.83",
+        "note": "Primary valuation metric — ใช้ P/AFFO แทน P/E",
+        "tone": "pos"
+      },
+      {
+        "label": "FFO/sh (2026E)",
+        "value": "$4.83–$4.87",
+        "note": "Nareit FFO guidance midpoint $4.85 (+4.5% YoY)",
+        "tone": "neu"
+      },
+      {
+        "label": "P/AFFO (current)",
+        "value": "~19.0x",
+        "note": "อิง AFFO FY25A $3.83 — บริบท ไม่ใช่ขาของ FV",
+        "tone": "neu"
+      },
+      {
+        "label": "Same-Property NOI Growth",
+        "value": "+4.4%",
+        "note": "YoY Q1 2569 — สูงกว่าค่าเฉลี่ยกลุ่ม",
+        "tone": "pos"
+      },
+      {
+        "label": "Leasing Spreads",
+        "value": "+12.1% / +24.3%",
+        "note": "Cash / straight-line, blended Q1 2569",
+        "tone": "pos"
+      },
+      {
+        "label": "Net Debt / EBITDA",
+        "value": "~4.89x",
+        "note": "A3(Moody's)/A-(S&P) — leverage ต่ำสุดในกลุ่ม",
+        "tone": "pos"
+      },
+      {
+        "label": "ROE / Beta",
+        "value": "~8.0% / 0.82",
+        "note": "Beta ต่ำกว่าตลาด — defensive income profile"
+      }
+    ],
+    "notes": {
+      "mcap": "186.55M หุ้น (รวมทุกคลาส)",
+      "occupancy": "Anchors 98.2% • Shop spaces 94.1% (Q1 2569)",
+      "yield": "{{dps}}/sh ปี ($0.755/qtr)",
+      "revenue": "ค่าเช่าขั้นต่ำ + recoveries + อื่นๆ",
+      "pbv": "BVPS ~{{bvps}} — premium สะท้อน NAV เติบโต"
+    },
+    "hint": "ข้อมูล ณ 21 ก.ย. 2569 — REIT ใช้ FFO/AFFO เป็นบริบท, FV ใช้ P/E ประวัติ + DDM"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 0,
+        "exitMultiple": 23,
+        "divCum": 9.06,
+        "desc": "Rate สูงต่อ, EPS ทรงตัว, multiple ลงต่ำสุดในช่วง 5 ปี"
+      },
+      {
+        "growth": 4,
+        "exitMultiple": 25.5,
+        "divCum": 9.34,
+        "desc": "Same-property NOI +4%, rate ลด, multiple ระดับ FY2025 (25.5x)"
+      },
+      {
+        "growth": 6,
+        "exitMultiple": 30.2,
+        "divCum": 9.52,
+        "desc": "Re-rating สู่มัธยฐาน 5 ปี, redevelopment upside, rate ลดแรง"
+      }
+    ],
+    "exitDp": 1,
+    "note": "<b>หมายเหตุสำหรับ REIT:</b> ฉากคำนวณจาก EPS (GAAP diluted) และ P/E ที่วัดได้จริงของ REG (ต่ำสุด 23.0x · FY2025 25.5x · มัธยฐาน 30.2x) เพราะ AFFO อนาคตตรวจซ้ำไม่ได้ · ราคาเป้าเป็นสมมติฐาน ส่วนผลตอบแทนคำนวณจากจุดเข้าปัจจุบัน Bear case ยังได้ผลตอบแทนบวกเล็กน้อยเพราะ dividend yield ~4.1% ช่วยพยุงแม้ multiple ลงไปต่ำสุดในช่วง 5 ปี · Base ใช้ multiple ระดับ FY2025 จึงต่ำกว่า FV เล็กน้อย การประมาณการไม่รับประกันผลตอบแทนจริง — ขึ้นอยู่กับ rate environment, occupancy, และ M&A/redevelopment execution",
+    "hintNote": "(TTM) ~{{dps}}/ปี"
+  },
+  "analyst": {
+    "target": 87,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "REG ขยับขึ้น <b>+5.8%</b> ในรอบปี (ต.ค. 2568 ถึง ก.ย. 2569) จากปิดรายเดือน $68.95 สู่ {{px}} บวก dividend yield ~4.1% ต่อปี กรอบ 52 สัปดาห์อยู่ที่ <b>$66.86 – $83.66</b> — ราคาขึ้นไปแตะ $80 ในช่วง มิ.ย.–ก.ค. 2569 แล้วย่อลงต่อเนื่องใน ส.ค.–ก.ย. 2569 แรงหนุนเชิงธุรกิจจากรายงาน Q1 2569: occupancy 96.6%, leasing spread cash +12.1% (straight-line +24.3%), และ same-property NOI growth +4.4% ราคาปัจจุบันอยู่ห่างจุดสูงสุด 52 สัปดาห์ราว 12% — เปิดพื้นที่ margin of safety มากกว่าช่วงกลางปี",
+    "valuation": "<b>หมายเหตุวิธี valuation (แก้โครงสร้างรอบ 21 ก.ย. 2569):</b> ขา P/AFFO เดิมสองขา (19x/21x) ถูกถอดออก เพราะตัวคูณเป็นค่าที่ตั้งเองไม่มีมัธยฐานที่วัดได้ และขา 21x ใกล้ตัวคูณปัจจุบัน (สมอตายวนกลับ) ส่วน AFFO FY2026E $4.00 ตรวจซ้ำจากแหล่งปฐมภูมิรอบนี้ไม่ได้ · P/AFFO เหลือเป็นบริบทเท่านั้น (AFFO FY2025A $3.83) FV = เฉลี่ยของ 2 ตระกูล: P/E มัธยฐานประวัติ {{fvHigh}} กับ DDM {{fvLow}} (สองขาห่างกันไม่ถึง 2 เท่า) · <b>ตระกูล P/E มีมัธยฐานที่วัดได้ 1 ชุดเท่านั้น</b> และ DDM ใช้ r/g ที่เป็นสมมติฐานของเราเอง — ความไวต่อสมมติฐาน: ถ้าใช้ DDM ขาเดียว MOS จะต่ำลงราว 5 จุด, ถ้าใช้ P/E ขาเดียว MOS สูงขึ้นราว 3 จุดเมื่อเทียบกับ FV เฉลี่ย ราคาปัจจุบัน {{px}} ต่ำกว่า fair value เฉลี่ย {{fv}} (MOS {{mos}}) — ยังไม่ถึงโซน MOS 20% ที่ {{mos20}}",
+    "gauge": "ราคาปัจจุบัน {{px}} ต่ำกว่า fair value {{fv}} (MOS {{mos}}) — มี margin of safety ระดับปานกลาง แต่ยังไม่ถึงเกณฑ์ 20% โซนทยอยสะสมที่น่าสนใจจริง: <b>ต่ำกว่า {{mos20}}</b> (MOS 20%) ซึ่งต่ำกว่า 52W low $66.86 — ต้องรอ correction ก่อนเข้าซื้อแบบมี margin เต็มเกณฑ์ เป้านักวิเคราะห์เฉลี่ย {{analyst.target}} (n=18, Buy) ใกล้เคียง fundamental FV ของเรา — ใช้เป็นเพียงเครื่องตรวจความสอดคล้อง ไม่ได้เป็นขาของ FV",
+    "mos": "MOS ปานกลาง — ราคาต่ำกว่า fair value พอสมควรแต่ยังไม่ถึงโซน 20% เหมาะกับการทยอยสะสมเป็นงวดและถือรับ dividend มากกว่าเข้าซื้อก้อนใหญ่",
+    "verdictHeadline": "REG — Premium Grocery-Anchored REIT ราคาใกล้มูลค่าเหมาะสม | Quality สูงแต่ Margin of Safety จำกัด",
+    "verdictBody": "Regency Centers เป็นผู้นำ grocery-anchored shopping center REIT คุณภาพสูงสุดของสหรัฐฯ ด้วย credit rating A3/A- สูงสุดในกลุ่ม, leverage ต่ำที่สุด (~4.9x), occupancy 96.6% และ leasing momentum แข็งแกร่ง (cash spread +12.1%) — fundamentals แข็งแกร่งกว่า KIM ในหลายมิติ (leverage ต่ำกว่า, credit สูงกว่า) แต่ valuation ก็แพงกว่าตามไปด้วย (P/AFFO ~19.0x ปัจจุบัน — เป็นบริบท) ที่ราคาปัจจุบัน {{px}} ต่ำกว่ามูลค่าเหมาะสม {{fv}} (MOS {{mos}}) — อยู่ในโซนปานกลาง ยังไม่ถึงเกณฑ์ MOS 20% และ FV มาจากสองตระกูลที่ต่างกัน (P/E ประวัติ + DDM) ซึ่งเป้านักวิเคราะห์ {{analyst.target}} ใกล้เคียง เหมาะสำหรับนักลงทุนที่ต้องการ income-quality holding ระยะยาว — ทยอยสะสมได้ และควรรอจังหวะราคาย่อตัวสู่โซน MOS 20% ({{mos20}}) เพื่อเพิ่ม margin of safety ก่อนสะสมเพิ่ม",
+    "strategy": "ทยอยสะสมเป็นงวดเมื่อราคาต่ำกว่ามูลค่าเหมาะสม เป้าหมายซื้อที่ดีที่สุดคือโซน MOS20 ({{mos20}}) ซึ่งให้ dividend yield ~4.4% ถือระยะยาวรับ dividend สะสม + growth ค่อยเป็นค่อยไป ~4-6%/ปี ลดสัดส่วนหากราคาขึ้นเหนือกรอบบน FV ({{fvHigh}}) หรือ same-property NOI growth ชะลอต่ำกว่า 2% ต่อเนื่อง 2 ไตรมาส",
+    "disclaimerSources": "ที่มา: StockAnalysis.com (ราคา $73.25 ณ 21 ก.ย. 2569, EPS TTM $2.97), Yahoo Finance (ราคา $73.14, EPS TTM $2.97, เป้านักวิเคราะห์ $87), Regency Centers IR — Q1 2026 & FY2025 Earnings Releases (AFFO/sh $3.83 FY2025, FFO guidance $4.83–$4.87 FY2026, occupancy 96.6%, leasing spread +12.1%/+24.3%)"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 2 วิธี (2 ตระกูลสมมติฐาน) — P/E ประวัติ + DDM",
+    "chartHint": "ต.ค. 2568 – ก.ย. 2569 (รายเดือน)",
+    "disclaimerAssump": " P/AFFO เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ AFFO ในอนาคต"
+  },
+  "catalysts": [
+    "<b>Grocery-anchor moat:</b> ~485 centers ยึดโยงกับ grocery ชั้นนำ (Kroger, Publix, Whole Foods, Sprouts) ดึง foot traffic รายสัปดาห์ กันผลกระทบ e-commerce ได้ดีกว่า retail ทั่วไป",
+    "<b>Credit rating + leverage ดีที่สุดในกลุ่ม:</b> Moody's A3 / S&P A- — สูงสุดในกลุ่ม grocery REIT, Net Debt/EBITDA ~4.9x ต่ำที่สุด เปิดทางต้นทุนทุนถูกและ flexibility สำหรับ M&A",
+    "<b>Occupancy + leasing momentum แข็งแกร่ง:</b> Same-property leased 96.6%, blended cash spread +12.1% (straight-line +24.3%) → embedded rent growth แม้ไม่มี occupancy เพิ่ม",
+    "<b>Urstadt Biddle merger synergies:</b> การควบรวมปี 2566 เพิ่มพอร์ตหนาแน่นโซนตะวันออกเฉียงเหนือ (NY-NJ-CT) cost synergies ยังไหลเข้า same-property NOI growth (+4.4% Q1 2569)",
+    "<b>Fed rate-cut tailwind:</b> ดอกเบี้ยระยะยาวที่ลดลงช่วยลดแรงกด cap rate และต้นทุนการเงิน หนุน multiple re-rating ต่อสำหรับ premium REIT อย่าง REG",
+    "<b>Redevelopment pipeline:</b> โครงการพัฒนา/ปรับปรุงศูนย์การค้าคุณภาพสูงสร้าง embedded NAV growth ที่ยังไม่ถูก price in เต็มที่ใน P/AFFO ปัจจุบัน"
+  ],
+  "risks": [
+    "<b>Valuation ค่อนข้างเต็มแล้ว:</b> FV พึ่ง P/E มัธยฐาน 30.2x ซึ่งวัดจาก GAAP EPS ที่รวมกำไรขายทรัพย์สิน — ถ้า EPS ปกติต่ำกว่านี้ ขา P/E จะสูงเกินจริง; P/AFFO ปัจจุบัน ~19.0x ไม่ถูกเมื่อเทียบ KIM",
+    "<b>Interest rate sensitivity:</b> แม้ leverage ต่ำ แต่การ refinance หนี้ที่ rate สูงกว่าเดิมยังกดดัน AFFO growth ได้ถ้า rate สูงต่อเนื่องนานกว่าคาด",
+    "<b>Anchor tenant concentration:</b> พึ่งพา grocery chain หลัก (Kroger, Publix) สูง — การควบรวม/ล้มละลาย/ปิดสาขาของ anchor กระทบ co-tenancy และ shop occupancy ได้",
+    "<b>Cap rate expansion risk:</b> valuation ฐาน NAV เปราะบางถ้า cap rate อสังหาฯ ขยายตัวอีกครั้ง (เคยเห็นในปี 2565-2566) กดราคาหุ้นแม้ AFFO stable",
+    "<b>Shop-space ยังตามหลัง anchor:</b> shop occupancy 94.1% ตามหลัง anchor 98.2% สะท้อน demand ร้าน inline ยังไม่ฟื้นเต็มที่ — consumer spending ชะลอตัวอาจถ่างช่องว่างนี้เพิ่ม",
+    "<b>Integration/execution risk:</b> การผสาน Urstadt Biddle ต่อเนื่องและการดำเนินโครงการ redevelopment มีความเสี่ยง cost overrun/delay"
+  ],
+  "extras": [],
+  "_sig": "sha256:fb2ae6682f976ec9508ec321467307f7905811ccd4aa1552af237951f70c7e2c"
+}

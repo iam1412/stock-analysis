@@ -1,0 +1,263 @@
+{
+  "v": 3,
+  "symbol": "ABT",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Abbott Laboratories",
+    "exchange": "NYSE",
+    "sub": "เครื่องมือแพทย์กระจายตัว • Medical Devices (FreeStyle Libre CGM, structural heart) • Diagnostics • Established Pharmaceuticals (EM) • Nutrition (Ensure/Similac)",
+    "sectorLine": "NYSE · Healthcare · Medical Devices",
+    "headerTags": [
+      "Healthcare",
+      "Medical Devices & Diagnostics"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis.com",
+      "Yahoo Finance",
+      "Abbott Investor Relations",
+      "Macrotrends",
+      "อิงงบ Q2 2026 (TTM)",
+      "Adj. EPS ยืนยันจากประกาศผลประกอบการ Abbott"
+    ],
+    "themeLegacy": {
+      "accent": "#0095CA",
+      "accentDark": "#006B92",
+      "darkGrad": "linear-gradient(135deg, #020A0F 0%, #04181F 100%)",
+      "glow": "rgba(0,149,202,0.35)",
+      "subColor": "#40B5DE",
+      "headerMuted": "#0f8ebd",
+      "verdictText": "#CDE9F2",
+      "vcellLabel": "rgba(205,233,242,0.6)"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T09:52:17+07:00",
+      "v2Hash": "b080e4f1f45c"
+    }
+  },
+  "market": {
+    "px": 101.29,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          123.62
+        ],
+        [
+          "พ.ย.25",
+          128.9
+        ],
+        [
+          "ธ.ค.25",
+          125.29
+        ],
+        [
+          "ม.ค.26",
+          109.3
+        ],
+        [
+          "ก.พ.26",
+          116.35
+        ],
+        [
+          "มี.ค.26",
+          102.67
+        ],
+        [
+          "เม.ย.26",
+          90.79
+        ],
+        [
+          "พ.ค.26",
+          85.6
+        ],
+        [
+          "มิ.ย.26",
+          90.74
+        ],
+        [
+          "ก.ค.26",
+          105.7
+        ],
+        [
+          "ส.ค.26",
+          110.36
+        ],
+        [
+          "ก.ย.26",
+          101.29
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 81.97,
+      "hi": 137.49
+    }
+  },
+  "fundamentals": {
+    "dps": 2.52,
+    "bvps": 24.09,
+    "shares": 1730000000,
+    "peAvg5y": 31.2,
+    "netIncome": 9000000000,
+    "eps": 5.26,
+    "revenue": 46600000000,
+    "grossMargin": 56.8,
+    "beta": 0.62,
+    "epsBasis": "adj-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation (GAAP TTM × มัธยฐาน 5 ปี)",
+      "inputs": {
+        "multiple": 31.2,
+        "multipleSource": "median5y"
+      },
+      "override": {
+        "eps": 3.09,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "มัธยฐาน P/E (ราคาเฉลี่ยปี ÷ EPS diluted) วัดจริง FY2021–25 ช่วง 14.6–35.2x ฐาน GAAP ตรงกับ EPS ที่ใช้ · GAAP TTM ถูกกดจากรายการพิเศษ/ต้นทุนดีล Exact Sciences จึงเป็นขาที่ระวัง (เทียบ adj TTM $5.26 ขานี้ = ~18.3x adj)",
+      "family": "market"
+    },
+    {
+      "method": "dcf",
+      "label": "DCF (10 ปี, FCF-based)",
+      "inputs": {
+        "stages": [
+          {
+            "years": 5,
+            "g": 8
+          },
+          {
+            "years": 5,
+            "g": 5
+          }
+        ],
+        "tg": 3,
+        "r": 8.5,
+        "rfCurrency": "USD"
+      },
+      "override": {
+        "fcf": 7819600000,
+        "netDebt": 0,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2 · FCF/Share $4.52 × 1.73B หุ้น (TTM FCF $7,824M)"
+      },
+      "note": "มูลค่าปลายทาง · มูลค่าปลายทาง ~62% ของผล · TTM FCF ยังไม่สะท้อนดีล Exact Sciences เต็มรอบ/ดอกเบี้ยหนี้ใหม่ จึงเป็นขาที่อ่อนไหวต่อสมมติฐาน g/WACC",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "peAvg5y",
+      "pbv",
+      "netIncome",
+      "eps",
+      "bvps",
+      "custom:0",
+      "revenue",
+      "grossMargin",
+      "yield",
+      "beta"
+    ],
+    "custom": [
+      {
+        "label": "ROE / ROIC",
+        "value": "~10.6% (GAAP TTM)",
+        "note": "FCF/Share ~$4.52 · D/E 0.63",
+        "tone": "pos"
+      }
+    ],
+    "notes": {
+      "pe": "อิง Adj. EPS TTM {{eps}} (GAAP TTM EPS $3.09 → P/E 33.2x)",
+      "peAvg5y": "วัดจริง FY2021–25 ช่วง 14.6–35.2x · GAAP TTM ปัจจุบัน 33.2x",
+      "pbv": "BVPS ~{{bvps}}",
+      "netIncome": "adj FY25 · GAAP TTM ~$5.40B (FY25 $6.50B)",
+      "eps": "adj · FY25 $5.15 − H1'25 $2.35 + H1'26 $2.46 · GAAP TTM $3.09 ถูกกดจากรายการพิเศษ/ต้นทุนดีล",
+      "bvps": "Book Value ~$41.7B",
+      "revenue": "TTM · YoY +8.1% (FY25 $44.3B)",
+      "grossMargin": "Margin ดีในอุตสาหกรรม",
+      "yield": "Dividend King 50 ปีต่อเนื่อง",
+      "beta": "ผันผวนต่ำกว่าตลาด"
+    },
+    "hint": "Adj. EPS TTM {{eps}} · Dividend King 50 ปี"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": "cagr",
+    "driver": "eps",
+    "exitMetric": "pe",
+    "baseOverride": {
+      "value": 5.2605,
+      "why": "เป้า Bear/Base/Bull ที่ผู้เขียนพิมพ์ ($87.70/$122.63/$151.08) ถอดกลับได้ฐาน Adj. EPS TTM ~5.2605 ก่อนปัด (หน้า v2 แสดง ~$5.26)"
+    },
+    "cases": [
+      {
+        "growth": 6,
+        "exitMultiple": 14,
+        "divCum": 7.56,
+        "desc": "NEC liability ใหญ่ + Libre growth ชะลอ"
+      },
+      {
+        "growth": 9,
+        "exitMultiple": 18,
+        "divCum": 7.56,
+        "desc": "Libre CGM เติบโต + NEC ค่อยๆ คลาย"
+      },
+      {
+        "growth": 11,
+        "exitMultiple": 21,
+        "divCum": 7.56,
+        "desc": "Libre dominates CGM + NEC ยุติ + M&A Exact Sciences"
+      }
+    ],
+    "exitDp": 0,
+    "note": "ผลตอบแทนอิง Adj. EPS TTM ฐาน {{eps}} · P/E ออก Bear 14x (ใกล้จุดต่ำสุด GAAP 5 ปีที่วัดได้ 14.6x — อ้างอิงคนละฐาน EPS) / Base 18x / Bull 21x (สมมติฐาน ไม่ใช่ค่าที่วัด) · Base scenario คาด +9%/ปี สะท้อน FreeStyle Libre CGM +13%/ปี + Structural Heart recovery + Diagnostics base ที่มั่นคง · Bear scenario ฉุดราคาได้หาก NEC settlement ขนาดใหญ่บีบ EPS ลง · ปันผลรวม 3 ปี ~$7.56 เพิ่ม cushion ทุก scenario"
+  },
+  "analyst": {
+    "target": 120.26,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ABT ปรับตัวลงในปีที่ผ่านมา จากระดับ ~$129 (พ.ย. 2568) ร่วงแตะจุดต่ำสุด ~$85.60 (พ.ค. 2569) คิดเป็น −34% จากจุดสูง แรงกดดันหลักมาจาก 1) กระแส Sector Rotation ออกจาก Healthcare 2) ความกังวลเรื่องคดี NEC litigation (สูตรนมสำหรับทารกคลอดก่อนกำหนด) ซึ่งตลาดวิตกว่าอาจนำไปสู่ liability ขนาดใหญ่คล้ายคดี Talc ของ J&J 3) ยอดขาย COVID test ที่หายไป ก่อนจะรีบาวด์กลับมาที่ ~$110 ในเดือน ส.ค. 2569 หลังนักลงทุนบางส่วนเริ่มเห็นว่า Core Business (Libre CGM, Structural Heart) ยังแข็งแกร่ง แล้วย่อลงอีกในเดือน ก.ย. 2569",
+    "valuation": "สองตระกูลที่เป็นอิสระต่อกัน (P/E ตัวคูณมัธยฐานที่วัดจริง · DCF ที่แสดงตารางกระแสเงินสด) ให้ค่า {{fvLow}} และ $112.53 ห่างกัน ~17% และคร่อมราคาตลาด — Fair Value {{fv}} เป็นค่าเฉลี่ยของสองขา ไม่ได้ผูกกับตัวคูณปัจจุบัน · เป้านักวิเคราะห์และ forward P/E (FY26E adj EPS $5.52) ไม่ใช่ขาของ FV เป็นเพียงบริบทเปรียบเทียบ · Adj. EPS TTM {{eps}} คำนวณจากประกาศผล Abbott (FY25 $5.15 − H1'25 $2.35 + H1'26 $2.46) · ปันผล Dividend King 50 ปี yield 2.46% สะท้อนความยั่งยืนของกระแสเงินสด",
+    "gauge": "ราคาปัจจุบัน {{px}} ต่ำกว่า Fair Value {{fv}} เล็กน้อย (MOS {{mos}}) อยู่ในโซนใกล้เคียงมูลค่าเหมาะสม ยังไม่ถึง Deep Value (MOS 20% = {{mos20}}) นักวิเคราะห์ 25 ราย เป้าเฉลี่ย {{analyst.target}} ({{analyst.pct}} จากราคาปัจจุบัน) สะท้อนว่าตลาดนักวิเคราะห์ยังเห็น upside มากกว่ามูลค่าเหมาะสมของรายงานนี้",
+    "mos": "MOS บางมาก — ราคา {{px}} ต่ำกว่า Fair Value {{fv}} เพียงเล็กน้อย NEC litigation overhang ยังกดดัน sentiment ระยะสั้น ควรรอย่อกลับสู่โซน {{mos20}}–$95 ก่อนทยอยสะสมเพิ่ม",
+    "verdictHeadline": "ABT — Healthcare กระจายตัวคุณภาพสูง · ถูกกด Sector Selloff + NEC Overhang · Value Play พร้อม Income",
+    "verdictBody": "Abbott เป็นบริษัท Healthcare ระดับโลกที่มีธุรกิจกระจายตัวดีเยี่ยม โดย FreeStyle Libre CGM เป็น Growth Engine หลักที่เติบโต +13% ต่อเนื่อง ราคาลดลงในรอบปีจาก Sector Selloff + ความกังวล NEC litigation ทำให้ P/E (adj TTM) อยู่ที่ ~19.5x (GAAP 33.2x ใกล้มัธยฐาน 5 ปี 31.2x) Fair Value {{fv}} (เฉลี่ย 2 ตระกูล: P/E GAAP มัธยฐาน + DCF) ให้ MOS {{mos}} บนราคาปัจจุบัน (ราคาใกล้เคียง Fair Value) บวกปันผล Dividend King 2.46%/ปี รวม Total Return Potential ยังน่าสนใจสำหรับ value investor ที่รับ litigation overhang ได้ แต่ควรรอจังหวะย่อก่อนเพิ่มพอร์ต",
+    "strategy": "ทยอยสะสมในโซน {{mos20}}–$95 (ปัจจุบัน {{px}} ยังสูงกว่าโซนสะสม รอย่อกลับ) · ถือได้ใน Port สำหรับ income + capital gain · ตั้ง stop-loss หาก NEC settlement ใหญ่ผิดปกติ ($70–75) · เป้าหมายระยะกลาง (3 ปี) $88–151 (Bear–Bull) ผลตอบแทนราคา ~−15% ถึง ~+47% (ไม่รวมปันผล)",
+    "disclaimerSources": "ข้อมูลอ้างอิง: StockAnalysis.com · Yahoo Finance · Abbott Investor Relations (ir.abbott.com) · Macrotrends.net · ราคา ณ {{priceDate}}"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 2 ตระกูล: P/E (GAAP มัธยฐาน) + DCF"
+  },
+  "catalysts": [
+    "<b>FreeStyle Libre CGM Growth Engine:</b> ยอดขาย +13% YoY ต่อเนื่อง ตลาด CGM ยังเติบโตสูงจาก Type 2 Diabetes ที่แพร่หลาย + ABT กำลัง expand ใน non-diabetic wellness monitoring",
+    "<b>Structural Heart Leadership:</b> ผลิตภัณฑ์ TAVR/MitraClip ขยายตลาด structural heart intervention ซึ่งยังมี unmet need สูง",
+    "<b>Dividend King 50 ปี:</b> เพิ่มปันผลต่อเนื่อง 50 ปี สะท้อนความมั่นคงของ cash flow และ commitment ต่อผู้ถือหุ้น · yield 2.46% เป็น income ที่ดี",
+    "<b>Healthcare Diversification:</b> รายได้กระจาย 4 segments (Medical Devices 48% · Diagnostics 20% · Nutrition 19% · Est. Pharma 12%) ลด single-point risk",
+    "<b>M&A / Diagnostics:</b> หนี้สินรวมเพิ่มเป็น ~$32.7B (FY25 $14.1B) สะท้อนการซื้อกิจการ (ข่าว Exact Sciences · EXAS) เสริม Diagnostics ด้วย cancer liquid biopsy — ควรติดตามการ integrate และภาระหนี้",
+    "<b>Analyst Support:</b> 25 นักวิเคราะห์มีเป้าเฉลี่ย {{analyst.target}} ({{analyst.pct}}) สะท้อนว่า consensus ยังเห็น upside เหนือมูลค่าเหมาะสมของรายงานนี้"
+  ],
+  "risks": [
+    "<b>⚠️ NEC Litigation (ความเสี่ยงหลัก):</b> คดีเกี่ยวกับสูตรนมสำหรับทารกคลอดก่อนกำหนด (premature-infant formula) เสี่ยง settlement ขนาดใหญ่คล้าย Talc — ยังเป็น overhang กดราคา จนกว่าตัวเลขจะชัดเจน",
+    "<b>CGM Competition:</b> Dexcom (DXCM) ยังแข็งแกร่ง + Google/Samsung เข้าสู่ wearable glucose monitoring อาจกดดัน margin ระยะยาว",
+    "<b>Reimbursement Risk:</b> นโยบาย Medicare/Medicaid ในสหรัฐ + CMS coverage ของ CGM สำหรับ non-insulin users ยังอยู่ระหว่างปรับ",
+    "<b>FX Exposure:</b> รายได้ Established Pharmaceuticals เน้น Emerging Markets (EM) มี FX risk สูง หากดอลลาร์แข็งค่า",
+    "<b>GAAP vs Adjusted Gap:</b> ช่องว่าง GAAP EPS $3.09 vs Adj. EPS {{eps}} สูงกว่า ~70% (adj TTM {{eps}}) สะท้อนรายการพิเศษที่บ่อยกว่าปกติ อาจทำให้นักลงทุนบางส่วนกังขา · หนี้สินรวมเพิ่มขึ้น (D/E 0.63 จาก 0.27) เพิ่มภาระดอกเบี้ย"
+  ],
+  "extras": [],
+  "_sig": "sha256:c61a1c56169a59a3a716925c77cf8be5d7b94bf1b4e5614930f057478801aaa6"
+}

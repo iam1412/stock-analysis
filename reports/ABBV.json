@@ -1,0 +1,283 @@
+{
+  "v": 3,
+  "symbol": "ABBV",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "AbbVie Inc.",
+    "exchange": "NYSE",
+    "sub": "Immunology (Skyrizi · Rinvoq) • Oncology (Imbruvica · Venclexta) • Neuroscience (Botox Therapeutic · Vraylar · Qulipta) • Aesthetics (Botox Cosmetic · Juvederm) • Eye Care",
+    "headerTags": [
+      "Pharmaceuticals",
+      "Dividend Aristocrat"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "stockanalysis.com",
+      "finance.yahoo.com",
+      "news.abbvie.com"
+    ],
+    "themeLegacy": {
+      "accent": "#7B2281",
+      "accentDark": "#4a0a5a",
+      "darkGrad": "linear-gradient(135deg,#160020 0%,#2a0040 100%)",
+      "glow": "rgba(123,34,129,0.4)",
+      "subColor": "#c47fd5",
+      "headerMuted": "rgba(255,255,255,0.55)",
+      "verdictText": "#f0c060",
+      "vcellLabel": "#b89ec4"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T09:52:17+07:00",
+      "v2Hash": "8b9e1813f321"
+    }
+  },
+  "market": {
+    "px": 264.34,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          218.04
+        ],
+        [
+          "พ.ย.25",
+          227.7
+        ],
+        [
+          "ธ.ค.25",
+          228.49
+        ],
+        [
+          "ม.ค.26",
+          223.01
+        ],
+        [
+          "ก.พ.26",
+          232.08
+        ],
+        [
+          "มี.ค.26",
+          217.49
+        ],
+        [
+          "เม.ย.26",
+          211.32
+        ],
+        [
+          "พ.ค.26",
+          217.72
+        ],
+        [
+          "มิ.ย.26",
+          251.64
+        ],
+        [
+          "ก.ค.26",
+          250.94
+        ],
+        [
+          "ส.ค.26",
+          256.42
+        ],
+        [
+          "ก.ย.26",
+          264.34
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 190.75,
+      "hi": 267.47
+    }
+  },
+  "fundamentals": {
+    "eps": 10.87,
+    "dps": 6.92,
+    "shares": 1770000000,
+    "epsForward": 13.87,
+    "ebitda": 23200000000,
+    "revenue": 64400000000,
+    "beta": 0.31,
+    "epsBasis": "adj-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation (adj. EPS)",
+      "inputs": {
+        "multiple": 19,
+        "multipleSource": "author"
+      },
+      "override": {
+        "eps": 13.97,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "EPS adj. $13.97 (FY2026 guidance กลางของช่วง $13.87–14.07 · รวมผลลบจาก IPR&D ~$0.58 และ Apogee ~$0.14) × P/E เป้า 19x — สมอ = P/E ของ ABBV เองที่ราคาเฉลี่ยรายปี ÷ adj EPS ~17.8x (FY2024) และ ~20.6x (FY2025) ใช้กลางช่วง 19x · GAAP P/E ย้อนหลังใช้ไม่ได้ (มัธยฐาน 64.8x บิดเบือนจาก amortization Allergan)"
+    },
+    {
+      "method": "ddm",
+      "label": "DDM / Gordon Growth Model",
+      "inputs": {
+        "g": 6,
+        "r": 9
+      },
+      "note": "อิง Skyrizi/Rinvoq + Botox growth · WACC โดยประมาณ"
+    },
+    {
+      "method": "evebitda",
+      "label": "EV/EBITDA",
+      "inputs": {
+        "multiple": 16,
+        "multipleSource": "sector"
+      },
+      "override": {
+        "ebitda": 25000000000,
+        "netDebt": 64300000000,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2",
+        "shares": 1767000000
+      },
+      "note": "EBITDA FY2026E ~$25B (FY2025 $23.2B +8%); Sector multiple 16x → Target EV $400B − Net Debt $64.3B (หนี้ $70.9B − เงินสด $6.6B) = $335.7B ÷ 1.767B หุ้น — penalize จาก Allergan debt; Sector ยา 14-18x ใช้ค่ากลาง 16x (สมมติฐานเซกเตอร์ ไม่ได้วัดตัวคูณ EV/EBITDA ย้อนหลังของ ABBV)"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      {
+        "key": "peForward",
+        "tone": "none"
+      },
+      "custom:0",
+      "revenue",
+      "eps",
+      "custom:1",
+      "beta",
+      {
+        "key": "yield",
+        "tone": "pos"
+      },
+      "custom:2",
+      "custom:3",
+      "custom:4"
+    ],
+    "custom": [
+      {
+        "label": "EV/EBITDA",
+        "value": "22.9x",
+        "note": "EBITDA FY2025: $23.2B · EV ~$531B",
+        "tone": "neu"
+      },
+      {
+        "label": "ROA",
+        "value": "10.0%",
+        "note": "ROE n/a (equity ติดลบ — Allergan)"
+      },
+      {
+        "label": "Skyrizi (FY2025)",
+        "value": "$17.6B",
+        "note": "+49.7% — ขับเคลื่อนการเติบโต",
+        "tone": "pos"
+      },
+      {
+        "label": "Rinvoq (FY2025)",
+        "value": "$8.3B",
+        "note": "+38.8% — ขยายข้อบ่งชี้ใหม่",
+        "tone": "pos"
+      },
+      {
+        "label": "Humira (FY2025)",
+        "value": "$4.5B",
+        "note": "-49.4% — biosimilars กดดัน",
+        "tone": "neg"
+      }
+    ],
+    "notes": {
+      "mcap": "1.77 พันล้านหุ้น",
+      "pe": "EPS adj. TTM ~{{eps}} · GAAP P/E 74.6x",
+      "peForward": "EPS adj. guidance $13.87–14.07",
+      "revenue": "+10.4% YoY · FY2025 $61.2B",
+      "eps": "GAAP EPS TTM $3.54 (amortization/IPR&D ลด)",
+      "beta": "ความผันผวนต่ำมาก vs ตลาด",
+      "yield": "เพิ่มขึ้น 54 ปีติดต่อกัน"
+    },
+    "hint": "ข้อมูล ณ 21 ก.ย. 2569"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 3,
+        "exitMultiple": 16,
+        "divCum": 21,
+        "desc": "Skyrizi ชะลอ, คู่แข่งกด"
+      },
+      {
+        "growth": 10,
+        "exitMultiple": 20,
+        "divCum": 22,
+        "desc": "Skyrizi+Rinvoq เติบโตต่อ"
+      },
+      {
+        "growth": 15,
+        "exitMultiple": 22,
+        "divCum": 23,
+        "desc": "Pipeline ใหม่ + Skyrizi label ใหม่"
+      }
+    ],
+    "exitDp": 0,
+    "baseOverride": {
+      "value": 13.9697,
+      "why": "EPS ฐานฉากที่ผู้เขียนใช้ ($13.97 FY2026 guidance กลาง) — ทศนิยมเต็มที่ถอดจากเป้า Bear/Base/Bull และ EPS ปี 3 ที่หน้า v2 พิมพ์ ($244.24/$371.87/$467.4 · ~$15.27/~$18.59/~$21.25)"
+    },
+    "note": "ผลตอบแทนคำนวณจากจุดเข้า {{px}} · EPS ฐาน = {{baseEps}} (FY2026 guidance กลาง) · อัตราเติบโต EPS 3 ปีขึ้นอยู่กับ Skyrizi ซึ่ง AbbVie คาดว่าจะแตะ $20B+ ในปีถัดไป + Rinvoq ที่กำลังขยาย label ใหม่ (atopic dermatitis, Crohn's) · Beta ต่ำ 0.31 ช่วยลด downside · Scenario Bear ได้ผลใกล้ศูนย์ เพราะปันผล ~$21 รวม 3 ปีชดเชย de-rating เกือบทั้งหมด"
+  },
+  "analyst": {
+    "target": 278.61,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ABBV เริ่มกราฟที่ราว $218 ในต.ค. 2568 ขึ้นมาทรงตัวโซน $223-232 ช่วงปลายปี 2568 ถึงต้นปี 2569 ก่อนย่อลงต่ำสุด ~$211 ในเม.ย. 2569 จากนั้นพุ่งแรงในมิ.ย. 2569 สู่ ~$252 หลังผล Q1 2026 (Adjusted EPS $2.65 เกินคาด) และไต่ต่อเป็นจุดสูงสุดของช่วงที่ ~$264 ในก.ย. 2569 หลังผล Q2 2026 (Adjusted EPS $3.65, +22.9% YoY) ผลตอบแทน 1 ปีตามป้ายด้านบน",
+    "valuation": "วิธี P/E ให้ค่าสูงสุด ($265) สะท้อนการเติบโต EPS จาก Skyrizi+Rinvoq · วิธี DDM ให้ค่ากลาง ($245) เหมาะกับ Dividend Aristocrat ที่จ่ายเงินปันผลเพิ่มมา 54 ปี · วิธี EV/EBITDA ให้ค่าต่ำสุด ($190) เพราะถูก penalize จากหนี้สูง ($71B) จากการซื้อ Allergan ปี 2563 · ค่าเฉลี่ยของสามตระกูลสมมติฐาน = {{fv}} ต่ำกว่าราคาปัจจุบัน {{px}} ({{mos}}) → หุ้นซื้อขายเหนือ fair value · นักวิเคราะห์ 28 คน เฉลี่ย {{analyst.target}} (+5.6%) สูงกว่า FV ของเรา เพราะฐาน EPS/ตัวคูณของฝั่งขายต่างจากสมมติฐานนี้ (P/E เป้า 19x บนกำไรที่ยังมีภาระ IPR&D)<br><br><b>แหล่งข้อมูล ≥2 แหล่ง:</b> (1) stockanalysis.com/stocks/abbv/ — ราคาปิดวันที่ 18 ก.ย. 2569, EPS GAAP TTM $3.54, yield 2.62%, Market Cap $466.45B · (2) Yahoo Finance quoteSummary — ราคา/EPS ตรงกับ (1) ต่าง 0% ✓ · (3) news.abbvie.com — ผล Q2 2569 (31 ก.ค. 2569: adj. EPS $3.65 +22.9% YoY, guidance FY2026 $13.87-$14.07 รวม Apogee dilution $0.14) · adj. EPS TTM {{eps}} = Q3 2568 $1.86 + Q4 2568 $2.71 + Q1 2569 $2.65 + Q2 2569 $3.65 · (4) stockanalysis.com/stocks/abbv/forecast/ — FY2026e EPS $14.01 / FY2027e $16.27, consensus target {{analyst.target}} จาก 28 นักวิเคราะห์",
+    "gauge": "ราคาปัจจุบัน {{px}} อยู่เหนือ Fair Value {{fv}} (MOS {{mos}}) → หุ้นซื้อขายในโซน \"แพงกว่ามูลค่า\" ขณะที่เป้าหมายนักวิเคราะห์เฉลี่ย {{analyst.target}} สูงกว่าราคา แต่ตัวเลข FV ของเรายึด P/E เป้า 19x บน EPS ปี 2569 ที่ยังมีภาระ IPR&D · โซน MOS 20% ที่ {{mos20}} และ MOS 30% ที่ {{mos30}} เป็นจุดที่น่าสะสมหากราคาย่อลงอย่างมีนัยสำคัญ",
+    "mos": "ราคาเหนือ Fair Value — ไม่มี Margin of Safety ณ ราคานี้",
+    "verdictHeadline": "ABBV: Fair Value Zone — Hold / รอโอกาสสะสม",
+    "verdictBody": "AbbVie เปลี่ยนผ่านสำเร็จจาก Humira-dependent ไปสู่ Skyrizi+Rinvoq Portfolio ที่เติบโตแข็งแกร่ง · FY2025 Skyrizi +49.7% และ Rinvoq +38.8% ชดเชย Humira ที่ลดลง 49.4% ได้อย่างสมบูรณ์ · บริษัทจ่ายเงินปันผลเพิ่มขึ้นมา 54 ปีติดต่อกัน (Dividend Aristocrat) และมี Beta ต่ำเพียง 0.31 เหมาะสำหรับนักลงทุนที่ต้องการ Defensive + Income · อย่างไรก็ตาม ราคาปัจจุบัน {{px}} อยู่เหนือ Fair Value {{fv}} (MOS {{mos}}) ทำให้ไม่มี Margin of Safety · กลยุทธ์ที่เหมาะสมคือ Hold หากถือแล้ว และรอโอกาสสะสมเมื่อราคาย่อมาต่ำกว่า {{fv}} หรือใกล้โซน MOS 20% ({{mos20}})",
+    "strategy": "Hold หากถือแล้ว ปันผล 2.62%+DPS growth ยังน่าสนใจ · ผู้ที่ยังไม่ถือ: รอราคาย่อมาต่ำกว่า {{fv}} (โซน Fair Value) หรือที่ {{mos20}} (MOS 20%) เพื่อมี Safety Margin · ระยะยาว Skyrizi+Rinvoq ยังมีพื้นที่เติบโตถึงปี 2570+",
+    "disclaimerSources": "แหล่งข้อมูล: stockanalysis.com/stocks/abbv/ · news.abbvie.com · news.abbvie.com (AbbVie Q2 2569) · stockanalysis.com/stocks/abbv/forecast/ · finance.yahoo.com/quote/ABBV"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 3 วิธี (3 ตระกูลสมมติฐาน)",
+    "chartHint": "ต.ค. 2568 – ก.ย. 2569",
+    "disclaimerAssump": " P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) ในอนาคต"
+  },
+  "catalysts": [
+    "<b>Skyrizi — เครื่องยนต์หลัก:</b> รายได้ FY2025 $17.6B (+49.7%) AbbVie คาดรายได้รวม Skyrizi+Rinvoq แตะ $27B+ ภายในปี 2570 ทดแทน Humira ได้สำเร็จ",
+    "<b>Rinvoq ขยาย Label ใหม่:</b> ได้รับอนุมัติ FDA ใน atopic dermatitis, Crohn's disease, ulcerative colitis ทำให้ addressable market กว้างขึ้นมาก",
+    "<b>Neuroscience เติบโตแรง:</b> Botox Therapeutic +14.9% · Vraylar (bipolar, schizophrenia) ยังเติบโต · Qulipta สำหรับ migraine เพิ่งเริ่มต้น",
+    "<b>Dividend Aristocrat 54 ปี:</b> จ่ายเงินปันผลเพิ่มขึ้นทุกปีมา 54 ปีติดต่อกัน yield 2.62% + DPS growth ~5-6%/ปี",
+    "<b>Pipeline ระยะ Phase 3:</b> ABBV-951 (Parkinson's), lutikizumab (pain), navitoclax (myelofibrosis) diversify ออกจาก immunology",
+    "<b>Acquisition Apogee Therapeutics (คาดปิด Q3 2569):</b> เสริม IL-13/IL-4 program ใน atopic dermatitis แข่งกับ Dupixent ของ Sanofi/Regeneron · guidance ปี 2569 รวมผลลบ ~$0.14/หุ้นแล้ว"
+  ],
+  "risks": [
+    "<b>Humira LOE ยาวนาน:</b> รายได้ Humira FY2025 เหลือ $4.5B (-49.4%) และจะลดต่อเนื่อง biosimilars ยังมีราคาถูกกว่ามาก",
+    "<b>หนี้สูงจาก Allergan:</b> Total Debt $70.9B · EV ~$531B vs Market Cap $466B · ดอกเบี้ยกดดัน Free Cash Flow และทำให้ EPS GAAP ต่ำมากเทียบ adj.",
+    "<b>IRA Drug Price Negotiation:</b> รัฐบาลสหรัฐฯ มีอำนาจเจรจาราคายา Medicare Skyrizi อาจถูกเจรจาในอนาคต",
+    "<b>Rinvoq Safety Concern:</b> FDA กำหนด Black Box Warning สำหรับ JAK inhibitor กระทบการสั่งจ่ายในบางกลุ่มผู้ป่วย",
+    "<b>Concentration Risk:</b> Skyrizi+Rinvoq คิดเป็น ~42% ของรายได้รวม ถ้าคู่แข่ง (Sanofi Dupixent/AstraZeneca) บุกหนัก อาจกด market share",
+    "<b>Goodwill/Amortization จาก Allergan:</b> Amortization ~$4-5B/ปี ทำให้ GAAP EPS ต่ำผิดปกติ และ book value ติดลบ ความโปร่งใสทางบัญชีลดลง"
+  ],
+  "extras": [],
+  "_sig": "sha256:92b6b4d7c99a8ddb4af2f51ad3f568f9f1f2bc5c58556363db8c740daca03679"
+}

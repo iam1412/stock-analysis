@@ -1,0 +1,259 @@
+{
+  "v": 3,
+  "symbol": "NNN",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "NNN REIT, Inc.",
+    "exchange": "NYSE",
+    "sub": "Net lease REIT (~3,711 single-tenant properties, 50 states, 39.6M sq ft) • 35+ consecutive years dividend increases (Dividend Aristocrat + Champion) • Triple-net leases: tenants pay taxes/insurance/maintenance • Tenants: 7-Eleven, Circle K, Mister Car Wash, casual dining, auto service • ~99.4% occupancy, avg 10.1 yr remaining lease term • ~6.0% dividend yield • ประเมินด้วย P/E ย้อนหลัง + DDM (AFFO เป็นบริบท)",
+    "headerTags": [
+      "Real Estate · Net Lease REIT",
+      "Dividend Aristocrat"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis.com",
+      "Yahoo Finance",
+      "NNN REIT IR (Q1 2026 — AFFO",
+      "occupancy ยกจากรอบก่อน)"
+    ],
+    "themeLegacy": {
+      "accent": "#003087",
+      "accentDark": "#001f5e",
+      "darkGrad": "linear-gradient(135deg,#001030 0%,#001f5e 60%,#003087 100%)",
+      "glow": "rgba(0,48,135,0.45)",
+      "subColor": "#a8bcd4",
+      "headerMuted": "#8fa7c9",
+      "verdictText": "#d0e4ff",
+      "vcellLabel": "#9db8cf"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T17:02:51+07:00",
+      "v2Hash": "8730ee1609f2"
+    }
+  },
+  "market": {
+    "px": 41.3,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          40.46
+        ],
+        [
+          "พ.ย.25",
+          41.35
+        ],
+        [
+          "ธ.ค.25",
+          39.63
+        ],
+        [
+          "ม.ค.26",
+          41.67
+        ],
+        [
+          "ก.พ.26",
+          45.32
+        ],
+        [
+          "มี.ค.26",
+          42.03
+        ],
+        [
+          "เม.ย.26",
+          43.79
+        ],
+        [
+          "พ.ค.26",
+          44.51
+        ],
+        [
+          "มิ.ย.26",
+          46.53
+        ],
+        [
+          "ก.ค.26",
+          47.52
+        ],
+        [
+          "ส.ค.26",
+          45.2
+        ],
+        [
+          "ก.ย.26",
+          41.3
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 38.9,
+      "hi": 50
+    }
+  },
+  "fundamentals": {
+    "dps": 2.48,
+    "shares": 191931400,
+    "netIncome": 384000000,
+    "bvps": 23.7,
+    "roe": 8.7,
+    "roa": 4.5,
+    "beta": 0.79,
+    "ffoBasis": "affo",
+    "eps": 2.03,
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation (มัธยฐานย้อนหลัง)",
+      "inputs": {
+        "multiple": 20.1,
+        "multipleSource": "median5y"
+      },
+      "family": "market"
+    },
+    {
+      "method": "ddm",
+      "label": "DDM (Gordon Growth Model)",
+      "inputs": {
+        "g": 3,
+        "r": 8
+      },
+      "note": "สมมติฐานของเราเอง: g ต่ำกว่าการขึ้นปันผลล่าสุด ~3.3% [$2.40 → {{dps}}] และสูงกว่า ~2.2%/ปีในอดีต 5 ปี; r = 8.0% สำหรับ BBB+ REIT",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "custom:0",
+      "custom:1",
+      "pe",
+      "custom:2",
+      "netIncome",
+      "bvps",
+      "roe",
+      {
+        "key": "yield",
+        "tone": "pos"
+      },
+      "custom:3",
+      "custom:4",
+      "beta"
+    ],
+    "custom": [
+      {
+        "label": "AFFO/sh (annualized)",
+        "value": "~$3.48",
+        "note": "Q1 2026: $0.87/sh · guidance FY2026: $3.53–$3.59",
+        "tone": "pos"
+      },
+      {
+        "label": "P/AFFO",
+        "value": "~11.9x",
+        "note": "AFFO/sh annualized $3.48 · ต่ำกว่าช่วงประวัติศาสตร์ ~16–18x ในรายงานรอบก่อน (ยังไม่ได้ตรวจซ้ำรอบนี้)",
+        "tone": "neu"
+      },
+      {
+        "label": "Net margin / Op margin TTM",
+        "value": "40.3% / 61.6%",
+        "note": "FY2024: net 45.6% · รายได้ FY2024 $869.27M",
+        "tone": "neu"
+      },
+      {
+        "label": "Div. Growth (5 ปี)",
+        "value": "~2.2%/ปี",
+        "note": "FY2021: $2.10 → FY2024: $2.29 · CPI escalators หนุน"
+      },
+      {
+        "label": "Occupancy / Lease Term",
+        "value": "~99.4% / 10.1 ปี",
+        "note": "3,711 properties · 50 states · 39.6M sq ft",
+        "tone": "pos"
+      }
+    ],
+    "notes": {
+      "mcap": "191.93M shares outstanding",
+      "pe": "EPS {{eps}} · มัธยฐาน P/E 5 ปีงบ 20.1x (ช่วง 19.4–30.0x)",
+      "netIncome": "EPS TTM {{eps}} · FY2025: $389M (EPS $2.07)",
+      "bvps": "Total equity $4,362M · P/BV ~1.75x",
+      "roe": "ROE TTM 8.7% (Yahoo 8.72%) · ROA ยกจากรอบก่อน",
+      "yield": "{{dps}}/sh/ปี (รายไตรมาส ≈ $0.62) · เพิ่มทุกปี 35+ ปี",
+      "beta": "BBB · ความเสี่ยงต่ำกว่าตลาด · Investment Grade"
+    },
+    "hint": "Net Lease REIT — AFFO/sh คือตัวชี้วัดหลัก แทน EPS"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 0,
+        "exitMultiple": 17,
+        "divCum": 7.44,
+        "desc": "ดอกเบี้ยค้างสูง EPS ไม่โต · de-rate ต่ำกว่าช่วง 5 ปี"
+      },
+      {
+        "growth": 3,
+        "exitMultiple": 20.1,
+        "divCum": 7.9,
+        "desc": "โตตาม escalator · P/E กลับสู่มัธยฐาน"
+      },
+      {
+        "growth": 5,
+        "exitMultiple": 23.4,
+        "divCum": 8.05,
+        "desc": "Fed ลดดอกเบี้ย · acquisition spread กว้าง · P/E ระดับ FY2022"
+      }
+    ],
+    "exitDp": 1,
+    "note": "<b>หมายเหตุ:</b> NNN เป็น REIT — ฉากนี้อิง EPS ตามบัญชี × P/E ออก โดยผูกกับมัธยฐาน 20.1x และช่วงย้อนหลัง 19.4–30.0x (Bear 17x = ต่ำกว่าต่ำสุดในช่วง 5 ปี · Bull 23.4x = ระดับ FY2022) · ราคาเป้าเป็นสมมติฐาน ผลตอบแทนตามป้ายเป็น <b>ส่วนต่างราคาอย่างเดียว</b> ยังไม่รวมปันผลที่แสดงแยก · ปันผล {{dps}}/sh ปัจจุบัน สมมติเพิ่ม 0% / 3% / 4% ต่อปี (Bear/Base/Bull) · Bear ผลตอบแทนรวมราว 0% ถึง +1% เพราะปันผลชดเชยราคาที่ลดลง (ราว −17% จากราคา บวกปันผลราว +18%)"
+  },
+  "analyst": {
+    "target": 47.8,
+    "n": 15,
+    "rating": "Hold",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ป้ายผลตอบแทนรอบปีอยู่ด้านบนของหน้านี้ · ราคาปิดรายเดือนต่ำสุดในกราฟ $39.63 (ธ.ค. 2568) สูงสุด $47.52 (ก.ค. 2569) จากนั้นย่อตัวลงราว 13% ภายใน 2 เดือน (ส.ค.–ก.ย. 2569) มาที่ระดับปัจจุบัน {{px}} — REIT อ่อนไหวต่อทิศทางอัตราดอกเบี้ย (สาเหตุของการย่อตัวรอบนี้ไม่ได้ตรวจสอบเพิ่มในรอบนี้) ขณะที่พื้นฐาน occupancy ~99.4% และการขึ้นปันผลต่อเนื่องยังไม่เปลี่ยน",
+    "valuation": "<b>หมายเหตุ:</b> NNN เป็น REIT — P/E ตามบัญชีไม่ใช่ตัวชี้วัดหลักที่ดีที่สุด แต่เป็นตัวคูณเดียวที่มี <b>มัธยฐานย้อนหลังที่วัดจริง</b> ในรอบนี้ จึงใช้ร่วมกับ DDM (สองตระกูลอิสระ: ตัวคูณจากประวัติราคา กับกระแสปันผลตามสมมติฐาน r/g ของเรา) · ค่าสองขาห่างกัน ~1.25 เท่า (ไม่เกิน 2.0 เท่า) จึงเฉลี่ยได้ = $45.94 ≈ <b>$46</b> · ความไวต่อสมมติฐาน: ส่วนต่างของขา P/E ขาเดียวเทียบราคาราว −2% ขณะที่ขา DDM ขาเดียวราว +19% — ผลสรุปขึ้นกับ g/r ของ DDM มาก · <b>ไม่ใช้เป็นขา (บริบทเท่านั้น):</b> P/AFFO เป้าหมาย 15x × AFFO $3.48 ≈ $52 และ Cap-rate NAV (cap rate 5.75%) เพราะตัวคูณ/cap rate ไม่มีค่ามัธยฐานที่วัดจริงในรอบนี้ · เป้านักวิเคราะห์ใช้เป็นแค่เครื่องตรวจความสอดคล้อง ไม่เป็นขาของ FV",
+    "gauge": "ราคาปัจจุบัน {{px}} อยู่ต่ำกว่ามูลค่าเหมาะสม {{fv}} ({{mos}}) — <b>ใกล้ fair value ส่วนเผื่อบาง</b> จุดเข้าซื้อที่คุ้มค่าอยู่ที่ MOS 20% = {{mos20}} (ต่ำกว่าราคาปัจจุบันราว 11%) · เป้า analyst เฉลี่ย 15 คน (Yahoo/StockAnalysis) {{analyst.target}} (Hold) สูงกว่าราคา แต่ไม่ได้ใช้เป็นขาของ FV",
+    "mos": "MOS บาง — ใกล้ fair value · รอโซน MOS 20% ({{mos20}}) เพื่อส่วนเผื่อที่ดีกว่า",
+    "verdictHeadline": "NNN: Dividend Aristocrat คุณภาพสูง — ใกล้ Fair Value ส่วนเผื่อบาง รอจุดเข้า MOS 20% เพื่อ Entry ที่ดีกว่า",
+    "verdictBody": "NNN REIT เป็น net lease REIT คุณภาพพรีเมียม ที่มีประวัติขึ้นปันผล 35+ ปีติดต่อกัน พอร์ตโฟลิโอ ~3,711 properties มี occupancy ~99.4% และ weighted average lease term 10.1 ปี (ตัวเลขพอร์ตยกจาก NNN IR Q1 2026 รอบก่อน) ณ ราคาปัจจุบัน {{px}} หุ้น trade ที่ P/E ~20.5x ใกล้มัธยฐานย้อนหลัง 20.1x และให้ปันผล ~6.0% FV ที่ประเมิน {{fv}} ให้ {{mos}} — <b>น่าสนใจสำหรับ income ระยะยาว แต่ไม่ใช่ deep value</b> และผลสรุปขึ้นกับสมมติฐาน r/g ของ DDM (ขา P/E ขาเดียวให้ค่าต่ำกว่าราคาเล็กน้อย) ฉาก Base 3 ปีให้ส่วนต่างราคาราว +7% บวกปันผลสะสมราว 19% ของราคาเข้า (รวมราว 26%) — เหมาะเป็นฐานรายได้ ไม่ใช่การเก็งกำไรราคา",
+    "strategy": "สำหรับนักลงทุน income ระยะยาว — NNN ณ ราคาปัจจุบัน {{px}} ให้ yield ~6.0% ที่เชื่อถือได้สูง (35+ ปีขึ้นทุกปี) เหมาะสำหรับ <b>ทยอยสะสมเล็กน้อยใกล้ราคาปัจจุบัน</b> แต่ <b>จุดเข้าที่ดีที่สุด = {{mos20}} (MOS 20%)</b> ถ้าราคาย่อลงตามดอกเบี้ยผันผวน · Bull case (Fed ลดดอกเบี้ย + P/E กลับระดับ FY2022) ให้ส่วนต่างราคาราว +32% บวกปันผลราว 19% ใน 3 ปี",
+    "disclaimerSources": "ที่มา: StockAnalysis.com (ราคา {{px}} · EPS TTM $2.03 · ปันผล $2.48 · เป้า analyst $47.80 · งบย้อนหลัง 5 ปี · shares 191.93M), Yahoo Finance (ราคา {{px}} · 52-wk $38.90–$50.00 · analyst n=15 · ROE 8.72%), NNN REIT IR Q1 2026 (AFFO $0.87/sh · portfolio 3,711 properties · occupancy ~99.4% · avg lease 10.1 yr — ยกจากรอบก่อน ไม่ได้ตรวจซ้ำ) • ราคาตรวจสอบ ≥2 แหล่ง ต่างกัน 0% ✓ • ข้อมูล ณ 21 ก.ย. 2569"
+  },
+  "text": {
+    "valHint": "2 วิธีที่อิสระกัน สำหรับ Net Lease REIT",
+    "disclaimerAssump": " P/AFFO เป้าหมาย, อัตราเติบโต AFFO (g), ผลตอบแทนที่ต้องการ (r) และ cap rate ในอนาคต"
+  },
+  "catalysts": [
+    "<b>Fed ลดดอกเบี้ย:</b> เป็นปัจจัยบวกตรงที่สุด — ต้นทุนทางการเงินลดลง + ตัวคูณ P/AFFO และ P/E มีโอกาส re-rate ขึ้นจากระดับปัจจุบัน",
+    "<b>35+ ปีขึ้นปันผลต่อเนื่อง:</b> เป็น Dividend Aristocrat + Dividend Champion หนึ่งใน 3 REIT เดียวที่ทำได้ — นักลงทุน income เชื่อถือสูง สร้าง demand base ที่แข็งแกร่ง",
+    "<b>CPI Escalators ในสัญญาเช่า:</b> สัญญาเช่า triple-net มีบทบัญญัติขึ้นค่าเช่าตาม CPI ทุกปี — รายได้โตตาม inflation อัตโนมัติ ไม่ต้องพึ่ง external growth",
+    "<b>Acquisition Pipeline ดี:</b> ปี 2025 deployment เพิ่มขึ้นจาก 2024 ด้วย cap rate spread กว้าง (acquisition yield ~7.5–8% vs borrowing ~5.5%) = AFFO growth จาก external acquisitions",
+    "<b>Occupancy ~99.4%:</b> สูงที่สุดในกลุ่ม net lease — triple-net structure ทำให้ผู้เช่าผูกพันระยะยาว average 10.1 ปีเหลือ ความเสี่ยงว่างต่ำมาก",
+    "<b>Portfolio Diversification:</b> 3,711 properties, 50 states, 38 sectors, ผู้เช่ารายใหญ่สุด (7-Eleven) คิด ~7.4% เท่านั้น — กระจายความเสี่ยงดีเยี่ยม"
+  ],
+  "risks": [
+    "<b>อัตราดอกเบี้ยสูงนาน:</b> ความเสี่ยงหลัก — ต้นทุน refinancing เพิ่มขึ้นกดดัน AFFO spread; ถ้า Fed ไม่ลดดอกเบี้ยเร็ว P/AFFO multiple อาจกดค้างไว้ที่ 12–14x",
+    "<b>Consumer Discretionary Tenant Risk:</b> ผู้เช่าหลักในกลุ่ม casual dining, auto service อาจได้รับผลกระทบจากเศรษฐกิจชะลอตัว — NNN เคยรับมือได้ดีแม้ COVID แต่ความเสี่ยงยังมี",
+    "<b>Rising Cap Rates:</b> ถ้าดอกเบี้ย Treasury สูงขึ้น cap rate property ก็สูงขึ้นตาม → NAV ลดลง → ราคาหุ้นกด",
+    "<b>Refinancing Risk (Net Debt ~$5.0B):</b> Debt $5,001M หักเงินสด ~$4M, D/E 1.12 — ถ้าดอกเบี้ย refi สูงกว่าเดิมมากจะกด AFFO margin",
+    "<b>ผู้เช่าล้มละลาย:</b> แม้ rare แต่ AMC Theatres (ผู้เช่ารายหนึ่ง) เคยมีปัญหา — กลุ่ม brick-and-mortar retail บางส่วนเปราะบางต่อ e-commerce"
+  ],
+  "extras": [],
+  "_sig": "sha256:954dc8baceb2c3cb68bcb862dcefda8b2e3fa5919cf35b003e03c8f6748dd64d"
+}

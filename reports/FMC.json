@@ -1,0 +1,272 @@
+{
+  "v": 3,
+  "symbol": "FMC",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "FMC Corporation",
+    "exchange": "NYSE",
+    "sub": "Pure-play crop protection · Insecticides/herbicides/fungicides · Diamide insecticides (Rynaxypyr/Cyazypyr) · FY2023-24 destocking recovery · New active ingredient pipeline · Philadelphia PA",
+    "headerTags": [
+      "Agriculture Chemicals",
+      "Crop Protection"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "StockAnalysis.com",
+      "FMC IR",
+      "SEC 8-K"
+    ],
+    "themeLegacy": {
+      "accent": "#4A8B00",
+      "accentDark": "#2E5C00",
+      "darkGrad": "linear-gradient(135deg,#1a2e10 0%,#0d1f08 100%)",
+      "glow": "rgba(74,139,0,0.35)",
+      "subColor": "#7aba2b",
+      "headerMuted": "#69a429",
+      "verdictText": "#c8e89a",
+      "vcellLabel": "#8fcc3a"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T14:08:46+07:00",
+      "v2Hash": "9f2e07eb3217"
+    }
+  },
+  "market": {
+    "px": 9.58,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          15.17
+        ],
+        [
+          "พ.ย.25",
+          14.29
+        ],
+        [
+          "ธ.ค.25",
+          13.87
+        ],
+        [
+          "ม.ค.26",
+          15.8
+        ],
+        [
+          "ก.พ.26",
+          14.74
+        ],
+        [
+          "มี.ค.26",
+          17.22
+        ],
+        [
+          "เม.ย.26",
+          15.38
+        ],
+        [
+          "พ.ค.26",
+          13.66
+        ],
+        [
+          "มิ.ย.26",
+          11.5
+        ],
+        [
+          "ก.ค.26",
+          10.71
+        ],
+        [
+          "ส.ค.26",
+          11.53
+        ],
+        [
+          "ก.ย.26",
+          9.58
+        ]
+      ],
+      "gridFmt": "v.toFixed(0)",
+      "dataFmt": "d[1].toFixed(2)"
+    },
+    "range52w": {
+      "lo": 9.71,
+      "hi": 37.52
+    }
+  },
+  "fundamentals": {
+    "dps": 0.32,
+    "bvps": 13.07,
+    "shares": 125230000,
+    "epsForward": 1.62,
+    "revenue": 3250000000,
+    "grossMargin": 31.9,
+    "netDebt": 3930000000,
+    "roe": 9.7,
+    "beta": 0.37,
+    "fy": {
+      "period": "FY2025",
+      "netIncome": -2240000000
+    }
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation (Adj EPS)",
+      "inputs": {
+        "multiple": 19.4,
+        "multipleSource": "median5y",
+        "medianWindow": "FY2021–FY2024"
+      },
+      "override": {
+        "eps": 1.29,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "มัธยฐานย้อนหลัง FY2021–FY2024 ของ FMC เอง (ราคาเฉลี่ยปี ÷ EPS diluted · 4 จุด ช่วง 9.0–21.9x) ไม่ได้มาจาก P/E ปัจจุบัน",
+      "family": "market"
+    },
+    {
+      "method": "evebitda",
+      "label": "EV/EBITDA Valuation",
+      "inputs": {
+        "multiple": 13.6,
+        "multipleSource": "median5y",
+        "medianWindow": "FY2021–FY2024"
+      },
+      "override": {
+        "ebitda": 650000000,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "กลาง guidance $620–680M · มัธยฐาน FY2021–FY2024 ของ FMC เอง: 13.8/13.5/13.7/12.2x ฐาน EV ณ สิ้นปีของ vendor",
+      "family": "market"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "custom:0",
+      {
+        "key": "peForward",
+        "tone": "none"
+      },
+      "pbv",
+      {
+        "key": "netIncomeFy",
+        "tone": "neg"
+      },
+      "custom:1",
+      "revenue",
+      "grossMargin",
+      "yield",
+      {
+        "key": "netDebt",
+        "tone": "neg"
+      },
+      "roe",
+      "beta"
+    ],
+    "custom": [
+      {
+        "label": "P/E (Adj FY2026)",
+        "value": "~7.4x",
+        "note": "ราคา ÷ EPS adj. $1.29 (FY2026e) · GAAP ติดลบ",
+        "tone": "neu"
+      },
+      {
+        "label": "Adj EPS FY2026 (คาด)",
+        "value": "~$1.29",
+        "note": "consensus FY2026e · guidance บริษัท $1.19–$1.49"
+      }
+    ],
+    "notes": {
+      "mcap": "125.2M หุ้น · ต่ำกว่าจุดสูงสุด 52 สัปดาห์ ~73%",
+      "peForward": "อิง EPS FY2027e $1.62 (vendor) — ไม่ใช่ปีงบถัดไป",
+      "pbv": "BVPS ~{{bvps}} (equity $1.66B) · ต่ำกว่า book value",
+      "netIncomeFy": "goodwill impairment $1.36B (ไม่ใช่เงินสด) · TTM −$2,759M",
+      "revenue": "TTM · ลดลงจาก $5.8B ใน FY2022 (−44%)",
+      "grossMargin": "TTM · FY2025 33.8% · FY2021 42.8%",
+      "yield": "ลดลง 86% จาก $2.32 ปี 2567",
+      "netDebt": "หนี้ $4.40B − เงินสด $0.48B · D/E ~265% · ≈6x EBITDA guidance กลางช่วง",
+      "roe": "ประมาณเอง: adj EPS $1.29 × 125.2M หุ้น ÷ equity $1.66B (GAAP ROE −88%)",
+      "beta": "ความผันผวนต่ำกว่าตลาด"
+    },
+    "hint": "งบล่าสุด Q2 2569 (ประกาศ 29 ก.ค. 2569) · ใช้ Adj EPS (non-GAAP) ปีงบ 2569 เพราะ GAAP ติดลบจาก goodwill impairment และค่า restructuring"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": -10,
+        "exitMultiple": 9,
+        "divCum": 0.96,
+        "desc": "EPS หดต่อ หนี้ยังสูง"
+      },
+      {
+        "growth": 15,
+        "exitMultiple": 15.5,
+        "divCum": 0.96,
+        "desc": "ฟื้นตัวตามแผน ลดหนี้สำเร็จ"
+      },
+      {
+        "growth": 25,
+        "exitMultiple": 19.4,
+        "divCum": 0.96,
+        "desc": "ฟื้นตัวเร็ว ลดหนี้จากดีลขายสินทรัพย์"
+      }
+    ],
+    "exitDp": 1,
+    "baseOverride": {
+      "value": 1.29,
+      "why": "EPS ฐานฉากที่ผู้เขียนใช้"
+    },
+    "note": "การคาดการณ์อิง adj EPS ฐาน {{baseEps}} (FY2026e consensus · guidance $1.19–1.49) ซึ่งต่ำกว่าช่วงปกติมาก (EPS diluted FY2022 $5.80) ตัวคูณออก: Bear 9x = ต่ำสุดที่วัดได้ (FY2023) · Base 15.5x = กึ่งกลางช่วงมัธยฐานย้อนหลัง 9.0–21.9x · Bull 19.4x = มัธยฐาน 4 ปี · ความสำเร็จของ base/bull ขึ้นอยู่กับ: (1) การลดหนี้จากเงินลงทุน Tessenderlo $400M, ขายธุรกิจอินเดีย $252M, sale-leaseback Newark $114M (บริษัทตั้งเป้าเงินรวม ~$1B) (2) ราคาสินค้าเกษตรและ demand ยากันแมลงฟื้นตัว (3) pipeline สารออกฤทธิ์ใหม่ · ผลตอบแทน scenario ยังไม่หักการเจือจางจากหุ้นใหม่ ~30.1M หุ้นของ Tessenderlo (ถ้าดีลปิด) และสมมติปันผลคงที่ {{dps}}/ปี ซึ่งอาจถูกตัดอีก",
+    "hintNote": "(FY2026 adj)"
+  },
+  "analyst": {
+    "target": 13.58,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ตามกราฟรายเดือน ราคา FMC เริ่มที่ ~$15 เดือน ต.ค. 2568 ขึ้นแตะ ~$17 เดือน มี.ค. 2569 แล้วร่วงต่อเนื่องตั้งแต่ เม.ย. จนปิดเดือน ก.ย. ที่ {{px}} หลังบริษัทรายงานผลปี 2568 (ก.พ. 2569) ที่มี goodwill impairment $1.36B (ไม่ใช่เงินสด) ลดปันผลเหลือ $0.08/ไตรมาส และประกาศศึกษาทางเลือกเชิงกลยุทธ์ รวมถึงการขายบริษัท ราคาปัจจุบันอยู่ใกล้ระดับต่ำสุด 52 สัปดาห์ ($9.71) และต่ำกว่าราคา $13.30 ที่ Tessenderlo ตกลงเข้าลงทุนเมื่อ 30 มิ.ย. 2569",
+    "valuation": "★ FV = เฉลี่ยสองตระกูลที่ใช้ตัวคูณมัธยฐานย้อนหลังของ FMC เอง (P/E {{fvLow}} และ EV/EBITDA $39.14) · ถอดขา P/BV 1.0x เดิมออก (ตัวคูณที่ตั้งเอง ไม่มีมัธยฐานรองรับ) · เป้านักวิเคราะห์ ({{analyst.target}}) เป็นบริบทเท่านั้น ไม่เป็นขาของ FV · <b>ข้อควรระวัง</b> (1) ทั้งสองตัวคูณมาจาก FY2021–24 ที่ธุรกิจปกติ (EPS $5.7–10.5) แต่นำมาใช้กับกำไรที่หดแล้วบนหนี้สุทธิ ~$3.93B (≈6x EBITDA) equity จึงอ่อนไหวมาก: ขา P/E ที่ 9.0x (ต่ำสุดที่วัดได้ FY2023) ให้ ≈$11.6 · ขา EV/EBITDA ใช้ EBITDA แบบ adjusted ตาม guidance ขณะที่ตัวคูณของ vendor คำนวณบน EBITDA แบบ GAAP (EBITDA GAAP TTM $269M ให้ EV ต่ำกว่าหนี้สุทธิ = equity ติดลบ) จึงเป็นขาที่มั่นใจน้อยที่สุด (2) สองขาอิงประวัติชุดเดียวกัน ไม่มีพยานอิสระ และผลต่างจากราคาตลาดเกิน 40% <b>จึงถือว่า FV ยังไม่ผ่านการยืนยัน</b> ให้อ่านเป็นกรอบ ไม่ใช่จุดเดียว (3) ดีล Tessenderlo (รอ regulatory approval) จะออกหุ้นใหม่ ~30.1M หุ้น ($400M ÷ $13.30 = +24% ของหุ้นเดิม 125.2M) เจือจาง FV ต่อหุ้น แม้เงินจะใช้ลดหนี้ชดเชยบางส่วน (ยังไม่นับในตัวเลขนี้)",
+    "gauge": "ราคาปัจจุบัน {{px}} อยู่ต่ำกว่าโซน MOS 30% ({{mos30}}) ซึ่งทางทฤษฎีเป็นโซน deep value แต่ MOS นี้อิงตัวคูณมัธยฐานจากปีที่ธุรกิจปกติ และ EPS ปีงบ 2569 ที่ยังเป็นประมาณการ เป้าเฉลี่ยนักวิเคราะห์ (17 คน) {{analyst.target}} อยู่ต่ำกว่า FV ที่ประเมินไว้ที่ {{fv}} มาก สะท้อนว่าตลาดยังไม่เชื่อ EPS ฟื้นตัวหรือกังวลหนี้ — ควรอ่านกรอบ FV ที่ {{fvLow}}–{{fvHigh}} มากกว่าจุดเดียว",
+    "mos": "ส่วนลดจากมูลค่าเหมาะสม — MOS สูงมากแต่ FV มาจากตัวคูณย้อนหลังสองขาและยังไม่ผ่านการยืนยัน ความเสี่ยงสูงจากหนี้และการฟื้นตัวที่ไม่แน่นอน",
+    "verdictHeadline": "Deep Value พร้อมความเสี่ยงสูง — เหมาะสำหรับนักลงทุนแบบ Contrarian ที่รับความเสี่ยงได้",
+    "verdictBody": "FMC เป็นหนึ่งในบริษัทชั้นนำของโลกด้าน crop protection ที่กำลังเผชิญวิกฤตรอบด้าน: รายได้หดจาก $5.8B (FY2022) เหลือ $3.25B (TTM) ผลปี 2568 มี goodwill impairment $1.36B (ไม่ใช่เงินสด) ปันผลถูกตัดเหลือ $0.08/ไตรมาส และบริษัทประกาศศึกษาทางเลือกเชิงกลยุทธ์ รวมถึงการขายบริษัท ปัจจุบันราคา {{px}} ต่ำกว่า $13.30 ที่ Tessenderlo ตกลงลงทุน ผลไตรมาส 2 ปี 2569 มี Adjusted EBITDA เกินกรอบและกระแสเงินสดแข็ง แต่ guidance EPS ทั้งปีลดลงเหลือ $1.19–$1.49 ผู้ลงทุนต้องตัดสินใจว่าบริษัทจะลดหนี้ ~$3.9B ได้สำเร็จหรือไม่ · มูลค่าเหมาะสมในรายงานนี้มาจากตัวคูณย้อนหลังสองตระกูลที่ยังไม่ผ่านการยืนยันอิสระ และสูงกว่าเป้านักวิเคราะห์ ({{analyst.target}}) มาก จึงควรใช้เป็นกรอบ ไม่ใช่ตัวเลขจุดเดียว",
+    "strategy": "เหมาะสำหรับนักลงทุนแบบ contrarian ที่รับความเสี่ยงสูงได้ — ราคาปัจจุบัน {{px}} ต่ำกว่าโซน MOS 30% ({{mos30}}) แต่ FV อ่อนไหวมาก (สองขาอิงประวัติชุดเดียวกัน) ต้องติดตามการปิดดีล Tessenderlo (และการเจือจางหุ้น) การลดหนี้ และ EPS recovery ไม่แนะนำลงทุนเต็มพอร์ต ควรจัดสรรเป็น high-risk position เล็กๆ และรอดูผลไตรมาส 3 ปี 2569 (ประกาศ 28 ต.ค. 2569)",
+    "disclaimerSources": "ที่มา: Yahoo Finance (ราคาปัจจุบัน, กราฟ), StockAnalysis.com (งบการเงิน, consensus EPS), FMC IR/SEC 8-K (ผล Q4 2568 และ Q2 2569, ดีล Tessenderlo)"
+  },
+  "text": {
+    "valIntro": "เฉลี่ย 2 ตระกูล (P/E + EV/EBITDA) · ตัวคูณมัธยฐานย้อนหลังที่วัดจริง · ใช้ Adj FY2026e",
+    "chartHint": "ต.ค. 2568 – ก.ย. 2569"
+  },
+  "catalysts": [
+    "<b>Tessenderlo $400M investment:</b> ข้อตกลงวันที่ 30 มิ.ย. 2569 ให้ Tessenderlo Group ลงทุนหุ้นส่วนน้อย ~$400M ที่ราคา $13.30/หุ้น (สูงกว่าราคาตลาดปัจจุบัน) เพื่อนำไปลดหนี้ · ยังรอ regulatory approval",
+    "<b>Rynaxypyr/Cyazypyr Diamide portfolio:</b> สารกำจัดแมลงของ FMC เป็นหนึ่งในสารออกฤทธิ์ที่มีประสิทธิภาพสูงสุดในตลาด ยังได้รับการยอมรับสูงในเอเชียและลาตินอเมริกา",
+    "<b>Pipeline สารออกฤทธิ์ใหม่:</b> FMC มี pipeline สารใหม่ที่กำลังอยู่ระหว่างการขึ้นทะเบียน ช่วยต่อยอดรายได้หลังสิทธิบัตรหมดอายุ",
+    "<b>ผลงาน Q2 2569 ดีกว่ากรอบ:</b> Adjusted EBITDA $153M สูงกว่าช่วงที่บริษัทคาด และกระแสเงินสดจากการดำเนินงาน $363M (+$297M YoY) แม้รายได้ลด 17% YoY",
+    "<b>Valuation ต่ำ:</b> P/BV ~{{pbv}}x หุ้น trade ต่ำกว่า book value และ forward P/E ต่ำกว่า 8x บน EPS ปีงบ 2569e",
+    "<b>Strategic review และขายสินทรัพย์:</b> ขายธุรกิจอินเดียให้ Crystal Crop Protection $252M, sale-leaseback Newark $114M และ Project Foundation (restructuring) เพื่อลดหนี้ ~$1B ตามเป้าบริษัท"
+  ],
+  "risks": [
+    "<b>หนี้สูงมาก (~$3.9B net debt):</b> D/E ~265% หนี้สุทธิ ≈6x Adjusted EBITDA กลางช่วง guidance ($650M) ดอกเบี้ยจ่ายกดกำไร ดีล Tessenderlo จะเพิ่มหุ้น ~24% และอาจมีการเจือจางเพิ่มหรือตัดปันผลอีก",
+    "<b>ปันผลลดแล้ว 86%:</b> การตัดปันผลจาก $2.32 เหลือ {{dps}}/ปี เป็นสัญญาณวิกฤตด้านกระแสเงินสด ไม่แน่ว่าจะเพิ่มกลับได้เมื่อใด",
+    "<b>EPS ยังลดลง:</b> guidance adj EPS FY2026 $1.19–$1.49 (ลด ~55% ที่กลางช่วง จาก ~$3 ใน FY2025) และ GAAP ยังขาดทุน (Q2 2569 −$187M จาก restructuring $139.5M + ด้อยค่าอินเดีย $64M)",
+    "<b>ราคาสินค้าเกษตรผันผวน:</b> หากราคาพืชผลลด เกษตรกรลดการใช้สารเคมี ทำให้รายได้ FMC ยิ่งหดตัว",
+    "<b>การแข่งขันจาก generic/China:</b> สารเคมีเกษตรจีนราคาถูกกดดันราคาในตลาด โดยเฉพาะในประเทศกำลังพัฒนา",
+    "<b>Regulatory risk:</b> การถูกแบน/จำกัดสารเคมีบางชนิดใน EU/US อาจกระทบ portfolio และรายได้"
+  ],
+  "extras": [],
+  "_sig": "sha256:f53d29cc8e38a39302a4a72ef486031cbb1f4415bd177f0e86bae2c3ee43a703"
+}

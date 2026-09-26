@@ -1,0 +1,264 @@
+{
+  "v": 3,
+  "symbol": "AMCR",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Amcor plc",
+    "exchange": "NYSE",
+    "sub": "Flexible Packaging • Rigid Containers & Closures • Specialty Cartons • Films & Engineered Materials (Berry Global)",
+    "headerTags": [
+      "Packaging - Containers",
+      "Post-Berry Merger + Reverse Split 1:5"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis.com",
+      "Yahoo Finance",
+      "MarketBeat"
+    ],
+    "priceNote": "ปิดตลาด 16:00 EDT · ปรับด้วย reverse split 1:5 ให้แล้ว",
+    "themeLegacy": {
+      "accent": "#0d9488",
+      "accentDark": "#0f766e",
+      "darkGrad": "linear-gradient(135deg,#042321 0%,#0b5852 58%,#108a7c 140%)",
+      "glow": "rgba(13,148,136,.35)",
+      "subColor": "#d9efec",
+      "headerMuted": "#ddeeeb",
+      "verdictText": "#d7f0ec",
+      "vcellLabel": "#f5fbfa"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T10:24:06+07:00",
+      "v2Hash": "09ea649e2f2e"
+    }
+  },
+  "market": {
+    "px": 42.51,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          39.5
+        ],
+        [
+          "พ.ย.25",
+          42.6
+        ],
+        [
+          "ธ.ค.25",
+          41.7
+        ],
+        [
+          "ม.ค.26",
+          44.25
+        ],
+        [
+          "ก.พ.26",
+          48.43
+        ],
+        [
+          "มี.ค.26",
+          39.75
+        ],
+        [
+          "เม.ย.26",
+          38.04
+        ],
+        [
+          "พ.ค.26",
+          38.82
+        ],
+        [
+          "มิ.ย.26",
+          43.35
+        ],
+        [
+          "ก.ค.26",
+          44.88
+        ],
+        [
+          "ส.ค.26",
+          45.89
+        ],
+        [
+          "ก.ย.26",
+          42.51
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 36.25,
+      "hi": 50.94
+    }
+  },
+  "fundamentals": {
+    "dps": 2.6,
+    "bvps": 25.6,
+    "shares": 461945690,
+    "peAvg5y": 18.9,
+    "roe": 9.4,
+    "grossMargin": 20,
+    "beta": 0.62,
+    "fy": {
+      "period": "FY2026",
+      "netIncome": 1106000000,
+      "eps": 2.38,
+      "revenue": 23510000000
+    }
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation (GAAP, มัธยฐานประวัติ)",
+      "inputs": {
+        "multiple": 18.9,
+        "multipleSource": "median5y",
+        "base": "epsFy"
+      },
+      "family": "market"
+    },
+    {
+      "method": "ddm",
+      "label": "DDM / Gordon Growth",
+      "inputs": {
+        "g": 2.5,
+        "r": 8.5
+      },
+      "note": "ปันผลรายไตรมาส 65.0 เซนต์ = {{dps}}/ปี",
+      "family": "rg"
+    },
+    {
+      "method": "evebitda",
+      "label": "EV/EBITDA",
+      "inputs": {
+        "multiple": 9,
+        "multipleSource": "author"
+      },
+      "override": {
+        "ebitda": 3670000000,
+        "netDebt": 12900000000,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "role": "context",
+      "note": "ตัวคูณสมมติ ยังไม่มีมัธยฐานที่วัดจริง จึงไม่เป็นขาของ FV",
+      "family": "market"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "custom:0",
+      "peAvg5y",
+      "pbv",
+      "netIncomeFy",
+      "epsFy",
+      "bvps",
+      "roe",
+      "revenueFy",
+      "grossMargin",
+      "yield",
+      "beta"
+    ],
+    "custom": [
+      {
+        "label": "P/E (adj., FY2026)",
+        "value": "~10.5x",
+        "note": "EPS adj. $4.02 (FY2026 จริง ปีงบสิ้นสุด 30 มิ.ย. 2569) — GAAP FY2026 {{epsFy}} ต่ำกว่าจากตัดจำหน่าย intangible + ต้นทุนควบรวม Berry",
+        "tone": "neu"
+      }
+    ],
+    "notes": {
+      "mcap": "(หลัง reverse split 1:5 มีผล 14 ม.ค. 2569)",
+      "peAvg5y": "มัธยฐาน 5 ปีงบ (ช่วง 16.2–31.6x) บน EPS GAAP diluted · ราคาเฉลี่ยของงวด ÷ EPS ของงวด",
+      "pbv": "BVPS ~$25.6 · ส่วนของผู้ถือหุ้น ~$11.83B (ประมาณจาก D/E 1.28 และหนี้ $15.14B)",
+      "netIncomeFy": "GAAP · FY2025 $510M — FY2026 มี Berry เต็มปี (ปิดดีล 30 เม.ย. 2568) · net margin 4.7%",
+      "epsFy": "Adjusted EPS FY2026 $4.02 (+13% YoY) — บริษัทเปลี่ยนสิ้นปีงบเป็น 31 ธ.ค. โดยมีงวดเปลี่ยนผ่าน 6 เดือน (ก.ค.–ธ.ค. 2569) guidance adj. EPS $1.80–1.90",
+      "bvps": "ส่วนของผู้ถือหุ้น ~$11.83B ÷ ~461.9M หุ้น (ประมาณจาก D/E)",
+      "roe": "GAAP FY2026 ยังกดดันจากตัดจำหน่าย intangible หลังควบรวม Berry",
+      "revenueFy": "+57% YoY (Berry เต็มปีครั้งแรก) · FY2025 (ก่อนรวม Berry เต็ม) $15.0B",
+      "grossMargin": "Operating margin 9.0% (GAAP) · EBITDA adj. FY2026 $3.67B (~15.6% ของรายได้)",
+      "yield": "(หลัง reverse split 1:5) · เน้นลดหนี้มากกว่าขึ้นปันผลระยะสั้น",
+      "beta": "ผันผวนต่ำกว่าตลาด — ธุรกิจ defensive (packaging สินค้าจำเป็น)"
+    },
+    "hint": "FY2026 (สิ้นสุด 30 มิ.ย. 2569 · หลังควบรวม Berry Global + reverse split 1:5) · ณ 21 ก.ย. 2569"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": -3,
+        "exitMultiple": 9,
+        "divCum": 7.5,
+        "desc": "Synergy ผิดหวัง ต้นทุน/inventory ยืดเยื้อ leverage กดดัน multiple"
+      },
+      {
+        "growth": 5,
+        "exitMultiple": 10.5,
+        "divCum": 7.8,
+        "desc": "Synergy ตามแผน deleveraging ต่อเนื่องสู่ 3.0–3.4x"
+      },
+      {
+        "growth": 9,
+        "exitMultiple": 12.5,
+        "divCum": 8.1,
+        "desc": "Synergy เกินแผน ลดหนี้เร็ว multiple re-rate กลับสู่ historical ~13-15x"
+      }
+    ],
+    "exitDp": 1,
+    "baseOverride": {
+      "value": 4.02,
+      "why": "EPS ฐานฉากที่ผู้เขียนใช้"
+    },
+    "note": "ประมาณการอิง EPS adjusted ฐาน $4.02 (FY2026 จริง) เติบโตตามความสำเร็จของ synergy หลังควบรวม Berry Global (เป้าสะสม $650M ถึง FY28) และการลดหนี้ (net debt $12.9B · บริษัทคาด leverage 3.5–3.6x ณ สิ้นปี 2569) — สถานการณ์ Bear สะท้อนความเสี่ยงต้นทุนวัตถุดิบ/สินค้าคงคลังที่กดดัน FCF ใน Q3 FY26 ยืดเยื้อและ multiple ถูกกด จาก leverage สูง ส่วน Bull สะท้อนการลดหนี้เร็วกว่าแผนพร้อม synergy เกินเป้าให้ P/E ขยับกลับใกล้ระดับ historical ของ Amcor เดิม (~13–15x) — ทั้งหมดยังไม่รวมความผันผวนจากอัตราแลกเปลี่ยนหลายสกุลเงินที่บริษัทดำเนินธุรกิจอยู่",
+    "hintNote": "(adj. FY2026 จริง)"
+  },
+  "analyst": {
+    "target": 50.18,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ราคา AMCR เริ่มต้นที่ ~$39.50 ใน ต.ค. 2568 ก่อนฟื้นตัวสู่จุดสูงสุดรอบปีที่ ~$48.43 ใน ก.พ. 2569 (ช่วงที่บริษัทรายงานผล Q2 FY26) จากนั้นปรับฐานแรงในช่วง มี.ค.–เม.ย. 2569 ลงไปแตะจุดต่ำสุดรอบปีที่ ~$38.04 (บริษัทปรับลดเป้า Free Cash Flow ปี FY26 ลงเหลือ $1.5–1.6B ในรายงาน Q3 ซึ่งอ้างความตึงเครียดในตะวันออกกลางและต้นทุน/สินค้าคงคลัง) แล้วฟื้นตัวกลับมาที่ระดับ ~$45.89 ใน ส.ค. 2569 ก่อนอ่อนลงอีกหลังรายงานผลประจำปี FY2026 (adj. EPS $4.02 ดีกว่าปีก่อน 13% แต่ตลาดไม่ตอบรับ) สู่ราคาล่าสุดในกราฟ · ตลาดยังให้น้ำหนักกับ leverage หลังควบรวม Berry (net debt $12.9B) มากกว่า synergy ที่ทำได้ตามแผน",
+    "valuation": "Fair Value เฉลี่ยเท่ากัน 2 วิธี (P/E มัธยฐานประวัติ บน EPS GAAP และ DDM — คนละตระกูลสมมติฐาน) ได้ {{fv}} (กรอบ {{fvLow}}–{{fvHigh}}) · รอบนี้ปรับโครงสร้าง FV: ตัดขา P/E 12.5x บน adj. EPS (ตัวคูณสมมติ) ออก และใช้มัธยฐาน P/E ที่วัดจริงของ Amcor เอง; EV/EBITDA เหลือเป็นบริบทเพราะยังไม่มีตัวคูณที่วัดจริง (ให้ค่า ~$43.6 ใกล้กัน) · เป้านักวิเคราะห์เฉลี่ย ไม่นับเป็นขา FV แต่เป็นเพียงข้อมูลเทียบ · ราคาปัจจุบัน {{px}} ต่ำกว่า FV เล็กน้อย ({{mos}}) — margin of safety บาง เพราะ EPS GAAP ยังถูกกดด้วยการตัดจำหน่าย intangible หลังควบรวม ซึ่งเป็นความเสี่ยงต่อการประเมินทั้งสองขา",
+    "gauge": "ราคาปัจจุบัน {{px}} ต่ำกว่ามูลค่าเหมาะสมกลาง {{fv}} ({{mos}}) และต่ำกว่าเป้าหมายนักวิเคราะห์เฉลี่ย {{analyst.target}} (n=12, Yahoo/StockAnalysis) จุดซื้อ MOS 20% อยู่ที่ {{mos20}} และ MOS 30% ที่ {{mos30}} ซึ่งราคาเคยแตะใกล้เคียงช่วง เม.ย. 2569 ($38.04) ตอนที่ตลาดกังวลต้นทุน/สินค้าคงคลังสูงสุด",
+    "mos": "MOS {{mos}} ต่ำกว่าเกณฑ์ 10% ที่ถือว่ามี margin of safety จริงจัง ราคาใกล้เคียงมูลค่าเหมาะสมแล้ว หลัง synergy ทยอยพิสูจน์ผล แนะนำรอจังหวะ pullback สู่โซน MOS 20% ({{mos20}}) หรือ MOS 30% ({{mos30}}) ก่อนสะสมเพิ่ม น้ำหนักให้มี margin of safety ที่หนาขึ้น",
+    "verdictHeadline": "ถือ/ทยอยสะสมบางส่วน — Fair Value ใกล้เคียงราคาปัจจุบัน MOS ยังบาง",
+    "verdictBody": "AMCR หลังควบรวม Berry Global กลายเป็นผู้นำ flexible packaging ระดับโลกด้วยรายได้ ~$23.5B แต่ราคาหุ้นยังสะท้อน ความกังวลเรื่อง leverage (net debt $12.9B) มากกว่าจะให้น้ำหนักกับ synergy ที่ทำได้ตามแผน Fair Value ประมาณ {{fv}} ใกล้เคียงราคาปัจจุบัน {{px}} ({{mos}}) ให้ margin of safety ที่บาง เหมาะสำหรับนักลงทุนสาย income (yield ~6%) ที่รับความเสี่ยง leverage หลังควบรวมได้ มากกว่านักลงทุนที่มองหาส่วนเผื่อความปลอดภัยหนา",
+    "strategy": "ทยอยสะสมเป็นล็อตเล็กช่วงราคาต่ำกว่า {{mos20}} (โซน MOS 20%) เพื่อเพิ่ม margin of safety โดยติดตามความคืบหน้า deleveraging (คาด 3.5–3.6x สิ้นปี 2569) และการทำ synergy ให้ได้ตามแผน $650M ก่อนเพิ่มน้ำหนักเต็มที่",
+    "disclaimerSources": "ข้อมูล: StockAnalysis.com, Yahoo Finance, MarketBeat (ก.ย. 2569)"
+  },
+  "text": {
+    "valIntro": "P/E (มัธยฐานประวัติ) · DDM — 2 ตระกูลสมมติฐาน เฉลี่ยเท่ากัน · EV/EBITDA เป็นบริบท",
+    "metricsNote": "Amcor plc (จดทะเบียนหลัก NYSE, มีต้นกำเนิดจากออสเตรเลีย) เป็นผู้นำโลกด้าน <b>flexible packaging</b> (ถุง/ฟิล์มบรรจุภัณฑ์) สำหรับอาหาร เครื่องดื่ม เวชภัณฑ์ และสินค้าอุปโภคบริโภค หลังปิดดีลควบรวมกับ <b>Berry Global Group</b> เมื่อ 30 เมษายน 2568 (Berry shareholders ได้รับ 7.25 หุ้น AMCR ต่อ 1 หุ้น Berry) บริษัทได้ทำ <b>reverse stock split 1:5</b> มีผล 14 มกราคม 2569 เพื่อปรับโครงสร้างจำนวนหุ้นให้เหมาะสม ปัจจุบันมีรายได้รวม ~$23.5B/ปี เป็นผู้นำตลาด flexible packaging ระดับโลก พร้อมเป้าหมาย synergy สะสม $650 ล้านดอลลาร์ภายใน FY2028",
+    "chartHint": "ต.ค. 2568 – ก.ย. 2569"
+  },
+  "catalysts": [
+    "<b>Synergy จากดีล Berry Global:</b> เป้าสะสม $650M ภายใน FY2028 — บริษัทรายงานว่า FY2026 ทำได้ตามหรือเกินเป้าปีแรก",
+    "<b>Deleveraging:</b> net debt $12.9B บริษัทคาด leverage 3.5–3.6x ณ 31 ธ.ค. 2569 และเป้าระยะยาว 2.5–3.0x",
+    "<b>Dividend yield สูง ~6%:</b> จ่ายต่อเนื่องแม้ช่วงควบรวม ดึงดูดนักลงทุนสาย income",
+    "<b>ขนาด/scale หลังรวม Berry:</b> รายได้รวม ~$23.5B ผู้นำตลาด flexible packaging ระดับโลก อำนาจต่อรองกับซัพพลายเออร์/ลูกค้าดีขึ้น",
+    "<b>เมกะเทรนด์บรรจุภัณฑ์ยั่งยืน:</b> ลงทุนต่อเนื่องด้าน R&D เพื่อผลิตภัณฑ์ recyclable ตอบโจทย์กฎเกณฑ์สิ่งแวดล้อมที่เข้มขึ้น",
+    "<b>ธุรกิจ defensive:</b> ลูกค้าหลักคือ food & beverage, healthcare/pharma ความต้องการค่อนข้างเสถียรไม่ผันผวนตามวัฏจักรเศรษฐกิจมาก"
+  ],
+  "risks": [
+    "<b>Leverage สูง (net debt $12.9B ~3.5–3.6x เป้า ธ.ค. 2569):</b> เสี่ยงต่อการเพิ่มขึ้นของอัตราดอกเบี้ย/ต้นทุนทางการเงิน กดดัน FCF และเงินปันผลระยะยาว",
+    "<b>ความเสี่ยง integration:</b> การรวมสองบริษัทขนาดใหญ่ (Amcor+Berry) อาจมีต้นทุน/ความล่าช้าที่ไม่คาดคิด กระทบ margin",
+    "<b>ต้นทุนวัตถุดิบ/inventory ผันผวน:</b> จากความตึงเครียดภูมิรัฐศาสตร์ (ตะวันออกกลาง) กระทบ FCF ตามที่เห็นใน Q3 FY26 (ปรับลด FCF guidance ~$300M)",
+    "<b>GAAP EPS ต่ำ/บิดเบือน:</b> ค่าตัดจำหน่าย intangible จำนวนมากหลังควบรวม ทำให้ P/E GAAP สูงเกินจริง นักลงทุนต้องพึ่ง adjusted metric ซึ่งมีดุลพินิจของบริษัท",
+    "<b>ความเสี่ยงอัตราแลกเปลี่ยน:</b> ธุรกิจกระจายหลายสกุลเงินทั่วโลก แม้งบการเงินหลักรายงานเป็น USD",
+    "<b>การแข่งขันในอุตสาหกรรม packaging ที่ mature:</b> เติบโตช้า ลูกค้า FMCG รายใหญ่มีอำนาจต่อรองสูง กดดัน margin ระยะยาว"
+  ],
+  "extras": [],
+  "_sig": "sha256:ee95bf7ee65e17d50d871be45688b475b013f75af7e1a67ed7a6835c067fd70f"
+}

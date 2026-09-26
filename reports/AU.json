@@ -1,0 +1,250 @@
+{
+  "v": 3,
+  "symbol": "AU",
+  "currency": "THB",
+  "region": "TH",
+  "dateEra": "BE",
+  "meta": {
+    "company": "After You (อาฟเตอร์ ยู)",
+    "exchange": "SET",
+    "sub": "ร้านของหวาน After You • Kakigori Bingsu • Toast หอม • Lukka Café • Mikka Coffee Roaster • ขยายแฟรนไชส์ต่างประเทศ • Brand Loyalty สูง",
+    "headerTags": [
+      "Food & Beverage",
+      "Dessert Café"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "StockAnalysis.com",
+      "Google Finance",
+      "BrandBuffet.in.th"
+    ],
+    "themeLegacy": {
+      "accent": "#e91e63",
+      "accentDark": "#880e4f",
+      "darkGrad": "linear-gradient(135deg,#750c44 0%,#a7144f 60%,#cf1454 100%)",
+      "glow": "rgba(233,30,99,0.3)",
+      "subColor": "#fdedf2",
+      "headerMuted": "#fbedf2",
+      "verdictText": "#fdedf2",
+      "vcellLabel": "#fef7f9"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T11:06:17+07:00",
+      "v2Hash": "fd16d14aaa91"
+    }
+  },
+  "market": {
+    "px": 4.2,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          4.98
+        ],
+        [
+          "พ.ย.25",
+          4.7
+        ],
+        [
+          "ธ.ค.25",
+          4.84
+        ],
+        [
+          "ม.ค.26",
+          4.94
+        ],
+        [
+          "ก.พ.26",
+          5.25
+        ],
+        [
+          "มี.ค.26",
+          4.86
+        ],
+        [
+          "เม.ย.26",
+          4.7
+        ],
+        [
+          "พ.ค.26",
+          4.58
+        ],
+        [
+          "มิ.ย.26",
+          4.86
+        ],
+        [
+          "ก.ค.26",
+          4.64
+        ],
+        [
+          "ส.ค.26",
+          4.36
+        ],
+        [
+          "ก.ย.26",
+          4.2
+        ]
+      ],
+      "gridFmt": "v.toFixed(2)",
+      "dataFmt": "d[1].toFixed(2)"
+    },
+    "range52w": {
+      "lo": 4.22,
+      "hi": 6.25
+    }
+  },
+  "fundamentals": {
+    "dps": 0.25,
+    "bvps": 1.33,
+    "shares": 815620000,
+    "peAvg5y": 26.9,
+    "netIncome": 176000000,
+    "eps": 0.22,
+    "roe": 18.8,
+    "roa": 8.6,
+    "revenue": 1633000000,
+    "grossMargin": 60.9,
+    "beta": -0.04,
+    "epsBasis": "ifrs"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation",
+      "inputs": {
+        "multiple": 26.9,
+        "multipleSource": "median5y",
+        "medianWindow": "FY2567–FY2568"
+      },
+      "note": "สมอ = มัธยฐาน P/E ย้อนหลังของ AU เองเฉพาะ FY2567–FY2568 (ราคาเฉลี่ยของงวด ÷ EPS diluted ของงวดนั้น) สองปีที่รายได้เท่าระดับ TTM ปัจจุบัน · ตัด FY2564 (กำไรเกือบศูนย์) และ FY2565–66 (ธุรกิจเล็กกว่า 25–42% ยุครายได้โตปีละ 29–52%) ออก — ค่ารายปีดูการ์ดหมวด 1",
+      "family": "market"
+    },
+    {
+      "method": "ddm",
+      "label": "DDM / Gordon Growth",
+      "inputs": {
+        "g": 3,
+        "r": 9
+      },
+      "note": "อิง payout ratio สม่ำเสมอ + ธุรกิจ Defensive มี brand moat",
+      "family": "rg"
+    },
+    {
+      "method": "pbv",
+      "label": "Justified P/BV",
+      "inputs": {
+        "g": 3,
+        "r": 9
+      },
+      "note": "อิง ROE TTM ล่าสุด ยังดีแต่ต่ำกว่า peak 28% ปี FY67",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "peAvg5y",
+      "pbv",
+      {
+        "key": "netIncome",
+        "tone": "neg"
+      },
+      "eps",
+      "bvps",
+      "roe",
+      "revenue",
+      "grossMargin",
+      "yield",
+      "beta"
+    ],
+    "notes": {
+      "mcap": "815.62 ล้านหุ้น",
+      "pe": "Forward P/E ~20.2x (ฐานประมาณการ FY2569e · ค่า forward ของ vendor เป็น FY2570e)",
+      "peAvg5y": "วัดจริงรายปี: FY65=70.8x · FY66=47.1x · FY67=25.8x · FY68=28.0x",
+      "pbv": "(TTM มี.ค. 69)",
+      "netIncome": "FY68 ฿204 ลบ. −31% YoY (FY67: ฿296 ลบ.)",
+      "eps": "FY2568={{dps}} · FY2567=฿0.36",
+      "bvps": "Equity ฿1,089 ลบ. (TTM)",
+      "roe": "FY67 ROE สูงสุด 28.4%",
+      "revenue": "−3.6% YoY (TTM); Product Sales channel ยังโตต่อ",
+      "grossMargin": "ลดต่อเนื่องจาก 62.0% (FY68) · 66.1% (FY67) — ต้นทุนสาขาใหม่",
+      "yield": "{{dps}}/หุ้น (FY68) · Ex-Div 7 พ.ค. 69",
+      "beta": "ความผันผวนต่ำมาก · Defensive stock"
+    },
+    "hint": "ข้อมูล ณ ก.ย. 2569 · แหล่ง: StockAnalysis.com + Yahoo Finance"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": "cagr",
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 0,
+        "exitMultiple": 15,
+        "divCum": 0.7,
+        "desc": "กำไรทรงตัว · P/E compress · นักท่องเที่ยวฟื้นช้า"
+      },
+      {
+        "growth": 8,
+        "exitMultiple": 19,
+        "divCum": 0.78,
+        "desc": "Lukka Café+สาขาใหม่ดัน SSSG กลับบวก · OEM โต"
+      },
+      {
+        "growth": 15,
+        "exitMultiple": 23,
+        "divCum": 0.85,
+        "desc": "Franchise ต่างประเทศสำเร็จ · RTD launch ติดตลาด · นักท่องเที่ยวบูม"
+      }
+    ],
+    "exitDp": 0,
+    "note": "Base case อิง EPS growth 8%/ปี จาก EPS TTM ฐาน {{eps}} จาก: (1) Lukka Café ขยาย 15 สาขา + After You 5 สาขา (2) Product/OEM channel เติบโตต่อเนื่อง (3) นักท่องเที่ยวต่างชาติฟื้น — ให้ผลตอบแทนรวม ~12.6%/ปี (รวมปันผล) เทียบกับเป้า Analyst {{analyst.target}} ({{analyst.pct}}) ที่มองกำไรฟื้นเร็วกว่า สะท้อนมุมมองระมัดระวังกว่าหลัง TTM EPS ลดลง ปันผล Yield ~5.8% เป็น cushion สำหรับ Bear case · Bull case ต้องอาศัย franchise ต่างประเทศ (Dubai/Indonesia) เติบโตจริง หมายเหตุตัวคูณ: P/E ออกของทั้งสามฉาก (15x/19x/23x) ตั้งไว้ต่ำกว่าค่ากลางย้อนหลัง 26.9x ที่ใช้ในหมวด 3 โดยตั้งใจ เพราะยุครายได้โตสองหลักของ AU จบไปแล้ว — ฉาก Base จึงให้ราคาเป้า 3 ปีสูงกว่า Fair Value วันนี้ไม่มาก ไม่ได้สูงลิ่ว หมายเหตุ: ตัวเลขเป็นการประมาณการเท่านั้น ไม่ใช่การรับประกันผลตอบแทน"
+  },
+  "analyst": {
+    "target": 5.7,
+    "n": 3,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ราคาหุ้น AU เปิดช่วงย้อนหลัง (ต.ค. 2568) ที่ ฿4.98 แล้วไหลลงต่อเนื่องจากแรงกดดันผลประกอบการ ที่กำไรชะลอตัว (SSSG ติดลบ ~8%) พร้อม margin compression จากสาขาใหม่และต้นทุนวัตถุดิบสูง ราคาฟื้นสั้นๆ ช่วงต้นปี 2569 (ก.พ. ฿5.25) ก่อนย่อกลับมาทรงตัวแถว ฿4.58–4.86 ตลอดครึ่งแรกปี 2569 ล่าสุด (ก.ย. 2569) ที่ {{px}} ลดลง ~14.9% เทียบรอบปี — สะท้อนการ de-rating ต่อเนื่อง จากตัวคูณที่ตลาดเคยให้ 25.8x (FY67) และ 28.0x (FY68) เหลือ ~19.3x วันนี้ ตามกำไรสุทธิ TTM ที่ยังลดลง",
+    "valuation": "ขา P/E ยึดสมอที่วัดจริง — P/E ย้อนหลังของ AU เอง (ราคาเฉลี่ยของงวด ÷ EPS diluted ของงวดนั้น): FY2565 70.8x · FY2566 47.1x · FY2567 25.8x · FY2568 28.0x (FY2564 ตัดทิ้ง เพราะ EPS ฿0.01 ทำให้ตัวคูณพุ่งถึง 2,074x) — เลือกเฉพาะ FY2567–68 เป็นสมอ ค่ากลาง 26.9x เพราะเป็นสองปีที่รายได้ ~1,600 ลบ. เท่าระดับ TTM ปัจจุบัน ส่วน FY2565–66 ตลาดจ่าย 47–71x ให้ธุรกิจที่เล็กกว่า 25–42% และกำลังโตปีละ 29–52% ซึ่งไม่ใช่สภาพของ AU วันนี้ (รายได้ TTM −3.6%) · ตัวคูณปัจจุบัน ~19.3x เป็นบริบทเปรียบเทียบเท่านั้น ไม่ใช่ที่มาของเป้า DDM กับ Justified P/BV ใช้สมมติฐาน (r,g) ชุดเดียวกัน จึงเฉลี่ยรวมเป็นตระกูลเดียว: DDM (฿4.29) สะท้อนกระแสปันผลที่จ่ายสม่ำเสมอ Yield สูงกว่า 5% แต่จำกัดด้วย payout ratio เกิน 100% ในปี 2568 · Justified P/BV ({{fvLow}}) ให้ค่าต่ำกว่าราคาตลาดจริง ({{pbv}}x) เพราะ ROE TTM ที่ 18.8% ยังต่ำกว่า peak Fair Value ถ่วงน้ำหนักตามตระกูลสมมติฐาน (DDM กับ Justified P/BV ใช้ (r,g) ชุดเดียวกัน จึงนับเป็นเสียงเดียว เฉลี่ยในตระกูลก่อน) = เฉลี่ยของขา P/E ({{fvHigh}}) กับค่าเฉลี่ยตระกูล (r,g) (฿3.90) = ~{{fv}} — ราคาปัจจุบัน {{px}} ต่ำกว่าราว 14% (EPS TTM ลดลงมาที่ {{eps}} จาก {{dps}} ใน FY2568 −12%; ปรับ EPS ฐานจาก ฿0.21 เป็น {{eps}} ตาม NI ฿176 ลบ. ÷ 816 ล้านหุ้น และตรงกับ Yahoo/StockAnalysis)",
+    "gauge": "ราคา {{px}} ต่ำกว่า Fair Value {{fv}} ราว 14% (โซน MOS 10–20%) หลัง EPS TTM อยู่ที่ {{eps}} (−12% จาก FY2568) แต่ยังไม่ถึงโซน MOS 20% ที่น่าสนใจกว่า ({{mos20}}) กำไรปี 2568 ลดลง 31% YoY และ TTM ยังลดต่อ โซน MOS 20% อยู่ที่ {{mos20}} และ MOS 30% ที่ {{mos30}} Analyst consensus (3 สำนัก, Buy) ให้เป้า {{analyst.target}} ({{analyst.pct}} upside) มองว่ากำไรจะฟื้นตัวปี 2569–2570 จาก new branches + product/OEM channel + franchise ต่างประเทศ (Dubai, Indonesia)",
+    "mos": "ราคาต่ำกว่ามูลค่าเหมาะสมราว 14% — อยู่ในโซน MOS พอประมาณ (10–20%) · ทยอยสะสมได้บางส่วน รอ {{mos20}} (MOS 20%) ก่อนเข้าเต็มไม้",
+    "verdictHeadline": "กำไร TTM ชะลอต่อ — ราคาต่ำกว่า Fair Value ราว 14% อยู่ในโซน MOS พอประมาณ",
+    "verdictBody": "After You คือหนึ่งใน dessert brand ที่แข็งแกร่งที่สุดในไทย มีกำไรขั้นต้นสูงถึง ~61% และ brand loyalty ที่พิสูจน์แล้ว อย่างไรก็ตาม FY2568 กำไรลดลง 31% YoY และ EPS TTM ยังลดต่อเป็น {{eps}} (−12% จาก {{dps}} ใน FY2568) สะท้อนการชะลอตัวของ SSSG และ margin compression จากการขยายสาขา ราคาปัจจุบัน {{px}} ต่ำกว่า Fair Value {{fv}} ราว 14% — อยู่ในโซน MOS 10–20% แต่ยังไม่ถึงโซน MOS 20% ({{mos20}}) ที่น่าสนใจกว่า Dividend Yield ~5.90% เป็น cushion ที่ดี แต่ payout ratio เกิน 100% เป็นสัญญาณระวังในระยะสั้น กลยุทธ์ที่เหมาะคือทยอยสะสมบางส่วนได้ที่ระดับปัจจุบัน และรอสะสมเพิ่มที่ {{mos20}} (MOS 20%) ก่อนเข้าเต็มไม้",
+    "strategy": "รอสะสมที่ {{mos30}}–{{mos20}} (MOS 20–30%) เพื่อ margin of safety ที่มากขึ้น · ถ้ากำไร Q1/2569 ฟื้นชัดเจน (SSSG กลับบวก) ปรับ FV ขึ้น · Dividend Yield ~5.8% เป็น income play ระหว่างรอ · ไม่แนะนำ add เพิ่มที่ราคาเกิน ฿5.00 หากไม่มี catalyst ใหม่",
+    "disclaimerSources": "แหล่งข้อมูล: Yahoo Finance (AU.BK ราคา/กราฟ 1 ปี) · StockAnalysis.com (งบการเงิน/ratios/analyst targets) · Google Finance (cross-verify ราคา) · BrandBuffet.in.th (ผลประกอบการ FY2568/แผนธุรกิจ 2569) · AiO/PanPhol (Krungsri Securities analyst downgrade notes)"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 3 วิธี",
+    "chartHint": "ต.ค. 2568 – ก.ย. 2569 · รายเดือน · Yahoo Finance"
+  },
+  "catalysts": [
+    "<b>Lukka Café ขยายเร็ว:</b> เป้า 15 สาขาใหม่ปี 2569 + coffee culture โตในไทย ดัน traffic เพิ่มช่องทางรายได้ใหม่",
+    "<b>Product/OEM & RTD Channel:</b> รายได้ Product Sales โตถึง +114% YoY ปี 2568 — เปิด Ready-to-Drink เพื่อ modern trade ลด SSS dependency",
+    "<b>Franchise ต่างประเทศ:</b> Dubai UAE + Indonesia ถ้า on-track จะ unlock valuation re-rating ครั้งใหญ่ (asset-light, high-margin model)",
+    "<b>Brand Loyalty สูง:</b> After You เป็น brand ที่ผู้บริโภคไทยรักและยึดมั่น · queue ยาวในช่วงเทศกาล · social media organic reach",
+    "<b>Defensive Dividend:</b> Yield ~5.90% เป็น floor ราคาในช่วงตลาดผันผวน · Beta −0.04 ต่ำมาก ป้องกัน downside",
+    "<b>นักท่องเที่ยวฟื้น:</b> ไทยยังเป็น top destination — นักท่องเที่ยวเอเชียฟื้นตัวดัน tourist traffic ใน store หลักกลับมา"
+  ],
+  "risks": [
+    "<b>SSSG ติดลบ:</b> Same-store sales growth ปี 2568 ติดลบ ~8% สัญญาณว่าฐานลูกค้าเดิมอาจ saturate หรือกำลังซื้อลด",
+    "<b>Payout Ratio เกิน 100%:</b> ปันผลสูงกว่ากำไรสุทธิที่รายงาน ยั่งยืนได้แค่ชั่วคราว หากกำไรไม่ฟื้นอาจปรับลดปันผล",
+    "<b>Margin Compression:</b> Gross margin ลดจาก 66% → 62% ปี 2568 เพราะต้นทุนสาขาใหม่ + ต้นทุนวัตถุดิบ กดดัน profitability",
+    "<b>พึ่งพานักท่องเที่ยว:</b> >35% รายได้มาจากนักท่องเที่ยวต่างชาติ · ช่วงรอมฎอนและ geopolitical risk กระทบรุนแรง",
+    "<b>Competition เพิ่ม:</b> ตลาด dessert café แข่งขันสูงขึ้น ทั้งแบรนด์ไทยและต่างชาติ · Bingsu concept ถูก copy ง่าย",
+    "<b>Franchise ต่างประเทศเสี่ยง:</b> ประสบการณ์ Hong Kong (ปิด) แสดงว่า overseas expansion ไม่ง่าย · execution risk สูง"
+  ],
+  "extras": [],
+  "_sig": "sha256:80accee174899d46f4d9b0ed9d37b1565b503b2b791e15b986df96bbbc672609"
+}

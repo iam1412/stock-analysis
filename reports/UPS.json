@@ -1,0 +1,260 @@
+{
+  "v": 3,
+  "symbol": "UPS",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "United Parcel Service",
+    "exchange": "NYSE",
+    "sub": "US Domestic Package delivery • International Package • Supply Chain Solutions • \"What can Brown do for you?\" • Fit to Serve cost transformation program",
+    "headerTags": [
+      "Logistics & Delivery",
+      "Dividend Aristocrat"
+    ],
+    "analysisDate": "2026-09-22",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "StockAnalysis.com",
+      "investors.ups.com"
+    ],
+    "themeLegacy": {
+      "accent": "#6B4226",
+      "accentDark": "#4B2E18",
+      "darkGrad": "linear-gradient(135deg,#2a1a0e 0%,#3d2510 50%,#1a0f07 100%)",
+      "glow": "rgba(107,66,38,0.35)",
+      "subColor": "#c49a6c",
+      "headerMuted": "#b3906c",
+      "verdictText": "#ffe0c0",
+      "vcellLabel": "#c1a280"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-22T01:46:25+07:00",
+      "v2Hash": "c387d61b6e80"
+    }
+  },
+  "market": {
+    "px": 93.96,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          96.42
+        ],
+        [
+          "พ.ย.25",
+          95.79
+        ],
+        [
+          "ธ.ค.25",
+          99.19
+        ],
+        [
+          "ม.ค.26",
+          106.22
+        ],
+        [
+          "ก.พ.26",
+          115.96
+        ],
+        [
+          "มี.ค.26",
+          98.38
+        ],
+        [
+          "เม.ย.26",
+          108.8
+        ],
+        [
+          "พ.ค.26",
+          106.69
+        ],
+        [
+          "มิ.ย.26",
+          107.5
+        ],
+        [
+          "ก.ค.26",
+          104.22
+        ],
+        [
+          "ส.ค.26",
+          104.23
+        ],
+        [
+          "ก.ย.26",
+          93.96
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 82,
+      "hi": 122.41
+    }
+  },
+  "fundamentals": {
+    "eps": 7.2,
+    "dps": 6.56,
+    "bvps": 18.54,
+    "shares": 850781582,
+    "epsForward": 7.2,
+    "roe": 29.6,
+    "revenue": 89900000000,
+    "opMargin": 9.2,
+    "fcf": 5500000000,
+    "fy": {
+      "period": "FY2025",
+      "netIncome": 5570000000
+    },
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation (GAAP EPS × มัธยฐานย้อนหลัง)",
+      "inputs": {
+        "multiple": 15.1,
+        "multipleSource": "median5y"
+      },
+      "override": {
+        "eps": 6.56,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "15.1x คือมัธยฐานของ P/E (ราคาเฉลี่ยรายปี ÷ EPS) 5 ปีงบ FY2021–FY2025 (ช่วง 13.1–21.9x) ที่ controller วัดมา ไม่ได้ลอกจาก P/E ปัจจุบัน (~18x บน EPS TTM $5.38)",
+      "family": "market"
+    },
+    {
+      "method": "dcf",
+      "label": "DCF (FCF to equity, 5 ปี)",
+      "inputs": {
+        "g1": 3,
+        "years1": 5,
+        "tg": 2.5,
+        "r": 9,
+        "rfCurrency": "USD"
+      },
+      "override": {
+        "fcf": 5457000000,
+        "netDebt": 0,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "สมมติฐานของเราเอง · TV = 74% ของมูลค่า · FCF หลังดอกเบี้ยแล้วจึงไม่หักหนี้ซ้ำ",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      {
+        "key": "peForward",
+        "tone": "none"
+      },
+      "pbv",
+      "netIncomeFy",
+      "custom:0",
+      "bvps",
+      "roe",
+      "revenue",
+      "opMargin",
+      "yield",
+      "fcf"
+    ],
+    "custom": [
+      {
+        "label": "EPS GAAP TTM",
+        "value": "~$5.38",
+        "note": "NI TTM $4.57B ÷ 851M หุ้น"
+      }
+    ],
+    "notes": {
+      "mcap": "850M shares outstanding",
+      "pe": "EPS GAAP TTM $5.38 (dil.)",
+      "peForward": "EPS คาดการณ์ FY2026: {{eps}}",
+      "pbv": "(leverage สูง)",
+      "netIncomeFy": "EPS GAAP dil. {{dps}} (−2.8% vs FY2024 $6.75)",
+      "bvps": "D/E 1.90x (buyback ดัน ROE)",
+      "roe": "ROE สูงจาก leverage + buyback",
+      "revenue": "FY2025: $88.7B (ลด 2.6% YoY)",
+      "opMargin": "Gross 22.4% · Net 5.1%",
+      "yield": "($1.64/ไตรมาส)",
+      "fcf": "ปันผลจ่ายจริง ~$5.6B/ปี สูงกว่า FCF"
+    },
+    "hint": "ข้อมูล ณ 22 ก.ย. 2569"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": -2,
+        "exitMultiple": 12,
+        "divCum": 19.68,
+        "desc": "Volume ลดต่อ, USPS หดตัว"
+      },
+      {
+        "growth": 5,
+        "exitMultiple": 15,
+        "divCum": 19.68,
+        "desc": "Cost saves เต็มที่, SMB เติบโต"
+      },
+      {
+        "growth": 10,
+        "exitMultiple": 18,
+        "divCum": 19.68,
+        "desc": "Healthcare + B2B boom, margin ฟื้น"
+      }
+    ],
+    "exitDp": 0,
+    "baseOverride": {
+      "value": 6.56,
+      "why": "EPS ฐานฉากที่ผู้เขียนใช้"
+    },
+    "note": "ทุก scenario เริ่มจาก EPS GAAP FY2025 {{dps}} (ฐานเดียวกับมัธยฐาน P/E) โต −2% / +5% / +10% ต่อปี — Base ใช้ P/E ออก 15x ใกล้มัธยฐานย้อนหลัง 15.1x ส่วน Bear 12x ต่ำกว่าต่ำสุดในประวัติ 13.1x และ Bull 18x ปันผลรวม 3 ปี $19.68 เป็นส่วนสำคัญของผลตอบแทน — Bear case ยังเสียหายแม้รวมปันผลเพราะ de-rating จริงจัง ความเสี่ยงหลักคือ recession ที่กดดัน volume หนัก หรือ tariff ที่ทำให้ e-commerce อ่อนแอ หมายเหตุ: ปันผลคำนวณอิง {{dps}}/ปีคงที่ และปันผลปัจจุบันสูงกว่า FCF TTM จึงมีความเสี่ยงถูกปรับลดใน Bear",
+    "hintNote": "(GAAP FY2025)"
+  },
+  "analyst": {
+    "target": 116.08,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ตามกราฟรายเดือน UPS อยู่แถว $96 ในเดือน ต.ค. 2568 ก่อนขึ้นไปทำจุดสูงสุด $115.96 ในเดือน ก.พ. 2569 แล้วย่อลงสู่ $98 ในเดือน มี.ค. 2569 จากนั้นแกว่งในกรอบ $104–$109 ช่วง เม.ย.–ส.ค. 2569 ก่อนอ่อนลงมาที่ {{px}} ณ {{priceDate}} กรอบ 52 สัปดาห์ $82–$122.41 · การลดปริมาณ Amazon (glide-down) เสร็จสิ้นเมื่อ มิ.ย. 2569 ตามที่ StockAnalysis สรุปไว้ และบริษัทเริ่มใช้โครงสร้างปฏิบัติการใหม่ตั้งแต่ 1 ก.ย. 2569",
+    "valuation": "FV = เฉลี่ยของ 2 วิธีคนละตระกูล (P/E ย้อนหลัง กับ DCF) ที่ {{fvLow}} และ {{fvHigh}} ห่างกันไม่ถึง 2 เท่า จึงเฉลี่ยได้ — กรอบล่าง $99 = ขา P/E, กรอบบน $108 = มัธยฐาน 15.1x × EPS consensus FY2026E {{eps}} (เป็นบริบท ไม่ใช่ขา) รอบนี้ตัดขา EV/EBITDA และ Forward P/E เดิมออก: EV/EBITDA อ้างตัวคูณ 10.8x/EBITDA ที่ตรวจซ้ำจากแหล่งที่เปิดไม่ได้ ส่วน Forward P/E ใช้ 18x ที่ตั้งเอง และ EPS adj. ที่ไม่ตรงฐาน GAAP ของมัธยฐาน เป้า consensus analyst ~$116 ใช้เป็นบริบทเทียบเท่านั้น ไม่ใช่ขาของ FV · ความไว: ถ้า P/E ใช้ 13.1x (ต่ำสุดในประวัติ) ขา P/E = $85.9 และ FV ≈ $95 (MOS ติดลบ) ถ้าใช้ 18x ขา P/E = $118.1 และ FV ≈ $111 ปันผล {{dps}}/ปี (~$5.6B) สูงกว่า FCF TTM $5.5B — yield สูงแต่ไม่มี cushion จาก FCF",
+    "gauge": "ราคา {{px}} ใกล้เคียงมูลค่าเหมาะสม {{fv}} ({{mos}}) — ยังไม่มีส่วนเผื่อความปลอดภัยที่มีนัย จุดเข้าซื้อที่มี MOS 20% คือ {{mos20}} และ MOS 30% คือ {{mos30}} ซึ่งต่ำกว่าราคาปัจจุบันชัดเจน dividend yield ~6.6% สูงมากสำหรับ blue-chip logistics แต่ปันผลสูงกว่า FCF TTM นักวิเคราะห์ 26 คน (Yahoo) ตั้งเป้าเฉลี่ย ~$116 — สูงกว่า FV ของเรา (เราไม่นับเป้านี้เป็นขา FV) ช่วง 52 สัปดาห์ $82–$122.41 ราคาปัจจุบันอยู่ค่อนไปทางล่างของกรอบ",
+    "mos": "MOS ต่ำ — ราคาใกล้มูลค่าเหมาะสม แทบไม่มีส่วนเผื่อ<br>เหมาะสำหรับ income investor ที่รับความเสี่ยงเรื่องปันผลสูงกว่า FCF",
+    "verdictHeadline": "UPS: Transformation Play + High Dividend — MOS ต่ำ",
+    "verdictBody": "United Parcel Service (NYSE: UPS) เป็น logistics giant ที่ผ่านการลดปริมาณ Amazon (เสร็จ มิ.ย. 2569) และกำลังเปลี่ยนไปเน้น SMB และ Healthcare ที่ margin สูงกว่า ที่ราคา {{px}} หุ้นเทรดใกล้ Fair Value {{fv}} ({{mos}}) และให้ dividend yield ~6.6% แต่ปันผลสูงกว่า FCF และกำไร GAAP ยังลดลง เหมาะกับ income investor ที่รอ turnaround และรับความเสี่ยงได้",
+    "strategy": "ยังไม่มี MOS ที่มีนัย — รอโซน MOS 20% ที่ {{mos20}} หรือ MOS 30% ที่ {{mos30}} ก่อนทยอยสะสม ผู้ถือเพื่อ income ควรติดตามว่าปันผลยังจ่ายไหวเทียบ FCF ติดตาม: (1) ผลงบ Q3-26 (คาด 27 ต.ค. 2569) (2) operating margin เทียบ FY2025 9.7% (3) ผลของโครงสร้างปฏิบัติการใหม่ (4) ผลกระทบ tariff ต่อ international UPS เป็นหุ้น \"slow but steady\" — ไม่เหมาะสำหรับ growth investor แต่ดีสำหรับ income + value investor ที่มี horizon 3-5 ปี",
+    "disclaimerSources": "แหล่งข้อมูล: Yahoo Finance (ราคา {{px}} ณ {{priceDate}}), StockAnalysis.com (EPS GAAP TTM $5.38, FY2025 $6.56, FCF TTM $5.5B, งบย้อนหลัง 5 ปี, forecast FY2026E $7.20)"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 2 วิธี (คนละตระกูล)"
+  },
+  "catalysts": [
+    "<b>Amazon glide-down เสร็จสิ้น:</b> StockAnalysis ระบุว่าการลดปริมาณ Amazon เสร็จเมื่อ มิ.ย. 2569 บริษัทหันไปเน้นการเติบโตที่ทำกำไร (SMB/B2B/Healthcare)",
+    "<b>ลงทุนกลุ่มกำไรสูง:</b> มีแผนลงทุนกว่า $2B ถึงปี 2028 ใน International, Healthcare และ Supply Chain Solutions",
+    "<b>โครงสร้างปฏิบัติการใหม่:</b> เริ่มใช้ 1 ก.ย. 2569 มาตรฐานกระบวนการเดียวกันทุกภูมิภาค หวังลดต้นทุน",
+    "<b>ผลไตรมาสล่าสุด:</b> Q2 2026 รายได้และ adj. EPS สูงกว่าที่ตลาดคาด (ตามหน้าสรุป StockAnalysis)",
+    "<b>ปันผล ~6.6%:</b> $1.64/ไตรมาส ({{dps}}/ปี) ดึงดูด income investor แต่ต้องดูความยั่งยืนเทียบ FCF",
+    "<b>สัญญาภาครัฐ:</b> ได้รับสัญญา Transportation Command มูลค่า $2.72B"
+  ],
+  "risks": [
+    "<b>รายได้ไม่โต / กำไรลด:</b> รายได้ FY2025 ลด 2.6% และ EPS GAAP ลดจาก $7.80 (FY2023) เป็น {{dps}} (FY2025) และ $5.38 (TTM) — Operating margin TTM 9.2% ต่ำกว่า FY2022 (14.3%)",
+    "<b>Tariff & Trade War:</b> ภาษีนำเข้ากดดัน cross-border e-commerce — ผลกระทบต่อ International segment และ Supply Chain Solutions",
+    "<b>Recession Risk:</b> UPS เป็น economic barometer — ภาวะถดถอยกดปริมาณทุก segment พร้อมกัน FCF อาจลดจนกดดัน dividend",
+    "<b>FedEx Competition & USPS Self-delivery:</b> FedEx ก็ pursuit SMB และ healthcare เช่นกัน ขณะที่ USPS พยายาม in-house delivery มากขึ้น",
+    "<b>Labor & Union Risk:</b> UPS Teamsters contract (IBT) — รอบถัดไปอาจมีการเจรจาที่ยาก ค่าแรงสูงขึ้นกระทบ margin",
+    "<b>Capital Allocation:</b> ปันผล ~$5.6B/ปี สูงกว่า FCF TTM $5.5B และ FY2025 FCF $4.8B; หนี้ $28.7B เทียบเงินสด $4.7B หากธุรกิจแย่ลง อาจต้องลดปันผลหรือเพิ่มหนี้"
+  ],
+  "extras": [],
+  "_sig": "sha256:8accb509f2495590ac834982ba6b0f9eff2f7143327bf7ef3338a59c0ad3a5fd"
+}

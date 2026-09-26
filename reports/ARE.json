@@ -1,0 +1,282 @@
+{
+  "v": 3,
+  "symbol": "ARE",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Alexandria Real Estate Equities",
+    "exchange": "NYSE",
+    "sub": "Premier life science REIT • Lab/R&D campuses ใน Boston/Cambridge (Kendall Square), San Francisco Bay Area, San Diego (Torrey Pines), RTP, NYC • ผู้เช่าหลัก: BMS, Moderna, Pfizer, Eli Lilly, Takeda • ~5.4% dividend yield (ปรับลดปันผล 45% ปี 2025) • Biotech funding headwind (2022-2025) → occupancy pressure • Lab assets เฉพาะทางที่แทนได้ยาก",
+    "headerTags": [
+      "อสังหาริมทรัพย์",
+      "Life Science REIT"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis.com",
+      "MarketBeat",
+      "Yahoo Finance"
+    ],
+    "themeLegacy": {
+      "accent": "#1B3F6A",
+      "accentDark": "#0F2847",
+      "darkGrad": "linear-gradient(135deg,#0F2847 0%,#1B3F6A 60%,#2B5F9A 100%)",
+      "glow": "rgba(27,63,106,0.35)",
+      "subColor": "#cedeed",
+      "headerMuted": "#d2dfec",
+      "verdictText": "#d4e8ff",
+      "vcellLabel": "#e9f0f6"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T08:28:49+07:00",
+      "v2Hash": "66e195bcee63"
+    }
+  },
+  "market": {
+    "px": 49.93,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          58.22
+        ],
+        [
+          "พ.ย.25",
+          53.67
+        ],
+        [
+          "ธ.ค.25",
+          48.94
+        ],
+        [
+          "ม.ค.26",
+          54.64
+        ],
+        [
+          "ก.พ.26",
+          54.04
+        ],
+        [
+          "มี.ค.26",
+          46.42
+        ],
+        [
+          "เม.ย.26",
+          40.51
+        ],
+        [
+          "พ.ค.26",
+          49.68
+        ],
+        [
+          "มิ.ย.26",
+          52.85
+        ],
+        [
+          "ก.ค.26",
+          51.45
+        ],
+        [
+          "ส.ค.26",
+          51.29
+        ],
+        [
+          "ก.ย.26",
+          49.93
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 39.41,
+      "hi": 88.24
+    }
+  },
+  "fundamentals": {
+    "dps": 2.88,
+    "bvps": 111,
+    "shares": 174000000,
+    "revenue": 2930000000,
+    "grossMargin": 70,
+    "roe": 2.5,
+    "netDebt": 12400000000,
+    "beta": 1.2
+  },
+  "legs": [
+    {
+      "method": "pffo",
+      "label": "P/FFO Valuation",
+      "inputs": {
+        "multiple": 10,
+        "multipleSource": "sector"
+      },
+      "override": {
+        "ffoPerShare": 6.4,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "stressed life science REIT, leverage สูง",
+      "family": "market"
+    },
+    {
+      "method": "ddm",
+      "label": "DDM (Gordon Growth)",
+      "inputs": {
+        "g": 3,
+        "r": 8.5
+      },
+      "override": {
+        "dps": 2.7961165048543686,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "ปันผล forward {{dps}}/ปี · required return สูงรับ leverage + biotech risk · ฟื้นตัวระยะยาว · สะท้อน risk premium ที่ตลาดเรียกร้อง",
+      "family": "rg"
+    },
+    {
+      "method": "declared",
+      "label": "NAV Discount (P/BV)",
+      "inputs": {
+        "value": 67,
+        "basis": "nav"
+      },
+      "note": "BVPS ~$111 × P/BV เป้า 0.60x (discount รับ high leverage Net Debt/EBITDA สูง + ค่าเสื่อมราคาสินทรัพย์ lab ที่อาจต่ำกว่า book) → $111 × 0.60 = $66.60",
+      "family": "asset"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "custom:0",
+      "custom:1",
+      {
+        "key": "pbv",
+        "tone": "pos"
+      },
+      "custom:2",
+      "revenue",
+      "grossMargin",
+      {
+        "key": "roe",
+        "tone": "neu"
+      },
+      "yield",
+      {
+        "key": "netDebt",
+        "tone": "neg"
+      },
+      "custom:3",
+      "beta"
+    ],
+    "custom": [
+      {
+        "label": "P/FFO (guide 2026)",
+        "value": "~8.3x",
+        "note": "FFO adj./sh ~$6.40 (midpoint guide) · ต่ำมากเทียบประวัติ",
+        "tone": "pos"
+      },
+      {
+        "label": "P/FFO เฉลี่ยประวัติ",
+        "value": "20–25x",
+        "note": "ช่วงปกติ (peak 30-35x ปี 2021)",
+        "tone": "neu"
+      },
+      {
+        "label": "FFO adj./หุ้น (guide 2026)",
+        "value": "~$6.40",
+        "note": "2Q26 $1.73 · 1H26 $3.46 · GAAP EPS TTM −$6.04 (มี write-off)"
+      },
+      {
+        "label": "Op. Cash Flow TTM",
+        "value": "$1.41B",
+        "note": "~$8.13/share · รองรับปันผลใหม่ {{dps}}"
+      }
+    ],
+    "notes": {
+      "mcap": "~174M หุ้น · NYSE: ARE",
+      "pbv": "BVPS ~$111 · ซื้อสินทรัพย์ต่ำกว่ามูลบัญชี",
+      "revenue": "ลด 5.8% YoY (disposition assets)",
+      "grossMargin": "สม่ำเสมอ 69–71% ต่อเนื่อง",
+      "roe": "ปี 2024 · 2025 ขาดทุนสุทธิจาก write-off",
+      "yield": "$0.72/qtr = {{dps}}/ปี · ปรับลดจาก $1.32/qtr (ก.ย. 2025)",
+      "netDebt": "vs Market Cap $9.3B · leverage สูง",
+      "beta": "ผันผวนสูงกว่าตลาด"
+    },
+    "hint": "Life Science REIT — ใช้ FFO (as adjusted) แทน EPS"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": null,
+    "driver": "ffo",
+    "exitMetric": "pffo",
+    "cases": [
+      {
+        "growth": -5,
+        "exitMultiple": 7,
+        "divCum": 8.64,
+        "desc": "Lab vacancy เพิ่ม, write-off ต่อ"
+      },
+      {
+        "growth": 2,
+        "exitMultiple": 10,
+        "divCum": 8.64,
+        "desc": "Biotech ฟื้น, ดอกเบี้ยลง"
+      },
+      {
+        "growth": 5,
+        "exitMultiple": 13,
+        "divCum": 8.64,
+        "desc": "Lab demand กลับมา, re-rating"
+      }
+    ],
+    "exitDp": 0,
+    "baseOverride": {
+      "value": 6.4,
+      "why": "ฐานฉากที่ผู้เขียนใช้ (ตัวตั้งที่ขาประเมินพิมพ์)"
+    },
+    "note": "การคาดการณ์อิง FFO as adjusted/share เป็นตัวชี้วัดหลัก (ไม่ใช่ EPS) เนื่องจาก REIT มีค่าเสื่อมสูง โดย bear scenario ขาดทุนราคาหนักกว่าปันผลที่ได้ ส่วน base/bull ขึ้นกับ re-rating ของ P/FFO จาก ~8.3x กลับสู่ระดับ 10-13x ซึ่งเป็นไปได้หาก biotech funding ฟื้น, Fed ลดดอกเบี้ย, และ ARE สามารถลด net debt ผ่าน asset disposal ได้สำเร็จ ความเสี่ยงหลัก: net debt $12.4B ที่ต้อง refinance, occupancy ห้อง lab ที่กดดัน, และโอกาส write-off เพิ่มเติม",
+    "hintNote": "FFO adj. /หุ้น"
+  },
+  "analyst": {
+    "target": 53,
+    "n": null,
+    "rating": "Hold",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ARE ร่วงจาก ~$58 (ต.ค. 2568) ลงจุดต่ำสุดรายเดือน $40.51 (เม.ย. 2569) แล้วฟื้นกลับสู่ระดับ ~$53 ในเดือนล่าสุด ผลจากหลายปัจจัยรุมเร้า: ตลาด biotech ซบเซาหลัง funding ดิ่งตั้งแต่ปี 2565, อัตราดอกเบี้ยสูงกด REIT valuation, บริษัทประกาศปรับลดปันผล 45% (ก.ย. 2568) จาก $1.32 เหลือ $0.72/ไตรมาส และบันทึก impairment losses ขนาดใหญ่ใน Q4 2568 ราคาฟื้นตัวบางส่วนหลังตลาดเริ่มมองว่าการปรับลดปันผลช่วยเสริมสภาพคล่อง และผล 2Q26 ออกมาตามกรอบ guidance แต่ยังต่ำกว่าค่าเฉลี่ย NAV อย่างมีนัยสำคัญ",
+    "valuation": "<b>หมายเหตุ:</b> ARE เป็น REIT จึงไม่ใช้ P/E (GAAP EPS ติดลบจากค่าเสื่อมอาคารขนาดใหญ่และ impairment losses) ตัวชี้วัดหลักคือ <b>FFO as adjusted</b> (guide 2026 $6.35–6.45 ต่ำกว่าปี 2568 เพราะขายสินทรัพย์/ต้นทุนดอกเบี้ย — ฐานเดิม $8.50 ล้าสมัยแล้ว) ณ P/FFO ~8.3x เทียบกับเฉลี่ยอุตสาหกรรม 20-25x ราคาดูน่าสนใจในเชิงสถิติ แต่ตลาดกำลัง discount ความเสี่ยงหลายด้าน: net debt $12.4B, การลดปันผล 45%, อัตราการเช่าห้องปฏิบัติการที่กดดันจาก biotech funding ที่ซบเซา 2022-2025 และ NAV ที่อาจหดลงจาก write-off เพิ่มเติม DDM ให้ค่า $52 ซึ่งใกล้เคียงราคาตลาดปัจจุบันมากที่สุด สะท้อน risk-adjusted return ที่ตลาดต้องการ FV เฉลี่ย {{fv}} (MOS {{mos}}) หาก sector ฟื้นตัวและอัตราดอกเบี้ยทยอยลด",
+    "gauge": "ราคาปัจจุบัน {{px}} อยู่ใกล้เป้าเฉลี่ย Analyst ({{analyst.target}} — Hold consensus จาก 14 นักวิเคราะห์) และสูงกว่าโซน MOS 20% ({{mos20}}) นักวิเคราะห์ยังระมัดระวัง Morgan Stanley downgrade เป็น Underweight ส่วน Evercore มองเป้า $58 ระยะห่างจาก Fair Value {{fv}} ยังมีส่วนเผื่อ {{mos}} แต่ต้องรอ biotech funding ฟื้น + อัตราดอกเบี้ยลด + การเช่าห้อง lab กลับมา",
+    "mos": "ส่วนเผื่อน่าสนใจ — แต่ความเสี่ยง sector/leverage สูง",
+    "verdictHeadline": "Undervalued แต่ Risk สูง — เหมาะนักลงทุนที่รับความเสี่ยงได้สูง",
+    "verdictBody": "Alexandria Real Estate Equities (ARE) คือ REIT ชั้นนำด้าน life science ที่ตกอยู่ในวังวนของพายุ: biotech funding ดิ่งตั้งแต่ปี 2565, อัตราดอกเบี้ยสูง, lab space อุปทานล้น และการปรับลดปันผล 45% กดราคาลงถึง $40 จากเคยสูงสุด $200+ ในปี 2564 ที่ระดับ P/FFO เพียง ~8.3x เทียบประวัติ 20-25x ราคาดูน่าสนใจอย่างยิ่งในเชิงสถิติ แต่ตลาดกำลัง price in ความเสี่ยงจากหนี้สูง $12.4B และ NAV ที่อาจยังหดลงต่อ Fair Value เฉลี่ย 3 วิธีที่ {{fv}} ให้ MOS {{mos}} เหมาะสำหรับนักลงทุนระยะยาว 3-5 ปีที่เชื่อใน lab demand cycle ฟื้นตัวและยอมรับ volatility สูง",
+    "strategy": "สะสมทยอยที่ <{{mos20}} (MOS 20%) และ deep value ที่ <{{mos30}} (MOS 30%) — ตัดขายถ้า net debt ไม่ลดหรือ FFO adj. ร่วงต่ำกว่า $6/sh เป้าระยะ 3 ปีที่ ~$68 (base case) หากอุตสาหกรรม biotech/life science ฟื้นตัว ปันผล {{dps}}/ปี (yield ~5.4%) ช่วย hold ระหว่างรอ",
+    "disclaimerSources": "แหล่งข้อมูล: StockAnalysis.com (ราคา/งบการเงิน), MarketBeat (analyst ratings/earnings), Yahoo Finance (ราคารายเดือน), Motley Fool (dividend), วันที่ข้อมูล: 21 ก.ย. 2569"
+  },
+  "text": {
+    "valHint": "3 วิธี — REIT: ไม่ใช้ P/E แต่ใช้ P/FFO + DDM + NAV",
+    "chartHint": "ต.ค. 2568 – ก.ย. 2569",
+    "disclaimerAssump": " P/AFFO เป้าหมาย, อัตราเติบโต AFFO (g), ผลตอบแทนที่ต้องการ (r) และ NAV ในอนาคต ARE มีความเสี่ยงสูงจาก leverage และ sector headwind"
+  },
+  "catalysts": [
+    "<b>Lab assets หายาก แทนได้ยาก:</b> Lab space เฉพาะทาง (BSL-2/3, clean room, specialized HVAC) ใน Kendall Square/Torrey Pines/Mission Bay สร้างใหม่ไม่ได้ง่ายๆ — barrier to entry สูงมาก",
+    "<b>P/FFO ต่ำสุดในรอบ 10+ ปี:</b> ที่ ~8.3x เป็นระดับ distressed pricing สุดขีด แม้แต่ในช่วงวิกฤตราคา ARE ไม่เคยถูกเท่านี้ — upside re-rating สูงมากหาก sector ฟื้น",
+    "<b>Biotech funding cycle ฟื้นตัว:</b> NIH funding + pharma M&A + AI drug discovery กระตุ้น biotech ใหม่ → demand lab space กลับมา ARE เป็นผู้รับประโยชน์โดยตรง",
+    "<b>Asset disposal plan:</b> ARE ขาย non-core assets ลด debt ลง — ช่วยลด leverage + ปลดล็อค NAV ที่ซ่อนอยู่ในพอร์ตสินทรัพย์คุณภาพสูง",
+    "<b>เป้าหมายของ Big Pharma:</b> BMS, Pfizer, Eli Lilly, Takeda เป็น anchor tenants ระยะยาว → รายได้ stable แม้ biotech cycle ซบเซา",
+    "<b>อัตราดอกเบี้ยลดลง:</b> Fed rate cut ลด cost of debt + กด required return REIT → multiple expansion"
+  ],
+  "risks": [
+    "<b>Net Debt $12.4B สูงมาก:</b> vs Market Cap $9.3B — leverage อันตราย หาก NOI ลด cost of debt สูง หรือ refinancing rate พุ่ง อาจกดดัน AFFO อย่างหนัก",
+    "<b>Lab space อุปทานล้นตลาด:</b> ช่วงบูม 2020-2022 developer หลายรายสร้าง lab ใหม่จำนวนมาก ตอนนี้อุปทาน excess ในบางตลาด → vacant lab ยากเช่าออก",
+    "<b>Dividend cut ซ้ำ:</b> ลดปันผลครั้งแรก 45% ยังไม่ชัดเจนว่าจะเพียงพอ — ถ้าต้องลดอีกจะ demoralise นักลงทุน income",
+    "<b>Biotech ซบเซายืดเยื้อ:</b> หาก FDA เข้มงวด, ดอกเบี้ยสูงนาน, หรือ recession → biotech startup ล้มหาย ทำให้ lab vacancy เพิ่มต่อเนื่อง",
+    "<b>Write-off เพิ่มเติม:</b> Q4 2568 มี impairment ~$1B+ แล้ว หาก lab value ยังตกต่ำอาจมี write-down สินทรัพย์ขนาดใหญ่เพิ่มอีก กด NAV ลง",
+    "<b>Refinancing risk:</b> หนี้ $12.4B ต้อง roll over บางส่วนในสภาพอัตราดอกเบี้ยสูง — spread อาจกว้างขึ้นเพิ่มต้นทุนการเงิน"
+  ],
+  "extras": [],
+  "_sig": "sha256:1a143d072f095776fee222d06479d69db7744bf397f5f2d1c66b75f4fab98461"
+}

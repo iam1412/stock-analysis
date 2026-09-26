@@ -1,0 +1,256 @@
+{
+  "v": 3,
+  "symbol": "ELV",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Elevance Health, Inc.",
+    "exchange": "NYSE",
+    "sub": "US managed care (formerly Anthem) • Commercial & Specialty health plans • Medicaid & Medicare (Government Business) • Carelon health services • CarelonRx pharmacy benefits • 45M+ members",
+    "headerTags": [
+      "Managed Care",
+      "Healthcare"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "StockAnalysis.com",
+      "elevancehealth.com"
+    ],
+    "themeLegacy": {
+      "accent": "#003DA5",
+      "accentDark": "#00297a",
+      "darkGrad": "linear-gradient(135deg,#001a4d 0%,#003DA5 60%,#0055cc 100%)",
+      "glow": "rgba(0,61,165,0.35)",
+      "subColor": "#cbdcf6",
+      "headerMuted": "#ccddf5",
+      "verdictText": "#e8f0fe",
+      "vcellLabel": "#e1eafa"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T14:08:46+07:00",
+      "v2Hash": "4af69268df2f"
+    }
+  },
+  "market": {
+    "px": 396.09,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          317.2
+        ],
+        [
+          "พ.ย.25",
+          338.26
+        ],
+        [
+          "ธ.ค.25",
+          350.55
+        ],
+        [
+          "ม.ค.26",
+          345.74
+        ],
+        [
+          "ก.พ.26",
+          320
+        ],
+        [
+          "มี.ค.26",
+          292.75
+        ],
+        [
+          "เม.ย.26",
+          376.42
+        ],
+        [
+          "พ.ค.26",
+          393.19
+        ],
+        [
+          "มิ.ย.26",
+          386.73
+        ],
+        [
+          "ก.ค.26",
+          375.84
+        ],
+        [
+          "ส.ค.26",
+          392.54
+        ],
+        [
+          "ก.ย.26",
+          396.09
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 274.84,
+      "hi": 436.24
+    }
+  },
+  "fundamentals": {
+    "dps": 6.88,
+    "bvps": 202,
+    "shares": 216869290,
+    "peAvg5y": 18.3,
+    "eps": 22.47,
+    "roe": 11.1,
+    "roa": 4.3,
+    "revenue": 198300000000,
+    "beta": 0.68,
+    "fy": {
+      "period": "FY2025",
+      "netIncome": 5660000000
+    },
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation (TTM × มัธยฐานย้อนหลัง)",
+      "inputs": {
+        "multiple": 18.3,
+        "multipleSource": "median5y"
+      },
+      "family": "market"
+    },
+    {
+      "method": "ddm",
+      "label": "DDM / Gordon Growth",
+      "inputs": {
+        "g": 6,
+        "r": 8.5
+      },
+      "note": "ให้ค่าต่ำเพราะ r-g spread แคบ; ปันผลเติบโต ~10%/ปีในอดีต แต่ใช้ g 6% เพื่อความอนุรักษ์นิยม (ตระกูล r,g ร่วมกับ Justified P/BV — นับเป็นหนึ่งเสียง)",
+      "family": "rg"
+    },
+    {
+      "method": "pbv",
+      "label": "Justified P/BV",
+      "inputs": {
+        "g": 5.5,
+        "r": 8.5
+      },
+      "override": {
+        "roe": 12,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "peAvg5y",
+      "pbv",
+      "netIncomeFy",
+      "eps",
+      "bvps",
+      "roe",
+      "revenue",
+      "custom:0",
+      "yield",
+      "beta"
+    ],
+    "custom": [
+      {
+        "label": "Medical Loss Ratio",
+        "value": "89.7% Q2/26",
+        "note": "+80bps YoY · Q1/26 เคยดีขึ้น 86.8% แต่ Q2 เด้งกลับ · เป้า <88% ยังไม่บรรลุ"
+      }
+    ],
+    "notes": {
+      "mcap": "~217M shares outstanding",
+      "pe": "GAAP EPS TTM {{eps}} · adj. FY26 guidance ≥$27.00",
+      "peAvg5y": "มัธยฐาน 5 ปี (ช่วง 14.4–20.2x) · ตอนนี้ใกล้ค่ากลาง",
+      "pbv": "BVPS ~$202 · ต่ำกว่าประวัติ (เฉลี่ย 3–4x)",
+      "netIncomeFy": "GAAP · adj. net income ~$6.8B · ลดจากปีก่อน",
+      "eps": "Q2/26 adj. EPS $7.45 (beat $6.21) · FY26 guidance ≥$27.00",
+      "bvps": "equity $43.9B · เติบโต ~5%/ปี",
+      "roe": "MLR เด้งกลับ กดดัน margin",
+      "revenue": "FY24 $175.2B · เติบโต ~13%",
+      "yield": "{{dps}}/share/ปี · เติบโตต่อเนื่อง ~10%/ปี",
+      "beta": "ผันผวนน้อยกว่าตลาด"
+    },
+    "hint": "ข้อมูล ณ 21 ก.ย. 2569 · EPS TTM แบบ GAAP + guidance adjusted"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": -5,
+        "exitMultiple": 11,
+        "divCum": 20,
+        "desc": "MLR ยืดเยื้อ กดดัน EPS"
+      },
+      {
+        "growth": 8,
+        "exitMultiple": 14,
+        "divCum": 22,
+        "desc": "MLR ปรับตัวดี Carelon เติบโต"
+      },
+      {
+        "growth": 15,
+        "exitMultiple": 16,
+        "divCum": 24,
+        "desc": "MLR ฟื้นเต็ม CarelonRx ขยายตลาด"
+      }
+    ],
+    "exitDp": 0,
+    "baseOverride": {
+      "value": 27,
+      "why": "EPS ฐานฉากที่ผู้เขียนใช้"
+    },
+    "note": "การคาดการณ์ใช้ adjusted EPS FY2026 guidance ≥$27.00 เป็นฐาน (ต่างฐานจาก EPS GAAP TTM ที่ใช้ในขา P/E ของ FV) (ยกขึ้นจาก ≥$26.75 หลัง Q2 beat แต่ MLR ยังผันผวน) ปัจจัยสำคัญที่จะกำหนดทิศทาง: (1) MLR กลับมาต่ำกว่า 88% อย่างต่อเนื่องในปี 2569–2570 หรือไม่ (Q2 เด้งกลับ 89.7%) (2) สมาชิก Medicaid/Medicare คงตัวหลัง redetermination ครบวงรอบ (สมาชิกรวม Q2 ลดลง 469K QoQ) (3) Carelon บรรลุ margin เป้าหมาย ผู้ลงทุนระยะยาว (3–5 ปี) ที่เชื่อใน MLR normalization จะได้ผลตอบแทนดีในกรณี Base–Bull หมายเหตุ: ผลตอบแทน 3 ปีคาดการณ์จากจุดเข้า {{px}} ไม่รับประกันผลตอบแทนจริง"
+  },
+  "analyst": {
+    "target": 451.38,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ELV อยู่ในกรอบ 52 สัปดาห์ $274.84 – $436.24 โดยแตะจุดสูงสุดของกรอบก่อนวันประกาศงบ Q2 2569 (15 ก.ค. 2569) และงบ Q3 จะประกาศ 20 ต.ค. 2569 Q2 2569: adjusted EPS $7.45 ชนะคาดการณ์ $6.21 (+20%) รายได้ $49.8B ชนะคาด แต่ตลาดกังวลว่า ~$0.80/หุ้นของกำไรมาจากรายการ non-recurring (net investment income) และ MLR เด้งกลับขึ้น 89.7% (+80bps YoY) จากที่เคยลดเหลือ 86.8% ใน Q1 หุ้นร่วง ~8.5% ในวันประกาศงบ จาก $426.79 เหลือ $390.33 แม้บริษัทจะยก FY2026 adjusted EPS guidance เป็น ≥$27.00",
+    "valuation": "FV ถ่วงตามตระกูลสมมติฐาน ไม่ใช่ตามจำนวนวิธี: ขา P/E ($411, ยึดตลาด/ประวัติ) และขา r,g ที่เฉลี่ย DDM ($292) กับ Justified P/BV ($438) เป็น $365 → (411+365)/2 = $388 — สองขาต่างกันน้อยกว่า 2 เท่า จึงเฉลี่ยได้ DDM ให้ค่าต่ำเพราะ spread ระหว่าง r และ g แคบ และอิง dividend yield ที่ต่ำ (1.67%) Sensitivity: ถ้าใช้ขา P/E ล้วน FV = $411 (ราคาแทบเท่ามูลค่า) · ถ้าใช้ขา r,g ล้วน FV = $365 (ราคาสูงกว่า ~12%) — ทั้งสองสอดคล้องว่าไม่มี MOS ราคาปัจจุบัน {{px}} สูงกว่า Fair Value {{fv}} เล็กน้อย (MOS {{mos}}) — ELV ซื้อขายใกล้/สูงกว่ามูลค่าเหมาะสมเล็กน้อย เป้านักวิเคราะห์เฉลี่ยไม่ได้ใช้เป็นขาของ FV (เป็นบริบทเท่านั้น) หมายเหตุ: ราคา ณ {{priceDate}} และ EPS TTM {{eps}} ยืนยัน 2 แหล่ง (Yahoo Finance + StockAnalysis.com ต่างกัน 0.6%) · adj. EPS FY26 guidance ≥$27.00 จาก elevancehealth.com Q2 2026 earnings release",
+    "gauge": "ELV ซื้อขายที่ {{px}} สูงกว่า Fair Value {{fv}} เล็กน้อย (MOS {{mos}}) — ยังไม่มีส่วนเผื่อความปลอดภัย consensus analyst target อยู่ที่ ~{{analyst.target}} (Buy, 21 ราย) สะท้อนความคาดหวังว่า MLR จะกลับมาปรับตัวดีขึ้น (ใช้เป็นบริบท ไม่ใช่ขาของ FV) โซนซื้อที่น่าสนใจ: MOS 20% อยู่ที่ {{mos20}}, MOS 30% อยู่ที่ {{mos30}} (ใกล้/ต่ำกว่าระดับต่ำสุด 52 สัปดาห์ $274.84) ปลดล็อกมูลค่าที่แท้จริง: ถ้า ELV ฟื้น ROE กลับ 15–18% (pre-pandemic) และ P/BV กลับสู่ 3x → Fair Value เกิน $590",
+    "mos": "<b>ไม่มี MOS</b><br>ราคาปัจจุบัน {{px}} สูงกว่ามูลค่าเหมาะสม {{fv}} เล็กน้อย → ยังไม่มีส่วนเผื่อ ไม่ถึงเกณฑ์ 20% ที่ value investor ต้องการ รอราคาลงก่อนสะสม",
+    "verdictHeadline": "ใกล้/สูงกว่ามูลค่าเหมาะสมเล็กน้อย — ยังไม่มี MOS รอราคาย่อ",
+    "verdictBody": "ELV ร่วง ~8.5% หลังประกาศงบ Q2 2569 (15 ก.ค. 2569) แม้ adjusted EPS $7.45 ชนะคาดและยก FY26 guidance เป็น ≥$27.00 เพราะตลาดกังวลคุณภาพกำไร (non-recurring gains) และ MLR ที่เด้งกลับขึ้น 89.7% ราคาล่าสุด {{px}} สูงกว่า Fair Value {{fv}} ที่คำนวณจาก 2 ตระกูล (P/E มัธยฐาน 5 ปี และ DDM/Justified P/BV) เล็กน้อย — MOS {{mos}} จึงยังไม่มี cushion ที่นักลงทุน value ต้องการ (margin of safety อย่างน้อย 20%) โอกาสซื้อที่น่าสนใจมากขึ้นเมื่อราคาลงมาที่ {{mos20}} (MOS 20%) ถ้า ELV สามารถทำให้ MLR กลับสู่แนวโน้มลดลงอย่างต่อเนื่องและ Carelon/CarelonRx สร้าง margin ได้ตามแผน upside ในระยะ 3–5 ปีมีนัยสำคัญ",
+    "strategy": "ราคาปัจจุบัน {{px}} สูงกว่า Fair Value ({{fv}}) เล็กน้อย — ยังไม่มี MOS (MOS {{mos}}) ไม่ใช่จังหวะซื้อเชิงรุกสำหรับ value investor โซนซื้อที่น่าสนใจคือ {{mos20}} (MOS 20%) ถ้า sector pullback ต่อหรือผลประกอบการ Q3/Q4 2569 แสดง MLR ยังไม่นิ่ง สำหรับนักลงทุนระยะยาว 5+ ปีที่เชื่อมั่นใน managed care recovery ควรรอราคาย่อเข้าใกล้มูลค่าเหมาะสมก่อนทยอยสะสม พร้อม dollar-cost averaging เมื่อราคาลงใกล้โซน MOS 20%",
+    "disclaimerSources": "แหล่งข้อมูล: Yahoo Finance (ราคา · กราฟรายเดือน), StockAnalysis.com (ตัวเลขการเงิน), elevancehealth.com Q2 2026 earnings release (adj. EPS · MLR · guidance), SEC Form 8-K FY2026, Gurufocus (ROE · book value)"
+  },
+  "text": {
+    "valHint": "2 ตระกูลสมมติฐาน"
+  },
+  "catalysts": [
+    "<b>Q2 2569 EPS Beat แรง ยก Guidance:</b> adj. EPS $7.45 ชนะคาด $6.21 (+20%) รายได้ $49.8B ชนะคาด ยก FY26 adjusted EPS guidance เป็น ≥$27.00 — บ่งชี้ momentum ธุรกิจหลักยังแข็งแรง",
+    "<b>Carelon & CarelonRx:</b> ธุรกิจ health services (Carelon) และ PBM (CarelonRx) กำลังขยายตัว สร้าง revenue stream ที่ไม่ผูกกับ insurance MLR โดยตรง ลดการพึ่งพา premium income",
+    "<b>Valuation ยัง Discount จากประวัติ:</b> P/BV {{pbv}}x ต่ำกว่าประวัติ (เฉลี่ย 3–4x) ส่วน P/E ~18.3x อยู่ที่มัธยฐาน 5 ปี (18.3x) พอดี — upside จาก re-rating อยู่ที่ P/BV มากกว่า P/E",
+    "<b>Medicaid Redetermination ครบวงรอบ:</b> กระบวนการตรวจสอบสิทธิ์ Medicaid ใกล้สิ้นสุด membership loss จะชะลอลง และ mix ที่ดีขึ้นจะช่วย margin",
+    "<b>ปันผลเติบโตต่อเนื่อง:</b> เพิ่มปันผล ~10%/ปี ย้อนหลัง dividend yield 1.67% + buyback 3–4%/ปี รวมผลตอบแทนผู้ถือหุ้น >5%",
+    "<b>Medicaid Redetermination ใกล้จบ:</b> แม้สมาชิกรวม Q2 ลด 469K QoQ (Individual ACA/Medicaid attrition ตามคาด) แต่กระบวนการใกล้ครบวงรอบ mix ที่เหลือควรดีขึ้น"
+  ],
+  "risks": [
+    "<b>MLR เด้งกลับ ยังไม่แน่นอน:</b> Q2 2569 benefit expense ratio เด้งขึ้น 89.7% (+80bps YoY) จาก Q1 ที่เคยดีขึ้น 86.8% — สัญญาณ \"peak MLR ผ่านไปแล้ว\" ยังพิสูจน์ไม่ได้ชัดเจน",
+    "<b>ความเสี่ยงนโยบาย CMS/Medicaid:</b> อัตราการชำระเงินของรัฐบาลสำหรับ Medicaid/Medicare อาจถูกตัดลด ส่งผลต่อ premium revenue โดยตรง โดยเฉพาะในสภาพแวดล้อมการลดงบประมาณ",
+    "<b>Competition ใน PBM:</b> CarelonRx ต้องแข่งกับ UnitedHealth's Optum Rx และ CVS Caremark ซึ่งมีขนาดใหญ่กว่า การขยาย margin ทำได้ยาก",
+    "<b>Membership Loss ยังคงอยู่:</b> สมาชิกรวมลดลง 469K QoQ ใน Q2 2569 จาก Individual ACA/Medicaid attrition ถ้า Commercial membership ไม่ชดเชย รายได้จะถูกกดดัน",
+    "<b>ความเสี่ยงคดีความและกฎระเบียบ:</b> บริษัท managed care ทั้ง sector ถูกตรวจสอบเรื่อง claim denial rates และ prior authorization — UNH DOJ probe ส่งผลต่อ sentiment ทั้งกลุ่ม",
+    "<b>ต้นทุน Inflation:</b> ค่าแรงบุคลากรทางการแพทย์ ยา specialty และ hospital rate inflation ยังสูง กดดัน MLR ในระยะกลาง"
+  ],
+  "extras": [],
+  "_sig": "sha256:d296c047b347e9f1a57a0954a4297a12ac59f99479cbccb661c91c473393e105"
+}
