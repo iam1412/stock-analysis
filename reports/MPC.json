@@ -31,7 +31,8 @@
     },
     "migratedFrom": {
       "updated": "2026-09-21T16:19:45+07:00",
-      "v2Hash": "3398c9d839e0"
+      "v2Hash": "3398c9d839e0",
+      "prevHash": "cf099aa3223c"
     }
   },
   "market": {
@@ -223,7 +224,7 @@
     "verdictHeadline": "MPC — กำไรวัฏจักรกำลังสูง ราคาตลาดเหนือมูลค่าฐานตัวคูณมัธยฐานมาก",
     "verdictBody": "Marathon Petroleum เป็นผู้กลั่นน้ำมันที่มี buyback หนักและ FCF TTM $12.9B แต่ราคาปัจจุบัน {{px}} สูงกว่า Fair Value {{fv}} (MOS {{mos}}) ซึ่งมาจาก P/E มัธยฐาน 5.7x ที่วัดจริง × EPS TTM และ EPS FY2026e — ตระกูลเดียว จึงเป็นค่าประมาณที่ยังตรวจยืนยันไม่ได้ (|MOS| เกิน 40%) ตลาดอาจกำลัง re-rate ตัวคูณเกินกว่า 5 ปีย้อนหลัง เป้าเฉลี่ยนักวิเคราะห์ราว $370 ต่ำกว่าราคาซื้อขายราว 13% — นักลงทุนระยะยาวควรรอโซนต่ำกว่า {{fv}} เพื่อ risk/reward ที่ดีกว่า",
     "strategy": "MPC เป็นหุ้น cyclical — รอซื้อเมื่อราคาย่อลงใกล้โซนสะสม <b>ต่ำกว่า {{fv}}</b> (FV) หรือ <b>ต่ำกว่า {{mos20}}</b> (MOS 20%) หากถือแล้ว พิจารณา <b>Trim/Hold</b> เพราะ upside ตามฉันทามติจำกัด และ Fair Value บนฐานนี้ต่ำกว่าราคามาก",
-    "disclaimerSources": "แหล่งข้อมูล: StockAnalysis.com (ราคาปิด 24 ก.ย. 2569, EPS TTM $28.75, P/E 14.78x, เป้าเฉลี่ย $370.17, 52 สัปดาห์ $161.93–$428, งบ FY2021–FY2025 + TTM, forecast FY2026e/FY2027e) • Yahoo Finance (EPS TTM $28.85, เป้า $375.5 n=18) • ตัวคูณมัธยฐาน P/E 5.7x วัดจากราคาเฉลี่ยรายปี ÷ EPS diluted FY2021–FY2025"
+    "disclaimerSources": "แหล่งข้อมูล: StockAnalysis.com (ราคาปิด 25 ก.ย. 2569, EPS TTM $28.75, P/E 14.78x, เป้าเฉลี่ย $370.17, 52 สัปดาห์ $161.93–$428, งบ FY2021–FY2025 + TTM, forecast FY2026e/FY2027e) • Yahoo Finance (EPS TTM $28.85, เป้า $375.5 n=18) • ตัวคูณมัธยฐาน P/E 5.7x วัดจากราคาเฉลี่ยรายปี ÷ EPS diluted FY2021–FY2025"
   },
   "text": {
     "valHint": "2 วิธี ตระกูล P/E เดียวกัน (นับเป็น 1 เสียง) — ตัวคูณ = มัธยฐานที่วัดจริง",
@@ -245,5 +246,44 @@
     "<b>Energy Transition / Regulatory:</b> อุปสงค์น้ำมันระยะยาวและกฎระเบียบสิ่งแวดล้อมอาจกดตัวคูณของกลุ่มกลั่น"
   ],
   "extras": [],
-  "_sig": "sha256:8f261a232ae9ad3bfdac0f55aabc247503568c03465ef041e00e594a585794f8"
+  "v2Display": {
+    "fv": 240,
+    "fvRange": [
+      164,
+      315
+    ],
+    "targets": [
+      53,
+      164,
+      347
+    ],
+    "driverEnds": [
+      "~$13.22",
+      null,
+      null
+    ],
+    "gauge": [
+      {
+        "ref": "mos30",
+        "label": "MOS 30%"
+      },
+      {
+        "ref": "mos20",
+        "label": "MOS 20%"
+      },
+      {
+        "ref": "fv",
+        "label": "Fair Value"
+      },
+      {
+        "ref": "analystTgt",
+        "label": "เป้าเฉลี่ย Analyst"
+      },
+      {
+        "text": "$320",
+        "label": "กรอบบน"
+      }
+    ]
+  },
+  "_sig": "sha256:0122bd1ecf861bb461add27fa7ce86095cc82c0cb54a5aa32b4614ed9351636c"
 }

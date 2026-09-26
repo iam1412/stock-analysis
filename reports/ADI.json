@@ -32,7 +32,8 @@
     },
     "migratedFrom": {
       "updated": "2026-09-22T07:22:55+07:00",
-      "v2Hash": "f47f427840eb"
+      "v2Hash": "f47f427840eb",
+      "prevHash": "b09d6eb296ab"
     }
   },
   "market": {
@@ -154,18 +155,15 @@
     "cards": [
       "mcap",
       "pe",
-      {
-        "key": "peForward",
-        "tone": "none"
-      },
+      "custom:0",
       "epsFy",
       {
         "key": "revenueFy",
         "tone": "none"
       },
-      "custom:0",
-      "grossMargin",
       "custom:1",
+      "grossMargin",
+      "custom:2",
       {
         "key": "revenue",
         "tone": "none"
@@ -178,6 +176,11 @@
       "range52w"
     ],
     "custom": [
+      {
+        "label": "P/E (Fwd, Non-GAAP)",
+        "value": "~29x",
+        "note": "อิง EPS หลัก (adjusted)"
+      },
       {
         "label": "รายได้ Q2 FY2026",
         "value": "$3.62B",
@@ -192,11 +195,8 @@
     "notes": {
       "mcap": "485 ล้านหุ้น",
       "pe": "EPS GAAP {{eps}} บิดเบือนจากค่าตัดจำหน่าย",
-      "peForward": "อิง EPS หลัก (adjusted)",
       "epsFy": "▲ +22% YoY",
-      "revenueFy": "▲ +17% YoY",
       "grossMargin": "Adj. Op. Margin 41.9%",
-      "revenue": "▲ +~34% YoY",
       "roe": "Normalized ~28–30% ฐานทุนบวมจาก M&A",
       "yield": "Payout ~52%",
       "range52w": "จุดสูงสุด $445.91"
@@ -271,5 +271,49 @@
     "<b>พึ่งยานยนต์/อุตสาหกรรม:</b> หากการฟื้นตัวของสองตลาดนี้ช้าหรือพลิกกลับ ผลตอบแทนตาม base case จะถูกกดทันที"
   ],
   "extras": [],
-  "_sig": "sha256:a9ad29e3debf84e3e57a15d13533143ca8bc64a11d63a6ea6c1cbb44580c6e53"
+  "v2Display": {
+    "fv": 363,
+    "fvRange": [
+      340,
+      390
+    ],
+    "targets": [
+      313,
+      435,
+      572
+    ],
+    "gauge": [
+      {
+        "ref": "mos30",
+        "label": "MOS 30%"
+      },
+      {
+        "ref": "mos20",
+        "label": "MOS 20%"
+      },
+      {
+        "ref": "fv",
+        "label": "Fair Value"
+      },
+      {
+        "ref": "analystTgt",
+        "label": "เป้า Analyst"
+      },
+      {
+        "text": "$515",
+        "label": "เป้าสูงสุด"
+      }
+    ],
+    "cards": {
+      "revenueFy": {
+        "v": "$11.02B",
+        "d": "▲ +17% YoY"
+      },
+      "revenue": {
+        "v": "$13.88B",
+        "d": "▲ +~34% YoY"
+      }
+    }
+  },
+  "_sig": "sha256:ec55da78c53501bb805574f853721e09e2e34f8b7572491c3ffb9875c30e2e75"
 }

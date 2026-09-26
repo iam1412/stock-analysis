@@ -22,7 +22,8 @@
     "priceNote": "ผันผวนสูงมาก · ATH $799.87",
     "migratedFrom": {
       "updated": "2026-09-22T07:22:55+07:00",
-      "v2Hash": "b8f6630b5744"
+      "v2Hash": "b8f6630b5744",
+      "prevHash": "a3dd87ce3983"
     }
   },
   "market": {
@@ -148,7 +149,7 @@
     "custom": [
       {
         "label": "P/E (Non-GAAP FY26)",
-        "value": "~44x",
+        "value": "~45x",
         "note": "EPS non-GAAP {{eps}}/หุ้น",
         "tone": "neu"
       },
@@ -170,7 +171,6 @@
     ],
     "notes": {
       "mcap": "360.5 ล้านหุ้นคงเหลือ",
-      "pe": "EPS TTM $24.28 บวมจากกำไรพิเศษ",
       "peForward": "อิง EPS FY2027E $20.09 (vendor)",
       "netIncomeFy": "รวมผลภาษีจากการแยก Sandisk",
       "epsFy": "▲ +104% YoY",
@@ -248,5 +248,53 @@
     "<b>EPS GAAP บิดเบือน:</b> EPS TTM $24.28 บวมจากผลภาษีของการแยก Sandisk ทำให้ P/E ดู \"ถูกกว่าจริง\" — ฐานกำไรแท้คือ non-GAAP ({{eps}})"
   ],
   "extras": [],
-  "_sig": "sha256:d2c202fa7a7aeed1ccb0a52e4484847cc35b6e254d4aa7122648e0126a9bb1c5"
+  "v2Display": {
+    "fv": 191,
+    "fvRange": [
+      187,
+      195
+    ],
+    "targets": [
+      117,
+      304,
+      555
+    ],
+    "gauge": [
+      {
+        "ref": "mos30",
+        "label": "MOS 30%"
+      },
+      {
+        "ref": "mos20",
+        "label": "MOS 20%"
+      },
+      {
+        "ref": "fv",
+        "label": "Fair Value"
+      },
+      {
+        "ref": "analystTgt",
+        "label": "เป้า Analyst"
+      }
+    ],
+    "cards": {
+      "pe": {
+        "v": "~19x",
+        "d": "EPS TTM $24.28 บวมจากกำไรพิเศษ",
+        "op": "pxOverBase",
+        "base": 24.28
+      }
+    },
+    "rets": {
+      "texts": [
+        "รวม ~ −73% (≈ −36%/ปี)",
+        "รวม ~ −31% (≈ −12%/ปี)",
+        "รวม ~ +26% (≈ +8%/ปี)"
+      ],
+      "neg": "−",
+      "perYear": "cagr",
+      "div": false
+    }
+  },
+  "_sig": "sha256:5c2381ac129b64f5c8a1c950c802626a1b1088499f31b89563eed0be35d06759"
 }
