@@ -1,0 +1,302 @@
+{
+  "v": 3,
+  "symbol": "UDR",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "UDR, Inc.",
+    "exchange": "NYSE",
+    "sub": "Apartment REIT • ~58,000 Homes • Coastal + Sun Belt • Monthly Dividend",
+    "headerTags": [
+      "REIT • Residential",
+      "Apartment REIT"
+    ],
+    "analysisDate": "2026-09-22",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "Morningstar",
+      "BusinessWire"
+    ],
+    "themeLegacy": {
+      "accent": "#4338ca",
+      "accentDark": "#1557b0",
+      "darkGrad": "linear-gradient(135deg,#202938 0%,#2c3a52 60%,#1557b0 140%)",
+      "glow": "rgba(66,133,244,.35)",
+      "subColor": "#c7d2e4",
+      "headerMuted": "#aebfd6",
+      "verdictText": "#d4dded",
+      "vcellLabel": "#c8d1df"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-22T01:46:25+07:00",
+      "v2Hash": "65c8bba56743"
+    }
+  },
+  "market": {
+    "px": 33.84,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          33.69
+        ],
+        [
+          "พ.ย.25",
+          36.42
+        ],
+        [
+          "ธ.ค.25",
+          36.68
+        ],
+        [
+          "ม.ค.26",
+          37.15
+        ],
+        [
+          "ก.พ.26",
+          37.5
+        ],
+        [
+          "มี.ค.26",
+          33.78
+        ],
+        [
+          "เม.ย.26",
+          36.34
+        ],
+        [
+          "พ.ค.26",
+          36.9
+        ],
+        [
+          "มิ.ย.26",
+          39.92
+        ],
+        [
+          "ก.ค.26",
+          38.16
+        ],
+        [
+          "ส.ค.26",
+          36.95
+        ],
+        [
+          "ก.ย.26",
+          33.84
+        ]
+      ],
+      "gridFmt": "v.toFixed(0)",
+      "dataFmt": "d[1].toFixed(2)"
+    },
+    "range52w": {
+      "lo": 32.94,
+      "hi": 42
+    }
+  },
+  "fundamentals": {
+    "dps": 1.74,
+    "shares": 343264222,
+    "occupancy": 97,
+    "ffoBasis": "ffoa"
+  },
+  "legs": [
+    {
+      "method": "pffo",
+      "label": "P/FFO ที่มัธยฐานย้อนหลัง 5 ปี",
+      "inputs": {
+        "multiple": 14.95,
+        "multipleSource": "median5y"
+      },
+      "override": {
+        "ffoPerShare": 2.52,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "family": "market",
+      "note": "FFOA FY2026E $2.52 × P/FFO 14.95x — 14.95x คือมัธยฐาน P/FFO รายปี FY2021–FY2025 ของ UDR เอง (24.45 · 14.95 · 13.84 · 17.51 · 14.57 จาก StockAnalysis) ไม่ได้มาจากตัวคูณปัจจุบัน · ข้อควรระวัง: FFO ของ vendor นิยามต่างจาก FFOA ของบริษัท"
+    },
+    {
+      "method": "ddm",
+      "label": "DDM / Gordon Growth",
+      "inputs": {
+        "g": 3,
+        "r": 7.5
+      },
+      "note": "D₁ = $1.74 × (1+3%) = $1.79; g 3%, r 7.5% (สมมติฐานของผู้วิเคราะห์เอง) → $1.79 ÷ 4.5% ≈ $39.83 · คนละตระกูลกับ P/FFO",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "custom:0",
+      "custom:1",
+      {
+        "key": "yield",
+        "tone": "pos"
+      },
+      {
+        "key": "occupancy",
+        "tone": "pos"
+      },
+      "custom:2",
+      "custom:3",
+      "analystTarget",
+      "custom:4",
+      "custom:5",
+      "custom:6",
+      "custom:7"
+    ],
+    "custom": [
+      {
+        "label": "FFOA/share FY2025",
+        "value": "$2.54",
+        "note": "+2.4% YoY · เกินเป้าที่ตั้งไว้",
+        "tone": "pos"
+      },
+      {
+        "label": "FFOA/share FY2026E",
+        "value": "$2.47–$2.57",
+        "note": "กลาง $2.52 (guidance)",
+        "tone": "neu"
+      },
+      {
+        "label": "Same-Store NOI Growth",
+        "value": "+2.3%",
+        "note": "FY2025 · Q4 +1.7% YoY"
+      },
+      {
+        "label": "2026 NOI Guidance",
+        "value": "−1.0 ถึง −1.25%",
+        "note": "ค่าใช้จ่ายโตเร็วกว่ารายได้",
+        "tone": "neg"
+      },
+      {
+        "label": "Total Apartment Homes",
+        "value": "~58,000",
+        "note": "~50 markets ใน US",
+        "tone": "neu"
+      },
+      {
+        "label": "กระจายตลาด",
+        "value": "Coastal + Sun Belt",
+        "note": "Denver · Austin · Boston · SF · DC · Seattle"
+      },
+      {
+        "label": "ปันผลต่อเนื่อง",
+        "value": "15 ปีติด",
+        "note": "เพิ่ม +1.2% ปี 2026",
+        "tone": "pos"
+      },
+      {
+        "label": "เงินปันผลรายเดือน",
+        "value": "$0.145/เดือน",
+        "note": "เปลี่ยนจากรายไตรมาส เม.ย. 2569",
+        "tone": "pos"
+      }
+    ],
+    "notes": {
+      "mcap": "~343M shares (รวมทุกคลาส)",
+      "yield": "($0.145/เดือน)",
+      "occupancy": "Same-store 53,468 homes",
+      "analystTarget": "21 นักวิเคราะห์ · Buy (Yahoo)"
+    },
+    "hint": "ข้อมูล ณ 22 ก.ย. 2569"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": "cagr",
+    "driver": "ffo",
+    "exitMetric": "pffo",
+    "cases": [
+      {
+        "growth": -2,
+        "exitMultiple": 12.5,
+        "divCum": 5.22,
+        "desc": "NOI ติดลบต่อเนื่อง อุปทานใหม่สูง"
+      },
+      {
+        "growth": 3,
+        "exitMultiple": 14.95,
+        "divCum": 5.4,
+        "desc": "Supply ลด 2027 ค่าเช่าเร่งตัว"
+      },
+      {
+        "growth": 6,
+        "exitMultiple": 17.5,
+        "divCum": 5.58,
+        "desc": "Supply หด + migration + Fed cut ลึก"
+      }
+    ],
+    "baseOverride": {
+      "value": 2.537,
+      "why": "ฐานฉากถอดกลับจากค่าปลายฉากที่พิมพ์"
+    },
+    "note": "ตัวคูณออก: Base ใช้มัธยฐาน 14.95x, Bear 12.5x (ต่ำกว่าต่ำสุด 13.8x ในช่วง FY2021–25) และ Bull 17.5x (ระดับ FY2024) เป็นสมมติฐาน ฉากเป้าเป็นสมมติฐาน ไม่ใช่การพยากรณ์ · Base case คาดว่า supply apartment ใหม่จะถึงจุดสูงสุดปี 2569 แล้วลดลงชัดเจนปี 2570 เนื่องจาก construction start ลดลง 40%+ จากช่วง peak 2022-2023 ทำให้ rental growth กลับมาเร่งตัว 4-5%/ปี · อัตราดอกเบี้ยสูงต่อเนื่องยิ่งสนับสนุน demand เช่าเพราะ homeownership ยิ่งยาก",
+    "hintNote": "FFOA"
+  },
+  "analyst": {
+    "target": 41.55,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ราคาปิดรายเดือนเริ่มที่ประมาณ $33.7 ในต.ค. 2568 ขึ้นไปแตะ $37.5 ในก.พ. 2569 ก่อนปรับลงช่วงสั้นในมี.ค. 2569 หลัง 2026 NOI guidance ออกมาติดลบ แล้วดีดกลับใกล้ $40 ในมิ.ย. และไหลลงอีกจนกลับมาใกล้จุดเริ่มต้นของปี ภาพรวมรอบปีจึงเกือบทรงตัว ทั้งที่ระหว่างทางแกว่งกว้าง (กรอบ 52 สัปดาห์ $32.94 – $42.00)",
+    "valuation": "รอบนี้ตัดขา P/FFOA 18x และเป้านักวิเคราะห์ออกจาก FV เพราะไม่มีตัวคูณที่วัดได้รองรับ (เป้านักวิเคราะห์เป็นเพียงบริบทเทียบ) เหลือสองขา: P/FFO มัธยฐาน 14.95x × FFOA $2.52 = $37.67 และ DDM $39.83 ห่างกันไม่ถึง 2 เท่า จึงเฉลี่ยได้เป็น FV {{fv}} · ความไวต่อสมมติฐาน: ถ้า r เป็น 8% DDM จะลงเหลือราว $35.8 และ MOS หดเหลือน้อยมาก ถ้า r 7% DDM ขึ้นเป็น $44.8 · ตัวคูณ FFO ของ vendor กับ FFOA ของบริษัทนิยามไม่เหมือนกัน (ตัวคูณ 14.95x อาจใช้ได้อย่างประมาณ) ตัวเลข FFOA/guidance ยกมาจากรายงานรอบก่อน ยังไม่ได้เปิดตรวจกับ earnings release ใหม่ในรอบนี้",
+    "gauge": "ราคาปัจจุบัน {{px}} ต่ำกว่า Fair Value {{fv}} ({{mos}}) — ยังไม่ถึงโซน MOS 20% ({{mos20}}) ที่น่าสนใจสำหรับ value investor · เป้า Analyst {{analyst.target}} (Yahoo, 21 ราย) ใกล้เคียง FV ของเราจึงใช้เป็นแค่บริบทเทียบ ไม่ได้อยู่ในการเฉลี่ย · ปันผลราว 5% ต่อปี",
+    "mos": "MOS พอมี แต่ไม่ถึง 20% — รอราคาลงใกล้โซน MOS 20% จะสบายกว่า",
+    "verdictHeadline": "Apartment REIT คุณภาพ — รอจังหวะราคาดีกว่านี้",
+    "verdictBody": "UDR เป็น apartment REIT ระดับกลางที่มีประวัติปันผลเติบโต 15 ปีติด portfolio กระจายดีทั้ง coastal และ Sun Belt occupancy สม่ำเสมอ ~97% และเพิ่งเปลี่ยนจ่ายปันผลรายเดือน อย่างไรก็ตาม 2026 same-store NOI guidance ติดลบจากค่าใช้จ่ายโตเร็วกว่ารายได้ และราคา {{px}} ต่ำกว่า Fair Value {{fv}} ทำให้ MOS ราว {{mos}} ยังไม่ถึงโซน 20% ที่น่าสนใจสำหรับ value investor",
+    "strategy": "ถือหรือสะสมได้เมื่อราคาต่ำกว่า FV {{fv}} เหมาะผู้ต้องการกระแสเงินสดปันผลรายเดือน $0.145 · โซนน่าซื้อจริง ๆ คือใกล้ {{mos20}} ซึ่งใกล้จุดต่ำ 52 สัปดาห์ $32.94 · เทียบ AVB/EQR ที่มีในรีโปแล้ว: UDR ให้ yield สูงกว่าเล็กน้อย แต่ scale เล็กกว่าและ MOS ใกล้เคียงกัน",
+    "disclaimerSources": "ราคา {{px}} ณ {{priceDate}} จาก Yahoo Finance และ StockAnalysis · ข้อมูล FFOA/guidance จาก UDR FY2025 Earnings Release (Morningstar/BusinessWire ก.พ. 2569) · ตัวคูณ P/FFO ย้อนหลังและ Analyst consensus จาก StockAnalysis/Yahoo"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 2 วิธี · REIT ใช้ P/FFO (มัธยฐานจริง) + DDM",
+    "disclaimerAssump": " P/FFOA เป้าหมาย, อัตราเติบโต (g) และผลตอบแทนที่ต้องการ (r) ·"
+  },
+  "catalysts": [
+    "<b>Supply cycle turning:</b> Construction start ลดลง 40%+ จาก peak → อุปทานใหม่หายปี 2027-2028 ค่าเช่าเร่ง",
+    "<b>Mortgage rate barrier:</b> อัตราดอกเบี้ยบ้านสูงทำให้ homeownership ยาก → demand เช่าระยะยาว",
+    "<b>Monthly dividend:</b> เปลี่ยนจ่ายรายเดือน เม.ย. 2569 ดึงนักลงทุนรายได้ประจำ ยก demand ต่อหุ้น",
+    "<b>15 ปีปันผลเพิ่มต่อเนื่อง:</b> Track record แข็งแกร่ง เพิ่ม +1.2% ปี 2026 สร้างความน่าเชื่อถือ",
+    "<b>Portfolio diversification:</b> ผสม coastal + Sun Belt ลดความเสี่ยงตลาดเดี่ยว",
+    "<b>Fed rate cuts:</b> ลด cap rate → มูลค่าทรัพย์สินและราคาหุ้น REIT ปรับขึ้น"
+  ],
+  "risks": [
+    "<b>2026 NOI guidance ติดลบ:</b> −1.0% ถึง −1.25% เพราะค่าใช้จ่ายบำรุงรักษา/ประกัน/สาธารณูปโภคโต 3-4.5%/ปี",
+    "<b>อุปทาน Sun Belt ยังสูง:</b> Austin, Nashville, Denver ยัง completion หนักปี 2569",
+    "<b>อัตราดอกเบี้ยสูงนาน:</b> ต้นทุน refinancing หนี้เพิ่ม กด valuation REIT",
+    "<b>Scale เล็กกว่าคู่แข่ง:</b> AVB/EQR ใหญ่กว่า มี economy of scale และ leverage ต่ำกว่า",
+    "<b>SF/Seattle market softness:</b> ค่าเช่าชายฝั่งตะวันตกบางเมืองอ่อนแอ",
+    "<b>Rent control risk:</b> บางรัฐ/เมืองอาจออกกฎหมายควบคุมค่าเช่าเพิ่มขึ้น"
+  ],
+  "extras": [],
+  "v2Display": {
+    "targets": [
+      29.88,
+      41.41,
+      52.85
+    ],
+    "rets": {
+      "texts": [
+        "+3.7% ≈ +1.2%/ปี (รวมปันผล)",
+        "+38.3% ≈ +11.4%/ปี",
+        "+72.7% ≈ +20.0%/ปี"
+      ],
+      "neg": "−",
+      "perYear": "cagr",
+      "div": true
+    },
+    "fvRange": [
+      37.7,
+      39.8
+    ]
+  },
+  "_sig": "sha256:d4300c6e8e3edd535fcf040620cc7aa2b495578ef3a4b9085f1f1e7fe505da12"
+}

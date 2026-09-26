@@ -1,0 +1,315 @@
+{
+  "v": 3,
+  "symbol": "DTE",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "DTE Energy",
+    "exchange": "NYSE",
+    "sub": "Detroit Edison Electric • MichCon Gas • Grid Modernization • Clean Energy Transition • Michigan Regulated Monopoly",
+    "sectorLine": "DTE",
+    "headerTags": [
+      "Utilities — Regulated Electric & Gas",
+      "Michigan Monopoly"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis.com",
+      "Yahoo Finance",
+      "Yahoo Finance Chart API"
+    ],
+    "priceNote": "งบล่าสุด TTM ตาม StockAnalysis · FY2025 ปิดแล้ว · ไตรมาสถัดไปประกาศ 29 ต.ค. 2569",
+    "themeLegacy": {
+      "accent": "#2b5fd9",
+      "accentDark": "#1a3f99",
+      "darkGrad": "linear-gradient(135deg,#0a1f4d 0%,#12326e 60%,#1a3f99 100%)",
+      "glow": "rgba(43,95,217,0.35)",
+      "subColor": "#a9c2f5",
+      "headerMuted": "#a6b9e3",
+      "verdictText": "#eef3fd",
+      "vcellLabel": "#bbcaec"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T13:09:09+07:00",
+      "v2Hash": "cbf6722a76f0"
+    }
+  },
+  "market": {
+    "px": 121.44,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          135.54
+        ],
+        [
+          "พ.ย.25",
+          137.03
+        ],
+        [
+          "ธ.ค.25",
+          128.98
+        ],
+        [
+          "ม.ค.26",
+          134.38
+        ],
+        [
+          "ก.พ.26",
+          148.24
+        ],
+        [
+          "มี.ค.26",
+          146.22
+        ],
+        [
+          "เม.ย.26",
+          151.69
+        ],
+        [
+          "พ.ค.26",
+          142.87
+        ],
+        [
+          "มิ.ย.26",
+          152.37
+        ],
+        [
+          "ก.ค.26",
+          141.87
+        ],
+        [
+          "ส.ค.26",
+          135.63
+        ],
+        [
+          "ก.ย.26",
+          121.44
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 126.23,
+      "hi": 155.75
+    }
+  },
+  "fundamentals": {
+    "dps": 4.66,
+    "bvps": 59.24,
+    "shares": 208088069,
+    "peAvg5y": 19.2,
+    "netIncome": 1310000000,
+    "eps": 6.32,
+    "roe": 11,
+    "roa": 2.8,
+    "revenue": 16500000000,
+    "grossMargin": 20,
+    "beta": 0.38,
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "ddm",
+      "label": "DDM / Gordon Growth (วิธีหลัก)",
+      "inputs": {
+        "g": 5,
+        "r": 8
+      },
+      "note": "ระมัดระวังกว่า guidance บริษัท 6–8%/ปี เนื่องจาก payout ratio สูง ~76.7% จำกัดพื้นที่โต · risk-free ~4.15% + beta 0.38 × ERP ~10% · เหมาะกับ regulated utility ที่กระแสเงินสด/ปันผลคาดการณ์ได้สูง",
+      "family": "rg"
+    },
+    {
+      "method": "pe",
+      "label": "P/E Valuation (เสริม)",
+      "inputs": {
+        "multiple": 19.2,
+        "multipleSource": "median5y"
+      },
+      "override": {
+        "eps": 7.03,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "FY2025 ปีงบล่าสุดที่ปิดแล้ว · มัธยฐาน FY2021–FY2025 ของ DTE เอง ช่วง 15.9–24.1x วัดจากราคาเฉลี่ยปี ÷ EPS ปรับลด · ใช้ EPS ปีงบเต็มให้ฐานเดียวกับที่วัดมัธยฐาน เพราะ TTM ({{eps}}) ถูกกดจากผลขาดทุนธุรกิจ energy trading ใน Q1 2569 ไม่ใช้ตัวคูณปัจจุบัน (~20.3x) เป็นที่มาของเป้า",
+      "family": "market"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "peAvg5y",
+      "pbv",
+      "netIncome",
+      "eps",
+      "bvps",
+      "roe",
+      "revenue",
+      "grossMargin",
+      "yield",
+      "beta"
+    ],
+    "notes": {
+      "mcap": "~208.09 ล้านหุ้น (คงเหลือ)",
+      "pe": "Forward P/E ~16.7x (EPS consensus FY2026e $7.71)",
+      "peAvg5y": "มัธยฐาน · FY2021–FY2025 ช่วง 15.9–24.1x (ราคาเฉลี่ยปี ÷ EPS ปรับลด)",
+      "pbv": "(TTM)",
+      "netIncome": "Net margin ~8.0% (FY2025 ~9.2% · กดดันจาก energy trading loss Q1 2569)",
+      "eps": "StockAnalysis {{eps}} · Yahoo {{eps}} · ตารางงบ NI ÷ หุ้น {{eps}} (FY2025 $7.03)",
+      "bvps": "มูลค่าสินทรัพย์สุทธิต่อหุ้น (TTM)",
+      "roe": "สอดคล้องกับ allowed ROE ของ regulated utility มิชิแกน (~9.9–10%)",
+      "revenue": "TTM โต +15.9% YoY (FY2025 $15.8 พัน ล.)",
+      "grossMargin": "Op margin · Net margin ~8.0%",
+      "yield": "Payout ~73.7% ของ EPS TTM · DGR guidance ~6–8%/ปี",
+      "beta": "ต่ำกว่าตลาดมาก — defensive สูง (regulated utility)"
+    },
+    "hint": "ข้อมูล ณ ก.ย. 2569"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": "cagr",
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 1,
+        "exitMultiple": 16,
+        "desc": "Michigan regulatory risk กดดันต่อเนื่อง + rate pause ยืดเยื้อ"
+      },
+      {
+        "growth": 6,
+        "exitMultiple": 19.2,
+        "desc": "EPS/ปันผลโตตาม guidance rate base growth 6-8%/ปี"
+      },
+      {
+        "growth": 8,
+        "exitMultiple": 21,
+        "desc": "data center demand เร่งตัวเกิน guidance + multiple re-rate"
+      }
+    ],
+    "exitDp": 1,
+    "baseOverride": {
+      "value": 7.02761,
+      "why": "EPS ฐานฉากถอดกลับจากราคาเป้าที่พิมพ์"
+    },
+    "note": "สมมติฐาน: ราคาเข้า {{px}} · EPS ฐาน $7.03 (FY2025 ที่ปิดแล้ว) · ตัวเลขผลตอบแทนคิดจากราคาเป้าอย่างเดียว ไม่รวมปันผลที่รับระหว่างทาง (แสดงแยกในแต่ละฉาก) Base case ให้ผลตอบแทน ~25.1% ใน 3 ปี (~7.7%/ปี) จาก EPS โต 6%/ปี (ต่ำกว่ากรอบ guidance 6–8% ที่ปลายล่าง) และ P/E ออก 19.2x = มัธยฐานย้อนหลัง บวก dividend yield ~3.6% ต่างหาก Bear case ติดลบ ~−9.8% หาก Michigan regulatory risk กดดันต่อเนื่องและ rate pause ยืดเยื้อจน P/E เหลือ 16x แต่ปันผลยังจ่ายได้จาก regulated cash flow ที่มั่นคง Bull case เปิด upside จาก data center demand ที่เร่งตัวเกิน guidance + re-rating multiple ตัวเลขเป็นการประมาณเพื่อการศึกษา ไม่ใช่การรับประกันผลตอบแทน",
+    "hintNote": "(FY2025) • ไม่รวมปันผล"
+  },
+  "analyst": {
+    "target": 156.36,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ราคาช่วง ต.ค. 2568 – ก.ย. 2569 แกว่งในกรอบ $128.52–$152.37 (ปิดรายเดือน) จุดต่ำสุดของกราฟคือเดือน ก.ย. 2569 ที่ราคาปัจจุบัน {{px}} ก่อนหน้านั้นฟื้นตัวแรงต้นปี 2569 แตะจุดสูงสุด $152.37 ในเดือน มิ.ย. 2569 หนุนจากดีล data center กับ Google/Oracle ในมิชิแกน และข้อตกลง battery storage 6GWh กับ LG Energy Solution Vertech (ข้อมูลเหตุการณ์จากรายงานรอบก่อน ไม่ได้ตรวจซ้ำในรอบนี้) หลังจากนั้นราคาอ่อนลงต่อเนื่อง 3 เดือนติด มาอยู่ใกล้ขอบล่างของกรอบ 52 สัปดาห์ ($126.23–$155.75) ผลตอบแทนรอบปีดูที่ป้ายราคาด้านบน",
+    "valuation": "DDM ให้ค่าสูงกว่า ({{fvHigh}}) เพราะสะท้อนความมั่นคงของกระแสเงินสด/ปันผลของ regulated utility ที่โตต่อเนื่อง (r 8.0% และ g 5.0% เป็นสมมติฐานของเรา ไม่ได้วัดจากตลาด — ต่างกัน 1.2 เท่าจากขา P/E จึงเฉลี่ยได้) ขณะที่ P/E Valuation ให้ค่าระมัดระวังกว่า ({{fvLow}}) โดยยึดมัธยฐานตัวคูณย้อนหลังของหุ้นเอง — ไม่ใช้เป้าราคานักวิเคราะห์เป็นขา FV (เป้าเฉลี่ย {{analyst.target}} ใช้เป็นบริบทเทียบเท่านั้น) ค่าเฉลี่ยสองวิธี {{fv}} สูงกว่าราคาตลาดปัจจุบัน {{px}} ราว {{mos}} ของ FV บ่งชี้ว่า DTE ซื้อขายต่ำกว่า fair value เล็กน้อย หลังราคาอ่อนลงจากจุดสูงสุด มิ.ย. 2569",
+    "gauge": "ราคาปัจจุบัน {{px}} ต่ำกว่า Fair Value {{fv}} (MOS {{mos}}) — ยังต่ำกว่าเกณฑ์ 20% ของเรา นักวิเคราะห์ 14 ราย ให้เป้าเฉลี่ย {{analyst.target}} ({{analyst.pct}}) (Buy consensus) สูงกว่า FV ของเราเล็กน้อย สะท้อนมุมมองบวกต่อดีล data center และแผน grid modernization จุดที่น่าสนใจกว่าสำหรับ value investor คือ {{mos20}}–{{mos30}} (MOS 20–30%) ส่วนราคาปัจจุบันเหมาะกับผู้ถือเดิมที่เน้นรับปันผลต่อเนื่อง และเริ่มทยอยสะสมได้ตามวินัยของแต่ละคน",
+    "mos": "ราคาปัจจุบันต่ำกว่า Fair Value เล็กน้อย มี Margin of Safety {{mos}} — ยังไม่ถึงเกณฑ์ 20% ของเรา จึงเหมาะกับการทยอยสะสมรอจังหวะย่อ มากกว่าซื้อก้อนเดียว",
+    "verdictHeadline": "DTE: Regulated Utility มิชิแกนที่มั่นคง — ราคาต่ำกว่า Fair Value เล็กน้อยหลังอ่อนตัวจากจุดสูงสุด เหมาะกับ Income Investor ที่ทยอยสะสม",
+    "verdictBody": "DTE Energy เป็น regulated utility ผูกขาดครบวงจรในมิชิแกน ทั้งไฟฟ้า (Detroit Edison) และก๊าซ (MichCon) ได้ประโยชน์จากดีล data center กับ Google/Oracle ที่หนุน load growth ใหม่ รวมถึงแผน grid modernization และ battery storage ต่อเนื่อง ราคาปัจจุบัน {{px}} ต่ำกว่า Fair Value จากแบบจำลอง DDM+P/E ที่ {{fv}} (MOS {{mos}}) บ่งชี้ว่าหุ้นซื้อขายต่ำกว่ามูลค่าเล็กน้อย หลังราคาอ่อนตัวจากจุดสูงสุด มิ.ย. 2569 ความเสี่ยงหลักคือ Michigan regulatory risk (เพิ่งประกาศ rate pause) และ payout ratio ที่สูงราว 73.7% ซึ่งจำกัดพื้นที่เพิ่มปันผลในอนาคต นักลงทุนที่เน้น dividend income (yield ~3.6%) ถือหรือทยอยสะสมได้ แต่ value investor ที่ต้องการ MOS สูงควรรอจังหวะราคาย่อลงมาที่ {{mos20}}–{{mos30}} (MOS 20–30%)",
+    "strategy": "ราคาปัจจุบันเหมาะสำหรับผู้ถือเดิมที่เน้นรับปันผล (yield ~3.6% + DGR guidance ~6–8%/ปี) และทยอยสะสมได้ นักลงทุนที่ต้องการ margin of safety สูงขึ้นควรรอราคาย่อไปที่ {{mos20}} (MOS 20%) หรือ {{mos30}} (MOS 30%) ซึ่งมักเกิดในช่วง sector rotation ออกจาก defensive stocks หรือข่าวลบด้าน regulatory",
+    "disclaimerSources": "แหล่งข้อมูล: StockAnalysis.com (stockanalysis.com/stocks/dte) · Yahoo Finance (finance.yahoo.com/quote/DTE) · Yahoo Finance Chart API (query1.finance.yahoo.com) · งวดล่าสุด: FY2025 (ปีงบเต็ม) + TTM ตาม StockAnalysis — งบไตรมาสถัดไปกำหนดประกาศ 29 ต.ค. 2569"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 2 วิธี — DDM (หลัก) + P/E (เสริม)"
+  },
+  "catalysts": [
+    "<b>Data Center Demand Surge:</b> ดีลจ่ายไฟให้ data center ของ Google และ Oracle ในมิชิแกน หนุน load growth ใหม่และ rate base เพิ่มเติมนอกเหนือจากการเติบโตแบบเดิม",
+    "<b>Grid Modernization + Clean Energy Transition:</b> แผน capex ต่อเนื่องยกเครื่องโครงข่ายไฟฟ้าและเปลี่ยนผ่านจากถ่านหินสู่พลังงานสะอาด หนุน rate base growth ที่คาดการณ์ได้ผ่านกลไก regulated return",
+    "<b>Battery Storage Rollout:</b> ข้อตกลงกับ LG Energy Solution Vertech ติดตั้งระบบกักเก็บพลังงานแบตเตอรี่ 6GWh ใน 8 โครงการทั่วมิชิแกน เสริมความมั่นคงของกริดและรองรับ renewables",
+    "<b>Dividend Growth ต่อเนื่อง:</b> เพิ่มปันผลต่อเนื่องหลายปี (ล่าสุด quarterly $1.165/share, มิ.ย. 2569) yield ~3.6% ดึงดูด income investor",
+    "<b>Rate Base Growth ชัดเจนจาก Regulated Model:</b> ธุรกิจผูกขาด electric (Detroit Edison) + gas (MichCon) ครบวงจรในมิชิแกน ให้กระแสเงินสดที่คาดการณ์ได้สูง",
+    "<b>Analyst Consensus Buy:</b> นักวิเคราะห์ 14 ราย ให้เป้าเฉลี่ย {{analyst.target}} (Buy) สูงกว่าราคาปัจจุบัน {{analyst.pct}}"
+  ],
+  "risks": [
+    "<b>Michigan Regulatory Risk:</b> การขึ้นค่าไฟ/ก๊าซต้องผ่านการอนุมัติจาก Michigan Public Service Commission (MPSC) — บริษัทเพิ่งประกาศ \"Rate Pause\" ชะลอการยื่นขอปรับค่าไฟฟ้าเพิ่มเติม (เม.ย. 2569) ซึ่งอาจกดดัน near-term earnings growth",
+    "<b>Capex หนักกดกระแสเงินสด:</b> แผนลงทุน grid modernization + clean energy transition ขนาดใหญ่ทำให้ FCF ติดลบต่อเนื่อง ต้องพึ่งพาการกู้ยืม/ออกหุ้นเพิ่ม — หนี้สินสูง (D/E ~2.29x)",
+    "<b>Payout Ratio สูง:</b> อัตราจ่ายปันผล ~73.7% ของกำไร TTM ค่อนข้างสูงเทียบ utility peer ทั่วไป จำกัดพื้นที่เพิ่มปันผลในอนาคตหากกำไรโตช้ากว่าคาด",
+    "<b>Aging Nuclear Asset (Fermi 2):</b> โรงไฟฟ้านิวเคลียร์ Fermi 2 กำลังยื่นขอต่อใบอนุญาตดำเนินงาน ความเสี่ยงด้านกฎระเบียบ/ค่าใช้จ่ายบำรุงรักษาหรือปิดซ่อมฉุกเฉินกระทบต้นทุนดำเนินงาน",
+    "<b>Q1 2026 Earnings Miss:</b> ผลประกอบการ Q1 2569 พลาดคาดการณ์กำไร จากธุรกิจเทรดพลังงาน (energy trading) ขาดทุน แม้ธุรกิจ electric utility หลักยังแข็งแกร่ง",
+    "<b>Legal/Environmental Liability:</b> ศาลสั่งจ่ายค่าปรับ $100 ล้าน จากการละเมิด Clean Air Act ที่โรงงาน coke facility (ก.พ. 2569) สะท้อนความเสี่ยงด้านสิ่งแวดล้อม/กฎระเบียบต่อเนื่อง"
+  ],
+  "extras": [],
+  "v2Display": {
+    "targets": [
+      115.9,
+      160.76,
+      185.98
+    ],
+    "rets": {
+      "texts": [
+        "−4.6% รวม / ~−1.6%/ปี",
+        "+32.4% รวม / ~9.8%/ปี",
+        "+53.1% รวม / ~15.3%/ปี"
+      ],
+      "neg": "−",
+      "perYear": "cagr",
+      "div": false
+    },
+    "driverEnds": [
+      "~$7.24",
+      "~$8.37",
+      "~$8.86"
+    ],
+    "s6": [
+      {
+        "head": "EPS +1%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$7.24"
+          ],
+          [
+            "P/E ออก",
+            "16x"
+          ],
+          [
+            "ปันผลสะสม 3 ปี (แยก ไม่รวมในเป้า)",
+            "~$14.4"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +6%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$8.37"
+          ],
+          [
+            "P/E ออก",
+            "19.2x"
+          ],
+          [
+            "ปันผลสะสม 3 ปี (แยก ไม่รวมในเป้า)",
+            "~$15.4"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +8%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$8.86"
+          ],
+          [
+            "P/E ออก",
+            "21x"
+          ],
+          [
+            "ปันผลสะสม 3 ปี (แยก ไม่รวมในเป้า)",
+            "~$16.4"
+          ]
+        ]
+      }
+    ]
+  },
+  "_sig": "sha256:4ee7baae2425974ea7e6eba471ddc361a85748aaeebd3e1118fb13ae0048fb75"
+}
