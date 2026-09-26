@@ -16,9 +16,13 @@
  *           guard เดียวกับ convert --write · merge market ของ migrator → checkDoc 0 error + ตัวเลขหลักตรง v2 (การปัดที่พิมพ์) → เขียน .json ลบ .html
  *           --accept-drift: FV · FV low/high · เป้า 3 ฉาก · MOS คลาดได้ ≤ 1 หน่วยของหลักสุดท้ายที่ v2 พิมพ์ (verdict ต้องเท่ากัน) · พิมพ์ drift list
  *           equivalence gate = ข้อมูลเท่านั้น · ตรรกะ = tools/migrate-v3/transcribe.js
- *   audit   [<SYM>…] [--all] [--out PATHBASE] [--reports-dir D]   (Plan 4c-audit · อ่านอย่างเดียว · tools/migrate-v3/audit.js)
+ *   audit   [<SYM>…] [--all] [--out PATHBASE] [--reports-dir D] [--v2-repo DIR]   (Plan 4c-audit · อ่านอย่างเดียว · tools/migrate-v3/audit.js)
  *           ใบ v3 ที่มี meta.migratedFrom: v2 สุดท้ายใน git vs v3 render แบบเว็บ (ที่ market ของ v2) ด้วย EQ.compare + sanity บนหน้า v3
  *           → PATHBASE.csv (symbol,status,valueDiffs,roundingDiffs,textLost,sanity) + .md · exit 1 เมื่อมี valueDiffs > 0 หรือ sanity ตก
+ *   remigrate <SYM…|--all-failing <audit.csv>> [--reports-dir D] [--v2-repo DIR] [--write] [--today YYYY-MM-DD]   (display-fix · tools/migrate-v3/remigrate.js)
+ *           ใบ migrate ที่แสดงค่าไม่เท่าหน้า v2: migrator ที่แก้แล้ว (fresh) หรือใบเดิม + v2Display (graft) · คง meta.migratedFrom (+ prevHash ⇒ updated ไม่ขยับ)
+ *           เขียนเฉพาะเมื่อ audit สะอาด + checkDoc 0 error + ราคาอื่นไม่มี error ใหม่ · พิมพ์ FIXED / STILL-FAILING <เหตุผล> · ไม่ --write = ตรวจอย่างเดียว
+ * ★ convert --write / adopt ต้องผ่าน display audit ด้วย (valueDiffs 0 · sanity ผ่าน — audit.auditDoc เทียบหน้า v2 ที่ market ของหน้า v2)
  * ★ --write ใส่ reports/ จริงต้องมี env MIGRATE_V3_ALLOW_REAL=1 (Plan 4c ตั้ง · PR นี้ไม่ตั้งนอก scratch rehearsal)
  * ★ นาฬิกา gate: sweep / convert dry-run = values.priceDate ของใบ (ไม่ขึ้นกับวันนี้ — E27 ไม่ใช่คุณสมบัติของการ migrate)
  *   · convert --write = วันนี้ (Asia/Bangkok) เหมือน npm run verify · --today YYYY-MM-DD แทนได้ (review T7 M-4)
@@ -44,12 +48,13 @@ const RP = require('./migrate-v3/report.js');
 const BT = require('./migrate-v3/batch.js');
 const TR = require('./migrate-v3/transcribe.js');
 const AU = require('./migrate-v3/audit.js');
+const RMG = require('./migrate-v3/remigrate.js');
 
 class UsageError extends Error {}
 const ISO_RE = /^\d{4}-\d{2}-\d{2}$/;
 
 function parseArgs(argv) {
-  const VAL = { '--reports-dir': 'reportsDir', '--head-manifest': 'headManifest', '--out': 'out', '--limit': 'limit', '--today': 'today', '--n': 'n', '--model': 'model', '--work-dir': 'workDir', '--doc': 'doc' };
+  const VAL = { '--reports-dir': 'reportsDir', '--head-manifest': 'headManifest', '--out': 'out', '--limit': 'limit', '--today': 'today', '--n': 'n', '--model': 'model', '--work-dir': 'workDir', '--doc': 'doc', '--all-failing': 'allFailing', '--v2-repo': 'v2Repo' };
   const o = { _: [], only: null, write: false, acceptDrift: false, noStale: false, force: false };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
@@ -240,6 +245,9 @@ function runConvert(symIn, opts, log, deps) {
   if (m.bucket === 'VALUE-DRIFT' && !o.acceptDrift) { say(`✗ ${sym}: VALUE-DRIFT — --write ต้องมี --accept-drift`); return 2; }
   // review M-3: ไม่มีแถว manifest = migratedFrom ว่าง ⇒ build ประทับ updated ใหม่ — ยอมเฉพาะเมื่อผู้ใช้ส่ง --head-manifest มาเอง
   if (!o.headManifest && !o.manifest.get(sym)) { say(`✗ ${sym}: ไม่มีแถวใน manifest HEAD:reports.json — --write ปฏิเสธ (ส่ง --head-manifest FILE ถ้าตั้งใจ)`); return 1; }
+  // display-fix: หน้า v3 ต้องแสดงค่าเท่าหน้า v2 (display audit — ตัวเดียวกับ audit/remigrate) · ถัง CLEAN/VALUE-DRIFT ไม่พอ
+  const da = displayGate(sym, m.doc, m.raw, o.seeds);
+  if (da.length) { say(`✗ ${sym}: display audit ไม่ผ่าน — --write ปฏิเสธ (หน้า v3 จะแสดงค่าต่างจากหน้า v2)`); for (const x of da) say(`  ✗ ${x}`); return 1; }
   // review M-4: gate ตอนเขียน = วันนี้ (Asia/Bangkok) เหมือน npm run verify · --today แทนได้ · sweep ยังใช้ priceDate (ไม่ขึ้นกับนาฬิกา)
   const gateDay = o.today || FD.todayBangkok();
   const json = path.join(o.reportsDir, sym + '.json');
@@ -258,6 +266,23 @@ function runConvert(symIn, opts, log, deps) {
   say(`✓ ${sym}: เขียน ${path.basename(json)} · ลบ ${sym}.html · checkDoc 0 error${g.warnings && g.warnings.length ? ` · ${g.warnings.length} warning` : ''} · gate วันที่ ${gateDay}${gateDay !== m.today ? ` (≠ priceDate ${m.today})` : ''}`);
   say('build ทันทีก่อนแก้ — แก้ก่อน build ครั้งแรก = การแก้นั้นไม่ถูกประทับ updated (คง updated ของ v2) (Task 3 · D1)');
   return 0;
+}
+
+/** display audit ของ doc ที่กำลังจะเขียน เทียบหน้า v2 (raw) → [เหตุผลที่ตก] · ว่าง = ผ่าน (convert --write / adopt ใช้ตัวเดียวกัน) */
+function displayGate(sym, doc, raw, seeds) {
+  const r = AU.auditDoc(sym, doc, { raw, ref: 'v2' }, { seeds });
+  const out = [];
+  if (r.valueDiffs) out.push(`valueDiffs ${r.valueDiffs}: ${r.values.slice(0, 3).map((x) => `${x.zone}: ${x.del} → ${x.ins}`).join(' · ')}`);
+  for (const x of r.sanity) out.push(`sanity: ${x}`);
+  return out;
+}
+
+/** remigrate — display-fix (tools/migrate-v3/remigrate.js) */
+function runRemigrateCli(syms, opts, log) {
+  if (opts.allFailing && syms.length) throw new UsageError('remigrate: ใช้ <SYM>… หรือ --all-failing <audit.csv> อย่างใดอย่างหนึ่ง');
+  const list = opts.allFailing ? RMG.failingOf(fs.readFileSync(opts.allFailing, 'utf8')) : syms.map((x) => String(x).toUpperCase());
+  if (!list.length) throw new UsageError('remigrate ต้องมี <SYM>… หรือ --all-failing <audit.csv>');
+  return RMG.runRemigrate(list, { ...opts, seeds: opts.seeds || seedsOf() }, log, { migrateOne: (sym, o) => migrateOne(sym, { ...o, stats: o.stats || { apxMs: 0 } }), isGuarded }).code;
 }
 
 /** batch — spec §3.7 ฉ · plan 4c-prep D6 · ★ เขียนได้เฉพาะ reports/ ของ checkout นี้ (ship --migrate commit ที่นี่) + env MIGRATE_V3_ALLOW_REAL=1 */
@@ -296,11 +321,12 @@ function runAuditCli(syms, opts, log) {
   let head = '?';
   try { head = cp.execFileSync('git', ['describe', '--always', '--dirty'], { cwd: ROOT, stdio: ['ignore', 'pipe', 'ignore'] }).toString().trim(); } catch (e) { /* ไม่ใช่ git */ }
   const reportsRel = opts.reportsDir.startsWith(ROOT + path.sep) ? path.relative(ROOT, opts.reportsDir) : opts.reportsDir;
-  return AU.runAudit(syms, { reportsDir: opts.reportsDir, all: !!opts.all, seeds: opts.seeds || seedsOf(), outBase }, say, { date, head, reportsRel }).code;
+  const v2Of = opts.v2Repo ? (sym) => AU.v2Source(sym, path.join(path.resolve(opts.v2Repo), 'reports')) : undefined;
+  return AU.runAudit(syms, { reportsDir: opts.reportsDir, all: !!opts.all, seeds: opts.seeds || seedsOf(), outBase, v2Of }, say, { date, head, reportsRel }).code;
 }
 
 // transcribe.js ใช้ท่อ/guard ชุดเดียวกับ convert (ไม่ require วงกลับ)
-const TRANSCRIBE_ENV = { migrateOne, ctxOf, isGuarded };
+const TRANSCRIBE_ENV = { migrateOne, ctxOf, isGuarded, displayGate };
 
 function main(argv) {
   let o;
@@ -313,7 +339,8 @@ function main(argv) {
     if (cmd === 'draft') { if (o._.length !== 1) throw new UsageError('draft ต้องมี <SYM> ตัวเดียว'); return TR.runDraft(o._[0], o, null, TRANSCRIBE_ENV); }
     if (cmd === 'adopt') { if (o._.length !== 1) throw new UsageError('adopt ต้องมี <SYM> ตัวเดียว'); return TR.runAdopt(o._[0], o, null, TRANSCRIBE_ENV); }
     if (cmd === 'audit') return runAuditCli(o._, o);
-    throw new UsageError('ใช้: migrate-v3.js sweep|convert|batch|draft|adopt|audit …');
+    if (cmd === 'remigrate') return runRemigrateCli(o._, o);
+    throw new UsageError('ใช้: migrate-v3.js sweep|convert|batch|draft|adopt|audit|remigrate …');
   } catch (e) {
     if (e instanceof UsageError) { process.stderr.write(`✗ ${e.message}\n`); return 1; }
     process.stderr.write(`✗ ${e.stack || e}\n`);
@@ -323,4 +350,4 @@ function main(argv) {
 
 if (require.main === module) process.exitCode = main(process.argv.slice(2));
 
-module.exports = { runSweep, runConvert, runBatchCli, runAuditCli, migrateOne, rowOf, parseArgs, loadManifest, isRealReports, isCheckoutReports, isGuarded, ctxOf, main };
+module.exports = { runSweep, runConvert, runBatchCli, runAuditCli, runRemigrateCli, displayGate, migrateOne, rowOf, parseArgs, loadManifest, isRealReports, isCheckoutReports, isGuarded, ctxOf, main };

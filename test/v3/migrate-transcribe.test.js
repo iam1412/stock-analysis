@@ -34,7 +34,8 @@ const aaplRaw = fs.readFileSync(path.join(REP, 'AAPL.html'));
   t(/\| FV low \| 222 \|/.test(brief) && /\| FV high \| 315 \|/.test(brief) && /\| Scenario years \| 3 \|/.test(brief), 'brief: FV low/high + years');
   t(/\| Verdict class \| bad \|/.test(brief) && /\| MOS \| −25% \|/.test(brief) && /\| Currency \| USD \|/.test(brief) && /\| Analysis date \|[^\n]*22–23 มิ\.ย\. 2026/.test(brief), 'brief: verdict · MOS · currency · analysis date');
   t(/node tools\/migrate-v3\.js adopt AAPL/.test(brief) && /ห้ามวิเคราะห์ใหม่/.test(brief), 'brief: next step + owner directive');
-  t(/FV[^\n]*262[^\n]*260\.76[^\n]*✗/.test(brief), 'brief: the migrator draft vs v2 status per key number', (brief.match(/\| FV \|[^\n]*/) || [''])[0]);
+  // display-fix: the migrator now carries the author's FV (v2Display.fv) ⇒ the draft shows v2's 262 (was 260.76 ✗ before)
+  t(/FV[^\n]*262[^\n]*262\.00[^\n]*✓/.test(brief) && doc.v2Display && doc.v2Display.fv === 262, 'brief: the migrator draft vs v2 status per key number (draft carries the author FV)', (brief.match(/\| FV \|[^\n]*/) || [''])[0]);
   const again = cli(['draft', 'AAPL', ...common, '--work-dir', WORK]);
   t(again.code === 1 && /--force/.test(again.out), 'draft refuses to overwrite an existing draft without --force', again.out.slice(-200));
   fs.writeFileSync(jf, '{"edited":true}');
@@ -53,7 +54,10 @@ const aaplRaw = fs.readFileSync(path.join(REP, 'AAPL.html'));
 
 // the "transcriber": solve fvWeights so the three fv legs give v2's FV 262 (ZTS pilot pattern) — nothing else changes
 const WF = path.join(WORK, 'AAPL.json');
-const base = JSON.parse(fs.readFileSync(WF, 'utf8'));
+// display-fix: the migrator draft now carries v2Display (the author's figures as the v2 page shows them) — `draft`
+//   `base` = the same draft WITHOUT v2Display (= a draft from before the fix) — the key-number refusals below keep testing adopt's checks on it
+const draft = JSON.parse(fs.readFileSync(WF, 'utf8'));
+const base = (() => { const d = JSON.parse(JSON.stringify(draft)); delete d.v2Display; return d; })();
 function transcribed() {
   const d = JSON.parse(JSON.stringify(base));
   const x = (315 - 262) / (315 * 2 - (247.8 + 219.4804936849534));   // w0 = w1 = x · w2 = 1 − 2x
@@ -97,16 +101,28 @@ const adopt = (extra, env) => cli(['adopt', 'AAPL', ...common, '--doc', WF, '--t
   const MV = require('../../tools/migrate-v3.js');
   const c6 = TR.runAdopt('AAPL', { ...MV.parseArgs(['--reports-dir', REP, '--no-stale', '--doc', WF, '--today', PD]), manifest: new Map() }, (x) => lines.push(x), MV);
   t(c6 === 1 && lines.some((l) => /manifest/.test(l)) && !fs.existsSync(path.join(REP, 'AAPL.json')), 'adopt without a manifest row → refused', lines.join('\n'));
-  // checkDoc fails after the write → .html restored byte-identical, .json removed
+  // checkDoc fails after the write → .html restored byte-identical, .json removed (display-fix: the migrator draft reaches the write)
+  put(JSON.parse(JSON.stringify(draft)));
   const l7 = [];
   const c7 = TR.runAdopt('AAPL', { ...MV.parseArgs([...common, '--doc', WF, '--today', PD]) }, (x) => l7.push(x), MV, { checkDoc: () => ({ errors: [{ id: 'E99', msg: 'injected' }], warnings: [] }) });
   t(c7 === 1 && fs.readFileSync(path.join(REP, 'AAPL.html')).equals(aaplRaw) && !fs.existsSync(path.join(REP, 'AAPL.json')) && l7.some((l) => /E99/.test(l)), 'adopt: checkDoc error after write → rolled back exactly', l7.join('\n'));
 }
 
+// ── display-fix: adopt also needs the display audit (the whole page shows v2's values — not only the key numbers) ──
+{
+  put(transcribed());   // key numbers match v2 (fvWeights solved to 262) but the page still differs (gauge ticks · targets · cards …)
+  const r = adopt();
+  t(r.code === 1 && /✓ FV: v2 262 · v3 262\.00/.test(r.out) && /✗ display audit valueDiffs \d+/.test(r.out) && fs.existsSync(path.join(REP, 'AAPL.html')) && !fs.existsSync(path.join(REP, 'AAPL.json')),
+    'adopt refuses a transcription whose key numbers match but whose page displays other values (display audit) — nothing written', r.out.slice(-800));
+}
+
 // ── adopt passes ──
 {
   // stale draft: the nightly cron patched the .html after draft → v2Hash in the draft is stale · updated = manifest row → adopt re-derives
-  const d = transcribed(); const freshMf = d.meta.migratedFrom; d.meta.migratedFrom = { ...freshMf, v2Hash: '000000000000' }; put(d);
+  //   display-fix: the migrator draft itself (v2Display = the author's figures) is the correct transcription now
+  const d = JSON.parse(JSON.stringify(draft)); const freshMf = d.meta.migratedFrom; d.meta.migratedFrom = { ...freshMf, v2Hash: '000000000000' };
+  // one author word dropped from the verdict body → the equivalence gate is not CLEAN (text lost) while every displayed value still matches
+  d.prose.verdictBody = d.prose.verdictBody.replace(/\s*\S+\s*$/, ''); put(d);
   const r = adopt();
   t(r.code === 0 && fs.existsSync(path.join(REP, 'AAPL.json')) && !fs.existsSync(path.join(REP, 'AAPL.html')), 'adopt a correct transcription: .json written, .html deleted', r.out.slice(-800));
   t(/✓ FV: v2 262 · v3 262\.00/.test(r.out) && /✓ verdict: v2 bad · v3 bad/.test(r.out), 'adopt prints each key-number check');
@@ -133,24 +149,28 @@ const adopt = (extra, env) => cli(['adopt', 'AAPL', ...common, '--doc', WF, '--t
   const SRE = path.join(REP, 'SRE.html'), SREJ = path.join(REP, 'SRE.json'), sreRaw = fs.readFileSync(SRE);
   const dr = cli(['draft', 'SRE', ...common, '--work-dir', WORK, '--today', PD]);
   t(dr.code === 0, 'draft SRE', dr.out.slice(-300));
-  const sre = JSON.parse(fs.readFileSync(path.join(WORK, 'SRE.json'), 'utf8'));
+  const sreDraft = JSON.parse(fs.readFileSync(path.join(WORK, 'SRE.json'), 'utf8'));
+  // display-fix: the draft carries the author's FV/targets (v2Display) · the ACMR-shaped one-step drift below = that draft with FV 103.94 / Base 112.46
+  //   (the values the pre-fix draft computed) — the rest of the page stays the author's, so the display audit sees only the one-step drift
+  t(sreDraft.v2Display && sreDraft.v2Display.fv === 103.95 && sreDraft.v2Display.targets[1] === 113, 'SRE draft carries the author FV 103.95 + Base target 113 (v2Display)', JSON.stringify(sreDraft.v2Display));
+  const sre = JSON.parse(JSON.stringify(sreDraft)); sre.v2Display.fv = 103.94; sre.v2Display.targets[1] = 112.46;
   const SF = path.join(WORK, 'SRE.adopt.json');
   const adoptS = (extra) => cli(['adopt', 'SRE', ...common, '--doc', SF, '--today', '2026-09-11', ...(extra || [])]);
   put(sre, SF);
   const no = adoptS();
   t(no.code === 1 && /✗ FV: v2 103\.95 · v3 103\.94/.test(no.out) && /✗ Base target: v2 113 · v3 112\.46/.test(no.out) && fs.existsSync(SRE) && !fs.existsSync(SREJ), 'ACMR-shaped drift without --accept-drift → refused, nothing written', no.out.slice(-700));
   // 2-step: Base exit multiple scaled so the target lands 1.5 units off "113" → refused even with the flag, v2 vs v3 listed
-  const two = JSON.parse(JSON.stringify(sre)); two.scenarios.cases[1].exitMultiple *= 111.5 / 112.46; delete two.scenarios.exitDp; put(two, SF);
+  const two = JSON.parse(JSON.stringify(sre)); two.v2Display.targets[1] = 111.5; put(two, SF);
   const r2 = adoptS(['--accept-drift']);
   t(r2.code === 1 && /✗ Base target: v2 113 · v3 111\.\d\d \(เกิน 1 หน่วย/.test(r2.out) && fs.existsSync(SRE) && !fs.existsSync(SREJ), 'a 2-step target difference is refused even with --accept-drift (v2 vs v3 listed)', r2.out.slice(-700));
   // verdict-class change is refused even with the flag (P/E leg multiple raised → MOS crosses the verdict zone)
-  const vd = JSON.parse(JSON.stringify(sre)); vd.legs[1].inputs.multiple *= 1.6; put(vd, SF);
+  const vd = JSON.parse(JSON.stringify(sre)); vd.v2Display.fv = +(103.94 * 1.6).toFixed(2); put(vd, SF);
   const r3 = adoptS(['--accept-drift']);
   t(r3.code === 1 && /✗ verdict: v2 ok · v3 (?!ok)\w+/.test(r3.out) && !fs.existsSync(SREJ), 'a verdict-class change is refused with --accept-drift', r3.out.split('\n').filter((l) => /verdict|MOS/.test(l)).join(' | '));
   // with the flag the one-step drift passes and the drift list is printed
   put(sre, SF);
   const yes = adoptS(['--accept-drift']);
-  t(yes.code === 0 && fs.existsSync(SREJ) && !fs.existsSync(SRE), 'ACMR-shaped drift with --accept-drift → adopted', yes.out.slice(-900));
+  t(yes.code === 0 && fs.existsSync(SREJ) && !fs.existsSync(SRE), 'ACMR-shaped drift with --accept-drift → adopted', yes.out.slice(-2500));
   t(/≈ FV: v2 103\.95 · v3 103\.94 \(drift/.test(yes.out) && /≈ Base target: v2 113 · v3 112\.46/.test(yes.out) && /drift list \(2\): FV v2 103\.95 → v3 103\.94 · Base target v2 113 → v3 112\.46/.test(yes.out), 'drift list printed (FV + Base target)', (yes.out.match(/drift list[^\n]*/) || [''])[0]);
   t(/✓ FV low: v2 96\.9/.test(yes.out) && /✓ FV high: v2 111/.test(yes.out) && /✓ verdict: v2 ok · v3 ok/.test(yes.out), '--accept-drift: FV low/high checked (blocking) · verdict equal');
   fs.rmSync(SREJ, { force: true }); fs.writeFileSync(SRE, sreRaw);

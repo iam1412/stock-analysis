@@ -643,9 +643,12 @@ function reportEntries(dir) {
 }
 // updated ของแถว manifest (spec §8 · Plan 4b D1): hash ตรง = คงเดิม · ใบ migrate (meta.migratedFrom) ที่แถว committed ยังถือ hash v2 = คง
 // updated ที่ migrator ลอกมาจาก HEAD:reports.json · นอกนั้น = ประทับ now (รวมไม่มีแถวเดิม — ไม่มีอะไรให้คง)
+// + display-fix: ใบที่ remigrate แทนใบ migrate เดิม (meta.migratedFrom.prevHash = hash ของใบเดิมในแถว committed) = คง updated ของ v2 เหมือนกัน
+//   (ถอดใหม่จากหน้า v2 เดิม ไม่ใช่งานวิเคราะห์ใหม่) · แก้ใบหลัง build ครั้งแรก = แถวถือ hash ใหม่แล้ว ⇒ ประทับ now ตามปกติ
 function updatedFor(old, h, mf, nowISO) {
   if (old && old.hash === h && old.updated) return old.updated;
   if (mf && old && old.hash === mf.v2Hash && mf.updated) return mf.updated;
+  if (mf && old && mf.prevHash && old.hash === mf.prevHash && mf.updated) return mf.updated;
   return nowISO;
 }
 function loadReportSource(dir, name, seeds) {

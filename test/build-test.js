@@ -471,6 +471,11 @@ ok(b.injectTA(taBody, 'AAPL', null, { currency: 'USD' }, 'assets/ta-abc123.js') 
   ok(b.updatedFor({ hash: 'other0000000', updated: OLD }, 'v3hash000001', mf, NOW) === NOW, 'row hash ≠ v2Hash (cron moved the v2 hash after the migrator ran) → now (two-build gate catches it)');
   ok(b.updatedFor({ hash: 'x', updated: OLD }, 'y', null, NOW) === NOW, 'no migratedFrom → today\'s rule');
   ok(b.updatedFor({ hash: 'y', updated: OLD }, 'y', null, NOW) === OLD, 'no migratedFrom, hash equal → keep (today\'s rule)');
+  // display-fix (remigrate): ใบใหม่แทนใบ migrate เดิม — prevHash = hash ของใบเดิมที่แถว committed ถือ → คง updated ของ v2
+  const mfR = { ...mf, prevHash: 'v3hash000001' };
+  ok(b.updatedFor({ hash: 'v3hash000001', updated: OLD }, 'v3hash000009', mfR, NOW) === OLD, 'remigrate: row holds prevHash (the replaced migrated doc) → keep updated');
+  ok(b.updatedFor({ hash: 'v3hash000009', updated: OLD }, 'v3hash000010', mfR, NOW) === NOW, 'remigrate then a real UPDATE (row now holds the remigrated hash) → stamp now');
+  ok(b.updatedFor({ hash: 'v3hash000001', updated: OLD }, 'v3hash000009', mf, NOW) === NOW, 'no prevHash → the rule before display-fix (now)');
 }
 
 // ── Plan 4b Task 3 fix round 1 (review M1): pin the WIRING — loadReportSource ส่ง migratedFrom ต่อ + ลูป build เรียก updatedFor ──
