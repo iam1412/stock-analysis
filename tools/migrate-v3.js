@@ -16,6 +16,9 @@
  *           guard เดียวกับ convert --write · merge market ของ migrator → checkDoc 0 error + ตัวเลขหลักตรง v2 (การปัดที่พิมพ์) → เขียน .json ลบ .html
  *           --accept-drift: FV · FV low/high · เป้า 3 ฉาก · MOS คลาดได้ ≤ 1 หน่วยของหลักสุดท้ายที่ v2 พิมพ์ (verdict ต้องเท่ากัน) · พิมพ์ drift list
  *           equivalence gate = ข้อมูลเท่านั้น · ตรรกะ = tools/migrate-v3/transcribe.js
+ *   audit   [<SYM>…] [--all] [--out PATHBASE] [--reports-dir D]   (Plan 4c-audit · อ่านอย่างเดียว · tools/migrate-v3/audit.js)
+ *           ใบ v3 ที่มี meta.migratedFrom: v2 สุดท้ายใน git vs v3 render แบบเว็บ (ที่ market ของ v2) ด้วย EQ.compare + sanity บนหน้า v3
+ *           → PATHBASE.csv (symbol,status,valueDiffs,roundingDiffs,textLost,sanity) + .md · exit 1 เมื่อมี valueDiffs > 0 หรือ sanity ตก
  * ★ --write ใส่ reports/ จริงต้องมี env MIGRATE_V3_ALLOW_REAL=1 (Plan 4c ตั้ง · PR นี้ไม่ตั้งนอก scratch rehearsal)
  * ★ นาฬิกา gate: sweep / convert dry-run = values.priceDate ของใบ (ไม่ขึ้นกับวันนี้ — E27 ไม่ใช่คุณสมบัติของการ migrate)
  *   · convert --write = วันนี้ (Asia/Bangkok) เหมือน npm run verify · --today YYYY-MM-DD แทนได้ (review T7 M-4)
@@ -40,6 +43,7 @@ const AP = require('./migrate-v3/analysis-px.js');
 const RP = require('./migrate-v3/report.js');
 const BT = require('./migrate-v3/batch.js');
 const TR = require('./migrate-v3/transcribe.js');
+const AU = require('./migrate-v3/audit.js');
 
 class UsageError extends Error {}
 const ISO_RE = /^\d{4}-\d{2}-\d{2}$/;
@@ -58,6 +62,7 @@ function parseArgs(argv) {
     else if (a === '--accept-drift') o.acceptDrift = true;
     else if (a === '--no-stale') o.noStale = true;
     else if (a === '--force') o.force = true;
+    else if (a === '--all') o.all = true;
     else if (a.startsWith('--')) throw new UsageError(`ไม่รู้จักตัวเลือก ${a}`);
     else o._.push(a);
   }
@@ -280,6 +285,20 @@ function runBatchCli(tablePath, opts, log) {
   return BT.runBatch(rows, { classes: opts.classes, n: opts.n || 1, model: opts.model, noPush: !!opts.noPush, dryRun: !!opts.dryRun }, deps).code;
 }
 
+/** audit — อ่านอย่างเดียว · --out PATHBASE (ค่าตั้งต้น docs/superpowers/specs/<วันนี้>-v3-display-audit) · ห้ามชี้เข้า reports/ */
+function runAuditCli(syms, opts, log) {
+  const say = log || ((s) => process.stdout.write(s + '\n'));
+  if (opts.all && syms.length) throw new UsageError('audit: ใช้ <SYM>… หรือ --all อย่างใดอย่างหนึ่ง');
+  const date = FD.todayBangkok();
+  const outBase = path.resolve(opts.out || path.join(ROOT, 'docs', 'superpowers', 'specs', `${date}-v3-display-audit`));
+  const ancestors = []; for (let d = path.dirname(outBase); ; d = path.dirname(d)) { ancestors.push(d); if (path.dirname(d) === d) break; }
+  if (ancestors.some(isGuarded)) { say(`✗ audit: --out ชี้เข้า reports/ (${outBase}) — audit เป็น read-only`); return 1; }
+  let head = '?';
+  try { head = cp.execFileSync('git', ['describe', '--always', '--dirty'], { cwd: ROOT, stdio: ['ignore', 'pipe', 'ignore'] }).toString().trim(); } catch (e) { /* ไม่ใช่ git */ }
+  const reportsRel = opts.reportsDir.startsWith(ROOT + path.sep) ? path.relative(ROOT, opts.reportsDir) : opts.reportsDir;
+  return AU.runAudit(syms, { reportsDir: opts.reportsDir, all: !!opts.all, seeds: opts.seeds || seedsOf(), outBase }, say, { date, head, reportsRel }).code;
+}
+
 // transcribe.js ใช้ท่อ/guard ชุดเดียวกับ convert (ไม่ require วงกลับ)
 const TRANSCRIBE_ENV = { migrateOne, ctxOf, isGuarded };
 
@@ -293,7 +312,8 @@ function main(argv) {
     if (cmd === 'batch') { if (o._.length !== 1) throw new UsageError('batch ต้องมี <table.csv> ตัวเดียว'); return runBatchCli(o._[0], o); }
     if (cmd === 'draft') { if (o._.length !== 1) throw new UsageError('draft ต้องมี <SYM> ตัวเดียว'); return TR.runDraft(o._[0], o, null, TRANSCRIBE_ENV); }
     if (cmd === 'adopt') { if (o._.length !== 1) throw new UsageError('adopt ต้องมี <SYM> ตัวเดียว'); return TR.runAdopt(o._[0], o, null, TRANSCRIBE_ENV); }
-    throw new UsageError('ใช้: migrate-v3.js sweep|convert|batch|draft|adopt …');
+    if (cmd === 'audit') return runAuditCli(o._, o);
+    throw new UsageError('ใช้: migrate-v3.js sweep|convert|batch|draft|adopt|audit …');
   } catch (e) {
     if (e instanceof UsageError) { process.stderr.write(`✗ ${e.message}\n`); return 1; }
     process.stderr.write(`✗ ${e.stack || e}\n`);
@@ -303,4 +323,4 @@ function main(argv) {
 
 if (require.main === module) process.exitCode = main(process.argv.slice(2));
 
-module.exports = { runSweep, runConvert, runBatchCli, migrateOne, rowOf, parseArgs, loadManifest, isRealReports, isCheckoutReports, isGuarded, ctxOf, main };
+module.exports = { runSweep, runConvert, runBatchCli, runAuditCli, migrateOne, rowOf, parseArgs, loadManifest, isRealReports, isCheckoutReports, isGuarded, ctxOf, main };
