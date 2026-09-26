@@ -48,7 +48,7 @@ const rowOf = (csv, s) => (csv.split('\n').find((l) => l.startsWith(s + ',')) ||
   const r = cli(['--all', '--reports-dir', REP, '--out', OUT]);
   const csv = fs.existsSync(OUT + '.csv') ? fs.readFileSync(OUT + '.csv', 'utf8') : '';
   t(r.code === 0, 'audit --all on correct migrations → exit 0', r.out);
-  t(csv.split('\n')[0] === 'symbol,status,valueDiffs,roundingDiffs,textLost,sanity', 'csv header');
+  t(csv.split('\n')[0] === 'symbol,status,valueDiffs,roundingDiffs,textLost,sanity,added,invented,addedList', 'csv header');
   t.eq(rowOf(csv, 'ZTS').slice(1, 6), ['OK', '0', '0', '0', ''], 'ZTS (committed deletion · price refreshed after): OK · 0 value · 0 rounding · 0 lost · sanity clean');
   t.eq(rowOf(csv, 'FER').slice(1, 3), ['OK', '0'], 'FER (deletion not committed → HEAD .html): OK · valueDiffs 0');
   const md = fs.readFileSync(OUT + '.md', 'utf8');
@@ -76,6 +76,20 @@ const rowOf = (csv, s) => (csv.split('\n').find((l) => l.startsWith(s + ',')) ||
   const csv = fs.readFileSync(OUT + '.csv', 'utf8');
   t(r.code === 1 && rowOf(csv, 'ZTS')[1] === 'VALUE-DIFF' && +rowOf(csv, 'ZTS')[2] > 0, 'wrong FV → VALUE-DIFF · valueDiffs > 0 · exit 1', r.out);
   t(/✗ ZTS VALUE-DIFF/.test(r.out) && fs.readFileSync(OUT + '.md', 'utf8').includes(`$${fv2}`), `the v2 FV $${fv2} appears in the listed value diffs`);
+  IO.write(path.join(REP, 'ZTS.json'), (() => { const d = JSON.parse(JSON.stringify(good)); delete d._sig; return d; })());
+}
+
+// ── a figure the v2 page never printed → INVENTED + exit 1 (numbers present on both pages alone cannot catch it) ──
+{
+  const good = IO.read(path.join(REP, 'ZTS.json'));
+  const bad = JSON.parse(JSON.stringify(good)); delete bad._sig;
+  bad.metrics.custom = (bad.metrics.custom || []).concat([{ label: 'EV/EBIT', value: '~31.7x', note: 'EV $98.76B' }]);
+  bad.metrics.cards = bad.metrics.cards.concat([`custom:${bad.metrics.custom.length - 1}`]).slice(-12);
+  IO.write(path.join(REP, 'ZTS.json'), bad);
+  const r = cli(['ZTS', '--reports-dir', REP, '--out', OUT]);
+  const csv = fs.readFileSync(OUT + '.csv', 'utf8');
+  t(r.code === 1 && rowOf(csv, 'ZTS')[1] === 'INVENTED' && +rowOf(csv, 'ZTS')[7] >= 1 && /invented:no v2 source@s1=31\.7/.test(csv), 'a new author-looking figure → INVENTED · invented ≥ 1 · listed · exit 1', r.out + csv);
+  t(/invented in ZTS/.test(r.out), 'summary line names the invented report', r.out);
   IO.write(path.join(REP, 'ZTS.json'), (() => { const d = JSON.parse(JSON.stringify(good)); delete d._sig; return d; })());
 }
 
