@@ -110,7 +110,37 @@ function tokenise(text, view, hits, field, opts) {
       }
     }
   }
+  // (c) display-fix2 (controller · VRTX "ราคาปัจจุบัน ($508.34)"): เงินที่ตามหลังคำว่าราคาปัจจุบัน ทันที = ราคาปัจจุบัน → {{px}} (pxPhraseLits)
+  if (opts && opts.pxPhrase && view && view.d && view.d.px > 0 && TK.TOKENS_V3.px) {
+    for (;;) {
+      const hit = pxPhraseLits(s, view.d.px)[0];
+      if (!hit) break;
+      s = s.slice(0, hit.at) + '{{px}}' + s.slice(hit.at + hit.lit.length); n++;
+      F.push(`prose:${where} "${hit.lit}" after a current-price phrase → {{px}} (live)`);
+    }
+  }
   return { text: s, D, F, n };
+}
+
+// ราคาปัจจุบันที่ผู้เขียนพิมพ์เป็นตัวเลข (display-fix2): เงินที่ตามหลัง "ราคาปัจจุบัน/ราคาตลาด/ราคาล่าสุด/ราคาหุ้น/ราคา" ทันที (วงเล็บ/~ ได้)
+//   ไม่นับ: มีวันที่ตามมา ("ราคา $508.34 ณ 18 ก.ย." = ราคาในอดีต) · "ราคาเป้า/เฉลี่ย/สูงสุด…" (คำอื่นคั่น) · ค่าห่างราคาที่ใช้เทียบเกิน ±35% (เงินอื่นที่ตามหลังคำว่าราคา)
+//   → [{lit, at}] ตามลำดับ · นอก {{token}}/แท็ก เท่านั้น — migrator (tokenise) และ audit (ส่วนเบี่ยง v2-stale-price-phrase) ใช้ตัวเดียวกัน
+const PX_PHRASE = /(?:ราคาปัจจุบัน|ราคาตลาด|ราคาล่าสุด|ราคาหุ้น|(?:^|[\s(>•·])ราคา)\s*[(]?\s*~?\s*$/;
+function pxPhraseLits(text, px) {
+  const s = String(text), out = [];
+  if (!(px > 0)) return out;
+  for (const [a, b] of freeSpans(s)) {
+    const seg = s.slice(a, b);
+    const R = CAND[0].re(); let m;
+    while ((m = R.exec(seg))) {
+      const lit = m[0].trim(), at = a + m.index + m[0].indexOf(lit);
+      const before = s.slice(Math.max(0, at - 24), at), after = s.slice(at + lit.length, at + lit.length + 16);
+      if (!PX_PHRASE.test(before) || /^\s*\)?\s*(?:ณ|เมื่อ|วันที่|\(?\s*[0-9]{1,2}\s)/.test(after)) continue;
+      const v = parseFloat(m[1].replace(/,/g, ''));
+      if (Math.abs(v - px) <= 0.35 * px) out.push({ lit, at, v });
+    }
+  }
+  return out;
 }
 
 const decOf = (s) => { const m = /[0-9][0-9,]*(?:\.([0-9]+))?/.exec(String(s)); return m && m[1] ? m[1].length : 0; };
@@ -141,4 +171,4 @@ function staleCopies(text, apx, d) {
   return out;
 }
 
-module.exports = { htmlToProse, tokenise, staleCopies, decode, bare, V2_TO_V3, freeSpans, CAND, shownOf };
+module.exports = { htmlToProse, tokenise, staleCopies, pxPhraseLits, decode, bare, V2_TO_V3, freeSpans, CAND, shownOf };

@@ -238,6 +238,14 @@ function deviationsOf(sym, served0, at, viewAt, v3At) {
       }
     }
   } catch (e) { e44V2 = []; e44V3 = []; }
+  // (4) ราคาปัจจุบันที่ผู้เขียนพิมพ์เป็นตัวเลขใน prose (display-fix2 · VRTX "ราคาปัจจุบัน ($508.34)") — migrator ใส่ {{px}} (ค่าตลาดต้องสด)
+  //     ฝั่ง v2 = เงินหลังคำว่าราคาปัจจุบัน (MP.pxPhraseLits บนต้นฉบับ) · ฝั่ง v3 = ราคาที่หน้า v3 แสดงที่ market เดียวกัน
+  let pxV2 = [], pxV3 = [];
+  try {
+    const MP = require('./prose.js');
+    const lits = MP.pxPhraseLits(MP.decode(PV.text(served0.replace(/<(script|style)\b[^>]*>[\s\S]*?<\/\1\s*>/gi, ' '))), viewAt.d.px);
+    if (lits.length) { pxV2 = lits.flatMap((l) => num(l.lit)); pxV3 = lits.flatMap(() => num(MP.shownOf('px', viewAt) || '')); }
+  } catch (e) { pxV2 = []; pxV3 = []; }
   const accept = (r) => {
     let x = num(r.del), y = num(r.ins);
     // ตัวเลขที่อยู่ทั้งสองฝั่ง (ห่าง ≤ 1 หน่วยที่ v2 พิมพ์ — บริบทของรัน "$278" → "$278.00" · เป้า "$212") ไม่ใช่ส่วนเบี่ยง · ตัดออกก่อน
@@ -245,6 +253,7 @@ function deviationsOf(sym, served0, at, viewAt, v3At) {
     if (!x.length) return null;
     if (r.zone === 's6' && badV2.length && subset(x, badV2) && subset(y, badV3)) return 'v2-inconsistent-returns';
     if (e44V2.length && subset(x, e44V2) && subset(y, e44V3)) return 'v2-stale-prose-e44';
+    if (pxV2.length && subset(x, pxV2) && subset(y, pxV3)) return 'v2-stale-price-phrase';
     return null;
   };
   return { served, list, rounding, accept };
@@ -335,7 +344,7 @@ function toCsv(rows) {
   return L.join('\n') + '\n';
 }
 const mdCell = (s) => String(s == null ? '' : s).replace(/\|/g, '\\|').replace(/\n/g, ' ');
-const DEV_CLASSES = ['v2-stale-card', 'v2-inconsistent-returns', 'v2-stale-prose-e44'];
+const DEV_CLASSES = ['v2-stale-card', 'v2-inconsistent-returns', 'v2-stale-prose-e44', 'v2-stale-price-phrase'];
 function toMd(rows, meta) {
   const n = (f) => rows.filter(f).length;
   const audited = rows.filter((r) => r.status !== 'SKIP');
@@ -352,7 +361,8 @@ function toMd(rows, meta) {
     L.push('## Deliberate deviations (controller rulings 26 Sep 2026 — the v3 page is right, not the v2 page)', '',
       '- `v2-stale-card`: a price-bound card no base reproduces at the v2 page\'s own price → v3 shows its live value',
       '- `v2-inconsistent-returns`: a scenario return the v2 page printed inconsistently with its own target (+dividends) at its own price → v3 computes it',
-      '- `v2-stale-prose-e44`: a price-bound prose literal in a report analysed since ' + RV.PROSE_TOKEN_SINCE + ' (E44) → v3 prints the live token', '');
+      '- `v2-stale-prose-e44`: a price-bound prose literal in a report analysed since ' + RV.PROSE_TOKEN_SINCE + ' (E44) → v3 prints the live token',
+      '- `v2-stale-price-phrase`: the author printed the current price as a number right after "ราคาปัจจุบัน/ราคา" → v3 prints the live price {{px}}', '');
     for (const c of DEV_CLASSES) { const xs = devs.filter((r) => r.deviations.some((d) => d.class === c)).map((r) => r.symbol); if (xs.length) L.push(`- ${c} (${xs.length}): ${xs.join(' ')}`); }
     L.push('');
   }

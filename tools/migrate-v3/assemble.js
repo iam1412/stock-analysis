@@ -651,7 +651,8 @@ function ffoBasisOf(parsed) {
   const texts = [].concat((parsed.s1cards || []).map((c) => c.k), (parsed.legs || []).flatMap((l) => [l.mname, l.mdesc]),
     (parsed.s6cols || []).flatMap((c) => [c.top ? c.top[1] : '', ...(c.lis || []).map((x) => x[0])]));
   const kinds = new Set();
-  for (const s of texts) for (const m of String(s || '').matchAll(/\b(Core\s*FFO|AFFO|FFO)\b/gi)) kinds.add(/core/i.test(m[1]) ? 'coreFfo' : m[1].toUpperCase() === 'AFFO' ? 'affo' : 'ffo');
+  // + FFOA (display-fix2 · UDR "FFOA/share" = FFO as adjusted ของบริษัท — ป้ายของผู้เขียน ไม่ใช่ FFO/AFFO)
+  for (const s of texts) for (const m of String(s || '').matchAll(/\b(Core\s*FFO|AFFO|FFOA|FFO)\b/gi)) kinds.add(/core/i.test(m[1]) ? 'coreFfo' : m[1].toUpperCase() === 'AFFO' ? 'affo' : m[1].toUpperCase() === 'FFOA' ? 'ffoa' : 'ffo');
   return kinds.size === 1 ? [...kinds][0] : null;
 }
 /** legend หมวด 2 — ตัดป้าย skeleton 3 ชิ้น (กติกาเดียวกับ equiv s2) · เศษ → text.legendNote (≤80 ไม่งั้น H) */
@@ -1060,7 +1061,7 @@ function assemble(parsed0, ctx) {
     const e44 = fd && fd.iso >= RV.PROSE_TOKEN_SINCE ? new Set(RV.proseBoundHits(parsed.html || '', view.d).map((h) => `${h.token}|${h.text}`)) : null;
     for (const z of proseZones(out, src)) {
       const hits = z.html ? RV.proseBoundHits(`<p>${z.html}</p>`, view.d) : [];
-      const r = MP.tokenise(z.obj[z.key], view, hits, z.field, { e44, only: z.only });
+      const r = MP.tokenise(z.obj[z.key], view, hits, z.field, { e44, only: z.only, pxPhrase: !z.only && /^prose\./.test(z.field) });
       z.obj[z.key] = r.text; D.push(...r.D); F.push(...(r.F || [])); tokens += r.n;
       apxStale.push(...MP.staleCopies(r.text, ctx.analysisPx, view.d));
     }

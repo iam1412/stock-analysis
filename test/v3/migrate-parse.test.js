@@ -41,7 +41,7 @@ const legsOf = (r) => r.legs.map((l) => { const m = LG.classifyName(l.mname, l.m
 // classifier + extractor — measured expectations
 const want = {
   AAPL: [['pe', true, { multiple: 30 }], ['dcf', true, { g1: 8, years1: 5, tg: 3.5, r: 8.5, rfCurrency: 'USD' }], ['analyst', false, null]],
-  BBL: [['pe', true, { multiple: 9 }], ['ddm', true, { g: 3, r: 9.5 }], ['pbv:justified', true, { g: 3, r: 9.5 }]],
+  BBL: [['pe', true, { multiple: 9 }], ['ddm', true, { g: 3, r: 9.5, d1: 10.5 }], ['pbv:justified', true, { g: 3, r: 9.5 }]],   // display-fix2: printed D₁ carried as inputs.d1
   CASY: [['pe', true, { multiple: 35 }], ['evebitda', true, { multiple: 17 }], ['pbv:justified', true, { g: 9, r: 11 }]],
   DPZ: [['pe', true, { multiple: 21 }], ['pfcf', true, { multiple: 19 }], ['pe', true, { multiple: 17 }]],
   FTV: [['pe', true, { multiple: 21.5 }], ['evebitda', true, { multiple: 18 }], ['fcfyield', true, { yield: 4.9 }]],
@@ -53,7 +53,8 @@ for (const [sym, exp] of Object.entries(want)) {
 }
 {
   const b = legsOf(load('BBL'));
-  t.near(b[1].override.dps, 10.194174757281553, 1e-9, 'BBL ddm: D₁ printed → override.dps = D₁/(1+g)');
+  // display-fix2 (controller · PKG): the printed D₁ is the author's number → inputs.d1 · no back-solved override.dps (D₁/(1+g) the author never printed)
+  t(b[1].inputs.d1 === 10.5 && !(b[1].override && b[1].override.dps != null), 'BBL ddm: D₁ printed → inputs.d1 10.5 (no back-solved override.dps)', JSON.stringify([b[1].inputs, b[1].override]));
   t.eq(b[2].override, { roe: 7.8, bvps: 302 }, 'BBL justified pbv: roe/bvps from the printed formula');
   const d = legsOf(load('DDOG'));
   t.eq([d[0].m, d[0].ok, d[0].override, d[1].m, d[2].m], ['pe', true, { eps: 2.95 }, 'dcf', 'analyst'], 'DDOG: pe with eps override · dcf · analyst leg');

@@ -165,4 +165,45 @@ const gate = (d) => CV.checkDoc(d, { skipSig: true, seeds: SEEDS, today: d.marke
   const ds = r5.doc.prose && r5.doc.prose.disclaimerSources;
   t(ds && ds.includes('เป้านักวิเคราะห์เฉลี่ย {{analyst.target}}') && ds.includes('ราคาปิด $150.00') && !/\{\{px\}\}/.test(ds), 'migrator: disclaimerSources analyst target → {{analyst.target}} · price literal stays', ds);
 }
+// ── extras (controller final scope): FFOA · DDM D₁ · live custom cards · driver/exit pairing under author cells · current-price phrase ──
+{
+  const d = mig();
+  t.eq(S.FFO_LABEL.ffoa, 'FFOA', 'FFO_LABEL: ffoa → "FFOA" (UDR)');
+  t.eq(S.validate({ ...d, fundamentals: { ...d.fundamentals, ffoBasis: 'ffoa' } }), [], 'schema: ffoBasis ffoa');
+  // DDM D₁ (PKG): the author's D₁ prints as-is, value = D₁/(r−g) · no back-solved dps
+  const ddm = d.legs.findIndex((l) => l.method === 'ddm');
+  const dd = { ...d, legs: d.legs.map((l, i) => (i === ddm ? { ...l, inputs: { ...l.inputs, d1: 6 }, override: undefined } : l)) };
+  dd.legs = dd.legs.map((l) => { const x = { ...l }; if (x.override === undefined) delete x.override; return x; });
+  t.eq(S.validate(dd), [], 'schema: ddm inputs.d1');
+  const lv = C.compute(dd, { seeds: SEEDS }).legs[ddm], i = dd.legs[ddm].inputs;
+  t(Math.abs(lv.value - 6 / ((i.r - i.g) / 100)) < 1e-9, 'legs: ddm with d1 = D₁/(r−g)');
+  t(src(dd).includes(`D₁ $6.00; g ${i.g}%, r ${i.r}%`), 'render: ddm line prints the author D₁');
+  t(has(S.validate({ ...dd, legs: dd.legs.map((l, k) => (k === ddm ? { ...l, inputs: { ...l.inputs, d1: -1 } } : l)) }), `legs[${ddm}].inputs.d1`), 'schema: ddm d1 must be > 0');
+  // live custom card (ZS "P/E Non-GAAP (FY26 จริง) ~46x" on EPS non-GAAP $4.21)
+  const cz = { ...d, metrics: { ...d.metrics, custom: [{ label: 'P/E Non-GAAP (FY26 จริง)', value: '~46x', note: 'EPS non-GAAP FY26 $4.21' }] }, v2Display: { custom: { 0: { op: 'pxOverBase', base: 4.21 } } } };
+  t.eq(S.validate(cz), [], 'schema: v2Display.custom (live custom card)');
+  const cv = (x) => (/<div class="k">P\/E Non-GAAP \(FY26 จริง\)<\/div><div class="v[^"]*">([^<]*)<\/div>/.exec(src(x)) || [])[1];
+  t.eq(cv(cz), `~${(d.market.px / 4.21).toFixed(0)}x`, 'render: custom P/E = price ÷ the author base (live)');
+  const cz2 = { ...cz, market: { ...cz.market, px: +(cz.market.px * 1.3).toFixed(2) } };
+  t(cv(cz2) !== cv(cz), 'render: the custom P/E follows the price');
+  t(has(S.validate({ ...cz, v2Display: { custom: { 3: { op: 'pxOverBase', base: 4.21 } } } }), 'v2Display.custom.3'), 'schema: custom index must exist');
+  t(has(S.validate({ ...cz, metrics: { ...cz.metrics, custom: [{ label: 'x', value: '{{pe}}x' }] } }), 'metrics.custom[0].value'), 'schema: a live custom card holds the author number, not a token');
+  const nw = { ...cz, meta: { ...cz.meta } }; delete nw.meta.migratedFrom;
+  t(has(S.validate(nw), 'v2Display', /migrate/), 'schema: NEW doc cannot carry v2Display.custom');
+  // driver/exit pairing: skipped only when every column carries the author rows (targets never come from driver × exit)
+  const pr = { ...d, scenarios: { ...d.scenarios, exitMetric: 'evsales' } };
+  t(has(S.validate(pr), 'scenarios.exitMetric'), 'schema: evsales with an eps driver → error (template path)');
+  const cells = [0, 1, 2].map((k) => ({ head: 'h' + k, rows: [['รายได้ปี 3', '$' + (k + 1) + 'M'], ['EV/Sales ออก', '9x']] }));
+  t.eq(S.validate({ ...pr, v2Display: { s6: cells, targets: [1, 2, 3] } }), [], 'schema: author rows in all columns → pairing not applied (migrated)');
+  const pr2 = { ...pr, meta: { ...pr.meta } }; delete pr2.meta.migratedFrom;
+  t(has(S.validate({ ...pr2, v2Display: { s6: cells, targets: [1, 2, 3] } }), 'scenarios.exitMetric'), 'schema: NEW doc keeps the pairing rule');
+  t(has(S.validate({ ...pr, v2Display: { s6: [cells[0], cells[1], null], targets: [1, 2, null] } }), 'scenarios.exitMetric'), 'schema: pairing still applies when a column is computed');
+  // current-price phrase → {{px}} (VRTX) · dated price stays · other "ราคา…" words stay
+  const MP = require('../../tools/migrate-v3/prose.js');
+  const vw = C.compute(d, { seeds: SEEDS }), px = vw.d.px, lit = '$' + (px * 1.02).toFixed(2);
+  const r = MP.tokenise(`ราคาปัจจุบัน (${lit}) เต็มมูลค่า · ราคา ${lit} ณ 18 ก.ย. 2569 · ราคาเป้า ${lit}`, vw, [], 'prose.strategy', { pxPhrase: true });
+  t.eq(r.text, `ราคาปัจจุบัน ({{px}}) เต็มมูลค่า · ราคา ${lit} ณ 18 ก.ย. 2569 · ราคาเป้า ${lit}`, 'tokenise: "ราคาปัจจุบัน ($X)" → {{px}} · dated/target prices stay', r.text);
+  t.eq(MP.tokenise(`ราคาปัจจุบัน (${lit})`, vw, [], 'prose.strategy', {}).text, `ราคาปัจจุบัน (${lit})`, 'tokenise: off unless pxPhrase');
+  t.eq(MP.pxPhraseLits(`ราคา $${(px * 3).toFixed(2)}`, px), [], 'pxPhraseLits: a number far from the price is not the price');
+}
 t.done();

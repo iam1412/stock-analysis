@@ -108,8 +108,11 @@ function v2DisplayOf(o) {
     const t = MP.decode(PV.text(lm.mval)).replace(/\s+/g, ' ').trim();
     const nums = NB.numsOf(t);
     const neg = /[−-]\s*(?:US\$|C\$|HK\$|\$|฿|€|£|¥)?\s*[0-9]/.test(t);
-    if (nums.length === 1 && neg && !/ถึง|–|~|\bto\b/.test(t.replace(/^[−-]/, ''))) { lv[i] = -nums[0].v; return null; }
-    if ((nums.length >= 2 || neg || !nums.length) && t && t.length <= 60 && !/[{}<>]/.test(t) && (nums.length || /^(?:—|–|-|n\/a|N\/A)$/.test(t))) return t;
+    if (nums.length === 1 && neg && !/ถึง|–|\bto\b/.test(t.replace(/^[−-]/, ''))) { lv[i] = -nums[0].v; return null; }
+    // ข้อความที่ .mval ของ v3 (สกุล + ตัวเลขบวกตัวเดียว) พิมพ์ไม่ได้: ช่วง · ติดลบ · ขีด · มีหน่วย/คำ (LWLG "EV ~$693M")
+    const plainNum = nums.length === 1 && !neg && !t.replace(/(?:US\$|C\$|HK\$|\$|฿|€|£|¥|บาท)|[0-9][0-9,]*(?:\.[0-9]+)?|[~≈\s]/g, '');
+    if (plainNum) return null;
+    if (t && t.length <= 60 && !/[{}<>]/.test(t) && (nums.length || /^(?:—|–|-|n\/a|N\/A)$/.test(t))) return t;
     return null;
   });
   lt.forEach((t, i) => { if (t != null) lv[i] = null; });
@@ -187,6 +190,20 @@ function v2DisplayOf(o) {
     else if (x.kind === 'stale') { stale.push(x); notes.push(`card "${x.label}" (${x.key}) v2 "${x.v2t}" is stale on the v2 page (no base reproduces it at the v2 price) — v3 shows ${x.v3}`); }
   }
   if (Object.keys(cards).length) out.cards = cards;
+  // การ์ด custom ที่ค่าเป็นตัวคูณ/ปันผลผูกราคา (display-fix2 · ZS "P/E Non-GAAP (FY26 จริง) ~46x" · EPS non-GAAP $4.21) → คิดสดจากฐานของผู้เขียน (v2Display.custom)
+  const customLive = {};
+  ((o.cardMeta || []).filter((m) => !m.key)).forEach((m, j) => {
+    const c = parsed.s1cards[m.i], cu = doc.metrics && doc.metrics.custom && doc.metrics.custom[j];
+    if (!c || !cu || /\{\{/.test(c.vHtml) || /\{\{/.test(String(cu.value))) return;
+    const lb = liveBase(c, view.d.px, parsed.sm && parsed.sm.currency);
+    const n = firstNum(PV.text(c.vHtml));
+    if (!lb || !n) return;
+    const b0 = Array.isArray(lb.base) ? lb.base[0] : lb.base;
+    if (Math.abs(opValue(lb.op, b0, view.d.px) - n.v) > 2 * n.half * (1 + 1e-9)) return;
+    customLive[j] = { op: lb.op, base: lb.base };
+    notes.push(`custom card "${c.k}" live on the v2 base ${JSON.stringify(lb.base)} (${lb.op})`);
+  });
+  if (Object.keys(customLive).length) out.custom = customLive;
   // ช่องผลตอบแทนฉาก (.ret) ที่ผู้เขียนพิมพ์เป็นข้อความ — ค่าผูกราคา ⇒ พกได้แค่ "รูปแบบ" (คิดสดทุกครั้ง · live) และเฉพาะเมื่อตัวเลขของหน้า v2
   //   สอดคล้องกับราคาเป้า/ราคาของหน้าเอง · ไม่สอดคล้อง (v2 พิมพ์ผิด/ค้าง — AON Bear "−3%") = v3 คิดเอง (ส่วนเบี่ยงที่ตั้งใจ · audit รับเฉพาะคลาสนี้)
   const cols = parsed.s6cols || [];

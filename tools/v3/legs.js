@@ -45,7 +45,7 @@ function legValue(leg, fundamentals, path) {
     case 'pfcf': v = perShare(need('fcf')) * i.multiple; break;
     case 'fcfyield': v = perShare(need('fcf')) / pct(i.yield); break;
     case 'pffo': v = need('ffoPerShare') * i.multiple; break;
-    case 'ddm': v = need('dps') * (1 + pct(i.g)) / spread(i.r, i.g, 'g'); break;
+    case 'ddm': v = (i.d1 != null ? i.d1 : need('dps') * (1 + pct(i.g))) / spread(i.r, i.g, 'g'); break;   // d1 = ปันผลปีหน้าของผู้เขียน (display-fix2)
     case 'ddm2': {
       // §3.6 N — D₁ = d1 · D_{t+1} = D_t·(1+g1) ขณะ t < years1 ไม่งั้น (1+g2) · horizon null = Gordon ปลายช่วง 1
       const r = pct(i.r), H = i.horizon == null ? i.years1 : i.horizon;

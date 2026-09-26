@@ -10,7 +10,7 @@ const SV = require('../safe-values.js');
 const ENUM = {
   currency: ['USD', 'THB'], region: ['US', 'TH'], dateEra: ['BE', 'CE'], chgSuffix: ['รอบปี', 'ตั้งแต่ IPO'],
   epsBasis: ['gaap-ttm', 'adj-ttm', 'fy', 'ifrs'],
-  ffoBasis: ['ffo', 'affo', 'coreFfo'],   // Plan 2a Task 9 (§3.6 J) — ป้าย FFO/AFFO ของการ์ด/ขา/ฉาก REIT · + coreFfo (Plan 4c-prep spec §3.7 ก): Core FFO ≠ FFO ≠ AFFO — ข้อเท็จจริงคนละตัว
+  ffoBasis: ['ffo', 'affo', 'coreFfo', 'ffoa'],   // + ffoa (display-fix2 · UDR "FFOA" = FFO as adjusted ของบริษัท — คนละตัวกับ FFO/AFFO)   // Plan 2a Task 9 (§3.6 J) — ป้าย FFO/AFFO ของการ์ด/ขา/ฉาก REIT · + coreFfo (Plan 4c-prep spec §3.7 ก): Core FFO ≠ FFO ≠ AFFO — ข้อเท็จจริงคนละตัว
   reportCurrency: ['USD', 'THB', 'EUR', 'CAD', 'GBP', 'JPY', 'CHF', 'TWD'],   // Plan 2a Task 10 (§3.6 L) — สกุลงบ (ยอดรวมทั้งบริษัท)
   method: ['pe', 'pbv', 'ps', 'evsales', 'evebitda', 'pfcf', 'fcfyield', 'pffo', 'ddm', 'ddm2', 'dcf', 'ri', 'declared'],
   multipleSource: ['median5y', 'median10y', 'peer', 'justified', 'sector', 'current', 'author'],   // 'current' = เฉพาะขา role:"context" (ตัวคูณสด คิดทุกวัน) · บนขา fv ห้าม = สมอตาย W18 (§13 ข้อ 6)
@@ -49,7 +49,7 @@ const LEG_INPUTS = {
   ps: { req: MULT, opt: RANGE }, evsales: { req: MULT, opt: RANGE }, evebitda: { req: MULT, opt: RANGE },
   pfcf: { req: MULT, opt: RANGE }, pffo: { req: MULT, opt: RANGE },
   fcfyield: { req: ['yield'], opt: [] },
-  ddm: { req: ['g', 'r'], opt: [] },
+  ddm: { req: ['g', 'r'], opt: ['d1'] },   // d1 (display-fix2 · PKG): ปันผลปีหน้าที่ผู้เขียนระบุเอง — ไม่มี = ปันผล × (1+g)
   ddm2: { req: ['d1', 'g1', 'years1', 'g2', 'r'], opt: ['horizon'] },   // §3.6 N — horizon: int ≥1 | null (null = Gordon ปลายช่วง 1) ต้องมีคีย์เสมอ
   dcf: { req: ['tg', 'r', 'rfCurrency'], opt: ['g1', 'years1', 'stages'] },   // Plan 4b Task 2 (§13-3): {g1, years1} 2-stage หรือ {stages} N-stage — ทางใดทางหนึ่ง (ตรวจใน legs loop)
   ri: { req: ['r', 'years', 'payout'], opt: [] },
@@ -72,7 +72,7 @@ function requiredFamily(leg) {
 const CURRENT_BASE = { pe: 'eps', pbv: 'bvps', pffo: 'ffoPerShare' };
 const OVERRIDE_KEYS = ['eps', 'bvps', 'roe', 'dps', 'revenue', 'ebitda', 'fcf', 'netDebt', 'ffoPerShare', 'shares', 'epsForward', 'why'];   // epsForward = Plan 4c-prep (คู่ inputs.base 'epsForward')
 // ป้าย FFO ชุดเดียวของ render / cards.js / check-v3.js (Plan 4c-prep)
-const FFO_LABEL = { ffo: 'FFO', affo: 'AFFO', coreFfo: 'Core FFO' };
+const FFO_LABEL = { ffo: 'FFO', affo: 'AFFO', coreFfo: 'Core FFO', ffoa: 'FFOA' };
 const THEME_KEYS = ['accent', 'accentDark', 'darkGrad', 'glow', 'subColor', 'headerMuted', 'verdictText', 'vcellLabel'];
 const TEXT_KEYS = ['valHint', 'valIntro', 'metricsNote', 'disclaimerAssump', 'chartHint', 'legendNote'];   // §3.6 A — แทนข้อความตายตัวของ template · chartHint = ต่อท้ายป้าย §2 (Plan 4b Task 6b)
 const ISO = /^\d{4}-\d{2}-\d{2}$/;
@@ -323,6 +323,7 @@ function validate(doc) {
       else if (!(r[0] <= inp.multiple && inp.multiple <= r[1])) E(rp, `multiple ${inp.multiple} ต้องอยู่ในกรอบ [${r[0]}, ${r[1]}]`);
       if (leg.role === 'context') E(rp, 'ขา context ไม่นับในกรอบ FV — ถอด multipleRange');
     }
+    if (leg.method === 'ddm' && isNum(inp.d1) && !(inp.d1 > 0)) E(`${p}.inputs.d1`, 'ต้อง > 0');
     if (leg.method === 'ddm2') {
       if (!('horizon' in inp)) E(`${p}.inputs.horizon`, 'ต้องมี — จำนวนงวด (จำนวนเต็ม ≥1) หรือ null = มูลค่าปลายงวดแบบ Gordon');
       else if (inp.horizon !== null) num(inp.horizon, `${p}.inputs.horizon`, { int: true, min: 1 });
@@ -460,10 +461,12 @@ function validate(doc) {
     en(s.perYear === undefined ? '∅' : s.perYear, 'scenarios.perYear', ENUM.perYear);
     en(s.driver, 'scenarios.driver', ENUM.driver); en(s.exitMetric, 'scenarios.exitMetric', ENUM.exitMetric);
     // Plan 4b Task 1 (fix round 1 · N-3): exit EV/Sales คูณรายได้ต่อหุ้น ⇒ ตัวตั้งต้องเป็น revenuePerShare เท่านั้น
-    if (s.exitMetric === 'evsales' && s.driver !== 'revenuePerShare') E('scenarios.exitMetric', `evsales (EV/Sales ออก) คูณรายได้ต่อหุ้น — ต้องใช้ scenarios.driver = "revenuePerShare" (พบ ${JSON.stringify(s.driver)})`);
+    // ใบ migrate ที่ทุกคอลัมน์พกแถวของผู้เขียน (v2Display.s6 — display-fix2 · PDYN/RCAT/PRINC) = ไม่มีเป้า/แถวไหนคิดจาก driver × exit ⇒ ข้ามกติกาคู่ driver/exit
+    const allCells = [0, 1, 2].every((i) => { const c = s6CellOf(doc, i); return c && c.rows != null; });
+    if (!allCells && s.exitMetric === 'evsales' && s.driver !== 'revenuePerShare') E('scenarios.exitMetric', `evsales (EV/Sales ออก) คูณรายได้ต่อหุ้น — ต้องใช้ scenarios.driver = "revenuePerShare" (พบ ${JSON.stringify(s.driver)})`);
     // Plan 4c-prep (spec §3.7 ก): EV/EBITDA ออก คู่ EBITDA ต่อหุ้น — กันทั้งสองทาง
-    if (s.exitMetric === 'evebitda' && s.driver !== 'ebitdaPerShare') E('scenarios.exitMetric', `evebitda (EV/EBITDA ออก) คูณ EBITDA ต่อหุ้น — ต้องใช้ scenarios.driver = "ebitdaPerShare" (พบ ${JSON.stringify(s.driver)})`);
-    if (s.driver === 'ebitdaPerShare' && s.exitMetric !== 'evebitda') E('scenarios.driver', `ebitdaPerShare ใช้คู่ exitMetric "evebitda" เท่านั้น (พบ ${JSON.stringify(s.exitMetric)})`);
+    if (!allCells && s.exitMetric === 'evebitda' && s.driver !== 'ebitdaPerShare') E('scenarios.exitMetric', `evebitda (EV/EBITDA ออก) คูณ EBITDA ต่อหุ้น — ต้องใช้ scenarios.driver = "ebitdaPerShare" (พบ ${JSON.stringify(s.driver)})`);
+    if (!allCells && s.driver === 'ebitdaPerShare' && s.exitMetric !== 'evebitda') E('scenarios.driver', `ebitdaPerShare ใช้คู่ exitMetric "evebitda" เท่านั้น (พบ ${JSON.stringify(s.exitMetric)})`);
     // Plan 4b Task 2: exitDp = จำนวนทศนิยมที่พิมพ์ตัวคูณออก (v2 พิมพ์ 17.25x ได้) · ไม่มี = render พิมพ์ค่าดิบ / token toFixed(1) เหมือนเดิม
     if (s.exitDp != null) { num(s.exitDp, 'scenarios.exitDp', { int: true, min: 0 }); if (isNum(s.exitDp) && s.exitDp > 2) E('scenarios.exitDp', 'ต้อง 0–2'); }
     if (s.baseOverride != null) { closed(s.baseOverride, 'scenarios.baseOverride', ['value', 'why']); num(s.baseOverride.value, 'scenarios.baseOverride.value', { gt: 0 }); str(s.baseOverride.why, 'scenarios.baseOverride.why'); }
@@ -604,7 +607,7 @@ function validate(doc) {
 // v2Display: คีย์ของเกจที่อ้างค่าของ view ได้ (ชื่อ token ของ v2 — render พิมพ์เป็น {{rd:<ref>}})
 //   hi52w/lo52w (display-fix2 · controller 26 ก.ย. 69): สูงสุด/ต่ำสุด 52 สัปดาห์ = ค่าตลาด → อ่านสดจาก market.range52w เสมอ (ห้ามแช่เป็น text)
 const GAUGE_REFS = ['mos30', 'mos20', 'fv', 'fvLow', 'fvHigh', 'analystTgt', 'px', 'sc1tgt', 'sc2tgt', 'sc3tgt', 'hi52w', 'lo52w'];
-const V2DISPLAY_KEYS = ['fv', 'fvRange', 'legValues', 'legTexts', 'targets', 's6', 'noBase', 'driverEnds', 'driverTotal', 'gauge', 'cards', 'rets', 'footer'];
+const V2DISPLAY_KEYS = ['fv', 'fvRange', 'legValues', 'legTexts', 'targets', 's6', 'noBase', 'custom', 'driverEnds', 'driverTotal', 'gauge', 'cards', 'rets', 'footer'];
 // แถวของเซลล์หมวด 6 ที่ผูกราคา — ผลตอบแทน/ส่วนต่าง/ราคาตลาด/ตัวคูณปัจจุบัน (คิดสดจากเป้าเสมอ ห้ามแช่)
 const S6_PRICE_RE = /ผลตอบแทน|\breturns?\b|upside|downside|\bMOS\b|ส่วนต่าง|ราคา\s*(?:ปัจจุบัน|ตลาด|ล่าสุด)|market\s*(?:cap|price)|มูลค่าตลาด|ปัจจุบัน|\bcurrent\b|52/i;
 // เซลล์ s6 ของคอลัมน์ i (ใบ migrate เท่านั้น) — null เมื่อไม่มี
@@ -673,6 +676,23 @@ function validateV2Display(doc, E, closed, num, plain, en) {
         }
         if (!(Array.isArray(x.targets) && isNum(x.targets[i]) && x.targets[i] > 0)) E(`${P0}.targets[${i}]`, `คอลัมน์ที่พกเซลล์ (s6[${i}]) ต้องมีราคาเป้าของผู้เขียน (ตัวเลข) — ผลตอบแทนคิดสดจากค่านี้`);
       });
+    }
+  }
+  // custom (display-fix2 · ZS): การ์ด custom ที่ค่าเป็นตัวคูณ/ปันผลผูกราคา → คิดสดจากฐานของผู้เขียน {op, base} (กติกาเดียวกับ cards[k].op)
+  if (x.custom != null) {
+    const cu = isObj(doc.metrics) && Array.isArray(doc.metrics.custom) ? doc.metrics.custom : [];
+    if (!isObj(x.custom) || !Object.keys(x.custom).length) E(`${P0}.custom`, 'ต้องเป็น object {"<index ของ metrics.custom>": {op, base}}');
+    else for (const [k, c] of Object.entries(x.custom)) {
+      const p = `${P0}.custom.${k}`;
+      if (!/^\d$/.test(k) || !isObj(cu[+k])) { E(p, 'ต้องเป็น index ของ metrics.custom'); continue; }
+      if (!isObj(c)) { E(p, 'ต้องเป็น {op, base}'); continue; }
+      closed(c, p, ['op', 'base']);
+      en(c.op, `${p}.op`, ['pxOverBase', 'basePct']);
+      const bs = Array.isArray(c.base) ? c.base : [c.base];
+      if (!bs.length || bs.length > 3 || !bs.every((b) => isNum(b) && b > 0)) E(`${p}.base`, 'ต้องเป็นตัวเลข > 0 หรือ array 1–3 ตัว');
+      const v = String(cu[+k].value);
+      if (/\{\{/.test(v)) E(`metrics.custom[${k}].value`, 'การ์ดที่คิดสด (v2Display.custom) ต้องเป็นข้อความตัวเลขของผู้เขียน ไม่มี token');
+      else if ((v.match(/[0-9][0-9,]*(?:\.[0-9]+)?/g) || []).length < bs.length) E(`metrics.custom[${k}].value`, `ต้องมีตัวเลขอย่างน้อย ${bs.length} ตัวให้เขียนใหม่`);
     }
   }
   // noBase: ผู้เขียนไม่ได้ใช้ฐานเดียว (AMZN/BAM ฐานต่อคอลัมน์ · ทางเดินหลายขั้น) ⇒ หัว §6 ไม่พิมพ์ "<driver> ฐาน ~ค่า" ของ template (ฐานที่ถอดกลับไม่ใช่ตัวเลขของผู้เขียน)

@@ -59,7 +59,7 @@ function mdesc(leg, view) {
       : `${epsLabel(leg, view)} ${m(b.eps)} × P/E เป้าหมาย ~${mult}x${src}${rng}`;
     case 'pbv': return i.multipleSource != null ? `BVPS ${m(b.bvps)} × P/BV ${live ? 'ปัจจุบัน ' : ''}${mult}x${live ? '' : src}${rng}`
       : `P/BV เหมาะสม = (ROE ${b.roe}% − g ${i.g}%)/(r ${i.r}% − g ${i.g}%) ≈ ${((b.roe - i.g) / (i.r - i.g)).toFixed(2)} × BVPS ${m(b.bvps)}`;
-    case 'ddm': return `D₁ = ปันผล ${m(b.dps)} × (1+g); g ${i.g}%, r ${i.r}%`;
+    case 'ddm': return i.d1 != null ? `D₁ ${m(i.d1)}; g ${i.g}%, r ${i.r}%` : `D₁ = ปันผล ${m(b.dps)} × (1+g); g ${i.g}%, r ${i.r}%`;
     case 'ddm2': return `D₁ ${m(i.d1)} โต ${i.g1}%/ปี ${i.years1} ปี แล้ว ${i.g2}%/ปี · r ${i.r}% · `
       + (i.horizon == null ? 'มูลค่าปลายงวดแบบ Gordon' : `${i.horizon} งวด ไม่มีมูลค่าปลายงวด`);
     // FCF = ยอดงบรวม (fundamentals/override) → สกุลงบ (view.stmtCur) เหมือนการ์ด FCF · ค่าขา (.mval) เป็นสกุลราคา (compute แปลงด้วย fx แล้ว)
@@ -196,7 +196,9 @@ function toV2Source(doc, view) {
   const cards = S.cardEntries(doc.metrics).map((e) => {
     if (e.custom != null) {
       const c = doc.metrics.custom[e.custom];
-      return { k: esc(c.label), v: pr(c.value), d: c.note ? pr(c.note) : '', cls: toneCls(e.tone, '') };
+      // v2Display.custom (ใบ migrate · display-fix2): ตัวคูณ/ปันผลผูกราคาในการ์ด custom คิดสดจากฐานของผู้เขียน
+      const lc = vd && vd.custom && vd.custom[String(e.custom)];
+      return { k: esc(c.label), v: lc ? esc(liveCardValue({ v: c.value, op: lc.op, base: lc.base }, view.d.px)) : pr(c.value), d: c.note ? pr(c.note) : '', cls: toneCls(e.tone, '') };
     }
     const c = K.renderCard(e.key, view), note = noteOf(e.key);
     // v2Display.cards (ใบ migrate): การ์ดที่ cron v2 ไม่เคยแตะ = ข้อความคงที่ของผู้เขียน — ค่า + บรรทัดล่างตามหน้า v2 (ป้ายยังเป็นของ template)
