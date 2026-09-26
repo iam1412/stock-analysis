@@ -31,7 +31,8 @@
     },
     "migratedFrom": {
       "updated": "2026-09-22T07:22:55+07:00",
-      "v2Hash": "9624f0d99155"
+      "v2Hash": "9624f0d99155",
+      "prevHash": "c2ed4386a3b5"
     }
   },
   "market": {
@@ -209,12 +210,8 @@
       }
     ],
     "exitDp": 0,
-    "baseOverride": {
-      "value": 7.82958,
-      "why": "EPS ฐานฉากถอดกลับจากราคาเป้าที่พิมพ์"
-    },
     "note": "<b>base case (EPS หลักไม่รวม gain) ให้ผลตอบแทนปานกลาง (~4%/ปี)</b> ขณะที่ downside ~−33% หากไม่มี gain การลงทุนซ้ำและตลาด de-rate — ตัวแปรหลักคือ <b>FCF</b> หลังหัก capex และว่า gain ทางบัญชีจะกลับมาซ้ำหรือไม่",
-    "hintNote": "(normalized) ~$7.4"
+    "hintNote": "• EPS ฐาน (normalized) ~$7.4"
   },
   "analyst": {
     "target": 328.22,
@@ -253,5 +250,81 @@
     "<b>Valuation แพงกว่าที่เห็น:</b> P/E TTM ~20.4x ดูถูกเพราะกำไรบวมจาก gain — เทียบ EPS หลัก (normalized) แล้ว P/E จริงราว 34x และ MOS เพียง {{mos}} ส่วนเผื่อความปลอดภัยบาง + FCF TTM ติดลบ (−$11.6B) จาก capex AI ramp"
   ],
   "extras": [],
-  "_sig": "sha256:5b0b5e404485e07905804f54d213e69ce8379475922f3c1b1fab9b456a1a6283"
+  "v2Display": {
+    "s6": [
+      {
+        "head": "EPS +5%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "$8.6"
+          ],
+          [
+            "P/E ออก",
+            "20x"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +12%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "$11.0"
+          ],
+          [
+            "P/E ออก",
+            "26x"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +18%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "$12.8"
+          ],
+          [
+            "P/E ออก",
+            "30x"
+          ]
+        ]
+      }
+    ],
+    "targets": [
+      171,
+      286,
+      384
+    ],
+    "noBase": true,
+    "fv": 261,
+    "fvRange": [
+      240,
+      282
+    ],
+    "gauge": [
+      {
+        "ref": "mos30",
+        "label": "MOS 30%"
+      },
+      {
+        "ref": "mos20",
+        "label": "MOS 20%"
+      },
+      {
+        "ref": "px",
+        "label": "ราคาปัจจุบัน"
+      },
+      {
+        "ref": "fv",
+        "label": "Fair Value"
+      },
+      {
+        "ref": "analystTgt",
+        "label": "เป้า Analyst"
+      }
+    ]
+  },
+  "_sig": "sha256:8491cd5d6edc1578ecf8cd45d31264baad85c0d35212d062ef490af6aec98d25"
 }
