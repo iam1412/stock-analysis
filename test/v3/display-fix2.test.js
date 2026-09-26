@@ -133,7 +133,7 @@ const gate = (d) => CV.checkDoc(d, { skipSig: true, seeds: SEEDS, today: d.marke
   const s1 = MS.scenarios(p1, { eps: 22 });
   t(s1.meta.perCase && s1.meta.display && s1.meta.display.s6[0].head === 'กำไรลดแล้วทรงตัว' && !('growth' in s1.scenarios.cases[0]), 'migrator: a text head (no growth) → author cells, growth omitted', JSON.stringify(s1.H));
   t(s1.meta.display.s6[2].head === 'FY27 +10% → FY28 +5%' && !('growth' in s1.scenarios.cases[2]) && s1.scenarios.cases[1].growth != null, 'migrator: a step-path head drops its growth · a simple head keeps it');
-  t(s1.meta.display.targets.every((x) => x > 0) && s1.meta.display.s6.every((c) => c.rows.some(([k]) => /ปันผล/.test(k)) && c.rows.every(([, v]) => !/\{\{/.test(v))), 'migrator: targets + rows carried (dividend token resolved to the author figure)', JSON.stringify(s1.meta.display.s6[0].rows));
+  t(s1.meta.display.targets.every((x) => x > 0) && s1.meta.display.s6.every((c) => c.rows.some(([k, v]) => /ปันผล/.test(k) && /^~฿[0-9]/.test(v)) && c.rows.every(([, v]) => !/\{\{/.test(v))), 'migrator: targets + rows carried (dividend token resolved to the author figure, with the currency)', JSON.stringify(s1.meta.display.s6[0].rows));
   const r1 = A.assemble(p1, { seeds: SEEDS, headUpdated: MF.updated, v2Hash: 'abcdef012345', today: p1.rd.values.priceDate, analysisPx: null });
   t(r1.doc.v2Display && r1.doc.v2Display.s6 && !r1.notes.H.some((x) => /growth unreadable/.test(x)), 'assemble: author cells in v2Display (no growth H)', r1.notes.H.join(' ; '));
   t.eq(S.validate(r1.doc), [], 'assemble: the migrated doc validates');
@@ -205,5 +205,28 @@ const gate = (d) => CV.checkDoc(d, { skipSig: true, seeds: SEEDS, today: d.marke
   t.eq(r.text, `ราคาปัจจุบัน ({{px}}) เต็มมูลค่า · ราคา ${lit} ณ 18 ก.ย. 2569 · ราคาเป้า ${lit}`, 'tokenise: "ราคาปัจจุบัน ($X)" → {{px}} · dated/target prices stay', r.text);
   t.eq(MP.tokenise(`ราคาปัจจุบัน (${lit})`, vw, [], 'prose.strategy', {}).text, `ราคาปัจจุบัน (${lit})`, 'tokenise: off unless pxPhrase');
   t.eq(MP.pxPhraseLits(`ราคา $${(px * 3).toFixed(2)}`, px), [], 'pxPhraseLits: a number far from the price is not the price');
+}
+// fix-gauge (the committed docs the new schema rejects): frozen market ticks → live refs · updated kept (prevHash) · dry-run writes nothing
+{
+  const FG = require('../../tools/migrate-v3/fix-gauge.js'), IO = require('../../tools/v3/io.js'), os = require('os');
+  const d = mig();
+  d.v2Display = { gauge: [{ ref: 'mos30', label: 'MOS 30%' }, { ref: 'fv', label: 'Fair Value' }, { text: '$999', label: 'เป้าสูงสุด' }, { text: '$193', label: 'สูงสุด 52 สัปดาห์' }] };
+  t(has(S.validate(d), 'v2Display.gauge[3].text'), 'fix-gauge setup: the doc is rejected by the schema');
+  const r = FG.fixDoc(d);
+  t.eq(r.doc.v2Display.gauge, [{ ref: 'mos30', label: 'MOS 30%' }, { ref: 'fv', label: 'Fair Value' }, { text: '$999', label: 'เป้าสูงสุด' }, { ref: 'hi52w', label: 'สูงสุด 52 สัปดาห์' }], 'fixDoc: only the market tick becomes a live ref');
+  t.eq(S.validate(r.doc), [], 'fixDoc: the fixed doc validates');
+  t(r.doc.meta.migratedFrom.prevHash === IO.freshHash(d) && r.doc.meta.migratedFrom.updated === MF.updated, 'fixDoc: prevHash = the old doc hash (build keeps updated)');
+  t.eq(FG.fixDoc(r.doc).doc, null, 'fixDoc: nothing to fix → null (idempotent)');
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'fix-gauge-'));
+  IO.write(path.join(tmp, 'ZTS.json'), { ...d, v2Display: { gauge: [{ ref: 'fv', label: 'Fair Value' }, { ref: 'mos30', label: 'x' }] } });
+  const bad = JSON.parse(fs.readFileSync(path.join(tmp, 'ZTS.json'), 'utf8')); bad.v2Display.gauge.push({ text: '$193', label: '52wk High' }); fs.writeFileSync(path.join(tmp, 'ZTS.json'), JSON.stringify(bad));
+  const before = fs.readFileSync(path.join(tmp, 'ZTS.json'), 'utf8');
+  const lines = []; const code = FG.runFixGauge([], { reportsDir: tmp, write: false }, (x) => lines.push(x), { isGuarded: () => false });
+  t(code === 0 && fs.readFileSync(path.join(tmp, 'ZTS.json'), 'utf8') === before && lines.some((x) => /WOULD FIX ZTS/.test(x)), 'runFixGauge dry-run: reports, writes nothing');
+  FG.runFixGauge(['ZTS'], { reportsDir: tmp, write: true }, () => {}, { isGuarded: () => false });
+  const now = IO.read(path.join(tmp, 'ZTS.json'));
+  t(IO.verifySig(now) && now.v2Display.gauge[2].ref === 'hi52w', 'runFixGauge --write: signed · live ref');
+  t.eq(FG.runFixGauge(['ZTS'], { reportsDir: tmp, write: true }, () => {}, { isGuarded: () => true }), 1, 'runFixGauge --write into a guarded reports/ needs MIGRATE_V3_ALLOW_REAL=1');
+  fs.rmSync(tmp, { recursive: true, force: true });
 }
 t.done();

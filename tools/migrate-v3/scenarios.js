@@ -245,7 +245,7 @@ function scenarios(parsed, fund, legs) {
   // คู่ driver × exit ที่ template คิดไม่ได้ (EV/Sales ต้องคูณรายได้ต่อหุ้น · EV/EBITDA คู่ EBITDA ต่อหุ้น — PDYN/RCAT "EPS" + "EV/Sales ออก") = เป้ามาจากตัวตั้งอื่นของผู้เขียน
   if ((out.exitMetric === 'evsales' && out.driver !== 'revenuePerShare') || ((out.exitMetric === 'evebitda') !== (out.driver === 'ebitdaPerShare'))) why.push(`driver ${out.driver} × exit ${out.exitMetric} is not a template pair`);
   if (why.length || soft.length) {
-    const cur = parsed.sm && parsed.sm.data && parsed.sm.data.currency ? (RV.CUR_SYMBOL[parsed.sm.data.currency] || '') : '';
+    const cur = RV.CUR_SYMBOL[parsed.sm && parsed.sm.currency] || '';
     const tgts = cols.map((c, i) => {
       if (vs && vs[i] && typeof vs[i].tgt === 'number' && vs[i].tgt > 0) return vs[i].tgt;
       const m = /<div class="tgt">([\s\S]*?)<\/div>/.exec((parsed.byN && parsed.byN[6] && parsed.byN[6].body.split(/<div class="col /)[i + 1]) || '');
@@ -253,6 +253,7 @@ function scenarios(parsed, fund, legs) {
       return x && x.v > 0 ? x.v : null;
     });
     const bad = [];
+    if (!cur) bad.push('currency unknown (stock-meta.currency) — dividend cells cannot be written');
     const cells = cols.map((c, i) => {
       const rows = c.lis.filter((x) => !/สถานการณ์/.test(x[0])).map((x) => {
         let v = x[1];
