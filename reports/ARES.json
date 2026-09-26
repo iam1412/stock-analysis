@@ -32,7 +32,8 @@
     },
     "migratedFrom": {
       "updated": "2026-09-21T10:24:06+07:00",
-      "v2Hash": "c329f6d5d1d5"
+      "v2Hash": "c329f6d5d1d5",
+      "prevHash": "e223e3deb4bb"
     }
   },
   "market": {
@@ -113,7 +114,6 @@
         "value": 142,
         "basis": "other"
       },
-      "note": "FRE/share (TTM) $5.68 × Price/FRE เป้าหมาย ~25x — อนุรักษ์นิยมกว่าค่าเฉลี่ยปกติของกลุ่ม (~30–35x) เพื่อสะท้อนความกังวล credit cycle",
       "family": "rg"
     },
     {
@@ -123,7 +123,6 @@
         "value": 98.2,
         "basis": "other"
       },
-      "note": "DE/share proxy (After-tax Realized Income TTM) $4.91 × Price/DE เป้าหมาย ~20x — ต่ำกว่า Price/FRE multiple เพราะ Realized Income ยังรวม performance fee ที่ผันผวนกว่า fee ประจำ",
       "family": "rg"
     },
     {
@@ -133,7 +132,6 @@
         "value": 120,
         "basis": "other"
       },
-      "note": "ปันผล {{dps}}/ปี ÷ fair yield 4.5% — อิงระดับ yield ที่นักลงทุนรายได้ต้องการสำหรับ alt-manager คุณภาพสูงที่ปันผลยังโตต่อเนื่อง",
       "family": "rg"
     }
   ],
@@ -245,8 +243,7 @@
       "value": 5.68326,
       "why": "ฐานฉากถอดกลับจากค่าปลายฉากที่พิมพ์"
     },
-    "note": "ฐาน FRE/share ใช้ TTM $5.68 (total-share basis) เป็นจุดตั้งต้น สมมติฐานการเติบโตอิงจาก FRE ที่โต 26% YoY ใน Q1'26 และ AUM ที่โต 18% YoY แต่ปรับลดลงเพื่อความระมัดระวังในทุก scenario Bear case ยังให้ผลตอบแทนไม่ติดลบมากเพราะปันผล ~4.6%/ปี ช่วยพยุงผลตอบแทนรวม แม้ราคาแทบไม่ขยับ",
-    "hintNote": "FRE/share"
+    "note": "ฐาน FRE/share ใช้ TTM $5.68 (total-share basis) เป็นจุดตั้งต้น สมมติฐานการเติบโตอิงจาก FRE ที่โต 26% YoY ใน Q1'26 และ AUM ที่โต 18% YoY แต่ปรับลดลงเพื่อความระมัดระวังในทุก scenario Bear case ยังให้ผลตอบแทนไม่ติดลบมากเพราะปันผล ~4.6%/ปี ช่วยพยุงผลตอบแทนรวม แม้ราคาแทบไม่ขยับ"
   },
   "analyst": {
     "target": 147.78,
@@ -285,15 +282,102 @@
   ],
   "extras": [],
   "v2Display": {
-    "fv": 120,
-    "fvRange": [
-      98,
-      142
+    "legDescs": [
+      "FRE/share (TTM) $5.68 × Price/FRE เป้าหมาย ~25x — อนุรักษ์นิยมกว่าค่าเฉลี่ยปกติของกลุ่ม (~30–35x) เพื่อสะท้อนความกังวล credit cycle",
+      "DE/share proxy (After-tax Realized Income TTM) $4.91 × Price/DE เป้าหมาย ~20x — ต่ำกว่า Price/FRE multiple เพราะ Realized Income ยังรวม performance fee ที่ผันผวนกว่า fee ประจำ",
+      "ปันผล $5.40/ปี ÷ fair yield 4.5% — อิงระดับ yield ที่นักลงทุนรายได้ต้องการสำหรับ alt-manager คุณภาพสูงที่ปันผลยังโตต่อเนื่อง"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "~$147.78 (Buy)"
+      }
+    ],
+    "s6": [
+      {
+        "head": "FRE +6%/ปี",
+        "rows": [
+          [
+            "FRE/share ปี 3",
+            "~$6.76"
+          ],
+          [
+            "Price/FRE ออก",
+            "17x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$18.22"
+          ]
+        ]
+      },
+      {
+        "head": "FRE +14%/ปี",
+        "rows": [
+          [
+            "FRE/share ปี 3",
+            "~$8.42"
+          ],
+          [
+            "Price/FRE ออก",
+            "21x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$21.17"
+          ]
+        ]
+      },
+      {
+        "head": "FRE +20%/ปี",
+        "rows": [
+          [
+            "FRE/share ปี 3",
+            "~$9.82"
+          ],
+          [
+            "Price/FRE ออก",
+            "26x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$23.59"
+          ]
+        ]
+      }
     ],
     "targets": [
       115,
       176.72,
       255.19
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • FRE/share ฐาน ~$5.68",
+    "legend": [
+      {
+        "text": "ราคา ARES",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
+    "fv": 120,
+    "fvRange": [
+      98,
+      142
     ],
     "cards": {
       "aum": {
@@ -302,5 +386,5 @@
       }
     }
   },
-  "_sig": "sha256:1abea362bf4808889327d5784d2245ca4398bfd2f1bbaece83dd2f700359636b"
+  "_sig": "sha256:e5bc8adb65b2d9c5f1a7b6cc5321ca9ef0a35c3541f609ed091acd653f5bb2bb"
 }

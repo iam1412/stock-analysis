@@ -33,7 +33,7 @@
     "migratedFrom": {
       "updated": "2026-09-22T07:22:55+07:00",
       "v2Hash": "9033cf8230a7",
-      "prevHash": "4ffef58db85e"
+      "prevHash": "1e11c3603727"
     }
   },
   "market": {
@@ -115,8 +115,7 @@
       "inputs": {
         "multiple": 28,
         "multipleSource": "author"
-      },
-      "note": "เฉลี่ย"
+      }
     },
     {
       "method": "dcf",
@@ -140,8 +139,7 @@
       "inputs": {
         "value": 328,
         "basis": "other"
-      },
-      "note": "ค่าเฉลี่ยเป้าหมายนักวิเคราะห์ (~44 ราย, กรอบ $215–$405)"
+      }
     }
   ],
   "fvWeights": null,
@@ -180,7 +178,6 @@
       }
     ],
     "notes": {
-      "mcap": "~14.59 พันล้านหุ้น",
       "pe": "สูงกว่าปกติ",
       "peAvg5y": "กรอบ 23–32x",
       "netIncome": "▲ +15.1% เทียบ FY2025",
@@ -254,6 +251,40 @@
   ],
   "extras": [],
   "v2Display": {
+    "legDescs": [
+      "EPS TTM $8.72 × P/E เฉลี่ย 5 ปี ~28x (มัธยฐาน 27x)",
+      "FCF/หุ้น $9.25 โต 8%/ปี (5 ปี) → terminal 3.5%, WACC 8.5%",
+      "ค่าเฉลี่ยเป้าหมายนักวิเคราะห์ (~44 ราย, กรอบ $215–$405)"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "~{{analyst.target}} ({{analyst.pct}})"
+      }
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~{{baseEps}}",
+    "legend": [
+      {
+        "text": "ราคา AAPL",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
     "fv": 268,
     "fvRange": [
       233,
@@ -287,6 +318,12 @@
       }
     ],
     "cards": {
+      "mcap": {
+        "v": "~$4.98 ล้านล้าน",
+        "d": "~14.59 พันล้านหุ้น",
+        "op": "pxTimesBase",
+        "base": 0.01459418
+      },
       "revenue": {
         "v": "$466.8B",
         "d": "▲ +14.2% YoY"
@@ -297,5 +334,5 @@
       }
     }
   },
-  "_sig": "sha256:03b8cd076960cbc23e833da8d224a64999c7c9f0401c8374f14be24a3dcf083e"
+  "_sig": "sha256:699072f5b9a4070f9768ce0f57a10f200b69a3da6f954e578ae50ad24a48a7fe"
 }

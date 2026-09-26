@@ -32,7 +32,8 @@
     },
     "migratedFrom": {
       "updated": "2026-09-21T09:15:06+07:00",
-      "v2Hash": "7b25a3c8120b"
+      "v2Hash": "7b25a3c8120b",
+      "prevHash": "7b7f13c9ed17"
     }
   },
   "market": {
@@ -115,7 +116,6 @@
         "multiple": 11,
         "multipleSource": "author"
       },
-      "note": "mid-cycle · E&P premium Permian ต้นทุนต่ำสุด",
       "family": "market"
     },
     {
@@ -127,7 +127,6 @@
         "base": "epsForward"
       },
       "baseLabel": "FY2026E",
-      "note": "consensus 29 นักวิเคราะห์ · SA · ตัวคูณอิงมัธยฐานย้อนหลัง 7.7x (ช่วง 5.5–11.9x) ปรับขึ้นเล็กน้อยเพราะสเกลหลัง Endeavor",
       "family": "market"
     },
     {
@@ -141,7 +140,6 @@
         "ebitda": 11000000000,
         "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
       },
-      "note": "mid-cycle · Adj EBITDA Q1 ann. ~$12B ลด ~10% ปรับ WTI เหมือน EPS · Permian quality multiple",
       "family": "market"
     }
   ],
@@ -245,8 +243,7 @@
       }
     ],
     "exitDp": 0,
-    "note": "FANG เป็น pure-play Permian E&P ที่มี breakeven ต่ำที่สุดในอุตสาหกรรม (~$35-40/bbl) ทำให้ยังมี FCF แม้ WTI ร่วงไป $50 · Base case WTI $65 ให้ผลตอบแทนรวมต่ำเพราะราคาปัจจุบันสูงกว่า mid-cycle FV แล้ว · ผลตอบแทนที่ดีขึ้นมาหาก WTI $70-80 คงทน หรือซื้อได้ที่ $135-152 (MOS 10-20%)",
-    "hintNote": "• EPS ฐาน mid-cycle ~$15.2"
+    "note": "FANG เป็น pure-play Permian E&P ที่มี breakeven ต่ำที่สุดในอุตสาหกรรม (~$35-40/bbl) ทำให้ยังมี FCF แม้ WTI ร่วงไป $50 · Base case WTI $65 ให้ผลตอบแทนรวมต่ำเพราะราคาปัจจุบันสูงกว่า mid-cycle FV แล้ว · ผลตอบแทนที่ดีขึ้นมาหาก WTI $70-80 คงทน หรือซื้อได้ที่ $135-152 (MOS 10-20%)"
   },
   "analyst": {
     "target": 234,
@@ -286,31 +283,25 @@
   ],
   "extras": [],
   "v2Display": {
-    "fv": 169,
-    "fvRange": [
-      127,
-      190
+    "legDescs": [
+      "$ EPS mid-cycle $15.20 (WTI $65/bbl est.) × P/E 11x — E&P premium Permian ต้นทุนต่ำสุด",
+      "$ EPS FY2026E $20.89 (consensus 29 นักวิเคราะห์ · SA) × P/E 8.5x — ตัวคูณอิงมัธยฐานย้อนหลัง 7.7x (ช่วง 5.5–11.9x) ปรับขึ้นเล็กน้อยเพราะสเกลหลัง Endeavor",
+      "EBITDA mid-cycle $11B (Adj EBITDA Q1 ann. ~$12B ลด ~10% ปรับ WTI เหมือน EPS) × 5.5x − net debt $13.9B / 285M shares → Permian quality multiple"
     ],
-    "targets": [
-      80,
-      182.4,
-      288
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "~$234 (Strong Buy)"
+      }
     ],
-    "legValues": [
-      null,
-      177.6,
-      163.5
-    ],
-    "rets": {
-      "texts": [
-        "−50.1% รวมปันผล ≈ −21.5%/ปี",
-        "+5.4% รวมปันผล ≈ +0.8%/ปี",
-        "+63.3% ≈ +17.8%/ปี"
-      ],
-      "neg": "−",
-      "perYear": "cagr",
-      "div": true
-    },
     "s6": [
       {
         "head": "WTI $50/bbl",
@@ -364,7 +355,50 @@
         ]
       }
     ],
-    "noBase": true
+    "targets": [
+      80,
+      182.4,
+      288
+    ],
+    "noBase": true,
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน mid-cycle ~$15.2 • รวมปันผล",
+    "legend": [
+      {
+        "text": "ราคา FANG",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม mid-cycle {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
+    "markers": {
+      "fair": "เหมาะสม mid-cycle {{fv}}"
+    },
+    "fv": 169,
+    "fvRange": [
+      127,
+      190
+    ],
+    "legValues": [
+      null,
+      177.6,
+      163.5
+    ],
+    "rets": {
+      "texts": [
+        "−50.1% รวมปันผล ≈ −21.5%/ปี",
+        "+5.4% รวมปันผล ≈ +0.8%/ปี",
+        "+63.3% ≈ +17.8%/ปี"
+      ],
+      "neg": "−",
+      "perYear": "cagr",
+      "div": true
+    }
   },
-  "_sig": "sha256:8b297a891235316e43f1fe2a5f27082221155822b4c26a49895526277ab21ccb"
+  "_sig": "sha256:d2670528fcfcb6a71efaac1637876c076964381384f9020c6717b5eb65eddacb"
 }

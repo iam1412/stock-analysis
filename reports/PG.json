@@ -15,14 +15,8 @@
     "analysisDate": "2026-09-21",
     "aiModel": "Claude Sonnet 5",
     "sources": [
-      "stockanalysis.com (https:",
-      "stockanalysis.com",
-      "stocks",
-      "pg",
-      ")",
-      "finance.yahoo.com (https:",
-      "finance.yahoo.com",
-      "quote"
+      "stockanalysis.com (https://stockanalysis.com/stocks/pg/)",
+      "finance.yahoo.com (https://finance.yahoo.com/quote/PG/)"
     ],
     "themeLegacy": {
       "accent": "#1a73e8",
@@ -37,7 +31,7 @@
     "migratedFrom": {
       "updated": "2026-09-21T23:32:21+07:00",
       "v2Hash": "bc9148c3aafb",
-      "prevHash": "9eaa9f84038d"
+      "prevHash": "1a2d73694472"
     }
   },
   "market": {
@@ -125,7 +119,6 @@
         "multiple": 25.8,
         "multipleSource": "median5y"
       },
-      "note": "มัธยฐาน 5 ปีงบ (FY2022–FY2026 ช่วง 22.7–26.0x) วัดจากราคาเฉลี่ยของปี ÷ EPS ของปีนั้น มาจากประวัติ ไม่ได้มาจาก P/E ปัจจุบัน {{pe}}x",
       "family": "market"
     },
     {
@@ -135,7 +128,6 @@
         "g": 4.5,
         "r": 7.5
       },
-      "note": "สมมติฐานของเราเอง · spread 3.0% ไวต่อสมมติฐาน",
       "family": "rg"
     }
   ],
@@ -237,12 +229,98 @@
   ],
   "extras": [],
   "v2Display": {
-    "fv": 161.34,
+    "legDescs": [
+      "EPS $6.62 (FY2026) × P/E 25.8x — มัธยฐาน 5 ปีงบ (FY2022–FY2026 ช่วง 22.7–26.0x) วัดจากราคาเฉลี่ยของปี ÷ EPS ของปีนั้น มาจากประวัติ ไม่ได้มาจาก P/E ปัจจุบัน 22.1x",
+      "D₁ = ปันผล $4.36 × (1+g) = $4.56; g 4.5%, r 7.5% (สมมติฐานของเราเอง) → D₁/(r−g) = $4.56/0.03 = $151.87; spread 3.0% ไวต่อสมมติฐาน"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "~$160.61 (Buy)"
+      }
+    ],
+    "s6": [
+      {
+        "head": "EPS +2.0%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$7.02"
+          ],
+          [
+            "P/E ออก",
+            "19x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$13.61"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +6.5%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$7.99"
+          ],
+          [
+            "P/E ออก",
+            "23x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$14.29"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +9.0%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$8.57"
+          ],
+          [
+            "P/E ออก",
+            "25x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$14.71"
+          ]
+        ]
+      }
+    ],
     "targets": [
       133.38,
       183.77,
       214.25
     ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~{{baseEps}} • รวมปันผล",
+    "legend": [
+      {
+        "text": "ราคา PG",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
+    "fv": 161.34,
     "gauge": [
       {
         "ref": "mos30",
@@ -272,5 +350,5 @@
       }
     }
   },
-  "_sig": "sha256:c2834c86ea77da3c99cb833f50195d4b15b86a09e1588c6cf1b1d8f58b467016"
+  "_sig": "sha256:0b51060d84663e1b62dfa2192dd7fab8bd1f3371d5f889ad4be0ad0f02967db9"
 }

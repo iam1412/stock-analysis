@@ -33,7 +33,7 @@
     "migratedFrom": {
       "updated": "2026-09-22T07:22:55+07:00",
       "v2Hash": "2f2fcbef6243",
-      "prevHash": "18ccc8f7f96c"
+      "prevHash": "1557bd6bbe77"
     }
   },
   "market": {
@@ -118,7 +118,6 @@
         "multipleSource": "median5y",
         "medianWindow": "FY2023–FY2025"
       },
-      "note": "มัธยฐานย้อนหลัง FY2023–FY2025 ของ APP เอง วัดจากราคาเฉลี่ยรายปี ÷ EPS ปีนั้น; P/E ปัจจุบันของตลาดใช้เป็นบริบทเทียบเท่านั้น",
       "family": "market"
     },
     {
@@ -128,7 +127,6 @@
         "value": 415,
         "basis": "other"
       },
-      "note": "FCF/share TTM $13.36 growth 22 เปอร์เซ็นต์ต่อปีใน 5 ปีแรก ชะลอสู่ terminal 3.5%, WACC ~10.5%",
       "family": "rg"
     }
   ],
@@ -239,6 +237,39 @@
   ],
   "extras": [],
   "v2Display": {
+    "legDescs": [
+      "EPS $13.01 (TTM) × P/E 28.8x (มัธยฐานย้อนหลัง FY2023–FY2025 ของ APP เอง วัดจากราคาเฉลี่ยรายปี ÷ EPS ปีนั้น; P/E ปัจจุบันของตลาดใช้เป็นบริบทเทียบเท่านั้น)",
+      "FCF/share TTM $13.36 growth 22 เปอร์เซ็นต์ต่อปีใน 5 ปีแรก ชะลอสู่ terminal 3.5%, WACC ~10.5%"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "{{analyst.target}} ({{analyst.pct}})"
+      }
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~{{baseEps}}",
+    "legend": [
+      {
+        "text": "ราคา APP",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
     "fv": 395,
     "fvRange": [
       375,
@@ -272,5 +303,5 @@
       }
     ]
   },
-  "_sig": "sha256:318093188fef98b9614ddb1bab31182f1e8b96402d37b37abe217a7fa885c726"
+  "_sig": "sha256:ab1d64070f4e4c12e773a7966a0b6655f0c76fbda2c4bdfb52f132ccbb43568a"
 }

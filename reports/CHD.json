@@ -32,7 +32,7 @@
     "migratedFrom": {
       "updated": "2026-09-21T12:28:00+07:00",
       "v2Hash": "7446b7e02419",
-      "prevHash": "3501aa617a63"
+      "prevHash": "098bd5012c7b"
     }
   },
   "market": {
@@ -123,7 +123,6 @@
         "multiple": 31.8,
         "multipleSource": "median5y"
       },
-      "note": "มัธยฐาน 5 ปีย้อนหลังที่วัดจริง: ราคาเฉลี่ยรายปี ÷ EPS diluted ปีเดียวกัน, ช่วง 26.1–52.6x — ไม่ใช่ตัวคูณปัจจุบัน ~30x",
       "family": "market"
     },
     {
@@ -137,7 +136,6 @@
         "netDebt": 2170000000,
         "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
       },
-      "note": "OpM 18.1% + D&A ~$196M บน revenue TTM $6,229M · Peer เฉลี่ยกลุ่ม consumer staples ระดับ 20–25x; CHD ปัจจุบันเทรดที่ ~18.6x (ตัวคูณเป้า 22x มาจากช่วง peer ไม่ใช่ตัวคูณปัจจุบัน)",
       "family": "market"
     },
     {
@@ -146,7 +144,6 @@
       "inputs": {
         "yield": 4
       },
-      "note": "สมเหตุสมผลสำหรับ compounder ที่เติบโตต่อเนื่อง",
       "family": "market"
     }
   ],
@@ -224,8 +221,7 @@
       "value": 3.53,
       "why": "EPS ฐานฉากที่ผู้เขียนใช้"
     },
-    "note": "Scenario ใช้ EPS adj. FY2025 ~{{epsFy}} เป็นฐาน (actual บริษัทประกาศเองใน 8-K 30 ม.ค. 2026 — ไม่ใช่ consensus) Bear case ใช้ P/E 24x สะท้อนความกังวล tariff impact และ organic growth ชะลอ; Base case 8% growth ใกล้เคียงกับ 5yr historical EPS CAGR ของ CHD และใกล้เคียง guidance FY2026 adj. +6–8%; Bull case 12% เกิดขึ้นได้ถ้า M&A deal ใหญ่ประสบความสำเร็จและ international revenue ขยายตัวแรง ปันผล {{dps}}/หุ้น/ปี (รวม 3 ปี ~$3.69) ช่วยเพิ่มผลตอบแทนรวม",
-    "hintNote": "(adj.)"
+    "note": "Scenario ใช้ EPS adj. FY2025 ~{{epsFy}} เป็นฐาน (actual บริษัทประกาศเองใน 8-K 30 ม.ค. 2026 — ไม่ใช่ consensus) Bear case ใช้ P/E 24x สะท้อนความกังวล tariff impact และ organic growth ชะลอ; Base case 8% growth ใกล้เคียงกับ 5yr historical EPS CAGR ของ CHD และใกล้เคียง guidance FY2026 adj. +6–8%; Bull case 12% เกิดขึ้นได้ถ้า M&A deal ใหญ่ประสบความสำเร็จและ international revenue ขยายตัวแรง ปันผล {{dps}}/หุ้น/ปี (รวม 3 ปี ~$3.69) ช่วยเพิ่มผลตอบแทนรวม"
   },
   "analyst": {
     "target": 105.24,
@@ -266,6 +262,98 @@
   ],
   "extras": [],
   "v2Display": {
+    "legDescs": [
+      "EPS $3.11 (TTM GAAP diluted) × P/E 31.8x (มัธยฐาน 5 ปีย้อนหลังที่วัดจริง: ราคาเฉลี่ยรายปี ÷ EPS diluted ปีเดียวกัน, ช่วง 26.1–52.6x — ไม่ใช่ตัวคูณปัจจุบัน ~30x) = $99",
+      "EBITDA TTM $1,323M (OpM 18.1% + D&A ~$196M บน revenue TTM $6,229M) × fair multiple 22x = EV $29.1B; หัก net debt $2.17B (debt $2,428M − cash $255M) / 237.2M หุ้น — Peer เฉลี่ยกลุ่ม consumer staples ระดับ 20–25x; CHD ปัจจุบันเทรดที่ ~18.6x (ตัวคูณเป้า 22x มาจากช่วง peer ไม่ใช่ตัวคูณปัจจุบัน)",
+      "FCF TTM $1,115M / 237.2M หุ้น = $4.70/หุ้น; target FCF yield 4% (สมเหตุสมผลสำหรับ compounder ที่เติบโตต่อเนื่อง) → FV = $4.70 / 0.04 = $117"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "{{analyst.target}} ({{analyst.pct}}) · Buy"
+      }
+    ],
+    "s6": [
+      {
+        "head": "EPS +4%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$3.97"
+          ],
+          [
+            "P/E ออก",
+            "24x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$3.69"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +8%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$4.45"
+          ],
+          [
+            "P/E ออก",
+            "28x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$3.69"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +12%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$4.96"
+          ],
+          [
+            "P/E ออก",
+            "30x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$3.69"
+          ]
+        ]
+      }
+    ],
+    "targets": [
+      99,
+      128,
+      152
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~{{baseEps}} (adj.)",
+    "legend": [
+      {
+        "text": "ราคา CHD",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
     "fv": 110,
     "fvRange": [
       99,
@@ -276,11 +364,6 @@
       null,
       117
     ],
-    "targets": [
-      99,
-      128,
-      152
-    ],
     "cards": {
       "fcf": {
         "v": "$1,115M",
@@ -288,5 +371,5 @@
       }
     }
   },
-  "_sig": "sha256:c1c44347b6ddcb1e5154f3be8029b8f126c8853ead466d9dfb7f5bed4bffc1b8"
+  "_sig": "sha256:ac1ed3bb9d48d8bc8007d9337048dacc2ce1a78b9d9abadc072584fcd9d2fc39"
 }

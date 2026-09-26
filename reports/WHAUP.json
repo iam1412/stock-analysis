@@ -32,7 +32,8 @@
     },
     "migratedFrom": {
       "updated": "2026-09-22T01:46:25+07:00",
-      "v2Hash": "74d85bbdda57"
+      "v2Hash": "74d85bbdda57",
+      "prevHash": "6f2ff178f2b2"
     }
   },
   "market": {
@@ -123,7 +124,6 @@
         "multiple": 14.8,
         "multipleSource": "median5y"
       },
-      "note": "มัธยฐาน P/E ย้อนหลัง 5 ปีงบของ WHAUP เอง (วัดจากราคาเฉลี่ยงวด ÷ EPS งวด) ไม่ได้มาจาก P/E ปัจจุบัน",
       "family": "market"
     },
     {
@@ -133,7 +133,6 @@
         "value": 6.63,
         "basis": "other"
       },
-      "note": "D₁ = ปันผล ฿0.265 × (1+g)/(r−g); g 5%, r 9% (สมมติฐานของเรา) · ตระกูล (r,g) เดียวกับ Justified P/BV นับเป็นเสียงเดียว",
       "family": "rg"
     },
     {
@@ -227,7 +226,7 @@
     "verdictHeadline": "WHAUP: Utility เติบโตผ่าน Data Center & Solar — แต่ราคา Price-in Growth ไปพอสมควรแล้ว",
     "verdictBody": "WHAUP คือ defensive utility ที่กำลัง re-rate ด้วย Data Center boom และ Solar expansion ในนิคม WHA ธุรกิจมีโมเดลรายได้ที่แข็งแกร่ง (สัญญา capacity charge ระยะยาว น้ำ+ไฟ) และจ่ายปันผลสม่ำเสมอ อย่างไรก็ตาม ราคาปัจจุบัน {{px}} สูงกว่า Fair Value ที่คำนวณได้ {{fv}} ({{mos}}) แม้ต่ำกว่าเป้านักวิเคราะห์ {{analyst.target}} ซึ่งไม่ใช่ขาของ FV — ผลตอบแทน base case 3 ปีขึ้นกับสมมติฐาน EPS/P/E ที่ยังไม่ยืนยัน นักลงทุนที่ถือแล้วอาจ hold รับปันผล ~3.6% ผู้ที่ยังไม่มีควรรอ pullback ใกล้ FV",
     "strategy": "ผู้ถือหุ้นเดิม — <b>Hold</b> รับปันผล ~3.6%/ปี และติดตาม DC deal ใหม่ ผู้ยังไม่มี — <b>รอ Pullback</b> สู่ใกล้ Fair Value {{fv}} ก่อนเริ่มสะสม โซน MOS 20% ที่ {{mos20}} คือโซน \"น่าซื้อเต็มที่\" หากตลาด correct",
-    "disclaimerSources": "แหล่งข้อมูล: StockAnalysis (BKK:WHAUP, ราคา/EPS TTM ฿0.39/ปันผล 3.56%/เป้าเฉลี่ย ฿8.82 7 ราย · 52W ฿3.86–฿8.50) · Yahoo Finance WHAUP.BK (กราฟรายเดือน ต.ค. 68 – ก.ย. 69 · EPS TTM ฿0.39 · ROE 11.13%) · WHA-UP Investor Relations / Press Release FY2568/Q4 2568 (รายได้รวม ฿4,153M · กำไรสุทธิ normalized ฿1,173M +5% YoY · Q1/2569 กำไร ฿303M +35% YoY · ปันผล ฿0.2525/หุ้น · Solar 350 MW signed · capex แผน ฿2.9B ปี 69 · SET factsheet market cap ฿31,174M)"
+    "disclaimerSources": "แหล่งข้อมูล: StockAnalysis (BKK:WHAUP, ราคา/EPS TTM ฿0.39/ปันผล 3.56%/เป้าเฉลี่ย {{analyst.target}} 7 ราย · 52W ฿3.86–฿8.50) · Yahoo Finance WHAUP.BK (กราฟรายเดือน ต.ค. 68 – ก.ย. 69 · EPS TTM ฿0.39 · ROE 11.13%) · WHA-UP Investor Relations / Press Release FY2568/Q4 2568 (รายได้รวม ฿4,153M · กำไรสุทธิ normalized ฿1,173M +5% YoY · Q1/2569 กำไร ฿303M +35% YoY · ปันผล ฿0.2525/หุ้น · Solar 350 MW signed · capex แผน ฿2.9B ปี 69 · SET factsheet market cap ฿31,174M)"
   },
   "text": {
     "valHint": "2 ตระกูล: P/E + (DDM/JPBV)",
@@ -251,10 +250,97 @@
   ],
   "extras": [],
   "v2Display": {
+    "legDescs": [
+      "EPS ฿0.39 (TTM GAAP diluted) × 14.8x — มัธยฐาน P/E ย้อนหลัง 5 ปีงบของ WHAUP เอง (วัดจากราคาเฉลี่ยงวด ÷ EPS งวด) ไม่ได้มาจาก P/E ปัจจุบัน",
+      "D₁ = ปันผล ฿0.265 × (1+g)/(r−g); g 5%, r 9% (สมมติฐานของเรา) · ตระกูล (r,g) เดียวกับ Justified P/BV นับเป็นเสียงเดียว",
+      "P/BV เหมาะสม = (ROE 12% − g 5%)/(r 9% − g 5%) ≈ 1.75 × BVPS ฿3.61 — forward ROE 12% เป็นสมมติฐาน · ตระกูลเดียวกับ DDM (r,g ชุดเดียวกัน)"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "~฿8.82 (7 ราย, Buy)"
+      }
+    ],
+    "s6": [
+      {
+        "head": "EPS +3%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~฿0.34"
+          ],
+          [
+            "P/E ออก",
+            "16x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~฿0.76"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +10%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~฿0.41"
+          ],
+          [
+            "P/E ออก",
+            "18x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~฿0.84"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +18%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~฿0.51"
+          ],
+          [
+            "P/E ออก",
+            "20x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~฿0.95"
+          ]
+        ]
+      }
+    ],
     "targets": [
       5.4,
       7.45,
       10.2
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~{{baseEps}} • รวมปันผล",
+    "legend": [
+      {
+        "text": "ราคา WHAUP",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
     ],
     "cards": {
       "netIncomeFy": {
@@ -267,5 +353,5 @@
       }
     }
   },
-  "_sig": "sha256:4e34b510af9d0922296bc89730176f1e5751d4b4bc7907a4c29cc189c35b522a"
+  "_sig": "sha256:1d807ba0224408f5eadb66650974e74c8a6730ff063b8fdf61c61f8206274f61"
 }

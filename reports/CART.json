@@ -32,7 +32,7 @@
     "migratedFrom": {
       "updated": "2026-09-21T11:54:28+07:00",
       "v2Hash": "6eae9d53b9fb",
-      "prevHash": "9f40eddc1b16"
+      "prevHash": "bb97b251d442"
     }
   },
   "market": {
@@ -118,7 +118,6 @@
         "multiple": 28,
         "multipleSource": "author"
       },
-      "note": "28x เป็นสมมติฐานสำหรับ marketplace GAAP profitable + EPS growth สูง สูงกว่า P/E ย้อนหลังที่วัดได้ (22.7x FY2024 · 26.7x FY2025) และ P/E ปัจจุบัน ~24.9x",
       "family": "market"
     },
     {
@@ -128,7 +127,6 @@
         "multiple": 3,
         "multipleSource": "author"
       },
-      "note": "3.0x เป็นสมมติฐาน (EV/Sales ปัจจุบัน ~2.4x) ธุรกิจ Ads margin สูง GM 72.6%",
       "family": "market"
     }
   ],
@@ -237,8 +235,7 @@
       }
     ],
     "exitDp": 0,
-    "note": "EPS TTM {{eps}} ใช้เป็นฐาน conservative — Instacart มีศักยภาพขยาย EPS เร็วจาก Advertising (margin ~80%+) ที่เติบโต 16%/ปี และ operating leverage ของ platform นักวิเคราะห์คาด EPS FY2026E $4.15 (สูงกว่า TTM ราว 128% — เป็นฐานปรับ adj. ที่อาจไม่เทียบกับ GAAP ตรง ๆ จึงไม่ใช้เป็นฐานของ scenario) Projection นี้ไม่รวมปันผล (บริษัทไม่จ่าย) เน้น capital gain ล้วน — ความเสี่ยงหลักคือถ้า EPS ต่ำกว่าคาดจะกด P/E re-rating",
-    "hintNote": "TTM • ไม่มีปันผล"
+    "note": "EPS TTM {{eps}} ใช้เป็นฐาน conservative — Instacart มีศักยภาพขยาย EPS เร็วจาก Advertising (margin ~80%+) ที่เติบโต 16%/ปี และ operating leverage ของ platform นักวิเคราะห์คาด EPS FY2026E $4.15 (สูงกว่า TTM ราว 128% — เป็นฐานปรับ adj. ที่อาจไม่เทียบกับ GAAP ตรง ๆ จึงไม่ใช้เป็นฐานของ scenario) Projection นี้ไม่รวมปันผล (บริษัทไม่จ่าย) เน้น capital gain ล้วน — ความเสี่ยงหลักคือถ้า EPS ต่ำกว่าคาดจะกด P/E re-rating"
   },
   "analyst": {
     "target": 58,
@@ -279,21 +276,102 @@
   ],
   "extras": [],
   "v2Display": {
-    "fv": 53,
-    "fvRange": [
-      51,
-      55
+    "legDescs": [
+      "EPS adj. $1.82 × P/E 28x = $50.96 — 28x เป็นสมมติฐานสำหรับ marketplace GAAP profitable + EPS growth สูง สูงกว่า P/E ย้อนหลังที่วัดได้ (22.7x FY2024 · 26.7x FY2025) และ P/E ปัจจุบัน ~24.9x",
+      "Revenue TTM $3.99B × 3.0x = EV $11.98B + Net Cash $0.82B = $12.80B ÷ 231.5M shares = $55.27 — 3.0x เป็นสมมติฐาน (EV/Sales ปัจจุบัน ~2.4x) ธุรกิจ Ads margin สูง GM 72.6%"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "~$58.00 (Buy)"
+      }
+    ],
+    "s6": [
+      {
+        "head": "EPS +5%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$2.06"
+          ],
+          [
+            "P/E ออก",
+            "22x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$0.00"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +15%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$2.77"
+          ],
+          [
+            "P/E ออก",
+            "25x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$0.00"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +25%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$3.55"
+          ],
+          [
+            "P/E ออก",
+            "28x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$0.00"
+          ]
+        ]
+      }
     ],
     "targets": [
       46,
       69,
       100
     ],
-    "driverEnds": [
-      "~$2.06",
-      null,
-      null
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~{{baseEps}} TTM • ไม่มีปันผล",
+    "legend": [
+      {
+        "text": "ราคา CART",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
+    "fv": 53,
+    "fvRange": [
+      51,
+      55
     ]
   },
-  "_sig": "sha256:24d60eb5c5c0e190ed556c5f197112aea4a412e09ffc040b344a76f5b8fe03be"
+  "_sig": "sha256:14bd170a4fcc196b8e231b0688988d0a0c1a62893548ed6b8b4a83b6b39a9028"
 }

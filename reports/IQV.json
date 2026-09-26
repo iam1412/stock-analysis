@@ -31,7 +31,8 @@
     },
     "migratedFrom": {
       "updated": "2026-09-21T14:53:54+07:00",
-      "v2Hash": "15843c549c46"
+      "v2Hash": "15843c549c46",
+      "prevHash": "6978ae263dfc"
     }
   },
   "market": {
@@ -166,7 +167,6 @@
         "netDebt": 0,
         "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
       },
-      "note": "สมมติฐานของผู้วิเคราะห์เอง · หลังดอกเบี้ย จึงได้มูลค่าส่วนผู้ถือหุ้นโดยตรง ไม่หัก net debt · PV $26,185M, สัดส่วน TV 57% · ไม่ใช้ตัวคูณและไม่ใช้เป้านักวิเคราะห์ (ตระกูลอิสระจากขา P/E)",
       "family": "rg"
     }
   ],
@@ -183,13 +183,13 @@
       "roe",
       "revenue",
       "ebitdaMargin",
-      "yield",
+      "custom:0",
       "beta",
       {
         "key": "backlog",
         "tone": "pos"
       },
-      "custom:0",
+      "custom:1",
       {
         "key": "fcf",
         "tone": "pos"
@@ -197,6 +197,11 @@
       "netDebt"
     ],
     "custom": [
+      {
+        "label": "เงินปันผล",
+        "value": "ไม่มี ($0)",
+        "note": "บริษัทใช้ FCF ซื้อหุ้นคืน + ลดหนี้"
+      },
       {
         "label": "Book-to-Bill",
         "value": "1.22x",
@@ -215,7 +220,6 @@
       "roe": "ROE (TTM GAAP) · FY2025 21.4% — equity base ต่ำจาก buyback + goodwill",
       "revenue": "FY2025 $16.31B · FY2026 guide $17.275–17.475B",
       "ebitdaMargin": "EBITDA TTM est. ~$3,430M · FY2026 guide $4.0–4.05B",
-      "yield": "ไม่มี · บริษัทใช้ FCF ซื้อหุ้นคืน + ลดหนี้",
       "beta": "ผันผวนมากกว่าตลาด — CRO cyclical",
       "backlog": "คงระดับ ATH · Next-12mo revenue $9.23B (+7.5% YoY)",
       "fcf": "FCF/share ~$13.27 · Q2 FCF $360M (+23.3% YoY)",
@@ -250,8 +254,7 @@
       }
     ],
     "exitDp": 0,
-    "note": "Projection ทั้ง 3 scenarios ไม่รวมปันผล (IQV ไม่จ่ายปันผล ใช้ FCF ซื้อหุ้นคืน ~$1.9B/ปี และลดหนี้) Base case {{scn.base.ret}} ใน 3 ปีขึ้นอยู่กับ: (1) backlog $34.2B + book-to-bill 1.22x convert เป็น revenue ตามแผน (2) TAS/AI analytics เป็น margin driver (3) P/E คงที่ที่ 20x · Bear case เสี่ยงถ้า momentum Q2 2026 เป็น one-off ไม่ต่อเนื่อง + pharma M&A wave ทำให้ลูกค้าลด trial ชั่วคราว Bull case โอกาสดีถ้า FDA accelerate AI-assisted trial approval + IQVIA.ai กลายเป็น platform ที่ pharma ยอมจ่าย premium + organic growth 6% ยั่งยืนต่อเนื่อง",
-    "hintNote": "(adj. TTM) • ไม่มีปันผล"
+    "note": "Projection ทั้ง 3 scenarios ไม่รวมปันผล (IQV ไม่จ่ายปันผล ใช้ FCF ซื้อหุ้นคืน ~$1.9B/ปี และลดหนี้) Base case {{scn.base.ret}} ใน 3 ปีขึ้นอยู่กับ: (1) backlog $34.2B + book-to-bill 1.22x convert เป็น revenue ตามแผน (2) TAS/AI analytics เป็น margin driver (3) P/E คงที่ที่ 20x · Bear case เสี่ยงถ้า momentum Q2 2026 เป็น one-off ไม่ต่อเนื่อง + pharma M&A wave ทำให้ลูกค้าลด trial ชั่วคราว Bull case โอกาสดีถ้า FDA accelerate AI-assisted trial approval + IQVIA.ai กลายเป็น platform ที่ pharma ยอมจ่าย premium + organic growth 6% ยั่งยืนต่อเนื่อง"
   },
   "analyst": {
     "target": 276,
@@ -290,6 +293,97 @@
   ],
   "extras": [],
   "v2Display": {
+    "legDescs": [
+      "EPS $8.08 (GAAP diluted TTM) × P/E 30.1x = $243 — 30.1x คือมัธยฐาน 5 ปีของ IQV เอง (ราคาเฉลี่ยรายปี ÷ EPS diluted FY2021–25 = 47.7x / 38.2x / 28.8x / 30.1x / 24.0x) มาจากประวัติ ไม่ได้มาจาก P/E ปัจจุบัน (33.0x); ตัวคูณกับ EPS เป็นฐาน GAAP เดียวกัน (ไม่ผสมกับ adj. EPS $12.46)",
+      "สมมติฐานของผู้วิเคราะห์เอง: FCF TTM $2,184M (หลังดอกเบี้ย จึงได้มูลค่าส่วนผู้ถือหุ้นโดยตรง ไม่หัก net debt) โต 8%/ปี ปี 1–5 แล้วชะลอ 6% / 5.5% / 5% / 4.5% / 4% ปี 6–10; FCF ปี 1–10 = 2,359 / 2,547 / 2,751 / 2,971 / 3,209 / 3,402 / 3,589 / 3,768 / 3,938 / 4,095 ($M); r 9.5% · g ปลาย 3.0%; PV ของ FCF 10 ปี $19,569M + TV $64,892M (PV $26,185M, สัดส่วน TV 57%) = $45,754M ÷ 164.6M หุ้น = $278 — ไม่ใช้ตัวคูณและไม่ใช้เป้านักวิเคราะห์ (ตระกูลอิสระจากขา P/E)"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "~$276 (Strong Buy — StockAnalysis.com)"
+      }
+    ],
+    "s6": [
+      {
+        "head": "EPS +3%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$13.62"
+          ],
+          [
+            "P/E ออก",
+            "15x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$0.00"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +8%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$15.70"
+          ],
+          [
+            "P/E ออก",
+            "20x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$0.00"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +13%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$17.98"
+          ],
+          [
+            "P/E ออก",
+            "24x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$0.00"
+          ]
+        ]
+      }
+    ],
+    "targets": [
+      204,
+      314,
+      432
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~{{baseEps}} (adj. TTM) • ไม่มีปันผล",
+    "legend": [
+      {
+        "text": "ราคา IQV",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
     "fv": 260,
     "fvRange": [
       243,
@@ -298,12 +392,7 @@
     "legValues": [
       null,
       278
-    ],
-    "targets": [
-      204,
-      314,
-      432
     ]
   },
-  "_sig": "sha256:f851fc6d0c49b2d0e146981cbe0ccdf657b7d9b478d1629645ee2c5c38d8941b"
+  "_sig": "sha256:4b7b2f05fc8f9a48e5ca2be6ed57f4de1423a35feb04b0a9c053f4070a96a6f0"
 }

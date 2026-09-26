@@ -16,10 +16,8 @@
     "aiModel": "Claude Sonnet 5",
     "sources": [
       "Yahoo Finance",
-      "StockAnalysis.com (financials",
-      "forecast)",
-      "StockAnalysis.com (statistics",
-      "dividend) — งบ FY2025 + TTM"
+      "StockAnalysis.com (financials/forecast)",
+      "StockAnalysis.com (statistics/dividend) — งบ FY2025 + TTM"
     ],
     "themeLegacy": {
       "accent": "#006B8E",
@@ -33,7 +31,8 @@
     },
     "migratedFrom": {
       "updated": "2026-09-21T12:28:00+07:00",
-      "v2Hash": "609ab11be93e"
+      "v2Hash": "609ab11be93e",
+      "prevHash": "9831de374f90"
     }
   },
   "market": {
@@ -121,7 +120,6 @@
         "eps": 13.79,
         "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
       },
-      "note": "เฉลี่ย FY2023–FY2025: 11.66, 14.53, 15.17 · มัธยฐานย้อนหลังของ CINF เอง วัดจาก ราคาเฉลี่ยปี ÷ EPS ปีนั้น 4 จุด ช่วง 6.1–10.0x",
       "family": "market"
     },
     {
@@ -131,7 +129,6 @@
         "g": 7,
         "r": 9
       },
-      "note": "สมมติฐาน · ปันผลโตต่อเนื่อง 65 ปี · สมมติฐาน cost of equity, beta 0.55 · อ่อนไหวมาก (r−g แค่ 2%)",
       "family": "rg"
     },
     {
@@ -218,8 +215,7 @@
       "value": 8.44052,
       "why": "EPS ฐานฉากถอดกลับจากราคาเป้าที่พิมพ์"
     },
-    "note": "ใช้ Operating EPS 2026E $8.44 เป็นฐาน (ตัด MTM equity portfolio ออกเพื่อภาพ stable กว่า GAAP EPS {{eps}}) · ตัวคูณขาออกเป็นสมมติฐานบน Operating EPS (P/E ปัจจุบันบนฐานเดียวกัน ~20x) โดย Base 16x สอดคล้อง FV Base scenario: ราคาเป้าใกล้ราคาปัจจุบัน (ผลตอบแทนราคา ~−2% หรือ ~−0.8%/ปี ไม่รวมปันผล) + ปันผล ~$12.90 ใน 3 ปี ≈ +7–8% รวมปันผล Base ใช้ EPS โต 7%/ปี ซึ่งเป็นสมมติฐาน (ไม่ใช่ค่าที่วัดจากงบ) Bear scenario เกิดเมื่อ catastrophe losses รุนแรง (ไฟป่า/พายุ) + equity portfolio ปรับลดรุนแรงพร้อมกัน Bull scenario เกิดเมื่อ insurance hard market ต่อเนื่อง + equity portfolio ฟื้นตัวแรง + combined ratio ต่ำกว่า 95%",
-    "hintNote": "(Operating 2026E) • ไม่รวมปันผล"
+    "note": "ใช้ Operating EPS 2026E $8.44 เป็นฐาน (ตัด MTM equity portfolio ออกเพื่อภาพ stable กว่า GAAP EPS {{eps}}) · ตัวคูณขาออกเป็นสมมติฐานบน Operating EPS (P/E ปัจจุบันบนฐานเดียวกัน ~20x) โดย Base 16x สอดคล้อง FV Base scenario: ราคาเป้าใกล้ราคาปัจจุบัน (ผลตอบแทนราคา ~−2% หรือ ~−0.8%/ปี ไม่รวมปันผล) + ปันผล ~$12.90 ใน 3 ปี ≈ +7–8% รวมปันผล Base ใช้ EPS โต 7%/ปี ซึ่งเป็นสมมติฐาน (ไม่ใช่ค่าที่วัดจากงบ) Bear scenario เกิดเมื่อ catastrophe losses รุนแรง (ไฟป่า/พายุ) + equity portfolio ปรับลดรุนแรงพร้อมกัน Bull scenario เกิดเมื่อ insurance hard market ต่อเนื่อง + equity portfolio ฟื้นตัวแรง + combined ratio ต่ำกว่า 95%"
   },
   "analyst": {
     "target": 191.67,
@@ -259,6 +255,40 @@
   ],
   "extras": [],
   "v2Display": {
+    "legDescs": [
+      "EPS $13.79 (เฉลี่ย FY2023–FY2025: 11.66, 14.53, 15.17) × P/E 9.0x (มัธยฐานย้อนหลังของ CINF เอง วัดจาก ราคาเฉลี่ยปี ÷ EPS ปีนั้น 4 จุด ช่วง 6.1–10.0x) — ใช้ EPS GAAP เฉลี่ยข้ามรอบเพื่อลดผลของ MTM equity · ตัวคูณและ EPS อยู่ฐานเดียวกัน (GAAP) ไม่ใช้ Operating EPS กับมัธยฐานนี้",
+      "D₁ = $3.76 × (1+7%) = $4.02; g = 7% (สมมติฐาน · ปันผลโตต่อเนื่อง 65 ปี); r = 9% (สมมติฐาน cost of equity, beta 0.55) → FV = $4.02 / (9%−7%) = $4.02 / 2% — อ่อนไหวมาก (r−g แค่ 2%)",
+      "P/BV = (ROE 11% − g 7%) / (r 9% − g 7%) = 4%/2% ≈ 2.0x × BVPS $108.68 — ROE 11% เป็นสมมติฐาน (Operating ROE ต่ำกว่า GAAP 21.5% แต่สูงกว่า ~8% ที่ได้จาก EPS 2026E ÷ BVPS) · BVPS $108.68 จาก equity $16.67B ÷ 153.5M หุ้น · (r,g) ชุดเดียวกับ DDM = ตระกูลเดียว"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "~$191.67 (Hold · 6 นักวิเคราะห์)"
+      }
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~$8.44 (Operating 2026E) • ไม่รวมปันผล",
+    "legend": [
+      {
+        "text": "ราคา CINF",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
     "fv": 167,
     "fvRange": [
       124,
@@ -270,5 +300,5 @@
       225
     ]
   },
-  "_sig": "sha256:f5213bb32a92057dd60ecc84c515d3395bd87688cccd780feee14e2808b6e97a"
+  "_sig": "sha256:1ffae9f8dba1b802947af8bf37cb8f48057b7acb8db7adb3f81be7288af547b7"
 }

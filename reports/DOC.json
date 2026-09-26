@@ -34,7 +34,8 @@
     },
     "migratedFrom": {
       "updated": "2026-09-21T13:09:09+07:00",
-      "v2Hash": "e947cd915df7"
+      "v2Hash": "e947cd915df7",
+      "prevHash": "e6bc1f741559"
     }
   },
   "market": {
@@ -119,8 +120,7 @@
         "ffoPerShare": 1.73,
         "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
       },
-      "family": "market",
-      "note": "FFOAA FY2569E $1.73/sh (กลาง guidance $1.71–$1.75) × P/AFFO เป้าหมาย ~13x — เป็นสมมติฐาน (ไม่มีมัธยฐานย้อนหลังของ P/AFFO ที่วัดได้ และมัธยฐาน P/E 36.6x ใช้กับ REIT ไม่ได้) สูงกว่าตัวคูณปัจจุบันราว {{pffo}}x เพราะพอร์ต MOB+Lab หลัง spin-off Janus Living กระแสเงินสดมั่นคงกว่าเดิม"
+      "family": "market"
     },
     {
       "method": "ddm",
@@ -129,7 +129,6 @@
         "g": 2,
         "r": 8
       },
-      "note": "g อนุรักษ์นิยม (dividend ทรงตัวหลายไตรมาส) r อิง risk-free 4.4% + REIT premium ~3.6%",
       "family": "rg"
     }
   ],
@@ -237,8 +236,7 @@
       "value": 1.73,
       "why": "ฐานฉากที่ผู้เขียนใช้ (ตัวตั้งที่ขาประเมินพิมพ์)"
     },
-    "note": "สมมติฐานตั้งอยู่บนพื้นฐาน FFOAA guidance FY2569 ($1.71-$1.75) เป็นปีฐาน หลังพอร์ต consolidated เล็กลงจาก spin-off Janus Living — Bear/Base/Bull สะท้อนความไม่แน่นอนหลักที่ความเร็วในการฟื้นตัวของ lab/life science segment (77.7% occupancy ปัจจุบัน) และทิศทางอัตราดอกเบี้ยระยะยาวที่กระทบ cap rate/P-AFFO multiple ของ REIT ทั้งกลุ่ม",
-    "hintNote": "FFOAA /sh"
+    "note": "สมมติฐานตั้งอยู่บนพื้นฐาน FFOAA guidance FY2569 ($1.71-$1.75) เป็นปีฐาน หลังพอร์ต consolidated เล็กลงจาก spin-off Janus Living — Bear/Base/Bull สะท้อนความไม่แน่นอนหลักที่ความเร็วในการฟื้นตัวของ lab/life science segment (77.7% occupancy ปัจจุบัน) และทิศทางอัตราดอกเบี้ยระยะยาวที่กระทบ cap rate/P-AFFO multiple ของ REIT ทั้งกลุ่ม"
   },
   "analyst": {
     "target": 23.05,
@@ -293,7 +291,93 @@
       18,
       25,
       32
+    ],
+    "legDescs": [
+      "FFOAA FY2569E $1.73/sh (กลาง guidance $1.71–$1.75) × P/AFFO เป้าหมาย ~13x — เป็นสมมติฐาน (ไม่มีมัธยฐานย้อนหลังของ P/AFFO ที่วัดได้ และมัธยฐาน P/E 36.6x ใช้กับ REIT ไม่ได้) สูงกว่าตัวคูณปัจจุบันราว 11.8x ประมาณ 10% เพราะพอร์ต MOB+Lab หลัง spin-off Janus Living กระแสเงินสดมั่นคงกว่าเดิม",
+      "D₁ = ปันผล $1.22/sh × (1+g 2%); g 2%, r 8% → FV = $1.244 / (8%−2%) = $20.7 — g อนุรักษ์นิยม (dividend ทรงตัวหลายไตรมาส) r อิง risk-free 4.4% + REIT premium ~3.6%"
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • FFOAA ฐาน ~$1.73/sh • รวมปันผล",
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "~$23.05 (Buy, consensus 19 นักวิเคราะห์)"
+      }
+    ],
+    "legend": [
+      {
+        "text": "ราคา DOC",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
+    "s6": [
+      {
+        "head": "FFOAA -1%/ปี",
+        "rows": [
+          [
+            "FFOAA ปี 3",
+            "~$1.68"
+          ],
+          [
+            "P/AFFO ออก",
+            "11x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$3.66"
+          ]
+        ]
+      },
+      {
+        "head": "FFOAA +4%/ปี",
+        "rows": [
+          [
+            "FFOAA ปี 3",
+            "~$1.95"
+          ],
+          [
+            "P/AFFO ออก",
+            "13x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$3.78"
+          ]
+        ]
+      },
+      {
+        "head": "FFOAA +7%/ปี",
+        "rows": [
+          [
+            "FFOAA ปี 3",
+            "~$2.12"
+          ],
+          [
+            "P/AFFO ออก",
+            "15x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$3.90"
+          ]
+        ]
+      }
     ]
   },
-  "_sig": "sha256:a6b778a26576a5821a985961f4a74ba6c53dc09efe4ce62aa5d97e98298f5fd6"
+  "_sig": "sha256:78b5a39b44cc8eab6afd9a31aee4aaf38e3bd492675b9a03b155c95878cde2d6"
 }

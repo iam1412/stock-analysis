@@ -32,7 +32,7 @@
     "migratedFrom": {
       "updated": "2026-09-21T23:32:21+07:00",
       "v2Hash": "b9efb603ca02",
-      "prevHash": "59f76db78d95"
+      "prevHash": "90bcd1f50014"
     }
   },
   "market": {
@@ -119,7 +119,6 @@
         "multiple": 16,
         "multipleSource": "median5y"
       },
-      "note": "16x คือมัธยฐาน P/E ย้อนหลัง FY2021–25 ของ SEIC เอง (ราคาเฉลี่ยรายปี ÷ EPS, ช่วง 14.8–17.3x) มาจากประวัติ ไม่ได้ตั้งตาม P/E ปัจจุบัน",
       "family": "market"
     },
     {
@@ -136,7 +135,6 @@
         "netDebt": -353000000,
         "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
       },
-      "note": "สมมติฐานของเราเอง",
       "family": "rg"
     }
   ],
@@ -208,8 +206,7 @@
       }
     ],
     "exitDp": 0,
-    "note": "Base case อิง EPS growth 10%/ปี (ใกล้ consensus FY2026E และต่ำกว่า FY2025 ที่ +27.7% YoY) จาก platform momentum, Private Wealth และ share buyback ที่ช่วย EPS/share โดยอัตโนมัติ P/E ออก 16x = มัธยฐานย้อนหลัง 5 ปีของ SEIC · Bear ใช้ 12x (de-rating จริงจัง ต่ำกว่าต่ำสุดในประวัติ 14.8x) · Bull ใช้ 17x (ใกล้ขอบบนของช่วง 17.3x) และถ้า Private Wealth บรรลุศักยภาพ ราคาอาจแตะ $146 ใน 3 ปี",
-    "hintNote": "• ไม่รวมปันผล"
+    "note": "Base case อิง EPS growth 10%/ปี (ใกล้ consensus FY2026E และต่ำกว่า FY2025 ที่ +27.7% YoY) จาก platform momentum, Private Wealth และ share buyback ที่ช่วย EPS/share โดยอัตโนมัติ P/E ออก 16x = มัธยฐานย้อนหลัง 5 ปีของ SEIC · Bear ใช้ 12x (de-rating จริงจัง ต่ำกว่าต่ำสุดในประวัติ 14.8x) · Bull ใช้ 17x (ใกล้ขอบบนของช่วง 17.3x) และถ้า Private Wealth บรรลุศักยภาพ ราคาอาจแตะ $146 ใน 3 ปี"
   },
   "analyst": {
     "target": 115.86,
@@ -249,6 +246,39 @@
   ],
   "extras": [],
   "v2Display": {
+    "legDescs": [
+      "EPS $5.66 (TTM, diluted) × P/E 16x — 16x คือมัธยฐาน P/E ย้อนหลัง FY2021–25 ของ SEIC เอง (ราคาเฉลี่ยรายปี ÷ EPS, ช่วง 14.8–17.3x) มาจากประวัติ ไม่ได้ตั้งตาม P/E ปัจจุบัน",
+      "FCF TTM $687M โต 8%/ปี 5 ปี (สมมติฐานของเราเอง): $742M / $801M / $865M / $935M / $1,009M · r 10% · g ปลาย 3% · PV FCF $3,252M + PV TV $9,223M (TV 73.9% ของ EV) + เงินสด $421M − หนี้ $68M = $12,828M ÷ 120.02M หุ้นคงเหลือ = $106.9"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "~$115.86 (Buy)"
+      }
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~$5.66 • ไม่รวมปันผล",
+    "legend": [
+      {
+        "text": "ราคา SEIC",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
     "fv": 99,
     "fvRange": [
       91,
@@ -270,5 +300,5 @@
       "div": false
     }
   },
-  "_sig": "sha256:0d1cd123276c2150cd0fac3a1485c47c601bdbdb47009e2047f9824a1d1685b3"
+  "_sig": "sha256:c79f5f047212b380972b6b9347a450dd0ad3c3af70ce3c47210c23e6a216f6ea"
 }

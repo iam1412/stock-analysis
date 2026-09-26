@@ -33,7 +33,7 @@
     "migratedFrom": {
       "updated": "2026-09-22T07:22:55+07:00",
       "v2Hash": "60e88ce661d4",
-      "prevHash": "25db29456a7c"
+      "prevHash": "62c4574981dc"
     }
   },
   "market": {
@@ -125,7 +125,6 @@
         "why": "ค่าที่ผู้เขียนใช้ในใบ v2",
         "epsForward": 8.9
       },
-      "note": "กลาง guidance 2026 ที่ reaffirm หลัง Q2",
       "family": "market"
     },
     {
@@ -135,7 +134,6 @@
         "value": 133,
         "basis": "other"
       },
-      "note": "FCF before growth guide ต่ำสุด $2.8B (ปี 2026) ÷ FCF yield เป้าหมาย 10% (ชดเชย leverage สูง D/E 4.8x และ FCF จริง TTM แค่ $348M) ÷ ~210M หุ้น",
       "family": "rg"
     }
   ],
@@ -223,8 +221,7 @@
       "value": 8.9,
       "why": "EPS ฐานฉากที่ผู้เขียนใช้"
     },
-    "note": "ความเสี่ยง–ผลตอบแทน <b>เอียงไปทางบวก</b> เพราะเข้าซื้อต่ำกว่ามูลค่าพื้นฐาน ({{mos}}) — base case (P/E ออก 12.5x ต่ำกว่าปัจจุบันเดิม) ตามแผนเติบโต EPS 14% CAGR (ถึงปี 2030) ของบริษัท upside ใน bull case ขึ้นกับว่า <b>ดีลป้อนไฟ Data Center</b> (\"bring your own power\") จะ materialize เป็นสัญญาระยะยาวได้จริงแค่ไหน",
-    "hintNote": "(Adjusted)"
+    "note": "ความเสี่ยง–ผลตอบแทน <b>เอียงไปทางบวก</b> เพราะเข้าซื้อต่ำกว่ามูลค่าพื้นฐาน ({{mos}}) — base case (P/E ออก 12.5x ต่ำกว่าปัจจุบันเดิม) ตามแผนเติบโต EPS 14% CAGR (ถึงปี 2030) ของบริษัท upside ใน bull case ขึ้นกับว่า <b>ดีลป้อนไฟ Data Center</b> (\"bring your own power\") จะ materialize เป็นสัญญาระยะยาวได้จริงแค่ไหน"
   },
   "analyst": {
     "target": 188.56,
@@ -264,6 +261,39 @@
   ],
   "extras": [],
   "v2Display": {
+    "legDescs": [
+      "Adjusted EPS ~$8.90 (กลาง guidance 2026 ที่ reaffirm หลัง Q2) × P/E ~14x (ต่ำกว่า P/E GAAP ปี 2024 ที่ 15.7x ซึ่งเป็นปีล่าสุดที่กำไรปกติ — ลดพรีเมียมธีม AI หลังผล Q2 พลาดคาดและ leverage สูง; ไม่ใช้มัธยฐานประวัติ 7.6x เพราะมาจากช่วงก่อนธุรกิจเปลี่ยนโครงสร้าง)",
+      "FCF before growth guide ต่ำสุด $2.8B (ปี 2026) ÷ FCF yield เป้าหมาย 10% (ชดเชย leverage สูง D/E 4.8x และ FCF จริง TTM แค่ $348M) ÷ ~210M หุ้น"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "{{analyst.target}} ({{analyst.pct}})"
+      }
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~{{baseEps}} (Adjusted)",
+    "legend": [
+      {
+        "text": "ราคา NRG",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
     "fv": 129,
     "fvRange": [
       118,
@@ -295,7 +325,13 @@
         "text": "$270",
         "label": "เป้าสูงสุด"
       }
-    ]
+    ],
+    "custom": {
+      "0": {
+        "op": "pxOverBase",
+        "base": 8.24
+      }
+    }
   },
-  "_sig": "sha256:aa0c98974fde4df5c8b962b371c8aec33c24fdabe677ae4ea620bcda868e82bc"
+  "_sig": "sha256:8620bacfb5c74da2b79a50da1b85af5ad91698a739046ec317d4a37db8b884ea"
 }

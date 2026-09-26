@@ -32,7 +32,8 @@
     },
     "migratedFrom": {
       "updated": "2026-09-21T23:32:21+07:00",
-      "v2Hash": "4dd90f92ce85"
+      "v2Hash": "4dd90f92ce85",
+      "prevHash": "f220b0a45f1b"
     }
   },
   "market": {
@@ -131,7 +132,6 @@
         "base": "epsForward"
       },
       "baseLabel": "FY26E",
-      "note": "อิงการฟื้นตัว cycle และ consensus estimate midpoint",
       "family": "market"
     },
     {
@@ -145,7 +145,6 @@
         "fcf": 1369140000,
         "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
       },
-      "note": "สะท้อน free cash flow ที่แข็งแกร่งและความสามารถในการจ่ายปันผลต่อเนื่อง",
       "family": "market"
     }
   ],
@@ -254,16 +253,103 @@
   ],
   "extras": [],
   "v2Display": {
-    "fv": 357,
-    "fvRange": [
-      337,
-      374
+    "legDescs": [
+      "adj EPS (TTM) $10.53 × P/E เป้าหมาย ~32x — P/E เฉลี่ย 5 ปีระดับ normalized สำหรับ cyclical industrial คุณภาพสูง",
+      "FY26E adj EPS คาดการณ์ $11.70 × P/E เป้าหมาย ~32x — อิงการฟื้นตัว cycle และ consensus estimate midpoint",
+      "FCF/Share $12.01 × P/FCF เป้าหมาย ~30x — สะท้อน free cash flow ที่แข็งแกร่งและความสามารถในการจ่ายปันผลต่อเนื่อง"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "~$464 (Hold/Neutral)"
+      }
+    ],
+    "s6": [
+      {
+        "head": "EPS +5%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$12.19"
+          ],
+          [
+            "P/E ออก",
+            "26x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$17.70"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +8%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$13.26"
+          ],
+          [
+            "P/E ออก",
+            "30x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$18.00"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +11%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$14.40"
+          ],
+          [
+            "P/E ออก",
+            "33x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$18.50"
+          ]
+        ]
+      }
     ],
     "targets": [
       316.94,
       397.8,
       475.2
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~{{baseEps}}",
+    "legend": [
+      {
+        "text": "ราคา ROK",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
+    "fv": 357,
+    "fvRange": [
+      337,
+      374
     ]
   },
-  "_sig": "sha256:1fa152834865d2a42ca0dab907f998e4ab832ea7d21a853bb1afb84eaf317aef"
+  "_sig": "sha256:29ddc427449d0dd74b966f2849fcda6a77070af0716e68ebc46b6a3da4414e76"
 }

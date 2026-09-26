@@ -31,7 +31,8 @@
     },
     "migratedFrom": {
       "updated": "2026-09-21T11:06:17+07:00",
-      "v2Hash": "3b4196d8d2f9"
+      "v2Hash": "3b4196d8d2f9",
+      "prevHash": "788b80415898"
     }
   },
   "market": {
@@ -119,7 +120,6 @@
         "multiple": 18.7,
         "multipleSource": "median5y"
       },
-      "note": "มัธยฐานย้อนหลัง 5 ปีงบของ ATO เอง (ช่วง 17.5–20.6x วัดจากราคาเฉลี่ยรายปี ÷ EPS)",
       "family": "market"
     },
     {
@@ -129,7 +129,6 @@
         "g": 5.5,
         "r": 7.5
       },
-      "note": "เหมาะกับ regulated utility ปันผลสม่ำเสมอ 40+ ปี (ตระกูล r,g เดียวกับ Justified P/BV — นับเป็นเสียงเดียว)",
       "family": "rg"
     },
     {
@@ -208,8 +207,7 @@
       }
     ],
     "exitDp": 0,
-    "note": "P/E ออกทุกฉากผูกกับช่วงประวัติ 17.5–20.6x (Bear = ขอบล่าง, Base ≈ มัธยฐาน, Bull = ขอบบน) · Base case อ้างอิง EPS growth ~8%/ปี ตามแนวโน้ม rate base expansion ~10%/ปีของ ATO ซึ่งได้รับการอนุมัติอัตรา (rate case) สม่ำเสมอในรัฐ Texas (65% ของ revenue) · Bear case สมมติอัตราดอกเบี้ยสูงต่อเนื่องกดดัน P/E multiple ของ utility ทั้งกลุ่ม ยังได้ผลตอบแทนบวกจากปันผล · Bull case: Fed ลดดอกเบี้ยต่อเนื่อง + Texas infrastructure capex อนุมัติเร็ว + data center gas demand เสริม · ทุก scenario ยังได้ปันผล Dividend Aristocrat เป็น floor ป้องกันขาดทุนระยะยาว",
-    "hintNote": "(TTM)"
+    "note": "P/E ออกทุกฉากผูกกับช่วงประวัติ 17.5–20.6x (Bear = ขอบล่าง, Base ≈ มัธยฐาน, Bull = ขอบบน) · Base case อ้างอิง EPS growth ~8%/ปี ตามแนวโน้ม rate base expansion ~10%/ปีของ ATO ซึ่งได้รับการอนุมัติอัตรา (rate case) สม่ำเสมอในรัฐ Texas (65% ของ revenue) · Bear case สมมติอัตราดอกเบี้ยสูงต่อเนื่องกดดัน P/E multiple ของ utility ทั้งกลุ่ม ยังได้ผลตอบแทนบวกจากปันผล · Bull case: Fed ลดดอกเบี้ยต่อเนื่อง + Texas infrastructure capex อนุมัติเร็ว + data center gas demand เสริม · ทุก scenario ยังได้ปันผล Dividend Aristocrat เป็น floor ป้องกันขาดทุนระยะยาว"
   },
   "analyst": {
     "target": 185.55,
@@ -246,5 +244,99 @@
     "<b>Weather Dependency:</b> ปริมาณการใช้ก๊าซแปรตามสภาพอากาศ ฤดูหนาวอุ่นผิดปกติกระทบรายได้ระยะสั้น แม้ระบบ weather normalization ช่วยป้องกันบางส่วน"
   ],
   "extras": [],
-  "_sig": "sha256:823075b7ef3aefb7e6a5358b4599259220a24dcfdebb8701da86b34175e7152e"
+  "v2Display": {
+    "legDescs": [
+      "EPS $8.43 (TTM) × P/E เป้าหมาย 18.7x — มัธยฐานย้อนหลัง 5 ปีงบของ ATO เอง (ช่วง 17.5–20.6x วัดจากราคาเฉลี่ยรายปี ÷ EPS)",
+      "D₁ = ปันผล $4.22 (= $4.00 × 1.055); g 5.5%, r 7.5% → เหมาะกับ regulated utility ปันผลสม่ำเสมอ 40+ ปี (ตระกูล r,g เดียวกับ Justified P/BV — นับเป็นเสียงเดียว)",
+      "P/BV เหมาะสม = (ROE 9.3% − g 6.0%)/(r 7.5% − g 6.0%) = 2.20 × BVPS $84.44"
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~{{baseEps}} (TTM)",
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "~$185.55 (Hold)"
+      }
+    ],
+    "legend": [
+      {
+        "text": "ราคา ATO",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
+    "s6": [
+      {
+        "head": "EPS +4%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$9.48"
+          ],
+          [
+            "P/E ออก",
+            "17x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$12.99"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +8%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$10.62"
+          ],
+          [
+            "P/E ออก",
+            "19x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$13.83"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +11%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$11.53"
+          ],
+          [
+            "P/E ออก",
+            "21x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$14.69"
+          ]
+        ]
+      }
+    ],
+    "targets": [
+      161.2,
+      201.77,
+      242.11
+    ]
+  },
+  "_sig": "sha256:7b5f3f04bd7c52312536efd95e03edeaa050060228f88440a9b28d08dd099d3c"
 }

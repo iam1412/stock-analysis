@@ -32,7 +32,7 @@
     "migratedFrom": {
       "updated": "2026-09-22T01:46:25+07:00",
       "v2Hash": "9502624bbb3c",
-      "prevHash": "4d908a40490c"
+      "prevHash": "d1285c7f44b5"
     }
   },
   "market": {
@@ -122,8 +122,7 @@
       "inputs": {
         "multiple": 13,
         "multipleSource": "author"
-      },
-      "note": "ค่าเฉลี่ย 5 ปี · สะท้อน brand power + margin สูง"
+      }
     },
     {
       "method": "ddm",
@@ -131,8 +130,7 @@
       "inputs": {
         "g": 5,
         "r": 9
-      },
-      "note": "ธุรกิจ defensive ปันผลสม่ำเสมอ"
+      }
     },
     {
       "method": "pbv",
@@ -140,8 +138,7 @@
       "inputs": {
         "g": 5,
         "r": 11
-      },
-      "note": "ROE สูงสม่ำเสมอ"
+      }
     }
   ],
   "fvWeights": null,
@@ -239,16 +236,103 @@
   ],
   "extras": [],
   "v2Display": {
-    "fv": 20.5,
-    "legValues": [
-      null,
-      null,
-      20.98
+    "legDescs": [
+      "EPS adj. ฿1.62 × P/E เป้าหมาย ~13x (ค่าเฉลี่ย 5 ปี) — สะท้อน brand power + margin สูง",
+      "D₁ = ปันผล ฿0.75 × (1+g); g 5%, r 9% → ฿0.7875 / (0.09−0.05) — ธุรกิจ defensive ปันผลสม่ำเสมอ",
+      "P/BV เหมาะสม = (ROE 20.74% − g 5%)/(r 11% − g 5%) ≈ 2.62 × BVPS ฿8.00 — ROE สูงสม่ำเสมอ"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "~฿15.50 (Buy 2/3)"
+      }
+    ],
+    "s6": [
+      {
+        "head": "EPS +2%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~฿1.72"
+          ],
+          [
+            "P/E ออก",
+            "9x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~฿2.25"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +7%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~฿1.98"
+          ],
+          [
+            "P/E ออก",
+            "12x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~฿2.40"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +12%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~฿2.27"
+          ],
+          [
+            "P/E ออก",
+            "14x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~฿2.60"
+          ]
+        ]
+      }
     ],
     "targets": [
       15.5,
       23.75,
       31.8
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~{{baseEps}} • รวมปันผล",
+    "legend": [
+      {
+        "text": "ราคา TOA",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
+    "fv": 20.5,
+    "legValues": [
+      null,
+      null,
+      20.98
     ],
     "cards": {
       "netIncomeFy": {
@@ -261,5 +345,5 @@
       }
     }
   },
-  "_sig": "sha256:983b5a4d98ec880400bd43e8982cc3ad2425c2cce591d10d27ee03a4b1952556"
+  "_sig": "sha256:ee1212ec0d5a46ea511dddaee57fef1a9a319edd9e9ecb4b48e118e1f6dbeaff"
 }

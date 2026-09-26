@@ -31,7 +31,8 @@
     },
     "migratedFrom": {
       "updated": "2026-09-21T10:24:06+07:00",
-      "v2Hash": "805e0678f6a6"
+      "v2Hash": "805e0678f6a6",
+      "prevHash": "9f5eab723860"
     }
   },
   "market": {
@@ -122,7 +123,6 @@
         "base": "epsForward"
       },
       "baseLabel": "FY2027E consensus",
-      "note": "P/E 10.4x = มัธยฐานย้อนหลังของ ALL เอง (FY24 10.4x · FY25 5.3x · FY21 24.3x · 3 จุด ช่วงกว้าง) · ไม่ใช้ตัวคูณปัจจุบัน",
       "family": "market"
     },
     {
@@ -212,8 +212,7 @@
       "value": 27.61,
       "why": "EPS ฐานฉากที่ผู้เขียนใช้"
     },
-    "note": "EPS ฐาน ~$27.61 (FY2027E consensus; FY26E $35.22) ต่ำกว่า FY25 adj. {{epsFy}} เพราะ FY25 เป็นปีผลลัพธ์ exceptional — Combined Ratio ต่ำสุดในรอบหลายปี + investment gains Base case ใช้ P/E exit 10.4x (มัธยฐานย้อนหลังของ ALL) แทนตัวคูณปัจจุบันที่ต่ำ ผลตอบแทน Base {{scn.base.ret}} ใน 3 ปี ความเสี่ยง Bear case อยู่ที่ hurricane season รุนแรง / wildfire LA ปี 2568 พิสูจน์ให้เห็นว่า catastrophe loss สามารถกัดกินกำไรทั้งปีได้ใน quarter เดียว",
-    "hintNote": "(FY27E consensus)"
+    "note": "EPS ฐาน ~$27.61 (FY2027E consensus; FY26E $35.22) ต่ำกว่า FY25 adj. {{epsFy}} เพราะ FY25 เป็นปีผลลัพธ์ exceptional — Combined Ratio ต่ำสุดในรอบหลายปี + investment gains Base case ใช้ P/E exit 10.4x (มัธยฐานย้อนหลังของ ALL) แทนตัวคูณปัจจุบันที่ต่ำ ผลตอบแทน Base {{scn.base.ret}} ใน 3 ปี ความเสี่ยง Bear case อยู่ที่ hurricane season รุนแรง / wildfire LA ปี 2568 พิสูจน์ให้เห็นว่า catastrophe loss สามารถกัดกินกำไรทั้งปีได้ใน quarter เดียว"
   },
   "analyst": {
     "target": 274.77,
@@ -252,5 +251,98 @@
     "<b>Interest rate sensitivity:</b> Bond portfolio ขนาดใหญ่ — ดอกเบี้ยลดลงจะกระทบ investment income และ book value"
   ],
   "extras": [],
-  "_sig": "sha256:ec5b687ed656faeddf7d71bd4d81de1a78e62c6fc4cfcbfbdbeb2de439a73da1"
+  "v2Display": {
+    "legDescs": [
+      "EPS $27.61 (FY2027E consensus, normalized) × P/E 10.4x = $287 — P/E 10.4x = มัธยฐานย้อนหลังของ ALL เอง (FY24 10.4x · FY25 5.3x · FY21 24.3x · 3 จุด ช่วงกว้าง) · ไม่ใช้ตัวคูณปัจจุบัน",
+      "P/BV = (ROE 15% − g 5%)/(r 9% − g 5%) ≈ 2.5x × BVPS $124.79 = $312 — ใช้ ROE 15% (mid-cycle normalized; ปัจจุบัน 46% สูงผิดปกติ)"
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~{{baseEps}} (FY27E consensus)",
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "~$274.77 (Hold)"
+      }
+    ],
+    "legend": [
+      {
+        "text": "ราคา ALL",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
+    "s6": [
+      {
+        "head": "EPS −5%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$23.67"
+          ],
+          [
+            "P/E ออก",
+            "9x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$13.00"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +5%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$31.96"
+          ],
+          [
+            "P/E ออก",
+            "10.4x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$13.00"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +8%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$34.78"
+          ],
+          [
+            "P/E ออก",
+            "12x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$13.00"
+          ]
+        ]
+      }
+    ],
+    "targets": [
+      213.05,
+      332.41,
+      417.37
+    ]
+  },
+  "_sig": "sha256:bd88038306f86dfb1c339bb33dfc6864dbda753f14e79d15a16dc6954f86a21d"
 }

@@ -31,7 +31,8 @@
     },
     "migratedFrom": {
       "updated": "2026-09-21T09:52:17+07:00",
-      "v2Hash": "8b9e1813f321"
+      "v2Hash": "8b9e1813f321",
+      "prevHash": "19d8c44fff92"
     }
   },
   "market": {
@@ -116,8 +117,7 @@
       "override": {
         "eps": 13.97,
         "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
-      },
-      "note": "EPS adj. $13.97 (FY2026 guidance กลางของช่วง $13.87–14.07 · รวมผลลบจาก IPR&D ~$0.58 และ Apogee ~$0.14) × P/E เป้า 19x — สมอ = P/E ของ ABBV เองที่ราคาเฉลี่ยรายปี ÷ adj EPS ~17.8x (FY2024) และ ~20.6x (FY2025) ใช้กลางช่วง 19x · GAAP P/E ย้อนหลังใช้ไม่ได้ (มัธยฐาน 64.8x บิดเบือนจาก amortization Allergan)"
+      }
     },
     {
       "method": "ddm",
@@ -125,8 +125,7 @@
       "inputs": {
         "g": 6,
         "r": 9
-      },
-      "note": "อิง Skyrizi/Rinvoq + Botox growth · WACC โดยประมาณ"
+      }
     },
     {
       "method": "evebitda",
@@ -140,8 +139,7 @@
         "netDebt": 64300000000,
         "why": "ค่าที่ผู้เขียนใช้ในใบ v2",
         "shares": 1767000000
-      },
-      "note": "EBITDA FY2026E ~$25B (FY2025 $23.2B +8%); Sector multiple 16x → Target EV $400B − Net Debt $64.3B (หนี้ $70.9B − เงินสด $6.6B) = $335.7B ÷ 1.767B หุ้น — penalize จาก Allergan debt; Sector ยา 14-18x ใช้ค่ากลาง 16x (สมมติฐานเซกเตอร์ ไม่ได้วัดตัวคูณ EV/EBITDA ย้อนหลังของ ABBV)"
+      }
     }
   ],
   "fvWeights": null,
@@ -279,5 +277,99 @@
     "<b>Goodwill/Amortization จาก Allergan:</b> Amortization ~$4-5B/ปี ทำให้ GAAP EPS ต่ำผิดปกติ และ book value ติดลบ ความโปร่งใสทางบัญชีลดลง"
   ],
   "extras": [],
-  "_sig": "sha256:92b6b4d7c99a8ddb4af2f51ad3f568f9f1f2bc5c58556363db8c740daca03679"
+  "v2Display": {
+    "legDescs": [
+      "EPS adj. $13.97 (FY2026 guidance กลางของช่วง $13.87–14.07 · รวมผลลบจาก IPR&D ~$0.58 และ Apogee ~$0.14) × P/E เป้า 19x — สมอ = P/E ของ ABBV เองที่ราคาเฉลี่ยรายปี ÷ adj EPS ~17.8x (FY2024) และ ~20.6x (FY2025) ใช้กลางช่วง 19x · GAAP P/E ย้อนหลังใช้ไม่ได้ (มัธยฐาน 64.8x บิดเบือนจาก amortization Allergan)",
+      "D₁ = ปันผลปัจจุบัน $6.92 × (1+6%) = $7.335; g 6% (อิง Skyrizi/Rinvoq + Botox growth); r 9% (WACC โดยประมาณ) → $7.335 ÷ (0.09−0.06) = $7.335 ÷ 0.03",
+      "EBITDA FY2026E ~$25B (FY2025 $23.2B +8%); Sector multiple 16x → Target EV $400B − Net Debt $64.3B (หนี้ $70.9B − เงินสด $6.6B) = $335.7B ÷ 1.767B หุ้น — penalize จาก Allergan debt; Sector ยา 14-18x ใช้ค่ากลาง 16x (สมมติฐานเซกเตอร์ ไม่ได้วัดตัวคูณ EV/EBITDA ย้อนหลังของ ABBV)"
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~{{baseEps}} • รวมปันผล",
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "~$278.61 (Buy — 28 คน)"
+      }
+    ],
+    "legend": [
+      {
+        "text": "ราคา ABBV",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
+    "s6": [
+      {
+        "head": "EPS +3%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$15.27"
+          ],
+          [
+            "P/E ออก",
+            "16x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$21.00"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +10%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$18.59"
+          ],
+          [
+            "P/E ออก",
+            "20x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$22.00"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +15%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$21.25"
+          ],
+          [
+            "P/E ออก",
+            "22x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$23.00"
+          ]
+        ]
+      }
+    ],
+    "targets": [
+      244.24,
+      371.87,
+      467.42
+    ]
+  },
+  "_sig": "sha256:241521aadde6e3ff8e8cc50fd8a43cce97475e94c7bdcae807855c298048f0f7"
 }

@@ -31,7 +31,8 @@
     },
     "migratedFrom": {
       "updated": "2026-09-21T14:53:54+07:00",
-      "v2Hash": "dc7aae08cadd"
+      "v2Hash": "dc7aae08cadd",
+      "prevHash": "29c09ea3e50d"
     }
   },
   "market": {
@@ -99,8 +100,7 @@
     "dps": 3.46,
     "shares": 298000000,
     "beta": 0.9,
-    "ffoBasis": "affo",
-    "ffoPerShare": 5.17
+    "ffoBasis": "affo"
   },
   "legs": [
     {
@@ -110,7 +110,6 @@
         "g": 5,
         "r": 8.5
       },
-      "note": "r และ g เป็นสมมติฐานของผู้วิเคราะห์ (g 5% ต่ำกว่าการขึ้นปันผลปีล่าสุด +12.6% และ AFFO guide +14%)",
       "family": "rg"
     },
     {
@@ -124,7 +123,6 @@
         "r": 8.5,
         "horizon": null
       },
-      "note": "ปันผลโต 8%/ปี 3 ปี · r 8.5% ชุดเดียวกับวิธี 1 จึงนับเป็นเสียงเดียวกัน",
       "family": "rg"
     }
   ],
@@ -140,8 +138,8 @@
       "custom:5",
       "custom:6",
       "yield",
-      "ffoPayout",
       "custom:7",
+      "custom:8",
       "beta"
     ],
     "custom": [
@@ -187,6 +185,11 @@
         "tone": "neu"
       },
       {
+        "label": "Payout Ratio (Div/AFFO)",
+        "value": "~59%",
+        "note": "DPS {{dps}} ÷ AFFO/share FY26E กลาง $5.90 — เหลือพื้นที่ reinvest data center"
+      },
+      {
         "label": "Data Center Growth",
         "value": "+39% YoY",
         "note": "Q2 2026: leasing 13 MW, YTD 110 MW, ~325 MW รอ energize ใน 24 เดือน",
@@ -195,7 +198,8 @@
     ],
     "notes": {
       "mcap": "~298M shares outstanding",
-      "yield": "{{dps}}/share ต่อปี (รายไตรมาส $0.865)"
+      "yield": "{{dps}}/share ต่อปี (รายไตรมาส $0.865)",
+      "beta": "ประมาณ — REIT hybrid ผันผวนกว่า storage-only peer"
     },
     "hint": "REIT — ใช้ AFFO/share แทน GAAP EPS"
   },
@@ -230,8 +234,7 @@
       "value": 5.16952,
       "why": "ฐานฉากถอดกลับจากค่าปลายฉากที่พิมพ์"
     },
-    "note": "การฉายภาพใช้ AFFO/share เป็นตัวชี้วัดหลัก (มาตรฐาน REIT) แทน GAAP EPS ซึ่งถูกกด D&A สูงมาก (GAAP EPS TTM เพียง $1.40) ปันผลรวม 3 ปี สมมติเติบโตช้า ~5%/ปี จากฐาน {{dps}} (IRM ขึ้นปันผลต่อเนื่อง และ payout ~59% ของ AFFO FY26E จำกัดอัตราเร่ง) Leverage (net lease-adjusted 4.8x) ลดลงแล้ว แต่ capex data center หนัก (FCF หลังลงทุนยังติดลบ) เป็นความเสี่ยงหลักที่อาจกด multiple ในกรณี Bear · P/AFFO ขาออก 16x/19x/21x เป็นสมมติฐานของฉาก ไม่ใช่ขาของ FV Base case ประมาณ +27% ใน 3 ปี (ทบต้น ~8%/ปี รวมปันผล จากจุดเข้า) สมเหตุสมผลหาก Project Matterhorn ส่งมอบตามแผนและไม่มี dilution/downgrade เครดิตเพิ่มเติม",
-    "hintNote": "/share"
+    "note": "การฉายภาพใช้ AFFO/share เป็นตัวชี้วัดหลัก (มาตรฐาน REIT) แทน GAAP EPS ซึ่งถูกกด D&A สูงมาก (GAAP EPS TTM เพียง $1.40) ปันผลรวม 3 ปี สมมติเติบโตช้า ~5%/ปี จากฐาน {{dps}} (IRM ขึ้นปันผลต่อเนื่อง และ payout ~59% ของ AFFO FY26E จำกัดอัตราเร่ง) Leverage (net lease-adjusted 4.8x) ลดลงแล้ว แต่ capex data center หนัก (FCF หลังลงทุนยังติดลบ) เป็นความเสี่ยงหลักที่อาจกด multiple ในกรณี Bear · P/AFFO ขาออก 16x/19x/21x เป็นสมมติฐานของฉาก ไม่ใช่ขาของ FV Base case ประมาณ +27% ใน 3 ปี (ทบต้น ~8%/ปี รวมปันผล จากจุดเข้า) สมเหตุสมผลหาก Project Matterhorn ส่งมอบตามแผนและไม่มี dilution/downgrade เครดิตเพิ่มเติม"
   },
   "analyst": {
     "target": 146.2,
@@ -271,6 +274,97 @@
   ],
   "extras": [],
   "v2Display": {
+    "legDescs": [
+      "DPS $3.46 × (1+5%) = D1 $3.633 ÷ (r 8.5% − g 5.0%) = $103.80 — r และ g เป็นสมมติฐานของผู้วิเคราะห์ (g 5% ต่ำกว่าการขึ้นปันผลปีล่าสุด +12.6% และ AFFO guide +14%)",
+      "ปันผลโต 8%/ปี 3 ปี: D1 $3.737 · D2 $4.036 · D3 $4.359 จากนั้น g 4% → D4 $4.533; TV ณ ปีที่ 3 = $4.533 ÷ (8.5% − 4%) = $100.73; PV = $3.44 + $3.43 + ($4.359 + $100.73) ÷ 1.085³ $82.27 = $89.14 ต่อหุ้น — r 8.5% ชุดเดียวกับวิธี 1 จึงนับเป็นเสียงเดียวกัน"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "~$146 (Buy)"
+      }
+    ],
+    "s6": [
+      {
+        "head": "AFFO +6%/ปี",
+        "rows": [
+          [
+            "AFFO ปี 3",
+            "~$6.16"
+          ],
+          [
+            "P/AFFO ออก",
+            "16x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$10.40"
+          ]
+        ]
+      },
+      {
+        "head": "AFFO +11%/ปี",
+        "rows": [
+          [
+            "AFFO ปี 3",
+            "~$7.07"
+          ],
+          [
+            "P/AFFO ออก",
+            "19x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$10.90"
+          ]
+        ]
+      },
+      {
+        "head": "AFFO +15%/ปี",
+        "rows": [
+          [
+            "AFFO ปี 3",
+            "~$7.86"
+          ],
+          [
+            "P/AFFO ออก",
+            "21x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$11.50"
+          ]
+        ]
+      }
+    ],
+    "targets": [
+      98.5,
+      134.3,
+      165.05
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • AFFO ฐาน ~$5.17/share • รวมปันผล",
+    "legend": [
+      {
+        "text": "ราคา IRM",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
     "fv": 96.5,
     "fvRange": [
       89.14,
@@ -279,22 +373,7 @@
     "legValues": [
       null,
       89.14
-    ],
-    "targets": [
-      98.5,
-      134.3,
-      165.05
-    ],
-    "cards": {
-      "ffoPayout": {
-        "v": "~59%",
-        "d": "DPS $3.46 ÷ AFFO/share FY26E กลาง $5.90 — เหลือพื้นที่ reinvest data center"
-      },
-      "beta": {
-        "v": "~0.9",
-        "d": "ประมาณ — REIT hybrid ผันผวนกว่า storage-only peer"
-      }
-    }
+    ]
   },
-  "_sig": "sha256:0eed1ec2ea84ed731da7f9d30bb7c2f1ea7d9117434a2752ec1575c6763210fb"
+  "_sig": "sha256:fbbcd13b219e50859f29eaf6401febc0a9703bdeaa6c8e8664842a2a808204e1"
 }

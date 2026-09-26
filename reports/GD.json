@@ -32,7 +32,8 @@
     },
     "migratedFrom": {
       "updated": "2026-09-21T14:53:54+07:00",
-      "v2Hash": "e0caf19a3be3"
+      "v2Hash": "e0caf19a3be3",
+      "prevHash": "6742947c08e5"
     }
   },
   "market": {
@@ -120,7 +121,6 @@
         "multiple": 19.1,
         "multipleSource": "median5y"
       },
-      "note": "มัธยฐาน P/E 5 ปีที่วัดจริง (FY2021–FY2025 ช่วง 16.3–21.0x) ไม่ได้อิงจาก P/E ปัจจุบัน",
       "family": "market"
     },
     {
@@ -132,7 +132,6 @@
         "base": "epsForward"
       },
       "baseLabel": "FY26E consensus",
-      "note": "มัธยฐานเดียวกัน · FY26E, consensus StockAnalysis · ตระกูล P/E เดียวกัน นับเป็นเสียงเดียว",
       "family": "market"
     }
   ],
@@ -239,5 +238,98 @@
     "<b>Supply Chain:</b> ชิ้นส่วนและวัตถุดิบสำหรับ combat vehicles + submarines บางอย่างมี single-source suppliers เสี่ยงต่อ disruption"
   ],
   "extras": [],
-  "_sig": "sha256:db3ff3d6bb8a2d262033de615c66a74aaf4717e1930712798daa134e5b3b2621"
+  "v2Display": {
+    "legDescs": [
+      "EPS $16.40 (TTM) × P/E 19.1x — มัธยฐาน P/E 5 ปีที่วัดจริง (FY2021–FY2025 ช่วง 16.3–21.0x) ไม่ได้อิงจาก P/E ปัจจุบัน",
+      "EPS $17.00 (FY26E, consensus StockAnalysis) × P/E 19.1x มัธยฐานเดียวกัน — ตระกูล P/E เดียวกัน นับเป็นเสียงเดียว"
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~{{baseEps}} • รวมปันผล",
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "~$422.30 (Buy consensus)"
+      }
+    ],
+    "legend": [
+      {
+        "text": "ราคา GD",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
+    "s6": [
+      {
+        "head": "EPS +5%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$18.99"
+          ],
+          [
+            "P/E ออก",
+            "17x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$19.08"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +8%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$20.66"
+          ],
+          [
+            "P/E ออก",
+            "19x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$20.52"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +11%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$22.43"
+          ],
+          [
+            "P/E ออก",
+            "20x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$21.60"
+          ]
+        ]
+      }
+    ],
+    "targets": [
+      322.75,
+      392.53,
+      448.58
+    ]
+  },
+  "_sig": "sha256:312589ed4273a09ce4392b4e0acd4be24fc4ed04e1f5460cf2ed3d7ad3f10937"
 }

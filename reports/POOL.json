@@ -31,7 +31,8 @@
     },
     "migratedFrom": {
       "updated": "2026-09-21T23:32:21+07:00",
-      "v2Hash": "152e0702885f"
+      "v2Hash": "152e0702885f",
+      "prevHash": "da008d761371"
     }
   },
   "market": {
@@ -118,8 +119,7 @@
       "inputs": {
         "multiple": 25,
         "multipleSource": "author"
-      },
-      "note": "ใช้ 25x สมเหตุสมผลสำหรับ quality distributor ในช่วง post-cycle (ต่ำกว่าค่าเฉลี่ย 5 ปีที่ ~35x) สะท้อน EPS ที่ normalize แล้ว + ธุรกิจยังมี moat"
+      }
     },
     {
       "method": "evebitda",
@@ -131,8 +131,7 @@
       "override": {
         "netDebt": 1420000000,
         "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
-      },
-      "note": "ปกติประวัติศาสตร์ 20-28x สำหรับ POOL · ปัจจุบัน trade ที่แค่ 14.5x ซึ่งถูกผิดปกติ"
+      }
     },
     {
       "method": "declared",
@@ -140,8 +139,7 @@
       "inputs": {
         "value": 301,
         "basis": "other"
-      },
-      "note": "FCF/share ~$13.5 (NOPAT margin 10.93%, rev $5.36B, less tax 21%, +D&A $75M, −capex $50M) ÷ (WACC 8.5% − g 4.0%) = $301 — g 4% สมเหตุสมผลสำหรับ distribution compounder ในตลาดน้ำ ~6M pools สหรัฐที่ต้องการ maintenance ตลอดชีพ"
+      }
     }
   ],
   "fvWeights": null,
@@ -251,15 +249,102 @@
   ],
   "extras": [],
   "v2Display": {
-    "fv": 295,
-    "fvRange": [
-      272,
-      315
+    "legDescs": [
+      "EPS adj. $10.87 × P/E 25x = $272 — ใช้ 25x สมเหตุสมผลสำหรับ quality distributor ในช่วง post-cycle (ต่ำกว่าค่าเฉลี่ย 5 ปีที่ ~35x) สะท้อน EPS ที่ normalize แล้ว + ธุรกิจยังมี moat",
+      "EBITDA TTM $638M × 20x (ปกติประวัติศาสตร์ 20-28x สำหรับ POOL) = EV $12,769M; หัก net debt ~$1,420M = equity $11,349M ÷ 36M shares = $315/หุ้น — ปัจจุบัน trade ที่แค่ 14.5x ซึ่งถูกผิดปกติ",
+      "FCF/share ~$13.5 (NOPAT margin 10.93%, rev $5.36B, less tax 21%, +D&A $75M, −capex $50M) ÷ (WACC 8.5% − g 4.0%) = $301 — g 4% สมเหตุสมผลสำหรับ distribution compounder ในตลาดน้ำ ~6M pools สหรัฐที่ต้องการ maintenance ตลอดชีพ"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "~$256 (Buy — 14 ราย)"
+      }
+    ],
+    "s6": [
+      {
+        "head": "EPS −3%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$9.92"
+          ],
+          [
+            "P/E ออก",
+            "18x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$15"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +8%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$13.69"
+          ],
+          [
+            "P/E ออก",
+            "24x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$16"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +12%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$15.27"
+          ],
+          [
+            "P/E ออก",
+            "28x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$16"
+          ]
+        ]
+      }
     ],
     "targets": [
       179,
       344,
       444
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~$10.87 • รวมปันผล",
+    "legend": [
+      {
+        "text": "ราคา POOL",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
+    "fv": 295,
+    "fvRange": [
+      272,
+      315
     ],
     "footer": "21 กันยายน 2569",
     "rets": {
@@ -273,5 +358,5 @@
       "div": false
     }
   },
-  "_sig": "sha256:a7ace3eb19ebf91a2e29d2818d35f625a42fd4d9221b56afbcbd60cc63187fbd"
+  "_sig": "sha256:482b050ece424fafa58fa1ab7695d3e90598a63832090eb10d582ec345b41f05"
 }

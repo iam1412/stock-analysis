@@ -19,10 +19,11 @@
       "MarketBeat",
       "Yahoo Finance"
     ],
-    "priceNote": "ปิดตลาด · ปิด · • เทียบจุดต่ำ 52 สัปดาห์ $362.55",
+    "priceNote": "ปิดตลาด · ราคาปิด ณ {{priceDate}} • เทียบจุดต่ำ 52 สัปดาห์ $362.55",
     "migratedFrom": {
       "updated": "2026-09-22T07:22:55+07:00",
-      "v2Hash": "cd3f6bdee925"
+      "v2Hash": "cd3f6bdee925",
+      "prevHash": "0848af2995f6"
     }
   },
   "market": {
@@ -107,7 +108,6 @@
         "eps": 15.07,
         "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
       },
-      "note": "FY26 ไกด์กลาง",
       "family": "market"
     },
     {
@@ -117,7 +117,6 @@
         "value": 498,
         "basis": "other"
       },
-      "note": "FCF เติบโตสูงช่วงแรกจาก backlog $11B + synergy Ansys, WACC ~9%, Terminal 4%",
       "family": "rg"
     },
     {
@@ -127,7 +126,6 @@
         "value": 500,
         "basis": "other"
       },
-      "note": "ค่าเฉลี่ยจากโมเดล fair value ของนักวิเคราะห์ (ปรับลดส่วน momentum ออก) — กรอบ $450–$650",
       "family": "rg"
     }
   ],
@@ -220,8 +218,7 @@
       "value": 14.25,
       "why": "EPS ฐานฉากที่ผู้เขียนใช้"
     },
-    "note": "ความเสี่ยง–ผลตอบแทน <b>เอียงบวก</b> — downside ใน bear จำกัด (ราคาเป้าใกล้จุดเข้า เพราะ de-rate เหลือ 22x) ขณะที่ base/bull ให้ผลตอบแทนน่าสนใจ จุดชี้ขาดคือ <b>การ integrate Ansys ให้ได้ synergy</b> และโมเมนตัมดีมานด์เครื่องมือออกแบบชิป AI ว่าจะรักษาการเติบโตเลขสองหลักได้ต่อเนื่องหรือไม่",
-    "hintNote": "(Non-GAAP)"
+    "note": "ความเสี่ยง–ผลตอบแทน <b>เอียงบวก</b> — downside ใน bear จำกัด (ราคาเป้าใกล้จุดเข้า เพราะ de-rate เหลือ 22x) ขณะที่ base/bull ให้ผลตอบแทนน่าสนใจ จุดชี้ขาดคือ <b>การ integrate Ansys ให้ได้ synergy</b> และโมเมนตัมดีมานด์เครื่องมือออกแบบชิป AI ว่าจะรักษาการเติบโตเลขสองหลักได้ต่อเนื่องหรือไม่"
   },
   "analyst": {
     "target": 545.93,
@@ -261,6 +258,40 @@
   ],
   "extras": [],
   "v2Display": {
+    "legDescs": [
+      "EPS Non-GAAP ~$15.07 (FY26 ไกด์กลาง) × P/E ~32x — ใช้กำไรหลัก (Non-GAAP) เพราะ GAAP ถูกบิดเบือนจากค่าตัดจำหน่าย Ansys",
+      "FCF เติบโตสูงช่วงแรกจาก backlog $11B + synergy Ansys, WACC ~9%, Terminal 4%",
+      "ค่าเฉลี่ยจากโมเดล fair value ของนักวิเคราะห์ (ปรับลดส่วน momentum ออก) — กรอบ $450–$650"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "{{analyst.target}} ({{analyst.pct}})"
+      }
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~{{baseEps}} (Non-GAAP)",
+    "legend": [
+      {
+        "text": "ราคา SNPS",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
     "fv": 493,
     "fvRange": [
       482,
@@ -292,7 +323,17 @@
         "text": "$600",
         "label": "Bull ~ฉากบวก"
       }
-    ]
+    ],
+    "custom": {
+      "0": {
+        "op": "pxOverBase",
+        "base": 14.25
+      },
+      "1": {
+        "op": "pxOverBase",
+        "base": 15.07
+      }
+    }
   },
-  "_sig": "sha256:93bb7e47fe85cb49e7ef619cfcffc4e4c542c87b3038101945f13086ca081b41"
+  "_sig": "sha256:ba26550ba5d60a57bec827dfefbebf79760e47ddb61c2fd10fca06157157a38b"
 }

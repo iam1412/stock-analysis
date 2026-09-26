@@ -32,7 +32,7 @@
     "migratedFrom": {
       "updated": "2026-09-21T17:12:35+07:00",
       "v2Hash": "77082bf1bfdd",
-      "prevHash": "4aa7d6e34629"
+      "prevHash": "f17ac4a6ad56"
     }
   },
   "market": {
@@ -122,7 +122,6 @@
         "multiple": 20.2,
         "multipleSource": "median5y"
       },
-      "note": "มัธยฐาน P/E ของ CHG เอง 5 FY (2564–2568) วัดจากราคาเฉลี่ยงวด ÷ EPS ช่วง 9.1–34.7x · ตัวคูณมาจากประวัติ ไม่ได้มาจาก P/E ปัจจุบัน (~18x)",
       "family": "market"
     },
     {
@@ -132,7 +131,6 @@
         "g": 5,
         "r": 9
       },
-      "note": "ROE TTM 12.47% (Yahoo) · g=5% และ r=9% (risk-free 3%+ERP 6%) เป็นสมมติฐานของผู้วิเคราะห์เอง",
       "family": "rg"
     }
   ],
@@ -217,7 +215,7 @@
     "verdictHeadline": "ราคาเต็มมูลค่า — รอโซน MOS 20% ก่อนสะสม",
     "verdictBody": "CHG เป็นโรงพยาบาลเอกชนขนาดกลางที่มีจุดแข็งชัดเจนคือ <b>โมเดลต้นทุนต่ำในพื้นที่ชานเมือง+ต่างจังหวัด</b> และ pipeline ขยาย capacity จาก 938 เป็น 1,700+ เตียงภายใน FY71 กำไรสุทธิ 3 ปีที่ผ่านมาทรงตัว-ลดลงจาก COVID windfall ล่าสุด TTM ฿973 ล้าน (+4.7% เทียบ FY68) และฉันทามติ EPS FY2569e ทรงตัวที่ ฿0.09 ราคาปัจจุบัน {{px}} เทียบ Fair Value {{fv}} ได้ MOS {{mos}} — เต็มมูลค่า ยังไม่ถึงโซน Deep Value ({{mos20}}) Beta 0.12 สะท้อนความผันผวนต่ำมาก เหมาะกับพอร์ต defensive ที่ต้องการ yield 4.4% แต่ upside จากราคานี้จำกัด",
     "strategy": "ราคาปัจจุบัน {{px}} ใกล้ FV — ยังไม่ควรไล่ซื้อ · รอโซน {{mos20}} (MOS 20%) ซึ่งใกล้เคียง 52W Low support · Stop-loss แนวรับ ฿1.33 (52W Low) · เป้า Base Case {{scn.base.tgt}} ใน 3 ปี",
-    "disclaimerSources": "แหล่งข้อมูล: Yahoo Finance (CHG.BK ราคา/กราฟ), SET.or.th (ราคา ณ {{priceDate}} {{px}}), Investing.com (ROE 11.9%, analyst consensus ฿1.78), StockAnalysis.com (EPS ฿0.09, EBITDA margin 20.48%), IR จุฬารัตน์ investor.chularat.com (BVPS ฿0.73, กำไร Q1/69 ฿247 ล้าน), KGI/DBS Research (กำไร 2569F ฿991–1,008 ล้าน, expansion plan)"
+    "disclaimerSources": "แหล่งข้อมูล: Yahoo Finance (CHG.BK ราคา/กราฟ), SET.or.th (ราคา ณ {{priceDate}} {{px}}), Investing.com (ROE 11.9%, analyst consensus {{fvHigh}}), StockAnalysis.com (EPS ฿0.09, EBITDA margin 20.48%), IR จุฬารัตน์ investor.chularat.com (BVPS ฿0.73, กำไร Q1/69 ฿247 ล้าน), KGI/DBS Research (กำไร 2569F ฿991–1,008 ล้าน, expansion plan)"
   },
   "text": {
     "valHint": "P/E มัธยฐานย้อนหลัง + Justified P/BV (r/g)",
@@ -241,8 +239,99 @@
   ],
   "extras": [],
   "v2Display": {
+    "legDescs": [
+      "EPS ฿0.088 (TTM) × P/E เป้าหมาย 20.2x — มัธยฐาน P/E ของ CHG เอง 5 FY (2564–2568) วัดจากราคาเฉลี่ยงวด ÷ EPS ช่วง 9.1–34.7x · ตัวคูณมาจากประวัติ ไม่ได้มาจาก P/E ปัจจุบัน (~18x)",
+      "P/BV เหมาะสม = (ROE 12.5% − g 5%)/(r 9% − g 5%) ≈ 1.88x × BVPS ฿0.73 — ROE TTM 12.47% (Yahoo) · g=5% และ r=9% (risk-free 3%+ERP 6%) เป็นสมมติฐานของผู้วิเคราะห์เอง"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "~฿1.78 (Buy)"
+      }
+    ],
+    "s6": [
+      {
+        "head": "EPS 0%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~฿0.088"
+          ],
+          [
+            "P/E ออก",
+            "15x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~฿0.21"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +5%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~฿0.102"
+          ],
+          [
+            "P/E ออก",
+            "20x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~฿0.21"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +10%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~฿0.117"
+          ],
+          [
+            "P/E ออก",
+            "25x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~฿0.21"
+          ]
+        ]
+      }
+    ],
+    "targets": [
+      1.32,
+      2.04,
+      2.93
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~฿0.088 • รวมปันผล",
+    "legend": [
+      {
+        "text": "ราคา CHG",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
     "fv": 1.58,
     "footer": "21 กันยายน 2569"
   },
-  "_sig": "sha256:742aaf64b8eea9dd276ba2c7a7bce452a8f3a8b246e8e6249e906b516d36f2a2"
+  "_sig": "sha256:cd2f8a9edb85c427faeb5c66f40eb56d095ed7b38f3df638d52ecd00c0a24c07"
 }

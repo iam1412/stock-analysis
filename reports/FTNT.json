@@ -33,7 +33,7 @@
     "migratedFrom": {
       "updated": "2026-09-22T07:22:55+07:00",
       "v2Hash": "d1a8d041c509",
-      "prevHash": "bb04c4c34ad6"
+      "prevHash": "1860fe0acff6"
     }
   },
   "market": {
@@ -121,7 +121,6 @@
         "multiple": 42,
         "multipleSource": "median5y"
       },
-      "note": "มัธยฐาน P/E ย้อนหลัง 5 ปีของ FTNT เอง 42.8x ช่วง 31.9–70.0x — ต่ำกว่า ~60x ปัจจุบันเพื่อเผื่อ valuation บีบ",
       "family": "market"
     },
     {
@@ -139,7 +138,6 @@
         "netDebt": -3500000000,
         "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
       },
-      "note": "ระหว่าง FY2025 $2.2B กับ TTM $3.1B",
       "family": "rg"
     }
   ],
@@ -245,6 +243,39 @@
   ],
   "extras": [],
   "v2Display": {
+    "legDescs": [
+      "EPS $2.83 × P/E ~42x (มัธยฐาน P/E ย้อนหลัง 5 ปีของ FTNT เอง 42.8x ช่วง 31.9–70.0x — ต่ำกว่า ~60x ปัจจุบันเพื่อเผื่อ valuation บีบ)",
+      "FCF ตั้งต้น ~$2.8B (ระหว่าง FY2025 $2.2B กับ TTM $3.1B) โต 15% 5 ปีแรก แล้วชะลอ, WACC ~9%, Terminal ~3.5%, บวกเงินสดสุทธิ ~$3.5B ÷ ~734 ล้านหุ้น"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "{{analyst.target}} ({{analyst.pct}})"
+      }
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~{{baseEps}}",
+    "legend": [
+      {
+        "text": "ราคา FTNT",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
     "fv": 120,
     "fvRange": [
       113,
@@ -278,5 +309,5 @@
       }
     ]
   },
-  "_sig": "sha256:f18ec7ac53ae4cfec46df5afe8e6efb0a1dc7baca8a27374ee9277d2f9575b27"
+  "_sig": "sha256:bdce7aacc2182faee3c4d2b44185b5e4aee0eb236f65d85709047023fa4b25b8"
 }

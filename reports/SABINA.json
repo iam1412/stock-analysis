@@ -32,7 +32,7 @@
     "migratedFrom": {
       "updated": "2026-09-21T23:32:21+07:00",
       "v2Hash": "1f205b28393f",
-      "prevHash": "07f0008be4ca"
+      "prevHash": "74bdff412d46"
     }
   },
   "market": {
@@ -119,8 +119,7 @@
       "inputs": {
         "multiple": 16.3,
         "multipleSource": "author"
-      },
-      "note": "เฉลี่ย 5 ปี จาก Alpha Spread · ราคาปัจจุบัน 13.2x ต่ำกว่า mean อย่างชัดเจน"
+      }
     },
     {
       "method": "ddm",
@@ -128,8 +127,7 @@
       "inputs": {
         "g": 3,
         "r": 9
-      },
-      "note": "Payout 100% ทำให้ DDM เหมาะสมมาก · บริษัทมีสถานะ Net Cash"
+      }
     },
     {
       "method": "pbv",
@@ -137,8 +135,7 @@
       "inputs": {
         "g": 3,
         "r": 9
-      },
-      "note": "สะท้อน ROE สูง D/E ต่ำ"
+      }
     }
   ],
   "fvWeights": null,
@@ -244,6 +241,40 @@
   ],
   "extras": [],
   "v2Display": {
+    "legDescs": [
+      "EPS adj. ฿1.18 × P/E เป้าหมาย ~16.3x (เฉลี่ย 5 ปี จาก Alpha Spread) — ราคาปัจจุบัน 13.2x ต่ำกว่า mean อย่างชัดเจน",
+      "D₁ = ปันผล ฿1.18 × (1+g); g 3%, r 9% → Payout 100% ทำให้ DDM เหมาะสมมาก · บริษัทมีสถานะ Net Cash",
+      "P/BV เหมาะสม = (ROE 21.1% − g 3%)/(r 9% − g 3%) ≈ 3.02 × BVPS ฿5.57 — สะท้อน ROE สูง D/E ต่ำ"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "~฿16.73 (Mixed)"
+      }
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~฿1.18 • รวมปันผล",
+    "legend": [
+      {
+        "text": "ราคา SABINA",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
     "fv": 18.75,
     "fvRange": [
       16.82,
@@ -276,5 +307,5 @@
       "div": true
     }
   },
-  "_sig": "sha256:9684cd8a0f716ff69dfa78cf98edb15831a52d03cc64cbbaf2e73a912a8cd10f"
+  "_sig": "sha256:1544dcfeef7e1605b08292f191c8c6946615603bd5e11c7307d350447af2156b"
 }

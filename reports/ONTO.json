@@ -23,7 +23,7 @@
     "migratedFrom": {
       "updated": "2026-09-22T07:22:55+07:00",
       "v2Hash": "83c9827458c4",
-      "prevHash": "27f3a4cb5139"
+      "prevHash": "9b341b3b4945"
     }
   },
   "market": {
@@ -109,7 +109,6 @@
         "base": "epsForward"
       },
       "baseLabel": "FY2026e",
-      "note": "FY2026e ปีบัญชีถัดไปจากที่ปิดแล้ว, consensus StockAnalysis",
       "family": "market"
     },
     {
@@ -135,7 +134,6 @@
         "netDebt": -410000000,
         "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
       },
-      "note": "สมมติฐานของเราเอง",
       "family": "rg"
     }
   ],
@@ -218,8 +216,7 @@
       }
     ],
     "exitDp": 0,
-    "note": "* EPS +18%/ปี ของ Base สูงเพราะ consensus เองคาด FY2027 กระโดดจาก FY2026e $8.11 → $11.69 (+44% ปีเดียว) — ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสม ไม่มี <b>Margin of Safety</b> ผลตอบแทน Base ต้องพึ่ง EPS โตตาม consensus ต่อเนื่องและ P/E ออก ~26x (มัธยฐานย้อนหลังปรับเป็นฐาน non-GAAP) upside ที่แท้จริงขึ้นกับว่าวงจร <b>advanced packaging/HBM และ co-packaged optics (CPO)</b> จะขยายต่อเนื่องเกิน consensus และ Onto รักษาความเป็นผู้นำ metrology/inspection ได้แค่ไหน — ส่วน downside มาจากความเสี่ยงที่การฟื้นตัวไม่เป็นไปตามคาด",
-    "hintNote": "• EPS ฐาน FY2026e $8.11 → FY2027e $11.69 (StockAnalysis forecast)"
+    "note": "* EPS +18%/ปี ของ Base สูงเพราะ consensus เองคาด FY2027 กระโดดจาก FY2026e $8.11 → $11.69 (+44% ปีเดียว) — ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสม ไม่มี <b>Margin of Safety</b> ผลตอบแทน Base ต้องพึ่ง EPS โตตาม consensus ต่อเนื่องและ P/E ออก ~26x (มัธยฐานย้อนหลังปรับเป็นฐาน non-GAAP) upside ที่แท้จริงขึ้นกับว่าวงจร <b>advanced packaging/HBM และ co-packaged optics (CPO)</b> จะขยายต่อเนื่องเกิน consensus และ Onto รักษาความเป็นผู้นำ metrology/inspection ได้แค่ไหน — ส่วน downside มาจากความเสี่ยงที่การฟื้นตัวไม่เป็นไปตามคาด"
   },
   "analyst": {
     "target": 386,
@@ -260,6 +257,24 @@
   ],
   "extras": [],
   "v2Display": {
+    "legDescs": [
+      "EPS $8.11 (FY2026e ปีบัญชีถัดไปจากที่ปิดแล้ว, consensus StockAnalysis) × P/E 25.8x = $209 — ตัวคูณมาจากมัธยฐานย้อนหลัง 5 ปีของ ONTO เอง 45.8x (ราคาเฉลี่ยงวด ÷ EPS GAAP, ช่วง 17.1–47.0x) ซึ่งเป็นฐาน GAAP จึงไม่เอาไปคูณ EPS consensus (ฐาน non-GAAP) ตรง ๆ: ปรับด้วยสัดส่วน GAAP/non-GAAP FY2025 = $2.78/$4.94 (0.563) → 45.8x × 0.563 = 25.8x (สัดส่วน non-GAAP ยกมาจากรายงานรอบก่อน ไม่ได้ตรวจซ้ำรอบนี้) — มาจากประวัติ ไม่ได้อิงจาก P/E ปัจจุบัน (~32x)",
+      "สมมติฐานของเราเอง: FCF TTM $252M โต 20%/ปี ปี 1–5 แล้ว 10%/ปี ปี 6–10, r 10%, g ปลาย 3% · FCF ($M) ปี 1–10 = 302 / 363 / 435 / 523 / 627 / 690 / 759 / 835 / 918 / 1,010 → PV รวม $3,595M · TV = 1,010 × 1.03 ÷ 0.07 = $14,860M → PV $5,729M (TV = 61% ของ EV) · EV $9,324M + net cash $410M (เงินสด $1,882M − หนี้ $1,472M) = $9,734M ÷ 49.07M หุ้น = $198"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "{{analyst.target}} ({{analyst.pct}})"
+      }
+    ],
     "s6": [
       {
         "head": "EPS +4%/ปี",
@@ -307,6 +322,21 @@
       465
     ],
     "noBase": true,
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน FY2026e $8.11 → FY2027e $11.69 (StockAnalysis forecast)",
+    "legend": [
+      {
+        "text": "ราคา ONTO",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
     "fv": 204,
     "fvRange": [
       198,
@@ -341,5 +371,5 @@
       }
     }
   },
-  "_sig": "sha256:1f01cd866467010578b53d9320c8efb217d223400810fa0ff830048a262455dd"
+  "_sig": "sha256:cbf5a69cb2fbb8bb9d6afc2608d3bac4b7c83a0d4b1e60a17efda206d3dfed04"
 }

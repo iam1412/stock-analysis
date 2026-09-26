@@ -31,7 +31,8 @@
     },
     "migratedFrom": {
       "updated": "2026-09-21T12:28:00+07:00",
-      "v2Hash": "be09fd904c45"
+      "v2Hash": "be09fd904c45",
+      "prevHash": "5b3e1a10fcc4"
     }
   },
   "market": {
@@ -116,7 +117,6 @@
         "ffoPerShare": 4.59,
         "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
       },
-      "note": "American Tower (AMT) trade ที่ ~22x ให้ส่วนลด 10% เนื่องจาก CCI กำลัง transition + DISH headwind",
       "family": "market"
     },
     {
@@ -126,7 +126,6 @@
         "g": 2.5,
         "r": 8.5
       },
-      "note": "tower escalator ~3%, offset DISH · required return สำหรับ leveraged REIT",
       "family": "rg"
     },
     {
@@ -136,7 +135,6 @@
         "value": 99.76,
         "basis": "sotp"
       },
-      "note": "Tower EBITDA 2026F $2.69B × 22x EV multiple = EV $59.2B − Net Debt post-repay ~$17.0B = Equity $42.2B ÷ ~423M shares (post buyback)",
       "family": "asset"
     }
   ],
@@ -242,8 +240,7 @@
       "value": 4.59,
       "why": "ฐานฉากที่ผู้เขียนใช้ (ตัวตั้งที่ขาประเมินพิมพ์)"
     },
-    "note": "การประมาณนี้ใช้ <b>AFFO/sh แทน EPS</b> เพราะ CCI เป็น REIT — Bear scenario ยังคงผลตอบแทนบวก ({{scn.bear.ret}}) เพราะปันผล 5.5% ช่วยรองรับ Base case คาด AFFO โต 3%/ปี (สอดคล้อง tower escalator clause ~3%) และ P/AFFO re-rate จาก 15.9x → 20x เมื่อ transition สำเร็จ Bull case มองว่า multiple กลับมาเทียบ AMT (~22x) + AFFO โต 5% จากการเพิ่ม tenancy บนทาวเวอร์เดิม (colocation) ความเสี่ยงหลักคือ DISH headwind ลาก + อัตราดอกเบี้ยสูง + หนี้ที่ยังคงสูงแม้ลดแล้ว <b>ปันผล 3 ปี:</b> อ้างอิง {{dps}}/sh/ปี (maintain dividend โดยไม่ตัด) — ยังไม่รวมกรณีขึ้นปันผลที่อาจเกิดหลัง 2026",
-    "hintNote": "~{{dps}}/ปี"
+    "note": "การประมาณนี้ใช้ <b>AFFO/sh แทน EPS</b> เพราะ CCI เป็น REIT — Bear scenario ยังคงผลตอบแทนบวก ({{scn.bear.ret}}) เพราะปันผล 5.5% ช่วยรองรับ Base case คาด AFFO โต 3%/ปี (สอดคล้อง tower escalator clause ~3%) และ P/AFFO re-rate จาก 15.9x → 20x เมื่อ transition สำเร็จ Bull case มองว่า multiple กลับมาเทียบ AMT (~22x) + AFFO โต 5% จากการเพิ่ม tenancy บนทาวเวอร์เดิม (colocation) ความเสี่ยงหลักคือ DISH headwind ลาก + อัตราดอกเบี้ยสูง + หนี้ที่ยังคงสูงแม้ลดแล้ว <b>ปันผล 3 ปี:</b> อ้างอิง {{dps}}/sh/ปี (maintain dividend โดยไม่ตัด) — ยังไม่รวมกรณีขึ้นปันผลที่อาจเกิดหลัง 2026"
   },
   "analyst": {
     "target": 94.82,
@@ -285,12 +282,99 @@
   ],
   "extras": [],
   "v2Display": {
-    "fv": 88,
+    "legDescs": [
+      "AFFO/sh 2026F adj. $4.59 × P/AFFO เป้าหมาย 20x — American Tower (AMT) trade ที่ ~22x ให้ส่วนลด 10% เนื่องจาก CCI กำลัง transition + DISH headwind",
+      "D₁ = ปันผล $4.25 × 1.025; g = 2.5% (tower escalator ~3%, offset DISH); r = 8.5% (required return สำหรับ leveraged REIT) → $4.356 / 0.06",
+      "Tower EBITDA 2026F $2.69B × 22x EV multiple = EV $59.2B − Net Debt post-repay ~$17.0B = Equity $42.2B ÷ ~423M shares (post buyback)"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "~$94.82 (Buy · 20 คน)"
+      }
+    ],
+    "s6": [
+      {
+        "head": "AFFO +1%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$4.73"
+          ],
+          [
+            "P/E ออก",
+            "17x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$12.75"
+          ]
+        ]
+      },
+      {
+        "head": "AFFO +3%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$5.02"
+          ],
+          [
+            "P/E ออก",
+            "20x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$13.50"
+          ]
+        ]
+      },
+      {
+        "head": "AFFO +5%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$5.31"
+          ],
+          [
+            "P/E ออก",
+            "22x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$14.25"
+          ]
+        ]
+      }
+    ],
     "targets": [
       80.41,
       100.4,
       116.82
-    ]
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • AFFO ฐาน ~$4.59 • รวมปันผล ~$4.25/ปี",
+    "legend": [
+      {
+        "text": "ราคา CCI",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
+    "fv": 88
   },
-  "_sig": "sha256:107157f2e7962db1bc999e4d2b85fcf901455b05b66464fb9547b0c2e1d20c19"
+  "_sig": "sha256:9037d8964f394feff675e79f268c61bf4a7ad327bce533c1c824442d10da1bd5"
 }

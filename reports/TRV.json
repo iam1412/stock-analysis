@@ -31,7 +31,8 @@
     },
     "migratedFrom": {
       "updated": "2026-09-22T01:46:25+07:00",
-      "v2Hash": "7fcabc8f2ad9"
+      "v2Hash": "7fcabc8f2ad9",
+      "prevHash": "0a3c09908a7c"
     }
   },
   "market": {
@@ -128,8 +129,7 @@
       "inputs": {
         "value": 265,
         "basis": "other"
-      },
-      "note": "D₁ = ปันผล {{dps}} × (1+g=6%) = $5.30; r = 8.5%, g = 6.5% → $5.30/(0.085−0.065) — TRV เพิ่มปันผล CAGR ~8% / 22 ปี; ใช้ conservative เพราะ payout ratio ต่ำ (~14%)"
+      }
     },
     {
       "method": "pbv",
@@ -248,5 +248,99 @@
     "<b>Social Inflation:</b> ค่าสินไหม litigation costs เพิ่มสูงขึ้นในสหรัฐฯ กดดัน loss ratio commercial lines ระยะยาว"
   ],
   "extras": [],
-  "_sig": "sha256:93398af332396af8f2a1260cb3d0abb85c2c12aa86bac929f1f641fa2af8c01b"
+  "v2Display": {
+    "legDescs": [
+      "EPS core adj. $37.02 × P/E เป้าหมาย ~11x — ค่าเฉลี่ย 5 ปีของ TRV ≈ 12.7x; ใช้ conservative 11x (ต่ำกว่าเฉลี่ย) เพราะ Q2'26 core EPS ได้แรงหนุนจาก cat losses ต่ำผิดปกติ (combined ratio 83.6%) ยังไม่ควรถือเป็น run-rate ถาวร",
+      "D₁ = ปันผล $5.00 × (1+g=6%) = $5.30; r = 8.5%, g = 6.5% → $5.30/(0.085−0.065) — TRV เพิ่มปันผล CAGR ~8% / 22 ปี; ใช้ conservative เพราะ payout ratio ต่ำ (~14%)",
+      "P/BV เหมาะสม = (ROE 20.5% − g 5%)/(r 10% − g 5%) ≈ 3.10 × BVPS $168.20 (adj.) — core ROE พุ่งเป็น 24.9% ใน Q2'26 จาก cat losses ต่ำ; ใช้ ROE เฉลี่ย TTM ~20.5% (ไม่ใช่ peak quarter) คำนึงถึง cat risk ระยะยาว"
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~{{baseEps}} • รวมปันผล",
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "~$336.50 (Hold)"
+      }
+    ],
+    "legend": [
+      {
+        "text": "ราคา TRV",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
+    "s6": [
+      {
+        "head": "EPS −5%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$31.75"
+          ],
+          [
+            "P/E ออก",
+            "9x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$15.00"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +7%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$45.36"
+          ],
+          [
+            "P/E ออก",
+            "12x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$16.50"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +12%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$52.01"
+          ],
+          [
+            "P/E ออก",
+            "13x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$18.00"
+          ]
+        ]
+      }
+    ],
+    "targets": [
+      285.66,
+      544.21,
+      676.14
+    ]
+  },
+  "_sig": "sha256:1881d28f30de2b764fa608119c1e7bae261f4d6aa7ea44a8dfd5fa1a0fe130bc"
 }

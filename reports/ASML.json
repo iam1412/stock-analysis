@@ -24,7 +24,7 @@
     "migratedFrom": {
       "updated": "2026-09-22T07:22:55+07:00",
       "v2Hash": "6062c56861e7",
-      "prevHash": "41f8947b0d83"
+      "prevHash": "6b5290f193ed"
     }
   },
   "market": {
@@ -106,7 +106,6 @@
         "multiple": 37.5,
         "multipleSource": "median5y"
       },
-      "note": "มัธยฐาน P/E 5 ปีของ ASML วัดจากราคาเฉลี่ยงวด ÷ EPS ของงวดนั้น บนหุ้น ASML.AS สกุล EUR ทั้งคู่ ช่วง 29.5–41.8x · ต่ำกว่า P/E ปัจจุบัน ~52x",
       "family": "market"
     },
     {
@@ -116,7 +115,6 @@
         "value": 1595,
         "basis": "other"
       },
-      "note": "FCF/หุ้น TTM ~$29.8 (FCF €10.04B × 1.1404 ÷ 384.1M ADR) โต 25%/ปี 5 ปีแรก แล้ว 10%/ปี 5 ปีถัดไป, WACC 9%, Terminal 3% — อัตราโต 25% ตั้งให้ตรงกับ Base scenario ไม่ใช่ตัวเลขที่ vendor รับรอง",
       "family": "rg"
     }
   ],
@@ -241,6 +239,39 @@
   ],
   "extras": [],
   "v2Display": {
+    "legDescs": [
+      "EPS $31.41 (TTM) × P/E 37.5x (มัธยฐาน P/E 5 ปีของ ASML วัดจากราคาเฉลี่ยงวด ÷ EPS ของงวดนั้น บนหุ้น ASML.AS สกุล EUR ทั้งคู่ ช่วง 29.5–41.8x · ต่ำกว่า P/E ปัจจุบัน ~52x)",
+      "FCF/หุ้น TTM ~$29.8 (FCF €10.04B × 1.1404 ÷ 384.1M ADR) โต 25%/ปี 5 ปีแรก แล้ว 10%/ปี 5 ปีถัดไป, WACC 9%, Terminal 3% — อัตราโต 25% ตั้งให้ตรงกับ Base scenario ไม่ใช่ตัวเลขที่ vendor รับรอง"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "{{analyst.target}} ({{analyst.pct}})"
+      }
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~{{baseEps}}",
+    "legend": [
+      {
+        "text": "ราคา ASML",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
     "fv": 1387,
     "fvRange": [
       1178,
@@ -280,5 +311,5 @@
       }
     }
   },
-  "_sig": "sha256:e9df412c7d4476630c6d1b6b3fdee93540e93c221c48cdc7ed5ff44334c1e6ca"
+  "_sig": "sha256:e9b0b8ae0ddf72b27b21d781048bccac0a215d7feca53ca19e31cde88bbc83e1"
 }

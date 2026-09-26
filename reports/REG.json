@@ -31,7 +31,8 @@
     },
     "migratedFrom": {
       "updated": "2026-09-22T00:04:26+07:00",
-      "v2Hash": "485e05aa3870"
+      "v2Hash": "485e05aa3870",
+      "prevHash": "5f02fb38ddf8"
     }
   },
   "market": {
@@ -121,7 +122,6 @@
         "value": 82.37,
         "basis": "other"
       },
-      "note": "D₁ = $3.13 (forward, +3.5% growth สอดคล้อง same-property NOI growth +4.4%); g = 3.5%; r = 7.3% (required return, ต่ำกว่า KIM เพราะ credit rating สูงกว่า) → FV = $3.13 / (7.3%−3.5%)",
       "family": "rg"
     }
   ],
@@ -226,8 +226,7 @@
       }
     ],
     "exitDp": 1,
-    "note": "<b>หมายเหตุสำหรับ REIT:</b> ฉากคำนวณจาก EPS (GAAP diluted) และ P/E ที่วัดได้จริงของ REG (ต่ำสุด 23.0x · FY2025 25.5x · มัธยฐาน 30.2x) เพราะ AFFO อนาคตตรวจซ้ำไม่ได้ · ราคาเป้าเป็นสมมติฐาน ส่วนผลตอบแทนคำนวณจากจุดเข้าปัจจุบัน Bear case ยังได้ผลตอบแทนบวกเล็กน้อยเพราะ dividend yield ~4.1% ช่วยพยุงแม้ multiple ลงไปต่ำสุดในช่วง 5 ปี · Base ใช้ multiple ระดับ FY2025 จึงต่ำกว่า FV เล็กน้อย การประมาณการไม่รับประกันผลตอบแทนจริง — ขึ้นอยู่กับ rate environment, occupancy, และ M&A/redevelopment execution",
-    "hintNote": "(TTM) ~{{dps}}/ปี"
+    "note": "<b>หมายเหตุสำหรับ REIT:</b> ฉากคำนวณจาก EPS (GAAP diluted) และ P/E ที่วัดได้จริงของ REG (ต่ำสุด 23.0x · FY2025 25.5x · มัธยฐาน 30.2x) เพราะ AFFO อนาคตตรวจซ้ำไม่ได้ · ราคาเป้าเป็นสมมติฐาน ส่วนผลตอบแทนคำนวณจากจุดเข้าปัจจุบัน Bear case ยังได้ผลตอบแทนบวกเล็กน้อยเพราะ dividend yield ~4.1% ช่วยพยุงแม้ multiple ลงไปต่ำสุดในช่วง 5 ปี · Base ใช้ multiple ระดับ FY2025 จึงต่ำกว่า FV เล็กน้อย การประมาณการไม่รับประกันผลตอบแทนจริง — ขึ้นอยู่กับ rate environment, occupancy, และ M&A/redevelopment execution"
   },
   "analyst": {
     "target": 87,
@@ -267,5 +266,98 @@
     "<b>Integration/execution risk:</b> การผสาน Urstadt Biddle ต่อเนื่องและการดำเนินโครงการ redevelopment มีความเสี่ยง cost overrun/delay"
   ],
   "extras": [],
-  "_sig": "sha256:fb2ae6682f976ec9508ec321467307f7905811ccd4aa1552af237951f70c7e2c"
+  "v2Display": {
+    "legDescs": [
+      "EPS $2.97 (TTM, GAAP diluted) × P/E 30.2x — 30.2x คือมัธยฐานที่วัดจากราคาเฉลี่ยรายปี ÷ EPS ของ FY2021–FY2025 (ช่วง 23.0–31.6x) ไม่ได้มาจาก P/E ปัจจุบัน · ข้อควรระวัง: EPS ของ REIT รวมกำไรจากขายทรัพย์สินและหักค่าเสื่อม จึงผันผวนกว่า AFFO",
+      "D₁ = $3.13 (forward, +3.5% growth สอดคล้อง same-property NOI growth +4.4%); g = 3.5%; r = 7.3% (required return, ต่ำกว่า KIM เพราะ credit rating สูงกว่า) → FV = $3.13 / (7.3%−3.5%)"
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน $2.97 (TTM) • รวมปันผล ~$3.02/ปี",
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "~$87.00 (Buy consensus)"
+      }
+    ],
+    "legend": [
+      {
+        "text": "ราคา REG",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
+    "s6": [
+      {
+        "head": "EPS 0%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$2.97"
+          ],
+          [
+            "P/E ออก",
+            "23.0x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$9.06"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +4%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$3.34"
+          ],
+          [
+            "P/E ออก",
+            "25.5x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$9.34"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +6%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$3.54"
+          ],
+          [
+            "P/E ออก",
+            "30.2x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$9.52"
+          ]
+        ]
+      }
+    ],
+    "targets": [
+      68.31,
+      85.19,
+      106.83
+    ]
+  },
+  "_sig": "sha256:6f315f03bcf2b1b60ea46fb18911218a4b3a9674d98aa6d2065194d4b51a3fd4"
 }

@@ -17,14 +17,14 @@
     "sources": [
       "StockAnalysis.com",
       "Yahoo Finance",
-      "SEC EDGAR (8-K",
-      "10-Q)",
+      "SEC EDGAR (8-K/10-Q)",
       "Venture Global IR"
     ],
     "priceNote": "StockAnalysis.com, ตรงกับ Yahoo Finance — ต่าง 0%",
     "migratedFrom": {
       "updated": "2026-09-22T01:46:25+07:00",
-      "v2Hash": "61e2defeac66"
+      "v2Hash": "61e2defeac66",
+      "prevHash": "c089517eeb29"
     }
   },
   "market": {
@@ -110,7 +110,6 @@
         "multiple": 13.4,
         "multipleSource": "author"
       },
-      "note": "ราคาเฉลี่ย $11.48 (11 เดือนของปีงบ 2025) ÷ EPS FY2025 $0.86 · เป็นจุดวัดจริงจุดเดียวจากประวัติของ VG เอง (ไม่ใช่มัธยฐาน เพราะ IPO ม.ค. 2568 มี EPS จริงเพียง 4 ปีและราคาครอบคลุมงวดเดียว) ไม่ได้มาจาก P/E ปัจจุบัน",
       "family": "market"
     },
     {
@@ -120,7 +119,6 @@
         "value": 9.9,
         "basis": "other"
       },
-      "note": "Revenue TTM $16,951M × EV/Sales ของ Cheniere Energy (LNG) 4.01x (StockAnalysis /statistics/ 21 ก.ย. 2569 — ตัวคูณ peer ที่วัดจริง) = EV $67,974M − หนี้สุทธิ $39,715M (หนี้ $42,835M − เงินสด $3,120M ณ 30 มิ.ย. 2569) − สิทธิส่วนน้อย $3,507M = Equity $24,752M ÷ 2,500M หุ้นรวมทุกคลาส = $9.90 · เป็นคนละตระกูลกับ P/E (มองจากรายได้ ไม่ใช้กำไรสุทธิ) และหักหนี้/สิทธิส่วนน้อยเต็มจำนวน",
       "family": "rg"
     }
   ],
@@ -154,7 +152,7 @@
     ],
     "notes": {
       "mcap": "2,500M หุ้นรวมทุกคลาส (StockAnalysis /statistics/)",
-      "pbv": "BVPS ~$3.43 — บริบทเท่านั้น ไม่ใช้เป็นขา FV",
+      "pbv": "BVPS ~{{bvps}} — บริบทเท่านั้น ไม่ใช้เป็นขา FV",
       "netIncomeFy": "+53.2% YoY (FY2024 $1,475M) · ปีบัญชี 2568",
       "eps": "งบ StockAnalysis (NI $3,331M ÷ 2,635M หุ้น diluted); Yahoo quote-level $1.32 (ต่าง 3.9% — ใช้เลขจากงบเป็นหลัก)",
       "bvps": "Total Common Equity $8,572M ÷ 2,500M หุ้น (30 มิ.ย. 2569 · ไม่ใช้เป็นขา valuation)",
@@ -228,23 +226,24 @@
   ],
   "extras": [],
   "v2Display": {
-    "targets": [
-      7.02,
-      16.51,
-      25.36
+    "legDescs": [
+      "EPS $1.27 (TTM, diluted) × P/E เป้าหมาย 13.4x = $17.02 · 13.4x = ราคาเฉลี่ย $11.48 (11 เดือนของปีงบ 2025) ÷ EPS FY2025 $0.86 — เป็นจุดวัดจริงจุดเดียวจากประวัติของ VG เอง (ไม่ใช่มัธยฐาน เพราะ IPO ม.ค. 2568 มี EPS จริงเพียง 4 ปีและราคาครอบคลุมงวดเดียว) ไม่ได้มาจาก P/E ปัจจุบัน",
+      "Revenue TTM $16,951M × EV/Sales ของ Cheniere Energy (LNG) 4.01x (StockAnalysis /statistics/ 21 ก.ย. 2569 — ตัวคูณ peer ที่วัดจริง) = EV $67,974M − หนี้สุทธิ $39,715M (หนี้ $42,835M − เงินสด $3,120M ณ 30 มิ.ย. 2569) − สิทธิส่วนน้อย $3,507M = Equity $24,752M ÷ 2,500M หุ้นรวมทุกคลาส = $9.90 · เป็นคนละตระกูลกับ P/E (มองจากรายได้ ไม่ใช้กำไรสุทธิ) และหักหนี้/สิทธิส่วนน้อยเต็มจำนวน"
     ],
-    "cards": {
-      "pe": {
-        "v": "~9.94x",
-        "d": "ราคา/EPS(dil.) TTM $1.27",
-        "op": "pxOverBase",
-        "base": 1.27
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
       },
-      "revenue": {
-        "v": "$16.95B",
-        "d": "+100.7% YoY (Plaquemines ramp + COD Calcasieu เม.ย. 2568)"
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "~$16.67 (Buy, เฉลี่ย 18 ราย)"
       }
-    },
+    ],
     "s6": [
       {
         "head": "EPS −15%/ปี",
@@ -298,7 +297,39 @@
         ]
       }
     ],
-    "noBase": true
+    "targets": [
+      7.02,
+      16.51,
+      25.36
+    ],
+    "noBase": true,
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~$1.27 • รวมปันผล",
+    "legend": [
+      {
+        "text": "ราคา VG",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
+    "cards": {
+      "pe": {
+        "v": "~9.94x",
+        "d": "ราคา/EPS(dil.) TTM $1.27",
+        "op": "pxOverBase",
+        "base": 1.27
+      },
+      "revenue": {
+        "v": "$16.95B",
+        "d": "+100.7% YoY (Plaquemines ramp + COD Calcasieu เม.ย. 2568)"
+      }
+    }
   },
-  "_sig": "sha256:abfc3fc23167921eb61a60eb9246bb31f321e726bb9d09555cb678c1bcd40d0f"
+  "_sig": "sha256:5c247ff383987ac258aab47f83cafae439b8036061e11d67be910a22c0aabe66"
 }

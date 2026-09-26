@@ -17,15 +17,14 @@
     "sources": [
       "Yahoo Finance",
       "StockAnalysis.com",
-      "SEC EDGAR (Medline 10-K",
-      "S-1)",
+      "SEC EDGAR (Medline 10-K/S-1)",
       "Medline Investor Relations"
     ],
     "priceNote": "StockAnalysis.com, ตรงกับ Yahoo Finance ที่ราคาเดียวกัน",
     "migratedFrom": {
       "updated": "2026-09-21T16:19:45+07:00",
       "v2Hash": "41970b8d73fa",
-      "prevHash": "6a44cfa7c320"
+      "prevHash": "f82fadcd4cd3"
     }
   },
   "market": {
@@ -100,7 +99,6 @@
         "multiple": 23.34,
         "multipleSource": "peer"
       },
-      "note": "มัธยฐาน trailing P/E ของ MCK 23.34x / CAH 31.17x / COR 22.94x — StockAnalysis 21 ก.ย. 2569, ตัวคูณ peer ที่วัดจริง ไม่ได้มาจาก P/E ปัจจุบันของ MDLN",
       "family": "market"
     },
     {
@@ -112,7 +110,6 @@
         "base": "epsForward"
       },
       "baseLabel": "FY2026E",
-      "note": "FY2026E ของ vendor consensus · มัธยฐาน forward P/E ของ MCK 18.80x / CAH 17.93x / COR 15.97x — StockAnalysis 21 ก.ย. 2569 · ฐานเดียวกันคือ forward EPS กับ forward P/E",
       "family": "market"
     }
   ],
@@ -194,8 +191,7 @@
       "value": 1.56385,
       "why": "EPS ฐานฉากถอดกลับจากราคาเป้าที่พิมพ์"
     },
-    "note": "<b>FV นี้มีเงื่อนไขอยู่บนกำไรที่ฟื้นตามประมาณการ:</b> ขา forward ต้องการ EPS FY2026E ~$1.56 (ประมาณการ vendor เกือบสองเท่าของ EPS TTM {{eps}}) หากกำไรไม่ฟื้น ค่าอ้างอิงที่ยึดกำไรจริงคือขา trailing ({{eps}} × 23.34x ≈ {{fvLow}}) ซึ่งต่ำกว่า FV — Bear case ด้านบนสะท้อนความเสี่ยงนี้บางส่วน ตัวคูณ peer ทั้งหมดเป็นตระกูล P/E เดียว จึงไม่ใช่การยืนยันอิสระ",
-    "hintNote": "FY2026E ~$1.56 (vendor consensus) เติบโตต่อ 3 ปี • ไม่มีปันผล"
+    "note": "<b>FV นี้มีเงื่อนไขอยู่บนกำไรที่ฟื้นตามประมาณการ:</b> ขา forward ต้องการ EPS FY2026E ~$1.56 (ประมาณการ vendor เกือบสองเท่าของ EPS TTM {{eps}}) หากกำไรไม่ฟื้น ค่าอ้างอิงที่ยึดกำไรจริงคือขา trailing ({{eps}} × 23.34x ≈ {{fvLow}}) ซึ่งต่ำกว่า FV — Bear case ด้านบนสะท้อนความเสี่ยงนี้บางส่วน ตัวคูณ peer ทั้งหมดเป็นตระกูล P/E เดียว จึงไม่ใช่การยืนยันอิสระ"
   },
   "analyst": {
     "target": 44.6,
@@ -234,11 +230,97 @@
   ],
   "extras": [],
   "v2Display": {
+    "legDescs": [
+      "EPS $0.80 (TTM GAAP) × P/E 23.34x (มัธยฐาน trailing P/E ของ MCK 23.34x / CAH 31.17x / COR 22.94x — StockAnalysis 21 ก.ย. 2569, ตัวคูณ peer ที่วัดจริง ไม่ได้มาจาก P/E ปัจจุบันของ MDLN)",
+      "EPS $1.56 (FY2026E ของ vendor consensus) × P/E 17.93x (มัธยฐาน forward P/E ของ MCK 18.80x / CAH 17.93x / COR 15.97x — StockAnalysis 21 ก.ย. 2569) — ฐานเดียวกันคือ forward EPS กับ forward P/E"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "~$44.6 (Buy)"
+      }
+    ],
+    "s6": [
+      {
+        "head": "EPS +3%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$1.70"
+          ],
+          [
+            "P/E ออก",
+            "13.0x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$0.00"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +8%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$1.97"
+          ],
+          [
+            "P/E ออก",
+            "17.9x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$0.00"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +11%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$2.13"
+          ],
+          [
+            "P/E ออก",
+            "20.0x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$0.00"
+          ]
+        ]
+      }
+    ],
     "targets": [
       22.16,
       35.23,
       42.67
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน FY2026E ~$1.56 (vendor consensus) เติบโตต่อ 3 ปี • ไม่มีปันผล",
+    "legend": [
+      {
+        "text": "ราคา MDLN",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
     ]
   },
-  "_sig": "sha256:8bc48a269ec6914ff787809e150b65612c21969e6563fef71c9eb87be5818d37"
+  "_sig": "sha256:ceea54350a561cb2d2bfd9089f3def192c46ccdcbfd2e4646e203c2ac6909a16"
 }

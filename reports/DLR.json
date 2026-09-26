@@ -32,7 +32,8 @@
     },
     "migratedFrom": {
       "updated": "2026-09-21T13:09:09+07:00",
-      "v2Hash": "6dcaa649e400"
+      "v2Hash": "6dcaa649e400",
+      "prevHash": "34424710eeb1"
     }
   },
   "market": {
@@ -120,7 +121,6 @@
         "ffoPerShare": 7.92,
         "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
       },
-      "note": "TTM ไม่รวม net promote",
       "family": "market"
     },
     {
@@ -200,19 +200,16 @@
     "exitMetric": "pffo",
     "cases": [
       {
-        "growth": 3,
         "exitMultiple": 17.8,
         "divCum": 14.64,
         "desc": "ดอกเบี้ยสูง กด REIT; FFO โตช้า; P/FFO ลดลงสู่ต่ำสุด 5 ปี (17.8x, FY23)"
       },
       {
-        "growth": 6,
         "exitMultiple": 22.2,
         "divCum": 14.64,
         "desc": "AI/cloud demand ต่อเนื่อง; FFO โต steady; ออกที่มัธยฐาน 5 ปี"
       },
       {
-        "growth": 9,
         "exitMultiple": 23.5,
         "divCum": 14.64,
         "desc": "AI boom เร่งตัว; pricing power; P/FFO กลับสูงสุด 5 ปี (23.5x, FY21)"
@@ -223,8 +220,7 @@
       "value": 7.92,
       "why": "ฐานฉากที่ผู้เขียนใช้ (ตัวตั้งที่ขาประเมินพิมพ์)"
     },
-    "note": "การฉายภาพใช้ Core FFO/share เป็นตัวชี้วัดหลัก (ปกติสำหรับ REIT) แทน GAAP EPS ซึ่งถูกกด D&A สูง ปันผลรวม 3 ปี ~$14.64 (อิง {{dps}}/ปี คงที่ — DLR มีประวัติขึ้นปันผลสม่ำเสมอ) รวมในทุก scenario Equity issuance เพื่อ fund การพัฒนา (ATM ~13.5M หุ้นตั้งแต่ต้นปี 69 ตาม 8-K) อาจ dilute FFO/share growth ซึ่งไม่ได้หักในตัวเลขที่แสดง Base case เป้า {{scn.base.tgt}} จากจุดเข้า {{px}} (ยังไม่รวมปันผลอีก ~{{scn.base.div}}) สอดคล้อง FV ที่โตตาม FFO ~6%/ปี 3 ปี (จึงสูงกว่า FV ปัจจุบัน) ไม่ได้อิงเป้านักวิเคราะห์; Bear/Bull ใช้ขอบล่าง/บนของ P/FFO ที่วัดจริง (17.8x/23.5x); FFO ฐานไม่รวม net promote ครั้งเดียว",
-    "hintNote": "Core /share"
+    "note": "การฉายภาพใช้ Core FFO/share เป็นตัวชี้วัดหลัก (ปกติสำหรับ REIT) แทน GAAP EPS ซึ่งถูกกด D&A สูง ปันผลรวม 3 ปี ~$14.64 (อิง {{dps}}/ปี คงที่ — DLR มีประวัติขึ้นปันผลสม่ำเสมอ) รวมในทุก scenario Equity issuance เพื่อ fund การพัฒนา (ATM ~13.5M หุ้นตั้งแต่ต้นปี 69 ตาม 8-K) อาจ dilute FFO/share growth ซึ่งไม่ได้หักในตัวเลขที่แสดง Base case เป้า {{scn.base.tgt}} จากจุดเข้า {{px}} (ยังไม่รวมปันผลอีก ~{{scn.base.div}}) สอดคล้อง FV ที่โตตาม FFO ~6%/ปี 3 ปี (จึงสูงกว่า FV ปัจจุบัน) ไม่ได้อิงเป้านักวิเคราะห์; Bear/Bull ใช้ขอบล่าง/บนของ P/FFO ที่วัดจริง (17.8x/23.5x); FFO ฐานไม่รวม net promote ครั้งเดียว"
   },
   "analyst": {
     "target": 223.48,
@@ -264,12 +260,98 @@
   ],
   "extras": [],
   "v2Display": {
-    "fv": 179,
+    "legDescs": [
+      "Core FFO/share $7.92 (TTM ไม่รวม net promote) × P/FFO 22.2x — 22.2x คือมัธยฐาน FY21–FY25 ที่วัดจากประวัติ (ราคาเฉลี่ยงวด ÷ Core FFO รายปี) ไม่ได้มาจาก P/FFO ปัจจุบัน",
+      "FY26E Core FFO/share $8.175 × P/FFO 22.2x — กึ่งกลาง guidance $8.15–$8.20 (8-K 23 ก.ค. 69); ใช้มัธยฐานเดียวกันกับข้อ 1 (ตัวคูณย้อนหลังนำมาใช้กับ FFO ปีหน้า ซึ่งเอื้อเล็กน้อย)"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "~$223.48 (Strong Buy)"
+      }
+    ],
+    "s6": [
+      {
+        "head": "Core FFO +3%/ปี",
+        "rows": [
+          [
+            "Core FFO ปี 3",
+            "~$8.65"
+          ],
+          [
+            "P/FFO ออก",
+            "17.8x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$14.64"
+          ]
+        ]
+      },
+      {
+        "head": "Core FFO +6%/ปี",
+        "rows": [
+          [
+            "Core FFO ปี 3",
+            "~$9.43"
+          ],
+          [
+            "P/FFO ออก",
+            "22.2x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$14.64"
+          ]
+        ]
+      },
+      {
+        "head": "Core FFO +9%/ปี",
+        "rows": [
+          [
+            "Core FFO ปี 3",
+            "~$10.26"
+          ],
+          [
+            "P/FFO ออก",
+            "23.5x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$14.64"
+          ]
+        ]
+      }
+    ],
     "targets": [
-      null,
+      154.05,
       209.4,
-      null
-    ]
+      241.03
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • Core FFO ฐาน ~$7.92/share",
+    "legend": [
+      {
+        "text": "ราคา DLR",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
+    "fv": 179
   },
-  "_sig": "sha256:cb7912a619449fbc74dbcfdf5dc86f3d3d992b045e183b3740393c9c729eeacb"
+  "_sig": "sha256:605f9995a9c8090e4dcfc1adb38c9b18742a986d7cf781f7534bba752e70d978"
 }

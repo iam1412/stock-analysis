@@ -33,7 +33,7 @@
     "migratedFrom": {
       "updated": "2026-09-22T01:46:25+07:00",
       "v2Hash": "e2e9b358aac9",
-      "prevHash": "821b2b00f35b"
+      "prevHash": "78e98c09d7e3"
     }
   },
   "market": {
@@ -117,8 +117,7 @@
         "ebitda": 37300000000,
         "netDebt": 81500000000,
         "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
-      },
-      "note": "Equity value ÷ 1.08B หุ้น"
+      }
     },
     {
       "method": "pe",
@@ -126,8 +125,7 @@
       "inputs": {
         "multiple": 20,
         "multipleSource": "author"
-      },
-      "note": "ต่ำกว่าค่าเฉลี่ย 5 ปีของ TMUS (~22–25x) สะท้อนการ de-rate ล่าสุด"
+      }
     },
     {
       "method": "declared",
@@ -135,8 +133,7 @@
       "inputs": {
         "value": 227.16,
         "basis": "other"
-      },
-      "note": "Adj. FCF/หุ้น (guide FY26) $17.04 ÷ FCF yield เป้าหมาย 7.5% (ใกล้เคียง peers VZ/T)"
+      }
     }
   ],
   "fvWeights": null,
@@ -270,6 +267,98 @@
   ],
   "extras": [],
   "v2Display": {
+    "legDescs": [
+      "Core Adj. EBITDA guide FY26 $37.3B × 8.0x = EV $298.4B − Net debt $81.5B = Equity value ÷ 1.08B หุ้น",
+      "EPS adj. $9.41 × P/E 20x — ต่ำกว่าค่าเฉลี่ย 5 ปีของ TMUS (~22–25x) สะท้อนการ de-rate ล่าสุด",
+      "Adj. FCF/หุ้น (guide FY26) $17.04 ÷ FCF yield เป้าหมาย 7.5% (ใกล้เคียง peers VZ/T)"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "~$255 (Buy consensus, 28 สำนัก)"
+      }
+    ],
+    "s6": [
+      {
+        "head": "EPS +2%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$9.99"
+          ],
+          [
+            "P/E ออก",
+            "16x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$12.36"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +6%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$11.21"
+          ],
+          [
+            "P/E ออก",
+            "19x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$12.61"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +10%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$12.52"
+          ],
+          [
+            "P/E ออก",
+            "22x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$12.85"
+          ]
+        ]
+      }
+    ],
+    "targets": [
+      159.78,
+      212.94,
+      275.54
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~{{baseEps}} • รวมปันผล",
+    "legend": [
+      {
+        "text": "ราคา TMUS",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
     "fv": 205,
     "fvRange": [
       188,
@@ -277,5 +366,5 @@
     ],
     "footer": "22 กันยายน 2569"
   },
-  "_sig": "sha256:2710d8feb248b0b7afb484ab912a34471ad63920bd9ebc999de771226655bc4b"
+  "_sig": "sha256:5aa8a39b8255031139a638e5fc5f960e5d2ff196f3086e7d7c9e17fcb511de1b"
 }

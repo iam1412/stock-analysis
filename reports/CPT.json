@@ -31,7 +31,8 @@
     },
     "migratedFrom": {
       "updated": "2026-09-21T12:28:00+07:00",
-      "v2Hash": "1a5d6bf3dc2e"
+      "v2Hash": "1a5d6bf3dc2e",
+      "prevHash": "eb680fed8ebb"
     }
   },
   "market": {
@@ -117,7 +118,6 @@
         "ffoPerShare": 6.76,
         "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
       },
-      "note": "StockAnalysis · 16.6x = ราคาเฉลี่ยปี 2025 $112.33 ÷ FFO/sh 2025A $6.77 (วัดจริงจุดเดียว จึงเป็นสมอที่บาง) · ไม่ใช้ตัวคูณ peer/พีคย้อนหลังที่ตรวจซ้ำไม่ได้ และไม่ใช้ตัวคูณปัจจุบัน",
       "family": "market"
     },
     {
@@ -127,7 +127,6 @@
         "g": 3.5,
         "r": 7.5
       },
-      "note": "อิง 5yr DGR 5.03% · moderate ลงช่วง supply headwind · dividend 34 ปีต่อเนื่องสนับสนุน g ระยะยาว",
       "family": "rg"
     },
     {
@@ -137,7 +136,6 @@
         "value": 109,
         "basis": "nav"
       },
-      "note": "EBITDA proxy ~$889M (รายได้ TTM $1,584M × 56.1%) / Cap rate 5.5% (สมมติฐาน ตรวจซ้ำกับตลาดไม่ได้) = Gross Assets $16,164M − Net Debt $4,828M (หนี้ $4,873M − เงินสด $45M) = Equity $11,336M / 104.15M shares = $109 · ใช้ EBITDA แทน NOI จึงอนุรักษ์เล็กน้อย",
       "family": "asset"
     }
   ],
@@ -241,8 +239,7 @@
       "value": 6.76,
       "why": "ฐานฉากที่ผู้เขียนใช้ (ตัวตั้งที่ขาประเมินพิมพ์)"
     },
-    "note": "การฉายภาพอิง Core FFO/sh เป็น proxy แทน EPS (เหมาะกว่าสำหรับ REIT) Bear case อิง supply headwind ยาวนานและ P/FFO re-rate ลง; Base case ตาม supply rolloff ปลาย 2569–2570 ที่ consensus คาด; Bull case อิง rate cut + household formation surge จาก Millennial/Gen-Z + development pipeline ROI สูงกว่า cap rate ตลาด ปันผล ~4.3% เป็นหมอนรองในทุก scenario",
-    "hintNote": "/sh"
+    "note": "การฉายภาพอิง Core FFO/sh เป็น proxy แทน EPS (เหมาะกว่าสำหรับ REIT) Bear case อิง supply headwind ยาวนานและ P/FFO re-rate ลง; Base case ตาม supply rolloff ปลาย 2569–2570 ที่ consensus คาด; Bull case อิง rate cut + household formation surge จาก Millennial/Gen-Z + development pipeline ROI สูงกว่า cap rate ตลาด ปันผล ~4.3% เป็นหมอนรองในทุก scenario"
   },
   "analyst": {
     "target": 116.65,
@@ -283,15 +280,102 @@
   ],
   "extras": [],
   "v2Display": {
-    "fv": 110,
-    "fvRange": [
-      105,
-      115
+    "legDescs": [
+      "FFO/sh 2026E $6.76 (StockAnalysis) × P/FFO 16.6x = $112 — 16.6x = ราคาเฉลี่ยปี 2025 $112.33 ÷ FFO/sh 2025A $6.77 (วัดจริงจุดเดียว จึงเป็นสมอที่บาง) · ไม่ใช้ตัวคูณ peer/พีคย้อนหลังที่ตรวจซ้ำไม่ได้ และไม่ใช้ตัวคูณปัจจุบัน",
+      "D₁ = $4.24 × 1.035 = $4.39; g = 3.5% (อิง 5yr DGR 5.03% · moderate ลงช่วง supply headwind), r = 7.5% → FV = 4.39 / (0.075 − 0.035) = $110 · dividend 34 ปีต่อเนื่องสนับสนุน g ระยะยาว",
+      "EBITDA proxy ~$889M (รายได้ TTM $1,584M × 56.1%) / Cap rate 5.5% (สมมติฐาน ตรวจซ้ำกับตลาดไม่ได้) = Gross Assets $16,164M − Net Debt $4,828M (หนี้ $4,873M − เงินสด $45M) = Equity $11,336M / 104.15M shares = $109 · ใช้ EBITDA แทน NOI จึงอนุรักษ์เล็กน้อย"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "~$116.65 (Hold)"
+      }
+    ],
+    "s6": [
+      {
+        "head": "FFO +0%/ปี",
+        "rows": [
+          [
+            "FFO ปี 3",
+            "~$6.76"
+          ],
+          [
+            "P/FFO ออก",
+            "14x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$12.72"
+          ]
+        ]
+      },
+      {
+        "head": "FFO +3%/ปี",
+        "rows": [
+          [
+            "FFO ปี 3",
+            "~$7.39"
+          ],
+          [
+            "P/FFO ออก",
+            "16.6x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$13.50"
+          ]
+        ]
+      },
+      {
+        "head": "FFO +6%/ปี",
+        "rows": [
+          [
+            "FFO ปี 3",
+            "~$8.05"
+          ],
+          [
+            "P/FFO ออก",
+            "19x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$14.50"
+          ]
+        ]
+      }
     ],
     "targets": [
       95,
       123,
       153
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • FFO ฐาน ~$6.76/sh",
+    "legend": [
+      {
+        "text": "ราคา CPT",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
+    "fv": 110,
+    "fvRange": [
+      105,
+      115
     ],
     "cards": {
       "revenue": {
@@ -300,5 +384,5 @@
       }
     }
   },
-  "_sig": "sha256:33008914345e970bce92c47b071322d64fbd6289603321675a3de8a5fd2642b3"
+  "_sig": "sha256:5c8de3e518ad357a90f156cb96ae3cb3dd3e88151fe64b3d3515d98f76a8be23"
 }

@@ -32,7 +32,7 @@
     "migratedFrom": {
       "updated": "2026-09-21T12:28:00+07:00",
       "v2Hash": "f063833fbeba",
-      "prevHash": "8a92506e67e8"
+      "prevHash": "e5e2081b1723"
     }
   },
   "market": {
@@ -118,7 +118,6 @@
         "multiple": 14.6,
         "multipleSource": "median5y"
       },
-      "note": "มัธยฐานย้อนหลัง FY2021–25 (ราคาเฉลี่ยรายปี ÷ EPS diluted · ช่วง 14.1–18.0x)",
       "family": "market"
     },
     {
@@ -222,7 +221,7 @@
     "verdictHeadline": "ธนาคารภูมิภาคคุณภาพสูง — ราคาต่ำกว่า Fair Value เล็กน้อย ยังไม่ถึงโซน MOS 20%",
     "verdictBody": "Commerce Bancshares คือหนึ่งในธนาคารภูมิภาคที่มีคุณภาพดีที่สุดในสหรัฐ ด้วยประวัติ 60+ ปีปันผลเพิ่มต่อเนื่อง NPL ratio best-in-class และ ROE ~14.7% บ่งชี้ความสามารถพิเศษในการจัดสรรทุน ราคาปัจจุบัน {{px}} ต่ำกว่า Fair Value {{fv}} (MOS {{mos}}) อิง P/E 14.6x (มัธยฐานย้อนหลัง) และ Justified P/BV 2.14x ที่ ROE ~14.7% แนวโน้มดอกเบี้ยขาลงจาก Fed จะเป็นตัวเร่ง EPS growth ในปี 2569–2570 รวมกับ Wealth Management และ Payment Services ที่สร้าง fee income หนุน total return",
     "strategy": "ทยอยสะสมที่ราคาไม่สูงกว่า {{fv}} รับปันผล ~2%/ปี (เพิ่มต่อเนื่อง 60+ ปี) · เพิ่มน้ำหนักที่โซน MOS 20% ต่ำกว่า {{mos20}} · เหมาะนักลงทุนระยะยาว conservative ที่ต้องการ quality + dividend growth · ตั้ง stop-loss ที่ $46–$48 หากพื้นฐานเปลี่ยน (NPL พุ่ง/ROE หล่น <13%)",
-    "disclaimerSources": "ที่มาข้อมูล: Yahoo Finance (ราคา ณ {{priceDate}}, EPS TTM $4.08, yield 1.93%, beta 0.60), StockAnalysis.com (งบการเงิน, ROE 14.69%, BVPS $30.23, analyst target $66.56, กรอบ 52 สัปดาห์ $46.99–$60.92, FY2026e EPS $4.30)"
+    "disclaimerSources": "ที่มาข้อมูล: Yahoo Finance (ราคา ณ {{priceDate}}, EPS TTM $4.08, yield 1.93%, beta 0.60), StockAnalysis.com (งบการเงิน, ROE 14.69%, BVPS $30.23, analyst target {{analyst.target}}, กรอบ 52 สัปดาห์ $46.99–$60.92, FY2026e EPS $4.30)"
   },
   "text": {
     "valHint": "เฉลี่ย 2 ตระกูลสมมติฐาน"
@@ -245,6 +244,39 @@
   ],
   "extras": [],
   "v2Display": {
+    "legDescs": [
+      "EPS adj. $4.08 × P/E เป้าหมาย 14.6x — มัธยฐานย้อนหลัง FY2021–25 (ราคาเฉลี่ยรายปี ÷ EPS diluted · ช่วง 14.1–18.0x)",
+      "P/BV เหมาะสม = (ROE 14.7% − g 4%)/(r 9% − g 4%) ≈ 2.14 × BVPS $30.23"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "~$66.56 (Hold)"
+      }
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~$4.08 • รวมปันผล",
+    "legend": [
+      {
+        "text": "ราคา CBSH",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
     "fv": 62.5,
     "fvRange": [
       60,
@@ -262,5 +294,5 @@
       }
     }
   },
-  "_sig": "sha256:363d5c0aa15b114e32736639881fb33c12b453002f61a9038e6d1d6a633a0db7"
+  "_sig": "sha256:b0230ffa06c26e2829bca90dfe1a814d801964e588b324d64302e8ad88d82278"
 }

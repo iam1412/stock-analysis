@@ -32,7 +32,8 @@
     },
     "migratedFrom": {
       "updated": "2026-09-21T13:09:09+07:00",
-      "v2Hash": "10d07b89af40"
+      "v2Hash": "10d07b89af40",
+      "prevHash": "ebc0b67223b4"
     }
   },
   "market": {
@@ -123,8 +124,7 @@
         "ebitda": 1583000000,
         "netDebt": 1439000000,
         "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
-      },
-      "note": "งบจริง — StockAnalysis income statement, ไม่ใช่ย้อนจากราคา · มัธยฐาน EV/EBITDA ปัจจุบันของ peer เคมีภัณฑ์พิเศษ/น้ำ 5 ราย: ECL 20.7x · IFF 14.4x · ASH 11.9x · PNR 10.5x · CE 9.5x — stockanalysis.com/ratios · หนี้ $3,179M − เงินสด $1,740M, งบจริง TTM"
+      }
     },
     {
       "method": "pe",
@@ -144,8 +144,7 @@
       "override": {
         "dps": 6.34,
         "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
-      },
-      "note": "FCF TTM $856M ÷ 135.04M หุ้น — งบจริง"
+      }
     }
   ],
   "fvWeights": null,
@@ -222,8 +221,7 @@
       }
     ],
     "exitDp": 0,
-    "note": "Bear: EPS โตช้า (+2%/ปี) จากความไม่แน่นอนของ standalone execution + multiple compression กลับสู่ 15x • Base: EPS โต +7%/ปี ตาม guidance FY2026 ที่ต่อเนื่อง multiple ทรงตัว ~19x • Bull: EPS โต +12%/ปี จาก margin expansion เต็มที่ หลัง portfolio high-grading multiple ขยายสู่ 24x ตามมุมมองนักวิเคราะห์เฉลี่ย ทั้งหมดรวมปันผล ~{{dps}}/ปี (yield ~1.8%) เป็นผลตอบแทนสะสม 3 ปี",
-    "hintNote": "(adj. FY26E)"
+    "note": "Bear: EPS โตช้า (+2%/ปี) จากความไม่แน่นอนของ standalone execution + multiple compression กลับสู่ 15x • Base: EPS โต +7%/ปี ตาม guidance FY2026 ที่ต่อเนื่อง multiple ทรงตัว ~19x • Bull: EPS โต +12%/ปี จาก margin expansion เต็มที่ หลัง portfolio high-grading multiple ขยายสู่ 24x ตามมุมมองนักวิเคราะห์เฉลี่ย ทั้งหมดรวมปันผล ~{{dps}}/ปี (yield ~1.8%) เป็นผลตอบแทนสะสม 3 ปี"
   },
   "analyst": {
     "target": 170,
@@ -264,6 +262,98 @@
   ],
   "extras": [],
   "v2Display": {
+    "legDescs": [
+      "EBITDA TTM $1,583M (งบจริง — StockAnalysis income statement, ไม่ใช่ย้อนจากราคา) × เป้าหมาย 11.9x (มัธยฐาน EV/EBITDA ปัจจุบันของ peer เคมีภัณฑ์พิเศษ/น้ำ 5 ราย: ECL 20.7x · IFF 14.4x · ASH 11.9x · PNR 10.5x · CE 9.5x — stockanalysis.com/ratios) − หนี้สุทธิ $1,439M (หนี้ $3,179M − เงินสด $1,740M, งบจริง TTM) ÷ 135.04M หุ้น",
+      "EPS adj. $7.09 (กลาง guidance FY2026 $7.02–7.16) × P/E เป้าหมาย 17.5x (มัธยฐาน forward P/E ปัจจุบันของ peer 5 ราย: ECL 32.2x · IFF 25.1x · ASH 17.5x · PNR 11.9x · CE 7.6x — stockanalysis.com/ratios)",
+      "FCF $6.34/หุ้น (FCF TTM $856M ÷ 135.04M หุ้น — งบจริง) โต g 3%/ปี, discount rate r 8.5% → $6.34×1.03/(0.085−0.03)"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "~$170.00 (Buy)"
+      }
+    ],
+    "s6": [
+      {
+        "head": "EPS 2%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$7.52"
+          ],
+          [
+            "P/E ออก",
+            "15x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$7.20"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +7%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$8.69"
+          ],
+          [
+            "P/E ออก",
+            "19x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$7.40"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +12%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$9.96"
+          ],
+          [
+            "P/E ออก",
+            "24x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$7.60"
+          ]
+        ]
+      }
+    ],
+    "targets": [
+      112.85,
+      165.1,
+      239.1
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~{{baseEps}} (adj. FY26E) • รวมปันผล",
+    "legend": [
+      {
+        "text": "ราคา DD",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
     "fv": 124.4,
     "fvRange": [
       118.7,
@@ -273,12 +363,7 @@
       128.84,
       null,
       118.71
-    ],
-    "targets": [
-      112.85,
-      165.1,
-      239.1
     ]
   },
-  "_sig": "sha256:7b89c3521f95f6c38d21dcf08cbf581b4af538cc7b08a6d2e77367e86836837f"
+  "_sig": "sha256:5bed5569060032402c1b2fbbd2eee45899baeaa724b64c0719ecbdb079d4635f"
 }

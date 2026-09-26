@@ -16,14 +16,14 @@
     "aiModel": "Claude Sonnet 5",
     "sources": [
       "Yahoo Finance",
-      "StockAnalysis.com (รวม MEGA peer P",
-      "E)",
+      "StockAnalysis.com (รวม MEGA peer P/E)",
       "SET.or.th"
     ],
     "priceNote": "Yahoo Finance, StockAnalysis.com",
     "migratedFrom": {
       "updated": "2026-09-22T01:46:25+07:00",
-      "v2Hash": "4012654df97d"
+      "v2Hash": "4012654df97d",
+      "prevHash": "512ca40670d0"
     }
   },
   "market": {
@@ -91,7 +91,6 @@
     "dps": 0.64,
     "bvps": 5.5,
     "shares": 400000000,
-    "peAvg5y": 2567,
     "eps": 1.27,
     "revenue": 2620000000,
     "grossMargin": 45.4,
@@ -110,7 +109,6 @@
         "multiple": 11,
         "multipleSource": "peer"
       },
-      "note": "อิง peer ที่วัดจริง: MEGA Lifesciences (SET:MEGA) P/E ปัจจุบัน ~14.2x (StockAnalysis ณ 21 ก.ย. 2569; มัธยฐานรายปี 5 ปีของ MEGA ~18.4x) หักส่วนลดประมาณ 23% (สมมติฐานของเรา) สำหรับขนาดเล็ก/สภาพคล่องต่ำกว่า/ประวัติซื้อขายสั้น (IPO ต.ค. 2567 จึงไม่มีมัธยฐาน P/E ของ TMAN เอง) — ตัวคูณนี้ไม่ได้มาจาก P/E ปัจจุบันของ TMAN",
       "family": "market"
     },
     {
@@ -124,7 +122,6 @@
         "roe": 24.6,
         "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
       },
-      "note": "มิ.ย. 2569 · r = rf (Thai Gov 10Y 2.4%) + β(1.15) × ERP(7.5%) ≈ 11.0%, g สมมติเติบโตระยะยาว 4.0%",
       "family": "rg"
     }
   ],
@@ -133,18 +130,23 @@
     "cards": [
       "mcap",
       "pe",
-      "peAvg5y",
+      "custom:0",
       "pbv",
       "netIncomeFy",
       "eps",
       "bvps",
-      "custom:0",
+      "custom:1",
       "revenue",
       "grossMargin",
       "yield",
       "beta"
     ],
     "custom": [
+      {
+        "label": "P/E เฉลี่ย ~5 ปี",
+        "value": "N/A — IPO ต.ค. 2567",
+        "note": "เทียบ MEGA Lifesciences ~14.2x ปัจจุบัน (มัธยฐานรายปี 5 ปี ~18.4x)"
+      },
       {
         "label": "ROE / D-E",
         "value": "~24.6% / 0.43x",
@@ -153,9 +155,7 @@
       }
     ],
     "notes": {
-      "mcap": "400 ล้านหุ้น",
       "pe": "ต่ำกว่ากลุ่มยาไทย (MEGA ~14.2x)",
-      "peAvg5y": "N A — IPO ต ค · เทียบ MEGA Lifesciences ~14.2x ปัจจุบัน (มัธยฐานรายปี 5 ปี ~18.4x)",
       "pbv": "ราคา/BVPS {{bvps}} (มิ.ย. 2569)",
       "netIncomeFy": "+16.0% YoY (จาก ฿451 ล้าน)",
       "eps": "FY68 ฿1.31 — EPS ทรงตัวจาก dilution หุ้น (IPO ต.ค. 2567)",
@@ -232,5 +232,114 @@
     "<b>พึ่งพาสัญญา third-party brand:</b> ความเสี่ยงสัญญาจัดจำหน่ายไม่ต่ออายุ/เปลี่ยนคู่ค้า"
   ],
   "extras": [],
-  "_sig": "sha256:6eb32d2fc71821d28c436e1d3c7ac4c36ff23bba859c56f86f92453dc2c5b37d"
+  "v2Display": {
+    "legDescs": [
+      "EPS ฿1.27 (TTM) × P/E เป้าหมาย ~11x — อิง peer ที่วัดจริง: MEGA Lifesciences (SET:MEGA) P/E ปัจจุบัน ~14.2x (StockAnalysis ณ 21 ก.ย. 2569; มัธยฐานรายปี 5 ปีของ MEGA ~18.4x) หักส่วนลดประมาณ 23% (สมมติฐานของเรา) สำหรับขนาดเล็ก/สภาพคล่องต่ำกว่า/ประวัติซื้อขายสั้น (IPO ต.ค. 2567 จึงไม่มีมัธยฐาน P/E ของ TMAN เอง) — ตัวคูณนี้ไม่ได้มาจาก P/E ปัจจุบันของ TMAN",
+      "P/BV เหมาะสม = (ROE 24.6% − g 4.0%)/(r 11.0% − g 4.0%) ≈ 2.94 × BVPS ฿5.50 (มิ.ย. 2569) — r = rf (Thai Gov 10Y 2.4%) + β(1.15) × ERP(7.5%) ≈ 11.0%, g สมมติเติบโตระยะยาว 4.0%"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "~฿17.40 (Buy, n=1)"
+      }
+    ],
+    "s6": [
+      {
+        "head": "EPS −3%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~฿1.16"
+          ],
+          [
+            "P/E ออก",
+            "7x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~฿1.79"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +6%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~฿1.51"
+          ],
+          [
+            "P/E ออก",
+            "10x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~฿2.14"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +14%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~฿1.88"
+          ],
+          [
+            "P/E ออก",
+            "13x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~฿2.49"
+          ]
+        ]
+      }
+    ],
+    "targets": [
+      8.11,
+      15.13,
+      24.46
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~{{baseEps}} • รวมปันผล",
+    "legend": [
+      {
+        "text": "ราคา TMAN",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
+    "fvRange": [
+      13.97,
+      16.18
+    ],
+    "legValues": [
+      null,
+      16.18
+    ],
+    "cards": {
+      "mcap": {
+        "v": "฿4,280 ล้าน",
+        "d": "400 ล้านหุ้น",
+        "op": "pxTimesBase",
+        "base": 400
+      }
+    }
+  },
+  "_sig": "sha256:4d6f4696653e32ab3c5bd4014234645291040734ab9952888c36198b37fabc4a"
 }

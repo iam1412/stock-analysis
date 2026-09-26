@@ -32,7 +32,7 @@
     "migratedFrom": {
       "updated": "2026-09-21T23:32:21+07:00",
       "v2Hash": "87c06c54fe01",
-      "prevHash": "6fcbd0f02d0a"
+      "prevHash": "d43df2ad308c"
     }
   },
   "market": {
@@ -117,8 +117,7 @@
       "inputs": {
         "multiple": 20,
         "multipleSource": "author"
-      },
-      "note": "specialty grocer ที่ comps ชะลอ; ประวัติ 25–35x แต่คาดตลาดให้ premium น้อยลงระยะสั้น"
+      }
     },
     {
       "method": "evebitda",
@@ -131,8 +130,7 @@
         "ebitda": 843900000,
         "netDebt": -175000000,
         "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
-      },
-      "note": "บวก net cash $175M ($257M cash − $81.6M debt) ÷ 98M หุ้น"
+      }
     },
     {
       "method": "pbv",
@@ -140,8 +138,7 @@
       "inputs": {
         "g": 7,
         "r": 11
-      },
-      "note": "r อิง WACC grocery specialty + growth premium"
+      }
     }
   ],
   "fvWeights": null,
@@ -216,8 +213,7 @@
       }
     ],
     "exitDp": 0,
-    "note": "ผลตอบแทนขึ้นอยู่กับ 2 ปัจจัยหลัก: (1) Comparable Store Sales ฟื้นตัวหรือไม่ (Q1 2569 −1.7% ยังกดดัน sentiment) และ (2) ตลาดจะ re-rate P/E กลับขึ้น 20–25x หรือไม่ (ปัจจุบัน 17x ต่ำกว่าประวัติ 25–35x) · SFM ไม่จ่ายปันผล ทั้ง 3 scenario คาดผลตอบแทน = Capital Gain ล้วน · FY26 guidance EPS $5.32–5.48 คือ near-term catalyst หลัก",
-    "hintNote": "• ไม่มีปันผล"
+    "note": "ผลตอบแทนขึ้นอยู่กับ 2 ปัจจัยหลัก: (1) Comparable Store Sales ฟื้นตัวหรือไม่ (Q1 2569 −1.7% ยังกดดัน sentiment) และ (2) ตลาดจะ re-rate P/E กลับขึ้น 20–25x หรือไม่ (ปัจจุบัน 17x ต่ำกว่าประวัติ 25–35x) · SFM ไม่จ่ายปันผล ทั้ง 3 scenario คาดผลตอบแทน = Capital Gain ล้วน · FY26 guidance EPS $5.32–5.48 คือ near-term catalyst หลัก"
   },
   "analyst": {
     "target": 95,
@@ -256,6 +252,98 @@
   ],
   "extras": [],
   "v2Display": {
+    "legDescs": [
+      "EPS adj. $5.21 × P/E เป้าหมาย ~20x — specialty grocer ที่ comps ชะลอ; ประวัติ 25–35x แต่คาดตลาดให้ premium น้อยลงระยะสั้น",
+      "EBITDA FY2025 $843.9M × multiple 13x = EV $10,970M · บวก net cash $175M ($257M cash − $81.6M debt) ÷ 98M หุ้น",
+      "P/BV = (ROE 38.4% − g 7%)/(r 11% − g 7%) = 7.85 × BVPS $14.21 — r อิง WACC grocery specialty + growth premium"
+    ],
+    "vcells": [
+      {
+        "k": "มูลค่าเหมาะสม",
+        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
+      },
+      {
+        "k": "ส่วนต่างจากราคา",
+        "v": "MOS ~ {{mos}}"
+      },
+      {
+        "k": "เป้านักวิเคราะห์ 12 ด.",
+        "v": "~$95.00 (Buy)"
+      }
+    ],
+    "s6": [
+      {
+        "head": "EPS +5%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$6.03"
+          ],
+          [
+            "P/E ออก",
+            "15x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$0.00"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +12%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$7.31"
+          ],
+          [
+            "P/E ออก",
+            "20x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$0.00"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +18%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "~$8.55"
+          ],
+          [
+            "P/E ออก",
+            "25x"
+          ],
+          [
+            "ปันผลรวม 3 ปี",
+            "~$0.00"
+          ]
+        ]
+      }
+    ],
+    "targets": [
+      90.45,
+      146.2,
+      213.75
+    ],
+    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~{{baseEps}} • ไม่มีปันผล",
+    "legend": [
+      {
+        "text": "ราคา SFM",
+        "swatch": "price"
+      },
+      {
+        "text": "มูลค่าเหมาะสม {{fv}}",
+        "swatch": "fv"
+      },
+      {
+        "text": "จุดสำคัญ",
+        "swatch": "point"
+      }
+    ],
     "fv": 110,
     "fvRange": [
       100,
@@ -266,11 +354,6 @@
       113.72,
       null
     ],
-    "targets": [
-      90.45,
-      146.2,
-      213.75
-    ],
     "cards": {
       "netIncomeFy": {
         "v": "$523.7M",
@@ -278,5 +361,5 @@
       }
     }
   },
-  "_sig": "sha256:444bd86e97dd3d1c30a9ee1d19a171a12b8e338a1e655c8732f05ef8beb70e8b"
+  "_sig": "sha256:a30b1a1e5f9096ac8a9ccd0eeb8e0bd6e7ec80fef717dcc9fb2e9ad801ecb674"
 }
