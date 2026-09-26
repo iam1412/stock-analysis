@@ -148,7 +148,7 @@ function validate(doc) {
 
   if (!isObj(doc)) return [{ path: '', msg: 'เอกสารต้องเป็น JSON object' }];
   closed(doc, '', ['v', 'symbol', 'currency', 'region', 'dateEra', 'meta', 'market', 'fundamentals', 'legs', 'fvWeights',
-    'metrics', 'scenarios', 'analyst', 'verdict', 'prose', 'text', 'catalysts', 'risks', 'extras', '_sig']);
+    'metrics', 'scenarios', 'analyst', 'verdict', 'prose', 'text', 'catalysts', 'risks', 'extras', 'v2Display', '_sig']);
   if (doc.v !== 3) E('v', 'ต้องเป็น 3');
   if (!/^[A-Z0-9][A-Z0-9.\-]*$/.test(doc.symbol || '')) E('symbol', 'ต้องเป็นตัวพิมพ์ใหญ่/ตัวเลข/จุด/ขีด');
   en(doc.currency, 'currency', ENUM.currency);
@@ -187,7 +187,9 @@ function validate(doc) {
     if (m.migratedFrom != null) {
       if (!isObj(m.migratedFrom)) E('meta.migratedFrom', 'ต้องเป็น object {updated, v2Hash}');
       else {
-        closed(m.migratedFrom, 'meta.migratedFrom', ['updated', 'v2Hash']);
+        closed(m.migratedFrom, 'meta.migratedFrom', ['updated', 'v2Hash', 'prevHash']);
+        // prevHash (display-fix · remigrate): freshHash ของใบ migrate ที่ใบนี้มาแทน (= hash ในแถว manifest ที่ commit แล้ว) — build คง updated ของ v2 ไว้ (ไม่ใช่งานวิเคราะห์ใหม่)
+        if (m.migratedFrom.prevHash != null && !/^[0-9a-f]{12}$/.test(m.migratedFrom.prevHash)) E('meta.migratedFrom.prevHash', 'ต้องเป็น freshHash ของใบ v3 ที่ถูกแทน (hex 12 ตัว)');
         if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{2}:\d{2}$/.test(m.migratedFrom.updated || '')) E('meta.migratedFrom.updated', 'ต้องเป็น ISO datetime ของ reports.json (YYYY-MM-DDTHH:mm:ss+07:00)');
         if (!/^[0-9a-f]{12}$/.test(m.migratedFrom.v2Hash || '')) E('meta.migratedFrom.v2Hash', 'ต้องเป็น freshHash ของใบ v2 (hex 12 ตัว)');
       }
@@ -575,6 +577,10 @@ function validate(doc) {
     }
     str(x.note, `${p}.note`, { req: false });
   });
+  // ── v2Display (display-fix · เจ้าของ 26 ก.ย. 69 "ข้อมูลที่แสดงของทุกใบต้องถูก") — ใบ migrate เท่านั้น (meta.migratedFrom · แบบเดียวกับ customCap/W33) ──
+  //   ตัวเลขของผู้เขียนที่หน้า v2 พิมพ์ แต่ v3 คิดจาก inputs ได้ไม่เท่า (FV · กรอบ FV · ค่าขา · ราคาเป้า/ตัวตั้งปลายฉาก · สเกลเกจ · ค่าการ์ดที่ cron v2 ไม่เคยแตะ)
+  //   compute/render ใช้ค่านี้แทนค่าที่คิด ⇒ หน้า v3 แสดงเท่าหน้า v2 · ใบ NEW ห้ามมี (ค่าต้องมาจาก inputs เสมอ)
+  if (doc.v2Display != null) validateV2Display(doc, E, closed, num, plain, en);
   // {{lit:…}} ↔ meta.litReasons (spec §4 ข้อ 4 · #51 · ruling R1) — 1 คีย์ต่อ 1 ข้อความ ใช้ได้หลายจุด
   for (const p of P.malformedLitPaths(doc)) E(p, '{{lit:…}} ไม่ครบรูป — ห้ามซ้อน token/วงเล็บปีกกา และต้องปิดด้วย }}');
   const reasons = isObj(doc.meta) && isObj(doc.meta.litReasons) ? doc.meta.litReasons : {};
@@ -592,6 +598,94 @@ function validate(doc) {
   return errs;
 }
 
+// v2Display: คีย์ของเกจที่อ้างค่าของ view ได้ (ชื่อ token ของ v2 — render พิมพ์เป็น {{rd:<ref>}})
+const GAUGE_REFS = ['mos30', 'mos20', 'fv', 'fvLow', 'fvHigh', 'analystTgt', 'px', 'sc1tgt', 'sc2tgt', 'sc3tgt'];
+const V2DISPLAY_KEYS = ['fv', 'fvRange', 'legValues', 'targets', 'driverEnds', 'driverTotal', 'gauge', 'cards', 'rets', 'footer'];
+// การ์ดที่ค่าเป็นฟังก์ชันของราคา — v2Display.cards ของคีย์เหล่านี้ต้องคิดสด (op/base) เท่านั้น
+const V2DISPLAY_PRICE_CARDS = ['mcap', 'pe', 'pbv', 'ps', 'yield', 'evEbitda', 'peForward', 'analystTarget', 'pffo', 'pffoForward', 'ptbv'];
+function validateV2Display(doc, E, closed, num, plain, en) {
+  const x = doc.v2Display, P0 = 'v2Display';
+  if (!isObj(x)) return E(P0, 'ต้องเป็น object');
+  if (!isMigrated(doc)) E(P0, 'ใช้ได้เฉพาะใบ migrate (meta.migratedFrom) — ใบ NEW คิดทุกตัวเลขจาก inputs');
+  closed(x, P0, V2DISPLAY_KEYS);
+  if (!Object.keys(x).length) E(P0, 'ว่าง — ลบออก');
+  if (x.fv != null) num(x.fv, `${P0}.fv`, { gt: 0 });
+  // driverTotal: แถวตัวตั้งปลายฉาก/ป้าย hint พิมพ์เป็นยอดรวมทั้งบริษัท (ต่อหุ้น × หุ้น) ตามหน้า v2 (CPNG/NET "รายได้ปี 3 ~$38.75B")
+  if (x.driverTotal != null) {
+    if (x.driverTotal !== true) E(`${P0}.driverTotal`, 'ต้องเป็น true (หรือลบออก)');
+    else if (!(isObj(doc.scenarios) && ['revenuePerShare', 'ebitdaPerShare', 'fcfPerShare'].includes(doc.scenarios.driver))) E(`${P0}.driverTotal`, 'ใช้ได้เฉพาะ driver ต่อหุ้นของยอดรวม (revenuePerShare/ebitdaPerShare/fcfPerShare)');
+  }
+  if (x.fvRange != null) {
+    if (!Array.isArray(x.fvRange) || x.fvRange.length !== 2 || !x.fvRange.every((v) => isNum(v) && v > 0) || x.fvRange[0] > x.fvRange[1]) E(`${P0}.fvRange`, 'ต้องเป็น [ล่าง, บน] ตัวเลข > 0 และ ล่าง ≤ บน');
+  }
+  const arr = (k, n, ok, what) => {
+    const a = x[k];
+    if (a == null) return;
+    if (!Array.isArray(a) || a.length !== n) return E(`${P0}.${k}`, `ต้องเป็น array ยาว ${n}`);
+    if (!a.some((v) => v != null)) E(`${P0}.${k}`, 'ทุกช่องเป็น null — ลบออก');
+    a.forEach((v, i) => { if (v != null && !ok(v)) E(`${P0}.${k}[${i}]`, what); });
+  };
+  arr('legValues', Array.isArray(doc.legs) ? doc.legs.length : -1, (v) => isNum(v) && v > 0, 'ต้องเป็น null หรือตัวเลข > 0 (ค่าขาที่หน้า v2 พิมพ์)');
+  arr('targets', 3, (v) => isNum(v) && v > 0, 'ต้องเป็น null หรือตัวเลข > 0 (ราคาเป้าฉากที่หน้า v2 พิมพ์)');
+  arr('driverEnds', 3, (v) => typeof v === 'string' && v.trim() && !/[{}<>]/.test(v), 'ต้องเป็น null หรือข้อความที่หน้า v2 พิมพ์ในแถวตัวตั้งปลายฉาก (เช่น "~$38.75B") — ห้ามมี { } < >');
+  // footer: วันที่ "ข้อมูล ณ …" ตามที่หน้า v2 พิมพ์ (ศักราช/วงเล็บของผู้เขียน เช่น "21 ก.ย. 2569 (2026)") — ต้องมีเลขปี
+  if (x.footer != null) { if (typeof x.footer !== 'string' || !/\d{4}/.test(x.footer)) E(`${P0}.footer`, 'ต้องเป็นข้อความวันที่ที่มีเลขปี'); else plain(x.footer, `${P0}.footer`); }
+  if (x.gauge != null) {
+    if (!Array.isArray(x.gauge) || x.gauge.length < 2 || x.gauge.length > 8) E(`${P0}.gauge`, 'ต้องเป็น array 2–8 ป้าย');
+    else x.gauge.forEach((t, i) => {
+      const p = `${P0}.gauge[${i}]`;
+      if (!isObj(t)) return E(p, 'ต้องเป็น {ref|text, label}');
+      closed(t, p, ['ref', 'text', 'label']);
+      if ((t.ref != null) === (t.text != null)) E(p, 'ต้องมี ref หรือ text อย่างใดอย่างหนึ่ง');
+      if (t.ref != null) en(t.ref, `${p}.ref`, GAUGE_REFS);
+      if (t.text != null) { if (typeof t.text !== 'string' || !t.text.trim()) E(`${p}.text`, 'ต้องเป็นข้อความ'); plain(t.text, `${p}.text`); }
+      if (typeof t.label !== 'string') E(`${p}.label`, 'ต้องเป็นข้อความ (ว่างได้)'); else plain(t.label, `${p}.label`);
+    });
+  }
+  // rets: รูปแบบข้อความ .ret ของผู้เขียน v2 — ตัวเลข % คิดใหม่ทุกครั้งที่ราคาปัจจุบัน (กติกาเดียวกับ cron v2) · ไม่มีแบบข้อความคงที่ (ผลตอบแทนเป็นฟังก์ชันของราคา — round 2)
+  if (x.rets != null) {
+    const r = x.rets, p = `${P0}.rets`;
+    if (!isObj(r)) E(p, 'ต้องเป็น {texts, neg, div, perYear?}');
+    else {
+      closed(r, p, ['texts', 'neg', 'perYear', 'div']);
+      if (!Array.isArray(r.texts) || r.texts.length !== 3) E(`${p}.texts`, 'ต้องเป็น array ข้อความ 3 ช่อง (Bear/Base/Bull)');
+      else r.texts.forEach((t, i) => { if (typeof t !== 'string' || !t.trim()) E(`${p}.texts[${i}]`, 'ต้องเป็นข้อความ'); else plain(t, `${p}.texts[${i}]`); });
+      en(r.neg, `${p}.neg`, ['−', '-']);
+      if (r.perYear != null) en(r.perYear, `${p}.perYear`, ['cagr', 'linear']);
+      if (typeof r.div !== 'boolean') E(`${p}.div`, 'ต้องบอกว่าผลตอบแทนรวมปันผลไหม (true/false — ฐานเดียวกับ cron v2)');
+      if (isObj(doc.scenarios) && Array.isArray(doc.scenarios.cases) && doc.scenarios.cases.some((c) => isObj(c) && c.retNote != null)) E(`${p}`, 'ช่อง .ret เป็นข้อความของหน้า v2 ทั้งช่อง — ลบ scenarios.cases[i].retNote');
+    }
+  }
+  if (x.cards != null) {
+    if (!isObj(x.cards) || !Object.keys(x.cards).length) E(`${P0}.cards`, 'ต้องเป็น object {คีย์การ์ด: {v, d}} (ค่า + บรรทัดล่างที่หน้า v2 พิมพ์)');
+    else {
+      const keys = new Set(isObj(doc.metrics) && Array.isArray(doc.metrics.cards) ? doc.metrics.cards.map((c) => (isObj(c) ? c.key : c)) : []);
+      for (const [k, c] of Object.entries(x.cards)) {
+        const p = `${P0}.cards.${k}`;
+        if (!CARD_KEYS.includes(k) || !keys.has(k)) E(p, 'ต้องเป็นคีย์แคตตาล็อกที่อยู่ใน metrics.cards');
+        if (!isObj(c)) { E(p, 'ต้องเป็น {v, d}'); continue; }
+        closed(c, p, ['v', 'd', 'op', 'base']);
+        // op/base: การ์ดที่ cron v2 คิดใหม่ตามราคาจากฐานที่ .d ประกาศ — pxOverBase = ราคา ÷ ฐาน (P/E · P/BV) · basePct = ฐาน ÷ ราคา (ปันผล %)
+        if ((c.op != null) !== (c.base != null)) E(p, 'op กับ base ต้องมาคู่กัน');
+        if (c.op != null) {
+          en(c.op, `${p}.op`, ['pxOverBase', 'basePct']);
+          // base หลายตัว = ตัวเลขหลายตัวในข้อความตามลำดับ ("2.38x / 4.22x" ← BVPS / TBVPS)
+          const bs = Array.isArray(c.base) ? c.base : [c.base];
+          if (!bs.length || bs.length > 3 || !bs.every((b) => isNum(b) && b > 0)) E(`${p}.base`, 'ต้องเป็นตัวเลข > 0 หรือ array 1–3 ตัว');
+          const nNum = typeof c.v === 'string' ? (c.v.match(/[0-9][0-9,]*(?:\.[0-9]+)?/g) || []).length : 0;
+          if (nNum < bs.length) E(`${p}.v`, `op ต้องมีตัวเลขในข้อความอย่างน้อย ${bs.length} ตัวให้เขียนใหม่`);
+        }
+        // การ์ดผูกราคา (ค่า = ฟังก์ชันของราคา) ห้ามแช่ข้อความ — ต้องมีฐาน (op/base) ให้คิดสดที่ราคาปัจจุบัน · ไม่มีฐาน = ไม่พก (v3 คิดเอง)
+        //   ยกเว้นข้อความไม่มีตัวเลข ("ขาดทุน GAAP" · "ไม่มี") = ข้อเท็จจริงของผู้เขียน ไม่ใช่ค่าที่คิดจากราคา
+        if (V2DISPLAY_PRICE_CARDS.includes(k) && c.op == null && /[0-9]/.test(String(c.v))) E(p, 'การ์ดผูกราคา — ต้องมี op/base (ฐานของผู้เขียน) ห้ามพกข้อความค่าคงที่ที่มีตัวเลข');
+        if (typeof c.v !== 'string' || !c.v.trim()) E(`${p}.v`, 'ต้องเป็นข้อความ'); else plain(c.v, `${p}.v`);
+        if (typeof c.d !== 'string') E(`${p}.d`, 'ต้องเป็นข้อความ (ว่างได้)'); else plain(c.d, `${p}.d`);
+        if (isObj(doc.metrics) && isObj(doc.metrics.notes) && doc.metrics.notes[k] != null) E(`metrics.notes.${k}`, `การ์ดนี้แสดงบรรทัดล่างของหน้า v2 (${p}.d) — ลบ note ออก`);
+      }
+    }
+  }
+}
+
 // path → เจ้าของ: 'cron' เขียนได้เฉพาะ market.* · 'io' = _sig · ที่เหลือ worker (ผ่าน report.js save)
 function OWNER(path) {
   if (path === '_sig') return 'io';
@@ -599,4 +693,4 @@ function OWNER(path) {
   return 'worker';
 }
 
-module.exports = { ENUM, FFO_LABEL, CARD_KEYS, FUND_KEYS, FY_KEYS, BANK_KEYS, LEG_INPUTS, CURRENT_BASE, requiredFamily, OVERRIDE_KEYS, THEME_KEYS, TEXT_KEYS, cardEntries, customCap, CUSTOM_CAP, CUSTOM_CAP_MIGRATED, isMigrated, SOURCES_MIN, SOURCES_MIN_MIGRATED, validate, OWNER, RD_TOKEN, TODO_RE, stringLeaves };
+module.exports = { GAUGE_REFS, V2DISPLAY_KEYS, V2DISPLAY_PRICE_CARDS, ENUM, FFO_LABEL, CARD_KEYS, FUND_KEYS, FY_KEYS, BANK_KEYS, LEG_INPUTS, CURRENT_BASE, requiredFamily, OVERRIDE_KEYS, THEME_KEYS, TEXT_KEYS, cardEntries, customCap, CUSTOM_CAP, CUSTOM_CAP_MIGRATED, isMigrated, SOURCES_MIN, SOURCES_MIN_MIGRATED, validate, OWNER, RD_TOKEN, TODO_RE, stringLeaves };

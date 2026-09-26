@@ -20,6 +20,7 @@ const MT = require('./theme.js');
 const FM = require('./formula.js');
 const SY = require('./synonyms.js');
 const NB = require('./numbers.js');
+const DS = require('./display.js');
 const R3 = require('../../_template/v3/render.js');
 
 const OVERRIDE_WHY = 'ค่าที่ผู้เขียนใช้ในใบ v2';
@@ -952,7 +953,7 @@ function assemble(parsed0, ctx) {
   doc.extras = extrasOf(parsed, H);
 
   // ── compute (view) → render check การ์ด · notes จริง · custom ผูกราคา · ราคาเป้าฉาก · tokenise ──
-  const order = ['v', 'symbol', 'currency', 'region', 'dateEra', 'meta', 'market', 'fundamentals', 'legs', 'fvWeights', 'metrics', 'scenarios', 'analyst', 'verdict', 'prose', 'text', 'catalysts', 'risks', 'extras'];
+  const order = ['v', 'symbol', 'currency', 'region', 'dateEra', 'meta', 'market', 'fundamentals', 'legs', 'fvWeights', 'metrics', 'scenarios', 'analyst', 'verdict', 'prose', 'text', 'catalysts', 'risks', 'extras', 'v2Display'];
   const tidy = () => { const o = {}; for (const k of order) if (doc[k] !== undefined) o[k] = doc[k]; return pruneUndefined(o); };
   let out = tidy();
   let view = null;
@@ -993,18 +994,50 @@ function assemble(parsed0, ctx) {
     scnNote: parsed.s6paras.join(' '), scnHint: s6hintSrc, scnRet: parsed.s6cols.map((c) => c.retHtml || ''), cat: parsed.catalysts, risk: parsed.risks,
   };
   let tokens = 0;
+  // display-fix (เจ้าของ 26 ก.ย. 69): ตัวเลขของผู้เขียนที่ v3 คิดได้ไม่เท่า → v2Display (ใบ migrate เท่านั้น — ต้องมี meta.migratedFrom)
+  //   ก่อน tokenise: token ของ prose ต้องเทียบกับตัวเลขที่หน้า v3 จะแสดงจริง (FV/เป้าของผู้เขียน)
+  let display = null;
+  if (view) {
+    const dx = DS.v2DisplayOf({ parsed, raw: parsed.html, doc: out, view, legMeta: pass.meta, cardMeta: mc.meta, scnMeta: scn.meta });
+    if (dx.v2Display && !(out.meta && out.meta.migratedFrom)) F.push(`v2Display not carried (no meta.migratedFrom): ${dx.notes.join(' · ')}`);
+    else if (dx.v2Display) {
+      const prev = out;
+      out = { ...out, v2Display: dx.v2Display };
+      if (dx.v2Display.cards && out.metrics.notes) {
+        const notes = { ...out.metrics.notes };
+        for (const k of Object.keys(dx.v2Display.cards)) delete notes[k];
+        out.metrics = { ...out.metrics, notes: Object.keys(notes).length ? notes : undefined };
+        out = pruneUndefined(out);
+      }
+      // ช่อง .ret ทั้งช่องเป็นข้อความของหน้า v2 — โน้ต retNote ที่แยกไว้อยู่ในข้อความนั้นแล้ว
+      if (dx.v2Display.rets && out.scenarios) out = { ...out, scenarios: { ...out.scenarios, cases: out.scenarios.cases.map(({ retNote, ...c }) => c) } };
+      // ฐานปันผลของผลตอบแทนฉาก = ฐานที่ cron v2 ใช้พิมพ์ข้อความนั้น (หน้า v2 ไม่มี scnBasis — migrator เดาจากป้าย "รวมปันผล" ได้คนละฐาน · UNP)
+      const rt = dx.v2Display.rets;
+      if (rt && out.scenarios && out.scenarios.divIncluded !== rt.div && (!rt.div || out.scenarios.cases.every((c) => c.divCum != null))) {
+        F.push(`scenarios.divIncluded ${out.scenarios.divIncluded} → ${rt.div} (the basis the v2 cron printed the returns on)`);
+        out = { ...out, scenarios: { ...out.scenarios, divIncluded: rt.div } };
+      }
+      const r = tryCompute();
+      if (r.view) { view = r.view; display = dx; F.push(...dx.notes.map((x) => `v2Display: ${x}`)); }
+      else { out = prev; H.push(`v2Display rejected — ${r.errs ? `${r.errs[0].path}: ${r.errs[0].msg}` : String(r.err && r.err.message).split('\n')[0]}`); }
+    } else F.push(...dx.notes.map((x) => `v2Display: ${x}`));
+  }
   if (view) {
     D.push(...MS.tgtCheck(parsed, view));
     // Plan 4c-prep D3: โน้ต .ret ที่มีตัวเลข % (pending จาก scenarios) — เท่าผลตอบแทนรวม v3 ภายในการปัด = พาคำ (ไม่พาตัวเลข) · ไม่งั้น H เดิม
     //  (ก่อน tokenise → retNote ที่เพิ่มผ่าน tokenise + C.compute ข้างล่างเหมือนช่องอื่น)
     const rr = MS.retResolve(scn.meta.retPending, view);
     H.push(...rr.H);
-    for (const { i, note } of rr.set) { if (note && out.scenarios) out.scenarios.cases[i].retNote = note; F.push(`scenarios.cases[${i}] numeric .ret = v3 total → carried without the number`); }
+    if (!(out.v2Display && out.v2Display.rets)) for (const { i, note } of rr.set) { if (note && out.scenarios) out.scenarios.cases[i].retNote = note; F.push(`scenarios.cases[${i}] numeric .ret = v3 total → carried without the number`); }
     const apxStale = [];
+    const fd = require('../queue/footer-date.js').footerDate(parsed.html || '');
+    // ขอบเขตเดียวกับ E44 (check-reports): ใบวิเคราะห์ ≥ SINCE · เฉพาะ literal ที่ผู้เขียนพิมพ์ในต้นฉบับ v2 (ไม่ใช่ค่าที่ token {{rd:…}} render ออกมา —
+    //   TMUS "ราคาปัจจุบัน–{{rd:mos20}}" ห้ามกลายเป็น {{px}}) → ชุด "token|ข้อความ"
+    const e44 = fd && fd.iso >= RV.PROSE_TOKEN_SINCE ? new Set(RV.proseBoundHits(parsed.html || '', view.d).map((h) => `${h.token}|${h.text}`)) : null;
     for (const z of proseZones(out, src)) {
       const hits = z.html ? RV.proseBoundHits(`<p>${z.html}</p>`, view.d) : [];
-      const r = MP.tokenise(z.obj[z.key], view, hits, z.field);
-      z.obj[z.key] = r.text; D.push(...r.D); tokens += r.n;
+      const r = MP.tokenise(z.obj[z.key], view, hits, z.field, { e44 });
+      z.obj[z.key] = r.text; D.push(...r.D); F.push(...(r.F || [])); tokens += r.n;
       apxStale.push(...MP.staleCopies(r.text, ctx.analysisPx, view.d));
     }
     if (tokens) F.push(`prose literals → tokens ×${tokens}`);
@@ -1038,7 +1071,7 @@ function assemble(parsed0, ctx) {
   } else H.push(...(scn.meta.retPending || []).filter(Boolean).map((p) => p.H));   // ไม่มี view = ตัดสินตัวเลขใน .ret ไม่ได้ → H เดิม
   return {
     doc: out, notes: { H, D, F },
-    meta: { legs: pass.meta, weights: wk, scn: scn.meta, cards: mc.meta, prose: { tokens }, fundSrc: srcs, computed: !!view, fv: view ? view.fv : null },
+    meta: { legs: pass.meta, weights: wk, scn: scn.meta, cards: mc.meta, prose: { tokens }, fundSrc: srcs, computed: !!view, fv: view ? view.fv : null, display },
   };
 }
 

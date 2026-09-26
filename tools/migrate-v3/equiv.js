@@ -54,7 +54,9 @@ const escHtml = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').re
 /** HTML → ข้อความที่มองเห็น — ตัด emoji (Extended_Pictographic + variation selector + ZWJ) · ≈ → ณ (transform ที่อนุมัติ) */
 function text(h) {
   return decode(String(h || '').replace(/<!--[\s\S]*?-->/g, ' ').replace(/<br\s*\/?>/gi, ' ').replace(/<[^>]+>/g, ' '))
-    .replace(/\p{Extended_Pictographic}|[\uFE0E\uFE0F\u200D]/gu, ' ').replace(/≈/g, 'ณ').replace(/\s+/g, ' ').trim();
+    .replace(/\p{Extended_Pictographic}|[\uFE0E\uFE0F\u200D]/gu, ' ').replace(/≈/g, 'ณ')
+    // หน่วยเงินไทยที่ผู้เขียนเว้นวรรคกลางคำ ("฿4.18 พัน ล." · "฿17.4 พัน ลบ.") = หน่วยเดียว (NB.UNIT) — ต่อกันก่อนตัดคำ ไม่งั้นตัวเลขหลุดจากหน่วยใน diff
+    .replace(/([0-9])\s*(พัน|หมื่น|แสน)\s+(ล\.|ลบ\.)/g, '$1 $2$3').replace(/\s+/g, ' ').trim();
 }
 
 /** zone ของหน้า → Map<id, html> · header · s1…s8 (ตาม <div class="n">) · extra:<i> (หมวดไม่มีเลข/เลขซ้ำ) · disc · footer */
@@ -92,7 +94,7 @@ function templateCard(key, view) { try { return K.renderCard(key, view); } catch
 function stripTemplateD(dText, td) {
   if (!td) return dText;
   if (dText === td) return '';
-  if (dText.startsWith(td)) return dText.slice(td.length).replace(/^[\s·•,;:—–-]+/, '').trim();
+  if (dText.startsWith(td)) return dText.slice(td.length).replace(/^(?:[\s·•,;:—–]|-(?![0-9]))+/, '').trim();
   return dText;
 }
 

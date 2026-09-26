@@ -304,6 +304,8 @@ function runAdopt(symIn, opts, log, mv, deps) {
   for (const c of cmp) say(`  ${c.drift ? '≈' : c.ok ? '✓' : '✗'} ${c.what}: v2 ${c.v2} · v3 ${c.v3}${c.drift ? ' (drift ≤ 1 printed step)' : ''}`);
   for (const c of infoKeys(k2, k3, kopt)) say(`  ${c.ok ? 'ℹ' : '⚠'} ${c.what}: v2 ${c.v2} · v3 ${c.v3} (ข้อมูลประกอบ ไม่บล็อก)`);
   for (const c of cmp) if (!c.ok) fails.push(`${c.what}: v2 ${c.v2} · v3 ${c.v3}${kopt.acceptDrift && /^(FV|FV low|FV high|Bear target|Base target|Bull target|MOS)$/.test(c.what) ? ' (เกิน 1 หน่วยของหลักสุดท้ายที่ v2 พิมพ์)' : ''}`);
+  // display-fix: ทั้งหน้าต้องแสดงค่าเท่าหน้า v2 (display audit ตัวเดียวกับ audit/remigrate/convert --write) — ไม่ใช่แค่ตัวเลขหลัก
+  if (mv.displayGate) for (const x of mv.displayGate(sym, full, m.raw, o.seeds)) fails.push(`display audit ${x}`);
   const drifts = cmp.filter((c) => c.drift);
   if (kopt.acceptDrift) say(`  drift list (${drifts.length}): ${drifts.length ? drifts.map((c) => `${c.what} v2 ${c.v2} → v3 ${c.v3}`).join(' · ') : 'none'}`);
   // equivalence gate = ข้อมูลเท่านั้น
