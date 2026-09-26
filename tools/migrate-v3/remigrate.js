@@ -183,7 +183,7 @@ function remigrateOne(sym, o, env) {
   const mf0 = existing.meta && existing.meta.migratedFrom;
   if (!mf0) { out.result = 'SKIP'; out.why.push('ไม่มี meta.migratedFrom (ใบ v3 ต้นฉบับ ไม่ใช่ใบ migrate)'); return out; }
   let src;
-  try { src = o.v2Of ? o.v2Of(sym) : AU.v2Source(sym, o.reportsDir); } catch (e) { out.why.push(`หน้า v2: ${String(e.message).split('\n')[0]}`); return out; }
+  try { src = o.v2Of ? o.v2Of(sym) : AU.v2Source(sym, o.reportsDir); } catch (e) { if (excluded) out.result = 'SKIP'; out.why.push(`หน้า v2: ${String(e.message).split('\n')[0]}`); return out; }
   const aOpts = { seeds: o.seeds };
   SEEDS_RMG = o.seeds;
   const exRow = AU.auditDoc(sym, existing, src, aOpts);
