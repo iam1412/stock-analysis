@@ -1,0 +1,274 @@
+{
+  "v": 3,
+  "symbol": "TLN",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Talen Energy Corporation",
+    "exchange": "NASDAQ",
+    "sub": "โรงไฟฟ้านิวเคลียร์ Susquehanna 2.5GW • สัญญาขายไฟให้ AWS 1,920MW ถึงปี 2585 • Independent Power Producer ~13.1GW ในตลาด PJM",
+    "headerTags": [
+      "Independent Power Producer",
+      "Nuclear / Data Center Power"
+    ],
+    "analysisDate": "2026-09-22",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis.com",
+      "Yahoo Finance",
+      "Talen Energy IR",
+      "SEC 10-Q"
+    ],
+    "priceNote": "StockAnalysis.com, ต่างจาก Yahoo Finance 0.09%",
+    "migratedFrom": {
+      "updated": "2026-09-22T01:46:25+07:00",
+      "v2Hash": "6c63bbca903f"
+    }
+  },
+  "market": {
+    "px": 304.42,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          399.78
+        ],
+        [
+          "พ.ย.25",
+          394.27
+        ],
+        [
+          "ธ.ค.25",
+          374.84
+        ],
+        [
+          "ม.ค.26",
+          348.36
+        ],
+        [
+          "ก.พ.26",
+          370.97
+        ],
+        [
+          "มี.ค.26",
+          319.23
+        ],
+        [
+          "เม.ย.26",
+          372.42
+        ],
+        [
+          "พ.ค.26",
+          386.8
+        ],
+        [
+          "มิ.ย.26",
+          384.26
+        ],
+        [
+          "ก.ค.26",
+          334.1
+        ],
+        [
+          "ส.ค.26",
+          295.76
+        ],
+        [
+          "ก.ย.26",
+          304.42
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 279.77,
+      "hi": 451.28
+    }
+  },
+  "fundamentals": {
+    "shares": 47914259,
+    "eps": -4.03,
+    "roe": -12.83,
+    "revenue": 3741000000,
+    "grossMargin": 7,
+    "dps": 0,
+    "beta": 1.65,
+    "fy": {
+      "period": "FY2025",
+      "netIncome": -219000000
+    },
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "evebitda",
+      "label": "EV/EBITDA (Peer Comparables — IPP นิวเคลียร์/สัญญาระยะยาว)",
+      "inputs": {
+        "multiple": 13.83,
+        "multipleSource": "peer"
+      },
+      "override": {
+        "ebitda": 2125000000,
+        "netDebt": 9343000000,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "guidance $2,025–2,225M ปรับขึ้น 5 ส.ค. 2569 หลังปิดดีล Cornerstone · TTM ณ 21 ก.ย. 2569, stockanalysis.com · NRG · หนี้ $9,574M − เงินสด $231M งวด TTM หลัง Cornerstone · StockAnalysis",
+      "family": "market"
+    },
+    {
+      "method": "declared",
+      "label": "DCF (Free Cash Flow to Equity — สัญญาขายไฟ AWS ที่เซ็นแล้ว)",
+      "inputs": {
+        "value": 264.53,
+        "basis": "other"
+      },
+      "note": "Adjusted FCF ปี 2569E เริ่มที่ $1,275M (กลาง guidance $1,200–1,350M) เติบโต Y2 +8% / Y3 +5% / Y4–Y5 +3% (AWS PPA front-of-meter เต็มปีเริ่ม เม.ย. 2569 + Cornerstone เต็มปี) → terminal growth 2% คิดลดด้วย cost of equity 13% (rf UST10Y 4.65% ณ 7 ส.ค. 2569 + β 1.65 (Yahoo 5Y รายเดือน) × ERP 5%) — terminal value 60.9% ของมูลค่ารวม (≤75% เข้าเกณฑ์ขาอิสระ 0.4d) โดย FCF ปี 1–5 = $1,275M / $1,377M / $1,446M / $1,489M / $1,534M → PV ของ FCF 5 ปี $4,955M + terminal value $14,223M (คิดลดเหลือ $7,720M) = มูลค่าส่วนผู้ถือหุ้น $12,675M ÷ 47.91M หุ้นคงเหลือ (StockAnalysis) = {{fvLow}}",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "custom:0",
+      "custom:1",
+      "custom:2",
+      {
+        "key": "netIncomeFy",
+        "tone": "neg"
+      },
+      {
+        "key": "eps",
+        "tone": "neg"
+      },
+      "custom:3",
+      {
+        "key": "roe",
+        "tone": "neg"
+      },
+      "revenue",
+      "grossMargin",
+      "yield",
+      "beta"
+    ],
+    "custom": [
+      {
+        "label": "EV/EBITDA (กลุ่ม IPP)",
+        "value": "~13.83x",
+        "note": "มัธยฐาน NRG · ตัวเองแกว่ง 13–123x ใช้ไม่ได้",
+        "tone": "neu"
+      },
+      {
+        "label": "Adj. EBITDA Guidance FY26",
+        "value": "$2,025–2,225M",
+        "note": "กลาง $2,125M (ปรับขึ้น 5 ส.ค. 69)"
+      },
+      {
+        "label": "Net Debt / EBITDA",
+        "value": "4.40x",
+        "note": "หนี้สุทธิ $9,343M หลังปิดดีล Cornerstone",
+        "tone": "neu"
+      },
+      {
+        "label": "Adjusted FCF Guidance FY26",
+        "value": "$1,200–1,350M",
+        "note": "กลาง $1,275M (คนละฐานกับ GAAP FCF TTM $444M)"
+      }
+    ],
+    "notes": {
+      "mcap": "47.91M หุ้นคงเหลือ (StockAnalysis)",
+      "netIncomeFy": "จาก +$998M ปี FY24 (fresh-start/hedging)",
+      "eps": "ขาดทุน — ห้ามใช้ P/E เป็นขา FV",
+      "revenue": "+75.8% YoY",
+      "grossMargin": "กดดันจากขาดทุนสัญญาป้องกันความเสี่ยงราคาไฟ",
+      "yield": "ไม่จ่าย — buyback $1.7B คงเหลือแทน",
+      "beta": "ผันผวนกว่าตลาด (Yahoo)"
+    },
+    "hint": "หุ้นเพิ่งออกจาก Chapter 11 (2566) — P/E ของตัวเองใช้ไม่ได้ ดู EV/EBITDA เทียบกลุ่มแทน"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": -8,
+        "exitMultiple": 8.5,
+        "divCum": 0,
+        "desc": "ราคา PJM ร่วง + AWS PPA เจอปัญหากำกับดูแล FERC + เลเวอเรจสูงกดตัวคูณ"
+      },
+      {
+        "growth": 8,
+        "exitMultiple": 10.5,
+        "divCum": 0,
+        "desc": "AWS PPA + Cornerstone ตามแผน guidance ไม่มีตัวคูณรีเรต ธุรกิจโตเข้าหาราคาปัจจุบัน"
+      },
+      {
+        "growth": 18,
+        "exitMultiple": 13,
+        "divCum": 0,
+        "desc": "ดีลสัญญาไฟใหม่กับ hyperscaler เพิ่ม + Keystone sale ปลดล็อกเงินสด buyback + ตัวคูณรีเรตใกล้ CEG"
+      }
+    ],
+    "exitDp": 1,
+    "baseOverride": {
+      "value": 30.7531,
+      "why": "EPS ฐานฉากถอดกลับจากราคาเป้าที่พิมพ์"
+    },
+    "note": "EPS ฐานใช้ forward consensus $30.75 ซึ่งตรงกับ FY2027E (Yahoo = StockAnalysis) ไม่ใช่ปีงบถัดไป (FY2026E = $22.26) — EPS ปี 3 จึงนับ 3 ปีเติบโตจากฐาน FY2027E และ P/E ออกใช้กับ EPS ล่วงหน้า P/E ออกใน scenario เป็น exit-multiple สมมติสำหรับการคาดการณ์ราคา 3 ปีข้างหน้าเท่านั้น ไม่ใช่ขาของ Fair Value (ซึ่งห้ามใช้ P/E ตามกฎ 0.4b/controller) — อ้างอิงกับ fwd P/E ปัจจุบันของ TLN เอง (9.7–10.0x ตาม Yahoo/StockAnalysis) และของกลุ่ม peer",
+    "hintNote": "(FY2027E consensus, Yahoo/StockAnalysis) ~$30.75 • ไม่มีปันผล"
+  },
+  "analyst": {
+    "target": 460.59,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ราคาปิดรายเดือนสูงสุดในกราฟอยู่ที่ $399.78 (ต.ค. 2568) ช่วงกระแส AI/data center หนุนหุ้นกลุ่มพลังงานนิวเคลียร์-IPP ทั้งกลุ่ม (วันสูงสุดในกรอบ 52 สัปดาห์ $451.28) ก่อนจะอ่อนตัวเป็นช่วง ๆ โดยราคาปิดรายเดือนต่ำสุดช่วงกลางปีอยู่ที่ $319.23 (มี.ค. 2569) จากแรงขายทำกำไร+ความไม่ชัดเจนด้านกำกับดูแลสัญญา behind/front-of-meter จากนั้นฟื้นตัวเป็นช่วง ๆ ตามข่าวดีลปิด Cornerstone และผลประกอบการ ก่อนอ่อนตัวลงต่อเนื่องช่วง ส.ค.–ก.ย. 2569 จนราคาล่าสุด {{px}} เป็นระดับต่ำสุดของกราฟและใกล้ขอบล่างกรอบ 52 สัปดาห์ ($279.77) รวมรอบปีติดลบตามป้ายผลตอบแทนด้านบน แม้ธุรกิจพื้นฐาน (guidance EBITDA/FCF ปรับขึ้น 5 ส.ค. 2569) จะปรับขึ้นในช่วงเดียวกัน — ส่วนต่างระหว่างราคากับพื้นฐานสะท้อนการรีเรตติ้งตัวคูณลงของกลุ่มพลังงานธีม AI (สาเหตุเป็นการตีความ ยังไม่ได้ยืนยันจากแหล่งปฐมภูมิรอบนี้)",
+    "valuation": "2 ขาต่างกัน 1.58 เท่า (≤2.0) จึงเฉลี่ยตรงได้ตามเกณฑ์ dispersion 0.4c — ขา EV/EBITDA (ยึดตลาดผ่านมัธยฐานกลุ่ม peer) ให้ค่าสูงกว่าเพราะปีฐาน EBITDA เป็นตัวเลข guidance ล่าสุดที่รวม Cornerstone เต็มรูปแบบแล้ว ส่วนขา DCF อนุรักษนิยมกว่าเพราะยังไม่ให้เครดิตการรีเรตติ้งตัวคูณ ใช้แค่กระแสเงินสดที่มาจากสัญญา/guidance ที่ประกาศแล้วจริงเท่านั้น <b>ห้ามใช้ P/E หรือ P/B ของ TLN เองเป็นขา FV</b> — ดูย่อหน้า full-disclosure ด้านล่างสำหรับเหตุผลเต็ม",
+    "gauge": "ราคาปัจจุบัน {{px}} อยู่ต่ำกว่า Fair Value ({{mos}} — ระดับ 10–20% ยังไม่ถึงโซน 20%) และต่ำกว่ากรอบบน FV ({{fvHigh}}) และต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ {{analyst.target}} (Yahoo n=17 / StockAnalysis, Buy) มาก ช่องว่างนี้สะท้อนว่าฝั่ง sell-side มองการรีเรตติ้งตัวคูณ (ไม่ใช่แค่กระแสเงินสด) จากธีม AI/data center มากกว่าที่โมเดล EV/EBITDA-peer + DCF ของรายงานนี้ให้เครดิต — ควรตีความเป็นข้อมูลประกอบ ไม่ใช่สัญญาณว่าโมเดลผิด",
+    "mos": "<b>มี Margin of Safety ระดับปานกลาง (โซน 10–20%)</b><br>ราคาปัจจุบันต่ำกว่า FV ที่คำนวณจากตัวคูณกลุ่ม IPP + DCF บนสัญญาที่เซ็นแล้วประมาณ {{mos}} (ราคาอ่อนตัวลงต่อเนื่องขณะ guidance ปรับขึ้น) ซึ่งเกิน 10% แต่ยังไม่ถึงโซนที่มีส่วนเผื่อชัดเจน (≥20%) นักลงทุนที่ต้องการส่วนเผื่อควรรอราคาย่อลงมาใกล้โซน MOS 20–30% หรือรอความชัดเจนของดีล/สัญญาใหม่ที่ยกระดับ EBITDA ฐานขึ้นจริง",
+    "verdictHeadline": "Talen Energy — ธุรกิจพื้นฐานดี สัญญาเซ็นแล้วชัดเจน ราคาปัจจุบันต่ำกว่า Fair Value พอสมควรหลังราคาอ่อนตัวทั้งกลุ่ม",
+    "verdictBody": "TLN เป็นหนึ่งในหุ้นที่ประเมินมูลค่ายากที่สุดในกลุ่ม — เพิ่งออกจากการฟื้นฟูกิจการ (Ch.11) ปี 2566 ทำให้ตัวคูณของตัวเอง (P/E, EV/EBITDA) ใช้เป็นฐานไม่ได้เลย รายงานนี้จึงประเมินมูลค่าด้วย EV/EBITDA เทียบกลุ่ม IPP นิวเคลียร์/สัญญาระยะยาว (Vistra/Constellation/NRG) คูณกับ guidance EBITDA ที่บริษัทประกาศเองล่าสุด และ DCF บนกระแสเงินสดจากสัญญาขายไฟ AWS ที่เซ็นแล้วจริงเท่านั้น ได้ Fair Value เฉลี่ย {{fv}} (กรอบ {{fvLow}}–{{fvHigh}}) สูงกว่าราคาปัจจุบัน {{px}} ({{mos}}) — ธุรกิจกำลังไปในทิศทางที่ดี (guidance ปรับขึ้น, ดีล AWS เดินหน้า, Cornerstone ปิดแล้ว) แต่ราคาอ่อนตัวลงต่อเนื่องจนส่วนต่างจาก FV กว้างขึ้นเป็นระดับ 10–20% ซึ่งยังไม่ถึงโซน margin of safety ที่ชัดเจน (≥20%)",
+    "strategy": "ยังไม่ใช่จุดเข้าที่มี margin of safety ตามโมเดลนี้ — ผู้ที่สนใจระยะยาวจากธีม data center power ควรรอย่อลงมาโซน MOS 20% ({{mos20}}) หรือรอความชัดเจนเพิ่มเติมของสัญญา/กำกับดูแล FERC ก่อนสะสมเพิ่ม ผู้ถือเดิมเน้นติดตามความคืบหน้า Keystone sale + การใช้วงเงิน buyback",
+    "disclaimerSources": "<b>Full disclosure — ทำไมตัวคูณของ TLN เองใช้ไม่ได้:</b> TLN ออกจากการฟื้นฟูกิจการ (Chapter 11) ในปี 2566 และใช้ fresh-start accounting ตีมูลค่าสินทรัพย์/ทุนใหม่ทั้งหมด บวกกับการขายสินทรัพย์ (เช่น Cumulus/data-center campus เดิม) และกำไร/ขาดทุนจากสัญญาป้องกันความเสี่ยงราคาไฟที่ผันผวนตามปี ทำให้ EV/EBITDA ของ TLN เองแกว่งจาก 12.86x (FY2023) → 23.29x (FY2024) → 122.67x (FY2025) → 67.71x (ปัจจุบัน) และ P/E จาก 28.32x (FY2023) → 11.40x (FY2024) → ไม่มีค่า (FY2025/ปัจจุบัน ขาดทุน) — ประวัติตัวคูณจึงใช้เป็นฐานประเมินมูลค่าไม่ได้ทั้งคู่ (รวมถึง P/BV ที่ book value ก็ตั้งใหม่จาก fresh-start เช่นกัน จึงไม่ใช้เป็นขาด้วย) รายงานนี้จึงใช้ (1) EV/EBITDA เทียบกลุ่ม IPP ที่มีนิวเคลียร์/สัญญาระยะยาว — Vistra 10.12x, NRG 13.83x (ใช้เป็นมัธยฐาน), Constellation 14.76x (ทั้งหมด TTM ณ 21 ก.ย. 2569 จาก stockanalysis.com) คูณกับ Adjusted EBITDA guidance FY2026 ของ TLN เอง ($2,125M กลาง) แทน — ข้อควรระวัง: การจับคู่นี้ผสมฐานเวลา (ตัวคูณ peer เป็น TTM แต่ EBITDA ของ TLN เป็นตัวเลข guidance ไปข้างหน้า) เป็นทางเลือกที่จำเป็นเพราะ EBITDA ระดับ TTM ของ TLN เองก็บิดเบือนจาก hedging เช่นกัน และทำให้ผลลัพธ์ค่อนข้าง generous กว่าหากใช้ตัวคูณ forward ของ peer (2) DCF บนกระแสเงินสด Adjusted FCF guidance FY2026 ($1,275M กลาง) ซึ่งต่างจาก GAAP FCF TTM ที่รายงานในงบ ($444M) อย่างมาก เพราะ Adjusted FCF ตัดรายจ่ายลงทุนเพื่อการเติบโต/M&A (เช่น Cornerstone) ออก ขณะที่ GAAP FCF รวมเงินสดจ่ายซื้อกิจการเข้าไปด้วย — ทดสอบความไว (0.4d): ปรับอัตราเติบโต 3–12%/ปี + terminal growth 1–3% ทำให้ FV ขา DCF เคลื่อนที่ระหว่าง $235.49–$349.76 (1.49 เท่า <2.0 เท่า) ผ่านเกณฑ์ขาอิสระ • net debt ที่ใช้เป็นข้อมูล ณ ไตรมาสหลังปิดดีล Cornerstone (มิ.ย. 2569) ขณะที่ EBITDA guidance ปี 2569 มีผลของ Cornerstone เต็มปีไม่ครบ (~7 เดือน) ทำให้ EV/EBITDA leg ค่อนข้างอนุรักษนิยมในทิศทางตรงข้าม และดีล Keystone sale ที่รอปิดอาจกระทบทั้งหนี้สุทธิและ EBITDA ในรอบถัดไป • <b>EPS(TTM) 2 แหล่งต่างกัน 0.5%:</b> Yahoo −$4.03 vs StockAnalysis −$4.05 — ทั้งคู่เป็น diluted EPS TTM ฐานเดียวกัน (NI −185M ÷ 45.7M หุ้น) ตัวเลขระดับงบ (StockAnalysis /financials) diluted EPS FY2025 เต็มปี = −$4.79 อยู่ในทิศทางเดียวกัน — ไม่กระทบ Fair Value เพราะรายงานนี้ไม่ใช้ P/E เป็นขาอยู่แล้ว • ราคา ณ {{priceDate}} จาก StockAnalysis.com (cross-check กับ Yahoo Finance ต่าง 0.09%) • ข้อมูลงบการเงิน/guidance จาก StockAnalysis.com และ Talen Energy Q2 2026 earnings release (GlobeNewswire, 5 ส.ค. 2569) • รายละเอียดสัญญา AWS จาก Talen Energy IR press release (11 มิ.ย. 2568) และ SEC Form 10-Q • ตัวคูณกลุ่ม peer จาก stockanalysis.com (Vistra/Constellation/NRG, 21 ก.ย. 2569) • จำนวนหุ้นคงเหลือ 47.91M จาก StockAnalysis /statistics/ (ใช้เป็นฐานต่อหุ้นของทั้งสองขา; ถัวเฉลี่ยปรับลด TTM = 45.7M) • rf จาก US 10-Year Treasury yield (4.65%, 7 ส.ค. 2569 — ยังไม่ได้ปรับรอบนี้) • การปิดดีล Cornerstone (15 มิ.ย. 2569) และ guidance (5 ส.ค. 2569) ตรวจกับ GlobeNewswire/StockAnalysis แล้ว ส่วนรายละเอียดสัญญา AWS, Keystone sale และวงเงิน buyback ยกมาจากรายงานฉบับก่อน ยังไม่ได้ตรวจซ้ำกับแหล่งปฐมภูมิ • β จาก Yahoo Finance (5Y รายเดือน)"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 2 วิธีอิสระ (dispersion 1.58× ≤2.0 — เฉลี่ยได้ตามเกณฑ์)"
+  },
+  "catalysts": [
+    "<b>AWS PPA เต็มรูปแบบ:</b> สัญญา 17 ปี มูลค่า ~$18B ส่งไฟสูงสุด 1,920MW จาก Susquehanna ให้ AWS แบบ front-of-the-meter ถึงปี 2585 เริ่มเดินสัญญาใหม่ เม.ย. 2569 (Talen IR 11 มิ.ย. 2568, ยืนยัน 10-Q)",
+    "<b>Cornerstone Acquisition:</b> ปิดดีลซื้อ Waterford Energy Center, Darby Generating Station, Lawrenceburg Power Plant มิ.ย. 2569 กระจายความเสี่ยงจากสินทรัพย์เดี่ยว + หนุน guidance EBITDA/FCF ขึ้น",
+    "<b>Guidance ปรับขึ้น:</b> 5 ส.ค. 2569 บริษัทยก 2026 Adjusted EBITDA เป็น $2,025–2,225M และ Adjusted FCF เป็น $1,200–1,350M",
+    "<b>Capital return:</b> ซื้อหุ้นคืน 550,000 หุ้น (~$200M) ใน Q2/2569 เหลือวงเงิน buyback $1.7B ถึง ธ.ค. 2571",
+    "<b>ธีม AI/data center demand:</b> อุปสงค์ไฟฟ้าจากศูนย์ข้อมูล AI หนุน re-rating ทั้งกลุ่ม IPP/นิวเคลียร์ (Vistra, Constellation, NRG) ซึ่ง TLN ยังเทรดต่ำกว่ากรอบบน FV และเป้านักวิเคราะห์"
+  ],
+  "risks": [
+    "<b>กระจุกตัวสินทรัพย์:</b> Susquehanna (2.5GW นิวเคลียร์) ยังเป็นแหล่งกำไรหลัก แม้ Cornerstone จะช่วยกระจายบ้าง — outage/ปัญหาโรงไฟฟ้ากระทบกำไรรุนแรง",
+    "<b>ราคาไฟตลาด PJM ผันผวน:</b> กำลังผลิตส่วนที่ไม่ได้อยู่ใต้สัญญา AWS ยังขายตามราคาตลาดขายส่ง PJM ซึ่งผันผวนสูง",
+    "<b>ความไม่ชัดเจนด้านกำกับดูแล FERC:</b> กติกาการต่อไฟตรงเข้าศูนย์ข้อมูล (behind-the-meter / co-location) ยังไม่นิ่ง อาจกระทบโครงสร้างเศรษฐศาสตร์ของดีลลักษณะเดียวกันในอนาคต",
+    "<b>ฐานเปรียบเทียบไม่นิ่ง:</b> fresh-start accounting หลังออกจาก Ch.11 (2566) ทำให้ P/E และ EV/EBITDA ของตัวเองแกว่งสิบเท่า ไม่มีประวัติที่เชื่อถือได้ ต้องพึ่ง peer comp/DCF เท่านั้น — ดีล/M&A ในอนาคต (เช่น Keystone sale ที่รอปิด) อาจทำให้ฐานเปรียบเทียบเพี้ยนซ้ำอีก",
+    "<b>เลเวอเรจสูง:</b> Net Debt/EBITDA ~4.4x, D/E 5.84x (TTM) หลัง Cornerstone — อ่อนไหวต่อดอกเบี้ยและช่วงราคาไฟฟ้าตกต่ำ",
+    "<b>ช่องว่างกับเป้านักวิเคราะห์:</b> FV จากโมเดลนี้ต่ำกว่าเป้าเฉลี่ย $460 ราว 26% — หาก sell-side ถูกต้อง (ให้เครดิตรีเรตติ้งตัวคูณมากกว่า) โมเดลนี้จะประเมินมูลค่าต่ำไป แต่หากธีม AI-power คลายตัว ตัวคูณกลุ่ม peer ก็เสี่ยงหดตัวเช่นกัน"
+  ],
+  "extras": [],
+  "v2Display": {
+    "targets": [
+      203.49,
+      null,
+      656.76
+    ],
+    "cards": {
+      "roe": {
+        "v": "-12.83%",
+        "d": "ขาดทุนสุทธิ TTM (Yahoo)"
+      }
+    }
+  },
+  "_sig": "sha256:065a8a2ec515ffa154e25316b70e8d89bafe7df6f15ca678d43a4b91e64f52e5"
+}

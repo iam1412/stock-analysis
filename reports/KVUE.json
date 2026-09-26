@@ -1,0 +1,240 @@
+{
+  "v": 3,
+  "symbol": "KVUE",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Kenvue Inc.",
+    "exchange": "NYSE",
+    "sub": "Tylenol • Neutrogena • Listerine • Band-Aid • Consumer Health Spinoff (J&J 2023)",
+    "headerTags": [
+      "Consumer Health",
+      "OTC Brands"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis.com",
+      "Yahoo Finance",
+      "Google Finance"
+    ],
+    "themeLegacy": {
+      "accent": "#c62828",
+      "accentDark": "#b71c1c",
+      "darkGrad": "linear-gradient(135deg,#3e0000 0%,#7f1313 55%,#c62828 140%)",
+      "glow": "rgba(198,40,40,.35)",
+      "subColor": "#ffcdd2",
+      "headerMuted": "#f5c2c2",
+      "verdictText": "#fce4ec",
+      "vcellLabel": "#fad0de"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T15:39:58+07:00",
+      "v2Hash": "673b7de6d3b6"
+    }
+  },
+  "market": {
+    "px": 17.8,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          14.37
+        ],
+        [
+          "พ.ย.25",
+          17.35
+        ],
+        [
+          "ธ.ค.25",
+          17.25
+        ],
+        [
+          "ม.ค.26",
+          17.4
+        ],
+        [
+          "ก.พ.26",
+          19.12
+        ],
+        [
+          "มี.ค.26",
+          17.24
+        ],
+        [
+          "เม.ย.26",
+          17.53
+        ],
+        [
+          "พ.ค.26",
+          17.28
+        ],
+        [
+          "มิ.ย.26",
+          19.11
+        ],
+        [
+          "ก.ค.26",
+          19.24
+        ],
+        [
+          "ส.ค.26",
+          18.88
+        ],
+        [
+          "ก.ย.26",
+          17.8
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 14.02,
+      "hi": 20.13
+    }
+  },
+  "fundamentals": {
+    "eps": 0.85,
+    "dps": 0.84,
+    "bvps": 6.46,
+    "shares": 1920000000,
+    "epsForward": 1.18,
+    "netIncome": 1660000000,
+    "roe": 15.6,
+    "revenue": 15400000000,
+    "grossMargin": 58,
+    "beta": 0.49,
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation (TTM)",
+      "inputs": {
+        "multiple": 26.8,
+        "multipleSource": "median5y"
+      },
+      "family": "market"
+    },
+    {
+      "method": "ddm",
+      "label": "DDM / Gordon Growth",
+      "inputs": {
+        "g": 3,
+        "r": 8
+      },
+      "note": "สมมติฐานของเราเอง · FCF TTM ~$1.9B ครอบคลุมปันผล ~$1.6B",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      {
+        "key": "peForward",
+        "tone": "none"
+      },
+      "pbv",
+      "netIncome",
+      "eps",
+      "bvps",
+      "roe",
+      "revenue",
+      "grossMargin",
+      "yield",
+      "beta"
+    ],
+    "notes": {
+      "mcap": "หุ้น ~1.92B",
+      "pe": "(GAAP)",
+      "peForward": "EPS FY2026E ~$1.18 (SA)",
+      "pbv": "BVPS ~{{bvps}} (หลัง spin-off)",
+      "netIncome": "GAAP EPS {{eps}} · อยู่ระหว่าง restructure",
+      "eps": "FY2026E ~$1.18 (forward consensus)",
+      "bvps": "Total equity ~$12.4B",
+      "roe": "ROE TTM · กดด้วย goodwill จาก JNJ spinoff",
+      "revenue": "ทรงตัว — ปรับพอร์ตหลัง spin-off",
+      "grossMargin": "แบรนด์ consumer premium",
+      "yield": "{{dps}}/หุ้น/ปี · จ่ายสม่ำเสมอ",
+      "beta": "defensive consumer staples"
+    },
+    "hint": "ข้อมูล TTM / FY2025 (สิ้นสุด ธ.ค. 2568)"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": "cagr",
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": -5,
+        "exitMultiple": 18,
+        "divCum": 2.52,
+        "desc": "Market share เสีย + margin squeeze จาก private label"
+      },
+      {
+        "growth": 15,
+        "exitMultiple": 20,
+        "divCum": 2.57,
+        "desc": "Restructuring จบ + EPS normalize + ตลาดใหม่เติบโต"
+      },
+      {
+        "growth": 22,
+        "exitMultiple": 22,
+        "divCum": 2.62,
+        "desc": "M&A สร้างมูลค่า + GLP-1 tailwind + ตลาดเอเชีย"
+      }
+    ],
+    "exitDp": 0,
+    "note": "Base case สะท้อนการ normalize EPS จาก {{eps}} TTM → ~$1.18 FY2026E (consensus) เมื่อต้นทุน spin-off/restructuring หมดไป ประกอบกับ organic growth จากแบรนด์ OTC ที่แข็งแกร่ง (Tylenol ครองส่วนแบ่ง ~40% ในตลาด pain relief US) และการขยายตัวในตลาดอินเดีย/เอเชียตะวันออกเฉียงใต้ ความเสี่ยงหลักคือการแข่งขันจาก private label และการชะลอตัวของ consumer spending"
+  },
+  "analyst": {
+    "target": 19.5,
+    "n": null,
+    "rating": "Hold",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ตามกราฟรายเดือน KVUE แตะจุดต่ำสุดราว $14.37 ในช่วง ต.ค. 2568 แล้วดีดกลับเหนือ $17 ใน พ.ย. 2568 และแกว่งในกรอบ $17–19 ตลอด 2569 (สูงสุดรายเดือน ~$19.24 เดือน ก.ค.) · ราคาปลายกราฟ {{px}} · ตามข้อมูล StockAnalysis (ณ 18 ก.ย. 2569) Kimberly-Clark เสนอซื้อกิจการ Kenvue มูลค่ารวม ~$40B รอการอนุมัติจากหน่วยงานกำกับดูแล (ออสเตรเลียอนุมัติแล้วมีเงื่อนไขขายแบรนด์ Carefree/Stayfree · EU อยู่ระหว่างพิจารณา) ราคาหุ้นจึงมีแรงยึดจากดีลนี้ ไม่ได้ขึ้นกับพื้นฐานเดี่ยว ๆ อย่างเดียว · ไม่ได้ตรวจเงื่อนไขต่อหุ้นของดีลจากแหล่งปฐมภูมิ",
+    "valuation": "FV เฉลี่ยจาก 2 ตระกูลอิสระ: P/E ที่วัดจากมัธยฐานประวัติ ({{fvHigh}}) และ DDM ({{fvLow}} — r 8%/g 3% เป็นสมมติฐานของเราเอง อ่อนไหวมาก: g 4% ให้ ~$21.8) สองขาห่างกันไม่ถึง 2 เท่าจึงเฉลี่ยได้ · ตัด Forward P/E (ตัวคูณ peer ที่ประมาณเอง ไม่มีค่ามัธยฐานที่วัดได้) และเป้านักวิเคราะห์ออกจากขา FV เหลือเป็นบริบทเท่านั้น · MOS {{mos}} ณ ราคา {{px}} — ตัวเลขนี้ไม่รวมผลของดีลควบรวมกับ Kimberly-Clark ซึ่งเป็นตัวกำหนดราคาระยะสั้น",
+    "gauge": "ราคาปัจจุบัน {{px}} ต่ำกว่า fair value {{fv}} เล็กน้อย (MOS {{mos}}) อยู่ในโซนกลาง 10–20% เป้านักวิเคราะห์เฉลี่ย ~{{analyst.target}} (Hold) สูงกว่าตลาดราว 9% แต่เป็นเพียงบริบท การเข้าซื้อที่ cushion เหมาะสมควรรอโซน MOS 20% ที่ {{mos20}} หรือต่ำกว่า",
+    "mos": "MOS ปานกลาง — ราคาต่ำกว่า Fair Value เล็กน้อย cushion ยังไม่หนา และราคาผูกกับดีลควบรวม",
+    "verdictHeadline": "Hold — แบรนด์ดี แต่ MOS บางเกินไปสำหรับ new entry",
+    "verdictBody": "KVUE เป็น consumer health company ที่มีแบรนด์ระดับโลก (Tylenol, Neutrogena, Listerine, Band-Aid) และกระแสเงินสดสม่ำเสมอพอรองรับปันผลราว 4.7% ได้ EPS TTM {{eps}} ถูกกดด้วยต้นทุน restructuring หลัง spin-off แต่กำลัง normalize ไปที่ ~$1.18 FY2026E ราคาปัจจุบัน {{px}} ต่ำกว่า fair value {{fv}} — MOS {{mos}} ผู้ที่ถืออยู่ควร hold รับปันผลขณะรอผลดีลควบรวม ผู้ที่ยังไม่ถือควรรอสะสมที่โซน MOS 20% ({{mos20}}) เพื่อ risk/reward ที่ดีกว่า",
+    "strategy": "ผู้ถืออยู่: Hold รับปันผลราว 4.7% รอผลดีลและ EPS normalize FY2026 · ผู้ยังไม่ถือ: รอสะสมที่โซน MOS 20% ({{mos20}}) หรือ MOS 30% ({{mos30}} ใกล้ 52-week low) สำหรับ position ใหญ่",
+    "disclaimerSources": "ราคา ณ {{priceDate}} · ที่มา: StockAnalysis.com, Yahoo Finance, Google Finance"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 2 วิธี"
+  },
+  "catalysts": [
+    "<b>EPS normalize FY2026:</b> ต้นทุน spin-off/restructuring หมดไป → EPS กระโดดจาก {{eps}} → ~$1.18 (+39%) เป็น re-rating catalyst สำคัญ",
+    "<b>Tylenol ครองตลาด OTC:</b> Pain relief market share ~40% ในสหรัฐฯ ลูกค้าภักดีสูง pricing power ดี",
+    "<b>Yield สูง ~4.7%:</b> ปันผล $0.828/ปี ดึงดูด income investor โดยเฉพาะในสภาวะดอกเบี้ยขาลง",
+    "<b>GLP-1 indirect tailwind:</b> ผู้ใช้ยา GLP-1 มีแนวโน้มใช้ OTC health products เพิ่ม (nausea → antacids, joint pain → Tylenol)",
+    "<b>ตลาดเกิดใหม่:</b> รับมรดก distribution JNJ ในอินเดีย อินโดนีเซีย บราซิล — consumer health เติบโตสูง",
+    "<b>FCF แข็งแกร่ง:</b> FCF/share ~$1.00 (FCF TTM $1.9B) รองรับการเพิ่มปันผลและ buyback ระยะกลาง"
+  ],
+  "risks": [
+    "<b>ดีลควบรวม Kimberly-Clark:</b> อยู่ระหว่างรออนุมัติ (EU พิจารณาอยู่ ต้องขายสินทรัพย์เพื่อผ่านการอนุมัติ) — ผลลัพธ์กำหนดราคาระยะสั้น มากกว่า valuation แบบ standalone",
+    "<b>Private label competition:</b> OTC drugs ถูก generic/house brand แย่งส่วนแบ่งในช่องทาง mass retail กดดัน margin",
+    "<b>Goodwill สูง:</b> Goodwill & intangibles $20B+ จาก JNJ valuation เสี่ยง impairment ถ้า revenue ต่ำกว่าคาด",
+    "<b>Tariff ต้นทุน:</b> KVUE ผลิตในหลายประเทศ tariff สหรัฐฯ อาจกระทบ COGS แบรนด์ที่ผลิตนอกอเมริกา",
+    "<b>Portfolio rationalization ช้า:</b> การขายแบรนด์ non-core อาจล่าช้า กดดัน ROE และ operating efficiency",
+    "<b>Neutrogena/Aveeno:</b> ตลาด skincare แข่งขันสูง ถูก premium brands (La Roche-Posay) และ K-Beauty กดดัน"
+  ],
+  "extras": [],
+  "v2Display": {
+    "targets": [
+      13.11,
+      25.86,
+      33.95
+    ]
+  },
+  "_sig": "sha256:375f181c996afa3ef7ce3ba1f0698b628c10e9aadc595ae5751e7d061008a62f"
+}

@@ -1,0 +1,295 @@
+{
+  "v": 3,
+  "symbol": "CSCO",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Cisco Systems, Inc.",
+    "exchange": "NASDAQ",
+    "sub": "โครงสร้างพื้นฐานเครือข่าย AI • Silicon One, Enterprise Networking, Security (Splunk)",
+    "headerTags": [
+      "Information Technology",
+      "Large-cap • AI Networking"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis",
+      "Yahoo Finance",
+      "Investing.com"
+    ],
+    "priceNote": "ปิดตลาด · ต่ำกว่าจุดสูงสุด 52 สัปดาห์ $130.37 ราว 16%",
+    "migratedFrom": {
+      "updated": "2026-09-22T07:22:55+07:00",
+      "v2Hash": "ae4db370d827"
+    }
+  },
+  "market": {
+    "px": 106.7,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          73.11
+        ],
+        [
+          "พ.ย.25",
+          76.94
+        ],
+        [
+          "ธ.ค.25",
+          77.03
+        ],
+        [
+          "ม.ค.26",
+          78.32
+        ],
+        [
+          "ก.พ.26",
+          79.46
+        ],
+        [
+          "มี.ค.26",
+          77.59
+        ],
+        [
+          "เม.ย.26",
+          91.5
+        ],
+        [
+          "พ.ค.26",
+          120.42
+        ],
+        [
+          "มิ.ย.26",
+          117.46
+        ],
+        [
+          "ก.ค.26",
+          115.99
+        ],
+        [
+          "ส.ค.26",
+          110.49
+        ],
+        [
+          "ก.ย.26",
+          106.7
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 66.81,
+      "hi": 130.37
+    }
+  },
+  "fundamentals": {
+    "eps": 3.33,
+    "dps": 1.68,
+    "shares": 3940000000,
+    "peAvg5y": 20,
+    "opMargin": 25,
+    "revenue": 8100000000,
+    "fy": {
+      "period": "FY2026",
+      "netIncome": 13300000000,
+      "revenue": 63300000000
+    },
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation อิง non-GAAP",
+      "inputs": {
+        "multiple": 19.7,
+        "multipleSource": "median5y"
+      },
+      "override": {
+        "eps": 4.33,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "family": "market"
+    },
+    {
+      "method": "dcf",
+      "label": "DCF (2-stage)",
+      "inputs": {
+        "g1": 7,
+        "years1": 5,
+        "tg": 3,
+        "r": 8.5,
+        "rfCurrency": "USD"
+      },
+      "override": {
+        "fcf": 12770000000,
+        "netDebt": 0,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "PV กระแสเงินสด 15.5 + PV TV 56.6",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      {
+        "key": "pe",
+        "tone": "none"
+      },
+      "custom:0",
+      "peAvg5y",
+      {
+        "key": "revenueFy",
+        "tone": "none"
+      },
+      "custom:1",
+      "opMargin",
+      "netIncomeFy",
+      "custom:2",
+      {
+        "key": "revenue",
+        "tone": "none"
+      },
+      "yield",
+      "range52w"
+    ],
+    "custom": [
+      {
+        "label": "P/E (Non-GAAP)",
+        "value": "~25x",
+        "note": "EPS non-GAAP ~$4.33/หุ้น (FY2026)",
+        "tone": "neu"
+      },
+      {
+        "label": "รายได้ Q3 FY2026",
+        "value": "$15.8B",
+        "note": "▲ +12% YoY (สถิติใหม่)"
+      },
+      {
+        "label": "AI orders (hyperscaler)",
+        "value": "$5.3B",
+        "note": "YTD FY26 • เป้าใหม่ $9B/ปี"
+      }
+    ],
+    "notes": {
+      "mcap": "~3.94 พันล้านหุ้น",
+      "pe": "EPS GAAP TTM {{eps}} กดจากตัดจำหน่าย Splunk",
+      "peAvg5y": "มัธยฐาน P/E ย้อนหลัง 5 ปีงบ (GAAP)",
+      "revenueFy": "▲ +11.8% YoY",
+      "opMargin": "ROE ~27% (แข็งแกร่ง)",
+      "netIncomeFy": "▲ +30.3% YoY (สถิติใหม่)",
+      "revenue": "เพิ่มเท่าตัวใน 2 ปี (Splunk)",
+      "yield": "Payout ~50% (GAAP)",
+      "range52w": "All-time high $130.37"
+    },
+    "hint": "งบ FY2026 (สิ้นสุด 25 ก.ค. 2026) ประกาศ 12 ส.ค. 2026"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": "cagr",
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 3,
+        "exitMultiple": 15.7,
+        "desc": "AI orders ชะลอ / แข่งดุ"
+      },
+      {
+        "growth": 8,
+        "exitMultiple": 19.7,
+        "desc": "โตปกติ AI/Security หนุน"
+      },
+      {
+        "growth": 13,
+        "exitMultiple": 26.2,
+        "desc": "AI networking จ่ายผลเต็มที่"
+      }
+    ],
+    "exitDp": 1,
+    "baseOverride": {
+      "value": 4.33,
+      "why": "EPS ฐานฉากที่ผู้เขียนใช้"
+    },
+    "note": "ความเสี่ยง–ผลตอบแทนเอียงลบ เมื่อราคาสูงกว่ามูลค่าพื้นฐาน (<b>base case ≈ −0.8%/ปี</b> ก่อนรวมปันผล ~1.5% · P/E ออก Bear/Base/Bull = ต่ำสุด/มัธยฐาน/สูงสุดย้อนหลัง 15.7/19.7/26.2x) upside ที่แท้จริงขึ้นกับว่าคำสั่งซื้อ AI infrastructure จะกลายเป็นกำไรยั่งยืนได้จริงหรือเป็นรอบสั้น"
+  },
+  "analyst": {
+    "target": 137.63,
+    "n": null,
+    "rating": null,
+    "asOf": null
+  },
+  "prose": {
+    "chart": "หุ้นวิ่งขึ้น <b>~+64% จากจุดต่ำ 52 สัปดาห์</b> (~$67) สู่จุดสูงสุดตลอดกาล $130.37 (พ.ค. 2026) ก่อนย่อตัวลงหลังประกาศงบ FY2026 แรงหนุนหลักคือ <b>คำสั่งซื้อ AI infrastructure จาก hyperscaler</b> ที่พุ่งแรง (ปรับเป้าทั้งปีจาก $5B → $9B) + การกลับมาเร่งตัวของคำสั่งซื้อเครือข่ายองค์กรและการรวม Splunk เข้าพอร์ต security",
+    "valuation": "<b>หมายเหตุ:</b> ใช้ <b>EPS non-GAAP</b> เป็นฐานเพราะ EPS GAAP ({{eps}}) ยังถูกกดด้วยค่าตัดจำหน่ายสินทรัพย์ไม่มีตัวตนจากดีล Splunk ทำให้ P/E GAAP (~33x) ดูแพงกว่าความเป็นจริง • ปันผล 1.53% เสริมผลตอบแทนแต่ไม่ได้ใช้ DDM เป็นวิธีหลักเพราะ payout มาจากกำไรที่ผันผวน • เป้านักวิเคราะห์เฉลี่ย {{analyst.target}} (24 โบรกเกอร์) ไม่ถูกนับเป็นขาของ FV (เป็นบริบท) • DCF เดิม ($115) ที่ตรวจซ้ำไม่ได้ถูกแทนด้วย schedule ที่คำนวณซ้ำได้ และ P/E ใช้มัธยฐานที่วัดจริงแทนตัวคูณ ~27x เดิม • ใช้กรอบ <b>Margin of Safety</b> ที่อนุรักษ์นิยม",
+    "gauge": "ราคา {{px}} อยู่ <b>สูงกว่ามูลค่าเหมาะสม</b> {{fv}} ในเชิงมูลค่าพื้นฐาน — แต่ยัง <b>ต่ำกว่าเป้าหมาย 12 เดือน</b> ของนักวิเคราะห์ (consensus \"Buy\" เฉลี่ย {{analyst.target}} จาก 24 โบรกเกอร์) สะท้อนว่าตลาดให้ตัวคูณสูงกว่ามัธยฐานย้อนหลังมาก (ราคาอิงความคาดหวัง AI networking) จึงไม่มี margin of safety ตามมูลค่าที่ประเมิน",
+    "mos": "<b>ไม่มี Margin of Safety</b><br>ราคาปัจจุบัน {{px}} สูงกว่ามูลค่าเหมาะสม {{fv}} ({{mos}}) → ไม่ผ่านเกณฑ์ MOS 20% ของ value investor <b>ยังไม่ใช่จุดซื้อ รอย่อเข้าโซน MOS 20% ที่ {{mos20}} ก่อน</b>",
+    "verdictHeadline": "ธุรกิจฟื้นตัวด้วย AI — แต่ราคาล้ำหน้ามูลค่าพื้นฐานที่ประเมิน",
+    "verdictBody": "Cisco ปิดปีงบ FY2026 (สิ้นสุด 25 ก.ค. 2026, ประกาศ 12 ส.ค. 2026) ด้วยรายได้และกำไรทำสถิติใหม่จากคลื่น AI networking และ Splunk security — แต่ราคา {{px}} อยู่สูงกว่ามูลค่าเหมาะสมที่ประเมิน {{fv}} ({{mos}}) เพราะตลาดให้ตัวคูณสูงกว่ามัธยฐานย้อนหลังมาก สำหรับสาย value ยังไม่มีส่วนเผื่อ ส่วนสาย growth ที่เชื่อเรื่อง AI infrastructure ยังอ้างเป้านักวิเคราะห์ {{analyst.target}} ({{analyst.pct}}) ได้ แต่ความเสี่ยงจากการแข่งขัน (ANET/white-box) ยังสูง",
+    "strategy": "สาย value — รอราคา <b>ต่ำกว่า {{mos20}}</b> (deep value ที่ <{{mos30}}) • สาย growth — เข้าได้แบบ DCA รับปันผล ~1.5% และติดตาม <b>ความต่อเนื่องของคำสั่งซื้อ AI จาก hyperscaler</b> กับ <b>ส่วนแบ่งตลาด vs Arista</b> เป็นตัวชี้วัดหลัก",
+    "disclaimerSources": "อ้างอิงงบจริงจาก SEC (8-K/10-K FY2026 ประกาศ 12 ส.ค. 2026) และข้อมูลราคา ณ {{priceDate}}"
+  },
+  "text": {
+    "valHint": "2 วิธี เฉลี่ย (คนละตระกูลสมมติฐาน)",
+    "disclaimerAssump": " \"EPS non-GAAP\" และความยั่งยืนของคำสั่งซื้อ AI infrastructure ซึ่งเป็นจุดถกเถียงหลัก ราคาหุ้นมีความผันผวนและเพิ่งย่อตัวลงมาจากจุดสูงสุดตลอดกาล ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ"
+  },
+  "catalysts": [
+    "<b>AI networking โตแรง:</b> คำสั่งซื้อ AI infrastructure จาก hyperscaler $1.9B ใน Q3 FY26 (YTD $5.3B) — ปรับเป้าทั้งปีขึ้นจาก $5B → <b>$9B</b>, หนุนด้วยชิป <b>Silicon One</b> และสวิตช์ศูนย์ข้อมูล",
+    "<b>คำสั่งซื้อเร่งตัวทั่วกระดาน:</b> Q3 FY26 ยอดสั่งซื้อสินค้ารวม +35% YoY, network product orders +50%+ ทั้ง campus/data center switching, wireless, enterprise routing",
+    "<b>Security โตจาก Splunk:</b> รายได้ security แตะ $8.1B (เพิ่มเท่าตัวใน 2 ปี) — observability + security เป็นเครื่องยนต์ recurring revenue ใหม่",
+    "<b>รายได้ประจำสูง:</b> สัดส่วน software & subscription เพิ่มต่อเนื่อง — รายได้ที่คาดการณ์ได้ดีขึ้น ลดความเป็นวัฏจักรของฮาร์ดแวร์",
+    "<b>คืนทุนผู้ถือหุ้น:</b> ปันผล {{dps}}/ปี (yield ~1.53%) ขึ้นต่อเนื่อง + ซื้อหุ้นคืนสม่ำเสมอ • งบดุลแกร่ง กระแสเงินสดสูง",
+    "<b>ปิดปี FY26 ทำสถิติใหม่:</b> รายได้จริง $63.3B (เกินไกด์ดันซ์ $62.8–63.0B) EPS non-GAAP ~$4.33 (FY2026)"
+  ],
+  "risks": [
+    "<b>การแข่งขันรุนแรง:</b> <b>Arista (ANET)</b> ครองส่วนแบ่งสวิตช์ศูนย์ข้อมูลความเร็วสูง + กระแส <b>white-box / merchant silicon</b> (Broadcom) กดดันทั้งราคาและส่วนแบ่งใน AI networking",
+    "<b>คำสั่งซื้อ AI อาจเป็นรอบสั้น:</b> ยอด hyperscaler order ก้อนใหญ่อาจ lumpy/ไม่ต่อเนื่อง — ถ้า capex AI ชะลอ การเติบโตจะหายเร็ว",
+    "<b>แกนกลางโตช้า:</b> ธุรกิจ enterprise networking เป็นตลาดอิ่มตัว เติบโตเลขหลักเดียว — AI ต้องแบกการเติบโตทั้งบริษัท",
+    "<b>Valuation ยังไม่ถูกมาก:</b> P/E GAAP ~33x / non-GAAP ~25x สูงกว่ามัธยฐานย้อนหลัง 5 ปีงบ (~20x) — ไม่มี margin of safety ตามมูลค่าที่ประเมิน",
+    "<b>ภาระจาก Splunk:</b> ค่าตัดจำหน่ายและภาระหนี้จากดีล $28B กด EPS GAAP และต้องพิสูจน์ synergy ให้คุ้ม",
+    "<b>มหภาค/วัฏจักร IT:</b> งบลงทุนองค์กรอ่อนไหวต่อเศรษฐกิจ + ความเสี่ยงภาษี/ซัพพลายเชนกระทบฮาร์ดแวร์"
+  ],
+  "extras": [],
+  "v2Display": {
+    "fv": 79,
+    "fvRange": [
+      72,
+      85
+    ],
+    "targets": [
+      74,
+      107,
+      164
+    ],
+    "footer": "21 ก.ย. 2569 (ราคาอัปเดต)",
+    "gauge": [
+      {
+        "ref": "mos30",
+        "label": "MOS 30%"
+      },
+      {
+        "ref": "mos20",
+        "label": "MOS 20%"
+      },
+      {
+        "ref": "fv",
+        "label": "Fair Value"
+      },
+      {
+        "ref": "analystTgt",
+        "label": "เป้า Analyst"
+      },
+      {
+        "text": "$150",
+        "label": "เป้าสูงสุด"
+      }
+    ]
+  },
+  "_sig": "sha256:8dfec11cdff9fa96ad46a3a2641525a08ccb681aebb6f2f223ffca8334bb024f"
+}

@@ -1,0 +1,274 @@
+{
+  "v": 3,
+  "symbol": "CINF",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Cincinnati Financial",
+    "exchange": "NYSE",
+    "sub": "P&C Insurance (Commercial · Personal · E&S) • Life Insurance • Equity Investment Portfolio • Dividend King 65 ปีติดต่อ • Cincinnati, Ohio",
+    "headerTags": [
+      "Insurance P&C",
+      "Dividend King"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "StockAnalysis.com (financials",
+      "forecast)",
+      "StockAnalysis.com (statistics",
+      "dividend) — งบ FY2025 + TTM"
+    ],
+    "themeLegacy": {
+      "accent": "#006B8E",
+      "accentDark": "#004F6A",
+      "darkGrad": "linear-gradient(135deg,#00364D 0%,#004F6A 60%,#006B8E 100%)",
+      "glow": "rgba(0,107,142,0.35)",
+      "subColor": "#d2ebf2",
+      "headerMuted": "#d5e9ef",
+      "verdictText": "#d0ebf1",
+      "vcellLabel": "#eef7fa"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T12:28:00+07:00",
+      "v2Hash": "609ab11be93e"
+    }
+  },
+  "market": {
+    "px": 162.54,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          154.59
+        ],
+        [
+          "พ.ย.25",
+          167.59
+        ],
+        [
+          "ธ.ค.25",
+          163.32
+        ],
+        [
+          "ม.ค.26",
+          160.89
+        ],
+        [
+          "ก.พ.26",
+          163.98
+        ],
+        [
+          "มี.ค.26",
+          157.35
+        ],
+        [
+          "เม.ย.26",
+          163.6
+        ],
+        [
+          "พ.ค.26",
+          157.42
+        ],
+        [
+          "มิ.ย.26",
+          185.14
+        ],
+        [
+          "ก.ค.26",
+          177.68
+        ],
+        [
+          "ส.ค.26",
+          169.9
+        ],
+        [
+          "ก.ย.26",
+          162.54
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 150,
+      "hi": 194.81
+    }
+  },
+  "fundamentals": {
+    "eps": 21.19,
+    "dps": 3.76,
+    "bvps": 108.68,
+    "shares": 153478045,
+    "epsForward": 8.44,
+    "roe": 21.5,
+    "revenue": 14000000000,
+    "fcf": 3400000000,
+    "beta": 0.55,
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation (Normalized GAAP EPS)",
+      "inputs": {
+        "multiple": 9,
+        "multipleSource": "median5y"
+      },
+      "override": {
+        "eps": 13.79,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "เฉลี่ย FY2023–FY2025: 11.66, 14.53, 15.17 · มัธยฐานย้อนหลังของ CINF เอง วัดจาก ราคาเฉลี่ยปี ÷ EPS ปีนั้น 4 จุด ช่วง 6.1–10.0x",
+      "family": "market"
+    },
+    {
+      "method": "ddm",
+      "label": "DDM / Gordon Growth Model",
+      "inputs": {
+        "g": 7,
+        "r": 9
+      },
+      "note": "สมมติฐาน · ปันผลโตต่อเนื่อง 65 ปี · สมมติฐาน cost of equity, beta 0.55 · อ่อนไหวมาก (r−g แค่ 2%)",
+      "family": "rg"
+    },
+    {
+      "method": "pbv",
+      "label": "Justified P/BV",
+      "inputs": {
+        "g": 7,
+        "r": 9
+      },
+      "override": {
+        "roe": 11,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "peForward",
+      "pbv",
+      "eps",
+      "custom:0",
+      "bvps",
+      "roe",
+      "revenue",
+      "fcf",
+      "yield",
+      "beta"
+    ],
+    "custom": [
+      {
+        "label": "EPS Operating 2026E",
+        "value": "~$8.44",
+        "note": "Normalized EPS ตัด MTM gains ออก",
+        "tone": "pos"
+      }
+    ],
+    "notes": {
+      "mcap": "153.5M shares · Beta 0.55 (Defensive)",
+      "pe": "EPS GAAP {{eps}} (รวม MTM equity portfolio ผันผวน)",
+      "peForward": "EPS operating 2026E $8.44 · consensus StockAnalysis (FY2026e)",
+      "pbv": "(equity $16.67B ÷ 153.5M หุ้น) · งบล่าสุด",
+      "eps": "รวมกำไร MTM หุ้น equity portfolio (ผันผวน)",
+      "bvps": "Book Value Per Share งบล่าสุด (StockAnalysis statistics)",
+      "roe": "สูงจาก MTM gains · Operating ROE ต่ำกว่ามาก (~8% จาก EPS 2026E ÷ BVPS)",
+      "revenue": "Net premiums + investment income + realized gains",
+      "fcf": "FY2025 $3.09B · FY2024 $2.63B",
+      "yield": "{{dps}}/share · เพิ่มติดต่อ 65 ปี · payout ~17.7% ของ GAAP EPS",
+      "beta": "ความผันผวนต่ำ · เหมาะ Conservative investor"
+    },
+    "hint": "ณ ก.ย. 2569 · ปรับสำหรับธุรกิจประกันภัย P&C"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 2,
+        "exitMultiple": 13,
+        "divCum": 12,
+        "desc": "Cat losses สูง + equity ร่วง"
+      },
+      {
+        "growth": 7,
+        "exitMultiple": 16,
+        "divCum": 12.9,
+        "desc": "Combined ratio ดี + premium growth"
+      },
+      {
+        "growth": 12,
+        "exitMultiple": 19,
+        "divCum": 13.7,
+        "desc": "Hard market + equity surge"
+      }
+    ],
+    "exitDp": 0,
+    "baseOverride": {
+      "value": 8.44052,
+      "why": "EPS ฐานฉากถอดกลับจากราคาเป้าที่พิมพ์"
+    },
+    "note": "ใช้ Operating EPS 2026E $8.44 เป็นฐาน (ตัด MTM equity portfolio ออกเพื่อภาพ stable กว่า GAAP EPS {{eps}}) · ตัวคูณขาออกเป็นสมมติฐานบน Operating EPS (P/E ปัจจุบันบนฐานเดียวกัน ~20x) โดย Base 16x สอดคล้อง FV Base scenario: ราคาเป้าใกล้ราคาปัจจุบัน (ผลตอบแทนราคา ~−2% หรือ ~−0.8%/ปี ไม่รวมปันผล) + ปันผล ~$12.90 ใน 3 ปี ≈ +7–8% รวมปันผล Base ใช้ EPS โต 7%/ปี ซึ่งเป็นสมมติฐาน (ไม่ใช่ค่าที่วัดจากงบ) Bear scenario เกิดเมื่อ catastrophe losses รุนแรง (ไฟป่า/พายุ) + equity portfolio ปรับลดรุนแรงพร้อมกัน Bull scenario เกิดเมื่อ insurance hard market ต่อเนื่อง + equity portfolio ฟื้นตัวแรง + combined ratio ต่ำกว่า 95%",
+    "hintNote": "(Operating 2026E) • ไม่รวมปันผล"
+  },
+  "analyst": {
+    "target": 191.67,
+    "n": null,
+    "rating": "Hold",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "CINF เริ่มกราฟที่ ~$155 (ต.ค. 2568) ขึ้นแตะ ~$168 ในพ.ย. 2568 ก่อนแกว่งในกรอบ ~$157–$164 ช่วง ธ.ค. 2568 – พ.ค. 2569 แล้วพุ่งแตะ ~$185 ในมิ.ย. 2569 (ระดับสูงสุดของกราฟ) และย่อลงต่อเนื่องมาปิดที่ {{px}} ณ {{priceDate}} ใกล้มูลค่าเหมาะสม {{fv}} (ราคาสูงกว่าเล็กน้อย)",
+    "valuation": "FV = เฉลี่ย 2 ตระกูล: P/E $124 กับค่าเฉลี่ยของ DDM ($201) และ Justified P/BV ($217) = $209 (สองวิธีหลังใช้ r,g ชุดเดียวกัน จึงนับเสียงเดียว) → ($124 + $209) / 2 ≈ {{fv}} · ช่องห่างระหว่างสองตระกูลราว 1.7 เท่า (ไม่เกิน 2.0 เท่า จึงเฉลี่ยได้) ขา P/E ยึดตลาดจริงด้วยมัธยฐาน 9.0x ของหุ้นเอง แต่ P/E ปัจจุบันบน GAAP TTM ต่ำเพียง ~8x เพราะ TTM EPS {{eps}} รวมกำไร MTM สูง จึงใช้ EPS เฉลี่ย 3 ปีแทน · ขา DDM/JPBV อ่อนไหวต่อ r−g (payout ต่ำ ~17.7% ทำให้ DDM ประเมิน CINF ไม่ตรงนัก) ควรอ่านเป็นกรอบบนมากกว่าค่ากลาง เป้านักวิเคราะห์ ~{{analyst.target}} ไม่ใช่ขาของ FV เป็นเพียงบริบทเทียบ แหล่งข้อมูล: Yahoo Finance (ราคา/EPS) · StockAnalysis.com (financials/statistics/dividend/forecast) · เป้านักวิเคราะห์ Yahoo (6 คน)",
+    "gauge": "ราคาปัจจุบัน {{px}} อยู่ใกล้มูลค่าเหมาะสม {{fv}} ({{mos}}) สะท้อนว่า CINF ซื้อขายในระดับ Fairly Valued ไม่มี Margin of Safety เป้าเฉลี่ย Analyst 6 คนที่ ~{{analyst.target}} (Hold ตาม StockAnalysis) สูงกว่าราคาปัจจุบันราว 13% แต่ไม่ใช่ขาของ FV โซนน่าสนใจสำหรับ Value Investor คือราคาต่ำกว่า MOS 20% ที่ {{mos20}} โซน Deep Value ต่ำกว่า MOS 30% ที่ {{mos30}} จะเป็นโอกาสสะสมดีมาก แต่อาจรอนานหรือต้องมีเหตุการณ์ Cat loss รุนแรง",
+    "mos": "ราคาใกล้มูลค่าเหมาะสม (สูงกว่าเล็กน้อย) — ไม่มี Margin of Safety (<10%)",
+    "verdictHeadline": "Fairly Valued — Dividend King ที่ตลาดให้ราคาสมเหตุสมผลแล้ว",
+    "verdictBody": "Cincinnati Financial (CINF) คือ P&C insurer ที่มั่นคง เพิ่มปันผล 65 ปีติดต่อกัน และถือ equity portfolio ในสัดส่วนสูงกว่า insurer ทั่วไป ณ ราคา {{px}} CINF ซื้อขายใกล้ FV เฉลี่ย {{fv}} (ราคาสูงกว่าเล็กน้อย) โดย P/E ที่ยึดมัธยฐานจริง 9.0x บน EPS GAAP เฉลี่ย 3 ปีให้ $124 ส่วน DDM/Justified P/BV ให้ราว $209 (สมมติฐาน r−g เพียง 2% จึงอ่อนไหว) จึงเฉลี่ยเป็น 2 ตระกูล ผู้ถืออยู่แล้วถือต่อได้ แต่ผู้ต้องการ MOS ที่มีนัยสำคัญควรรอราคาลงสู่ MOS 20% ที่ {{mos20}} · ผลลัพธ์นี้ขึ้นกับขา DDM/JPBV ที่ประเมินโดยสมมติฐาน ควรมองเป็นกรอบมากกว่าค่าจุดเดียว",
+    "strategy": "Hold สำหรับผู้ถืออยู่แล้ว · ผู้ต้องการเข้าใหม่รอจุดเข้าที่ดีกว่าใกล้ {{mos20}} (MOS 20%) · ระยะยาวให้ weight ประวัติปันผล 65 ปี + equity portfolio compounding",
+    "disclaimerSources": "ที่มา: Yahoo Finance (finance.yahoo.com/quote/CINF) · StockAnalysis.com (stockanalysis.com/stocks/cinf) · Digrin.com (digrin.com/stocks/detail/CINF) · ราคา ณ {{priceDate}}"
+  },
+  "text": {
+    "valHint": "2 ตระกูลสมมติฐาน (P/E ขายึดมัธยฐานจริง + DDM/Justified P/BV นับเป็นเสียงเดียว)",
+    "chartHint": "ต.ค. 2568 – ก.ย. 2569",
+    "disclaimerAssump": " P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต CINF มี equity portfolio ขนาดใหญ่ที่ทำให้ GAAP EPS ผันผวนมาก ควรใช้ Operating EPS ในการ Valuation"
+  },
+  "catalysts": [
+    "<b>Dividend King 65 ปี:</b> เพิ่มปันผลติดต่อกัน 65 ปีไม่เคยหยุด (StockAnalysis) ดึงดูด Income investor และ Index fund ที่ติดตาม Dividend Aristocrat/King ทำให้มีฐาน Buyer ขนาดใหญ่",
+    "<b>Large Equity Portfolio Compounder:</b> CINF ถือ equity portfolio สัดส่วนสูงกว่า P&C insurer ทั่วไป ตลาดหุ้นขาขึ้นระยะยาว = investment income + unrealized gains เพิ่ม = BVPS และ dividend capacity เติบโต",
+    "<b>Premium Rate Hardening:</b> อุตสาหกรรม P&C insurance ยังอยู่ใน hard market หลัง catastrophe losses สูงหลายปี CINF ปรับ premium ขึ้นต่อเนื่อง (ตัวเลข premium growth ไม่ได้ยืนยันรอบนี้)",
+    "<b>กระแสเงินสดแข็งแรง:</b> FCF เพิ่มจาก $2.63B (FY2024) เป็น $3.09B (FY2025) และ ~$3.4B (TTM) พร้อม net margin TTM 23.8% (สูงจาก MTM gains) รองรับปันผล payout ต่ำ ~17.7%",
+    "<b>Agency Model Moat:</b> CINF ขายผ่าน Independent agents ที่มีความภักดีสูง ได้ renewal rate ดีและ combined ratio ต่ำกว่าคู่แข่ง ยากที่จะ disrupt จาก InsurTech",
+    "<b>Low Beta / Defensive:</b> Beta 0.54 ต่ำมาก ในช่วงตลาดผันผวน/recession CINF มักทนทานกว่าตลาดรวม เหมาะสำหรับ Conservative portfolio ที่ต้องการ Dividend + Capital preservation"
+  ],
+  "risks": [
+    "<b>Equity Portfolio Volatility:</b> CINF ถือ equity แทน bond แบบ insurer ทั่วไป ตลาดหุ้นลงหนัก = GAAP EPS ติดลบ (FY2022 EPS -$3.07) สร้างความผันผวน EPS และอาจทำให้นักลงทุนกังวล",
+    "<b>Catastrophe Exposure:</b> ไฟป่า น้ำท่วม พายุ tornado ใน Midwest CINF เน้น Commercial lines ในพื้นที่มีความเสี่ยง Cat loss สูง ปี cat loss รุนแรง = combined ratio เกิน 100% + EPS ลด",
+    "<b>Valuation Premium:</b> ราคาปัจจุบันเหนือ FV เล็กน้อย MOS เป็นลบ Forward P/E ~20x บน Operating EPS สูงกว่ามัธยฐานย้อนหลัง 9.0x บนฐาน GAAP (คนละฐานเปรียบตรง ๆ ไม่ได้) จุดเข้าที่ดีกว่าคือใกล้ {{mos20}}",
+    "<b>Climate Change Risk:</b> ความถี่และความรุนแรงของ catastrophe events เพิ่มขึ้นในระยะยาว อาจกดดัน underwriting profitability และต้นทุน reinsurance ในอีก 5–10 ปีข้างหน้า",
+    "<b>Interest Rate Sensitivity:</b> BVPS ของ CINF ผันผวนตามตลาดหุ้น (equity portfolio) มากกว่า interest rate ถ้าตลาดหุ้นปรับฐาน BVPS ลด = Justified P/BV ให้ FV ต่ำลงมาก"
+  ],
+  "extras": [],
+  "v2Display": {
+    "fv": 167,
+    "fvRange": [
+      124,
+      217
+    ],
+    "targets": [
+      117,
+      165,
+      225
+    ]
+  },
+  "_sig": "sha256:f5213bb32a92057dd60ecc84c515d3395bd87688cccd780feee14e2808b6e97a"
+}

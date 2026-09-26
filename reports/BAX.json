@@ -1,0 +1,322 @@
+{
+  "v": 3,
+  "symbol": "BAX",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Baxter International",
+    "exchange": "NYSE",
+    "sub": "IV therapy & infusion systems • Hospital consumables & nutrition therapy • Surgical products • Hillrom patient monitoring & care communications",
+    "headerTags": [
+      "Healthcare",
+      "Medical Products"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "StockAnalysis.com",
+      "Digrin.com"
+    ],
+    "themeLegacy": {
+      "accent": "#C8102E",
+      "accentDark": "#8B0B1F",
+      "darkGrad": "linear-gradient(135deg,#2a0610 0%,#1a0408 100%)",
+      "glow": "rgba(200,16,46,0.35)",
+      "subColor": "#F5A3B0",
+      "headerMuted": "rgba(245,163,176,0.7)",
+      "verdictText": "#fff0f2",
+      "vcellLabel": "#e8bbc2"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T11:06:17+07:00",
+      "v2Hash": "06ccc3d8ed8d"
+    }
+  },
+  "market": {
+    "px": 23.37,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          18.47
+        ],
+        [
+          "พ.ย.25",
+          18.74
+        ],
+        [
+          "ธ.ค.25",
+          19.11
+        ],
+        [
+          "ม.ค.26",
+          20.07
+        ],
+        [
+          "ก.พ.26",
+          20.37
+        ],
+        [
+          "มี.ค.26",
+          16.8
+        ],
+        [
+          "เม.ย.26",
+          17.58
+        ],
+        [
+          "พ.ค.26",
+          18.78
+        ],
+        [
+          "มิ.ย.26",
+          21.32
+        ],
+        [
+          "ก.ค.26",
+          26.16
+        ],
+        [
+          "ส.ค.26",
+          26
+        ],
+        [
+          "ก.ย.26",
+          23.37
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 15.73,
+      "hi": 30
+    }
+  },
+  "fundamentals": {
+    "bvps": 11.75,
+    "shares": 516000000,
+    "epsForward": 2.05,
+    "revenue": 11470000000,
+    "grossMargin": 34,
+    "fcf": 815000000,
+    "dps": 0.04,
+    "beta": 0.64,
+    "ebitda": 1900000000
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation (Adjusted EPS)",
+      "inputs": {
+        "multiple": 14,
+        "multipleSource": "author",
+        "base": "epsForward"
+      },
+      "baseLabel": "FY2026E",
+      "note": "FY2026E กลางกรอบ guidance",
+      "family": "market"
+    },
+    {
+      "method": "evebitda",
+      "label": "EV/EBITDA (Normalized)",
+      "inputs": {
+        "multiple": 9,
+        "multipleSource": "peer"
+      },
+      "override": {
+        "netDebt": 7520000000,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "ประมาณการเดิม ยังไม่ได้ยืนยันใหม่ · ลบด้วย net debt $7.52B (debt $9.67B − cash $2.15B) · คูณต่ำกว่าค่าเฉลี่ยกลุ่ม medtech (12–14x) เพราะภาระหนี้จากการซื้อ Hillrom",
+      "family": "market"
+    },
+    {
+      "method": "declared",
+      "label": "FCF Yield Valuation",
+      "inputs": {
+        "value": 24.25,
+        "basis": "other"
+      },
+      "note": "FCF TTM $815M / required yield 6.5% = equity value $12.54B / 517M shares — FCF ดีกว่า GAAP TTM ที่ยังติดลบจาก goodwill impairment; ใช้ yield 6.5% สำหรับ healthcare defensive",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "peForward",
+      "custom:0",
+      "pbv",
+      {
+        "key": "revenue",
+        "tone": "none"
+      },
+      "grossMargin",
+      {
+        "key": "fcf",
+        "tone": "pos"
+      },
+      "custom:1",
+      "yield",
+      "beta",
+      "custom:2",
+      "range52w"
+    ],
+    "custom": [
+      {
+        "label": "Forward P/E (FY2026E)",
+        "value": "~10.9x",
+        "note": "guidance FY2026E ที่บริษัทปรับขึ้นหลัง Q2 2569: adj EPS $1.95–$2.15 ใช้กลางกรอบ EPS $2.05; Q2 adj EPS มีตัวช่วยจากเงินคืนภาษีศุลกากร $0.11/หุ้นที่ไม่ได้อยู่ใน guidance เดิม"
+      },
+      {
+        "label": "Total Debt (TTM)",
+        "value": "$9.7B",
+        "note": "จากซื้อ Hillrom $12B ปี 2564; ใกล้เคียง FY2025 ($9.7B) แทบไม่ลดลง แม้ FCF เป็นบวกต่อเนื่อง",
+        "tone": "neg"
+      },
+      {
+        "label": "EV/EBITDA (norm.)",
+        "value": "~10.2x",
+        "note": "EV ~$19.3B (mkt cap $11.8B + net debt $7.5B) / EBITDA norm. ~$1.9B (ประมาณการเดิม ยังไม่ได้วัดใหม่)",
+        "tone": "neu"
+      }
+    ],
+    "notes": {
+      "mcap": "~517M shares outstanding",
+      "pbv": "BVPS ~{{bvps}} (TTM); tangible BV ติดลบเพราะ goodwill สูง",
+      "grossMargin": "TTM 34.1% · FY2025 35.7% · FY2024 39.6% (StockAnalysis); Q2 2569 38.6% — ลดลงจากก่อน spinoff (product mix shift)",
+      "fcf": "ตามงบ StockAnalysis (FY2025 $332M); ดีกว่า GAAP TTM ที่ยังติดลบจาก goodwill impairment",
+      "yield": "($0.01/ไตรมาส); ตัดลง 94% พ.ย. 2568",
+      "beta": "ความผันผวนต่ำกว่าตลาด",
+      "range52w": "ราคาปัจจุบัน {{px}} อยู่กลางกรอบ หลังย่อจากจุดสูงสุด ส.ค. 2569"
+    },
+    "hint": "ข้อมูล ณ 21 ก.ย. 2569 (หลังงบ Q2 2569) — ใช้ Adjusted EPS (ตัดรายการพิเศษ)"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": -5,
+        "exitMultiple": 8,
+        "divCum": 0.12,
+        "desc": "turnaround สะดุด หนี้ยังสูง margin กลับแย่ ตลาดปรับมุมมองกลับเป็นลบหลังวิ่งขึ้นแรง"
+      },
+      {
+        "growth": 5,
+        "exitMultiple": 12,
+        "divCum": 0.12,
+        "desc": "guidance FY2026 เป็นไปตามแผน ลดหนี้ต่อเนื่องแต่ช้า margin ฟื้นทีละน้อย"
+      },
+      {
+        "growth": 10,
+        "exitMultiple": 15,
+        "divCum": 0.12,
+        "desc": "turnaround เร่งตัว margin ฟื้นเร็ว ลดหนี้ได้ตามแผน Hillrom synergy unlock เต็มที่"
+      }
+    ],
+    "exitDp": 0,
+    "baseOverride": {
+      "value": 2.0473,
+      "why": "EPS ฐานฉากถอดกลับจากราคาเป้าที่พิมพ์"
+    },
+    "note": "การคาดการณ์อิง adj EPS ฐาน $2.05 (กลางกรอบ guidance FY2026E $1.95–$2.15 ที่บริษัทปรับขึ้นหลัง Q2 2569) โดย Base case ใช้ P/E 12x (discount จากค่าเฉลี่ย med-tech ~18x เพราะภาระหนี้ยังสูง ~$9.7B) ส่วน Bear ใช้ 8x ใกล้ P/E ย้อนหลังที่วัดได้ของ BAX ปี FY2023 (7.8x) — ผลตอบแทนแต่ละฉากคำนวณจากจุดเข้าปัจจุบันตามการ์ดด้านบน · ปันผลรวม 3 ปี ใช้ {{dps}}/ปี × 3 = $0.12 (ตัดลงแล้ว 94% ยังไม่มีสัญญาณกลับมาเพิ่ม)",
+    "hintNote": "adj. ~$2.05 (FY2026E)"
+  },
+  "analyst": {
+    "target": 28.73,
+    "n": null,
+    "rating": "Hold",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "กราฟเริ่มที่ ~$18.47 (ต.ค. 2568) ก่อนทรงตัวแล้วร่วงลงไปทำจุดต่ำสุดรอบปีที่ ~{{mos30}} (มี.ค. 2569) จากแรงกดดัน margin, การตัดลดเงินปันผล 94% (พ.ย. 2568) และ goodwill impairment ก้อนใหญ่ใน Q4 2568 ราคาทยอยฟื้นช่วง เม.ย.–มิ.ย. 2569 ก่อนพุ่งแรงในเดือน ก.ค. 2569 ขึ้นไปทำจุดสูงสุดรอบปีราว $26 หลังบริษัทรายงานผล Q2 2569 (28 ก.ค. 2569) — adj EPS $0.56 พร้อมปรับเพิ่ม guidance FY2026 ทั้งยอดขายและกำไร — จากนั้นราคาย่อลงในช่วง ส.ค.–ก.ย. 2569 มาอยู่ที่ระดับปัจจุบัน รอบปีรวม +23.4%",
+    "valuation": "การประเมินมูลค่า BAX ยังกระจัดกระจายเพราะอยู่ระหว่างเปลี่ยนผ่านหลัง Hillrom + Vantive spinoff — วิธี P/E ให้สูงสุด $28.70 จาก adj EPS ฐาน $2.05; วิธี EV/EBITDA ให้ต่ำสุด $18.53 เพราะกดด้วยภาระหนี้ $9.7B ที่ยังแทบไม่ลดลง; วิธี FCF Yield $24.25 อยู่กลาง — เฉลี่ย 3 วิธี = $23.83 ปัดเป็น {{fv}} ราคาปัจจุบัน {{px}} ใกล้เคียง Fair Value ส่วนเผื่อความปลอดภัยจึงบางมาก (MOS {{mos}}) · เป้าเฉลี่ยนักวิเคราะห์ใช้เป็นบริบทเท่านั้น ไม่เป็นขาของ FV · ความไม่แน่นอนสำคัญ: ตัวคูณ 14x/9x และ EBITDA เป็นสมมติฐานที่ยังไม่มีมัธยฐานที่วัดได้รองรับ",
+    "gauge": "ราคาปัจจุบัน {{px}} ใกล้เคียง Fair Value {{fv}} หลังหุ้นย่อลงจากจุดสูงสุดหลังงบ Q2 2569 — ส่วนเผื่อความปลอดภัยบางมาก โซนน่าสนใจสำหรับ value investor คือต่ำกว่า {{mos20}} (MOS 20%) และ deep value ที่ต่ำกว่า {{mos30}} (MOS 30%) เป้าเฉลี่ยนักวิเคราะห์ {{analyst.target}} (Yahoo n=11, StockAnalysis 13 ราย ฉันทามติ Hold) สูงกว่าราคาตลาดปัจจุบัน แต่ไม่ได้นำมาเป็นขาของ Fair Value",
+    "mos": "ราคาใกล้เคียง Fair Value — ส่วนเผื่อความปลอดภัยบางมาก ยังไม่พอสำหรับเข้าใหม่ตามเกณฑ์ MOS ของรายงานนี้",
+    "verdictHeadline": "Turnaround Story — ต้องการความอดทนและ Margin of Safety สูงกว่านี้",
+    "verdictBody": "Baxter International รายงานผลประกอบการ Q2 2569 (28 ก.ค. 2569) — ยอดขาย +5% YoY เป็น $2.96B, adj EPS $0.56 (ลดลง 5% จาก $0.59 ปีก่อน; มีตัวช่วยเงินคืนภาษีศุลกากร $0.11/หุ้น), GAAP EPS $0.26 ตามที่บริษัทประกาศ พร้อมปรับเพิ่ม guidance FY2026 ทั้งยอดขาย ($11.58–11.69B) และ adj EPS ($1.95–2.15) เป็นสัญญาณว่า turnaround เริ่มเห็นผล ราคาหุ้นพุ่งหลังงบแล้วย่อลงมาที่ {{px}} ใกล้เคียง Fair Value {{fv}} (MOS {{mos}}) ขณะที่หนี้รวม ~$9.7B ยังแทบไม่ลดลงจาก FY2025 — ส่วนเผื่อความปลอดภัยจึงบางมากสำหรับนักลงทุนใหม่ ควรรอราคาย่อสู่โซน {{mos20}} เพื่อ MOS ที่ดีกว่า หรือรอดูว่าโมเมนตัม turnaround จะต่อเนื่องใน Q3–Q4 2569 (งบถัดไป 29 ต.ค. 2569) จนปรับ Fair Value ขึ้นได้จริงหรือไม่ · หมายเหตุ: ตัวคูณ 14x/9x และ EBITDA normalized ในการประเมินเป็นสมมติฐาน ยังไม่มีมัธยฐานที่วัดได้ยืนยัน",
+    "strategy": "BAX รายงาน Q2 2569 พร้อมปรับ guidance ขึ้น แต่ราคาปัจจุบันใกล้ Fair Value ส่วนเผื่อความปลอดภัยบาง แนะนำ <b>Watch & Wait</b> — รอราคาย่อสู่ {{mos20}} (MOS 20%) / {{mos30}} (MOS 30%) เพื่อเข้าซื้อด้วยส่วนเผื่อความปลอดภัยที่เหมาะสม หรือรอผลงบ Q3 2569 (29 ต.ค. 2569) ยืนยัน guidance",
+    "disclaimerSources": "ที่มา: Yahoo Finance (ราคา ณ {{priceDate}}), StockAnalysis.com (งบการเงิน), Digrin.com (เงินปันผล)"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 3 วิธี — Adjusted EPS + EV/EBITDA + FCF Yield",
+    "chartHint": "ต.ค. 2568 – ก.ย. 2569 (Yahoo Finance)",
+    "disclaimerAssump": " P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ FCF ในอนาคต"
+  },
+  "catalysts": [
+    "<b>Hillrom Synergy ยังไม่ unlock เต็มที่:</b> การรวม Hillrom ($12B ปี 2564) ยังมี synergy ด้านประสิทธิภาพการดำเนินงานและ cross-selling ระหว่าง patient monitoring กับ IV/infusion systems มีโอกาส re-rating เมื่อประสิทธิภาพดีขึ้น",
+    "<b>Guidance ปรับขึ้นหลัง Q2 2569:</b> ยอดขาย Q2 $2.96B (+5%) และปรับเพิ่ม guidance ยอดขาย/adj EPS ทั้งปี (adj EPS $1.95–$2.15) สะท้อนว่า turnaround เริ่มเห็นผล แม้ adj EPS Q2 $0.56 ลดลง 5% YoY และหนี้ยังไม่ลดลงชัดเจน",
+    "<b>ศักยภาพลดหนี้จาก FCF:</b> FCF TTM $815M เพียงพอทยอยลดหนี้ได้หากบริษัทจัดสรรไปทาง debt paydown มากขึ้น — ปัจจุบันหนี้รวมยังทรงตัวที่ ~$9.7B (แทบไม่ลดจาก FY2025) จึงยังเป็น catalyst ที่รอการพิสูจน์",
+    "<b>Gross Margin Normalization:</b> gross margin 39.6% ใน FY2024 ลดเหลือ 35.7% ใน FY2025 (Q2 2569 ฟื้นที่ 38.6%) หลัง spinoff mix shift — มีโอกาสฟื้นต่อเมื่อ overhead ถูก rationalize และ product mix ปรับตัว",
+    "<b>โครงสร้างธุรกิจ Defensive:</b> IV therapy และ infusion systems เป็นสินค้าจำเป็นในโรงพยาบาล ความต้องการ inelastic ป้องกัน downside ในสภาวะเศรษฐกิจขาลง",
+    "<b>Hurricane Milton Insurance Recovery:</b> BAX ได้รับผลกระทบจากโรงงาน North Cove ถูกพายุ Milton ปี 2567 และกำลังอยู่ระหว่างเรียกร้องประกันภัย — recovery จะเป็น one-time upside ต่อ earnings"
+  ],
+  "risks": [
+    "<b>ภาระหนี้สูงมาก:</b> หนี้รวม (TTM) ~$9.7B เทียบ market cap ~{{mcap}} — แม้ FCF เป็นบวกต่อเนื่องแต่หนี้แทบไม่ลดลงจาก FY2025 ดอกเบี้ยยังกินกำไร adj operating income หาก refi rates สูงหรือ earnings ต่ำกว่าคาด credit downgrade หรือ liquidity pressure อาจเกิดขึ้น",
+    "<b>Gross Margin ยังกดดัน:</b> หลัง Vantive spinoff ทำให้ product mix เปลี่ยน — ธุรกิจที่เหลือ (IV/infusion) มี margin ต่ำกว่า kidney care ทำให้ gross margin ลดจาก 39.6% (FY2024) → 35.7% (FY2025) และการฟื้นตัวใช้เวลา",
+    "<b>คุณภาพกำไร Q2 และ margin ของ guidance:</b> adj EPS Q2 $0.56 ได้ตัวช่วยจากเงินคืนภาษีศุลกากร $0.11/หุ้นที่ไม่อยู่ใน guidance เดิม — หากตัดรายการนี้ กำไรพื้นฐานต่ำกว่าที่เห็น และ H2 2569 ต้องทำให้ถึง guidance ใหม่ ($1.95–2.15) ไม่งั้นตลาดอาจ de-rate กลับ ขณะที่ส่วนเผื่อความปลอดภัยของราคาปัจจุบันบางมาก",
+    "<b>ปันผลตัดแล้ว — การคืนทุนจำกัด:</b> ตัดเงินปันผล 94% ใน พ.ย. 2568 ทำให้ income investors ถอนตัว buyback ก็มีน้อยเพราะต้องรักษา cash สำหรับชำระหนี้ — yield เพียง ~0.18% ไม่ดึงดูดนักลงทุน",
+    "<b>Integration Risk:</b> การบูรณาการ Hillrom ยังไม่เสร็จสมบูรณ์ มีความเสี่ยงด้าน IT system, culture และ customer retention — goodwill impairment ขนาดใหญ่ใน Q4 2568 สะท้อนว่า synergy ต่ำกว่าคาด"
+  ],
+  "extras": [],
+  "v2Display": {
+    "fv": 24,
+    "fvRange": [
+      18,
+      29
+    ],
+    "legValues": [
+      null,
+      18.53,
+      null
+    ],
+    "targets": [
+      14.06,
+      28.48,
+      40.94
+    ],
+    "gauge": [
+      {
+        "ref": "mos30",
+        "label": "MOS 30%"
+      },
+      {
+        "ref": "mos20",
+        "label": "MOS 20%"
+      },
+      {
+        "ref": "fv",
+        "label": "Fair Value"
+      },
+      {
+        "ref": "fvHigh",
+        "label": "กรอบบน FV"
+      },
+      {
+        "text": "$30",
+        "label": "52-Week High"
+      }
+    ],
+    "cards": {
+      "peForward": {
+        "v": "~10.9x",
+        "d": "adj EPS ฐาน $2.05 = กลางกรอบ guidance FY2026E ($1.95–$2.15) ตรง consensus StockAnalysis; GAAP EPS TTM −$2.06 ติดลบจาก goodwill impairment Q4 2568",
+        "op": "pxOverBase",
+        "base": 2.15
+      },
+      "revenue": {
+        "v": "$11.47B",
+        "d": "Q2 2569 +5.3% YoY เป็น $2.96B; FY2026 guidance ปรับขึ้นเป็น $11.58–11.69B (เดิม $11.24–11.36B)"
+      }
+    }
+  },
+  "_sig": "sha256:e0b61c963e6a501ec3d0b7a4de250cebc6d3d953e8a08e6bd792c307ec0fcead"
+}

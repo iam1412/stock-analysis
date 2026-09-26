@@ -1,0 +1,280 @@
+{
+  "v": 3,
+  "symbol": "VMC",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Vulcan Materials Company",
+    "exchange": "NYSE",
+    "sub": "ผู้ผลิตวัสดุก่อสร้างมวลรวม (aggregates) รายใหญ่สุดสหรัฐ • หิน/ทราย/กรวด (~79% รายได้) • asphalt & concrete • pricing power local-monopoly • ได้ประโยชน์ infrastructure (IIJA)",
+    "headerTags": [
+      "Construction Materials",
+      "Aggregates / Infrastructure"
+    ],
+    "analysisDate": "2026-09-22",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis.com",
+      "Yahoo Finance",
+      "Vulcan Materials IR",
+      "Macrotrends"
+    ],
+    "themeLegacy": {
+      "accent": "#9C7B3E",
+      "accentDark": "#6E552A",
+      "darkGrad": "linear-gradient(135deg, #0F0C04 0%, #1F1809 100%)",
+      "glow": "rgba(156,123,62,0.35)",
+      "subColor": "#C2A062",
+      "headerMuted": "#a58136",
+      "verdictText": "#EEE2C8",
+      "vcellLabel": "rgba(238,226,200,0.6)"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-22T03:05:24+07:00",
+      "v2Hash": "2311d0e90733"
+    }
+  },
+  "market": {
+    "px": 245,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          289.5
+        ],
+        [
+          "พ.ย.25",
+          297.24
+        ],
+        [
+          "ธ.ค.25",
+          285.22
+        ],
+        [
+          "ม.ค.26",
+          300.54
+        ],
+        [
+          "ก.พ.26",
+          310
+        ],
+        [
+          "มี.ค.26",
+          272.3
+        ],
+        [
+          "เม.ย.26",
+          301.74
+        ],
+        [
+          "พ.ค.26",
+          282.92
+        ],
+        [
+          "มิ.ย.26",
+          295.01
+        ],
+        [
+          "ก.ค.26",
+          268.57
+        ],
+        [
+          "ส.ค.26",
+          269.58
+        ],
+        [
+          "ก.ย.26",
+          245
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 240.69,
+      "hi": 331.09
+    }
+  },
+  "fundamentals": {
+    "eps": 8.42,
+    "dps": 2.08,
+    "bvps": 62.5,
+    "shares": 131100000,
+    "peAvg5y": 32,
+    "revenue": 7940000000,
+    "fy": {
+      "period": "FY25",
+      "netIncome": 1050000000
+    },
+    "epsForward": 9.2,
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation (adj EPS TTM)",
+      "inputs": {
+        "multiple": 30,
+        "multipleSource": "sector"
+      },
+      "note": "P/E เฉลี่ยระยะยาว sector ~28–32x; ใช้ 30x สะท้อน moat แต่ระมัดระวัง",
+      "family": "market"
+    },
+    {
+      "method": "pe",
+      "label": "Forward P/E (FY26E)",
+      "inputs": {
+        "multiple": 30,
+        "multipleSource": "author",
+        "base": "epsForward"
+      },
+      "baseLabel": "FY26E",
+      "note": "consensus analyst EPS estimate FY2026; P/E 30x เดิม",
+      "family": "market"
+    },
+    {
+      "method": "pfcf",
+      "label": "P/FCF Valuation",
+      "inputs": {
+        "multiple": 31,
+        "multipleSource": "author"
+      },
+      "override": {
+        "fcf": 1122216000,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "family": "market"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "peAvg5y",
+      "pbv",
+      "netIncomeFy",
+      "eps",
+      "bvps",
+      "custom:0",
+      "revenue",
+      "custom:1",
+      "yield",
+      "custom:2"
+    ],
+    "custom": [
+      {
+        "label": "ROE / ROIC",
+        "value": "~13.5% / 15.7%",
+        "note": "ROIC สูงกว่า WACC = value creation",
+        "tone": "pos"
+      },
+      {
+        "label": "Gross / Operating Margin",
+        "value": "27.4% / 20.4%",
+        "note": "pricing power ดันมาร์จิ้น"
+      },
+      {
+        "label": "FCF/Share",
+        "value": "~$8.56",
+        "note": "Beta ~0.8 · defensive cyclical",
+        "tone": "pos"
+      }
+    ],
+    "notes": {
+      "mcap": "131.1M shares outstanding",
+      "pe": "adj EPS {{eps}} · premium sector",
+      "peAvg5y": "ช่วง 25–45x (moat premium)",
+      "pbv": "BVPS ~{{bvps}} · asset-heavy",
+      "netIncomeFy": "adj net margin ~13.2%",
+      "eps": "adj EPS FY25 $8.00 / FY26E $9.20",
+      "bvps": "book per share FY25",
+      "revenue": "FY25 +7.0% YoY",
+      "yield": "ขึ้นต่อเนื่อง 14+ ปี"
+    },
+    "hint": "ข้อมูล ณ ก.ย. 2569 · adj EPS {{eps}} (TTM)"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 5,
+        "exitMultiple": 26,
+        "divCum": 6.24,
+        "desc": "volume ชะลอ ดอกเบี้ยสูงกดหุ้น infrastructure"
+      },
+      {
+        "growth": 9,
+        "exitMultiple": 30,
+        "divCum": 6.24,
+        "desc": "IIJA execution ต่อเนื่อง pricing ขึ้นทุกปี"
+      },
+      {
+        "growth": 12,
+        "exitMultiple": 32,
+        "divCum": 6.24,
+        "desc": "reshoring + housing rebound + pricing beat ต่อเนื่อง"
+      }
+    ],
+    "exitDp": 0,
+    "note": "Base case อิง EPS ฐาน {{eps}} เติบโต 9%/ปี 3 ปี → EPS $10.90 × P/E 30x = $327 ตรงกับเป้านักวิเคราะห์เฉลี่ย แต่ upside จากราคาปัจจุบัน ~+6% เท่านั้น (หัก risk-free rate แทบไม่มีส่วนต่าง) · Bull case ต้อง P/E rerating 32x Bear case เกิดถ้า housing + commercial construction ชะลอต่อเนื่อง 2–3 ปี กดให้ P/E หด · ปันผลรวม ~$6.24 (3 ปี) เป็น cushion เล็กน้อย"
+  },
+  "analyst": {
+    "target": 327,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ราคา VMC เคลื่อนไหว +11.9% ในรอบปี (ก.ค. 68 $274.67 → มิ.ย. 69 $307.27) สะท้อนความแข็งแกร่งของธุรกิจ aggregates จุดสูงสุด ก.พ. 69 ที่ $310.00 หลัง Q4 FY25 งบดีและ IIJA spending เร่งตัว แต่มี.ค. 69 ย่อลงสู่ $272.30 จากความกังวลเศรษฐกิจชะลอ ก่อนดีดกลับสู่ระดับปัจจุบัน ราคาซื้อขายเหนือ Fair Value {{fv}} ตลอดช่วงปี บ่งชี้ว่าตลาด pricing moat premium ไว้สูง",
+    "valuation": "วิธี P/E (adj TTM) ให้ค่าต่ำสุด {{fvLow}} เพราะ TTM EPS รวมผลขาดทุนพิเศษบางไตรมาส วิธี Forward P/E FY26E สูงสุด {{fvHigh}} สะท้อนการเติบโตที่คาดไว้ วิธี P/FCF $265.36 อยู่กลางและมีความน่าเชื่อถือสูงสำหรับธุรกิจ asset-heavy ที่กระแสเงินสดมั่นคง ค่าเฉลี่ยสาม วิธี = $264.65 ≈ <b>{{fv}}</b> · ราคาปัจจุบัน {{px}} เทียบ FV (MOS {{mos}})",
+    "gauge": "ราคา {{px}} เทียบ Fair Value {{fv}} (MOS {{mos}}) บ่งชี้ว่าตลาด pricing moat และ IIJA tailwind ไว้แล้ว นักวิเคราะห์ 23 ราย เป้าเฉลี่ย {{analyst.target}} ({{analyst.pct}} จากราคาปัจจุบัน) แต่ยังต่ำกว่า P/E ปัจจุบัน 36.5x โซนน่าสนใจเริ่มต้นที่ <{{fv}} (Fair Value) · โซน MOS 20% ที่ {{mos20}} เป็นจุด deep value",
+    "mos": "ราคาแพงกว่ามูลค่าเหมาะสม ~16% · รอย่อก่อนสะสม",
+    "verdictHeadline": "ธุรกิจชั้นเยี่ยม แต่ราคาแพง — รอย่อใกล้ $212",
+    "verdictBody": "Vulcan Materials คือผู้นำ aggregates สหรัฐที่มี moat แข็งแกร่งที่สุดในเซกเตอร์ (quarry permit = irreplaceable asset, pricing power ท้องถิ่น) ได้ประโยชน์โดยตรงจาก IIJA $1.2T และ reshoring mega-projects ทำให้ demand ระยะยาวสดใส อย่างไรก็ตาม ราคา {{px}} ที่ P/E {{pe}}x เทียบการเติบโต ~9%/ปี — Fair Value 3 วิธีเฉลี่ย {{fv}} (MOS {{mos}}) นักวิเคราะห์ 23 ราย เป้าเฉลี่ย $327 ให้ upside เพียง +6% จากระดับปัจจุบัน ไม่คุ้มค่าความเสี่ยง สำหรับนักลงทุนระยะยาว: ธุรกิจดีมากแต่ต้องรอราคาย่อ",
+    "strategy": "รอราคาย่อใกล้ {{fv}} (Fair Value) เพื่อ MOS เป็นบวก · จุดสะสมแรก <{{fv}} · deep value zone {{mos20}} (MOS 20%) · ที่ $307 ราคาแพงเกินไปสำหรับ return ที่คาดหวัง — moat ดีมากแต่ต้องรอจังหวะ",
+    "disclaimerSources": "แหล่งข้อมูล: StockAnalysis.com / Yahoo Finance / Vulcan Materials Investor Relations / Macrotrends · ราคา ณ {{priceDate}}"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 3 วิธี · อิง adj EPS"
+  },
+  "catalysts": [
+    "<b>IIJA (Infrastructure Investment & Jobs Act):</b> $1.2T ใช้จ่ายโครงสร้างพื้นฐาน 5–10 ปี demand aggregates โดยตรง VMC อยู่ในตำแหน่งที่ดีสุด",
+    "<b>Local Pricing Monopoly (moat แข็งแกร่ง):</b> ขออนุญาตเปิด quarry ใหม่แทบเป็นไปไม่ได้ ทำให้ VMC มีอำนาจกำหนดราคาในแต่ละตลาดท้องถิ่น",
+    "<b>Pricing Power เหนือเงินเฟ้อ:</b> ราคา aggregates ขึ้นทุกปีต่อเนื่อง >5 ปี กดดัน cost ต่อหน่วยลดลง → margin expansion ต่อเนื่อง",
+    "<b>Reshoring & Data Center Boom:</b> โรงงาน chip, ศูนย์ข้อมูล, logistics hub = demand หิน/ทราย/กรวดปริมาณมหาศาล หนุน volume ระยะยาว",
+    "<b>ROIC > WACC อย่างมีนัยสำคัญ:</b> ROIC 15.7% สูงกว่า WACC ~8–9% สะท้อน asset irreplaceable สร้าง economic value ต่อเนื่อง"
+  ],
+  "risks": [
+    "<b>Valuation สูงเกินกว่าการเติบโต:</b> P/E 36.5x สำหรับธุรกิจโต ~9%/ปี แทบไม่มี margin of safety · รอย่อสำคัญมาก",
+    "<b>Cyclical Volume Risk:</b> ดอกเบี้ยสูง กดตลาด residential & commercial construction → volume aggregates ลด (เคยเกิด 2022–2023)",
+    "<b>ต้นทุนพลังงานและขนส่ง:</b> diesel/natural gas คือ cost หลักของ quarry & trucking · spike ราคาพลังงานกดมาร์จิ้นได้ทันที",
+    "<b>Weather & Seasonality:</b> ฤดูหนาวในเขต Midwest/Northeast ทำให้รายได้ Q1 ต่ำทุกปี · ภัยธรรมชาติกระทบ site บางแห่ง",
+    "<b>Execution IIJA ล่าช้า:</b> รัฐบาลกลาง/รัฐอาจเบิกจ่ายช้ากว่าแผน → demand ไม่ได้รับ catalyst ทันที"
+  ],
+  "extras": [],
+  "v2Display": {
+    "fv": 265,
+    "targets": [
+      253.5,
+      327,
+      378.56
+    ],
+    "rets": {
+      "texts": [
+        "−16% (รวมปันผล ~−14%)",
+        "+6% (รวมปันผล ~+8%)",
+        "+23% (รวมปันผล ~+25%)"
+      ],
+      "neg": "−",
+      "perYear": "cagr",
+      "div": true
+    }
+  },
+  "_sig": "sha256:24c172e603ddbe1ff0d441ac381fb62fa7aa42ad0e3af03f3e38f4bb09ce2679"
+}

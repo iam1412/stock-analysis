@@ -1,0 +1,263 @@
+{
+  "v": 3,
+  "symbol": "SYY",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Sysco Corporation",
+    "exchange": "NYSE",
+    "sub": "ผู้จัดจำหน่ายอาหาร-เครื่องดื่มรายใหญ่สุดในสหรัฐฯ (~17% market share) • รายได้ ~$84.6B TTM • ลูกค้า: ร้านอาหาร, โรงพยาบาล, โรงเรียน, โรงแรม, ผู้จัดเลี้ยง • ฝูงรถบรรทุกห้องเย็นใหญ่สุดในสหรัฐฯ (cold chain scale moat) • ปันผล {{dps}}/หุ้น/ปี • หนี้สูง (D/E ~5.7x) กำไรสุทธิบาง (Net margin ~2.1%)",
+    "headerTags": [
+      "Consumer Staples",
+      "Foodservice Distribution"
+    ],
+    "analysisDate": "2026-09-22",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "StockAnalysis.com (งบ FY2026 + forecast)"
+    ],
+    "themeLegacy": {
+      "accent": "#003087",
+      "accentDark": "#001a52",
+      "darkGrad": "linear-gradient(135deg,#001a52 0%,#003087 60%,#0051c3 100%)",
+      "glow": "rgba(0,48,135,0.35)",
+      "subColor": "#c8d8f5",
+      "headerMuted": "#c2d5f2",
+      "verdictText": "#e8f0fe",
+      "vcellLabel": "#dce4f6"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-22T01:46:25+07:00",
+      "v2Hash": "dbbbd13a3e10"
+    }
+  },
+  "market": {
+    "px": 78.46,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          74.28
+        ],
+        [
+          "พ.ย.25",
+          76.2
+        ],
+        [
+          "ธ.ค.25",
+          73.69
+        ],
+        [
+          "ม.ค.26",
+          83.85
+        ],
+        [
+          "ก.พ.26",
+          91.16
+        ],
+        [
+          "มี.ค.26",
+          71.33
+        ],
+        [
+          "เม.ย.26",
+          74.71
+        ],
+        [
+          "พ.ค.26",
+          75.81
+        ],
+        [
+          "มิ.ย.26",
+          83.58
+        ],
+        [
+          "ก.ค.26",
+          85.24
+        ],
+        [
+          "ส.ค.26",
+          81.08
+        ],
+        [
+          "ก.ย.26",
+          78.46
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 68.19,
+      "hi": 91.85
+    }
+  },
+  "fundamentals": {
+    "eps": 3.66,
+    "dps": 2.2,
+    "bvps": 5.42,
+    "shares": 491913960,
+    "peAvg5y": 21.6,
+    "revenue": 84600000000,
+    "roe": 77.7,
+    "grossMargin": 18.5,
+    "opMargin": 4.2,
+    "beta": 0.66,
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation (GAAP)",
+      "inputs": {
+        "multiple": 21.6,
+        "multipleSource": "median5y"
+      },
+      "note": "21.6x คือมัธยฐาน 5 ปีงบ (ราคาเฉลี่ยของงวด ÷ EPS diluted: 30.6x / 22.5x / 19.0x / 20.2x / 21.6x) วัดจากประวัติของ SYY เอง ไม่ได้ลอกจาก P/E ปัจจุบัน (บังเอิญใกล้กัน จึงขานี้ให้ค่าใกล้ราคา)",
+      "family": "market"
+    },
+    {
+      "method": "dcf",
+      "label": "DCF (Levered FCF · ตระกูลต่างจาก P/E)",
+      "inputs": {
+        "g1": 4,
+        "years1": 10,
+        "tg": 2.5,
+        "r": 8.5,
+        "rfCurrency": "USD"
+      },
+      "override": {
+        "fcf": 1938000000,
+        "netDebt": 0,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "ตาราง FY2026 · ต้นทุนส่วนผู้ถือหุ้น เพราะ FCF หลังดอกเบี้ย · สมมติฐานของผู้วิเคราะห์เอง · PV $21,675M · TV 58% ของมูลค่า",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "peAvg5y",
+      "pbv",
+      "revenue",
+      "eps",
+      "bvps",
+      "roe",
+      "grossMargin",
+      "opMargin",
+      "yield",
+      "beta"
+    ],
+    "notes": {
+      "mcap": "491.9M หุ้นคงเหลือ (StockAnalysis)",
+      "pe": "EPS GAAP diluted TTM {{eps}} (= FY2026)",
+      "peAvg5y": "มัธยฐาน 5 ปีงบ (ช่วง 19.0–30.6x) · ปัจจุบันใกล้เคียงมัธยฐาน",
+      "pbv": "สูงเพราะ leverage",
+      "revenue": "+3.9% YoY · FY2025: $81.4B",
+      "eps": "FY2025: $3.73 (FY2026 −1.9% YoY) · FY2027E consensus $5.07 (vendor, ฐานต่างจาก GAAP)",
+      "bvps": "คำนวณ: หนี้รวม $15.05B ÷ D/E 5.65 ≈ equity $2.66B ÷ 491.9M หุ้น · หนี้สุทธิ ~$13.3B",
+      "roe": "ROE สูงเพราะ leverage สูง (buyback)",
+      "grossMargin": "FY2025: 18.4% · FY2022: 17.9%",
+      "opMargin": "FY2025: 4.1% · FY2022: 3.4% · ค่อยๆ ขยาย",
+      "yield": "{{dps}}/หุ้น/ปี · ปรับขึ้นต่อเนื่อง 55+ ปี",
+      "beta": "ความผันผวนต่ำกว่าตลาด"
+    },
+    "hint": "ข้อมูล ณ 22 ก.ย. 2569 · FY2026 สิ้นสุด 27 มิ.ย. 2569 (งบ GAAP)"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": -1,
+        "exitMultiple": 19,
+        "divCum": 6.6,
+        "desc": "ร้านอาหารปิดกิจการ, volume ลด, margin กดดัน"
+      },
+      {
+        "growth": 5,
+        "exitMultiple": 21.6,
+        "divCum": 6.93,
+        "desc": "U.S. local volume โต 2–3%/ปี, margin ขยายช้าๆ"
+      },
+      {
+        "growth": 8,
+        "exitMultiple": 24,
+        "divCum": 7.26,
+        "desc": "M&A ระหว่างประเทศ, local case vol +4%, margin re-rating"
+      }
+    ],
+    "exitDp": 1,
+    "note": "การคาดการณ์อิงสมมติฐาน EPS growth (ฐาน GAAP {{eps}}) และ P/E ออก (Bear 19x = ปลายล่างของช่วง 5 ปีงบ · Base 21.6x = มัธยฐาน · Bull 24x) ซึ่งอาจผิดพลาดได้ Base case คาดผลตอบแทนรวมประมาณ 7–8%/ปี รวมปันผล ราคาเป้าเป็นสมมติฐาน ไม่ใช่ราคาที่รับประกัน ผลตอบแทนส่วนใหญ่มาจาก EPS growth + dividend มากกว่า re-rating ผู้ลงทุนควรประเมินความเสี่ยงของธุรกิจ leverage สูง (beta 0.66)",
+    "hintNote": "GAAP ~{{eps}}"
+  },
+  "analyst": {
+    "target": 90.31,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ราคา SYY เคลื่อนไหวในกรอบ $71–$91 ตลอดรอบปีที่ผ่านมา เริ่มที่ ~$74.28 (ต.ค. 2568) ไต่ขึ้นสูงสุดที่ $91.16 (ก.พ. 2569) จากนั้นปรับฐานแรงลงแตะ $71.33 (มี.ค. 2569) ก่อนฟื้นตัวกลับมาแถว $79–$85 ช่วง มิ.ย.–ก.ย. 2569 กรอบ 52 สัปดาห์ $68.19–$91.85 การเคลื่อนไหวสะท้อนตลาดที่ให้ราคาหุ้นผู้จัดจำหน่ายอาหารตามความคาดหวังกำไรซึ่งกำไร GAAP โตช้า (EPS FY2026 {{eps}} ต่ำกว่า FY2025 $3.73)",
+    "valuation": "สองวิธีจากคนละตระกูลให้ผลใกล้กัน (P/E $79.06 · DCF $75.50) จึงเฉลี่ยตรง ๆ ได้ FV {{fv}} เทียบราคา {{px}} ได้ MOS {{mos}} กรอบ {{fvLow}}–{{fvHigh}} มาจาก P/E 19x–23x บน EPS {{eps}} ขาที่ตัดทิ้งจากรอบก่อน: เป้านักวิเคราะห์/haircut (ไม่ใช่ขา FV), EV/EBITDA ที่ตัวคูณ 13x เป็นค่าที่ไม่มีมัธยฐานวัดได้รองรับ, Forward P/E (ตระกูล P/E เดียวกันและใช้ EPS คนละฐาน) EPS ฐาน GAAP ต่ำกว่าฐาน adjusted ที่รอบก่อนใช้ จึงทำให้ FV ลดลงทั้งที่ธุรกิจไม่ได้เปลี่ยน ผู้ลงทุนแบบ value ควรรอโซน MOS 20% ที่ {{mos20}}",
+    "gauge": "ราคาปัจจุบัน {{px}} เทียบ Fair Value {{fv}} ({{mos}}) หุ้น SYY ซื้อขายใกล้/สูงกว่ามูลค่าเหมาะสมเล็กน้อย ยังไม่มี margin of safety สำหรับ value investor ที่ต้องการ MOS ≥ 20% (จุดซื้อ {{mos20}}) นักวิเคราะห์ 13 ราย consensus \"Buy\" เป้าเฉลี่ย {{analyst.target}} อยู่เหนือราคาปัจจุบันราว 15% แต่ใช้เป็นบริบทเท่านั้น ไม่ได้เป็นขาของ FV ผลตอบแทนส่วนใหญ่จากจุดนี้มาจาก dividend yield ~2.8% + การเติบโตของ EPS",
+    "mos": "ราคาใกล้/สูงกว่ามูลค่าเหมาะสมเล็กน้อย — ยังไม่มีส่วนเผื่อความปลอดภัย รอจุดเข้าที่ดีกว่า",
+    "verdictHeadline": "Sysco — Defensive Leader ใกล้ Fair Value · รอจุดเข้าที่ดีกว่า",
+    "verdictBody": "Sysco คือธุรกิจ foodservice distribution อันดับ 1 ของสหรัฐฯ ที่มี competitive moat จาก scale + logistics network รายได้ FY2026 $84.6B (+3.9%) และ FCF $1.94B ฟื้นตัว แต่ EPS GAAP ลดลงเล็กน้อยเป็น {{eps}} ณ ราคา {{px}} หุ้นซื้อขายใกล้ Fair Value {{fv}} ({{mos}}) ซึ่งประเมินจาก P/E มัธยฐานประวัติ 21.6x และ DCF ที่ตั้งสมมติฐานเอง ยังไม่มีส่วนเผื่อความปลอดภัยสำหรับ value investor ผู้ลงทุนที่ต้องการ total return จะได้ราว 7–8%/ปีใน base case จาก EPS growth 5% + dividend ~2.8% เหมาะกับ defensive portfolio มากกว่าการหา capital gain",
+    "strategy": "SYY เหมาะสำหรับ defensive income investor ที่ต้องการ dividend + ความมั่นคง ณ ราคา {{px}} MOS น้อยเกินไปสำหรับ value investor ทั่วไป ควรรอโซน MOS 20% ที่ {{mos20}} ซึ่งเกิดขึ้นได้เมื่อตลาดกังวล recession หรือ earnings miss หากถือแล้วสามารถถือต่อ รับปันผล ~2.8%/ปี ระหว่างรอ",
+    "disclaimerSources": "แหล่งข้อมูล: Yahoo Finance (ราคา/chart), StockAnalysis.com (ตัวเลขงบ), StockAnalysis.com/forecast (analyst targets)"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 2 วิธี (P/E + DCF)",
+    "chartHint": "· รายเดือน",
+    "disclaimerAssump": " P/E เป้าหมาย, อัตราเติบโต (g), และ EPS ในอนาคต"
+  },
+  "catalysts": [
+    "<b>Scale moat ที่แข็งแกร่ง:</b> ฝูงรถบรรทุกห้องเย็นใหญ่สุดในสหรัฐฯ + network logistics สร้างต้นทุนต่อหน่วยที่คู่แข่งเทียบไม่ได้ ปกป้อง market share ~17% ระยะยาว",
+    "<b>รายได้โตต่อเนื่อง:</b> รายได้ FY2026 $84.6B (+3.9% YoY) ต่อจาก FY2025 +3.2% และ FY2024 +3.3% ธุรกิจมี volume พื้นฐานจากร้านอาหาร/สถาบัน",
+    "<b>Margin ขยับขึ้นช้า ๆ:</b> Gross margin 18.5% (FY2022: 17.9%) และ operating margin GAAP 4.2% (FY2022: 3.4%) สะท้อน mix และประสิทธิภาพต้นทุน",
+    "<b>FCF ฟื้นตัว:</b> FCF FY2026 $1,938M เทียบ $1,604M ใน FY2025 (+21%) รองรับปันผลและ buyback",
+    "<b>Dividend Aristocrat (55+ ปี):</b> ปรับขึ้นเงินปันผลต่อเนื่องดึงดูดนักลงทุนสถาบัน + income investors สร้าง floor support ราคา",
+    "<b>ผลประกอบการถัดไป:</b> วันประกาศงบที่ StockAnalysis ระบุ 27 ต.ค. 2569 · EPS FY2027E consensus $5.07 (vendor — ฐานอาจเป็น adjusted จึงไม่ใช้เป็นตัวตั้งใน FV)"
+  ],
+  "risks": [
+    "<b>Leverage สูง (D/E 5.65x):</b> หนี้รวม $15.05B หนี้สุทธิ ~$13.3B ดอกเบี้ยเป็นภาระหนัก หากอัตราดอกเบี้ยสูงขึ้นหรือ EBITDA ลดจะกดดัน FCF และความสามารถในการจ่ายเงินปันผล",
+    "<b>กำไร GAAP ชะลอ:</b> EPS FY2026 {{eps}} ต่ำกว่า FY2025 $3.73 และ FY2024 $3.89 แม้รายได้โต — Net margin 2.1% ลดลงจาก 2.5% ใน FY2024",
+    "<b>Food inflation / ต้นทุน:</b> inflation จะกดดัน gross margin และทำให้ลูกค้าลด order แม้ Sysco มีอำนาจต่อรองพอสมควร",
+    "<b>Restaurant industry slowdown:</b> consumer spending ชะลอ → ร้านอาหารลด traffic → case volume growth ต่ำกว่าคาด โดยเฉพาะในช่วง recession",
+    "<b>Competition:</b> US Foods (USFD) เป็นคู่แข่งหลัก + private label distributors รายย่อยในตลาดท้องถิ่น ราคาสงครามราคาสามารถกดดัน margin",
+    "<b>Thin margin business:</b> operating margin GAAP ~4.2% หมายความว่าต้นทุนที่เพิ่มขึ้นเพียงเล็กน้อย (fuel, labor, insurance) สามารถกระทบ profitability มาก"
+  ],
+  "extras": [],
+  "v2Display": {
+    "fv": 77.3,
+    "fvRange": [
+      70,
+      84
+    ],
+    "targets": [
+      null,
+      null,
+      110.67
+    ],
+    "rets": {
+      "texts": [
+        "−5.6% รวม 3 ปี (รวมปันผล)",
+        "+25.5% รวม 3 ปี (~7.9%/ปี)",
+        "+50.3% รวม 3 ปี (~14.5%/ปี)"
+      ],
+      "neg": "−",
+      "perYear": "cagr",
+      "div": true
+    }
+  },
+  "_sig": "sha256:e0819df8c193405fd391105f2e6ddc72568c1d50caec9913aeb91c4920e1da78"
+}

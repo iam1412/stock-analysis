@@ -1,0 +1,278 @@
+{
+  "v": 3,
+  "symbol": "FCNCA",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "First Citizens BancShares, Inc.",
+    "exchange": "NASDAQ",
+    "sub": "ธนาคารระดับภูมิภาคที่ครอบครัวควบคุมใหญ่สุดในสหรัฐฯ • แฟรนไชส์ SVB Commercial/Private (Innovation Economy) • CIT Commercial (equipment finance/factoring) • General/Community Banking",
+    "headerTags": [
+      "Regional Bank / Diversified Financial Services",
+      "Innovation Economy & Venture Banking (SVB Franchise)"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "StockAnalysis.com",
+      "Google Finance",
+      "First Citizens BancShares Investor Relations"
+    ],
+    "priceNote": "Yahoo Finance, StockAnalysis.com ตรงกัน",
+    "migratedFrom": {
+      "updated": "2026-09-21T14:08:46+07:00",
+      "v2Hash": "d3943ab8bcc1"
+    }
+  },
+  "market": {
+    "px": 2090.36,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          1824.82
+        ],
+        [
+          "พ.ย.25",
+          1877.89
+        ],
+        [
+          "ธ.ค.25",
+          2146.18
+        ],
+        [
+          "ม.ค.26",
+          2069.57
+        ],
+        [
+          "ก.พ.26",
+          1898.15
+        ],
+        [
+          "มี.ค.26",
+          1884.66
+        ],
+        [
+          "เม.ย.26",
+          1983.82
+        ],
+        [
+          "พ.ค.26",
+          1990.51
+        ],
+        [
+          "มิ.ย.26",
+          2080.79
+        ],
+        [
+          "ก.ค.26",
+          2186.65
+        ],
+        [
+          "ส.ค.26",
+          2164.4
+        ],
+        [
+          "ก.ย.26",
+          2090.36
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 1623.76,
+      "hi": 2296.3
+    }
+  },
+  "fundamentals": {
+    "dps": 8.4,
+    "shares": 11293120,
+    "tbvps": 1722,
+    "netIncome": 2268000000,
+    "eps": 186.44,
+    "revenue": 9332000000,
+    "netMargin": 24.3,
+    "beta": 1,
+    "bank": {
+      "nim": 3.1
+    },
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pbv",
+      "label": "Justified P/BV (ROTE × TBVPS)",
+      "inputs": {
+        "g": 4,
+        "r": 10
+      },
+      "override": {
+        "roe": 12.5,
+        "bvps": 1722,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "family": "rg"
+    },
+    {
+      "method": "pe",
+      "label": "P/E Valuation (EPS TTM × Historical Median)",
+      "inputs": {
+        "multiple": 11.4,
+        "multipleSource": "median5y"
+      },
+      "note": "11.4x คือมัธยฐาน P/E ย้อนหลังของ FCNCA เอง (ราคาเฉลี่ยรายปี ÷ EPS diluted: FY2025 11.8x, FY2024 9.7x, FY2022 11.1x, FY2021 15.0x; ตัด FY2023 ที่มีกำไรพิเศษ SVB ออก) — มาจากประวัติ ไม่ได้มาจาก P/E ปัจจุบัน (~11.3x ซึ่งบังเอิญใกล้กัน) วิธีนี้ไม่ใช้ (r,g) เลย จึงอิสระจากวิธีที่ 1",
+      "family": "market"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "ptbv",
+      "nim",
+      "netIncome",
+      "eps",
+      "custom:0",
+      "custom:1",
+      "revenue",
+      "netMargin",
+      "yield",
+      "beta"
+    ],
+    "custom": [
+      {
+        "label": "TBVPS",
+        "value": "~$1,722",
+        "note": "+8% YoY (IR, 2Q69)"
+      },
+      {
+        "label": "ROTE (normalized)",
+        "value": "~12.5%",
+        "note": "ROE (GAAP) ปี 2568 = 9.9%",
+        "tone": "pos"
+      }
+    ],
+    "notes": {
+      "mcap": "(รวมทุกคลาส)",
+      "ptbv": "ราคา ÷ TBVPS $1,722",
+      "nim": "3.01% ไม่รวม PAA (2Q69)",
+      "eps": "Adj. EPS 2Q69 $57.09 (+27% QoQ)",
+      "netMargin": "NI ÷ Revenue TTM",
+      "yield": "payout ต่ำ เน้น buyback",
+      "beta": "ใกล้เคียงตลาดโดยรวม"
+    },
+    "hint": "ปรับชุด metric ให้เหมาะกับธนาคาร"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": -3,
+        "exitMultiple": 9,
+        "divCum": 20,
+        "desc": "วัฏจักร VC ชะลอตัวแรง เงินฝาก Innovation Economy ไหลออก + NPL ในสินเชื่อเฉพาะทาง (CIT/venture debt) เพิ่มขึ้น ตลาดคืนมูลค่าเป็น P/E ต่ำ"
+      },
+      {
+        "growth": 9,
+        "exitMultiple": 11.4,
+        "divCum": 26,
+        "desc": "ธุรกิจเติบโตสม่ำเสมอ บวก buyback ต่อเนื่อง ~$600 ล้าน/ไตรมาส ดัน EPS โต NIM ทรงตัวใกล้ 3.1%"
+      },
+      {
+        "growth": 15,
+        "exitMultiple": 13,
+        "divCum": 27,
+        "desc": "วัฏจักร VC ฟื้นตัวแรง สินเชื่อ/เงินฝาก Innovation Economy กลับมาเติบโต ผสาน buyback เข้มข้น ตลาดให้มูลค่าใกล้กลุ่มพรีเมียม"
+      }
+    ],
+    "exitDp": 1,
+    "note": "Bear อิงวัฏจักร VC ชะลอ + NPL เพิ่มในสินเชื่อเฉพาะทาง ตลาดคืนมูลค่าเป็น P/E ~9x ใกล้ต่ำสุดของช่วง 5 ปี (9.7x) • Base อิง EPS โตต่อเนื่องจาก buyback + สินเชื่อ/รายได้ค่าธรรมเนียมโต ~9%/ปี P/E คงที่ 11.4x (มัธยฐานประวัติ) • Bull อิงวัฏจักร VC ฟื้นตัวแรงพร้อม buyback เข้มข้น P/E ขยับเหนือมัธยฐาน ~13x (ช่วง 5 ปี 9.7–15.0x) — ทุก scenario ไม่รวมรายการพิเศษแบบปี 2566"
+  },
+  "analyst": {
+    "target": 2335.54,
+    "n": null,
+    "rating": "Hold",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "หุ้นปรับขึ้นในรอบ 12 เดือนจาก $1,824.82 (ต.ค. 2568) สู่ {{px}} ({{priceDate}}) หรือ +15.7% หนุนจากผลประกอบการไตรมาส 2/2569 ที่ adjusted EPS พุ่ง +27% QoQ เป็น $57.09, การซื้อหุ้นคืนต่อเนื่อง ~$600 ล้าน/ไตรมาส และ TBVPS โต +8% YoY เป็น $1,722 แม้ราคาแกว่งลงช่วง ธ.ค.68–มี.ค.69 (จาก $2,146.18 สู่ $1,884.66) ตามความกังวลวัฏจักรสินเชื่อ/เงินฝากกลุ่ม Innovation Economy ก่อนฟื้นตัวแรงในไตรมาสล่าสุด",
+    "valuation": "วิธี Justified P/TBV ให้ค่าสูงกว่าวิธี P/E เพราะ ROTE normalized (~12.5%) สูงกว่า CoE (~10.0%) — ธนาคารคุณภาพดีควรเทรดเหนือ 1x TBV ตามหลักการ ส่วนวิธี P/E ใช้มัธยฐานประวัติของตัวเองเป็นขาที่ไม่พึ่ง (r,g) เลย ให้ค่าระมัดระวังกว่า FV เฉลี่ยจึงใกล้ราคาตลาดปัจจุบันมาก (MOS {{mos}}) เพราะขา P/E ที่ยึดประวัติอยู่ใกล้ราคาตลาดโดยธรรมชาติ (ตัวคูณปัจจุบันบังเอิญใกล้มัธยฐานประวัติ) ทำให้ผลสรุปพึ่งขา Justified P/TBV เป็นหลักในการชี้ส่วนต่าง — ทั้งนี้เป้านักวิเคราะห์เฉลี่ยไม่ได้เป็นขาของ FV และใช้เป็นบริบทเท่านั้น<br><b>⚠️ Full disclosure — ผลของ SVB gain-on-acquisition ต่องบและวิธี normalize:</b> ปี 2566 (FY2023) บริษัทรับรู้ \"gain on acquisition\" ก้อนใหญ่ ~$9.8 พันล้าน จากดีลซื้อกิจการ Silicon Valley Bank (SVB) แบบ FDIC-assisted bargain purchase ทำให้ NI ปี 2566 พุ่งเป็น $11,407 ล้าน และ EPS ปี 2566 สูงถึง $784.51 ($67.40 ปี 2565 → $784.51 ปี 2566 → $189.38 ปี 2567) ซึ่งเป็นรายการครั้งเดียวที่ไม่ใช่กำไรจากการดำเนินงานปกติ — รายงานนี้<b>ไม่ใช้ปี 2566 เป็นฐาน FV/scenario ใด ๆ ทั้งสิ้น</b> และไม่ใช้ ROE ปี 2566 เป็นตัวแปรฉาก โดยใช้ EPS TTM (ไตรมาส 3/2568–ไตรมาส 2/2569 = {{eps}}) ซึ่งเป็นช่วงที่ไม่ทับซ้อนกับไตรมาสที่มีรายการพิเศษนี้เป็นฐาน normalize • นอกจากนี้ ตัวเลขแบบ TTM จาก StockAnalysis ตรวจแล้วสอดคล้องกัน (NI 2,268 ÷ Revenue 9,332 = 24.3% · ROE GAAP 10.7% เทียบ 9.9% ปี 2568) รายงานนี้ใช้ ROE GAAP (non-tangible) เป็นบริบท พร้อมคำนวณ ROTE (tangible, ตัวแปรฉากของวิธีที่ 1) แยกต่างหากที่ ~12.5% จาก TBVPS ที่บริษัทเปิดเผยเอง ($1,722 ณ 2Q69) และผลรวม adjusted diluted EPS ย้อนหลัง 4 ไตรมาส (3Q68 $44.62 + 4Q68 $51.27 + 1Q69 $44.86 + 2Q69 $57.09 = $197.84) เทียบ TBVPS เฉลี่ยช่วงเดียวกัน (~$1,658) ได้ ~11.9-12.0% และเทียบ run-rate ไตรมาส 2/2569 annualized ได้ ~13.4% — ใช้ค่ากลาง ~12.5% เป็นฐาน normalized",
+    "gauge": "ราคาปัจจุบัน ({{px}}) อยู่เหนือโซน MOS 20-30% ทั้งหมด และต่ำกว่า Fair Value ({{fv}}) เล็กน้อย เป้านักวิเคราะห์เฉลี่ย ({{analyst.target}}, Hold, n=13) สูงกว่า FV ราว 2% ซึ่งเป็นเพียงบริบทเทียบ ไม่ใช่ขาของ FV — ส่วนเผื่อความปลอดภัยไม่มีนัยสำคัญ ณ ราคานี้",
+    "mos": "<b>แทบไม่มี Margin of Safety</b><br>ราคาตลาดใกล้เคียงมูลค่าเหมาะสมมาก หลังหุ้นวิ่งขึ้น +16% ในรอบปี นักลงทุนที่ยังไม่ถือควรรอจังหวะย่อตัวมากกว่าไล่ราคาปัจจุบัน",
+    "verdictHeadline": "คุณภาพดี แต่ราคาใกล้เต็มมูลค่าแล้ว (Hold)",
+    "verdictBody": "First Citizens BancShares เป็นธนาคารคุณภาพสูงที่ผสาน 3 แฟรนไชส์ (Community Banking ดั้งเดิม, CIT commercial/equipment finance และ SVB Innovation Economy/Private Bank) ให้ ROTE normalized ราว 12.5% เหนือต้นทุนทุน (CoE) ~10.0% อย่างต่อเนื่อง เงินทุนแข็งแกร่ง (CET1 ~10.8%) และเดินหน้าซื้อหุ้นคืนเข้มข้นต่อเนื่อง แต่หลังหุ้นขึ้น +16% ในรอบปี ราคาปัจจุบันใกล้เคียงมูลค่าเหมาะสมที่ประเมินได้ (MOS {{mos}}) และสอดคล้องกับมุมมอง Hold ของนักวิเคราะห์ (upside เฉลี่ย ~10.6%) ความเสี่ยงหลักคือวัฏจักรเงินฝาก/สินเชื่อกลุ่ม venture capital ที่รับมาจาก SVB และการทยอยหมดไปของ purchase accounting accretion (PAA) ที่หนุน NIM อยู่ในปัจจุบัน",
+    "strategy": "รอจังหวะย่อราคาลงมาใกล้โซน MOS 20% ({{mos20}}) มากกว่าไล่ซื้อราคาปัจจุบันที่ใกล้มูลค่าเหมาะสมแล้ว เป็นหุ้นคุณภาพสูง (ROTE เหนือ CoE, เงินทุนแข็งแกร่ง, buyback ต่อเนื่อง) แต่ upside จำกัดในระยะสั้นหลัง rally แรง ควรติดตามความเสี่ยงวัฏจักร Innovation Economy และการลดลงของ PAA benefit ต่อ NIM อย่างใกล้ชิด",
+    "disclaimerSources": "ราคา ณ {{priceDate}} จาก Yahoo Finance และ StockAnalysis.com (ตรงกัน) • ข้อมูลงบการเงิน/ประมาณการจาก StockAnalysis.com • TBVPS/NIM/adjusted EPS จากรายงานผลประกอบการ First Citizens BancShares (newsroom.firstcitizens.com, ir.firstcitizens.com, PRNewswire) ไตรมาส 2/2569 (23 ก.ค. 2569) และไตรมาสก่อนหน้า • มัธยฐาน P/E 11.4x คำนวณจากประวัติ FCNCA เอง 5 ปี (ราคาเฉลี่ยรายปี ÷ EPS diluted, StockAnalysis/Yahoo, ตัด FY2023) • รายงานนี้ normalize ตัวเลขปี 2566 (FY2023) ออกจากฐานคำนวณทั้งหมดเนื่องจากมีรายการ gain on acquisition ครั้งเดียวจากดีล SVB ~$9.8 พันล้าน (ดูรายละเอียดเต็มในหัวข้อ 3)"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 2 วิธีอิสระ — ธนาคาร: ห้าม DCF/EV",
+    "disclaimerAssump": " P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r/CoE) และ ROTE ในอนาคต"
+  },
+  "catalysts": [
+    "<b>Buyback เข้มข้นต่อเนื่อง:</b> ซื้อหุ้นคืน ~$600 ล้าน/ไตรมาส (298,907 หุ้น ใน 2Q69) หนุน EPS/TBVPS growth ต่อเนื่อง",
+    "<b>เงินทุนแข็งแกร่ง:</b> CET1 ~10.8%, Tier 1 leverage ~15.4% รองรับการคืนทุนผู้ถือหุ้นต่อได้อีกมาก",
+    "<b>แฟรนไชส์เฉพาะทางที่มี moat:</b> SVB Innovation Economy/Private Bank + CIT equipment finance/factoring ให้ yield สูงกว่าธนาคารทั่วไป",
+    "<b>คุณภาพสินเชื่อยืดหยุ่น:</b> credit quality \"resilient\" ตามที่ผู้บริหารระบุ แม้อยู่ในช่วงดอกเบี้ยสูง",
+    "<b>Balance sheet optimization:</b> ทยอย prepay Purchase Money Note (อีก $2.5B ใน 2Q69) ลดภาระดอกเบี้ยจ่ายและความเสี่ยงด้าน funding"
+  ],
+  "risks": [
+    "<b>เงินฝากกลุ่ม venture capital/innovation economy ผันผวนตามวัฏจักร:</b> รับมาจาก SVB — วัฏจักร VC ซบเซาอาจทำให้เงินฝากไหลออกเร็ว ซ้ำรอยความเสี่ยงที่ทำให้ SVB เดิมล้ม",
+    "<b>การกระจุกตัวสินเชื่อเฉพาะทาง:</b> venture debt + CIT equipment/factoring มีความอ่อนไหวต่อวัฏจักรเศรษฐกิจมากกว่าสินเชื่อรีเทลทั่วไป",
+    "<b>Purchase accounting accretion (PAA) จะทยอยหมดไป:</b> ปัจจุบันหนุน NIM ~9bps (3.10% vs 3.01% ไม่รวม PAA) — ผลบวกนี้จะลดลงตามเวลาเมื่อส่วนลดจากดีล SVB/CIT ทยอย amortize หมด",
+    "<b>ราคาต่อหุ้นสูงมาก:</b> ระดับหลักพันดอลลาร์ (~$2,100+) ทำให้สภาพคล่อง/การเข้าถึงของนักลงทุนรายย่อยจำกัดกว่าหุ้นธนาคารทั่วไป",
+    "<b>Analyst consensus เป็น Hold:</b> เป้าเฉลี่ย {{analyst.target}} (n=13) ให้ upside ~10.6% จากราคาปัจจุบัน แต่ยังเป็นเพียงมุมมอง Hold ไม่ใช่สัญญาณซื้อชัดเจน",
+    "<b>ความเสี่ยง execution จากขนาดที่โตเร็วผ่าน M&A:</b> การผสาน 3 แฟรนไชส์ (Legacy/CIT/SVB) ต่อเนื่องยังมีความเสี่ยงด้านระบบ/บุคลากร/regulatory"
+  ],
+  "extras": [],
+  "v2Display": {
+    "fv": 2282.47,
+    "fvRange": [
+      2125.42,
+      2439.51
+    ],
+    "legValues": [
+      2439.51,
+      null
+    ],
+    "targets": [
+      1531.44,
+      2752.53,
+      3686.15
+    ],
+    "cards": {
+      "pe": {
+        "v": "~10.8x",
+        "d": "fwd P/E ~11.0x (FY2026e EPS $192.77)",
+        "op": "pxOverBase",
+        "base": 192.77
+      },
+      "netIncome": {
+        "v": "$2,268M",
+        "d": "+5.5% เทียบ FY2568"
+      },
+      "revenue": {
+        "v": "$9,332M",
+        "d": "+3.9% YoY"
+      }
+    },
+    "rets": {
+      "texts": [
+        "−25.8% (3 ปี)",
+        "+32.9% (3 ปี)",
+        "+77.6% (3 ปี)"
+      ],
+      "neg": "−",
+      "perYear": "cagr",
+      "div": true
+    }
+  },
+  "_sig": "sha256:94af4edb488c4413fd0ec8174192c95c4bc38296b7cf7cd7971eae227c455162"
+}

@@ -1,0 +1,269 @@
+{
+  "v": 3,
+  "symbol": "NDAQ",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Nasdaq, Inc.",
+    "exchange": "NASDAQ",
+    "sub": "ตลาดหลักทรัพย์ Nasdaq + รายได้ recurring จากเทค/ข้อมูล • Capital Access Platforms (listings/index/data) • Financial Technology (Verafin, AxiomSL/Calypso) • Market Services (trading/clearing)",
+    "headerTags": [
+      "Financial Exchanges & Data",
+      "Fintech / SaaS Transition"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis.com",
+      "Yahoo Finance",
+      "Nasdaq Investor Relations",
+      "Macrotrends"
+    ],
+    "themeLegacy": {
+      "accent": "#0072C6",
+      "accentDark": "#004F8A",
+      "darkGrad": "linear-gradient(135deg, #02070F 0%, #04162A 100%)",
+      "glow": "rgba(0,114,198,0.35)",
+      "subColor": "#3D97D8",
+      "headerMuted": "#1383f0",
+      "verdictText": "#CFE2F2",
+      "vcellLabel": "rgba(207,226,242,0.6)"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T17:02:51+07:00",
+      "v2Hash": "df4f1a965be1"
+    }
+  },
+  "market": {
+    "px": 93.55,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          85.49
+        ],
+        [
+          "พ.ย.25",
+          90.92
+        ],
+        [
+          "ธ.ค.25",
+          97.13
+        ],
+        [
+          "ม.ค.26",
+          96.89
+        ],
+        [
+          "ก.พ.26",
+          87.58
+        ],
+        [
+          "มี.ค.26",
+          84.89
+        ],
+        [
+          "เม.ย.26",
+          91.91
+        ],
+        [
+          "พ.ค.26",
+          92.52
+        ],
+        [
+          "มิ.ย.26",
+          78.82
+        ],
+        [
+          "ก.ค.26",
+          94.19
+        ],
+        [
+          "ส.ค.26",
+          98.61
+        ],
+        [
+          "ก.ย.26",
+          93.55
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 76.55,
+      "hi": 101.79
+    }
+  },
+  "fundamentals": {
+    "dps": 1.24,
+    "bvps": 21.4,
+    "shares": 558977372,
+    "peAvg5y": 25.9,
+    "netIncome": 1970000000,
+    "eps": 3.43,
+    "roe": 16.5,
+    "revenue": 5610000000,
+    "opMargin": 48.1,
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation",
+      "inputs": {
+        "multiple": 25.9,
+        "multipleSource": "median5y"
+      },
+      "note": "มัธยฐานย้อนหลัง 5 FY ของ NDAQ เอง (ราคาเฉลี่ยของปี ÷ EPS ปีนั้น: 28.1x / 34.7x / 25.9x / 25.8x / 25.1x) ไม่ได้อิงจาก P/E ปัจจุบัน",
+      "family": "market"
+    },
+    {
+      "method": "dcf",
+      "label": "DCF (10 ปี FCF/หุ้น)",
+      "inputs": {
+        "stages": [
+          {
+            "years": 5,
+            "g": 8
+          },
+          {
+            "years": 5,
+            "g": 5
+          }
+        ],
+        "tg": 3,
+        "r": 8.5,
+        "rfCurrency": "USD"
+      },
+      "override": {
+        "fcf": 1900523064.8,
+        "netDebt": 0,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "สมมติฐานของผู้วิเคราะห์: FCF โต 8%/ปี ปี 1–5 และ 5%/ปี ปี 6–10 · TV = 62% ของมูลค่า",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "peAvg5y",
+      "pbv",
+      "netIncome",
+      "eps",
+      "bvps",
+      "roe",
+      "revenue",
+      "opMargin",
+      "yield",
+      "custom:0"
+    ],
+    "custom": [
+      {
+        "label": "ARR (Recurring)",
+        "value": "$3.1B",
+        "note": "+10% YoY · SaaS +13%",
+        "tone": "pos"
+      }
+    ],
+    "notes": {
+      "mcap": "~559M shares outstanding",
+      "pe": "(GAAP diluted)",
+      "peAvg5y": "มัธยฐาน 5 FY · range 25.1x–34.7x",
+      "pbv": "BVPS ~{{bvps}}",
+      "netIncome": "GAAP · FY2568 $1.79B (+10% vs FY2568)",
+      "eps": "diluted TTM · FY2568 $3.09",
+      "bvps": "หลัง goodwill จาก Adenza (คำนวณจาก D/E 0.78)",
+      "roe": "FY2568 15.3% · FY2567 10.1%",
+      "revenue": "TTM +14% YoY · FY2568 $5.25B",
+      "opMargin": "TTM (vendor) · FY2568 47.3%",
+      "yield": "FCF TTM ~$1.95B"
+    },
+    "hint": "ข้อมูล ณ 21 ก.ย. 2569 · ปีงบการเงิน 2568 + TTM"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 8,
+        "exitMultiple": 19,
+        "divCum": 3.72,
+        "desc": "Adenza integration ล่าช้า, trading volume ซบเซา"
+      },
+      {
+        "growth": 12,
+        "exitMultiple": 21,
+        "divCum": 3.72,
+        "desc": "ARR โต 10–13%, deleveraging ดี, re-rating fintech"
+      },
+      {
+        "growth": 15,
+        "exitMultiple": 22,
+        "divCum": 3.72,
+        "desc": "Verafin/Adenza crosssell ดีเกินคาด, P/E re-rating 22x+"
+      }
+    ],
+    "exitDp": 0,
+    "note": "การคาดการณ์อิง EPS ฐาน {{eps}} (TTM, GAAP diluted) · ทั้ง 3 scenario รวมปันผลรวม 3 ปี ~$3.72 ({{dps}}/ปี) · Bear case ให้ผล {{scn.bear.ret}} เพราะ de-rating เหลือ 19x และ EPS โตช้า · Base case {{scn.base.ret}} ใช้ P/E ออก 21x (ต่ำกว่ามัธยฐานย้อนหลัง 25.9x) ซึ่งสมเหตุสมผลถ้า ARR โตต่อเนื่องและ D/E ลดลง · Bull case {{scn.bull.ret}} ต้องการทั้ง EPS growth แข็งและ multiple expansion · ผลตอบแทนจริงขึ้นอยู่กับ integration Adenza, ดอกเบี้ย, และ sentiment ตลาด fintech/exchange",
+    "hintNote": "(TTM)"
+  },
+  "analyst": {
+    "target": 109.67,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ราคาปิดรายเดือนของ NDAQ เพิ่มขึ้น +9.4% ในช่วง 1 ปี (ต.ค. 2568 – ก.ย. 2569) จาก $85.49 ผันผวนตลอดปี ขึ้นไปที่ $97.13 ในเดือน ธ.ค. 2568 ก่อนร่วงลงไปทำจุดต่ำสุดที่ $78.82 ในเดือน มิ.ย. 2569 แล้วดีดกลับแรงเป็น $94.19 ในเดือน ก.ค. 2569 (+19.5% จากจุดต่ำสุด) และแตะจุดสูงสุดของช่วงที่ $98.61 ในเดือน ส.ค. 2569 สะท้อน sentiment ที่ฟื้นต่อหุ้น fintech/exchange ระดับปัจจุบันอยู่สูงกว่า Fair Value {{fv}} เล็กน้อย แต่ยังต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ {{analyst.target}} ({{analyst.pct}})",
+    "valuation": "FV เฉลี่ยของ 2 ตระกูลอิสระ: P/E มัธยฐานย้อนหลังให้ {{fvHigh}} และ DCF ให้ {{fvLow}} (ห่างกันน้อยกว่า 2 เท่า จึงเฉลี่ยได้) · เป้านักวิเคราะห์ ({{analyst.target}}, Buy, 15 ราย) และ forward P/E ของ vendor ใช้เป็นบริบทเท่านั้น ไม่เป็นขาของ FV (vendor forward EPS $4.68 เป็นของ FY2027E ไม่ใช่ FY2026E $4.14 ซึ่งให้ P/E ราว 22.6x จากราคาล่าสุด) · ผลอ่อนไหวต่อสมมติฐาน: P/E ที่ 22x ให้ $75.5 · DCF ที่ r 9% ให้ $77.3 · แหล่ง: StockAnalysis.com, Yahoo Finance, Nasdaq IR, Macrotrends",
+    "gauge": "ราคาปัจจุบัน {{px}} อยู่สูงกว่า Fair Value {{fv}} (MOS {{mos}}) — ตลาดให้ premium กลับมาหลังจากร่วงลงไปใกล้ 52w low ในเดือน มิ.ย. 2569 ยังมี upside ต่อเป้านักวิเคราะห์ {{analyst.target}} ({{analyst.pct}}) · โซน MOS 20% ({{mos20}}) และ MOS 30% ({{mos30}}) อยู่ต่ำกว่าราคาปัจจุบันมาก เป็นสัญญาณว่า NDAQ ไม่ใช่ deep value ที่ระดับนี้ นักลงทุนที่รอจังหวะเข้าซื้อควรรอย่อตัวลงมาใกล้ Fair Value หรือต่ำกว่า",
+    "mos": "MOS ติดลบ — ราคาแพงกว่ามูลค่าเหมาะสมเล็กน้อย หลังดีดตัวขึ้นจาก 52w low ยังไม่ใช่จังหวะเข้าซื้อเชิง value investing รอย่อตัวลงมาใกล้ Fair Value ก่อน",
+    "verdictHeadline": "Fairly Valued — ราคาสูงกว่า Fair Value เล็กน้อย หลัง Re-rate สู่ Fintech/SaaS",
+    "verdictBody": "Nasdaq กำลังเปลี่ยนจาก exchange แบบดั้งเดิมสู่ recurring fintech/data platform — ARR $3.1B โต 10% ต่อปี (SaaS +13%), Verafin ใน anti-financial crime และ Adenza ใน RegTech คือเครื่องยนต์ใหม่ที่ตลาดยังให้ multiple ต่ำอยู่ ราคาปัจจุบัน {{px}} ดีดตัวขึ้นมาจาก 52w low $76.55 หลังตลาดคลาย sentiment ลบต่อ fintech/exchange sector Fair Value {{fv}} (เฉลี่ย P/E มัธยฐานย้อนหลังกับ DCF) ให้ MOS {{mos}} — ราคาแพงกว่ามูลค่าเหมาะสมเล็กน้อย ไม่ใช่จุดเข้าที่มี margin of safety แม้ธุรกิจพื้นฐาน (deleveraging + ARR growth) ยังไปได้ดี นักวิเคราะห์ consensus 15 ราย ให้เป้า {{analyst.target}} ({{analyst.pct}}) เป็นบริบทที่ไม่ได้นับใน FV",
+    "strategy": "รอย่อตัวเข้าใกล้ Fair Value {{fv}} หรือต่ำกว่าก่อนทยอยสะสม · ที่ราคาปัจจุบัน {{px}} ยังไม่มี margin of safety พอ · ติดตาม catalyst: deleveraging ต่อ + ARR โต 10%+ ต่อเนื่อง · MOS 20% ({{mos20}}) คือโซน aggressive accumulate ถ้าตลาดขายเกินอีกครั้ง · ตั้ง stop ต่ำกว่า 52w low $76.55 อย่างชัดเจน · ถือระยะ 2–3 ปีเพื่อ benefit จาก fintech transition full",
+    "disclaimerSources": "ข้อมูลอ้างอิง: StockAnalysis.com · Yahoo Finance · Nasdaq Investor Relations · Macrotrends · งบการเงิน FY2568 (Q4 2025) · ราคา ณ {{priceDate}}"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 2 วิธี (คนละตระกูล)"
+  },
+  "catalysts": [
+    "<b>ARR โต 10%+ ต่อเนื่อง:</b> Annual Recurring Revenue $3.1B (+10% YoY) กับ SaaS segment +13% คือเครื่องยนต์ใหม่ที่กำลัง replace รายได้ transaction ที่ผันผวน",
+    "<b>Verafin anti-financial crime:</b> RegTech สำหรับธนาคารทั่วโลก — market ขนาดใหญ่ penetration ยังต่ำ crosssell กับ Adenza ยิ่งเพิ่ม TAM",
+    "<b>Adenza (AxiomSL + Calypso) deleveraging:</b> D/E ลดจาก 1.01 (FY2566) → 0.78 (TTM) หนี้รวมลดจาก $10.9B เหลือ $9.3B FCF TTM ~$1.95B → multiple re-rating เป็น catalyst",
+    "<b>Index/data recurring monopoly:</b> ดัชนี Nasdaq-100 + data licensing ขึ้นราคาได้ แทบไม่มีต้นทุนแปรผัน margin ดี",
+    "<b>นักวิเคราะห์ consensus Buy:</b> เป้าเฉลี่ย {{analyst.target}} ({{analyst.pct}}) จาก 15 ราย (Yahoo, ระดับ Buy) — ใช้เป็นบริบท ไม่ใช่ขาของ FV"
+  ],
+  "risks": [
+    "<b>Goodwill จาก Adenza:</b> ROE ขึ้นจาก 10.1% (FY2567) เป็น 16.5% (TTM) แล้ว แต่ถ้า Adenza ไม่ deliver revenue synergy ตามแผน จะกดดัน multiple ต่อเนื่อง",
+    "<b>Market Services cyclical:</b> รายได้ trading/clearing ~23% ของรายได้รวมผันผวนตาม volume ตลาด — ตลาดซบเซา/ผันผวนต่ำกดรายได้ segment นี้",
+    "<b>Integration risk fintech:</b> Verafin + Adenza ยังอยู่ระหว่าง integration ความล่าช้าหรือ churn ลูกค้า = ความเสี่ยงต่อ ARR growth",
+    "<b>ภาระดอกเบี้ย:</b> หนี้จาก Adenza deal ยังมีนัยสำคัญ ดอกเบี้ยสูงกดดัน GAAP EPS และลด flexibility ด้านทุน",
+    "<b>การแข่งขัน ICE / CME ใน data & tech:</b> Intercontinental Exchange และ CME Group ลงทุน fintech/data อย่างหนัก — space ไม่ใช่ monopoly ยาวนาน"
+  ],
+  "extras": [],
+  "v2Display": {
+    "fv": 86.73,
+    "fvRange": [
+      84.62,
+      88.84
+    ],
+    "legValues": [
+      null,
+      84.62
+    ],
+    "targets": [
+      null,
+      null,
+      114.8
+    ]
+  },
+  "_sig": "sha256:690049254a8356a7683979c440884c0e9ce5f4e7223e7db0e339da5e75ca55ed"
+}

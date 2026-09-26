@@ -1,0 +1,278 @@
+{
+  "v": 3,
+  "symbol": "KR",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "The Kroger Co.",
+    "exchange": "NYSE",
+    "sub": "Largest US supermarket chain (~$148B revenue, ~2,800 stores) • Albertsons merger blocked FTC Dec 2024 — back to standalone strategy • Simple Truth & Kroger private label • Pharmacy + fuel centers • eCommerce $16B+ • $7.5B share buyback completed",
+    "headerTags": [
+      "Consumer Staples",
+      "Grocery Retail"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "StockAnalysis.com",
+      "S&P Global Market Intelligence (ผ่าน StockAnalysis)"
+    ],
+    "themeLegacy": {
+      "accent": "#003DA5",
+      "accentDark": "#002880",
+      "darkGrad": "linear-gradient(135deg,#001a6e 0%,#003DA5 60%,#0052cc 100%)",
+      "glow": "rgba(0,61,165,0.35)",
+      "subColor": "#cddaef",
+      "headerMuted": "#c1d9ff",
+      "verdictText": "#e8f0fe",
+      "vcellLabel": "#dbe7fc"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T15:39:58+07:00",
+      "v2Hash": "8436b559f783"
+    }
+  },
+  "market": {
+    "px": 58.74,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          63.63
+        ],
+        [
+          "พ.ย.25",
+          67.28
+        ],
+        [
+          "ธ.ค.25",
+          62.48
+        ],
+        [
+          "ม.ค.26",
+          62.85
+        ],
+        [
+          "ก.พ.26",
+          68.24
+        ],
+        [
+          "มี.ค.26",
+          72.36
+        ],
+        [
+          "เม.ย.26",
+          68.07
+        ],
+        [
+          "พ.ค.26",
+          62.15
+        ],
+        [
+          "มิ.ย.26",
+          55.53
+        ],
+        [
+          "ก.ค.26",
+          57.74
+        ],
+        [
+          "ส.ค.26",
+          57.54
+        ],
+        [
+          "ก.ย.26",
+          58.74
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 54.15,
+      "hi": 76.58
+    }
+  },
+  "fundamentals": {
+    "eps": 4.85,
+    "dps": 1.56,
+    "shares": 590588700,
+    "epsForward": 5.19,
+    "netDebt": 22500000000,
+    "revenue": 149300000000,
+    "opMargin": 3.2,
+    "fcf": 2380000000,
+    "netIncome": 1080000000,
+    "debtToEquity": 4.13,
+    "roe": 14.4,
+    "fy": {
+      "period": "FY2026",
+      "eps": 4.85
+    },
+    "epsBasis": "adj-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation (Adjusted EPS)",
+      "inputs": {
+        "multiple": 15.9,
+        "multipleSource": "median5y",
+        "base": "epsForward"
+      },
+      "override": {
+        "epsForward": 4.85,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "family": "market"
+    },
+    {
+      "method": "dcf",
+      "label": "DCF (FCF to equity — คนละตระกูลกับ P/E)",
+      "inputs": {
+        "g1": 5,
+        "years1": 5,
+        "tg": 2,
+        "r": 8.5,
+        "rfCurrency": "USD"
+      },
+      "override": {
+        "netDebt": 0,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "สมมติฐานผู้วิเคราะห์ · สมมติฐานผู้วิเคราะห์ · 74.6% ของรวม · FCF หลังดอกเบี้ยแล้ว จึงไม่หัก net debt",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      {
+        "key": "peForward",
+        "tone": "none"
+      },
+      {
+        "key": "netDebt",
+        "tone": "neu"
+      },
+      "epsFy",
+      "revenue",
+      "opMargin",
+      {
+        "key": "fcf",
+        "tone": "pos"
+      },
+      "netIncome",
+      "debtToEquity",
+      "yield",
+      "roe"
+    ],
+    "notes": {
+      "mcap": "590.59 ล้านหุ้น (คงเหลือ)",
+      "pe": "Adj. EPS {{eps}} FY2026 • GAAP EPS TTM $1.72 (P/E GAAP ~34.9x) สูงเพราะรายการพิเศษ",
+      "peForward": "Adj. EPS consensus FY2027 $5.19 (19 นักวิเคราะห์)",
+      "netDebt": "หนี้ $24.16B − เงินสด $1.68B • D/E 4.13x",
+      "epsFy": "GAAP dil. $1.54 • consensus FY2027 $5.19",
+      "opMargin": "Gross margin 23.9% • Net margin 0.7% (GAAP) — grocery margin ต่ำ",
+      "fcf": "FY2026 $3.46B • FCF yield ~6.7% บน Market Cap $35.44B",
+      "netIncome": "FY2026 $1.01B vs FY2025 $2.65B (−62%) • GAAP รวมรายการพิเศษ",
+      "debtToEquity": "หุ้นลดจาก 720M เหลือ 629M (ถัวเฉลี่ย) จาก buyback",
+      "yield": "{{dps}}/หุ้น/ปี • payout ~32% ของ Adj. EPS",
+      "roe": "defensive grocery stock • ROE FY2025 26.9% ก่อนรายการพิเศษ FY2026"
+    },
+    "hint": "ข้อมูล FY2026 (สิ้นสุด 31 ม.ค. 2569 · ป้ายปีงบตาม StockAnalysis)"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 0,
+        "exitMultiple": 10,
+        "divCum": 4.68,
+        "desc": "Food deflation รุนแรง + Walmart/Aldi กดดัน margin; multiple หด"
+      },
+      {
+        "growth": 8,
+        "exitMultiple": 12,
+        "divCum": 4.92,
+        "desc": "Private label ขยาย; eCommerce profitable; buyback ต่อเนื่อง"
+      },
+      {
+        "growth": 12,
+        "exitMultiple": 14,
+        "divCum": 5.06,
+        "desc": "eCommerce บรรลุกำไร $400M; private label ดึง margin; multiple re-rating"
+      }
+    ],
+    "exitDp": 0,
+    "note": "การคาดการณ์อิง Adj. EPS FY2026 {{eps}} เป็นฐาน (ราคาเป้าคำนวณจาก EPS ปี 3 × P/E ออก ซึ่งเป็นสมมติฐาน) • Kroger เป็น defensive grocery stock ให้ผลตอบแทนปานกลางสม่ำเสมอมากกว่าหุ้นเติบโตสูง • ปันผลสะสม 3 ปี ~$4.7–$5.1 (DPS {{dps}} คงที่/โตช้า) ช่วย cushion downside • buyback ต่อเนื่องหนุน EPS ต่อหุ้น • ความเสี่ยงหลัก: food deflation กดดัน identical sales, ค่าจ้าง, รายการพิเศษที่กดกำไร GAAP"
+  },
+  "analyst": {
+    "target": 67.91,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ราคารายเดือน KR เคลื่อนในกรอบ $62–68 ช่วง ต.ค. 2568–ม.ค. 2569 ก่อนขึ้นแตะ <b>จุดสูงสุดรายเดือน $72.36</b> ในมี.ค. 2569 แล้วปรับลงต่อเนื่องเหลือ <b>จุดต่ำสุดรายเดือน $55.53</b> ในมิ.ย. 2569 (กรอบ 52 สัปดาห์ต่ำสุด $54.15) จากแรงกดดันของ food deflation, การแข่งขันจาก Walmart/Aldi/Lidl และต้นทุนแรงงาน ก่อนฟื้นกลับมาแถว {{px}} ตอน ก.ย. 2569 ผลตอบแทนรอบปีดูป้ายที่หัวรายงาน — ราคายังอยู่ใต้ Fair Value",
+    "valuation": "วิธี P/E ให้ $77.12 และ DCF ให้ $72.08 (สองขาห่างกัน ~1.07 เท่า) — เฉลี่ยเป็น <b>{{fv}}</b> • ความไวต่อสมมติฐาน: ถ้าใช้ P/E 14x แทนมัธยฐาน ขา P/E จะเหลือ $67.90 และ FV เฉลี่ยราว $70 (ช่องว่างจากราคาตลาดหดเหลือเพียงราว 14% ของ FV นั้น) — ผลจึงอ่อนไหวต่อ P/E เป้าหมาย • เป้านักวิเคราะห์เฉลี่ย {{analyst.target}} (22 คน, Buy) <b>ไม่ใช่ขาของ FV</b> ใช้เป็นบริบทเปรียบเทียบเท่านั้น • แหล่งอ้างอิง: Yahoo Finance, StockAnalysis.com (งบ, forecast จาก S&P Global Market Intelligence ณ 17 ก.ย. 2569)",
+    "gauge": "ราคาปัจจุบัน {{px}} อยู่ใกล้โซน MOS 20% ({{mos20}}) มาก — ซื้อขายใกล้ราคาที่ value investor ถือว่า \"น่าสนใจ\" แล้ว • MOS ปัจจุบัน <b>{{mos}}</b> จาก Fair Value {{fv}} • เป้านักวิเคราะห์ 22 คนเฉลี่ย {{analyst.target}} ต่ำกว่า FV ของเรา (ซึ่งไม่ได้ใช้เป้านั้นเป็นขา) • ปันผล {{yield}}",
+    "mos": "MOS ระดับ \"พอใช้\" — ราคาใกล้โซน MOS 20% ({{mos20}}) กำลังเข้าสู่ value zone",
+    "verdictHeadline": "Kroger: Defensive Value ราคาใกล้โซนสะสม",
+    "verdictBody": "KR ซื้อขายที่ Forward P/E ~11.6x บน Adj. EPS consensus FY2027 $5.19 ซึ่ง <b>ต่ำกว่ามัธยฐานย้อนหลัง 5 ปี 15.9x</b> (วัดบน EPS GAAP จึงเทียบเป็นแนวทาง) ราคา {{px}} อยู่ใกล้โซน MOS 20% ({{mos20}}) ทำให้ downside ค่อนข้างจำกัดในฐานะ defensive grocery stock จุดแข็งคือ <b>FCF TTM $2.38B</b> (FCF yield ~6.7%), buyback เชิงรุก, private label ขยายตัว • ข้อควรระวัง: กำไร GAAP FY2026 ตกแรง (NI −62% YoY) และ leverage สูง (D/E 4.13x) • นักวิเคราะห์ 22 คน consensus \"Buy\" เป้าเฉลี่ย {{analyst.target}} (ไม่ใช่ขาของ FV) • FV ของเราคิดจาก P/E มัธยฐาน + DCF จึงต่างจากเป้านักวิเคราะห์",
+    "strategy": "ราคาปัจจุบัน {{px}} เฉียดโซน MOS 20% ({{mos20}}) — เหมาะสำหรับ <b>ทยอยสะสม</b> สำหรับ defensive income investor ที่ต้องการปันผล {{yield}} + buyback upside • deep value ที่โซน MOS 30% ({{mos30}}) • Bull case ~$95 ภายใน 3 ปีหาก private label รักษา margin ได้และ multiple re-rate • ไม่เหมาะกับ growth investor ที่ต้องการ upside >20%/ปี",
+    "disclaimerSources": "แหล่งข้อมูล: Yahoo Finance (ราคา ณ {{priceDate}}, 52-week range $54.15–$76.58), StockAnalysis.com (งบการเงิน, forecast, analyst consensus 22 คน avg $67.91), S&P Global Market Intelligence (ผ่าน StockAnalysis)"
+  },
+  "text": {
+    "valHint": "2 วิธี • P/E (มัธยฐานย้อนหลัง) และ DCF (FCF ต่อผู้ถือหุ้น)",
+    "chartHint": "ราคารายเดือน • Yahoo Finance"
+  },
+  "catalysts": [
+    "<b>EPS Growth หลัง Albertsons:</b> Focus กลับมาที่ standalone operations; ทรัพยากรและ capital allocation ชัดเจน; consensus FY2027 adj. EPS $5.19 (+7% YoY จาก {{eps}})",
+    "<b>Private Label Expansion:</b> Simple Truth (natural/organic) + Kroger brand (~30% ของยอดขาย); margin สูงกว่า national brand; ลูกค้าซื้อซ้ำสูง; เติบโตเร็วในภาวะ food inflation",
+    "<b>eCommerce Turnaround:</b> eCommerce FY2025 เกิน $16B; last-mile delivery + click & collect ขยายตัว",
+    "<b>Massive Buyback Program:</b> $7.5B buyback เสร็จสิ้น; หุ้นถัวเฉลี่ยลดจาก 720M (FY2025) เป็น 629M (TTM) boost EPS per share",
+    "<b>Pharmacy & Fuel:</b> Kroger Health (pharmacy benefit management) + specialty pharmacy เป็น high-margin segment; ~1,600 fuel centers เป็น traffic driver + margin contributor",
+    "<b>Defensive ใน Downturn:</b> Beta 0.42 ต่ำมาก; ผู้บริโภคยังต้องซื้ออาหารในทุกสภาวะเศรษฐกิจ; private label รับอานิสงส์ consumer trade-down"
+  ],
+  "risks": [
+    "<b>Food Deflation:</b> ราคาอาหารที่ชะลอตัวกดดัน identical sales growth; รายได้ TTM โตเพียง +1.6% YoY; deflation ยืดเยื้ออาจทำให้ revenue stagnate",
+    "<b>การแข่งขันรุนแรง:</b> Walmart (price leader + growing grocery), Costco (loyalty), Amazon Fresh, Aldi/Lidl (discount hard discounters) กดดัน market share และ margin",
+    "<b>Margin บาง + รายการพิเศษ:</b> Operating margin TTM ~3.2%, Net margin GAAP 0.7%; NI FY2026 ลด 62% YoY เหลือ $1.01B จากรายการพิเศษ — GAAP ค้างต่ำกว่า adj. มาก",
+    "<b>Labor Costs:</b> ต้นทุนค่าจ้างพนักงานและ union contract สูงขึ้น; Kroger มีพนักงาน ~430,000 คน ส่วนใหญ่ union; wage inflation เป็น structural headwind",
+    "<b>High Leverage:</b> Net Debt ~$22.5B; Debt/Equity 4.13x; หากกำไรลดลง ความสามารถ buyback/ปันผลถูกจำกัด",
+    "<b>eCommerce Profitability:</b> การส่งอาหารสด last-mile มีต้นทุนสูง; ยังขาดทุนในส่วน digital delivery; ต้องการลงทุน capex ต่อเนื่อง"
+  ],
+  "extras": [],
+  "v2Display": {
+    "fv": 74.6,
+    "fvRange": [
+      72,
+      77
+    ],
+    "legValues": [
+      null,
+      72.08
+    ],
+    "targets": [
+      null,
+      73.31,
+      null
+    ],
+    "cards": {
+      "revenue": {
+        "v": "~$149.3B",
+        "d": "FY2026 $147.6B • TTM โต +1.6% YoY"
+      }
+    }
+  },
+  "_sig": "sha256:c018075c61b8aec0d19fce7aa1ce4f25d29035c3b01d6d5ab3ee60754610b9cc"
+}

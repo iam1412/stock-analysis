@@ -1,0 +1,287 @@
+{
+  "v": 3,
+  "symbol": "TT",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Trane Technologies plc",
+    "exchange": "NYSE",
+    "sub": "ระบบ HVAC เชิงพาณิชย์/ที่อยู่อาศัย (Trane, American Standard) • ระบบทำความเย็นขนส่ง Thermo King • โซลูชันลดคาร์บอน/cooling สำหรับ Data Center",
+    "headerTags": [
+      "Industrials",
+      "HVAC / Climate"
+    ],
+    "analysisDate": "2026-09-22",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis.com",
+      "Yahoo Finance",
+      "Trane Technologies Investor Relations",
+      "Macrotrends"
+    ],
+    "themeLegacy": {
+      "accent": "#0E7C7B",
+      "accentDark": "#0A5A59",
+      "darkGrad": "linear-gradient(135deg, #02100F 0%, #06201F 100%)",
+      "glow": "rgba(14,124,123,0.35)",
+      "subColor": "#3FB5B3",
+      "headerMuted": "#199995",
+      "verdictText": "#CDEDEC",
+      "vcellLabel": "rgba(205,237,236,0.6)"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-22T01:46:25+07:00",
+      "v2Hash": "715c7c98dbf9"
+    }
+  },
+  "market": {
+    "px": 454.44,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          448.65
+        ],
+        [
+          "พ.ย.25",
+          421.48
+        ],
+        [
+          "ธ.ค.25",
+          389.2
+        ],
+        [
+          "ม.ค.26",
+          420.58
+        ],
+        [
+          "ก.พ.26",
+          462.32
+        ],
+        [
+          "มี.ค.26",
+          416.74
+        ],
+        [
+          "เม.ย.26",
+          492.54
+        ],
+        [
+          "พ.ค.26",
+          451.3
+        ],
+        [
+          "มิ.ย.26",
+          491.16
+        ],
+        [
+          "ก.ค.26",
+          454.95
+        ],
+        [
+          "ส.ค.26",
+          444.4
+        ],
+        [
+          "ก.ย.26",
+          454.44
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 348.06,
+      "hi": 505.87
+    }
+  },
+  "fundamentals": {
+    "eps": 13.31,
+    "dps": 4.2,
+    "shares": 221000000,
+    "roe": 36.6,
+    "opMargin": 18.6,
+    "netMargin": 13.9,
+    "roic": 25.7,
+    "grossMargin": 36.2,
+    "backlog": 7800000000,
+    "fy": {
+      "period": "FY2025",
+      "revenue": 21320000000
+    },
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation",
+      "inputs": {
+        "multiple": 33,
+        "multipleSource": "author"
+      },
+      "note": "ลดจาก 34x เล็กน้อย สะท้อน normalization",
+      "family": "market"
+    },
+    {
+      "method": "pe",
+      "label": "Forward P/E",
+      "inputs": {
+        "multiple": 32,
+        "multipleSource": "author"
+      },
+      "override": {
+        "eps": 14.75,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "อิง growth visibility จาก backlog $7.8B",
+      "family": "market"
+    },
+    {
+      "method": "evebitda",
+      "label": "EV/EBITDA",
+      "inputs": {
+        "multiple": 22,
+        "multipleSource": "peer"
+      },
+      "override": {
+        "ebitda": 4460000000,
+        "netDebt": 3000000000,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "peer multiple",
+      "family": "market"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "eps",
+      "roe",
+      {
+        "key": "revenueFy",
+        "tone": "none"
+      },
+      "opMargin",
+      "netMargin",
+      "roic",
+      "yield",
+      "grossMargin",
+      {
+        "key": "backlog",
+        "tone": "pos"
+      },
+      {
+        "key": "range52w",
+        "tone": "neu"
+      }
+    ],
+    "notes": {
+      "mcap": "221M shares outstanding",
+      "eps": "FY26E $14.65–14.85 (+12%)",
+      "roe": "ROIC 25.7%",
+      "opMargin": "ขยายต่อเนื่อง",
+      "netMargin": "pricing power สูง",
+      "roic": "สูงกว่า WACC มาก",
+      "yield": "จ่ายต่อเนื่อง",
+      "grossMargin": "ขยายจาก 31.6% (FY21)",
+      "backlog": "+15% YoY สูงสุดเป็นประวัติการณ์"
+    },
+    "hint": "ข้อมูล TTM / FY2025"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 7,
+        "exitMultiple": 26,
+        "divCum": 13.26,
+        "desc": "เศรษฐกิจชะลอ/ก่อสร้างหดตัว"
+      },
+      {
+        "growth": 11,
+        "exitMultiple": 30,
+        "divCum": 13.86,
+        "desc": "backlog แปลงรายได้ตามแผน"
+      },
+      {
+        "growth": 14,
+        "exitMultiple": 33,
+        "divCum": 14.58,
+        "desc": "Data Center boom + retrofit ต่อเนื่อง"
+      }
+    ],
+    "exitDp": 0,
+    "note": "Base case อิง EPS โต 11%/ปี (consensus) × P/E 30x ออก → $546 (+18% รวมปันผล) · Bull case อิง Data Center demand พุ่ง + margin expansion ต่อเนื่อง EPS โต 14% × P/E 33x → $651 (+46%) · Bear case อิงเศรษฐกิจ slowdown กระทบ Thermo King + Residential HVAC อ่อนตัว EPS โต 7% × P/E 26x → $424 (−4%) · ผลตอบแทนปันผลเพิ่ม ~$4.2/ปี ≈ $12–15 รวม 3 ปี (ตัวเลขประมาณการ)"
+  },
+  "analyst": {
+    "target": 525,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ราคา TT แกว่งขึ้นจาก $415.60 (ส.ค. 68) สู่ $454.47 (ก.ค. 69) คิดเป็น +9.4% รอบปี จุดต่ำสุดที่ $389.20 ในเดือน ธ.ค. 68 ก่อนพุ่งขึ้นแตะจุดสูงสุด $492.54 ในเดือน เม.ย. 69 (ไฮไลต์สีแดง) หนุนโดย bookings Data Center และ backlog สูงเป็นประวัติการณ์ $7.8B ก่อนย่อลงมาซื้อขายใกล้ระดับปัจจุบัน ราคาปัจจุบัน {{px}} อยู่เหนือ Fair Value {{fv}} ประมาณ 1.7%",
+    "valuation": "วิธี P/E (TTM) ให้ค่าต่ำสุด $439.23 สะท้อนการใช้ P/E 33x บน EPS TTM ล่าสุด {{eps}} · Forward P/E ให้ $472 สูงกว่า เพราะ EPS FY26E เติบโต +12% · EV/EBITDA ให้ $430.30 กลาง ๆ สอดคล้อง peer Carrier/Lennox · เฉลี่ย 3 วิธี = (439.23+472.00+430.30)/3 = $447.18 ≈ $447 · DDM ให้ yield 0.93% ต่ำกว่า 1.5% จึงใช้เป็น floor เท่านั้น ไม่นำมา weight ใน FV",
+    "gauge": "ราคาปัจจุบัน {{px}} อยู่สูงกว่า Fair Value {{fv}} ประมาณ 1.7% (MOS ติดลบเล็กน้อย) แสดงว่าตลาดให้ premium เล็กน้อยกับ growth visibility และ backlog $7.8B · โซน MOS 20% อยู่ที่ {{mos20}} และ MOS 30% ที่ {{mos30}} เป็นจุดน่าสะสมระยะยาวหากย่อลงมา · นักวิเคราะห์ 21 ราย มีเป้าเฉลี่ย {{analyst.target}} ({{analyst.pct}} จากราคาปัจจุบัน)",
+    "mos": "ราคาสูงกว่ามูลค่าเหมาะสม — ยังไม่มี Margin of Safety · ธุรกิจดีแต่ราคาตึงเล็กน้อย",
+    "verdictHeadline": "ธุรกิจดีมาก · ราคาตึงเล็กน้อย · รอจังหวะสะสม",
+    "verdictBody": "Trane Technologies เป็นผู้นำ HVAC โลกที่ได้ secular tailwind แรง 3 ด้าน: decarbonization, AI Data Center cooling demand, และ retrofit อาคารเก่า · backlog $7.8B สูงสุดเป็นประวัติการณ์ให้ revenue visibility ชัดเจน · ROIC 25.7% และ EPS CAGR ~21% (FY21–25) สะท้อนคุณภาพธุรกิจชั้นนำ · อย่างไรก็ตาม ราคาปัจจุบัน {{px}} (P/E ~34.2x) สูงกว่า Fair Value {{fv}} ประมาณ 1.7% ธุรกิจดีแต่ราคาตึงเล็กน้อย · นักวิเคราะห์ 21 ราย ยังมีเป้าเฉลี่ย $525 บ่งชี้ upside อีก ~15%",
+    "strategy": "ราคาปัจจุบัน $454 ยังไม่มี Margin of Safety · ผู้ที่ถือหุ้นอยู่ — hold รับ upside ตาม $525 · ผู้สนใจเข้าใหม่ — รอโซน $415–447 (ใกล้ FV) หรือสะสมที่ $357–415 (MOS 10–20%) เพื่อ risk/reward ดีขึ้น · Data Center cooling เป็น long-term theme แข็งแกร่ง ราคาที่ดีกว่าคุ้มค่ารอ",
+    "disclaimerSources": "ที่มาข้อมูล: StockAnalysis.com / Yahoo Finance / Trane Technologies Investor Relations / Macrotrends"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 3 วิธี"
+  },
+  "catalysts": [
+    "<b>Decarbonization Megatrend:</b> กฎหมายลดคาร์บอน (IRA, EU Green Deal) หนุนความต้องการ HVAC ประสิทธิภาพสูง · Trane เป็น leader ที่มีพอร์ตโซลูชันพร้อม",
+    "<b>Data Center Cooling Boom:</b> Americas Commercial HVAC bookings +35% YoY หนุนโดย AI infrastructure · ความต้องการ cooling สำหรับ GPU cluster พุ่งสูง",
+    "<b>Backlog สูงสุดเป็นประวัติการณ์:</b> $7.8B (+15% YoY) สิ้นปี 2025 ให้ visibility รายได้ล่วงหน้า 12–18 เดือน",
+    "<b>Retrofit อาคารเก่า:</b> อาคารพาณิชย์ในสหรัฐฯ และยุโรปอายุเฉลี่ยสูง · wave การเปลี่ยน HVAC ยังยืดยาวอีก 10+ ปี",
+    "<b>Pricing Power และ Margin Expansion:</b> Gross margin ขยายจาก 31.6% → 36.2% ใน 4 ปี · EPS CAGR ~21% ชนะ revenue growth",
+    "<b>นักวิเคราะห์เป้า {{analyst.target}}:</b> 21 ราย เป้าเฉลี่ย $525 ({{analyst.pct}} จากราคาปัจจุบัน) ส่วนใหญ่ Buy/Outperform"
+  ],
+  "risks": [
+    "<b>Valuation สูง P/E 37x:</b> ราคาตึง ตลาดคาด growth สูงต่อเนื่อง · หาก growth miss แม้เล็กน้อยอาจ de-rate แรง",
+    "<b>Thermo King (Transport) อ่อนแอ:</b> ตลาดรถบรรทุก/ตู้แช่ชะลอ กดดันส่วนงาน ~15% ของรายได้",
+    "<b>Residential HVAC กดดัน:</b> ตลาดบ้านที่อยู่อาศัยชะลอตาม housing market · mix shift ลดมาร์จิ้นเฉลี่ย",
+    "<b>Cyclical Risk:</b> Commercial construction และ capex อุตสาหกรรมอ่อนไหวต่อวัฏจักรเศรษฐกิจ · recession = bookings หด",
+    "<b>ต้นทุนวัตถุดิบ/แรงงาน:</b> ทองแดง เหล็ก refrigerant ผันผวน · ต้นทุนแรงงานขึ้น squeeze margin ได้",
+    "<b>Competition:</b> Carrier, Lennox, Daikin ลงทุน R&D heavy · โซลูชัน heat pump และ cooling ใหม่แข่งขันสูงขึ้น"
+  ],
+  "extras": [],
+  "v2Display": {
+    "fv": 447,
+    "fvRange": [
+      430,
+      472
+    ],
+    "legValues": [
+      null,
+      null,
+      430.3
+    ],
+    "targets": [
+      424.06,
+      546,
+      650.76
+    ],
+    "cards": {
+      "revenueFy": {
+        "v": "$21.32B",
+        "d": "CAGR ~11% (FY21–25)"
+      },
+      "range52w": {
+        "v": "$348.06",
+        "d": "— $505.87"
+      }
+    }
+  },
+  "_sig": "sha256:a6383c07c73e779da4c801e4229aaca73030c8080c124351dd36afe9ef8f21f9"
+}

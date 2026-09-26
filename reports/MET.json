@@ -1,0 +1,257 @@
+{
+  "v": 3,
+  "symbol": "MET",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "MetLife, Inc.",
+    "exchange": "NYSE",
+    "sub": "Global life & health insurance • Group Benefits (US employer-sponsored life/disability) • Pension risk transfer — RIS • Asia operations • Latin America & EMEA • Run-off MetLife Holdings (post-BHF spinoff 2017)",
+    "headerTags": [
+      "Insurance — Life & Health",
+      "Global Diversified"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "StockAnalysis.com",
+      "MetLife IR"
+    ],
+    "themeLegacy": {
+      "accent": "#0070C0",
+      "accentDark": "#004F8B",
+      "darkGrad": "linear-gradient(135deg,#003366 0%,#005A9E 60%,#0070C0 100%)",
+      "glow": "rgba(0,112,192,0.35)",
+      "subColor": "#eff7fd",
+      "headerMuted": "#f4f9fd",
+      "verdictText": "#eff7ff",
+      "vcellLabel": "#ffffff"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T16:19:45+07:00",
+      "v2Hash": "bd912e67f251"
+    }
+  },
+  "market": {
+    "px": 97.7,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          79.82
+        ],
+        [
+          "พ.ย.25",
+          76.56
+        ],
+        [
+          "ธ.ค.25",
+          78.94
+        ],
+        [
+          "ม.ค.26",
+          78.88
+        ],
+        [
+          "ก.พ.26",
+          72.07
+        ],
+        [
+          "มี.ค.26",
+          70.72
+        ],
+        [
+          "เม.ย.26",
+          80.1
+        ],
+        [
+          "พ.ค.26",
+          82.69
+        ],
+        [
+          "มิ.ย.26",
+          84.61
+        ],
+        [
+          "ก.ค.26",
+          96.13
+        ],
+        [
+          "ส.ค.26",
+          95.17
+        ],
+        [
+          "ก.ย.26",
+          97.7
+        ]
+      ],
+      "gridFmt": "v.toFixed(0)",
+      "dataFmt": "d[1].toFixed(2)"
+    },
+    "range52w": {
+      "lo": 67.33,
+      "hi": 100.93
+    }
+  },
+  "fundamentals": {
+    "eps": 9.36,
+    "dps": 2.37,
+    "bvps": 57.41,
+    "shares": 635476927,
+    "peAvg5y": 12.8,
+    "roe": 17,
+    "roa": 0.5,
+    "beta": 0.78,
+    "fy": {
+      "period": "FY2568",
+      "eps": 8.89,
+      "revenue": 77100000000
+    },
+    "epsBasis": "adj-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation (adj. EPS)",
+      "inputs": {
+        "multiple": 9.3,
+        "multipleSource": "author"
+      },
+      "family": "market"
+    },
+    {
+      "method": "ddm",
+      "label": "DDM / Gordon Growth",
+      "inputs": {
+        "g": 6,
+        "r": 9
+      },
+      "note": "สะท้อน dividend yield ที่ยั่งยืน payout ratio ~25%",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "peAvg5y",
+      "pbv",
+      "epsFy",
+      "eps",
+      "custom:0",
+      "roe",
+      "revenueFy",
+      "custom:1",
+      "yield",
+      "beta"
+    ],
+    "custom": [
+      {
+        "label": "Adj. BVPS",
+        "value": "~{{bvps}}",
+        "note": "+4% YoY · GAAP BVPS $37.92"
+      },
+      {
+        "label": "PRT & RIS FY2568",
+        "value": "$14.2B PRT",
+        "note": "บวก UK longevity reins. $11.1B"
+      }
+    ],
+    "notes": {
+      "mcap": "~635M shares out. (คงเหลือ)",
+      "pe": "adj. operating EPS {{eps}} TTM",
+      "peAvg5y": "มัธยฐาน GAAP (7.9–34.5x) · ฐาน adj. FY25/FY24 ~9.1–9.4x",
+      "pbv": "adj. BVPS {{bvps}} (Q1 2569)",
+      "epsFy": "sh · +10% YoY · FY2567 = $8.08",
+      "eps": "Q2'68–Q1'69 · Q1'69 = $2.42 (+23%)",
+      "roe": "Q1'69: 17%, FY'68: 16% (mid target)",
+      "revenueFy": "+8.6% YoY · PFOs $57.6B",
+      "yield": "{{dps}}/sh ประจำปี · จ่าย 4 ครั้ง/ปี",
+      "beta": "ผันผวนน้อยกว่าตลาด"
+    },
+    "hint": "ข้อมูล ณ ก.ย. 2569 · EPS ใช้ Adjusted Operating EPS (non-GAAP) · GAAP EPS TTM $5.22 (StockAnalysis/Yahoo) ต่างเพราะ mark-to-market"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 2,
+        "exitMultiple": 8,
+        "divCum": 7.54,
+        "desc": "อัตราดอกเบี้ยกด, claims สูง"
+      },
+      {
+        "growth": 8,
+        "exitMultiple": 9.3,
+        "divCum": 7.54,
+        "desc": "PRT เติบโต, Asia ขยาย"
+      },
+      {
+        "growth": 14,
+        "exitMultiple": 10,
+        "divCum": 7.54,
+        "desc": "PRT+Asia breakthrough"
+      }
+    ],
+    "exitDp": 1,
+    "note": "การคาดการณ์อิง adjusted operating EPS ฐาน {{eps}} (TTM Q2'68–Q1'69) · Base สมมติ EPS โต 8%/ปี ต่ำกว่า consensus FY2026E $9.85 (+11.6% เทียบ FY2025 adj. $8.83) · P/E ออก Base 9.3x = ระดับที่วัดจากประวัติ adj. (9.1–9.4x) · Bear 8.0x ใกล้ค่าต่ำสุด 7.9x ของประวัติ 5 ปี · Bull 10.0x (สมมติฐาน re-rate เล็กน้อย) · Bear สมมติ slowdown เศรษฐกิจ + mortality/morbidity claims แย่ลง + P/E compression · Bull สมมติ pension risk transfer ยังเติบโตแรง (บริษัทต่างๆ ยังต้องการ offload pension liability) + Asia operations ขยายตัว · ปันผลรวม 3 ปีประมาณ $7.54 (อิง ~{{dps}}/ปี เติบโต ~6%/ปี)"
+  },
+  "analyst": {
+    "target": 105,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ราคา MET เริ่มกราฟที่ ~$79.82 (ต.ค. 68) ก่อนดิ่งต่ำสุดที่ $70.72 (มี.ค. 69) รับแรงกดดันจากความกังวลอัตราดอกเบี้ยและผลขาดทุน GAAP จากการ mark-to-market หลังจากนั้นฟื้นตัวต่อเนื่อง กระโดดขึ้นสู่ ~$96 ในเดือน ก.ค. 69 และปิดล่าสุดที่ {{px}} (สูงสุด 52 สัปดาห์ $100.93) รับแรงหนุนจาก Q1 2569 adjusted EPS +23% YoY + ดีล pension risk transfer สูงสุดเป็นประวัติการณ์",
+    "valuation": "ปรับโครง FV: ตัดขา Justified P/BV (ใช้ 1.6x ที่กำหนดเอง ไม่มีค่ามัธยฐานวัดรองรับ) และตัด P/E 10.5x เดิมที่ไม่มีที่มาจากค่าที่วัดได้ · เฉลี่ย 50/50 ของ P/E adj. ($87) และ DDM ($84) = FV {{fv}} · DDM อาศัย r 9% / g 6% ที่เป็นสมมติฐานของเราเอง และไวต่อ g มาก · มี 2 ตระกูล (กำไรและปันผล) แต่ตัวคูณ adj. มาจาก 2 ปีเท่านั้น จึงเป็นการประเมินที่ความเชื่อมั่นจำกัด · ทั้งสองขาต่ำกว่าราคาปัจจุบัน · เป้า consensus $105.06 (18 คน · Buy) เป็นบริบทตรวจความสอดคล้อง ไม่ใช่ขาของ FV",
+    "gauge": "MET ซื้อขายที่ {{px}} สูงกว่า Fair Value {{fv}} · ไม่มี margin of safety ในขณะนี้ · โซนทยอยสะสมที่น่าสนใจคือ <{{fv}} (ต่ำกว่า FV) · โซน deep value ที่ MOS 20% คือ {{mos20}} และ MOS 30% คือ {{mos30}} · นักวิเคราะห์ 18 คน consensus Buy เป้าเฉลี่ย $105.06 (สูงสุด $119 ต่ำสุด $84)",
+    "mos": "ราคาสูงกว่า Fair Value ชัดเจน · ไม่มี Margin of Safety ในขณะนี้ ควรรอจังหวะย่อ",
+    "verdictHeadline": "MET — Global Insurer คุณภาพสูง · ราคาใกล้เคียง FV · ถือ/รอจังหวะย่อ",
+    "verdictBody": "MetLife เป็นบริษัทประกันชีวิตระดับโลกที่มีธุรกิจกระจายตัวดีใน 5 ภูมิภาค โดดเด่นด้าน Pension Risk Transfer (PRT) ที่เติบโตจากกระแส de-risking ของกองทุนบำนาญบริษัทยักษ์ใหญ่ · Adjusted ROE 17% สูงกว่า target range 15-17% · EPS adj. TTM {{eps}} ที่ราคา {{px}} ทำให้ P/E adj. {{pe}}x สูงกว่าระดับประวัติ adj. ~9.1–9.4x · ความเสี่ยงหลักคือ GAAP EPS ผันผวนจาก mark-to-market (GAAP TTM $5.22) แต่ adjusted EPS เติบโตสม่ำเสมอ · ราคายืนยันจาก Yahoo และ StockAnalysis ตรงกัน ({{priceDate}}) · Consensus 18 นักวิเคราะห์ Buy เป้าเฉลี่ย $105.06",
+    "strategy": "ราคาแพงกว่า Fair Value แล้ว (MOS {{mos}}) รอจังหวะย่อก่อนทยอยสะสม · ทยอยสะสมเมื่อต่ำกว่า {{fv}} · จุดน่าสนใจมากที่ MOS 20% = {{mos20}} · Stop-loss พิจารณาที่ adj. ROE หลุดต่ำกว่า 14% หรือ PRT pipeline ชะลอตัวอย่างมีนัยสำคัญ",
+    "disclaimerSources": "ราคา: StockAnalysis.com ({{priceDate}}) · EPS adj. TTM: MetLife Q1 2569 Earnings Release + FY2568 Results · พื้นฐาน: MetLife Investor Relations, SEC Form 8-K, StockAnalysis.com"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 2 วิธี (กำไร + ปันผล)"
+  },
+  "catalysts": [
+    "<b>Pension Risk Transfer (PRT) บูม:</b> บริษัทขนาดใหญ่ต้องการ offload pension obligations ให้ insurers — MetLife เป็น leader ใน US+UK; FY68 ปิดดีล PRT $14.2B + UK longevity reins $11.1B (สูงสุดเป็นประวัติการณ์)",
+    "<b>Asia Growth Engine:</b> ธุรกิจประกันชีวิตใน Asia ยังเติบโตสูง โดยเฉพาะ Japan, Korea; MetLife มีฐานลูกค้าแข็งแกร่งและ brand recognition ที่ดี ช่วยหนุน EPS ในระยะยาว",
+    "<b>Investment Income สูงขึ้น:</b> อัตราดอกเบี้ยสูงช่วยหนุน Net Investment Income — Q1'69 NII +10% YoY ถึง $5.4B; พอร์ตตราสารหนี้ที่ reinvest ได้ยีลด์สูงขึ้น",
+    "<b>Share Buyback + Dividend Growth:</b> ส่งคืนผู้ถือหุ้น $4.4B ใน FY68 (buyback+dividend); payout ratio ต่ำ (~25%) มีช่องว่างเพิ่มได้อีก; dividend โต ~5-6%/ปีในช่วง 5 ปีที่ผ่านมา",
+    "<b>Group Benefits — US แข็งแกร่ง:</b> นายจ้างในสหรัฐฯ ยังต้องการ group life/disability; ราคาพรีเมียมปรับขึ้นได้ตาม claims experience; segment สร้างกระแสเงินสดสม่ำเสมอ",
+    "<b>กำไรคาดการณ์เร่งขึ้น:</b> consensus FY2026E adj. EPS $9.85 (+11.6% เทียบ FY2025 $8.83) และเป้าเฉลี่ย analyst $105.06 สูงกว่า Fair Value ของเรา; P/BV (adj.) {{pbv}}x อาจ re-rate ได้ถ้า GAAP earnings นิ่ง"
+  ],
+  "risks": [
+    "<b>GAAP EPS ผันผวนสูง:</b> GAAP EPS ต่างจาก adjusted EPS มากเพราะ mark-to-market derivatives — FY68 GAAP EPS $4.71 vs adjusted {{epsFy}}; ทำให้นักลงทุน retail สับสน",
+    "<b>ความเสี่ยงอัตราดอกเบี้ย:</b> หากอัตราดอกเบี้ยลดลงเร็ว spread การลงทุนจะแคบลง กระทบ NII; อัตราสูงเกินไปก็กระทบ bond portfolio GAAP mark",
+    "<b>Pandemic / Catastrophe Risk:</b> การระบาดใหญ่หรือภัยธรรมชาติรุนแรงกระทบ mortality/morbidity claims อย่างมีนัยสำคัญ; COVID-19 เป็นตัวอย่างที่กระทบ EPS รายไตรมาส",
+    "<b>Regulatory & Capital Requirements:</b> ข้อกำหนด solvency capital ที่เข้มงวดขึ้น (Bermuda BSCR, EU Solvency II) กระทบ capital allocation; ใน US อาจถูก designate เป็น SIFI อีกครั้ง",
+    "<b>Currency Risk:</b> รายได้จาก Asia+LatAm+EMEA คิดเป็นสัดส่วนสูง; เงินดอลลาร์แข็งค่ากระทบ translation เป็น USD (เช่น เยน/วอน อ่อนค่า)",
+    "<b>MetLife Holdings Run-off:</b> พอร์ต legacy retail insurance ที่กำลัง run-off อาจมีค่าใช้จ่ายไม่คาดคิดจากการปรับสมมติฐาน actuarial"
+  ],
+  "extras": [],
+  "v2Display": {
+    "fv": 85.4,
+    "fvRange": [
+      84,
+      87
+    ],
+    "targets": [
+      86.98,
+      117.19,
+      146.21
+    ]
+  },
+  "_sig": "sha256:9cf7e9720a07e12f1e6157b9774ca9a3bd4b14e68cea295c0976adf7a44f00b8"
+}

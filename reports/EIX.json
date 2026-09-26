@@ -1,0 +1,280 @@
+{
+  "v": 3,
+  "symbol": "EIX",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Edison International",
+    "exchange": "NYSE",
+    "sub": "Southern California Edison • 15M Customers in SoCal • Grid Hardening & Undergrounding • Eaton Fire (Jan 2025) Liability Under Cal Fire/CPUC Investigation",
+    "sectorLine": "EIX",
+    "headerTags": [
+      "Utilities — Regulated Electric (California)",
+      "Wildfire Liability Overhang"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis.com",
+      "Google Finance",
+      "Yahoo Finance",
+      "SEC EDGAR (10-K",
+      "8-K)"
+    ],
+    "priceNote": "งวดล่าสุดที่รายงาน: ไตรมาส 2 ปี 2569 / Q2 2026 — ประกาศ 30 ก.ค. 2569",
+    "themeLegacy": {
+      "accent": "#ea580c",
+      "accentDark": "#9a3412",
+      "darkGrad": "linear-gradient(135deg,#1c0a03 0%,#431407 55%,#7c2d12 100%)",
+      "glow": "rgba(234,88,12,0.35)",
+      "subColor": "#fdba74",
+      "headerMuted": "#e0b28e",
+      "verdictText": "#fff7ed",
+      "vcellLabel": "#e9c2a2"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T14:08:46+07:00",
+      "v2Hash": "53d0ccb271e1"
+    }
+  },
+  "market": {
+    "px": 52.65,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          55.38
+        ],
+        [
+          "พ.ย.25",
+          58.89
+        ],
+        [
+          "ธ.ค.25",
+          60.02
+        ],
+        [
+          "ม.ค.26",
+          62.28
+        ],
+        [
+          "ก.พ.26",
+          74.74
+        ],
+        [
+          "มี.ค.26",
+          73.18
+        ],
+        [
+          "เม.ย.26",
+          69.49
+        ],
+        [
+          "พ.ค.26",
+          69.94
+        ],
+        [
+          "มิ.ย.26",
+          74.45
+        ],
+        [
+          "ก.ค.26",
+          73.37
+        ],
+        [
+          "ส.ค.26",
+          53.98
+        ],
+        [
+          "ก.ย.26",
+          52.65
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 52,
+      "hi": 81.62
+    }
+  },
+  "fundamentals": {
+    "dps": 3.51,
+    "bvps": 48.9,
+    "shares": 384800000,
+    "netIncome": 3740000000,
+    "eps": 9.69,
+    "roe": 19.7,
+    "roa": 5.1,
+    "revenue": 19420000000,
+    "grossMargin": 19.3,
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "ddm",
+      "label": "DDM / Gordon Growth (วิธีหลัก)",
+      "inputs": {
+        "g": 4,
+        "r": 9.5
+      },
+      "note": "ระมัดระวังกว่า core EPS growth guidance 5–7%/ปี เพราะข้อจำกัดเงินทุนจาก wildfire liability · utility cost of equity ~8% + wildfire tail-risk premium ~1.5pp จาก Eaton Fire ที่ยังไม่สรุป",
+      "family": "rg"
+    },
+    {
+      "method": "pe",
+      "label": "P/E Valuation (เสริม)",
+      "inputs": {
+        "multiple": 12.5,
+        "multipleSource": "peer"
+      },
+      "override": {
+        "eps": 6.05,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "family": "market"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "custom:0",
+      "pbv",
+      "netIncome",
+      "eps",
+      "bvps",
+      "roe",
+      "revenue",
+      "grossMargin",
+      "yield",
+      "custom:1"
+    ],
+    "custom": [
+      {
+        "label": "P/E เฉลี่ย ~5 ปี",
+        "value": "~12–16x",
+        "note": "core basis — บีบตัวช่วง wildfire crisis 2568 กำลังฟื้นตัว"
+      },
+      {
+        "label": "Beta",
+        "value": "~0.7–0.9",
+        "note": "สูงกว่า utility ทั่วไป (~0.4–0.5) จาก wildfire litigation overhang"
+      }
+    ],
+    "notes": {
+      "mcap": "~384.8 ล้านหุ้น (คงเหลือ)",
+      "pbv": "BVPS ~{{bvps}} (equity $18.88 พันล้าน ÷ ~386 ล้านหุ้น)",
+      "netIncome": "GAAP รวม one-time recovery — Core net profit ~$2.34 พันล้าน",
+      "eps": "distorted · Core FY2568 actual $6.55 · Core guidance 2569 $5.90–$6.20 (กลาง $6.05)",
+      "bvps": "มูลค่าสินทรัพย์สุทธิต่อหุ้น (TTM)",
+      "roe": "GAAP TTM ถูกดันจาก one-time recovery — Core ROE ~12.4%",
+      "grossMargin": "Net margin GAAP · Core net margin ~12.0% (ไม่รวมรายการพิเศษ)",
+      "yield": "Payout ~58% ของ Core EPS · DGR ระมัดระวัง ~4%/ปี"
+    },
+    "hint": "ข้อมูล ณ 21 ก.ย. 2569 · Core EPS อ้างอิง guidance ปี 2569"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": -3,
+        "exitMultiple": 9,
+        "divCum": 9.91,
+        "desc": "Eaton Fire liability เกินกำลัง insurance+WEMA fund ต้องเพิ่มทุน (dilution) + multiple บีบตัวต่อเนื่องจากความไม่แน่นอนทางกฎหมาย"
+      },
+      {
+        "growth": 5,
+        "exitMultiple": 12.5,
+        "divCum": 11.62,
+        "desc": "Core EPS โตตาม guidance (~5%/ปี) คดี Eaton Fire จบด้วยกลไก AB 1054/ประกันภัยตามคาด ไม่มี dilution เพิ่มเติม"
+      },
+      {
+        "growth": 7,
+        "exitMultiple": 14,
+        "divCum": 12.08,
+        "desc": "คดี Eaton Fire จบเร็วด้วยต้นทุนต่ำกว่าคาด (คล้ายกรณี Thomas/Woolsey ปี 2560-2561) ตลาด re-rate multiple กลับสู่ค่าเฉลี่ยกลุ่ม utility ปกติ + rate base growth เร่งตัว"
+      }
+    ],
+    "exitDp": 1,
+    "baseOverride": {
+      "value": 6.04686,
+      "why": "EPS ฐานฉากถอดกลับจากราคาเป้าที่พิมพ์"
+    },
+    "note": "สมมติฐาน: ราคาเข้า {{px}} · EPS ฐาน (Core) $6.05 (guidance 2569 กลาง) · ปันผลเติบโตตามอัตราเดียวกับ EPS ในแต่ละ scenario Bear case สะท้อนกรณีเลวร้ายที่ Eaton Fire liability เกินกำลัง AB 1054 fund + ประกันภัย ต้องเพิ่มทุนเจือจาง EPS ผลตอบแทนรวมปันผลราว +7.7% (~2.5%/ปี) ใน 3 ปี Base case ให้ผลตอบแทนรวม ~79.2% (~21.5%/ปี) หากคดีจบด้วยกลไกที่มีอยู่โดยไม่ต้อง dilution เพิ่ม Bull case เปิด upside ~109.4% หากคดีจบเร็วและตลาด re-rate multiple กลับสู่ระดับ utility ปกติ (14–16x) ตัวเลขเป็นการประมาณเพื่อการศึกษา ไม่ใช่การรับประกันผลตอบแทน",
+    "hintNote": "(Core)"
+  },
+  "analyst": {
+    "target": 67.14,
+    "n": null,
+    "rating": "Hold",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "EIX เริ่มต้นรอบปีที่ $55.38 (ต.ค. 2568) ไต่ขึ้นแรงแตะจุดสูงสุดของกราฟที่ $74.74 ในเดือน ก.พ. 2569 หลังบริษัทรายงานผลประกอบการ FY2568 ที่มี one-time net recovery จากคดี legacy wildfire (Thomas/Woolsey Fires ปี 2560-2561) มูลค่าสุทธิ ~$2.96 พันล้าน + tax benefit $747 ล้าน ซึ่งสร้างความเชื่อมั่นว่ากลไก AB 1054/ประกันภัยสามารถซับ liability ก้อนใหญ่ได้จริง ราคาแกว่งอยู่แถวโซนบนของกรอบ ($69–75) จนถึงเดือน ก.ค. 2569 ก่อนร่วงลงแรง -26.4% ในเดือน ส.ค. 2569 มาแตะจุดต่ำสุดของกราฟที่ $53.98 ท่ามกลางความกังวลใหม่เกี่ยวกับขนาด liability คดี Eaton Fire ที่ Cal Fire/CPUC ยังสอบสวนอยู่ ก่อนขยับขึ้นเล็กน้อยมาอยู่ที่ {{px}} ในเดือน ก.ย. 2569 ภาพรวมทั้งปีราคาทรงตัว (~-0.1%) แต่ร่วงลงแรงจากจุดสูงสุดกลางปี สะท้อนความผันผวนสูงจากความไม่แน่นอนของคดีความ (52-week range $52.00–$81.62 ตามข้อมูล vendor — จุดสูงสุดรายวันอยู่นอกกราฟรายเดือนนี้)",
+    "valuation": "มูลค่านี้ยืนบนสองตระกูลที่พึ่งดุลยพินิจ (DDM: r/g · P/E: ตัวคูณ 12.5x) — sensitivity: P/E 10x → FV ~$63.4 (ส่วนเผื่อราว 12.8 จุด) · 14x → FV ~$75.5 (ส่วนเผื่อราว 26.7 จุด) ราคาเป้านักวิเคราะห์ใช้เป็นบริบทเท่านั้น ไม่ใช่ส่วนของ FV. DDM ให้ค่าต่ำกว่า ({{fvLow}}) เพราะสะท้อน risk-adjusted discount rate ที่สูงขึ้นจาก wildfire tail risk ขณะที่ P/E Valuation ให้ค่าสูงกว่า ({{fvHigh}}) โดยอิง Core EPS ที่ไม่รวมรายการพิเศษ ค่าเฉลี่ยสองวิธี {{fv}} (Base Case) สูงกว่าราคาตลาดปัจจุบัน ({{px}}) ราว {{upside}} หลังราคาร่วงแรงจากจุดสูงสุดกลางปี บ่งชี้ว่าตลาดกำลังกังวลขนาด liability คดี Eaton Fire มากขึ้นกว่าช่วงต้นปีที่เชื่อมั่นว่ากลไก AB 1054/ประกันภัยจะจัดการได้ดีเหมือนกรณี Thomas/Woolsey แต่ยังมีความไม่แน่นอนสูง — <b>Bear Case</b> (liability เกินกำลัง insurance+WEMA fund ต้องเพิ่มทุนเจือจาง EPS): FV อาจต่ำถึง ~$45–55 ใกล้เคียง 52-week low ($52.00) <b>Bull Case</b> (คดีปิดจบด้วยต้นทุนต่ำกว่าคาด ตลาด re-rate multiple กลับสู่ค่าเฉลี่ยกลุ่ม utility 14–16x): FV อาจสูงถึง ~$88–92",
+    "gauge": "ราคาปัจจุบัน {{px}} ต่ำกว่า Fair Value ฐาน (Base Case) {{fv}} อยู่ราว {{mos}} — ผ่านโซน MOS 20% ({{mos20}}) ลงมาแล้ว หลังราคาร่วงแรงจากจุดสูงสุดกลางปี เป้าเฉลี่ยนักวิเคราะห์ (17 ราย, StockAnalysis) {{analyst.target}} (Yahoo $66.79) สูงกว่าราคาตลาดปัจจุบันอยู่พอสมควร (consensus rating: Hold) ราคาอยู่ในโซนน่าสนใจสำหรับทยอยสะสมแล้ว (MOS 20% {{mos20}}) ส่วน MOS 30% ({{mos30}} ต่ำกว่า 52-week low) จะเกิดขึ้นได้หากมีข่าวร้ายเพิ่มเติมเกี่ยวกับขนาด liability จากผลสอบสวน Cal Fire/CPUC",
+    "mos": "ราคาปัจจุบันต่ำกว่า Fair Value (ฐาน) อยู่ราว {{mos}} — เข้าโซน MOS 20% แล้ว หลังราคาร่วงแรงจากจุดสูงสุดกลางปี นักลงทุนที่เข้าซื้อตอนนี้ยังรับความเสี่ยงคดี Eaton Fire ที่ยังไม่สรุปอยู่ แต่มีส่วนเผื่อความปลอดภัยพอสมควร ผู้ที่ต้องการความปลอดภัยมากขึ้นอาจรอโซน MOS 30% ({{mos30}}) ก่อนเพิ่มน้ำหนัก",
+    "verdictHeadline": "EIX: ราคาร่วงแรงจากจุดสูงสุดกลางปี เริ่มมี Margin of Safety — รอความชัดเจนคดี Eaton Fire ก่อนเข้าซื้อเพิ่ม",
+    "verdictBody": "Edison International (ผ่าน Southern California Edison) เป็น regulated utility ที่ให้บริการไฟฟ้าแก่ผู้ใช้ 15 ล้านคนใน Southern California ราคาหุ้นพุ่งขึ้นแตะ $74.74 ในเดือน ก.พ. 2569 หลังบริษัทรายงานกำไร GAAP ที่พุ่งสูงจาก one-time net recovery คดี legacy wildfire (Thomas/Woolsey Fires ปี 2560-2561) ที่ช่วยสร้างความเชื่อมั่นว่ากลไก AB 1054/ประกันภัยสามารถซับ liability ก้อนใหญ่ได้จริง ก่อนร่วงลงแรงในเดือน ส.ค. 2569 มาอยู่ที่ {{px}} ในปัจจุบัน ท่ามกลางความกังวลเพิ่มเติมเรื่องขนาด liability คดี Eaton Fire Eaton Fire (ม.ค. 2568) ยังอยู่ระหว่างสอบสวนว่าสายไฟของ SCE เป็นสาเหตุหรือไม่ บริษัทเองยังไม่สามารถประมาณขนาดความเสียหายได้ นักวิเคราะห์ประเมินช่วง $10–20 พันล้าน จาก valuation ที่ปรับ Core EPS แล้ว (ไม่รวม one-time GAAP gain) Fair Value ฐานอยู่ที่ {{fv}} สูงกว่าราคาตลาดปัจจุบันราว {{upside}} (MOS {{mos}} เข้าโซน MOS 20% แล้ว โดยมูลค่ายืนบนสองตระกูลที่พึ่งดุลยพินิจ) กรณีเลวร้าย (equity dilution จาก liability เกินกำลัง fund) อาจกดราคาลงใกล้ $50 ขณะที่กรณีดีที่สุด (คดีจบเร็วต้นทุนต่ำ) อาจหนุนราคาขึ้นไปถึง ~$90 นักลงทุนที่รับความเสี่ยงคดีความไม่ได้ควรรอความชัดเจนคดี หรือโซน MOS 30% ({{mos30}}) ก่อนเพิ่มน้ำหนัก แม้ปัจจุบันจะมีส่วนเผื่อความปลอดภัยพอสมควรแล้ว",
+    "strategy": "ทยอยสะสมได้ในโซน MOS 20% ({{mos20}}) ที่ราคาอยู่ตอนนี้ และเพิ่มน้ำหนักหากลงถึง MOS 30% ({{mos30}} ต่ำกว่า 52-week low $52.00) เหมาะสำหรับนักลงทุนที่รับความเสี่ยงคดีความสูงและมีมุมมองระยะยาว (3+ ปี) เท่านั้น ไม่เหมาะกับผู้ที่ต้องการความมั่นคงแบบ utility ทั่วไป จนกว่าผลสอบสวน Cal Fire/CPUC เรื่อง Eaton Fire จะชัดเจนขึ้น",
+    "disclaimerSources": "แหล่งข้อมูล: StockAnalysis.com (stockanalysis.com/stocks/eix) · Google Finance · Yahoo Finance Chart API (query1.finance.yahoo.com) · SEC EDGAR 10-K/8-K (Edison International) · งวดล่าสุดที่รายงาน: Q2 ปีงบประมาณ 2569 (30 ก.ค. 2569)"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 2 วิธี — DDM (หลัก) + P/E (เสริม) บน Core EPS (risk-adjusted)",
+    "disclaimerAssump": " P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และขนาด wildfire liability ในอนาคตซึ่งบริษัทเองยังไม่สามารถประมาณได้"
+  },
+  "catalysts": [
+    "<b>Grid Hardening & Undergrounding:</b> SCE ลงทุนหลายพันล้านดอลลาร์ต่อปีฝังสายไฟใต้ดิน/ติดตั้งอุปกรณ์ตัดไฟอัตโนมัติ (PSPS/covered conductor) ลดความเสี่ยง wildfire ในอนาคตและหนุน rate base growth ที่ชัดเจน",
+    "<b>AB 1054 Wildfire Fund:</b> กองทุนระดับรัฐ claim-paying capacity $21+ พันล้าน ครอบคลุมไฟป่าหลัง ก.ค. 2019 ช่วยจำกัดความเสียหายต่องบดุลหากพบว่า SCE ดำเนินการอย่างรอบคอบ (prudent)",
+    "<b>Precedent จาก Thomas/Woolsey Fires (2560-2561):</b> จบลงด้วย net recovery สุทธิ (ไม่ใช่ net cost) +$2.96 พันล้าน ให้ตลาดมีความเชื่อมั่นว่ากลไกประกันภัย+กองทุนสามารถซับ liability ก้อนใหญ่ได้จริง",
+    "<b>Regulated Cash Flow มั่นคง:</b> รายได้ SCE มาจากผู้ใช้ไฟฟ้า 15 ล้านคนที่กำกับโดย CPUC ให้กระแสเงินสด/ปันผลที่คาดการณ์ได้แม้อยู่ระหว่างคดีความ",
+    "<b>Dividend Yield สูง:</b> ~6.35% สูงกว่าค่าเฉลี่ยกลุ่ม utility ดึงดูด income investor แม้ยังมีความเสี่ยง",
+    "<b>Data Center Demand Growth:</b> ความต้องการไฟฟ้าจาก data center ในพื้นที่ให้บริการ SoCal เพิ่มขึ้น หนุน load growth และ rate base เพิ่มเติมระยะยาว"
+  ],
+  "risks": [
+    "<b>Eaton Fire Liability ไม่แน่นอนสูง:</b> บริษัทเองระบุใน 10-K ว่า \"unable to reasonably estimate\" ขนาดความเสียหาย นักวิเคราะห์ประเมินช่วง $10–20 พันล้าน อ้างอิงบรรทัดฐานจากกรณี PG&E ก่อนล้มละลายปี 2019",
+    "<b>Inverse Condemnation Doctrine:</b> กฎหมายแคลิฟอร์เนียให้ utility ต้องรับผิดชอบค่าเสียหายจากไฟป่าแม้ไม่ได้ประมาทเลินเล่อ หากอุปกรณ์ของบริษัทเป็นสาเหตุ",
+    "<b>ความเสี่ยง Equity Dilution:</b> หาก liability เกินกำลัง AB 1054 fund + ประกันภัย อาจต้องออกหุ้นเพิ่มทุนจำนวนมาก กระทบ EPS/มูลค่าต่อหุ้นระยะยาว (คล้ายกรณี PG&E ก่อนล้มละลาย)",
+    "<b>GAAP EPS บิดเบือน:</b> TTM GAAP EPS {{eps}} รวม one-time net recovery คดี legacy wildfire — นักลงทุนที่ไม่ปรับ core EPS อาจตีราคาหุ้นผิดพลาด (P/E ต่ำ 6x หลอกตาว่าถูก)",
+    "<b>Cal Fire/CPUC Investigation ยังไม่สรุป:</b> ผลสอบสวนสาเหตุ Eaton Fire อย่างเป็นทางการยังไม่ประกาศ อาจกระทบทั้งขนาด liability และสถานะ \"prudent\" ของ SCE ในการเข้าถึง WEMA fund",
+    "<b>หนี้สินระดับสูง:</b> D/E ~2.1–2.3x ต้นทุนดอกเบี้ยเพิ่มขึ้นเมื่อ refinance ซ้ำเติมด้วยความต้องการเงินทุนจาก wildfire settlement + grid hardening capex"
+  ],
+  "extras": [],
+  "v2Display": {
+    "targets": [
+      49.68,
+      null,
+      103.74
+    ],
+    "cards": {
+      "pe": {
+        "v": "~5.43x",
+        "d": "EPS TTM $9.69 (GAAP รวม one-time net recovery คดี legacy wildfire +$2.96 พันล้าน) → P/E Core adj. ~9.8x",
+        "op": "pxOverBase",
+        "base": 9.69
+      },
+      "revenue": {
+        "v": "$19.42 พัน ล.",
+        "d": "Net margin GAAP ~19.3% / Core ~12.0%"
+      }
+    },
+    "rets": {
+      "texts": [
+        "+13.2% รวม (รวมปันผล)",
+        "+88.3% รวม / ~23.5%/ปี",
+        "+120.0% รวม / ~30.1%/ปี"
+      ],
+      "neg": "-",
+      "perYear": "cagr",
+      "div": true
+    }
+  },
+  "_sig": "sha256:d1d75232cd0bed54c3fb3e796333fba2f0c7d33bb15b2ca33a2b39327b73e01d"
+}

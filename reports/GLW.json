@@ -1,0 +1,291 @@
+{
+  "v": 3,
+  "symbol": "GLW",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Corning Incorporated",
+    "exchange": "NYSE",
+    "sub": "ผู้นำใยแก้วนำแสง (optical fiber/cable), คอนเนกเตอร์ และกระจกพิเศษ • ป้อนโครงข่าย optical interconnect ของ data center AI และ co-packaged optics (CPO)",
+    "headerTags": [
+      "Technology • Optical / Specialty Glass",
+      "Large-cap • AI Optical Connectivity"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis.com",
+      "Google Finance",
+      "MarketBeat"
+    ],
+    "priceNote": "ราคาปิด · จุดสูงสุดตลอดกาล $271.78 30 มิ.ย. 2569, intraday",
+    "migratedFrom": {
+      "updated": "2026-09-22T07:22:55+07:00",
+      "v2Hash": "b1bd834ea09a"
+    }
+  },
+  "market": {
+    "px": 156.74,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          89.08
+        ],
+        [
+          "พ.ย.25",
+          84.2
+        ],
+        [
+          "ธ.ค.25",
+          87.56
+        ],
+        [
+          "ม.ค.26",
+          103.25
+        ],
+        [
+          "ก.พ.26",
+          150.38
+        ],
+        [
+          "มี.ค.26",
+          135.97
+        ],
+        [
+          "เม.ย.26",
+          164.24
+        ],
+        [
+          "พ.ค.26",
+          181.16
+        ],
+        [
+          "มิ.ย.26",
+          255.43
+        ],
+        [
+          "ก.ค.26",
+          138.25
+        ],
+        [
+          "ส.ค.26",
+          148.73
+        ],
+        [
+          "ก.ย.26",
+          156.74
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 77.05,
+      "hi": 271.78
+    }
+  },
+  "fundamentals": {
+    "eps": 3.28,
+    "dps": 1.12,
+    "shares": 861000000,
+    "epsForward": 3.28,
+    "roe": 16.8,
+    "fy": {
+      "period": "FY2025",
+      "netIncome": 1590000000,
+      "eps": 1.83,
+      "revenue": 15630000000
+    },
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation (forward) มัธยฐาน 5 ปี",
+      "inputs": {
+        "multiple": 35,
+        "multipleSource": "median5y",
+        "base": "epsForward"
+      },
+      "baseLabel": "FY2026e consensus",
+      "note": "FY2026e, consensus StockAnalysis",
+      "family": "market"
+    },
+    {
+      "method": "pe",
+      "label": "P/E Valuation (trailing) ตระกูลเดียวกับข้อ 1",
+      "inputs": {
+        "multiple": 35,
+        "multipleSource": "median5y"
+      },
+      "override": {
+        "eps": 2.17,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "มัธยฐาน 5 ปีเดียวกัน",
+      "family": "market"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      {
+        "key": "peForward",
+        "tone": "none"
+      },
+      "custom:0",
+      {
+        "key": "revenueFy",
+        "tone": "none"
+      },
+      "netIncomeFy",
+      {
+        "key": "roe",
+        "tone": "none"
+      },
+      "epsFy",
+      "custom:1",
+      "custom:2",
+      "yield",
+      "range52w"
+    ],
+    "custom": [
+      {
+        "label": "EPS (TTM, GAAP)",
+        "value": "$2.17",
+        "note": "Core EPS FY2025 $2.52"
+      },
+      {
+        "label": "รายได้ Q2 2026 (core)",
+        "value": "$4.74B",
+        "note": "▲ +17% YoY"
+      },
+      {
+        "label": "EPS Q2 2026 (core)",
+        "value": "$0.78",
+        "note": "▲ +30% YoY (beat แต่หุ้นร่วง)"
+      }
+    ],
+    "notes": {
+      "mcap": "~861 ล้านหุ้น",
+      "pe": "GAAP EPS ยังต่ำจาก restructuring บิดเบือน",
+      "peForward": "EPS FY2026e ~{{eps}} (consensus, StockAnalysis)",
+      "netIncomeFy": "▲ จาก $0.51B ปี 2024",
+      "roe": "Op margin (core) ขยายสู่ ~20%",
+      "epsFy": "Core EPS $2.52 (+29% YoY)",
+      "yield": "{{dps}}/หุ้น/ปี • จ่ายต่อเนื่อง",
+      "range52w": "หนี้รวม ~$9.4B"
+    },
+    "hint": "งบ FY2025 (Core) + Q2 2026"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": "cagr",
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 12,
+        "exitMultiple": 22.7,
+        "desc": "capex AI ชะลอ / โมเมนตัมอ่อนต่อเนื่อง"
+      },
+      {
+        "growth": 20,
+        "exitMultiple": 35,
+        "desc": "Springboard เดินตามแผน (+$20B สิ้นปี 2569)"
+      },
+      {
+        "growth": 30,
+        "exitMultiple": 47.3,
+        "desc": "CPO/multicore fiber ครองตลาด AI + Springboard เกินเป้า $30B ปี 2571"
+      }
+    ],
+    "exitDp": 1,
+    "note": "ความเสี่ยง–ผลตอบแทนขึ้นกับการส่งมอบกำไรจริง: ตัวคูณออกของสามฉากอิงประวัติ P/E ของ GLW เอง (Bear = ต่ำสุด 22.7x · Base = มัธยฐาน 35.0x · Bull = 47.3x) ที่ราคา {{px}} ตลาดจ่ายล่วงหน้าให้กำไรโตต่อเนื่องแล้ว ฉาก Base ให้ผลตอบแทนได้ก็ต่อเมื่อ EPS โต ~20%/ปีจริง (Springboard เดินตามแผน: +$20B annualized สิ้นปี 2569 → +$30B สิ้นปี 2571 → +$40B สิ้นปี 2573) — ไม่ขัดกับ FV ที่ต่ำกว่าราคา เพราะฉากใช้ EPS ปีที่ 3 ส่วน FV ใช้ EPS ปีนี้/TTM · ตลาดยัง sensitive สูงต่อสัญญาณโมเมนตัมชะลอ (งบ Q2 2026 ดีกว่าคาดแต่หุ้นร่วง 14–18% ใน 28 ก.ค. 2569) upside ที่แท้จริงขึ้นกับว่า <b>capex AI ของ hyperscaler จะขยายต่อเนื่อง</b> และ Corning ส่ง Springboard plan ตามเป้าได้จริงแค่ไหน",
+    "hintNote": "FY2026e ~{{eps}}"
+  },
+  "analyst": {
+    "target": 192.44,
+    "n": null,
+    "rating": null,
+    "asOf": null
+  },
+  "prose": {
+    "chart": "หุ้นวิ่งขึ้นแรงในช่วงครึ่งแรกของกราฟ จากบริเวณ ~$77 (จุดต่ำ 52 สัปดาห์) ทะลุ $209.83 (22 มิ.ย. 2026) แล้ววิ่งต่อทำ<b>จุดสูงสุดตลอดกาลใหม่ $271.78 (intraday, 30 มิ.ย. 2026)</b> แรงหนุนหลักจาก <b>ดีลใยแก้ว/optical connectivity สำหรับ AI data center</b> — โดยเฉพาะ partnership ระดับมหึมากับ <b>NVIDIA (สูงสุด ~$3.2B)</b>, <b>Meta (สูงสุด ~$6B)</b> และ <b>Amazon (มูลค่าหลายพันล้าน)</b> จากนั้นตั้งแต่ต้น ก.ค. 2026 หุ้นเริ่มร่วงจาก <b>ความกังวล valuation ฟองสบู่ธีม AI ทั้งตลาด</b> แล้วร่วงแรงขึ้นอีกหลังประกาศงบ <b>Q2 2026 (28 ก.ค. 2569)</b> — core EPS $0.78 (+30% YoY) core sales $4.74B (+17% YoY) ดีกว่าคาด แต่หุ้นร่วง <b>14–18% ในวันเดียว</b> เพราะ guide Q3 ($0.85–0.89 EPS, $4.9–5.0B sales) แม้ดูดีแต่ตลาดมองว่าโมเมนตัมชะลอเทียบไตรมาสก่อน (sell-the-news) ปิดที่ $134.13 (30 ก.ค. 2026) ก่อนฟื้นตัวและแกว่งตัว ราคาปิดล่าสุด {{px}} ({{priceDate}})",
+    "valuation": "<b>หมายเหตุ (valuation ตระกูลเดียว):</b> มีเพียงตระกูล P/E ที่วัดมัธยฐานย้อนหลังได้จริง จึงใช้ P/E สองฐาน EPS เป็นสองการ์ด นับเป็นเสียงเดียว — FV คือค่าเฉลี่ยของสองการ์ด ไม่ใช่การยืนยันอิสระ · ตัดเป้านักวิเคราะห์ออกจากขา FV (คงไว้เป็นบริบทเทียบเท่านั้น) และตัด DCF เดิมที่ตรวจซ้ำไม่ได้ · ความไว: ตัวคูณ forward ทุก ±5x ขยับขาแรก ±$16 (EPS {{eps}} × 5) · ตัวคูณ 35x บน EPS FY2027e ($4.35, vendor forward) ได้ราว $152 ใกล้ราคาตลาดมาก = ตลาดจ่ายล่วงหน้าให้กำไรอีกหนึ่งปี (ไม่ใช่ขาของ FV) · DCF ที่ทดสอบเอง (FCF TTM $2,395M โต 15%/ปี 5 ปี, WACC 9%, g 3%, หนี้สุทธิ ~$6.9B, หุ้น 861.4M) ได้ราว $71 แต่ TV เกิน 75% ของ EV (79%) จึงไม่นำมาเป็นขา · เนื่องจาก |MOS| เกิน 40% และไม่มีขาอิสระที่ไม่พึ่ง (r,g) มายืนยัน FV นี้<b>ยังตรวจยืนยันไม่ได้</b> ใช้เป็นกรอบเทียบมากกว่าราคาเป้า · ข้าม DDM เพราะ yield ต่ำ ~0.75% · ราคาปัจจุบัน {{px}} อยู่<b>เหนือกรอบ fair value</b> ({{fvLow}} – {{fvHigh}}) เพราะตลาดให้ตัวคูณสูงกว่าประวัติมากจากธีม AI optical",
+    "gauge": "ราคา {{px}} อยู่<b>เหนือกรอบมูลค่าเหมาะสมค่อนข้างมาก</b> แต่ยัง<b>ต่ำกว่าเป้าหมาย 12 เดือน</b>เฉลี่ยของนักวิเคราะห์ ({{analyst.target}}, {{analyst.pct}}) — เป้านักวิเคราะห์เป็นบริบทเทียบเท่านั้น ไม่ได้เป็นขาของ FV · ตลาดจ่ายพรีเมียมสูงต่อธีม AI optical จึงอยู่เหนือมัธยฐานประวัติของ GLW มาก",
+    "mos": "<b>ไม่มี Margin of Safety — แพงกว่ามูลค่าเหมาะสมตามมัธยฐานประวัติ</b><br>ราคาปัจจุบัน {{px}} สูงกว่ามูลค่าเหมาะสม {{fv}} มาก — FV มาจากตระกูล P/E เดียว (มัธยฐาน 5 ปี) ยังตรวจยืนยันด้วยขาอิสระไม่ได้ จึงอ่านเป็นกรอบเทียบ ไม่ใช่ราคาที่ควรซื้อ (MOS 20% อยู่ที่ {{mos20}})",
+    "verdictHeadline": "ผู้นำ AI optical กับ Springboard Plan ทะเยอทะยาน — ราคาอยู่เหนือมูลค่าเหมาะสมตามมัธยฐานประวัติมาก ตลาดจ่ายล่วงหน้าให้การเติบโต",
+    "verdictBody": "Corning กลายเป็นหนึ่งใน supplier โครงสร้างพื้นฐานที่สำคัญของยุค AI — ใยแก้ว, connector, multicore fiber และ glass substrate สำหรับ CPO ป้อนโครงข่าย optical interconnect ของ data center โดยตรง ดีลกับ NVIDIA/Meta/Amazon และ Springboard Plan ที่ตั้งเป้ารายได้ annualized $20B สิ้นปี 2569, $30B สิ้นปี 2571, $40B สิ้นปี 2573 หนุน narrative การเติบโตระยะยาวชัดเจน — หุ้นเคยพุ่งทำจุดสูงสุดตลอดกาลใหม่ $271.78 (30 มิ.ย. 2026) ก่อนร่วงแรงสองรอบ: AI-valuation pullback ทั้งตลาดต้น ก.ค. แล้วร่วงเพิ่มอีกหลังงบ Q2 2026 (28 ก.ค. 2569) ที่ core EPS $0.78 (+30% YoY) core sales $4.74B (+17% YoY) ดีกว่าคาดแต่ guide Q3 บ่งชี้โมเมนตัมชะลอ (sell-the-news) ลงไปแตะ $134.13 (30 ก.ค. 2026) ก่อนฟื้นตัว ราคาปิดล่าสุด {{px}} ({{priceDate}}) forward P/E ~45.8x บน EPS FY2026e {{eps}} สูงกว่ามัธยฐานประวัติของ GLW (35.0x) มาก มูลค่าเหมาะสม {{fv}} (MOS {{mos}}) มาจากตระกูล P/E เดียวจึงตรวจยืนยันไม่ได้ด้วยขาอิสระ ขณะที่เป้านักวิเคราะห์เฉลี่ย {{analyst.target}} ({{analyst.pct}}) ใช้เป็นบริบทเทียบเท่านั้น",
+    "strategy": "สาย value — รอย่อ/ทยอยสะสมเมื่อราคา <b>ต่ำกว่า {{fvLow}}</b> (น่าสนใจที่ <{{mos20}}) • สาย growth — เข้าได้แบบ DCA และยอมรับความผันผวนสูง โดยติดตาม <b>งบ Q3 2026</b> (guide EPS $0.85–0.89), <b>ความคืบหน้า Springboard Plan</b> และ <b>capex/หนี้</b> เป็นตัวชี้วัดหลัก",
+    "disclaimerSources": "อ้างอิงงบจริงจาก SEC (8-K/press release FY2025, 10-Q Q1-Q2 2026) — หมายเหตุ: ใช้ <b>core/forward EPS</b> เป็นฐาน valuation เพราะ GAAP EPS (TTM $2.17) ยังทำให้ P/E TTM สูงผิดปกติ (~69.2x) ไม่สะท้อนกำลังกำไรเดินหน้าเต็มที่"
+  },
+  "text": {
+    "valHint": "P/E ตระกูลเดียว 2 ฐาน EPS (นับ 1 เสียง)",
+    "disclaimerAssump": " อัตราการเติบโตของ optical/capex AI, การแปลงดีล hyperscaler (NVIDIA/Meta/Amazon) เป็นรายได้จริง และ P/E ออกในอนาคต ซึ่งเป็นจุดถกเถียงหลัก ราคาหุ้นผันผวนสูงมากในช่วงที่ผ่านมา (ทำ ATH ใหม่ $271.78 ปลาย มิ.ย. 2026 ก่อนร่วงแรงสองรอบจากความกังวล valuation ธีม AI ทั้งตลาด และ sell-the-news หลังงบ Q2 2026 แล้วฟื้นตัว) ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ"
+  },
+  "catalysts": [
+    "<b>ดีล AI optical ระดับมหึมา:</b> partnership กับ <b>NVIDIA (สูงสุด ~$3.2B)</b>, <b>Meta (สูงสุด ~$6B)</b> และ <b>Amazon (หลายพันล้าน)</b> ป้อน multicore fiber / PRIZM connector / CPO ให้ data center AI — สร้าง order visibility หลายปี",
+    "<b>Optical Communications เร่งตัวต่อเนื่อง:</b> Q2 2026 (core) ยอดขายรวม $4.74B <b>+17% YoY</b>, EPS core $0.78 <b>+30% YoY</b> (beat) — ต่อเนื่องจาก Q1 2026 ที่ Optical Communications เติบโต +36% YoY",
+    "<b>Springboard Plan เป้าใหม่ทะเยอทะยาน:</b> ตั้งเป้ารายได้ annualized <b>$20B สิ้นปี 2569</b>, <b>$30B สิ้นปี 2571</b>, <b>$40B สิ้นปี 2573</b> (CAGR ~19% Q4/69→Q4/73) — ยืนยันหลังงบ Q2 2026",
+    "<b>ขยายกำลังการผลิตในสหรัฐ:</b> เพิ่มกำลัง optical connectivity ~10 เท่า, ขยายการผลิตใยแก้ว >50%, สร้างโรงงานใหม่ใน North Carolina และ Texas — รองรับ reshoring + ดีล hyperscaler",
+    "<b>CPO / co-packaged optics:</b> เป็นผู้จัดห่วงโซ่ glass substrate และ optical interconnect ที่จำเป็นต่อ co-packaged optics ยุคถัดไป — ธีมเชิงโครงสร้างที่ลึกกว่าวงจรชิป",
+    "<b>ธุรกิจกระจายความเสี่ยง:</b> Display Technologies (กระจกจอ + ปรับราคาเป็น JPY-hedged), Gorilla Glass (มือถือ/รถยนต์), Solar (โพลีซิลิคอน/wafer ในสหรัฐ) และ Life Sciences — ช่วยพยุงเมื่อ optical ผันผวน"
+  ],
+  "risks": [
+    "<b>Valuation ตึงมาก:</b> P/E TTM ~69.2x (GAAP), forward P/E ~45.8x (FY2026e) — สูงกว่ามัธยฐาน 5 ปีของ GLW (35.0x) มาก, ราคาแพงกว่ามูลค่าเหมาะสมมาก (MOS {{mos}}), อ่อนไหวต่อ EPS miss หรือสัญญาณโมเมนตัมชะลอเพิ่มเติม",
+    "<b>ตลาดอ่อนไหวต่อโมเมนตัมชะลอ:</b> งบ Q2 2026 core EPS/sales beat แต่หุ้นร่วง <b>14–18% ในวันเดียว</b> (28 ก.ค. 2569) เพราะ guide Q3 แม้บวก แต่ตลาดมองว่าชะลอเทียบไตรมาสก่อน — สะท้อนว่าตลาดให้พรีเมียมสูงและลงโทษแรงเมื่อโมเมนตัมไม่เร่งต่อ",
+    "<b>พึ่งวัฏจักร capex AI:</b> ดีลใหญ่กระจุกที่ hyperscaler ไม่กี่ราย (NVIDIA/Meta/Amazon) — หากรอบลงทุน data center ชะลอ/overbuild หรือดีลถูกเลื่อน รายได้ optical แกว่งแรง",
+    "<b>การแข่งขัน optical:</b> ผู้ผลิตใยแก้ว/connector รายอื่น (Prysmian, Amphenol, Fujikura, Coherent, รวมถึง vertical integration ของลูกค้า) กดดันราคาและส่วนแบ่งในตลาดที่กำลังขยายตัว",
+    "<b>ดีลเป็น \"สูงสุด\" ไม่ใช่ committed:</b> ตัวเลข $3.2B/$6B เป็น <b>มูลค่า \"สูงสุด\" หลายปี</b> ขึ้นกับ volume จริง — การรับรู้รายได้และ capex ลงทุนล่วงหน้าอาจไม่เป็นไปตามคาด",
+    "<b>วงจรธุรกิจดั้งเดิม:</b> Display อิงราคาแผงจอ/ค่าเงินเยน, Gorilla อิงรอบยอดขายมือถือ, Solar อิงนโยบาย/IRA — เซกเมนต์เหล่านี้โตช้าและวัฏจักรกว่า optical",
+    "<b>Capex สูง + หนี้เพิ่ม:</b> ขยายกำลังผลิตทั่วสหรัฐต้องลงทุนหนัก, หนี้รวม ~$9.4B (งบ TTM ล่าสุด) — กดดัน FCF ระยะสั้นและความยืดหยุ่นงบดุล"
+  ],
+  "extras": [],
+  "v2Display": {
+    "fv": 96,
+    "fvRange": [
+      76,
+      115
+    ],
+    "targets": [
+      105,
+      198,
+      341
+    ],
+    "gauge": [
+      {
+        "ref": "mos30",
+        "label": "MOS 30%"
+      },
+      {
+        "ref": "mos20",
+        "label": "MOS 20%"
+      },
+      {
+        "ref": "fv",
+        "label": "Fair Value"
+      },
+      {
+        "ref": "analystTgt",
+        "label": "เป้า Analyst"
+      },
+      {
+        "text": "$341",
+        "label": "Bull 3ปี"
+      }
+    ],
+    "cards": {
+      "revenueFy": {
+        "v": "$15.63B",
+        "d": "▲ +19% YoY • Core $16.41B"
+      }
+    }
+  },
+  "_sig": "sha256:230c1e1a3d38488b909ae3a7d33200e59cc8cf664eae3af689d0550c67dc0b7a"
+}

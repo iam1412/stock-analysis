@@ -1,0 +1,277 @@
+{
+  "v": 3,
+  "symbol": "CTVA",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Corteva, Inc.",
+    "exchange": "NYSE",
+    "sub": "Agricultural seeds & crop protection (DowDuPont spinoff 2019) • Pioneer & Brevant seeds • Herbicides, fungicides, insecticides • Biologicals pipeline • 140+ countries • Innovation-led R&D (~$1.2B/yr)",
+    "headerTags": [
+      "Agricultural Sciences",
+      "Seeds & Crop Protection"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis",
+      "Yahoo Finance",
+      "Corteva IR"
+    ],
+    "themeLegacy": {
+      "accent": "#46a149",
+      "accentDark": "#2f7833",
+      "darkGrad": "linear-gradient(135deg,#154b1a 0%,#256428 60%,#2d7230 100%)",
+      "glow": "rgba(76,175,80,0.35)",
+      "subColor": "#daeeda",
+      "headerMuted": "#ddebde",
+      "verdictText": "#E8F5E9",
+      "vcellLabel": "#f6fbf6"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T12:28:00+07:00",
+      "v2Hash": "079bf2292ef9"
+    }
+  },
+  "market": {
+    "px": 78.52,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          61.44
+        ],
+        [
+          "พ.ย.25",
+          67.47
+        ],
+        [
+          "ธ.ค.25",
+          67.03
+        ],
+        [
+          "ม.ค.26",
+          72.8
+        ],
+        [
+          "ก.พ.26",
+          80.12
+        ],
+        [
+          "มี.ค.26",
+          83.71
+        ],
+        [
+          "เม.ย.26",
+          81.01
+        ],
+        [
+          "พ.ค.26",
+          78.28
+        ],
+        [
+          "มิ.ย.26",
+          84.69
+        ],
+        [
+          "ก.ค.26",
+          78.71
+        ],
+        [
+          "ส.ค.26",
+          84.63
+        ],
+        [
+          "ก.ย.26",
+          78.52
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 60.53,
+      "hi": 90.97
+    }
+  },
+  "fundamentals": {
+    "dps": 0.72,
+    "bvps": 36.36,
+    "shares": 667196000,
+    "eps": 3.34,
+    "roe": 5.1,
+    "roa": 4.3,
+    "revenue": 17810000000,
+    "ebitda": 3850000000,
+    "beta": 0.57,
+    "fy": {
+      "period": "FY2025",
+      "netIncome": 1200000000
+    },
+    "epsBasis": "adj-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation (Adjusted Operating EPS)",
+      "inputs": {
+        "multiple": 24,
+        "multipleSource": "author"
+      },
+      "override": {
+        "eps": 3.7,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "family": "market"
+    },
+    {
+      "method": "evsales",
+      "label": "EV/Sales Valuation",
+      "inputs": {
+        "multiple": 3,
+        "multipleSource": "author"
+      },
+      "override": {
+        "netDebt": 2510000000,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "3.0x เป็นสมมติฐาน (ต่ำกว่า EV/Sales ปัจจุบัน ~3.2x ราว 5%) ยังไม่มีมัธยฐานที่วัดจริงของ EV/Sales จึงให้น้ำหนักเป็นเพียงหนึ่งในสองตระกูลและถือเป็นค่าประมาณ",
+      "family": "market"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "custom:0",
+      "custom:1",
+      "pbv",
+      "netIncomeFy",
+      "eps",
+      "bvps",
+      "roe",
+      "revenue",
+      "ebitdaMargin",
+      "yield",
+      "beta"
+    ],
+    "custom": [
+      {
+        "label": "P/E (FY2025 adj.)",
+        "value": "~{{pe}}x",
+        "note": "Adj. op. EPS FY2025 {{eps}}; Forward P/E ~21.8x บน guidance FY2026E $3.60–3.80 (midpoint $3.70)",
+        "tone": "neu"
+      },
+      {
+        "label": "P/E เฉลี่ย ~5 ปี",
+        "value": "25–30x",
+        "note": "ช่วงปกติก่อนปรับ destocking 2023-24"
+      }
+    ],
+    "notes": {
+      "mcap": "~667M shares outstanding",
+      "pbv": "ROE ต่ำเพราะ goodwill/intangibles สูง",
+      "netIncomeFy": "GAAP EPS $1.60 (+23% YoY) · Op. EPS {{eps}} (+30%)",
+      "eps": "Adj. op. EPS FY2025 (non-GAAP) — ไม่รวมค่าตัดจำหน่าย/ปรับโครงสร้าง",
+      "bvps": "Goodwill & intangibles หนักจากการ spinoff ปี 2562",
+      "roe": "ROE ต่ำเพราะฐาน equity สูงจาก DowDuPont; ปรับขึ้นต่อเนื่อง",
+      "revenue": "FY2025 $17.40B (+2.9%) · Seed $9.90B · Crop Pro $7.50B",
+      "yield": "(รายไตรมาส $0.18) · Ex-div 1 มิ.ย. 2569",
+      "beta": "ผันผวนต่ำกว่าตลาด — ธุรกิจเกษตรเชิง defensive"
+    },
+    "hint": "FY2025 ปีงบประมาณสิ้นสุด ธ.ค."
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 2,
+        "exitMultiple": 18,
+        "divCum": 2.3,
+        "desc": "Destocking กลับมา, Spin-off ล่าช้า, ราคาข้าวโพด/ถั่วเหลืองดิ่ง"
+      },
+      {
+        "growth": 8,
+        "exitMultiple": 22,
+        "divCum": 2.4,
+        "desc": "Vylor spin-off สำเร็จ 1 ต.ค. 2569, margin expansion ต่อเนื่อง, biologicals แตะ $1B"
+      },
+      {
+        "growth": 13,
+        "exitMultiple": 24,
+        "divCum": 2.5,
+        "desc": "Vylor ได้ multiple premium 18-20x, New Corteva re-rate, ลิขสิทธิ์ seed genetics พุ่ง"
+      }
+    ],
+    "exitDp": 0,
+    "baseOverride": {
+      "value": 3.7,
+      "why": "EPS ฐานฉากที่ผู้เขียนใช้"
+    },
+    "note": "Projection ใช้ Adj. Operating EPS FY2026E $3.70 (guidance midpoint $3.60–$3.80 หลัง Q2 2569) เป็นฐาน ไม่ใช่ GAAP EPS TTM $1.50 ที่ถูกกดด้วยค่าตัดจำหน่ายและรายการพิเศษ เหตุการณ์สำคัญที่ต้องติดตาม: Vylor separation 1 ต.ค. 2569, Q3 2569 earnings (3 พ.ย. 2569), ราคาสินค้าเกษตรโลก (corn/soy), ภาระ PFAS ของ New Corteva Catalyst หลักของ bull case คือการที่ตลาดให้ multiple แยกกันแก่ธุรกิจ seed หลังแยกตัว — เป็นสมมติฐานของ scenario ไม่ใช่ตัวเลขที่ยืนยันแล้ว"
+  },
+  "analyst": {
+    "target": 92.6,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "CTVA ต่ำสุดของกราฟรายเดือน ~$61 ในเดือน ต.ค. 2568 แล้วฟื้นตัวต่อเนื่องจนแตะสูงสุดกรอบ 52 สัปดาห์ที่ $90.97 งบ Q2 2569 (30 ก.ค. 2569): ยอดขาย 1H +4% เป็น $11.28B, Op. EBITDA 1H +10% เป็น $3.70B และบริษัทปรับ guidance FY2026 ขึ้นเป็น Operating EPS $3.60–3.80 · แผนแยก Vylor (seed) ออกจาก Corteva (crop protection) ยังเดินตามกำหนด 1 ต.ค. 2569 ราคาล่าสุด {{px}} ณ {{priceDate}} (ปิดเดือน ส.ค. 2569 ที่ $84.63) — ผลตอบแทนรอบปีดูที่ป้ายด้านบน",
+    "valuation": "FV = เฉลี่ยของสองตระกูลที่ต่างกัน (P/E บน adjusted EPS · EV/Sales) = {{fv}} กรอบ {{fvLow}}–{{fvHigh}} · ราคาปัจจุบัน {{px}} ให้ MOS {{mos}} ซึ่งยังต่ำกว่าเกณฑ์ 10% ปรับโครงสร้างจากรอบก่อน: ตัดขา EV/EBITDA 13.5x ออกจาก FV เพราะใกล้ EV/EBITDA ปัจจุบัน ~14.6x (สมอตายวนกลับ) — ใช้เป็นบริบทเท่านั้น: EBITDA guidance midpoint $4.2B × 13.5x − net debt $2.51B ÷ 667.2M shares ≈ $81 เป้านักวิเคราะห์ ({{analyst.target}}) เป็นเพียงบริบทเปรียบเทียบ ไม่ได้เป็นขาของ FV ข้อจำกัด: ตัวคูณทั้งสองขาเป็นสมมติฐาน (ไม่มีมัธยฐานที่วัดบนฐาน adjusted) — ควรอ่าน FV เป็นช่วง ไม่ใช่จุดเดียว · Upside เพิ่มเติมอาจมาจาก Vylor spin-off (กำหนด 1 ต.ค. 2569) แต่ยังไม่ใส่ใน FV",
+    "gauge": "ราคาปัจจุบัน {{px}} อยู่ต่ำกว่า Fair Value {{fv}} เล็กน้อย (MOS {{mos}}) — ยังต่ำกว่าเกณฑ์น่าเข้า โซน MOS 20% ที่ {{mos20}} และ MOS 30% ที่ {{mos30}} คือจุดเข้าที่น่าสนใจสำหรับ value investor ซึ่งต้องรอการย่อตัวเพิ่ม เป้านักวิเคราะห์เฉลี่ย {{analyst.target}} (20 คน, Buy) สูงกว่า FV ของเรา สะท้อนมุมมองบวกต่อ spin-off และ guidance ที่ปรับขึ้น งบ Q2 2569 ออกแล้ว (30 ก.ค. 2569) — Operating EPS $2.30 พร้อม guidance FY2026 Operating EPS $3.60–3.80 · Vylor separation กำหนด 1 ต.ค. 2569 (บริษัทระบุว่าเป็นไปตามแผน)",
+    "mos": "ราคาปัจจุบันต่ำกว่า Fair Value เล็กน้อย — MOS ยังต่ำกว่าเกณฑ์ 10% · รอโอกาสซื้อที่ดีกว่า",
+    "verdictHeadline": "ยุติธรรม–เหมาะสม: MOS ต่ำ หลัง Q2 ดี รอ Spin-off 1 ต.ค. 2569",
+    "verdictBody": "Corteva เป็นผู้นำระดับโลกด้าน seed genetics (Pioneer, Brevant) และ crop protection ที่กำลังเดินหน้าสู่ margin expansion งบ Q2 2569 (ออก 30 ก.ค. 2569) Operating EPS $2.30 และบริษัทปรับ guidance FY2026 Operating EPS เป็น $3.60–3.80 การแยก Vylor (seed) ออกจาก New Corteva (crop protection) กำหนด 1 ต.ค. 2569 เป็น catalyst ที่ยังไม่ได้ใส่ใน FV ราคาปัจจุบัน {{px}} ใกล้ Fair Value {{fv}} (MOS {{mos}}) — ต่ำกว่าเกณฑ์น่าเข้า (10%) · FV มาจากสองตระกูลที่ใช้ตัวคูณสมมติฐาน จึงเป็นช่วงประมาณการ เป้านักวิเคราะห์ {{analyst.target}} (20 คน, Buy) สูงกว่า FV เรา แนวทางที่เหมาะสมคือ \"ถือถ้ามีอยู่ — ทยอยสะสมเมื่อราคาต่ำกว่า {{fv}}\" หรือรอย่อใกล้ {{mos20}} (MOS 20%)",
+    "strategy": "ราคาปัจจุบันใกล้ Fair Value — ทยอยสะสมได้เล็กน้อย และพิจารณาเพิ่มเมื่อย่อใกล้ {{mos20}} (MOS 20%) รอ Vylor Spin-off 1 ต.ค. 2569 เป็น trigger · Beta ต่ำ 0.57",
+    "disclaimerSources": "แหล่งข้อมูล: StockAnalysis.com (ราคา ณ วันที่ราคาข้างต้น, P/E, EPS, dividend, งบ 5 ปี), Yahoo Finance (ราคา, กราฟรายเดือน, EPS TTM $1.65), Corteva IR / SEC 8-K Q2 2569 Earnings (30 ก.ค. 2569, Op. EPS $2.30, guidance FY2026 $3.60–3.80, Op. EBITDA $4.1–4.3B)"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 2 ตระกูล",
+    "chartHint": "ต.ค. 2568 – ก.ย. 2569"
+  },
+  "catalysts": [
+    "<b>Vylor Spin-off (กำหนด 1 ต.ค. 2569):</b> การแยก seed business (Vylor) ออกจาก crop protection (New Corteva) อาจทำให้ตลาดให้ multiple แยกกัน — ยังเป็นสมมติฐาน ไม่ได้อยู่ใน FV",
+    "<b>Margin Expansion ต่อเนื่อง:</b> Op. EBITDA margin จาก 22.1% (FY2025) เป้าหมาย 22–23% (FY2026) ขับเคลื่อนด้วยผลิตภัณฑ์ใหม่และ mix shift สู่ชีววิทยา",
+    "<b>Biologicals Pipeline พุ่ง:</b> เป้าหมาย $1B revenue จาก biologicals ภายในปี 2572 — Fungicide organic +40% และ Insecticide +7% ใน FY2025",
+    "<b>Seed & Traits Innovation:</b> Seed 1H 2569 ยอดขาย +4% และ Op. EBITDA +11% จากความต้องการ genetics รุ่นใหม่และรายได้ licensing",
+    "<b>Q2 2569 ยืนยัน momentum:</b> Operating EPS $2.30 (ปีก่อน ~$2.20) และ guidance FY2026 Operating EPS ขึ้นเป็น $3.60–3.80 (+11% ที่ midpoint) · Op. EBITDA guidance $4.1–4.3B"
+  ],
+  "risks": [
+    "<b>PFAS Litigation (New Corteva):</b> ธุรกิจ crop protection มี legacy PFAS liability จาก DowDuPont era — settlement costs อาจส่งผลต่อ balance sheet ของ New Corteva หลังแยกตัว",
+    "<b>Commodity Price Risk:</b> ราคาข้าวโพดและถั่วเหลืองต่ำ → เกษตรกรลด input spending → กดดัน seed/chemical demand เช่นที่เกิดใน 2023-2024",
+    "<b>Channel Inventory Glut:</b> ตลาดสารป้องกันพืชยังมีความเสี่ยง inventory overhang โดยเฉพาะในบราซิลและ EM — New Corteva มีความเสี่ยงนี้มากกว่า Vylor",
+    "<b>Spin-off Execution Risk:</b> แม้ยืนยัน timeline separation 1 ต.ค. 2569 แล้ว แต่ความล่าช้าหรือปัญหาใน SEC registration, tax-free qualification, หรือ debt allocation อาจทำให้ multiple discount ไม่ถูก unlock ทันที",
+    "<b>Competition ผู้นำตลาด:</b> Bayer CropScience (Roundup/traits), Syngenta (ChemChina), BASF Ag — competition ด้าน seed traits และ pesticides รุนแรงต่อเนื่อง",
+    "<b>Valuation Premium Risk:</b> ราคาปัจจุบัน {{px}} ใกล้ FV {{fv}} (MOS {{mos}}) — ถ้า Q3-Q4 2569 ไม่เป็นไปตาม guidance หรือ Vylor spin-off ล่าช้า อาจเห็น multiple compression"
+  ],
+  "extras": [],
+  "v2Display": {
+    "fv": 82.6,
+    "fvRange": [
+      76,
+      89
+    ],
+    "legValues": [
+      null,
+      76.3
+    ],
+    "targets": [
+      73.04,
+      104.92,
+      130.66
+    ],
+    "cards": {
+      "ebitdaMargin": {
+        "v": "22.1%",
+        "d": "EBITDA $3.85B FY2025 (+14% YoY) · EV/EBITDA ~14.6x (EV ~$56.2B)"
+      }
+    }
+  },
+  "_sig": "sha256:b2b6b32e39db0ace5d10fa49f4ae8241840ef264022b93b75d1edf49736d577d"
+}

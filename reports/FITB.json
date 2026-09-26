@@ -1,0 +1,281 @@
+{
+  "v": 3,
+  "symbol": "FITB",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Fifth Third Bancorp",
+    "exchange": "NASDAQ",
+    "sub": "Top-9 US bank (>$300B assets หลังควบรวม Comerica • HQ Cincinnati OH) • Midwest/Southeast footprint (OH/KY/IN/MI/IL/FL/TN/GA/NC) • Commercial banking + Consumer/SMB + Wealth management • Auto Finance (top Midwest auto lender) • Fee income diversification • Southeast expansion strategy • ~3.2% dividend yield",
+    "headerTags": [
+      "Regional Banking",
+      "Midwest / Southeast US"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "StockAnalysis.com",
+      "Fifth Third Bancorp IR (ir.53.com)",
+      "SEC EDGAR 10-Q Q2 2569; เป้านักวิเคราะห์ ~$62.90 (Yahoo",
+      "StockAnalysis",
+      "n=20)"
+    ],
+    "themeLegacy": {
+      "accent": "#006747",
+      "accentDark": "#004d35",
+      "darkGrad": "linear-gradient(135deg,#003d29 0%,#001a12 100%)",
+      "glow": "rgba(0,103,71,0.35)",
+      "subColor": "#a8d5c2",
+      "headerMuted": "rgba(168,213,194,0.7)",
+      "verdictText": "#d4f0e5",
+      "vcellLabel": "#a8d5c2"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T14:08:46+07:00",
+      "v2Hash": "063f8f04f1d8"
+    }
+  },
+  "market": {
+    "px": 52.1,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          41.62
+        ],
+        [
+          "พ.ย.25",
+          43.46
+        ],
+        [
+          "ธ.ค.25",
+          46.81
+        ],
+        [
+          "ม.ค.26",
+          50.22
+        ],
+        [
+          "ก.พ.26",
+          49.47
+        ],
+        [
+          "มี.ค.26",
+          46.46
+        ],
+        [
+          "เม.ย.26",
+          50.76
+        ],
+        [
+          "พ.ค.26",
+          49.93
+        ],
+        [
+          "มิ.ย.26",
+          56.37
+        ],
+        [
+          "ก.ค.26",
+          56.5
+        ],
+        [
+          "ส.ค.26",
+          53.77
+        ],
+        [
+          "ก.ย.26",
+          52.1
+        ]
+      ],
+      "gridFmt": "v.toFixed(0)",
+      "dataFmt": "d[1].toFixed(2)"
+    },
+    "range52w": {
+      "lo": 40.05,
+      "hi": 59.5
+    }
+  },
+  "fundamentals": {
+    "eps": 2.85,
+    "dps": 1.68,
+    "shares": 906892564,
+    "peAvg5y": 11.2,
+    "tbvps": 23.15,
+    "roe": 8.4,
+    "revenue": 10100000000,
+    "fy": {
+      "period": "FY2568",
+      "netIncome": 2380000000
+    },
+    "bank": {
+      "nim": 3.36
+    },
+    "epsForward": 4.09,
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation (มัธยฐานประวัติ)",
+      "inputs": {
+        "multiple": 11.2,
+        "multipleSource": "median5y",
+        "base": "epsForward"
+      },
+      "baseLabel": "FY2569e consensus",
+      "note": "FY2569e consensus",
+      "family": "market"
+    },
+    {
+      "method": "pe",
+      "label": "P/E Valuation (สอบทาน — ตระกูลเดียวกับข้อ 1)",
+      "inputs": {
+        "multiple": 11.2,
+        "multipleSource": "median5y"
+      },
+      "override": {
+        "eps": 3.53,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "ตัวคูณมัธยฐานเดียวกัน ใช้เป็นขอบล่างของกรอบเท่านั้น นับเป็นเสียงเดียวกับข้อ 1 ไม่นำมาเฉลี่ยเข้า FV",
+      "family": "market"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "peAvg5y",
+      "ptbv",
+      "netIncomeFy",
+      "eps",
+      {
+        "key": "nim",
+        "tone": "pos"
+      },
+      {
+        "key": "roe",
+        "tone": "none"
+      },
+      "revenue",
+      "custom:0",
+      "yield",
+      "custom:1"
+    ],
+    "custom": [
+      {
+        "label": "Efficiency Ratio (adj.)",
+        "value": "54.3%",
+        "note": "Q4 2568; Q1 2569 = 61.9% (merger costs)"
+      },
+      {
+        "label": "CET1 / Beta",
+        "value": "10.77% / 0.95",
+        "note": "CET1 Q4 2568 · Beta 5Y monthly (low vol)"
+      }
+    ],
+    "notes": {
+      "mcap": "906.9M shares outstanding (StockAnalysis)",
+      "pe": "GAAP EPS TTM {{eps}} (dil.); Forward P/E FY2569e ~12.9x (EPS $4.09)",
+      "peAvg5y": "มัธยฐาน FY2021–2025 (ช่วง 8.9–{{peForward}})",
+      "ptbv": "(Q2 2569, หลังควบรวม)",
+      "netIncomeFy": "GAAP EPS $3.53 (+12.4% YoY) · ก่อนควบรวม",
+      "eps": "Yahoo $2.97 · หุ้นถัวเฉลี่ย 772M ต่ำกว่าคงเหลือ · รวมค่า merger · FY2569e $4.09",
+      "nim": "+6 bps QoQ — ขยายตัวต่อเนื่อง",
+      "roe": "FY2568 ROE 12.2% · TTM ถูกกดจากค่า merger",
+      "revenue": "FY2568 $8.36B · TTM +26% YoY จากควบรวม Comerica",
+      "yield": "{{dps}}/share annual (StockAnalysis)"
+    },
+    "hint": "ข้อมูล ณ 21 ก.ย. 2569 — หลังควบรวม Comerica (ปิดดีล 1 ก.พ. 2569)"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": -3,
+        "exitMultiple": 8.9,
+        "divCum": 5,
+        "desc": "Integration ล้มเหลว + NIM กดดัน"
+      },
+      {
+        "growth": 8,
+        "exitMultiple": 11.2,
+        "divCum": 5.2,
+        "desc": "Integration สำเร็จ · Synergy เต็มที่"
+      },
+      {
+        "growth": 14,
+        "exitMultiple": 12.7,
+        "divCum": 5.4,
+        "desc": "Southeast expansion สำเร็จ · ROTCE 18%+"
+      }
+    ],
+    "exitDp": 1,
+    "baseOverride": {
+      "value": 4.08824,
+      "why": "EPS ฐานฉากถอดกลับจากราคาเป้าที่พิมพ์"
+    },
+    "note": "การคาดการณ์อิง EPS ฐาน $4.09 (FY2569e consensus) · Base: EPS +8%/ปี สู่ ~$5.15 ภายใน 3 ปี ออกที่ P/E 11.2x (มัธยฐานประวัติ) · Bear ออกที่ 8.9x (ต่ำสุดของช่วงประวัติ) · Bull ออกที่ {{peForward}} (สูงสุดของช่วง) · ราคาเป้าไม่รวมปันผล (ปันผลรวม 3 ปีที่แสดงเป็นข้อมูลประกอบ ~{{dps}}/ปีคงที่) · Bear สมมติว่า integration ล้มเหลวและ NIM หดตัว — stress test",
+    "hintNote": "(FY2569e) • ราคาเป้าไม่รวมปันผล"
+  },
+  "analyst": {
+    "target": 62.9,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ราคา FITB ปรับตัวขึ้นราว 27% ตามกราฟ (ปลาย ต.ค. 2568 $41.62 → ก.ย. 2569 ปลายกราฟ) โดยขึ้นแรงช่วง พ.ค.–มิ.ย. 2569 แล้วพักตัว หลังการควบรวม Comerica (ปิดดีลแบบแลกหุ้น 1 ก.พ. 2569 มูลค่า $12.7B) ทำให้ FITB มีสินทรัพย์เกิน $300B เป็นครั้งแรกในไตรมาส 2 ปี 2569 · ช่วง 52 สัปดาห์ $40.05–$59.50 · NIM ขยายเป็น 3.36% ใน Q2 2569",
+    "valuation": "★ การประเมินนี้ยืนอยู่บนตระกูลเดียว (P/E มัธยฐานประวัติ) · FV ปัดจาก $45.81 · กรอบ: ล่าง = 11.2x × EPS FY2568 GAAP $3.53 ≈ $40 · บน = 11.2x × EPS FY2570e $4.94 ≈ $55 · ความไว: ที่ P/E {{peForward}} (ขอบบนของประวัติ) × $4.09 = $51.9 ซึ่งยังต่ำกว่าราคาปัจจุบันเล็กน้อย · ขา P/TBV 2.5x (ตัวคูณสมมติ ไม่มีค่าวัดจริง) และ Justified P/BV (อิง ROE เป้า 15.5% และ BVPS หลังควบรวมที่ยังตรวจไม่ได้ · TBVPS ล่าสุด $23.15) ถูกถอดออกจาก FV · เป้านักวิเคราะห์ ~{{analyst.target}} (Buy) เป็นเพียงบริบท ไม่ใช่ขาของ FV",
+    "gauge": "ราคาปัจจุบัน {{px}} อยู่เหนือ Fair Value {{fv}} (MOS {{mos}}) จึงถือว่า \"แพงกว่ามูลค่าตามเกณฑ์มัธยฐานประวัติ\" สำหรับ Value Investor · แต่ตลาดกำลังให้ราคากับ EPS ปี 2569–70 ที่สูงขึ้นหลังควบรวม (P/E FY2569e ~12.9x เทียบมัธยฐาน 11.2x) · โซนน่าสนใจเริ่มที่ MOS 20% คือ {{mos20}} · โซน Deep Value MOS 30% ที่ {{mos30}} ต่ำกว่าจุดต่ำสุด 52 สัปดาห์ ($40.05) จึงเกิดได้ยากหากไม่มี stress ต่อสินเชื่อ/NIM",
+    "mos": "<b>ราคาสูงกว่ามูลค่าเหมาะสม — ไม่มีส่วนเผื่อ</b><br>ราคาปัจจุบัน {{px}} สูงกว่า FV {{fv}} · ไม่มี MOS เหลือ ไม่เพียงพอสำหรับ Value Investor ที่ต้องการ MOS ≥20% · FV มาจากขา P/E ขาเดียว จึงมีความไม่แน่นอนสูง",
+    "verdictHeadline": "FITB — ธนาคารภูมิภาคที่เพิ่งสเกลขึ้นมาชั้น Top-9 US Bank · ราคาสูงกว่า FV ตามมัธยฐานประวัติ แต่ตลาดรอ Integration Synergy",
+    "verdictBody": "Fifth Third Bancorp เพิ่งเสร็จสิ้นการควบรวมกับ Comerica (1 ก.พ. 2569 · แลกหุ้น) มูลค่า $12.7B สินทรัพย์เกิน $300B — เป็นก้าวกระโดดเชิงกลยุทธ์สำคัญที่ขยาย footprint และ Commercial Banking capability อย่างมีนัยสำคัญ ค่า integration ทำให้ EPS GAAP ปัจจุบันต่ำ (Q2 2569 GAAP $0.83 · adj. $1.02) NIM กำลังขยายตัว (3.36% ใน Q2) Efficiency ratio แข็งแกร่ง (54.3% adj. Q4 2568) และ CET1 10.77% ยืนยันความมั่นคง อย่างไรก็ดี ราคา {{px}} วิ่งขึ้นราว 27% ตามกราฟ จนสูงกว่า FV {{fv}} (MOS {{mos}}) ซึ่งอิงขา P/E มัธยฐานประวัติขาเดียว จึงเหมาะกับกลยุทธ์ \"ถือต่อ\" มากกว่า \"ซื้อใหม่\" ณ ระดับนี้",
+    "strategy": "ผู้ถือหุ้นอยู่แล้ว — <b>ถือต่อ</b> รอ synergy เต็มที่ · ผู้สนใจซื้อใหม่ — รอจังหวะ pullback เข้าใกล้ FV {{fv}} หรือโซน MOS 20% ที่ <b>{{mos20}}</b> ก่อนสะสม · ปันผล ~3.2% ช่วยบรรเทาความเสี่ยงขณะรอ",
+    "disclaimerSources": "แหล่งข้อมูล: Yahoo Finance (ราคา/กราฟ/EPS), StockAnalysis.com (ข้อมูลการเงิน/analyst targets), Fifth Third Bancorp IR (Q4 2568 earnings release), SEC EDGAR (8-K FY2026), Motley Fool (Q1 2569 earnings transcript) — ราคาอ้างอิง ณ {{priceDate}}"
+  },
+  "text": {
+    "valHint": "ขาเดียว: P/E มัธยฐานประวัติ (ตระกูลเดียว) · ธนาคารภูมิภาค",
+    "chartHint": "· ต.ค. 2568 – ก.ย. 2569"
+  },
+  "catalysts": [
+    "<b>Comerica Integration Synergy:</b> คาดได้ synergy ต้นทุน/รายได้เมื่อ integration เต็มที่ (สื่อรายงานเป้าประหยัด ~$850M — PYMNTS) · ผลบวกต่อ EPS ปี 2570 ตามประมาณการ consensus $4.94",
+    "<b>NIM ขยายตัวต่อเนื่อง:</b> NIM 3.36% ใน Q2 2569 (+6 bps QoQ) · Loan repricing จาก portfolio Comerica ยังไม่เต็มที่ · Fed rate environment สนับสนุน NII growth",
+    "<b>Southeast Expansion:</b> ตลาด FL/GA/NC/TN เติบโตสูงกว่า Midwest ชัดเจน · FITB เพิ่มสาขาและ digital banking ในภูมิภาคนี้ เป็นแหล่ง Loan growth สำคัญ",
+    "<b>Fee Income Diversification:</b> Non-interest income $3.0B (FY2568) คิดเป็น ~33% รายได้ · Auto Finance, Wealth Management, Payment processing ลดการพึ่งพา NII",
+    "<b>Capital Strength + Buyback:</b> CET1 10.77% (Q4 2568) · หลังบรรลุ target 10–10.5% จะมีทุนส่วนเกินสำหรับ buyback และปันผล",
+    "<b>Investor Day 2024 Targets:</b> ยืนยัน track record ตาม strategic plan · Efficiency ratio เป้า <55% ระยะกลาง · Management credibility สูง"
+  ],
+  "risks": [
+    "<b>Integration Risk (Comerica):</b> merger deal $12.7B ขนาดใหญ่ — ความเสี่ยงด้าน systems integration, talent retention, cultural fit · ค่าใช้จ่ายพิเศษกดดัน GAAP EPS ระยะสั้น",
+    "<b>Credit Quality Deterioration:</b> portfolio Comerica มี CRE (Commercial Real Estate) exposure สูง — day-1 ACL build $83M ใน Q1 2569 · office/retail CRE ยังกดดัน",
+    "<b>NIM Compression:</b> หาก Fed ลดดอกเบี้ยเร็วกว่าคาด NIM อาจหดตัว · Deposit repricing สูงขึ้น — ต้นทุน funding เพิ่ม",
+    "<b>Regulatory / Capital Pressure:</b> Basel III Endgame อาจบังคับเพิ่ม capital requirement สำหรับ bank ขนาด >$100B · CET1 ต้องคงระดับ 10–10.5% กดดัน buyback",
+    "<b>Macro / Recession Risk:</b> FITB มี loan book ขนาดใหญ่ใน Midwest (manufacturing/industrial) — อ่อนไหวต่อ tariff และ economic slowdown มากกว่า coastal banks",
+    "<b>Competition FinTech + Megabank:</b> JPM/BAC ขยายสาขาในตลาด Midwest · FinTech กดดัน Consumer lending fees และ Payment processing revenue"
+  ],
+  "extras": [],
+  "v2Display": {
+    "fv": 46,
+    "fvRange": [
+      40,
+      55
+    ],
+    "targets": [
+      33,
+      58,
+      77
+    ]
+  },
+  "_sig": "sha256:4c643dcbe43371ef1672694554a7a9b64baabca7b8eb7b29b9e391c17d79644d"
+}

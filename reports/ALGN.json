@@ -1,0 +1,286 @@
+{
+  "v": 3,
+  "symbol": "ALGN",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Align Technology",
+    "exchange": "NASDAQ",
+    "sub": "Invisalign clear aligners · iTero intraoral scanners · 10M+ patients treated · dental tech platform · gross margin 67–70% · San Jose CA · Nasdaq",
+    "headerTags": [
+      "MedTech / Dental",
+      "Clear Aligner · Orthodontics"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "StockAnalysis.com",
+      "MarketBeat.com"
+    ],
+    "themeLegacy": {
+      "accent": "#009bba",
+      "accentDark": "#00728c",
+      "darkGrad": "linear-gradient(135deg,#002b38 0%,#004559 50%,#007188 100%)",
+      "glow": "rgba(0,163,196,0.35)",
+      "subColor": "#d4f2f9",
+      "headerMuted": "#dceff3",
+      "verdictText": "#e0f7fd",
+      "vcellLabel": "#fafdfe"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T10:24:06+07:00",
+      "v2Hash": "f580af094abb"
+    }
+  },
+  "market": {
+    "px": 146.78,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          137.88
+        ],
+        [
+          "พ.ย.25",
+          147.19
+        ],
+        [
+          "ธ.ค.25",
+          156.15
+        ],
+        [
+          "ม.ค.26",
+          163.03
+        ],
+        [
+          "ก.พ.26",
+          190.1
+        ],
+        [
+          "มี.ค.26",
+          171.43
+        ],
+        [
+          "เม.ย.26",
+          176.01
+        ],
+        [
+          "พ.ค.26",
+          174.95
+        ],
+        [
+          "มิ.ย.26",
+          168.66
+        ],
+        [
+          "ก.ค.26",
+          169.16
+        ],
+        [
+          "ส.ค.26",
+          159.79
+        ],
+        [
+          "ก.ย.26",
+          146.78
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 122,
+      "hi": 200.44
+    }
+  },
+  "fundamentals": {
+    "eps": 5.76,
+    "bvps": 57.55,
+    "shares": 71039852,
+    "ebitda": 811000000,
+    "revenue": 4140000000,
+    "netIncome": 414000000,
+    "grossMargin": 70.7,
+    "fcf": 634000000,
+    "roe": 10.2,
+    "beta": 1.67,
+    "dps": 0,
+    "epsBasis": "adj-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation (Non-GAAP)",
+      "inputs": {
+        "multiple": 20,
+        "multipleSource": "author"
+      },
+      "override": {
+        "eps": 10.97,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "family": "market"
+    },
+    {
+      "method": "evebitda",
+      "label": "EV/EBITDA Valuation",
+      "inputs": {
+        "multiple": 18,
+        "multipleSource": "author"
+      },
+      "override": {
+        "netDebt": -982000000,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "ตัวคูณ 18x เป็นสมมติฐานกลุ่ม medtech (ไม่มีมัธยฐานที่วัดมา) และ EBITDA ยังไม่ได้ refresh",
+      "family": "market"
+    },
+    {
+      "method": "pfcf",
+      "label": "Price/FCF Valuation",
+      "inputs": {
+        "multiple": 25,
+        "multipleSource": "author"
+      },
+      "note": "เหมาะ capital-light model FCF margin 15% ที่ใช้ buyback แทนปันผล (25x เป็นสมมติฐาน ไม่มีมัธยฐานที่วัดมา)",
+      "family": "market"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "custom:0",
+      "custom:1",
+      "revenue",
+      "netIncome",
+      {
+        "key": "grossMargin",
+        "tone": "pos"
+      },
+      {
+        "key": "fcf",
+        "tone": "pos"
+      },
+      "roe",
+      "pbv",
+      "yield",
+      "beta"
+    ],
+    "custom": [
+      {
+        "label": "P/E (Non-GAAP adj.)",
+        "value": "~13.4x",
+        "note": "EPS adj. ~$10.97 TTM · บวก SBC+intangibles",
+        "tone": "neu"
+      },
+      {
+        "label": "EV/EBITDA",
+        "value": "~11.7x",
+        "note": "EBITDA $811M (ยังไม่ refresh) · EV ~$9.5B",
+        "tone": "neu"
+      }
+    ],
+    "notes": {
+      "mcap": "71.04M หุ้นคงเหลือ (Shares Outstanding)",
+      "pe": "EPS GAAP {{eps}} TTM · ยืนยัน 3 ทาง (Yahoo · SA · ตารางงบ)",
+      "revenue": "YoY +4.4% · guidance FY2026 โต 3–4%",
+      "netIncome": "Net margin 10.0% · Operating margin 18.5%",
+      "grossMargin": "TTM · FY2025 69.9% · FY2024 70.0% (ทรงตัว)",
+      "fcf": "FCF margin 15.3% · เงินสด $1.10B · หนี้ $121M",
+      "roe": "Net income $414M / equity ~$4.1B",
+      "pbv": "equity ~$4.1B (มั่นคง)",
+      "yield": "ไม่มี · Buyback แทน · แผนใหม่ $400–500M (SA news)",
+      "beta": "ผันผวนสูงกว่าตลาด 67% · high-beta medtech"
+    },
+    "hint": "ข้อมูล TTM ล่าสุด (Q2 2569) · StockAnalysis"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 3,
+        "exitMultiple": 18,
+        "divCum": 0,
+        "desc": "growth ชะลอ · EU antitrust กด multiple · ASP ถูกกดดัน"
+      },
+      {
+        "growth": 8,
+        "exitMultiple": 20,
+        "divCum": 0,
+        "desc": "teen+adult case growth ฟื้น · iTero adoption · buyback ต่อเนื่อง"
+      },
+      {
+        "growth": 12,
+        "exitMultiple": 25,
+        "divCum": 0,
+        "desc": "re-rating premium · EM market เร่งตัว · Invisalign AI features ดึง ASP"
+      }
+    ],
+    "exitDp": 0,
+    "baseOverride": {
+      "value": 10.9708,
+      "why": "EPS ฐานฉากถอดกลับจากราคาเป้าที่พิมพ์"
+    },
+    "note": "ใช้ EPS adjusted (non-GAAP) เป็นฐาน ~$10.97 TTM (บวก SBC และ amortization กลับเข้า — มาตรฐานที่นักวิเคราะห์และบริษัทรายงาน) Bear case (+3%/yr EPS, P/E ออก 18x) ให้ผลตอบแทน {{scn.bear.ret}} หาก multiple ฟื้นจาก ~13.5x ปัจจุบันมา 18x — เป็นสมมติฐานที่พึ่ง re-rating ความเสี่ยงหลัก: ถ้า EU สั่งห้าม business practice สำคัญ อาจกด EPS และ multiple พร้อมกัน ทำให้ Bear case แย่กว่าที่คำนวณ",
+    "hintNote": "EPS adj. • ไม่มีปันผล"
+  },
+  "analyst": {
+    "target": 209,
+    "n": 16,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ALGN ขึ้นจากระดับ $137.88 ในเดือน ต.ค. 2568 สู่สูงสุด $190.10 (ก.พ. 2569) ก่อนย่อตัวลงต่อเนื่องมาที่ {{px}} — ยังห่างจากจุดสูงสุดเดิม $700+ (2564) ราว 80% แรงหนุน: Q2 2569 รายได้สถิติใหม่ $1.056B · clear aligner volumes สถิติใหม่ · guidance gross margin Q3 ~71% · Elliott เข้ามา + แผน buyback $400–500M (ที่มา StockAnalysis news) แรงกดดัน: EU Commission เปิดสอบสวน antitrust อย่างเป็นทางการ (ยืนยัน StockAnalysis news) กด sentiment · รายได้โตช้า 3–4% · Beta สูง",
+    "valuation": "ทั้งสามวิธี ($219–223) ใกล้กันมาก แต่เป็นตัวคูณสมมติฐานทั้งหมด (ไม่มีขาที่ยึดมัธยฐานที่วัดได้ นอกจากการเทียบ P/E) จึงมีความไม่แน่นอนสูง เป้าเฉลี่ยนักวิเคราะห์ ($209) ไม่ได้เป็นขาของ FV — ใช้เป็นบริบทเทียบเท่านั้น หมายเหตุ: ใช้ EPS Non-GAAP adjusted สำหรับวิธี P/E (adj. $10.97 ยังไม่ได้ refresh กับงบ Q2 2569 — consensus FY2026e $11.29) GAAP EPS TTM {{eps}} → GAAP P/E ~25.6x (สูงกว่าแต่ไม่ใช่ basis ที่นักวิเคราะห์ใช้กัน) ที่มา: Yahoo Finance, StockAnalysis.com, MarketBeat.com",
+    "gauge": "ALGN ซื้อขายที่ {{px}} ต่ำกว่า Fair Value {{fv}} (MOS {{mos}}) — ต่ำกว่าโซน MOS 30% ({{mos30}}) แล้ว ราคาปัจจุบันต่ำกว่าทั้ง FV ของเรา และเป้าเฉลี่ยนักวิเคราะห์ ($209) สะท้อนว่าตลาดยังกดราคาจาก EU risk โซนน่าสนใจ: ต่ำกว่าโซน MOS 20% ({{mos20}}) และ MOS 30% ({{mos30}}) — แต่ FV มาจากตัวคูณสมมติฐาน จึงควรมี buffer สูง",
+    "mos": "MOS อยู่ในโซนน่าสนใจ — ต่ำกว่า Fair Value มากกว่า 20% เหมาะสำหรับนักลงทุน Value ระยะ 3+ ปี",
+    "verdictHeadline": "ALGN: ผู้นำ Clear Aligner ที่ถูก De-rate ผิดปกติ — Valuation น่าสนใจ ระวัง EU Risk",
+    "verdictBody": "Align Technology เป็นผู้ประดิษฐ์และเจ้าตลาด Clear Aligner ระดับโลก ด้วย Invisalign แบรนด์แข็งแกร่ง ผู้ป่วยสะสม 10M+ ราย คุณภาพธุรกิจชัดเจน: gross margin ~70%, FCF margin 15%, เงินสด $1.10B หนี้ต่ำ, buyback ต่อเนื่อง หุ้นถูก de-rate อย่างรุนแรงจาก $700+ (2564) มา $122–200 (52 สัปดาห์) สาเหตุ: demand normalization, EU antitrust, competition เพิ่มขึ้น ที่ราคา {{px}} adjusted P/E ~13.5x และ EV/EBITDA ~11.7x — ถูกสำหรับธุรกิจคุณภาพนี้ แต่ FV อิงตัวคูณสมมติฐานทั้งหมด MOS {{mos}} จาก FV {{fv}} อยู่ในโซน \"น่าสนใจ\" สำหรับนักลงทุนระยะ 3+ ปีที่รับความเสี่ยง EU ได้ ความเสี่ยงหลักคือผลการสอบสวน EU antitrust ที่เพิ่งเริ่มต้น — ถ้าถูกปรับหนักหรือบังคับเปลี่ยน practice จะกด EPS + multiple พร้อมกัน",
+    "strategy": "ทยอยสะสมได้ต่ำกว่าโซน MOS 20% ({{mos20}}) — ราคาปัจจุบันอยู่ใต้โซนนี้และโซน MOS 30% ({{mos30}}) แล้ว ควรทยอยซื้อเพราะ EU antitrust ยังไม่จบ และ FV อิงตัวคูณสมมติฐาน เป้าระยะ 3 ปี: Base–Bull ตามหมวด 6 โดยอิง re-rating + EPS growth Stop loss: <$120 (52W low ใหม่ = thesis เปลี่ยน · EU อาจมีผลกระทบรุนแรงกว่าคาด)",
+    "disclaimerSources": "ที่มา: Yahoo Finance (finance.yahoo.com), StockAnalysis.com (stockanalysis.com), MarketBeat.com · ราคา ณ {{priceDate}}"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 3 วิธี",
+    "chartHint": "ต.ค. 2568 – ก.ย. 2569",
+    "disclaimerAssump": " P/E เป้าหมาย, อัตราเติบโต EPS, EV/EBITDA target และ FCF ในอนาคต"
+  },
+  "catalysts": [
+    "<b>Record volumes Q2 2569:</b> รายได้สถิติใหม่ $1.056B · clear aligner volumes สถิติใหม่ · โตต่างประเทศแข็งแรง (StockAnalysis news)",
+    "<b>iTero + AI workflow:</b> scanner AI ลด workflow time ~40% · เพิ่ม stickiness ให้ orthodontist จ่าย ASP premium · platform moat แข็งแกร่ง",
+    "<b>Emerging markets runway:</b> penetration ใน APAC/EM ยังต่ำมาก (<5% ของ orthodontic cases) — growth runway ระยะยาวสูงมาก",
+    "<b>Valuation compressed ผิดปกติ:</b> adj. P/E ~13.5x สำหรับ gross margin ~70% business ที่เคยซื้อขาย 40–60x — re-rating potential สูง",
+    "<b>Capital return + Elliott:</b> แผน buyback $400–500M และกรรมการอิสระใหม่ 3 คนหลัง Elliott เข้ามา (StockAnalysis news) · เงินสด $1.10B หนี้ $121M",
+    "<b>Gross margin ทรงตัวสูง:</b> TTM 70.7% · guidance Q3 ~71% (StockAnalysis news) · บ่งชี้ pricing power ยังแข็ง"
+  ],
+  "risks": [
+    "<b>EU Antitrust Investigation:</b> European Commission เปิดสอบสวนอย่างเป็นทางการจากข้อร้องเรียนของคู่แข่ง (StockAnalysis news) — ผลและค่าปรับยังไม่ทราบ อาจต้องเปลี่ยน business practice",
+    "<b>การแข่งขันเพิ่มขึ้น:</b> Henry Schein/SureSmile, Straumann ClearCorrect, 3M Clarity ราคาต่ำกว่า 15–30% — กดดัน market share ใน GP dentist segment",
+    "<b>แรงกดดันราคา/ASP:</b> gross margin ทรงตัว ~70% แต่คู่แข่งราคาต่ำกว่า · ต้นทุน SG&A สูง · ถ้าต้องลดราคาแข่งขัน margin จะกดลง",
+    "<b>Revenue growth ชะลอ:</b> +4.4% YoY TTM (guidance FY2026 +3–4%) — ต่ำสำหรับ premium medtech · ตลาด US/Europe saturate · GP dentist adoption ช้ากว่าคาด",
+    "<b>Beta สูง + sentiment เปราะ:</b> Beta 1.67 ผันผวนมาก · ในภาวะ risk-off สามารถทะลุ $122 (52W low) ได้อีก · EU news อาจกดฉับพลัน 10–20%",
+    "<b>Multiple ต้องพึ่ง re-rating:</b> ถ้าตลาดยังให้ ~13–15x adjusted ตลอด upside จำกัดมาก ต้องอาศัย EPS growth ล้วน ๆ ซึ่งช้า 3–8%/ปี"
+  ],
+  "extras": [],
+  "v2Display": {
+    "fv": 220,
+    "fvRange": [
+      219,
+      223
+    ],
+    "targets": [
+      216,
+      276,
+      385
+    ]
+  },
+  "_sig": "sha256:2eb08a1633e45374a712ae0ee3ef126557a51e890fe16fc295c57fe526e05136"
+}

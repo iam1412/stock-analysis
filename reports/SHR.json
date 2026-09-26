@@ -1,0 +1,297 @@
+{
+  "v": 3,
+  "symbol": "SHR",
+  "currency": "THB",
+  "region": "TH",
+  "dateEra": "BE",
+  "meta": {
+    "company": "เอส โฮเทล แอนด์ รีสอร์ท (S Hotels and Resorts)",
+    "exchange": "SET",
+    "sub": "โรงแรมและรีสอร์ท upper-midscale ในเครือสิงห์ • สมุย ภูเก็ต มัลดีฟส์ ฟิจิ มอริเชียส สหราชอาณาจักร • 33 โรงแรม 4,035 คีย์ • 11 แบรนด์",
+    "sectorLine": "SET · โรงแรมและรีสอร์ท · เครือสิงห์",
+    "headerTags": [
+      "โรงแรม & รีสอร์ท",
+      "เครือสิงห์"
+    ],
+    "analysisDate": "2026-09-22",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "SET Thailand",
+      "Investing.com",
+      "StockAnalysis.com",
+      "SHR IR (Q1",
+      "2026)"
+    ],
+    "themeLegacy": {
+      "accent": "#cc8006",
+      "accentDark": "#a45107",
+      "darkGrad": "linear-gradient(135deg,#733807 0%,#7c4f07 60%,#845e04 100%)",
+      "glow": "rgba(249,168,37,0.3)",
+      "subColor": "#ffe79b",
+      "headerMuted": "#f4e7c3",
+      "verdictText": "#fff8e1",
+      "vcellLabel": "#fff8e3"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-22T01:46:25+07:00",
+      "v2Hash": "c30d889cf02c"
+    }
+  },
+  "market": {
+    "px": 1.56,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          1.53
+        ],
+        [
+          "พ.ย.25",
+          1.51
+        ],
+        [
+          "ธ.ค.25",
+          1.71
+        ],
+        [
+          "ม.ค.26",
+          1.67
+        ],
+        [
+          "ก.พ.26",
+          1.96
+        ],
+        [
+          "มี.ค.26",
+          1.66
+        ],
+        [
+          "เม.ย.26",
+          1.59
+        ],
+        [
+          "พ.ค.26",
+          1.62
+        ],
+        [
+          "มิ.ย.26",
+          1.7
+        ],
+        [
+          "ก.ค.26",
+          1.68
+        ],
+        [
+          "ส.ค.26",
+          1.59
+        ],
+        [
+          "ก.ย.26",
+          1.56
+        ]
+      ],
+      "gridFmt": "v.toFixed(2)",
+      "dataFmt": "d[1].toFixed(2)"
+    },
+    "range52w": {
+      "lo": 1.47,
+      "hi": 1.98
+    }
+  },
+  "fundamentals": {
+    "bvps": 3.72,
+    "shares": 3594000000,
+    "eps": 0.17,
+    "occupancy": 87,
+    "fy": {
+      "period": "FY2568",
+      "revenue": 10372000000
+    },
+    "dps": 0.069108,
+    "epsBasis": "ifrs"
+  },
+  "legs": [
+    {
+      "method": "pbv",
+      "label": "Justified P/BV (ตระกูล r/g ร่วมกับ DDM — นับเป็นเสียงเดียว)",
+      "inputs": {
+        "g": 3,
+        "r": 10
+      },
+      "override": {
+        "roe": 4.6,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "ไม่ annualise Q1 ซึ่งเป็น peak season (ครึ่งปีแรก 2569 ฿171M ÷ equity = ROE annualised ~2.6%)",
+      "family": "rg"
+    },
+    {
+      "method": "declared",
+      "label": "DDM / Gordon Growth (ตระกูล r/g เดียวกับ Justified P/BV)",
+      "inputs": {
+        "value": 1.03,
+        "basis": "other"
+      },
+      "note": "D₁ = ฿0.07 × (1+3%) = ฿0.0721; g 3%, r 10% — ฿0.0721 / (0.10 − 0.03)",
+      "family": "rg"
+    },
+    {
+      "method": "dcf",
+      "label": "DCF กระแสเงินสดต่อผู้ถือหุ้น (FCF ปกติ 5 ปี)",
+      "inputs": {
+        "g1": 3,
+        "years1": 5,
+        "tg": 3,
+        "r": 10,
+        "rfCurrency": "THB"
+      },
+      "override": {
+        "fcf": 426000000,
+        "netDebt": 0,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "สมมติฐานของเรา · ค่าเฉลี่ย FY2021–25 (−420, 1,165, −557, 933, 1,007) · PV ฿4,508M = 72% ของมูลค่า",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pbv",
+      "custom:0",
+      "custom:1",
+      "eps",
+      "bvps",
+      "revenueFy",
+      {
+        "key": "occupancy",
+        "tone": "pos"
+      },
+      "yield",
+      "custom:2",
+      {
+        "key": "analystTarget",
+        "tone": "pos"
+      },
+      {
+        "key": "range52w",
+        "tone": "neu"
+      }
+    ],
+    "custom": [
+      {
+        "label": "กำไรปกติ FY2568 (Norm.)",
+        "value": "฿615 ล้าน",
+        "note": "GAAP -฿1,586 ล้าน (UK impairment one-time)",
+        "tone": "pos"
+      },
+      {
+        "label": "Q2/2569 กำไรสุทธิ",
+        "value": "−฿94 ล้าน",
+        "note": "Q1/69 +฿264 ล้าน · Q2/68 +฿24 ล้าน (low season)",
+        "tone": "neg"
+      },
+      {
+        "label": "หนี้สินที่มีดอกเบี้ย",
+        "value": "~฿16,257 ล้าน",
+        "note": "D/E ~1.2x · ดอกเบี้ย ~฿891 ล้าน/ปี",
+        "tone": "neg"
+      }
+    ],
+    "notes": {
+      "mcap": "3,594 ล้านหุ้น",
+      "pbv": "(ปลาย FY2568)",
+      "eps": "GAAP EPS -฿0.44 (รวม non-cash UK loss)",
+      "bvps": "ลดจาก ฿4.43 ปี 2567 หลัง UK restructure",
+      "occupancy": "ADR ฿13,951 (+9% YoY)",
+      "yield": "฿0.07/หุ้น (interim ฿0.015 + final ฿0.055)",
+      "analystTarget": "Buy · 5 analysts (Yahoo/StockAnalysis)"
+    },
+    "hint": "ข้อมูล ณ 22 ก.ย. 2569 · SET + Investing.com + StockAnalysis.com + SHR IR (งวดล่าสุด Q2/2569)"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": "cagr",
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": -8,
+        "exitMultiple": 8,
+        "divCum": 0.21,
+        "desc": "low season ขาดทุนต่อ กำไรปกติหดสู่ ~฿0.13"
+      },
+      {
+        "growth": 8,
+        "exitMultiple": 9,
+        "divCum": 0.24,
+        "desc": "ฟื้นตัวตามเป้า RevPAR กำไรปกติโต 8%/ปี"
+      },
+      {
+        "growth": 12,
+        "exitMultiple": 11,
+        "divCum": 0.27,
+        "desc": "ไฮซีซัน full swing + debt ลด"
+      }
+    ],
+    "exitDp": 0,
+    "note": "คาดการณ์อิง EPS ฐาน ~{{eps}} (Normalised ปี 2568 = ฿615M / 3,594M หุ้น) ไม่นับ one-time UK impairment · P/E ออก 8x / 9x / 11x เป็นสมมติฐานของเรา (ไม่ใช่มัธยฐานที่วัดได้ เพราะ P/E ย้อนหลังใช้ไม่ได้) Bear ใช้ EPS −8%/ปี ≈ consensus ปี 2569 (~฿0.13) ต่อเนื่อง · Base +8%/ปี สอดคล้องกับเป้าหมายบริษัทที่ RevPAR growth 20–25% และ EBITDA margin ขยับสู่ 30% (ยังไม่ยืนยันจาก Q2/2569) Bull case {{scn.bull.tgt}} ยังต่ำกว่าเป้าสูงสุดของนักวิเคราะห์ ความเสี่ยงหลัก: หนี้สุทธิ ~฿16,000 ล้าน และ FX exposure หลายสกุลเงิน (USD/GBP) อาจกดผลตอบแทน Bear case ได้",
+    "hintNote": "(Norm.)"
+  },
+  "analyst": {
+    "target": 2.04,
+    "n": 5,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ราคา SHR แกว่งในกรอบราว ฿1.5–฿2.0 ตลอดรอบปี แตะจุดสูงสุดรายเดือน ฿1.96 ใน ก.พ. 2569 (ช่วงไฮซีซัน) แล้วอ่อนตัวลงมาซื้อขายที่ {{px}} ณ {{priceDate}} แรงกดดันหลักมาจากผลขาดทุนสุทธิ Q4/2568 ฿1,914 ล้าน (รวม non-cash impairment จากการขาย 15 โรงแรมใน UK) และ Q2/2569 ที่ยังขาดทุนสุทธิ ฿94 ล้าน (Q2/2568 กำไร ฿24 ล้าน) ตามงบรายไตรมาส กำไรปกติ (Normalised) ปี 2568 ที่ ฿615 ล้านและ Q1/2569 ฿264 ล้านยังเป็นจุดแข็ง แต่ครึ่งปีแรก 2569 รวมเพียง ฿171 ล้าน และ consensus EPS ปี 2569 อยู่ที่ ~฿0.13 (StockAnalysis) ต่ำกว่าฐาน {{eps}} ราคาปัจจุบันจึงเหนือ Fair Value {{fv}} ที่คำนวณใหม่ (ดูหมวด 3)",
+    "valuation": "เนื่องจาก GAAP EPS ติดลบ (TTM −฿0.45) และมัธยฐาน P/E ย้อนหลังใช้ไม่ได้ (เหลือจุดที่เชื่อได้ 1 จุด) จึงงดใช้ P/E · ขา P/BV เทียบกลุ่ม (~0.75x) ของรอบก่อนถูกถอดออกเพราะไม่มีตัวคูณที่วัดจริงรองรับ · ตระกูลที่ 1 = Justified P/BV ({{fvLow}}) + DDM (฿1.03) ใช้ (r,g) ชุดเดียวกัน นับเป็นเสียงเดียว (เฉลี่ย {{mos30}}) ตระกูลที่ 2 = DCF {{fvHigh}} (อิง FCF เฉลี่ย 5 ปีที่วัดจากงบ) · Fair Value = ({{mos30}} + {{fvHigh}})/2 ≈ {{fv}} · ความไว: ถ้าใช้ ROE Q1 annualised 7.9% (peak season) แบบรอบก่อน ขา Justified P/BV จะเป็น ฿2.42 และ FV ~฿1.84 (ราคาจะต่ำกว่า FV ราว 14%) — ผลจึงไวต่อสมมติฐาน ROE ปกติมาก · เป้านักวิเคราะห์ {{analyst.target}} ใช้เป็นบริบทเทียบเท่านั้น ไม่ใช่ขาของ FV",
+    "gauge": "ราคาปัจจุบัน {{px}} อยู่<b>เหนือ Fair Value {{fv}}</b> (MOS ติดลบ) และสูงกว่าจุดซื้อ MOS 20% ที่ {{mos20}} — ยังไม่ใช่โซน Value ตามการประเมินใหม่ แต่ยังต่ำกว่าเป้านักวิเคราะห์เฉลี่ย {{analyst.target}} ซึ่งเป็นเพียงบริบท (ไม่ใช่ขาของ FV) · P/BV ต่ำสะท้อน ROE ปกติเพียง ~4.6% เทียบต้นทุนทุน 10% และ Q2/2569 ที่ยังขาดทุน จุด deep value ที่ MOS 30% อยู่ที่ {{mos30}} ต่ำกว่าต่ำสุดรอบ 52 สัปดาห์ (฿1.47) — จะเข้าโซนนี้ได้ต้องมีการ de-rate เพิ่มหรือหลักฐานว่ากำไรปกติฟื้นไม่ทัน",
+    "mos": "ราคาเหนือ Fair Value {{fv}} — ยังไม่มีส่วนเผื่อความปลอดภัยตามสมมติฐาน ROE ปกติ (ผลไวต่อสมมติฐาน ดูหมวด 3)",
+    "verdictHeadline": "SHR — ถูกกว่ามูลค่าบัญชี แต่ ROE ปกติต่ำ · ราคาเหนือ Fair Value ที่ประเมินใหม่",
+    "verdictBody": "SHR ซื้อขายที่ P/BV เพียง {{pbv}}x แต่กำไรสุทธิ GAAP ติดลบ (TTM −฿1,615 ล้าน) จาก impairment การขาย 15 โรงแรม UK ขณะที่กำไรปกติปี 2568 ฿615 ล้านและ Q1/2569 ฿264 ล้านเป็นจุดแข็ง ทว่า Q2/2569 ขาดทุนสุทธิ ฿94 ล้าน และ consensus EPS ปี 2569 ~฿0.13 ต่ำกว่าฐาน รอบนี้ถอดขา P/BV กลุ่มที่ไม่มีตัวคูณวัดจริง และเลิก annualise Q1 (peak season) จึงได้ Fair Value {{fv}} ต่ำกว่าราคา {{px}} ด้านลบสำคัญคือ leverage สูง (D/E ~1.2x) และ FX risk เป้านักวิเคราะห์ 5 รายเฉลี่ย {{analyst.target}} (Buy) เป็นบริบทเท่านั้น dividend yield ~4.4% เป็น cushion บางส่วน",
+    "strategy": "ยังไม่ใช่โซนสะสมตามมูลค่าเหมาะสม — รอราคาลงเข้าโซน MOS 20–30% ({{mos20}}–{{mos30}}) หรือรอหลักฐานว่ากำไรปกติฟื้นจริง (ROE ปกติ >~7% จะยก Fair Value ขึ้น) ผู้ถือเดิมใช้ปันผล ~4.4% เป็น carry และคุมสัดส่วนเพราะ leverage สูง",
+    "disclaimerSources": "แหล่งข้อมูล (≥3 แหล่งอิสระ): SET Thailand factsheet (3 ก.ค. 2569) · Investing.com (ราคา + P/BV + EPS) · StockAnalysis.com (income statement รายปี/รายไตรมาส + BVPS + balance sheet FY2568 + consensus เป้านักวิเคราะห์/forecast) · SHR Investor Relations — press release Q1/2569 และ FY2568 (shotelsresorts.com) · Yahoo Finance (กราฟราคารายเดือน SHR.BK) • งวดงบล่าสุด: Q2/2569 (มิ.ย. 2569, ตามงบรายไตรมาส StockAnalysis) + Q1/2569 + FY2568 (ธ.ค. 2568)"
+  },
+  "text": {
+    "valIntro": "3 วิธี · 2 ตระกูล (ไม่ใช้ P/E: GAAP EPS ติดลบ และมัธยฐาน P/E ย้อนหลังใช้ไม่ได้ — เหลือจุดที่เชื่อได้ 1 จุด)",
+    "chartHint": "ต.ค. 2568 – ก.ย. 2569 (รายเดือน · Yahoo Finance)",
+    "disclaimerAssump": " forward ROE, ROE ปกติ, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ FCF ฐานของ DCF กำไรปกติ (Normalised) ต่างจาก GAAP อย่างมีนัยเพราะ one-time UK impairment — ผู้ลงทุนควรศึกษา Financial Statement จาก SET เพิ่มเติม ราคาหุ้นมีความผันผวนสูงโดยเฉพาะหุ้นที่มี leverage สูง ผู้ลงทุนควรพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ"
+  },
+  "catalysts": [
+    "<b>กำไร Q1/2569 สูงสุดประวัติการณ์:</b> ฿264 ล้าน (+51% YoY) สะท้อน peak season ที่แข็งแกร่งในไทยและมัลดีฟส์ ให้ความเชื่อมั่นต่อ full-year guidance",
+    "<b>Portfolio Restructure เสร็จสิ้น:</b> ขาย 15 โรงแรม UK ที่ไม่ใช่ core asset แล้ว ธุรกิจโฟกัสที่ premium resort ในทำเลแข็งแกร่ง ลด overhead สูงของ UK",
+    "<b>เป้า RevPAR Growth 20–25% ปี 2569:</b> บริษัทตั้งเป้า RevPAR เติบโต 20–25% ควบคู่ EBITDA margin ขยับสู่ 30% และลด average cost of debt >0.5%",
+    "<b>P/BV ต่ำ ({{pbv}}x):</b> ราคาต่ำกว่า BVPS มาก แต่ส่วนหนึ่งสะท้อน ROE ปกติต่ำ (~4.6%) จึงยังไม่นับเป็นส่วนเผื่อความปลอดภัยโดยอัตโนมัติ",
+    "<b>Buy consensus เป้า {{analyst.target}}:</b> 5 นักวิเคราะห์ (ลดจากรอบก่อน ฿2.67) ยังเชื่อในการฟื้นตัวและ re-rating ใน 12 เดือน แต่ consensus EPS ปี 2569 ~฿0.13 ต่ำกว่าฐาน {{eps}}",
+    "<b>Occupancy 87% + ADR ขึ้น:</b> Occupancy สูงและ ADR ฿13,951 (+9% YoY) ใน Q1/2569 บ่งชี้ pricing power และฐานลูกค้าคุณภาพสูง"
+  ],
+  "risks": [
+    "<b>Leverage สูง:</b> หนี้สินที่มีดอกเบี้ย ~฿16,257 ล้าน / equity ~฿13,373 ล้าน D/E ~1.2x ดอกเบี้ยจ่าย ~฿891 ล้าน/ปีเป็นแรงกดดันต่อกำไรสุทธิ",
+    "<b>FX Risk (USD/GBP):</b> รายได้จากมัลดีฟส์ ฟิจิ มอริเชียสในสกุล USD เมื่อบาทแข็งค่ากระทบรายได้แปลงกลับ — บาทแข็ง 5% ลด revenue ~500 ล้านบาท (ประมาณ)",
+    "<b>ฤดูกาลสูงต่ำชัดเจน (Q2/2569 ขาดทุน ฿94 ล้านแล้ว):</b> Q1 เป็น peak season (Oct–Apr สำหรับมัลดีฟส์ไทย) Q2–Q3 กำไรต่ำกว่ามาก ต้องระวัง low season ดึงผลประกอบการรายปี",
+    "<b>ความเสี่ยงเศรษฐกิจโลก:</b> การท่องเที่ยว upper-midscale ไวต่อภาวะเศรษฐกิจโลก ราคาน้ำมัน ค่าตั๋วเครื่องบิน และความเชื่อมั่นผู้บริโภค",
+    "<b>GAAP Earnings Complexity:</b> ความต่างระหว่าง Normalised (+฿615M) และ GAAP (−฿1,586M) สร้างความสับสน อาจมีการตั้งสำรองหรือ impairment เพิ่มเติมในอนาคต",
+    "<b>Oversupply ในบางทำเลเป้าหมาย:</b> จำนวนโรงแรมใหม่ในไทย-มัลดีฟส์ขยายตัวต่อเนื่อง อาจกดดัน ADR และ Occupancy ในระยะกลางถ้าอุปสงค์ไม่โตตาม"
+  ],
+  "extras": [],
+  "v2Display": {
+    "fv": 1.34,
+    "cards": {
+      "revenueFy": {
+        "v": "~฿10,372 ล้าน",
+        "d": "RevPAR Thailand +21%+ YoY"
+      },
+      "range52w": {
+        "v": "฿1.98 / ฿1.47",
+        "d": "ราคาปัจจุบัน ฿1.56 (ค่อนไปทางล่างของช่วง)"
+      }
+    }
+  },
+  "_sig": "sha256:b2ca6e41331042a7be37b11764e30dccef169849db56df9f788750945cc752bb"
+}

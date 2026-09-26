@@ -1,0 +1,271 @@
+{
+  "v": 3,
+  "symbol": "LANC",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "The Marzetti Company (เดิม Lancaster Colony)",
+    "exchange": "NASDAQ",
+    "sub": "Marzetti dressings & sauces • New York Bakery frozen breads • Sister Schubert's rolls • Angelic Bakehouse • Flatout flatbreads • Foodservice partnerships",
+    "headerTags": [
+      "→ MZTI",
+      "Consumer Staples",
+      "Specialty Food"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance chart API",
+      "Yahoo quoteSummary",
+      "StockAnalysis.com"
+    ],
+    "themeLegacy": {
+      "accent": "#C41E3A",
+      "accentDark": "#811326",
+      "darkGrad": "#240e12",
+      "glow": "rgba(196,30,58,0.35)",
+      "subColor": "#d96e80",
+      "headerMuted": "#d9babf",
+      "verdictText": "#fff8f4",
+      "vcellLabel": "#af828a"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T15:39:58+07:00",
+      "v2Hash": "09803e3dba76"
+    }
+  },
+  "market": {
+    "px": 100.47,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          156.79
+        ],
+        [
+          "พ.ย.25",
+          166.94
+        ],
+        [
+          "ธ.ค.25",
+          164.42
+        ],
+        [
+          "ม.ค.26",
+          171.57
+        ],
+        [
+          "ก.พ.26",
+          164.34
+        ],
+        [
+          "มี.ค.26",
+          138.33
+        ],
+        [
+          "เม.ย.26",
+          130.28
+        ],
+        [
+          "พ.ค.26",
+          111.94
+        ],
+        [
+          "มิ.ย.26",
+          114.16
+        ],
+        [
+          "ก.ค.26",
+          106.87
+        ],
+        [
+          "ส.ค.26",
+          112.65
+        ],
+        [
+          "ก.ย.26",
+          100.47
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 98,
+      "hi": 182.56
+    }
+  },
+  "fundamentals": {
+    "dps": 4,
+    "bvps": 38.07,
+    "shares": 27291000,
+    "eps": 6.98,
+    "roe": 18.7,
+    "revenue": 1930000000,
+    "grossMargin": 24.7,
+    "beta": 0.33,
+    "fy": {
+      "period": "FY2026",
+      "netIncome": 191000000
+    },
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "dcf",
+      "label": "DCF (FCF 5 ปี + Terminal)",
+      "inputs": {
+        "g1": 4,
+        "years1": 5,
+        "tg": 3,
+        "r": 9.5,
+        "rfCurrency": "USD"
+      },
+      "override": {
+        "fcf": 206000000,
+        "netDebt": 229000000,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "สมมติฐานของผู้วิเคราะห์เอง · ตระกูลอิสระจาก DDM/P-BV",
+      "family": "rg"
+    },
+    {
+      "method": "ddm",
+      "label": "DDM / Gordon Growth Model",
+      "inputs": {
+        "g": 4,
+        "r": 7
+      },
+      "note": "Dividend King จ่ายปันผลมา 61+ ปี (ตระกูล r,g เดียวกับ Justified P/BV = นับเป็น 1 เสียง)",
+      "family": "rg"
+    },
+    {
+      "method": "pbv",
+      "label": "Justified P/BV",
+      "inputs": {
+        "g": 4,
+        "r": 7
+      },
+      "note": "(r,g) ชุดเดียวกับ DDM = ตระกูลเดียว; ROE FY2026 สูง ทำให้ค่านี้เป็นขอบบนของกรอบ",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "custom:0",
+      "pbv",
+      "netIncomeFy",
+      "eps",
+      "bvps",
+      "roe",
+      "revenue",
+      "grossMargin",
+      "yield",
+      "beta"
+    ],
+    "custom": [
+      {
+        "label": "EPS คาดการณ์ FY2027e",
+        "value": "~$6.73",
+        "note": "FY2028e $7.23 (StockAnalysis /forecast/)"
+      }
+    ],
+    "notes": {
+      "mcap": "27.29 ล้านหุ้น (คงเหลือ)",
+      "pe": "(FY2026)",
+      "pbv": "BVPS ~{{bvps}}",
+      "netIncomeFy": "+14% YoY · FY2025 $167M",
+      "eps": "FY2026 = TTM · FY2025: $6.07 · FY2024: $5.76",
+      "bvps": "Equity ~$1.04B · หนี้สุทธิ ~$229M (หนี้ $254M − เงินสด $25M)",
+      "roe": "ROE FY2026 (StockAnalysis) — คุณภาพสูง",
+      "revenue": "FY2025: $1.91B · +1.1% YoY",
+      "grossMargin": "Operating margin 12.3%",
+      "yield": "61+ ปีติดต่อกัน (Dividend King)",
+      "beta": "ผันผวนต่ำมาก vs ตลาด"
+    },
+    "hint": "FY2026 (ปีงบสิ้นสุด มิ.ย. 2569) · TTM"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 0,
+        "exitMultiple": 12,
+        "divCum": 12,
+        "desc": "Margin กดต่อ, volume ไม่โต"
+      },
+      {
+        "growth": 4,
+        "exitMultiple": 16,
+        "divCum": 12.36,
+        "desc": "Margin ฟื้น + foodservice โต"
+      },
+      {
+        "growth": 7,
+        "exitMultiple": 19,
+        "divCum": 12.72,
+        "desc": "Brand rerating + M&A synergy"
+      }
+    ],
+    "exitDp": 0,
+    "note": "Bear case: EPS ไม่โต และ P/E ออกที่ 12x (de-rating จาก ~14x ปัจจุบัน) — ผลตอบแทนรวม {{scn.bear.ret}} รวมปันผล ~{{scn.bear.div}} ใน 3 ปี Base case: EPS +4%/ปี (รายได้โต ~1–3% + margin ขยับเล็กน้อย) P/E ออก 16x — ผลตอบแทนรวม {{scn.base.ret}} Bull case: EPS +7%/ปี จาก margin ฟื้นและ foodservice ขยาย P/E ออก 19x — ผลตอบแทนรวม {{scn.bull.ret}} P/E ออกทั้งสามเป็นสมมติฐานของผู้วิเคราะห์ (ไม่มีมัธยฐานย้อนหลังที่วัดได้) · สมมติฐาน: ปันผล $4/ปีต่อเนื่อง, EPS ฐาน {{eps}} (FY2026)"
+  },
+  "analyst": {
+    "target": 146.6,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ราคาปิดรายเดือนสูงสุดในกราฟคือ ~$172 (ม.ค. 69) และอ่อนตัวลงต่อเนื่องจนถึงราคาล่าสุด {{px}} ซึ่งอยู่ใกล้ขอบล่างของกรอบ 52 สัปดาห์ ($98.00 – $182.56) ขณะที่ EPS TTM (FY2026) เพิ่มเป็น {{eps}} จาก $6.07 ใน FY2025 และปันผลยังจ่าย $4/ปี — คือราคาลดลงแรงกว่าที่กำไรสะท้อน (P/E หดตัว) สาเหตุเฉพาะของการขายลงยังไม่ได้ยืนยันจากแหล่งปฐมภูมิในรอบนี้ จึงไม่ระบุเป็นข้อเท็จจริง",
+    "valuation": "โครงสร้าง FV ปรับใหม่ในรอบนี้: ตัดขา P/E ที่ใช้ตัวคูณ 21x/24x เดิมออก เพราะไม่มีมัธยฐานย้อนหลังที่วัดได้ (ดึงข้อมูลไม่สำเร็จ) และเป้า analyst ไม่ถูกใช้เป็นขา FV — ใช้เป็นบริบทเท่านั้น FV = (ค่าเฉลี่ยตระกูล DDM + Justified P/BV = $162.60 ให้ (r,g) ชุดเดียวกันนับเสียงเดียว + DCF $116.47) ÷ 2 = <b>{{fv}}</b> (กรอบ {{fvLow}}–{{fvHigh}}) ตระกูล DDM/P-BV อ่อนไหวต่อ r และ g มาก (g 4% ใกล้ r 7%) ส่วน DCF อิงกระแสเงินสดจริง FY2026 — สองตระกูลห่างกัน ~{{ps}} เท่า จึงเฉลี่ยได้ · หากใช้ DCF ขาเดียว ($116) ส่วนเผื่อจะบางลงมากเหลือระดับเลขหลักเดียวถึงต้นเลขสอง (single-family sensitivity) ดังนั้นควรอ่าน MOS ในรายงานนี้เป็นช่วง ไม่ใช่จุดเดียว เป้า analyst เฉลี่ย {{analyst.target}} ({{analyst.pct}}) อยู่ใกล้ FV จึงเป็นข้อมูลประกอบที่สอดคล้องกัน (ไม่ใช่ที่มาของ FV)",
+    "gauge": "ราคาปัจจุบัน {{px}} ต่ำกว่าจุด MOS 20% ({{mos20}}) แล้ว แต่ยังสูงกว่าจุด MOS 30% ({{mos30}}) เล็กน้อย — เข้าเขต \"น่าสนใจ\" ตามกรอบ value investing ส่วนต่างจาก Fair Value {{fv}} คือ {{mos}} และต่ำกว่าเป้า analyst {{analyst.target}} ({{analyst.pct}}) FV ครึ่งหนึ่งมาจากตระกูล (r,g) เดียว จึงไม่ควรตีความเป็นจุดเดียว · โซน deep value คือต่ำกว่า {{mos30}} (MOS 30%)",
+    "mos": "ส่วนต่างความปลอดภัยสูง — เข้าโซนน่าสนใจ (MOS ≥20%) แต่ FV ขึ้นกับสมมติฐาน r/g ของตระกูล DDM/P-BV ครึ่งหนึ่ง จึงควรอ่านเป็นช่วง ไม่ใช่จุดเดียว",
+    "verdictHeadline": "Dividend King ที่ถูก Rerating — มีโอกาส Value ในโซนปัจจุบัน",
+    "verdictBody": "The Marzetti Company (เดิม Lancaster Colony) เป็นบริษัทอาหารพิเศษที่มี brand moat แข็งแกร่งในกลุ่ม dressings, sauces, และ frozen bread ด้วยประวัติจ่ายปันผลเพิ่มขึ้นติดต่อกัน 61+ ปี (Dividend King), ROE 17%+, และ ROIC 20%+ บ่งชี้ถึงคุณภาพธุรกิจระดับสูง ราคาอ่อนตัวลงมากในรอบปีขณะที่ EPS และ FCF เพิ่มขึ้น ทำให้ P/E หดตัว แต่หนี้สุทธิเพิ่มเป็น ~$229M (สาเหตุยังไม่ได้ตรวจแหล่งปฐมภูมิ) เป็นโอกาสให้ value investor พิจารณาสะสมเมื่อราคาต่ำกว่า MOS 20% โดยรับปันผล {{dps}}/ปีระหว่างรอ และต้องติดตามว่า margin และกระแสเงินสดยังพอรองรับภาระหนี้ใหม่",
+    "strategy": "ทยอยสะสมเมื่อราคาต่ำกว่า MOS 20% ({{mos20}}) รับปันผล {{dps}}/ปีระหว่างรอ margin ฟื้น ถ้าหุ้นลงถึง {{mos30}} (MOS 30%) ถือเป็น deep value zone ที่น่าซื้อเพิ่ม เป้าหมาย Fair Value {{fv}} (upside {{upside}}) หรือเป้า analyst {{analyst.target}} ภายใน 12–24 เดือน เหมาะกับนักลงทุน defensive ที่เน้น dividend income + moderate growth",
+    "disclaimerSources": "ที่มาข้อมูล: Yahoo Finance API (ราคา/กราฟ) · StockAnalysis.com (financial statements/forecast) · Yahoo quoteSummary (EPS, เป้านักวิเคราะห์, กรอบ 52 สัปดาห์) · StockAnalysis MZTI statistics (P/E, P/BV, ROE) · ตรวจสอบ ≥2 แหล่งอิสระ"
+  },
+  "text": {
+    "valHint": "3 วิธี · 2 ตระกูลสมมติฐาน: (DDM + Justified P/BV) 50% · DCF 50%",
+    "chartHint": "ต.ค. 2568 – ก.ย. 2569 (ราคาปิดรายเดือน)"
+  },
+  "catalysts": [
+    "<b>Dividend King 61+ ปี:</b> จ่ายปันผลเพิ่มขึ้นทุกปีมา 6 ทศวรรษ ไม่เคยลด — ให้ความมั่นใจนักลงทุนระยะยาว",
+    "<b>Rebranding เป็น Marzetti:</b> การเปลี่ยนชื่อตามแบรนด์หลักช่วยให้ตลาดจดจำบริษัทได้ชัดขึ้น เพิ่ม brand awareness ทั้ง retail & foodservice",
+    "<b>Foodservice Partnership:</b> สัญญากับร้านอาหารชั้นนำ (Chick-fil-A, Red Lobster, Cracker Barrel) ช่วยสร้าง recurring revenue ที่มั่นคง",
+    "<b>Margin Recovery:</b> gross margin ขยับจาก 23.9% (FY2025) เป็น 24.7% (FY2026) และ operating margin จาก 12.0% เป็น 12.3% — หากต่อเนื่องจะหนุน EPS โดยตรง",
+    "<b>FCF แข็งแรง:</b> FCF FY2026 $206M (FY2025 $203M) ครอบคลุมปันผล ~$110M/ปี และรองรับการลดหนี้",
+    "<b>Premium Niche Brands:</b> Marzetti, Sister Schubert's, New York Bakery เป็น market leader ในกลุ่ม premium dressings & frozen breads ที่คู่แข่งทำได้ยาก"
+  ],
+  "risks": [
+    "<b>Margin Pressure ต่อเนื่อง:</b> ราคาวัตถุดิบ (commodity oil, wheat) ยังมีความไม่แน่นอน gross margin 24.7% ยังเปราะบางต่อต้นทุน",
+    "<b>Leverage เพิ่ม:</b> หนี้รวมเพิ่มจาก $56M (FY2025) เป็น $254M (FY2026) ขณะเงินสดลดจาก $161M เป็น $25M (หนี้สุทธิ ~$229M) — ยังไม่ได้ตรวจสาเหตุจากเอกสารปฐมภูมิ · การเปลี่ยน ticker LANC→MZTI เป็นแค่ข้อมูลอ้างอิงที่ต้องระวัง",
+    "<b>Revenue Growth ชะลอ:</b> ยอดขาย +1.1% YoY (FY2026) ต่ำกว่าคาด บริษัทอาจยังไม่สามารถใช้ pricing power ในสภาพแวดล้อมที่ผู้บริโภคระมัดระวังการจ่าย",
+    "<b>Foodservice Concentration:</b> ลูกค้ารายใหญ่ไม่กี่รายมีสัดส่วนสูง — หากสัญญาไม่ต่ออายุหรือแข่งขันแย่งชิงจาก private label กระทบ revenue",
+    "<b>Private Label Competition:</b> ซุปเปอร์มาร์เก็ตขยาย private label dressings & frozen bread — กดดัน volume & pricing ของแบรนด์ premium",
+    "<b>Small Cap Liquidity:</b> Market cap ~{{mcap}} ทำให้ volume บางวันต่ำ bid-ask spread กว้าง ไม่เหมาะกับนักลงทุนที่ต้องการ exit เร็ว"
+  ],
+  "extras": [],
+  "v2Display": {
+    "fv": 139.5,
+    "fvRange": [
+      116,
+      163
+    ],
+    "targets": [
+      84,
+      126,
+      162
+    ]
+  },
+  "_sig": "sha256:063c86e7a30663ee80069512f01de3a289f037f00667f9c3b13dd1b84c6947d9"
+}

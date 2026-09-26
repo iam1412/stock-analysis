@@ -1,0 +1,292 @@
+{
+  "v": 3,
+  "symbol": "MOH",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Molina Healthcare",
+    "exchange": "NYSE",
+    "sub": "Pure-play government healthcare MCO • Medicaid & Medicare (D-SNPs) managed care • 19 states, ~5.0M members • Marketplace plans • ไม่มี commercial insurance exposure",
+    "headerTags": [
+      "Healthcare",
+      "Managed Care"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis.com",
+      "Google Finance",
+      "Molina Healthcare Q2 2026 Earnings Release",
+      "Reuters",
+      "Yahoo Finance"
+    ],
+    "themeLegacy": {
+      "accent": "#00704A",
+      "accentDark": "#004d33",
+      "darkGrad": "linear-gradient(135deg,#003d28 0%,#00291a 100%)",
+      "glow": "rgba(0,112,74,0.35)",
+      "subColor": "#b2dfdb",
+      "headerMuted": "rgba(178,223,219,0.70)",
+      "verdictText": "#e0f2ef",
+      "vcellLabel": "#b2dfdb"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T16:19:45+07:00",
+      "v2Hash": "bb745337cb77"
+    }
+  },
+  "market": {
+    "px": 190.86,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          153.06
+        ],
+        [
+          "พ.ย.25",
+          148.26
+        ],
+        [
+          "ธ.ค.25",
+          173.54
+        ],
+        [
+          "ม.ค.26",
+          179.59
+        ],
+        [
+          "ก.พ.26",
+          154.05
+        ],
+        [
+          "มี.ค.26",
+          133.3
+        ],
+        [
+          "เม.ย.26",
+          194.62
+        ],
+        [
+          "พ.ค.26",
+          173.6
+        ],
+        [
+          "มิ.ย.26",
+          228.7
+        ],
+        [
+          "ก.ค.26",
+          195.62
+        ],
+        [
+          "ส.ค.26",
+          198.77
+        ],
+        [
+          "ก.ย.26",
+          190.86
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 121.06,
+      "hi": 244.89
+    }
+  },
+  "fundamentals": {
+    "bvps": 80.21,
+    "shares": 52100000,
+    "epsForward": 5.25,
+    "eps": -0.14,
+    "revenue": 43100000000,
+    "roe": -0.2,
+    "dps": 0,
+    "beta": 0.75,
+    "fy": {
+      "period": "FY2025",
+      "netIncome": 472000000
+    },
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation (Normalized Mid-Cycle)",
+      "inputs": {
+        "multiple": 23.2,
+        "multipleSource": "median5y"
+      },
+      "override": {
+        "eps": 8.14,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "family": "market"
+    },
+    {
+      "method": "pbv",
+      "label": "Justified P/BV",
+      "inputs": {
+        "g": 5,
+        "r": 8
+      },
+      "override": {
+        "roe": 11,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "ตระกูล r/g — เป็นอีกเสียงหนึ่งที่ต่างจาก P/E ประวัติ",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "custom:0",
+      "custom:1",
+      "pbv",
+      {
+        "key": "eps",
+        "tone": "neg"
+      },
+      "custom:2",
+      "revenue",
+      {
+        "key": "roe",
+        "tone": "neg"
+      },
+      {
+        "key": "netIncomeFy",
+        "tone": "neg"
+      },
+      "bvps",
+      "yield",
+      "beta"
+    ],
+    "custom": [
+      {
+        "label": "P/E (TTM GAAP)",
+        "value": "n/a (ขาดทุน)",
+        "note": "EPS TTM GAAP ติดลบจาก impairment Q4'25 สะสม",
+        "tone": "neg"
+      },
+      {
+        "label": "Forward Adj P/E (2026)",
+        "value": "~38.2x",
+        "note": "อิง adj EPS guide ≥$5.25 (ปรับขึ้นจาก $5.00 หลัง Q2'26)",
+        "tone": "neu"
+      },
+      {
+        "label": "Medical Care Ratio",
+        "value": "92.2%",
+        "note": "Q2 2026 consolidated MCR (Q2'25 90.4%)",
+        "tone": "neg"
+      }
+    ],
+    "notes": {
+      "mcap": "~52.1M shares outstanding",
+      "pbv": "BVPS ~{{bvps}} / share",
+      "eps": "Q2'26 adj EPS $1.51 (ชนะคาด); FY25 adj $11.03",
+      "revenue": "+7.0% YoY; FY2025 $45.4B",
+      "roe": "TTM ติดลบเล็กน้อย (FY2025 11.0%, FY2024 27.1%)",
+      "netIncomeFy": "ลดลง 60% vs FY2024 ($1.18B)",
+      "bvps": "Total equity ~$4.17B (Debt $3.95B/D-E 0.95x)",
+      "beta": "ความผันผวนต่ำกว่าตลาด S&P 500"
+    },
+    "hint": "ข้อมูล TTM / FY2025 / Q2 2026"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 0,
+        "exitMultiple": 12,
+        "divCum": 0,
+        "desc": "MCR ยังยกสูง ไม่ฟื้น revenue growth ชะลอต่อ"
+      },
+      {
+        "growth": 20,
+        "exitMultiple": 16.6,
+        "divCum": 0,
+        "desc": "MCR ดีขึ้นตาม \"trough year\" ที่ CEO ระบุ + rate correction ปี 2027"
+      },
+      {
+        "growth": 30,
+        "exitMultiple": 23.2,
+        "divCum": 0,
+        "desc": "MCR ฟื้นเต็มที่ + Marketplace stabilize + สัญญาใหม่"
+      }
+    ],
+    "exitDp": 1,
+    "baseOverride": {
+      "value": 5.24884,
+      "why": "EPS ฐานฉากถอดกลับจากราคาเป้าที่พิมพ์"
+    },
+    "note": "ที่จุดเข้า {{px}} — Bull case ให้ผลตอบแทนรวม {{scn.bull.ret}} ขณะที่ Base case (EPS ฟื้นตัว +20%/ปี ออกที่ P/E ต่ำสุดของประวัติ) ให้ {{scn.base.ret}} และ Bear case {{scn.bear.ret}} หาก MCR ไม่ฟื้นตามที่ CEO คาดหวัง (2026 = \"trough year\") — ผลตอบแทนเอียงลบที่ราคานี้ เพราะตลาดจ่าย premium เหนือ P/E ต่ำสุดของประวัติไปแล้ว หมายเหตุ: MOH ไม่จ่ายปันผล การคืนเงินผู้ถือหุ้นทำผ่าน share buyback",
+    "hintNote": "adj ~$5.25 • ไม่มีปันผล"
+  },
+  "analyst": {
+    "target": 209,
+    "n": null,
+    "rating": "Hold",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "MOH เริ่มกราฟ (ต.ค. 2568) ที่ราว $153 ปิดเดือนพฤศจิกายนที่ $148 ก่อนฟื้นขึ้นมาที่ $174–180 ในช่วง ธ.ค. 2568–ม.ค. 2569 จากนั้นถูกขายลงมา $133 ในมีนาคม 2569 ซึ่งเป็นจุดต่ำสุดของกราฟรายเดือน (52wk low จริงที่ $121.06 เกิดระหว่างเดือน) เนื่องจาก MCR ที่สูงกว่าคาดและผลขาดทุน Medicare ราว $1.25B ในปี 2025 หุ้นฟื้นตัวแรงจนแตะ $228.70 ในเดือนมิถุนายน 2569 ก่อนร่วงลงมาที่ราว $196 ในเดือนกรกฎาคม หลังประกาศงบ Q2 2569 (22 ก.ค.) — Yahoo Finance รายงานว่างบชนะคาดที่บรรทัดล่างแต่ตลาดกังวล guidance/รายได้ (บริษัทยกระดับ guidance adj EPS ปี 2026 เป็น ≥$5.25 จาก $5.00 แต่ revenue guidance ตรึง ~$42B และ Marketplace MCR พุ่งเป็น 88.9% ตามรายงานงบที่เปิดอ่านในรอบก่อน) จากนั้นราคาทรงตัวในกรอบ $196–$201 ถึงกลางเดือนกันยายน ผลตอบแทนรอบปีตามกราฟ +31.2% จากจุดเริ่มต้นที่ $153.06",
+    "valuation": "FV = เฉลี่ยของ 2 ตระกูล: P/E มัธยฐานประวัติ ($189) กับ Justified P/BV ($160) ห่างกันไม่ถึง 2 เท่าจึงเฉลี่ยได้ · เป้านักวิเคราะห์ (เฉลี่ย $209.12, Hold, 19 ราย, ช่วง $147–$266) ไม่นับเป็นขาของ FV — ใช้เป็นบริบทตรวจความสอดคล้องเท่านั้น · Sensitivity: หาก P/E เป้าหมายเป็นระดับต่ำสุดของประวัติ 16.6x (แทน 23.2x) ขา P/E จะเป็น ~$135 และ FV เฉลี่ยลดเหลือ ~$148 (MOS ติดลบมากขึ้น) · ราคาปัจจุบัน {{px}} อยู่เหนือ FV เฉลี่ย {{fv}} สะท้อนว่าตลาดยัง price in การฟื้นตัวของ MCR ในปี 2027 ไว้บางส่วนแล้ว",
+    "gauge": "ราคาปัจจุบัน {{px}} อยู่เหนือ Fair Value {{fv}} แต่ยังต่ำกว่า Analyst consensus $209.12 เล็กน้อย — สะท้อนมุมมองที่ไม่ตรงกัน ตลาดยัง price in การฟื้นตัวของ MCR บางส่วน ขณะที่นักวิเคราะห์เชื่อว่ายังมี upside จาก guidance ที่เพิ่งปรับขึ้น โซน MOS 20% ({{mos20}}) และ MOS 30% ({{mos30}}) อยู่ต่ำกว่าราคาปัจจุบันมาก ผู้ที่ต้องการ margin of safety ควรรอจังหวะราคาปรับฐานเพิ่ม",
+    "mos": "ราคาปัจจุบันอยู่เหนือ Fair Value — ยังไม่มี MOS",
+    "verdictHeadline": "MOH — เข้าสู่ \"ปีก้นเหว\" ของวงจร Medicaid ราคาร่วงแรงแต่ยังไม่มี Margin of Safety",
+    "verdictBody": "Molina Healthcare เป็น MCO ที่โดดเด่นในฐานะผู้เชี่ยวชาญ Medicaid/Medicare เฉพาะทาง ครอบคลุม 19 รัฐ มีรายได้กว่า $45B ในปี 2025 โมเดลธุรกิจ pure-play government healthcare มีความมั่นคงในระยะยาวเนื่องจาก Medicaid ไม่ใช่สินค้าวัฏจักร แต่หลังงบ Q2 2569 (22 ก.ค.) EPS TTM GAAP พลิกเป็นติดลบ (-$0.14) ครั้งแรกจากผลสะสมของ impairment Q4'25 + MCR ที่ยังสูงเกิน 92% แม้บริษัทจะยกระดับ guidance FY2026 adj EPS เป็น ≥$5.25 (จาก $5.00) และ Q2 adj EPS ชนะคาด แต่ revenue guidance ที่ตรึงต่ำกว่า consensus และ Marketplace ที่เสื่อมถอย (MCR 88.9%, สมาชิก −60% YoY) ทำให้ราคาร่วงหลังประกาศงบ (ตามกราฟ: จาก $228.70 เดือน มิ.ย. มาราว $196 เดือน ก.ค.) CEO เรียกปี 2026 ว่าเป็น \"trough year\" ของ Medicaid margin ราคาปัจจุบันยังอยู่เหนือ Fair Value ทำให้ยังไม่มี margin of safety แม้ downside จะจำกัดกว่าก่อนหน้านี้แล้ว",
+    "strategy": "ราคาปัจจุบัน {{px}} เหนือ Fair Value {{fv}} — ยังไม่มี margin of safety สำหรับนักลงทุนแนว value โซนน่าสนใจเริ่มต้นที่ต่ำกว่า {{fv}} (ใกล้ FV) และ deep value ที่ {{mos20}} / {{mos30}} (MOS 20-30%) หากยังถือหุ้นอยู่ควรติดตามสัญญาณ MCR รวมให้ลดต่ำกว่า 90% อย่างยั่งยืน และดูว่า revenue growth กลับมาเร่งตัวก่อนพิจารณา add เพิ่ม",
+    "disclaimerSources": "ที่มาข้อมูล: (1) StockAnalysis.com — ราคา $200.79 ณ 18 ก.ย. 2569, EPS TTM GAAP -$0.14, forward P/E, งบการเงิน TTM/FY2021-2025, BVPS $80.21, beta 0.75, เป้านักวิเคราะห์ $209.12 (Hold, 19 ราย); (2) Yahoo Finance — ยืนยันราคา $200.79 และกรอบ 52 สัปดาห์ $121.06–$244.89; (3) Molina Healthcare Q2 2026 Earnings Release (Businesswire, 22 ก.ค. 2569) — GAAP EPS $1.19, adj EPS $1.51, consolidated MCR 92.2%, FY2026 guidance adj EPS ≥$5.25 (ปรับขึ้นจาก $5.00), revenue ~$42B; (4) ข่าว Reuters/Yahoo Finance/Becker's Payer/StockStory (22 ก.ค. 2569) — เหตุผลราคาร่วง: revenue outlook ต่ำกว่า consensus, Marketplace MCR พุ่งเป็น 88.9%, สมาชิก Marketplace ลด 60% YoY"
+  },
+  "text": {
+    "valHint": "2 วิธี (คนละตระกูล) — อิงกำไรปกติ mid-cycle",
+    "chartHint": "รายเดือน ต.ค. 2568 – ก.ย. 2569"
+  },
+  "catalysts": [
+    "<b>Pure-play government MCO Moat:</b> MOH เชี่ยวชาญ Medicaid/Medicare เท่านั้น ต่างจาก UNH/ELV ที่มี commercial สิ่งนี้ทำให้บริหารจัดการต้นทุน MCR ได้เฉพาะเจาะจงกว่า",
+    "<b>Medicaid Expansion & Long-Term Growth:</b> กลุ่ม Dual Eligible (D-SNP) มีแนวโน้มเติบโตตาม aging population และ Medicaid expansion บางรัฐที่ยังไม่ขยาย",
+    "<b>Guidance ปรับขึ้น + earnings beat:</b> Q2'26 adj EPS $1.51 ชนะคาด ($1.39-1.40) บริษัทยกระดับ FY2026 adj EPS guidance เป็น ≥$5.25 จาก ≥$5.00 — CEO ระบุว่า imbalance ระหว่าง Medicaid rate กับ cost trend เริ่มคงตัว",
+    "<b>State Contract Wins:</b> MOH ชนะสัญญาใหม่หลายรัฐ — สร้างรายได้ recurring ยาวนาน 3-5 ปีต่อสัญญา ลด churn ต่ำ",
+    "<b>Analyst Target เหนือราคาตลาดเล็กน้อย:</b> เป้าเฉลี่ย $209.12 (Hold, 19 ราย, ช่วง $147–$266) — StockAnalysis.com ณ 18 ก.ย. 2569",
+    "<b>Low Beta 0.75:</b> ความผันผวนต่ำกว่าตลาด เหมาะกับนักลงทุนที่ต้องการ defensive healthcare exposure"
+  ],
+  "risks": [
+    "<b>Marketplace เสื่อมถอยชัดเจน:</b> MCR ส่วน Marketplace พุ่งเป็น 88.9% (จาก 84%) สมาชิกลด 60% YoY เหลือ 230K — เดิมเป็น catalyst กลายเป็นความเสี่ยงใหม่",
+    "<b>Revenue Guidance น่าผิดหวัง:</b> FY2026 guidance ตรึงที่ ~$42B ต่ำกว่า consensus ~$44.3B ทำให้หุ้นร่วง ~9-12% วันประกาศงบ (22 ก.ค.) แม้ EPS ชนะคาด",
+    "<b>EPS TTM GAAP ติดลบครั้งแรก:</b> -$0.14 สะท้อนผลสะสมจาก impairment Q4'25 + MCR ที่ยังสูง — ROE TTM ติดลบ -0.2%",
+    "<b>MCR รวมยังสูงเกิน 92%:</b> Q2 2026 consolidated MCR 92.2% (Q2'25 90.4%) — CEO เรียกปี 2026 ว่าเป็น \"trough year\" การฟื้นตัวขึ้นกับ rate correction ปี 2027 ที่ยังไม่ล็อก",
+    "<b>Medicaid Redetermination:</b> สมาชิก Medicaid ลด 6% ในปี 2026 หลัง COVID-era continuous enrollment สิ้นสุด กระทบ California, Illinois, New York, Texas",
+    "<b>Regulatory Risk:</b> การเปลี่ยนแปลงนโยบาย Medicaid reimbursement โดยรัฐหรือรัฐบาลกลางกระทบโดยตรงต่อ revenue และ margin"
+  ],
+  "extras": [],
+  "v2Display": {
+    "fv": 175,
+    "fvRange": [
+      160,
+      189
+    ],
+    "targets": [
+      63,
+      151,
+      267
+    ],
+    "footer": "21 กันยายน 2569",
+    "cards": {
+      "yield": {
+        "v": "ไม่มี",
+        "d": "MOH ไม่จ่ายปันผล — ลงทุนต่อยอดธุรกิจ"
+      }
+    }
+  },
+  "_sig": "sha256:4de15a0f0eeab2ed48b4537c64485ced6f5d1fb1758a9cbe267a00d48917f0e0"
+}

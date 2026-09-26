@@ -1,0 +1,291 @@
+{
+  "v": 3,
+  "symbol": "O",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Realty Income Corporation",
+    "exchange": "NYSE",
+    "sub": "REIT net-lease รายใหญ่ (The Monthly Dividend Company) • ~15,600 properties • สัญญา triple-net ระยะยาว • retail 79%/industrial 15%/gaming 3% • ปันผลรายเดือน 671+ ครั้งติด",
+    "sectorLine": "NYSE · REIT · Net-Lease",
+    "headerTags": [
+      "Net-Lease REIT",
+      "Dividend Aristocrat"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis.com",
+      "Yahoo Finance",
+      "Google Finance"
+    ],
+    "themeLegacy": {
+      "accent": "#2E8B57",
+      "accentDark": "#1E6440",
+      "darkGrad": "linear-gradient(135deg, #03100A 0%, #061F13 100%)",
+      "glow": "rgba(46,139,87,0.35)",
+      "subColor": "#5CBA82",
+      "headerMuted": "#279a5f",
+      "verdictText": "#D2EDDC",
+      "vcellLabel": "rgba(210,237,220,0.6)"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T22:32:04+07:00",
+      "v2Hash": "d7b2162ef39c"
+    }
+  },
+  "market": {
+    "px": 55.54,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          57.98
+        ],
+        [
+          "พ.ย.25",
+          57.61
+        ],
+        [
+          "ธ.ค.25",
+          56.37
+        ],
+        [
+          "ม.ค.26",
+          61.16
+        ],
+        [
+          "ก.พ.26",
+          67
+        ],
+        [
+          "มี.ค.26",
+          61.18
+        ],
+        [
+          "เม.ย.26",
+          64.24
+        ],
+        [
+          "พ.ค.26",
+          61.28
+        ],
+        [
+          "มิ.ย.26",
+          61.96
+        ],
+        [
+          "ก.ค.26",
+          63.87
+        ],
+        [
+          "ส.ค.26",
+          61.28
+        ],
+        [
+          "ก.ย.26",
+          55.54
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 55.86,
+      "hi": 67.94
+    }
+  },
+  "fundamentals": {
+    "shares": 946000000,
+    "occupancy": 98.8,
+    "roe": 3.2,
+    "eps": 1.37,
+    "beta": 0.95,
+    "fy": {
+      "period": "FY2025",
+      "revenue": 5750000000
+    },
+    "ffoBasis": "affo",
+    "dps": 3.188,
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation (มัธยฐานย้อนหลัง 5 ปี)",
+      "inputs": {
+        "multiple": 49.2,
+        "multipleSource": "median5y"
+      },
+      "note": "49.2x คือมัธยฐาน P/E ย้อนหลัง 5 ปีของ O เอง (ราคาเฉลี่ยรายปี ÷ EPS ช่วง 46.5–75.4x) ไม่ได้มาจาก P/E ปัจจุบัน · หมายเหตุ: GAAP EPS ของ REIT ถูกกดด้วยค่าเสื่อมราคา จึงใช้เป็นขาเทียบประวัติเท่านั้น",
+      "family": "market"
+    },
+    {
+      "method": "ddm",
+      "label": "DDM (Gordon Growth)",
+      "inputs": {
+        "g": 2,
+        "r": 7
+      },
+      "override": {
+        "dps": 3.25,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "r และ g เป็นสมมติฐานของผู้วิเคราะห์เอง (g ตามการปรับเพิ่มปันผลรายปีที่ช้า) ไม่ใช่ค่าที่วัดจากตลาด",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "custom:0",
+      "custom:1",
+      "custom:2",
+      {
+        "key": "yield",
+        "tone": "pos"
+      },
+      "custom:3",
+      {
+        "key": "occupancy",
+        "tone": "pos"
+      },
+      {
+        "key": "roe",
+        "tone": "none"
+      },
+      "revenueFy",
+      "eps",
+      "custom:4",
+      "beta"
+    ],
+    "custom": [
+      {
+        "label": "AFFO/Share (TTM)",
+        "value": "$4.28",
+        "note": "Cash flow หลักของ REIT",
+        "tone": "pos"
+      },
+      {
+        "label": "P/AFFO (TTM)",
+        "value": "~13.2x",
+        "note": "ราคาต่อ AFFO (บริบท ไม่ใช่ขาของ FV)",
+        "tone": "neu"
+      },
+      {
+        "label": "AFFO Growth",
+        "value": "+2.1%",
+        "note": "YoY FY2024→FY2025"
+      },
+      {
+        "label": "Dividend Yield",
+        "value": "~{{yield}}",
+        "note": "S&P 500 Dividend Aristocrat",
+        "tone": "pos"
+      },
+      {
+        "label": "FY26 AFFO Guidance",
+        "value": "$4.44–4.45",
+        "note": "+3.9% growth YoY (ปรับขึ้นหลัง Q2 2026)"
+      }
+    ],
+    "notes": {
+      "mcap": "~946M หุ้น (Diluted)",
+      "yield": "รายเดือน 671+ ครั้งติด",
+      "occupancy": "~15,621 properties",
+      "roe": "GAAP (REIT บัญชีสูง Depreciation)",
+      "revenueFy": "+9.1% YoY จาก $5.27B (FY2024)",
+      "eps": "P/E ~41.4x — GAAP ไม่สะท้อน cash flow REIT",
+      "beta": "Rate-sensitive (bond proxy)"
+    },
+    "hint": "REIT — ประเมินด้วย AFFO ไม่ใช่ GAAP EPS"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "ffo",
+    "exitMetric": "pffo",
+    "cases": [
+      {
+        "growth": 2,
+        "exitMultiple": 14,
+        "divCum": 9.72,
+        "desc": "ดอกเบี้ยสูงกด valuation"
+      },
+      {
+        "growth": 3,
+        "exitMultiple": 15,
+        "divCum": 9.97,
+        "desc": "Fed ลดดอกเบี้ย + deal flow ดี"
+      },
+      {
+        "growth": 5,
+        "exitMultiple": 16,
+        "divCum": 10.47,
+        "desc": "rate cut เร็ว + European expansion"
+      }
+    ],
+    "exitDp": 0,
+    "baseOverride": {
+      "value": 4.28286,
+      "why": "ฐานฉากถอดกลับจากค่าปลายฉากที่พิมพ์"
+    },
+    "note": "การคาดการณ์ใช้ P/AFFO แทน P/E เนื่องจาก O เป็น REIT ที่มี GAAP depreciation สูง ทำให้ GAAP EPS ไม่สื่อถึงความสามารถสร้างกระแสเงินสดจริง AFFO (Adjusted Funds From Operations) คือ metric มาตรฐาน REIT · Upside หลักอยู่ที่ capital gain + ปันผล ~5.7%/ปี รายเดือน รวม Total Return Base case {{scn.base.ret}} ใน 3 ปี (ไม่รวม reinvest ปันผล) · ความเสี่ยงหลักคืออัตราดอกเบี้ยที่กด P/AFFO multiple"
+  },
+  "analyst": {
+    "target": 68.16,
+    "n": null,
+    "rating": "Hold",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ราคา O เริ่มที่ราว $57.98 (ต.ค. 2568) ลงแตะจุดต่ำ <b>$56.37 (ธ.ค. 2568)</b> ก่อนฟื้นขึ้นแตะจุดสูงสุด $67.00 (ก.พ. 2569) แล้วแกว่งในกรอบ $61–64 ช่วง มี.ค.–ส.ค. 2569 ก่อนอ่อนตัวลงมาใกล้ต่ำสุดของกรอบ 52 สัปดาห์ในเดือน ก.ย. 2569 ผลตอบแทนรอบปีดูที่ป้ายหัวรายงาน (ไม่รวมปันผลรายเดือน ~5.7%) ราคาปัจจุบัน {{px}} ต่ำกว่า Fair Value {{fv}} และต่ำกว่าเป้านักวิเคราะห์เฉลี่ย {{analyst.target}}",
+    "valuation": "สองขาให้ค่า {{fvLow}}–{{fvHigh}} (ต่างกันไม่ถึง 2 เท่า) ค่าเฉลี่ย ~$66.86 → FV <b>$66.9</b> · ★ การประเมินนี้มีข้อจำกัด: เป็นตระกูลที่วัดจริงเพียงขาเดียว (P/E มัธยฐาน) ส่วน DDM อิง r/g ของผู้วิเคราะห์ — ถ้า r = 7.5% FV เหลือ ~$63.9 ถ้า r = 6.5% FV ขึ้นเป็น ~$70.5 (ช่วง MOS ตามราคาปัจจุบันจึงกว้างราว 9 จุด) · ตัดขา P/AFFO 15x และ Dividend Yield 5.0% ของรอบก่อนออก เพราะตัวคูณเป็นค่าที่อ้างเอง ไม่มีมัธยฐานย้อนหลังที่วัดได้ · บริบท: P/AFFO ปัจจุบัน ~13.2x (TTM $4.28) และ ~12.7x (FY26E $4.445 ตาม guidance ที่ปรับขึ้นหลัง Q2 2026) ราคา {{px}} เทียบ FV {{fv}} MOS {{mos}}",
+    "gauge": "ราคา {{px}} ต่ำกว่า Fair Value {{fv}} (MOS {{mos}}) — ราคาใกล้ต่ำสุดของกรอบ 52 สัปดาห์ ($55.86) จุดซื้อ MOS 20% ที่ {{mos20}} จะเป็นโซน value ชัดขึ้น นักวิเคราะห์ 20 ราย (เฉลี่ย Hold) มีเป้าเฉลี่ย {{analyst.target}} (อยู่เหนือราคาปัจจุบัน ~20%) + ปันผล ~5.7% เป็นบริบทเปรียบเทียบเท่านั้น ไม่ใช่ขาของ FV",
+    "mos": "MOS ปานกลาง — ราคาต่ำกว่ามูลค่าเหมาะสมพอสมควร (income play เน้นปันผล ~5.7% รายเดือน)",
+    "verdictHeadline": "Income Play คุณภาพสูง — ราคาต่ำกว่ามูลค่า ปันผล ~5.7% รายเดือน",
+    "verdictBody": "Realty Income net-lease REIT อันดับ 1 (The Monthly Dividend Company) คุณภาพสูง (occupancy ~99%, Dividend Aristocrat รายเดือน 671 ครั้ง) ราคา {{px}} ที่ P/AFFO ~13.2x ต่ำกว่า FV {{fv}} (MOS {{mos}}) + ปันผล ~5.7% รายเดือน นักวิเคราะห์ 20 ราย เป้าเฉลี่ย {{analyst.target}} (ฉันทามติ Hold) income play คุณภาพสูงเหมาะนักลงทุนต้องการกระแสเงินสดสม่ำเสมอ ไม่ใช่ growth play · FV อิงสองตระกูลที่ยังไวต่อ r/g ของ DDM",
+    "strategy": "O เหมาะสำหรับ <b>income investor</b> ที่ต้องการกระแสเงินสดรายเดือนสม่ำเสมอ ราคาปัจจุบัน {{px}} ต่ำกว่า FV {{fv}} — ทยอยสะสมได้ (yield ~5.7%) ยิ่งลงใกล้ต่ำสุด 52 สัปดาห์ยิ่งน่าสนใจ สำหรับ growth investor ที่ต้องการ capital gain >20% ควรรอ pullback ถึง {{mos20}} (MOS 20%)",
+    "disclaimerSources": "ที่มา: StockAnalysis.com / Yahoo Finance / Google Finance (ราคา ณ {{priceDate}})"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 2 ตระกูล — P/E มัธยฐานย้อนหลัง + DDM",
+    "disclaimerAssump": " P/AFFO เป้าหมาย, อัตราเติบโต AFFO และ yield สมดุล"
+  },
+  "catalysts": [
+    "<b>Fed Rate Cut:</b> REIT เป็น rate-sensitive — ดอกเบี้ยลด กด cap rate → มูลค่า property สูงขึ้น + P/AFFO expand ได้ทันที",
+    "<b>Scale Moat:</b> net-lease REIT อันดับ 1 ของโลก ~15,621 properties, diversification ทำให้ occupancy คงที่ ~98.8% แม้ tenant เดี่ยวมีปัญหา",
+    "<b>ปันผลรายเดือน 671+ ครั้ง:</b> S&P 500 Dividend Aristocrat ปรับเพิ่มปันผลทุกปี ดึงดูด income investor และ ETF ปันผล",
+    "<b>European Expansion:</b> ลงทุนใน UK/Spain/Italy เพิ่ม deal pipeline นอก US → diversify ความเสี่ยง US retail",
+    "<b>$10B Investment Pipeline (2026, ปรับขึ้นจาก $9.5B หลัง Q2):</b> initial yield ~7.3% สูงกว่าต้นทุนเงินกู้ → AFFO accretive ทันที",
+    "<b>Triple-Net + Escalator:</b> สัญญาผู้เช่าครอบครองค่าใช้จ่าย + escalation clause 1.5–2% ต่อปี = รายได้มั่นคงโดยไม่เพิ่ม cost"
+  ],
+  "risks": [
+    "<b>Rate Sensitivity:</b> O เป็น \"bond proxy\" — Fed ขึ้นดอกเบี้ย/ดอกเบี้ยสูงนานกว่าคาด กด P/AFFO multiple ทันที",
+    "<b>Retail Tenant Risk:</b> ลูกค้า 79% เป็น retail (Dollar General/Walgreens/7-Eleven) — ถ้า retail อิ่มตัว/ล้มละลาย กระทบ occupancy",
+    "<b>AFFO Growth ช้า:</b> ขนาดใหญ่ทำให้ชนะ deal ยากขึ้น growth ~2–3%/ปี ต่ำกว่า REIT ขนาดเล็กที่ grow ได้ >5%",
+    "<b>Equity Dilution:</b> REIT ต้องออกหุ้นลงทุน — ถ้าราคาหุ้นต่ำ dilution กระทบ AFFO/share",
+    "<b>Concentration:</b> แม้ diversify สูง แต่ top tenant ยังเป็น Walgreens (3.4%) ที่มีปัญหาเชิงโครงสร้าง"
+  ],
+  "extras": [],
+  "v2Display": {
+    "fv": 66.9,
+    "fvRange": [
+      66.3,
+      67.41
+    ],
+    "legValues": [
+      67.41,
+      null
+    ],
+    "targets": [
+      63.56,
+      null,
+      79.2
+    ]
+  },
+  "_sig": "sha256:1a1b65c3d0db77003e661b19f503294a2d3f13504b1b9efc4139646152281a39"
+}

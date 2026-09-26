@@ -1,0 +1,275 @@
+{
+  "v": 3,
+  "symbol": "RSG",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Republic Services, Inc.",
+    "exchange": "NYSE",
+    "sub": "เก็บ-ขนส่ง-กำจัดขยะอันดับ 2 อเมริกาเหนือ • Collection ~68% • Landfill (207 แห่ง) • Environmental Solutions (hazardous) • Recycling • RNG/sustainability • pricing power",
+    "headerTags": [
+      "Industrials",
+      "Waste Management"
+    ],
+    "analysisDate": "2026-09-22",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis.com",
+      "Yahoo Finance",
+      "Republic Services IR",
+      "Macrotrends"
+    ],
+    "themeLegacy": {
+      "accent": "#1B6CA8",
+      "accentDark": "#114A75",
+      "darkGrad": "linear-gradient(135deg, #02080F 0%, #041626 100%)",
+      "glow": "rgba(27,108,168,0.35)",
+      "subColor": "#4E97CB",
+      "headerMuted": "#1d86e2",
+      "verdictText": "#CFE3F2",
+      "vcellLabel": "rgba(207,227,242,0.6)"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-22T01:46:25+07:00",
+      "v2Hash": "86ed8c955a31"
+    }
+  },
+  "market": {
+    "px": 212.1,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          208.24
+        ],
+        [
+          "พ.ย.25",
+          217.06
+        ],
+        [
+          "ธ.ค.25",
+          211.93
+        ],
+        [
+          "ม.ค.26",
+          215.09
+        ],
+        [
+          "ก.พ.26",
+          229
+        ],
+        [
+          "มี.ค.26",
+          219.02
+        ],
+        [
+          "เม.ย.26",
+          209.22
+        ],
+        [
+          "พ.ค.26",
+          200.44
+        ],
+        [
+          "มิ.ย.26",
+          213.08
+        ],
+        [
+          "ก.ค.26",
+          210.55
+        ],
+        [
+          "ส.ค.26",
+          220.92
+        ],
+        [
+          "ก.ย.26",
+          212.1
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 196.41,
+      "hi": 233.42
+    }
+  },
+  "fundamentals": {
+    "eps": 7.02,
+    "dps": 2.5,
+    "bvps": 38,
+    "shares": 318000000,
+    "revenue": 16590000000,
+    "beta": 0.72,
+    "fy": {
+      "period": "FY2025",
+      "netIncome": 2170000000
+    },
+    "epsForward": 7.24,
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation (adj EPS)",
+      "inputs": {
+        "multiple": 26,
+        "multipleSource": "author"
+      },
+      "note": "discount จาก P/E ปัจจุบัน 31x สะท้อนการเติบโต ~8% ระยะยาว",
+      "family": "market"
+    },
+    {
+      "method": "pe",
+      "label": "Forward P/E (FY26E)",
+      "inputs": {
+        "multiple": 26,
+        "multipleSource": "author",
+        "base": "epsForward"
+      },
+      "baseLabel": "FY26E",
+      "family": "market"
+    },
+    {
+      "method": "pfcf",
+      "label": "P/FCF Valuation",
+      "inputs": {
+        "multiple": 24,
+        "multipleSource": "sector"
+      },
+      "override": {
+        "fcf": 2652120000,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "waste sector ให้ premium FCF เพราะ predictable cash flow; DDM yield 1.16% ใช้เป็น floor เท่านั้น",
+      "family": "market"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "custom:0",
+      "pbv",
+      "netIncomeFy",
+      "eps",
+      "custom:1",
+      "custom:2",
+      "revenue",
+      "custom:3",
+      "yield",
+      "beta"
+    ],
+    "custom": [
+      {
+        "label": "P/E เฉลี่ย ~5 ปี",
+        "value": "~28–32x",
+        "note": "defensive premium สม่ำเสมอ"
+      },
+      {
+        "label": "FCF/Share",
+        "value": "~$8.34",
+        "note": "FCF yield ~3.9%"
+      },
+      {
+        "label": "ROE / ROIC",
+        "value": "~18.4% / 10.9%",
+        "note": "stable, asset-heavy moat",
+        "tone": "pos"
+      },
+      {
+        "label": "Operating/EBITDA Margin",
+        "value": "19.9% / 32%",
+        "note": "ค่อนข้างคงที่ทุกปี"
+      }
+    ],
+    "notes": {
+      "mcap": "~318M shares",
+      "pe": "adj EPS {{eps}} · GAAP P/E ~31.6x",
+      "pbv": "BV/share ~$38 (asset-heavy)",
+      "netIncomeFy": "GAAP EPS $6.85 · adj EPS {{eps}}",
+      "eps": "adj · GAAP $6.85 · +8.7% YoY",
+      "revenue": "+3.5% YoY · 5y CAGR ~8%",
+      "yield": "grower 22 ปีติด",
+      "beta": "defensive · ต่ำกว่าตลาด"
+    },
+    "hint": "FY2025 · ปีงบสิ้น ธ.ค."
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 6,
+        "exitMultiple": 22,
+        "divCum": 7.5,
+        "desc": "ถดถอย-pricing power ลด"
+      },
+      {
+        "growth": 9,
+        "exitMultiple": 25,
+        "divCum": 7.5,
+        "desc": "เติบโตสม่ำเสมอ pricing +4-5%"
+      },
+      {
+        "growth": 12,
+        "exitMultiple": 27,
+        "divCum": 7.5,
+        "desc": "Environmental Solutions เร่งตัว + RNG"
+      }
+    ],
+    "exitDp": 0,
+    "note": "Base case คาด EPS โต ~9%/ปี (สอดคล้อง consensus) ออก P/E 25x ให้ราคาเป้า $227 (+5% รวมปันผล ~3 ปี) ผลตอบแทนไม่สูงเมื่อเทียบกับ risk จากจุดเข้าที่แพง — Bull case $266 (+23%) ต้องการ re-rating + EPS เร่งตัว Bear case $184 (−15%) เกิดได้หาก recession กดดัน pricing power หรือ P/E compression มาที่ 22x ปันผล $7.50 ตลอด 3 ปี เป็น cushion แต่ไม่เพียงพอชดเชย downside ที่จุดเข้าปัจจุบัน"
+  },
+  "analyst": {
+    "target": 244,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ราคา RSG เปิดปี (ก.ค. 68) ที่ ~$231 แล้วแตะจุดสูงสุดช่วง ส.ค. ที่ $234 ก่อนปรับลงรับแรงกดดันดอกเบี้ยและตลาดโดยรวม ช่วง ต.ค. 68 ร่วงมาที่ ~$208 ก่อนฟื้นตัว แต่ใน พ.ค. 69 ลงแตะจุดต่ำสุด ~$200 (ไฮไลต์) จากความกังวลต้นทุนแรงงาน/น้ำมัน ล่าสุด มิ.ย. 69 ฟื้นมาที่ {{px}} — ผลตอบแทนรอบปี −6.4% ยังคงเหนือกว่า FV {{fv}}",
+    "valuation": "วิธี P/FCF ให้ค่าสูงสุด $200 สะท้อน free cash flow ที่แข็งแกร่งของ Republic Services ขณะที่ P/E adj ให้ค่าต่ำสุด $182 โดย P/E เป้า 26x คือระดับ \"fair\" สำหรับธุรกิจ waste ที่โต ~8%/ปี เฉลี่ยทั้ง 3 วิธี = $190.31 → ปัดลง {{fv}} เป็น Fair Value กลาง ราคาปัจจุบัน {{px}} สูงกว่า FV ทั้ง 3 วิธี สะท้อน defensive premium ที่นักลงทุนให้กับหุ้น waste quality",
+    "gauge": "ราคา {{px}} อยู่เหนือ Fair Value {{fv}} ประมาณ 14% — อยู่ใน \"overvalued zone\" ตาม DCF/valuation กลาง อย่างไรก็ตาม นักวิเคราะห์ 27 รายให้เป้าเฉลี่ย {{analyst.target}} ({{analyst.pct}}) สะท้อน premium สำหรับคุณภาพธุรกิจและ pricing power จุดซื้อ MOS 20% อยู่ที่ {{mos20}} และ MOS 30% ที่ {{mos30}} ซึ่งต้องรอ correction ใหญ่",
+    "mos": "ราคาแพงกว่ามูลค่าเหมาะสม — ยังไม่มี Margin of Safety",
+    "verdictHeadline": "คุณภาพดีเยี่ยม แต่ราคาเต็มมูลค่า — รอย่อใกล้ {{mos20}} ถึงจะน่าสนใจ",
+    "verdictBody": "Republic Services เป็นธุรกิจ waste management อันดับ 2 ของอเมริกาเหนือที่มีคุณภาพสูงมาก — landfill 207 แห่งเป็น moat แท้จริง, pricing power เหนือเงินเฟ้อ, recession-resistant และ dividend grower 22 ปีติด อย่างไรก็ตาม ราคาปัจจุบัน {{px}} ที่ P/E 31x adj แพงสำหรับการเติบโต ~8%/ปี — Fair Value สามวิธีเฉลี่ยที่ {{fv}} (MOS {{mos}}) สะท้อนว่าตลาดให้ defensive premium ไปล่วงหน้าแล้ว นักวิเคราะห์ 27 รายให้เป้าเฉลี่ย {{analyst.target}} ({{analyst.pct}}) แต่ upside จำกัดจากจุดนี้ เปรียบได้กับ WM (Waste Management) ที่คล้ายกัน — ธุรกิจดีแต่ต้องรอราคาที่สมเหตุสมผลกว่านี้",
+    "strategy": "ถือไว้ถ้ามีอยู่แล้ว (ธุรกิจยังดี) · ไม่แนะนำซื้อเพิ่มที่ราคานี้ · รอย่อมาใกล้ {{fv}} (FV) หรือ {{mos20}} (MOS 20%) ก่อนทยอยสะสม · เป้าระยะยาวที่ {{mos30}} (MOS 30%) คือ deep value entry ที่ดีที่สุด",
+    "disclaimerSources": "แหล่งข้อมูล: StockAnalysis.com · Yahoo Finance · Republic Services Investor Relations (ir.republicservices.com) · Macrotrends"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 3 วิธี"
+  },
+  "catalysts": [
+    "<b>Landfill moat:</b> 207 landfills ทั่วประเทศเป็น barrier-to-entry สูง ขออนุญาตใหม่แทบเป็นไปไม่ได้ในปัจจุบัน",
+    "<b>Pricing power เหนือเงินเฟ้อ:</b> ขึ้นราคาได้ +4-5%/ปีสม่ำเสมอโดยไม่สูญเสีย volume (contracts ระยะยาว)",
+    "<b>Recession-resistant:</b> ขยะเกิดขึ้นเสมอ ไม่ว่าเศรษฐกิจจะเป็นอย่างไร — revenue ขึ้นแม้ปี GDP ลบ",
+    "<b>Environmental Solutions / hazardous:</b> US Ecology acquisition เพิ่ม margin สูง + diversify revenue stream",
+    "<b>RNG & sustainability:</b> Renewable Natural Gas จาก landfill gas = revenue stream ใหม่ + ESG premium",
+    "<b>Dividend grower 22 ปีติด:</b> เพิ่มปันผลทุกปี สร้าง shareholder confidence + institutional flow"
+  ],
+  "risks": [
+    "<b>Valuation แพง P/E 31x:</b> Premium สูงสำหรับธุรกิจที่โต ~8% — P/E compression เสี่ยงสูงหาก sentiment เปลี่ยน",
+    "<b>Leverage / ดอกเบี้ย:</b> D/E ~1.18 — ดอกเบี้ยสูงกดดัน interest expense และ FCF generation",
+    "<b>ต้นทุนแรงงาน/น้ำมัน:</b> แรงงานขับรถ/ช่างและน้ำมัน diesel เป็นต้นทุนหลัก — เงินเฟ้อกด margin",
+    "<b>Recycling commodity ผันผวน:</b> ราคา commodity (กระดาษ, พลาสติก) ผันผวนรุนแรง กระทบรายได้ recycling",
+    "<b>M&A integration risk:</b> US Ecology และ acquisition อื่น ๆ ต้องการเวลา integrate ก่อนจะเห็น synergy จริง",
+    "<b>กฎระเบียบสิ่งแวดล้อม:</b> EPA regulation เข้มงวดขึ้นเพิ่มต้นทุน compliance และ closure liability ของ landfill"
+  ],
+  "extras": [],
+  "v2Display": {
+    "fv": 190,
+    "targets": [
+      183.92,
+      227.25,
+      266.22
+    ]
+  },
+  "_sig": "sha256:3a5d54acb2b15dee5be8ea1864b7a5bf38256f7083c712e9f2a9748a3969df47"
+}

@@ -1,0 +1,288 @@
+{
+  "v": 3,
+  "symbol": "VECO",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Veeco Instruments Inc.",
+    "exchange": "NASDAQ",
+    "sub": "เครื่องจักรกระบวนการผลิตชิป — Laser Annealing, MOCVD, Ion Beam, Lithography สำหรับเลเซอร์/โฟโตนิกส์และ advanced packaging เบื้องหลัง AI accelerator & co-packaged optics (CPO)",
+    "headerTags": [
+      "Semiconductor • Process Equipment",
+      "Mid-cap • Photonics / CPO"
+    ],
+    "analysisDate": "2026-09-22",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis.com",
+      "Yahoo Finance",
+      "CNBC"
+    ],
+    "priceNote": "ระหว่างวัน/ปิดล่าสุด · ต่ำกว่าจุดสูงสุด 52 สัปดาห์ $86.63 เด้งแรงจาก $26.00",
+    "migratedFrom": {
+      "updated": "2026-09-22T07:22:55+07:00",
+      "v2Hash": "67fabd58b7be"
+    }
+  },
+  "market": {
+    "px": 49.67,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          28.75
+        ],
+        [
+          "พ.ย.25",
+          29.23
+        ],
+        [
+          "ธ.ค.25",
+          28.58
+        ],
+        [
+          "ม.ค.26",
+          31.23
+        ],
+        [
+          "ก.พ.26",
+          30.56
+        ],
+        [
+          "มี.ค.26",
+          33.86
+        ],
+        [
+          "เม.ย.26",
+          49.85
+        ],
+        [
+          "พ.ค.26",
+          57.64
+        ],
+        [
+          "มิ.ย.26",
+          75.8
+        ],
+        [
+          "ก.ค.26",
+          50
+        ],
+        [
+          "ส.ค.26",
+          44.3
+        ],
+        [
+          "ก.ย.26",
+          49.67
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 26,
+      "hi": 86.63
+    }
+  },
+  "fundamentals": {
+    "eps": 0.37,
+    "shares": 61129640,
+    "epsForward": 1.51,
+    "roe": 4,
+    "dps": 0,
+    "fy": {
+      "period": "FY2025",
+      "netIncome": 35000000,
+      "eps": 0.59,
+      "revenue": 664000000
+    },
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation ระมัดระวัง",
+      "inputs": {
+        "multiple": 40.7,
+        "multipleSource": "median5y",
+        "base": "epsForward"
+      },
+      "baseLabel": "FY2026e consensus",
+      "note": "FY2026e, consensus จาก StockAnalysis",
+      "family": "market"
+    },
+    {
+      "method": "dcf",
+      "label": "DCF (2-stage)",
+      "inputs": {
+        "g1": 15,
+        "years1": 5,
+        "tg": 3,
+        "r": 10.5,
+        "rfCurrency": "USD"
+      },
+      "override": {
+        "fcf": 85200000,
+        "netDebt": -168000000,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "สมมติฐานของเราเอง",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "peForward",
+      {
+        "key": "pe",
+        "tone": "neg"
+      },
+      "eps",
+      {
+        "key": "revenueFy",
+        "tone": "none"
+      },
+      "netIncomeFy",
+      {
+        "key": "roe",
+        "tone": "none"
+      },
+      "epsFy",
+      "custom:0",
+      "custom:1",
+      "yield",
+      "range52w"
+    ],
+    "custom": [
+      {
+        "label": "รายได้ Q1 2026",
+        "value": "$158M",
+        "note": "โดน China export license ฉุด ~$8M"
+      },
+      {
+        "label": "EPS Q1 2026 (non-GAAP)",
+        "value": "$0.14",
+        "note": "ต่ำกว่าคาด ($0.27)"
+      }
+    ],
+    "notes": {
+      "mcap": "~61 ล้านหุ้น",
+      "peForward": "อิง EPS FY2026e (consensus) $1.51 ปีฟื้นตัว",
+      "pe": "EPS TTM เพียง {{eps}} — บิดเบือน",
+      "eps": "▼ กำไรกดจากวัฏจักรลง",
+      "revenueFy": "▼ −7.4% YoY",
+      "netIncomeFy": "▼ Net margin ~5.3%",
+      "roe": "Gross margin ~40% (กดชั่วคราว)",
+      "epsFy": "non-GAAP สูงกว่า (ปรับรายการพิเศษ)",
+      "yield": "ไม่จ่ายปันผล • เน้น reinvest/หุ้นคืน",
+      "range52w": "เงินสด ~$429M • หนี้ ~$261M (TTM)"
+    },
+    "hint": "งบ FY2025 + Q1 2026 (10-Q)"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": "cagr",
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 5,
+        "exitMultiple": 18,
+        "desc": "CPO ดีเลย์ / China คุมส่งออกหนัก"
+      },
+      {
+        "growth": 25,
+        "exitMultiple": 22,
+        "desc": "กำไรฟื้นตามรอบ CPO/annealing"
+      },
+      {
+        "growth": 45,
+        "exitMultiple": 28,
+        "desc": "InP/CPO ramp เต็มสูบ ครอง niche"
+      }
+    ],
+    "exitDp": 0,
+    "baseOverride": {
+      "value": 1.51,
+      "why": "EPS ฐานฉากที่ผู้เขียนใช้"
+    },
+    "note": "ความเสี่ยง–ผลตอบแทน <b>กระจายตัวกว้างมาก</b> เพราะเป็นหุ้นวัฏจักร + เดิมพันธีม (CPO) — base/bull ให้ผลตอบแทนสูงถ้ากำไรเร่งตัวจริงตามออเดอร์ InP แต่ bear case ติดลบชัดเจน ({{scn.bear.ret}}) หากดีลเลื่อน/มาตรการส่งออกจีนคุมหนัก เพราะกำไรฐานยังบาง ทำให้ valuation อ่อนไหวต่อ EPS มาก (EPS ฐานคือประมาณการ FY2026e ของ vendor; ราคาเป้าเป็นสมมติฐาน)"
+  },
+  "analyst": {
+    "target": 61.33,
+    "n": null,
+    "rating": null,
+    "asOf": null
+  },
+  "prose": {
+    "chart": "หุ้นวิ่งขึ้นแรง <b>กว่า 3 เท่าจากจุดต่ำ 52 สัปดาห์</b> ~$26 สู่จุดสูงสุด ~$87 (มิ.ย. 2026) แรงหนุนหลักจากกระแส <b>co-packaged optics (CPO)</b> และดีล <b>ออเดอร์ >$250M</b> สำหรับเครื่อง MOCVD/Ion Beam ผลิตเลเซอร์ InP — แต่ระหว่างทาง <b>Q1 2026 ทำผลงานพลาดเป้า</b> (รายได้/EPS) ราคาจึงแกว่งแรงและย่อจากจุดสูงสุด",
+    "valuation": "<b>หมายเหตุ:</b> ข้าม DDM/P/BV เพราะ <b>ไม่จ่ายปันผล</b> (0%) • FV = เฉลี่ย P/E ($61) กับ DCF ($34) (ห่างกัน 1.8 เท่า ไม่เกิน 2 เท่า) — เป้านักวิเคราะห์เฉลี่ย ({{analyst.target}}, Hold, n=3) ไม่ใช่ขาของ FV เป็นเพียงบริบทเทียบ • ประมาณการ EPS ที่ใช้เป็นของ vendor ตรวจซ้ำกับงบไม่ได้ จึงให้ DCF (ใช้ FCF จริง TTM) ถ่วงคู่กัน; ผลอ่อนไหวมาก: FV กรอบ {{fvLow}}–{{fvHigh}}",
+    "gauge": "ราคา {{px}} อยู่ <b>ต่ำกว่ามูลค่าเหมาะสม</b> {{fv}} ({{mos}}) และต่ำกว่า <b>เป้าหมาย 12 เดือน</b> ของนักวิเคราะห์ (เฉลี่ย {{analyst.target}}, เรตติ้ง Hold) หลังราคาย่อจากจุดสูงสุด 52 สัปดาห์ $86.63 — ส่วนเผื่อยังบางเพราะ FV มีความไม่แน่นอนสูง ต้องติดตามว่ากำไรจะฟื้นตามคาดหรือไม่",
+    "mos": "MOS บาง — ราคาปัจจุบัน {{px}} ต่ำกว่ามูลค่าเหมาะสม {{fv}} → เริ่มมีส่วนเผื่อความปลอดภัยบางส่วน แต่ยังไม่ถึงโซน MOS 20%+ โดยเฉพาะกับธุรกิจวัฏจักรที่กำไรยังผันผวน",
+    "verdictHeadline": "ผู้เล่น niche ของ CPO/โฟโตนิกส์ — ราคาต่ำกว่ามูลค่าเหมาะสมเล็กน้อย",
+    "verdictBody": "Veeco เป็นผู้นำเฉพาะทางในเครื่องผลิตชิป (laser annealing, MOCVD, Ion Beam) ที่อยู่ในจุดเชื่อมต่อสำคัญของคลื่น co-packaged optics และ advanced packaging สำหรับ AI — ออเดอร์ InP/CPO >$250M และตำแหน่ง tool-of-record ใน LSA เป็นเรื่องจริงที่หนุนกำไรปี 2027 ให้ก้าวกระโดด หลังราคาย่อจากจุดสูงสุด $86.63 มาที่ {{px}} (เป้านักวิเคราะห์เฉลี่ย {{analyst.target}}, Hold) หุ้นมี Margin of Safety บางส่วน ({{mos}}) แต่ฐานกำไรปัจจุบันยังบางและเป็นธุรกิจวัฏจักร ต้องติดตามว่ากำไรจะฟื้นตามคาดหรือไม่",
+    "strategy": "สาย value — ราคาปัจจุบัน {{px}} เริ่มต่ำกว่ามูลค่าเหมาะสมแล้ว ทยอยสะสมเพิ่มได้หากย่อลงมา <b>ต่ำกว่า {{mos30}}</b> (MOS 30%, deep value) • สาย growth/ธีม CPO — เข้าได้แบบ DCA และยอมรับความผันผวนสูง โดยติดตาม <b>การแปลงออเดอร์ InP >$250M เป็นรายได้</b>, <b>กำไรฟื้นตามไกด์ 2027</b> และ <b>มาตรการส่งออกจีน</b> เป็นตัวชี้วัดหลัก",
+    "disclaimerSources": "อ้างอิงงบจริงจาก SEC (FY2025, 10-Q Q1 2026 ลงวันที่ 5 พ.ค. 2026) — หมายเหตุ: ราคา ณ {{priceDate}} อ้างอิง StockAnalysis.com และ Yahoo Finance (ต่างกัน 0.02%)"
+  },
+  "text": {
+    "valHint": "2 วิธี คนละตระกูล (P/E + DCF)",
+    "disclaimerAssump": " อัตราการแปลงออเดอร์ CPO/InP เป็นรายได้และจังหวะการฟื้นตัวของกำไร (EPS GAAP TTM {{eps}} ต่ำผิดปกติทำให้ P/E ~115x ไม่สื่อความจริง จึงใช้ประมาณการ EPS FY2026e ควบคู่ DCF) หุ้นกลุ่ม semiconductor equipment เป็นวัฏจักรและผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ"
+  },
+  "catalysts": [
+    "<b>คลื่น Co-Packaged Optics (CPO):</b> AI data center กำลังเปลี่ยนจากทองแดงเป็น optical interconnect — Veeco คว้าออเดอร์ <b>>$250M</b> (Lumina MOCVD / Spector Ion Beam / WaferEtch) ผลิต <b>เลเซอร์ InP</b> สำหรับ transceiver ส่งมอบเริ่มปี 2026 เร่งตัวปี 2027",
+    "<b>Laser Annealing (LSA) ครองตลาด:</b> แพลตฟอร์ม LSA เป็น <b>tool of record ที่ลูกค้า Tier-1 logic ครบทั้ง 3 ราย</b> สำหรับ leading-edge logic/foundry — โรงงานใหม่ San Jose ส่งมอบเครื่องแรกแล้ว",
+    "<b>Advanced packaging:</b> wet processing + lithography หนุน advanced packaging และ silicon photonics ที่ foundry ชั้นนำ — ตรง TAM ที่โตตาม AI accelerator",
+    "<b>กำไรพลิกฟื้น:</b> นักวิเคราะห์คาด EPS non-GAAP โต <b>$1.51 (FY2026e) → ~$2.91 (FY2027e, +93%)</b> เมื่อออเดอร์เปลี่ยนเป็นรายได้",
+    "<b>งบดุลแข็ง:</b> เงินสด ~$429M, net cash บวก ~$168M (TTM) — รองรับการขยายกำลังผลิตและลงทุน R&D ในรอบขาขึ้น",
+    "<b>Niche leader:</b> ผู้นำเฉพาะทางในเครื่อง MOCVD/Ion Beam/annealing — คู่แข่งตรงน้อย ได้อานิสงส์จากคอขวดกำลังผลิตเลเซอร์ InP"
+  ],
+  "risks": [
+    "<b>วัฏจักรชิปรุนแรง:</b> รายได้ FY2025 <b>−7.4% YoY</b>, กำไรสุทธิ −52% — ธุรกิจ capital equipment แกว่งตามรอบลงทุนของลูกค้า กำไรฐานยังบาง",
+    "<b>ออเดอร์เป็นก้อน (lumpy):</b> รายได้ผูกกับโปรเจกต์ใหญ่ไม่กี่ดีล — <b>Q1 2026 พลาดเป้า</b> (รายได้ $158M, EPS non-GAAP $0.14 vs คาด $0.27) timing รับรู้รายได้ทำไตรมาสผันผวน",
+    "<b>ความเสี่ยงจีน/ส่งออก:</b> Q1 โดน <b>BIS export license</b> ฉุดรายได้ ~$8M — มาตรการคุมส่งออกสหรัฐฯ–จีนกระทบลูกค้าจีนต่อเนื่อง",
+    "<b>Valuation ตึง:</b> ราคาวิ่งกว่า 3 เท่าจากจุดต่ำ 52 สัปดาห์, P/E TTM ~115x, ไม่มีปันผล — ส่วนเผื่อความปลอดภัยบาง และ FV พึ่งประมาณการกำไรที่ยังไม่เกิด",
+    "<b>เดิมพัน CPO ยังไม่พิสูจน์:</b> ออเดอร์ >$250M ยังต้องแปลงเป็นรายได้/กำไรจริง — หาก CPO adoption ช้าหรือดีลเลื่อน upside ที่ราคาสะท้อนไว้จะหด",
+    "<b>ลูกค้ากระจุก + แข่งขัน:</b> พึ่งลูกค้า logic/foundry รายใหญ่ไม่กี่ราย และเผชิญคู่แข่ง (Applied Materials, ASMI ฯลฯ) ในบางเซกเมนต์ที่กดดันราคา/ส่วนแบ่ง"
+  ],
+  "extras": [],
+  "v2Display": {
+    "fv": 47.5,
+    "fvRange": [
+      34,
+      61
+    ],
+    "targets": [
+      31,
+      65,
+      129
+    ],
+    "gauge": [
+      {
+        "ref": "mos30",
+        "label": "MOS 30%"
+      },
+      {
+        "ref": "mos20",
+        "label": "MOS 20%"
+      },
+      {
+        "ref": "fv",
+        "label": "Fair Value"
+      },
+      {
+        "text": "$80",
+        "label": "แนวต้านล่าสุด"
+      },
+      {
+        "text": "$87",
+        "label": "สูงสุด 52 สัปดาห์"
+      }
+    ]
+  },
+  "_sig": "sha256:97d85de72ea881cc2c44896ea251a7f88f4c7389f79187b87cd526772fc74157"
+}

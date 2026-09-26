@@ -1,0 +1,291 @@
+{
+  "v": 3,
+  "symbol": "BF-B",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Brown-Forman Corporation",
+    "exchange": "NYSE",
+    "sub": "Jack Daniel's • Woodford Reserve • Old Forester • Whiskey Portfolio",
+    "headerTags": [
+      "เครื่องดื่มแอลกอฮอล์",
+      "Premium Spirits"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "StockAnalysis",
+      "Brown-Forman IR"
+    ],
+    "themeLegacy": {
+      "accent": "#b45309",
+      "accentDark": "#92400e",
+      "darkGrad": "#78350f",
+      "glow": "rgba(180,83,9,0.12)",
+      "subColor": "#b45309",
+      "headerMuted": "rgba(180,83,9,0.10)",
+      "verdictText": "#92400e",
+      "vcellLabel": "#b45309"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T11:54:28+07:00",
+      "v2Hash": "8a4e04a21b7d"
+    }
+  },
+  "market": {
+    "px": 26.16,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          27.23
+        ],
+        [
+          "พ.ย.25",
+          28.98
+        ],
+        [
+          "ธ.ค.25",
+          26.06
+        ],
+        [
+          "ม.ค.26",
+          27.37
+        ],
+        [
+          "ก.พ.26",
+          28.86
+        ],
+        [
+          "มี.ค.26",
+          26.44
+        ],
+        [
+          "เม.ย.26",
+          25.77
+        ],
+        [
+          "พ.ค.26",
+          25.72
+        ],
+        [
+          "มิ.ย.26",
+          26.65
+        ],
+        [
+          "ก.ค.26",
+          28.73
+        ],
+        [
+          "ส.ค.26",
+          26.57
+        ],
+        [
+          "ก.ย.26",
+          26.16
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 22.61,
+      "hi": 31.92
+    }
+  },
+  "fundamentals": {
+    "dps": 0.924,
+    "shares": 458860000,
+    "ebitda": 1190000000,
+    "roe": 18.1,
+    "fy": {
+      "period": "FY2026",
+      "eps": 1.53
+    },
+    "eps": 1.62,
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E กลางวัฏจักร (mid-cycle)",
+      "inputs": {
+        "multiple": 20,
+        "multipleSource": "author"
+      }
+    },
+    {
+      "method": "evebitda",
+      "label": "EV/EBITDA (normalized)",
+      "inputs": {
+        "multiple": 14,
+        "multipleSource": "author"
+      },
+      "override": {
+        "netDebt": 2140000000,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "14x เป็นสมมติฐาน (ปัจจุบัน ~11.8x; ไม่มีมัธยฐานย้อนหลังที่วัดได้) ใช้ EBITDA จริง ไม่ใช้ normalized"
+    },
+    {
+      "method": "ddm",
+      "label": "DDM (Gordon Growth)",
+      "inputs": {
+        "g": 5,
+        "r": 9
+      },
+      "note": "g ลดจากประวัติ 6–7% เพราะ EPS ยังถูกกด; r 9% รวม country/brand risk premium"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "epsFy",
+      "custom:0",
+      "custom:1",
+      "custom:2",
+      {
+        "key": "yield",
+        "tone": "pos"
+      },
+      "roe"
+    ],
+    "custom": [
+      {
+        "label": "EPS FY2027E",
+        "value": "~$1.69",
+        "note": "consensus (StockAnalysis) — ฟื้นจาก FY2026 แต่ยังต่ำกว่า FY2025 $1.84",
+        "tone": "pos"
+      },
+      {
+        "label": "รายได้ FY2025",
+        "value": "$4.0B",
+        "note": "FY2025 $3.98B (−5% YoY); FY2026 $3.93B (StockAnalysis)",
+        "tone": "neu"
+      },
+      {
+        "label": "EBITDA TTM",
+        "value": "$1.19B",
+        "note": "EV/EBITDA ~11.8x (StockAnalysis)"
+      }
+    ],
+    "notes": {
+      "mcap": "~458.9M shares (Class A+B รวม)",
+      "epsFy": "diluted EPS ปีงบสิ้น เม.ย. 2026 (StockAnalysis)",
+      "yield": "{{dps}}/yr ($0.231/Q) — ขึ้นปันผลต่อเนื่อง 53 ปี (StockAnalysis)",
+      "roe": "ROE (Yahoo) · ครอบครัวควบคุมเป็นผู้ถือ Class A (voting)"
+    },
+    "hint": "ปีงบการเงินสิ้นสุด 30 เม.ย."
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 0,
+        "exitMultiple": 13,
+        "divCum": 2.77,
+        "desc": "spirits volume decline + EU tariff ยืดเยื้อ"
+      },
+      {
+        "growth": 7,
+        "exitMultiple": 18,
+        "divCum": 2.77,
+        "desc": "spirits cycle ฟื้น + EU tariff ผ่อนคลาย"
+      },
+      {
+        "growth": 15,
+        "exitMultiple": 20,
+        "divCum": 2.77,
+        "desc": "ยอดขาย Jack Daniel's ฟื้น + premium rerating"
+      }
+    ],
+    "exitDp": 0,
+    "baseOverride": {
+      "value": 1.55097,
+      "why": "EPS ฐานฉากถอดกลับจากราคาเป้าที่พิมพ์"
+    },
+    "note": "กรณีฐาน EPS +7%/ปี ฟื้นจาก TTM $1.55 → $1.90 ใน 3 ปี ที่ P/E ออก 18x ให้ผลตอบแทน ~43% รวมปันผล กรณีเลวร้าย EPS นิ่ง + P/E ลดเหลือ 13x ขาดทุน ~12% ปันผล {{dps}}/yr (ขึ้นต่อเนื่อง 53 ปี ตาม StockAnalysis) เป็น safety net",
+    "hintNote": "(TTM)"
+  },
+  "analyst": {
+    "target": 28.26,
+    "n": null,
+    "rating": "Hold",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "BF-B แกว่งในกรอบ 52 สัปดาห์ $22.61–$31.92 ราคาล่าสุด {{px}} ({{chg}}) รายได้และกำไรลดลงสามปีติด (EPS FY2024 $2.14 → FY2025 $1.84 → FY2026 {{epsFy}}) แรงกดที่ตลาดพูดถึง: ยอดขายสุราชะลอ, ภาษีนำเข้า, ปริมาณการดื่มเบากว่าช่วง pandemic boom และ concern ระยะยาวจาก GLP-1 drugs",
+    "valuation": "วิธี P/E และ EV/EBITDA ให้ค่าใกล้เคียงกัน ~$32 ทั้งสองขาเป็นตัวคูณที่ตั้งเป็นสมมติฐาน (ไม่ใช่ค่ามัธยฐานที่วัด) DDM ให้ต่ำกว่า ($24) เพราะ dividend growth ถูกจำกัดโดย EPS ที่ยังอยู่ใน trough FV {{fv}} เป็นค่าเฉลี่ยสามขา เป้านักวิเคราะห์ไม่ใช่ขาของ FV",
+    "gauge": "ราคา {{px}} อยู่ใต้ Fair Value {{fv}} ({{mos}}) — MOS ระดับ \"ok\" (10–20%) นักวิเคราะห์ (Hold, 18 คน) ให้เป้าเฉลี่ย {{analyst.target}} ใกล้ FV ของเรา ซึ่งมองการฟื้นตัวกลางวัฏจักรใน 2–3 ปี ความไม่แน่นอนสูง",
+    "mos": "MOS ระดับพอใช้ — อยู่ระหว่าง MOS20 ({{mos20}}) กับ Fair Value ({{fv}})",
+    "verdictHeadline": "Premium Brand ที่ Multi-year Low — สะสมได้ แต่ต้องอดทน",
+    "verdictBody": "BF-B ซื้อขายต่ำกว่า Fair Value {{fv}} ({{mos}}) Jack Daniel's และ Woodford Reserve ยังเป็นแบรนด์แข็งแกร่ง ปันผลขึ้นต่อเนื่อง 53 ปีช่วยรอ แต่ความเสี่ยงระยะยาว (GLP-1 drugs, spirits secular decline) ทำให้ไม่ควรรีบ all-in ก่อน EU tariff situation ชัดขึ้น เหมาะสำหรับนักลงทุน value ที่เชื่อว่าเป็น cyclical trough ไม่ใช่ structural decline",
+    "strategy": "ทยอยสะสมที่ราคาปัจจุบัน ({{mos}}) + เพิ่มที่ {{mos20}} (MOS 20%) รับปันผล ~3.6%/ปี รอ spirits cycle ฟื้น 2–3 ปี · ติดตาม EU tariff และ EPS FY2027 เป็น milestone ตัดสิน thesis",
+    "disclaimerSources": "ราคา ณ {{priceDate}} จาก Yahoo Finance • EPS/Target: StockAnalysis consensus 18 analysts • Financials: StockAnalysis FY2026"
+  },
+  "text": {
+    "valHint": "EPS กลางรอบ ~{{eps}} — เฉลี่ย TTM $1.55 กับ FY2027E $1.69",
+    "disclaimerAssump": " mid-cycle EPS, P/E target และการฟื้นตัวของ spirits cycle"
+  },
+  "catalysts": [
+    "<b>Jack Daniel's brand moat:</b> #1 American whiskey โลก 150+ ปี — pricing power สูง ครองส่วนแบ่งยาก",
+    "<b>EU tariff ผ่อนคลาย:</b> ถ้า US-EU trade deal เกิดขึ้น bourbon export ฟื้น → EPS upside ทันที",
+    "<b>Spirits cycle ฟื้น:</b> post-pandemic de-stocking เสร็จสิ้น on-premise demand (bar/restaurant) ค่อยๆ กลับ",
+    "<b>Woodford Reserve + premium:</b> focus high-margin premium SKU เพิ่มมาร์จิ้น แม้ volume ชะลอ",
+    "<b>ปันผลขึ้นต่อเนื่อง 53 ปี:</b> payout ~60% — yield ~3.6% ดึงดูด income investor",
+    "<b>Valuation ต่ำ:</b> EV/EBITDA ~11.8x, P/E ~16.7x — ถ้า business ไม่ deteriorate = โอกาส"
+  ],
+  "risks": [
+    "<b>Secular spirits decline:</b> GLP-1 drugs + Gen Z ดื่มน้อยลง = structural headwind ระยะยาวที่ยังไม่แน่นอน",
+    "<b>EU tariffs ยาวนาน:</b> bourbon export ~30% ของ revenue — ถ้า trade war ยืดเยื้อ กระทบมาก",
+    "<b>Agave competition:</b> Tequila/Mezcal แย่งตลาด premium spirits จาก whiskey โดยเฉพาะ US consumers รุ่นใหม่",
+    "<b>Family control risk:</b> Class A (voting) ถือโดยครอบครัว ~65% → ผู้ถือ BF-B มีอำนาจน้อยในการตัดสินใจ",
+    "<b>FX headwind:</b> $4B revenue ใน 170+ ประเทศ USD แข็งค่ากระทบ reported revenue",
+    "<b>EPS ยังต่ำกว่า FY2025:</b> FY2027E $1.69 vs FY2025 $1.84 — ฟื้นตัวช้า"
+  ],
+  "extras": [],
+  "v2Display": {
+    "fv": 29.4,
+    "fvRange": [
+      24,
+      33
+    ],
+    "legValues": [
+      null,
+      31.65,
+      null
+    ],
+    "targets": [
+      20.15,
+      null,
+      47.2
+    ],
+    "cards": {
+      "pe": {
+        "v": "~16.9x",
+        "d": "EPS TTM $1.55 / ราคา $26.16",
+        "op": "pxOverBase",
+        "base": 1.55
+      }
+    },
+    "rets": {
+      "texts": [
+        "−12% รวมปันผล ~−12%",
+        "+43% รวมปันผล ~+43%",
+        "+93% รวมปันผล ~+93%"
+      ],
+      "neg": "−",
+      "perYear": "cagr",
+      "div": true
+    }
+  },
+  "_sig": "sha256:8fa038073d2ed0dbaba6acb2c528968920381503f0485ebf5441c09eb23a1aa7"
+}

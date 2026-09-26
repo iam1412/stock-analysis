@@ -1,0 +1,297 @@
+{
+  "v": 3,
+  "symbol": "GOOGL",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Alphabet Inc. (Google)",
+    "exchange": "NASDAQ",
+    "sub": "บริษัทแม่ของ Google • Search, YouTube, Cloud, Android, Waymo, DeepMind",
+    "headerTags": [
+      "GOOG",
+      "Communication Services",
+      "Mega-cap • AI"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis",
+      "Yahoo Finance",
+      "Google Finance"
+    ],
+    "priceNote": "ผันผวนสูง",
+    "migratedFrom": {
+      "updated": "2026-09-22T07:22:55+07:00",
+      "v2Hash": "c64498133f4a"
+    }
+  },
+  "market": {
+    "px": 343.92,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          281.19
+        ],
+        [
+          "พ.ย.25",
+          320.18
+        ],
+        [
+          "ธ.ค.25",
+          313
+        ],
+        [
+          "ม.ค.26",
+          338
+        ],
+        [
+          "ก.พ.26",
+          311.76
+        ],
+        [
+          "มี.ค.26",
+          287.56
+        ],
+        [
+          "เม.ย.26",
+          384.8
+        ],
+        [
+          "พ.ค.26",
+          380.34
+        ],
+        [
+          "มิ.ย.26",
+          357.37
+        ],
+        [
+          "ก.ค.26",
+          356.13
+        ],
+        [
+          "ส.ค.26",
+          339.35
+        ],
+        [
+          "ก.ย.26",
+          343.92
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 235.84,
+      "hi": 408.61
+    }
+  },
+  "fundamentals": {
+    "eps": 10.5,
+    "dps": 0.88,
+    "shares": 12230000000,
+    "peAvg5y": 20.7,
+    "opMargin": 33,
+    "fcf": 73300000000,
+    "fy": {
+      "period": "FY2025",
+      "netIncome": 132200000000,
+      "eps": 10.8,
+      "revenue": 402800000000
+    },
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation ระมัดระวัง",
+      "inputs": {
+        "multiple": 24,
+        "multipleSource": "author"
+      },
+      "note": "มัธยฐาน 20.7x FY21–25 + พรีเมียมการเติบโต · กำไรจากธุรกิจจริง ไม่รวมกำไรพิเศษ"
+    },
+    {
+      "method": "declared",
+      "label": "DCF (2-stage)",
+      "inputs": {
+        "value": 330,
+        "basis": "other"
+      },
+      "note": "FCF ปกติเติบโต (TTM $53.3B หลัง capex), WACC 9%, Terminal 3% — สมมติ capex AI สร้างผลตอบแทนในอนาคต"
+    },
+    {
+      "method": "declared",
+      "label": "Analyst Intrinsic",
+      "inputs": {
+        "value": 340,
+        "basis": "other"
+      },
+      "note": "ค่าเฉลี่ยจากโมเดล fair value ของนักวิเคราะห์ ($267–$368)"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      {
+        "key": "pe",
+        "tone": "none"
+      },
+      "custom:0",
+      "peAvg5y",
+      {
+        "key": "revenueFy",
+        "tone": "none"
+      },
+      "netIncomeFy",
+      "opMargin",
+      "epsFy",
+      "fcf",
+      "custom:1",
+      "yield",
+      "range52w"
+    ],
+    "custom": [
+      {
+        "label": "P/E (Normalized)",
+        "value": "~33x",
+        "note": "EPS หลัก ~$10.5/หุ้น",
+        "tone": "neu"
+      },
+      {
+        "label": "FCF Yield",
+        "value": "~1.2%",
+        "note": "เฉลี่ย 5 ปี 3.4% ต่ำกว่าปกติ",
+        "tone": "neu"
+      }
+    ],
+    "notes": {
+      "mcap": "12.2 พันล้านหุ้น",
+      "peAvg5y": "มัธยฐาน FY21–25 (10 ปี = 27.4x)",
+      "opMargin": "ROE หลัก ~30% (GAAP 49% บวมจากกำไรพิเศษ)",
+      "epsFy": "▲ +34% (จาก $8.04)",
+      "fcf": "TTM ลดเหลือ $53.3B",
+      "yield": "Payout ~8% ของกำไรหลัก",
+      "range52w": "All-time high $408.61"
+    },
+    "hint": "งบ TTM (ถึง Q2/2026) + FY2025 จาก SEC 10-K"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": "cagr",
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 3,
+        "exitMultiple": 20,
+        "desc": "capex ไม่คุ้ม / แข่งดุ"
+      },
+      {
+        "growth": 11,
+        "exitMultiple": 23,
+        "desc": "โตปกติ Cloud/AI ฟื้น"
+      },
+      {
+        "growth": 16,
+        "exitMultiple": 26,
+        "desc": "AI/Cloud จ่ายผลเต็มที่"
+      }
+    ],
+    "exitDp": 0,
+    "baseOverride": {
+      "value": 11.9915,
+      "why": "EPS ฐานฉากถอดกลับจากราคาเป้าที่พิมพ์"
+    },
+    "note": "ความเสี่ยง–ผลตอบแทนค่อนข้าง <b>สมมาตรเอียงบวกเล็กน้อย</b> แต่ <b>base case ให้ผลตอบแทนไม่สูง</b> (~3%/ปี) เพราะเข้าซื้อที่ราคาแพงกว่ามูลค่าพื้นฐานแล้ว upside ที่แท้จริงขึ้นกับว่าเงินลงทุน AI มหาศาลจะสร้างกำไรกลับมาได้จริงหรือไม่",
+    "hintNote": "EPS หลัก"
+  },
+  "analyst": {
+    "target": 428,
+    "n": null,
+    "rating": null,
+    "asOf": null
+  },
+  "prose": {
+    "chart": "หุ้นขึ้นจาก ~$281 (ต.ค. 2025) สู่จุดสูงสุดตลอดกาล $408.61 (เม.ย.–พ.ค. 2026) แล้วย่อลงมาต่ำกว่าจุดสูงสุดราว 14% โดยรายงานนี้แยก <b>กำไรพิเศษจากการตีมูลค่าหุ้นที่ถือ</b> ออก (กำไรสุทธิ Q2/2026 $112.1B เทียบกำไรจากการดำเนินงาน $40.8B) และยังกังวล capex AI + การแข่งขันด้าน AI",
+    "valuation": "<b>หมายเหตุ:</b> ข้าม DDM เพราะปันผลน้อยมาก (0.25%) ไม่มีนัยสำคัญ • ใช้กรอบ <b>Value Investor / Margin of Safety</b> ที่อนุรักษ์นิยม จึงต่ำกว่าเป้านักวิเคราะห์สาย momentum (เฉลี่ย {{analyst.target}}) อย่างมีนัยสำคัญ",
+    "gauge": "ราคา {{px}} อยู่ <b>เหนือมูลค่าเหมาะสม</b> ในเชิงมูลค่าพื้นฐาน — แต่ยัง <b>ต่ำกว่าเป้าหมาย 12 เดือน</b> ของนักวิเคราะห์ (Wall Street: Strong Buy, 54 นักวิเคราะห์) สะท้อนความเห็น 2 ขั้ว: สาย value มองว่าแพง, สาย growth มองว่าเดิมพัน AI ยังให้ upside",
+    "mos": "<b>ไม่มี Margin of Safety</b><br>ราคาปัจจุบัน {{px}} สูงกว่ามูลค่าเหมาะสม {{fv}} ราว 14% → ตามเกณฑ์ value investor ถือว่า <b>แพงเล็กน้อย</b> ยังไม่ใช่จุดซื้อที่ปลอดภัย",
+    "verdictHeadline": "บริษัทคุณภาพสูงสุด แต่ราคา ณ ตอนนี้ \"ไม่ถูก\"",
+    "verdictBody": "Alphabet เป็นธุรกิจระดับท็อปของโลก โตเร็วและทำเงินมหาศาล — แต่ที่ราคา {{px}} ตลาดได้สะท้อนความคาดหวังเชิงบวกไปมากแล้ว สำหรับสาย value จึงยังไม่มีส่วนเผื่อความปลอดภัย ส่วนสาย growth ที่เชื่อเรื่อง AI/Cloud ยังพอเห็น upside แต่ความเสี่ยงสูงขึ้น",
+    "strategy": "สาย value — รอย่อ/ทยอยสะสมเมื่อราคา <b>ต่ำกว่า ~$255</b> (น่าสนใจที่ {{mos20}}) • สาย growth — เข้าได้แบบ DCA และยอมรับความผันผวน โดยติดตาม <b>ผลตอบแทนจาก capex AI</b> และ <b>FCF</b> เป็นตัวชี้วัดหลัก",
+    "disclaimerSources": "อ้างอิงงบจริงจาก SEC (10-K FY2025, 8-K Q2 2026)"
+  },
+  "text": {
+    "valHint": "3 วิธี เฉลี่ยถ่วงน้ำหนัก",
+    "chartHint": "(ปรับ split แล้ว)",
+    "disclaimerAssump": " \"EPS หลัก/Normalized\" และผลตอบแทนจาก capex AI ซึ่งเป็นจุดถกเถียงหลัก ราคาหุ้นมีความผันผวนสูงและช่วงนี้เคลื่อนไหวแรงจากข่าว ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ"
+  },
+  "catalysts": [
+    "<b>Google Cloud โตแรง:</b> +32–34% YoY, run-rate $20B+/ไตรมาส, backlog $460B, ทำกำไรแล้ว — ดีล SpaceX $30B, Anthropic เช่าชิป $36B, Nokia/HSBC",
+    "<b>รายได้เร่งตัว:</b> Q1/2026 +22% YoY (จาก +15% ทั้งปี 2025) — โมเมนตัมกลับมา",
+    "<b>ผู้นำ AI:</b> Gemini, AI Overviews 1.5พันล้านผู้ใช้/เดือน, AI Mode — Search ยังโตเลขสองหลัก",
+    "<b>สินทรัพย์ซ่อน:</b> หุ้น SpaceX (ลงทุน $12B ปี 2015 มูลค่าตอนนี้ ~$100B) + พอร์ตลงทุนอื่น",
+    "<b>งบดุลแกร่ง:</b> เครดิต AA+, เงินสด $242B (หนี้ $121B), Berkshire ลง $10B ในรอบระดมทุน — โหวตความเชื่อมั่นจาก Buffett",
+    "<b>YouTube + Subscription:</b> สมาชิกจ่ายเงิน 270 ล้าน+ • Waymo (รถไร้คนขับ) เป็น optionality"
+  ],
+  "risks": [
+    "<b>Capex AI บีบ FCF:</b> พุ่งจาก $91B (2025) → <b>$180–190B (2026)</b> กิน cash flow เกือบหมด, FCF TTM เหลือ $53.3B (yield ~1.2%) ต้องกู้ $84.75B มาเสริม — เสี่ยงถ้าไม่คุ้ม",
+    "<b>สมองไหล AI:</b> John Jumper (โนเบล/AlphaFold) ออกไป Anthropic + นักวิจัยระดับท็อปอีกคนในสัปดาห์เดียว — สั่นคลอนความได้เปรียบ DeepMind",
+    "<b>การแข่งขันรุนแรง:</b> OpenAI, Anthropic, Meta, xAI (Musk) — AI chatbot อาจกัดกร่อนโมเดลโฆษณา Search",
+    "<b>กฎหมาย/Antitrust:</b> คดีผูกขาด DOJ สหรัฐ + ค่าปรับ EU ($3.5B ใน Q3/2025) ยังคาราคาซัง",
+    "<b>Valuation ไม่ถูก:</b> P/E หลัก ~33x, FCF yield ~1.2% — margin of safety จำกัด, ราคาสะท้อนความคาดหวังสูง",
+    "<b>กำไรผันผวน:</b> กำไร/ขาดทุนจากการตีมูลค่าหุ้นที่ถือ (Q2/2026 กำไรสุทธิ $112.1B สูงกว่ากำไรดำเนินงาน $40.8B มาก) ทำให้ EPS แกว่งและ P/E ดูถูกกว่าจริง"
+  ],
+  "extras": [],
+  "v2Display": {
+    "fv": 307,
+    "targets": [
+      262,
+      377,
+      487
+    ],
+    "gauge": [
+      {
+        "ref": "mos30",
+        "label": "MOS 30%"
+      },
+      {
+        "ref": "mos20",
+        "label": "MOS 20%"
+      },
+      {
+        "ref": "fv",
+        "label": "Fair Value"
+      },
+      {
+        "ref": "analystTgt",
+        "label": "เป้า Analyst"
+      },
+      {
+        "text": "$515",
+        "label": "เป้าสูงสุด"
+      }
+    ],
+    "cards": {
+      "pe": {
+        "v": "~17.3x",
+        "d": "EPS TTM $19.93 บวมจากกำไรพิเศษ",
+        "op": "pxOverBase",
+        "base": 19.93
+      },
+      "revenueFy": {
+        "v": "$402.8B",
+        "d": "▲ +15% YoY"
+      },
+      "netIncomeFy": {
+        "v": "$132.2B",
+        "d": "▲ +32% YoY"
+      }
+    }
+  },
+  "_sig": "sha256:cec023b75270b9590abcb155dfab407e9a31c5189847dd59b5ae365f4a7bcbe0"
+}

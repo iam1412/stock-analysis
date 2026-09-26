@@ -1,0 +1,270 @@
+{
+  "v": 3,
+  "symbol": "JMT",
+  "currency": "THB",
+  "region": "TH",
+  "dateEra": "BE",
+  "meta": {
+    "company": "JMT Network Services",
+    "exchange": "SET",
+    "sub": "บริหารหนี้ NPL รายใหญ่ • ซื้อพอร์ตหนี้ธนาคาร-non-bank ทวงเอง • J Fintech (digital lending) • ประกันภัย • ตลาด SET",
+    "headerTags": [
+      "การเงิน / Financials",
+      "NPL / Debt Collection"
+    ],
+    "analysisDate": "2026-09-22",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "Investing.com",
+      "Google Finance (cross-verified)"
+    ],
+    "themeLegacy": {
+      "accent": "#c62828",
+      "accentDark": "#b71c1c",
+      "darkGrad": "linear-gradient(135deg,#7b1717 0%,#b71c1c 60%,#c62828 100%)",
+      "glow": "rgba(198,40,40,0.3)",
+      "subColor": "#ffe7e9",
+      "headerMuted": "#f9e9e9",
+      "verdictText": "#ffebee",
+      "vcellLabel": "#fef8f8"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-22T01:46:25+07:00",
+      "v2Hash": "37790f4517b7"
+    }
+  },
+  "market": {
+    "px": 10.5,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          9.75
+        ],
+        [
+          "พ.ย.25",
+          8.6
+        ],
+        [
+          "ธ.ค.25",
+          8.75
+        ],
+        [
+          "ม.ค.26",
+          8.5
+        ],
+        [
+          "ก.พ.26",
+          11.1
+        ],
+        [
+          "มี.ค.26",
+          8.65
+        ],
+        [
+          "เม.ย.26",
+          9.8
+        ],
+        [
+          "พ.ค.26",
+          11.1
+        ],
+        [
+          "มิ.ย.26",
+          11.6
+        ],
+        [
+          "ก.ค.26",
+          12
+        ],
+        [
+          "ส.ค.26",
+          11
+        ],
+        [
+          "ก.ย.26",
+          10.5
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 7.65,
+      "hi": 13
+    }
+  },
+  "fundamentals": {
+    "eps": 0.65,
+    "dps": 0.67,
+    "bvps": 18.76,
+    "shares": 1461000000,
+    "roe": 5.6,
+    "roa": 4.4,
+    "grossMargin": 64,
+    "debtToEquity": 0.36,
+    "fy": {
+      "period": "FY2568",
+      "netIncome": 1030000000,
+      "revenue": 4802000000
+    },
+    "epsBasis": "ifrs"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation",
+      "inputs": {
+        "multiple": 16,
+        "multipleSource": "author"
+      }
+    },
+    {
+      "method": "ddm",
+      "label": "DDM / Gordon Growth",
+      "inputs": {
+        "g": 3,
+        "r": 9
+      },
+      "note": "สะท้อนมูลค่ากระแสปันผลที่สม่ำเสมอ (บริษัทจ่ายปีละ 2 ครั้ง ต่อเนื่อง 5+ ปี)"
+    },
+    {
+      "method": "pbv",
+      "label": "Justified P/BV",
+      "inputs": {
+        "g": 3,
+        "r": 9
+      },
+      "override": {
+        "roe": 7,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "ใช้ ROE normalize 7% (ระหว่าง TTM 5.6% กับ historical 9%) สมมติว่าบริษัทฟื้นกลับสู่ค่ากลาง"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "custom:0",
+      "pbv",
+      {
+        "key": "netIncomeFy",
+        "tone": "neg"
+      },
+      "eps",
+      "bvps",
+      {
+        "key": "roe",
+        "tone": "neu"
+      },
+      "revenueFy",
+      "grossMargin",
+      "yield",
+      {
+        "key": "debtToEquity",
+        "tone": "pos"
+      }
+    ],
+    "custom": [
+      {
+        "label": "P/E เฉลี่ย ~5 ปี",
+        "value": "~12–22x",
+        "note": "ปัจจุบัน 18x · ช่วงกลาง"
+      }
+    ],
+    "notes": {
+      "mcap": "~1,461 ล้านหุ้น",
+      "pe": "กำไรกำลังฟื้น",
+      "pbv": "ต่ำกว่า Book",
+      "netIncomeFy": "ลด 36% YoY (provision สูง)",
+      "eps": "FY68: ฿0.71 · Q1/69: ฿0.17",
+      "bvps": "Q1/2569 · ทรงตัว",
+      "roe": "FY2568 · ลดจาก 9.4% (FY2566)",
+      "grossMargin": "ธุรกิจ NPL margin สูงแต่ volatile",
+      "yield": "{{dps}}/หุ้น · จ่ายปีละ 2 ครั้ง",
+      "debtToEquity": "FY2568 · ลดลงต่อเนื่อง"
+    },
+    "hint": "ข้อมูล ณ Q1/2569 · FY2568"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": "cagr",
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": -5,
+        "exitMultiple": 12,
+        "divCum": 1.55,
+        "desc": "NPL คุณภาพแย่ กำไรหดต่อ"
+      },
+      {
+        "growth": 10,
+        "exitMultiple": 16,
+        "divCum": 2.12,
+        "desc": "Provision ลด กำไรฟื้น"
+      },
+      {
+        "growth": 20,
+        "exitMultiple": 20,
+        "divCum": 2.42,
+        "desc": "J Fintech โต + ตลาดฟื้น"
+      }
+    ],
+    "exitDp": 0,
+    "note": "EPS ปัจจุบัน ({{eps}}) อยู่ในระดับต่ำสุดในรอบ 5 ปี หลังบริษัทตั้ง provision สูงในปี 2567–2568 เพื่อรับมือหนี้เสียที่เพิ่มขึ้นตามภาวะเศรษฐกิจ · Base case ฟื้น +10%/ปี หากตลาดแรงงานปรับตัวดีขึ้นและอัตราการชำระหนี้กลับสู่ปกติ · Bull case ขับเคลื่อนโดย J Fintech (digital lending) ที่โตเร็ว + JK AMC (Joint Venture ซื้อหนี้ก้อนใหญ่จากธนาคาร) · Bear case เกิดหากหนี้ครัวเรือนสูงต่อเนื่อง บริษัทต้องตั้ง provision เพิ่ม กำไรหด · การลงทุนมีความเสี่ยงสูง โปรดศึกษาข้อมูลเพิ่มเติม"
+  },
+  "analyst": {
+    "target": 10.28,
+    "n": null,
+    "rating": "Neutral",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ราคา JMT ย้อนหลัง 1 ปีทรงตัวในกรอบ ฿8.50–฿11.80 โดยร่วงแรงจาก ฿11.70 ในเดือน ก.ค. 2568 ลงสู่จุดต่ำสุดที่ ฿8.50 ในเดือน ม.ค. 2569 หลังจากกำไร FY2568 ต่ำกว่าคาด ราคาดีดกลับเกือบ ฿11 ใน ก.พ. 2569 ก่อนย่อตัวอีกครั้ง แล้วฟื้นกลับมาที่ระดับต้นปีที่ ฿11.60–฿11.70 ใน มิ.ย.–ก.ค. 2569 การเคลื่อนไหวสะท้อนความกังวลเรื่องคุณภาพหนี้และ provision ที่สูง ขณะที่ตลาดรอสัญญาณฟื้นตัว",
+    "valuation": "วิธี P/E ให้ค่าต่ำสุด ({{fvLow}}) เพราะ EPS TTM อยู่ในจุดต่ำสุดรอบ 4 ปี · DDM (฿11.50) สะท้อน yield ที่จ่ายสม่ำเสมอ 5.8% · Justified P/BV ({{fvHigh}}) สูงสุดเพราะ BVPS {{bvps}} ยังแข็งแกร่ง ราคาปัจจุบันซื้อขายต่ำกว่า Book · ค่าเฉลี่ย ฿{{fv}} อยู่ใกล้ราคาตลาดมาก สะท้อนว่า JMT ณ ปัจจุบัน \"ราคายุติธรรม\" ยังไม่ถูกพอสำหรับ margin of safety เต็มรูปแบบ · เป้าเฉลี่ยนักวิเคราะห์ 7 ราย = {{analyst.target}} (Neutral) ซึ่งต่ำกว่าราคาตลาดปัจจุบัน",
+    "gauge": "ราคาปัจจุบัน ฿{{px}} อยู่ต่ำกว่ามูลค่าเหมาะสม ฿{{fv}} เล็กน้อย บ่งชี้ว่า JMT ซื้อขายที่ระดับ \"ราคายุติธรรม\" ไม่ใช่โซน undervalue · โซนน่าสนใจสำหรับ value investor อยู่ที่ต่ำกว่า ฿{{fv}} โดยมี margin of safety เต็มที่ต้องลงไปถึง ฿{{mos20}} (MOS 20%) หรือ ฿{{mos30}} (MOS 30%) · เป้านักวิเคราะห์เฉลี่ย {{analyst.target}} บ่งชี้ downside จากราคาปัจจุบัน สะท้อนความกังวลเรื่องกำไรระยะสั้น",
+    "mos": "ราคาแพงกว่ามูลค่าเหมาะสมเล็กน้อย — รอโซน ฿9–10 เพื่อ margin of safety ที่ดีกว่า",
+    "verdictHeadline": "ราคายุติธรรม — รอโซนเข้าซื้อ MOS ≥ 20% ที่ ฿{{mos20}} ลงมา",
+    "verdictBody": "JMT เป็นผู้นำธุรกิจบริหารหนี้ NPL ของไทย มีพอร์ตหนี้สะสมขนาดใหญ่และ JK AMC เป็น pipeline รายได้ระยะยาว แต่กำไรปี 2567–2568 ถูกกดดันจากการตั้ง provision สูงและอัตราหนี้ครัวเรือนระดับสูง ราคาปัจจุบัน ฿{{px}} อยู่ในโซน \"Fair Value\" ตามโมเดล (~฿{{fv}} เฉลี่ย 3 วิธี) ไม่มี margin of safety เพียงพอสำหรับ value investor · เป้าเฉลี่ยนักวิเคราะห์ 7 รายอยู่ที่ {{analyst.target}} (Neutral) ต่ำกว่าราคาตลาด · Dividend yield ~5.8% ที่ราคาปัจจุบันช่วยหนุน downside แต่หากต้องการ total return ดีต้องรอราคาร่วงสู่โซน ฿9–10",
+    "strategy": "รอราคาร่วงสู่ ฿{{mos20}} ลงมา (MOS 20%) เพื่อ margin of safety ที่เหมาะสม · ถือปัจจุบัน: yield ~5.8% ชดเชยความเสี่ยง · ไม่ขายหากถือต้นทุนต่ำกว่า ฿9 · ติดตาม Q2/2569 (ส.ค. 2569) หาก EPS ฟื้นเกิน ฿0.20/ไตรมาส = สัญญาณบวก",
+    "disclaimerSources": "แหล่งข้อมูล: (1) Yahoo Finance — JMT.BK ราคา ณ {{priceDate}}, กราฟรายเดือน 1 ปี; (2) Investing.com — cross-verify ราคา ฿11.80/P/E 18x/BVPS/Analyst consensus; (3) JMT Network Services IR (jmtnetwork.co.th) — Financial Highlights FY2568, รายได้/กำไร/EPS/ROE; (4) StockAnalysis.com — รายได้/กำไร FY2021–FY2568, ประวัติปันผล; (5) AIO Panphol — งบการเงิน BVPS ฿18.76 Q1/2569"
+  },
+  "text": {
+    "chartHint": "ก.ค. 2568 – ก.ค. 2569 · รายเดือน"
+  },
+  "catalysts": [
+    "<b>Provision normalize:</b> หาก JMT ลดการตั้งสำรองหลังพอร์ตหนี้เดิมถูก written-off จะปลดล็อก EPS ฟื้นเร็วกว่าคาด",
+    "<b>J Fintech growth:</b> ธุรกิจสินเชื่อดิจิทัลผ่าน J Fintech เติบโตต่อเนื่อง เพิ่มรายได้ดอกเบี้ยคงที่ ลดการพึ่งพา NPL collection เพียงอย่างเดียว",
+    "<b>JK AMC (JV ธนาคารกรุงไทย):</b> ร่วมทุนซื้อพอร์ตหนี้ขนาดใหญ่ (~฿11.6B) โอกาสทยอยรับรู้กำไรระยะยาว 5–10 ปี",
+    "<b>Dividend yield ดึงดูด:</b> yield ~5.8% ที่ราคาปัจจุบัน สูงกว่าพันธบัตรรัฐบาล 10 ปี มีผลให้ downside จำกัดในกลุ่ม income investor",
+    "<b>ต้นทุนพอร์ตต่ำ:</b> NPL ที่ซื้อในช่วงวิกฤตได้ราคาดี หากเศรษฐกิจฟื้น collection rate สูงขึ้น IRR ของพอร์ตพุ่ง"
+  ],
+  "risks": [
+    "<b>หนี้ครัวเรือนสูง:</b> หนี้ครัวเรือนไทยอยู่ ~90% ของ GDP อัตราชำระหนี้ต่ำ กระทบ collection yield ของพอร์ตที่ซื้อมา",
+    "<b>ROE ต่ำผิดปกติ:</b> ROE ลดจาก 22.96% (2563) เหลือ 3.84% (2568) สะท้อนการขยายฐานทุนเร็วกว่ากำไร ต้องใช้เวลาฟื้น",
+    "<b>Regulatory risk:</b> กฎหมายคุ้มครองลูกหนี้ใหม่ / นโยบาย BOT ลดอัตราดอกเบี้ยสินเชื่อ อาจกดรายได้ J Fintech",
+    "<b>การแข่งขันสูง:</b> BAM, JMT, CHAYO แข่งซื้อพอร์ตหนี้จากธนาคาร ราคาซื้อสูงขึ้น กดดัน IRR ระยะยาว",
+    "<b>ผลตอบแทน JK AMC ไม่แน่นอน:</b> พอร์ตขนาดใหญ่ใช้เวลาทวง 5–10 ปี หากเศรษฐกิจแย่ยาวนาน IRR ต่ำกว่าคาด",
+    "<b>กำไรผันผวน:</b> ธุรกิจ NPL รับรู้รายได้ตาม collection model อาจผันผวนสูงตาม provision policy ของฝ่ายบริหาร"
+  ],
+  "extras": [],
+  "v2Display": {
+    "targets": [
+      6.72,
+      13.92,
+      22.4
+    ],
+    "cards": {
+      "revenueFy": {
+        "v": "฿4,802 ล้าน",
+        "d": "ลด 12.3% YoY"
+      }
+    }
+  },
+  "_sig": "sha256:590b783c2e260864cec7243c99a7f7262e64638f90998a4391d8737db5e3a6f6"
+}

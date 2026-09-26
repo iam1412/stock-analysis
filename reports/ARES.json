@@ -1,0 +1,306 @@
+{
+  "v": 3,
+  "symbol": "ARES",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Ares Management Corporation",
+    "exchange": "NYSE",
+    "sub": "Private Credit (~75% ของ AUM) • Real Estate • Private Equity • Infrastructure & Secondaries • Aspida (insurance capital) — ผู้จัดการสินทรัพย์ทางเลือกสาย credit ใหญ่ที่สุดในโลก AUM $644B+",
+    "headerTags": [
+      "Alternative Asset Management",
+      "Private Credit"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis.com",
+      "Yahoo Finance",
+      "Ares Management Investor Relations (Q1 2026 8-K)",
+      "SEC 10-Q"
+    ],
+    "themeLegacy": {
+      "accent": "#1E3A8A",
+      "accentDark": "#122466",
+      "darkGrad": "linear-gradient(135deg,#050f35 0%,#122466 50%,#1E3A8A 100%)",
+      "glow": "rgba(30,58,138,0.35)",
+      "subColor": "#a0b1e5",
+      "headerMuted": "rgba(255,255,255,0.65)",
+      "verdictText": "#9aafe9",
+      "vcellLabel": "#b3c1f2"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T10:24:06+07:00",
+      "v2Hash": "c329f6d5d1d5"
+    }
+  },
+  "market": {
+    "px": 122.01,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          148.71
+        ],
+        [
+          "พ.ย.25",
+          156.85
+        ],
+        [
+          "ธ.ค.25",
+          161.63
+        ],
+        [
+          "ม.ค.26",
+          149.67
+        ],
+        [
+          "ก.พ.26",
+          112.01
+        ],
+        [
+          "มี.ค.26",
+          109.1
+        ],
+        [
+          "เม.ย.26",
+          117.4
+        ],
+        [
+          "พ.ค.26",
+          128.5
+        ],
+        [
+          "มิ.ย.26",
+          111.31
+        ],
+        [
+          "ก.ค.26",
+          128.09
+        ],
+        [
+          "ส.ค.26",
+          143.17
+        ],
+        [
+          "ก.ย.26",
+          122.01
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 95.8,
+      "hi": 186.85
+    }
+  },
+  "fundamentals": {
+    "eps": 2.22,
+    "dps": 5.4,
+    "shares": 329500000,
+    "aum": 644300000000,
+    "roe": 12.3,
+    "beta": 1.5,
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "declared",
+      "label": "Price/FRE Valuation",
+      "inputs": {
+        "value": 142,
+        "basis": "other"
+      },
+      "note": "FRE/share (TTM) $5.68 × Price/FRE เป้าหมาย ~25x — อนุรักษ์นิยมกว่าค่าเฉลี่ยปกติของกลุ่ม (~30–35x) เพื่อสะท้อนความกังวล credit cycle",
+      "family": "rg"
+    },
+    {
+      "method": "declared",
+      "label": "Price/DE Valuation",
+      "inputs": {
+        "value": 98.2,
+        "basis": "other"
+      },
+      "note": "DE/share proxy (After-tax Realized Income TTM) $4.91 × Price/DE เป้าหมาย ~20x — ต่ำกว่า Price/FRE multiple เพราะ Realized Income ยังรวม performance fee ที่ผันผวนกว่า fee ประจำ",
+      "family": "rg"
+    },
+    {
+      "method": "declared",
+      "label": "Dividend Yield Valuation",
+      "inputs": {
+        "value": 120,
+        "basis": "other"
+      },
+      "note": "ปันผล {{dps}}/ปี ÷ fair yield 4.5% — อิงระดับ yield ที่นักลงทุนรายได้ต้องการสำหรับ alt-manager คุณภาพสูงที่ปันผลยังโตต่อเนื่อง",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "custom:0",
+      "custom:1",
+      "custom:2",
+      {
+        "key": "aum",
+        "tone": "pos"
+      },
+      "custom:3",
+      "custom:4",
+      "custom:5",
+      {
+        "key": "yield",
+        "tone": "pos"
+      },
+      "custom:6",
+      {
+        "key": "roe",
+        "tone": "neu"
+      },
+      "beta"
+    ],
+    "custom": [
+      {
+        "label": "Price/FRE (TTM)",
+        "value": "~21.8x",
+        "note": "FRE/share $5.68 (total-share basis)",
+        "tone": "neu"
+      },
+      {
+        "label": "Price/DE (TTM)",
+        "value": "~25.2x",
+        "note": "Realized Income/share $4.91 (Class A diluted)",
+        "tone": "neu"
+      },
+      {
+        "label": "GAAP P/E (TTM)",
+        "value": "~{{pe}}x",
+        "note": "GAAP EPS {{eps}} (TTM) — บิดเบือนสูงจาก unrealized MTM ของพอร์ตลงทุน ไม่ใช่ multiple หลัก",
+        "tone": "neu"
+      },
+      {
+        "label": "FRE/Share (TTM)",
+        "value": "$5.68",
+        "note": "FRE รวม 4 ไตรมาสล่าสุด ~$1.87B",
+        "tone": "pos"
+      },
+      {
+        "label": "DE/Share (TTM, proxy)",
+        "value": "$4.91",
+        "note": "After-tax Realized Income/share (Class A) 4Q ล่าสุด",
+        "tone": "pos"
+      },
+      {
+        "label": "AUM Growth YoY",
+        "value": "+18%",
+        "note": "Management fees Q1'26 ทะลุ $1.0B ครั้งแรก (+22% YoY)",
+        "tone": "pos"
+      },
+      {
+        "label": "FRE Margin",
+        "value": "~40%",
+        "note": "FY2025 margin 41.7% (จาก 41.5% ปีก่อน) — ทรงตัว/ขยายเล็กน้อย",
+        "tone": "neu"
+      }
+    ],
+    "notes": {
+      "mcap": "~329.5M shares (ทุก class รวมกัน)",
+      "yield": "($1.35/ไตรมาส) — เพิ่มขึ้น ~20% YoY",
+      "roe": "FY2025 — ผันผวนตาม unrealized gains/losses เช่นเดียวกับ EPS",
+      "beta": "ผันผวนสูงกว่าตลาดตามวัฏจักร credit/alt-manager"
+    },
+    "hint": "Alternative Asset Manager — ใช้ Fee-Related Earnings (FRE) / Distributable Earnings (DE) แทน GAAP EPS"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": null,
+    "driver": "fre",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 6,
+        "exitMultiple": 17,
+        "divCum": 18.22,
+        "desc": "Credit cycle เสื่อม, spread compression, multiple หดตัว"
+      },
+      {
+        "growth": 14,
+        "exitMultiple": 21,
+        "divCum": 21.17,
+        "desc": "FRE โตใกล้เคียง run-rate ปัจจุบัน multiple ทรงตัว"
+      },
+      {
+        "growth": 20,
+        "exitMultiple": 26,
+        "divCum": 23.59,
+        "desc": "AUM เร่งตัว, Aspida ขยายทุนประกัน, multiple re-rate กลับสู่ค่าเฉลี่ยประวัติศาสตร์"
+      }
+    ],
+    "exitDp": 0,
+    "baseOverride": {
+      "value": 5.68326,
+      "why": "ฐานฉากถอดกลับจากค่าปลายฉากที่พิมพ์"
+    },
+    "note": "ฐาน FRE/share ใช้ TTM $5.68 (total-share basis) เป็นจุดตั้งต้น สมมติฐานการเติบโตอิงจาก FRE ที่โต 26% YoY ใน Q1'26 และ AUM ที่โต 18% YoY แต่ปรับลดลงเพื่อความระมัดระวังในทุก scenario Bear case ยังให้ผลตอบแทนไม่ติดลบมากเพราะปันผล ~4.6%/ปี ช่วยพยุงผลตอบแทนรวม แม้ราคาแทบไม่ขยับ",
+    "hintNote": "FRE/share"
+  },
+  "analyst": {
+    "target": 147.78,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ราคาปลายเดือนทำจุดสูงสุดรอบปีที่ ~$162 ช่วง ธ.ค. 2568 (กรอบ 52 สัปดาห์ระหว่างวัน $95.80–$186.85) ก่อนร่วงต่อเนื่องจนแตะจุดต่ำสุดปลายเดือน ~$109 ช่วง มี.ค. 2569 (สัมพันธ์กับความกังวลวัฏจักรสินเชื่อเอกชน/private credit และแรงขายกลุ่ม alt-asset manager ทั้งกลุ่มหลัง credit event ของผู้เล่นรายอื่นในอุตสาหกรรม) จากนั้นฟื้นตัวขึ้นมาแถว $111–$143 (ปลาย ส.ค. 2569 ~$143) ก่อนอ่อนตัวลงมาปิดที่ {{px}} รวมลดลง ~16.7% จากจุดเริ่มต้นรอบปี (ปลาย ต.ค. 2568) แม้พื้นฐาน AUM และ FRE ยังโตต่อเนื่องเป็นตัวเลขสองหลัก สะท้อนว่าตลาดกังวลเรื่อง credit cycle risk มากกว่าจะกังวลเรื่อง fee-earning power ของธุรกิจ — ราคาที่ฟื้นตัวขึ้นมาใกล้ Fair Value ทำให้ MOS แคบลงจนพลิกติดลบเล็กน้อย",
+    "valuation": "Price/FRE ให้ค่าสูงสุด ($142) เพราะ FRE (management fee ล้วน) เป็นกำไรที่มั่นคง/คาดการณ์ได้สูงสุดของธุรกิจ — สมควรได้ multiple ที่สูงกว่า Price/DE ให้ค่าต่ำสุด ($98) เพราะ Realized Income รวม performance-fee ที่ผันผวนตามรอบ realization ของกองทุน จึงระมัดระวังมากกว่า มูลค่ากลาง {{fv}} ใกล้เคียงราคาปัจจุบัน ({{px}}) มาก — หลังฟื้นตัวจากจุดต่ำสุด ราคาขยับแซง Fair Value อนุรักษ์นิยมขึ้นไปเล็กน้อยแล้ว (~+13.5% จากจุดต่ำสุดปลายเดือน มี.ค. 2569) สะท้อนว่าหุ้นซื้อขายเต็มมูลค่าตามกรอบอนุรักษ์นิยมของเรา ไม่ใช่ deep-value อีกต่อไป แม้ยังต่ำกว่ากรอบบน $142 อยู่มาก",
+    "gauge": "ราคาปัจจุบัน {{px}} ขยับแซง Fair Value กลาง {{fv}} ขึ้นไปเล็กน้อยแล้ว (MOS {{mos}}) — ยังไม่ใช่จุดแพงเกินไป (ต่ำกว่ากรอบบน {{fvHigh}} พอสมควร) แต่ก็ไม่เหลือ margin of safety ในกรอบอนุรักษ์นิยมของเราแล้ว เป้าหมายนักวิเคราะห์เฉลี่ย {{analyst.target}} (Buy consensus, +19.4% upside จากราคาปัจจุบัน) ยังสูงกว่ามูลค่าเหมาะสมแบบอนุรักษ์นิยมของเรา สะท้อนมุมมองที่ optimistic กว่าเล็กน้อยต่อการฟื้นตัวของ multiple",
+    "mos": "MOS ติดลบ — ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสมแบบอนุรักษ์นิยมเล็กน้อยแล้ว ไม่ใช่จุดเข้าที่มี margin of safety",
+    "verdictHeadline": "ผู้นำ Private Credit ระดับโลก — ราคาฟื้นตัวจนใกล้เต็มมูลค่าอนุรักษ์นิยมแล้ว",
+    "verdictBody": "Ares Management เป็นผู้จัดการสินทรัพย์ทางเลือกสาย credit ใหญ่ที่สุดในโลก ด้วย AUM $644B+ ที่ยังโต 18% YoY และ Fee-Related Earnings ที่โต 26% YoY สะท้อนโมเดลธุรกิจ fee-based ที่มั่นคงและ scale advantage ที่ยากจะลอกเลียนแบบ แม้ราคาเคยร่วงหนักจากจุดสูงสุดรอบปีจากความกังวลตลาดต่อวัฏจักรสินเชื่อเอกชน (private credit cycle) แต่ล่าสุดฟื้นตัวขึ้นมาที่ {{px}} แล้ว — FRE และ AUM ยังคงโตต่อเนื่องเป็นตัวเลขสองหลักตลอดช่วงที่ผ่านมา ไม่มีปัญหาเชิงโครงสร้าง อย่างไรก็ตาม ราคาปัจจุบันได้แซง Fair Value อนุรักษ์นิยม {{fv}} ขึ้นไปแล้วเล็กน้อย (MOS {{mos}}) จึงไม่เหลือ margin of safety ในกรอบประเมินของเรา — เหมาะสำหรับผู้ที่ถือครองอยู่แล้วและเชื่อมั่นธีม private credit ระยะยาว มากกว่าจุดเข้าใหม่สำหรับนักลงทุนที่เน้น margin of safety",
+    "strategy": "ราคาปัจจุบันไม่เหลือ margin of safety ในกรอบอนุรักษ์นิยมของเรา — ผู้ที่ถือครองอยู่แล้วถือต่อได้ตามธีม private credit ระยะยาว ส่วนผู้ต้องการเข้าใหม่ควรรอจังหวะย่อกลับสู่โซน MOS 20% ({{mos20}}) ขึ้นไป — ติดตามผลประกอบการ Q3 2026 (2 พ.ย. 2569) เพื่อดูสัญญาณ credit quality และ FRE margin หลัง integration BlueCove/GCP",
+    "disclaimerSources": "ที่มา: StockAnalysis.com, Yahoo Finance, Ares Management Investor Relations (Q1 2026 8-K/10-Q), SEC EDGAR"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 3 วิธี — ใช้ FRE/DE แทน GAAP EPS",
+    "disclaimerAssump": " Price/FRE และ Price/DE เป้าหมาย, อัตราเติบโต (g) ของ FRE/AUM และความเสี่ยงวัฏจักรสินเชื่อเอกชนในอนาคต"
+  },
+  "catalysts": [
+    "<b>Private Credit Boom ต่อเนื่อง:</b> ธนาคารดั้งเดิมยังถอยจาก leverage lending ทำให้ private credit เติมช่องว่างต่อไป — Ares เป็นผู้เล่นใหญ่สุดในตลาดนี้ ได้ประโยชน์จาก scale โดยตรง",
+    "<b>AUM/Fee-paying AUM โตสองหลักต่อเนื่อง:</b> AUM +18% YoY แตะ $644B, fee-paying AUM +19% YoY — management fee ทะลุ $1B/ไตรมาสครั้งแรกใน Q1'26",
+    "<b>Aspida (ธุรกิจประกัน):</b> ขยายฐานทุนถาวร (permanent capital) ให้ Ares บริหาร ลดความผันผวนของ fee-paying AUM ต่อวัฏจักรระดมทุนกองทุนปกติ",
+    "<b>Dry powder สูง:</b> Available capital กว่า $158B รวม credit dry powder กว่า $100B พร้อมลงทุนเมื่อโอกาสเปิด — เป็นทั้ง catalyst การโตและ margin of safety เชิงกลยุทธ์",
+    "<b>Dividend เติบโตต่อเนื่อง:</b> ปันผลเพิ่มขึ้น ~20% YoY สะท้อนความมั่นใจของผู้บริหารต่อ recurring FRE ที่หนุนหลัง"
+  ],
+  "risks": [
+    "<b>Credit Cycle Risk:</b> หากเศรษฐกิจเข้าสู่ภาวะถดถอย private credit loss rate อาจเพิ่มขึ้นเร็ว กระทบทั้ง realized performance fee และความเชื่อมั่นนักลงทุนต่อ asset class นี้โดยรวม — เป็นสาเหตุหลักของการร่วงหนักจากจุดสูงสุดรอบปีที่ผ่านมา (แม้ฟื้นตัวขึ้นมาจากจุดต่ำสุดแล้วก็ตาม)",
+    "<b>Spread Compression:</b> การแข่งขันในตลาด private credit ที่รุนแรงขึ้น (ผู้เล่นใหม่เข้ามาเยอะ) อาจกดดัน spread/yield ที่ปล่อยกู้ได้ กระทบผลตอบแทนนักลงทุนในกองทุนและความน่าดึงดูดการระดมทุนรอบใหม่",
+    "<b>Regulation ของ Private Credit:</b> หน่วยงานกำกับดูแล (Fed, SEC) เริ่มจับตา private credit market มากขึ้นหลังขนาดตลาดโตเร็ว อาจมีกฎเกณฑ์ใหม่ที่เพิ่มต้นทุนดำเนินงานหรือจำกัดการเติบโต",
+    "<b>GAAP Earnings ผันผวนสูง:</b> Net income ผันผวนตาม unrealized mark-to-market ของพอร์ตลงทุน ทำให้ GAAP P/E (~56x) ไม่สะท้อนมูลค่าที่แท้จริง นักลงทุนที่ยึด headline EPS อาจตีความราคาผิด",
+    "<b>Integration Cost จากการซื้อกิจการ:</b> BlueCove และ GCP International ที่เพิ่งควบรวมกดดัน FRE margin ในระยะสั้นจากต้นทุนบุคลากร/รวมระบบ",
+    "<b>Fee-paying AUM พึ่งพา Fundraising ต่อเนื่อง:</b> หากภาวะตลาดทำให้ LP ชะลอการลงทุนกองทุนใหม่ อัตราการโตของ management fee จะชะลอตามไปด้วย"
+  ],
+  "extras": [],
+  "v2Display": {
+    "fv": 120,
+    "fvRange": [
+      98,
+      142
+    ],
+    "targets": [
+      115,
+      176.72,
+      255.19
+    ],
+    "cards": {
+      "aum": {
+        "v": "$644.3B",
+        "d": "+18% YoY · Fee-paying AUM $399.6B (+19% YoY)"
+      }
+    }
+  },
+  "_sig": "sha256:1abea362bf4808889327d5784d2245ca4398bfd2f1bbaece83dd2f700359636b"
+}

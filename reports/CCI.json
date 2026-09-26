@@ -1,0 +1,296 @@
+{
+  "v": 3,
+  "symbol": "CCI",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Crown Castle Inc.",
+    "exchange": "NYSE",
+    "sub": "Largest US cell tower REIT • ~40,000 towers (pure-play post-fiber sale) • 5G densification tailwind • Verizon/AT&T/T-Mobile tenants • ~5.5% dividend yield • Restructuring to reduce leverage",
+    "headerTags": [
+      "Real Estate / Cell Tower REIT",
+      "Pure-Play Tower"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "StockAnalysis.com",
+      "Globe Newswire"
+    ],
+    "themeLegacy": {
+      "accent": "#3D1C6E",
+      "accentDark": "#280F50",
+      "darkGrad": "linear-gradient(135deg,#1A0A35 0%,#2E1060 50%,#3D1C6E 100%)",
+      "glow": "rgba(61,28,110,0.35)",
+      "subColor": "#C9B8E8",
+      "headerMuted": "#a895c8",
+      "verdictText": "#E8DEFF",
+      "vcellLabel": "#b8a6d4"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T12:28:00+07:00",
+      "v2Hash": "be09fd904c45"
+    }
+  },
+  "market": {
+    "px": 67.84,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          90.22
+        ],
+        [
+          "พ.ย.25",
+          91.28
+        ],
+        [
+          "ธ.ค.25",
+          88.87
+        ],
+        [
+          "ม.ค.26",
+          86.81
+        ],
+        [
+          "ก.พ.26",
+          89.54
+        ],
+        [
+          "มี.ค.26",
+          81.31
+        ],
+        [
+          "เม.ย.26",
+          88.78
+        ],
+        [
+          "พ.ค.26",
+          91.5
+        ],
+        [
+          "มิ.ย.26",
+          75.73
+        ],
+        [
+          "ก.ค.26",
+          76.3
+        ],
+        [
+          "ส.ค.26",
+          76.14
+        ],
+        [
+          "ก.ย.26",
+          67.84
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 69.72,
+      "hi": 100.5
+    }
+  },
+  "fundamentals": {
+    "dps": 4.25,
+    "shares": 425455439,
+    "revenue": 4210000000,
+    "ebitda": 2690000000,
+    "netDebt": 17000000000,
+    "beta": 0.95,
+    "ffoBasis": "affo"
+  },
+  "legs": [
+    {
+      "method": "pffo",
+      "label": "P/AFFO Valuation",
+      "inputs": {
+        "multiple": 20,
+        "multipleSource": "author"
+      },
+      "override": {
+        "ffoPerShare": 4.59,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "American Tower (AMT) trade ที่ ~22x ให้ส่วนลด 10% เนื่องจาก CCI กำลัง transition + DISH headwind",
+      "family": "market"
+    },
+    {
+      "method": "ddm",
+      "label": "DDM / Gordon Growth Model",
+      "inputs": {
+        "g": 2.5,
+        "r": 8.5
+      },
+      "note": "tower escalator ~3%, offset DISH · required return สำหรับ leveraged REIT",
+      "family": "rg"
+    },
+    {
+      "method": "declared",
+      "label": "EV/EBITDA Sum-of-Parts",
+      "inputs": {
+        "value": 99.76,
+        "basis": "sotp"
+      },
+      "note": "Tower EBITDA 2026F $2.69B × 22x EV multiple = EV $59.2B − Net Debt post-repay ~$17.0B = Equity $42.2B ÷ ~423M shares (post buyback)",
+      "family": "asset"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "custom:0",
+      "custom:1",
+      "custom:2",
+      "revenue",
+      "custom:3",
+      "custom:4",
+      {
+        "key": "netDebt",
+        "tone": "neg"
+      },
+      {
+        "key": "yield",
+        "tone": "pos"
+      },
+      "custom:5",
+      "custom:6",
+      "beta"
+    ],
+    "custom": [
+      {
+        "label": "P/AFFO (2026F)",
+        "value": "~15.9x",
+        "note": "AFFO/sh $4.59F (midpoint) — ต่ำกว่า AMT ~22x",
+        "tone": "neu"
+      },
+      {
+        "label": "AFFO/sh 2026F",
+        "value": "$4.53–$4.65",
+        "note": "Updated หลังปิดขาย fiber/small cell พ.ค. 69",
+        "tone": "pos"
+      },
+      {
+        "label": "AFFO/sh 2025",
+        "value": "$4.36",
+        "note": "ปีก่อน (รวม fiber ทั้งปี)"
+      },
+      {
+        "label": "Site Rental Rev. 2026F",
+        "value": "$3.85B",
+        "note": "Tower-only หลังขาย fiber — ลด DISH/Sprint"
+      },
+      {
+        "label": "Adj. EBITDA 2026F",
+        "value": "$2.69B",
+        "note": "margin ~70% (tower business สูง)"
+      },
+      {
+        "label": "Dividend/sh (รายปี)",
+        "value": "{{dps}}",
+        "note": "Yield ~5.82% · ปรับโครงสร้างใหม่ Q1 2026",
+        "tone": "pos"
+      },
+      {
+        "label": "จำนวน Tower",
+        "value": "~40,000",
+        "note": "ครอบคลุมสหรัฐทั้งหมด (pure-play)"
+      }
+    ],
+    "notes": {
+      "mcap": "~425M หุ้นคงเหลือ (หลังซื้อคืน $1B)",
+      "revenue": "ลดลง 4.4% YoY (ตัด fiber ออก)",
+      "netDebt": "ลดจาก $24.6B หลังจ่ายหนี้ $7B จาก fiber sale",
+      "yield": "{{dps}}/sh/ปี ($1.0625/ไตรมาส) · ลด 32% YoY",
+      "beta": "ใกล้เคียง market · REIT defensive"
+    },
+    "hint": "Tower REIT — ใช้ AFFO/sh แทน EPS เป็น Earnings Metric หลัก"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "ffo",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 1,
+        "exitMultiple": 17,
+        "divCum": 12.75,
+        "desc": "DISH ลาก / 5G หดตัว"
+      },
+      {
+        "growth": 3,
+        "exitMultiple": 20,
+        "divCum": 13.5,
+        "desc": "Pure-play re-rate / 5G เต็มสูบ"
+      },
+      {
+        "growth": 5,
+        "exitMultiple": 22,
+        "divCum": 14.25,
+        "desc": "Multiple re-rate = AMT / dividend ขึ้น"
+      }
+    ],
+    "exitDp": 0,
+    "baseOverride": {
+      "value": 4.59,
+      "why": "ฐานฉากที่ผู้เขียนใช้ (ตัวตั้งที่ขาประเมินพิมพ์)"
+    },
+    "note": "การประมาณนี้ใช้ <b>AFFO/sh แทน EPS</b> เพราะ CCI เป็น REIT — Bear scenario ยังคงผลตอบแทนบวก ({{scn.bear.ret}}) เพราะปันผล 5.5% ช่วยรองรับ Base case คาด AFFO โต 3%/ปี (สอดคล้อง tower escalator clause ~3%) และ P/AFFO re-rate จาก 15.9x → 20x เมื่อ transition สำเร็จ Bull case มองว่า multiple กลับมาเทียบ AMT (~22x) + AFFO โต 5% จากการเพิ่ม tenancy บนทาวเวอร์เดิม (colocation) ความเสี่ยงหลักคือ DISH headwind ลาก + อัตราดอกเบี้ยสูง + หนี้ที่ยังคงสูงแม้ลดแล้ว <b>ปันผล 3 ปี:</b> อ้างอิง {{dps}}/sh/ปี (maintain dividend โดยไม่ตัด) — ยังไม่รวมกรณีขึ้นปันผลที่อาจเกิดหลัง 2026",
+    "hintNote": "~{{dps}}/ปี"
+  },
+  "analyst": {
+    "target": 94.82,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "CCI ร่วงจากราว <b>$91 (พ.ย. 68)</b> สู่ระดับ {{px}} ณ {{priceDate}} — ซึ่งอยู่ใกล้ 52-week low ที่ $69.72 (กรอบ 52 สัปดาห์ $69.72–$100.50) แรงกดดันหลักมาจาก: (1) ความไม่แน่นอนการขายธุรกิจ fiber/small cell ให้ Zayo + EQT มูลค่า $8.5B (2) DISH ยกเลิกสัญญาเช่าทาวเวอร์ทำให้รายได้หาย ~$220M ใน 2026 (3) อัตราดอกเบี้ยสูงกดมูลค่า REIT ที่มีหนี้สูง — Net Debt เคยสูงถึง $24.6B หลังปิดการขาย fiber บน <b>1 พ.ค. 69</b> บริษัทใช้เงินจ่ายหนี้ $7B ลดภาระดอกเบี้ยลงอย่างมีนัยสำคัญ ราคาอยู่ใกล้ 52-week low สะท้อนความกังวลตลาดในช่วง transition สู่ pure-play tower",
+    "valuation": "<b>P/AFFO ($91.80):</b> วิธีนี้เหมาะกับ tower REIT มากที่สุด — ใช้ P/AFFO 20x (discount 10% จาก AMT) สะท้อน DISH headwind + leveraged balance sheet <b>DDM ({{fvLow}}):</b> ผลลัพธ์ต่ำสุดเพราะ required return สูง (8.5%) บวกกับเงินปันผลที่ลดลง 32% YoY ในปีนี้ — ถ้า dividend กลับมาเติบโต 4-5% FV จะสูงกว่านี้ <b>EV/EBITDA ({{fvHigh}}):</b> แบบ sum-of-parts มองว่าหลังลดหนี้ equity value สูงกว่าราคาตลาดชัดเจน <b>หมายเหตุ cross-source:</b> ราคา ณ {{priceDate}} ตรงกันระหว่าง Yahoo Finance และ StockAnalysis.com (ต่าง 0%) ✓ AFFO 2026F midpoint $4.59 (Adj. EBITDA $2.69B · Net Debt $17.1B) ยืนยันจาก Globe Newswire Q2 2026 earnings release (22 ก.ค. 2569) ✓ <b>ข้อจำกัด:</b> P/AFFO 20x และ EV/EBITDA 22x เป็นตัวคูณเชิง peer (AMT) ที่ยังไม่มีมัธยฐานที่วัดได้ในระบบ (มัธยฐาน P/E ย้อนหลัง 57.6x ใช้กับ REIT ไม่ได้) จึงคงสมมติฐานเดิมและถือเป็นประมาณการที่ยังไม่ผ่านการวัดเทียบ",
+    "gauge": "ราคาปัจจุบัน {{px}} อยู่ใต้ Fair Value {{fv}} (MOS {{mos}}) — ยังไม่ถึงโซน MOS 20% ที่ {{mos20}} แต่ต่ำกว่า FV เป้าเฉลี่ยนักวิเคราะห์ 20 คน อยู่ที่ <b>{{analyst.target}}</b> (Buy consensus) เป็นเพียงข้อมูลเทียบ ไม่ได้เป็นขาของ FV Upside จากราคาปัจจุบันสู่เป้าเฉลี่ย analyst = <b>+29.8%</b> (ยังไม่รวมปันผล ~5.8%) หากตลาดปรับ multiple กลับใกล้ AMT เมื่อ transition สำเร็จ ราคาเป้าหมายก็สูงขึ้นได้ถึง $100+",
+    "mos": "โซนต่ำกว่า Fair Value — น่าสนใจแต่ยังมีความเสี่ยง Transition",
+    "verdictHeadline": "CCI: Pure-Play Tower ที่กำลัง Re-Rate — ซื้อทยอยสะสม ใต้ {{fv}}",
+    "verdictBody": "Crown Castle กำลังผ่าน <b>transformation ที่เจ็บปวดแต่จำเป็น</b> — ขาย fiber/small cell ที่ดูดเงินลงทุนออก ($8.5B) กลับมาโฟกัส tower business ที่มี margin สูง predictable และ asset-light การลดหนี้ $7B ลด risk profile อย่างชัดเจน ขณะที่ 5G densification cycle ยังเป็น secular tailwind ระยะยาว ราคาปัจจุบัน {{px}} สะท้อน <b>ส่วนลด transition risk</b> ที่มากเกินควรเทียบกับ peer อย่าง AMT — P/AFFO 15.9x vs AMT 22x ถ้า CCI แสดงให้เห็นว่าธุรกิจ tower-only ทำได้ดีใน 2-3 ไตรมาสหน้า multiple re-rate กลับ 20x จะให้ upside ชัดเจน ความเสี่ยงหลักคือ DISH headwind ยาวนานกว่าคาด + อัตราดอกเบี้ยที่ยังสูง",
+    "strategy": "<b>ทยอยสะสมใต้ {{fv}}</b> (Fair Value) — เริ่ม position ได้เลย ราคาปัจจุบัน {{px}} ให้ MOS {{mos}} ถ้าราคาลงทดสอบโซน MOS 20% ที่ {{mos20}} เพิ่มสัดส่วน · หยุดซื้อถ้าราคาเกิน {{fv}} รอ pullback target ออก 3 ปี $100-110 (AFFO re-rate + dividend) · ถือรับปันผล 5.8% ระหว่างรอ <b>ไม่แนะนำสำหรับ</b>: ผู้ที่ต้องการ growth สูง หรือไม่รับความเสี่ยง leverage/transition",
+    "disclaimerSources": "แหล่งข้อมูล: Yahoo Finance, StockAnalysis.com, Globe Newswire (Crown Castle Press Release 1 พ.ค. 69), StockTitan (Q1 2026 Earnings)"
+  },
+  "text": {
+    "valHint": "3 วิธี Tower REIT: P/AFFO · DDM · EV/EBITDA",
+    "metricsNote": "<b>หมายเหตุ P/E:</b> CCI เป็น REIT — P/E (TTM ~37x อิง Net Income GAAP) <b>ไม่ใช่ metric หลัก</b> เพราะ net income บิดเบือนด้วยค่าเสื่อมราคา (depreciation) ขนาดใหญ่จากโครงสร้างพื้นฐานทาวเวอร์ metric ที่นักวิเคราะห์ใช้ประเมิน Tower REIT คือ <b>AFFO (Adjusted Funds From Operations)</b> ซึ่งบวกกลับ depreciation/amortization และปรับปัจจัยที่ไม่เป็นเงินสด หุ้นคู่แข่ง American Tower (AMT) ซื้อขายที่ P/AFFO ~22x ขณะที่ CCI ที่ ~15.9x สะท้อนส่วนลด restructuring ที่ตลาดยังตั้ง อ้างอิงงบ Q2 2026 (ประกาศ 22 ก.ค. 2569) และ Guidance ปี 2026F หลังปิดขาย fiber 1 พ.ค. 69 (AFFO/sh midpoint $4.59, Adj. EBITDA $2.69B, Net Debt $17.1B ณ 30 มิ.ย. 69)",
+    "chartHint": "ต.ค. 2568 – ก.ย. 2569",
+    "disclaimerAssump": " P/AFFO เป้าหมาย, อัตราเติบโต AFFO (g), ผลตอบแทนที่ต้องการ (r) และ EBITDA ในอนาคต"
+  },
+  "catalysts": [
+    "<b>Pure-Play Tower Re-Rating:</b> หลังขาย fiber/small cell สำเร็จ CCI กลายเป็น pure-play tower ที่ตลาดให้ premium multiple — AMT trade ที่ P/AFFO ~22x เทียบ CCI ที่ ~15.9x ช่องว่าง valuation ยังกว้าง",
+    "<b>5G Densification Cycle:</b> Verizon, AT&T, T-Mobile ยังลงทุน capex 5G อย่างต่อเนื่อง — การ deploy มากขึ้นต้องการ tower colocation ที่ margin สูงมาก (incremental tenant ต้นทุนต่ำ)",
+    "<b>ลดหนี้ $7B:</b> ใช้เงินจาก fiber sale ลดดอกเบี้ยจ่ายลงประมาณ $350-400M/ปี — เพิ่ม AFFO/sh อย่างมีนัยสำคัญและลดความเสี่ยง balance sheet",
+    "<b>Contract Escalators:</b> สัญญา 90-95% ของรายได้ tower มี built-in escalator ~3%/ปี — รายได้มีความแน่นอนสูง predictable ไม่ขึ้นกับ capex ผู้เช่า",
+    "<b>Buyback $1B:</b> บริษัทดำเนินการซื้อหุ้นคืน $1B แล้วหลังปิดขาย fiber (ตาม Q2 2026 release) เป็น accretive AFFO/sh",
+    "<b>Dividend Yield 5.5%:</b> Yield ที่น่าสนใจสำหรับ income investor — แม้ลดปันผล 32% YoY แต่ยังสูงกว่า 10Y Treasury มากพอ"
+  ],
+  "risks": [
+    "<b>DISH/Sprint Headwinds:</b> รายได้ลด $240M ใน 2026 จาก DISH ยกเลิกสัญญา — ยังกด topline และ AFFO แม้จะถูก bake in แล้วในราคา แต่ recovery ไม่แน่นอน",
+    "<b>Leverage ยังสูง:</b> แม้ลดหนี้ $7B แล้ว Net Debt ยังอยู่ที่ ~$17B — Net Debt/EBITDA ~6.3x สูงกว่า AMT ~5x ความเสี่ยง refinancing ถ้า rate ยังสูง",
+    "<b>อัตราดอกเบี้ย:</b> REIT ที่มีหนี้สูงอ่อนไหวต่อ rate สูง — ถ้า Fed ไม่ลด rate ตามคาด cost of debt สูงกดมูลค่า DDM และกดราคา REIT ทั้งเซกเตอร์",
+    "<b>Carrier Consolidation:</b> การควบรวมหรือ spectrum sharing ของ Verizon/AT&T/T-Mobile อาจลดความต้องการ tower ในบางพื้นที่ — concentration risk จาก 3 ลูกค้าหลัก",
+    "<b>Post-Transition ยังไม่ชัด:</b> CCI ยังอยู่ใน transition — นักลงทุนบางส่วนรอดูผลการดำเนินงาน tower-only 2-3 ไตรมาสก่อนเชื่อมั่น อาจกดราคาระยะสั้น",
+    "<b>Dividend Cut Risk:</b> ปันผลลด 32% YoY แล้ว — ถ้า AFFO แย่กว่า guidance อาจลดปันผลอีก ทำให้ income investor ขาย"
+  ],
+  "extras": [],
+  "v2Display": {
+    "fv": 88,
+    "targets": [
+      80.41,
+      100.4,
+      116.82
+    ]
+  },
+  "_sig": "sha256:107157f2e7962db1bc999e4d2b85fcf901455b05b66464fb9547b0c2e1d20c19"
+}

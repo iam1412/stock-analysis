@@ -1,0 +1,258 @@
+{
+  "v": 3,
+  "symbol": "PNFP",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Pinnacle Financial Partners",
+    "exchange": "NYSE",
+    "sub": "Commercial Banking • Private Wealth Management • หลังควบรวม Synovus (ม.ค. 2569) — ธนาคารภูมิภาคสินทรัพย์ $129B ใหญ่อันดับ 28 ของสหรัฐฯ ครอบคลุม TN·GA·AL·FL·SC·NC·VA",
+    "headerTags": [
+      "Regional Banks",
+      "Southeast US Commercial & Private Banking"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "StockAnalysis.com",
+      "SEC EDGAR (8-K Q2",
+      "2026",
+      "10-Q)",
+      "Pinnacle Financial Partners IR",
+      "Synovus IR"
+    ],
+    "priceNote": "Yahoo Finance ตรงกับ StockAnalysis.com Δ0.1%",
+    "migratedFrom": {
+      "updated": "2026-09-21T23:32:21+07:00",
+      "v2Hash": "8a86ebd67f02"
+    }
+  },
+  "market": {
+    "px": 94.97,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          85.21
+        ],
+        [
+          "พ.ย.25",
+          91.68
+        ],
+        [
+          "ธ.ค.25",
+          95.41
+        ],
+        [
+          "ม.ค.26",
+          95.09
+        ],
+        [
+          "ก.พ.26",
+          90.76
+        ],
+        [
+          "มี.ค.26",
+          86.14
+        ],
+        [
+          "เม.ย.26",
+          98.94
+        ],
+        [
+          "พ.ค.26",
+          97.74
+        ],
+        [
+          "มิ.ย.26",
+          100.88
+        ],
+        [
+          "ก.ค.26",
+          105.23
+        ],
+        [
+          "ส.ค.26",
+          99.97
+        ],
+        [
+          "ก.ย.26",
+          94.97
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 81.08,
+      "hi": 110.33
+    }
+  },
+  "fundamentals": {
+    "eps": 9.78,
+    "dps": 2,
+    "bvps": 92.96,
+    "shares": 151500000,
+    "netIncome": 608000000,
+    "roe": 9.4,
+    "revenue": 1885000000,
+    "netMargin": 33.1,
+    "beta": 0.81,
+    "bank": {
+      "nim": 3.44
+    },
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation",
+      "inputs": {
+        "multiple": 12.5,
+        "multipleSource": "author"
+      },
+      "override": {
+        "eps": 6.83,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "StockAnalysis — ตรงกับตาราง [3]: กำไรสุทธิ TTM $784M ÷ หุ้นถัวเฉลี่ยถ่วงน้ำหนักปรับลด TTM 115M, Δ0% · FY2021–FY2025 ก่อนควบรวม Synovus — วัดจากราคาเฉลี่ยรายงวด ÷ EPS diluted ของงวดนั้น · ช่วง 9.3x–15.9x, 5 จุดครบ",
+      "family": "market"
+    },
+    {
+      "method": "declared",
+      "label": "Justified P/BV (บนฐาน ROTE/TBVPS — ธนาคาร)",
+      "inputs": {
+        "value": 105.03,
+        "basis": "other"
+      },
+      "note": "P/TBV เหมาะสม = (ROTE 15.0% − g 5.0%)/(r 11.0% − g 5.0%) ≈ 1.67x × BVPS $63.02 (TBVPS, Q2/2026) — r สร้างจาก CAPM: rf 4.65% (UST10Y, 7 ส.ค. 2569, CNBC/Treasury) + β 0.90 (ปรับเพิ่มจาก 0.81 จริงเพื่อสะท้อนความเสี่ยง integration) × ERP 5.5% = 9.6% บวก premium ดุลพินิจเฉพาะตัว 1.4pp (integration/CRE concentration) = 11.0% — เทียบกับ implied-rate check ด้านล่าง (ตลาดฝัง ~11.5% สูงกว่า r ที่ใช้ราว 0.5pp)",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      {
+        "key": "nim",
+        "tone": "neu"
+      },
+      "pbv",
+      "netIncome",
+      "custom:0",
+      "custom:1",
+      "roe",
+      "revenue",
+      "netMargin",
+      "yield",
+      "beta"
+    ],
+    "custom": [
+      {
+        "label": "EPS (TTM)",
+        "value": "~$7.05",
+        "note": "เฉลี่ย 2 แหล่ง (Yahoo $7.26 / StockAnalysis $6.83, Δ6.3% จากช่วงคร่อมดีล — ตาราง StockAnalysis $6.83 = กำไรสุทธิ TTM ÷ หุ้นถัวเฉลี่ย ตรงกัน) — ใช้ {{eps}} normalized สำหรับ valuation"
+      },
+      {
+        "label": "TBVPS",
+        "value": "~$63.02",
+        "note": "BVPS มาตรฐาน {{bvps}} · dilution ~9% ที่ปิดดีล, earnback 2.6 ปี (ตามแผนดีล)"
+      }
+    ],
+    "notes": {
+      "mcap": "151.5M หุ้น diluted (Q2/2026) — เพิ่มจาก ~77M ก่อนควบรวม (ออกหุ้นใหม่ให้ผู้ถือ Synovus 0.5237:1)",
+      "pe": "TTM คร่อมช่วงควบรวม — P/E normalized run-rate ~{{pe}}x (ราคา/EPS adj. annualized {{eps}})",
+      "nim": "คำแนะนำทั้งปี 3.44–3.47% (กดดันจาก SOFR ลดลง + wholesale funding)",
+      "pbv": "TBVPS $63.02 → P/TBV ~1.54x (BVPS มาตรฐาน {{bvps}})",
+      "netIncome": "YoY ไม่มีความหมาย — TTM คร่อมช่วงควบรวม (สินทรัพย์รวม $57.7B→$129.1B)",
+      "roe": "ROTCE adj. (Q2/2026 ann., ตัดค่าใช้จ่ายดีลออก) 17.7% · reported 14.9%",
+      "netMargin": "NetM% TTM (บริบท — คร่อมช่วงควบรวมเช่นกัน)",
+      "yield": "ไม่เปลี่ยนจากก่อนควบรวม (payout ~20% ของ EPS adj.)",
+      "beta": "ปรับเป็น 0.90 ใน CoE model เพื่อสะท้อนความเสี่ยง integration"
+    },
+    "hint": "ธนาคารภูมิภาค — หลังปิดดีลควบรวม Synovus (1–2 ม.ค. 2569)"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": "cagr",
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 2,
+        "exitMultiple": 9,
+        "divCum": 6,
+        "desc": "Integration สะดุด synergy ช้ากว่าแผน + CRE เสื่อมคุณภาพ ต้องตั้งสำรองเพิ่ม ตลาด de-rate"
+      },
+      {
+        "growth": 8,
+        "exitMultiple": 11,
+        "divCum": 6.3,
+        "desc": "Synergy เข้าตามแผน (50%→75%→100% ปี 2028) NIM ทรงตัว 3.44–3.47% ROTCE ไต่สู่เป้า 18% ปี 2027"
+      },
+      {
+        "growth": 13,
+        "exitMultiple": 13,
+        "divCum": 6.5,
+        "desc": "Integration ราบรื่นกว่าคาด synergy เกินเป้า $250M ROTCE ทะลุ 18% ก่อนกำหนด ตลาดให้พรีเมียมกลับใกล้ระดับก่อนควบรวม"
+      }
+    ],
+    "exitDp": 1,
+    "note": "EPS ฐานใช้ normalized run-rate {{eps}} (H1/2026 adjusted diluted EPS ×2) ไม่ใช่ EPS TTM GAAP $6.83–$7.26 (ตามแหล่ง) ที่คร่อมช่วงควบรวมและไม่สะท้อนธุรกิจหลังรวมกิจการเต็มไตรมาส — ทุก scenario สมมติไม่มีการซื้อกิจการเพิ่มเติมและ integration ดำเนินต่อตามแผนที่ประกาศ (แล้วเสร็จต้นปี 2570)",
+    "hintNote": "(normalized run-rate) ~{{eps}}"
+  },
+  "analyst": {
+    "target": 120.1,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "หุ้นแตะจุดต่ำสุดของกราฟ $85.21 ในเดือน ต.ค.68 ระหว่างตลาดยังไม่มั่นใจในดีล Synovus ที่เพิ่งประกาศ (ก.ค.68) ก่อนฟื้นตัวหลังปิดดีลจริง (1–2 ม.ค. 2569) และผลประกอบการ Q1–Q2/2026 ที่แสดงความคืบหน้าของ integration ดันราคาขึ้นแตะจุดสูงสุด $105.23 ในเดือน ก.ค.69 ก่อนย่อลงมาอยู่ที่ {{px}} ในเดือน ก.ย.69 — ผลตอบแทนรวมช่วงกราฟ (ต.ค.68→ก.ย.69) +13.5%",
+    "valuation": "สองวิธีนี้ให้ค่าห่างกันพอสมควรแล้ว ({{fvLow}}–{{fvHigh}}) เพราะยึดสมอคนละแบบ: วิธี 1 ใช้ P/E มัธยฐานย้อนหลัง 5 ปีของหุ้นเอง (สมอที่วัดจริง ไม่ใช่ตัวคูณตลาดปัจจุบัน) บนฐาน EPS GAAP diluted TTM ส่วนวิธี 2 ใช้ CAPM+Gordon Growth บนฐาน ROTE/TBVPS adjusted — ตรวจสอบความสมเหตุผลของวิธี 2 (gate ชั้น 0.3): อัตราคิดลดที่ตลาดฝังอยู่จริง r* = g + (ROTE−g)/(P/TBV ปัจจุบัน) = 5% + (15−5)/1.535 = 11.5% สูงกว่า r ที่ใช้ (11.0%) ราว 0.5pp (r ประกอบจาก CAPM 9.6% + premium ดุลพินิจ 1.4pp ตามที่ระบุไว้ในวิธี 2 ไม่ได้ปรับย้อนหลังให้ตรงราคานี้) ⇒ ตลาดกำลังตีราคาหุ้นที่ CoE ราว 11.5% หรือเผื่อความเสี่ยง integration มากกว่าที่วิธี 2 ใส่ไว้ — ตรงกับ sensitivity ด้านล่างที่ r 11.5% ให้วิธี 2 ≈ $96.9 ใกล้ราคาตลาด · sensitivity: r±0.5pp → FV วิธี 2 = $96.9 (r 11.5%) ถึง $114.6 (r 10.5%) · ส่วนต่างระหว่างสองวิธีจึงมาจากทั้งฐาน EPS (GAAP TTM vs adjusted normalized) และตัวคูณ (มัธยฐานย้อนหลัง vs CAPM/Gordon) — ไม่ใช่วิธีเดียวรันสองรอบ",
+    "gauge": "ราคาปัจจุบัน {{px}} อยู่ใกล้มูลค่าเหมาะสมที่ประเมินแบบระมัดระวัง ({{fv}}) (สูงกว่าเล็กน้อย) แต่ยังต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ {{analyst.target}} (Buy, n=22) อยู่มาก — ส่วนต่างนี้สะท้อนว่า consensus Street มองการทำ synergy เต็มรูปแบบโดยไม่มีอุปสรรค ขณะที่โมเดลนี้ยึด P/E มัธยฐานย้อนหลัง 5 ปีของหุ้นเอง (ไม่ใช่ตัวคูณตลาดปัจจุบัน) และปรับความเสี่ยง integration/CRE เข้าไปในอัตราคิดลดของอีกวิธีแล้ว",
+    "mos": "<b>MOS ติดลบเล็กน้อย — ราคาใกล้เคียงมูลค่าเหมาะสม (สูงกว่าเล็กน้อย) ยังไม่มีส่วนเผื่อความปลอดภัย</b><br>ราคาปัจจุบันเดินมาแตะมูลค่าที่ประเมินไว้ ท่ามกลางความเสี่ยง integration ที่ยังไม่คลี่คลาย นักลงทุนใหม่ควรรอราคาย่อลงสู่โซน MOS 20% ({{mos20}}) หรือรอสัญญาณชัดเจนกว่านี้ (ROTCE ยืนเหนือ 17% ต่อเนื่อง 2–3 ไตรมาส / synergy เข้าตามแผน) ก่อนเพิ่มน้ำหนักลงทุน",
+    "verdictHeadline": "ราคาใกล้มูลค่าเหมาะสมแล้ว (ยังไม่มี MOS) — รอย่อตัว/รอผล Integration ก่อนเพิ่มน้ำหนัก",
+    "verdictBody": "Pinnacle Financial Partners หลังปิดดีลควบรวม Synovus (1–2 ม.ค. 2569) กลายเป็นธนาคารภูมิภาคสินทรัพย์ $129B ที่มีศักยภาพเติบโตสูงในพื้นที่ Sunbelt แต่ยังอยู่ระหว่างช่วงเปลี่ยนผ่าน integration ที่มีความเสี่ยงด้าน execution สูง งบล่าสุด (Q2/2026) ยังมีค่าใช้จ่ายดีลค้างอยู่และ TBVPS ยังไม่ earn back เต็มที่ เมื่อประเมินมูลค่าด้วยสมอที่วัดจริง (P/E มัธยฐานย้อนหลัง 5 ปีของหุ้นเอง + CAPM/Gordon บน ROTE-TBVPS) ราคาปัจจุบัน ({{px}}) สูงกว่ามูลค่าเหมาะสม ({{fv}}) เล็กน้อย (MOS {{mos}}) แม้เป้าเฉลี่ยนักวิเคราะห์ Street จะสูงกว่านี้มาก ({{analyst.target}}) เพราะ Street มองว่า synergy จะเข้าเต็มรูปแบบโดยไม่มีอุปสรรค",
+    "strategy": "นักลงทุนที่ถืออยู่แล้วสามารถถือต่อได้เพื่อรับปันผล (~2.1%) และรอ multiple re-rate เมื่อ integration พิสูจน์ตัว — นักลงทุนใหม่ควรรอราคาย่อลงสู่โซน MOS 20% ({{mos20}}) หรือรอสัญญาณ ROTCE ยืนเหนือ 17% ต่อเนื่องก่อนเข้าซื้อ เพื่อให้มี margin of safety รองรับความเสี่ยง integration/CRE ที่ยังไม่คลี่คลาย",
+    "disclaimerSources": "<b>Full disclosure — ควบรวม Synovus:</b> ดีลปิดจริง 1 ม.ค. 2569 (โฮลดิ้ง) / 2 ม.ค. 2569 (ธนาคาร) เป็น merger of equals เชิงโครงสร้าง แต่ Pinnacle เป็น accounting acquirer (business combination/purchase accounting) หุ้นเดิมเทรดบน NASDAQ ย้ายมาเทรดบน NYSE ในชื่อ/ticker เดิม PNFP ตั้งแต่ 2 ม.ค. 2569 · งบ Q1–Q2/2026 รวมกิจการ Synovus เต็มไตรมาสแล้วทั้งคู่ แต่ TTM (Q3/2025–Q2/2026) ยังคร่อมช่วงควบรวม (2 ไตรมาสแรกเป็น Pinnacle เดี่ยว อีก 2 ไตรมาสเป็นบริษัทรวมกัน) จึงไม่ใช้ TTM คำนวณอัตราเติบโตหรือเป็นฐาน valuation ในรายงานนี้ — ใช้ EPS adjusted ของ H1/2026 annualized ($9.78) แทน ซึ่งเป็น 2 ไตรมาสหลังรวมกิจการเต็มรูปแบบทั้งคู่ · ค่าใช้จ่ายดีล/merger-related expense รวมแล้ว $275.4M (Q1/2026) + $51M (Q2/2026) จากเป้ารวม ~$675M pretax · TBVPS ถูกเจือจาง ~9% ที่ปิดดีล คาด earn back ใน 2.6 ปี • ราคา ณ {{priceDate}} จาก Yahoo Finance และ StockAnalysis.com (ตรงกัน Δ0.1%) • ข้อมูลงบ/ผลประกอบการ Q1–Q2/2026 และเงื่อนไขดีลจาก SEC EDGAR (8-K/10-Q ของ Pinnacle Financial Partners) และข่าวประชาสัมพันธ์ทางการของ Pinnacle Financial Partners และ Synovus Financial Corp"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 2 วิธี — กฎธนาคาร: ห้าม DCF บน FCF / ห้ามคำนวณ EV"
+  },
+  "catalysts": [
+    "<b>Synergy realization:</b> เป้า cost synergy $250M (~9% ของฐานค่าใช้จ่ายรวม) ทยอยรับรู้ 50% ปี 2026 → 75% ปี 2027 → เต็ม 100% ปี 2028",
+    "<b>ขนาด/ความสามารถแข่งขัน:</b> รวมกันเป็นธนาคารสินทรัพย์ $129B ใหญ่อันดับ 28 ของสหรัฐฯ แข่งขันกับธนาคารใหญ่ในตลาด middle-market/private banking ได้ดีขึ้น",
+    "<b>Footprint Sunbelt:</b> ครอบคลุม 7 รัฐภาคตะวันออกเฉียงใต้ (TN·GA·AL·FL·SC·NC·VA) ซึ่งเป็นพื้นที่ประชากร/ธุรกิจโตเร็วกว่าค่าเฉลี่ยประเทศ",
+    "<b>ROTCE trending สู่เป้า 18%:</b> ROTCE adj. Q2/2026 อยู่ที่ 17.7% แล้ว ใกล้เป้าบริหาร 18% ที่วางไว้สำหรับปี 2027",
+    "<b>Re-rating potential:</b> ตลาดยังให้ P/E normalized เพียง ~{{pe}}x ต่ำกว่ามัธยฐาน P/E ย้อนหลัง 5 ปีของหุ้นเอง (12.5x, ก่อนควบรวม) — มี upside จาก multiple expansion หาก integration พิสูจน์ตัวได้"
+  ],
+  "risks": [
+    "<b>Integration risk:</b> ลดพนักงาน 5–6% + รวมระบบ IT/แบรนด์คู่ขนาน (Pinnacle+Synovus) จนถึงต้นปี 2570 — ความเสี่ยง execution สูงในช่วงเปลี่ยนผ่าน 12–18 เดือนข้างหน้า",
+    "<b>CRE concentration:</b> สินเชื่อ Commercial Real Estate $23.6B (ส่วนใหญ่รับมาจาก Synovus) ยังเป็นตัวฉุดการเติบโตสินเชื่อรวม — payoff สูงกว่า origination ใหม่ในสภาวะดอกเบี้ยปัจจุบัน",
+    "<b>Tangible book value dilution:</b> ดีลทำให้ TBVPS ลดลง ~9% ทันทีที่ปิดดีล และ CET1 ลดลง ~131bps — ต้องใช้เวลา ~2.6 ปีจึง earn back ตามแผนที่บริษัทประกาศไว้ (ก.ค. 2568)",
+    "<b>ค่าใช้จ่ายดีลยังไม่จบ:</b> merger-related expense $275.4M (Q1/2026) + $51M (Q2/2026) แล้ว ยังมีค่าใช้จ่ายทยอยเข้าอีกจนครบ ~$675M pretax ตามแผน + ~$45M ค่าใช้จ่าย compliance สถานะ \"large financial institution\" ใหม่",
+    "<b>NIM pressure:</b> NIM 3.44% (Q2/2026) ถูกกดดันจาก SOFR ที่ลดลงและพึ่งพา wholesale funding มากขึ้นในช่วงฤดูกาลเงินฝากตึงตัว",
+    "<b>สัญญาณคุณภาพสินเชื่อ:</b> มีรายงาน NPL ที่มีแนวโน้มสูงขึ้นหลังรวมพอร์ต Synovus เข้ามา ซึ่งนักวิเคราะห์บางส่วนมองเป็นสัญญาณเชิงลบต่อคุณภาพสินทรัพย์"
+  ],
+  "extras": [],
+  "v2Display": {
+    "fv": 95.21,
+    "targets": [
+      93.42,
+      null,
+      183.43
+    ],
+    "cards": {
+      "revenue": {
+        "v": "$1.885B",
+        "d": "คร่อมช่วงควบรวม (2Q legacy Pinnacle เดี่ยว + 2Q รวม Synovus) — บริบทเท่านั้น"
+      }
+    }
+  },
+  "_sig": "sha256:04d99c524e52f8f67fbbefb8370dacac449a5d790bc23109c55cc088bac8b467"
+}

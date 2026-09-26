@@ -1,0 +1,299 @@
+{
+  "v": 3,
+  "symbol": "APO",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Apollo Global Management Inc.",
+    "exchange": "NYSE",
+    "sub": "Alternative asset manager — Credit (corporate direct lending, ABS, structured) $450B+ • Private Equity • Real Assets (infra/real estate) • Retirement Services ผ่าน Athene (ขายประกัน annuity แล้วนำ premium มาลงทุนใน Apollo credit) • AUM รวม $1.03 ล้านล้าน",
+    "headerTags": [
+      "Alternative Asset Management",
+      "Credit · PE · Retirement Services (Athene)"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis.com",
+      "StockTitan",
+      "SEC EDGAR 8-K",
+      "Apollo IR"
+    ],
+    "themeLegacy": {
+      "accent": "#aa8a33",
+      "accentDark": "#7e6526",
+      "darkGrad": "linear-gradient(135deg,#0a0a1a 0%,#1a1a2e 60%,#2d2d4e 100%)",
+      "glow": "rgba(201,168,76,0.35)",
+      "subColor": "#e8c96a",
+      "headerMuted": "rgba(255,255,255,0.65)",
+      "verdictText": "#C9A84C",
+      "vcellLabel": "#caac66"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T10:24:06+07:00",
+      "v2Hash": "47aea64c1ece"
+    }
+  },
+  "market": {
+    "px": 121.69,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          124.31
+        ],
+        [
+          "พ.ย.25",
+          131.85
+        ],
+        [
+          "ธ.ค.25",
+          144.76
+        ],
+        [
+          "ม.ค.26",
+          134.54
+        ],
+        [
+          "ก.พ.26",
+          104.6
+        ],
+        [
+          "มี.ค.26",
+          111.42
+        ],
+        [
+          "เม.ย.26",
+          128.72
+        ],
+        [
+          "พ.ค.26",
+          128.71
+        ],
+        [
+          "มิ.ย.26",
+          118.31
+        ],
+        [
+          "ก.ค.26",
+          125.59
+        ],
+        [
+          "ส.ค.26",
+          136.58
+        ],
+        [
+          "ก.ย.26",
+          121.69
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 99.56,
+      "hi": 153.29
+    }
+  },
+  "fundamentals": {
+    "dps": 2.25,
+    "shares": 590543159,
+    "aum": 1030000000000,
+    "beta": 1.6,
+    "eps": 9.61,
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "Price/DE (Total Distributable Earnings)",
+      "inputs": {
+        "multiple": 15,
+        "multipleSource": "author"
+      },
+      "note": "FRE+SRE, LTM",
+      "family": "market"
+    },
+    {
+      "method": "declared",
+      "label": "SOTP: FRE + SRE แยก multiple",
+      "inputs": {
+        "value": 164.61,
+        "basis": "sotp"
+      },
+      "note": "FRE/share $4.34 × 27x (fee income คุณภาพสูง ไม่มี credit/insurance risk เหมือน peer BX ที่ 25-28x) + SRE/share $5.27 × 9x (spread earnings มี leverage + liability risk ต่ำกว่า multiple มาก)",
+      "family": "asset"
+    },
+    {
+      "method": "declared",
+      "label": "Price/ANI (Adjusted Net Income)",
+      "inputs": {
+        "value": 136,
+        "basis": "other"
+      },
+      "note": "ANI/share (LTM) $8.50 × P/ANI เป้าหมาย ~16x — ANI รวม principal investment income ที่ผันผวนกว่า DE จึงใช้ multiple ต่ำกว่า Price/DE เล็กน้อย",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "custom:0",
+      {
+        "key": "aum",
+        "tone": "pos"
+      },
+      "custom:1",
+      "custom:2",
+      "custom:3",
+      "custom:4",
+      "custom:5",
+      "custom:6",
+      "custom:7",
+      "yield",
+      "beta"
+    ],
+    "custom": [
+      {
+        "label": "Price / DE (TTM)",
+        "value": "~13.1x",
+        "note": "DE/Share {{eps}} (FRE+SRE, LTM) — ตัววัดหลัก ไม่ใช่ GAAP P/E",
+        "tone": "neu"
+      },
+      {
+        "label": "GAAP P/E (TTM)",
+        "value": "~45x",
+        "note": "บิดเบือนจาก mark-to-market + one-time items — ไม่ใช้ตัดสิน valuation"
+      },
+      {
+        "label": "FRE/Share (LTM)",
+        "value": "$4.34",
+        "note": "Fee-Related Earnings — recurring, ไม่มี credit/insurance risk",
+        "tone": "pos"
+      },
+      {
+        "label": "SRE/Share (LTM)",
+        "value": "$5.27",
+        "note": "Spread-Related Earnings (Athene) — ผันตาม net investment spread"
+      },
+      {
+        "label": "Total DE/Share (LTM)",
+        "value": "{{eps}}",
+        "note": "FRE+SRE = Distributable Earnings หลัก · ANI/Share $8.50",
+        "tone": "neu"
+      },
+      {
+        "label": "Athene Net Inv. Spread",
+        "value": "0.97%",
+        "note": "Q1 2569 (ex-notable 1.34%) ลดจาก 1.65% YoY — cost of funds สูงขึ้น"
+      },
+      {
+        "label": "FRE Q1 2569",
+        "value": "$728M",
+        "note": "+30% YoY · margin ขยายจาก fee-paying AUM โต",
+        "tone": "pos"
+      },
+      {
+        "label": "SRE Q1 2569",
+        "value": "$719M",
+        "note": "Organic growth ของ Athene ยังแข็งแรง แม้ spread บีบ"
+      }
+    ],
+    "notes": {
+      "mcap": "คงเหลือ (StockAnalysis)",
+      "aum": "ครบ $1 ล้านล้านครั้งแรก Q1 2569 · +$300B LTM inflows",
+      "yield": "($0.5625/ไตรมาส) · payout ต่ำ เน้น reinvest",
+      "beta": "ผันผวนสูงกว่าตลาด (leveraged to credit cycle + rates)"
+    },
+    "hint": "Alt Asset Manager — ดู FRE/SRE/DE ต่อหุ้น แทน GAAP EPS"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "de",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 2,
+        "exitMultiple": 11,
+        "divCum": 6.82,
+        "desc": "Credit cycle เสื่อม, Athene spread บีบต่อ, multiple de-rate"
+      },
+      {
+        "growth": 8,
+        "exitMultiple": 13.5,
+        "divCum": 7.02,
+        "desc": "AUM โตต่อเนื่อง, FRE margin ขยาย, spread ทรงตัว"
+      },
+      {
+        "growth": 13,
+        "exitMultiple": 16,
+        "divCum": 7.19,
+        "desc": "Retirement services ขยายแรง, credit market share เพิ่ม, re-rating กลับสู่ premium multiple"
+      }
+    ],
+    "exitDp": 1,
+    "baseOverride": {
+      "value": 9.61331,
+      "why": "ฐานฉากถอดกลับจากค่าปลายฉากที่พิมพ์"
+    },
+    "note": "ประมาณการอิง Total Distributable Earnings (FRE+SRE) เติบโตและ exit ที่ multiple ต่างกันตาม scenario — ปัจจุบัน APO ซื้อขายที่ ~13.1x DE (ต่ำกว่าค่าเฉลี่ยยาว ๆ ที่มัก 15-18x) ให้ downside จำกัดใน Bear case แต่ upside มากใน Base/Bull หาก spread Athene ฟื้นตัวและ credit market share ยังโต",
+    "hintNote": "DE /share"
+  },
+  "analyst": {
+    "target": 153.47,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "APO ทรงตัวในรอบปี (ปิดรายเดือน $124.31 ต.ค. 68 → $125.91 ก.ย. 69) โดยระหว่างทางแกว่งกว้าง: กรอบ 52 สัปดาห์สูงสุด $153.29 และร่วงแรงเหลือ $99.56 (ต่ำสุด 3 มี.ค. 69) จากความกังวล credit cycle + Athene net investment spread บีบแคบลง (1.65%→0.97% YoY) กดดัน valuation ของกลุ่ม alt asset manager ทั้งกลุ่ม ราคาฟื้นตัวช่วง เม.ย.–ส.ค. 69 หลังผลประกอบการ Q1 2569 โชว์ FRE โต 30% YoY และ AUM ทะลุ $1 ล้านล้านครั้งแรก ปัจจุบันราคา {{px}} ต่ำกว่า Fair Value {{fv}} ({{mos}})",
+    "valuation": "วิธี Price/ANI ({{fvLow}}) ให้ค่าต่ำสุดเพราะ ANI รวม principal investment income ที่ผันผวน ส่วน SOTP แยก FRE/SRE ({{fvHigh}}) ให้ค่าสูงสุดเพราะให้เครดิต FRE เต็มที่ในฐานะ recurring fee income คุณภาพสูงแบบเดียวกับ BX/KKR ค่าเฉลี่ย {{fv}} ต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ {{analyst.target}} (19 ราย, Buy) เล็กน้อย — เป้านักวิเคราะห์ใช้เป็นเพียงตัวเทียบความสอดคล้อง ไม่ใช่ขาของ FV — สะท้อนความเสี่ยง Athene spread compression ที่ยังไม่คลี่คลาย",
+    "gauge": "ราคาปัจจุบัน {{px}} อยู่เหนือเส้น MOS 20% ({{mos20}}) เล็กน้อย — ยังมีส่วนเผื่อความปลอดภัยพอสมควรแต่ยังไม่ถึงระดับ deep value (MOS 30% ที่ {{mos30}}) เป้าหมายนักวิเคราะห์เฉลี่ย {{analyst.target}} ({{analyst.pct}}) สูงกว่า Fair Value ฐานของเราเล็กน้อย สะท้อนมุมมองที่ optimistic กว่าเกี่ยวกับการฟื้นตัวของ Athene spread และการ scale ของ private credit",
+    "mos": "MOS อยู่ในโซน \"พอใช้\" (10–20%) — ราคาต่ำกว่ามูลค่าเหมาะสมพอสมควร แต่ยังมีความเสี่ยง Athene spread ที่ต้องติดตาม",
+    "verdictHeadline": "APO — ราคาทรงตัวในรอบปีแต่แกว่งกว้าง ขณะที่ AUM ทะลุ $1 ล้านล้านครั้งแรก",
+    "verdictBody": "Apollo เป็นหนึ่งในผู้นำ alternative asset management ที่มีโมเดลธุรกิจแตกต่างจาก peer อย่าง BX/KKR ตรงที่มี Athene (retirement services) เป็นแกนสำคัญ ให้ permanent capital ที่มั่นคงกว่าเงินทุนจาก LP ทั่วไป แต่ก็แบกความเสี่ยง insurance liability ไปด้วย ราคาปัจจุบัน {{px}} ต่ำกว่า Fair Value ({{mos}}) สะท้อนความกังวลเรื่อง Athene net investment spread ที่บีบแคบลง (0.97% Q1 2569) มากกว่าพื้นฐานธุรกิจหลักที่ยังแข็งแรง (FRE +30% YoY, AUM $1.03T) เทียบกับ ARES ที่เน้น credit ล้วนไม่มี insurance mix, APO ให้ yield จาก permanent capital สูงกว่าแต่ก็ผันผวนตาม spread มากกว่า เหมาะกับนักลงทุนที่รับความเสี่ยง insurance-linked earnings ได้และมองระยะยาว 3 ปีขึ้นไป",
+    "strategy": "ราคาปัจจุบันอยู่เหนือโซน MOS 20% ({{mos20}}) เล็กน้อย — เหมาะสำหรับทยอยสะสม (DCA) โดยเฉพาะหากย่อลงใกล้โซน MOS 30% ({{mos30}}, ใกล้ 52wk low) จะน่าสนใจมากขึ้น ควรติดตาม Athene net investment spread รายไตรมาสอย่างใกล้ชิด เพราะเป็นตัวแปรหลักที่กำหนดทิศทาง SRE และความเชื่อมั่นของตลาดต่อหุ้นนี้",
+    "disclaimerSources": "แหล่งข้อมูล: StockAnalysis.com, StockTitan, SEC EDGAR (8-K Q1 2026 earnings release), Apollo Investor Relations"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 3 วิธี · อิง FRE/SRE/DE (ไม่ใช่ GAAP P/E)",
+    "disclaimerAssump": " Price/DE เป้าหมาย, อัตราเติบโตของ FRE/SRE, และทิศทาง Athene net investment spread ในอนาคต"
+  },
+  "catalysts": [
+    "<b>AUM ทะลุ $1 ล้านล้าน:</b> Q1 2569 เป็นครั้งแรกที่ Apollo AUM แตะ $1.03T พร้อม inflow $115B ในไตรมาสเดียว และ $300B ใน LTM — ฐานค่าธรรมเนียม (fee-paying AUM) ขยายต่อเนื่อง หนุน FRE ระยะยาว",
+    "<b>FRE โตแรง 30% YoY:</b> Fee-Related Earnings $728M ใน Q1 2569 สะท้อน operating leverage ของธุรกิจจัดการสินทรัพย์ที่ margin ขยายเมื่อ scale ใหญ่ขึ้น",
+    "<b>Athene permanent capital flywheel:</b> เงินจากขายประกัน annuity เป็นทุนถาวร (permanent capital) ที่ไม่ต้อง redemption เหมือนกองทุน PE ทั่วไป — ทำให้ Apollo ระดมทุนลงทุนใน credit ได้มั่นคงกว่า peer ที่พึ่ง LP fundraising",
+    "<b>ขยาย international + retirement services:</b> Apollo ผลักดัน Athene ในตลาดต่างประเทศ (เช่น ญี่ปุ่น, ยุโรป) และผลิตภัณฑ์ retirement ใหม่ เพิ่มช่องทางเติบโตนอกเหนือจาก US annuity",
+    "<b>Scale ผู้นำ private credit:</b> ด้วย AUM สินเชื่อ >$450B Apollo เป็นหนึ่งในผู้เล่นใหญ่สุดในตลาด direct lending ที่ธนาคารดั้งเดิมถอยออกหลัง Basel regulation เข้มขึ้น"
+  ],
+  "risks": [
+    "<b>Athene insurance liability risk:</b> Athene คือทั้งจุดแข็ง (permanent capital) และจุดเสี่ยง — ต้องบริหาร asset-liability matching ให้แม่นยำ หาก credit portfolio เสียหาย จะกระทบ solvency ของบริษัทประกันโดยตรง",
+    "<b>Net investment spread บีบแคบ:</b> Athene spread ลดจาก 1.65% เหลือ 0.97% YoY (Q1 2569) จาก cost of funds สูงขึ้น หากแนวโน้มนี้ต่อเนื่อง SRE จะถูกกดดันต่อ",
+    "<b>Credit cycle risk:</b> พอร์ต private credit ขนาดใหญ่ ($450B+) มีความเสี่ยงต่อ default rate ที่สูงขึ้นหากเศรษฐกิจชะลอตัวแรง โดยเฉพาะ leveraged loans ในพอร์ต PE",
+    "<b>Leverage ในพอร์ต PE:</b> ดีลไพรเวทอิควิตี้จำนวนมากใช้ leverage สูง หากดอกเบี้ยค้างระดับสูงนาน (higher-for-longer) จะกดดัน exit multiple และ realization ของกองทุน",
+    "<b>ผันผวนตามอัตราดอกเบี้ยและตลาดทุน:</b> Beta ~1.6 ทำให้ APO อ่อนไหวต่อความกังวลเศรษฐกิจมหภาคมากกว่าตลาดโดยรวม เห็นได้จากการร่วงลงถึง $99.56 ช่วง มี.ค. 69 ก่อนฟื้นตัว"
+  ],
+  "extras": [],
+  "v2Display": {
+    "targets": [
+      112.18,
+      163.43,
+      221.86
+    ],
+    "rets": {
+      "texts": [
+        "−10.9% (capital) / −5.5% total",
+        "+29.8% (capital) / +35.4% total",
+        "+76.2% (capital) / +81.9% total"
+      ],
+      "neg": "−",
+      "perYear": "cagr",
+      "div": true
+    }
+  },
+  "_sig": "sha256:8b6bfe5655844da08537b103e7232a9221355e91b368cfdea6d934322263ac03"
+}

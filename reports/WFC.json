@@ -1,0 +1,276 @@
+{
+  "v": 3,
+  "symbol": "WFC",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Wells Fargo & Company",
+    "exchange": "NYSE",
+    "sub": "ธนาคารพาณิชย์ขนาดใหญ่อันดับ 4 ของสหรัฐฯ • Consumer & Commercial Banking • Wealth & Investment Management • Corporate & Investment Banking • อดีต Fed Asset Cap ถูกยกเลิก มิ.ย. 2568",
+    "headerTags": [
+      "Financial Services",
+      "Banking"
+    ],
+    "analysisDate": "2026-09-22",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "StockAnalysis.com",
+      "Macrotrends"
+    ],
+    "themeLegacy": {
+      "accent": "#CC0000",
+      "accentDark": "#8B0000",
+      "darkGrad": "linear-gradient(135deg,#1a0000 0%,#2d0808 60%,#1a0000 100%)",
+      "glow": "rgba(204,0,0,0.35)",
+      "subColor": "#ff6b6b",
+      "headerMuted": "#a57878",
+      "verdictText": "#ffe0e0",
+      "vcellLabel": "#ffb3b3"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-22T03:05:24+07:00",
+      "v2Hash": "06d10fea9c18"
+    }
+  },
+  "market": {
+    "px": 82.97,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          86.97
+        ],
+        [
+          "พ.ย.25",
+          85.85
+        ],
+        [
+          "ธ.ค.25",
+          93.2
+        ],
+        [
+          "ม.ค.26",
+          90.49
+        ],
+        [
+          "ก.พ.26",
+          81.45
+        ],
+        [
+          "มี.ค.26",
+          79.61
+        ],
+        [
+          "เม.ย.26",
+          82.23
+        ],
+        [
+          "พ.ค.26",
+          77.54
+        ],
+        [
+          "มิ.ย.26",
+          82.64
+        ],
+        [
+          "ก.ค.26",
+          86.45
+        ],
+        [
+          "ส.ค.26",
+          86.39
+        ],
+        [
+          "ก.ย.26",
+          82.97
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 72.78,
+      "hi": 97.76
+    }
+  },
+  "fundamentals": {
+    "eps": 6.88,
+    "dps": 1.7,
+    "bvps": 55.86,
+    "shares": 3240000000,
+    "roe": 12.6,
+    "beta": 0.93,
+    "fy": {
+      "period": "FY2025",
+      "netIncome": 21400000000,
+      "revenue": 80000000000
+    },
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation",
+      "inputs": {
+        "multiple": 13.5,
+        "multipleSource": "author"
+      },
+      "note": "ค่ากลางธนาคารขนาดใหญ่ US",
+      "family": "market"
+    },
+    {
+      "method": "pbv",
+      "label": "Justified P/BV (Residual Income)",
+      "inputs": {
+        "g": 3.5,
+        "r": 9.5
+      },
+      "override": {
+        "roe": 13,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "อิง ROE เป้าระยะกลาง 13% ปัจจุบัน ~12.6%",
+      "family": "rg"
+    },
+    {
+      "method": "pbv",
+      "label": "Tangible P/BV",
+      "inputs": {
+        "multiple": 1.8,
+        "multipleSource": "peer"
+      },
+      "override": {
+        "bvps": 48.16,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "peer premium หลัง asset cap ยกเลิก",
+      "family": "market"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "pbv",
+      "roe",
+      "eps",
+      "custom:0",
+      "revenueFy",
+      {
+        "key": "netIncomeFy",
+        "tone": "pos"
+      },
+      "yield",
+      "custom:1",
+      "beta",
+      "range52w"
+    ],
+    "custom": [
+      {
+        "label": "BVPS / Tangible",
+        "value": "{{bvps}} / $48.16",
+        "note": "FY2025 · เพิ่มขึ้นจาก $51.66 ปี 2567"
+      },
+      {
+        "label": "CET1 Capital Ratio",
+        "value": "~11.1%",
+        "note": "เหนือเกณฑ์ Basel III · แข็งแกร่ง",
+        "tone": "pos"
+      }
+    ],
+    "notes": {
+      "mcap": "~3.24 พันล้านหุ้น (ลดลงจาก 3.75B ปี 2566 buyback)",
+      "pe": "Forward P/E ~11.5x",
+      "pbv": "Tangible BVPS $48.16",
+      "roe": "FY2025: 11.73% · เป้าระยะกลาง ≥15%",
+      "eps": "FY2025: $6.26 (diluted) · Q1 2026: $1.60",
+      "revenueFy": "+2.7% YoY · FY2024: $78.0B · FY2023: $77.2B",
+      "netIncomeFy": "+7.0% YoY · Net margin ~26.7%",
+      "yield": "$1.80/หุ้น/ปี (อัตรารายไตรมาสล่าสุด×4) · เพิ่มจาก {{dps}} ปี 2568",
+      "beta": "ผันผวนใกล้เคียง S&P 500",
+      "range52w": "ราคาปัจจุบันอยู่กลาง ๆ range"
+    },
+    "hint": "ธนาคารขนาดใหญ่ — เน้น P/BV, ROE, NIM"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": -2,
+        "exitMultiple": 11,
+        "divCum": 5.1,
+        "desc": "ดอกเบี้ยลดแรง/ถดถอย NIM หด"
+      },
+      {
+        "growth": 7,
+        "exitMultiple": 13.5,
+        "divCum": 5.1,
+        "desc": "ขยายสินเชื่อหลัง Asset Cap ยกเลิก"
+      },
+      {
+        "growth": 12,
+        "exitMultiple": 15,
+        "divCum": 5.1,
+        "desc": "ROE ≥15% + การรีแบรนด์เต็มรูปแบบ"
+      }
+    ],
+    "exitDp": 1,
+    "note": "Base case อิงการขยายสินเชื่อหลังยกเลิก Asset Cap + Efficiency Ratio ปรับตัวดีขึ้น + Buyback ลดหุ้น → EPS โต ~7%/ปี · ปันผลรวม 3 ปี ~$5.10 (คาด {{dps}}→$1.90→$2.10) · Bear case เกิดหาก Fed ลดดอกเบี้ยแรงเกิน/เศรษฐกิจถดถอย ทำให้ NIM หดและ Credit Loss สูง · Bull case เกิดหาก ROE บรรลุ 15%+ ตามเป้า CEO ซึ่งตลาดจะให้ Premium P/BV สูงขึ้น · หมายเหตุ: ตัวเลขเป็นการประมาณการไม่ใช่ผลลัพธ์รับประกัน"
+  },
+  "analyst": {
+    "target": 98.66,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "WFC ปรับตัวขึ้นต่อเนื่องช่วงปลายปี 2568 แตะจุดสูงสุด ~$93 ในเดือน ธ.ค. 2568 หลังธนาคารกลางสหรัฐฯ (Fed) ยกเลิก Asset Cap ที่บังคับใช้มากว่า 7 ปี — นับเป็น Catalyst สำคัญที่ตลาดรอคอย จากนั้นราคาปรับฐานลงไปแตะ ~$77.5 ในเดือน พ.ค. 2569 ก่อนฟื้นตัวกลับมาที่ $85.29 ปัจจุบัน โดยตลอดช่วง 1 ปี WFC ให้ผลตอบแทน +6.1% รวมปันผล ~2.1% คิดเป็น Total Return ประมาณ +8.2%",
+    "valuation": "ทั้ง 3 วิธีให้ค่าใกล้กัน ($87–$93) สะท้อนว่า WFC ซื้อขายต่ำกว่ามูลค่าเหมาะสมเล็กน้อย วิธี Justified P/BV ใช้ ROE เป้าระยะกลาง 13% (ปัจจุบัน ~12.6%) เนื่องจากการยกเลิก Asset Cap เปิดโอกาสให้ขยายสินเชื่อและปรับปรุง ROE ได้ หากบรรลุ ROE 15% ตามเป้าของ CEO Charles Scharf มูลค่าจะสูงถึง $91–$100 (Bull case) กรอบล่าง $85 อิง Justified P/BV แบบ conservative ด้วย ROE 12.6% ปัจจุบัน",
+    "gauge": "ราคา $85.29 ต่ำกว่า Fair Value {{fv}} เล็กน้อย (MOS {{mos}}) สะท้อนว่า WFC ซื้อขายใกล้มูลค่าเหมาะสม มี margin เผื่อเล็กน้อย นักวิเคราะห์มีเป้าเฉลี่ย {{analyst.target}} (Buy consensus) บ่งชี้ Upside ~15.7% จากราคาปัจจุบัน Catalyst หลักคือการยกเลิก Asset Cap ที่เปิดทางให้ขยายงบดุลและ ROE ปรับตัวสูงขึ้น",
+    "mos": "MOS ต่ำ — ราคาต่ำกว่า Fair Value เล็กน้อย · ซื้อได้แบบทยอยสะสม",
+    "verdictHeadline": "WFC ซื้อขายใกล้ Fair Value — Turnaround Story หลัง Asset Cap ยกเลิก",
+    "verdictBody": "Wells Fargo ผ่านจุดเปลี่ยนสำคัญใน มิ.ย. 2568 เมื่อ Fed ยกเลิก Asset Cap $1.95T ที่บังคับใช้มา 7 ปีนับจากสแกนดัลบัญชีปลอม ธนาคารกำลังอยู่ในเส้นทาง Transformation ภายใต้ CEO Charles Scharf — ขับเคลื่อนด้วยการตัดต้นทุน ขยายรายได้ค่าธรรมเนียม และ Buyback เชิงรุก ที่ช่วยลดหุ้นจาก 3.75B เหลือ 3.24B ใน 2 ปี ราคาปัจจุบัน {{px}} ต่ำกว่า Fair Value เล็กน้อย (MOS {{mos}}) และยังต่ำกว่าเป้าเฉลี่ย Analyst {{analyst.target}} (~15.7%) สะท้อนว่ายังมี Upside โดยเฉพาะหาก ROE บรรลุ 13–15% ตามแผน อย่างไรก็ตาม MOS ยังไม่มากพอสำหรับ Deep Value Investor ควรรอโซน $62–$71 หาก Macro เสื่อมลง",
+    "strategy": "ราคาปัจจุบัน $85.29 ต่ำกว่า Fair Value เล็กน้อย ทยอยสะสมได้ · เพิ่ม Position หากลงมาโซน $62–$71 (MOS 20%) · เป้าหมาย Base Case $119 ใน 3 ปี (+39.5% รวมปันผล) · ตัดออกหาก ROE ไม่ปรับตัวดีขึ้นหรือมีปัญหา Regulatory ใหม่",
+    "disclaimerSources": "ที่มาข้อมูล: Yahoo Finance (ราคา/EPS/ปันผล/Beta/52W), StockAnalysis.com (งบการเงิน/BVPS/ROE/P/BV), Wikipedia (Asset Cap timeline), Macrotrends (ข้อมูลย้อนหลัง/NIM) · ราคา ณ {{priceDate}} (UTC+7)"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 3 วิธี"
+  },
+  "catalysts": [
+    "<b>Asset Cap ยกเลิกแล้ว (มิ.ย. 2568):</b> Fed ยกเลิก Asset Cap $1.95T ที่บังคับใช้มา 7 ปีหลังสแกนดัลบัญชีปลอม — WFC สามารถขยายงบดุล เพิ่มสินเชื่อ Corporate และ Investment Banking ได้เต็มที่",
+    "<b>ROE Expansion Path:</b> CEO Charles Scharf วางเป้า ROE ≥15% ระยะกลาง (ปัจจุบัน ~12%) ผ่านการตัดต้นทุน ขยายรายได้ค่าธรรมเนียม และ Efficiency Ratio ที่ดีขึ้น",
+    "<b>Buyback เชิงรุก:</b> ลดจำนวนหุ้นจาก 3.75B (ปี 2566) เหลือ 3.24B (ปี 2568) — EPS โตเร็วกว่ากำไร ลด dilution ต่อเนื่อง",
+    "<b>Rising Fee Income:</b> Wealth Management + IB รายได้ค่าธรรมเนียมเติบโต ช่วยลด dependency ต่อ NIM ที่ผันผวนตามดอกเบี้ย",
+    "<b>Analyst Consensus Buy:</b> เป้าเฉลี่ย {{analyst.target}} (Upside ~15.7%) จาก Wall Street สะท้อนมุมมองเชิงบวกหลัง Asset Cap ยกเลิก",
+    "<b>Low Valuation vs Peers:</b> P/E ~12.4x ยังต่ำกว่า JPMorgan (~14x) และ Bank of America (~13.5x) — ช่องว่างที่อาจ re-rate หาก Execution ดี"
+  ],
+  "risks": [
+    "<b>ความเสี่ยง Regulatory ยังคงมีอยู่:</b> แม้ Asset Cap ยกเลิกแล้ว แต่ WFC ยังมี consent order บางส่วนจาก OCC/CFPB — การ re-offense อาจนำมาซึ่งบทลงโทษใหม่",
+    "<b>Net Interest Margin (NIM) Sensitivity:</b> การลดดอกเบี้ยของ Fed ส่งผลกดดัน NIM โดยตรง ธนาคารมีรายได้ดอกเบี้ยเป็นสัดส่วนสูง",
+    "<b>Credit Quality Risk:</b> การชะลอตัวของเศรษฐกิจหรือ Recession อาจทำให้ NPL (Non-Performing Loans) สูงขึ้น โดยเฉพาะ Commercial Real Estate (CRE)",
+    "<b>Execution Risk:</b> การขยายสินเชื่อหลัง Asset Cap ยกเลิกต้องเป็นไปอย่างระมัดระวัง — การเร่งเร็วเกินอาจทำให้ Credit Quality เสื่อมลง",
+    "<b>ค่าใช้จ่ายปฏิบัติการ:</b> ค่าธรรมเนียม Legal, Regulatory Compliance และ Technology Modernization ยังคงสูง กดดัน Efficiency Ratio",
+    "<b>Macro/Recession Risk:</b> หาก US เข้าสู่ภาวะถดถอย ธนาคารขนาดใหญ่จะถูก Stress Test เข้มงวดขึ้น อาจจำกัด Buyback และ Dividend"
+  ],
+  "extras": [],
+  "v2Display": {
+    "fv": 89,
+    "fvRange": [
+      85,
+      93
+    ],
+    "targets": [
+      76,
+      119,
+      150
+    ]
+  },
+  "_sig": "sha256:5ffae658e0cc280b20f8128df04009fa79850106ac4555500bfe80b3af70ea8d"
+}

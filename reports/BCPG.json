@@ -1,0 +1,286 @@
+{
+  "v": 3,
+  "symbol": "BCPG",
+  "currency": "THB",
+  "region": "TH",
+  "dateEra": "BE",
+  "meta": {
+    "company": "BCPG PCL (บีซีพีจี)",
+    "exchange": "SET",
+    "sub": "พลังงานหมุนเวียน: โซลาร์ • ลม • น้ำ • ก๊าซธรรมชาติ • ไทย / ญี่ปุ่น / ลาว / เวียดนาม / สหรัฐฯ (spin-off Bangchak)",
+    "headerTags": [
+      "พลังงาน",
+      "Renewable Energy"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "SET.or.th",
+      "Yahoo Finance",
+      "StockAnalysis.com"
+    ],
+    "themeLegacy": {
+      "accent": "#388e3c",
+      "accentDark": "#2b762f",
+      "darkGrad": "linear-gradient(135deg,#154b1a 0%,#256428 60%,#2d7230 100%)",
+      "glow": "rgba(56,142,60,0.3)",
+      "subColor": "#daeeda",
+      "headerMuted": "#dcebdd",
+      "verdictText": "#e8f5e9",
+      "vcellLabel": "#f6fbf6"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T17:12:35+07:00",
+      "v2Hash": "8dd8b111e56c"
+    }
+  },
+  "market": {
+    "px": 6.7,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          8.25
+        ],
+        [
+          "พ.ย.25",
+          7.15
+        ],
+        [
+          "ธ.ค.25",
+          6.75
+        ],
+        [
+          "ม.ค.26",
+          7.1
+        ],
+        [
+          "ก.พ.26",
+          8.1
+        ],
+        [
+          "มี.ค.26",
+          6.7
+        ],
+        [
+          "เม.ย.26",
+          7.05
+        ],
+        [
+          "พ.ค.26",
+          6.75
+        ],
+        [
+          "มิ.ย.26",
+          7.05
+        ],
+        [
+          "ก.ค.26",
+          7.1
+        ],
+        [
+          "ส.ค.26",
+          7.4
+        ],
+        [
+          "ก.ย.26",
+          6.7
+        ]
+      ],
+      "gridFmt": "v.toFixed(2)",
+      "dataFmt": "d[1].toFixed(2)"
+    },
+    "range52w": {
+      "lo": 5.3,
+      "hi": 9.6
+    }
+  },
+  "fundamentals": {
+    "eps": 0.74,
+    "dps": 0.35,
+    "bvps": 9.47,
+    "shares": 2995759339,
+    "peAvg5y": 19,
+    "roe": 7.7,
+    "revenue": 3950000000,
+    "netMargin": 56.5,
+    "fy": {
+      "period": "FY2568",
+      "netIncome": 855000000
+    },
+    "epsBasis": "ifrs"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation",
+      "inputs": {
+        "multiple": 19,
+        "multipleSource": "median5y"
+      },
+      "override": {
+        "eps": 0.43,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "มัธยฐาน 5 ปีของ BCPG เอง (ราคาเฉลี่ยงวด ÷ EPS ช่วง 10.7–25.0x — วัดจากประวัติ ไม่ได้มาจาก P/E ปัจจุบัน)",
+      "family": "market"
+    },
+    {
+      "method": "ddm",
+      "label": "DDM / Gordon Growth",
+      "inputs": {
+        "g": 4,
+        "r": 8.5
+      },
+      "note": "สมมติฐานของเราเอง · จ่ายกึ่งปี · ตระกูลเดียวกับ Justified P/BV (นับรวมเป็น 1 เสียง)",
+      "family": "rg"
+    },
+    {
+      "method": "pbv",
+      "label": "Justified P/BV",
+      "inputs": {
+        "g": 3,
+        "r": 8
+      },
+      "override": {
+        "roe": 7,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "ROE 7.0% ใกล้ ROE TTM 7.7% (สมมติฐานของเราเอง) · ตระกูล (r,g) เดียวกับ DDM",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "peAvg5y",
+      "pbv",
+      "netIncomeFy",
+      "eps",
+      "bvps",
+      {
+        "key": "roe",
+        "tone": "neu"
+      },
+      "revenue",
+      "netMargin",
+      "yield",
+      "custom:0"
+    ],
+    "custom": [
+      {
+        "label": "Debt/Equity",
+        "value": "83%",
+        "note": "ปกติสำหรับโครงสร้าง infra energy",
+        "tone": "neg"
+      }
+    ],
+    "notes": {
+      "mcap": "2,996 ล้านหุ้น",
+      "pe": "(รวมรายการที่ไม่ประจำ — ดูหมวด 3)",
+      "peAvg5y": "มัธยฐาน 5 ปี ช่วง 10.7–25.0x",
+      "pbv": "BVPS ~{{bvps}} (ต่ำกว่าบุ๊ก)",
+      "netIncomeFy": "↓ −53% YoY (ขาย solar ญี่ปุ่น)",
+      "eps": "NI TTM ฿2,231 ล้าน (FY2568 EPS ฿0.29)",
+      "bvps": "BVPS ตามที่รายงานเดิมใช้ (ยังไม่ได้ตรวจซ้ำกับงบล่าสุด)",
+      "roe": "ROE TTM (Yahoo 7.74%) · FY2568 ROE 2.9%",
+      "revenue": "+25.3% YoY (TTM เทียบ FY2568 ฿3.56 พันล้าน)",
+      "netMargin": "สูงกว่าช่วง 22–49% ของ FY2564–68 มาก",
+      "yield": "{{dps}}/หุ้น/ปี (ปี 68) · จ่ายกึ่งปี"
+    },
+    "hint": "ข้อมูล TTM / ณ ก.ย. 2569"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": "cagr",
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 0,
+        "exitMultiple": 11,
+        "divCum": 1.05,
+        "desc": "US capacity payment ลด + Monsoon yield ต่ำ"
+      },
+      {
+        "growth": 10,
+        "exitMultiple": 14,
+        "divCum": 1.1,
+        "desc": "US capacity payment เพิ่ม + Monsoon เต็มกำลัง + โซลาร์ไทยขยาย"
+      },
+      {
+        "growth": 20,
+        "exitMultiple": 16,
+        "divCum": 1.13,
+        "desc": "Data center demand ดัน US capacity สูง + ประกวดราคา RE ชนะ + เวียดนามโต"
+      }
+    ],
+    "exitDp": 0,
+    "baseOverride": {
+      "value": 0.428249,
+      "why": "EPS ฐานฉากถอดกลับจากราคาเป้าที่พิมพ์"
+    },
+    "note": "Base case +10.1%/ปี (3 ปี) อิงกับ EPS ฐาน normalized ฿0.43 เติบโต 10%/ปี × P/E ออก 14x ให้ราคาเป้าใกล้ FV (ตัวคูณออก 14x ต่ำกว่ามัธยฐานย้อนหลัง 19.0x โดยตั้งใจ — อนุรักษ์นิยม) Bear ให้ EPS คงที่และ de-rate เหลือ 11x ส่วน Bull ให้ EPS +20%/ปี ที่ 16x · ราคาเป้าเป็นสมมติฐาน ผลตอบแทนรวมปันผลคำนวณจากจุดเข้าปัจจุบัน vendor forecast FY2569e EPS ฿0.59 เทียบกับฐานของเรา ฿0.43 — ถ้ากำไร TTM ที่สูงยั่งยืนจริง ผลลัพธ์จะดีกว่า Base ความเสี่ยงหลัก: ค่า THB/USD, นโยบาย PJM capacity market, อัตราดอกเบี้ย (หนี้สูง D/E 83%)",
+    "hintNote": "normalized ~฿0.43"
+  },
+  "analyst": {
+    "target": 8.75,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "กราฟรายเดือนเริ่มที่ ฿8.25 (ต.ค. 2568) ปรับลงมาแถว ฿6.75 (ธ.ค. 2568) ฟื้นขึ้นแตะ ฿8.10 (ก.พ. 2569) แล้วกลับลงแตะจุดต่ำสุดรอบปีที่ {{px}} (มี.ค. 2569) จากนั้นแกว่งอยู่ในกรอบ ฿6.75–฿7.40 โดยกำไรสุทธิ FY2568 ลดลง 53% YoY (฿855 ล้าน เทียบ ฿1,819 ล้าน) ขณะที่ TTM ล่าสุดกลับสูงขึ้นเป็น ฿2,231 ล้าน ราคาล่าสุด {{px}} — {{chg}}",
+    "valuation": "FV = เฉลี่ยของ 2 ตระกูล: P/E {{fvHigh}} และค่าเฉลี่ย DDM ฿8.09 กับ Justified P/BV {{fvLow}} (฿7.84 — (r,g) ชุดเดียวกัน นับเป็นเสียงเดียว) ไม่ได้เฉลี่ย 3 วิธีตรง ๆ ทั้งสองตระกูลอยู่ห่างกันไม่ถึง 2 เท่า เป้านักวิเคราะห์เฉลี่ย {{analyst.target}} (7 คน, Yahoo/StockAnalysis) ไม่ได้เป็นส่วนหนึ่งของ FV เป็นเพียงข้อมูลเทียบ ข้อควรระวัง: ขา P/E ใช้ EPS เฉลี่ย 3 ปีเพราะ TTM {{eps}} มี net margin สูงผิดปกติ (ยังไม่ได้ตรวจที่มาของรายการพิเศษจากงบฉบับเต็ม) ถ้าใช้ EPS TTM ตรง ๆ ค่า FV จะสูงขึ้นมาก ส่วน vendor forecast FY2569e EPS ฿0.59 และ FY2570e ฿0.57 สูงกว่า EPS normalized ที่ใช้ — ผลลัพธ์จึงค่อนข้างอนุรักษ์นิยม",
+    "gauge": "ราคาปัจจุบัน {{px}} ต่ำกว่า Fair Value {{fv}} ({{mos}}) และต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ {{analyst.target}} (ข้อมูลเทียบเท่านั้น ไม่อยู่ใน FV) โซนน่าสนใจสำหรับนักลงทุน VI จะอยู่ที่ {{mos20}} (MOS 20%) ถึง {{mos30}} (MOS 30%) ซึ่งมักเกิดเมื่อมีข่าวลบชั่วคราว นักลงทุนที่เน้นปันผลอาจพิจารณาสะสมในระดับราคาปัจจุบันเพื่อรับ yield ~5.1%",
+    "mos": "MOS ปานกลาง — ราคาต่ำกว่ามูลค่าเหมาะสมพอสมควร แต่ยังไม่ถึงโซน MOS 20% สำหรับ VI เต็มตัว",
+    "verdictHeadline": "ราคาต่ำกว่ามูลค่าเหมาะสมพอสมควร — MOS ปานกลาง รอโซน MOS 20% เพื่อเพิ่มน้ำหนัก",
+    "verdictBody": "BCPG เป็นบริษัทพลังงานหมุนเวียนที่มีพอร์ตกระจายตัวระหว่างประเทศ (ไทย ลาว เวียดนาม สหรัฐฯ) โดยมีจุดแข็งที่กระแสเงินสดสม่ำเสมอจากสัญญา PPA ระยะยาว ราคาปัจจุบัน {{px}} เทียบกับ Fair Value {{fv}} ให้ MOS {{mos}} (เฉลี่ย 2 ตระกูล: P/E มัธยฐาน 19.0x บน EPS normalized กับ DDM/Justified P/BV) ค่อนข้างมีความไม่แน่นอนเพราะกำไร TTM มีรายการไม่ประจำ นักลงทุนที่เน้นปันผลรับ yield ~5.1% ที่ระดับนี้ได้ ผู้ที่ต้องการ MOS 20% ควรรอซื้อที่ {{mos20}}",
+    "strategy": "ถือหรือสะสมน้อยๆ ที่ระดับ {{px}} เพื่อ dividend yield ~5.1% รอเพิ่มน้ำหนักที่โซน {{mos20}} (MOS 20%) หากราคาย่อตัวลงมา — ติดตามงบไตรมาสถัดไป (คาด 11 พ.ย. 2569) ว่ากำไร TTM ที่สูงยั่งยืนหรือไม่",
+    "disclaimerSources": "แหล่งข้อมูล: StockAnalysis.com (ราคา ฿6.75 ณ 21 ก.ย. 2569, EPS TTM ฿0.74, P/E 8.86x, Market Cap ฿19.77B) · Yahoo Finance BCPG.BK (ราคา ฿6.80, EPS TTM ฿0.75, กราฟรายเดือน ต.ค. 2568–ก.ย. 2569) · Investing.com (P/BV 0.69, ROE 4.74%) · BCPG Investor Relations — Financial Highlights FY2022–FY2025 (งบการเงินรายปี) · InnovestX Research Q4/2025 (เป้า ฿11, Outperform, 18 ก.พ. 2569) · Gurufocus.com (DPS ฿0.28–฿0.35)"
+  },
+  "text": {
+    "valHint": "2 ตระกูลสมมติฐาน (3 วิธี)",
+    "chartHint": "ต.ค. 2568 – ก.ย. 2569"
+  },
+  "catalysts": [
+    "<b>US Capacity Payment พุ่ง:</b> PJM zone capacity payment ปี 2569/70 ที่ USD 329/MW-day (+27% YoY) และปี 2570/71 USD 333/MW-day หนุนกำไรส่วนแบ่งจากโรงไฟฟ้าในสหรัฐฯ (857MWe, ~70% ของพอร์ต)",
+    "<b>Monsoon Wind ลาว เต็มปี:</b> โครงการลม Monsoon ลาว (600MW) เริ่ม COD เต็มกำลังปี 2569 เพิ่ม EBITDA และแหล่งรายได้สกุล USD ต่อเนื่อง 25 ปี",
+    "<b>Data Center Demand:</b> ความต้องการไฟฟ้าใน PJM zone จาก data center สหรัฐฯ คาด CAGR 5.3% (2568–78) หนุนราคา capacity และ energy อย่างต่อเนื่อง",
+    "<b>EBITDA Target +10%:</b> บริษัทตั้งเป้า EBITDA เติบโต 10%/ปี 2569 รองรับด้วยแหล่งรายได้หลากหลาย (4 ประเทศ + สหรัฐฯ) ลดความเสี่ยง single-point",
+    "<b>Dividend Yield สูง:</b> ปันผล ~5.1% จ่ายกึ่งปีสม่ำเสมอ มี Payout สูง สะท้อนกระแสเงินสดจากสัมปทานระยะยาว",
+    "<b>Green Energy Policy:</b> นโยบายพลังงานสะอาดทั้งไทย/ลาว/เวียดนาม หนุนโอกาสชนะประกวดราคาโครงการใหม่ (โซลาร์ + ลม)"
+  ],
+  "risks": [
+    "<b>ความเสี่ยง FX (THB/USD):</b> รายได้หลักเป็น USD (US capacity) และ Lao Kip แต่รายงานเป็น THB — ค่าบาทแข็งกดดันกำไรสุทธิโดยตรง",
+    "<b>PJM Capacity Market:</b> การเปลี่ยนนโยบาย PJM (cap on capacity payment, derating plant) หรือปัญหาเชิงระบบในสหรัฐฯ กระทบรายได้ ~70% ของกำลังผลิต",
+    "<b>อัตราดอกเบี้ยสูง:</b> D/E 83% — ต้นทุนทางการเงินสูง ดอกเบี้ยกดกำไรสุทธิ แม้ EBITDA แข็งแกร่ง; อัตราดอกเบี้ยขาขึ้นกระทบการ refinance",
+    "<b>ค่าเสื่อมสูง / Asset Heavy:</b> โครงการ infra ระยะยาวมีค่าเสื่อมราคาสูง ทำให้ EPS ต่ำกว่า EBITDA มาก และ ROE ต่ำในช่วงก่อสร้าง",
+    "<b>ปริมาณน้ำ/ลม/แสงแดด:</b> พลังงานน้ำในลาวและโซลาร์ไทยขึ้นกับสภาพอากาศ — ปีแล้งหรือเมฆมากกระทบผลผลิตพลังงาน",
+    "<b>ความเสี่ยงประเทศ (Country Risk):</b> กฎระเบียบ/สัมปทานในลาว เวียดนาม และโรงไฟฟ้าก๊าซ US ที่อาจถูก phase-out จาก ESG pressure"
+  ],
+  "extras": [],
+  "v2Display": {
+    "targets": [
+      4.73,
+      null,
+      null
+    ],
+    "rets": {
+      "texts": [
+        "−4.8%/ปี",
+        "+10.7%/ปี",
+        "+24.6%/ปี"
+      ],
+      "neg": "−",
+      "perYear": "cagr",
+      "div": true
+    }
+  },
+  "_sig": "sha256:3c436faba00d33c78972232c957affef0074e52468b98fa7d9e6c07784e4de48"
+}

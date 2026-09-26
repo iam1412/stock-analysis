@@ -1,0 +1,269 @@
+{
+  "v": 3,
+  "symbol": "VICI",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "VICI Properties Inc.",
+    "exchange": "NYSE",
+    "sub": "REIT เกมมิ่ง/experiential รายใหญ่ • เจ้าของ casino trophy บน Las Vegas Strip (Caesars Palace, MGM Grand, Venetian) • triple-net lease + CPI escalator • ปันผล {{dps}}/ปี",
+    "headerTags": [
+      "Real Estate / REIT",
+      "Gaming & Experiential"
+    ],
+    "analysisDate": "2026-09-22",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis.com",
+      "Yahoo Finance",
+      "Yahoo quoteSummary"
+    ],
+    "themeLegacy": {
+      "accent": "#b18b35",
+      "accentDark": "#7f652c",
+      "darkGrad": "linear-gradient(135deg, #100D04 0%, #201A09 100%)",
+      "glow": "rgba(201,162,75,0.35)",
+      "subColor": "#DCBE72",
+      "headerMuted": "#a38435",
+      "verdictText": "#F2E8CC",
+      "vcellLabel": "rgba(242,232,204,0.6)"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-22T01:46:25+07:00",
+      "v2Hash": "6a203dae1951"
+    }
+  },
+  "market": {
+    "px": 23.51,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          29.99
+        ],
+        [
+          "พ.ย.25",
+          28.82
+        ],
+        [
+          "ธ.ค.25",
+          28.12
+        ],
+        [
+          "ม.ค.26",
+          28.08
+        ],
+        [
+          "ก.พ.26",
+          30.21
+        ],
+        [
+          "มี.ค.26",
+          27.32
+        ],
+        [
+          "เม.ย.26",
+          29.2
+        ],
+        [
+          "พ.ค.26",
+          28.22
+        ],
+        [
+          "มิ.ย.26",
+          26.55
+        ],
+        [
+          "ก.ค.26",
+          26.35
+        ],
+        [
+          "ส.ค.26",
+          25.65
+        ],
+        [
+          "ก.ย.26",
+          23.51
+        ]
+      ],
+      "gridFmt": "v.toFixed(0)",
+      "dataFmt": "d[1].toFixed(2)"
+    },
+    "range52w": {
+      "lo": 23.72,
+      "hi": 33.01
+    }
+  },
+  "fundamentals": {
+    "dps": 1.84,
+    "shares": 1101077562,
+    "peAvg5y": 12.7,
+    "epsForward": 2.75,
+    "opMargin": 91,
+    "roe": 9.8,
+    "fy": {
+      "period": "FY2025",
+      "netIncome": 2780000000,
+      "eps": 2.61
+    },
+    "eps": 2.58,
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E (TTM)",
+      "inputs": {
+        "multiple": 12.7,
+        "multipleSource": "median5y"
+      },
+      "note": "มัธยฐานย้อนหลัง 5 ปีของ VICI เอง (ราคาเฉลี่ยรายปี ÷ EPS; ช่วง 12.0–24.4x) มาจากประวัติ ไม่ได้มาจาก P/E ปัจจุบัน",
+      "family": "market"
+    },
+    {
+      "method": "pe",
+      "label": "P/E (FY2026E)",
+      "inputs": {
+        "multiple": 12.7,
+        "multipleSource": "median5y",
+        "base": "epsForward"
+      },
+      "baseLabel": "FY2026E",
+      "note": "ตัวคูณมัธยฐานเดียวกับข้อ 1 จึงเป็นตระกูลเดียวกัน นับเป็นเสียงเดียว",
+      "family": "market"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "peAvg5y",
+      "peForward",
+      {
+        "key": "epsFy",
+        "tone": "pos"
+      },
+      "netIncomeFy",
+      {
+        "key": "opMargin",
+        "tone": "pos"
+      },
+      "roe",
+      {
+        "key": "yield",
+        "tone": "pos"
+      },
+      "custom:0",
+      "custom:1",
+      "custom:2"
+    ],
+    "custom": [
+      {
+        "label": "Net Lease Type",
+        "value": "Triple-Net",
+        "note": "ผู้เช่าแบกรับค่าใช้จ่ายทุกอย่าง"
+      },
+      {
+        "label": "CPI Escalator",
+        "value": "ใช่",
+        "note": "ค่าเช่าโตตามเงินเฟ้อทุกปี",
+        "tone": "pos"
+      },
+      {
+        "label": "หนี้สิน / D/E",
+        "value": "~$17.8B / 0.60",
+        "note": "เงินสด ~$0.29B (TTM) — REIT ใช้หนี้สูง"
+      }
+    ],
+    "notes": {
+      "mcap": "~1.10B shares outstanding",
+      "pe": "GAAP EPS {{eps}} (TTM); ต่ำกว่ามัธยฐานย้อนหลังของตัวเอง 12.7x",
+      "peAvg5y": "ช่วง 12.0–24.4x (FY2021–FY2025; 24.4x = ปี 2022 EPS ต่ำ)",
+      "peForward": "EPS ประมาณการ FY2026E $2.75 (StockAnalysis)",
+      "epsFy": "+2.0% YoY (FY2024: $2.56; FY2023: $2.47)",
+      "netIncomeFy": "Net margin 69.3% (FY2024: $2.68B, 69.6%)",
+      "opMargin": "TTM 88.7% — รายได้ค่าเช่า master lease ระยะยาว",
+      "roe": "FY2025 10.2% · FY2023 10.7%",
+      "yield": "DPS {{dps}}/ปี (Yahoo 7.76% / StockAnalysis 7.66%)"
+    },
+    "hint": "REIT Gaming & Experiential — รอบนี้ใช้ GAAP EPS (AFFO ยังไม่ได้ยืนยันจากแหล่งที่เปิดอ่าน)"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 2,
+        "exitMultiple": 10,
+        "divCum": 5.52,
+        "desc": "ตัวคูณต่ำกว่าทุกปีในประวัติ (10x)"
+      },
+      {
+        "growth": 4,
+        "exitMultiple": 12,
+        "divCum": 5.63,
+        "desc": "ดอกเบี้ยลงช้า CPI escalator หนุน"
+      },
+      {
+        "growth": 5,
+        "exitMultiple": 13,
+        "divCum": 5.7,
+        "desc": "Fed ลดดอกเบี้ย + acquisition ใหม่"
+      }
+    ],
+    "exitDp": 0,
+    "note": "การประมาณการใช้ GAAP EPS TTM {{eps}} เป็นฐาน (ไม่ใช่ AFFO) ตัวเลขผลตอบแทนคือส่วนต่างราคาเป้าเท่านั้น ไม่รวมปันผล — ปันผลรวม 3 ปี (~$5.52–5.70; DPS {{dps}} คงที่ถึงโต 2–3%/ปี เป็นสมมติฐานของรายงาน) เป็นผลตอบแทนเพิ่มต่างหาก ฉาก Bear ใช้ P/E 10x ซึ่งต่ำกว่าทุกปีในประวัติ (12.0–24.4x) แต่ยังให้ผลบวกจากราคาราว 15% เพราะราคาปัจจุบันอยู่ต่ำมาก",
+    "hintNote": "(TTM)"
+  },
+  "analyst": {
+    "target": 32.25,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ราคา VICI ปรับลงต่อเนื่องในช่วง 1 ปี จากกราฟรายเดือน $29.99 (ต.ค. 2568) มาที่ {{px}} ในปัจจุบัน (ประมาณ −21%) จุดสูงรายเดือน $30.21 (ก.พ. 2569) และปัจจุบันซื้อขายที่ระดับต่ำสุดของกรอบ 52 สัปดาห์ ขณะที่กำไรสุทธิไม่ได้ลดลง (NI FY2025 $2,775M เทียบ FY2024 $2,679M) จึงเป็นการ de-rate ของตัวคูณ — สาเหตุเฉพาะ (ดอกเบี้ย/ความกังวลผู้เช่า) ยังไม่ได้ยืนยันจากแหล่งที่เปิดอ่านรอบนี้",
+    "valuation": "สองขานี้อยู่ตระกูลเดียวกัน (P/E × ตัวคูณมัธยฐานเดียวกัน) จึงนับเป็น single-family valuation ไม่ใช่การยืนยันอิสระ ค่าเฉลี่ย $33.85 ปัดเป็น {{fv}} — เป้านักวิเคราะห์ ({{analyst.target}}) ไม่ใช่ขาของ FV แค่บริบทตรวจความสอดคล้อง ความอ่อนไหว: ที่ P/E 11x (ต่ำกว่ามัธยฐาน) มูลค่าราว $28.4 และที่ 10x (ต่ำกว่าทุกปีในประวัติ) ราว $25.8 ส่วนเผื่อจึงหดเร็วถ้าตัวคูณไม่กลับสู่มัธยฐาน AFFO/DDM ไม่ถูกใช้เป็นขาเพราะไม่มีตัวคูณ/อัตราที่วัดจริงรอบนี้",
+    "gauge": "ราคาปัจจุบัน {{px}} อยู่ต่ำกว่า Fair Value {{fv}} (MOS {{mos}}) และใกล้/ต่ำกว่าโซน MOS 30% ({{mos30}}) นักวิเคราะห์ 24 ราย เป้าเฉลี่ย {{analyst.target}} (Buy) ต่ำกว่า FV ของรายงานนี้เล็กน้อย — ใช้เป็นบริบทเท่านั้น ไม่ใช่ขาของ FV",
+    "mos": "MOS สูง — ราคาต่ำกว่า FV มาก แต่ FV มาจากตัวคูณ P/E ตระกูลเดียว (มัธยฐาน 12.7x) ยังไม่มีขาอิสระยืนยัน; ปันผล {{dps}}/ปี ช่วยรองรับระหว่างรอ",
+    "verdictHeadline": "VICI — Gaming REIT Trophy คุณภาพสูง ถูกกดราคาชั่วคราวจากดอกเบี้ย",
+    "verdictBody": "VICI Properties เป็นเจ้าของ casino trophy assets บน Las Vegas Strip ด้วย triple-net master lease ระยะยาว และ CPI escalator กำไรสุทธิ FY2025 $2.78B (net margin 69.3%) ราคาปรับลงราว 21% ในรอบปีจนอยู่ที่ต่ำสุดของกรอบ 52 สัปดาห์ ขณะที่กำไรไม่ลด P/E ปัจจุบันราว 9x ต่ำกว่ามัธยฐานย้อนหลัง 12.7x ของตัวเองอย่างมีนัย FV รอบนี้มาจากตัวคูณตระกูลเดียว (P/E × EPS TTM และ FY2026E) จึงมีความไม่แน่นอนสูงกว่าที่ตัวเลข MOS สื่อ ปันผล {{dps}}/ปีเป็นตาข่ายระหว่างรอ re-rate",
+    "strategy": "ราคาปัจจุบัน {{px}} ใกล้/ต่ำกว่าโซน MOS 30% ({{mos30}}) บนสมมติฐาน P/E มัธยฐาน — ทยอยสะสมรับปันผล {{dps}}/ปี ระหว่างรอ re-rate และทบทวนถ้ากำไรชะลอหรือตัวคูณต่ำกว่าประวัติถาวร ผลตอบแทนฉาก Base/Bull ดูหมวด 6 (ราคาเป้าอย่างเดียว ไม่รวมปันผล)",
+    "disclaimerSources": "ข้อมูล ณ 22 ก.ย. 2569 • แหล่งที่มา: StockAnalysis.com / Yahoo Finance / Yahoo quoteSummary"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 2 วิธี — ตระกูล P/E เดียว (GAAP EPS)",
+    "disclaimerAssump": " P/E เป้าหมาย (มัธยฐานย้อนหลัง), อัตราเติบโตของ EPS และประมาณการ FY2026E"
+  },
+  "catalysts": [
+    "<b>Trophy casino assets irreplaceable:</b> Caesars Palace, MGM Grand, Venetian คือสินทรัพย์ที่สร้างทดแทนไม่ได้บน Las Vegas Strip — moat ระยะยาว",
+    "<b>Master lease ระยะยาว:</b> ค่าเช่าจาก operator รายใหญ่ ทำให้รายได้คาดการณ์ได้ (operating margin FY2025 91.0%, net margin 69.3%)",
+    "<b>CPI escalator:</b> ค่าเช่าปรับขึ้นอัตโนมัติตามเงินเฟ้อทุกปี — รายได้โตพร้อมกับ CPI โดยไม่ต้องลงทุนเพิ่ม",
+    "<b>ปันผลสูง:</b> DPS {{dps}}/ปี (yield ~7.7%) บนกำไรสุทธิ FY2025 $2.78B ที่ยังไม่ลดลง",
+    "<b>Re-rate สู่มัธยฐาน:</b> ถ้าตัวคูณกลับสู่ P/E มัธยฐาน 12.7x จะมี upside มากจาก {{px}} (ปัจจุบัน P/E ราว 9x)",
+    "<b>นักวิเคราะห์ 24 รายเป้า {{analyst.target}} (Buy):</b> เป้าเฉลี่ยสูงกว่าราคาตลาดมาก — ใช้เป็นบริบทเท่านั้น"
+  ],
+  "risks": [
+    "<b>Rate sensitivity สูง:</b> REIT เป็น bond-proxy — ดอกเบี้ยสูงนานกด multiple ต่อเนื่อง ราคาอยู่ที่ระดับต่ำสุด 52 สัปดาห์แล้ว และอาจต่ำลงอีก",
+    "<b>Tenant concentration สูง:</b> รายได้พึ่ง operator รายใหญ่ไม่กี่ราย (เช่น Caesars, MGM) — ถ้ารายใดมีปัญหาทางการเงินกระทบรุนแรง (สัดส่วนที่แน่นอนยังไม่ได้ยืนยันรอบนี้)",
+    "<b>Gaming cyclical risk:</b> แม้ค่าเช่า fixed แต่ถ้า gaming revenue operator ตกหนัก อาจเจรจา restructure lease ในระยะยาว",
+    "<b>การเติบโตพึ่ง acquisition:</b> organic growth จาก CPI escalator ~2–3% เท่านั้น การเติบโตก้าวกระโดดต้องซื้อสินทรัพย์ใหม่ซึ่งใช้เงินทุนสูง",
+    "<b>Dilution + หนี้สูง:</b> หุ้นถัวเฉลี่ย 577M (FY2021) → 1,074M (TTM) และหนี้ ~$17.8B (D/E 0.60) — ขยายด้วยการออกหุ้น/กู้ อาจกด EPS ต่อหุ้น"
+  ],
+  "extras": [],
+  "v2Display": {
+    "fv": 34,
+    "fvRange": [
+      32.77,
+      34.93
+    ]
+  },
+  "_sig": "sha256:40b2fd1b77133cc3275e6c215fcab6ca1e4fd9ebe362bc67a658a9af0b9fbf85"
+}

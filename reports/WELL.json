@@ -1,0 +1,302 @@
+{
+  "v": 3,
+  "symbol": "WELL",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Welltower Inc.",
+    "exchange": "NYSE",
+    "sub": "Largest healthcare REIT by market cap • Senior housing (RIDEA direct operations) • Post-acute/skilled nursing • Medical office buildings • Baby boomer demand surge (2025–2040) • Occupancy recovery from COVID lows • Supply/demand imbalance (limited new construction) • ~1.5% dividend yield",
+    "headerTags": [
+      "Healthcare REIT",
+      "Senior Housing"
+    ],
+    "analysisDate": "2026-09-22",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis",
+      "Yahoo Finance",
+      "Welltower IR (SEC 8-K)"
+    ],
+    "themeLegacy": {
+      "accent": "#006B77",
+      "accentDark": "#004d57",
+      "darkGrad": "linear-gradient(135deg,#003e46 0%,#005660 60%,#00737f 100%)",
+      "glow": "rgba(0,107,119,0.35)",
+      "subColor": "#ddf1ef",
+      "headerMuted": "#e3f0f1",
+      "verdictText": "#bdf7ff",
+      "vcellLabel": "#f5feff"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-22T03:05:24+07:00",
+      "v2Hash": "8cd252962a9c"
+    }
+  },
+  "market": {
+    "px": 231.37,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          181.04
+        ],
+        [
+          "พ.ย.25",
+          208.22
+        ],
+        [
+          "ธ.ค.25",
+          185.61
+        ],
+        [
+          "ม.ค.26",
+          188.36
+        ],
+        [
+          "ก.พ.26",
+          207.12
+        ],
+        [
+          "มี.ค.26",
+          197.71
+        ],
+        [
+          "เม.ย.26",
+          217.34
+        ],
+        [
+          "พ.ค.26",
+          205.33
+        ],
+        [
+          "มิ.ย.26",
+          226.97
+        ],
+        [
+          "ก.ค.26",
+          234.44
+        ],
+        [
+          "ส.ค.26",
+          236.24
+        ],
+        [
+          "ก.ย.26",
+          231.37
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 163.75,
+      "hi": 255.2
+    }
+  },
+  "fundamentals": {
+    "dps": 3.4,
+    "bvps": 62.79,
+    "shares": 720744951,
+    "revenue": 11770000000,
+    "occupancy": 88.8,
+    "roe": 3.8
+  },
+  "legs": [
+    {
+      "method": "ddm",
+      "label": "DDM / Gordon Growth",
+      "inputs": {
+        "g": 6.5,
+        "r": 8
+      },
+      "note": "r และ g เป็นสมมติฐานของผู้วิเคราะห์เอง (g อิง FFO growth ระยะกลางและการขึ้นปันผลต่อเนื่อง; r = risk-free 4.4% + REIT premium 3.6%)",
+      "family": "rg"
+    },
+    {
+      "method": "declared",
+      "label": "Justified P/BV",
+      "inputs": {
+        "value": 147,
+        "basis": "other"
+      },
+      "note": "(ROE−g)/(r−g) × BVPS = (10.0%−6.5%)/(8.0%−6.5%) × {{bvps}} = 2.33 × {{bvps}} = $147 — ROE 10.0% = FFO $6.28 ÷ BVPS {{bvps}} (ROE เชิงกระแสเงินสด ไม่ใช่ GAAP ~3.8% ที่ต่ำเพราะค่าเสื่อม) · ตระกูลเดียวกับ DDM (r,g ชุดเดียวกัน) จึงนับรวมเป็น 1 เสียง",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "custom:0",
+      "pbv",
+      {
+        "key": "revenue",
+        "tone": "none"
+      },
+      "custom:1",
+      "custom:2",
+      {
+        "key": "occupancy",
+        "tone": "pos"
+      },
+      "custom:3",
+      "yield",
+      "custom:4",
+      {
+        "key": "roe",
+        "tone": "none"
+      },
+      "custom:5"
+    ],
+    "custom": [
+      {
+        "label": "P/FFO (Norm. 2026E)",
+        "value": "~36.4x",
+        "note": "ที่ราคา {{px}} / FFO $6.28/sh (guidance ณ Q1 2569)",
+        "tone": "neu"
+      },
+      {
+        "label": "FFO Norm. (FY2568)",
+        "value": "$5.29/sh",
+        "note": "+22.5% YoY — RIDEA platform leverage",
+        "tone": "pos"
+      },
+      {
+        "label": "FFO Norm. (FY2569E)",
+        "value": "$6.21–$6.35/sh",
+        "note": "guidance midpoint $6.28 (+18.7% YoY)",
+        "tone": "pos"
+      },
+      {
+        "label": "SS NOI Growth (Q1 2569)",
+        "value": "+16.4%",
+        "note": "SHO portfolio: +22.1% — RevPOR +5.0%",
+        "tone": "pos"
+      },
+      {
+        "label": "Net Debt / EBITDA",
+        "value": "2.73x",
+        "note": "Q1 2569 — ต่ำมากสำหรับ REIT ขนาดนี้",
+        "tone": "pos"
+      },
+      {
+        "label": "Liquidity",
+        "value": "$11.1B",
+        "note": "Q1 2569 — ยืดหยุ่นสูง เพิ่ม deal flow",
+        "tone": "pos"
+      }
+    ],
+    "notes": {
+      "mcap": "~720.7M shares outstanding",
+      "pbv": "BVPS ~{{bvps}} (Q1 2569)",
+      "occupancy": "+370 bps YoY · ฟื้นตัวจาก COVID ~73%",
+      "yield": "$0.85/Q (ใหม่ เพิ่ม 15%) → {{dps}}/yr",
+      "roe": "ต่ำเพราะ depreciation GAAP — เป็นปกติ REIT"
+    },
+    "hint": "Healthcare REIT — ใช้ FFO/AFFO แทน EPS"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": null,
+    "driver": "ffo",
+    "exitMetric": "pffo",
+    "cases": [
+      {
+        "growth": 8,
+        "exitMultiple": 28,
+        "divCum": 9.93,
+        "desc": "Occupancy หยุดเติบโต / rate hike กดดัน cap rate"
+      },
+      {
+        "growth": 15,
+        "exitMultiple": 32,
+        "divCum": 10.8,
+        "desc": "Occupancy 91%+ RevPOR +4-5%/yr ต่อเนื่อง"
+      },
+      {
+        "growth": 20,
+        "exitMultiple": 36,
+        "divCum": 12.24,
+        "desc": "Baby boomer wave เร่ง + M&A platform ใหม่ + rate cut"
+      }
+    ],
+    "exitDp": 0,
+    "baseOverride": {
+      "value": 6.27928,
+      "why": "ฐานฉากถอดกลับจากค่าปลายฉากที่พิมพ์"
+    },
+    "note": "<b>หมายเหตุ:</b> Scenario ใช้ <b>Normalized FFO/sh</b> (ไม่ใช่ EPS GAAP) ซึ่งเป็น metric หลักของ REIT สะท้อนกระแสเงินสดจริงหลังปรับค่าเสื่อม · Base Case (+15%/yr FFO) อิง guidance 2569 $6.28 + consensus growth ระยะกลาง — ซึ่ง Conservative เพราะ 2568–69 FFO โตถึง 18-23%/yr · Bear Case (+8%/yr) รับมือกรณี Occupancy ชะลอเมื่อถึง 90%+ และ competition เริ่มสร้าง supply ใหม่ในบางตลาด · Bull Case (+20%/yr) อิงการเร่งตัวของ Baby Boomer wave ปี 2570+ เมื่อ Gen X (เกิด 2503-2508) เข้าสู่ senior housing demand อย่างเต็มที่ · ปันผลรวม 3 ปี คำนวณจาก {{dps}}/yr ฐาน (Bear), $3.60 avg (Base), $4.08 avg (Bull) — สมมติขึ้นตาม FFO growth",
+    "hintNote": "/sh • ผลตอบแทนคิดจากราคาเป้า (ไม่รวมปันผล)"
+  },
+  "analyst": {
+    "target": 262,
+    "n": 22,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ราคาปิดรายเดือนเริ่มที่ $181.04 ในตุลาคม 2568 พุ่งแตะ $208.22 ในพฤศจิกายน 2568 แล้วย่อลงสู่ $185.61 ในธันวาคม 2568 ก่อนไต่ขึ้นเป็นลำดับ ผ่าน $217.34 (เม.ย. 2569) และ $226.97 (มิ.ย. 2569) จนแตะจุดสูงสุดของกราฟที่ $236.24 ในสิงหาคม 2569 และปิดล่าสุดที่ $228.87 ในกันยายน 2569 — กรอบ 52 สัปดาห์ (อิงราคาระหว่างวัน) $163.75–$255.20 ผลตอบแทนรอบปี: <b>+26.4%</b> (ไม่รวมปันผล ~1.5%) · ที่มา: Yahoo Finance, StockAnalysis (ข้อมูล ณ 22 ก.ย. 2569)",
+    "valuation": "<b>โครงสร้าง FV:</b> ทั้ง DDM ($241) และ Justified P/BV ($147) ใช้ (r 8.0%, g 6.5%) ชุดเดียวกัน = ตระกูลเดียว ⇒ ถ่วงเป็นหนึ่งเสียง FV = ค่าเฉลี่ยของสองขา ≈ $194 (สองขาห่างกัน 1.6 เท่า อยู่ในเกณฑ์ ≤2 เท่า) · <b>ตัดออกจากรอบก่อน:</b> P/FFO เป้าหมาย ~36x (ใกล้ P/FFO ปัจจุบัน = สมอตายวนกลับ และไม่มีมัธยฐานย้อนหลังที่วัดได้ — P/E ย้อนหลังใช้ไม่ได้เพราะเหลือ 2 จุด) · NAV Premium 3.5x (ตัวคูณที่ตั้งเอง ไม่มีที่มา) · เป้านักวิเคราะห์ไม่เป็นขาของ FV ใช้เป็นบริบทเท่านั้น · <b>การประเมินตระกูลเดียว (single-family):</b> FV ไวต่อ (r,g) — g 6.0% ลด DDM เหลือ ~$180 และ FV ลงตาม ส่วน g 7.0% ไม่นิยามได้เมื่อใกล้ r · ราคาปัจจุบัน {{px}} เทียบ FV {{fv}} ({{mos}}) — ราคาตลาดสูงกว่าทั้งสองขาของ FV แสดงว่าตลาดคาดการเติบโตเร็วกว่าสมมติฐานนี้ ไม่มีส่วนเผื่อความปลอดภัย",
+    "gauge": "WELL ซื้อขายอยู่ที่ <b>{{px}}</b> สูงกว่า Fair Value {{fv}} ({{mos}}) แสดงว่าตลาด <b>Pricing-in</b> ประสิทธิภาพของ RIDEA model และ demographic tailwind ไว้เกินสมมติฐาน DDM ของเรา โซน MOS 20% ({{mos20}}) ต่ำกว่าราคาปัจจุบันมาก จึงเป็นจุดที่เกิดได้เฉพาะเมื่อราคาย่อตัวลึกหรือ FV ปรับขึ้น เป้า Analyst เฉลี่ย $262 (consensus Buy — 22 นักวิเคราะห์ สูงสุด $292 ต่ำสุด $219) สูงกว่า FV ของเรา — เป็นบริบทเท่านั้น ไม่ได้เป็นขาของ FV · long-term thesis ยังคงสมบูรณ์",
+    "mos": "ราคาสูงกว่า Fair Value — รอโอกาสราคาย่อก่อนสะสม",
+    "verdictHeadline": "WELL: Priced Above Fair Value — Quality REIT Worth Owning on Dips",
+    "verdictBody": "Welltower เป็น Healthcare REIT คุณภาพสูงที่สุดในโลก ได้รับประโยชน์จาก <b>mega-trend ที่มีความแน่นอนสูงที่สุดประการหนึ่ง</b> — การเพิ่มขึ้นของประชากรสูงอายุในสหรัฐ ที่ Baby Boomer กว่า 70 ล้านคนกำลังเข้าสู่ช่วงที่ต้องการ senior housing อย่างเร่งด่วน ประกอบกับ supply ที่จำกัดเพราะต้นทุนก่อสร้างสูง ด้วย RIDEA structure ที่ให้ WELL รับ upside โดยตรงจาก occupancy และ RevPOR ที่เพิ่มขึ้น บริษัทสามารถเติบโต Same-Store NOI ได้ +22.1% YoY ใน Q1 2569 และขึ้นปันผล 15% — สิ่งเหล่านี้สะท้อนถึงพลังของ platform ที่สร้างมาหลายสิบปี อย่างไรก็ตาม <b>ณ ราคา {{px}} หุ้นซื้อขายเหนือ Fair Value {{fv}}</b> ({{mos}}; P/FFO ~36x ตามกรอบ guidance Q1 2569) โดยพื้นฐานตลาดได้รับรู้ thesis นี้ไว้แล้วเกือบทั้งหมด กลยุทธ์ที่เหมาะสมคือ <b>รอโอกาสซื้อเมื่อย่อตัว</b> มากกว่าไล่ซื้อที่ราคาปัจจุบัน",
+    "strategy": "WELL เป็นหุ้น \"เก็บสะสมระยะยาว\" ที่เหมาะกับ portfolio ที่เน้น dividend growth + demographic play ราคาปัจจุบันสะท้อน Fair Value แล้ว ควร <b>รอทยอยสะสมเมื่อราคาลงมาใกล้/ต่ำกว่า {{fv}}</b> และ <b>เพิ่มน้ำหนักจริงจังที่ MOS 20% ({{mos20}})</b> — thesis ระยะ 5-10 ปีแข็งแกร่งมาก เพราะ demographic wave เพิ่งเริ่มต้น",
+    "disclaimerSources": "แหล่งข้อมูลหลัก: Welltower Q1 2569 Earnings Release (SEC 8-K), StockAnalysis.com, Yahoo Finance, MarketBeat, REITNotes — ราคา ณ {{priceDate}} ตรวจสอบ ≥2 แหล่งแล้ว (Yahoo vs StockAnalysis ต่าง 0.06%; EPS(TTM) $2.21–$2.22 สองแหล่งตรงกัน) · ตัวเลขปฏิบัติการ/guidance ของ FFO อ้าง Q1 2569 (ยังไม่ได้ตรวจงวด Q2)"
+  },
+  "text": {
+    "valHint": "2 วิธี — DDM + Justified P/BV (ตระกูลสมมติฐาน r,g เดียวกัน นับเป็น 1 เสียง)",
+    "metricsNote": "<b>หมายเหตุ REIT:</b> Welltower เป็น REIT — P/E แบบ GAAP ไม่สื่อความหมาย เพราะค่าเสื่อมราคาอสังหาริมทรัพย์ขนาดใหญ่ทำให้กำไรสุทธิต่ำกว่ากระแสเงินสดจริงมาก ตัวชี้วัดหลักคือ <b>Normalized FFO (Funds From Operations)</b> ซึ่ง WELL รายงาน $5.29/sh ปี 2568 และคาด $6.28/sh ปี 2569E · ไม่มีการ์ด P/E (TTM) — ตั้ง pe:null ใน stock-meta",
+    "chartHint": "ต.ค. 2568 – ก.ย. 2569",
+    "disclaimerAssump": " P/FFO เป้าหมาย, อัตราเติบโต FFO (g), ผลตอบแทนที่ต้องการ (r) และ occupancy assumptions"
+  },
+  "catalysts": [
+    "<b>Baby Boomer Wave (2568–2583):</b> ประชากรอเมริกันรุ่น Baby Boomer กำลังเข้าสู่ช่วงอายุ 80+ อย่างเต็มที่ในทศวรรษนี้ — ความต้องการ senior housing คาดเพิ่มขึ้น 40-50% ภายในปี 2583 โดยไม่มีปัจจัยฝั่ง demand ที่ไม่แน่นอน",
+    "<b>Supply Shortage เชิงโครงสร้าง:</b> ต้นทุนก่อสร้างที่สูงขึ้น (ราคาแรงงาน/วัสดุ) ทำให้นักพัฒนาลดการสร้าง senior housing ใหม่ ส่งผลให้ความไม่สมดุล supply/demand ยืดยาว",
+    "<b>RIDEA Platform Leverage:</b> ไม่เหมือน REIT แบบ triple-net-lease ที่รายได้ตายตัว WELL ดำเนินงาน senior housing เองผ่าน RIDEA structure → รับ upside จาก occupancy ที่เพิ่มขึ้น และ RevPOR ที่ขยับตัวตามเงินเฟ้อ (SS NOI +22.1% Q1 2569)",
+    "<b>Operator Diversification:</b> พันธมิตรหลัก Sunrise Senior Living, Cogir, ProMedica ช่วยกระจายความเสี่ยง ไม่พึ่งพา operator รายเดียว + ความสัมพันธ์ระยะยาวลด turnover risk",
+    "<b>Financial Strength:</b> Net debt/EBITDA เพียง 2.73x (ต่ำมากสำหรับ REIT) + liquidity $11.1B เปิดพื้นที่ deal flow — ลงทุน $3.3B ใน Q1 2569 เดียว",
+    "<b>Dividend Growth Track Record:</b> ขึ้นปันผล 15% ใน Q2 2569 และจ่ายปันผลต่อเนื่อง 220+ ไตรมาส สะท้อน cash flow คุณภาพสูง"
+  ],
+  "risks": [
+    "<b>Valuation Premium สูง:</b> P/FFO ~36x เป็น premium สูงกว่า Healthcare REIT เฉลี่ย ~28x อย่างมีนัย — ถ้า FFO growth ชะลอลงจากคาดหรือ sentiment REIT เปลี่ยน ราคาอาจปรับตัวลงแรง",
+    "<b>Interest Rate Sensitivity:</b> REIT โดยทั่วไปอ่อนไหวต่อดอกเบี้ย — ถ้า Fed กลับขึ้นดอกเบี้ยหรือ treasury yield พุ่งสูง cap rate จะขยายตัวกดดัน NAV และ P/FFO multiple",
+    "<b>Operator Execution Risk:</b> การเติบโตของ FFO พึ่งพา operator ปฏิบัติงานได้ดี — ปัญหาแรงงาน (shortage/cost) ใน senior care เป็นปัจจัยเสี่ยงต่อเนื่อง อาจบีบ margin",
+    "<b>Regulatory & Reimbursement:</b> ผู้พักอาศัยบางส่วนใช้ Medicare/Medicaid สำหรับ skilled nursing — นโยบายลด reimbursement จากรัฐบาลกลางกระทบรายได้พอร์ต",
+    "<b>Occupancy Ceiling:</b> Occupancy 88.8% กำลังใกล้ระดับ pre-COVID ~90-92% — การเติบโต occupancy ในอนาคตจะช้าลงตามธรรมชาติ ต้องพึ่ง RevPOR/rate hike มากขึ้น",
+    "<b>Concentration Risk:</b> พอร์ตหนักสหรัฐ/แคนาดา/สหราชอาณาจักร — เงินดอลลาร์แข็งค่ากระทบการรายงานจาก UK operations; มีความเสี่ยงในตลาด UK ด้านกฎระเบียบ"
+  ],
+  "extras": [],
+  "v2Display": {
+    "fv": 194,
+    "fvRange": [
+      147,
+      241
+    ],
+    "targets": [
+      222,
+      306,
+      391
+    ],
+    "cards": {
+      "revenue": {
+        "v": "$11.77B",
+        "d": "+37.6% YoY (senior housing surge)"
+      }
+    },
+    "rets": {
+      "texts": [
+        "−4.0% (ไม่รวม div)",
+        "+32.3% (ไม่รวม div)",
+        "+69.0% (ไม่รวม div)"
+      ],
+      "neg": "−",
+      "perYear": "cagr",
+      "div": false
+    }
+  },
+  "_sig": "sha256:b29b81606764ff833cc4e195ac1cea08ccd1f68c073e2825fda5eec66b2c4a18"
+}

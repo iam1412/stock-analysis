@@ -1,0 +1,266 @@
+{
+  "v": 3,
+  "symbol": "MRK",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Merck & Co., Inc.",
+    "exchange": "NYSE",
+    "sub": "Keytruda (pembrolizumab) — ภูมิคุ้มกันบำบัดมะเร็งอันดับ 1 ของโลก • Gardasil (วัคซีน HPV) • Animal Health • WINREVAIR (ความดันปอดสูง) • Enflonsia/clesrovimab (RSV ทารก) • MK-1084 (KRAS G12C) • Ohtuvayre — พอร์ตยาหลังแยก Organon ปี 2564",
+    "headerTags": [
+      "Pharmaceuticals — Big Pharma",
+      "Oncology (Keytruda) · Vaccines · Cardiometabolic"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis.com",
+      "StatMuse",
+      "SEC EDGAR 8-K (Q1 2569)",
+      "Merck IR"
+    ],
+    "themeLegacy": {
+      "accent": "#0071ce",
+      "accentDark": "#004f99",
+      "darkGrad": "linear-gradient(135deg,#08111d 0%,#0d1b2e 60%,#0071ce22 100%)",
+      "glow": "rgba(0,113,206,0.35)",
+      "subColor": "#5fb4ff",
+      "headerMuted": "rgba(255,255,255,0.65)",
+      "verdictText": "#5fb4ff",
+      "vcellLabel": "#4f9bda"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T16:22:02+07:00",
+      "v2Hash": "d67a00931f66"
+    }
+  },
+  "market": {
+    "px": 148.78,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          85.98
+        ],
+        [
+          "พ.ย.25",
+          104.83
+        ],
+        [
+          "ธ.ค.25",
+          105.26
+        ],
+        [
+          "ม.ค.26",
+          110.27
+        ],
+        [
+          "ก.พ.26",
+          123.82
+        ],
+        [
+          "มี.ค.26",
+          120.29
+        ],
+        [
+          "เม.ย.26",
+          109.18
+        ],
+        [
+          "พ.ค.26",
+          118.72
+        ],
+        [
+          "มิ.ย.26",
+          128.5
+        ],
+        [
+          "ก.ค.26",
+          130.2
+        ],
+        [
+          "ส.ค.26",
+          147.76
+        ],
+        [
+          "ก.ย.26",
+          148.78
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 77.58,
+      "hi": 156.92
+    }
+  },
+  "fundamentals": {
+    "eps": 7.28,
+    "dps": 3.4,
+    "bvps": 18.58,
+    "shares": 2467171638,
+    "revenue": 66600000000,
+    "roe": 7,
+    "grossMargin": 75.9,
+    "beta": 0.2,
+    "fy": {
+      "period": "FY2025",
+      "eps": 7.28,
+      "revenue": 31700000000
+    },
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation",
+      "inputs": {
+        "multiple": 15.3,
+        "multipleSource": "median5y",
+        "base": "epsFy"
+      },
+      "note": "ตัวคูณคือมัธยฐาน P/E ย้อนหลังของ MRK เอง (ราคาเฉลี่ยของปี ÷ EPS ปีนั้น; FY2021/22/24/25 ช่วง 12.2–17.4x, ตัด FY2023 ที่ EPS $0.14 ออก) มาจากประวัติ ไม่ได้มาจาก P/E ปัจจุบัน",
+      "family": "market"
+    },
+    {
+      "method": "ddm",
+      "label": "DDM / Gordon Growth",
+      "inputs": {
+        "g": 5,
+        "r": 8.5
+      },
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "custom:0",
+      "pbv",
+      {
+        "key": "revenue",
+        "tone": "pos"
+      },
+      "custom:1",
+      "epsFy",
+      "roe",
+      "revenueFy",
+      "grossMargin",
+      "yield",
+      "beta"
+    ],
+    "custom": [
+      {
+        "label": "P/E (EPS FY2025 ปีงบเต็ม)",
+        "value": "~{{pe}}x",
+        "note": "อิง EPS(dil) FY2025 {{eps}} — ปีงบล่าสุดที่ปิดแล้ว ก่อนชาร์จ 2569"
+      },
+      {
+        "label": "EPS(dil) TTM (GAAP)",
+        "value": "$1.27",
+        "note": "รวม Q1–Q2 2569 ที่ขาดทุนจากชาร์จ M&A — ต่ำกว่าปีงบ 2568 มาก"
+      }
+    ],
+    "notes": {
+      "mcap": "คงเหลือ (ลด ~0.6% จากถัวเฉลี่ยปรับลด จาก buyback)",
+      "pe": "บิดเบือนจากชาร์จ M&A (Cidara $9.0B ใน Q1 2569 และขาดทุนต่อเนื่องใน Q2) — ไม่ใช้ตัดสิน valuation",
+      "pbv": "BVPS ~{{bvps}} — สูงเพราะ ROE สูง + buyback ต่อเนื่อง",
+      "revenue": "Keytruda ~49% ของรายได้รวม (FY68)",
+      "epsFy": "FY2024 $6.74 · FY2022 $5.71 · FY2021 $5.14 (FY2023 $0.14 จากชาร์จ M&A)",
+      "roe": "ต่ำเพราะชาร์จ M&A — FY2025 อยู่ที่ ~36.9%",
+      "revenueFy": "49% ของรายได้รวม — สิทธิบัตรหลัก IV หมดอายุ 2571 (2028)",
+      "grossMargin": "มาร์จิ้นสูงมากตามธุรกิจยาต้นตำรับ (TTM)",
+      "yield": "($0.85/ไตรมาส) • เพิ่มต่อเนื่อง 16 ปี",
+      "beta": "ผันผวนต่ำกว่าตลาดปกติ (defensive pharma)"
+    },
+    "hint": "Big Pharma — ใช้ EPS ปีงบเต็มล่าสุด (FY2025) เป็นฐาน เพราะ TTM บิดเบือนจากชาร์จ M&A"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": -2,
+        "exitMultiple": 12.2,
+        "divCum": 11.25,
+        "desc": "Keytruda cliff 2571 (2028) กระทบหนัก, biosimilar เข้าเร็ว, Qlex ป้องกันไม่สำเร็จเท่าที่หวัง"
+      },
+      {
+        "growth": 6,
+        "exitMultiple": 15.3,
+        "divCum": 11.25,
+        "desc": "WINREVAIR/Clesrovimab/MK-1084 ชดเชย Keytruda cliff ได้บางส่วน, Qlex คุม penetration ~30-40%"
+      },
+      {
+        "growth": 12,
+        "exitMultiple": 17.4,
+        "divCum": 11.25,
+        "desc": "Qlex + method-of-use patent ยืดคุ้มครองถึง 2584 ได้จริง, pipeline ใหม่ (WINREVAIR/IBD/oncology) โตเกินคาด"
+      }
+    ],
+    "exitDp": 1,
+    "note": "ประมาณการอิง EPS(dil) FY2025 {{eps}} เติบโตตามความสำเร็จในการป้องกัน Keytruda patent cliff ปี 2571 (2028) — P/E ออกใช้ช่วงมัธยฐานประวัติของ MRK (ต่ำสุด 12.2x · มัธยฐาน 15.3x · สูงสุด 17.4x) ช่วง Bear/Bull กว้างเพราะผลลัพธ์ขึ้นกับว่า Keytruda Qlex จะรักษาส่วนแบ่งตลาดจาก biosimilar ได้มากแค่ไหน และ pipeline ใหม่ (WINREVAIR, Clesrovimab, MK-1084) จะโตทันชดเชยได้หรือไม่",
+    "hintNote": "FY2025 {{eps}}"
+  },
+  "analyst": {
+    "target": 152.96,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "MRK ขยับขึ้น +70.8% ในรอบปี จาก $85.98 (ต.ค. 68) โดยกระโดดแรงใน ส.ค. 69 ถึง $147.76 (ปิดรายเดือน) จาก $130.20 ใน ก.ค. 69 และกรอบ 52 สัปดาห์อยู่ที่ $77.58–$156.92 แรงหนุนหลักคือตลาดคลายกังวล Keytruda patent cliff 2571 (2028) หลัง FDA อนุมัติ Keytruda Qlex (สูตรฉีดใต้ผิวหนัง) ก.ย. 68 ซึ่งยืดอายุความคุ้มครองได้ถึงปี 2584 (2041) และ WINREVAIR โตแรงต่อเนื่อง ขณะที่ GAAP EPS ติดลบใน Q1–Q2 2569 จากชาร์จ M&A (Cidara $9.0B)",
+    "valuation": "FV มาจาก 2 ตระกูลสมมติฐานอิสระ: (1) P/E — EPS {{eps}} × มัธยฐานย้อนหลัง 15.3x และ (2) DDM ({{fvLow}} · r 8.5% g 5% เป็นสมมติฐานของเราเอง) ขา Forward P/E 13x บน EPS consensus เดิมถูกถอดออก เพราะไม่มีมัธยฐานที่วัดได้รองรับ และ EPS ปรับปรุง $8.75 ที่เคยใช้ตรวจซ้ำกับแหล่งที่เปิดอ่านไม่ได้ จึงใช้ EPS GAAP ปีงบเต็มแทน (ค่อนข้างระมัดระวัง) — MOS อ่อนไหวต่อฐาน EPS: EPS consensus FY2027e $9.55 × 15.3x ให้ราว $146 ใกล้ราคาตลาด แต่เป็นตัวเลขของปีงบถัดไปอีกปี จึงเป็นเพียงบริบท ค่าเฉลี่ย {{fv}} ต่ำกว่าราคาตลาด ({{px}}) ชัดเจน",
+    "gauge": "ราคาปัจจุบัน {{px}} อยู่สูงกว่ากรอบบนของ FV ({{fvHigh}}) และ Fair Value ฐาน ({{fv}}) มาก แต่ต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ ({{analyst.target}}) เล็กน้อย — ตลาดกำลังตีมูลค่าด้วย EPS ปีข้างหน้าที่สูงกว่าฐาน FY2025 ที่เราใช้ ทำให้ไม่เหลือ margin of safety ณ ราคานี้",
+    "mos": "MOS ติดลบลึก — ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสมฐานและกรอบบนของ FV หลังหุ้นพุ่งขึ้น +70.8% ในรอบปี ไม่เหลือส่วนเผื่อความปลอดภัย และควรอ่าน FV เป็นค่าประมาณเพราะอ่อนไหวต่อฐาน EPS (GAAP FY2025)",
+    "verdictHeadline": "MRK — พุ่ง +70.8% ในรอบปี ราคาเหนือ Fair Value ฐานมาก ตลาดคลายกังวล Keytruda cliff แต่ MOS ติดลบลึก",
+    "verdictBody": "Merck เป็นบริษัทยาชั้นนำที่พอร์ตพึ่งพา Keytruda (ภูมิคุ้มกันบำบัดมะเร็งอันดับ 1 ของโลก) หนักถึง 49% ของรายได้ ความเสี่ยงใหญ่สุดคือสิทธิบัตรหลักหมดอายุปี 2571 (2028) แต่ปีที่ผ่านมาตลาดคลายกังวลลงมากหลัง FDA อนุมัติ Keytruda Qlex (สูตรฉีดใต้ผิวหนัง) ที่ยืดอายุความคุ้มครองได้ถึงปี 2584 บวกกับ WINREVAIR ที่โตแรง 88% YoY และพอร์ตใหม่ (Clesrovimab, MK-1084, ดีล Prometheus/Harpoon) ปัจจุบันราคา {{px}} อยู่เหนือ Fair Value ฐาน ({{fv}}) มาก — FV รอบนี้มาจาก 2 ตระกูล (P/E มัธยฐานย้อนหลัง 15.3x × EPS FY2025 {{eps}} และ DDM) และไม่ใช้เป้านักวิเคราะห์เป็นขา ราคาวันนี้สะท้อนความเชื่อมั่นใน diversification และ EPS ปีถัดไปที่ตลาดคาดสูงกว่าฐานของเรา จึงแพงกว่ามูลค่าเหมาะสมฐานอย่างมีนัยสำคัญ",
+    "strategy": "ราคาปัจจุบันแพงกว่า Fair Value ฐานมาก — ไม่ใช่จุดเข้าที่มี MOS สำหรับ value investor ผู้ที่ถืออยู่แล้วอาจถือต่อตามเป้านักวิเคราะห์ (~$153) แต่นักลงทุนใหม่ควรรอย่อกลับมาโซน MOS 20% ({{mos20}}) หรือ MOS 30% ({{mos30}}) ก่อนตัดสินใจ ต้องติดตาม Keytruda Qlex market share และความคืบหน้า WINREVAIR/pipeline ใหม่อย่างใกล้ชิด เพราะเป็นตัวกำหนดว่า valuation ระดับนี้จะยืนได้จริงหรือไม่",
+    "disclaimerSources": "แหล่งข้อมูล: StockAnalysis.com, StatMuse, SEC EDGAR (8-K Q1 2026 earnings release), Merck Investor Relations"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 2 วิธี (2 ตระกูลสมมติฐาน)",
+    "disclaimerAssump": " P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และความสำเร็จของ Keytruda Qlex ในการป้องกัน biosimilar"
+  },
+  "catalysts": [
+    "<b>Keytruda Qlex (สูตรฉีดใต้ผิวหนัง):</b> FDA อนุมัติ ก.ย. 2568 — เปลี่ยนจากฉีดเข้าเส้นเลือด (IV) ใช้เวลา 30 นาที เป็นฉีดใต้ผิวหนังใช้เวลาไม่ถึง 5 นาที ได้สิทธิบัตรใหม่คุ้มครองถึงปี 2584 (2041) ช่วยยืดอายุความได้เปรียบก่อน biosimilar เข้าตลาดปี 2571 (2028)",
+    "<b>WINREVAIR โตแรงต่อเนื่อง:</b> ยารักษาความดันโลหิตในปอดสูง (PAH) ยอดขาย Q1 2569 $525M โต 88% YoY จากการขยายฐานผู้ป่วยในสหรัฐฯ และเปิดตลาดญี่ปุ่น/ยุโรป เป็นหนึ่งในเสาหลักที่จะมาแทน Keytruda",
+    "<b>พอร์ตหลัง Keytruda ขยายตัว:</b> Clesrovimab (Enflonsia, RSV ทารก), MK-1084 (KRAS G12C ในมะเร็งปอด), Ohtuvayre, และดีล Prometheus Biosciences (IBD) + Harpoon Therapeutics (oncology T-cell engager) เพิ่มความหลากหลายของรายได้นอกเหนือ oncology",
+    "<b>เงินปันผลมั่นคง เพิ่มต่อเนื่อง 16 ปี:</b> Yield ~2.31% + ประวัติเพิ่มปันผลทุกปี สะท้อนกระแสเงินสดแข็งแรงแม้อยู่ระหว่างช่วงเปลี่ยนผ่านพอร์ตสินค้า",
+    "<b>Gross margin สูงมาก ~77%:</b> โมเดลธุรกิจยาต้นตำรับให้มาร์จิ้นสูง รองรับการลงทุน R&D และ M&A เพื่อเติมพอร์ตต่อเนื่องได้"
+  ],
+  "risks": [
+    "<b>Keytruda patent cliff 2571 (2028):</b> ความเสี่ยงอันดับ 1 — สิทธิบัตรหลักของ Keytruda (IV) ที่สร้างรายได้ $31.7B (49% ของรายได้รวม) หมดอายุปี 2571 แม้ Qlex จะช่วยยืดได้บางส่วน แต่ biosimilar คู่แข่งจะเข้าตลาดกดราคาลงแรงในไม่กี่ปีข้างหน้า",
+    "<b>ราคาหุ้นขึ้นมาไกลแล้ว (+70.8% ในรอบปี):</b> ราคาปัจจุบันสูงกว่า Fair Value ฐาน ({{fv}}) มาก ไม่เหลือ margin of safety สำหรับนักลงทุนใหม่ ความเสี่ยงขาลงหากตลาดเปลี่ยนมุมมองเรื่อง patent cliff หรือ EPS ปีถัดไปไม่ถึงที่ตลาดคาด",
+    "<b>ชาร์จ M&A บิดเบือนงบ GAAP:</b> ชาร์จ Cidara $9.0B ($3.62/หุ้น) ใน Q1 2569 และขาดทุนต่อเนื่อง Q2 (−$0.54/หุ้น) ทำให้ EPS TTM เหลือ ~$1.27 — นักลงทุนต้องแยกแยะกำไรปกติออกจากรายการพิเศษ ไม่ใช้ EPS TTM ตรง ๆ",
+    "<b>IRA price-setting เริ่มกระทบ Keytruda ปี 2571:</b> Inflation Reduction Act (สหรัฐฯ) จะเริ่มกระบวนการกำหนดราคายา Medicare กับ Keytruda ซ้ำเติมแรงกดดันรายได้จาก biosimilar",
+    "<b>Gardasil อ่อนแอในจีน:</b> ความต้องการวัคซีน HPV (Gardasil) ในตลาดจีนชะลอตัวต่อเนื่อง กดดันหนึ่งในสินค้าหลักรองจาก Keytruda",
+    "<b>ความเสี่ยงจากดีล M&A ต่อเนื่อง:</b> การไล่ซื้อบริษัทเพื่อเติมพอร์ต (Cidara, Terns, Verona) เพิ่มความเสี่ยงด้าน integration และอาจกดดันงบดุล/เครดิตเรทติ้งหากทำต่อเนื่องในอัตราสูง"
+  ],
+  "extras": [],
+  "v2Display": {
+    "targets": [
+      null,
+      132.65,
+      null
+    ],
+    "rets": {
+      "texts": [
+        "−43.1% (capital) / −35.4% total",
+        "−9.7% (capital) / −2.0% total",
+        "+21.2% (capital) / +28.8% total"
+      ],
+      "neg": "−",
+      "perYear": "cagr",
+      "div": true
+    }
+  },
+  "_sig": "sha256:bf7efa31d5c9cc0c6d50e54fccb0af11e2e337909d56de43a1e2c130f8fcec91"
+}

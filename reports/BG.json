@@ -1,0 +1,293 @@
+{
+  "v": 3,
+  "symbol": "BG",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Bunge Global",
+    "exchange": "NYSE",
+    "sub": "Oilseed Processing • Grain Trading • Edible Oils • Sugar & Bioenergy • Viterra Integration (S. America/Black Sea/Canada)",
+    "headerTags": [
+      "Agribusiness / Oilseed Processing",
+      "Post-Viterra Merger"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis.com",
+      "Yahoo Finance",
+      "StockAnalysis Forecast"
+    ],
+    "themeLegacy": {
+      "accent": "#92400e",
+      "accentDark": "#78350f",
+      "darkGrad": "linear-gradient(135deg,#1a0f00 0%,#2a1800 60%,#1a0f00 100%)",
+      "glow": "rgba(146,64,14,0.25)",
+      "subColor": "#d99a54",
+      "headerMuted": "#de6712",
+      "verdictText": "#fff3e0",
+      "vcellLabel": "rgba(255,243,224,0.65)"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T11:54:28+07:00",
+      "v2Hash": "5857b5d78ee1"
+    }
+  },
+  "market": {
+    "px": 109,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          94.6
+        ],
+        [
+          "พ.ย.25",
+          96.07
+        ],
+        [
+          "ธ.ค.25",
+          89.08
+        ],
+        [
+          "ม.ค.26",
+          113.88
+        ],
+        [
+          "ก.พ.26",
+          120.65
+        ],
+        [
+          "มี.ค.26",
+          127.2
+        ],
+        [
+          "เม.ย.26",
+          127.07
+        ],
+        [
+          "พ.ค.26",
+          123.3
+        ],
+        [
+          "มิ.ย.26",
+          106.73
+        ],
+        [
+          "ก.ค.26",
+          106.23
+        ],
+        [
+          "ส.ค.26",
+          116.21
+        ],
+        [
+          "ก.ย.26",
+          109
+        ]
+      ],
+      "gridFmt": "v.toFixed(0)",
+      "dataFmt": "d[1].toFixed(2)"
+    },
+    "range52w": {
+      "lo": 76.01,
+      "hi": 134.87
+    }
+  },
+  "fundamentals": {
+    "eps": 5.13,
+    "dps": 2.88,
+    "bvps": 83.04,
+    "shares": 192120000,
+    "epsForward": 9.64,
+    "netIncome": 1007000000,
+    "revenue": 91800000000,
+    "grossMargin": 4.92,
+    "beta": 0.66,
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation (Mid-Cycle Adj. EPS)",
+      "inputs": {
+        "multiple": 12,
+        "multipleSource": "peer"
+      },
+      "override": {
+        "eps": 8.75,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "mid-cycle",
+      "family": "market"
+    },
+    {
+      "method": "evebitda",
+      "label": "EV/EBITDA (Mid-Cycle, ปรับ Net Debt แบบ Inventory-Backed)",
+      "inputs": {
+        "multiple": 8,
+        "multipleSource": "author"
+      },
+      "override": {
+        "ebitda": 2820000000,
+        "netDebt": 0,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "เฉลี่ย · เฉลี่ยกลางวัฏจักร FY2564–2567 $2.74B + EBITDA TTM ณ รอบประเมินก่อน $2.90B · Net Debt $16.27B ส่วนใหญ่ยังผูกกับสินค้าคงคลังที่ hedge แล้ว (ไม่ใช่ leverage เชิงโครงสร้าง) จึงปรับ Net Debt สุทธิเป็น ~$0 → Equity Value $22.56B ÷ 192.12M หุ้น · ⚠ ข้อจำกัด: EBITDA TTM ล่าสุดตาม StockAnalysis คือ $3.13B (ยังไม่ปรับเข้าขานี้ ถ้าปรับ ขานี้จะสูงขึ้นราว $122) และ EV/EBITDA ตามหนี้จริงตอนนี้ ~12.3x — การตัด Net Debt เป็น ~$0 เป็นสมมติฐานเชิงคุณภาพที่ตรวจซ้ำเชิงตัวเลขไม่ได้ จึงเป็นความไม่แน่นอนหลักของ FV",
+      "family": "market"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      {
+        "key": "peForward",
+        "tone": "pos"
+      },
+      "pbv",
+      {
+        "key": "netIncome",
+        "tone": "neu"
+      },
+      "eps",
+      "bvps",
+      "custom:0",
+      "revenue",
+      {
+        "key": "grossMargin",
+        "tone": "neu"
+      },
+      {
+        "key": "yield",
+        "tone": "pos"
+      },
+      {
+        "key": "beta",
+        "tone": "pos"
+      }
+    ],
+    "custom": [
+      {
+        "label": "ROE / อัตรากำไรสุทธิ",
+        "value": "7.18% / 1.10%",
+        "note": "ฟื้นตัวจากจุดต่ำ ยังต่ำกว่าค่าเฉลี่ยวัฏจักร",
+        "tone": "neu"
+      }
+    ],
+    "notes": {
+      "mcap": "~192.12 ล้านหุ้น (diluted)",
+      "pe": "(StockAnalysis, งวดถึง 30 มิ.ย. 2569)",
+      "peForward": "Consensus EPS FY2569E $9.64 (FY2026e)",
+      "eps": "StockAnalysis (รวม Q2 2569 แล้ว) — Yahoo $4.63 ยังไม่ sync งบใหม่ (ต่าง 9.7%)",
+      "bvps": "Equity ~$15.95B / 192.12M หุ้น",
+      "revenue": "โต +80.5% YoY (TTM) จากการรวม Viterra ตั้งแต่ ก.ค. 2568",
+      "yield": "{{dps}}/หุ้น — payout ~33% ของ mid-cycle EPS",
+      "beta": "ผันผวนต่ำกว่าตลาดโดยรวม"
+    },
+    "hint": "ข้อมูล ณ 21 ก.ย. 2569 — TTM ถึง มิ.ย. 2569 (Q2 2569 diluted EPS $3.47 ตาม StockAnalysis · งบไตรมาสถัดไปคาดออก 4 พ.ย. 2569)"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": -5,
+        "exitMultiple": 9,
+        "divCum": 8.6,
+        "desc": "วัฏจักรสินค้าเกษตรซบเซา + integration cost บานปลาย"
+      },
+      {
+        "growth": 5,
+        "exitMultiple": 12,
+        "divCum": 9,
+        "desc": "crush margin ฟื้นตัวปกติ + Viterra synergies เริ่มเห็นผล"
+      },
+      {
+        "growth": 10,
+        "exitMultiple": 15,
+        "divCum": 9.5,
+        "desc": "วัฏจักรขาขึ้น + Viterra synergies เต็มที่ + renewable diesel demand แรง"
+      }
+    ],
+    "exitDp": 0,
+    "baseOverride": {
+      "value": 8.75,
+      "why": "EPS ฐานฉากที่ผู้เขียนใช้"
+    },
+    "note": "หมายเหตุ: EPS ฐาน Mid-Cycle $8.75; Bear = $8.75×(0.95)³≈$7.50, Base = $8.75×(1.05)³≈$10.13, Bull = $8.75×(1.10)³≈$11.65 — ราคาเป้า = EPS ปีที่ 3 × P/E ออก + ปันผลรวม 3 ปี จากจุดเข้า {{px}} กรณี Base ให้ผลตอบแทนรวม {{scn.base.ret}} Bull Scenario (Viterra synergies เต็มที่ + วัฏจักรสินค้าเกษตรขาขึ้น) {{scn.bull.ret}} ขณะที่ Bear Scenario (วัฏจักรซบเซา + ต้นทุน integration บานปลาย) {{scn.bear.ret}}",
+    "hintNote": "(mid-cycle)"
+  },
+  "analyst": {
+    "target": 141.78,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "BG ฟื้นตัวในรอบปี จากจุดต่ำสุดของกราฟรายเดือน ~$89.08 (ธ.ค. 2568) ขึ้นมาแตะจุดสูงสุด ~$127.20 (มี.ค. 2569) ก่อนย่อลงมาที่ $106.73 (มิ.ย. 2569) แล้วฟื้นกลับมาปิดล่าสุดที่ {{px}} ผลตอบแทนรอบปีราว +22% (จากปลายกราฟเดือน ต.ค. 2568) แรงหนุนหลักคือกำไร TTM ที่เพิ่มขึ้นหลังงบ Q2 2569 (EPS ไตรมาสเดียว $3.47 ตาม StockAnalysis — ยังไม่ได้แยกว่ามีรายการพิเศษหรือไม่) และตลาดเริ่มมองข้ามต้นทุน integration ของดีล Viterra (ปิดดีล ก.ค. 2568) ไปสู่ช่วงที่ synergies เริ่มเห็นผล",
+    "valuation": "วิธี P/E ให้ค่าต่ำกว่า ({{fvLow}}) แบบอนุรักษนิยมโดยไม่รวมส่วนเพิ่มจาก Viterra synergies ที่ยังพิสูจน์ไม่เต็มที่ ส่วนวิธี EV/EBITDA ให้ค่าสูงกว่า ({{fvHigh}}) เพราะปรับ Net Debt ลงหลังตัดหนี้ที่ผูกกับสินค้าคงคลัง hedge แล้วออก ค่าเฉลี่ย 2 วิธี = {{fv}} ราคาปัจจุบัน {{px}} อยู่ในกรอบ FV ค่อนไปทางสูง (MOS {{mos}}) ที่มา: StockAnalysis.com (ราคา/EPS/EBITDA/งบดุล), Yahoo Finance (ราคา cross-check), stockanalysis.com/forecast (consensus EPS)",
+    "gauge": "ราคา {{px}} อยู่สูงกว่า Fair Value ({{fv}}) เล็กน้อย (MOS {{mos}}) และต่ำกว่าเป้าเฉลี่ย Analyst ที่ {{analyst.target}} ({{analyst.pct}}) (consensus Buy จาก 9 นักวิเคราะห์ตาม StockAnalysis/Yahoo) โซน MOS 20% อยู่ที่ {{mos20}} และ MOS 30% ที่ {{mos30}} ห่างจากราคาปัจจุบันพอสมควร นักลงทุนสาย value ที่ต้องการ margin of safety จริงต้องรอราคาย่อตัวลงมาระดับนั้น หรือรอกำไรฟื้นตัวเกินคาดต่อเนื่องในงบถัดไป (4 พ.ย. 2569)",
+    "mos": "ราคาปัจจุบันสูงกว่า Fair Value {{fv}} เล็กน้อย — ไม่มี Margin of Safety เหลือแล้ว ถือว่าใกล้เคียงมูลค่าเหมาะสม (fairly valued) ค่อนไปทางเต็มมูลค่า",
+    "verdictHeadline": "BG: กำไรฟื้นตัว — ราคาเหนือมูลค่าเหมาะสมเล็กน้อย MOS ติดลบ",
+    "verdictBody": "Bunge Global ฟื้นตัวราว +22% ในรอบปีหลังปิดดีลควบรวม Viterra (ก.ค. 2568) กำไรล่าสุด (Q2 2569 EPS $3.47) ดัน EPS TTM ขึ้นเป็น {{eps}} เมื่อ normalize เป็น Mid-Cycle EPS ~$8.75 (≈91% ของ consensus FY2026e $9.64) Fair Value จาก 2 วิธี (P/E 12x + EV/EBITDA ปรับหนี้แบบ inventory-backed) เฉลี่ยอยู่ที่ {{fv}} (กรอบ {{fvLow}}–{{fvHigh}}) ราคาปัจจุบัน {{px}} สูงกว่า Fair Value เล็กน้อย (MOS {{mos}}) ไม่เหลือ margin of safety สำหรับผู้ซื้อใหม่ ผู้ที่ถืออยู่แล้วอาจถือต่อรับปันผล 2.49% พร้อมติดตาม synergies Viterra ต่อเนื่อง ส่วนนักลงทุนสาย value ที่ต้องการ MOS ชัดเจนควรรอราคาย่อสู่โซน {{mos30}}–{{mos20}} ก่อนพิจารณาสะสมเพิ่ม (ขา EV/EBITDA มีความไม่แน่นอนสูง ดูหมวด 3)",
+    "strategy": "ราคาปัจจุบัน {{px}} อยู่สูงกว่า Fair Value ({{fv}}) เล็กน้อย และต่ำกว่าเป้าเฉลี่ย Analyst ({{analyst.target}}) มาก เหมาะสำหรับผู้ถือเดิมที่รอรับปันผลระหว่างที่ Viterra synergies ทยอยเห็นผล ส่วนนักลงทุนใหม่ที่ต้องการ margin of safety ชัดเจนกว่านี้ ระดับน่าสนใจคือช่วง {{mos20}} (MOS 20%) ถึง {{mos30}} (MOS 30%) — ควรติดตามงบ 4 พ.ย. 2569 เพื่อยืนยันว่ากำไรฟื้นตัวเข้าสู่ mid-cycle ตามคาดก่อนตัดสินใจเพิ่มสถานะ",
+    "disclaimerSources": "ที่มา: StockAnalysis.com (ราคา $115.58 ณ 18 ก.ย. 2569, EPS TTM $5.13 รวม Q2 2569 แล้ว, งบการเงิน/งบดุล — ยืนยัน 21 ก.ย. 2569), Yahoo Finance (ราคา $115.58, EPS TTM $4.63 ยังไม่ sync งบ Q2 2569 — ยืนยัน 21 ก.ย. 2569), stockanalysis.com/forecast (consensus EPS FY2569 $9.64, เป้าราคาเฉลี่ย $141.78, 9 นักวิเคราะห์), stockanalysis.com/statistics (shares 192.12M, BVPS $83.04, EBITDA TTM $3.13B)"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 2 วิธี — ใช้ Mid-Cycle Adj. EPS แทน EPS TTM ที่ถูกบิดเบือนจากดีล Viterra",
+    "chartHint": "ราคาปิดรายเดือน Yahoo Finance",
+    "disclaimerAssump": " Mid-Cycle Adj. EPS ($8.75) ซึ่งยังไม่มีผลจริงครบปี, P/E เป้าหมาย, EBITDA multiple และการปรับ Net Debt แบบ inventory-backed ซึ่งเป็นสมมติฐานเชิงคุณภาพ ราคาหุ้นมีความผันผวนสูงตามวัฏจักรสินค้าเกษตร ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ"
+  },
+  "catalysts": [
+    "<b>Viterra Synergies:</b> หลังปิดดีลควบรวม Viterra (ก.ค. 2568) BG ตั้งเป้า synergies ต้นทุน/รายได้รวมหลายร้อยล้านดอลลาร์ต่อปี จากเครือข่าย origination ที่ใหญ่ขึ้นในอเมริกาใต้ ทะเลดำ และแคนาดา",
+    "<b>Crush Margin ฟื้นตัว:</b> อัตรากำไรจากการสกัดถั่วเหลือง/คาโนลาเริ่มฟื้นตัวหลังจุดต่ำปี 2568 Consensus FY2026e EPS $9.64 และ FY2027e $11.34 (StockAnalysis) บ่งชี้ EPS เติบโตแรงเทียบ TTM {{eps}}",
+    "<b>Renewable Diesel/Biofuel Demand:</b> นโยบายพลังงานสะอาด (RFS, SAF) ในสหรัฐฯ และตลาดโลกหนุนดีมานด์น้ำมันพืช (ถั่วเหลือง/คาโนลา) เป็น feedstock ต่อเนื่อง BG มีเครือข่ายโรงสกัดขนาดใหญ่รองรับ",
+    "<b>Analyst Sentiment เชิงบวก:</b> Consensus 9 นักวิเคราะห์ระดับ Buy เป้าเฉลี่ย {{analyst.target}} ({{analyst.pct}}) — ใช้เป็นบริบทเท่านั้น ไม่ได้เป็นส่วนของ Fair Value",
+    "<b>โครงสร้างหนี้แบบ Inventory-Backed:</b> หนี้สินรวม $17.06B ส่วนใหญ่ยังผูกกับสินค้าคงคลังที่ hedge แล้ว ไม่ใช่ leverage เชิงโครงสร้างล้วน ลดความเสี่ยงด้าน solvency เทียบกับหนี้ปกติ (แม้หนี้สุทธิเพิ่มขึ้นจากปีก่อน)",
+    "<b>ปันผลสม่ำเสมอ:</b> {{dps}}/หุ้น yield 2.49% payout ~33% ของ mid-cycle EPS เหลือพื้นที่ปรับขึ้นได้เมื่อกำไรฟื้นตัวเต็มที่"
+  ],
+  "risks": [
+    "<b>ความผันผวนวัฏจักรสินค้าเกษตร:</b> กำไร BG อิงราคาธัญพืช/น้ำมันพืชและ crush spread โดยตรง สภาพอากาศ/ผลผลิตในอเมริกาใต้และทะเลดำผันผวนสูง อาจกดกำไรต่ำกว่าคาดมาก",
+    "<b>ความเสี่ยง Integration Viterra:</b> การรวมระบบ/บุคลากร/วัฒนธรรมองค์กรยังดำเนินอยู่ตั้งแต่ปิดดีล ก.ค. 2568 หากล่าช้าหรือ synergies ไม่เป็นไปตามเป้า อาจกดดันกำไรและราคาหุ้น",
+    "<b>กำไร GAAP ยังต่ำกว่า mid-cycle:</b> EPS TTM ~{{eps}} (P/E TTM ~{{pe}}x) เทียบ mid-cycle ที่ประเมิน ~$8.75 หากการฟื้นตัวช้ากว่า consensus FY2569 ($9.64) มูลค่าที่ประเมินไว้อาจสูงเกินจริง",
+    "<b>ความเสี่ยงนโยบายการค้า:</b> ธุรกิจ trading สินค้าเกษตรผูกกับความสัมพันธ์การค้าสหรัฐฯ-จีน ภาษีส่งออก และความไม่แน่นอนภูมิรัฐศาสตร์ (เช่น เส้นทางส่งออกธัญพืชทะเลดำ ภาษีส่งออกอาร์เจนตินา/บราซิล)",
+    "<b>หนี้สินรวมสูงในมูลค่าสัมบูรณ์:</b> แม้ส่วนใหญ่ผูกกับสินค้าคงคลัง แต่หนี้สุทธิ ~$16.3B เพิ่มขึ้นจากปีก่อนและสูงในมูลค่าสัมบูรณ์ หากราคาสินค้าเกษตรร่วงแรงฉับพลันอาจกระทบสภาพคล่อง working capital",
+    "<b>Valuation ใกล้ Fair Value:</b> ราคาบวกราว +22% ในรอบปี ปัจจุบันซื้อขายใกล้เคียง Fair Value เหลือ margin of safety จำกัดสำหรับนักลงทุนสาย value ที่เข้าใหม่"
+  ],
+  "extras": [],
+  "v2Display": {
+    "fv": 111.2,
+    "fvRange": [
+      105,
+      117.4
+    ],
+    "legValues": [
+      null,
+      117.4
+    ],
+    "targets": [
+      67.5,
+      121.56,
+      174.75
+    ],
+    "cards": {
+      "netIncome": {
+        "v": "~$1,007 M",
+        "d": "ฟื้นตัวจากจุดต่ำ หลังงบ Q2 2569 (EPS ไตรมาสเดียว $3.47)"
+      },
+      "grossMargin": {
+        "v": "4.92%",
+        "d": "margin บางตามธุรกิจ commodity trading"
+      }
+    }
+  },
+  "_sig": "sha256:68d5126688038344e919d2ffd05d8b3292411720c1678fdd56610db7e570f992"
+}

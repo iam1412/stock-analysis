@@ -1,0 +1,290 @@
+{
+  "v": 3,
+  "symbol": "TPR",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Tapestry, Inc.",
+    "exchange": "NYSE",
+    "sub": "Accessible luxury fashion • Coach (~89% revenue, handbags & accessories) • Kate Spade New York • North America & Greater China growth engine",
+    "headerTags": [
+      "Consumer Discretionary",
+      "Accessible Luxury Fashion"
+    ],
+    "analysisDate": "2026-09-22",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "StockAnalysis",
+      "Finviz"
+    ],
+    "themeLegacy": {
+      "accent": "#ac8b23",
+      "accentDark": "#826213",
+      "darkGrad": "linear-gradient(135deg,#2C1F08 0%,#1A1205 100%)",
+      "glow": "rgba(197,160,40,0.18)",
+      "subColor": "#E8C96A",
+      "headerMuted": "#a58c46",
+      "verdictText": "#FFF8E7",
+      "vcellLabel": "rgba(232,201,106,0.7)"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-22T01:46:25+07:00",
+      "v2Hash": "5816ab6bab78"
+    }
+  },
+  "market": {
+    "px": 113.88,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          109.82
+        ],
+        [
+          "พ.ย.25",
+          109.28
+        ],
+        [
+          "ธ.ค.25",
+          127.77
+        ],
+        [
+          "ม.ค.26",
+          126.91
+        ],
+        [
+          "ก.พ.26",
+          155.47
+        ],
+        [
+          "มี.ค.26",
+          141.11
+        ],
+        [
+          "เม.ย.26",
+          145.04
+        ],
+        [
+          "พ.ค.26",
+          145.46
+        ],
+        [
+          "มิ.ย.26",
+          146.38
+        ],
+        [
+          "ก.ค.26",
+          152.37
+        ],
+        [
+          "ส.ค.26",
+          123.39
+        ],
+        [
+          "ก.ย.26",
+          113.88
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 92.62,
+      "hi": 164.8
+    }
+  },
+  "fundamentals": {
+    "eps": 7.27,
+    "dps": 1.85,
+    "bvps": 3.47,
+    "shares": 199390000,
+    "netIncome": 1528000000,
+    "fcf": 1813000000,
+    "roe": 197.1,
+    "revenue": 8004000000,
+    "grossMargin": 76.6,
+    "netDebt": 2800000000,
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation (Normalized EPS)",
+      "inputs": {
+        "multiple": 12,
+        "multipleSource": "median5y"
+      },
+      "override": {
+        "eps": 6.99,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "มัธยฐาน P/E ย้อนหลัง FY2022–26 = 12.05x จาก StockAnalysis ratios; ตระกูลเดียวกับวิธีที่ 2",
+      "family": "market"
+    },
+    {
+      "method": "evebitda",
+      "label": "EV/EBITDA Valuation",
+      "inputs": {
+        "multiple": 9.3,
+        "multipleSource": "median5y"
+      },
+      "override": {
+        "ebitda": 2045000000,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "EBIT $1,865M = OpM 23.3% × รายได้ $8,004M + D&A ประมาณ $180M · มัธยฐาน FY2022–26 = 9.28x จาก StockAnalysis ratios; ตระกูลเดียวกับวิธีที่ 1",
+      "family": "market"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "custom:0",
+      "pbv",
+      "netIncome",
+      "eps",
+      {
+        "key": "fcf",
+        "tone": "pos"
+      },
+      "roe",
+      "revenue",
+      "grossMargin",
+      "yield",
+      {
+        "key": "netDebt",
+        "tone": "neu"
+      }
+    ],
+    "custom": [
+      {
+        "label": "Forward P/E",
+        "value": "14.45x",
+        "note": "epsFwd consensus ~$7.88 (ถอดจาก fwd P/E ของ StockAnalysis)"
+      }
+    ],
+    "notes": {
+      "mcap": "199.39M หุ้น",
+      "pbv": "BVPS ~{{bvps}} — ทุนบางจาก buyback ไม่ใช้เป็นขา FV",
+      "eps": "ฐาน normalized ที่ใช้ประเมินมูลค่า ~$6.99",
+      "roe": "ทุนบางจาก buyback หนัก — ไม่สะท้อนคุณภาพจริง",
+      "grossMargin": "Op. margin 23.3% TTM",
+      "yield": "{{dps}}/หุ้น/ปี"
+    },
+    "hint": "ข้อมูล TTM = FY2026 เต็มปี (ปิดงบ 13 ส.ค. 2569) ณ 22 ก.ย. 2569"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": -7,
+        "exitMultiple": 10,
+        "divCum": 5.55,
+        "desc": "margin เสื่อมกลับสู่ระดับปกติ 12–14%, Kate Spade ยังอ่อน, China ชะลอ"
+      },
+      {
+        "growth": 6,
+        "exitMultiple": 12,
+        "divCum": 5.75,
+        "desc": "Coach โต moderate ต่อเนื่อง margin ทรงตัวใกล้ระดับ normalized"
+      },
+      {
+        "growth": 16,
+        "exitMultiple": 15,
+        "divCum": 6,
+        "desc": "margin สูงคงอยู่ EPS โตเกิน consensus (~$7.88), ตัวคูณกลับไป 15x, Coach + China momentum แข็งแกร่ง"
+      }
+    ],
+    "exitDp": 0,
+    "baseOverride": {
+      "value": 6.99403,
+      "why": "EPS ฐานฉากถอดกลับจากราคาเป้าที่พิมพ์"
+    },
+    "note": "Scenario Base (+6%/ปี, P/E ออก 12x ตามมัธยฐานย้อนหลัง) ให้ผลตอบแทนรวม {{scn.base.ret}} จากราคาปัจจุบัน สะท้อนว่าราคาปัจจุบันได้ price-in ตัวคูณสูงกว่าอดีตไปแล้ว Bull case ต้องการ margin ปัจจุบัน (OpM 23.3%, NetM 19.1%) คงอยู่ต่อเนื่อง EPS โต 16%/ปี และตัวคูณ 15x ไม่ใช่แค่ effect ชั่วคราวจากการขาย Stuart Weitzman Bear case ที่ margin เสื่อมกลับสู่ระดับปกติ 12–14% พร้อม P/E ลดเหลือ 10x จากความผิดหวังของตลาด ให้ผลตอบแทนรวม {{scn.bear.ret}} การซื้อหุ้นคืนต่อเนื่อง (233M หุ้น FY2024 → 199.39M หุ้นปัจจุบัน) ช่วยหนุน EPS ต่อหุ้นแต่เพิ่มความเสี่ยงจาก leverage สูง (D/E 5.72x) ผลตอบแทนรวมปันผล 3 ปีอยู่ในช่วง ~$5.55–$6.00 (ประมาณ {{dps}}/หุ้น/ปี × 3 ปี + การเติบโตเล็กน้อย)",
+    "hintNote": "normalized ~$6.99 (TTM adj.)"
+  },
+  "analyst": {
+    "target": 166.5,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ราคา TPR ย่อลงต่อเนื่องหลังจุดสูง $152.37 (สิ้นเดือน ก.ค. 2569) มาที่ $123.39 (ส.ค.) และ {{px}} ปัจจุบัน แม้ EPS(dil) เติบโตก้าวกระโดดจาก $0.82 (FY2025) เป็น {{eps}} (FY2026/TTM) เพราะตลาดตีความว่า margin ที่พุ่งขึ้น (NetM 19.1% เทียบค่าเฉลี่ยปกติ 12–14%) ส่วนหนึ่งมาจากกำไรพิเศษจากการขาย Stuart Weitzman (ส.ค. 2568) ไม่ใช่ operating margin ที่ยั่งยืนทั้งหมด ตลอดรอบปีที่ผ่านมา (ต.ค. 2568 – ก.ย. 2569) ราคาให้ผลตอบแทนรวม ▲ +4.7% จากจุดต่ำ $109.28 (พ.ย. 2568) สู่จุดสูงสุด $155.47 (ก.พ. 2569) ก่อนย่อกลับมาที่ {{px}} กรอบ 52 สัปดาห์เต็ม $92.62–$164.80 กว้างกว่าที่เห็นในกราฟรายเดือน สะท้อนความผันผวนระหว่างวันที่สูง เส้นสีเขียว = มูลค่าเหมาะสม {{fv}} (ตัวคูณมัธยฐานย้อนหลัง 5 ปี บนฐาน normalized) — ราคาปัจจุบันซื้อขายเหนือเส้นนี้",
+    "valuation": "ทั้ง 2 วิธีให้ค่าในช่วง $81–$84 เฉลี่ย {{fv}} ซึ่งเป็นตัวคูณกำไรบนฐานเดียวกัน จึงนับเป็นตระกูลเดียว (single-family valuation) ราคาปัจจุบัน {{px}} ซื้อขาย premium เหนือ FV — ความไว: ถ้าใช้ P/E 15x แทนมัธยฐาน FV ขยับเป็น ~$105 (ราคายังสูงกว่า FV เพียงเล็กน้อย) แสดงว่าข้อสรุป \"ราคาไม่ถูก\" ไวต่อการที่ตลาดยอมจ่ายตัวคูณสูงกว่าอดีตต่อไป (P/E ย้อนหลังปี FY2026 19.3x, FY2025 98.8x จากกำไรต่ำผิดปกติ) EPS(dil) TTM จริง {{eps}} พุ่งขึ้นก้าวกระโดดจาก FY2025 ที่ต่ำผิดปกติ $0.82 (มีค่าใช้จ่ายพิเศษจากดีล Capri ที่ล้มไป) — ไม่ใช้ทั้งสองปีเป็นฐานตรงๆ แต่ปรับ NetM ให้สอดคล้องกับ operating margin ที่ดีขึ้นจริง (OpM 23.3% TTM สูงกว่าค่าเฉลี่ยปกติ FY2022–24 ~17.5% จาก mix Coach ที่แข็งแกร่งขึ้น + ลดความซับซ้อนหลังขาย Stuart Weitzman) แต่ตัดกำไรพิเศษออกจาก NetM conversion ได้ EPS normalized ~$6.99 เป็นฐานประเมินมูลค่า epsFwd consensus ~$7.88 (ถอดจาก fwd P/E 14.42x ของ StockAnalysis ซึ่งอาจเป็นปีงบถัดไป) สูงกว่าฐาน normalized $6.99 เล็กน้อย — ต้องติดตามผลประกอบการ 1–2 ไตรมาสถัดไปว่า margin ยืนได้จริง P/BV ~33.1x และ ROE 197.1% ไม่มีความหมายเชิงเปรียบเทียบ เพราะส่วนของผู้ถือหุ้นบางมากจากการซื้อหุ้นคืนต่อเนื่อง (233M หุ้น FY2024 → 199.39M หุ้นปัจจุบัน) — ใช้เป็นบริบทเท่านั้น ไม่ใช่ขา FV นักวิเคราะห์ให้ราคาเป้าเฉลี่ย {{analyst.target}} (StockAnalysis ณ 22 ก.ย. 2569) สูงกว่า FV ของเราชัดเจน — ใช้เป็นบริบทตรวจความสอดคล้องเท่านั้น ไม่เป็นขาของ FV ที่มาราคาเป้า: StockAnalysis (เป้าเฉลี่ย {{analyst.target}}, ก.ย. 2569)",
+    "gauge": "ราคาปัจจุบัน {{px}} อยู่สูงกว่ามูลค่าเหมาะสม {{fv}} — ไม่มี Margin of Safety โซน MOS 20% ({{mos20}}) และ MOS 30% ({{mos30}}) ยังห่างจากราคาปัจจุบันพอสมควร บ่งชี้ว่าตลาดยัง pricing ใน margin premium และตัวคูณที่สูงกว่ามัธยฐานย้อนหลัง เป้าเฉลี่ย Analyst {{analyst.target}} สูงกว่า FV ของเราชัดเจน สะท้อนมุมมองที่มองบวกกว่าเรื่องความยั่งยืนของ margin FY2026 การลงทุนที่ราคาปัจจุบันต้องการความเชื่อมั่นว่า margin ที่ดีขึ้น (OpM 23.3%) และตัวคูณระดับปัจจุบันจะคงอยู่ต่อเนื่อง",
+    "mos": "ราคาสูงกว่า Fair Value — ไม่มี Margin of Safety; ตลาดยัง price-in margin premium และตัวคูณที่สูงกว่ามัธยฐานย้อนหลัง (FV เป็นตระกูลเดียว ไวต่อตัวคูณ)",
+    "verdictHeadline": "Coach แข็งแกร่ง แต่งบ FY2026 มี margin ผิดปกติ — ราคาซื้อขาย Premium เหนือ Fair Value เมื่อใช้ตัวคูณมัธยฐานย้อนหลังบนฐาน normalize",
+    "verdictBody": "Tapestry ปิดงบ FY2026 เต็มปี (13 ส.ค. 2569) ด้วย EPS(dil) {{eps}} พุ่งจาก FY2025 ที่ต่ำผิดปกติ $0.82 — ก้าวกระโดดนี้ส่วนหนึ่งมาจาก operating margin ที่ดีขึ้นจริง (OpM 23.3%) และอีกส่วนจากกำไรพิเศษขาย Stuart Weitzman (ส.ค. 2568) เราจึงใช้ EPS normalized ~$6.99 เป็นฐานประเมินมูลค่า ได้ FV ~{{fv}} (ตัวคูณมัธยฐานย้อนหลัง 5 ปี — ตระกูลเดียว ไวต่อตัวคูณ) ต่ำกว่าราคาปัจจุบัน {{px}} Coach ยังเป็นแบรนด์หลักที่แข็งแกร่ง (~89% ของรายได้) แต่ Kate Spade ยังเป็นจุดอ่อน และ leverage สูง (D/E 5.72x) เป็นความเสี่ยง สำหรับราคาปัจจุบัน {{px}} นักลงทุนต้องการความเชื่อมั่นว่า margin ระดับสูงและตัวคูณระดับปัจจุบันจะคงอยู่ต่อเนื่อง เพื่อให้ได้ผลตอบแทนที่น่าพอใจ",
+    "strategy": "ราคาปัจจุบัน {{px}} เหนือ Fair Value — ไม่เหมาะสำหรับ value investor แบบ conservative; สำหรับ growth investor ที่เชื่อใน margin sustainability ของ Coach อาจทยอยสะสมได้แต่ต้อง monitor ผลประกอบการ 1-2 ไตรมาสถัดไปว่า margin ยืนได้จริง โซนเป้าหมายเหมาะสมสำหรับเพิ่มน้ำหนักคือ {{fv}} (FV) หรือ {{mos20}} (MOS 20%)",
+    "disclaimerSources": "แหล่งที่มา: Yahoo Finance (ราคา/กราฟ ณ {{priceDate}}), StockAnalysis.com (งบการเงิน/analyst targets), Finviz (metrics cross-verify), Tapestry IR / BusinessWire (FY2026 full-year earnings, 13 ส.ค. 2569), Caleres IR (Stuart Weitzman divestiture, ส.ค. 2568)"
+  },
+  "text": {
+    "valIntro": "เฉลี่ย 2 วิธี (ตัวคูณมัธยฐานย้อนหลังทั้งคู่) — ไม่ใช้ Justified P/BV (ทุนบางเกินไป) และไม่ใช้เป้านักวิเคราะห์เป็นขา",
+    "chartHint": "รายเดือน ต.ค. 2568 – ก.ย. 2569",
+    "disclaimerAssump": " P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ adj. EPS ในอนาคต"
+  },
+  "catalysts": [
+    "<b>Coach Brand Momentum:</b> Coach เติบโต 31% YoY ใน Q3 FY2026 ด้วย Gen Z customer acquisition strategy; แบรนด์แข็งแกร่งสุดในรอบทศวรรษ",
+    "<b>Greater China Expansion:</b> รายได้ China โต >30% YoY; ตลาดหรูราคาประหยัดในจีนมีศักยภาพสูงมาก เนื่องจากชนชั้นกลางจีนเติบโต",
+    "<b>Strategic Focus:</b> ขาย Stuart Weitzman ออกไปแล้ว (ส.ค. 2568) ทำให้ management โฟกัสเฉพาะ Coach + Kate Spade; ลด complexity",
+    "<b>Aggressive Buybacks:</b> จำนวนหุ้นลดจาก 233M (FY2024) เหลือ 199.39M ปัจจุบัน (-14%) หนุน EPS ต่อหุ้นโตเร็วกว่ากำไรสุทธิ; dividend {{dps}}/หุ้น (yield 1.61%)",
+    "<b>FY2026 Results Beat:</b> EPS(dil) จริง {{eps}} (+787% YoY จากฐานต่ำ FY2025 $0.82) OpM ขยายเป็น 23.3% จาก mix Coach ที่แข็งแกร่งขึ้น + operating leverage",
+    "<b>Tariff Resilience:</b> brand power ทำให้ pass-through pricing ได้บางส่วน; gross margin ยังแข็งแกร่ง 76%+"
+  ],
+  "risks": [
+    "<b>Kate Spade Decline:</b> รายได้ Kate Spade -10% YoY ใน Q3; brand positioning ไม่ชัดเจน ต้องใช้เงิน marketing + time เพื่อ turnaround",
+    "<b>High Valuation Premium:</b> ตัวคูณปัจจุบัน (TTM P/E ~15.8x, EV/EBITDA ~12.6x) สูงกว่ามัธยฐานย้อนหลัง 5 ปี (P/E 12.05x, EV/EBITDA 9.28x); ถ้า margin ไม่ยั่งยืนจะเห็น multiple + EPS compression พร้อมกัน",
+    "<b>Leverage สูง:</b> D/E 5.72x; หนี้สุทธิ $2.80B (หนี้ $3,956M เงินสด $1,152M); ถ้าดอกเบี้ยสูงต่อเนื่องหรือ FCF อ่อนแอจะกดดัน balance sheet",
+    "<b>Tariff & Trade Risk:</b> สินค้าจากจีน/เวียดนามถูก tariff กดดัน gross margin; Kate Spade เจอผลกระทบ 440bps ใน Q3",
+    "<b>China Geopolitical Risk:</b> รายได้ China สูง แต่ความตึงเครียด US-China อาจกระทบ consumer sentiment หรือ market access",
+    "<b>Consumer Spending Cycle:</b> accessible luxury ขึ้นกับ discretionary spending; ถ้าเศรษฐกิจถดถอย ผู้บริโภคอาจ trade down ไป mass market"
+  ],
+  "extras": [],
+  "v2Display": {
+    "fv": 83,
+    "fvRange": [
+      81,
+      84
+    ],
+    "targets": [
+      56,
+      100,
+      164
+    ],
+    "footer": "22 กันยายน 2569",
+    "cards": {
+      "pe": {
+        "v": "15.66x",
+        "d": "EPS(dil) TTM $7.27 (รวมกำไรพิเศษขาย SW)",
+        "op": "pxOverBase",
+        "base": 7.27
+      },
+      "netIncome": {
+        "v": "$1,528M",
+        "d": "Net margin 19.1% (สูงผิดปกติ)"
+      },
+      "fcf": {
+        "v": "$1,813M",
+        "d": "FCF/หุ้น ~$9.09"
+      },
+      "revenue": {
+        "v": "$8,004M",
+        "d": "+14.2% YoY"
+      },
+      "netDebt": {
+        "v": "$2.80B / 5.72x",
+        "d": "หนี้ $3,956M; เงินสด $1,152M"
+      }
+    }
+  },
+  "_sig": "sha256:921770c247a6c0ad93aad929551165356edc173b272c39b71ad247e95649c704"
+}

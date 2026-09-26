@@ -1,0 +1,290 @@
+{
+  "v": 3,
+  "symbol": "COF",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Capital One Financial",
+    "exchange": "NYSE",
+    "sub": "บัตรเครดิต Venture, Quicksilver, Savor • สินเชื่อรถยนต์ • ธนาคารรายย่อยดิจิทัล • เจ้าของเครือข่าย Discover Network (หลังควบรวม พ.ค. 2568)",
+    "headerTags": [
+      "Financials / Consumer Credit",
+      "Owned-Network Card Issuer"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis.com",
+      "Yahoo Finance",
+      "SEC 8-K (Q1 2026 earnings release)"
+    ],
+    "themeLegacy": {
+      "accent": "#d03027",
+      "accentDark": "#8f1a16",
+      "darkGrad": "linear-gradient(135deg,#4a0e0a 0%,#8f1a16 60%,#d03027 100%)",
+      "glow": "rgba(208,48,39,0.35)",
+      "subColor": "#fef9f8",
+      "headerMuted": "#fdf6f6",
+      "verdictText": "#fef9f8",
+      "vcellLabel": "#ffffff"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T12:37:21+07:00",
+      "v2Hash": "b09ef4945e43"
+    }
+  },
+  "market": {
+    "px": 200.2,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          219.99
+        ],
+        [
+          "พ.ย.25",
+          219.07
+        ],
+        [
+          "ธ.ค.25",
+          242.36
+        ],
+        [
+          "ม.ค.26",
+          218.93
+        ],
+        [
+          "ก.พ.26",
+          195.64
+        ],
+        [
+          "มี.ค.26",
+          182.43
+        ],
+        [
+          "เม.ย.26",
+          191.3
+        ],
+        [
+          "พ.ค.26",
+          187.93
+        ],
+        [
+          "มิ.ย.26",
+          200.62
+        ],
+        [
+          "ก.ค.26",
+          209.01
+        ],
+        [
+          "ส.ค.26",
+          214.51
+        ],
+        [
+          "ก.ย.26",
+          200.2
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 174.24,
+      "hi": 259.64
+    }
+  },
+  "fundamentals": {
+    "eps": 19.3,
+    "dps": 3.2,
+    "shares": 613484836,
+    "tbvps": 107.76,
+    "roe": 15,
+    "bank": {
+      "nim": 7.87
+    },
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation",
+      "inputs": {
+        "multiple": 7.8,
+        "multipleSource": "median5y",
+        "medianWindow": "FY2021–FY2024"
+      },
+      "family": "market"
+    },
+    {
+      "method": "ddm",
+      "label": "DDM / Gordon Growth",
+      "inputs": {
+        "g": 5,
+        "r": 9
+      },
+      "note": "payout ratio ต่ำ (~17%) ทำให้ DDM เป็นเพียง \"ฐานล่าง\" ไม่ใช่ตัวชี้วัดหลัก (กำไรส่วนใหญ่เก็บไว้ทำ buyback) · นับเป็น 1 เสียงร่วมกับ Justified P/TBV (ตระกูล r,g เดียวกัน)",
+      "family": "rg"
+    },
+    {
+      "method": "pbv",
+      "label": "Justified P/TBV",
+      "inputs": {
+        "g": 6,
+        "r": 10.5
+      },
+      "override": {
+        "bvps": 107.76,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "TBVPS",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "custom:0",
+      "ptbv",
+      "custom:1",
+      "custom:2",
+      "custom:3",
+      "roe",
+      "custom:4",
+      "custom:5",
+      "yield",
+      "nim"
+    ],
+    "custom": [
+      {
+        "label": "P/E (Adjusted, normalized)",
+        "value": "~{{pe}}x",
+        "note": "EPS adj. {{eps}} (คาดการณ์ FY2026, ตัด one-time)",
+        "tone": "neu"
+      },
+      {
+        "label": "กำไรสุทธิ Q1 FY2026",
+        "value": "$2.2B",
+        "note": "+57% YoY (รวม Discover เต็มไตรมาสแรก)"
+      },
+      {
+        "label": "EPS (TTM, GAAP)",
+        "value": "~$16.19",
+        "note": "GAAP diluted (StockAnalysis: NI $10.2B ÷ 630M หุ้น) · Yahoo แสดง $18.16 คนละฐาน · Q1 adj. EPS $4.42"
+      },
+      {
+        "label": "TBVPS",
+        "value": "~$107.76",
+        "note": "Tangible book value ต่อหุ้น ณ 31 มี.ค. 2569"
+      },
+      {
+        "label": "รายได้ Q1 2026",
+        "value": "$15.23B",
+        "note": "Domestic Card revenue margin 16.9%",
+        "tone": "neu"
+      },
+      {
+        "label": "Domestic Card charge-off",
+        "value": "5.10%",
+        "note": "−109 bps YoY (~ครึ่งจากพอร์ต Discover ดีขึ้น)"
+      }
+    ],
+    "notes": {
+      "mcap": "~613M หุ้น (เพิ่ม ~60% YoY จากดีล Discover)",
+      "ptbv": "(Q1 2569)",
+      "roe": "ROA ~1.6% — เป้าหมายหลัง synergy เต็มรูปแบบปี 2570",
+      "yield": "$0.80/ไตรมาส = {{dps}}/ปี, payout ~17% (ต่ำ เหลือ buyback)",
+      "nim": "Q1 2026, −39 bps QoQ (ฤดูกาล + เงินสดสูง)"
+    },
+    "hint": "หลังควบรวม Discover — ใช้ Adjusted EPS เป็นหลัก"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 0,
+        "exitMultiple": 6.5,
+        "divCum": 8.64,
+        "desc": "Integration สะดุด, credit loss พุ่งจากพอร์ต Discover, synergy ล่าช้า"
+      },
+      {
+        "growth": 7,
+        "exitMultiple": 7.8,
+        "divCum": 10.56,
+        "desc": "Synergy $2.5B ตามแผนปี 2570, credit quality ทรงตัว, NIM คงที่"
+      },
+      {
+        "growth": 12,
+        "exitMultiple": 13.1,
+        "divCum": 11.52,
+        "desc": "Discover Network ขยายปริมาณธุรกรรมเร่งตัว + re-rate multiple ตามโมเดล closed-loop แบบ AXP"
+      }
+    ],
+    "exitDp": 1,
+    "note": "Base case ({{scn.base.ret}} รวมปันผล 3 ปี, P/E ออกที่มัธยฐาน 7.8x) อิงกับแผน synergy รวม $2.5B (cost + revenue) ที่ฝ่ายบริหารตั้งเป้าให้เห็นผลเต็มที่ภายในปี 2570 พร้อมการย้ายพอร์ตบัตร Discover เข้าระบบ back-office ของ Capital One (เริ่ม ก.ค. 2569) และคุณภาพสินเชื่อที่ทรงตัว/ดีขึ้นต่อเนื่อง (charge-off ลดลง YoY) Bear case เกิดได้หากเศรษฐกิจถดถอย ผู้บริโภคกลุ่มความเสี่ยงสูง (subprime) ที่ Discover ถืออยู่มากกว่า COF เดิม ทำให้ credit loss เร่งตัวเร็วกว่าคาด Bull case ต้องอาศัย Discover Network ขยายปริมาณธุรกรรมจากผู้ค้ารายอื่น (ไม่ใช่แค่บัตร COF) และตลาดให้ premium multiple เทียบเท่า American Express closed-loop (P/E ออก 13.1x = สูงสุดที่วัดได้ FY2024 · Bear 6.5x = FY2022)",
+    "hintNote": "(adjusted)"
+  },
+  "analyst": {
+    "target": 258,
+    "n": 22,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ราคาขึ้นแตะจุดสูงสุดรอบปีที่ $242 ในเดือน ธ.ค. 2568 ก่อนร่วงแรงต่อเนื่องช่วง ม.ค.–มี.ค. 2569 ลงมาแตะจุดต่ำ $182.43 ในเดือน มี.ค. 2569 หลังตลาดกังวลต้นทุนควบรวม Discover ที่กดกำไร GAAP และรายงานผล Q1 2026 พลาดคาดการณ์ (adjusted EPS $4.42 ต่ำกว่าคาด $4.51) จากนั้นเริ่มฟื้นตัวช่วง เม.ย.–ส.ค. 2569 (ปิดเดือน ส.ค. ที่ $214.51) ตามความชัดเจนของแผนย้ายระบบบัตร Discover เข้าสู่แพลตฟอร์มของ Capital One ก่อนย่อลงในเดือน ก.ย. 2569 รวมทั้งปีราคาลดลง ~8.0% (รอบปี) แม้ปัจจัยพื้นฐานระยะยาว (Discover Network) จะแข็งแกร่งขึ้น",
+    "valuation": "FV = (P/E ตัวคูณมัธยฐาน $151 + ค่าเฉลี่ยตระกูล ROE/r,g ของ DDM $84 กับ Justified P/TBV $216 = $150) ÷ 2 = {{fv}} — 2 ตระกูลสมมติฐานอิสระ ถ่วงเสียงละเท่ากัน DDM กับ Justified P/TBV ใช้ (r,g) ชุดเดียวกันจึงนับเป็นเสียงเดียว ส่วน P/E ใช้ตัวคูณที่วัดจริงจากประวัติของ COF (มัธยฐาน 7.8x) ไม่ใช่ตัวคูณปัจจุบัน เป้าราคาเฉลี่ยนักวิเคราะห์ ($258, n=22) เป็นเพียงบริบทเทียบ ไม่ได้เป็นขาของ FV — ตัวคูณมัธยฐานมาจากช่วง FY2021–FY2024 ก่อนควบรวม Discover จึงอาจต่ำกว่าระดับที่ธุรกิจหลังควบรวมสมควรได้ (ประมาณการนี้ยังไม่ผ่านการยืนยันด้วยวิธีอื่น)",
+    "gauge": "ราคาปัจจุบัน {{px}} สูงกว่ามูลค่าเหมาะสม {{fv}} ราว 35% (MOS {{mos}}) — ตลาดตีราคาเหนือระดับที่ตัวคูณมัธยฐานย้อนหลังของ COF รองรับ และยังต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ ($258) ~22% ซึ่งสะท้อนมุมมองบวกต่อ synergy จาก Discover Network ที่ยังไม่เกิดเต็มที่",
+    "mos": "Margin of Safety ติดลบ — ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสมที่ประเมินจากตัวคูณมัธยฐานย้อนหลัง ยังไม่ใช่จุดเข้าสำหรับ value investor (ผลขึ้นกับสมมติฐานตัวคูณก่อนควบรวม — ถ้าตลาด re-rate ตามโมเดลเครือข่ายปิด FV จะสูงกว่านี้)",
+    "verdictHeadline": "COF — Discover moat มีจริง แต่ราคาสูงกว่ามูลค่าเหมาะสมเชิงประวัติ",
+    "verdictBody": "Capital One หลังควบรวม Discover Financial (พ.ค. 2568) กลายเป็นผู้เล่นบัตรเครดิตรายเดียวในสหรัฐฯ ที่เป็นเจ้าของเครือข่ายชำระเงินตัวเอง คล้าย American Express แต่ตัวเลข GAAP ยังบิดเบือนหนักจากต้นทุนควบรวม (purchase accounting + integration cost รวม ~$1.08/หุ้นต่อไตรมาส) ทำให้ต้องดู Adjusted EPS ($4.42/ไตรมาส, ~{{eps}}/ปี normalized) เป็นหลัก ที่ราคา {{px}} หุ้นเทรดที่ P/E adjusted ~{{pe}}x และ P/TBV 1.9x สูงกว่ามัธยฐาน P/E ย้อนหลัง 7.8x และสูงกว่ามูลค่าเหมาะสม {{fv}} ทำให้ Margin of Safety ติดลบ ({{mos}}) คุณภาพสินเชื่อกำลังดีขึ้นต่อเนื่อง (charge-off ลดลง YoY) แต่ยังต้องจับตา integration risk และความไม่แน่นอนของ synergy timeline ปี 2570",
+    "strategy": "รอสะสมช่วงราคาย่อลงมาใกล้โซน MOS 20% ({{mos20}}) หรือต่ำกว่า แทนการไล่ซื้อที่ราคาปัจจุบันซึ่ง MOS ติดลบ เหมาะกับนักลงทุนที่เชื่อมั่นในเรื่อง Discover Network synergy ระยะยาว (3–5 ปี) และรับความเสี่ยงด้าน integration/credit cycle ได้ ติดตามตัวเลข charge-off rate และความคืบหน้าการย้ายระบบบัตร Discover (เริ่ม ก.ค. 2569) เป็นตัวชี้วัดหลักทุกไตรมาส",
+    "disclaimerSources": "ข้อมูล ณ 21 ก.ย. 2569 จาก StockAnalysis.com, Yahoo Finance, SEC 8-K Q1 2026 Earnings Release (เป้านักวิเคราะห์ $258 จาก StockAnalysis/Yahoo) — ตัวเลข Adjusted EPS เป็นค่าประมาณ normalized ตัดต้นทุนควบรวม Discover ที่เป็น one-time"
+  },
+  "text": {
+    "valHint": "ถ่วงตามตระกูลสมมติฐาน (3 วิธี = 2 เสียง)"
+  },
+  "catalysts": [
+    "<b>Discover Network — moat ระยะยาว:</b> เป็นเครือข่ายชำระเงินของตัวเอง (เหมือน Visa/Mastercard) ทำให้ประหยัด interchange fee และเปิดรายได้ใหม่จากการรับ third-party issuer เข้าเครือข่าย คาดว่าเป็น synergy หลักระยะ 3–5 ปี",
+    "<b>Synergy เป้าหมาย $2.5B:</b> ผสมทั้ง cost synergy (รวมระบบ back-office, ปิดซ้ำซ้อน) และ revenue synergy (ปริมาณธุรกรรมเครือข่าย) คาดเห็นผลเต็มรูปแบบภายในปี 2570",
+    "<b>คุณภาพสินเชื่อดีขึ้นต่อเนื่อง:</b> Domestic Card charge-off ลดลง 109 bps YoY และ delinquency ลดลง 55 bps YoY สะท้อนวินัยการปล่อยสินเชื่อที่ดีทั้งพอร์ตเดิมและพอร์ต Discover",
+    "<b>Valuation เทียบ normalized EPS:</b> P/E adjusted ~{{pe}}x สูงกว่ามัธยฐานย้อนหลังของ COF (7.8x) แต่เปิดช่องให้ re-rate เมื่อตลาดเริ่มมองข้ามต้นทุนควบรวมชั่วคราว",
+    "<b>Buyback + เงินทุนแข็งแกร่ง:</b> CET1 ratio 14.4% สูงกว่าเกณฑ์ขั้นต่ำมาก เปิดทางให้ซื้อหุ้นคืนต่อเนื่องหลังลดหนี้จากดีล Discover"
+  ],
+  "risks": [
+    "<b>GAAP EPS บิดเบือนรุนแรง:</b> Purchase accounting (amortization ของพอร์ต Discover ที่ acquire มา $477M/ไตรมาส) + integration cost ($415M/ไตรมาส) ทำให้ GAAP EPS ต่ำกว่า adjusted (TTM GAAP $16.19 เทียบ adj. normalized ~{{eps}}) นักลงทุนที่ไม่ normalize อาจตีความผิด",
+    "<b>คุณภาพสินเชื่อ Discover เดิมอ่อนกว่า COF:</b> พอร์ต Discover มี charge-off rate สูงกว่าพอร์ตเดิมของ Capital One ในอดีต หากเศรษฐกิจถดถอยจะกดดันตัวเลข credit loss ของทั้งกลุ่มเร็วกว่าคาด",
+    "<b>Integration risk — เทคโนโลยี/ระบบ:</b> การย้ายบัญชี Discover เข้าระบบ back-office ของ COF (เริ่ม ก.ค. 2569, เสร็จสมบูรณ์ต้นปี 2571) มีความเสี่ยงด้าน operation/downtime/customer experience",
+    "<b>Synergy อาจล่าช้ากว่าแผน:</b> ประวัติการควบรวมธนาคารขนาดใหญ่มักใช้เวลานานกว่าที่ประกาศไว้ในตอนแรก และ regulatory scrutiny (Fed/OCC) อาจชะลอขั้นตอนบางส่วน",
+    "<b>อัตราดอกเบี้ยและวงจรเศรษฐกิจ:</b> NIM ลดลง 39 bps QoQ ใน Q1 2026 จากปัจจัยฤดูกาล+เงินสดสูง — ธุรกิจบัตรเครดิตอ่อนไหวสูงต่อการว่างงานและอัตราดอกเบี้ย",
+    "<b>หุ้นเจือจาง (dilution):</b> จำนวนหุ้นเพิ่มขึ้น ~60% YoY จากการจ่ายด้วยหุ้นให้ผู้ถือหุ้น Discover ทำให้ EPS ต่อหุ้นเติบโตช้ากว่ากำไรสุทธิรวมในระยะสั้น"
+  ],
+  "extras": [],
+  "v2Display": {
+    "fv": 150,
+    "fvRange": [
+      84,
+      216
+    ],
+    "targets": [
+      126,
+      184,
+      355
+    ],
+    "cards": {
+      "pe": {
+        "v": "~12.4x",
+        "d": "GAAP EPS TTM $16.19 ต่ำกว่า adj. เพราะต้นทุนควบรวม — ดู P/E adj. ด้านล่าง",
+        "op": "pxOverBase",
+        "base": 16.19
+      }
+    }
+  },
+  "_sig": "sha256:552d680d527d64cc112480d86c8f420da443373010405eea0d172ead7f8f7163"
+}

@@ -1,0 +1,297 @@
+{
+  "v": 3,
+  "symbol": "AFL",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Aflac Incorporated",
+    "exchange": "NYSE",
+    "sub": "Supplemental health insurance • Aflac Japan (~70% revenue, cancer & medical) • Aflac US (accident, hospital indemnity, disability) • \"Duck\" brand • Dividend Champion 42yr • ~5% annual buyback",
+    "headerTags": [
+      "Insurance",
+      "Supplemental Health"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "StockAnalysis.com",
+      "MarketBeat"
+    ],
+    "themeLegacy": {
+      "accent": "#E31837",
+      "accentDark": "#a01027",
+      "darkGrad": "linear-gradient(135deg,#1a0508 0%,#2d0812 50%,#1a0508 100%)",
+      "glow": "rgba(227,24,55,0.18)",
+      "subColor": "#f4aab5",
+      "headerMuted": "rgba(244,170,181,0.70)",
+      "verdictText": "#fce8eb",
+      "vcellLabel": "#b9818b"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T09:52:17+07:00",
+      "v2Hash": "2f84f9c57ab6"
+    }
+  },
+  "market": {
+    "px": 113.72,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          107.19
+        ],
+        [
+          "พ.ย.25",
+          110.31
+        ],
+        [
+          "ธ.ค.25",
+          110.27
+        ],
+        [
+          "ม.ค.26",
+          110.95
+        ],
+        [
+          "ก.พ.26",
+          112.93
+        ],
+        [
+          "มี.ค.26",
+          109.71
+        ],
+        [
+          "เม.ย.26",
+          113.67
+        ],
+        [
+          "พ.ค.26",
+          112.42
+        ],
+        [
+          "มิ.ย.26",
+          117.25
+        ],
+        [
+          "ก.ค.26",
+          127.48
+        ],
+        [
+          "ส.ค.26",
+          115.85
+        ],
+        [
+          "ก.ย.26",
+          113.72
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 105.43,
+      "hi": 130.22
+    }
+  },
+  "fundamentals": {
+    "eps": 7.56,
+    "dps": 2.44,
+    "bvps": 55.01,
+    "shares": 501343298,
+    "roe": 12.8,
+    "roa": 3.4,
+    "revenue": 18100000000,
+    "beta": 0.63,
+    "fy": {
+      "period": "FY2025",
+      "netIncome": 3650000000
+    },
+    "epsBasis": "adj-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation",
+      "inputs": {
+        "multiple": 13,
+        "multipleSource": "author"
+      },
+      "family": "market"
+    },
+    {
+      "method": "ddm",
+      "label": "DDM / Gordon Growth",
+      "inputs": {
+        "g": 5,
+        "r": 7.5
+      },
+      "note": "dividend champion ให้ใช้ r ต่ำกว่าตลาด",
+      "family": "rg"
+    },
+    {
+      "method": "pbv",
+      "label": "Justified P/BV",
+      "inputs": {
+        "g": 5,
+        "r": 9
+      },
+      "note": "r=9% สะท้อน FX risk",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "custom:0",
+      "pbv",
+      "netIncomeFy",
+      "eps",
+      "bvps",
+      "roe",
+      "revenue",
+      "custom:1",
+      "yield",
+      "beta"
+    ],
+    "custom": [
+      {
+        "label": "P/E เฉลี่ย ~5 ปี",
+        "value": "~13–15x",
+        "note": "ปัจจุบันแพงกว่า avg เล็กน้อย"
+      },
+      {
+        "label": "Benefit Ratio (Japan)",
+        "value": "~68%",
+        "note": "เบี้ยประกันสุทธิ vs ค่าสินไหม"
+      }
+    ],
+    "notes": {
+      "mcap": "~501M shares outstanding",
+      "pe": "Adj. EPS TTM {{eps}} (GAAP $9.37)",
+      "pbv": "BVPS ex-AOCI {{bvps}}",
+      "netIncomeFy": "Adj. EPS FY2025 = $7.49 (+3.9% YoY)",
+      "eps": "Q3'25–Q2'26 (adj.; GAAP diluted $9.37 รวมกำไรลงทุน)",
+      "bvps": "Jun 2026; adj. book value/share",
+      "roe": "incl. FX drag; ex-FX ROE ~16.4%",
+      "revenue": "Japan ~70% / US ~30%",
+      "yield": "{{dps}}/share TTM · Div Champion 42yr",
+      "beta": "ความผันผวนต่ำกว่าตลาดมาก"
+    },
+    "hint": "ข้อมูล ณ Q2 2026 (มิ.ย. 2569)"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 0,
+        "exitMultiple": 11,
+        "divCum": 7.3,
+        "desc": "JPY อ่อนต่อ, P/E compress"
+      },
+      {
+        "growth": 5,
+        "exitMultiple": 13,
+        "divCum": 8.1,
+        "desc": "buyback + US growth ช่วยหนุน EPS"
+      },
+      {
+        "growth": 9,
+        "exitMultiple": 15,
+        "divCum": 8.5,
+        "desc": "JPY ฟื้น + buyback เร่ง + US cross-sell"
+      }
+    ],
+    "exitDp": 0,
+    "note": "ในสถานการณ์ Base หุ้น AFL ให้ผลตอบแทน <b>+5.0%</b> ใน 3 ปี (total return รวมปันผล ~$8.1) ซึ่งต่ำเมื่อเทียบกับราคาปัจจุบันที่ premium — ชี้ว่า upside ในอนาคตจำกัด ความเสี่ยงหลักคือ JPY/USD: รายได้ญี่ปุ่น ~70% ในเยน เมื่อแปลงเป็น USD ในช่วง JPY อ่อนจะกดดัน EPS รายงาน ปัจจัยหนุน: Aflac buyback ~5%/ปี ทำให้ EPS/share เติบโตแม้กำไรรวม flat; dividend 42 ปีไม่เคยตัด ผู้ลงทุนระยะยาวที่เน้น income + quality อาจรับ Bull case ได้ถ้าเชื่อใน JPY recovery ใน 2-3 ปี"
+  },
+  "analyst": {
+    "target": 118.53,
+    "n": null,
+    "rating": "Hold",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "AFL ขึ้นมา <b>+8.5%</b> ในรอบ 12 เดือน จาก $107.19 (ต.ค. 2568) สู่ {{px}} (ก.ย. 2569) เริ่มต้นช่วงอ่อนตัวจากความกังวลเรื่อง FX (เยนอ่อน) ก่อนไต่ขึ้นต่อเนื่องถึงจุดสูงสุด $127.48 ในเดือน ก.ค. 2569 แล้วย่อลงมาราว 9% ใน ส.ค. หลังผลประกอบการ Q2 2026 ที่ adjusted EPS $1.75 (−1.7% YoY; ไม่รวม FX +1.1%) โปรแกรม buyback ยังต่อเนื่อง (หุ้นคงเหลือ ~501M ณ 30 มิ.ย. 2569) ราคาปัจจุบันอยู่เหนือมูลค่าเหมาะสม {{fv}} ทำให้ MOS ติดลบ",
+    "valuation": "ทั้ง 3 วิธีสอดคล้องกัน: P/E ให้ $98, DDM ให้ $102 และ Justified P/BV ให้ $107 (DDM กับ P/BV ใช้ (r,g) ชุดเดียวกัน จึงนับเป็นตระกูลเดียว: FV = (P/E $98 + เฉลี่ย DDM/P-BV $104.5)/2 ≈ $101) FV เฉลี่ย <b>$101</b> ต่ำกว่าราคาตลาด ({{px}}) ชี้ว่า AFL ซื้อขายที่ <b>premium ~15%</b> จาก fair value ราคาปัจจุบันสะท้อนความคาดหวังว่า JPY จะแข็งขึ้นและ buyback จะยังคงหนุน EPS consensus นักวิเคราะห์ 15 คน ให้ราคาเป้าเฉลี่ย {{analyst.target}} (Hold) — สูงกว่าราคาตลาดเล็กน้อย (+1.9%) แต่ยังสูงกว่า FV ที่คำนวณ",
+    "gauge": "AFL ซื้อขายที่ <b>{{px}}</b> เหนือ Fair Value {{fv}} ประมาณ 15% และใกล้เคียง consensus นักวิเคราะห์ที่ {{analyst.target}} ผู้ลงทุนที่เน้น Margin of Safety ควรรอโซน <b>{{mos30}}–{{mos20}}</b> (MOS 30–20%) ที่ราคาปัจจุบันยังไม่ถึง จุดซื้อ MOS 20% อยู่ที่ {{mos20}} และ MOS 30% อยู่ที่ {{mos30}} ซึ่งไกลจากระดับปัจจุบันมาก อย่างไรก็ดี Aflac มี quality สูง (dividend champion 42 ปี, buyback สม่ำเสมอ) จึงเหมาะกับ นักลงทุนระยะยาวที่รับ premium ได้หากมั่นใจใน JPY recovery thesis",
+    "mos": "ราคาสูงกว่ามูลค่าเหมาะสม — ยังไม่มี Margin of Safety · รอโซน {{mos30}}–{{mos20}} ก่อนเข้าซื้อ",
+    "verdictHeadline": "Aflac: คุณภาพสูง แต่ราคาตลาดแพงกว่า FV ~15% — รอโซน MOS 20–30%",
+    "verdictBody": "Aflac เป็นบริษัทประกันสุขภาพเสริมที่มีคุณภาพสูงและกระแสเงินสดมั่นคง ด้วยสถานะ Dividend Champion 42 ปีและ buyback เร่งรัด ~5%/ปี แต่ราคา {{px}} ณ ปัจจุบันสูงกว่า Fair Value {{fv}} ประมาณ 15% ทำให้ไม่มี Margin of Safety สำหรับผู้ลงทุนแนว value ความเสี่ยงหลักคือ FX (JPY/USD) ที่อาจกดดัน EPS USD ต่อไป consensus นักวิเคราะห์ 15 คนให้ Hold เป้า {{analyst.target}} <b>รอโซน {{mos30}}–{{mos20}}</b> (MOS 30–20%) สำหรับนักลงทุน value; ผู้เน้น quality income อาจ accumulate อย่างระมัดระวังที่ <$100",
+    "strategy": "รอโซน MOS 20% ที่ {{mos20}} สำหรับ value entry · ถ้าเน้น quality income อาจ accumulate ค่อยๆ <$100 · ปัจจัยเร่ง: JPY ฟื้นตัวหรือ buyback เร่งจะเปิดทาง bull case ที่ EPS $9-10 · รายงานอ้างอิงราคา Yahoo Finance และ StockAnalysis.com ณ {{priceDate}}",
+    "disclaimerSources": "แหล่งข้อมูล: Yahoo Finance (ราคา/กราฟ), StockAnalysis.com (งบการเงิน/นักวิเคราะห์), MarketBeat (consensus), SEC 8-K Ex-99.1 (adjusted EPS Q2 2026, FY2025), ราคา ณ {{priceDate}}"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 3 วิธี",
+    "chartHint": "ต.ค. 2568 – ก.ย. 2569"
+  },
+  "catalysts": [
+    "<b>JPY แข็งค่า:</b> ~70% รายได้มาจากญี่ปุ่น ทุก 1% JPY แข็งขึ้น = EPS USD เพิ่มขึ้น ~1.5% ตลาดคาด JPY จะฟื้นตัวในระยะกลาง",
+    "<b>Buyback เร่งรัด:</b> Aflac ลด shares outstanding ~5.5%/ปี (535M → ~501M หุ้นคงเหลือ) หนุน EPS/share โดยตรง แม้กำไรรวมทรงตัว",
+    "<b>Dividend Champion 42 ปี:</b> ปันผลเพิ่มต่อเนื่อง 42 ปี ทำให้ total return น่าสนใจในระยะยาว มั่นคงแม้ในวิกฤต",
+    "<b>Aflac US ขยายตัว:</b> กลุ่มประกันสุขภาพเสริม (supplemental) กำลังขยายตัว โดยเฉพาะ employer-paid benefits หลัง ACA ยังมีช่องว่างด้าน out-of-pocket ค่ารักษา",
+    "<b>Berkshire Hathaway ถือ ~20%:</b> Warren Buffett เชื่อมั่น Aflac ในฐานะ \"quality insurer\" ให้ความน่าเชื่อถือแก่นักลงทุน",
+    "<b>Japan Reinsurance ลดความเสี่ยง:</b> โปรแกรมถ่ายโอนความเสี่ยงให้ partner เพิ่มขึ้น ช่วยลดความผันผวนของ claims"
+  ],
+  "risks": [
+    "<b>FX Risk (JPY/USD):</b> ความเสี่ยงหลัก — JPY อ่อนในปี 2023–2025 กดดัน EPS USD อย่างมีนัย แม้กำไรในเยนดี ตราบใด JPY อ่อน ผลประกอบการ USD จะถูกกด",
+    "<b>ตลาดญี่ปุ่นอิ่มตัว:</b> Japan เป็นตลาดประกันเก่าแก่และมีการแข่งขันสูง อัตราการเติบโต premium ใหม่ชะลอตัว — growth ขึ้นกับ in-force policies และ pricing",
+    "<b>ความเสี่ยงกฎหมาย/สุขภาพ:</b> ถ้าการรักษาโรคมะเร็งในญี่ปุ่นเปลี่ยนไป (เช่น การรักษาขึ้นจาก immunotherapy) อาจกระทบ claims เพิ่มขึ้น",
+    "<b>P/E สูงกว่า avg:</b> ณ P/E {{pe}}x (adjusted) สูงกว่า avg ประวัติ ~13x — ถ้า earnings growth ชะลอหรือ FX กดดัน อาจเกิด P/E de-rating",
+    "<b>อัตราดอกเบี้ยต่ำ:</b> รายได้การลงทุน (investment income) ของ Aflac อาจถูกกดดันในสภาวะ rate ต่ำ กระทบ total earnings",
+    "<b>Population aging Japan:</b> ผู้เอาประกันสูงอายุขึ้น → claims สูงขึ้นในระยะยาว แต่ชดเชยบางส่วนด้วยเบี้ยสะสม"
+  ],
+  "extras": [],
+  "v2Display": {
+    "fv": 101,
+    "fvRange": [
+      98,
+      107
+    ],
+    "targets": [
+      83,
+      114,
+      147
+    ],
+    "gauge": [
+      {
+        "ref": "mos30",
+        "label": "MOS 30%"
+      },
+      {
+        "ref": "mos20",
+        "label": "MOS 20%"
+      },
+      {
+        "ref": "fv",
+        "label": "Fair Value"
+      },
+      {
+        "ref": "analystTgt",
+        "label": "เป้าเฉลี่ย Analyst"
+      },
+      {
+        "text": "$130",
+        "label": "กรอบบน"
+      }
+    ],
+    "rets": {
+      "texts": [
+        "−20.6%",
+        "+7.4%",
+        "+36.7%"
+      ],
+      "neg": "−",
+      "perYear": "cagr",
+      "div": true
+    }
+  },
+  "_sig": "sha256:212783a125eb045d8f4919b40adf4595982bcf59e9857564fcbfc0e48ed7716c"
+}

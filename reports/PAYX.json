@@ -1,0 +1,255 @@
+{
+  "v": 3,
+  "symbol": "PAYX",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Paychex, Inc.",
+    "exchange": "NASDAQ",
+    "sub": "Payroll processing • Benefits admin • HR services • PEO (Professional Employer Organization) • Time & attendance • 401(k)/retirement services • ลูกค้าหลักคือธุรกิจขนาดเล็ก-กลาง (SMB) 1–1,000 คน",
+    "headerTags": [
+      "Payroll & HR Services",
+      "SMB-focused"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "StockAnalysis.com",
+      "บริษัท (8-K",
+      "press release FY2026 Q4)"
+    ],
+    "themeLegacy": {
+      "accent": "#ea690c",
+      "accentDark": "#a74e00",
+      "darkGrad": "linear-gradient(135deg,#451f00 0%,#7c3b00 50%,#aa4c07 100%)",
+      "glow": "rgba(244,121,32,0.35)",
+      "subColor": "#ffead8",
+      "headerMuted": "#f6ece5",
+      "verdictText": "#ffebda",
+      "vcellLabel": "#fffbf7"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T22:32:04+07:00",
+      "v2Hash": "79cc1e831469"
+    }
+  },
+  "market": {
+    "px": 101.37,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          117.03
+        ],
+        [
+          "พ.ย.25",
+          111.69
+        ],
+        [
+          "ธ.ค.25",
+          112.18
+        ],
+        [
+          "ม.ค.26",
+          103.13
+        ],
+        [
+          "ก.พ.26",
+          93.65
+        ],
+        [
+          "มี.ค.26",
+          92.12
+        ],
+        [
+          "เม.ย.26",
+          92.63
+        ],
+        [
+          "พ.ค.26",
+          96.98
+        ],
+        [
+          "มิ.ย.26",
+          98.33
+        ],
+        [
+          "ก.ค.26",
+          116.84
+        ],
+        [
+          "ส.ค.26",
+          127.34
+        ],
+        [
+          "ก.ย.26",
+          101.37
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 85.45,
+      "hi": 132.87
+    }
+  },
+  "fundamentals": {
+    "dps": 4.76,
+    "bvps": 10.5,
+    "shares": 355980473,
+    "peAvg5y": 27,
+    "opMargin": 39.5,
+    "eps": 4.89,
+    "roe": 45,
+    "roa": 12,
+    "revenue": 6510000000,
+    "beta": 0.82,
+    "fy": {
+      "period": "FY26",
+      "eps": 5.51
+    },
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation",
+      "inputs": {
+        "multiple": 27,
+        "multipleSource": "median5y"
+      },
+      "note": "27.0x คือมัธยฐานย้อนหลัง 5 ปีงบ (FY2022–26: 31.5x, 27.0x, 25.6x, 30.9x, 23.4x = ราคาเฉลี่ยรายปี ÷ EPS ปีนั้น) มาจากประวัติ ไม่ได้ลอกจาก P/E ปัจจุบัน (~23.75x)",
+      "family": "market"
+    },
+    {
+      "method": "ddm",
+      "label": "DDM / Gordon Growth",
+      "inputs": {
+        "g": 4.5,
+        "r": 8.3
+      },
+      "note": "beta ต่ำ 0.82 · r/g เป็นสมมติฐานของเรา; payout ~97% GAAP ทำให้ g สูงกว่า EPS โตได้ยาก",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "peAvg5y",
+      "pbv",
+      {
+        "key": "opMargin",
+        "tone": "pos"
+      },
+      "eps",
+      "epsFy",
+      "roe",
+      "revenue",
+      "custom:0",
+      "yield",
+      "beta"
+    ],
+    "custom": [
+      {
+        "label": "Float Income (FY26)",
+        "value": "$210.9M",
+        "note": "~3.2% ของรายได้ • คาด FY27 ลดเหลือ $195–205M (Fed cut)"
+      }
+    ],
+    "notes": {
+      "pe": "ต่ำกว่าค่าเฉลี่ย 5 ปี (~27x)",
+      "peAvg5y": "FY2022–26 ช่วง 23.4–31.5x (ราคาเฉลี่ยรายปี ÷ EPS)",
+      "pbv": "BVPS ~{{bvps}} (buyback ดันสูง)",
+      "opMargin": "FY26 GAAP (ลดจาก 41.8% เพราะ Paycor) • Adj. margin 43.2% — สูงกว่า ADP ~30%",
+      "eps": "diluted, 4 ไตรมาสล่าสุดถึง พ.ค. 69",
+      "epsFy": "+11% YoY (ไม่รวม one-time/integration cost)",
+      "roe": "โครงสร้าง asset-light, buyback ดัน ROE สูง",
+      "revenue": "+17% YoY (รวม Paycor เต็มปีแรก)",
+      "yield": "payout ~97% ของ GAAP EPS • เพิ่มต่อเนื่อง ~10%/ปี (10y avg)",
+      "beta": "ผันผวนต่ำกว่าตลาด"
+    },
+    "hint": "FY สิ้นสุด พ.ค. 2569 (May FYE) + TTM"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": -2,
+        "exitMultiple": 18,
+        "divCum": 14.28,
+        "desc": "SMB recession, Gusto/Rippling แย่ง share ต่อเนื่อง, float income หดตาม Fed cut"
+      },
+      {
+        "growth": 7,
+        "exitMultiple": 22,
+        "divCum": 15.76,
+        "desc": "ตาม FY27 guide (adj. EPS +7–9%), synergy Paycor ทยอยรับรู้, PEO โตต่อ 6–7%"
+      },
+      {
+        "growth": 11,
+        "exitMultiple": 25,
+        "divCum": 16.69,
+        "desc": "AI HR assistant upsell สำเร็จ, SMB hiring ฟื้นตัว, multiple re-rate กลับใกล้ค่าเฉลี่ยเดิม"
+      }
+    ],
+    "exitDp": 0,
+    "note": "สมมติฐานอิงกับ guidance ของบริษัท (FY27: รายได้ +5–6%, adj. EPS +7–9%) เป็นฐาน — Bear/Bull ปรับตามความเสี่ยง SMB cycle และการแข่งขันจาก payroll/HR startup"
+  },
+  "analyst": {
+    "target": 121,
+    "n": null,
+    "rating": "Hold",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ราคาไหลลงจาก ~$117 (ต.ค. 2568) ต่อเนื่องถึงจุดต่ำ ~$92 (มี.ค. 2569) จากความกังวลเรื่อง การชะลอตัวของ SMB hiring, การแข่งขันจาก Gusto/Rippling ในกลุ่มลูกค้าเล็ก, และแรงกดดันจาก float income ที่คาดว่าจะลดลงตาม Fed rate cut จากนั้นดีดขึ้นไปจุดสูง ~$127 (ส.ค. 2569 ตามข้อมูลรายเดือน) หลัง Paychex รายงานผล Q4/FY2026 ที่ดีกว่าคาด (adj. EPS +11%, synergy จาก Paycor เกินเป้า) แล้วปรับลงมาที่ {{px}} ณ ปลายกราฟ — ยังต่ำกว่าจุดสูง 52 สัปดาห์ ($132.87) และสูงกว่าจุดต่ำสุดของปีพอสมควร",
+    "valuation": "FV เฉลี่ยจากวิธี P/E (มัธยฐานย้อนหลัง 27.0x) และ DDM (สองตระกูลแยกกัน) ได้ {{fv}} — ปรับโครงสร้างรอบนี้: เดิมใช้ P/E เป้าหมาย 22x (ไม่มีมัธยฐานรองรับ) ตอนนี้ใช้มัธยฐานที่วัดจริง ความไว: ถ้า P/E ขาแรกเป็น 22x แทน ขา P/E = $107.58 และ FV ≈ $119.19 (ส่วนต่างจากราคาแทบหายไป) — ผลจึงไวต่อสมมติฐาน P/E; ช่วงมัธยฐานกว้าง 23.4–31.5x เช็คเพิ่มเติมด้วย Justified P/BV = (ROE 45% − g 6%)/(r 11% − g 6%) ≈ 7.8x × BVPS {{bvps}} ≈ $81.90 — ต่ำกว่ามากเพราะ BVPS ถูกกดจาก buyback สะสมหลายปี (ROE สูงผิดปกติเทียบ book ที่เหลือน้อย) จึงไม่นำมารวมเฉลี่ย ใช้เป็นแค่กรอบล่างเชิงทฤษฎีเท่านั้น — เป้านักวิเคราะห์เฉลี่ย $121 (Hold, 14 สำนัก) เป็นแค่บริบทเทียบ ไม่ใช่ขาของ FV และ FV ของเราสูงกว่าเป้านั้น",
+    "gauge": "ราคาปัจจุบัน {{px}} อยู่ระหว่างโซน MOS 20% ({{mos20}}) กับมูลค่าเหมาะสม ({{fv}}) — มี margin of safety ราว {{mos}} ใกล้เป้าเฉลี่ยนักวิเคราะห์ ($121, การจัดอันดับหลักคือ Hold) — FV ของเราสูงกว่าเป้านั้น จึงควรอ่านด้วยความระมัดระวัง",
+    "mos": "MOS ระดับปานกลาง — ราคาต่ำกว่ามูลค่าเหมาะสมพอสมควร แต่ยังไม่ถึงระดับ \"ถูกมาก\"",
+    "verdictHeadline": "PAYX — Duopoly payroll คู่กับ ADP แต่ margin สูงกว่า, ราคาต่ำกว่าจุดสูง 52 สัปดาห์ ~13% เปิดโอกาส MOS ปานกลาง",
+    "verdictBody": "Paychex เป็นหนึ่งในสองผู้เล่นหลักตลาด payroll/HR services สหรัฐฯ (คู่กับ ADP) แต่โฟกัสกลุ่มลูกค้า SMB ซึ่งทำให้มี operating margin สูงกว่า ADP อย่างชัดเจน (Adj. margin 43.2% vs ADP ~30%) ธุรกิจมี switching cost สูงสำหรับลูกค้า SMB ที่ไม่มีทีม IT/HR ภายใน ทำให้ retention สูงต่อเนื่อง ปีที่ผ่านมาราคาหุ้นย่อลงแรงถึงต่ำ ~$92 (มี.ค. 2569) จากความกังวลเรื่องการเติบโตชะลอตัวและการแข่งขันจาก payroll startup อย่าง Gusto/Rippling ในกลุ่ม micro-SMB ก่อนฟื้นตัวหลังงบ FY2026 แต่ผลประกอบการ FY2026 ยังแข็งแกร่ง (adj. EPS +11%, synergy Paycor เกินเป้า) ทำให้ valuation ปัจจุบันที่ P/E ~23.75x ต่ำกว่าค่าเฉลี่ยระยะยาวพอสมควร FV ประเมินที่ {{fv}} ให้ MOS ~{{mos}} (ไวต่อ P/E ขาแรก: ที่ 22x MOS แทบหายไป) — เป็นระดับที่น่าสนใจสำหรับนักลงทุนสาย income/dividend growth มากกว่าสาย deep-value",
+    "strategy": "เหมาะกับการทยอยสะสมที่ราคาปัจจุบันถึงโซน MOS 20% ({{mos20}}) สำหรับนักลงทุนที่เน้นปันผล (yield ~4.1% + growth streak) มากกว่าการเข้าซื้อเต็มไม้ที่ราคาเดียว — เฝ้าดูทิศทาง SMB hiring และการแข่งขันจาก Gusto/Rippling เป็นตัวชี้วัดหลักของ upside ต่อจากนี้",
+    "disclaimerSources": "ข้อมูล: Yahoo Finance, StockAnalysis.com, Paychex 8-K/press release (FY2026 Q4, 24 มิ.ย. 2569)"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 2 วิธีหลัก (คนละตระกูล) + เช็คด้วย P/BV",
+    "chartHint": "(รายเดือน, ต.ค. 2568 – ก.ย. 2569)"
+  },
+  "catalysts": [
+    "<b>AI HR Assistant upsell:</b> Paychex ผลัก AI-powered HR tools (compliance, recruiting, analytics) เป็น upsell margin สูงให้ฐานลูกค้า SMB เดิม",
+    "<b>PEO growth ต่อเนื่อง:</b> PEO & Insurance Solutions โต 9% YoY (Q4 FY26) คาดโตต่อ 6–7% ใน FY27 — high-margin, sticky segment",
+    "<b>Paycor synergy เกินเป้า:</b> ประหยัดต้นทุนรวมกว่า $100M จากดีล Paycor (เม.ย. 2568) เร็วกว่าแผน หนุน margin ขยายต่อ",
+    "<b>401(k)/benefits expansion:</b> คู่ค้า retirement services เป็นอีกช่องทาง cross-sell margin สูง ใช้ประโยชน์จากฐานลูกค้า SMB กว่า 745,000 ราย",
+    "<b>Dividend growth streak:</b> เพิ่มปันผลต่อเนื่องเฉลี่ย ~10%/ปี ใน 10 ปีที่ผ่านมา ดึงดูดนักลงทุนสาย income"
+  ],
+  "risks": [
+    "<b>Gusto/Rippling แย่ง SMB:</b> คู่แข่ง cloud-native เจาะกลุ่มธุรกิจเล็กมาก (micro-SMB) ด้วยราคาถูกกว่าและ UX ทันสมัยกว่า กดดัน pricing power ระยะยาว",
+    "<b>SMB cyclicality:</b> ฐานลูกค้า SMB อ่อนไหวต่อ recession/สภาพเศรษฐกิจสูงกว่า Enterprise — hiring ชะลอ = worksite employee/checks ต่อ client ลด",
+    "<b>Float income sensitivity:</b> รายได้ดอกเบี้ยจากเงินฝากลูกค้า (float) มีสัดส่วน ~3% ของรายได้แต่ margin สูง — Fed cut ต่อเนื่องกดรายได้ส่วนนี้ให้ลดจาก $210.9M เหลือ $195–205M ใน FY27",
+    "<b>Payout ratio สูง (~97% ของ GAAP EPS):</b> พื้นที่เพิ่มปันผลจำกัดถ้า EPS โตช้าลงกว่าคาด — ความเสี่ยงต่อ dividend growth streak ในระยะยาว",
+    "<b>Integration risk Paycor:</b> แม้ synergy เกินเป้าแล้ว แต่การรวมระบบ/ทีมขาย/ลูกค้าเดิมยังมีความเสี่ยง churn หรือ disruption ระยะสั้น"
+  ],
+  "extras": [],
+  "v2Display": {
+    "fv": 131.41,
+    "fvRange": [
+      130.79,
+      132.03
+    ],
+    "legValues": [
+      null,
+      130.79
+    ],
+    "footer": "21 ก.ย. 2569 (ราคาปิด 18 ก.ย.)"
+  },
+  "_sig": "sha256:4666a57373df47c62220d5433e02a9b563685367c1c2119a5f0469e124422b45"
+}

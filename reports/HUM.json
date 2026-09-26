@@ -1,0 +1,302 @@
+{
+  "v": 3,
+  "symbol": "HUM",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Humana Inc.",
+    "exchange": "NYSE",
+    "sub": "Largest pure-play Medicare Advantage insurer (~90% MA membership) • MA utilization crisis 2024–2025 → MLR spike, EPS collapse • 2026 CMS rate +5.06% + 2027 rate +5% (effective) → recovery path • Benefit redesign underway • Stars ratings recovery critical • Value-based care via CenterWell",
+    "headerTags": [
+      "Healthcare / Managed Care",
+      "Medicare Advantage"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "StockAnalysis.com",
+      "MarketBeat"
+    ],
+    "themeLegacy": {
+      "accent": "#007B5F",
+      "accentDark": "#005540",
+      "darkGrad": "linear-gradient(135deg,#003D2E 0%,#00261D 100%)",
+      "glow": "rgba(0,123,95,0.35)",
+      "subColor": "#00C896",
+      "headerMuted": "#00bb8d",
+      "verdictText": "#00F5BC",
+      "vcellLabel": "#05cd9b"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-21T14:53:54+07:00",
+      "v2Hash": "d34ec94eff15"
+    }
+  },
+  "market": {
+    "px": 397.93,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          278.19
+        ],
+        [
+          "พ.ย.25",
+          245.77
+        ],
+        [
+          "ธ.ค.25",
+          256.13
+        ],
+        [
+          "ม.ค.26",
+          195.2
+        ],
+        [
+          "ก.พ.26",
+          190.54
+        ],
+        [
+          "มี.ค.26",
+          173.39
+        ],
+        [
+          "เม.ย.26",
+          236.44
+        ],
+        [
+          "พ.ค.26",
+          305.42
+        ],
+        [
+          "มิ.ย.26",
+          397.22
+        ],
+        [
+          "ก.ค.26",
+          363.86
+        ],
+        [
+          "ส.ค.26",
+          383.23
+        ],
+        [
+          "ก.ย.26",
+          397.93
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 163.11,
+      "hi": 428.88
+    }
+  },
+  "fundamentals": {
+    "eps": 10.59,
+    "dps": 3.54,
+    "bvps": 154.75,
+    "shares": 120080308,
+    "epsForward": 16.57,
+    "roe": 6.9,
+    "roa": 2.7,
+    "fy": {
+      "period": "FY2025",
+      "revenue": 129700000000
+    },
+    "epsBasis": "adj-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E มัธยฐาน × EPS TTM",
+      "inputs": {
+        "multiple": 24.3,
+        "multipleSource": "median5y"
+      },
+      "note": "24.3x = มัธยฐาน 5 ปีของ HUM เอง (ราคาเฉลี่ยรายปี ÷ EPS diluted FY2021–FY2025: 18.7x / 21.5x / 24.3x / 33.0x / 26.8x) มาจากประวัติ ไม่ได้มาจาก P/E ปัจจุบัน · ตระกูล P/E",
+      "family": "market"
+    },
+    {
+      "method": "pe",
+      "label": "P/E มัธยฐาน × EPS FY2026E (ตระกูลเดียวกับข้อ 1 — นับเป็น 1 เสียง)",
+      "inputs": {
+        "multiple": 24.3,
+        "multipleSource": "median5y",
+        "base": "epsForward"
+      },
+      "override": {
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2",
+        "epsForward": 9.15
+      },
+      "baseLabel": "FY2026E consensus",
+      "note": "FY2026E consensus จาก StockAnalysis · ตัวคูณมัธยฐานเดียวกับข้อ 1 ต่างที่ฐาน EPS (ปีงบถัดไปที่ยังไม่ปิด ใกล้ guidance ≥$9.00) จึงเป็นตระกูลสมมติฐานเดียวกัน ไม่ใช่การยืนยันอิสระ",
+      "family": "market"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      {
+        "key": "peForward",
+        "tone": "none"
+      },
+      "pbv",
+      {
+        "key": "revenueFy",
+        "tone": "none"
+      },
+      "custom:0",
+      "custom:1",
+      {
+        "key": "roe",
+        "tone": "none"
+      },
+      "custom:2",
+      "custom:3",
+      "yield",
+      "custom:4"
+    ],
+    "custom": [
+      {
+        "label": "Adj. EPS 2025 (actual)",
+        "value": "$17.14",
+        "note": "ลดจากพีค $25 ปี 2022 (MLR spike)",
+        "tone": "pos"
+      },
+      {
+        "label": "Adj. EPS 2026 (guidance)",
+        "value": "≥$9.00",
+        "note": "Stars headwind $3.5B กดกำไรครึ่ง",
+        "tone": "neg"
+      },
+      {
+        "label": "Medical Benefit Ratio",
+        "value": "~90.4%",
+        "note": "2025 actual | Q1 2026: ~89.4% ยังสูง",
+        "tone": "neg"
+      },
+      {
+        "label": "MA Membership",
+        "value": "7.1M คน",
+        "note": "+22% YoY (Q1 2026) — เติบโตแรง",
+        "tone": "pos"
+      },
+      {
+        "label": "EV/Revenue",
+        "value": "0.41x",
+        "note": "Managed care ปกติ 0.3-0.5x"
+      }
+    ],
+    "notes": {
+      "mcap": "120.1M shares outstanding",
+      "pe": "GAAP EPS TTM {{eps}} (ยังถูกกดจาก MLR/Stars)",
+      "peForward": "ราคา ÷ EPS FY2027E $16.57 (SA/Yahoo consensus)",
+      "pbv": "| P/S 0.34x",
+      "roe": "กดต่ำจากกำไรวิกฤต | ปกติ 15-20%+",
+      "yield": "| Ex-div 26 มิ.ย. 2569"
+    },
+    "hint": "ข้อมูล ณ 21 ก.ย. 2569 — EPS TTM {{eps}} (GAAP diluted) · FY2026E $9.15 · FY2027E $16.57 (SA consensus) · guidance 2026 adj. ≥$9.00 (Stars headwind)"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 0,
+        "exitMultiple": 18.7,
+        "divCum": 10.62,
+        "desc": "Stars ไม่ฟื้น MLR ยังสูง"
+      },
+      {
+        "growth": 21,
+        "exitMultiple": 24.3,
+        "divCum": 10.62,
+        "desc": "Stars ฟื้น MA margins normalize"
+      },
+      {
+        "growth": 35,
+        "exitMultiple": 24.3,
+        "divCum": 10.62,
+        "desc": "Stars 4+ เต็มฐาน MA margin >3%"
+      }
+    ],
+    "exitDp": 1,
+    "baseOverride": {
+      "value": 9,
+      "why": "EPS ฐานฉากที่ผู้เขียนใช้"
+    },
+    "note": "<b>ข้อสังเกตสำคัญ:</b> ตัวคูณออกอิงมัธยฐาน 5 ปีของ HUM (24.3x, ช่วง 18.7–33.0x) — Bear ใช้ P/E ต่ำสุดของช่วง 18.7x กับ EPS ทรงตัว ~$9 ได้ {{scn.bear.tgt}} ({{scn.bear.ret}}) · Base (EPS ~$16 × 24.3x) ได้ {{scn.base.tgt}} ({{scn.base.ret}}) ใกล้ราคาปัจจุบัน {{px}} แปลว่าแม้ฟื้นตามแผนผลตอบแทน 3 ปียังจำกัด · Bull (EPS ~$22 × 24.3x) ได้ {{scn.bull.tgt}} ({{scn.bull.ret}}) · ผลตอบแทนไม่รวมปันผล · ตัวคูณ 24.3x ถูกยกโดยปีที่ EPS ตกต่ำ (2024–2025) จึงเป็นเพดานที่ไม่ควรมองข้าม · <b>จุดเข้าซื้อที่น่าสนใจ:</b> โซน {{mos20}}–{{fv}} (MOS 20%–FV) ให้ risk/reward ดีกว่ามาก · คาดการณ์อิง Adj. EPS 2026 guidance ≥$9.00 · Dividend ~{{dps}}/ปี · แหล่ง: StockAnalysis.com, BusinessWire Q1 2026 earnings release, Yahoo Finance (ก.ย. 2569)",
+    "hintNote": "(2026 adj. guidance)"
+  },
+  "analyst": {
+    "target": 419,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "HUM ปรับตัวลงอย่างรุนแรงจาก $278 (ต.ค. 2568) สู่จุดต่ำสุดรายเดือน $173 (มี.ค. 2569) สะท้อนการประกาศ Guidance 2026 ที่ผิดหวัง — Stars headwind $3.5B ทำให้ Adjusted EPS ปี 2569 ร่วงเหลือ ≥$9 จากระดับ $17 ปี 2568 และตลาดตื่นตกใจกับ MLR ที่ยังสูงกว่าคาด หลังจากนั้นหุ้นฟื้นตัวแรงกว่า +120% จากจุดต่ำ (ทะลุ $397 ในเดือน มิ.ย. 2569) หลัง CMS ประกาศ rate 2027 ดีกว่าคาด (+5% effective) + Q1 2569 revenue +23% YoY + MA membership ทะลุ 7.1M คน (+22%) แสดงว่า growth engine ยังแข็งแกร่ง แม้กำไรยังกดดันจาก Stars · ตัวเลขเหตุการณ์ธุรกิจในย่อหน้านี้อ้างอิงรายงาน Q1 2569 (ยังไม่ได้ตรวจซ้ำกับงบไตรมาส 2)",
+    "valuation": "<b>การตีความ:</b> FV = ($257 + $222)/2 ≈ $240 · กรอบ FV = $222–$257 · <b>ตระกูลเดียว (single-family valuation):</b> ทั้งสองขาใช้ตัวคูณ P/E มัธยฐาน 24.3x เดียวกัน จึงนับเป็น 1 เสียง ไม่ใช่การยืนยันอิสระ 2 วิธี — EV/Revenue เดิม (0.35x ซึ่งไม่มีมัธยฐานที่วัดได้รองรับ) ถูกถอดออกจาก FV และเป้าเฉลี่ยนักวิเคราะห์ไม่เป็นขาของ FV · <b>|MOS| เกิน 40% แต่ยังไม่มีพยานอิสระที่ไม่ใช้ตัวคูณ:</b> ถือเป็นประมาณการที่ยังยืนยันไม่ได้ · <b>ความไว (sensitivity):</b> ถ้าใช้ P/E สูงสุดใน 5 ปี 33.0x × EPS TTM {{eps}} ได้ ≈ $350 (ยังต่ำกว่าราคา) และ EPS FY2027E $16.57 × 24.3x ≈ $403 ≈ ราคาปัจจุบัน — แปลว่าราคาปัจจุบัน price in การฟื้นตัวของ EPS ถึงปี 2570 เต็มที่แล้ว · <b>บริบท:</b> เป้าเฉลี่ยนักวิเคราะห์ ~$419 (Buy, n=23) สูงกว่าราคาปัจจุบัน ~8.5% สวนทางกับ FV นี้ เพราะตลาด/นักวิเคราะห์ใช้ EPS ที่ฟื้นตัวแล้วเป็นฐาน ขณะที่ FV นี้ยึด EPS ปัจจุบัน — ควรอ่าน FV เป็นขอบล่างเชิงอนุรักษ์ ไม่ใช่ราคาที่ \"ควรเป็น\" · ณ ราคาปัจจุบัน {{px}} สูงกว่า FV {{fv}} ({{mos}})",
+    "gauge": "ราคาปัจจุบัน {{px}} อยู่<b>เหนือ Fair Value เฉลี่ย {{fv}}</b> (MOS {{mos}}) แต่ต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ $419 (~8.5%) · ผู้ซื้อวันนี้กำลัง \"จ่ายล่วงหน้า\" สำหรับ EPS ปี 2027 เป็นต้นไป · โซนน่าสนใจเริ่มต้นที่ต่ำกว่า Fair Value ({{fv}}) และโซน MOS 20% ({{mos20}}) / MOS 30% ({{mos30}}) ห่างจากราคาปัจจุบันมาก",
+    "mos": "ราคาแพงเกิน Fair Value — ไม่มี Margin of Safety (Overvalued)",
+    "verdictHeadline": "Recovery Story น่าสนใจ แต่ราคาปัจจุบัน Price-In ไปมากเกินไปแล้ว — รอจังหวะ",
+    "verdictBody": "Humana เป็น pure-play Medicare Advantage ที่ใหญ่ที่สุดในสหรัฐ — growth engine แข็งแกร่ง (MA members +22%, revenue +23% Q1 2569) แต่กำลังเผชิญ MLR สูง + Stars headwind $3.5B ทำให้ Adjusted EPS ปี 2569 ร่วงเหลือ ≥$9 จากระดับ $17 · ราคาหุ้นฟื้นกว่า +120% จากจุดต่ำ (มี.ค. 2569) สะท้อนว่าตลาด price in การฟื้นตัวของ EPS ไปมากแล้ว · FV ตระกูลเดียว (P/E มัธยฐาน 5 ปี 24.3x บน EPS ปัจจุบัน) ให้ {{fv}} ต่ำกว่าราคามาก แต่เป้านักวิเคราะห์เฉลี่ย ~$419 (Buy) สูงกว่าราคา ~8.5% เพราะใช้ EPS ที่ฟื้นแล้ว — สองมุมนี้ขัดกัน จึงควรอ่าน FV เป็นขอบล่างเชิงอนุรักษ์ · ธุรกิจ MA ยังมีอนาคตที่ดีในระยะยาว (aging US population, MA penetration ยังเพิ่มได้) แต่ <b>ราคาที่น่าสนใจสำหรับ value investor คือโซน {{mos20}}–{{fv}}</b> ไม่ใช่ {{px}} · สำหรับนักลงทุนที่ต้องการ exposure ใน Medicare Advantage ควรรอ pullback จากปัจจัยลบใดๆ (execution miss, Stars revision, policy ไม่แน่นอน) ก่อนเข้าซื้อ",
+    "strategy": "ที่ราคาปัจจุบัน {{px}} ไม่แนะนำให้ซื้อเพิ่ม — ตลาด price in recovery ไปมากแล้ว · หากถือไว้แล้ว พิจารณา <b>trim position</b> บางส่วน · รอ pullback สู่โซน <b>{{mos20}}–{{fv}}</b> (MOS 20%–FV) ก่อนเข้าสะสม · จุด catalyst ต้องติดตาม: การประกาศ Stars ratings ประจำปี และ 2027 benefit design / MLR trend",
+    "disclaimerSources": "แหล่งอ้างอิง: Yahoo Finance (ราคา ณ {{priceDate}}), StockAnalysis.com (Financials, Statistics, Forecast), BusinessWire / Humana Q1 2026 Earnings Release (29 เม.ย. 2569), StockTitan / SEC 8-K FY2026, MarketBeat Analyst Consensus, TIKR.com Q1 2026 Analysis"
+  },
+  "text": {
+    "valIntro": "ตระกูล P/E ตระกูลเดียว — ตัวคูณ = มัธยฐาน 5 ปีของ HUM เอง 24.3x (ไม่ใช่ตัวคูณปัจจุบัน) · เป้านักวิเคราะห์เป็นแค่บริบท ไม่ใช่ขาของ FV",
+    "chartHint": "· Oct 2025 – Sep 2026",
+    "disclaimerAssump": " P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ EPS recovery ในอนาคต"
+  },
+  "catalysts": [
+    "<b>CMS Rate ดีกว่าคาด:</b> Rate 2026 +5.06% และ 2027 effective ~+5% (ดีกว่า proposal ที่ flat) ช่วย revenue per member ขึ้นและรองรับ cost inflation",
+    "<b>MA Membership ทะลุ 7.1M (+22%):</b> Q1 2569 — scale ที่เพิ่มขึ้นช่วยกระจาย fixed cost และเพิ่ม negotiating power กับ providers",
+    "<b>Stars Ratings Recovery:</b> HUM กำลัง close HEDIS gaps +5% ahead of pace → หากได้ Stars 4+ กลับมา bonus revenue หลายพันล้านดอลลาร์จะกลับมา (2027-2028)",
+    "<b>Benefit Redesign & Cost Control:</b> ลด richness ของ MA benefits เพื่อควบคุม MLR — จะเห็นผลใน 2027 bid cycle ที่ submitted mid-2026",
+    "<b>CenterWell Value-Based Care:</b> Healthcare services segment (pharmacy, primary care, home health) ช่วยควบคุม cost utilization และสร้าง moat ใน value-based care model",
+    "<b>Illinois Medicaid HealthChoice:</b> Win ใหม่ operations เริ่ม 2027 — เป็น diversification นอก Medicare ลด concentration risk"
+  ],
+  "risks": [
+    "<b>Stars Ratings Headwind $3.5B:</b> BY 2026 ขาด bonus $3.5B net — ทำให้ Adj. EPS ปี 2569 ร่วงจาก $17 เหลือ ≥$9 เป็นความเสี่ยงที่ยังดำเนินอยู่ถ้า Stars ไม่ฟื้น",
+    "<b>MLR ยังสูงกว่าปกติ:</b> Q1 2569 benefit ratio ~89.4% ยังห่างจาก target <87% — cost trend gap \"wider heading into 2027 bid cycle\" ตามที่ management ยอมรับ",
+    "<b>Valuation แพงมาก:</b> ราคา {{px}} ที่ ~23x EPS FY2027E หรือ ~42x EPS FY2026E สะท้อนความคาดหวังสูง — execution miss ใดๆ จะทำราคาร่วงแรง",
+    "<b>Regulatory & Policy Risk:</b> Trump administration อาจปรับ MA payment rules / Medicare policy ไม่แน่นอน + ความเสี่ยงจาก CMS coding/risk adjustment changes",
+    "<b>Utilization Trend ไม่แน่นอน:</b> Post-pandemic surgical surge อาจยังไม่จบ + aging MA population ทำ medical costs สูงขึ้นเรื่อยๆ ส่งผลต่อ MLR",
+    "<b>Competition ใน MA:</b> CVS/Aetna มี 81% members ใน 4-Star plans vs HUM ที่ ~45% — ความเสียเปรียบเรื่อง Stars กระทบทั้ง revenue และ member attractiveness"
+  ],
+  "extras": [],
+  "v2Display": {
+    "fv": 240,
+    "fvRange": [
+      222,
+      257
+    ],
+    "targets": [
+      168,
+      389,
+      535
+    ],
+    "driverEnds": [
+      null,
+      "~$16.00",
+      "~$22.00"
+    ],
+    "cards": {
+      "revenueFy": {
+        "v": "$129.7B",
+        "d": "+10.1% YoY | TTM $137.2B (+23% Q1)"
+      }
+    }
+  },
+  "_sig": "sha256:a7d4944f5de20d5e5c85c4300dfa84244fe7667151c6b43396a4309c29ab44c0"
+}

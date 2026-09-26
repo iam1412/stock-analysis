@@ -1,0 +1,277 @@
+{
+  "v": 3,
+  "symbol": "T",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "AT&T Inc.",
+    "exchange": "NYSE",
+    "sub": "Wireless postpaid (Mobility) • AT&T Fiber / Internet Air (fixed wireless) • Business wireline & 5G enterprise connectivity • pure-play connectivity หลังขาย WarnerMedia (WBD) และ DIRECTV ออกหมดแล้ว",
+    "headerTags": [
+      "Telecom",
+      "Wireless + Fiber Broadband"
+    ],
+    "analysisDate": "2026-09-22",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "StockAnalysis.com",
+      "AT&T Q1 2026 8-K (SEC)"
+    ],
+    "themeLegacy": {
+      "accent": "#0099cc",
+      "accentDark": "#006fa0",
+      "darkGrad": "linear-gradient(135deg,#00263c 0%,#004868 50%,#006d8f 100%)",
+      "glow": "rgba(0,168,224,0.35)",
+      "subColor": "#c2f0ff",
+      "headerMuted": "#dbeaef",
+      "verdictText": "#c9eeff",
+      "vcellLabel": "#f0faff"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-22T01:46:25+07:00",
+      "v2Hash": "bbfa0d1519ab"
+    }
+  },
+  "market": {
+    "px": 25.38,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          24.75
+        ],
+        [
+          "พ.ย.25",
+          26.02
+        ],
+        [
+          "ธ.ค.25",
+          24.84
+        ],
+        [
+          "ม.ค.26",
+          26.21
+        ],
+        [
+          "ก.พ.26",
+          28.01
+        ],
+        [
+          "มี.ค.26",
+          28.99
+        ],
+        [
+          "เม.ย.26",
+          26.13
+        ],
+        [
+          "พ.ค.26",
+          24.8
+        ],
+        [
+          "มิ.ย.26",
+          20.7
+        ],
+        [
+          "ก.ค.26",
+          23.25
+        ],
+        [
+          "ส.ค.26",
+          25.89
+        ],
+        [
+          "ก.ย.26",
+          25.38
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 19.89,
+      "hi": 29.43
+    }
+  },
+  "fundamentals": {
+    "eps": 2.34,
+    "dps": 1.11,
+    "bvps": 18.07,
+    "shares": 6852385650,
+    "epsForward": 2.25,
+    "netDebt": 126400000000,
+    "roe": 11.6,
+    "revenue": 126500000000,
+    "beta": 0.42,
+    "fy": {
+      "period": "FY68",
+      "eps": 2.12
+    },
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation",
+      "inputs": {
+        "multiple": 8.7,
+        "multipleSource": "median5y",
+        "medianWindow": "FY2023–FY2025"
+      },
+      "family": "market"
+    },
+    {
+      "method": "ddm",
+      "label": "DDM / Gordon Growth",
+      "inputs": {
+        "g": 2.5,
+        "r": 7.5
+      },
+      "note": "สมมติฐานของผู้วิเคราะห์เอง: CAPM rf 4.3% + beta 0.42 × ERP 5.5% ≈ 6.6% ปัดขึ้นเผื่อความเสี่ยงหนี้ · ตระกูล (r,g) นับเป็นเสียงเดียว",
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      {
+        "key": "peForward",
+        "tone": "none"
+      },
+      "pbv",
+      "netDebt",
+      "custom:0",
+      "epsFy",
+      "roe",
+      "revenue",
+      "custom:1",
+      "yield",
+      "beta"
+    ],
+    "custom": [
+      {
+        "label": "EPS (TTM, GAAP)",
+        "value": "~$3.02",
+        "note": "รวมกำไรพิเศษขาย DIRECTV $5.5B"
+      },
+      {
+        "label": "Fiber Locations Passed",
+        "value": "37M+",
+        "note": "รวม Lumen deal · เป้า 40M ภายในปี 69"
+      }
+    ],
+    "notes": {
+      "mcap": "6.85B หุ้น",
+      "pe": "GAAP EPS มีกำไรพิเศษขาย DIRECTV ปน",
+      "pbv": "BVPS ~{{bvps}}",
+      "epsFy": "ใช้เป็นฐาน run-rate (ไม่รวมรายการพิเศษ)",
+      "roe": "Adj. NI/equity (ตัดกำไรพิเศษออก)",
+      "yield": "{{dps}}/หุ้น/ปี (คงที่หลายปี)",
+      "beta": "ผันผวนต่ำกว่าตลาดมาก"
+    },
+    "hint": "Q1 2026 · TTM"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 0,
+        "exitMultiple": 7.7,
+        "divCum": 3.33,
+        "desc": "Starlink แย่งลูกค้าจริง, EBITDA ทรงตัว, ตลาดให้ P/E ต่ำลง"
+      },
+      {
+        "growth": 4,
+        "exitMultiple": 8.7,
+        "divCum": 3.33,
+        "desc": "Fiber+FWA โตตามแผน, หนี้ลดต่อเนื่องหลัง EchoStar, ปันผลคงที่"
+      },
+      {
+        "growth": 7,
+        "exitMultiple": 10.5,
+        "divCum": 3.33,
+        "desc": "Net debt/EBITDA กลับสู่ <2.5x เร็ว, เริ่มขึ้นปันผล, ตลาดให้ P/E premium กลับ"
+      }
+    ],
+    "exitDp": 1,
+    "note": "Total Return ต่อปี (annualized, 3 ปี): Bear ≈ −5.6%/ปี · Base ≈ +1.1%/ปี · Bull ≈ +9.6%/ปี สมมติปันผลคงที่ {{dps}}/หุ้น/ปีตลอดช่วงคาดการณ์ (AT&T ยังไม่ประกาศแผนขึ้นปันผลจนกว่า net debt/EBITDA จะลงมา <2.5x)"
+  },
+  "analyst": {
+    "target": 28.71,
+    "n": null,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ราคาขึ้นไปแตะจุดสูงสุดรอบปีช่วง มี.ค. 2569 (กรอบ 52 สัปดาห์สูงสุด $29.43) หลังผลประกอบการ fiber แข็งแกร่ง ก่อนร่วงลงหนักในช่วง เม.ย.–มิ.ย. 2569 (จาก $28.99 → $20.70 ใน ~3 เดือน) จากข่าว SpaceX/Starlink ประกาศแผนขายบริการมือถือตรงถึงผู้บริโภค (direct-to-cell) กดดันหุ้นกลุ่มไร้สายทั้งอุตสาหกรรม (Oppenheimer ปรับลดคำแนะนำ AT&T) ผนวกกับความกังวลภาระหนี้เพิ่มจากดีล EchoStar spectrum $23B ก่อนดีดตัวกลับหลังผล Q2 2569 (22 ก.ค.) beat คาด — adj. EPS $0.65 (คาด $0.60), รายได้ $31.6B (+2.3% YoY), postpaid phone net add 432k (คาด 338.5k), broadband net add 646k สูงสุดเป็นประวัติการณ์ แม้ guidance FY2569 จะคงเดิม — ราคาสิ้นเดือน ก.ย. 2569 อยู่ที่ {{px}} ผลตอบแทนรอบปี (จุดแรก $24.75 ต.ค. 2568 → จุดล่าสุด {{px}} ก.ย. 2569) ≈ +2.6%",
+    "valuation": "FV = เฉลี่ย 2 ตระกูลอิสระ: P/E ที่สมอเป็นมัธยฐานย้อนหลังของ T เอง ({{fvLow}}) กับ DDM ({{fvHigh}}) ซึ่งห่างกันไม่ถึง 2 เท่า (DDM ใช้ (r,g) ชุดเดียว จึงนับเสียงเดียว) — ปันผลของ AT&T แช่แข็งที่ {{dps}}/หุ้นมาหลายปี g จึงอนุรักษ์นิยมที่ 2.5% · EV/EBITDA เดิม (6.5x) ถูกถอดออกจากขา FV เพราะเป็นตัวคูณที่ตั้งเองโดยไม่มีมัธยฐานที่วัดได้ในบล็อกข้อมูล และ net debt สูงทำให้ผลไวต่อตัวคูณมาก · เป้านักวิเคราะห์ใช้เป็นบริบทตรวจความสอดคล้องเท่านั้น ไม่ใช่ขาของ FV · ความไว: หากใช้ P/E ขาเดียว MOS จะติดลบมากกว่านี้ หากใช้ DDM ขาเดียวจะติดลบน้อยกว่า",
+    "gauge": "ราคาปัจจุบัน {{px}} อยู่เหนือ Fair Value ({{fv}}) หลังหุ้นรีบาวด์แรงจากผล Q2 2569 ที่ beat คาด แต่ guidance FY2569 คงเดิม — ตลาด re-rate ข่าวดีเข้าราคาไปก่อนมูลค่าพื้นฐานจะเปลี่ยนจริง ขณะที่เป้าเฉลี่ยนักวิเคราะห์ ({{analyst.target}}, 23 สำนัก, Buy consensus) สูงกว่าราคาราว 12% — ส่วนต่างนี้สะท้อนความกังวลตลาดต่อภัยคุกคาม Starlink direct-to-cell และภาระหนี้เพิ่มจากดีล EchoStar เป้านักวิเคราะห์ไม่ได้เป็นส่วนหนึ่งของ FV จึงใช้ดูความสอดคล้องเท่านั้น",
+    "mos": "MOS ติดลบ (ราคาสูงกว่า Fair Value ที่เฉลี่ย P/E มัธยฐานกับ DDM หลังหุ้นรีบาวด์แรงจาก Q2 beat) — ตลาดให้ราคานำมูลค่าพื้นฐานอยู่ ควรรอราคาย่อ",
+    "verdictHeadline": "ปันผลสูง หนี้ลดมีวินัย แต่ราคาวิ่งนำ FV หลัง Q2 beat — MOS ติดลบ",
+    "verdictBody": "AT&T ร่วงจากจุดสูงสุดรอบปี ~30% ช่วง มี.ค.–มิ.ย. 2569 หลัง SpaceX ประกาศแผน direct-to-cell กดดันหุ้นกลุ่มไร้สายทั้งกระดาน ผสมกับความกังวลเรื่องหนี้ที่จะเพิ่มขึ้นชั่วคราวจากดีล EchoStar spectrum $23B ก่อนดีดตัวกลับหลังผล Q2 2569 (22 ก.ค.) ที่ beat คาดทั้ง EPS/รายได้/net add แต่ guidance FY2569 คงเดิม — พื้นฐานธุรกิจยังแข็งแรง: fiber ยังโตต่อเนื่อง (37M+ locations passed, เป้า 40M ในปีนี้), net debt/EBITDA ที่ 2.71x ต่ำสุดในรอบหลายปี, FCF guidance $18B+ ครอบคลุมปันผล (~4.4%) ได้สบาย และธุรกิจสื่อ/บันเทิงถูกตัดออกหมดแล้วทำให้โฟกัสชัดเจนขึ้น Fair Value ที่เฉลี่ย P/E มัธยฐานย้อนหลัง (8.7x) กับ DDM อยู่ที่ {{fv}} ให้ MOS ติดลบ — ราคาปัจจุบัน {{px}} วิ่งนำมูลค่าพื้นฐานไปแล้ว (ตัวคูณ P/E มัธยฐานมาจากงบ GAAP ที่มีรายการพิเศษ จึงเป็นค่าประมาณ)",
+    "strategy": "เหมาะกับนักลงทุนสายปันผล (yield ~4.4%) ที่รับความเสี่ยง Starlink/หนี้ได้ — ราคาปัจจุบันวิ่งนำ FV ไปแล้ว ไม่ควรไล่ซื้อเพิ่ม ควรรอทยอยสะสมหากราคาย่อกลับไปโซน MOS 20% ({{mos20}}) ให้ margin of safety ที่มั่นใจกว่า เผื่อความเสี่ยงเชิงโครงสร้างจาก satellite-to-phone competition ที่ยังประเมินผลกระทบระยะยาวไม่ได้ชัดเจน",
+    "disclaimerSources": "ข้อมูล: Yahoo Finance, StockAnalysis.com, AT&T Investor Relations (SEC 8-K Q1 2026), StockTitan"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 2 ตระกูล: P/E (มัธยฐานย้อนหลัง) + DDM",
+    "disclaimerAssump": " P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ EBITDA multiple ในอนาคต"
+  },
+  "catalysts": [
+    "<b>Fiber ramp ต่อเนื่อง:</b> locations passed เพิ่มจาก 29.5M (Q1 68) → 37M+ (รวม Lumen) มุ่งสู่ 40M ภายในสิ้นปี 69 และ 60M ภายในปี 73 — penetration ~40% และเพิ่มขึ้นเรื่อยๆ หนุนรายได้ recurring สูงมาร์จิ้นดี",
+    "<b>Debt paydown มีวินัย:</b> Net Debt/EBITDA อยู่ที่ 2.71x (Q1 69) ต่ำสุดในรอบหลายปี หลังขาย DIRECTV/WarnerMedia — เป้าหมายระยะยาวคือกลับสู่ <2.5x เพื่อเปิดทางขึ้นปันผล/buyback เพิ่ม",
+    "<b>FCF แข็งแกร่ง:</b> guidance FY69 ที่ $18B+ ให้พื้นที่ครอบคลุมปันผล ({{dps}}/หุ้น ~$7.7B/ปี) ด้วยส่วนเกินไปลดหนี้และลงทุนต่อ",
+    "<b>Pure-play connectivity:</b> ตัดธุรกิจสื่อ/บันเทิงออกหมดแล้ว (WBD spinoff, DIRECTV divest) โฟกัส wireless+fiber ล้วน ลดความซับซ้อนและความเสี่ยง capital allocation",
+    "<b>Enterprise 5G/fixed wireless:</b> Internet Air (FWA) เติบโตเร็วเสริม fiber ในพื้นที่ที่ยังไม่ถึง ช่วยขยาย broadband reach โดยไม่ต้องรอ fiber build"
+  ],
+  "risks": [
+    "<b>Starlink/SpaceX direct-to-cell:</b> ภัยคุกคามใหม่ต่อโมเดลไร้สายทั้งอุตสาหกรรม เป็นสาเหตุหลักที่กดราคาหุ้น T ร่วง ~30% ในรอบปี — ยังไม่ชัดว่าผลกระทบจริงต่อ ARPU/market share จะรุนแรงแค่ไหน",
+    "<b>Net debt เพิ่มจาก EchoStar deal:</b> ดีลซื้อ spectrum $23B (คาดปิดกลางปี 69) จะดัน net debt/EBITDA ขึ้นไปแตะ ~3.2x ชั่วคราว ก่อนไล่ลดกลับ — เสี่ยงถ้า EBITDA โตช้ากว่าคาด",
+    "<b>Legacy wireline เสื่อมถอยเร็ว:</b> Legacy service revenue ลดลง ~25% YoY ใน Q1 69 และคาดลดลง >20% ทั้งปี 69 — กดดันรายได้รวมแม้ fiber จะโตชดเชย",
+    "<b>Postpaid phone ARPU ทรงตัว:</b> ไม่โตในไตรมาสล่าสุดจากการเจาะกลุ่มลูกค้า value-tier มากขึ้น อาจกดดันรายได้ mobility ในระยะกลาง",
+    "<b>ปันผลไม่โตมาหลายปี:</b> คงที่ {{dps}}/หุ้นตั้งแต่ตัดลดหลัง WarnerMedia spinoff (2565) — นักลงทุนที่หวังปันผลโตอาจผิดหวังจนกว่าหนี้จะลดพอ",
+    "<b>แข่งขันจาก cable/fixed wireless:</b> Comcast, Charter และคู่แข่ง FWA (T-Mobile, Verizon) แย่งส่วนแบ่งตลาด broadband ในพื้นที่ที่ fiber ยังไปไม่ถึง"
+  ],
+  "extras": [],
+  "v2Display": {
+    "targets": [
+      null,
+      22.88,
+      30.14
+    ],
+    "cards": {
+      "peForward": {
+        "v": "~10.8x",
+        "d": "อิง adj. EPS FY69 guide $2.25–2.35",
+        "op": "pxOverBase",
+        "base": 2.34
+      },
+      "netDebt": {
+        "v": "$126.4B",
+        "d": "Net Debt/EBITDA 2.71x (Q1 69)"
+      },
+      "revenue": {
+        "v": "$126.5B",
+        "d": "+2.9% YoY"
+      }
+    },
+    "rets": {
+      "texts": [
+        "−29.1% (capital) / −15.9% รวม",
+        "−9.9% (capital) / +3.2% รวม",
+        "+18.7% (capital) / +31.8% รวม"
+      ],
+      "neg": "−",
+      "perYear": "cagr",
+      "div": true
+    }
+  },
+  "_sig": "sha256:efe65fe1f6dcdcaadd5147f0a5aa0b56583551e37ef33f974e4ea17db0685709"
+}

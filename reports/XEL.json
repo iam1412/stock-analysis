@@ -1,0 +1,262 @@
+{
+  "v": 3,
+  "symbol": "XEL",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Xcel Energy",
+    "exchange": "NASDAQ",
+    "sub": "Public Service Co. of Colorado • NSP-Minnesota • SPS Texas/New Mexico • 80% Carbon-Free Energy by 2030 • Wind & Solar Leader • Regulated Utility Monopoly",
+    "sectorLine": "XEL",
+    "headerTags": [
+      "Utilities — Regulated Electric & Gas",
+      "Renewables Leader"
+    ],
+    "analysisDate": "2026-09-22",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "StockAnalysis.com",
+      "Yahoo Finance",
+      "Digrin.com"
+    ],
+    "priceNote": "งบล่าสุด FY2025 + TTM ตาม StockAnalysis; งบไตรมาสถัดไปประกาศ 29 ต.ค. 2569",
+    "themeLegacy": {
+      "accent": "#0d9488",
+      "accentDark": "#0f766e",
+      "darkGrad": "linear-gradient(135deg,#042f2c 0%,#0f3d38 60%,#134e4a 100%)",
+      "glow": "rgba(13,148,136,0.35)",
+      "subColor": "#5eead4",
+      "headerMuted": "#6dc7bb",
+      "verdictText": "#f0fdfa",
+      "vcellLabel": "#91d7cd"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-22T03:05:24+07:00",
+      "v2Hash": "d4785d3db4bc"
+    }
+  },
+  "market": {
+    "px": 69.8,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          81.17
+        ],
+        [
+          "พ.ย.25",
+          82.11
+        ],
+        [
+          "ธ.ค.25",
+          73.86
+        ],
+        [
+          "ม.ค.26",
+          76.06
+        ],
+        [
+          "ก.พ.26",
+          83.36
+        ],
+        [
+          "มี.ค.26",
+          79.44
+        ],
+        [
+          "เม.ย.26",
+          82.95
+        ],
+        [
+          "พ.ค.26",
+          79.5
+        ],
+        [
+          "มิ.ย.26",
+          80.3
+        ],
+        [
+          "ก.ค.26",
+          78.2
+        ],
+        [
+          "ส.ค.26",
+          75.69
+        ],
+        [
+          "ก.ย.26",
+          69.8
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 71.8,
+      "hi": 84.23
+    }
+  },
+  "fundamentals": {
+    "dps": 2.37,
+    "bvps": 38.14,
+    "shares": 624634306,
+    "peAvg5y": 21.5,
+    "netIncome": 2230000000,
+    "eps": 3.65,
+    "roe": 9.9,
+    "revenue": 14620000000,
+    "grossMargin": 15.3,
+    "beta": 0.41,
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "ddm",
+      "label": "DDM / Gordon Growth (วิธีหลัก)",
+      "inputs": {
+        "g": 5.5,
+        "r": 8.25
+      },
+      "note": "conservative กว่า guidance บริษัท 5–7%/ปี · risk-free ~4.3% + beta 0.41 × ERP ~9.5% · เหมาะกับ regulated utility ที่กระแสเงินสด/ปันผลคาดการณ์ได้สูง",
+      "family": "rg"
+    },
+    {
+      "method": "pe",
+      "label": "P/E Valuation (ตัวคูณมัธยฐานย้อนหลัง)",
+      "inputs": {
+        "multiple": 21.5,
+        "multipleSource": "median5y"
+      },
+      "family": "market"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "peAvg5y",
+      "pbv",
+      "netIncome",
+      "eps",
+      "bvps",
+      "roe",
+      "revenue",
+      "grossMargin",
+      "yield",
+      "beta"
+    ],
+    "notes": {
+      "mcap": "~625 ล้านหุ้น",
+      "pe": "ประมาณการ EPS FY2026E ~$4.12 (vendor forecast)",
+      "peAvg5y": "มัธยฐาน 5 ปี FY2021–FY2025 (ช่วง 17.5–22.3x)",
+      "pbv": "(TTM)",
+      "netIncome": "Net margin ~15.3%",
+      "eps": "StockAnalysis {{eps}} · Yahoo {{eps}} (ตรงกัน) · FY2025 $3.42",
+      "bvps": "มูลค่าสินทรัพย์สุทธิต่อหุ้น (TTM)",
+      "roe": "ROE (TTM) สอดคล้องกับ allowed ROE ของ regulated utility",
+      "grossMargin": "Net margin · FY2025 ~13.8%",
+      "yield": "Payout ~65% · DGR guidance ~5–7%/ปี",
+      "beta": "ต่ำกว่าตลาดมาก — defensive สูง"
+    },
+    "hint": "ข้อมูล ณ 22 ก.ย. 2569"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 3,
+        "exitMultiple": 16,
+        "divCum": 7.54,
+        "desc": "อัตราดอกเบี้ยสูงต่อเนื่อง + คดีความกดดัน multiple ต่ำกว่าช่วงประวัติ 17.5–22.3x"
+      },
+      {
+        "growth": 6,
+        "exitMultiple": 20,
+        "divCum": 8,
+        "desc": "EPS/ปันผลโตตาม guidance rate base growth"
+      },
+      {
+        "growth": 8,
+        "exitMultiple": 22,
+        "divCum": 8.31,
+        "desc": "renewables capex เร่งตัวเกิน guidance + rate cut"
+      }
+    ],
+    "exitDp": 0,
+    "note": "สมมติฐาน: ราคาเข้า {{px}} · EPS ฐาน {{eps}} (TTM) · ปันผลเติบโตตามอัตราเดียวกับ EPS ในแต่ละ scenario Base case ให้ผลตอบแทนรวม ~31% ใน 3 ปี (~9.5%/ปี) โดยใช้ P/E ออก 20x ซึ่งต่ำกว่ามัธยฐานย้อนหลัง 21.5x เล็กน้อย บวก EPS โต 6%/ปีตาม guidance rate base growth และ dividend yield ~3% Bear case ใช้ P/E 16x ต่ำกว่าต่ำสุดของช่วงประวัติ 5 ปี ทำให้ผลตอบแทนรวมติดลบเล็กน้อยแม้ปันผลยังจ่ายได้จาก regulated cash flow Bull case ใช้ P/E 22x (ใกล้ขอบบนของช่วงประวัติ) และ EPS โต 8%/ปีจาก renewables capex ที่เร่งตัวเกิน guidance ตัวเลขเป็นการประมาณเพื่อการศึกษา ไม่ใช่การรับประกันผลตอบแทน"
+  },
+  "analyst": {
+    "target": 91.76,
+    "n": null,
+    "rating": "Strong Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "XEL ปรับตัว {{chg}} ในรอบปี โดยยืนเหนือ $80 ช่วง ต.ค. 2568 – ก.พ. 2569 (จุดสูงสุดรายเดือนราว $83 ปลาย ก.พ. 2569) ก่อนอ่อนตัวลงต่อเนื่องตั้งแต่ ก.ค. 2569 จนราคาปิดรายเดือนล่าสุดเป็นจุดต่ำสุดของกราฟและใกล้ขอบล่างของกรอบ 52 สัปดาห์ ปัจจุบันซื้อขายต่ำกว่า Fair Value {{fv}} สะท้อนส่วนเผื่อความปลอดภัยระดับปานกลาง",
+    "valuation": "DDM ให้ค่าสูงกว่า ({{fvHigh}}) เพราะสะท้อนกระแสปันผลที่โตต่อเนื่องของ regulated utility ตามสมมติฐาน r/g ของเราเอง ขณะที่ P/E Valuation ให้ค่าต่ำกว่า ({{fvLow}}) เพราะยึดตัวคูณที่ตลาดเคยจ่ายจริง สองวิธีต่างกัน ~1.16 เท่า (ไม่เกิน 2.0 เท่า จึงเฉลี่ยได้) ค่าเฉลี่ย {{fv}} · ความไวของ DDM สูง: ถ้า r−g กว้างขึ้น 0.5 จุด (เป็น 3.25%) DDM ลดเหลือราว $77 และ FV เฉลี่ยราว $78 ซึ่งเหลือส่วนเผื่อเพียงเล็กน้อย · เป้าเฉลี่ยนักวิเคราะห์ไม่ใช่ขาของ FV ใช้เป็นบริบทตรวจความสอดคล้องเท่านั้น ซึ่งอยู่สูงกว่า FV ของเรา",
+    "gauge": "ราคาปัจจุบัน {{px}} ต่ำกว่า Fair Value {{fv}} — MOS {{mos}} ยังไม่ถึงเกณฑ์ 20% ที่มั่นใจเต็มที่ แต่สะท้อนว่าราคาไม่แพง นักวิเคราะห์ให้เป้าเฉลี่ย {{analyst.target}} (Strong Buy, 17 ราย) สูงกว่า FV ของเรา ซึ่งเป็นมุมมองของตลาดไม่ใช่ขาของ FV จุดซื้อที่น่าสนใจสำหรับ value investor คือ {{mos30}}–{{mos20}} (MOS 30–20%) ส่วนราคาปัจจุบันเหมาะสำหรับนักลงทุนที่เน้น dividend + defensive quality",
+    "mos": "ราคาปัจจุบันต่ำกว่า Fair Value มี Margin of Safety {{mos}} — ยังไม่ถึงเกณฑ์ 20% ที่ถือว่าปลอดภัยเต็มที่ เหมาะสำหรับทยอยสะสมระยะยาวมากกว่าเข้าเต็มไม้ (ประเมินจากสองตระกูลวิธี ผลไวต่อ r−g ของ DDM)",
+    "verdictHeadline": "XEL: ผู้นำ Renewables ในกลุ่ม Utility — ราคาต่ำกว่า Fair Value พอสมควร เหมาะสะสมระยะยาว",
+    "verdictBody": "Xcel Energy เป็น regulated utility ที่ผสมผสานความมั่นคงของรายได้ (electric+gas กำกับโดยรัฐใน Colorado, Minnesota, Texas/New Mexico) กับความเป็นผู้นำด้าน renewables ในกลุ่ม US utility — เป้าหมาย 80% carbon-free energy by 2030 หนุน rate base เติบโตชัดเจนจากแผน capex ระยะยาว ราคาปัจจุบัน {{px}} ต่ำกว่า Fair Value {{fv}} (MOS {{mos}}) ยังไม่ถึงเกณฑ์ MOS 20% ที่มั่นใจเต็มที่ แต่ก็สะท้อนว่าหุ้นไม่ได้ซื้อขายแพงเกินไป ความเสี่ยงหลักคือคดี Marshall Fire litigation ที่ยังค้างอยู่และ capex หนักที่กดกระแสเงินสด นักลงทุนที่เน้น dividend + defensive quality สามารถเริ่มทยอยสะสมได้ ส่วน value investor ที่ต้องการ MOS สูงควรรอจังหวะ {{mos30}}–{{mos20}}",
+    "strategy": "ทยอยสะสมได้ที่ราคาปัจจุบันสำหรับ income/defensive portfolio เน้นรับปันผล ~3% + DGR guidance ~5–7%/ปี จุดเข้าที่น่าสนใจกว่าสำหรับ value investor คือ {{mos20}} (MOS 20%) หรือ {{mos30}} (MOS 30%) ในช่วง dip จากความกังวลคดีความหรืออัตราดอกเบี้ย",
+    "disclaimerSources": "แหล่งข้อมูล: StockAnalysis.com (stockanalysis.com/stocks/xel) · Yahoo Finance (finance.yahoo.com/quote/XEL) · Yahoo Finance Chart API (query1.finance.yahoo.com) · Digrin.com (digrin.com/stocks/detail/XEL) · งวดล่าสุดที่รายงาน: FY2025 + TTM (StockAnalysis ณ 21 ก.ย. 2569)"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 2 วิธี — DDM (r,g) + P/E (มัธยฐานย้อนหลัง) คนละตระกูล"
+  },
+  "catalysts": [
+    "<b>Renewables Leadership:</b> เป้าหมาย 80% carbon-free energy by 2030 ผู้นำ wind/solar ในกลุ่ม US utility ดึงดูด ESG capital และหนุน rate base growth ที่ชัดเจนจากแผน capex",
+    "<b>Regulated Rate Base Growth:</b> แผนลงทุนโครงข่ายไฟฟ้าและ renewables หลายพันล้านดอลลาร์ต่อปี รับประกัน EPS growth ผ่านกลไก rate case ที่กำกับโดยรัฐ",
+    "<b>Dividend Growth ต่อเนื่อง:</b> DGR guidance ~5–7%/ปี ต่อเนื่องหลายปี yield ~3% ดึงดูด income investor",
+    "<b>Multi-state Diversification:</b> ธุรกิจกระจายใน Colorado, Minnesota, Texas/New Mexico ลดความเสี่ยงจาก regulator รัฐเดียว",
+    "<b>Data Center Demand Growth:</b> ความต้องการไฟฟ้าจาก data center ในพื้นที่ให้บริการเพิ่มขึ้น หนุน load growth และ rate base เพิ่มเติม",
+    "<b>อัตราดอกเบี้ยขาลง:</b> เมื่อ Fed ลดดอกเบี้ย utility stocks มักปรับขึ้น เพราะ yield spread ต่อ bond เพิ่มขึ้น หนุน valuation multiple"
+  ],
+  "risks": [
+    "<b>Colorado Wildfire Litigation (Marshall Fire):</b> คดีความเกี่ยวกับไฟป่า Marshall Fire ในโคโลราโดยังค้างอยู่ ความเสี่ยงค่าใช้จ่ายทางกฎหมาย/ค่าชดเชยเพิ่มเติมกดดันกำไร",
+    "<b>Capex หนักกดกระแสเงินสด:</b> แผนลงทุน renewables ขนาดใหญ่ทำให้ FCF ติดลบต่อเนื่อง ต้องพึ่งพาการกู้ยืม/ออกหุ้นเพิ่ม",
+    "<b>Regulatory Risk:</b> การขึ้นค่าไฟต้องผ่านการอนุมัติจากคณะกรรมการกำกับแต่ละรัฐ ความล่าช้าหรือได้ rate ต่ำกว่าคาดกระทบ ROE",
+    "<b>อัตราดอกเบี้ยสูง:</b> หนี้สินระดับสูง (D/E ~1.73x) ต้นทุนดอกเบี้ยเพิ่มขึ้นเมื่อ refinance กระทบกำไรสุทธิ",
+    "<b>Valuation Premium:</b> P/E TTM อยู่ในกรอบประวัติ 5 ปี (17.5–22.3x) แต่ยังเป็นระดับ premium ของกลุ่ม utility หากตลาดปรับ multiple ลง ราคาหุ้นอาจ underperform",
+    "<b>Extreme Weather:</b> พายุฤดูหนาว/ภัยแล้งในพื้นที่ให้บริการอาจเพิ่มต้นทุนซ่อมแซมโครงข่ายและความเสี่ยง wildfire ในอนาคต"
+  ],
+  "extras": [],
+  "v2Display": {
+    "fvRange": [
+      78.48,
+      90.91
+    ],
+    "legValues": [
+      90.91,
+      null
+    ],
+    "targets": [
+      63.81,
+      null,
+      101.16
+    ],
+    "cards": {
+      "revenue": {
+        "v": "$14.62 พัน ล.",
+        "d": "โต ~4.7% YoY (TTM)"
+      }
+    },
+    "rets": {
+      "texts": [
+        "+2.2% รวม (รวมปันผล)",
+        "+36.0% รวม / ~10.8%/ปี",
+        "+56.8% รวม / ~16.2%/ปี"
+      ],
+      "neg": "-",
+      "perYear": "cagr",
+      "div": true
+    }
+  },
+  "_sig": "sha256:14d6848d71e4cd63cad37738a605e0df739b4f1f89ebab524f703b7ea5bbf3b8"
+}

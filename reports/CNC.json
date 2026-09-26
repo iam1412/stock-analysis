@@ -1,0 +1,286 @@
+{
+  "v": 3,
+  "symbol": "CNC",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Centene Corporation",
+    "exchange": "NYSE",
+    "sub": "ผู้ให้บริการประกันสุขภาพภาครัฐรายใหญ่ที่สุดในสหรัฐฯ • Medicaid Managed Care • ACA Health Insurance Marketplace • Medicare Advantage/PDP",
+    "headerTags": [
+      "Healthcare — Managed Care",
+      "Medicaid MCO / ACA Marketplace"
+    ],
+    "analysisDate": "2026-09-21",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "StockAnalysis.com",
+      "Centene Investor Relations",
+      "PR Newswire"
+    ],
+    "priceNote": "Yahoo Finance, ตรงกับ StockAnalysis.com",
+    "migratedFrom": {
+      "updated": "2026-09-21T12:28:00+07:00",
+      "v2Hash": "d6ddf28f1567"
+    }
+  },
+  "market": {
+    "px": 61.82,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          35.37
+        ],
+        [
+          "พ.ย.25",
+          39.34
+        ],
+        [
+          "ธ.ค.25",
+          41.15
+        ],
+        [
+          "ม.ค.26",
+          43.32
+        ],
+        [
+          "ก.พ.26",
+          44.88
+        ],
+        [
+          "มี.ค.26",
+          32.74
+        ],
+        [
+          "เม.ย.26",
+          53.69
+        ],
+        [
+          "พ.ค.26",
+          59.6
+        ],
+        [
+          "มิ.ย.26",
+          64.19
+        ],
+        [
+          "ก.ค.26",
+          62.22
+        ],
+        [
+          "ส.ค.26",
+          64.34
+        ],
+        [
+          "ก.ย.26",
+          61.82
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 31.63,
+      "hi": 69.63
+    }
+  },
+  "fundamentals": {
+    "eps": 4.6,
+    "bvps": 45.9,
+    "shares": 494000000,
+    "epsForward": 4.6,
+    "netIncome": -5100000000,
+    "roe": -20.4,
+    "revenue": 202938000000,
+    "grossMargin": 19.9,
+    "dps": 0,
+    "epsBasis": "adj-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "Forward P/E Valuation",
+      "inputs": {
+        "multiple": 13,
+        "multipleSource": "median5y",
+        "base": "epsForward"
+      },
+      "family": "market"
+    },
+    {
+      "method": "pbv",
+      "label": "Justified P/BV",
+      "inputs": {
+        "g": 3,
+        "r": 9.5
+      },
+      "override": {
+        "roe": 10,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "family": "rg"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      {
+        "key": "mcap",
+        "tone": "neu"
+      },
+      "custom:0",
+      "peForward",
+      "pbv",
+      {
+        "key": "netIncome",
+        "tone": "neg"
+      },
+      "custom:1",
+      {
+        "key": "bvps",
+        "tone": "neu"
+      },
+      {
+        "key": "roe",
+        "tone": "neg"
+      },
+      {
+        "key": "revenue",
+        "tone": "pos"
+      },
+      {
+        "key": "grossMargin",
+        "tone": "pos"
+      },
+      "custom:2",
+      "custom:3"
+    ],
+    "custom": [
+      {
+        "label": "HBR รวม (Health Benefits Ratio) Q2/69",
+        "value": "89.6%",
+        "note": "ลดจาก 93.0% YoY — หัวใจของการฟื้นมาร์จิ้น",
+        "tone": "pos"
+      },
+      {
+        "label": "EPS (TTM) / EPS Fwd Guidance",
+        "value": "-$10.36 / >$4.80",
+        "note": "TTM ติดลบ vs guidance floor ปี 2569 (รวม one-time ~$0.50)",
+        "tone": "neg"
+      },
+      {
+        "label": "สมาชิก Medicaid (Q2/69)",
+        "value": "12.1M",
+        "note": "จาก 12.8M YoY — redetermination + rate มลรัฐตึงตัว",
+        "tone": "neg"
+      },
+      {
+        "label": "สมาชิก Marketplace / Medicare",
+        "value": "4.0M / 980K+8.8M PDP",
+        "note": "Marketplace หด 37% YoY (จาก 6.3M) • PDP โตจาก 7.8M",
+        "tone": "neu"
+      }
+    ],
+    "notes": {
+      "mcap": "~494M หุ้น (diluted, TTM เฉลี่ย)",
+      "peForward": "ราคา ÷ EPS fwd normalized {{eps}}",
+      "pbv": "BVPS ประมาณ {{bvps}}",
+      "netIncome": "ขาดทุนจากตั้งสำรอง Marketplace ปี 2568 (FY68 -$6,674M)",
+      "bvps": "Equity ≈ Debt $16,105M ÷ D/E 0.71",
+      "roe": "ติดลบตาม EPS TTM — ROE normalized (fwd) ~10.0%",
+      "grossMargin": "ฟื้นจาก 17.7% ใน FY68"
+    },
+    "hint": "ข้อมูล ณ Q2/2569 (30 มิ.ย. 2569) + TTM ถึง Q2/2569"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": false,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 0,
+        "exitMultiple": 10,
+        "divCum": 0,
+        "desc": "HBR ดีดกลับขึ้น ~91-92% จาก ACA subsidy หมดอายุ + Medicaid rate ตึงตัว EPS ทรงตัว P/E หด"
+      },
+      {
+        "growth": 8,
+        "exitMultiple": 13,
+        "divCum": 0,
+        "desc": "HBR ปรับดีขึ้นต่อเนื่องแบบค่อยเป็นค่อยไปสู่ ~88-89% ตามเทรนด์ที่วัดได้จริงใน Q2/2569 P/E คงที่"
+      },
+      {
+        "growth": 15,
+        "exitMultiple": 15,
+        "divCum": 0,
+        "desc": "Repricing Marketplace ยั่งยืน + Medicaid cost trend คุมได้เชิงโครงสร้าง HBR หลุดต่ำกว่า 87% ตลาดให้ premium P/E คืน"
+      }
+    ],
+    "exitDp": 0,
+    "note": "★ full disclosure: ทั้ง 3 ฉากผูกกับทิศทาง Health Benefits Ratio (HBR) โดยตรง เพราะมาร์จิ้นของ managed care organization บางมาก ขยับ HBR แม้ 1 จุด% กระทบกำไรมหาศาล ฐานกำไรทุกฉากคือ EPS normalized {{eps}} (ไม่ใช่ EPS TTM -$10.36 ซึ่งเป็นผลจากการตั้งสำรอง Marketplace ปี 2568 ที่ไม่ใช่กำไรวิ่งปกติ) • ฉาก Base ไม่ได้สมมติว่านโยบายจะพลิกกลับมาเอื้อ — อิงเทรนด์ cost management ที่วัดได้แล้วจริงใน Q2/2569 เท่านั้น • ความเสี่ยงเชิงนโยบายที่สำคัญและยังไม่คลี่คลาย: การตัดงบ/เปลี่ยนกติกา Medicaid ระดับสหพันธรัฐ-มลรัฐ (รวมผลกฎหมาย OBBBA), การหมดอายุ/ไม่ต่ออายุเงินอุดหนุน ACA Marketplace แบบเต็มรูปแบบ และการทำ redetermination ที่ยังกดสมาชิก Medicaid ลงต่อเนื่อง (12.1M จาก 12.8M ในไตรมาสเดียว)",
+    "hintNote": "• ไม่มีปันผล"
+  },
+  "analyst": {
+    "target": 71.78,
+    "n": 18,
+    "rating": "Buy",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "ราคาร่วงลึกถึง $32.74 ในมี.ค. 2569 จากความกังวลเรื่องขาดทุนธุรกิจ Marketplace/การตั้งสำรองก้อนใหญ่ในปี 2568 (FY2568 ขาดทุนสุทธิ -$6,674M, EPS -$13.53) ก่อนพลิกฟื้นแรง +84.1% ในรอบปีสู่ {{px}} หลัง Health Benefits Ratio (HBR) ปรับดีขึ้นต่อเนื่องแทบทุกไตรมาส และบริษัทปรับ guidance กำไรปี 2569 ขึ้น 2 ครั้งติดต่อกัน (ล่าสุดหลัง Q2/2569 ปรับพื้น adjusted diluted EPS จาก >$3.40 เป็น >$4.80)",
+    "valuation": "★ full disclosure: ทั้งสองวิธีใช้ \"กำไรปกติ\" (normalized) {{eps}} ไม่ใช่กำไร TTM ที่ยังติดลบ $10.36/หุ้นจากการตั้งสำรอง Marketplace ปี 2568 — ฐาน {{eps}} เป็นค่าเฉลี่ยระหว่าง (ก) พื้น guidance ทางการของบริษัทปี 2569 (adjusted diluted EPS >$4.80 ซึ่งฝ่ายบริหารเปิดเผยว่ารวมรายการ non-recurring ราว $0.50/หุ้นในกลุ่ม Medicare/Commercial) กับ (ข) ฐาน recurring ล้วนหลังตัดรายการนั้นออก (~$4.30) • r = rf 4.65% (UST 10Y ณ 7 ส.ค. 2569, TradingEconomics/CNBC) + β ประมาณ 1.0 (สูงกว่าค่าเฉลี่ย MCO ทั่วไป ~0.6-0.8 เพราะความผันผวนเฉพาะตัวรอบนี้) × ERP ~4.85% ≈ 9.5% • g = 3.0% (ใกล้ nominal GDP ระยะยาว) • วิธี P/E ไม่ใช้ (r,g) เป็น input จึงเป็นวิธีอิสระจากวิธี P/BV จริง • ทั้งสองวิธีชี้ทางเดียวกัน: ราคาปัจจุบัน {{px}} สูงกว่ากรอบ FV ทั้งคู่ สะท้อนว่าตลาดวิ่งนำหน้าการฟื้นมาร์จิ้นไปมากแล้วหลัง HBR ลดจาก 93.0%→89.6% ใน Q2/2569",
+    "gauge": "ราคาปัจจุบัน {{px}} อยู่เหนือกรอบบน Fair Value ({{fvHigh}}) ไปแล้ว — MOS ติดลบ ห่างจากโซนซื้อ MOS20 ({{mos20}})/MOS30 ({{mos30}}) มาก แต่ยังต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ {{analyst.target}} (n=18, Yahoo/StockAnalysis ตรงกัน) ทั้งนี้เป้าราคาจากสำนักต่าง ๆ กระจายกว้างมาก ($39-$80) สะท้อนความเห็นที่ยังแตกต่างกันสูงเรื่องความยั่งยืนของกำไร",
+    "mos": "<b>ไม่มี Margin of Safety (ราคาแพงกว่ามูลค่าเหมาะสม)</b><br>ราคาปัจจุบัน {{px}} สูงกว่า Fair Value {{fv}} ตลาดวิ่งนำหน้าฟื้นมาร์จิ้นไปมากแล้ว นักลงทุนที่เข้าซื้อตอนนี้แทบไม่มีส่วนเผื่อความปลอดภัย",
+    "verdictHeadline": "มาร์จิ้นฟื้นชัดเจน — แต่ราคาวิ่งนำหน้าพื้นฐานไปแล้ว",
+    "verdictBody": "Centene ฟื้นตัวจากวิกฤตขาดทุน Marketplace ปี 2568 ได้จริง: HBR รวมลดจาก 93.0% เหลือ 89.6% ใน Q2/2569, guidance EPS ปี 2569 ถูกปรับขึ้น 2 ครั้งติดต่อกัน และไตรมาสล่าสุดพลิกกำไร GAAP diluted EPS $2.19 ต่อหุ้น อย่างไรก็ตาม ราคาหุ้นวิ่งขึ้นมาแล้ว +84.1% ในรอบปีสู่ {{px}} ซึ่งสูงกว่ากรอบ Fair Value ที่ประเมินได้ ({{fvLow}}–{{fvHigh}}) ด้วยกำไรปกติที่ยังต้องพิสูจน์ความยั่งยืนอีกหลายไตรมาส ทั้งความเสี่ยงเงินอุดหนุน ACA และแรงกดดัน Medicaid ระดับรัฐ นักลงทุนที่เข้าซื้อ ณ ราคานี้จึงแทบไม่มี Margin of Safety — เหมาะกับการติดตามรอจังหวะย่อ หรือรอผลประกอบการยืนยันความยั่งยืนของ HBR อีก 2-3 ไตรมาสมากกว่าไล่ราคา",
+    "strategy": "รอสะสมโซน MOS20 ({{mos20}}) ลงไป หรือรอ HBR ยืนยันดีขึ้นต่อเนื่องอีก 2-3 ไตรมาสก่อนไล่ราคาปัจจุบัน — ติดตามผลประกอบการ Q3/2569 (คาดประกาศ ต.ค. 2569) และความชัดเจนเรื่องเงินอุดหนุน ACA Marketplace ปี 2570 อย่างใกล้ชิด",
+    "disclaimerSources": "ราคา ณ {{priceDate}} จาก Yahoo Finance (cross-check กับ StockAnalysis.com ตรงกัน) • ข้อมูลงบการเงิน/ประมาณการ 5 ปีจาก StockAnalysis.com • ข้อมูล HBR/สมาชิกรายกลุ่ม/guidance จาก Centene Corporation ผลประกอบการไตรมาส 2/2569 (ประกาศ 28 ก.ค. 2569 ผ่าน PR Newswire/Centene Investor Relations) • อัตราดอกเบี้ยอ้างอิง UST 10Y จาก TradingEconomics/CNBC ณ 7 ส.ค. 2569 • เป้าราคานักวิเคราะห์เพิ่มเติมจาก WallStreetZen, Investing.com, MarketBeat (ช่วงกว้าง $39-$80)"
+  },
+  "text": {
+    "valHint": "เฉลี่ย 2 วิธี"
+  },
+  "catalysts": [
+    "<b>HBR ฟื้นตัวชัดเจนทุกกลุ่มธุรกิจ:</b> Consolidated HBR ลดจาก 93.0%→89.6% YoY ใน Q2/2569 — Marketplace ดีขึ้นมากสุด 90.6%→79.2%, Medicaid 94.9%→93.9%, Medicare 90.9%→89.5% (Centene Q2 2026 press release)",
+    "<b>Guidance ปรับขึ้นต่อเนื่อง:</b> พื้น adjusted diluted EPS ปี 2569 ปรับจาก >$3.40 เป็น >$4.80 หลัง Q2 พร้อมปรับรายได้ขึ้น $6B สู่ $193.5–197.5B",
+    "<b>Medicare PDP โตแรง:</b> สมาชิกเพิ่มจาก 7.8M เป็น 8.8M ชดเชยการหดตัวของ Marketplace/Medicaid บางส่วน",
+    "<b>นักวิเคราะห์ปรับเป้าขึ้น:</b> Bernstein ปรับเป้าจาก $68 เป็น $79 คงเรตติ้ง Outperform (3 ส.ค. 2569) หลังผลประกอบการแข็งแกร่งเกินคาด",
+    "<b>พลิกกำไรไตรมาส:</b> Q2/2569 พลิกมีกำไร GAAP diluted EPS $2.19 (adjusted $2.51) หลังไตรมาสก่อนหน้ายังฟื้นตัวจากขาดทุนสะสมปี 2568"
+  ],
+  "risks": [
+    "<b>เงินอุดหนุน ACA Marketplace มีความเสี่ยง:</b> หากเงินอุดหนุนพิเศษ (enhanced subsidy) ไม่ต่ออายุเต็มรูปแบบ อาจดันสมาชิกกลุ่มสุขภาพดีออกจากตลาด (adverse selection ย้อนกลับ) กระทบ HBR Marketplace ที่เพิ่งฟื้น",
+    "<b>Medicaid หดตัวต่อเนื่อง:</b> สมาชิกลดจาก 12.8M เหลือ 12.1M ในไตรมาสเดียว จาก redetermination ที่ยังดำเนินอยู่ + แรงกดดันงบประมาณ/กติกา Medicaid ระดับสหพันธรัฐ-มลรัฐ (รวมผลกฎหมาย OBBBA ปี 2568)",
+    "<b>Marketplace หดตัวแรง 37% YoY:</b> HBR ที่ดีขึ้นส่วนหนึ่งมาจากฐานสมาชิกที่เล็กลงและ acuity เปลี่ยน ไม่ใช่ cost trend ดีขึ้นล้วน ๆ — ต้องติดตามว่าฟื้นตัวยั่งยืนจริงหรือไม่เมื่อฐานสมาชิกกลับมาโต",
+    "<b>Guidance รวมรายการ non-recurring:</b> ฝ่ายบริหารเปิดเผยว่าการปรับ guidance ขึ้นมีราว $0.50/หุ้นจากรายการที่ไม่เกิดซ้ำในกลุ่ม Medicare/Commercial — กำไรจริงระยะยาวอาจต่ำกว่าตัวเลข guidance ล่าสุด",
+    "<b>ราคาวิ่งนำหน้าพื้นฐาน:</b> หุ้นขึ้น +84.1% ในรอบปี สูงกว่ากรอบ FV ที่ประเมิน ({{fvLow}}–{{fvHigh}}) MOS {{mos}} ตลาดคาดการฟื้นตัวไว้ล่วงหน้ามากแล้ว",
+    "<b>เป้าราคานักวิเคราะห์แตกกระจาย:</b> จาก 21 สำนัก มีทั้ง Strong Buy 8/Hold 12/Strong Sell 1 เป้าราคาตั้งแต่ $39-$80 สะท้อนความไม่แน่นอนสูงเรื่องความยั่งยืนของกำไร"
+  ],
+  "extras": [],
+  "v2Display": {
+    "fv": 54.7,
+    "fvRange": [
+      49.6,
+      59.8
+    ],
+    "legValues": [
+      null,
+      49.6
+    ],
+    "targets": [
+      null,
+      75.27,
+      105
+    ],
+    "cards": {
+      "revenue": {
+        "v": "$202,938M",
+        "d": "+13.9% YoY"
+      }
+    }
+  },
+  "_sig": "sha256:67de932bd23325829678cdf6911a125d2659e1bcb24295be97aeaa33725fe4b4"
+}

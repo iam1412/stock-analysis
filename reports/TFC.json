@@ -1,0 +1,309 @@
+{
+  "v": 3,
+  "symbol": "TFC",
+  "currency": "USD",
+  "region": "US",
+  "dateEra": "BE",
+  "meta": {
+    "company": "Truist Financial Corporation",
+    "exchange": "NYSE",
+    "sub": "7th largest US bank (BB&T + SunTrust merger 2019, ~$530B assets) • SE US geography (Sun Belt growth) • McGriff Insurance divested 2023 ($7.75B) → capital return focus • CEO transition 1 ก.ย. 2569 (Lyons succeeds Rogers) • ~4.0% dividend yield • Q2 2026 EPS beat +37% YoY",
+    "headerTags": [
+      "Financials",
+      "Regional Bank"
+    ],
+    "analysisDate": "2026-09-22",
+    "aiModel": "Claude Sonnet 5",
+    "sources": [
+      "Yahoo Finance",
+      "Finviz",
+      "StockAnalysis.com"
+    ],
+    "themeLegacy": {
+      "accent": "#5B2C8D",
+      "accentDark": "#3D1A6B",
+      "darkGrad": "linear-gradient(135deg,#1a0a2e 0%,#2d1660 50%,#1a0a2e 100%)",
+      "glow": "rgba(91,44,141,0.35)",
+      "subColor": "#b39ddb",
+      "headerMuted": "#9c89c1",
+      "verdictText": "#ce93d8",
+      "vcellLabel": "#ac9acf"
+    },
+    "migratedFrom": {
+      "updated": "2026-09-22T01:46:25+07:00",
+      "v2Hash": "7d23a1cdfa1a"
+    }
+  },
+  "market": {
+    "px": 47.66,
+    "priceDate": "2026-09-25",
+    "chgSuffix": "รอบปี",
+    "chart": {
+      "data": [
+        [
+          "ต.ค.25",
+          44.63
+        ],
+        [
+          "พ.ย.25",
+          46.5
+        ],
+        [
+          "ธ.ค.25",
+          49.21
+        ],
+        [
+          "ม.ค.26",
+          51.42
+        ],
+        [
+          "ก.พ.26",
+          49.31
+        ],
+        [
+          "มี.ค.26",
+          45.97
+        ],
+        [
+          "เม.ย.26",
+          51.5
+        ],
+        [
+          "พ.ค.26",
+          48.21
+        ],
+        [
+          "มิ.ย.26",
+          49.82
+        ],
+        [
+          "ก.ค.26",
+          51.84
+        ],
+        [
+          "ส.ค.26",
+          49.58
+        ],
+        [
+          "ก.ย.26",
+          47.66
+        ]
+      ]
+    },
+    "range52w": {
+      "lo": 40.78,
+      "hi": 56.2
+    }
+  },
+  "fundamentals": {
+    "eps": 4.35,
+    "dps": 2.08,
+    "shares": 1240000000,
+    "bvps": 50.04,
+    "revenue": 18700000000,
+    "beta": 0.88,
+    "fy": {
+      "period": "FY2025",
+      "netIncome": 5310000000
+    },
+    "bank": {
+      "nim": 2.98
+    },
+    "epsBasis": "gaap-ttm"
+  },
+  "legs": [
+    {
+      "method": "pe",
+      "label": "P/E Valuation (Forward EPS)",
+      "inputs": {
+        "multiple": 12,
+        "multipleSource": "peer"
+      },
+      "override": {
+        "eps": 4.85,
+        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+      },
+      "note": "ใช้ epsFwd เฉลี่ย Yahoo $5.00 และ StockAnalysis ~$4.69 (ปรับขึ้นจาก $4.54 เดิมหลัง Q2 2026 beat) × P/E 12x (คงเดิม เทียบ PNC/USB 12–13x)"
+    },
+    {
+      "method": "ddm",
+      "label": "DDM / Gordon Growth",
+      "inputs": {
+        "g": 4,
+        "r": 8.5
+      },
+      "note": "ใช้ g 4% (Sun Belt loan growth + NIM recovery) และ r 8.5% (cost of equity regional bank)"
+    },
+    {
+      "method": "declared",
+      "label": "Justified P/TBV",
+      "inputs": {
+        "value": 56.8,
+        "basis": "other"
+      },
+      "note": "P/TBV เหมาะสม = (ROTCE ~14.2% − g 4%)/(r 10% − g 4%) ≈ 1.7 × TBVPS $33.40 — ใช้ ROTCE กลางระหว่าง Q1 26 13.8% และ Q2 26 15.4% (guidance FY26 >14%, ไม่ใช้ spike Q2 ตรง ๆ เพราะมี trading revenue ชั่วคราวหนุน); TBVPS $33.40 (Q2 2026); r 10% สะท้อนความเสี่ยงช่วง CEO transition"
+    }
+  ],
+  "fvWeights": null,
+  "metrics": {
+    "cards": [
+      "mcap",
+      "pe",
+      "custom:0",
+      "pbv",
+      "netIncomeFy",
+      "eps",
+      {
+        "key": "nim",
+        "tone": "pos"
+      },
+      "custom:1",
+      "revenue",
+      "custom:2",
+      "yield",
+      "custom:3",
+      "beta",
+      "custom:4",
+      "custom:5",
+      "custom:6"
+    ],
+    "custom": [
+      {
+        "label": "P/E เฉลี่ย ~5 ปี",
+        "value": "~11–14x",
+        "note": "ส่วนลดจากรอบ integration"
+      },
+      {
+        "label": "ROE / ROTCE",
+        "value": "~4.3% / ~14.2%",
+        "note": "ROE TTM (GAAP) · ROTCE Q1 13.8%→Q2 15.4%, guide FY26 >14%",
+        "tone": "pos"
+      },
+      {
+        "label": "Efficiency Ratio",
+        "value": "57.9%",
+        "note": "ปรับดีขึ้น Q1 26 · เป้า <56% ปลาย 26"
+      },
+      {
+        "label": "CET1 Ratio",
+        "value": "10.8%",
+        "note": "Q1 26 · buyback $1.1B Q1 · โปรแกรม $5B",
+        "tone": "pos"
+      },
+      {
+        "label": "ROA",
+        "value": "~0.97%",
+        "note": "FY25 · ปรับดีขึ้นจาก -0.008% FY24"
+      },
+      {
+        "label": "Total Assets",
+        "value": "$547B",
+        "note": "อันดับ 7 สหรัฐ · ฐานใน SE US"
+      },
+      {
+        "label": "Stress Test",
+        "value": "ผ่าน Strong",
+        "note": "Fed stress test 2026 · ทุนแข็งแกร่ง",
+        "tone": "pos"
+      }
+    ],
+    "notes": {
+      "mcap": "ในตลาด",
+      "pe": "Forward P/E ~10.7x",
+      "netIncomeFy": "EPS $3.82 · +14% YoY (vs FY24 -\\$45M)",
+      "eps": "TTM · Q1 26 $1.09 (+25%) → Q2 26 $1.23 (+37% YoY)",
+      "nim": "-4bp QoQ (Q1 26: 3.02%) · trading revenue surge ช่วยชดเชย",
+      "revenue": "FY25 $18.4B · +61% vs FY24 (revenue recovery)",
+      "yield": "payout ~50% · ทรงตัว 3 ปี",
+      "beta": "ผันผวนต่ำกว่าตลาดเล็กน้อย"
+    },
+    "hint": "Q2 2026 · FY2025"
+  },
+  "scenarios": {
+    "years": 3,
+    "divIncluded": true,
+    "perYear": null,
+    "driver": "eps",
+    "exitMetric": "pe",
+    "cases": [
+      {
+        "growth": 2,
+        "exitMultiple": 10,
+        "divCum": 6.24,
+        "desc": "NIM กดดัน, สินเชื่อชะลอ"
+      },
+      {
+        "growth": 9,
+        "exitMultiple": 12,
+        "divCum": 6.24,
+        "desc": "NIM ฟื้น, efficiency <56%, Sun Belt"
+      },
+      {
+        "growth": 15,
+        "exitMultiple": 13.5,
+        "divCum": 6.24,
+        "desc": "re-rating, ROTCE >16%, buyback ต่อเนื่อง"
+      }
+    ],
+    "exitDp": 1,
+    "note": "กรณี Base (+43%) อิงการเติบโต EPS 9%/ปี จากฐาน EPS TTM ใหม่ {{eps}} หลัง Q2 2026 beat สอดคล้องกับ NIM ฟื้นตัว + efficiency ratio ดีขึ้น + buyback $5B ลด share count · กรณี Bear (+1%) สะท้อน NIM ที่กดดันต่อเนื่อง (2.98% Q2 26) และ rate environment ที่ไม่เอื้อ แต่ยังมีปันผล $6.24 ช่วยพยุง total return · กรณี Bull อิงการ re-rating เมื่อ ROTCE ยืนเหนือ 15%+ ต่อเนื่องและตลาดให้ multiple สูงขึ้นเทียบเท่า PNC/USB <b>คำเตือน:</b> ตัวเลขนี้เป็นการคาดการณ์ ไม่ใช่การรับประกันผลตอบแทน",
+    "hintNote": "(TTM GAAP)"
+  },
+  "analyst": {
+    "target": 54.9,
+    "n": null,
+    "rating": "Hold",
+    "asOf": null
+  },
+  "prose": {
+    "chart": "TFC ปรับตัวขึ้น <b>+10.6%</b> ในรอบปีที่ผ่านมา (ส.ค. 2568 – ก.ค. 2569) จาก $46.82 สู่ $51.76 จุดสูงสุดอยู่ที่ <b>$51.42 ม.ค. 2569</b> หลัง Q4 2025 earnings ดีกว่าคาด และ <b>$51.50 เม.ย. 2569</b> หลัง Q1 2026 EPS +25% YoY ช่วง มี.ค. 2569 ราคาถอยลงสู่ $45.97 จากความกังวลเรื่อง NIM compression และ macro uncertainty ก่อนฟื้นตัวสู่ {{px}} ก.ค. 2569 หลัง Q2 2026 EPS beat แรง ($1.23 vs คาด $1.08) แต่ถูกกดดันบางส่วนจากความไม่แน่นอนช่วง CEO transition แนวต้านสำคัญอยู่ที่ระดับ $54–$58 (Fair Value ใหม่ / 52wk high $56.20) · ราคาปัจจุบัน {{px}} ยังต่ำกว่า FV ที่มา: StockAnalysis.com, Google Finance (ปิดรายเดือน ส.ค. 68 – ก.ค. 69)",
+    "valuation": "P/E และ Justified P/TBV ให้ค่าใกล้เคียงกันที่ $57–$58 สะท้อน ROTCE เฉลี่ย ~14.2% ที่แข็งแกร่งขึ้นหลัง Q2 2026 beat DDM ให้ค่าต่ำกว่าที่ $48.1 เนื่องจาก payout ratio ~50% ต่ำกว่าธนาคารขนาดใหญ่บางแห่ง และบริษัทเน้น buyback มากกว่าปันผลในระยะนี้ FV เฉลี่ย {{fv}} ใกล้เคียงกับ consensus analyst target $54.86 · ราคาปัจจุบัน {{px}} ต่ำกว่า FV MOS {{mos}} ที่มาข้อมูล: StockAnalysis.com (EPS TTM {{eps}}, PE 11.90, price $51.76, EPS fwd blended ~$4.85), Yahoo Finance (price $51.76, epsFwd $5.00, fwdPE 10.3, target $54.86 n=18), Truist Q2 2026 earnings release 17 ก.ค. 2569 (ROTCE 15.4%, TBVPS $33.40, NIM 2.98%)",
+    "gauge": "ราคา {{px}} ต่ำกว่า Fair Value {{fv}} เล็กน้อย (~4.9% upside) และใกล้เคียง analyst target $54.86 (Hold, 18 นักวิเคราะห์) โซน MOS 20% ({{mos20}}) จะเป็นจุดเข้าซื้อที่น่าสนใจมากขึ้น — ช่วงนี้เคยทดสอบครั้งสุดท้ายที่ $40.78 (52wk low) การที่ราคาต่ำกว่า FV ({{fv}}) เล็กน้อยแสดงว่าตลาดยัง derate จากความไม่แน่นอนช่วง CEO transition แม้งบ Q2 จะ beat แรง",
+    "mos": "MOS ยังต่ำ — ราคาปัจจุบันต่ำกว่า Fair Value เล็กน้อย · ยังไม่ถึงส่วนเผื่อความปลอดภัยที่แนะนำ (10%+) · เหมาะสำหรับนักลงทุนที่ยอมรับ MOS ต่ำแลกกับปันผลระดับ 4 กว่าเปอร์เซ็นต์ และมองข้ามความผันผวนช่วง CEO transition",
+    "verdictHeadline": "Truist: งบ Q2 2026 beat แรง ROTCE ฟื้น • ปันผล ~4% • ระวัง CEO transition",
+    "verdictBody": "TFC เป็นธนาคารภูมิภาคอันดับ 7 ของสหรัฐ รายงานกำไร Q2 2026 แข็งแกร่งเกินคาด EPS $1.23 (+37% YoY) หนุนจาก non-interest income ที่โต 17% (IB/trading +72%) ROTCE พุ่งสู่ 15.4% จาก Q1 13.8% แม้ผู้บริหารยังใช้ guidance ระมัดระวังที่ >14% สำหรับทั้งปี · จุดแข็งคือ geography ใน Sun Belt ที่เติบโตสูง + ปันผล ~4.3% ที่สม่ำเสมอ จุดอ่อนยังเป็น ROE TTM ต่ำกว่า peer (4.3%) และความไม่แน่นอนช่วง CEO transition (Bill Rogers → Michael Lyons 1 ก.ย. 2569) ที่ทำให้ BofA/UBS ปรับลดเรตติ้ง Buy→Neutral ราคา {{px}} ต่ำกว่า FV {{fv}} เล็กน้อย (MOS {{mos}}) ใกล้เคียง analyst target $54.86 · เหมาะสำหรับนักลงทุนที่ต้องการ income (~4.3%) + upside จากงบที่ฟื้นตัวต่อเนื่อง",
+    "strategy": "ราคาปัจจุบัน {{px}} ต่ำกว่า Fair Value {{fv}} เล็กน้อย (MOS {{mos}}) — <b>ทยอยสะสมได้ที่ระดับปัจจุบัน หรือรอจังหวะอ่อนตัวเพิ่มสู่ $43.5 (MOS 20%) เพื่อส่วนเผื่อความปลอดภัยที่มากขึ้น</b> โดยเฉพาะช่วงก่อน CEO transition มีผล 1 ก.ย. 2569 ที่อาจสร้างความผันผวนระยะสั้น สำหรับ income investor ที่ต้องการปันผล 4.02% กรณีราคาต่ำกว่า {{mos20}} (MOS 20%) ถือเป็นโอกาสเข้าที่ดี · stop loss พิจารณาที่ <$40 (52wk low) เหมาะสำหรับนักลงทุนที่มีขอบเขตเวลา 2–3 ปีขึ้นไป",
+    "disclaimerSources": "ที่มา: StockAnalysis.com (ราคา $51.76 · 24 ก.ค. 2569, EPS TTM $4.35, P/E 11.90), Yahoo Finance (ราคา $51.76, epsFwd $5.00, fwdPE 10.3, target $54.86 n=18), StockAnalysis.com (EPS fwd blended ~$4.85, BVPS $50.04, ROE TTM 4.3%), Truist Q2 2026 earnings release 17 ก.ค. 2569 (EPS $1.23, net income $1.52B, revenue $5.27B, ROTCE 15.4%, TBVPS $33.40, NIM 2.98%), BofA Securities/UBS (downgrade Buy→Neutral 7-8 ก.ค. 2569 หลังประกาศ CEO transition)"
+  },
+  "catalysts": [
+    "<b>Sun Belt / SE US growth:</b> ประชากรอพยพเข้า Southeast US ต่อเนื่อง (Florida, Georgia, Carolina, Virginia, Tennessee) หนุนสินเชื่อบ้าน-SME และ deposit growth ในพื้นที่ที่ TFC มีสาขาหนาแน่น",
+    "<b>NIM recovery:</b> NIM ยืนที่ 3.02% Q1 2026 และคาดฟื้นตัวเมื่อ Fed เริ่มปรับดอกเบี้ยในวงจรใหม่ ต้นทุน deposit เริ่มลดลง QoQ ส่งผลดีต่อ spread",
+    "<b>Efficiency improvement:</b> efficiency ratio ดีขึ้นสู่ 57.9% Q1 2026 (จาก ~60%+ ยุค post-merger) ยังมีพื้นที่ลดลงอีกสู่เป้า <56% ปลายปี 2026 จาก cost synergy ที่สมบูรณ์แล้ว",
+    "<b>Capital return program:</b> buyback $5B (2026) + payout ratio 129% Q1 2026 → share count ลดลงหนุน EPS per share ต่อเนื่อง CET1 10.8% แข็งแกร่งรองรับการคืนทุน",
+    "<b>McGriff divestiture windfall:</b> เงิน $7.75B จากขาย McGriff Insurance (พ.ย. 2566) ใช้ buyback + เสริมทุน → ROE/ROTCE ฟื้นโดยไม่ต้องพึ่ง revenue growth เพียงอย่างเดียว",
+    "<b>Q2 2026 earnings beat แรง:</b> EPS $1.23 vs consensus $1.08 (+13.8%) · +37% YoY (Q1 26 +25% YoY) · net income $1.52B · revenue $5.27B (+5.6% YoY) จาก non-interest income +17% (IB/trading +72%, wealth mgmt +8%) · ROTCE พุ่งสู่ 15.4% ยืนยัน trajectory ฟื้นตัวต่อเนื่อง"
+  ],
+  "risks": [
+    "<b>NIM compression:</b> NIM ลดต่อเนื่องเหลือ 2.98% Q2 2026 (-4bp QoQ) จาก loan repricing → ความเสี่ยงหลักที่กด multiple ของ TFC ให้ต่ำกว่า peer แม้กำไรรวมจะดีจาก non-interest income",
+    "<b>CEO transition:</b> Bill Rogers พ้นตำแหน่งซีอีโอ 1 ก.ย. 2569 (เป็น executive chair ถึงประชุมผู้ถือหุ้น 2570) · Michael P. Lyons (อดีต Fiserv/PNC/BofA) รับตำแหน่งใหม่ — ประกาศ 15 มิ.ย. 2569 · BofA Securities และ UBS ปรับลดเรตติ้ง Buy→Neutral (7-8 ก.ค. 2569) จากความไม่แน่นอนเชิงกลยุทธ์ ทำให้ราคาไม่ค่อยขยับขึ้นแม้งบ Q2 จะ beat แรง",
+    "<b>Integration risk (legacy):</b> แม้ระบบหลักรวมกันแล้ว แต่ยังมีความเสี่ยงด้าน technology + talent retention จาก BB&T+SunTrust culture ที่แตกต่างกัน",
+    "<b>Credit quality:</b> NPL ratio ยังต้องติดตามในสภาพ rate สูง โดยเฉพาะ CRE (Commercial Real Estate) exposure ในพอร์ตธนาคาร SE US",
+    "<b>Regulatory environment:</b> stress test ผ่านแล้ว แต่ DFAST / Basel III endgame อาจบังคับ capital ratio สูงขึ้น จำกัดความสามารถคืนทุน",
+    "<b>PE multiple discount:</b> TFC ซื้อขายที่ discount ต่อ PNC/USB เนื่องจาก ROE TTM ต่ำกว่า (4.3% vs 10%+ PNC) → re-rating ต้องการความชัดเจนด้านกลยุทธ์ CEO ใหม่ก่อน"
+  ],
+  "extras": [],
+  "v2Display": {
+    "fv": 54.4,
+    "fvRange": [
+      48,
+      58
+    ],
+    "targets": [
+      46.2,
+      null,
+      89.4
+    ],
+    "cards": {
+      "pbv": {
+        "v": "1.0x / 1.4x",
+        "d": "BVPS $50.04 · TBVPS $33.40 (Q2 26)",
+        "op": "pxOverBase",
+        "base": [
+          50.04,
+          33.4
+        ]
+      }
+    }
+  },
+  "_sig": "sha256:b8d88285db7b4d2a461f93938f58a0f1a39e36344fd74176413ce84e74db4898"
+}
