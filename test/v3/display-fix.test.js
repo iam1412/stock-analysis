@@ -291,7 +291,8 @@ const tmp = fs.realpathSync.native(fs.mkdtempSync(path.join(os.tmpdir(), 'dfix-'
   t(/รายได้\/หุ้น ฐาน/.test(R.toV2Source(plain, C.compute(plain, { seeds: SEEDS }))), 'render: without driverTotal the per-share label stays');
 }
 t.eq(Object.keys(RMG.EXCLUDED).sort(), ['ABT', 'UNP'], 'remigrate: ABT/UNP excluded (controller ruling)');
-t.eq(RMG.remigrateOne('ABT', { reportsDir: REAL }, {}).result, 'SKIP', 'remigrate ABT → SKIP before reading anything');
+t.eq(RMG.remigrateOne('ABT', { reportsDir: REAL, v2Of: () => { throw new Error('no v2 history (shallow clone)'); } }, {}).result, 'SKIP', 'remigrate ABT (excluded) → SKIP when the v2 page cannot be read (CI shallow clone)');
+{ const r = RMG.remigrateOne('ABT', { reportsDir: REAL }, { migrateOne: () => ({ doc: null, failed: 'stub' }) }); t(r.via !== 'fresh' && r.via !== 'graft', 'remigrate ABT (excluded) never replaced by fresh/graft', JSON.stringify([r.result, r.via])); }
 
 t(fs.readdirSync(REAL).length === realBefore, 'real reports/ untouched');
 fs.rmSync(tmp, { recursive: true, force: true });
