@@ -23,7 +23,7 @@
     "migratedFrom": {
       "updated": "2026-09-22T07:22:55+07:00",
       "v2Hash": "83c9827458c4",
-      "prevHash": "faa6a12af742"
+      "prevHash": "27f3a4cb5139"
     }
   },
   "market": {
@@ -208,7 +208,6 @@
         "desc": "FY2026-27 โตต่ำกว่า consensus / capex AI ชะลอ / de-rating"
       },
       {
-        "growth": 18,
         "exitMultiple": 26,
         "desc": "โตตาม consensus (FY26 $8.11→FY27 $11.69) แล้วชะลอ"
       },
@@ -219,12 +218,8 @@
       }
     ],
     "exitDp": 0,
-    "baseOverride": {
-      "value": 8.09479,
-      "why": "EPS ฐานฉากถอดกลับจากราคาเป้าที่พิมพ์"
-    },
     "note": "* EPS +18%/ปี ของ Base สูงเพราะ consensus เองคาด FY2027 กระโดดจาก FY2026e $8.11 → $11.69 (+44% ปีเดียว) — ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสม ไม่มี <b>Margin of Safety</b> ผลตอบแทน Base ต้องพึ่ง EPS โตตาม consensus ต่อเนื่องและ P/E ออก ~26x (มัธยฐานย้อนหลังปรับเป็นฐาน non-GAAP) upside ที่แท้จริงขึ้นกับว่าวงจร <b>advanced packaging/HBM และ co-packaged optics (CPO)</b> จะขยายต่อเนื่องเกิน consensus และ Onto รักษาความเป็นผู้นำ metrology/inspection ได้แค่ไหน — ส่วน downside มาจากความเสี่ยงที่การฟื้นตัวไม่เป็นไปตามคาด",
-    "hintNote": "FY2026e $8.11 → FY2027e $11.69 (StockAnalysis forecast)"
+    "hintNote": "• EPS ฐาน FY2026e $8.11 → FY2027e $11.69 (StockAnalysis forecast)"
   },
   "analyst": {
     "target": 386,
@@ -265,15 +260,57 @@
   ],
   "extras": [],
   "v2Display": {
-    "fv": 204,
-    "fvRange": [
-      198,
-      209
+    "s6": [
+      {
+        "head": "EPS +4%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "$9.1"
+          ],
+          [
+            "P/E ออก",
+            "18x"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +18%/ปี*",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "$13.3"
+          ],
+          [
+            "P/E ออก",
+            "26x"
+          ]
+        ]
+      },
+      {
+        "head": "EPS +24%/ปี",
+        "rows": [
+          [
+            "EPS ปี 3",
+            "$15.5"
+          ],
+          [
+            "P/E ออก",
+            "30x"
+          ]
+        ]
+      }
     ],
     "targets": [
       164,
       346,
       465
+    ],
+    "noBase": true,
+    "fv": 204,
+    "fvRange": [
+      198,
+      209
     ],
     "gauge": [
       {
@@ -296,7 +333,13 @@
         "ref": "analystTgt",
         "label": "เป้า Analyst"
       }
-    ]
+    ],
+    "custom": {
+      "0": {
+        "op": "pxOverBase",
+        "base": 2.68
+      }
+    }
   },
-  "_sig": "sha256:edd453c1b7f96b27dbab796ef7242b595c3ee0f27640fb4ae629bdc107969c02"
+  "_sig": "sha256:1f01cd866467010578b53d9320c8efb217d223400810fa0ff830048a262455dd"
 }
