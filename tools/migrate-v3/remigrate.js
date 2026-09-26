@@ -79,7 +79,9 @@ function verbatimGraft(doc, fresh) {
   if (vd.blocks) {
     const hay = JSON.stringify(doc).replace(/<[^>]*>|\\u003c[^>]*>/g, ' ').replace(/\s+/g, ' ');
     const snip = (t) => String(t).replace(/<[^>]*>/g, ' ').replace(/\{\{[^}]*\}\}/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 40);
-    const has = (pt) => { const k = snip(pt.text != null ? pt.text : (pt.table.rows[0] || []).join(' ')); return !!k && hay.indexOf(k) >= 0; };
+    // ตาราง: แถวแรกตามตัว (JSON) อยู่ในใบเดิมแล้ว = มีแล้ว (CCEP — เดิมเทียบข้อความที่ต่อด้วยช่องว่างซึ่งไม่มีใน JSON ⇒ ตารางที่มีอยู่ถูกนับว่าหาย แล้ว blocks ของใบเดิมถูกแทนด้วยตารางเดี่ยว — ข้อความหาย)
+    const raw = JSON.stringify(doc);
+    const has = (pt) => { if (pt.text == null) { const r0 = pt.table.rows[0]; return !!r0 && raw.indexOf(JSON.stringify(r0)) >= 0; } const k = snip(pt.text); return !!k && hay.indexOf(k) >= 0; };
     const fresh1 = vd.blocks.map((b) => ({ ...b, parts: b.parts.filter((pt) => !has(pt)) })).filter((b) => b.parts.length);
     if (fresh1.length) x.blocks = fresh1;
   }
@@ -88,6 +90,36 @@ function verbatimGraft(doc, fresh) {
 let SEEDS_RMG = null;
 const seedsOf = () => SEEDS_RMG;
 
+/** display-fix2: การ์ด custom คิดสด (v2Display.custom ของ fresh — ตัวคูณผูกราคาบนฐานของผู้เขียน) → ใบเดิม
+ *  เฉพาะช่องที่ป้ายเดียวกับของ fresh และค่าของใบเดิมไม่มี token · คืน null เมื่อไม่มี
+ *  ใช้ทั้ง graft และ graft-text (27 ก.ย. 69 · COHU/LYB/MLI/PWR/ZM — การ์ด P/E ของผู้เขียนที่แช่ค่าไว้ = E41 เมื่อราคาขยับ · ตัวเลขอื่นของใบไม่ขยับ) */
+function liveCustomOf(doc, fresh) {
+  const vd = (fresh && fresh.v2Display) || {};
+  if (!vd.custom) return null;
+  const cu = Object.fromEntries(Object.entries(vd.custom).filter(([k]) => doc.metrics && doc.metrics.custom && doc.metrics.custom[+k] && fresh.metrics.custom && fresh.metrics.custom[+k]
+    && doc.metrics.custom[+k].label === fresh.metrics.custom[+k].label && !/\{\{/.test(String(doc.metrics.custom[+k].value))));
+  return Object.keys(cu).length ? cu : null;
+}
+
+/** v2Display.cards ของ fresh (การ์ดแคตตาล็อกที่หน้า v2 พิมพ์ข้อความของผู้เขียน/ฐานของผู้เขียน) → ใบเดิม: เฉพาะคีย์ที่ใบเดิมมี
+ *  note ของคีย์นั้นถอดออก (บรรทัดล่างมาจาก v2Display.cards[k].d แทน) · คืน { cards, metrics } | null
+ *  ใช้ทั้ง graft และ graft-text (27 ก.ย. 69 · COHU การ์ด P/E (TTM) ที่หน้า v2 พิมพ์ "N/A" — ตัวเลขอื่นของใบไม่ขยับ) */
+function cardsGraft(doc, fresh) {
+  const vd = (fresh && fresh.v2Display) || {};
+  if (!vd.cards || !doc.metrics) return null;
+  const keys = new Set((doc.metrics.cards || []).map((c) => (c && typeof c === 'object' ? c.key : c)));
+  const cards = Object.fromEntries(Object.entries(vd.cards).filter(([k]) => keys.has(k)));
+  if (!Object.keys(cards).length) return null;
+  let metrics = doc.metrics;
+  if (doc.metrics.notes) {
+    const notes = { ...doc.metrics.notes };
+    for (const k of Object.keys(cards)) delete notes[k];
+    metrics = { ...doc.metrics };
+    if (Object.keys(notes).length) metrics.notes = notes; else delete metrics.notes;
+  }
+  return { cards, metrics };
+}
+
 /** v2Display ของ fresh → ใบเดิม (เฉพาะส่วนที่โครงของใบเดิมรับได้) · คืน null เมื่อไม่มีอะไรให้ต่อ */
 function graftOf(existing, fresh) {
   if (!fresh) return null;
@@ -95,30 +127,15 @@ function graftOf(existing, fresh) {
   const { _sig, ...doc } = existing;
   const x = {};
   for (const k of ['fv', 'fvRange', 'targets', 'driverEnds', 'gauge', 'footer']) if (vd[k] != null) x[k] = vd[k];
-  // display-fix2: การ์ด custom คิดสด — เฉพาะช่องที่ป้ายเดียวกับของ fresh
-  if (vd.custom) {
-    const cu = Object.fromEntries(Object.entries(vd.custom).filter(([k]) => doc.metrics && doc.metrics.custom && doc.metrics.custom[+k] && fresh.metrics.custom && fresh.metrics.custom[+k]
-      && doc.metrics.custom[+k].label === fresh.metrics.custom[+k].label && !/\{\{/.test(String(doc.metrics.custom[+k].value))));
-    if (Object.keys(cu).length) x.custom = cu;
-  }
+  const cu = liveCustomOf(doc, fresh);
+  if (cu) x.custom = cu;
   // display-fix2: ข้อความขา context (ช่วง/ขีด) — ขาเดียวกันเท่านั้น
   if (vd.legTexts && Array.isArray(doc.legs) && doc.legs.length === vd.legTexts.length && vd.legTexts.every((t, i) => t == null || (doc.legs[i] && doc.legs[i].role === 'context'))) x.legTexts = vd.legTexts;
   if (vd.legValues && Array.isArray(doc.legs) && doc.legs.length === vd.legValues.length
     && doc.legs.every((l, i) => !fresh.legs[i] || l.method === fresh.legs[i].method)) x.legValues = vd.legValues;
-  let metrics = doc.metrics;
-  if (vd.cards) {
-    const keys = new Set((doc.metrics.cards || []).map((c) => (c && typeof c === 'object' ? c.key : c)));
-    const cards = Object.fromEntries(Object.entries(vd.cards).filter(([k]) => keys.has(k)));
-    if (Object.keys(cards).length) {
-      x.cards = cards;
-      if (doc.metrics.notes) {
-        const notes = { ...doc.metrics.notes };
-        for (const k of Object.keys(cards)) delete notes[k];
-        metrics = { ...doc.metrics };
-        if (Object.keys(notes).length) metrics.notes = notes; else delete metrics.notes;
-      }
-    }
-  }
+  const cg = cardsGraft(doc, fresh);
+  const metrics = cg ? cg.metrics : doc.metrics;
+  if (cg) x.cards = cg.cards;
   let scenarios = doc.scenarios;
   // ผลตอบแทนฉาก: ฐานปันผลต้องเท่าฐานที่ cron v2 พิมพ์ข้อความนั้น (เหมือน assemble) — ต่างแล้วปรับได้เมื่อไม่ต้องเพิ่มปันผลที่ใบไม่มี
   const divOk = vd.rets && (vd.rets.div === !!doc.scenarios.divIncluded || !vd.rets.div || doc.scenarios.cases.every((c) => c.divCum != null));
@@ -221,8 +238,15 @@ function remigrateOne(sym, o, env) {
   if (!excluded && fresh) {
     const { _sig, ...ex0 } = existing;
     const vg = verbatimGraft(ex0, fresh);
+    // การ์ด custom ที่คิดสดได้บนฐานของผู้เขียน (ตัวเลขอื่นของใบไม่ขยับ) ต่อไปกับข้อความตามตัว
+    //   + การ์ดแคตตาล็อกที่หน้า v2 พิมพ์ข้อความ/ฐานของผู้เขียน (v2Display.cards) — ตัวเลขที่คิดของใบไม่ขยับ (sameNumbers ตรวจข้างล่าง)
+    const cu = liveCustomOf(ex0, fresh);
+    if (cu) vg.x.custom = cu;
+    const cg = cardsGraft(vg.doc, fresh);
+    if (cg) vg.x.cards = cg.cards;
+    const vgDoc = cg ? { ...vg.doc, metrics: cg.metrics } : vg.doc;
     if (Object.keys(vg.x).length) {
-      const c = { via: 'graft-text', doc: { ...vg.doc, v2Display: { ...(vg.doc.v2Display || {}), ...vg.x }, meta: { ...vg.doc.meta, migratedFrom: mf } } };
+      const c = { via: 'graft-text', doc: { ...vgDoc, v2Display: { ...(vgDoc.v2Display || {}), ...vg.x }, meta: { ...vgDoc.meta, migratedFrom: mf } } };
       // fresh ที่คิดตัวเลขได้เท่าใบเดิมทุกตัว (FV · กรอบ · ค่าขา · เป้าฉาก) = ถอดใหม่ทั้งใบได้โดยตัวเลขไม่ขยับ → fresh ก่อน · ไม่งั้น graft-text ก่อน
       const freshSame = cands[0] && cands[0].via === 'fresh' && sameNumbers(existing, cands[0].doc, o.seeds);
       if (exValuesOk && !freshSame) cands.unshift(c); else cands.push(c);
@@ -232,6 +256,8 @@ function remigrateOne(sym, o, env) {
     const why = [];
     const errs = S.validate(c.doc);
     if (errs.length) { out.why.push(`${c.via}: schema ${errs[0].path}: ${errs[0].msg}`); continue; }
+    // ใบเดิมแสดงค่าเท่าหน้า v2 อยู่แล้ว ⇒ ผู้สมัครต้องคิดตัวเลข (FV · กรอบ · ค่าขา · เป้าฉาก) เท่าใบเดิมทุกตัว (27 ก.ย. 69: ห้ามเปลี่ยน FV/ค่าขาที่คิด — MLI fresh ปัด FV 44.19→44 · CCEP ปัดเป้าฉาก)
+    if (exValuesOk && !sameNumbers(existing, c.doc, o.seeds)) { out.why.push(`${c.via}: numbers move vs the existing doc (FV/range/legs/targets)`); continue; }
     const r = AU.auditDoc(sym, c.doc, src, aOpts);
     if (r.valueDiffs) why.push(`valueDiffs ${r.valueDiffs} (${r.values.slice(0, 2).map((x) => `${x.zone}: ${x.del} → ${x.ins}`).join(' · ')})`);
     if (r.sanity.length) why.push(`sanity: ${r.sanity.join(' · ')}`);
@@ -242,6 +268,8 @@ function remigrateOne(sym, o, env) {
     const g0 = gateAt(c.doc, 1, o);
     if (g0.length) why.push(`checkDoc ${g0.map((e) => `${e.id} ${String(e.msg).slice(0, 90)}`).join(' ; ')}`);
     PERTURB.forEach((k, i) => { const nw = [...ids(gateAt(c.doc, k, o))].filter((id) => !exGate[i].has(id)); if (nw.length) why.push(`gate at price ×${k}: new ${nw.join(',')}`); });
+    // ใบที่เขียนต้องผ่าน audit ทั้งแถว — gate ที่ราคาอื่นเทียบกับราคาของใบเอง (audit.perturb) ด้วย ไม่ใช่แค่ไม่แย่กว่าใบเดิม
+    if (r.perturb && r.perturb.length) why.push(`perturbed: ${r.perturb.slice(0, 2).join(' · ')}`);
     if (!why.length) { out.result = 'FIXED'; out.via = c.via; out.doc = c.doc; out.row = r; out.why = []; break; }
     out.why.push(`${c.via}: ${why.join(' | ')}`);
   }
@@ -282,4 +310,4 @@ function runRemigrate(syms, opts, log, env) {
   return { code: n('STILL-FAILING') ? 1 : 0, res };
 }
 
-module.exports = { EXCLUDED, runRemigrate, remigrateOne, graftOf, verbatimGraft, sameNumbers, failingOf, headRows, gateAt, gateRes, PERTURB };
+module.exports = { EXCLUDED, runRemigrate, remigrateOne, graftOf, verbatimGraft, liveCustomOf, cardsGraft, sameNumbers, failingOf, headRows, gateAt, gateRes, PERTURB };

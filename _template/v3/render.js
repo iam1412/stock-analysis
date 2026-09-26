@@ -136,7 +136,12 @@ function gaugeScale(ticks, d, view) {
   const r52 = view && view.doc && view.doc.market.range52w;
   const valOf = (t) => { if (t.ref != null) return GAUGE_VALUE[t.ref](d, r52); const m = /[0-9][0-9,]*(?:\.[0-9]+)?/.exec(t.text); return m ? parseFloat(m[0].replace(/,/g, '')) : null; };
   const xs = ticks.map((t, i) => ({ t, i, v: valOf(t) }));
-  if (xs.every((x) => typeof x.v === 'number' && Number.isFinite(x.v))) xs.sort((a, b) => a.v - b.v || a.i - b.i);
+  // ช่องที่อ่านค่าไม่ได้ (BGC "n/a" เป้านักวิเคราะห์ที่ไม่มี coverage) คงตำแหน่งของผู้เขียน · ช่องที่อ่านได้เรียงกันเองในตำแหน่งที่เหลือ
+  //   (27 ก.ย. 69 — เดิมทั้งสเกลคงลำดับของผู้เขียน ⇒ ช่อง {{rd:px}} ข้าม FV เมื่อราคาขยับ = E26) · อ่านได้ครบทุกช่อง = เรียงทั้งสเกลเหมือนเดิม
+  const ok = (x) => typeof x.v === 'number' && Number.isFinite(x.v);
+  const sorted = xs.filter(ok).sort((a, b) => a.v - b.v || a.i - b.i);
+  if (sorted.length === xs.length) xs.splice(0, xs.length, ...sorted);
+  else { let k = 0; for (let i = 0; i < xs.length; i++) if (ok(xs[i])) xs[i] = sorted[k++]; }
   const shown = (t) => (t.ref == null ? esc(t.text) : MARKET_REF.has(t.ref) ? esc(view.cur + RV.fmtPrice(GAUGE_VALUE[t.ref](d, r52))) : `{{rd:${t.ref}}}`);
   return xs.map(({ t }, i, arr) => `<span${i === 0 ? '' : i === arr.length - 1 ? ' style="text-align:right"' : ' style="text-align:center"'}>${shown(t)}<br><small>${esc(t.label)}</small></span>`).join('\n          ');
 }
