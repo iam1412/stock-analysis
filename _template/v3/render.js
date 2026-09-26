@@ -59,7 +59,7 @@ function mdesc(leg, view) {
       : `${epsLabel(leg, view)} ${m(b.eps)} × P/E เป้าหมาย ~${mult}x${src}${rng}`;
     case 'pbv': return i.multipleSource != null ? `BVPS ${m(b.bvps)} × P/BV ${live ? 'ปัจจุบัน ' : ''}${mult}x${live ? '' : src}${rng}`
       : `P/BV เหมาะสม = (ROE ${b.roe}% − g ${i.g}%)/(r ${i.r}% − g ${i.g}%) ≈ ${((b.roe - i.g) / (i.r - i.g)).toFixed(2)} × BVPS ${m(b.bvps)}`;
-    case 'ddm': return `D₁ = ปันผล ${m(b.dps)} × (1+g); g ${i.g}%, r ${i.r}%`;
+    case 'ddm': return i.d1 != null ? `D₁ ${m(i.d1)}; g ${i.g}%, r ${i.r}%` : `D₁ = ปันผล ${m(b.dps)} × (1+g); g ${i.g}%, r ${i.r}%`;
     case 'ddm2': return `D₁ ${m(i.d1)} โต ${i.g1}%/ปี ${i.years1} ปี แล้ว ${i.g2}%/ปี · r ${i.r}% · `
       + (i.horizon == null ? 'มูลค่าปลายงวดแบบ Gordon' : `${i.horizon} งวด ไม่มีมูลค่าปลายงวด`);
     // FCF = ยอดงบรวม (fundamentals/override) → สกุลงบ (view.stmtCur) เหมือนการ์ด FCF · ค่าขา (.mval) เป็นสกุลราคา (compute แปลงด้วย fx แล้ว)
@@ -108,13 +108,23 @@ function liveCardValue(fz, px) {
 
 // v2Display.gauge (ใบ migrate): สเกลเกจที่ผู้เขียน v2 เลือกเอง (ป้าย/จำนวนช่องต่างจาก template) · ref = ค่าของ view ({{rd:<ref>}}) · text = ป้ายตัวเลขคงที่ของผู้เขียน
 //   เรียงจากน้อยไปมากตามค่าปัจจุบันเมื่ออ่านค่าได้ครบทุกช่อง (E26 — ช่อง {{rd:px}} ขยับตามราคา) · อ่านไม่ได้ (เช่น "N/A") = ลำดับของผู้เขียน
+//   hi52w/lo52w (display-fix2): ค่าตลาด → อ่านสดจาก market.range52w ทุกครั้งที่ build (cron เขียน market) · พิมพ์เป็นเงินตรง ๆ (ไม่มี token {{rd:}} ของ v2)
 const GAUGE_VALUE = { mos30: (d) => d.mos30, mos20: (d) => d.mos20, fv: (d) => d.fv, fvLow: (d) => d.values.fvLow, fvHigh: (d) => d.values.fvHigh,
-  analystTgt: (d) => d.values.analystTgt, px: (d) => d.px, sc1tgt: (d) => d.scenarios[0].tgt, sc2tgt: (d) => d.scenarios[1].tgt, sc3tgt: (d) => d.scenarios[2].tgt };
-function gaugeScale(ticks, d) {
-  const valOf = (t) => { if (t.ref != null) return GAUGE_VALUE[t.ref](d); const m = /[0-9][0-9,]*(?:\.[0-9]+)?/.exec(t.text); return m ? parseFloat(m[0].replace(/,/g, '')) : null; };
+  analystTgt: (d) => d.values.analystTgt, px: (d) => d.px, sc1tgt: (d) => d.scenarios[0].tgt, sc2tgt: (d) => d.scenarios[1].tgt, sc3tgt: (d) => d.scenarios[2].tgt,
+  hi52w: (d, r52) => r52.hi, lo52w: (d, r52) => r52.lo };
+const MARKET_REF = new Set(['hi52w', 'lo52w']);
+function gaugeScale(ticks, d, view) {
+  const r52 = view && view.doc && view.doc.market.range52w;
+  const valOf = (t) => { if (t.ref != null) return GAUGE_VALUE[t.ref](d, r52); const m = /[0-9][0-9,]*(?:\.[0-9]+)?/.exec(t.text); return m ? parseFloat(m[0].replace(/,/g, '')) : null; };
   const xs = ticks.map((t, i) => ({ t, i, v: valOf(t) }));
   if (xs.every((x) => typeof x.v === 'number' && Number.isFinite(x.v))) xs.sort((a, b) => a.v - b.v || a.i - b.i);
-  return xs.map(({ t }, i, arr) => `<span${i === 0 ? '' : i === arr.length - 1 ? ' style="text-align:right"' : ' style="text-align:center"'}>${t.ref != null ? `{{rd:${t.ref}}}` : esc(t.text)}<br><small>${esc(t.label)}</small></span>`).join('\n          ');
+  const shown = (t) => (t.ref == null ? esc(t.text) : MARKET_REF.has(t.ref) ? esc(view.cur + RV.fmtPrice(GAUGE_VALUE[t.ref](d, r52))) : `{{rd:${t.ref}}}`);
+  return xs.map(({ t }, i, arr) => `<span${i === 0 ? '' : i === arr.length - 1 ? ' style="text-align:right"' : ' style="text-align:center"'}>${shown(t)}<br><small>${esc(t.label)}</small></span>`).join('\n          ');
+}
+// ค่าขาที่พิมพ์ (.mval): v2Display.legTexts (ขา context ที่หน้า v2 พิมพ์เป็นช่วง/ข้อความ — CRWV "−$135 ถึง −$35") · ค่าติดลบ (ขา context เท่านั้น — schema) = "−$135.00"
+function legShown(l, view) {
+  if (l.text != null) return l.text;
+  return (l.value < 0 ? '−' : '') + view.cur + RV.fmtPrice(Math.abs(l.value));
 }
 
 // v2Display.rets (ใบ migrate): รูปแบบข้อความ .ret ของผู้เขียน v2 · ตัวเลข % คิดใหม่ทุกครั้งที่ราคาปัจจุบันด้วยกติกาเดียวกับ cron v2
@@ -186,7 +196,9 @@ function toV2Source(doc, view) {
   const cards = S.cardEntries(doc.metrics).map((e) => {
     if (e.custom != null) {
       const c = doc.metrics.custom[e.custom];
-      return { k: esc(c.label), v: pr(c.value), d: c.note ? pr(c.note) : '', cls: toneCls(e.tone, '') };
+      // v2Display.custom (ใบ migrate · display-fix2): ตัวคูณ/ปันผลผูกราคาในการ์ด custom คิดสดจากฐานของผู้เขียน
+      const lc = vd && vd.custom && vd.custom[String(e.custom)];
+      return { k: esc(c.label), v: lc ? esc(liveCardValue({ v: c.value, op: lc.op, base: lc.base }, view.d.px)) : pr(c.value), d: c.note ? pr(c.note) : '', cls: toneCls(e.tone, '') };
     }
     const c = K.renderCard(e.key, view), note = noteOf(e.key);
     // v2Display.cards (ใบ migrate): การ์ดที่ cron v2 ไม่เคยแตะ = ข้อความคงที่ของผู้เขียน — ค่า + บรรทัดล่างตามหน้า v2 (ป้ายยังเป็นของ template)
@@ -198,10 +210,10 @@ function toV2Source(doc, view) {
   const cardHtml = cards.map((c) => `<div class="metric"><div class="k">${c.k}</div><div class="v${c.cls ? ' ' + c.cls : ''}">${c.v}</div><div class="d">${c.d}</div></div>`).join('\n      ');
   const legsHtml = view.legs.map((l, i) => `<div class="vmethod">
         <div><div class="mname">${i + 1}. ${esc(l.label)}${l.role === 'context' ? ' (บริบท — ไม่นับใน FV)' : ''}</div><div class="mdesc">${esc(mdesc(doc.legs[i], view))}${l.note ? ' — ' + pr(l.note) : ''}</div></div>
-        <div class="mval">${esc(view.cur + RV.fmtPrice(l.value))}</div>
+        <div class="mval">${esc(legShown(l, view))}</div>
       </div>`).join('\n      ');
   // Review Focus #2 — ป้ายเกจเรียงค่าจากน้อยไปมากเสมอ (E26)
-  const scale = vd && vd.gauge ? gaugeScale(vd.gauge, d) : [
+  const scale = vd && vd.gauge ? gaugeScale(vd.gauge, d, view) : [
     { v: d.mos30, tok: '{{rd:mos30}}', lab: 'MOS 30%' }, { v: d.mos20, tok: '{{rd:mos20}}', lab: 'MOS 20%' },
     { v: d.fv, tok: '{{rd:fv}}', lab: 'Fair Value' }, { v: d.values.fvHigh, tok: '{{rd:fvHigh}}', lab: 'กรอบบน FV' },
   ].concat(doc.analyst ? [{ v: doc.analyst.target, tok: '{{rd:analystTgt}}', lab: 'เป้าเฉลี่ย Analyst' }] : [])
@@ -217,18 +229,26 @@ function toV2Source(doc, view) {
   const col = (i, cls, name) => {
     const sc = view.scn[i];
     // Finding 4 (postreview) — เลขลบใช้ minus glyph U+2212 (ตามธรรมเนียม v2) ไม่ใช่ ASCII hyphen
-    const g = sc.growth >= 0 ? `+${sc.growth}` : `−${Math.abs(sc.growth)}`;
+    // v2Display.s6[i] (ใบ migrate · display-fix2): เซลล์ที่ผู้เขียนพิมพ์ — หัวคอลัมน์ (ข้อความ/ทางเดินหลายขั้น) และแถว (ตัวตั้ง · ตัวคูณออก+หมายเหตุ · ปันผล) ตามหน้า v2
+    //   เป้า/ผลตอบแทนยังเป็น token ({{rd:scNtgt}} = v2Display.targets[i] · ผลตอบแทนคิดสดที่ราคาปัจจุบัน)
+    const cell = C.cellOf(doc, i);
+    const head = cell && cell.head != null ? esc(cell.head)
+      : `${drv} ${sc.growth >= 0 ? `+${sc.growth}` : `−${Math.abs(sc.growth)}`}%/ปี`;
+    const rows = cell && cell.rows != null ? cell.rows.map(([k, v]) => `
+            <li><span>${esc(k)}</span><span>${esc(v)}</span></li>`).join('') : null;
     return `<div class="col ${cls}">
-        <div class="top"><span>${name}</span><span>${drv} ${g}%/ปี</span></div>
+        <div class="top"><span>${name}</span><span>${head}</span></div>
         <div class="body">
           <div class="tgt">{{rd:sc${i + 1}tgt}}</div>
           ${vd && vd.rets ? `<div class="ret {{rd:sc${i + 1}retClass}}">${esc(v2Ret(vd.rets, i, view))}</div>` : `<div class="ret {{rd:sc${i + 1}retClass}}">{{rd:sc${i + 1}ret}}${s.cases[i].retNote ? ' ' + pr(s.cases[i].retNote) : ''}</div>`}
-          <ul>
+          <ul>${rows != null ? rows + (sc.desc != null ? `
+            <li><span>สถานการณ์</span><span>${pr(sc.desc)}</span></li>` : '') + `
+          </ul>` : `
             <li><span>${drv} ปี ${s.years}</span><span>${vd && vd.driverEnds && vd.driverEnds[i] != null ? esc(vd.driverEnds[i]) : `~${esc(drvAmt(sc.driverEnd))}`}</span></li>
             <li><span>${ex} ออก</span><span>${exitText(s, sc.exitMultiple)}x</span></li>${sc.divCum != null ? `
             <li><span>ปันผลรวม ${s.years} ปี</span><span>~{{rd:sc${i + 1}div}}</span></li>` : ''}${sc.desc != null ? `
             <li><span>สถานการณ์</span><span>${pr(sc.desc)}</span></li>` : ''}
-          </ul>
+          </ul>`}
         </div>
       </div>`;
   };
@@ -359,7 +379,7 @@ ${jsonScript(RV.styledRD(view.rd))}
   </section>
 
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน ${s.years} ปี</h2><div class="hint">จากจุดเข้า {{rd:px}}${s.driver === 'eps' ? ' • EPS ฐาน ~{{rd:baseEps}}' : ` • ${drv} ฐาน ~${esc(drvAmt(view.scn[0].driverStart))}`}${s.hintNote ? ' ' + pr(s.hintNote) : ''}{{rd:scnNote}}</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน ${s.years} ปี</h2><div class="hint">จากจุดเข้า {{rd:px}}${view.scn[0].driverStart == null ? '' : s.driver === 'eps' ? ' • EPS ฐาน ~{{rd:baseEps}}' : ` • ${drv} ฐาน ~${esc(drvAmt(view.scn[0].driverStart))}`}${s.hintNote ? ' ' + pr(s.hintNote) : ''}{{rd:scnNote}}</div></div>
     <div class="scn">
       ${col(0, 'bear', 'Bear')}
       ${col(1, 'base', 'Base')}
@@ -419,4 +439,4 @@ ${jsonScript(RV.styledRD(view.rd))}
 `;
 }
 
-module.exports = { toV2Source, mdesc, jsonScript, SRC_NAME, epsLabel, ffoLabel, v2RetTokens, v2RetWants };
+module.exports = { toV2Source, legShown, mdesc, jsonScript, SRC_NAME, epsLabel, ffoLabel, v2RetTokens, v2RetWants };

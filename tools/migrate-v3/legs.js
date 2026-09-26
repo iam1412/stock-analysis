@@ -275,7 +275,8 @@ function extract(method, mdesc, mname, mval, f) {
     const monies = moneyAll(mdesc).filter((x) => !x.scaled);
     if (g != null && r != null && r > g) for (const b of monies.map((x) => x.v).concat(f.dps ? [f.dps] : [])) {
       if (finish('ddm', { g, r }, { dps: b })) return out;
-      if (finish('ddm', { g, r }, { dps: b / (1 + g / 100) }, 'D1 printed')) return out;   // พิมพ์ D₁ ⇒ dps (D₀) = D₁/(1+g)
+      // พิมพ์ D₁ ⇒ inputs.d1 = ตัวเลขของผู้เขียน (display-fix2 · PKG) — ไม่ถอดกลับเป็น dps (D₀ = D₁/(1+g) ที่ผู้เขียนไม่ได้พิมพ์)
+      if (finish('ddm', { g, r, d1: b }, null, 'D1 printed')) return out;
     }
     out.why = `ddm: g=${g} r=${r}`;
     return out;

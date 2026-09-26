@@ -10,6 +10,7 @@ const S = require('../v3/schema.js');
 const MP = require('./prose.js');
 const SY = require('./synonyms.js');
 const NB = require('./numbers.js');
+const RV = require('../report-values.js');
 
 // Plan 4c-prep (spec §3.7 ก): EBITDA มาก่อน revenue/eps · EV/EBITDA ก่อน EV/Sales · EV/Revenue ≡ evsales
 const DRIVER = [['ebitdaPerShare', /EBITDA/i], ['de', /\bDE\b|distributable/i], ['fre', /\bFRE\b|fee[-\s]*related/i],
@@ -23,6 +24,18 @@ const pctOf = (s) => { const m = /([+\-−]?)\s*([0-9]+(?:\.[0-9]+)?)\s*%/.exec(
 const decOf = (s) => { const m = /[0-9][0-9,]*(?:\.([0-9]+))?/.exec(String(s)); return m && m[1] ? m[1].length : 0; };
 const isExit = (label) => /ออก|exit|ทางออก/i.test(label);
 const isEnd = (label) => /ปี\s*\d/.test(label) && !/ปันผล/.test(label);
+// แถวตัวตั้งปลายฉาก: "… ปี 3" ก่อน · ไม่มี = แถวตัวเลขแถวเดียวที่ไม่ใช่ตัวคูณออก/ปันผล/สถานการณ์ (MRNA "ยอดขายสูงสุด (ปรับความเสี่ยง) ~$3B" — display-fix2)
+const endLiOf = (c) => c.lis.find((x) => isEnd(x[0])) || (() => {
+  const xs = c.lis.filter((x) => !isExit(x[0]) && !/ปันผล|สถานการณ์/.test(x[0]) && numOf(x[1]) != null);
+  return xs.length === 1 ? xs[0] : null;
+})();
+// หัวคอลัมน์ที่ template พิมพ์ได้เอง ("<driver> +g%/ปี") — ตัด % · /ปี · คำ driver แล้วไม่เหลือคำ (LITE "FY28 +50% → FY29 +30%" ไม่ใช่)
+const simpleHead = (t, driver) => {
+  let r = String(t || '').replace(/[+\-−]?\s*[0-9]+(?:\.[0-9]+)?\s*%/g, ' ').replace(/\/\s*ปี|ต่อปี/g, ' ');
+  const dr = DRIVER.find(([k]) => k === driver);
+  if (dr) r = r.replace(dr[1], ' ');
+  return !r.replace(/[()~≈•·,:/]/g, ' ').trim();
+};
 // .ret (Plan 4b Task 6b): หลักยึด = token ผลตอบแทนของ v2 หรือเลข % ตัวแรก — ข้อความหลังหลักยึด = คำของผู้เขียน → cases[i].retNote (ตัวเลขไม่คัดลอก)
 const RET_ANCHOR = /\{\{rd:sc\d+ret\}\}|(?:[+\-−]|&minus;)?\s*[0-9][0-9.,]*\s*%/;
 // คำต่อท้ายที่ติดป้ายไปบนผลตอบแทนรวมของ v3 แล้วความหมายเพี้ยน: มี % (ตัวเลขผูกราคาอีกตัว) หรือหน่วยต่อปี (v2 พิมพ์ %/ปี แต่ v3 พิมพ์ผลตอบแทนรวม)
@@ -124,11 +137,13 @@ function scenarios(parsed, fund, legs) {
     if (/(?<!ไม่|ยังไม่)รวมปันผล/.test(h6) && !NO_DIV.test(h6) && divAll) out.divIncluded = true;
     F.push(`scenarios: no values.scnBasis — years ${out.years} · divIncluded ${out.divIncluded} · perYear null (from the section head/hint)`);
   }
-  const meta = { driverText: null, exitText: null, starts: [], ends: [], base: null };
+  const meta = { driverText: null, exitText: null, starts: [], ends: [], base: null, noGrowth: [], heads: [null, null, null], perCase: false };
   if (cols.length !== 3) { H.push(`scenarios: ${cols.length} columns (need Bear/Base/Bull)`); return { scenarios: null, H, D, F, meta }; }
   const top = cols[0].top ? cols[0].top[1] : '';
   meta.driverText = top;
-  const drv = (DRIVER.find(([, re]) => re.test(top)) || [null])[0];
+  // driver จากหัวคอลัมน์ Bear · หัวเป็นข้อความล้วน (MRNA "เฉพาะมะเร็งผิวหนัง") = จากป้ายแถวตัวตั้งปลายฉาก (display-fix2)
+  const endLab0 = (endLiOf(cols[0]) || [''])[0];
+  const drv = (DRIVER.find(([, re]) => re.test(top)) || DRIVER.find(([, re]) => re.test(endLab0)) || [null])[0];
   const exLi = cols[0].lis.find((x) => isExit(x[0]));
   meta.exitText = exLi ? exLi[0] : null;
   const ex = exLi ? (EXIT.find(([, re]) => re.test(exLi[0])) || [null])[0] : null;
@@ -155,11 +170,11 @@ function scenarios(parsed, fund, legs) {
     else if (vs && vs[i] && typeof vs[i].div === 'number') divCum = vs[i].div;
     const descLi = c.lis.find((x) => /สถานการณ์/.test(x[0]));
     const desc = descLi ? MP.htmlToProse(descLi[2]) : '';
-    if (growth == null) H.push(`scenarios.cases[${i}].growth unreadable ("${c.top ? c.top[1] : ''}")`);
-    if (exitMultiple == null) H.push(`scenarios.cases[${i}].exitMultiple unreadable`);
+    if (growth == null) meta.noGrowth.push(i);   // H หลังตัดสินโหมดรายคอลัมน์ (display-fix2) — อ่าน growth ไม่ได้แต่พกหัว + ตัวตั้งปลายฉากของผู้เขียนได้
+    // exitMultiple อ่านไม่ได้ → H หลังตัดสินโหมดเซลล์ของผู้เขียน (display-fix2)
     if (!desc) H.push(`scenarios.cases[${i}].desc: no "สถานการณ์" row`);
     if (out.divIncluded && divCum == null) H.push(`scenarios.cases[${i}].divCum missing while divIncluded`);
-    const endLi = c.lis.find((x) => isEnd(x[0]));
+    const endLi = endLiOf(c);
     let end = endLi ? numOf(endLi[1]) : null, tol = endLi ? 0.5 * Math.pow(10, -decOf(endLi[1])) : null;
     // ค่าปลายฉากที่พิมพ์เป็นยอดรวมทั้งบริษัท ("รายได้ปี 3 ~$38.75B" — CPNG/NET) ของ driver ต่อหุ้น → ต่อหุ้น = ยอดรวม ÷ หุ้น (หน่วยปัดก็หารด้วย)
     const big = endLi ? NB.numsOf(endLi[1])[0] : null;
@@ -170,7 +185,10 @@ function scenarios(parsed, fund, legs) {
     }
     meta.starts.push(end != null && growth != null ? end / Math.pow(1 + growth / 100, out.years) : null);
     meta.ends.push(end != null && growth != null ? { end, text: endLi[1], growth, tol } : null);
+    meta.heads[i] = c.top ? MP.htmlToProse(c.top[1]).replace(/<[^>]*>/g, '').replace(/[{}<>]/g, '').replace(/\s+/g, ' ').trim() : null;
     const cs = { growth, exitMultiple };
+    if (growth == null) delete cs.growth;
+    if (exitMultiple == null) delete cs.exitMultiple;
     if (divCum != null) cs.divCum = divCum;
     cs.desc = desc;
     const rn = retNoteOf(parts[i], i, H, F, out);
@@ -205,6 +223,64 @@ function scenarios(parsed, fund, legs) {
       F.push(`scenarios.baseOverride ${out.baseOverride.value} back-computed from the printed ${out.driver} end values${out.driver === 'eps' ? ' (values.baseEps absent)' : ''}`);
     } else if (fStart == null) H.push(`scenarios: no base for driver ${out.driver} (fundamentals and printed end value both missing)`);
   }
+  // ── โหมดเซลล์ของผู้เขียน (display-fix2 · ใบ migrate — v2Display.s6 + targets): ฉากที่ template "ฐานเดียว × (1+g)^ปี" พิมพ์ไม่ได้
+  //   (ก) หัวคอลัมน์ไม่มี growth (LWLG "รายได้ปี 3 $5M" · MRNA/DOW ข้อความ) · (ข) ค่าปลายฉากที่พิมพ์ไม่เข้าฐานเดียว (AMZN/BAM · AVAV ทบ 2 ปี · LITE/GIS ทางเดินหลายขั้น)
+  //   (ค) ตัวคูณออกอ่านไม่ได้/มีหมายเหตุ (NTRA "n/a" · OMCL "11.0x (FY2567)") · (ง) แถวปันผลของผู้เขียน (DTE ป้าย/ทศนิยม 1 ตำแหน่ง) · (จ) driver/ตัวคูณต่างกันต่อคอลัมน์ (OKJ)
+  //   ⇒ พกหัว + แถวทุกคอลัมน์ตามที่พิมพ์ + ราคาเป้าของผู้เขียน (ตัวเลข — ผลตอบแทนคิดสด) · ไม่ถอดฐานกลับ · หัว §6 = คำของผู้เขียนทั้งท่อน
+  const why = [];
+  if (meta.noGrowth.length) why.push('growth not printed');
+  // ฐานเดียวคลาดเกินเกณฑ์ E24 (5%) ในคอลัมน์ใด = ฐานเดียวพิมพ์ฉากของผู้เขียนไม่ได้ (ภายใน 5% = การปัด — ทางเดิม back-compute)
+  const e24off = (b) => ends.some((e) => Math.abs(b * Math.pow(1 + e.growth / 100, out.years) - e.end) / e.end > 0.05);
+  if (meta.base === 'back-computed' && out.baseOverride && ends.length === 3 && e24off(out.baseOverride.value)) why.push('no single base reproduces the printed end values');
+  const exitCell = (c) => (c.lis.find((x) => isExit(x[0])) || [])[1];
+  // hard = template คิด/พิมพ์ฉากนี้ไม่ได้เลย (อ่านไม่ได้ → H เมื่อพกเซลล์ไม่ได้) · soft = template พิมพ์ได้แต่ไม่ตรงคำผู้เขียน (พกไม่ได้ = คงทางเดิม + F)
+  const soft = [];
+  if (cols.some((c) => { const t = exitCell(c); return t == null || numOf(t) == null; })) why.push('exit multiple not printed');
+  else if (cols.some((c) => /[^\s0-9.,x×~≈+\-−]/i.test(String(exitCell(c)).replace(/^[\s~≈]+/, '')))) soft.push('exit cell annotated');
+  const divRow = (c) => c.lis.find((x) => /ปันผล/.test(x[0]));
+  if (cols.some((c) => { const d = divRow(c); return d && (!new RegExp(`^ปันผลรวม ${out.years} ปี$`).test(d[0].trim()) || (!/\{\{rd:/.test(d[2]) && decOf(d[1]) !== 2)); })) soft.push("author's dividend row");
+  const colDrv = (c) => { const t = c.top ? c.top[1] : '', e = (endLiOf(c) || [''])[0]; return (DRIVER.find(([, re]) => re.test(t)) || DRIVER.find(([, re]) => re.test(e)) || [null])[0]; };
+  const colEx = (c) => { const l = (c.lis.find((x) => isExit(x[0])) || [''])[0]; return (EXIT.find(([, re]) => re.test(l)) || [null])[0]; };
+  if (cols.some((c) => colDrv(c) && colDrv(c) !== out.driver) || cols.some((c) => colEx(c) && colEx(c) !== out.exitMetric)) why.push('driver/exit differs per column');
+  // คู่ driver × exit ที่ template คิดไม่ได้ (EV/Sales ต้องคูณรายได้ต่อหุ้น · EV/EBITDA คู่ EBITDA ต่อหุ้น — PDYN/RCAT "EPS" + "EV/Sales ออก") = เป้ามาจากตัวตั้งอื่นของผู้เขียน
+  if ((out.exitMetric === 'evsales' && out.driver !== 'revenuePerShare') || ((out.exitMetric === 'evebitda') !== (out.driver === 'ebitdaPerShare'))) why.push(`driver ${out.driver} × exit ${out.exitMetric} is not a template pair`);
+  if (why.length || soft.length) {
+    const cur = RV.CUR_SYMBOL[parsed.sm && parsed.sm.currency] || '';
+    const tgts = cols.map((c, i) => {
+      if (vs && vs[i] && typeof vs[i].tgt === 'number' && vs[i].tgt > 0) return vs[i].tgt;
+      const m = /<div class="tgt">([\s\S]*?)<\/div>/.exec((parsed.byN && parsed.byN[6] && parsed.byN[6].body.split(/<div class="col /)[i + 1]) || '');
+      const x = m && !/\{\{rd:/.test(m[1]) ? NB.numsOf(MP.htmlToProse(m[1]))[0] : null;
+      return x && x.v > 0 ? x.v : null;
+    });
+    const bad = [];
+    if (!cur) bad.push('currency unknown (stock-meta.currency) — dividend cells cannot be written');
+    const cells = cols.map((c, i) => {
+      const rows = c.lis.filter((x) => !/สถานการณ์/.test(x[0])).map((x) => {
+        let v = x[1];
+        const dm = /\{\{rd:sc(\d)div\}\}/.exec(v);
+        if (dm) { const dv = vs && vs[+dm[1] - 1] && vs[+dm[1] - 1].div; if (typeof dv === 'number') v = v.replace(dm[0], cur + RV.fmtPrice(dv)); }
+        return [String(x[0]).replace(/\s+/g, ' ').trim(), String(v).replace(/\s+/g, ' ').trim()];
+      });
+      const head = meta.heads[i];
+      rows.forEach(([k, v], j) => { if (!k || !v || /[{}<>]/.test(k + v) || k.length > 60 || v.length > 80 || S.S6_PRICE_RE.test(k)) bad.push(`scenarios.cases[${i}] row ${j} "${k}: ${v}" cannot be carried`); });
+      if (!rows.length || rows.length > 5) bad.push(`scenarios.cases[${i}]: ${rows.length} rows (carry 1–5)`);
+      if (!head || head.length > 80) bad.push(`scenarios.cases[${i}]: column header "${head || ''}" cannot be carried`);
+      if (tgts[i] == null) bad.push(`scenarios.cases[${i}]: no printed target to carry`);
+      return { head, rows };
+    });
+    if (bad.length) (why.length ? H : F).push(...bad.map((x) => `${x} (author cells: ${why.concat(soft).join(' · ')})`));
+    else {
+      meta.perCase = true;
+      // ฐานเดียวที่ template ใช้ไม่ได้ (hard) = ไม่มีฐาน: ไม่ถอดกลับ · ไม่พิมพ์ฐานของ template (noBase) · ฐานของผู้เขียน (values.baseEps) / fundamentals ที่ใช้ได้ = คงไว้
+      if (why.length && meta.base !== 'values.baseEps' && meta.base !== 'leg override') { delete out.baseOverride; meta.base = 'author cells'; meta.noBase = true; }
+      out.cases.forEach((cs, i) => { if (cs.growth == null || !simpleHead(cells[i].head, out.driver)) delete cs.growth; if (cs.exitMultiple == null) delete cs.exitMultiple; });
+      meta.display = { s6: cells, targets: tgts };
+      if (meta.noBase) meta.display.noBase = true;
+      F.push(`scenarios: the author's cells per column (v2Display.s6 + targets — ${why.concat(soft).join(' · ')})`);
+    }
+  }
+  if (!meta.perCase) H.push(...meta.noGrowth.map((i) => `scenarios.cases[${i}].growth unreadable ("${cols[i].top ? cols[i].top[1] : ''}")`));
+  if (!meta.perCase) out.cases.forEach((cs, i) => { if (cs.exitMultiple == null) H.push(`scenarios.cases[${i}].exitMultiple unreadable`); });
   const note = (parsed.s6paras || []).map((p) => MP.htmlToProse(p)).filter(Boolean).join('<br>');
   if (note) out.note = note; else H.push('scenarios.note: no paragraph under the scenario columns');
   return { scenarios: out, H, D, F, meta };

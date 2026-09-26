@@ -350,7 +350,7 @@ for (const method of ['pe', 'ps', 'evsales', 'evebitda', 'pfcf', 'pffo', 'pbv'])
 {
   const d = base(); d.fundamentals.ffoBasis = 'coreFfo'; d.fundamentals.ffoPerShare = 4;
   t(!paths(S.validate(d)).includes('fundamentals.ffoBasis'), 'ffoBasis coreFfo accepted');
-  t.eq(S.FFO_LABEL, { ffo: 'FFO', affo: 'AFFO', coreFfo: 'Core FFO' }, 'one shared FFO label map');
+  t.eq(S.FFO_LABEL, { ffo: 'FFO', affo: 'AFFO', coreFfo: 'Core FFO', ffoa: 'FFOA' }, 'one shared FFO label map (+ ffoa — display-fix2 · UDR)');
 }
 {
   const d = base(); d.fundamentals.ebitda = 3.2e9; d.scenarios.driver = 'ebitdaPerShare'; d.scenarios.exitMetric = 'evebitda';

@@ -98,7 +98,8 @@ function checkDoc(doc, opts) {
   try { view = C.compute(doc, { seeds: o.seeds }); }
   catch (e) { add('E51', 'compute: ' + String(e.message).split('\n')[0]); return done(); }
   // (3) tieOut หารด้วยค่าขา — compute รับประกัน > 0 อยู่แล้ว (legValue throw) แต่ยืนยันก่อนหาร ไม่ปล่อย Infinity/NaN เป็นผลตรวจ
-  const badLeg = view.legs.findIndex((l) => !(isNum(l.value) && l.value > 0));
+  // ขา context ใบ migrate ที่ v2Display พกค่าติดลบ (display-fix2 · schema: ขา context เท่านั้น · ไม่เข้าคณิต FV) = ค่าที่หน้า v2 พิมพ์ — computed (จาก inputs) ยังต้อง > 0
+  const badLeg = view.legs.findIndex((l) => !(isNum(l.value) && l.value > 0) && !(l.role === 'context' && l.computed != null && isNum(l.value) && isNum(l.computed) && l.computed > 0));
   if (badLeg >= 0) { add('E51', `compute: legs[${badLeg}] ค่าขา ${view.legs[badLeg].value} (ต้อง > 0)`); return done(); }
   for (const i of X.tieOut(doc, view)) add('E52', `${i.path}: ${i.msg}`);
 
@@ -161,7 +162,9 @@ function checkDoc(doc, opts) {
   const prevToday = process.env.STALE_TODAY;
   let res;
   process.env.STALE_TODAY = today;
-  try { res = CR.checkHtml(html, `${doc.symbol}.html`, { source: src }); }
+  // v2Display.s6 (ใบ migrate · display-fix2): คอลัมน์ที่พกเซลล์ของผู้เขียน — E24 เทียบราคาเป้าที่หน้าแสดงกับเป้าที่พก (v2Display.targets) แทนสูตรฐานเดียว
+  const carried = [0, 1, 2].map((i) => (C.cellOf(doc, i) ? doc.v2Display.targets[i] : null));
+  try { res = CR.checkHtml(html, `${doc.symbol}.html`, carried.some((x) => x != null) ? { source: src, scnCarried: carried } : { source: src }); }
   finally { if (prevToday === undefined) delete process.env.STALE_TODAY; else process.env.STALE_TODAY = prevToday; }
   for (const e of res.errors) {
     if (NATIVE_V2.has(e.id)) continue;

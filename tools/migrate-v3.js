@@ -22,6 +22,8 @@
  *   remigrate <SYM…|--all-failing <audit.csv>> [--reports-dir D] [--v2-repo DIR] [--write] [--today YYYY-MM-DD]   (display-fix · tools/migrate-v3/remigrate.js)
  *           ใบ migrate ที่แสดงค่าไม่เท่าหน้า v2: migrator ที่แก้แล้ว (fresh) หรือใบเดิม + v2Display (graft) · คง meta.migratedFrom (+ prevHash ⇒ updated ไม่ขยับ)
  *           เขียนเฉพาะเมื่อ audit สะอาด + checkDoc 0 error + ราคาอื่นไม่มี error ใหม่ · พิมพ์ FIXED / STILL-FAILING <เหตุผล> · ไม่ --write = ตรวจอย่างเดียว
+ *   fix-gauge [<SYM>…] [--reports-dir D] [--write]   (display-fix2 · tools/migrate-v3/fix-gauge.js)
+ *           ใบ migrate ที่ v2Display.gauge แช่ค่าตลาดเป็นข้อความ (ราคา · 52 สัปดาห์ — schema ปฏิเสธแล้ว) → ref สด px/hi52w/lo52w · คง updated (prevHash)
  * ★ convert --write / adopt ต้องผ่าน display audit ด้วย (valueDiffs 0 · sanity ผ่าน — audit.auditDoc เทียบหน้า v2 ที่ market ของหน้า v2)
  * ★ --write ใส่ reports/ จริงต้องมี env MIGRATE_V3_ALLOW_REAL=1 (Plan 4c ตั้ง · PR นี้ไม่ตั้งนอก scratch rehearsal)
  * ★ นาฬิกา gate: sweep / convert dry-run = values.priceDate ของใบ (ไม่ขึ้นกับวันนี้ — E27 ไม่ใช่คุณสมบัติของการ migrate)
@@ -340,7 +342,8 @@ function main(argv) {
     if (cmd === 'adopt') { if (o._.length !== 1) throw new UsageError('adopt ต้องมี <SYM> ตัวเดียว'); return TR.runAdopt(o._[0], o, null, TRANSCRIBE_ENV); }
     if (cmd === 'audit') return runAuditCli(o._, o);
     if (cmd === 'remigrate') return runRemigrateCli(o._, o);
-    throw new UsageError('ใช้: migrate-v3.js sweep|convert|batch|draft|adopt|audit|remigrate …');
+    if (cmd === 'fix-gauge') return require('./migrate-v3/fix-gauge.js').runFixGauge(o._, o, null, { isGuarded });
+    throw new UsageError('ใช้: migrate-v3.js sweep|convert|batch|draft|adopt|audit|remigrate|fix-gauge …');
   } catch (e) {
     if (e instanceof UsageError) { process.stderr.write(`✗ ${e.message}\n`); return 1; }
     process.stderr.write(`✗ ${e.stack || e}\n`);

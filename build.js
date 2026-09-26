@@ -665,7 +665,7 @@ function loadReportSource(dir, name, seeds) {
 const SEEDS = JSON.parse(fs.readFileSync(path.join(ROOT, 'tools', 'seeds.json'), 'utf8'));
 
 // export ฟังก์ชันให้ unit-test (test/build-test.js) — ต้องอยู่ก่อนโค้ดที่รัน build จริง
-module.exports = { extractMeta, extractMetrics, freshHash, injectModelCredit, injectContactFooter, injectFooterCopyright, COPYRIGHT, injectTA, parseJsonScript, decorateReport, renderTagRow, pickHighlight, computeLeaders, HL_DEFS, AI_MODEL, AI_MAKER, expandReport, renderHead, renderEngine, validateReportData, THEME_DEFAULTS, deriveTheme, stripDecorEmoji, injectSectionNav, reportEntries, loadReportSource, updatedFor };
+module.exports = { THEME_DEFAULTS, extractMeta, extractMetrics, freshHash, injectModelCredit, injectContactFooter, injectFooterCopyright, COPYRIGHT, injectTA, parseJsonScript, decorateReport, renderTagRow, pickHighlight, computeLeaders, HL_DEFS, AI_MODEL, AI_MAKER, expandReport, renderHead, renderEngine, validateReportData, THEME_DEFAULTS, deriveTheme, stripDecorEmoji, injectSectionNav, reportEntries, loadReportSource, updatedFor };
 // ถูก require เข้ามาเพื่อเทส → ส่งออกฟังก์ชันแล้วหยุด ไม่รัน build (top-level return ใช้ได้ใน CommonJS module)
 if (require.main !== module) return;
 
