@@ -91,7 +91,10 @@ function tokenise(text, view, hits, field, opts) {
   for (const [token, kind] of [['eps', 'money'], ['dps', 'money'], ['bvps', 'money'], ['epsFy', 'money']]) {
     const sh = shownOf(token, view); if (sh != null) cands.push({ token, kind, shown: sh });
   }
-  const usable = cands.filter((c) => TK.TOKENS_V3[c.token] && c.shown != null && /\d\.\d/.test(c.shown) && (!only || only.has(c.token)));
+  // opts.exact === false: ข้าม (a) ทั้งหมด · opts.noMult: ไม่แทนตัวคูณ (ข้อความตามตัวของ v2Display — 27 ก.ย. 69: ตัวคูณเป้าหมายของผู้เขียนบังเอิญเท่า P/E ปัจจุบันได้ DTE/MO/FN)
+  //   opts.exactOnly = ชุด token ที่ (a) แทนได้ (ข้อความตามตัว = ค่าผูกราคาเท่านั้น — ตัวเลขการเงินของผู้เขียนคงตามที่เขียน)
+  const exactOnly = opts && opts.exactOnly;
+  const usable = opts && opts.exact === false ? [] : cands.filter((c) => TK.TOKENS_V3[c.token] && c.shown != null && /\d\.\d/.test(c.shown) && (!only || only.has(c.token)) && (!exactOnly || exactOnly.has(c.token)) && !(opts && opts.noMult && c.kind === 'mult'));
   let changed = true;
   while (changed) {
     changed = false;

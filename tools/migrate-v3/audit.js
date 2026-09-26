@@ -8,7 +8,7 @@
  *       ⇒ ค่าที่ผูกราคาต้องเทียบที่ราคาเดียวกัน) · sanity ตรวจบนหน้า v3 ที่เว็บแสดงจริง (market ปัจจุบันของใบ)
  *   valueDiffs = EQ numberValue ที่ไม่ใช่ "ย้ายที่ในโซนเดียวกัน" และเกิน 1 หน่วยที่ v2 พิมพ์ (ค่าที่แสดงต่างจริง — ต้องเป็น 0)
  *   roundingDiffs = numberRounding + numberValue ที่ ≤ 1 หน่วยของหลักสุดท้ายที่ v2 พิมพ์ (drift ที่เจ้าของยอมรับ · แสดงรายการ)
- *   textLost = คำของผู้เขียนที่หาย · sanity = ไม่มี {{…}} · ไม่มี undefined/NaN/null/TODO · ครบ 8 หมวด · ราคา/วันที่ราคา = market
+ *   textLost = คำของผู้เขียนที่หาย + ตัวเลขที่หายไปกับข้อความ (ต้องเป็น 0 — เจ้าของ 27 ก.ย. 69) · sanity = ไม่มี {{…}} · ไม่มี undefined/NaN/null/TODO · ครบ 8 หมวด · ราคา/วันที่ราคา = market
  * อ่านอย่างเดียว: ไม่เขียน reports/ · git ผ่าน env ที่ล้าง GIT_DIR/GIT_WORK_TREE/… (ใต้ hook ก็ชี้ repo ของ reports-dir)
  */
 const fs = require('fs');
@@ -250,9 +250,18 @@ function deviationsOf(sym, served0, at, viewAt, v3At) {
   let pxV2 = [], pxV3 = [];
   try {
     const MP = require('./prose.js');
-    const lits = MP.pxPhraseLits(MP.decode(PV.text(served0.replace(/<(script|style)\b[^>]*>[\s\S]*?<\/\1\s*>/gi, ' '))), viewAt.d.px);
+    // ข้อความล้วนแล้ว — "<"/">" ที่ผู้เขียนพิมพ์ ("&lt; {{rd:fv}}" หมวด 5) ไม่ใช่แท็ก (freeSpans ของ pxPhraseLits จะกลืนช่วงยาวเป็นแท็ก · TER 27 ก.ย. 69)
+    const lits = MP.pxPhraseLits(MP.decode(PV.text(served0.replace(/<(script|style)\b[^>]*>[\s\S]*?<\/\1\s*>/gi, ' '))).replace(/[<>]/g, ' '), viewAt.d.px);
     if (lits.length) { pxV2 = lits.flatMap((l) => num(l.lit)); pxV3 = lits.flatMap(() => num(MP.shownOf('px', viewAt) || '')); }
   } catch (e) { pxV2 = []; pxV3 = []; }
+  // (5) แถวผลตอบแทนในเซลล์ §6 ของผู้เขียน (v2Display.s6[i].rows[j][2] — 27 ก.ย. 69 · CBOE/GABLE): หน้า v2 แช่ตัวเลข ณ วันวิเคราะห์ (cron v2 ไม่แตะ ul)
+  //     หน้า v3 คิดสดจากเป้าของคอลัมน์ (ผลตอบแทนผูกราคา — กติกาเจ้าของ) ⇒ ฝั่ง v2 = ตัวเลขในข้อความที่พก · ฝั่ง v3 = ค่าที่ render ที่ market เดียวกัน
+  let rowV2 = [], rowV3 = [];
+  try {
+    const R = require('../../_template/v3/render.js');
+    const cells = (at.v2Display && at.v2Display.s6) || [];
+    cells.forEach((c, i) => { for (const r of (c && c.rows) || []) if (r[2]) { rowV2.push(...num(r[1])); rowV3.push(...num(R.liveRowRet(r[1], r[2], i, viewAt))); } });
+  } catch (e) { rowV2 = []; rowV3 = []; }
   const accept = (r) => {
     let x = num(r.del), y = num(r.ins);
     // ตัวเลขที่อยู่ทั้งสองฝั่ง (ห่าง ≤ 1 หน่วยที่ v2 พิมพ์ — บริบทของรัน "$278" → "$278.00" · เป้า "$212") ไม่ใช่ส่วนเบี่ยง · ตัดออกก่อน
@@ -261,6 +270,7 @@ function deviationsOf(sym, served0, at, viewAt, v3At) {
     if (r.zone === 's6' && badV2.length && subset(x, badV2) && subset(y, badV3)) return 'v2-inconsistent-returns';
     if (e44V2.length && subset(x, e44V2) && subset(y, e44V3)) return 'v2-stale-prose-e44';
     if (pxV2.length && subset(x, pxV2) && subset(y, pxV3)) return 'v2-stale-price-phrase';
+    if (r.zone === 's6' && rowV2.length && subset(x, rowV2) && subset(y, rowV3)) return 'v2-stale-return-row';
     return null;
   };
   return { served, list, rounding, accept };
@@ -470,6 +480,8 @@ function auditDoc(sym, doc, src, o, srcErr) {
   if (row.valueDiffs > 0) f.push('VALUE-DIFF');
   if (row.sanity.length) f.push('SANITY');
   if (row.invented > 0) f.push('INVENTED');
+  // เจ้าของ 27 ก.ย. 69: ข้อความของผู้เขียนที่หาย (คำ · ตัวเลขที่หายไปกับข้อความ) = ตก (เดิมเป็นข้อมูลประกอบ)
+  if (row.textLost > 0) f.push('TEXT-LOST');
   row.status = f.length ? f.join('+') : 'OK';
   return row;
 }
@@ -482,7 +494,7 @@ function toCsv(rows) {
   return L.join('\n') + '\n';
 }
 const mdCell = (s) => String(s == null ? '' : s).replace(/\|/g, '\\|').replace(/\n/g, ' ');
-const DEV_CLASSES = ['v2-stale-card', 'v2-inconsistent-returns', 'v2-stale-prose-e44', 'v2-stale-price-phrase'];
+const DEV_CLASSES = ['v2-stale-card', 'v2-inconsistent-returns', 'v2-stale-prose-e44', 'v2-stale-price-phrase', 'v2-stale-return-row'];
 function toMd(rows, meta) {
   const n = (f) => rows.filter(f).length;
   const audited = rows.filter((r) => r.status !== 'SKIP');
@@ -492,7 +504,7 @@ function toMd(rows, meta) {
     `| audited | ${audited.length} |`, `| OK | ${n((r) => r.status === 'OK')} |`,
     `| value diff (valueDiffs > 0) | ${n((r) => r.valueDiffs > 0)} |`, `| sanity failure | ${n((r) => r.sanity.length > 0)} |`,
     `| rounding drift only (OK with roundingDiffs > 0) | ${n((r) => r.status === 'OK' && r.roundingDiffs > 0)} |`,
-    `| text lost (textLost > 0) | ${n((r) => r.textLost > 0)} |`, `| skipped (not migrated) | ${n((r) => r.status === 'SKIP')} |`,
+    `| text lost (textLost > 0 — failure) | ${n((r) => r.textLost > 0)} |`, `| skipped (not migrated) | ${n((r) => r.status === 'SKIP')} |`,
     ...ADDED_CLASSES.map((c) => `| added numbers — ${c} (numbers · reports) | ${audited.reduce((k, r) => k + (r.addedList || []).filter((x) => x.cls === c).length, 0)} · ${n((r) => (r.addedList || []).some((x) => x.cls === c))} |`),
     ...DEV_CLASSES.map((c) => `| deliberate deviation: ${c} (reports) | ${n((r) => (r.deviations || []).some((d) => d.class === c))} |`), ''];
   const devs = audited.filter((r) => (r.deviations || []).length);
@@ -501,7 +513,8 @@ function toMd(rows, meta) {
       '- `v2-stale-card`: a price-bound card no base reproduces at the v2 page\'s own price → v3 shows its live value',
       '- `v2-inconsistent-returns`: a scenario return the v2 page printed inconsistently with its own target (+dividends) at its own price → v3 computes it',
       '- `v2-stale-prose-e44`: a price-bound prose literal in a report analysed since ' + RV.PROSE_TOKEN_SINCE + ' (E44) → v3 prints the live token',
-      '- `v2-stale-price-phrase`: the author printed the current price as a number right after "ราคาปัจจุบัน/ราคา" → v3 prints the live price {{px}}', '');
+      '- `v2-stale-price-phrase`: the author printed the current price as a number right after "ราคาปัจจุบัน/ราคา" → v3 prints the live price {{px}}',
+      '- `v2-stale-return-row`: a scenario-return row inside the author\'s §6 cells (not rewritten by the v2 cron) → v3 computes it live from the column target', '');
     for (const c of DEV_CLASSES) { const xs = devs.filter((r) => r.deviations.some((d) => d.class === c)).map((r) => r.symbol); if (xs.length) L.push(`- ${c} (${xs.length}): ${xs.join(' ')}`); }
     L.push('');
   }
@@ -541,7 +554,7 @@ function toMd(rows, meta) {
   return L.join('\n');
 }
 
-/** audit — syms ว่าง + all = ทุกใบ v3 · คืน { rows, code, files } · code 1 = มีใบ valueDiffs > 0 หรือ sanity ตก */
+/** audit — syms ว่าง + all = ทุกใบ v3 · คืน { rows, code, files } · code 1 = มีใบ valueDiffs > 0 · sanity ตก · invented > 0 · textLost > 0 */
 function runAudit(syms, o, log, ctx) {
   const say = log || ((s) => process.stdout.write(s + '\n'));
   let list = (syms || []).map((s) => String(s).toUpperCase());
@@ -563,12 +576,13 @@ function runAudit(syms, o, log, ctx) {
   const audited = rows.filter((r) => r.status !== 'SKIP');
   const vd = audited.filter((r) => r.valueDiffs > 0), sn = audited.filter((r) => r.sanity.length);
   const inv = audited.filter((r) => r.invented > 0);
+  const tl = audited.filter((r) => r.textLost > 0);
   const addedN = (c) => audited.reduce((k, r) => k + (r.addedList || []).filter((x) => x.cls === c).length, 0);
-  say(`audit: ${audited.length} ใบ · OK ${audited.filter((r) => r.status === 'OK').length} · value diff ${vd.length} · sanity ${sn.length} · invented ${inv.length} · rounding-only ${audited.filter((r) => r.status === 'OK' && r.roundingDiffs > 0).length} · text lost ${audited.filter((r) => r.textLost > 0).length}${rows.length > audited.length ? ` · skip ${rows.length - audited.length}` : ''}`);
+  say(`audit: ${audited.length} ใบ · OK ${audited.filter((r) => r.status === 'OK').length} · value diff ${vd.length} · sanity ${sn.length} · invented ${inv.length} · text lost ${tl.length} · rounding-only ${audited.filter((r) => r.status === 'OK' && r.roundingDiffs > 0).length}${rows.length > audited.length ? ` · skip ${rows.length - audited.length}` : ''}`);
   say(`  added numbers: ${ADDED_CLASSES.map((c) => `${c} ${addedN(c)}`).join(' · ')}${inv.length ? ` · invented in ${inv.map((r) => r.symbol).join(' ')}` : ''}`);
-  for (const r of audited.filter((x) => x.status !== 'OK')) say(`  ✗ ${r.symbol} ${r.status} · valueDiffs ${r.valueDiffs}${r.sanity.length ? ` · ${r.sanity.join(' · ')}` : ''}${r.values.length ? ` · ${r.values.slice(0, 2).map((x) => `${x.zone}: ${x.del} → ${x.ins}`).join(' · ')}` : ''}`);
+  for (const r of audited.filter((x) => x.status !== 'OK')) say(`  ✗ ${r.symbol} ${r.status} · valueDiffs ${r.valueDiffs}${r.textLost ? ` · textLost ${r.textLost} (${(r.lost || []).slice(0, 6).map((x) => `${x.w}@${x.zone}`).join(' ')})` : ''}${r.sanity.length ? ` · ${r.sanity.join(' · ')}` : ''}${r.values.length ? ` · ${r.values.slice(0, 2).map((x) => `${x.zone}: ${x.del} → ${x.ins}`).join(' · ')}` : ''}`);
   if (files.md) say(`  → ${files.md} · ${files.csv}`);
-  return { rows, code: vd.length || sn.length || inv.length ? 1 : 0, files };
+  return { rows, code: vd.length || sn.length || inv.length || tl.length ? 1 : 0, files };
 }
 
 module.exports = { runAudit, auditOne, auditDoc, addedNumbersOf, liveValuesOf, taggedNums, ADDED_CLASSES, deviationsOf, emptyRow, v2Served, splitValues, authorSteps, v2Source, v2Market, sanityOf, toCsv, toMd, GIT_SCRUB };

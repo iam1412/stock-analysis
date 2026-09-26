@@ -29,6 +29,7 @@ function tableTotal(x) {
   const t = (x.rows || []).find((r) => r && !Array.isArray(r) && r.kind === 'total');
   return { sum, total: t ? t.cells[x.sumCol] : sum, hasTotalRow: !!t };
 }
+const legDescOf = (doc, i) => { const vd = S.isMigrated(doc) && doc.v2Display; const t = vd && Array.isArray(vd.legDescs) ? vd.legDescs[i] : null; return typeof t === 'string' && t.trim() ? t : null; };
 function tieOut(doc, view) {
   const out = [];
   doc.legs.forEach((leg, i) => {
@@ -50,7 +51,8 @@ function tieOut(doc, view) {
       const scaled = total * (x.fx ? doc.fundamentals.fx : 1), value = view.legs[i].value;
       if (Math.abs(scaled - value) / value > 0.01)
         out.push({ path: `${p}.inputs.value`, msg: `ยอดตาราง ${+scaled.toFixed(2)}${x.fx ? ` (× fx ${doc.fundamentals.fx})` : ''} ≠ ค่าขา ${value} เกิน 1%` });
-    } else if (!(typeof leg.note === 'string' && leg.note.trim())) {
+    } else if (!(typeof leg.note === 'string' && leg.note.trim()) && !legDescOf(doc, i)) {
+      // ใบ migrate: คำอธิบายขาของผู้เขียนตามตัว (v2Display.legDescs[i]) = เหตุผลของขานี้ (27 ก.ย. 69)
       out.push({ path: `${p}.note`, msg: `ขา declared (${inp.basis}) ไม่มีตารางอ้าง ต้องมีเหตุผลใน note` });
     }
   });

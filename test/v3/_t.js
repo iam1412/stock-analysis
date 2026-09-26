@@ -2,7 +2,7 @@
 // assert counter แบบเดียวกับ test/report-values-test.js — หนึ่ง instance ต่อไฟล์ test
 module.exports = function makeT(name) {
   let n = 0, fails = 0;
-  const t = (c, m) => { n++; if (!c) { fails++; console.error('✗ [' + name + '] ' + m); } };
+  const t = (c, m, detail) => { n++; if (!c) { fails++; console.error("✗ [" + name + "] " + m + (process.env.T_DETAIL && detail != null ? "\n    " + String(detail).slice(0, 2000) : "")); } };
   t.eq = (a, b, m) => t(JSON.stringify(a) === JSON.stringify(b), `${m}: got ${JSON.stringify(a)} want ${JSON.stringify(b)}`);
   t.near = (a, b, tol, m) => t(typeof a === 'number' && Math.abs(a - b) <= tol, `${m}: got ${a} want ${b}±${tol}`);
   t.throws = (fn, re, m) => {

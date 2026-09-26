@@ -200,7 +200,17 @@ const L3 = require('../../tools/v3/legs.js'), bt = require('../../tools/brandthe
   t(/extra section not a table/.test(H2[0] || ''), 'extras: non-table section → H');
   const F = [];
   const pm = A.pxMetaOf('ราคาปิด ณ {{rd:priceDate}} (ตลาดปิด)<br>กรอบ 52 สัปดาห์ $1.00 / $2.50 • ADR 1 = 8 หุ้นสามัญ<br>ที่มา: A / B, C และ D', null, F);
-  t.eq(pm, { sources: ['A', 'B', 'C', 'D'], priceNote: 'ปิด · ตลาดปิด · ADR 1 = 8 หุ้นสามัญ', range52w: { lo: 1, hi: 2.5 } }, 'pxMeta: sources · range with "/" · extra words → priceNote', JSON.stringify(pm));
+  // 27 ก.ย. 69: "และ" เป็นคำของผู้เขียน (WTW) — ไม่ตัดแหล่งที่ "และ"
+  t.eq(pm, { sources: ['A', 'B', 'C และ D'], priceNote: 'ปิด · ตลาดปิด · ADR 1 = 8 หุ้นสามัญ', range52w: { lo: 1, hi: 2.5 } }, 'pxMeta: sources · range with "/" · extra words → priceNote', JSON.stringify(pm));
+  // 27 ก.ย. 69: "/" ใน URL / งวด "Q3/25" / ในวงเล็บ ไม่ตัด (PG · BIDU) · เกิน 8 แหล่ง = ท่อนเกินต่อท้ายแหล่งที่ 8 (คำไม่หาย)
+  t.eq(A.pxMetaOf('ราคา ณ {{rd:priceDate}}<br>ที่มา: stockanalysis.com (https://stockanalysis.com/stocks/pg/), SEC 6-K (Q3/25, FY25) / Yahoo', null, []).sources,
+    ['stockanalysis.com (https://stockanalysis.com/stocks/pg/)', 'SEC 6-K (Q3/25, FY25)', 'Yahoo'], 'pxMeta: sources split only at depth 0 · URL/period slashes kept');
+  t.eq(A.pxMetaOf('ที่มา: a, b, c, d, e, f, g, h, i, j', null, []).sources, ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h, i, j'], 'pxMeta: > 8 sources → the tail joins the 8th');
+  // 27 ก.ย. 69: "ช่วง" ในคำของผู้เขียนไม่ถูกตัด (CPF "อยู่ช่วงกลาง–บน") · บรรทัดวันที่ราคาที่สอง = priceNote ทั้งบรรทัด (SNPS) · token ในที่มา → priceNote (LRCX)
+  t.eq(A.pxMetaOf('กรอบ 52 สัปดาห์ ฿1.00 – ฿2.00 (อยู่ช่วงกลาง–บนของกรอบ)', null, []).priceNote, 'อยู่ช่วงกลาง–บนของกรอบ', 'pxMeta: "ช่วง" inside the author\'s words kept');
+  t.eq(A.pxMetaOf('ราคา ณ {{rd:priceDate}}<br>ราคาปิด ณ {{rd:priceDate}} • เทียบจุดต่ำ<br>ที่มา: A, B', null, []).priceNote, 'ราคาปิด ณ {{rd:priceDate}} • เทียบจุดต่ำ', 'pxMeta: a second price-date line → priceNote verbatim');
+  const lr = A.pxMetaOf('ราคา ≈ {{rd:priceDate}}<br>ที่มา: A, B ({{rd:px}}), C (ราคา ณ {{rd:priceDate}})', null, []);
+  t.eq([lr.sources, lr.priceNote], [['A', 'B', 'C'], 'ราคา ณ {{rd:priceDate}}'], 'pxMeta: sources after a price-date token read · token-only parens dropped · worded parens → priceNote', JSON.stringify(lr));
   t.eq(out.AAPL.doc.market.range52w, { lo: 196.86, hi: 317.4 }, 'range52w: falls back to the 52-week card');
   t(out.AAPL.notes.F.includes('market.range52w from the 52-week card (px-meta has none)'), 'range52w fallback → F');
   t.eq(out.AAPL.doc.metrics.notes.pe, 'สูงกว่าปกติ', 'card note: template .d prefix ("EPS TTM $8.26") stripped');
@@ -288,8 +298,10 @@ const asm = (sym, html) => A.assemble(PV.parseV2(sym, html), { seeds: SEEDS, hea
   t(!('chartHint' in (out.FTV.doc.text || {})), '6b: template-only §2 hint → no chartHint key');
 }
 {
-  t.eq(out.FTV.doc.scenarios.hintNote, '(TTM adj.)', '6b: FTV §6 hint residue → scenarios.hintNote');
-  t.eq(out.DDOG.doc.scenarios.hintNote, '(non-GAAP)', '6b: DDOG §6 hint residue (no scnNote token) → hintNote');
+  // ใบ migrate (27 ก.ย. 69): ป้ายหัว §6 ทั้งป้ายตามตัว (v2Display.s6Hint) · ทาง hintNote คงไว้สำหรับใบที่ไม่มีแถว manifest
+  t(!('hintNote' in out.FTV.doc.scenarios) && /\(TTM adj\.\)/.test(out.FTV.doc.v2Display.s6Hint) && /^จากจุดเข้า \{\{px\}\}/.test(out.FTV.doc.v2Display.s6Hint), '6b: FTV (migrated) §6 hint verbatim → v2Display.s6Hint', out.FTV.doc.v2Display.s6Hint);
+  t.eq(asm('FTV', raw('FTV')).doc.scenarios.hintNote, '(TTM adj.)', '6b: FTV (no manifest row) §6 hint residue → scenarios.hintNote');
+  t.eq(asm('DDOG', raw('DDOG')).doc.scenarios.hintNote, '(non-GAAP)', '6b: DDOG §6 hint residue (no scnNote token) → hintNote');
   const g = asm('FTV', raw('FTV').replace('~{{rd:baseEps}} (TTM adj.){{rd:scnNote}}', '~{{rd:baseEps}} (TTM GAAP){{rd:scnNote}}'));
   t.eq(g.doc.scenarios.hintNote, '(TTM GAAP)', '6b: FTV-shaped "(TTM GAAP)" → hintNote');
   t(!('hintNote' in out.BBL.doc.scenarios) && !('hintNote' in out.DPZ.doc.scenarios), '6b: template-form §6 hint → no hintNote key');
@@ -515,8 +527,12 @@ const EQ = require('../../tools/migrate-v3/equiv.js');
 const R = require('../../_template/v3/render.js');
 const K = require('../../tools/v3/cards.js');
 // MS / MC ประกาศไว้แล้วด้านบน (บรรทัด require ชุด Task 5 ของ 4b)
-const runH = (sym, html) => { const p = PV.parseV2(sym, html); const r = A.assemble(p, { seeds: SEEDS, headUpdated: '2026-09-01T00:00:00+07:00', v2Hash: B.freshHash(html), today: p.rd.values.priceDate, analysisPx: null });
+const runAt = (headUpdated) => (sym, html) => { const p = PV.parseV2(sym, html); const r = A.assemble(p, { seeds: SEEDS, headUpdated, v2Hash: B.freshHash(html), today: p.rd.values.priceDate, analysisPx: null });
   const view = r.doc && C.compute(r.doc, { seeds: SEEDS }); return { ...r, view, eq: view && EQ.compare(B.expandReport(html), B.expandReport(R.toV2Source(r.doc, view)), r.doc, view, { v2src: html }) }; };
+const runH = runAt('2026-09-01T00:00:00+07:00');
+// ทางเดิม (ไม่มีแถว manifest → ไม่มี meta.migratedFrom): กลไก fail-closed ของ Plan 4c-prep (qualifier · extraCells · legendNote) ยังใช้กับทางนี้ ·
+//   ใบ migrate ใช้ข้อความของผู้เขียนตามตัว (v2Display.* — 27 ก.ย. 69) ⇒ เทสต์กลไกเดิมรันบนทางนี้
+const runL = runAt(null);
 // gdots text → meta.sectorLine (v2 rendered it)
 {
   const r = runH('SRE', raw('SRE').replace(/<div class="gdots">[^<]*<\/div>/, '<div class="gdots">SRE · Sempra · Utilities</div>'));
@@ -541,9 +557,13 @@ const runH = (sym, html) => { const p = PV.parseV2(sym, html); const r = A.assem
   const html = raw('CASY').replace(/(จุดสำคัญ<\/span>)/, '$1\n        <span>เส้นประ = FV รอบก่อน</span>')
     .replace(/(<div class="vgrid">[\s\S]*?)(\n\s*<\/div>\s*<div class="zone">)/, '$1\n        <div class="vcell"><div class="k">จุดทยอยสะสม</div><div class="v">ใต้มูลค่าเหมาะสม</div></div>$2');
   const r = runH('CASY', html);
-  t.eq(r.doc.text.legendNote, 'เส้นประ = FV รอบก่อน', 'legend residue → text.legendNote');
-  t.eq(r.doc.verdict, { extraCells: [{ k: 'จุดทยอยสะสม', v: 'ใต้มูลค่าเหมาะสม' }] }, '3rd vcell → verdict.extraCells');
+  // ใบ migrate (27 ก.ย. 69): legend + ช่อง vgrid ของผู้เขียนทุกช่องตามตัว (v2Display.legend / vcells) · ใบไม่มีแถว manifest = legendNote / extraCells เดิม
+  t(r.doc.v2Display.legend.some((x) => x.text === 'เส้นประ = FV รอบก่อน') && !(r.doc.text && r.doc.text.legendNote), 'legend (migrated) → v2Display.legend verbatim', JSON.stringify(r.doc.v2Display.legend));
+  t(r.doc.v2Display.vcells.some((c) => c.k === 'จุดทยอยสะสม' && c.v === 'ใต้มูลค่าเหมาะสม') && !r.doc.verdict, 'vcells (migrated) → v2Display.vcells verbatim', JSON.stringify(r.doc.v2Display.vcells));
   t(!r.eq.textLost.includes('จุดทยอยสะสม') && !r.eq.textLost.includes('เส้นประ'), 'carried words not lost', JSON.stringify(r.eq.textLost));
+  const n = asm('CASY', html);
+  t.eq(n.doc.text.legendNote, 'เส้นประ = FV รอบก่อน', 'legend residue (no manifest row) → text.legendNote');
+  t.eq(n.doc.verdict, { extraCells: [{ k: 'จุดทยอยสะสม', v: 'ใต้มูลค่าเหมาะสม' }] }, '3rd vcell (no manifest row) → verdict.extraCells');
 }
 // forward-labelled pe base → inputs.base + baseLabel (+ fundamentals.epsForward from the leg when absent)
 {
@@ -581,7 +601,9 @@ const runH = (sym, html) => { const p = PV.parseV2(sym, html); const r = A.assem
   const html = raw('CASY').replace('<div class="mname">3. Justified P/BV', '<div class="mname">3. Justified P/BV (บริบท — ห่างจากขายึดตลาด >2× ไม่รวมในกรอบ)');
   const r = runH('CASY', html);
   t.eq([r.doc.legs[2].role, r.doc.legs[2].label], ['context', 'Justified P/BV'], 'context leg · author label without the suffix');
-  t(/^ห่างจากขายึดตลาด >2×/.test(r.doc.legs[2].note || ''), 'suffix reasoning prepended to legs[2].note', r.doc.legs[2].note);
+  // ใบ migrate: ป้ายบริบทของผู้เขียนตามตัว (27 ก.ย. 69) · ทางเดิม: เหตุผลที่ตัดคำป้าย
+  t.eq(r.doc.legs[2].note, 'บริบท — ห่างจากขายึดตลาด >2× ไม่รวมในกรอบ', 'context label words carried verbatim in legs[2].note (migrated)');
+  t(/^ห่างจากขายึดตลาด >2×/.test(runL('CASY', html).doc.legs[2].note || ''), 'suffix reasoning prepended to legs[2].note (no manifest row)');
   t(!['บริบท', 'ไม่รวมในกรอบ', 'ห่างจากขายึดตลาด'].some((w) => r.eq.textLost.includes(w)), 'no context word lost', JSON.stringify(r.eq.textLost));
 }
 // qualifierOf round 3 — author words left in the formula head are carried; formula words and consumed words are not
@@ -668,10 +690,10 @@ const runH = (sym, html) => { const p = PV.parseV2(sym, html); const r = A.assem
   // extra vcells > 2 → H, none carried · legend annotation > 80 → H, not carried
   const vc = (k) => `<div class="vcell"><div class="k">${k}</div><div class="v">ข้อความ</div></div>`;
   const three = raw('CASY').replace(/(<div class="vgrid">[\s\S]*?)(\n\s*<\/div>\s*<div class="zone">)/, `$1\n        ${vc('ช่องหนึ่ง')}${vc('ช่องสอง')}${vc('ช่องสาม')}$2`);
-  const r = runH('CASY', three);
+  const r = runL('CASY', three);
   t(!r.doc.verdict && r.notes.H.some((h) => /s8 vcells 6 > 5 — extra cells not carried/.test(h)), '3 extra vcells → H, verdict absent', JSON.stringify(r.notes.H));
   const long = raw('CASY').replace(/(จุดสำคัญ<\/span>)/, `$1\n        <span>${'ยาวมาก '.repeat(14)}</span>`);
-  const r2 = runH('CASY', long);
+  const r2 = runL('CASY', long);
   t(!(r2.doc.text || {}).legendNote && r2.notes.H.some((h) => /legend annotation \d+ > 80 chars/.test(h)), 'legend annotation > 80 → H, not carried');
   // leg label > 80 → cut at the last top-level "(" before 80 · tail to the note
   const lbl = 'P/E Valuation ' + 'ก'.repeat(50) + ' (หางคำอธิบายของผู้เขียนที่ยาวเกินกว่าช่องชื่อ)';
@@ -713,21 +735,21 @@ const runH = (sym, html) => { const p = PV.parseV2(sym, html); const r = A.assem
   const vcell = (k, v) => `<div class="vcell"><div class="k">${k}</div><div class="v">${v}</div></div>`;
   const withCell = (html, cell) => html.replace(/(<div class="vgrid">[\s\S]*?)(\n\s*<\/div>\s*<div class="zone">)/, `$1\n        ${cell}$2`);
   // I-2: template key + author qualifier (MPC) → H, no extraCells
-  const mpc = runH('CASY', raw('CASY').replace('<div class="k">มูลค่าเหมาะสม</div>', '<div class="k">มูลค่าเหมาะสม (normalized)</div>'));
+  const mpc = runL('CASY', raw('CASY').replace('<div class="k">มูลค่าเหมาะสม</div>', '<div class="k">มูลค่าเหมาะสม (normalized)</div>'));
   t(!mpc.doc.verdict && mpc.notes.H.some((h) => /s8 vcell "มูลค่าเหมาะสม \(normalized\)" repeats a template cell/.test(h)), 'I-2 MPC shape: "มูลค่าเหมาะสม (normalized)" → H, not an extra cell', JSON.stringify({ v: mpc.doc.verdict, H: mpc.notes.H }));
   // I-2: WORK shape — "เป้าเฉลี่ย 12 ด." is the analyst cell under another name → H
-  const work = runH('CASY', withCell(raw('CASY'), vcell('เป้าเฉลี่ย 12 ด.', '฿8.45 (Yahoo, 2 นักวิเคราะห์)')));
+  const work = runL('CASY', withCell(raw('CASY'), vcell('เป้าเฉลี่ย 12 ด.', '฿8.45 (Yahoo, 2 นักวิเคราะห์)')));
   t(!work.doc.verdict && work.notes.H.some((h) => /s8 vcell "เป้าเฉลี่ย 12 ด\." repeats a template cell/.test(h)), 'I-2 WORK shape: "เป้าเฉลี่ย 12 ด." → H', JSON.stringify(work.notes.H));
   // a genuine author cell (different key, no price literal) is still carried
-  const ok = runH('CASY', withCell(raw('CASY'), vcell('จุดทยอยสะสม', 'ใต้มูลค่าเหมาะสม')));
+  const ok = runL('CASY', withCell(raw('CASY'), vcell('จุดทยอยสะสม', 'ใต้มูลค่าเหมาะสม')));
   t.eq(ok.doc.verdict, { extraCells: [{ k: 'จุดทยอยสะสม', v: 'ใต้มูลค่าเหมาะสม' }] }, 'I-2: a genuine author cell is still carried');
   // minor: price-bound literal in an extra cell (SMPC yield · TKC 52-week) → H, not carried
-  const smpc = runH('CASY', withCell(raw('CASY'), vcell('เงินปันผล', '~6.86% ต่อปี (฿0.70/หุ้น)')));
+  const smpc = runL('CASY', withCell(raw('CASY'), vcell('เงินปันผล', '~6.86% ต่อปี (฿0.70/หุ้น)')));
   t(!smpc.doc.verdict && smpc.notes.H.some((h) => /verdict\.extraCells "เงินปันผล" holds a price-bound literal/.test(h)), 'minor SMPC shape: yield % in an extra cell → H', JSON.stringify(smpc.notes.H));
-  const tkc = runH('CASY', withCell(raw('CASY'), vcell('กรอบ 52 สัปดาห์', '฿7.20–฿11.40')));
+  const tkc = runL('CASY', withCell(raw('CASY'), vcell('กรอบ 52 สัปดาห์', '฿7.20–฿11.40')));
   t(!tkc.doc.verdict && tkc.notes.H.some((h) => /verdict\.extraCells "กรอบ 52 สัปดาห์" holds a price-bound literal/.test(h)), 'minor TKC shape: 52-week range → H');
   // I-3: legend residue with a value / token / "ราคา <…>" / fair-value key → H, not carried
-  const leg = (from, to) => runH('CASY', raw('CASY').replace(from, to));
+  const leg = (from, to) => runL('CASY', raw('CASY').replace(from, to));
   const mpcL = leg('มูลค่าเหมาะสม {{rd:fv}}</span>', 'มูลค่าเหมาะสม (normalized) {{rd:fv}}</span>');
   t(!(mpcL.doc.text || {}).legendNote && mpcL.notes.H.some((h) => /legend annotation .* not carried — token/.test(h)), 'I-3 MPC shape: qualifier + {{fv}} → H', JSON.stringify(mpcL.notes.H));
   const fang = leg('มูลค่าเหมาะสม {{rd:fv}}</span>', 'มูลค่าเหมาะสม mid-cycle {{rd:fv}}</span>');
@@ -749,13 +771,13 @@ const runH = (sym, html) => { const p = PV.parseV2(sym, html); const r = A.assem
   t.eq(A.qualifierOf('ปรับ combined ratio เป็น 88% → EPS $23 × P/E 14x'), 'ปรับ combined ratio เป็น 88%', 'round 2: CB lead-in (no basis word · % only) still carried whole');
   const vcell = (k, v) => `<div class="vcell"><div class="k">${k}</div><div class="v">${v}</div></div>`;
   const withCell = (cell) => raw('CASY').replace(/(<div class="vgrid">[\s\S]*?)(\n\s*<\/div>\s*<div class="zone">)/, `$1\n        ${cell}$2`);
-  const snc = runH('CASY', withCell(vcell('เป้าประเมิน 12 ด.', 'Buy 5 ราย')));
+  const snc = runL('CASY', withCell(vcell('เป้าประเมิน 12 ด.', 'Buy 5 ราย')));
   t(!snc.doc.verdict && snc.notes.H.some((h) => /"เป้าประเมิน 12 ด\." is an analyst-slot sibling/.test(h)), 'round 2: SNC shape analyst sibling key → H', JSON.stringify(snc.notes.H));
-  const apure = runH('CASY', withCell(vcell('เป้าหมายกรณีฟื้นตัว', '~{{rd:fv}} (Speculative)')));
+  const apure = runL('CASY', withCell(vcell('เป้าหมายกรณีฟื้นตัว', '~{{rd:fv}} (Speculative)')));
   t(!apure.doc.verdict && apure.notes.H.some((h) => /"เป้าหมายกรณีฟื้นตัว" value repeats a template cell token/.test(h)), 'round 2: APURE shape ({{fv}} value) → H', JSON.stringify(apure.notes.H));
-  const vr = runH('CASY', withCell(vcell('EV/EBITDA (บริบท)', '9.5 เท่า — กลุ่ม 11.3–24.6')));
+  const vr = runL('CASY', withCell(vcell('EV/EBITDA (บริบท)', '9.5 เท่า — กลุ่ม 11.3–24.6')));
   t(!vr.doc.verdict && vr.notes.H.some((h) => /verdict\.extraCells "EV\/EBITDA \(บริบท\)" holds a price-bound literal/.test(h)), 'round 2: VRANDA shape (current multiple) → H', JSON.stringify(vr.notes.H));
-  t.eq(runH('CASY', withCell(vcell('จุดทยอยสะสม', 'ใต้มูลค่าเหมาะสม'))).doc.verdict, { extraCells: [{ k: 'จุดทยอยสะสม', v: 'ใต้มูลค่าเหมาะสม' }] }, 'round 2: genuine author cell still carried');
+  t.eq(runL('CASY', withCell(vcell('จุดทยอยสะสม', 'ใต้มูลค่าเหมาะสม'))).doc.verdict, { extraCells: [{ k: 'จุดทยอยสะสม', v: 'ใต้มูลค่าเหมาะสม' }] }, 'round 2: genuine author cell still carried');
 }
 // ── Plan 4c-prep Task 5 fix round 3 — ruling A (option ii): basis words on basis-labelled legs are never carried unless consumed ──
 {
@@ -835,10 +857,14 @@ const runH = (sym, html) => { const p = PV.parseV2(sym, html); const r = A.assem
     HON: 'EPS $19.16 (adjusted FY2026E, กลาง guidance $18.05–$20.35) × P/E เป้าหมาย ~35x — premium คุณภาพ',
   };
   for (const [name, md] of Object.entries(shapes)) {
-    const r = runH('CASY', raw('CASY').replace(CASY1, md));
+    const r = runL('CASY', raw('CASY').replace(CASY1, md));
     const l0 = r.doc.legs[0];
-    t(l0.method === 'pe' && !l0.inputs.base && !/non-GAAP|GAAP|ปกติ|adjusted|guidance|guide/.test(l0.note || ''), `round 4: ${name} shape — basis word not carried`, JSON.stringify(l0));
-    t.eq(BK.bucketOf(r.notes, r.eq).bucket, 'HUMAN', `round 4: ${name} shape — doc stays HUMAN`);
+    t(l0.method === 'pe' && !l0.inputs.base && !/non-GAAP|GAAP|ปกติ|adjusted|guidance|guide/.test(l0.note || ''), `round 4: ${name} shape — basis word not carried (no manifest row)`, JSON.stringify(l0));
+    t.eq(BK.bucketOf(r.notes, r.eq).bucket, 'HUMAN', `round 4: ${name} shape — doc stays HUMAN (no manifest row)`);
+    // ใบ migrate (27 ก.ย. 69): บรรทัดของผู้เขียนตามตัวแทนสูตร+ป้าย — ไม่มีป้ายของ template ให้ขัด · คำฐานไม่หาย
+    const m = runH('CASY', raw('CASY').replace(CASY1, md));
+    t.eq(m.doc.v2Display.legDescs[0], md, `round 4: ${name} shape — migrated leg line = the author's line verbatim`);
+    t(!m.eq.textLost.length, `round 4: ${name} shape — migrated: nothing lost`, JSON.stringify(m.eq.textLost));
   }
 }
 t.done();

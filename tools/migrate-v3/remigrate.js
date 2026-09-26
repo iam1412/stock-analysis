@@ -8,9 +8,10 @@
  *                         graft = ใบเดิม + v2Display ของ fresh (ใบที่ worker ถอดความไว้ — ถ้อยคำของ worker ไม่หาย)
  *     ทั้งสองใช้ market ปัจจุบันของใบเดิม (cron) + meta.migratedFrom เดิม (updated · v2Hash) + prevHash = hash ของใบเดิมในแถว manifest
  *       ⇒ build คง updated ของ v2 (build.updatedFor) — การถอดใหม่ไม่ใช่งานวิเคราะห์ใหม่
- *     เขียนเมื่อผ่านครบ: audit สะอาด (valueDiffs 0 · sanity ผ่าน · textLost ไม่มากกว่าใบเดิม) · checkDoc 0 error (วันนี้)
+ *     เขียนเมื่อผ่านครบ: audit สะอาด (valueDiffs 0 · sanity ผ่าน · invented 0 · textLost 0) · checkDoc 0 error (วันนี้)
  *       · ราคาอื่น (×0.8 · ×1.25) ไม่มี error ใหม่ที่ใบเดิมไม่มี (cron ต้องเขียนราคาต่อได้)
- *   พิมพ์ต่อใบ: FIXED (fresh|graft) · STILL-FAILING <เหตุผล> · SKIP
+ *                         graft-text = ใบเดิม + ข้อความตามตัวของผู้เขียนเท่านั้น (27 ก.ย. 69 · ทางสุดท้าย · และทางเดียวของใบ EXCLUDED)
+ *   พิมพ์ต่อใบ: FIXED (fresh|graft|graft-text) · STILL-FAILING <เหตุผล> · SKIP
  *   ★ --write ใส่ reports/ ของ checkout ต้อง MIGRATE_V3_ALLOW_REAL=1 (เหมือน convert/adopt) · ไม่ --write = ตรวจอย่างเดียว
  */
 const fs = require('fs');
@@ -44,6 +45,46 @@ function gateAt(doc, k, o) {
   catch (e) { return [{ id: 'THROW', msg: String(e.message).split('\n')[0] }]; }
 }
 const ids = (errs) => new Set(errs.map((e) => e.id));
+
+/** ข้อความของผู้เขียนตามตัว (เจ้าของ 27 ก.ย. 69) ของ fresh → ใบเดิม (doc ไม่มี _sig) · คืน { doc, x } (x = คีย์ v2Display ที่ต่อ) — ขาต้องตรงกันทุกขา (จำนวน · method · ชื่อ)
+ *  legDescs/textLegs · s6Hint (แทน scenarios.hintNote) · vcells (แทน verdict.extraCells) · legend (แทน text.legendNote) · titles · hints · markers */
+function verbatimGraft(doc, fresh) {
+  const vd = (fresh && fresh.v2Display) || {};
+  const x = {};
+  let out = doc;
+  const legsAlign = Array.isArray(doc.legs) && Array.isArray(fresh && fresh.legs) && doc.legs.length === fresh.legs.length
+    && doc.legs.every((l, i) => l && fresh.legs[i] && l.method === fresh.legs[i].method && l.label === fresh.legs[i].label);
+  if (legsAlign && vd.legDescs) {
+    x.legDescs = vd.legDescs;
+    // note ของขาที่พกบรรทัดตามตัว = คำจากชื่อขาเท่านั้น (ของ fresh) — note เดิมเป็นเศษของบรรทัดเดียวกัน (ซ้ำ)
+    out = { ...out, legs: doc.legs.map((l, i) => { const { note, ...rest } = l; return fresh.legs[i].note != null ? { ...rest, note: fresh.legs[i].note } : rest; }) };
+    if (vd.textLegs) x.textLegs = vd.textLegs;
+  }
+  if (vd.s6Hint != null && out.scenarios) { x.s6Hint = vd.s6Hint; const { hintNote, ...sc } = out.scenarios; out = { ...out, scenarios: sc }; }
+  if (vd.vcells) { x.vcells = vd.vcells; if (out.verdict) { const { verdict, ...rest } = out; out = rest; } }
+  if (vd.legend) { x.legend = vd.legend; if (out.text && out.text.legendNote != null) { const { legendNote, ...t } = out.text; out = { ...out, text: t }; if (!Object.keys(t).length) { const { text, ...rest } = out; out = rest; } } }
+  for (const k of ['titles', 'hints', 'markers']) if (vd[k]) x[k] = vd[k];
+  // เซลล์หมวด 6 ของผู้เขียน (หัวคอลัมน์ + แถว — ข้อความ) บนฉากของใบเดิม: เป้า = เป้าที่ใบเดิมคิดได้ (ตัวเลขไม่ขยับ) · ต้องมีฉากครบ 3 คอลัมน์
+  if (vd.s6 && out.scenarios && Array.isArray(out.scenarios.cases) && out.scenarios.cases.length === 3) {
+    try {
+      const C = require('../v3/compute.js');
+      const v = C.compute(out, { seeds: seedsOf() });
+      const targets = v.d.scenarios.map((c) => (c && c.tgt > 0 ? c.tgt : null));
+      if (targets.every((t) => t != null)) { x.s6 = vd.s6.map((c) => c || null); x.targets = targets; }
+    } catch (e) { /* ฉากของใบเดิมคิดไม่ได้ — ไม่ต่อเซลล์ */ }
+  }
+  // บล็อกนอกโครง template (กล่อง/ตาราง) — เฉพาะบล็อกที่ข้อความยังไม่อยู่ในใบเดิม (worker อาจถอดไว้ใน prose แล้ว — ไม่พิมพ์ซ้ำ)
+  if (vd.blocks) {
+    const hay = JSON.stringify(doc).replace(/<[^>]*>|\\u003c[^>]*>/g, ' ').replace(/\s+/g, ' ');
+    const snip = (t) => String(t).replace(/<[^>]*>/g, ' ').replace(/\{\{[^}]*\}\}/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 40);
+    const has = (pt) => { const k = snip(pt.text != null ? pt.text : (pt.table.rows[0] || []).join(' ')); return !!k && hay.indexOf(k) >= 0; };
+    const fresh1 = vd.blocks.map((b) => ({ ...b, parts: b.parts.filter((pt) => !has(pt)) })).filter((b) => b.parts.length);
+    if (fresh1.length) x.blocks = fresh1;
+  }
+  return { doc: out, x };
+}
+let SEEDS_RMG = null;
+const seedsOf = () => SEEDS_RMG;
 
 /** v2Display ของ fresh → ใบเดิม (เฉพาะส่วนที่โครงของใบเดิมรับได้) · คืน null เมื่อไม่มีอะไรให้ต่อ */
 function graftOf(existing, fresh) {
@@ -109,9 +150,24 @@ function graftOf(existing, fresh) {
       return nl;
     });
   }
+  // ข้อความตามตัว (27 ก.ย. 69) — บนโครงที่ต่อแล้ว (ขา DDM ที่แก้ d1 · ฉากของ fresh) · v2Display เดิมของใบ (ไม่มีจาก fresh) คงไว้
+  const vg = verbatimGraft({ ...doc, metrics, scenarios, legs }, fresh);
+  Object.assign(x, vg.x);
   if (!Object.keys(x).length && !legsChanged) return null;
   // v2Display: ของ fresh เมื่อมี (แทนทั้งก้อน — เหมือนเดิม) · ต่อแค่ขา DDM = คง v2Display ของใบเดิม
-  return Object.keys(x).length ? { ...doc, metrics, scenarios, legs, v2Display: x } : { ...doc, metrics, scenarios, legs };
+  return Object.keys(x).length ? { ...vg.doc, v2Display: x } : vg.doc;
+}
+
+/** ตัวเลขที่คิด (FV · กรอบ FV · ค่าขาทุกขา · เป้าฉาก) ของสองใบเท่ากันทุกตัว (market เดียวกัน) · คิดไม่ได้ = false */
+function sameNumbers(a, b, seeds) {
+  try {
+    const C = require('../v3/compute.js');
+    const va = C.compute(a, { seeds }), vb = C.compute({ ...b, market: a.market }, { seeds });
+    const eq = (x, y) => (x == null && y == null) || (typeof x === 'number' && typeof y === 'number' && Math.abs(x - y) <= 1e-9 * Math.max(1, Math.abs(x)));
+    if (!eq(va.fv, vb.fv) || !eq(va.d.values.fvLow, vb.d.values.fvLow) || !eq(va.d.values.fvHigh, vb.d.values.fvHigh)) return false;
+    if (va.legs.length !== vb.legs.length || va.legs.some((l, i) => !eq(l.value, vb.legs[i].value))) return false;
+    return va.d.scenarios.every((x, i) => vb.d.scenarios[i] && eq(x.tgt, vb.d.scenarios[i].tgt));
+  } catch (e) { return false; }
 }
 
 /** ใบเดียว → { sym, result, via, why[], doc, row } · ไม่ throw */
@@ -119,7 +175,8 @@ function graftOf(existing, fresh) {
 const EXCLUDED = { ABT: 'controller ruling: keep worker transcription', UNP: 'controller ruling: keep worker transcription' };
 function remigrateOne(sym, o, env) {
   const out = { sym, result: 'STILL-FAILING', via: null, why: [], doc: null };
-  if (EXCLUDED[sym]) { out.result = 'SKIP'; out.why.push(EXCLUDED[sym]); return out; }
+  // ใบที่ controller สั่งคงไว้: ต่อได้เฉพาะข้อความตามตัวของผู้เขียน (27 ก.ย. 69 — คำที่หายเป็น error) บนใบเดิม · ไม่ผ่าน = SKIP เหมือนเดิม
+  const excluded = EXCLUDED[sym];
   const file = path.join(o.reportsDir, sym + '.json');
   let existing;
   try { existing = IO.read(file); } catch (e) { out.result = 'SKIP'; out.why.push(`อ่าน ${sym}.json ไม่ได้ — ${String(e.message).split('\n')[0]}`); return out; }
@@ -128,6 +185,7 @@ function remigrateOne(sym, o, env) {
   let src;
   try { src = o.v2Of ? o.v2Of(sym) : AU.v2Source(sym, o.reportsDir); } catch (e) { out.why.push(`หน้า v2: ${String(e.message).split('\n')[0]}`); return out; }
   const aOpts = { seeds: o.seeds };
+  SEEDS_RMG = o.seeds;
   const exRow = AU.auditDoc(sym, existing, src, aOpts);
   const exGate = PERTURB.map((k) => ids(gateAt(existing, k, o)));
   // fresh: migrator ที่แก้แล้วบนหน้า v2 (temp dir — migrateOne อ่าน <dir>/<SYM>.html)
@@ -143,10 +201,31 @@ function remigrateOne(sym, o, env) {
   const prevHash = row && /^[0-9a-f]{12}$/.test(row.hash || '') && row.hash !== mf0.v2Hash ? row.hash : IO.freshHash(existing);
   const mf = { updated: mf0.updated, v2Hash: mf0.v2Hash, prevHash };
   const cands = [];
-  if (fresh) cands.push({ via: 'fresh', doc: { ...fresh, market: existing.market, meta: { ...fresh.meta, migratedFrom: mf } } });
-  else out.why.push(`fresh: migrator ไม่ได้ doc (${m && m.failed || '?'})`);
-  const g = graftOf(existing, fresh);
-  if (g) cands.push({ via: 'graft', doc: { ...g, meta: { ...g.meta, migratedFrom: mf } } });
+  // ใบเดิมที่แสดงค่าเท่าหน้า v2 อยู่แล้ว (valueDiffs 0 · sanity ผ่าน · invented 0): ลอง graft-text ก่อน — เติมเฉพาะข้อความตามตัวของผู้เขียน
+  //   ตัวเลขของใบไม่ขยับ (27 ก.ย. 69: ห้ามเปลี่ยน FV/ค่าขาที่คิด) · ไม่ผ่าน (เช่นคำยังหาย) → fresh → graft ตามเดิม
+  const exValuesOk = !exRow.valueDiffs && !exRow.sanity.length && !exRow.invented;
+  if (excluded) {
+    const { _sig, ...ex0 } = existing;
+    const vg = fresh ? verbatimGraft(ex0, fresh) : { x: {} };
+    if (Object.keys(vg.x).length) cands.push({ via: 'graft-text', doc: { ...vg.doc, v2Display: { ...(vg.doc.v2Display || {}), ...vg.x }, meta: { ...vg.doc.meta, migratedFrom: mf } } });
+  } else {
+    if (fresh) cands.push({ via: 'fresh', doc: { ...fresh, market: existing.market, meta: { ...fresh.meta, migratedFrom: mf } } });
+    else out.why.push(`fresh: migrator ไม่ได้ doc (${m && m.failed || '?'})`);
+    const g = graftOf(existing, fresh);
+    if (g) cands.push({ via: 'graft', doc: { ...g, meta: { ...g.meta, migratedFrom: mf } } });
+  }
+  // graft-text (27 ก.ย. 69): ใบเดิมทุกอย่าง + ข้อความตามตัวของผู้เขียนเท่านั้น (ไม่ต่อตัวเลข/ฉากของ fresh) — ก่อนสุดเมื่อใบเดิมแสดงค่าถูกอยู่แล้ว ·
+  //   ไม่งั้นเป็นทางสุดท้าย (ใบที่ fresh/graft ตกด้วยเหตุอื่น — S: W17 ของ rets)
+  if (!excluded && fresh) {
+    const { _sig, ...ex0 } = existing;
+    const vg = verbatimGraft(ex0, fresh);
+    if (Object.keys(vg.x).length) {
+      const c = { via: 'graft-text', doc: { ...vg.doc, v2Display: { ...(vg.doc.v2Display || {}), ...vg.x }, meta: { ...vg.doc.meta, migratedFrom: mf } } };
+      // fresh ที่คิดตัวเลขได้เท่าใบเดิมทุกตัว (FV · กรอบ · ค่าขา · เป้าฉาก) = ถอดใหม่ทั้งใบได้โดยตัวเลขไม่ขยับ → fresh ก่อน · ไม่งั้น graft-text ก่อน
+      const freshSame = cands[0] && cands[0].via === 'fresh' && sameNumbers(existing, cands[0].doc, o.seeds);
+      if (exValuesOk && !freshSame) cands.unshift(c); else cands.push(c);
+    }
+  }
   for (const c of cands) {
     const why = [];
     const errs = S.validate(c.doc);
@@ -155,7 +234,8 @@ function remigrateOne(sym, o, env) {
     if (r.valueDiffs) why.push(`valueDiffs ${r.valueDiffs} (${r.values.slice(0, 2).map((x) => `${x.zone}: ${x.del} → ${x.ins}`).join(' · ')})`);
     if (r.sanity.length) why.push(`sanity: ${r.sanity.join(' · ')}`);
     if (r.invented) why.push(`invented ${r.invented} (${r.addedList.filter((x) => x.cls === 'invented').slice(0, 2).map((x) => `${x.zone}: ${x.v} in "${String(x.ins).slice(0, 40)}"`).join(' · ')})`);
-    if (r.textLost > exRow.textLost) why.push(`textLost ${r.textLost} > current ${exRow.textLost}`);
+    // เจ้าของ 27 ก.ย. 69: ข้อความของผู้เขียนที่หาย = ตก (เดิม: ไม่มากกว่าใบเดิม)
+    if (r.textLost) why.push(`textLost ${r.textLost} (${r.lost.slice(0, 6).map((x) => `${x.w}@${x.zone}`).join(' ')})`);
     const g0 = gateAt(c.doc, 1, o);
     if (g0.length) why.push(`checkDoc ${g0.map((e) => `${e.id} ${String(e.msg).slice(0, 90)}`).join(' ; ')}`);
     PERTURB.forEach((k, i) => { const nw = [...ids(gateAt(c.doc, k, o))].filter((id) => !exGate[i].has(id)); if (nw.length) why.push(`gate at price ×${k}: new ${nw.join(',')}`); });
@@ -163,6 +243,7 @@ function remigrateOne(sym, o, env) {
     out.why.push(`${c.via}: ${why.join(' | ')}`);
   }
   out.before = { status: exRow.status, valueDiffs: exRow.valueDiffs };
+  if (excluded && out.result !== 'FIXED') { out.result = 'SKIP'; out.why.unshift(excluded); }
   return out;
 }
 
@@ -194,8 +275,8 @@ function runRemigrate(syms, opts, log, env) {
     else say(`${r.result} ${sym} · ${r.why.join(' ‖ ')}`);
   }
   const n = (k) => res.filter((r) => r.result === k).length;
-  say(`remigrate: ${res.length} ใบ · FIXED ${n('FIXED')} (fresh ${res.filter((r) => r.via === 'fresh').length} · graft ${res.filter((r) => r.via === 'graft').length}) · STILL-FAILING ${n('STILL-FAILING')} · SKIP ${n('SKIP')}${opts.write ? '' : ' · dry-run (ไม่ได้เขียน — ใส่ --write)'}`);
+  say(`remigrate: ${res.length} ใบ · FIXED ${n('FIXED')} (fresh ${res.filter((r) => r.via === 'fresh').length} · graft ${res.filter((r) => r.via === 'graft').length} · graft-text ${res.filter((r) => r.via === 'graft-text').length}) · STILL-FAILING ${n('STILL-FAILING')} · SKIP ${n('SKIP')}${opts.write ? '' : ' · dry-run (ไม่ได้เขียน — ใส่ --write)'}`);
   return { code: n('STILL-FAILING') ? 1 : 0, res };
 }
 
-module.exports = { EXCLUDED, runRemigrate, remigrateOne, graftOf, failingOf, headRows, gateAt };
+module.exports = { EXCLUDED, runRemigrate, remigrateOne, graftOf, verbatimGraft, sameNumbers, failingOf, headRows, gateAt };

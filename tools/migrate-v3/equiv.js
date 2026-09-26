@@ -53,7 +53,8 @@ const reEsc = (s) => String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const escHtml = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 /** HTML → ข้อความที่มองเห็น — ตัด emoji (Extended_Pictographic + variation selector + ZWJ) · ≈ → ณ (transform ที่อนุมัติ) */
 function text(h) {
-  return decode(String(h || '').replace(/<!--[\s\S]*?-->/g, ' ').replace(/<br\s*\/?>/gi, ' ').replace(/<[^>]+>/g, ' '))
+  // <u> ไม่แยกคำในหน้าเว็บ ("จึง<u>ห้าม…" = "จึงห้าม…") — prose v3 ไม่มี <u> (ข้อความเดียวกันต่อกัน) · แท็กอื่น = ช่องว่างเหมือนเดิม (TRP 27 ก.ย. 69)
+  return decode(String(h || '').replace(/<!--[\s\S]*?-->/g, ' ').replace(/<br\s*\/?>/gi, ' ').replace(/<\/?u\b[^>]*>/gi, '').replace(/<[^>]+>/g, ' '))
     .replace(/\p{Extended_Pictographic}|[\uFE0E\uFE0F\u200D]/gu, ' ').replace(/≈/g, 'ณ')
     // หน่วยเงินไทยที่ผู้เขียนเว้นวรรคกลางคำ ("฿4.18 พัน ล." · "฿17.4 พัน ลบ.") = หน่วยเดียว (NB.UNIT) — ต่อกันก่อนตัดคำ ไม่งั้นตัวเลขหลุดจากหน่วยใน diff
     .replace(/([0-9])\s*(พัน|หมื่น|แสน)\s+(ล\.|ลบ\.)/g, '$1 $2$3').replace(/\s+/g, ' ').trim();
@@ -118,7 +119,8 @@ function norm(zoneId, html, side, ctx) {
     if (sym) h = h.replace(/(<h1[^>]*>[\s\S]*?)\s*\(\s*([A-Z0-9.\-]+)\s*\)\s*(<\/h1>)/, (m, a, s, c) => (s === sym ? a + c : m));
     // gauge dots + (SYM) ใต้ราคา = ของตกแต่ง/ป้ายของ template (spec §10.2 b "gauge dots")
     // gdots: glyph/สี = ของตกแต่ง (ตัดทิ้ง) · ข้อความ = คำผู้เขียนที่ v2 แสดงจริง → v3 พกด้วย meta.sectorLine (Plan 4c-prep D4 แก้คำตัดสิน Task 6 ของ 4b)
-    h = h.replace(/(<div class="gdots">)([\s\S]*?)(<\/div>\s*<div>)/, (m, a, g, c) => a + escHtml(text(g).replace(/#[0-9a-f]{3,8}\b/gi, ' ').replace(/[^\s\p{L}\p{M}\p{N}]/gu, ' ')) + c);
+    // ตัดเฉพาะสัญลักษณ์ (\p{S} — ●◆★…) · เครื่องหมายวรรคตอนในคำคงไว้ ("Coca-Cola" ≡ คำเดียวกับ h1/meta.sectorLine — 27 ก.ย. 69 KO)
+    h = h.replace(/(<div class="gdots">)([\s\S]*?)(<\/div>\s*<div>)/, (m, a, g, c) => a + escHtml(text(g).replace(/#[0-9a-f]{3,8}\b/gi, ' ').replace(/\p{S}/gu, ' ')) + c);
     // <small> แรกใน .price-row = "(SYM)" ใต้ราคา (ไม่อ้าง regex ของ .px — เจ้าของเดียวคือ report-meta.js · parser-lint)
     h = h.replace(/(<div class="price-row">[\s\S]*?)<small>([\s\S]*?)<\/small>/, (m, a, g) => { if (side === 'v2') ctx.dropped.push(...tok(text(g))); return a; });
     // ป้ายตายตัวของ px-meta (ทุกรูปที่ v2 เขียน: "ราคา ณ" · "ราคาปิด ณ" · "ปิดตลาด ณ" · "ราคาปิด <วันที่>" · "ช่วง/กรอบ 52 สัปดาห์" · "52wk:" · "ที่มา:")
@@ -166,6 +168,9 @@ function norm(zoneId, html, side, ctx) {
       const leg = k >= 0 ? legs[k] : null;
       if (side === 'v2' && leg) { const r = syn('s3.mname', tok(text(nm)), leg); if (r.used.length) nm = escHtml(r.tokens.join(' ')); }
       let d = dOpen ? dOpen + mdesc + dClose : '';
+      // ขาที่หน้า v3 พิมพ์ .mdesc ของผู้เขียนตามตัว (v2Display.legDescs · 27 ก.ย. 69) — ไม่มีข้อความ generate ให้ตัด ⇒ เทียบเต็มทั้งสองฝั่ง (คำ + ตัวเลข)
+      const verbatim = k >= 0 && doc && S.isMigrated(doc) && doc.v2Display && Array.isArray(doc.v2Display.legDescs) && doc.v2Display.legDescs[k] != null;
+      if (verbatim) return a + nm + b + d;
       if (side === 'v2' && leg && leg.method === 'declared' && dOpen) { const r = syn('s3.mdesc', tok(text(mdesc)), leg); if (r.used.length) d = dOpen + escHtml(r.tokens.join(' ')) + dClose; }
       if (leg && leg.method !== 'declared' && dOpen) {
         // ขา computed (final-review I-1): mdesc ที่ generate (v3) แทนสูตรของผู้เขียน (v2) — transform ที่อนุมัติ (spec §10.2 b · plan D2)
@@ -199,7 +204,8 @@ function norm(zoneId, html, side, ctx) {
       });
     }
     // FV box ป้ายซ้าย (คำ + กรอบ) — ค่าอยู่ใน structured diff
-    h = h.replace(/(<div class="fv-box">\s*<div class="l">)[\s\S]*?(<\/div>\s*<div class="r">)/, '$1$2');
+    // ทุกกล่อง (/g — SYM/IFF หน้า v2 พิมพ์กล่อง FV ของ template ซ้ำสองกล่อง · ป้ายของ template ไม่ใช่คำผู้เขียน · 27 ก.ย. 69)
+    h = h.replace(/(<div class="fv-box">\s*<div class="l">)[\s\S]*?(<\/div>\s*<div class="r">)/g, '$1$2');
   }
   if (zoneId === 's2') {
     // ป้ายหัวหมวด 2: template พิมพ์ "โดยประมาณ" ตัวอักษรตรงตัวเท่านั้น — เศษ (text.chartHint ของ v3 / คำผู้เขียนของ v2) เทียบเต็ม (fix round 1 · C-1)
@@ -228,7 +234,7 @@ function norm(zoneId, html, side, ctx) {
   if (zoneId === 's6') {
     // .top + ป้ายแถว: ฝั่ง v3 = ป้ายของ template ตัดเสมอ · ฝั่ง v2 ตัดเฉพาะป้ายที่ทุกคำอยู่ในชุดป้าย v3 ของคอลัมน์เดียวกัน (หรือ TEMPLATE_VOCAB)
     // ไม่เดาบทบาทจากตำแหน่ง — ป้ายที่ผู้เขียนเขียนเอง ("Exit P/FFO" · "ทรงตัว" · "เงินสดสุทธิปี 3") เทียบเต็ม (fix round 1 · M-2)
-    const cols = [...h.matchAll(/<div class="col (bear|base|bull)">([\s\S]*?)<\/ul>/g)];
+    const cols = [...h.matchAll(/<div class="col (bear|base|bull)">([\s\S]*?)(?:<\/ul>|(?=<div class="col (?:bear|base|bull)">)|(?=<\/div>\s*<\/div>\s*<\/div>\s*<p\b)|$)/g)];   // ขอบเดียวกับ parse-v2 (ไม่มี </ul> — AMRZ)
     const labelWords = side === 'v3' ? null : ctx.shared.s6Labels || {};
     if (side === 'v3') {
       ctx.shared.s6Labels = {};
@@ -244,7 +250,9 @@ function norm(zoneId, html, side, ctx) {
       let body = cm[2];
       const topLab = (x) => { const t = text(x), at = t.search(/[+\-−±]?\d/); return { lab: at > 0 ? t.slice(0, at) : at < 0 ? t : '', rest: at >= 0 ? t.slice(at) : '' }; };
       const ok = (t) => side === 'v3' || tok(t).filter(isWord).every((w) => (labelWords[name] || new Set()).has(keyOf(w)) || inVocab('s6', keyOf(w)));
-      if (side === 'v2' && doc && doc.scenarios) {
+      // คอลัมน์ที่หน้า v3 พิมพ์เซลล์ของผู้เขียนตามตัว (v2Display.s6[i]) — ไม่มีป้ายของ template ให้เทียบคำพ้อง ⇒ เทียบตรงตัว (27 ก.ย. 69)
+      const authorCells = !!(doc && S.s6CellOf(doc, { bear: 0, base: 1, bull: 2 }[name]));
+      if (side === 'v2' && doc && doc.scenarios && !authorCells) {
         // คำพ้องที่อนุมัติ (synonyms.js · Plan 4c-prep D4) — ฝั่ง v2 ต่อคอลัมน์ (bear 0 · base 1 · bull 2) ก่อนเช็คป้าย ok() ("Exit P/E" → "ออก P/E")
         //   .top ช่องที่สอง → s6.top · ป้ายแถวออก → s6.exitRow · ป้ายแถวปลายฉาก ("… ปี 3" ไม่ใช่ปันผล) → s6.endRow · ค่าของแถวปันผล → s6.divRow · .ret → s6.ret
         const ci = { bear: 0, base: 1, bull: 2 }[name];
@@ -460,6 +468,16 @@ function compare(v2Html, v3Html, doc, view, opts) {
     if (left > 0) { lostLeft.set(k, left - 1); out.textLost.push(wordOf(w)); out.textLostAt.push({ zone, w: wordOf(w) }); lostRuns.add(run); } else out.moved.push(wordOf(w));
   }
   // ตัวเลขในรันที่มีคำเปลี่ยนด้วย (fix round 1 · I-1): text changed เสมอ · TEXT LOST เมื่อคำทุกคำ resolve แล้ว (moved/vocab) — ค่าเปลี่ยน = numberValue
+  // ตัวเลขในรันที่คำหาย (TEXT LOST) ไม่ผ่าน numberValue — ตัวเลขที่ไม่อยู่ที่ไหนในหน้า v3 (ห่าง ≤ ครึ่งหน่วยที่พิมพ์) = หายไปกับข้อความ (เจ้าของ 27 ก.ย. 69: นับเป็น TEXT LOST)
+  const pageNums = numsOf(text(String(v3Html).replace(/<(script|style)\b[^>]*>[\s\S]*?<\/\1\s*>/gi, ' ')));
+  for (const { zone, run } of mixed) {
+    if (!(run.kind === 'TEXT LOST' && lostRuns.has(run))) continue;
+    for (const p of numsOf(run.del)) {
+      const i = pageNums.findIndex((q) => Math.abs(q.v - p.v) <= Math.max(p.half, q.half) * (1 + 1e-9));
+      if (i >= 0) { pageNums.splice(i, 1); continue; }
+      out.textLost.push(p.raw || String(p.v)); out.textLostAt.push({ zone, w: p.raw || String(p.v), number: true });
+    }
+  }
   for (const { zone, run } of mixed) {
     if (run.kind === 'TEXT LOST' && lostRuns.has(run)) continue;
     if (classifyNumber(run.del, run.ins) === 'value') out.numberValue.push({ zone, del: run.del, ins: run.ins, ctx: run.ctx });

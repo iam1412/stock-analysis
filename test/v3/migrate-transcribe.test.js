@@ -121,8 +121,12 @@ const adopt = (extra, env) => cli(['adopt', 'AAPL', ...common, '--doc', WF, '--t
   // stale draft: the nightly cron patched the .html after draft → v2Hash in the draft is stale · updated = manifest row → adopt re-derives
   //   display-fix: the migrator draft itself (v2Display = the author's figures) is the correct transcription now
   const d = JSON.parse(JSON.stringify(draft)); const freshMf = d.meta.migratedFrom; d.meta.migratedFrom = { ...freshMf, v2Hash: '000000000000' };
-  // one author word dropped from the verdict body → the equivalence gate is not CLEAN (text lost) while every displayed value still matches
-  d.prose.verdictBody = d.prose.verdictBody.replace(/\s*\S+\s*$/, ''); put(d);
+  // เจ้าของ 27 ก.ย. 69: ข้อความของผู้เขียนที่หาย = error — ตัดคำท้าย verdict ออก 1 คำ → adopt ปฏิเสธ (display audit textLost) ไม่เขียน/ไม่ลบ
+  const lost = JSON.parse(JSON.stringify(d)); lost.prose.verdictBody = lost.prose.verdictBody.replace(/\s*\S+\s*$/, ''); put(lost);
+  const rl = adopt();
+  t(rl.code === 1 && /display audit textLost 1/.test(rl.out) && !fs.existsSync(path.join(REP, 'AAPL.json')) && fs.existsSync(path.join(REP, 'AAPL.html')), 'adopt: one author word dropped → refused (textLost is an error)', rl.out.slice(-600));
+  // the draft itself (every author word carried) — the migrator bucket for AAPL is HUMAN (analyst leg note) → info only, does not block
+  put(d);
   const r = adopt();
   t(r.code === 0 && fs.existsSync(path.join(REP, 'AAPL.json')) && !fs.existsSync(path.join(REP, 'AAPL.html')), 'adopt a correct transcription: .json written, .html deleted', r.out.slice(-800));
   t(/✓ FV: v2 262 · v3 262\.00/.test(r.out) && /✓ verdict: v2 bad · v3 bad/.test(r.out), 'adopt prints each key-number check');

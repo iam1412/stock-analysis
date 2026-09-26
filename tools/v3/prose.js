@@ -62,6 +62,17 @@ function proseFields(doc) {
   for (const [k, v] of Object.entries(obj(obj(doc.metrics).notes))) add(`metrics.notes.${k}`, v);
   arr(obj(doc.metrics).custom).forEach((c, i) => { add(`metrics.custom[${i}].value`, obj(c).value); add(`metrics.custom[${i}].note`, obj(c).note); });
   arr(doc.legs).forEach((l, i) => add(`legs[${i}].note`, obj(l).note));
+  arr(obj(doc.v2Display).legDescs).forEach((x, i) => add(`v2Display.legDescs[${i}]`, x));
+  add('v2Display.s6Hint', obj(doc.v2Display).s6Hint);
+  for (const [k, v] of Object.entries(obj(obj(doc.v2Display).hints))) add(`v2Display.hints.${k}`, v);
+  arr(obj(doc.v2Display).textLegs).forEach((t, i) => add(`v2Display.textLegs[${i}].desc`, obj(t).desc));
+  arr(obj(doc.v2Display).vcells).forEach((c, i) => add(`v2Display.vcells[${i}].v`, obj(c).v));
+  arr(obj(doc.v2Display).legend).forEach((c, i) => add(`v2Display.legend[${i}].text`, obj(c).text));
+  add('v2Display.markers.cur', obj(obj(doc.v2Display).markers).cur); add('v2Display.markers.fair', obj(obj(doc.v2Display).markers).fair);
+  arr(obj(doc.v2Display).blocks).forEach((b, i) => arr(obj(b).parts).forEach((pt, j) => {
+    add(`v2Display.blocks[${i}].parts[${j}].text`, obj(pt).text);
+    arr(obj(obj(pt).table).rows).forEach((r, k) => arr(r).forEach((c, l) => add(`v2Display.blocks[${i}].parts[${j}].table.rows[${k}][${l}]`, c)));
+  }));   // ใบ migrate — ข้อความ .mdesc ของหน้า v2 ตามตัว (27 ก.ย. 69)
   arr(obj(doc.scenarios).cases).forEach((c, i) => { add(`scenarios.cases[${i}].desc`, obj(c).desc); add(`scenarios.cases[${i}].retNote`, obj(c).retNote); });
   add('scenarios.note', obj(doc.scenarios).note); add('scenarios.hintNote', obj(doc.scenarios).hintNote);   // + Plan 4b Task 6b
   arr(obj(doc.verdict).extraCells).forEach((c, i) => { add(`verdict.extraCells[${i}].k`, obj(c).k); add(`verdict.extraCells[${i}].v`, obj(c).v); });   // + Plan 4c-prep Task 3
