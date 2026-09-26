@@ -48,7 +48,7 @@ const rowOf = (csv, s) => (csv.split('\n').find((l) => l.startsWith(s + ',')) ||
   const r = cli(['--all', '--reports-dir', REP, '--out', OUT]);
   const csv = fs.existsSync(OUT + '.csv') ? fs.readFileSync(OUT + '.csv', 'utf8') : '';
   t(r.code === 0, 'audit --all on correct migrations → exit 0', r.out);
-  t(csv.split('\n')[0] === 'symbol,status,valueDiffs,roundingDiffs,textLost,sanity,added,invented,addedList', 'csv header');
+  t(csv.split('\n')[0] === 'symbol,status,valueDiffs,roundingDiffs,textLost,sanity,added,invented,addedList,perturb', 'csv header');
   t.eq(rowOf(csv, 'ZTS').slice(1, 6), ['OK', '0', '0', '0', ''], 'ZTS (committed deletion · price refreshed after): OK · 0 value · 0 rounding · 0 lost · sanity clean');
   t.eq(rowOf(csv, 'FER').slice(1, 3), ['OK', '0'], 'FER (deletion not committed → HEAD .html): OK · valueDiffs 0');
   const md = fs.readFileSync(OUT + '.md', 'utf8');

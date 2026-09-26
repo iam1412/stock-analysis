@@ -36,14 +36,16 @@ function headRows(reportsDir) {
   } catch (e) { return new Map(); }
 }
 
-/** error id ของ gate ที่ราคา px × k (ราคาจุดสุดท้ายของกราฟขยับตาม — เหมือน cron) */
-function gateAt(doc, k, o) {
+/** ผล gate ที่ราคา px × k (ราคาจุดสุดท้ายของกราฟขยับตาม — เหมือน cron) → { errors, warnings } */
+function gateRes(doc, k, o) {
   const px = Math.round(doc.market.px * k * 100) / 100;
   const data = doc.market.chart.data.map((p, i, a) => (i === a.length - 1 ? [p[0], px] : p));
   const d = k === 1 ? doc : { ...doc, market: { ...doc.market, px, chart: { ...doc.market.chart, data } } };
-  try { return checkDocOf()(d, { skipSig: true, seeds: o.seeds, today: o.today }).errors; }
-  catch (e) { return [{ id: 'THROW', msg: String(e.message).split('\n')[0] }]; }
+  try { const r = checkDocOf()(d, { skipSig: true, seeds: o.seeds, today: o.today }); return { errors: r.errors, warnings: r.warnings }; }
+  catch (e) { return { errors: [{ id: 'THROW', msg: String(e.message).split('\n')[0] }], warnings: [] }; }
 }
+/** error id ของ gate ที่ราคา px × k */
+const gateAt = (doc, k, o) => gateRes(doc, k, o).errors;
 const ids = (errs) => new Set(errs.map((e) => e.id));
 
 /** ข้อความของผู้เขียนตามตัว (เจ้าของ 27 ก.ย. 69) ของ fresh → ใบเดิม (doc ไม่มี _sig) · คืน { doc, x } (x = คีย์ v2Display ที่ต่อ) — ขาต้องตรงกันทุกขา (จำนวน · method · ชื่อ)
@@ -236,6 +238,7 @@ function remigrateOne(sym, o, env) {
     if (r.invented) why.push(`invented ${r.invented} (${r.addedList.filter((x) => x.cls === 'invented').slice(0, 2).map((x) => `${x.zone}: ${x.v} in "${String(x.ins).slice(0, 40)}"`).join(' · ')})`);
     // เจ้าของ 27 ก.ย. 69: ข้อความของผู้เขียนที่หาย = ตก (เดิม: ไม่มากกว่าใบเดิม)
     if (r.textLost) why.push(`textLost ${r.textLost} (${r.lost.slice(0, 6).map((x) => `${x.w}@${x.zone}`).join(' ')})`);
+    // gate ที่ราคาอื่น: เทียบกับใบเดิม (ข้างล่าง) — audit.perturb เทียบกับราคาของใบเอง (error ที่ใบเดิมมีอยู่แล้วที่ราคาอื่น = ถัง HUMAN ของ audit ไม่ใช่เหตุไม่ถอดใหม่)
     const g0 = gateAt(c.doc, 1, o);
     if (g0.length) why.push(`checkDoc ${g0.map((e) => `${e.id} ${String(e.msg).slice(0, 90)}`).join(' ; ')}`);
     PERTURB.forEach((k, i) => { const nw = [...ids(gateAt(c.doc, k, o))].filter((id) => !exGate[i].has(id)); if (nw.length) why.push(`gate at price ×${k}: new ${nw.join(',')}`); });
@@ -279,4 +282,4 @@ function runRemigrate(syms, opts, log, env) {
   return { code: n('STILL-FAILING') ? 1 : 0, res };
 }
 
-module.exports = { EXCLUDED, runRemigrate, remigrateOne, graftOf, verbatimGraft, sameNumbers, failingOf, headRows, gateAt };
+module.exports = { EXCLUDED, runRemigrate, remigrateOne, graftOf, verbatimGraft, sameNumbers, failingOf, headRows, gateAt, gateRes, PERTURB };

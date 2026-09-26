@@ -756,13 +756,15 @@ const TEMPLATE_CELL_TOK = /\{\{(?:fv|px|fvLow|fvHigh|mos|upside)\}\}/;
 /** vcell ที่ไม่ใช่ template (มูลค่าเหมาะสม · ส่วนต่างจากราคา · เป้านักวิเคราะห์ ตัวแรก) → verdict.extraCells (≤2 ไม่งั้น H) */
 /** ใบ migrate (เจ้าของ 27 ก.ย. 69 "ข้อความของผู้เขียนตามตัว"): ช่อง vgrid หมวด 8 ของผู้เขียนทุกช่องตามตัว → v2Display.vcells [{k, v, tone?}]
  *  ป้าย .k ของผู้เขียน ("มูลค่าเหมาะสม (normalized)" · "เป้าประเมิน 12 ด.") · ค่า = prose (token {{rd:…}} → token v3 · ค่าผูกราคาผ่าน tokenise กติกา B)
- *  tone: class สีของ .v ("{{rd:mosClass}}" → 'mos' · pos/neg/neu) — ไม่มี = ไม่พก */
+ *  tone: class สีของ .v ("{{rd:mosClass}}" · bad/good/ok บนช่อง {{rd:mos}} → 'mos' · pos/neg/neu) — ไม่มี = ไม่พก */
 function vcellsOf(parsed) {
   const out = [];
   for (const [k, vHtml, cls] of (parsed.s8 && parsed.s8.vcells) || []) {
     const c = { k: txt(k).replace(/[{}<>]/g, '').trim(), v: MP.htmlToProse(vHtml) };
     const t = String(cls || '').trim();
-    if (/\{\{rd:mosClass\}\}/.test(t)) c.tone = 'mos'; else if (/^(?:pos|neg|neu)$/.test(t)) c.tone = t;
+    // ช่อง MOS ของหน้า v2 พิมพ์คลาส literal bad/good/ok (cron v2 summaryPlan เขียนใหม่ทุกรอบ = ผูกราคา · review I-1) → 'mos' = คลาสคิดสดตอน render
+    //   ({{rd:mosClass}} — กติกาเดียวกับกล่อง verdict) · ไม่แช่คลาสที่หน้า v2 พิมพ์ ณ วันนั้น
+    if (/\{\{rd:mosClass\}\}/.test(t) || (/^(?:bad|good|ok)$/.test(t) && /\{\{rd:mos\}\}/.test(vHtml))) c.tone = 'mos'; else if (/^(?:pos|neg|neu)$/.test(t)) c.tone = t;
     out.push(c);
   }
   return out;
@@ -805,7 +807,8 @@ function proseZones(doc, src) {
   // ข้อความตามตัวของ v2Display (27 ก.ย. 69 · กติกาเจ้าของข้อ 3): เฉพาะค่าผูกราคาเป็น token สด — ตัวเลขการเงินของผู้เขียน (EPS · FV · เป้า …) คงตามที่เขียน
   //   บรรทัดขา (legDescs · textLegs) = คำอธิบายวิธีประเมินของผู้เขียน — ไม่แทนแบบ "ตัวเลขเท่ากัน" (ตัวคูณเป้าหมาย/ตัวตั้งบังเอิญเท่าค่าสด) · แทนเฉพาะป้ายเจ้าของเลข (E44) + ราคาหลังคำว่าราคา
   //   ช่องอื่นของ v2Display = ไม่แทนตัวคูณแบบตัวเลขเท่ากัน (noMult)
-  const add = (field, obj, key, html) => { if (obj && typeof obj[key] === 'string') z.push({ field, obj, key, html: html == null ? obj[key] : html, ...(/^v2Display\./.test(field) ? { exactOnly: PRICE_BOUND_TOKENS, pxPhrase: true, exact: /^v2Display\.(?:legDescs|textLegs)/.test(field) ? false : undefined, noMult: true } : {}) }); };
+  //   ยกเว้นตัวคูณที่ผู้เขียนกำกับว่า "ปัจจุบัน" (multPhrase — review I-2 · PG "P/E ปัจจุบัน 22.1x") = ผูกราคา → token สดเมื่อเท่าค่าที่ render ทุก byte
+  const add = (field, obj, key, html) => { if (obj && typeof obj[key] === 'string') z.push({ field, obj, key, html: html == null ? obj[key] : html, ...(/^v2Display\./.test(field) ? { exactOnly: PRICE_BOUND_TOKENS, pxPhrase: true, exact: /^v2Display\.(?:legDescs|textLegs)/.test(field) ? false : undefined, noMult: true, multPhrase: true } : {}) }); };
   add('meta.sub', doc.meta, 'sub', src.sub); add('meta.priceNote', doc.meta, 'priceNote', null);
   add('metrics.hint', doc.metrics, 'hint', src.s1hint);
   for (const k of Object.keys(doc.metrics.notes || {})) add(`metrics.notes.${k}`, doc.metrics.notes, k, src.cardD[k]);
@@ -1231,7 +1234,7 @@ function assemble(parsed0, ctx) {
     const e44 = fd && fd.iso >= RV.PROSE_TOKEN_SINCE ? new Set(RV.proseBoundHits(parsed.html || '', view.d).map((h) => `${h.token}|${h.text}`)) : null;
     for (const z of proseZones(out, src)) {
       const hits = z.html ? RV.proseBoundHits(`<p>${z.html}</p>`, view.d) : [];
-      const r = MP.tokenise(z.obj[z.key], view, hits, z.field, { e44, only: z.only, pxPhrase: z.pxPhrase != null ? z.pxPhrase : !z.only && /^prose\./.test(z.field), exact: z.exact, exactOnly: z.exactOnly, noMult: z.noMult });
+      const r = MP.tokenise(z.obj[z.key], view, hits, z.field, { e44, only: z.only, pxPhrase: z.pxPhrase != null ? z.pxPhrase : !z.only && /^prose\./.test(z.field), exact: z.exact, exactOnly: z.exactOnly, noMult: z.noMult, multPhrase: z.multPhrase });
       z.obj[z.key] = r.text; D.push(...r.D); F.push(...(r.F || [])); tokens += r.n;
       apxStale.push(...MP.staleCopies(r.text, ctx.analysisPx, view.d));
     }

@@ -617,7 +617,18 @@ const GAUGE_REFS = ['mos30', 'mos20', 'fv', 'fvLow', 'fvHigh', 'analystTgt', 'px
 const V2DISPLAY_KEYS = ['fv', 'fvRange', 'legValues', 'legTexts', 'legDescs', 's6Hint', 'vcells', 'titles', 'hints', 'legend', 'markers', 'blocks', 'textLegs', 'targets', 's6', 'noBase', 'custom', 'driverEnds', 'driverTotal', 'gauge', 'cards', 'rets', 'footer'];
 // แถวของเซลล์หมวด 6 ที่ผูกราคา — ผลตอบแทน/ส่วนต่าง/ราคาตลาด/ตัวคูณปัจจุบัน (คิดสดจากเป้าเสมอ ห้ามแช่)
 const S6_PRICE_RE = /ผลตอบแทน|\breturns?\b|upside|downside|\bMOS\b|ส่วนต่าง|ราคา\s*(?:ปัจจุบัน|ตลาด|ล่าสุด)|market\s*(?:cap|price)|มูลค่าตลาด|ปัจจุบัน|\bcurrent\b|52/i;
-const s6RowPriceBound = (k, v) => S6_PRICE_RE.test(String(k)) && !/ปันผล|dividend/i.test(String(k)) && /[0-9]/.test(String(v));
+// ป้ายแถวปันผล: ยอดปันผลของผู้เขียน = สมมติฐาน (ไม่ผูกราคา) · แต่ % ในวงเล็บ ("~$15.36 (+15.7%)" KMB = ปันผลรวม ÷ ราคา) ผูกราคา (review I-3)
+//   และป้ายผลตอบแทนที่มีคำว่าปันผล ("ผลตอบแทนรวมปันผล +45%") ยังเป็นแถวผลตอบแทน
+const DIV_LABEL = /ปันผล|dividend/i;
+const S6_RET_WORD = /ผลตอบแทน|\breturns?\b|upside|downside/i;
+const S6_DIV_PCT = /\(\s*[^()]*?[+\-−]?\s*[0-9][0-9.,]*\s*%[^()]*\)/;
+//   คำในวงเล็บของป้าย = หมายเหตุ (PTG "ปันผลรวม 3 ปี (ไม่รวมในผลตอบแทน)" ไม่ใช่ป้ายผลตอบแทน) · ป้ายผลตอบแทนต้องมีตัวเลข %
+const retLabel = (k) => S6_RET_WORD.test(String(k).replace(/\([^()]*\)/g, ' '));
+const s6RowPriceBound = (k, v) => /[0-9]/.test(String(v)) && (DIV_LABEL.test(String(k))
+  ? (retLabel(k) && /[0-9]\s*%/.test(String(v))) || S6_DIV_PCT.test(String(v))
+  : S6_PRICE_RE.test(String(k)));
+// แถวปันผลที่ % ในวงเล็บคิดสดได้ ('div' = ปันผลรวมของฉาก ÷ ราคาปัจจุบัน) — ป้ายปันผล (ไม่ใช่ป้ายผลตอบแทน) · % ในวงเล็บตัวเดียว
+const s6DivRow = (k, v) => DIV_LABEL.test(String(k)) && !retLabel(k) && S6_DIV_PCT.test(String(v)) && (String(v).match(/[0-9][0-9.,]*\s*%/g) || []).length === 1;
 // เซลล์ s6 ของคอลัมน์ i (ใบ migrate เท่านั้น) — null เมื่อไม่มี
 const s6CellOf = (doc, i) => (isMigrated(doc) && isObj(doc.v2Display) && Array.isArray(doc.v2Display.s6) && isObj(doc.v2Display.s6[i]) ? doc.v2Display.s6[i] : null);
 // ป้ายเกจแบบ text ที่เป็นค่าตลาด (ราคา · สูงสุด/ต่ำสุด 52 สัปดาห์ · ATH) — ค่าเหล่านี้เปลี่ยนทุกวัน ⇒ ห้ามพกใน v2Display (display-fix2)
@@ -672,7 +683,7 @@ function validateV2Display(doc, E, closed, num, plain, en) {
       if (!isObj(c)) return E(p, 'ต้องเป็น {k, v, tone?}');
       closed(c, p, ['k', 'v', 'tone']);
       if (typeof c.k !== 'string' || c.k.length > 80) E(`${p}.k`, 'ต้องเป็นข้อความป้าย ≤ 80 ตัวอักษร (ว่างได้)'); else plain(c.k, `${p}.k`);
-      if (typeof c.v !== 'string') E(`${p}.v`, 'ต้องเป็นข้อความ');
+      if (typeof c.v !== 'string' || c.v.length > 600) E(`${p}.v`, 'ต้องเป็นข้อความ ≤ 600 ตัวอักษร');
       if (c.tone != null) en(c.tone, `${p}.tone`, ['mos', 'pos', 'neg', 'neu']);
     });
     if (isObj(doc.verdict) && doc.verdict.extraCells != null) E('verdict.extraCells', 'ช่อง vgrid เป็นของหน้า v2 ทั้งชุดแล้ว (v2Display.vcells) — ลบ extraCells');
@@ -690,10 +701,11 @@ function validateV2Display(doc, E, closed, num, plain, en) {
       if (!isObj(b)) return E(p, 'ต้องเป็น {after, parts}');
       closed(b, p, ['after', 'at', 'section', 'parts']);
       if (b.at != null && b.at !== 'top') E(`${p}.at`, 'ต้องเป็น "top" (ก่อนเนื้อหาหมวด) หรือไม่มี (ท้ายหมวด)');
-      if (!/^[1-8]$/.test(String(b.after))) E(`${p}.after`, 'ต้องเป็นเลขหมวด "1"–"8"');
+      // review M-1: ต้องเป็นสตริง — render กรองด้วย b.after === String(n) ⇒ ตัวเลข 3 ผ่าน schema แต่บล็อกไม่ถูก render (ข้อความหายเงียบ)
+      if (typeof b.after !== 'string' || !/^[1-8]$/.test(b.after)) E(`${p}.after`, 'ต้องเป็นสตริงเลขหมวด "1"–"8"');
       if (b.section != null) {
         if (!isObj(b.section)) E(`${p}.section`, 'ต้องเป็น {n?, title?}');
-        else { closed(b.section, `${p}.section`, ['n', 'title']); if (b.section.n != null && !(Number.isInteger(b.section.n) && b.section.n > 8)) E(`${p}.section.n`, 'เลขหมวดเสริมต้องเป็นจำนวนเต็ม > 8'); if (b.section.title != null) { if (typeof b.section.title !== 'string') E(`${p}.section.title`, 'ต้องเป็นข้อความ'); else plain(b.section.title, `${p}.section.title`); } }
+        else { closed(b.section, `${p}.section`, ['n', 'title']); if (b.section.n != null && !(Number.isInteger(b.section.n) && b.section.n > 8)) E(`${p}.section.n`, 'เลขหมวดเสริมต้องเป็นจำนวนเต็ม > 8'); if (typeof b.section.title !== 'string' || !b.section.title.trim() || b.section.title.length > 200) E(`${p}.section.title`, 'ต้องเป็นข้อความหัวหมวดเสริม ≤ 200 ตัวอักษร (ไม่มี = <h2> ว่าง)'); else plain(b.section.title, `${p}.section.title`); }
       }
       if (!Array.isArray(b.parts) || !b.parts.length) return E(`${p}.parts`, 'ต้องเป็น array ≥ 1 ส่วน');
       b.parts.forEach((pt, j) => {
@@ -701,18 +713,19 @@ function validateV2Display(doc, E, closed, num, plain, en) {
         if (!isObj(pt)) return E(q, 'ต้องเป็น {text} หรือ {table}');
         closed(pt, q, ['text', 'table']);
         if ((pt.text != null) === (pt.table != null)) return E(q, 'ต้องมี text หรือ table อย่างใดอย่างหนึ่ง');
-        if (pt.text != null) { if (typeof pt.text !== 'string' || !pt.text.trim()) E(`${q}.text`, 'ต้องเป็นข้อความ'); return; }
+        // review M-3: เพดานความยาว (สูงกว่าคลังจริงหลายเท่า — ข้อความยาวสุด 5,090 · แถวตาราง 12 · เซลล์ 89 ตัวอักษร ณ 27 ก.ย. 69)
+        if (pt.text != null) { if (typeof pt.text !== 'string' || !pt.text.trim() || pt.text.length > 12000) E(`${q}.text`, 'ต้องเป็นข้อความ ≤ 12,000 ตัวอักษร'); return; }
         const t = pt.table;
         if (!isObj(t)) return E(`${q}.table`, 'ต้องเป็น {headers, rows}');
         closed(t, `${q}.table`, ['headers', 'rows']);
-        if (!Array.isArray(t.headers) || !t.headers.every((h) => typeof h === 'string')) E(`${q}.table.headers`, 'ต้องเป็น array ของข้อความ'); else t.headers.forEach((h, k) => plain(h, `${q}.table.headers[${k}]`));
-        if (!Array.isArray(t.rows) || !t.rows.every((r) => Array.isArray(r) && r.every((c) => typeof c === 'string'))) E(`${q}.table.rows`, 'ต้องเป็น array ของแถว [ข้อความ…]');
+        if (!Array.isArray(t.headers) || t.headers.length > 12 || !t.headers.every((h) => typeof h === 'string' && h.length <= 200)) E(`${q}.table.headers`, 'ต้องเป็น array ของข้อความ (≤ 12 คอลัมน์ · ≤ 200 ตัวอักษร)'); else t.headers.forEach((h, k) => plain(h, `${q}.table.headers[${k}]`));
+        if (!Array.isArray(t.rows) || t.rows.length > 60 || !t.rows.every((r) => Array.isArray(r) && r.length <= 12 && r.every((c) => typeof c === 'string' && c.length <= 1000))) E(`${q}.table.rows`, 'ต้องเป็น array ของแถว [ข้อความ…] (≤ 60 แถว · ≤ 12 ช่อง · ช่องละ ≤ 1,000 ตัวอักษร)');
       });
     });
   }
   if (x.markers != null) {
     if (!isObj(x.markers) || !Object.keys(x.markers).length) E(`${P0}.markers`, 'ต้องเป็น {cur?, fair?}');
-    else { closed(x.markers, `${P0}.markers`, ['cur', 'fair']); for (const k of ['cur', 'fair']) if (x.markers[k] != null && (typeof x.markers[k] !== 'string' || !x.markers[k].trim())) E(`${P0}.markers.${k}`, 'ต้องเป็นข้อความ'); }
+    else { closed(x.markers, `${P0}.markers`, ['cur', 'fair']); for (const k of ['cur', 'fair']) if (x.markers[k] != null && (typeof x.markers[k] !== 'string' || !x.markers[k].trim() || x.markers[k].length > 200)) E(`${P0}.markers.${k}`, 'ต้องเป็นข้อความ ≤ 200 ตัวอักษร'); }
   }
   // textLegs (27 ก.ย. 69): ขาที่หน้า v2 พิมพ์ค่าเป็นขีด/ข้อความ (ไม่คิดค่า · ไม่นับใน FV) [{at (ก่อนขาลำดับนี้ · 0..จำนวนขา), name, desc (prose), val}]
   if (x.textLegs != null) {
@@ -722,14 +735,14 @@ function validateV2Display(doc, E, closed, num, plain, en) {
       if (!isObj(t)) return E(p, 'ต้องเป็น {at, name, desc, val}');
       closed(t, p, ['at', 'name', 'desc', 'val']);
       if (!(Number.isInteger(t.at) && t.at >= 0 && t.at <= legs.length)) E(`${p}.at`, `ต้องเป็นจำนวนเต็ม 0–${legs.length}`);
-      for (const k of ['name', 'val']) { if (typeof t[k] !== 'string') E(`${p}.${k}`, 'ต้องเป็นข้อความ'); else plain(t[k], `${p}.${k}`); }
-      if (typeof t.desc !== 'string') E(`${p}.desc`, 'ต้องเป็นข้อความ');
+      for (const [k, max] of [['name', 120], ['val', 60]]) { if (typeof t[k] !== 'string' || t[k].length > max) E(`${p}.${k}`, `ต้องเป็นข้อความ ≤ ${max} ตัวอักษร`); else plain(t[k], `${p}.${k}`); }
+      if (typeof t.desc !== 'string' || t.desc.length > 1500) E(`${p}.desc`, 'ต้องเป็นข้อความ ≤ 1500 ตัวอักษร');
       if (typeof t.val === 'string' && /[0-9]/.test(t.val)) E(`${p}.val`, 'ค่าที่มีตัวเลข = ขาที่คิดได้ (legs) ไม่ใช่แถวข้อความ');
     });
   }
   if (x.hints != null) {
     if (!isObj(x.hints) || !Object.keys(x.hints).length) E(`${P0}.hints`, 'ต้องเป็น object {"4"|"5"|"7"|"8": ข้อความ}');
-    else for (const [k, t] of Object.entries(x.hints)) { if (!/^[4578]$/.test(k)) E(`${P0}.hints.${k}`, 'คีย์ต้องเป็นหมวดที่ template ไม่มีป้าย (4 · 5 · 7 · 8)'); if (typeof t !== 'string' || !t.trim()) E(`${P0}.hints.${k}`, 'ต้องเป็นข้อความ'); }
+    else for (const [k, t] of Object.entries(x.hints)) { if (!/^[4578]$/.test(k)) E(`${P0}.hints.${k}`, 'คีย์ต้องเป็นหมวดที่ template ไม่มีป้าย (4 · 5 · 7 · 8)'); if (typeof t !== 'string' || !t.trim() || t.length > 400) E(`${P0}.hints.${k}`, 'ต้องเป็นข้อความ ≤ 400 ตัวอักษร'); }
   }
   if (x.legend != null) {
     if (!Array.isArray(x.legend) || x.legend.length < 1 || x.legend.length > 8) E(`${P0}.legend`, 'ต้องเป็น array 1–8 ช่อง [{text, swatch?}]');
@@ -737,7 +750,7 @@ function validateV2Display(doc, E, closed, num, plain, en) {
       const p = `${P0}.legend[${i}]`;
       if (!isObj(it)) return E(p, 'ต้องเป็น {text, swatch?}');
       closed(it, p, ['text', 'swatch']);
-      if (typeof it.text !== 'string') E(`${p}.text`, 'ต้องเป็นข้อความ');
+      if (typeof it.text !== 'string' || it.text.length > 300) E(`${p}.text`, 'ต้องเป็นข้อความ ≤ 300 ตัวอักษร');
       if (it.swatch != null) en(it.swatch, `${p}.swatch`, ['price', 'fv', 'point']);
     });
     if (isObj(doc.text) && doc.text.legendNote != null) E('text.legendNote', 'legend เป็นของหน้า v2 ทั้งชุดแล้ว (v2Display.legend) — ลบ legendNote');
@@ -763,13 +776,22 @@ function validateV2Display(doc, E, closed, num, plain, en) {
           if (!Array.isArray(c.rows) || c.rows.length < 1 || c.rows.length > 5) E(`${p}.rows`, 'ต้องเป็น array 1–5 แถว [ป้าย, ค่า]');
           else c.rows.forEach((r, j) => {
             const rp = `${p}.rows[${j}]`;
-            // [ป้าย, ค่า] · [ป้าย, ค่า, 'tot'|'py'] = แถวผลตอบแทนของผู้เขียน (27 ก.ย. 69 · CBOE/GABLE) — ตัวเลข % ตัวเดียวในค่าคิดสดจากเป้าของคอลัมน์ทุกครั้ง (รูปแบบ/ทศนิยมตามผู้เขียน)
-            if (!Array.isArray(r) || (r.length !== 2 && r.length !== 3)) return E(rp, 'ต้องเป็น [ป้าย, ค่า] หรือ [ป้าย, ค่า, "tot"|"py"]');
+            // [ป้าย, ค่า] · [ป้าย, ค่า, 'tot'|'py'|'div'] = แถวผลตอบแทนของผู้เขียน (27 ก.ย. 69 · CBOE/GABLE) — ตัวเลข % ตัวเดียวในค่าคิดสดจากเป้าของคอลัมน์ทุกครั้ง (รูปแบบ/ทศนิยมตามผู้เขียน)
+            if (!Array.isArray(r) || (r.length !== 2 && r.length !== 3)) return E(rp, 'ต้องเป็น [ป้าย, ค่า] หรือ [ป้าย, ค่า, "tot"|"py"|"div"]');
             txt(r[0], `${rp}[0]`, 120); txt(r[1], `${rp}[1]`, 400);   // 27 ก.ย. 69: ข้อความเซลล์ของผู้เขียนยาวได้ (AMRZ แถวสถานการณ์ซ้ำ)
-            if (r.length === 3) { en(r[2], `${rp}[2]`, ['tot', 'py']); if ((String(r[1]).match(/[0-9][0-9.,]*\s*%/g) || []).length !== 1) E(`${rp}[1]`, 'แถวผลตอบแทนคิดสดต้องมีตัวเลข % ตัวเดียว'); }
+            if (r.length === 3) {
+              en(r[2], `${rp}[2]`, ['tot', 'py', 'div']);
+              if ((String(r[1]).match(/[0-9][0-9.,]*\s*%/g) || []).length !== 1) E(`${rp}[1]`, 'แถวผลตอบแทนคิดสดต้องมีตัวเลข % ตัวเดียว');
+              // 'div' (review I-3 · KMB): % ในวงเล็บของแถวปันผล = ปันผลรวมของฉาก ÷ ราคาปัจจุบัน — ต้องเป็นแถวปันผล และฉากต้องมี divCum
+              if (r[2] === 'div') {
+                if (!s6DivRow(r[0], r[1])) E(`${rp}[2]`, '"div" ใช้ได้กับแถวปันผลที่มี % ในวงเล็บตัวเดียว ("ปันผลรวม 3 ปี", "~$15.36 (+15.7%)")');
+                const cs = isObj(doc.scenarios) && Array.isArray(doc.scenarios.cases) ? doc.scenarios.cases[i] : null;
+                if (!(isObj(cs) && isNum(cs.divCum) && cs.divCum > 0)) E(`${rp}[2]`, `"div" ต้องมี scenarios.cases[${i}].divCum (ปันผลรวมของฉาก)`);
+              }
+            }
             if (/สถานการณ์/.test(String(r[0]))) E(`${rp}[0]`, 'แถว "สถานการณ์" มาจาก scenarios.cases[i].desc — ไม่พกซ้ำ');
             // แถวผูกราคา = ป้ายผลตอบแทน/MOS/ราคาตลาด ที่ค่ามีตัวเลข (ป้ายแถวปันผล · ค่าเป็นข้อความล้วน เช่น "ฐานผลตอบแทน: ราคาเป้า ไม่รวมปันผล" = คำของผู้เขียน ไม่ผูกราคา)
-            if (r.length === 2 && s6RowPriceBound(r[0], r[1])) E(`${rp}[0]`, 'แถวผูกราคา (ผลตอบแทน/MOS/ราคาตลาด) ห้ามแช่ใน v2Display — คิดสดจากเป้า (แถวผลตอบแทน: [ป้าย, ค่า, "tot"|"py"])');
+            if (r.length === 2 && s6RowPriceBound(r[0], r[1])) E(`${rp}[0]`, 'แถวผูกราคา (ผลตอบแทน/MOS/ราคาตลาด/% ปันผลเทียบราคา) ห้ามแช่ใน v2Display — คิดสด (แถวผลตอบแทน: [ป้าย, ค่า, "tot"|"py"] · แถวปันผล: [ป้าย, ค่า, "div"])');
           });
         }
         if (!(Array.isArray(x.targets) && isNum(x.targets[i]) && x.targets[i] > 0)) E(`${P0}.targets[${i}]`, `คอลัมน์ที่พกเซลล์ (s6[${i}]) ต้องมีราคาเป้าของผู้เขียน (ตัวเลข) — ผลตอบแทนคิดสดจากค่านี้`);
@@ -870,4 +892,4 @@ function OWNER(path) {
   return 'worker';
 }
 
-module.exports = { GAUGE_REFS, MARKET_TICK_RE, S6_PRICE_RE, s6RowPriceBound, s6CellOf, V2DISPLAY_KEYS, V2DISPLAY_PRICE_CARDS, ENUM, FFO_LABEL, CARD_KEYS, FUND_KEYS, FY_KEYS, BANK_KEYS, LEG_INPUTS, CURRENT_BASE, requiredFamily, OVERRIDE_KEYS, THEME_KEYS, TEXT_KEYS, cardEntries, customCap, CUSTOM_CAP, CUSTOM_CAP_MIGRATED, isMigrated, SOURCES_MIN, SOURCES_MIN_MIGRATED, validate, OWNER, RD_TOKEN, TODO_RE, stringLeaves };
+module.exports = { GAUGE_REFS, MARKET_TICK_RE, S6_PRICE_RE, s6RowPriceBound, s6DivRow, s6CellOf, V2DISPLAY_KEYS, V2DISPLAY_PRICE_CARDS, ENUM, FFO_LABEL, CARD_KEYS, FUND_KEYS, FY_KEYS, BANK_KEYS, LEG_INPUTS, CURRENT_BASE, requiredFamily, OVERRIDE_KEYS, THEME_KEYS, TEXT_KEYS, cardEntries, customCap, CUSTOM_CAP, CUSTOM_CAP_MIGRATED, isMigrated, SOURCES_MIN, SOURCES_MIN_MIGRATED, validate, OWNER, RD_TOKEN, TODO_RE, stringLeaves };

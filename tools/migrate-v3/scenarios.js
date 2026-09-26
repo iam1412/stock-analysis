@@ -285,7 +285,9 @@ function scenarios(parsed, fund, legs, opts) {
         if (dm) { const dv = vs && vs[+dm[1] - 1] && vs[+dm[1] - 1].div; if (typeof dv === 'number') v = v.replace(dm[0], cur + RV.fmtPrice(dv)); }
         const row = [String(x[0]).replace(/\s+/g, ' ').trim(), String(v).replace(/\s+/g, ' ').trim()];
         // แถวผลตอบแทนของผู้เขียน (CBOE "ผลตอบแทน/ปี" · GABLE "ผลตอบแทนราคารวม 3 ปี") = ผูกราคา → คิดสด ('py' ต่อปี · 'tot' รวม) · ตัวเลข % ต้องมีตัวเดียว
-        if (S.s6RowPriceBound(row[0], row[1]) && (row[1].match(/[0-9][0-9.,]*\s*%/g) || []).length === 1) row.push(/\/\s*ปี|ต่อปี|per\s*year|CAGR|p\.?a\./i.test(row[0] + ' ' + row[1]) ? 'py' : 'tot');
+        // แถวปันผลที่มี % ในวงเล็บ (KMB "~$15.36 (+15.7%)" = ปันผลรวม ÷ ราคา — review I-3) → 'div' คิดสด (ยอดปันผลคงตามผู้เขียน) เมื่อฉากมีปันผลรวม
+        if (S.s6DivRow(row[0], row[1])) { if (vs && vs[i] && typeof vs[i].div === 'number' && vs[i].div > 0) row.push('div'); }
+        else if (S.s6RowPriceBound(row[0], row[1]) && (row[1].match(/[0-9][0-9.,]*\s*%/g) || []).length === 1) row.push(/\/\s*ปี|ต่อปี|per\s*year|CAGR|p\.?a\./i.test(row[0] + ' ' + row[1]) ? 'py' : 'tot');
         return row;
       });
       const head = meta.heads[i];

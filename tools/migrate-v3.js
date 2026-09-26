@@ -18,7 +18,7 @@
  *           equivalence gate = ข้อมูลเท่านั้น · ตรรกะ = tools/migrate-v3/transcribe.js
  *   audit   [<SYM>…] [--all] [--out PATHBASE] [--reports-dir D] [--v2-repo DIR]   (Plan 4c-audit · อ่านอย่างเดียว · tools/migrate-v3/audit.js)
  *           ใบ v3 ที่มี meta.migratedFrom: v2 สุดท้ายใน git vs v3 render แบบเว็บ (ที่ market ของ v2) ด้วย EQ.compare + sanity บนหน้า v3
- *           → PATHBASE.csv (symbol,status,valueDiffs,roundingDiffs,textLost,sanity) + .md · exit 1 เมื่อมี valueDiffs > 0 · sanity ตก · invented > 0 · textLost > 0
+ *           → PATHBASE.csv (symbol,status,valueDiffs,roundingDiffs,textLost,sanity,…,perturb) + .md · exit 1 เมื่อมี valueDiffs > 0 · sanity ตก · invented > 0 · textLost > 0 · gate ที่ราคา ×0.8/×1.25 มี error ใหม่/W31 เพิ่ม
  *   remigrate <SYM…|--all-failing <audit.csv>> [--reports-dir D] [--v2-repo DIR] [--write] [--today YYYY-MM-DD]   (display-fix · tools/migrate-v3/remigrate.js)
  *           ใบ migrate ที่แสดงค่าไม่เท่าหน้า v2: migrator ที่แก้แล้ว (fresh) หรือใบเดิม + v2Display (graft) · คง meta.migratedFrom (+ prevHash ⇒ updated ไม่ขยับ)
  *           เขียนเฉพาะเมื่อ audit สะอาด + checkDoc 0 error + ราคาอื่นไม่มี error ใหม่ · พิมพ์ FIXED / STILL-FAILING <เหตุผล> · ไม่ --write = ตรวจอย่างเดียว
@@ -279,6 +279,8 @@ function displayGate(sym, doc, raw, seeds) {
   if (r.invented) out.push(`invented ${r.invented}: ${r.addedList.filter((x) => x.cls === 'invented').slice(0, 3).map((x) => `${x.zone}: ${x.v} in "${String(x.ins).slice(0, 40)}"`).join(' · ')}`);
   // เจ้าของ 27 ก.ย. 69: ข้อความของผู้เขียนที่หาย (คำ หรือตัวเลขที่หายไปกับข้อความ) = error
   if (r.textLost) out.push(`textLost ${r.textLost}: ${r.lost.slice(0, 12).map((x) => `${x.w}@${x.zone}`).join(' ')}`);
+  // review 27 ก.ย. 69: gate ของใบที่ราคาอื่น (×0.8 · ×1.25) — error ใหม่ / W31 เพิ่ม = cron เขียนราคาต่อไม่ได้ หรือมีตัวเลขผูกราคาแช่
+  for (const x of r.perturb || []) out.push(`perturbed gate ${x}`);
   return out;
 }
 
