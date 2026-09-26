@@ -100,6 +100,20 @@ function v2DisplayOf(o) {
     const shown = round2(vl.value);
     return Math.abs(shown - n) > halfOf(lm.mval) * (1 + 1e-9) && Math.abs(vl.value - n) > halfOf(lm.mval) * (1 + 1e-9) ? n : null;
   });
+  // ขา context (display-fix2): หน้า v2 พิมพ์ช่วง/ขีด/ติดลบ (CRWV "−$135 ถึง −$35" · AVGO "—") ที่ .mval ของ v3 (ตัวเลขบวกตัวเดียว) พิมพ์ไม่ได้ → legTexts ·
+  //   ตัวเลขติดลบตัวเดียว → legValues ติดลบ (schema: ขา context เท่านั้น)
+  const lt = (doc.legs || []).map((leg, i) => {
+    const lm = (o.legMeta || [])[i], vl = view.legs[i];
+    if (!lm || !vl || leg.role !== 'context' || !lm.mval) return null;
+    const t = MP.decode(PV.text(lm.mval)).replace(/\s+/g, ' ').trim();
+    const nums = NB.numsOf(t);
+    const neg = /[−-]\s*(?:US\$|C\$|HK\$|\$|฿|€|£|¥)?\s*[0-9]/.test(t);
+    if (nums.length === 1 && neg && !/ถึง|–|~|\bto\b/.test(t.replace(/^[−-]/, ''))) { lv[i] = -nums[0].v; return null; }
+    if ((nums.length >= 2 || neg || !nums.length) && t && t.length <= 60 && !/[{}<>]/.test(t) && (nums.length || /^(?:—|–|-|n\/a|N\/A)$/.test(t))) return t;
+    return null;
+  });
+  lt.forEach((t, i) => { if (t != null) lv[i] = null; });
+  if (lt.some((x) => x != null)) { out.legTexts = lt; notes.push(`context leg texts ${lt.map((x) => (x == null ? '·' : `"${x}"`)).join(' ')}`); }
   if (lv.some((x) => x != null)) { out.legValues = lv; notes.push(`leg values ${lv.map((x, i) => (x == null ? '·' : `${round2(view.legs[i].value)}→${x}`)).join(' ')}`); }
   // ราคาเป้าฉาก (values.scenarios ของผู้เขียน · ไม่มี = .tgt literal ของคอลัมน์) + ตัวตั้งปลายฉากที่พิมพ์
   const s6 = parsed.byN && parsed.byN[6];
@@ -116,7 +130,8 @@ function v2DisplayOf(o) {
   // แถวตัวตั้งปลายฉาก ("EPS ปี 3 ~$8.6" · "รายได้ปี 3 ~$38.75B") = ข้อความที่ผู้เขียนพิมพ์ — v3 คิดได้ไม่เท่า (หรือคนละหน่วย) → พกข้อความ
   const ends = ((o.scnMeta && o.scnMeta.ends) || []).map((e, i) => {
     const sc = view.scn[i];
-    if (!e || !sc || !isNum(e.end) || !e.text || /\{\{/.test(e.text)) return null;
+    if (S.s6CellOf(doc, i)) return null;   // เซลล์ของผู้เขียน (display-fix2) พิมพ์แถวตัวตั้งเองแล้ว
+    if (!e || !sc || !isNum(e.end) || !isNum(sc.driverEnd) || !e.text || /\{\{/.test(e.text)) return null;
     const sh = doc.fundamentals && doc.fundamentals.shares;
     const v3t = o.scnMeta.total && sh > 0 ? `~${RV.fmtBig(sc.driverEnd * sh, view.cur)}` : `~${view.cur}${RV.fmtPerShare(sc.driverEnd)}`;
     return sameNumbers(e.text, v3t) ? null : String(e.text).replace(/[{}<>]/g, '').trim() || null;
@@ -128,6 +143,20 @@ function v2DisplayOf(o) {
   // สเกลเกจ: ชุดช่องของผู้เขียน (token/ตัวเลขคงที่) ≠ ชุดที่ template สร้าง (mos30 · mos20 · fv · fvHigh · analystTgt) → พกสเกลของผู้เขียน
   //   ชุดเดียวกัน = ตัวเลขเท่ากันเอง (ref ชี้ค่าเดียวกัน · FV/กรอบพกแล้วข้างบน) ⇒ ไม่พก
   let g = v2Gauge(parsed);
+  if (g) {
+    // ค่าตลาด (display-fix2 · controller): ป้ายราคา/สูงสุด-ต่ำสุด 52 สัปดาห์ ห้ามแช่ — ref สด (px · hi52w/lo52w จาก market.range52w) · ไม่มี range52w = ไม่พกสเกล
+    const r52 = doc.market && doc.market.range52w;
+    let lostMarket = false;
+    g = g.map((t) => {
+      if (t.ref != null || !(S.MARKET_TICK_RE.test(t.label || '') || S.MARKET_TICK_RE.test(String(t.text).replace(/[0-9][0-9,]*(?:\.[0-9]+)?/g, '')))) return t;
+      const lab = `${t.label || ''} ${t.text}`;
+      const low = /ต่ำสุด|ต่ำ|\blow\b|ล่าง/i.test(lab), is52 = /52|สัปดาห์|week|wk|ATH|all[- ]?time|สูงสุด|\bhigh\b|บน/i.test(lab);
+      const ref = is52 ? (low ? 'lo52w' : 'hi52w') : 'px';
+      if (ref !== 'px' && !r52) { lostMarket = true; return t; }
+      return { ref, label: t.label };
+    });
+    if (lostMarket) { notes.push('gauge scale not carried — a 52-week tick needs market.range52w'); g = null; }
+  }
   if (g) {
     // ป้ายตัวเลขคงที่ที่เท่าค่าของช่อง template (CASY "$954" = เป้า analyst) = ช่องนั้น — ไม่ใช่สเกลของผู้เขียน
     const fvA = isNum(out.fv) ? out.fv : round2(view.fv);

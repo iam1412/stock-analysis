@@ -703,6 +703,8 @@ const pruneUndefined = (x) => {
   return x;
 };
 
+// token ที่ prose.disclaimerSources แทนได้ (display-fix2): ตัวเลขของผู้เขียน/analyst ที่ไม่ขยับตามราคา
+const DISC_TOKENS = new Set(['analyst.target', 'fv', 'fvLow', 'fvHigh']);
 /** ช่อง prose ทั้งหมดของ doc + HTML ต้นทาง (ใช้หา E44 hits) — get/set ตรงที่ */
 function proseZones(doc, src) {
   const z = [];
@@ -715,8 +717,10 @@ function proseZones(doc, src) {
   (doc.metrics.custom || []).forEach((c, i) => add(`metrics.custom[${i}].value`, c, 'value', ''));
   ((doc.verdict && doc.verdict.extraCells) || []).forEach((c, i) => add(`verdict.extraCells[${i}].v`, c, 'v', null));
   for (const k of Object.keys(doc.text || {})) add(`text.${k}`, doc.text, k, src.text[k]);
-  // prose.disclaimerSources = อ้างอิงแหล่ง/วันที่ในอดีต — คงเป็น literal เสมอ ไม่ tokenise (fix round 1 · M-2)
+  // prose.disclaimerSources = อ้างอิงแหล่ง/วันที่ในอดีต — ราคา/วันที่คงเป็น literal (fix round 1 · M-2) · display-fix2: เป้า analyst / FV ของผู้เขียนเท่านั้นที่แทนเป็น token
+  //   (AVAV "เป้านักวิเคราะห์เฉลี่ย $221.50" = doc.analyst.target — ค่าเดียวกันสองที่ต้องไม่แยกกันตอน UPDATE) — ช่องนี้ tokenise ด้วยชุดจำกัด (zone.only)
   for (const k of Object.keys(doc.prose || {})) if (k !== 'disclaimerSources') add(`prose.${k}`, doc.prose, k, src.prose[k]);
+  if (doc.prose && typeof doc.prose.disclaimerSources === 'string') z.push({ field: 'prose.disclaimerSources', obj: doc.prose, key: 'disclaimerSources', html: src.prose.disclaimerSources == null ? doc.prose.disclaimerSources : src.prose.disclaimerSources, only: DISC_TOKENS });
   doc.legs.forEach((l, i) => add(`legs[${i}].note`, l, 'note', src.legs[i]));
   if (doc.scenarios) {
     (doc.scenarios.cases || []).forEach((c, i) => { add(`scenarios.cases[${i}].desc`, c, 'desc', src.scnDesc[i]); add(`scenarios.cases[${i}].retNote`, c, 'retNote', (src.scnRet || [])[i]); });
@@ -762,6 +766,15 @@ function s6HintNote(t6, scen) {
   let out = segs[0];
   segs.slice(1).forEach((x, i) => { if (!x) return; out += (i + 1 === k && !out ? '' : ' • ') + x; });
   return out.trim();
+}
+
+/** ป้ายหัว §6 ของ v2 ทั้งท่อนหลัง "จากจุดเข้า <px>" (display-fix2 — ใบที่ไม่มีฐานเดียว: template ไม่พิมพ์ส่วนฐาน) · ตัด "• รวมปันผล" ท้ายเมื่อ divIncluded (= {{rd:scnNote}}) */
+function s6HintVerbatim(t6, scen) {
+  const t = String(t6 || '').trim();
+  const m = /^จาก(?:จุดเข้า|ราคาปัจจุบัน|ราคา)\s+(?:\{\{px\}\}|[^\s•·(]+)/.exec(t);
+  let rest = (m ? t.slice(m[0].length) : t).trim();
+  if (scen.divIncluded) rest = rest.replace(/\s*[•·]\s*รวมปันผล\s*$/, '');
+  return rest.replace(/^·/, '•').replace(/\s+/g, ' ').trim();
 }
 
 /** ช่องโน้ตที่ migrator carry จากโซน template (Plan 4b Task 6b) → [obj, key, path] */
@@ -865,11 +878,17 @@ function assemble(parsed0, ctx) {
   const scn = MS.scenarios(parsed, doc.fundamentals, doc.legs);
   H.push(...scn.H); D.push(...scn.D); F.push(...scn.F);
   doc.scenarios = scn.scenarios || undefined;
+  // display-fix2: เซลล์หมวด 6 ของผู้เขียน (v2Display.s6 + targets) — ต้องอยู่ก่อน compute (ฉากที่ไม่มี growth/ตัวคูณ คิดเป้าจากสูตรไม่ได้) · ใบ migrate เท่านั้น
+  if (scn.meta.display) {
+    if (doc.meta && doc.meta.migratedFrom) doc.v2Display = { ...(doc.v2Display || {}), ...scn.meta.display };
+    else H.push(`scenarios: the author's cells need meta.migratedFrom (v2Display is migrated-only)`);
+  }
   // §6 hint (Plan 4b Task 6b) → scenarios.hintNote = คำของผู้เขียนที่เหลือหลังตัดส่วนที่ template v3 พิมพ์เอง (s6HintNote)
   let s6hintSrc = '';
   if (doc.scenarios && parsed.s6hint) {
     const raw6 = String(parsed.s6hint).replace(/\{\{rd:scnNote\}\}/g, ' ');
-    const rest = s6HintNote(MP.htmlToProse(raw6), doc.scenarios);
+    // เซลล์ของผู้เขียนทุกคอลัมน์ + ไม่มี baseOverride = template ไม่พิมพ์ "<driver> ฐาน ~ค่า" (ไม่มีฐานเดียว — compute start = null) ⇒ คำผู้เขียนทั้งท่อน (display-fix2 · AMZN "• EPS ฐาน (normalized) ~$7.4")
+    const rest = doc.v2Display && doc.v2Display.noBase ? s6HintVerbatim(MP.htmlToProse(raw6), doc.scenarios) : s6HintNote(MP.htmlToProse(raw6), doc.scenarios);
     const clash = rest ? MS.divClash(rest, doc.scenarios.divIncluded) : null;
     if (clash) H.push(`scenarios hint "${rest}" not carried — dividend claim in the note contradicts divIncluded (${clash})`);
     else if (rest) { doc.scenarios.hintNote = rest; s6hintSrc = raw6; F.push(`scenarios hint kept → scenarios.hintNote "${rest}"`); }
@@ -1002,7 +1021,12 @@ function assemble(parsed0, ctx) {
     if (dx.v2Display && !(out.meta && out.meta.migratedFrom)) F.push(`v2Display not carried (no meta.migratedFrom): ${dx.notes.join(' · ')}`);
     else if (dx.v2Display) {
       const prev = out;
-      out = { ...out, v2Display: dx.v2Display };
+      // เซลล์หมวด 6 ของผู้เขียน (ตั้งก่อน compute — display-fix2) คงอยู่ · targets: ค่าที่ display พบต่าง > ค่าที่พกไว้ (รายช่อง)
+      const base = out.v2Display || {};
+      const merged = { ...base, ...dx.v2Display };
+      if (base.targets && dx.v2Display.targets) merged.targets = base.targets.map((t, i) => (dx.v2Display.targets[i] != null ? dx.v2Display.targets[i] : t));
+      else if (base.targets) merged.targets = base.targets;
+      out = { ...out, v2Display: merged };
       if (dx.v2Display.cards && out.metrics.notes) {
         const notes = { ...out.metrics.notes };
         for (const k of Object.keys(dx.v2Display.cards)) delete notes[k];
@@ -1036,7 +1060,7 @@ function assemble(parsed0, ctx) {
     const e44 = fd && fd.iso >= RV.PROSE_TOKEN_SINCE ? new Set(RV.proseBoundHits(parsed.html || '', view.d).map((h) => `${h.token}|${h.text}`)) : null;
     for (const z of proseZones(out, src)) {
       const hits = z.html ? RV.proseBoundHits(`<p>${z.html}</p>`, view.d) : [];
-      const r = MP.tokenise(z.obj[z.key], view, hits, z.field, { e44 });
+      const r = MP.tokenise(z.obj[z.key], view, hits, z.field, { e44, only: z.only });
       z.obj[z.key] = r.text; D.push(...r.D); F.push(...(r.F || [])); tokens += r.n;
       apxStale.push(...MP.staleCopies(r.text, ctx.analysisPx, view.d));
     }
@@ -1075,5 +1099,5 @@ function assemble(parsed0, ctx) {
   };
 }
 
-module.exports = { assemble, s6HintNote, guardLegs, extrasOf, analystOf, singleTarget, legsOf, weightsOf, generatedValHint, pxMetaOf, qualifierOf, hasProse, isProseToken, labelOf, labelParts, multipleSourceOf, medianWindowOf,
+module.exports = { assemble, s6HintNote, s6HintVerbatim, guardLegs, extrasOf, analystOf, singleTarget, legsOf, weightsOf, generatedValHint, pxMetaOf, qualifierOf, hasProse, isProseToken, labelOf, labelParts, multipleSourceOf, medianWindowOf,
   firstTagOf, sectorLineOf, ffoBasisOf, baseOf, extraCellsOf, legendNoteOf, renderedBasisLabel, epsBasisOf };

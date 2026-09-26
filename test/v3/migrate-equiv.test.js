@@ -25,6 +25,8 @@ function recompare(m, html, mutate) {
   const view = C.compute(doc, { seeds: SEEDS });
   return EQ.compare(m.v2, B.expandReport(R.toV2Source(doc, view)), doc, view, { v2src: html });
 }
+// display-fix2: assemble พกเซลล์หมวด 6 ของผู้เขียน (v2Display.s6) เมื่อ template พิมพ์ไม่ตรง — test ของ gate (TEXT LOST/TEMPLATE_COUNTED บนทาง template) ถอดเซลล์ออกแล้วเทียบใหม่
+const stripCells = (doc) => { if (doc.v2Display) { delete doc.v2Display.s6; delete doc.v2Display.noBase; if (!Object.keys(doc.v2Display).length) delete doc.v2Display; } };
 // identity
 { const html = raw('BBL'); const v2 = B.expandReport(html); const z = EQ.zones(v2);
   t(z.has('header') && z.has('s1') && z.has('s8') && z.has('disc') && z.has('footer'), 'zones: header · s1…s8 · disc · footer located');
@@ -202,7 +204,10 @@ t(EQ.TEMPLATE_VOCAB && EQ.TEMPLATE_VOCAB.s3.includes('เฉลี่ย') && EQ
   // SIRI-shaped §6 exit cell: v2 "15x (มัธยฐาน 5 ปี)" → v3 prints the multiple only ⇒ the author's annotation is TEXT LOST (was masked page-wide)
   const html = raw('SRE').replace('<li><span>P/E ออก</span><span>15x</span></li>', '<li><span>P/E ออก</span><span>15x (มัธยฐาน 5 ปี)</span></li>');
   t(html !== raw('SRE'), 'I-2 setup: exit cell annotated');
-  const m = migrate('SRE', html);
+  const m0 = migrate('SRE', html);
+  // display-fix2: the migrator now carries the author's cells (v2Display.s6) ⇒ the annotation is displayed, not lost
+  t(m0.doc.v2Display && m0.doc.v2Display.s6 && m0.doc.v2Display.s6.every((c) => c.rows.some(([k, v]) => /ออก/.test(k) && (v === '15x (มัธยฐาน 5 ปี)' || !/มัธยฐาน/.test(v)))) && !m0.eq.textLost.includes('มัธยฐาน'), 'display-fix2: annotated exit cell carried verbatim (v2Display.s6) → not TEXT LOST', JSON.stringify({ s6: m0.doc.v2Display && m0.doc.v2Display.s6, lost: m0.eq.textLost }));
+  const m = { ...m0, eq: recompare(m0, html, stripCells) };   // the template path (no author cells) — the gate must still see the loss
   t(m.eq.textLost.includes('มัธยฐาน') && !m.eq.templateDropped.includes('มัธยฐาน'), 'I-2: SIRI-shaped exit cell "15x (มัธยฐาน 5 ปี)" vs v3 "15x" → TEXT LOST', JSON.stringify({ lost: m.eq.textLost, td: m.eq.templateDropped }));
   t.eq(BK.bucketOf(m.notes, m.eq).bucket, 'HUMAN', 'I-2: → HUMAN');
   // legit template text stays dropped: CARR/ERIE footer "· สร้างด้วย stock-analyzer workflow" (footer zone)
@@ -319,12 +324,14 @@ const docOf = (patch) => { const d = JSON.parse(JSON.stringify(require('../fixtu
 }
 {
   const html = raw('CASY').replace(/<span>ปันผลรวม 3 ปี<\/span>/g, '<span>ปันผลสะสม 3 ปี</span>');
-  const m = migrate('CASY', html);
+  const m0 = migrate('CASY', html);
+  t(m0.doc.v2Display && m0.doc.v2Display.s6 && m0.doc.v2Display.s6.every((c) => c.rows.some(([k]) => k === 'ปันผลสะสม 3 ปี')), "display-fix2: the author's dividend label carried (v2Display.s6)", JSON.stringify(m0.doc.v2Display));
+  const m = { ...m0, eq: recompare(m0, html, stripCells) };
   t(!m.eq.textLost.includes('ปันผลสะสม') && m.eq.templateDropped.filter((w) => w === 'ปันผลสะสม').length === 3, 'CASY ปันผลสะสม ×3: s6 TEMPLATE_COUNTED (3 columns)', JSON.stringify(m.eq.textLost));
   // condition "v3 column does not print the word": the author also writes it in the Bear scenario text (carried into cases[0].desc ⇒ inside a v3 column)
   // ⇒ the counted rule is off for this doc ⇒ the three label occurrences are compared normally (v3 prints the word once) ⇒ 3 TEXT LOST
   const inCol = html.replace(/(<li><span>สถานการณ์<\/span><span>)/, '$1ปันผลสะสม ');
-  const mc = migrate('CASY', inCol);
+  const mc0 = migrate('CASY', inCol), mc = { ...mc0, eq: recompare(mc0, inCol, stripCells) };
   t.eq(mc.eq.textLost.filter((w) => w === 'ปันผลสะสม').length, 3, 'TEMPLATE_COUNTED off when a v3 column prints the word (not a template word there)');
 }
 // fix round 1 (review I-1): TEMPLATE_COUNTED only at the label position of each column (≤1 per column) — never the hint, never a value cell
@@ -333,7 +340,7 @@ const docOf = (patch) => { const d = JSON.parse(JSON.stringify(require('../fixtu
   const recmp = (html, patch) => {
     const parsed = PV.parseV2('CASY', html);
     const { doc } = A.assemble(parsed, { seeds: SEEDS, headUpdated: '2026-09-01T00:00:00+07:00', v2Hash: B.freshHash(html), today: parsed.rd.values.priceDate, analysisPx: null });
-    patch(doc);
+    stripCells(doc); patch(doc);
     const view = C.compute(doc, { seeds: SEEDS });
     return EQ.compare(B.expandReport(html), B.expandReport(R.toV2Source(doc, view)), doc, view, { v2src: html });
   };
@@ -356,11 +363,11 @@ const docOf = (patch) => { const d = JSON.parse(JSON.stringify(require('../fixtu
   const labs3 = base.replace(/(<div class="col bear">[\s\S]*?)<span>EPS ปี 3<\/span>([\s\S]*?)<span>P\/E ออก<\/span>([\s\S]*?)<span>ปันผลรวม 3 ปี<\/span>/,
     '$1<span>ปันผลสะสม EPS ปี 3</span>$2<span>ปันผลสะสม P/E ออก</span>$3<span>ปันผลสะสม 3 ปี</span>');
   t(labs3 !== base, 'fixture: bear labels mutated');
-  const ec = migrate('CASY', labs3).eq;
+  const ec = recmp(labs3, () => {});
   t(cnt(ec.templateDropped, 'ปันผลสะสม') === 1 && cnt(ec.textLost, 'ปันผลสะสม') === 2, 'TEMPLATE_COUNTED: ≤ 1 per column (3 labels in bear → 1 dropped · 2 TEXT LOST)', JSON.stringify({ lost: ec.textLost, td: ec.templateDropped }));
   // (c) positive: one per column label (×3 columns) → all dropped, none lost — also the .ret suffix of old skeletons
   const pos = base.replace(/<span>ปันผลรวม 3 ปี<\/span>/g, '<span>ปันผลสะสม 3 ปี</span>').replace('{{rd:sc2ret}}', '{{rd:sc2ret}} รวมปันผล');
-  const ed = migrate('CASY', pos).eq;
+  const ed = recmp(pos, () => {});
   t(cnt(ed.templateDropped, 'ปันผลสะสม') === 3 && cnt(ed.templateDropped, 'รวมปันผล') === 1 && !ed.textLost.includes('ปันผลสะสม') && !ed.textLost.includes('รวมปันผล'),
     'TEMPLATE_COUNTED positive: one per column label + .ret suffix → dropped, not lost', JSON.stringify({ lost: ed.textLost, td: ed.templateDropped }));
 }

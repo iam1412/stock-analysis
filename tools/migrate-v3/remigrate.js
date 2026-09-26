@@ -52,6 +52,8 @@ function graftOf(existing, fresh) {
   const { _sig, ...doc } = existing;
   const x = {};
   for (const k of ['fv', 'fvRange', 'targets', 'driverEnds', 'gauge', 'footer']) if (vd[k] != null) x[k] = vd[k];
+  // display-fix2: ข้อความขา context (ช่วง/ขีด) — ขาเดียวกันเท่านั้น
+  if (vd.legTexts && Array.isArray(doc.legs) && doc.legs.length === vd.legTexts.length && vd.legTexts.every((t, i) => t == null || (doc.legs[i] && doc.legs[i].role === 'context'))) x.legTexts = vd.legTexts;
   if (vd.legValues && Array.isArray(doc.legs) && doc.legs.length === vd.legValues.length
     && doc.legs.every((l, i) => !fresh.legs[i] || l.method === fresh.legs[i].method)) x.legValues = vd.legValues;
   let metrics = doc.metrics;
@@ -80,6 +82,12 @@ function graftOf(existing, fresh) {
     x.driverTotal = true;
     const { baseOverride, ...rest } = scenarios;
     scenarios = fresh.scenarios.baseOverride ? { ...rest, baseOverride: fresh.scenarios.baseOverride } : rest;
+  }
+  // display-fix2: เซลล์หมวด 6 ของผู้เขียน — ฉากต้องเป็นของ fresh (growth/ตัวคูณที่ไม่มี · ไม่มีฐานที่ถอดกลับ · หัว §6 ทั้งท่อน)
+  if (vd.s6 && fresh.scenarios) {
+    x.s6 = vd.s6;
+    if (vd.noBase) x.noBase = true;
+    scenarios = { ...fresh.scenarios, cases: fresh.scenarios.cases.map((c, i) => ({ ...c, desc: (doc.scenarios.cases[i] || {}).desc != null ? doc.scenarios.cases[i].desc : c.desc })), note: doc.scenarios.note };
   }
   if (!Object.keys(x).length) return null;
   return { ...doc, metrics, scenarios, v2Display: x };

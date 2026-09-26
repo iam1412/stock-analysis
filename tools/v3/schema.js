@@ -472,7 +472,10 @@ function validate(doc) {
       const p = `scenarios.cases[${i}]`;
       if (!isObj(c)) return E(p, 'ต้องเป็น object');
       closed(c, p, ['growth', 'exitMultiple', 'divCum', 'desc', 'retNote']);
-      num(c.growth, `${p}.growth`); num(c.exitMultiple, `${p}.exitMultiple`, { gt: 0 }); str(c.desc, `${p}.desc`, { req: !isMigrated(doc) });
+      // v2Display.s6[i] (ใบ migrate · display-fix2): คอลัมน์ที่พกเซลล์ของผู้เขียน — growth ไม่มีได้เมื่อพกหัวคอลัมน์ + แถว · exitMultiple ไม่มีได้เมื่อพกแถว (เป้า = v2Display.targets[i])
+      const cell = s6CellOf(doc, i);
+      if (!(c.growth == null && cell && cell.head != null && cell.rows != null)) num(c.growth, `${p}.growth`);
+      if (!(c.exitMultiple == null && cell && cell.rows != null)) num(c.exitMultiple, `${p}.exitMultiple`, { gt: 0 }); str(c.desc, `${p}.desc`, { req: !isMigrated(doc) });
       str(c.retNote, `${p}.retNote`, { req: false }); noTag(c.retNote, `${p}.retNote`);
       // divCum = ปันผลสะสมต่อหุ้นถึงจุดออก — บังคับเมื่อ divIncluded=true (นับรวมใน total%)
       // ยอมให้มี (optional, informational) เมื่อ divIncluded=false ด้วย — คลัง v2 จริง 423/1097 ใบเก็บเลขนี้ไว้
@@ -599,8 +602,16 @@ function validate(doc) {
 }
 
 // v2Display: คีย์ของเกจที่อ้างค่าของ view ได้ (ชื่อ token ของ v2 — render พิมพ์เป็น {{rd:<ref>}})
-const GAUGE_REFS = ['mos30', 'mos20', 'fv', 'fvLow', 'fvHigh', 'analystTgt', 'px', 'sc1tgt', 'sc2tgt', 'sc3tgt'];
-const V2DISPLAY_KEYS = ['fv', 'fvRange', 'legValues', 'targets', 'driverEnds', 'driverTotal', 'gauge', 'cards', 'rets', 'footer'];
+//   hi52w/lo52w (display-fix2 · controller 26 ก.ย. 69): สูงสุด/ต่ำสุด 52 สัปดาห์ = ค่าตลาด → อ่านสดจาก market.range52w เสมอ (ห้ามแช่เป็น text)
+const GAUGE_REFS = ['mos30', 'mos20', 'fv', 'fvLow', 'fvHigh', 'analystTgt', 'px', 'sc1tgt', 'sc2tgt', 'sc3tgt', 'hi52w', 'lo52w'];
+const V2DISPLAY_KEYS = ['fv', 'fvRange', 'legValues', 'legTexts', 'targets', 's6', 'noBase', 'driverEnds', 'driverTotal', 'gauge', 'cards', 'rets', 'footer'];
+// แถวของเซลล์หมวด 6 ที่ผูกราคา — ผลตอบแทน/ส่วนต่าง/ราคาตลาด/ตัวคูณปัจจุบัน (คิดสดจากเป้าเสมอ ห้ามแช่)
+const S6_PRICE_RE = /ผลตอบแทน|\breturns?\b|upside|downside|\bMOS\b|ส่วนต่าง|ราคา\s*(?:ปัจจุบัน|ตลาด|ล่าสุด)|market\s*(?:cap|price)|มูลค่าตลาด|ปัจจุบัน|\bcurrent\b|52/i;
+// เซลล์ s6 ของคอลัมน์ i (ใบ migrate เท่านั้น) — null เมื่อไม่มี
+const s6CellOf = (doc, i) => (isMigrated(doc) && isObj(doc.v2Display) && Array.isArray(doc.v2Display.s6) && isObj(doc.v2Display.s6[i]) ? doc.v2Display.s6[i] : null);
+// ป้ายเกจแบบ text ที่เป็นค่าตลาด (ราคา · สูงสุด/ต่ำสุด 52 สัปดาห์ · ATH) — ค่าเหล่านี้เปลี่ยนทุกวัน ⇒ ห้ามพกใน v2Display (display-fix2)
+//   ใช้ ref แทน: px · hi52w · lo52w · ป้ายที่ผู้เขียนคิดจาก FV/เป้า (MOS 30% · เป้าสูงสุด Analyst · กรอบบน FV) = สมมติฐานของผู้เขียน พกได้
+const MARKET_TICK_RE = /52|สัปดาห์|\bweeks?\b|\bwk\b|\bATH\b|all[- ]?time|ราคา\s*(?:ปัจจุบัน|ตลาด|ล่าสุด|ปิด)|ปิดล่าสุด|\b(?:current|last|market|closing)\s+price\b|^\s*(?:ราคา|price|px)\s*$/i;
 // การ์ดที่ค่าเป็นฟังก์ชันของราคา — v2Display.cards ของคีย์เหล่านี้ต้องคิดสด (op/base) เท่านั้น
 const V2DISPLAY_PRICE_CARDS = ['mcap', 'pe', 'pbv', 'ps', 'yield', 'evEbitda', 'peForward', 'analystTarget', 'pffo', 'pffoForward', 'ptbv'];
 function validateV2Display(doc, E, closed, num, plain, en) {
@@ -623,10 +634,54 @@ function validateV2Display(doc, E, closed, num, plain, en) {
     if (a == null) return;
     if (!Array.isArray(a) || a.length !== n) return E(`${P0}.${k}`, `ต้องเป็น array ยาว ${n}`);
     if (!a.some((v) => v != null)) E(`${P0}.${k}`, 'ทุกช่องเป็น null — ลบออก');
-    a.forEach((v, i) => { if (v != null && !ok(v)) E(`${P0}.${k}[${i}]`, what); });
+    a.forEach((v, i) => { if (v != null && !ok(v, i)) E(`${P0}.${k}[${i}]`, typeof what === 'function' ? what(i) : what); });
   };
-  arr('legValues', Array.isArray(doc.legs) ? doc.legs.length : -1, (v) => isNum(v) && v > 0, 'ต้องเป็น null หรือตัวเลข > 0 (ค่าขาที่หน้า v2 พิมพ์)');
+  const legs = Array.isArray(doc.legs) ? doc.legs : [];
+  const isCtx = (i) => isObj(legs[i]) && legs[i].role === 'context';
+  // ค่าขา: ขา fv ต้อง > 0 (FV คิดจากขา fv) · ขา context (ไม่นับใน FV — compute ไม่ใช้ในคณิต FV) ติดลบได้ตามที่หน้า v2 พิมพ์ (CRWV "−$135")
+  arr('legValues', Array.isArray(doc.legs) ? doc.legs.length : -1, (v, i) => isNum(v) && (v > 0 || (isCtx(i) && v !== 0)),
+    (i) => (isCtx(i) ? 'ต้องเป็น null หรือตัวเลข ≠ 0 (ค่าขา context ที่หน้า v2 พิมพ์)' : 'ต้องเป็น null หรือตัวเลข > 0 (ค่าขาที่หน้า v2 พิมพ์)'));
+  // legTexts: ค่าขา context ที่หน้า v2 พิมพ์เป็นข้อความ (ช่วง/ติดลบ — CRWV "−$135 ถึง −$35") · ขา fv ห้าม (ค่าขา fv คือตัวเลขที่ FV ใช้)
+  arr('legTexts', legs.length || -1, (v, i) => isCtx(i) && typeof v === 'string' && (/[0-9]/.test(v) || /^(?:—|–|-|n\/a|N\/A)$/.test(v)) && !/[{}<>]/.test(v) && v.trim() === v && v.length <= 60,
+    (i) => (isCtx(i) ? 'ต้องเป็น null หรือข้อความที่หน้า v2 พิมพ์ (มีตัวเลข หรือ "—" · ≤ 60 ตัวอักษร · ห้ามมี { } < > · ไม่มีช่องว่างหัวท้าย)' : 'ใช้ได้เฉพาะขา role:"context" — ค่าขา fv ต้องเป็นตัวเลข (legValues)'));
+  if (Array.isArray(x.legTexts) && Array.isArray(x.legValues)) x.legTexts.forEach((t, i) => { if (t != null && x.legValues[i] != null) E(`${P0}.legValues[${i}]`, 'ขานี้พิมพ์เป็นข้อความ (legTexts) แล้ว — ลบค่าตัวเลขออก'); });
   arr('targets', 3, (v) => isNum(v) && v > 0, 'ต้องเป็น null หรือตัวเลข > 0 (ราคาเป้าฉากที่หน้า v2 พิมพ์)');
+  // s6 (display-fix2 · controller 26 ก.ย. 69 — ฉากที่ template "ฐานเดียว × (1+g)^ปี" พิมพ์ไม่ได้: หัวข้อความ · ทางเดินหลายขั้น · ฐานต่างกันต่อคอลัมน์ ·
+  //   driver ต่างกันต่อคอลัมน์ · เซลล์ตัวคูณมีหมายเหตุ · แถวปันผลของผู้เขียน) = เซลล์ที่หน้า v2 พิมพ์ต่อคอลัมน์ {head?, rows?: [[ป้าย, ค่า]…]}
+  //   สมมติฐานของผู้เขียนเท่านั้น — ห้ามแถวผูกราคา (ผลตอบแทน/MOS/ราคาปัจจุบัน…) · เป้า = targets[i] (ตัวเลข — ผลตอบแทนคิดสดจากเป้านี้)
+  if (x.s6 != null) {
+    if (!Array.isArray(x.s6) || x.s6.length !== 3) E(`${P0}.s6`, 'ต้องเป็น array ยาว 3 (Bear/Base/Bull · null = คอลัมน์ของ template)');
+    else {
+      if (!x.s6.some((c) => c != null)) E(`${P0}.s6`, 'ทุกช่องเป็น null — ลบออก');
+      const txt = (v, p, max) => { if (typeof v !== 'string' || !v.trim() || v.trim() !== v || v.length > max || /[{}<>]/.test(v)) E(p, `ต้องเป็นข้อความที่หน้า v2 พิมพ์ (≤ ${max} ตัวอักษร · ห้าม { } < > · ไม่มีช่องว่างหัวท้าย)`); };
+      x.s6.forEach((c, i) => {
+        if (c == null) return;
+        const p = `${P0}.s6[${i}]`;
+        if (!isObj(c)) return E(p, 'ต้องเป็น {head?, rows?} หรือ null');
+        closed(c, p, ['head', 'rows']);
+        if (c.head == null && c.rows == null) E(p, 'ต้องมี head หรือ rows');
+        if (c.head != null) txt(c.head, `${p}.head`, 80);
+        if (c.rows != null) {
+          if (!Array.isArray(c.rows) || c.rows.length < 1 || c.rows.length > 5) E(`${p}.rows`, 'ต้องเป็น array 1–5 แถว [ป้าย, ค่า]');
+          else c.rows.forEach((r, j) => {
+            const rp = `${p}.rows[${j}]`;
+            if (!Array.isArray(r) || r.length !== 2) return E(rp, 'ต้องเป็น [ป้าย, ค่า]');
+            txt(r[0], `${rp}[0]`, 60); txt(r[1], `${rp}[1]`, 80);
+            if (/สถานการณ์/.test(String(r[0]))) E(`${rp}[0]`, 'แถว "สถานการณ์" มาจาก scenarios.cases[i].desc — ไม่พกซ้ำ');
+            if (S6_PRICE_RE.test(String(r[0]))) E(`${rp}[0]`, 'แถวผูกราคา (ผลตอบแทน/MOS/ราคาตลาด) ห้ามแช่ใน v2Display — คิดสดจากเป้า');
+          });
+        }
+        if (!(Array.isArray(x.targets) && isNum(x.targets[i]) && x.targets[i] > 0)) E(`${P0}.targets[${i}]`, `คอลัมน์ที่พกเซลล์ (s6[${i}]) ต้องมีราคาเป้าของผู้เขียน (ตัวเลข) — ผลตอบแทนคิดสดจากค่านี้`);
+      });
+    }
+  }
+  // noBase: ผู้เขียนไม่ได้ใช้ฐานเดียว (AMZN/BAM ฐานต่อคอลัมน์ · ทางเดินหลายขั้น) ⇒ หัว §6 ไม่พิมพ์ "<driver> ฐาน ~ค่า" ของ template (ฐานที่ถอดกลับไม่ใช่ตัวเลขของผู้เขียน)
+  //   — คำผู้เขียนทั้งท่อนอยู่ใน scenarios.hintNote · ต้องพกแถวของผู้เขียนครบ 3 คอลัมน์ (ไม่มีแถวไหนคิดจากฐาน) และไม่มี baseOverride
+  if (x.noBase != null) {
+    if (x.noBase !== true) E(`${P0}.noBase`, 'ต้องเป็น true (หรือลบออก)');
+    else if (!(Array.isArray(x.s6) && x.s6.every((c) => isObj(c) && c.rows != null))) E(`${P0}.noBase`, 'ต้องพกแถวของผู้เขียนครบ 3 คอลัมน์ (s6[i].rows)');
+    else if (isObj(doc.scenarios) && doc.scenarios.baseOverride != null) E(`${P0}.noBase`, 'มี scenarios.baseOverride (ฐานของผู้เขียน) — ลบ noBase หรือ baseOverride');
+  }
   arr('driverEnds', 3, (v) => typeof v === 'string' && v.trim() && !/[{}<>]/.test(v), 'ต้องเป็น null หรือข้อความที่หน้า v2 พิมพ์ในแถวตัวตั้งปลายฉาก (เช่น "~$38.75B") — ห้ามมี { } < >');
   // footer: วันที่ "ข้อมูล ณ …" ตามที่หน้า v2 พิมพ์ (ศักราช/วงเล็บของผู้เขียน เช่น "21 ก.ย. 2569 (2026)") — ต้องมีเลขปี
   if (x.footer != null) { if (typeof x.footer !== 'string' || !/\d{4}/.test(x.footer)) E(`${P0}.footer`, 'ต้องเป็นข้อความวันที่ที่มีเลขปี'); else plain(x.footer, `${P0}.footer`); }
@@ -638,7 +693,11 @@ function validateV2Display(doc, E, closed, num, plain, en) {
       closed(t, p, ['ref', 'text', 'label']);
       if ((t.ref != null) === (t.text != null)) E(p, 'ต้องมี ref หรือ text อย่างใดอย่างหนึ่ง');
       if (t.ref != null) en(t.ref, `${p}.ref`, GAUGE_REFS);
+      if ((t.ref === 'hi52w' || t.ref === 'lo52w') && !(isObj(doc.market) && isObj(doc.market.range52w))) E(`${p}.ref`, `${t.ref} อ่านจาก market.range52w — ใบนี้ไม่มี`);
       if (t.text != null) { if (typeof t.text !== 'string' || !t.text.trim()) E(`${p}.text`, 'ต้องเป็นข้อความ'); plain(t.text, `${p}.text`); }
+      // ค่าตลาด (ราคา · 52 สัปดาห์ · ATH) ห้ามแช่เป็นข้อความ — เปลี่ยนทุกวัน · ใช้ ref px / hi52w / lo52w (อ่านสด)
+      if (t.text != null && (MARKET_TICK_RE.test(String(t.label || '')) || MARKET_TICK_RE.test(String(t.text).replace(/[0-9][0-9,]*(?:\.[0-9]+)?/g, ''))))
+        E(`${p}.text`, `ป้ายเกจเป็นค่าตลาด ("${t.label}") — ห้ามพกค่าคงที่ใน v2Display · ใช้ ref: px (ราคา) · hi52w/lo52w (สูงสุด/ต่ำสุด 52 สัปดาห์ จาก market.range52w)`);
       if (typeof t.label !== 'string') E(`${p}.label`, 'ต้องเป็นข้อความ (ว่างได้)'); else plain(t.label, `${p}.label`);
     });
   }
@@ -693,4 +752,4 @@ function OWNER(path) {
   return 'worker';
 }
 
-module.exports = { GAUGE_REFS, V2DISPLAY_KEYS, V2DISPLAY_PRICE_CARDS, ENUM, FFO_LABEL, CARD_KEYS, FUND_KEYS, FY_KEYS, BANK_KEYS, LEG_INPUTS, CURRENT_BASE, requiredFamily, OVERRIDE_KEYS, THEME_KEYS, TEXT_KEYS, cardEntries, customCap, CUSTOM_CAP, CUSTOM_CAP_MIGRATED, isMigrated, SOURCES_MIN, SOURCES_MIN_MIGRATED, validate, OWNER, RD_TOKEN, TODO_RE, stringLeaves };
+module.exports = { GAUGE_REFS, MARKET_TICK_RE, S6_PRICE_RE, s6CellOf, V2DISPLAY_KEYS, V2DISPLAY_PRICE_CARDS, ENUM, FFO_LABEL, CARD_KEYS, FUND_KEYS, FY_KEYS, BANK_KEYS, LEG_INPUTS, CURRENT_BASE, requiredFamily, OVERRIDE_KEYS, THEME_KEYS, TEXT_KEYS, cardEntries, customCap, CUSTOM_CAP, CUSTOM_CAP_MIGRATED, isMigrated, SOURCES_MIN, SOURCES_MIN_MIGRATED, validate, OWNER, RD_TOKEN, TODO_RE, stringLeaves };

@@ -63,6 +63,12 @@ function withBase(leg, f, path) {
 const legValueOf = (leg, f, path) => L.legValue(withBase(leg, f, path), f, path);
 // ตัวตั้งปลายฉาก — compute() และ semanticErrors() ใช้สูตรเดียวกัน
 const driverEndOf = (start, c, s) => start * Math.pow(1 + c.growth / 100, s.years);
+// v2Display.s6 (ใบ migrate · display-fix2): คอลัมน์ที่พกเซลล์ของผู้เขียน — เป้า = v2Display.targets[i] (schema บังคับ) · ไม่คิดตัวตั้ง/เป้าจากสูตร
+//   ทุกคอลัมน์พกแถวของผู้เขียน + ไม่มี baseOverride = ไม่มีอะไรใช้ฐาน ⇒ start = null (ไม่ถอดฐานกลับ — ตัวเลขที่ผู้เขียนไม่ได้พิมพ์) · หัว §6 = คำของผู้เขียน (hintNote)
+const cellOf = (doc, i) => S.s6CellOf(doc, i);
+const noBase = (doc) => { const vd = v2DisplayOf(doc); return !!(vd && vd.noBase === true); };   // schema: แถวครบ 3 คอลัมน์ + ไม่มี baseOverride
+const scnStart = (doc, f) => (noBase(doc) ? null : driverStart(doc, f));
+const endAt = (start, c, s) => (start != null && typeof c.growth === 'number' ? driverEndOf(start, c, s) : null);
 
 function themeOf(doc, seeds, dir) {
   let base;
@@ -146,13 +152,15 @@ function compute(doc, opts) {
     if (vd.fvRange) [fvLow, fvHigh] = vd.fvRange;
     // ค่าขาที่พิมพ์ (.mval · {{legN}}) — FV/กรอบข้างบนคิดจากค่าที่คำนวณแล้ว · computed = ค่าจาก inputs (ไว้ตรวจ/อ้างอิง)
     if (vd.legValues) legs.forEach((l, i) => { if (vd.legValues[i] != null) { l.computed = l.value; l.value = vd.legValues[i]; } });
+    // ค่าขา context ที่หน้า v2 พิมพ์เป็นข้อความ (ช่วง/ติดลบ — display-fix2 · CRWV) → .mval / {{legN}} พิมพ์ข้อความนี้ (schema: ขา context เท่านั้น)
+    if (vd.legTexts) legs.forEach((l, i) => { if (vd.legTexts[i] != null) l.text = vd.legTexts[i]; });
   }
 
   // ── scenarios ──
-  const start = driverStart(doc, fq);
+  const start = scnStart(doc, fq);
   const scn = s.cases.map((c, i) => {
-    const end = driverEndOf(start, c, s);
-    let tgt = exitTarget(s, end, c.exitMultiple, fq, i);
+    const end = endAt(start, c, s);
+    let tgt = cellOf(doc, i) ? vd.targets[i] : exitTarget(s, end, c.exitMultiple, fq, i);
     if (vd && vd.targets && vd.targets[i] != null) tgt = vd.targets[i];
     // divCum: เก็บผ่านเสมอเมื่อ author ให้มา (informational แม้ divIncluded=false — schema อนุญาต) · total% ตัดสินด้วย scnBasis.divIncluded ใน derive() v2 อยู่แล้ว ไม่ใช่ตรงนี้
     return { name: SCN_NAMES[i], growth: c.growth, exitMultiple: c.exitMultiple, driverStart: start, driverEnd: end, tgt, divCum: c.divCum == null ? null : c.divCum, desc: c.desc };
@@ -166,7 +174,7 @@ function compute(doc, opts) {
   if (fq.revenue != null && fq.revenue > 0) values.revenue = fq.revenue;
   if (f.dps != null && f.dps >= 0) values.dps = f.dps;
   if (f.bvps != null && f.bvps > 0) values.bvps = f.bvps;
-  if (s.driver === 'eps') values.baseEps = start;
+  if (s.driver === 'eps' && start != null) values.baseEps = start;
   values.scenarios = scn.map((x) => (x.divCum == null ? { tgt: round2(x.tgt) } : { tgt: round2(x.tgt), div: round2(x.divCum) }));
   values.scnBasis = { years: s.years, divIncluded: s.divIncluded, perYear: s.perYear };
 
@@ -222,9 +230,10 @@ function semanticErrors(doc, opts) {
   });
   // exitTarget ทีละฉากด้วยตัวตั้งปลายฉากจริง · driverStart throw = รายงานแล้วบน scenarios.driver → ข้าม · error ซ้ำ (shares ขาด ทั้ง 3 ฉาก) รายงานครั้งเดียว
   try {
-    const s = doc.scenarios, start = driverStart(doc, fq);
+    const s = doc.scenarios, start = scnStart(doc, fq);
     s.cases.forEach((c, i) => {
-      try { exitTarget(s, driverEndOf(start, c, s), c.exitMultiple, fq, i); } catch (e) {
+      if (cellOf(doc, i)) return;   // เป้าของผู้เขียน (v2Display.targets) — ไม่คิดจากสูตร
+      try { exitTarget(s, endAt(start, c, s), c.exitMultiple, fq, i); } catch (e) {
         const x = splitErr(e, `scenarios.cases[${i}].exitMultiple`);
         if (!out.some((o) => o.path === x.path && o.msg === x.msg)) out.push(x);
       }
@@ -234,4 +243,4 @@ function semanticErrors(doc, opts) {
   return out;
 }
 
-module.exports = { v2DisplayOf, compute, semanticErrors, weightsOf, toQuote, SCN_NAMES, withBase, legValueOf };
+module.exports = { v2DisplayOf, cellOf, compute, semanticErrors, weightsOf, toQuote, SCN_NAMES, withBase, legValueOf };

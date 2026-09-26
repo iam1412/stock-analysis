@@ -242,6 +242,22 @@ expect('E22', 'error', mutMval(iPBV, numStr(C.methods[iPBV].val * 1.4)), 'วิ
 // ★ 23 ก.ย. 69: ctx.pxInput ของ v2 = dv.px (JSON) เช่นกัน ไม่อ่าน #pxIn ที่ render แล้ว → v1Base
 expect('E23', 'error', mut3(/(id="pxIn"[^>]*value=")([0-9.]+)(")/, numStr(PX * 3)), 'ราคา header ≠ ค่าตั้งต้นเครื่องคิดเลข', v1Base);
 expect('E24', 'error', mut3(/(EPS ปี 3<\/span>\s*<span>~?\s*[฿$]?)([0-9.,]+)(<\/span>)/, numStr(C.scenarios[0].eps * 2)), 'EPS ปี3 ไม่ตรงการทบต้น (1+g)³');
+// display-fix2: E24 ของใบ v3 migrate ที่พกเซลล์หมวด 6 ของผู้เขียน (check-v3 ส่ง opts.scnCarried = v2Display.targets ของคอลัมน์นั้น)
+//   คอลัมน์ที่พก = ไม่มีสูตรฐานเดียว → เทียบราคาเป้าที่แสดงกับเป้าที่พก · ทาง v2/HTML (ไม่มี opts) = สูตรเดิมเสมอ (ใบ NEW/v2 เลี่ยง E24 ไม่ได้)
+{
+  const e24bad = mut3(/(EPS ปี 3<\/span>\s*<span>~?\s*[฿$]?)([0-9.,]+)(<\/span>)/, numStr(C.scenarios[0].eps * 2))(base);
+  const T0 = C.scenarios[0].tgt;
+  ok(e24bad !== base && T0 != null, 'E24 carried: setup (Bear EPS ปี3 ×2 · เป้า Bear อ่านได้)');
+  const plain = errIds(checkHtml(e24bad, 'BBL.html', { source: DEFAULT_SOURCE }));
+  ok(plain.has('E24'), 'E24 carried: ไม่มี opts.scnCarried (ใบ NEW/v2) → สูตรฐานเดียวยังจับ EPS ปี3 ผิดการทบต้น');
+  const carried = errIds(checkHtml(e24bad, 'BBL.html', { source: DEFAULT_SOURCE, scnCarried: [T0, null, null] }));
+  ok(!carried.has('E24'), 'E24 carried: คอลัมน์ Bear พกเซลล์ของผู้เขียน + เป้าที่แสดง = เป้าที่พก → E24 เงียบ (ไม่มีสูตรฐานเดียวของคอลัมน์นั้น)');
+  const wrongT = errIds(checkHtml(base, 'BBL.html', { source: DEFAULT_SOURCE, scnCarried: [T0 * 1.2, null, null] }));
+  ok(wrongT.has('E24'), 'E24 carried: เป้าที่แสดง ≠ เป้าที่พก (v2Display.targets) → E24 ยิง');
+  const other = errIds(checkHtml(mut3(/(EPS ปี 3<\/span>\s*<span>~?\s*[฿$]?)([0-9.,]+)(<\/span>)/, numStr(C.scenarios[0].eps * 2))(base), 'BBL.html', { source: DEFAULT_SOURCE, scnCarried: [null, C.scenarios[1].tgt, null] }));
+  ok(other.has('E24'), 'E24 carried: พกเฉพาะคอลัมน์ Base → Bear ที่ผิดการทบต้นยังโดนสูตรเดิม');
+  ok(errIds(checkHtml(e24bad, 'BBL.html', { source: DEFAULT_SOURCE, scnCarried: [T0, null] })).has('E24'), 'E24 carried: scnCarried รูปผิด (ไม่ยาว 3) = ไม่นับ → สูตรเดิมยังจับ');
+}
 expect('E25', 'error', mutSlice('class="vgrid"', /(มูลค่าเหมาะสม<\/div>\s*<div class="v">\s*[฿$]?)([0-9.,]+)/, `$1${numStr(FV * 1.3)}`), 'FV ในสรุป ≠ FV ในกล่อง');
 expect('E26', 'error', mut3(/([฿$])([0-9.,]+)(<br>\s*<small>MOS 20%)/, numStr(FV)), 'gauge scale MOS20 ≠ FV×0.8');
 // ── W06 (ระยะ 1 ข้อ D): ช่องสรุป "ส่วนต่างจากราคา" = คลังคำคงที่ "MOS ~ ±X%" ที่ cron เขียนทั้งช่อง · X อ่านจาก .big ตรง ๆ ──

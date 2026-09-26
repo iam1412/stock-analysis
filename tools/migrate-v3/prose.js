@@ -65,8 +65,10 @@ function tokenise(text, view, hits, field, opts) {
   const where = field || 'text';
   // (b) ป้ายเป็นเจ้าของเลข (E44) — แทนเฉพาะเมื่อตัวเลขที่ render เท่ากับที่ผู้เขียนพิมพ์ (display-fix · เจ้าของ 26 ก.ย. 69:
   //     หน้า v3 ต้องแสดงสิ่งที่หน้า v2 แสดง — เดิมแทนแม้ค่าต่าง ⇒ A "+11.8%" กลายเป็น "+1.3%") · ค่าต่าง = คง literal ของผู้เขียน + จด F
+  const only = opts && opts.only;   // display-fix2: ชุด token ที่ยอมให้แทนในช่องนี้ (prose.disclaimerSources = เฉพาะตัวเลขของผู้เขียน/analyst — ไม่ใช่ราคา/วันที่)
   for (const h of hits || []) {
     const name = V2_TO_V3[h.token] || h.token;
+    if (only && !only.has(name)) continue;
     const shown = shownOf(name, view);
     if (shown == null) continue;   // token ที่ไม่มีใน TOKENS_V3 / ไม่มีค่า = ข้าม (ไม่จด D)
     // ใบที่วิเคราะห์ตั้งแต่ RV.PROSE_TOKEN_SINCE (opts.e44): literal ผูกราคาใน prose ผิดกติกา E44 อยู่แล้ว (ต้องเป็น token) — ค่าต่าง = literal ค้าง
@@ -89,7 +91,7 @@ function tokenise(text, view, hits, field, opts) {
   for (const [token, kind] of [['eps', 'money'], ['dps', 'money'], ['bvps', 'money'], ['epsFy', 'money']]) {
     const sh = shownOf(token, view); if (sh != null) cands.push({ token, kind, shown: sh });
   }
-  const usable = cands.filter((c) => TK.TOKENS_V3[c.token] && c.shown != null && /\d\.\d/.test(c.shown));
+  const usable = cands.filter((c) => TK.TOKENS_V3[c.token] && c.shown != null && /\d\.\d/.test(c.shown) && (!only || only.has(c.token)));
   let changed = true;
   while (changed) {
     changed = false;

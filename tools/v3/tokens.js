@@ -24,7 +24,8 @@ const perShare = (view, v) => view.d.cur + RV.fmtPerShare(v);
 const TOKENS_V3 = {};
 for (const [v3, v2] of Object.entries(V2_TWIN)) TOKENS_V3[v3] = (view) => String(RV.TOKENS[v2](view.d));
 for (let i = 1; i <= 4; i++) {
-  TOKENS_V3[`leg${i}`] = (view) => money(view, need(view.legs && view.legs[i - 1], `leg${i}`).value);
+  // ขา context ใบ migrate (display-fix2): ข้อความที่หน้า v2 พิมพ์ (l.text — ช่วง/ติดลบ) · ค่าติดลบ = "−$135.00" (ขา fv > 0 เสมอ — ทางเดิมทุก byte)
+  TOKENS_V3[`leg${i}`] = (view) => { const l = need(view.legs && view.legs[i - 1], `leg${i}`); return l.text != null ? l.text : (l.value < 0 ? '−' : '') + money(view, Math.abs(l.value)); };
   // ขา context 'current' (R7) ไม่มี inputs.multiple — ใช้ตัวคูณสดที่ compute คิดไว้ (liveMultiple = ราคา ÷ ตัวตั้ง) ตัวเดียวกับ mdesc/ค่าขา
   TOKENS_V3[`leg${i}.multiple`] = (view) => { const l = need(view.legs && view.legs[i - 1], `leg${i}`);
     return need(l.liveMultiple != null ? l.liveMultiple : l.inputs.multiple, `leg${i}.multiple`).toFixed(1) + 'x'; };
