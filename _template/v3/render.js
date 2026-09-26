@@ -193,17 +193,21 @@ function v2Ret(rets, i, view) {
   return out;
 }
 
-// แถวผลตอบแทนของผู้เขียนในเซลล์ §6 (v2Display.s6[i].rows[j][2] — 27 ก.ย. 69): ตัวเลข % ตัวเดียวคิดสดที่ราคาปัจจุบัน ('tot' รวม · 'py' ต่อปี CAGR/linear ตาม scenarios.perYear)
+// แถวผลตอบแทนของผู้เขียนในเซลล์ §6 (v2Display.s6[i].rows[j][2] — 27 ก.ย. 69): ตัวเลข % ตัวเดียวคิดสดที่ราคาปัจจุบัน ('tot' รวม · 'py' ต่อปี CAGR/linear ตาม scenarios.perYear · 'div' ปันผลรวม ÷ ราคา)
 //   ทศนิยม · เครื่องหมาย + · ขีดลบ (− หรือ -) ตามที่ผู้เขียนพิมพ์
 function liveRowRet(text, kind, i, view) {
   const sc = view.d && view.d.scenarios && view.d.scenarios[i];
   if (!sc) return text;
   const years = view.doc.scenarios.years;
-  const want = kind === 'tot' ? sc.total : sc.perYear != null ? sc.perYear
+  // 'div' (review I-3 · KMB "ปันผลรวม 3 ปี ~$15.36 (+15.7%)"): ปันผลรวมของฉาก ÷ ราคาปัจจุบัน
+  if (kind === 'div' && !(sc.div > 0 && view.d.px > 0)) return text;
+  const want = kind === 'div' ? sc.div / view.d.px * 100 : kind === 'tot' ? sc.total : sc.perYear != null ? sc.perYear
     : view.doc.scenarios.perYear === 'linear' ? sc.total / years : (Math.pow(1 + sc.total / 100, 1 / years) - 1) * 100;
-  return String(text).replace(/([+\-−–]?)\s*([0-9][0-9,]*(?:\.([0-9]+))?)(\s*%)/, (m, sg, n, dec, pct) => {
+  // ช่องว่างก่อนตัวเลขคงไว้ (review M-9: "ราคา 10%" ไม่มีเครื่องหมาย → เดิมกลืนช่องว่าง "ราคา7.3%") · ไม่มีเครื่องหมาย = เครื่องหมายใหม่วางหลังช่องว่าง
+  return String(text).replace(/([+\-−–]?)(\s*)([0-9][0-9,]*(?:\.([0-9]+))?)(\s*%)/, (m, sg, ws, n, dec, pct) => {
     const r = Math.abs(want).toFixed(dec ? dec.length : 0), neg = want < 0 && +r !== 0;
-    return (neg ? (sg === '-' ? '-' : '−') : sg === '+' || !sg ? (sg ? '+' : '') : '+') + r + pct;
+    const sign = neg ? (sg === '-' ? '-' : '−') : sg === '+' || !sg ? (sg ? '+' : '') : '+';
+    return (sg ? sign + ws : ws + sign) + r + pct;
   });
 }
 

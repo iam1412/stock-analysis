@@ -46,6 +46,16 @@ function sanitizeErrors(str) {
     seen.add(name);
     out.push(`แท็กไม่อนุญาต <${name}> — ใช้ได้แค่ <b> <i> <br> หรือ **ตัวหนา**`);
   }
+  // review M-2: <b>/<i> ต้องเปิด-ปิดครบและซ้อนถูก — ไม่ปิด = ตัวหนา/เอียงล้นไปทั้งหมวดถัดไป (เบราว์เซอร์สร้าง formatting element ต่อ)
+  const stack = [];
+  let bad2 = null;
+  for (const m of String(str).matchAll(/<(\/?)(b|i)\s*>/gi)) {
+    const nm = m[2].toLowerCase();
+    if (!m[1]) stack.push(nm);
+    else if (stack[stack.length - 1] === nm) stack.pop();
+    else { bad2 = `</${nm}>`; break; }
+  }
+  if (bad2 || stack.length) out.push(`แท็ก <b>/<i> ไม่สมดุล (${bad2 ? `ปิด ${bad2} โดยไม่ได้เปิด/ซ้อนผิด` : `ไม่ได้ปิด <${stack[stack.length - 1]}>`}) — ต้องเปิด-ปิดครบในช่องเดียวกัน`);
   return out;
 }
 
@@ -68,6 +78,9 @@ function proseFields(doc) {
   arr(obj(doc.v2Display).textLegs).forEach((t, i) => add(`v2Display.textLegs[${i}].desc`, obj(t).desc));
   arr(obj(doc.v2Display).vcells).forEach((c, i) => add(`v2Display.vcells[${i}].v`, obj(c).v));
   arr(obj(doc.v2Display).legend).forEach((c, i) => add(`v2Display.legend[${i}].text`, obj(c).text));
+  // เซลล์ §6 ของผู้เขียน (review I-3): หัวคอลัมน์ + แถว [ป้าย, ค่า] — ให้กติกา B / W31 เห็นตัวเลขที่พกตามตัว (ค่าของแถวคิดสด [.., 'tot'|'py'|'div'] render สด — ไม่นับ)
+  arr(obj(doc.v2Display).s6).forEach((c, i) => { add(`v2Display.s6[${i}].head`, obj(c).head);
+    arr(obj(c).rows).forEach((r, j) => { if (Array.isArray(r)) { add(`v2Display.s6[${i}].rows[${j}][0]`, r[0]); if (r.length === 2) add(`v2Display.s6[${i}].rows[${j}][1]`, r[1]); } }); });
   add('v2Display.markers.cur', obj(obj(doc.v2Display).markers).cur); add('v2Display.markers.fair', obj(obj(doc.v2Display).markers).fair);
   arr(obj(doc.v2Display).blocks).forEach((b, i) => arr(obj(b).parts).forEach((pt, j) => {
     add(`v2Display.blocks[${i}].parts[${j}].text`, obj(pt).text);

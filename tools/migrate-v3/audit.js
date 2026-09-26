@@ -8,6 +8,8 @@
  *       ⇒ ค่าที่ผูกราคาต้องเทียบที่ราคาเดียวกัน) · sanity ตรวจบนหน้า v3 ที่เว็บแสดงจริง (market ปัจจุบันของใบ)
  *   valueDiffs = EQ numberValue ที่ไม่ใช่ "ย้ายที่ในโซนเดียวกัน" และเกิน 1 หน่วยที่ v2 พิมพ์ (ค่าที่แสดงต่างจริง — ต้องเป็น 0)
  *   roundingDiffs = numberRounding + numberValue ที่ ≤ 1 หน่วยของหลักสุดท้ายที่ v2 พิมพ์ (drift ที่เจ้าของยอมรับ · แสดงรายการ)
+ *   perturb = gate ของใบที่ราคาอื่น (×0.8 · ×1.25 — remigrate.gateRes ตัวเดียวกับ remigrate/cron): error ใหม่ที่ราคาของใบไม่มี · W31 เพิ่ม (ต้องว่าง)
+ *     — จุดบอดของการเทียบที่ราคา snapshot: ตัวเลขผูกราคาที่แช่เป็น literal เท่าหน้า v2 ที่ราคานั้นเสมอ (review 27 ก.ย. 69)
  *   textLost = คำของผู้เขียนที่หาย + ตัวเลขที่หายไปกับข้อความ (ต้องเป็น 0 — เจ้าของ 27 ก.ย. 69) · sanity = ไม่มี {{…}} · ไม่มี undefined/NaN/null/TODO · ครบ 8 หมวด · ราคา/วันที่ราคา = market
  * อ่านอย่างเดียว: ไม่เขียน reports/ · git ผ่าน env ที่ล้าง GIT_DIR/GIT_WORK_TREE/… (ใต้ hook ก็ชี้ repo ของ reports-dir)
  */
@@ -434,7 +436,23 @@ function auditOne(sym, o) {
   try { src = o.v2Of ? o.v2Of(sym) : v2Source(sym, o.reportsDir); } catch (e) { err = e; }
   return auditDoc(sym, doc, src, o, err);
 }
-const emptyRow = (sym) => ({ symbol: sym, status: 'OK', valueDiffs: 0, roundingDiffs: 0, textLost: 0, sanity: [], values: [], step: [], moved: [], rounding: [], lost: [], rd: [], added: 0, addedList: [], invented: 0, ref: null, error: null, deviations: [] });
+/** gate ที่ราคาอื่นของใบเอง (review 27 ก.ย. 69 · remigrate.gateRes/PERTURB): error id ใหม่ที่ราคา ×1 ไม่มี · W31 (literal เงินค้าง) มากกว่าที่ ×1 → [เหตุ] */
+function perturbOf(doc, o) {
+  const RMG = require('./remigrate.js');
+  const g = { seeds: o.seeds, today: o.today || FD.todayBangkok() };
+  const base = RMG.gateRes(doc, 1, g);
+  const ids0 = new Set(base.errors.map((e) => e.id));
+  const w31 = (r) => { const w = r.warnings.find((x) => x.id === 'W31'); return w ? parseInt(w.msg, 10) || 0 : 0; };
+  const out = [];
+  for (const k of RMG.PERTURB) {
+    const r = RMG.gateRes(doc, k, g);
+    const nw = [...new Set(r.errors.map((e) => e.id))].filter((id) => !ids0.has(id));
+    if (nw.length) out.push(`×${k}: new ${nw.map((id) => `${id} ${String((r.errors.find((e) => e.id === id) || {}).msg || '').slice(0, 80)}`).join(' ; ')}`);
+    if (w31(r) > w31(base)) out.push(`×${k}: W31 ${w31(base)} → ${w31(r)}`);
+  }
+  return out;
+}
+const emptyRow = (sym) => ({ symbol: sym, status: 'OK', valueDiffs: 0, roundingDiffs: 0, textLost: 0, perturb: [], sanity: [], values: [], step: [], moved: [], rounding: [], lost: [], rd: [], added: 0, addedList: [], invented: 0, ref: null, error: null, deviations: [] });
 
 /** doc (ใบ v3 ในหน่วยความจำ) เทียบหน้า v2 src = { raw, ref } → แถวผล · ไม่ throw (remigrate/adopt/convert ใช้ตัวเดียวกับ audit) */
 function auditDoc(sym, doc, src, o, srcErr) {
@@ -472,6 +490,7 @@ function auditDoc(sym, doc, src, o, srcErr) {
     row.lost = eq.textLostAt || eq.textLost.map((w) => ({ zone: '?', w }));
     row.rd = eq.rd; row.added = eq.numberAdded.length; row.addedList = addedNumbersOf(eq, v2Page, v3At, viewAt, at, steps); row.invented = row.addedList.filter((x) => x.cls === 'invented').length;
     row.valueDiffs = k.value.length; row.roundingDiffs = eq.numberRounding.length + k.step.length + dev.rounding.length; row.textLost = eq.textLost.length;
+    if (!o.noPerturb) row.perturb = perturbOf(doc, o);
   } catch (e) {
     row.error = String(e && e.message || e).split('\n')[0];
     row.sanity.push(`audit error: ${row.error}`);
@@ -482,15 +501,16 @@ function auditDoc(sym, doc, src, o, srcErr) {
   if (row.invented > 0) f.push('INVENTED');
   // เจ้าของ 27 ก.ย. 69: ข้อความของผู้เขียนที่หาย (คำ · ตัวเลขที่หายไปกับข้อความ) = ตก (เดิมเป็นข้อมูลประกอบ)
   if (row.textLost > 0) f.push('TEXT-LOST');
+  if (row.perturb.length) f.push('PERTURB');
   row.status = f.length ? f.join('+') : 'OK';
   return row;
 }
 
 const csvCell = (s) => { const t = String(s == null ? '' : s); return /[",\n]/.test(t) ? `"${t.replace(/"/g, '""')}"` : t; };
 function toCsv(rows) {
-  const L = ['symbol,status,valueDiffs,roundingDiffs,textLost,sanity,added,invented,addedList'];
+  const L = ['symbol,status,valueDiffs,roundingDiffs,textLost,sanity,added,invented,addedList,perturb'];
   const addedCell = (r) => (r.addedList || []).map((x) => `${x.cls}:${x.kind}@${x.zone}=${x.v == null ? String(x.ins) : x.v}`).join(' | ');
-  for (const r of rows) L.push([r.symbol, r.status, r.valueDiffs, r.roundingDiffs, r.textLost, r.sanity.join(' | '), (r.addedList || []).length, r.invented || 0, addedCell(r)].map(csvCell).join(','));
+  for (const r of rows) L.push([r.symbol, r.status, r.valueDiffs, r.roundingDiffs, r.textLost, r.sanity.join(' | '), (r.addedList || []).length, r.invented || 0, addedCell(r), (r.perturb || []).join(' | ')].map(csvCell).join(','));
   return L.join('\n') + '\n';
 }
 const mdCell = (s) => String(s == null ? '' : s).replace(/\|/g, '\\|').replace(/\n/g, ' ');
@@ -504,7 +524,7 @@ function toMd(rows, meta) {
     `| audited | ${audited.length} |`, `| OK | ${n((r) => r.status === 'OK')} |`,
     `| value diff (valueDiffs > 0) | ${n((r) => r.valueDiffs > 0)} |`, `| sanity failure | ${n((r) => r.sanity.length > 0)} |`,
     `| rounding drift only (OK with roundingDiffs > 0) | ${n((r) => r.status === 'OK' && r.roundingDiffs > 0)} |`,
-    `| text lost (textLost > 0 — failure) | ${n((r) => r.textLost > 0)} |`, `| skipped (not migrated) | ${n((r) => r.status === 'SKIP')} |`,
+    `| text lost (textLost > 0 — failure) | ${n((r) => r.textLost > 0)} |`, `| perturbed gate (new error / W31 up at price ×0.8 · ×1.25 — failure) | ${n((r) => (r.perturb || []).length > 0)} |`, `| skipped (not migrated) | ${n((r) => r.status === 'SKIP')} |`,
     ...ADDED_CLASSES.map((c) => `| added numbers — ${c} (numbers · reports) | ${audited.reduce((k, r) => k + (r.addedList || []).filter((x) => x.cls === c).length, 0)} · ${n((r) => (r.addedList || []).some((x) => x.cls === c))} |`),
     ...DEV_CLASSES.map((c) => `| deliberate deviation: ${c} (reports) | ${n((r) => (r.deviations || []).some((d) => d.class === c))} |`), ''];
   const devs = audited.filter((r) => (r.deviations || []).length);
@@ -538,6 +558,7 @@ function toMd(rows, meta) {
   for (const r of audited.filter((x) => x.status !== 'OK' || x.textLost || x.roundingDiffs || x.moved.length || (x.deviations || []).length || (x.addedList || []).length)) {
     L.push(`### ${r.symbol} — ${r.status} (v2 @ ${r.ref || '?'})`, '');
     for (const s of r.sanity) L.push(`- sanity: ${mdCell(s)}`);
+    for (const s of r.perturb || []) L.push(`- perturbed gate: ${mdCell(s)}`);
     for (const x of r.values) L.push(`- value ${x.zone}: \`${mdCell(x.del)}\` → \`${mdCell(x.ins)}\``);
     for (const x of r.deviations || []) L.push(`- deviation ${x.class} ${x.zone}: \`${mdCell(x.del)}\` → \`${mdCell(x.ins)}\``);
     if (r.textLost) L.push(`- text lost ×${r.textLost}: ${mdCell(r.lost.map((x) => `${x.w}@${x.zone}`).join(' '))}`);
@@ -554,7 +575,7 @@ function toMd(rows, meta) {
   return L.join('\n');
 }
 
-/** audit — syms ว่าง + all = ทุกใบ v3 · คืน { rows, code, files } · code 1 = มีใบ valueDiffs > 0 · sanity ตก · invented > 0 · textLost > 0 */
+/** audit — syms ว่าง + all = ทุกใบ v3 · คืน { rows, code, files } · code 1 = มีใบ valueDiffs > 0 · sanity ตก · invented > 0 · textLost > 0 · perturbed gate */
 function runAudit(syms, o, log, ctx) {
   const say = log || ((s) => process.stdout.write(s + '\n'));
   let list = (syms || []).map((s) => String(s).toUpperCase());
@@ -577,12 +598,13 @@ function runAudit(syms, o, log, ctx) {
   const vd = audited.filter((r) => r.valueDiffs > 0), sn = audited.filter((r) => r.sanity.length);
   const inv = audited.filter((r) => r.invented > 0);
   const tl = audited.filter((r) => r.textLost > 0);
+  const pt = audited.filter((r) => (r.perturb || []).length);
   const addedN = (c) => audited.reduce((k, r) => k + (r.addedList || []).filter((x) => x.cls === c).length, 0);
-  say(`audit: ${audited.length} ใบ · OK ${audited.filter((r) => r.status === 'OK').length} · value diff ${vd.length} · sanity ${sn.length} · invented ${inv.length} · text lost ${tl.length} · rounding-only ${audited.filter((r) => r.status === 'OK' && r.roundingDiffs > 0).length}${rows.length > audited.length ? ` · skip ${rows.length - audited.length}` : ''}`);
+  say(`audit: ${audited.length} ใบ · OK ${audited.filter((r) => r.status === 'OK').length} · value diff ${vd.length} · sanity ${sn.length} · invented ${inv.length} · text lost ${tl.length} · perturbed ${pt.length} · rounding-only ${audited.filter((r) => r.status === 'OK' && r.roundingDiffs > 0).length}${rows.length > audited.length ? ` · skip ${rows.length - audited.length}` : ''}`);
   say(`  added numbers: ${ADDED_CLASSES.map((c) => `${c} ${addedN(c)}`).join(' · ')}${inv.length ? ` · invented in ${inv.map((r) => r.symbol).join(' ')}` : ''}`);
-  for (const r of audited.filter((x) => x.status !== 'OK')) say(`  ✗ ${r.symbol} ${r.status} · valueDiffs ${r.valueDiffs}${r.textLost ? ` · textLost ${r.textLost} (${(r.lost || []).slice(0, 6).map((x) => `${x.w}@${x.zone}`).join(' ')})` : ''}${r.sanity.length ? ` · ${r.sanity.join(' · ')}` : ''}${r.values.length ? ` · ${r.values.slice(0, 2).map((x) => `${x.zone}: ${x.del} → ${x.ins}`).join(' · ')}` : ''}`);
+  for (const r of audited.filter((x) => x.status !== 'OK')) say(`  ✗ ${r.symbol} ${r.status} · valueDiffs ${r.valueDiffs}${r.textLost ? ` · textLost ${r.textLost} (${(r.lost || []).slice(0, 6).map((x) => `${x.w}@${x.zone}`).join(' ')})` : ''}${r.sanity.length ? ` · ${r.sanity.join(' · ')}` : ''}${(r.perturb || []).length ? ` · perturbed: ${r.perturb.slice(0, 2).join(' · ')}` : ''}${r.values.length ? ` · ${r.values.slice(0, 2).map((x) => `${x.zone}: ${x.del} → ${x.ins}`).join(' · ')}` : ''}`);
   if (files.md) say(`  → ${files.md} · ${files.csv}`);
-  return { rows, code: vd.length || sn.length || inv.length || tl.length ? 1 : 0, files };
+  return { rows, code: vd.length || sn.length || inv.length || tl.length || pt.length ? 1 : 0, files };
 }
 
-module.exports = { runAudit, auditOne, auditDoc, addedNumbersOf, liveValuesOf, taggedNums, ADDED_CLASSES, deviationsOf, emptyRow, v2Served, splitValues, authorSteps, v2Source, v2Market, sanityOf, toCsv, toMd, GIT_SCRUB };
+module.exports = { runAudit, auditOne, auditDoc, perturbOf, addedNumbersOf, liveValuesOf, taggedNums, ADDED_CLASSES, deviationsOf, emptyRow, v2Served, splitValues, authorSteps, v2Source, v2Market, sanityOf, toCsv, toMd, GIT_SCRUB };

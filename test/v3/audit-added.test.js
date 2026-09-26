@@ -57,7 +57,7 @@ const one = (xs, v) => xs.find((x) => x.v === v) || {};
 {
   const row = { ...AU.emptyRow('X'), status: 'INVENTED', invented: 1, addedList: [{ zone: 's3', v: 6.11, cls: 'invented', kind: 'no v2 source', ins: 'D₁ = ปันผล $6.11', via: 'page' }] };
   const csv = AU.toCsv([row]);
-  t(csv.split('\n')[0] === 'symbol,status,valueDiffs,roundingDiffs,textLost,sanity,added,invented,addedList', 'csv header carries added/invented/addedList');
+  t(csv.split('\n')[0] === 'symbol,status,valueDiffs,roundingDiffs,textLost,sanity,added,invented,addedList,perturb', 'csv header carries added/invented/addedList');
   t(/X,INVENTED,0,0,0,,1,1,invented:no v2 source@s3=6\.11/.test(csv), 'csv row: counts + the classified list', csv);
   const md = AU.toMd([row], { date: 'd', head: 'h', reportsRel: 'r' });
   t(/added numbers — invented \(numbers · reports\) \| 1 · 1/.test(md) && /invented \(1 reports\): X/.test(md) && /- added invented \(no v2 source\) s3: `6\.11`/.test(md), 'md: class counts · invented symbols · per-report lines', md.slice(0, 1500));

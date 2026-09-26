@@ -122,7 +122,74 @@ function tokenise(text, view, hits, field, opts) {
       F.push(`prose:${where} "${hit.lit}" after a current-price phrase → {{px}} (live)`);
     }
   }
+  // (d) review I-2 (กติกา B · ตัวคูณที่ผู้เขียนระบุว่า "ปัจจุบัน"): ข้อความตามตัวของ v2Display ไม่แทนตัวคูณแบบตัวเลขเท่ากัน (noMult — ตัวคูณเป้าหมาย/ในอดีต
+  //     บังเอิญเท่าค่าสดได้ DTE/MO/FN · GE/EWBC) แต่ตัวคูณที่มีคำว่าปัจจุบันกำกับ = ค่าผูกราคา → token สด เมื่อเท่าค่าที่ render ทุก byte (curMultLits)
+  //     ไม่เท่า (ผู้เขียนปัดเอง/ค้าง) = คง literal (W31 เดิม)
+  if (opts && opts.multPhrase && view && view.d) {
+    for (;;) {
+      const hit = curMultLits(s, view).find((h) => h.token);
+      if (!hit) break;
+      s = s.slice(0, hit.at) + `{{${hit.token}}}` + s.slice(hit.at + hit.num.length); n++;
+      F.push(`prose:${where} "${hit.lit}" after a current-multiple phrase → {{${hit.token}}} (live)`);
+    }
+  }
   return { text: s, D, F, n };
+}
+
+// ตัวคูณปัจจุบันที่ผู้เขียนพิมพ์เป็นตัวเลข (review I-2): ตัวคูณ (Nx · N เท่า) ที่ในท่อนเดียวกันก่อนหน้ามีคำกำกับ "ปัจจุบัน/วันนี้/current/ณ ราคาปัจจุบัน"
+//   และระหว่างคำกำกับกับตัวเลขไม่มีตัวเลขอื่น (≤ 40 ตัวอักษร · ไม่ข้ามตัวคั่นท่อน · ; • → | <br>) — "ไม่ใช่ตัวคูณปัจจุบัน · มัธยฐาน 5 ปี 27.5x" (DPZ) ไม่นับ
+//   ตัวคูณ = ป้ายที่อยู่ใกล้ตัวเลขที่สุดในท่อน (Forward P/E → peForward · P/S · P/BV · P/FFO · EV/EBITDA · P/E) · ป้ายที่ไม่มี token (P/FCF · EV/Sales) = ไม่แทน
+//   ไม่มีป้าย ("ตัวคูณปัจจุบัน 5.8x") = token ผูกราคาตัวเดียวที่เท่าค่าที่ render ทุก byte (มีหลายตัว = กำกวม ไม่แทน)
+//   → [{lit, num, at (ตำแหน่งตัวเลข), token|null}] · token = null เมื่อไม่เท่าค่าที่ render (ผู้เขียนปัดเอง)
+const CUR_Q = /(?:ปัจจุบัน|วันนี้|\bcurrent(?:ly)?\b|\btoday\b)/gi;
+const MULT_LABELS = [
+  [/(?:forward|fwd)\s*P\s*\/\s*E|P\s*\/\s*E\s*(?:adj\.?\s*)?\(?\s*(?:fwd|forward)/gi, 'peForward'],
+  [/(?:forward|fwd)\s*P\s*\/\s*A?FFO|P\s*\/\s*A?FFO\s*\(?\s*(?:fwd|forward)/gi, 'pffoForward'],
+  [/P\s*\/\s*A?FFO/gi, 'pffo'], [/P\s*\/\s*TBV/gi, 'ptbv'], [/P\s*\/\s*BV?(?![A-Za-z])/gi, 'pbv'], [/P\s*\/\s*S(?:ales)?(?![A-Za-z])/gi, 'ps'],
+  [/EV\s*\/\s*EBITDA/gi, 'evEbitda'], [/P\s*\/\s*(?:FCF|CF|OCF|EBIT)|EV\s*\/\s*(?:Sales|Revenue|EBIT(?!DA)|FCF)/gi, null], [/P\s*\/\s*E(?![A-Za-z])|\bPE\b/gi, 'pe'],
+];
+const MULT_TOKENS = ['pe', 'peForward', 'ps', 'pbv', 'ptbv', 'evEbitda', 'pffo', 'pffoForward'];
+function curMultLits(text, view) {
+  const s = String(text), out = [];
+  const R = CAND[3].re(); let m;
+  while ((m = R.exec(s))) {
+    const at = m.index;
+    if (!freeSpans(s).some(([a, b]) => at >= a && at < b)) continue;
+    // ท่อนก่อนหน้า (ตัดที่ตัวคั่นท่อน) · token {{…}} ในท่อน = ตัวเลข (ค่าอื่น) → ตัดที่นั่นด้วย
+    let clause = s.slice(Math.max(0, at - 80), at);
+    const cut = Math.max(...[/[·•;|→]/g, /<br>/g, /\{\{[^{}]*\}\}/g, /[.!?](?:\s|$)/g].map((re) => { let k = -1, x; while ((x = re.exec(clause))) k = x.index + x[0].length; return k; }));
+    if (cut >= 0) clause = clause.slice(cut);
+    let q = null, x;
+    CUR_Q.lastIndex = 0;
+    while ((x = CUR_Q.exec(clause))) q = x;
+    if (!q) continue;
+    const gap = clause.slice(q.index + q[0].length);
+    if (gap.length > 40 || /[0-9]/.test(gap)) continue;
+    // ป้ายตัวคูณที่ใกล้ตัวเลขที่สุด (ในท่อน — ก่อนหรือหลังคำกำกับ)
+    //   วัดจากปลายป้าย · ปลายเท่ากัน = ป้ายยาวกว่า ("Forward P/E" ชนะ "P/E" ที่อยู่ในนั้น)
+    let lab = { at: -1, end: -1, token: undefined };
+    for (const [re, token] of MULT_LABELS) { re.lastIndex = 0; let y; while ((y = re.exec(clause))) { const end = y.index + y[0].length; if (end > lab.end || (end === lab.end && y.index < lab.at)) lab = { at: y.index, end, token }; } }
+    const lit = m[0].trim();
+    const same = (tk) => { const sh = shownOf(tk, view); return sh != null && /\d\.\d/.test(sh) && bare(m[1]) === bare(sh); };
+    let token = null;
+    if (lab.at < 0) { const hits = MULT_TOKENS.filter(same); token = hits.length === 1 ? hits[0] : null; }
+    // ป้าย Forward P/E ที่ตัวเลขเท่า P/E ของหน้า ({{pe}} — การ์ด P/E ที่ผู้เขียนลอกมา · EVRG "Forward P/E ตลาดปัจจุบัน ~19.8x" = การ์ด P/E TTM 19.8x) = ตัวเลขนั้น
+    else if (lab.token) token = same(lab.token) ? lab.token : lab.token === 'peForward' && same('pe') ? 'pe' : null;
+    out.push({ lit, num: m[1], at, token });
+  }
+  // อัตราปันผลปัจจุบัน ("yield 3.27%" · "Div yield ~3.3%" — BAFS) = ปันผล ÷ ราคา (ผูกราคาโดยนิยาม) → {{yield}} เมื่อเท่าค่าที่ render ทุก byte (2 ตำแหน่ง)
+  //   ป้าย yield อยู่ติดตัวเลข (≤ 16 ตัวอักษร · ไม่มีตัวเลขคั่น) · ป้ายสมมติฐาน (exit/terminal/cap rate/เป้า/ที่ต้องการ/required) ในท่อน = ไม่แทน
+  const RP = CAND[2].re();
+  while ((m = RP.exec(s))) {
+    const at = m.index + m[0].indexOf(m[2]);
+    if (m[1] || !freeSpans(s).some(([a, b]) => at >= a && at < b)) continue;
+    const before = s.slice(Math.max(0, at - 60), at);
+    const y = /(?:dividend\s*|div\.?\s*)?yield\b([^0-9{}]{0,16})$/i.exec(before);
+    if (!y || /exit|terminal|cap\s*rate|implied|เป้า|ที่ต้องการ|required|target/i.test(before)) continue;
+    const sh = shownOf('yield', view);
+    if (sh != null && bare(m[2] + '%') === bare(sh)) out.push({ lit: m[0].trim(), num: s.slice(at, m.index + m[0].length), at, token: 'yield' });
+  }
+  return out.sort((a, b) => a.at - b.at);
 }
 
 // ราคาปัจจุบันที่ผู้เขียนพิมพ์เป็นตัวเลข (display-fix2): เงินที่ตามหลัง "ราคาปัจจุบัน/ราคาตลาด/ราคาล่าสุด/ราคาหุ้น/ราคา" ทันที (วงเล็บ/~ ได้)
@@ -174,4 +241,4 @@ function staleCopies(text, apx, d) {
   return out;
 }
 
-module.exports = { htmlToProse, tokenise, staleCopies, pxPhraseLits, decode, bare, V2_TO_V3, freeSpans, CAND, shownOf };
+module.exports = { htmlToProse, tokenise, staleCopies, pxPhraseLits, curMultLits, decode, bare, V2_TO_V3, freeSpans, CAND, shownOf };
