@@ -126,6 +126,51 @@ const adopt = (extra, env) => cli(['adopt', 'AAPL', ...common, '--doc', WF, '--t
   t(again.code === 1 && /v3 แล้ว|already v3/.test(again.out), 'adopt on an already-v3 symbol → refused');
 }
 
+// ── adopt --accept-drift (owner rule 26 ก.ย. 69: ≤ ONE printed rounding step per key number · verdict EQUAL) ──
+{
+  // SRE fixture = a real ACMR-shaped case: the migrator draft as-is gives FV 103.94 vs v2 "103.95" (1 cent = one step of a 2-dp figure)
+  //   and Base target 112.46 vs v2 "113" (0.54 > ½ step, ≤ 1 step) · FV low/high · MOS · verdict already match
+  const SRE = path.join(REP, 'SRE.html'), SREJ = path.join(REP, 'SRE.json'), sreRaw = fs.readFileSync(SRE);
+  const dr = cli(['draft', 'SRE', ...common, '--work-dir', WORK, '--today', PD]);
+  t(dr.code === 0, 'draft SRE', dr.out.slice(-300));
+  const sre = JSON.parse(fs.readFileSync(path.join(WORK, 'SRE.json'), 'utf8'));
+  const SF = path.join(WORK, 'SRE.adopt.json');
+  const adoptS = (extra) => cli(['adopt', 'SRE', ...common, '--doc', SF, '--today', '2026-09-11', ...(extra || [])]);
+  put(sre, SF);
+  const no = adoptS();
+  t(no.code === 1 && /✗ FV: v2 103\.95 · v3 103\.94/.test(no.out) && /✗ Base target: v2 113 · v3 112\.46/.test(no.out) && fs.existsSync(SRE) && !fs.existsSync(SREJ), 'ACMR-shaped drift without --accept-drift → refused, nothing written', no.out.slice(-700));
+  // 2-step: Base exit multiple scaled so the target lands 1.5 units off "113" → refused even with the flag, v2 vs v3 listed
+  const two = JSON.parse(JSON.stringify(sre)); two.scenarios.cases[1].exitMultiple *= 111.5 / 112.46; delete two.scenarios.exitDp; put(two, SF);
+  const r2 = adoptS(['--accept-drift']);
+  t(r2.code === 1 && /✗ Base target: v2 113 · v3 111\.\d\d \(เกิน 1 หน่วย/.test(r2.out) && fs.existsSync(SRE) && !fs.existsSync(SREJ), 'a 2-step target difference is refused even with --accept-drift (v2 vs v3 listed)', r2.out.slice(-700));
+  // verdict-class change is refused even with the flag (P/E leg multiple raised → MOS crosses the verdict zone)
+  const vd = JSON.parse(JSON.stringify(sre)); vd.legs[1].inputs.multiple *= 1.6; put(vd, SF);
+  const r3 = adoptS(['--accept-drift']);
+  t(r3.code === 1 && /✗ verdict: v2 ok · v3 (?!ok)\w+/.test(r3.out) && !fs.existsSync(SREJ), 'a verdict-class change is refused with --accept-drift', r3.out.split('\n').filter((l) => /verdict|MOS/.test(l)).join(' | '));
+  // with the flag the one-step drift passes and the drift list is printed
+  put(sre, SF);
+  const yes = adoptS(['--accept-drift']);
+  t(yes.code === 0 && fs.existsSync(SREJ) && !fs.existsSync(SRE), 'ACMR-shaped drift with --accept-drift → adopted', yes.out.slice(-900));
+  t(/≈ FV: v2 103\.95 · v3 103\.94 \(drift/.test(yes.out) && /≈ Base target: v2 113 · v3 112\.46/.test(yes.out) && /drift list \(2\): FV v2 103\.95 → v3 103\.94 · Base target v2 113 → v3 112\.46/.test(yes.out), 'drift list printed (FV + Base target)', (yes.out.match(/drift list[^\n]*/) || [''])[0]);
+  t(/✓ FV low: v2 96\.9/.test(yes.out) && /✓ FV high: v2 111/.test(yes.out) && /✓ verdict: v2 ok · v3 ok/.test(yes.out), '--accept-drift: FV low/high checked (blocking) · verdict equal');
+  fs.rmSync(SREJ, { force: true }); fs.writeFileSync(SRE, sreRaw);
+}
+// unit: ACMR numbers · 2-step · verdict change
+{
+  const v2 = { symbol: 'ACMR', currency: 'USD', fv: { v: 72, text: '72' }, fvLow: { v: 64, text: '64' }, fvHigh: { v: 82, text: '82' },
+    targets: [{ name: 'Bear', v: 50, text: '50' }, { name: 'Base', v: 80, text: '80' }, { name: 'Bull', v: 110, text: '110' }], mos: { v: -4, text: '−4%' }, verdict: 'neu' };
+  const v3 = { symbol: 'ACMR', currency: 'USD', fv: 72.73, fvLow: 64, fvHigh: 82, targets: [50, 80, 110], mos: -4.87, verdict: 'neu' };
+  const fails = (o, x) => TR.compareKeys(v2, { ...v3, ...(x || {}) }, o).filter((c) => !c.ok).map((c) => c.what);
+  t.eq(fails({}), ['FV', 'MOS'], 'ACMR (FV 72 vs 72.73 · MOS −4% vs −4.87%) without --accept-drift → FV + MOS fail');
+  t.eq(fails({ acceptDrift: true }), [], 'ACMR with --accept-drift → passes');
+  t.eq(TR.compareKeys(v2, v3, { acceptDrift: true }).filter((c) => c.drift).map((c) => c.what), ['FV', 'MOS'], 'ACMR drift rows marked drift:true');
+  t.eq(fails({ acceptDrift: true }, { fv: 74.01, mos: -6.1 }), ['FV', 'MOS'], '2-step (FV +2.01 · MOS 2.1 pp) refused even with --accept-drift');
+  t.eq(fails({ acceptDrift: true }, { targets: [50, 80, 111.5], fvHigh: 83.2 }), ['FV high', 'Bull target'], 'targets / FV high beyond one step refused with --accept-drift');
+  t.eq(fails({ acceptDrift: true }, { verdict: 'bad' }), ['verdict'], 'verdict-class change refused even with --accept-drift');
+  t.eq(TR.compareKeys({ ...v2, fv: { v: 103.95, text: '103.95' } }, { ...v3, fv: 103.96 }, { acceptDrift: true }).find((c) => c.what === 'FV').ok, true, 'one step of a 2-dp figure = 1 cent');
+  t.eq(TR.compareKeys({ ...v2, fv: { v: 103.95, text: '103.95' } }, { ...v3, fv: 103.97 }, { acceptDrift: true }).find((c) => c.what === 'FV').ok, false, 'two cents off a 2-dp figure refused');
+}
+
 // ── key-number comparison (unit) ──
 {
   const v2 = { symbol: 'X', currency: 'USD', fv: { v: 262, text: '262' }, targets: [{ name: 'Bear', v: 235, text: '235' }, { name: 'Base', v: 312, text: '312' }, { name: 'Bull', v: 417, text: '417' }], mos: { v: -24.6, text: '−25%' }, verdict: 'bad' };

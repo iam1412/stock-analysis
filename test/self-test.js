@@ -564,6 +564,20 @@ const setMdesc = (idx, txt) => (h) => { let i = -1; return h.replace(/(<div clas
     expect('E21', 'error', (h) => mutMval(iPE, numStr(C.methods[iPE].val * 1.5))(fyLabel(tok)(h)), `E21: ป้ายงวด "${tok}" + ค่าไม่ตรง EPS×P/E → ยังต้องยิง (อ่าน EPS หลังป้าย)`);
   }
 }
+// ── E21 + ค่าเล็ก (Plan 4c-audit · HENG/MICRO/DCC · 26 ก.ย. 69): mval พิมพ์ 2 ตำแหน่ง ⇒ ครึ่งหน่วยที่พิมพ์ (0.005) ใหญ่กว่า 3% เมื่อค่า < 0.17 ──
+//   "EPS ฿0.0158 × 8.5x" = 0.1343 พิมพ์ "฿0.13" (คลาด 3.2% จากการปัดล้วน ๆ) → ต้องเงียบ · ค่าที่ผิดจริง ("฿0.15") → ยังต้องยิง
+{
+  const small = (mval) => (h) => mutMval(iPE, mval)(setMdesc(iPE, 'EPS ฿0.0158 × P/E เป้าหมาย ~8.5x (มัธยฐาน 5 ปี)')(h));
+  reject('E21', small('0.13'), 'E21: EPS ฿0.0158 × 8.5x = 0.1343 พิมพ์ ฿0.13 (ครึ่งหน่วยที่พิมพ์) → ต้องเงียบ');
+  expect('E21', 'error', small('0.15'), 'E21: EPS ฿0.0158 × 8.5x = 0.1343 แต่พิมพ์ ฿0.15 (เกินครึ่งหน่วยและ 3%) → ต้องยิง');
+  expect('E21', 'error', small('0.12'), 'E21: EPS ฿0.0158 × 8.5x = 0.1343 แต่พิมพ์ ฿0.12 → ต้องยิง');
+}
+// ── E22 + ตัวคั่นหลักพัน (Plan 4c-audit · FCNCA v3 · 26 ก.ย. 69): "BVPS $1,722.00" เดิมอ่านได้ 1 ⇒ "1.42 × BVPS 1 = 1.42" ยิงปลอม ──
+if (iPBV >= 0) {
+  const big = (mval) => (h) => mutMval(iPBV, mval)(setMdesc(iPBV, 'P/BV เหมาะสม = (ROE 12.5% − g 4%)/(r 10% − g 4%) ≈ 1.42 × BVPS ฿1,722.00')(h));
+  reject('E22', big('2,445.24'), 'E22: 1.42 × BVPS ฿1,722.00 = 2,445.24 → ต้องเงียบ (อ่าน BVPS ที่มีตัวคั่นหลักพัน)');
+  expect('E22', 'error', big('3,000.00'), 'E22: 1.42 × BVPS ฿1,722.00 แต่พิมพ์ 3,000 → ต้องยิง');
+} else ok(false, 'E22: ฐาน BBL ไม่มีการ์ด P/BV — เคสตัวคั่นหลักพันตั้งไม่ได้');
 const addCard = (name, desc, val) => (h) => h.replace(/(<div class="vmethod">[\s\S]*?<\/div>\s*<\/div>)(?![\s\S]*<div class="vmethod">)/, (m) => m + `<div class="vmethod"><div class="mname">${name}</div><div class="mval">$${val}</div><div class="mdesc">${desc}</div></div>`);
 if (iDDM >= 0) {
   // DDM — ฐาน BBL: "D₁ = ปันผลยั่งยืน ~฿10.5 × (1+g); g 3%, r 9.5%" → 10.5×1.03/0.065 = 166.4 ≈ mval 162 (2.7% ผ่าน)
@@ -636,6 +650,16 @@ reject('W14', addCard('4. EV/EBITDA', 'EBITDA $4.0B (mid-point FY2026 $3.6B guid
       'E41: stock-meta.pe ค้างเป็น 2 เท่าของฐานที่ไฟล์ประกาศ → ต้องจับ (เคส ARM/JBL/STX/FORM)');
     reject('E41', (h) => mutJson('stock-meta', (d) => { d.pe = peShown; })(setCardD(PE_LABEL, `EPS (TTM) ${cur}${epsFor(peShown)}`)(h)),
       'E41: stock-meta.pe ตรงฐานที่ประกาศ → เงียบ');
+    // Plan 4c-audit (MDLZ v3): การ์ด P/E มีแค่ Forward แต่ stock-meta.pe = ราคา ÷ EPS ที่การ์ด "EPS (TTM)" โชว์ → ฐานที่หน้าประกาศ = เงียบ
+    {
+      const EPS_CARD = (base.match(/<div class="k">(EPS \([^<]*\))<\/div>/) || [])[1];
+      const ttmCard = (e) => (h) => setCardV('EPS (TTM)', `~${cur}${e}`)(h.replace(`<div class="k">${EPS_CARD}</div>`, '<div class="k">EPS (TTM)</div>'));
+      const eTtm = epsFor(peShown * 1.3);
+      ok(!!EPS_CARD && ttmCard(eTtm)(base) !== base, `E41 (EPS TTM): (guard) ฐานมีการ์ด EPS ให้ตั้งเป็น "EPS (TTM)" (${EPS_CARD})`);
+      const withTtm = (pe) => (h) => mutJson('stock-meta', (d) => { d.pe = pe; })(ttmCard(eTtm)(setCardD(PE_LABEL, `EPS (TTM) ${cur}${epsFor(peShown)}`)(h)));
+      reject('E41', withTtm(PX / parseFloat(eTtm)), 'E41: stock-meta.pe = ราคา ÷ EPS ของการ์ด "EPS (TTM)" (ฐานที่หน้าประกาศ ไม่ใช่ฐานของการ์ด P/E) → เงียบ (เคส MDLZ v3)');
+      expect('E41', 'error', withTtm(peShown * 2), 'E41: มีการ์ด "EPS (TTM)" แต่ stock-meta.pe ไม่ตรงฐานใดเลย → ยังต้องจับ');
+    }
 
     // E42 — % ในการ์ดราคาเป้า (เคส AAOI: ค้างที่ +8.7% ทั้งที่ราคาปัจจุบันให้ +24.3%)
     rejectBase('E42', 'ฐาน BBL: การ์ดเป้าไม่ได้เขียน % ไว้ → ไม่มีอะไรให้เทียบ ต้องเงียบ');
@@ -954,6 +978,26 @@ reject('W14', addCard('4. EV/EBITDA', 'EBITDA $4.0B (mid-point FY2026 $3.6B guid
   ok([/<div\b/g, /<\/div>/g, /<div class="ret/g, /<div class="tgt">/g, /<div class="col /g, /<li>/g]
     .every((re) => cnt(rgld, re) === cnt(DV.patchDerived(rgld, PX).html, re)),
     'W17: ซ่อมแล้วจำนวนแท็ก (div/ret/tgt/col/li) เท่าเดิมทุกตัว → ไม่ได้เขียนทับโครงสร้าง');
+
+  // ── Plan 4c-audit (26 ก.ย. 69): scnBasis ประกาศ "รวมปันผล" แต่ปันผลรวม 0 ในบางฉาก/ทุกฉาก (schema: div ≥ 0) ──
+  //   ใบ migrate CHKP (0/0/0) · S (0/0.05/0.08) + perYear null: เดิม impD = null → mean(null) throw ⇒ W17 = "ตรวจไม่สำเร็จ"
+  //   (ตัวซ่อม patchDerived#7 เรียก scenarioPlan ตัวเดียวกัน = cron ล้มที่ใบเดียวกัน) · ต้องตัดสินได้: ปันผล 0 = ราคาเป้าล้วน
+  for (const [tag, divs] of [['ทุกฉาก 0', [0, 0, 0]], ['Bear 0', [0, 1, 2]]]) {
+    let k = 0;
+    const zeroDiv = mutJson('report-data', (d) => { d.values.scnBasis = { ...d.values.scnBasis, perYear: null }; })(
+      base.replace(/(<li><span>ปันผลรวม[^<]*<\/span><span>~?)([^<]*)(<)/g, (m, a, v, b) => a + '฿' + divs[k++].toFixed(2) + b));
+    ok(k === 3 && zeroDiv !== base, `W17 (${tag}): (guard) แก้ปันผลรวมครบ 3 คอลัมน์ (แก้ ${k})`);
+    let freshZ = null, err = null;
+    const basisZ = { years: 3, divIncluded: true, perYear: null };   // ฐานเดียวกับที่ derivedPassV2 ส่ง (report-data.values.scnBasis)
+    try { freshZ = DV.patchDerived(zeroDiv, PX, { scnBasis: basisZ }).html; } catch (e) { err = e.message; }
+    ok(err == null, `W17 (${tag}): ตัวซ่อม patchDerived ต้องไม่ throw (ได้ ${err})`);
+    ok(!/ตรวจไม่สำเร็จ/.test(msgOf(zeroDiv)), `W17 (${tag}): scnBasis รวมปันผล + ปันผล 0 + perYear null → ตัวตรวจต้องไม่ throw (ได้ "${msgOf(zeroDiv)}")`);
+    if (freshZ) {
+      ok(!fires(freshZ), `W17 (${tag}): ซ่อมที่ราคาปัจจุบันแล้ว → เงียบ (${msgOf(freshZ)})`);
+      ok(freshZ !== zeroDiv, `W17 (${tag}): (guard) ตัวซ่อมเขียนหมวด 6 ใหม่จริง`);
+      ok(fires(DV.patchDerived(zeroDiv, PX * 0.8, { scnBasis: basisZ }).html), `W17 (${tag}): ค้างจากจุดเข้าต่ำกว่า 20% → ยังต้องจับ`);
+    }
+  }
 }
 
 // ── W18: สมอตายวนกลับ — ตัวคูณเป้าหมายลอกมาจากตัวคูณปัจจุบัน (9 ก.ย. 69) ──

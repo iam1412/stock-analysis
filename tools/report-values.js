@@ -22,6 +22,16 @@ function fmtPrice(p) {
   const [i, d] = s.split('.');
   return (Math.abs(p) >= 1000 ? Number(i).toLocaleString('en-US') : i) + '.' + d;
 }
+// ค่าต่อหุ้น (EPS/BVPS/DPS/ตัวขับฉาก) — ≥ 1 หรือ 0 = fmtPrice เดิมทุก byte · |ค่า| < 1 = 3 หลักมีนัย (อย่างน้อย 2 ตำแหน่ง ตัดศูนย์ท้ายเกิน 2)
+//   เหตุ (Plan 4c-audit · HENG/MICRO/DCC): fmtPrice ปัด EPS ฿0.0158 เป็น "฿0.02" ⇒ หน้าโชว์ "EPS 0.02 × 29.1x = ฿0.46" ที่คูณไม่ได้ (E21/E24)
+//   และทิ้งทศนิยมที่ผู้เขียน v2 พิมพ์ไว้ (฿0.0158 · ฿0.095) — ราคา/FV/เป้ายังใช้ fmtPrice (ธรรมเนียมราคา 2 ตำแหน่ง)
+function fmtPerShare(p) {
+  if (!(Math.abs(p) < 1) || p === 0) return fmtPrice(p);
+  let s = Number(p).toPrecision(3);
+  if (/e/i.test(s)) s = Number(s).toFixed(20);
+  s = s.replace(/(\.\d{2}\d*?)0+$/, '$1');
+  return s;
+}
 // ป้าย % รอบปี จากจุดแรก→จุดท้ายของกราฟ (ย้ายจาก update-prices.js — ข้อความ/เกณฑ์เดิมเป๊ะ)
 function annualChg(data, suffix) {
   const first = data[0][1], last = data[data.length - 1][1];
@@ -175,7 +185,7 @@ const TOKENS = {
     return need(d.ps, 'shares/revenue').toFixed(1);
   },
   yield: (d) => need(d.yield, 'dps').toFixed(2) + '%', pbv: (d) => need(d.pbv, 'bvps').toFixed(2),
-  baseEps: (d) => money(d, d.values.baseEps, 'baseEps'), scnNote: (d) => (d.scnBasis && d.scnBasis.divIncluded ? ' • รวมปันผล' : ''),
+  baseEps: (d) => d.cur + fmtPerShare(need(d.values.baseEps, 'baseEps')), scnNote: (d) => (d.scnBasis && d.scnBasis.divIncluded ? ' • รวมปันผล' : ''),
 };
 for (const i of [0, 1, 2]) {
   TOKENS[`sc${i + 1}tgt`] = (d) => money(d, scn(d, i).tgt, `scenarios[${i}].tgt`);
@@ -461,7 +471,7 @@ function mirrorStockMeta(html) {
   return String(html).replace(RM.STOCK_META_PARTS_RE, (x, a, b, z) => a + lead + JSON.stringify(sm) + trail + z);
 }
 
-module.exports = { CUR_SYMBOL, FLAT_PP, VALUE_KEYS, CHG_SUFFIX, isV2, validateValues, derive, TOKENS, COPY_TOKENS: Object.keys(TOKENS), renderValues,
+module.exports = { fmtPerShare, CUR_SYMBOL, FLAT_PP, VALUE_KEYS, CHG_SUFFIX, isV2, validateValues, derive, TOKENS, COPY_TOKENS: Object.keys(TOKENS), renderValues,
   fmtPrice, fmtBig, round, annualChg, mosBand, isoOf, parseIso, styledRD, MIRROR_KEYS, mirrorStockMeta,
   // E44 (ระยะ 2 ส่วน F · spec B(ข)) — prose ผูกราคาในใบใหม่ + healer
   PROSE_TOKEN_SINCE, PROSE_BOUND, proseSpans, proseBoundHits, proseTokens,
