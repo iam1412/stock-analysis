@@ -195,6 +195,15 @@ function v2DisplayOf(o) {
   ((o.cardMeta || []).filter((m) => !m.key)).forEach((m, j) => {
     const c = parsed.s1cards[m.i], cu = doc.metrics && doc.metrics.custom && doc.metrics.custom[j];
     if (!c || !cu || /\{\{/.test(c.vHtml) || /\{\{/.test(String(cu.value))) return;
+    // ช่วงของผู้เขียน ("~9.7–14.4x" บน EPS FY26e $6.07 / FY27e $4.04 — OXY · 27 ก.ย. 69): ตัวเลขในค่า k ตัว = EPS ใน .d k ตัว (ตามลำดับ)
+    //   → ฐาน array · ทุกตัวต้องอยู่ในเกณฑ์ E41 ของ gate (DV.nearPE — เกณฑ์เดียวกับที่หน้า v2 ผ่าน) ที่ราคาของหน้า v2
+    const pe = DV.peCards(`<div class="metric"><div class="k">${c.kHtml}</div><div class="v">${c.vHtml}</div><div class="d">${c.dHtml}</div></div>`)[0];
+    const ns = NB.numsOf(PV.text(c.vHtml));
+    if (pe && ns.length >= 2 && ns.length <= 3 && pe.eps.length === ns.length && ns.every((x, i) => DV.nearPE(x.v, view.d.px / pe.eps[i]))) {
+      customLive[j] = { op: 'pxOverBase', base: pe.eps.slice() };
+      notes.push(`custom card "${c.k}" live on the v2 bases ${JSON.stringify(pe.eps)} (pxOverBase · range)`);
+      return;
+    }
     const lb = liveBase(c, view.d.px, parsed.sm && parsed.sm.currency);
     const n = firstNum(PV.text(c.vHtml));
     if (!lb || !n) return;

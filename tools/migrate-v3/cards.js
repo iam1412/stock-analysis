@@ -103,7 +103,9 @@ function cardFund(parsed, base) {
     const labelled = (t, re) => { const m = new RegExp(`(?:${re})\\b[^$฿\\n]{0,40}?~?\\s*((?:US\\$|\\$|฿)\\s*~?\\s*[0-9][0-9,]*(?:\\.[0-9]+)?(?:\\s*(?:ล้านล้าน|แสนล้าน|หมื่นล้าน|พันล้าน|ล้าน|[TBMK](?![A-Za-z])))?)`, 'i').exec(t); return m ? LG.moneyAll(m[1])[0] : null; };
     switch (key) {
       case 'mcap': {
-        const m = /([0-9][0-9,]*(?:\.[0-9]+)?)\s*(พันล้าน|ล้าน|[MB](?![A-Za-z])|billion|million)\s*(?:หุ้น|shares?)/i.exec(c.d);
+        // "<N><หน่วย> หุ้น" · หรือ "หุ้นคงเหลือ ~<N><หน่วย>" (JPM "ฐานหุ้นคงเหลือ 2.66B" · ORLY "หุ้นคงเหลือ ~809M" — 27 ก.ย. 69)
+        const m = /([0-9][0-9,]*(?:\.[0-9]+)?)\s*(พันล้าน|ล้าน|[MB](?![A-Za-z])|billion|million)\s*(?:หุ้น|shares?)/i.exec(c.d)
+          || /(?:หุ้น\s*คงเหลือ|shares?\s+outstanding)\s*~?\s*([0-9][0-9,]*(?:\.[0-9]+)?)\s*(พันล้าน|ล้าน|[MB](?![A-Za-z])|billion|million)/i.exec(c.d);
         if (m) set('shares', +(num(m[1]) * ({ 'พันล้าน': 1e9, 'ล้าน': 1e6, m: 1e6, b: 1e9, billion: 1e9, million: 1e6 }[m[2].toLowerCase()] || 1)).toPrecision(15), `card "${c.k}" .d`);
         break;
       }
