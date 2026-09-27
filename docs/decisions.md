@@ -136,6 +136,8 @@ E17 บังคับ ≥2 การ์ด `.vmethod` แต่บางหุ�
 
 > (884/908 ใบ · ระยะ 3 กวาด residue เพิ่มจาก 865 · ดู open-items #36)
 
+> **27 ก.ย. 69 (หมายเหตุเพิ่ม · ไม่แก้ข้อความเดิม)**: คลังเป็น v3 ครบ **911/911** (909 ใบ migrate จาก v2 มี `meta.migratedFrom` + OGE/ICC เป็น v3 ตั้งแต่ต้น) · `reports/` ไม่มี `.html` เหลือ ⇒ ตัวเลข "884/908 ใบ v2" ในเอกสาร live (CLAUDE.md §9 · skill `stock-controller` §9 · `docs/price-refresh.md` · `docs/templates.md`) ปรับเป็นสถานะนี้แล้ว · ทาง v2 (`V2TOKENS` · `patchDerived` · skeleton) ยังอยู่ในโค้ดจนถึง P7 cutover
+
 > (7 ช่องนี้ต้องเป็น token เสมอ — pseudo-error `V2TOKENS` บังคับ · ยิง 0/908 · **ระยะ 3 Task 12 ขยายเป็น 13 ช่อง** โดยเพิ่มช่องที่ผูก **FV**: `.fv-box .r` · `legend` · `#mFair` · การ์ด "จุดซื้อ MOS 20/30%" · `vcell` "มูลค่าเหมาะสม" — เกณฑ์เดียวกัน คือ cron ไม่มีตัวเขียนให้ · `summary` ยังอยู่นอกรายการเพราะมี `summaryPlan` เขียนให้ — open-items #44)
 
 ### `mos-sign-flip` ปิดจบที่ PREPATCH — มาจากระยะไหน
@@ -371,3 +373,8 @@ E17 บังคับ ≥2 การ์ด `.vmethod` แต่บางหุ�
 ### Report v3 Plan 4c-transcribe — HUMAN → ถอดความ (26 ก.ย. 69)
 
 - **คำสั่งเจ้าของ (26 ก.ย. 69)**: "ทำเหมือน ZTS … ห้ามวิเคราะห์ใหม่ งานคือย้ายจาก V2 => V3" ⇒ ถัง HUMAN ย้ายด้วย `migrate-v3.js draft → worker แก้ → adopt → ship --migrate` · acceptance = `check-v3` ผ่าน + ตัวเลขหลักตรง v2 ภายในการปัดที่ผู้เขียนพิมพ์ (spec §10 ข้อ 4 "ถัง HUMAN → ถอดความ")
+
+### คลังเป็น v3 ครบ 911/911 (27 ก.ย. 69 · หมายเหตุสถานะ)
+
+- `reports/` = 911 `.json` · 0 `.html` (909 migrate + OGE/ICC native) · เอกสารที่ยืนยันจำนวนใบ v2 แบบ live ปรับตามแล้ว (ดู §9 "ใบ v2 — สัดส่วน…") · ข้อความประวัติที่ลงวันที่ไว้ (เช่น "ยิง 0/908 · 15 ก.ย. 69") ไม่แก้ · ทาง v2/v1 ในโค้ด (build · cron · gate) ยังอยู่จนถึง P7 cutover
+- follow-up "adopt exit 0 ทั้งที่ปฏิเสธ" (DUSIT 26 ก.ย. 69) = สคริปต์ห่อของผู้เรียก (`… | grep -v …; echo "exit ${pipestatus[1]}$?"` ใต้ bash ⇒ ได้ exit ของ grep) ไม่ใช่ `migrate-v3.js` — ทุกทางปฏิเสธใน `runAdopt` คืน 1 อยู่แล้ว · ตรึงด้วยเทสต์ CLI (`test/v3/migrate-transcribe.test.js`: ข้อความปฏิเสธ ⇒ exit ≠ 0 · exit 0 ⇔ บรรทัด "✓ … เขียน")

@@ -40,7 +40,8 @@ git commit -F …                    # title: price: refresh N symbols (YYYY-MM-
 
 ## จุดที่ script แตะ (เฉพาะตัวเลขโครงสร้างที่ gate คุม)
 
-> ตารางนี้คือทาง **v1** (24 ใบที่เหลือ · ระยะ 3) · ใบ **v2** (884 ใบ) เขียนราคา/วันที่/MOS/verdict/`pxIn`/`.chg` ลง `report-data.values` **ที่เดียว**
+> ★ **27 ก.ย. 69: คลังเป็น v3 ครบ 911/911 ใบ (v1 0 · v2 0)** — ทาง v1/v2 ข้างล่างยังอยู่ในโค้ดจนถึง P7 cutover แต่ไม่มีใบให้เดินแล้ว · ใบ v3 → หัวข้อ "ใบ v3"
+> ตารางนี้คือทาง **v1** (24 ใบที่เหลือ ณ ระยะ 3 · 0 ใบตั้งแต่ 23 ก.ย. 69) · ใบ **v2** (884 ใบ ณ ระยะ 3) เขียนราคา/วันที่/MOS/verdict/`pxIn`/`.chg` ลง `report-data.values` **ที่เดียว**
 > แล้วให้ `build` render — ดูหัวข้อ "ใบ v2" ท้ายตารางนี้
 
 | จุด | gate ที่บังคับ |
@@ -60,7 +61,7 @@ git commit -F …                    # title: price: refresh N symbols (YYYY-MM-
 
 ### ใบ v2 — cron เขียน `report-data.values` ไม่ได้เขียนสำเนาใน HTML (14 ก.ย. 2569 · ระยะ 2)
 
-คลังวันนี้ **884 ใบเป็น v2** (`report-data.v = 2`) · **24 ใบยังเป็น v1** (residue หลังกวาดเชิงกลระยะ 3 — ดู `docs/superpowers/audit/2026-09-11-stock-analyzer/phase3-residue-disclosure.md`)
+คลัง ณ ระยะ 3 (15 ก.ย. 69) **884 ใบเป็น v2** (`report-data.v = 2`) · **24 ใบยังเป็น v1** (residue หลังกวาดเชิงกลระยะ 3 — ดู `docs/superpowers/audit/2026-09-11-stock-analyzer/phase3-residue-disclosure.md`) · **27 ก.ย. 69: v2 0 ใบ · v3 911/911** (migrate ครบ — ทางนี้คงไว้ในโค้ดจนถึง P7 cutover)
 ตารางข้างบนคือทาง **v1** · ใบ v2 เดินคนละทางในครึ่งแรกแล้วมาบรรจบกันที่ `patchDerived`:
 
 1. **ราคา/วันที่ = เขียนลง JSON ที่เดียว** — `patchReport` เขียน `values.px` + `values.priceDate` แล้ว **return ก่อนตัวเขียนสำเนา HTML ของ v1**
