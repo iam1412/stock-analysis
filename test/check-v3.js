@@ -36,7 +36,7 @@ const CODES = [
   { id: 'E50', level: 'error', label: 'ลายเซ็น _sig ตรงเนื้อไฟล์ (เขียนผ่าน tools/v3/io.js เท่านั้น)' },
   { id: 'E51', level: 'error', label: 'สคีมา v3 + compute + render สำเร็จ + prose ไม่มีแท็กต้องห้าม + ไม่หลุด NaN/Infinity/undefined' },
   { id: 'E52', level: 'error', label: 'ขา declared มีหลักฐาน · ยอดตาราง × fx = ค่าขา ±1%' },
-  { id: 'E17', level: 'error', label: '≥2 ขา role:"fv" (ขา context ไม่นับ)' },
+  { id: 'E17', level: 'error', label: '≥2 ขา role:"fv" ที่น้ำหนัก > 0 (ขา context · ขาน้ำหนัก 0 ไม่นับ)' },
   { id: 'E27', level: 'error', label: 'ราคาไม่เก่า/ไม่อยู่อนาคต (market.priceDate)' },
   { id: 'W07', level: 'warn', label: 'ตัวเลขพื้นฐานสมเหตุสมผล' },
   { id: 'W09', level: 'warn', label: 'ความสดของราคา' },
@@ -103,10 +103,11 @@ function checkDoc(doc, opts) {
   if (badLeg >= 0) { add('E51', `compute: legs[${badLeg}] ค่าขา ${view.legs[badLeg].value} (ต้อง > 0)`); return done(); }
   for (const i of X.tieOut(doc, view)) add('E52', `${i.path}: ${i.msg}`);
 
-  const nFv = view.legs.filter(isFvLeg).length;
+  // #65: ขา fv ที่ fvWeights = 0 ไม่ได้อยู่ใน FV จริง (สเปก §3.6 I — ขาที่ไม่นับต้องเป็น role context) ⇒ ไม่นับเป็นขา FV · ไม่มี fvWeights = ทุกขา fv มีน้ำหนัก
+  const nFv = view.legs.filter((l) => isFvLeg(l) && l.weight > 0).length;
   // Plan 4c-transcribe: ใบ migrate ที่หน้า v2 ประกาศขา fv ขาเดียว (ขาอื่น "บริบท — ไม่รวมใน FV" · 11/447 ใบ HUMAN ที่วัด) ถอดความเพิ่มขาไม่ได้ → W33 (มองเห็น ไม่บล็อก) · 0 ขา = E17 เสมอ
   if (nFv === 1 && S.isMigrated(doc)) add('W33', `ขา role:"fv" มี 1 ขา ตามหน้า v2 — ใบ migrate ถอดความเพิ่มขาไม่ได้ (spec §13 ข้อ 4 ยังค้าง)`);
-  else if (nFv < 2) add('E17', `ขา role:"fv" มี ${nFv} ขา (ต้อง ≥ 2) — ขา context ไม่นับ (spec §13 ข้อ 4)`);
+  else if (nFv < 2) add('E17', `ขา role:"fv" ที่น้ำหนัก > 0 มี ${nFv} ขา (ต้อง ≥ 2) — ขา context และขาน้ำหนัก 0 ไม่นับ (spec §13 ข้อ 4 · #65)`);
 
   const today = o.today || thaiToday(), pd = doc.market.priceDate, age = days(pd, today);
   const errDays = parseInt(process.env.STALE_ERROR_DAYS || '120', 10), warnDays = parseInt(process.env.STALE_WARN_DAYS || '45', 10);

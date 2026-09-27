@@ -218,7 +218,8 @@ function liveRowRet(text, kind, i, view) {
 
 function valHintParts(doc, view) {
   if (doc.text && doc.text.valHint) return { hint: P.renderProse(doc.text.valHint, view, { mode: 'v2src' }), box: 'มูลค่าเหมาะสม (Fair Value)' };
-  const fv = view.legs.filter((l) => l.role === 'fv'), nCtx = view.legs.length - fv.length;
+  // #65: ขา fv ที่ fvWeights = 0 ไม่ได้อยู่ใน FV ⇒ นับเป็นบริบท (เท่ากับที่ E17 นับ)
+  const fv = view.legs.filter((l) => l.role === 'fv' && l.weight > 0), nCtx = view.legs.length - fv.length;
   const fams = new Set(fv.map((l) => l.family).filter(Boolean));
   const byFamily = !doc.fvWeights && fams.size > 0;
   const word = byFamily ? 'เฉลี่ยตามตระกูล' : doc.fvWeights ? 'ถ่วงน้ำหนัก' : 'เฉลี่ย';
