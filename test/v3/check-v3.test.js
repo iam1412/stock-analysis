@@ -42,6 +42,17 @@ const today0 = Z().market.priceDate;
 { const d = load('FER-real'); delete d._sig; d.legs[0].inputs.value = 60; t(ids(run(signed(d)), 'errors').includes('E52'), 'E52: SOTP table does not tie to the leg'); }
 { const d = Z(); delete d._sig; d.legs[1].role = 'context'; d.legs[2].role = 'context'; d.fvWeights = null;
   t(ids(run(signed(d)), 'errors').includes('E17'), 'E17: one fv leg left'); }
+// #65: ขา fv ที่ fvWeights = 0 ไม่อยู่ใน FV จริง ⇒ E17 ไม่นับ · hint "ถ่วงน้ำหนัก N วิธี" นับเท่ากัน (ขาน้ำหนัก 0 = บริบท)
+{ const R = require('../../_template/v3/render.js');
+  const hintOf = (d) => { const v = C.compute(d, { seeds: {} }); return (/(ถ่วงน้ำหนัก|เฉลี่ย)[^<]*วิธี[^<]*/.exec(R.toV2Source(d, v)) || [''])[0]; };
+  const base = Z(); delete base._sig;
+  t(/^ถ่วงน้ำหนัก 3 วิธี$/.test(hintOf(base)), '#65 hint: fvWeights all > 0 → "ถ่วงน้ำหนัก 3 วิธี" (unchanged)', hintOf(base));
+  const one = Z(); delete one._sig; one.fvWeights = [1, 0, 0];
+  t(ids(run(signed(one)), 'errors').includes('E17'), '#65 E17: 3 fv legs but only one with weight > 0 → E17');
+  t(/^ถ่วงน้ำหนัก 1 วิธี · \+2 บริบท$/.test(hintOf(one)), '#65 hint: zero-weight fv legs count as context', hintOf(one));
+  const two = Z(); delete two._sig; two.fvWeights = [0.5, 0.5, 0];
+  t(!ids(run(signed(two)), 'errors').includes('E17'), '#65 E17: two fv legs with weight > 0 → no E17');
+  t(/^ถ่วงน้ำหนัก 2 วิธี · \+1 บริบท$/.test(hintOf(two)), '#65 hint: 2 weighted + 1 zero-weight', hintOf(two)); }
 // E27/W09 native + ไม่รายงานซ้ำจาก v2 (gate v2 เห็นหน้าเก่า 200/60 วันบนนาฬิกาแช่เดียวกัน → ยิง E27/W09 ของตัวเอง ซึ่ง NATIVE_V2 ต้องกรองออก)
 { const d = Z(); delete d._sig; d.market.priceDate = shift(today0, -200); const r = run(signed(d), { today: today0 });
   t(ids(r, 'errors').includes('E27'), 'E27: price 200 days old');
