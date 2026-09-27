@@ -13,7 +13,8 @@ const WORK = path.join(tmp, 'work');
 for (const s of ['AAPL', 'SRE']) fs.copyFileSync(path.join(ROOT, 'test', 'fixtures', `${s}-v2.html`), path.join(REP, `${s}.html`));
 const MAN = path.join(tmp, 'reports.json');
 fs.writeFileSync(MAN, JSON.stringify(['AAPL', 'SRE'].map((s) => ({ symbol: s, updated: '2026-09-01T00:00:00+07:00', hash: 'x' }))));
-const cli = (args, env) => { const r = cp.spawnSync(process.execPath, [path.join(ROOT, 'tools', 'migrate-v3.js'), ...args], { encoding: 'utf8', cwd: ROOT, env: { ...process.env, MIGRATE_V3_ALLOW_REAL: '', ...(env || {}) } }); return { code: r.status, out: r.stdout + r.stderr }; };
+const adoptRuns = [];   // every adopt through the CLI — exit-code invariant checked at the end
+const cli = (args, env) => { const r = cp.spawnSync(process.execPath, [path.join(ROOT, 'tools', 'migrate-v3.js'), ...args], { encoding: 'utf8', cwd: ROOT, env: { ...process.env, MIGRATE_V3_ALLOW_REAL: '', ...(env || {}) } }); const res = { code: r.status, out: r.stdout + r.stderr }; if (args[0] === 'adopt') adoptRuns.push(res); return res; };
 const common = ['--reports-dir', REP, '--head-manifest', MAN, '--no-stale'];
 const REAL = path.join(ROOT, 'reports');   // guard target only
 const realBefore = fs.readdirSync(REAL).length;
@@ -242,6 +243,16 @@ const adopt = (extra, env) => cli(['adopt', 'AAPL', ...common, '--doc', WF, '--t
     const bull = (html.split('<div class="col bull">')[1] || '').split('</ul>')[0];
     t(!/สถานการณ์/.test(bull) && /สถานการณ์/.test((html.split('<div class="col bear">')[1] || '').split('</ul>')[0]), 'render: no empty "สถานการณ์" row where the desc is absent (other columns keep theirs)'); }
   { const d = mig(load('ZTS-real')); d.scenarios.cases[2].desc = ''; t(ids(run(d), 'errors').includes('E51'), 'desc allowance: an empty string is still an error (absent only)'); }
+}
+
+// ── exit code = the verdict (open follow-up 26 ก.ย. 69: a DUSIT adopt "rejected but exit 0") ──
+//   root cause was the caller's wrapper (`… | grep -v …; echo "exit ${pipestatus[1]}$?"` = grep's status), not migrate-v3 —
+//   pinned here so the CLI itself can never print a refusal and exit 0 (or write and exit ≠ 0)
+{
+  const refused = adoptRuns.filter((r) => /✗ \S+: (adopt ปฏิเสธ|checkDoc \d+ error หลังเขียน)|^✗ /m.test(r.out));
+  const wrote = adoptRuns.filter((r) => /^✓ \S+: เขียน \S+\.json/m.test(r.out));
+  t(refused.length >= 8 && refused.every((r) => r.code !== 0), `adopt CLI: every refusal exits ≠ 0 (${refused.length} runs)`, refused.filter((r) => r.code === 0).map((r) => r.out.slice(-300)).join('\n---\n'));
+  t(wrote.length >= 2 && wrote.every((r) => r.code === 0) && adoptRuns.every((r) => (r.code === 0) === /^✓ \S+: เขียน/m.test(r.out)), `adopt CLI: exit 0 ⇔ a "✓ … เขียน" line (${adoptRuns.length} runs)`);
 }
 
 t(fs.readdirSync(REAL).length === realBefore, 'real reports/ untouched');
