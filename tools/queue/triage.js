@@ -17,7 +17,7 @@ const BUCKET = {
   'drift-gt-15pct': 'LIGHT', 'age-gt-90d': 'LIGHT', 'earnings-after-analysis': 'LIGHT',
   'suspect-split-or-data': 'FULL', 'bad-chart': 'FULL',
   'fetch-failed': 'PLUMBING', 'patch-failed': 'PLUMBING', 'no-stock-meta': 'PLUMBING', 'currency-mismatch': 'PLUMBING', 'bad-price': 'PLUMBING', 'bad-report-price': 'PLUMBING',
-  'patch-rejected': 'REJECTED', 'not-on-exchange': 'DELIST',
+  'patch-rejected': 'REJECTED', 'not-on-exchange': 'DELIST', 'ticker-renamed': 'RENAME',
 };
 const ACTION = {
   PREPATCH: 'ราคาอย่างเดียว — runbook pre-patch แล้ว ship --prepatch จบ ไม่ spawn worker (ข้อ D: flip ในย่าน FV ไม่มีข้อมูลใหม่)',
@@ -25,7 +25,8 @@ const ACTION = {
   FULL: 'UPDATE เต็ม — ตรวจ split/ticker ก่อนเขียนเลข (bad-chart: ดูฐาน chart.data ในไฟล์ก่อน — SKILL STEP 0)',
   PLUMBING: 'ไม่ใช้ agent — symbol-map / stock-meta / ราคาในไฟล์ / เช็คเพิกถอน (SKILL STEP 0)',
   REJECTED: 'cron patch แล้ว gate ตก — อ่าน detail แก้ไฟล์ให้ npm test ผ่าน (ไม่ใช่ re-analyze)',
-  DELIST: 'ยืนยันแหล่งปฐมภูมิ → ลบรายงาน + tag-apply --prune · ยังเทรด → update-prices --alive · ห้าม re-analyze',
+  DELIST: 'เช็คเปลี่ยนชื่อก่อน (TradingView symbol-search ชื่อบริษัท/ISIN · Yahoo search prevName) → เจอ ticker ใหม่ = เพิ่ม symbol-map ห้ามลบ · ไม่เจอ → ยืนยันแหล่งปฐมภูมิ (SEC Form 25 / หน้า SET) → ลบรายงาน + tag-apply --prune · ห้าม re-analyze · ★ แท่งรายวัน Yahoo ของ ticker เดิมไม่ใช่หลักฐานว่ายังเทรด (relink ไป ticker ใหม่ได้ — THCOM→GST)',
+  RENAME: 'ticker เปลี่ยนชื่อ (ISIN เดิมอยู่ที่ ticker ใหม่ — ดู detail) → ยืนยันหน้าตลาด → เพิ่ม tools/symbol-map.json {yahoo, sa, tv} แล้ว update-prices --write --alive <SYM> · ห้ามลบรายงาน · ห้าม re-analyze เพราะ flag นี้',
   UNKNOWN: 'reason ไม่รู้จัก — เพิ่มใน tools/queue/triage.js',
 };
 const FRESH_DAYS = 7;    // CLAUDE.md §3.1
@@ -47,7 +48,7 @@ function bucketOf(reason) {
   return BUCKET[r] || 'UNKNOWN';
 }
 /** กฎใหม่ (ส่วนบริสุทธิ์) — คืน { bucket, escalated, stmt, stmtWhy, drift } ให้ bucket ฐานของ reason
- *  bucket ที่ไม่ใช่เนื้อหา (PLUMBING/REJECTED/DELIST/UNKNOWN) ไม่แตะ · bad-chart = FULL เสมอ */
+ *  bucket ที่ไม่ใช่เนื้อหา (PLUMBING/REJECTED/DELIST/RENAME/UNKNOWN) ไม่แตะ · bad-chart = FULL เสมอ */
 function ruleNew(f, base, c, footerAge, staleDays) {
   const drift = f.diffPct != null && Number.isFinite(+f.diffPct) ? Math.abs(+f.diffPct) : null;
   if (!['PREPATCH', 'LIGHT', 'FULL'].includes(base)) return { bucket: base, escalated: null, drift };

@@ -53,7 +53,8 @@ const fs = require('fs');
 const path = require('path');
 // ยืนยัน "ticker ตายจริงไหม" ด้วยแหล่งอิสระ — ใช้ helper ร่วมกับ canary รายสัปดาห์ (ไม่มี require วน:
 // dead-ticker-canary ไม่ได้ require ไฟล์นี้ · main() ของมันรันเฉพาะเมื่อถูกเรียกเป็น entry point)
-const { tvCandidates, scan: scanTickers, classify: classifyTickers, loadTickerCache } = require('./dead-ticker-canary.js');
+const { tvCandidates, scan: scanTickers, classify: classifyTickers, loadTickerCache, renameResolved } = require('./dead-ticker-canary.js');
+const { DEAD_REASONS, NOT_ON_EXCHANGE } = require('./flag-reasons.js');
 const { entryFor } = require('./symbol-map.js');
 const RM = require('./report-meta.js');   // เจ้าของเดียวของ regex stock-meta/report-data/.px
 const { withLock, writeJsonAtomic } = require('./lockfile.js');   // WS4: price-flags.json มีหลาย writer
@@ -827,7 +828,7 @@ function loadFlags(file = FLAGS) {
 // flag คืนวันจันทร์ แล้วเช้าวันอังคารหายเกลี้ยง (หุ้นตายกลับไปเงียบเหมือนเดิม)
 // ถอนได้ 3 ทาง: TradingView เจอ ticker กลับมา · รายงานถูกลบ · `--alive <SYM>` (ยืนยันด้วยมือ — ไม่ใช่ --force: SKILL สั่ง --force ทุก re-analysis)
 // — ทั้งสามทางถอนที่ตัวเรียก (prevFlags) ก่อนถึง mergeFlags ตัวนี้จึงกันแค่การเคลียร์แบบเงียบ ๆ
-const EXTERNAL_REASONS = new Set(['not-on-exchange']);
+const EXTERNAL_REASONS = DEAD_REASONS;   // not-on-exchange + ticker-renamed (tools/flag-reasons.js — เจ้าของเดียว)
 
 // snapshot: flag ของ symbol ที่ประมวลรอบนี้ = ผลรอบนี้ (เคลียร์เองเมื่อหาย) · symbol นอกรอบ (--only) คงเดิม
 function mergeFlags(prev, processed, newFlags) {
@@ -856,7 +857,7 @@ function commitFlags(p) {
   const file = p.file || FLAGS;
   return withLock(file, () => {
     const latest = loadFlags(file);   // dry-run ก็อ่านล่าสุด — ให้ preview ตรงกับที่ --write จะเขียนจริง
-    const prevFlags = latest.filter((f) => !((p.quietSyms.has(f.symbol) || p.aliveConfirmed.has(f.symbol)) && f.reason === 'not-on-exchange'));
+    const prevFlags = latest.filter((f) => !((p.quietSyms.has(f.symbol) || p.aliveConfirmed.has(f.symbol)) && DEAD_REASONS.has(f.reason)));
     const merged = mergeFlags(prevFlags, p.evaluated, p.frozenAll.concat(p.failed.map((x) => ({ ...x, reportPrice: null, marketPrice: null, diffPct: null }))))
       .filter((f) => p.reportExists.has(String(f.symbol).toUpperCase()));
     if (p.write) writeJsonAtomic(file, JSON.stringify(merged, null, 2) + '\n');
@@ -1134,10 +1135,14 @@ async function main() {
   // เขียนคั่นกลางไม่ถูก snapshot เก่าทับ (ห้ามเปลี่ยน commitFlags กลับมาใช้ prevAll)
   const prevAll = loadFlags();
   // หุ้นที่รอบก่อน (cron หรือ canary รายสัปดาห์) ยืนยันแล้วว่าไม่อยู่บนกระดาน → ไม่ patch อีก
-  const deadAlready = new Set(prevAll.filter((f) => f.reason === 'not-on-exchange').map((f) => f.symbol));
+  // ticker-renamed ที่ symbol-map ชี้ไป ticker ผู้สืบทอดแล้ว = แก้แล้ว → patch ต่อ + ปลด flag รอบนี้เลย (ไม่ต้องรอ canary วันจันทร์/--alive)
+  const renameFixed = new Set(prevAll.filter(renameResolved).map((f) => f.symbol));
+  for (const s of renameFixed) console.log(`↻ ${s.padEnd(10)} ticker-renamed → symbol-map ชี้ผู้สืบทอดแล้ว — patch ต่อแล้วปลด flag`);
+  const deadAlready = new Set(prevAll.filter((f) => DEAD_REASONS.has(f.reason) && !renameFixed.has(f.symbol)).map((f) => f.symbol));
   // --alive = ผู้ใช้ยืนยันด้วยมือว่ายังอยู่บนกระดาน → patch ต่อได้ + ปลด flag (ทางออกของเคส "mapping
   // เพี้ยน" ที่เดิมไม่มีเลยนอกจากแก้ price-flags.json มือ) · ปลดจริงหลังจบลูปเฉพาะตัวที่ไม่ล้ม plumbing
   const aliveAsserted = new Set(ALIVE ? entries.map((e) => e.symbol) : []);   // v2 + v3 (Plan 3 · R7)
+  for (const e of entries) if (renameFixed.has(e.symbol)) aliveAsserted.add(e.symbol);   // ปลดเหมือน --alive (ยังกันด้วย plumbingFail ข้างล่าง)
   let consecFails = 0;
 
   for (const ent of entries) {
@@ -1337,7 +1342,7 @@ async function main() {
   const plumbingFail = new Set([...failed.map((x) => x.symbol),
     ...frozen.filter((f) => f.reason === 'fetch-failed' || f.reason === 'patch-failed').map((f) => f.symbol)]);
   const aliveConfirmed = new Set([...aliveAsserted].filter((s) => !plumbingFail.has(s)));
-  for (const s of aliveAsserted) if (plumbingFail.has(s)) console.log(`⚠ ${s.padEnd(10)} --alive แต่รอบนี้ล้มแบบ plumbing — คง flag not-on-exchange ไว้ก่อน (ยังไม่มีหลักฐานว่ายังเทรด)`);
+  for (const s of aliveAsserted) if (plumbingFail.has(s)) console.log(`⚠ ${s.padEnd(10)} --alive แต่รอบนี้ล้มแบบ plumbing — คง flag ${NOT_ON_EXCHANGE}/ticker-renamed ไว้ก่อน (ยังไม่มีหลักฐานว่ายังเทรด)`);
   const deadSyms = new Set(deadConfirmed.map((f) => f.symbol));
   const frozenAll = frozen.filter((f) => !deadSyms.has(f.symbol)).concat(deadConfirmed);
 

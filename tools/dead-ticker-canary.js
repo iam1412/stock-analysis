@@ -39,6 +39,7 @@ const US_EXCHANGES = ['NASDAQ', 'NYSE', 'AMEX', 'OTC', 'CBOE'];
 const { entryFor } = require('./symbol-map.js');
 const RS = require('./report-source.js');   // ใบ v2 + v3 (Plan 2b)
 const { withLock, writeJsonAtomic } = require('./lockfile.js');   // WS4: price-flags.json มีหลาย writer
+const { DEAD_REASONS, TICKER_RENAMED } = require('./flag-reasons.js');
 
 // ไฟล์ไม่มี = รอบแรก → fallback · **มีไฟล์แต่ parse ไม่ผ่าน ต้องแยกตามว่าไฟล์นั้นสร้างใหม่ได้ไหม**
 // (ตัวอ่านนี้ใช้กับสองไฟล์ที่ราคาของการเดาผิดต่างกันคนละชั้น จึงไม่มีนโยบายเดียวที่ถูกทั้งคู่):
@@ -123,13 +124,22 @@ function mergeDeadFlags(prev, dead, aliveSymbols, today) {
   const by = new Map((prev || []).map((f) => [f.symbol, f]));
   for (const sym of aliveSymbols) {
     const old = by.get(sym);
-    if (old && old.reason === 'not-on-exchange') by.delete(sym);  // เคยสงสัย แต่กลับมาแล้ว → ถอน
+    if (old && DEAD_REASONS.has(old.reason)) by.delete(sym);  // เคยสงสัย/เปลี่ยนชื่อ แต่ ticker (หลัง symbol-map) อยู่บนกระดานแล้ว → ถอน
   }
   for (const d of dead) {
     const old = by.get(d.symbol);
     by.set(d.symbol, { ...d, flaggedAt: old && old.reason === d.reason ? old.flaggedAt : today });
   }
   return [...by.values()].sort((a, b) => String(a.symbol).localeCompare(String(b.symbol)));
+}
+
+// flag ticker-renamed ถือว่า "แก้แล้ว" เมื่อ symbol-map ของ symbol นั้นชี้ ticker ผู้สืบทอดใน flag แล้ว
+// (เพิ่ม entry {tv|sa|yahoo} ตาม triage RENAME) ⇒ cron รายวันปลด flag + patch ต่อได้เลย ไม่ต้องรอ canary วันจันทร์
+// ไม่มี `successor` (flag รุ่นเก่า/เขียนมือ) = ยังไม่แก้ → ทางเดิม (canary เจอ ticker / --alive)
+function renameResolved(flag, entryOf = entryFor) {
+  if (!flag || flag.reason !== TICKER_RENAMED || !flag.successor) return false;
+  const want = String(flag.successor).toUpperCase().split(':').pop();
+  return tvBaseName(flag.symbol, entryOf(flag.symbol) || {}) === want;
 }
 
 // ---------- io ----------
@@ -257,6 +267,6 @@ async function main() {
   if (!WRITE) console.log('ใส่ --write เพื่อเขียน price-flags.json + cache');
 }
 
-module.exports = { probeList, tvBaseName, tvCandidates, parseRows, classify, mergeDeadFlags, shouldAbort, scan, withRetry, loadTickerCache };
+module.exports = { renameResolved, probeList, tvBaseName, tvCandidates, parseRows, classify, mergeDeadFlags, shouldAbort, scan, withRetry, loadTickerCache };
 
 if (require.main === module) main().catch((e) => { console.error(`✗ canary ล้ม: ${e.message}`); process.exit(1); });

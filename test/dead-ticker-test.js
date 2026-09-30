@@ -91,6 +91,11 @@ ok(m.map((f) => f.symbol).join(',') === 'AAOI,BPP,EA,IT', 'mergeDeadFlags: เ�
 const revived = C.mergeDeadFlags(prev, [], ['EA', 'IT'], '2026-08-08');
 ok(!revived.find((f) => f.symbol === 'EA'), 'mergeDeadFlags: ตัวที่ฟื้น → ถอน not-on-exchange');
 ok(revived.find((f) => f.symbol === 'IT'), 'mergeDeadFlags: ตัวที่ฟื้นแต่ flag คนละเหตุผล → คงไว้');
+// ticker-renamed (THCOM→GST): เพิ่ม symbol-map แล้ว canary เจอ ticker ใหม่ → ถอนเหมือน not-on-exchange
+const renRev = C.mergeDeadFlags([{ symbol: 'THCOM', reason: 'ticker-renamed', detail: 'ISIN TH0380010Y07 → SET:GST', flaggedAt: '2026-10-05' }], [], ['THCOM'], '2026-10-12');
+ok(!renRev.length, 'mergeDeadFlags: ticker-renamed ที่ TradingView เจอแล้ว (หลังเพิ่ม symbol-map) → ถอน');
+const renUp = C.mergeDeadFlags([{ symbol: 'THCOM', reason: 'not-on-exchange', flaggedAt: '2026-09-28' }], [{ symbol: 'THCOM', reason: 'ticker-renamed', detail: 'ISIN TH0380010Y07 → SET:GST' }], [], '2026-10-05');
+ok(renUp.length === 1 && renUp[0].reason === 'ticker-renamed' && renUp[0].flaggedAt === '2026-10-05', 'mergeDeadFlags: not-on-exchange → ticker-renamed ทับ + วันใหม่ (triage เปลี่ยนจากลบเป็น symbol-map)');
 
 // ตัวที่ตายแต่เดิมมี flag เหตุผลอื่น → ทับด้วย not-on-exchange + วันใหม่ (triage เปลี่ยนเป็น "ยืนยันแล้วลบ")
 const upgraded = C.mergeDeadFlags(prev, [{ symbol: 'AAOI', reason: 'not-on-exchange', reportPrice: 94.32 }], ['IT'], '2026-08-08');
@@ -113,6 +118,30 @@ ok(b.marketPrice === null && b.diffPct === null,
   'BPP: ตัวเลข drift เดิมต้องไม่ติดมา (ป้าย not-on-exchange ที่โชว์ −20% อ่านเหมือนราคายังเดินอยู่)',
   JSON.stringify({ marketPrice: b.marketPrice, diffPct: b.diffPct }));
 ok(bpp.length === 1, 'BPP: ไม่เกิด entry ซ้ำ');
+
+// ---------- symbol-map.json จริง: `tv` = ชื่อฐานล้วน (canary เติม `SET:`/กระดาน US เอง) ----------
+// เคสจริง 1 ต.ค. 69: entry THCOM ใส่ tv "SET:GST" → canary จะยิง SET:SET:GST → ไม่เจอ → flag หุ้นตายซ้ำ
+{
+  const map = JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '..', 'tools', 'symbol-map.json'), 'utf8'));
+  for (const [sym, e] of Object.entries(map)) {
+    if (sym.startsWith('_')) continue;
+    ok(e && typeof e.yahoo === 'string' && e.yahoo, `symbol-map ${sym}: มี yahoo`);
+    for (const k of ['tv', 'sa']) if (e[k] != null) ok(/^[A-Z0-9.\-]+$/.test(e[k]), `symbol-map ${sym}.${k} = ชื่อฐานล้วน ห้ามมี exchange prefix`, e[k]);
+    const c = C.tvCandidates(sym, sym === 'LANC' ? 'USD' : 'THB');
+    ok(c.every((t) => (t.match(/:/g) || []).length === 1), `symbol-map ${sym}: candidate มี ':' ตัวเดียว`, JSON.stringify(c));
+  }
+}
+
+// ---------- renameResolved (cron ปลด ticker-renamed เองเมื่อ symbol-map ชี้ผู้สืบทอดแล้ว) ----------
+{
+  const f = { symbol: 'THCOM', reason: 'ticker-renamed', successor: 'SET:GST' };
+  ok(C.renameResolved(f, () => ({ yahoo: 'GST.BK', sa: 'NOPE', tv: 'GST' })) === true, 'renameResolved: tv ชนะ sa (ลำดับเดียวกับ tvBaseName)');
+  ok(C.renameResolved(f, () => ({ yahoo: 'GST.BK', sa: 'GST' })) === true, 'renameResolved: symbol-map ชี้ GST (sa/yahoo) = แก้แล้ว');
+  ok(C.renameResolved(f, () => ({ yahoo: 'GST.BK' })) === true, 'renameResolved: entry มีแค่ yahoo ก็พอ (ถอด .BK)');
+  ok(C.renameResolved(f, () => undefined) === false, 'renameResolved: ยังไม่มี entry = ยังไม่แก้');
+  ok(C.renameResolved({ symbol: 'THCOM', reason: 'ticker-renamed' }, () => ({ yahoo: 'GST.BK' })) === false, 'renameResolved: flag ไม่มี successor = ทางเดิม');
+  ok(C.renameResolved({ symbol: 'THCOM', reason: 'not-on-exchange', successor: 'SET:GST' }, () => ({ yahoo: 'GST.BK' })) === false, 'renameResolved: เฉพาะ ticker-renamed');
+}
 
 // ---------- shouldAbort (ยามกัน mass-flag) ----------
 ok(C.shouldAbort({ onlyMode: false, probed: 784, aliveCount: 120 }) === true, 'shouldAbort: sweep เต็มเจอ alive 15% → ยกเลิกรอบ (โดนบล็อก)');

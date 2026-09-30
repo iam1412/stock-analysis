@@ -91,8 +91,8 @@ function detailOf(x) {
 // reason ที่ **ห้าม re-analyze** — งานคือยืนยันเพิกถอนแล้วลบรายงาน (ดู SKILL.md STEP 0)
 // `stale-quote` ไม่อยู่ในนี้: detectStaleQuotes ตั้งใจคืนฟิลด์ `signal` ไม่ใช่ `reason` จึงไม่มีวัน
 // โผล่ใน price-flags.json — ใส่ไว้เท่ากับบอกผู้อ่านผิดว่ามันเขียนลงไฟล์ได้ (ชุดนี้ต้องตรงกับ
-// EXTERNAL_REASONS ใน update-prices.js ซึ่งมีแค่ not-on-exchange)
-const DEAD_REASONS = new Set(['not-on-exchange']);
+// EXTERNAL_REASONS ใน update-prices.js — ทั้งสองอ่านจาก tools/flag-reasons.js ตัวเดียว)
+const { DEAD_REASONS } = require('./flag-reasons.js');
 const hasDead = flags.some((f) => DEAD_REASONS.has(f.reason));
 const deadNote = hasDead
   ? [
@@ -103,6 +103,9 @@ const deadNote = hasDead
       '> ไฟล์รายงานถูกลบ · TradingView เจอ ticker กลับมา (cron รายวันตอนยืนยัน candidate หรือ canary รายสัปดาห์)',
       '> · หรือยืนยันด้วยมือแล้วสั่ง `node tools/update-prices.js --write --alive <SYM>`',
       '> ถ้ายืนยันว่ายังเทรดอยู่จริง = ปัญหา mapping **ห้ามลบรายงาน** (แก้ `tools/symbol-map.json` แล้ว `--alive`)',
+      '> **เช็คเปลี่ยนชื่อก่อนลบเสมอ** (TradingView symbol-search · Yahoo search `prevName`) — แท่งรายวันของ Yahoo ใต้ ticker เดิม',
+      '> **ไม่ใช่หลักฐานว่ายังเทรด** (Yahoo relink ไป ticker ใหม่ได้ — THCOM→GST 1 ต.ค. 69) · `ticker-renamed` = canary เจอผู้สืบทอดจาก ISIN',
+      '> แล้ว → เพิ่ม `tools/symbol-map.json` ตาม detail (cron ปลด flag เองเมื่อ symbol-map ชี้ผู้สืบทอด) **ห้ามลบรายงาน**',
     ]
   : [];
 

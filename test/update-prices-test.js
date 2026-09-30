@@ -837,6 +837,8 @@ ok(keptExt[0].flaggedAt === '2026-08-04', 'flags: not-on-exchange คงวั�
 const bothFlags = U.mergeFlags(withExternal, new Set(['EA']), [{ symbol: 'EA', reason: 'drift-gt-15pct', reportPrice: 209.7, marketPrice: 250, diffPct: 19.2 }]);
 ok(bothFlags.filter((f) => f.symbol === 'EA').length === 1, 'flags: ไม่เกิด entry ซ้ำเมื่อทั้งสองเครื่องมือ flag ตัวเดียวกัน', JSON.stringify(bothFlags));
 ok(bothFlags.find((f) => f.symbol === 'EA').reason === 'not-on-exchange', 'flags: ticker ตาย (not-on-exchange) ชนะ drift — triage คือยืนยันแล้วลบ');
+const keptRen = U.mergeFlags([{ symbol: 'THCOM', reason: 'ticker-renamed', detail: 'ISIN TH0380010Y07 → SET:GST', flaggedAt: '2026-10-05' }], new Set(['THCOM']), []);
+ok(keptRen.length === 1 && keptRen[0].reason === 'ticker-renamed' && keptRen[0].flaggedAt === '2026-10-05', 'flags: ticker-renamed รอด cron รายวันเหมือน not-on-exchange (EXTERNAL)');
 
 // ---------- commitBody ----------
 const body = U.commitBody(
@@ -945,6 +947,11 @@ ok(U.commitBody([], []) === '', 'commitBody: ว่างเมื่อไม�
   ok(!flags.some((f) => f.symbol === 'AAA'), 'commitFlags: AAA ประเมินรอบนี้ไม่ freeze → หลุดคิว');
   ok(flags.some((f) => f.symbol === 'ZZZ' && f.reason === 'not-on-exchange'), 'commitFlags: flag ที่ canary เขียนระหว่าง loop ยังอยู่ (merge บนไฟล์ล่าสุด)');
   ok(JSON.parse(fs.readFileSync(file, 'utf8')).length === 1 && !fs.existsSync(file + '.lock'), 'commitFlags: เขียนไฟล์ + ปล่อย lock');
+  // quiet (TradingView เจอ ticker) / --alive ต้องถอน ticker-renamed ด้วย — ไม่งั้นหลังเพิ่ม symbol-map flag ค้าง + cron ข้าม patch ตลอด
+  const fileR = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'flags-')), 'price-flags.json');
+  fs.writeFileSync(fileR, JSON.stringify([{ symbol: 'THCOM', reason: 'ticker-renamed', flaggedAt: '2026-10-05' }, { symbol: 'QQQ', reason: 'ticker-renamed', flaggedAt: '2026-10-05' }]));
+  const fr = U.commitFlags({ file: fileR, write: false, evaluated: new Set(['THCOM', 'QQQ']), frozenAll: [], failed: [], quietSyms: new Set(['QQQ']), aliveConfirmed: new Set(['THCOM']), reportExists: new Set(['THCOM', 'QQQ']) });
+  ok(!fr.length, 'commitFlags: --alive / TradingView เจอ ticker → ถอน ticker-renamed', JSON.stringify(fr));
   const before = fs.readFileSync(file, 'utf8');
   ok(Array.isArray(U.commitFlags({ ...args, write: false })) && fs.readFileSync(file, 'utf8') === before, 'commitFlags: dry-run ไม่เขียนไฟล์');
 }

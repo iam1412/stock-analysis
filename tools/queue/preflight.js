@@ -280,7 +280,9 @@ function manualSteps(rows) {
   let n = 0;
   L.push(`${++n}. probe โมเดล: spawn subagent ไม่ใส่ model ให้ตอบบรรทัด "You are powered by the model named …" (CLAUDE.md §3.2) แล้ว pin ทุก call`);
   const d = rows.filter((r) => r.bucket === 'DELIST');
-  if (d.length) L.push(`${++n}. DELIST ${d.map((r) => r.symbol).join(' ')}: ยืนยันแหล่งปฐมภูมิ (SEC Form 25/8-K · ประกาศตลาด) → ลบรายงาน + node tools/tag-apply.js --prune · ยังเทรด → node tools/update-prices.js --write --alive <SYM>`);
+  if (d.length) L.push(`${++n}. DELIST ${d.map((r) => r.symbol).join(' ')}: เช็คเปลี่ยนชื่อก่อน (TradingView symbol-search · Yahoo search prevName — แท่ง Yahoo ไม่ใช่หลักฐาน) → เปลี่ยนชื่อ = เพิ่ม tools/symbol-map.json แล้ว --alive · ไม่ใช่ → ยืนยันแหล่งปฐมภูมิ (SEC Form 25/8-K · หน้า SET) → ลบรายงาน + node tools/tag-apply.js --prune`);
+  const rn = rows.filter((r) => r.bucket === 'RENAME');
+  if (rn.length) L.push(`${++n}. RENAME ${rn.map((r) => `${r.symbol}${r.detail ? `[${r.detail}]` : ''}`).join(' ')}: ยืนยันหน้าตลาด → เพิ่ม tools/symbol-map.json {yahoo, sa, tv} → node tools/update-prices.js --write --alive <SYM> · ห้ามลบรายงาน`);
   // prePatchRejected ติดมากับแถวหลัง preflight เท่านั้น (pre-patch แล้ว gate ตก → คืนไฟล์) — คลาสเดียวกับ REJECTED ของ cron: แก้ใบเอง ไม่ spawn agent
   const p = rows.filter((r) => r.bucket === 'PLUMBING' || r.bucket === 'REJECTED' || r.bucket === 'UNKNOWN' || r.prePatchRejected);
   if (p.length) L.push(`${++n}. ${p.map((r) => `${r.symbol}[${r.prePatchRejected ? 'gate ตกหลัง pre-patch' : r.reason}]`).join(' ')}: แก้ตามคอลัมน์ "การทำ" ไม่ spawn agent`);
