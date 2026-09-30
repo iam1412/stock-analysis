@@ -25,6 +25,8 @@ const path = require('path');
 const REPORTS = path.join(__dirname, '..', 'reports');
 const FLAGS = path.join(__dirname, '..', 'price-flags.json');
 const CACHE = path.join(__dirname, 'tv-tickers.json');
+const ISIN_CACHE = path.join(__dirname, 'tv-isins.json');   // symbol → ISIN ที่ TradingView รายงาน (canary --write เขียนเอง)
+const SEARCH_URL = 'https://symbol-search.tradingview.com/symbol_search/v3/';
 const SCAN_URL = 'https://scanner.tradingview.com/global/scan';
 const CHUNK = 1200;          // ต่อ 1 request (เพดาน scanner ~2000 — เผื่อไว้)
 const REQ_TIMEOUT_MS = 20000; // undici default ~300 วิ — ยิงเดียวค้างกินงบ job (15 นาที) ไปหนึ่งในสาม
@@ -39,7 +41,7 @@ const US_EXCHANGES = ['NASDAQ', 'NYSE', 'AMEX', 'OTC', 'CBOE'];
 const { entryFor } = require('./symbol-map.js');
 const RS = require('./report-source.js');   // ใบ v2 + v3 (Plan 2b)
 const { withLock, writeJsonAtomic } = require('./lockfile.js');   // WS4: price-flags.json มีหลาย writer
-const { DEAD_REASONS, TICKER_RENAMED } = require('./flag-reasons.js');
+const { DEAD_REASONS, TICKER_RENAMED, NOT_ON_EXCHANGE } = require('./flag-reasons.js');
 
 // ไฟล์ไม่มี = รอบแรก → fallback · **มีไฟล์แต่ parse ไม่ผ่าน ต้องแยกตามว่าไฟล์นั้นสร้างใหม่ได้ไหม**
 // (ตัวอ่านนี้ใช้กับสองไฟล์ที่ราคาของการเดาผิดต่างกันคนละชั้น จึงไม่มีนโยบายเดียวที่ถูกทั้งคู่):
@@ -60,6 +62,8 @@ const loadJson = (p, fallback, { rebuildable = false } = {}) => {
 
 /** ticker ที่ resolve ได้รอบก่อน (tools/tv-tickers.json) — cron รายวันก็ใช้ร่วม ไม่ต้องยิงทุกกระดานซ้ำ */
 const loadTickerCache = () => loadJson(CACHE, {}, { rebuildable: true });
+/** ISIN ต่อ symbol ที่ sweep รอบก่อนเห็น (tools/tv-isins.json) — กุญแจหาผู้สืบทอดเมื่อ ticker หาย (ISIN ไม่เปลี่ยนตาม ticker) */
+const loadIsinCache = () => loadJson(ISIN_CACHE, {}, { rebuildable: true });
 
 // ---------- pure helpers (ทดสอบใน test/dead-ticker-test.js) ----------
 
@@ -88,14 +92,83 @@ function tvCandidates(symbol, currency, opts = {}) {
   return [...new Set(out)];
 }
 
-// { totalCount, data: [{ s: 'NASDAQ:NVDA', d: [223.96, 'USD'] }] } → Map ticker → { price, currency }
+// { totalCount, data: [{ s: 'NASDAQ:NVDA', d: [223.96, 'USD', 'US67066G1040'] }] } → Map ticker → { price, currency, isin }
+// (คอลัมน์ตาม SCAN_COLUMNS · isin ไม่มี/ว่าง = null — ไม่ใช่เหตุให้ถือว่าตาย)
+const SCAN_COLUMNS = ['close', 'currency', 'isin'];
 function parseRows(json) {
   const rows = new Map();
   for (const r of (json && json.data) || []) {
     if (!r || !r.s) continue;
-    rows.set(String(r.s).toUpperCase(), { price: (r.d || [])[0], currency: (r.d || [])[1] });
+    const d = r.d || [];
+    rows.set(String(r.s).toUpperCase(), { price: d[0], currency: d[1], isin: typeof d[2] === 'string' && d[2] ? d[2].toUpperCase() : null });
   }
   return rows;
+}
+
+// ---------- ผู้สืบทอดจาก ISIN (เคส THCOM→GST 1 ต.ค. 69) ----------
+// ticker หายจาก scanner มีสองความหมาย: เพิกถอน (ลบรายงาน) หรือ **เปลี่ยนชื่อ** (แก้ symbol-map) — เดิมทุกตัวได้
+// not-on-exchange ⇒ triage พาไปทาง "ลบ/--alive" ซึ่งผิดทั้งคู่สำหรับการเปลี่ยนชื่อ · ISIN ติดตัวหุ้นข้ามการเปลี่ยน
+// ticker (GST = TH0380010Y07 ตัวเดียวกับ THCOM · MZTI = LANC US5138471033) ⇒ ถามค้นหาด้วย ISIN ที่ sweep ก่อนบันทึกไว้
+// ข้อจำกัดที่ยอมรับ: ปรับโครงสร้างแบบแลกหุ้น (BKI→BKIH, STEC→STECON) ได้ ISIN ใหม่ → ไม่เจอ → not-on-exchange เหมือนเดิม (ทิศปลอดภัย)
+//   และหุ้นที่ยังไม่มี ISIN ใน cache (รายงานใหม่ที่ sweep ยังไม่เคยเห็น) ก็เช่นกัน
+const cohortExchanges = (currency) => (currency === 'THB' ? ['SET'] : US_EXCHANGES);
+
+/** ผลค้นหา symbol-search (ส่วนบริสุทธิ์) → ticker บนกระดานของ cohort ที่ ISIN ตรงเป๊ะ ไม่ใช่ ticker เดิม */
+function successorCandidates(json, { isin, currency, exclude = [] }) {
+  const want = String(isin || '').toUpperCase();
+  if (!want) return [];
+  const ex = new Set(cohortExchanges(currency));
+  const skip = new Set(exclude.map((t) => String(t).toUpperCase()));
+  const out = [];
+  for (const x of (json && json.symbols) || []) {
+    if (!x || String(x.isin || '').toUpperCase() !== want || x.type !== 'stock') continue;
+    const exch = String(x.exchange || x.source_id || '').toUpperCase();
+    if (!ex.has(exch)) continue;
+    const t = `${exch}:${String(x.symbol || '').replace(/<[^>]+>/g, '').toUpperCase()}`;
+    if (!skip.has(t) && !out.includes(t)) out.push(t);
+  }
+  return out;
+}
+
+async function searchIsin(isin, deps = {}) {
+  const doFetch = deps.fetch || fetch;
+  return withRetry(async () => {
+    const url = `${SEARCH_URL}?text=${encodeURIComponent(isin)}&search_type=stocks&lang=en&domain=production`;
+    const res = await doFetch(url, { headers: { 'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36', origin: 'https://www.tradingview.com' }, signal: AbortSignal.timeout(REQ_TIMEOUT_MS) });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const text = await res.text();
+    try { return JSON.parse(text); } catch (e) { throw new Error(`JSON เสีย: ${text.slice(0, 60)}`); }
+  }, deps);
+}
+
+/** dead probes → Map symbol → { successor, isin } · ผลค้นหา**ต้องยืนยันด้วย scanner** ว่าอยู่บนกระดานจริง (ผลค้นหาไม่ใช่หลักฐาน)
+ *  ค้นล้ม/ไม่มี ISIN/ไม่เจอ = ไม่อยู่ใน Map (ผู้เรียกคง not-on-exchange — ห้ามล้มทั้งรอบเพราะตัวช่วยนี้) · deps = ช่องฉีดของ test */
+async function resolveSuccessors(dead, isinCache, deps = {}) {
+  const found = new Map(), cands = new Map();
+  for (const p of dead) {
+    const isin = isinCache[String(p.symbol).toUpperCase()];
+    if (!isin) continue;
+    try {
+      const c = successorCandidates(await searchIsin(isin, deps), { isin, currency: p.currency, exclude: p.candidates || [] });
+      if (c.length) cands.set(p.symbol, { isin, list: c });
+    } catch (e) { console.log(`⚠ ${p.symbol}: ค้น ISIN ${isin} ไม่สำเร็จ (${e.message}) — คง not-on-exchange`); }
+  }
+  if (!cands.size) return found;
+  let rows;
+  try { rows = await scan([...new Set([...cands.values()].flatMap((c) => c.list))], deps); }
+  catch (e) { console.log(`⚠ ยืนยันผู้สืบทอดกับ scanner ไม่สำเร็จ (${e.message}) — คง not-on-exchange`); return found; }
+  for (const [sym, c] of cands) {
+    const hit = c.list.find((t) => rows.has(t) && (!rows.get(t).isin || rows.get(t).isin === c.isin));
+    if (hit) found.set(sym, { successor: hit, isin: c.isin });
+  }
+  return found;
+}
+
+/** dead probe (+ ผลผู้สืบทอด) → แถว flag · ตัวเดียวใช้ทั้ง canary รายสัปดาห์และ cron รายวัน (triage ตรงกัน) */
+function deadFlag(p, succ, extra = {}) {
+  if (succ) return { symbol: p.symbol, reason: TICKER_RENAMED, reportPrice: p.reportPrice, marketPrice: null, diffPct: null,
+    successor: succ.successor, isin: succ.isin, detail: `ISIN ${succ.isin} → ${succ.successor}`, ...extra };
+  return { symbol: p.symbol, reason: NOT_ON_EXCHANGE, reportPrice: p.reportPrice, marketPrice: null, diffPct: null, ...extra };
 }
 
 // จับคู่ผลลัพธ์กลับเป็น symbol → ticker ที่ยังมีตัวตน · ตัวที่ไม่มี candidate ไหนตอบ = ต้องสงสัย
@@ -169,7 +242,7 @@ async function scan(tickers, deps = {}) {
         'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
         origin: 'https://www.tradingview.com',
       },
-      body: JSON.stringify({ symbols: { tickers }, columns: ['close', 'currency'], range: [0, tickers.length] }),
+      body: JSON.stringify({ symbols: { tickers }, columns: SCAN_COLUMNS, range: [0, tickers.length] }),
       signal: AbortSignal.timeout(REQ_TIMEOUT_MS),
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -232,12 +305,13 @@ async function main() {
   }
 
   for (const [sym, hit] of alive) cache[sym.toUpperCase()] = hit.ticker;
+  const isins = loadIsinCache();
+  const succ = dead.length ? await resolveSuccessors(dead, isins, {}) : new Map();
+  for (const [sym, s] of succ) console.log(`↪ ${sym.padEnd(10)} ไม่ได้ตาย — ISIN ${s.isin} อยู่ที่ ${s.successor} (เปลี่ยนชื่อ) → flag ticker-renamed · แก้ symbol-map ห้ามลบรายงาน`);
+  for (const [sym, hit] of alive) if (hit.isin) isins[sym.toUpperCase()] = hit.isin;   // ตัวตายคง ISIN เดิมไว้ (กุญแจของรอบหน้า)
 
   const today = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Bangkok' }); // YYYY-MM-DD เวลาไทย
-  const newFlags = dead.map((p) => ({
-    symbol: p.symbol, reason: 'not-on-exchange', reportPrice: p.reportPrice,
-    marketPrice: null, diffPct: null, probed: p.candidates.length,
-  }));
+  const newFlags = dead.map((p) => deadFlag(p, succ.get(p.symbol), { probed: p.candidates.length }));
   // flag ของรายงานที่ถูกลบไปแล้ว (= ปลายทางของ triage not-on-exchange) ต้องตัดทิ้งเหมือนที่
   // update-prices.js ทำ — mergeDeadFlags พา flag เดิมมาทุกตัวโดยไม่รู้ว่าไฟล์ยังอยู่ไหม ⇒ ถ้ารัน
   // canary หลังลบรายงานแต่ก่อน cron รอบถัดไป flag ที่เคลียร์ไปแล้วจะถูก commit กลับเข้าคิว
@@ -251,22 +325,24 @@ async function main() {
   if (WRITE) {
     cache._readme = 'ticker ที่ TradingView ใช้จริงต่อ symbol — dead-ticker-canary.js เขียนเอง (cache กันยิงหลายกระดานซ้ำ) ห้ามแก้มือ';
     writeJsonAtomic(CACHE, JSON.stringify(cache, null, 2) + '\n');
+    const sorted = Object.fromEntries(Object.entries(isins).filter(([k]) => k !== '_readme').sort(([a], [b]) => a.localeCompare(b)));
+    writeJsonAtomic(ISIN_CACHE, JSON.stringify({ _readme: 'ISIN ต่อ symbol ที่ TradingView รายงาน — dead-ticker-canary.js เขียนเอง (กุญแจหา ticker ผู้สืบทอดเมื่อเปลี่ยนชื่อ) ห้ามแก้มือ', ...sorted }, null, 2) + '\n');
   }
 
-  const line = `${WRITE ? 'เขียนแล้ว' : '[dry-run]'} ตรวจ ${probes.length} · อยู่บนกระดาน ${alive.size} · ต้องสงสัย ${dead.length}`;
+  const line = `${WRITE ? 'เขียนแล้ว' : '[dry-run]'} ตรวจ ${probes.length} · อยู่บนกระดาน ${alive.size} · ต้องสงสัย ${dead.length}${succ.size ? ` (ในนั้นเปลี่ยนชื่อ ${succ.size})` : ''}`;
   console.log('\n' + line);
   if (process.env.GITHUB_STEP_SUMMARY) {
     let md = `## Dead-ticker canary\n${line}\n`;
     if (dead.length) {
       md += `\n### ☠ ไม่พบบนกระดาน (${dead.length}) — ยืนยันด้วยมือก่อนลบรายงาน\n| Symbol | สกุลเงิน | ราคาในรายงาน | ticker ที่ถาม |\n|---|---|---|---|\n`;
-      for (const p of dead) md += `| ${p.symbol} | ${p.currency} | ${p.reportPrice != null ? p.reportPrice : '-'} | ${p.candidates.join(' · ')} |\n`;
-      md += `\nflag \`not-on-exchange\` ลง \`price-flags.json\` แล้ว — triage: ยืนยันจากแหล่งปฐมภูมิ (SEC Form 25 / ประกาศตลาด) แล้ว**ลบรายงาน** ไม่ใช่ re-analyze\n`;
+      for (const p of dead) md += `| ${p.symbol} | ${p.currency} | ${p.reportPrice != null ? p.reportPrice : '-'} | ${p.candidates.join(' · ')}${succ.has(p.symbol) ? ` → **เปลี่ยนชื่อเป็น ${succ.get(p.symbol).successor}**` : ''} |\n`;
+      md += `\nflag \`not-on-exchange\` ลง \`price-flags.json\` แล้ว — triage: เช็คเปลี่ยนชื่อก่อน แล้วยืนยันจากแหล่งปฐมภูมิ (SEC Form 25 / ประกาศตลาด) แล้ว**ลบรายงาน** ไม่ใช่ re-analyze · \`ticker-renamed\` = เพิ่ม symbol-map **ห้ามลบ**\n`;
     }
     fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, md);
   }
   if (!WRITE) console.log('ใส่ --write เพื่อเขียน price-flags.json + cache');
 }
 
-module.exports = { renameResolved, probeList, tvBaseName, tvCandidates, parseRows, classify, mergeDeadFlags, shouldAbort, scan, withRetry, loadTickerCache };
+module.exports = { renameResolved, successorCandidates, resolveSuccessors, deadFlag, loadIsinCache, SCAN_COLUMNS, probeList, tvBaseName, tvCandidates, parseRows, classify, mergeDeadFlags, shouldAbort, scan, withRetry, loadTickerCache };
 
 if (require.main === module) main().catch((e) => { console.error(`✗ canary ล้ม: ${e.message}`); process.exit(1); });

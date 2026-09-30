@@ -53,7 +53,7 @@ const fs = require('fs');
 const path = require('path');
 // ยืนยัน "ticker ตายจริงไหม" ด้วยแหล่งอิสระ — ใช้ helper ร่วมกับ canary รายสัปดาห์ (ไม่มี require วน:
 // dead-ticker-canary ไม่ได้ require ไฟล์นี้ · main() ของมันรันเฉพาะเมื่อถูกเรียกเป็น entry point)
-const { tvCandidates, scan: scanTickers, classify: classifyTickers, loadTickerCache, renameResolved } = require('./dead-ticker-canary.js');
+const { tvCandidates, scan: scanTickers, classify: classifyTickers, loadTickerCache, loadIsinCache, renameResolved, resolveSuccessors, deadFlag } = require('./dead-ticker-canary.js');
 const { DEAD_REASONS, NOT_ON_EXCHANGE } = require('./flag-reasons.js');
 const { entryFor } = require('./symbol-map.js');
 const RM = require('./report-meta.js');   // เจ้าของเดียวของ regex stock-meta/report-data/.px
@@ -1327,11 +1327,21 @@ async function main() {
       if (!verified.length) throw new Error('ไม่มี cohort ไหนยืนยันได้เลย — ไม่ flag ทั้งรอบ');
       const res = classifyStale(verified, rows, probeMap);
       deadConfirmed = res.dead;
+      // ตัวที่ TradingView ไม่พบ: ISIN เดิมไปโผล่ ticker ใหม่ไหม (เปลี่ยนชื่อ ≠ เพิกถอน — THCOM→GST) · ล้ม = คง not-on-exchange
+      if (deadConfirmed.length) {
+        const cohortOf = new Map(verified.map((c) => [c.symbol, c.cohort]));
+        const succ = await resolveSuccessors(deadConfirmed.map((d) => ({ symbol: d.symbol, currency: cohortOf.get(d.symbol), candidates: probeMap.get(d.symbol) || [] })), loadIsinCache());
+        deadConfirmed = deadConfirmed.map((d) => (succ.has(d.symbol)
+          ? deadFlag({ symbol: d.symbol, reportPrice: d.reportPrice }, succ.get(d.symbol), { missedSessions: d.missedSessions })
+          : d));
+      }
       quietSyms = new Set(res.quiet.map((q) => q.symbol));
       for (const q of res.quiet)
         console.log(`· ${q.symbol.padEnd(10)} quote ค้าง ${q.missedSessions} session แต่ ${q.ticker} ยังอยู่บนกระดาน = ไม่มีคนเทรด ไม่ใช่หุ้นตาย`);
       for (const d of deadConfirmed)
-        console.log(`☠ ${d.symbol.padEnd(10)} quote ค้าง ${d.missedSessions} session + TradingView ไม่พบ ticker → flag not-on-exchange (ยืนยันด้วยมือก่อนลบ)`);
+        console.log(d.reason === 'ticker-renamed'
+          ? `↪ ${d.symbol.padEnd(10)} quote ค้าง ${d.missedSessions} session · ticker เดิมหาย แต่ ${d.detail} → flag ticker-renamed (แก้ symbol-map ห้ามลบ)`
+          : `☠ ${d.symbol.padEnd(10)} quote ค้าง ${d.missedSessions} session + TradingView ไม่พบ ticker → flag not-on-exchange (ยืนยันด้วยมือก่อนลบ)`);
     } catch (e) {
       console.log(`⚠ ถาม TradingView ไม่สำเร็จ (${e.message}) — ไม่ flag รอบนี้ ปล่อย canary รายสัปดาห์จัดการ · candidate: ${candidates.map((c) => c.symbol).join(', ')}`);
     }
