@@ -255,6 +255,24 @@ async function scan(tickers, deps = {}) {
   }, deps);
 }
 
+/** 52wk ของ TradingView ต่อ ticker (ตัวชี้ขาดสำรองของ bad-chart ใน update-prices — THCOM→GST) · Map ticker → { low, high } */
+async function scan52w(tickers, deps = {}) {
+  const doFetch = deps.fetch || fetch;
+  return withRetry(async () => {
+    const res = await doFetch(SCAN_URL, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', 'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36', origin: 'https://www.tradingview.com' },
+      body: JSON.stringify({ symbols: { tickers }, columns: ['price_52_week_low', 'price_52_week_high'], range: [0, tickers.length] }),
+      signal: AbortSignal.timeout(REQ_TIMEOUT_MS),
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const json = JSON.parse(await res.text());
+    const out = new Map();
+    for (const r of (json && json.data) || []) if (r && r.s) out.set(String(r.s).toUpperCase(), { low: (r.d || [])[0], high: (r.d || [])[1] });
+    return out;
+  }, deps);
+}
+
 /** รายการ probe (ส่วนบริสุทธิ์) — syms ตามลำดับไฟล์ · liteOf(sym) → metaLite (สกุล/ราคาในใบ ทั้ง v2 และ v3) · ไม่มีสกุล = ข้าม */
 function probeList(syms, liteOf, only, cache) {
   const probes = [], skipped = [];
@@ -343,6 +361,6 @@ async function main() {
   if (!WRITE) console.log('ใส่ --write เพื่อเขียน price-flags.json + cache');
 }
 
-module.exports = { renameResolved, successorCandidates, resolveSuccessors, deadFlag, loadIsinCache, SCAN_COLUMNS, probeList, tvBaseName, tvCandidates, parseRows, classify, mergeDeadFlags, shouldAbort, scan, withRetry, loadTickerCache };
+module.exports = { scan52w, renameResolved, successorCandidates, resolveSuccessors, deadFlag, loadIsinCache, SCAN_COLUMNS, probeList, tvBaseName, tvCandidates, parseRows, classify, mergeDeadFlags, shouldAbort, scan, withRetry, loadTickerCache };
 
 if (require.main === module) main().catch((e) => { console.error(`✗ canary ล้ม: ${e.message}`); process.exit(1); });

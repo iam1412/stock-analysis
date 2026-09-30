@@ -115,6 +115,28 @@ ok(mb.worst && mb.worst.close === 76.67, 'detectMixedBasis: worst = จุดท
 ok(/76\.67/.test(mb.text) && /50\.17/.test(mb.text) && /ธ\.ค\.25/.test(mb.text),
   'detectMixedBasis: detail อ่านออก (เดือน+ค่า+กรอบ 52wk) — ลงคิว price-flags ให้คนไล่ต่อได้', mb.text);
 
+// ---------- pick52w: Yahoo 52wk ของ ticker ที่เพิ่งเปลี่ยนชื่อแคบผิด → ใช้ TradingView ตัดสินฐาน (THCOM→GST 1 ต.ค. 69) ----------
+// GST.BK meta 52wk = 9.4–10.2 (นับแค่หลังเปลี่ยนชื่อ) แต่แท่งรายเดือนมีประวัติเต็ม (มี.ค.26 = 12.3) → detectMixedBasis freeze bad-chart ผิด
+// TradingView SET:GST 52wk = 7.6–14.2 ครอบทุกแท่ง ⇒ ฐานเดียว · ค่าจริงที่วัด 1 ต.ค. 69 แช่ไว้ ห้าม fetch สด
+{
+  const NOW_GST = Date.UTC(2026, 8, 30) / 1000;
+  const gstBars = mkSeries([[2025, 9, 9.55], [2025, 10, 8.7], [2025, 11, 8.65], [2026, 0, 9.2], [2026, 1, 11.8], [2026, 2, 12.3],
+    [2026, 3, 11.6], [2026, 4, 11.5], [2026, 5, 11.2], [2026, 6, 10.9], [2026, 7, 10.9], [2026, 8, 9.4]]);
+  const qG = { price: 9.4, week52Low: 9.4, week52High: 10.2 };
+  ok(U.detectMixedBasis({ bars: gstBars, low: 9.4, high: 10.2, nowSec: NOW_GST }).mixed, 'pick52w fixture: Yahoo 52wk ของ GST ทำให้ freeze จริง (ยืนยันว่าเคสนี้ยิง)');
+  const pk = U.pick52w(qG, { bars: gstBars }, { low: 7.6, high: 14.2 }, NOW_GST);
+  ok(pk.q.week52Low === 7.6 && pk.q.week52High === 14.2 && pk.q.price === 9.4 && /TradingView/.test(pk.note), 'pick52w: TradingView ครอบทุกแท่ง → ใช้ 52wk ของ TradingView (ปลด freeze + range52w ถูก)', JSON.stringify(pk));
+  ok(qG.week52Low === 9.4, 'pick52w: ไม่แก้ q เดิม (คืนตัวใหม่)');
+  const noTv = U.pick52w(qG, { bars: gstBars }, null, NOW_GST);
+  ok(noTv.q === qG && /ไม่ได้/.test(noTv.note), 'pick52w: TradingView ไม่ตอบ → คง Yahoo (freeze เหมือนเดิม — fail closed)', JSON.stringify(noTv.note));
+  const mn = U.pick52w({ price: 45.53, week52Low: 30.485, week52High: 50.17 }, { bars: mnstBars }, { low: 30.49, high: 50.2 }, NOW);
+  ok(mn.q.week52High === 50.17 && /ยืนยัน/.test(mn.note), 'pick52w: MNST split — TradingView (ปรับแล้ว) ก็เห็นว่าผสมสองฐาน → คง freeze', mn.note);
+  const pxOut = U.pick52w({ price: 30, week52Low: 9.4, week52High: 10.2 }, { bars: gstBars }, { low: 7.6, high: 14.2 }, NOW_GST);
+  ok(pxOut.q.week52Low === 9.4, 'pick52w: ราคาปัจจุบันหลุดกรอบ TradingView = ไม่เชื่อ TradingView (คนละตัว/ข้อมูลเพี้ยน)');
+  const clean = U.pick52w({ price: 45.53, week52Low: 30.485, week52High: 50.17 }, { bars: mkSeries([[2026, 6, 48.19], [2026, 7, 45.53]]) }, null, NOW);
+  ok(clean.note === null, 'pick52w: Yahoo ไม่ผสมฐาน → ไม่ถาม/ไม่แตะ');
+}
+
 // close ดิบจาก JSON ของ Yahoo เป็น float มีหางลอย (วัดจริงตอน dry-run: 76.66999816894531)
 // — detail ลงไฟล์ price-flags.json ที่คนอ่าน จึงต้องปัด ไม่ใช่โยนค่าดิบลงไป
 const noisy = U.detectMixedBasis({ bars: mkSeries([[2025, 11, 76.66999816894531], [2026, 7, 45.53]]), low: 30.485, high: 50.17, nowSec: NOW });

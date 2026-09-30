@@ -53,7 +53,7 @@ const fs = require('fs');
 const path = require('path');
 // ยืนยัน "ticker ตายจริงไหม" ด้วยแหล่งอิสระ — ใช้ helper ร่วมกับ canary รายสัปดาห์ (ไม่มี require วน:
 // dead-ticker-canary ไม่ได้ require ไฟล์นี้ · main() ของมันรันเฉพาะเมื่อถูกเรียกเป็น entry point)
-const { tvCandidates, scan: scanTickers, classify: classifyTickers, loadTickerCache, loadIsinCache, renameResolved, resolveSuccessors, deadFlag } = require('./dead-ticker-canary.js');
+const { tvCandidates, scan: scanTickers, scan52w, classify: classifyTickers, loadTickerCache, loadIsinCache, renameResolved, resolveSuccessors, deadFlag } = require('./dead-ticker-canary.js');
 const { DEAD_REASONS, NOT_ON_EXCHANGE } = require('./flag-reasons.js');
 const { entryFor } = require('./symbol-map.js');
 const RM = require('./report-meta.js');   // เจ้าของเดียวของ regex stock-meta/report-data/.px
@@ -250,6 +250,40 @@ function detectMixedBasis({ bars, low, high, nowSec, gmtoffset = 0, tol = CHART_
   out.text = `${lab} ${round(out.worst.close, 2)} หลุดกรอบ 52 สัปดาห์ ${round(low, 2)}–${round(high, 2)} `
     + `(${out.bad.length}/${bars.length} จุดคนละฐาน — สงสัย split ที่ Yahoo ยังไม่ปรับย้อนหลัง)`;
   return out;
+}
+
+// ★ ตัวชี้ขาดสำรองของ detectMixedBasis (THCOM→GST 1 ต.ค. 69): Yahoo meta 52wk ของ ticker ที่**เพิ่งเปลี่ยนชื่อ**นับแค่
+// ช่วงหลังเปลี่ยน (GST.BK 9.4–10.2) ขณะที่แท่งรายเดือนมีประวัติเต็ม (มี.ค.26 = 12.3) ⇒ ดูเหมือนผสมสองฐาน freeze bad-chart ผิด
+// และถ้าเขียนผ่านได้ range52w ก็ผิดด้วย · ใช้ 52wk ของ TradingView (แหล่งอิสระ) **เฉพาะเมื่อ Yahoo บอกว่าผสม**:
+//   TradingView ครอบทุกแท่ง + ราคาปัจจุบันอยู่ในกรอบ = ฐานเดียว → แทน 52wk ใน q (ปลด freeze + range52w ถูก)
+//   TradingView ก็เห็นผสม (split จริง — MNST) / ไม่ตอบ / ราคาหลุดกรอบ = คง Yahoo (freeze เหมือนเดิม — fail closed)
+// ส่วนบริสุทธิ์ · alt = { low, high } | null · คืน { q, note } (note null = Yahoo ไม่ผสม ไม่ได้ถาม)
+function pick52w(q, chart, alt, nowSec) {
+  const bars = (chart && chart.bars) || [];
+  const y = detectMixedBasis({ bars, low: q.week52Low, high: q.week52High, nowSec });
+  if (!y.mixed) return { q, note: null };
+  if (!alt || !Number.isFinite(alt.low) || !Number.isFinite(alt.high) || alt.low <= 0 || alt.high < alt.low)
+    return { q, note: 'ถาม TradingView 52wk ไม่ได้ — คง Yahoo' };
+  const inBand = q.price >= alt.low * (1 - CHART_BASIS_TOL) && q.price <= alt.high * (1 + CHART_BASIS_TOL);
+  if (!inBand) return { q, note: `ราคา ${round(q.price, 2)} หลุดกรอบ TradingView ${round(alt.low, 2)}–${round(alt.high, 2)} — ไม่เชื่อ คง Yahoo` };
+  const t = detectMixedBasis({ bars, low: alt.low, high: alt.high, nowSec });
+  if (t.mixed) return { q, note: `TradingView ${round(alt.low, 2)}–${round(alt.high, 2)} ยืนยันว่าผสมสองฐานจริง` };
+  return { q: { ...q, week52Low: alt.low, week52High: alt.high }, note: `Yahoo 52wk ${round(q.week52Low, 2)}–${round(q.week52High, 2)} แคบผิด — TradingView ${round(alt.low, 2)}–${round(alt.high, 2)} ครอบทุกแท่ง (ฐานเดียว) · ใช้ของ TradingView` };
+}
+
+/** ห่อ pick52w ด้วยการถาม TradingView เฉพาะเมื่อ Yahoo บอกว่าผสม (หายาก — ยิงทีละตัว) · ถามล้ม = คง Yahoo */
+async function arbitrate52w(symbol, currency, q, chart) {
+  if (!detectMixedBasis({ bars: (chart && chart.bars) || [], low: q.week52Low, high: q.week52High }).mixed) return q;
+  let alt = null;
+  try {
+    const cands = tvCandidates(symbol, currency, { cached: loadTickerCache()[symbol.toUpperCase()] });
+    const rows = await scan52w(cands);
+    const hit = cands.find((c) => rows.has(c));
+    alt = hit ? rows.get(hit) : null;
+  } catch (e) { alt = null; }
+  const r = pick52w(q, chart, alt);
+  console.log(`· ${symbol.padEnd(10)} bad-chart ตรวจซ้ำกับ TradingView: ${r.note}`);
+  return r.q;
 }
 
 // niceBounds/num4 — ย้ายไป tools/v3/scale.js (v3 compute ใช้ร่วม) แล้ว import กลับด้านบน
@@ -1211,7 +1245,10 @@ async function main() {
       }
       if (deadAlready.has(symbol)) console.log(`↻ ${symbol.padEnd(10)} --alive ทับ flag not-on-exchange — patch ต่อแล้วปลด flag (ยืนยันด้วยมือแล้ว)`);
       let r;
-      try { r = applyV3(fp, planV3(doc, q, await chartFor(symbol, currency, q), { force: FORCE, strictGate: STRICT_GATE, seeds: SEEDS }), { write: WRITE, seeds: SEEDS, force: FORCE, strictGate: STRICT_GATE }); }
+      try {
+        const chart = await chartFor(symbol, currency, q);
+        r = applyV3(fp, planV3(doc, await arbitrate52w(symbol, currency, q, chart), chart, { force: FORCE, strictGate: STRICT_GATE, seeds: SEEDS }), { write: WRITE, seeds: SEEDS, force: FORCE, strictGate: STRICT_GATE });
+      }
       catch (e) {   // compute/render ที่ throw นอกเหนือ gate = plumbing (เหมือน patch-failed ของ v2) — ไม่ล้มทั้งรอบ
         r = { kind: 'freeze', flag: { symbol, reason: 'patch-failed', detail: e.message, reportPrice, marketPrice: round(q.price, 2), diffPct }, line: `⚠ ${symbol.padEnd(10)} patch fail (v3): ${e.message}` };
       }
@@ -1267,7 +1304,8 @@ async function main() {
     // ซีรีส์ต้นทางผสมสองฐาน (split ที่ Yahoo ยังไม่ปรับย้อนหลัง) → **ห้ามเขียนกราฟนี้ลงไฟล์**
     // ไม่ใช่เกณฑ์เชิงนโยบายแบบ drift/mos-flip แต่เป็น "ข้อมูลต้นทางไม่สมประกอบ" เหมือน bad-price
     // ⇒ freeze ทั้งตัวเพื่อกันไม่ให้ patch ทับกราฟที่คนแก้ถูกไว้แล้ว (เคส MNST: drift ~0 ⇒ ไม่มียามตัวอื่นจับได้เลย)
-    const basis = detectMixedBasis({ bars: chartBars, low: q.week52Low, high: q.week52High, gmtoffset: chartGmt });
+    const q52 = await arbitrate52w(symbol, sm.currency, q, { bars: chartBars });   // สมมาตรกับสาย v3 (ใบ v2 = 0 ใบ แต่ทางยังอยู่)
+    const basis = detectMixedBasis({ bars: chartBars, low: q52.week52Low, high: q52.week52High, gmtoffset: chartGmt });
     if (basis.mixed) {
       // --force = re-analysis ที่ agent ยืนยัน cross-source แล้ว: ยอมให้ประทับ "ราคา/วันที่" ต่อได้
       // แต่ยัง **ห้ามเขียนกราฟจากซีรีส์นี้** → chartData = null = ทาง price-only ที่คงกราฟเดิมในไฟล์
@@ -1395,6 +1433,6 @@ function pxOf(html, sm) {
   return r && RV.isV2(r.data) && r.data.values && Number.isFinite(r.data.values.px) ? r.data.values.px : sm.price;
 }
 
-module.exports = { onlyFromArgv, healV3Refusal, preSkip, evaluatedOf, readV3Doc, chartFor, planV3, applyV3, v3BucketOf, v3LaneLine, derivedPassV2, proseTokensIfNew, mirrorStockMetaV2, healDerived, fvOf, pxOf, mosBand, fmtPrice, fmtLike, toYahooSymbol, fetchChart, buildChartData, niceBounds, annualChg, decide, currencyMatches, isIntradayQuote, detectMixedBasis, detectStaleQuotes, missedSessions, probeCap, capByCohort, controlTickers, unverifiedCohorts, classifyStale, patchReport, gateAfterPatch, gateCheck, mergeFlags, commitFlags, styledRD, commitBody, THAI_MONTHS, MOS_FLIP_DEADBAND_PP };
+module.exports = { pick52w, arbitrate52w, onlyFromArgv, healV3Refusal, preSkip, evaluatedOf, readV3Doc, chartFor, planV3, applyV3, v3BucketOf, v3LaneLine, derivedPassV2, proseTokensIfNew, mirrorStockMetaV2, healDerived, fvOf, pxOf, mosBand, fmtPrice, fmtLike, toYahooSymbol, fetchChart, buildChartData, niceBounds, annualChg, decide, currencyMatches, isIntradayQuote, detectMixedBasis, detectStaleQuotes, missedSessions, probeCap, capByCohort, controlTickers, unverifiedCohorts, classifyStale, patchReport, gateAfterPatch, gateCheck, mergeFlags, commitFlags, styledRD, commitBody, THAI_MONTHS, MOS_FLIP_DEADBAND_PP };
 
 if (require.main === module) main().catch((e) => { console.error(e); process.exit(1); });
