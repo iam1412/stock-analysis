@@ -140,6 +140,14 @@ E17 บังคับ ≥2 การ์ด `.vmethod` แต่บางหุ�
 
 > (7 ช่องนี้ต้องเป็น token เสมอ — pseudo-error `V2TOKENS` บังคับ · ยิง 0/908 · **ระยะ 3 Task 12 ขยายเป็น 13 ช่อง** โดยเพิ่มช่องที่ผูก **FV**: `.fv-box .r` · `legend` · `#mFair` · การ์ด "จุดซื้อ MOS 20/30%" · `vcell` "มูลค่าเหมาะสม" — เกณฑ์เดียวกัน คือ cron ไม่มีตัวเขียนให้ · `summary` ยังอยู่นอกรายการเพราะมี `summaryPlan` เขียนให้ — open-items #44)
 
+### ticker เปลี่ยนชื่อ ≠ หุ้นตาย — `ticker-renamed` (THCOM→GST · 1 ต.ค. 2569)
+
+- **เหตุ**: ไทยคม (THCOM) เปลี่ยนชื่อเป็น Gulf Space Technology (**GST**) มีผลซื้อขาย 28 ก.ย. 69 · canary รายสัปดาห์ flag `not-on-exchange` 28 ก.ย. — **ถูกต้อง** (TradingView ไม่มี `SET:THCOM` แล้ว) · แต่ controller (session เคลียร์คิว 1 ต.ค.) ปลดด้วย `--alive` (commit `850a1c210`) เพราะเห็นแท่งรายวันของ `THCOM.BK` บน Yahoo มีวอลุ่มจริงถึง 30 ก.ย. — ต่อมาพบว่าแท่งเหล่านั้นคือ**ซีรีส์ของ GST ที่ Yahoo relink** ไว้ใต้ symbol เดิม ขณะที่ meta (`regularMarketPrice/Time`) ค้างที่ 9.95 @25 ก.ย. · ยืนยันหน้า SET: GST 9.40 วอลุ่ม 5,447,082 = ตรงแท่งเป๊ะ
+- **ข้อมูลปลายทางหรือฝั่งเรา?** — ปลายทางทำตัวแบบที่รู้กันอยู่แล้ว (Yahoo ไม่ 404 · serve meta ค้าง) บวกพฤติกรรมใหม่ที่ไม่เคยบันทึก (แท่ง relink · meta ของ ticker ใหม่มีกรอบ 52wk แค่หลังเปลี่ยนชื่อ) · **ความผิดอยู่ฝั่งเรา 3 จุด**: (1) controller ใช้แท่ง Yahoo แทนแหล่งปฐมภูมิ (2) triage `not-on-exchange` มีทางออกแค่ "ลบ / `--alive`" ไม่มีทาง "เปลี่ยนชื่อ" จึงพาไปผิดทั้งสองทาง (3) `bad-chart` เชื่อกรอบ 52wk ของ Yahoo เป็นตัวชี้ขาดเดียว · ส่วน "`update-prices` ไม่มี session ใหม่" = **พฤติกรรมถูก** — ข้อเสนอแรก "ใช้แท่งรายวันเมื่อใหม่กว่า meta" ถูกยกเลิกเพราะจะ patch จากซีรีส์ relink เงียบ ๆ และกลบการเปลี่ยนชื่อ
+- **ที่แก้**: symbol-map `THCOM → GST.BK` (คงชื่อไฟล์เดิม — เจ้าของเลือกตามแบบ BKI/STEC/LANC) · reason ใหม่ `ticker-renamed` จาก ISIN (`tools/tv-isins.json` seed 911/911 · symbol-search ด้วย ISIN + ยืนยันด้วย scanner) · `DEAD_REASONS` เจ้าของเดียว (`tools/flag-reasons.js`) · cron ปลด flag เองเมื่อ symbol-map ชี้ผู้สืบทอด · `pick52w` ตรวจ `bad-chart` ซ้ำกับ 52wk ของ TradingView · ข้อความ DELIST: เช็คเปลี่ยนชื่อก่อนลบ + แท่ง Yahoo ไม่ใช่หลักฐาน
+- **ระหว่างทาง**: entry แรกใส่ `tv: "SET:GST"` ผิดสัญญา (`tv` = ชื่อฐาน canary เติม `SET:` เอง → `SET:SET:GST`) — แก้ใน `5641688b3` + test บังคับรูปแบบ symbol-map ทั้งไฟล์
+- **วัดสด**: resolver THCOM → `SET:GST` · LANC → `NASDAQ:MZTI` (ISIN คงเดิมข้ามการเปลี่ยนชื่อ) · EA (take-private) → ไม่มีผู้สืบทอด = `not-on-exchange` ถูกต้อง · dry-run THCOM 9.95 → 9.40 @2026-09-30 (เดิม freeze `bad-chart`)
+
 ### `mos-sign-flip` ปิดจบที่ PREPATCH — มาจากระยะไหน
 
 > **`mos-sign-flip` = bucket PREPATCH จบตรงนี้ ไม่ spawn worker — ระยะ 1 ข้อ D**

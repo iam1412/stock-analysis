@@ -215,6 +215,7 @@ npm run build && node tools/preserve-dates.js && npm run build   # ★ ซ่อ
 | `fetch-failed` / `patch-failed` | ดึงข้อมูลไม่ได้ (delisted?) / ไฟล์ผิดโครงจน regex ไม่ match |
 | `bad-chart` | **ซีรีส์กราฟผสมสองฐาน** — split ที่ Yahoo ยังไม่ปรับย้อนหลังให้ครบ (เพิ่ม 12 ส.ค. 2569 · `detectMixedBasis`) · เงื่อนไข: มี bar **ในหน้าต่าง 52 สัปดาห์** หลุดกรอบ `fiftyTwoWeekLow/High` เกิน 10% · `detail` บอกเดือน/ค่า/กรอบที่หลุด — triage เต็มใน SKILL STEP 0 |
 | `patch-rejected` | **patch แล้ว gate ตก** (เพิ่ม ระยะ 0 audit ก.ย. 2569 · `gateAfterPatch`) — ไม่เขียนไฟล์นั้น รอบนั้น push ที่เหลือตามปกติ · `detail` = รหัส error ที่ยิง (รวม W16/W17/W19/W20 ที่ยกเป็น error ระยะ 1) + `(ค้างก่อน patch)` ถ้าไฟล์เดิมก็ตกอยู่แล้ว · triage = **แก้ไฟล์ให้ผ่าน `npm test -- <SYM>`** ไม่ใช่ re-analyze · `--force` ไม่ freeze แต่พิมพ์เตือน |
+| `ticker-renamed` | ticker เดิมหายจาก TradingView แต่ **ISIN เดิม** (จาก `tools/tv-isins.json`) อยู่ที่ ticker ใหม่กระดานเดียวกัน และ scanner ยืนยันว่ายังเทรด (เพิ่ม 1 ต.ค. 2569 — เคส THCOM→GST) · `successor`/`isin`/`detail` บอกผู้สืบทอด · triage RENAME = เพิ่ม `tools/symbol-map.json` **ห้ามลบ** · อยู่ใน `EXTERNAL_REASONS` (= `DEAD_REASONS` ใน `tools/flag-reasons.js`) เหมือน `not-on-exchange` · cron ปลด flag + patch ต่อเองเมื่อ symbol-map ชี้ผู้สืบทอด (`renameResolved`) |
 | `not-on-exchange` | **สองชั้น**: quote ค้างหลัง cohort เดียวกัน ≥3 session **และ** TradingView ไม่พบ ticker บนกระดานใดเลย (เพิ่ม 8 ส.ค. 2569 — ดู §canary) · เขียนได้ทั้งจาก cron รายวัน (ยืนยันสด) และ `tools/dead-ticker-canary.js` รายสัปดาห์ · ตัวที่ติด flag นี้ **หยุด patch** รอบถัดไป (ไม่ใช่แค่ freeze รอบนี้) |
 
 - flags เป็น **snapshot ต่อรอบ**: symbol ที่กลับมาปกติ (re-analyze แล้ว / ราคาย่อกลับเข้าเกณฑ์) หายจากไฟล์เอง ไม่ต้องลบมือ · `flaggedAt` คงวันแรกที่โดนไว้ (ถ้าเหตุผลเดิม)
@@ -223,6 +224,7 @@ npm run build && node tools/preserve-dates.js && npm run build   # ★ ซ่อ
   - ตัวชี้ขาดที่เชื่อได้คือ `fiftyTwoWeekLow/High` ใน meta **ชุดเดียวกัน** (Yahoo ปรับ split ให้แล้วแม้ตอนที่ซีรีส์ยังไม่ปรับ) — ไม่ต้องยิง endpoint `quote` แยกที่ต้องใช้ crumb/cookie · bar ในหน้าต่าง 52 สัปดาห์ถูกกรอบนี้ครอบ**โดยนิยาม** (close รายเดือน = close รายวันของวันสิ้นเดือน) ⇒ หลุดกรอบ = คนละฐาน ไม่ใช่ราคาแกว่ง
   - **ไม่ได้ใช้ `events.splits` ซ่อมอัตโนมัติ** ทั้งที่ทำได้ตามทฤษฎี: วัดจริงตอนสร้างเช็คนี้ `events` = `{}` แล้ว (Yahoo เลิกส่งใน `range=1y`) — ตัวซ่อมจึงไม่มี input บนหุ้นตัวที่เป็นต้นเหตุเอง ⇒ **freeze ดีกว่าเดา**
   - tol 10% = กันชนเผื่อ "ราคา gap ทำจุดสูงใหม่แล้ว field 52wk ตามไม่ทัน" ไม่ใช่ค่าจูนให้พอดีข้อมูล — วัดจริง 227/908 ตัว: **จุดหลุดกรอบ = 0 ทุกตัวแม้ตั้ง tol = 0** · dry-run เต็ม 908 ตัว → trip ตัวเดียวคือ MNST
+  - **ตรวจซ้ำกับ TradingView ก่อน freeze** (`pick52w` · เพิ่ม 1 ต.ค. 2569): เมื่อกรอบ Yahoo บอกว่าผสม → ถาม `price_52_week_low/high` ของ TradingView · ครอบทุกแท่ง + ราคาอยู่ในกรอบ = ฐานเดียว → ใช้ 52wk ของ TradingView (ปลด freeze + `range52w` ถูก) · TradingView ก็เห็นผสม (split จริง — MNST) / ไม่ตอบ / ราคาหลุดกรอบ = freeze ตามเดิม · เคสต้นเรื่อง: GST.BK (THCOM เปลี่ยนชื่อ) Yahoo 52wk 9.4–10.2 นับแค่หลังเปลี่ยน แต่แท่งรายเดือนมีประวัติเต็ม
   - **flag หายเอง**เมื่อ Yahoo ปรับ adjclose ครบ (ไม่อยู่ใน `EXTERNAL_REASONS` — ต่างจาก `not-on-exchange`) · `--force` ยังประทับราคา/วันที่ได้แต่ส่ง `chartData = null` = ทาง price-only ที่**คงกราฟเดิมในไฟล์** จึงไม่ลากฐานที่สองกลับเข้ามาทับกราฟที่คนแก้ถูกแล้ว
   - ⚠️ **เป็นตัวชี้ให้ไปดู ไม่ใช่คำตัดสิน** (ปรัชญาเดียวกับ canary หุ้นตาย): split ตัวคูณเล็กที่ยังตกในกรอบ 52wk กว้าง ๆ จะรอดสายตาเช็คนี้ — ยืนยัน split จากแหล่งปฐมภูมิเสมอก่อนแก้ตัวเลข
 - **ยกเว้น `not-on-exchange`**: อยู่ใน `EXTERNAL_REASONS` ของ `mergeFlags` — snapshot รายวัน **ไม่มีสิทธิเคลียร์แบบเงียบ ๆ** เพราะ "ไม่มี freeze รอบนี้" ไม่ได้แปลว่าหุ้นฟื้น (ไม่งั้น canary เขียนคืนวันจันทร์ เช้าอังคารหายเกลี้ยง) · ถอนได้ **3 ทางเท่านั้น**: TradingView เจอ ticker กลับมา (cron รายวันตอนยืนยัน candidate หรือ canary รายสัปดาห์) · ไฟล์รายงานถูกลบ · **`--alive <SYM>`** = ผู้ใช้ยืนยันด้วยมือว่ายังอยู่บนกระดาน (เคส "mapping เพี้ยน" ใน SKILL STEP 0 ที่ห้ามลบรายงาน — เดิมไม่มีทางออกเลยนอกจากแก้ `price-flags.json` มือ) · ถ้าชนกับ flag ราคา → `not-on-exchange` ชนะ (triage ต่างกัน: ยืนยันแล้ว**ลบ** ไม่ใช่ re-analyze)
@@ -333,7 +335,7 @@ npm run test:dead                        # unit test offline ของ canary (�
 
 ```
 POST https://scanner.tradingview.com/global/scan
-{"symbols":{"tickers":["NASDAQ:NVDA", …]},"columns":["close","currency"],"range":[0,N]}
+{"symbols":{"tickers":["NASDAQ:NVDA", …]},"columns":["close","currency","isin"],"range":[0,N]}
 ```
 
 - **ต้องส่ง `range` ให้ครบ N** — default page size ของ scanner = 50 ไม่งั้นได้แค่ 50 แถวเงียบ ๆ
@@ -346,6 +348,16 @@ POST https://scanner.tradingview.com/global/scan
   **บนหุ้นที่แค่เปลี่ยนชื่อ** ซึ่งเป็นเคสที่ไฟล์ map มีไว้แก้พอดี · ใส่ `tv` เฉพาะเมื่อ TradingView ใช้ชื่อต่างจากทั้งคู่
 - **2 รอบ**: รอบ 1 ถาม ticker ที่น่าจะถูกที่สุดตัวเดียวต่อ symbol (จาก cache `tools/tv-tickers.json`) →
   รอบ 2 เฉพาะตัวที่ยังไม่เจอ ค่อยยิงทุกกระดาน — กันสรุปว่า "ตาย" เพราะย้ายกระดาน (uplist จาก OTC)
+- **ผู้สืบทอดจาก ISIN** (เพิ่ม 1 ต.ค. 2569 — เคส THCOM→GST): scanner ขอคอลัมน์ `isin` ด้วย แล้ว `--write` เก็บ
+  `tools/tv-isins.json` (symbol → ISIN · workflow commit ให้) · ตัวที่ไม่เจอ → `resolveSuccessors` ค้น
+  `symbol-search.tradingview.com/symbol_search/v3/?text=<ISIN>&search_type=stocks` → หุ้น (`type: stock`) กระดานเดียวกับ
+  cohort · ISIN ตรงเป๊ะ · ไม่ใช่ ticker เดิม → **ยืนยันด้วย scanner** (ผลค้นหาไม่ใช่หลักฐาน) → flag `ticker-renamed`
+  แทน `not-on-exchange` · ใช้ทั้ง canary และ cron รายวัน (`deadFlag` ตัวเดียว) · ค้นล้ม = คง `not-on-exchange` ไม่ล้มทั้งรอบ
+  · ข้อจำกัด: ปรับโครงสร้างแบบแลกหุ้นได้ ISIN ใหม่ (BKI→BKIH, STEC→STECON) และรายงานที่ sweep ยังไม่เคยเห็น = ไม่มี ISIN
+  ⇒ `not-on-exchange` ตามเดิม (ทิศปลอดภัย) — triage DELIST จึงสั่ง **เช็คเปลี่ยนชื่อก่อนลบ** ด้วยมือ
+  > ⚠️ **กับดัก Yahoo (THCOM→GST)**: symbol เดิมมี meta (`regularMarketPrice/Time`) ค้างที่วันสุดท้าย แต่**แท่งรายวัน relink
+  > ไปซีรีส์ของ ticker ใหม่** (วอลุ่มจริง) ⇒ ดูเหมือนยังเทรด — แท่ง Yahoo **ไม่ใช่หลักฐาน** · และ meta ของ ticker ใหม่
+  > มีกรอบ 52wk แค่หลังเปลี่ยนชื่อ ⇒ `bad-chart` ตรวจซ้ำกับ 52wk ของ TradingView (`pick52w`) ก่อน freeze
 - ยาม `MIN_ALIVE_RATIO` 80%: ถ้ารอบนั้นเจอ alive น้อยผิดปกติ = โดนบล็อก/โครง response เปลี่ยน →
   **exit 2 ไม่เขียน flag เลย** (กัน mass-flag ทั้งรีโปเวลา TradingView บล็อก IP ของ Actions)
   · ใช้เฉพาะ **sweep เต็มที่ ≥20 ตัว** (`GUARD_MIN_PROBES`) — รันเจาะจงอย่าง `… EA BPP` ไม่ใช้ยาม
