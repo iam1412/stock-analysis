@@ -7,19 +7,19 @@
   "meta": {
     "company": "Fair Isaac Corporation",
     "exchange": "NYSE",
-    "sub": "FICO Score (คะแนนเครดิตมาตรฐานสหรัฐ — near-monopoly) • Scores segment B2B/B2C • Software/Platform (decisioning SaaS) • Applications (fraud/analytics)",
+    "sub": "FICO Score (คะแนนเครดิตมาตรฐานสหรัฐ — ถูกท้าทายโดย VantageScore 4.0 ในสินเชื่อบ้าน GSE) • Scores B2B/B2C • Software/Platform (decisioning SaaS)",
     "sectorLine": "NYSE · FICO · Credit Scoring · Analytics · SaaS",
     "headerTags": [
       "Financial Technology",
       "Credit Analytics"
     ],
     "analysisDate": "2026-10-01",
-    "aiModel": "Claude Sonnet 5.5",
+    "aiModel": "Claude Opus 5.5",
     "sources": [
       "StockAnalysis.com",
       "Yahoo Finance",
-      "Fair Isaac IR",
-      "Macrotrends"
+      "SEC 8-K Fair Isaac (Q3 FY2026)",
+      "Forbes / HousingWire (FHFA ก.ย. 2569)"
     ],
     "themeLegacy": {
       "accent": "#008B8B",
@@ -100,41 +100,60 @@
   },
   "fundamentals": {
     "eps": 34.47,
-    "shares": 21600000,
-    "peAvg5y": 43,
-    "roic": 47,
+    "epsBasis": "gaap-ttm",
+    "shares": 21597635,
+    "revenue": 2394000000,
+    "netIncome": 815000000,
     "grossMargin": 85.1,
-    "revenue": 2390000000,
+    "opMargin": 52.1,
+    "netMargin": 34.1,
+    "fcf": 996000000,
+    "ebitda": 1280000000,
+    "netDebt": 5350000000,
     "dps": 0,
     "beta": 1.35,
     "fy": {
       "period": "FY25",
-      "netIncome": 652000000
-    },
-    "epsBasis": "gaap-ttm"
+      "netIncome": 652000000,
+      "eps": 26.54,
+      "revenue": 1991000000
+    }
   },
   "legs": [
     {
       "method": "pe",
-      "label": "P/E Valuation (TTM)",
+      "label": "P/E × EPS หลังเหตุการณ์ (ฉาก Base)",
       "inputs": {
-        "multiple": 30,
-        "multipleSource": "author"
-      },
-      "family": "market"
-    },
-    {
-      "method": "pfcf",
-      "label": "P/FCF Valuation (TTM)",
-      "inputs": {
-        "multiple": 22,
-        "multipleSource": "author"
+        "multiple": 28,
+        "multipleSource": "peer",
+        "multipleRange": [
+          24,
+          33.3
+        ]
       },
       "override": {
-        "fcf": 911520000.0000001,
-        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
+        "eps": 23.4,
+        "why": "EPS ฉาก Base ที่สเกลธุรกิจปัจจุบัน ผลกระทบเต็มปี — ไม่ใช่ EPS TTM ที่ฝังกำไรจากขึ้นราคา"
       },
-      "family": "market"
+      "family": "market",
+      "note": "EPS หลังเหตุการณ์ ~23.4 ดอลลาร์ = (EBIT ฐานไม่กระทบ ~0.48B + EBIT mortgage ~0.50B [รายได้ ~1.1B × เหลือ 50% × margin ส่วนเพิ่ม 90%] − ดอกเบี้ย ~0.33B) × (1 − ภาษี 21%) ÷ 21.8M หุ้น diluted · ตัวคูณ 28x = ส่วนลด ~15% จากมัธยฐาน 5 ปีของ peer ธุรกิจข้อมูล/เครดิตตัวต่ำสุด (SPGI 33.3x · MCO 37.9x · MSCI 39.4x · VRSK 42.1x · EFX 45.9x — วัดจากราคาเฉลี่ยงวด ÷ EPS งวดนั้น) เพราะหนี้สุทธิสูงกว่า peer มากและ moat หลักถูกเจาะ · กรอบ 24–33.3x · ไม่ใช้ P/E ย้อนหลังของ FICO เอง (30–69x = ยุคผูกขาด)"
+    },
+    {
+      "method": "dcf",
+      "label": "DCF (FCFF หลังเหตุการณ์ หักหนี้สุทธิ)",
+      "inputs": {
+        "g1": 6,
+        "years1": 5,
+        "tg": 3,
+        "r": 9,
+        "rfCurrency": "USD"
+      },
+      "override": {
+        "fcf": 910000000,
+        "why": "FCFF ฉาก Base: EBIT ~0.975B × (1 − 21%) + SBC/ค่าเสื่อมส่วนเกิน capex ~0.14B — ไม่ใช่ FCF TTM 0.996B ที่ฝังราคาคะแนนเดิม"
+      },
+      "family": "rg",
+      "note": "FCFF ฉาก Base ~0.91B ดอลลาร์ โต 6%/ปี 5 ปี แล้ว 3% ตลอดไป · r = WACC 9% (ต้นทุนส่วนทุน ~10.5–11% จาก rf พันธบัตรสหรัฐ 10 ปี ~4–4.5% + beta 1.35 × ERP ~5% · ต้นทุนหนี้หลังภาษี ~4.7% · หนี้ ~30% ของ EV) · EV หักหนี้สุทธิ 5.35B ÷ หุ้นคงเหลือ 21.6M · ความไว: WACC 8.5% ≈ 651 · 9.5% ≈ 511 ดอลลาร์ต่อหุ้น (หนี้สูงทำให้มูลค่าส่วนทุนไวมาก)"
     }
   ],
   "fvWeights": null,
@@ -142,44 +161,44 @@
     "cards": [
       "mcap",
       "pe",
-      "peAvg5y",
-      "roic",
-      "netIncomeFy",
+      "evEbitda",
+      "netDebt",
       "eps",
-      {
-        "key": "grossMargin",
-        "tone": "pos"
-      },
-      "custom:0",
+      "epsFy",
       "revenue",
+      "opMargin",
+      "fcf",
+      "custom:0",
       "custom:1",
-      "yield",
       "beta"
     ],
     "custom": [
       {
-        "label": "FCF / Share",
-        "value": "~$42.2",
-        "note": "FCF TTM ~$996M · conversion สูงมาก",
-        "tone": "pos"
+        "label": "สินเชื่อบ้าน (mortgage origination)",
+        "value": "62% ของ Scores",
+        "note": "71% ของ B2B Scores · Q3 FY26 รายได้ +97% YoY บนปริมาณโตแค่ low-single-digit",
+        "tone": "neg"
       },
       {
-        "label": "อัตรากำไรขั้นต้น",
-        "value": "82.2%",
-        "note": "FY25 · TTM 85.1%"
+        "label": "EPS หลังเหตุการณ์ (ฉาก Base)",
+        "value": "~23.4",
+        "note": "ดอลลาร์/หุ้น · สเกลปัจจุบัน ผลกระทบเต็มปี (สมมติฐาน)",
+        "tone": "neu"
       }
     ],
     "notes": {
-      "mcap": "หุ้น ~21.6 ล้านหุ้น",
-      "peAvg5y": "มัธยฐานที่วัดจริง · กรอบ 30x–69x",
-      "roic": "neg. equity → ROE บิดเบือน ใช้ ROIC",
-      "netIncomeFy": "YoY +27% · TTM ~$815M",
-      "eps": "FY25 $26.54 · FY24 $20.45",
-      "grossMargin": "Operating Margin 52.1% (TTM)",
-      "revenue": "FY25 $1.99B · CAGR ~11%",
+      "mcap": "หุ้นคงเหลือ 21.6 ล้านหุ้น",
+      "pe": "บน EPS TTM ที่ฝังกำไรจากขึ้นราคา — ไม่ใช่ฐานหลังเหตุการณ์",
+      "evEbitda": "EBITDA ≈ EBIT TTM 1.25B + D&A โดยประมาณ",
+      "netDebt": "หนี้ 5.6B − เงินสด 0.25B · ส่วนผู้ถือหุ้นติดลบจาก buyback",
+      "eps": "GAAP diluted · หุ้นถัวเฉลี่ย 23.6M",
+      "epsFy": "FY24 20.45 · FY23 16.93",
+      "revenue": "+24% YoY · FY25 1.99B",
+      "opMargin": "สูงสุดเป็นประวัติการณ์ — มาจากขึ้นราคาคะแนน",
+      "fcf": "FY25 0.77B · ฝังราคาคะแนนเดิม",
       "beta": "ผันผวนสูงกว่าตลาด"
     },
-    "hint": "ข้อมูล ณ 1 ต.ค. 2569 — neg. book equity จาก buyback → ใช้ ROIC แทน ROE/P/BV"
+    "hint": "ข้อมูล ณ 1 ต.ค. 2569 — ส่วนผู้ถือหุ้นติดลบจาก buyback → ดู EV/EBITDA และหนี้สุทธิแทน ROE/P/BV · P/E (TTM) และ FCF อยู่บนตัวเลขก่อนเหตุการณ์ FHFA"
   },
   "scenarios": {
     "years": 3,
@@ -187,180 +206,64 @@
     "perYear": "cagr",
     "driver": "eps",
     "exitMetric": "pe",
+    "exitDp": 0,
     "cases": [
       {
-        "growth": 10,
-        "exitMultiple": 22,
+        "growth": -23.8,
+        "exitMultiple": 20,
         "divCum": 0,
-        "desc": "regulatory กดราคา score · valuation compression"
+        "desc": "ราคาถูกกดเข้าหา parity กับ VantageScore + เสียส่วนแบ่ง GSE · หยุด buyback · de-rating — run-rate EPS ~14.4 ดอลลาร์ (EBIT ฐาน 0.48B + mortgage 1.1B×25%×90% − ดอกเบี้ย 0.33B, ภาษี 21%, 21.8M หุ้น) → โต 3%/ปี FY28–29 (ฐาน +5% ถูกหักด้วยส่วนแบ่ง mortgage ที่ยังไหลออก · ไม่มี buyback ช่วย) → EPS FY29 ~15.3 × 20x ≈ 305 ดอลลาร์"
       },
       {
-        "growth": 15,
-        "exitMultiple": 26,
+        "growth": -8.7,
+        "exitMultiple": 28,
         "divCum": 0,
-        "desc": "ขึ้นราคา score ต่อเนื่อง · Platform ARR +15%"
+        "desc": "ลดราคาเพื่อรักษาส่วนแบ่ง → รายได้ mortgage เหลือราวครึ่ง · Software/Scores อื่นโตต่อ — run-rate EPS ~23.4 ดอลลาร์ (= EPS ขา P/E) → โต 6%/ปี FY28–29 (เท่าขา DCF) → EPS FY29 ~26.2 × 28x ≈ 735 ดอลลาร์"
       },
       {
-        "growth": 19,
-        "exitMultiple": 30,
+        "growth": 3.7,
+        "exitMultiple": 33,
         "divCum": 0,
-        "desc": "mortgage cycle ฟื้น + SaaS platform ขยายตัวเร็ว"
+        "desc": "ความเป็นเจ้าตลาด + ความต้องการของตลาด MBS รักษาปริมาณส่วนใหญ่ · ลดราคาเล็กน้อย — run-rate EPS ~32.3 ดอลลาร์ (mortgage เหลือ 75%) → โต 9%/ปี FY28–29 (ฐาน +10% · ปริมาณ +5% · หนี้คงที่ขยายกำไร) → EPS FY29 ~38.4 × 33x ≈ 1,270 ดอลลาร์"
       }
     ],
-    "exitDp": 0,
-    "note": "สมมติฐาน: EPS TTM {{eps}} · Base +15%/ปี (consensus ~15–17%) · Bear +10%/ปี (regulatory headwind) · Bull +19%/ปี (price hike + platform acceleration) · P/E ออก 22–30x (discount จาก peak 40–65x เพื่อสะท้อน normalization) · ไม่รวมปันผล (FICO ไม่จ่ายปันผล โฟกัสที่ buyback) · ผลตอบแทนจริงขึ้นกับ regulatory outcome + ทิศทาง mortgage market"
+    "note": "สมมติฐาน: EPS FY2029 ของแต่ละฉากสร้างจาก run-rate หลังเหตุการณ์ ไม่ใช่การโตต่อจาก EPS TTM {{eps}} (ที่ฝังกำไรจากขึ้นราคา) · run-rate = (EBIT ฐานที่ไม่กระทบ ≈ 0.48B ดอลลาร์ [Scores นอก mortgage + Software หลังต้นทุนส่วนกลาง] + รายได้ mortgage ก่อนเหตุการณ์ ~1.1B/ปี [Q3 FY26 × 4] × สัดส่วนที่รักษาไว้ × margin ส่วนเพิ่ม ~90% − ดอกเบี้ย ~0.33B) × (1 − ภาษี 21%) ÷ 21.8M หุ้น · <b>Bear</b> เหลือ 25% (ราคา −65% · ส่วนแบ่ง ~70%) หยุด buyback → ~14.4 ดอลลาร์ โต 3%/ปี · <b>Base</b> เหลือ 50% (ราคา −40% · ส่วนแบ่ง ~85%) → ~23.4 ดอลลาร์ โต 6%/ปี เท่าขา DCF · <b>Bull</b> เหลือ 75% (ราคา −15% · ส่วนแบ่ง ~90%) → ~32.3 ดอลลาร์ โต 9%/ปี · run-rate ถือเป็น FY27 แล้วโต 2 ปีถึง FY29 · ช่อง growth ในตาราง = CAGR 3 ปีเทียบจาก EPS TTM (แปลงให้สูตรเครื่องยนต์ได้ EPS FY29 เดียวกัน) จึงติดลบแม้ธุรกิจหลังเหตุการณ์ยังโต · P/E ออก 20/28/33x ยึดมัธยฐาน peer ที่วัดจริง (ต่ำสุด SPGI 33.3x) หักส่วนลดตามความเสี่ยง · ฉาก Base ให้ผลตอบแทน {{scn.base.ret}} ใกล้แต่ต่ำกว่าต้นทุนทุน ~9%/ปีเล็กน้อย สอดคล้องกับ MOS {{mos}} ที่บาง · ไม่รวมปันผล (FICO ไม่จ่าย)"
   },
   "analyst": {
-    "target": 1440.16,
-    "n": null,
+    "target": 1256.42,
+    "n": 19,
     "rating": "Buy",
-    "asOf": null
+    "asOf": "2026-09-30"
   },
   "prose": {
-    "chart": "ราคา FICO ร่วงหนักในรอบปีที่ผ่านมา — จากช่วงสูงสุด 52 สัปดาห์ {{range52w.hi}} ลงมาที่ {{px}} ปัจจุบัน ซึ่งอยู่ใกล้จุดต่ำสุด 52 สัปดาห์ {{range52w.lo}} มาก และราคาลดลงอีกราว 30% ในช่วงไม่กี่วันก่อนวันที่ {{priceDate}} จาก sentiment ตลาดซบ + ความกังวล regulatory เรื่องราคา mortgage score (ยังไม่ได้ยืนยันสาเหตุของการลงรอบล่าสุดจากแหล่งปฐมภูมิ) รวมรอบปี <b>{{chg}}</b>",
-    "valuation": "FV = เฉลี่ย 2 ขาที่ใช้ตัวคูณต่ำสุดที่วัดจริงของตัวเอง (P/E 30x, P/FCF 22x) กรอบ {{fvLow}}–{{fvHigh}} คือช่วงระหว่างสองขา · ราคาปัจจุบัน {{px}} เทียบ FV {{fv}} (ส่วนเผื่อ {{mos}}) · ทั้งสองขาวัดจากกำไร/เงินสดของธุรกิจเดียวกัน จึงไม่ใช่การยืนยันอิสระเต็มตัว และผลไวต่อตัวคูณมาก: ที่มัธยฐานย้อนหลัง (P/E 42.7x = $1,472 · P/FCF ~40x = $1,688) FV จะสูงกว่านี้มาก แต่มัธยฐานถูกดึงด้วยตัวคูณสูงของ FY24–25 ที่ปรับฐานแล้ว จึงไม่ใช้เป็นฐาน · ขาเดิมที่ถอดออก: Forward P/E 28x (ตระกูล P/E เดียวกัน) และ P/FCF 33x (ตัวคูณที่ไม่มีหลักฐานวัดจริงรองรับ) · DDM ไม่ใช้เพราะไม่ปันผล / Justified P/BV ไม่ใช้เพราะ book equity ติดลบ −$1.7B จาก buybacks · เป้านักวิเคราะห์เป็นเพียงบริบท ไม่ใช่ขาของ FV",
-    "gauge": "ราคาปัจจุบัน {{px}} ต่ำกว่า FV {{fv}} มาก ({{mos}}) — อยู่ลึกกว่าโซน MOS 20% ที่ {{mos20}} และโซน deep value MOS 30% ที่ {{mos30}} แล้ว และใกล้จุดต่ำสุด 52 สัปดาห์ {{range52w.lo}} · แต่ FV อิงตัวคูณต่ำสุดย้อนหลัง (P/E 30x) ขณะที่ตลาดราคาที่ P/E ~{{pe}}x ซึ่งต่ำกว่ามาก จึงต้องตรวจว่าตลาดกำลังสะท้อนความเสี่ยงที่ FV ยังไม่ได้ปรับหรือไม่ · นักวิเคราะห์ 19 รายเป้าเฉลี่ย {{analyst.target}} ({{analyst.pct}}) เป็นบริบท ไม่ได้เป็นส่วนของ FV",
-    "mos": "ราคาปัจจุบัน {{px}} ต่ำกว่ามูลค่าเหมาะสม {{fv}} มาก → Margin of Safety {{mos}} เกินโซน 20% ที่ {{mos20}} แล้ว แต่ราคาเพิ่งร่วงแรง ควรตรวจความเสี่ยง regulatory ก่อนสรุปว่าเป็นโอกาส",
-    "verdictHeadline": "ธุรกิจชั้นเยี่ยม ราคาต่ำกว่ามูลค่าเหมาะสมมาก — ส่วนเผื่อกว้าง แต่ต้องระวังความเสี่ยง regulatory ที่ตลาดกำลังราคา",
-    "verdictBody": "Fair Isaac เจ้าของ FICO Score near-monopoly ในตลาดสินเชื่อสหรัฐ — pricing power มหาศาล (ขึ้นราคา B2B score +42% โดยไม่สูญเสีย volume) Gross margin 82%+ ROIC 47% FCF/Share ~$42.2 เป็นธุรกิจ asset-light คุณภาพสูงมาก ราคาปัจจุบัน {{px}} ที่ P/E ~{{pe}}x ต่ำกว่า FV {{fv}} ({{mos}}) ส่วนเผื่อกว้าง แต่ราคาเพิ่งร่วงแรงและอยู่ใกล้จุดต่ำ 52 สัปดาห์ — ความเสี่ยง regulatory เรื่องราคา score จาก CFPB/FHFA และการแข่งขันของ VantageScore ยังเป็นตัวแปรสำคัญ และ FV ใช้ตัวคูณย้อนหลังที่อาจสูงเกินไปหากตลาดปรับมุมมองถาวร = น่าสนใจเชิงมูลค่า แต่ควรทยอยสะสมและติดตามข่าว regulatory",
-    "strategy": "ราคาปัจจุบันต่ำกว่า FV {{fv}} มาก และต่ำกว่าโซน MOS 20% ที่ {{mos20}} และ 30% ที่ {{mos30}} แล้ว / ราคาเพิ่งร่วงแรงจึงควรทยอยสะสมไม่ทุ่มครั้งเดียว / ระวัง regulatory risk เรื่องราคา mortgage score — ถ้า CFPB/FHFA บังคับจำกัดราคา = กระทบ thesis หลัก และ FV ที่อิงตัวคูณ 30x อาจต้องปรับลง",
-    "disclaimerSources": "แหล่งข้อมูล: StockAnalysis.com · Yahoo Finance · Fair Isaac Corporation Investor Relations (FY25 Q4 งวดสิ้นสุด ก.ย. 2568) · Macrotrends"
+    "chart": "ราคา FICO ร่วงจากจุดสูงสุด 52 สัปดาห์ {{range52w.hi}} ลงมาที่ {{px}} (ณ {{priceDate}}) ใกล้จุดต่ำสุด {{range52w.lo}} · รวมรอบปี <b>{{chg}}</b> — แรงขายหลักสองระลอกมาจาก FHFA: <b>4 ก.ย. 2569</b> อนุญาตให้ผู้ปล่อยกู้ GSE ใช้ VantageScore 4.0 ได้ทันที (หุ้น −16.7% ในวันเดียว ปิดราว 932 ดอลลาร์) และ <b>28–29 ก.ย. 2569</b> สั่ง Fannie/Freddie รวมตาราง loan-level pricing (LLPA) เป็นตารางเดียว ให้ VantageScore 4.0 อยู่ระดับเดียวกับ Classic FICO และถอดการปรับลด 20 คะแนน (หุ้น −26.5%) · ยังไม่ประกาศวันมีผลและตารางจริง",
+    "valuation": "หลังเหตุการณ์ FHFA กำไรย้อนหลังใช้เป็นฐานไม่ได้ — FV สร้างจาก<b>กำไรของฉาก</b> ไม่ใช่ EPS TTM {{eps}} ที่ฝังกำไรจากการขึ้นราคาคะแนน mortgage (+97% ใน Q3 FY26) · <b>ขา 1 (ตลาด)</b> EPS หลังเหตุการณ์ฉาก Base ~23.4 ดอลลาร์ (สเกลธุรกิจปัจจุบัน รายได้ mortgage เหลือราวครึ่ง) × P/E {{leg1.multiple}} = {{leg1}} — ตัวคูณยึดมัธยฐาน 5 ปีของ peer ธุรกิจข้อมูล/เครดิตที่วัดจริง (SPGI 33.3x ต่ำสุด · กลุ่ม 33–46x) หักส่วนลด ~15% เพราะหนี้สุทธิสูงและ moat หลักถูกเจาะ · <b>ขา 2 (r,g)</b> DCF บน FCFF หลังเหตุการณ์ ~0.91B ดอลลาร์ โต 6%/ปี 5 ปี · WACC 9% · g ปลายทาง 3% · หักหนี้สุทธิ 5.35B = {{leg2}} · สองขาคนละตระกูล ถ่วงเท่ากัน → FV {{fv}} กรอบ {{fvLow}}–{{fvHigh}} · ความไว: DCF ที่ WACC ±0.5pp ≈ 511–651 ดอลลาร์ต่อหุ้น · <b>ไม่ใช้</b> P/E ย้อนหลังของ FICO เอง (30–69x = ยุคผูกขาดที่ยังไม่ถูกแตะ) · ไม่ใช้ forward EPS ของ vendor (เป็น FY2027e และทำก่อน 29 ก.ย.) · ไม่มี DDM (ไม่ปันผล) และ P/BV (ส่วนผู้ถือหุ้นติดลบ)",
+    "gauge": "ราคา {{px}} อยู่ใกล้ FV {{fv}} (MOS {{mos}}) ยังห่างโซน MOS 20% ที่ {{mos20}} · หลังร่วงจากจุดสูงสุด ตลาดราคาใกล้ฉาก Base แล้ว ไม่ใช่ของถูกชัด · เป้านักวิเคราะห์ 19 ราย {{analyst.target}} ({{analyst.pct}}) <b>เป็นตัวเลขก่อนเหตุการณ์ 29 ก.ย.</b> ยังไม่ปรับ — ใช้เป็นบริบท ไม่ใช่พยานของมูลค่า",
+    "mos": "ราคาปัจจุบัน {{px}} เทียบมูลค่าเหมาะสม {{fv}} → Margin of Safety {{mos}} — ส่วนเผื่อบางเมื่อเทียบความไม่แน่นอนของ FV · จุดที่มีส่วนเผื่อ: MOS 20% = {{mos20}} · MOS 30% = {{mos30}} · FV เองยังเปลี่ยนได้มากจนกว่าจะรู้วันมีผล/ตาราง LLPA จริง และ guidance FY27 (4 พ.ย. 2569)",
+    "verdictHeadline": "ราคาร่วงมาสะท้อนฉาก Base แล้ว — moat หลักถูกกฎระเบียบเจาะ ส่วนเผื่อยังบาง รอ guidance FY27",
+    "verdictBody": "FHFA ทำให้ VantageScore 4.0 (TransUnion ตรึงราคา 0.99 ดอลลาร์/คะแนนถึง ธ.ค. 2028) ใช้แทน Classic FICO ในสินเชื่อ GSE ได้เท่าเทียม — กระทบตรงบรรทัดที่ขับกำไร 2 ปีหลัง: mortgage origination = 62% ของรายได้ Scores และโต +97% ใน Q3 FY26 แทบทั้งหมดจากขึ้นราคา (ต่ำกว่า 1 ดอลลาร์ปี 2018 → 10 ดอลลาร์ปี 2026) · เมื่อแยกฐานที่ไม่กระทบ (Scores นอก mortgage + Software) ออก ฉาก Base (ลดราคาเพื่อรักษาส่วนแบ่ง) ให้ FV {{fv}} ใกล้ราคา {{px}} (MOS {{mos}}) และฉาก Base 3 ปีให้ {{scn.base.ret}} ต่ำกว่าต้นทุนทุน ~9%/ปีเล็กน้อย · หนี้สุทธิ ~5.35B ดอลลาร์ทำให้ผลต่อส่วนผู้ถือหุ้นแรงกว่าผลต่อรายได้ · <b>บทวิเคราะห์นี้ทำก่อน guidance FY27 (งบ Q4 FY26 วันที่ 4 พ.ย. 2569)</b> และคาดว่าต้องวิเคราะห์เต็มอีกครั้งหลังงบ",
+    "strategy": "ยังไม่ใช่จุดเข้าที่มีส่วนเผื่อ — ราคาใกล้ FV {{fv}} / รอ MOS 20% ที่ {{mos20}} — ฉาก Base ให้ {{scn.base.ret}} ({{scn.base.tgt}}) ต่ำกว่าต้นทุนทุน ~9%/ปีเล็กน้อย ไม่พอชดเชยความเสี่ยงที่ FV ยังเปลี่ยนได้มาก · หรือรอข้อมูลใหม่: (1) guidance FY27 วันที่ 4 พ.ย. 2569 (2) วันมีผลและตาราง LLPA จริงของ Fannie/Freddie (3) ท่าทีตลาด MBS ว่ายังต้องการคะแนน FICO หรือไม่ / ถ้า FICO ลดราคาคะแนน mortgage แรงหรือผู้ปล่อยกู้รายใหญ่ย้ายไป VantageScore เร็ว = ฉาก Bear ({{scn.bear.tgt}} · {{scn.bear.ret}}) ใกล้ขึ้น · ถ้าตลาด MBS ยังยึด FICO และราคาลดไม่มาก = ฉาก Bull ({{scn.bull.tgt}} · {{scn.bull.ret}}) / หนี้สูง → ขนาดสถานะควรเล็ก",
+    "disclaimerSources": "แหล่งข้อมูล: StockAnalysis.com · Yahoo Finance · SEC 8-K Fair Isaac ex-99.1 (Q3 FY2026 งวด มิ.ย. 2569) · Forbes / HousingWire / Yahoo Finance (ข่าว FHFA 4 และ 29 ก.ย. 2569) · ตัวคูณ peer วัดจากงบ 5 ปี (EFX · TRU · VRSK · MCO · SPGI · MSCI)"
   },
   "text": {
-    "valIntro": "2 ขา P/E + P/FCF (ตัวคูณต่ำสุดที่วัดจริงของตัวเอง) — ไม่มี DDM (ไม่ปันผล) · ไม่มี Justified P/BV (neg. equity)",
-    "disclaimerAssump": " P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROIC ในอนาคต"
+    "valIntro": "2 ขาคนละตระกูล: P/E บน EPS หลังเหตุการณ์ (ยึด peer ที่วัดจริง) + DCF บน FCFF หักหนี้สุทธิ (r,g) — ไม่มี DDM (ไม่ปันผล) · ไม่มี P/BV (ส่วนผู้ถือหุ้นติดลบ)",
+    "disclaimerAssump": " ส่วนแบ่งและราคาต่อคะแนนของ FICO ในสินเชื่อบ้าน GSE, ตัวคูณ P/E ที่ยึด peer, WACC และอัตราเติบโต (g) ของ DCF"
   },
   "catalysts": [
-    "<b>Near-monopoly pricing power:</b> FICO Score ใช้ใน 90%+ ของ mortgage origination สหรัฐ — ขึ้นราคา B2B score +42% (mortgage) โดยไม่สูญเสีย volume",
-    "<b>Platform ARR เติบโต +17%:</b> Software/SaaS segment (decisioning platform) เพิ่ม recurring revenue ลดการพึ่งพา mortgage cycle",
-    "<b>Margin expansion:</b> Scores segment gross margin ~85% ขณะ Software margin ปรับตัวขึ้น — operating leverage แข็งแกร่ง",
-    "<b>Buyback aggressively:</b> EPS เติบโตเร็วกว่า revenue (CAGR EPS ~18% vs rev ~11%) จาก buyback ลด share count",
-    "<b>Mortgage market recovery:</b> ถ้าอัตราดอกเบี้ยลด → mortgage origination ฟื้น → B2B score volume เพิ่ม → revenue surge",
-    "<b>นักวิเคราะห์ 19 ราย เป้า {{analyst.target}} ({{analyst.pct}}):</b> consensus bull จาก pricing power + platform growth ต่อเนื่อง"
+    "<b>งบ Q4 FY26 — 4 พ.ย. 2569:</b> guidance FY27 ครั้งแรกหลังเหตุการณ์ FHFA — ตัวชี้ว่าฉากไหนใกล้ความจริง",
+    "<b>ตลาด MBS ยังต้องการ FICO:</b> ผู้ลงทุน MBS ใช้ประวัติคะแนน FICO ในโมเดลความเสี่ยง — ถ้ายังเรียกร้อง ผู้ปล่อยกู้อาจดึงทั้งสองคะแนน ปริมาณ FICO ไม่หาย",
+    "<b>รายละเอียดยังไม่ประกาศ:</b> วันมีผลและตาราง LLPA จริงยังไม่ออก · การปรับระบบของ lender/GSE ใช้เวลา ⇒ กำไร FY27 อาจยังได้ราคาเดิมบางส่วน",
+    "<b>ฐานที่ไม่กระทบยังโต:</b> Scores นอก mortgage (บัตร/รถยนต์/B2C myFICO) + Software platform เป็นพื้นของกำไร",
+    "<b>Buyback กลับมาเมื่อหนี้ลด:</b> FCF TTM ~1.0B ดอลลาร์ — ถ้ากำไรนิ่งเร็วกว่าคาด การซื้อหุ้นคืนกลับมาหนุน EPS ได้เร็ว"
   ],
   "risks": [
-    "<b>Regulatory/Political risk (อันดับ 1):</b> CFPB/FHFA จับตาราคา mortgage score — ถ้าถูกบังคับจำกัดการขึ้นราคา = กระทบ revenue growth หลัก",
-    "<b>VantageScore competition:</b> Credit bureaus (Equifax/Experian/TransUnion) ร่วมเป็นเจ้าของ VantageScore ดัน FHFA ให้ยอมรับ alternative score ใน mortgage → ลด moat",
-    "<b>ตัวคูณอาจถูกปรับฐานถาวร (P/E ~{{pe}}x):</b> ตลาดราคาที่ P/E ต่ำกว่าตัวคูณต่ำสุดย้อนหลัง 30x ที่ใช้ใน FV มาก — ถ้า growth ชะลอหรือ regulatory กดดัน ตัวคูณอาจไม่กลับไปที่ระดับเดิม และ FV ที่อิงตัวคูณย้อนหลังจะสูงเกินจริง",
-    "<b>Negative book equity:</b> Book equity −$1.7B จาก buybacks สะสม → leverage สูง ROE บิดเบือน ความยืดหยุ่นทางการเงินต่ำกว่าตัวเลขกำไรแสดง",
-    "<b>Mortgage cycle dependency:</b> แม้ diversify ด้วย software แต่ Scores segment (59% revenue) ยังผูกกับ origination volume ที่ขึ้นลงตาม rate",
-    "<b>ผันผวนสูง Beta ~1.35:</b> ราคา {{chg}} และอยู่ใกล้จุดต่ำ 52 สัปดาห์ {{range52w.lo}} (จากจุดสูง {{range52w.hi}}) — เหมาะกับ investor ที่รับความผันผวนได้"
+    "<b>Moat หลักถูกกฎระเบียบเจาะ (อันดับ 1):</b> VantageScore 4.0 ระดับเดียวกับ Classic FICO ในตาราง LLPA เดียว และไม่ถูกหัก 20 คะแนน · ราคาตรึง 0.99 ดอลลาร์/คะแนนถึง ธ.ค. 2028 · ผู้ปล่อยกู้ใช้แล้ว 1,100+ ราย รวม 9 ใน 15 รายใหญ่",
+    "<b>กำไรกระจุกที่บรรทัดเดียว:</b> mortgage origination = 62% ของ Scores และโต +97% บนปริมาณที่โตแค่ low-single-digit = ราคาล้วน ⇒ ราคาที่ลดลงหักเข้ากำไรเกือบเต็มจำนวน",
+    "<b>หนี้สูง + refinance/covenant:</b> หนี้ 5.6B ดอลลาร์ เงินสด 0.25B · ส่วนผู้ถือหุ้นติดลบ · ถ้ารายได้ Scores ลด 30%+ หนี้/EBITDA จาก ~4.4x (TTM) อาจขึ้นเกิน 5–6x — ต้องหยุด buyback และเสี่ยงต้นทุน refinance/เงื่อนไขสินเชื่อ (ระดับ covenant ต้องตรวจใน 10-K)",
+    "<b>กฎระเบียบรอบต่อไป:</b> FHFA อาจออกมาตรการเพิ่ม และหน่วยงานอื่น (FHA/VA) อาจทำตาม — ขยายผลกระทบเกินสินเชื่อ GSE",
+    "<b>ตัวเลขตลาดทั้งชุดเป็นของก่อนเหตุการณ์:</b> consensus FY26e–FY27e และเป้านักวิเคราะห์ทำก่อน 29 ก.ย. — FV ฉบับนี้ทำก่อน guidance FY27 อาจต้องปรับแรงทั้งสองทาง",
+    "<b>ผันผวนสูง Beta ~1.35:</b> รอบปี {{chg}} จากจุดสูง {{range52w.hi}}"
   ],
   "extras": [],
-  "v2Display": {
-    "legDescs": [
-      "EPS (TTM) $34.47 × P/E เป้าหมาย 30x — 30x คือค่าต่ำสุดที่วัดจริงจากงบ 5 ปี (30.1x, FY2022) ไม่ได้ยกมาจาก P/E ปัจจุบัน · ไม่ใช้มัธยฐาน 42.7x เพราะ 65–69x ของ FY24–25 เป็นช่วงตัวคูณสูงที่ตอนนี้ปรับฐานลงแล้ว",
-      "FCF/Share $42.2 × P/FCF เป้าหมาย 22x — (FCF TTM $996M ÷ 23.6M หุ้น) 22x คือค่าต่ำสุดที่วัดจากงบ 5 ปี (22.3x, FY2022: ราคาเฉลี่ยงวด ÷ FCF/หุ้น) มาจากประวัติ ไม่ได้ถอดจากราคาปัจจุบัน (P/FCF ปัจจุบันต่ำกว่านี้มาก ~13x) · ไม่ใช้มัธยฐาน ~40x เพราะถูกดึงด้วย 54–59x ของ FY24–25"
-    ],
-    "vcells": [
-      {
-        "k": "มูลค่าเหมาะสม",
-        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
-      },
-      {
-        "k": "ส่วนต่างจากราคา",
-        "v": "MOS ~ {{mos}}",
-        "tone": "mos"
-      },
-      {
-        "k": "เป้านักวิเคราะห์ 12 ด.",
-        "v": "~{{analyst.target}} (Buy consensus)"
-      }
-    ],
-    "s6": [
-      {
-        "head": "EPS +10%/ปี",
-        "rows": [
-          [
-            "EPS ปี 3",
-            "~$45.88"
-          ],
-          [
-            "P/E ออก",
-            "22x"
-          ],
-          [
-            "ปันผลรวม 3 ปี",
-            "~$0.00"
-          ]
-        ]
-      },
-      {
-        "head": "EPS +15%/ปี",
-        "rows": [
-          [
-            "EPS ปี 3",
-            "~$52.42"
-          ],
-          [
-            "P/E ออก",
-            "26x"
-          ],
-          [
-            "ปันผลรวม 3 ปี",
-            "~$0.00"
-          ]
-        ]
-      },
-      {
-        "head": "EPS +19%/ปี",
-        "rows": [
-          [
-            "EPS ปี 3",
-            "~$58.09"
-          ],
-          [
-            "P/E ออก",
-            "30x"
-          ],
-          [
-            "ปันผลรวม 3 ปี",
-            "~$0.00"
-          ]
-        ]
-      }
-    ],
-    "targets": [
-      1009.35,
-      1363.04,
-      1742.62
-    ],
-    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~{{baseEps}} • ไม่มีปันผล",
-    "legend": [
-      {
-        "text": "ราคา FICO",
-        "swatch": "price"
-      },
-      {
-        "text": "มูลค่าเหมาะสม {{fv}}",
-        "swatch": "fv"
-      },
-      {
-        "text": "จุดสำคัญ",
-        "swatch": "point"
-      }
-    ],
-    "blocks": [
-      {
-        "after": "5",
-        "parts": [
-          {
-            "text": "FICO เป็นธุรกิจชั้นเยี่ยม (near-monopoly · margin 82%+ · ROIC 47%) ราคาปัจจุบัน {{px}} ต่ำกว่า FV มาก ({{mos}}) หลังราคาร่วงแรงและอยู่ใกล้จุดต่ำ 52 สัปดาห์ (FV อิงตัวคูณต่ำสุดย้อนหลัง 2 ขา) นักวิเคราะห์ 19 ราย เป้าเฉลี่ย <b>{{analyst.target}} ({{analyst.pct}})</b> สะท้อน bull case จากการขึ้นราคา score ต่อเนื่อง อย่างไรก็ตาม risk regulatory เรื่อง CFPB/FHFA เป็นตัวแปรสำคัญที่ต้องติดตาม"
-          }
-        ]
-      }
-    ],
-    "fv": 981,
-    "fvRange": [
-      928,
-      1034
-    ],
-    "cards": {
-      "yield": {
-        "v": "ไม่ปันผล",
-        "d": "โฟกัสที่ buyback แทน"
-      }
-    }
-  },
-  "_sig": "sha256:370d0d109b83e7a5a0c0ed06e272877ac0674d13b3415b84a0843fce232007b6"
+  "_sig": "sha256:197bed8572a9aaa18f4d78fc7e39d0127f9ad711fd5231dbf4bcb2568651e194"
 }
