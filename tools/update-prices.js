@@ -53,7 +53,8 @@ const fs = require('fs');
 const path = require('path');
 // ยืนยัน "ticker ตายจริงไหม" ด้วยแหล่งอิสระ — ใช้ helper ร่วมกับ canary รายสัปดาห์ (ไม่มี require วน:
 // dead-ticker-canary ไม่ได้ require ไฟล์นี้ · main() ของมันรันเฉพาะเมื่อถูกเรียกเป็น entry point)
-const { tvCandidates, scan: scanTickers, classify: classifyTickers, loadTickerCache } = require('./dead-ticker-canary.js');
+const { tvCandidates, scan: scanTickers, scan52w, classify: classifyTickers, loadTickerCache, loadIsinCache, renameResolved, resolveSuccessors, deadFlag } = require('./dead-ticker-canary.js');
+const { DEAD_REASONS, NOT_ON_EXCHANGE } = require('./flag-reasons.js');
 const { entryFor } = require('./symbol-map.js');
 const RM = require('./report-meta.js');   // เจ้าของเดียวของ regex stock-meta/report-data/.px
 const { withLock, writeJsonAtomic } = require('./lockfile.js');   // WS4: price-flags.json มีหลาย writer
@@ -249,6 +250,40 @@ function detectMixedBasis({ bars, low, high, nowSec, gmtoffset = 0, tol = CHART_
   out.text = `${lab} ${round(out.worst.close, 2)} หลุดกรอบ 52 สัปดาห์ ${round(low, 2)}–${round(high, 2)} `
     + `(${out.bad.length}/${bars.length} จุดคนละฐาน — สงสัย split ที่ Yahoo ยังไม่ปรับย้อนหลัง)`;
   return out;
+}
+
+// ★ ตัวชี้ขาดสำรองของ detectMixedBasis (THCOM→GST 1 ต.ค. 69): Yahoo meta 52wk ของ ticker ที่**เพิ่งเปลี่ยนชื่อ**นับแค่
+// ช่วงหลังเปลี่ยน (GST.BK 9.4–10.2) ขณะที่แท่งรายเดือนมีประวัติเต็ม (มี.ค.26 = 12.3) ⇒ ดูเหมือนผสมสองฐาน freeze bad-chart ผิด
+// และถ้าเขียนผ่านได้ range52w ก็ผิดด้วย · ใช้ 52wk ของ TradingView (แหล่งอิสระ) **เฉพาะเมื่อ Yahoo บอกว่าผสม**:
+//   TradingView ครอบทุกแท่ง + ราคาปัจจุบันอยู่ในกรอบ = ฐานเดียว → แทน 52wk ใน q (ปลด freeze + range52w ถูก)
+//   TradingView ก็เห็นผสม (split จริง — MNST) / ไม่ตอบ / ราคาหลุดกรอบ = คง Yahoo (freeze เหมือนเดิม — fail closed)
+// ส่วนบริสุทธิ์ · alt = { low, high } | null · คืน { q, note } (note null = Yahoo ไม่ผสม ไม่ได้ถาม)
+function pick52w(q, chart, alt, nowSec) {
+  const bars = (chart && chart.bars) || [];
+  const y = detectMixedBasis({ bars, low: q.week52Low, high: q.week52High, nowSec });
+  if (!y.mixed) return { q, note: null };
+  if (!alt || !Number.isFinite(alt.low) || !Number.isFinite(alt.high) || alt.low <= 0 || alt.high < alt.low)
+    return { q, note: 'ถาม TradingView 52wk ไม่ได้ — คง Yahoo' };
+  const inBand = q.price >= alt.low * (1 - CHART_BASIS_TOL) && q.price <= alt.high * (1 + CHART_BASIS_TOL);
+  if (!inBand) return { q, note: `ราคา ${round(q.price, 2)} หลุดกรอบ TradingView ${round(alt.low, 2)}–${round(alt.high, 2)} — ไม่เชื่อ คง Yahoo` };
+  const t = detectMixedBasis({ bars, low: alt.low, high: alt.high, nowSec });
+  if (t.mixed) return { q, note: `TradingView ${round(alt.low, 2)}–${round(alt.high, 2)} ยืนยันว่าผสมสองฐานจริง` };
+  return { q: { ...q, week52Low: alt.low, week52High: alt.high }, note: `Yahoo 52wk ${round(q.week52Low, 2)}–${round(q.week52High, 2)} แคบผิด — TradingView ${round(alt.low, 2)}–${round(alt.high, 2)} ครอบทุกแท่ง (ฐานเดียว) · ใช้ของ TradingView` };
+}
+
+/** ห่อ pick52w ด้วยการถาม TradingView เฉพาะเมื่อ Yahoo บอกว่าผสม (หายาก — ยิงทีละตัว) · ถามล้ม = คง Yahoo */
+async function arbitrate52w(symbol, currency, q, chart) {
+  if (!detectMixedBasis({ bars: (chart && chart.bars) || [], low: q.week52Low, high: q.week52High }).mixed) return q;
+  let alt = null;
+  try {
+    const cands = tvCandidates(symbol, currency, { cached: loadTickerCache()[symbol.toUpperCase()] });
+    const rows = await scan52w(cands);
+    const hit = cands.find((c) => rows.has(c));
+    alt = hit ? rows.get(hit) : null;
+  } catch (e) { alt = null; }
+  const r = pick52w(q, chart, alt);
+  console.log(`· ${symbol.padEnd(10)} bad-chart ตรวจซ้ำกับ TradingView: ${r.note}`);
+  return r.q;
 }
 
 // niceBounds/num4 — ย้ายไป tools/v3/scale.js (v3 compute ใช้ร่วม) แล้ว import กลับด้านบน
@@ -827,7 +862,7 @@ function loadFlags(file = FLAGS) {
 // flag คืนวันจันทร์ แล้วเช้าวันอังคารหายเกลี้ยง (หุ้นตายกลับไปเงียบเหมือนเดิม)
 // ถอนได้ 3 ทาง: TradingView เจอ ticker กลับมา · รายงานถูกลบ · `--alive <SYM>` (ยืนยันด้วยมือ — ไม่ใช่ --force: SKILL สั่ง --force ทุก re-analysis)
 // — ทั้งสามทางถอนที่ตัวเรียก (prevFlags) ก่อนถึง mergeFlags ตัวนี้จึงกันแค่การเคลียร์แบบเงียบ ๆ
-const EXTERNAL_REASONS = new Set(['not-on-exchange']);
+const EXTERNAL_REASONS = DEAD_REASONS;   // not-on-exchange + ticker-renamed (tools/flag-reasons.js — เจ้าของเดียว)
 
 // snapshot: flag ของ symbol ที่ประมวลรอบนี้ = ผลรอบนี้ (เคลียร์เองเมื่อหาย) · symbol นอกรอบ (--only) คงเดิม
 function mergeFlags(prev, processed, newFlags) {
@@ -856,7 +891,7 @@ function commitFlags(p) {
   const file = p.file || FLAGS;
   return withLock(file, () => {
     const latest = loadFlags(file);   // dry-run ก็อ่านล่าสุด — ให้ preview ตรงกับที่ --write จะเขียนจริง
-    const prevFlags = latest.filter((f) => !((p.quietSyms.has(f.symbol) || p.aliveConfirmed.has(f.symbol)) && f.reason === 'not-on-exchange'));
+    const prevFlags = latest.filter((f) => !((p.quietSyms.has(f.symbol) || p.aliveConfirmed.has(f.symbol)) && DEAD_REASONS.has(f.reason)));
     const merged = mergeFlags(prevFlags, p.evaluated, p.frozenAll.concat(p.failed.map((x) => ({ ...x, reportPrice: null, marketPrice: null, diffPct: null }))))
       .filter((f) => p.reportExists.has(String(f.symbol).toUpperCase()));
     if (p.write) writeJsonAtomic(file, JSON.stringify(merged, null, 2) + '\n');
@@ -1134,10 +1169,14 @@ async function main() {
   // เขียนคั่นกลางไม่ถูก snapshot เก่าทับ (ห้ามเปลี่ยน commitFlags กลับมาใช้ prevAll)
   const prevAll = loadFlags();
   // หุ้นที่รอบก่อน (cron หรือ canary รายสัปดาห์) ยืนยันแล้วว่าไม่อยู่บนกระดาน → ไม่ patch อีก
-  const deadAlready = new Set(prevAll.filter((f) => f.reason === 'not-on-exchange').map((f) => f.symbol));
+  // ticker-renamed ที่ symbol-map ชี้ไป ticker ผู้สืบทอดแล้ว = แก้แล้ว → patch ต่อ + ปลด flag รอบนี้เลย (ไม่ต้องรอ canary วันจันทร์/--alive)
+  const renameFixed = new Set(prevAll.filter(renameResolved).map((f) => f.symbol));
+  for (const s of renameFixed) console.log(`↻ ${s.padEnd(10)} ticker-renamed → symbol-map ชี้ผู้สืบทอดแล้ว — patch ต่อแล้วปลด flag`);
+  const deadAlready = new Set(prevAll.filter((f) => DEAD_REASONS.has(f.reason) && !renameFixed.has(f.symbol)).map((f) => f.symbol));
   // --alive = ผู้ใช้ยืนยันด้วยมือว่ายังอยู่บนกระดาน → patch ต่อได้ + ปลด flag (ทางออกของเคส "mapping
   // เพี้ยน" ที่เดิมไม่มีเลยนอกจากแก้ price-flags.json มือ) · ปลดจริงหลังจบลูปเฉพาะตัวที่ไม่ล้ม plumbing
   const aliveAsserted = new Set(ALIVE ? entries.map((e) => e.symbol) : []);   // v2 + v3 (Plan 3 · R7)
+  for (const e of entries) if (renameFixed.has(e.symbol)) aliveAsserted.add(e.symbol);   // ปลดเหมือน --alive (ยังกันด้วย plumbingFail ข้างล่าง)
   let consecFails = 0;
 
   for (const ent of entries) {
@@ -1206,7 +1245,10 @@ async function main() {
       }
       if (deadAlready.has(symbol)) console.log(`↻ ${symbol.padEnd(10)} --alive ทับ flag not-on-exchange — patch ต่อแล้วปลด flag (ยืนยันด้วยมือแล้ว)`);
       let r;
-      try { r = applyV3(fp, planV3(doc, q, await chartFor(symbol, currency, q), { force: FORCE, strictGate: STRICT_GATE, seeds: SEEDS }), { write: WRITE, seeds: SEEDS, force: FORCE, strictGate: STRICT_GATE }); }
+      try {
+        const chart = await chartFor(symbol, currency, q);
+        r = applyV3(fp, planV3(doc, await arbitrate52w(symbol, currency, q, chart), chart, { force: FORCE, strictGate: STRICT_GATE, seeds: SEEDS }), { write: WRITE, seeds: SEEDS, force: FORCE, strictGate: STRICT_GATE });
+      }
       catch (e) {   // compute/render ที่ throw นอกเหนือ gate = plumbing (เหมือน patch-failed ของ v2) — ไม่ล้มทั้งรอบ
         r = { kind: 'freeze', flag: { symbol, reason: 'patch-failed', detail: e.message, reportPrice, marketPrice: round(q.price, 2), diffPct }, line: `⚠ ${symbol.padEnd(10)} patch fail (v3): ${e.message}` };
       }
@@ -1262,7 +1304,8 @@ async function main() {
     // ซีรีส์ต้นทางผสมสองฐาน (split ที่ Yahoo ยังไม่ปรับย้อนหลัง) → **ห้ามเขียนกราฟนี้ลงไฟล์**
     // ไม่ใช่เกณฑ์เชิงนโยบายแบบ drift/mos-flip แต่เป็น "ข้อมูลต้นทางไม่สมประกอบ" เหมือน bad-price
     // ⇒ freeze ทั้งตัวเพื่อกันไม่ให้ patch ทับกราฟที่คนแก้ถูกไว้แล้ว (เคส MNST: drift ~0 ⇒ ไม่มียามตัวอื่นจับได้เลย)
-    const basis = detectMixedBasis({ bars: chartBars, low: q.week52Low, high: q.week52High, gmtoffset: chartGmt });
+    const q52 = await arbitrate52w(symbol, sm.currency, q, { bars: chartBars });   // สมมาตรกับสาย v3 (ใบ v2 = 0 ใบ แต่ทางยังอยู่)
+    const basis = detectMixedBasis({ bars: chartBars, low: q52.week52Low, high: q52.week52High, gmtoffset: chartGmt });
     if (basis.mixed) {
       // --force = re-analysis ที่ agent ยืนยัน cross-source แล้ว: ยอมให้ประทับ "ราคา/วันที่" ต่อได้
       // แต่ยัง **ห้ามเขียนกราฟจากซีรีส์นี้** → chartData = null = ทาง price-only ที่คงกราฟเดิมในไฟล์
@@ -1322,11 +1365,21 @@ async function main() {
       if (!verified.length) throw new Error('ไม่มี cohort ไหนยืนยันได้เลย — ไม่ flag ทั้งรอบ');
       const res = classifyStale(verified, rows, probeMap);
       deadConfirmed = res.dead;
+      // ตัวที่ TradingView ไม่พบ: ISIN เดิมไปโผล่ ticker ใหม่ไหม (เปลี่ยนชื่อ ≠ เพิกถอน — THCOM→GST) · ล้ม = คง not-on-exchange
+      if (deadConfirmed.length) {
+        const cohortOf = new Map(verified.map((c) => [c.symbol, c.cohort]));
+        const succ = await resolveSuccessors(deadConfirmed.map((d) => ({ symbol: d.symbol, currency: cohortOf.get(d.symbol), candidates: probeMap.get(d.symbol) || [] })), loadIsinCache());
+        deadConfirmed = deadConfirmed.map((d) => (succ.has(d.symbol)
+          ? deadFlag({ symbol: d.symbol, reportPrice: d.reportPrice }, succ.get(d.symbol), { missedSessions: d.missedSessions })
+          : d));
+      }
       quietSyms = new Set(res.quiet.map((q) => q.symbol));
       for (const q of res.quiet)
         console.log(`· ${q.symbol.padEnd(10)} quote ค้าง ${q.missedSessions} session แต่ ${q.ticker} ยังอยู่บนกระดาน = ไม่มีคนเทรด ไม่ใช่หุ้นตาย`);
       for (const d of deadConfirmed)
-        console.log(`☠ ${d.symbol.padEnd(10)} quote ค้าง ${d.missedSessions} session + TradingView ไม่พบ ticker → flag not-on-exchange (ยืนยันด้วยมือก่อนลบ)`);
+        console.log(d.reason === 'ticker-renamed'
+          ? `↪ ${d.symbol.padEnd(10)} quote ค้าง ${d.missedSessions} session · ticker เดิมหาย แต่ ${d.detail} → flag ticker-renamed (แก้ symbol-map ห้ามลบ)`
+          : `☠ ${d.symbol.padEnd(10)} quote ค้าง ${d.missedSessions} session + TradingView ไม่พบ ticker → flag not-on-exchange (ยืนยันด้วยมือก่อนลบ)`);
     } catch (e) {
       console.log(`⚠ ถาม TradingView ไม่สำเร็จ (${e.message}) — ไม่ flag รอบนี้ ปล่อย canary รายสัปดาห์จัดการ · candidate: ${candidates.map((c) => c.symbol).join(', ')}`);
     }
@@ -1337,7 +1390,7 @@ async function main() {
   const plumbingFail = new Set([...failed.map((x) => x.symbol),
     ...frozen.filter((f) => f.reason === 'fetch-failed' || f.reason === 'patch-failed').map((f) => f.symbol)]);
   const aliveConfirmed = new Set([...aliveAsserted].filter((s) => !plumbingFail.has(s)));
-  for (const s of aliveAsserted) if (plumbingFail.has(s)) console.log(`⚠ ${s.padEnd(10)} --alive แต่รอบนี้ล้มแบบ plumbing — คง flag not-on-exchange ไว้ก่อน (ยังไม่มีหลักฐานว่ายังเทรด)`);
+  for (const s of aliveAsserted) if (plumbingFail.has(s)) console.log(`⚠ ${s.padEnd(10)} --alive แต่รอบนี้ล้มแบบ plumbing — คง flag ${NOT_ON_EXCHANGE}/ticker-renamed ไว้ก่อน (ยังไม่มีหลักฐานว่ายังเทรด)`);
   const deadSyms = new Set(deadConfirmed.map((f) => f.symbol));
   const frozenAll = frozen.filter((f) => !deadSyms.has(f.symbol)).concat(deadConfirmed);
 
@@ -1380,6 +1433,6 @@ function pxOf(html, sm) {
   return r && RV.isV2(r.data) && r.data.values && Number.isFinite(r.data.values.px) ? r.data.values.px : sm.price;
 }
 
-module.exports = { onlyFromArgv, healV3Refusal, preSkip, evaluatedOf, readV3Doc, chartFor, planV3, applyV3, v3BucketOf, v3LaneLine, derivedPassV2, proseTokensIfNew, mirrorStockMetaV2, healDerived, fvOf, pxOf, mosBand, fmtPrice, fmtLike, toYahooSymbol, fetchChart, buildChartData, niceBounds, annualChg, decide, currencyMatches, isIntradayQuote, detectMixedBasis, detectStaleQuotes, missedSessions, probeCap, capByCohort, controlTickers, unverifiedCohorts, classifyStale, patchReport, gateAfterPatch, gateCheck, mergeFlags, commitFlags, styledRD, commitBody, THAI_MONTHS, MOS_FLIP_DEADBAND_PP };
+module.exports = { pick52w, arbitrate52w, onlyFromArgv, healV3Refusal, preSkip, evaluatedOf, readV3Doc, chartFor, planV3, applyV3, v3BucketOf, v3LaneLine, derivedPassV2, proseTokensIfNew, mirrorStockMetaV2, healDerived, fvOf, pxOf, mosBand, fmtPrice, fmtLike, toYahooSymbol, fetchChart, buildChartData, niceBounds, annualChg, decide, currencyMatches, isIntradayQuote, detectMixedBasis, detectStaleQuotes, missedSessions, probeCap, capByCohort, controlTickers, unverifiedCohorts, classifyStale, patchReport, gateAfterPatch, gateCheck, mergeFlags, commitFlags, styledRD, commitBody, THAI_MONTHS, MOS_FLIP_DEADBAND_PP };
 
 if (require.main === module) main().catch((e) => { console.error(e); process.exit(1); });

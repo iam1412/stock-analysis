@@ -98,7 +98,7 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
 // ── 3) triage: ครบทุก reason ที่ cron/canary/preflight เขียนได้ · flip = PREPATCH ไม่ส่ง LLM (ข้อ D) ──
 {
   const T = require('../tools/queue/triage.js');
-  const want = { 'mos-sign-flip': 'PREPATCH', 'drift-gt-15pct': 'LIGHT', 'age-gt-90d': 'LIGHT', 'earnings-after-analysis': 'LIGHT', 'suspect-split-or-data': 'FULL', 'bad-chart': 'FULL', 'fetch-failed': 'PLUMBING', 'patch-failed': 'PLUMBING', 'no-stock-meta': 'PLUMBING', 'currency-mismatch': 'PLUMBING', 'bad-price': 'PLUMBING', 'bad-report-price': 'PLUMBING', 'patch-rejected': 'REJECTED', 'not-on-exchange': 'DELIST' };
+  const want = { 'mos-sign-flip': 'PREPATCH', 'drift-gt-15pct': 'LIGHT', 'age-gt-90d': 'LIGHT', 'earnings-after-analysis': 'LIGHT', 'suspect-split-or-data': 'FULL', 'bad-chart': 'FULL', 'fetch-failed': 'PLUMBING', 'patch-failed': 'PLUMBING', 'no-stock-meta': 'PLUMBING', 'currency-mismatch': 'PLUMBING', 'bad-price': 'PLUMBING', 'bad-report-price': 'PLUMBING', 'patch-rejected': 'REJECTED', 'not-on-exchange': 'DELIST', 'ticker-renamed': 'RENAME' };
   for (const [r, b] of Object.entries(want)) ok(T.bucketOf(r) === b, `bucketOf(${r}) = ${b}`, T.bucketOf(r));
   ok(T.bucketOf('drift-gt-10pct') === 'LIGHT' && T.bucketOf('อะไรก็ไม่รู้') === 'UNKNOWN', 'bucketOf: drift เกณฑ์อื่น = LIGHT · ไม่รู้จัก = UNKNOWN');
   const flags = [{ symbol: 'A', reason: 'mos-sign-flip' }, { symbol: 'B', reason: 'mos-sign-flip' }, { symbol: 'C', reason: 'not-on-exchange' }, { symbol: 'D', reason: 'suspect-split-or-data' }, { symbol: 'E', reason: 'mos-sign-flip' }, { symbol: 'F', reason: 'mos-sign-flip' }, { symbol: 'G', reason: 'drift-gt-15pct' }];
@@ -112,6 +112,12 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   ok(T.prePatchList(rows).join(',') === 'A,B,D,E,F', 'prePatchList: PREPATCH ทุกแถว (ไม่สน skip — patch ราคาไม่มีโทษ) + LIGHT/FULL ที่ไม่ skip · ไม่รวม DELIST', T.prePatchList(rows).join(','));
   ok(T.llmList(rows).join(',') === 'D,E,F', 'llmList: เฉพาะ LIGHT/FULL ที่ไม่ skip (flip ธรรมดาไม่อยู่)', T.llmList(rows).join(','));
   ok(T.STALE_DAYS === 90, 'STALE_DAYS = 90 (WS6 ข้อ 3: >1 ไตรมาส)');
+  // ticker-renamed (THCOM→GST 1 ต.ค. 69): งาน controller แก้ symbol-map — ไม่ pre-patch ไม่ส่ง LLM · ทุก reason ใน DEAD_REASONS ต้องมี bucket
+  const rn = T.triage([{ symbol: 'THCOM', reason: 'ticker-renamed', detail: 'ISIN TH0380010Y07 → SET:GST' }, { symbol: 'X', reason: 'ticker-renamed', diffPct: 40 }], { footerAgeOf: () => 200 });
+  ok(rn.every((r) => r.bucket === 'RENAME') && !T.prePatchList(rn).length && !T.llmList(rn).length, 'ticker-renamed = RENAME · ไม่ pre-patch · ไม่ส่ง LLM (แม้ drift >30%/อายุ >90 วัน)');
+  ok(/symbol-map/.test(rn[0].action) && /ห้ามลบ/.test(rn[0].action), 'RENAME action: เพิ่ม symbol-map · ห้ามลบรายงาน', rn[0].action);
+  ok(/เปลี่ยนชื่อ/.test(T.ACTION.DELIST) && /แท่ง/.test(T.ACTION.DELIST), 'DELIST action: เช็คเปลี่ยนชื่อก่อนลบ + แท่ง Yahoo ไม่ใช่หลักฐาน', T.ACTION.DELIST);
+  for (const r of require('../tools/flag-reasons.js').DEAD_REASONS) ok(T.bucketOf(r) !== 'UNKNOWN', `DEAD_REASONS ${r} มี bucket`);
 }
 
 // ── 4) state: อ่าน/เขียน/update ใต้ QUEUE_DIR ชั่วคราว ──
@@ -167,6 +173,9 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   const man = P.manualSteps(rows);
   ok(/probe โมเดล/.test(man) && /US2/.test(man) && /US4\[fetch-failed\]/.test(man) && /prep <SYM>/.test(man), 'manualSteps: probe · DELIST · PLUMBING · ขั้นถัดไป');
   ok(man.split('\n').filter((l) => /^\d+\./.test(l)).length <= 5, 'manualSteps: ขั้นที่ต้องทำเอง ≤5 (KPI ระยะ 0)');
+  ok(/เปลี่ยนชื่อ/.test(man) && /แท่ง Yahoo ไม่ใช่หลักฐาน/.test(man), 'manualSteps DELIST: เช็คเปลี่ยนชื่อก่อนลบ (THCOM→GST)');
+  const manRn = P.manualSteps([{ symbol: 'THCOM', reason: 'ticker-renamed', bucket: 'RENAME', detail: 'ISIN TH0380010Y07 → SET:GST', currency: 'THB', action: 'x', skip: null }]);
+  ok(/RENAME THCOM\[ISIN TH0380010Y07 → SET:GST\]/.test(manRn) && /symbol-map/.test(manRn) && /--alive/.test(manRn) && !/DELIST/.test(manRn), 'manualSteps RENAME: พิมพ์ผู้สืบทอด + symbol-map + --alive', manRn);
 
   // renderTable: คอลัมน์ "ที่มา" ใหม่ — synthetic (age-gt-90d) = "อายุ" · escalated (flip ยกจาก PREPATCH) = ป้าย escalated · ปกติ = "flag"
   const table2 = P.renderTable([

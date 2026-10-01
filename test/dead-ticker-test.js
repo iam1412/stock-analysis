@@ -91,6 +91,11 @@ ok(m.map((f) => f.symbol).join(',') === 'AAOI,BPP,EA,IT', 'mergeDeadFlags: เ�
 const revived = C.mergeDeadFlags(prev, [], ['EA', 'IT'], '2026-08-08');
 ok(!revived.find((f) => f.symbol === 'EA'), 'mergeDeadFlags: ตัวที่ฟื้น → ถอน not-on-exchange');
 ok(revived.find((f) => f.symbol === 'IT'), 'mergeDeadFlags: ตัวที่ฟื้นแต่ flag คนละเหตุผล → คงไว้');
+// ticker-renamed (THCOM→GST): เพิ่ม symbol-map แล้ว canary เจอ ticker ใหม่ → ถอนเหมือน not-on-exchange
+const renRev = C.mergeDeadFlags([{ symbol: 'THCOM', reason: 'ticker-renamed', detail: 'ISIN TH0380010Y07 → SET:GST', flaggedAt: '2026-10-05' }], [], ['THCOM'], '2026-10-12');
+ok(!renRev.length, 'mergeDeadFlags: ticker-renamed ที่ TradingView เจอแล้ว (หลังเพิ่ม symbol-map) → ถอน');
+const renUp = C.mergeDeadFlags([{ symbol: 'THCOM', reason: 'not-on-exchange', flaggedAt: '2026-09-28' }], [{ symbol: 'THCOM', reason: 'ticker-renamed', detail: 'ISIN TH0380010Y07 → SET:GST' }], [], '2026-10-05');
+ok(renUp.length === 1 && renUp[0].reason === 'ticker-renamed' && renUp[0].flaggedAt === '2026-10-05', 'mergeDeadFlags: not-on-exchange → ticker-renamed ทับ + วันใหม่ (triage เปลี่ยนจากลบเป็น symbol-map)');
 
 // ตัวที่ตายแต่เดิมมี flag เหตุผลอื่น → ทับด้วย not-on-exchange + วันใหม่ (triage เปลี่ยนเป็น "ยืนยันแล้วลบ")
 const upgraded = C.mergeDeadFlags(prev, [{ symbol: 'AAOI', reason: 'not-on-exchange', reportPrice: 94.32 }], ['IT'], '2026-08-08');
@@ -113,6 +118,30 @@ ok(b.marketPrice === null && b.diffPct === null,
   'BPP: ตัวเลข drift เดิมต้องไม่ติดมา (ป้าย not-on-exchange ที่โชว์ −20% อ่านเหมือนราคายังเดินอยู่)',
   JSON.stringify({ marketPrice: b.marketPrice, diffPct: b.diffPct }));
 ok(bpp.length === 1, 'BPP: ไม่เกิด entry ซ้ำ');
+
+// ---------- symbol-map.json จริง: `tv` = ชื่อฐานล้วน (canary เติม `SET:`/กระดาน US เอง) ----------
+// เคสจริง 1 ต.ค. 69: entry THCOM ใส่ tv "SET:GST" → canary จะยิง SET:SET:GST → ไม่เจอ → flag หุ้นตายซ้ำ
+{
+  const map = JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '..', 'tools', 'symbol-map.json'), 'utf8'));
+  for (const [sym, e] of Object.entries(map)) {
+    if (sym.startsWith('_')) continue;
+    ok(e && typeof e.yahoo === 'string' && e.yahoo, `symbol-map ${sym}: มี yahoo`);
+    for (const k of ['tv', 'sa']) if (e[k] != null) ok(/^[A-Z0-9.\-]+$/.test(e[k]), `symbol-map ${sym}.${k} = ชื่อฐานล้วน ห้ามมี exchange prefix`, e[k]);
+    const c = C.tvCandidates(sym, sym === 'LANC' ? 'USD' : 'THB');
+    ok(c.every((t) => (t.match(/:/g) || []).length === 1), `symbol-map ${sym}: candidate มี ':' ตัวเดียว`, JSON.stringify(c));
+  }
+}
+
+// ---------- renameResolved (cron ปลด ticker-renamed เองเมื่อ symbol-map ชี้ผู้สืบทอดแล้ว) ----------
+{
+  const f = { symbol: 'THCOM', reason: 'ticker-renamed', successor: 'SET:GST' };
+  ok(C.renameResolved(f, () => ({ yahoo: 'GST.BK', sa: 'NOPE', tv: 'GST' })) === true, 'renameResolved: tv ชนะ sa (ลำดับเดียวกับ tvBaseName)');
+  ok(C.renameResolved(f, () => ({ yahoo: 'GST.BK', sa: 'GST' })) === true, 'renameResolved: symbol-map ชี้ GST (sa/yahoo) = แก้แล้ว');
+  ok(C.renameResolved(f, () => ({ yahoo: 'GST.BK' })) === true, 'renameResolved: entry มีแค่ yahoo ก็พอ (ถอด .BK)');
+  ok(C.renameResolved(f, () => undefined) === false, 'renameResolved: ยังไม่มี entry = ยังไม่แก้');
+  ok(C.renameResolved({ symbol: 'THCOM', reason: 'ticker-renamed' }, () => ({ yahoo: 'GST.BK' })) === false, 'renameResolved: flag ไม่มี successor = ทางเดิม');
+  ok(C.renameResolved({ symbol: 'THCOM', reason: 'not-on-exchange', successor: 'SET:GST' }, () => ({ yahoo: 'GST.BK' })) === false, 'renameResolved: เฉพาะ ticker-renamed');
+}
 
 // ---------- shouldAbort (ยามกัน mass-flag) ----------
 ok(C.shouldAbort({ onlyMode: false, probed: 784, aliveCount: 120 }) === true, 'shouldAbort: sweep เต็มเจอ alive 15% → ยกเลิกรอบ (โดนบล็อก)');
@@ -169,6 +198,49 @@ const quiet = async (fn) => {                       // กลบ log "ลอง�
   ok(n6 === 1 && slept === 0, 'scan: รอบแรกผ่าน → ไม่ retry ไม่หน่วง', `ยิง ${n6} · หน่วง ${slept}`);
 
   ok(await C.withRetry(async () => 'ok', noWait) === 'ok', 'withRetry: คืนค่าที่ fn คืน');
+
+  // ---------- ผู้สืบทอดจาก ISIN (เคสจริง THCOM→GST 1 ต.ค. 69 · LANC→MZTI) ----------
+  // fixture = ผล symbol-search จริง (ย่อ) — มี dr/alien/ต่างกระดานปนมา ต้องเหลือแค่หุ้นกระดานเดียวกัน ISIN ตรงเป๊ะ
+  const GST_SEARCH = { symbols: [
+    { symbol: 'GST', exchange: 'SET', type: 'stock', isin: 'TH0380010Y07' },
+    { symbol: 'HI11', exchange: 'GETTEX', type: 'stock', isin: 'TH0380010Y15' },
+    { symbol: 'GST.R', exchange: 'SET', type: 'dr', isin: 'TH0380010R14' },
+    { symbol: 'GST.F', exchange: 'SET', type: 'stock', isin: 'TH0380010Y15' },
+    { symbol: 'NYVP', exchange: 'MUN', type: 'dr', isin: 'TH0380010R14' },
+  ] };
+  ok(JSON.stringify(C.successorCandidates(GST_SEARCH, { isin: 'TH0380010Y07', currency: 'THB', exclude: ['SET:THCOM'] })) === '["SET:GST"]', 'successorCandidates: THCOM → SET:GST เท่านั้น (ตัด dr · alien ISIN ต่าง · ต่างกระดาน)');
+  const MZTI_SEARCH = { symbols: [{ symbol: 'MZTI', exchange: 'NASDAQ', type: 'stock', isin: 'US5138471033' }, { symbol: 'LC1', exchange: 'GETTEX', type: 'stock', isin: 'US5138471033' }] };
+  ok(JSON.stringify(C.successorCandidates(MZTI_SEARCH, { isin: 'US5138471033', currency: 'USD', exclude: ['NASDAQ:LANC'] })) === '["NASDAQ:MZTI"]', 'successorCandidates: LANC → NASDAQ:MZTI (US cohort)');
+  ok(!C.successorCandidates({ symbols: [{ symbol: 'THCOM', exchange: 'SET', type: 'stock', isin: 'TH0380010Y07' }] }, { isin: 'TH0380010Y07', currency: 'THB', exclude: ['SET:THCOM'] }).length, 'successorCandidates: เจอ ticker เดิม = scanner สะอึก ไม่ใช่เปลี่ยนชื่อ → ว่าง');
+  ok(!C.successorCandidates(GST_SEARCH, { isin: null, currency: 'THB' }).length, 'successorCandidates: ไม่มี ISIN → ว่าง');
+  ok(JSON.stringify(C.successorCandidates({ symbols: [{ symbol: '<em>GST</em>', exchange: 'SET', type: 'stock', isin: 'th0380010y07' }] }, { isin: 'TH0380010Y07', currency: 'THB' })) === '["SET:GST"]', 'successorCandidates: ถอด <em> highlight · ISIN ไม่สนตัวพิมพ์');
+
+  const deadTH = [{ symbol: 'THCOM', currency: 'THB', reportPrice: 9.95, candidates: ['SET:THCOM'] }];
+  const fake = (scanBody, calls) => async (url) => { calls.push(String(url)); return res(/symbol-search/.test(url) ? JSON.stringify(GST_SEARCH) : scanBody); };
+  let calls = [];
+  const r1 = await quiet(() => C.resolveSuccessors(deadTH, { THCOM: 'TH0380010Y07' }, { ...noWait, fetch: fake(JSON.stringify({ data: [{ s: 'SET:GST', d: [9.4, 'THB', 'TH0380010Y07'] }] }), calls) }));
+  ok(r1.get('THCOM') && r1.get('THCOM').successor === 'SET:GST' && r1.get('THCOM').isin === 'TH0380010Y07', 'resolveSuccessors: ค้น ISIN → ยืนยัน scanner → THCOM = SET:GST', JSON.stringify([...r1]));
+  ok(calls.length === 2 && /TH0380010Y07/.test(calls[0]), 'resolveSuccessors: ค้น 1 + scan ยืนยัน 1', JSON.stringify(calls));
+  calls = [];
+  const r2 = await quiet(() => C.resolveSuccessors(deadTH, { THCOM: 'TH0380010Y07' }, { ...noWait, fetch: fake(JSON.stringify({ data: [] }), calls) }));
+  ok(!r2.size, 'resolveSuccessors: ผลค้นหาเจอแต่ scanner ไม่ยืนยัน = ไม่ใช่ผู้สืบทอด (ผลค้นหาไม่ใช่หลักฐาน)');
+  const r3 = await quiet(() => C.resolveSuccessors(deadTH, { THCOM: 'TH0380010Y07' }, { ...noWait, fetch: fake(JSON.stringify({ data: [{ s: 'SET:GST', d: [9.4, 'THB', 'TH9999999999'] }] }), []) }));
+  ok(!r3.size, 'resolveSuccessors: scanner ตอบ ISIN คนละตัว = ไม่ใช่ผู้สืบทอด');
+  calls = [];
+  const r4 = await quiet(() => C.resolveSuccessors(deadTH, {}, { ...noWait, fetch: fake('{}', calls) }));
+  ok(!r4.size && !calls.length, 'resolveSuccessors: ไม่มี ISIN ใน cache → ไม่ยิงเลย (not-on-exchange เหมือนเดิม)');
+  const r5 = await quiet(() => C.resolveSuccessors(deadTH, { THCOM: 'TH0380010Y07' }, { ...noWait, fetch: async () => res('') }));
+  ok(!r5.size, 'resolveSuccessors: ค้นล้มทุกรอบ → Map ว่าง ไม่โยน (ไม่ล้มทั้ง sweep)');
+
+  const fR = C.deadFlag(deadTH[0], r1.get('THCOM'), { probed: 1 });
+  ok(fR.reason === 'ticker-renamed' && fR.successor === 'SET:GST' && fR.detail === 'ISIN TH0380010Y07 → SET:GST' && fR.probed === 1 && fR.marketPrice === null, 'deadFlag: มีผู้สืบทอด → ticker-renamed + successor/isin/detail', JSON.stringify(fR));
+  const fD = C.deadFlag(deadTH[0], undefined, { probed: 1 });
+  ok(fD.reason === 'not-on-exchange' && !('successor' in fD), 'deadFlag: ไม่มีผู้สืบทอด → not-on-exchange เดิม');
+  ok(C.renameResolved(fR, () => ({ yahoo: 'GST.BK', sa: 'GST' })), 'ปลายทาง: flag จาก deadFlag + symbol-map ที่ triage สั่ง → renameResolved = true');
+
+  const rows3 = C.parseRows({ data: [{ s: 'SET:GST', d: [9.4, 'THB', 'th0380010y07'] }, { s: 'SET:PTT', d: [38.75, 'THB'] }] });
+  ok(rows3.get('SET:GST').isin === 'TH0380010Y07' && rows3.get('SET:PTT').isin === null, 'parseRows: คอลัมน์ isin (ไม่มี = null)');
+  ok(C.SCAN_COLUMNS.join() === 'close,currency,isin', 'SCAN_COLUMNS: ลำดับตรงกับ parseRows');
 
   console.log(nFail ? `\n✗ dead-ticker-test: ${nFail} failed / ${nOK} passed` : `\n✓ dead-ticker-test: ${nOK} passed`);
   process.exit(nFail ? 1 : 0);
