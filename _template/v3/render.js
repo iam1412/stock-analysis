@@ -190,7 +190,10 @@ function v2Ret(rets, i, view) {
   const parts = v2RetTokens(text);
   if (!parts) return text;
   const sc = view.scn[i];
-  const wants = v2RetWants(parts, { tgt: sc.tgt, divCum: sc.divCum, px: view.d.px, years: view.doc.scenarios.years, div: rets.div, perYear: rets.perYear });
+  // เป้า/ปันผลต้องเป็นค่าที่ "โชว์" (ปัด 2 ตำแหน่ง = values.scenarios ที่ compute.js ส่งให้ RV.derive) — W17 ถอดเป้าจากเลขที่พิมพ์ในหน้า
+  //   ใช้ค่าดิบแล้ว % ต่างจากที่ผู้อ่านกดเครื่องคิดเลขได้ (QH เป้า 2.04 @1.38: ดิบ +48.9% vs โชว์ +47.8% → gate v2:W17 ตก, patch-rejected)
+  const r2 = (x) => (x == null ? x : Math.round(x * 100) / 100);
+  const wants = v2RetWants(parts, { tgt: r2(sc.tgt), divCum: r2(sc.divCum), px: view.d.px, years: view.doc.scenarios.years, div: rets.div, perYear: rets.perYear });
   if (!wants) return text;
   let out = text;
   const edits = parts.map((x, k) => ({ ...x, want: wants[k] })).filter((e) => (e.kind === 'py' ? DV.pyOff(e.v, e.want) : DV.retOff(e.v, e.want)));

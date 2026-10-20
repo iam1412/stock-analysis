@@ -113,6 +113,15 @@ t.eq(txt('~฿4.18 พัน ล. และ ฿17.4 พัน ลบ.'), '~฿4.
   const lsrc = R.toV2Source(lv, C.compute(lv, { seeds: SEEDS }));
   const T0 = Math.round((C.compute(lv, { seeds: SEEDS }).scn[0].tgt - px) / px * 100);
   t(new RegExp(`<div class="ret \\{\\{rd:sc1retClass\\}\\}">${T0 < 0 ? '-' : '\\+'}${Math.abs(T0)}% \\(3 ปี\\)</div>`).test(lsrc), `render: the author ret format, numbers live at the current price (${T0}%) + live class token`, (/<div class="ret[^>]*>[^<]*/.exec(lsrc) || [])[0]);
+  // regression (QH 20 ต.ค. 69): .ret คิดจากเป้าที่ "โชว์" (ปัด 2 ตำแหน่ง) ไม่ใช่ค่าดิบ — ไม่งั้น W17 (ถอดเป้าจากเลขที่พิมพ์) ตก → patch-rejected
+  {
+    const px2 = 1.38, raw = 2.0449, shown = Math.round(raw * 100) / 100;   // ดิบ → +48.2% · โชว์ 2.04 → +47.8% (ต่างกันที่ 1dp)
+    const q = { ...d, market: { ...d.market, px: px2 }, v2Display: { ...d.v2Display, targets: [null, raw, null], rets: { texts: ['−2.5%', '+10.0%', '+39.4%'], neg: '−', perYear: 'cagr', div: false } } };
+    const qs = R.toV2Source(q, C.compute(q, { seeds: SEEDS }));
+    const baseRet = (qs.split('<div class="col base">')[1] || '').split('</ul>')[0];
+    const wantTot = ((shown - px2) / px2 * 100).toFixed(1);
+    t(baseRet.includes(`+${wantTot}%`) && !baseRet.includes(`+${((raw - px2) / px2 * 100).toFixed(1)}%`), `render: ret total from the displayed target ${shown} (+${wantTot}%), not the raw ${raw}`, baseRet.slice(0, 300));
+  }
   const fz = { ...d, v2Display: { cards: { pe: { v: 'ขาดทุน GAAP', d: 'EPS TTM −$0.59' } } } };
   t(R.toV2Source(fz, C.compute(fz, { seeds: SEEDS })).includes('<div class="v neu">ขาดทุน GAAP</div><div class="d">EPS TTM −$0.59</div>'), 'render: an author-fact card (no number) = v2 text + v2 .d');
   const neg = load('ZTS-real'); neg.fundamentals.eps = -0.77;
