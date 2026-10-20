@@ -116,11 +116,16 @@ t.eq(txt('~฿4.18 พัน ล. และ ฿17.4 พัน ลบ.'), '~฿4.
   // regression (QH 20 ต.ค. 69): .ret คิดจากเป้าที่ "โชว์" (ปัด 2 ตำแหน่ง) ไม่ใช่ค่าดิบ — ไม่งั้น W17 (ถอดเป้าจากเลขที่พิมพ์) ตก → patch-rejected
   {
     const px2 = 1.38, raw = 2.0449, shown = Math.round(raw * 100) / 100;   // ดิบ → +48.2% · โชว์ 2.04 → +47.8% (ต่างกันที่ 1dp)
-    const q = { ...d, market: { ...d.market, px: px2 }, v2Display: { ...d.v2Display, targets: [null, raw, null], rets: { texts: ['−2.5%', '+10.0%', '+39.4%'], neg: '−', perYear: 'cagr', div: false } } };
+    const q = { ...d, market: { ...d.market, px: px2 }, scenarios: { ...d.scenarios, divIncluded: false, perYear: 'cagr', cases: d.scenarios.cases.map((c) => ({ ...c, divCum: 0 })) },
+      v2Display: { ...d.v2Display, targets: [1.1, raw, 3.2], rets: { texts: ['−20.0%/ปี', '+10.0%', '+39.4%/ปี'], neg: '−', perYear: 'cagr', div: false } } };
     const qs = R.toV2Source(q, C.compute(q, { seeds: SEEDS }));
     const baseRet = (qs.split('<div class="col base">')[1] || '').split('</ul>')[0];
     const wantTot = ((shown - px2) / px2 * 100).toFixed(1);
     t(baseRet.includes(`+${wantTot}%`) && !baseRet.includes(`+${((raw - px2) / px2 * 100).toFixed(1)}%`), `render: ret total from the displayed target ${shown} (+${wantTot}%), not the raw ${raw}`, baseRet.slice(0, 300));
+    // ผ่าน W17 จริง: scenarioPlan ตัวเดียวกับ check-reports (อ่านเป้า/% จากหน้าที่ build แล้ว) ต้องไม่เจอฉากที่ off
+    const DV = require('../../tools/derived-values.js');
+    const plan = DV.scenarioPlan(page(q), px2, undefined, { years: q.scenarios.years, divIncluded: q.scenarios.divIncluded, perYear: q.scenarios.perYear });
+    t(plan && plan.items.every((it) => (!it.total || !DV.retOff(DV.retShown(it.total.token), it.total.want)) && (!it.py || !DV.pyOff(DV.retShown(it.py.token), it.py.want))), 'W17 (scenarioPlan) accepts the rendered page at px 1.38', plan ? '' : 'plan=null');
   }
   const fz = { ...d, v2Display: { cards: { pe: { v: 'ขาดทุน GAAP', d: 'EPS TTM −$0.59' } } } };
   t(R.toV2Source(fz, C.compute(fz, { seeds: SEEDS })).includes('<div class="v neu">ขาดทุน GAAP</div><div class="d">EPS TTM −$0.59</div>'), 'render: an author-fact card (no number) = v2 text + v2 .d');
