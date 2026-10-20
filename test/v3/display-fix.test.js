@@ -117,7 +117,7 @@ t.eq(txt('~฿4.18 พัน ล. และ ฿17.4 พัน ลบ.'), '~฿4.
   {
     const px2 = 1.38, raw = 2.0449, shown = Math.round(raw * 100) / 100;   // ดิบ → +48.2% · โชว์ 2.04 → +47.8% (ต่างกันที่ 1dp)
     const q = { ...d, market: { ...d.market, px: px2 }, scenarios: { ...d.scenarios, divIncluded: false, perYear: 'cagr', cases: d.scenarios.cases.map((c) => ({ ...c, divCum: 0 })) },
-      v2Display: { ...d.v2Display, targets: [1.1, raw, 3.2], rets: { texts: ['−20.0%/ปี', '+10.0%', '+39.4%/ปี'], neg: '−', perYear: 'cagr', div: false } } };
+      v2Display: { ...d.v2Display, targets: [1.1, raw, 3.2], rets: { texts: ['−20.0%/ปี', '+48.9%', '+39.4%/ปี'], neg: '−', perYear: 'cagr', div: false } } };
     const qs = R.toV2Source(q, C.compute(q, { seeds: SEEDS }));
     const baseRet = (qs.split('<div class="col base">')[1] || '').split('</ul>')[0];
     const wantTot = ((shown - px2) / px2 * 100).toFixed(1);
