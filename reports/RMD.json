@@ -12,13 +12,13 @@
       "Medical Devices",
       "Sleep Apnea / Respiratory"
     ],
-    "analysisDate": "2026-09-21",
-    "aiModel": "Claude Sonnet 5",
+    "analysisDate": "2026-11-02",
+    "aiModel": "Claude Sonnet 5.5",
     "sources": [
       "StockAnalysis.com",
       "Yahoo Finance",
-      "ResMed Investor Relations",
-      "Macrotrends"
+      "ResMed Q1 FY2027 Press Release (29 ต.ค. 2569)",
+      "ResMed Investor Relations"
     ],
     "themeLegacy": {
       "accent": "#1B4D9B",
@@ -98,48 +98,51 @@
     }
   },
   "fundamentals": {
-    "dps": 2.4,
-    "bvps": 41.04,
-    "shares": 146900000,
-    "eps": 10.37,
-    "revenue": 5150000000,
-    "grossMargin": 59.4,
+    "dps": 2.64,
+    "bvps": 42.29,
+    "shares": 140657071,
+    "eps": 10.6,
+    "revenue": 5733000000,
+    "grossMargin": 61.8,
     "beta": 0.5,
     "fy": {
-      "period": "FY25",
-      "netIncome": 1400000000
+      "period": "FY26",
+      "netIncome": 1523000000
     },
-    "epsForward": 11.4,
-    "epsBasis": "gaap-ttm"
+    "epsForward": 12.12,
+    "epsBasis": "adj-ttm"
   },
   "legs": [
     {
       "method": "pe",
       "label": "P/E Valuation (TTM)",
       "inputs": {
-        "multiple": 23,
+        "multiple": 24,
         "multipleSource": "author"
       },
-      "family": "market"
+      "family": "market",
+      "note": "EPS ฐาน {{baseEps}} = GAAP TTM หักกำไรพิเศษขาย MatrixCare 0.38 ต่อหุ้น · ตัวคูณ 24x อยู่ระหว่างต่ำสุด (23.2x) กับมัธยฐาน (26.2x) ของ P/E ย้อนหลัง 5 ปีที่วัดจริง (ช่วง 23.2–46.1x) เผื่อความกังวล GLP-1"
     },
     {
       "method": "pe",
-      "label": "Forward P/E (FY26E)",
+      "label": "Forward P/E (FY27E)",
       "inputs": {
-        "multiple": 22,
+        "multiple": 21,
         "multipleSource": "author",
         "base": "epsForward"
       },
-      "family": "market"
+      "family": "market",
+      "note": "EPS FY27E 12.12 (ตรงช่วง guidance non-GAAP 12.00–12.25 ที่คงเดิมหลังงบ Q1) × 21x ต่ำกว่า P/E ที่วัดจริงย้อนหลัง"
     },
     {
       "method": "declared",
       "label": "DCF (Discounted Cash Flow)",
       "inputs": {
-        "value": 245.69,
+        "value": 241.8,
         "basis": "other"
       },
-      "family": "rg"
+      "family": "rg",
+      "note": "FCF ต่อหุ้น ~11.1 (FCF TTM 1,609 ล้าน ÷ 145 ล้านหุ้น) โตระยะกลาง 10% ต่อปี · ส่วนลด 9% · Terminal growth 3% — วิธีเดียวกับรอบก่อน ปรับตามฐาน FCF ใหม่"
     }
   ],
   "fvWeights": null,
@@ -160,30 +163,30 @@
     ],
     "custom": [
       {
-        "label": "P/E เฉลี่ย ~5 ปี",
-        "value": "~27–29x",
-        "note": "ช่วง 15x–45x (5 ปี)"
+        "label": "P/E ย้อนหลัง 5 ปี (มัธยฐาน)",
+        "value": "~26.2x",
+        "note": "ช่วง 23.2x–46.1x (วัดจริง)"
       },
       {
-        "label": "ROE / ROIC",
-        "value": "~25.3% / 26.9%",
+        "label": "ROE / D/E",
+        "value": "~26.4% / 0.10",
         "note": "คุณภาพสูง หนี้ต่ำ",
         "tone": "pos"
       }
     ],
     "notes": {
-      "mcap": "146.9M shares",
-      "pe": "ต่ำกว่าค่าเฉลี่ย 5 ปี (~28x)",
+      "mcap": "140.66M shares",
+      "pe": "ต่ำกว่ามัธยฐาน 5 ปี (~26x)",
       "pbv": "BVPS ~{{bvps}}",
-      "netIncomeFy": "+43% YoY",
-      "eps": "EPS FY25: $9.51",
-      "bvps": "ROE 25.3% / ROA 10.8%",
-      "revenue": "CAGR ~13% (5 ปี)",
-      "grossMargin": "Operating Margin 32.8%",
-      "yield": "ขึ้นต่อเนื่อง",
-      "beta": "ความผันผวนต่ำ D/E 0.13"
+      "netIncomeFy": "FY26 +9% YoY",
+      "eps": "ปรับหักกำไรขาย MatrixCare 0.38 (GAAP TTM 10.98) · FY26 GAAP 10.43",
+      "bvps": "ROE 26.4%",
+      "revenue": "CAGR ~12% (FY22–FY26)",
+      "grossMargin": "Operating Margin 34.0%",
+      "yield": "จ่ายไตรมาสละ 0.66 (ขึ้นจาก 0.60)",
+      "beta": "ความผันผวนต่ำ D/E 0.10"
     },
-    "hint": "FY มิ.ย. 2025 · TTM"
+    "hint": "FY มิ.ย. 2026 · TTM ถึงไตรมาส ก.ย. 2569"
   },
   "scenarios": {
     "years": 3,
@@ -193,42 +196,42 @@
     "exitMetric": "pe",
     "cases": [
       {
-        "growth": 7,
-        "exitMultiple": 19,
-        "divCum": 7.2,
-        "desc": "GLP-1 กระทบตลาดบางส่วน"
+        "growth": 6,
+        "exitMultiple": 17,
+        "divCum": 8.7,
+        "desc": "GLP-1 กระทบตลาดบางส่วน · de-rating ลงต่ำกว่าช่วงวัดจริง"
       },
       {
         "growth": 10,
-        "exitMultiple": 22,
-        "divCum": 7.2,
+        "exitMultiple": 21,
+        "divCum": 8.7,
         "desc": "เติบโตตามประวัติศาสตร์ GLP-1 ไม่กระทบ"
       },
       {
         "growth": 13,
         "exitMultiple": 24,
-        "divCum": 7.2,
+        "divCum": 8.7,
         "desc": "ส่วนแบ่งตลาดเพิ่ม SaaS โต re-rating"
       }
     ],
     "exitDp": 0,
-    "note": "ผลตอบแทนแต่ละฉากดูจากตารางด้านบน (คำนวณจากจุดเข้า {{px}}) Base Case ซึ่งใกล้เคียงกับ CAGR ประวัติศาสตร์ ปันผลสะสม ~$7.20/3 ปี รวมอยู่ในการคำนวณ (yield ~1.2%/ปี) · ตัวเลขนี้ไม่รวมการ re-rating Multiple กรณีกระแส GLP-1 คลาย"
+    "note": "ผลตอบแทนแต่ละฉากคำนวณจากจุดเข้า {{px}} ฐาน EPS {{baseEps}} (หักกำไรพิเศษ MatrixCare) ปันผลสะสม {{scn.base.div}} ต่อหุ้น 3 ปี รวมอยู่ในการคำนวณ · ไม่รวมแผนซื้อหุ้นคืน"
   },
   "analyst": {
-    "target": 248,
-    "n": null,
+    "target": 265.11,
+    "n": 17,
     "rating": "Buy",
     "asOf": null
   },
   "prose": {
-    "chart": "ราคา RMD ร่วงลง −26.3% ในรอบปี (ก.ค. 2568 – มิ.ย. 2569) จากระดับ ~$272 ลงมาแถว {{px}} โดยแรงกดดันหลักคือกระแสความกลัว GLP-1 (ยาลดน้ำหนัก) ที่นักลงทุนเกรงจะลดจำนวนผู้ป่วย sleep apnea ระยะยาว ราคาแตะจุดต่ำสุด พ.ค. 2569 ที่ $190.57 ก่อนฟื้นตัวบางส่วน ปัจจุบัน {{px}} ยังต่ำกว่า Fair Value {{fv}} เล็กน้อย สะท้อน MOS {{mos}}",
-    "valuation": "ทั้ง 3 วิธีให้ค่าใกล้กันมาก ($238–$251) สะท้อนว่าราคาปัจจุบัน {{px}} ยังต่ำกว่ามูลค่าพื้นฐานอยู่บ้างแต่ส่วนเผื่อความปลอดภัยบางลง วิธี P/E (TTM) ใช้ Multiple 23x ซึ่งอนุรักษ์นิยมกว่าค่าเฉลี่ยประวัติศาสตร์ (~28x) แต่เหมาะสมกับสภาวะตลาดที่ยังกังวล GLP-1 วิธี DCF ยืนยันว่าแม้โตช้าลง 10%/ปี ราคายังต่ำกว่า intrinsic value · DDM ให้ผลตอบแทนต่ำเพราะ yield 1.2% เป็นเพียง floor — ไม่ใช่วิธีหลักสำหรับ growth stock ประเภทนี้",
-    "gauge": "ราคาปัจจุบัน {{px}} อยู่เหนือจุดซื้อ MOS 20% ({{mos20}}) และต่ำกว่า Fair Value {{fv}} เพียงเล็กน้อย (MOS {{mos}}) นักวิเคราะห์ 16 ราย ให้เป้าเฉลี่ย $247.56 (+10%) ราคาอยู่เหนือกรอบล่าง 52 สัปดาห์ $180.26 ราว 25% ยังไม่ใช่โซนสะสมเชิงลึก",
+    "chart": "ราคา RMD อ่อนตัวในรอบปี ({{chg}}) จากโซนสูงใกล้ {{range52w.hi}} ลงมาแถว {{px}} ท่ามกลางความกังวลเรื่อง GLP-1 ต่อผู้ป่วย sleep apnea ระยะยาว แม้งบ Q1 FY27 (29 ต.ค. 2569) จะออกมาดี: รายได้ 1,415 ล้านดอลลาร์ (+6%) EPS GAAP 2.92 ดอลลาร์ (non-GAAP 2.91 ดอลลาร์ +14%) ราคาอยู่เหนือจุดต่ำ 52 สัปดาห์ {{range52w.lo}}",
+    "valuation": "ทั้ง 3 วิธีให้ค่าใกล้กัน ({{fvLow}}–{{fvHigh}}) FV {{fv}} เทียบราคา {{px}} · P/E (TTM) ใช้ EPS ฐาน {{baseEps}} (หักกำไรพิเศษขายธุรกิจ MatrixCare 0.38 ต่อหุ้นออกจาก GAAP TTM 10.98) × 24x ซึ่งต่ำกว่ามัธยฐาน 26.2x ของหุ้นเอง · Forward P/E ใช้ EPS FY27E 12.12 ตาม guidance × 21x · DCF ยืนยันว่าแม้โตช้าลง 10%/ปี ราคายังต่ำกว่ามูลค่าพื้นฐาน · P/E และ Forward P/E เป็นตระกูลตัวคูณตลาด ส่วน DCF เป็นตระกูล (r,g) จึงถ่วง 50:50",
+    "gauge": "ราคาปัจจุบัน {{px}} อยู่เหนือจุดซื้อ MOS 20% ({{mos20}}) และต่ำกว่า Fair Value {{fv}} (MOS {{mos}}) นักวิเคราะห์ 17 ราย ให้เป้าเฉลี่ย {{analyst.target}} ({{analyst.pct}}) ช่วง 52 สัปดาห์ {{range52w.lo}}–{{range52w.hi}} ยังไม่ใช่โซนสะสมเชิงลึก",
     "mos": "ราคาต่ำกว่า Fair Value เล็กน้อย — ส่วนเผื่อความปลอดภัยบาง · รอราคาลงใกล้จุดซื้อ MOS 20%",
     "verdictHeadline": "Value Pick — ผู้นำ Sleep Apnea คุณภาพสูง ถูกกดราคาเกินจริง",
-    "verdictBody": "ResMed เป็นผู้นำตลาด sleep apnea ระดับโลก มีธุรกิจ recurring revenue (หน้ากาก/อุปกรณ์) ที่แข็งแกร่ง ROIC 27% หนี้ต่ำ (D/E 0.13) และ SaaS กำลังเติบโต ราคาปรับลงจากระดับสูงเพราะความกลัว GLP-1 ที่ข้อมูลจริงยังไม่สนับสนุน ทำให้ P/E อยู่ราว 21x (ต่ำกว่าเฉลี่ย 5 ปีที่ ~28x) Fair Value {{fv}} (MOS {{mos}}) นักวิเคราะห์ 16 ราย เป้าเฉลี่ย $247.56 (+10%) เหมาะสำหรับนักลงทุนระยะกลาง-ยาวที่เชื่อว่า GLP-1 ไม่ได้กระทบมากอย่างที่ตลาดกังวล",
-    "strategy": "ราคาปัจจุบัน {{px}} ยังเหนือ MOS 20% ({{mos20}}) — ทยอยซื้อเล็กน้อยได้สำหรับนักลงทุนระยะยาว · เพิ่มน้ำหนักถ้าราคาลงสู่ $180–196 (Deep Value) · รอดูผลการศึกษา GLP-1 ต่อ CPAP adherence เพิ่มเติมก่อนตัดสินใจหนัก",
-    "disclaimerSources": "ที่มาข้อมูล: StockAnalysis.com / Yahoo Finance / ResMed Investor Relations (Annual Report FY2025 Q4) / Macrotrends"
+    "verdictBody": "ResMed เป็นผู้นำตลาด sleep apnea ระดับโลก มีรายได้ recurring จากหน้ากาก/อุปกรณ์ ROE ราว 26% หนี้ต่ำ (D/E 0.10) งบ Q1 FY27 แข็งแรง: รายได้ +6% Global Sleep Devices +9% masks +10% อัตรากำไรขั้นต้น non-GAAP 62.5% guidance ปีงบ 27 คงเดิม (non-GAAP EPS 12.00–12.25 ดอลลาร์) บริษัทขาย MatrixCare ได้เงินสุทธิ 450.8 ล้านดอลลาร์ แล้วคืนผู้ถือหุ้นรวมกว่า 1 พันล้านดอลลาร์ (ซื้อหุ้นคืน 936 ล้าน + ปันผล 95 ล้าน) P/E ราว {{pe}}x บน EPS ฐานที่หักกำไรพิเศษ ต่ำกว่ามัธยฐาน 5 ปี Fair Value {{fv}} (MOS {{mos}}) เป้านักวิเคราะห์ {{analyst.target}} ({{analyst.pct}}) เหมาะกับนักลงทุนระยะกลาง-ยาวที่เชื่อว่า GLP-1 ไม่ได้กระทบมากอย่างที่ตลาดกังวล",
+    "strategy": "ราคาปัจจุบัน {{px}} ยังเหนือ MOS 20% ({{mos20}}) — ทยอยซื้อเล็กน้อยได้สำหรับนักลงทุนระยะยาว · เพิ่มน้ำหนักถ้าราคาลงใกล้ {{mos20}} หรือต่ำกว่า · ติดตามข้อมูล GLP-1 ต่อ CPAP adherence และงบ Q2 FY27",
+    "disclaimerSources": "ที่มาข้อมูล: StockAnalysis.com / Yahoo Finance / ResMed Q1 FY2027 Press Release (29 ต.ค. 2569) / ResMed Investor Relations"
   },
   "text": {
     "valHint": "เฉลี่ย 3 วิธี"
@@ -237,9 +240,9 @@
     "<b>GLP-1 ความกลัวเกินจริง:</b> ข้อมูลจริงชี้ว่าผู้ใช้ยาลดน้ำหนักส่วนใหญ่ยังต้องใช้ CPAP ต่อเนื่อง ตลาด sleep apnea ยังโตได้ระยะยาว",
     "<b>Philips Recall ผลักส่วนแบ่ง:</b> Philips ถอนตัวจากตลาด CPAP → RMD ได้ส่วนแบ่งเพิ่มขึ้นอย่างมีนัยสำคัญ",
     "<b>Recurring Revenue:</b> หน้ากาก/อุปกรณ์สิ้นเปลือง ~36% รายได้ มีความสม่ำเสมอสูง predictable cashflow",
-    "<b>SaaS Growth:</b> Brightree + MatrixCare ขยายฐาน SaaS สู่ home care management มาร์จิ้นสูงกว่า hardware",
-    "<b>หนี้ต่ำมาก:</b> D/E 0.13 ยืดหยุ่นทางการเงิน ปรับโครงสร้าง/M&A ได้ง่าย",
-    "<b>Dividend Grower:</b> ปันผลเพิ่มต่อเนื่อง หนุน total return สำหรับนักลงทุนระยะยาว"
+    "<b>SaaS Focus:</b> ขาย MatrixCare แล้วเหลือ Brightree/ซอฟต์แวร์ที่เหลือ (Residential Care Software +5%) เงินสดสุทธิ 450.8 ล้านดอลลาร์ ใช้คืนผู้ถือหุ้นและลดหนี้",
+    "<b>หนี้ต่ำมาก + คืนทุน:</b> D/E 0.10 ชำระคืนหนี้ 250 ล้านดอลลาร์ใน Q1 ซื้อหุ้นคืน 936 ล้านดอลลาร์ ปรับโครงสร้าง/M&A ได้ง่าย",
+    "<b>Dividend Grower:</b> ปันผลไตรมาสล่าสุด 0.66 ดอลลาร์ (เพิ่มจาก 0.60) หนุน total return ระยะยาว"
   ],
   "risks": [
     "<b>GLP-1 Disruption จริง:</b> ถ้า GLP-1 ลด sleep apnea ได้มากกว่าที่คาด อาจกระทบตลาดระยะยาว ยังไม่มีข้อสรุปแน่ชัด",
@@ -247,108 +250,8 @@
     "<b>Reimbursement Risk:</b> นโยบายประกันสุขภาพ/Medicare เปลี่ยนอาจกดดันราคา และการเข้าถึงผลิตภัณฑ์",
     "<b>FX Risk:</b> ~40% รายได้จากต่างประเทศ ค่าเงิน USD แข็งกดรายได้และกำไรได้",
     "<b>Patient Adherence:</b> บางส่วนหยุดใช้ CPAP หลังเริ่ม GLP-1 อาจลด recurring revenue หน้ากาก",
-    "<b>Valuation ไม่ถูกมาก:</b> แม้ถูกกว่าค่าเฉลี่ย แต่ P/E 19x ไม่ใช่ deep value ถ้า EPS โตช้ากว่าคาด upside จำกัด"
+    "<b>Valuation ไม่ถูกมาก:</b> P/E {{pe}}x แม้ต่ำกว่ามัธยฐาน 5 ปี แต่ไม่ใช่ deep value ถ้า EPS โตช้ากว่าคาด upside จำกัด · EPS GAAP TTM รอบนี้รวมกำไรขาย MatrixCare ซึ่งไม่เกิดซ้ำ"
   ],
   "extras": [],
-  "v2Display": {
-    "legDescs": [
-      "EPS (TTM) $10.37 × P/E เป้าหมาย ~23x — ค่ากลางประวัติศาสตร์ (ต่ำกว่าค่าเฉลี่ย 5 ปี ~28x เพื่อความระมัดระวัง)",
-      "EPS FY26 ประมาณการ $11.40 × Forward P/E เป้าหมาย 22x — นักวิเคราะห์คาด EPS โต ~10% YoY สะท้อนการเติบโตต่อเนื่อง",
-      "FCF/Share $11.28 × โตระยะกลาง 10% ต่อปี · ส่วนลด 9% · Terminal growth 3% — สะท้อนคุณภาพธุรกิจ ROIC 27%"
-    ],
-    "vcells": [
-      {
-        "k": "มูลค่าเหมาะสม",
-        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
-      },
-      {
-        "k": "ส่วนต่างจากราคา",
-        "v": "MOS ~ {{mos}}",
-        "tone": "mos"
-      },
-      {
-        "k": "เป้านักวิเคราะห์ 12 ด.",
-        "v": "~$248 (Buy)"
-      }
-    ],
-    "s6": [
-      {
-        "head": "EPS +7%/ปี",
-        "rows": [
-          [
-            "EPS ปี 3",
-            "~$12.71"
-          ],
-          [
-            "P/E ออก",
-            "19x"
-          ],
-          [
-            "ปันผลรวม 3 ปี",
-            "~$7.20"
-          ]
-        ]
-      },
-      {
-        "head": "EPS +10%/ปี",
-        "rows": [
-          [
-            "EPS ปี 3",
-            "~$13.80"
-          ],
-          [
-            "P/E ออก",
-            "22x"
-          ],
-          [
-            "ปันผลรวม 3 ปี",
-            "~$7.20"
-          ]
-        ]
-      },
-      {
-        "head": "EPS +13%/ปี",
-        "rows": [
-          [
-            "EPS ปี 3",
-            "~$14.96"
-          ],
-          [
-            "P/E ออก",
-            "24x"
-          ],
-          [
-            "ปันผลรวม 3 ปี",
-            "~$7.20"
-          ]
-        ]
-      }
-    ],
-    "targets": [
-      241.49,
-      303.6,
-      359.04
-    ],
-    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~{{baseEps}}",
-    "legend": [
-      {
-        "text": "ราคา RMD",
-        "swatch": "price"
-      },
-      {
-        "text": "มูลค่าเหมาะสม {{fv}}",
-        "swatch": "fv"
-      },
-      {
-        "text": "จุดสำคัญ",
-        "swatch": "point"
-      }
-    ],
-    "fv": 245,
-    "fvRange": [
-      238,
-      251
-    ]
-  },
-  "_sig": "sha256:75a5b436aaddbefd210f956653ade727f8c0d4e199e5cf1b45d99e6c1e1a6963"
+  "_sig": "sha256:7545a70a4657f9d96e15d4858b33d066a159f39d4aa6e186ab488d792ca9e4a6"
 }
