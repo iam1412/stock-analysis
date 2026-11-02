@@ -7,17 +7,17 @@
   "meta": {
     "company": "Sprouts Farmers Market",
     "exchange": "NASDAQ",
-    "sub": "Specialty natural & organic grocery chain • ~430 stores, 23 states • Fresh produce, bulk foods, vitamins, supplements • Health-conscious value positioning vs Whole Foods • Zero long-term financial debt, reinvesting in growth",
+    "sub": "Specialty natural & organic grocery chain • 504 stores, 25 states • Fresh produce, bulk foods, vitamins, supplements • Health-conscious value positioning vs Whole Foods • Net cash, buybacks ~$299M YTD",
     "headerTags": [
       "Consumer Staples",
       "Specialty Grocery"
     ],
-    "analysisDate": "2026-09-21",
-    "aiModel": "Claude Sonnet 5",
+    "analysisDate": "2026-11-02",
+    "aiModel": "Claude Sonnet 5.5",
     "sources": [
       "Yahoo Finance",
       "StockAnalysis.com",
-      "Macrotrends"
+      "SEC 8-K Ex-99.2 Q3 FY2026 (28 ต.ค. 2026)"
     ],
     "themeLegacy": {
       "accent": "#5A8F3C",
@@ -97,48 +97,62 @@
     }
   },
   "fundamentals": {
-    "eps": 5.21,
-    "bvps": 14.21,
-    "shares": 97000000,
-    "roe": 38.4,
-    "roa": 12.6,
-    "revenue": 8900000000,
+    "eps": 4.64,
+    "bvps": 16.58,
+    "shares": 92232635,
+    "roe": 32.4,
+    "revenue": 9108000000,
     "grossMargin": 38.8,
     "fy": {
       "period": "FY2025",
       "netIncome": 523700000
     },
-    "epsBasis": "gaap-ttm"
+    "epsBasis": "fy",
+    "epsForward": 4.8
   },
   "legs": [
     {
       "method": "pe",
       "label": "P/E Valuation",
+      "role": "fv",
+      "family": "market",
       "inputs": {
-        "multiple": 20,
-        "multipleSource": "author"
-      }
+        "multiple": 15.3,
+        "multipleSource": "median5y",
+        "medianWindow": "FY2021–FY2025",
+        "multipleRange": [
+          12,
+          17
+        ]
+      },
+      "note": "EPS ฐาน 4.64 = ไกด์ FY2026 ($4.80) หักผลสัปดาห์ที่ 53 (~$0.16) · P/E 15.3x = มัธยฐาน 5 ปีที่วัดจริง (ช่วง 12.0–25.3x; สองจุดบนคือยุค comps บวก) ไม่ใช่ตัวคูณปัจจุบัน · ความไว: 12.0x–17.0x"
     },
     {
       "method": "evebitda",
       "label": "EV/EBITDA",
+      "role": "fv",
+      "family": "market",
       "inputs": {
-        "multiple": 13,
+        "multiple": 9,
         "multipleSource": "author"
       },
       "override": {
-        "ebitda": 843900000,
-        "netDebt": -175000000,
-        "why": "ค่าที่ผู้เขียนใช้ในใบ v2"
-      }
+        "ebitda": 775000000,
+        "netDebt": -110000000,
+        "why": "EBITDA ประมาณการ = EBIT ไกด์ FY2026 ~$605M + D&A ~$170M (ประมาณจาก FY2025: EBITDA $843.9M − EBIT ~$687M = ~$157M แล้วบวกการเติบโตของสาขา) · net cash = เงินสด $228.7M − หนี้ระยะยาว $118.6M (Q3 FY2026)"
+      },
+      "note": "9x = กลุ่มค้าปลีกอาหารที่โตช้า (ผู้เขียนเลือก ไม่ได้วัดมัธยฐานของ SFM) · ขาที่ไม่พึ่ง (r,g) ใช้ยืนยันขา P/BV"
     },
     {
       "method": "pbv",
       "label": "Justified P/BV",
+      "role": "fv",
+      "family": "rg",
       "inputs": {
-        "g": 7,
-        "r": 11
-      }
+        "g": 3.5,
+        "r": 10.5
+      },
+      "note": "ROE 32.4% (NI TTM $496M ÷ Equity $1,529M) · BVPS $16.58 = Equity ÷ หุ้นคงเหลือ 92.23M · g ต่ำลงเพราะ comps ติดลบ · ROE สูงจาก buyback ลด equity จึงไม่ใช่ขายึดหลัก"
     }
   ],
   "fvWeights": null,
@@ -159,32 +173,32 @@
     ],
     "custom": [
       {
-        "label": "P/E เฉลี่ย ~5 ปี",
-        "value": "25–35x",
-        "note": "ปัจจุบัน Discount จากประวัติ"
+        "label": "P/E มัธยฐาน 5 ปี",
+        "value": "15.3x",
+        "note": "ช่วง 12.0–25.3x · ปัจจุบัน {{pe}}x"
       },
       {
         "label": "เงินปันผล",
         "value": "ไม่มี",
-        "note": "บริษัทนำกำไรเปิดร้านใหม่"
+        "note": "ซื้อหุ้นคืน $299M ใน 9 เดือนแรก FY2026"
       },
       {
         "label": "จำนวนร้าน",
-        "value": "~430",
-        "note": "ใน 23 รัฐ · แผนเปิด 40+ ร้าน/ปี"
+        "value": "504",
+        "note": "25 รัฐ · เปิดสุทธิ 42 ร้านใน FY2026"
       }
     ],
     "notes": {
-      "mcap": "97 ล้านหุ้น (diluted 98M)",
-      "pe": "ต่ำกว่า 5 ปีเฉลี่ย",
-      "pbv": "(FY2025)",
-      "eps": "FY2025 $5.31 · FY26E $5.32–5.48",
-      "bvps": "Equity FY2025 $1,403M",
-      "roe": "ROE สูงผิดปกติสำหรับค้าปลีก",
-      "revenue": "FY2025 $8.81B (+14.1% YoY)",
-      "grossMargin": "FY2025 · ปรับดีขึ้นจาก 36.9% FY2023"
+      "mcap": "92.2M หุ้นคงเหลือ (diluted Q3 93.7M)",
+      "pe": "EPS ฐาน normalized · P/E จริง TTM GAAP ~9.5x",
+      "pbv": "Equity Q3 FY2026 $1,529M",
+      "eps": "ไกด์ FY2026 $4.80 (รวมสัปดาห์ที่ 53 ~$0.16) · Q4 $0.47–0.51",
+      "bvps": "Equity Q3 FY2026 $1,529M ÷ 92.23M หุ้น",
+      "roe": "ROE สูงจาก buyback ลด equity",
+      "revenue": "TTM (Q3 FY2026) · Q3 +5% YoY",
+      "grossMargin": "TTM · Q3 FY2026 38.2% (−50bp YoY)"
     },
-    "hint": "ข้อมูล ณ ก.ย. 2569 · แหล่ง: Yahoo Finance, StockAnalysis, Macrotrends"
+    "hint": "ข้อมูล ณ 2 พ.ย. 2569 · แหล่ง: Yahoo Finance, StockAnalysis, SEC 8-K Q3 FY2026"
   },
   "scenarios": {
     "years": 3,
@@ -194,173 +208,62 @@
     "exitMetric": "pe",
     "cases": [
       {
-        "growth": 5,
-        "exitMultiple": 15,
+        "growth": -4,
+        "exitMultiple": 10,
         "divCum": 0,
-        "desc": "Comps ลบต่อเนื่อง, การแข่งขันสูง, ชะลอเปิดสาขา"
+        "desc": "Comps ติดลบต่อเนื่อง, traffic ลด, margin ถูกบีบ — P/E ลดเหลือราว 10x (ใกล้ระดับปัจจุบัน)"
       },
       {
-        "growth": 12,
-        "exitMultiple": 20,
+        "growth": 3,
+        "exitMultiple": 14,
         "divCum": 0,
-        "desc": "Comps กลับมาบวกต่ำ ๆ, เปิดสาขาใหม่ 40+/ปี, margin ขยาย"
+        "desc": "Comps ทรงตัว, เปิดสาขา 40+/ปี, buyback ช่วย EPS — P/E ฟื้นสู่ราว 14x ต่ำกว่ามัธยฐาน 15.3x"
       },
       {
-        "growth": 18,
-        "exitMultiple": 25,
+        "growth": 9,
+        "exitMultiple": 18,
         "divCum": 0,
-        "desc": "Comps กลับมา +3–5%, re-rate P/E สูง, ขยายสาขาเร็ว"
+        "desc": "Comps กลับมาบวก, margin คืนระดับเดิม — re-rate ราว 18x"
       }
     ],
     "exitDp": 0,
-    "note": "ผลตอบแทนขึ้นอยู่กับ 2 ปัจจัยหลัก: (1) Comparable Store Sales ฟื้นตัวหรือไม่ (Q1 2569 −1.7% ยังกดดัน sentiment) และ (2) ตลาดจะ re-rate P/E กลับขึ้น 20–25x หรือไม่ (ปัจจุบัน 17x ต่ำกว่าประวัติ 25–35x) · SFM ไม่จ่ายปันผล ทั้ง 3 scenario คาดผลตอบแทน = Capital Gain ล้วน · FY26 guidance EPS $5.32–5.48 คือ near-term catalyst หลัก"
+    "note": "ฐาน EPS 4.64 (ไกด์ FY2026 หักสัปดาห์ที่ 53) · ผลตอบแทนขึ้นกับ (1) traffic/comps ที่ยังติดลบ (Q3 −0.9% · ไกด์ Q4 −2% ถึง −4%) และ (2) P/E re-rate · ไม่มีปันผล ผลตอบแทน = capital gain ล้วน (รวมแรงหนุนจาก buyback ในตัว EPS)"
   },
   "analyst": {
-    "target": 95,
-    "n": null,
+    "target": 63.29,
+    "n": 14,
     "rating": "Buy",
     "asOf": null
   },
   "prose": {
-    "chart": "SFM เปิดช่วง ก.ค. 2568 ที่ระดับต่ำสุดรอบปี $70.91 หลังตกจากจุดสูง $171.15 เนื่องจาก Q1 2569 รายงาน Comparable Store Sales −1.7% ต่ำกว่าคาด ราคาทยอยฟื้นตัวผ่านครึ่งหลังปี 2568 ก่อนปรับลงอีกครั้งในช่วง มี.ค.–เม.ย. 2569 ($74.99) จากความกังวลเศรษฐกิจ แล้วอยู่ที่ {{px}} ณ ก.ย. 2569 (ใกล้ต่ำสุดของกรอบ 52 สัปดาห์ $64.75) · ราคาปัจจุบันอยู่ต่ำกว่า Fair Value {{fv}} ราว {{mos}}",
-    "valuation": "ทั้ง 3 วิธีให้ค่าใกล้เคียงกัน ($104–$114) ชี้ว่า SFM มีมูลค่าเหมาะสมแถว {{fv}} · P/E Valuation ให้ค่าต่ำสุดเพราะใช้ P/E เพียง 20x (อนุรักษ์นิยม) เทียบประวัติ 25–35x · EV/EBITDA และ Justified P/BV ให้ค่าสูงกว่าเล็กน้อย · ถ้า comps กลับมาเติบโต ตลาดอาจ re-rate P/E สูงขึ้นได้อีก · ความเสี่ยง: หาก EPS FY2026 ต่ำกว่า guidance ($5.32–5.48) FV อาจปรับลง",
-    "gauge": "ราคาปัจจุบัน {{px}} ต่ำกว่าโซน Deep Value (MOS 30% = {{mos30}}) แล้ว — แปลว่าตลาดให้ส่วนลดสูงกว่าที่ FV รองรับ ควรตรวจว่า comps ที่อ่อนลงเป็นเรื่องชั่วคราวหรือโครงสร้าง · เป้านักวิเคราะห์เฉลี่ย {{analyst.target}} สูงกว่าราคาปัจจุบันราว 35% · หาก comps ฟื้นตัวกลับมาบวก ราคาเป้าหมายและ FV ควรปรับขึ้น",
-    "mos": "ส่วนต่างกว้าง — ราคาต่ำกว่าโซน MOS 30% แต่ต้องยืนยันว่า comps อ่อนลงชั่วคราว",
-    "verdictHeadline": "SFM: หุ้น Growth-at-Reasonable-Price ที่ถูก Re-rate ลงจากความผิดหวัง Comps",
-    "verdictBody": "Sprouts Farmers Market เป็นธุรกิจที่มีคุณภาพสูง (ROE 38%, gross margin 38.8%, แทบไม่มีหนี้สินทางการเงิน) แต่ราคาหุ้นผ่านช่วงผันผวนในรอบปี — ตกลงจากจุดสูง $171 มาต่ำสุด $70.91 หลัง Q1 2569 รายงาน Comparable Store Sales −1.7% ต่ำกว่าคาด ทำให้ตลาด de-rate P/E จาก 30–35x เหลือ 17x และราคายังอยู่ใกล้ต่ำสุด 52 สัปดาห์ · ณ ราคาปัจจุบัน {{px}} ต่ำกว่า MOS 30% ของ Fair Value {{fv}} — ให้ส่วนต่างความปลอดภัยกว้าง แต่ต้องติดตาม comps · catalyst หลักคือ Comps กลับมาบวกใน H2 2569 ซึ่งอาจนำไปสู่การ re-rate P/E กลับขึ้นอย่างรวดเร็ว · อย่างไรก็ดี ความเสี่ยงด้านการแข่งขันจาก Walmart/Amazon และแนวโน้ม organic ที่กำลังถูก democratize ต้องติดตามอย่างใกล้ชิด",
-    "strategy": "ราคาปัจจุบัน {{px}} ต่ำกว่าโซน Deep Value {{mos30}} (MOS 30%) เหมาะสำหรับทยอยสะสมระยะยาวเป็นงวด โดยเฉพาะถ้า Comps ดีขึ้น · ผลตอบแทน Base Case 3 ปี ~+63.8% ถ้า EPS โตได้ 12%/ปีและ P/E re-rate กลับ 20x · ไม่มีปันผล — ต้องพึ่ง Capital Gain ล้วน",
-    "disclaimerSources": "ที่มา: Yahoo Finance (ราคา $89.30 ณ 3 ก.ค. 2569 · ราคารายเดือน 1 ปี), StockAnalysis.com (งบการเงิน FY2025 · EPS TTM $5.21 · analyst target $92.43), Macrotrends (รายได้ย้อนหลัง · อัตรากำไร)"
+    "chart": "SFM ร่วงหนักในรอบปี: จากจุดสูงสุด 52 สัปดาห์ {{range52w.hi}} มาอยู่ที่ {{px}} ({{chg}}) ใกล้ต่ำสุด {{range52w.lo}} หลังรายงานงบ Q3 FY2026 (28 ต.ค. 2569) — comps −0.9%, traffic −3.3%, gross margin 38.2% ลดลง 50bp และไกด์ Q4 comps −2% ถึง −4% ทำให้ตลาดปรับ P/E ลงต่อ · ราคาปัจจุบันต่ำกว่า Fair Value {{fv}} ราว {{mos}}",
+    "valuation": "ทั้ง 3 ขาให้ค่าในกรอบแคบ ($68–$77) · P/E ใช้มัธยฐาน 5 ปีที่วัดจริง 15.3x × EPS ฐาน {{baseEps}} (ไกด์ FY2026 หักสัปดาห์ที่ 53) = {{leg1}} · EV/EBITDA 9x (ผู้เขียนเลือก ไม่พึ่ง r,g) = {{leg2}} ยืนยันว่า FV ไม่ได้เกิดจากสมมติฐาน (r,g) ขาเดียว · Justified P/BV (r,g) = {{leg3}} นับเป็นหนึ่งเสียงตระกูล (r,g) · ความเสี่ยง: ถ้า comps ติดลบลึกกว่าไกด์ EPS ฐานต่ำกว่า 4.64 FV จะลดตาม — ความไว P/E 12x–17x ให้ FV ช่วง {{fvLow}}–{{fvHigh}}",
+    "gauge": "ราคาปัจจุบัน {{px}} ต่ำกว่าโซน Deep Value (MOS 30% = {{mos30}}) — ตลาดตีราคาเผื่อ EPS ที่ยังลดลงต่อ (FY2027E ของนักวิเคราะห์ ~$4.62 และ traffic ติดลบ) · เป้านักวิเคราะห์เฉลี่ย {{analyst.target}} ({{analyst.pct}}) สูงกว่าราคาปัจจุบัน แต่ถูกปรับลงมาจาก $95 ก่อนรายงานงบ",
+    "mos": "ส่วนต่างกว้างแต่ต้องแยกว่า traffic ติดลบเป็นชั่วคราวหรือโครงสร้าง — FV ใช้ EPS ที่ลดลงแล้ว ไม่ใช่ EPS TTM",
+    "verdictHeadline": "SFM: ธุรกิจคุณภาพสูงที่ถูกตีราคาลงแรงจาก traffic ติดลบ — ถูกกว่า FV แต่ momentum ยังอ่อน",
+    "verdictBody": "Sprouts ยังเป็นธุรกิจกำไรสูงกว่ากลุ่ม (gross margin 38.2% ใน Q3, ROE ~32%, net cash, ซื้อหุ้นคืน $299M ใน 9 เดือน) แต่ Q3 FY2026 เผยจุดอ่อน: comps −0.9%, comparable transactions −3.3%, EPS $1.21 ต่ำกว่าปีก่อน และไกด์ Q4 comps −2% ถึง −4% (EPS $0.47–0.51) ฉุด EPS FY2026 เหลือราว $4.80 (รวมสัปดาห์ที่ 53) · ณ ราคา {{px}} ซื้อขายที่ P/E เพียง {{pe}}x เทียบมัธยฐานย้อนหลัง 15.3x และต่ำกว่า Fair Value {{fv}} ราว {{mos}} — ส่วนต่างความปลอดภัยกว้าง แต่ตลาดกำลังตั้งคำถามกับโมเดลการเติบโต (traffic) ไม่ใช่แค่รอบเศรษฐกิจ · catalyst คือ traffic หยุดลดและ margin คงที่ · ความเสี่ยงหลักคือ Walmart/Amazon/Kroger แย่งลูกค้า organic และ comps ลบต่อเนื่อง",
+    "strategy": "ราคาปัจจุบัน {{px}} ต่ำกว่าโซน MOS 30% ({{mos30}}) แต่ข่าวล่าสุดยังลบ — ทยอยสะสมเป็นงวดและรอสัญญาณ traffic หยุดลด (ไตรมาสหน้า) ก่อนเพิ่มน้ำหนัก · ผลตอบแทน Base Case 3 ปี {{scn.base.ret}} ที่ EPS +3%/ปีและ P/E 14x · ไม่มีปันผล — พึ่ง capital gain ล้วน",
+    "disclaimerSources": "ที่มา: Yahoo Finance และ StockAnalysis.com (ราคา {{px}} ณ 30 ต.ค. 2569 · EPS TTM $5.21 · analyst target {{analyst.target}} n=14), SEC 8-K Ex-99.2 (Q3 FY2026 สิ้นสุด 27 ก.ย. 2569 · ไกด์ FY2026), StockAnalysis (งบย้อนหลัง · balance sheet)"
   },
   "text": {
     "chartHint": "รายเดือน"
   },
   "catalysts": [
-    "<b>Health & Wellness Megatrend:</b> กลุ่ม Millennial/Gen Z หันมาใส่ใจสุขภาพมากขึ้น — SFM อยู่ในตำแหน่ง Sweet Spot ราคาต่ำกว่า Whole Foods แต่ premium กว่า supermarket ทั่วไป",
-    "<b>เปิดสาขาใหม่ต่อเนื่อง:</b> แผน 40+ ร้าน/ปี ใน FY2026 — ยังมีพื้นที่ขยายในตลาดชานเมืองที่ยังไม่มีคู่แข่ง นำไปสู่ unit economics ดี",
-    "<b>Margin ขยายตัว:</b> Gross Margin เพิ่มจาก 36.9% FY2023 → 38.8% FY2025 ด้วย product mix shift ไปสินค้า private label + bulk food ที่ margin สูงกว่า",
-    "<b>Balance Sheet แกร่ง:</b> หนี้สินทางการเงินต่ำมาก ($81.6M) มี net cash จ่ายสุทธิ ~$175M — ยืดหยุ่นสูง สามารถ buyback หุ้นหรือ accelerate expansion",
-    "<b>Comps Rebound Potential:</b> Q1 2569 −1.7% เป็น \"low base\" — ถ้าฟื้นกลับมาบวกใน H2 2569 ราคาหุ้นอาจ re-rate แรง",
-    "<b>Valuation Reset:</b> ราคาปัจจุบัน P/E ~{{pe}}x ต่ำสุดในรอบหลายปี (vs ประวัติ 25–35x) — ให้ margin of safety สำหรับนักลงทุนเชิง value"
+    "<b>Traffic หยุดลด:</b> Q3 comparable transactions −3.3% (รวมผลกระทบ cyclospora ~60bp ต่อ comps) — ถ้า traffic ทรงตัว Q1 FY2027 ตลาดอาจ re-rate กลับสู่ P/E 14–15x",
+    "<b>เปิดสาขาใหม่:</b> เปิดสุทธิ 42 ร้านใน FY2026 (28 ร้านใน 9 เดือน) ปัจจุบัน 504 ร้าน 25 รัฐ — ยอดขายรวมโต ~5% แม้ comps ลบ",
+    "<b>ซื้อหุ้นคืน:</b> $299M ใน 9 เดือนแรก (Q3 $89M) ลดหุ้น diluted เหลือ 93.7M — หนุน EPS และ ROE",
+    "<b>Balance sheet:</b> เงินสด $228.7M เทียบหนี้ระยะยาว $118.6M (net cash) · operating cash flow YTD $555M",
+    "<b>Valuation reset:</b> P/E {{pe}}x ต่ำกว่ามัธยฐาน 5 ปี 15.3x มาก — ให้ margin of safety หาก EPS ไม่ลดต่อ",
+    "<b>สัปดาห์ที่ 53 ใน FY2026:</b> เพิ่มยอดขาย ~$190M และ EPS ~$0.16 (ครั้งเดียว) — ฐานเปรียบเทียบ FY2027 จึงต่ำลงตามจริง"
   ],
   "risks": [
-    "<b>Comparable Store Sales อ่อนแอ:</b> Q1 2569 −1.7% YoY — ถ้าลบต่อเนื่องหลายไตรมาส บ่งชี้ว่า core shopper เริ่มไปที่อื่น หรือ concept เริ่มอิ่มตัว",
-    "<b>การแข่งขันจาก Big Box:</b> Walmart + Target ขยาย organic/natural section อย่างก้าวร้าว, Amazon Fresh/Whole Foods กดราคา — กดดัน traffic และ basket size ของ SFM",
-    "<b>Execution Risk การขยายสาขา:</b> เปิดสาขาเร็วเกินไปในตลาดที่ยังไม่ proven อาจดึง Comparable Store Sales ลง (cannibalization) และเพิ่มต้นทุน",
-    "<b>Gross Margin ถึง Ceiling:</b> Margin 38.8% สูงกว่า grocery peers — ยากที่จะขยายต่อ อาจต้อง discount เพื่อดึงลูกค้ากลับ",
-    "<b>Consumer Spending Risk:</b> ลูกค้าเป้าหมายของ SFM (Millennial ที่มีการศึกษาสูง) หากเศรษฐกิจชะลอ อาจ trade-down ไปซื้อ Kroger/Aldi แทน",
-    "<b>Valuation Premium คงไว้ยาก:</b> ตลาดเคย price-in growth story 30–40x P/E — แต่ถ้า comps ไม่ฟื้น ราคาหุ้นอาจถูก de-rate ต่อเนื่องได้"
+    "<b>Traffic ติดลบ:</b> comparable transactions −3.3% ใน Q3 และไกด์ Q4 comps −2% ถึง −4% — ถ้าลบต่อเนื่องแปลว่า concept อิ่มตัวหรือลูกค้าไปที่อื่น",
+    "<b>การแข่งขัน Big Box:</b> Walmart, Target, Kroger, Amazon ขยาย organic/natural แข่งราคา — กดดัน traffic และ basket",
+    "<b>Gross margin ลด:</b> 38.2% ใน Q3 (−50bp YoY) — เริ่มสูญเสียส่วนต่างเหนือกลุ่ม อาจต้องเพิ่มโปรโมชัน",
+    "<b>EPS ลดลงต่อ:</b> ไกด์ FY2026 ~$4.80 ต่ำกว่า TTM $5.21 และ FY2027E ~$4.62 — ถ้าต่ำกว่านี้ FV ลดตาม",
+    "<b>Execution การขยายสาขา:</b> เปิดสถิติ 15 ร้านใน Q3 และปิดร้านด้อยผลงาน 1 ร้าน — cannibalization อาจฉุด comps",
+    "<b>Sentiment/Momentum:</b> หุ้นร่วง ~40% รอบปีและหลุดต่ำสุด 52 สัปดาห์ — แรงขายอาจต่อเนื่องก่อนมีหลักฐานว่า traffic ฟื้น"
   ],
   "extras": [],
-  "v2Display": {
-    "legDescs": [
-      "EPS adj. $5.21 × P/E เป้าหมาย ~20x — specialty grocer ที่ comps ชะลอ; ประวัติ 25–35x แต่คาดตลาดให้ premium น้อยลงระยะสั้น",
-      "EBITDA FY2025 $843.9M × multiple 13x = EV $10,970M · บวก net cash $175M ($257M cash − $81.6M debt) ÷ 98M หุ้น",
-      "P/BV = (ROE 38.4% − g 7%)/(r 11% − g 7%) = 7.85 × BVPS $14.21 — r อิง WACC grocery specialty + growth premium"
-    ],
-    "vcells": [
-      {
-        "k": "มูลค่าเหมาะสม",
-        "v": "{{fv}} ({{fvLow}}–{{fvHigh}})"
-      },
-      {
-        "k": "ส่วนต่างจากราคา",
-        "v": "MOS ~ {{mos}}",
-        "tone": "mos"
-      },
-      {
-        "k": "เป้านักวิเคราะห์ 12 ด.",
-        "v": "~$95.00 (Buy)"
-      }
-    ],
-    "s6": [
-      {
-        "head": "EPS +5%/ปี",
-        "rows": [
-          [
-            "EPS ปี 3",
-            "~$6.03"
-          ],
-          [
-            "P/E ออก",
-            "15x"
-          ],
-          [
-            "ปันผลรวม 3 ปี",
-            "~$0.00"
-          ]
-        ]
-      },
-      {
-        "head": "EPS +12%/ปี",
-        "rows": [
-          [
-            "EPS ปี 3",
-            "~$7.31"
-          ],
-          [
-            "P/E ออก",
-            "20x"
-          ],
-          [
-            "ปันผลรวม 3 ปี",
-            "~$0.00"
-          ]
-        ]
-      },
-      {
-        "head": "EPS +18%/ปี",
-        "rows": [
-          [
-            "EPS ปี 3",
-            "~$8.55"
-          ],
-          [
-            "P/E ออก",
-            "25x"
-          ],
-          [
-            "ปันผลรวม 3 ปี",
-            "~$0.00"
-          ]
-        ]
-      }
-    ],
-    "targets": [
-      90.45,
-      146.2,
-      213.75
-    ],
-    "s6Hint": "จากจุดเข้า {{px}} • EPS ฐาน ~{{baseEps}} • ไม่มีปันผล",
-    "legend": [
-      {
-        "text": "ราคา SFM",
-        "swatch": "price"
-      },
-      {
-        "text": "มูลค่าเหมาะสม {{fv}}",
-        "swatch": "fv"
-      },
-      {
-        "text": "จุดสำคัญ",
-        "swatch": "point"
-      }
-    ],
-    "fv": 110,
-    "fvRange": [
-      100,
-      120
-    ],
-    "legValues": [
-      null,
-      113.72,
-      null
-    ],
-    "cards": {
-      "netIncomeFy": {
-        "v": "$523.7M",
-        "d": "+37.6% YoY จาก $380.6M"
-      }
-    }
-  },
-  "_sig": "sha256:8d85bc213850f56ba8768293387b4878f6767d47a7793690ae39a9cf50219a8c"
+  "_sig": "sha256:740f8988a02b6dfbf8b7713d497acc6a79bc9eaa2cd93825832a7b739be60f71"
 }
